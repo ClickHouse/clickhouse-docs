@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import clsx from 'clsx';
 import { useLocation } from '@docusaurus/router';
 import Link from '@docusaurus/Link';
-import styles from './CustomSidebarItems.module.scss';
+import styles from './customSidebarItems.module.scss';
 
 const CustomSidebarItems = ({ items, activePath, level = 1, onItemClick, isMenuVisible = true, forceCollapsible = false }) => {
     const location = useLocation();
