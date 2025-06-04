@@ -6,6 +6,9 @@ import styles from './styles.module.scss';
 const MobileSideBarMenu = ({sidebar, menu}) => {
     const [currentMenuState, setMenuState] = useState(false);
 
+    // Define the breakpoint where mobile menu should be hidden (laptop breakpoint)
+    const LAPTOP_BREAKPOINT = 1330;
+
     // Prevent body scroll when menu is open
     useEffect(() => {
         if (currentMenuState) {
@@ -28,6 +31,26 @@ const MobileSideBarMenu = ({sidebar, menu}) => {
             };
         }
     }, [currentMenuState]);
+
+    // Close mobile menu when viewport exceeds mobile breakpoint
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth >= LAPTOP_BREAKPOINT && currentMenuState) {
+                setMenuState(false);
+            }
+        };
+
+        // Add event listener
+        window.addEventListener('resize', handleResize);
+
+        // Also check on mount in case the component mounts with a large viewport
+        handleResize();
+
+        // Cleanup
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [currentMenuState, LAPTOP_BREAKPOINT]);
 
     // Function to handle menu close
     const handleMenuClose = () => {
