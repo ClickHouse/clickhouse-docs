@@ -1,6 +1,7 @@
 @use "colors";
 @use "default";
 @use "home";
+@use "./breakpoints.scss" as breakpoints;
 
 @tailwind base;
 @tailwind components;
@@ -664,15 +665,8 @@ prism-code {
   min-height: auto;
 }
 
-@media (min-width: 1440px) {
-  .container {
-    max-width: 95%;
-  }
-}
-
-@media (max-width: 1439px) {
-  .container {
-  }
+.container {
+  max-width: 100%;
 }
 
 #__docusaurus {
