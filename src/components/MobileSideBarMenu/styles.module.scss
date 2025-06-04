@@ -78,11 +78,48 @@
     flex-direction: column;
     justify-content: space-between;
     box-shadow: none;
+
+    // Ensure logo container always takes up space and remains visible
+    .leftSection {
+        display: flex !important;
+        align-items: center;
+        flex-shrink: 0; // Prevent shrinking
+        min-width: 0; // Allow content to shrink if needed but container stays
+
+        // Force logo visibility in mobile sidebar
+        :global(.navbar__brand) {
+            display: flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+
+            // Ensure logo image/text is always visible
+            :global(.navbar__logo) {
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                max-height: none !important;
+                height: auto !important;
+            }
+
+            :global(.navbar__title) {
+                display: inline-block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+        }
+    }
 }
 
 .headerActions {
-    display: flex;
-    vertical-align: center;
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.headerActions > * {
+    margin: 0;
+    flex-shrink: 0; // Prevent action items from shrinking
 }
 
 .arrow {
@@ -106,8 +143,34 @@
 .toplevel {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
     margin-bottom: 0.5rem;
+    min-height: 2.5rem; // Ensure minimum height for logo
+}
+
+.leftSection {
+    display: flex;
+    align-items: center;
+    flex: 0 1 auto; // Allow to shrink but maintain content
+    min-width: 0; // Allow flexbox to work properly
+
+    // Override any Docusaurus hiding of logo in mobile
+    :global(.navbar__brand) {
+        display: flex !important;
+        align-items: center !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        width: auto !important;
+        height: auto !important;
+
+        // Ensure all logo elements are visible
+        * {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+    }
 }
 
 .bottomLevel {
@@ -120,14 +183,44 @@
     border: none;
     border-radius: 5px;
     padding: 5px;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
 }
 
 [data-theme="dark"] .levelToggleButton {
-    background-color: #303030;;
+    background-color: #303030;
 }
 
 [data-theme="light"] .levelToggleButton {
     background-color: var(--ifm-menu-color-background-active);
+}
+
+// Additional overrides to ensure logo visibility across all breakpoints
+// (Override for Docusaurus default hiding of logo at this breakpoint)
+@media (max-width: 996px) {
+    .docsMobileMenu_header {
+        .leftSection {
+            :global(.navbar__brand) {
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+
+                :global(.navbar__logo) {
+                    display: block !important;
+                    max-width: none !important;
+                    max-height: 2rem !important; // Reasonable max height for mobile
+                    width: auto !important;
+                    height: auto !important;
+                }
+
+                :global(.navbar__title) {
+                    display: inline-block !important;
+                    font-size: 1.1rem !important; // Ensure readable size
+                }
+            }
+        }
+    }
 }
 
 @media (min-width: breakpoints.$laptop-breakpoint) {

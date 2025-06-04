@@ -57,7 +57,7 @@
 .categoryLabel {
   flex: 0 1 auto; // Only take up the space needed for the text
   cursor: pointer;
-  padding: 0.25rem;
+  padding: 0.1rem;
   border-radius: 0.25rem;
   transition: background-color 0.2s ease;
   display: inline-block;
@@ -150,13 +150,13 @@
   }
 
   .sidebarItemLink {
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
+    padding: 0.2rem 0.5rem;
+    font-size: 14px;
   }
 
   .sidebarSubItems {
     .sidebarItemLink {
-      padding: 0.625rem 1rem;
+      padding: 0.1rem 1rem;
       font-size: 0.9rem;
     }
   }
