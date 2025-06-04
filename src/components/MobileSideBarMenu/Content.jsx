@@ -4,7 +4,7 @@ import IconClose from '@theme/Icon/Close';
 import IconArrowLeft from '@site/static/img/arrowleft.svg';
 import IconArrowRight from '@site/static/img/arrowright.svg';
 import clsx from 'clsx'
-import DocSidebarItems from '@theme/DocSidebarItems'
+import CustomSidebarItems from './CustomSidebarItems'
 import { ThemeClassNames } from '@docusaurus/theme-common'
 import ClickHouseLogo from '../../icons/ClickHouseLogo'
 import ColorModeToggle from "../../components/ColorModeToggler";
@@ -72,7 +72,7 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
         }
     };
 
-    // Generic function to render DocSidebarItems with consistent styling
+    // Generic function to render CustomSidebarItems with consistent styling
     const renderDocSidebarItems = (items, activePath) => {
         return (
             <ul className={clsx(
@@ -80,7 +80,7 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
                 'menu__list',
                 styles.docsMobileMenuItems
             )}>
-                <DocSidebarItems
+                <CustomSidebarItems
                     items={items || []}
                     activePath={activePath}
                     level={1}
