@@ -683,6 +683,7 @@ prism-code {
   flex: 0 0 var(--ifm-navbar-height);
   background: var(--click-color-background);
   background-attachment: fixed;
+  height: auto;
 }
 
 .search-result-match {
@@ -1021,7 +1022,6 @@ prism-code {
 
 .main-content-wrapper {
   height: 100%;
-  margin-top: 2rem;
 
   .row {
     height: 100%;
