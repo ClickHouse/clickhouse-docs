@@ -72,6 +72,24 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
         }
     };
 
+    // Generic function to render DocSidebarItems with consistent styling
+    const renderDocSidebarItems = (items, activePath) => {
+        return (
+            <ul className={clsx(
+                ThemeClassNames.docs.docSidebarMenu,
+                'menu__list',
+                styles.docsMobileMenuItems
+            )}>
+                <DocSidebarItems
+                    items={items || []}
+                    activePath={activePath}
+                    level={1}
+                    onItemClick={handleItemClick}
+                />
+            </ul>
+        );
+    };
+
     // Render top-level menu using DocSidebarItems
     const renderTopLevelMenu = () => {
         return (
@@ -102,18 +120,7 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
                     </div>
                 </div>
 
-                <ul className={clsx(
-                    ThemeClassNames.docs.docSidebarMenu,
-                    'menu__list',
-                    styles.docsMobileMenuItems
-                )}>
-                    <DocSidebarItems
-                        items={menu.dropdownCategories || []}
-                        activePath={path}
-                        level={1}
-                        onItemClick={handleItemClick}
-                    />
-                </ul>
+                {renderDocSidebarItems(menu.dropdownCategories, location.pathname)}
             </>
         );
     };
@@ -146,18 +153,7 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
                     </div>
                 </div>
 
-                <ul className={clsx(
-                    ThemeClassNames.docs.docSidebarMenu,
-                    'menu__list',
-                    styles.docsMobileMenuItems
-                )}>
-                    <DocSidebarItems
-                        items={sidebar || []}
-                        activePath={location.pathname}
-                        level={1}
-                        onItemClick={handleItemClick}
-                    />
-                </ul>
+                {renderDocSidebarItems(sidebar, location.pathname)}
             </>
         );
     };

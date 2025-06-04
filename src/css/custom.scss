@@ -464,6 +464,16 @@ code span.token.keyword {
   padding-left: 0;
 }
 
+@media (max-width: #{breakpoints.$mobile-breakpoint}) {
+  .theme-doc-sidebar-container,
+  .theme-doc-sidebar-container *,
+  .docsMobileMenuItems,
+  .menu__list {
+    display: block !important;
+    visibility: visible !important;
+  }
+}
+
 li.theme-doc-sidebar-item-category-level-1 {
   .menu__list-item-collapsible {
     font-weight: 700;
@@ -1404,3 +1414,4 @@ input::-ms-input-placeholder { /* Microsoft Edge */
 .installInstructions {
   margin-top: 2em;
 }
+

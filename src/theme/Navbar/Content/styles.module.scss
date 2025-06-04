@@ -185,9 +185,9 @@
 }
 
 @media (max-width: breakpoints.$mobile-breakpoint) {
-  .dropdownCategoriesContainer {
-    display:inline-block;
-  }
+  //.dropdownCategoriesContainer {
+  //  display:inline-block;
+  //}
 }
 
 @media screen and (max-width: breakpoints.$mobile-breakpoint) {
@@ -258,6 +258,7 @@
 
   .headerActions {
     display: flex;
+    flex-direction: row;
     align-items: center;
     gap: 0.5rem;
   }

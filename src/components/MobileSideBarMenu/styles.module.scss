@@ -72,12 +72,15 @@
 }
 
 .docsMobileMenu_header{
-    margin-top: 4rem;
-    margin-bottom: 1rem;
-    height: 3.5rem;
+    padding-top: 2rem;
+    height: auto;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.headerActions {
+    display: flex;
 }
 
 @media (min-width: breakpoints.$laptop-breakpoint) {
