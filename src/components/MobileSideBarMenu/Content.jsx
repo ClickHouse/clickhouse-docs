@@ -10,7 +10,7 @@ import NavbarLogo from '@theme/Navbar/Logo';
 import ColorModeToggle from "../../components/ColorModeToggler";
 import Translate from "@docusaurus/Translate";
 import { useLocation } from '@docusaurus/router';
-
+import MobileLanguagePicker from "./MobileLanguagePicker";
 const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path, menu, isVisible = true }) => {
     const [showTopLevel, setShowTopLevel] = useState(false);
     const location = useLocation();
@@ -97,6 +97,7 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
 
                     {/* Right Side - Controls */}
                     <div className={styles.headerActions}>
+                        <MobileLanguagePicker/>
                         <ColorModeToggle/>
                         <IconClose width={10} height={10} onClick={onClose || onClick} style={{"align-self":"center"}}/>
                     </div>
