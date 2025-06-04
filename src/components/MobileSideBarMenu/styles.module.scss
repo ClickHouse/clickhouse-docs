@@ -37,7 +37,7 @@
 }
 
 [data-theme="dark"] .docsMobileMenuBackdropActive{
-    background-color: #282828;
+    background-color: #1f1f1c;
     display: flex;
     position:fixed;
     width:100%;
@@ -72,15 +72,62 @@
 }
 
 .docsMobileMenu_header{
-    padding-top: 2rem;
+    padding-top: 0.75rem;
     height: auto;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
+    box-shadow: none;
 }
 
 .headerActions {
     display: flex;
+    vertical-align: center;
+}
+
+.arrow {
+    width: 8px;
+    height: 8px;
+    margin: 0 0.25rem;
+}
+
+[data-theme="dark"] .arrow {
+    color: white;
+}
+
+[data-theme="light"] .arrow {
+    color: black;
+}
+
+[data-theme="light"] .logo {
+    color: black;
+}
+
+.toplevel {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.bottomLevel {
+    display: flex;
+    justify-content: left;
+    width: 100%;
+}
+
+.levelToggleButton {
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+[data-theme="dark"] .levelToggleButton {
+    background-color: #303030;;
+}
+
+[data-theme="light"] .levelToggleButton {
+    background-color: var(--ifm-menu-color-background-active);
 }
 
 @media (min-width: breakpoints.$laptop-breakpoint) {

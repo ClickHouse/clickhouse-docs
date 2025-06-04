@@ -6,7 +6,7 @@ import IconArrowRight from '@site/static/img/arrowright.svg';
 import clsx from 'clsx'
 import CustomSidebarItems from './CustomSidebarItems'
 import { ThemeClassNames } from '@docusaurus/theme-common'
-import ClickHouseLogo from '../../icons/ClickHouseLogo'
+import NavbarLogo from '@theme/Navbar/Logo';
 import ColorModeToggle from "../../components/ColorModeToggler";
 import Translate from "@docusaurus/Translate";
 import { useLocation } from '@docusaurus/router';
@@ -63,24 +63,6 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
         }
     };
 
-    // Handle back button click
-    const handleBackClick = () => {
-        setShowTopLevel(true);
-    };
-
-    // Handle top-level category click
-    const handleTopLevelItemClick = (item) => {
-        // If it's a category with items, go to the sidebar view
-        if (item && item.items && item.items.length > 0) {
-            setShowTopLevel(false);
-            return;
-        }
-        // Otherwise close the sidebar (for direct links)
-        if (onClose) {
-            onClose();
-        }
-    };
-
     // Generic function to render CustomSidebarItems with consistent styling
     const renderDocSidebarItems = (items, activePath, forceCollapsible = false) => {
         return (
@@ -101,36 +83,58 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
         );
     };
 
+    // Render the enhanced header with logo and navigation toggle
+    const renderHeader = () => {
+        const isTopLevel = showTopLevel || isDocsRootPage();
+
+        return (
+            <div className={clsx("navbar-sidebar__brand", styles.docsMobileMenu_header)}>
+                <div className={styles.toplevel}>
+                    {/* Left Side - Logo and Navigation Toggle */}
+                    <div className={styles.leftSection}>
+                        <NavbarLogo/>
+                    </div>
+
+                    {/* Right Side - Controls */}
+                    <div className={styles.headerActions}>
+                        <ColorModeToggle/>
+                        <IconClose width={10} height={10} onClick={onClose || onClick} style={{"align-self":"center"}}/>
+                    </div>
+                </div>
+                <div className={styles.bottomLevel}>
+                    {!isDocsRootPage() && (
+                        <button
+                            className={styles.levelToggleButton}
+                            onClick={() => setShowTopLevel(!showTopLevel)}
+                            aria-label={showTopLevel ? "Go to current sidebar" : "Go to top level menu"}
+                        >
+                            {showTopLevel ? (
+                                <>
+                                    <IconArrowRight className={styles.arrow}/>
+                                    <span>
+                                        <Translate id="mobile.sidebar.current">sidebar</Translate>
+                                    </span>
+                                </>
+                            ) : (
+                                <>
+                                    <IconArrowLeft className={styles.arrow}/>
+                                    <span>
+                                        <Translate id="mobile.sidebar.toplevel">main-menu</Translate>
+                                    </span>
+                                </>
+                            )}
+                        </button>
+                    )}
+                </div>
+            </div>
+        );
+    };
+
     // Render top-level menu using DocSidebarItems
     const renderTopLevelMenu = () => {
         return (
             <>
-                <div className={clsx("navbar-sidebar__brand", styles.docsMobileMenu_header)}>
-                    <div className={styles.backNavigation}>
-                        {!isDocsRootPage() && (
-                            <button
-                                className={styles.backButton}
-                                onClick={() => setShowTopLevel(false)}
-                                aria-label="Go to current sidebar"
-                            >
-                                <IconArrowLeft style={{ transform: 'rotate(180deg)' }} />
-                                <span>
-                                    <Translate id="mobile.sidebar.current">Current sidebar</Translate>
-                                </span>
-                            </button>
-                        )}
-                        {currentCategory && !isDocsRootPage() && (
-                            <span className={styles.currentCategoryTitle}>
-                                Top Level Navigation
-                            </span>
-                        )}
-                    </div>
-                    <div className={styles.headerActions}>
-                        <ColorModeToggle/>
-                        <IconClose onClick={onClose || onClick} />
-                    </div>
-                </div>
-
+                {renderHeader()}
                 {renderDocSidebarItems(menu.dropdownCategories || [], location.pathname, true)}
             </>
         );
@@ -140,30 +144,7 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
     const renderCurrentSidebar = () => {
         return (
             <>
-                <div className={clsx("navbar-sidebar__brand", styles.docsMobileMenu_header)}>
-                    <div className={styles.backNavigation}>
-                        <button
-                            className={styles.backButton}
-                            onClick={handleBackClick}
-                            aria-label="Back to main menu"
-                        >
-                            <IconArrowLeft />
-                            <span>
-                                <Translate id="mobile.sidebar.back">Main menu</Translate>
-                            </span>
-                        </button>
-                        {currentCategory && (
-                            <span className={styles.currentCategoryTitle}>
-                                {currentCategory.label}
-                            </span>
-                        )}
-                    </div>
-                    <div className={styles.headerActions}>
-                        <ColorModeToggle/>
-                        <IconClose onClick={onClose || onClick} />
-                    </div>
-                </div>
-
+                {renderHeader()}
                 {renderDocSidebarItems(sidebar, location.pathname, false)}
             </>
         );

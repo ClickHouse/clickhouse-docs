@@ -1,3 +1,5 @@
+@use '../../css/breakpoints' as breakpoints;
+
 // Custom Sidebar Items Styles
 .sidebarItem {
   list-style: none;
@@ -98,7 +100,7 @@
   margin-top: 0.25rem;
 
   .sidebarItemLink {
-    padding: 0.375rem 1rem;
+    padding: 0.2rem 0.5rem;
     font-size: 0.9rem;
   }
 }
@@ -115,7 +117,7 @@
 .textItem {
   // Specific styles for text-only items
   .sidebarItemText {
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.5rem;
     color: var(--ifm-font-color-secondary);
     font-style: italic;
   }
@@ -161,7 +163,7 @@
 }
 
 // Tablet and desktop styles
-@media (min-width: 997px) {
+@media (min-width: breakpoints.$mobile-breakpoint) {
   .sidebarItem {
     // Ensure desktop visibility
     display: block !important;
