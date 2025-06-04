@@ -11,103 +11,77 @@
 }
 
 .docsMobileMenuActive {
-    position:fixed;
-    z-index: 15;
+    position: fixed;
+    z-index: 9999; // Much higher z-index to ensure it's on top
     left: 0;
     top: 0;
     height: 100vh;
     width: 100%;
-    padding: 1em;
     transform: translate3d(0, 0, 0);
     margin: 0;
     padding: 0 1rem;
-    overflow-x:hidden;
+    overflow-x: hidden;
+    overflow-y: auto; // Allow scrolling if content is too tall
     opacity: 1;
+    background: transparent; // Ensure no background interferes
 }
 
 .docsMobileMenuHidden {
     display: none;
-    position:absolute;
+    position: absolute;
     opacity: 0;
     transform: translate3d(-100%, 0, 0);
 }
 
-.docsMobileMenuBackdropInactive{
-
+.docsMobileMenuBackdropInactive {
+    display: none;
 }
 
-[data-theme="dark"] .docsMobileMenuBackdropActive{
+[data-theme="dark"] .docsMobileMenuBackdropActive {
     background-color: #1f1f1c;
     display: flex;
-    position:fixed;
-    width:100%;
+    position: fixed;
+    width: 100%;
     height: 100vh;
-    left:0;
-    top:0;
-    z-index:14;
+    left: 0;
+    top: 0;
+    z-index: 9998; // Just below the menu content
     transform: translate3d(0, 0, 0);
 }
 
 [data-theme="light"] .docsMobileMenuBackdropActive {
     background-color: white;
     display: flex;
-    position:fixed;
-    width:100%;
+    position: fixed;
+    width: 100%;
     height: 100vh;
-    left:0;
-    top:0;
-    z-index:14;
+    left: 0;
+    top: 0;
+    z-index: 9998; // Just below the menu content
     transform: translate3d(0, 0, 0);
 }
 
 [data-theme="dark"] .searchBar {
-    button{
+    button {
         background: #303030;
     }
 }
 
-.docsMobileMenuItems{
+.docsMobileMenuItems {
     margin-top: 1em;
     margin-bottom: 2em;
 }
 
-.docsMobileMenu_header{
+.docsMobileMenu_header {
     padding-top: 0.75rem;
     height: auto;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     box-shadow: none;
-
-    // Ensure logo container always takes up space and remains visible
-    .leftSection {
-        display: flex !important;
-        align-items: center;
-        flex-shrink: 0; // Prevent shrinking
-        min-width: 0; // Allow content to shrink if needed but container stays
-
-        // Force logo visibility in mobile sidebar
-        :global(.navbar__brand) {
-            display: flex !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-
-            // Ensure logo image/text is always visible
-            :global(.navbar__logo) {
-                display: block !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-                max-height: none !important;
-                height: auto !important;
-            }
-
-            :global(.navbar__title) {
-                display: inline-block !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-            }
-        }
-    }
+    position: relative;
+    z-index: 1;
+    background: inherit;
 }
 
 .headerActions {
@@ -115,6 +89,8 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 0.5rem;
+    position: relative; // Ensure proper stacking
+    z-index: 1;
 }
 
 .headerActions > * {
@@ -147,36 +123,40 @@
     width: 100%;
     margin-bottom: 0.5rem;
     min-height: 2.5rem; // Ensure minimum height for logo
+    position: relative;
+    z-index: 1;
 }
 
 .leftSection {
     display: flex;
     align-items: center;
-    flex: 0 1 auto; // Allow to shrink but maintain content
-    min-width: 0; // Allow flexbox to work properly
+    flex: 0 1 auto;
+    min-width: 0;
+}
 
-    // Override any Docusaurus hiding of logo in mobile
-    :global(.navbar__brand) {
-        display: flex !important;
-        align-items: center !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        width: auto !important;
-        height: auto !important;
+.logoLink {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
 
-        // Ensure all logo elements are visible
-        * {
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-        }
+    &:hover {
+        text-decoration: none;
     }
+}
+
+.logo {
+    height: 2rem;
+    width: auto;
+    max-width: 200px;
+    display: block;
 }
 
 .bottomLevel {
     display: flex;
     justify-content: left;
     width: 100%;
+    position: relative;
+    z-index: 1;
 }
 
 .levelToggleButton {
@@ -186,45 +166,69 @@
     display: flex;
     align-items: center;
     gap: 0.25rem;
+    position: relative;
+    z-index: 1;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.8;
+    }
 }
 
 [data-theme="dark"] .levelToggleButton {
     background-color: #303030;
+    color: white;
 }
 
 [data-theme="light"] .levelToggleButton {
     background-color: var(--ifm-menu-color-background-active);
+    color: black;
 }
 
-// Additional overrides to ensure logo visibility across all breakpoints
-// (Override for Docusaurus default hiding of logo at this breakpoint)
-@media (max-width: 996px) {
-    .docsMobileMenu_header {
-        .leftSection {
-            :global(.navbar__brand) {
-                display: flex !important;
-                visibility: visible !important;
-                opacity: 1 !important;
+.arrow {
+    width: 8px;
+    height: 8px;
+    margin: 0 0.25rem;
+    flex-shrink: 0;
+}
 
-                :global(.navbar__logo) {
-                    display: block !important;
-                    max-width: none !important;
-                    max-height: 2rem !important; // Reasonable max height for mobile
-                    width: auto !important;
-                    height: auto !important;
-                }
+[data-theme="dark"] .arrow {
+    color: white;
+}
 
-                :global(.navbar__title) {
-                    display: inline-block !important;
-                    font-size: 1.1rem !important; // Ensure readable size
-                }
-            }
-        }
-    }
+[data-theme="light"] .arrow {
+    color: black;
 }
 
 @media (min-width: breakpoints.$laptop-breakpoint) {
     .docsNavBurger {
         display: none;
     }
+}
+
+// Additional z-index overrides to ensure mobile menu is always on top
+.docsMobileMenuActive {
+    // Override any potential conflicting z-index from other components
+    * {
+        position: relative;
+    }
+
+    // Ensure dropdown components within the menu have appropriate z-index
+    .languagePicker {
+        position: relative;
+        z-index: 1;
+
+        .languageDropdown {
+            z-index: 10000 !important; // Ensure dropdowns appear above menu content
+        }
+    }
+}
+
+// Ensure the mobile menu content has a solid background
+[data-theme="dark"] .docsMobileMenuActive {
+    background-color: #1f1f1c;
+}
+
+[data-theme="light"] .docsMobileMenuActive {
+    background-color: white;
 }

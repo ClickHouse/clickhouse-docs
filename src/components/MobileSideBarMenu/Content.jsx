@@ -22,12 +22,6 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
         }
     }, [isVisible]);
 
-    console.log('Menu data:', menu);
-    console.log('Menu keys:', Object.keys(menu));
-    console.log('dropdownCategories:', menu.dropdownCategories);
-    console.log('Sidebar data:', sidebar);
-    console.log('Current path:', location.pathname);
-
     // Check if we're on a docs root page (should show only top-level menu)
     const isDocsRootPage = () => {
         const docsRootPaths = ['/docs/', '/docs/jp/', '/docs/ru/', '/docs/zh/'];

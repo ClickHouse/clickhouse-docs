@@ -27,13 +27,29 @@
 }
 
 .navRight {
-  margin-left: auto;
-  right: 2rem;
-  z-index: 10;
+  z-index: 1;
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
   gap: 1rem;
+  // Push to the right edge and eliminate any extra spacing
+  margin-left: auto;
+
+  // Force the last child to have no margin/padding on the right
+  > *:last-child {
+    margin-right: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  // Hide empty divs that might be creating unwanted space
+  > div:empty {
+    display: none !important;
+  }
+
+  // Also hide divs that only contain whitespace
+  > div:not(:has(*)):not([class]):not([id]) {
+    display: none !important;
+  }
 }
 
 @media screen and (min-width: breakpoints.$mobile-breakpoint) {
@@ -63,7 +79,7 @@
   }
 
   .navRight .githubStars {
-      display: flex;
+    display: flex;
   }
 
   .githubStars, .signIn {
@@ -92,12 +108,18 @@
     color: var(--ifm-navbar-link-color);
   }
 
+  .signIn {
+    margin-right: 10px;
+    align-self: center;
+  }
+
 }
 
 @media screen and (min-width: breakpoints.$laptop-breakpoint) {
 
   .navRight {
-    gap: 1.5rem;
+    display: flex;
+    justify-content: right;
   }
 }
 
