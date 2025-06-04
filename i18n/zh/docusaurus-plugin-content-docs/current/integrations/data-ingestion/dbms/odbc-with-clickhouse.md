@@ -6,6 +6,6 @@
 'description': '页面描述ODBC集成'
 ---
 
-import Content from '@site/i18n/jp/docusaurus-plugin-content-docs/current/engines/table-engines/integrations/odbc.md';
+import Content from '@site/i18n/zh/docusaurus-plugin-content-docs/current/engines/table-engines/integrations/odbc.md';
 
 <Content />

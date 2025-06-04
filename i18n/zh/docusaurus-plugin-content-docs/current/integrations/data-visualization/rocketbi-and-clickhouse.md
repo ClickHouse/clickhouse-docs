@@ -12,7 +12,7 @@
 'title': '目标：构建你的第一个仪表板'
 ---
 
-import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import rocketbi_01 from '@site/static/images/integrations/data-visualization/rocketbi_01.gif';
 import rocketbi_02 from '@site/static/images/integrations/data-visualization/rocketbi_02.gif';

@@ -6,7 +6,7 @@
 'title': '与 Zookeeper 的可选安全通信'
 ---
 
-import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
+import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 
 
 # 可选的 ClickHouse 和 Zookeeper 之间的安全通信

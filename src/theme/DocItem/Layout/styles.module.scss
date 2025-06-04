@@ -1,0 +1,97 @@
+@use '../../../css/breakpoints.scss' as breakpoints;
+
+.docItemContainer header + *,
+.docItemContainer article > *:first-child {
+  margin-top: 0;
+}
+
+.docItemContainer {
+    max-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding-bottom: 3.5rem;
+    padding: 0.2rem;
+}
+
+.docHeaderContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (min-width: breakpoints.$mobile-breakpoint) {
+  .docItemCol {
+    max-width: 75% !important;
+    padding-bottom: 2rem;
+  }
+}
+
+@media (max-width: var(--mobile-breakpoint)) {
+  .docItemContainer {
+  }
+}
+
+/* Translation popup */
+
+.docCloudCard {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+[data-theme='dark'] .docCloudCard {
+  background: var(--click-cloud-card-background);
+}
+
+[data-theme='light'] .docCloudCard {
+  background: var(--ifm-table-head-background);
+}
+
+.docCloudCardHeader {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.docCloudCardHeader h6 {
+  margin-bottom: 16px;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.docCloudCardContent {
+  font-weight: 400;
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+.docCloudCardLink {
+  width: fit-content;
+  padding: 0 12px;
+  white-space: nowrap;
+}
+
+[data-theme='light'] .docCloudCardLink {
+  background-color: var(--palette_info_300);
+}
+
+.docCloudCardLink:hover {
+  text-decoration: none;
+}
+
+.docCloudClose {
+  padding: 2px 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+@media (max-height: 700px) {
+  .docCloudCard {
+    display: none;
+  }
+}

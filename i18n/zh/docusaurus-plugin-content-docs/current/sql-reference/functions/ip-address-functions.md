@@ -1,25 +1,25 @@
 ---
-'description': 'IPv4 和 IPv6 地址的函数文档'
-'sidebar_label': 'IP 地址'
+'description': '处理IPv4和IPv6地址的函数的文档'
+'sidebar_label': 'IP地址'
 'sidebar_position': 95
 'slug': '/sql-reference/functions/ip-address-functions'
-'title': '处理 IPv4 和 IPv6 地址的函数'
+'title': '处理IPv4和IPv6地址的函数'
 ---
 
 
-# 用于处理 IPv4 和 IPv6 地址的函数
+# 处理 IPv4 和 IPv6 地址的函数
 
 ## IPv4NumToString {#IPv4NumToString}
 
-接受一个 UInt32 数字。将其解释为大端格式的 IPv4 地址。返回一个字符串，包含对应的 IPv4 地址，格式为 A.B.C.d（用点分隔的十进制数字）。
+接收一个 UInt32 数字，将其解释为一个大端格式的 IPv4 地址。返回一个字符串，包含与之对应的 IPv4 地址，格式为 A.B.C.d（以点分隔的十进制数字）。
 
-别名: `INET_NTOA`。
+别名： `INET_NTOA`。
 
 ## IPv4StringToNum {#IPv4StringToNum}
 
 [IPv4NumToString](#IPv4NumToString) 的反向函数。如果 IPv4 地址格式无效，则抛出异常。
 
-别名: `INET_ATON`。
+别名： `INET_ATON`。
 
 ## IPv4StringToNumOrDefault(s) {#ipv4stringtonumordefaults}
 
@@ -31,7 +31,7 @@
 
 ## IPv4NumToStringClassC(num) {#ipv4numtostringclasscnum}
 
-类似于 IPv4NumToString，但使用 xxx 代替最后一个八位组。
+类似于 IPv4NumToString，但使用 xxx 替代最后一个八位字节。
 
 示例：
 
@@ -60,14 +60,14 @@ LIMIT 10
 └────────────────┴───────┘
 ```
 
-由于使用 'xxx' 是非常不寻常的，因此将来可能会更改。我们建议您不要依赖此片段的确切格式。
+由于使用 'xxx' 是极其不寻常的，未来可能会有所更改。我们建议您不要依赖此片段的确切格式。
 
 ### IPv6NumToString(x) {#ipv6numtostringx}
 
 接受一个包含 IPv6 地址的 FixedString(16) 值，格式为二进制。返回一个字符串，包含该地址的文本格式。
 IPv6 映射的 IPv4 地址以格式 ::ffff:111.222.33.44 输出。
 
-别名: `INET6_NTOA`。
+别名： `INET6_NTOA`。
 
 示例：
 
@@ -140,7 +140,7 @@ LIMIT 10
 如果输入字符串包含有效的 IPv4 地址，则返回其 IPv6 等效地址。
 HEX 可以是大写或小写。
 
-别名: `INET6_ATON`。
+别名： `INET6_ATON`。
 
 **语法**
 
@@ -154,7 +154,7 @@ IPv6StringToNum(string)
 
 **返回值**
 
-- 二进制格式的 IPv6 地址。 [FixedString(16)](../data-types/fixedstring.md)。
+- IPv6 地址，格式为二进制。 [FixedString(16)](../data-types/fixedstring.md)。
 
 **示例**
 
@@ -174,7 +174,7 @@ SELECT addr, cutIPv6(IPv6StringToNum(addr), 0, 0) FROM (SELECT ['notaddress', '1
 └────────────┴──────────────────────────────────────┘
 ```
 
-**另请参见**
+**参见**
 
 - [cutIPv6](#cutipv6x-bytestocutforipv6-bytestocutforipv4)。
 
@@ -188,7 +188,7 @@ SELECT addr, cutIPv6(IPv6StringToNum(addr), 0, 0) FROM (SELECT ['notaddress', '1
 
 ## IPv4ToIPv6(x) {#ipv4toipv6x}
 
-接受一个 `UInt32` 数字。将其解释为大端格式的 IPv4 地址。返回一个包含 IPv6 地址的 `FixedString(16)` 值，格式为二进制。示例：
+接受一个 `UInt32` 数字。将其解释为一个大端格式的 IPv4 地址 [big endian](https://en.wikipedia.org/wiki/Endianness)。返回一个包含 IPv6 地址的 `FixedString(16)` 值，其格式为二进制。示例：
 
 ```sql
 SELECT IPv6NumToString(IPv4ToIPv6(IPv4StringToNum('192.168.0.1'))) AS addr;
@@ -202,7 +202,7 @@ SELECT IPv6NumToString(IPv4ToIPv6(IPv4StringToNum('192.168.0.1'))) AS addr;
 
 ## cutIPv6(x, bytesToCutForIPv6, bytesToCutForIPv4) {#cutipv6x-bytestocutforipv6-bytestocutforipv4}
 
-接受一个包含 IPv6 地址的 FixedString(16) 值，格式为二进制。返回一个字符串，包含在文本格式中去掉指定字节数后的地址。例如：
+接受一个包含 IPv6 地址的 FixedString(16) 值，格式为二进制。返回一个字符串，包含以文本格式删除指定字节数后的地址。例如：
 
 ```sql
 WITH
@@ -221,7 +221,7 @@ SELECT
 
 ## IPv4CIDRToRange(ipv4, Cidr) {#ipv4cidrtorangeipv4-cidr}
 
-接受一个 IPv4 地址和一个 UInt8 值，包含 [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)。返回一个包含子网的下限范围和上限范围的两个 IPv4 元组。
+接收一个 IPv4 和一个 UInt8 值，包含 [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)。返回一个元组，包含两个 IPv4 地址，分别表示子网的下限和上限范围。
 
 ```sql
 SELECT IPv4CIDRToRange(toIPv4('192.168.5.2'), 16);
@@ -235,7 +235,7 @@ SELECT IPv4CIDRToRange(toIPv4('192.168.5.2'), 16);
 
 ## IPv6CIDRToRange(ipv6, Cidr) {#ipv6cidrtorangeipv6-cidr}
 
-接受一个 IPv6 地址和一个 UInt8 值，包含 CIDR。返回一个包含子网的下限范围和上限范围的两个 IPv6 元组。
+接收一个 IPv6 和一个 UInt8 值，包含 CIDR。返回一个元组，包含两个 IPv6 地址，分别表示子网的下限和上限范围。
 
 ```sql
 SELECT IPv6CIDRToRange(toIPv6('2001:0db8:0000:85a3:0000:0000:ac1f:8001'), 32);
@@ -250,7 +250,7 @@ SELECT IPv6CIDRToRange(toIPv6('2001:0db8:0000:85a3:0000:0000:ac1f:8001'), 32);
 ## toIPv4 {#toipv4}
 
 将字符串或 UInt32 格式的 IPv4 地址转换为 [IPv4](../data-types/ipv4.md) 类型。
-类似于 [`IPv4StringToNum`](#IPv4StringToNum) 和 [IPv4NumToString](#IPv4NumToString) 函数，但它支持字符串和无符号整数数据类型作为输入参数。
+类似于 [`IPv4StringToNum`](#IPv4StringToNum) 和 [IPv4NumToString](#IPv4NumToString) 函数，但支持字符串和无符号整数数据类型的输入参数。
 
 **语法**
 
@@ -260,7 +260,7 @@ toIPv4(x)
 
 **参数**
 
-- `x` — IPv4 地址。 [`String`](../data-types/string.md), [`UInt8/16/32`](../data-types/int-uint.md)。
+- `x` — IPv4 地址。 [`String`](../data-types/string.md)、[`UInt8/16/32`](../data-types/int-uint.md)。
 
 **返回值**
 
@@ -316,7 +316,7 @@ SELECT toIPv4(2130706433);
 
 ## toIPv4OrDefault {#toipv4ordefault}
 
-与 `toIPv4` 相同，但如果 IPv4 地址格式无效，则返回 `0.0.0.0`（0 IPv4）或提供的 IPv4 默认值。
+与 `toIPv4` 相同，但如果 IPv4 地址格式无效，则返回 `0.0.0.0` （0 IPv4）或提供的 IPv4 默认值。
 
 **语法**
 
@@ -327,11 +327,11 @@ toIPv4OrDefault(string[, default])
 **参数**
 
 - `value` — IP 地址。 [String](../data-types/string.md)。
-- `default`（可选）— 如果 `string` 格式无效时返回的值。 [IPv4](../data-types/ipv4.md)。
+- `default`（可选）— 如果 `string` 格式无效时要返回的值。 [IPv4](../data-types/ipv4.md)。
 
 **返回值**
 
-- 转换为当前 IPv4 地址的 `string`。 [String](../data-types/string.md)。
+- `string` 转换为当前 IPv4 地址。 [String](../data-types/string.md)。
 
 **示例**
 
@@ -371,7 +371,7 @@ toIPv4OrNull(string)
 
 **返回值**
 
-- 转换为当前 IPv4 地址的 `string`，如果 `string` 是无效地址则返回 null。 [String](../data-types/string.md)。
+- `string` 转换为当前 IPv4 地址，如果 `string` 是无效地址，则返回 null。 [String](../data-types/string.md)。
 
 **示例**
 
@@ -406,7 +406,7 @@ toIPv4OrZero(string)
 
 **返回值**
 
-- 转换为当前 IPv4 地址的 `string`，如果 `string` 是无效地址则返回 `0.0.0.0`。 [String](../data-types/string.md)。
+- `string` 转换为当前 IPv4 地址，如果 `string` 是无效地址，则返回 `0.0.0.0` 。 [String](../data-types/string.md)。
 
 **示例**
 
@@ -427,10 +427,10 @@ SELECT toIPv4OrZero(invalid_IPv6_string);
 
 ## toIPv6 {#toipv6}
 
-将字符串或 UInt128 格式的 IPv6 地址转换为 [IPv6](../data-types/ipv6.md) 类型。如果字符串的 IPv6 地址格式无效，则返回空值。
-类似于 [IPv6StringToNum](#ipv6stringtonum) 和 [IPv6NumToString](#ipv6numtostringx) 函数，转换 IPv6 地址到二进制格式（即 `FixedString(16)`）及其返回。
+将字符串或 UInt128 格式的 IPv6 地址转换为 [IPv6](../data-types/ipv6.md) 类型。对于字符串，如果 IPv6 地址格式无效，则返回空值。
+类似于 [IPv6StringToNum](#ipv6stringtonum) 和 [IPv6NumToString](#ipv6numtostringx) 函数，这些函数可以在二进制格式（即 `FixedString(16)`）之间转换 IPv6 地址。
 
-如果输入字符串包含有效的 IPv4 地址，则返回该 IPv4 地址的 IPv6 等效地址。
+如果输入字符串包含有效的 IPv4 地址，则返回其 IPv6 等效地址。
 
 **语法**
 
@@ -493,11 +493,11 @@ toIPv6OrDefault(string[, default])
 **参数**
 
 - `string` — IP 地址。 [String](../data-types/string.md)。
-- `default`（可选）— 如果 `string` 格式无效时返回的值。 [IPv6](../data-types/ipv6.md)。
+- `default`（可选）— 如果 `string` 格式无效时要返回的值。 [IPv6](../data-types/ipv6.md)。
 
 **返回值**
 
-- IPv6 地址 [IPv6](../data-types/ipv6.md)，否则返回 `::` 或提供的可选默认值，如果 `string` 格式无效。
+- IPv6 地址 [IPv6](../data-types/ipv6.md)，否则如果 `string` 格式无效则返回 `::` 或提供的可选默认值。
 
 **示例**
 
@@ -523,7 +523,7 @@ SELECT
 
 ## toIPv6OrNull {#toipv6ornull}
 
-与 [`toIPv6`](#toipv6) 相同，但如果 IPv6 地址格式无效，则返回 null。
+与 [`toIPv6`](#to_ipv6) 相同，但如果 IPv6 地址格式无效，则返回 null。
 
 **语法**
 
@@ -537,7 +537,7 @@ toIPv6OrNull(string)
 
 **返回值**
 
-- IP 地址。 [IPv6](../data-types/ipv6.md)，如果 `string` 格式无效则返回 null。
+- IP 地址。 [IPv6](../data-types/ipv6.md)，如果 `string` 不是有效格式，则返回 null。
 
 **示例**
 
@@ -572,7 +572,7 @@ toIPv6OrZero(string)
 
 **返回值**
 
-- IP 地址。 [IPv6](../data-types/ipv6.md)，如果 `string` 格式无效则返回 `::`。
+- IP 地址。 [IPv6](../data-types/ipv6.md)，如果 `string` 不是有效格式，则返回 `::`。
 
 **示例**
 
@@ -601,7 +601,7 @@ SELECT toIPv6OrZero(invalid_IPv4_string);
 
 ## isIPv4String {#isipv4string}
 
-判断输入字符串是否为 IPv4 地址。如果 `string` 是 IPv6 地址则返回 `0`。
+判断输入字符串是否为 IPv4 地址。如果 `string` 为 IPv6 地址，则返回 `0`。
 
 **语法**
 
@@ -637,7 +637,7 @@ SELECT addr, isIPv4String(addr) FROM ( SELECT ['0.0.0.0', '127.0.0.1', '::ffff:1
 
 ## isIPv6String {#isipv6string}
 
-判断输入字符串是否为 IPv6 地址。如果 `string` 是 IPv4 地址则返回 `0`。
+判断输入字符串是否为 IPv6 地址。如果 `string` 为 IPv4 地址，则返回 `0`。
 
 **语法**
 
@@ -674,7 +674,7 @@ SELECT addr, isIPv6String(addr) FROM ( SELECT ['::', '1111::ffff', '::ffff:127.0
 
 ## isIPAddressInRange {#isipaddressinrange}
 
-判断一个 IP 地址是否包含在以 [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing) 表示的网络中。如果是则返回 `1`，否则返回 `0`。
+判断一个 IP 地址是否包含在以 [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing) 表示的网络中。如果为真，则返回 `1`，否则返回 `0`。
 
 **语法**
 
@@ -682,12 +682,12 @@ SELECT addr, isIPv6String(addr) FROM ( SELECT ['::', '1111::ffff', '::ffff:127.0
 isIPAddressInRange(address, prefix)
 ```
 
-此函数接受两个 IPv4 和 IPv6 地址（及网络），表示为字符串。如果 IP 地址的版本和 CIDR 不匹配，则返回 `0`。
+该函数接受以字符串表示的 IPv4 和 IPv6 地址（以及网络）。如果 IP 地址的版本与 CIDR 不匹配，则返回 `0`。
 
 **参数**
 
-- `address` — IPv4 或 IPv6 地址。 [String](../data-types/string.md), [IPv4](../data-types/ipv4.md), [IPv6](../data-types/ipv6.md), `Nullable(String)`, `Nullable(IPv4)` 和 `Nullable(IPv6)`。
-- `prefix` — CIDR 中的 IPv4 或 IPv6 网络前缀。 [String](../data-types/string.md)。
+- `address` — IPv4 或 IPv6 地址。 [String](../data-types/string.md)、[IPv4](../data-types/ipv4.md)、[IPv6](../data-types/ipv6.md)、`Nullable(String)`、`Nullable(IPv4)` 和 `Nullable(IPv6)`。
+- `prefix` — 以 CIDR 表示的 IPv4 或 IPv6 网络前缀。 [String](../data-types/string.md)。
 
 **返回值**
 
@@ -736,3 +736,12 @@ SELECT isIPAddressInRange('::ffff:192.168.0.1', '::ffff:192.168.0.4/128');
 │                                                                  0 │
 └────────────────────────────────────────────────────────────────────┘
 ```
+
+<!-- 
+The inner content of the tags below are replaced at doc framework build time with 
+docs generated from system.functions. Please do not modify or remove the tags.
+See: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+-->
+
+<!--AUTOGENERATED_START-->
+<!--AUTOGENERATED_END-->

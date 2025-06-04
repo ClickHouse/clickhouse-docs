@@ -1,0 +1,176 @@
+@use '../../../css/breakpoints.scss' as breakpoints;
+
+.navbarHeaderContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.secondaryMenu {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 0.5rem 2rem;
+  gap: 2rem;
+  border-bottom: 1px solid var(--click-color-stroke);
+  border-top: 1px solid var(--click-color-stroke);
+  height: 3.5rem;
+}
+
+
+.navRight {
+  margin-left: auto;
+  right: 2rem;
+  z-index: 10;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.githubStars, .signIn {
+  display: flex;
+  color: var(--ifm-navbar-link-active-color);
+}
+.githubStarsContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.githubStarsContainer {
+  text-decoration-line: none;
+}
+.githubText {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+}
+.githubStars:hover, .signIn:hover {
+  text-decoration-line: none;
+  color: var(--ifm-navbar-link-color);
+}
+
+@media screen and (min-width: breakpoints.$laptop-breakpoint) {
+  .navRight {
+    display: flex;
+  }
+
+  .navRight .githubStars {
+      display: flex;
+  }
+
+}
+
+@media screen and (min-width: breakpoints.$laptop-breakpoint) {
+  .navRight {
+    gap: 1.5rem;
+  }
+}
+
+.secondaryMenuLeft {
+  display: flex;
+  flex-wrap: nowrap;
+  max-width: 100%;
+  overflow: auto;
+  gap: 1rem;
+}
+
+.secondaryMenuRight {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.secondaryMenuLeft > *, .secondaryMenuRight a, .secondaryMenuRight button {
+  display: flex !important;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.secondaryMenuLeft > *, .secondaryMenuRight > a {
+  padding: 0;
+}
+
+.secondaryMenu::-webkit-scrollbar {
+  display: none;
+}
+
+.navbarInner {
+  padding: 0 2rem;
+  flex-direction: row;
+  align-items: center;
+  height: 4rem;
+}
+
+.navbarItemsList {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.navbarLogo {
+  z-index: 2;
+  left: 2rem;
+}
+
+.dropdownCategoriesContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 100%;
+  white-space: wrap;
+}
+
+@media (max-width: breakpoints.$laptop-breakpoint) {
+  .navbarItemsList {
+    display: none !important;
+  }
+
+  .dropdownCategoriesContainer {
+    display: none !important;
+  }
+}
+
+@media (max-width: breakpoints.$mobile-breakpoint) {
+  
+  :global .navbar-color-toggle span {
+    display: none;
+  }
+
+  .navRight a {
+    display: none;
+  }
+
+  .githubStars {
+    display: none;
+  }
+
+  .click-button .primary-btn {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+}
+
+@media (max-width: breakpoints.$mobile-breakpoint) {
+  .dropdownCategoriesContainer {
+    display:inline-block;
+  }
+}
+
+@media screen and (max-width: breakpoints.$mobile-breakpoint) {
+  .navRight .githubStars {
+    display: none;
+  }
+}
+
+@media screen and (max-width: breakpoints.$mobile-breakpoint) {
+    .secondaryMenu {
+      gap:0;
+    }
+}
+
+@media screen and (min-width: breakpoints.$large-desktop-breakpoint) {
+  .dropdownCategoriesContainer {
+    max-width: breakpoints.$laptop-breakpoint;
+    justify-content: unset;
+  }
+}

@@ -13,7 +13,7 @@
 ---
 
 import Image from '@theme/IdealImage';
-import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import explo_01 from '@site/static/images/integrations/data-visualization/explo_01.png';
 import explo_02 from '@site/static/images/integrations/data-visualization/explo_02.png';
 import explo_03 from '@site/static/images/integrations/data-visualization/explo_03.png';

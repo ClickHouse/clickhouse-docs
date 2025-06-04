@@ -5,6 +5,6 @@
 'title': '分布式 DDL 页面'
 ---
 
-import Content from '@site/i18n/jp/docusaurus-plugin-content-docs/current/sql-reference/distributed-ddl.md';
+import Content from '@site/i18n/zh/docusaurus-plugin-content-docs/current/sql-reference/distributed-ddl.md';
 
 <Content/>

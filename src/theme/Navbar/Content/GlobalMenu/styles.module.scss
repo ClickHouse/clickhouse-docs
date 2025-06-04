@@ -1,0 +1,331 @@
+@use '../../../../css/breakpoints.scss' as breakpoints;
+
+.linkStyle {
+  display: block;
+  color: var(--ifm-navbar-link-color);
+  width: 100%;
+
+  font-size: 14px;
+  line-height: 1;
+  text-decoration-line: none !important;
+  border-radius: 6px;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  user-select: none;
+}
+
+.linkStyle:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px #1F1F1C;
+  color: var(--ifm-navbar-link-active-color);
+  border-radius: 4px;
+}
+
+.linkStyle:hover {
+  background: var(--click-color-nav-sub-item-hover-background);
+  border-radius: 4px;
+  color: var(--ifm-navbar-link-active-color);
+}
+
+.menuItemContainer {
+  margin: 0;
+  display: flex;
+  list-style: none;
+  background: var(--click-color-nav-background);
+}
+
+.menuItem {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  width: 100%;
+}
+
+.menuItemHeader {
+  font-weight: 500;
+}
+
+.subMenuItem {
+  border-radius: 0;
+  padding-left: 1rem;
+  color: var(--click-color-text-muted);
+}
+
+.subMenuItem[data-header="true"] {
+  color: var(--click-color-text);
+}
+
+.deepMenu {
+  margin-left: auto;
+  border-radius: 0;
+}
+
+.deepMenuContent {
+  display: flex;
+  gap: 1rem;
+}
+
+.icon {
+  height: 2rem;
+  width: 2rem;
+  background: var(--click-color-text);
+  mask-image: var(--icon);
+  mask-size: contain;
+}
+
+.deepMenuText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.deepMenuListItem {
+  white-space: nowrap;
+}
+
+.deepMenuDesc {
+  color: var(--click-color-text-muted);
+  font-weight: 400;
+  white-space: initial;
+}
+
+.linkStyle:hover .deepMenuListItem, .linkStyle:hover .deepMenuDesc {
+  color: inherit;
+}
+
+.fontMedium {
+  font-weight: 500;
+}
+
+@media screen and (min-width: breakpoints.$mobile-breakpoint) {
+  .menuItemContainer {
+    min-width: 500px;
+  }
+  .useCasesMenuContainer {
+    min-width: 250px;
+  }
+}
+
+@media screen and (min-width: breakpoints.$tablet-breakpoint) {
+  .subMenuItem {
+    min-width: 9.5rem;
+  }
+}
+
+.navigationMenuRoot {
+  position: relative;
+  display: none;
+  justify-content: center;
+  width: 100vw;
+  z-index: 1;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.navigationMenuList {
+  display: flex;
+  justify-content: center;
+  padding: 0 4px;
+  border-radius: 6px;
+  list-style: none;
+  margin: 0;
+}
+
+.navigationMenuTrigger {
+  padding: 0.75rem 0.5rem;
+  text-decoration-line: none;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  user-select: none;
+  font-weight: 500;
+  line-height: 1;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: var(--default-font);
+  color: var(--ifm-navbar-link-active-color);
+  background: transparent;
+
+  display: block;
+  pointer-events: auto;
+  text-decoration-line: none;
+  border: none;
+}
+
+.navigationMenuTrigger:hover {
+  color: var(--ifm-navbar-link-color);
+  text-decoration-line: none;
+}
+
+.navigationMenuTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2px;
+}
+
+.navigationMenuContent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-weight: 500;
+  padding-bottom: 1rem;
+  border-radius: 6px;
+  background: var(--click-color-nav-background);
+    
+  padding: 15px 10px 20px 10px;
+}
+
+.useCasesMenuContent {
+ width: 300px;
+ padding-bottom: 10px;
+}
+
+@media only screen and (min-width: breakpoints.$mobile-breakpoint) {
+  .navigationMenuContent {
+    width: auto;
+  }
+}
+
+.navigationMenuIndicator {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 10px;
+  top: 100%;
+  overflow: hidden;
+  z-index: 1;
+  transition: width, transform 250ms ease;
+}
+
+.navigationMenuViewport {
+  position: relative;
+  transform-origin: top center;
+  margin-top: 10px;
+  width: 100%;
+  overflow: hidden;
+  height: var(--radix-navigation-menu-viewport-height);
+  transition: width, height, 300ms ease;
+  background: var(--click-color-nav-background);
+
+  border-radius: 4px;
+  border: 1px solid var(--click-color-stroke);
+  filter: drop-shadow(0px 2px 2px rgba(50, 50, 50, 0.1));
+}
+
+@media only screen and (min-width: breakpoints.$mobile-breakpoint) {
+  .navigationMenuViewport {
+    width: var(--radix-navigation-menu-viewport-width);
+  }
+}
+
+.viewportPosition {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  top: 100%;
+  left: 0;
+  perspective: 2000px;
+}
+
+.arrow {
+  position: relative;
+  top: 70%;
+  background: var(--click-color-nav-header-background);
+  width: 10px;
+  height: 10px;
+  transform: rotate(45deg);
+  border-top-left-radius: 2px;
+}
+
+@keyframes enterFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(200px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes enterFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-200px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes exitToRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(200px);
+  }
+}
+
+@keyframes exitToLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-200px);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: rotateX(-30deg) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: rotateX(0deg) scale(1);
+  }
+}
+
+@keyframes scaleOut {
+  from {
+    opacity: 1;
+    transform: rotateX(0deg) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: rotateX(-10deg) scale(0.95);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

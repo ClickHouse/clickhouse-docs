@@ -6,7 +6,7 @@
 'description': '本指南提供简单且最小的设置，以配置 ClickHouse 使用 OpenSSL 证书来验证连接。'
 ---
 
-import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
+import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.png';
 import Image from '@theme/IdealImage';
 

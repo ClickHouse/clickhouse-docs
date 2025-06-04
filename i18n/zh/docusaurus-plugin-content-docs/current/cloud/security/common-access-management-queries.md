@@ -5,7 +5,7 @@
 'description': '本文展示了定义 SQL 用户和角色的基础知识，并将这些权限和权限应用于数据库、表、行和列。'
 ---
 
-import CommonUserRolesContent from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_users-and-roles-common.md';
+import CommonUserRolesContent from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_users-and-roles-common.md';
 
 
 # 常见访问管理查询

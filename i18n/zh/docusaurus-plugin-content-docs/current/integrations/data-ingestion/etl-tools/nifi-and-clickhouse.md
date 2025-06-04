@@ -13,7 +13,7 @@
 'title': '将 Apache NiFi 连接到 ClickHouse'
 ---
 
-import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import nifi01 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_01.png';
 import nifi02 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_02.png';

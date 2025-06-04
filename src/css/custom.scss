@@ -494,15 +494,15 @@ li.theme-doc-sidebar-item-category-level-1 {
 }
 
 .theme-doc-sidebar-item-link-level-5 {
-  padding-left: 1.9rem;
+  padding-left: 1.2rem;
 }
 
 .theme-doc-sidebar-item-category-level-5 {
-  padding-left: 1.9rem;
+  padding-left: 1.2rem;
 }
 
 .theme-doc-sidebar-item-link-level-6 {
-  padding-left: 2.2rem;
+  padding-left: 1.2rem;
 }
 
 .theme-doc-sidebar-item-category-level-6 {
@@ -962,7 +962,7 @@ prism-code {
   }
 }
 
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: var(--laptop-breakpoint)) {
   .dropdown {
     padding-right: 2px;
     padding-left: 20px;
@@ -1410,4 +1410,3 @@ input::-ms-input-placeholder { /* Microsoft Edge */
 .installInstructions {
   margin-top: 2em;
 }
-

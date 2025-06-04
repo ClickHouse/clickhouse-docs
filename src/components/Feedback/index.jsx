@@ -191,6 +191,7 @@ export default function Feedback({side}) {
 
   
   return (
+    <div className={styles.displayFeedback}>
     <Panel hasBorder alignItems='start'>
     <Popover open={open} >
         <Popover.Trigger>
@@ -212,6 +213,7 @@ export default function Feedback({side}) {
             selected === 'neg' && negative_feedback
         }
       </Popover>
-    </Panel>  
+    </Panel>
+    </div>
   );
 }

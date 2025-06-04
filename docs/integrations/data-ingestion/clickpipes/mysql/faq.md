@@ -20,14 +20,15 @@ We support both `GTID` & `FilePos` replication. Unlike Postgres there is no slot
 It's also possible for an inactive database to rotate the log file without allowing ClickPipes to progress to a more recent offset. You may need to setup a heartbeat table with regularly scheduled updates.
 
 ### Why am I getting a TLS certificate validation error when connecting to MySQL? {#tls-certificate-validation-error}
-If you see an error like `failed to verify certificate: x509: certificate is not valid for any names`, this occurs when the SSL/TLS certificate on your MySQL server doesn't include the connecting hostname (e.g., EC2 instance DNS name) in its list of valid names. ClickPipes enables TLS by default to provide secure encrypted connections.
 
-To resolve this issue, you have three options:
+When connecting to MySQL, you may encounter certificate errors like `x509: certificate is not valid for any names` or `x509: certificate signed by unknown authority`. These occur because ClickPipes enables TLS encryption by default.
 
-1. Use the IP address instead of hostname in the connection settings, while leaving the "TLS Host (optional)" field empty. While this is the easiest solution, it's not the most secure as it bypasses hostname verification.
+You have several options to resolve these issues:
 
-2. Set the "TLS Host (optional)" field to match the actual hostname that's in the certificate's Subject Alternative Name (SAN) field - this maintains proper verification.
+1. **Set the TLS Host field** - When the hostname in your connection differs from the certificate (common with AWS PrivateLink via Endpoint Service). Set "TLS Host (optional)" to match the certificate's Common Name (CN) or Subject Alternative Name (SAN).
 
-3. Update your MySQL server's SSL certificate to include the actual hostname you're using to connect in its certificate.
+2. **Upload your Root CA** - For MySQL servers using internal Certificate Authorities or Google Cloud SQL in the default per-instance CA configuration. For more information on how to access Google Cloud SQL certificates, see [this section](https://clickhouse.com/docs/integrations/clickpipes/mysql/source/gcp#download-root-ca-certificate-gcp-mysql).
 
-This is a common configuration issue with MySQL TLS certificates, particularly when connecting to databases self-hosted in cloud environments (or when using AWS Private Link via Endpoint Service) where the public DNS name differs from what's in the certificate.
+3. **Configure server certificate** - Update your server's SSL certificate to include all connection hostnames and use a trusted Certificate Authority.
+
+4. **Skip certificate verification** - For self-hosted MySQL or MariaDB, whose default configurations provision a self-signed certificate we can't validate ([MySQL](https://dev.mysql.com/doc/refman/8.4/en/creating-ssl-rsa-files-using-mysql.html#creating-ssl-rsa-files-using-mysql-automatic), [MariaDB](https://mariadb.com/kb/en/securing-connections-for-client-and-server/#enabling-tls-for-mariadb-server)). Relying on this certificate encrypts the data in transit but runs the risk of server impersonation. We recommend properly signed certificates for production environments, but this option is useful for testing on a one-off instance or connecting to legacy infrastructure.

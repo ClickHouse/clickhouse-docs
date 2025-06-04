@@ -1,0 +1,75 @@
+@use '../../../../css/breakpoints.scss' as breakpoints;
+
+.docTOC {
+  top: 0;
+  position: relative;
+  max-height: initial;
+}
+
+.docCloudCardAd {
+    display: none; // don't show by default on mobile
+}
+
+.docTOCContainer {
+  height: calc(100vh - (var(--ifm-navbar-height) + 2rem));
+  display: flex;
+  flex-flow: column nowrap;
+  position: sticky;
+  gap: 24px;
+  padding-bottom: 3.5rem;
+  overflow-y: auto;
+  top: calc(var(--ifm-navbar-height) + 1rem);
+}
+
+.docCloudCardHeader {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.docCloudCardHeader h6 {
+  margin-bottom: 16px;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.docCloudCardContent {
+  font-weight: 400;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+
+.docCloudCardLink {
+  width: fit-content;
+  padding: 0 16px;
+  white-space: nowrap;
+}
+.docCloudCardLink:hover {
+  text-decoration: none;
+}
+
+.docCloudClose {
+  padding: 2px 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+@media (max-height: 700px) {
+  .docCloudCardAd {
+    display: none;
+  }
+}
+
+@media screen and (min-width: breakpoints.$laptop-breakpoint) {
+  .docCloudCardAd {
+    background: var(--click-cloud-card-background);
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 24px;
+  }
+}
