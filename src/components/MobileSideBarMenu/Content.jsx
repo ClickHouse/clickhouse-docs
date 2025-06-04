@@ -15,7 +15,16 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
     const [showTopLevel, setShowTopLevel] = useState(false);
     const location = useLocation();
 
+    // Reset to sidebar view (showTopLevel = false) whenever the mobile menu becomes visible
+    useEffect(() => {
+        if (isVisible) {
+            setShowTopLevel(false);
+        }
+    }, [isVisible]);
+
     console.log('Menu data:', menu);
+    console.log('Menu keys:', Object.keys(menu));
+    console.log('dropdownCategories:', menu.dropdownCategories);
     console.log('Sidebar data:', sidebar);
     console.log('Current path:', location.pathname);
 
@@ -73,7 +82,7 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
     };
 
     // Generic function to render CustomSidebarItems with consistent styling
-    const renderDocSidebarItems = (items, activePath) => {
+    const renderDocSidebarItems = (items, activePath, forceCollapsible = false) => {
         return (
             <ul className={clsx(
                 ThemeClassNames.docs.docSidebarMenu,
@@ -86,6 +95,7 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
                     level={1}
                     onItemClick={handleItemClick}
                     isMenuVisible={isVisible}
+                    forceCollapsible={forceCollapsible}
                 />
             </ul>
         );
@@ -121,7 +131,7 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
                     </div>
                 </div>
 
-                {renderDocSidebarItems(menu.dropdownCategories, location.pathname)}
+                {renderDocSidebarItems(menu.dropdownCategories || [], location.pathname, true)}
             </>
         );
     };
@@ -154,7 +164,7 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
                     </div>
                 </div>
 
-                {renderDocSidebarItems(sidebar, location.pathname)}
+                {renderDocSidebarItems(sidebar, location.pathname, false)}
             </>
         );
     };

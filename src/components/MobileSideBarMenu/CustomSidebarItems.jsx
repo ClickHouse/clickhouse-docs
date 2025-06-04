@@ -4,13 +4,14 @@ import { useLocation } from '@docusaurus/router';
 import Link from '@docusaurus/Link';
 import styles from './CustomSidebarItems.module.scss';
 
-const CustomSidebarItems = ({ items, activePath, level = 1, onItemClick, isMenuVisible = true }) => {
+const CustomSidebarItems = ({ items, activePath, level = 1, onItemClick, isMenuVisible = true, forceCollapsible = false }) => {
     const location = useLocation();
 
     const isActiveItem = (item) => {
-        if (!item.href) return false;
+        const itemHref = item.href || (item.customProps && item.customProps.href);
+        if (!itemHref) return false;
         const currentPath = activePath || location.pathname;
-        return currentPath === item.href || currentPath.startsWith(item.href + '/');
+        return currentPath === itemHref || currentPath.startsWith(itemHref + '/');
     };
 
     const hasActiveChild = (item) => {
@@ -33,11 +34,14 @@ const CustomSidebarItems = ({ items, activePath, level = 1, onItemClick, isMenuV
             itemsList.forEach((item, index) => {
                 const itemId = `${item.label}-${currentLevel}-${index}`;
 
-                // For level 1 (top-level), always treat as collapsible if it has children
-                // For deeper levels, respect the collapsible property
-                const isCollapsibleItem = currentLevel === 1
+                // Force collapsible when specified (for top-level menu),
+                // or for level 1 in regular sidebar,
+                // or respect the collapsible property for deeper levels
+                const isCollapsibleItem = forceCollapsible
                     ? (item.items && item.items.length > 0)
-                    : (item.items && item.items.length > 0 && item.collapsible !== false);
+                    : (currentLevel === 1
+                        ? (item.items && item.items.length > 0)
+                        : (item.items && item.items.length > 0 && item.collapsible !== false));
 
                 if (isCollapsibleItem) {
                     collapsed.add(itemId);
@@ -99,11 +103,14 @@ const CustomSidebarItems = ({ items, activePath, level = 1, onItemClick, isMenuV
         const itemId = `${item.label}-${level}-${index}`;
         const isActive = isActiveItem(item);
         const hasChildren = item.items && item.items.length > 0;
-        // For level 1 (top-level), always treat as collapsible if it has children
-        // For deeper levels, respect the collapsible property
-        const isCollapsible = level === 1
+        // Force collapsible when specified (for top-level menu),
+        // or for level 1 in regular sidebar,
+        // or respect the collapsible property for deeper levels
+        const isCollapsible = forceCollapsible
             ? hasChildren
-            : (hasChildren && item.collapsible !== false);
+            : (level === 1
+                ? hasChildren
+                : (hasChildren && item.collapsible !== false));
         const isCollapsed = collapsedItems.has(itemId);
         const hasActiveDescendant = hasActiveChild(item);
 
@@ -200,9 +207,9 @@ const CustomSidebarItems = ({ items, activePath, level = 1, onItemClick, isMenuV
         }
 
         // Handle regular links
-        if (item.href) {
-            const LinkComponent = item.href.startsWith('http') ? 'a' : Link;
-            const linkProps = item.href.startsWith('http')
+        if (item.href || item.type === 'link') {
+            const LinkComponent = item.href && item.href.startsWith('http') ? 'a' : Link;
+            const linkProps = item.href && item.href.startsWith('http')
                 ? { href: item.href, target: '_blank', rel: 'noopener noreferrer' }
                 : { to: item.href };
 
