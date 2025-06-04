@@ -17,13 +17,13 @@ Admins and developers are different than database users. To create database user
 
 To invite a user, select the organization and click `Users and roles`:
 
-<Image img={users_and_roles} size="md" alt="ClickHouse Cloud users and roles page" />
+<Image img={users_and_roles} size="lg" alt="ClickHouse Cloud users and roles page" />
 
 <br />
 
 Select `Invite members`, and enter the email address of up to 3 new users at once, selecting the role for each.
 
-<Image img={invite_user} size="md" alt="ClickHouse Cloud invite user page" />
+<Image img={invite_user} size="lg" alt="ClickHouse Cloud invite user page" />
 
 <br />
 
