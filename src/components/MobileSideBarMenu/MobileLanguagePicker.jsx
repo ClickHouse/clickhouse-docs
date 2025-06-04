@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from '@docusaurus/router';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Link from '@docusaurus/Link';
-import styles from './MobileLanguagePicker.module.scss';
+import styles from './mobileLanguagePicker.module.scss';
 
 const MobileLanguagePicker = () => {
     const [isOpen, setIsOpen] = useState(false);
