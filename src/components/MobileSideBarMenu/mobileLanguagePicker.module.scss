@@ -11,7 +11,6 @@
   gap: 0.375rem;
   padding: 0.5rem;
   border: none;
-  background: transparent;
   color: var(--ifm-font-color-base);
   border-radius: 0.375rem;
   cursor: pointer;
@@ -20,7 +19,7 @@
   font-weight: 500;
 
   &:hover {
-    background: var(--ifm-color-emphasis-200);
+    background: #e8e4ec;
   }
 
   &:focus {
@@ -60,11 +59,11 @@
   top: 100%;
   right: 0;
   margin-top: 0.5rem;
-  background: var(--ifm-background-color);
+  background: transparent;
   border: 1px solid var(--ifm-color-emphasis-300);
   border-radius: 0.75rem;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  z-index: 50;
+  z-index: 1000;
   min-width: 160px;
   max-width: 200px;
   overflow: hidden;
@@ -90,7 +89,7 @@
   width: 100%;
   padding: 0.75rem 1rem;
   border: none;
-  background: transparent;
+  background: #ffffff;
   color: var(--ifm-font-color-base);
   text-decoration: none;
   font-size: 0.875rem;
@@ -100,19 +99,19 @@
   &:hover {
     background: var(--ifm-color-emphasis-200);
     text-decoration: none;
-    color: var(--ifm-font-color-base);
+    color: black;
   }
 
   &:focus {
     background: var(--ifm-color-emphasis-200);
     outline: none;
     text-decoration: none;
-    color: var(--ifm-font-color-base);
+    color: black;
   }
 
   &.languageOptionActive {
-    background: var(--ifm-color-primary-light);
-    color: var(--ifm-color-primary-dark);
+    background: #e8e4ec;
+    color: black;
     font-weight: 600;
 
     .languageCode {
@@ -120,8 +119,8 @@
     }
 
     &:hover {
-      background: var(--ifm-color-primary-light);
-      color: var(--ifm-color-primary-dark);
+      background: #e8e4ec;
+      color: black;
     }
   }
 }
@@ -133,7 +132,7 @@
   text-transform: uppercase;
   min-width: 28px;
   text-align: left;
-  color: var(--ifm-color-primary);
+  color: black;
 }
 
 .languageName {
@@ -159,47 +158,25 @@
 
   .languageOption {
     &:hover {
-      background: var(--ifm-color-emphasis-300);
+      background: #414141
     }
 
     &.languageOptionActive {
-      background: var(--ifm-color-primary-dark);
-      color: var(--ifm-color-primary-light);
+      background: #414141;
+      color: white;
 
       .languageCode {
-        color: var(--ifm-color-primary-light);
+        color: #414141;
       }
 
       &:hover {
-        background: var(--ifm-color-primary-dark);
-        color: var(--ifm-color-primary-light);
+        background: #414141;
+        color: white;
       }
     }
   }
 }
 
-// Mobile responsive adjustments
-@media (max-width: 480px) {
-  .languageDropdown {
-    min-width: 140px;
-    max-width: 160px;
-    right: -1rem; // Adjust for smaller screens
-  }
-
-  .languageOption {
-    padding: 0.625rem 0.875rem;
-    font-size: 0.8rem;
-  }
-
-  .languageText {
-    font-size: 0.8rem;
-    min-width: 20px;
-  }
-
-  .languageName {
-    font-size: 0.8rem;
-  }
-}
 
 // High contrast mode support
 @media (prefers-contrast: high) {

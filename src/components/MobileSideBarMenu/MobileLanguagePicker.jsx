@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from '@docusaurus/router';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import { useAlternatePageUtils } from '@docusaurus/theme-common/internal';
 import Link from '@docusaurus/Link';
 import styles from './MobileLanguagePicker.module.scss';
 
@@ -10,7 +9,6 @@ const MobileLanguagePicker = () => {
     const dropdownRef = useRef(null);
     const location = useLocation();
     const { i18n } = useDocusaurusContext();
-    const alternatePageUtils = useAlternatePageUtils();
 
     // Get current locale from URL instead of relying solely on Docusaurus context
     const getCurrentLocaleFromURL = () => {
