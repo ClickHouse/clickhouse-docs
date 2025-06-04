@@ -4,7 +4,7 @@ import { useLocation } from '@docusaurus/router';
 import Link from '@docusaurus/Link';
 import styles from './CustomSidebarItems.module.scss';
 
-const CustomSidebarItems = ({ items, activePath, level = 1, onItemClick }) => {
+const CustomSidebarItems = ({ items, activePath, level = 1, onItemClick, isMenuVisible = true }) => {
     const location = useLocation();
 
     const isActiveItem = (item) => {
@@ -28,63 +28,62 @@ const CustomSidebarItems = ({ items, activePath, level = 1, onItemClick }) => {
     // Initialize collapsed state - only expand items that are part of the active path
     const getInitialCollapsedState = () => {
         const collapsed = new Set();
-        const currentPath = activePath || location.pathname;
 
-        // First, check if there's any active item in the entire structure
-        const hasAnyActiveItem = (itemsList) => {
-            return itemsList.some(item => {
-                if (isActiveItem(item)) return true;
-                if (item.items && hasAnyActiveItem(item.items)) return true;
-                return false;
-            });
-        };
-
-        const checkAndExpandActiveItems = (itemsList, currentLevel) => {
+        const collapseAllCollapsibleItems = (itemsList, currentLevel) => {
             itemsList.forEach((item, index) => {
                 const itemId = `${item.label}-${currentLevel}-${index}`;
 
-                // Check if item has children (regardless of type property)
+                // For level 1 (top-level), always treat as collapsible if it has children
+                // For deeper levels, respect the collapsible property
+                const isCollapsibleItem = currentLevel === 1
+                    ? (item.items && item.items.length > 0)
+                    : (item.items && item.items.length > 0 && item.collapsible !== false);
+
+                if (isCollapsibleItem) {
+                    collapsed.add(itemId);
+                    // Recursively collapse children too
+                    collapseAllCollapsibleItems(item.items, currentLevel + 1);
+                }
+            });
+        };
+
+        const expandActivePathItems = (itemsList, currentLevel) => {
+            itemsList.forEach((item, index) => {
+                const itemId = `${item.label}-${currentLevel}-${index}`;
+
+                // Check if this item or any of its children are in the active path
                 if (item.items && item.items.length > 0) {
-                    // Check if this category or any of its children are active
                     const isActiveCategory = hasActiveChild(item) || isActiveItem(item);
 
-                    if (!isActiveCategory) {
-                        // Collapse by default if not in active path
-                        collapsed.add(itemId);
-                    }
-
-                    // Recursively check children
-                    if (!collapsed.has(itemId)) {
-                        checkAndExpandActiveItems(item.items, currentLevel + 1);
+                    if (isActiveCategory) {
+                        // Remove from collapsed set (expand it)
+                        collapsed.delete(itemId);
+                        // Recursively check children
+                        expandActivePathItems(item.items, currentLevel + 1);
                     }
                 }
             });
         };
 
-        if (items) {
-            // If no active items found anywhere, collapse everything
-            if (!hasAnyActiveItem(items)) {
-                const collapseAllItems = (itemsList, currentLevel) => {
-                    itemsList.forEach((item, index) => {
-                        const itemId = `${item.label}-${currentLevel}-${index}`;
-                        // Collapse any item that has children (regardless of type)
-                        if (item.items && item.items.length > 0) {
-                            collapsed.add(itemId);
-                            collapseAllItems(item.items, currentLevel + 1);
-                        }
-                    });
-                };
-                collapseAllItems(items, level);
-            } else {
-                // Only expand items in the active path
-                checkAndExpandActiveItems(items, level);
-            }
+        if (items && items.length > 0) {
+            // First: Collapse everything that is collapsible
+            collapseAllCollapsibleItems(items, level);
+
+            // Second: Expand only items in the active path
+            expandActivePathItems(items, level);
         }
 
         return collapsed;
     };
 
     const [collapsedItems, setCollapsedItems] = useState(getInitialCollapsedState());
+
+    // Reset collapsed state when menu becomes visible (reopened)
+    React.useEffect(() => {
+        if (isMenuVisible) {
+            setCollapsedItems(getInitialCollapsedState());
+        }
+    }, [isMenuVisible]);
 
     const toggleCollapse = (itemId) => {
         const newCollapsed = new Set(collapsedItems);
@@ -100,6 +99,11 @@ const CustomSidebarItems = ({ items, activePath, level = 1, onItemClick }) => {
         const itemId = `${item.label}-${level}-${index}`;
         const isActive = isActiveItem(item);
         const hasChildren = item.items && item.items.length > 0;
+        // For level 1 (top-level), always treat as collapsible if it has children
+        // For deeper levels, respect the collapsible property
+        const isCollapsible = level === 1
+            ? hasChildren
+            : (hasChildren && item.collapsible !== false);
         const isCollapsed = collapsedItems.has(itemId);
         const hasActiveDescendant = hasActiveChild(item);
 
@@ -114,13 +118,13 @@ const CustomSidebarItems = ({ items, activePath, level = 1, onItemClick }) => {
                             {
                                 [styles.active]: isActive,
                                 [styles.hasActiveChild]: hasActiveDescendant && !isActive,
-                                [styles.collapsible]: hasChildren,
+                                [styles.collapsible]: hasChildren && isCollapsible,
                                 [styles.collapsed]: isCollapsed,
                             }
                         )}
                         onClick={(e) => {
-                            // Only expand/collapse if not clicking on the text
-                            if (hasChildren && !e.target.closest(`.${styles.categoryLabel}`)) {
+                            // Only expand/collapse if not clicking on the text and item is collapsible
+                            if (hasChildren && isCollapsible && !e.target.closest(`.${styles.categoryLabel}`)) {
                                 toggleCollapse(itemId);
                             }
                         }}
@@ -129,7 +133,7 @@ const CustomSidebarItems = ({ items, activePath, level = 1, onItemClick }) => {
                         onKeyDown={(e) => {
                             if (e.key === 'Enter' || e.key === ' ') {
                                 e.preventDefault();
-                                if (hasChildren) {
+                                if (hasChildren && isCollapsible) {
                                     toggleCollapse(itemId);
                                 }
                             }
@@ -158,7 +162,7 @@ const CustomSidebarItems = ({ items, activePath, level = 1, onItemClick }) => {
                         >
                             {item.label}
                         </span>
-                        {hasChildren && (
+                        {hasChildren && isCollapsible && (
                             <span
                                 className={clsx(styles.collapseIcon, {
                                     [styles.collapsed]: isCollapsed

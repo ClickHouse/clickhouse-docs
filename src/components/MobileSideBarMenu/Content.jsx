@@ -11,7 +11,7 @@ import ColorModeToggle from "../../components/ColorModeToggler";
 import Translate from "@docusaurus/Translate";
 import { useLocation } from '@docusaurus/router';
 
-const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path, menu }) => {
+const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path, menu, isVisible = true }) => {
     const [showTopLevel, setShowTopLevel] = useState(false);
     const location = useLocation();
 
@@ -85,6 +85,7 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
                     activePath={activePath}
                     level={1}
                     onItemClick={handleItemClick}
+                    isMenuVisible={isVisible}
                 />
             </ul>
         );
