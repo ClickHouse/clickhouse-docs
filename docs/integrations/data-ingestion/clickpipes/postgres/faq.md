@@ -64,7 +64,7 @@ Please refer to the [ClickPipes for Postgres: Schema Changes Propagation Support
 
 ### What are the costs for ClickPipes for Postgres CDC? {#what-are-the-costs-for-clickpipes-for-postgres-cdc}
 
-During the preview, ClickPipes is free of cost. Post-GA, pricing is still to be determined. The goal is to make the pricing reasonable and highly competitive compared to external ETL tools.
+For detailed pricing information, please refer to the [ClickPipes for Postgres CDC pricing section on our main billing overview page](/cloud/manage/billing/overview#clickpipes-for-postgres-cdc).
 
 ### My replication slot size is growing or not decreasing; what might be the issue? {#my-replication-slot-size-is-growing-or-not-decreasing-what-might-be-the-issue}
 
