@@ -362,7 +362,7 @@ const sidebars = {
       items: [
         "cloud/reference/architecture",
         "cloud/reference/shared-merge-tree",
-	"/cloud/reference/shared-catalog",
+	"cloud/reference/shared-catalog",
         "cloud/reference/warehouses",
         "cloud/reference/byoc",
         {
