@@ -21,7 +21,7 @@ import chartbrew_06 from '@site/static/images/integrations/data-visualization/ch
 import chartbrew_07 from '@site/static/images/integrations/data-visualization/chartbrew_07.png';
 import chartbrew_08 from '@site/static/images/integrations/data-visualization/chartbrew_08.png';
 import chartbrew_09 from '@site/static/images/integrations/data-visualization/chartbrew_09.png';
-import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import Image from '@theme/IdealImage';
 
