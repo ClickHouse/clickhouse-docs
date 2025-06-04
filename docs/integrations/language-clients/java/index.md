@@ -72,6 +72,10 @@ Java Client was developed far back in 2015. Its codebase became very hard to mai
 |Polygon                |✔                    |✔                    |
 |SimpleAggregateFunction|✔                    |✔                    |
 |AggregateFunction      |✗                    |✔                    |
+|Variant                |✔                    |✗                    |
+|Dynamic                |✔                    |✗                    |
+|JSON                   |✔                    |✗                    |
+
 
 [ClickHouse Data Types](/sql-reference/data-types)
 
