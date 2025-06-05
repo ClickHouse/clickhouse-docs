@@ -10,10 +10,13 @@ import NavbarLogo from '@theme/Navbar/Logo';
 import ColorModeToggle from "../../components/ColorModeToggler";
 import Translate from "@docusaurus/Translate";
 import { useLocation } from '@docusaurus/router';
+import { useHistory } from '@docusaurus/router';
 import MobileLanguagePicker from "./MobileLanguagePicker";
+
 const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path, menu, isVisible = true }) => {
     const [showTopLevel, setShowTopLevel] = useState(false);
     const location = useLocation();
+    const history = useHistory();
 
     // Reset to sidebar view (showTopLevel = false) whenever the mobile menu becomes visible
     useEffect(() => {
@@ -22,10 +25,58 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
         }
     }, [isVisible]);
 
+    // Get current locale from URL
+    const getCurrentLocale = () => {
+        const pathname = location.pathname;
+        const docsLocaleMatch = pathname.match(/^\/docs\/(jp|ja|ru|zh|zh-CN)(?=\/|$)/);
+        return docsLocaleMatch ? docsLocaleMatch[1] : 'en';
+    };
+
+    // Normalize path for comparison (remove locale prefix if present)
+    const normalizePath = (path) => {
+        if (!path) return '';
+        // Remove locale prefix from path for comparison
+        return path.replace(/^\/docs\/(jp|ja|ru|zh|zh-CN)/, '/docs');
+    };
+
+    // Check if the current path exists in the sidebar
+    const isCurrentPathInSidebar = () => {
+        if (!sidebar || sidebar.length === 0) return false;
+
+        const normalizedCurrentPath = normalizePath(location.pathname);
+
+        const checkItemsRecursively = (items) => {
+            return items.some(item => {
+                // Check if this item matches the current path
+                const itemHref = item.href || (item.customProps && item.customProps.href);
+                if (itemHref) {
+                    const normalizedItemHref = normalizePath(itemHref);
+                    if (normalizedCurrentPath === normalizedItemHref || normalizedCurrentPath.startsWith(normalizedItemHref + '/')) {
+                        return true;
+                    }
+                }
+
+                // Check children recursively
+                if (item.items && item.items.length > 0) {
+                    return checkItemsRecursively(item.items);
+                }
+
+                return false;
+            });
+        };
+
+        return checkItemsRecursively(sidebar);
+    };
+
     // Check if we're on a docs root page (should show only top-level menu)
     const isDocsRootPage = () => {
         const docsRootPaths = ['/docs/', '/docs/jp/', '/docs/ru/', '/docs/zh/'];
         return docsRootPaths.includes(location.pathname);
+    };
+
+    // Check if we should show the main menu instead of sidebar
+    const shouldShowMainMenu = () => {
+        return isDocsRootPage() || !isCurrentPathInSidebar();
     };
 
     // Find which top-level category we're currently in
@@ -44,16 +95,41 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
 
     const currentCategory = getCurrentCategory();
 
-    // Handle item click - close the mobile sidebar
+    // Handle item click - navigate and potentially close the mobile sidebar
     const handleItemClick = (item) => {
+        // Handle navigation for items with href
+        let itemHref = item.href || (item.customProps && item.customProps.href);
+
+        if (itemHref) {
+            // Fix URLs for main menu items - add /docs/ prefix if missing and handle localization
+            // Use shouldShowMainMenu() instead of showTopLevel to catch invalid pages too
+            if (shouldShowMainMenu() && itemHref && !itemHref.startsWith('/docs/') && !itemHref.startsWith('http')) {
+                const currentLocale = getCurrentLocale();
+                if (currentLocale !== 'en') {
+                    itemHref = `/docs/${currentLocale}${itemHref}`;
+                } else {
+                    itemHref = `/docs${itemHref}`;
+                }
+            }
+
+            // Navigate to the href
+            if (itemHref.startsWith('http')) {
+                // External link
+                window.open(itemHref, '_blank', 'noopener,noreferrer');
+            } else {
+                // Internal link
+                history.push(itemHref);
+            }
+
+            // Close the menu after navigation
+            if (onClose) {
+                onClose();
+            }
+        }
+
         // Call the onClick handler from parent if provided
         if (onClick) {
             onClick(item);
-        }
-
-        // For non-collapsible items, close the menu
-        if (item && !item.collapsible && onClose) {
-            onClose();
         }
     };
 
@@ -79,7 +155,7 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
 
     // Render the enhanced header with logo and navigation toggle
     const renderHeader = () => {
-        const isTopLevel = showTopLevel || isDocsRootPage();
+        const isTopLevel = showTopLevel || shouldShowMainMenu();
 
         return (
             <div className={clsx("navbar-sidebar__brand", styles.docsMobileMenu_header)}>
@@ -97,7 +173,7 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
                     </div>
                 </div>
                 <div className={styles.bottomLevel}>
-                    {!isDocsRootPage() && (
+                    {!shouldShowMainMenu() && (
                         <button
                             className={styles.levelToggleButton}
                             onClick={() => setShowTopLevel(!showTopLevel)}
@@ -145,8 +221,8 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
         );
     };
 
-    // If we're on a docs root page, always show the top-level menu
-    if (isDocsRootPage()) {
+    // If we're on a docs root page or invalid path, always show the top-level menu
+    if (shouldShowMainMenu()) {
         return (
             <div className={clsx(styles.docsMobileMenu, className)}>
                 {renderTopLevelMenu()}
