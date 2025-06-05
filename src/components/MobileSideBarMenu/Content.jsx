@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './styles.module.scss'
 import IconClose from '@theme/Icon/Close';
 import IconArrowLeft from '@site/static/img/arrowleft.svg';
@@ -13,7 +13,7 @@ import { useLocation } from '@docusaurus/router';
 import { useHistory } from '@docusaurus/router';
 import MobileLanguagePicker from "./MobileLanguagePicker";
 
-const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path, menu, isVisible = true }) => {
+const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path, menu, isVisible = true, onLanguageChange }) => {
     const [showTopLevel, setShowTopLevel] = useState(false);
     const location = useLocation();
     const history = useHistory();
@@ -95,6 +95,17 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
 
     const currentCategory = getCurrentCategory();
 
+    // Handle language change - notify parent and then navigate
+    const handleLanguageChange = (locale, href) => {
+        // Notify parent component about language change FIRST
+        if (onLanguageChange) {
+            onLanguageChange(locale, href);
+        }
+
+        // Then navigate (parent has already set the language change flag)
+        history.push(href);
+    };
+
     // Handle item click - navigate and potentially close the mobile sidebar
     const handleItemClick = (item) => {
         // Handle navigation for items with href
@@ -109,15 +120,6 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
                 !itemHref.startsWith('/docs/') &&
                 !itemHref.startsWith('http');
 
-            console.log('Navigation debug:', {
-                item: item.label,
-                originalHref: itemHref,
-                isInMainMenu,
-                isDocsContext,
-                shouldAddDocsPrefix,
-                currentPath: location.pathname
-            });
-
             if (shouldAddDocsPrefix) {
                 const currentLocale = getCurrentLocale();
                 if (currentLocale !== 'en') {
@@ -125,7 +127,6 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
                 } else {
                     itemHref = `/docs${itemHref}`;
                 }
-                console.log('Fixed href:', itemHref);
             }
 
             // Navigate to the href
@@ -183,7 +184,7 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
 
                     {/* Right Side - Controls */}
                     <div className={styles.headerActions}>
-                        <MobileLanguagePicker/>
+                        <MobileLanguagePicker onLanguageChange={handleLanguageChange} />
                         <ColorModeToggle/>
                         <IconClose width={10} height={10} onClick={onClose || onClick} style={{"align-self":"center"}}/>
                     </div>
@@ -222,7 +223,7 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
         return (
             <>
                 {renderHeader()}
-                {renderDocSidebarItems(menu.dropdownCategories || [], location.pathname, true)}
+                {renderDocSidebarItems(menu?.dropdownCategories || menu || [], location.pathname, true)}
             </>
         );
     };

@@ -4,7 +4,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Link from '@docusaurus/Link';
 import styles from './mobileLanguagePicker.module.scss';
 
-const MobileLanguagePicker = () => {
+const MobileLanguagePicker = ({ onLanguageChange }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
     const location = useLocation();
@@ -83,6 +83,19 @@ const MobileLanguagePicker = () => {
         };
 
         return localeNames[locale] || locale;
+    };
+
+    // Handle language selection
+    const handleLanguageSelect = (locale, href) => {
+        setIsOpen(false);
+
+        // Notify parent component about language change if callback provided
+        if (onLanguageChange) {
+            onLanguageChange(locale, href);
+        } else {
+            // Fallback navigation if no callback
+            window.location.href = href;
+        }
     };
 
     // If only one locale is configured, don't show the picker
@@ -189,7 +202,10 @@ const MobileLanguagePicker = () => {
                                 key={locale}
                                 to={href}
                                 className={`${styles.languageOption} ${isCurrentLocale ? styles.languageOptionActive : ''}`}
-                                onClick={() => setIsOpen(false)}
+                                onClick={(e) => {
+                                    e.preventDefault(); // Prevent the Link from navigating
+                                    handleLanguageSelect(locale, href);
+                                }}
                                 aria-label={`Switch to ${localeFullName}`}
                             >
                                 <span className={styles.languageName}>{localeFullName}</span>
