@@ -137,7 +137,7 @@ SELECT count(*) FROM posts;
 
 #### ROWポリシー {#row-policy}
 
-冗長な`_peerdb_is_deleted = 0`フィルターを隠す簡単な方法は、[ROWポリシー](/docs/operations/access-rights#row-policy-management)を使用することです。以下は、テーブルvotesのすべてのクエリから削除された行を除外するための行ポリシーを作成する例です。
+冗長な`_peerdb_is_deleted = 0`フィルターを隠す簡単な方法は、[ROWポリシー](/operations/access-rights#row-policy-management)を使用することです。以下は、テーブルvotesのすべてのクエリから削除された行を除外するための行ポリシーを作成する例です。
 
 ```sql
 -- すべてのユーザーに行ポリシーを適用

@@ -6,9 +6,12 @@ import { useLocation, useHistory } from '@docusaurus/router';
 
 const MobileSideBarMenu = ({sidebar, menu}) => {
     const [currentMenuState, setMenuState] = useState(() => {
-        // Try to restore menu state from sessionStorage on mount
-        const savedMenuState = sessionStorage.getItem('mobilemenu_open');
-        return savedMenuState === 'true';
+        // Only access sessionStorage if we're in the browser
+        if (typeof window !== 'undefined' && window.sessionStorage) {
+            const savedMenuState = sessionStorage.getItem('mobilemenu_open');
+            return savedMenuState === 'true';
+        }
+        return false;
     });
     const location = useLocation();
     const history = useHistory();
@@ -18,7 +21,9 @@ const MobileSideBarMenu = ({sidebar, menu}) => {
 
     // Save menu state to sessionStorage whenever it changes
     useEffect(() => {
-        sessionStorage.setItem('mobilemenu_open', currentMenuState.toString());
+        if (typeof window !== 'undefined' && window.sessionStorage) {
+            sessionStorage.setItem('mobilemenu_open', currentMenuState.toString());
+        }
     }, [currentMenuState]);
 
     // Define the breakpoint where mobile menu should be hidden (laptop breakpoint)
@@ -31,7 +36,10 @@ const MobileSideBarMenu = ({sidebar, menu}) => {
 
         // On first render, check if we can get previous path from sessionStorage
         if (previousPath === null) {
-            const storedPreviousPath = sessionStorage.getItem('mobilemenu_previous_path');
+            let storedPreviousPath = null;
+            if (typeof window !== 'undefined' && window.sessionStorage) {
+                storedPreviousPath = sessionStorage.getItem('mobilemenu_previous_path');
+            }
 
             if (storedPreviousPath && storedPreviousPath !== currentPath) {
                 // We have a stored previous path that's different from current
@@ -40,7 +48,9 @@ const MobileSideBarMenu = ({sidebar, menu}) => {
             } else {
                 // No stored path or it's the same - initialize and skip detection
                 previousLocationRef.current = currentPath;
-                sessionStorage.setItem('mobilemenu_previous_path', currentPath);
+                if (typeof window !== 'undefined' && window.sessionStorage) {
+                    sessionStorage.setItem('mobilemenu_previous_path', currentPath);
+                }
                 return; // Skip path change detection on first render
             }
         }
@@ -100,12 +110,14 @@ const MobileSideBarMenu = ({sidebar, menu}) => {
 
         // Update the previous path reference and store it
         previousLocationRef.current = currentPath;
-        sessionStorage.setItem('mobilemenu_previous_path', currentPath);
+        if (typeof window !== 'undefined' && window.sessionStorage) {
+            sessionStorage.setItem('mobilemenu_previous_path', currentPath);
+        }
     }, [location.pathname]);
 
     // Prevent body scroll when menu is open
     useEffect(() => {
-        if (currentMenuState) {
+        if (currentMenuState && typeof window !== 'undefined') {
             // Store original overflow style
             const originalOverflow = document.body.style.overflow;
             const originalPosition = document.body.style.position;
@@ -128,6 +140,8 @@ const MobileSideBarMenu = ({sidebar, menu}) => {
 
     // Close mobile menu when viewport exceeds mobile breakpoint
     useEffect(() => {
+        if (typeof window === 'undefined') return;
+
         const handleResize = () => {
             if (window.innerWidth >= LAPTOP_BREAKPOINT && currentMenuState) {
                 setMenuState(false);

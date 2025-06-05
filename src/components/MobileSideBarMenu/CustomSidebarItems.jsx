@@ -53,7 +53,6 @@ const CustomSidebarItems = ({ items, activePath, level = 1, onItemClick, isMenuV
             });
         };
 
-        console.log(`Getting initial state for ${forceCollapsible ? 'MAIN MENU' : 'SIDEBAR'}`);
         if (items && items.length > 0) {
             processItems(items, level);
         }

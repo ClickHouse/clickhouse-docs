@@ -12,6 +12,7 @@ import Translate from "@docusaurus/Translate";
 import { useLocation } from '@docusaurus/router';
 import { useHistory } from '@docusaurus/router';
 import MobileLanguagePicker from "./MobileLanguagePicker";
+import { useDocsSidebar } from '@docusaurus/theme-common/internal';
 
 const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path, menu, isVisible = true, onLanguageChange }) => {
     const [showTopLevel, setShowTopLevel] = useState(false);
@@ -112,31 +113,40 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
         let itemHref = item.href || (item.customProps && item.customProps.href);
 
         if (itemHref) {
-            // Determine if we should add /docs/ prefix
-            // This happens when we're in the main menu OR when the current path suggests we're in docs
-            const isInMainMenu = shouldShowMainMenu();
-            const isDocsContext = location.pathname.startsWith('/docs/');
-            const shouldAddDocsPrefix = (isInMainMenu || isDocsContext) &&
-                !itemHref.startsWith('/docs/') &&
-                !itemHref.startsWith('http');
+            // Skip processing for external links
+            if (itemHref.startsWith('http')) {
+                window.open(itemHref, '_blank', 'noopener,noreferrer');
+                if (onClose) {
+                    onClose();
+                }
+                if (onClick) {
+                    onClick(item);
+                }
+                return;
+            }
 
-            if (shouldAddDocsPrefix) {
-                const currentLocale = getCurrentLocale();
-                if (currentLocale !== 'en') {
-                    itemHref = `/docs/${currentLocale}${itemHref}`;
-                } else {
-                    itemHref = `/docs${itemHref}`;
+            // For internal links, check if we need to add locale prefix
+            // Only process relative paths that don't already contain /docs/
+            if (!itemHref.includes('/docs/')) {
+                const isInMainMenu = shouldShowMainMenu();
+                const isDocsContext = location.pathname.startsWith('/docs/');
+
+                if (isInMainMenu || isDocsContext) {
+                    const currentLocale = getCurrentLocale();
+                    if (currentLocale !== 'en') {
+                        // Ensure the path starts with /
+                        const cleanPath = itemHref.startsWith('/') ? itemHref : `/${itemHref}`;
+                        itemHref = `/docs/${currentLocale}${cleanPath}`;
+                    } else {
+                        // Ensure the path starts with /
+                        const cleanPath = itemHref.startsWith('/') ? itemHref : `/${itemHref}`;
+                        itemHref = `/docs${cleanPath}`;
+                    }
                 }
             }
 
-            // Navigate to the href
-            if (itemHref.startsWith('http')) {
-                // External link
-                window.open(itemHref, '_blank', 'noopener,noreferrer');
-            } else {
-                // Internal link
-                history.push(itemHref);
-            }
+            // Navigate to the internal link
+            history.push(itemHref);
 
             // Close the menu after navigation
             if (onClose) {
@@ -150,8 +160,64 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
         }
     };
 
-    // Generic function to render CustomSidebarItems with consistent styling
-    const renderDocSidebarItems = (items, activePath, forceCollapsible = false) => {
+    // Helper function to determine the current sidebar name
+    const getCurrentSidebarName = () => {
+        // You'll need to determine this based on your app's logic
+        // This could be passed as a prop, derived from the URL, or stored in context
+        // For now, returning a placeholder - you'll need to implement this based on your setup
+
+        const pathname = location.pathname;
+
+        // Example logic - adjust based on your URL structure
+        if (pathname.includes('/cloud/')) return 'cloud';
+        if (pathname.includes('/docs/')) return 'docs';
+        if (pathname.includes('/sql-reference/')) return 'sqlreference';
+
+        // You might need to add more logic here based on your specific routing
+        // or pass the sidebar name as a prop to this component
+        return 'docs'; // default fallback
+    };
+
+    // Helper function to apply translations to menu items
+    const applyTranslationsToItems = (items, translationPrefix) => {
+        if (!items) return [];
+
+        return items.map(item => ({
+            ...item,
+            label: (
+                <Translate id={`${translationPrefix}.${item.label}`}>
+                    {item.label}
+                </Translate>
+            ),
+            items: item.items?.map(subItem => ({
+                ...subItem,
+                label: (
+                    <Translate id={`${translationPrefix}.${item.label}.${subItem.label}`}>
+                        {subItem.label}
+                    </Translate>
+                )
+            }))
+        }));
+    };
+
+    // Generic function to render CustomSidebarItems with consistent styling and translations
+    const renderDocSidebarItems = (items, activePath, forceCollapsible = false, useSidebarTranslations = false) => {
+        let translatedItems = items;
+
+        if (useSidebarTranslations) {
+            // For current sidebar, use dynamic sidebar name only if available
+            const sidebarName = getCurrentSidebarName();
+            if (sidebarName) {
+                const translationPrefix = `sidebar.${sidebarName}.category`;
+                translatedItems = applyTranslationsToItems(items, translationPrefix);
+            }
+            // If no sidebar name, use items as-is (no translation)
+        } else {
+            // For top-level menu, always use dropdown categories translations
+            const translationPrefix = 'sidebar.dropdownCategories.category';
+            translatedItems = applyTranslationsToItems(items, translationPrefix);
+        }
+
         return (
             <ul className={clsx(
                 ThemeClassNames.docs.docSidebarMenu,
@@ -159,7 +225,7 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
                 styles.docsMobileMenuItems
             )}>
                 <CustomSidebarItems
-                    items={items || []}
+                    items={translatedItems || []}
                     activePath={activePath}
                     level={1}
                     onItemClick={handleItemClick}
@@ -218,22 +284,32 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
         );
     };
 
-    // Render top-level menu using DocSidebarItems
+    // Render top-level menu using DocSidebarItems with dropdown categories translations
     const renderTopLevelMenu = () => {
         return (
             <>
                 {renderHeader()}
-                {renderDocSidebarItems(menu?.dropdownCategories || menu || [], location.pathname, true)}
+                {renderDocSidebarItems(
+                    menu?.dropdownCategories || menu || [],
+                    location.pathname,
+                    true,
+                    false // Use dropdown categories translations
+                )}
             </>
         );
     };
 
-    // Render current sidebar with back navigation
+    // Render current sidebar with dynamic sidebar translations
     const renderCurrentSidebar = () => {
         return (
             <>
                 {renderHeader()}
-                {renderDocSidebarItems(sidebar, location.pathname, false)}
+                {renderDocSidebarItems(
+                    sidebar,
+                    location.pathname,
+                    false,
+                    true // Use dynamic sidebar translations
+                )}
             </>
         );
     };
