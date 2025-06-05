@@ -514,7 +514,7 @@ Note the ability to pass a Context to the query. This can be used to pass specif
 
 ### Batch Insert {#batch-insert}
 
-To insert a large number of rows, the client provides batch semantics. This requires the preparation of a batch to which rows can be appended. This is finally sent via the `Send()` method. Batches will be held in memory until `Send` is executed.
+To insert a large number of rows, the client provides batch semantics. This requires the preparation of a batch to which rows can be appended. This is finally sent via the `Send()` method. Batches are held in memory until `Send` is executed.
 
 It is recommended to call `Close` on the batch to prevent leaking connections. This can be done via the `defer` keyword after preparing the batch. This will clean up the connection if `Send` never gets called. Note that this will result in 0 row inserts showing up in the query log if no rows were appended.
 
