@@ -101,15 +101,31 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
         let itemHref = item.href || (item.customProps && item.customProps.href);
 
         if (itemHref) {
-            // Fix URLs for main menu items - add /docs/ prefix if missing and handle localization
-            // Use shouldShowMainMenu() instead of showTopLevel to catch invalid pages too
-            if (shouldShowMainMenu() && itemHref && !itemHref.startsWith('/docs/') && !itemHref.startsWith('http')) {
+            // Determine if we should add /docs/ prefix
+            // This happens when we're in the main menu OR when the current path suggests we're in docs
+            const isInMainMenu = shouldShowMainMenu();
+            const isDocsContext = location.pathname.startsWith('/docs/');
+            const shouldAddDocsPrefix = (isInMainMenu || isDocsContext) &&
+                !itemHref.startsWith('/docs/') &&
+                !itemHref.startsWith('http');
+
+            console.log('Navigation debug:', {
+                item: item.label,
+                originalHref: itemHref,
+                isInMainMenu,
+                isDocsContext,
+                shouldAddDocsPrefix,
+                currentPath: location.pathname
+            });
+
+            if (shouldAddDocsPrefix) {
                 const currentLocale = getCurrentLocale();
                 if (currentLocale !== 'en') {
                     itemHref = `/docs/${currentLocale}${itemHref}`;
                 } else {
                     itemHref = `/docs${itemHref}`;
                 }
+                console.log('Fixed href:', itemHref);
             }
 
             // Navigate to the href
