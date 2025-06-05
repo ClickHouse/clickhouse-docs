@@ -127,25 +127,24 @@ const MobileLanguagePicker = () => {
                         let currentPath = location.pathname;
 
                         // Handle docs paths
-                        if (currentPath.startsWith('/docs/')) {
-                            // Remove existing locale from docs path
-                            let cleanPath = currentPath.replace(/^\/docs\/(jp|ja|ru|zh|zh-CN)(?=\/|$)/, '/docs');
-
-                            // If no locale was removed, we're already on a clean path
-                            if (cleanPath === currentPath) {
-                                cleanPath = currentPath;
-                            }
-
-                            // Build new URL with target locale
-                            if (locale === i18n.defaultLocale || locale === 'en') {
-                                // English: keep clean path as-is
-                                href = cleanPath;
-                            } else {
-                                // Other languages: inject locale after /docs
-                                if (cleanPath === '/docs' || cleanPath === '/docs/') {
-                                    href = `/docs/${locale}/`;
+                        if (currentPath.startsWith('/docs')) {
+                            // Handle docs root paths specifically
+                            if (currentPath === '/docs' || currentPath === '/docs/') {
+                                if (locale === i18n.defaultLocale || locale === 'en') {
+                                    href = '/docs/';
                                 } else {
-                                    href = cleanPath.replace('/docs/', `/docs/${locale}/`);
+                                    href = `/docs/${locale}/`;
+                                }
+                            } else {
+                                // Remove existing locale from docs path if present
+                                let cleanPath = currentPath.replace(/^\/docs\/(jp|ja|ru|zh|zh-CN)(?=\/|$)/, '/docs');
+
+                                // Build new URL with target locale
+                                if (locale === i18n.defaultLocale || locale === 'en') {
+                                    href = cleanPath;
+                                } else {
+                                    // For non-English locales, inject locale after /docs
+                                    href = cleanPath.replace('/docs', `/docs/${locale}`);
                                 }
                             }
                         } else {
