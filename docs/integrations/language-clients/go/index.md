@@ -514,7 +514,9 @@ Note the ability to pass a Context to the query. This can be used to pass specif
 
 ### Batch Insert {#batch-insert}
 
-To insert a large number of rows, the client provides batch semantics. This requires the preparation of a batch to which rows can be appended. This is finally sent via the `Send()` method. Batches will be held in memory until Send is executed.
+To insert a large number of rows, the client provides batch semantics. This requires the preparation of a batch to which rows can be appended. This is finally sent via the `Send()` method. Batches are held in memory until `Send` is executed.
+
+It is recommended to call `Close` on the batch to prevent leaking connections. This can be done via the `defer` keyword after preparing the batch. This will clean up the connection if `Send` never gets called. Note that this will result in 0 row inserts showing up in the query log if no rows were appended.
 
 ```go
 conn, err := GetNativeConnection(nil, nil, nil)
@@ -547,6 +549,8 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 for i := 0; i < 1000; i++ {
     err := batch.Append(
         uint8(42),
@@ -568,6 +572,7 @@ for i := 0; i < 1000; i++ {
         return err
     }
 }
+
 return batch.Send()
 ```
 
@@ -582,6 +587,8 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 for i := 0; i < 1000; i++ {
     err := batch.Append(
         "2006-01-02 15:04:05.999",
@@ -590,6 +597,7 @@ for i := 0; i < 1000; i++ {
         return err
     }
 }
+
 return batch.Send()
 ```
 
@@ -697,6 +705,8 @@ batch, err := conn.PrepareBatch(context.Background(), "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 var (
     col1 []uint64
     col2 []string
@@ -721,6 +731,7 @@ if err := batch.Column(2).Append(col3); err != nil {
 if err := batch.Column(3).Append(col4); err != nil {
     return err
 }
+
 return batch.Send()
 ```
 
@@ -778,6 +789,8 @@ batch, err := conn.PrepareBatch(context.Background(), "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 for i := 0; i < 1_000; i++ {
     err := batch.AppendStruct(&row{
         Col1:       uint64(i),
@@ -828,6 +841,8 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 var i int64
 for i = 0; i < 10; i++ {
     err := batch.Append(
@@ -869,6 +884,8 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 var i int64
 for i = 0; i < 10; i++ {
     err := batch.Append(
@@ -936,6 +953,8 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 // both named and unnamed can be added with slices. Note we can use strongly typed lists and maps if all elements are the same type
 if err = batch.Append([]interface{}{"Clicky McClickHouse", uint8(42)}, []interface{}{"Clicky McClickHouse Snr", uint8(78)}, []string{"Dale", "521211"}); err != nil {
     return err
@@ -1002,6 +1021,8 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 var i int64
 for i = 0; i < 10; i++ {
     err := batch.Append(
@@ -1099,6 +1120,8 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 var i uint8
 for i = 0; i < 10; i++ {
     col1_1_data := []string{strconv.Itoa(int(i)), strconv.Itoa(int(i + 1)), strconv.Itoa(int(i + 2))}
@@ -1158,6 +1181,7 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
 
 if err = batch.Append(
     orb.Point{11, 22},
@@ -1238,6 +1262,8 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 col1Data, _ := uuid.NewUUID()
 if err = batch.Append(
     col1Data,
@@ -1283,6 +1309,8 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 if err = batch.Append(
     decimal.New(25, 4),
     decimal.New(30, 5),
@@ -1336,6 +1364,8 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 if err = batch.Append(
     nil,
     nil,
@@ -1387,6 +1417,7 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
 
 col1Data, _ := new(big.Int).SetString("170141183460469231731687303715884105727", 10)
 col2Data := big.NewInt(128)
@@ -1467,6 +1498,8 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
 }
+defer batch.Close()
+
 for i := 0; i < 1000; i++ {
     if err := batch.Append([]string{strconv.Itoa(i), strconv.Itoa(i + 1), strconv.Itoa(i + 2), strconv.Itoa(i + 3)}); err != nil {
         return err
