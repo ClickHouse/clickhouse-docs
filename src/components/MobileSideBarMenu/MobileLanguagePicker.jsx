@@ -126,10 +126,9 @@ const MobileLanguagePicker = () => {
                         let href;
                         let currentPath = location.pathname;
 
-                        // Always use manual construction to avoid Docusaurus URL accumulation bugs
+                        // Handle docs paths
                         if (currentPath.startsWith('/docs/')) {
                             // Remove existing locale from docs path
-                            // Handle both /docs/locale/path and /docs/locale patterns
                             let cleanPath = currentPath.replace(/^\/docs\/(jp|ja|ru|zh|zh-CN)(?=\/|$)/, '/docs');
 
                             // If no locale was removed, we're already on a clean path
@@ -150,22 +149,36 @@ const MobileLanguagePicker = () => {
                                 }
                             }
                         } else {
-                            // Fallback for non-docs paths
+                            // Handle non-docs paths (like home page, blog, etc.)
+                            // Remove any existing locale prefix first
                             let cleanPath = currentPath.replace(/^\/(jp|ja|ru|zh|zh-CN)(?=\/|$)/, '');
 
+                            // If nothing was removed, we're on a clean path already
                             if (cleanPath === currentPath) {
+                                // We're on a path like '/' or '/blog' - no locale prefix to remove
                                 cleanPath = currentPath;
                             }
 
-                            // Ensure path starts with /
+                            // Ensure path starts with / (in case we removed a locale and left empty string)
                             if (!cleanPath.startsWith('/')) {
                                 cleanPath = '/' + cleanPath;
                             }
 
-                            if (locale === i18n.defaultLocale || locale === 'en') {
-                                href = cleanPath;
+                            // For home page specifically, handle it differently
+                            if (cleanPath === '/' || cleanPath === '') {
+                                if (locale === i18n.defaultLocale || locale === 'en') {
+                                    href = '/';
+                                } else {
+                                    // For non-English, go to the docs root for that language
+                                    href = `/docs/${locale}/`;
+                                }
                             } else {
-                                href = `/${locale}${cleanPath}`;
+                                // For other non-docs pages
+                                if (locale === i18n.defaultLocale || locale === 'en') {
+                                    href = cleanPath;
+                                } else {
+                                    href = `/${locale}${cleanPath}`;
+                                }
                             }
                         }
 
