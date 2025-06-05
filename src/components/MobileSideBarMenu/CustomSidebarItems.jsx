@@ -26,55 +26,36 @@ const CustomSidebarItems = ({ items, activePath, level = 1, onItemClick, isMenuV
         });
     };
 
-    // Initialize collapsed state - only expand items that are part of the active path
+    // Initialize collapsed state - main menu always collapsed, sidebar expands active path
     const getInitialCollapsedState = () => {
         const collapsed = new Set();
 
-        const collapseAllCollapsibleItems = (itemsList, currentLevel) => {
+        const processItems = (itemsList, currentLevel) => {
             itemsList.forEach((item, index) => {
                 const itemId = `${item.label}-${currentLevel}-${index}`;
+                const hasChildren = item.items && item.items.length > 0;
 
-                // Force collapsible when specified (for top-level menu),
-                // or for level 1 in regular sidebar,
-                // or respect the collapsible property for deeper levels
-                const isCollapsibleItem = forceCollapsible
-                    ? (item.items && item.items.length > 0)
-                    : (currentLevel === 1
-                        ? (item.items && item.items.length > 0)
-                        : (item.items && item.items.length > 0 && item.collapsible !== false));
-
-                if (isCollapsibleItem) {
-                    collapsed.add(itemId);
-                    // Recursively collapse children too
-                    collapseAllCollapsibleItems(item.items, currentLevel + 1);
-                }
-            });
-        };
-
-        const expandActivePathItems = (itemsList, currentLevel) => {
-            itemsList.forEach((item, index) => {
-                const itemId = `${item.label}-${currentLevel}-${index}`;
-
-                // Check if this item or any of its children are in the active path
-                if (item.items && item.items.length > 0) {
-                    const isActiveCategory = hasActiveChild(item) || isActiveItem(item);
-
-                    if (isActiveCategory) {
-                        // Remove from collapsed set (expand it)
-                        collapsed.delete(itemId);
-                        // Recursively check children
-                        expandActivePathItems(item.items, currentLevel + 1);
+                if (hasChildren) {
+                    if (forceCollapsible) {
+                        // Main menu: ALWAYS collapse everything
+                        collapsed.add(itemId);
+                    } else {
+                        // Sidebar: only expand if this item or its children are in the active path
+                        const shouldExpand = isActiveItem(item) || hasActiveChild(item);
+                        if (!shouldExpand) {
+                            collapsed.add(itemId);
+                        }
                     }
+
+                    // Recursively process children
+                    processItems(item.items, currentLevel + 1);
                 }
             });
         };
 
+        console.log(`Getting initial state for ${forceCollapsible ? 'MAIN MENU' : 'SIDEBAR'}`);
         if (items && items.length > 0) {
-            // First: Collapse everything that is collapsible
-            collapseAllCollapsibleItems(items, level);
-
-            // Second: Expand only items in the active path
-            expandActivePathItems(items, level);
+            processItems(items, level);
         }
 
         return collapsed;
@@ -84,10 +65,8 @@ const CustomSidebarItems = ({ items, activePath, level = 1, onItemClick, isMenuV
 
     // Reset collapsed state when menu becomes visible (reopened)
     React.useEffect(() => {
-        if (isMenuVisible) {
-            setCollapsedItems(getInitialCollapsedState());
-        }
-    }, [isMenuVisible]);
+        setCollapsedItems(getInitialCollapsedState());
+    }, [isMenuVisible, forceCollapsible, items, activePath, location.pathname]);
 
     const toggleCollapse = (itemId) => {
         const newCollapsed = new Set(collapsedItems);
@@ -103,14 +82,8 @@ const CustomSidebarItems = ({ items, activePath, level = 1, onItemClick, isMenuV
         const itemId = `${item.label}-${level}-${index}`;
         const isActive = isActiveItem(item);
         const hasChildren = item.items && item.items.length > 0;
-        // Force collapsible when specified (for top-level menu),
-        // or for level 1 in regular sidebar,
-        // or respect the collapsible property for deeper levels
-        const isCollapsible = forceCollapsible
-            ? hasChildren
-            : (level === 1
-                ? hasChildren
-                : (hasChildren && item.collapsible !== false));
+        // All items with children are collapsible - ignore the collapsible property completely
+        const isCollapsible = hasChildren;
         const isCollapsed = collapsedItems.has(itemId);
         const hasActiveDescendant = hasActiveChild(item);
 
@@ -125,13 +98,13 @@ const CustomSidebarItems = ({ items, activePath, level = 1, onItemClick, isMenuV
                             {
                                 [styles.active]: isActive,
                                 [styles.hasActiveChild]: hasActiveDescendant && !isActive,
-                                [styles.collapsible]: hasChildren && isCollapsible,
+                                [styles.collapsible]: hasChildren,
                                 [styles.collapsed]: isCollapsed,
                             }
                         )}
                         onClick={(e) => {
-                            // Only expand/collapse if not clicking on the text and item is collapsible
-                            if (hasChildren && isCollapsible && !e.target.closest(`.${styles.categoryLabel}`)) {
+                            // Only expand/collapse if not clicking on the text and item has children
+                            if (hasChildren && !e.target.closest(`.${styles.categoryLabel}`)) {
                                 toggleCollapse(itemId);
                             }
                         }}
@@ -140,7 +113,7 @@ const CustomSidebarItems = ({ items, activePath, level = 1, onItemClick, isMenuV
                         onKeyDown={(e) => {
                             if (e.key === 'Enter' || e.key === ' ') {
                                 e.preventDefault();
-                                if (hasChildren && isCollapsible) {
+                                if (hasChildren) {
                                     toggleCollapse(itemId);
                                 }
                             }
@@ -169,7 +142,7 @@ const CustomSidebarItems = ({ items, activePath, level = 1, onItemClick, isMenuV
                         >
                             {item.label}
                         </span>
-                        {hasChildren && isCollapsible && (
+                        {hasChildren && (
                             <span
                                 className={clsx(styles.collapseIcon, {
                                     [styles.collapsed]: isCollapsed
@@ -199,6 +172,7 @@ const CustomSidebarItems = ({ items, activePath, level = 1, onItemClick, isMenuV
                                 activePath={activePath}
                                 level={level + 1}
                                 onItemClick={onItemClick}
+                                forceCollapsible={forceCollapsible}
                             />
                         </ul>
                     )}

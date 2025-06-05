@@ -160,6 +160,12 @@
       font-size: 0.9rem;
     }
   }
+
+  // Fix for the overly broad CSS rule hiding links below 996px
+  .sidebarItem a,
+  .sidebarItemLink {
+    display: flex !important;
+  }
 }
 
 // Tablet and desktop styles
