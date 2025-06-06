@@ -9,7 +9,7 @@ import rds_backups from '@site/static/images/integrations/data-ingestion/clickpi
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
 import security_group_in_rds_mysql from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/security-group-in-rds-mysql.png';
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
-import aurora_config from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/parameter_group/rds_config.png';
+import aurora_config from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/parameter_group/aurora_config.png';
 import binlog_format from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/parameter_group/binlog_format.png';
 import binlog_row_image from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/parameter_group/binlog_row_image.png';
 import binlog_row_metadata from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/parameter_group/binlog_row_metadata.png';
@@ -47,7 +47,7 @@ If this configuration isn't set, Amazon RDS purges the binary logs as soon as po
 
 The parameter group can be found when you click on your MySQL instance in the RDS Console, and then heading over to the `Configurations` tab.
 
-<Image img={aurora_config} alt="Where to find parameter group in RDS" size="lg" border/>
+<Image img={aurora_config} alt="Where to find parameter group in Aurora" size="lg" border/>
 
 Upon clicking on the parameter group link, you will be taken to the page for it. You will see an Edit button in the top-right.
 
