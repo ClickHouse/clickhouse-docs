@@ -2007,7 +2007,7 @@ const sidebars = {
           type: "link",
           label: "Changelogs",
           description: "View the latest changes in ClickHouse",
-          href: "/whats-new/security-changelog"
+          href: "/category/changelog"
         },
         {
           type: "link",
