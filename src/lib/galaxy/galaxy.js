@@ -86,6 +86,7 @@ export const galaxyOnPage = (prefix, depsArray = []) => {
   galaxyOnFocus(`${prefix}.window.focus`, depsArray);
 };
 
+// Pass String with convention 'namespace.component.eventName'
 export const galaxyOnClick = (event) => {
   return () => {
     window.galaxy.track(event, { interaction: "click" });
