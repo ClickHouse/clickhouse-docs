@@ -19,6 +19,7 @@ business intelligence,бизнес-аналитика,business intelligence,busi
 bucket,корзина,bucket,bucket
 chunks,фрагменты,chunks,chunks
 clause,оператор,clause,clause
+ClickHouse,ClickHouse,ClickHouse,ClickHouse
 codecs,кодеки,codecs,codecs
 CollapsingMergeTree,CollapsingMergeTree,CollapsingMergeTree,CollapsingMergeTree
 column,колонка,カラム,列
