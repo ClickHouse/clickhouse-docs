@@ -208,14 +208,16 @@ CREATE TABLE otel_metrics_histogram
 ENGINE = SharedMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
 PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
-SETTINGS index_granularity = 8192"
 ```
 
 ### Exponential histograms {#exponential-histograms}
 
+:::note
+HyperDX does not support fetching/displaying exponential histogram metrics yet. Users may configure them in the metrics source but future support is forthcoming.
+:::
+
 ```sql
-CREATE TABLE otel_metrics_histogram
-(
+CREATE TABLE otel_metrics_exponentialhistogram (
     `ResourceAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
     `ResourceSchemaUrl` String CODEC(ZSTD(1)),
     `ScopeName` String CODEC(ZSTD(1)),
@@ -228,27 +230,33 @@ CREATE TABLE otel_metrics_histogram
     `MetricDescription` String CODEC(ZSTD(1)),
     `MetricUnit` String CODEC(ZSTD(1)),
     `Attributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-    `StartTimeUnix` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
-    `TimeUnix` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
-    `Count` UInt64 CODEC(Delta(8), ZSTD(1)),
-    `Sum` Float64 CODEC(ZSTD(1)),
-    `BucketCounts` Array(UInt64) CODEC(ZSTD(1)),
-    `ExplicitBounds` Array(Float64) CODEC(ZSTD(1)),
-    `Exemplars.FilteredAttributes` Array(Map(LowCardinality(String), String)) CODEC(ZSTD(1)),
-    `Exemplars.TimeUnix` Array(DateTime64(9)) CODEC(ZSTD(1)),
-    `Exemplars.Value` Array(Float64) CODEC(ZSTD(1)),
-    `Exemplars.SpanId` Array(String) CODEC(ZSTD(1)),
-    `Exemplars.TraceId` Array(String) CODEC(ZSTD(1)),
-    `Flags` UInt32 CODEC(ZSTD(1)),
+	`StartTimeUnix` DateTime64(9) CODEC(Delta, ZSTD(1)),
+	`TimeUnix` DateTime64(9) CODEC(Delta, ZSTD(1)),
+    `Count UInt64` CODEC(Delta, ZSTD(1)),
+    `Sum Float64` CODEC(ZSTD(1)),
+    `Scale Int32` CODEC(ZSTD(1)),
+    `ZeroCount` UInt64 CODEC(ZSTD(1)),
+	`PositiveOffset` Int32 CODEC(ZSTD(1)),
+	`PositiveBucketCounts` Array(UInt64) CODEC(ZSTD(1)),
+	`NegativeOffset` Int32 CODEC(ZSTD(1)),
+	`NegativeBucketCounts` Array(UInt64) CODEC(ZSTD(1)),
+	`Exemplars` Nested (
+		FilteredAttributes Map(LowCardinality(String), String),
+		TimeUnix DateTime64(9),
+		Value Float64,
+		SpanId String,
+		TraceId String
+    ) CODEC(ZSTD(1)),
+    `Flags` UInt32  CODEC(ZSTD(1)),
     `Min` Float64 CODEC(ZSTD(1)),
     `Max` Float64 CODEC(ZSTD(1)),
     `AggregationTemporality` Int32 CODEC(ZSTD(1)),
-    INDEX idx_res_attr_key mapKeys(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_res_attr_value mapValues(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_scope_attr_key mapKeys(ScopeAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_scope_attr_value mapValues(ScopeAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_attr_key mapKeys(Attributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_attr_value mapValues(Attributes) TYPE bloom_filter(0.01) GRANULARITY 1
+	INDEX idx_res_attr_key mapKeys(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+	INDEX idx_res_attr_value mapValues(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+	INDEX idx_scope_attr_key mapKeys(ScopeAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+	INDEX idx_scope_attr_value mapValues(ScopeAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+	INDEX idx_attr_key mapKeys(Attributes) TYPE bloom_filter(0.01) GRANULARITY 1,
+	INDEX idx_attr_value mapValues(Attributes) TYPE bloom_filter(0.01) GRANULARITY 1
 )
 ENGINE = SharedMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
 PARTITION BY toDate(TimeUnix)
