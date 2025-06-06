@@ -15,6 +15,7 @@ import RPMProd from './_snippets/_rpm_install.md'
 import MacOSProd from './_snippets/_macos.md'
 import Docker from './_snippets/_docker.md'
 import {CardPrimary} from '@clickhouse/click-ui/bundled';
+import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
 # Installation instructions
 
@@ -26,7 +27,7 @@ import {CardPrimary} from '@clickhouse/click-ui/bundled';
     infoText="Get started free"
     infoUrl="https://auth.clickhouse.cloud/"
     isSelected
-    onButtonClick={function Da(){}}
+    onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')}
     size="md"
     title="ClickHouse Cloud"
     topBadgeText="Recommended"

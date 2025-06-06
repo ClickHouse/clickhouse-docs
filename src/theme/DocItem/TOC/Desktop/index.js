@@ -6,6 +6,7 @@ import clsx from "clsx";
 import IconClose from '@theme/Icon/Close';
 import styles from './styles.module.scss'
 import Feedback from '../../../../components/Feedback';
+import {galaxyOnClick} from "../../../../lib/galaxy/galaxy";
 
 const AD_DATA_ENDPOINT = 'https://cms.clickhouse-dev.com:1337/api/docs-ad'
 
@@ -96,6 +97,7 @@ export default function DocItemTOCDesktop() {
                 className={styles.docCloudClose}
                 onClick={() => {
                   setClosed(true)
+                  galaxyOnClick('docs.sidebarCloudAdvert.buttonClick')
                   window.sessionStorage.setItem('doc-cloud-card-banner', 'closed');
                 }}>
                 <IconClose color="var(--ifm-color-emphasis-600)" width={10} height={10}/>
