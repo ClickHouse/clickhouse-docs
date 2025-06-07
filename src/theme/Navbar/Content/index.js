@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import clsx from "clsx";
-import { useThemeConfig } from "@docusaurus/theme-common";
+import { useThemeConfig, useWindowSize } from "@docusaurus/theme-common";
 import {
   splitNavbarItems,
   useNavbarMobileSidebar,
@@ -67,6 +67,8 @@ export default function NavbarContent() {
     menuItems,
   } = usePluginData("ch-header-plugin");
 
+  const windowSize = useWindowSize();
+  const isMobile = windowSize === 'mobile';
 
   return (
     <div className={`${styles.navbarHeaderContainer} navbar-header`}>
@@ -138,7 +140,7 @@ export default function NavbarContent() {
           <LocaleDropdownNavbarItem />
           <ColorModeToggle className="navbar-color-toggle" />
         </div>
-        <MobileSideBarMenu sidebar={items} />
+        {isMobile && <MobileSideBarMenu sidebar={items} />}
       </div>
     </div>
   );
