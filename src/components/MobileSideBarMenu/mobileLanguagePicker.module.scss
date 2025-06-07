@@ -118,7 +118,7 @@
   }
 
   &:hover {
-    background: var(--ifm-color-emphasis-200);
+    background: var(--ifm-menu-color-background-active);
     text-decoration: none;
     color: black;
   }
@@ -131,12 +131,12 @@
   }
 
   &.languageOptionActive {
-    background: #e8e4ec;
+    background: var(--ifm-menu-color-background-active) ;
     color: black;
     font-weight: 600;
 
     &:hover {
-      background: #e8e4ec;
+      background: var(--ifm-menu-color-background-active) ;
       color: black;
     }
   }
@@ -151,35 +151,35 @@
 [data-theme='dark'] {
   .languageButton {
     &:hover {
-      background: var(--ifm-color-emphasis-300);
+      background: var(--ifm-menu-color-background-active);
     }
   }
 
   .languageDropdown {
-    background: var(--ifm-background-color);
+    background: #1f1f1c;
     border-color: var(--ifm-color-emphasis-400);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
   }
 
   .languageOption {
-    background: var(--ifm-background-color);
+    background: #1f1f1c;
 
     &:hover {
-      background: #414141;
+      background: var(--ifm-menu-color-background-active);
       color: white;
     }
 
     &:focus {
-      background: #414141;
+      background: var(--ifm-menu-color-background-active);
       color: white;
     }
 
     &.languageOptionActive {
-      background: #414141;
+      background: var(--ifm-menu-color-background-active);
       color: white;
 
       &:hover {
-        background: #414141;
+        background: var(--ifm-menu-color-background-active);
         color: white;
       }
     }

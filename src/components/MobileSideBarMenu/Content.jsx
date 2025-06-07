@@ -252,7 +252,7 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
                     <div className={styles.headerActions}>
                         <MobileLanguagePicker onLanguageChange={handleLanguageChange} />
                         <ColorModeToggle/>
-                        <IconClose width={10} height={10} onClick={onClose || onClick} style={{"align-self":"center"}}/>
+                        <div className={styles.iconClose}><IconClose width={12} height={12} onClick={onClose || onClick} /></div>
                     </div>
                 </div>
                 <div className={styles.bottomLevel}>

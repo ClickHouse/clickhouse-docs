@@ -232,3 +232,12 @@
 [data-theme="light"] .docsMobileMenuActive {
     background-color: white;
 }
+
+.iconClose {
+    padding: 0.3rem 0.5rem !important;
+    border-radius: 6px;
+}
+
+.iconClose:hover {
+    background: var(--ifm-menu-color-background-active) !important;
+}
