@@ -16,7 +16,7 @@
 
 > ユーザースペースページキャッシュは、OSページキャッシュに依存することなく、プロセスマemory内のデータをキャッシュする新しいキャッシングメカニズムです。
 
-ClickHouseはすでに、[ファイルシステムキャッシュ](/docs/operations/storing-data)を提供しており、これはAmazon S3、Google Cloud Storage (GCS)、またはAzure Blob Storageなどのリモートオブジェクトストレージの上にキャッシングを行う方法です。ユーザースペースページキャッシュは、通常のOSキャッシングが充分ではないときに、リモートデータへのアクセスをスピードアップするために設計されています。
+ClickHouseはすでに、[ファイルシステムキャッシュ](/operations/storing-data)を提供しており、これはAmazon S3、Google Cloud Storage (GCS)、またはAzure Blob Storageなどのリモートオブジェクトストレージの上にキャッシングを行う方法です。ユーザースペースページキャッシュは、通常のOSキャッシングが充分ではないときに、リモートデータへのアクセスをスピードアップするために設計されています。
 
 ファイルシステムキャッシュとは以下の点で異なります：
 
@@ -55,7 +55,7 @@ SET use_page_cache_for_disks_without_file_cache=1;
 |--------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
 | `use_page_cache_for_disks_without_file_cache`          | ファイルシステムキャッシュが有効でないリモートディスクに対してユーザースペースページキャッシュを使用します。                                                                                                                                                                                           | `0`         |
 | `use_page_cache_with_distributed_cache`                | 分散キャッシュが使用されているときにユーザースペースページキャッシュを使用します。                                                                                                                                                                                                                       | `0`         |
-| `read_from_page_cache_if_exists_otherwise_bypass_cache` | 他にキャッシュをバイパスする場合、ユーザースペースページキャッシュをパッシブモードで使用します。これは [`read_from_filesystem_cache_if_exists_otherwise_bypass_cache`](/docs/operations/settings/settings#read_from_filesystem_cache_if_exists_otherwise_bypass_cache) と似ています。                         | `0`         |
+| `read_from_page_cache_if_exists_otherwise_bypass_cache` | 他にキャッシュをバイパスする場合、ユーザースペースページキャッシュをパッシブモードで使用します。これは [`read_from_filesystem_cache_if_exists_otherwise_bypass_cache`](/operations/settings/settings#read_from_filesystem_cache_if_exists_otherwise_bypass_cache) と似ています。                         | `0`         |
 | `page_cache_inject_eviction`                           | ユーザースペースページキャッシュは時々ランダムにいくつかのページを無効にします。テスト用です。                                                                                                                                                                                                                                                                                     | `0`         |
 | `page_cache_block_size`                                | ユーザースペースページキャッシュに保存するファイルチャンクのサイズ（バイト単位）です。キャッシュを通る全ての読み取りはこのサイズの倍数に切り上げられます。                                                                                                                                                               | `1048576`   |
 | `page_cache_history_window_ms`                         | 解放されたメモリがユーザースペースページキャッシュで使用できるまでの遅延。                                                                                                                                                                                                                                                                              | `1000`      |
@@ -68,5 +68,5 @@ SET use_page_cache_for_disks_without_file_cache=1;
 | `page_cache_shards`                                    | ミューテックス競合を減らすために、指定された数のシャードにわたってユーザースペースページキャッシュをストライプします。実験的で、パフォーマンス向上の可能性は低いです。                                                                                                                                                                          | `4`         |
 
 ## 関連コンテンツ {#related-content}
-- [ファイルシステムキャッシュ](/docs/operations/storing-data)
+- [ファイルシステムキャッシュ](/operations/storing-data)
 - [ClickHouse v25.3 リリースウェビナー](https://www.youtube.com/live/iCKEzp0_Z2Q?feature=shared&t=1320)

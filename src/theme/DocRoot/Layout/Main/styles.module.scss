@@ -1,0 +1,35 @@
+@use '../../../../css/breakpoints' as breakpoints;
+
+.docMainContainer {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 2rem;
+}
+
+.docItemWrapper {
+  margin-top: 6rem !important;
+}
+
+@media (min-width: breakpoints.$mobile-breakpoint) {
+  .docMainContainer {
+    flex-grow: 1;
+    max-width: calc(100% - var(--doc-sidebar-width));
+  }
+
+  .docMainContainerEnhanced {
+    max-width: calc(100% - var(--doc-sidebar-hidden-width));
+  }
+
+  .docItemWrapperEnhanced {
+    max-width: calc(
+            var(--ifm-container-width) + var(--doc-sidebar-width)
+    ) !important;
+  }
+}
+
+@media (min-width: breakpoints.$laptop-breakpoint) {
+  .docItemWrapper {
+    margin-top: calc(var(--ifm-navbar-height) + 2rem) !important;
+  }
+}

@@ -88,13 +88,13 @@ LIMIT 5;
 └─────────────────────┴────────┘
 ```
 
-ここで使用した[`toStartOfHour()`](/docs/sql-reference/functions/date-time-functions#tostartofhour) 関数は、指定された時間をその時間の開始に変換します。年、四半期、月、または日でグループ化することもできます。
+ここで使用した[`toStartOfHour()`](/sql-reference/functions/date-time-functions#tostartofhour) 関数は、指定された時間をその時間の開始に変換します。年、四半期、月、または日でグループ化することもできます。
 
 ## カスタムグループ化間隔 {#time-series-custom-grouping-intervals}
 
-任意の間隔でグループ化することもできます。例えば、5分ごとに[`toStartOfInterval()`](/docs/sql-reference/functions/date-time-functions#tostartofinterval) 関数を使用できます。
+任意の間隔でグループ化することもできます。例えば、5分ごとに[`toStartOfInterval()`](/sql-reference/functions/date-time-functions#tostartofinterval) 関数を使用できます。
 
-4時間ごとにグループ化したいとしましょう。グループ化の間隔を[`INTERVAL`](/docs/sql-reference/data-types/special-data-types/interval)句を使って指定できます：
+4時間ごとにグループ化したいとしましょう。グループ化の間隔を[`INTERVAL`](/sql-reference/data-types/special-data-types/interval)句を使って指定できます：
 
 ```sql
 SELECT
@@ -107,7 +107,7 @@ ORDER BY interval ASC
 LIMIT 6;
 ```
 
-または、[`toIntervalHour()`](/docs/sql-reference/functions/type-conversion-functions#tointervalhour) 関数を使うこともできます：
+または、[`toIntervalHour()`](/sql-reference/functions/type-conversion-functions#tointervalhour) 関数を使うこともできます：
 
 ```sql
 SELECT
@@ -172,7 +172,7 @@ ORDER BY hour ASC;
 └─────────────────────┴───────────┘
 ```
 
-ClickHouseは、これに対処するために[`WITH FILL`](/docs/guides/developer/time-series-filling-gaps#with-fill)修飾子を提供しています。これにより、すべての空の時間がゼロで埋められ、時間の分布を理解しやすくなります：
+ClickHouseは、これに対処するために[`WITH FILL`](/guides/developer/time-series-filling-gaps#with-fill)修飾子を提供しています。これにより、すべての空の時間がゼロで埋められ、時間の分布を理解しやすくなります：
 
 ```sql
 SELECT
@@ -217,7 +217,7 @@ ORDER BY hour ASC WITH FILL STEP toIntervalHour(1);
 
 時には、間隔の開始（例えば、日の開始や時間の開始）ではなく、ウィンドウ間隔を扱いたい場合があります。6時からオフセットされた24時間の期間に基づいて、総ヒット数を理解したいとします。
 
-この場合、[`date_diff()`](/docs/sql-reference/functions/date-time-functions#date_diff) 関数を使用して、基準時間と各レコードの時間との違いを計算できます。この場合、`day`カラムは日数の違い（例えば、1日前、2日前など）を表します：
+この場合、[`date_diff()`](/sql-reference/functions/date-time-functions#date_diff) 関数を使用して、基準時間と各レコードの時間との違いを計算できます。この場合、`day`カラムは日数の違い（例えば、1日前、2日前など）を表します：
 
 ```sql
 SELECT    

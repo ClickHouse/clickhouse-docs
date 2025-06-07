@@ -20,7 +20,7 @@
 
 ## 説明 {#description}
 
-[`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) コンビネーターは、[`min`](/sql-reference/aggregate-functions/reference/min) 関数に適用され、すべての入力値の中で最小値を返します。結果は [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction) 型で返されます。
+[`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) コンビネーターは、[`min`](/sql-reference/aggregate-functions/reference/min) 関数に適用され、すべての入力値の中で最小値を返します。結果は [`SimpleAggregateFunction`](/sql-reference/data-types/simpleaggregatefunction) 型で返されます。
 
 ## 使用例 {#example-usage}
 

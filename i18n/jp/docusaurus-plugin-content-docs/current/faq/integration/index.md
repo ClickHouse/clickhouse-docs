@@ -16,7 +16,7 @@
 
 # ClickHouseと他のシステムの統合に関する質問
 
-- [ClickHouseからファイルにデータをエクスポートするには？](https://clickhouse.com/docs/knowledgebase/file-export)
+- [ClickHouseからファイルにデータをエクスポートするには？](/knowledgebase/file-export)
 - [JSONをClickHouseにインポートする方法は？](/integrations/data-ingestion/data-formats/json/intro.md)
 - [KafkaをClickHouseに接続するには？](/integrations/data-ingestion/kafka/index.md)
 - [JavaアプリケーションをClickHouseに接続できますか？](/integrations/data-ingestion/dbms/jdbc-with-clickhouse.md)

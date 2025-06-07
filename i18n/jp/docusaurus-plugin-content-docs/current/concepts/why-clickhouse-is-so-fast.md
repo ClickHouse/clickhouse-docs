@@ -28,7 +28,7 @@ ClickHouseでは、各テーブルは複数の「テーブルパーツ」で構�
 
  VLDB論文の包括的なパフォーマンス最適化セクション。
 
-🤿 これは、私たちのVLDB 2024論文のウェブ版の[ディスク上フォーマット](/docs/academic_overview#3-1-on-disk-format)セクションで詳しく述べています。
+🤿 これは、私たちのVLDB 2024論文のウェブ版の[ディスク上フォーマット](/academic_overview#3-1-on-disk-format)セクションで詳しく述べています。
 
 ## Storage Layer: Concurrent inserts and selects are isolated {#storage-layer-concurrent-inserts-and-selects-are-isolated}
 
@@ -36,7 +36,7 @@ ClickHouseでは、各テーブルは複数の「テーブルパーツ」で構�
 
 挿入はSELECTクエリから完全に隔離されており、挿入されたデータパーツのマージは、同時クエリに影響を与えることなくバックグラウンドで行われます。
 
-🤿 これは、私たちのVLDB 2024論文のウェブ版の[ストレージ層](/docs/academic_overview#3-storage-layer)セクションで詳しく述べています。
+🤿 これは、私たちのVLDB 2024論文のウェブ版の[ストレージ層](/academic_overview#3-storage-layer)セクションで詳しく述べています。
 
 ## Storage Layer: Merge-time computation {#storage-layer-merge-time-computation}
 
@@ -56,7 +56,7 @@ ClickHouseは、他のデータベースとは異なり、すべての追加デ�
 
 他方では、マージのランタイムの大部分が入力パーツの読み込みと出力パーツの保存に消費されます。マージ中のデータ変換のための追加の努力は、通常、マージのランタイムにあまり影響しません。これらすべてのマジックは完全に透明であり、クエリの結果に影響を与えることはありません（性能を除いて）。
 
-🤿 これは、私たちのVLDB 2024論文のウェブ版の[マージ時間データ変換](/docs/academic_overview#3-3-merge-time-data-transformation)セクションで詳しく述べています。
+🤿 これは、私たちのVLDB 2024論文のウェブ版の[マージ時間データ変換](/academic_overview#3-3-merge-time-data-transformation)セクションで詳しく述べています。
 
 ## Storage Layer: Data pruning {#storage-layer-data-pruning}
 
@@ -72,7 +72,7 @@ ClickHouseは、他のデータベースとは異なり、すべての追加デ�
 
 これら3つの技術の目的は、フルカラムリード中にできるだけ多くの行をスキップすることであり、データを読み込む最も速い方法は、データをまったく読み込まないことです。
 
-🤿 これは、私たちのVLDB 2024論文のウェブ版の[データプルーニング](/docs/academic_overview#3-2-data-pruning)セクションで詳しく述べています。
+🤿 これは、私たちのVLDB 2024論文のウェブ版の[データプルーニング](/academic_overview#3-2-data-pruning)セクションで詳しく述べています。
 
 ## Storage Layer: Data compression {#storage-layer-data-compression}
 
@@ -86,7 +86,7 @@ ClickHouseは、他のデータベースとは異なり、すべての追加デ�
 
 データ圧縮は、データベーステーブルのストレージサイズを減少させるだけでなく、多くの場合、ローカルディスクやネットワークI/Oのスループットが低いため、クエリのパフォーマンスも向上させます。
 
-🤿 これは、私たちのVLDB 2024論文のウェブ版の[ディスク上フォーマット](/docs/academic_overview#3-1-on-disk-format)セクションで詳しく述べています。
+🤿 これは、私たちのVLDB 2024論文のウェブ版の[ディスク上フォーマット](/academic_overview#3-1-on-disk-format)セクションで詳しく述べています。
 
 ## State-of-the-art query processing layer {#state-of-the-art-query-processing-layer}
 
@@ -139,7 +139,7 @@ ClickHouseを[特徴付ける](https://www.youtube.com/watch?v=CAS2otEoerM)の�
 VLDBは非常に大規模なデータベースに関する国際会議であり、データ管理の分野でリーディングカンファレンスの一つと広く見なされています。
 数百件の投稿の中から、VLDBは一般的に約20％の受理率を持っています。
 
-論文の[PDF](https://www.vldb.org/pvldb/vol17/p3731-schulze.pdf)や、ClickHouseの最も興味深いアーキテクチャやシステム設計コンポーネントを簡潔に説明する[ウェブ版](/docs/academic_overview)を読むことができます。
+論文の[PDF](https://www.vldb.org/pvldb/vol17/p3731-schulze.pdf)や、ClickHouseの最も興味深いアーキテクチャやシステム設計コンポーネントを簡潔に説明する[ウェブ版](/academic_overview)を読むことができます。
 
 私たちのCTOでありClickHouseの創設者であるAlexey Milovidovが論文を発表しました（スライドは[こちら](https://raw.githubusercontent.com/ClickHouse/clickhouse-presentations/master/2024-vldb/VLDB_2024_presentation.pdf)）その後、Q&Aが行われました（すぐに時間切れになりました！）。
 録画されたプレゼンテーションはこちらで確認できます：

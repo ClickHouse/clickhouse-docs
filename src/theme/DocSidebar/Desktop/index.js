@@ -45,7 +45,6 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden, ...props}) {
         styles.sidebar,
         hideOnScroll && styles.sidebarWithHideableNavbar,
         isHidden && styles.sidebarHidden,
-        'padding-top--md'
       )}
       >
       {hideOnScroll && <Logo tabIndex={-1} className={styles.sidebarLogo} />}

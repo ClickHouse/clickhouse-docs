@@ -1,6 +1,7 @@
 @use "colors";
 @use "default";
 @use "home";
+@use "./breakpoints.scss" as breakpoints;
 
 @tailwind base;
 @tailwind components;
@@ -463,6 +464,16 @@ code span.token.keyword {
   padding-left: 0;
 }
 
+@media (max-width: #{breakpoints.$mobile-breakpoint}) {
+  .theme-doc-sidebar-container,
+  .theme-doc-sidebar-container *,
+  .docsMobileMenuItems,
+  .menu__list {
+    display: block !important;
+    visibility: visible !important;
+  }
+}
+
 li.theme-doc-sidebar-item-category-level-1 {
   .menu__list-item-collapsible {
     font-weight: 700;
@@ -664,15 +675,8 @@ prism-code {
   min-height: auto;
 }
 
-@media (min-width: 1440px) {
-  .container {
-    max-width: 95%;
-  }
-}
-
-@media (max-width: 1439px) {
-  .container {
-  }
+.container {
+  max-width: 100%;
 }
 
 #__docusaurus {
@@ -683,6 +687,7 @@ prism-code {
   flex: 0 0 var(--ifm-navbar-height);
   background: var(--click-color-background);
   background-attachment: fixed;
+  height: auto;
 }
 
 .search-result-match {
@@ -1021,7 +1026,6 @@ prism-code {
 
 .main-content-wrapper {
   height: 100%;
-  margin-top: 2rem;
 
   .row {
     height: 100%;
@@ -1409,4 +1413,8 @@ input::-ms-input-placeholder { /* Microsoft Edge */
 
 .installInstructions {
   margin-top: 2em;
+}
+
+.DocSearch-Cancel {
+  color: var(--docsearch-text-color) !important;
 }

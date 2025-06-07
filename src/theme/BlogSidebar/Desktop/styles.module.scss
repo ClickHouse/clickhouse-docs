@@ -1,3 +1,5 @@
+@use '../../../css/breakpoints' as breakpoints;
+
 .sidebar {
   max-height: calc(100vh - (var(--ifm-navbar-height) + 2rem));
   overflow-y: auto;
@@ -49,7 +51,7 @@
   margin-bottom: 1.75rem;
 }
 
-@media (max-width: var(--mobile-breakpoint)) {
+@media (max-width: breakpoints.$mobile-breakpoint) {
   .sidebar {
     display: none;
   }

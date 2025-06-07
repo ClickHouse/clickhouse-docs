@@ -11,4 +11,4 @@
 
 # JDBCドライバ
 
-JavaアプリケーションからClickHouseにアクセスするには、[公式JDBCドライバ](/docs/integrations/language-clients/java/jdbc)（およびJavaクライアント）を使用してください。
+JavaアプリケーションからClickHouseにアクセスするには、[公式JDBCドライバ](/integrations/language-clients/java/jdbc)（およびJavaクライアント）を使用してください。

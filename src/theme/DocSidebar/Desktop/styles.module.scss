@@ -1,5 +1,9 @@
 @use '../../../css/breakpoints.scss' as breakpoints;
 
+.sidebarSearchContainer {
+  margin-top: 6rem !important;
+}
+
 @media (min-width: breakpoints.$mobile-breakpoint) {
 
   .sidebar {
@@ -42,4 +46,10 @@
 .sidebarSearchContainer {
   margin-top: 2rem;
   padding: 0 1rem;
+}
+
+@media (min-width: breakpoints.$laptop-breakpoint) {
+  .sidebarSearchContainer {
+    margin-top: calc(var(--ifm-navbar-height) + 2rem) !important;
+  }
 }

@@ -280,7 +280,7 @@ ClickHouse Cloud では、S3 にバックアップされたデータの単一コ
 
 スキーマ変更は、これらの新しいカラムが送信される原因となる、マテリアライズドビューの変換ロジックや OTel コレクタ構成を変更する前に行うことができます。
 
-スキーマが変更された後、ユーザーは OTel コレクタを再構成できます。"Extracting structure with SQL"（[こちら](/docs/use-cases/observability/schema-design#extracting-structure-with-sql)を参照）で説明されている推奨プロセスを使用している場合、OTel コレクタは、ターゲットスキーマを抽出し、その結果をストレージ用のターゲットテーブルに送信する責任を持つマテリアライズドビューに Null テーブルエンジンにデータを送信します。このビューは、[`ALTER TABLE ... MODIFY QUERY` 構文](/sql-reference/statements/alter/view)を使用して変更することができます。次のように、OTel 構造化ログからターゲットスキーマを抽出するための対応するマテリアライズドビューを持つターゲットテーブルを仮定します。
+スキーマが変更された後、ユーザーは OTel コレクタを再構成できます。"Extracting structure with SQL"（[こちら](/use-cases/observability/schema-design#extracting-structure-with-sql)を参照）で説明されている推奨プロセスを使用している場合、OTel コレクタは、ターゲットスキーマを抽出し、その結果をストレージ用のターゲットテーブルに送信する責任を持つマテリアライズドビューに Null テーブルエンジンにデータを送信します。このビューは、[`ALTER TABLE ... MODIFY QUERY` 構文](/sql-reference/statements/alter/view)を使用して変更することができます。次のように、OTel 構造化ログからターゲットスキーマを抽出するための対応するマテリアライズドビューを持つターゲットテーブルを仮定します。
 
 ```sql
 CREATE TABLE default.otel_logs_v2

@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import {useDocsSidebar} from '@docusaurus/plugin-content-docs/client';
-import styles from './styles.module.css';
+import styles from './styles.module.scss';
 export default function DocPageLayoutMain({hiddenSidebarContainer, children}) {
   const sidebar = useDocsSidebar();
   return (
@@ -12,7 +12,7 @@ export default function DocPageLayoutMain({hiddenSidebarContainer, children}) {
       )}>
       <div
         className={clsx(
-          'container padding-top--md padding-bottom--lg main-content-wrapper',
+          'container padding-bottom--lg main-content-wrapper',
           styles.docItemWrapper,
           hiddenSidebarContainer && styles.docItemWrapperEnhanced,
         )}>
