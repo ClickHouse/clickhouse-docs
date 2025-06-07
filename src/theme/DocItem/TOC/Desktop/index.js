@@ -96,8 +96,8 @@ export default function DocItemTOCDesktop() {
                   <button
                       className={styles.docCloudClose}
                       onClick={() => {
-                        setClosed(true)
-                        galaxyOnClick('docs.sidebarCloudAdvert.advertDismissed')
+                        setClosed(true);
+                        galaxyOnClick('docs.sidebarCloudAdvert.advertDismissed');
                         window.sessionStorage.setItem('doc-cloud-card-banner', 'closed');
                       }}>
                     <IconClose color="var(--ifm-color-emphasis-600)" width={10} height={10}/>
@@ -107,7 +107,7 @@ export default function DocItemTOCDesktop() {
                 <a
                     href={href}
                     className={clsx(styles.docCloudCardLink, 'click-button primary-btn')}
-                    onClick={()=>{galaxyOnClick('docs.sidebarCloudAdvert.clickedThrough')}}
+                    onClick={()=>{galaxyOnClick('docs.sidebarCloudAdvert.clickedThrough');}}
                 >
                     {label}
                 </a>
