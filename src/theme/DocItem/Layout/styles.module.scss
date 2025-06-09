@@ -6,6 +6,7 @@
 
 @media (min-width: breakpoints.$mobile-breakpoint) {
   .tocSidebar {
+    justify-content: right;
     display: flex;
   }
 }
