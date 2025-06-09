@@ -675,6 +675,16 @@ prism-code {
   min-height: auto;
 }
 
+.blog-wrapper .main-wrapper .container {
+  margin-top: 4rem !important;
+}
+
+@media screen and (min-width: breakpoints.$laptop-breakpoint) {
+  .blog-wrapper .main-wrapper .container {
+    margin-top: 8rem !important;
+  }
+}
+
 .container {
   max-width: 100%;
 }
