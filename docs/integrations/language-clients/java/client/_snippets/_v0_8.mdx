@@ -1,5 +1,6 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWrapper';
 
 Java client library to communicate with a DB server through its protocols. The current implementation only supports the [HTTP interface](/interfaces/http).
 The library provides its own API to send requests to a server. The library also provides tools to work with different binary data formats (RowBinary* & Native*).
@@ -104,7 +105,7 @@ Major configuration parameters are defined in one scope (client or operation) an
 Configuration is defined during client creation. See `com.clickhouse.client.api.Client.Builder`.
 
 ## Client Configuration {#client-configuration}
-
+<WideTableWrapper>
 | Configuration Method                  | Arguments                                      |  Description                                |
 |---------------------------------------|:-----------------------------------------------|:--------------------------------------------|
 | `addEndpoint(String endpoint)`          | - `enpoint` - URL formatted a server address.      | Adds a server endpoint to list of available servers. Currently only one endpoint is supported. |
@@ -160,6 +161,7 @@ Configuration is defined during client creation. See `com.clickhouse.client.api.
 | `useHTTPBasicAuth(boolean useBasicAuth)` | - `useBasicAuth` - flag that indicates if the option should be enabled | Sets if basic HTTP authentication should be used for user-password authentication. Default is enabled. Using this type of authentication resolves issues with passwords containing special characters that cannot be transferred over HTTP headers. |
 | `setClientName(String clientName)` | - `clientName` - a string representing application name | Sets additional information about calling application. This string will be passed to server as a client name. In case of HTTP protocol it will be passed as a `User-Agent` header. |
 | `useBearerTokenAuth(String bearerToken)` | - `bearerToken` - an encoded bearer token |  Specifies whether to use Bearer Authentication and what token to use. The token will be sent as is, so it should be encoded before passing to this method. |
+</WideTableWrapper>
 
 ## Common Definitions {#common-definitions}
 
