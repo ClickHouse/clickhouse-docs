@@ -8,6 +8,8 @@
   .tocSidebar {
     justify-content: right;
     display: flex;
+    width: fit-content;
+    max-width: 350px;
   }
 }
 
@@ -18,7 +20,7 @@
 }
 
 .docItemContainer {
-    max-width: 1000px;
+    max-width: 1250px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
