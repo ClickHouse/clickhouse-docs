@@ -257,7 +257,7 @@ CREATE TABLE inventory (
     inv_date_sk             UInt32,
     inv_item_sk             Int64,
     inv_warehouse_sk        Int64,
-    inv_quantity_on_hand    Nullable(Int32)
+    inv_quantity_on_hand    Nullable(Int32),
     PRIMARY KEY (inv_date_sk, inv_item_sk, inv_warehouse_sk),
 );
 
