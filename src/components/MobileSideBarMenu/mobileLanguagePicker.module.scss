@@ -1,0 +1,269 @@
+// Mobile Language Picker Styles
+.languagePicker {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.languageButton {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem;
+  border: none;
+  background: transparent;
+  color: var(--ifm-font-color-base);
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+
+  &:hover {
+    background: #e8e4ec;
+  }
+
+  &:focus {
+    outline: 2px solid var(--ifm-color-primary);
+    outline-offset: 2px;
+  }
+}
+
+.globeIcon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.languageText {
+  min-width: 24px;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+.chevronIcon {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  opacity: 0.6;
+  transition: transform 0.2s ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.languageDropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  background: #ffffff;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  z-index: 10001;
+  min-width: 160px;
+  max-width: 200px;
+  overflow: visible;
+
+  // Remove all animations and transforms
+  animation: none;
+  transform: none;
+  will-change: auto;
+}
+
+// Remove the animation entirely
+// @keyframes dropdownFadeIn {
+//   from {
+//     opacity: 0;
+//     transform: translateY(-8px) scale(0.95);
+//   }
+//   to {
+//     opacity: 1;
+//     transform: translateY(0) scale(1);
+//   }
+// }
+
+.languageOption {
+  display: block !important;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: #ffffff;
+  color: var(--ifm-font-color-base);
+  text-decoration: none;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-align: left;
+  white-space: nowrap;
+
+  // Force block structure
+  box-sizing: border-box;
+  min-height: 2.5rem;
+  line-height: 1.2;
+  flex: none !important;
+  float: none !important;
+
+  &:first-child {
+    border-top-left-radius: 0.75rem;
+    border-top-right-radius: 0.75rem;
+  }
+
+  &:last-child {
+    border-bottom-left-radius: 0.75rem;
+    border-bottom-right-radius: 0.75rem;
+  }
+
+  &:hover {
+    background: var(--ifm-menu-color-background-active);
+    text-decoration: none;
+    color: black;
+  }
+
+  &:focus {
+    background: var(--ifm-color-emphasis-200);
+    outline: none;
+    text-decoration: none;
+    color: black;
+  }
+
+  &.languageOptionActive {
+    background: var(--ifm-menu-color-background-active) ;
+    color: black;
+    font-weight: 600;
+
+    &:hover {
+      background: var(--ifm-menu-color-background-active) ;
+      color: black;
+    }
+  }
+}
+
+.languageName {
+  display: block;
+  font-weight: 400;
+}
+
+// Dark theme adjustments
+[data-theme='dark'] {
+  .languageButton {
+    &:hover {
+      background: var(--ifm-menu-color-background-active);
+    }
+  }
+
+  .languageDropdown {
+    background: #1f1f1c;
+    border-color: var(--ifm-color-emphasis-400);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  .languageOption {
+    background: #1f1f1c;
+
+    &:hover {
+      background: var(--ifm-menu-color-background-active);
+      color: white;
+    }
+
+    &:focus {
+      background: var(--ifm-menu-color-background-active);
+      color: white;
+    }
+
+    &.languageOptionActive {
+      background: var(--ifm-menu-color-background-active);
+      color: white;
+
+      &:hover {
+        background: var(--ifm-menu-color-background-active);
+        color: white;
+      }
+    }
+  }
+}
+
+// Mobile-specific adjustments to prevent flattening
+@media (max-width: 768px) {
+  .languagePicker {
+    position: relative;
+    z-index: 1000;
+  }
+
+  .languageDropdown {
+    position: absolute !important;
+    display: block !important;
+    min-width: 140px;
+    max-width: 180px;
+    right: 0;
+    top: calc(100% + 0.5rem);
+    transform: none !important;
+    overflow: visible;
+    animation: none !important;
+    min-height: fit-content;
+    height: auto;
+  }
+
+  .languageOption {
+    display: block !important;
+    padding: 0.625rem 0.75rem;
+    font-size: 0.8rem;
+    line-height: 1.2;
+    min-height: auto;
+    height: auto;
+    flex: none;
+    transform: none;
+  }
+}
+
+// Remove animations globally for the dropdown
+.languageDropdown,
+.languageDropdown * {
+  animation: none !important;
+  transform: none !important;
+  transition-property: background-color, color !important;
+  transition-duration: 0.2s !important;
+}
+
+// Force dropdown to maintain structure at all sizes
+.languageDropdown {
+  // Override any potential layout interference
+  position: absolute !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+
+  // Prevent any flex or grid interference
+  flex: none !important;
+  grid-area: unset !important;
+
+  // Force fixed dimensions
+  min-height: max-content !important;
+  height: auto !important;
+}
+
+// Ensure dropdown stays above mobile menu content
+.docsMobileMenuActive .languagePicker {
+  .languageDropdown {
+    z-index: 10002 !important;
+    position: absolute !important;
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .languageDropdown {
+    border-width: 2px;
+  }
+
+  .languageOption {
+    &:hover,
+    &:focus {
+      outline: 2px solid var(--ifm-color-primary);
+      outline-offset: -2px;
+    }
+  }
+}

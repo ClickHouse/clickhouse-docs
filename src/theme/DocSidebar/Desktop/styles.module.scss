@@ -3,11 +3,15 @@
 @media (min-width: breakpoints.$mobile-breakpoint) {
 
   .sidebar {
+    position: fixed;
+    top: 4rem;
+    overflow: auto;
+    left: 0;
     display: flex;
     flex-direction: column;
-    height: 100%;
     width: var(--doc-sidebar-width);
     max-width: 100%;
+    height: calc(100% - 3.5rem);
   }
 
   .sidebarWithHideableNavbar {
@@ -40,6 +44,12 @@
 }
 
 .sidebarSearchContainer {
-  margin-top: 2rem;
   padding: 0 1rem;
+  margin-top: 1.5rem;
+}
+
+@media (min-width: breakpoints.$laptop-breakpoint) {
+  .sidebarSearchContainer {
+    margin-top: 5rem !important;
+  }
 }
