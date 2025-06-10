@@ -44,7 +44,7 @@ It's the preferred choice for Postgres CDC ingesting data from an RDS cluster.
 To set up PrivateLink with VPC resource:
 1. Create a resource gateway
 2. Create a resource configuration
-3. Share the resource configuration and resource owner acount id with ClickPipes team
+3. Share the resource configuration and resource owner account id with ClickPipes team
 
 #### 1. Create a Resource-Gateway {#create-resource-gateway}
 
