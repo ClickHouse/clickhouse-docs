@@ -54,10 +54,10 @@ You can create a Resource-Gateway from the [AWS console](https://docs.aws.amazon
 
 ```bash
 aws vpc-lattice create-resource-gateway \
---vpc-identifier <VPC_ID> \
---subnet-ids <SUBNET_IDS> \
---security-group-ids <SG_IDs> \
---name <RESOURCE_GATEWAY_NAME>
+    --vpc-identifier <VPC_ID> \
+    --subnet-ids <SUBNET_IDS> \
+    --security-group-ids <SG_IDs> \
+    --name <RESOURCE_GATEWAY_NAME>
 ```
 
 The output will contain a Resource-Gateway id, which you will need for the next step.
