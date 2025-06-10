@@ -62,7 +62,7 @@ aws vpc-lattice create-resource-gateway \
 
 The output will contain a Resource-Gateway id, which you will need for the next step.
 
-Before you can proceed, wait for the Resource-Gateway to enter into an `Active` state. You can check the state by running the following command:
+Before you can proceed,  you'll need to wait for the Resource-Gateway to enter into an `Active` state. You can check the state by running the following command:
 
 ```bash
 aws vpc-lattice get-resource-gateway \
