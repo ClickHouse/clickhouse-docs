@@ -66,7 +66,7 @@ Before you can proceed,  you'll need to wait for the Resource-Gateway to enter i
 
 ```bash
 aws vpc-lattice get-resource-gateway \
---resource-gateway-identifier <RESOURCE_GATEWAY_ID>
+    --resource-gateway-identifier <RESOURCE_GATEWAY_ID>
 ```
 
 #### 2. Create a VPC Resource-Configuration {#create-resource-configuration}
