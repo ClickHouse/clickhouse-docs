@@ -44,7 +44,7 @@ It's the preferred choice for Postgres CDC ingesting data from an RDS cluster.
 To set up PrivateLink with VPC resource:
 1. Create a resource gateway
 2. Create a resource configuration
-3. Share the resource configuration and resource owner account id with ClickPipes team
+3. Create a resource share
 
 #### 1. Create a Resource-Gateway {#create-resource-gateway}
 
@@ -59,6 +59,8 @@ aws vpc-lattice create-resource-gateway \
 --security-group-ids <SG_IDs> \
 --name <RESOURCE_GATEWAY_NAME>
 ```
+
+The output will contain a Resource-Gateway id, which you will need for the next step.
 
 Before you can proceed, wait for the Resource-Gateway to enter into an `Active` state. You can check the state by running the following command:
 
@@ -81,11 +83,22 @@ aws vpc-lattice create-resource-configuration \
 --name <RESOURCE_CONFIGURATION_NAME>
 ```
 
-The simplest [resource configuration type](https://docs.aws.amazon.com/vpc-lattice/latest/ug/resource-configuration.html#resource-configuration-types) is Single Resource-Configuration. This allows you to share an IP-address or a domain-name that is publicly resolvable.
+The simplest [resource configuration type](https://docs.aws.amazon.com/vpc-lattice/latest/ug/resource-configuration.html#resource-configuration-types) is a single Resource-Configuration. You can configure with the ARN directly, or share an IP address or a domain name that is publicly resolvable.
 
-#### 3. Share the Resource Configuration with ClickHouse {#share-resource-configuration}
+For example, to configure with the ARN of an RDS Cluster:
+```
+aws vpc-lattice create-resource-configuration \
+    --name my-rds-cluster-config \
+    --type ARN \
+    --resource-gateway-identifier rgw-0bba03f3d56060135 \
+    --resource-configuration-definition 'arnResource={arn=arn:aws:rds:us-east-1:123456789012:cluster:my-rds-cluster}'
+```
 
-Sharing your resource requires the Resource-Configuration and Resource-Owner Account ID to be shared with ClickPipes, this is facilitated through the Resource Access Manager (RAM).
+The output will contain a Resource-Configuration ARN, which you will need for the next step. It will also contain a Resource-Configuration ID, which you will need to set up a ClickPipe connection with VPC resource.
+
+#### 3. Create a Resource-Share {#create-resource-share}
+
+Sharing your resource requires a Resource-Share. This is facilitated through the Resource Access Manager (RAM).
 
 You can put the Resource-Configuration into the Resource-Share through [AWS console](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html) or by running the following command with ClickPipes account ID `072088201116`:
 
@@ -96,17 +109,14 @@ aws ram create-resource-share \
 --name <RESOURCE_SHARE_NAME>
 ```
 
-Finally, to share your Resource-Owner Account ID with the ClickPipes team, you can raise a [support ticket](https://console.clickhouse.cloud/support) through the ClickHouse Console and provide your Resource Owner Account ID.
+The output will contain a Resource-Share ARN, which you will need to set up a ClickPipe connection with VPC resource.
 
-You can find this account ID within the [AWS console](https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-identifiers.html) or by running the following CLI command:
+You are ready to [create a ClickPipe with Reverse private endpoint](#creating-clickpipe) using VPC resource. You will need to:
+- Set `VPC endpoint type` to `VPC Resource`.
+- Set `Resource configuration ID` to the ID of the Resource-Configuration created in step 2.
+- Set `Resource share ARN` to the ARN of the Resource-Share created in step 3.
 
-```bash
-aws sts get-caller-identity \
---query Account \
---output text
-```
-
-For more details on VPC resource, see [AWS documentation](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html).
+For more details on PrivateLink with VPC resource, see [AWS documentation](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html).
 
 ### MSK multi-VPC connectivity {#msk-multi-vpc}
 
