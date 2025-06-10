@@ -41,7 +41,7 @@ Cross-region is not supported.
 
 It's the preferred choice for Postgres CDC ingesting data from an RDS cluster.
 
-To set up PrivateLinke with VPC resource:
+To set up PrivateLink with VPC resource:
 1. Create a Resource-Gateway
 2. Create a Resource-Configuration
 3. Share the Resource-Configuration and Resource-Owner Account ID with ClickPipes
