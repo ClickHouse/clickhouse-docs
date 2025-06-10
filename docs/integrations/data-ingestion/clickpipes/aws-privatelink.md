@@ -42,11 +42,11 @@ Cross-region is not supported.
 It's the preferred choice for Postgres CDC ingesting data from an RDS cluster.
 
 To set up PrivateLink with VPC resource:
-1. Create a Resource-Gateway
-2. Create a Resource-Configuration
-3. Share the Resource-Configuration and Resource-Owner Account ID with ClickPipes
+1. Create a resource gateway
+2. Create a resource configuration
+3. Share the resource configuration and resource owner acount id with ClickPipes team
 
-#### 1. Create a Resource-Gateway
+#### 1. Create a Resource-Gateway {#create-resource-gateway}
 
 Resource-Gateway is the point that receives traffic for specified resources in your VPC.
 
@@ -67,7 +67,7 @@ aws vpc-lattice get-resource-gateway \
 --resource-gateway-identifier <RESOURCE_GATEWAY_ID>
 ```
 
-#### 2. Create a VPC Resource-Configuration
+#### 2. Create a VPC Resource-Configuration {#create-resource-configuration}
 
 Resource-Configuration is associated with Resource-Gateway to make your resource accessible.
 
@@ -81,9 +81,9 @@ aws vpc-lattice create-resource-configuration \
 --name <RESOURCE_CONFIGURATION_NAME>
 ```
 
-The simpliest [resource configuration type](https://docs.aws.amazon.com/vpc-lattice/latest/ug/resource-configuration.html#resource-configuration-types) is Single Resource-Configuration. This allows you to share an IP-address or a domain-name that is publicly resolvable.
+The simplest [resource configuration type](https://docs.aws.amazon.com/vpc-lattice/latest/ug/resource-configuration.html#resource-configuration-types) is Single Resource-Configuration. This allows you to share an IP-address or a domain-name that is publicly resolvable.
 
-#### 3. Share the Resource Configuration with ClickHouse
+#### 3. Share the Resource Configuration with ClickHouse {#share-resource-configuration}
 
 Sharing your resource requires the Resource-Configuration and Resource-Owner Account ID to be shared with ClickPipes, this is facilitated through the Resource Access Manager (RAM).
 
