@@ -60,7 +60,7 @@ curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
 # wget https://storage.googleapis.com/hyperdx/sample.tar.gz
 ```
 
-This file contains example logs, metrics, and traces from our public [OpenTelemetry demo](http://example.com) - a simple e-commerce store with microservices. Copy this file to a directory of your choosing.
+This file contains example logs, metrics, and traces from our public [OpenTelemetry demo](https://github.com/ClickHouse/opentelemetry-demo) - a simple e-commerce store with microservices. Copy this file to a directory of your choosing.
 
 ## Load sample data {#load-sample-data}
 
