@@ -86,7 +86,8 @@ aws vpc-lattice create-resource-configuration \
 The simplest [resource configuration type](https://docs.aws.amazon.com/vpc-lattice/latest/ug/resource-configuration.html#resource-configuration-types) is a single Resource-Configuration. You can configure with the ARN directly, or share an IP address or a domain name that is publicly resolvable.
 
 For example, to configure with the ARN of an RDS Cluster:
-```
+
+```bash
 aws vpc-lattice create-resource-configuration \
     --name my-rds-cluster-config \
     --type ARN \
