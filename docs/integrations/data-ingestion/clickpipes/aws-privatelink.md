@@ -105,9 +105,9 @@ You can put the Resource-Configuration into the Resource-Share through [AWS cons
 
 ```bash
 aws ram create-resource-share \
---principals 072088201116 \
---resource-arns <RESOURCE_CONFIGURATION_ARN> \
---name <RESOURCE_SHARE_NAME>
+    --principals 072088201116 \
+    --resource-arns <RESOURCE_CONFIGURATION_ARN> \
+    --name <RESOURCE_SHARE_NAME>
 ```
 
 The output will contain a Resource-Share ARN, which you will need to set up a ClickPipe connection with VPC resource.
