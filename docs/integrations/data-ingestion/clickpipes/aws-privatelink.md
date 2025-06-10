@@ -77,10 +77,10 @@ You can create a Resource-Configuration from the [AWS console](https://docs.aws.
 
 ```bash
 aws vpc-lattice create-resource-configuration \
---resource-gateway-identifier <RESOURCE_GATEWAY_ID> \
---type <RESOURCE_CONFIGURATION_TYPE> \
---resource-configuration-definition <RESOURCE_CONFIGURATION_DEFINITION> \
---name <RESOURCE_CONFIGURATION_NAME>
+    --resource-gateway-identifier <RESOURCE_GATEWAY_ID> \
+    --type <RESOURCE_CONFIGURATION_TYPE> \
+    --resource-configuration-definition <RESOURCE_CONFIGURATION_DEFINITION> \
+    --name <RESOURCE_CONFIGURATION_NAME>
 ```
 
 The simplest [resource configuration type](https://docs.aws.amazon.com/vpc-lattice/latest/ug/resource-configuration.html#resource-configuration-types) is a single Resource-Configuration. You can configure with the ARN directly, or share an IP address or a domain name that is publicly resolvable.
