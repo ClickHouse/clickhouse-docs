@@ -11,11 +11,11 @@ import Image from '@theme/IdealImage';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
 import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png';
 
-This mode includes the UI with all application state stored locally in the browser. 
+This mode includes the UI with authentication disabled to allow for quick local use. 
 
 **User authentication is disabled for this distribution of HyperDX**
 
-It does not include a MongoDB instance, meaning dashboards, saved searches, and alerts are not persisted across users.
+It does not persist dashboards, saved searches, and alerts.
 
 ### Suitable for {#suitable-for}
 
