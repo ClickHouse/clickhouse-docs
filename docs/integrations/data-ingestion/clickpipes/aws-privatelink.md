@@ -32,26 +32,85 @@ ClickPipes reverse private endpoint can be configured with one of the following 
 - [MSK multi-VPC connectivity for MSK ClickPipe](https://docs.aws.amazon.com/msk/latest/developerguide/aws-access-mult-vpc.html)
 - [VPC endpoint service](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html)
 
-Follow the links above for detailed instructions on how to set up the respective AWS PrivateLink shares.
-
 ### VPC resource {#vpc-resource}
 
-Your VPC resources can be accessed in ClickPipes using PrivateLink.
+Your VPC resources can be accessed in ClickPipes using PrivateLink and [AWS VPC Lattice](https://docs.aws.amazon.com/vpc-lattice/latest/ug/what-is-vpc-lattice.html). This approach doesn't require setting up a load balancer in front of your data source.
+
 Resource configuration can be targeted with a specific host or RDS cluster ARN.
 Cross-region is not supported.
 
 It's the preferred choice for Postgres CDC ingesting data from an RDS cluster.
 
-See a [getting started](https://docs.aws.amazon.com/vpc/latest/privatelink/resource-configuration.html) guide for more details.
+To set up PrivateLinke with VPC resource:
+1. Create a Resource-Gateway
+2. Create a Resource-Configuration
+3. Share the Resource-Configuration and Resource-Owner Account ID with ClickPipes
 
-:::info
-VPC resource needs to be shared with a ClickPipes account. Add `072088201116` to the allowed principals to your resource share configuration.
-See AWS guide for [sharing resources](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html) for more details.
-:::
+#### 1. Create a Resource-Gateway
+
+Resource-Gateway is the point that receives traffic for specified resources in your VPC.
+
+You can create a Resource-Gateway from the [AWS console](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource-gateway.html) or with the following command:
+
+```bash
+aws vpc-lattice create-resource-gateway \
+--vpc-identifier <VPC_ID> \
+--subnet-ids <SUBNET_IDS> \
+--security-group-ids <SG_IDs> \
+--name <RESOURCE_GATEWAY_NAME>
+```
+
+Before you can proceed, wait for the Resource-Gateway to enter into an `Active` state. You can check the state by running the following command:
+
+```bash
+aws vpc-lattice get-resource-gateway \
+--resource-gateway-identifier <RESOURCE_GATEWAY_ID>
+```
+
+#### 2. Create a VPC Resource-Configuration
+
+Resource-Configuration is associated with Resource-Gateway to make your resource accessible.
+
+You can create a Resource-Configuration from the [AWS console](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource-configuration.html) or with the following command:
+
+```bash
+aws vpc-lattice create-resource-configuration \
+--resource-gateway-identifier <RESOURCE_GATEWAY_ID> \
+--type <RESOURCE_CONFIGURATION_TYPE> \
+--resource-configuration-definition <RESOURCE_CONFIGURATION_DEFINITION> \
+--name <RESOURCE_CONFIGURATION_NAME>
+```
+
+The simpliest [resource configuration type](https://docs.aws.amazon.com/vpc-lattice/latest/ug/resource-configuration.html#resource-configuration-types) is Single Resource-Configuration. This allows you to share an IP-address or a domain-name that is publicly resolvable.
+
+#### 3. Share the Resource Configuration with ClickHouse
+
+Sharing your resource requires the Resource-Configuration and Resource-Owner Account ID to be shared with ClickPipes, this is facilitated through the Resource Access Manager (RAM).
+
+You can put the Resource-Configuration into the Resource-Share through [AWS console](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html) or by running the following command with ClickPipes account ID `072088201116`:
+
+```bash
+aws ram create-resource-share \
+--principals 072088201116 \
+--resource-arns <RESOURCE_CONFIGURATION_ARN> \
+--name <RESOURCE_SHARE_NAME>
+```
+
+Finally, to share your Resource-Owner Account ID with the ClickPipes team, you can raise a [support ticket](https://console.clickhouse.cloud/support) through the ClickHouse Console and provide your Resource Owner Account ID.
+
+You can find this account ID within the [AWS console](https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-identifiers.html) or by running the following CLI command:
+
+```bash
+aws sts get-caller-identity \
+--query Account \
+--output text
+```
+
+For more details on VPC resource, see [AWS documentation](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html).
 
 ### MSK multi-VPC connectivity {#msk-multi-vpc}
 
-The MSK multi-VPC is a built-in feature of AWS MSK that allows you to connect multiple VPCs to a single MSK cluster.
+The [Multi-VPC connectivity](https://docs.aws.amazon.com/msk/latest/developerguide/aws-access-mult-vpc.html) is a built-in feature of AWS MSK that allows you to connect multiple VPCs to a single MSK cluster.
 Private DNS support is out of the box and does not require any additional configuration.
 Cross-region is not supported.
 
@@ -67,7 +126,7 @@ Follow our [MSK setup guide for ClickPipes](/knowledgebase/aws-privatelink-setup
 
 ### VPC endpoint service {#vpc-endpoint-service}
 
-VPC service is another approach to share your data source with ClickPipes.
+[VPC endpoint service](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html) is another approach to share your data source with ClickPipes.
 It requires setting up a NLB (Network Load Balancer) in front of your data source
 and configuring the VPC endpoint service to use the NLB.
 
