@@ -861,6 +861,7 @@ const sidebars = {
         "integrations/data-visualization/draxlr-and-clickhouse",
         "integrations/data-visualization/embeddable-and-clickhouse",
         "integrations/data-visualization/explo-and-clickhouse",
+        "integrations/data-visualization/fabi-and-clickhouse",
         {
           type: "category",
           label: "Grafana",

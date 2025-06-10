@@ -352,6 +352,7 @@ FFFFFFFF
 FIPS
 FOSDEM
 FQDN
+Fabi
 Failover
 FarmHash
 FileCluster
@@ -1111,6 +1112,7 @@ Simhash
 SimpleAggregateFunction
 SimpleState
 SipHash
+Smartbook
 Smirnov's
 Smirnov'test
 Sonatype
