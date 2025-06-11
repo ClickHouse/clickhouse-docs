@@ -22,7 +22,7 @@ If using the [All in One](/use-cases/observability/clickstack/deployment/all-in-
 docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
 
-### Docker compose {#docker-compose}
+### Docker Compose {#docker-compose}
 
 If using the [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose) deployment guide, the [`.env`](https://github.com/hyperdxio/hyperdx/blob/main/.env) file can be used to modify settings.
 
@@ -40,7 +40,7 @@ services:
 
 ### Helm {#helm}
 
-#### Customizing values (Optional) {#customizing-values}
+#### Customizing values (optional) {#customizing-values}
 
 You can customize settings by using `--set` flags e.g.
 

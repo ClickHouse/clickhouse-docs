@@ -29,7 +29,7 @@ HyperDX's search interface supports this familiar syntax but translates it behin
 
 Below, we compare the Lucene query languages of ClickStack and Elasticsearch.
 
-## ClickStack Search Syntax vs Elasticsearch Query String {#hyperdx-vs-elasticsearch-query-string}
+## ClickStack search syntax vs Elasticsearch query string {#hyperdx-vs-elasticsearch-query-string}
 
 Both HyperDX and Elasticsearch provide flexible query languages to enable intuitive log and trace filtering. While Elasticsearch's query string is tightly integrated with its DSL and indexing engine, HyperDX supports a Lucene-inspired syntax that translates to ClickHouse SQL under the hood. The table below outlines how common search patterns behave across both systems, highlighting similarities in syntax and differences in backend execution.
 
@@ -56,7 +56,7 @@ Both HyperDX and Elasticsearch provide flexible query languages to enable intuit
 | Escaped special chars   | Escape reserved characters with `\` | Same      | Escaping required for reserved symbols. |
 
 
-## Exists/Missing differences {#empty-value-differences}
+## Exists/missing differences {#empty-value-differences}
 
 Unlike Elasticsearch, where a field can be entirely omitted from an event and therefore truly "not exist," ClickHouse requires all columns in a table schema to exist. If a field is not provided in an insert event:
 

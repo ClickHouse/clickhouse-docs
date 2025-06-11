@@ -16,7 +16,7 @@ The ClickStack architecture is built around three core components: **ClickHouse*
 
 <Image img={architecture} alt="Architecture" size="lg"/>
 
-## ClickHouse: The database engine {#clickhouse}
+## ClickHouse: the database engine {#clickhouse}
 
 At the heart of ClickStack is ClickHouse, a column-oriented database designed for real-time analytics at scale. It powers the ingestion and querying of observability data, enabling:
 
@@ -37,7 +37,7 @@ ClickStack includes a pre-configured OpenTelemetry (OTel) collector to ingest te
 
 The collector exports telemetry to ClickHouse in efficient batches. It supports optimized table schemas per data source, ensuring scalable performance across all signal types.
 
-## HyperDX: The interface {#hyperdx}
+## HyperDX: the interface {#hyperdx}
 
 HyperDX is the user interface for ClickStack. It offers:
 

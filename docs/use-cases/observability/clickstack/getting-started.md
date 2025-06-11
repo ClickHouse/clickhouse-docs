@@ -163,11 +163,11 @@ Authentication is not supported.
 
 This mode is intended to be used for quick testing, development, demos and debugging use cases where authentication and settings persistence is not necessary.
 
-### Hosted Version {#hosted-version}
+### Hosted version {#hosted-version}
 
 You can use a hosted version of HyperDX in local mode available at [play.hyperdx.io](https://play.hyperdx.io).
 
-### Self-Hosted Version {#self-hosted-version}
+### Self-hosted version {#self-hosted-version}
 
 <VerticalStepper headerLevel="h3">
 

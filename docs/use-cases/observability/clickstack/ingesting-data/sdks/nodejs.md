@@ -46,7 +46,7 @@ yarn add @hyperdx/node-opentelemetry
 
 ### Initializing the SDK {#initializin-the-sdk}
 
-To initialize the SDK, you'll need to call the `init` function at the  top of the entry point of your application.
+To initialize the SDK, you'll need to call the `init` function at the top of the entry point of your application.
 
 <Tabs groupId="initialize">
 <TabItem value="require" label="require" default>
@@ -242,7 +242,7 @@ tag and propagate identifiers yourself.
 with the corresponding values, but can be omitted. Any other additional values
 can be specified and used to search for events.
 
-```ts
+```typescript
 import * as HyperDX from '@hyperdx/node-opentelemetry';
 
 app.use((req, res, next) => {

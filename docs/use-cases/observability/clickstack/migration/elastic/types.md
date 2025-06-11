@@ -39,7 +39,7 @@ Elasticsearch and ClickHouse support a wide variety of data types, but their und
 | `histogram`                   | [`Tuple(Array(Float64), Array(UInt64))`](/sql-reference/data-types/tuple) | Manually represent buckets and counts using arrays or custom schemas. |
 | `annotated-text`              | [`String`](/sql-reference/data-types/string)                    | No built-in support for entity-aware search or annotations. |
 | `completion`, `search_as_you_type` | NA                    | No native autocomplete or suggester engine. Can be reproduced with `String` and [search functions](/sql-reference/functions/string-search-functions). |
-| `semantic_text`               | NA                           | No native semantic search search - generate embeddings and use vector search. |
+| `semantic_text`               | NA                           | No native semantic search - generate embeddings and use vector search. |
 | `token_count`                 | [`Int32`](/sql-reference/data-types/int-uint)                    | Use during ingestion to compute token count manually e.g. `length(tokens())` function e.g. with a Materialized column |
 | `dense_vector`                | [`Array(Float32)`](/sql-reference/data-types/array)            | Use arrays for embedding storage |
 | `sparse_vector`               | [`Map(UInt32, Float32)`](/sql-reference/data-types/map)      | Simulate sparse vectors with maps. No native sparse vector support. |

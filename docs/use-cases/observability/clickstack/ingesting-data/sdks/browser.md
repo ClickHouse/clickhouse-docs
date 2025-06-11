@@ -25,7 +25,7 @@ This guide integrates the following:
 - **XHR/Fetch/Websocket Requests**
 - **Exceptions**
 
-## Getting Started {#getting-started}
+## Getting started {#getting-started}
 
 <br/>
 

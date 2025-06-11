@@ -616,7 +616,7 @@ clickhouse-client --host ${CLICKHOUSE_HOST} --secure --password ${CLICKHOUSE_PAS
 See ["Reading JSON as an object"](/integrations/data-formats/json/other-formats#reading-json-as-an-object) for further details.
 :::
 
-### Transform data (Optional) {#transform-data}
+### Transform data (optional) {#transform-data}
 
 The above commands assume a 1:1 mapping of Elasticsearch fields to ClickHouse columns. Users often need to filter and transform Elasticsearch data before insertion into ClickHouse.
 

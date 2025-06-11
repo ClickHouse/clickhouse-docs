@@ -109,7 +109,7 @@ ClickHouse also supports sharding, but its model is designed to favor **vertical
 Processing within a ClickHouse shard is **fully parallelized**, and users are encouraged to scale vertically to avoid the network costs associated with moving data across nodes. 
 
 :::note Insert processing in ClickHouse
-ClickHouse inserts are **synchronous by default** — the write is acknowledged only after commit — but can be configured for **asynchronous inserts** to match Elastic-like buffering and batching. If [asynchronous data inserts](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse) are used, Ⓐ newly inserted rows first go into an Ⓑ in-memory insert buffer that is flushed by default once every 200 milliseconds. If multiple shards are used, a [distributed table](/engines/table-engines/special/distributed) is used for routing newly inserted rows to their target shard. A new part is written for the shard on disk.
+Inserts in ClickHouse are **synchronous by default** — the write is acknowledged only after commit — but can be configured for **asynchronous inserts** to match Elastic-like buffering and batching. If [asynchronous data inserts](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse) are used, Ⓐ newly inserted rows first go into an Ⓑ in-memory insert buffer that is flushed by default once every 200 milliseconds. If multiple shards are used, a [distributed table](/engines/table-engines/special/distributed) is used for routing newly inserted rows to their target shard. A new part is written for the shard on disk.
 :::
 
 ### Distribution and replication {#distribution-and-replication}
@@ -179,17 +179,17 @@ In summary, ClickHouse executes aggregations and queries with finer-grained para
 
 For further details on the mechanics of aggregations in the respective technologies, we recommend the blog post ["ClickHouse vs. Elasticsearch: The Mechanics of Count Aggregations"](https://clickhouse.com/blog/clickhouse_vs_elasticsearch_mechanics_of_count_aggregations#elasticsearch).
 
-### Data Management {#data-management}
+### Data management {#data-management}
 
 Elasticsearch and ClickHouse take fundamentally different approaches to managing time-series observability data — particularly around data retention, rollover, and tiered storage.
 
-#### Index Lifecycle Management vs Native TTL {#lifecycle-vs-ttl}
+#### Index lifecycle management vs native TTL {#lifecycle-vs-ttl}
 
 In Elasticsearch, long-term data management is handled through **Index Lifecycle Management (ILM)** and **Data Streams**. These features allow users to define policies that govern when indices are rolled over (e.g. after reaching a certain size or age), when older indices are moved to lower-cost storage (e.g. warm or cold tiers), and when they are ultimately deleted. This is necessary because Elasticsearch does **not support re-sharding**, and shards cannot grow indefinitely without performance degradation. To manage shard sizes and support efficient deletion, new indices must be created periodically and old ones removed — effectively rotating data at the index level.
 
 ClickHouse takes a different approach. Data is typically stored in a **single table** and managed using **TTL (time-to-live) expressions** at the column or partition level. Data can be **partitioned by date**, allowing efficient deletion without the need to create new tables or perform index rollovers. As data ages and meets the TTL condition, ClickHouse will automatically remove it — no additional infrastructure is required to manage rotation.
 
-#### Storage Tiers and Hot-Warm Architectures {#storage-tiers}
+#### Storage tiers and hot-warm architectures {#storage-tiers}
 
 Elasticsearch supports **hot-warm-cold-frozen** storage architectures, where data is moved between storage tiers with different performance characteristics. This is typically configured through ILM and tied to node roles in the cluster.
 
@@ -199,7 +199,7 @@ ClickHouse supports **tiered storage** through native table engines like `MergeT
 In **ClickHouse Cloud**, this becomes even more seamless: all data is stored on **object storage (e.g. S3)**, and compute is decoupled. Data can remain in object storage until queried, at which point it is fetched and cached locally (or in a distributed cache) — offering the same cost profile as Elastic's frozen tier, with better performance characteristics. This approach means no data needs to be moved between storage tiers, making hot-warm architectures redundant.
 :::
 
-### Rollups vs Incremental Aggregates {#rollups-vs-incremental-aggregates}
+### Rollups vs incremental aggregates {#rollups-vs-incremental-aggregates}
 
 In Elasticsearch, **rollups** or **aggregates** are achieved using a mechanism called [**transforms**](https://www.elastic.co/guide/en/elasticsearch/reference/current/transforms.html). These are used to summarize time-series data at fixed intervals (e.g., hourly or daily) using a **sliding window** model. These are configured as recurring background jobs that aggregate data from one index and write the results to a separate **rollup index**. This helps reduce the cost of long-range queries by avoiding repeated scans of high-cardinality raw data.
 

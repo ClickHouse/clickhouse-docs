@@ -193,7 +193,7 @@ hyperdx:
 
 ## Using ClickHouse Cloud {#using-clickhouse-cloud}
 
-If using ClickHouse Cloud users disable the ClickHouse instance deployed by the Helm chart and specify the Cloud Cloud credentials:
+If using ClickHouse Cloud users disable the ClickHouse instance deployed by the Helm chart and specify the Cloud credentials:
 
 ```shell
 # specify ClickHouse Cloud credentials
@@ -238,7 +238,7 @@ To disable ClickHouse and the OTel collector, set the following values:
 helm install myrelease hyperdx-helm --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false --set otel.enabled=false
 ```
 
-## Task Configuration {#task-configuration}
+## Task configuration {#task-configuration}
 
 By default, there is one task in the chart setup as a cronjob, responsible for checking whether alerts should fire. Here are its configuration options:
 
@@ -248,7 +248,7 @@ By default, there is one task in the chart setup as a cronjob, responsible for c
 | `tasks.checkAlerts.schedule` | Cron schedule for the check-alerts task | `*/1 * * * *` |
 | `tasks.checkAlerts.resources` | Resource requests and limits for the check-alerts task | See `values.yaml` |
 
-## Upgrading the Chart {#upgrading-the-chart}
+## Upgrading the chart {#upgrading-the-chart}
 
 To upgrade to a newer version:
 
