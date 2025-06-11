@@ -1077,7 +1077,7 @@ Although our ordering of the arrival of rows from each view is the same, this is
 
 ### When to use parallel processing {#materialized-views-when-to-use-parallel}
 
-Enabling `parallel_view_processing=1` can significantly improve insert throughput, as shown above, especially when multiple Materialized Views are attached to a single table. However, it’s important to understand the trade-offs:
+Enabling `parallel_view_processing=1` can significantly improve insert throughput, as shown above, especially when multiple Materialized Views are attached to a single table. However, it's important to understand the trade-offs:
 
 - **Increased insert pressure**: All Materialized Views are executed simultaneously, increasing CPU and memory usage. If each view performs heavy computation or JOINs, this can overload the system.
 - **Need for strict execution order**: In rare workflows where the order of view execution matters (e.g., chained dependencies), parallel execution may lead to inconsistent state or race conditions. While possible to design around this, such setups are fragile and may break with future versions.
@@ -1090,7 +1090,7 @@ In general, enable `parallel_view_processing=1` when:
 
 - You have multiple independent Materialized Views
 - You're aiming to maximize insert performance
-- You're aware of the system’s capacity to handle concurrent view execution
+- You're aware of the system's capacity to handle concurrent view execution
 
 Leave it disabled when:
 - Materialized Views have dependencies on one another

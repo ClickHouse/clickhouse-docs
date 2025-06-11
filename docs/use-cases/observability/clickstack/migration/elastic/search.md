@@ -31,7 +31,7 @@ Below, we compare the Lucene query languages of ClickStack and Elasticsearch.
 
 ## ClickStack Search Syntax vs Elasticsearch Query String {#hyperdx-vs-elasticsearch-query-string}
 
-Both HyperDX and Elasticsearch provide flexible query languages to enable intuitive log and trace filtering. While Elasticsearch’s query string is tightly integrated with its DSL and indexing engine, HyperDX supports a Lucene-inspired syntax that translates to ClickHouse SQL under the hood. The table below outlines how common search patterns behave across both systems, highlighting similarities in syntax and differences in backend execution.
+Both HyperDX and Elasticsearch provide flexible query languages to enable intuitive log and trace filtering. While Elasticsearch's query string is tightly integrated with its DSL and indexing engine, HyperDX supports a Lucene-inspired syntax that translates to ClickHouse SQL under the hood. The table below outlines how common search patterns behave across both systems, highlighting similarities in syntax and differences in backend execution.
 
 | **Feature** | **HyperDX Syntax** | **Elasticsearch Syntax** | **Comments** |
 |-------------------------|----------------------------------------|----------------------------------------|--------------|
@@ -69,4 +69,4 @@ This behavior means that checking whether a field "exists”" in the Elasticsear
 
 Instead, users can use `field:*` or `field != ''` to check for the presence of a non-empty value. It is thus not possible to distinguish between truly missing and explicitly empty fields.
 
-In practice, this difference rarely causes issues for observability use cases, but it’s important to keep in mind when translating queries between systems.
+In practice, this difference rarely causes issues for observability use cases, but it's important to keep in mind when translating queries between systems.

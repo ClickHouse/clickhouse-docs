@@ -28,7 +28,7 @@ Set up your data collection pipeline to send data to both Elastic and ClickStack
 
 2. **Adjust Retention Periods**
 
-Configure Elastic's TTL settings to match your desired retention period. Set up ClickStack's [TTL](/use-cases/observability/clickstack/production#configure-ttl) to maintain data for the same duration.
+Configure Elastic's TTL settings to match your desired retention period. Set up the ClickStack [TTL](/use-cases/observability/clickstack/production#configure-ttl) to maintain data for the same duration.
 
 3. **Validate and Compare**:
 
@@ -47,7 +47,7 @@ Configure Elastic's TTL settings to match your desired retention period. Set up 
 For organizations requiring longer retention periods:
 
 - Continue running both systems in parallel until all data has expired from Elastic
-- ClickStack's [tiered storage](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes) capabilities can help manage long-term data efficiently.
+- ClickStack [tiered storage](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes) capabilities can help manage long-term data efficiently.
 - Consider using [materialized views](/materialized-view/incremental-materialized-view) to maintain aggregated or filtered historical data while allowing raw data to expire.
 
 ### Migration Timeline {#migration-timeline}
@@ -60,7 +60,7 @@ The migration timeline will depend on your data retention requirements:
 
 ## Migrating settings {#migrating-settings}
 
-When migrating from Elastic to ClickStack, your indexing and storage settings will need to be adapted to fit ClickHouse’s architecture. While Elasticsearch relies on horizontal scaling and sharding for performance and fault tolerance and thus has multiple shards by default, ClickHouse is optimized for vertical scaling and typically performs best with fewer shards.
+When migrating from Elastic to ClickStack, your indexing and storage settings will need to be adapted to fit ClickHouse's architecture. While Elasticsearch relies on horizontal scaling and sharding for performance and fault tolerance and thus has multiple shards by default, ClickHouse is optimized for vertical scaling and typically performs best with fewer shards.
 
 ### Recommended settings {#recommended-settings} 
 
@@ -425,6 +425,7 @@ The equivalent ClickHouse table schema:
 
 <details>
 <summary>ClickHouse schema</summary>
+
 ```sql
 SET enable_json_type = 1;
 
@@ -500,6 +501,7 @@ CREATE TABLE logs_system_syslog
 ENGINE = MergeTree
 ORDER BY (`host.name`, `@timestamp`)
 ```
+
 </details>
 
 Note that:
@@ -545,9 +547,9 @@ This latter approach, while simpler, is best for prototyping and data engineerin
 
 For more details on using the JSON type in schemas, and how to efficiently apply it, we recommend the guide ["Designing your schema"](/integrations/data-formats/json/schema).
 
-### Install elasticdump {#install-elasticdump}
+### Install `elasticdump` {#install-elasticdump}
 
-We recommend [`elasticdump`](https://github.com/elasticsearch-dump/elasticsearch-dump) for exporting data from Elasticsearch. This tool requires `node` and should be installed on a machine with network proximity to both Elasticsearch and ClickHouse. We recommend a dedicated server with atleast 4 cores and 16GB of RAM for most exports.
+We recommend [`elasticdump`](https://github.com/elasticsearch-dump/elasticsearch-dump) for exporting data from Elasticsearch. This tool requires `node` and should be installed on a machine with network proximity to both Elasticsearch and ClickHouse. We recommend a dedicated server with at least 4 cores and 16GB of RAM for most exports.
 
 ```bash
 npm install elasticdump -g
@@ -563,7 +565,7 @@ Where possible, we recommend running both ClickHouse, Elasticsearch, and `elasti
 
 ### Install ClickHouse client {#install-clickhouse-client}
 
-Ensure ClickHouse is [installed on the server](/install) on which `elasticdump` is located. **Donot start a ClickHouse server** - these steps only require the client.
+Ensure ClickHouse is [installed on the server](/install) on which `elasticdump` is located. **Do not start a ClickHouse server** - these steps only require the client.
 
 ### Stream data {#stream-data}
 
@@ -590,7 +592,7 @@ Note the use of the following flags for `elasticdump`:
 - `input-index` - our Elasticsearch input index.
 - `output=$` - redirects all results to stdout.
 - `sourceOnly` flag ensuring we omit metadata fields in our response.
-- `searchAfter` flag to use the [searchAfter API](https://www.elastic.co/docs/reference/elasticsearch/rest-apis/paginate-search-results#search-after) for efficient pagination of results.
+- `searchAfter` flag to use the [`searchAfter` API](https://www.elastic.co/docs/reference/elasticsearch/rest-apis/paginate-search-results#search-after) for efficient pagination of results.
 - `pit=true` to ensure consistent results between queries using the [point in time API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-open-point-in-time).
 
 Our ClickHouse client parameters here (aside from credentials):

@@ -323,7 +323,7 @@ paid prices is streaming 2.17 million rows. When we directly used a second table
 optimized for this query, only 81.92 thousand rows were streamed from disk.
 
 The reason for the difference is that currently, the `optimize_read_in_order` 
-optimization mentioned above isn’t supported for projections.
+optimization mentioned above isn't supported for projections.
 
 We inspect the `system.query_log` table to see that ClickHouse 
 automatically used the two projections for the two queries above (see the 

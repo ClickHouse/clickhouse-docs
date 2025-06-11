@@ -118,7 +118,7 @@ SELECT count(*) FROM `uniform.delta_hits`
 ```
 
 :::note Backticks required
-Backticks are required because ClickHouse doesn’t support more than one namespace.
+Backticks are required because ClickHouse doesn't support more than one namespace.
 :::
 
 To inspect the table DDL:

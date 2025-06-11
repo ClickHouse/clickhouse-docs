@@ -94,7 +94,7 @@ Azure Data Factory can handle this encoding automatically using its built-in
 :::
 
 Now you can send JSON-formatted data to this URL. The data should match the
-structure of the target table. Here’s a simple example using curl, assuming a
+structure of the target table. Here's a simple example using curl, assuming a
 table with three columns: `col_1`, `col_2`, and `col_3`.
 ```text
 curl \
@@ -104,13 +104,13 @@ curl \
 
 You can also send a JSON array of objects, or JSON Lines (newline-delimited
 JSON objects). Azure Data Factory uses the JSON array format, which works
-perfectly with ClickHouse’s `JSONEachRow` input.
+perfectly with ClickHouse's `JSONEachRow` input.
 
-As you can see, for this step you don’t need to do anything special on the ClickHouse
+As you can see, for this step you don't need to do anything special on the ClickHouse
 side. The HTTP interface already provides everything needed to act as a
 REST-like endpoint — no additional configuration required.
 
-Now that we’ve made ClickHouse behave like a REST endpoint, it's time to
+Now that we've made ClickHouse behave like a REST endpoint, it's time to
 configure Azure Data Factory to use it.
 
 In the next steps, we'll create an Azure Data Factory instance, set up a Linked
@@ -187,7 +187,7 @@ Data Factory instance.
 
 9. Back in the main form select Basic authentication, enter the username and
    password used to connect to your ClickHouse HTTP interface, click **Test
-   connection**. If everything is configured correctly, you’ll see a success
+   connection**. If everything is configured correctly, you'll see a success
    message.
    <Image img={adfNewLinkedServiceCheckConnection} size="lg" alt="New Linked Service Check Connection" border/>
 
@@ -257,7 +257,7 @@ Data](https://clickhouse.com/docs/getting-started/example-datasets/environmental
    <Image img={adfNewDatasetQuery} size="xl" alt="New Dataset Query" border/>
 
 6. Click OK to save the expression. Click Test connection. If everything is
-   configured correctly, you’ll see a Connection successful message. Click Publish
+   configured correctly, you'll see a Connection successful message. Click Publish
    all at the top of the page to save your changes.
    <Image img={adfNewDatasetConnectionSuccessful} size="xl" alt="New Dataset Connection Successful" border/>
 

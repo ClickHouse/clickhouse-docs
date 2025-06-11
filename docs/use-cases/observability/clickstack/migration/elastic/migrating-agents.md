@@ -23,7 +23,7 @@ The Elastic Stack provides a number of Observability data collection agents. Spe
 
 The best migration path depends on the agent(s) currently in use. In the sections that follow, we document migration options for each major agent type. Our goal is to minimize friction and, where possible, allow users to continue using their existing agents during the transition.
 
-## Prefered migration path {#prefered-migration-path}
+## Preferred migration path {#prefered-migration-path}
 
 Where possible we recommend migrating to the [OpenTelemetry (OTel) Collector](https://opentelemetry.io/docs/collector/) for all log, metric, and trace collection, deploying the collector at the [edge in an agent role](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles). This represents the most efficient means of sending data and avoids architectural complexity and data transformation.
 
@@ -107,10 +107,11 @@ transforms:
     file: 'beat_to_otel.vrl'
 ```
 
-Note it receieves events from the above `beats` source. Our remap script is shown below. This script has been tested with log events only but can form the basis for other formats.
+Note it receives events from the above `beats` source. Our remap script is shown below. This script has been tested with log events only but can form the basis for other formats.
 
 <details>
 <summary>VRL - ECS to OTel</summary>
+
 ```js
 # Define keys to ignore at root level
 ignored_keys = ["@metadata"]
@@ -227,6 +228,7 @@ body_value = if exists(.message) {
     ]
 }
 ```
+
 </details>
 
 Finally, transformed events can be sent to ClickStack via OpenTelemetry collector over OTLP. This requires the configuration of a OTLP sink in Vector, which takes events from the `remap_filebeat` transform as input:
@@ -235,7 +237,7 @@ Finally, transformed events can be sent to ClickStack via OpenTelemetry collecto
 sinks:
   otlp:
     type: opentelemetry
-    inputs: [remap_filebeat] # receieves events from a remap transform - see below
+    inputs: [remap_filebeat] # receives events from a remap transform - see below
     protocol:
       type: http  # Use "grpc" for port 4317
       uri: http://localhost:4318/v1/logs # logs endpoint for the OTel collector 
@@ -292,7 +294,7 @@ sinks:
 
 ### Configure Filebeat {#configure-filebeat}
 
-Existing filebeats simply need to be modified to send their events to Vector. This requires the configuration of a Logstash output - again, TLS can be optionally configured:
+Existing Filebeat installations simply need to be modified to send their events to Vector. This requires the configuration of a Logstash output - again, TLS can be optionally configured:
 
 ```yaml
 # ------------------------------ Logstash Output -------------------------------

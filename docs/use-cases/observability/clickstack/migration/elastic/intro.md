@@ -10,7 +10,7 @@ description: 'Overview for migrating to the ClickHouse Observability Stack from 
 
 ## Migrating to ClickStack from Elastic {#migrating-to-clickstack-from-elastic}
 
-This guide is intended for users migrating from the Elastic Stack — specifically those using Kibana to monitor logs, traces, and metrics collected via Elastic Agent and stored in Elasticsearch. It outlines equivalent concepts and data types in ClickStack, explains how to translate Kibana's Lucene-based queries to HyperDX's syntax, and provides guidance on migrating both data and agents for a smooth transition.
+This guide is intended for users migrating from the Elastic Stack — specifically those using Kibana to monitor logs, traces, and metrics collected via Elastic Agent and stored in Elasticsearch. It outlines equivalent concepts and data types in ClickStack, explains how to translate Kibana Lucene-based queries to HyperDX's syntax, and provides guidance on migrating both data and agents for a smooth transition.
 
 Before beginning a migration, it's important to understand the tradeoffs between ClickStack and the Elastic Stack.
 
@@ -26,4 +26,4 @@ However, ClickStack may not be suitable if:
 
 - You use observability data primarily for security use cases and need a SIEM-focused product.
 - Universal profiling is a critical part of your workflow.
-- You require a business intelligence (BI) dashboarding platform. ClickStack intentionally has opinionated visual workflows for SREs and DevOps users and is not designed as a Business Intelligence (BI) tool. For equivalent capabilities,m we recommend using [Grafana with the ClickHouse plugin](/integrations/grafana) or [Superset](/integrations/superset).
+- You require a business intelligence (BI) dashboarding platform. ClickStack intentionally has opinionated visual workflows for SREs and developers and is not designed as a Business Intelligence (BI) tool. For equivalent capabilities,m we recommend using [Grafana with the ClickHouse plugin](/integrations/grafana) or [Superset](/integrations/superset).

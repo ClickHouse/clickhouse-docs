@@ -33,11 +33,11 @@ Real-time Change Data Capture (CDC) can be implemented in ClickHouse using [Clic
 
 In some cases, a more straightforward approach like manual bulk loading followed by periodic updates may be sufficient. This strategy is ideal for one-time migrations or situations where real-time replication is not required. It involves loading data from PostgreSQL to ClickHouse in bulk, either through direct SQL `INSERT` commands or by exporting and importing CSV files. After the initial migration, you can periodically update the data in ClickHouse by syncing changes from PostgreSQL at regular intervals.
 
-The bulk load process is simple and flexible but comes with the downside of no real-time updates. Once the initial data is in ClickHouse, updates won’t be reflected immediately, so you must schedule periodic updates to sync the changes from PostgreSQL. This approach works well for less time-sensitive use cases, but it introduces a delay between when data changes in PostgreSQL and when those changes appear in ClickHouse.
+The bulk load process is simple and flexible but comes with the downside of no real-time updates. Once the initial data is in ClickHouse, updates won't be reflected immediately, so you must schedule periodic updates to sync the changes from PostgreSQL. This approach works well for less time-sensitive use cases, but it introduces a delay between when data changes in PostgreSQL and when those changes appear in ClickHouse.
 
 ### Which strategy to choose? {#which-strategy-to-choose}
 
-For most applications that require fresh, up-to-date data in ClickHouse, real-time CDC through ClickPipes is the recommended approach. It provides continuous data syncing with minimal setup and maintenance. On the other hand, manual bulk loading with periodic updates is a viable option for simpler, one-off migrations or workloads where real-time updates aren’t critical.
+For most applications that require fresh, up-to-date data in ClickHouse, real-time CDC through ClickPipes is the recommended approach. It provides continuous data syncing with minimal setup and maintenance. On the other hand, manual bulk loading with periodic updates is a viable option for simpler, one-off migrations or workloads where real-time updates aren't critical.
 
 ---
 

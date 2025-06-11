@@ -417,7 +417,7 @@ This dimension covers the compute units provisioned per service just for Postgre
 ClickPipes. Compute is shared across all Postgres pipes within a service. **It
 is provisioned when the first Postgres pipe is created and deallocated when no
 Postgres CDC pipes remain**. The amount of compute provisioned depends on your
-organization’s tier:
+organization's tier:
 
 | Tier                         | Cost                                          |
 |------------------------------|-----------------------------------------------|
@@ -426,7 +426,7 @@ organization’s tier:
 
 #### Example {#example}
 
-Let’s say your service is in Scale tier and has the following setup:
+Let's say your service is in Scale tier and has the following setup:
 
 - 2 Postgres ClickPipes running continuous replication
 - Each pipe ingests 500 GB of data changes (CDC) per month
@@ -540,7 +540,7 @@ Postgres CDC ClickPipes pricing begins appearing on monthly bills starting
 **September 1st, 2025**, for all customers—both existing and new. Until then, 
 usage is free. Customers have a **3-month window** starting from **May 29**
 (the GA announcement date) to review and optimize their usage if needed, although
-we expect most won’t need to make any changes.
+we expect most won't need to make any changes.
 
 </details>
 
@@ -550,7 +550,7 @@ we expect most won’t need to make any changes.
 
 No data ingestion charges apply while a pipe is paused, since no data is moved. 
 However, compute charges still apply—either 0.5 or 1 compute unit—based on your 
-organization’s tier. This is a fixed service-level cost and applies across all 
+organization's tier. This is a fixed service-level cost and applies across all 
 pipes within that service.
 
 </details>
