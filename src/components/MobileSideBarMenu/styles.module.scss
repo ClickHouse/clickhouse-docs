@@ -234,8 +234,9 @@
 }
 
 .iconClose {
-    padding: 0.3rem 0.5rem !important;
+    padding: 1px;
     border-radius: 6px;
+    display: flex;
 }
 
 .iconClose:hover {

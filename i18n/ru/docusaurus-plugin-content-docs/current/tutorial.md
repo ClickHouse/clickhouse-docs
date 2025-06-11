@@ -82,7 +82,7 @@ keywords: ['clickhouse', 'установка', 'учебник', 'словарь
     ENGINE = MergeTree
     PARTITION BY toYYYYMM(pickup_date)
     ORDER BY pickup_datetime;
-    ```
+```
 
 ## Добавить набор данных {#add-the-dataset}
 

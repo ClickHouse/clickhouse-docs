@@ -7,6 +7,6 @@ description: 'Страница, описывающая движок таблиц
 ---
 ``` 
 
-import HudiTableEngine from '@site/docs/engines/table-engines/integrations/hudi.md';
+import HudiTableEngine from '@site/i18n/ru/docusaurus-plugin-content-docs/current/engines/table-engines/integrations/hudi.md';
 
 <HudiTableEngine/>
