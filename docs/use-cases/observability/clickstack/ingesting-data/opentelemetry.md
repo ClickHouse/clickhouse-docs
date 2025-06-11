@@ -45,7 +45,7 @@ To send data to ClickStack, point your OpenTelemetry instrumentation to the foll
 
 For most [language SDKs](/use-cases/observability/clickstack/sdks) and telemetry libraries that support OpenTelemetry, users can simply set `OTEL_EXPORTER_OTLP_ENDPOINT` environment variable in your application:
 
-```bash
+```shell
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ```
 
@@ -56,7 +56,7 @@ In addition, an authorization header containing the API ingestion key is require
 
 For language SDKs, this can either be set by an `init` function or via an`OTEL_EXPORTER_OTLP_HEADERS` environment variable e.g.:
 
-```bash
+```shell
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
 

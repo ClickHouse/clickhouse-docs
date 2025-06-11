@@ -117,7 +117,7 @@ Consider the following Elasticsearch mapping for an index containing `syslog` da
 <details>
 <summary>Elasticsearch mapping</summary>
 
-```json
+```javascripton
 GET .ds-logs-system.syslog-default-2025.06.03-000001/_mapping
 {
   ".ds-logs-system.syslog-default-2025.06.03-000001": {
@@ -551,7 +551,7 @@ For more details on using the JSON type in schemas, and how to efficiently apply
 
 We recommend [`elasticdump`](https://github.com/elasticsearch-dump/elasticsearch-dump) for exporting data from Elasticsearch. This tool requires `node` and should be installed on a machine with network proximity to both Elasticsearch and ClickHouse. We recommend a dedicated server with at least 4 cores and 16GB of RAM for most exports.
 
-```bash
+```shell
 npm install elasticdump -g
 ```
 
@@ -571,7 +571,7 @@ Ensure ClickHouse is [installed on the server](/install) on which `elasticdump` 
 
 To stream data between Elasticsearch and ClickHouse, use the `elasticdump` command - piping the output directly to the ClickHouse client. The following inserts the data into our well structured table `logs_system_syslog`.
 
-```bash
+```shell
 # export url and credentials
 export ELASTICSEARCH_INDEX=.ds-logs-system.syslog-default-2025.06.03-000001
 export ELASTICSEARCH_URL=
@@ -607,7 +607,7 @@ Our ClickHouse client parameters here (aside from credentials):
 :::note Inserting into single JSON row
 If inserting into a single JSON column (see the `syslog_json` schema above), the same insert command can be used. However, users must specify `JSONAsObject` as the format instead of `JSONEachRow` e.g.
 
-```bash
+```shell
 elasticdump --input=${ELASTICSEARCH_URL} --type=data --input-index ${ELASTICSEARCH_INDEX} --output=$ --sourceOnly --searchAfter --pit=true | 
 clickhouse-client --host ${CLICKHOUSE_HOST} --secure --password ${CLICKHOUSE_PASSWORD} --user ${CLICKHOUSE_USER} --max_insert_block_size=1000 \
 --min_insert_block_size_bytes=0 --min_insert_block_size_rows=1000 --query="INSERT INTO test.logs_system_syslog FORMAT JSONAsObject"
@@ -636,7 +636,7 @@ ORDER BY (hostname, timestamp)
 
 To insert from `elasticdump` into this table, we can simply use the `input` table function - using the JSON type to dynamically detect and select the required columns. Note this `SELECT` query could easily contain a filter.
 
-```bash
+```shell
 elasticdump --input=${ELASTICSEARCH_URL} --type=data --input-index ${ELASTICSEARCH_INDEX} --output=$ --sourceOnly --searchAfter --pit=true |
 clickhouse-client --host ${CLICKHOUSE_HOST} --secure --password ${CLICKHOUSE_PASSWORD} --user ${CLICKHOUSE_USER} --max_insert_block_size=1000 \
 --min_insert_block_size_bytes=0 --min_insert_block_size_rows=1000 --query="INSERT INTO test.logs_system_syslog_v2 SELECT json.\`@timestamp\` as timestamp, json.host.hostname as hostname FROM input('json JSON') FORMAT JSONAsObject"

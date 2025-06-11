@@ -27,14 +27,14 @@ This guide integrates:
 
 Use the following command to install the [ClickStack OpenTelemetry package](https://pypi.org/project/hyperdx-opentelemetry/).
 
-```bash
+```shell
 pip install hyperdx-opentelemetry
 ```
 
 Install the OpenTelemetry automatic instrumentation libraries for the packages used by your Python application. We recommend that you use the
 `opentelemetry-bootstrap` tool that comes with the OpenTelemetry Python SDK to scan your application packages and generate the list of available libraries.
 
-```bash
+```shell
 opentelemetry-bootstrap -a install
 ```
 
@@ -42,7 +42,7 @@ opentelemetry-bootstrap -a install
 
 Afterwards you'll need to configure the following environment variables in your shell to ship telemetry to ClickStack:
 
-```bash
+```shell
 export HYPERDX_API_KEY='<YOUR_INGESTION_API_KEY>' \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 
@@ -54,7 +54,7 @@ _The `OTEL_SERVICE_NAME` environment variable is used to identify your service i
 
 Now you can run the application with the OpenTelemetry Python agent (`opentelemetry-instrument`).
 
-```bash
+```shell
 opentelemetry-instrument python app.py
 ```
 
@@ -105,7 +105,7 @@ By enabling network capture features, developers gain the capability to debug
 HTTP request headers and body payloads effectively. This can be accomplished
 simply by setting `HYPERDX_ENABLE_ADVANCED_NETWORK_CAPTURE` flag to 1.
 
-```bash
+```shell
 export HYPERDX_ENABLE_ADVANCED_NETWORK_CAPTURE=1
 ```
 
@@ -133,7 +133,7 @@ When debug mode is activated, all telemetries will be printed to the console,
 allowing you to verify if your application is properly instrumented with the
 expected data.
 
-```bash
+```shell
 export DEBUG=true
 ```
 

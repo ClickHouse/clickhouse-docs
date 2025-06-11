@@ -108,7 +108,7 @@ Note it receives events from the above `beats` source. Our remap script is shown
 <details>
 <summary>VRL - ECS to OTel</summary>
 
-```js
+```javascript
 # Define keys to ignore at root level
 ignored_keys = ["@metadata"]
 

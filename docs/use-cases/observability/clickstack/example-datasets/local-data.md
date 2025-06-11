@@ -123,7 +123,7 @@ For more details on the OpenTelemetry (OTel) configuration structure, we recomme
 
 Run the following docker command to start an instance of the OTel collector.
 
-```bash
+```shell
 docker run --network=host --rm -it \
   --user 0:0 \
   -v "$(pwd)/otel-file-collector.yaml":/etc/otel/config.yaml \

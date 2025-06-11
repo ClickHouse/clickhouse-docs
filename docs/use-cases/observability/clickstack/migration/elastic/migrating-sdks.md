@@ -31,7 +31,7 @@ Configuration follows the standard OpenTelemetry mechanisms. For Python, this is
 
 A typical EDOT SDK configuration might look like this:
 
-```bash
+```shell
 export OTEL_RESOURCE_ATTRIBUTES=service.name=<app-name>
 export OTEL_EXPORTER_OTLP_ENDPOINT=https://my-deployment.ingest.us-west1.gcp.cloud.es.io
 export OTEL_EXPORTER_OTLP_HEADERS="Authorization=ApiKey P....l"
@@ -39,7 +39,7 @@ export OTEL_EXPORTER_OTLP_HEADERS="Authorization=ApiKey P....l"
 
 To migrate to ClickStack, update the endpoint to point to the local OTLP Collector and change the authorization header:
 
-```bash
+```shell
 export OTEL_RESOURCE_ATTRIBUTES=service.name=<app-name>
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 export OTEL_EXPORTER_OTLP_HEADERS="authorization=<YOUR_INGESTION_API_KEY>"

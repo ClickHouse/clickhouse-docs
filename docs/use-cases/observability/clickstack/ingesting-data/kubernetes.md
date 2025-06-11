@@ -171,13 +171,13 @@ the [OpenTelemetry Helm Chart](https://github.com/open-telemetry/opentelemetry-h
 
 Add the OpenTelemetry Helm repo:
 
-```bash copy
+```shell copy
 helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts # Add OTel Helm repo
 ```
 
 Install the chart with the above config:
 
-```bash copy
+```shell copy
 helm install my-opentelemetry-collector-deployment open-telemetry/opentelemetry-collector -f deployment.yaml
 helm install my-opentelemetry-collector-daemonset open-telemetry/opentelemetry-collector -f daemonset.yaml
 ```

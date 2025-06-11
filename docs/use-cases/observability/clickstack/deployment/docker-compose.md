@@ -46,7 +46,7 @@ These ports enable integrations with a variety of telemetry sources and make the
 
 To deploy with Docker Compose clone the HyperDX repo, change into the directory and run `docker-compose up`:
 
-```bash
+```shell
 git clone git@github.com:hyperdxio/hyperdx.git
 cd hyperdx
 # switch to the v2 branch
@@ -86,7 +86,7 @@ If prompted to create a source, retain all default values and complete the `Tabl
 
 Users can modify settings for the stack, such as the version used, through the environment variable file:
 
-```bash
+```shell
 user@example-host hyperdx % cat .env
 # Used by docker-compose.yml
 # Used by docker-compose.yml
@@ -126,7 +126,7 @@ This distribution can be used with ClickHouse Cloud. Users should:
 - Remove the ClickHouse service from the [`docker-compose.yaml`](https://github.com/hyperdxio/hyperdx/blob/86465a20270b895320eb21dca13560b65be31e68/docker-compose.yml#L89) file. This is optional if testing, as the deployed ClickHouse instance will simply be ignored - although waste local resources. If removing the service, ensure [any references](https://github.com/hyperdxio/hyperdx/blob/86465a20270b895320eb21dca13560b65be31e68/docker-compose.yml#L65) to the service such as `depends_on` are removed.
 - Modify the OTel collector to use a ClickHouse Cloud instance by setting the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_PASSWORD` in the compose file. Specifically, add the environment variables to the OTel collector service:
 
-    ```bash
+    ```shell
     otel-collector:
         image: ${OTEL_COLLECTOR_IMAGE_NAME}:${IMAGE_VERSION}
         environment:
