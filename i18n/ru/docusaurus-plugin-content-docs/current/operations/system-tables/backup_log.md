@@ -6,7 +6,7 @@ slug: /operations/system-tables/backup_log
 title: 'system.backup_log'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/ru/current/_snippets/_system_table_cloud.md';
 
 
 # system.backup_log

@@ -4,7 +4,7 @@ slug: /operations/external-authenticators/ldap
 title: 'LDAP'
 ---
 
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/ru/current/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 

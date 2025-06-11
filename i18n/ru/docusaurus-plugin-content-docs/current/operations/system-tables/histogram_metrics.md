@@ -6,7 +6,7 @@ slug: /ru/operations/system-tables/histogram_metrics
 title: 'system.histogram_metrics'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/ru/current/_snippets/_system_table_cloud.md';
 
 
 # histogram_metrics {#histogram_metrics}

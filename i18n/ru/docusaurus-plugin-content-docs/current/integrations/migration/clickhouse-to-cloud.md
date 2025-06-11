@@ -7,7 +7,7 @@ description: 'Страница, описывающая, как перемеща�
 ---
 
 import Image from '@theme/IdealImage';
-import AddARemoteSystem from '@site/docs/_snippets/_add_remote_ip_access_list_detail.md';
+import AddARemoteSystem from '@site/i18n/ru/current/_snippets/_add_remote_ip_access_list_detail.md';
 import self_managed_01 from '@site/static/images/integrations/migration/self-managed-01.png';
 import self_managed_02 from '@site/static/images/integrations/migration/self-managed-02.png';
 import self_managed_03 from '@site/static/images/integrations/migration/self-managed-03.png';

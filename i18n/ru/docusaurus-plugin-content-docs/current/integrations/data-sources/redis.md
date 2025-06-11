@@ -5,7 +5,7 @@ title: 'Redis'
 description: 'Страница, описывающая табличную функцию Redis'
 ---
 
-import RedisFunction from '@site/docs/sql-reference/table-functions/redis.md';
+import RedisFunction from '@site/i18n/ru/current/sql-reference/table-functions/redis.md';
 
 
 # Интеграция с Redis

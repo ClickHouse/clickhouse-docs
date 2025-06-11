@@ -9,7 +9,7 @@ import Image from '@theme/IdealImage';
 import clickpipesPricingFaq1 from '@site/static/images/cloud/manage/jan2025_faq/external_clickpipes_pricing_faq_1.png';
 import clickpipesPricingFaq2 from '@site/static/images/cloud/manage/jan2025_faq/external_clickpipes_pricing_faq_2.png';
 import clickpipesPricingFaq3 from '@site/static/images/cloud/manage/jan2025_faq/external_clickpipes_pricing_faq_3.png';
-import NetworkPricing from '@site/docs/cloud/manage/_snippets/_network_transfer_rates.md';
+import NetworkPricing from '@site/i18n/ru/current/cloud/manage/_snippets/_network_transfer_rates.md';
 
 Следующие параметры были добавлены в новое ценообразование ClickHouse Cloud.
 

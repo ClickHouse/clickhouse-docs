@@ -5,7 +5,7 @@ slug: /operations/system-tables/events
 title: 'system.events'
 ---
 
-import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/ru/current/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 

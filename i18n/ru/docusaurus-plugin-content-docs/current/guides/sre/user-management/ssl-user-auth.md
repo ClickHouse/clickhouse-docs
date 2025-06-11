@@ -8,7 +8,7 @@ description: 'В этом руководстве представлены про
 
 
 # Настройка сертификата пользователя SSL для аутентификации
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/ru/current/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 

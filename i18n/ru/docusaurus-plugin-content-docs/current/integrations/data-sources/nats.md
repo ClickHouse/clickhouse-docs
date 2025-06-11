@@ -6,6 +6,6 @@ hide_title: true
 description: 'Страница, описывающая интеграцию с движком NATS'
 ---
 
-import NatsEngine from '@site/docs/engines/table-engines/integrations/nats.md';
+import NatsEngine from '@site/i18n/ru/current/engines/table-engines/integrations/nats.md';
 
 <NatsEngine/>

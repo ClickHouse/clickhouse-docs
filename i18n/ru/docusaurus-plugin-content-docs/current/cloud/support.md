@@ -6,6 +6,6 @@ description: 'Learn about Cloud Support'
 hide_title: true
 ---
 
-import Content from '@site/docs/about-us/support.md';
+import Content from '@site/i18n/ru/current/about-us/support.md';
 
 <Content />

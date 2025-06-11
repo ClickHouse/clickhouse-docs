@@ -8,7 +8,7 @@ title: 'Необязательная безопасная связь между 
 
 
 # Необязательная безопасная связь между ClickHouse и Zookeeper
-import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
+import SelfManaged from '@site/i18n/ru/current/_snippets/_self_managed_only_automated.md';
 
 <SelfManaged />
 
