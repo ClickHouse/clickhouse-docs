@@ -17,6 +17,7 @@ import IconClose from "@theme/Icon/Close";
 import {useLocation} from "@docusaurus/router";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import RelatedBlogs from "../../../components/RelatedBlogs/RelatedBlogs";
+import {galaxyOnClick} from "../../../lib/galaxy/galaxy";
 /**
  * Decide if the toc should be rendered, on mobile or desktop viewports
  */
@@ -90,6 +91,7 @@ export default function DocItemLayout({children}) {
                     className={styles.docCloudClose}
                     onClick={() => {
                       setShowPopup(false)
+                      galaxyOnClick('docs.translationIssueBanner.buttonClick')
                       window.localStorage.setItem('doc-translate-card-banner', 'closed')
                     }}>
                   <IconClose color="var(--ifm-color-emphasis-600)" width={10} height={10}/>
@@ -111,7 +113,7 @@ export default function DocItemLayout({children}) {
           <DocItemPaginator />
         </div>
       </div>
-      {docTOC.desktop && <div className="col col--3">{docTOC.desktop}</div>}
+      {docTOC.desktop && <div className={clsx(styles.tocSidebar, 'col col--3')}>{docTOC.desktop}</div>}
     </div>
   );
 }

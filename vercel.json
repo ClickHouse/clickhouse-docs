@@ -3318,6 +3318,10 @@
     {
       "source": "/docs/cloud/manage/api/organizations-api-reference",
       "destination": "https://clickhouse.com/docs/cloud/manage/api/swagger#/paths/~1v1~1organizations/get"
+    },
+    {
+      "source": "/docs/cloud/manage/api/services-api-reference",
+      "destination": "https://clickhouse.com/docs/cloud/manage/api/swagger#/paths/~1v1~1organizations~1%7BorganizationId%7D~1services/get"
     }
   ]
 }

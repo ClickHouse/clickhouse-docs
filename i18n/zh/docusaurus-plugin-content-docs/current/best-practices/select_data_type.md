@@ -8,7 +8,7 @@
 - 'data types'
 ---
 
-import NullableColumns from '@site/i18n/jp/docusaurus-plugin-content-docs/current/best-practices/_snippets/_avoid_nullable_columns.md';
+import NullableColumns from '@site/i18n/zh/docusaurus-plugin-content-docs/current/best-practices/_snippets/_avoid_nullable_columns.md';
 
 ClickHouse 查询性能的核心原因之一是其高效的数据压缩。磁盘上的数据减少通过最小化 I/O 开销，从而导致更快的查询和插入。ClickHouse 的列式架构自然地将相似数据相邻排列，使压缩算法和编解码器能够显著减小数据大小。为了最大化这些压缩收益，精心选择适当的数据类型至关重要。
 

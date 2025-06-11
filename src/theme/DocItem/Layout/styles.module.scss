@@ -1,12 +1,26 @@
 @use '../../../css/breakpoints.scss' as breakpoints;
 
+.tocSidebar {
+  display: none;
+}
+
+@media (min-width: breakpoints.$mobile-breakpoint) {
+  .tocSidebar {
+    justify-content: right;
+    display: flex;
+    width: fit-content;
+    max-width: 350px;
+  }
+}
+
+
 .docItemContainer header + *,
 .docItemContainer article > *:first-child {
   margin-top: 0;
 }
 
 .docItemContainer {
-    max-width: 1000px;
+    max-width: 1250px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

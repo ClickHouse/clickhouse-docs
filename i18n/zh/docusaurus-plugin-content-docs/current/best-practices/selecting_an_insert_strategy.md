@@ -15,8 +15,8 @@
 import Image from '@theme/IdealImage';
 import insert_process from '@site/static/images/bestpractices/insert_process.png';
 import async_inserts from '@site/static/images/bestpractices/async_inserts.png';
-import AsyncInserts from '@site/i18n/jp/docusaurus-plugin-content-docs/current/best-practices/_snippets/_async_inserts.md';
-import BulkInserts from '@site/i18n/jp/docusaurus-plugin-content-docs/current/best-practices/_snippets/_bulk_inserts.md';
+import AsyncInserts from '@site/i18n/zh/docusaurus-plugin-content-docs/current/best-practices/_snippets/_async_inserts.md';
+import BulkInserts from '@site/i18n/zh/docusaurus-plugin-content-docs/current/best-practices/_snippets/_bulk_inserts.md';
 
 高效的数据摄取构成了高性能 ClickHouse 部署的基础。选择正确的插入策略可以显著影响吞吐量、成本和可靠性。本节概述了最佳实践、权衡和配置选项，以帮助您为工作负载做出正确的决策。
 

@@ -2,7 +2,7 @@ import React, { useLayoutEffect } from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import {translate} from '@docusaurus/Translate';
-import styles from './styles.module.css';
+import styles from './styles.module.scss';
 import SearchBar from "../../SearchBar";
 import KBArticleSearch from "../../../components/KBArticleSearch/KBArticleSearch";
 import {DocSearchButton} from "@docsearch/react";
@@ -45,7 +45,7 @@ export default function BlogSidebarDesktop({sidebar}) {
                 />
             </div>
             <nav
-                className={clsx(styles.sidebar, 'thin-scrollbar')}
+                className={styles.sidebar}
                 aria-label={translate({
                     id: 'theme.blog.sidebar.navAriaLabel',
                     message: 'Blog recent posts navigation',

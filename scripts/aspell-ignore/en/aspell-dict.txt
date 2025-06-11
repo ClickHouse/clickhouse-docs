@@ -257,6 +257,7 @@ Damerau
 DataFrame
 DataFrames
 DataGrip
+DataLakeCatalog
 DataLens
 DataPacket
 DataTime
@@ -296,6 +297,7 @@ DeprecatedBadge
 DestroyAggregatesThreads
 DestroyAggregatesThreadsActive
 DictCacheRequests
+DigiCert
 DiskAvailable
 DiskObjectStorage
 DiskObjectStorageAsyncThreads

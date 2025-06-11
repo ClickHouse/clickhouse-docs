@@ -212,14 +212,6 @@
   resolved "https://registry.yarnpkg.com/@antfu/utils/-/utils-0.7.10.tgz#ae829f170158e297a9b6a28f161a8e487d00814d"
   integrity sha512-+562v9k4aI80m1+VuMHehNJWLOFjBnXn3tdOitzD0il5b7smkSBal4+a3oKiQTbrwMmN/TBUMDvbdoWDehgOww==
 
-"@argos-ci/api-client@0.7.2":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/@argos-ci/api-client/-/api-client-0.7.2.tgz#cef6541b1d59f645d69f9595e75552459aa53535"
-  integrity sha512-ojKOhb4CXugJcHNzGH4Gp7G6gqqBEbhO2B5FNfU/ieBCDsYY+urE0hQ5L7+4TfmMoKb/xVpvtu2mQdEpMt4JVg==
-  dependencies:
-    debug "^4.4.0"
-    openapi-fetch "0.13.4"
-
 "@argos-ci/api-client@0.8.0":
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@argos-ci/api-client/-/api-client-0.8.0.tgz#4a12acdce2f3c04e43aef03fe59acaa603187532"
@@ -228,10 +220,18 @@
     debug "^4.4.0"
     openapi-fetch "0.13.4"
 
-"@argos-ci/browser@2.2.2":
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/@argos-ci/browser/-/browser-2.2.2.tgz#a024ad84819b337fb2f7a903d4e1aa56de81e471"
-  integrity sha512-pxoUKAVA/3whUKZU1BV93vI4JBYD6utKOd8yfMdZk70kRBL+ZEY+wIPDgQCXiDk02/od64xTn3YiD+N20V45RA==
+"@argos-ci/api-client@0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@argos-ci/api-client/-/api-client-0.8.1.tgz#332ba16cad462d73ac2b91e7c205ff74ba21a42a"
+  integrity sha512-3IHv7ANSPNO6OwWgwULlHbP9/tFV9kQDu6+nL9jysfPkGj0GgtrOsyBb+iU931c7wSMo1OD+XNujCnRzDD968w==
+  dependencies:
+    debug "^4.4.0"
+    openapi-fetch "0.13.5"
+
+"@argos-ci/browser@4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@argos-ci/browser/-/browser-4.1.1.tgz#840d9a105b831e6333b7ec85fb5cd773279f0ba1"
+  integrity sha512-UyKdnprGftUjWQkb0jqJ0zGHJmcWBzdko8zRy4y+4efukVX4jjC/Px2HvWW8aqwjoR4aplouMZuzhmOkq2SCsA==
 
 "@argos-ci/cli@^2.5.5":
   version "2.5.5"
@@ -242,20 +242,6 @@
     commander "^13.0.0"
     ora "^8.1.1"
     update-notifier "^7.3.1"
-
-"@argos-ci/core@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@argos-ci/core/-/core-3.0.0.tgz#45203c3ee513262f48b9a7fa3a7c2af81d837fda"
-  integrity sha512-00xNAPwE8O7sKCgn9oeiKGE0cyZYuC3ouCxN+DBAMqZLIG+8zoUZUuB+ZJsKwjMHA9un/bzFX9l8z2Z8rgkQ7w==
-  dependencies:
-    "@argos-ci/api-client" "0.7.2"
-    "@argos-ci/util" "2.2.2"
-    axios "^1.7.9"
-    convict "^6.2.4"
-    debug "^4.4.0"
-    fast-glob "^3.3.3"
-    sharp "^0.33.5"
-    tmp "^0.2.3"
 
 "@argos-ci/core@3.1.0":
   version "3.1.0"
@@ -271,26 +257,40 @@
     sharp "^0.33.5"
     tmp "^0.2.3"
 
-"@argos-ci/playwright@^3.9.4":
-  version "3.10.0"
-  resolved "https://registry.yarnpkg.com/@argos-ci/playwright/-/playwright-3.10.0.tgz#3666e08efcd5733ab59ea3c7044e01cb85377ded"
-  integrity sha512-kL83M8+KJ+A3bVbAWwPUMZNVlzP1FZMi3E5Y8Er4LnpqAutkbmL+YNeSamgX61WjOS8Zq3tIwf9923/rWvEkiQ==
+"@argos-ci/core@3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@argos-ci/core/-/core-3.2.0.tgz#e323a9ab73929ffbb3dc824ea18266a42228aed9"
+  integrity sha512-wraH5RGFpoU7zcKV2BVi4LvY+5bWR/Ds6OVhUtq3jtd7I3qJRFVFq2IX1TfPPvBBA7wX0OqcrqgIWAQwy+vsoA==
   dependencies:
-    "@argos-ci/browser" "2.2.2"
-    "@argos-ci/core" "3.0.0"
-    "@argos-ci/util" "2.2.2"
+    "@argos-ci/api-client" "0.8.1"
+    "@argos-ci/util" "2.3.1"
+    axios "^1.8.4"
+    convict "^6.2.4"
+    debug "^4.4.0"
+    fast-glob "^3.3.3"
+    sharp "^0.33.5"
+    tmp "^0.2.3"
+
+"@argos-ci/playwright@^5.0.4":
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/@argos-ci/playwright/-/playwright-5.0.4.tgz#2dcffbf87767c1e46d8450164ce1679a419632ae"
+  integrity sha512-mfbEg6RgQb4ciihozEJ+F1guA4MNphzDfefRpxQuwt+P5eczTxkhgUCO94glk4+dqWoHQDbdNf2N33sL9Zsuew==
+  dependencies:
+    "@argos-ci/browser" "4.1.1"
+    "@argos-ci/core" "3.2.0"
+    "@argos-ci/util" "2.3.1"
     chalk "^5.4.1"
     debug "^4.4.0"
-
-"@argos-ci/util@2.2.2":
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/@argos-ci/util/-/util-2.2.2.tgz#8222b72af3f73875d8f3e1980489f772b2acd3da"
-  integrity sha512-MpKAz/3dMNjsUO49sEMYfw+qZFUrEeji8EmSbr0rgL8bw+Q7hIYNesRtEIQnFPub0FgX1/AV3sRZ9yqWTgGgUw==
 
 "@argos-ci/util@2.3.0":
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/@argos-ci/util/-/util-2.3.0.tgz#43c04d1df3bcf9766ac100e6d0c00cbd73765dbe"
   integrity sha512-tkxnCpaj7yN9nCFzo9MX0FJ5YjUepEOGYfdvF8COQqp+EdY1qubOPpc4Z0l1B60BlC8YtjQv/oRxHSh1XzxWFg==
+
+"@argos-ci/util@2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@argos-ci/util/-/util-2.3.1.tgz#bccaf867c605d5a5554b9573d3e26cc319ce17c5"
+  integrity sha512-kE61HU2480fbAnimmA4x9HK45ZJvkoqLdW5GxT5uvwhkclQykVd2S6WfGFUr3JokTXfZ5LZEEfoWgtGA316KSQ==
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.16.0", "@babel/code-frame@^7.25.9", "@babel/code-frame@^7.26.2", "@babel/code-frame@^7.8.3":
   version "7.26.2"
@@ -2940,12 +2940,12 @@
     "@parcel/watcher-win32-ia32" "2.5.1"
     "@parcel/watcher-win32-x64" "2.5.1"
 
-"@playwright/test@^1.51.1":
-  version "1.51.1"
-  resolved "https://registry.yarnpkg.com/@playwright/test/-/test-1.51.1.tgz#75357d513221a7be0baad75f01e966baf9c41a2e"
-  integrity sha512-nM+kEaTSAoVlXmMPH10017vn3FSiFqr/bh4fKg9vmAdMfd9SDqRZNvPSiAHADc/itWak+qPvMPZQOPwCBW7k7Q==
+"@playwright/test@^1.52.0":
+  version "1.52.0"
+  resolved "https://registry.yarnpkg.com/@playwright/test/-/test-1.52.0.tgz#267ec595b43a8f4fa5e444ea503689629e91a5b8"
+  integrity sha512-uh6W7sb55hl7D6vsAeA+V2p5JnlAqzhqFyF0VcJkKZXkgnFcVG9PziERRHQfPLfNGx1C292a4JqbWzhR8L4R1g==
   dependencies:
-    playwright "1.51.1"
+    playwright "1.52.0"
 
 "@pnpm/config.env-replace@^1.1.0":
   version "1.1.0"
@@ -5204,6 +5204,15 @@ axios@^1.7.9, axios@^1.8.2:
   version "1.8.2"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.8.2.tgz#fabe06e241dfe83071d4edfbcaa7b1c3a40f7979"
   integrity sha512-ls4GYBm5aig9vWx8AWDSGLpnpDQRtWAfrjU+EuytuODrFBkqesN2RkOQCBzrA1RQNHw1SmRMSDDDSwzNAYQ6Rg==
+  dependencies:
+    follow-redirects "^1.15.6"
+    form-data "^4.0.0"
+    proxy-from-env "^1.1.0"
+
+axios@^1.8.4:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.9.0.tgz#25534e3b72b54540077d33046f77e3b8d7081901"
+  integrity sha512-re4CqKTJaURpzbLHtIi6XpDv20/CnpXOtjRY5/CU32L8gU8ek9UIivcfvSWvmKEngmVbrUtPpdDwWDWL7DNHvg==
   dependencies:
     follow-redirects "^1.15.6"
     form-data "^4.0.0"
@@ -10601,6 +10610,13 @@ openapi-fetch@0.13.4:
   dependencies:
     openapi-typescript-helpers "^0.0.15"
 
+openapi-fetch@0.13.5:
+  version "0.13.5"
+  resolved "https://registry.yarnpkg.com/openapi-fetch/-/openapi-fetch-0.13.5.tgz#805606860d85b8ba8c2e7cb36ea30b473d8065d9"
+  integrity sha512-AQK8T9GSKFREFlN1DBXTYsLjs7YV2tZcJ7zUWxbjMoQmj8dDSFRrzhLCbHPZWA1TMV3vACqfCxLEZcwf2wxV6Q==
+  dependencies:
+    openapi-typescript-helpers "^0.0.15"
+
 openapi-sampler@^1.5.0, openapi-sampler@^1.6.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/openapi-sampler/-/openapi-sampler-1.6.1.tgz#fa1839cd372d1789e12cd3cce46b0511d3f5c79e"
@@ -10937,17 +10953,17 @@ pkg-up@^3.1.0:
   dependencies:
     find-up "^3.0.0"
 
-playwright-core@1.51.1:
-  version "1.51.1"
-  resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.51.1.tgz#d57f0393e02416f32a47cf82b27533656a8acce1"
-  integrity sha512-/crRMj8+j/Nq5s8QcvegseuyeZPxpQCZb6HNk3Sos3BlZyAknRjoyJPFWkpNn8v0+P3WiwqFF8P+zQo4eqiNuw==
+playwright-core@1.52.0:
+  version "1.52.0"
+  resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.52.0.tgz#238f1f0c3edd4ebba0434ce3f4401900319a3dca"
+  integrity sha512-l2osTgLXSMeuLZOML9qYODUQoPPnUsKsb5/P6LJ2e6uPKXUdPK5WYhN4z03G+YNbWmGDY4YENauNu4ZKczreHg==
 
-playwright@1.51.1:
-  version "1.51.1"
-  resolved "https://registry.yarnpkg.com/playwright/-/playwright-1.51.1.tgz#ae1467ee318083968ad28d6990db59f47a55390f"
-  integrity sha512-kkx+MB2KQRkyxjYPc3a0wLZZoDczmppyGJIvQ43l+aZihkaVvmu/21kiyaHeHjiFxjxNNFnUncKmcGIyOojsaw==
+playwright@1.52.0:
+  version "1.52.0"
+  resolved "https://registry.yarnpkg.com/playwright/-/playwright-1.52.0.tgz#26cb9a63346651e1c54c8805acfd85683173d4bd"
+  integrity sha512-JAwMNMBlxJ2oD1kce4KPtMkDeKGHQstdpFPcPH3maElAXon/QZeTvtsfXmTMRyO9TslfoYOXkSsvao2nE1ilTw==
   dependencies:
-    playwright-core "1.51.1"
+    playwright-core "1.52.0"
   optionalDependencies:
     fsevents "2.3.2"
 

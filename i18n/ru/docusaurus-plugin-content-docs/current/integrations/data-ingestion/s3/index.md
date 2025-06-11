@@ -6,7 +6,7 @@ title: 'Интеграция S3 с ClickHouse'
 description: 'Страница, описывающая, как интегрировать S3 с ClickHouse'
 ---
 
-import BucketDetails from '@site/docs/_snippets/_S3_authentication_and_bucket.md';
+import BucketDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_S3_authentication_and_bucket.md';
 import S3J from '@site/static/images/integrations/data-ingestion/s3/s3-j.png';
 import Bucket1 from '@site/static/images/integrations/data-ingestion/s3/bucket1.png';
 import Bucket2 from '@site/static/images/integrations/data-ingestion/s3/bucket2.png';
@@ -852,7 +852,7 @@ SELECT * FROM s3_table1;
 
         <s3_cache>
            <type>cache</type>
-           <disk>s3</disk>
+           <disk>s3_disk</disk>
            <path>/var/lib/clickhouse/disks/s3_cache/</path>
            <max_size>10Gi</max_size>
         </s3_cache>

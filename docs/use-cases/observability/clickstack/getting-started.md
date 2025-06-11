@@ -157,11 +157,11 @@ With the stack deployed, try one of our same datasets.
 
 ## Local mode {#local-mode}
 
-Local mode is a way to deploy HyperDX without a database or OTel collector. You can connect directly to a ClickHouse server from your browser directly, with configuration stored locally in your browser's local or session storage. This image **only** includes the HyperDX UI. 
+Local mode is a way to deploy HyperDX without needing to authenticate. 
 
 Authentication is not supported. 
 
-This mode is intended to be used for quick testing, development, demos and debugging use cases where deploying a full HyperDX instance is not necessary.
+This mode is intended to be used for quick testing, development, demos and debugging use cases where authentication and settings persistence is not necessary.
 
 ### Hosted Version {#hosted-version}
 
