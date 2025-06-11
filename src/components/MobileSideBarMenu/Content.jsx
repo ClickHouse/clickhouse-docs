@@ -252,7 +252,11 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
                     <div className={styles.headerActions}>
                         <MobileLanguagePicker onLanguageChange={handleLanguageChange} />
                         <ColorModeToggle/>
-                        <div className={styles.iconClose}><IconClose width={12} height={12} onClick={onClose || onClick} /></div>
+                        <div className={styles.iconClose} onClick={onClose || onClick}>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="31" height="31" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6" strokeLinecap="round" strokeLinejoin="round">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 6L18 18M6 18L18 6" />
+                            </svg>
+                        </div>
                     </div>
                 </div>
                 <div className={styles.bottomLevel}>

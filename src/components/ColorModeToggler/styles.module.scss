@@ -5,13 +5,14 @@
   align-items: center;
   cursor: pointer;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 0.438rem;
+  padding: 1px;
   gap: 8px;
   color: var(--click-color-secondary-button-text);
   border: 0;
   border-radius: 4px;
   background: transparent;
 }
+
 .colorModeButton:hover {
   background: var(--ifm-menu-color-background-active);
 }
@@ -21,5 +22,19 @@
   white-space: nowrap;
 }
 
+@media (min-width: breakpoints.$laptop-breakpoint) {
+  [data-theme="light"] .colorModeButton {
+    color: rgb(100, 100, 100);
+  }
+
+  .colorModeButton {
+    width: 28px;
+    height: 28px;
+  }
+
+  .colorModeButton:hover {
+      background-color: unset;
+  }
+}
 
 
