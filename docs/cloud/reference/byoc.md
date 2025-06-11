@@ -422,3 +422,9 @@ scrape_configs:
 ```
 
 Please also see [this blog post](https://clickhouse.com/blog/clickhouse-cloud-now-supports-prometheus-monitoring) and the [Prometheus setup docs for ClickHouse](/integrations/prometheus).
+
+### Uptime SLAs {#uptime-sla}
+
+#### Does ClickHouse offer an uptime SLA for BYOC? {#uptime-sla-for-byoc}
+
+No, since the data plane is hosted in the customer's cloud environment, service availability depends on resources not in ClickHouse's control. Therefore, ClickHouse does not offer a formal uptime SLA for BYOC deployments. If you have additional questions, please contact support@clickhouse.com.

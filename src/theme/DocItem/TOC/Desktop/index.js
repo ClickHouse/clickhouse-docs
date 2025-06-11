@@ -6,6 +6,7 @@ import clsx from "clsx";
 import IconClose from '@theme/Icon/Close';
 import styles from './styles.module.scss'
 import Feedback from '../../../../components/Feedback';
+import {galaxyOnClick} from "../../../../lib/galaxy/galaxy";
 
 const AD_DATA_ENDPOINT = 'https://cms.clickhouse-dev.com:1337/api/docs-ad'
 
@@ -89,22 +90,29 @@ export default function DocItemTOCDesktop() {
 
       {
         !isClosed && title && description && href && label && (
-          <div className={styles.docCloudCardAd}>
-            <div className={styles.docCloudCardHeader}>
-              <h6>{title}</h6>
-              <button
-                className={styles.docCloudClose}
-                onClick={() => {
-                  setClosed(true)
-                  window.sessionStorage.setItem('doc-cloud-card-banner', 'closed');
-                }}>
-                <IconClose color="var(--ifm-color-emphasis-600)" width={10} height={10}/>
-              </button>
-            </div>
-            <p className={styles.docCloudCardContent}>{description}</p>
-            <a href={href} className={clsx(styles.docCloudCardLink, 'click-button primary-btn')}>{label}</a>
-          </div>
-        )
+              <div className={styles.docCloudCardAd}>
+                <div className={styles.docCloudCardHeader}>
+                  <h6>{title}</h6>
+                  <button
+                      className={styles.docCloudClose}
+                      onClick={() => {
+                        setClosed(true);
+                        galaxyOnClick('docs.sidebarCloudAdvert.advertDismissed');
+                        window.sessionStorage.setItem('doc-cloud-card-banner', 'closed');
+                      }}>
+                    <IconClose color="var(--ifm-color-emphasis-600)" width={10} height={10}/>
+                  </button>
+                </div>
+                <p className={styles.docCloudCardContent}>{description}</p>
+                <a
+                    href={href}
+                    className={clsx(styles.docCloudCardLink, 'click-button primary-btn')}
+                    onClick={()=>{galaxyOnClick('docs.sidebarCloudAdvert.clickedThrough');}}
+                >
+                    {label}
+                </a>
+              </div>
+          )
       }
     </div>
   );

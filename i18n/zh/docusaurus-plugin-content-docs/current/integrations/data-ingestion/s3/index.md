@@ -833,7 +833,7 @@ ClickHouse 表在两个服务器之间复制，因此在两个区域之间复制
 
         <s3_cache>
            <type>cache</type>
-           <disk>s3</disk>
+           <disk>s3_disk</disk>
            <path>/var/lib/clickhouse/disks/s3_cache/</path>
            <max_size>10Gi</max_size>
         </s3_cache>

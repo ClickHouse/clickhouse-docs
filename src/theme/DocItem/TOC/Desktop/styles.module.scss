@@ -10,15 +10,18 @@
     display: none; // don't show by default on mobile
 }
 
-.docTOCContainer {
-  height: calc(100vh - (var(--ifm-navbar-height) + 2rem));
-  display: flex;
-  flex-flow: column nowrap;
-  position: sticky;
-  gap: 24px;
-  padding-bottom: 3.5rem;
-  overflow-y: auto;
-  top: calc(var(--ifm-navbar-height) + 1rem);
+@media screen and (min-width: breakpoints.$mobile-breakpoint) {
+  .docTOCContainer {
+    height: calc(100vh - (var(--ifm-navbar-height) + 2rem));
+    display: flex;
+    flex-flow: column nowrap;
+    position: sticky;
+    gap: 24px;
+    padding-bottom: 3.5rem;
+    overflow-y: auto;
+    top: calc(var(--ifm-navbar-height) + 1rem);
+    max-width: 350px;
+  }
 }
 
 .docCloudCardHeader {

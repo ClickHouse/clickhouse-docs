@@ -379,6 +379,7 @@ const sidebars = {
       items: [
         "cloud/reference/architecture",
         "cloud/reference/shared-merge-tree",
+	"cloud/reference/shared-catalog",
         "cloud/reference/warehouses",
         "cloud/reference/byoc",
         {
@@ -747,8 +748,10 @@ const sidebars = {
               items: [
                 "integrations/data-ingestion/clickpipes/mysql/source/rds",
                 "integrations/data-ingestion/clickpipes/mysql/source/aurora",
+                "integrations/data-ingestion/clickpipes/mysql/source/gcp",
+                "integrations/data-ingestion/clickpipes/mysql/source/generic",
                 "integrations/data-ingestion/clickpipes/mysql/source/rds_maria",
-                "integrations/data-ingestion/clickpipes/mysql/source/gcp"
+                "integrations/data-ingestion/clickpipes/mysql/source/generic_maria",
               ],
             },
             "integrations/data-ingestion/clickpipes/mysql/datatypes"
@@ -2027,7 +2030,7 @@ const sidebars = {
           type: "link",
           label: "Changelogs",
           description: "View the latest changes in ClickHouse",
-          href: "/whats-new/security-changelog"
+          href: "/category/changelog"
         },
         {
           type: "link",
