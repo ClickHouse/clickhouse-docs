@@ -8,7 +8,7 @@ sidebar_position: 4
 description: 'Migrating data to ClickHouse Observability Stack from Elastic'
 ---
 
-## Parallel Operation Strategy {#parallel-operation}
+## Parallel operation strategy {#parallel-operation}
 
 When migrating from Elastic to ClickStack for observability use cases, we recommend a **parallel operation** approach rather than attempting to migrate historical data. This strategy offers several advantages:
 
@@ -20,7 +20,7 @@ When migrating from Elastic to ClickStack for observability use cases, we recomm
 We demonstrate an approach for migrating essential data from Elasticsearch to ClickHouse in the section ["Migrating data"](#migrating-data). This should not be used for larger datasets as it is rarely performant - limited by the ability for Elasticsearch to export efficiently, with only JSON format supported.
 :::
 
-### Implementation Steps {#implementation-steps}
+### Implementation steps {#implementation-steps}
 
 1. **Configure Dual Ingestion**
 
@@ -42,7 +42,7 @@ Configure Elastic's TTL settings to match your desired retention period. Set up 
 - As data naturally expires from Elastic, users will increasingly rely on ClickStack
 - Once confidence in ClickStack is established, you can begin redirecting queries and dashboards
 
-### Long-term Retention {#long-term-retention}
+### Long-term retention {#long-term-retention}
 
 For organizations requiring longer retention periods:
 
@@ -50,7 +50,7 @@ For organizations requiring longer retention periods:
 - ClickStack [tiered storage](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes) capabilities can help manage long-term data efficiently.
 - Consider using [materialized views](/materialized-view/incremental-materialized-view) to maintain aggregated or filtered historical data while allowing raw data to expire.
 
-### Migration Timeline {#migration-timeline}
+### Migration timeline {#migration-timeline}
 
 The migration timeline will depend on your data retention requirements:
 

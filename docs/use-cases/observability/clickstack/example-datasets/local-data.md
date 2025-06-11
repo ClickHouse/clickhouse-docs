@@ -41,7 +41,7 @@ Create a `otel-file-collector.yaml` file with the following content.
 
 **Important**: Populate the value `<YOUR_INGESTION_API_KEY>` with your ingestion API key copied above.
 
-```yml
+```yaml
 receivers:
   filelog:
     include:

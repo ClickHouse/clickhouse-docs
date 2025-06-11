@@ -45,7 +45,7 @@ The chart supports standard Kubernetes best practices, including:
 - Kubernetes cluster (v1.20+ recommended)
 - `kubectl` configured to interact with your cluster
 
-### Add the HyperDX Helm Repository {#add-the-hyperdx-helm-repository}
+### Add the HyperDX Helm repository {#add-the-hyperdx-helm-repository}
 
 Add the HyperDX Helm repository:
 
@@ -99,7 +99,7 @@ You can override the default connection to the integrated ClickHouse instance. F
 
 For an example of using an alternative ClickHouse instance, see ["Create a ClickHouse Cloud connection"](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
 
-### Customizing values (Optional) {#customizing-values}
+### Customizing values (optional) {#customizing-values}
 
 You can customize settings by using `--set` flags. For example:
 
@@ -138,11 +138,11 @@ ingress:
 helm install my-hyperdx hyperdx/hdx-oss-v2 -f values.yaml
 ```
 
-### Using Secrets (Optional) {#using-secrets}
+### Using secrets (optional) {#using-secrets}
 
 For handling sensitive data such as API keys or database credentials, use Kubernetes secrets. The HyperDX Helm charts provide default secret files that you can modify and apply to your cluster.
 
-#### Using Pre-Configured Secrets {#using-pre-configured-secrets}
+#### Using pre-configured secrets {#using-pre-configured-secrets}
 
 The Helm chart includes a default secret template located at [`charts/hdx-oss-v2/templates/secrets.yaml`](https://github.com/hyperdxio/helm-charts/blob/main/charts/hdx-oss-v2/templates/secrets.yaml). This file provides a base structure for managing secrets.
 
@@ -167,7 +167,7 @@ Apply the secret to your cluster:
 kubectl apply -f secrets.yaml
 ```
 
-#### Creating a Custom Secret {#creating-a-custom-secret}
+#### Creating a custom secret {#creating-a-custom-secret}
 
 If you prefer, you can create a custom Kubernetes secret manually:
 
@@ -176,7 +176,7 @@ kubectl create secret generic hyperdx-secret \
   --from-literal=API_KEY=my-secret-api-key
 ```
 
-#### Referencing a Secret {#referencing-a-secret}
+#### Referencing a secret {#referencing-a-secret}
 
 To reference a secret in `values.yaml`:
 
@@ -274,19 +274,19 @@ This will remove all resources associated with the release, but persistent data 
 
 ## Troubleshooting {#troubleshooting}
 
-### Checking Logs {#checking-logs}
+### Checking logs {#checking-logs}
 
 ```shell
 kubectl logs -l app.kubernetes.io/name=hdx-oss-v2
 ```
 
-### Debugging a Failed Install {#debugging-a-failed-instance}
+### Debugging a failed install {#debugging-a-failed-instance}
 
 ```shell
 helm install my-hyperdx hyperdx/hdx-oss-v2 --debug --dry-run
 ```
 
-### Verifying Deployment {#verifying-deployment}
+### Verifying deployment {#verifying-deployment}
 
 ```shell
 kubectl get pods -l app.kubernetes.io/name=hdx-oss-v2

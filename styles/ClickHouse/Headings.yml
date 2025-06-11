@@ -49,3 +49,10 @@ exceptions:
   - AWS
   - Frequently Asked Questions
   - PostgreSQL
+  - TTL
+  - ClickStack
+  - OpenTelemetry
+  - Filebeat
+  - Elastic Agent
+  - HyperDX
+  - Helm

@@ -14,7 +14,7 @@ import add_logstash_output from '@site/static/images/use-cases/observability/add
 import agent_output_settings from '@site/static/images/use-cases/observability/agent-output-settings.png';
 import migrating_agents from '@site/static/images/use-cases/observability/clickstack-migrating-agents.png';
 
-## Migrating Agents from Elastic {#migrating-agents-from-elastic}
+## Migrating agents from Elastic {#migrating-agents-from-elastic}
 
 The Elastic Stack provides a number of Observability data collection agents. Specifically:
 
@@ -40,7 +40,7 @@ Users send data to this collector from [language SDKs](/use-cases/observability/
 
 **We assume this collector is available for all agent migration steps**.
 
-## Migrating from Beats {#migrating-to-beats}
+## Migrating from beats {#migrating-to-beats}
 
 Users with extensive Beat deployments may wish to retain these when migrating to ClickStack.
 
@@ -405,6 +405,6 @@ exporters:
       key_file: /path/to/client.key
 ```
 
-## Migrating from the Elastic OpenTelemetry Collector {#migrating-from-elastic-otel-collector}
+## Migrating from the Elastic OpenTelemetry collector {#migrating-from-elastic-otel-collector}
 
 Users already running the [Elastic OpenTelemetry Collector (EDOT)](https://www.elastic.co/docs/reference/opentelemetry) can simply reconfigure their agents to send to ClickStack OpenTelemetry collector via OTLP. The steps involved are identical to those outlined above for running the [Elastic Agent as an OpenTelemetry collector](#run-agent-as-otel). This approach can be used for all data types.
