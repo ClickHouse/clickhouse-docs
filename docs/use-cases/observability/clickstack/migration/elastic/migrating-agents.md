@@ -58,7 +58,7 @@ We illustrate both of these architectures below.
 
 <Image img={migrating_agents} alt="Migrating agents" size="lg" background/>
 
-In the following example, we provide the initial steps to configure Vector to receive log events from Filebeat via the Lumberjack protocol. We provide VRL for mapping the inbound ECS events to Otel specification, before sending these to the ClickStack OpenTelemetry collector via OTLP. Users consuming events from Kafka can replace the Vector Logstash source with the [Kafka source](https://vector.dev/docs/reference/configuration/sources/kafka/) - all other steps remain the same.
+In the following example, we provide the initial steps to configure Vector to receive log events from Filebeat via the Lumberjack protocol. We provide VRL for mapping the inbound ECS events to OTel specification, before sending these to the ClickStack OpenTelemetry collector via OTLP. Users consuming events from Kafka can replace the Vector Logstash source with the [Kafka source](https://vector.dev/docs/reference/configuration/sources/kafka/) - all other steps remain the same.
 
 <VerticalStepper headerLevel="h3">
 
@@ -66,7 +66,7 @@ In the following example, we provide the initial steps to configure Vector to re
 
 Install Vector using the [official installation guide](https://vector.dev/docs/setup/installation/).
 
-This can be installed on the same instance as your ElasticStack OTel collector.
+This can be installed on the same instance as your Elastic Stack OTel collector.
 
 Users can follow best practices with regards to architecture and security when [moving Vector to production](https://vector.dev/docs/setup/going-to-prod/).
 
