@@ -65,7 +65,7 @@ If not using [`JSON`](/integrations/data-formats/json/overview), the schema is s
 
 Elasticsearch uses ingest pipelines with processors (e.g., `enrich`, `rename`, `grok`) to transform documents before indexing. In ClickHouse, similar functionality is achieved using [**Incremental Materialized Views**](/materialized-view/incremental-materialized-view), which can [filter, transform](/materialized-view/incremental-materialized-view#filtering-and-transformation), or [enrich](/materialized-view/incremental-materialized-view#lookup-table) incoming data and insert results into target tables. You can also insert data to a `Null` table engine if you only need the output of the materialized view to be stored. This means the only the results of any materialized views are preserved, but the original data is discarded - thus saving storage space.
 
-For enrichment, Elasticsearch supports dedicated [enrich processors](/reference/enrich-processor/enrich-processor) to add context to documents. In ClickHouse, [**dictionaries**](/dictionary) can be used at both [query time](/dictionary#query-time-enrichment) and [ingest time](/dictionary#index-time-enrichment) to enrich rows - for example, to [map IPs to locations](/use-cases/observability/schema-design#using-ip-dictionaries) or apply [user agent lookups](/use-cases/observability/schema-design#using-regex-dictionaries-user-agent-parsing) on insert.
+For enrichment, Elasticsearch supports dedicated [enrich processors](https://www.elastic.co/docs/reference/enrich-processor/enrich-processor) to add context to documents. In ClickHouse, [**dictionaries**](/dictionary) can be used at both [query time](/dictionary#query-time-enrichment) and [ingest time](/dictionary#index-time-enrichment) to enrich rows - for example, to [map IPs to locations](/use-cases/observability/schema-design#using-ip-dictionaries) or apply [user agent lookups](/use-cases/observability/schema-design#using-regex-dictionaries-user-agent-parsing) on insert.
 
 
 ### Query languages {#query-languages}
@@ -221,7 +221,7 @@ In the diagram above, the materialized view's source table already contains a da
 
 Note that all [over 90 aggregate functions](https://clickhouse.com/docs/en/sql-reference/aggregate-functions/reference), including their combination with aggregate function [combinators](https://www.youtube.com/watch?v=7ApwD0cfAFI), support [partial aggregation states](https://clickhouse.com/docs/en/sql-reference/data-types/aggregatefunction). 
 
-You can see a more concrete example of ClickHouse materializes views [here](./README.md#clickhouse-materialized-views). 
+You can see a more concrete example of Elasticsearch vs ClickHouse for incremental aggregates, see [here](https://github.com/ClickHouse/examples/tree/main/blog-examples/clickhouse-vs-elasticsearch/continuous-data-transformation#continuous-data-transformation-example). 
 
 The advantages of ClickHouse's approach include:
 
@@ -235,16 +235,16 @@ This model is particularly powerful for observability use cases where users need
 
 ### Lakehouse support {#lakehouse-support}
 
-ClickHouse and Elasticsearch take fundamentally different approaches to lakehouse integration. ClickHouse is a fully-fledged query execution engine capable of executing queries over lakehouse formats such as [Iceberg](/engines/table-engines/integrations/iceberg) and [Delta Lake](/engines/table-engines/integrations/delta-lake). These formats rely on efficient querying of [Parquet](/interfaces/formats#parquet) files, which ClickHouse fully supports. ClickHouse can read both Iceberg and Delta Lake tables directly, enabling seamless integration with modern data lake architectures.
+ClickHouse and Elasticsearch take fundamentally different approaches to lakehouse integration. ClickHouse is a fully-fledged query execution engine capable of executing queries over lakehouse formats such as [Iceberg](/sql-reference/table-functions/iceberg) and [Delta Lake](/sql-reference/table-functions/deltalake), as well as integrating with data lake catalogs such as [AWS Glue](/use-cases/data-lake/glue-catalog) and [Unity catalog](/use-cases/data-lake/unity-catalog). These formats rely on efficient querying of [Parquet](/interfaces/formats#parquet) files, which ClickHouse fully supports. ClickHouse can read both Iceberg and Delta Lake tables directly, enabling seamless integration with modern data lake architectures.
 
 In contrast, Elasticsearch is tightly coupled to its internal data format and Lucene-based storage engine. It cannot directly query lakehouse formats or Parquet files, limiting its ability to participate in modern data lake architectures. Elasticsearch requires data to be transformed and loaded into its proprietary format before it can be queried.
 
 ClickHouse's lakehouse capabilities extend beyond just reading data:
 
 - **Data Catalog Integration**: ClickHouse supports integration with data catalogs like [Iceberg REST catalog](/engines/table-engines/integrations/iceberg#iceberg-rest-catalog) and [AWS Glue](/engines/table-engines/integrations/iceberg#aws-glue-catalog), enabling automatic discovery and access to tables in object storage.
-- **Object Storage Support**: Native support for querying data residing in [S3](/engines/table-engines/integrations/s3), [GCS](/engines/table-engines/integrations/gcs), and [Azure Blob Storage](/engines/table-engines/integrations/azure-blob-storage) without requiring data movement.
+- **Object Storage Support**: Native support for querying data residing in [S3](/engines/table-engines/integrations/s3), [GCS](/sql-reference/table-functions/gcs), and [Azure Blob Storage](/engines/table-engines/integrations/azureBlobStorage) without requiring data movement.
 - **Query Federation**: Ability to correlate data across multiple sources, including lakehouse tables, traditional databases, and ClickHouse tables using [external dictionaries](/dictionary) and [table functions](/sql-reference/table-functions).
-- **Incremental Loading**: Support for continuous loading from lakehouse tables into local [MergeTree](/engines/table-engines/mergetree-family/mergetree) tables, using features like [S3Queue](/engines/table-engines/integrations/s3queue) and [ClickPipes](/cloud/clickpipes).
+- **Incremental Loading**: Support for continuous loading from lakehouse tables into local [MergeTree](/engines/table-engines/mergetree-family/mergetree) tables, using features like [S3Queue](/engines/table-engines/integrations/s3queue) and [ClickPipes](/integrations/clickpipes).
 - **Performance Optimization**: Distributed query execution over lakehouse data using [cluster functions](/sql-reference/table-functions/cluster) for improved performance.
 
 These capabilities make ClickHouse a natural fit for organizations adopting lakehouse architectures, allowing them to leverage both the flexibility of data lakes and the performance of a columnar database. 

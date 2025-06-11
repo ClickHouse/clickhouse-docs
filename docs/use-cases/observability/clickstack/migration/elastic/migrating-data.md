@@ -82,7 +82,7 @@ Sharding may be necessary if:
 - You need tenant isolation or regional data separation
 - Your total dataset is too large for a single server, even with object storage
 
-If you do need to shard, refer to [Horizontal scaling](architecture/horizontal-scaling) for guidance on shard keys and distributed table setup.
+If you do need to shard, refer to [Horizontal scaling](/architecture/horizontal-scaling) for guidance on shard keys and distributed table setup.
 
 ### Retention and TTL {#retention-and-ttl}
 

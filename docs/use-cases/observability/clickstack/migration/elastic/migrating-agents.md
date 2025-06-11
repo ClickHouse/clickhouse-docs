@@ -12,6 +12,7 @@ import Image from '@theme/IdealImage';
 import ingestion_key from '@site/static/images/use-cases/observability/ingestion-keys.png';
 import add_logstash_output from '@site/static/images/use-cases/observability/add-logstash-output.png';
 import agent_output_settings from '@site/static/images/use-cases/observability/agent-output-settings.png';
+import migrating_agents from '@site/static/images/use-cases/observability/clickstack-migrating-agents.png';
 
 ## Migrating Agents from Elastic {#migrating-agents-from-elastic}
 
@@ -43,7 +44,7 @@ Users send data to this collector from [language SDKs](/use-cases/observability/
 
 Users with extensive Beat deployments may wish to retain these when migrating to ClickStack.
 
-**Currently this option has only been tested with Filebeat, and is therefore appropriate for Logs only**
+**Currently this option has only been tested with Filebeat, and is therefore appropriate for Logs only.**
 
 Beats agents use the [Elastic Common Schema (ECS)](https://www.elastic.co/docs/reference/ecs), which is currently [in the process of being merged into the OpenTelemetry](https://github.com/open-telemetry/opentelemetry-specification/blob/main/oteps/0199-support-elastic-common-schema-in-opentelemetry.md) specification used by ClickStack. However, these [schemas still differ significantly](https://www.elastic.co/docs/reference/ecs/ecs-otel-alignment-overview), and users are currently responsible for transforming ECS-formatted events into OpenTelemetry format before ingestion into ClickStack.
 
@@ -55,12 +56,7 @@ Alternatively, Vector also supports receiving events over the Lumberjack protoco
 
 We illustrate both of these architectures below.
 
-
-
-```DIAGRAMS``
-
-
-
+<Image img={migrating_agents} alt="Migrating agents" size="lg" background/>
 
 In the following example, we provide the initial steps to configure Vector to receive log events from Filebeat via the Lumberjack protocol. We provide VRL for mapping the inbound ECS events to Otel specification, before sending these to the ClickStack OpenTelemetry collector via OTLP. Users consuming events from Kafka can replace the Vector Logstash source with the [Kafka source](https://vector.dev/docs/reference/configuration/sources/kafka/) - all other steps remain the same.
 
