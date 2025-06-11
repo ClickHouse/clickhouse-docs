@@ -5,6 +5,6 @@ title: 'Избегайте Nullable Колонок'
 description: 'Почему следует избегать Nullable Колонок в ClickHouse'
 ---
 
-import Content from '@site/i18n/ru/current/best-practices/_snippets/_avoid_nullable_columns.md';
+import Content from '@site/i18n/docusaurus-plugin-content-docs/ru/current/best-practices/_snippets/_avoid_nullable_columns.md';
 
 <Content />

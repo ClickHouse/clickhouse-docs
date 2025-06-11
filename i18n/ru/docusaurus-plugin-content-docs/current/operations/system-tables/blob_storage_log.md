@@ -5,7 +5,7 @@ slug: /operations/system-tables/blob_storage_log
 title: 'system.blob_storage_log'
 ---
 
-import SystemTableCloud from '@site/i18n/ru/current/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/docusaurus-plugin-content-docs/ru/current/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 

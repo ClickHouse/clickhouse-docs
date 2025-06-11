@@ -5,7 +5,7 @@ title: 'Delta Lake'
 description: 'Страница, описывающая, как пользователи могут интегрироваться с форматом таблиц Delta Lake через табличную функцию.'
 ---
 
-import DeltaLakeFunction from '@site/i18n/ru/current/sql-reference/table-functions/deltalake.md';
+import DeltaLakeFunction from '@site/i18n/docusaurus-plugin-content-docs/ru/current/sql-reference/table-functions/deltalake.md';
 
 
 # Интеграция Delta Lake

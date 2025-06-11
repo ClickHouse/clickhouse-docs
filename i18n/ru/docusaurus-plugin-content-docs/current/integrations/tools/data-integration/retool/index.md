@@ -6,7 +6,7 @@ description: 'Быстро создавайте веб и мобильные п�
 title: 'Подключение Retool к ClickHouse'
 ---
 
-import ConnectionDetails from '@site/i18n/ru/current/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/docusaurus-plugin-content-docs/ru/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import retool_01 from '@site/static/images/integrations/tools/data-integration/retool/retool_01.png';
 import retool_02 from '@site/static/images/integrations/tools/data-integration/retool/retool_02.png';

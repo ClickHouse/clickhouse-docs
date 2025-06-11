@@ -6,7 +6,7 @@ slug: /operations/system-tables/replicated_fetches
 title: 'system.replicated_fetches'
 ---
 
-import SystemTableCloud from '@site/i18n/ru/current/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/docusaurus-plugin-content-docs/ru/current/_snippets/_system_table_cloud.md';
 
 
 # system.replicated_fetches

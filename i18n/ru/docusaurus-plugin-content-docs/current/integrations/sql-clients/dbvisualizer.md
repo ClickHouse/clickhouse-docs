@@ -5,7 +5,7 @@ description: 'DbVisualizer — это инструмент базы данных
 title: 'Подключение DbVisualizer к ClickHouse'
 ---
 
-import ConnectionDetails from '@site/i18n/ru/current/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/docusaurus-plugin-content-docs/ru/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import dbvisualizer_driver_manager from '@site/static/images/integrations/sql-clients/dbvisualizer-driver-manager.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';

@@ -9,7 +9,7 @@ title: 'Использование MinIO'
 
 # Использование MinIO
 
-import SelfManaged from '@site/i18n/ru/current/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/docusaurus-plugin-content-docs/ru/current/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 

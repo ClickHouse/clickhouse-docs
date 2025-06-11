@@ -6,7 +6,7 @@ slug: /operations/system-tables/asynchronous_loader
 title: 'system.asynchronous_loader'
 ---
 
-import SystemTableCloud from '@site/i18n/ru/current/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/docusaurus-plugin-content-docs/ru/current/_snippets/_system_table_cloud.md';
 
 
 # system.asynchronous_loader

@@ -5,7 +5,7 @@ slug: /operations/system-tables/stack_trace
 title: 'system.stack_trace'
 ---
 
-import SystemTableCloud from '@site/i18n/ru/current/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/docusaurus-plugin-content-docs/ru/current/_snippets/_system_table_cloud.md';
 
 
 # system.stack_trace

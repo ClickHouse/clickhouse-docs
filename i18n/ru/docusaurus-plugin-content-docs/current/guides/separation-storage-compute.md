@@ -7,7 +7,7 @@ description: 'Этот гид исследует, как вы можете ис�
 ---
 
 import Image from '@theme/IdealImage';
-import BucketDetails from '@site/i18n/ru/current/_snippets/_S3_authentication_and_bucket.md';
+import BucketDetails from '@site/i18n/docusaurus-plugin-content-docs/ru/current/_snippets/_S3_authentication_and_bucket.md';
 import s3_bucket_example from '@site/static/images/guides/s3_bucket_example.png';
 
 

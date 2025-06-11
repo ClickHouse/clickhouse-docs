@@ -6,7 +6,7 @@ description: 'Официальный коннектор Kafka от ClickHouse.'
 title: 'ClickHouse Kafka Connect Sink'
 ---
 
-import ConnectionDetails from '@site/i18n/ru/current/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/docusaurus-plugin-content-docs/ru/current/_snippets/_gather_your_details_http.mdx';
 
 
 # ClickHouse Kafka Connect Sink

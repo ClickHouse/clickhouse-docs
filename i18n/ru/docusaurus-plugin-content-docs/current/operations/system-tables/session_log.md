@@ -5,7 +5,7 @@ slug: /operations/system-tables/session_log
 title: 'system.session_log'
 ---
 
-import SystemTableCloud from '@site/i18n/ru/current/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/docusaurus-plugin-content-docs/ru/current/_snippets/_system_table_cloud.md';
 
 
 # system.session_log

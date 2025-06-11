@@ -6,6 +6,6 @@ slug: /integrations/data-ingestion/dbms/odbc-with-clickhouse
 description: 'Страница, описывающая интеграцию ODBC'
 ---
 
-import Content from '@site/i18n/ru/current/engines/table-engines/integrations/odbc.md';
+import Content from '@site/i18n/docusaurus-plugin-content-docs/ru/current/engines/table-engines/integrations/odbc.md';
 
 <Content />
