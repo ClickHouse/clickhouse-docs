@@ -6,7 +6,7 @@ slug: /operations/optimizing-performance/sampling-query-profiler
 title: 'Профайлер запросов с выборкой'
 ---
 
-import SelfManaged from '@site/i18n/docusaurus-plugin-content-docs/ru/current/_snippets/_self_managed_only_no_roadmap.md';
+import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 
 # Профайлер запросов с выборкой

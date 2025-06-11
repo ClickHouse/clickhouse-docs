@@ -6,7 +6,7 @@ description: 'Использование Vector с Kafka и ClickHouse'
 title: 'Использование Vector с Kafka и ClickHouse'
 ---
 
-import ConnectionDetails from '@site/i18n/docusaurus-plugin-content-docs/ru/current/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 ## Использование Vector с Kafka и ClickHouse {#using-vector-with-kafka-and-clickhouse}
 

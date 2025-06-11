@@ -5,7 +5,7 @@ slug: /cloud/security/common-access-management-queries
 description: 'В этой статье представлены основы определения SQL пользователей и ролей, а также применения этих привилегий и разрешений к базам данных, таблицам, строкам и колонкам.'
 ---
 
-import CommonUserRolesContent from '@site/i18n/docusaurus-plugin-content-docs/ru/current/_snippets/_users-and-roles-common.md';
+import CommonUserRolesContent from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_users-and-roles-common.md';
 
 
 # Общие запросы управления доступом

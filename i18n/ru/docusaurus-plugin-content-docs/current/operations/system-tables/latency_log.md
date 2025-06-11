@@ -4,7 +4,7 @@ slug: /operations/system-tables/latency_log
 title: 'system.latency_log'
 ---
 
-import SystemTableCloud from '@site/i18n/docusaurus-plugin-content-docs/ru/current/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
 # latency_log

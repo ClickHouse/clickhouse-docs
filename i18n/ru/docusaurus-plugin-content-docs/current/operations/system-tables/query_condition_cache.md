@@ -5,7 +5,7 @@ slug: /operations/system-tables/query_condition_cache
 title: 'system.query_condition_cache'
 ---
 
-import SystemTableCloud from '@site/i18n/docusaurus-plugin-content-docs/ru/current/_snippets/_system_table_cloud.md';
+import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
 # system.query_condition_cache

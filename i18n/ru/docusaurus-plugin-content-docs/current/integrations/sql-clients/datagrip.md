@@ -6,7 +6,7 @@ title: 'Подключение DataGrip к ClickHouse'
 ---
 
 import Image from '@theme/IdealImage';
-import ConnectionDetails from '@site/i18n/docusaurus-plugin-content-docs/ru/current/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import datagrip_1 from '@site/static/images/integrations/sql-clients/datagrip-1.png';
 import datagrip_5 from '@site/static/images/integrations/sql-clients/datagrip-5.png';
 import datagrip_6 from '@site/static/images/integrations/sql-clients/datagrip-6.png';

@@ -5,7 +5,7 @@ title: 'Выберите ключ партиционирования с низк
 description: 'Используйте ключ партиционирования с низкой кардинальностью или избегайте использования любого ключа партиционирования для вашей таблицы.'
 ---
 
-import Content from '@site/i18n/docusaurus-plugin-content-docs/ru/current/best-practices/partionning_keys.md';
+import Content from '@site/i18n/ru/docusaurus-plugin-content-docs/current/best-practices/partionning_keys.md';
 
 <Content />
 
