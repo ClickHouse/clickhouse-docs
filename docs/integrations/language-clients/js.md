@@ -816,7 +816,8 @@ The related JS type is relevant for any `JSON*` formats except the ones that rep
 | Variant(T1, T2...) | ✔️              | T (depends on the variant) |
 | Dynamic            | ✔️              | T (depends on the variant) |
 | Nested             | ✔️              | T[]                        |
-| Tuple              | ✔️              | Tuple                      |
+| Tuple(T1, T2, ...) | ✔️              | [T1, T2, ...]              |
+| Tuple(n1 T1, n2 T2...)  | ✔️         | \{ n1: T1; n2: T2; ...}     |
 | Nullable(T)        | ✔️              | JS type for T or null      |
 | IPv4               | ✔️              | string                     |
 | IPv6               | ✔️              | string                     |
