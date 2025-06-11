@@ -16,7 +16,7 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
-# Ingesting Data from Postgres to ClickHouse (using CDC)
+# Ingesting data from Postgres to ClickHouse (using CDC)
 
 You can use ClickPipes to ingest data from your source Postgres database into ClickHouse Cloud. The source Postgres database can be hosted on-premises or in the cloud including Amazon RDS, Google Cloud SQL, Azure Database for Postgres, Supabase and others.
 
@@ -134,7 +134,7 @@ You can configure the Advanced settings if needed. A brief description of each s
 7. You can select the tables you want to replicate from the source Postgres database. While selecting the tables, you can also choose to rename the tables in the destination ClickHouse database as well as exclude specific columns.
 
    :::warning
-   If you are defining a Ordering Key in ClickHouse differently from the Primary Key in Postgres, please don't forget to read all the [considerations](/integrations/clickpipes/postgres/ordering_keys) around it!
+   If you are defining an ordering key in ClickHouse differently than from the primary key in Postgres, don't forget to read all the [considerations](/integrations/clickpipes/postgres/ordering_keys) around it
    :::
 
 ### Review permissions and start the ClickPipe {#review-permissions-and-start-the-clickpipe}
