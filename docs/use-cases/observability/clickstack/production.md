@@ -123,6 +123,10 @@ ClickHouse OSS provides robust security features out of the box. However, these 
 
 See also [external authenticators](/operations/external-authenticators) and [query complexity settings](/operations/settings/query-complexity) for managing users and ensuring query/resource limits.
 
+### Configure Time To Live (TTL) {#configure-ttl}
+
+Ensure the [Time To Live (TTL)](/use-cases/observability/clickstack/ttl) has been [appropriately configured](/use-cases/observability/clickstack/ttl#modifying-ttl) for your ClickStack deployment. This controls how long data is retained for - the default of 3 days often needs to be modified.
+
 ## MongoDB Guidelines {#mongodb-guidelines}
 
 Follow the official [MongoDB security checklist](https://www.mongodb.com/docs/manual/administration/security-checklist/).

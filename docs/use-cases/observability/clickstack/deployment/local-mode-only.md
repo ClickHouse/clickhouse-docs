@@ -11,11 +11,14 @@ import Image from '@theme/IdealImage';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
 import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png';
 
-This mode includes the UI with all application state stored locally in the browser. 
+Similar to the [all-in-one image](/use-cases/observability/clickstack/deployment/docker-compose), this comprehensive Docker image bundles all ClickStack components:
 
-**User authentication is disabled for this distribution of HyperDX**
+* **ClickHouse**
+* **HyperDX**
+* **OpenTelemetry (OTel) collector** (exposing OTLP on ports `4317` and `4318`)
+* **MongoDB** (for persistent application state)
 
-It does not include a MongoDB instance, meaning dashboards, saved searches, and alerts are not persisted across users.
+**However, user authentication is disabled for this distribution of HyperDX**
 
 ### Suitable for {#suitable-for}
 

@@ -95,3 +95,5 @@ ClickStack consists of three core components:
 In addition to these three components, ClickStack uses a **MongoDB instance** to store application state such as dashboards, user accounts, and configuration settings.
 
 A full architectural diagram and deployment details can be found in the [Architecture section](/use-cases/observability/clickstack/architecture).
+
+For users interesting in deploying ClickStack to production, we recommend reading the ["Production"](/use-cases/observability/clickstack/production) guide.
