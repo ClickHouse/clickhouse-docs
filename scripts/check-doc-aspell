@@ -89,6 +89,7 @@ preprocess_file() {
     # Print lines only if not in frontmatter
     !in_frontmatter { print }
     ' "$file" \
+        | sed -E 's/\[[^\]]*\]\([^)]*\)//g' \
         | sed -E 's/\{#[^}]*\}//g' \
         | sed -E 's/<[A-Za-z0-9_]+svg[^>]*\/?>//g' \
         | sed -E 's/<Image[^>]*\/?>//g' \
