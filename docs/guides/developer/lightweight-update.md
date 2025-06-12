@@ -6,15 +6,23 @@ keywords: ['lightweight update']
 description: 'Provides a description of lightweight updates'
 ---
 
-## Lightweight Update {#lightweight-update}
+# Lightweight Update {#lightweight-update}
 
-When lightweight updates are enabled, updated rows are marked as updated immediately and subsequent `SELECT` queries will automatically return with the changed values. When lightweight updates are not enabled, you may have to wait for your mutations to be applied via a background process to see the changed values.
+## Introduction {#introduction}
+
+When lightweight updates are enabled, updated rows are marked as updated immediately and subsequent `SELECT` queries will
+automatically return with the changed values. When lightweight updates are not enabled, you may have to wait for your 
+mutations to be applied via a background process to see the changed values.
 
 Lightweight updates can be enabled for `MergeTree`-family tables by enabling the query-level setting `apply_mutations_on_fly`.
 
 ```sql
 SET apply_mutations_on_fly = 1;
 ```
+
+## How lightweight updates work {#how-lightweight-updates-work}
+
+[`ALTER TABLE ... UPDATE`]() queries in ClickHouse are implemented as mutations. A mutation is a heavyweight operation that rewrites parts, either synchronously or asynchronously.
 
 ## Example {#example}
 

@@ -225,7 +225,7 @@ Materialized columns will, by default, not be returned in a `SELECT *`.  This is
 
 [Materialized views](/materialized-views) provide a more powerful means of applying SQL filtering and transformations to logs and traces.
 
-Materialized Views allow users to shift the cost of computation from query time to insert time. A ClickHouse Materialized View is just a trigger that runs a query on blocks of data as they are inserted into a table. The results of this query are inserted into a second "target" table.
+Materialized Views allow users to shift the cost of computation from query time to insert time. A ClickHouse materialized view is just a trigger that runs a query on blocks of data as they are inserted into a table. The results of this query are inserted into a second "target" table.
 
 <Image img={observability_10} alt="Materialized view" size="md"/>
 

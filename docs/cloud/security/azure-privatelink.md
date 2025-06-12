@@ -488,7 +488,7 @@ Address: 10.0.0.4
 
 Most likely, the Private Endpoint GUID was not added to the service allow-list. Revisit the [_Add Private Endpoint GUID to your services allow-list_ step](#add-private-endpoint-guid-to-services-allow-list).
 
-### Private Endpoint is in Pending state {#private-endpoint-is-in-pending-state}
+### Private Endpoint is in pending state {#private-endpoint-is-in-pending-state}
 
 Most likely, the Private Endpoint GUID was not added to the service allow-list. Revisit the [_Add Private Endpoint GUID to your services allow-list_ step](#add-private-endpoint-guid-to-services-allow-list).
 

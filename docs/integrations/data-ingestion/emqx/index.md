@@ -107,7 +107,7 @@ Start at the [EMQX Cloud sign up](https://accounts.emqx.com/signup?continue=http
 
 ### Create an MQTT cluster {#create-an-mqtt-cluster}
 
-Once logged in, click on "Cloud Console" under the account menu and you will be able to see the green button to create a new deployment.
+Once logged in, click on "Cloud console" under the account menu and you will be able to see the green button to create a new deployment.
 
 <Image img={emqx_cloud_create_1} size="lg" border alt="EMQX Cloud Create Deployment Step 1 showing deployment options" />
 

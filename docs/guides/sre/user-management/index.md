@@ -33,7 +33,7 @@ You can't manage the same access entity by both configuration methods simultaneo
 :::
 
 :::note
-If you are looking to manage ClickHouse Cloud Console users, please refer to this [page](/cloud/security/cloud-access-management)
+If you are looking to manage ClickHouse Cloud console users, please refer to this [page](/cloud/security/cloud-access-management)
 :::
 
 To see all users, roles, profiles, etc. and all their grants use [`SHOW ACCESS`](/sql-reference/statements/show#show-access) statement.

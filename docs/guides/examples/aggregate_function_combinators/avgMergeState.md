@@ -43,7 +43,7 @@ ORDER BY (region, server_id, timestamp);
 ```
 
 We'll create a server-level aggregation target table and define an Incremental
-Materialized View acting as an insert trigger to it:
+materialized view acting as an insert trigger to it:
 
 ```sql
 CREATE TABLE server_performance
@@ -88,7 +88,7 @@ AS SELECT
 FROM server_performance
 GROUP BY region, datacenter;
 
--- datacenter level table and Materialized View
+-- datacenter level table and materialized view
 
 CREATE TABLE datacenter_performance
 (

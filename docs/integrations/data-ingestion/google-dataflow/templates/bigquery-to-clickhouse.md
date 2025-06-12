@@ -136,7 +136,7 @@ job:
 
 ### Monitor the Job {#monitor-the-job}
 
-Navigate to the [Dataflow Jobs tab](https://console.cloud.google.com/dataflow/jobs) in your Google Cloud Console to
+Navigate to the [Dataflow Jobs tab](https://console.cloud.google.com/dataflow/jobs) in your Google Cloud console to
 monitor the status of the job. You'll find the job details, including progress and any errors:
 
 <Image img={dataflow_inqueue_job} size="lg" border alt="DataFlow console showing a running BigQuery to ClickHouse job" />

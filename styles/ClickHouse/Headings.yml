@@ -8,7 +8,9 @@ indicators:
   - ":"
 exceptions:
   - ClickHouse
-  - Cloud
+  - ClickHouse Cloud
+  - ClickStack
+  - Kafka Connect
   - Azure
   - CLI
   - Cosmos
@@ -45,7 +47,74 @@ exceptions:
   - Postgres
   - CDC
   - FAQ
+  - Amazon
   - Amazon Web Services
   - AWS
   - Frequently Asked Questions
   - PostgreSQL
+  - OSS
+  - Google
+  - Google Cloud Storage
+  - GCS
+  - BigQuery
+  - Pandas
+  - DataFrame
+  - Role-Based Access Control
+  - RBAC
+  - OLTP
+  - HyperDX
+  - UI
+  - ch_bucket_us_east1
+  - ch_bucket_us_east4
+  - SQL
+  - Yandex.Metrica
+  - CPU
+  - B2B
+  - SaaS
+  - LZ4
+  - ZSTD
+  - HTTP
+  - APPEND
+  - REPLACE
+  - chDB
+  - Python
+  - GitHub
+  - Parquet
+  - CSV
+  - JSON
+  - Arrow
+  - ORC
+  - UDF
+  - User Defined Functions
+  - NodeJS
+  - Go
+  - Apache
+  - Bun
+  - S3
+  - Private Link
+  - Kafka
+  - ClickPipes Connector
+  - Prometheus
+  - Java
+  - Bring Your Own Cloud
+  - BYOC
+  - Customer Managed Encryption Keys
+  - CMEK
+  - Transparent Data Encryption
+  - TDE
+  - UAE
+  - GA
+  - JWT
+  - DNS
+  - Private Service Connect
+  - PSC
+  - SSO
+  - Microsoft
+  - IdP
+  - SAML
+  - Okta
+  - REST
+  - API
+  - Kinesis
+  - Middle East
+  - Google Cloud Platform

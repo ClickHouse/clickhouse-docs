@@ -12,7 +12,7 @@ Language SDKs are responsible for collecting telemetry from within your applicat
 
 In browser-based environments, SDKs may also be responsible for collecting **session data**, including UI events, clicks, and navigation thus enabling replays of user sessions. 
 
-## How It Works {#how-it-works}
+## How it works {#how-it-works}
 
 1. Your application uses a a ClickStack SDK (e.g., Node.js, Python, Go). These SDKs are based on the OpenTelemetry SDKs with additional features and usability enhancements.
 2. The SDK collects and exports traces and logs via OTLP (HTTP or gRPC).

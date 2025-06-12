@@ -66,6 +66,6 @@ ALTER TABLE posts (DROP PARTITION '2008')
 
 Read more about [DROP PARTITION](/sql-reference/statements/alter/partition).
 
-## More Resources {#more-resources}
+## More resources {#more-resources}
 
 - [Handling Updates and Deletes in ClickHouse](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

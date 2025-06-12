@@ -227,7 +227,7 @@ Users can schedule upgrades for their services. This feature is supported for En
 
 [Golang](https://github.com/ClickHouse/clickhouse-go/releases/tag/v2.30.1), [Python](https://github.com/ClickHouse/clickhouse-connect/releases/tag/v0.8.11), and [NodeJS](https://github.com/ClickHouse/clickhouse-js/releases/tag/1.10.1) clients added support for Dynamic, Variant, and JSON types.
 
-### DBT support for Refreshable Materialized Views {#dbt-support-for-refreshable-materialized-views}
+### DBT support for refreshable materialized views {#dbt-support-for-refreshable-materialized-views}
 
 DBT now [supports Refreshable Materialized Views](https://github.com/ClickHouse/dbt-clickhouse/releases/tag/v1.8.7) in the `1.8.7` release.
 
@@ -270,15 +270,15 @@ Org Admins can now add more email addresses to a specific notification as additi
 
 ## December 6, 2024 {#december-6-2024}
 
-### BYOC (Beta) {#byoc-beta}
+### BYOC (beta) {#byoc-beta}
 
 Bring Your Own Cloud for AWS is now available in Beta. This deployment model allows you to deploy and run ClickHouse Cloud in your own AWS account. We support deployments in 11+ AWS regions, with more coming soon. Please [contact support](https://clickhouse.com/support/program) for access. Note that this deployment is reserved for large-scale deployments.
 
-### Postgres Change-Data-Capture (CDC) Connector in ClickPipes {#postgres-change-data-capture-cdc-connector-in-clickpipes}
+### Postgres Change Data Capture (CDC) Connector in ClickPipes {#postgres-change-data-capture-cdc-connector-in-clickpipes}
 
 This turnkey integration enables customers to replicate their Postgres databases to ClickHouse Cloud in just a few clicks and leverage ClickHouse for blazing-fast analytics. You can use this connector for both continuous replication and one-time migrations from Postgres.
 
-### Dashboards (Beta) {#dashboards-beta}
+### Dashboards (beta) {#dashboards-beta}
 
 This week, we're excited to announce the Beta launch of Dashboards in ClickHouse Cloud. With Dashboards, users can turn saved queries into visualizations, organize visualizations onto dashboards, and interact with dashboards using query parameters. To get started, follow the [dashboards documentation](/cloud/manage/dashboards).
 
@@ -304,7 +304,7 @@ To get started, follow the [Query API Endpoints documentation](/cloud/get-starte
 
 We are launching Beta for our native JSON support in ClickHouse Cloud. To get started, please get in touch with support[ to enable your cloud service](/cloud/support).
 
-### Vector search using vector similarity indexes (Early Access) {#vector-search-using-vector-similarity-indexes-early-access}
+### Vector search using vector similarity indexes (early access) {#vector-search-using-vector-similarity-indexes-early-access}
 
 We are announcing vector similarity indexes for approximate vector search in early access!
 
@@ -312,7 +312,7 @@ ClickHouse already offers robust support for vector-based use cases, with a wide
 
 To get started, [please sign up for the early access waitlist](https://clickhouse.com/cloud/vector-search-index-waitlist).
 
-### ClickHouse-Connect (Python) and ClickHouse-Kafka-Connect Users {#clickhouse-connect-python-and-clickhouse-kafka-connect-users}
+### ClickHouse-connect (Python) and ClickHouse Kafka Connect users {#clickhouse-connect-python-and-clickhouse-kafka-connect-users}
 
 Notification emails went out to customers who had experienced issues where the clients could encounter a `MEMORY_LIMIT_EXCEEDED` exception.
 
@@ -350,7 +350,7 @@ We've improved autocomplete significantly, allowing you to get in-line SQL compl
 
 <Image img={copilot} size="lg" alt="Animation showing the AI Copilot providing SQL autocompletion suggestions as a user types" border />
 
-### New "Billing" role {#new-billing-role}
+### New "billing" role {#new-billing-role}
 
 You can now assign users in your organization to a new **Billing** role that allows them to view and manage billing information without giving them the ability to configure or manage services. Simply invite a new user or edit an existing user's role to assign the **Billing** role.
 
@@ -376,7 +376,7 @@ Customers looking for increased security for protected health information (PHI) 
 
 Services are available in GCP `us-central-1` to customers with the **Dedicated** service type and require a Business Associate Agreement (BAA). Contact [sales](mailto:sales@clickhouse.com) or [support](https://clickhouse.com/support/program) to request access to this feature or join the wait list for additional GCP, AWS, and Azure regions.
 
-### Compute-Compute separation is now in Private Preview for GCP and Azure {#compute-compute-separation-is-now-in-private-preview-for-gcp-and-azure}
+### Compute-compute separation is now in private preview for GCP and Azure {#compute-compute-separation-is-now-in-private-preview-for-gcp-and-azure}
 
 We recently announced the Private Preview for Compute-Compute Separation for AWS. We're happy to announce that it is now available for GCP and Azure.
 
@@ -386,7 +386,7 @@ Compute-compute separation allows you to designate specific services as read-wri
 
 Customers using multi-factor authentication can now obtain recovery codes that can be used in the event of a lost phone or accidentally deleted token. Customers enrolling in MFA for the first time will be provided the code on set up. Customers with existing MFA can obtain a recovery code by removing their existing MFA token and adding a new one.
 
-### ClickPipes Update: Custom Certificates, Latency Insights, and More! {#clickpipes-update-custom-certificates-latency-insights-and-more}
+### ClickPipes update: custom certificates, latency insights, and more! {#clickpipes-update-custom-certificates-latency-insights-and-more}
 
 We're excited to share the latest updates for ClickPipes, the easiest way to ingest data into your ClickHouse service! These new features are designed to enhance your control over data ingestion and provide greater visibility into performance metrics.
 
@@ -440,11 +440,11 @@ ClickPipes is the easiest way to ingest data into ClickHouse Cloud. We're happy 
 
 ## July 18, 2024 {#july-18-2024}
 
-### Prometheus Endpoint for Metrics is now Generally Available {#prometheus-endpoint-for-metrics-is-now-generally-available}
+### Prometheus endpoint for metrics is now generally available {#prometheus-endpoint-for-metrics-is-now-generally-available}
 
 In our last cloud changelog, we announced the Private Preview for exporting [Prometheus](https://prometheus.io/) metrics from ClickHouse Cloud. This feature allows you to use the [ClickHouse Cloud API](/cloud/manage/api/api-overview) to get your metrics into tools like [Grafana](https://grafana.com/) and [Datadog](https://www.datadoghq.com/) for visualization. We're happy to announce that this feature is now **Generally Available**. Please see [our docs](/integrations/prometheus) to learn more about this feature.
 
-### Table Inspector in Cloud Console {#table-inspector-in-cloud-console}
+### Table inspector in Cloud console {#table-inspector-in-cloud-console}
 
 ClickHouse has commands like [`DESCRIBE`](/sql-reference/statements/describe-table) that allow you to introspect your table to examine schema. These commands output to the console, but they are often not convenient to use as you need to combine several queries to retrieve all pertinent data about your tables and columns.
 
@@ -464,7 +464,7 @@ Stay tuned for more improvements to the analyzer as we have many more optimizati
 
 ## June 28, 2024 {#june-28-2024}
 
-### ClickHouse Cloud for Microsoft Azure is now Generally Available! {#clickhouse-cloud-for-microsoft-azure-is-now-generally-available}
+### ClickHouse Cloud for Microsoft Azure is now generally available! {#clickhouse-cloud-for-microsoft-azure-is-now-generally-available}
 
 We first announced Microsoft Azure support in Beta [this past May](https://clickhouse.com/blog/clickhouse-cloud-is-now-on-azure-in-public-beta). In this latest cloud release, we're happy to announce that our Azure support is transitioning from Beta to Generally Available. ClickHouse Cloud is now available on all the three major cloud platforms: AWS, Google Cloud Platform, and now Microsoft Azure.
 
@@ -475,19 +475,19 @@ This release also includes support for subscriptions via the [Microsoft Azure Ma
 
 If you'd like any specific region to be supported, please [contact us](https://clickhouse.com/support/program).
 
-### Query Log Insights {#query-log-insights}
+### Query log insights {#query-log-insights}
 
-Our new Query Insights UI in the Cloud Console makes ClickHouse's built-in query log a lot easier to use. ClickHouse's `system.query_log` table is a key source of information for query optimization, debugging, and monitoring overall cluster health and performance.  There's just one caveat: with 70+ fields and multiple records per query, interpreting the query log represents a steep learning curve. This initial version of query insights provides a blueprint for future work to simplify query debugging and optimization patterns. We'd love to hear your feedback as we continue to iterate on this feature, so please reach out—your input will be greatly appreciated!
+Our new Query Insights UI in the Cloud console makes ClickHouse's built-in query log a lot easier to use. ClickHouse's `system.query_log` table is a key source of information for query optimization, debugging, and monitoring overall cluster health and performance.  There's just one caveat: with 70+ fields and multiple records per query, interpreting the query log represents a steep learning curve. This initial version of query insights provides a blueprint for future work to simplify query debugging and optimization patterns. We'd love to hear your feedback as we continue to iterate on this feature, so please reach out—your input will be greatly appreciated!
 
 <Image img={query_insights} size="lg" alt="ClickHouse Cloud Query Insights UI showing query performance metrics and analysis" border />
 
-### Prometheus Endpoint for Metrics (Private Preview) {#prometheus-endpoint-for-metrics-private-preview}
+### Prometheus endpoint for metrics (private preview) {#prometheus-endpoint-for-metrics-private-preview}
 
 Perhaps one of our most requested features: you can now export [Prometheus](https://prometheus.io/) metrics from ClickHouse Cloud to [Grafana](https://grafana.com/) and [Datadog](https://www.datadoghq.com/) for visualization. Prometheus provides an open-source solution to monitor ClickHouse and set up custom alerts. Access to Prometheus metrics for your ClickHouse Cloud service is available via the [ClickHouse Cloud API](/integrations/prometheus). This feature is currently in Private Preview. Please reach out to the [support team](https://clickhouse.com/support/program) to enable this feature for your organization.
 
 <Image img={prometheus} size="lg" alt="Grafana dashboard showing Prometheus metrics from ClickHouse Cloud" border />
 
-### Other features: {#other-features}
+### Other features {#other-features}
 - [Configurable backups](/cloud/manage/backups/configurable-backups) to configure custom backup policies like frequency, retention, and schedule are now Generally Available.
 
 ## June 13, 2024 {#june-13-2024}
@@ -535,7 +535,7 @@ We expect to have ClickHouse Cloud for Azure ready for General Availability in t
 
 Note: **Development** services for Azure are not supported at this time.
 
-### Set up Private Link via the Cloud Console {#set-up-private-link-via-the-cloud-console}
+### Set up Private Link via the Cloud console {#set-up-private-link-via-the-cloud-console}
 
 Our Private Link feature allows you to connect your ClickHouse Cloud services with internal services in your cloud provider account without having to direct traffic to the public internet, saving costs and enhancing security. Previously, this was difficult to set up and required using the ClickHouse Cloud API.
 
@@ -617,7 +617,7 @@ Other changes:
 
 ## April 4, 2024 {#april-4-2024}
 
-### Introducing the new ClickHouse Cloud Console {#introducing-the-new-clickhouse-cloud-console}
+### Introducing the new ClickHouse Cloud console {#introducing-the-new-clickhouse-cloud-console}
 
 This release introduces a private preview for the new cloud console.
 
@@ -627,7 +627,7 @@ Thousands of ClickHouse Cloud users execute billions of queries on our SQL conso
 
 Select customers will receive a preview of our new cloud console experience –  a unified and immersive way to explore and manage your data in ClickHouse. Please reach out to us at support@clickhouse.com if you'd like priority access.
 
-<Image img={cloud_console} size="lg" alt="Animation showing the new ClickHouse Cloud Console interface with integrated SQL editor and management features" border />
+<Image img={cloud_console} size="lg" alt="Animation showing the new ClickHouse Cloud console interface with integrated SQL editor and management features" border />
 
 ## March 28, 2024 {#march-28-2024}
 
@@ -661,10 +661,10 @@ This release introduces support for Microsoft Azure, Horizontal Scaling via API,
 
 ## March 14, 2024 {#march-14-2024}
 
-This release makes available in early access the new Cloud Console experience, ClickPipes for bulk loading from S3 and GCS, and support for Avro format in ClickPipes for Kafka. It also upgrades the ClickHouse database version to 24.1, bringing support for new functions as well as performance and resource usage optimizations.
+This release makes available in early access the new Cloud console experience, ClickPipes for bulk loading from S3 and GCS, and support for Avro format in ClickPipes for Kafka. It also upgrades the ClickHouse database version to 24.1, bringing support for new functions as well as performance and resource usage optimizations.
 
 ### Console changes {#console-changes-2}
-- New Cloud Console experience is available in early access (please contact support if you're interested in participating).
+- New Cloud console experience is available in early access (please contact support if you're interested in participating).
 - ClickPipes for bulk loading from S3 and GCS are available in early access (please contact support if you're interested in participating).
 - Support for Avro format in ClickPipes for Kafka is available in early access (please contact support if you're interested in participating).
 
