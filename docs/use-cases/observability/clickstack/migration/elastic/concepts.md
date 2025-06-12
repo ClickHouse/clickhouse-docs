@@ -20,9 +20,9 @@ import clickhouse_mvs from '@site/static/images/use-cases/observability/ch-mvs.p
 
 Both Elastic Stack and ClickStack cover the core roles of an observability platform, but they approach these roles with different design philosophies. These roles include:
 
-- **UI and Alerting**: Tools for querying data, building dashboards, and managing alerts.
-- **Storage and Query Engine**: The backend systems responsible for storing observability data and serving analytical queries.
-- **Data Collection and ETL**: Agents and pipelines that gather telemetry data and process it before ingestion.
+- **UI and Alerting**: tools for querying data, building dashboards, and managing alerts.
+- **Storage and Query Engine**: the backend systems responsible for storing observability data and serving analytical queries.
+- **Data Collection and ETL**: agents and pipelines that gather telemetry data and process it before ingestion.
 
 The table below outlines how each stack maps its components to these roles:
 
@@ -63,14 +63,14 @@ If not using [`JSON`](/integrations/data-formats/json/overview), the schema is s
 
 ### Ingestion and transformation {#ingestion-and-transformation}
 
-Elasticsearch uses ingest pipelines with processors (e.g., `enrich`, `rename`, `grok`) to transform documents before indexing. In ClickHouse, similar functionality is achieved using [**Incremental Materialized Views**](/materialized-view/incremental-materialized-view), which can [filter, transform](/materialized-view/incremental-materialized-view#filtering-and-transformation), or [enrich](/materialized-view/incremental-materialized-view#lookup-table) incoming data and insert results into target tables. You can also insert data to a `Null` table engine if you only need the output of the materialized view to be stored. This means the only the results of any materialized views are preserved, but the original data is discarded - thus saving storage space.
+Elasticsearch uses ingest pipelines with processors (e.g., `enrich`, `rename`, `grok`) to transform documents before indexing. In ClickHouse, similar functionality is achieved using [**incremental materialized views**](/materialized-view/incremental-materialized-view), which can [filter, transform](/materialized-view/incremental-materialized-view#filtering-and-transformation), or [enrich](/materialized-view/incremental-materialized-view#lookup-table) incoming data and insert results into target tables. You can also insert data to a `Null` table engine if you only need the output of the materialized view to be stored. This means that only the results of any materialized views are preserved, but the original data is discarded - thus saving storage space.
 
 For enrichment, Elasticsearch supports dedicated [enrich processors](https://www.elastic.co/docs/reference/enrich-processor/enrich-processor) to add context to documents. In ClickHouse, [**dictionaries**](/dictionary) can be used at both [query time](/dictionary#query-time-enrichment) and [ingest time](/dictionary#index-time-enrichment) to enrich rows - for example, to [map IPs to locations](/use-cases/observability/schema-design#using-ip-dictionaries) or apply [user agent lookups](/use-cases/observability/schema-design#using-regex-dictionaries-user-agent-parsing) on insert.
 
 
 ### Query languages {#query-languages}
 
-Elasticsearch supports a [number of query languages](https://www.elastic.co/docs/explore-analyze/query-filter/languages) including [DSL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/querydsl), [ES|QL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/esql), [EQL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/eql) and [KQL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/kql) (Lucene style) queries, but has limited support for joins — only **left outer joins** are available via [`ES|QL`](https://www.elastic.co/guide/en/elasticsearch/reference/8.x/esql-commands.html#esql-lookup-join). ClickHouse supports **full SQL syntax**, including all join types, [window functions](/sql-reference/window-functions), subqueries (and correlated), and CTEs. This is a major advantage for users needing to correlate between observability signals and business or infrastructure data.
+Elasticsearch supports a [number of query languages](https://www.elastic.co/docs/explore-analyze/query-filter/languages) including [DSL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/querydsl), [ES|QL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/esql), [EQL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/eql) and [KQL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/kql) (Lucene style) queries, but has limited support for joins — only **left outer joins** are available via [`ES|QL`](https://www.elastic.co/guide/en/elasticsearch/reference/8.x/esql-commands.html#esql-lookup-join). ClickHouse supports **full SQL syntax**, including [all join types](/sql-reference/statements/select/join#supported-types-of-join), [window functions](/sql-reference/window-functions), subqueries (and correlated), and CTEs. This is a major advantage for users needing to correlate between observability signals and business or infrastructure data.
 
 In ClickStack, [HyperDX provides a Lucene-compatible search interface](/use-cases/observability/clickstack/search) for ease of transition, alongside full SQL support via the ClickHouse backend. This syntax is comparable to the [Elastic query string](https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-query-string-query#query-string-syntax) syntax. For an exact comparison of this syntax, see ["Searching in ClickStack and Elastic"](/use-cases/observability/clickstack/migration/elastic/search).
 
