@@ -180,7 +180,7 @@ SELECT
 
 ## Excluding columns  {#excluding-columns}
 
-We can also choose to exclude a field by using the EXCEPT clause. For example, to remove the tolls_amount column, we would write the following query:
+We can also choose to exclude a field by using the [`EXCEPT`](/sql-reference/statements/select#except) modifier. For example, to remove the `tolls_amount` column, we would write the following query:
 
 ```sql
 FROM nyc_taxi.trips 
