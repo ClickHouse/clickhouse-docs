@@ -24,6 +24,9 @@ queries by creating a reordering of data by attributes of interest. This can be:
 3. A precomputed aggregation (similar to a Materialized View) but with an ordering
    aligned to the aggregation.
 
+<br/>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6CdnUdZSEG0?si=1zUyrP-tCvn9tXse" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 ## How do Projections work? {#how-do-projections-work}
 
 Practically, a Projection can be thought of as an additional, hidden table to the
