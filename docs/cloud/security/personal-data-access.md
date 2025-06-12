@@ -38,7 +38,7 @@ Below is a summary of the data ClickHouse collects during account setup and serv
 
 Note: URLs with `OrgID` need to be updated to reflect the `OrgID` for your specific account.
 
-### Current Customers {#current-customers}
+### Current customers {#current-customers}
 
 If you have an account with us and the self-service option has not resolved your personal data issue, you can submit a Data Subject Access Request under the Privacy Policy. To do so, log into your ClickHouse account and open a [support case](https://console.clickhouse.cloud/support). This helps us verify your identity and streamline the process to address your request.
 

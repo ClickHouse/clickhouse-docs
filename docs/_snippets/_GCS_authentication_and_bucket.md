@@ -19,7 +19,7 @@ import Image from '@theme/IdealImage';
 
 <Image size="md" img={GCS_bucket_2} alt="Creating a GCS bucket in US East 4" border />
 
-### Generate an Access key {#generate-an-access-key}
+### Generate an access key {#generate-an-access-key}
 
 ### Create a service account HMAC key and secret {#create-a-service-account-hmac-key-and-secret}
 

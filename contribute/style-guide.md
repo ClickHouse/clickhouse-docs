@@ -340,7 +340,7 @@ When using URL parameters to control which version of documentation is displayed
 there are conventions to follow for reliable functionality. 
 Here's how the `?v=v08` parameter relates to the snippet selection:
 
-#### How It Works
+#### How it works
 
 The URL parameter acts as a selector that matches against the `version` property 
 in your component configuration. For example:

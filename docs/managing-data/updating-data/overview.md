@@ -28,7 +28,7 @@ In summary, update operations should be issued carefully, and the mutations queu
 
 Here is a summary of the different ways to update data in ClickHouse:
 
-## Update Mutations {#update-mutations}
+## Update mutations {#update-mutations}
 
 Update mutations can be issued through a `ALTER TABLE ... UPDATE` command e.g.
 
@@ -40,7 +40,7 @@ These are extremely IO-heavy, rewriting all the parts that match the `WHERE` exp
 
 Read more about [update mutations](/sql-reference/statements/alter/update).
 
-## Lightweight Updates {#lightweight-updates}
+## Lightweight updates {#lightweight-updates}
 
 Lightweight updates provide a mechanism to update rows such that they are updated immediately, and subsequent `SELECT` queries will automatically return with the changed values (this incurs an overhead and will slow queries). This effectively addresses the atomicity limitation of normal mutations. We show an example below:
 
@@ -77,7 +77,7 @@ Note that for lightweight updates, a mutation is still used to update the data; 
 
 Read more about [lightweight updates](/guides/developer/lightweight-update).
 
-## Collapsing Merge Tree {#collapsing-merge-tree}
+## Collapsing merge tree {#collapsing-merge-tree}
 
 Stemming from the idea that updates are expensive but inserts can be leveraged to perform updates,
 the [`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree) table engine
@@ -124,6 +124,6 @@ for [`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingme
 for a more comprehensive overview.
 :::
 
-## More Resources {#more-resources}
+## More resources {#more-resources}
 
 - [Handling Updates and Deletes in ClickHouse](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

@@ -624,7 +624,7 @@ formatReadableSize(total_bytes): 36.42 MiB
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-#### Verify in Google Cloud Console {#verify-in-google-cloud-console}
+#### Verify in Google Cloud console {#verify-in-google-cloud-console}
 
 Looking at the buckets you will see that a folder was created in each bucket with the name that was used in the `storage.xml` configuration file.  Expand the folders and you will see many files, representing the data partitions.
 #### Bucket for replica one {#bucket-for-replica-one}

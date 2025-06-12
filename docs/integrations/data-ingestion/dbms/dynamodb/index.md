@@ -61,12 +61,12 @@ The snapshot data from DynamoDB will look something this:
 }
 ```
 
-Observe that the data is in a nested format. We will need to flatten this data before loading it into ClickHouse. This can be done using the `JSONExtract` function in ClickHouse in a Materialized View.
+Observe that the data is in a nested format. We will need to flatten this data before loading it into ClickHouse. This can be done using the `JSONExtract` function in ClickHouse in a materialized view.
 
 We will want to create three tables:
 1. A table to store the raw data from DynamoDB
 2. A table to store the final flattened data (destination table)
-3. A Materialized View to flatten the data
+3. A materialized view to flatten the data
 
 
 For the example DynamoDB data above, the ClickHouse tables would look like this:

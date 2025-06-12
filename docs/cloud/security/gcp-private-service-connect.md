@@ -23,7 +23,7 @@ import gcp_privatelink_pe_dns from '@site/static/images/cloud/security/gcp-priva
 
 <ScalePlanFeatureBadge feature="GCP PSC"/>
 
-Private Service Connect(PSC) is a Google Cloud networking feature that allows consumers to access managed services privately inside their virtual private cloud (VPC) network. Similarly, it allows managed service producers to host these services in their own separate VPC networks and offer a private connection to their consumers.
+Private Service Connect (PSC) is a Google Cloud networking feature that allows consumers to access managed services privately inside their virtual private cloud (VPC) network. Similarly, it allows managed service producers to host these services in their own separate VPC networks and offer a private connection to their consumers.
 
 Service producers publish their applications to consumers by creating Private Service Connect services. Service consumers access those Private Service Connect services directly through one of these Private Service Connect types.
 
@@ -65,7 +65,7 @@ Code examples are provided below to show how to set up Private Service Connect w
  - GCP VPC in customer GCP project: `default`
 :::
 
-You'll need to retrieve information about your ClickHouse Cloud service. You can do this either via the ClickHouse Cloud Console or the ClickHouse API. If you are going to use the ClickHouse API, please set the following environment variables before proceeding:
+You'll need to retrieve information about your ClickHouse Cloud service. You can do this either via the ClickHouse Cloud console or the ClickHouse API. If you are going to use the ClickHouse API, please set the following environment variables before proceeding:
 
 ```shell
 REGION=<Your region code using the GCP format, for example: us-central1>
@@ -137,7 +137,7 @@ First up, we're going to create a Private Service Connection.
 
 In the Google Cloud console, navigate to **Network services -> Private Service Connect**.
 
-<Image img={gcp_psc_open} size="lg" alt="Open Private Service Connect in Google Cloud Console" border />
+<Image img={gcp_psc_open} size="lg" alt="Open Private Service Connect in Google Cloud console" border />
 
 Open the Private Service Connect creation dialog by clicking on the **Connect Endpoint** button.
 

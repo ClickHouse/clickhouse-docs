@@ -1,6 +1,6 @@
 ---
 slug: /best-practices
-keywords: ['Cloud', 'Primary key', 'Ordering key', 'Materialized Views', 'Best Practices', 'Bulk Inserts', 'Asynchronous Inserts', 'Avoid Mutations', 'Avoid Nullable Columns', 'Avoid Optimize Final', 'Partitioning Key']
+keywords: ['Cloud', 'Primary key', 'Ordering key', 'Materialized Views', 'Best Practices', 'Bulk Inserts', 'Asynchronous Inserts', 'Avoid Mutations', 'Avoid nullable Columns', 'Avoid Optimize Final', 'Partitioning Key']
 title: 'Overview'
 hide_title: true
 description: 'Landing page for Best Practices section in ClickHouse'
