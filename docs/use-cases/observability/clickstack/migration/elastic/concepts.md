@@ -141,7 +141,7 @@ Index routing in Elasticsearch ensures specific documents are always routed to s
 
 While both systems support the aggregation of data, ClickHouse offers significantly [more functions](/sql-reference/aggregate-functions/reference), including statistical, approximate, and specialized analytical functions.
 
-In observability use cases, one of the most common applications for aggregations is to count how often specific log messages or events occur (and alerting in case the frequency is unusual).
+In observability use cases, one of the most common applications for aggregations is to count how often specific log messages or events occur (and alert in case the frequency is unusual).
 
 The equivalent to a ClickHouse `SELECT count(*) FROM ... GROUP BY ...` SQL query in Elasticsearch is the [terms aggregation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html), which is an Elasticsearch [bucket aggregation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html).
 
@@ -166,9 +166,9 @@ ClickHouse was designed to maximize efficiency on modern hardware. By default, C
 On a single node, execution lanes split data into independent ranges allowing concurrent processing across CPU threads. This includes filtering, aggregation, and sorting. The local results from each lane are eventually merged, and a limit operator is applied, in case the query features a limit clause.
 
 Query execution is further parallelized by:
-1. **SIMD vectorization**: Operations on columnar data use [CPU SIMD instructions](https://en.wikipedia.org/wiki/Single_instruction,_multiple_data) (e.g., [AVX512](https://en.wikipedia.org/wiki/AVX-512)), allowing batch processing of values.
-2. **Cluster-level parallelism**: In distributed setups, each node performs query processing locally. [Partial aggregation states](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states#working-with-aggregation-states) are streamed to the initiating node and merged. If the query's `GROUP BY` keys align with the [sharding keys](/architecture/horizontal-scaling#shard), merging can be [minimized or avoided entirely](/operations/settings/settings#distributed_group_by_no_merge).
-
+1. **SIMD vectorization**: operations on columnar data use [CPU SIMD instructions](https://en.wikipedia.org/wiki/Single_instruction,_multiple_data) (e.g., [AVX512](https://en.wikipedia.org/wiki/AVX-512)), allowing batch processing of values.
+2. **Cluster-level parallelism**: in distributed setups, each node performs query processing locally. [Partial aggregation states](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states#working-with-aggregation-states) are streamed to the initiating node and merged. If the query's `GROUP BY` keys align with the [sharding keys](/architecture/horizontal-scaling#shard), merging can be [minimized or avoided entirely](/operations/settings/settings#distributed_group_by_no_merge).
+<br/>
 This model enables efficient scaling across cores and nodes, making ClickHouse well-suited for large-scale analytics. The use of *partial aggregation states* allows intermediate results from different threads and nodes to be merged without loss of accuracy.
 
 Elasticsearch, by contrast, assigns one thread per shard for most aggregations, regardless of how many CPU cores are available. These threads return shard-local top-N results, which are merged at the coordinating node. This approach can underutilize system resources and introduce potential inaccuracies in global aggregations, particularly when frequent terms are distributed across multiple shards. Accuracy can be improved by increasing the `shard_size` parameter, but this comes at the cost of higher memory usage and query latency.
@@ -219,17 +219,17 @@ We sketch the mechanics of incremental materialized views abstractly (note that 
 
 In the diagram above, the materialized view's source table already contains a data part storing some `blue` rows (1 to 10) belonging to the same group. For this group, there also already exists a data part in the view's target table storing a [partial aggregation state](https://www.youtube.com/watch?v=QDAJTKZT8y4) for the `blue` group. When ① ② ③ inserts into the source table with new rows take place, a corresponding source table data part is created for each insert, and, in parallel, (just) for each block of newly inserted rows, a partial aggregation state is calculated and inserted in the form of a data part into the materialized view's target table. ④ During background part merges, the partial aggregation states are merged, resulting in incremental data aggregation. 
 
-Note that all [over 90 aggregate functions](https://clickhouse.com/docs/en/sql-reference/aggregate-functions/reference), including their combination with aggregate function [combinators](https://www.youtube.com/watch?v=7ApwD0cfAFI), support [partial aggregation states](https://clickhouse.com/docs/en/sql-reference/data-types/aggregatefunction). 
+Note that all [aggregate functions](https://clickhouse.com/docs/en/sql-reference/aggregate-functions/reference) (over 90 of them), including their combinations with aggregate function [combinators](https://www.youtube.com/watch?v=7ApwD0cfAFI), support [partial aggregation states](https://clickhouse.com/docs/en/sql-reference/data-types/aggregatefunction). 
 
-You can see a more concrete example of Elasticsearch vs ClickHouse for incremental aggregates, see [here](https://github.com/ClickHouse/examples/tree/main/blog-examples/clickhouse-vs-elasticsearch/continuous-data-transformation#continuous-data-transformation-example). 
+For a more concrete example of Elasticsearch vs ClickHouse for incremental aggregates, see this [example](https://github.com/ClickHouse/examples/tree/main/blog-examples/clickhouse-vs-elasticsearch/continuous-data-transformation#continuous-data-transformation-example). 
 
 The advantages of ClickHouse's approach include:
 
-- **Always-up-to-date aggregates**: Materialized views are always in sync with the source table.
-- **No background jobs**: Aggregation is pushed to insert time rather than query time.
-- **Better real-time performance**: Ideal for observability workloads and real-time analytics where fresh aggregates are required instantly.
-- **Composable**: Materialized views can be layered or joined with other views and tables for more complex query acceleration strategies.
-- **Different TTLs**: Different TTL settings can be applied to the source table and target table of the materialized view.
+- **Always-up-to-date aggregates**: materialized views are always in sync with the source table.
+- **No background jobs**: aggregations are pushed to insert time rather than query time.
+- **Better real-time performance**: ideal for observability workloads and real-time analytics where fresh aggregates are required instantly.
+- **Composable**: materialized views can be layered or joined with other views and tables for more complex query acceleration strategies.
+- **Different TTLs**: different TTL settings can be applied to the source table and target table of the materialized view.
 
 This model is particularly powerful for observability use cases where users need to compute metrics such as per-minute error rates, latencies, or top-N breakdowns without scanning billions of raw records per query.
 
@@ -241,10 +241,10 @@ In contrast, Elasticsearch is tightly coupled to its internal data format and Lu
 
 ClickHouse's lakehouse capabilities extend beyond just reading data:
 
-- **Data Catalog Integration**: ClickHouse supports integration with data catalogs like [AWS Glue](/use-cases/data-lake/glue-catalog), enabling automatic discovery and access to tables in object storage.
-- **Object Storage Support**: Native support for querying data residing in [S3](/engines/table-engines/integrations/s3), [GCS](/sql-reference/table-functions/gcs), and [Azure Blob Storage](/engines/table-engines/integrations/azureBlobStorage) without requiring data movement.
-- **Query Federation**: Ability to correlate data across multiple sources, including lakehouse tables, traditional databases, and ClickHouse tables using [external dictionaries](/dictionary) and [table functions](/sql-reference/table-functions).
-- **Incremental Loading**: Support for continuous loading from lakehouse tables into local [MergeTree](/engines/table-engines/mergetree-family/mergetree) tables, using features like [S3Queue](/engines/table-engines/integrations/s3queue) and [ClickPipes](/integrations/clickpipes).
-- **Performance Optimization**: Distributed query execution over lakehouse data using [cluster functions](/sql-reference/table-functions/cluster) for improved performance.
+- **Data catalog integration**: ClickHouse supports integration with data catalogs like [AWS Glue](/use-cases/data-lake/glue-catalog), enabling automatic discovery and access to tables in object storage.
+- **Object storage support**: native support for querying data residing in [S3](/engines/table-engines/integrations/s3), [GCS](/sql-reference/table-functions/gcs), and [Azure Blob Storage](/engines/table-engines/integrations/azureBlobStorage) without requiring data movement.
+- **Query federation**: the ability to correlate data across multiple sources, including lakehouse tables, traditional databases, and ClickHouse tables using [external dictionaries](/dictionary) and [table functions](/sql-reference/table-functions).
+- **Incremental loading**: support for continuous loading from lakehouse tables into local [MergeTree](/engines/table-engines/mergetree-family/mergetree) tables, using features like [S3Queue](/engines/table-engines/integrations/s3queue) and [ClickPipes](/integrations/clickpipes).
+- **Performance optimization**: distributed query execution over lakehouse data using [cluster functions](/sql-reference/table-functions/cluster) for improved performance.
 
 These capabilities make ClickHouse a natural fit for organizations adopting lakehouse architectures, allowing them to leverage both the flexibility of data lakes and the performance of a columnar database. 
