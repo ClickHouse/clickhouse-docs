@@ -44,7 +44,7 @@
     "@docusaurus/theme-mermaid": "3.7.0",
     "@docusaurus/theme-search-algolia": "^3.7.0",
     "@mdx-js/react": "^3.1.0",
-    "@radix-ui/react-navigation-menu": "^1.2.5",
+    "@radix-ui/react-navigation-menu": "^1.2.13",
     "@redocly/cli": "^1.34.0",
     "axios": "^1.8.2",
     "clsx": "^2.1.0",
@@ -70,7 +70,7 @@
     "remark-docusaurus-tabs": "^0.2.0",
     "remark-link-rewrite": "^1.0.7",
     "remark-math": "^6.0.0",
-    "sass": "^1.86.1",
+    "sass": "^1.89.1",
     "search-insights": "^2.17.3",
     "short-uuid": "^5.2.0",
     "unist-util-visit": "^5.0.0"
