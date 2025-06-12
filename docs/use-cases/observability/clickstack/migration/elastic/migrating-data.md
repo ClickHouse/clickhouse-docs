@@ -524,7 +524,7 @@ This strict schema has a number of benefits:
 
 - **Data validation** – enforcing a strict schema avoids the risk of column explosion, outside of specific structures. 
 - **Avoids risk of column explosion**: although the JSON type scales to potentially thousands of columns, where subcolumns are stored as dedicated columns, this can lead to a column file explosion where an excessive number of column files are created that impacts performance. To mitigate this, the underlying [Dynamic type](/sql-reference/data-types/dynamic) used by JSON offers a [`max_dynamic_paths`](/sql-reference/data-types/newjson#reading-json-paths-as-sub-columns) parameter, which limits the number of unique paths stored as separate column files. Once the threshold is reached, additional paths are stored in a shared column file using a compact encoded format, maintaining performance and storage efficiency while supporting flexible data ingestion. Accessing this shared column file is, however, not as performant. Note, however, that the JSON column can be used with [type hints](/integrations/data-formats/json/schema#using-type-hints-and-skipping-paths). "Hinted" columns will deliver the same performance as dedicated columns.
-- **Simpler introspection of paths and types** - Although the JSON type supports [introspection functions](/sql-reference/data-types/newjson#introspection-functions) to determine the types and paths that have been inferred, static structures can be simpler to explore e.g. with `DESCRIBE`.
+- **Simpler introspection of paths and types**: although the JSON type supports [introspection functions](/sql-reference/data-types/newjson#introspection-functions) to determine the types and paths that have been inferred, static structures can be simpler to explore e.g. with `DESCRIBE`.
 <br/>
 Alternatively, users can simply create a table with one `JSON` column.
 
@@ -580,6 +580,7 @@ export ELASTICDUMP_INPUT_PASSWORD=
 export CLICKHOUSE_HOST=
 export CLICKHOUSE_PASSWORD=
 export CLICKHOUSE_USER=default
+
 # command to run - modify as required
 elasticdump --input=${ELASTICSEARCH_URL} --type=data --input-index ${ELASTICSEARCH_INDEX} --output=$ --sourceOnly --searchAfter --pit=true | 
 clickhouse-client --host ${CLICKHOUSE_HOST} --secure --password ${CLICKHOUSE_PASSWORD} --user ${CLICKHOUSE_USER} --max_insert_block_size=1000 \
@@ -594,7 +595,7 @@ Note the use of the following flags for `elasticdump`:
 - `sourceOnly` flag ensuring we omit metadata fields in our response.
 - `searchAfter` flag to use the [`searchAfter` API](https://www.elastic.co/docs/reference/elasticsearch/rest-apis/paginate-search-results#search-after) for efficient pagination of results.
 - `pit=true` to ensure consistent results between queries using the [point in time API](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-open-point-in-time).
-
+<br/>
 Our ClickHouse client parameters here (aside from credentials):
 
 - `max_insert_block_size=1000` - ClickHouse client will send data once this number of rows is reached. Increasing improves throughput at the expense of time to formulate a block - thus increasing time till data appears in ClickHouse.
