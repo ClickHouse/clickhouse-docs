@@ -17,7 +17,7 @@ import hyperdx_sql from '@site/static/images/use-cases/observability/hyperdx-sql
 
 ClickHouse is a SQL-native engine, designed from the ground up for high-performance analytical workloads. In contrast, Elasticsearch provides a SQL-like interface, transpiling SQL into the underlying Elasticsearch query DSL — meaning it is not a first-class citizen, and [feature parity](https://www.elastic.co/docs/explore-analyze/query-filter/languages/sql-limitations) is limited. 
 
-ClickHouse not only supports full SQL but extends it with a range of observability-focused functions, such as `argMax`, `histogram`, and `quantileTiming`, that simplify querying structured logs, metrics, and traces.
+ClickHouse not only supports full SQL but extends it with a range of observability-focused functions, such as [`argMax`](/sql-reference/aggregate-functions/reference/argmax), [`histogram`](/sql-reference/aggregate-functions/parametric-functions#histogram), and [`quantileTiming`](/sql-reference/aggregate-functions/reference/quantiletiming), that simplify querying structured logs, metrics, and traces.
 
 For simple log and trace exploration, HyperDX provides a [Lucene-style syntax](/use-cases/observability/clickstack/search) for intuitive, text-based filtering for field-value queries, ranges, wildcards, and more. This is comparable to the [Lucene syntax](https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-query-string-query#query-string-syntax) in Elasticsearch and elements of the [Kibana Query Language](https://www.elastic.co/docs/reference/query-languages/kql).
 
