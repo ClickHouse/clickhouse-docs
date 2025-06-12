@@ -12,10 +12,10 @@ description: 'Migrating data to ClickHouse Observability Stack from Elastic'
 
 When migrating from Elastic to ClickStack for observability use cases, we recommend a **parallel operation** approach rather than attempting to migrate historical data. This strategy offers several advantages:
 
-1. **Minimal Risk**: By running both systems concurrently, you maintain access to existing data and dashboards while validating ClickStack and familiarizing your users with the new system.
-2. **Natural Data Expiration**: Most observability data has a limited retention period (typically 30 days or less), allowing for a natural transition as data expires from Elastic.
-3. **Simplified Migration**: No need for complex data transfer tools or processes to move historical data between systems.
-
+1. **Minimal risk**: by running both systems concurrently, you maintain access to existing data and dashboards while validating ClickStack and familiarizing your users with the new system.
+2. **Natural data expiration**: most observability data has a limited retention period (typically 30 days or less), allowing for a natural transition as data expires from Elastic.
+3. **Simplified migration**: no need for complex data transfer tools or processes to move historical data between systems.
+<br/>
 :::note Migrating data
 We demonstrate an approach for migrating essential data from Elasticsearch to ClickHouse in the section ["Migrating data"](#migrating-data). This should not be used for larger datasets as it is rarely performant - limited by the ability for Elasticsearch to export efficiently, with only JSON format supported.
 :::
@@ -23,11 +23,11 @@ We demonstrate an approach for migrating essential data from Elasticsearch to Cl
 ### Implementation steps {#implementation-steps}
 
 1. **Configure Dual Ingestion**
-
+<br/>
 Set up your data collection pipeline to send data to both Elastic and ClickStack simultaneously. How this is achieved depends on your current agents for collection - see ["Migrating Agents"](/use-cases/observability/clickstack/migration/elastic/migrating-agents).
 
 2. **Adjust Retention Periods**
-
+<br/>
 Configure Elastic's TTL settings to match your desired retention period. Set up the ClickStack [TTL](/use-cases/observability/clickstack/production#configure-ttl) to maintain data for the same duration.
 
 3. **Validate and Compare**:
@@ -38,7 +38,7 @@ Configure Elastic's TTL settings to match your desired retention period. Set up 
 - Verify that all critical dashboards and alerts work as expected in ClickStack
 
 4. **Gradual Transition**:
-
+<br/>
 - As data naturally expires from Elastic, users will increasingly rely on ClickStack
 - Once confidence in ClickStack is established, you can begin redirecting queries and dashboards
 
@@ -508,15 +508,15 @@ Note that:
 
  - We've used Tuples to represent nested structures instead of dot notation
  - Used appropriate ClickHouse types based on the mapping:
- - `keyword` → `String`
- - `date` → `DateTime`
- - `boolean` → `UInt8`
- - `long` → `Int64`
- - `ip` → `Array(Variant(IPv4, IPv6))`. We use a [`Variant(IPv4, IPv6)`](/sql-reference/data-types/variant) here as the field contains a mixture of [`IPv4`](/sql-reference/data-types/ipv4) and [`IPv6`](/sql-reference/data-types/ipv6).
- - `object` → `JSON` for the syslog object whose structure is unpredictable.
- - Note the columns `host.ip` and `host.mac` are explicit `Array` type, unlike in Elasticsearch where all types are arrays.
- - Added an `ORDER BY` clause using timestamp and hostname for efficient time-based queries
- - Used the MergeTree engine, which is optimal for log data
+   - `keyword` → `String`
+   - `date` → `DateTime`
+   - `boolean` → `UInt8`
+   - `long` → `Int64`
+   - `ip` → `Array(Variant(IPv4, IPv6))`. We use a [`Variant(IPv4, IPv6)`](/sql-reference/data-types/variant) here as the field contains a mixture of [`IPv4`](/sql-reference/data-types/ipv4) and [`IPv6`](/sql-reference/data-types/ipv6).
+   - `object` → `JSON` for the syslog object whose structure is unpredictable.
+ - Columns `host.ip` and `host.mac` are explicit `Array` type, unlike in Elasticsearch where all types are arrays.
+ - An `ORDER BY` clause is added using timestamp and hostname for efficient time-based queries
+ - `MergeTree`, which is optimal for log data, is used as the engine type
 
 **This approach of statically defining the schema and using the JSON type selectively where required [is recommended](/integrations/data-formats/json/schema#handling-semi-structured-dynamic-structures).**
 
