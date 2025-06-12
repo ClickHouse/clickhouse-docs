@@ -17,6 +17,7 @@ import { useEffect } from 'react';
 import { getGoogleAnalyticsUserIdFromBrowserCookie } from '../../lib/google/google'
 
 let DocSearchModal = null;
+let searchContainer = null;
 
 function Hit({ hit, children }) {
   const handleClick = () => {
@@ -69,7 +70,6 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
     clickAnalytics: true,
   };
   const history = useHistory();
-  const searchContainer = useRef(null);
   const searchButtonRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [initialQuery, setInitialQuery] = useState(undefined);
@@ -100,18 +100,26 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
 
   const onOpen = useCallback(() => {
     importDocSearchModalIfNeeded().then(() => {
-      searchContainer.current = document.createElement('div');
+      // searchContainer is not null here when the modal is already open
+      // this check is needed because ctrl + k shortcut was handled by another instance of SearchBar component
+      if (searchContainer) {
+        return;
+      }
+
+      searchContainer = document.createElement('div');
       document.body.insertBefore(
-        searchContainer.current,
+        searchContainer,
         document.body.firstChild,
       );
+
       setIsOpen(true);
     });
   }, [importDocSearchModalIfNeeded, setIsOpen]);
 
   const onClose = useCallback(() => {
     setIsOpen(false);
-    searchContainer.current?.remove();
+    searchContainer?.remove();
+    searchContainer = null;;
   }, [setIsOpen]);
 
   const onInput = useCallback(
@@ -204,7 +212,7 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
 
       {isOpen &&
         DocSearchModal &&
-        searchContainer.current &&
+        searchContainer &&
         createPortal(
           <DocSearchModal
             onClose={onClose}
@@ -223,7 +231,7 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
             placeholder={translations.placeholder}
             translations={translations.modal}
           />,
-          searchContainer.current,
+          searchContainer,
         )}
     </>
   );
