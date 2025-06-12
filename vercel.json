@@ -3322,6 +3322,24 @@
     {
       "source": "/docs/cloud/manage/api/services-api-reference",
       "destination": "https://clickhouse.com/docs/cloud/manage/api/swagger#/paths/~1v1~1organizations~1%7BorganizationId%7D~1services/get"
+    },
+    {
+      "source": "/docs/getting-started/example-datasets/reddit-comments",
+      "destination": "/docs/getting-started/example-datasets",
+      "permanent": true
+    },
+    {
+      "source": "/docs/getting-started/example-datasets/recipes",
+      "destination": "/docs/getting-started/example-datasets",
+      "permanent": true
+    },
+    {
+      "source": "/docs/whats-new/changelog/2025",
+      "destination": "/docs/category/changelog"
+    },
+    {
+      "source": "/docs/development/adding_test_queries",
+      "destination": "/docs/development/tests#adding-a-new-test"
     }
   ]
 }
