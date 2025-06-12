@@ -6,6 +6,8 @@ pagination_next: null
 sidebar_label: 'Equivalent concepts'
 sidebar_position: 1
 description: 'Equivalent concepts - ClickStack and Elastic'
+show_related_blogs: true
+keywords: ['Elasticsearch']
 ---
 
 import Image from '@theme/IdealImage';
@@ -98,9 +100,9 @@ Importantly, Elasticsearch stores the full original document in [`_source`](http
 
 In Elasticsearch, [index mappings](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html) (equivalent to table schemas in ClickHouse) control the type of fields and the data structures used for this persistence and querying.
 
-<Image img={clickhouse} alt="ClickHouse" size="lg"/>
-
 ClickHouse, by contrast, is **column-oriented** — every column is stored independently but always sorted by the table's primary/ordering key. This ordering enables [sparse primary indexes](/primary-indexes), which allow ClickHouse to skip over data during query execution efficiently. When queries filter by primary key fields, ClickHouse reads only the relevant parts of each column, significantly reducing disk I/O and improving performance — even without a full index on every column. 
+
+<Image img={clickhouse} alt="ClickHouse" size="lg"/>
 
 ClickHouse also supports [**skip indexes**](/optimize/skipping-indexes), which accelerate filtering by precomputing index data for selected columns. These must be explicitly defined but can significantly improve performance. Additionally, ClickHouse lets users specify [compression codecs](/use-cases/observability/schema-design#using-codecs) and compression algorithms per column — something Elasticsearch does not support (its [compression](https://www.elastic.co/docs/reference/elasticsearch/index-settings/index-modules) only applies to `_source` JSON storage).
 

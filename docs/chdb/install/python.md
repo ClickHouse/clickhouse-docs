@@ -1,24 +1,17 @@
----
-title: 'Installing chDB for Python'
-sidebar_label: 'Python'
-slug: /chdb/install/python
-description: 'How to install chDB for Python'
-keywords: ['chdb', 'embedded', 'clickhouse-lite', 'python', 'install']
----
 
 # Installing chDB for Python
 
-## Requirements {#requirements}
+## Requirements 
 
 Python 3.8+ on macOS and Linux (x86_64 and ARM64)
 
-## Install {#install}
+## Install 
 
 ```bash
 pip install chdb
 ```
 
-## Usage {#usage}
+## Usage 
 
 CLI example:
 
@@ -41,15 +34,15 @@ print(res, end="")
 
 Queries can return data using any [supported format](/interfaces/formats) as well as `Dataframe` and `Debug`.
 
-## GitHub repository {#github-repository}
+## GitHub repository 
 
 You can find the GitHub repository for the project at [chdb-io/chdb](https://github.com/chdb-io/chdb).
 
-## Data Input {#data-input}
+## Data Input 
 
 The following methods are available to access on-disk and in-memory data formats:
 
-### Query On File (Parquet, CSV, JSON, Arrow, ORC and 60+) {#query-on-file-parquet-csv-json-arrow-orc-and-60}
+### Query On File (Parquet, CSV, JSON, Arrow, ORC and 60+) 
 
 You can execute SQL and return desired format data.
 
@@ -73,7 +66,7 @@ print(f"SQL read {res.rows_read()} rows, {res.bytes_read()} bytes, elapsed {res.
 chdb.query('select * from file("data.parquet", Parquet)', 'Dataframe')
 ```
 
-### Query On Table (Pandas DataFrame, Parquet file/bytes, Arrow bytes) {#query-on-table-pandas-dataframe-parquet-filebytes-arrow-bytes}
+### Query On Table (Pandas DataFrame, Parquet file/bytes, Arrow bytes) 
 
 **Query On Pandas DataFrame**
 
@@ -90,7 +83,7 @@ print(ret_tbl)
 print(ret_tbl.query('select b, sum(a) from __table__ group by b'))
 ```
 
-### Query with Stateful Session {#query-with-stateful-session}
+### Query with Stateful Session 
 
  Sessions will keep the state of query. All DDL and DML state will be kept in a directory. Directory path can be passed in as an argument. If it is not passed, a temporary directory will be created.
 
@@ -115,7 +108,7 @@ print(sess.query("SELECT * FROM db_xxx.view_xxx", "Pretty"))
 
 See also: [test_stateful.py](https://github.com/chdb-io/chdb/blob/main/tests/test_stateful.py).
 
-### Query with Python DB-API 2.0 {#query-with-python-db-api-20}
+### Query with Python DB-API 2.0 
 
 ```python
 import chdb.dbapi as dbapi
@@ -130,7 +123,7 @@ cur1.close()
 conn1.close()
 ```
 
-### Query with UDF (User Defined Functions) {#query-with-udf-user-defined-functions}
+### Query with UDF (User Defined Functions) 
 
 ```python
 from chdb.udf import chdb_udf
@@ -169,9 +162,9 @@ Some notes on the chDB Python UDF (User Defined Function) decorator.
 
 see also: [test_udf.py](https://github.com/chdb-io/chdb/blob/main/tests/test_udf.py).
 
-### Python Table Engine {#python-table-engine}
+### Python Table Engine 
 
-### Query on Pandas DataFrame {#query-on-pandas-dataframe}
+### Query on Pandas DataFrame 
 
 ```python
 import chdb
@@ -186,7 +179,7 @@ df = pd.DataFrame(
 chdb.query("SELECT b, sum(a) FROM Python(df) GROUP BY b ORDER BY b").show()
 ```
 
-### Query on Arrow Table {#query-on-arrow-table}
+### Query on Arrow Table 
 
 ```python
 import chdb
@@ -203,7 +196,7 @@ chdb.query(
 ).show()
 ```
 
-### Query on chdb.PyReader class instance {#query-on-chdbpyreader-class-instance}
+### Query on chdb.PyReader class instance 
 
 1. You must inherit from chdb.PyReader class and implement the `read` method.
 2. The `read` method should:
@@ -245,7 +238,7 @@ chdb.query(
 
 See also: [test_query_py.py](https://github.com/chdb-io/chdb/blob/main/tests/test_query_py.py).
 
-## Limitations {#limitations}
+## Limitations 
 
 1. Column types supported: `pandas.Series`, `pyarrow.array`,`chdb.PyReader`
 1. Data types supported: Int, UInt, Float, String, Date, DateTime, Decimal

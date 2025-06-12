@@ -1,12 +1,7 @@
----
-title: 'Troubleshooting'
-slug: /faq/troubleshooting
-description: 'How to troubleshoot common ClickHouse Cloud error messages.'
----
 
-## ClickHouse Cloud Troubleshooting {#clickhouse-cloud-troubleshooting}
+## ClickHouse Cloud Troubleshooting 
 
-### Unable to access a ClickHouse Cloud service {#unable-to-access-a-clickhouse-cloud-service}
+### Unable to access a ClickHouse Cloud service 
 
 If you are seeing an error message like one of these, your IP Access List may be denying access:
 

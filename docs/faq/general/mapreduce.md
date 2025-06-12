@@ -1,13 +1,5 @@
----
-slug: /faq/general/mapreduce
-title: 'Why not use something like MapReduce?'
-toc_hidden: true
-toc_priority: 110
-description: 'This page explains why you would use ClickHouse over MapReduce'
-keywords: ['MapReduce']
----
 
-# Why Not Use Something Like MapReduce? {#why-not-use-something-like-mapreduce}
+# Why Not Use Something Like MapReduce? 
 
 We can refer to systems like MapReduce as distributed computing systems in which the reduce operation is based on distributed sorting. The most common open-source solution in this class is [Apache Hadoop](http://hadoop.apache.org). 
 

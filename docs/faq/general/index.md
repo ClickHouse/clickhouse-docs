@@ -1,11 +1,3 @@
----
-slug: /faq/general/
-sidebar_position: 1
-sidebar_label: 'General Questions about ClickHouse'
-keywords: ['faq', 'questions', 'what is']
-title: 'General Questions About ClickHouse'
-description: 'Index page listing general questions about ClickHouse'
----
 
 # General Questions About ClickHouse
 

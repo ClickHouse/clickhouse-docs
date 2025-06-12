@@ -13,7 +13,7 @@ There are a few tasks to be done before running `docker compose`:
 The commands below are to be run from the  top level of the GitHub repo, `superset`.
 :::
 
-## Official ClickHouse Connect driver {#official-clickhouse-connect-driver}
+## Official ClickHouse Connect driver 
 
 To make the ClickHouse Connect driver available in the Superset deployment add it to the local requirements file:
 
@@ -21,7 +21,7 @@ To make the ClickHouse Connect driver available in the Superset deployment add i
 echo "clickhouse-connect" >> ./docker/requirements-local.txt
 ```
 
-## Mapbox {#mapbox}
+## Mapbox 
 
 This is optional, you can plot location data in Superset without a Mapbox API key, but you will see a message telling you that you should add a key and the background image of the map will be missing (you will only see the data points and not the map background).  Mapbox provides a free tier if you would like to use it.
 
@@ -33,7 +33,7 @@ Make the API key available to Superset:
 echo "MAPBOX_API_KEY=pk.SAMPLE-Use-your-key-instead" >> docker/.env-non-dev
 ```
 
-## Deploy Superset version 2.0.0 {#deploy-superset-version-200}
+## Deploy Superset version 2.0.0 
 
 To deploy release 2.0.0 run:
 

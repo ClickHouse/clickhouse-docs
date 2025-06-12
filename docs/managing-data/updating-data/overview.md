@@ -1,17 +1,11 @@
----
-slug: /updating-data/overview
-title: 'Overview'
-description: 'How to update data in ClickHouse'
-keywords: ['update', 'updating data']
----
 
-## Differences between updating data in ClickHouse and OLTP databases {#differences-between-updating-data-in-clickhouse-and-oltp-databases}
+## Differences between updating data in ClickHouse and OLTP databases 
 
 When it comes to handling updates, ClickHouse and OLTP databases diverge significantly due to their underlying design philosophies and target use cases. For example, PostgreSQL, a row-oriented, ACID-compliant relational database, supports robust and transactional update and delete operations, ensuring data consistency and integrity through mechanisms like Multi-Version Concurrency Control (MVCC). This allows for safe and reliable modifications even in high-concurrency environments.
 
 Conversely, ClickHouse is a column-oriented database optimized for read-heavy analytics and high throughput append-only operations. While it does natively support in-place updates and delete, they must be used carefully to avoid high I/O. Alternatively, tables can be restructured to convert delete and update into appended operations where they are processed asynchronously and/or at read time, thus reflecting the focus on high-throughput data ingestion and efficient query performance over real-time data manipulation.
 
-## Methods to update data in ClickHouse {#methods-to-update-data-in-clickhouse}
+## Methods to update data in ClickHouse 
 
 There are several ways to update data in ClickHouse, each with its own advantages and performance characteristics. You should select the appropriate method based on your data model and the amount of data you intend to update.
 
@@ -28,7 +22,7 @@ In summary, update operations should be issued carefully, and the mutations queu
 
 Here is a summary of the different ways to update data in ClickHouse:
 
-## Update Mutations {#update-mutations}
+## Update Mutations 
 
 Update mutations can be issued through a `ALTER TABLE ... UPDATE` command e.g.
 
@@ -40,7 +34,7 @@ These are extremely IO-heavy, rewriting all the parts that match the `WHERE` exp
 
 Read more about [update mutations](/sql-reference/statements/alter/update).
 
-## Lightweight Updates {#lightweight-updates}
+## Lightweight Updates 
 
 Lightweight updates provide a mechanism to update rows such that they are updated immediately, and subsequent `SELECT` queries will automatically return with the changed values (this incurs an overhead and will slow queries). This effectively addresses the atomicity limitation of normal mutations. We show an example below:
 
@@ -77,7 +71,7 @@ Note that for lightweight updates, a mutation is still used to update the data; 
 
 Read more about [lightweight updates](/guides/developer/lightweight-update).
 
-## Collapsing Merge Tree {#collapsing-merge-tree}
+## Collapsing Merge Tree 
 
 Stemming from the idea that updates are expensive but inserts can be leveraged to perform updates,
 the [`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree) table engine
@@ -124,6 +118,6 @@ for [`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingme
 for a more comprehensive overview.
 :::
 
-## More Resources {#more-resources}
+## More Resources 
 
 - [Handling Updates and Deletes in ClickHouse](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

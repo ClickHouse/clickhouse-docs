@@ -1,11 +1,3 @@
----
-slug: /migrations/bigquery
-title: 'BigQuery'
-pagination_prev: null
-pagination_next: null
-description: 'Landing page for the BigQuery migrations section'
-keywords: ['BigQuery', 'migration']
----
 
 In this section of the docs, learn more about the similarities and differences between BigQuery and ClickHouse Cloud, as well as why you might want to migrate and how to do so.
 

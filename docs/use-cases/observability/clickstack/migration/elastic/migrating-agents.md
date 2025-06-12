@@ -6,6 +6,8 @@ pagination_next: null
 sidebar_label: 'Migrating agents'
 sidebar_position: 5
 description: 'Migrating agents from Elastic'
+show_related_blogs: true
+keywords: ['ClickStack']
 ---
 
 import Image from '@theme/IdealImage';

@@ -1,12 +1,5 @@
----
-slug: /faq/operations/multi-region-replication
-title: 'Does ClickHouse support multi-region replication?'
-toc_hidden: true
-toc_priority: 30
-description: 'This page answers whether ClickHouse supports multi-region replication'
----
 
-# Does ClickHouse support multi-region replication? {#does-clickhouse-support-multi-region-replication}
+# Does ClickHouse support multi-region replication? 
 
 The short answer is "yes". However, we recommend keeping latency between all regions/datacenters in two-digit range, otherwise write performance will suffer as it goes through distributed consensus protocol. For example, replication between US coasts will likely work fine, but between the US and Europe won't.
 

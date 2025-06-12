@@ -1629,8 +1629,8 @@ const sidebars = {
           type: "category",
           label: "Migration guides",
           link: { type: "doc", id: "use-cases/observability/clickstack/migration/index" },
-          collapsed: true,
-          collapsible: true,
+          collapsed: false,
+          collapsible: false,
           items: [
             {
               type: "category",

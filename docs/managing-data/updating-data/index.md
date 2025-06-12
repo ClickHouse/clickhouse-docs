@@ -1,9 +1,3 @@
----
-slug: /updating-data
-title: 'Updating Data'
-description: 'Updating Data Table Of Contents'
-keywords: ['update', 'updating data']
----
 
 In this section of the documentation, you will learn how you can update your data.
 

@@ -1,14 +1,7 @@
----
-title: 'Installing chDB for C and C++'
-sidebar_label: 'C and C++'
-slug: /chdb/install/c
-description: 'How to install chDB for C and C++'
-keywords: ['chdb', 'embedded', 'clickhouse-lite', 'install']
----
 
 # Installing chDB for C and C++
 
-## Requirements {#requirements}
+## Requirements 
 
 Install [libchdb](https://github.com/chdb-io/chdb):
 
@@ -17,7 +10,7 @@ curl -sL https://lib.chdb.io | bash
 ```
 
 
-## Usage {#usage}
+## Usage 
 
 Follow the instructions for [libchdb](https://github.com/chdb-io/chdb/blob/main/bindings.md) to get started.
 

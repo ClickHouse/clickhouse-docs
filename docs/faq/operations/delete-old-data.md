@@ -1,16 +1,9 @@
----
-slug: /faq/operations/delete-old-data
-title: 'Is it possible to delete old records from a ClickHouse table?'
-toc_hidden: true
-toc_priority: 20
-description: 'This page answers the question of whether it is possible to delete old records from a ClickHouse table'
----
 
-# Is It Possible to Delete Old Records from a ClickHouse Table? {#is-it-possible-to-delete-old-records-from-a-clickhouse-table}
+# Is It Possible to Delete Old Records from a ClickHouse Table? 
 
 The short answer is “yes”. ClickHouse has multiple mechanisms that allow freeing up disk space by removing old data. Each mechanism is aimed for different scenarios.
 
-## TTL {#ttl}
+## TTL 
 
 ClickHouse allows to automatically drop values when some condition happens. This condition is configured as an expression based on any columns, usually just static offset for any timestamp column.
 
@@ -22,7 +15,7 @@ TTL can also be used to move data not only to [/dev/null](https://en.wikipedia.o
 
 More details on [configuring TTL](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl).
 
-## DELETE FROM {#delete-from}
+## DELETE FROM 
 [DELETE FROM](/sql-reference/statements/delete.md) allows standard DELETE queries to be run in ClickHouse. The rows targeted in the filter clause are marked as deleted, and removed from future result sets.  Cleanup of the rows happens asynchronously.
 
 :::note
@@ -32,7 +25,7 @@ SET allow_experimental_lightweight_delete = true;
 ```
 :::
 
-## ALTER DELETE {#alter-delete}
+## ALTER DELETE 
 
 ALTER DELETE removes rows using asynchronous batch operations. Unlike DELETE FROM, queries run after the ALTER DELETE and before the batch operations complete will include the rows targeted for deletion.  For more details see the [ALTER DELETE](/sql-reference/statements/alter/delete.md) docs.
 
@@ -42,13 +35,13 @@ This is the most common approach to make your system based on ClickHouse [GDPR](
 
 More details on [mutations](/sql-reference/statements/alter#mutations).
 
-## DROP PARTITION {#drop-partition}
+## DROP PARTITION 
 
 `ALTER TABLE ... DROP PARTITION` provides a cost-efficient way to drop a whole partition. It's not that flexible and needs proper partitioning scheme configured on table creation, but still covers most common cases. Like mutations need to be executed from an external system for regular use.
 
 More details on [manipulating partitions](/sql-reference/statements/alter/partition).
 
-## TRUNCATE {#truncate}
+## TRUNCATE 
 
 It's rather radical to drop all data from a table, but in some cases it might be exactly what you need.
 

@@ -1,9 +1,3 @@
----
-title: 'chDB Technical Reference'
-slug: /chdb/reference
-description: 'Data Formats for chDB'
-keywords: ['chdb', 'data formats']
----
 
 | Reference page       |
 |----------------------|

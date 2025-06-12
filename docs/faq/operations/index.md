@@ -1,10 +1,3 @@
----
-slug: /faq/operations/
-sidebar_position: 3
-sidebar_label: 'Question about Operating ClickHouse Servers and Clusters'
-title: 'Question about operating ClickHouse servers and clusters'
-description: 'Landing page for questions about operating ClickHouse servers and clusters'
----
 
 # Question about operating ClickHouse servers and clusters
 

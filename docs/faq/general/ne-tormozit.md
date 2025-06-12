@@ -1,13 +1,5 @@
----
-slug: /faq/general/ne-tormozit
-title: 'What does “не тормозит” mean?'
-toc_hidden: true
-toc_priority: 11
-description: 'This page explains what "Не тормозит" means'
-keywords: ['Yandex']
----
 
-# What Does "Не тормозит" Mean? {#what-does-ne-tormozit-mean}
+# What Does "Не тормозит" Mean? 
 
 We often get this question when people see vintage (limited production) ClickHouse t-shirts. They have the words **"ClickHouse не тормозит"** written in big bold text on the front.
 

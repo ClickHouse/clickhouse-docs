@@ -1,12 +1,5 @@
----
-slug: /managing-data/drop_partition
-sidebar_label: 'Drop Partition'
-title: 'Dropping Partitions'
-hide_title: false
-description: 'Page describing drop partitions'
----
 
-## Background {#background}
+## Background 
 
 Partitioning is specified on a table when it is initially defined via the `PARTITION BY` clause. This clause can contain a SQL expression on any columns, the results of which will define which partition a row is sent to.
 
@@ -31,7 +24,7 @@ Read about setting the partition expression in a section [How to set the partiti
 
 In ClickHouse, users should principally consider partitioning to be a data management feature, not a query optimization technique. By separating data logically based on a key, each partition can be operated on independently e.g. deleted. This allows users to move partitions, and thus subsets, between [storage tiers](/integrations/s3#storage-tiers) efficiently on time or [expire data/efficiently delete from the cluster](/sql-reference/statements/alter/partition).
 
-## Drop Partitions {#drop-partitions}
+## Drop Partitions 
 
 `ALTER TABLE ... DROP PARTITION` provides a cost-efficient way to drop a whole partition.
 

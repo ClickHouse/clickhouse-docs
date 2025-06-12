@@ -1,10 +1,3 @@
----
-sidebar_position: 1
-sidebar_label: 'Beta Features and Experimental'
-title: 'Beta and Experimental Features'
-description: 'ClickHouse has beta and experimental features. This documentation page discusses definition.'
-slug: /beta-and-experimental-features
----
 
 Because ClickHouse is open-source, it receives many contributions not only from ClickHouse employees but also from the community. These contributions are often developed at different speeds; certain features may require a lengthy prototyping phase or more time for sufficient community feedback and iteration to be considered generally available (GA).
 
@@ -14,7 +7,7 @@ Due to the uncertainty of when features are classified as generally available, w
 
 The sections below explicitly describe the properties of **Beta** and **Experimental** features:
 
-## Beta Features {#beta-features}
+## Beta Features 
 
 - Under active development to make them generally available (GA)
 - Main known issues can be tracked on GitHub
@@ -26,7 +19,7 @@ The following features are considered Beta in ClickHouse Cloud and are available
 
 Note: please be sure to be using a current version of the ClickHouse [compatibility](/operations/settings/settings#compatibility) setting to be using a recently introduced feature.
 
-## Experimental Features {#experimental-features}
+## Experimental Features 
 
 - May never become GA
 - May be removed
