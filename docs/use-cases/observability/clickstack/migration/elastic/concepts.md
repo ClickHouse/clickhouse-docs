@@ -135,7 +135,7 @@ Ultimately, ClickHouse favors simplicity and performance at scale by minimizing 
 
 Elasticsearch de-duplicates documents based on their `_id`, routing them to shards accordingly. ClickHouse does not store a default row identifier but supports **insert-time deduplication**, allowing users to retry failed inserts safely. For more control, `ReplacingMergeTree` and other table engines enable deduplication by specific columns.
 
-Index routing in Elasticsearch ensures specific documents and always routed to specific shards. In ClickHouse, users can define **shard keys** or use `Distributed` tables to achieve similar data locality.
+Index routing in Elasticsearch ensures specific documents are always routed to specific shards. In ClickHouse, users can define **shard keys** or use `Distributed` tables to achieve similar data locality.
 
 ### Aggregations and execution model {#aggregations-execution-model}
 
