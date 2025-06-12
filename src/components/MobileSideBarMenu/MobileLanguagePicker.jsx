@@ -86,14 +86,29 @@ const MobileLanguagePicker = ({ onLanguageChange }) => {
     };
 
     // Handle language selection
-    const handleLanguageSelect = (locale, href) => {
+    const handleLanguageSelect = async (locale, href) => {
         setIsOpen(false);
 
         // Notify parent component about language change if callback provided
         if (onLanguageChange) {
             onLanguageChange(locale, href);
-        } else {
-            // Fallback navigation if no callback
+        }
+
+        // Try client-side navigation first
+        try {
+            // Use history.push for client-side navigation
+            const { history } = await import('@docusaurus/router');
+            history.push(href);
+
+            // Force a small delay to allow React to update, then trigger a re-render
+            setTimeout(() => {
+                // Force re-render by updating a state or triggering a window event
+                window.dispatchEvent(new Event('languageChanged'));
+            }, 100);
+
+        } catch (error) {
+            // Fallback to full page reload if client-side navigation fails
+            console.warn('Client-side navigation failed, falling back to full reload:', error);
             window.location.href = href;
         }
     };
