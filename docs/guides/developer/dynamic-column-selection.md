@@ -137,7 +137,7 @@ FROM nyc_taxi.trips;
 ```
 
 
-But that rounds the averages to whole numbers. If we want to round to, say, 2 decimal places, we can do that as well. As well as taking in functions, the APPLY function takes in a lambda, which gives us the flexibility to have the round function round our average values to 2 decimal places:
+But that rounds the averages to whole numbers. If we want to round to, say, 2 decimal places, we can do that as well. As well as taking in functions, the `APPLY` modifier accepts a lambda, which gives us the flexibility to have the round function round our average values to 2 decimal places:
 
 ```sql
 SELECT COLUMNS('.*_amount|fee|tax') APPLY(avg) APPLY(x -> round(x, 2))
