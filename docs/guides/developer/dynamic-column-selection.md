@@ -7,7 +7,7 @@ description: 'Use alternative query languages in ClickHouse'
 
 [Dynamic column selection](/docs/sql-reference/statements/select#dynamic-column-selection) is a powerful but underutilized ClickHouse feature that allows you to select columns using regular expressions instead of naming each column individually. You can also apply functions to matching columns using the APPLY modifier, making it incredibly useful for data analysis and transformation tasks.
 
-We're going to learn how to use this feature with help from the [New York taxis dataset](/docs/getting-started/example-datasets/nyc-taxi), which you can find also find in the [ClickHouse SQL playground](https://sql.clickhouse.com?query=LS0gRGF0YXNldCBjb250YWluaW5nIHRheGkgcmlkZSBkYXRhIGluIE5ZQyBmcm9tIDIwMDkuIE1vcmUgaW5mbyBoZXJlOiBodHRwczovL2NsaWNraG91c2UuY29tL2RvY3MvZW4vZ2V0dGluZy1zdGFydGVkL2V4YW1wbGUtZGF0YXNldHMvbnljLXRheGkKU0VMRUNUICogRlJPTSBueWNfdGF4aS50cmlwcyBMSU1JVCAxMDA).
+We're going to learn how to use this feature with help from the [New York taxis dataset](/docs/getting-started/example-datasets/nyc-taxi), which you can also find in the [ClickHouse SQL playground](https://sql.clickhouse.com?query=LS0gRGF0YXNldCBjb250YWluaW5nIHRheGkgcmlkZSBkYXRhIGluIE5ZQyBmcm9tIDIwMDkuIE1vcmUgaW5mbyBoZXJlOiBodHRwczovL2NsaWNraG91c2UuY29tL2RvY3MvZW4vZ2V0dGluZy1zdGFydGVkL2V4YW1wbGUtZGF0YXNldHMvbnljLXRheGkKU0VMRUNUICogRlJPTSBueWNfdGF4aS50cmlwcyBMSU1JVCAxMDA).
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/moabRqqHNo4?si=jgmInV-u3UxtLvMS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
