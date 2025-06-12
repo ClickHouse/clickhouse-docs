@@ -144,9 +144,9 @@ const MobileLanguagePicker = ({ onLanguageChange }) => {
                             // Handle docs root paths specifically
                             if (currentPath === '/docs' || currentPath === '/docs/') {
                                 if (locale === i18n.defaultLocale || locale === 'en') {
-                                    href = '/docs/';
+                                    href = '/docs';
                                 } else {
-                                    href = `/docs/${locale}/`;
+                                    href = `/docs/${locale}`;
                                 }
                             } else {
                                 // Remove existing locale from docs path if present
