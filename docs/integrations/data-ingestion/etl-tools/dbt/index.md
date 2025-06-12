@@ -813,10 +813,9 @@ In this run, only the new rows are added straight to `imdb_dbt.actor_summary` ta
 
 ### Delete+Insert mode (Experimental) {#deleteinsert-mode-experimental}
 
-Historically ClickHouse has had only limited support for updates and deletes, in the form of asynchronous [Mutations](/sql-reference/statements/alter/index.md).  These can be extremely IO-intensive and should generally be avoided.
+Historically ClickHouse has had only limited support for updates and deletes, in the form of asynchronous [Mutations](/sql-reference/statements/alter/index.md). These can be extremely IO-intensive and should generally be avoided.
 
-ClickHouse 22.8 introduced [Lightweight deletes](/sql-reference/statements/delete.md). These are currently experimental but offer a more performant means of deleting data.
-
+ClickHouse 22.8 introduced [lightweight deletes](/sql-reference/statements/delete.md) and ClickHouse 25.7 introduced [lightweight updates](/guides/developer/lightweight-update). With the introduction of these features, modifications from single update queries, even when being materialized asynchronously, will occur instantly from the user's perspective.
 
 This mode can be configured for a model via the `incremental_strategy` parameter i.e.
 
