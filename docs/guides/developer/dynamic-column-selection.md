@@ -11,7 +11,7 @@ We're going to learn how to use this feature with help from the [New York taxis 
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/moabRqqHNo4?si=jgmInV-u3UxtLvMS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-## Selecting columns that match a pattern
+## Selecting columns that match a pattern  {#selecting-columns}
 
 Let's start with a common scenario: selecting only the columns that contain `_amount` from the NYC taxi dataset. Instead of manually typing each column name, we can use the `COLUMNS` expression with a regular expression:
 
@@ -60,7 +60,7 @@ LIMIT 3;
    └─────────────┴─────────┴────────────┴──────────────┴───────────┴──────────────┘
 ```
 
-## Selecting multiple patterns
+## Selecting multiple patterns  {#selecting-multiple-patterns}
 
 We can combine multiple column patterns in a single query:
 
@@ -84,7 +84,7 @@ LIMIT 5;
    └─────────────┴────────────┴──────────────┴──────────────┴─────────────┴─────────────────────┴──────────────┴─────────────────────┘
 ```
 
-## Apply functions to all columns
+## Apply functions to all columns  {#applying-functions}
 
 We can also use the [`APPLY`](https://clickhouse.com/docs/sql-reference/statements/select#apply) modifier to apply functions across every column. 
 For example, if we wanted to find the maximum value of each of those columns, we could run the following query:
@@ -153,7 +153,7 @@ FROM nyc_taxi.trips;
    └────────────────────────────┴────────────────────────┴───────────────────────────┴─────────────────────────────┴──────────────────────────┴─────────────────────────────┘
 ```
 
-## Replacing columns
+## Replacing columns  {#replacing-columns}
 
 So far so good. But let’s say we want to adjust one of the values, while leaving the other ones as they are. For example, maybe we want to double the total amount and divide the MTA tax by 1.1. We can do that by using the REPLACE clause, which will replace a column while leaving the other ones as they are.
 
@@ -178,7 +178,7 @@ SELECT
    └────────────────────────────┴──────────────────────────┴───────────────────────────┴─────────────────────────────┴──────────────────────────┴──────────────────────────┘
 ```
 
-## Excluding columns
+## Excluding columns  {#excluding-columns}
 
 We can also choose to exclude a field by using the EXCEPT clause. For example, to remove the tolls_amount column, we would write the following query:
 
