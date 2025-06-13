@@ -1,8 +1,15 @@
+---
+title: 'How to query Apache Arrow with chDB'
+sidebar_label: 'Querying Apache Arrow'
+slug: /chdb/guides/apache-arrow
+description: 'In this guide, we will learn how to query Apache Arrow tables with chDB'
+keywords: ['chdb', 'Apache Arrow']
+---
 
 [Apache Arrow](https://arrow.apache.org/) is a standardized column-oriented memory format that's gained popularity in the data community.
 In this guide, we will learn how to query Apache Arrow using the `Python` table function.
 
-## Setup 
+## Setup {#setup}
 
 Let's first create a virtual environment:
 
@@ -32,7 +39,7 @@ ipython
 
 You can also use the code in a Python script or in your favorite notebook.
 
-## Creating an Apache Arrow table from a file 
+## Creating an Apache Arrow table from a file {#creating-an-apache-arrow-table-from-a-file}
 
 Let's first download one of the Parquet files for the [Ookla dataset](https://github.com/teamookla/ookla-open-data), using the [AWS CLI tool](https://aws.amazon.com/cli/):
 
@@ -90,7 +97,7 @@ arrow_table.shape
 (3864546, 11)
 ```
 
-## Querying Apache Arrow 
+## Querying Apache Arrow {#querying-apache-arrow}
 
 Now let's query the Arrow table from chDB.
 First, let's import chDB:

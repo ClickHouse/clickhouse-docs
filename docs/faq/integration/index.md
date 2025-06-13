@@ -1,3 +1,11 @@
+---
+slug: /faq/integration/
+sidebar_position: 1
+sidebar_label: 'Integrating ClickHouse with other systems'
+keywords: ['clickhouse', 'faq', 'questions', 'integrations']
+title: 'Questions about integrating ClickHouse and other systems'
+description: 'Landing page listing questions related to integrating ClickHouse with other systems'
+---
 
 # Questions about integrating ClickHouse and other systems
 

@@ -1,16 +1,27 @@
+---
+slug: /architecture/horizontal-scaling
+sidebar_label: 'Scaling out'
+sidebar_position: 10
+title: 'Scaling out'
+description: 'Page describing an example architecture designed to provide scalability'
+---
 
+import Image from '@theme/IdealImage';
+import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';
+import ConfigFileNote from '@site/docs/_snippets/_config-files.md';
+import scalingOut1 from '@site/static/images/deployment-guides/scaling-out-1.png';
 
-## Description 
+## Description {#description}
 This example architecture is designed to provide scalability.  It includes three nodes: two combined ClickHouse plus coordination (ClickHouse Keeper) servers, and a third server with only ClickHouse Keeper to finish the quorum of three. With this example, we'll create a database, table, and a distributed table that will be able to query the data on both of the nodes.
 
-## Level: Basic 
+## Level: Basic {#level-basic}
 
 <ReplicationShardingTerminology />
 
-## Environment 
-### Architecture Diagram 
+## Environment {#environment}
+### Architecture Diagram {#architecture-diagram}
 
-
+<Image img={scalingOut1} size='md' alt='Architecture diagram for 2 shards and 1 replica' />
 
 |Node|Description|
 |----|-----------|
@@ -22,19 +33,19 @@ This example architecture is designed to provide scalability.  It includes three
 In production environments we strongly recommend that ClickHouse Keeper runs on dedicated hosts.  This basic configuration runs the Keeper functionality within the ClickHouse Server process. The instructions for deploying ClickHouse Keeper standalone are available in the [installation documentation](/getting-started/install/install.mdx).
 :::
 
-## Install 
+## Install {#install}
 
 Install Clickhouse on three servers following the [instructions for your archive type](/getting-started/install/install.mdx) (.deb, .rpm, .tar.gz, etc.). For this example, you will follow the installation instructions for ClickHouse Server and Client on all three machines.
 
-## Editing configuration files 
+## Editing configuration files {#editing-configuration-files}
 
 <ConfigFileNote />
 
-## chnode1 configuration 
+## chnode1 configuration {#chnode1-configuration}
 
 For `chnode1`, there are five configuration files.  You may choose to combine these files into a single file, but for clarity in the documentation it may be simpler to look at them separately.  As you read through the configuration files, you will see that most of the configuration is the same between `chnode1` and `chnode2`; the differences will be highlighted.
 
-### Network and logging configuration 
+### Network and logging configuration {#network-and-logging-configuration}
 
 These values can be customized as you wish.  This example configuration gives you a debug log that will roll over at 1000M three times.  ClickHouse will listen on the IPv4 network on ports 8123 and 9000, and will use port 9009 for interserver communication.
 
@@ -55,7 +66,7 @@ These values can be customized as you wish.  This example configuration gives yo
 </clickhouse>
 ```
 
-### ClickHouse Keeper configuration 
+### ClickHouse Keeper configuration {#clickhouse-keeper-configuration}
 
 ClickHouse Keeper provides the coordination system for data replication and distributed DDL queries execution. ClickHouse Keeper is compatible with Apache ZooKeeper.  This configuration enables ClickHouse Keeper on port 9181.  The highlighted line specifies that this instance of Keeper has `server_id` of 1.  This is the only difference in the `enable-keeper.xml` file across the three servers.  `chnode2` will have `server_id` set to `2`, and `chnode3` will have `server_id` set to `3`.  The raft configuration section is the same on all three servers, and it is highlighted below to show you the relationship between `server_id` and the `server` instance within the raft configuration.
 
@@ -101,7 +112,7 @@ If for any reason a Keeper node is replaced or rebuilt, do not reuse an existing
 </clickhouse>
 ```
 
-### Macros configuration 
+### Macros configuration {#macros-configuration}
 
 The macros `shard` and `replica` reduce the complexity of distributed DDL.  The values configured are automatically substituted in your DDL queries, which simplifies your DDL.  The macros for this configuration specify the shard and replica number for each node.
 In this 2 shard 1 replica example, the replica macro is `replica_1` on both chnode1 and chnode2 as there is only one replica.  The shard macro is `1` on chnode1 and `2` on chnode2.
@@ -116,7 +127,7 @@ In this 2 shard 1 replica example, the replica macro is `replica_1` on both chno
 </clickhouse>
 ```
 
-### Replication and sharding configuration 
+### Replication and sharding configuration {#replication-and-sharding-configuration}
 
 Starting from the top:
 - The `remote_servers` section of the XML specifies each of the clusters in the environment. The attribute `replace=true` replaces the sample `remote_servers` in the default ClickHouse configuration with the `remote_servers` configuration specified in this file.  Without this attribute, the remote servers in this file would be appended to the list of samples in the default.
@@ -149,7 +160,7 @@ Starting from the top:
 </clickhouse>
 ```
 
-### Configuring the use of Keeper 
+### Configuring the use of Keeper {#configuring-the-use-of-keeper}
 
 Up above a few files ClickHouse Keeper was configured.  This configuration file `use-keeper.xml` is configuring ClickHouse Server to use ClickHouse Keeper for the coordination of replication and distributed DDL.  This file specifies that ClickHouse Server should use Keeper on nodes chnode1 - 3 on port 9181, and the file is the same on `chnode1` and `chnode2`.
 
@@ -172,11 +183,11 @@ Up above a few files ClickHouse Keeper was configured.  This configuration file 
 </clickhouse>
 ```
 
-## chnode2 configuration 
+## chnode2 configuration {#chnode2-configuration}
 
 As the configuration is very similar on `chnode1` and `chnode2`, only the differences will be pointed out here.
 
-### Network and logging configuration 
+### Network and logging configuration {#network-and-logging-configuration-1}
 
 ```xml title="network-and-logging.xml on chnode2"
 <clickhouse>
@@ -195,7 +206,7 @@ As the configuration is very similar on `chnode1` and `chnode2`, only the differ
 </clickhouse>
 ```
 
-### ClickHouse Keeper configuration 
+### ClickHouse Keeper configuration {#clickhouse-keeper-configuration-1}
 
 This file contains one of the two differences between `chnode1` and `chnode2`.  In the Keeper configuration the `server_id` is set to `2`.
 
@@ -237,7 +248,7 @@ This file contains one of the two differences between `chnode1` and `chnode2`.  
 </clickhouse>
 ```
 
-### Macros configuration 
+### Macros configuration {#macros-configuration-1}
 
 The macros configuration has one of the differences between `chnode1` and `chnode2`.  `shard` is set to `2` on this node.
 
@@ -251,7 +262,7 @@ The macros configuration has one of the differences between `chnode1` and `chnod
 </clickhouse>
 ```
 
-### Replication and sharding configuration 
+### Replication and sharding configuration {#replication-and-sharding-configuration-1}
 
 ```xml title="remote-servers.xml on chnode2"
 <clickhouse>
@@ -277,7 +288,7 @@ The macros configuration has one of the differences between `chnode1` and `chnod
 </clickhouse>
 ```
 
-### Configuring the use of Keeper 
+### Configuring the use of Keeper {#configuring-the-use-of-keeper-1}
 
 ```xml title="use-keeper.xml on chnode2"
 <clickhouse>
@@ -298,11 +309,11 @@ The macros configuration has one of the differences between `chnode1` and `chnod
 </clickhouse>
 ```
 
-## chnode3 configuration 
+## chnode3 configuration {#chnode3-configuration}
 
 As `chnode3` is not storing data and is only used for ClickHouse Keeper to provide the third node in the quorum, `chnode3` has only two configuration files, one to configure the network and logging, and one to configure ClickHouse Keeper.
 
-### Network and logging configuration 
+### Network and logging configuration {#network-and-logging-configuration-2}
 
 ```xml title="network-and-logging.xml on chnode3"
 <clickhouse>
@@ -321,7 +332,7 @@ As `chnode3` is not storing data and is only used for ClickHouse Keeper to provi
 </clickhouse>
 ```
 
-### ClickHouse Keeper configuration 
+### ClickHouse Keeper configuration {#clickhouse-keeper-configuration-2}
 
 ```xml title="enable-keeper.xml on chnode3"
 <clickhouse>
@@ -361,7 +372,7 @@ As `chnode3` is not storing data and is only used for ClickHouse Keeper to provi
 </clickhouse>
 ```
 
-## Testing 
+## Testing {#testing}
 
 1. Connect to `chnode1` and verify that the cluster `cluster_2S_1R` configured above exists
 
@@ -470,7 +481,7 @@ SELECT * FROM db1.table1_dist;
 ```
 
 
-## More information about: 
+## More information about: {#more-information-about}
 
 - The [Distributed Table Engine](/engines/table-engines/special/distributed.md)
 - [ClickHouse Keeper](/guides/sre/keeper/index.md)

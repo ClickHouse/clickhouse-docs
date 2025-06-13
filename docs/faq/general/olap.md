@@ -1,5 +1,13 @@
+---
+slug: /faq/general/olap
+title: 'What is OLAP?'
+toc_hidden: true
+toc_priority: 100
+description: 'An explainer on what Online Analytical Processing is'
+keywords: ['OLAP']
+---
 
-# What Is OLAP? 
+# What Is OLAP? {#what-is-olap}
 
 [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) stands for Online Analytical Processing. It is a broad term that can be looked at from two perspectives: technical and business. But at the very high level, you can just read these words backward:
 
@@ -12,7 +20,7 @@ Analytical
 Online
 :   ...in real-time.
 
-## OLAP from the Business Perspective 
+## OLAP from the Business Perspective {#olap-from-the-business-perspective}
 
 In recent years, business people started to realize the value of data. Companies who make their decisions blindly, more often than not fail to keep up with the competition. The data-driven approach of successful companies forces them to collect all data that might be remotely useful for making business decisions and need mechanisms to timely analyze them. Here's where OLAP database management systems (DBMS) come in.
 
@@ -20,7 +28,7 @@ In a business sense, OLAP allows companies to continuously plan, analyze, and re
 
 ClickHouse is an OLAP database management system that is pretty often used as a backend for those SaaS solutions for analyzing domain-specific data. However, some businesses are still reluctant to share their data with third-party providers and an in-house data warehouse scenario is also viable.
 
-## OLAP from the Technical Perspective 
+## OLAP from the Technical Perspective {#olap-from-the-technical-perspective}
 
 All database management systems could be classified into two groups: OLAP (Online **Analytical** Processing) and OLTP (Online **Transactional** Processing). Former focuses on building reports, each based on large volumes of historical data, but doing it not so frequently. While the latter usually handle a continuous stream of transactions, constantly modifying the current state of data.
 

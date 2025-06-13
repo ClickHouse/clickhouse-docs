@@ -1,5 +1,12 @@
+---
+slug: /faq/use-cases/key-value
+title: 'Can I use ClickHouse as a key-value storage?'
+toc_hidden: true
+toc_priority: 101
+description: 'Answers the frequently asked question of whether or not ClickHouse can be used as a key-value storage?'
+---
 
-# Can I Use ClickHouse As a Key-Value Storage? 
+# Can I Use ClickHouse As a Key-Value Storage? {#can-i-use-clickhouse-as-a-key-value-storage}
 
 The short answer is **"no"**. The key-value workload is among top positions in the list of cases when <span class="text-danger">**NOT**</span> to use ClickHouse. It's an [OLAP](../../faq/general/olap.md) system after all, while there are many excellent key-value storage systems out there.
 

@@ -1,5 +1,12 @@
+---
+slug: /faq/use-cases/time-series
+title: 'Can I use ClickHouse as a time-series database?'
+toc_hidden: true
+toc_priority: 101
+description: 'Page describing how to use ClickHouse as a time-series database'
+---
 
-# Can I Use ClickHouse As a Time-Series Database? 
+# Can I Use ClickHouse As a Time-Series Database? {#can-i-use-clickhouse-as-a-time-series-database}
 
 _Note: Please see the blog [Working with Time series data in ClickHouse](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse) for additional examples of using ClickHouse for time series analysis._
 

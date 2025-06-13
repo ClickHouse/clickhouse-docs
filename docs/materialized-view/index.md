@@ -1,3 +1,9 @@
+---
+slug: /materialized-views
+title: 'Materialized Views'
+description: 'Index page for materialized views'
+keywords: ['materialized views', 'speed up queries', 'query optimization', 'refreshable', 'incremental']
+---
 
 | Page                                                                                      | Description                                                                                                                                                                                    |
 |-------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

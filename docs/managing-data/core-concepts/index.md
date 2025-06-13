@@ -1,3 +1,9 @@
+---
+slug: /managing-data/core-concepts
+title: 'Core Concepts'
+description: 'Learn Core Concepts of how ClickHouse works'
+keywords: ['concepts', 'part', 'partition', 'primary index']
+---
 
 In this section of the documentation,
 you will learn some of the core concepts of how ClickHouse works.

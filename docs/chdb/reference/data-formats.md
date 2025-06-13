@@ -1,3 +1,10 @@
+---
+title: 'Data Formats'
+sidebar_label: 'Data Formats'
+slug: /chdb/reference/data-formats
+description: 'Data Formats for chDB'
+keywords: ['chdb', 'data formats']
+---
 
 When it comes to data formats, chDB is 100% feature compatible with ClickHouse.
 

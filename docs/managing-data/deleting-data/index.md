@@ -1,3 +1,9 @@
+---
+slug: /managing-data/deleting-data/overview
+title: 'Deleting Data'
+description: 'How to delete data in ClickHouse Table Of Contents'
+keywords: ['delete', 'truncate', 'drop', 'lightweight delete']
+---
 
 In this section of the documentation,
 we will explore how to delete data in ClickHouse.

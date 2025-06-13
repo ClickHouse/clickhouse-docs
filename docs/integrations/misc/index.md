@@ -1,3 +1,9 @@
+---
+slug: /integrations/misc
+keywords: ['Retool', 'Easypanel', 'Splunk']
+title: 'Tools'
+description: 'Landing page for the Tools section'
+---
 
 # Tools
 

@@ -1,5 +1,12 @@
+---
+slug: /faq/operations/production
+title: 'Which ClickHouse version to use in production?'
+toc_hidden: true
+toc_priority: 10
+description: 'This page provides guidance on which ClickHouse version to use in production'
+---
 
-# Which ClickHouse Version to Use in Production? 
+# Which ClickHouse Version to Use in Production? {#which-clickhouse-version-to-use-in-production}
 
 First of all, let's discuss why people ask this question in the first place. There are two key reasons:
 
@@ -8,7 +15,7 @@ First of all, let's discuss why people ask this question in the first place. The
 
 The second reason is more fundamental, so we'll start with that one and then get back to navigating through various ClickHouse releases.
 
-## Which ClickHouse Version Do You Recommend? 
+## Which ClickHouse Version Do You Recommend? {#which-clickhouse-version-do-you-recommend}
 
 It's tempting to hire consultants or trust some known experts to get rid of responsibility for your production environment. You install some specific ClickHouse version that someone else recommended; if there's some issue with it - it's not your fault, it's someone else's. This line of reasoning is a big trap. No external person knows better than you what's going on in your company's production environment.
 
@@ -39,7 +46,7 @@ When you have your pre-production environment and testing infrastructure in plac
 
 As you might have noticed, there's nothing specific to ClickHouse in the approach described above - people do that for any piece of infrastructure they rely on if they take their production environment seriously.
 
-## How to Choose Between ClickHouse Releases? 
+## How to Choose Between ClickHouse Releases? {#how-to-choose-between-clickhouse-releases}
 
 If you look into the contents of the ClickHouse package repository, you'll see two kinds of packages:
 

@@ -1,4 +1,4 @@
-## Test admin privileges 
+## Test admin privileges {#test-admin-privileges}
 
 Log out as the user `default` and log back in as user `clickhouse_admin`.
 
@@ -32,15 +32,15 @@ DROP TABLE db1.table1;
 DROP DATABASE db1;
 ```
 
-## Non-admin users 
+## Non-admin users {#non-admin-users}
 
 Users should have the privileges necessary, and not all be admin users. The rest of this document provides example scenarios and the roles required.
 
-### Preparation 
+### Preparation {#preparation}
 
 Create these tables and users to be used in the examples.
 
-#### Creating a sample database, table, and rows 
+#### Creating a sample database, table, and rows {#creating-a-sample-database-table-and-rows}
 
 1. Create a test database
 
@@ -101,7 +101,7 @@ Create these tables and users to be used in the examples.
    CREATE USER row_user IDENTIFIED BY 'password';
    ```
 
-#### Creating roles 
+#### Creating roles {#creating-roles}
 
 With this set of examples:
 
@@ -164,9 +164,9 @@ Roles are used to define groups of users for certain privileges instead of manag
     When attaching a policy to a table, the system will apply that policy, and only those users and roles defined will be able to do operations on the table, all others will be denied any operations. In order to not have the restrictive row policy applied to other users, another policy must be defined to allow other users and roles to have regular or other types of access.
     :::
 
-## Verification 
+## Verification {#verification}
 
-### Testing role privileges with column restricted user 
+### Testing role privileges with column restricted user {#testing-role-privileges-with-column-restricted-user}
 
 1. Log into the clickhouse client using the `clickhouse_admin` user
 
@@ -241,7 +241,7 @@ Roles are used to define groups of users for certain privileges instead of manag
    └────┴─────────┘
    ```
 
-### Testing role privileges with row restricted user 
+### Testing role privileges with row restricted user {#testing-role-privileges-with-row-restricted-user}
 
 1. Log into the ClickHouse client using `row_user`
 
@@ -269,7 +269,7 @@ Roles are used to define groups of users for certain privileges instead of manag
    Verify that only the above two rows are returned, rows with the value `B` in `column1` should be excluded.
    :::
 
-## Modifying Users and Roles 
+## Modifying Users and Roles {#modifying-users-and-roles}
 
 Users can be assigned multiple roles for a combination of privileges needed. When using multiple roles, the system will combine the roles to determine privileges, the net effect will be that the role permissions will be cumulative.
 
@@ -336,11 +336,11 @@ For example, if one `role1` allows for only select on `column1` and `role2` allo
    └────┴─────────┘
    ```
 
-## Troubleshooting 
+## Troubleshooting {#troubleshooting}
 
 There are occasions when privileges intersect or combine to produce unexpected results, the following commands can be used to narrow the issue using an admin account
 
-### Listing the grants and roles for a user 
+### Listing the grants and roles for a user {#listing-the-grants-and-roles-for-a-user}
 
 ```sql
 SHOW GRANTS FOR row_and_column_user
@@ -354,7 +354,7 @@ Query id: 6a73a3fe-2659-4aca-95c5-d012c138097b
 └──────────────────────────────────────────────────────────┘
 ```
 
-### List roles in ClickHouse 
+### List roles in ClickHouse {#list-roles-in-clickhouse}
 
 ```sql
 SHOW ROLES
@@ -369,7 +369,7 @@ Query id: 1e21440a-18d9-4e75-8f0e-66ec9b36470a
 └─────────────────┘
 ```
 
-### Display the policies 
+### Display the policies {#display-the-policies}
 
 ```sql
 SHOW ROW POLICIES
@@ -384,7 +384,7 @@ Query id: f2c636e9-f955-4d79-8e80-af40ea227ebc
 └────────────────────────────────────────┘
 ```
 
-### View how a policy was defined and current privileges 
+### View how a policy was defined and current privileges {#view-how-a-policy-was-defined-and-current-privileges}
 
 ```sql
 SHOW CREATE ROW POLICY A_row_filter ON db1.table1
@@ -398,7 +398,7 @@ Query id: 0d3b5846-95c7-4e62-9cdd-91d82b14b80b
 └─────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## Example commands to manage roles, policies, and users 
+## Example commands to manage roles, policies, and users {#example-commands-to-manage-roles-policies-and-users}
 
 The following commands can be used to:
 
@@ -412,36 +412,36 @@ The following commands can be used to:
 Run these commands as an admin user or the `default` user
 :::
 
-### Remove privilege from a role 
+### Remove privilege from a role {#remove-privilege-from-a-role}
 
 ```sql
 REVOKE SELECT(column1, id) ON db1.table1 FROM A_rows_users;
 ```
 
-### Delete a policy 
+### Delete a policy {#delete-a-policy}
 
 ```sql
 DROP ROW POLICY A_row_filter ON db1.table1;
 ```
 
-### Unassign a user from a role 
+### Unassign a user from a role {#unassign-a-user-from-a-role}
 
 ```sql
 REVOKE A_rows_users FROM row_user;
 ```
 
-### Delete a role 
+### Delete a role {#delete-a-role}
 
 ```sql
 DROP ROLE A_rows_users;
 ```
 
-### Delete a user 
+### Delete a user {#delete-a-user}
 
 ```sql
 DROP USER row_user;
 ```
 
-## Summary 
+## Summary {#summary}
 
 This article demonstrated the basics of creating SQL users and roles and provided steps to set and modify privileges for users and roles. For more detailed information on each please refer to our user guides and reference documentation.

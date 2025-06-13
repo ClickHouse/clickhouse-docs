@@ -1,3 +1,9 @@
+---
+slug: /integrations/tools/data-integrations
+keywords: ['Retool', 'Easypanel', 'Splunk']
+title: 'Data Integrations'
+description: 'Landing page for the data integrations section'
+---
 
 # Data Integrations
 

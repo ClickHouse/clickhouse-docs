@@ -1,6 +1,16 @@
+---
+slug: /primary-indexes
+title: 'Primary indexes'
+description: 'How does the sparse primary index work in ClickHouse'
+keywords: ['sparse primary index', 'primary index', 'index']
+---
 
 
+import visual01 from '@site/static/images/managing-data/core-concepts/primary-index-light_01.gif';
+import visual02 from '@site/static/images/managing-data/core-concepts/primary-index-light_02.gif';
+import visual03 from '@site/static/images/managing-data/core-concepts/primary-index-light_03.gif';
 
+import Image from '@theme/IdealImage';
 
 
 :::tip Looking for advanced indexing details?
@@ -12,19 +22,19 @@ For advanced indexing strategies and deeper technical detail, see the [primary i
 
 
 
-## How does the sparse primary index work in ClickHouse? 
+## How does the sparse primary index work in ClickHouse? {#how-does-the-sparse-primary-index-work-in-clickHouse}
 
 <br/>
 
 The sparse primary index in ClickHouse helps efficiently identify [granules](https://clickhouse.com/docs/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)—blocks of rows—that might contain data matching a query's condition on the table's primary key columns. In the next section, we explain how this index is constructed from the values in those columns.
 
-### Sparse primary index creation 
+### Sparse primary index creation {#sparse-primary-index-creation}
 
 To illustrate how the sparse primary index is built, we use the [uk_price_paid_simple](https://clickhouse.com/docs/parts) table along with some animations.
 
 As a [reminder](https://clickhouse.com/docs/parts), in our ① example table with the primary key (town, street), ② inserted data is ③ stored on disk, sorted by the primary key column values, and compressed, in separate files for each column:
 
-
+<Image img={visual01} size="lg"/>
 
 <br/><br/>
 
@@ -32,18 +42,18 @@ For processing, each column's data is ④ logically divided into granules—each
 
 This granule structure is also what makes the primary index **sparse**: instead of indexing every row, ClickHouse stores ⑤ the primary key values from just one row per granule—specifically, the first row. This results in one index entry per granule:
 
-
+<Image img={visual02} size="lg"/>
 
 <br/><br/>
 
 Thanks to its sparseness, the primary index is small enough to fit entirely in memory, enabling fast filtering for queries with predicates on primary key columns. In the next section, we show how it helps accelerate such queries.
 
 
-### Primary index usage 
+### Primary index usage {#primary-index-usage}
 
 We sketch how the sparse primary index is used for query acceleration with another animation:
 
-
+<Image img={visual03} size="lg"/>
 
 <br/><br/>
 
@@ -56,7 +66,7 @@ We sketch how the sparse primary index is used for query acceleration with anoth
 ④ These potentially relevant granules are then loaded and [processed](/optimize/query-parallelism) in memory, along with the corresponding granules from any other columns required for the query.
 
 
-## Monitoring primary indexes 
+## Monitoring primary indexes {#monitoring-primary-indexes}
 
 Each [data part](/parts) in the table has its own primary index. We can inspect the contents of these indexes using the [mergeTreeIndex](/sql-reference/table-functions/mergeTreeIndex) table function.
 
@@ -169,7 +179,7 @@ SELECT count() FROM uk.uk_price_paid_simple;
    └──────────┘
 ```
 
-##  Key takeaways 
+##  Key takeaways {#key-takeaways}
 
 * **Sparse primary indexes** help ClickHouse skip unnecessary data by identifying which granules might contain rows matching query conditions on primary key columns. 
 
@@ -182,7 +192,7 @@ SELECT count() FROM uk.uk_price_paid_simple;
 * You can **inspect index contents** using the `mergeTreeIndex` table function and monitor index usage with the `EXPLAIN` clause.
 
 
-## Where to find more information 
+## Where to find more information {#where-to-find-more-information}
 
 For a deeper look at how sparse primary indexes work in ClickHouse, including how they differ from traditional database indexes and best practices for using them, check out our detailed indexing [deep dive](/guides/best-practices/sparse-primary-indexes).
 

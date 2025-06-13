@@ -1,4 +1,13 @@
+---
+title: 'JupySQL and chDB'
+sidebar_label: 'JupySQL'
+slug: /chdb/guides/jupysql
+description: 'How to install chDB for Bun'
+keywords: ['chdb', 'JupySQL']
+---
 
+import Image from '@theme/IdealImage';
+import PlayersPerRank from '@site/static/images/chdb/guides/players_per_rank.png';
 
 [JupySQL](https://jupysql.ploomber.io/en/latest/quick-start.html) is a Python library that lets you run SQL in Jupyter notebooks and the IPython shell.
 In this guide, we're going to learn how to query data using chDB and JupySQL.
@@ -7,7 +16,7 @@ In this guide, we're going to learn how to query data using chDB and JupySQL.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/2wjl3OijCto?si=EVf2JhjS5fe4j6Cy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Setup 
+## Setup {#setup}
 
 Let's first create a virtual environment:
 
@@ -38,7 +47,7 @@ jupyter lab
 If you're using Jupyter Lab, you'll need to create a notebook before following the rest of the guide.
 :::
 
-## Downloading a dataset 
+## Downloading a dataset {#downloading-a-dataset}
 
 We're going to use one of [Jeff Sackmann's tennis_atp](https://github.com/JeffSackmann/tennis_atp) dataset, which contains metadata about players and their rankings over time.
 Let's start by downloading the rankings files:
@@ -57,7 +66,7 @@ for file in files:
   )
 ```
 
-## Configuring chDB and JupySQL 
+## Configuring chDB and JupySQL {#configuring-chdb-and-jupysql}
 
 Next, let's import the `dbapi` module for chDB:
 
@@ -85,7 +94,7 @@ Next, we'll display the display limit so that results of queries won't be trunca
 %config SqlMagic.displaylimit = None
 ```
 
-## Querying data in CSV files 
+## Querying data in CSV files {#querying-data-in-csv-files}
 
 We've downloaded a bunch of files with the `atp_rankings` prefix.
 Let's use the `DESCRIBE` clause to understand the schema:
@@ -153,7 +162,7 @@ SETTINGS schema_inference_make_columns_nullable=0
 +--------------+------+--------+--------+
 ```
 
-## Importing CSV files into chDB 
+## Importing CSV files into chDB {#importing-csv-files-into-chdb}
 
 Now we're going to store the data from these CSV files in a table.
 The default database doesn't persist data on disk, so we need to create another database first:
@@ -257,7 +266,7 @@ Once that's finished running, we can have a look at the data we've ingested:
 +-----------+------------+-----------+------+------------+-----+--------+-------------+
 ```
 
-## Querying chDB 
+## Querying chDB {#querying-chdb}
 
 Data ingestion is done, now it's time for the fun part - querying the data!
 
@@ -297,7 +306,7 @@ LIMIT 10
 
 It's quite interesting that some of the players in this list accumulated a lot of points without being number 1 with that points total.
 
-## Saving queries 
+## Saving queries {#saving-queries}
 
 We can save queries using the `--save` parameter on the same line as the `%%sql` magic.
 The `--no-execute` parameter means that query execution will be skipped.
@@ -342,7 +351,7 @@ In the following query we compute the maximum points achieved by players when th
 +-------------+-----------+-----------+------+------------+
 ```
 
-## Querying with parameters 
+## Querying with parameters {#querying-with-parameters}
 
 We can also use parameters in our queries.
 Parameters are just normal variables:
@@ -386,7 +395,7 @@ LIMIT 10
 +------------+-----------+---------------+------------------+------+-------+
 ```
 
-## Plotting histograms 
+## Plotting histograms {#plotting-histograms}
 
 JupySQL also has limited charting functionality.
 We can create box plots or histograms.
@@ -416,5 +425,5 @@ plot = (
 )
 ```
 
-
+<Image img={PlayersPerRank} size="md" alt="Histogram of player rankings in ATP dataset" />
 

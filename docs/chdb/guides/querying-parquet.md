@@ -1,8 +1,15 @@
+---
+title: 'How to query Parquet files'
+sidebar_label: 'Querying Parquet files'
+slug: /chdb/guides/querying-parquet
+description: 'Learn how to query Parquet files with chDB.'
+keywords: ['chdb', 'parquet']
+---
 
 A lot of the world's data lives in Amazon S3 buckets.
 In this guide, we'll learn how to query that data using chDB.
 
-## Setup 
+## Setup {#setup}
 
 Let's first create a virtual environment:
 
@@ -32,7 +39,7 @@ ipython
 
 You can also use the code in a Python script or in your favorite notebook.
 
-## Exploring Parquet metadata 
+## Exploring Parquet metadata {#exploring-parquet-metadata}
 
 We're going to explore a Parquet file from the [Amazon reviews](/getting-started/example-datasets/amazon-reviews) dataset.
 But first, let's install `chDB`:
@@ -142,7 +149,7 @@ chdb.query(query, 'DataFrame')
 14        review_body              145886383                232457911                                                                                              🚅 +🐧=💥 😀
 ```
 
-## Querying Parquet files 
+## Querying Parquet files {#querying-parquet-files}
 
 Next, let's query the contents of the file.
 We can do this by adjusting the above query to remove `ParquetMetadata` and then, say, compute the most popular `star_rating` across all reviews:

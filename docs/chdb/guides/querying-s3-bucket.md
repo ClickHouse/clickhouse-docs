@@ -1,8 +1,15 @@
+---
+title: 'How to query data in an S3 bucket'
+sidebar_label: 'Querying data in S3'
+slug: /chdb/guides/querying-s3
+description: 'Learn how to query data in an S3 bucket with chDB.'
+keywords: ['chdb', 's3']
+---
 
 A lot of the world's data lives in Amazon S3 buckets.
 In this guide, we'll learn how to query that data using chDB.
 
-## Setup 
+## Setup {#setup}
 
 Let's first create a virtual environment:
 
@@ -32,7 +39,7 @@ ipython
 
 You can also use the code in a Python script or in your favorite notebook.
 
-## Listing files in an S3 bucket 
+## Listing files in an S3 bucket {#listing-files-in-an-s3-bucket}
 
 Let's start by listing all the files in [an S3 bucket that contains Amazon reviews](/getting-started/example-datasets/amazon-reviews).
 To do this, we can use the [`s3` table function](/sql-reference/table-functions/s3) and pass in the path to a file or a wildcard to a set of files.
@@ -70,7 +77,7 @@ SETTINGS output_format_pretty_row_numbers=0
 
 This bucket contains only Parquet files.
 
-## Querying files in an S3 bucket 
+## Querying files in an S3 bucket {#querying-files-in-an-s3-bucket}
 
 Next, let's learn how to query those files.
 If we want to count the number of rows in each of those files, we can run the following query:
@@ -169,7 +176,7 @@ LIMIT 10
     └──────────────────┴──────────┴──────┘
 ```
 
-## Querying files in a private S3 bucket 
+## Querying files in a private S3 bucket {#querying-files-in-a-private-s3-bucket}
 
 If we're querying files in a private S3 bucket, we need to pass in an access key and secret.
 We can pass in those credentials to the  `s3` table function:

@@ -1,3 +1,8 @@
+---
+slug: /about
+title: 'About ClickHouse'
+description: 'Landing page for About ClickHouse'
+---
 
 # About ClickHouse
 

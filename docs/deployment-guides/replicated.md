@@ -1,16 +1,28 @@
+---
+slug: /architecture/replication
+sidebar_label: 'Replication for fault tolerance'
+sidebar_position: 10
+title: 'Replication for fault tolerance'
+description: 'Page describing an example architecture with five servers configured. Two are used to host copies of the data and the rest are used to coordinate the replication of data'
+---
 
+import Image from '@theme/IdealImage';
+import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';
+import ConfigFileNote from '@site/docs/_snippets/_config-files.md';
+import KeeperConfigFileNote from '@site/docs/_snippets/_keeper-config-files.md';
+import ReplicationArchitecture from '@site/static/images/deployment-guides/architecture_1s_2r_3_nodes.png';
 
-## Description 
+## Description {#description}
 In this architecture, there are five servers configured. Two are used to host copies of the data. The other three servers are used to coordinate the replication of data. With this example, we'll create a database and table that will be replicated across both data nodes using the ReplicatedMergeTree table engine.
 
-## Level: Basic 
+## Level: Basic {#level-basic}
 
 <ReplicationShardingTerminology />
 
-## Environment 
-### Architecture Diagram 
+## Environment {#environment}
+### Architecture Diagram {#architecture-diagram}
 
-
+<Image img={ReplicationArchitecture} size="md" alt="Architecture diagram for 1 shard and 2 replicas with ReplicatedMergeTree" />
 
 |Node|Description|
 |----|-----------|
@@ -24,21 +36,21 @@ In this architecture, there are five servers configured. Two are used to host co
 In production environments, we strongly recommend using *dedicated* hosts for ClickHouse keeper. In test environment it is acceptable to run ClickHouse Server and ClickHouse Keeper combined on the same server.  The other basic example, [Scaling out](/deployment-guides/horizontal-scaling.md), uses this method.  In this example we present the recommended method of separating Keeper from ClickHouse Server.  The Keeper servers can be smaller, 4GB RAM is generally enough for each Keeper server until your ClickHouse Servers grow very large.
 :::
 
-## Install 
+## Install {#install}
 
 Install ClickHouse server and client on the two servers `clickhouse-01` and `clickhouse-02` following the [instructions for your archive type](/getting-started/install/install.mdx) (.deb, .rpm, .tar.gz, etc.).
 
 Install ClickHouse Keeper on the three servers `clickhouse-keeper-01`, `clickhouse-keeper-02` and `clickhouse-keeper-03` following the [instructions for your archive type](/getting-started/install/install.mdx) (.deb, .rpm, .tar.gz, etc.).
 
-## Editing configuration files 
+## Editing configuration files {#editing-configuration-files}
 
 <ConfigFileNote />
 
-## clickhouse-01 configuration 
+## clickhouse-01 configuration {#clickhouse-01-configuration}
 
 For clickhouse-01 there are five configuration files.  You may choose to combine these files into a single file, but for clarity in the documentation it may be simpler to look at them separately.  As you read through the configuration files you will see that most of the configuration is the same between clickhouse-01 and clickhouse-02; the differences will be highlighted.
 
-### Network and logging configuration 
+### Network and logging configuration {#network-and-logging-configuration}
 
 These values can be customized as you wish.  This example configuration gives you:
 - a debug log that will roll over at 1000M three times
@@ -61,7 +73,7 @@ These values can be customized as you wish.  This example configuration gives yo
 </clickhouse>
 ```
 
-### Macros configuration 
+### Macros configuration {#macros-configuration}
 
 The macros `shard` and `replica` reduce the complexity of distributed DDL.  The values configured are automatically substituted in your DDL queries, which simplifies your DDL.  The macros for this configuration specify the shard and replica number for each node.
 In this 1 shard 2 replica example, the replica macro is `replica_1` on clickhouse-01 and `replica_2` on clickhouse-02.  The shard macro is `1` on both clickhouse-01 and clickhouse-02 as there is only one shard.
@@ -77,7 +89,7 @@ In this 1 shard 2 replica example, the replica macro is `replica_1` on clickhous
 </clickhouse>
 ```
 
-### Replication and sharding configuration 
+### Replication and sharding configuration {#replication-and-sharding-configuration}
 
 Starting from the top:
 - The remote_servers section of the XML specifies each of the clusters in the environment. The attribute `replace=true` replaces the sample remote_servers in the default ClickHouse configuration with the remote_server configuration specified in this file.  Without this attribute the remote servers in this file would be appended to the list of samples in the default.
@@ -107,7 +119,7 @@ Starting from the top:
 </clickhouse>
 ```
 
-### Configuring the use of Keeper 
+### Configuring the use of Keeper {#configuring-the-use-of-keeper}
 
 This configuration file `use-keeper.xml` is configuring ClickHouse Server to use ClickHouse Keeper for the coordination of replication and distributed DDL.  This file specifies that ClickHouse Server should use Keeper on nodes clickhouse-keeper-01 - 03 on port 9181, and the file is the same on `clickhouse-01` and `clickhouse-02`.
 
@@ -131,11 +143,11 @@ This configuration file `use-keeper.xml` is configuring ClickHouse Server to use
 </clickhouse>
 ```
 
-## clickhouse-02 configuration 
+## clickhouse-02 configuration {#clickhouse-02-configuration}
 
 As the configuration is very similar on clickhouse-01 and clickhouse-02 only the differences will be pointed out here.
 
-### Network and logging configuration 
+### Network and logging configuration {#network-and-logging-configuration-1}
 
 This file is the same on both clickhouse-01 and clickhouse-02, with the exception of `display_name`.
 
@@ -156,7 +168,7 @@ This file is the same on both clickhouse-01 and clickhouse-02, with the exceptio
 </clickhouse>
 ```
 
-### Macros configuration 
+### Macros configuration {#macros-configuration-1}
 
 The macros configuration is different between clickhouse-01 and clickhouse-02.  `replica` is set to `02` on this node.
 
@@ -171,7 +183,7 @@ The macros configuration is different between clickhouse-01 and clickhouse-02.  
 </clickhouse>
 ```
 
-### Replication and sharding configuration 
+### Replication and sharding configuration {#replication-and-sharding-configuration-1}
 
 This file is the same on both clickhouse-01 and clickhouse-02.
 
@@ -196,7 +208,7 @@ This file is the same on both clickhouse-01 and clickhouse-02.
 </clickhouse>
 ```
 
-### Configuring the use of Keeper 
+### Configuring the use of Keeper {#configuring-the-use-of-keeper-1}
 
 This file is the same on both clickhouse-01 and clickhouse-02.
 
@@ -220,7 +232,7 @@ This file is the same on both clickhouse-01 and clickhouse-02.
 </clickhouse>
 ```
 
-## clickhouse-keeper-01 configuration 
+## clickhouse-keeper-01 configuration {#clickhouse-keeper-01-configuration}
 
 <KeeperConfigFileNote />
 
@@ -274,7 +286,7 @@ If for any reason a Keeper node is replaced or rebuilt, do not reuse an existing
 </clickhouse>
 ```
 
-## clickhouse-keeper-02 configuration 
+## clickhouse-keeper-02 configuration {#clickhouse-keeper-02-configuration}
 
 There is only one line difference between `clickhouse-keeper-01` and `clickhouse-keeper-02`.  `server_id` is set to `2` on this node.
 
@@ -322,7 +334,7 @@ There is only one line difference between `clickhouse-keeper-01` and `clickhouse
 </clickhouse>
 ```
 
-## clickhouse-keeper-03 configuration 
+## clickhouse-keeper-03 configuration {#clickhouse-keeper-03-configuration}
 
 There is only one line difference between `clickhouse-keeper-01` and `clickhouse-keeper-03`.  `server_id` is set to `3` on this node.
 
@@ -370,7 +382,7 @@ There is only one line difference between `clickhouse-keeper-01` and `clickhouse
 </clickhouse>
 ```
 
-## Testing 
+## Testing {#testing}
 
 To gain experience with ReplicatedMergeTree and ClickHouse Keeper you can run the following commands which will have you:
 - Create a database on the cluster configured above
@@ -381,7 +393,7 @@ To gain experience with ReplicatedMergeTree and ClickHouse Keeper you can run th
 - Restart the stopped node
 - Verify that the data is available when querying the restarted node
 
-### Verify that ClickHouse Keeper is running 
+### Verify that ClickHouse Keeper is running {#verify-that-clickhouse-keeper-is-running}
 
 The `mntr` command is used to verify that the ClickHouse Keeper is running and to get state information about the relationship of the three Keeper nodes.  In the configuration used in this example there are three nodes working together.  The nodes will elect a leader, and the remaining nodes will be followers.  The `mntr` command gives information related to performance, and whether a particular node is a follower or a leader.
 
@@ -438,7 +450,7 @@ zk_synced_followers     2
 # highlight-end
 ```
 
-### Verify ClickHouse cluster functionality 
+### Verify ClickHouse cluster functionality {#verify-clickhouse-cluster-functionality}
 
 Connect to node `clickhouse-01` with `clickhouse client` in one shell, and connect to node `clickhouse-02` with `clickhouse client` in another shell.
 
