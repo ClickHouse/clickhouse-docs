@@ -32,7 +32,7 @@ How this is achieved depends on your current agents for collection - see ["Migra
 
 2. **Adjust Retention Periods**
 <br/>
-Configure Elastic's TTL settings to match your desired retention period. Set up the ClickStack [TTL](/use-cases/observability/Calexico/production#configure-ttl) to maintain data for the same duration.
+Configure Elastic's TTL settings to match your desired retention period. Set up the ClickStack [TTL](/use-cases/observability/clickstack/production#configure-ttl) to maintain data for the same duration.
 
 3. **Validate and Compare**:
 <br/>
