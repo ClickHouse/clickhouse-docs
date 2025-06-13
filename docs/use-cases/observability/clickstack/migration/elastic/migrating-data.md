@@ -540,7 +540,7 @@ This latter approach, while simpler, is best for prototyping and data engineerin
 
 For more details on using the JSON type in schemas, and how to efficiently apply it, we recommend the guide ["Designing your schema"](/integrations/data-formats/json/schema).
 
-### Install `elasticdump` 
+### Install `elasticdump` {#install-elasticdump}
 
 We recommend [`elasticdump`](https://github.com/elasticsearch-dump/elasticsearch-dump) for exporting data from Elasticsearch. This tool requires `node` and should be installed on a machine with network proximity to both Elasticsearch and ClickHouse. We recommend a dedicated server with at least 4 cores and 16GB of RAM for most exports.
 
