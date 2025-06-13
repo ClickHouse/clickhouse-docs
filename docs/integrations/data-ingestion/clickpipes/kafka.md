@@ -208,6 +208,12 @@ The following virtual columns are supported for Kafka compatible streaming data 
 Note that the _raw_message column is only recommended for JSON data.  For use cases where only the JSON string is required (such as using ClickHouse [`JsonExtract*`](/sql-reference/functions/json-functions#jsonextract-functions) functions to populate a downstream materialized
 view), it may improve ClickPipes performance to delete all the "non-virtual" columns.
 
+## Best Practices {#best-practices}
+
+### Message Compression {#compression}
+We strongly recommend using compression for your Kafka topics. Compression can result in a significant saving in data transfer costs with virtually no performance hit.
+To learn more about message compression in Kafka, we recommend starting with this [guide](https://www.confluent.io/blog/apache-kafka-message-compression/).
+
 ## Limitations {#limitations}
 
 - [DEFAULT](/sql-reference/statements/create/table#default) is not supported.
