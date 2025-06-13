@@ -74,6 +74,8 @@ host = "localhost"                       # ClickHouse server host
 port = 9000                              # ClickHouse HTTP port, default is 9000
 http_port = 8443                         # HTTP Port to connect to ClickHouse server's HTTP interface. Defaults to 8443.
 secure = 1                               # Set to 1 if using HTTPS, else 0.
+
+[destination.clickhouse]
 dataset_table_separator = "___"          # Separator for dataset table names from dataset.
 ```
 
