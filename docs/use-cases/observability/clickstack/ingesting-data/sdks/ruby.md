@@ -28,7 +28,7 @@ _To send logs to ClickStack, please send logs via the [OpenTelemetry collector](
 
 Use the following command to install the OpenTelemetry package.
 
-```bash
+```shell
 bundle add opentelemetry-sdk opentelemetry-instrumentation-all opentelemetry-exporter-otlp
 ```
 
@@ -77,7 +77,7 @@ end
 
 Afterwards you'll need to configure the following environment variables in your shell to ship telemetry to ClickStack:
 
-```bash
+```shell
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
 OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \

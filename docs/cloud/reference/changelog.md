@@ -33,7 +33,7 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 
 ## May 30, 2025 {#may-30-2025}
 
-- We’re excited to announce general availability of **ClickPipes for Postgres CDC**
+- We're excited to announce general availability of **ClickPipes for Postgres CDC**
   in ClickHouse Cloud. With just a few clicks, you can now replicate your Postgres
   databases and unlock blazing-fast, real-time analytics. The connector delivers 
   faster data synchronization, latency as low as a few seconds, automatic schema changes,
@@ -64,7 +64,7 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
   * Memory & CPU: Graphs for `CGroupMemoryTotal` (Allocated Memory), `CGroupMaxCPU` (allocated CPU),
     `MemoryResident` (memory used), and `ProfileEvent_OSCPUVirtualTimeMicroseconds` (CPU used)
   * Data Transfer: Graphs showing data ingress and egress from ClickHouse Cloud. Learn more [here](/cloud/manage/network-data-transfer).
-- We’re excited to announce the launch of our new ClickHouse Cloud Prometheus/Grafana mix-in, 
+- We're excited to announce the launch of our new ClickHouse Cloud Prometheus/Grafana mix-in, 
   built to simplify monitoring for your ClickHouse Cloud services.
   This mix-in uses our Prometheus-compatible API endpoint to seamlessly integrate
   ClickHouse metrics into your existing Prometheus and Grafana setup. It includes

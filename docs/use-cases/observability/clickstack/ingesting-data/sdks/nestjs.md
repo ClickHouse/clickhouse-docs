@@ -30,7 +30,7 @@ integration to your application as well._
 Import `HyperDXNestLoggerModule` into the root `AppModule` and use the `forRoot()`
 method to configure it.
 
-```js
+```javascript
 import { Module } from '@nestjs/common';
 import { HyperDXNestLoggerModule } from '@hyperdx/node-logger';
 
@@ -49,7 +49,7 @@ export class AppModule {}
 Afterward, the winston instance will be available to inject across the entire
 project using the `HDX_LOGGER_MODULE_PROVIDER` injection token:
 
-```js
+```javascript
 import { Controller, Inject } from '@nestjs/common';
 import { HyperDXNestLoggerModule, HyperDXNestLogger } from '@hyperdx/node-logger';
 
@@ -84,7 +84,7 @@ into the Logger class, forwarding all calls to it:
 
 Create the logger in the `main.ts` file
 
-```js
+```javascript
 import { HyperDXNestLoggerModule } from '@hyperdx/node-logger';
 
 async function bootstrap() {
@@ -102,7 +102,7 @@ bootstrap();
 
 Change your main module to provide the Logger service:
 
-```js
+```javascript
 import { Logger, Module } from '@nestjs/common';
 
 @Module({
@@ -113,7 +113,7 @@ export class AppModule {}
 
 Then inject the logger simply by type hinting it with the Logger from `@nestjs/common`:
 
-```js
+```javascript
 import { Controller, Logger } from '@nestjs/common';
 
 @Controller('cats')

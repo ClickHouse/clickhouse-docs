@@ -41,7 +41,7 @@ Create a `otel-file-collector.yaml` file with the following content.
 
 **Important**: Populate the value `<YOUR_INGESTION_API_KEY>` with your ingestion API key copied above.
 
-```yml
+```yaml
 receivers:
   filelog:
     include:
@@ -123,7 +123,7 @@ For more details on the OpenTelemetry (OTel) configuration structure, we recomme
 
 Run the following docker command to start an instance of the OTel collector.
 
-```bash
+```shell
 docker run --network=host --rm -it \
   --user 0:0 \
   -v "$(pwd)/otel-file-collector.yaml":/etc/otel/config.yaml \

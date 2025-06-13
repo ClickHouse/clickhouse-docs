@@ -49,3 +49,20 @@ exceptions:
   - AWS
   - Frequently Asked Questions
   - PostgreSQL
+  - TTL
+  - ClickStack
+  - OpenTelemetry
+  - Filebeat
+  - Elastic Agent
+  - HyperDX
+  - Helm
+  - EDOT
+  - SDK
+  - Docker
+  - Time To Live
+  - Docker Compose
+  - Kafka
+  - Google Cloud Run
+  - NPM
+  - OTel
+  - SQL
