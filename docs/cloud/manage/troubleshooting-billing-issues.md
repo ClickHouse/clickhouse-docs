@@ -12,7 +12,7 @@ import Image from '@theme/IdealImage';
 
 ## Fixing non-working payment details {#fixing-non-working-payment-details}
 
-Use of ClickHouse Cloud requires an active, working credit card. For 30 days after trial expiration or after your last successful payment, your services will continue to run. However, if we are unable to charge a valid credit card, cloud console functionality for your org will be restricted including scaling (up to 120GiB per replica), starting, and stopping your services.
+Use of ClickHouse Cloud requires an active, working credit card. For 30 days after trial expiration or after your last successful payment, your services will continue to run. However, if we are unable to charge a valid credit card, cloud console functionality for your org will be restricted including scaling (up to 120GiB per replica) and starting your services if stopped.
 
 **If a valid credit card is not added 30 days after trial expiration or your last successful payment, your data will be deleted.**
 
