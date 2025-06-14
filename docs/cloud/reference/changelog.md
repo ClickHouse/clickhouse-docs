@@ -30,6 +30,11 @@ import query_endpoints from '@site/static/images/cloud/reference/may-17-query-en
 import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.png';
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/cloud/reference/cloud-compatibility.md) page.
+## June 13, 2025 {#june-13-2025}
+
+- We're excited to announce that ClickHouse Cloud Dashboards are now generally available. Dashboards allow users to visualize queries on dashboards, interact with data via filters and query parameters, and manage sharing. 
+
+- API key IP filters: we are introducing an additional layer of protection for your interactions with ClickHouse Cloud. When generating an API key, you may setup an IP allow list to limit where the API key may be used.  Please refer to the [documentation](https://clickhouse.com/docs/cloud/security/setting-ip-filters) for details. 
 
 ## May 30, 2025 {#may-30-2025}
 
