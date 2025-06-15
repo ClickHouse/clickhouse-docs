@@ -57,6 +57,7 @@ You will need the following details to export/restore backups to your own CSP st
 2. Access HMAC key and HMAC secret.
 
 <hr/>
+
 # Backup / Restore
 
 ## Backup / Restore to AWS S3 Bucket {#backup--restore-to-aws-s3-bucket}
@@ -81,7 +82,7 @@ For example, if you are taking daily backups, you will need to use a new UUID ea
 
 ```sql
 BACKUP DATABASE test_backups 
-TO S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key secret>') 
+TO S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>/my_incremental', '<key id>', '<key secret>') 
 SETTINGS base_backup = S3('https://testchbackups.s3.amazonaws.com/backups/<base-backup-uuid>', '<key id>', '<key secret>')
 ```
 
@@ -152,4 +153,39 @@ SETTINGS base_backup = S3('https://storage.googleapis.com/test_gcs_backups/<uuid
 RESTORE DATABASE test_backups 
 AS test_backups_restored_gcs 
 FROM S3('https://storage.googleapis.com/test_gcs_backups/<uuid>', 'key', 'secret')
+```
+
+# Granular Backups
+
+The `BACKUP` command also works with granular backups of specific tables. Example AWS commands for backing up a specific table are listed below. GCP and Azure commands are similar to the ones explained above, except that they need to be customized to backup specific tables.
+
+### Take a Granular Backup
+**Full Backup**
+```sql
+BACKUP TABLE data TO S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key
+secret>')
+```
+
+**Incremental Backup**
+```sql
+BACKUP TABLE data TO S3('https://testchbackups.s3.amazonaws.com/backups/my_incremental/', '<key id>', '<key
+secret>') SETTINGS base_backup = S3('https://testchbackups.s3.amazonaws.com/backups/<base-backup-uuid>', '<key id>', '<key
+secret>')
+```
+
+### Restore from Granular Backup
+```sql
+RESTORE TABLE data AS data3 FROM
+S3('https://testchbackups.s3.amazonaws.com/backups/my_incremental', '<key id>', '<key secret>')
+```
+
+### Backup and Restore all service data
+**Backup**
+```sql
+BACKUP TABLE system.settings_profiles, TABLE system.row_policies, TABLE system.quotas, TABLE system.functions, ALL EXCEPT DATABASES INFORMATION_SCHEMA,information_schema,system TO S3('https://testchbackups.s3.amazonaws.com/backups/', '<key id>', '<key secret>')
+```
+
+**Restore**
+```sql
+RESTORE ALL FROM S3('https://testchbackups.s3.amazonaws.com/backups/', '<key id>', '<key secret>')
 ```
