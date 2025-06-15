@@ -60,7 +60,7 @@ You will need the following details to export/restore backups to your own CSP st
 
 # Backup / restore
 
-## Backup / restore to AWS S3 Bucket {#backup--restore-to-aws-s3-bucket}
+## Backup / restore to AWS S3 bucket {#backup--restore-to-aws-s3-bucket}
 
 ### Take a DB backup {#take-a-db-backup}
 
