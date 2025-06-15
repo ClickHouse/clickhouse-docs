@@ -58,13 +58,13 @@ You will need the following details to export/restore backups to your own CSP st
 
 <hr/>
 
-# Backup / Restore
+# Backup / restore
 
-## Backup / Restore to AWS S3 Bucket {#backup--restore-to-aws-s3-bucket}
+## Backup / restore to AWS S3 Bucket {#backup--restore-to-aws-s3-bucket}
 
-### Take a DB Backup {#take-a-db-backup}
+### Take a DB backup {#take-a-db-backup}
 
-**Full Backup**
+**Full backup**
 
 ```sql
 BACKUP DATABASE test_backups 
@@ -78,7 +78,7 @@ You will need to use a different UUID for each new backup in this subdirectory, 
 For example, if you are taking daily backups, you will need to use a new UUID each day.  
 :::
 
-**Incremental Backup**
+**Incremental backup**
 
 ```sql
 BACKUP DATABASE test_backups 
@@ -96,11 +96,11 @@ FROM S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<k
 
 See: [Configuring BACKUP/RESTORE to use an S3 Endpoint](/operations/backup#configuring-backuprestore-to-use-an-s3-endpoint) for more details.
 
-## Backup / Restore to Azure Blob Storage {#backup--restore-to-azure-blob-storage}
+## Backup / restore to Azure Blob Storage {#backup--restore-to-azure-blob-storage}
 
-### Take a DB Backup {#take-a-db-backup-1}
+### Take a DB backup {#take-a-db-backup-1}
 
-**Full Backup**
+**Full backup**
 
 ```sql
 BACKUP DATABASE test_backups 
@@ -109,7 +109,7 @@ TO AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container
 
 Where `uuid` is a unique identifier, used to differentiate a set of backups.
 
-**Incremental Backup**
+**Incremental backup**
 
 ```sql
 BACKUP DATABASE test_backups 
@@ -127,11 +127,11 @@ FROM AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<contain
 
 See: [Configuring BACKUP/RESTORE to use an S3 Endpoint](/operations/backup#configuring-backuprestore-to-use-an-azureblobstorage-endpoint) for more details.
 
-## Backup / Restore to Google Cloud Storage (GCS) {#backup--restore-to-google-cloud-storage-gcs}
+## Backup / restore to Google Cloud Storage (GCS) {#backup--restore-to-google-cloud-storage-gcs}
 
-### Take a DB Backup {#take-a-db-backup-2}
+### Take a DB backup {#take-a-db-backup-2}
 
-**Full Backup**
+**Full backup**
 
 ```sql
 BACKUP DATABASE test_backups 
@@ -139,7 +139,7 @@ TO S3('https://storage.googleapis.com/<bucket>/<uuid>', <hmac-key>', <hmac-secre
 ```
 Where `uuid` is a unique identifier, used to differentiate a set of backups.
 
-**Incremental Backup**
+**Incremental backup**
 
 ```sql
 BACKUP DATABASE test_backups 
@@ -155,37 +155,42 @@ AS test_backups_restored_gcs
 FROM S3('https://storage.googleapis.com/test_gcs_backups/<uuid>', 'key', 'secret')
 ```
 
-# Granular Backups
+# Granular backups {#granular-backups}
 
 The `BACKUP` command also works with granular backups of specific tables. Example AWS commands for backing up a specific table are listed below. GCP and Azure commands are similar to the ones explained above, except that they need to be customized to backup specific tables.
 
-### Take a Granular Backup
+### Take a granular backup {#take-a-granular-backup}
+
 **Full Backup**
 ```sql
 BACKUP TABLE data TO S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key
 secret>')
 ```
 
-**Incremental Backup**
+**Incremental backup**
+
 ```sql
 BACKUP TABLE data TO S3('https://testchbackups.s3.amazonaws.com/backups/my_incremental/', '<key id>', '<key
 secret>') SETTINGS base_backup = S3('https://testchbackups.s3.amazonaws.com/backups/<base-backup-uuid>', '<key id>', '<key
 secret>')
 ```
 
-### Restore from Granular Backup
+### Restore from a granular backup {#restore-from-granular-backup}
 ```sql
 RESTORE TABLE data AS data3 FROM
 S3('https://testchbackups.s3.amazonaws.com/backups/my_incremental', '<key id>', '<key secret>')
 ```
 
-### Backup and Restore all service data
+### Backup and restore all service data {#backup-and-restore-all-service-data}
+
 **Backup**
+
 ```sql
 BACKUP TABLE system.settings_profiles, TABLE system.row_policies, TABLE system.quotas, TABLE system.functions, ALL EXCEPT DATABASES INFORMATION_SCHEMA,information_schema,system TO S3('https://testchbackups.s3.amazonaws.com/backups/', '<key id>', '<key secret>')
 ```
 
 **Restore**
+
 ```sql
 RESTORE ALL FROM S3('https://testchbackups.s3.amazonaws.com/backups/', '<key id>', '<key secret>')
 ```
