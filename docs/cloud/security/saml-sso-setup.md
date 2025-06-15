@@ -13,7 +13,7 @@ import samlAzureApp from '@site/static/images/cloud/security/saml-azure-app.png'
 import samlAzureClaims from '@site/static/images/cloud/security/saml-azure-claims.png';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
-# SAML SSO Setup
+# SAML SSO setup
 
 <EnterprisePlanFeatureBadge feature="SAML SSO"/>
 
@@ -342,15 +342,15 @@ We only utilize service provider-initiated SSO. This means users go to `https://
 
 Users will appear in your ClickHouse Cloud console after they are assigned to your IdP application and log in for the first time. At least one SSO user should be assigned the Admin role in your organization. Use social login or `https://console.clickhouse.cloud/?with=email` to log in with your original authentication method to update your SSO role.
 
-### Removing Non-SSO Users {#removing-non-sso-users}
+### Removing non-SSO users {#removing-non-sso-users}
 
 Once you have SSO users set up and have assigned at least one user the Admin role, the Admin can remove users using other methods (e.g. social authentication or user ID + password). Google authentication will continue to work after SSO is set up. User ID + password users will be automatically redirected to SSO based on their email domain unless users use `https://console.clickhouse.cloud/?with=email`.
 
-### Managing Users {#managing-users}
+### Managing users {#managing-users}
 
 ClickHouse Cloud currently implements SAML for SSO. We have not yet implemented SCIM to manage users. This means SSO users must be assigned to the application in your IdP to access your ClickHouse Cloud organization. Users must log in to ClickHouse Cloud once to appear in the **Users** area in the organization. When users are removed in your IdP, they will not be able to log in to ClickHouse Cloud using SSO. However, the SSO user will still show in your organization until and administrator manually removes the user.
 
-### Multi-Org SSO {#multi-org-sso}
+### Multi-org SSO {#multi-org-sso}
 
 ClickHouse Cloud supports multi-organization SSO by providing a separate connection for each organization. Use the direct link (`https://console.clickhouse.cloud/?connection={organizationid}`) to log in to each respective organization. Be sure to log out of one organization before logging into another.
 

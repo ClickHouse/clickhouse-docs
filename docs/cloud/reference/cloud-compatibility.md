@@ -5,11 +5,11 @@ title: 'Cloud Compatibility'
 description: 'This guide provides an overview of what to expect functionally and operationally in ClickHouse Cloud.'
 ---
 
-# ClickHouse Cloud — Compatibility Guide
+# ClickHouse Cloud compatibility guide
 
 This guide provides an overview of what to expect functionally and operationally in ClickHouse Cloud. While ClickHouse Cloud is based on the open-source ClickHouse distribution, there may be some differences in architecture and implementation. You may find this blog on [how we built ClickHouse Cloud](https://clickhouse.com/blog/building-clickhouse-cloud-from-scratch-in-a-year) interesting and relevant to read as background.
 
-## ClickHouse Cloud Architecture {#clickhouse-cloud-architecture}
+## ClickHouse Cloud architecture {#clickhouse-cloud-architecture}
 ClickHouse Cloud significantly simplifies operational overhead and reduces the costs of running ClickHouse at scale. There is no need to size your deployment upfront, set up replication for high availability, manually shard your data, scale up your servers when your workload increases, or scale them down when you are not using them — we handle this for you.
 
 These benefits come as a result of architectural choices underlying ClickHouse Cloud:
@@ -99,7 +99,7 @@ The [Kafka Table Engine](/integrations/data-ingestion/kafka/index.md) is not gen
 
 [Named collections](/operations/named-collections) are not currently supported in ClickHouse Cloud.
 
-## Operational Defaults and Considerations {#operational-defaults-and-considerations}
+## Operational defaults and considerations {#operational-defaults-and-considerations}
 The following are default settings for ClickHouse Cloud services. In some cases, these settings are fixed to ensure the correct operation of the service, and in others, they can be adjusted.
 
 ### Operational limits {#operational-limits}

@@ -129,7 +129,7 @@ For any issues related to GCP configuration tasks, contact GCP Support directly.
 
 In this section, we're going to create a service endpoint.
 
-### Adding a Private Service Connection {#adding-a-private-service-connection}
+### Adding a private service connection {#adding-a-private-service-connection}
 
 First up, we're going to create a Private Service Connection.
 
@@ -209,7 +209,7 @@ output "psc_connection_id" {
 use `endpointServiceId`<sup>API</sup> or `Service name`<sup>console</sup> from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect) step
 :::
 
-## Set Private DNS Name for Endpoint {#setting-up-dns}
+## Set private DNS name for endpoint {#set-private-dns-name-for-endpoint}
 
 :::note
 There are various ways to configure DNS. Please set up DNS according to your specific use case.
@@ -336,7 +336,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: ap
 Each service with Private Link enabled has a public and private endpoint. In order to connect using Private Link, you need to use a private endpoint which will be `privateDnsHostname` taken from [Obtain GCP service attachment for Private Service Connect](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect).
 
 
-### Getting Private DNS Hostname {#getting-private-dns-hostname}
+### Getting private DNS hostname {#getting-private-dns-hostname}
 
 #### Option 1: ClickHouse Cloud console {#option-1-clickhouse-cloud-console-3}
 
@@ -412,7 +412,7 @@ Early data was not sent
 Verify return code: 0 (ok)
 ```
 
-### Checking Endpoint filters {#checking-endpoint-filters}
+### Checking endpoint filters {#checking-endpoint-filters}
 
 #### REST API {#rest-api}
 

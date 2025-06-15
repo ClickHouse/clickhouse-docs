@@ -274,7 +274,7 @@ Org Admins can now add more email addresses to a specific notification as additi
 
 Bring Your Own Cloud for AWS is now available in Beta. This deployment model allows you to deploy and run ClickHouse Cloud in your own AWS account. We support deployments in 11+ AWS regions, with more coming soon. Please [contact support](https://clickhouse.com/support/program) for access. Note that this deployment is reserved for large-scale deployments.
 
-### Postgres Change Data Capture (CDC) Connector in ClickPipes {#postgres-change-data-capture-cdc-connector-in-clickpipes}
+### Postgres Change Data Capture (CDC) connector in ClickPipes {#postgres-change-data-capture-cdc-connector-in-clickpipes}
 
 This turnkey integration enables customers to replicate their Postgres databases to ClickHouse Cloud in just a few clicks and leverage ClickHouse for blazing-fast analytics. You can use this connector for both continuous replication and one-time migrations from Postgres.
 
@@ -553,7 +553,7 @@ You can try the new Amazon Kinesis integration for ClickPipes in the cloud conso
 
 <Image img={kenesis} size="lg" alt="ClickPipes interface showing Amazon Kinesis integration configuration options" border />
 
-### Configurable Backups (Private Preview) {#configurable-backups-private-preview}
+### Configurable backups (private preview) {#configurable-backups-private-preview}
 
 Backups are important for every database (no matter how reliable), and we've taken backups very seriously since day 1 of ClickHouse Cloud. This week, we launched Configurable Backups, which allows for much more flexibility for your service's backups. You can now control start time, retention, and frequency. This feature is available for **Production** and **Dedicated** services and is not available for **Development** services. As this feature is in private preview, please contact support@clickhouse.com to enable this for your service. Read more about configurable backups [here](https://clickhouse.com/blog/configurable-backups-in-clickhouse-cloud).
 
@@ -1020,14 +1020,15 @@ This release brings the public release of the ClickHouse Cloud Programmatic API 
 
 ## May 11, 2023 {#may-11-2023}
 
-This release brings the ~~public beta~~ (now GA, see June 20th entry above) of ClickHouse Cloud on GCP (see [blog](https://clickhouse.com/blog/clickhouse-cloud-on-gcp-available-in-public-beta) for details), extends administrators rights to grant terminate query permissions, and adds more visibility into the status of MFA users in the Cloud console.
+This release brings the public beta (now GA, see June 20th entry above) of ClickHouse Cloud on GCP (see [blog](https://clickhouse.com/blog/clickhouse-cloud-on-gcp-available-in-public-beta) for details), extends administrators' rights to grant terminate query permissions, and adds more visibility into the status of MFA users in the Cloud console.
 
-### ClickHouse Cloud on GCP ~~(Public Beta)~~ (now GA, see June 20th entry above) {#clickhouse-cloud-on-gcp-public-beta-now-ga-see-june-20th-entry-above}
+### ClickHouse Cloud on GCP is now available in public beta (now GA, see June 20th entry above) {#clickhouse-cloud-on-gcp-is-now-available-in-public-beta-now-ga-see-june-20th-entry-above}
 - Launches a fully-managed separated storage and compute ClickHouse offering, running on top of Google Compute and Google Cloud Storage
 - Available in Iowa (us-central1), Netherlands (europe-west4), and Singapore (asia-southeast1) regions
 - Supports both Development and Production services in all three initial regions
 - Provides strong security by default: End-to-end encryption in transit, data-at-rest encryption, IP Allow Lists
 
+{{ ... }}
 ### Integrations changes {#integrations-changes-18}
 - Golang client: Added proxy environment variables support
 - Grafana: Added the ability to specify ClickHouse custom settings and proxy environment variables in Grafana datasource setup
@@ -1279,7 +1280,7 @@ This release introduces seamless logins for administrators to SQL console, impro
 ### Integrations changes {#integrations-changes-26}
 - The [Metabase plugin](/integrations/data-visualization/metabase-and-clickhouse.md) got a long-awaited v0.9.1 major update. Now it is compatible with the latest Metabase version and has been thoroughly tested against ClickHouse Cloud.
 
-## December 6, 2022 - General Availability {#december-6-2022---general-availability}
+## December 6, 2022 - General availability {#december-6-2022---general-availability}
 
 ClickHouse Cloud is now production-ready with SOC2 Type II compliance, uptime SLAs for production workloads, and public status page. This release includes major new capabilities like AWS Marketplace integration, SQL console - a data exploration workbench for ClickHouse users, and ClickHouse Academy - self-paced learning in ClickHouse Cloud. Learn more in this [blog](https://clickhouse.com/blog/clickhouse-cloud-generally-available).
 
