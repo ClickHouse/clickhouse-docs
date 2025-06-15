@@ -269,7 +269,7 @@ Roles are used to define groups of users for certain privileges instead of manag
    Verify that only the above two rows are returned, rows with the value `B` in `column1` should be excluded.
    :::
 
-## Modifying Users and Roles {#modifying-users-and-roles}
+## Modifying users and roles {#modifying-users-and-roles}
 
 Users can be assigned multiple roles for a combination of privileges needed. When using multiple roles, the system will combine the roles to determine privileges, the net effect will be that the role permissions will be cumulative.
 

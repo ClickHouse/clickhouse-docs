@@ -67,7 +67,7 @@ You can also map [virtual columns](../../sql-reference/table-functions/s3#virtua
 7. Finally, you can configure permissions for the internal ClickPipes user.
 
   **Permissions:** ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user using a custom role or one of the predefined role:
-    - `Full access`: with the full access to the cluster. Required if you use Materialized View or Dictionary with the destination table.
+    - `Full access`: with the full access to the cluster. Required if you use materialized view or Dictionary with the destination table.
     - `Only destination table`: with the `INSERT` permissions to the destination table only.
 
 <Image img={cp_step5} alt="Permissions" size="lg" border/>

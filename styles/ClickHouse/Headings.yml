@@ -7,62 +7,142 @@ match: $sentence
 indicators:
   - ":"
 exceptions:
-  - ClickHouse
-  - Cloud
-  - Azure
-  - CLI
-  - Cosmos
-  - Docker
-  - Emmet
-  - gRPC
-  - I
-  - Kubernetes
-  - Linux
-  - macOS
-  - Marketplace
-  - MongoDB
-  - REPL
-  - Studio
-  - TypeScript
-  - URLs
-  - Visual
-  - VS
-  - Windows
-  - JSON
-  - MergeTree
-  - ReplacingMergeTree
+  - API
+  - APPEND
+  - Arrow
+  - AWS
+  - AWS
+  - Apache
   - AggregatingMergeTree
-  - DigitalOcean Spaces
+  - Amazon
+  - Amazon Web Services
+  - Azure
   - Azure Blob Storage
-  - VPC
+  - B2B
+  - BigQuery
+  - Bring Your Own Cloud
+  - Bun
   - BYOC
-  - TiDB
-  - PlanetScale
-  - Vitess
-  - MySQL
+  - BYOC
+  - CPU
+  - CSV
+  - CDC
+  - CMEK
+  - CLI
+  - ClickHouse
+  - ClickHouse Cloud
   - ClickPipe
   - ClickPipes
-  - Postgres
-  - CDC
-  - FAQ
-  - Amazon Web Services
-  - AWS
-  - Frequently Asked Questions
-  - PostgreSQL
-  - TTL
+  - ClickPipes Connector
   - ClickStack
-  - OpenTelemetry
-  - Filebeat
-  - Elastic Agent
-  - HyperDX
-  - Helm
-  - EDOT
-  - SDK
+  - ClickStack
+  - CloudFormation
+  - Cosmos
+  - Customer Managed Encryption Keys
+  - DBT
+  - DBT
+  - DDL
+  - DNS
   - Docker
-  - Time To Live
+  - Docker
   - Docker Compose
+  - DigitalOcean Spaces
+  - Duo SAML
+  - EDOT
+  - Elastic Agent
+  - Emmet
+  - FAQ
+  - Filebeat
+  - Frequently Asked Questions
+  - GA
+  - GCS
+  - GET
+  - GitHub
+  - Go
+  - Google
+  - Google Cloud
+  - Google Cloud Platform
+  - Google Cloud Storage
+  - HTTP
+  - Helm
+  - HyperDX
+  - HyperDX
+  - I
+  - IdP
+  - JWT
+  - Java
+  - JSON
+  - JSON
   - Kafka
-  - Google Cloud Run
+  - Kafka
+  - Kafka Connect
+  - KMS
+  - Kubernetes
+  - LZ4
+  - Linux
+  - MERGETREE
+  - Microsoft
+  - Middle East
+  - MongoDB
   - NPM
+  - NodeJS
+  - OLAP
+  - OLTP
+  - ORC
+  - OSS
   - OTel
+  - Okta
+  - OpenTelemetry
+  - Pandas
+  - Parquet
+  - PlanetScale
+  - Postgres
+  - PostgreSQL
+  - PSC
+  - Private Link
+  - Private Service Connect
+  - PrivateLink
+  - Prometheus
+  - Python
+  - RBAC
+  - REPL
+  - REPLACE
+  - REST
+  - Role-Based Access Control
+  - SAML
+  - SOC
   - SQL
+  - SQL
+  - SSO
+  - S3
+  - SaaS
+  - SDK
+  - Studio
+  - TDE
+  - TTL
+  - TiDB
+  - Time To Live
+  - Transparent Data Encryption
+  - TypeScript
+  - U.S.
+  - UDF
+  - UI
+  - URLs
+  - UAE
+  - User Defined Functions
+  - VLDB
+  - VS
+  - VPC
+  - Vitess
+  - Visual
+  - Windows
+  - Yandex.Metrica
+  - ZSTD
+  - chDB
+  - ch_bucket_us_east1
+  - ch_bucket_us_east4
+  - gRPC
+  - macOS
+  - MergeTree
+  - MySQL
+  - ReplacingMergeTree

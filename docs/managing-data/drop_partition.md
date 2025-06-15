@@ -31,7 +31,7 @@ Read about setting the partition expression in a section [How to set the partiti
 
 In ClickHouse, users should principally consider partitioning to be a data management feature, not a query optimization technique. By separating data logically based on a key, each partition can be operated on independently e.g. deleted. This allows users to move partitions, and thus subsets, between [storage tiers](/integrations/s3#storage-tiers) efficiently on time or [expire data/efficiently delete from the cluster](/sql-reference/statements/alter/partition).
 
-## Drop Partitions {#drop-partitions}
+## Drop partitions {#drop-partitions}
 
 `ALTER TABLE ... DROP PARTITION` provides a cost-efficient way to drop a whole partition.
 

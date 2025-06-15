@@ -21,7 +21,7 @@ queries by creating a reordering of data by attributes of interest. This can be:
 
 1. A complete reordering
 2. A subset of the original table with a different order
-3. A precomputed aggregation (similar to a Materialized View) but with an ordering
+3. A precomputed aggregation (similar to a materialized view) but with an ordering
    aligned to the aggregation.
 
 <br/>
@@ -70,8 +70,8 @@ users should be aware of and thus should be deployed sparingly.
 - Projections don't currently support `optimize_read_in_order` for the (hidden) 
   target table.
 - Lightweight updates and deletes are not supported for tables with projections.
-- Materialized Views can be chained: the target table of one Materialized View 
-  can be the source table of another Materialized View, and so on. This is not 
+- Materialized Views can be chained: the target table of one materialized view 
+  can be the source table of another materialized view, and so on. This is not 
   possible with projections.
 - Projections don't support joins, but Materialized Views do.
 - Projections don't support filters (`WHERE` clause), but Materialized Views do.

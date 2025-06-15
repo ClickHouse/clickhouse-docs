@@ -7,7 +7,7 @@ description: 'This article shows the basics of defining SQL users and roles and 
 
 import CommonUserRolesContent from '@site/docs/_snippets/_users-and-roles-common.md';
 
-# Common Access Management Queries
+# Common access management queries
 
 :::tip Self-managed
 If you are working with self-managed ClickHouse please see [SQL users and roles](/guides/sre/user-management/index.md).

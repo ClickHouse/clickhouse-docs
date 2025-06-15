@@ -5,7 +5,7 @@ title: 'Privacy and Compliance'
 description: 'Landing page for privacy and compliance'
 ---
 
-# Privacy and Compliance
+# Privacy and compliance
 
 This section contains the following pages:
 

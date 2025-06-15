@@ -24,7 +24,7 @@ Looker Studio can be connected to ClickHouse Cloud by enabling the [MySQL interf
 
 ### MySQL Interface {#mysql-interface}
 
-Some applications currently do not support the ClickHouse wire protocol. To use ClickHouse Cloud with these applications, you can enable the MySQL wire protocol through the Cloud Console. Please see [this page](/interfaces/mysql#enabling-the-mysql-interface-on-clickhouse-cloud) for details on how to enable the MySQL wire protocol through the Cloud Console.
+Some applications currently do not support the ClickHouse wire protocol. To use ClickHouse Cloud with these applications, you can enable the MySQL wire protocol through the Cloud console. Please see [this page](/interfaces/mysql#enabling-the-mysql-interface-on-clickhouse-cloud) for details on how to enable the MySQL wire protocol through the Cloud console.
 
 ## Unsupported Integrations {#unsupported-integrations}
 

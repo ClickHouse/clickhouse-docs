@@ -2,19 +2,21 @@
 slug: /guides/developer/mutations
 sidebar_label: 'Updating and Deleting Data'
 sidebar_position: 1
-keywords: ['UPDATE', 'DELETE']
+keywords: ['UPDATE', 'DELETE', 'mutations']
 title: 'Updating and deleting ClickHouse data'
 description: 'Describes how to perform update and delete operations in ClickHouse'
 show_related_blogs: false
 ---
 
-# Updating and deleting ClickHouse data
+# Updating and deleting ClickHouse data with mutations
 
-Although ClickHouse is geared toward high volume analytic workloads, it is possible in some situations to modify or delete existing data.  These operations are labeled "mutations" and are executed using the `ALTER TABLE` command. You can also `DELETE` a row using the lightweight
-delete capability of ClickHouse.
+Although ClickHouse is geared toward high volume analytic workloads, it is possible in some situations to modify or 
+delete existing data. These operations are labeled "mutations" and are executed using the `ALTER TABLE` command.
 
 :::tip
-If you need to perform frequent updates, consider using [deduplication](../developer/deduplication.md) in ClickHouse, which allows you to update and/or delete rows without generating a mutation event.
+If you need to perform frequent updates, consider using [deduplication](../developer/deduplication.md) in ClickHouse, which allows you to update 
+and/or delete rows without generating a mutation event. Alternatively, use [lightweight updates](/guides/developer/lightweight-update)
+or [lightweight deletes](/guides/developer/lightweight-delete)
 :::
 
 ## Updating data {#updating-data}

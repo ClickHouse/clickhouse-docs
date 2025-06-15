@@ -49,7 +49,7 @@ ENGINE = AggregatingMergeTree()
 ORDER BY page_id;
 ```
 
-Create an Incremental Materialized View that will act as an insert trigger to 
+Create an Incremental materialized view that will act as an insert trigger to 
 new data and store the intermediate state data in the target table defined above:
 
 ```sql
