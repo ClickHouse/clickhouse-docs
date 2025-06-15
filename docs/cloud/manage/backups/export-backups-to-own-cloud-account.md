@@ -12,7 +12,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 ClickHouse Cloud supports taking backups to your own cloud service provider (CSP) account (AWS S3, Google Cloud Storage, or Azure Blob Storage).
 For details of how ClickHouse Cloud backups work, including "full" vs. "incremental" backups, see the [backups](overview.md) docs.
 
-Here we show examples of how to take full and incremental backups to AWS, GCP, Azure object storage as well as how to restore from the backups. The BACKUP commands listed below are run within the original service. The RESTORE commands are run from a new service where the backup is going to be restored. 
+Here we show examples of how to take full and incremental backups to AWS, GCP, Azure object storage as well as how to restore from the backups. The BACKUP commands listed below are run within the original service. The RESTORE commands are run from a new service where the backup should be restored. 
 
 :::note
 Users should be aware that any usage where backups are being exported to a different region in the same cloud provider, or to another cloud provider (in the same or different region) will incur [data transfer](../network-data-transfer.mdx) charges.
