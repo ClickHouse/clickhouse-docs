@@ -26,7 +26,7 @@ For a full guide on denormalizing data in ClickHouse see [here](/data-modeling/d
 
 ## When JOINs are required {#when-joins-are-required}
 
-When JOINs are required, ensure you’re using **at least version 24.12 and preferably the latest version**, as JOIN performance continues to improve with each new release. As of ClickHouse 24.12, the query planner now automatically places the smaller table on the right side of the join for optimal performance - a task that previously had to be done manually. Even more enhancements are coming soon, including more aggressive filter pushdown and automatic re-ordering of multiple joins.
+When JOINs are required, ensure you're using **at least version 24.12 and preferably the latest version**, as JOIN performance continues to improve with each new release. As of ClickHouse 24.12, the query planner now automatically places the smaller table on the right side of the join for optimal performance - a task that previously had to be done manually. Even more enhancements are coming soon, including more aggressive filter pushdown and automatic re-ordering of multiple joins.
 
 Follow these best practices to improve JOIN performance:
 

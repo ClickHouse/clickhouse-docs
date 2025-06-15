@@ -30,14 +30,14 @@ Use the following command to install the [ClickStack OpenTelemetry package](http
 <Tabs groupId="install">
 <TabItem value="npm" label="NPM" default>
 
-```bash 
+```shell 
 npm install @hyperdx/node-opentelemetry 
 ```
 
 </TabItem>
 <TabItem value="yarn" label="Yarn" default>
 
-```bash  
+```shell  
 yarn add @hyperdx/node-opentelemetry 
 ```
 
@@ -46,12 +46,12 @@ yarn add @hyperdx/node-opentelemetry
 
 ### Initializing the SDK {#initializin-the-sdk}
 
-To initialize the SDK, you'll need to call the `init` function at the  top of the entry point of your application.
+To initialize the SDK, you'll need to call the `init` function at the top of the entry point of your application.
 
 <Tabs groupId="initialize">
 <TabItem value="require" label="require" default>
 
-```js
+```javascript
 const HyperDX = require('@hyperdx/node-opentelemetry');
 
 HyperDX.init({
@@ -63,7 +63,7 @@ HyperDX.init({
 </TabItem>
 <TabItem value="import" label="import">
 
-```js
+```javascript
 import * as HyperDX from '@hyperdx/node-opentelemetry';
 
 HyperDX.init({
@@ -151,7 +151,7 @@ To enable this, you'll need to add the following code to the end of your applica
 <Tabs groupId="setup">
 <TabItem value="Express" label="Express" default>
 
-```js 
+```javascript 
 const HyperDX = require('@hyperdx/node-opentelemetry');
 HyperDX.init({
     apiKey: 'YOUR_INGESTION_API_KEY',
@@ -171,7 +171,7 @@ app.listen(3000);
 </TabItem>
 <TabItem value="Koa" label="Koa">
 
-```js 
+```javascript 
 const Koa = require("koa");
 const Router = require("@koa/router");
 const HyperDX = require('@hyperdx/node-opentelemetry');
@@ -193,7 +193,7 @@ app.listen(3030);
 </TabItem>
 <TabItem value="Manual" label="Manual">
 
-```js
+```javascript
 const HyperDX = require('@hyperdx/node-opentelemetry');
 
 function myErrorHandler(error, req, res, next) {
@@ -211,7 +211,7 @@ function myErrorHandler(error, req, res, next) {
 If you're having trouble with the SDK, you can enable verbose logging by setting
 the `OTEL_LOG_LEVEL` environment variable to `debug`.
 
-```sh
+```shell
 export OTEL_LOG_LEVEL=debug
 ```
 
@@ -242,7 +242,7 @@ tag and propagate identifiers yourself.
 with the corresponding values, but can be omitted. Any other additional values
 can be specified and used to search for events.
 
-```ts
+```typescript
 import * as HyperDX from '@hyperdx/node-opentelemetry';
 
 app.use((req, res, next) => {
@@ -262,7 +262,7 @@ Make sure to enable beta mode by setting `HDX_NODE_BETA_MODE` environment
 variable to 1 or by passing `betaMode: true` to the `init` function to
 enable trace attributes.
 
-```sh
+```shell
 export HDX_NODE_BETA_MODE=1
 ```
 
@@ -316,14 +316,14 @@ Node.js `--require` flag. The CLI installation exposes a wider range of auto-ins
 <Tabs groupId="cli">
 <TabItem value="npx" label="Using NPX" default>
 
-```bash
+```shell
 HYPERDX_API_KEY='<YOUR_INGESTION_KEY>' OTEL_SERVICE_NAME='<YOUR_APP_NAME>' npx opentelemetry-instrument index.js
 ```
 
 </TabItem>
 <TabItem value="custom" label="Custom Entry Point (ex. Nodemon, ts-node, etc.)">
 
-```bash
+```shell
 HYPERDX_API_KEY='<YOUR_INGESTION_KEY>' OTEL_SERVICE_NAME='<YOUR_APP_NAME>' ts-node -r '@hyperdx/node-opentelemetry/build/src/tracing' index.js
 ```
 
@@ -331,7 +331,7 @@ HYPERDX_API_KEY='<YOUR_INGESTION_KEY>' OTEL_SERVICE_NAME='<YOUR_APP_NAME>' ts-no
 
 <TabItem value="code_import" label="Code Import">
 
-```js 
+```javascript 
 // Import this at the very top of the first file loaded in your application
 // You'll still specify your API key via the `HYPERDX_API_KEY` environment variable
 import { initSDK } from '@hyperdx/node-opentelemetry';
@@ -352,7 +352,7 @@ _The `OTEL_SERVICE_NAME` environment variable is used to identify your service i
 
 To enable uncaught exception capturing, you'll need to set the `HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE` environment variable to 1.
 
-```sh
+```shell
 HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE=1
 ```
 

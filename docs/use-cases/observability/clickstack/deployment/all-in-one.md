@@ -34,7 +34,7 @@ This option includes authentication, enabling the persistence of dashboards, ale
 
 The following will run an OpenTelemetry collector (on port 4317 and 4318) and the HyperDX UI (on port 8080).
 
-```bash
+```shell
 docker run -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
 
@@ -60,7 +60,7 @@ To ingest data see ["Ingesting data"](/use-cases/observability/clickstack/ingest
 
 To persist data and settings across restarts of the container, users can modify the above docker command to mount the paths `/data/db`, `/var/lib/clickhouse` and `/var/log/clickhouse-server`. For example:
 
-```bash
+```shell
 # ensure directories exist
 mkdir -p .volumes/db .volumes/ch_data .volumes/ch_logs
 # modify command to mount paths
@@ -87,7 +87,7 @@ If you need to customize the application (8080) or API (8000) ports that HyperDX
 
 Customizing the OpenTelemetry ports can simply be changed by modifying the port forwarding flags. For example,  replacing `-p 4318:4318` with `-p 4999:4318` to change the OpenTelemetry HTTP port to 4999.
 
-```bash
+```shell
 docker run -p 8080:8080 -p 4317:4317 -p 4999:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
 
@@ -97,7 +97,7 @@ This distribution can be used with ClickHouse Cloud. While the local ClickHouse 
 
 For example:
 
-```bash
+```shell
 export CLICKHOUSE_ENDPOINT=<HTTPS ENDPOINT>
 export CLICKHOUSE_USER=<CLICKHOUSE_USER>
 export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>

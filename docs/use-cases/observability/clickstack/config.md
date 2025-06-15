@@ -18,11 +18,11 @@ The following configuration options are available for each component of ClickSta
 
 If using the [All in One](/use-cases/observability/clickstack/deployment/all-in-one), [HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only) or [Local Mode](/use-cases/observability/clickstack/deployment/local-mode-only) simply pass the desired setting via an environment variable e.g.
 
-```bash
+```shell
 docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
 
-### Docker compose {#docker-compose}
+### Docker Compose {#docker-compose}
 
 If using the [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose) deployment guide, the [`.env`](https://github.com/hyperdxio/hyperdx/blob/main/.env) file can be used to modify settings.
 
@@ -40,11 +40,11 @@ services:
 
 ### Helm {#helm}
 
-#### Customizing values (Optional) {#customizing-values}
+#### Customizing values (optional) {#customizing-values}
 
 You can customize settings by using `--set` flags e.g.
 
-```bash
+```shell
 helm install my-hyperdx hyperdx/hdx-oss-v2 \
   --set replicaCount=2 \
   --set resources.limits.cpu=500m \
@@ -62,7 +62,7 @@ helm install my-hyperdx hyperdx/hdx-oss-v2 \
 
 Alternatively edit the `values.yaml`. To retrieve the default values:
 
-```sh
+```shell
 helm show values hyperdx/hdx-oss-v2 > values.yaml
 ```
 

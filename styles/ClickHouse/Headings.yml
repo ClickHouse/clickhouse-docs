@@ -7,128 +7,142 @@ match: $sentence
 indicators:
   - ":"
 exceptions:
-  - ClickHouse
-  - ClickHouse Cloud
-  - ClickStack
-  - Kafka Connect
-  - Azure
-  - CLI
-  - Cosmos
-  - Docker
-  - Emmet
-  - gRPC
-  - I
-  - Kubernetes
-  - Linux
-  - macOS
-  - Marketplace
-  - MongoDB
-  - REPL
-  - Studio
-  - TypeScript
-  - URLs
-  - Visual
-  - VS
-  - Windows
-  - JSON
-  - MergeTree
-  - ReplacingMergeTree
+  - API
+  - APPEND
+  - Arrow
+  - AWS
+  - AWS
+  - Apache
   - AggregatingMergeTree
-  - DigitalOcean Spaces
-  - Azure Blob Storage
-  - VPC
-  - BYOC
-  - TiDB
-  - PlanetScale
-  - Vitess
-  - MySQL
-  - ClickPipe
-  - ClickPipes
-  - Postgres
-  - CDC
-  - FAQ
   - Amazon
   - Amazon Web Services
-  - AWS
-  - Frequently Asked Questions
-  - PostgreSQL
-  - OSS
-  - Google
-  - Google Cloud Storage
-  - GCS
+  - Azure
+  - Azure Blob Storage
+  - B2B
   - BigQuery
-  - Pandas
-  - DataFrame
-  - Role-Based Access Control
-  - RBAC
-  - OLTP
+  - Bring Your Own Cloud
+  - Bun
+  - BYOC
+  - BYOC
+  - CPU
+  - CSV
+  - CDC
+  - CMEK
+  - CLI
+  - ClickHouse
+  - ClickHouse Cloud
+  - ClickPipe
+  - ClickPipes
+  - ClickPipes Connector
+  - ClickStack
+  - ClickStack
+  - CloudFormation
+  - Cosmos
+  - Customer Managed Encryption Keys
+  - DBT
+  - DBT
+  - DDL
+  - DNS
+  - Docker
+  - Docker
+  - Docker Compose
+  - DigitalOcean Spaces
+  - Duo SAML
+  - EDOT
+  - Elastic Agent
+  - Emmet
+  - FAQ
+  - Filebeat
+  - Frequently Asked Questions
+  - GA
+  - GCS
+  - GET
+  - GitHub
+  - Go
+  - Google
+  - Google Cloud
+  - Google Cloud Platform
+  - Google Cloud Storage
+  - HTTP
+  - Helm
   - HyperDX
+  - HyperDX
+  - I
+  - IdP
+  - JWT
+  - Java
+  - JSON
+  - JSON
+  - Kafka
+  - Kafka
+  - Kafka Connect
+  - KMS
+  - Kubernetes
+  - LZ4
+  - Linux
+  - MERGETREE
+  - Microsoft
+  - Middle East
+  - MongoDB
+  - NPM
+  - NodeJS
+  - OLAP
+  - OLTP
+  - ORC
+  - OSS
+  - OTel
+  - Okta
+  - OpenTelemetry
+  - Pandas
+  - Parquet
+  - PlanetScale
+  - Postgres
+  - PostgreSQL
+  - PSC
+  - Private Link
+  - Private Service Connect
+  - PrivateLink
+  - Prometheus
+  - Python
+  - RBAC
+  - REPL
+  - REPLACE
+  - REST
+  - Role-Based Access Control
+  - SAML
+  - SOC
+  - SQL
+  - SQL
+  - SSO
+  - S3
+  - SaaS
+  - SDK
+  - Studio
+  - TDE
+  - TTL
+  - TiDB
+  - Time To Live
+  - Transparent Data Encryption
+  - TypeScript
+  - U.S.
+  - UDF
   - UI
+  - URLs
+  - UAE
+  - User Defined Functions
+  - VLDB
+  - VS
+  - VPC
+  - Vitess
+  - Visual
+  - Windows
+  - Yandex.Metrica
+  - ZSTD
+  - chDB
   - ch_bucket_us_east1
   - ch_bucket_us_east4
-  - SQL
-  - Yandex.Metrica
-  - CPU
-  - B2B
-  - SaaS
-  - LZ4
-  - ZSTD
-  - HTTP
-  - APPEND
-  - REPLACE
-  - chDB
-  - Python
-  - GitHub
-  - Parquet
-  - CSV
-  - JSON
-  - Arrow
-  - ORC
-  - UDF
-  - User Defined Functions
-  - NodeJS
-  - Go
-  - Apache
-  - Bun
-  - S3
-  - Private Link
-  - Kafka
-  - ClickPipes Connector
-  - Prometheus
-  - Java
-  - Bring Your Own Cloud
-  - BYOC
-  - Customer Managed Encryption Keys
-  - CMEK
-  - Transparent Data Encryption
-  - TDE
-  - UAE
-  - GA
-  - JWT
-  - DNS
-  - Private Service Connect
-  - PSC
-  - SSO
-  - Microsoft
-  - IdP
-  - SAML
-  - Okta
-  - REST
-  - API
-  - Kinesis
-  - Middle East
-  - Google Cloud Platform
-  - VLDB
-  - OLAP
-  - Change Data Capture
-  - DBT
-  - Duo SAML
-  - U.S.
-  - SOC
-  - CloudFormation
-  - SLA
-  - PrivateLink
-  - KMS
-  - Google Cloud
-  - DDL
-  - GET
+  - gRPC
+  - macOS
+  - MergeTree
+  - MySQL
+  - ReplacingMergeTree

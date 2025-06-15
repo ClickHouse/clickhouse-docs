@@ -23,7 +23,7 @@ python-dateutil==2.9.0.post0
 python-slugify==8.0.4
 PyYAML==6.0.2
 remember==0.1
-requests==2.32.3
+requests==2.32.4
 ruamel.yaml==0.18.10
 ruamel.yaml.clib==0.2.12
 scipy==1.15.1

@@ -17,7 +17,7 @@ This guide integrates the following:
 To send over application-level metrics or APM/traces, you'll need to add the corresponding language integration to your application as well.
 :::
 
-## Creating the OTel Helm Chart configuration files {#creating-the-otel-helm-chart-config-files}
+## Creating the OTel Helm chart configuration files {#creating-the-otel-helm-chart-config-files}
 
 To collect logs and metrics from both each node and the cluster itself, we'll need to deploy two separate OpenTelemetry collectors. One will be deployed as a DaemonSet to collect logs and metrics from each node, and the other will be deployed as a deployment to collect logs and metrics from the cluster itself.
 
@@ -113,7 +113,7 @@ config:
           - otlphttp
 ```
 
-### Creating the Deployment Configuration {#creating-the-deployment-configuration}
+### Creating the deployment configuration {#creating-the-deployment-configuration}
 
 To collect Kubernetes events and cluster-wide metrics, we'll need to deploy a separate OpenTelemetry collector as a deployment.
 
@@ -171,13 +171,13 @@ the [OpenTelemetry Helm Chart](https://github.com/open-telemetry/opentelemetry-h
 
 Add the OpenTelemetry Helm repo:
 
-```bash copy
+```shell copy
 helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts # Add OTel Helm repo
 ```
 
 Install the chart with the above config:
 
-```bash copy
+```shell copy
 helm install my-opentelemetry-collector-deployment open-telemetry/opentelemetry-collector -f deployment.yaml
 helm install my-opentelemetry-collector-daemonset open-telemetry/opentelemetry-collector -f daemonset.yaml
 ```

@@ -21,7 +21,7 @@ This Guide Integrates:
 
 Use the following command to install the [ClickStack React Native package](https://www.npmjs.com/package/@hyperdx/otel-react-native).
 
-```bash
+```shell
 npm install @hyperdx/otel-react-native
 ```
 
@@ -29,7 +29,7 @@ npm install @hyperdx/otel-react-native
 
 Initialize the library as early in your app lifecycle as possible:
 
-```js
+```javascript
 import { HyperDXRum } from '@hyperdx/otel-react-native';
 
 HyperDXRum.init({
@@ -50,7 +50,7 @@ with the user information.
 corresponding values, but can be omitted. Any other additional values can be
 specified and used to search for events.
 
-```js
+```javascript
 HyperDXRum.setGlobalAttributes({
   userId: user.id,
   userEmail: user.email,
@@ -66,7 +66,7 @@ To instrument applications running on React Native versions lower than 0.68,
 edit your `metro.config.js` file to force metro to use browser specific
 packages. For example:
 
-```js
+```javascript
 const defaultResolver = require('metro-resolver');
 
 module.exports = {
@@ -112,7 +112,7 @@ module.exports = {
 
 The following example shows how to instrument navigation:
 
-```js
+```javascript
 import { startNavigationTracking } from '@hyperdx/otel-react-native';
 
 export default function App() {

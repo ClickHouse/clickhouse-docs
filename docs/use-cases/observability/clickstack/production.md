@@ -69,7 +69,7 @@ Here's how to add it to your `docker-compose.yml` file for the app service:
 
 You can generate a strong secret using openssl:
 
-```bash
+```shell
 openssl rand -hex 32
 ```
 
@@ -122,6 +122,10 @@ ClickHouse OSS provides robust security features out of the box. However, these 
 - **Audit access and queries** using [system logs](/operations/system-tables/query_log) and [session logs](/operations/system-tables/session_log).
 
 See also [external authenticators](/operations/external-authenticators) and [query complexity settings](/operations/settings/query-complexity) for managing users and ensuring query/resource limits.
+
+### Configure Time To Live (TTL) {#configure-ttl}
+
+Ensure the [Time To Live (TTL)](/use-cases/observability/clickstack/ttl) has been [appropriately configured](/use-cases/observability/clickstack/ttl#modifying-ttl) for your ClickStack deployment. This controls how long data is retained for - the default of 3 days often needs to be modified.
 
 ## MongoDB guidelines {#mongodb-guidelines}
 

@@ -31,7 +31,7 @@ To get started, you'll need to enable the Next.js instrumentation hook by settin
 
 **Example:**
 
-```js
+```javascript
 const nextConfig = {
   experimental: {
     instrumentationHook: true,
@@ -57,14 +57,14 @@ module.exports = nextConfig;
 <Tabs groupId="npm">
 <TabItem value="npm" label="NPM" default>
 
-```bash 
+```shell 
 npm install @hyperdx/node-opentelemetry 
 ```
 
 </TabItem>
 <TabItem value="yarn" label="Yarn" default>
 
-```bash  
+```shell  
 yarn add @hyperdx/node-opentelemetry 
 ```
 
@@ -75,7 +75,7 @@ yarn add @hyperdx/node-opentelemetry
 
 Create a file called `instrumentation.ts` (or `.js`) in your Next.js project root with the following contents:
 
-```js
+```javascript
 export async function register() {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     const { init } = await import('@hyperdx/node-opentelemetry');

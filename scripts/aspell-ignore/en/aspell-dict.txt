@@ -319,6 +319,7 @@ Draxlr
 Dresseler
 Durre
 ECMA
+EDOT
 EMQX
 ETag
 EachRow
@@ -354,6 +355,7 @@ FOSDEM
 FQDN
 Failover
 FarmHash
+Filebeat
 FileCluster
 FileLog
 FilesystemCacheBytes
@@ -711,6 +713,7 @@ MessageBird
 MessagePack
 Metabase
 Metastore
+Metricbeat
 MetroHash
 MiB
 Milli
@@ -880,6 +883,7 @@ PROCESSLIST
 PROXYv
 PRQL
 PSUN
+Packetbeat
 PagerDuty
 ParallelFormattingOutputFormatThreads
 ParallelFormattingOutputFormatThreadsActive
@@ -1058,6 +1062,7 @@ SCIM
 SDKs
 SELECTs
 SERIALIZABLE
+SIEM
 SIGTERM
 SIMD
 SLAs
@@ -2450,6 +2455,7 @@ mlockall
 mmap
 mmapped
 modularization
+modularity
 moduli
 moduloOrZero
 mongoc
@@ -2692,6 +2698,7 @@ prebuilt
 precompiled
 precompute
 precomputed
+precomputing
 preconfigured
 preemptable
 preferServerCiphers
@@ -2902,6 +2909,8 @@ roadmap
 rocksdb
 rollout
 rollup
+rollups
+Rollups
 roundAge
 roundBankers
 roundDown
@@ -3300,6 +3309,7 @@ transactionally
 translateUTF
 translocality
 transpilation
+transpiling
 trie
 trimBoth
 trimLeft
@@ -3346,6 +3356,7 @@ unbin
 uncomment
 undelete
 undeleting
+underutilize
 undrop
 undropping
 unencoded
@@ -3426,6 +3437,7 @@ varpopstable
 varsamp
 varsampstable
 vectorized
+vectorization
 vectorscan
 vendoring
 verificationDepth
@@ -3543,3 +3555,4 @@ TimescaleDB
 columnstore
 TiDB
 resync
+resynchronization
