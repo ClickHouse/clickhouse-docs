@@ -11,11 +11,15 @@ import Image from '@theme/IdealImage';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
 import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png';
 
-This mode includes the UI with authentication disabled to allow for quick local use. 
 
-**User authentication is disabled for this distribution of HyperDX**
+Similar to the [all-in-one image](/use-cases/observability/clickstack/deployment/docker-compose), this comprehensive Docker image bundles all ClickStack components:
 
-It does not persist dashboards, saved searches, and alerts.
+* **ClickHouse**
+* **HyperDX**
+* **OpenTelemetry (OTel) collector** (exposing OTLP on ports `4317` and `4318`)
+* **MongoDB** (for persistent application state)
+
+**However, user authentication is disabled for this distribution of HyperDX**
 
 ### Suitable for {#suitable-for}
 
@@ -32,7 +36,7 @@ It does not persist dashboards, saved searches, and alerts.
 
 Local mode deploys the HyperDX UI only, accessible on port 8080.
 
-```bash
+```shell
 docker run -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx-local
 ```
 

@@ -118,3 +118,20 @@ exceptions:
   - Kinesis
   - Middle East
   - Google Cloud Platform
+  - TTL
+  - ClickStack
+  - OpenTelemetry
+  - Filebeat
+  - Elastic Agent
+  - HyperDX
+  - Helm
+  - EDOT
+  - SDK
+  - Docker
+  - Time To Live
+  - Docker Compose
+  - Kafka
+  - Google Cloud Run
+  - NPM
+  - OTel
+  - SQL

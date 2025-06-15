@@ -64,7 +64,7 @@ if $USE_CHANGED_FILES; then
   MERGE_BASE=$(git merge-base $BASE_BRANCH $CURRENT_BRANCH)
 
   # Get changed files between merge-base and current branch
-  CHANGED_FILES=$(git diff --name-only $MERGE_BASE $CURRENT_BRANCH | grep -E '^docs/.*\.(md|mdx)$' | tr '\n' ' ')
+  CHANGED_FILES=$(git diff --name-only --diff-filter=d $MERGE_BASE $CURRENT_BRANCH | grep -E '^docs/.*\.(md|mdx)$' | tr '\n' ' ')
 
   # Also check for uncommitted changes
   UNCOMMITTED_FILES=$(git diff --name-only HEAD | grep -E '^docs/.*\.(md|mdx)$' | tr '\n' ' ')

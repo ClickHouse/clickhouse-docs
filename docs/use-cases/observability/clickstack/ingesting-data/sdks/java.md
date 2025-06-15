@@ -36,7 +36,7 @@ and place the JAR in your preferred directory. The JAR file contains the agent
 and instrumentation libraries. You can also use the following command to
 download the agent:
 
-```bash
+```shell
 curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar
 ```
 
@@ -44,7 +44,7 @@ curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/
 
 Afterwards you'll need to configure the following environment variables in your shell to ship telemetry to ClickStack:
 
-```bash
+```shell
 export JAVA_TOOL_OPTIONS="-javaagent:PATH/TO/opentelemetry-javaagent.jar" \
 OTEL_EXPORTER_OTLP_ENDPOINT=https://localhost:4318 \
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>' \
@@ -59,7 +59,7 @@ The `OTEL_EXPORTER_OTLP_HEADERS` environment variable contains the API Key avail
 
 ### Run the application with OpenTelemetry Java agent {#run-the-application-with-otel-java-agent}
 
-```sh
+```shell
 java -jar target/<APPLICATION_JAR_FILE>
 ```
 <br/>

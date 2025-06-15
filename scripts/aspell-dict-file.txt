@@ -1055,3 +1055,5 @@ allowlist
 microsoft
 --docs/integrations/data-ingestion/azure-data-factory/index.md--
 microsoft
+--docs/use-cases/observability/clickstack/migration/elastic/migrating-data.md--
+clickstack
