@@ -48,7 +48,7 @@ Once you’ve connected Fabi.ai to ClickHouse, go to any [Smartbook](https://doc
    <Image size="lg" img={fabi_04} alt="Querying ClickHouse" border />
 
 
-## Additional Resources
+## Additional Resources {#additional-resources}
 
 [Fabi.ai](https://www.fabi.ai) documentation: https://docs.fabi.ai/introduction
 
