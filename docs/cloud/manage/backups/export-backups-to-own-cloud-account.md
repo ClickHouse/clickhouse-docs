@@ -12,14 +12,10 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 ClickHouse Cloud supports taking backups to your own cloud service provider (CSP) account (AWS S3, Google Cloud Storage, or Azure Blob Storage).
 For details of how ClickHouse Cloud backups work, including "full" vs. "incremental" backups, see the [backups](overview.md) docs.
 
-Here we show examples of how to take full and incremental backups to AWS, GCP, Azure object storage as well as how to restore from the backups. The BACKUP commands listed below are run within the original service. The RESTORE commands are run from a new service where the backup should be restored. 
+Here we show examples of how to take full and incremental backups to AWS, GCP, Azure object storage as well as how to restore from the backups.
 
 :::note
 Users should be aware that any usage where backups are being exported to a different region in the same cloud provider, or to another cloud provider (in the same or different region) will incur [data transfer](../network-data-transfer.mdx) charges.
-:::
-
-:::note
-Backup / Restore into your own bucket for services utilizing [TDE](https://clickhouse.com/docs/cloud/security/cmek#transparent-data-encryption-tde) is currently not supported. 
 :::
 
 ## Requirements {#requirements}
@@ -62,11 +58,6 @@ You will need the following details to export/restore backups to your own CSP st
 
 <hr/>
 # Backup / Restore
-
-:::note:::
-1. For restoring the backup from your own bucket into a new service, you will need to update the trust policy of your backups storage bucket to allow access from the new service.
-2. The Backup / Restore commands need to be run from the database command line. For restore to a new service, you will first need to create the service and then run the command.   
-:::
 
 ## Backup / Restore to AWS S3 Bucket {#backup--restore-to-aws-s3-bucket}
 
