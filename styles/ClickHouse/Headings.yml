@@ -63,8 +63,6 @@ exceptions:
   - Docker Compose
   - Kafka
   - Google Cloud Run
-  - Google Cloud Storage
-  - GCS
   - NPM
   - OTel
   - SQL
