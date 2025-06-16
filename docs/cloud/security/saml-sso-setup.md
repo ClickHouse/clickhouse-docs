@@ -110,6 +110,10 @@ We recommend setting up a **direct link to your organization** in addition to yo
    - For email + password accounts, please use `https://console.clickhouse.cloud/?with=email`.
    - For social logins, please click the appropriate button (**Continue with Google** or **Continue with Microsoft**)
 
+:::note
+`email` in `?with=email` above is the literal parameter value, not a placeholder
+:::
+
    5. Log out with your original authentication method and log back in via https://console.clickhouse.cloud OR the direct link you configured in 'Configure your SAML integration' above.
 
    6. Remove any non-SAML users to enforce SAML for the organization. Going forward users are assigned via your Identity Provider.
