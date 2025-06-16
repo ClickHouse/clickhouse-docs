@@ -3340,6 +3340,11 @@
     {
       "source": "/docs/development/adding_test_queries",
       "destination": "/docs/development/tests#adding-a-new-test"
+    },
+    {
+      "source": "/docs/cloud/manage/api/keys-api-reference",
+      "destination": "/docs/cloud/manage/api/swagger#/paths/~1v1~1organizations~1%7BorganizationId%7D~1keys/get",
+      "permanent": true
     }
   ]
 }
