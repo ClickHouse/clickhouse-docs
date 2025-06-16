@@ -61,7 +61,8 @@ You will need the following details to export/restore backups to your own CSP st
 2. Access HMAC key and HMAC secret.
 
 <hr/>
-# Backup / restore
+
+# Backup / restore {#backup-restore}
 
 :::note
 1. For restoring the backup from your own bucket into a new service, you will need to update the trust policy of your backups storage bucket to allow access from the new service.
@@ -196,12 +197,4 @@ BACKUP TABLE system.settings_profiles, TABLE system.row_policies, TABLE system.q
 
 ```sql
 RESTORE ALL FROM S3('https://testchbackups.s3.amazonaws.com/backups/', '<key id>', '<key secret>')
-```
-
-### Restore from a backup {#restore-from-a-backup-2}
-
-```sql
-RESTORE DATABASE test_backups 
-AS test_backups_restored_gcs 
-FROM S3('https://storage.googleapis.com/test_gcs_backups/<uuid>', 'key', 'secret')
 ```
