@@ -344,7 +344,9 @@ We only utilize service provider initiated SSO. This means users go to `https://
 
 ### Assigning User Roles {#assigning-user-roles}
 
-Users will appear in your ClickHouse Cloud console after they are assigned to your IdP application and log in for the first time. At least one SSO user should be assigned the Admin role in your organization. Use social login or `https://console.clickhouse.cloud/?with=email` to log in with your original authentication method to update your SSO role.
+Users will appear in your ClickHouse Cloud console after they are assigned to your IdP application and log in for the first time. At least one SSO user should be assigned the Admin role in your organization and additional users that login with SSO will be created with the role of ["Member"](/cloud/security/cloud-access-management/overview#console-users-and-roles), meaning that by default they do not have access to any services and should have their access and roles updated by an Admin.
+
+Use social login or `https://console.clickhouse.cloud/?with=email` to log in with your original authentication method to update your SSO role.
 
 ### Removing Non-SSO Users {#removing-non-sso-users}
 
