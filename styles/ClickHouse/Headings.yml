@@ -8,7 +8,12 @@ indicators:
   - ":"
 exceptions:
   - API
+  - ANN
   - APPEND
+  - DELETE FROM
+  - ALTER DELETE
+  - DROP PARTITION
+  - TRUNCATE
   - Arrow
   - AWS
   - AWS
@@ -31,6 +36,7 @@ exceptions:
   - CLI
   - ClickHouse
   - ClickHouse Cloud
+  - ClickHouse Keeper
   - ClickPipe
   - ClickPipes
   - ClickPipes Connector
@@ -168,5 +174,13 @@ exceptions:
   - Routing
   - Cloud
   - Change Data Capture
+  - PostLinks
+  - PostHistory
+  - DateTime
+  - Stack Overflow
+  - Homebrew
+  - WSL
+  - London
+  - Query 2. Average price per year in London
   - V24.5 changelog for Cloud
   - V24.6 changelog for Cloud

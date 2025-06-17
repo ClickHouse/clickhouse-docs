@@ -15,7 +15,7 @@ can be applied to the [`avg`](/sql-reference/aggregate-functions/reference/avg)
 function to produce an intermediate state of `AggregateFunction(avg, T)` type where
 `T` is the specified type for the average.
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 In this example, we'll look at how we can use the `AggregateFunction` type, 
 together with the `avgState` function to aggregate website traffic data.

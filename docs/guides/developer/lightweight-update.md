@@ -6,7 +6,7 @@ keywords: ['lightweight update']
 description: 'Provides a description of lightweight updates'
 ---
 
-# Lightweight Update {#lightweight-update}
+# Lightweight update {#lightweight-update}
 
 ## Introduction {#introduction}
 

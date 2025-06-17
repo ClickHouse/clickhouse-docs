@@ -14,7 +14,7 @@ The [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate)
 function to return the minimum value across all input values. It returns the 
 result with type [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction).
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 Let's look at a practical example using a table that tracks daily temperature 
 readings. For each location, we want to maintain the lowest temperature recorded.

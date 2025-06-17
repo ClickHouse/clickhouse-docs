@@ -4,7 +4,7 @@ description: 'Overview page for Manage and Deploy'
 slug: /guides/manage-and-deploy-index
 ---
 
-# Manage and Deploy
+# Manage and deploy
 
 This section contains the following topics:
 

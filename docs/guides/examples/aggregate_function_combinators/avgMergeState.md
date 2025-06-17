@@ -18,7 +18,7 @@ can be applied to the [`avg`](/sql-reference/aggregate-functions/reference/avg)
 function to merge partial aggregate states of type `AverageFunction(avg, T)` and
 return a new intermediate aggregation state.
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 The `MergeState` combinator is particularly useful for multi-level aggregation 
 scenarios where you want to combine pre-aggregated states and maintain them as 

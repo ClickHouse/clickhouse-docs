@@ -18,7 +18,7 @@ aggregate combinator function.
 The `sumArray` function is useful when you need to calculate the total sum of 
 all elements across multiple arrays in a dataset.
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 In this example, we'll use a sample dataset of daily sales across different 
 product categories to demonstrate how `sumArray` works. We'll calculate the total

@@ -5,7 +5,7 @@ description: 'Overview page of Performance and Optimizations'
 title: 'Performance and Optimizations'
 ---
 
-# Performance and Optimizations
+# Performance and optimizations
 
 This section contains tips and best practices for improving performance with ClickHouse. 
 We recommend users read [Core Concepts](/parts) as a precursor to this section, 

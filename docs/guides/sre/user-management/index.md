@@ -7,7 +7,7 @@ keywords: ['ClickHouse Cloud', 'Access Control', 'User Management', 'RBAC', 'Sec
 description: 'Describes access control and account management in ClickHouse Cloud'
 ---
 
-# Creating Users and Roles in ClickHouse
+# Creating users and roles in ClickHouse
 
 ClickHouse supports access control management based on [RBAC](https://en.wikipedia.org/wiki/Role-based_access_control) approach.
 
@@ -48,13 +48,13 @@ If you just started using ClickHouse, consider the following scenario:
 2.  Log in to the `default` user account and create all the required users. Don't forget to create an administrator account (`GRANT ALL ON *.* TO admin_user_account WITH GRANT OPTION`).
 3.  [Restrict permissions](/operations/settings/permissions-for-queries) for the `default` user and disable SQL-driven access control and account management for it.
 
-### Properties of Current Solution {#access-control-properties}
+### Properties of current solution {#access-control-properties}
 
 - You can grant permissions for databases and tables even if they do not exist.
 - If a table is deleted, all the privileges that correspond to this table are not revoked. This means that even if you create a new table with the same name later, all the privileges remain valid. To revoke privileges corresponding to the deleted table, you need to execute, for example, the `REVOKE ALL PRIVILEGES ON db.table FROM ALL` query.
 - There are no lifetime settings for privileges.
 
-### User Account {#user-account-management}
+### User account {#user-account-management}
 
 A user account is an access entity that allows to authorize someone in ClickHouse. A user account contains:
 
@@ -75,7 +75,7 @@ Management queries:
 - [SHOW CREATE USER](/sql-reference/statements/show#show-create-user)
 - [SHOW USERS](/sql-reference/statements/show#show-users)
 
-### Settings Applying {#access-control-settings-applying}
+### Settings applying {#access-control-settings-applying}
 
 Settings can be configured differently: for a user account, in its granted roles and in settings profiles. At user login, if a setting is configured for different access entities, the value and constraints of this setting are applied as follows (from higher to lower priority):
 
@@ -106,7 +106,7 @@ Management queries:
 
 Privileges can be granted to a role by the [GRANT](/sql-reference/statements/grant.md) query. To revoke privileges from a role ClickHouse provides the [REVOKE](/sql-reference/statements/revoke.md) query.
 
-#### Row Policy {#row-policy-management}
+#### Row policy {#row-policy-management}
 
 Row policy is a filter that defines which of the rows are available to a user or a role. Row policy contains filters for one particular table, as well as a list of roles and/or users which should use this row policy.
 
@@ -122,7 +122,7 @@ Management queries:
 - [SHOW CREATE ROW POLICY](/sql-reference/statements/show#show-create-row-policy)
 - [SHOW POLICIES](/sql-reference/statements/show#show-policies)
 
-### Settings Profile {#settings-profiles-management}
+### Settings profile {#settings-profiles-management}
 
 Settings profile is a collection of [settings](/operations/settings/index.md). Settings profile contains settings and constraints, as well as a list of roles and/or users to which this profile is applied.
 
@@ -149,7 +149,7 @@ Management queries:
 - [SHOW QUOTA](/sql-reference/statements/show#show-quota)
 - [SHOW QUOTAS](/sql-reference/statements/show#show-quotas)
 
-### Enabling SQL-driven Access Control and Account Management {#enabling-access-control}
+### Enabling SQL-driven access control and account management {#enabling-access-control}
 
 - Setup a directory for configuration storage.
 
@@ -160,7 +160,7 @@ Management queries:
     By default, SQL-driven access control and account management is disabled for all users. You need to configure at least one user in the `users.xml` configuration file and set the values of the [`access_management`](/operations/settings/settings-users.md#access_management-user-setting), `named_collection_control`, `show_named_collections`, and `show_named_collections_secrets` settings to 1.
 
 
-## Defining SQL Users and Roles {#defining-sql-users-and-roles}
+## Defining SQL users and roles {#defining-sql-users-and-roles}
 
 :::tip
 If you are working in ClickHouse Cloud, please see [Cloud access management](/cloud/security/cloud-access-management).

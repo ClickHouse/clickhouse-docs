@@ -14,7 +14,7 @@ The [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate)
 function to return the sum across all input values. It returns the result with 
 type [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction).
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 ### Tracking upvotes and downvotes {#tracking-post-votes}
 

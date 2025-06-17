@@ -20,7 +20,7 @@ In this architecture, there are five servers configured. Two are used to host co
 <ReplicationShardingTerminology />
 
 ## Environment {#environment}
-### Architecture Diagram {#architecture-diagram}
+### Architecture diagram {#architecture-diagram}
 
 <Image img={ReplicationArchitecture} size="md" alt="Architecture diagram for 1 shard and 2 replicas with ReplicatedMergeTree" />
 
@@ -46,7 +46,7 @@ Install ClickHouse Keeper on the three servers `clickhouse-keeper-01`, `clickhou
 
 <ConfigFileNote />
 
-## clickhouse-01 configuration {#clickhouse-01-configuration}
+## Clickhouse-01 configuration {#clickhouse-01-configuration}
 
 For clickhouse-01 there are five configuration files.  You may choose to combine these files into a single file, but for clarity in the documentation it may be simpler to look at them separately.  As you read through the configuration files you will see that most of the configuration is the same between clickhouse-01 and clickhouse-02; the differences will be highlighted.
 
@@ -143,7 +143,7 @@ This configuration file `use-keeper.xml` is configuring ClickHouse Server to use
 </clickhouse>
 ```
 
-## clickhouse-02 configuration {#clickhouse-02-configuration}
+## Clickhouse-02 configuration {#clickhouse-02-configuration}
 
 As the configuration is very similar on clickhouse-01 and clickhouse-02 only the differences will be pointed out here.
 
@@ -232,7 +232,7 @@ This file is the same on both clickhouse-01 and clickhouse-02.
 </clickhouse>
 ```
 
-## clickhouse-keeper-01 configuration {#clickhouse-keeper-01-configuration}
+## Clickhouse-keeper-01 configuration {#clickhouse-keeper-01-configuration}
 
 <KeeperConfigFileNote />
 
@@ -286,7 +286,7 @@ If for any reason a Keeper node is replaced or rebuilt, do not reuse an existing
 </clickhouse>
 ```
 
-## clickhouse-keeper-02 configuration {#clickhouse-keeper-02-configuration}
+## Clickhouse-keeper-02 configuration {#clickhouse-keeper-02-configuration}
 
 There is only one line difference between `clickhouse-keeper-01` and `clickhouse-keeper-02`.  `server_id` is set to `2` on this node.
 
@@ -334,7 +334,7 @@ There is only one line difference between `clickhouse-keeper-01` and `clickhouse
 </clickhouse>
 ```
 
-## clickhouse-keeper-03 configuration {#clickhouse-keeper-03-configuration}
+## Clickhouse-keeper-03 configuration {#clickhouse-keeper-03-configuration}
 
 There is only one line difference between `clickhouse-keeper-01` and `clickhouse-keeper-03`.  `server_id` is set to `3` on this node.
 

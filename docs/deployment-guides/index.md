@@ -4,7 +4,7 @@ title: 'Deployment Guides Overview'
 description: 'Landing page for the deployment and scaling section'
 ---
 
-# Deployment and Scaling
+# Deployment and scaling
 
 This section covers the following topics:
 
