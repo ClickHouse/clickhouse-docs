@@ -16,7 +16,7 @@ Configure Organization and Service role assignments within the Console > Users a
 
 Users must be assigned an organization level role and may optionally be assigned service roles for one or more services. Service roles may be optionally configured for users to access the SQL console in the service settings page.
 - Users assigned the Organization Admin role are granted Service Admin by default.
-- Users added to an organization via a SAML integration are automatically assigned the Member role.
+- Users added to an organization via a SAML integration are automatically assigned the Member role, with least privilege and without access to any services without further configuration.
 - Service Admin is assigned the SQL console admin role by default. SQL console permissions may be removed in the service settings page.
 
 
