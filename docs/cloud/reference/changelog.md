@@ -550,7 +550,7 @@ You can now configure private endpoints in just a few clicks directly from the C
 
 ## May 17, 2024 {#may-17-2024}
 
-### Ingest data from Amazon Kinesis using ClickPipes (Beta) {#ingest-data-from-amazon-kinesis-using-clickpipes-beta}
+### Ingest data from Amazon Kinesis using ClickPipes (beta) {#ingest-data-from-amazon-kinesis-using-clickpipes-beta}
 
 ClickPipes is an exclusive service provided by ClickHouse Cloud to ingest data without code. Amazon Kinesis is AWS's fully managed streaming service to ingest and store data streams for processing. We are thrilled to launch the ClickPipes beta for Amazon Kinesis, one of our most requested integrations. We're looking to add more integrations to ClickPipes, so please let us know which data source you'd like us to support! Read more about this feature [here](https://clickhouse.com/blog/clickpipes-amazon-kinesis).
 

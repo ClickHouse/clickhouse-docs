@@ -68,9 +68,9 @@ You will need the following details to export/restore backups to your own CSP st
 2. The Backup / Restore commands need to be run from the database command line. For restore to a new service, you will first need to create the service and then run the command.   
 :::
 
-## Backup / Restore to AWS S3 Bucket {#backup--restore-to-aws-s3-bucket}
+## Backup / Restore to AWS S3 bucket {#backup--restore-to-aws-s3-bucket}
 
-### Take a DB Backup {#take-a-db-backup}
+### Take a DB backup {#take-a-db-backup}
 
 **Full Backup**
 
@@ -106,7 +106,7 @@ See: [Configuring BACKUP/RESTORE to use an S3 Endpoint](/operations/backup#confi
 
 ## Backup / Restore to Azure Blob Storage {#backup--restore-to-azure-blob-storage}
 
-### Take a DB Backup {#take-a-db-backup-1}
+### Take a DB backup {#take-a-db-backup-1}
 
 **Full Backup**
 
@@ -137,7 +137,7 @@ See: [Configuring BACKUP/RESTORE to use an S3 Endpoint](/operations/backup#confi
 
 ## Backup / Restore to Google Cloud Storage (GCS) {#backup--restore-to-google-cloud-storage-gcs}
 
-### Take a DB Backup {#take-a-db-backup-2}
+### Take a DB backup {#take-a-db-backup-2}
 
 **Full Backup**
 

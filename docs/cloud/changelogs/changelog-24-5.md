@@ -6,11 +6,11 @@ keywords: ['changelog', 'cloud']
 sidebar_label: 'v24.5'
 ---
 
-# v24.5 Changelog for Cloud
+# V24.5 changelog for Cloud
 
 Relevant changes for ClickHouse Cloud services based on the v24.5 release.
 
-## Breaking Changes {#breaking-changes}
+## Breaking changes {#breaking-changes}
 
 * Change the column name from duration_ms to duration_microseconds in the system.zookeeper table to reflect the reality that the duration is in the microsecond resolution. [#60774](https://github.com/ClickHouse/ClickHouse/pull/60774) (Duc Canh Le).
 
@@ -21,7 +21,7 @@ Relevant changes for ClickHouse Cloud services based on the v24.5 release.
 * Usage of functions neighbor, runningAccumulate, runningDifferenceStartingWithFirstValue, runningDifference deprecated (because it is error-prone). Proper window functions should be used instead. To enable them back, set allow_deprecated_error_prone_window_functions=1. [#63132](https://github.com/ClickHouse/ClickHouse/pull/63132) (Nikita Taranov).
 
 
-## Backward Incompatible Changes {#backward-incompatible-changes}
+## Backward incompatible changes {#backward-incompatible-changes}
 
 * In the new ClickHouse version, the functions geoDistance, greatCircleDistance, and greatCircleAngle will use 64-bit double precision floating point data type for internal calculations and return type if all the arguments are Float64. This closes #58476. In previous versions, the function always used Float32. You can switch to the old behavior by setting geo_distance_returns_float64_on_float64_arguments to false or setting compatibility to 24.2 or earlier. [#61848](https://github.com/ClickHouse/ClickHouse/pull/61848) (Alexey Milovidov).
 
@@ -29,7 +29,7 @@ Relevant changes for ClickHouse Cloud services based on the v24.5 release.
 
 * Fix crash in largestTriangleThreeBuckets. This changes the behaviour of this function and makes it to ignore NaNs in the series provided. Thus the resultset might differ from previous versions. [#62646](https://github.com/ClickHouse/ClickHouse/pull/62646) (Raúl Marín).
 
-## New Features {#new-features}
+## New features {#new-features}
 
 * The new analyzer is enabled by default on new services. 
 

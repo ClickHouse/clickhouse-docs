@@ -175,7 +175,7 @@ Best for: large scale, mission critical deployments that have stringent security
 </tbody>
 </table>
 
-## Frequently Asked Questions {#faqs}
+## Frequently asked questions {#faqs}
 
 ### How is compute metered? {#how-is-compute-metered}
 

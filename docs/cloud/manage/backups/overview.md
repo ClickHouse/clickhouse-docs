@@ -171,7 +171,7 @@ SYNC SETTINGS max_table_size_to_drop=2097152 -- increases the limit to 2TB
 ```
 :::
 
-## Configurable Backups {#configurable-backups}
+## Configurable backups {#configurable-backups}
 
 If you want to set up a backups schedule different from the default backup schedule, take a look at [Configurable Backups](./configurable-backups.md).
 

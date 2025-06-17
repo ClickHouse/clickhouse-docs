@@ -146,3 +146,27 @@ exceptions:
   - MergeTree
   - MySQL
   - ReplacingMergeTree
+  - SLA
+  - SLAs
+  - Beta
+  - Preview
+  - Private Preview
+  - CDC
+  - DB
+  - URL
+  - Build
+  - Testing
+  - Packaging
+  - Tier
+  - Tiers
+  - Overview
+  - Console
+  - Endpoints
+  - Backups
+  - Thresholds
+  - Keys
+  - Routing
+  - Cloud
+  - Change Data Capture
+  - V24.5 changelog for Cloud
+  - V24.6 changelog for Cloud
