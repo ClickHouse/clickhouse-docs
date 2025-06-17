@@ -171,6 +171,16 @@ SYNC SETTINGS max_table_size_to_drop=2097152 -- increases the limit to 2TB
 ```
 :::
 
+## Backup and Restore Duration
+
+Backup and restore durations depend on several factors such as the size of the database as well as the schema and the number of tables in the database. Incremental backups will usually complete much faster than a full backup as less data is being backed up. Restoring from an incremental backup, however, will not be faster than restoring from a full backup as all incremental backups and the last full backup in the chain have to be included in the restore as explained above.
+
+In our testing, we have seen that smaller backups ~1 TB could take up to 10-15 mins or longer to backup. Backups less than 20 TB should complete within an hour, and backing up 50 TB of data should take about 2-3 hours.  Backups get economies of scale at larger sizes, and we have seen backups of up to 1 PB for some internal services complete in about 10 hours.
+
+Restore durations are about the same as the backup durations.
+
+We recommend testing with your own database and sample data to get better estimates as the actual duration depends on several factors as outlined above.
+
 ## Configurable Backups {#configurable-backups}
 
 If you want to set up a backups schedule different from the default backup schedule, take a look at [Configurable Backups](./configurable-backups.md).
