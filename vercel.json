@@ -3345,6 +3345,11 @@
       "source": "/docs/cloud/manage/api/keys-api-reference",
       "destination": "/docs/cloud/manage/api/swagger#/paths/~1v1~1organizations~1%7BorganizationId%7D~1keys/get",
       "permanent": true
+    },
+    {
+      "source": "/docs/cloud/manage/api/members-api-reference",
+      "destination": "/docs/cloud/manage/api/swagger#/paths/~1v1~1organizations~1%7BorganizationId%7D~1members/get",
+      "permanent": true
     }
   ]
 }
