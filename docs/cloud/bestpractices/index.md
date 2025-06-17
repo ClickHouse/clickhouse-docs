@@ -1,6 +1,6 @@
 ---
 slug: /cloud/bestpractices
-keywords: ['Cloud', 'Best Practices', 'Bulk Inserts', 'Asynchronous Inserts', 'Avoid Mutations', 'Avoid Nullable Columns', 'Avoid Optimize Final', 'Low Cardinality Partitioning Key', 'Multi Tenancy', 'Usage Limits']
+keywords: ['Cloud', 'Best Practices', 'Bulk Inserts', 'Asynchronous Inserts', 'Avoid mutations', 'Avoid nullable columns', 'Avoid Optimize Final', 'Low Cardinality Partitioning Key', 'Multi Tenancy', 'Usage Limits']
 title: 'Overview'
 hide_title: true
 description: 'Landing page for Best Practices section in ClickHouse Cloud'

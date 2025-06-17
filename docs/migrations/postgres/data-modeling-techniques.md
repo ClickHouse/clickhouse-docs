@@ -71,7 +71,7 @@ PARTITION BY toYear(CreationDate)
 
 For a full description of partitioning see ["Table partitions"](/partitions).
 
-### Applications of Partitions {#applications-of-partitions}
+### Applications of partitions {#applications-of-partitions}
 
 Partitioning in ClickHouse has similar applications as in Postgres but with some subtle differences. More specifically:
 
@@ -114,7 +114,7 @@ Ok.
 
 - **Query optimization** - While partitions can assist with query performance, this depends heavily on the access patterns. If queries target only a few partitions (ideally one), performance can potentially improve. This is only typically useful if the partitioning key is not in the primary key and you are filtering by it. However, queries that need to cover many partitions may perform worse than if no partitioning is used (as there may possibly be more parts as a result of partitioning). The benefit of targeting a single partition will be even less pronounced to non-existence if the partitioning key is already an early entry in the primary key. Partitioning can also be used to [optimize GROUP BY queries](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key) if values in each partition are unique. However, in general, users should ensure the primary key is optimized and only consider partitioning as a query optimization technique in exceptional cases where access patterns access a specific predictable subset of the day, e.g., partitioning by day, with most queries in the last day.
 
-### Recommendations for Partitions {#recommendations-for-partitions}
+### Recommendations for partitions {#recommendations-for-partitions}
 
 Users should consider partitioning a data management technique. It is ideal when data needs to be expired from the cluster when operating with time series data e.g. the oldest partition can [simply be dropped](/sql-reference/statements/alter/partition#drop-partitionpart).
 

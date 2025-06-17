@@ -1,8 +1,8 @@
 ---
 slug: /architecture/cluster-deployment
-sidebar_label: 'Cluster Deployment'
+sidebar_label: 'Cluster deployment'
 sidebar_position: 100
-title: 'Cluster Deployment'
+title: 'Cluster deployment'
 description: 'By going through this tutorial, you will learn how to set up a simple ClickHouse cluster.'
 ---
 
@@ -10,7 +10,7 @@ This tutorial assumes you've already set up a [local ClickHouse server](../getti
 
 By going through this tutorial, you'll learn how to set up a simple ClickHouse cluster. It'll be small, but fault-tolerant and scalable. Then we will use one of the example datasets to fill it with data and execute some demo queries.
 
-## Cluster Deployment {#cluster-deployment}
+## Cluster deployment {#cluster-deployment}
 
 This ClickHouse cluster will be a homogeneous cluster. Here are the steps:
 

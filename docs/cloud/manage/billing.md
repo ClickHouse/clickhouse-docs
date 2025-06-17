@@ -191,7 +191,7 @@ Storage costs are the same across tiers and vary by region and cloud service pro
 
 Storage and backups are counted towards storage costs and billed separately. 
 All services will default to one backup, retained for a day. 
-Users who need additional backups can do so by configuring additional [backups](backups/overview.md) under the settings tab of the Cloud Console.
+Users who need additional backups can do so by configuring additional [backups](backups/overview.md) under the settings tab of the Cloud console.
 
 ### How do I estimate compression? {#how-do-i-estimate-compression}
 

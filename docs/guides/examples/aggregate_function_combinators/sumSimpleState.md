@@ -51,7 +51,7 @@ ENGINE = AggregatingMergeTree()
 ORDER BY post_id;
 ```
 
-We then create a Materialized View with `SimpleAggregateFunction` type columns:
+We then create a materialized view with `SimpleAggregateFunction` type columns:
        
 ```sql
 CREATE MATERIALIZED VIEW mv_vote_processor TO vote_aggregates
@@ -79,7 +79,7 @@ INSERT INTO raw_votes VALUES
     (3, 'downvote');
 ```
 
-Query the Materialized View using the `SimpleState` combinator:
+Query the materialized view using the `SimpleState` combinator:
 
 ```sql
 SELECT

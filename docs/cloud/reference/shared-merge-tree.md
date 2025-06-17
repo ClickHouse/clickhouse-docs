@@ -11,7 +11,7 @@ import shared_merge_tree_2 from '@site/static/images/cloud/reference/shared-merg
 import Image from '@theme/IdealImage';
 
 
-# SharedMergeTree Table Engine
+# SharedMergeTree table engine
 
 *\* Available exclusively in ClickHouse Cloud (and first party partner cloud services)*
 
