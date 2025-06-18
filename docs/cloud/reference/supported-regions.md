@@ -24,7 +24,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - us-east-2 (Ohio)
 - us-west-2 (Oregon)
 
-**Under Consideration:**
+**Private Region:**
 - ca-central-1 (Canada)
 - af-south-1 (South Africa)
 - eu-north-1 (Stockholm)
@@ -38,7 +38,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - us-central1 (Iowa)
 - us-east1 (South Carolina)
 
-**Under Consideration:**
+**Private Region:**
 
 - us-west1 (Oregon)
 - australia-southeast1(Sydney)
@@ -53,7 +53,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - East US 2 (Virginia)
 - Germany West Central (Frankfurt)
 
-**Under Consideration:**
+**Private Region:**
 
 JapanEast
 :::note 
