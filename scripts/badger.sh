@@ -53,9 +53,9 @@ for component in "${components[@]}"; do
             if [ -n "$file" ]; then
                 slug=$(extract_slug_from_file "$file")
                 if [[ "$slug" == \[no\ slug\]* ]]; then
-                    echo "  $slug"
+                    echo "  • $slug"
                 else
-                    echo "  https://clickhouse.com/docs$slug"
+                    echo "  • https://clickhouse.com/docs$slug"
                 fi
             fi
         done <<< "$files"
