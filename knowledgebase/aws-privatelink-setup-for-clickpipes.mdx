@@ -64,9 +64,10 @@ RDS instances that require endpoint services (OR you may have different listener
     - Add the regions where you want to allow access to the endpoint service, [refer here](/integrations/clickpipes#list-of-static-ips) for the list of ClickPipes regions.
 
 8. **Recommended For MySQL**
-    - If you are using MySQL, it is recommended to set `skip_name_resolve=1` as a parameter in the RDS. Due to repeated
-      health checks from the NLB, MySQL will block the NLB Hosts. Setting this parameter completely avoids the DNS host
-      name lookup and so it never blocks the NLB hosts.
+    - If you are using MySQL, it is recommended to set `skip_name_resolve=1` as a parameter in the source database.
+     Due to repeated health checks from the NLB, MySQL will block the NLB Hosts. Setting this parameter completely
+     avoids the DNS host name lookup and so it never blocks the NLB hosts. If using RDS, this will require an instance
+     reboot.
 
 ## Initiating connection {#initiating-connection}
 
