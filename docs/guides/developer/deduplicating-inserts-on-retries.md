@@ -105,7 +105,7 @@ SELECT
     *,
     _part
 FROM dst
-ORDER by all;
+ORDER BY all;
 
 ┌─key─┬─value─┬─_part─────┐
 │   1 │ B     │ all_0_0_0 │
@@ -120,7 +120,7 @@ SELECT
     *,
     _part
 FROM mv_dst
-ORDER by all;
+ORDER BY all;
 
 ┌─key─┬─value─┬─_part─────┐
 │   0 │ B     │ all_0_0_0 │
@@ -140,7 +140,7 @@ SELECT
     *,
     _part
 FROM dst
-ORDER by all;
+ORDER BY all;
 
 ┌─key─┬─value─┬─_part─────┐
 │   1 │ B     │ all_0_0_0 │
@@ -192,7 +192,7 @@ SELECT
     *,
     _part
 FROM dst
-ORDER by all;
+ORDER BY all;
 
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   0 │ A     │ all_0_0_0 │
@@ -232,7 +232,7 @@ SELECT
     *,
     _part
 FROM dst
-ORDER by all;
+ORDER BY all;
 
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   0 │ A     │ all_2_2_0 │
@@ -243,7 +243,7 @@ ORDER by all;
 Two identical blocks have been inserted as expected.
 
 ```sql
-select 'second attempt';
+SELECT 'second attempt';
 
 INSERT INTO dst SELECT
     0 AS key,
@@ -256,7 +256,7 @@ SELECT
     *,
     _part
 FROM dst
-ORDER by all;
+ORDER BY all;
 
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   0 │ A     │ all_2_2_0 │
@@ -267,7 +267,7 @@ ORDER by all;
 Retried insertion is deduplicated as expected.
 
 ```sql
-select 'third attempt';
+SELECT 'third attempt';
 
 INSERT INTO dst SELECT
     1 AS key,
@@ -280,7 +280,7 @@ SELECT
     *,
     _part
 FROM dst
-ORDER by all;
+ORDER BY all;
 
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   0 │ A     │ all_2_2_0 │
@@ -442,7 +442,7 @@ ORDER by all;
 Two equal blocks inserted to the table `mv_dst` (as expected).
 
 ```sql
-select 'second attempt';
+SELECT 'second attempt';
 
 INSERT INTO dst VALUES (1, 'A');
 
@@ -451,7 +451,7 @@ SELECT
     *,
     _part
 FROM dst
-ORDER by all;
+ORDER BY all;
 
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   1 │ A     │ all_0_0_0 │

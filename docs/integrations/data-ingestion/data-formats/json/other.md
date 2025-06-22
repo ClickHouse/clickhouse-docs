@@ -61,7 +61,7 @@ FROM people
 The [`JSONExtract`](/sql-reference/functions/json-functions#jsonextract-functions) functions can be used to retrieve values from this JSON. Consider the simple example below:
 
 ```sql
-SELECT JSONExtractString(tags, 'holidays') as holidays FROM people
+SELECT JSONExtractString(tags, 'holidays') AS holidays FROM people
 
 ┌─holidays──────────────────────────────────────┐
 │ [{"year":2024,"location":"Azores, Portugal"}] │
@@ -581,11 +581,11 @@ size FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/doc
 Querying this data requires us to access the request fields as arrays. Below, we summarize the errors and http methods over a fixed time period.
 
 ```sql
-SELECT status, request.method[1] as method, count() as c
+SELECT status, request.method[1] AS method, count() AS c
 FROM http
 WHERE status >= 400
   AND toDateTime(timestamp) BETWEEN '1998-01-01 00:00:00' AND '1998-06-01 00:00:00'
-GROUP by method, status
+GROUP BY method, status
 ORDER BY c DESC LIMIT 5;
 
 ┌─status─┬─method─┬─────c─┐
@@ -646,13 +646,13 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/document
 Querying this structure requires using the [`indexOf`](/sql-reference/functions/array-functions#indexOf) function to identify the index of the required key (which should be consistent with the order of the values). This can be used to access the values array column i.e. `values[indexOf(keys, 'status')]`. We still require a JSON parsing method for the request column - in this case, `simpleJSONExtractString`.
 
 ```sql
-SELECT toUInt16(values[indexOf(keys, 'status')])                           as status,
-       simpleJSONExtractString(values[indexOf(keys, 'request')], 'method') as method,
-       count()                                                             as c
+SELECT toUInt16(values[indexOf(keys, 'status')])                           AS status,
+       simpleJSONExtractString(values[indexOf(keys, 'request')], 'method') AS method,
+       count()                                                             AS c
 FROM http_with_arrays
 WHERE status >= 400
   AND toDateTime(values[indexOf(keys, '@timestamp')]) BETWEEN '1998-01-01 00:00:00' AND '1998-06-01 00:00:00'
-GROUP by method, status ORDER BY c DESC LIMIT 5;
+GROUP BY method, status ORDER BY c DESC LIMIT 5;
 
 ┌─status─┬─method─┬─────c─┐
 │    404 │ GET    │ 11267 │
