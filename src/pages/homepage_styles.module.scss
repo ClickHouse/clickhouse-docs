@@ -1,7 +1,13 @@
+.yellowStrip {
+  height: 3px;
+  background: linear-gradient(to right, transparent, #faff69, transparent);
+  width: 100%;
+}
+
 .topLevelContainer {
   position: absolute;
   left: 0;
-  top: 8rem;
+  top: 7.5rem;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -16,6 +22,8 @@
     grid-template-columns: 1fr 1fr 1fr;
   flex-direction: row;
   width: 1000px;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
 }
 
 .panel {
@@ -55,19 +63,158 @@
   align-items: center;
   flex-direction: column;
   max-width: 1000px;
+}
 
-  .heroSection {
-    max-width: 600px;
+.heroSection {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+  max-width: 600px;
 
-    h2 {
-      text-align: center;
-    }
+  h2 {
+    text-align: center;
+  }
+
+  .logo {
+    width: 300px;
+    height: auto;
   }
 }
+
 
 .navatticDemo {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 90%;
+}
+
+/* Styling for the browser window illusion around the demo */
+
+.browser_mockup {
+  background: #f6f8fa;
+  border-radius: 8px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  width: 90%;
+  max-width: 1200px;
+  overflow: hidden;
+  position: relative;
+}
+
+.browser_header {
+  background: linear-gradient(180deg, #e8e8e8 0%, #d1d1d1 100%);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #c0c0c0;
+}
+
+.traffic_lights {
+  display: flex;
+  gap: 8px;
+}
+
+.traffic_light {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.close {
+  background: #ff5f57;
+  background: linear-gradient(135deg, #ff6b5a, #ff4d3d);
+}
+
+.minimize {
+  background: #ffbd2e;
+  background: linear-gradient(135deg, #ffc843, #ffab00);
+}
+
+.maximize {
+  background: #28ca42;
+  background: linear-gradient(135deg, #32d74b, #1eb932);
+}
+
+.address_bar {
+  flex: 1;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: #666;
+  margin-left: 20px;
+  position: relative;
+}
+
+.address_bar::before {
+  content: "🔒";
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+}
+
+.address_bar_text {
+  margin-left: 18px;
+}
+
+.browser_controls {
+  display: flex;
+  gap: 8px;
+  margin-left: 12px;
+}
+
+.control_btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  background: transparent;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  color: #666;
+}
+
+.control_btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.browser_content {
+  background: white;
+  position: relative;
+  height: 600px;
+}
+
+.try_it_out {
+  position: relative;
+  top: 15px;
+  left: -50px;
+  width: 135px;
+  background: #fdff73;
+  color: black;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transform: rotate(0);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.try_it_out::after {
+  content: '⤵';
+  font-size: 16px;
 }
