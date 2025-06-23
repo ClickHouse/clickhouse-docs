@@ -6,7 +6,9 @@ import Link from '@docusaurus/Link';
 import BookIcon from '@site/static/img/book.svg';
 import RocketIcon from '@site/static/img/rocket.svg';
 import LightbulbOnIcon from '@site/static/img/lightbulb-on.svg';
+import ClickHouseLogo from '@site/static/img/ch_logo_docs_dark.svg';
 import SearchBar from '@theme/SearchBar';
+import clsx from 'clsx';
 
 const NavatticDemo = ({
   demoId = "cmbj9y9dx000004lbbeus84ns",
@@ -16,28 +18,46 @@ const NavatticDemo = ({
 }) => {
     const src = `https://capture.navattic.com/${demoId}`;
     return (
-        <div className={homepage_styles.navatticDemo} style={{ height }}>
-            <iframe
-                src={src}
-                style={{
-                    border: 'none',
-                    width: '100%',
-                    height: '100%'
-                }}
-                data-navattic-demo-id={demoId}
-                allow="fullscreen"
-                title="Navattic Interactive Demo"
-                loading="lazy"
-            />
+        <div>
+            <div className={homepage_styles.try_it_out}>Try out Cloud</div>
+            <div className={homepage_styles.browser_header}>
+                <div className={homepage_styles.traffic_lights}>
+                    <div className={clsx(homepage_styles.traffic_light, homepage_styles.close)}></div>
+                    <div className={clsx(homepage_styles.traffic_light, homepage_styles.minimize)}></div>
+                    <div className={clsx(homepage_styles.traffic_light, homepage_styles.maximize)}></div>
+                </div>
+
+                <div className={homepage_styles.address_bar}>
+                    <div className={homepage_styles.address_bar_text}>https://console.clickhouse.cloud</div>
+                </div>
+            </div>
+
+            <div className={homepage_styles.browser_content}>
+                <div className={homepage_styles.navatticDemo} style={{height}}>
+                    <iframe
+                        src={src}
+                        style={{
+                            border: 'none',
+                            width: '100%',
+                            height: '100%'
+                        }}
+                        data-navattic-demo-id={demoId}
+                        allow="fullscreen"
+                        title="Navattic Interactive Demo"
+                        loading="lazy"
+                    />
+                </div>
+            </div>
         </div>
     );
 };
 
 const HeroSection = () => {
-    return(
-    <div className={homepage_styles.heroSection}>
-        <h2>The fastest and most resource efficient real-time data warehouse and open-source database.</h2>
-        <SearchBar/>
+    return (
+        <div className={homepage_styles.heroSection}>
+            <ClickHouseLogo className={homepage_styles.logo}/>
+            <h2>The fastest and most resource efficient real-time data warehouse and open-source database.</h2>
+            <SearchBar/>
     </div>
     );
 }
