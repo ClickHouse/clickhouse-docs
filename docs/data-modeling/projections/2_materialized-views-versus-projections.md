@@ -47,18 +47,15 @@ You should consider using materialized views when:
 
 You should consider avoiding use of materialized views when:
 
-- **High ingestion throughput is critical**: Especially for high-velocity streaming data with small, frequent batches, as synchronous materialized view updates can significantly degrade insert performance. This is because successive blocks of inserted data will have to wait until each materialized view is finished transforming the current blocks data for insertion into the materialized view's target table.
-- **Source data is frequently updated or deleted**: Without additional strategies for handling consistency between the source and target tables, incremental materialized views will become stale and inconsistent.
+- **Source data is frequently updated or deleted**: Without additional strategies for handling consistency between the source and target tables, incremental materialized views could become stale and inconsistent.
 - **Simplicity and automatic optimization are preferred**: If you want to avoid managing separate target tables.
 
 ### When to choose projections {#choosing-projections}
 
 You should consider using projections when:
 
-- **Optimizing queries for a single table**: Your primary goal is to accelerate queries on a single base table by providing alternative sorting orders, optimizing filters on columns which are not part of the primary-key, or pre-computing aggregations for a single table.
-- You want **query transparency**: You want queries to target the original table without modification, relying on ClickHouse to pick the best data layout for a given query.
-- **High ingestion throughput is a priority**: Projections' asynchronous updates generally have less direct impact on write performance compared to materialized views.
-- **Data is predominantly append-only or immutably managed**: or if your `DELETE` strategy can effectively leverage the `lightweight_mutation_projection_mode` (v24.7+)
+- **Optimizing queries for a single table**: Your primary goal is to speed up queries on a single base table by providing alternative sorting orders, optimizing filters on columns which are not part of the primary-key, or pre-computing aggregations for a single table.
+- You want **query transparency**: you want queries to target the original table without modification, relying on ClickHouse to pick the best data layout for a given query.
 
 ### When to avoid projections {#avoid-projections}
 
@@ -68,19 +65,20 @@ You should consider avoiding use of projections when:
 - **Explicit filtering of materialized data is needed**: Projections do not support `WHERE` clauses in their definition to filter the data that gets materialized into the projection itself.
 - **Non-MergeTree table engines are used**: Projections are exclusively available for tables using the `MergeTree` family of engines.
 - `FINAL` queries are essential: Projections do not work with `FINAL` queries, which are sometimes used for deduplication.
+- Working with large tables that grow quickly: 
 
 ## Summary {#summary}
 
 Materialized views and projections are both powerful tools in your toolkit for 
 optimizing queries and transforming data, and in general, we recommend not to view
-using them as an either/or choice. Instead, they can be used together to get the
-most out of your queries. As such, the choice between materialized views and 
-projections in ClickHouse really depends on your specific use case and access 
-patterns.
+using them as an either/or choice. Instead, they can be used in a complementary 
+manner to get the most out of your queries. As such, the choice between materialized
+views and projections in ClickHouse really depends on your specific use case and
+access patterns.
 
 As a general rule of thumb, you should consider using materialized views when
 you need to aggregate data from one or more source tables into a target table or
-perform complex transformations. Materialized views are excellent for shifting 
+perform complex transformations at scale. Materialized views are excellent for shifting 
 the work of expensive aggregations from query time to insert time. They are a 
 great choice for daily or monthly rollups, real-time dashboards or data summaries. 
 
