@@ -1,0 +1,73 @@
+.topLevelContainer {
+  position: absolute;
+  left: 0;
+  top: 8rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  /* yellow effect at the top */
+}
+
+.exploreDocs {
+  display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  flex-direction: row;
+  width: 1000px;
+}
+
+.panel {
+  margin: 0px 5px;
+  background-color: rgba(0, 0, 0, 0);
+  box-shadow: lch(6.77 0 0 / 0.15) 0px 4px 6px -1px, lch(6.77 0 0 / 0.15) 0px 2px 4px -1px;
+  padding: 1rem;
+  border-radius: 10px;
+  margin: 0px 20px;
+}
+
+[data-theme='dark'] .panel {
+  border: 1px solid rgb(50, 50, 50);
+}
+
+[data-theme='light'] .panel {
+  border: 1px solid rgb(230, 231, 233);
+}
+
+.panel_links {
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+}
+
+.panel_heading {
+  display: flex;
+
+  h2 {
+    margin-left: 16px;
+  }
+}
+
+.navatticDemoSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  max-width: 1000px;
+
+  .heroSection {
+    max-width: 600px;
+
+    h2 {
+      text-align: center;
+    }
+  }
+}
+
+.navatticDemo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+}
