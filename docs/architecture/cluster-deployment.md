@@ -639,7 +639,7 @@ SHOW DATABASES;
    └────────────────────┘
 ```
 
-## Creating a table using ON CLUSTER {#creating-a-table}
+## Creating local tables on the cluster {#creating-a-table}
 
 Now that the database has been created, create a distributed table in the cluster.
 Run the following query from any of the host clients:
