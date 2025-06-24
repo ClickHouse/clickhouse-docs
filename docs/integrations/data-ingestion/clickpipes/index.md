@@ -59,9 +59,9 @@ The following are the static NAT IPs (separated by region) that ClickPipes uses 
 For all services, ClickPipes traffic will originate from a default region based on your service's location:
 - **eu-central-1**: For all services in EU regions.
 - **us-east-1**: For all services in `us-east-1`.
-- **ap-south-1**: For services in `ap-south-1` created on or after 24 Jun 2025 (services created before this date use `us-east-1` IPs).
+- **ap-south-1**: For services in `ap-south-1` created on or after 25 Jun 2025 (services created before this date use `us-east-1` IPs).
 - **ap-southeast-2**: For services in `ap-southeast-2` created on or after 25 Jun 2025 (services created before this date use `us-east-1` IPs).
-- **us-west-2**: For services in `us-west-2` created on or after 25 Jun 2025 (services created before this date use `us-east-1` IPs).
+- **us-west-2**: For services in `us-west-2` created on or after 24 Jun 2025 (services created before this date use `us-east-1` IPs).
 - **us-east-2**: For all other regions not explicitly listed.
 
 | ClickHouse Cloud region                  | IP Addresses                                                                                                                                     |
@@ -69,9 +69,9 @@ For all services, ClickPipes traffic will originate from a default region based 
 | **eu-central-1**                         | `18.195.233.217`, `3.127.86.90`, `35.157.23.2`, `18.197.167.47`, `3.122.25.29`, `52.28.148.40`                                                     |
 | **us-east-1**                            | `54.82.38.199`, `3.90.133.29`, `52.5.177.8`, `3.227.227.145`, `3.216.6.184`, `54.84.202.92`, `3.131.130.196`, `3.23.172.68`, `3.20.208.150`         |
 | **us-east-2**                            | `3.131.130.196`, `3.23.172.68`, `3.20.208.150`, `3.132.20.192`, `18.119.76.110`, `3.134.185.180`                                                     |
-| **ap-south-1** (from 24 Jun 2025)        | `13.203.140.189`, `13.232.213.12`, `13.235.145.208`, `35.154.167.40`, `65.0.39.245`, `65.1.225.89`                                                     |
+| **ap-south-1** (from 25 Jun 2025)        | `13.203.140.189`, `13.232.213.12`, `13.235.145.208`, `35.154.167.40`, `65.0.39.245`, `65.1.225.89`                                                     |
 | **ap-southeast-2** (from 25 Jun 2025)    | `3.106.48.103`, `52.62.168.142`, `13.55.113.162`, `3.24.61.148`, `54.206.77.184`, `54.79.253.17`                                                     |
-| **us-west-2** (from 25 Jun 2025)         | `52.42.100.5`, `44.242.47.162`, `52.40.44.52`, `44.227.206.163`, `44.246.241.23`, `35.83.230.19`                                                     |
+| **us-west-2** (from 24 Jun 2025)         | `52.42.100.5`, `44.242.47.162`, `52.40.44.52`, `44.227.206.163`, `44.246.241.23`, `35.83.230.19`                                                     |
 
 ## Adjusting ClickHouse settings {#adjusting-clickhouse-settings}
 ClickHouse Cloud provides sensible defaults for most of the use cases. However, if you need to adjust some ClickHouse settings for the ClickPipes destination tables, a dedicated role for ClickPipes is the most flexible solution.
