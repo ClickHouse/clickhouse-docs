@@ -6,148 +6,414 @@ title: 'Cluster Deployment'
 description: 'By going through this tutorial, you will learn how to set up a simple ClickHouse cluster.'
 ---
 
-This tutorial assumes you've already set up a [local ClickHouse server](../getting-started/install/install.mdx)
+## Prerequisites {#prerequisites}
 
-By going through this tutorial, you'll learn how to set up a simple ClickHouse cluster. It'll be small, but fault-tolerant and scalable. Then we will use one of the example datasets to fill it with data and execute some demo queries.
+- You've already set up a [local ClickHouse server](../getting-started/install/install.mdx)
+- You are familiar with basic configuration concepts of ClickHouse
+- You have docker installed on your machine
 
-## Cluster Deployment {#cluster-deployment}
+In this tutorial you'll learn how to set up a simple ClickHouse cluster,
+consisting of two shards and two replicas with 3 dedicated ClickHouse Keepers
+for managing coordination and keeping quorum in the cluster.
 
-This ClickHouse cluster will be a homogeneous cluster. Here are the steps:
+The architecture of the cluster we will be setting up is shown below:
 
-1.  Install ClickHouse server on all machines of the cluster
-2.  Set up cluster configs in configuration files
-3.  Create local tables on each instance
-4.  Create a [Distributed table](../engines/table-engines/special/distributed.md)
 
-A [distributed table](../engines/table-engines/special/distributed.md) is a kind of "view" to the local tables in a ClickHouse cluster. A SELECT query from a distributed table executes using resources of all cluster's shards. You may specify configs for multiple clusters and create multiple distributed tables to provide views for different clusters.
 
-Here is an example config for a cluster with three shards, with one replica each:
+<VerticalStepper level="h2">
+
+## Set up directory structure and test environment {#set-up}
+
+In this tutorial, you will use [Docker compose](https://docs.docker.com/compose/) to
+set up the ClickHouse cluster for simplicity. This setup could be modified to work
+for separate local machines, virtual machines or cloud instances as well.
+
+Run the following commands to set up the directory structure for the cluster:
+
+```bash
+mkdir clickhouse-cluster
+cd clickhouse-cluster
+
+# Create clickhouse-keeper directories
+for i in {01..03}; do
+  mkdir -p fs/volumes/clickhouse-keeper-${i}/etc/clickhouse-keeper
+done
+
+# Create clickhouse-server directories
+for i in {01..04}; do
+  mkdir -p fs/volumes/clickhouse-${i}/etc/clickhouse-server
+done
+```
+
+Add the following `docker-compose.yml` file to the `clickhouse-cluster` directory:
+
+```yaml
+version: '3.8'
+services:
+  clickhouse-01:
+    image: "clickhouse/clickhouse-server:latest"
+    user: "101:101"
+    container_name: clickhouse-01
+    hostname: clickhouse-01
+    volumes:
+      - ${PWD}/fs/volumes/clickhouse-01/etc/clickhouse-server/config.d/config.xml:/etc/clickhouse-server/config.d/config.xml
+      - ${PWD}/fs/volumes/clickhouse-01/etc/clickhouse-server/users.d/users.xml:/etc/clickhouse-server/users.d/users.xml
+    ports:
+      - "127.0.0.1:8123:8123"
+      - "127.0.0.1:9000:9000"
+    depends_on:
+      - clickhouse-keeper-01
+      - clickhouse-keeper-02
+      - clickhouse-keeper-03
+  clickhouse-02:
+    image: "clickhouse/clickhouse-server:latest"
+    user: "101:101"
+    container_name: clickhouse-02
+    hostname: clickhouse-02
+    volumes:
+      - ${PWD}/fs/volumes/clickhouse-02/etc/clickhouse-server/config.d/config.xml:/etc/clickhouse-server/config.d/config.xml
+      - ${PWD}/fs/volumes/clickhouse-02/etc/clickhouse-server/users.d/users.xml:/etc/clickhouse-server/users.d/users.xml
+    ports:
+      - "127.0.0.1:8124:8123"
+      - "127.0.0.1:9001:9000"
+    depends_on:
+      - clickhouse-keeper-01
+      - clickhouse-keeper-02
+      - clickhouse-keeper-03
+  clickhouse-03:
+    image: "clickhouse/clickhouse-server:latest"
+    user: "101:101"
+    container_name: clickhouse-03
+    hostname: clickhouse-03
+    volumes:
+      - ${PWD}/fs/volumes/clickhouse-03/etc/clickhouse-server/config.d/config.xml:/etc/clickhouse-server/config.d/config.xml
+      - ${PWD}/fs/volumes/clickhouse-03/etc/clickhouse-server/users.d/users.xml:/etc/clickhouse-server/users.d/users.xml
+    ports:
+      - "127.0.0.1:8125:8123"
+      - "127.0.0.1:9002:9000"
+    depends_on:
+      - clickhouse-keeper-01
+      - clickhouse-keeper-02
+      - clickhouse-keeper-03
+  clickhouse-04:
+    image: "clickhouse/clickhouse-server:latest"
+    user: "101:101"
+    container_name: clickhouse-04
+    hostname: clickhouse-04
+    volumes:
+      - ${PWD}/fs/volumes/clickhouse-04/etc/clickhouse-server/config.d/config.xml:/etc/clickhouse-server/config.d/config.xml
+      - ${PWD}/fs/volumes/clickhouse-04/etc/clickhouse-server/users.d/users.xml:/etc/clickhouse-server/users.d/users.xml
+    ports:
+      - "127.0.0.1:8126:8123"
+      - "127.0.0.1:9003:9000"
+    depends_on:
+      - clickhouse-keeper-01
+      - clickhouse-keeper-02
+      - clickhouse-keeper-03
+  clickhouse-keeper-01:
+    image: "clickhouse/clickhouse-keeper:latest-alpine"
+    user: "101:101"
+    container_name: clickhouse-keeper-01
+    hostname: clickhouse-keeper-01
+    volumes:
+      - ${PWD}/fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper/keeper_config.xml:/etc/clickhouse-keeper/keeper_config.xml
+    ports:
+      - "127.0.0.1:9181:9181"
+  clickhouse-keeper-02:
+    image: "clickhouse/clickhouse-keeper:latest-alpine"
+    user: "101:101"
+    container_name: clickhouse-keeper-02
+    hostname: clickhouse-keeper-02
+    volumes:
+      - ${PWD}/fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper/keeper_config.xml:/etc/clickhouse-keeper/keeper_config.xml
+    ports:
+      - "127.0.0.1:9182:9181"
+  clickhouse-keeper-03:
+    image: "clickhouse/clickhouse-keeper:latest-alpine"
+    user: "101:101"
+    container_name: clickhouse-keeper-03
+    hostname: clickhouse-keeper-03
+    volumes:
+      - ${PWD}/fs/volumes/clickhouse-keeper-03/etc/clickhouse-keeper/keeper_config.xml:/etc/clickhouse-keeper/keeper_config.xml
+    ports:
+      - "127.0.0.1:9183:9181"
+```
+
+Create the following sub-directories and files:
+
+```bash
+for i in {01..04}; do
+  mkdir -p fs/volumes/clickhouse-${i}/etc/clickhouse-server/config.d
+  mkdir -p fs/volumes/clickhouse-${i}/etc/clickhouse-server/users.d
+  touch fs/volumes/clickhouse-${i}/etc/clickhouse-server/config.d/config.xml
+  touch fs/volumes/clickhouse-${i}/etc/clickhouse-server/users.d/users.xml
+done
+```
+
+- The `config.d` directory contains ClickHouse server configuration file `config.xml`, 
+in which custom configuration for each ClickHouse node is defined. This 
+configuration gets combined with the default `config.xml` ClickHouse configuration
+file that comes with every ClickHouse installation.
+- The `users.d` directory contains user configuration file `users.xml`, in which
+custom configuration for users is defined. This configuration gets combined with
+the default ClickHouse `users.xml` configuration file that comes with every 
+ClickHouse installation.
+
+<br/>
+
+:::tip Custom configuration directories
+It is a best practice to make use of the `config.d` and `users.d` directories when
+writing your own configuration, rather than directly modifying the default configuration
+in `/etc/clickhouse-server/config.xml` and `etc/clickhouse-server/users.xml`.
+
+The line 
 
 ```xml
-<remote_servers>
-    <perftest_3shards_1replicas>
-        <shard>
-            <replica>
-                <host>example-perftest01j.clickhouse.com</host>
-                <port>9000</port>
-            </replica>
-        </shard>
-        <shard>
-            <replica>
-                <host>example-perftest02j.clickhouse.com</host>
-                <port>9000</port>
-            </replica>
-        </shard>
-        <shard>
-            <replica>
-                <host>example-perftest03j.clickhouse.com</host>
-                <port>9000</port>
-            </replica>
-        </shard>
-    </perftest_3shards_1replicas>
-</remote_servers>
+<clickhouse replace="true">
 ```
 
-For further demonstration, let's create a new local table with the same `CREATE TABLE` query that we used for `hits_v1` in the single node deployment tutorial, but with a different table name:
-
-```sql
-CREATE TABLE tutorial.hits_local (...) ENGINE = MergeTree() ...
-```
-
-Creating a distributed table provides a view into the local tables of the cluster:
-
-```sql
-CREATE TABLE tutorial.hits_all AS tutorial.hits_local
-ENGINE = Distributed(perftest_3shards_1replicas, tutorial, hits_local, rand());
-```
-
-A common practice is to create similar distributed tables on all machines of the cluster. This allows running distributed queries on any machine of the cluster. There's also an alternative option to create a temporary distributed table for a given SELECT query using [remote](../sql-reference/table-functions/remote.md) table function.
-
-Let's run [INSERT SELECT](../sql-reference/statements/insert-into.md) into the distributed table to spread the table to multiple servers.
-
-```sql
-INSERT INTO tutorial.hits_all SELECT * FROM tutorial.hits_v1;
-```
-
-As you would expect, computationally heavy queries run N times faster if they utilize 3 servers instead of one.
-
-In this case, we use a cluster with 3 shards, and each shard contains a single replica.
-
-To provide resilience in a production environment, we recommend that each shard contain 2-3 replicas spread between multiple availability zones or datacenters (or at least racks). Note that ClickHouse supports an unlimited number of replicas.
-
-Here is an example config for a cluster of one shard containing three replicas:
-
-```xml
-<remote_servers>
-    ...
-    <perftest_1shards_3replicas>
-        <shard>
-            <replica>
-                <host>example-perftest01j.clickhouse.com</host>
-                <port>9000</port>
-             </replica>
-             <replica>
-                <host>example-perftest02j.clickhouse.com</host>
-                <port>9000</port>
-             </replica>
-             <replica>
-                <host>example-perftest03j.clickhouse.com</host>
-                <port>9000</port>
-             </replica>
-        </shard>
-    </perftest_1shards_3replicas>
-</remote_servers>
-```
-
-To enable native replication [ZooKeeper](http://zookeeper.apache.org/), is required. ClickHouse takes care of data consistency on all replicas and runs a restore procedure after a failure automatically. It's recommended to deploy the ZooKeeper cluster on separate servers (where no other processes including ClickHouse are running).
-
-:::note Note
-ZooKeeper is not a strict requirement: in some simple cases, you can duplicate the data by writing it into all the replicas from your application code. This approach is **not** recommended, as in this case, ClickHouse won't be able to guarantee data consistency on all replicas. Thus, it becomes the responsibility of your application.
+Ensures that the configuration sections defined in the `config.d` and `users.d` 
+directories override the default configuration sections defined in the default
+`config.xml` and `users.xml` files.
 :::
 
-ZooKeeper locations are specified in the configuration file:
+## Configure ClickHouse nodes {#configure-clickhouse-servers}
+
+Now modify each empty configuration file `config.xml` located at
+`fs/volumes/clickhouse-{}/etc/clickhouse-server/config.d`. The lines which are 
+highlighted below need to be changed to be specific to each node:
 
 ```xml
-<zookeeper>
-    <node>
-        <host>zoo01.clickhouse.com</host>
-        <port>2181</port>
-    </node>
-    <node>
-        <host>zoo02.clickhouse.com</host>
-        <port>2181</port>
-    </node>
-    <node>
-        <host>zoo03.clickhouse.com</host>
-        <port>2181</port>
-    </node>
-</zookeeper>
+<clickhouse replace="true">
+    <logger>
+        <level>debug</level>
+        <log>/var/log/clickhouse-server/clickhouse-server.log</log>
+        <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
+        <size>1000M</size>
+        <count>3</count>
+    </logger>
+    <!--highlight-next-line-->
+    <display_name>cluster_2S_2R node 1</display_name>
+    <listen_host>0.0.0.0</listen_host>
+    <http_port>8123</http_port>
+    <tcp_port>9000</tcp_port>
+    <user_directories>
+        <users_xml>
+            <path>users.xml</path>
+        </users_xml>
+        <local_directory>
+            <path>/var/lib/clickhouse/access/</path>
+        </local_directory>
+    </user_directories>
+    <distributed_ddl>
+        <path>/clickhouse/task_queue/ddl</path>
+    </distributed_ddl>
+    <remote_servers>
+        <cluster_2S_2R>
+            <shard>
+                <internal_replication>true</internal_replication>
+                <replica>
+                    <host>clickhouse-01</host>
+                    <port>9000</port>
+                </replica>
+                <replica>
+                    <host>clickhouse-03</host>
+                    <port>9000</port>
+                </replica>
+            </shard>
+            <shard>
+                <internal_replication>true</internal_replication>
+                <replica>
+                    <host>clickhouse-02</host>
+                    <port>9000</port>
+                </replica>
+                <replica>
+                    <host>clickhouse-04</host>
+                    <port>9000</port>
+                </replica>
+            </shard>
+        </cluster_2S_2R>
+    </remote_servers>
+    <zookeeper>
+        <node>
+            <host>clickhouse-keeper-01</host>
+            <port>9181</port>
+        </node>
+        <node>
+            <host>clickhouse-keeper-02</host>
+            <port>9181</port>
+        </node>
+        <node>
+            <host>clickhouse-keeper-03</host>
+            <port>9181</port>
+        </node>
+    </zookeeper>
+    <macros>
+        <shard>01</shard>
+        <replica>01</replica>
+    </macros>
+</clickhouse>
 ```
 
-Also, we need to set macros for identifying each shard and replica which are used on table creation:
+| Directory                                                 | File                                                                                                                                                                              |
+|-----------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `fs/volumes/clickhouse-01/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-01/etc/clickhouse-server/config.d/config.xml)  |
+| `fs/volumes/clickhouse-02/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-02/etc/clickhouse-server/config.d/config.xml)  |
+| `fs/volumes/clickhouse-03/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-03/etc/clickhouse-server/config.d/config.xml)  |
+| `fs/volumes/clickhouse-04/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-04/etc/clickhouse-server/config.d/config.xml)  |
+ 
+### Configuration explanation {#configuration-explanation}
+
+Note that each node in the cluster has the same cluster configuration defined by the
+`<remote_servers></remote_servers>` section.
+
+
+Now modify each empty configuration file `users.xml` located at
+`fs/volumes/clickhouse-{}/etc/clickhouse-server/users.d` with the following:
 
 ```xml
-<macros>
-    <shard>01</shard>
-    <replica>01</replica>
-</macros>
+<?xml version="1.0"?>
+<clickhouse replace="true">
+    <profiles>
+        <default>
+            <max_memory_usage>10000000000</max_memory_usage>
+            <use_uncompressed_cache>0</use_uncompressed_cache>
+            <load_balancing>in_order</load_balancing>
+            <log_queries>1</log_queries>
+        </default>
+    </profiles>
+    <users>
+        <default>
+            <access_management>1</access_management>
+            <profile>default</profile>
+            <networks>
+                <ip>::/0</ip>
+            </networks>
+            <quota>default</quota>
+            <access_management>1</access_management>
+            <named_collection_control>1</named_collection_control>
+            <show_named_collections>1</show_named_collections>
+            <show_named_collections_secrets>1</show_named_collections_secrets>
+        </default>
+    </users>
+    <quotas>
+        <default>
+            <interval>
+                <duration>3600</duration>
+                <queries>0</queries>
+                <errors>0</errors>
+                <result_rows>0</result_rows>
+                <read_rows>0</read_rows>
+                <execution_time>0</execution_time>
+            </interval>
+        </default>
+    </quotas>
+</clickhouse>
 ```
 
-If there are no replicas at the moment of replicated table creation, a new first replica is instantiated. If there are already live replicas, the new replica clones data from existing ones. You have an option to create all replicated tables first, and then insert data to it. Another option is to create some replicas and add the others after or during data insertion.
+:::note
+Each `users.xml` file is identical for all nodes in the cluster.
+:::
 
-```sql
-CREATE TABLE tutorial.hits_replica (...)
-ENGINE = ReplicatedMergeTree(
-    '/clickhouse_perftest/tables/{shard}/hits',
-    '{replica}'
-)
-...
+## Configure ClickHouse Keeper nodes {#configure-clickhouse-keeper-nodes}
+
+Finally, create the `keeper_config.xml` files for each ClickHouse Keeper node
+using the following command:
+
+```bash
+for i in {01..03}; do
+  touch fs/volumes/clickhouse-keeper-${i}/etc/clickhouse-keeper/keeper_config.xml
+done
 ```
 
-Here we use the [ReplicatedMergeTree](../engines/table-engines/mergetree-family/replication.md) table engine. In parameters, we specify the ZooKeeper path containing the shard and replica identifiers.
+Modify these empty configuration files called `keeper_config.xml` in each
+node directory `fs/volumes/clickhouse-keeper-{}/etc/clickhouse-keeper`. The 
+highlighted lines below need to be changed to be specific to each node:
 
-```sql
-INSERT INTO tutorial.hits_replica SELECT * FROM tutorial.hits_local;
+```xml
+<clickhouse replace="true">
+    <logger>
+        <level>information</level>
+        <log>/var/log/clickhouse-keeper/clickhouse-keeper.log</log>
+        <errorlog>/var/log/clickhouse-keeper/clickhouse-keeper.err.log</errorlog>
+        <size>1000M</size>
+        <count>3</count>
+    </logger>
+    <listen_host>0.0.0.0</listen_host>
+    <keeper_server>
+        <tcp_port>9181</tcp_port>
+        <!--highlight-next-line-->
+        <server_id>1</server_id>
+        <log_storage_path>/var/lib/clickhouse/coordination/log</log_storage_path>
+        <snapshot_storage_path>/var/lib/clickhouse/coordination/snapshots</snapshot_storage_path>
+        <coordination_settings>
+            <operation_timeout_ms>10000</operation_timeout_ms>
+            <session_timeout_ms>30000</session_timeout_ms>
+            <raft_logs_level>information</raft_logs_level>
+        </coordination_settings>
+        <raft_configuration>
+            <server>
+                <id>1</id>
+                <hostname>clickhouse-keeper-01</hostname>
+                <port>9234</port>
+            </server>
+            <server>
+                <id>2</id>
+                <hostname>clickhouse-keeper-02</hostname>
+                <port>9234</port>
+            </server>
+            <server>
+                <id>3</id>
+                <hostname>clickhouse-keeper-03</hostname>
+                <port>9234</port>
+            </server>
+        </raft_configuration>
+    </keeper_server>
+</clickhouse>
 ```
 
-Replication operates in multi-master mode. Data can be loaded into any replica, and the system then syncs it with other instances automatically. Replication is asynchronous so at a given moment, not all replicas may contain recently inserted data. At least one replica should be up to allow for data ingestion. Others will sync up data and repair consistency once they become active again. Note that this approach allows for the low possibility of loss of recently inserted data.
+### Configuration explanation {#configuration-explanation}
+
+
+
+## Test the setup {#test-the-setup}
+
+Make sure that docker is running on your machine.
+Start the cluster using the `docker-compose up` command from the `clickhouse-cluster` directory:
+
+```bash
+docker-compose up -d
+```
+
+You should see docker begin to pull the ClickHouse and Zookeeper images, 
+and then start the containers:
+
+```bash
+[+] Running 8/8
+ ✔ Network clickhouse-cluster_default  Created
+ ✔ Container clickhouse-keeper-03      Started
+ ✔ Container clickhouse-keeper-02      Started
+ ✔ Container clickhouse-keeper-01      Started
+ ✔ Container clickhouse-01             Started
+ ✔ Container clickhouse-02             Started
+ ✔ Container clickhouse-04             Started
+ ✔ Container clickhouse-03             Started
+```
+
+To verify that the cluster is running, connect to any one of the nodes and run the 
+following query. 
+For the sake of this example, the command to connect to the 
+first node is shown:
+
+```bash
+# Connect to any node
+docker exec -it clickhouse-01 clickhouse-client
+```
+
+If successful, you will see the ClickHouse client prompt:
+
+```response
+cluster_2S_2R node 1 :)
+```
+
+</VerticalStepper>
