@@ -63,6 +63,7 @@
   align-items: center;
   flex-direction: column;
   max-width: 1000px;
+  margin-bottom: 6rem;
 }
 
 .heroSection {
@@ -79,6 +80,14 @@
   .logo {
     width: 300px;
     height: auto;
+  }
+
+  [data-theme='dark'] .logo {
+    color: white;
+  }
+
+  [data-theme='light'] .logo {
+    color: black;
   }
 }
 
