@@ -56,11 +56,12 @@ More connectors will get added to ClickPipes, you can find out more by [contacti
 
 The following are the static NAT IPs (separated by region) that ClickPipes uses to connect to your external services. Add your related instance region IPs to your IP allow list to allow traffic.
 
-For services created in `ap-south-1`, `ap-southeast-2`, and `us-west-2` **on or after 24 Jun 2025**, ClickPipes will be deployed in the same region, and you should use the region-specific IPs from the table below. For services created in these regions **before** this date, please use the IPs for `us-east-1`.
-
-For all other services, ClickPipes traffic will originate from a default region based on your service's location:
+For all services, ClickPipes traffic will originate from a default region based on your service's location:
 - **eu-central-1**: For all services in EU regions.
 - **us-east-1**: For all services in `us-east-1`.
+- **ap-south-1**: For services in `ap-south-1` created on or after 24 Jun 2025 (services created before this date use `us-east-1` IPs).
+- **ap-southeast-2**: For services in `ap-southeast-2` created on or after 25 Jun 2025 (services created before this date use `us-east-1` IPs).
+- **us-west-2**: For services in `us-west-2` created on or after 25 Jun 2025 (services created before this date use `us-east-1` IPs).
 - **us-east-2**: For all other regions not explicitly listed.
 
 | ClickHouse Cloud region                  | IP Addresses                                                                                                                                     |
