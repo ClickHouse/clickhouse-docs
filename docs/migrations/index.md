@@ -14,4 +14,3 @@ description: 'Landing page for the migrations section'
 | [MySQL](../integrations/data-ingestion/dbms/mysql/index.md)       | Migration guide for MySQL      |
 | [Redshift](../integrations/data-ingestion/redshift/index.md)      | Migration guide for Redshift   |
 | [DynamoDB](../integrations/data-ingestion/dbms/dynamodb/index.md) | Migration guide for DynamoDB   |
-| [Rockset](../integrations/migration/rockset.md)                   | Migration guide for Rockset    |

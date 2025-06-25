@@ -211,11 +211,6 @@ const sidebars = {
         "integrations/data-ingestion/dbms/mysql/index",
         "integrations/data-ingestion/redshift/index",
         "integrations/data-ingestion/dbms/dynamodb/index",
-        {
-          type: "doc",
-          id: "integrations/migration/rockset",
-          label: "Rockset",
-        },
       ],
     },
     {
@@ -479,11 +474,6 @@ const sidebars = {
         "integrations/migration/etl-tool-to-clickhouse",
         "integrations/migration/object-storage-to-clickhouse",
         "integrations/migration/upload-a-csv-file",
-        {
-          type: "link",
-          label: "Rockset",
-          href: "/migrations/rockset",
-        },
       ],
     },
   ],
