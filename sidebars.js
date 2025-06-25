@@ -212,9 +212,9 @@ const sidebars = {
         "integrations/data-ingestion/redshift/index",
         "integrations/data-ingestion/dbms/dynamodb/index",
         {
+          label: "Elasticsearch",
           type: "doc",
-          id: "integrations/migration/rockset",
-          label: "Rockset",
+          id: "use-cases/observability/clickstack/migration/elastic/index",
         },
       ],
     },
@@ -479,11 +479,6 @@ const sidebars = {
         "integrations/migration/etl-tool-to-clickhouse",
         "integrations/migration/object-storage-to-clickhouse",
         "integrations/migration/upload-a-csv-file",
-        {
-          type: "link",
-          label: "Rockset",
-          href: "/migrations/rockset",
-        },
       ],
     },
   ],
