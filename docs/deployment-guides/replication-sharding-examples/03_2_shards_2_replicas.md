@@ -1,33 +1,48 @@
 ---
 slug: /architecture/cluster-deployment
-sidebar_label: 'Cluster Deployment'
+sidebar_label: 'Replication + Scaling'
 sidebar_position: 100
-title: 'Cluster Deployment'
+title: 'Replication + Scaling'
 description: 'By going through this tutorial, you will learn how to set up a simple ClickHouse cluster.'
 ---
 
-> In this tutorial, you'll learn how to set up a simple ClickHouse cluster
-consisting of two shards and two replicas with a 3-node ClickHouse Keeper cluster
-for managing coordination and keeping quorum in the cluster.
+import ConfigExplanation from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_config_explanation.mdx';
+import ListenHost from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_listen_host.mdx';
+import KeeperConfig from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_keeper_config.mdx';
+import KeeperConfigExplanation from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_keeper_explanation.mdx';
+import VerifyKeeperStatus from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_verify_keeper_using_mntr.mdx';
+import DedicatedKeeperServers from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_dedicated_keeper_servers.mdx';
+
+> In this example, you'll learn how to set up a simple ClickHouse cluster which
+both replicates and scales. It consisting of two shards and two replicas with a 
+3-node ClickHouse Keeper cluster for managing coordination and keeping quorum 
+in the cluster.
+
+The architecture of the cluster you will be setting up is shown below:
+
+|Node|Description|
+|----|-----------|
+|`chnode1`|Data + ClickHouse Keeper|
+|`chnode2`|Data + ClickHouse Keeper|
+|`chnode3`|Used for ClickHouse Keeper quorum|
+
+<DedicatedKeeperServers/>
 
 ## Prerequisites {#prerequisites}
 
-- You've already set up a [local ClickHouse server](../getting-started/install/install.mdx)
+- You've set up a [local ClickHouse server](../getting-started/install/install.mdx) before
 - You are familiar with basic configuration concepts of ClickHouse such as [configuration files](/operations/configuration-files)
 - You have docker installed on your machine
-
-The architecture of the cluster we will be setting up is shown below:
-
 
 <VerticalStepper level="h2">
 
 ## Set up directory structure and test environment {#set-up}
 
 In this tutorial, you will use [Docker compose](https://docs.docker.com/compose/) to
-set up the ClickHouse cluster for simplicity. This setup could be modified to work
+set up the ClickHouse cluster. This setup could be modified to work
 for separate local machines, virtual machines or cloud instances as well.
 
-Run the following commands to set up the directory structure for the cluster:
+Run the following commands to set up the directory structure for this example:
 
 ```bash
 mkdir clickhouse-cluster
@@ -149,34 +164,11 @@ for i in {01..04}; do
 done
 ```
 
-- The `config.d` directory contains ClickHouse server configuration file `config.xml`, 
-in which custom configuration for each ClickHouse node is defined. This 
-configuration gets combined with the default `config.xml` ClickHouse configuration
-file that comes with every ClickHouse installation.
-- The `users.d` directory contains user configuration file `users.xml`, in which
-custom configuration for users is defined. This configuration gets combined with
-the default ClickHouse `users.xml` configuration file that comes with every 
-ClickHouse installation.
-
-<br/>
-
-:::tip Custom configuration directories
-It is a best practice to make use of the `config.d` and `users.d` directories when
-writing your own configuration, rather than directly modifying the default configuration
-in `/etc/clickhouse-server/config.xml` and `etc/clickhouse-server/users.xml`.
-
-The line 
-
-```xml
-<clickhouse replace="true">
-```
-
-Ensures that the configuration sections defined in the `config.d` and `users.d` 
-directories override the default configuration sections defined in the default
-`config.xml` and `users.xml` files.
-:::
+<ConfigExplanation/>
 
 ## Configure ClickHouse nodes {#configure-clickhouse-servers}
+
+### Server configuration {#cluster-configuration}
 
 Now modify each empty configuration file `config.xml` located at
 `fs/volumes/clickhouse-{}/etc/clickhouse-server/config.d`. The lines which are 
@@ -247,10 +239,12 @@ highlighted below need to be changed to be specific to each node:
             <port>9181</port>
         </node>
     </zookeeper>
+    <!--highlight-start-->
     <macros>
         <shard>01</shard>
         <replica>01</replica>
     </macros>
+    <!--highlight-end-->
 </clickhouse>
 ```
 
@@ -260,58 +254,85 @@ highlighted below need to be changed to be specific to each node:
 | `fs/volumes/clickhouse-02/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-02/etc/clickhouse-server/config.d/config.xml)  |
 | `fs/volumes/clickhouse-03/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-03/etc/clickhouse-server/config.d/config.xml)  |
 | `fs/volumes/clickhouse-04/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-04/etc/clickhouse-server/config.d/config.xml)  |
- 
-### Configuration explanation {#configuration-explanation-clickhouse}
 
-External communication to the network interface is enabled by activating the listen
-host setting. This ensures that the ClickHouse server host is reachable by other
-hosts.
+Each section of the above configuration file is explained in more detail below.
+
+#### Networking and logging {#networking}
+
+<ListenHost/>
+
+Logging configuration is defined in the `<logger>` block. This example configuration gives
+you a debug log that will roll over at 1000M three times:
 
 ```xml
-<listen_host>0.0.0.0</listen_host>
+<logger>
+   <level>debug</level>
+   <log>/var/log/clickhouse-server/clickhouse-server.log</log>
+   <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
+   <size>1000M</size>
+   <count>3</count>
+</logger>
 ```
 
-Note that each node in the cluster gets the same cluster configuration defined by the
-`<remote_servers></remote_servers>` section:
+For more information on logging configuration, see the comments included in the
+default ClickHouse [configuration file](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml).
+
+#### Cluster configuration {#cluster-config}
+
+Configuration for the cluster is set up in the `<remote_servers>` block.
+Here the cluster name `cluster_2S_2R` is defined.
+
+The `<cluster_2S_2R></cluster_2S_2R>` block defines the layout of the cluster,
+using the `<shard></shard>` and `<replica></replica>` settings, and acts as a
+template for distributed DDL queries, which are queries that execute across the
+cluster using the `ON CLUSTER` clause. By default, distributed DDL queries
+are allowed, but can also be turned off with setting `allow_distributed_ddl_queries`.
+
+`internal_replication` is set to true so that data is written to just one of the replicas.
 
 ```xml
 <remote_servers>
-        <cluster_2S_2R>
-            <shard>
-                <internal_replication>true</internal_replication>
-                <replica>
-                    <host>clickhouse-01</host>
-                    <port>9000</port>
-                </replica>
-                <replica>
-                    <host>clickhouse-03</host>
-                    <port>9000</port>
-                </replica>
-            </shard>
-            <shard>
-                <internal_replication>true</internal_replication>
-                <replica>
-                    <host>clickhouse-02</host>
-                    <port>9000</port>
-                </replica>
-                <replica>
-                    <host>clickhouse-04</host>
-                    <port>9000</port>
-                </replica>
-            </shard>
-        </cluster_2S_2R>
-    </remote_servers>
+   <!-- cluster name (should not contain dots) -->
+  <cluster_2S_2R>
+      <!-- <allow_distributed_ddl_queries>false</allow_distributed_ddl_queries> -->
+      <shard>
+          <!-- Optional. Whether to write data to just one of the replicas. Default: false (write data to all replicas). -->
+          <internal_replication>true</internal_replication>
+          <replica>
+              <host>clickhouse-01</host>
+              <port>9000</port>
+          </replica>
+          <replica>
+              <host>clickhouse-03</host>
+              <port>9000</port>
+          </replica>
+      </shard>
+      <shard>
+          <internal_replication>true</internal_replication>
+          <replica>
+              <host>clickhouse-02</host>
+              <port>9000</port>
+          </replica>
+          <replica>
+              <host>clickhouse-04</host>
+              <port>9000</port>
+          </replica>
+      </shard>
+  </cluster_2S_2R>
+</remote_servers>
 ```
 
 The `<cluster_2S_2R></cluster_2S_2R>` section defines the layout of the cluster,
 and acts as a template for distributed DDL queries, which are queries that execute
 across the cluster using the `ON CLUSTER` clause. 
 
+#### Keeper configuration {#keeper-config-explanation}
+
 The `<ZooKeeper>` section tells ClickHouse where ClickHouse Keeper (or ZooKeeper) is running.
 As we are using a ClickHouse Keeper cluster, each `<node>` of the cluster needs to be specified, 
-along with it's hostname and port number using the `<host>` and `<port>` tags respectively.
+along with its hostname and port number using the `<host>` and `<port>` tags respectively.
 
-Set-up of ClickHouse Keeper is explained in the next step of the tutorial.
+Set up of ClickHouse Keeper is explained in the next step of the tutorial.
 
 ```xml
 <zookeeper>
@@ -330,6 +351,13 @@ Set-up of ClickHouse Keeper is explained in the next step of the tutorial.
 </zookeeper>
 ```
 
+:::note
+Although it is possible to run ClickHouse Keeper on the same server as ClickHouse Server,
+in production environments we strongly recommend that ClickHouse Keeper runs on dedicated hosts.
+:::
+
+#### Macros configuration {#macros-config-explanation}
+
 Additionally, the `<macros>` section is used to define parameter substitutions for
 replicated tables. These are listed in `system.macros` and allow using substitutions
 like `{shard}` and `{replica}` in queries. 
@@ -340,6 +368,8 @@ like `{shard}` and `{replica}` in queries.
    <replica>01</replica>
 </macros>
 ```
+
+### User configuration {#cluster-configuration}
 
 Now modify each empty configuration file `users.xml` located at
 `fs/volumes/clickhouse-{}/etc/clickhouse-server/users.d` with the following:
@@ -384,127 +414,39 @@ Now modify each empty configuration file `users.xml` located at
 </clickhouse>
 ```
 
-:::note
-Each `users.xml` file is identical for all nodes in the cluster.
-:::
-
-## Configure ClickHouse Keeper nodes {#configure-clickhouse-keeper-nodes}
-
-In order for replication to work, a ClickHouse keeper cluster needs to be set up and
-configured. ClickHouse Keeper provides the coordination system for data replication,
-acting as a stand in replacement for Zookeeper, which could also be used. 
-ClickHouse Keeper is however recommended, as it provides better guarantees and 
-reliability and uses fewer resources than ZooKeeper. For high availability and in
-order to keep quorum it is recommended to run at least 3 ClickHouse Keeper nodes.
+In this example, the default user is configured without a password for simplicity.
+In practice, this is discouraged.
 
 :::note
-ClickHouse Keeper can run on any node of the cluster alongside ClickHouse, although
-it is recommended to have it run on a dedicated node which allows to scale and 
-manage the ClickHouse Keeper cluster independently from the database cluster.
+In this example, each `users.xml` file is identical for all nodes in the cluster.
 :::
 
-Create the `keeper_config.xml` files for each ClickHouse Keeper node
-using the following command:
+## Configure ClickHouse Keeper {#configure-clickhouse-keeper-nodes}
 
-```bash
-for i in {01..03}; do
-  touch fs/volumes/clickhouse-keeper-${i}/etc/clickhouse-keeper/keeper_config.xml
-done
-```
+Next you will configure ClickHouse Keeper, which is used for coordination.
 
-Modify these empty configuration files called `keeper_config.xml` in each
-node directory `fs/volumes/clickhouse-keeper-{}/etc/clickhouse-keeper`. The 
-highlighted lines below need to be changed to be specific to each node:
+### Keeper setup {#configuration-explanation}
 
-```xml title="/config.d/config.xml"
-<clickhouse replace="true">
-    <logger>
-        <level>information</level>
-        <log>/var/log/clickhouse-keeper/clickhouse-keeper.log</log>
-        <errorlog>/var/log/clickhouse-keeper/clickhouse-keeper.err.log</errorlog>
-        <size>1000M</size>
-        <count>3</count>
-    </logger>
-    <listen_host>0.0.0.0</listen_host>
-    <keeper_server>
-        <tcp_port>9181</tcp_port>
-        <!--highlight-next-line-->
-        <server_id>1</server_id>
-        <log_storage_path>/var/lib/clickhouse/coordination/log</log_storage_path>
-        <snapshot_storage_path>/var/lib/clickhouse/coordination/snapshots</snapshot_storage_path>
-        <coordination_settings>
-            <operation_timeout_ms>10000</operation_timeout_ms>
-            <session_timeout_ms>30000</session_timeout_ms>
-            <raft_logs_level>information</raft_logs_level>
-        </coordination_settings>
-        <raft_configuration>
-            <server>
-                <id>1</id>
-                <hostname>clickhouse-keeper-01</hostname>
-                <port>9234</port>
-            </server>
-            <server>
-                <id>2</id>
-                <hostname>clickhouse-keeper-02</hostname>
-                <port>9234</port>
-            </server>
-            <server>
-                <id>3</id>
-                <hostname>clickhouse-keeper-03</hostname>
-                <port>9234</port>
-            </server>
-        </raft_configuration>
-    </keeper_server>
-</clickhouse>
-```
+<KeeperConfig/>
 
-### Configuration explanation {#configuration-explanation}
+| Directory                                                        | File                                                                                                                                                                                         |
+|------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `fs/volumes/clickhouse-keeper-01/etc/clickhouse-server/config.d` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper/keeper_config.xml) |
+| `fs/volumes/clickhouse-keeper-02/etc/clickhouse-server/config.d` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper/keeper_config.xml) |
+| `fs/volumes/clickhouse-keeper-03/etc/clickhouse-server/config.d` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-keeper-03/etc/clickhouse-keeper/keeper_config.xml) |
 
-Each configuration file will contain the following unique configuration (shown below).
-The `server_id` used should be unique for that particular ClickHouse Keeper node 
-in the cluster and match the server `<id>` defined in the `<raft_configuration>` section.
-`tcp_port` is the port used by _clients_ of ClickHouse Keeper.
-
-```xml
-<tcp_port>9181</tcp_port>
-<server_id>{id}</server_id>
-```
-
-The following section is used to configure the servers that participate in the 
-quorum for the [raft consensus algorithm](https://en.wikipedia.org/wiki/Raft_(algorithm)):
-
-```xml
-<raft_configuration>
-    <server>
-        <id>1</id>
-        <hostname>clickhouse-keeper-01</hostname>
-        <!-- TCP port used for communication between ClickHouse Keeper nodes -->
-        <!--highlight-next-line-->
-        <port>9234</port>
-    </server>
-    <server>
-        <id>2</id>
-        <hostname>clickhouse-keeper-02</hostname>
-        <port>9234</port>
-    </server>
-    <server>
-        <id>3</id>
-        <hostname>clickhouse-keeper-03</hostname>
-        <port>9234</port>
-    </server>
-</raft_configuration>
-```
+<KeeperConfigExplanation/>
 
 ## Test the setup {#test-the-setup}
 
 Make sure that docker is running on your machine.
-Start the cluster using the `docker-compose up` command from the `clickhouse-cluster` directory:
+Start the cluster using the `docker-compose up` command from the root of the `cluster_2S_2R` directory:
 
 ```bash
 docker-compose up -d
 ```
 
-You should see docker begin to pull the ClickHouse and Zookeeper images, 
+You should see docker begin to pull the ClickHouse and Keeper images, 
 and then start the containers:
 
 ```bash
@@ -520,9 +462,7 @@ and then start the containers:
 ```
 
 To verify that the cluster is running, connect to any one of the nodes and run the 
-following query. 
-For the sake of this example, the command to connect to the 
-first node is shown:
+following query. The command to connect to the first node is shown:
 
 ```bash
 # Connect to any node
@@ -575,17 +515,19 @@ WHERE path IN ('/', '/clickhouse')
    └────────────┴───────┴─────────────┘
 ```
 
-With this you have successfully set up a ClickHouse cluster with two shards and two replicas.
-In the next step we will create a table in the cluster.
+<VerifyKeeperStatus/>
 
-## Creating a distributed database {#creating-a-table}
+With this, you have successfully set up a ClickHouse cluster with two shards and two replicas.
+In the next step, you will create a table in the cluster.
 
-In this tutorial, you will be recreating the same table as the one used in the
-[UK property prices](/getting-started/example-datasets/uk-price-paid) example dataset tutorial.
-It consists of around 30 million rows of prices paid for real-estate property in England and Wales
-since 1995. 
+## Create a database {#creating-a-database}
 
-Start each client of each host, by running each of the following commands from separate terminal
+Now that you have verified the cluster is correctly setup and is running, you
+will be recreating the same table as the one used in the [UK property prices](/getting-started/example-datasets/uk-price-paid)
+example dataset tutorial. It consists of around 30 million rows of prices paid 
+for real-estate property in England and Wales since 1995. 
+
+Connect to the client of each host by running each of the following commands from separate terminal
 tabs or windows:
 
 ```bash
@@ -611,8 +553,8 @@ SHOW DATABASES;
    └────────────────────┘
 ```
 
-From the `clickhouse-01` client run the following **distributed** DDL query using the `ON CLUSTER` clause to create a
-database:
+From the `clickhouse-01` client run the following **distributed** DDL query using the
+`ON CLUSTER` clause to create a new database called `uk`:
 
 ```sql
 CREATE DATABASE IF NOT EXISTS uk 
@@ -639,7 +581,7 @@ SHOW DATABASES;
    └────────────────────┘
 ```
 
-## Creating local tables on the cluster {#creating-a-table}
+## Create a local table on the cluster {#creating-a-table}
 
 Now that the database has been created, create a distributed table in the cluster.
 Run the following query from any of the host clients:
@@ -671,14 +613,15 @@ ORDER BY (postcode1, postcode2, addr1, addr2);
 
 Notice that it is identical to the query used in the original `CREATE` statement of the
 [UK property prices](/getting-started/example-datasets/uk-price-paid) example dataset tutorial,
-except for the `ON CLUSTER` clause and the `ReplicatedMergeTree` engine.
+except for the `ON CLUSTER` clause and use of the `ReplicatedMergeTree` engine.
 
 The `ON CLUSTER` clause is designed for distributed execution of DDL (Data Definition Language)
 queries such as `CREATE`, `DROP`, `ALTER`, and `RENAME`, ensuring that these 
 schema changes are applied across all nodes in a cluster.
 
 The [`ReplicatedMergeTree`](https://clickhouse.com/docs/engines/table-engines/mergetree-family/replication#converting-from-mergetree-to-replicatedmergetree)
-engine works just as the ordinary `MergeTree` table engine, but it will also replicate the data. It requires two parameters to be specified:
+engine works just as the ordinary `MergeTree` table engine, but it will also replicate the data. 
+It requires two parameters to be specified:
 
 - `zoo_path`: The Keeper/ZooKeeper path to the table's metadata.
 - `replica_name`: The table's replica name.
@@ -704,20 +647,20 @@ SHOW TABLES IN uk;
 ```
 
 ```response title="Response"
-   ┌─name──────────┐
-1. │ uk_price_paid │
-   └───────────────┘
+   ┌─name────────────────┐
+1. │ uk_price_paid_local │
+   └─────────────────────┘
 ```
 
 ## Insert data using a distributed table {#inserting-data-using-distributed}
 
 To insert data into the distributed table, `ON CLUSTER` cannot be used as it does
 not apply to DML (Data Manipulation Language) queries such as `INSERT`, `UPDATE`,
-and `DELETE`. In order to insert data, it is necessary to make use of the 
+and `DELETE`. To insert data, it is necessary to make use of the 
 [`Distributed`](/engines/table-engines/special/distributed) table engine.
 
 From any of the host clients, run the following query to create a distributed table
-using the existing table we created previously with `ON CLUSTER` and 
+using the existing table we created previously with `ON CLUSTER` and use of the
 `ReplicatedMergeTree`:
 
 ```sql
@@ -782,10 +725,9 @@ across the nodes of our cluster:
 
 ```sql
 SELECT count(*)
-FROM uk.uk_price_paid_distributed
-LIMIT 10;
+FROM uk.uk_price_paid_distributed;
 
-SELECT count(*) FROM uk.uk_price_paid_local LIMIT 10;
+SELECT count(*) FROM uk.uk_price_paid_local;
 ```
 
 ```response
