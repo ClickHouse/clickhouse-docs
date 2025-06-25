@@ -211,6 +211,11 @@ const sidebars = {
         "integrations/data-ingestion/dbms/mysql/index",
         "integrations/data-ingestion/redshift/index",
         "integrations/data-ingestion/dbms/dynamodb/index",
+        {
+          label: "Elasticsearch",
+          type: "doc",
+          id: "use-cases/observability/clickstack/migration/elastic/index",
+        },
       ],
     },
     {
