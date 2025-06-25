@@ -237,7 +237,7 @@ You can manage existing reverse private endpoints in the ClickHouse Cloud servic
 ## Supported AWS regions {#aws-privatelink-regions}
 
 AWS PrivateLink support is limited to specific AWS regions for ClickPipes.
-Please refer to the [ClickPipes regions list]() to see the available regions.
+Please refer to the [ClickPipes regions list](/integrations/clickpipes#list-of-static-ips) to see the available regions.
 
 This restriction does not apply to PrivateLink VPC endpoint service with a cross-region connectivity enabled.
 
