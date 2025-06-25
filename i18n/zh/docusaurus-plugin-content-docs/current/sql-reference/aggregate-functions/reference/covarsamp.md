@@ -1,8 +1,8 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/covarsamp
-sidebar_position: 124
-title: "covarSamp"
-description: "计算 `Σ((x - x̅)(y - y̅)) / (n - 1)` 的值"
+'description': '计算 `Σ((x - x̄)(y - ȳ)) / (n - 1)` 的值'
+'sidebar_position': 124
+'slug': '/sql-reference/aggregate-functions/reference/covarsamp'
+'title': 'covarSamp'
 ---
 
 
@@ -11,7 +11,7 @@ description: "计算 `Σ((x - x̅)(y - y̅)) / (n - 1)` 的值"
 计算 `Σ((x - x̅)(y - y̅)) / (n - 1)` 的值。
 
 :::note
-该函数使用了一个数值不稳定的算法。如果您需要计算中的[数值稳定性](https://en.wikipedia.org/wiki/Numerical_stability)，请使用 [`covarSampStable`](../reference/covarsamp.md) 函数。它的速度较慢，但提供了更低的计算误差。
+此函数使用了一个数值不稳定的算法。如果您在计算中需要 [数值稳定性](https://en.wikipedia.org/wiki/Numerical_stability)，请使用 [`covarSampStable`](../reference/covarsamp.md) 函数。它的计算速度较慢，但提供较低的计算误差。
 :::
 
 **语法**
@@ -22,12 +22,12 @@ covarSamp(x, y)
 
 **参数**
 
-- `x` — 第一个变量。[(U)Int*](../../data-types/int-uint.md)，[Float*](../../data-types/float.md)，[Decimal](../../data-types/decimal.md)。
-- `y` — 第二个变量。[(U)Int*](../../data-types/int-uint.md)，[Float*](../../data-types/float.md)，[Decimal](../../data-types/decimal.md)。
+- `x` — 第一个变量。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
+- `y` — 第二个变量。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
 
 **返回值**
 
-- `x` 和 `y` 之间的样本协方差。对于 `n <= 1`，返回 `nan`。[Float64](../../data-types/float.md)。
+- `x` 和 `y` 之间的样本协方差。当 `n <= 1` 时，返回 `nan`。[Float64](../../data-types/float.md)。
 
 **示例**
 

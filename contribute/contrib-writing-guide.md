@@ -43,14 +43,13 @@ sudo apt-get install npm
 sudo npm install --global yarn
 ```
 
-note: if the Node version available in your distro is old (`<=v16`), you can use [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) to pick a specific one.
+Note: if the Node version available in your distro is old (`<=v16`), you can use [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) to pick a specific one.
 
-for example to use node 18:
+for example to use the appropriate version of node:
 
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-nvm install 18
-nvm use 18
+nvm use
 ```
 
 #### OSx {#osx}
@@ -69,11 +68,11 @@ cd clickhouse-docs # local docs repo
 
 # Below you can choose only ***ONE*** of the two prep commands
 
-# yarn prep-from-master
+# yarn copy-clickhouse-repo-docs
 # This command will clone master ClickHouse/Clickhouse branch to a temp folder and 
 # from there it will copy over the relevant docs folders to this folder
 
-yarn prep-from-master
+yarn copy-clickhouse-repo-docs
 
 # OR
 
@@ -104,6 +103,27 @@ yarn start
 # not, make them, and you will see the page update as you save the changes.
 ```
 
+## Checking style standards {#check-style}
+
+Users can check that spelling and markdown is correct with the following commands:
+
+```bash
+yarn check-spelling
+yarn check-markdown
+```
+
+Knowledge base articles can be checked for structure (e.g. front matter and correct tags) with:
+
+```bash
+yarn check-kb
+```
+
+These commands can all be run with a single command:
+
+```bash
+yarn check-style
+```
+
 ## Placeholder files {#placeholder-files}
 Some of the markdown content is generated from other files; here are some examples:
 
@@ -128,13 +148,13 @@ pages as:
 
 #### link to another doc {#link-to-another-doc}
 ```md title="foo"
-[async_insert](/docs/operations/settings/settings.md)
+[async_insert](/operations/settings/settings.md)
 ```
 
 #### link to an anchor within another doc {#link-to-an-anchor-within-another-doc}
 
 ```md
-[async_insert](/docs/operations/settings/settings.md/#async-insert)
+[async_insert](/operations/settings/settings.md/#async-insert)
 ```
 
 Note the initial `/`, the `.md` and the slash between the `.md` and the `#async-insert` in the second example.
@@ -152,17 +172,21 @@ https://clickhouse.com/docs/install/
 should be replaced with
 
 ```md
-/docs/getting-started/install.md
+/getting-started/install.md
 ```
+
+Note a `/docs` prefix is not required.
 
 If you look closely, the path on disk does not match the URL.  The URLs can be changed by setting the `slug` in the markdown file frontmatter.
 
 ## Introduce your topic {#introduce-your-topic}
+
 The default first page in a folder (category in Docusaurus terminology) is a list of the pages in that folder.  If you would like an intro or overview page, then add that page to `docs/en/coverpages/`.  This example is addring an Architecture folder, so the full filename would be `docs/en/coverpages/architecture.md`
 
 The next step depends on the location of the file in the nav.  In this example, architecture is at the root level:
 
 ### Cover pages {#cover-pages}
+
 Intros, cover pages, summaries--whatever you want to call them; it is important to provide the reader with a summary of a section
 of the docs.  The summary should let them know if they are in the right place.  Also include at the bottom of the summary a link to relted content (blogs, videos, etc.)
 The cover page is specified in `sidebars.js`, specifically with a `link` of type `doc`:
@@ -186,6 +210,7 @@ The cover page is specified in `sidebars.js`, specifically with a `link` of type
 ```
 
 ## Save time with reusable content {#save-time-with-reusable-content}
+
 Many of the pages in the docs have a section toward the top about gathering the connection details for your ClickHouse service.  Sending people off to look at a page to learn about the connection details and then having them forget what they were doing is a poor user experience.  If you can just include the right instructions in the current doc, please do so.  In general there are two interfaces that people will use when integrating some 3rd party software, or even `clickhouse client` to ClickHouse:
 
 - HTTPS
@@ -213,10 +238,12 @@ Here is how the above renders:
 ## Avoid sending readers in circles {#avoid-sending-readers-in-circles}
 
 ### Links can be overdone {#links-can-be-overdone}
+
 Every time you mention a feature or product you may be tempted to link to it.  Don't do it.  When peole see links
 they can be tempted to visit them, and quite often there is no need for them to go to the linked content.  If you mention a technique and you need the reader to learn it right then, add a link.  If they should read about it later then add a link down at the bottom of the doc in a **What's next** section.
 
 ### Include content in the current doc instead {#include-content-in-the-current-doc-instead}
+
 If you find yourself wanting to send the reader to another doc to perform a task before they perform the main task that you are writing about, then maybe that prerequisite task should be included in the current doc instead so the reader is not clicking back and forth.  It may be time to create a snippet pull the content from the other doc into a snippet file and include it in the current doc and the other doc that you pulled it from (see [above](#save-time-with-reusable-content)).
 
 ## Avoid multiple pages for a single topic {#avoid-multiple-pages-for-a-single-topic}
@@ -355,125 +382,7 @@ When writing docs about a new feature it helps to be able to use the new feature
 ```bash
 curl https://ClickHouse.com/ | sh
 ```
-
-### Run unreleased builds in Docker {#run-unreleased-builds-in-docker}
-
-```bash
-docker pull clickhouse/clickhouse-server:head
 ```
-
-```bash
-docker run -d \
-	--cap-add=SYS_NICE \
-    --cap-add=NET_ADMIN \
-    --cap-add=IPC_LOCK \
-	--name some-clickhouse-server \
-    --ulimit nofile=262144:262144 \
-    clickhouse/clickhouse-server:head
-```
-
-## Tests: A great source of details {#tests-a-great-source-of-details}
-
-If you want to run the tests from the `ClickHouse/tests` directory you either need a full release, a CI build, or to compile yourself. [How to get the binaries](https://clickhouse.com/docs/development/build/#you-dont-have-to-build-clickhouse)
-
-### Extracting build from RPMs {#extracting-build-from-rpms}
-
-If you want to extract the binary files from RPMs to use with the test `runner`, you can use `cpio`
-
-```bash
-mkdir 22.12
-mv cl*rpm 22.12/
-export CHDIR=`pwd`/22.12
-cd $CHDIR
-rpm2cpio ./clickhouse-server-22.12.1.1738.x86_64.rpm | \
-  cpio -id --no-absolute-filenames
-
-rpm2cpio ./clickhouse-client-22.12.1.1738.x86_64.rpm | \
-    cpio -id --no-absolute-filenames
-
-rpm2cpio ./clickhouse-common-static-22.12.1.1738.x86_64.rpm | \
-  cpio -id --no-absolute-filenames
-```
-
-### Modify the ClickHouse server config {#modify-the-clickhouse-server-config}
-
-If you are running the ClickHouse server process and not using the standard
-directories of `/etc/clickhouse-server` for configs and `/var` for the data directories
-then you will need to edit the config.
-
-Create an override dir:
-```bash
-mkdir $CHDIR/etc/clickhouse-server/config.d
-```
-
-This is a sample `$CHDIR/etc/clickhouse-server/config.d/dirs.xml`
-file that overrides the default config:
-
-```xml
-<clickhouse>
-    <logger>
-        <level>error</level>
-        <log>/home/droscigno/Downloads/22.12/usr/var/log/clickhouse-server/clickhouse-server.log</log>
-        <errorlog>/home/droscigno/Downloads/22.12/usr/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
-    </logger>
-    <path>/home/droscigno/Downloads/22.12/usr/var/lib/clickhouse/</path>
-    <tmp_path>/home/droscigno/Downloads/22.12/usr/var/lib/clickhouse/tmp/</tmp_path>
-    <user_files_path>/home/droscigno/Downloads/22.12/usr/var/lib/clickhouse/user_files/</user_files_path>
-    <user_directories>
-        <local_directory>
-            <path>/home/droscigno/Downloads/22.12/usr/var/lib/clickhouse/access/</path>
-        </local_directory>
-    </user_directories>
-    <format_schema_path>/home/droscigno/Downloads/22.12/usr/var/lib/clickhouse/format_schemas/</format_schema_path>
-</clickhouse>
-```
-### Run ClickHouse {#run-clickhouse}
-
-From $CHDIR/usr/bin:
-
-```bash
-./clickhouse-server -C ../../etc/clickhouse-server/config.xml
-```
-
-### Command to run tests: {#command-to-run-tests}
-
-These examples use env vars for the directory names:
-
-- $DOCS is the parent directory of the ClickHouse repo
-- $CHDIR is the parent directory of the extracted ClickHouse download files
-
-For SQL tests:
-
-The command to run the tests needs:
-
-- The $PATH to use, with $CHDIR/usr/bin added to the $PATH
-- The path to `clickhouse-test`
-- The name of the test to run
-
-For example, to run the test `01428_hash_set_nan_key`:
-```bash
-PATH=$CHDIR/usr/bin/:$PATH \
-  $DOCS/ClickHouse/tests/clickhouse-test \
-  01428_hash_set_nan_key
-```
-
-To see the queries that were run:
-```bash
-PATH=$CHDIR/usr/bin/$PATH \
-clickhouse-client -q \
-"select query from system.query_log ORDER BY event_time FORMAT Vertical"
-```
-
-For integration tests:
-```bash
-cd $DOCS/ClickHouse/tests/integration/
-./runner -n 5 \
-  --src-dir $DOCS/ClickHouse/src \
-  --binary $CHDIR/usr/bin/clickhouse-server \
-  --cleanup-containers \
-  --command bash
-```
-
 ## How to change code highlighting? {#how-to-change-code-highlighting}
 
 Code highlighting is based on the language chosen for your code blocks.  Specify the language when you start the code block:
@@ -495,7 +404,7 @@ If you need a language supported then open an issue in [ClickHouse-docs](https:/
 
 At the moment there’s no easy way to do just that, but you can consider:
 
-- To hit the “Watch” button on top of GitHub web interface to know as early as possible, even during pull request. Alternative to this is `#github-activity` channel of [public ClickHouse Slack](https://clickhouse.com/slack).
+- To hit the "Watch" button on top of GitHub web interface to know as early as possible, even during pull request. Alternative to this is `#github-activity` channel of [public ClickHouse Slack](https://clickhouse.com/slack).
 - Some search engines allow to subscribe on specific website changes via email and you can opt-in for that for https://clickhouse.com.
 
 ## Embedding videos {#embedding-videos}
@@ -534,46 +443,7 @@ And here is a Vimeo example from the Cloud landing page:
 
 ## Algolia {#algolia}
 
-The docs are crawled daily.  The configuration for the crawler is in the docs-private repo
-as the crawler config contains a key that is used to manage the Algolia account.  If you need to modify the crawler configuration log in to crawler.algolia.com and edit the configuration in the
-UI.  Once the updated configuration is tested, update the configuration stored in the docs-private repo.
-
-**Note**
-
-Comments added to the config get removed by the Algolia editor :( The best practice would be to add your comments to the PR used to update the config in docs-private.
-
-### Doc search tweaks {#doc-search-tweaks}
-We use [Docsearch](https://docsearch.algolia.com/) from Algolia; there is not much for you to do to have the docs you write added to the search.  Every Monday, the Algolia crawler updates our index.
-
-If a search is not finding the page that you expect, then have a look at the Markdown for that page.  For example, a search for `UDF` was returning a bunch of changelog entries, but not the page specifically for user defined functions.  This was the Markdown for the page:
-
-```md
----
-slug: /sql-reference/statements/create/function
-sidebar_position: 38
-sidebar_label: FUNCTION
----
-
-# CREATE FUNCTION
-
-Creates a user defined function from a lambda expression.
-```
-
-And this was the change to improve the search results (add the expected search terms to the H1 heading):
-
-```md
----
-slug: /sql-reference/statements/create/function
-sidebar_position: 38
-sidebar_label: FUNCTION
----
-
-# CREATE FUNCTION &mdash; user defined function (UDF)
-
-Creates a user defined function from a lambda expression.
-```
-
-Note: The docs are crawled each morning.  If you make a change and want the docs re-crawled sooner, open an issue in clickhouse-docs.
+The docs are crawled daily. This is achieved by parsing the markdown and inserting it into Algolia. We maintain a list of authoritative search results to measure relevancy. See [Search README](../scripts/search/README.md) for further details.
 
 ## Tools that you might like {#tools-that-you-might-like}
 

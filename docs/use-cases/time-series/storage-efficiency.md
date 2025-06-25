@@ -4,6 +4,7 @@ sidebar_label: 'Storage efficiency'
 description: 'Improving time-series storage efficiency'
 slug: /use-cases/time-series/storage-efficiency
 keywords: ['time-series']
+show_related_blogs: true
 ---
 
 # Time-Series storage efficiency
@@ -14,7 +15,7 @@ This section demonstrates practical techniques to reduce storage requirements wh
 ## Type optimization {#time-series-type-optimization}
 
 The general approach to optimizing storage efficiency is using optimal data types. 
-Let’s take the `project` and `subproject` columns. These columns are of type String, but have a relatively small amount of unique values:
+Let's take the `project` and `subproject` columns. These columns are of type String, but have a relatively small amount of unique values:
 
 ```sql
 SELECT
@@ -38,7 +39,7 @@ MODIFY COLUMN `project` LowCardinality(String),
 MODIFY COLUMN `subproject` LowCardinality(String)
 ```
 
-We’ve also used UInt64 type for the hits column, which takes 8 bytes, but has a relatively small max value:
+We've also used UInt64 type for the hits column, which takes 8 bytes, but has a relatively small max value:
 
 ```sql
 SELECT max(hits)
@@ -70,7 +71,7 @@ ALTER TABLE wikistat
 MODIFY COLUMN `time` CODEC(Delta, ZSTD);
 ```
 
-We’ve used the Delta codec for time column, which is a good fit for time series data. 
+We've used the Delta codec for time column, which is a good fit for time series data. 
 
 The right ordering key can also save disk space. 
 Since we usually want to filter by a path, we will add `path` to the sorting key.

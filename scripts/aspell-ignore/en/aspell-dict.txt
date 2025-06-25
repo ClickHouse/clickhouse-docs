@@ -190,6 +190,7 @@ ClickPipe
 ClickPipes
 ClickPipes's
 ClickPy
+ClickStack
 ClickVisual
 ClickableSquare
 CloudAvailableBadge
@@ -246,6 +247,7 @@ DDLs
 DECRYPT
 Decrypter
 DELETEs
+Deno
 DESC
 DIEs
 DOGEFI
@@ -255,6 +257,7 @@ Damerau
 DataFrame
 DataFrames
 DataGrip
+DataLakeCatalog
 DataLens
 DataPacket
 DataTime
@@ -268,6 +271,7 @@ DatabaseOnDiskThreadsActive
 DatabaseOrdinaryThreads
 DatabaseOrdinaryThreadsActive
 Datadog
+Databricks
 Datasource
 Datasources
 DateTime
@@ -293,6 +297,7 @@ DeprecatedBadge
 DestroyAggregatesThreads
 DestroyAggregatesThreadsActive
 DictCacheRequests
+DigiCert
 DiskAvailable
 DiskObjectStorage
 DiskObjectStorageAsyncThreads
@@ -314,6 +319,7 @@ Draxlr
 Dresseler
 Durre
 ECMA
+EDOT
 EMQX
 ETag
 EachRow
@@ -347,8 +353,10 @@ FFFFFFFF
 FIPS
 FOSDEM
 FQDN
+Fabi
 Failover
 FarmHash
+Filebeat
 FileCluster
 FileLog
 FilesystemCacheBytes
@@ -379,6 +387,7 @@ Fuzzers
 GDPR
 GHCN
 GTID
+GTIDs
 GTest
 GUID
 Gb
@@ -412,6 +421,7 @@ Grafana
 GraphQL
 GraphiteMergeTree
 Greenwald
+Gunicorn
 HANA
 HDDs
 HHMM
@@ -440,6 +450,8 @@ Hostname
 HouseOps
 Hudi
 HudiCluster
+HyperDX
+HyperDX's
 HyperLogLog
 Hypertable
 Hypot
@@ -632,6 +644,7 @@ LowCardinality
 LpDistance
 LpNorm
 LpNormalize
+Lucene
 Luebbe
 Luzmo
 Lyft
@@ -659,6 +672,7 @@ MarkCacheBytes
 MarkCacheFiles
 MarksLoaderThreads
 MarksLoaderThreadsActive
+Mastercard
 MaterializedMySQL
 MaterializedPostgreSQL
 MaterializedView
@@ -700,6 +714,7 @@ MessageBird
 MessagePack
 Metabase
 Metastore
+Metricbeat
 MetroHash
 MiB
 Milli
@@ -748,6 +763,7 @@ Namenode
 NamesAndTypesList
 Nano
 Nesterov
+NestJS
 NetFlow
 NetworkReceive
 NetworkReceiveBytes
@@ -839,6 +855,7 @@ Ok
 Omni
 OnTime
 Ookla
+OpAMP
 OpenAI
 OpenAPI
 OpenCelliD
@@ -867,6 +884,7 @@ PROCESSLIST
 PROXYv
 PRQL
 PSUN
+Packetbeat
 PagerDuty
 ParallelFormattingOutputFormatThreads
 ParallelFormattingOutputFormatThreadsActive
@@ -1045,6 +1063,7 @@ SCIM
 SDKs
 SELECTs
 SERIALIZABLE
+SIEM
 SIGTERM
 SIMD
 SLAs
@@ -1098,6 +1117,7 @@ Simhash
 SimpleAggregateFunction
 SimpleState
 SipHash
+Smartbook
 Smirnov's
 Smirnov'test
 Sonatype
@@ -1283,6 +1303,7 @@ Vadim
 Valgrind
 Vectorization
 Vectorized
+Vercel
 VersionBadge
 VersionInteger
 VersionedCollapsingMergeTree
@@ -1293,6 +1314,7 @@ Vose
 WALs
 WSFG
 WarpStream
+Websocket
 Welch's
 Werror
 Wether
@@ -1368,9 +1390,12 @@ aggregatio
 aggretate
 aggthrow
 aiochclient
+allowlisted
+allowlisting
 alloc
 allocator
 alphaTokens
+altair
 amplab
 analysisOfVariance
 analytics
@@ -1474,6 +1499,7 @@ atomicity
 auth
 authenticator
 authenticators
+autocomplete
 autocompletion
 autodetect
 autodetected
@@ -1575,6 +1601,7 @@ bugfix
 buildId
 buildable
 builtins
+bundler
 burstable
 byteHammingDistance
 byteSize
@@ -1686,6 +1713,7 @@ const
 contrib
 convertCharset
 coroutines
+correlatable
 corrMatrix
 corrStable
 corrmatrix
@@ -1765,12 +1793,14 @@ dashboarding
 datacenter
 datacenters
 datafiles
+dataframe
 datagrip
 datalens
 datanode
 dataset
 datasets
 datasource
+datasources
 datatypes
 dateName
 dateTime
@@ -1997,6 +2027,7 @@ fromModifiedJulianDayOrNull
 fromUTCTimestamp
 fromUnixTimestamp
 fromUnixTimestampInJodaSyntax
+frontend
 fsync
 func
 fuzzBits
@@ -2174,6 +2205,7 @@ initcapUTF
 initialQueryID
 initializeAggregation
 injective
+inlined
 innogames
 inodes
 instantiation
@@ -2270,6 +2302,7 @@ kurtpop
 kurtsamp
 lagInFrame
 laion
+lakehouse
 lang
 laravel
 largestTriangleThreeBuckets
@@ -2309,6 +2342,7 @@ libpq
 libpqxx
 librdkafka
 libs
+lifecycle
 libunwind
 libuv
 libvirt
@@ -2372,6 +2406,8 @@ mappedfile
 marginBottom
 marginLeft
 mariadb
+marimo
+marimo's
 matcher
 materializations
 materializedview
@@ -2398,6 +2434,7 @@ metrica
 metroHash
 mfedotov
 mflix
+microservice
 microservices
 middleware
 minMap
@@ -2412,6 +2449,7 @@ minmap
 minmax
 mins
 misconfiguration
+misconfigurations
 misconfigured
 mispredictions
 mlock
@@ -2419,6 +2457,7 @@ mlockall
 mmap
 mmapped
 modularization
+modularity
 moduli
 moduloOrZero
 mongoc
@@ -2644,6 +2683,7 @@ polygonsWithinSpherical
 popcnt
 portRFC
 porthttps
+positionally
 positionCaseInsensitive
 positionCaseInsensitiveUTF
 positionUTF
@@ -2660,6 +2700,7 @@ prebuilt
 precompiled
 precompute
 precomputed
+precomputing
 preconfigured
 preemptable
 preferServerCiphers
@@ -2753,6 +2794,7 @@ quantiletdigestweighted
 quantiletiming
 quantiletimingweighted
 quartile
+queryable
 queryID
 queryString
 queryStringAndFragment
@@ -2869,6 +2911,8 @@ roadmap
 rocksdb
 rollout
 rollup
+rollups
+Rollups
 roundAge
 roundBankers
 roundDown
@@ -3135,6 +3179,7 @@ throughputs
 throwIf
 throwif
 timeDiff
+timespan
 timeSeriesData
 timeSeriesMetrics
 timeSeriesTags
@@ -3266,6 +3311,7 @@ transactionally
 translateUTF
 translocality
 transpilation
+transpiling
 trie
 trimBoth
 trimLeft
@@ -3312,6 +3358,7 @@ unbin
 uncomment
 undelete
 undeleting
+underutilize
 undrop
 undropping
 unencoded
@@ -3376,6 +3423,7 @@ userver
 utils
 uuid
 uuidv
+uvicorn
 vCPU
 vCPUs
 varPop
@@ -3391,6 +3439,7 @@ varpopstable
 varsamp
 varsampstable
 vectorized
+vectorization
 vectorscan
 vendoring
 verificationDepth
@@ -3411,6 +3460,7 @@ vruntime
 walkthrough
 wchc
 wchs
+webhook
 webpage
 webserver
 weekyear
@@ -3422,6 +3472,7 @@ whitespace
 whitespaces
 wikistat
 windowFunnel
+winston
 wordShingleMinHash
 wordShingleMinHashArg
 wordShingleMinHashArgCaseInsensitive
@@ -3472,3 +3523,38 @@ VersionedCollapsing
 subpath
 AICPA
 restartable
+sumArray
+sumForEach
+argMaxIf
+groupArrayResample
+downsampled
+uniqArrayIf
+minSimpleState
+sumArray
+avgMerge
+avgMergeState
+timeslot
+timeslots
+groupArrayDistinct
+avgMap
+avgState
+avgIf
+quantilesTiming
+quantilesTimingIf
+quantilesTimingArrayIf
+downvotes
+sumSimpleState
+upvotes
+uniqArray
+avgResample
+countResample
+avgMerge
+avgState
+argMinIf
+minSimpleState
+maxSimpleState
+TimescaleDB
+columnstore
+TiDB
+resync
+resynchronization

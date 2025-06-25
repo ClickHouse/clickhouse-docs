@@ -1,34 +1,37 @@
 ---
+description: 'Документация для оператора `EXISTS`'
 slug: /sql-reference/operators/exists
+title: 'EXISTS'
 ---
+
 
 # EXISTS
 
-Оператор `EXISTS` проверяет, сколько записей находится в результате подзапроса. Если он пустой, то оператор возвращает `0`. В противном случае он возвращает `1`.
+Оператор `EXISTS` проверяет, сколько записей находится в результате подзапроса. Если он пуст, оператор возвращает `0`. В противном случае он возвращает `1`.
 
-`EXISTS` также может быть использован в условии [WHERE](../../sql-reference/statements/select/where.md).
+`EXISTS` также может быть использован в [WHERE](../../sql-reference/statements/select/where.md) условии.
 
 :::tip    
-Ссылки на таблицы и колонки основного запроса в подзапросе не поддерживаются.
+Ссылки на таблицы и колонки главного запроса не поддерживаются в подзапросе.
 :::
 
 **Синтаксис**
 
-``` sql
+```sql
 EXISTS(subquery)
 ```
 
 **Пример**
 
-Запрос, проверяющий существование значений в подзапросе:
+Запрос, проверяющий наличие значений в подзапросе:
 
-``` sql
+```sql
 SELECT EXISTS(SELECT * FROM numbers(10) WHERE number > 8), EXISTS(SELECT * FROM numbers(10) WHERE number > 11)
 ```
 
 Результат:
 
-``` text
+```text
 ┌─in(1, _subquery1)─┬─in(1, _subquery2)─┐
 │                 1 │                 0 │
 └───────────────────┴───────────────────┘
@@ -36,13 +39,13 @@ SELECT EXISTS(SELECT * FROM numbers(10) WHERE number > 8), EXISTS(SELECT * FROM 
 
 Запрос с подзапросом, возвращающим несколько строк:
 
-``` sql
+```sql
 SELECT count() FROM numbers(10) WHERE EXISTS(SELECT number FROM numbers(10) WHERE number > 8);
 ```
 
 Результат:
 
-``` text
+```text
 ┌─count()─┐
 │      10 │
 └─────────┘
@@ -50,13 +53,13 @@ SELECT count() FROM numbers(10) WHERE EXISTS(SELECT number FROM numbers(10) WHER
 
 Запрос с подзапросом, который возвращает пустой результат:
 
-``` sql
+```sql
 SELECT count() FROM numbers(10) WHERE EXISTS(SELECT number FROM numbers(10) WHERE number > 11);
 ```
 
 Результат:
 
-``` text
+```text
 ┌─count()─┐
 │       0 │
 └─────────┘

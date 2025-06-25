@@ -1,26 +1,29 @@
 ---
-description: 'Системная таблица, содержащая записи логирования.'
+description: 'Системная таблица, содержащая записи логов.'
+keywords: ['системная таблица', 'text_log']
 slug: /operations/system-tables/text_log
 title: 'system.text_log'
-keywords: ['system table', 'text_log']
 ---
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+
+# system.text_log
+
 <SystemTableCloud/>
 
-Содержит записи логирования. Уровень логирования, который попадает в эту таблицу, может быть ограничен серверной настройкой `text_log.level`.
+Содержит записи логов. Уровень логирования, который поступает в эту таблицу, можно ограничить настройкой сервера `text_log.level`.
 
-Колонки:
+Столбцы:
 
-- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, выполняющего запрос.
+- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, исполняющего запрос.
 - `event_date` (Date) — Дата записи.
 - `event_time` (DateTime) — Время записи.
 - `event_time_microseconds` (DateTime64) — Время записи с точностью до микросекунд.
 - `microseconds` (UInt32) — Микросекунды записи.
-- `thread_name` (String) — Имя потока, из которого производилось логирование.
+- `thread_name` (String) — Имя потока, из которого выполнялось логирование.
 - `thread_id` (UInt64) — ID потока ОС.
-- `level` (`Enum8`) — Уровень записи. Возможно следующие значения:
+- `level` (`Enum8`) — Уровень записи. Возможные значения:
     - `1` или `'Fatal'`.
     - `2` или `'Critical'`.
     - `3` или `'Error'`.
@@ -30,12 +33,12 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
     - `7` или `'Debug'`.
     - `8` или `'Trace'`.
 - `query_id` (String) — ID запроса.
-- `logger_name` (LowCardinality(String)) — Имя логгера (т.е. `DDLWorker`).
-- `message` (String) — Сообщение.
+- `logger_name` (LowCardinality(String)) — Имя логгера (например, `DDLWorker`).
+- `message` (String) — Собственно сообщение.
 - `revision` (UInt32) — Ревизия ClickHouse.
 - `source_file` (LowCardinality(String)) — Исходный файл, из которого производилось логирование.
 - `source_line` (UInt64) — Исходная строка, из которой производилось логирование.
-- `message_format_string` (LowCardinality(String)) — Строка формата, использованная для форматирования сообщения.
+- `message_format_string` (LowCardinality(String)) — Форматная строка, использованная для форматирования сообщения.
 - `value1` (String) - Аргумент 1, использованный для форматирования сообщения.
 - `value2` (String) - Аргумент 2, использованный для форматирования сообщения.
 - `value3` (String) - Аргумент 3, использованный для форматирования сообщения.
@@ -49,11 +52,11 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 **Пример**
 
-``` sql
+```sql
 SELECT * FROM system.text_log LIMIT 1 \G
 ```
 
-``` text
+```text
 Row 1:
 ──────
 hostname:                clickhouse.eu-central1.internal

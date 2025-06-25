@@ -1,18 +1,19 @@
 ---
-slug: /operations/performance-test
+description: 'Руководство по тестированию и оценке производительности аппаратного обеспечения с помощью ClickHouse'
+sidebar_label: 'Тестирование оборудования'
 sidebar_position: 54
-sidebar_label: Тестирование оборудования
-title: "Как протестировать ваше оборудование с помощью ClickHouse"
+slug: /operations/performance-test
+title: 'Как протестировать ваше оборудование с ClickHouse'
 ---
 
 import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
-Вы можете провести базовый тест производительности ClickHouse на любом сервере без установки пакетов ClickHouse.
+Вы можете запустить базовый тест производительности ClickHouse на любом сервере без установки пакетов ClickHouse.
 
 
-## Автоматизированный запуск {#automated-run}
+## Автоматический запуск {#automated-run}
 
 Вы можете запустить тест с помощью одного скрипта.
 
@@ -29,4 +30,4 @@ chmod a+x ./hardware.sh
 
 3. Скопируйте вывод и отправьте его на feedback@clickhouse.com
 
-Все результаты опубликованы здесь: https://clickhouse.com/benchmark/hardware/
+Все результаты публикуются здесь: https://clickhouse.com/benchmark/hardware/

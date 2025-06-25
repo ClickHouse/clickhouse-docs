@@ -27,12 +27,107 @@ import kafka_config from '@site/static/images/cloud/reference/june-13-kafka-conf
 import fast_releases from '@site/static/images/cloud/reference/june-13-fast-releases.png';
 import share_queries from '@site/static/images/cloud/reference/may-30-share-queries.png';
 import query_endpoints from '@site/static/images/cloud/reference/may-17-query-endpoints.png';
+import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.png';
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/cloud/reference/cloud-compatibility.md) page.
+## June 13, 2025 {#june-13-2025}
+
+- We're excited to announce that ClickHouse Cloud Dashboards are now generally available. Dashboards allow users to visualize queries on dashboards, interact with data via filters and query parameters, and manage sharing. 
+
+- API key IP filters: we are introducing an additional layer of protection for your interactions with ClickHouse Cloud. When generating an API key, you may setup an IP allow list to limit where the API key may be used.  Please refer to the [documentation](https://clickhouse.com/docs/cloud/security/setting-ip-filters) for details. 
+
+## May 30, 2025 {#may-30-2025}
+
+- We're excited to announce general availability of **ClickPipes for Postgres CDC**
+  in ClickHouse Cloud. With just a few clicks, you can now replicate your Postgres
+  databases and unlock blazing-fast, real-time analytics. The connector delivers 
+  faster data synchronization, latency as low as a few seconds, automatic schema changes,
+  fully secure connectivity, and more. Refer to the 
+  [blog](https://clickhouse.com/blog/postgres-cdc-connector-clickpipes-ga) for 
+  more information. To get started, refer to the instructions [here](https://clickhouse.com/docs/integrations/clickpipes/postgres).
+
+- Introduced new improvements to the SQL console dashboards:
+  - Sharing: You can share your dashboard with your team members. Four levels of access are supported, that can be adjusted both globally and on a per-user basis:
+    - _Write access_: Add/edit visualizations, refresh settings, interact with dashboards via filters.
+    - _Owner_: Share a dashboard, delete a dashboard, and all other permissions of a user with "write access".
+    - _Read-only access_: View and interact with dashboard via filters
+    - _No access_: Cannot view a dashboard
+  - For existing dashboards that have already been created, Organization Administrators can assign existing dashboards to themselves as owners.
+  - You can now add a table or chart from the SQL console to a dashboard from the query view.
+
+<Image img={dashboards} size="md" alt="Dashboards improvements" border />
+
+
+- We are enlisting preview participants for [Distributed cache](https://clickhouse.com/cloud/distributed-cache-waitlist) 
+  for AWS and GCP. Read more in the [blog](https://clickhouse.com/blog/building-a-distributed-cache-for-s3).
+
+## May 16, 2025 {#may-16-2025}
+
+- Introduced the Resource Utilization Dashboard which provides a view of 
+  resources being used by a service in ClickHouse Cloud. The following metrics 
+  are scraped from system tables, and displayed on this dashboard:
+  * Memory & CPU: Graphs for `CGroupMemoryTotal` (Allocated Memory), `CGroupMaxCPU` (allocated CPU),
+    `MemoryResident` (memory used), and `ProfileEvent_OSCPUVirtualTimeMicroseconds` (CPU used)
+  * Data Transfer: Graphs showing data ingress and egress from ClickHouse Cloud. Learn more [here](/cloud/manage/network-data-transfer).
+- We're excited to announce the launch of our new ClickHouse Cloud Prometheus/Grafana mix-in, 
+  built to simplify monitoring for your ClickHouse Cloud services.
+  This mix-in uses our Prometheus-compatible API endpoint to seamlessly integrate
+  ClickHouse metrics into your existing Prometheus and Grafana setup. It includes
+  a pre-configured dashboard that gives you real-time visibility into the health 
+  and performance of your services. Refer to the launch [blog](https://clickhouse.com/blog/monitor-with-new-prometheus-grafana-mix-in) to read more.
+
+## April 18, 2025 {#april-18-2025}
+
+- Introduced a new **Member** organization level role and two new service level 
+  roles: **Service Admin** and **Service Read Only**.
+  **Member** is an organization level role that is assigned to SAML SSO users by 
+  default and provides only sign-in and profile update capabilities. **Service Admin** 
+  and **Service Read Only** roles for one or more services can be assigned to users 
+  with **Member**, **Developer**, or **Billing Admin** roles. For more information 
+  see ["Access control in ClickHouse Cloud"](https://clickhouse.com/docs/cloud/security/cloud-access-management/overview)
+- ClickHouse Cloud now offers **HIPAA** and **PCI** services in the following regions
+  for **Enterprise** customers: AWS eu-central-1, AWS eu-west-2, AWS us-east-2.
+- Introduced **user facing notifications for ClickPipes**. This feature sends 
+  automatic alerts for ClickPipes failures via email, ClickHouse Cloud UI, and 
+  Slack. Notifications via email and UI are enabled by default and can be 
+  configured per pipe. For **Postgres CDC ClickPipes**, alerts also cover 
+  replication slot threshold (configurable in the **Settings** tab), specific error
+  types, and self-serve steps to resolve failures.
+- **MySQL CDC private preview** is now open. This lets customers replicate MySQL 
+  databases to ClickHouse Cloud in a few clicks, enabling fast analytics and 
+  removing the need for external ETL tools. The connector supports both continuous
+  replication and one-time migrations, whether MySQL is on the cloud (RDS, 
+  Aurora, Cloud SQL, Azure, etc.) or on-premises. You can sign up to the private
+  preview by [following this link](https://clickhouse.com/cloud/clickpipes/mysql-cdc-connector).
+- Introduced **AWS PrivateLink for ClickPipes**. You can use AWS PrivateLink to 
+  establish secure connectivity between VPCs, AWS services, your on-premises 
+  systems, and ClickHouse Cloud. This can be done without exposing traffic to 
+  the public internet while moving data from sources like Postgres, MySQL, and 
+  MSK on AWS. It also supports cross-region access through VPC service endpoints.
+  PrivateLink connectivity set-up is now [fully self-serve](https://clickhouse.com/docs/integrations/clickpipes/aws-privatelink)
+  through ClickPipes.
+
+## April 4, 2025 {#april-4-2025}
+
+- Slack notifications for ClickHouse Cloud: ClickHouse Cloud now supports Slack notifications for billing, scaling, and ClickPipes events, in addition to in-console and email notifications. These notifications are sent via the ClickHouse Cloud Slack application. Organization admins can configure these notifications via the notification center by specifying slack channels to which notifications should be sent.
+- Users running Production and Development services will now see ClickPipes and data transfer usage price on their bills. Please refer to the [announcement](/cloud/manage/jan-2025-faq/pricing-dimensions) from January 2025 for more details. 
+  
+## March 21, 2025 {#march-21-2025}
+
+- Cross-region Private Link connectivity on AWS is now in Beta. Please refer to
+  ClickHouse Cloud private link [docs](/manage/security/aws-privatelink) for 
+  details of how to set up and list of supported regions.
+- The maximum replica size available for services on AWS is now set to 236 GiB RAM. 
+  This allows for efficient utilization, while ensuring we have resources 
+  allocated to background processes.
+
 ## March 7, 2025 {#march-7-2025}
 
-- New `UsageCost` API endpoint: The API specification now supports a new endpoint for retrieving usage information. This is an organization endpoint and usage costs can be queried for a maximum of 31 days. The metrics that can be retrieved include Storage, Compute, Data Transfer and ClickPipes. Please refer to the [documentation](https://clickhouse.com/docs/cloud/manage/api/usageCost-api-reference) for details.
-
+- New `UsageCost` API endpoint: The API specification now supports a new endpoint
+  for retrieving usage information. This is an organization endpoint and usage 
+  costs can be queried for a maximum of 31 days. The metrics that can be 
+  retrieved include Storage, Compute, Data Transfer and ClickPipes. Please refer
+  to the [documentation](https://clickhouse.com/docs/cloud/manage/api/usageCost-api-reference) for details.
 - Terraform provider [v2.1.0](https://registry.terraform.io/providers/ClickHouse/clickhouse/2.1.0/docs/resources/service#nestedatt--endpoints_configuration) release supports enabling the MySQL endpoint.
 
 ## February 21, 2025 {#february-21-2025}
@@ -51,8 +146,7 @@ within a secure customer environment.
 
 ### Postgres CDC connector for ClickPipes {#postgres-cdc-connector-for-clickpipes}
 
-Postgres CDC connector for ClickPipes is now in public beta. This feature allows
-users to seamlessly replicate their Postgres databases to ClickHouse Cloud.
+Postgres CDC connector for ClickPipes allows users to seamlessly replicate their Postgres databases to ClickHouse Cloud.
 
 - To get started, refer to the [documentation](https://clickhouse.com/docs/integrations/clickpipes/postgres) for ClickPipes Postgres CDC connector.
 - For more information on customer use cases and features, please refer to the [landing page](https://clickhouse.com/cloud/clickpipes/postgres-cdc-connector) and the [launch blog](https://clickhouse.com/blog/postgres-cdc-connector-clickpipes-public-beta).
@@ -185,7 +279,7 @@ Org Admins can now add more email addresses to a specific notification as additi
 
 Bring Your Own Cloud for AWS is now available in Beta. This deployment model allows you to deploy and run ClickHouse Cloud in your own AWS account. We support deployments in 11+ AWS regions, with more coming soon. Please [contact support](https://clickhouse.com/support/program) for access. Note that this deployment is reserved for large-scale deployments.
 
-### Postgres Change-Data-Capture (CDC) Connector in ClickPipes (Public Beta) {#postgres-change-data-capture-cdc-connector-in-clickpipes-public-beta}
+### Postgres Change-Data-Capture (CDC) Connector in ClickPipes {#postgres-change-data-capture-cdc-connector-in-clickpipes}
 
 This turnkey integration enables customers to replicate their Postgres databases to ClickHouse Cloud in just a few clicks and leverage ClickHouse for blazing-fast analytics. You can use this connector for both continuous replication and one-time migrations from Postgres.
 

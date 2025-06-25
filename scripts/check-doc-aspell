@@ -1,11 +1,23 @@
 #!/usr/bin/env bash
 
+echo "Checking spelling using aspell"
+
 # Only support OSX and Linux for now
 OS=$(uname | tr '[:upper:]' '[:lower:]')
 if [[ "$OS" != "darwin" && "$OS" != "linux" ]]; then
     echo "Unsupported OS: $OS"
     exit 1
 fi
+
+# Check if aspell is installed
+if ! command -v aspell &> /dev/null; then
+    echo "Error: aspell is not installed. Please install it using your package manager:"
+    echo "  macOS: brew install aspell"
+    echo "  Linux (Debian/Ubuntu): sudo apt install aspell"
+    echo "  Linux (Fedora/RHEL): sudo dnf install aspell"
+    exit 1
+fi
+
 
 # Perform spell checking on the docs
 if [[ ${1:-} == "--help" ]] || [[ ${1:-} == "-h" ]]; then
@@ -55,17 +67,42 @@ get_ignore_words_for_file() {
 # Use this to filter out lines we don't wanna consider in spell-check - slugs, imports, and img src JSX elements
 preprocess_file() {
     local file=$1
-    sed -E 's/\{#[^}]*\}//g' "$file" | grep -Ev '^(slug:|import [[:alnum:]_, {}*]+ from .+;?|<img src=\{[^}]+\})'
+
+    # Remove YAML frontmatter (everything between the first --- and second --- lines)
+    # Then apply other existing filters
+    awk '
+    BEGIN {
+        in_frontmatter = 0
+        frontmatter_ended = 0
+    }
+    # If first line is ---, we are starting frontmatter
+    /^---$/ && NR == 1 {
+        in_frontmatter = 1
+        next
+    }
+    # If we encounter --- while in frontmatter, end it
+    /^---$/ && in_frontmatter {
+        in_frontmatter = 0
+        frontmatter_ended = 1
+        next
+    }
+    # Print lines only if not in frontmatter
+    !in_frontmatter { print }
+    ' "$file" \
+        | sed -E 's/\{#[^}]*\}//g' \
+        | sed -E 's/<[A-Za-z0-9_]+svg[^>]*\/?>//g' \
+        | sed -E 's/<Image[^>]*\/?>//g' \
+        | grep -Ev '(^[[:space:]]*(slug:|<img src=\{[^}]+\})|^import .* from .*)'
 }
+
 # List of files to ignore
 IGNORE_LIST=(
     "${ROOT_PATH}/docs/about-us/adopters.md"
     "${ROOT_PATH}/docs/integrations/data-visualization.md"
     "${ROOT_PATH}/docs/integrations/index.mdx"
     "${ROOT_PATH}/docs/whats-new/security-changelog.md"
-    "${ROOT_PATH}/docs/fast-release-24-2.md"
+    "${ROOT_PATH}/docs/cloud/changelogs/*"
     "${ROOT_PATH}/docs/whats-new/changelog/*" # ignore all changelogs
-    "${ROOT_PATH}/docs/cloud/changelogs/changelog-24*"
     "${ROOT_PATH}/docs/sql-reference/*" # we ignore all files from ClickHouse/ClickHouse
     "${ROOT_PATH}/docs/engines/*"
     "${ROOT_PATH}/docs/getting-started/*"

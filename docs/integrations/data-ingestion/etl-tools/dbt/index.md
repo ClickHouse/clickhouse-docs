@@ -31,7 +31,7 @@ Dbt is compatible with ClickHouse through a [ClickHouse-supported plugin](https:
 
 ## Concepts {#concepts}
 
-dbt introduces the concept of a model. This is defined as a SQL statement, potentially joining many tables. A model can be "materialized" in a number of ways. A materialization represents a build strategy for the model’s select query. The code behind a materialization is boilerplate SQL that wraps your SELECT query in a statement in order to create a new or update an existing relation.
+dbt introduces the concept of a model. This is defined as a SQL statement, potentially joining many tables. A model can be "materialized" in a number of ways. A materialization represents a build strategy for the model's select query. The code behind a materialization is boilerplate SQL that wraps your SELECT query in a statement in order to create a new or update an existing relation.
 
 dbt provides 4 types of materialization:
 
@@ -40,7 +40,7 @@ dbt provides 4 types of materialization:
 * **ephemeral**: The model is not directly built in the database but is instead pulled into dependent models as common table expressions.
 * **incremental**: The model is initially materialized as a table, and in subsequent runs, dbt inserts new rows and updates changed rows in the table.
 
-Additional syntax and clauses define how these models should be updated if their underlying data changes. dbt generally recommends starting with the view materialization until performance becomes a concern. The table materialization provides a query time performance improvement by capturing the results of the model’s query as a table at the expense of increased storage. The incremental approach builds on this further to allow subsequent updates to the underlying data to be captured in the target table.
+Additional syntax and clauses define how these models should be updated if their underlying data changes. dbt generally recommends starting with the view materialization until performance becomes a concern. The table materialization provides a query time performance improvement by capturing the results of the model's query as a table at the expense of increased storage. The incremental approach builds on this further to allow subsequent updates to the underlying data to be captured in the target table.
 
 The[ current plugin](https://github.com/silentsokolov/dbt-clickhouse) for ClickHouse supports the **view**, **table,**, **ephemeral** and **incremental** materializations. The plugin also supports dbt[ snapshots](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy) and [seeds](https://docs.getdbt.com/docs/building-a-dbt-project/seeds) which we explore in this guide.
 
@@ -515,7 +515,7 @@ In the previous example, our model was materialized as a view. While this might 
 
 The previous example created a table to materialize the model. This table will be reconstructed for each dbt execution. This may be infeasible and extremely costly for larger result sets or complex transformations. To address this challenge and reduce the build time, dbt offers Incremental materializations. This allows dbt to insert or update records into a table since the last execution, making it appropriate for event-style data. Under the hood a temporary table is created with all the updated records and then all the untouched records as well as the updated records are inserted into a new target table. This results in similar [limitations](#limitations) for large result sets as for the table model.
 
-To overcome these limitations for large sets, the plugin supports ‘inserts_only‘ mode, where all the updates are inserted into the target table without creating a temporary table (more about it below).
+To overcome these limitations for large sets, the plugin supports 'inserts_only' mode, where all the updates are inserted into the target table without creating a temporary table (more about it below).
 
 To illustrate this example, we will add the actor "Clicky McClickHouse", who will appear in an incredible 910 movies - ensuring he has appeared in more films than even [Mel Blanc](https://en.wikipedia.org/wiki/Mel_Blanc).
 
@@ -689,7 +689,7 @@ To illustrate this example, we will add the actor "Clicky McClickHouse", who wil
 
 ### Internals {#internals}
 
-We can identify the statements executed to achieve the above incremental update by querying ClickHouse’s query log.
+We can identify the statements executed to achieve the above incremental update by querying ClickHouse's query log.
 
 ```sql
 SELECT event_time, query  FROM system.query_log WHERE type='QueryStart' AND query LIKE '%dbt%'
@@ -713,7 +713,7 @@ This strategy may encounter challenges on very large models. For further details
 ### Append Strategy (inserts-only mode) {#append-strategy-inserts-only-mode}
 
 To overcome the limitations of large datasets in incremental models, the plugin uses the dbt configuration parameter `incremental_strategy`. This can be set to the value `append`. When set, updated rows are inserted directly into the target table (a.k.a `imdb_dbt.actor_summary`) and no temporary table is created.
-Note: Append only mode requires your data to be immutable or for duplicates to be acceptable. If you want an incremental table model that supports altered rows don’t use this mode!
+Note: Append only mode requires your data to be immutable or for duplicates to be acceptable. If you want an incremental table model that supports altered rows don't use this mode!
 
 To illustrate this mode, we will add another new actor and re-execute dbt run with `incremental_strategy='append'`.
 
@@ -723,7 +723,7 @@ To illustrate this mode, we will add another new actor and re-execute dbt run wi
    {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental', unique_key='id', incremental_strategy='append') }}
    ```
 
-2. Let’s add another famous actor - Danny DeBito
+2. Let's add another famous actor - Danny DeBito
 
    ```sql
    INSERT INTO imdb.actors VALUES (845467, 'Danny', 'DeBito', 'M');
@@ -813,10 +813,9 @@ In this run, only the new rows are added straight to `imdb_dbt.actor_summary` ta
 
 ### Delete+Insert mode (Experimental) {#deleteinsert-mode-experimental}
 
-Historically ClickHouse has had only limited support for updates and deletes, in the form of asynchronous [Mutations](/sql-reference/statements/alter/index.md).  These can be extremely IO-intensive and should generally be avoided.
+Historically ClickHouse has had only limited support for updates and deletes, in the form of asynchronous [Mutations](/sql-reference/statements/alter/index.md). These can be extremely IO-intensive and should generally be avoided.
 
-ClickHouse 22.8 introduced [Lightweight deletes](/sql-reference/statements/delete.md). These are currently experimental but offer a more performant means of deleting data.
-
+ClickHouse 22.8 introduced [lightweight deletes](/sql-reference/statements/delete.md) and ClickHouse 25.7 introduced [lightweight updates](/guides/developer/lightweight-update). With the introduction of these features, modifications from single update queries, even when being materialized asynchronously, will occur instantly from the user's perspective.
 
 This mode can be configured for a model via the `incremental_strategy` parameter i.e.
 
@@ -1101,7 +1100,3 @@ Additional configuration for the plugin is described [here](https://github.com/s
 ## Fivetran {#fivetran}
 
 The `dbt-clickhouse` connector is also available for use in [Fivetran transformations](https://fivetran.com/docs/transformations/dbt), allowing seamless integration and transformation capabilities directly within the Fivetran platform using `dbt`.
-
-## Related Content {#related-content}
-
-- Blog & Webinar: [ClickHouse and dbt - A Gift from the Community](https://clickhouse.com/blog/clickhouse-dbt-project-introduction-and-webinar)

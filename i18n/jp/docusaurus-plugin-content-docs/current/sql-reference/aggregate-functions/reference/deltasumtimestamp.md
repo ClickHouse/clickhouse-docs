@@ -1,32 +1,35 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/deltasumtimestamp
-sidebar_position: 130
-title: "deltaSumTimestamp"
-description: "連続する行の差を追加します。差が負の場合は無視されます。"
+'description': 'Adds the difference between consecutive rows. If the difference is
+  negative, it is ignored.'
+'sidebar_position': 130
+'slug': '/sql-reference/aggregate-functions/reference/deltasumtimestamp'
+'title': 'deltaSumTimestamp'
 ---
 
-連続する行の差を追加します。差が負の場合は無視されます。
 
-この関数は、例えば `toStartOfMinute` バケットによって時系列でデータを保存するための [物化ビュー](/sql-reference/statements/create/view#materialized-view) に主に使用されます。このような物化ビューの行はすべて同じタイムスタンプを持つため、元の丸められていないタイムスタンプ値を保存せずに正しい順序でマージすることは不可能です。`deltaSumTimestamp` 関数は見た値の元の `timestamp` を追跡し、パーツのマージ中に関数の値（状態）が正しく計算されるようにします。
 
-順序付けられたコレクション全体でデルタ合計を計算するには、単純に [deltaSum](/sql-reference/aggregate-functions/reference/deltasum) 関数を使用できます。
+Adds the difference between consecutive rows. If the difference is negative, it is ignored.
+
+This function is primarily for [materialized views](/sql-reference/statements/create/view#materialized-view) that store data ordered by some time bucket-aligned timestamp, for example, a `toStartOfMinute` bucket. Because the rows in such a materialized view will all have the same timestamp, it is impossible for them to be merged in the correct order, without storing the original, unrounded timestamp value. The `deltaSumTimestamp` function keeps track of the original `timestamp` of the values it's seen, so the values (states) of the function are correctly computed during merging of parts.
+
+To calculate the delta sum across an ordered collection you can simply use the [deltaSum](/sql-reference/aggregate-functions/reference/deltasum) function.
 
 **構文**
 
-``` sql
+```sql
 deltaSumTimestamp(value, timestamp)
 ```
 
 **引数**
 
-- `value` — 入力値。いずれかの [整数](../../data-types/int-uint.md) 型または [浮動小数点](../../data-types/float.md) 型、または [日付](../../data-types/date.md) または [日時](../../data-types/datetime.md) である必要があります。
-- `timestamp` — 値を順序付けるためのパラメータ。いずれかの [整数](../../data-types/int-uint.md) 型または [浮動小数点](../../data-types/float.md) 型、または [日付](../../data-types/date.md) または [日時](../../data-types/datetime.md) である必要があります。
+- `value` — 入力値。必ず [Integer](../../data-types/int-uint.md) 型または [Float](../../data-types/float.md) 型、または [Date](../../data-types/date.md) または [DateTime](../../data-types/datetime.md) でなければなりません。
+- `timestamp` — 値の順序付けに使用するパラメーター。必ず [Integer](../../data-types/int-uint.md) 型または [Float](../../data-types/float.md) 型、または [Date](../../data-types/date.md) または [DateTime](../../data-types/datetime.md) でなければなりません。
 
-**返される値**
+**戻り値**
 
-- `timestamp` パラメータによって順序付けられた連続する値の累積的な差。
+- `timestamp` パラメーターによって順序付けられた連続した値の差の累積。
 
-型: [整数](../../data-types/int-uint.md) または [浮動小数点](../../data-types/float.md) または [日付](../../data-types/date.md) または [日時](../../data-types/datetime.md)。
+タイプ: [Integer](../../data-types/int-uint.md) または [Float](../../data-types/float.md) または [Date](../../data-types/date.md) または [DateTime](../../data-types/datetime.md)。
 
 **例**
 
@@ -39,7 +42,7 @@ FROM (SELECT number AS timestamp, [0, 4, 8, 3, 0, 0, 0, 1, 3, 5][number] AS valu
 
 結果:
 
-``` text
+```text
 ┌─deltaSumTimestamp(value, timestamp)─┐
 │                                  13 │
 └─────────────────────────────────────┘

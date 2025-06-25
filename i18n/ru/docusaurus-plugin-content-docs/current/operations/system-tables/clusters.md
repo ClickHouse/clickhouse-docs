@@ -1,32 +1,32 @@
 ---
 description: 'Системная таблица, содержащая информацию о кластерах, доступных в файле конфигурации, и серверах, определенных в них.'
+keywords: ['системная таблица', 'кластеры']
 slug: /operations/system-tables/clusters
 title: 'system.clusters'
-keywords: ['системная таблица', 'кластеры']
 ---
 
 Содержит информацию о кластерах, доступных в файле конфигурации, и серверах в них.
 
-Колонки:
+Столбцы:
 
-- `cluster` ([String](../../sql-reference/data-types/string.md)) — Название кластера.
-- `shard_num` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Номер шарда в кластере, начиная с 1. Может измениться в результате модификации кластера.
-- `shard_name` ([String](../../sql-reference/data-types/string.md)) — Название шарда в кластере.
+- `cluster` ([String](../../sql-reference/data-types/string.md)) — Имя кластера.
+- `shard_num` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Номер шард в кластере, начиная с 1. Может изменяться в результате модификации кластера.
+- `shard_name` ([String](../../sql-reference/data-types/string.md)) — Имя шарда в кластере.
 - `shard_weight` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Относительный вес шарда при записи данных.
 - `replica_num` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Номер реплики в шарде, начиная с 1.
-- `host_name` ([String](../../sql-reference/data-types/string.md)) — Имя хоста, указанное в конфигурации.
+- `host_name` ([String](../../sql-reference/data-types/string.md)) — Имя хоста, как указано в конфигурации.
 - `host_address` ([String](../../sql-reference/data-types/string.md)) — IP-адрес хоста, полученный из DNS.
 - `port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — Порт для подключения к серверу.
 - `is_local` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Флаг, указывающий, является ли хост локальным.
 - `user` ([String](../../sql-reference/data-types/string.md)) — Имя пользователя для подключения к серверу.
-- `default_database` ([String](../../sql-reference/data-types/string.md)) — Название базы данных по умолчанию.
-- `errors_count` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Количество случаев, когда этот хост не смог достичь реплики.
-- `slowdowns_count` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Количество замедлений, которые привели к изменению реплики при установлении соединения с хеджированными запросами.
-- `estimated_recovery_time` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Остаток секунд до тех пор, пока счетчик ошибок реплики не будет обнулен, и она не будет считаться нормальной.
-- `database_shard_name` ([String](../../sql-reference/data-types/string.md)) — Название шарда базы данных `Replicated` (для кластеров, принадлежащих базе данных `Replicated`).
-- `database_replica_name` ([String](../../sql-reference/data-types/string.md)) — Название реплики базы данных `Replicated` (для кластеров, принадлежащих базе данных `Replicated`).
+- `default_database` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных по умолчанию.
+- `errors_count` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Количество попыток, когда этот хост не смог достичь реплики.
+- `slowdowns_count` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Количество замедлений, приведших к смене реплики при установлении соединения с запрашивающими запросами.
+- `estimated_recovery_time` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Секунды, оставшиеся до обнуления счетчика ошибок реплики, когда она считается вернувшейся в норму.
+- `database_shard_name` ([String](../../sql-reference/data-types/string.md)) — Имя шардированной базы данных `Replicated` (для кластеров, принадлежащих базе данных `Replicated`).
+- `database_replica_name` ([String](../../sql-reference/data-types/string.md)) — Имя реплики базы данных `Replicated` (для кластеров, принадлежащих базе данных `Replicated`).
 - `is_active` ([Nullable(UInt8)](../../sql-reference/data-types/int-uint.md)) — Статус реплики базы данных `Replicated` (для кластеров, принадлежащих базе данных `Replicated`): 1 означает "реплика онлайн", 0 означает "реплика оффлайн", `NULL` означает "неизвестно".
-- `name` ([String](../../sql-reference/data-types/string.md)) — Псевдоним для кластера.
+- `name` ([String](../../sql-reference/data-types/string.md)) - Псевдоним кластера.
 
 **Пример**
 
@@ -80,7 +80,7 @@ database_replica_name:
 is_active:               NULL
 ```
 
-**Смотрите также**
+**Смотрите Также**
 
 - [Table engine Distributed](../../engines/table-engines/special/distributed.md)
 - [distributed_replica_error_cap setting](../../operations/settings/settings.md#distributed_replica_error_cap)

@@ -102,13 +102,17 @@ We recommend setting up a **direct link to your organization** in addition to yo
 
    1. Assign user access within your Identity Provider. 
 
-   2. Log in to ClickHouse via https://console.clickhouse.cloud OR the direct link you configured in 'Configure your SAML integration' above. Users are initially assigned the 'Developer' role, which has read-only access to the organization.
+   2. Log in to ClickHouse via https://console.clickhouse.cloud OR the direct link you configured in 'Configure your SAML integration' above. Users are initially assigned the 'Member' role, which can log in to the organization and update personal settings.
 
    3. Log out of the ClickHouse organization. 
 
    4. Log in with your original authentication method to assign the Admin role to your new SSO account.
    - For email + password accounts, please use `https://console.clickhouse.cloud/?with=email`.
    - For social logins, please click the appropriate button (**Continue with Google** or **Continue with Microsoft**)
+
+:::note
+`email` in `?with=email` above is the literal parameter value, not a placeholder
+:::
 
    5. Log out with your original authentication method and log back in via https://console.clickhouse.cloud OR the direct link you configured in 'Configure your SAML integration' above.
 
@@ -340,7 +344,9 @@ We only utilize service provider initiated SSO. This means users go to `https://
 
 ### Assigning User Roles {#assigning-user-roles}
 
-Users will appear in your ClickHouse Cloud console after they are assigned to your IdP application and log in for the first time. At least one SSO user should be assigned the Admin role in your organization. Use social login or `https://console.clickhouse.cloud/?with=email` to log in with your original authentication method to update your SSO role.
+Users will appear in your ClickHouse Cloud console after they are assigned to your IdP application and log in for the first time. At least one SSO user should be assigned the Admin role in your organization and additional users that login with SSO will be created with the role of ["Member"](/cloud/security/cloud-access-management/overview#console-users-and-roles), meaning that by default they do not have access to any services and should have their access and roles updated by an Admin.
+
+Use social login or `https://console.clickhouse.cloud/?with=email` to log in with your original authentication method to update your SSO role.
 
 ### Removing Non-SSO Users {#removing-non-sso-users}
 
@@ -363,5 +369,4 @@ Security is our top priority when it comes to authentication. For this reason, w
 - **All users assigned to your app via your IdP must have the same email domain.** If you have vendors, contractors or consultants you would like to have access to your ClickHouse account, they must have an email address with the same domain (e.g. user@domain.com) as your employees.
 
 - **We do not automatically link SSO and non-SSO accounts.** You may see multiple accounts for your users in your ClickHouse user list even if they are using the same email address.
-      | Name    | Name format   | Value      |
       

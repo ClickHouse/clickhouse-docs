@@ -1,6 +1,11 @@
 @use "colors";
 @use "default";
 @use "home";
+@use "./breakpoints.scss" as breakpoints;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* KaTeX renders the input twice by default, once in HTML and one in MathML */
 .katex-html {
@@ -68,7 +73,6 @@ body {
 }
 /* Rich's attempt to add scrollbar to nav */
 .sidebar_mhZE {
-  padding-bottom: 4rem;
   height: 100% !important;
 }
 /* Make the navbar move with the page */
@@ -204,7 +208,14 @@ article[itemprop="blogPost"] {
 }
 
 .adopters-table {
-  width: 1150px;
+  overflow-x: auto;
+  width: 100%;
+
+  th {
+    padding: 0;
+    padding-left: 0.7rem;
+    text-align: left;
+  }
 }
 
 /* the buttons on the hompage stack on cell phones - this seems to fix it */
@@ -224,20 +235,59 @@ html {
   font-size: 16px;
 }
 
+/* === Base <code> styles === */
 code {
   font-weight: bold;
-  background-color: var(--ifm-code-background) !important;
+  font-size: 0.95em;
+  border-radius: 0;
+  padding: 0.15em 0.35em !important;
   scrollbar-width: thin;
   scrollbar-color: rgb(99, 99, 99) rgb(41, 45, 62);
-  span {
-    font-style: normal !important;
-  }
 }
 
-/* Style individual tokens */
+/* Normalize inner span styles */
+code span {
+  font-style: normal !important;
+}
+
+/* === Theme-specific inline <code> backgrounds === */
+html[data-theme='dark'] pre,
+html[data-theme='dark'] pre code,
+html[data-theme='dark'] code {
+  background: none !important;
+  background-color: #282828 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  border: none !important;
+}
+
+html[data-theme='light'] code {
+  background-color: #f5f5f5 !important;
+  color: #000 !important;
+}
+
+/* === Block code (pre) === */
+pre {
+  padding: 1em 1em 1em 1em !important;
+  border-radius: 0 !important;
+}
+
+html[data-theme='light'] pre,
+html[data-theme='light'] pre code {
+  background-color: #f5f5f5 !important;
+  color: #000 !important;
+}
+
+html[data-theme='dark'] pre,
+html[data-theme='dark'] pre code {
+  background-color: #282828 !important;
+  color: var(--prism-color);
+}
+
+/* === Prism token styles (Dark Theme) === */
 code .token.keyword {
-  font-style: italic !important; /* Italicize keywords */
-  color: rgb(86, 156, 214) !important; /* Blue for keywords */
+  font-style: italic !important;
+  color: rgb(86, 156, 214) !important;
 }
 
 code .token.plain {
@@ -245,26 +295,61 @@ code .token.plain {
 }
 
 code .token.punctuation {
-  color: rgb(199, 146, 234) !important; /* Match punctuation color */
+  color: rgb(199, 146, 234) !important;
 }
 
 code .token.operator {
-  color: rgb(137, 221, 255) !important; /* Light blue for operators */
+  color: rgb(137, 221, 255) !important;
 }
 
 code .token.string {
-  color: rgb(206, 145, 120) !important; /* Orange for strings */
+  color: rgb(206, 145, 120) !important;
 }
 
 code .token.number {
-  color: rgb(181, 206, 168) !important; /* Green for numbers */
+  color: rgb(181, 206, 168) !important;
 }
 
 code .token.function {
-  color: rgb(220, 220, 170) !important; /* Bright blue for functions */
+  color: rgb(220, 220, 170) !important;
 }
 
-/* Ensure keywords are not italic */
+/* === Prism token styles (Light Theme) === */
+html[data-theme='light'] code .token.keyword {
+  font-style: italic !important;
+  color: rgb(0, 92, 154) !important;
+}
+
+html[data-theme='light'] code .token.plain {
+  color: rgb(36, 41, 46) !important;
+}
+
+html[data-theme='light'] code .token.identifier {
+  color: rgb(0, 102, 204) !important;
+}
+
+html[data-theme='light'] code .token.punctuation {
+  color: rgb(125, 86, 148) !important;
+}
+
+html[data-theme='light'] code .token.operator {
+  color: rgb(0, 112, 138) !important;
+}
+
+html[data-theme='light'] code .token.string {
+  color: rgb(163, 21, 21) !important;
+}
+
+html[data-theme='light'] code .token.number {
+  color: rgb(34, 134, 58) !important;
+}
+
+html[data-theme='light'] code .token.function {
+  color: rgb(88, 92, 63) !important;
+}
+
+/* Ensure keywords are not italic if nested */
+html[data-theme='light'] code span.token.keyword,
 code span.token.keyword {
   font-style: normal !important;
 }
@@ -378,6 +463,16 @@ code span.token.keyword {
   padding-left: 0;
 }
 
+@media (max-width: #{breakpoints.$mobile-breakpoint}) {
+  .theme-doc-sidebar-container,
+  .theme-doc-sidebar-container *,
+  .docsMobileMenuItems,
+  .menu__list {
+    display: block !important;
+    visibility: visible !important;
+  }
+}
+
 li.theme-doc-sidebar-item-category-level-1 {
   .menu__list-item-collapsible {
     font-weight: 700;
@@ -409,15 +504,15 @@ li.theme-doc-sidebar-item-category-level-1 {
 }
 
 .theme-doc-sidebar-item-link-level-5 {
-  padding-left: 1.9rem;
+  padding-left: 1.2rem;
 }
 
 .theme-doc-sidebar-item-category-level-5 {
-  padding-left: 1.9rem;
+  padding-left: 1.2rem;
 }
 
 .theme-doc-sidebar-item-link-level-6 {
-  padding-left: 2.2rem;
+  padding-left: 1.2rem;
 }
 
 .theme-doc-sidebar-item-category-level-6 {
@@ -579,25 +674,25 @@ prism-code {
   min-height: auto;
 }
 
-@media (min-width: 1440px) {
-  .container {
-    max-width: 95%;
+.blog-wrapper .main-wrapper .container {
+  margin-top: 4rem !important;
+}
+
+@media screen and (min-width: breakpoints.$laptop-breakpoint) {
+  .blog-wrapper .main-wrapper .container {
+    margin-top: 8rem !important;
   }
 }
 
-@media (max-width: 1439px) {
-  .container {
-  }
-}
-
-#__docusaurus {
-  height: 100%;
+.container {
+  max-width: 100%;
 }
 
 .navbar {
   flex: 0 0 var(--ifm-navbar-height);
   background: var(--click-color-background);
   background-attachment: fixed;
+  height: auto;
 }
 
 .search-result-match {
@@ -877,7 +972,7 @@ prism-code {
   }
 }
 
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: var(--laptop-breakpoint)) {
   .dropdown {
     padding-right: 2px;
     padding-left: 20px;
@@ -936,7 +1031,6 @@ prism-code {
 
 .main-content-wrapper {
   height: 100%;
-  margin-top: 2rem;
 
   .row {
     height: 100%;
@@ -1308,3 +1402,24 @@ input::-ms-input-placeholder { /* Microsoft Edge */
   }
 }
 
+/* Install guide */
+.installContainer {
+  display: flex;
+}
+
+.install-card {
+  margin: 0em 0.5em;
+}
+
+.prod-or-quick-install {
+  display: flex;
+  margin: 0.5em 0em;
+}
+
+.installInstructions {
+  margin-top: 2em;
+}
+
+.DocSearch-Cancel {
+  color: var(--docsearch-text-color) !important;
+}

@@ -1,7 +1,8 @@
 ---
-title: JSONLines
-slug: /interfaces/formats/JSONLines
+description: 'Документация для формата JSONLines'
 keywords: ['JSONLines']
+slug: /interfaces/formats/JSONLines
+title: 'JSONLines'
 ---
 
 ## Описание {#description}

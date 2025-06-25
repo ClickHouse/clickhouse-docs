@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'ClickPipes for Postgres'
+sidebar_label: 'Ingesting Data from Postgres to ClickHouse'
 description: 'Seamlessly connect your Postgres to ClickHouse Cloud.'
 slug: /integrations/clickpipes/postgres
 title: 'Ingesting Data from Postgres to ClickHouse (using CDC)'
@@ -8,7 +8,7 @@ title: 'Ingesting Data from Postgres to ClickHouse (using CDC)'
 import BetaBadge from '@theme/badges/BetaBadge';
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
-import postgres_tile from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-tile.jpg'
+import postgres_tile from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-tile.png'
 import postgres_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-connection-details.jpg'
 import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ssh-tunnel.jpg'
 import select_replication_slot from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/select-replication-slot.jpg'
@@ -16,17 +16,9 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
-# Ingesting Data from Postgres to ClickHouse (using CDC)
-
-<BetaBadge/>
-
-:::info
-Currently, ingesting data from Postgres to ClickHouse Cloud via ClickPipes is in Public Beta.
-:::
-
+# Ingesting data from Postgres to ClickHouse (using CDC)
 
 You can use ClickPipes to ingest data from your source Postgres database into ClickHouse Cloud. The source Postgres database can be hosted on-premises or in the cloud including Amazon RDS, Google Cloud SQL, Azure Database for Postgres, Supabase and others.
-
 
 ## Prerequisites {#prerequisites}
 
@@ -34,17 +26,21 @@ To get started, you first need to make sure that your Postgres database is set u
 
 1. [Amazon RDS Postgres](./postgres/source/rds)
 
-2. [Supabase Postgres](./postgres/source/supabase)
+2. [Amazon Aurora Postgres](./postgres/source/aurora)
 
-3. [Google Cloud SQL Postgres](./postgres/source/google-cloudsql)
+3. [Supabase Postgres](./postgres/source/supabase)
 
-4. [Azure Flexible Server for Postgres](./postgres/source/azure-flexible-server-postgres)
+4. [Google Cloud SQL Postgres](./postgres/source/google-cloudsql)
 
-5. [Neon Postgres](./postgres/source/neon-postgres)
+5. [Azure Flexible Server for Postgres](./postgres/source/azure-flexible-server-postgres)
 
-6. [Crunchy Bridge Postgres](./postgres/source/crunchy-postgres)
+6. [Neon Postgres](./postgres/source/neon-postgres)
 
-7. [Generic Postgres Source](./postgres/source/generic), if you are using any other Postgres provider or using a self-hosted instance
+7. [Crunchy Bridge Postgres](./postgres/source/crunchy-postgres)
+
+8. [Generic Postgres Source](./postgres/source/generic), if you are using any other Postgres provider or using a self-hosted instance.
+
+9. [TimescaleDB](./postgres/source/timescale), if you are using the TimescaleDB extension on a managed service or self-hosted instance.
 
 
 :::warning
@@ -84,6 +80,12 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
    :::
 
    <Image img={postgres_connection_details} alt="Fill in connection details" size="lg" border/>
+
+#### (Optional) Setting up AWS Private Link {#optional-setting-up-aws-private-link}
+
+You can use AWS Private Link to connect to your source Postgres database if it is hosted on AWS. This is useful if you
+want to keep your data transfer private.
+You can follow the [setup guide to set up the connection](/integrations/clickpipes/aws-privatelink).
 
 #### (Optional) Setting up SSH Tunneling {#optional-setting-up-ssh-tunneling}
 
@@ -132,9 +134,7 @@ You can configure the Advanced settings if needed. A brief description of each s
 7. You can select the tables you want to replicate from the source Postgres database. While selecting the tables, you can also choose to rename the tables in the destination ClickHouse database as well as exclude specific columns.
 
    :::warning
-
-   If you are defining a Ordering Key in ClickHouse differently from the Primary Key in Postgres, please don’t forget to read all the [considerations](https://docs.peerdb.io/mirror/ordering-key-different) around it!
-
+   If you are defining an ordering key in ClickHouse differently than from the primary key in Postgres, don't forget to read all the [considerations](/integrations/clickpipes/postgres/ordering_keys) around it
    :::
 
 ### Review permissions and start the ClickPipe {#review-permissions-and-start-the-clickpipe}
@@ -145,12 +145,6 @@ You can configure the Advanced settings if needed. A brief description of each s
 
 ## What's next? {#whats-next}
 
-Once you've moved data from Postgres to ClickHouse, the next obvious question is how to model your data in ClickHouse to make the most of it. Please refer to this page on [ClickHouse Data Modeling Tips for Postgres users](https://docs.peerdb.io/bestpractices/clickhouse_datamodeling) to help you model data in ClickHouse.
+Once you've moved data from Postgres to ClickHouse, the next obvious question is how to query and model your data in ClickHouse to make the most of it. Please refer to the [migration guide](/migrations/postgresql/overview) to a step by step approaches on how to migrate from PostgreSQL to ClickHouse. Alongside the migration guide, make sure to check the pages about [Deduplication strategies (using CDC)](/integrations/clickpipes/postgres/deduplication) and [Ordering Keys](/integrations/clickpipes/postgres/ordering_keys) to understand how to handle duplicates and customize ordering keys when using CDC.
 
-Also, please refer to the [ClickPipes for Postgres FAQ](./postgres/faq) for more information about common issues and how to resolve them.
-
-:::info
-
-[This](https://docs.peerdb.io/bestpractices/clickhouse_datamodeling) is especially important as ClickHouse differs from Postgres, and you might encounter some surprises. This guide helps address potential pitfalls and ensures you can take full advantage of ClickHouse.
-
-:::
+Finally, please refer to the ["ClickPipes for Postgres FAQ"](/integrations/clickpipes/postgres/faq) page for more information about common issues and how to resolve them.

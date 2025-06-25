@@ -1,12 +1,12 @@
 ---
-sidebar_label: タブサンプル
+'sidebar_label': 'タブのサンプル'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-##  ステップ 1. {#step-1}
+##  Step 1. {#step-1}
 
 <Tabs groupId="deployMethod">
 <TabItem value="serverless" label="ClickHouse Cloud" default>
@@ -14,7 +14,7 @@ import CodeBlock from '@theme/CodeBlock';
 クラウド
 
 </TabItem>
-<TabItem value="selfmanaged" label="セルフマネージド">
+<TabItem value="selfmanaged" label="Self-managed">
 
 セルフマネージド
 

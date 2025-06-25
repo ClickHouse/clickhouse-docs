@@ -1,70 +1,61 @@
-title: 'Создание нескольких MySQL пользователей в ClickHouse Cloud'
-sidebar_label: 'Создание нескольких MySQL пользователей'
-keywords: ['ClickHouse', 'MySQL', 'пользователи', 'репликация', 'база данных']
-description: 'Инструкция по созданию нескольких MySQL пользователей в ClickHouse Cloud.'
-```
-
 import mysql_1 from '@site/static/images/_snippets/mysql1.png';
 import mysql_2 from '@site/static/images/_snippets/mysql2.png';
 import mysql_3 from '@site/static/images/_snippets/mysql3.png';
 import mysql_4 from '@site/static/images/_snippets/mysql4.png';
 import mysql_5 from '@site/static/images/_snippets/mysql5.png';
+import Image from '@theme/IdealImage';
 
 <br/>
-1. После создания вашего ClickHouse Cloud Service, на экране `Подключите ваше приложение`, выберите MySQL из выпадающего списка.
+1. После создания вашего ClickHouse Cloud Service, на экране `Подключите ваше приложение`, выберите MySQL из выпадающего меню.
 <br/>
 
-<div class="eighty-percent">
-    <img src={mysql_1} class="image" alt="Экран учетных данных - Запрос" />
-</div>
+<Image size="md" img={mysql_1} alt="Экран учетных данных ClickHouse Cloud с выбором интерфейса MySQL" border />
 
-2. Переключите тумблер, чтобы включить интерфейс MySQL для этой конкретной службы. Это откроет порт `3306` для этой службы и предоставит вам экран подключения MySQL, который включает ваше уникальное имя пользователя MySQL.
 
-<div class="eighty-percent">
-    <img src={mysql_2} class="image" alt="Экран учетных данных - Включенный MySQL" />
-</div>
+2. Переключите переключатель для включения интерфейса MySQL для этого конкретного сервиса. Это откроет порт `3306` для этого сервиса и выведет экран подключения MySQL с вашим уникальным именем пользователя MySQL.
+
+<Image size="md" img={mysql_2} alt="Переключатель включения интерфейса MySQL и детали подключения ClickHouse Cloud" border />
 <br/>
 
-В качестве альтернативы, чтобы включить интерфейс MySQL для существующей службы:
+Альтернативно, чтобы включить интерфейс MySQL для существующего сервиса:
 
-3. Убедитесь, что ваша служба находится в состоянии `Работает`, затем нажмите на службу, для которой вы хотите включить интерфейс MySQL. Выберите "Подключить" в левом меню:
-
-<br/>
-<div class="eighty-percent">
-    <img src={mysql_3} class="image" alt="Экран подключения - Запрос MySQL" />
-</div>
-<br/>
-
-4. Выберите MySQL из выпадающего списка `Подключиться с помощью`.
+3. Убедитесь, что ваш сервис находится в состоянии `Работает`, затем нажмите на сервис, для которого вы хотите включить интерфейс MySQL. Выберите "Подключить" в левом меню:
 
 <br/>
-<img src={mysql_4} class="image" alt="Экран подключения - Запрос MySQL" />
+<Image size="md" img={mysql_3} alt="Экран подключения к сервису ClickHouse Cloud с выделенной опцией Подключить" border />
 <br/>
 
-5. Переключите тумблер, чтобы включить интерфейс MySQL для этой конкретной службы. Это откроет порт `3306` для этой службы и предоставит вам экран подключения MySQL, который включает ваше уникальное имя пользователя MySQL.
 
-<img src={mysql_5} class="image" alt="Экран подключения - MySQL Включен" />
+4. Выберите MySQL из выпадающего меню `Подключиться с помощью`.
 
-## Создание нескольких MySQL пользователей в ClickHouse Cloud {#creating-multiple-mysql-users-in-clickhouse-cloud}
+<br/>
+<Image size="md" img={mysql_4} alt="Экран подключения ClickHouse Cloud с выбором опции MySQL" border />
+<br/>
 
-По умолчанию существует встроенный пользователь `mysql4<subdomain>`, который использует такой же пароль, как и `default`. Часть `<subdomain>` - это первый сегмент вашего имени хоста ClickHouse Cloud. Этот формат необходим для работы с инструментами, которые реализуют безопасное подключение, но не предоставляют [информации SNI в своем TLS-рукопожатии](https://www.cloudflare.com/learning/ssl/what-is-sni), что делает невозможным внутреннюю маршрутизацию без дополнительной подсказки в имени пользователя (клиент консоли MySQL - один из таких инструментов).
+5. Переключите переключатель для включения интерфейса MySQL для этого конкретного сервиса. Это откроет порт `3306` для этого сервиса и выведет экран подключения MySQL с вашим уникальным именем пользователя MySQL.
 
-Из-за этого мы _настоятельно рекомендуем_ следовать формату `mysql4<subdomain>_<username>` при создании нового пользователя, который предназначен для использования с интерфейсом MySQL, где `<subdomain>` является подсказкой для идентификации вашей облачной службы, а `<username>` - произвольный суффикс по вашему выбору.
+<Image size="md" img={mysql_5} alt="Экран подключения ClickHouse Cloud с включенным интерфейсом MySQL, показывающий детали подключения" border />
+
+## Создание нескольких пользователей MySQL в ClickHouse Cloud {#creating-multiple-mysql-users-in-clickhouse-cloud}
+
+По умолчанию существует встроенный пользователь `mysql4<subdomain>`, который использует тот же пароль, что и `default`. Часть `<subdomain>` является первым сегментом вашего имени хоста ClickHouse Cloud. Этот формат необходим для работы с инструментами, которые реализуют безопасное соединение, но не предоставляют [информацию SNI в своем TLS рукопожатии](https://www.cloudflare.com/learning/ssl/what-is-sni), что делает невозможным внутреннюю маршрутизацию без дополнительной подсказки в имени пользователя (MySQL консольный клиент является одним из таких инструментов).
+
+По этой причине мы _настоятельно рекомендуем_ следовать формату `mysql4<subdomain>_<username>` при создании нового пользователя, предназначенного для использования с интерфейсом MySQL, где `<subdomain>` является подсказкой для идентификации вашего Cloud сервиса, а `<username>` - произвольным суффиксом по вашему выбору.
 
 :::tip
 Для имени хоста ClickHouse Cloud, такого как `foobar.us-east1.aws.clickhouse.cloud`, часть `<subdomain>` равна `foobar`, и пользователь MySQL может выглядеть как `mysql4foobar_team1`.
 :::
 
-Вы можете создать дополнительных пользователей для использования с интерфейсом MySQL, например, если вам нужно применить дополнительные настройки.
+Вы можете создать дополнительных пользователей для использования с интерфейсом MySQL, если, например, вам нужно применить дополнительные настройки.
 
-1. По желанию - создайте [профиль настроек](/sql-reference/statements/create/settings-profile), который будет применен для вашего пользовательского пользователя. Например, `my_custom_profile` с дополнительной настройкой, которая будет применена по умолчанию, когда мы подключимся с пользователем, которого создадим позже:
+1. Необязательно - создайте [профиль настроек](/sql-reference/statements/create/settings-profile), который будет применяться к вашему пользовательскому пользователю. Например, `my_custom_profile` с дополнительным настройкой, которая будет применена по умолчанию, когда мы подключимся с пользователем, которого создадим позже:
 
     ```sql
     CREATE SETTINGS PROFILE my_custom_profile SETTINGS prefer_column_name_to_alias=1;
     ```
 
     `prefer_column_name_to_alias` используется только в качестве примера, вы можете использовать другие настройки.
-2. [Создайте пользователя](/sql-reference/statements/create/user) с помощью следующего формата: `mysql4<subdomain>_<username>` ([см. выше](#creating-multiple-mysql-users-in-clickhouse-cloud)). Пароль должен быть в формате double SHA1. Например:
+2. [Создайте пользователя](/sql-reference/statements/create/user) с использованием следующего формата: `mysql4<subdomain>_<username>` ([см. выше](#creating-multiple-mysql-users-in-clickhouse-cloud)). Пароль должен быть в двойном формате SHA1. Например:
 
     ```sql
     CREATE USER mysql4foobar_team1 IDENTIFIED WITH double_sha1_password BY 'YourPassword42$';
@@ -83,14 +74,14 @@ import mysql_5 from '@site/static/images/_snippets/mysql5.png';
     GRANT SELECT ON system.query_log TO mysql4foobar_team1;
     ```
 
-4. Используйте созданного пользователя для подключения к вашей службе ClickHouse Cloud с интерфейсом MySQL.
+4. Используйте созданного пользователя для подключения к вашему ClickHouse Cloud сервису с интерфейсом MySQL.
 
-### Устранение проблем с несколькими MySQL пользователями в ClickHouse Cloud {#troubleshooting-multiple-mysql-users-in-clickhouse-cloud}
+### Устранение неполадок с несколькими пользователями MySQL в ClickHouse Cloud {#troubleshooting-multiple-mysql-users-in-clickhouse-cloud}
 
-Если вы создали нового пользователя MySQL и видите следующую ошибку при подключении через клиент MySQL CLI:
+Если вы создали нового пользователя MySQL и видите следующую ошибку при подключении через MySQL CLI клиент:
 
 ```
 ERROR 2013 (HY000): Lost connection to MySQL server at 'reading authorization packet', system error: 54
 ```
 
-В этом случае, убедитесь, что имя пользователя соответствует формату `mysql4<subdomain>_<username>`, как описано ([выше](#creating-multiple-mysql-users-in-clickhouse-cloud)).
+В этом случае убедитесь, что имя пользователя соответствует формату `mysql4<subdomain>_<username>`, как описано ([выше](#creating-multiple-mysql-users-in-clickhouse-cloud)).

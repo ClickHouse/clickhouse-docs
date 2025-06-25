@@ -1,17 +1,19 @@
 ---
-description: "英語の画像キャプション付きの4億枚の画像を含むデータセット"
-slug: /getting-started/example-datasets/laion-400m-dataset
-sidebar_label: Laion-400M データセット
-title: "Laion-400M データセット"
+'description': 'Dataset containing 400 million images with English image captions'
+'sidebar_label': 'Laion-400M dataset'
+'slug': '/getting-started/example-datasets/laion-400m-dataset'
+'title': 'Laion-400M dataset'
 ---
 
-[Laion-400M データセット](https://laion.ai/blog/laion-400-open-dataset/) は、英語の画像キャプション付きの4億枚の画像を含んでいます。現在、Laionは[さらに大きなデータセット](https://laion.ai/blog/laion-5b/)を提供していますが、これを扱う際の方法は似ています。
 
-このデータセットには、画像のURL、画像と画像キャプションの両方の埋め込み、画像と画像キャプション間の類似度スコア、さらにメタデータ（画像の幅/高さ、ライセンス、NSFWフラグなど）が含まれています。このデータセットを使用して、ClickHouseにおける[近似最近傍探索](../../engines/table-engines/mergetree-family/annindexes.md)のデモを行います。
+
+[Laion-400Mデータセット](https://laion.ai/blog/laion-400-open-dataset/)は、英語の画像キャプションを持つ4億の画像を含んでいます。現在、Laionは[さらに大きなデータセット](https://laion.ai/blog/laion-5b/)を提供していますが、取り扱いは似ています。
+
+このデータセットには、画像のURL、画像および画像キャプションの埋め込み、画像と画像キャプションの間の類似度スコア、さらに画像の幅/高さ、ライセンス、NSFWフラグなどのメタデータが含まれています。このデータセットを使用して、ClickHouseでの[近似最近傍検索](../../engines/table-engines/mergetree-family/annindexes.md)を示すことができます。
 
 ## データ準備 {#data-preparation}
 
-埋め込みとメタデータは、原データ中の別々のファイルに保存されています。データ準備ステップでは、データをダウンロードし、ファイルをマージし、CSVに変換してClickHouseにインポートします。これには、以下の`download.sh`スクリプトを使用できます：
+埋め込みとメタデータは、生のデータの別々のファイルに保存されています。データ準備ステップでは、データをダウンロードし、ファイルをマージし、CSVに変換してClickHouseにインポートします。以下の`download.sh`スクリプトを使用できます：
 
 ```bash
 number=${1}
@@ -37,13 +39,13 @@ metadata_file = "metadata_" + str_i + '.parquet'
 text_npy =  "text_emb_" + str_i + '.npy'
 
 
-# 全ファイルを読み込む
+# 全ファイルをロード
 im_emb = np.load(npy_file)
 text_emb = np.load(text_npy) 
 data = pd.read_parquet(metadata_file)
 
 
-# ファイルを結合
+# ファイルを組み合わせる
 data = pd.concat([data, pd.DataFrame({"image_embedding" : [*im_emb]}), pd.DataFrame({"text_embedding" : [*text_emb]})], axis=1, copy=False)
 
 
@@ -51,12 +53,12 @@ data = pd.concat([data, pd.DataFrame({"image_embedding" : [*im_emb]}), pd.DataFr
 data = data[['url', 'caption', 'NSFW', 'similarity', "image_embedding", "text_embedding"]]
 
 
-# np.arraysをリストに変換
+# np.arrayをリストに変換
 data['image_embedding'] = data['image_embedding'].apply(lambda x: list(x))
 data['text_embedding'] = data['text_embedding'].apply(lambda x: list(x))
 
 
-# キャプションにはすべての種類のクオートが含まれることがあるため、この小さなハックが必要
+# キャプションに含まれる様々な引用符に対してこの小さなハックが必要
 data['caption'] = data['caption'].apply(lambda x: x.replace("'", " ").replace('"', " "))
 
 
@@ -64,19 +66,19 @@ data['caption'] = data['caption'].apply(lambda x: x.replace("'", " ").replace('"
 data.to_csv(str_i + '.csv', header=False)
 
 
-# 原データファイルを削除
+# 生データファイルを削除
 os.system(f"rm {npy_file} {metadata_file} {text_npy}")
 ```
 
-データ準備パイプラインを開始するには、次のコマンドを実行してください：
+データ準備パイプラインを開始するには、次のコマンドを実行します：
 
 ```bash
 seq 0 409 | xargs -P1 -I{} bash -c './download.sh {}'
 ```
 
-データセットは410ファイルに分割されており、それぞれのファイルには約100万行が含まれています。データの小さなサブセットで作業したい場合は、制限を調整してください。例：`seq 0 9 | ...`。
+データセットは410のファイルに分割されており、各ファイルには約100万行が含まれています。データの小さなサブセットで作業したい場合は、リミットを調整するだけです。例：`seq 0 9 | ...`。
 
-（上記のPythonスクリプトは非常に遅く（1ファイルあたり約2〜10分）、多くのメモリ（1ファイルあたり41 GB）を消費し、結果として得られるCSVファイルも大きく（各ファイル10 GB）、注意が必要です。十分なRAMがある場合は、より多くの並列性のために`-P1`の数を増やしてください。これでも依然として遅い場合は、より良い取り込み手順を考えてみてください - .npyファイルをparquetに変換し、その後すべての処理をClickHouseで行うことを検討しても良いでしょう。）
+（上記のPythonスクリプトは非常に遅い（1ファイルあたり約2〜10分）、多くのメモリを消費し（ファイルごとに41 GB）、結果として生成されるCSVファイルは大きい（各10 GB）ため、注意が必要です。十分なRAMがある場合は、並列性を高めるために`-P1`の数値を増やします。これでもまだ遅い場合は、より良いインジェスト手順を考案することを検討してください。たとえば、.npyファイルをparquetに変換し、その後に他の処理をClickHouseで行うことが考えられます。）
 
 ## テーブルの作成 {#create-table}
 
@@ -98,21 +100,21 @@ ORDER BY id
 SETTINGS index_granularity = 8192
 ```
 
-CSVファイルをClickHouseにインポートするには：
+CSVファイルをClickHouseにインポートするには、次のコマンドを実行します：
 
 ```sql
 INSERT INTO laion FROM INFILE '{path_to_csv_files}/*.csv'
 ```
 
-## ブルートフォースANN検索を実行（ANNインデックスなし） {#run-a-brute-force-ann-search-without-ann-index}
+## ANNインデックスなしでのブルートフォースANN検索の実行 {#run-a-brute-force-ann-search-without-ann-index}
 
-ブルートフォース近似最近傍検索を実行するには：
+ブルートフォース近似最近傍検索を実行するには、次のコマンドを実行します：
 
 ```sql
 SELECT url, caption FROM laion ORDER BY L2Distance(image_embedding, {target:Array(Float32)}) LIMIT 30
 ```
 
-`target`は512要素の配列で、クライアントパラメータです。そのような配列を取得する便利な方法は、記事の最後に紹介されます。現在は、ランダムな猫の画像の埋め込みを`target`として実行できます。
+`target`は512要素の配列で、クライアントパラメータです。そのような配列を取得する便利な方法は、この記事の終わりに紹介します。今のところ、ランダムな猫の画像の埋め込みを`target`として実行できます。
 
 **結果**
 
@@ -128,12 +130,12 @@ SELECT url, caption FROM laion ORDER BY L2Distance(image_embedding, {target:Arra
 │ https://s3.amazonaws.com/pet-uploads.adoptapet.com/0/1/2/221698235.jpg                                        │ Domestic Shorthair Cat for adoption in Marietta, Ohio - Daisy (Spayed) │
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────┘
 
-8行がセットされました。経過時間: 6.432秒。処理済み 1965万行、43.96 GB (306万行/秒、6.84 GB/秒)
+8 rows in set. Elapsed: 6.432 sec. Processed 19.65 million rows, 43.96 GB (3.06 million rows/s., 6.84 GB/s.)
 ```
 
-## ANNインデックスを使用したANNを実行 {#run-a-ann-with-an-ann-index}
+## ANNインデックスを使用したANNの実行 {#run-a-ann-with-an-ann-index}
 
-ANNインデックスを使用した新しいテーブルを作成し、既存のテーブルからデータを挿入します：
+ANNインデックスを持つ新しいテーブルを作成し、既存のテーブルからデータを挿入します：
 
 ```sql
 CREATE TABLE laion_annoy
@@ -155,7 +157,7 @@ SETTINGS index_granularity = 8192;
 INSERT INTO laion_annoy SELECT * FROM laion;
 ```
 
-デフォルトでは、AnnoyインデックスはL2距離をメトリックとして使用します。インデックスの作成と検索のためのさらなる調整機能については、Annoyインデックスの[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)を参照してください。では、同じクエリで再度チェックしましょう：
+デフォルトでは、AnnoyインデックスはL2距離をメトリックとして使用します。インデックスの作成や検索のためのさらなる調整方法については、Annoyインデックスの[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)に記載されています。さて、同じクエリで再度確認してみましょう：
 
 ```sql
 SELECT url, caption FROM laion_annoy ORDER BY l2Distance(image_embedding, {target:Array(Float32)}) LIMIT 8
@@ -175,20 +177,20 @@ SELECT url, caption FROM laion_annoy ORDER BY l2Distance(image_embedding, {targe
 │ https://www.baxterboo.com/images/breeds/medium/cairn-terrier.jpg                                                                                                                     │ Cairn Terrier Photo                                                  │
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────┘
 
-8行がセットされました。経過時間: 0.641秒。処理済み 22060行、49.36 MB (91530行/秒、204.81 MB/秒)
+8 rows in set. Elapsed: 0.641 sec. Processed 22.06 thousand rows, 49.36 MB (91.53 thousand rows/s., 204.81 MB/s.)
 ```
 
-速度は大幅に向上しましたが、結果の正確性は低下しました。これは、ANNインデックスが近似検索結果のみを提供するためです。例では、類似の画像埋め込みを検索しましたが、正の画像キャプション埋め込みを検索することも可能です。
+スピードは大幅に向上しましたが、精度が低下しました。これは、ANNインデックスが近似検索結果のみを提供するためです。例では類似画像埋め込みを検索しましたが、ポジティブな画像キャプション埋め込みをも検索することが可能です。
 
-## UDFを使用して埋め込みを作成する {#creating-embeddings-with-udfs}
+## UDFを使用した埋め込みの作成 {#creating-embeddings-with-udfs}
 
-通常、新しい画像や新しい画像キャプションのために埋め込みを作成し、データ内で類似の画像/画像キャプションのペアを検索したいと考えます。[UDF](/sql-reference/functions/udf)を使用して、クライアントを離れることなく`target`ベクトルを作成できます。データと新しい埋め込みを検索するために同じモデルを使用することが重要です。以下のスクリプトは、データセットの基礎となる`ViT-B/32`モデルを利用します。
+通常、新しい画像や新しい画像キャプションのために埋め込みを作成し、データ内の類似画像/画像キャプションペアを検索したいと思います。[UDF](/sql-reference/functions/udf)を使用して、クライアントを離れることなく`target`ベクターを作成できます。データを作成し、検索のために新しい埋め込みを作成する際は、同じモデルを使用することが重要です。以下のスクリプトは、データセットの基盤となる`ViT-B/32`モデルを利用しています。
 
 ### テキスト埋め込み {#text-embeddings}
 
-まず、次のPythonスクリプトをClickHouseのデータパスの`user_scripts/`ディレクトリに保存し、実行可能にします（`chmod +x encode_text.py`）。
+最初に、次のPythonスクリプトをClickHouseデータパスの`user_scripts/`ディレクトリに保存し、実行可能にします（`chmod +x encode_text.py`）。
 
-`encode_text.py`：
+`encode_text.py`:
 
 ```python
 #!/usr/bin/python3
@@ -208,7 +210,7 @@ if __name__ == '__main__':
         sys.stdout.flush()
 ```
 
-次に、ClickHouseサーバーの設定ファイル内の`<user_defined_executable_functions_config>/path/to/*_function.xml</user_defined_executable_functions_config>`で参照される場所に`encode_text_function.xml`を作成します。
+次に、ClickHouseサーバ構成ファイルの`<user_defined_executable_functions_config>/path/to/*_function.xml</user_defined_executable_functions_config>`で参照される場所に`encode_text_function.xml`を作成します。
 
 ```xml
 <functions>
@@ -227,16 +229,16 @@ if __name__ == '__main__':
 </functions>
 ```
 
-これで、次のように簡単に使用できます：
+これで、単純に次のように使用できます：
 
 ```sql
 SELECT encode_text('cat');
 ```
-最初の実行はモデルを読み込むため遅くなりますが、繰り返し実行は早くなります。その後、出力を`SET param_target=...`にコピーし、クエリを書くのが簡単になります。
+最初の実行は遅くなりますが、モデルをロードするためですが、繰り返しの実行は速くなります。その後、出力を`SET param_target=...`にコピーして、簡単にクエリを記述できます。
 
 ### 画像埋め込み {#image-embeddings}
 
-画像埋め込みも同様に作成できますが、テキストの代わりにローカル画像へのパスをPythonスクリプトに提供します。
+画像埋め込みも同様に作成できますが、画像キャプションテキストの代わりにローカル画像へのパスをPythonスクリプトに提供します。
 
 `encode_image.py`
 

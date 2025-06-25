@@ -30,12 +30,12 @@ This example architecture is designed to provide scalability.  It includes three
 |`chnode3`|Used for ClickHouse Keeper quorum|
 
 :::note
-In production environments we strongly recommend that ClickHouse Keeper runs on dedicated hosts.  This basic configuration runs the Keeper functionality within the ClickHouse Server process. The instructions for deploying ClickHouse Keeper standalone are available in the [installation documentation](/getting-started/install.md/#install-standalone-clickhouse-keeper).
+In production environments we strongly recommend that ClickHouse Keeper runs on dedicated hosts.  This basic configuration runs the Keeper functionality within the ClickHouse Server process. The instructions for deploying ClickHouse Keeper standalone are available in the [installation documentation](/getting-started/install/install.mdx).
 :::
 
 ## Install {#install}
 
-Install Clickhouse on three servers following the [instructions for your archive type](/getting-started/install.md/#available-installation-options) (.deb, .rpm, .tar.gz, etc.). For this example, you will follow the installation instructions for ClickHouse Server and Client on all three machines.
+Install Clickhouse on three servers following the [instructions for your archive type](/getting-started/install/install.mdx) (.deb, .rpm, .tar.gz, etc.). For this example, you will follow the installation instructions for ClickHouse Server and Client on all three machines.
 
 ## Editing configuration files {#editing-configuration-files}
 

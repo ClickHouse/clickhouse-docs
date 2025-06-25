@@ -1,15 +1,20 @@
 ---
-title: 为 Go 安装 chDB
-sidebar_label: Go
-slug: /chdb/install/go
-description: 如何为 Go 安装 chDB
-keywords: [chdb, 嵌入式, clickhouse-lite, go, 安装]
+'title': '为 Go 安装 chDB'
+'sidebar_label': 'Go'
+'slug': '/chdb/install/go'
+'description': '如何为 Go 安装 chDB'
+'keywords':
+- 'chdb'
+- 'embedded'
+- 'clickhouse-lite'
+- 'go'
+- 'install'
 ---
 
 
-# 为 Go 安装 chDB
+# Installing chDB for Go
 
-## 要求 {#requirements}
+## Requirements {#requirements}
 
 安装 [libchdb](https://github.com/chdb-io/chdb):
 
@@ -17,15 +22,15 @@ keywords: [chdb, 嵌入式, clickhouse-lite, go, 安装]
 curl -sL https://lib.chdb.io | bash
 ```
 
-## 安装 {#install}
+## Install {#install}
 
-请参阅: [chdb-go](https://github.com/chdb-io/chdb-go)
+查看: [chdb-go](https://github.com/chdb-io/chdb-go)
 
-## GitHub 仓库 {#github-repository}
+## GitHub repository {#github-repository}
 
 您可以在 [chdb-io/chdb-go](https://github.com/chdb-io/chdb-go) 找到该项目的 GitHub 仓库。
 
-## 使用方法 {#usage}
+## Usage {#usage}
 
-- API 文档: [高级 API](https://github.com/chdb-io/chdb-go/blob/main/chdb.md)
-- 低级 API 文档: [低级 API](https://github.com/chdb-io/chdb-go/blob/main/lowApi.md)
+- API 文档: [High Level API](https://github.com/chdb-io/chdb-go/blob/main/chdb.md)
+- 低级 API 文档: [Low Level API](https://github.com/chdb-io/chdb-go/blob/main/lowApi.md)

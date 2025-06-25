@@ -1,19 +1,23 @@
 ---
-slug: /engines/table-engines/
-toc_folder_title: テーブルエンジン
-toc_priority: 26
-toc_title: はじめに
+'description': 'テーブルエンジンのドキュメント'
+'slug': '/engines/table-engines/'
+'toc_folder_title': 'Table Engines'
+'toc_priority': 26
+'toc_title': 'Introduction'
+'title': 'テーブルエンジン'
 ---
+
+
 
 
 # テーブルエンジン
 
-テーブルエンジン（テーブルのタイプ）は以下を決定します：
+テーブルエンジン（テーブルの種類）は、以下を決定します。
 
-- データの保存方法と場所、書き込み先、読み込み元。
-- サポートされているクエリとその方法。
+- データがどのように、どこに保存されるか、書き込む場所、読み取る場所。
+- サポートされるクエリとその方法。
 - 同時データアクセス。
-- インデックスの使用（存在する場合）。
+- 存在する場合のインデックスの使用。
 - マルチスレッドリクエスト実行が可能かどうか。
 - データレプリケーションパラメータ。
 
@@ -21,60 +25,60 @@ toc_title: はじめに
 
 ### MergeTree {#mergetree}
 
-高負荷タスクに対する最も汎用的で機能的なテーブルエンジンです。これらのエンジンが共有する特性は、迅速なデータ挿入とその後のバックグラウンドデータ処理です。 `MergeTree` ファミリーのエンジンはデータレプリケーション（[Replicated\*](/engines/table-engines/mergetree-family/replication) バージョンのエンジン）、パーティショニング、二次データスキッピングインデックスなど、他のエンジンではサポートされていないさまざまな機能をサポートしています。
+高負荷タスクに対する最も汎用的で機能的なテーブルエンジン。これらのエンジンに共通する特性は、迅速なデータ挿入と、その後のバックグラウンドでのデータ処理です。`MergeTree`ファミリーのエンジンは、データレプリケーション（[Replicated\*](/engines/table-engines/mergetree-family/replication)バージョンのエンジン）、パーティション、セカンダリデータスキッピングインデックス、その他の機能をサポートしていますが、他のエンジンではサポートされていません。
 
-ファミリー内のエンジン：
+ファミリー内のエンジン:
 
-| MergeTreeエンジン                                                                                                                       |
-|-----------------------------------------------------------------------------------------------------------------------------------------|
-| [MergeTree](/engines/table-engines/mergetree-family/mergetree)                                                              |
-| [ReplacingMergeTree](/engines/table-engines/mergetree-family/replication)                               |
-| [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree)                                       |
-| [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree)                       |
+| MergeTreeエンジン                                                                                                                         |
+|-------------------------------------------------------------------------------------------------------------------------------------------|
+| [MergeTree](/engines/table-engines/mergetree-family/mergetree)                                                          |
+| [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)                               |
+| [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree)                                     |
+| [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree)                         |
 | [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)               |
 | [VersionedCollapsingMergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) |
-| [GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree)                                |
+| [GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree)                                  |
 
 ### Log {#log}
 
-最小限の機能を持つ軽量な [エンジン](../../engines/table-engines/log-family/index.md) です。多くの小さなテーブル（約100万行まで）を迅速に書き込む必要がある場合や、後で全体として読み込む場合に最も効果的です。
+最小限の機能を持つ軽量[エンジン](../../engines/table-engines/log-family/index.md)。多くの小さなテーブル（約100万行まで）を迅速に書き込み、後で全体として読み取る必要がある場合に最も効果的です。
 
-ファミリー内のエンジン：
+ファミリー内のエンジン:
 
-| Logエンジン                                                                  |
-|-----------------------------------------------------------------------------|
+| Logエンジン                                                                |
+|----------------------------------------------------------------------------|
 | [TinyLog](/engines/table-engines/log-family/tinylog)       |
 | [StripeLog](/engines/table-engines/log-family/stripelog) |
 | [Log](/engines/table-engines/log-family/log)                   |
 
-### インテグレーションエンジン {#integration-engines}
+### 統合エンジン {#integration-engines}
 
-他のデータストレージおよび処理システムと通信するためのエンジンです。
+他のデータストレージおよび処理システムと通信するためのエンジン。
 
-ファミリー内のエンジン：
+ファミリー内のエンジン:
 
-| インテグレーションエンジン                                                              |
+| 統合エンジン                                                             |
 |---------------------------------------------------------------------------------|
-| [ODBC](../../engines/table-engines/integrations/odbc.md)                          |
-| [JDBC](../../engines/table-engines/integrations/jdbc.md)                          |
-| [MySQL](../../engines/table-engines/integrations/mysql.md)                        |
-| [MongoDB](../../engines/table-engines/integrations/mongodb.md)                    |
-| [Redis](../../engines/table-engines/integrations/redis.md)                        |
-| [HDFS](../../engines/table-engines/integrations/hdfs.md)                          |
-| [S3](../../engines/table-engines/integrations/s3.md)                              |
-| [Kafka](../../engines/table-engines/integrations/kafka.md)                        |
+| [ODBC](../../engines/table-engines/integrations/odbc.md)                        |
+| [JDBC](../../engines/table-engines/integrations/jdbc.md)                        |
+| [MySQL](../../engines/table-engines/integrations/mysql.md)                      |
+| [MongoDB](../../engines/table-engines/integrations/mongodb.md)                  |
+| [Redis](../../engines/table-engines/integrations/redis.md)                      |
+| [HDFS](../../engines/table-engines/integrations/hdfs.md)                        |
+| [S3](../../engines/table-engines/integrations/s3.md)                            |
+| [Kafka](../../engines/table-engines/integrations/kafka.md)                      |
 | [EmbeddedRocksDB](../../engines/table-engines/integrations/embedded-rocksdb.md) |
-| [RabbitMQ](../../engines/table-engines/integrations/rabbitmq.md)                  |
-| [PostgreSQL](../../engines/table-engines/integrations/postgresql.md)              |
-| [S3Queue](../../engines/table-engines/integrations/s3queue.md)                    |
-| [TimeSeries](../../engines/table-engines/integrations/time-series.md)             |
+| [RabbitMQ](../../engines/table-engines/integrations/rabbitmq.md)                |
+| [PostgreSQL](../../engines/table-engines/integrations/postgresql.md)            |
+| [S3Queue](../../engines/table-engines/integrations/s3queue.md)                  |
+| [TimeSeries](../../engines/table-engines/integrations/time-series.md)           |
 
 ### 特殊エンジン {#special-engines}
 
-ファミリー内のエンジン：
+ファミリー内のエンジン:
 
-| 特殊エンジン                                                 |
-|------------------------------------------------------------|
+| 特殊エンジン                                               |
+|---------------------------------------------------------------|
 | [Distributed](/engines/table-engines/special/distributed)     |
 | [Dictionary](/engines/table-engines/special/dictionary)       |
 | [Merge](/engines/table-engines/special/merge)                 |
@@ -90,14 +94,14 @@ toc_title: はじめに
 | [External Data](/engines/table-engines/special/external-data) |
 | [GenerateRandom](/engines/table-engines/special/generate)     |
 | [KeeperMap](/engines/table-engines/special/keeper-map)        |
-| [FileLog](/engines/table-engines/special/filelog)             |
+| [FileLog](/engines/table-engines/special/filelog)                                                   |
 
-## 仮想カラム {#table_engines-virtual_columns}
+## バーチャルカラム {#table_engines-virtual_columns}
 
-仮想カラムは、エンジンソースコードで定義された不可欠なテーブルエンジン属性です。
+バーチャルカラムは、エンジンソースコードで定義されたテーブルエンジンの不可欠な属性です。
 
-`CREATE TABLE` クエリで仮想カラムを指定するべきではなく、`SHOW CREATE TABLE` および `DESCRIBE TABLE` クエリの結果にも表示されません。仮想カラムは読み取り専用であり、データを挿入することはできません。
+`CREATE TABLE`クエリではバーチャルカラムを指定してはいけません。`SHOW CREATE TABLE`や`DESCRIBE TABLE`クエリの結果にも表示されません。バーチャルカラムは読み取り専用であり、そこにデータを挿入することはできません。
 
-仮想カラムからデータを選択するには、`SELECT` クエリでその名前を指定する必要があります。 `SELECT *` では仮想カラムの値は返されません。
+バーチャルカラムからデータを選択するには、その名前を`SELECT`クエリで指定する必要があります。`SELECT *`ではバーチャルカラムの値は返されません。
 
-テーブルに仮想カラムと同じ名前のカラムを作成すると、その仮想カラムにアクセスできなくなります。これを行うことは推奨されません。衝突を避けるために、仮想カラム名には通常アンダースコアがプレフィックスとして付けられます。
+テーブルにテーブルのバーチャルカラムのいずれかと同じ名前のカラムがある場合、バーチャルカラムはアクセスできなくなります。これを行うことはお勧めしません。競合を避けるために、バーチャルカラム名には通常アンダースコアがプレフィックスとして付けられます。

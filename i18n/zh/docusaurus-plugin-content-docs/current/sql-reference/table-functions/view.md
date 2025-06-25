@@ -1,35 +1,35 @@
 ---
-slug: /sql-reference/table-functions/view
-sidebar_position: 210
-sidebar_label: view
-title: view
-description: "将子查询转化为表。该函数实现视图。"
+'description': '将子查询转换为表。该函数实现视图。'
+'sidebar_label': '视图'
+'sidebar_position': 210
+'slug': '/sql-reference/table-functions/view'
+'title': '视图'
 ---
 
 
 # view 表函数
 
-将子查询转化为表。该函数实现视图（请参见 [CREATE VIEW](/sql-reference/statements/create/view)）。生成的表不存储数据，而只存储指定的 `SELECT` 查询。在从表中读取数据时，ClickHouse 执行查询并从结果中删除所有不必要的列。
+将子查询转换为一个表。该函数实现了视图（请参见 [CREATE VIEW](/sql-reference/statements/create/view)）。生成的表不存储数据，而仅存储指定的 `SELECT` 查询。在从表中读取数据时，ClickHouse 执行查询并从结果中删除所有不必要的列。
 
-**语法**
+## 语法 {#syntax}
 
-``` sql
+```sql
 view(subquery)
 ```
 
-**参数**
+## 参数 {#arguments}
 
 - `subquery` — `SELECT` 查询。
 
-**返回值**
+## 返回值 {#returned_value}
 
-- 一张表。
+- 一个表。
 
-**示例**
+## 示例 {#examples}
 
 输入表：
 
-``` text
+```text
 ┌─id─┬─name─────┬─days─┐
 │  1 │ January  │   31 │
 │  2 │ February │   29 │
@@ -40,13 +40,13 @@ view(subquery)
 
 查询：
 
-``` sql
+```sql
 SELECT * FROM view(SELECT name FROM months);
 ```
 
 结果：
 
-``` text
+```text
 ┌─name─────┐
 │ January  │
 │ February │
@@ -55,16 +55,16 @@ SELECT * FROM view(SELECT name FROM months);
 └──────────┘
 ```
 
-您可以将 `view` 函数作为 [remote](/sql-reference/table-functions/remote) 和 [cluster](/sql-reference/table-functions/cluster) 表函数的参数使用：
+您可以将 `view` 函数用作 [remote](/sql-reference/table-functions/remote) 和 [cluster](/sql-reference/table-functions/cluster) 表函数的参数：
 
-``` sql
+```sql
 SELECT * FROM remote(`127.0.0.1`, view(SELECT a, b, c FROM table_name));
 ```
 
-``` sql
+```sql
 SELECT * FROM cluster(`cluster_name`, view(SELECT a, b, c FROM table_name));
 ```
 
-**另见**
+## 相关 {#related}
 
-- [View 表引擎](/engines/table-engines/special/view/)
+- [视图表引擎](/engines/table-engines/special/view/)

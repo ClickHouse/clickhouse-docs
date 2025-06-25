@@ -1,23 +1,27 @@
 ---
-slug: /operations/utilities/clickhouse-format
-title: 'clickhouse-format'
+'description': '使用格式化工具处理 ClickHouse 数据格式的指南'
+'slug': '/operations/utilities/clickhouse-format'
+'title': 'clickhouse-format'
 ---
+
+
+# clickhouse-format 工具
 
 允许格式化输入查询。
 
-键：
+选项：
 
-- `--help` 或 `-h` — 生成帮助信息。
+- `--help` 或 `-h` — 显示帮助信息。
 - `--query` — 格式化任何长度和复杂性的查询。
-- `--hilite` — 使用 ANSI 终端转义序列添加语法高亮。
-- `--oneline` — 格式化为单行。
-- `--max_line_length` — 格式化为长度小于指定值的单行查询。
+- `--hilite` — 添加 ANSI 终端转义序列的语法高亮。
+- `--oneline` — 以单行格式输出。
+- `--max_line_length` — 格式化单行查询，长度小于指定值。
 - `--comments` — 保留输出中的注释。
-- `--quiet` 或 `-q` — 仅检查语法，成功时无输出。
+- `--quiet` 或 `-q` — 仅检查语法，成功时不输出。
 - `--multiquery` 或 `-n` — 允许在同一文件中包含多个查询。
 - `--obfuscate` — 混淆而不是格式化。
-- `--seed <string>` — 任意字符串的种子，决定混淆结果。
-- `--backslash` — 在格式化查询的每行末尾添加反斜杠。 当您从网页或其他地方复制多行查询并希望在命令行中执行时，这非常有用。
+- `--seed <string>` — 确定混淆结果的任意字符串种子。
+- `--backslash` — 在格式化查询的每行末尾添加反斜杠。当您从网页或其他地方复制多行查询并希望在命令行中执行时，这非常有用。
 
 ## 示例 {#examples}
 

@@ -1,38 +1,42 @@
 ---
-slug: /sql-reference/window-functions/nth_value
-sidebar_label: nth_value
-sidebar_position: 5
+'description': 'nth_value ウィンドウ関数の文書化'
+'sidebar_label': 'nth_value'
+'sidebar_position': 5
+'slug': '/sql-reference/window-functions/nth_value'
+'title': 'nth_value'
 ---
+
+
 
 
 # nth_value
 
-順序付けられたフレーム内で、n番目の行（オフセット）に対して評価された最初の非NULL値を返します。
+nth_value は、順序付けられたフレーム内の nth 行（オフセット）に対して評価された最初の非 NULL 値を返します。
 
 **構文**
 
 ```sql
 nth_value (x, offset)
   OVER ([[PARTITION BY grouping_column] [ORDER BY sorting_column] 
-        [ROWS or RANGE expression_to_bound_rows_withing_the_group]] | [window_name])
+        [ROWS または RANGE expression_to_bound_rows_withing_the_group]] | [window_name])
 FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-ウィンドウ関数の構文の詳細については、[ウィンドウ関数 - 構文](./index.md/#syntax)を参照してください。
+ウィンドウ関数の構文の詳細については、[ウィンドウ関数 - 構文](./index.md/#syntax)をご覧ください。
 
-**パラメータ**
+**パラメーター**
 
 - `x` — カラム名。
-- `offset` — 現在の行に対して評価するn番目の行。
+- `offset` — 現在の行に対して評価する nth 行。
 
-**返される値**
+**戻り値**
 
-- 順序付けられたフレーム内で、n番目の行（オフセット）に対して評価された最初の非NULL値。
+- 順序付けられたフレーム内の nth 行（オフセット）に対して評価された最初の非 NULL 値。
 
 **例**
 
-この例では、`nth_value` 関数を使用して、プレミアリーグのサッカー選手の給料の架空のデータセットから3番目に高い給料を見つけます。
+この例では、`nth-value` 関数を使用して、プレミアリーグのサッカー選手の架空の給与データセットから三番目に高い給与を見つけます。
 
 クエリ:
 

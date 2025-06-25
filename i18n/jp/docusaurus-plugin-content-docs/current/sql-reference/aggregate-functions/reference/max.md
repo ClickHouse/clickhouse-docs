@@ -1,11 +1,13 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/max
-sidebar_position: 162
-title: max
-description: "値のグループ内で最大値を計算する集約関数。"
+'description': 'Aggregate function that calculates the maximum across a group of values.'
+'sidebar_position': 162
+'slug': '/sql-reference/aggregate-functions/reference/max'
+'title': 'max'
 ---
 
-値のグループ内で最大値を計算する集約関数。
+
+
+値のグループ間で最大値を計算する集約関数です。
 
 例:
 

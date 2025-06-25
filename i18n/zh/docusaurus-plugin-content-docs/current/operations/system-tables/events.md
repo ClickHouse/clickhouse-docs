@@ -1,14 +1,17 @@
 ---
-description: '包含有关系统中发生的事件数量的信息的系统表。'
-slug: /operations/system-tables/events
-title: 'system.events'
-keywords: ['系统表', '事件']
+'description': '系统表，包含关于系统中发生的事件数量的信息。'
+'keywords':
+- 'system table'
+- 'events'
+'slug': '/operations/system-tables/events'
+'title': 'system.events'
 ---
+
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
-包含有关系统中发生的事件数量的信息。例如，在该表中，您可以找到自ClickHouse服务器启动以来处理的`SELECT`查询数量。
+包含系统中发生的事件数量的信息。例如，在该表中，您可以找到自 ClickHouse 服务器启动以来处理的 `SELECT` 查询的数量。
 
 列：
 
@@ -21,23 +24,23 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
 **示例**
 
-``` sql
+```sql
 SELECT * FROM system.events LIMIT 5
 ```
 
-``` text
+```text
 ┌─event─────────────────────────────────┬─value─┬─description────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ Query                                 │    12 │ 被解释并可能执行的查询数量。不包括解析失败或由于AST大小限制、配额限制或同时运行查询数量限制而被拒绝的查询。可能包括ClickHouse本身发起的内部查询。不计算子查询。                  │
-│ SelectQuery                           │     8 │ 与Query相同，但仅针对SELECT查询。                                                                                                                                                                                                                │
-│ FileOpen                              │    73 │ 打开文件的数量。                                                                                                                                                                                                                                    │
-│ ReadBufferFromFileDescriptorRead      │   155 │ 从文件描述符读取的读取次数（read/pread）。不包括套接字。                                                                                                                                                                             │
-│ ReadBufferFromFileDescriptorReadBytes │  9931 │ 从文件描述符读取的字节数。如果文件被压缩，这将显示压缩数据的大小。                                                                                                                                              │
+│ Query                                 │    12 │ Number of queries to be interpreted and potentially executed. Does not include queries that failed to parse or were rejected due to AST size limits, quota limits or limits on the number of simultaneously running queries. May include internal queries initiated by ClickHouse itself. Does not count subqueries.                  │
+│ SelectQuery                           │     8 │ Same as Query, but only for SELECT queries.                                                                                                                                                                                                                │
+│ FileOpen                              │    73 │ Number of files opened.                                                                                                                                                                                                                                    │
+│ ReadBufferFromFileDescriptorRead      │   155 │ Number of reads (read/pread) from a file descriptor. Does not include sockets.                                                                                                                                                                             │
+│ ReadBufferFromFileDescriptorReadBytes │  9931 │ Number of bytes read from file descriptors. If the file is compressed, this will show the compressed data size.                                                                                                                                              │
 └───────────────────────────────────────┴───────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**参见其他信息**
+**另见**
 
 - [system.asynchronous_metrics](/operations/system-tables/asynchronous_metrics) — 包含定期计算的指标。
 - [system.metrics](/operations/system-tables/metrics) — 包含即时计算的指标。
-- [system.metric_log](/operations/system-tables/metric_log) — 包含表`system.metrics`和`system.events`的指标值历史。
-- [Monitoring](../../operations/monitoring.md) — ClickHouse监控的基本概念。
+- [system.metric_log](/operations/system-tables/metric_log) — 包含来自表 `system.metrics` 和 `system.events` 的指标值历史。
+- [监控](../../operations/monitoring.md) — ClickHouse 监控的基本概念。

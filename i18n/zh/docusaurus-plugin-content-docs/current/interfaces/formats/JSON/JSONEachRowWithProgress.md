@@ -1,19 +1,21 @@
 ---
-title: 'JSONEachRowWithProgress'
-slug: '/interfaces/formats/JSONEachRowWithProgress'
-keywords: ['JSONEachRowWithProgress']
-input_format: false
-output_format: true
-alias: []
+'alias': []
+'description': 'JSONEachRowWithProgress 格式的文档'
+'input_format': false
+'keywords':
+- 'JSONEachRowWithProgress'
+'output_format': true
+'slug': '/interfaces/formats/JSONEachRowWithProgress'
+'title': 'JSONEachRowWithProgress'
 ---
 
-| 输入 | 输出 | 别名 |
+| Input | Output | Alias |
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
 ## 描述 {#description}
 
-与 [`JSONEachRow`](./JSONEachRow.md)/[`JSONStringsEachRow`](./JSONStringsEachRow.md) 的不同之处在于，ClickHouse 还会将进度信息作为 JSON 值输出。
+与 [`JSONEachRow`](./JSONEachRow.md)/[`JSONStringsEachRow`](./JSONStringsEachRow.md) 的不同之处在于 ClickHouse 还会以 JSON 值的形式提供进度信息。
 
 ## 示例用法 {#example-usage}
 

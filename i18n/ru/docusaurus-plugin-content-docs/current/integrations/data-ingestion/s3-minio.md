@@ -1,19 +1,21 @@
 ---
-sidebar_label: MinIO
+sidebar_label: 'MinIO'
 sidebar_position: 6
 slug: /integrations/minio
-description: Использование MinIO
+description: 'Страница, описывающая, как использовать MinIO с ClickHouse'
+title: 'Использование MinIO'
 ---
 
-import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 # Использование MinIO
 
+import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
+
 <SelfManaged />
 
-Все функции и таблицы S3 совместимы с [MinIO](https://min.io/). Пользователи могут испытывать более высокую пропускную способность на самоуправляемых хранилищах MinIO, особенно в случае оптимальной сетевой локальности.
+Все функции S3 и таблицы совместимы с [MinIO](https://min.io/). Пользователи могут испытывать повышенную пропускную способность на самостоятельно размещённых хранилищах MinIO, особенно в случае оптимальной локальности сети.
 
-Настройка для MergeTree также совместима, с некоторыми незначительными изменениями в конфигурации:
+Также конфигурация с поддерживаемыми деревьями слияния совместима, с некоторыми незначительными изменениями в конфигурации:
 
 ```xml
 <clickhouse>
@@ -41,5 +43,5 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
 ```
 
 :::tip
-Обратите внимание на двойной слэш в теге endpoint, это необходимо для указания корня ведра.
+Обратите внимание на двойной слэш в теге endpoint, он нужен для обозначения корня ведра.
 :::

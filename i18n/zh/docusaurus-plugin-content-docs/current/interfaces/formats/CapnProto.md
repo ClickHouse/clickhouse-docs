@@ -1,31 +1,34 @@
 ---
-title: 'CapnProto'
-slug: '/interfaces/formats/CapnProto'
-keywords: ['CapnProto']
-input_format: true
-output_format: true
-alias: []
+'alias': []
+'description': 'Capnproto 的文档'
+'input_format': true
+'keywords':
+- 'CapnProto'
+'output_format': true
+'slug': '/interfaces/formats/CapnProto'
+'title': 'CapnProto'
 ---
+
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge/>
 
-| 输入  | 输出  | 别名 |
+| 输入 | 输出 | 别名 |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## 描述 {#description}
 
-`CapnProto` 格式是一种二进制消息格式，类似于 [`Protocol Buffers`](https://developers.google.com/protocol-buffers/) 格式和 [Thrift](https://en.wikipedia.org/wiki/Apache_Thrift)，但与 [JSON](./JSON/JSON.md) 或 [MessagePack](https://msgpack.org/) 不同。
-CapnProto 消息是严格类型且不具自描述性的，这意味着它们需要一个外部模式描述。该模式在查询时动态应用并且针对每个查询进行缓存。
+`CapnProto` 格式是一种类似于 [`Protocol Buffers`](https://developers.google.com/protocol-buffers/) 格式和 [Thrift](https://en.wikipedia.org/wiki/Apache_Thrift) 的二进制消息格式，但与 [JSON](./JSON/JSON.md) 或 [MessagePack](https://msgpack.org/) 不同。
+CapnProto 消息是严格类型且不自描述，这意味着它们需要外部模式描述。该模式在查询时动态应用并缓存。
 
 另请参见 [格式模式](/interfaces/formats/#formatschema)。
 
 ## 数据类型匹配 {#data_types-matching-capnproto}
 
-下表显示了支持的数据类型以及它们如何与 ClickHouse 的 [数据类型](/sql-reference/data-types/index.md) 在 `INSERT` 和 `SELECT` 查询中进行匹配。
+下表展示了支持的数据类型，以及它们在 `INSERT` 和 `SELECT` 查询中如何匹配 ClickHouse 的 [数据类型](/sql-reference/data-types/index.md)。
 
-| CapnProto 数据类型 (`INSERT`)                       | ClickHouse 数据类型                                                                                                                                                           | CapnProto 数据类型 (`SELECT`)                       |
+| CapnProto 数据类型（`INSERT`）                       | ClickHouse 数据类型                                                                                                                                                           | CapnProto 数据类型（`SELECT`）                       |
 |------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------|
 | `UINT8`, `BOOL`                                      | [UInt8](/sql-reference/data-types/int-uint.md)                                                                                                                         | `UINT8`                                              |
 | `INT8`                                               | [Int8](/sql-reference/data-types/int-uint.md)                                                                                                                          | `INT8`                                               |
@@ -48,9 +51,9 @@ CapnProto 消息是严格类型且不具自描述性的，这意味着它们需�
 | `DATA`                                               | [Decimal128/Decimal256](/sql-reference/data-types/decimal.md)                                                                                                          | `DATA`                                               |
 | `STRUCT(entries LIST(STRUCT(key Key, value Value)))` | [Map](/sql-reference/data-types/map.md)                                                                                                                                | `STRUCT(entries LIST(STRUCT(key Key, value Value)))` |
 
-- 整数类型之间可以在输入/输出时进行转换。
-- 在 CapnProto 格式中使用 `Enum` 时，请使用 [format_capn_proto_enum_comparising_mode](/operations/settings/settings-formats.md/#format_capn_proto_enum_comparising_mode) 设置。
-- 数组可以嵌套，并且可以以 `Nullable` 类型的值为参数。`Tuple` 和 `Map` 类型也可以被嵌套。
+- 整数类型可以在输入/输出过程中互相转换。
+- 使用 CapnProto 格式处理 `Enum` 时，请使用设置 [format_capn_proto_enum_comparising_mode](/operations/settings/settings-formats.md/#format_capn_proto_enum_comparising_mode)。
+- 数组可以嵌套，可以将 `Nullable` 类型作为参数。`Tuple` 和 `Map` 类型也可以嵌套。
 
 ## 示例用法 {#example-usage}
 
@@ -62,7 +65,7 @@ CapnProto 消息是严格类型且不具自描述性的，这意味着它们需�
 $ cat capnproto_messages.bin | clickhouse-client --query "INSERT INTO test.hits SETTINGS format_schema = 'schema:Message' FORMAT CapnProto"
 ```
 
-其中 `schema.capnp` 的内容如下所示：
+其中 `schema.capnp` 的内容如下：
 
 ```capnp
 struct Message {
@@ -71,7 +74,7 @@ struct Message {
 }
 ```
 
-您可以从 ClickHouse 表中选择数据，并使用以下命令将其保存到某个文件中，以 `CapnProto` 格式输出：
+您可以从 ClickHouse 表中选择数据并使用以下命令将它们保存为 `CapnProto` 格式的文件：
 
 ```bash
 $ clickhouse-client --query = "SELECT * FROM test.hits FORMAT CapnProto SETTINGS format_schema = 'schema:Message'"
@@ -79,7 +82,7 @@ $ clickhouse-client --query = "SELECT * FROM test.hits FORMAT CapnProto SETTINGS
 
 ### 使用自动生成的模式 {#using-autogenerated-capn-proto-schema}
 
-如果您没有外部的 `CapnProto` 模式，仍然可以使用自动生成的模式输入/输出 `CapnProto` 格式的数据。
+如果您没有外部的 `CapnProto` 模式，您仍然可以使用自动生成的模式在 `CapnProto` 格式中输出/输入数据。
 
 例如：
 
@@ -89,7 +92,7 @@ FORMAT CapnProto
 SETTINGS format_capn_proto_use_autogenerated_schema=1
 ```
 
-在这种情况下，ClickHouse 将根据表结构自动生成 CapnProto 模式，并使用该模式以 CapnProto 格式序列化数据，使用的函数为 [structureToCapnProtoSchema](/sql-reference/functions/other-functions.md#structure_to_capn_proto_schema)。
+在这种情况下，ClickHouse 将根据表结构使用函数 [structureToCapnProtoSchema](/sql-reference/functions/other-functions.md#structure_to_capn_proto_schema) 自动生成 CapnProto 模式，并使用此模式将数据序列化为 CapnProto 格式。
 
 您还可以读取具有自动生成模式的 CapnProto 文件（在这种情况下，该文件必须使用相同的模式创建）：
 
@@ -99,9 +102,9 @@ $ cat hits.bin | clickhouse-client --query "INSERT INTO test.hits SETTINGS forma
 
 ## 格式设置 {#format-settings}
 
-设置 [`format_capn_proto_use_autogenerated_schema`](../../operations/settings/settings-formats.md/#format_capn_proto_use_autogenerated_schema) 默认是启用的，并在未设置 [`format_schema`](/interfaces/formats#formatschema) 时适用。
+设置 [`format_capn_proto_use_autogenerated_schema`](../../operations/settings/settings-formats.md/#format_capn_proto_use_autogenerated_schema) 默认启用，并适用于未设置 [`format_schema`](/interfaces/formats#formatschema) 的情况。
 
-您还可以在输入/输出期间使用设置 [`output_format_schema`](/operations/settings/formats#output_format_schema) 将自动生成的模式保存到文件中。
+您还可以使用设置 [`output_format_schema`](/operations/settings/formats#output_format_schema) 在输入/输出过程中将自动生成的模式保存到文件中。
 
 例如：
 
@@ -112,5 +115,4 @@ SETTINGS
     format_capn_proto_use_autogenerated_schema=1,
     output_format_schema='path/to/schema/schema.capnp'
 ```
-
-在这种情况下，自动生成的 `CapnProto` 模式将被保存到文件 `path/to/schema/schema.capnp` 中。
+在这种情况下，自动生成的 `CapnProto` 模式将保存在文件 `path/to/schema/schema.capnp` 中。

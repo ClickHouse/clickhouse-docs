@@ -1,8 +1,8 @@
 ---
-title: 'varSamp'
-slug: /sql-reference/aggregate-functions/reference/varSamp
-sidebar_position: 212
-description: '计算数据集的样本方差。'
+'description': '计算数据集的样本方差。'
+'sidebar_position': 212
+'slug': '/sql-reference/aggregate-functions/reference/varSamp'
+'title': 'varSamp'
 ---
 
 ## varSamp {#varsamp}
@@ -19,11 +19,11 @@ varSamp(x)
 
 **参数**
 
-- `x`: 你想要计算样本方差的总体。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md)。
+- `x`: 您要计算样本方差的总体。 [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md)。
 
 **返回值**
 
-- 返回输入数据集 `x` 的样本方差。[Float64](../../data-types/float.md)。
+- 返回输入数据集 `x` 的样本方差。 [Float64](../../data-types/float.md)。
 
 **实现细节**
 
@@ -35,11 +35,11 @@ $$
 
 其中：
 
-- `x` 是数据集中的每个单独数据点。
+- `x` 是数据集中每个单独数据点。
 - `mean(x)` 是数据集的算术平均值。
-- `n` 是数据集中的数据点数量。
+- `n` 是数据集中数据点的数量。
 
-该函数假设输入数据集代表了更大总体的一个样本。如果你想计算整个总体的方差（当你拥有完整的数据集时），应该使用 [`varPop`](../reference/varpop.md) 。
+该函数假定输入数据集代表来自更大总体的样本。如果您想计算整个总体的方差（当您拥有完整数据集时），应使用 [`varPop`](../reference/varpop.md) 代替。
 
 **示例**
 

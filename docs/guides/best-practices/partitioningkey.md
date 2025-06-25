@@ -5,6 +5,6 @@ title: 'Choose a Low Cardinality Partitioning Key'
 description: 'Use a low cardinality partitioning key or avoid using any partitioning key for your table.'
 ---
 
-import Content from '@site/docs/cloud/bestpractices/partitioningkey.md';
+import Content from '@site/docs/best-practices/partitioning_keys.mdx';
 
 <Content />

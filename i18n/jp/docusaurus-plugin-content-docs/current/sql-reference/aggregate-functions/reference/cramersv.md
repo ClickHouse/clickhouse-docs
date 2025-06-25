@@ -1,43 +1,48 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/cramersv
-sidebar_position: 127
-title: "cramersV"
-description: "`cramersV` 関数の結果は、変数間に関連がないことを示す 0 から 1 までの範囲であり、各値が他の値によって完全に決定される場合のみ 1 に達することができます。それは、2 つの変数間の関連性を最大可能な変動の割合として見ることができます。"
+'description': 'The result of the `cramersV` function ranges from 0 (corresponding
+  to no association between the variables) to 1 and can reach 1 only when each value
+  is completely determined by the other. It may be viewed as the association between
+  two variables as a percentage of their maximum possible variation.'
+'sidebar_position': 127
+'slug': '/sql-reference/aggregate-functions/reference/cramersv'
+'title': 'cramersV'
 ---
+
+
 
 
 # cramersV
 
-[Cramer's V](https://en.wikipedia.org/wiki/Cram%C3%A9r%27s_V)（時には Cramer's phi とも呼ばれます）は、テーブル内の 2 つのカラム間の関連性を測定する指標です。`cramersV` 関数の結果は、変数間に関連がないことを示す 0 から 1 までの範囲であり、各値が他の値によって完全に決定される場合のみ 1 に達することができます。それは、2 つの変数間の関連性を最大可能な変動の割合として見ることができます。
+[Cramer's V](https://en.wikipedia.org/wiki/Cram%C3%A9r%27s_V)（時々Cramer's phiと呼ばれる）は、テーブル内の二つのカラム間の関連性を測定する指標です。`cramersV`関数の結果は、変数間に関連がない場合に相当する0から1までの範囲で、各値が互いに完全に決定される場合にのみ1に達することができます。この指標は、二つの変数間の関連性をその最大可能変動の割合として見ることができます。
 
 :::note
-Cramer's V のバイアス補正バージョンについては、[cramersVBiasCorrected](./cramersvbiascorrected.md) を参照してください。
+バイアス修正されたCramer's Vのバージョンについては、[cramersVBiasCorrected](./cramersvbiascorrected.md)を参照してください。
 :::
 
 **構文**
 
-``` sql
+```sql
 cramersV(column1, column2)
 ```
 
 **パラメータ**
 
 - `column1`: 比較する最初のカラム。
-- `column2`: 比較する2番目のカラム。
+- `column2`: 比較する二番目のカラム。
 
 **返される値**
 
-- カラムの値間に関連がない場合は 0、完全な関連がある場合は 1 となる値。
+- カラムの値間に関連がない場合に相当する0から（完全な関連）1までの値。
 
-タイプ: いつでも [Float64](../../../sql-reference/data-types/float.md)。
+タイプ: いつも [Float64](../../../sql-reference/data-types/float.md)。
 
 **例**
 
-以下で比較される 2 つのカラムは相互に関連がないため、`cramersV` の結果は 0 です：
+以下の二つのカラムは互いに関連がないため、`cramersV`の結果は0です：
 
 クエリ:
 
-``` sql
+```sql
 SELECT
     cramersV(a, b)
 FROM
@@ -58,7 +63,7 @@ FROM
 └────────────────┘
 ```
 
-以下の 2 つのカラムはかなり近い関連を持っているため、`cramersV` の結果は高い値になります：
+以下の二つのカラムはかなり密接に関連しているため、`cramersV`の結果は高い値になります：
 
 ```sql
 SELECT

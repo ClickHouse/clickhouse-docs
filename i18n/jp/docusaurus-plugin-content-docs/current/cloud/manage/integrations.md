@@ -1,31 +1,34 @@
 ---
-sidebar_label: インテグレーション
-slug: /manage/integrations
-title: インテグレーション
+'sidebar_label': 'Integrations'
+'slug': '/manage/integrations'
+'title': 'Integrations'
+'description': 'Integrations for ClickHouse'
 ---
 
-ClickHouseのインテグレーションの完全なリストを確認するには、[このページ](/integrations)をご覧ください。
 
-## ClickHouse Cloudの独自インテグレーション {#proprietary-integrations-for-clickhouse-cloud}
 
-ClickHouseに利用可能な多数のインテグレーションに加えて、ClickHouse Cloudにのみ利用可能な独自のインテグレーションもいくつかあります。
+To see a full list of integrations for ClickHouse, please see [this page](/integrations).
+
+## Proprietary Integrations for ClickHouse Cloud {#proprietary-integrations-for-clickhouse-cloud}
+
+Besides the dozens of integrations available for ClickHouse, there are also some proprietary integrations only available for ClickHouse Cloud:
 
 ### ClickPipes {#clickpipes}
 
-[ClickPipes](/integrations/clickpipes)は、シンプルなウェブベースのUIを使用してデータをClickHouse Cloudに取り込むためのマネージドインテグレーションプラットフォームです。現在、Apache Kafka、S3、GCS、およびAmazon Kinesisをサポートしており、今後さらに多くのインテグレーションが登場する予定です。
+[ClickPipes](/integrations/clickpipes)は、シンプルなWebベースのUIを使用してClickHouse Cloudにデータを取り込む管理された統合プラットフォームです。現在、Apache Kafka、S3、GCS、Amazon Kinesisをサポートしており、さらに多くの統合が近日中に登場予定です。
 
-### ClickHouse Cloud用のLooker Studio {#looker-studio-for-clickhouse-cloud}
+### Looker Studio for ClickHouse Cloud {#looker-studio-for-clickhouse-cloud}
 
-[Looker Studio](https://lookerstudio.google.com/)は、Googleが提供する人気のビジネスインテリジェンステoolです。Looker Studioは現在、ClickHouseコネクタを提供していませんが、MySQLワイヤープロトコルを使用してClickHouseに接続します。
+[Looker Studio](https://lookerstudio.google.com/)は、Googleが提供する人気のビジネスインテリジェンスツールです。Looker Studioは現在ClickHouseコネクタを提供しておらず、代わりにMySQLワイヤプロトコルに依存してClickHouseに接続します。
 
-Looker Studioは、[MySQLインターフェース](/interfaces/mysql)を有効にすることでClickHouse Cloudに接続できます。Looker StudioをClickHouse Cloudに接続する方法の詳細については、[このページ](/interfaces/mysql#enabling-the-mysql-interface-on-clickhouse-cloud)をご覧ください。
+Looker Studioは、[MySQLインターフェース](/interfaces/mysql)を有効にすることでClickHouse Cloudに接続できます。Looker StudioをClickHouse Cloudに接続する方法の詳細については、[こちらのページ](/interfaces/mysql#enabling-the-mysql-interface-on-clickhouse-cloud)をご覧ください。
 
-### MySQLインターフェース {#mysql-interface}
+### MySQL Interface {#mysql-interface}
 
-現在、いくつかのアプリケーションはClickHouseワイヤープロトコルをサポートしていません。これらのアプリケーションでClickHouse Cloudを使用するには、Cloud Consoleを通じてMySQLワイヤープロトコルを有効にすることができます。Cloud Consoleを介してMySQLワイヤープロトコルを有効にする方法の詳細については、[このページ](/interfaces/mysql#enabling-the-mysql-interface-on-clickhouse-cloud)をご覧ください。
+現在、一部のアプリケーションはClickHouseワイヤプロトコルをサポートしていません。これらのアプリケーションでClickHouse Cloudを使用するには、Cloud Consoleを通じてMySQLワイヤプロトコルを有効にすることができます。MySQLワイヤプロトコルをCloud Consoleを通じて有効にする方法の詳細については、[こちらのページ](/interfaces/mysql#enabling-the-mysql-interface-on-clickhouse-cloud)をご覧ください。
 
-## サポートされていないインテグレーション {#unsupported-integrations}
+## Unsupported Integrations {#unsupported-integrations}
 
-以下のインテグレーションの機能は、現在ClickHouse Cloudで利用できない experimental features です。これらの機能をアプリケーションでサポートする必要がある場合は、support@clickhouse.comまでご連絡ください。
+次の統合機能は、現時点でClickHouse Cloudでは利用できません。これらは実験的機能です。アプリケーションでこれらの機能をサポートする必要がある場合は、support@clickhouse.comまでお問い合わせください。
 
 - [MaterializedPostgreSQL](/engines/table-engines/integrations/materialized-postgresql)

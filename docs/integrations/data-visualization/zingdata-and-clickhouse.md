@@ -2,9 +2,10 @@
 sidebar_label: 'Zing Data'
 sidebar_position: 206
 slug: /integrations/zingdata
-keywords: ['clickhouse', 'Zing Data', 'connect', 'integrate', 'ui']
+keywords: ['Zing Data']
 description: 'Zing Data is simple social business intelligence for ClickHouse, made for iOS, Android and the web.'
 title: 'Connect Zing Data to ClickHouse'
+show_related_blogs: true
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
@@ -88,7 +89,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ## Related Content {#related-content}
 
-- Blog: [Visualizing Data with ClickHouse - Zing Data](https://getzingdata.com/blog/zing-adds-support-for-clickhouse-as-a-data-source/)
 - [Documentation](https://docs.getzingdata.com/docs/)
 - [Quick Start](https://getzingdata.com/quickstart/)
 - Guide to [Create Dashboards](https://getzingdata.com/blog/new-feature-create-multi-question-dashboards/)

@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'ClickPipes for Postgres FAQ'
+sidebar_label: 'FAQ'
 description: 'Frequently asked questions about ClickPipes for Postgres.'
 slug: /integrations/clickpipes/postgres/faq
 sidebar_position: 2
@@ -40,11 +40,11 @@ Yes! ClickPipes for Postgres offers two ways to connect to databases in private 
    - Works across all regions
 
 2. **AWS PrivateLink**
-   - Available in three AWS regions:
+   - Available in three AWS regions: 
      - us-east-1
      - us-east-2 
      - eu-central-1
-   - For detailed setup instructions, see our [PrivateLink documentation](/knowledgebase/aws-privatelink-setup-for-clickpipes#requirements)
+   - For detailed setup instructions, see our [PrivateLink documentation](/knowledgebase/aws-privatelink-setup-for-clickpipes)
    - For regions where PrivateLink is not available, please use SSH tunneling
 
 ### How do you handle UPDATEs and DELETEs? {#how-do-you-handle-updates-and-deletes}
@@ -64,7 +64,7 @@ Please refer to the [ClickPipes for Postgres: Schema Changes Propagation Support
 
 ### What are the costs for ClickPipes for Postgres CDC? {#what-are-the-costs-for-clickpipes-for-postgres-cdc}
 
-During the preview, ClickPipes is free of cost. Post-GA, pricing is still to be determined. The goal is to make the pricing reasonable and highly competitive compared to external ETL tools.
+For detailed pricing information, please refer to the [ClickPipes for Postgres CDC pricing section on our main billing overview page](/cloud/manage/billing/overview#clickpipes-for-postgres-cdc).
 
 ### My replication slot size is growing or not decreasing; what might be the issue? {#my-replication-slot-size-is-growing-or-not-decreasing-what-might-be-the-issue}
 
@@ -131,7 +131,7 @@ In summary, while sync and normalize processes are terminated during a pause, it
 
 ### Can ClickPipe creation be automated or done via API or CLI? {#can-clickpipe-creation-be-automated-or-done-via-api-or-cli}
 
-As of now, you can create a ClickPipe only via the UI. However, we are actively working on exposing OpenAPI and Terraform endpoints. We expect this to be released in the near future (within a month). If you are interested in becoming a design partner for this feature, please reach out to db-integrations-support@clickhouse.com.
+A Postgres ClickPipe can also be created and managed via [OpenAPI](https://clickhouse.com/docs/cloud/manage/openapi) endpoints. This feature is in beta, and the API reference can be found [here](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/beta). We are actively working on Terraform support to create Postgres ClickPipes as well.
 
 ### How do I speed up my initial load? {#how-do-i-speed-up-my-initial-load}
 
@@ -147,7 +147,7 @@ These adjustments should significantly enhance the performance of the initial lo
 
 ### How should I scope my publications when setting up replication? {#how-should-i-scope-my-publications-when-setting-up-replication}
 
-You can let ClickPipes manage your publications (requires write access) or create them yourself. With ClickPipes-managed publications, we automatically handle table additions and removals as you edit the pipe. If self-managing, carefully scope your publications to only include tables you need to replicate - including unnecessary tables will slow down Postgres WAL decoding.
+You can let ClickPipes manage your publications (requires additional permissions) or create them yourself. With ClickPipes-managed publications, we automatically handle table additions and removals as you edit the pipe. If self-managing, carefully scope your publications to only include tables you need to replicate - including unnecessary tables will slow down Postgres WAL decoding.
 
 If you include any table in your publication, make sure it has either a primary key or `REPLICA IDENTITY FULL`. If you have tables without a primary key, creating a publication for all tables will cause DELETE and UPDATE operations to fail on those tables.
 
@@ -168,7 +168,7 @@ You have two options when dealing with tables without primary keys:
 1. **Exclude tables without primary keys from ClickPipes**:
    Create the publication with only the tables that have a primary key:
    ```sql
-   CREATE PUBLICATION my_publication FOR TABLE table_with_primary_key1, table_with_primary_key2, ...;
+   CREATE PUBLICATION clickpipes_publication FOR TABLE table_with_primary_key1, table_with_primary_key2, ...;
    ```
 
 2. **Include tables without primary keys in ClickPipes**:
@@ -176,8 +176,15 @@ You have two options when dealing with tables without primary keys:
    ```sql
    ALTER TABLE table_without_primary_key1 REPLICA IDENTITY FULL;
    ALTER TABLE table_without_primary_key2 REPLICA IDENTITY FULL;
-   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
+   CREATE PUBLICATION clickpipes_publication FOR TABLE <...>, <...>;
    ```
+
+:::tip
+If you're creating a publication manually instead of letting ClickPipes manage it, we don't recommend creating a publication `FOR ALL TABLES`, this leads to more traffic from Postgres to ClickPipes (to sending changes for other tables not in the pipe) and reduces overall efficiency.
+
+For manually created publications, please add any tables you want to the publication before adding them to the pipe.
+::: 
+
 
 ## Recommended `max_slot_wal_keep_size` Settings {#recommended-max_slot_wal_keep_size-settings}
 
@@ -220,9 +227,9 @@ The only way to recover ClickPipe is by triggering a resync, which you can do in
 
 The most common cause of replication slot invalidation is a low `max_slot_wal_keep_size` setting on your PostgreSQL database (e.g., a few gigabytes). We recommend increasing this value. [Refer to this section](/integrations/clickpipes/postgres/faq#recommended-max_slot_wal_keep_size-settings) on tuning `max_slot_wal_keep_size`. Ideally, this should be set to at least 200GB to prevent replication slot invalidation.
 
-In rare cases, we have seen this issue occur even when `max_slot_wal_keep_size` is not configured. This could be due to an intricate and a rare bug in PostgreSQL, although the cause remains unclear.
+In rare cases, we have seen this issue occur even when `max_slot_wal_keep_size` is not configured. This could be due to an intricate and rare bug in PostgreSQL, although the cause remains unclear.
 
-### I am seeing Out Of Memory (OOMs) on ClickHouse while my ClickPipe is ingesting data. Can you help? {#i-am-seeing-out-of-memory-ooms-on-clickhouse-while-my-clickpipe-is-ingesting-data-can-you-help}
+## I am seeing Out Of Memory (OOMs) on ClickHouse while my ClickPipe is ingesting data. Can you help? {#i-am-seeing-out-of-memory-ooms-on-clickhouse-while-my-clickpipe-is-ingesting-data-can-you-help}
 
 One common reason for OOMs on ClickHouse is that your service is undersized. This means that your current service configuration doesn't have enough resources (e.g., memory or CPU) to handle the ingestion load effectively. We strongly recommend scaling up the service to meet the demands of your ClickPipe data ingestion.
 
@@ -232,7 +239,7 @@ Another reason we've observed is the presence of downstream Materialized Views w
 
 - Another optimization for JOINs is to explicitly filter the tables through `subqueries` or `CTEs` and then perform the `JOIN` across these subqueries. This provides the planner with hints on how to efficiently filter rows and perform the `JOIN`.
 
-### I am seeing an `invalid snapshot identifier` during the initial load. What should I do? {#i-am-seeing-an-invalid-snapshot-identifier-during-the-initial-load-what-should-i-do}
+## I am seeing an `invalid snapshot identifier` during the initial load. What should I do? {#i-am-seeing-an-invalid-snapshot-identifier-during-the-initial-load-what-should-i-do}
 
 The `invalid snapshot identifier` error occurs when there is a connection drop between ClickPipes and your Postgres database. This can happen due to gateway timeouts, database restarts, or other transient issues.
 
@@ -240,3 +247,35 @@ It is recommended that you do not carry out any disruptive operations like upgra
 
 To resolve this issue, you can trigger a resync from the ClickPipes UI. This will restart the initial load process from the beginning.
 
+## What happens if I drop a publication in Postgres? {#what-happens-if-i-drop-a-publication-in-postgres}
+
+Dropping a publication in Postgres will break your ClickPipe connection since the publication is required for the ClickPipe to pull changes from the source. When this happens, you'll typically receive an error alert indicating that the publication no longer exists.
+
+To recover your ClickPipe after dropping a publication:
+
+1. Create a new publication with the same name and required tables in Postgres
+2. Click the 'Resync tables' button in the Settings tab of your ClickPipe
+
+This resync is necessary because the recreated publication will have a different Object Identifier (OID) in Postgres, even if it has the same name. The resync process refreshes your destination tables and restores the connection.
+
+Alternatively, you can create an entirely new pipe if preferred.
+
+Note that if you're working with partitioned tables, make sure to create your publication with the appropriate settings:
+
+```sql
+CREATE PUBLICATION clickpipes_publication 
+FOR TABLE <...>, <...>  
+WITH (publish_via_partition_root = true);
+```
+
+## What if I am seeing `Unexpected Datatype` errors or `Cannot parse type XX ...` {#what-if-i-am-seeing-unexpected-datatype-errors}
+
+This error typically occurs when the source Postgres database has a datatype which cannot be mapped during ingestion.
+For more specific issue, refer to the possibilities below.
+
+### `Cannot parse type Decimal(XX, YY), expected non-empty binary data with size equal to or less than ...` {#cannot-parse-type-decimal-expected-non-empty-binary-data-with-size-equal-to-or-less-than}
+
+Postgres `NUMERIC`s have really high precision (up to 131072 digits before the decimal point; up to 16383 digits after the decimal point) and ClickHouse Decimal type allows maximum of (76 digits, 39 scale).
+The system assumes that _usually_ the size would not get that high and does an optimistic cast for the same as source table can have large number of rows or the row can come in during the CDC phase.
+
+The current workaround would be to map the NUMERIC type to string on ClickHouse. To enable this please raise a ticket with the support team and this will be enabled for your ClickPipes.

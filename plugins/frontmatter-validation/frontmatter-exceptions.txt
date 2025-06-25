@@ -1,0 +1,16 @@
+# Frontmatter Validation Exception List
+# One entry per line. Each entry can be:
+#  - A file path relative to the project root
+#  - A regex pattern enclosed in slashes
+
+# Example file paths
+# docs/legacy/deprecated-file.md
+# docs/special-case.mdx
+# blog/external-contribution.md
+
+# Example regex patterns
+# /docs\/experimental\/.*/
+# /docs\/imports\/.*\.mdx/
+# /\.temp\./
+
+docs/i18n/.*

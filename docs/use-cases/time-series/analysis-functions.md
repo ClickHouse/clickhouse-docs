@@ -4,6 +4,7 @@ sidebar_label: 'Analysis functions'
 description: 'Functions for analyzing time-series data in ClickHouse.'
 slug: /use-cases/time-series/analysis-functions
 keywords: ['time-series']
+show_related_blogs: true
 ---
 
 # Time-Series analysis functions

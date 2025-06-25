@@ -1,21 +1,21 @@
 ---
-slug: /engines/table-engines/special/dictionary
-sidebar_position: 20
-sidebar_label: 字典
-title: "字典表引擎"
-description: "The `Dictionary` engine displays the dictionary data as a ClickHouse table."
+'description': '`Dictionary` 引擎将字典数据作为 ClickHouse 表显示。'
+'sidebar_label': 'Dictionary'
+'sidebar_position': 20
+'slug': '/engines/table-engines/special/dictionary'
+'title': '字典表引擎'
 ---
 
 
 # 字典表引擎
 
-The `Dictionary` engine displays the [dictionary](../../../sql-reference/dictionaries/index.md) data as a ClickHouse table.
+`Dictionary` 引擎将 [字典](../../../sql-reference/dictionaries/index.md) 数据作为一个 ClickHouse 表显示。
 
 ## 示例 {#example}
 
-作为示例，考虑一个名为 `products` 的字典，其配置如下：
+作为一个例子，考虑一个 `products` 的字典，其配置如下：
 
-``` xml
+```xml
 <dictionaries>
     <dictionary>
         <name>products</name>
@@ -48,7 +48,7 @@ The `Dictionary` engine displays the [dictionary](../../../sql-reference/diction
 
 查询字典数据：
 
-``` sql
+```sql
 SELECT
     name,
     type,
@@ -62,7 +62,7 @@ FROM system.dictionaries
 WHERE name = 'products'
 ```
 
-``` text
+```text
 ┌─name─────┬─type─┬─key────┬─attribute.names─┬─attribute.types─┬─bytes_allocated─┬─element_count─┬─source──────────┐
 │ products │ Flat │ UInt64 │ ['title']       │ ['String']      │        23065376 │        175032 │ ODBC: .products │
 └──────────┴──────┴────────┴─────────────────┴─────────────────┴─────────────────┴───────────────┴─────────────────┘
@@ -70,17 +70,17 @@ WHERE name = 'products'
 
 您可以使用 [dictGet\*](/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull) 函数以这种格式获取字典数据。
 
-当您需要获取原始数据或执行 `JOIN` 操作时，这种视图并不实用。在这些情况下，您可以使用 `Dictionary` 引擎，它以表格形式显示字典数据。
+当您需要获取原始数据或在执行 `JOIN` 操作时，这种视图并不有用。在这些情况下，您可以使用 `Dictionary` 引擎，它以表的形式显示字典数据。
 
 语法：
 
-``` sql
+```sql
 CREATE TABLE %table_name% (%fields%) engine = Dictionary(%dictionary_name%)`
 ```
 
 使用示例：
 
-``` sql
+```sql
 create table products (product_id UInt64, title String) Engine = Dictionary(products);
 ```
 
@@ -88,11 +88,11 @@ create table products (product_id UInt64, title String) Engine = Dictionary(prod
 
 查看表中的内容。
 
-``` sql
+```sql
 select * from products limit 1;
 ```
 
-``` text
+```text
 ┌────product_id─┬─title───────────┐
 │        152689 │ Some item       │
 └───────────────┴─────────────────┘

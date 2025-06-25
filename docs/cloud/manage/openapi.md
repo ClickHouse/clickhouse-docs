@@ -17,7 +17,7 @@ import Image from '@theme/IdealImage';
 ClickHouse Cloud provides an API utilizing OpenAPI that allows you to programmatically manage your account and aspects of your services.
 
 :::note
-This document covers the ClickHouse Cloud API. For database API endpoints, please see [Cloud Endpoints API](//cloud/get-started/query-endpoints.md)
+This document covers the ClickHouse Cloud API. For database API endpoints, please see [Cloud Endpoints API](/cloud/get-started/query-endpoints.md)
 :::
 
 1. You can use the **API Keys** tab on the left menu to create and manage your API keys.
@@ -31,7 +31,7 @@ This document covers the ClickHouse Cloud API. For database API endpoints, pleas
 3. To create an API key, specify the key name, permissions for the key, and expiration time, then click `Generate API Key`.
 <br/>
 :::note
-Permissions align with ClickHouse Cloud [predefined roles](/cloud/security/cloud-access-management/overview#predefined-roles). The developer role has read-only permissions and the admin role has full read and write permissions.
+Permissions align with ClickHouse Cloud [predefined roles](/cloud/security/cloud-access-management/overview#console-users-and-roles). The developer role has read-only permissions for assigned services and the admin role has full read and write permissions.
 :::
 
   <Image img={image_03} size="md" alt="Create API key form" border/>
@@ -59,4 +59,5 @@ Deleting an API key is a permanent action. Any services using the key will immed
 
 ## Endpoints {#endpoints}
 
-The [endpoint docs are here](/cloud/manage/api/invitations-api-reference.md).  Use your API Key and API Secret with the base URL `https://api.clickhouse.cloud/v1`.
+Refer details on endpoints, refer to the [API reference](https://clickhouse.com/docs/cloud/manage/api/swagger). 
+Use your API Key and API Secret with the base URL `https://api.clickhouse.cloud/v1`.

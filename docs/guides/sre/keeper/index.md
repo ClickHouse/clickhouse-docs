@@ -52,7 +52,7 @@ The main ClickHouse Keeper configuration tag is `<keeper_server>` and has the fo
 | `create_snapshot_on_exit`            | Create a snapshot during shutdown                                                                                                                                                                                                                   | -                                                                                                            |
 | `hostname_checks_enabled`            | Enable sanity hostname checks for cluster configuration (e.g. if localhost is used with remote endpoints)                                                                                                                                           | `True`                                                                                                       |
 | `four_letter_word_white_list`        | White list of 4lw commands.                                                                                                                                                                                                                         | `conf, cons, crst, envi, ruok, srst, srvr, stat, wchs, dirs, mntr, isro, rcvr, apiv, csnp, lgif, rqld, ydld` |
-
+|`enable_ipv6`| Enable IPv6 | `True`|
 
 Other common parameters are inherited from the ClickHouse server config (`listen_host`, `logger`, and so on).
 
@@ -450,10 +450,11 @@ Example of feature flag config that disables `multi_read` and enables `check_not
 
 The following features are available:
 
-`multi_read` - support for read multi request. Default: `1`
-`filtered_list` - support for list request which filters results by the type of node (ephemeral or persistent). Default: `1`
-`check_not_exists` - support for `CheckNotExists` request which asserts that node doesn't exists. Default: `0`
-`create_if_not_exists` - support for `CreateIfNotExists` requests which will try to create a node if it doesn't exist. If it exists, no changes are applied and `ZOK` is returned. Default: `0`
+- `multi_read` - support for read multi request. Default: `1`
+- `filtered_list` - support for list request which filters results by the type of node (ephemeral or persistent). Default: `1`
+- `check_not_exists` - support for `CheckNotExists` request, which asserts that node doesn't exists. Default: `0`
+- `create_if_not_exists` - support for `CreateIfNotExists` request, which will try to create a node if it doesn't exist. If it exists, no changes are applied and `ZOK` is returned. Default: `0`
+- `remove_recursive` - support for `RemoveRecursive` request, which removes the node along with its subtree. Default: `0`
 
 ### Migration from ZooKeeper {#migration-from-zookeeper}
 
@@ -639,7 +640,7 @@ Keeper can expose metrics data for scraping from [Prometheus](https://prometheus
 
 Settings:
 
-- `endpoint` – HTTP endpoint for scraping metrics by the Prometheus server. Start from ‘/’.
+- `endpoint` – HTTP endpoint for scraping metrics by the Prometheus server. Start from '/'.
 - `port` – Port for `endpoint`.
 - `metrics` – Flag that sets to expose metrics from the [system.metrics](/operations/system-tables/metrics) table.
 - `events` – Flag that sets to expose metrics from the [system.events](/operations/system-tables/events) table.
@@ -677,7 +678,7 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
 
 ### 1. Configure Nodes with Keeper settings {#1-configure-nodes-with-keeper-settings}
 
-1. Install 3 ClickHouse instances on 3 hosts (`chnode1`, `chnode2`, `chnode3`). (View the [Quick Start](/getting-started/install.md) for details on installing ClickHouse.)
+1. Install 3 ClickHouse instances on 3 hosts (`chnode1`, `chnode2`, `chnode3`). (View the [Quick Start](/getting-started/install/install.mdx) for details on installing ClickHouse.)
 
 2. On each node, add the following entry to allow external communication through the network interface.
     ```xml

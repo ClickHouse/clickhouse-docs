@@ -125,7 +125,7 @@ Now click the panel to go to the cluster view. On this dashboard, you will see t
 
 EMQX Cloud does not allow anonymous connections by default，so you need add a client credential so you can use the MQTT client tool to send data to this broker.
 
-Click ‘Authentication & ACL’ on the left menu and click ‘Authentication’ in the submenu. Click the ‘Add’ button on the right and give a username and password for the MQTT connection later. Here we will use `emqx` and `xxxxxx` for the username and password.
+Click 'Authentication & ACL' on the left menu and click 'Authentication' in the submenu. Click the 'Add' button on the right and give a username and password for the MQTT connection later. Here we will use `emqx` and `xxxxxx` for the username and password.
 
 <Image img={emqx_cloud_auth} size="lg" border alt="EMQX Cloud Authentication Setup interface for adding credentials" />
 
@@ -203,8 +203,8 @@ Now click on the "NEXT" button. This step is to tell EMQX Cloud how to insert re
 
 ### Add a response action {#add-a-response-action}
 
-If you have only one resource, you don’t need to modify the ‘Resource’ and ‘Action Type’.
-You only need to set the SQL template. Here’s the example used for this tutorial:
+If you have only one resource, you don't need to modify the 'Resource' and 'Action Type'.
+You only need to set the SQL template. Here's the example used for this tutorial:
 
 ```bash
 INSERT INTO temp_hum (client_id, timestamp, topic, temp, hum) VALUES ('${client_id}', ${timestamp}, '${topic}', ${temp}, ${hum})
@@ -282,4 +282,4 @@ SELECT * FROM emqx.temp_hum;
 
 ### Summary {#summary}
 
-You didn’t write any piece of code, and now have the MQTT data move from EMQX cloud to ClickHouse Cloud. With EMQX Cloud and ClickHouse Cloud, you don’t need to manage the infra and just focus on writing you IoT applications with data storied securely in ClickHouse Cloud.
+You didn't write any piece of code, and now have the MQTT data move from EMQX cloud to ClickHouse Cloud. With EMQX Cloud and ClickHouse Cloud, you don't need to manage the infra and just focus on writing you IoT applications with data storied securely in ClickHouse Cloud.

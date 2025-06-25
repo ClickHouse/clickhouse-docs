@@ -1,39 +1,42 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/sumkahan
-sidebar_position: 197
-title: sumKahan
-description: "Kahan補正加算アルゴリズムで数値の合計を計算します"
+'description': 'Calculates the sum of the numbers with Kahan compensated summation
+  algorithm'
+'sidebar_position': 197
+'slug': '/sql-reference/aggregate-functions/reference/sumkahan'
+'title': 'sumKahan'
 ---
 
-[Kahan補正加算アルゴリズム](https://en.wikipedia.org/wiki/Kahan_summation_algorithm)を使用して数値の合計を計算します。  
-[sum](./sum.md)関数よりも遅いです。  
-補正は[Float](../../../sql-reference/data-types/float.md)型のみに機能します。
+
+
+数の合計を [Kahan 補正加算アルゴリズム](https://en.wikipedia.org/wiki/Kahan_summation_algorithm) を使用して計算します。  
+[sums](./sum.md) 関数よりも遅くなります。  
+補正は [Float](../../../sql-reference/data-types/float.md) 型のみに適用されます。
 
 **構文**
 
-``` sql
+```sql
 sumKahan(x)
 ```
 
 **引数**
 
-- `x` — 入力値、[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、または[Decimal](../../../sql-reference/data-types/decimal.md)である必要があります。
+- `x` — 入力値で、[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、または [Decimal](../../../sql-reference/data-types/decimal.md) でなければなりません。
 
 **返される値**
 
-- 合計値、型は入力引数の型に依存し、[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、または[Decimal](../../../sql-reference/data-types/decimal.md)です。
+- 数の合計。返される型は、入力引数の型に応じて [Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、または [Decimal](../../../sql-reference/data-types/decimal.md) になります。
 
 **例**
 
 クエリ:
 
-``` sql
+```sql
 SELECT sum(0.1), sumKahan(0.1) FROM numbers(10);
 ```
 
 結果:
 
-``` text
+```text
 ┌───────────sum(0.1)─┬─sumKahan(0.1)─┐
 │ 0.9999999999999999 │             1 │
 └────────────────────┴───────────────┘

@@ -1,0 +1,45 @@
+description: 'Установка ClickHouse'
+keywords: ['clickhouse', 'установка', 'начало работы', 'быстрый старт']
+sidebar_label: 'Установка'
+slug: /install
+title: 'Установка ClickHouse'
+```
+
+import InstallSelector from '@site/src/components/Install/Install'
+import Windows from './_snippets/_windows_install.md'
+import TarProd from './_snippets/_linux_tar_install.md'
+import QuickInstall from './_snippets/_quick_install.md'
+import DebianProd from './_snippets/_deb_install.md'
+import RPMProd from './_snippets/_rpm_install.md'
+import MacOSProd from './_snippets/_macos.md'
+import Docker from './_snippets/_docker.md'
+import {CardPrimary} from '@clickhouse/click-ui/bundled';
+
+
+# Инструкции по установке
+
+<CardPrimary
+    alignContent="center"
+    description="Начните строить мгновенно, не беспокоясь о размерности и масштабировании вашего кластера. Мы заботимся о размере, масштабировании, безопасности, надежности и обновлениях."
+    icon="cloud"
+    infoText="Начните бесплатно"
+    infoUrl="https://auth.clickhouse.cloud/"
+    isSelected
+    onButtonClick={function Da(){}}
+    size="md"
+    title="ClickHouse Cloud"
+    topBadgeText="Рекомендуется"
+/>
+<br/>
+
+В качестве альтернативы выберите платформу, дистрибутив и метод установки ниже, чтобы увидеть инструкции по установке для Open Source ClickHouse:
+
+<InstallSelector
+    windows={<Windows/>}
+    quickinstall={<QuickInstall/>}
+    debian_prod={<DebianProd/>}
+    rpm_prod={<RPMProd/>}
+    tar_prod={<TarProd/>}
+    macos_prod={<MacOSProd/>}
+    docker={<Docker/>}
+/>

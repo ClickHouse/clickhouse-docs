@@ -1,41 +1,45 @@
 ---
-slug: /sql-reference/table-functions/generate
-sidebar_position: 75
-sidebar_label: generateRandom
-title: 'generateRandom'
-description: '生成具有给定架构的随机数据。允许使用这些数据填充测试表。并非所有类型都受支持。'
+'description': '生成具有给定架构的随机数据。允许用该数据填充测试表。并非所有类型都受支持。'
+'sidebar_label': 'generateRandom'
+'sidebar_position': 75
+'slug': '/sql-reference/table-functions/generate'
+'title': 'generateRandom'
 ---
 
 
 # generateRandom 表函数
 
 生成具有给定架构的随机数据。  
-允许使用这些数据填充测试表。  
+允许用这些数据填充测试表。  
 并非所有类型都受支持。
 
-``` sql
+## 语法 {#syntax}
+
+```sql
 generateRandom(['name TypeName[, name TypeName]...', [, 'random_seed'[, 'max_string_length'[, 'max_array_length']]]])
 ```
 
-**参数**
+## 参数 {#arguments}
 
-- `name` — 对应列的名称。
-- `TypeName` — 对应列的类型。
-- `random_seed` — 手动指定随机种子以生成稳定结果。如果为 NULL — 种子将随机生成。
-- `max_string_length` — 所有生成字符串的最大长度。默认为 `10`。
-- `max_array_length` — 所有生成数组或映射的最大元素数量。默认为 `10`。
+| 参数                 | 描述                                                                                           |
+|---------------------|------------------------------------------------------------------------------------------------|
+| `name`              | 对应列的名称。                                                                                 |
+| `TypeName`          | 对应列的类型。                                                                                 |
+| `random_seed`       | 手动指定随机种子以产生稳定的结果。如果为 `NULL`，则随机生成种子。                             |
+| `max_string_length` | 所有生成字符串的最大长度。默认为 `10`。                                                       |
+| `max_array_length`  | 所有生成数组或映射的最大元素数量。默认为 `10`。                                               |
 
-**返回值**
+## 返回值 {#returned_value}
 
-一个具有请求架构的表对象。
+具有请求架构的表对象。
 
 ## 使用示例 {#usage-example}
 
-``` sql
+```sql
 SELECT * FROM generateRandom('a Array(Int8), d Decimal32(4), c Tuple(DateTime64(3), UUID)', 1, 10, 2) LIMIT 3;
 ```
 
-``` text
+```text
 ┌─a────────┬────────────d─┬─c──────────────────────────────────────────────────────────────────┐
 │ [77]     │ -124167.6723 │ ('2061-04-17 21:59:44.573','3f72f405-ec3e-13c8-44ca-66ef335f7835') │
 │ [32,110] │ -141397.7312 │ ('1979-02-09 03:43:48.526','982486d1-5a5d-a308-e525-7bd8b80ffa73') │
@@ -56,7 +60,7 @@ SELECT * FROM random;
 └──────────────────────────────┴──────────────┴────────────────────────────────────────────────────────────────────┘
 ```
 
-结合 [generateRandomStructure](../../sql-reference/functions/other-functions.md#generaterandomstructure):
+结合使用 [generateRandomStructure](../../sql-reference/functions/other-functions.md#generaterandomstructure):
 
 ```sql
 SELECT * FROM generateRandom(generateRandomStructure(4, 101), 101) LIMIT 3;
@@ -70,7 +74,7 @@ SELECT * FROM generateRandom(generateRandomStructure(4, 101), 101) LIMIT 3;
 └─────────────────────┴─────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────────────────────────────┘
 ```
 
-在缺少 `structure` 参数的情况下（在此情况下，结构是随机的）：
+缺少 `structure` 参数（在这种情况下，结构是随机的）：
 
 ```sql
 SELECT * FROM generateRandom() LIMIT 3;
@@ -84,7 +88,7 @@ SELECT * FROM generateRandom() LIMIT 3;
 └──────┴────────────┴────────────────────────┴─────────────────────────┴──────────┘
 ```
 
-同时为随机结构和随机数据指定随机种子：
+对于随机结构和随机数据，使用随机种子：
 
 ```sql
 SELECT * FROM generateRandom(11) LIMIT 3;
@@ -98,7 +102,9 @@ SELECT * FROM generateRandom(11) LIMIT 3;
 └──────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────────┴────────────┴────────────────────────────────────────────────────────────────────────────────┴─────────────────────────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────────────────────────────┴────────────┘
 ```
 
-**注意：** `generateRandom(generateRandomStructure(), [random seed], max_string_length, max_array_length)` 在较大的 `max_array_length` 下可能会生成非常大的输出，因为复杂类型（`Array`，`Tuple`，`Map`，`Nested`）的嵌套深度可能很大（最多 16）。
+:::note
+`generateRandom(generateRandomStructure(), [random seed], max_string_length, max_array_length)` 在 `max_array_length` 足够大的情况下，可能会由于复杂类型（`Array`、`Tuple`、`Map`、`Nested`）的深层嵌套（最多16层）而生成非常庞大的输出。
+:::
 
 ## 相关内容 {#related-content}
 - 博客: [在 ClickHouse 中生成随机数据](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse)

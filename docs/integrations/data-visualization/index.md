@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Overview'
 sidebar_position: 1
-keywords: ['ClickHouse', 'connect', 'Luzmo', 'Explo', 'Tableau', 'Grafana', 'Metabase', 'Mitzu', 'superset', 'Deepnote', 'Draxlr', 'RocketBI', 'Omni', 'bi', 'visualization', 'tool']
+keywords: ['ClickHouse', 'connect', 'Luzmo', 'Explo', 'Fabi.ai', 'Tableau', 'Grafana', 'Metabase', 'Mitzu', 'superset', 'Deepnote', 'Draxlr', 'RocketBI', 'Omni', 'bi', 'visualization', 'tool']
 title: 'Visualizing Data in ClickHouse'
 slug: /integrations/data-visualization
 description: 'Learn about Visualizing Data in ClickHouse'
@@ -29,7 +29,9 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 - [Chartbrew](./chartbrew-and-clickhouse.md)
 - [Deepnote](./deepnote.md)
 - [Draxlr](./draxlr-and-clickhouse.md)
+- [Embeddable](./embeddable-and-clickhouse.md)
 - [Explo](./explo-and-clickhouse.md)
+- [Fabi.ai](./fabi-and-clickhouse.md)
 - [Grafana](./grafana/index.md)
 - [Looker](./looker-and-clickhouse.md)
 - [Luzmo](./luzmo-and-clickhouse.md)
@@ -51,6 +53,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 | [Chartbrew](./chartbrew-and-clickhouse.md)           | ClickHouse official connector              | ✅      | ✅          |                                                                                                                                         |
 | [Deepnote](./deepnote.md)                            | Native connector              | ✅      | ✅          |                                                                                                                                         |
 | [Explo](./explo-and-clickhouse.md)                   | Native connector              | ✅      | ✅          |                                                                                                                                         |
+| [Fabi.ai](./fabi-and-clickhouse.md)                  | Native connector              | ✅      | ✅          |                                                                                                                                         |
 | [Grafana](./grafana/index.md)                        | ClickHouse official connector | ✅      | ✅          |                                                                                                                                         |
 | [Hashboard](./hashboard-and-clickhouse.md)           | Native connector              | ✅      | ✅          |                                                                                                                                         |
 | [Looker](./looker-and-clickhouse.md)                 | Native connector              | ✅      | ✅          | Works with some limitations, see [the documentation](./looker-and-clickhouse.md) for more details                    |

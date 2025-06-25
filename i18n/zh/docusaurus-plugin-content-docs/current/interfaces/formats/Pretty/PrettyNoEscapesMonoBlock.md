@@ -1,10 +1,12 @@
 ---
-title: 'PrettyNoEscapesMonoBlock'
-slug: '/interfaces/formats/PrettyNoEscapesMonoBlock'
-keywords: ['PrettyNoEscapesMonoBlock']
-input_format: false
-output_format: true
-alias: []
+'alias': []
+'description': 'PrettyNoEscapesMonoBlock 格式的 Documentation'
+'input_format': false
+'keywords':
+- 'PrettyNoEscapesMonoBlock'
+'output_format': true
+'slug': '/interfaces/formats/PrettyNoEscapesMonoBlock'
+'title': 'PrettyNoEscapesMonoBlock'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
@@ -15,7 +17,7 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 ## 描述 {#description}
 
-与 [`PrettyNoEscapes`](./PrettyNoEscapes.md) 格式不同的是，最多会缓冲 `10,000` 行，然后作为一个单独的表输出，而不是按块输出。
+与 [`PrettyNoEscapes`](./PrettyNoEscapes.md) 格式的区别在于，最多缓冲 `10,000` 行，然后作为单个表输出，而不是按块输出。
 
 ## 示例用法 {#example-usage}
 

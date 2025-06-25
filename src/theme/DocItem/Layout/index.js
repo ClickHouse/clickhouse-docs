@@ -11,11 +11,13 @@ import DocItemTOCDesktop from '@theme/DocItem/TOC/Desktop';
 import DocItemContent from '@theme/DocItem/Content';
 import DocBreadcrumbs from '@theme/DocBreadcrumbs';
 import EditThisPage from '@theme/EditThisPage';
-import styles from './styles.module.css';
+import styles from './styles.module.scss';
 import Translate from "@docusaurus/Translate";
 import IconClose from "@theme/Icon/Close";
 import {useLocation} from "@docusaurus/router";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import RelatedBlogs from "../../../components/RelatedBlogs/RelatedBlogs";
+import {galaxyOnClick} from "../../../lib/galaxy/galaxy";
 /**
  * Decide if the toc should be rendered, on mobile or desktop viewports
  */
@@ -23,7 +25,7 @@ function useDocTOC() {
   const {frontMatter, toc} = useDoc();
   const windowSize = useWindowSize();
   const hidden = frontMatter.hide_table_of_contents;
-  const canRender = !hidden && toc.length > 0;
+  const canRender = !hidden;
   const mobile = canRender ? <DocItemTOCMobile /> : undefined;
   const desktop =
     canRender && (windowSize === 'desktop' || windowSize === 'ssr') ? (
@@ -36,10 +38,9 @@ function useDocTOC() {
   };
 }
 
-
 export default function DocItemLayout({children}) {
   const docTOC = useDocTOC();
-  const {metadata} = useDoc();
+  const {metadata, frontMatter} = useDoc();
   const {editUrl} = metadata;
 
   const location = useLocation();
@@ -90,6 +91,7 @@ export default function DocItemLayout({children}) {
                     className={styles.docCloudClose}
                     onClick={() => {
                       setShowPopup(false)
+                      galaxyOnClick('docs.translationIssueBanner.buttonClick')
                       window.localStorage.setItem('doc-translate-card-banner', 'closed')
                     }}>
                   <IconClose color="var(--ifm-color-emphasis-600)" width={10} height={10}/>
@@ -107,10 +109,11 @@ export default function DocItemLayout({children}) {
             <DocItemContent>{children}</DocItemContent>
             <DocItemFooter />
           </article>
+          {frontMatter.show_related_blogs === true ? <RelatedBlogs frontMatter={frontMatter}/> : <></>}
           <DocItemPaginator />
         </div>
       </div>
-      {docTOC.desktop && <div className="col col--3">{docTOC.desktop}</div>}
+      {docTOC.desktop && <div className={clsx(styles.tocSidebar, 'col col--3')}>{docTOC.desktop}</div>}
     </div>
   );
 }

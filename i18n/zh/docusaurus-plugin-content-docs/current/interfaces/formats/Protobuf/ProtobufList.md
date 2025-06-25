@@ -1,23 +1,25 @@
 ---
-title: 'ProtobufList'
-slug: '/interfaces/formats/ProtobufList'
-keywords: ['ProtobufList']
-input_format: true
-output_format: true
-alias: []
+'alias': []
+'description': 'ProtobufList 格式的文档'
+'input_format': true
+'keywords':
+- 'ProtobufList'
+'output_format': true
+'slug': '/interfaces/formats/ProtobufList'
+'title': 'ProtobufList'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge/>
 
-| 输入 | 输出 | 别名 |
-|------|------|------|
-| ✔    | ✔    |      |
+| 输入   | 输出   | 别名   |
+|--------|--------|--------|
+| ✔      | ✔      |        |
 
 ## 描述 {#description}
 
-`ProtobufList` 格式类似于 [`Protobuf`](./Protobuf.md) 格式，但行以子消息的序列表示，这些子消息包含在一个固定名称为 "Envelope" 的消息中。
+`ProtobufList` 格式类似于 [`Protobuf`](./Protobuf.md) 格式，但行作为包含在名为 "Envelope" 的消息中的子消息序列表示。
 
 ## 示例用法 {#example-usage}
 
@@ -31,7 +33,7 @@ SELECT * FROM test.table FORMAT ProtobufList SETTINGS format_schema = 'schemafil
 cat protobuflist_messages.bin | clickhouse-client --query "INSERT INTO test.table FORMAT ProtobufList SETTINGS format_schema='schemafile:MessageType'"
 ```
 
-其中文件 `schemafile.proto` 具有如下内容：
+文件 `schemafile.proto` 的内容如下：
 
 ```capnp title="schemafile.proto"
 syntax = "proto3";

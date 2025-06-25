@@ -1,8 +1,10 @@
 ---
-description: '包含有关 ClickHouse 服务器构建选项的信息的系统表。'
-slug: /operations/system-tables/build_options
-title: 'system.build_options'
-keywords: ['system table', 'build_options']
+'description': '系统表包含有关 ClickHouse 服务器构建选项的信息。'
+'slug': '/operations/system-tables/build_options'
+'title': 'system.build_options'
+'keywords':
+- 'system table'
+- 'build_options'
 ---
 
 包含有关 ClickHouse 服务器构建选项的信息。
@@ -14,11 +16,11 @@ keywords: ['system table', 'build_options']
 
 **示例**
 
-``` sql
+```sql
 SELECT * FROM system.build_options LIMIT 5
 ```
 
-``` text
+```text
 ┌─name─────────────┬─value─┐
 │ USE_BROTLI       │ 1     │
 │ USE_BZIP2        │ 1     │

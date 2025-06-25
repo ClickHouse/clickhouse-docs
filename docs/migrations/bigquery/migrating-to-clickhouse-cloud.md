@@ -2,7 +2,8 @@
 title: 'Migrating from BigQuery to ClickHouse Cloud'
 slug: /migrations/bigquery/migrating-to-clickhouse-cloud
 description: 'How to migrate your data from BigQuery to ClickHouse Cloud'
-keywords: ['migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'BigQuery']
+keywords: ['BigQuery']
+show_related_blogs: true
 ---
 
 import bigquery_2 from '@site/static/images/migrations/bigquery-2.png';
@@ -17,7 +18,6 @@ import bigquery_10 from '@site/static/images/migrations/bigquery-10.png';
 import bigquery_11 from '@site/static/images/migrations/bigquery-11.png';
 import bigquery_12 from '@site/static/images/migrations/bigquery-12.png';
 import Image from '@theme/IdealImage';
-
 
 ## Why use ClickHouse Cloud over BigQuery? {#why-use-clickhouse-cloud-over-bigquery}
 
@@ -68,7 +68,7 @@ Change Data Capture (CDC) is the process by which tables are kept in sync betwee
 
 ## Designing Schemas {#designing-schemas}
 
-The Stack Overflow dataset contains a number of related tables. We recommend focusing on migrating the primary table first. This may not necessarily be the largest table but rather the one on which you expect to receive the most analytical queries. This will allow you to familiarize yourself with the main ClickHouse concepts. This table may require remodeling as additional tables are added to fully exploit ClickHouse features and obtain optimal performance. We explore this modeling process in our [Data Modeling docs](/data-modeling/schema-design#next-data-modelling-techniques).
+The Stack Overflow dataset contains a number of related tables. We recommend focusing on migrating the primary table first. This may not necessarily be the largest table but rather the one on which you expect to receive the most analytical queries. This will allow you to familiarize yourself with the main ClickHouse concepts. This table may require remodeling as additional tables are added to fully exploit ClickHouse features and obtain optimal performance. We explore this modeling process in our [Data Modeling docs](/data-modeling/schema-design#next-data-modeling-techniques).
 
 Adhering to this principle, we focus on the main `posts` table. The BigQuery schema for this is shown below:
 
@@ -242,7 +242,7 @@ Users should consider partitioning a data management technique. It is ideal when
 
 Important: Ensure your partitioning key expression does not result in a high cardinality set i.e. creating more than 100 partitions should be avoided. For example, do not partition your data by high cardinality columns such as client identifiers or names. Instead, make a client identifier or name the first column in the `ORDER BY` expression.
 
-> Internally, ClickHouse [creates parts](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design) for inserted data. As more data is inserted, the number of parts increases. In order to prevent an excessively high number of parts, which will degrade query performance (because there are more files to read), parts are merged together in a background asynchronous process. If the number of parts exceeds a [pre-configured limit](/operations/settings/merge-tree-settings#parts-to-throw-insert), then ClickHouse will throw an exception on insert as a ["too many parts" error](/knowledgebase/exception-too-many-parts). This should not happen under normal operation and only occurs if ClickHouse is misconfigured or used incorrectly e.g. many small inserts. Since parts are created per partition in isolation, increasing the number of partitions causes the number of parts to increase i.e. it is a multiple of the number of partitions. High cardinality partitioning keys can, therefore, cause this error and should be avoided.
+> Internally, ClickHouse [creates parts](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design) for inserted data. As more data is inserted, the number of parts increases. In order to prevent an excessively high number of parts, which will degrade query performance (because there are more files to read), parts are merged together in a background asynchronous process. If the number of parts exceeds a [pre-configured limit](/operations/settings/merge-tree-settings#parts_to_throw_insert), then ClickHouse will throw an exception on insert as a ["too many parts" error](/knowledgebase/exception-too-many-parts). This should not happen under normal operation and only occurs if ClickHouse is misconfigured or used incorrectly e.g. many small inserts. Since parts are created per partition in isolation, increasing the number of partitions causes the number of parts to increase i.e. it is a multiple of the number of partitions. High cardinality partitioning keys can, therefore, cause this error and should be avoided.
 
 ## Materialized views vs projections {#materialized-views-vs-projections}
 

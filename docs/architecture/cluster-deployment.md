@@ -3,12 +3,12 @@ slug: /architecture/cluster-deployment
 sidebar_label: 'Cluster Deployment'
 sidebar_position: 100
 title: 'Cluster Deployment'
-description: 'By going through this tutorial, you’ll learn how to set up a simple ClickHouse cluster.'
+description: 'By going through this tutorial, you will learn how to set up a simple ClickHouse cluster.'
 ---
 
-This tutorial assumes you've already set up a [local ClickHouse server](../getting-started/install.md)
+This tutorial assumes you've already set up a [local ClickHouse server](../getting-started/install/install.mdx)
 
-By going through this tutorial, you’ll learn how to set up a simple ClickHouse cluster. It’ll be small, but fault-tolerant and scalable. Then we will use one of the example datasets to fill it with data and execute some demo queries.
+By going through this tutorial, you'll learn how to set up a simple ClickHouse cluster. It'll be small, but fault-tolerant and scalable. Then we will use one of the example datasets to fill it with data and execute some demo queries.
 
 ## Cluster Deployment {#cluster-deployment}
 
@@ -19,7 +19,7 @@ This ClickHouse cluster will be a homogeneous cluster. Here are the steps:
 3.  Create local tables on each instance
 4.  Create a [Distributed table](../engines/table-engines/special/distributed.md)
 
-A [distributed table](../engines/table-engines/special/distributed.md) is a kind of "view" to the local tables in a ClickHouse cluster. A SELECT query from a distributed table executes using resources of all cluster’s shards. You may specify configs for multiple clusters and create multiple distributed tables to provide views for different clusters.
+A [distributed table](../engines/table-engines/special/distributed.md) is a kind of "view" to the local tables in a ClickHouse cluster. A SELECT query from a distributed table executes using resources of all cluster's shards. You may specify configs for multiple clusters and create multiple distributed tables to provide views for different clusters.
 
 Here is an example config for a cluster with three shards, with one replica each:
 
@@ -48,7 +48,7 @@ Here is an example config for a cluster with three shards, with one replica each
 </remote_servers>
 ```
 
-For further demonstration, let’s create a new local table with the same `CREATE TABLE` query that we used for `hits_v1` in the single node deployment tutorial, but with a different table name:
+For further demonstration, let's create a new local table with the same `CREATE TABLE` query that we used for `hits_v1` in the single node deployment tutorial, but with a different table name:
 
 ```sql
 CREATE TABLE tutorial.hits_local (...) ENGINE = MergeTree() ...
@@ -63,7 +63,7 @@ ENGINE = Distributed(perftest_3shards_1replicas, tutorial, hits_local, rand());
 
 A common practice is to create similar distributed tables on all machines of the cluster. This allows running distributed queries on any machine of the cluster. There's also an alternative option to create a temporary distributed table for a given SELECT query using [remote](../sql-reference/table-functions/remote.md) table function.
 
-Let’s run [INSERT SELECT](../sql-reference/statements/insert-into.md) into the distributed table to spread the table to multiple servers.
+Let's run [INSERT SELECT](../sql-reference/statements/insert-into.md) into the distributed table to spread the table to multiple servers.
 
 ```sql
 INSERT INTO tutorial.hits_all SELECT * FROM tutorial.hits_v1;
@@ -99,10 +99,10 @@ Here is an example config for a cluster of one shard containing three replicas:
 </remote_servers>
 ```
 
-To enable native replication [ZooKeeper](http://zookeeper.apache.org/), is required. ClickHouse takes care of data consistency on all replicas and runs a restore procedure after a failure automatically. It’s recommended to deploy the ZooKeeper cluster on separate servers (where no other processes including ClickHouse are running).
+To enable native replication [ZooKeeper](http://zookeeper.apache.org/), is required. ClickHouse takes care of data consistency on all replicas and runs a restore procedure after a failure automatically. It's recommended to deploy the ZooKeeper cluster on separate servers (where no other processes including ClickHouse are running).
 
 :::note Note
-ZooKeeper is not a strict requirement: in some simple cases, you can duplicate the data by writing it into all the replicas from your application code. This approach is **not** recommended, as in this case, ClickHouse won’t be able to guarantee data consistency on all replicas. Thus, it becomes the responsibility of your application.
+ZooKeeper is not a strict requirement: in some simple cases, you can duplicate the data by writing it into all the replicas from your application code. This approach is **not** recommended, as in this case, ClickHouse won't be able to guarantee data consistency on all replicas. Thus, it becomes the responsibility of your application.
 :::
 
 ZooKeeper locations are specified in the configuration file:

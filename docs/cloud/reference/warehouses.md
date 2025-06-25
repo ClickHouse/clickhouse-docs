@@ -29,7 +29,7 @@ Each ClickHouse Cloud service includes:
 Child single services can scale vertically unlike single parent services.
 :::
 
-<Image img={compute_1} size="sm" alt="Current service in ClickHouse Cloud" background='white' />
+<Image img={compute_1} size="md" alt="Current service in ClickHouse Cloud" />
 
 <br />
 
@@ -39,13 +39,13 @@ Compute-compute separation allows users to create multiple compute node groups, 
 
 Each compute node group will have its own endpoint so you can choose which set of replicas to use for your workloads. Some of your workloads may be satisfied with only one small-size replica, and others may require full high-availability (HA) and hundreds of gigs of memory. Compute-compute separation also allows you to separate read operations from write operations so they don't interfere with each other:
 
-<Image img={compute_2} size="md" alt="Compute separation in ClickHouse Cloud" background='white' />
+<Image img={compute_2} size="md" alt="Compute separation in ClickHouse Cloud" />
 
 <br />
 
 _Fig. 2 - compute separation in ClickHouse Cloud_
 
-In this private preview program, you will have the ability to create extra services that share the same data with your existing services, or create a completely new setup with multiple services sharing the same data.
+It is possible to create extra services that share the same data with your existing services, or create a completely new setup with multiple services sharing the same data.
 
 ## What is a Warehouse? {#what-is-a-warehouse}
 
@@ -75,7 +75,7 @@ You can sort services by the warehouse that they belong to.
 
 Because all in a warehouse share the same set of tables, they also share access controls to those other services. This means that all database users that are created in Service 1 will also be able to use Service 2 with the same permissions (grants for tables, views, etc), and vice versa. Users will use another endpoint for each service but will use the same username and password. In other words, _users are shared across services that work with the same storage:_
 
-<Image img={compute_3} size="md" alt="User access across services sharing same data" background='white' />
+<Image img={compute_3} size="md" alt="User access across services sharing same data" />
 
 <br />
 
@@ -87,7 +87,7 @@ It is often useful to restrict specific services from being used by other applic
 
 You can apply IP filtering setting to each service separately, which means you can control which application can access which service. This allows you to restrict users from using specific services:
 
-<Image img={compute_4} size="md" alt="Network access control settings" background='white' />
+<Image img={compute_4} size="md" alt="Network access control settings"/>
 
 <br />
 
@@ -97,14 +97,15 @@ _Fig. 5 - Alice is restricted to access Service 2 because of the network setting
 
 Sometimes it is useful to restrict write access to a specific service and allow writes only by a subset of services in a warehouse. This can be done when creating the second and nth services (the first service should always be read-write):
 
-<Image img={compute_5} size="lg" alt="Read-write and Read-only services in a warehouse" background='white' />
+<Image img={compute_5} size="lg" alt="Read-write and Read-only services in a warehouse"/>
 
 <br />
 
 _Fig. 6 - Read-write and Read-only services in a warehouse_
 
 :::note
-Read-only services currently allow user management operations (create, drop, etc). This behavior may be changed in the future.
+1. Read-only services currently allow user management operations (create, drop, etc). This behavior may be changed in the future.
+2. Currently, refreshable materialized views are executed on all services in the warehouse, including read-only services. This behavior will be changed in the future, however, and they will be executed on RW services only.
 :::
 
 
@@ -121,17 +122,17 @@ Once compute-compute is enabled for a service (at least one secondary service wa
 
 ## Limitations {#limitations}
 
-Because this compute-compute separation is currently in private preview, there are some limitations to using this feature. Most of these limitations will be removed once the feature is released to GA (general availability):
-
 1. **Primary service should always be up and should not be idled (limitation will be removed some time after GA).** During the private preview and some time after GA, the primary service (usually the existing service that you want to extend by adding other services) will be always up and will have the idling setting disabled. You will not be able to stop or idle the primary service if there is at least one secondary service. Once all secondary services are removed, you can stop or idle the original service again.
 
 2. **Sometimes workloads cannot be isolated.** Though the goal is to give you an option to isolate database workloads from each other, there can be corner cases where one workload in one service will affect another service sharing the same data. These are quite rare situations that are mostly connected to OLTP-like workloads.
 
 3. **All read-write services are doing background merge operations.** When inserting data to ClickHouse, the database at first inserts the data to some staging partitions, and then performs merges in the background. These merges can consume memory and CPU resources. When two read-write services share the same storage, they both are performing background operations. That means that there can be a situation where there is an `INSERT` query in Service 1, but the merge operation is completed by Service 2. Note that read-only services do not execute background merges, thus they don't spend their resources on this operation.
 
-4. **Inserts in one read-write service can prevent another read-write service from idling if idling is enabled.** Because of the previous point, a second service perform background merge operations for the first service. These background operations can prevent the second service from going to sleep when idling. Once the background operations are finished, the service will be idled. Read-only services are not affected and will be idled without delay.
+4. **All read-write services are performing S3Queue table engine insert operations.** When creating a S3Queue table on a RW service, all other RW services in the WH may perform reading data from S3 and writing data to the database.
 
-5. **CREATE/RENAME/DROP DATABASE queries could be blocked by idled/stopped services by default.** These queries can hang. To bypass this, you  can run database management queries with `settings distributed_ddl_task_timeout=0` at the session or per query level. For example:
+5. **Inserts in one read-write service can prevent another read-write service from idling if idling is enabled.** As a result, a second service performs background merge operations for the first service. These background operations can prevent the second service from going to sleep when idling. Once the background operations are finished, the service will be idled. Read-only services are not affected and will be idled without delay.
+
+6. **CREATE/RENAME/DROP DATABASE queries could be blocked by idled/stopped services by default.** These queries can hang. To bypass this, you  can run database management queries with `settings distributed_ddl_task_timeout=0` at the session or per query level. For example:
 
 ```sql
 create database db_test_ddl_single_query_setting
@@ -145,7 +146,7 @@ settings distributed_ddl_task_timeout=0
 
 ## Pricing {#pricing}
 
-Extra services created during the private preview are billed as usual. Compute prices are the same for all services in a warehouse (primary and secondary). Storage is billed only once - it is included in the first (original) service.
+Compute prices are the same for all services in a warehouse (primary and secondary). Storage is billed only once - it is included in the first (original) service.
 
 ## Backups {#backups}
 

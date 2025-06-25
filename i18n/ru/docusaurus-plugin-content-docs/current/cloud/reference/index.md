@@ -1,21 +1,22 @@
 ---
 slug: /cloud/reference
-keywords: ['Cloud', 'reference', 'architecture', 'SharedMergeTree', 'Compute-Compute Separation', 'Bring Your Own Cloud', 'Changelogs', 'Supported Cloud Regions', 'Cloud Compatibility']
+keywords: ['Облако', 'справочник', 'архитектура', 'SharedMergeTree', 'Разделение Вычислений', 'Принесите Свое Облако', 'Журналы Изменений', 'Поддерживаемые Облачные Региону', 'Совместимость с Облаком']
 title: 'Обзор'
 hide_title: true
+description: 'Главная страница для раздела справочника по Облаку'
 ---
 
 
-# Cloud Reference
+# Справочник по Облаку
 
-Этот раздел служит справочным руководством по некоторым техническим деталям ClickHouse Cloud и содержит следующие страницы:
+Этот раздел служит справочным руководством для некоторых технических деталей ClickHouse Cloud и содержит следующие страницы:
 
-| Страница                                   | Описание                                                                                                   |
-|--------------------------------------------|------------------------------------------------------------------------------------------------------------|
-| [Architecture](/cloud/reference/architecture)               | Обсуждает архитектуру ClickHouse Cloud, включая хранилище, вычисления, администрирование и безопасность.   |
-| [SharedMergeTree](/cloud/reference/shared-merge-tree)            |  Объяснение SharedMergeTree, облачного аналога ReplicatedMergeTree и его аналогов.                        |
-| [Warehouses](/cloud/reference/compute-compute-separation)                 | Объяснение того, что такое Warehouses и разделение Compute-Compute в ClickHouse Cloud.                  |
-| [BYOC (Bring Your Own Cloud)](/cloud/reference/byoc)| Объяснение услуги Bring Your Own Cloud (BYOC), доступной в ClickHouse Cloud.                             |
-| [Changelogs](/cloud/reference/changelogs)                 | Журналы изменений облака и примечания к версиям.                                                           |
-| [Cloud Compatibility](/whats-new/cloud-compatibility)        | Руководство о том, чего ожидать функционально и оперативно в ClickHouse Cloud.                           |
-| [Supported Cloud Regions](/cloud/reference/supported-regions)    | Список поддерживаемых облачных регионов для AWS, Google и Azure.                                         |
+| Страница                             | Описание                                                                                                   |
+|-------------------------------------|------------------------------------------------------------------------------------------------------------|
+| [Архитектура](/cloud/reference/architecture)                 | Обсуждает архитектуру ClickHouse Cloud, включая хранение, вычисления, администрирование и безопасность.   |
+| [SharedMergeTree](/cloud/reference/shared-merge-tree)              | Объясняет SharedMergeTree, облачно-ориентированную замену для ReplicatedMergeTree и аналогов.            |
+| [Склады](/cloud/reference/warehouses)                  | Объясняет, что такое Склады и Разделение Вычислений в ClickHouse Cloud.                                   |
+| [BYOC (Принесите Свое Облако)](/cloud/reference/byoc) | Объясняет услугу "Принесите Свое Облако" (BYOC), доступную с ClickHouse Cloud.                          |
+| [Журналы Изменений](/cloud/reference/changelogs)                  | Журналы изменений и примечания к выпуску для Облака.                                                       |
+| [Совместимость с Облаком](/whats-new/cloud-compatibility)      | Руководство о том, чего ожидать функционально и организационно в ClickHouse Cloud.                        |
+| [Поддерживаемые Облачные Региону](/cloud/reference/supported-regions)  | Список поддерживаемых облачных регионов для AWS, Google и Azure.                                          |

@@ -1,8 +1,8 @@
 ---
-slug: /sql-reference/aggregate-functions/reference/grouparraymovingavg
+description: 'Вычисляет скользящее среднее входных значений.'
 sidebar_position: 144
+slug: /sql-reference/aggregate-functions/reference/grouparraymovingavg
 title: 'groupArrayMovingAvg'
-description: 'Calculates the moving average of input values.'
 ---
 
 
@@ -10,7 +10,7 @@ description: 'Calculates the moving average of input values.'
 
 Вычисляет скользящее среднее входных значений.
 
-``` sql
+```sql
 groupArrayMovingAvg(numbers_for_summing)
 groupArrayMovingAvg(window_size)(numbers_for_summing)
 ```
@@ -19,20 +19,20 @@ groupArrayMovingAvg(window_size)(numbers_for_summing)
 
 **Аргументы**
 
-- `numbers_for_summing` — [Выражение](/sql-reference/syntax#expressions), возвращающее значение числового типа данных.
-- `window_size` — Размер окна для вычисления.
+- `numbers_for_summing` — [Выражение](/sql-reference/syntax#expressions), приводящее к значению числового типа данных.
+- `window_size` — Размер окна расчетов.
 
 **Возвращаемые значения**
 
-- Массив такого же размера и типа, что и входные данные.
+- Массив такого же размера и типа, как входные данные.
 
-Функция использует [округление к нулю](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero). Она отсекает дробные знаки, незначащие для результирующего типа данных.
+Функция использует [округление к нулю](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero). Она отсекает десятичные знаки, незначительные для результирующего типа данных.
 
 **Пример**
 
-Таблица `b`:
+Пример таблицы `b`:
 
-``` sql
+```sql
 CREATE TABLE t
 (
     `int` UInt8,
@@ -42,7 +42,7 @@ CREATE TABLE t
 ENGINE = TinyLog
 ```
 
-``` text
+```text
 ┌─int─┬─float─┬──dec─┐
 │   1 │   1.1 │ 1.10 │
 │   2 │   2.2 │ 2.20 │
@@ -53,7 +53,7 @@ ENGINE = TinyLog
 
 Запросы:
 
-``` sql
+```sql
 SELECT
     groupArrayMovingAvg(int) AS I,
     groupArrayMovingAvg(float) AS F,
@@ -61,13 +61,13 @@ SELECT
 FROM t
 ```
 
-``` text
+```text
 ┌─I─────────┬─F───────────────────────────────────┬─D─────────────────────┐
 │ [0,0,1,3] │ [0.275,0.82500005,1.9250001,3.8675] │ [0.27,0.82,1.92,3.86] │
 └───────────┴─────────────────────────────────────┴───────────────────────┘
 ```
 
-``` sql
+```sql
 SELECT
     groupArrayMovingAvg(2)(int) AS I,
     groupArrayMovingAvg(2)(float) AS F,
@@ -75,7 +75,7 @@ SELECT
 FROM t
 ```
 
-``` text
+```text
 ┌─I─────────┬─F────────────────────────────────┬─D─────────────────────┐
 │ [0,1,3,5] │ [0.55,1.6500001,3.3000002,6.085] │ [0.55,1.65,3.30,6.08] │
 └───────────┴──────────────────────────────────┴───────────────────────┘

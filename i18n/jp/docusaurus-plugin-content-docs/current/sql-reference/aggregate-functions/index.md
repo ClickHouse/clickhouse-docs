@@ -1,42 +1,47 @@
 ---
-slug: /sql-reference/aggregate-functions/
-sidebar_label: 集約関数
-sidebar_position: 33
+'description': '集約関数のドキュメント'
+'sidebar_label': '集約関数'
+'sidebar_position': 33
+'slug': '/sql-reference/aggregate-functions/'
+'title': '集約関数'
 ---
+
+
 
 
 # 集約関数
 
-集約関数は、データベース専門家が期待する[通常の](http://www.sql-tutorial.com/sql-aggregate-functions-sql-tutorial)方法で動作します。
+集約関数は、データベースのエキスパートが期待する[通常の](http://www.sql-tutorial.com/sql-aggregate-functions-sql-tutorial)方法で動作します。
 
-ClickHouse はまた、以下をサポートしています：
+ClickHouseは以下もサポートしています：
 
-- カラムに加えて他のパラメータを受け付ける[パラメトリック集約関数](/sql-reference/aggregate-functions/parametric-functions)。
-- 集約関数の動作を変更する[コンビネータ](/sql-reference/aggregate-functions/combinators)。
+- [パラメトリック集約関数](/sql-reference/aggregate-functions/parametric-functions)は、カラムに加えて他のパラメータを受け取ります。
+- [コンビネーター](/sql-reference/aggregate-functions/combinators)は、集約関数の動作を変更します。
 
-## NULL 処理 {#null-processing}
 
-集約中は、すべての `NULL` 引数がスキップされます。集約に複数の引数がある場合、それらのいずれかが NULL の行は無視されます。
+## NULL処理 {#null-processing}
 
-このルールには例外があります。`first_value`（`first` とそのエイリアス）、`last_value`（`last` とそのエイリアス）関数が `RESPECT NULLS` 修飾子の後に続く場合です。たとえば、`FIRST_VALUE(b) RESPECT NULLS` のようになります。
+集約中は、すべての `NULL` 引数がスキップされます。集約に複数の引数がある場合、1つ以上の引数がNULLである行は無視されます。
 
-**例：**
+このルールには例外があります。`first_value`（`any`）および `last_value`（`anyLast`）関数は、修飾子 `RESPECT NULLS` に続く場合です。例えば、`FIRST_VALUE(b) RESPECT NULLS` のようになります。
 
-次のテーブルを考えてみましょう：
+**例:**
 
-``` text
+このテーブルを考えてみましょう：
+
+```text
 ┌─x─┬────y─┐
 │ 1 │    2 │
 │ 2 │ ᴺᵁᴸᴸ │
 │ 3 │    2 │
 │ 3 │    3 │
-│ 3 │ ᴺᵁᴸᴹ │
+│ 3 │ ᴺᵁᴸᴸ │
 └───┴──────┘
 ```
 
-`y` カラムの値を合計する必要があるとしましょう：
+`y` カラムの合計を求めるとします：
 
-``` sql
+```sql
 SELECT sum(y) FROM t_null_big
 ```
 
@@ -46,13 +51,13 @@ SELECT sum(y) FROM t_null_big
 └────────┘
 ```
 
-次に、`y` カラムから配列を作成するために `groupArray` 関数を使用することができます：
+次に、`groupArray` 関数を使用して `y` カラムから配列を作成します：
 
-``` sql
+```sql
 SELECT groupArray(y) FROM t_null_big
 ```
 
-``` text
+```text
 ┌─groupArray(y)─┐
 │ [2,2,3]       │
 └───────────────┘
@@ -60,22 +65,22 @@ SELECT groupArray(y) FROM t_null_big
 
 `groupArray` は結果の配列に `NULL` を含めません。
 
-[COALESCE](../../sql-reference/functions/functions-for-nulls.md#coalesce) を使用して NULL を意味のある値に変換できます。たとえば：`avg(COALESCE(column, 0))` は、NULL の場合は 0 を使用するか、カラムの値を集約に使います。
+[COALESCE](../../sql-reference/functions/functions-for-nulls.md#coalesce) を使用して、NULL をケースに応じて意味のある値に変更できます。例えば、`avg(COALESCE(column, 0))` は、NULL の場合は 0 を使用し、カラム値を集約に使用します：
 
-``` sql
+```sql
 SELECT
     avg(y),
     avg(coalesce(y, 0))
 FROM t_null_big
 ```
 
-``` text
+```text
 ┌─────────────avg(y)─┬─avg(coalesce(y, 0))─┐
 │ 2.3333333333333335 │                 1.4 │
 └────────────────────┴─────────────────────┘
 ```
 
-また、NULL スキップ動作を回避するために [Tuple](sql-reference/data-types/tuple.md) を使用できます。`NULL` 値のみを含む `Tuple` は NULL ではないため、その NULL 値のために集約関数はその行をスキップしません。
+また、[Tuple](sql-reference/data-types/tuple.md) を使用して NULL スキップの動作を回避することもできます。`NULL` のみを含む `Tuple` は NULL ではないため、その NULL 値によって集約関数はその行をスキップしません。
 
 ```sql
 SELECT
@@ -88,7 +93,7 @@ FROM t_null_big;
 └───────────────┴───────────────────────────────────────┘
 ```
 
-集約関数に引数としてカラムが使用されると、集約はスキップされることに注意してください。たとえば、パラメータなしの [`count`](../../sql-reference/aggregate-functions/reference/count.md)（`count()`）または定数だけのもの（`count(1)`）は、GROUP BY カラムの値に関係なくブロック内のすべての行をカウントしますが、`count(column)` は、カラムが NULL でない行の数だけを返します。
+集約関数に引数としてカラムが使用されると、集約がスキップされることに注意してください。例えば、引数なしの [`count`](../../sql-reference/aggregate-functions/reference/count.md) （`count()`）や定数のもの（`count(1)`）は、ブロック内のすべての行をカウントします（GROUP BY カラムの値にかかわらず、引数ではないため）。一方で、`count(column)` は、カラムがNULLでない行の数のみを返します。
 
 ```sql
 SELECT
@@ -110,7 +115,7 @@ GROUP BY v
 └──────┴─────────┴──────────┘
 ```
 
-ここに、`RESPECT NULLS` を使った `first_value` の例があります。NULL 入力が尊重され、最初に読み取られた値を返します、NULL であってもなくてもです。
+次に、`RESPECT NULLS` を使用した first_value の例を示します。ここでは、NULL 入力が尊重され、最初に読み取られた値が NULL であっても返されることを示しています：
 
 ```sql
 SELECT

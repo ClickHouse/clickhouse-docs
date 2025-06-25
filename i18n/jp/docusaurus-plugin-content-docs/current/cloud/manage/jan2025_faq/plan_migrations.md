@@ -1,106 +1,113 @@
 ---
-title: 新しいプランへの移行
-slug: /cloud/manage/jan-2025-faq/plan-migrations
-keywords: [移行, 新しいティア, 価格, コスト, 見積もり]
-description: 新しいプラン、ティア、価格への移行、決定とコスト見積もり方法
+'title': '新しいプランへの移行'
+'slug': '/cloud/manage/jan-2025-faq/plan-migrations'
+'keywords':
+- 'migration'
+- 'new tiers'
+- 'pricing'
+- 'cost'
+- 'estimation'
+'description': '新プラン、階層、価格への移行、決定方法とコストの見積もり'
 ---
+
+
 
 ## 新しいプランの選択 {#choosing-new-plans}
 
-### 新たに設立された組織は旧（レガシー）プランでサービスを開始できますか？ {#can-new-organizations-launch-services-on-the-old-legacy-plan}
+### 新しく作成された組織は古い（レガシー）プランでサービスを開始できますか？ {#can-new-organizations-launch-services-on-the-old-legacy-plan}
 
-いいえ、新しく作成された組織は発表後、旧プランにアクセスできません。
+いいえ、新しく作成された組織は発表後に古いプランへのアクセスを持ちません。
 
 ### ユーザーは新しい価格プランにセルフサービスで移行できますか？ {#can-users-migrate-to-the-new-pricing-plan-self-serve}
 
-はい、以下にセルフサービス移行のガイダンスを示します：
+はい、以下にセルフサービス移行のガイダンスがあります：
 
-| 現行プラン      | 新プラン                   | セルフサービス移行                                                                                                                        |
-|----------------|----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| Development     | Basic                      | 組織内の全サービスがDevelopmentをサポートしている場合はサポートされます                                                                               |
-| Development     | Scale (2レプリカ以上)     | :white_check_mark:                                                                                                                              |
-| Development     | Enterprise (2レプリカ以上) | :white_check_mark:                                                                                                                              |
-| Production      | Scale (3レプリカ以上)     | :white_check_mark:                                                                                                                              |
-| Production      | Enterprise (3レプリカ以上) | :white_check_mark:                                                                                                                                   |
-| Dedicated       | [サポートに連絡](https://clickhouse.com/support/program) |
+| 現行プラン      | 新プラン                    | セルフサービス移行                                                                                                                             |
+|--------------|--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| 開発          | 基本                     | 組織内のすべてのサービスが開発をサポートしている場合にサポート                                                                                             |
+| 開発          | スケール（2レプリカ以上）  | :white_check_mark:                                                                                                                                     |
+| 開発          | エンタープライズ（2レプリカ以上） | :white_check_mark:                                                                                                                                          |
+| 本番         | スケール（3レプリカ以上）  | :white_check_mark:                                                                                                                                          |
+| 本番         | エンタープライズ（3レプリカ以上） | :white_check_mark:                                                                                                                                       |
+| 専用         | [サポート](https://clickhouse.com/support/program)にお問い合わせください  |
 
-### 開発およびプロダクションサービスを試用しているユーザーの体験はどうなりますか？ {#what-will-the-experience-be-for-users-in-trial-running-development-and-production-services}
+### 開発および本番サービスを試用中のユーザーはどのような体験をしますか？ {#what-will-the-experience-be-for-users-in-trial-running-development-and-production-services}
 
-ユーザーは試用中にアップグレードし、新しいサービスティアおよびその機能を評価するために試用クレジットを使用し続けることができます。ただし、同じDevelopmentおよびProductionサービスを引き続き使用したい場合は、PAYGにアップグレードすることができます。2025年7月23日以前に移行する必要があります。
+ユーザーは試用中にアップグレードし、新しいサービス階層とそれがサポートする機能を評価するために試用クレジットを引き続き使用できます。ただし、同じ開発および本番サービスを引き続き使用することを選択した場合、PAYGにアップグレードできます。2025年7月23日前に移行する必要があります。
 
-### ユーザーはティアをアップグレードできますか？例：Basic → Scale, Scale → Enterpriseなど。 {#can-users-upgrade-their-tiers-ie-basic--scale-scale--enterprise-etc}
+### ユーザーは階層をアップグレードできますか？たとえば、基本 → スケール、スケール → エンタープライズなど？ {#can-users-upgrade-their-tiers-ie-basic--scale-scale--enterprise-etc}
 
-はい、ユーザーはセルフサービスでアップグレードでき、アップグレード後の価格はティアの選択を反映します。
+はい、ユーザーはセルフサービスでアップグレードでき、アップグレード後の価格は階層の選択を反映します。
 
-### ユーザーは高コストティアから低コストティアに移行できますか？例：Enterprise → Scale, Scale → Basic, Enterprise → Basicセルフサービス。 {#can-users-move-from-a-higher-to-a-lower-cost-tier-eg-enterprise--scale-scale--basic-enterprise--basic-self-serve}
+### ユーザーは高コスト階層から低コスト階層に移動できますか？たとえば、エンタープライズ → スケール、スケール → 基本、エンタープライズ → 基本のセルフサービスなど？ {#can-users-move-from-a-higher-to-a-lower-cost-tier-eg-enterprise--scale-scale--basic-enterprise--basic-self-serve}
 
-いいえ、ティアのダウングレードは許可されていません。
+いいえ、階層のダウングレードは許可されていません。
 
-### 組織内にDevelopmentサービスのみを持つユーザーはBasicティアに移行できますか？ {#can-users-with-only-development-services-in-the-organization-migrate-to-the-basic-tier}
+### 組織内に開発サービスのみがあるユーザーは基本階層に移行できますか？ {#can-users-with-only-development-services-in-the-organization-migrate-to-the-basic-tier}
 
-はい、これは許可されます。ユーザーは過去の使用に基づいた推奨を受け、Basic `1x8GiB` または `1x12GiB` を選択できます。
+はい、これは許可されます。ユーザーには過去の使用に基づいて推奨が与えられ、基本 `1x8GiB` または `1x12GiB` を選択できます。
 
-### 同一組織内でDevelopmentおよびProductionサービスを持つユーザーはBasicティアに移行できますか？ {#can-users-with-a-development-and-production-service-in-the-same-organization-move-to-the-basic-tier}
+### 同じ組織内に開発と本番サービスがあるユーザーは基本階層に移動できますか？ {#can-users-with-a-development-and-production-service-in-the-same-organization-move-to-the-basic-tier}
 
-いいえ、ユーザーが同一組織にDevelopmentおよびProductionサービスの両方を持つ場合、セルフサービスでScaleまたはEnterpriseティアにのみ移行できます。Basicに移行したい場合は、既存のProductionサービスをすべて削除する必要があります。
+いいえ、ユーザーが同じ組織に開発と本番サービスの両方を持っている場合、セルフサービスでスケールまたはエンタープライズ階層にのみ移行できます。基本に移行したい場合、すべての既存の本番サービスを削除する必要があります。
 
-### 新しいティアに関連するスケーリング動作に変更はありますか？ {#are-there-any-changes-related-to-the-scaling-behavior-with-the-new-tiers}
+### 新しい階層でのスケーリングの動作に関する変更はありますか？ {#are-there-any-changes-related-to-the-scaling-behavior-with-the-new-tiers}
 
-コンピュートレプリカ用の新しい垂直スケーリングメカニズム「Make Before Break」（MBB）を導入しています。このアプローチでは、古いレプリカを削除する前に、新しいサイズの1つ以上のレプリカを追加し、スケーリング操作中の容量の損失を防ぎます。既存のレプリカを削除し新しいレプリカを追加する間のギャップを排除することで、よりシームレスで妨げの少ないスケーリングプロセスを実現します。特にリソース使用率が高く追加容量が必要なスケールアップシナリオにおいて有益です。なぜなら、早期にレプリカを削除するとリソース制約が悪化するのみだからです。
+我々は、コンピュートレプリカ用の新しい垂直スケーリングメカニズムを導入します。これを「Make Before Break」（MBB）と呼びます。このアプローチでは、古いレプリカを削除する前に新しいサイズのレプリカを1つ以上追加し、スケーリング操作中に容量の損失を防ぎます。既存のレプリカの削除と新しいレプリカの追加の間のギャップを解消することで、MBBはよりシームレスで中断の少ないスケーリングプロセスを実現します。リソースの高い使用率が追加の容量を必要とするスケールアップシナリオでは、レプリカを前もって削除することはリソース制約を悪化させるだけなので、特に有益です。
 
-この変更の一環として、歴史的なシステムテーブルデータは、スケーリングイベントの一部として最大30日間保持されます。また、2024年12月19日以前のAWSまたはGCPのサービスに関するシステムテーブルデータおよび2025年1月14日以前のAzureのサービスに関するデータは、新しい組織ティアへの移行の一環として保持されません。
+この変更の一環として、過去のシステムテーブルデータはスケーリングイベントの一部として最大30日間保持されます。さらに、AWSまたはGCPでのサービスに関しては2024年12月19日以前のシステムテーブルデータ、Azureでのサービスに関しては2025年1月14日以前のデータは新しい組織階層への移行の一部として保持されません。
 
-## コストの見積もり {#estimating-costs}
+## コストの推定 {#estimating-costs}
 
-### 移行中にユーザーはどのように案内され、自分のニーズに最適なティアを理解しますか？ {#how-will-users-be-guided-during-migration-understanding-what-tier-best-fits-their-needs}
+### ユーザーは移行中にどのようにガイドされ、自分のニーズに最適な階層を理解しますか？ {#how-will-users-be-guided-during-migration-understanding-what-tier-best-fits-their-needs}
 
-コンソールは、サービスがある場合、過去の使用に基づいた推奨オプションを提供します。新しいユーザーは、詳細にリストされた機能と特徴を確認し、自分のニーズに最適なティアを決定できます。
+コンソールは、サービスがある場合に過去の使用に基づいて各サービスの推奨オプションを提示します。新しいユーザーは、詳細に記載された機能と機能を確認し、自分のニーズに最適な階層を決定できます。
 
-### ユーザーは新しい価格で「倉庫」のサイズをどう見積もりますか？ {#how-do-users-size-and-estimate-the-cost-of-warehouses-in-the-new-pricing}
+### ユーザーは新しい価格で「ウェアハウス」をどのようにサイズ設定し、コストを推定しますか？ {#how-do-users-size-and-estimate-the-cost-of-warehouses-in-the-new-pricing}
 
-[価格](https://clickhouse.com/pricing)ページの価格計算ツールを参照してください。これにより、ワークロードのサイズとティアの選択に基づいてコストを見積もることができます。
+[ Pricing](https://clickhouse.com/pricing) ページにある価格計算機を参照してください。これにより、ワークロードのサイズと階層選択に基づいてコストを推定できます。
 
-## 移行を実施する {#undertaking-the-migration}
+## 移行の実施 {#undertaking-the-migration}
 
 ### 移行を実施するためのサービスバージョンの前提条件は何ですか？ {#what-are-service-version-pre-requisites-to-undertaking-the-migration}
 
-サービスはバージョン24.8以上である必要があり、すでにSharedMergeTreeに移行されている必要があります。
+サービスはバージョン24.8以降であり、SharedMergeTreeに移行されている必要があります。
 
-### 現行のDevelopmentおよびProductionサービスのユーザーにとっての移行体験はどうですか？ ユーザーはサービスが利用できないメンテナンスウィンドウを計画する必要がありますか？ {#what-is-the-migration-experience-for-users-of-the-current-development-and-production-services-do-users-need-to-plan-for-a-maintenance-window-where-the-service-is-unavailable}
+### 現行の開発および本番サービスのユーザーの移行体験はどのようなものですか？ユーザーはサービスが利用できないメンテナンスウィンドウを計画する必要がありますか？ {#what-is-the-migration-experience-for-users-of-the-current-development-and-production-services-do-users-need-to-plan-for-a-maintenance-window-where-the-service-is-unavailable}
 
-DevelopmentおよびProductionサービスを新しい価格ティアに移行する際には、サーバーの再起動が必要になる場合があります。Dedicatedサービスを移行するには、[サポートに連絡](https://clickhouse.com/support/program)してください。
+開発および本番サービスを新しい価格階層に移行する際、サーバーの再起動がトリガーされる可能性があります。専用サービスを移行するには、[サポート](https://clickhouse.com/support/program)にお問い合わせください。
 
-### 移行後にユーザーが行うべき他のアクションは何ですか？ {#what-other-actions-should-a-user-take-after-the-migration}
+### 移行後、ユーザーが取るべき他のアクションは何ですか？ {#what-other-actions-should-a-user-take-after-the-migration}
 
 APIアクセスパターンは異なります。
 
-新しいサービスを作成するためにOpenAPIを使用するユーザーは、サービス作成の`POST`リクエストにおいて`tier`フィールドを削除する必要があります。
+新しいサービスを作成するためにOpenAPIを使用するユーザーは、サービス作成の`POST`リクエストから`tier`フィールドを削除する必要があります。
 
-サービスオブジェクトから`tier`フィールドは削除され、もはやサービスティアは存在しません。  
-これにより、`POST`、`GET`、`PATCH`サービスリクエストで返されるオブジェクトにも影響があります。したがって、これらのAPIを利用するコードは、これらの変更に対応できるように調整が必要です。
+`tier`フィールドはサービスオブジェクトから削除され、もはやサービス階層は存在しません。  
+これは`POST`、`GET`、および`PATCH`サービスリクエストによって返されるオブジェクトに影響を及ぼします。したがって、これらのAPIを消費するコードは、これらの変更を処理するように調整する必要があります。
 
-各サービスが作成されるレプリカの数は、ScaleおよびEnterpriseティアではデフォルトで3に設定され、Basicティアではデフォルトで1に設定されます。  
-ScaleおよびEnterpriseティアでは、サービス作成リクエストで`numReplicas`フィールドを指定することで調整することが可能です。  
-`numReplicas`フィールドの値は、倉庫内の最初のサービスに対して2から20の間である必要があります。既存の倉庫で作成されるサービスは、レプリカの数が1まで低くすることができます。
+各サービスは、スケールおよびエンタープライズ階層でのデフォルトのレプリカ数は3、基本階層では1です。  
+スケールおよびエンタープライズ階層では、サービス作成リクエストで`numReplicas`フィールドを渡すことにより調整できます。  
+ウェアハウス内の最初のサービスの`numReplicas`フィールドの値は2から20の範囲内である必要があります。既存のウェアハウス内で作成されたサービスは、最低1のレプリカ数を持つことができます。
 
 ### 自動化のために既存のTerraformプロバイダーを使用している場合、ユーザーはどのような変更を行う必要がありますか？ {#what-changes-should-the-users-make-if-using-the-existing-terraform-provider-for-automation}
 
-組織が新しいプランの1つに移行すると、ユーザーは当社のTerraformプロバイダーのバージョン2.0.0以上を使用する必要があります。
+組織が新しいプランのいずれかに移行した後、ユーザーはTerraformプロバイダーのバージョン2.0.0以上を使用する必要があります。
 
-新しいTerraformプロバイダーは、サービスの`tier`属性の変更を扱うために必要です。
+新しいTerraformプロバイダーは、サービスの`tier`属性の変更を処理するために必要です。
 
-移行後は、`tier`フィールドはもはや受け入れられず、それに対する参照は削除する必要があります。
+移行後、`tier`フィールドは受け付けられなくなりますので、これへの参照は削除する必要があります。
 
-ユーザーは、サービスリソースのプロパティとして`num_replicas`フィールドを指定できるようになります。
+ユーザーはサービスリソースのプロパティとして`num_replicas`フィールドを指定できるようになります。
 
-各サービスが作成されるレプリカの数は、ScaleおよびEnterpriseティアではデフォルトで3に設定され、Basicティアではデフォルトで1に設定されます。  
-ScaleおよびEnterpriseティアでは、サービス作成リクエストで`numReplicas`フィールドを指定することで調整することが可能です。  
-`num_replicas`フィールドの値は、倉庫内の最初のサービスに対して2から20の間である必要があります。既存の倉庫で作成されるサービスは、レプリカの数が1まで低くすることができます。
+各サービスは、スケールおよびエンタープライズ階層でのデフォルトのレプリカ数は3、基本階層では1です。  
+スケールおよびエンタープライズ階層では、サービス作成リクエストで`numReplicas`フィールドを渡すことで調整できます。  
+ウェアハウス内の最初のサービスの`num_replicas`フィールドの値は2から20の範囲内である必要があります。既存のウェアハウス内で作成されたサービスは、最低1のレプリカ数を持つことができます。
 
 ### ユーザーはデータベースアクセスに変更を加える必要がありますか？ {#will-users-have-to-make-any-changes-to-the-database-access}
 
-いいえ、データベースのユーザー名/パスワードは以前と同様に機能します。
+いいえ、データベースのユーザー名/パスワードは以前と同じように機能します。
 
-### ユーザーはプライベートネットワーク機能を再構成する必要がありますか？ {#will-users-have-to-reconfigure-private-networking-features}
+### ユーザーはプライベートネットワーキング機能を再構成する必要がありますか？ {#will-users-have-to-reconfigure-private-networking-features}
 
-いいえ、ユーザーはProductionサービスをScaleまたはEnterpriseに移行した後、既存のプライベートネットワーキング（Private Link, PSCなど）設定を使用できます。
+いいえ、ユーザーは本番サービスをスケールまたはエンタープライズに移動した後、既存のプライベートネットワーキング（プライベートリンク、PSCなど）構成を使用できます。

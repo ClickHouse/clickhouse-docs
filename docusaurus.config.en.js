@@ -3,10 +3,16 @@ import math from "remark-math";
 import katex from "rehype-katex";
 import chHeader from "./plugins/header.js";
 import fixLinks from "./src/hooks/fixLinks.js";
+const path = require('path');
+const remarkCustomBlocks = require('./plugins/remark-custom-blocks');
+
+// Import custom plugins
 const { customParseFrontMatter } = require('./plugins/frontmatter-validation/customParseFrontMatter');
 const checkFloatingPages = require('./plugins/checkFloatingPages');
 const frontmatterValidator = require('./plugins/frontmatter-validation/frontmatterValidatorPlugin');
-const path = require('path');
+import pluginLlmsTxt from './plugins/llms-txt-plugin.ts'
+import prismLight from "./src/utils/prismLight";
+import prismDark from "./src/utils/prismDark";
 
 // Helper function to skip over index.md files.
 function skipIndex(items) {
@@ -65,7 +71,7 @@ const config = {
   trailingSlash: false,
   i18n: {
     defaultLocale: "en",
-    locales: ["en", "jp", "zh"],
+    locales: ["en", "jp", "zh", "ru"],
     path: "i18n",
     localeConfigs: {
       en: {
@@ -83,6 +89,11 @@ const config = {
         htmlLang: "zh",
         path: "zh",
       },
+      ru: {
+        label: "Русский",
+        htmlLang: "ru",
+        path: "ru",
+      }
     },
   },
   staticDirectories: ["static"],
@@ -132,7 +143,6 @@ const config = {
             if (
               docPath.includes("development") ||
               docPath.includes("engines") ||
-              docPath.includes("getting-started") ||
               docPath.includes("interfaces") ||
               docPath.includes("operations") ||
               docPath.includes("sql-reference")
@@ -151,7 +161,7 @@ const config = {
           showLastUpdateTime: false,
           sidebarCollapsed: true,
           routeBasePath: "/",
-          remarkPlugins: [math],
+          remarkPlugins: [math, remarkCustomBlocks],
           beforeDefaultRemarkPlugins: [fixLinks],
           rehypePlugins: [katex],
         },
@@ -229,6 +239,9 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      metadata: [
+        {name: 'Accept-Language', content: 'en-US,en;q=0.9'},
+      ],
       algolia: {
         appId: "5H9UG7CX5W",
         apiKey: "4a7bf25cf3edbef29d78d5e1eecfdca5",
@@ -277,9 +290,9 @@ const config = {
         copyright: `© 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc.`,
       },
       prism: {
-        theme: themes.darkTheme,
-        darkTheme: themes.darkTheme,
-        additionalLanguages: ["java", "cpp", "rust"],
+        theme: prismLight,
+        darkTheme: prismDark,
+        additionalLanguages: ["java", "cpp", "rust", "python", "javascript", "yaml", "bash", "docker"],
         magicComments: [
           // Remember to extend the default highlight class name as well!
           {
@@ -334,7 +347,7 @@ const config = {
     [
       frontmatterValidator,
       {
-        failBuild: true,
+        failBuild: true
       },
     ],
     [
@@ -343,6 +356,14 @@ const config = {
         failBuild: true,
         exceptionsFile: path.resolve(__dirname, 'plugins/floating-pages-exceptions.txt')
       },
+    ],
+    [
+      pluginLlmsTxt,
+      {}
+    ],
+    [
+        './plugins/tailwind-config.js',
+        {}
     ]
   ],
   customFields: {

@@ -213,7 +213,7 @@ clickhouse-local --query "SELECT * FROM s3('https://datasets-documentation.s3.eu
 ### Inserting Data from S3 {#inserting-data-from-s3}
 
 To exploit the full capabilities of ClickHouse, we next read and insert the data into our instance.
-We combine our `s3` function with a simple `INSERT` statement to achieve this. Note that we aren’t required to list our columns because our target table provides the required structure. This requires the columns to appear in the order specified in the table DDL statement: columns are mapped according to their position in the `SELECT` clause. The insertion of all 10m rows can take a few minutes depending on the ClickHouse instance. Below we insert 1M rows to ensure a prompt response. Adjust the `LIMIT` clause or column selection to import subsets as required:
+We combine our `s3` function with a simple `INSERT` statement to achieve this. Note that we aren't required to list our columns because our target table provides the required structure. This requires the columns to appear in the order specified in the table DDL statement: columns are mapped according to their position in the `SELECT` clause. The insertion of all 10m rows can take a few minutes depending on the ClickHouse instance. Below we insert 1M rows to ensure a prompt response. Adjust the `LIMIT` clause or column selection to import subsets as required:
 
 
 ```sql
@@ -254,7 +254,7 @@ FROM trips
 LIMIT 10000;
 ```
 
-Note here how the format of the file is inferred from the extension. We also don’t need to specify the columns in the `s3` function - this can be inferred from the `SELECT`.
+Note here how the format of the file is inferred from the extension. We also don't need to specify the columns in the `s3` function - this can be inferred from the `SELECT`.
 
 ### Splitting Large Files {#splitting-large-files}
 
@@ -833,7 +833,7 @@ ClickHouse tables are replicated across the two servers, and therefore across th
 ### Install software {#install-software}
 
 #### ClickHouse server nodes {#clickhouse-server-nodes}
-Refer to the [installation instructions](/getting-started/install.md/#available-installation-options) when performing the deployment steps on the ClickHouse server nodes.
+Refer to the [installation instructions](/getting-started/install/install.mdx) when performing the deployment steps on the ClickHouse server nodes.
 
 #### Deploy ClickHouse {#deploy-clickhouse}
 
@@ -845,7 +845,7 @@ Place `chnode1` in one AWS region, and `chnode2` in a second.
 
 Deploy ClickHouse Keeper on three hosts, in the sample configurations these are named `keepernode1`, `keepernode2`, and `keepernode3`.  `keepernode1` can be deployed in the same region as `chnode1`, `keepernode2` with `chnode2`, and `keepernode3` in either region but a different availability zone from the ClickHouse node in that region.
 
-Refer to the [installation instructions](/getting-started/install.md/#install-standalone-clickhouse-keeper) when performing the deployment steps on the ClickHouse Keeper nodes.
+Refer to the [installation instructions](/getting-started/install/install.mdx) when performing the deployment steps on the ClickHouse Keeper nodes.
 
 ### Create S3 Buckets {#create-s3-buckets}
 
@@ -873,7 +873,7 @@ The configuration files will then be placed in `/etc/clickhouse-server/config.d/
 
         <s3_cache>
            <type>cache</type>
-           <disk>s3</disk>
+           <disk>s3_disk</disk>
            <path>/var/lib/clickhouse/disks/s3_cache/</path>
            <max_size>10Gi</max_size>
         </s3_cache>

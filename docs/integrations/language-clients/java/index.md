@@ -11,8 +11,8 @@ import CodeBlock from '@theme/CodeBlock';
 
 # Java Clients Overview
 
-- [Client 0.8+](./client.md)
-- [JDBC 0.8+](./jdbc.md)
+- [Client 0.8+](./client/client.mdx)
+- [JDBC 0.8+](./jdbc/jdbc.mdx)
 - [R2DBC Driver](./r2dbc.md)
 
 ## ClickHouse Client {#clickhouse-client}
@@ -72,6 +72,10 @@ Java Client was developed far back in 2015. Its codebase became very hard to mai
 |Polygon                |✔                    |✔                    |
 |SimpleAggregateFunction|✔                    |✔                    |
 |AggregateFunction      |✗                    |✔                    |
+|Variant                |✔                    |✗                    |
+|Dynamic                |✔                    |✗                    |
+|JSON                   |✔                    |✗                    |
+
 
 [ClickHouse Data Types](/sql-reference/data-types)
 

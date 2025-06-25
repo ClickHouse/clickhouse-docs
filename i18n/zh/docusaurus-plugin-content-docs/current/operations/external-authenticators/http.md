@@ -1,16 +1,18 @@
 ---
-slug: /operations/external-authenticators/http
-title: 'HTTP'
+'description': 'Http 的文档'
+'slug': '/operations/external-authenticators/http'
+'title': 'HTTP'
 ---
+
 import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
-<SelfManaged/>
+<SelfManaged />
 
-HTTP 服务器可用于对 ClickHouse 用户进行身份验证。HTTP 身份验证只能作为外部身份验证器用于在 `users.xml` 中或本地访问控制路径中定义的现有用户。目前，仅支持使用 GET 方法的 [Basic](https://datatracker.ietf.org/doc/html/rfc7617) 身份验证方案。
+HTTP服务器可以用来验证ClickHouse用户。HTTP认证只能被用作对在 `users.xml` 或本地访问控制路径中定义的现有用户的外部认证器。目前，仅支持使用GET方法的[基本](https://datatracker.ietf.org/doc/html/rfc7617)认证方案。
 
-## HTTP 身份验证服务器定义 {#http-auth-server-definition}
+## HTTP认证服务器定义 {#http-auth-server-definition}
 
-要定义 HTTP 身份验证服务器，必须向 `config.xml` 中添加 `http_authentication_servers` 部分。
+要定义HTTP认证服务器，必须在 `config.xml` 中添加 `http_authentication_servers` 部分。
 
 **示例**
 ```xml
@@ -25,36 +27,45 @@ HTTP 服务器可用于对 ClickHouse 用户进行身份验证。HTTP 身份验�
           <max_tries>3</max_tries>
           <retry_initial_backoff_ms>50</retry_initial_backoff_ms>
           <retry_max_backoff_ms>1000</retry_max_backoff_ms>
+          <forward_headers>
+            <name>Custom-Auth-Header-1</name>
+            <name>Custom-Auth-Header-2</name>
+          </forward_headers>
+
         </basic_auth_server>
     </http_authentication_servers>
 </clickhouse>
 
 ```
 
-注意，可以在 `http_authentication_servers` 部分中使用不同的名称定义多个 HTTP 服务器。
+请注意，您可以在 `http_authentication_servers` 部分内定义多个HTTP服务器，使用不同的名称。
 
 **参数**
-- `uri` - 用于发起身份验证请求的 URI
+- `uri` - 用于进行认证请求的URI
 
-与服务器通信时使用的套接字的超时（以毫秒为单位）：
-- `connection_timeout_ms` - 默认：1000 毫秒。
-- `receive_timeout_ms` - 默认：1000 毫秒。
-- `send_timeout_ms` - 默认：1000 毫秒。
+在与服务器通信所使用的套接字上的超时（以毫秒为单位）：
+- `connection_timeout_ms` - 默认: 1000 ms。
+- `receive_timeout_ms` - 默认: 1000 ms。
+- `send_timeout_ms` - 默认: 1000 ms。
 
 重试参数：
-- `max_tries` - 发起身份验证请求的最大尝试次数。默认：3
-- `retry_initial_backoff_ms` - 重试时的初始退避间隔。默认：50 毫秒
-- `retry_max_backoff_ms` - 最大退避间隔。默认：1000 毫秒
+- `max_tries` - 进行认证请求的最大尝试次数。默认: 3
+- `retry_initial_backoff_ms` - 重试的初始退避间隔。默认: 50 ms
+- `retry_max_backoff_ms` - 最大退避间隔。默认: 1000 ms
 
-### 在 `users.xml` 中启用 HTTP 身份验证 {#enabling-http-auth-in-users-xml}
+转发头：
 
-为了为用户启用 HTTP 身份验证，请在用户定义中指定 `http_authentication` 部分，而不是 `password` 或类似部分。
+该部分定义了哪些头将从客户端请求头转发到外部HTTP认证器。
+
+### 在 `users.xml` 中启用HTTP认证 {#enabling-http-auth-in-users-xml}
+
+为了启用用户的HTTP认证，指定 `http_authentication` 部分，而不是用户定义中的 `password` 或类似部分。
 
 参数：
-- `server` - 在主 `config.xml` 文件中配置的 HTTP 身份验证服务器的名称，如前所述。
-- `scheme` - HTTP 身份验证方案。目前仅支持 `Basic`。默认：Basic
+- `server` - 在主 `config.xml` 文件中配置的HTTP认证服务器的名称，如前所述。
+- `scheme` - HTTP认证方案。目前仅支持 `Basic`。默认: Basic
 
-示例（放入 `users.xml`）：
+示例（放入 `users.xml` 中）：
 ```xml
 <clickhouse>
     <!- ... -->
@@ -69,18 +80,18 @@ HTTP 服务器可用于对 ClickHouse 用户进行身份验证。HTTP 身份验�
 ```
 
 :::note
-请注意，HTTP 身份验证不能与任何其他身份验证机制一起使用。存在任何其他部分，如 `password` 和 `http_authentication`，将导致 ClickHouse 关闭。
+请注意，HTTP认证不能与任何其他认证机制一起使用。与 `http_authentication` 共同存在的任何其他部分，例如 `password`，将迫使ClickHouse关闭。
 :::
 
-### 使用 SQL 启用 HTTP 身份验证 {#enabling-http-auth-using-sql}
+### 使用SQL启用HTTP认证 {#enabling-http-auth-using-sql}
 
-当 ClickHouse 中启用 [SQL 驱动的访问控制和账户管理](/operations/access-rights#access-control-usage) 时，可以使用 SQL 语句创建通过 HTTP 身份验证识别的用户。
+当ClickHouse中启用[SQL驱动的访问控制和账户管理](/operations/access-rights#access-control-usage)时，通过HTTP认证识别的用户也可以使用SQL语句创建。
 
 ```sql
 CREATE USER my_user IDENTIFIED WITH HTTP SERVER 'basic_server' SCHEME 'Basic'
 ```
 
-...或者，`Basic` 是默认的，无需显式方案定义。
+...或者，不显式定义方案时，`Basic` 为默认值
 
 ```sql
 CREATE USER my_user IDENTIFIED WITH HTTP SERVER 'basic_server'
@@ -88,4 +99,4 @@ CREATE USER my_user IDENTIFIED WITH HTTP SERVER 'basic_server'
 
 ### 传递会话设置 {#passing-session-settings}
 
-如果 HTTP 身份验证服务器的响应体为 JSON 格式并包含 `settings` 子对象，ClickHouse 将尝试将其键值对解析为字符串值，并将它们设置为已认证用户当前会话的会话设置。如果解析失败，服务器的响应体将被忽略。
+如果来自HTTP认证服务器的响应体具有JSON格式并包含 `settings` 子对象，ClickHouse将尝试将其键：值对解析为字符串值，并将其设置为已认证用户的当前会话的会话设置。如果解析失败，将忽略来自服务器的响应体。

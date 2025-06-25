@@ -1,0 +1,73 @@
+/* Styling of the top level container */
+
+.dropDownButton {
+    display: flex;
+    margin-bottom: 24px;
+    align-items: center;
+    width: fit-content;
+    cursor: pointer;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    padding: 0px 15px 0px 10px;
+}
+
+.versionText{
+
+}
+
+/* Styling of the triangle in the dropdown button */
+
+.triangle {
+    position: relative;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.triangle::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -15px; /* Adjust as needed */
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    transform: translateY(-50%);
+}
+
+[data-theme='dark'] .triangle::after {
+    border-top: 5px solid #ffff; /* Color of triangle */
+}
+
+[data-theme='light'] .triangle::after {
+    border-top: 5px solid #000; /* Color of triangle */
+}
+
+.dropdownItem {
+    display: block;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: black;
+}
+
+.dropdownItem:hover {
+    background-color: #f5f5f5;
+}
+
+.dropdownStyleStatic {
+    position: absolute;
+    margin-top: 2px;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+
+}
+
+[data-theme='dark'] .dropdownStyleStatic {
+    background-color: #3c3c3c;
+}
+
+[data-theme='light'] .dropdownStyleStatic {
+    background-color: white;
+}

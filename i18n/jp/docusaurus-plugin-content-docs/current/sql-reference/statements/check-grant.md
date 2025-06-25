@@ -1,11 +1,14 @@
 ---
-slug: /sql-reference/statements/check-grant
-sidebar_position: 56
-sidebar_label: CHECK GRANT
-title: "CHECK GRANT ステートメント"
+'description': 'Documentation for Check Grant'
+'sidebar_label': 'CHECK GRANT'
+'sidebar_position': 56
+'slug': '/sql-reference/statements/check-grant'
+'title': 'CHECK GRANT Statement'
 ---
 
-`CHECK GRANT` クエリは、現在のユーザー/ロールが特定の権限を付与されているかどうかを確認するために使用されます。
+
+
+`CHECK GRANT` クエリは、現在のユーザー/ロールに特定の権限が付与されているかどうかを確認するために使用されます。
 
 ## 構文 {#syntax}
 
@@ -19,9 +22,9 @@ CHECK GRANT privilege[(column_name [,...])] [,...] ON {db.table[*]|db[*].*|*.*|t
 
 ## 例 {#examples}
 
-ユーザーがかつて権限を付与されていた場合、応答の `check_grant` は `1` になります。そうでない場合、応答の `check_grant` は `0` になります。
+ユーザーが以前に権限を付与されていた場合、応答の `check_grant` は `1` になります。それ以外の場合、応答の `check_grant` は `0` になります。
 
-`table_1.col1` が存在し、現在のユーザーが権限 `SELECT`/`SELECT(con)` または（権限のある）ロールによって付与されている場合、応答は `1` です。
+`table_1.col1` が存在し、現在のユーザーが `SELECT`/`SELECT(con)` 権限または（権限のある）ロールを付与されている場合、応答は `1` になります。
 ```sql
 CHECK GRANT SELECT(col1) ON table_1;
 ```
@@ -31,7 +34,7 @@ CHECK GRANT SELECT(col1) ON table_1;
 │      1 │
 └────────┘
 ```
-`table_2.col2` が存在しない、または現在のユーザーが権限 `SELECT`/`SELECT(con)` または（権限のある）ロールによって付与されていない場合、応答は `0` です。
+`table_2.col2` が存在しない場合、または現在のユーザーが `SELECT`/`SELECT(con)` 権限または（権限のある）ロールを付与されていない場合、応答は `0` になります。
 ```sql
 CHECK GRANT SELECT(col2) ON table_2;
 ```
@@ -43,4 +46,4 @@ CHECK GRANT SELECT(col2) ON table_2;
 ```
 
 ## ワイルドカード {#wildcard}
-権限を指定する際には、テーブル名やデータベース名の代わりにアスタリスク (`*`) を使用できます。ワイルドカードのルールについては、[WILDCARD GRANTS](../../sql-reference/statements/grant.md#wildcard-grants) を確認してください。
+権限を指定する場合、アスタリスク（`*`）を使用してテーブルまたはデータベース名の代わりに使用できます。ワイルドカードのルールについては、[WILDCARD GRANTS](../../sql-reference/statements/grant.md#wildcard-grants) をご確認ください。

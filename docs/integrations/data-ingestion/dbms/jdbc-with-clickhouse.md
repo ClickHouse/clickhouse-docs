@@ -37,7 +37,7 @@ You have access to a machine that has:
 2. <a href="https://www.gnu.org/software/wget/" target="_blank">wget</a> installed
 3. a current version of **Java** (e.g. <a href="https://openjdk.java.net" target="_blank">OpenJDK</a> Version >= 17) installed
 4. a current version of **MySQL** (e.g. <a href="https://www.mysql.com" target="_blank">MySQL</a> Version >=8) installed and running
-5. a current version of **ClickHouse** [installed](/getting-started/install.md) and running
+5. a current version of **ClickHouse** [installed](/getting-started/install/install.mdx) and running
 :::
 
 ## Install the ClickHouse JDBC Bridge locally {#install-the-clickhouse-jdbc-bridge-locally}

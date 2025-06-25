@@ -1,41 +1,48 @@
 ---
-slug: /sql-reference/table-functions/generate
-sidebar_position: 75
-sidebar_label: generateRandom
-title: "generateRandom"
-description: "指定したスキーマに基づいてランダムデータを生成します。このデータを使ってテストテーブルを埋めることができます。すべてのタイプがサポートされているわけではありません。"
+'description': 'Generates random data with a given schema. Allows populating test
+  tables with that data. Not all types are supported.'
+'sidebar_label': 'generateRandom'
+'sidebar_position': 75
+'slug': '/sql-reference/table-functions/generate'
+'title': 'generateRandom'
 ---
+
+
 
 
 # generateRandom テーブル関数
 
-指定したスキーマに基づいてランダムデータを生成します。
-このデータを使ってテストテーブルを埋めることができます。
+指定されたスキーマでランダムデータを生成します。
+そのデータを用いてテストテーブルを人口することが可能です。
 すべてのタイプがサポートされているわけではありません。
 
-``` sql
+## 構文 {#syntax}
+
+```sql
 generateRandom(['name TypeName[, name TypeName]...', [, 'random_seed'[, 'max_string_length'[, 'max_array_length']]]])
 ```
 
-**引数**
+## 引数 {#arguments}
 
-- `name` — 対応するカラムの名前。
-- `TypeName` — 対応するカラムの型。
-- `random_seed` — 安定した結果を得るためにランダムシードを手動で指定します。NULLの場合、シードはランダムに生成されます。
-- `max_string_length` — 生成されるすべての文字列に対する最大文字列長。デフォルトは`10`です。
-- `max_array_length` — 生成されるすべての配列またはマップに対する最大要素数。デフォルトは`10`です。
+| 引数                 | 説明                                                                                                  |
+|----------------------|-------------------------------------------------------------------------------------------------------|
+| `name`               | 対応するカラムの名前。                                                                                         |
+| `TypeName`           | 対応するカラムのタイプ。                                                                                       |
+| `random_seed`        | 安定した結果を生成するためのランダムシードを手動で指定します。 `NULL` の場合、シードはランダムに生成されます。               |
+| `max_string_length`  | 生成されるすべての文字列の最大文字列長。デフォルトは `10` です。                                            |
+| `max_array_length`   | 生成されるすべての配列やマップの最大要素数。デフォルトは `10` です。                                          |
 
-**返される値**
+## 戻り値 {#returned_value}
 
-要求されたスキーマを持つテーブルオブジェクト。
+要求されたスキーマでのテーブルオブジェクト。
 
 ## 使用例 {#usage-example}
 
-``` sql
+```sql
 SELECT * FROM generateRandom('a Array(Int8), d Decimal32(4), c Tuple(DateTime64(3), UUID)', 1, 10, 2) LIMIT 3;
 ```
 
-``` text
+```text
 ┌─a────────┬────────────d─┬─c──────────────────────────────────────────────────────────────────┐
 │ [77]     │ -124167.6723 │ ('2061-04-17 21:59:44.573','3f72f405-ec3e-13c8-44ca-66ef335f7835') │
 │ [32,110] │ -141397.7312 │ ('1979-02-09 03:43:48.526','982486d1-5a5d-a308-e525-7bd8b80ffa73') │
@@ -56,7 +63,7 @@ SELECT * FROM random;
 └──────────────────────────────┴──────────────┴────────────────────────────────────────────────────────────────────┘
 ```
 
-[generateRandomStructure](../../sql-reference/functions/other-functions.md#generaterandomstructure) と組み合わせて:
+[generateRandomStructure](../../sql-reference/functions/other-functions.md#generaterandomstructure)と組み合わせて:
 
 ```sql
 SELECT * FROM generateRandom(generateRandomStructure(4, 101), 101) LIMIT 3;
@@ -70,7 +77,7 @@ SELECT * FROM generateRandom(generateRandomStructure(4, 101), 101) LIMIT 3;
 └─────────────────────┴─────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────────────────────────────┘
 ```
 
-`structure` 引数が欠落している場合（この場合、構造はランダムです）:
+`structure` 引数が欠如している場合（この場合、構造はランダムです）:
 
 ```sql
 SELECT * FROM generateRandom() LIMIT 3;
@@ -84,7 +91,7 @@ SELECT * FROM generateRandom() LIMIT 3;
 └──────┴────────────┴────────────────────────┴─────────────────────────┴──────────┘
 ```
 
-ランダムな構造とランダムなデータの両方のためのランダムシードを持つ場合:
+ランダムシードの両方をランダム構造とランダムデータに使用:
 
 ```sql
 SELECT * FROM generateRandom(11) LIMIT 3;
@@ -98,7 +105,9 @@ SELECT * FROM generateRandom(11) LIMIT 3;
 └──────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────────┴────────────┴────────────────────────────────────────────────────────────────────────────────┴─────────────────────────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────────────────────────────┴────────────┘
 ```
 
-**注意:** `generateRandom(generateRandomStructure(), [random seed], max_string_length, max_array_length)` は大きな`max_array_length`の設定により、複雑なタイプ（`Array`, `Tuple`, `Map`, `Nested`）のネストの深さが最大16に達する可能性があるため、本当に巨大な出力を生成することがあります。
+:::note
+`generateRandom(generateRandomStructure(), [random seed], max_string_length, max_array_length)` において、十分な `max_array_length` を設定すると、複雑なタイプ (`Array`, `Tuple`, `Map`, `Nested`) の深いネスト（最大16）により、非常に大きな出力が生成される可能性があります。
+:::
 
 ## 関連コンテンツ {#related-content}
-- ブログ: [ClickHouseでのランダムデータ生成](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse)
+- ブログ: [ClickHouse でのランダムデータ生成](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse)

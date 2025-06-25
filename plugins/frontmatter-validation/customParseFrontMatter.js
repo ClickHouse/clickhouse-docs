@@ -1,8 +1,77 @@
 // customParseFrontMatter.js
 const path = require('path');
+const fs = require('fs');
 
 // List to track files with issues
 let filesWithIssues = [];
+
+// Exceptions list configuration
+const EXCEPTIONS_FILE_PATH = path.join(process.cwd(), 'plugins/frontmatter-validation/frontmatter-exceptions.txt');
+let exceptionList = [];
+
+function loadExceptions() {
+    try {
+        if (!fs.existsSync(EXCEPTIONS_FILE_PATH)) {
+            console.log(`Exceptions file not found at ${EXCEPTIONS_FILE_PATH}. No exceptions will be applied.`);
+            return [];
+        }
+
+        const fileContent = fs.readFileSync(EXCEPTIONS_FILE_PATH, 'utf8');
+        const exceptions = [];
+
+        fileContent.split('\n').forEach(line => {
+            line = line.trim();
+
+            // Skip empty lines and comments
+            if (!line || line.startsWith('#')) {
+                return;
+            }
+
+            // Check if line is a regex pattern (enclosed in slashes)
+            const regexMatch = line.match(/^\/(.+)\/$/);
+            if (regexMatch) {
+                try {
+                    exceptions.push(new RegExp(regexMatch[1]));
+                } catch (e) {
+                    console.warn(`Invalid regex in exceptions file: ${line}`);
+                }
+            } else {
+                // Treat as a literal file path
+                exceptions.push(line);
+            }
+        });
+
+        console.log(`Loaded ${exceptions.length} frontmatter exception(s)`);
+        return exceptions;
+    } catch (error) {
+        console.error(`Error loading exception file: ${error.message}`);
+        return [];
+    }
+}
+
+// Initialize exception list when module is loaded
+exceptionList = loadExceptions();
+
+/**
+ * Checks if a file path should be excluded from validation
+ * @param {string} filePath - Path to the file
+ * @returns {boolean} - True if the file should be excluded
+ */
+function isExcluded(filePath) {
+    const relativePath = path.relative(process.cwd(), filePath);
+
+    return exceptionList.some(exception => {
+        if (exception instanceof RegExp) {
+            return exception.test(relativePath);
+        }
+        return relativePath === exception;
+    });
+}
+
+function reloadExceptions() {
+    exceptionList = loadExceptions();
+    return exceptionList.length;
+}
 
 /**
  * Custom frontmatter parser that enforces specific formatting rules
@@ -18,6 +87,11 @@ async function customParseFrontMatter(params) {
     const { filePath, fileContent, defaultParseFrontMatter } = params;
     const relativePath = path.relative(process.cwd(), filePath);
     const issues = [];
+
+    // Skip files in the exception list
+    if (isExcluded(filePath)) {
+        return await defaultParseFrontMatter(params);
+    }
 
     // Skip snippets
     const regex_snippets = /snippet(s)?/i;
@@ -295,5 +369,8 @@ module.exports = {
     getFilesWithIssues: () => [...filesWithIssues], // Return a copy to prevent external modifications
     resetIssues: () => {
         filesWithIssues = []; // Replace the array instead of modifying it
-    }
+    },
+    // Export exception list management functions
+    reloadExceptions,
+    getExceptions: () => [...exceptionList]
 };

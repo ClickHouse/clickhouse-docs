@@ -1,14 +1,18 @@
 ---
-description: "Системная таблица, содержащая историю значений метрик из таблиц `system.metrics` и `system.events`, периодически записываемую на диск."
-slug: /operations/system-tables/metric_log
-title: "system.metric_log"
+description: 'Системная таблица, содержащая историю значений метрик из таблиц `system.metrics` и `system.events`, периодически записываемых на диск.'
 keywords: ['system table', 'metric_log']
+slug: /operations/system-tables/metric_log
+title: 'system.metric_log'
 ---
+
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
+
+# system.metric_log
 
 <SystemTableCloud/>
 
-Содержит историю значений метрик из таблиц `system.metrics` и `system.events`, периодически записываемую на диск.
+Содержит историю значений метрик из таблиц `system.metrics` и `system.events`, периодически записываемых на диск.
 
 Колонки:
 - `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, выполняющего запрос.
@@ -18,11 +22,11 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 **Пример**
 
-``` sql
+```sql
 SELECT * FROM system.metric_log LIMIT 1 FORMAT Vertical;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 hostname:                                                        clickhouse.eu-central1.internal
@@ -50,10 +54,17 @@ CurrentMetric_LocalThreadActive:                                 0
 CurrentMetric_DistributedFilesToInsert:                          0
 ```
 
-**Смотрите также**
+**Схема**
+Эта таблица может быть настроена с использованием различных типов схем с помощью XML-тега `<schema_type>`. Тип схемы по умолчанию — `wide`, где каждая метрика или событие профиля хранятся в отдельной колонке. Эта схема является наиболее производительной и эффективной для чтений из одной колонки.
+
+Схема `transposed` хранит данные в формате, аналогичном `system.asynchronous_metric_log`, где метрики и события хранятся как строки. Эта схема полезна для малоресурсных конфигураций, поскольку снижает потребление ресурсов во время слияний.
+
+Существует также схема совместимости, `transposed_with_wide_view`, которая хранит фактические данные в таблице с транспонированной схемой (`system.transposed_metric_log`) и создает представление на ее основе с использованием широкой схемы. Это представление выполняет запросы к транспонированной таблице, что делает его полезным для миграции от широкой схемы к транспонированной.
+
+**См. также**
 
 - [metric_log setting](../../operations/server-configuration-parameters/settings.md#metric_log) — Включение и отключение настройки.
-- [system.asynchronous_metrics](../../operations/system-tables/asynchronous_metrics.md) — Содержит периодически вычисляемые метрики.
+- [system.asynchronous_metrics](../../operations/system-tables/asynchronous_metrics.md) — Содержит периодически рассчитываемые метрики.
 - [system.events](/operations/system-tables/events) — Содержит ряд произошедших событий.
-- [system.metrics](../../operations/system-tables/metrics.md) — Содержит мгновенно вычисляемые метрики.
+- [system.metrics](../../operations/system-tables/metrics.md) — Содержит мгновенно рассчитанные метрики.
 - [Monitoring](../../operations/monitoring.md) — Основные концепции мониторинга ClickHouse.

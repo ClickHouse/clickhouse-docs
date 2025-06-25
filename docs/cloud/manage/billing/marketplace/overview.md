@@ -82,3 +82,11 @@ Please see the [Billing overview page](/cloud/manage/billing).
 ### Is there a difference in ClickHouse Cloud pricing, whether paying through the cloud provider marketplace or directly to ClickHouse? {#is-there-a-difference-in-clickhouse-cloud-pricing-whether-paying-through-the-cloud-provider-marketplace-or-directly-to-clickhouse}
 
 There is no difference in pricing between marketplace billing and signing up directly with ClickHouse. In either case, your usage of  ClickHouse Cloud is tracked in terms of ClickHouse Cloud Credits (CHCs), which are metered in the same way and billed accordingly.
+
+### Can I set up multiple ClickHouse Organizations to bill to a single cloud marketplace billing account or sub account (AWS, GCP, or Azure)? {#multiple-organizations-to-bill-to-single-cloud-marketplace-account}
+
+A single ClickHouse organization can only be configured to bill to a single Cloud marketplace billing account or sub account.
+
+### If my ClickHouse Organization is billed through a cloud marketplace committed spend agreement will I automatically move to PAYG billing when I run out of credits? {#automatically-move-to-PAYG-when-running-out-of-credit}
+
+If your marketplace committed spend contract is active and you run out of credits we will automatically move your organization to PAYG billing. However, when your existing contract expires, you will need to link a new marketplace contract to your organization or move your organization to direct billing via credit card. 

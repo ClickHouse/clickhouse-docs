@@ -1,7 +1,9 @@
 ---
-sidebar_label: '主キーインデックス'
-sidebar_position: 1
-description: 'このガイドでは、ClickHouseのインデックスについて深く掘り下げていきます。'
+'sidebar_label': '主キーインデックス'
+'sidebar_position': 1
+'description': 'このガイドでは、ClickHouseのインデックスに詳しく入ります。'
+'title': 'ClickHouseにおける主キーインデックスの実践的な紹介'
+'slug': '/guides/best-practices/sparse-primary-indexes'
 ---
 
 import sparsePrimaryIndexes01 from '@site/static/images/guides/best-practices/sparse-primary-indexes-01.png';
@@ -28,42 +30,45 @@ import sparsePrimaryIndexes14a from '@site/static/images/guides/best-practices/s
 import sparsePrimaryIndexes14b from '@site/static/images/guides/best-practices/sparse-primary-indexes-14b.png';
 import sparsePrimaryIndexes15a from '@site/static/images/guides/best-practices/sparse-primary-indexes-15a.png';
 import sparsePrimaryIndexes15b from '@site/static/images/guides/best-practices/sparse-primary-indexes-15b.png';
+import Image from '@theme/IdealImage';
 
-# ClickHouseの主キーインデックスの実用的な紹介
+
+
+# ClickHouseにおける主キーインデックスの実用的な導入
 ## はじめに {#introduction}
 
-このガイドでは、ClickHouseのインデックスについて深く掘り下げていきます。以下の点について詳しく説明します：
-- [ClickHouseのインデックスが従来のリレーショナルデータベース管理システムのインデックスとどのように異なるか](#an-index-design-for-massive-data-scales)
+このガイドでは、ClickHouseのインデックスについて詳しく掘り下げていきます。以下について詳細に説明し、議論します：
+- [ClickHouseにおけるインデクシングが従来のリレーショナルデータベース管理システムとどのように異なるか](#an-index-design-for-massive-data-scales)
 - [ClickHouseがテーブルのスパース主キーインデックスをどのように構築し使用しているか](#a-table-with-a-primary-key)
-- [ClickHouseでのインデックスのベストプラクティスは何か](#using-multiple-primary-indexes)
+- [ClickHouseにおけるインデクシングのベストプラクティスは何か](#using-multiple-primary-indexes)
 
-このガイドに記載されたすべてのClickHouse SQL文やクエリは、ご自身のマシンで実行することができます。
-ClickHouseのインストールおよび始め方の手順については、[クイックスタート](/quick-start.mdx)を参照してください。
+このガイドに記載されているすべてのClickHouse SQLステートメントとクエリを自分のマシンで実行することもできます。
+ClickHouseのインストールと開始方法については、[クイックスタート](/quick-start.mdx)を参照してください。
 
 :::note
-このガイドは、ClickHouseのスパース主キーインデックスに焦点を当てています。
+このガイドはClickHouseのスパース主キーインデックスに焦点を当てています。
 
-ClickHouseの[二次データスキッピングインデックス](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-data_skipping-indexes)については、[チュートリアル](/guides/best-practices/skipping-indexes.md)をご覧ください。
+ClickHouseの[セカンダリーデータスキッピングインデックス](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-data_skipping-indexes)については、[チュートリアル](/guides/best-practices/skipping-indexes.md)を参照してください。
 :::
 ### データセット {#data-set}
 
-このガイドの中では、サンプルの匿名化されたウェブトラフィックデータセットを使用します。
+このガイドでは、サンプルの匿名化されたウェブトラフィックデータセットを使用します。
 
-- サンプルデータセットからの8.87百万行（イベント）のサブセットを使用します。
-- 非圧縮データのサイズは8.87百万イベントで約700MBです。ClickHouseに保存すると200MBに圧縮されます。
-- サブセットにおいて、各行はインターネットユーザーを示す3つのカラムを含みます（`UserID`カラム）、特定の時間にURLをクリックした（`URL`カラム）、イベント時間（`EventTime`カラム）を示します。
+- サンプルデータセットから887万行（イベント）のサブセットを使用します。
+- 圧縮されていないデータサイズは887万イベントで約700MBです。ClickHouseに保存すると圧縮後は200MBになります。
+- サブセットの各行には、特定の時刻にURL（`URL`カラム）をクリックしたインターネットユーザー（`UserID`カラム）を示す3つのカラムがあります。
 
-この3つのカラムを使って、以下のような典型的なウェブ分析クエリを提案できます：
+これら3つのカラムを使用して、次のような典型的なウェブ分析クエリをすでに策定できます：
 
-- "特定のユーザーの最もクリックされたURLのトップ10は？"
-- "特定のURLを最も頻繁にクリックしたユーザーのトップ10は誰か？"
-- "特定のURLをユーザーがクリックする最も人気のある時間帯（例：曜日）は？"
+- 「特定のユーザーにとって最もクリックされた上位10のURLは何ですか？」
+- 「特定のURLを最も頻繁にクリックした上位10のユーザーは誰ですか？」
+- 「ユーザーが特定のURLをクリックする際の最も人気のある時間（例えば、曜日）は何ですか？」
 ### テストマシン {#test-machine}
 
-このドキュメントに記載されたすべての実行時間の数字は、Apple M1 Proチップと16GBのRAMを搭載したMacBook Pro上でClickHouse 22.2.1をローカルに実行した際のものです。
+このドキュメントに示すすべての実行時間数値は、Apple M1 Proチップを搭載したMacBook Pro上でClickHouse 22.2.1をローカルで実行したものです。
 ### フルテーブルスキャン {#a-full-table-scan}
 
-プライマリーキーなしでデータセットに対してクエリが実行される方法を確認するために、次のSQL DDL文を実行して（MergeTreeテーブルエンジンを使用して）テーブルを作成します：
+主キーなしでデータセット上でクエリがどのように実行されるかを見るために、次のSQL DDLステートメントを実行してテーブル（MergeTreeテーブルエンジンを使用）を作成します：
 
 ```sql
 CREATE TABLE hits_NoPrimaryKey
@@ -76,8 +81,8 @@ ENGINE = MergeTree
 PRIMARY KEY tuple();
 ```
 
-次に、以下のSQL挿入文を使用して、ヒットデータセットのサブセットをテーブルに挿入します。
-これには、クリックハウス.comにリモートホストされた完全なデータセットのサブセットを読み込むために[URLテーブル関数](/sql-reference/table-functions/url.md)が使用されています。
+次に、次のSQL挿入ステートメントを使用して、ヒットデータセットのサブセットをテーブルに挿入します。
+これは、クリックハウスのリモートホストにホストされているフルデータセットのサブセットをロードするために[URLテーブル関数](/sql-reference/table-functions/url.md)を使用します：
 
 ```sql
 INSERT INTO hits_NoPrimaryKey SELECT
@@ -87,26 +92,26 @@ INSERT INTO hits_NoPrimaryKey SELECT
 FROM url('https://datasets.clickhouse.com/hits/tsv/hits_v1.tsv.xz', 'TSV', 'WatchID UInt64,  JavaEnable UInt8,  Title String,  GoodEvent Int16,  EventTime DateTime,  EventDate Date,  CounterID UInt32,  ClientIP UInt32,  ClientIP6 FixedString(16),  RegionID UInt32,  UserID UInt64,  CounterClass Int8,  OS UInt8,  UserAgent UInt8,  URL String,  Referer String,  URLDomain String,  RefererDomain String,  Refresh UInt8,  IsRobot UInt8,  RefererCategories Array(UInt16),  URLCategories Array(UInt16), URLRegions Array(UInt32),  RefererRegions Array(UInt32),  ResolutionWidth UInt16,  ResolutionHeight UInt16,  ResolutionDepth UInt8,  FlashMajor UInt8, FlashMinor UInt8,  FlashMinor2 String,  NetMajor UInt8,  NetMinor UInt8, UserAgentMajor UInt16,  UserAgentMinor FixedString(2),  CookieEnable UInt8, JavascriptEnable UInt8,  IsMobile UInt8,  MobilePhone UInt8,  MobilePhoneModel String,  Params String,  IPNetworkID UInt32,  TraficSourceID Int8, SearchEngineID UInt16,  SearchPhrase String,  AdvEngineID UInt8,  IsArtifical UInt8,  WindowClientWidth UInt16,  WindowClientHeight UInt16,  ClientTimeZone Int16,  ClientEventTime DateTime,  SilverlightVersion1 UInt8, SilverlightVersion2 UInt8,  SilverlightVersion3 UInt32,  SilverlightVersion4 UInt16,  PageCharset String,  CodeVersion UInt32,  IsLink UInt8,  IsDownload UInt8,  IsNotBounce UInt8,  FUniqID UInt64,  HID UInt32,  IsOldCounter UInt8, IsEvent UInt8,  IsParameter UInt8,  DontCountHits UInt8,  WithHash UInt8, HitColor FixedString(1),  UTCEventTime DateTime,  Age UInt8,  Sex UInt8,  Income UInt8,  Interests UInt16,  Robotness UInt8,  GeneralInterests Array(UInt16), RemoteIP UInt32,  RemoteIP6 FixedString(16),  WindowName Int32,  OpenerName Int32,  HistoryLength Int16,  BrowserLanguage FixedString(2),  BrowserCountry FixedString(2),  SocialNetwork String,  SocialAction String,  HTTPError UInt16, SendTiming Int32,  DNSTiming Int32,  ConnectTiming Int32,  ResponseStartTiming Int32,  ResponseEndTiming Int32,  FetchTiming Int32,  RedirectTiming Int32, DOMInteractiveTiming Int32,  DOMContentLoadedTiming Int32,  DOMCompleteTiming Int32,  LoadEventStartTiming Int32,  LoadEventEndTiming Int32, NSToDOMContentLoadedTiming Int32,  FirstPaintTiming Int32,  RedirectCount Int8, SocialSourceNetworkID UInt8,  SocialSourcePage String,  ParamPrice Int64, ParamOrderID String,  ParamCurrency FixedString(3),  ParamCurrencyID UInt16, GoalsReached Array(UInt32),  OpenstatServiceName String,  OpenstatCampaignID String,  OpenstatAdID String,  OpenstatSourceID String,  UTMSource String, UTMMedium String,  UTMCampaign String,  UTMContent String,  UTMTerm String, FromTag String,  HasGCLID UInt8,  RefererHash UInt64,  URLHash UInt64,  CLID UInt32,  YCLID UInt64,  ShareService String,  ShareURL String,  ShareTitle String,  ParsedParams Nested(Key1 String,  Key2 String, Key3 String, Key4 String, Key5 String,  ValueDouble Float64),  IslandID FixedString(16),  RequestNum UInt32,  RequestTry UInt8')
 WHERE URL != '';
 ```
-レスポンスは以下の通りです：
+応答は次のようになります：
 ```response
 Ok.
 
 0 rows in set. Elapsed: 145.993 sec. Processed 8.87 million rows, 18.40 GB (60.78 thousand rows/s., 126.06 MB/s.)
 ```
 
-ClickHouseクライアントの結果出力は、上記のステートメントがテーブルに8.87百万行を挿入したことを示しています。
+ClickHouseクライアントの結果出力は、上記のステートメントがテーブルに887万行挿入されたことを示しています。
 
-最後に、後の議論を簡単にし、図や結果を再現性のあるものにするために、`FINAL`キーワードを使用してテーブルを[最適化](/sql-reference/statements/optimize.md)します：
+最後に、後の議論を簡素化し、図や結果を再現可能にするために、FINALキーワードを使用してテーブルを[最適化](/sql-reference/statements/optimize.md)します：
 
 ```sql
 OPTIMIZE TABLE hits_NoPrimaryKey FINAL;
 ```
 
 :::note
-一般的に、データを読み込んだ後にテーブルをすぐに最適化する必要はありませんし、推奨もされません。この例でなぜこれが必要かは後で明らかになります。
+一般的には、データをロードした後にすぐにテーブルを最適化することは必要も推奨もされません。この例でこれが必要な理由は明らかになります。
 :::
 
-最初のウェブ分析クエリを実行します。以下は、UserID 749927693のインターネットユーザーに対して最もクリックされたURLのトップ10を計算するクエリです。
+次に、最初のウェブ分析クエリを実行します。以下は、ユーザーID 749927693を持つインターネットユーザーのために最もクリックされた上位10のURLを計算します：
 
 ```sql
 SELECT URL, count(URL) as Count
@@ -116,7 +121,7 @@ GROUP BY URL
 ORDER BY Count DESC
 LIMIT 10;
 ```
-レスポンスは次のようになります：
+応答は次のようになります：
 ```response
 ┌─URL────────────────────────────┬─Count─┐
 │ http://auto.ru/chatay-barana.. │   170 │
@@ -132,29 +137,30 @@ LIMIT 10;
 └────────────────────────────────┴───────┘
 
 10 rows in set. Elapsed: 0.022 sec.
-// highlight-next-line
+
+# highlight-next-line
 Processed 8.87 million rows,
 70.45 MB (398.53 million rows/s., 3.17 GB/s.)
 ```
 
-ClickHouseクライアントの結果出力は、ClickHouseがフルテーブルスキャンを実行したことを示しています！8.87百万行のテーブルの各行がClickHouseにストリームされました。これはスケールしません。
+ClickHouseクライアントの結果出力は、ClickHouseがフルテーブルスキャンを実行したことを示しています！私たちのテーブルの887万行の各行がClickHouseにストリームされました。これはスケールしません。
 
-これを（はるかに）効率よく（ずっと）速くするためには、適切な主キーを持つテーブルを使用する必要があります。これにより、ClickHouseは自動的に（主キーのカラムに基づいて）スパース主キーインデックスを作成し、例のクエリの実行を大幅に高速化できます。
+これを（大幅に）効率的かつ（はるかに）高速にするためには、適切な主キーを持つテーブルを使用する必要があります。これにより、ClickHouseは自動的に（主キーのカラムに基づいて）スパース主キーインデックスを作成し、それを使用して例のクエリの実行速度を大幅に向上させることができます。
 ### 関連コンテンツ {#related-content}
-- ブログ: [ClickHouseクエリの高速化](https://clickhouse.com/blog/clickhouse-faster-queries-with-projections-and-primary-indexes)
+- ブログ: [ClickHouseのクエリを超高速化する](https://clickhouse.com/blog/clickhouse-faster-queries-with-projections-and-primary-indexes)
 ## ClickHouseインデックス設計 {#clickhouse-index-design}
 ### 大規模データスケールのためのインデックス設計 {#an-index-design-for-massive-data-scales}
 
-従来のリレーショナルデータベース管理システムでは、主インデックスはテーブルの行ごとに1つのエントリを含むことになります。これにより、主インデックスは私たちのデータセットに対して8.87百万のエントリを含むことになります。このようなインデックスは、特定の行を迅速に特定できるため、ルックアップクエリやポイント更新において高効率を実現します。`B(+)-Tree`データ構造におけるエントリの検索は、平均時間計算量が`O(log n)`です；より正確には、`log_b n = log_2 n / log_2 b`、ここで`b`は`B(+)-Tree`の分岐係数で、`n`はインデックスされた行の数です。`b`は通常、数百から数千の間の値を持つため、`B(+)-Trees`は非常に浅い構造であり、レコードを特定するために必要なディスクアクセスも少なく済みます。8.87百万行で分岐係数が1000の場合、平均して2.3回のディスクアクセスが必要です。この能力は、多くのディスクおよびメモリのオーバーヘッド、新しい行をテーブルに追加しインデックスにエントリを追加する際の高い挿入コスト、時にはB-Treeの再バランスを必要とするというコストを伴います。
+従来のリレーショナルデータベース管理システムでは、主インデックスにはテーブル行ごとに1つのエントリが含まれます。これにより、主インデックスには887万エントリが含まれることになります。このようなインデックスは特定の行を迅速に特定することができるため、ルックアップクエリやポイントアップデートに対して高い効率をもたらします。`B(+)-Tree`データ構造でエントリを検索する平均時間計算量は`O(log n)`です；より正確には、`log_b n = log_2 n / log_2 b`であり、ここで`b`は`B(+)-Tree`の分岐因子、`n`はインデックスされた行の数です。通常、`b`は数百から数千の間にあるため、`B(+)-Trees`は非常に浅い構造であり、レコードを特定するために必要なディスクシークは少数です。887万行と分岐因子が1000の場合、平均して2.3回のディスクシークが必要です。この能力にはコストが伴います：新しい行をテーブルに追加し、インデックスにエントリを追加する際の追加的なディスクおよびメモリーオーバーヘッド、挿入コストの増加、時にはB-Treeの再バランス。
 
-B-Treeインデックスに関連する課題を考慮に入れて、ClickHouseのテーブルエンジンは異なるアプローチを利用しています。ClickHouseの[MergeTreeエンジンファミリー](/engines/table-engines/mergetree-family/index.md)は、大規模なデータボリュームを処理するために設計および最適化されています。これらのテーブルは毎秒百万行の挿入を受け入れ、非常に大きなデータ（100ペタバイト以上）を格納するために設計されています。データは迅速にテーブルに[パーツごと](/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage)書き込まれ、バックグラウンドでパーツをマージするためのルールが適用されます。ClickHouseにおいて各パーツにはそれぞれの主インデックスがあります。パーツがマージされると、マージされたパーツの主インデックスもマージされます。ClickHouseが設計された非常に大規模な環境では、ディスクおよびメモリの効率が重要です。したがって、各行をインデックスするのではなく、パーツの主インデックスには行のグループごとに1つのインデックスエントリ（「マーク」として知られる）が存在します。この技術は**スパースインデックス**と呼ばれます。
+B-Treeインデックスに関連する課題を考慮すると、ClickHouseのテーブルエンジンは異なるアプローチを利用しています。ClickHouseの[MergeTreeエンジンファミリー](/engines/table-engines/mergetree-family/index.md)は、大量のデータボリュームを処理するために設計および最適化されています。これらのテーブルは、毎秒数百万の行挿入を受け取り、非常に大きな（100ペタバイト以上の）データボリュームを保存するように設計されています。データは、バックグラウンドで部分を結合するルールが適用されながら、テーブルに[部分ごとに](/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage)迅速に書き込まれます。ClickHouseでは、各部分にそれぞれの主インデックスがあります。部分がマージされると、マージされた部分の主インデックスもマージされます。ClickHouseが設計された非常に大きなスケールにおいて、ディスクとメモリーの効率が非常に重要です。したがって、すべての行をインデックスするのではなく、部分の主インデックスは行のグループ（「グラニュール」と呼ばれる）ごとに1つのインデックスエントリ（「マーク」と呼ばれる）を持ちます。このテクニックは**スパースインデックス**と呼ばれます。
 
-スパースインデックスが可能であるのは、ClickHouseがパーツの行をディスク上で主キーのカラムに従って順序付けて保存しているためです。個々の行を直接特定するのではなく（B-Treeベースのインデックスのように）、スパース主インデックスはインデックスエントリのバイナリ検索を通じて、クエリに対して一致する可能性のある行のグループを迅速に特定することを可能にします。特定された一群の一致する可能性のある行（グラニュール）は、その後、並行してClickHouseエンジンにストリーミングされます。このインデックス設計により、主インデックスは小さく（完全にメインメモリに収まる必要があります）、クエリ実行時間を大幅に短縮します：特にデータ分析の使用ケースで典型的な範囲クエリの場合に。
+スパースインデクシングが可能なのは、ClickHouseが部分の行を主キーのカラムに基づいてディスクに順序付けて保存しているためです。単一の行を直接特定する代わりに（B-Treeベースのインデックスのように）、スパース主インデックスはインデックスエントリのバイナリ検索を介して迅速に一致する可能性がある行のグループを特定できます。見つかった一致する可能性のある行のグループ（グラニュール）は、その後ClickHouseエンジンに並行してストリーミングされて一致を見つけます。このインデックス設計により、主インデックスは小さく（完全にメインメモリにフィットすることが可能であり、及びそれが必要です）、クエリ実行時間を大幅に短縮します：特にデータ分析のユースケースにおいて典型的な範囲クエリの場合に。
 
-以下は、ClickHouseがどのようにスパース主インデックスを構築し、使用しているのかを詳細に示します。後のセクションでは、インデックスを構築するために使用されるテーブルカラムの選択、削除、順序に関するいくつかのベストプラクティスについて議論します。
+以下に、ClickHouseがスパース主インデックスを構築し使用する方法を詳しく示します。後のセクションでは、インデックスを構築するために使用されるテーブルカラム（主キーのカラム）の選択、削除、順序付けのベストプラクティスについて議論します。
 ### 主キーを持つテーブル {#a-table-with-a-primary-key}
 
-UserIDとURLのキーカラムを持つコンパウンド主キーを持つテーブルを作成します：
+UserIDとURLのキーカラムを持つ複合主キーのあるテーブルを作成します：
 
 ```sql
 CREATE TABLE hits_UserID_URL
@@ -164,7 +170,7 @@ CREATE TABLE hits_UserID_URL
     `EventTime` DateTime
 )
 ENGINE = MergeTree
-// highlight-next-line
+-- highlight-next-line
 PRIMARY KEY (UserID, URL)
 ORDER BY (UserID, URL, EventTime)
 SETTINGS index_granularity = 8192, index_granularity_bytes = 0, compress_primary_key = 0;
@@ -173,35 +179,35 @@ SETTINGS index_granularity = 8192, index_granularity_bytes = 0, compress_primary
 [//]: # (<details open>)
 <details>
     <summary>
-    DDL文の詳細
+    DDLステートメントの詳細
     </summary>
     <p>
 
-このガイドの今後の議論を簡潔にし、図や結果を再現可能にするために、DDL文は：
+後の議論を簡素化し、図や結果を再現可能にするために、DDLステートメントは：
 
 <ul>
   <li>
     <code>ORDER BY</code>句を介してテーブルの複合ソートキーを指定します。
   </li>
   <li>
-    セッティングの介して、主インデックスのエントリ数を明示的に制御します：
+    設定を通じて主インデックスが持つインデックスエントリの数を明示的に制御します：
     <ul>
       <li>
-        <code>index_granularity</code>: デフォルト値の8192に明示的に設定されます。これは、8192行の各グループに対して主インデックスが1つのインデックスエントリを持つことを意味しています。例えば、テーブルに16384行がある場合、インデックスには2つのインデックスエントリが存在します。
+        <code>index_granularity</code>：デフォルト値の8192に明示的に設定されており、8192行ごとに1つのインデックスエントリを持つことを意味します。例えば、テーブルが16384行を持つ場合、インデックスは2つのインデックスエントリを持つことになります。
       </li>
       <li>
-        <code>index_granularity_bytes</code>: <a href="https://clickhouse.com/docs/whats-new/changelog/2019/#experimental-features-1" target="_blank">適応インデックスグラニュラリティ</a>を無効にするために0に設定されています。適応インデックスグラニュラリティは、ClickHouseが次のいずれかが真の場合に、n行のグループに対して1つのインデックスエントリを自動的に作成することを意味します：
+        <code>index_granularity_bytes</code>：<a href="https://clickhouse.com/docs/whats-new/changelog/2019/#experimental-features-1" target="_blank">適応インデックスグラニュラティ</a>を無効にするために0に設定されます。適応インデックスグラニュラティは、次のいずれかが真である場合にClickHouseがn行のグループごとに1つのインデックスエントリを自動的に作成することを意味します：
         <ul>
           <li>
-            <code>n</code>が8192未満であり、かつその<code>n</code>行の合計行データサイズが10MB以上（<code>index_granularity_bytes</code>のデフォルト値）である場合。
+            <code>n</code>が8192未満であり、その<code>n</code>行の結合された行データのサイズが10MB以上（<code>index_granularity_bytes</code>のデフォルト値）である場合。
           </li>
           <li>
-            <code>n</code>行の合計行データサイズが10MB未満であるが、<code>n</code>が8192である場合。
+            <code>n</code>行の結合されたデータサイズが10MB未満であるが、<code>n</code>が8192である場合。
           </li>
         </ul>
       </li>
       <li>
-        <code>compress_primary_key</code>: 主インデックスの<a href="https://github.com/ClickHouse/ClickHouse/issues/34437" target="_blank">圧縮を無効にするために0</a>に設定されます。これにより、後でその内容をオプションで検査することができます。
+        <code>compress_primary_key</code>：主インデックスの<a href="https://github.com/ClickHouse/ClickHouse/issues/34437" target="_blank">圧縮を無効にするために0に設定されており</a>、これにより後でオプションでコンテンツを検査できます。
       </li>
     </ul>
   </li>
@@ -210,7 +216,8 @@ SETTINGS index_granularity = 8192, index_granularity_bytes = 0, compress_primary
 </p>
 </details>
 
-DDL文で指定された主キーは、指定された2つのキーカラムに基づいて主インデックスの作成を誘発します。
+
+上記のDDLステートメントの主キーは、指定された2つのキーカラムに基づいて主インデックスを作成する原因となります。
 
 <br/>
 次にデータを挿入します：
@@ -223,20 +230,21 @@ INSERT INTO hits_UserID_URL SELECT
 FROM url('https://datasets.clickhouse.com/hits/tsv/hits_v1.tsv.xz', 'TSV', 'WatchID UInt64,  JavaEnable UInt8,  Title String,  GoodEvent Int16,  EventTime DateTime,  EventDate Date,  CounterID UInt32,  ClientIP UInt32,  ClientIP6 FixedString(16),  RegionID UInt32,  UserID UInt64,  CounterClass Int8,  OS UInt8,  UserAgent UInt8,  URL String,  Referer String,  URLDomain String,  RefererDomain String,  Refresh UInt8,  IsRobot UInt8,  RefererCategories Array(UInt16),  URLCategories Array(UInt16), URLRegions Array(UInt32),  RefererRegions Array(UInt32),  ResolutionWidth UInt16,  ResolutionHeight UInt16,  ResolutionDepth UInt8,  FlashMajor UInt8, FlashMinor UInt8,  FlashMinor2 String,  NetMajor UInt8,  NetMinor UInt8, UserAgentMajor UInt16,  UserAgentMinor FixedString(2),  CookieEnable UInt8, JavascriptEnable UInt8,  IsMobile UInt8,  MobilePhone UInt8,  MobilePhoneModel String,  Params String,  IPNetworkID UInt32,  TraficSourceID Int8, SearchEngineID UInt16,  SearchPhrase String,  AdvEngineID UInt8,  IsArtifical UInt8,  WindowClientWidth UInt16,  WindowClientHeight UInt16,  ClientTimeZone Int16,  ClientEventTime DateTime,  SilverlightVersion1 UInt8, SilverlightVersion2 UInt8,  SilverlightVersion3 UInt32,  SilverlightVersion4 UInt16,  PageCharset String,  CodeVersion UInt32,  IsLink UInt8,  IsDownload UInt8,  IsNotBounce UInt8,  FUniqID UInt64,  HID UInt32,  IsOldCounter UInt8, IsEvent UInt8,  IsParameter UInt8,  DontCountHits UInt8,  WithHash UInt8, HitColor FixedString(1),  UTCEventTime DateTime,  Age UInt8,  Sex UInt8,  Income UInt8,  Interests UInt16,  Robotness UInt8,  GeneralInterests Array(UInt16), RemoteIP UInt32,  RemoteIP6 FixedString(16),  WindowName Int32,  OpenerName Int32,  HistoryLength Int16,  BrowserLanguage FixedString(2),  BrowserCountry FixedString(2),  SocialNetwork String,  SocialAction String,  HTTPError UInt16, SendTiming Int32,  DNSTiming Int32,  ConnectTiming Int32,  ResponseStartTiming Int32,  ResponseEndTiming Int32,  FetchTiming Int32,  RedirectTiming Int32, DOMInteractiveTiming Int32,  DOMContentLoadedTiming Int32,  DOMCompleteTiming Int32,  LoadEventStartTiming Int32,  LoadEventEndTiming Int32, NSToDOMContentLoadedTiming Int32,  FirstPaintTiming Int32,  RedirectCount Int8, SocialSourceNetworkID UInt8,  SocialSourcePage String,  ParamPrice Int64, ParamOrderID String,  ParamCurrency FixedString(3),  ParamCurrencyID UInt16, GoalsReached Array(UInt32),  OpenstatServiceName String,  OpenstatCampaignID String,  OpenstatAdID String,  OpenstatSourceID String,  UTMSource String, UTMMedium String,  UTMCampaign String,  UTMContent String,  UTMTerm String, FromTag String,  HasGCLID UInt8,  RefererHash UInt64,  URLHash UInt64,  CLID UInt32,  YCLID UInt64,  ShareService String,  ShareURL String,  ShareTitle String,  ParsedParams Nested(Key1 String,  Key2 String, Key3 String, Key4 String, Key5 String,  ValueDouble Float64),  IslandID FixedString(16),  RequestNum UInt32,  RequestTry UInt8')
 WHERE URL != '';
 ```
-レスポンスは以下のようになります：
+応答は次のようになります：
 ```response
 0 rows in set. Elapsed: 149.432 sec. Processed 8.87 million rows, 18.40 GB (59.38 thousand rows/s., 123.16 MB/s.)
 ```
 
+
 <br/>
-そして、テーブルを最適化します：
+テーブルを最適化します：
 
 ```sql
 OPTIMIZE TABLE hits_UserID_URL FINAL;
 ```
 
 <br/>
-次に、テーブルのメタデータを取得するためのクエリを使用します：
+次のクエリを使用してテーブルのメタデータを取得できます：
 
 ```sql
 SELECT
@@ -253,7 +261,7 @@ WHERE (table = 'hits_UserID_URL') AND (active = 1)
 FORMAT Vertical;
 ```
 
-レスポンスは以下のようになります：
+応答は次のようになります：
 
 ```response
 part_type:                   Wide
@@ -269,211 +277,186 @@ bytes_on_disk:               207.07 MiB
 1 rows in set. Elapsed: 0.003 sec.
 ```
 
-ClickHouseクライアントの出力は以下を示しています：
+ClickHouseクライアントの出力は次のことを示しています:
 
-- テーブルのデータは、ディスク上の特定のディレクトリに[ワイドフォーマット](/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage)で保存されており、そのディレクトリ内には各テーブルカラムに対して1つのデータファイルと1つのマークファイルがあります。
-- テーブルには8.87百万行が含まれています。
-- すべての行の合計の非圧縮データサイズは733.28MBです。
-- すべての行のディスク上での圧縮サイズは206.94MBです。
-- テーブルには1083エントリ（「マーク」と呼ばれる）の主インデックスがあり、そのサイズは96.93KBです。
-- 合計で、テーブルのデータファイル、マークファイル、および主インデックスファイルは、ディスク上で207.07MBを占めています。
-### データは主キーのカラムによってディスク上で順序付けられて保存される {#data-is-stored-on-disk-ordered-by-primary-key-columns}
+- テーブルのデータは、ディスク上の特定のディレクトリに[広い形式](/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage)で保存されており、そのディレクトリ内にはテーブルカラムごとに1つのデータファイル（および1つのマークファイル）があります。
+- テーブルには887万行があります。
+- すべての行の圧縮されていないデータサイズは733.28MBです。
+- すべての行のディスク上の圧縮サイズは206.94MBです。
+- テーブルには1083エントリ（「マーク」と呼ばれる）の主インデックスがあり、そのインデックスのサイズは96.93KBです。
+- 合計で、テーブルのデータとマークファイル、および主インデックスファイルはディスク上で207.07MBを占めています。
+### データは主キーのカラムによって順序付けられてディスクに保存される {#data-is-stored-on-disk-ordered-by-primary-key-columns}
 
-上記で作成したテーブルは以下の特徴を持っています：
+上記で作成したテーブルは以下の特性を持っています：
 - 複合[主キー](/engines/table-engines/mergetree-family/mergetree.md/#primary-keys-and-indexes-in-queries) `(UserID, URL)`と
 - 複合[ソートキー](/engines/table-engines/mergetree-family/mergetree.md/#choosing-a-primary-key-that-differs-from-the-sorting-key) `(UserID, URL, EventTime)`。
 
 :::note
-- ソートキーのみを指定している場合、主キーは暗黙のうちにソートキーに等しいと定義されます。
-
-- メモリ効率を考慮して、クエリでフィルタリングされるカラムのみを含む主キーを明示的に指定しました。主キーに基づいている主インデックスは、メインメモリに完全に読み込まれます。
-
-- ガイドの図の一貫性を維持し、圧縮率を最大化するために、すべてのテーブルカラムを含む別のソートキーを定義しました（同じデータが近くに配置されている場合、例えばソートを通じて、そのデータはより良く圧縮されます）。
-
-- 主キーを指定する場合、主キーはソートキーのプレフィックスである必要があります。
+- もしソートキーのみを指定していた場合、主キーは暗黙的にソートキーと等しいと定義されます。
+- メモリ効率を高めるために、クエリがフィルタリングするカラムのみを含む主キーを明示的に指定しました。主キーに基づく主インデックスは、完全にメインメモリにロードされています。
+- ガイドの図や情報の一貫性を確保し、圧縮率を最適化するため、すべてのテーブルカラムを含む別のソートキーを定義しました（同じカラムに類似のデータが近接すればするほど、例えばソートを行うことで、データはより良く圧縮されます）。
+- 両方が指定されている場合、主キーはソートキーのプレフィックスである必要があります。
 :::
 
-挿入された行は、主キーのカラム（および追加の`EventTime`カラム）の順序に従ってディスク上に辞書式に（昇順に）保存されます。
+挿入された行は、主キーのカラム（およびソートキーの追加的な `EventTime` カラム）によって、ディスク上で辞書式順序（昇順）で保存されています。
 
 :::note
-ClickHouseは、同じ主キーのカラム値を持つ複数の行の挿入を許可します。この場合（下の図の行1と行2を参照）、最終的な順序は指定されたソートキーによって決まります。したがって、`EventTime`カラムの値が重要です。
+ClickHouseは、同一の主キーのカラム値を持つ複数の行を挿入することを許可します。この場合（以下に図の行1と行2を参照）、最終的な順番は指定されたソートキーによって決まるため、`EventTime`カラムの値によって決まります。
 :::
 
-ClickHouseは<a href="https://clickhouse.com/docs/introduction/distinctive-features/#true-column-oriented-dbms" target="_blank">列指向データベース管理システム</a>です。以下の図示は示しています：
-- ディスク上の表現については、各テーブルカラムごとに1つのデータファイル（*.bin）があり、すべての値が<a href="https://clickhouse.com/docs/introduction/distinctive-features/#data-compression" target="_blank">圧縮</a>された形式で保存されます。
-- 8.87百万行は、主キーのカラム（および追加のソートキーのカラム）で辞書式の昇順にディスク上に保存されます。すなわち、この場合、
-  - 最初に`UserID`で、
-  - 次に`URL`で、
-  - 最後に`EventTime`で並べられます：
+ClickHouseは<a href="https://clickhouse.com/docs/introduction/distinctive-features/#true-column-oriented-dbms" target="_blank">列指向のデータベース管理システム</a>です。以下の図に示すように
+- ディスク上の表現では、各テーブルカラムに対して1つのデータファイル（*.bin）があり、すべての値は<a href="https://clickhouse.com/docs/introduction/distinctive-features/#data-compression" target="_blank">圧縮</a>された形式で保存され、
+- 887万の行はディスク上で主キーのカラム（および追加のソートキーのカラム）によって辞書式昇順で保存されます。すなわち、この場合
+  - 最初は `UserID`によって、
+  - 次は `URL`によって、
+  - 最後に `EventTime`によって：
 
-<img src={sparsePrimaryIndexes01} class="image"/>
+<Image img={sparsePrimaryIndexes01} size="md" alt="Sparse Primary Indices 01" background="white"/>
 
-`UserID.bin`、`URL.bin`、及び`EventTime.bin`は、それぞれ`UserID`、`URL`、`EventTime`のカラムの値が保存されているディスク上のデータファイルです。
-
-<br/>
-<br/>
+`UserID.bin`、`URL.bin`、および `EventTime.bin` は、`UserID`、`URL`、および `EventTime`カラムの値が保存されるディスク上のデータファイルです。
 
 :::note
-- 主キーはディスク上の行の辞書式の順序を定義するため、テーブルには1つの主キーしか存在できません。
-
-- 行の番号は0から始めており、ClickHouseの内部的な行番号付けのスキームと整合させています。これは、ログメッセージにも使用されます。
+- 主キーはディスク上の行の辞書式順序を定義するため、テーブルには1つの主キーしか持てません。
+- 行を0から始まる番号付けしているのは、ClickHouseの内部行番号付けスキームと一致させ、ログメッセージにも使用されるためです。
 :::
-### データはグラニュールに整理されており、並列データ処理が可能 {#data-is-organized-into-granules-for-parallel-data-processing}
+### データは並列データ処理のためにグラニュールに整理される {#data-is-organized-into-granules-for-parallel-data-processing}
 
-データ処理の目的で、テーブルのカラム値は論理的にグラニュールに分割されます。
-グラニュールは、データ処理のためにClickHouseにストリームされる最小の不可分なデータセットです。
-これは、個々の行を読み込むのではなく、ClickHouseが常に一度に一群（グラニュール）の行を読み込むことを意味します。
+データ処理の目的のために、テーブルのカラムの値は論理的にグラニュールに分割されます。
+グラニュールはClickHouseにストリーミングされる最小の不可分なデータセットです。
+これにより、数個の行を読み取るのではなく、ClickHouseは常に行のグループ（グラニュール）全体をストリーミング方式かつ並行して読み取ります。
 :::note
-カラム値は物理的にグラニュール内に保存されるわけではありません：グラニュールはクエリ処理のためのカラム値の論理的な組織に過ぎません。
+カラムの値は物理的にグラニュール内に保存されるわけではありません：グラニュールはクエリ処理のためのカラム値の論理的な定義です。
 :::
 
-次の図は、8.87百万行のテーブルの（カラム値が）1083のグラニュールに整理されるさまを示しています。これはテーブルのDDL文に設定された`index_granularity`（デフォルト値8192に設定）を考慮した結果です。
+以下の図は、当テーブルの8.87百万行の（カラムの値）が、テーブルのDDLステートメントに`index_granularity`（デフォルト値の8192に設定）を含むことから、1083グラニュールに整理される様子を示しています。
 
-<img src={sparsePrimaryIndexes02} class="image"/>
+<Image img={sparsePrimaryIndexes02} size="md" alt="Sparse Primary Indices 02" background="white"/>
 
-最初の（ディスク上の物理的順序に基づく）8192行（そのカラム値）は論理的にグラニュール0に属し、その後の8192行（そのカラム値）はグラニュール1に属します。
+最初の（物理的なディスク上の順序に基づく）8192行（そのカラムの値）は論理的にグラニュール0に属し、その後の8192行（そのカラムの値）はグラニュール1に属します。
 
 :::note
-- 最後のグラニュール（グラニュール1082）は、8192行未満の「含むから」です。
+- 最後のグラニュール（グラニュール1082）は、8192行未満を「含む」ことがあります。
+- このガイドの冒頭で「DDLステートメントの詳細」において、私たちは[適応インデックスグラニュラティ](/whats-new/changelog/2019.md/#experimental-features-1)を無効にしたことに言及しました（ガイドの議論を簡素化し、図や結果を再現可能にするために）。
+  
+  したがって、私たちの例のテーブルのすべてのグラニュール（最後のものを除く）のサイズは同じです。
 
-- このガイドの最初で、私たちは[適応インデックスグラニュラリティ](/whats-new/changelog/2019.md/#experimental-features-1)を無効にしたと述べました（このガイドでの議論を簡略化するため、または図や結果を再現可能にするためにです）。
+- 適応インデックスグラニュラティを持つテーブルの場合（index granularityは[デフォルトで適応的](/operations/settings/merge-tree-settings#index_granularity_bytes)であり）、一部のグラニュールのサイズは8192行より少なくなる場合があります。
 
-したがって、例のテーブルのすべてのグラニュール（最後のものを除いて）は、同じサイズを持っています。
+- 私たちは主キーのカラム（`UserID`、`URL`）の一部のカラム値をオレンジでマーキングしています。
+  これらのオレンジでマークされたカラム値は、各グラニュールの最初の行の主キーのカラム値になります。
+  以下で見ていくように、これらのオレンジでマークされたカラム値はテーブルの主インデックスのエントリになります。
 
-- 適応インデックスグラニュラリティのあるテーブル（インデックスグラニュラリティはデフォルトで[適応](/operations/settings/merge-tree-settings#index_granularity_bytes)である場合、いくつかのグラニュールは行データ長に応じて8192行未満である可能性があります。
-
-- 主キーのカラム（`UserID`、`URL`）の一部のカラム値はオレンジでマークされており、これらのオレンジでマークされたカラム値は、各グラニュールの最初の行の主キーのカラム値です。
-これらのオレンジでマークされたカラム値は、テーブルの主インデックスにおけるエントリとなります。
-
-- グラニュールは0から始めて番号を付けており、ClickHouseの内部的な番号付けスキームと整合しています。これもまたログメッセージに利用できます。
+- グラニュールには0から番号を付けており、ClickHouseの内部の番号付けスキームと一致させ、ログメッセージにも使用されます。
 :::
-```yaml
-title: '主キーインデックスはグラニュールごとに1エントリを持っています'
-sidebar_label: '主キーインデックスはグラニュールごとに1エントリを持っています'
-keywords: '主キー, インデックス, グラニュール, ClickHouse'
-description: 'このドキュメントでは、主キーインデックスに関する詳細情報を提供します。'
-```
+### 主インデックスはグラニュールごとに1つのエントリを持つ {#the-primary-index-has-one-entry-per-granule}
 
-### 主キーインデックスはグラニュールごとに1エントリを持っています {#the-primary-index-has-one-entry-per-granule}
+主インデックスは、上記の図に示すグラニュールに基づいて作成されます。このインデックスは圧縮されていないフラットな配列ファイル（primary.idx）であり、0から始まるいわゆる数値インデックスマークを含みます。
 
-主キーインデックスは上の図に示すグラニュールに基づいて作成されます。このインデックスは非圧縮のフラット配列ファイル（primary.idx）であり、0から始まるいわゆる数値インデックスマークを含んでいます。
+以下の図は、インデックスが各グラニュールの最初の行の主キーのカラム値（上記の図でオレンジでマークされた値）を保存していることを示しています。
+言い換えれば：主インデックスは、テーブルのすべての8192行における主キーのカラム値を保存しています（物理的な行順序に基づいて主キーのカラムによって定義されます）。
+例えば、
+- 最初のインデックスエントリ（上の図で「マーク0」と呼ばれる）は、上の図でグラニュール0の最初の行のキーのカラム値を保存しています。
+- 2番目のインデックスエントリ（上の図で「マーク1」と呼ばれる）は、上の図でグラニュール1の最初の行のキーのカラム値を保存しています、そして続きます。
 
-以下の図は、そのインデックスが各グラニュールの最初の行の主キー列の値（上の図でオレンジ色でマークされた値）を格納していることを示しています。
-言い換えれば、主キーインデックスは、テーブルの8192行ごとの主キー列の値を格納しています（主キー列で定義された物理行順に基づく）。
-例えば
-- 最初のインデックスエントリ（以下の図の「マーク 0」）は、上の図からグラニュール0の最初の行のキー列の値を格納しています。
-- 2番目のインデックスエントリ（以下の図の「マーク 1」）は、上の図からグラニュール1の最初の行のキー列の値を格納しています。このように続きます。
+<Image img={sparsePrimaryIndexes03a} size="lg" alt="Sparse Primary Indices 03a" background="white"/>
 
-<img src={sparsePrimaryIndexes03a} class="image"/>
+私たちのテーブルには887万行と1083グラニュールがあるため、インデックスには合計1083エントリがあります：
 
-合計で、8.87百万行と1083グラニュールを持つテーブルのインデックスには1083のエントリがあります：
-
-<img src={sparsePrimaryIndexes03b} class="image"/>
+<Image img={sparsePrimaryIndexes03b} size="md" alt="Sparse Primary Indices 03b" background="white"/>
 
 :::note
-- [適応インデックスの粒度](/whats-new/changelog/2019.md/#experimental-features-1)を持つテーブルの場合、主インデックスには「最終」追加マークも格納され、これは最後のテーブル行の主キー列の値を記録していますが、このガイドの議論を簡素化するために（また図示や結果の再現性を向上させるために）適応インデックスの粒度を無効にしたため、例のテーブルのインデックスにはこの最終マークは含まれていません。
-
-- 主インデックスファイルは完全にメインメモリにロードされます。ファイルが利用可能な空きメモリスペースよりも大きい場合、ClickHouseはエラーを引き起こします。
+- [適応インデックスグラニュラティ](/whats-new/changelog/2019.md/#experimental-features-1)を持つテーブルの場合、テーブルの最後の行の主キーのカラム値を記録する1つの「最終」の追加マークも主インデックスに保存されますが、適応インデックスグラニュラティを無効にしたため（このガイドの議論を簡素化し、図や結果を再現可能にするため）、私たちの例のテーブルのインデックスにはこの最終のマークは含まれていません。
+  
+- 主インデックスファイルは完全にメインメモリにロードされます。ファイルのサイズが利用可能な空きメモリのサイズを超える場合は、ClickHouseはエラーを発生させます。
 :::
 
 <details>
     <summary>
-    主インデックスの内容を調査する
+    主インデックスの内容を検査する
     </summary>
     <p>
 
-セルフマネージドのClickHouseクラスターでは、<a href="https://clickhouse.com/docs/sql-reference/table-functions/file/" target="_blank">ファイルテーブル関数</a>を使用して、例のテーブルの主インデックスの内容を調査できます。
+セルフマネージドのClickHouseクラスタ上で、以下の手順を踏むことで、例のテーブルの主インデックスのコンテンツを調査するために<a href="https://clickhouse.com/docs/sql-reference/table-functions/file/" target="_blank">fileテーブル関数</a>を使用できます。
 
-そのためには、まず主インデックスファイルを実行中のクラスターのノードの<a href="https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#server_configuration_parameters-user_files_path" target="_blank">user_files_path</a>にコピーする必要があります：
+そのために、まず、稼働中のクラスタのノードの<a href="https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#server_configuration_parameters-user_files_path" target="_blank">user_files_path</a>に主インデックスファイルをコピーする必要があります：
 <ul>
-<li>ステップ 1: 主インデックスファイルを含むパーツパスを取得します。</li>
+<li>ステップ1：主インデックスファイルを含む部分のパスを取得します</li>
 `
 SELECT path FROM system.parts WHERE table = 'hits_UserID_URL' AND active = 1
 `
 
-はテストマシンで`/Users/tomschreiber/Clickhouse/store/85f/85f4ee68-6e28-4f08-98b1-7d8affa1d88c/all_1_9_4`を返します。
+はテストマシン上で`/Users/tomschreiber/Clickhouse/store/85f/85f4ee68-6e28-4f08-98b1-7d8affa1d88c/all_1_9_4`を返します。
 
-<li>ステップ 2: user_files_pathを取得します。</li>
-Linuxの<a href="https://github.com/ClickHouse/ClickHouse/blob/22.12/programs/server/config.xml#L505" target="_blank">デフォルトのuser_files_path</a>は
+<li>ステップ2：user_files_pathを取得します</li>
+デフォルトのuser_files_pathは、Linuxでは
 `/var/lib/clickhouse/user_files/`
 
-Linuxでは、それが変更されたかどうかを確認できます：`$ grep user_files_path /etc/clickhouse-server/config.xml`
+であり、Linuxでは変更されたかどうかを確認できます：`$ grep user_files_path /etc/clickhouse-server/config.xml`
 
-テストマシンではパスは`/Users/tomschreiber/Clickhouse/user_files/`です。
+テストマシン上のパスは`/Users/tomschreiber/Clickhouse/user_files/`です。
 
-<li>ステップ 3: 主インデックスファイルをuser_files_pathにコピーします。</li>
+<li>ステップ3：主インデックスファイルをuser_files_pathにコピーします</li>
 
 `cp /Users/tomschreiber/Clickhouse/store/85f/85f4ee68-6e28-4f08-98b1-7d8affa1d88c/all_1_9_4/primary.idx /Users/tomschreiber/Clickhouse/user_files/primary-hits_UserID_URL.idx`
 
-<br/>
-
 </ul>
 
-これで、SQLを使って主インデックスの内容を調査できます：
+<br/>
+これで、SQLを介して主インデックスの内容を検査できます：
 <ul>
-<li>エントリ数を取得する</li>
+<li>エントリの数を取得します</li>
 `
 SELECT count( )<br/>FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID UInt32, URL String');
 `
+は `1083` を返します。
 
-<br/>
-<br/>
-は`1083`を返します。
-<br/>
-<br/>
-<li>最初の2つのインデックスマークを取得する</li>
+<li>最初の2つのインデックスマークを取得します</li>
 `
 SELECT UserID, URL<br/>FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID UInt32, URL String')<br/>LIMIT 0, 2;
 `
-<br/>
-<br/>
-は
-<br/>
+
+は次のように返します：
+
 `
 240923, http://showtopics.html%3...<br/>
 4073710, http://mk.ru&pos=3_0
 `
-<br/>
-<br/>
-<li>最後のインデックスマークを取得する</li>
+
+<li>最後のインデックスマークを取得します</li>
 `
-SELECT UserID, URL<br/>FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID UInt32, URL String')<br/>LIMIT 1082, 1;
+SELECT UserID, URL FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID UInt32, URL String')<br/>LIMIT 1082, 1;
 `
-<br/>
-<br/>
 は
-<br/>
 `
 4292714039 │ http://sosyal-mansetleri...
 `
-
-
-
+と返します。
 </ul>
-
-この内容は、例のテーブルの主インデックス内容の図と完全に一致します：
-<img src={sparsePrimaryIndexes03b} class="image"/>
+<br/>
+これは、私たちの例のテーブルの主インデックス内容の図と正確に一致します：
 </p>
 </details>
 
-主キーエントリはインデックスマークと呼ばれます。なぜなら、各インデックスエントリが特定のデータ範囲の開始を示しているからです。具体的には例のテーブルについて：
-- UserIDインデックスマーク:<br/>
-  主インデックスに格納された`UserID`値は昇順にソートされています。<br/>
-  したがって、上の図の「マーク 1」は、グラニュール1内のすべてのテーブル行の`UserID`値と、そのすべての後続グラニュールの`UserID`値が4,073,710以上であることが保証されます。
+主キーエントリはインデックスマークと呼ばれます。なぜなら、各インデックスエントリが特定のデータ範囲の開始を示すためです。具体的には例のテーブルに関して：
+- UserIDインデックスマーク：
 
- [後で詳しく説明します](#the-primary-index-is-used-for-selecting-granules)が、ClickHouseはクエリが主キーの最初の列をフィルタリングしているときに、インデックスマークに対して<a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">二分探索アルゴリズム</a>を使用できます。
+  主インデックスに保存された`UserID`の値は昇順にソートされています。<br/>
+  上記の図の「マーク1」は、グラニュール1のすべてのテーブル行の`UserID`の値、およびすべての後続のグラニュールの`UserID`の値が4.073.710以上であることを保証します。
 
-- URLインデックスマーク:<br/>
-  主キー列`UserID`と`URL`のほぼ同じカーディナリティは、一般に、最初の列以降のすべてのキー列のインデックスマークが、少なくとも現在のグラニュール内のすべてのテーブル行で前のキー列の値が同じである間だけデータ範囲を示すことを意味します。<br/>
-  例えば、上の図でマーク0とマーク1の`UserID`値が異なるため、ClickHouseはグラニュール0内のすべてのテーブル行のすべてのURL値が`'http://showtopics.html%3...'`以上であると仮定できません。しかし、上の図でマーク0とマーク1の`UserID`値が同じだった場合（つまり、`UserID`値がグラニュール0内のすべてのテーブル行で同じである場合）、ClickHouseはグラニュール0内のすべてのテーブル行のすべてのURL値が`'http://showtopics.html%3...'`以上であると仮定できます。
+ [後で確認するように](#the-primary-index-is-used-for-selecting-granules)、このグローバルな順序により、ClickHouseはクエリが主キーの最初のカラムでフィルタリングされるときにインデックスマークに対して<a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">バイナリサーチアルゴリズムを使用することができる</a>からです。
 
-  この点については、クエリの実行性能への影響を後で詳しく説明します。
-### 主キーインデックスはグラニュールを選択するために使用されます {#the-primary-index-is-used-for-selecting-granules}
+- URLインデックスマーク：
 
-これで、主キーインデックスのサポートを受けてクエリを実行できます。
+  主キーのカラム`UserID`と`URL`の類似の基数により、一般的に主キーの最初のカラムの後に位置するすべてのキーカラムのインデックスマークは、前のキーのカラム値がグラニュール内のすべてのテーブル行で同じである限りデータ範囲を示します。<br/>
+  例えば、上記の図でマーク0とマーク1のUserID値が異なるため、ClickHouseはグラニュール0内のすべてのテーブル行のURLの値が`'http://showtopics.html%3...'`以上であるとは仮定できません。しかし、上記の図でマーク0とマーク1のUserID値が同じであれば（すなわち、UserIDの値がグラニュール0内のすべてのテーブル行で同じであれば）、ClickHouseはグラニュール0内のすべてのテーブル行のURLの値が`'http://showtopics.html%3...'`以上であると仮定できたでしょう。
 
+  これは、クエリ実行パフォーマンスに対しての影響について、後で詳しく説明します。
+```
+### 主キーはグラニュールを選択するために使用されます {#the-primary-index-is-used-for-selecting-granules}
 
-次のクエリは、UserID 749927693の最もクリックされた上位10のURLを計算します。
+現在、主キーのサポートを使用してクエリを実行できます。
+
+次のクエリは、UserID 749927693 の上位 10 件のクリックされた URL を計算します。
 
 ```sql
 SELECT URL, count(URL) AS Count
@@ -484,7 +467,7 @@ ORDER BY Count DESC
 LIMIT 10;
 ```
 
-応答は次のとおりです：
+返答は次のようになります：
 
 ```response
 ┌─URL────────────────────────────┬─Count─┐
@@ -500,31 +483,32 @@ LIMIT 10;
 │ http://wot/html?page/23600_m...│     9 │
 └────────────────────────────────┴───────┘
 
-10行がセットに含まれています。経過時間: 0.005秒。
-// highlight-next-line
-処理された行数: 8.19千行、
-740.18 KB (1.53百万行/s., 138.59 MB/s.)
+10 行がセットにあります。経過時間: 0.005 秒。
+
+# highlight-next-line
+処理された行数: 8.19 千,
+740.18 KB (1.53 百万行/s., 138.59 MB/s.)
 ```
 
-ClickHouseクライアントの出力は、テーブルスキャンを行う代わりに、8.19千行のみがClickHouseにストリーミングされたことを示しています。
+ClickHouse クライアントの出力は、フルテーブルスキャンを実行する代わりに、8.19 千の行のみが ClickHouse にストリーミングされたことを示しています。
 
-
-もし<a href="https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#server_configuration_parameters-logger" target="_blank">トレースロギング</a>が有効になっている場合、ClickHouseサーバーログファイルは、ClickHouseが`749927693`というUserID列の値を含む行を持つ可能性のあるグラニュールを特定するために、1083のUserIDインデックスマークに対して<a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">二分探索</a>を実行していたことを示しています。これには19ステップが必要で、平均時間計算量は`O(log2 n)`です：
+もし <a href="https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#server_configuration_parameters-logger" target="_blank">トレースログ</a> が有効になっていると、ClickHouse サーバーログファイルは ClickHouse が 1083 の UserID インデックスマークに対して <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">二分探索</a> を実行して、`749927693` の UserID カラム値を持つ行を含んでいる可能性のあるグラニュールを特定したことを示しています。これには平均で `O(log2 n)` の時間計算量を必要とします：
 ```response
 ...Executor): Key condition: (column 0 in [749927693, 749927693])
-// highlight-next-line
+
+# highlight-next-line
 ...Executor): Running binary search on index range for part all_1_9_2 (1083 marks)
 ...Executor): Found (LEFT) boundary mark: 176
 ...Executor): Found (RIGHT) boundary mark: 177
 ...Executor): Found continuous range in 19 steps
 ...Executor): Selected 1/1 parts by partition key, 1 parts by primary key,
-// highlight-next-line
+
+# highlight-next-line
               1/1083 marks by primary key, 1 marks to read from 1 ranges
 ...Reading ...approx. 8192 rows starting from 1441792
 ```
 
-
-上のトレースログから、1083の既存マークのうち、クエリを満たす1マークが特定されたことがわかります。
+上記のトレースログから、1083 の既存のマークのうち 1 つがクエリを満たしていることが分かります。
 
 <details>
     <summary>
@@ -532,11 +516,11 @@ ClickHouseクライアントの出力は、テーブルスキャンを行う代�
     </summary>
     <p>
 
-マーク176が特定されました（「見つかった左境界マーク」は含まれ、「見つかった右境界マーク」は排他的です）。したがって、グラニュール176からの8192行（1,441,792行目から開始）がClickHouseにストリーミングされ、その中でUserID列の値が`749927693`である実際の行を見つけることができます。
+マーク 176 が特定されました（「見つかった左境界マーク」は包含的で、「見つかった右境界マーク」は排他的です）、したがって、グラニュール 176 からのすべての 8192 行（これは行 1.441.792 から始まります - これは後でこのガイドで確認します）が ClickHouse にストリーミングされ、`749927693` の UserID カラム値を持つ実際の行が見つかります。
 </p>
 </details>
 
-また、例のクエリで<a href="https://clickhouse.com/docs/sql-reference/statements/explain/" target="_blank">EXPLAIN句</a>を使用してこれを再現できます：
+この例のクエリで <a href="https://clickhouse.com/docs/sql-reference/statements/explain/" target="_blank">EXPLAIN 句</a> を使用してこれを再現することもできます：
 ```sql
 EXPLAIN indexes = 1
 SELECT URL, count(URL) AS Count
@@ -547,7 +531,7 @@ ORDER BY Count DESC
 LIMIT 10;
 ```
 
-応答は次のようになります：
+返答は次のようになります：
 
 ```response
 ┌─explain───────────────────────────────────────────────────────────────────────────────┐
@@ -566,36 +550,35 @@ LIMIT 10;
 │                       UserID                                                          │
 │                     Condition: (UserID in [749927693, 749927693])                     │
 │                     Parts: 1/1                                                        │
-// highlight-next-line
+
+# highlight-next-line
 │                     Granules: 1/1083                                                  │
 └───────────────────────────────────────────────────────────────────────────────────────┘
 
-16行がセットに含まれています。経過時間: 0.003秒。
+16 行がセットにあります。経過時間: 0.003 秒。
 ```
-クライアントの出力は1083のグラニュールのうち1つが749927693のUserID列の値を持つ行を含む可能性があるとして選択されたことを示しています。
-
+クライアントの出力は、1083 のグラニュールのうち 1 つが UserID カラム値 749927693 を持つ行を含んでいる可能性があるとして選択されたことを示しています。
 
 :::note 結論
-クエリが複合キーの一部であり、最初のキー列でフィルタリングされている場合、ClickHouseはキー列のインデックスマークに対して二分探索アルゴリズムを実行します。
+クエリが複合キーの一部であり、最初のキー列であるカラムをフィルタリングする場合、ClickHouse はキー列のインデックスマークの上で二分探索アルゴリズムを実行します。
 :::
 
 <br/>
 
-上で説明したように、ClickHouseはスパース主インデックスを使用して、クエリに一致する行を含む可能性があるグラニュールを迅速に（バイナリ検索を介して）選択しています。
+上記で述べたように、ClickHouse は自社のスパース主インデックスを使用して、クエリに一致する可能性のある行を含むグラニュールを迅速に（二分探索を介して）選択しています。
 
+これは ClickHouse のクエリ実行の **第一段階（グラニュール選択）** です。
 
-これはClickHouseクエリ実行の**第一段階（グラニュール選択）**です。
+**第二段階（データ読み取り）** では、ClickHouse は選択したグラニュールを見つけて、それらのすべての行を ClickHouse エンジンにストリーミングして、クエリに実際に一致する行を見つけるために使用します。
 
-**第二段階（データ読み込み）**では、ClickHouseは選択されたグラニュールを特定し、すべての行をClickHouseエンジンにストリーミングして、クエリに実際に一致する行を見つけます。
+この第二段階について、次のセクションで詳しく説明します。
+### マークファイルはグラニュールを特定するために使用されます {#mark-files-are-used-for-locating-granules}
 
-その第二段階については、次のセクションで詳しく説明します。
-### マークファイルはグラニュールの特定に使用されます {#mark-files-are-used-for-locating-granules}
+以下の図は、私たちのテーブルの主インデックスファイルの一部を示しています。
 
-以下の図は、テーブルの主インデックスファイルの一部を示しています。
+<Image img={sparsePrimaryIndexes04} size="md" alt="Sparse Primary Indices 04" background="white"/>
 
-<img src={sparsePrimaryIndexes04} class="image"/>
-
-上で説明したように、1083のUserIDマークに対する二分検索を介してマーク176が特定されました。したがって、対応するグラニュール176はUserID列の値749,927,693を含む行を持つ可能性があります。
+上記で述べたように、インデックスの 1083 の UserID マークに対する二分探索を通じて、マーク 176 が特定されました。したがって、対応するグラニュール 176 はおそらく UserID カラム値 749.927.693 を持つ行を含んでいる可能性があります。
 
 <details>
     <summary>
@@ -603,101 +586,103 @@ LIMIT 10;
     </summary>
     <p>
 
-上の図は、マーク176が関連するグラニュール176の最小UserID値が749,927,693未満で、次のマーク（マーク177）のグラニュール177の最小UserID値がこの値よりも大きい最初のインデックスエントリであることを示しています。したがって、マーク176の対応するグラニュール176のみがUserID列の値749,927,693を含む可能性があります。
+上記の図は、マーク 176 が関連グラニュール 176 の最小 UserID 値が 749.927.693 より小さく、次のマーク（マーク 177）のグラニュール 177 の最小 UserID 値がこの値より大きいという最初のインデックスエントリであることを示しています。したがって、マーク 176 に対応するグラニュール 176 のみが UserID カラム値が 749.927.693 を持つ行を含んでいる可能性があります。
 </p>
 </details>
 
-グラニュール176に行が含まれているかどうかを確認するためには、このグラニュールに属する全8192行をClickHouseにストリーミングする必要があります。
+グラニュール 176 の中に UserID カラム値が 749.927.693 を持つ行が含まれているかどうかを確認するためには、このグラニュールに属するすべての 8192 行を ClickHouse にストリーミングする必要があります。
 
-これを実現するために、ClickHouseはグラニュール176の物理的な場所を知る必要があります。
+これを達成するために、ClickHouse はグラニュール 176 の物理的位置を知る必要があります。
 
-ClickHouseでは、我々のテーブルのすべてのグラニュールの物理的な場所がマークファイルに格納されています。データファイルと同様に、テーブルの各列ごとに1つのマークファイルがあります。
+ClickHouse では、テーブルのすべてのグラニュールの物理的位置がマークファイルに格納されています。データファイルと同様に、カラムごとに 1 つのマークファイルがあります。
 
-以下の図は、テーブルの`UserID`、`URL`、`EventTime`列のグラニュールの物理的な場所を格納している3つのマークファイル`UserID.mrk`、`URL.mrk`、`EventTime.mrk`を示しています。
-<img src={sparsePrimaryIndexes05} class="image"/>
+以下の図は、テーブルの `UserID`、`URL`、および `EventTime` カラムのグラニュールの物理位置を保存している 3 つのマークファイル `UserID.mrk`、`URL.mrk`、および `EventTime.mrk` を示しています。
 
-主インデックスが、0から始まるインデックスマークを含む非圧縮のフラット配列ファイル（primary.idx）であることを説明しました。
+<Image img={sparsePrimaryIndexes05} size="md" alt="Sparse Primary Indices 05" background="white"/>
 
-同様に、マークファイルも0から始まるマークを含む非圧縮のフラット配列ファイル（*.mrk）です。
+主インデックスが 0 から始まる番号を付けられたインデックスマークを含むフラットな未圧縮配列ファイル (primary.idx) であることを説明してきました。
 
-ClickHouseがクエリに対して一致する行を含む可能性のあるグラニュールのインデックスマークを特定および選択した後、マークファイル内の位置配列ルックアップを実行して、グラニュールの物理的な場所を取得できます。
+同様に、マークファイルも 0 から始まる番号が付けられたマークを含むフラットな未圧縮配列ファイル (*.mrk) です。
 
-特定の列の各マークファイルエントリは、オフセットの形で2つの位置を格納しています：
+ClickHouse がマッチする可能性のある行を含むグラニュールのインデックスマークを特定して選択した後、マークファイルにおいて位置配列のルックアップが実行され、そのグラニュールの物理位置を取得します。
 
-- 最初のオフセット（上の図の「block_offset」）は、選択されたグラニュールの圧縮バージョンを含む<a href="https://clickhouse.com/docs/development/architecture/#block" target="_blank">ブロック</a>を<a href="https://clickhouse.com/docs/introduction/distinctive-features/#data-compression" target="_blank">圧縮</a>されたカラムデータファイル内で特定しています。この圧縮ブロックには、いくつかの圧縮されたグラニュールが含まれている可能性があります。特定された圧縮ファイルブロックは、読み込み時にメインメモリに展開されます。
+特定のカラムの各マークファイルエントリは、オフセットの形式で 2 つの位置を保存しています。
 
-- マークファイルの2番目のオフセット（上の図の「granule_offset」）は、非圧縮されたブロックデータ内でのグラニュールの位置を提供します。
+- 最初のオフセット（上記の図の「block_offset」）は、選択されたグラニュールの圧縮バージョンを含む <a href="https://clickhouse.com/docs/development/architecture/#block" target="_blank">ブロック</a> が、<a href="https://clickhouse.com/docs/introduction/distinctive-features/#data-compression" target="_blank">圧縮</a>されたカラムデータファイルの中でどこにあるかを指し示しています。この圧縮ブロックは、おそらくいくつかの圧縮されたグラニュールを含んでいます。見つかった圧縮ファイルブロックは、読み込み時に主メモリに展開されます。
 
-すべての8192行がその後、ClickHouseにストリーミングされ、さらなる処理に使用されます。
+- マークファイルの 2 番目のオフセット（上記の図の「granule_offset」）は、非圧縮ブロックデータ内のグラニュールの位置を提供します。
+
+その後、見つかった非圧縮グラニュールに属するすべての 8192 行が、さらなる処理のために ClickHouse にストリーミングされます。
+
 
 :::note
 
-- [ワイドフォーマット](/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage)のテーブルと[適応インデックス粒度](/whats-new/changelog/2019.md/#experimental-features-1)を持たないテーブルの場合、ClickHouseは上で視覚化した`.mrk`マークファイルを使用します。そのエントリには、各エントリごとに2つの8バイト長のアドレスが含まれており、これらはすべて同じサイズのグラニュールの物理的場所です。
+- [ワイドフォーマット](/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage)のテーブルで、[適応インデックス粒度](/whats-new/changelog/2019.md/#experimental-features-1)がない場合、ClickHouse は上記のように視覚化された `.mrk` マークファイルを使用し、各エントリには 8 バイトのアドレスが 2 つ含まれています。これらのエントリは、同じサイズを持つすべてのグラニュールの物理位置です。
 
-インデックス粒度は[デフォルトで適応的](/operations/settings/merge-tree-settings#index_granularity_bytes)ですが、例のテーブルでは適応インデックス粒度を無効にしました（このガイド内の議論を簡素化し、図や結果の再現性を持たせるため）。当テーブルはデータのサイズが[min_bytes_for_wide_part](/operations/settings/merge-tree-settings#min_bytes_for_wide_part)よりも大きいため、ワイドフォーマットを使用しています（デフォルトでセルフマネージドクラスター向けに10MB）。
+インデックス粒度は [デフォルトで適応式](/operations/settings/merge-tree-settings#index_granularity_bytes)ですが、例のために、適応インデックス粒度を無効にしました（このガイドでの議論を簡素化し、図や結果を再現しやすくするため）。私たちのテーブルは、データのサイズが [min_bytes_for_wide_part](/operations/settings/merge-tree-settings#min_bytes_for_wide_part) より大きいため、ワイドフォーマットを使用しています（これはセルフマネージドクラスターのデフォルトで 10 MB です）。
 
-- ワイドフォーマットのテーブルで適応インデックス粒度がある場合、ClickHouseは`.mrk2`マークファイルを使用します。これには、現在のエントリに関連付けられたグラニュールの行数という追加の3番目の値が含まれています。
+- ワイドフォーマットのテーブルで、適応インデックス粒度がある場合、ClickHouse は `.mrk2` マークファイルを使用し、`.mrk` マークファイルと似たエントリを持っていますが、各エントリに対して追加の 3 番目の値、すなわち現在のエントリに関連するグラニュールの行数があります。
 
-- [コンパクトフォーマット](/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage)のテーブルの場合、ClickHouseは`.mrk3`マークファイルを使用します。
+- [コンパクトフォーマット](/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage)のテーブルでは、ClickHouse は `.mrk3` マークファイルを使用します。
 
 :::
 
 
 :::note マークファイルの理由
 
-なぜ主インデックスがインデックスマークに対応するグラニュールの物理的な場所を直接含まないのでしょうか？
+なぜ主インデックスは、インデックスマークに対応するグラニュールの物理位置を直接含まないのでしょうか？
 
-ClickHouseが設計されている非常に大規模なスケールでは、ディスクとメモリ効率を非常に重視することが重要です。
+ClickHouse が設計されている非常に大規模なスケールにおいては、非常にディスクおよびメモリ効率が良いことが重要です。
 
-主インデックスファイルはメインメモリに収まる必要があります。
+主インデックスファイルは主メモリに収まる必要があります。
 
-例のクエリでは、ClickHouseは主インデックスを使用して、クエリに一致する行を持つ可能性のある単一のグラニュールを選択しました。その1つのグラニュールのみのために、ClickHouseはそれに関連する行をストリーミングするために物理的な場所を必要とします。
+私たちの例のクエリでは、ClickHouse は主インデックスを使用しておそらくマッチする行を含むことができる単一のグラニュールを選択しました。その単一のグラニュールのためにのみ、ClickHouse は対応する行をストリーミングするための物理位置が必要です。
 
-さらに、このオフセット情報は、クエリで使用されていない列（例えば`EventTime`）には必要ありません。
+さらに、このオフセット情報は、クエリに使用されていないカラム（例えば `EventTime`）には必要ありません。
 
-例のクエリにおいて、ClickHouseはUserIDデータファイル（UserID.bin）内のグラニュール176の物理的な場所オフセット2つと、URLデータファイル（URL.bin）内のグラニュール176の物理的な場所オフセット2つのみが必要です。
+サンプルクエリの場合、ClickHouse は UserID データファイル (UserID.bin) のグラニュール 176 の 2 つの物理位置オフセットと、URL データファイル (URL.bin) のグラニュール 176 の 2 つの物理位置オフセットのみが必要です。
 
-マークファイルによって提供される間接性により、主インデックス内に3列のすべての1083グラニュールの物理的な場所のエントリを直接保存することを回避できるため、メインメモリ内の不要な（潜在的に未使用の）データを避けることができます。
+マークファイルによって提供される間接性は、すべての 1083 グラニュールの物理位置のエントリを主インデックスの中に直接格納することを避けることで、メインメモリ内に不要な（使用されていない）データを持つことを回避します。
 :::
 
-以下の図とその下のテキストは、例のクエリに対してClickHouseがUserID.binデータファイル内のグラニュール176をどのように特定するかを示しています。
+以下の図とその後のテキストは、例のクエリのために ClickHouse が UserID.bin データファイル内のグラニュール 176 をどのように特定するかを示しています。
 
-<img src={sparsePrimaryIndexes06} class="image"/>
+<Image img={sparsePrimaryIndexes06} size="md" alt="Sparse Primary Indices 06" background="white"/>
 
-これまでの説明で、ClickHouseは主インデックスマーク176を選択し、したがってグラニュール176をクエリに一致する可能性のある行を持つものとして特定したと述べました。
+このガイドで以前に述べたように、ClickHouse は主インデックスマーク 176 を選択し、したがって私たちのクエリに一致する行を含む可能性のあるグラニュール 176 を選択しました。
 
-ClickHouseは、選択されたインデックスマーク番号（176）を使用してUserID.mrkマークファイル内で位置配列ルックアップを行い、グラニュール176の特定のために2つのオフセットを取得します。
+ClickHouse は今、選択されたマーク番号 (176) を使用して、UserID.mrk マークファイル内で位置配列ルックアップを行って、グラニュール 176 の位置を特定するための 2 つのオフセットを取得します。
 
-示されているように、最初のオフセットは`UserID.bin`データファイル内の圧縮ファイルブロックを特定します。このブロックには、圧縮されたグラニュール176が含まれています。
+示されているように、最初のオフセットは、UserID.bin データファイル内でグラニュール 176 の圧縮ファイルブロックを特定しています。
 
-一度特定されたファイルブロックがメインメモリに展開されると、マークファイルの2番目のオフセットを使用して、非圧縮データ内のグラニュール176を特定できます。
+見つかったファイルブロックが主メモリに展開されると、マークファイルからの 2 番目のオフセットを使って、非圧縮データ内のグラニュール 176 を特定できます。
 
-ClickHouseは、例のクエリを実行するために、UserID.binデータファイルおよびURL.binデータファイルの両方からグラニュール176を特定（およびすべての値をストリーミング）する必要があります。
+ClickHouse は UserID.bin データファイルと URL.bin データファイルの両方からグラニュール 176 を特定し（すべての値をストリーミングする）、サンプルクエリ（UserID 749.927.693 のインターネットユーザーの上位 10 件のクリックされた URL）を実行する必要があります。
 
-上の図は、ClickHouseがUserID.binデータファイルのグラニュールをどのように特定しているかを示しています。
+上記の図は、ClickHouse が UserID.bin データファイルのグラニュールを特定する方法を示しています。
 
-並行して、ClickHouseはURL.binデータファイルのグラニュール176について同様の操作を行っています。これらの2つのグラニュールは整列され、ClickHouseエンジンにストリーミングされてさらなる処理が行われ、すなわちUserIDが749927693であるすべての行のURL値をグループ別に集計およびカウントした後、最終的にカウントの降順で10の最大URLグループを出力します。
+並行して、ClickHouse は URL.bin データファイルのグラニュール 176 に対しても同様の処理を行います。対応する 2 つのグラニュールは整列して ClickHouse エンジンにストリーミングされ、UserID が 749.927.693 であるすべての行の URL 値をグループごとに集約およびカウントし、最終的に 10 の最大の URL グループを降順で出力します。
 ## 複数の主インデックスを使用する {#using-multiple-primary-indexes}
 
 <a name="filtering-on-key-columns-after-the-first"></a>
-### セカンダリキー列は（非効率的ではない）ことができます {#secondary-key-columns-can-not-be-inefficient}
+### 二次キー列は（非効率的）である可能性がある {#secondary-key-columns-can-not-be-inefficient}
 
 
-クエリが最初のキー列である複合キーの一部である列でフィルタリングされているとき、[ClickHouseはキー列のインデックスマークに対して二分探索アルゴリズムを実行しています](#the-primary-index-is-used-for-selecting-granules)。
+クエリが複合キーの一部であり、最初のキー列であるカラムをフィルタリングしている場合、[ClickHouse はキー列のインデックスマークに対して二分探索アルゴリズムを実行します](#the-primary-index-is-used-for-selecting-granules)。
 
-しかし、クエリが複合キーの一部である列でフィルタリングされていますが、それが最初のキー列でない場合はどうなりますか？
+しかし、クエリが複合キーの一部であるが最初のキー列ではないカラムをフィルタリングする場合に何が起こるでしょうか？
 
 :::note
-クエリが最初のキー列でフィルタリングしていないが、セカンダリキー列でフィルタリングしているシナリオを説明します。
+ここでは、クエリが最初のキー列ではなく、二次キー列でフィルタリングしているシナリオについて議論します。
 
-クエリが最初のキー列とその後のすべてのキー列でフィルタリングしている場合、ClickHouseは最初のキー列のインデックスマークに対して二分探索を実行しています。
+クエリが最初のキー列とその後の任意のキー列でフィルタリングしている場合、ClickHouse は最初のキー列のインデックスマークに対して二分探索を実行します。
 :::
 
 <br/>
 <br/>
 
 <a name="query-on-url"></a>
-URL「http://public_search」を頻繁にクリックした上位10のユーザーを計算するクエリを使用します。
+次のクエリを使用して、最も頻繁に「http://public_search」の URL をクリックした上位 10 人のユーザーを計算します：
 
 ```sql
 SELECT UserID, count(UserID) AS Count
@@ -708,7 +693,7 @@ ORDER BY Count DESC
 LIMIT 10;
 ```
 
-応答は以下のとおりです： <a name="query-on-url-slow"></a>
+返答は次のとおりです： <a name="query-on-url-slow"></a>
 ```response
 ┌─────UserID─┬─Count─┐
 │ 2459550954 │  3741 │
@@ -723,145 +708,155 @@ LIMIT 10;
 │  765730816 │   536 │
 └────────────┴───────┘
 
-10行がセットに含まれています。経過時間: 0.086秒。
-// highlight-next-line
-処理された行数: 8.81百万行、
-799.69 MB (102.11百万行/s., 9.27 GB/s.)
+10 行がセットにあります。経過時間: 0.086 秒。
+
+# highlight-next-line
+処理された行数: 8.81 百万,
+799.69 MB (102.11 百万行/s., 9.27 GB/s.)
 ```
 
-クライアントの出力は、ClickHouseが主キー列`URL`の一部としているにも関わらず、ほぼ完全なテーブルスキャンを実行したことを示しています！ClickHouseは、8.87百万行のテーブルから8.81百万行を読み込みました。
+クライアント出力は、ClickHouse が複合主キーの一部である [URL カラム](#a-table-with-a-primary-key) に対してほぼフルテーブルスキャンを実行したことを示しています！ ClickHouse は 887 万行のテーブルから 881 万行を読み取ります。
 
-もし[trace_logging](/operations/server-configuration-parameters/settings#logger)が有効になっていると、ClickHouseサーバーログファイルはClickHouseが1083のURLインデックスマークに対して<a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1444" target="_blank">一般的な排除検索</a>を使用して、「http://public_search」列の値を持つ行を含む可能性のあるグラニュールを特定したことを示しています：
+もし [trace_logging](/operations/server-configuration-parameters/settings#logger) が有効になっている場合、ClickHouse サーバーログファイルは、ClickHouse が 1083 の URL インデックスマークに対して <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1444" target="_blank">一般的な除外検索</a> を使用して、「http://public_search」という URL カラム値を持つ行を含む可能性のあるグラニュールを特定したことを示しています：
 ```response
 ...Executor): Key condition: (column 1 in ['http://public_search',
                                            'http://public_search'])
-// highlight-next-line
+
+# highlight-next-line
 ...Executor): Used generic exclusion search over index for part all_1_9_2
               with 1537 steps
 ...Executor): Selected 1/1 parts by partition key, 1 parts by primary key,
-// highlight-next-line
+
+# highlight-next-line
               1076/1083 marks by primary key, 1076 marks to read from 5 ranges
 ...Executor): Reading approx. 8814592 rows with 10 streams
 ```
+上記のサンプルトレースログから、1076（マークによる）マークのうちの 1083 が、マッチする URL 値を持つ行を含んでいる可能性があるとして選択されたことがわかります。
 
-上記のサンプルトレースログから、1083のうち1076のインデックスマークから、マッチングするURL値を持つ行を含む可能性がある行が選択されたことがわかります。
+その結果、ClickHouse エンジンのために 881 万行がストリーミングされ（10 ストリームを使用して並列で）、実際に「http://public_search」という URL 値が含まれている行を特定します。
 
-この結果、ClickHouseエンジンに8.81百万行がストリーミングされます（10のストリームを使用して並行して）。これは、実際に「http://public_search」の値を持つ行を特定するためです。
+しかし、後で見ますが、その選択した 1076 のグラニュールのうち、実際に一致する行を持つのは 39 のグラニュールだけです。
 
-しかし、後で説明するように、選択された1076グラニュールのうち、実際にマッチングする行を含むグラニュールは39しかありません。
+複合主キー（UserID、URL）に基づく主インデックスは、特定の UserID 値を持つ行のフィルタリングを迅速に行うためには非常に便利でしたが、特定の URL 値を持つ行のフィルタリングのクエリを迅速に行う際には大きな助けにはなっていません。
 
-複合主キー（UserID、URL）に基づく主インデックスは、特定のUserID値の行をフィルタリングするクエリを加速するのに非常に役立ちましたが、特定のURL値の行をフィルタリングするためのクエリを加速する際にはそれほど有用ではありません。
+その理由は、URL カラムが最初のキー列ではないため、ClickHouse は URL カラムのインデックスマークに対して一般的な除外検索アルゴリズム（代わりに二分検索）を使用しており、**そのアルゴリズムの効果は、URL カラムとその前のキー列である UserID との間の基数の違いに依存します**。
 
-その理由は、URL列が最初のキー列でないため、ClickHouseはURL列のインデックスマークに対して一般的な排除検索アルゴリズムを使用しており、そのアルゴリズムの効果は、URL列と前のキー列UserIDのカーディナリティの差に依存しています。
-
-これを説明するために、一般的な排除検索がどのように機能するかの詳細を示します。
+これを説明するために、一般的な除外検索がどのように機能するかの詳細をいくつか示します。
 
 <a name="generic-exclusion-search-algorithm"></a>
-### 一般的な排除検索アルゴリズム {#generic-exclusion-search-algorithm}
+### 一般的な除外検索アルゴリズム {#generic-exclusion-search-algorithm}
 
-以下は、複合キーの一部である列を経由してグラニュールが選択されるときに、ClickHouseの<a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1438" target="_blank">一般的な排除検索アルゴリズム</a>がどのように機能するかを示しています。前のキー列が低いまたは高いカーディナリティの場合の両方のケースを例として考えます。
-- URL値が「W3」である行を検索するクエリ。
-- UserIDおよびURLの簡略化された値の抽象的なヒットテーブルのバージョン。
-- インデックス用の同じ複合主キー（UserID、URL）。これは、行が最初にUserID値で順序付けられることを意味します。最初のUserID値が同じ行は、その後URLで順序付けられます。
-- グラニュールサイズは2、すなわち各グラニュールが2行を含むとします。
+以下は、<a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1438" target="_blank">ClickHouse の一般的な除外検索アルゴリズム</a>が、前のキー列が低いまたは高い基数を持つ二次列でグラニュールが選択されるときにどのように機能するかを示しています。
 
-以下の図での各グラニュールの最初の行のキー列値はオレンジでマークされています。
+どちらのケースについても、次の仮定をします：
+- URL 値 = "W3" の行を検索するクエリ。
+- UserID および URL の簡略値を持つ抽象バージョンのヒットテーブル。
+- インデックスの複合主キー（UserID、URL）。これは、行が最初に UserID 値で並べられ、同じ UserID 値を持つ行が URL で並べられていることを意味します。
+- グラニュールサイズは 2 です。すなわち、各グラニュールには 2 行が含まれています。
 
-**前のキー列が低いカーディナリティの場合**<a name="generic-exclusion-search-fast"></a>
+以下の図では、各グラニュールの最初のテーブル行のキー列値をオレンジ色でマークしています。
 
-UserIDには低いカーディナリティがあるとします。この場合、同じUserID値が複数のテーブル行やグラニュールに広がる可能性が高く、したがってインデックスマークもです。同じUserIDを持つインデックスマークに対しては、URL値は昇順にソートされています（テーブル行は最初にUserIDで、次にURLで順序付けられるため）。これにより、以下のように効率的にフィルタリングできます：
-<img src={sparsePrimaryIndexes07} class="image"/>
+**前のキー列が低い基数を持つ場合**<a name="generic-exclusion-search-fast"></a>
 
-この図の抽象的なサンプルデータに対するグラニュール選択プロセスには、3つの異なるシナリオがあります：
+UserID に低い基数があると仮定してください。この場合、同じ UserID 値が複数のテーブル行およびグラニュール、したがってインデックスマークに広がっている可能性が高いです。同じ UserID のインデックスマークの URL 値は、昇順にソートされます（テーブル行は最初に UserID によって、次に URL で並べられるため）。これにより、効率的なフィルタリングが可能です。
 
-1. インデックスマーク0は、**URL値がW3より小さく、直接後のインデックスマークのURL値もW3より小さい**場合は排除されます。なぜなら、マーク0と１は同じUserID値を持つためです。この排除前提条件により、グラニュール0はすべてU1のUserID値で構成されていると仮定できるので、ClickHouseはグラニュール0内の最大URL値がW3よりも小さいとも断定し、グラニュールを排除できます。
+<Image img={sparsePrimaryIndexes07} size="md" alt="Sparse Primary Indices 06" background="white"/>
 
-2. インデックスマーク1は、**URL値がW3より小さい（または等しい）場合、および直接後のインデックスマークのURL値がW3以上の場合**は選択されます。これにより、グラニュール1がURL W3を含む可能性があることを示します。
+上の図には、抽象的なサンプルデータに基づくグラニュール選択プロセスの 3 つの異なるシナリオが示されています：
 
-3. インデックスマーク2および3は、**URL値がW3より大きい場合**に排除されます。主インデックスのインデックスマークが各グラニュールの最初のテーブル行のキー列の値を格納しているため、テーブル行はディスク上でキー列の値で順序付けられています。したがって、グラニュール2と3はURL値W3を含むことはできません。
+1. **URL 値が W3 より小さく、次のインデックスマークの URL 値も W3 より小さいインデックスマーク 0** は、マーク 0 と 1 が同じ UserID 値を持っていますので除外できます。この除外前提条件により、グラニュール 0 はすべて U1 UserID 値で構成されていることが確認でき、ClickHouse はグラニュール 0 内の最大 URL 値も W3 より小さいと仮定し、グラニュールを除外できます。
 
-**前のキー列が高いカーディナリティの場合**<a name="generic-exclusion-search-slow"></a>
+2. **URL 値が W3 より小さい（または等しい）インデックスマーク 1 と直接後続のインデックスマークの URL 値が W3 より大きい（または等しい）場合は選択されます**。これはグラニュール 1 がおそらく URL W3 を含むことを意味します。
 
-UserIDが高いカーディナリティである場合は、同じUserID値が複数のテーブル行やグラニュールに広がる可能性が低くなります。これにより、インデックスマークのURL値は単調に増加することはありません：
+3. **URL 値が W3 より大きいインデックスマーク 2 および 3** は除外できます。なぜなら、プライマリインデックスのインデックスマークは、各グラニュールの最初のテーブル行のキー列値を保存しており、テーブル行はキー列値に基づいてディスクにソートされるため、グラニュール 2 および 3 では URL 値 W3 が存在できないためです。
 
-<img src={sparsePrimaryIndexes08} class="image"/>
+**前のキー列が高い基数を持つ場合**<a name="generic-exclusion-search-slow"></a>
 
-上の図からわかるように、W3より小さいすべてのマークはその関連するグラニュールの行をClickHouseエンジンにストリーミングするために選択されます。
+UserID に高い基数がある場合、同じ UserID 値が複数のテーブル行およびグラニュールに広がる可能性は低くなります。これは、インデックスマークの URL 値が単調に増加しないことを意味します：
 
-これは、図内のすべてのインデックスマークが上記のシナリオ1に該当しますが、インデックスマーク0に対しては、**直接後のインデックスマークが現在のマークとは同じUserID値を持っている**という排除前提条件が満たされないため、排除できません。
+<Image img={sparsePrimaryIndexes08} size="md" alt="Sparse Primary Indices 06" background="white"/>
 
-例えば、インデックスマーク0は**URL値がW3より小さく、直接後のインデックスマークがW3よりも小さい**場合であっても、直接後のインデックスマーク1が現在のマーク0と同じUserID値を持たないため、排除できません。
+上記の図では、W3 よりも URL 値が小さいすべてのマークがその関連するグラニュールの行を ClickHouse エンジンにストリーミングするための選択を受けていることが示されています。
 
-これが最終的にClickHouseがグラニュール0の最大URL値に関する仮定を行うことを妨げます。代わりに、ClickHouseは、グラニュール0がURL値W3を含む可能性があると仮定せざるを得ず、マーク0を選択せざるを得ません。
+これは、図内のすべてのインデックスマークがシナリオ 1 に該当するが、示された除外前提条件を満たしていないためです。それは、*直接後続のインデックスマークが現在のマークと同じ UserID 値を持つ*ことから、除外できないからです。
 
-同様のシナリオが、マーク1、2、3にも当てはまります。
+例えば、**URL 値が W3 より小さいインデックスマーク 0** に注目すると、その直接後続のインデックスマーク 1 も W3 より小さいが、*マーク 1 の UserID 値は 0 と異なるため*除外できません。
+
+これが最終的に、ClickHouse がグラニュール 0 の最大 URL 値についての仮定を行うことを妨げます。代わりに、ClickHouse はグラニュール 0 に行が存在する可能性があると仮定し、マーク 0 の選択を余儀なくされます。
+
+同様のシナリオがマーク 1、2、および 3 に対しても当てはまります。
 
 :::note 結論
-ClickHouseが複合キーの一部である列のフィルタリングに対して<a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1444" target="_blank">一般的な排除検索アルゴリズム</a>を用いている場合、前のキー列が低いカーディナリティがある場合に最も効果的です。
+ClickHouse が一般的な除外検索アルゴリズムを使用するのは、前のキー列が低い基数を持つ場合において、特に効果的です。
 :::
 
-サンプルデータセットでは、両方のキー列（UserID、URL）は高いカーディナリティを持ち、上記の通り、URL列の前のキー列のカーディナリティが高いか似ている場合、一般的な排除検索アルゴリズムはあまり効果的ではありません。
+サンプルデータセットでは、両方のキー列（UserID、URL）が高い基数を持ち、説明されたように、一般的な除外検索アルゴリズムは、URL カラムの前のキー列が高い（または等しい）基数を持つ場合にはあまり効果的ではありません。
+### データスキップインデックスについての注意事項 {#note-about-data-skipping-index}
 
-### データスキッピングインデックスに関する注意 {#note-about-data-skipping-index}
 
-UserIDとURLの似たような高いカーディナリティのため、私たちの[URLに基づくクエリフィルタリング](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient)も、私たちの[複合主キー（UserID、URL）を持つテーブル](#a-table-with-a-primary-key)のURLカラムに対して[セカンダリデータスキッピングインデックス](./skipping-indexes.md)を作成することからあまり恩恵を受けませんでした。
+UserID と URL の基数が似て高いため、私たちの [URL でのフィルタリングクエリ](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient) も、複合主キー (UserID、URL) の URL カラムに対する [二次データスキッピングインデックス](./skipping-indexes.md) 作成からあまり利益を得ることはできません。
 
-例えば、次の2つの文は、私たちのテーブルのURLカラムに対して[minmax](/engines/table-engines/mergetree-family/mergetree.md/#primary-keys-and-indexes-in-queries)データスキッピングインデックスを作成し、人口を与えます：
+例えば、次の 2 つのステートメントは、テーブルの URL カラムに対する [minmax](/engines/table-engines/mergetree-family/mergetree.md/#primary-keys-and-indexes-in-queries) データスキッピングインデックスを作成し、充填します：
 ```sql
 ALTER TABLE hits_UserID_URL ADD INDEX url_skipping_index URL TYPE minmax GRANULARITY 4;
 ALTER TABLE hits_UserID_URL MATERIALIZE INDEX url_skipping_index;
 ```
-ClickHouseは現在、4つの連続した[グラニュール](#data-is-organized-into-granules-for-parallel-data-processing)のグループごと（上記の`ALTER TABLE`文の`GRANULARITY 4`句に注意）に、最小および最大のURL値を格納する追加のインデックスを作成しました：
+ClickHouse は、4 つの連続する [グラニュール](#data-is-organized-into-granules-for-parallel-data-processing) のグループごとに最小および最大の URL 値を保存する追加のインデックスを作成しました（上記の `ALTER TABLE` ステートメントの `GRANULARITY 4` 句に注目）。
 
-<img src={sparsePrimaryIndexes13a} class="image"/>
+<Image img={sparsePrimaryIndexes13a} size="md" alt="Sparse Primary Indices 13a" background="white"/>
 
-最初のインデックスエントリ（上の図での「マーク0」）は、[テーブルの最初の4つのグラニュールに属する行](#data-is-organized-into-granules-for-parallel-data-processing)の最小および最大のURL値を格納しています。
+最初のインデックスエントリ（上の図の「マーク 0」）は、テーブルの最初の 4 つのグラニュールに属する行の最小および最大の URL 値を保存しています。
 
-2つ目のインデックスエントリ（「マーク1」）は、テーブルの次の4つのグラニュールに属する行の最小および最大のURL値を格納し、以下同様です。
+2 番目のインデックスエントリ（「マーク 1」）は、テーブルの次の 4 つのグラニュールに属する行に対する最小および最大の URL 値を保存し、以下同様です。
 
-（ClickHouseはまた、インデックスマークに関連付けられたグラニュールのグループを[定位するため](#mark-files-are-used-for-locating-granules)にデータスキッピングインデックス用の特別な[マークファイル](#mark-files-are-used-for-locating-granules)を作成しました。）
+（ClickHouse は、インデックスマークに関連付けられたグラニュールのグループを [特定](#mark-files-are-used-for-locating-granules)するための [特別なマークファイル](#mark-files-are-used-for-locating-granules) も作成しました。）
 
-UserIDとURLの似たような高いカーディナリティのため、このセカンダリデータスキッピングインデックスは、私たちの[URLに基づくクエリフィルタリング](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient)が実行される際に、グラニュールを除外するのに役立ちません。
 
-クエリが探している特定のURL値（つまり、'http://public_search'）は、インデックスが各グラニュールのグループに対して保存する最小値と最大値の間に非常にありそうであり、ClickHouseはそのグループのグラニュールを選択せざるを得なくなります（なぜならそれらはクエリに一致する行を含む可能性があるためです）。
+UserID と URL の基数が似て高いため、この二次データスキッピングインデックスは、私たちの [URL でのフィルタリングクエリ](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient) が実行された場合にグラニュールの選択から除外するのに役立つことはありません。
 
+クエリが探している特定の URL 値（すなわち 'http://public_search'）は、インデックスがそれぞれのグラニュールグループに保存している最小値と最大値の間にある可能性が高く、そのため ClickHouse はグラニュールグループを選択せざるを得ません（それらがクエリと一致する行を含んでいる可能性があるため）。
 ### 複数の主インデックスを使用する必要性 {#a-need-to-use-multiple-primary-indexes}
 
-その結果、特定のURLを持つ行をフィルタリングするサンプルクエリを大幅に高速化したい場合は、そのクエリに最適化された主インデックスを使用する必要があります。
 
-さらに、特定のUserIDを持つ行をフィルタリングするサンプルクエリの良好なパフォーマンスを維持したい場合は、複数の主インデックスを使用する必要があります。
+その結果、特定の URL を持つ行のためにサンプルクエリを大幅に高速化する必要がある場合、クエリに最適化された主インデックスを使用する必要があります。
 
-次に、それを達成する方法を示します。
+さらに、特定の UserID を持つ行のためにサンプルクエリの良好なパフォーマンスを維持したい場合、複数の主インデックスを使用する必要があります。
+
+これは、次のような方法で実現できます。
 
 <a name="multiple-primary-indexes"></a>
 ### 追加の主インデックスを作成するオプション {#options-for-creating-additional-primary-indexes}
 
-私たちのサンプルクエリの両方を大幅に高速化したい場合（特定のUserIDを持つ行をフィルタリングするクエリと特定のURLを持つ行をフィルタリングするクエリ）には、次の3つのオプションのいずれかを使用して複数の主インデックスを使用する必要があります：
 
-- 異なる主キーを持つ**第2テーブル**を作成する。
-- 既存のテーブルに**マテリアライズドビュー**を作成する。
-- 既存のテーブルに**プロジェクション**を追加する。
+特定の UserID を持つ行をフィルタリングするサンプルクエリと特定の URL を持つ行をフィルタリングするサンプルクエリの両方を大幅に高速化したい場合、次の 3 つのオプションのいずれかを使用して、複数の主インデックスを使用する必要があります：
 
-3つのオプションはすべて、サンプルデータを追加テーブルに効果的に重複させ、テーブルの主インデックスと行のソート順序を再編成することになります。
+- **異なる主キーを持つ第二のテーブルを作成する**。
+- **既存のテーブルにマテリアライズドビューを作成する**。
+- **既存のテーブルにプロジェクションを追加する**。
 
-ただし、3つのオプションは、クエリや挿入文のルーティングに対する追加テーブルの透明性の点で異なります。
+これら 3 つのオプションは、テーブルの主インデックスおよび行のソート順を再編成するために、サンプルデータを追加のテーブルに効果的に複製します。
 
-異なる主キーで**第2テーブル**を作成する場合、クエリはテーブルのバージョンに明示的に送信される必要があり、新しいデータは両方のテーブルに明示的に挿入される必要があります：
-<img src={sparsePrimaryIndexes09a} class="image"/>
+しかし、3 つのオプションは、クエリのルーティングや挿入ステートメントに関して、ユーザーに対する追加のテーブルの透過性において異なります。
 
-**マテリアライズドビュー**の場合、追加のテーブルは暗黙的に作成され、データは自動的に両方のテーブル間で同期されます：
-<img src={sparsePrimaryIndexes09b} class="image"/>
+**異なる主キーを持つ第二のテーブル**を作成する場合、クエリはクエリに最適なテーブルバージョンに明示的に送信する必要があり、新しいデータは両方のテーブルに明示的に挿入されて、テーブルを同期する必要があります：
 
-そして**プロジェクション**は、暗黙的に作成された（隠された）追加テーブルをデータ変更とともに自動的に同期させるだけでなく、ClickHouseがクエリのために最も効果的なテーブルバージョンを自動的に選択するため、最も透明なオプションです：
-<img src={sparsePrimaryIndexes09c} class="image"/>
+<Image img={sparsePrimaryIndexes09a} size="md" alt="Sparse Primary Indices 09a" background="white"/>
 
-以下では、複数の主インデックスを作成し使用するためのこれらの3つのオプションについて、詳細かつ実際の例と共に説明します。
+**マテリアライズドビュー**の場合、追加のテーブルは自動的に作成され、データは両方のテーブル間で自動的に同期されます：
+
+<Image img={sparsePrimaryIndexes09b} size="md" alt="Sparse Primary Indices 09b" background="white"/>
+
+そして、**プロジェクション**は最も透過的なオプションであり、暗黙的に作成された（そして隠された）追加のテーブルをデータの変更に基づいて自動的に同期させるだけでなく、ClickHouse はクエリに最も効果的なテーブルバージョンを自動的に選択します：
+
+<Image img={sparsePrimaryIndexes09c} size="md" alt="Sparse Primary Indices 09c" background="white"/>
+
+以下では、複数の主インデックスを作成して使用するための 3 つのオプションについて、さらに詳細に、実際の例と共に議論します。
 
 <a name="multiple-primary-indexes-via-secondary-tables"></a>
-### オプション 1: セカンダリテーブル {#option-1-secondary-tables}
+### Option 1: セカンダリテーブル {#option-1-secondary-tables}
 
 <a name="secondary-table"></a>
-私たちは、主キーにおけるカラムの順序を（元のテーブルと比較して）変更する新しい追加テーブルを作成しています：
+プライマリキーのキーカラムの順序を元のテーブルと比較して入れ替えた新しい追加テーブルを作成します。
 
 ```sql
 CREATE TABLE hits_URL_UserID
@@ -871,43 +866,44 @@ CREATE TABLE hits_URL_UserID
     `EventTime` DateTime
 )
 ENGINE = MergeTree
-// highlight-next-line
+-- highlight-next-line
 PRIMARY KEY (URL, UserID)
 ORDER BY (URL, UserID, EventTime)
 SETTINGS index_granularity = 8192, index_granularity_bytes = 0, compress_primary_key = 0;
 ```
 
-元のテーブルからすべての8.87百万行を追加テーブルに挿入します：
+元のテーブルからすべての 8.87百万行を追加テーブルに挿入します:
 
 ```sql
 INSERT INTO hits_URL_UserID
 SELECT * from hits_UserID_URL;
 ```
 
-レスポンスは次のようになります：
+レスポンスは次のようになります:
+
 ```response
 Ok.
 
 0 rows in set. Elapsed: 2.898 sec. Processed 8.87 million rows, 838.84 MB (3.06 million rows/s., 289.46 MB/s.)
 ```
 
-最後にテーブルを最適化します：
+最後にテーブルを最適化します:
 ```sql
 OPTIMIZE TABLE hits_URL_UserID FINAL;
 ```
 
-主キーのカラムの順序を変更したため、挿入された行は現在、元のテーブルと比較して異なる辞書順でディスクに保存され、そのテーブルの1083のグラニュールには以前とは異なる値が含まれています：
+プライマリキーのカラムの順序を変更したため、挿入された行はディスクに異なる辞書順で保存され（元のテーブルと比較して）、そのテーブルの 1083 グラニュールも以前とは異なる値を含んでいます:
 
-<img src={sparsePrimaryIndexes10} class="image"/>
+<Image img={sparsePrimaryIndexes10} size="md" alt="Sparse Primary Indices 10" background="white"/>
 
-これが生成された主キーです：
+これが結果のプライマリキーです:
 
-<img src={sparsePrimaryIndexes11} class="image"/>
+<Image img={sparsePrimaryIndexes11} size="md" alt="Sparse Primary Indices 11" background="white"/>
 
-これを使用して、URLカラムでフィルタリングされたサンプルクエリの実行を大幅に高速化することができます。これにより、URL「http://public_search」を最も頻繁にクリックした上位10ユーザーを計算します：
+これを使用して、URL カラムでフィルタリングされた例のクエリの実行を大幅に高速化できます。これは、最も頻繁に「http://public_search」をクリックしたトップ 10 のユーザーを計算するためのクエリです:
 ```sql
 SELECT UserID, count(UserID) AS Count
-// highlight-next-line
+-- highlight-next-line
 FROM hits_URL_UserID
 WHERE URL = 'http://public_search'
 GROUP BY UserID
@@ -915,7 +911,7 @@ ORDER BY Count DESC
 LIMIT 10;
 ```
 
-レスポンスは以下の通りです：
+レスポンスは次のようになります:
 <a name="query-on-url-fast"></a>
 
 ```response
@@ -933,41 +929,44 @@ LIMIT 10;
 └────────────┴───────┘
 
 10 rows in set. Elapsed: 0.017 sec.
-// highlight-next-line
+
+# highlight-next-line
 Processed 319.49 thousand rows,
 11.38 MB (18.41 million rows/s., 655.75 MB/s.)
 ```
 
-今、[ほぼフルテーブルスキャンを行うことなく](/guides/best-practices/sparse-primary-indexes#efficient-filtering-on-secondary-key-columns)、ClickHouseはそのクエリをより効率的に実行しました。
+今や、[ほぼ全テーブルスキャンを行う代わりに](/guides/best-practices/sparse-primary-indexes#efficient-filtering-on-secondary-key-columns)、ClickHouse はそのクエリをはるかに効果的に実行しました。
 
-元のテーブルの主インデックスではUserIDが最初のカラムで、URLが2番目のカラムでしたが、ClickHouseはそのクエリを実行するためにインデックスマークに対して[一般的な除外検索](/guides/best-practices/sparse-primary-indexes#generic-exclusion-search-algorithm)を使用していましたが、UserIDとURLの似たような高いカーディナリティのため、それはあまり効果的ではありませんでした。
+元のテーブルのプライマリインデックスでは、UserID が最初で、URL が 2 番目のキーカラムでしたが、ClickHouse はクエリを実行するためにインデックスマークの上で [一般的な排他検索](/guides/best-practices/sparse-primary-indexes#generic-exclusion-search-algorithm) を使用し、UserID と URL の間の同様に高いカーディナリティにより、あまり効果的ではありませんでした。
 
-URLが主インデックスの最初のカラムとして配置されたことで、ClickHouseは[バイナリサーチ](https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452)をインデックスマークの上で実行しています。
-ClickHouseサーバーログファイルの対応するトレースログは次のように確認します：
+URL をプライマリインデックスの最初のカラムとして使用することで、ClickHouse は現在、インデックスマークの上で<a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">二分探索</a>を実行しています。
+ClickHouse サーバーログファイルの対応するトレースログがそれを確認しました:
 ```response
 ...Executor): Key condition: (column 0 in ['http://public_search',
                                            'http://public_search'])
-// highlight-next-line
+
+# highlight-next-line
 ...Executor): Running binary search on index range for part all_1_9_2 (1083 marks)
 ...Executor): Found (LEFT) boundary mark: 644
 ...Executor): Found (RIGHT) boundary mark: 683
 ...Executor): Found continuous range in 19 steps
 ...Executor): Selected 1/1 parts by partition key, 1 parts by primary key,
-// highlight-next-line
+
+# highlight-next-line
               39/1083 marks by primary key, 39 marks to read from 1 ranges
 ...Executor): Reading approx. 319488 rows with 2 streams
 ```
-ClickHouseは1076のインデックスマークではなく、39のインデックスマークのみを選択しました。
+ClickHouse は、一般的な排他検索を使用した際の 1076 ではなく、わずか 39 インデックスマークを選択しました。
 
-追加テーブルが、URLでフィルタリングされたサンプルクエリの実行を高速化するように最適化されていることに注意してください。
+追加テーブルは、URL でフィルタリングされた例のクエリの実行を高速化するために最適化されています。
 
-元のテーブルでのそのクエリの[悪いパフォーマンス](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient)とは異なり、`UserIDs`に対する私たちの[例のクエリのフィルタリング](#the-primary-index-is-used-for-selecting-granules)は、新しい追加テーブルでは非常に効果的には実行されません。なぜなら、UserIDがそのテーブルの主インデックスの2番目のキー列であり、したがってClickHouseはグラニュール選択のために一般的な除外検索を使用することになるからです。これは[同様に高いカーディナリティ](/guides/best-practices/sparse-primary-indexes#generic-exclusion-search-algorithm)にはあまり効果的ではありません。
+元のテーブルでのクエリの[悪いパフォーマンス](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient)と同様に、`UserIDs` に対するフィルタリングの例のクエリは新しい追加テーブルであまり効果的には実行されません。なぜなら、UserID がこのテーブルのプライマリインデックスの 2 番目のキーカラムになったからであり、ClickHouse はそのため、グラニュール選択に一般的な排他検索を使用するからです。UserID と URL のカーディナリティが同じように高い場合（/guides/best-practices/sparse-primary-indexes#generic-exclusion-search-algorithm）。
 
-詳細ボックスを開いて具体例を確認してください。
+詳細を知りたい場合は、詳細ボックスを開いてください。
 
 <details>
     <summary>
-    UserIDsに基づくクエリフィルタリングのパフォーマンスが悪くなった<a name="query-on-userid-slow"></a>
+    UserIDs に対するフィルタリングのクエリのパフォーマンスは悪い<a name="query-on-userid-slow"></a>
     </summary>
     <p>
 
@@ -980,7 +979,7 @@ ORDER BY Count DESC
 LIMIT 10;
 ```
 
-レスポンスは次の通りです：
+レスポンスは以下のようになります:
 
 ```response
 ┌─URL────────────────────────────┬─Count─┐
@@ -997,31 +996,33 @@ LIMIT 10;
 └────────────────────────────────┴───────┘
 
 10 rows in set. Elapsed: 0.024 sec.
-// highlight-next-line
+
+# highlight-next-line
 Processed 8.02 million rows,
 73.04 MB (340.26 million rows/s., 3.10 GB/s.)
 ```
 
-サーバーログ：
+サーバーログ:
 ```response
 ...Executor): Key condition: (column 1 in [749927693, 749927693])
-// highlight-next-line
+
+# highlight-next-line
 ...Executor): Used generic exclusion search over index for part all_1_9_2
               with 1453 steps
 ...Executor): Selected 1/1 parts by partition key, 1 parts by primary key,
-// highlight-next-line
+
+# highlight-next-line
               980/1083 marks by primary key, 980 marks to read from 23 ranges
 ...Executor): Reading approx. 8028160 rows with 10 streams
 ```
 </p>
 </details>
 
-私たちは現在、2つのテーブルを持っています。`UserIDs`でフィルタリングされたクエリの実行を高速化するように最適化され、URLでフィルタリングされたクエリの実行を高速化するように最適化されています：
+私たちは現在、2 つのテーブルを所有しています。`UserIDs` に対するフィルタリングのクエリを高速化するために最適化され、URLs に対するクエリを高速化するために最適化されたテーブルです。
 
-<img src={sparsePrimaryIndexes12a} class="image"/>
-### オプション 2: マテリアライズドビュー {#option-2-materialized-views}
+### Option 2: マテリアライズドビュウ {#option-2-materialized-views}
 
-既存のテーブルに対して[マテリアライズドビュー](/sql-reference/statements/create/view.md)を作成します。
+既存のテーブルに対してマテリアライズドビューを作成します。
 ```sql
 CREATE MATERIALIZED VIEW mv_hits_URL_UserID
 ENGINE = MergeTree()
@@ -1031,7 +1032,8 @@ POPULATE
 AS SELECT * FROM hits_UserID_URL;
 ```
 
-レスポンスは次のようになります：
+レスポンスは次のようになります:
+
 ```response
 Ok.
 
@@ -1039,25 +1041,26 @@ Ok.
 ```
 
 :::note
-- 主キーのカラム順序を（元のテーブルと比較して）変更しています。
-- マテリアライズドビューは、指定された主キー定義に基づいて行順序と主インデックスを持つ**暗黙的に作成されたテーブル**に支えられています。
-- 暗黙的に作成されたテーブルは`SHOW TABLES`クエリでリストされており、名前は`.inner`で始まります。
-- マテリアライズドビューのバックアップテーブルを最初に明示的に作成し、そのテーブルを`TO [db].[table]` [句](/sql-reference/statements/create/view.md)を介してターゲットすることも可能です。
-- `POPULATE`キーワードを使用して、ソーステーブル[hits_UserID_URL](#a-table-with-a-primary-key)のすべての8.87百万行で暗黙的に作成されたテーブルを即座に人口します。
-- ソーステーブルhits_UserID_URLに新しい行が挿入されると、これらの行も自動的に暗黙的に作成されたテーブルに挿入されます。
-- 効果的には、暗黙的に作成されたテーブルは、[明示的に作成したセカンダリテーブル](/guides/best-practices/sparse-primary-indexes#option-1-secondary-tables)と同じ行順序と主インデックスを持っています：
+- ビューのプライマリキーのキーカラムの順序を（元のテーブルと比較して）入れ替えます
+- マテリアライズドビューは、所定のプライマリキーディフィニションに基づいて、**暗黙的に作成されたテーブル**によってバックアップされています
+- 暗黙的に作成されたテーブルは、`SHOW TABLES` クエリによってリスト表示され、名前は `.inner` で始まります
+- マテリアライズドビューのバックアップテーブルを最初に明示的に作成し、その後、`TO [db].[table]` [句](/sql-reference/statements/create/view.md)を通じてそのテーブルをターゲットにすることも可能です
+- `POPULATE` キーワードを使用して、元のテーブル [hits_UserID_URL](#a-table-with-a-primary-key) から 8.87 百万行すべてで暗黙的に作成されたテーブルを即座に埋めます
+- 新しい行がソーステーブル hits_UserID_URL に挿入されると、その行は暗黙的に作成されたテーブルにも自動的に挿入されます
+- 実際には、暗黙的に作成されたテーブルは、[セカンダリテーブルとして明示的に作成したテーブル](#option-1-secondary-tables) と同じ行の順序およびプライマリインデックスを持っています:
 
-<img src={sparsePrimaryIndexes12b1} class="image"/>
+<Image img={sparsePrimaryIndexes12b1} size="md" alt="Sparse Primary Indices 12b1" background="white"/>
 
-ClickHouseは、暗黙的に作成されたテーブルの[カラムデータファイル](#data-is-stored-on-disk-ordered-by-primary-key-columns)(*.bin)、[マークファイル](#mark-files-are-used-for-locating-granules)(*.mrk2)、および[主インデックス](#the-primary-index-has-one-entry-per-granule)(primary.idx)をClickHouseサーバーのデータディレクトリ内の特別なフォルダに保存します：
+ClickHouse は、[カラムデータファイル](#data-is-stored-on-disk-ordered-by-primary-key-columns) (*.bin)、[マークファイル](#mark-files-are-used-for-locating-granules) (*.mrk2)、および暗黙的に作成されたテーブルの[プライマリインデックス](#the-primary-index-has-one-entry-per-granule) (primary.idx)を、ClickHouse サーバーディレクトリの特別なフォルダに保存します:
 
-<img src={sparsePrimaryIndexes12b2} class="image"/>
+<Image img={sparsePrimaryIndexes12b2} size="md" alt="Sparse Primary Indices 12b2" background="white"/>
+
 :::
 
-暗黙的に作成されたテーブル（およびその主インデックス）がマテリアライズドビューを支えていることで、URLカラムでフィルタリングされたサンプルクエリの実行を大幅に高速化することができます：
+暗黙的に作成されたテーブル（およびそのプライマリインデックス）は、URL カラムでフィルタリングされた例のクエリの実行を大幅に高速化するために今や使用できます:
 ```sql
 SELECT UserID, count(UserID) AS Count
-// highlight-next-line
+-- highlight-next-line
 FROM mv_hits_URL_UserID
 WHERE URL = 'http://public_search'
 GROUP BY UserID
@@ -1065,7 +1068,7 @@ ORDER BY Count DESC
 LIMIT 10;
 ```
 
-レスポンスは次のようになります：
+レスポンスは次のようになります:
 
 ```response
 ┌─────UserID─┬─Count─┐
@@ -1082,29 +1085,33 @@ LIMIT 10;
 └────────────┴───────┘
 
 10 rows in set. Elapsed: 0.026 sec.
-// highlight-next-line
+
+# highlight-next-line
 Processed 335.87 thousand rows,
 13.54 MB (12.91 million rows/s., 520.38 MB/s.)
 ```
 
-暗黙的に作成されたテーブル（およびその主インデックス）が、マテリアライズドビューを支えていることで、クエリは明示的に作成したテーブルと同じ効果的な方法で実行されます。
+実際に、プライマリインデックスのバックアップとして暗黙的に作成されたテーブルは、[セカンダリテーブルとして明示的に作成したテーブル](#option-1-secondary-tables) と同一のものであり、このためクエリは明示的に作成したテーブルと同じ効果的な方法で実行されます。
 
-ClickHouseサーバーログファイルの対応するトレースログは、ClickHouseがインデックスマークに対してバイナリサーチを実行していることを確認します：
+ClickHouse サーバーログファイルの対応するトレースログは、ClickHouse がインデックスマークの上で二分探索を実行していることを確認します:
 
 ```response
 ...Executor): Key condition: (column 0 in ['http://public_search',
                                            'http://public_search'])
-// highlight-next-line
+
+# highlight-next-line
 ...Executor): Running binary search on index range ...
 ...
 ...Executor): Selected 4/4 parts by partition key, 4 parts by primary key,
-// highlight-next-line
+
+# highlight-next-line
               41/1083 marks by primary key, 41 marks to read from 4 ranges
 ...Executor): Reading approx. 335872 rows with 4 streams
 ```
-### オプション 3: プロジェクション {#option-3-projections}
 
-既存のテーブルにプロジェクションを作成します：
+### Option 3: プロジェクション {#option-3-projections}
+
+既存のテーブルにプロジェクションを作成します:
 ```sql
 ALTER TABLE hits_UserID_URL
     ADD PROJECTION prj_url_userid
@@ -1114,32 +1121,33 @@ ALTER TABLE hits_UserID_URL
     );
 ```
 
-プロジェクションをマテリアライズします：
+そしてプロジェクションをマテリアライズします:
 ```sql
 ALTER TABLE hits_UserID_URL
     MATERIALIZE PROJECTION prj_url_userid;
 ```
 
 :::note
-- プロジェクションは、指定された`ORDER BY`句に基づいて行順序と主インデックスを持つ**隠されたテーブル**を作成します。
-- 隠されたテーブルは`SHOW TABLES`クエリでリストされません。
-- `MATERIALIZE`キーワードを使用して、ソーステーブル[hits_UserID_URL](#a-table-with-a-primary-key)のすべての8.87百万行で隠されたテーブルを即座に人口します。
-- ソーステーブルhits_UserID_URLに新しい行が挿入されると、これらの行も自動的に隠されたテーブルに挿入されます。
-- クエリは常に（構文的に）ソーステーブルhits_UserID_URLをターゲットにしますが、隠されたテーブルの行順序と主インデックスがクエリの実行をより効果的にする場合、その隠されたテーブルが代わりに使用されます。
-- プロジェクションは、プロジェクションの`ORDER BY`が一致しても、ORDER BYを使用するクエリをより効率的にすることはありません（https://github.com/ClickHouse/ClickHouse/issues/47333を参照）。
-- 効果的には、暗黙的に作成された隠されたテーブルは[明示的に作成したセカンダリテーブル](/guides/best-practices/sparse-primary-indexes#option-1-secondary-tables)と同じ行順序と主インデックスを持っています：
+- プロジェクションは、所定の `ORDER BY` 句に基づく行の順序とプライマリインデックスを持つ**隠れたテーブル**を作成します
+- 隠れたテーブルは、`SHOW TABLES` クエリではリスト表示されません
+- `MATERIALIZE` キーワードを使用して、元のテーブル [hits_UserID_URL](#a-table-with-a-primary-key) から 8.87 百万行すべてで隠れたテーブルを即座に埋めます
+- 新しい行がソーステーブル hits_UserID_URL に挿入されると、その行は暗黙的に作成されたテーブルにも自動的に挿入されます
+- クエリは常に（文法的に）ソーステーブル hits_UserID_URL をターゲットにしていますが、もし隠れたテーブルの行の順序とプライマリインデックスがより効果的なクエリ実行を可能にする場合、その隠れたテーブルが代わりに使用されます
+- プロジェクションは、プロジェクションの ORDER BY ステートメントが一致していても、ORDER BY を使用するクエリがより効率的になるわけではありません (see https://github.com/ClickHouse/ClickHouse/issues/47333)
+- 実際には、暗黙的に作成された隠れたテーブルは、[セカンダリテーブルとして明示的に作成したテーブル](#option-1-secondary-tables) と同じ行の順序およびプライマリインデックスを持っています:
 
-<img src={sparsePrimaryIndexes12c1} class="image"/>
+<Image img={sparsePrimaryIndexes12c1} size="md" alt="Sparse Primary Indices 12c1" background="white"/>
 
-ClickHouseは、隠されたテーブル（およびその主インデックス）の[カラムデータファイル](#data-is-stored-on-disk-ordered-by-primary-key-columns)(*.bin)、[マークファイル](#mark-files-are-used-for-locating-granules)(*.mrk2)、および[主インデックス](#the-primary-index-has-one-entry-per-granule)(primary.idx)をソーステーブルのデータファイル、マークファイル、および主インデックスファイルの隣の特別なフォルダに保存します：
+ClickHouse は、[カラムデータファイル](#data-is-stored-on-disk-ordered-by-primary-key-columns) (*.bin)、[マークファイル](#mark-files-are-used-for-locating-granules) (*.mrk2)、および隠れたテーブルの[プライマリインデックス](#the-primary-index-has-one-entry-per-granule) (primary.idx) を、ソーステーブルのデータファイル、マークファイル、プライマリインデックスファイルの隣にある特別なフォルダ（下のスクリーンショットでオレンジ色でマーク）に保存します:
 
-<img src={sparsePrimaryIndexes12c2} class="image"/>
+<Image img={sparsePrimaryIndexes12c2} size="sm" alt="Sparse Primary Indices 12c2" background="white"/>
+
 :::
 
-プロジェクションによって作成された隠されたテーブル（およびその主インデックス）は、URLカラムでフィルタリングされたサンプルクエリの実行を大幅に高速化するために（暗黙的に）使用できます。クエリは構文的にプロジェクションのソーステーブルをターゲットとしています。
+プロジェクションによって作成された隠れたテーブル（およびそのプライマリインデックス）は、URL カラムでフィルタリングされた例のクエリの実行を大幅に高速化するために今や使用できます。クエリは文法的にプロジェクションのソーステーブルをターゲットにしています。
 ```sql
 SELECT UserID, count(UserID) AS Count
-// highlight-next-line
+-- highlight-next-line
 FROM hits_UserID_URL
 WHERE URL = 'http://public_search'
 GROUP BY UserID
@@ -1147,7 +1155,7 @@ ORDER BY Count DESC
 LIMIT 10;
 ```
 
-レスポンスは次のようになります：
+レスポンスは以下のようになります:
 
 ```response
 ┌─────UserID─┬─Count─┐
@@ -1164,57 +1172,62 @@ LIMIT 10;
 └────────────┴───────┘
 
 10 rows in set. Elapsed: 0.029 sec.
-// highlight-next-line
-Processed 319.49 thousand rows, 1
-1.38 MB (11.05 million rows/s., 393.58 MB/s.)
+
+# highlight-next-line
+Processed 319.49 thousand rows, 
+11.38 MB (11.05 million rows/s., 393.58 MB/s.)
 ```
 
-効果的にプロジェクションによって作成された隠されたテーブル（およびその主インデックス）は、[明示的に作成したセカンダリテーブル](/guides/best-practices/sparse-primary-indexes#option-1-secondary-tables)と同じ効果的な方法でクエリを実行します。
+実際に、プロジェクションによって作成された隠れたテーブル（およびそのプライマリインデックス）は、[セカンダリテーブルとして明示的に作成したテーブル](#option-1-secondary-tables) と同一であり、このためクエリは明示的に作成したテーブルと同じ効果的な方法で実行されます。
 
-ClickHouseサーバーログファイルの対応するトレースログは、ClickHouseがインデックスマークに対してバイナリサーチを実行していることを確認します：
+ClickHouse サーバーログファイルの対応するトレースログは、ClickHouse がインデックスマークの上で二分探索を実行していることを確認します:
 
 ```response
 ...Executor): Key condition: (column 0 in ['http://public_search',
                                            'http://public_search'])
-// highlight-next-line
+
+# highlight-next-line
 ...Executor): Running binary search on index range for part prj_url_userid (1083 marks)
 ...Executor): ...
-// highlight-next-line
+
+# highlight-next-line
 ...Executor): Choose complete Normal projection prj_url_userid
 ...Executor): projection required columns: URL, UserID
 ...Executor): Selected 1/1 parts by partition key, 1 parts by primary key,
-// highlight-next-line
+
+# highlight-next-line
               39/1083 marks by primary key, 39 marks to read from 1 ranges
 ...Executor): Reading approx. 319488 rows with 2 streams
 ```
-### サマリー {#summary}
 
-複合主キー（UserID、URL）を持つ私たちの[テーブル](#a-table-with-a-primary-key)の主インデックスは、UserIDでフィルタリングされた[クエリを高速化するのに非常に役立ちました](#the-primary-index-is-used-for-selecting-granules)。しかし、そのインデックスはURLでフィルタリングされた[クエリ](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient)の高速化にはあまり助けになっていませんでした。URLカラムが複合主キーの一部であるにもかかわらずです。
+### Summary {#summary}
 
-逆もまた真です：
-複合主キー（URL、UserID）を持つ私たちの[テーブル](#guides/best-practices/sparse-primary-indexes#option-1-secondary-tables)は、URLでフィルタリングされた[クエリを高速化しました](#guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient)。しかし、UserIDでフィルタリングされた[クエリ](#the-primary-index-is-used-for-selecting-granules)にはあまりサポートを提供しませんでした。
+UserID と URL の複合プライマリキーを持つテーブルのプライマリインデックスは、[UserID に基づくクエリのフィルタリングを高速化する](#the-primary-index-is-used-for-selecting-granules)のに役立ちました。しかし、そのインデックスは、[URL に基づくクエリのフィルタリングを高速化する](#secondary-key-columns-can-not-be-inefficient)のにはあまり明確な助けは提供しません。URL カラムが複合プライマリキーの一部であってもですが。
 
-主キーのカラムであるUserIDとURLが似たような高いカーディナリティであるため、2番目のキー列でフィルタリングされたクエリは、[インデックスにその2番目のキー列があることでほとんど利益を得られない](#generic-exclusion-search-algorithm)のです。
+そして、逆もまた然りです:
+URL と UserID の複合プライマリキーを持つテーブルのプライマリインデックスは、[URL に基づくクエリのフィルタリングを高速化する](#secondary-key-columns-can-not-be-inefficient)のには役立ちましたが、[UserID に基づくクエリのフィルタリングに対してはあまり効果を提供しません](#the-primary-index-is-used-for-selecting-granules)。
 
-したがって、主インデックスから2番目のキー列を削除する（インデックスのメモリ消費量が少なくなる）こと、および[複数の主インデックスを使用する](#guides/best-practices/sparse-primary-indexes#using-multiple-primary-indexes)ことは理にかなっています。
+UserID と URL のプライマリキーのカラムの同様に高いカーディナリティのため、2 番目のキーカラムでフィルタリングされるクエリは、[インデックスにある 2 番目のキーカラムからあまり恩恵を受けない](#generic-exclusion-search-algorithm)。
 
-ただし、複合主キーのキー列に大きなカーディナリティの違いがある場合、主キーのカラムをカーディナリティの昇順に並べることは、[クエリにとって有益です](#guides/best-practices/sparse-primary-indexes#generic-exclusion-search-algorithm)。
+したがって、プライマリインデックスから 2 番目のキーカラムを削除し（インデックスのメモリ消費を少なくすることになります）、[複数のプライマリインデックスを使用する](#using-multiple-primary-indexes)方が理にかなっています。
 
-キー列のカーディナリティ差が大きいほど、その列の順序が重要になります。次のセクションではそれを示します。
+ただし、複合プライマリキー内のキーカラムに大きなカーディナリティの違いがある場合、[クエリにとって有益](#generic-exclusion-search-algorithm)な処理を行うために、プライマリキーカラムを昇順にカーディナリティでソートすることの方が良いです。
 
-## キー列を効率的に並べる {#ordering-key-columns-efficiently}
+キーカラム間のカーディナリティ差が大きいほど、それらのカラムの順序は重要となります。次のセクションでそのことを証明していきます。
+
+## キーカラムを効率的に順序付ける {#ordering-key-columns-efficiently}
 
 <a name="test"></a>
 
-複合主キーでは、キー列の順序が次の両方に大きな影響を与えることができます。
-- クエリ内のセカンダリーキー列のフィルタリングの効率。
+複合プライマリキー内のキーカラムの順序は、次の両者に大きな影響を与えます:
+- クエリ内のセカンダリキーカラムに対するフィルタリングの効率と、
 - テーブルのデータファイルの圧縮率。
 
-そのことを示すために、アクセスがインターネットの「ユーザー」(`UserID`カラム)からURL(`URL`カラム)に対するボットトラフィック(`IsRobot`カラム)としてマークされたかどうかを示す3つのカラムを含む、私たちの[ウェブトラフィックサンプルデータセット](#data-set)のバージョンを使用します。
+これを実証するために、次の 3 つのカラムを持つ、インターネットの「ユーザー」(`UserID` カラム) が URL (`URL` カラム) にアクセスした際にボットトラフィックとしてマークされたかを示すサンプルデータセットを使用します。
+- 特定の URL へのトラフィックのうち、ボットによるものがどれくらい (パーセント) なのか
+- 特定のユーザーが (ボットでない) かどうかの信頼度 (そのユーザーからのトラフィックのうち、どのくらいがボットトラフィックでないと見なされるか)
 
-その3つのカラムを含む複合主キーを使って、特定のURLへのトラフィックのパーセンテージがボットからのものであるか、特定のユーザーが（ボットではない）ボットであるかどうかの自信がどの程度あるか（そのユーザーからのトラフィックの何パーセントがボットトラフィックであると見なされているか）を計算するという典型的なウェブ分析のクエリを高速化するためのキーとして使います。
-
-これらのキー列として使いたい3つのカラムのカーディナリティを計算するために、このクエリを使用します（注意：ローカルテーブルを作成せずにTSVデータをアドホックにクエリするために[URLテーブル関数](/sql-reference/table-functions/url.md)を使用しています）。クリックハウスクライアントでこのクエリを実行してください：
+上記の 3 つのカラムをキーカラムとして使用する複合プライマリキーのカーディナリティを計算するため、このクエリを使用します（注意: TSV データをローカルテーブルを作成することなく、即席でクエリするために [URL テーブル関数](/sql-reference/table-functions/url.md) を使用しています）。以下のクエリを `clickhouse client` で実行します:
 ```sql
 SELECT
     formatReadableQuantity(uniq(URL)) AS cardinality_URL,
@@ -1230,7 +1243,7 @@ FROM
     WHERE URL != ''
 )
 ```
-レスポンスは次のようになります：
+レスポンスは次のようになります:
 ```response
 ┌─cardinality_URL─┬─cardinality_UserID─┬─cardinality_IsRobot─┐
 │ 2.39 million    │ 119.08 thousand    │ 4.00                │
@@ -1239,13 +1252,13 @@ FROM
 1 row in set. Elapsed: 118.334 sec. Processed 8.87 million rows, 15.88 GB (74.99 thousand rows/s., 134.21 MB/s.)
 ```
 
-カーディナリティに大きな違いがあることが確認でき、特に`URL`と`IsRobot`カラムの間では大きな違いがあるため、したがって、複合主キーにおけるこれらのカラムの順序は、クエリの効率的な高速化とテーブルのカラムデータファイルの最適な圧縮比を達成するために重要です。
+私たちは、`URL` と `IsRobot` カラムの間で特にカーディナリティに大きな違いがあることを確認できます。したがって、複合プライマリキーでこれらのカラムの順序は、これらのカラムのフィルタリングの効率を高め、テーブルのカラムデータファイルの最適な圧縮比を達成するために重要です。
 
-そのことを証明するために、ボットトラフィック分析データのために2つのテーブルバージョンを作成します。
-- キー列のカーディナリティを降順に並べる複合主キー`(URL, UserID, IsRobot)`を持つテーブル`hits_URL_UserID_IsRobot`
-- キー列のカーディナリティを昇順に並べる複合主キー`(IsRobot, UserID, URL)`を持つテーブル`hits_IsRobot_UserID_URL`
+このことを示すために、私たちはボットトラフィック分析データ用に 2 つのテーブルバージョンを作成します:
+- `(URL, UserID, IsRobot)` の複合プライマリキーを持つテーブル `hits_URL_UserID_IsRobot`
+- `(IsRobot, UserID, URL)` の複合プライマリキーを持つテーブル `hits_IsRobot_UserID_URL`
 
-複合主キー`(URL, UserID, IsRobot)`を持つテーブル`hits_URL_UserID_IsRobot`を作成します：
+`hits_URL_UserID_IsRobot` テーブルを `(URL, UserID, IsRobot)` の複合プライマリキーで作成します:
 ```sql
 CREATE TABLE hits_URL_UserID_IsRobot
 (
@@ -1254,11 +1267,11 @@ CREATE TABLE hits_URL_UserID_IsRobot
     `IsRobot` UInt8
 )
 ENGINE = MergeTree
-// highlight-next-line
+-- highlight-next-line
 PRIMARY KEY (URL, UserID, IsRobot);
 ```
 
-そして8.87百万行でそれを満たします：
+そして、8.87 百万行で埋め込みます:
 ```sql
 INSERT INTO hits_URL_UserID_IsRobot SELECT
     intHash32(c11::UInt64) AS UserID,
@@ -1267,12 +1280,12 @@ INSERT INTO hits_URL_UserID_IsRobot SELECT
 FROM url('https://datasets.clickhouse.com/hits/tsv/hits_v1.tsv.xz')
 WHERE URL != '';
 ```
-レスポンスは次のようになります：
+レスポンスは次のようになります:
 ```response
 0 rows in set. Elapsed: 104.729 sec. Processed 8.87 million rows, 15.88 GB (84.73 thousand rows/s., 151.64 MB/s.)
 ```
 
-次に、複合主キー`(IsRobot, UserID, URL)`を持つテーブル`hits_IsRobot_UserID_URL`を作成します：
+次に、`hits_IsRobot_UserID_URL` テーブルを `(IsRobot, UserID, URL)` の複合プライマリキーで作成します:
 ```sql
 CREATE TABLE hits_IsRobot_UserID_URL
 (
@@ -1281,11 +1294,10 @@ CREATE TABLE hits_IsRobot_UserID_URL
     `IsRobot` UInt8
 )
 ENGINE = MergeTree
-// highlight-next-line
+-- highlight-next-line
 PRIMARY KEY (IsRobot, UserID, URL);
 ```
-そして、先程のテーブルで使用したのと同じ8.87百万行を満たします：
-
+そして、前のテーブルを埋めるために使用したのと同じ 8.87 百万行で埋め込みます:
 ```sql
 INSERT INTO hits_IsRobot_UserID_URL SELECT
     intHash32(c11::UInt64) AS UserID,
@@ -1294,66 +1306,64 @@ INSERT INTO hits_IsRobot_UserID_URL SELECT
 FROM url('https://datasets.clickhouse.com/hits/tsv/hits_v1.tsv.xz')
 WHERE URL != '';
 ```
-レスポンスは次のようになります：
+レスポンスは次のようになります:
 ```response
 0 rows in set. Elapsed: 95.959 sec. Processed 8.87 million rows, 15.88 GB (92.48 thousand rows/s., 165.50 MB/s.)
 ```
-### セカンダリーキー列の効率的なフィルタリング {#efficient-filtering-on-secondary-key-columns}
 
-クエリが複合キーの一部である列でフィルタリングしている場合、その列が最初のキー列であれば、[ClickHouseはそのカラムのインデックスマークに整列検索を実行しています](#the-primary-index-is-used-for-selecting-granules)。
+### セカンダリキーカラムの効率的なフィルタリング {#efficient-filtering-on-secondary-key-columns}
 
-クエリがフィルタリングしているのが複合キーの一部のカラムであり、しかしそれが最初のキー列ではない場合、[ClickHouseはそのカラムのインデックスマークに対して一般的な除外検索アルゴリズムを使用しています](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient)。
+クエリが複合キーの一部であるカラムでフィルタリングし、かつそれが最初のキーカラムである場合、[ClickHouse はインデックスマークの上でバイナリ検索アルゴリズムを実行します](#the-primary-index-is-used-for-selecting-granules)。
 
-このクエリは、キー列を(`URL, UserID, IsRobot`)のカラム順序で持つテーブルの`UserID`列でフィルタリングしています：
+クエリが複合キーの一部であるカラムでのみフィルタリングしているが、それが最初のキーカラムでない場合、[ClickHouse はインデックスマークの上で一般的な排他検索アルゴリズムを使用します](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient)。
+
+第二のケースでは、複合プライマリキー内でのキーカラムの順序は、[一般的な排他検索アルゴリズム](https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1444)の効果に影響を与えます。
+
+これは、キーカラム `(URL, UserID, IsRobot)` の順序をカーディナリティに降順にしたテーブルの `UserID` カラムでフィルタリングしているクエリです:
 ```sql
 SELECT count(*)
 FROM hits_URL_UserID_IsRobot
 WHERE UserID = 112304
 ```
-レスポンスは次のようになります：
+レスポンスは次のようになります:
 ```response
 ┌─count()─┐
 │      73 │
 └─────────┘
 
 1 row in set. Elapsed: 0.026 sec.
-// highlight-next-line
+
+# highlight-next-line
 Processed 7.92 million rows,
 31.67 MB (306.90 million rows/s., 1.23 GB/s.)
 ```
 
-次は、カラムを(`IsRobot, UserID, URL`)のカラム順序で持つテーブルでの同じクエリです：
+次に、キーカラム `(IsRobot, UserID, URL)` の順序をカーディナリティに昇順にしたテーブルに対して同じクエリを実行します:
 ```sql
 SELECT count(*)
 FROM hits_IsRobot_UserID_URL
 WHERE UserID = 112304
 ```
-レスポンスは次のようになります：
+レスポンスは次のようになります:
 ```response
 ┌─count()─┐
 │      73 │
 └─────────┘
 
 1 row in set. Elapsed: 0.003 sec.
-// highlight-next-line
+
+# highlight-next-line
 Processed 20.32 thousand rows,
 81.28 KB (6.61 million rows/s., 26.44 MB/s.)
 ```
 
-キー列の順序をカーディナリティに応じて並べたテーブルでのクエリ実行が、はるかに効果的で速いことが確認できます。
+テーブルでのキーカラムの順序をカーディナリティに降順にした場合と比較して、迅速性が非常に大きく効果的であることがわかります。
 
-その理由は、[一般的な除外検索アルゴリズム](https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1444)は、前のキー列のカーディナリティが低い場合にセカンダリーキー列で選択されたグラニュールを最も効果的に処理するからです。これはこのガイドの[以前のセクション](#generic-exclusion-search-algorithm)で詳しく説明しました。
-```
-```yaml
-title: 'データファイルの最適な圧縮率'
-sidebar_label: 'データファイルの最適な圧縮率'
-keywords: 'ClickHouse, 圧縮率, データファイル, プライマリキー, クエリ'
-description: 'ClickHouseにおけるデータファイルの圧縮率についての解説。'
-```
+その理由は、[一般的な排他検索アルゴリズム](https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1444)が、前のキーカラムが低いカーディナリティである場合に、セカンダリキーカラムを介してグラニュールが選択されるとうまく機能するからです。このことについては、ガイドの[前のセクション](#generic-exclusion-search-algorithm)で詳しく説明しました。
 
-### データファイルの最適な圧縮率 {#optimal-compression-ratio-of-data-files}
+### データファイルの最適圧縮率 {#optimal-compression-ratio-of-data-files}
 
-このクエリは、上で作成した二つのテーブル間での`UserID`カラムの圧縮率を比較します：
+次のクエリは、上記で作成した 2 つのテーブルの `UserID` カラムの圧縮率を比較します:
 
 ```sql
 SELECT
@@ -1366,7 +1376,7 @@ FROM system.columns
 WHERE (table = 'hits_URL_UserID_IsRobot' OR table = 'hits_IsRobot_UserID_URL') AND (name = 'UserID')
 ORDER BY Ratio ASC
 ```
-これがレスポンスです：
+レスポンスは以下のようになります:
 ```response
 ┌─Table───────────────────┬─Column─┬─Uncompressed─┬─Compressed─┬─Ratio─┐
 │ hits_URL_UserID_IsRobot │ UserID │ 33.83 MiB    │ 11.24 MiB  │     3 │
@@ -1375,80 +1385,85 @@ ORDER BY Ratio ASC
 
 2 rows in set. Elapsed: 0.006 sec.
 ```
-`UserID`カラムの圧縮率は、キーのカラムを高次元の順に整列させたテーブルで著しく高いことがわかります。
 
-両方のテーブルには同じデータが保存されています（双方のテーブルに同じ8.87百万行を挿入しました）が、複合主キーでのキーのカラムの順序は、テーブルの[カラムデータファイル](#data-is-stored-on-disk-ordered-by-primary-key-columns)にある圧縮されたデータが必要とするディスクスペースに大きな影響を与えます：
-- 複合主キー`(URL, UserID, IsRobot)`のテーブル`hits_URL_UserID_IsRobot`では、キーのカラムを高次元に降順で整列させたため、`UserID.bin`データファイルは**11.24 MiB**のディスクスペースを必要とします
-- 複合主キー`(IsRobot, UserID, URL)`のテーブル`hits_IsRobot_UserID_URL`では、キーのカラムを高次元に昇順で整列させたため、`UserID.bin`データファイルはわずかに**877.47 KiB**のディスクスペースを必要とします
+`UserID` カラムの圧縮率は、カーディナリティに昇順にソートされたテーブルの方が非常に高いことがわかります。
 
-テーブルのカラムデータのディスク上で良好な圧縮率を持つことは、ディスクのスペースを節約するだけでなく、そのカラムからデータを読み取る必要があるクエリ（特に分析を必要とするもの）を速くします。なぜなら、カラムのデータをディスクから主記憶（オペレーティングシステムのファイルキャッシュ）に移動する際に必要な入出力が少なくて済むからです。
+両方のテーブルに正確に同じデータが保存されているにも関わらず（両方のテーブルに同じ 8.87 百万行を挿入しました）、複合プライマリキー内のキーカラムの順序は、テーブルの[カラムデータファイル](#data-is-stored-on-disk-ordered-by-primary-key-columns)内の圧縮データが必要とするディスクスペースの大きさに大きな影響を与えています:
+- 複合プライマリキーが `(URL, UserID, IsRobot)` でキーカラムの順序がカーディナリティに降順の場合、`UserID.bin` データファイルのディスクスペースは **11.24 MiB** です
+- 複合プライマリキーが `(IsRobot, UserID, URL)` でキーカラムの順序がカーディナリティに昇順の場合、`UserID.bin` データファイルのディスクスペースは **877.47 KiB** です
 
-以下に、テーブルのカラムの圧縮率を高めるために、主キーのカラムを高次元に昇順に整列させることが有益である理由を示します。
+ディスク上のテーブルのカラムに対して良好な圧縮率を持つことは、ディスクスペースを節約するだけでなく、当該カラムからのデータをメインメモリ（オペレーティングシステムのファイルキャッシュ）に移動するために必要な入出力が少なくなるため、（特に分析用の）クエリがより高速になります。
 
-下の図は、主キーが高次元に昇順で整列されている場合のディスク上の行の順序を示しています：
-<img src={sparsePrimaryIndexes14a} class="image"/>
+次のセクションで、テーブルのカラムに対する圧縮率を最適化するためにプライマリキーのカラムを昇順にソートすることがいかに有益であるかを説明します。
 
-私たちは、[テーブルの行データが主キーのカラムで整列されて保存されている](#data-is-stored-on-disk-ordered-by-primary-key-columns)ことを議論しました。
+以下の図は、カーディナリティによって昇順に並べられたプライマリキーの行がディスク上での順序を示しています:
 
-上の図では、テーブルの行（ディスク上のカラム値）が最初にその`cl`値で整列され、同じ`cl`値を持つ行はその`ch`値で整列されます。また、最初のキーカラム`cl`は低次元を持つため、同じ`cl`値を持つ行が存在する可能性が高いです。このため、`ch`値が（同じ`cl`値を持つ行に対して）ローカルで整列される可能性も高いです。
+<Image img={sparsePrimaryIndexes14a} size="md" alt="Sparse Primary Indices 14a" background="white"/>
 
-カラム内で、類似データが互いに近く配置されている場合（例えばソートによって）、そのデータはより良く圧縮されます。
-一般的に、圧縮アルゴリズムはデータのラン長と位置性の恩恵を受けます（多くのデータを見れば見るほど圧縮が良くなり、データが類似しているほど圧縮率が向上します）。
+私たちは、[テーブルの行データがプライマリキーのカラムに沿ってディスクに保存される](#data-is-stored-on-disk-ordered-by-primary-key-columns)ことを確認しました。
 
-上の図とは対照的に、下の図は、プライマリキーのカラムが高次元に降順で配置されている場合のディスク上の行の順序を示しています：
-<img src={sparsePrimaryIndexes14b} class="image"/>
+上記の図では、テーブルの行（そのカラム値がディスク上）はまずその `cl` 値によってオーダーされ、同じ `cl` 値を持つ行はその `ch` 値によってオーダーされます。そして、最初のキーカラム `cl` が低いカーディナリティであるため、同じ `cl` 値を持つ行がある可能性が高く、これにより `ch` 値がローカルでオーダーされる可能性が高いのです。
 
-ここでテーブルの行は最初にその`ch`値で整列され、同じ`ch`値を持つ行はその`cl`値で整列されます。
-しかし、最初のキーカラム`ch`は高次元を持つため、同じ`ch`値を持つ行が存在する可能性は低くなります。このため、`cl`値が（同じ`ch`値を持つ行に対して）ローカルで整列される可能性も低くなります。
+もしデータが似たようなものだと近くに配置されている場合（例えば、ソートによって）、そのデータはよりよく圧縮されます。
+一般的に、圧縮アルゴリズムは、データのランレングスが多いほど（データが多ければ多いほど圧縮にとって良いことです）および局所性（データが似たようなものであるほど圧縮率が良いことです）に利益を得ます。
 
-よって、`cl`値はほとんどランダムな順序であり、したがって、ローカル性と圧縮率が良くありません。
+上記の図と対照的に、下記の図は、カーディナリティに降順で順序付けられたプライマリキーのディスク上での行を示しています:
 
-### まとめ {#summary-1}
+<Image img={sparsePrimaryIndexes14b} size="md" alt="Sparse Primary Indices 14b" background="white"/>
 
-クエリでのセカンダリキーのカラムに対する効率的なフィルタリングとテーブルのカラムデータファイルの圧縮率の両方において、プライマリキーのカラムを高次元に昇順で整列させることは有益です。
+ここでは、テーブルの行はまずその `ch` 値によってオーダーされ、同じ `ch` 値を持つ行はその `cl` 値によってオーダーされます。
+しかし、最初のキーカラム `ch` が高いカーディナリティであるため、同じ `ch` 値を持つ行が存在する可能性は低く、これにより `cl` 値がローカルでオーダーされる可能性も低くなります。
+
+したがって、`cl` 値は最も可能性としてランダムな順序にあり、したがって局所性や圧縮率が悪くなります。
+
+### Summary {#summary-1}
+
+クエリにおけるセカンダリキーカラムの効率的フィルタリングとテーブルのカラムデータファイルの圧縮率の両方に対して、プライマリキー内のカラムの順序をカーディナリティに沿って昇順に並べることが有益です。
 
 ### 関連コンテンツ {#related-content-1}
-- ブログ: [ClickHouseのクエリを強化する](https://clickhouse.com/blog/clickhouse-faster-queries-with-projections-and-primary-indexes)
-## 単一行を効率的に特定する {#identifying-single-rows-efficiently}
+- ブログ: [ClickHouse のクエリをスーパーチャージする](https://clickhouse.com/blog/clickhouse-faster-queries-with-projections-and-primary-indexes)
 
-一般的には[最良の](https://knowledgebase/key-value)ユースケースではありませんが、ClickHouseの上に構築されたアプリケーションでは、ClickHouseテーブルの単一行を特定する必要があります。
+## 単一行の特定を効率的に行う {#identifying-single-rows-efficiently}
 
-その直感的な解決策は、各行にユニークな値を持つ[UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier)カラムを使用し、行の高速な取得にそのカラムをプライマリキーとして使用することです。
+一般的に、ClickHouse にとっての最良の使用ケースではありませんが、時々 ClickHouse 上に構築されたアプリケーションは、ClickHouse テーブルの単一行を特定する必要があります。
 
-最速の取得のためには、UUIDカラム[が最初のキーカラムである必要があります](#the-primary-index-is-used-for-selecting-granules)。
+その直感的な解決策は、各行にユニークな値を持つ [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) カラムを使用し、そのカラムをプライマリキーとして使用して行を迅速に取得することです。
 
-私たちは、[ClickHouseテーブルの行データがディスク上で主キーのカラムで整列されて保存されている](#data-is-stored-on-disk-ordered-by-primary-key-columns)ため、非常に高次元のカラム（UUIDカラムのような）をプライマリキーまたは複合プライマリキー内の低次元のカラムの前に置くことは、他のテーブルのカラムの圧縮率にとって有害であることを議論しました。
+最も迅速に取得するためには、UUID カラムは[最初のキーカラムである必要があります](#the-primary-index-is-used-for-selecting-granules)。
 
-最速の取得と最適なデータ圧縮の妥協点は、UUIDを最後のキーカラムとして持つ複合プライマリキーを使用し、テーブルのいくつかのカラムの良好な圧縮率を確保するために低次元のキーカラムを使用することです。
+私たちは[ClickHouse テーブルの行データがディスクに保存され、プライマリキーのカラムによって並べられている](#data-is-stored-on-disk-ordered-by-primary-key-columns)ため、非常に高いカーディナリティのカラム（UUID カラムのような）をプライマリキーまたは複合プライマリキー内の低いカーディナリティのカラムの前に置くことは、テーブルの他のカラムの圧縮率に悪影響を及ぼします。
 
-### 具体例 {#a-concrete-example}
+最も迅速に取得することと、データ圧縮を最適化することとの妥協案は、複合プライマリキーを使用し、UUIDを最後のキーカラム、低（または）カーディナリティのキーカラムの後に配置することです。
+### A concrete example {#a-concrete-example}
 
-具体的な例の一つは、Alexey Milovidovが開発し[ブログに書いた](https://clickhouse.com/blog/building-a-paste-service-with-clickhouse/)プレーンテキストのペーストサービスであるhttps://pastila.nlです。
+一つの具体例は、Alexey Milovidov が開発し、[ブログに書いた](https://clickhouse.com/blog/building-a-paste-service-with-clickhouse/)プレーンテキストペーストサービス [https://pastila.nl](https://pastila.nl) です。
 
-テキストエリアで変更があるたびに、データは自動的にClickHouseテーブルの行に保存されます（変更ごとに一行）。
+テキストエリアの変更があるたびに、データは自動的に ClickHouse テーブルの行に保存されます（変更ごとに一行）。
 
-ペーストされたコンテンツの（特定のバージョンを）特定し、取得する一つの方法は、そのコンテンツのハッシュをテーブル行のUUIDとして使用することです。
+ペーストされたコンテンツの（特定のバージョンの）識別と取得の方法の一つは、コンテンツのハッシュをそのコンテンツを含むテーブル行の UUID として使用することです。
 
-以下の図は、変更があるときの行の挿入順序（例えばテキストをテキストエリアにタイプする際のキーストロークによる）と、`PRIMARY KEY (hash)`が使用された場合の挿入された行からのデータのディスク上の順序を示しています：
-<img src={sparsePrimaryIndexes15a} class="image"/>
+以下の図は
+- コンテンツが変更されるときの行の挿入順（例えば、テキストエリアにテキストを入力するキーストロークによる）と
+- `PRIMARY KEY (hash)` が使用される場合の挿入された行からのデータのディスク上の順序を示しています：
 
-`hash`カラムがプライマリキーとして使用されているため、
-- 特定の行は[非常に速く](#the-primary-index-is-used-for-selecting-granules)取得でき、しかし
-- テーブルの行（そのカラムデータ）は、（ユニークでランダムな）ハッシュ値によって昇順でディスクに保存されます。したがって、コンテンツカラムの値もランダム順序で保存され、データのローカリティが結果的に**コンテンツカラムのデータファイルの圧縮率を最適でないものに**しています。
+<Image img={sparsePrimaryIndexes15a} size="md" alt="Sparse Primary Indices 15a" background="white"/>
 
-特定の行の取得を迅速に行いながら、コンテンツカラムの圧縮率を大幅に改善するために、pastila.nlは二つのハッシュ（および複合プライマリキー）を使用して特定の行を特定しています：
-- 前述のように、異なるデータに対して一意であるコンテンツのハッシュ、及び
-- 小さなデータの変更の際には**変化しない**[局所感応ハッシュ（フィンガープリント）](https://en.wikipedia.org/wiki/Locality-sensitive_hashing)。
+`hash` カラムが主キー列として使用されるため
+- 特定の行を [非常に速く](#the-primary-index-is-used-for-selecting-granules) 取得できますが、
+- テーブルの行（そのカラムデータ）はディスク上に（ユニークでランダムな）ハッシュ値によって昇順に保存されます。したがって、コンテンツカラムの値もランダム順で保存され、データの局所性がないため、**コンテンツカラムデータファイルの最適でない圧縮比**をもたらします。
 
-以下の図は、
-- コンテンツが変わる際の行の挿入順序（例えばテキストエリアにテキストをタイプする際のキーストロークによる）と
-- 複合`PRIMARY KEY (fingerprint, hash)`が使用された場合の挿入された行からのデータのディスク上の順序を示しています：
+コンテンツカラムの圧縮比を大幅に改善しつつ、特定の行の迅速な取得を実現するために、pastila.nl は特定の行を識別するために二つのハッシュ（および複合主キー）を使用しています：
+- 上述の通り、異なるデータに対して異なるハッシュであるコンテンツのハッシュと、
+- 小さなデータの変更で**変わらない** [局所感度ハッシュ（フィンガープリント）](https://en.wikipedia.org/wiki/Locality-sensitive_hashing) です。
 
-<img src={sparsePrimaryIndexes15b} class="image"/>
+以下の図は
+- コンテンツが変更されるときの行の挿入順（例えば、テキストエリアにテキストを入力するキーストロークによる）と
+- 複合 `PRIMARY KEY (fingerprint, hash)` が使用される場合の挿入された行からのデータのディスク上の順序を示しています：
 
-現在、ディスク上の行はまず`fingerprint`によって整列され、同じフィンガープリント値を持つ行に対してはその`hash`値が最終的な順序を決定します。
+<Image img={sparsePrimaryIndexes15b} size="md" alt="Sparse Primary Indices 15b" background="white"/>
 
-わずかに変更されたデータが同じフィンガープリント値を受け取るため、類似データがディスク上で互いに近くに保存され、これはコンテンツカラムの圧縮率にとって非常に良いことです。一般的に圧縮アルゴリズムはデータのローカリティから恩恵を受けます（データが類似しているほど圧縮率が良くなります）。
+今やディスク上の行はまず `fingerprint` によって順序付けられ、同じフィンガープリント値を持つ行においては、その `hash` 値が最終的な順序を決定します。
 
-妥協点は、複合`PRIMARY KEY (fingerprint, hash)`から得られるプライマリインデックスを最適に利用するためには、特定の行を取得するために二つのフィールド（`fingerprint`と`hash`）が必要であることです。
-```
+データが小さな変更のみで異なる場合でも同じフィンガープリント値が付与されるため、今や似たデータはコンテンツカラム上で近くに保存されます。これは、圧縮アルゴリズムが一般的にデータの局所性から恩恵を受けるため、コンテンツカラムの圧縮比を非常に良くします（データがより似ているほど、圧縮比は良くなります）。
+
+妥協点は、複合 `PRIMARY KEY (fingerprint, hash)` から得られる主インデックスを最適に利用するために特定の行を取得するには二つのフィールド（`fingerprint` と `hash`）が必要であることです。

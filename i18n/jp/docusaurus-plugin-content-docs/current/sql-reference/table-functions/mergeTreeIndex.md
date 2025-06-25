@@ -1,35 +1,42 @@
 ---
-slug: /sql-reference/table-functions/mergeTreeIndex
-sidebar_position: 77
-sidebar_label: mergeTreeIndex
-title: "mergeTreeIndex"
-description: "Represents the contents of index and marks files of MergeTree tables. It can be used for introspection."
+'description': 'Represents the contents of index and marks files of MergeTree tables.
+  It can be used for introspection.'
+'sidebar_label': 'mergeTreeIndex'
+'sidebar_position': 77
+'slug': '/sql-reference/table-functions/mergeTreeIndex'
+'title': 'mergeTreeIndex'
 ---
+
+
 
 
 # mergeTreeIndex テーブル関数
 
-MergeTree テーブルのインデックスおよびマークファイルの内容を表します。これは内部検証に使用できます。
+MergeTree テーブルのインデックスとマークファイルの内容を表します。これは内部確認に使用できます。
 
-``` sql
+## 構文 {#syntax}
+
+```sql
 mergeTreeIndex(database, table, [with_marks = true])
 ```
 
-**引数**
+## 引数 {#arguments}
 
-- `database` - インデックスおよびマークを読み取るデータベース名。
-- `table` - インデックスおよびマークを読み取るテーブル名。
-- `with_marks` - 結果にマークを持つカラムを含めるかどうか。
+| 引数         | 説明                                           |
+|--------------|------------------------------------------------|
+| `database`   | インデックスとマークを読み込むデータベース名。   |
+| `table`      | インデックスとマークを読み込むテーブル名。      |
+| `with_marks` | 結果にマーク付きカラムを含めるかどうか。        |
 
-**返される値**
+## 戻り値 {#returned_value}
 
-ソーステーブルの主キーの値を持つカラム、すべてのデータパーツ内の可能なファイルのマークの値を持つカラム（有効な場合）および仮想カラムを含むテーブルオブジェクト：
+ソーステーブルの主キーの値を持つカラム、すべてのデータパーツに対するマークの値を持つカラム（有効な場合）、および仮想カラムを持つテーブルオブジェクト：
 
 - `part_name` - データパートの名前。
 - `mark_number` - データパート内の現在のマークの番号。
 - `rows_in_granule` - 現在のグラニュール内の行数。
 
-マークカラムは、データパート内にカラムが存在しない場合や、そのサブストリームのいずれかのマークが書き込まれていない場合（例：コンパクトパーツの場合）に `(NULL, NULL)` 値を含むことがあります。
+マークのカラムは、データパートにカラムが存在しない場合や、そのサブストリームのいずれかのマークが書き込まれていない場合（例：コンパクトパーツ）に `(NULL, NULL)` 値を含むことがあります。
 
 ## 使用例 {#usage-example}
 
@@ -83,4 +90,4 @@ DESCRIBE mergeTreeIndex(currentDatabase(), test_table, with_marks = true) SETTIN
 │ arr.size0.mark  │ Tuple(offset_in_compressed_file Nullable(UInt64), offset_in_decompressed_block Nullable(UInt64)) │
 │ arr.mark        │ Tuple(offset_in_compressed_file Nullable(UInt64), offset_in_decompressed_block Nullable(UInt64)) │
 └─────────────────┴──────────────────────────────────────────────────────────────────────────────────────────────────┘
-```
+

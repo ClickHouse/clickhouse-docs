@@ -3,7 +3,8 @@ title: 'Date and time data types - Time-series'
 sidebar_label: 'Date and time data types'
 description: 'Time-series data types in ClickHouse.'
 slug: /use-cases/time-series/date-time-data-types
-keywords: ['time-series']
+keywords: ['Time Series', 'DateTime']
+show_related_blogs: true
 ---
 
 # Date and time data types
@@ -14,13 +15,13 @@ From compact date representations to high-precision timestamps with nanosecond a
 Whether you're working with historical financial data, IoT sensor readings, or future-dated events, ClickHouse's date and time types provide the flexibility needed to handle various temporal data scenarios. 
 The range of supported types allows you to optimize both storage space and query performance while maintaining the precision your use case demands.
 
-* The [`Date`](/docs/sql-reference/data-types/date) type should be sufficient in most cases. This type requires 2 bytes to store a date and limits the range to `[1970-01-01, 2149-06-06]`. 
+* The [`Date`](/sql-reference/data-types/date) type should be sufficient in most cases. This type requires 2 bytes to store a date and limits the range to `[1970-01-01, 2149-06-06]`. 
 
-* [`Date32`](/docs/sql-reference/data-types/date32) covers a wider range of dates. It requires 4 bytes to store a date and limits the range to `[1900-01-01, 2299-12-31]`
+* [`Date32`](/sql-reference/data-types/date32) covers a wider range of dates. It requires 4 bytes to store a date and limits the range to `[1900-01-01, 2299-12-31]`
 
-* [`DateTime`](/docs/sql-reference/data-types/datetime) stores date time values with second precision and a range of `[1970-01-01 00:00:00, 2106-02-07 06:28:15]` It requires 4 bytes per value.
+* [`DateTime`](/sql-reference/data-types/datetime) stores date time values with second precision and a range of `[1970-01-01 00:00:00, 2106-02-07 06:28:15]` It requires 4 bytes per value.
 
-* For cases where more precision is required, [`DateTime64`](/docs/sql-reference/data-types/datetime64) can be used. This allows storing time with up to nanoseconds precision, with a range of `[1900-01-01 00:00:00, 2299-12-31 23:59:59.99999999]`. It requires 8 bytes per value.
+* For cases where more precision is required, [`DateTime64`](/sql-reference/data-types/datetime64) can be used. This allows storing time with up to nanoseconds precision, with a range of `[1900-01-01 00:00:00, 2299-12-31 23:59:59.99999999]`. It requires 8 bytes per value.
 
 Let's create a table that stores various date types:
 
@@ -38,7 +39,7 @@ ENGINE = MergeTree
 ORDER BY tuple();
 ```
 
-We can use the [`now()`](/docs/sql-reference/functions/date-time-functions#now) function to return the current time and [`now64()`](/docs/sql-reference/functions/date-time-functions#now64) to get it in a specified precision via the first argument.
+We can use the [`now()`](/sql-reference/functions/date-time-functions#now) function to return the current time and [`now64()`](/sql-reference/functions/date-time-functions#now64) to get it in a specified precision via the first argument.
 
 ```sql
 INSERT INTO dates 
@@ -138,7 +139,7 @@ As in the first row, `dt_1` and `dt_3` are converted to `Europe/Berlin`, while `
 
 ClickHouse also comes with a set of functions that let us convert between the different data types.
 
-For example, we can use [`toDate`](/docs/sql-reference/functions/type-conversion-functions#todate) to convert a `DateTime` value to the `Date` type:
+For example, we can use [`toDate`](/sql-reference/functions/type-conversion-functions#todate) to convert a `DateTime` value to the `Date` type:
 
 ```sql
 SELECT
@@ -158,7 +159,7 @@ date_only:                2025-03-12
 toTypeName(date_only):    Date
 ```
 
-We can use [`toDateTime64`](/docs/sql-reference/functions/type-conversion-functions#todatetime64) to convert `DateTime` to `DateTime64`:
+We can use [`toDateTime64`](/sql-reference/functions/type-conversion-functions#todatetime64) to convert `DateTime` to `DateTime64`:
 
 ```sql
 SELECT
@@ -178,7 +179,7 @@ date_only:                2025-03-12 12:35:01.000
 toTypeName(date_only):    DateTime64(3)
 ```
 
-And we can use [`toDateTime`](/docs/sql-reference/functions/type-conversion-functions#todatetime) to go from `Date` or `DateTime64` back to `DateTime`:
+And we can use [`toDateTime`](/sql-reference/functions/type-conversion-functions#todatetime) to go from `Date` or `DateTime64` back to `DateTime`:
 
 ```sql
 SELECT

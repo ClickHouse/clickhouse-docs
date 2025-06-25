@@ -1,14 +1,15 @@
 ---
-slug: /sql-reference/statements/exchange
-sidebar_position: 49
-sidebar_label: EXCHANGE
+'description': 'EXCHANGE 语句的文档'
+'sidebar_label': 'EXCHANGE'
+'sidebar_position': 49
+'slug': '/sql-reference/statements/exchange'
+'title': 'EXCHANGE 语句'
 ---
 
 
 # EXCHANGE 语句
 
-原子性地交换两个表或字典的名称。  
-这个任务也可以通过使用临时名称的 [RENAME](./rename.md) 查询来完成，但在这种情况下，操作不是原子性的。
+**EXCHANGE** 语句原子地交换两个表或字典的名称。 这个任务也可以通过一个使用临时名称的 [RENAME](./rename.md) 查询来完成，但在这种情况下，该操作不是原子的。
 
 :::note    
 `EXCHANGE` 查询仅由 [Atomic](../../engines/database-engines/atomic.md) 数据库引擎支持。

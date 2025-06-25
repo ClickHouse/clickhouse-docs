@@ -5,11 +5,13 @@ title: 'Pricing'
 description: 'Overview page for ClickHouse Cloud pricing'
 ---
 
+import ClickPipesFAQ from './jan2025_faq/_snippets/_clickpipes_faq.md'
+
 For pricing information, see the [ClickHouse Cloud Pricing](https://clickhouse.com/pricing#pricing-calculator) page.
 ClickHouse Cloud bills based on the usage of compute, storage, [data transfer](/cloud/manage/network-data-transfer) (egress over the internet and cross-region), and [ClickPipes](/integrations/clickpipes). 
 To understand what can affect your bill, and ways that you can manage your spend, keep reading.
 
-## Amazon Web Services (AWS) Example {#amazon-web-services-aws-example}
+## Amazon Web Services (AWS) example {#amazon-web-services-aws-example}
 
 :::note
 - Prices reflect AWS us-east-1 pricing.
@@ -70,7 +72,7 @@ Pricing breakdown for this example:
 </tbody>
 </table>
 
-### Scale (Always-on, Auto-scaling): From $499.38 per month {#scale-always-on-auto-scaling-from-49938-per-month}
+### Scale (always-on, auto-scaling): from $499.38 per month {#scale-always-on-auto-scaling-from-49938-per-month}
 
 Best for: workloads requiring enhanced SLAs (2+ replica services), scalability, and advanced security.
 
@@ -98,9 +100,9 @@ Pricing breakdown for this example:
   </tr>
   <tr>
     <td>Storage</td>
-    <td>1TB of data + 1 backup<br></br>\$50.60</td>
-    <td>2TB of data + 1 backup<br></br>\$101.20</td>
-    <td>3TB of data + 1 backup<br></br>\$151.80</td>
+    <td>1 TB of data + 1 backup<br></br>\$50.60</td>
+    <td>2 TB of data + 1 backup<br></br>\$101.20</td>
+    <td>3 TB of data + 1 backup<br></br>\$151.80</td>
   </tr>
   <tr>
     <td>Public internet egress data transfer</td>
@@ -148,9 +150,9 @@ Best for: large scale, mission critical deployments that have stringent security
   </tr>
   <tr>
     <td>Storage</td>
-    <td>5TB + 1 backup<br></br>\$253.00</td>
-    <td>10TB + 1 backup<br></br>\$506.00</td>
-    <td>20TB + 1 backup<br></br>\$1,012.00</td>
+    <td>5 TB + 1 backup<br></br>\$253.00</td>
+    <td>10 TB + 1 backup<br></br>\$506.00</td>
+    <td>20 TB + 1 backup<br></br>\$1,012.00</td>
   </tr>
   <tr>
     <td>Public internet egress data transfer</td>
@@ -173,7 +175,7 @@ Best for: large scale, mission critical deployments that have stringent security
 </tbody>
 </table>
 
-## FAQs {#faqs}
+## Frequently Asked Questions {#faqs}
 
 ### How is compute metered? {#how-is-compute-metered}
 
@@ -193,8 +195,8 @@ Users who need additional backups can do so by configuring additional [backups](
 
 ### How do I estimate compression? {#how-do-i-estimate-compression}
 
-Compression can vary quite a bit by dataset. 
-It is dependent on how compressible the data is in the first place (number of high vs. low cardinality fields), 
+Compression can vary from dataset to dataset. 
+How much it varies is dependent on how compressible the data is in the first place (number of high vs. low cardinality fields), 
 and how the user sets up the schema (using optional codecs or not, for instance). 
 It can be on the order of 10x for common types of analytical data, but it can be significantly lower or higher as well. 
 See the [optimizing documentation](/optimize/asynchronous-inserts) for guidance and this [Uber blog](https://www.uber.com/blog/logging/) for a detailed logging use case example. 
@@ -227,7 +229,7 @@ Billing follows a monthly billing cycle and the start date is tracked as the dat
 
 ### What controls does ClickHouse Cloud offer to manage costs for Scale and Enterprise services? {#what-controls-does-clickhouse-cloud-offer-to-manage-costs-for-scale-and-enterprise-services}
 
-- Trial and Annual Commit customers will be notified automatically by email when their consumption hits certain thresholds: `50%`, `75%`, and `90%`. This allows users to proactively manage their usage.
+- Trial and Annual Commit customers are notified automatically by email when their consumption hits certain thresholds: `50%`, `75%`, and `90%`. This allows users to proactively manage their usage.
 - ClickHouse Cloud allows users to set a maximum auto-scaling limit on their compute via [Advanced scaling control](/manage/scaling), a significant cost factor for analytical workloads.
 - The [Advanced scaling control](/manage/scaling) lets you set memory limits with an option to control the behavior of pausing/idling during inactivity.
 
@@ -251,13 +253,13 @@ The ClickHouse Cloud console provides a Usage display that details usage per ser
 
 ### How do I access my invoice for my marketplace subscription to the ClickHouse Cloud service? {#how-do-i-access-my-invoice-for-my-marketplace-subscription-to-the-clickhouse-cloud-service}
 
-All marketplace subscriptions will be billed and invoiced by the marketplace. You can view your invoice through the respective cloud provider marketplace directly.
+All marketplace subscriptions are billed and invoiced by the marketplace. You can view your invoice through the respective cloud provider marketplace directly.
 
 ### Why do the dates on the Usage statements not match my Marketplace Invoice? {#why-do-the-dates-on-the-usage-statements-not-match-my-marketplace-invoice}
 
 AWS Marketplace billing follows the calendar month cycle.
 For example, for usage between dates 01-Dec-2024 and 01-Jan-2025, 
-an invoice will be generated between 3-Jan and 5-Jan-2025
+an invoice is generated between 3-Jan and 5-Jan-2025
 
 ClickHouse Cloud usage statements follow a different billing cycle where usage is metered 
 and reported over 30 days starting from the day of sign up.
@@ -352,37 +354,133 @@ Cost estimation (per month) for this example on the **Scale Tier**:
 Without warehouses, you would have to pay for the amount of memory that the data engineer needs for his queries. 
 However, combining two services in a warehouse and idling one of them helps you save money.
 
-## ClickPipes Pricing {#clickpipes-pricing}
+## ClickPipes pricing {#clickpipes-pricing}
 
-### What does the ClickPipes pricing structure look like? {#what-does-the-clickpipes-pricing-structure-look-like}
+### ClickPipes for Postgres CDC {#clickpipes-for-postgres-cdc}
+
+This section outlines the pricing model for our Postgres Change Data Capture (CDC)
+connector in ClickPipes. In designing this model, our goal was to keep pricing
+highly competitive while staying true to our core vision:
+
+> Making it seamless and
+affordable for customers to move data from Postgres to ClickHouse for
+real-time analytics.
+
+The connector is over **5x more cost-effective** than external
+ETL tools and similar features in other database platforms.
+
+:::note
+Pricing will start being metered in monthly bills beginning **September 1st, 2025,**
+for all customers (both existing and new) using Postgres CDC ClickPipes. Until
+then, usage is free. Customers have a 3-month window starting May 29 (GA announcement)
+to review and optimize their costs if needed, although we expect most will not need
+to make any changes.
+:::
+
+#### Pricing dimensions {#pricing-dimensions}
+
+There are two main dimensions to pricing:
+
+1. **Ingested Data**: The raw, uncompressed bytes coming from Postgres and
+   ingested into ClickHouse.
+2. **Compute**: The compute units provisioned per service manage multiple
+   Postgres CDC ClickPipes and are separate from the compute units used by the
+   ClickHouse Cloud service. This additional compute is dedicated specifically
+   to Postgres CDC ClickPipes. Compute is billed at the service level, not per
+   individual pipe. Each compute unit includes 2 vCPUs and 8 GB of RAM.
+
+#### Ingested data {#ingested-data}
+
+The Postgres CDC connector operates in two main phases:
+
+- **Initial load / resync**: This captures a full snapshot of Postgres tables
+  and occurs when a pipe is first created or re-synced.
+- **Continuous Replication (CDC)**: Ongoing replication of changes—such as inserts,
+  updates, deletes, and schema changes—from Postgres to ClickHouse.
+
+In most use cases, continuous replication accounts for over 90% of a ClickPipe
+life cycle. Because initial loads involve transferring a large volume of data all
+at once, we offer a lower rate for that phase.
+
+| Phase                            | Cost         |
+|----------------------------------|--------------|
+| **Initial load / resync**        | $0.10 per GB |
+| **Continuous Replication (CDC)** | $0.20 per GB |
+
+#### Compute {#compute}
+
+This dimension covers the compute units provisioned per service just for Postgres
+ClickPipes. Compute is shared across all Postgres pipes within a service. **It
+is provisioned when the first Postgres pipe is created and deallocated when no
+Postgres CDC pipes remain**. The amount of compute provisioned depends on your
+organization's tier:
+
+| Tier                         | Cost                                          |
+|------------------------------|-----------------------------------------------|
+| **Basic Tier**               | 0.5 compute unit per service — $0.10 per hour |
+| **Scale or Enterprise Tier** | 1 compute unit per service — $0.20 per hour   |
+
+#### Example {#example}
+
+Let's say your service is in Scale tier and has the following setup:
+
+- 2 Postgres ClickPipes running continuous replication
+- Each pipe ingests 500 GB of data changes (CDC) per month
+- When the first pipe is kicked off, the service provisions **1 compute unit under the Scale Tier** for Postgres CDC
+
+##### Monthly cost breakdown {#cost-breakdown}
+
+**Ingested Data (CDC)**: 
+
+$$ 2 \text{ pipes} \times 500 \text{ GB} = 1,000 \text{ GB per month} $$ 
+
+$$ 1,000 \text{ GB} \times \$0.20/\text{GB} = \$200 $$
+
+**Compute**: 
+
+$$1 \text{ compute unit} \times \$0.20/\text{hr} \times 730 \text{ hours (approximate month)} = \$146$$
+
+:::note
+Compute is shared across both pipes
+:::
+
+**Total Monthly Cost**: 
+
+$$\$200 \text{ (ingest)} + \$146 \text{ (compute)} = \$346$$
+ 
+### ClickPipes for streaming and object storage {#clickpipes-for-streaming-object-storage}
+
+This section outlines the pricing model of ClickPipes for streaming and object storage.
+
+#### What does the ClickPipes pricing structure look like? {#what-does-the-clickpipes-pricing-structure-look-like}
 
 It consists of two dimensions
 
 - **Compute**: Price per unit per hour
-    Compute represents the cost of running the ClickPipes replica pods whether they actively ingest data or not. 
-    It applies to all ClickPipes types.
+  Compute represents the cost of running the ClickPipes replica pods whether they actively ingest data or not.
+  It applies to all ClickPipes types.
 - **Ingested data**: per GB pricing
-    The ingested data rate applies to all streaming ClickPipes 
-    (Kafka, Confluent, Amazon MSK, Amazon Kinesis, Redpanda, WarpStream, Azure Event Hubs) 
-    for the data transferred via the replica pods. The ingested data size (GB) is charged based on bytes received from the source (uncompressed or compressed).
+  The ingested data rate applies to all streaming ClickPipes
+  (Kafka, Confluent, Amazon MSK, Amazon Kinesis, Redpanda, WarpStream, Azure Event Hubs)
+  for the data transferred via the replica pods. The ingested data size (GB) is charged based on bytes received from the source (uncompressed or compressed).
 
-### What are ClickPipes replicas? {#what-are-clickpipes-replicas}
+#### What are ClickPipes replicas? {#what-are-clickpipes-replicas}
 
-ClickPipes ingests data from remote data sources via a dedicated infrastructure 
-that runs and scales independently of the ClickHouse Cloud service. 
+ClickPipes ingests data from remote data sources via a dedicated infrastructure
+that runs and scales independently of the ClickHouse Cloud service.
 For this reason, it uses dedicated compute replicas.
 
-### What is the default number of replicas and their size? {#what-is-the-default-number-of-replicas-and-their-size}
+#### What is the default number of replicas and their size? {#what-is-the-default-number-of-replicas-and-their-size}
 
-Each ClickPipe defaults to 1 replica that is provided with 2 GiB of RAM and 0.5 vCPU. 
+Each ClickPipe defaults to 1 replica that is provided with 2 GiB of RAM and 0.5 vCPU.
 This corresponds to **0.25** ClickHouse compute units (1 unit = 8 GiB RAM, 2 vCPUs).
 
-### What are the ClickPipes public prices? {#what-are-the-clickpipes-public-prices}
+#### What are the ClickPipes public prices? {#what-are-the-clickpipes-public-prices}
 
 - Compute: \$0.20 per unit per hour (\$0.05 per replica per hour)
 - Ingested data: \$0.04 per GB
 
-### How does it look in an illustrative example? {#how-does-it-look-in-an-illustrative-example}
+#### How does it look in an illustrative example? {#how-does-it-look-in-an-illustrative-example}
 
 The following examples assume a single replica unless explicitly mentioned.
 
@@ -409,6 +507,101 @@ The following examples assume a single replica unless explicitly mentioned.
 </tbody>
 </table>
 
-$^1$ _Only ClickPipes compute for orchestration, 
+$^1$ _Only ClickPipes compute for orchestration,
 effective data transfer is assumed by the underlying Clickhouse Service_
 
+## ClickPipes pricing FAQ {#clickpipes-pricing-faq}
+
+Below, you will find frequently asked questions about CDC ClickPipes and streaming
+and object-based storage ClickPipes. 
+
+### FAQ for Postgres CDC ClickPipes {#faq-postgres-cdc-clickpipe}
+
+<details>
+
+<summary>Is the ingested data measured in pricing based on compressed or uncompressed size?</summary>
+
+The ingested data is measured as _uncompressed data_ coming from Postgres—both 
+during the initial load and CDC (via the replication slot). Postgres does not 
+compress data during transit by default, and ClickPipe processes the raw, 
+uncompressed bytes.
+
+</details>
+
+<details>
+
+<summary>When will Postgres CDC pricing start appearing on my bills?</summary>
+
+Postgres CDC ClickPipes pricing begins appearing on monthly bills starting
+**September 1st, 2025**, for all customers—both existing and new. Until then, 
+usage is free. Customers have a **3-month window** starting from **May 29**
+(the GA announcement date) to review and optimize their usage if needed, although
+we expect most won't need to make any changes.
+
+</details>
+
+<details>
+
+<summary>Will I be charged if I pause my pipes?</summary>
+
+No data ingestion charges apply while a pipe is paused, since no data is moved. 
+However, compute charges still apply—either 0.5 or 1 compute unit—based on your 
+organization's tier. This is a fixed service-level cost and applies across all 
+pipes within that service.
+
+</details>
+
+<details>
+
+<summary>How can I estimate my pricing?</summary>
+
+The Overview page in ClickPipes provides metrics for both initial load/resync and
+CDC data volumes. You can estimate your Postgres CDC costs using these metrics 
+in conjunction with the ClickPipes pricing.
+
+</details>
+
+<details>
+
+<summary>Can I scale the compute allocated for Postgres CDC in my service?</summary>
+
+By default, compute scaling is not user-configurable. The provisioned resources 
+are optimized to handle most customer workloads optimally. If your use case 
+requires more or less compute, please open a support ticket so we can evaluate 
+your request.
+
+</details>
+
+<details>
+
+<summary>What is the pricing granularity?</summary>
+
+- **Compute**: Billed per hour. Partial hours are rounded up to the next hour.
+- **Ingested Data**: Measured and billed per gigabyte (GB) of uncompressed data.
+
+</details>
+
+<details>
+
+<summary>Can I use my ClickHouse Cloud credits for Postgres CDC via ClickPipes?</summary>
+
+Yes. ClickPipes pricing is part of the unified ClickHouse Cloud pricing. Any 
+platform credits you have will automatically apply to ClickPipes usage as well.
+
+</details>
+
+<details>
+
+<summary>How much additional cost should I expect from Postgres CDC ClickPipes in my existing monthly ClickHouse Cloud spend?</summary>
+
+The cost varies based on your use case, data volume, and organization tier. 
+That said, most existing customers see an increase of **0–15%** relative to their 
+existing monthly ClickHouse Cloud spend post trial. Actual costs may vary 
+depending on your workload—some workloads involve high data volumes with 
+lesser processing, while others require more processing with less data.
+
+</details>
+
+### FAQ for streaming and object storage ClickPipes {#faq-streaming-and-object-storage}
+
+<ClickPipesFAQ/>

@@ -1,12 +1,14 @@
 ---
-slug: /architecture/introduction
-sidebar_label: はじめに
-title: はじめに
-sidebar_position: 1
+'slug': '/architecture/introduction'
+'sidebar_label': '紹介'
+'title': '紹介'
+'sidebar_position': 1
+'description': 'ClickHouseのサポートおよびサービス機関から提供されたアドバイスに基づいて、展開の例を示すページ'
 ---
+
 import ReplicationShardingTerminology from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_replication-sharding-terminology.md';
 
-これらのデプロイメント例は、ClickHouse サポートおよびサービス組織からの ClickHouse ユーザーへのアドバイスに基づいています。これらは実際に機能する例であり、試してみてから自分のニーズに合わせて調整することをお勧めします。ここにあなたの要件に正確に合った例が見つかるかもしれません。あるいは、データが2回ではなく3回レプリケートされる必要がある場合は、ここで示されているパターンに従うことで、もう1つのレプリカを追加できるはずです。
+これらのデプロイメントの例は、ClickHouseサポートおよびサービス組織がClickHouseユーザーに提供したアドバイスに基づいています。これらは動作する例であり、試してみてからニーズに合わせて調整することをお勧めします。こちらに、あなたの要件にぴったり合う例を見つけられるかもしれません。Alternatively, もしデータを2回ではなく3回レプリケートする必要がある場合は、ここで示されたパターンに従うことで、別のレプリカを追加できるはずです。
 
 <ReplicationShardingTerminology />
 
@@ -14,9 +16,9 @@ import ReplicationShardingTerminology from '@site/i18n/jp/docusaurus-plugin-cont
 
 ### 基本 {#basic}
 
-- [**スケールアウト**](/deployment-guides/horizontal-scaling.md) の例では、データを2つのノードにシャードし、分散テーブルを使用する方法が示されています。これにより、2つの ClickHouse ノードにデータが格納されます。また、2つの ClickHouse ノードは ClickHouse Keeper を実行して分散同期を提供しています。3つ目のノードは ClickHouse Keeper をスタンドアロンで実行し、ClickHouse Keeper の過半数を完成させます。
+- [**スケーリングアウト**](/deployment-guides/horizontal-scaling.md) の例は、データを2つのノードにシャードし、分散テーブルを使用する方法を示しています。これにより、2つのClickHouseノード上にデータが存在することになります。2つのClickHouseノードは、分散同期を提供するClickHouse Keeperも実行しています。また、3番目のノードは、ClickHouse Keeperのクオラムを完成させるためにスタンドアロンの状態でClickHouse Keeperを実行しています。
 
-- [**フォールトトレランスのためのレプリケーション**](/deployment-guides/replicated.md) の例では、データを2つのノードにレプリケートし、ReplicatedMergeTree テーブルを使用する方法が示されています。これにより、2つの ClickHouse ノードにデータが存在します。2つの ClickHouse サーバーノードに加えて、レプリケーションを管理するために3つの ClickHouse Keeper スタンドアロンノードがあります。
+- [**フォールトトレランスのためのレプリケーション**](/deployment-guides/replicated.md) の例は、データを2つのノードにレプリケートし、ReplicatedMergeTreeテーブルを使用する方法を示しています。これにより、2つのClickHouseノード上にデータが存在することになります。2つのClickHouseサーバーノードに加えて、レプリケーションを管理するための3つのスタンドアロンのClickHouse Keeperノードがあります。
 
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/vBjCJtw_Ei0"
@@ -32,8 +34,8 @@ import ReplicationShardingTerminology from '@site/i18n/jp/docusaurus-plugin-cont
 
 ### 中級 {#intermediate}
 
-- 近日中に公開予定
+- 近日公開予定
 
 ### 上級 {#advanced}
 
-- 近日中に公開予定
+- 近日公開予定

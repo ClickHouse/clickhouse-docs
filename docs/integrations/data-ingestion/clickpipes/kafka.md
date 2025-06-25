@@ -101,7 +101,7 @@ without an embedded schema id, then the specific schema ID or subject must be sp
 
 11. **Congratulations!** you have successfully set up your first ClickPipe. If this is a streaming ClickPipe it will be continuously running, ingesting data in real-time from your remote data source.
 
-## Supported Data Sources {#supported-data-sources}
+## Supported data sources {#supported-data-sources}
 
 | Name                 |Logo|Type| Status          | Description                                                                                          |
 |----------------------|----|----|-----------------|------------------------------------------------------------------------------------------------------|
@@ -114,16 +114,17 @@ without an embedded schema id, then the specific schema ID or subject must be sp
 
 More connectors are will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
-## Supported Data Formats {#supported-data-formats}
+## Supported data formats {#supported-data-formats}
 
 The supported formats are:
 - [JSON](../../../interfaces/formats.md/#json)
 - [AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent)
 
 
-### Supported Data Types {#supported-data-types}
+### Supported data types {#supported-data-types}
 
-The following ClickHouse data types are currently supported in ClickPipes:
+#### Standard types support {#standard-types-support}
+The following standard ClickHouse data types are currently supported in ClickPipes:
 
 - Base numeric types - \[U\]Int8/16/32/64 and Float32/64
 - Large integer types - \[U\]Int128/256
@@ -141,12 +142,34 @@ The following ClickHouse data types are currently supported in ClickPipes:
 - Map with keys and values using any of the above types (including Nullables)
 - Tuple and Array with elements using any of the above types (including Nullables, one level depth only)
 
+#### Variant type support (experimental) {#variant-type-support}
+Variant type support is automatic if your Cloud service is running ClickHouse 25.3 or later.  Otherwise, you will
+have to submit a support ticket to enable it on your service.
+
+ClickPipes supports the Variant type in the following circumstances:
+- Avro Unions.  If your Avro schema contains a union with multiple non-null types, ClickPipes will infer the
+appropriate variant type.  Variant types are not otherwise supported for Avro data.
+- JSON fields.  You can manually specify a Variant type (such as `Variant(String, Int64, DateTime)`) for any JSON field
+in the source data stream.  Because of the way ClickPipes determines the correct variant subtype to use, only one integer or datetime
+type can be used in the Variant definition - for example, `Variant(Int64, UInt32)` is not supported.
+
+#### JSON type support (experimental) {#json-type-support}
+JSON type support is automatic if your Cloud service is running ClickHouse 25.3 or later.  Otherwise, you will
+have to submit a support ticket to enable it on your service.
+
+ClickPipes support the JSON type in the following circumstances:
+- Avro Record types can always be assigned to a JSON column.
+- Avro String and Bytes types can be assigned to a JSON column if the column actually holds JSON String objects.
+- JSON fields that are always a JSON object can be assigned to a JSON destination column.
+
+Note that you will have to manually change the destination column to the desired JSON type, including any fixed or skipped paths.
+
 ### Avro {#avro}
 #### Supported Avro Data Types {#supported-avro-data-types}
 
 ClickPipes supports all Avro Primitive and Complex types, and all Avro Logical types except `time-millis`, `time-micros`, `local-timestamp-millis`, `local_timestamp-micros`, and `duration`.  Avro `record` types are converted to Tuple, `array` types to Array, and `map` to Map (string keys only).  In general the conversions listed [here](/interfaces/formats/Avro#data-types-matching) are available.  We recommend using exact type matching for Avro numeric types, as ClickPipes does not check for overflow or precision loss on type conversion.
 
-#### Nullable Types and Avro Unions {#nullable-types-and-avro-unions}
+#### Nullable types and Avro unions {#nullable-types-and-avro-unions}
 
 Nullable types in Avro are defined by using a Union schema of `(T, null)` or `(null, T)` where T is the base Avro type.  During schema inference, such unions will be mapped to a ClickHouse "Nullable" column.  Note that ClickHouse does not support
 `Nullable(Array)`, `Nullable(Map)`, or `Nullable(Tuple)` types.  Avro null unions for these types will be mapped to non-nullable versions (Avro Record types are mapped to a ClickHouse named Tuple).  Avro "nulls" for these types will be inserted as:
@@ -156,7 +179,7 @@ Nullable types in Avro are defined by using a Union schema of `(T, null)` or `(n
 
 ClickPipes does not currently support schemas that contain other Avro Unions (this may change in the future with the maturity of the new ClickHouse Variant and JSON data types).  If the Avro schema contains a "non-null" union, ClickPipes will generate an error when attempting to calculate a mapping between the Avro schema and Clickhouse column types.
 
-#### Avro Schema Management {#avro-schema-management}
+#### Avro schema management {#avro-schema-management}
 
 ClickPipes dynamically retrieves and applies the Avro schema from the configured Schema Registry using the schema ID embedded in each message/event.  Schema updates are detected and processed automatically.
 
@@ -167,7 +190,7 @@ The following rules are applied to the mapping between the retrieved Avro schema
 - If the Avro schema is missing a field defined in the ClickHouse destination mapping, the ClickHouse column will be populated with a "zero" value, such as 0 or an empty string.  Note that [DEFAULT](/sql-reference/statements/create/table#default) expressions are not currently evaluated for ClickPipes inserts (this is temporary limitation pending updates to the ClickHouse server default processing).
 - If the Avro schema field and the ClickHouse column are incompatible, inserts of that row/message will fail, and the failure will be recorded in the ClickPipes errors table.  Note that several implicit conversions are supported (like between numeric types), but not all (for example, an Avro `record` field can not be inserted into an `Int32` ClickHouse column).
 
-## Kafka Virtual Columns {#kafka-virtual-columns}
+## Kafka virtual columns {#kafka-virtual-columns}
 
 The following virtual columns are supported for Kafka compatible streaming data sources.  When creating a new destination table virtual columns can be added by using the `Add Column` button.
 
@@ -184,6 +207,12 @@ The following virtual columns are supported for Kafka compatible streaming data 
 
 Note that the _raw_message column is only recommended for JSON data.  For use cases where only the JSON string is required (such as using ClickHouse [`JsonExtract*`](/sql-reference/functions/json-functions#jsonextract-functions) functions to populate a downstream materialized
 view), it may improve ClickPipes performance to delete all the "non-virtual" columns.
+
+## Best practices {#best-practices}
+
+### Message Compression {#compression}
+We strongly recommend using compression for your Kafka topics. Compression can result in a significant saving in data transfer costs with virtually no performance hit.
+To learn more about message compression in Kafka, we recommend starting with this [guide](https://www.confluent.io/blog/apache-kafka-message-compression/).
 
 ## Limitations {#limitations}
 
@@ -246,7 +275,7 @@ Below is an example of the required IAM policy for Apache Kafka APIs for MSK:
 }
 ```
 
-#### Configuring a Trusted Relationship {#configuring-a-trusted-relationship}
+#### Configuring a trusted relationship {#configuring-a-trusted-relationship}
 
 If you are authenticating to MSK with a IAM role ARN, you will need to add a trusted relationship between your ClickHouse Cloud instance so the role can be assumed.
 
@@ -320,11 +349,11 @@ the ClickPipe will automatically restart the consumer and continue processing me
 
 - **What are the requirements for using ClickPipes for Kafka?**
 
-  In order to use ClickPipes for Kafka, you will need a running Kafka broker and a ClickHouse Cloud service with ClickPipes enabled. You will also need to ensure that ClickHouse Cloud can access your Kafka broker. This can be achieved by allowing remote connection on the Kafka side, whitelisting [ClickHouse Cloud Egress IP addresses](/manage/security/cloud-endpoints-api) in your Kafka setup.
+  In order to use ClickPipes for Kafka, you will need a running Kafka broker and a ClickHouse Cloud service with ClickPipes enabled. You will also need to ensure that ClickHouse Cloud can access your Kafka broker. This can be achieved by allowing remote connection on the Kafka side, whitelisting [ClickHouse Cloud Egress IP addresses](/manage/security/cloud-endpoints-api) in your Kafka setup. Alternatively, you can use [AWS PrivateLink](/integrations/clickpipes/aws-privatelink) to connect ClickPipes for Kafka to your Kafka brokers.
 
 - **Does ClickPipes for Kafka support AWS PrivateLink?**
 
-  AWS PrivateLink is supported. Please [contact us](https://clickhouse.com/company/contact?loc=clickpipes) for more information.
+  AWS PrivateLink is supported. See [the documentation](/integrations/clickpipes/aws-privatelink) for more information on how to set it up.
 
 - **Can I use ClickPipes for Kafka to write data to a Kafka topic?**
 

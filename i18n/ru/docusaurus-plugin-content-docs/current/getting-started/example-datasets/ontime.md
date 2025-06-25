@@ -1,15 +1,15 @@
 ---
-description: 'Набор данных, содержащий данные о своевременном выполнении авиарейсов'
+description: 'Набор данных, содержащий информацию о своевременности рейсов авиакомпаний'
+sidebar_label: 'Данные о своевременности рейсов авиакомпаний'
 slug: /getting-started/example-datasets/ontime
-sidebar_label: Данные о своевременности авиарейсов
-title: 'OnTime'
+title: 'Своевременность'
 ---
 
-Этот набор данных содержит данные из Бюро статистики транспорта.
+Этот набор данных содержит информацию из Бюро статистики транспортировки.
 
 ## Создание таблицы {#creating-a-table}
 
-``` sql
+```sql
 CREATE TABLE `ontime`
 (
     `Year`                            UInt16,
@@ -129,33 +129,33 @@ CREATE TABLE `ontime`
 
 Скачивание данных:
 
-``` bash
+```bash
 wget --no-check-certificate --continue https://transtats.bts.gov/PREZIP/On_Time_Reporting_Carrier_On_Time_Performance_1987_present_{1987..2022}_{1..12}.zip
 ```
 
-Загрузка данных с несколькими потоками:
+Загрузка данных с использованием нескольких потоков:
 
-``` bash
+```bash
 ls -1 *.zip | xargs -I{} -P $(nproc) bash -c "echo {}; unzip -cq {} '*.csv' | sed 's/\.00//g' | clickhouse-client --input_format_csv_empty_as_default 1 --query='INSERT INTO ontime FORMAT CSVWithNames'"
 ```
 
-(если у вас возникнут проблемы с нехваткой памяти или другие проблемы на сервере, удалите часть `-P $(nproc)`)
+(если у вас возникнут нехватка памяти или другие проблемы на сервере, удалите часть `-P $(nproc)`)
 
 ## Импорт из сохраненной копии {#import-from-a-saved-copy}
 
-Кроме того, вы можете импортировать данные из сохраненной копии следующим запросом:
+Кроме того, вы можете импортировать данные из сохраненной копии с помощью следующего запроса:
 
 ```sql
 INSERT INTO ontime SELECT * FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/ontime/csv_by_year/*.csv.gz', CSVWithNames) SETTINGS max_insert_threads = 40;
 ```
 
-Снимок был создан 29 мая 2022 года.
+Снимок был создан 29-05-2022.
 
 ## Запросы {#queries}
 
 Q0.
 
-``` sql
+```sql
 SELECT avg(c1)
 FROM
 (
@@ -167,7 +167,7 @@ FROM
 
 Q1. Количество рейсов в день с 2000 по 2008 год
 
-``` sql
+```sql
 SELECT DayOfWeek, count(*) AS c
 FROM ontime
 WHERE Year>=2000 AND Year<=2008
@@ -175,9 +175,9 @@ GROUP BY DayOfWeek
 ORDER BY c DESC;
 ```
 
-Q2. Количество рейсов, задержанных более чем на 10 минут, сгруппированных по дню недели за 2000-2008 годы
+Q2. Количество рейсов, задержанных более чем на 10 минут, сгруппированных по дню недели, за 2000-2008 годы
 
-``` sql
+```sql
 SELECT DayOfWeek, count(*) AS c
 FROM ontime
 WHERE DepDelay>10 AND Year>=2000 AND Year<=2008
@@ -187,7 +187,7 @@ ORDER BY c DESC;
 
 Q3. Количество задержек по аэропортам за 2000-2008 годы
 
-``` sql
+```sql
 SELECT Origin, count(*) AS c
 FROM ontime
 WHERE DepDelay>10 AND Year>=2000 AND Year<=2008
@@ -196,9 +196,9 @@ ORDER BY c DESC
 LIMIT 10;
 ```
 
-Q4. Количество задержек по авиаперевозчикам за 2007 год
+Q4. Количество задержек по авиакомпаниям за 2007 год
 
-``` sql
+```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, count(*)
 FROM ontime
 WHERE DepDelay>10 AND Year=2007
@@ -206,9 +206,9 @@ GROUP BY Carrier
 ORDER BY count(*) DESC;
 ```
 
-Q5. Процент задержек по авиаперевозчикам за 2007 год
+Q5. Процент задержек по авиакомпаниям за 2007 год
 
-``` sql
+```sql
 SELECT Carrier, c, c2, c*100/c2 as c3
 FROM
 (
@@ -234,7 +234,7 @@ ORDER BY c3 DESC;
 
 Лучшая версия того же запроса:
 
-``` sql
+```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, avg(DepDelay>10)*100 AS c3
 FROM ontime
 WHERE Year=2007
@@ -242,9 +242,9 @@ GROUP BY Carrier
 ORDER BY c3 DESC
 ```
 
-Q6. Предыдущий запрос для более широкого диапазона лет, с 2000 по 2008
+Q6. Предыдущий запрос для более широкого диапазона лет, 2000-2008
 
-``` sql
+```sql
 SELECT Carrier, c, c2, c*100/c2 as c3
 FROM
 (
@@ -270,7 +270,7 @@ ORDER BY c3 DESC;
 
 Лучшая версия того же запроса:
 
-``` sql
+```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, avg(DepDelay>10)*100 AS c3
 FROM ontime
 WHERE Year>=2000 AND Year<=2008
@@ -280,7 +280,7 @@ ORDER BY c3 DESC;
 
 Q7. Процент рейсов, задержанных более чем на 10 минут, по годам
 
-``` sql
+```sql
 SELECT Year, c1/c2
 FROM
 (
@@ -304,16 +304,16 @@ ORDER BY Year;
 
 Лучшая версия того же запроса:
 
-``` sql
+```sql
 SELECT Year, avg(DepDelay>10)*100
 FROM ontime
 GROUP BY Year
 ORDER BY Year;
 ```
 
-Q8. Самые популярные направления по количеству напрямую связанных городов за разные диапазоны лет
+Q8. Самые популярные направления по количеству напрямую связанных городов для различных диапазонов лет
 
-``` sql
+```sql
 SELECT DestCityName, uniqExact(OriginCityName) AS u
 FROM ontime
 WHERE Year >= 2000 and Year <= 2010
@@ -323,7 +323,7 @@ ORDER BY u DESC LIMIT 10;
 
 Q9.
 
-``` sql
+```sql
 SELECT Year, count(*) AS c1
 FROM ontime
 GROUP BY Year;
@@ -331,7 +331,7 @@ GROUP BY Year;
 
 Q10.
 
-``` sql
+```sql
 SELECT
    min(Year), max(Year), IATA_CODE_Reporting_Airline AS Carrier, count(*) AS cnt,
    sum(ArrDelayMinutes>30) AS flights_delayed,
@@ -349,7 +349,7 @@ LIMIT 1000;
 
 Бонус:
 
-``` sql
+```sql
 SELECT avg(cnt)
 FROM
 (
@@ -387,7 +387,7 @@ LIMIT 10;
 
 Вы также можете поиграть с данными в Playground, [пример](https://sql.clickhouse.com?query_id=M4FSVBVMSHY98NKCQP8N4K).
 
-Этот тест производительности был создан Вадимом Ткаченко. Смотрите:
+Этот тест производительности был создан Вадимом Ткаченко. См.:
 
 - https://www.percona.com/blog/2009/10/02/analyzing-air-traffic-performance-with-infobright-and-monetdb/
 - https://www.percona.com/blog/2009/10/26/air-traffic-queries-in-luciddb/

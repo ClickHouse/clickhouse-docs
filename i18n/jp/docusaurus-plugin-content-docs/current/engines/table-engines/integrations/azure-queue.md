@@ -1,19 +1,22 @@
 ---
-slug: /engines/table-engines/integrations/azure-queue
-sidebar_position: 181
-sidebar_label: AzureQueue
-title: "AzureQueue テーブルエンジン"
-description: "このエンジンは、ストリーミングデータのインポートを可能にする Azure Blob Storage エコシステムとの統合を提供します。"
+'description': 'This engine provides an integration with the Azure Blob Storage ecosystem,
+  allowing streaming data import.'
+'sidebar_label': 'AzureQueue'
+'sidebar_position': 181
+'slug': '/engines/table-engines/integrations/azure-queue'
+'title': 'AzureQueue テーブルエンジン'
 ---
+
+
 
 
 # AzureQueue テーブルエンジン
 
-このエンジンは、[Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) エコシステムとの統合を提供し、ストリーミングデータのインポートを可能にします。
+このエンジンは [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) エコシステムとの統合を提供し、ストリーミングデータのインポートを可能にします。
 
 ## テーブルの作成 {#creating-a-table}
 
-``` sql
+```sql
 CREATE TABLE test (name String, value UInt32)
     ENGINE = AzureQueue(...)
     [SETTINGS]
@@ -23,11 +26,11 @@ CREATE TABLE test (name String, value UInt32)
     ...
 ```
 
-**エンジンパラメータ**
+**エンジンのパラメータ**
 
-`AzureQueue` のパラメータは `AzureBlobStorage` テーブルエンジンがサポートするものと同じです。パラメータのセクションは [こちら](../../../engines/table-engines/integrations/azureBlobStorage.md) を参照してください。
+`AzureQueue` のパラメータは `AzureBlobStorage` テーブルエンジンがサポートしているのと同じです。パラメータセクションは [こちら](../../../engines/table-engines/integrations/azureBlobStorage.md) を参照してください。
 
-[AzureBlobStorage](/engines/table-engines/integrations/azureBlobStorage) テーブルエンジンと同様に、ユーザーはローカル Azure Storage 開発のために Azurite エミュレーターを使用できます。詳細は [こちら](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage) をご覧ください。
+[AzureBlobStorage](/engines/table-engines/integrations/azureBlobStorage) テーブルエンジンと同様に、ユーザーはローカルの Azure Storage 開発のために Azurite エミュレーターを使用できます。詳細は [こちら](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage) を参照してください。
 
 **例**
 
@@ -43,22 +46,22 @@ SETTINGS mode = 'unordered'
 
 ## 設定 {#settings}
 
-サポートされている設定のセットは `S3Queue` テーブルエンジンと同じですが、`s3queue_` プレフィックスは含まれていません。設定の完全なリストは [こちら](../../../engines/table-engines/integrations/s3queue.md#settings) を参照してください。
-テーブルに構成されている設定のリストを取得するには、`system.azure_queue_settings` テーブルを使用します。利用可能は `24.10` からです。
+サポートされている設定のセットは `S3Queue` テーブルエンジンと同じですが、`s3queue_` プレフィックスはありません。[設定のフルリスト](../../../engines/table-engines/integrations/s3queue.md#settings)を参照してください。
+テーブルに対して設定された設定のリストを取得するには、`system.azure_queue_settings` テーブルを使用します。利用可能は `24.10` 以降です。
 
 ## 説明 {#description}
 
-ストリーミングインポートには `SELECT` は特に役に立ちません（デバッグを除きます）。なぜなら、各ファイルは一度だけインポートできるからです。リアルタイムスレッドを作成するためには、[マテリアライズドビュー](../../../sql-reference/statements/create/view.md)を使用する方が実用的です。これを行うには：
+ストリーミングインポートに対して `SELECT` は特に便利ではありません（デバッグを除く）、なぜなら各ファイルは一度だけインポートできるからです。実際には、[マテリアライズドビュー](../../../sql-reference/statements/create/view.md)を使用してリアルタイムスレッドを作成するのがより実用的です。これを行うには：
 
-1. エンジンを使用して、S3 の指定されたパスから消費するためのテーブルを作成し、それをデータストリームと見なします。
-2. 目的の構造を持つテーブルを作成します。
-3. エンジンからデータを変換し、以前に作成したテーブルに格納するマテリアライズドビューを作成します。
+1. エンジンを使用して、S3の指定されたパスからデータを消費するためのテーブルを作成し、それをデータストリームと見なします。
+2. 望ましい構造を持つテーブルを作成します。
+3. エンジンからデータを変換し、以前に作成したテーブルに挿入するマテリアライズドビューを作成します。
 
-`MATERIALIZED VIEW` がエンジンに接続すると、バックグラウンドでデータの収集を開始します。
+`MATERIALIZED VIEW` がエンジンを結合すると、バックグラウンドでデータの収集を開始します。
 
 例：
 
-``` sql
+```sql
 CREATE TABLE azure_queue_engine_table (key UInt64, data String)
   ENGINE=AzureQueue('<endpoint>', 'CSV', 'gzip')
   SETTINGS
@@ -80,14 +83,14 @@ SELECT * FROM stats ORDER BY key;
 
 仮想カラムに関する詳細は [こちら](../../../engines/table-engines/index.md#table_engines-virtual_columns) を参照してください。
 
-## インストロペクション {#introspection}
+## 内部情報 {#introspection}
 
-テーブル設定 `enable_logging_to_s3queue_log=1` を使用してテーブルのロギングを有効にします。
+テーブル設定 `enable_logging_to_queue_log=1` を介してテーブルのロギングを有効にします。
 
-インストロペクション機能は [S3Queue テーブルエンジン](/engines/table-engines/integrations/s3queue#introspection) と同様ですが、いくつかの特有の違いがあります：
+内部情報の機能は、[S3Queue テーブルエンジン](/engines/table-engines/integrations/s3queue#introspection) と同様ですが、いくつかの明確な違いがあります：
 
-1. サーバーバージョンが >= 25.1 の場合、キューのメモリ内状態には `system.azure_queue` を使用します。古いバージョンでは `system.s3queue` を使用します（それには `azure` テーブルの情報も含まれます）。
-2. ClickHouse のメイン構成で `system.azure_queue_log` を有効にします。例：
+1. サーバーバージョン >= 25.1 では、`system.azure_queue` を使用してキューのメモリ内状態を確認します。古いバージョンでは `system.s3queue` を使用します（それには `azure` テーブルに関する情報も含まれます）。
+2. メインの ClickHouse 構成を介して `system.azure_queue_log` を有効にします。例えば：
 
   ```xml
   <azure_queue_log>
@@ -96,32 +99,32 @@ SELECT * FROM stats ORDER BY key;
   </azure_queue_log>
   ```
 
-この永続テーブルは `system.s3queue` と同じ情報を持っていますが、処理済みおよび失敗したファイルに関するものです。
+この永続テーブルは `system.s3queue` と同じ情報を持っていますが、処理され、失敗したファイルに関するものです。
 
-テーブルの構造は次のとおりです：
+テーブルの構造は以下の通りです：
 
 ```sql
 
 CREATE TABLE system.azure_queue_log
 (
     `hostname` LowCardinality(String) COMMENT 'ホスト名',
-    `event_date` Date COMMENT 'このログ行の書き込みイベントの日付',
-    `event_time` DateTime COMMENT 'このログ行の書き込みイベントの時間',
+    `event_date` Date COMMENT 'このログ行が書き込まれたイベントの日付',
+    `event_time` DateTime COMMENT 'このログ行が書き込まれたイベントの時間',
     `database` String COMMENT '現在の S3Queue テーブルが存在するデータベースの名前',
     `table` String COMMENT 'S3Queue テーブルの名前',
     `uuid` String COMMENT 'S3Queue テーブルの UUID',
-    `file_name` String COMMENT '処理中のファイルの名前',
-    `rows_processed` UInt64 COMMENT '処理された行の数',
-    `status` Enum8('Processed' = 0, 'Failed' = 1) COMMENT '処理中のファイルのステータス',
-    `processing_start_time` Nullable(DateTime) COMMENT 'ファイルの処理開始時間',
-    `processing_end_time` Nullable(DateTime) COMMENT 'ファイルの処理終了時間',
+    `file_name` String COMMENT '処理されているファイルの名前',
+    `rows_processed` UInt64 COMMENT '処理された行数',
+    `status` Enum8('Processed' = 0, 'Failed' = 1) COMMENT '処理されたファイルのステータス',
+    `processing_start_time` Nullable(DateTime) COMMENT 'ファイル処理開始時刻',
+    `processing_end_time` Nullable(DateTime) COMMENT 'ファイル処理終了時刻',
     `exception` String COMMENT '発生した場合の例外メッセージ'
 )
 ENGINE = MergeTree
 PARTITION BY toYYYYMM(event_date)
 ORDER BY (event_date, event_time)
 SETTINGS index_granularity = 8192
-COMMENT 'S3Queue エンジンによって処理されたファイルに関するログエントリが含まれます。'
+COMMENT 'S3Queue エンジンによって処理されたファイルに関するログエントリを含みます。'
 
 ```
 
@@ -148,6 +151,6 @@ processing_start_time: 2024-12-16 13:42:47
 processing_end_time:   2024-12-16 13:42:47
 exception:
 
-1 行がセットにあります。経過時間: 0.002 秒。
+1 row in set. Elapsed: 0.002 sec.
 
 ```

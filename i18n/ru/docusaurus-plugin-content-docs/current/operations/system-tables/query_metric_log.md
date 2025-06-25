@@ -1,32 +1,36 @@
 ---
-description: "Системная таблица, содержащая историю значений памяти и метрик из таблицы `system.events` для отдельных запросов, периодически сбрасываемая на диск."
+description: 'Системная таблица, содержащая историю значений памяти и метрик из таблицы
+  `system.events` для отдельных запросов, периодически сбрасываемая на диск.'
+keywords: ['системная таблица', 'query_metric_log']
 slug: /operations/system-tables/query_metric_log
-title: "system.query_metric_log"
-keywords: ["system table", "query_metric_log"]
+title: 'system.query_metric_log'
 ---
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
+
+# system.query_metric_log
 
 <SystemTableCloud/>
 
 Содержит историю значений памяти и метрик из таблицы `system.events` для отдельных запросов, периодически сбрасываемую на диск.
 
-Как только запрос начинается, данные собираются через регулярные интервалы в `query_metric_log_interval` миллисекунд (по умолчанию установлено 1000). Данные также собираются, когда запрос завершается, если запрос занимает больше времени, чем `query_metric_log_interval`.
+После того как запрос начинается, данные собираются через определённые интервалы времени в миллисекундах `query_metric_log_interval` (по умолчанию установлено значение 1000). Данные также собираются, когда запрос завершается, если он занимает больше времени, чем `query_metric_log_interval`.
 
-Колонки:
+Столбцы:
 - `query_id` ([String](../../sql-reference/data-types/string.md)) — ID запроса.
 - `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, выполняющего запрос.
 - `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата события.
 - `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время события.
-- `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Время события с разрешением в микросекунды.
+- `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Время события с разрешением в микросекундах.
 
 **Пример**
 
-``` sql
+```sql
 SELECT * FROM system.query_metric_log LIMIT 1 FORMAT Vertical;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 query_id:                                                        97c8ba04-b6d4-4bd7-b13e-6201c5c6e49d
@@ -44,7 +48,7 @@ ProfileEvent_FailedSelectQuery:                                  0
 ...
 ```
 
-**Смотрите также**
+**См. также**
 
 - [query_metric_log setting](../../operations/server-configuration-parameters/settings.md#query_metric_log) — Включение и отключение настройки.
 - [query_metric_log_interval](../../operations/settings/settings.md#query_metric_log_interval)

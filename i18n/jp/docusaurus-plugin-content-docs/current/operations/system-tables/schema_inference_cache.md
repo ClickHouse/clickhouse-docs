@@ -1,26 +1,32 @@
 ---
-description: "キャッシュされた全てのファイルスキーマに関する情報を含むシステムテーブル。"
-slug: /operations/system-tables/schema_inference_cache
-title: "system.schema_inference_cache"
-keywords: ["システムテーブル", "schema_inference_cache"]
+'description': 'System table containing information about all cached file schemas.'
+'keywords':
+- 'system table'
+- 'schema_inference_cache'
+'slug': '/operations/system-tables/schema_inference_cache'
+'title': 'system.schema_inference_cache'
 ---
+
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
+
+
+# system.schema_inference_cache
 
 <SystemTableCloud/>
 
-キャッシュされた全てのファイルスキーマに関する情報を含みます。
+キャッシュされたファイルスキーマについての情報を含みます。
 
 カラム:
 - `storage` ([String](/sql-reference/data-types/string.md)) — ストレージ名: File, URL, S3 または HDFS。
 - `source` ([String](/sql-reference/data-types/string.md)) — ファイルのソース。
 - `format` ([String](/sql-reference/data-types/string.md)) — フォーマット名。
-- `additional_format_info` ([String](/sql-reference/data-types/string.md)) - スキーマを識別するために必要な追加情報。例えば、フォーマット特有の設定。
+- `additional_format_info` ([String](/sql-reference/data-types/string.md)) - スキーマを特定するために必要な追加情報。例えば、フォーマット特有の設定。
 - `registration_time` ([DateTime](/sql-reference/data-types/datetime.md)) — スキーマがキャッシュに追加されたタイムスタンプ。
 - `schema` ([String](/sql-reference/data-types/string.md)) - キャッシュされたスキーマ。
 
 **例**
 
-`data.jsonl` というファイルがあり、次の内容が含まれているとします：
+`data.jsonl` というファイルがあり、以下の内容が含まれているとします:
 ```json
 {"id" :  1, "age" :  25, "name" :  "Josh", "hobbies" :  ["football", "cooking", "music"]}
 {"id" :  2, "age" :  19, "name" :  "Alan", "hobbies" :  ["tennis", "art"]}
@@ -29,13 +35,13 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 ```
 
 :::tip
-`data.jsonl` を `user_files_path` ディレクトリに置いてください。この場所は ClickHouse の設定ファイルを見て確認できます。デフォルトは次の通りです：
+`data.jsonl`を`user_files_path`ディレクトリに置いてください。これを見つけるには、ClickHouseの設定ファイルを調べてください。デフォルトは:
 ```sql
 <user_files_path>/var/lib/clickhouse/user_files/</user_files_path>
 ```
 :::
 
-`clickhouse-client` を開き、`DESCRIBE` クエリを実行します：
+`clickhouse-client`を開き、`DESCRIBE`クエリを実行します:
 
 ```sql
 DESCRIBE file('data.jsonl') SETTINGS input_format_try_infer_integers=0;
@@ -50,7 +56,7 @@ DESCRIBE file('data.jsonl') SETTINGS input_format_try_infer_integers=0;
 └─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-`system.schema_inference_cache` テーブルの内容を見てみましょう：
+`system.schema_inference_cache`テーブルの内容を見てみましょう:
 
 ```sql
 SELECT *
@@ -68,5 +74,5 @@ registration_time:      2022-12-29 17:49:52
 schema:                 id Nullable(Float64), age Nullable(Float64), name Nullable(String), hobbies Array(Nullable(String))
 ```
 
-**参照**
+**関連情報**
 - [入力データからの自動スキーマ推論](/interfaces/schema-inference.md)

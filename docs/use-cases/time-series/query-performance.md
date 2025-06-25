@@ -4,6 +4,7 @@ sidebar_label: 'Query performance'
 description: 'Improving time-series query performance'
 slug: /use-cases/time-series/query-performance
 keywords: ['time-series']
+show_related_blogs: true
 ---
 
 # Time-Series query performance
@@ -15,7 +16,7 @@ We'll see how these approaches can reduce query times from seconds to millisecon
 ## Optimize ORDER BY keys {#time-series-optimize-order-by}
 
 Before attempting other optimizations, you should optimize their ordering key to ensure ClickHouse produces the fastest possible results. 
-Choosing the key right largely depends on the queries you’re going to run. Suppose most of our queries filter by `project` and `subproject` columns. 
+Choosing the key right largely depends on the queries you're going to run. Suppose most of our queries filter by `project` and `subproject` columns. 
 In this case, its a good idea to add them to the ordering key - as well as the time column since we query on time as well:
 
 Let's create another version of the table that has the same column types as `wikistat`, but is ordered by `(project, subproject, time)`.
@@ -33,7 +34,7 @@ ENGINE = MergeTree
 ORDER BY (project, subproject, time);
 ```
 
-Let’s now compare multiple queries to get an idea of how essential our ordering key expression is to performance. Note that we have haven't applied our previous data type and codec optimizations, so any query performance differences are only based on the sort order.
+Let's now compare multiple queries to get an idea of how essential our ordering key expression is to performance. Note that we have haven't applied our previous data type and codec optimizations, so any query performance differences are only based on the sort order.
 
 <table>
     <thead>
@@ -170,7 +171,7 @@ GROUP BY path, month;
 
 This destination table will only be populated when new records are inserted into the `wikistat` table, so we need to do some [backfilling](/docs/data-modeling/backfilling).
 
-The easiest way to do this is using an [`INSERT INTO SELECT`](/docs/sql-reference/statements/insert-into#inserting-the-results-of-select) statement to insert directly into the materialized view’s target table [using](https://github.com/ClickHouse/examples/tree/main/ClickHouse_vs_ElasticSearch/DataAnalytics#variant-1---directly-inserting-into-the-target-table-by-using-the-materialized-views-transformation-query) the view's SELECT query (transformation) :
+The easiest way to do this is using an [`INSERT INTO SELECT`](/docs/sql-reference/statements/insert-into#inserting-the-results-of-select) statement to insert directly into the materialized view's target table [using](https://github.com/ClickHouse/examples/tree/main/ClickHouse_vs_ElasticSearch/DataAnalytics#variant-1---directly-inserting-into-the-target-table-by-using-the-materialized-views-transformation-query) the view's SELECT query (transformation) :
 
 ```sql
 INSERT INTO wikistat_top
@@ -189,7 +190,7 @@ Depending on the cardinality of the raw data set (we have 1 billion rows!), this
 * Using an INSERT INTO SELECT query, copying all data from the raw data set into that temporary table
 * Dropping the temporary table and the temporary materialized view.
 
-With that approach, rows from the raw data set are copied block-wise into the temporary table (which doesn’t store any of these rows), and for each block of rows, a partial state is calculated and written to the target table, where these states are incrementally merged in the background.
+With that approach, rows from the raw data set are copied block-wise into the temporary table (which doesn't store any of these rows), and for each block of rows, a partial state is calculated and written to the target table, where these states are incrementally merged in the background.
 
 
 ```sql

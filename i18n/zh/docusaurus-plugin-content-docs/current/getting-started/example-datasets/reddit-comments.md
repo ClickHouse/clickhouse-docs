@@ -1,11 +1,11 @@
 ---
-description: '包含2005年12月至2023年3月在Reddit上公开可用评论的数据集，包含超过140亿行的JSON格式数据'
-slug: /getting-started/example-datasets/reddit-comments
-sidebar_label: Reddit评论
-title: 'Reddit评论数据集'
+'description': '数据集包含从 2005 年 12 月到 2023 年 3 月在 Reddit 上公开可用的评论，超过 14B 行的数据，格式为 JSON'
+'sidebar_label': 'Reddit 评论'
+'slug': '/getting-started/example-datasets/reddit-comments'
+'title': 'Reddit 评论数据集'
 ---
 
-该数据集包含2005年12月到2023年3月在Reddit上公开可用的评论，包含超过140亿行的数据。原始数据以JSON格式存储在压缩文件中，行的格式如下：
+这个数据集包含自2005年12月到2023年3月在Reddit上公开可用的评论，数据超过140亿行。原始数据以JSON格式存储在压缩文件中，行的格式如下：
 
 ```json
 {"controversiality":0,"body":"A look at Vietnam and Mexico exposes the myth of market liberalisation.","subreddit_id":"t5_6","link_id":"t3_17863","stickied":false,"subreddit":"reddit.com","score":2,"ups":2,"author_flair_css_class":null,"created_utc":1134365188,"author_flair_text":null,"author":"frjo","id":"c13","edited":false,"parent_id":"t3_17863","gilded":0,"distinguished":null,"retrieved_on":1473738411}
@@ -15,14 +15,15 @@ title: 'Reddit评论数据集'
 {"gilded":0,"retrieved_on":1473738411,"distinguished":null,"author_flair_text":null,"author":"rjoseph","edited":false,"id":"c17","parent_id":"t3_17817","subreddit":"reddit.com","author_flair_css_class":null,"created_utc":1134367754,"score":1,"ups":1,"body":"Saft is by far the best extension you could tak onto your Safari","controversiality":0,"link_id":"t3_17817","stickied":false,"subreddit_id":"t5_6"}
 ```
 
-感谢Percona提供的[获取此数据集的动机](https://www.percona.com/blog/big-data-set-reddit-comments-analyzing-clickhouse/)，我们已将其下载并存储在S3桶中。
-## 创建一个表格 {#creating-a-table}
+感谢Percona提供的[获取此数据集的动机](https://www.percona.com/blog/big-data-set-reddit-comments-analyzing-clickhouse/)，我们已经将其下载并存储在S3存储桶中。
+
+## 创建一个表 {#creating-a-table}
 
 :::note
-以下命令是在ClickHouse Cloud的生产实例上执行，最少内存设置为720GB。要在自己的集群上运行此命令，将`s3Cluster`函数调用中的`default`替换为你的集群名称。如果没有集群，则将`s3Cluster`函数替换为`s3`函数。
+以下命令是在最小内存设置为720GB的ClickHouse Cloud生产实例上执行的。要在自己的集群上运行此命令，请将`s3Cluster`函数调用中的`default`替换为您的集群名称。如果您没有集群，请将`s3Cluster`函数替换为`s3`函数。
 :::
 
-1. 首先，我们将为Reddit数据创建一个表：
+1. 让我们为Reddit数据创建一个表：
 
 ```sql
 CREATE TABLE reddit
@@ -67,27 +68,29 @@ ORDER BY (subreddit, created_date, author);
 ```
 
 :::note
-S3中的文件名以`RC_YYYY-MM`开头，其中`YYYY-MM`从`2005-12`到`2023-02`。不过，压缩方式有几次变化，因此文件扩展名并不一致。例如：
+S3中的文件名以`RC_YYYY-MM`开头，其中`YYYY-MM`的范围为`2005-12`到`2023-02`。然而，压缩格式有几次变化，因此文件扩展名不一致。例如：
 
 - 文件名最初是`RC_2005-12.bz2`到`RC_2017-11.bz2`
-- 然后变为`RC_2017-12.xz`到`RC_2018-09.xz`
-- 最后变为`RC_2018-10.zst`到`RC_2023-02.zst`
+- 然后它们的格式是`RC_2017-12.xz`到`RC_2018-09.xz`
+- 最终是`RC_2018-10.zst`到`RC_2023-02.zst`
 :::
+
+
 ## 加载数据 {#load-data}
 
-2. 我们将从一月的数据开始，但如果你想简单地插入每一行，可以跳到下面的步骤8。以下文件包含来自2017年12月的8600万条记录：
+2. 以下文件包含2017年12月的8600万条记录：
 
 ```sql
 INSERT INTO reddit
     SELECT *
     FROM s3(
-        'https://clickhouse-public-datasets.s3.eu-central-1.amazonaws.com/reddit/original/RC_2017-12.xz',
+        'https://your-bucket.s3.amazonaws.com/reddit/original/RC_2017-12.xz',
         'JSONEachRow'
     );
 
 ```
 
-3. 这可能需要一些时间，具体取决于你的资源，但完成后请核实是否成功：
+3. 这将花费一些时间，具体取决于您的资源，但完成后请验证它是否成功：
 
 ```sql
 SELECT formatReadableQuantity(count())
@@ -100,7 +103,7 @@ FROM reddit;
 └─────────────────────────────────┘
 ```
 
-4. 让我们看看2017年12月有多少个独特的子版块：
+4. 让我们看看2017年12月有多少个唯一子版块：
 
 ```sql
 SELECT uniqExact(subreddit)
@@ -114,9 +117,10 @@ FROM reddit;
 
 1 row in set. Elapsed: 1.572 sec. Processed 85.97 million rows, 367.43 MB (54.71 million rows/s., 233.80 MB/s.)
 ```
+
 ## 示例查询 {#example-queries}
 
-5. 该查询返回评论数量最多的前10个子版块：
+5. 此查询返回评论数量最多的前10个子版块：
 
 ```sql
 SELECT
@@ -155,7 +159,7 @@ LIMIT 20;
 20 rows in set. Elapsed: 0.368 sec. Processed 85.97 million rows, 367.43 MB (233.34 million rows/s., 997.25 MB/s.)
 ```
 
-6. 这是2017年12月前10个作者（按发布的评论数排序）：
+6. 这里是2017年12月以发表评论数量计的前10位作者：
 
 ```sql
 SELECT
@@ -183,6 +187,7 @@ LIMIT 10;
 
 10 rows in set. Elapsed: 8.143 sec. Processed 85.97 million rows, 711.05 MB (10.56 million rows/s., 87.32 MB/s.)
 ```
+
 ## 加载整个数据集 {#loading-the-entire-dataset}
 
 7. 我们已经插入了一些数据，但我们将重新开始：
@@ -191,45 +196,45 @@ LIMIT 10;
 TRUNCATE TABLE reddit;
 ```
 
-8. 这是一个有趣的数据集，看起来我们可以找到一些很好的信息，所以让我们插入2005年至2023年的整个数据集。出于实际考虑，从每年开始插入数据效果最好，首先是...
+8. 这是一个有趣的数据集，看起来我们可以找到一些很好的信息，所以让我们继续插入2005年至2023年的整个数据集。出于实际考虑，从每年开始插入数据是一个不错的选择...
 
 ```sql
 INSERT INTO reddit
     SELECT *
     FROM s3Cluster(
         'default',
-        'https://clickhouse-public-datasets.s3.eu-central-1.amazonaws.com/reddit/original/RC_2005*',
+        'https://your-bucket.s3.amazonaws.com/reddit/original/RC_2005*',
         'JSONEachRow'
     )
     SETTINGS zstd_window_log_max = 31;
 ```
 
-...最后是：
+...并以以下内容结束：
 
 ```sql
 INSERT INTO reddit
 SELECT *
 FROM s3Cluster(
     'default',
-    'https://clickhouse-public-datasets.s3.amazonaws.com/reddit/original/RC_2023*',
+    'https://your-bucket.s3.amazonaws.com/reddit/original/RC_2023*',
     'JSONEachRow'
     )
 SETTINGS zstd_window_log_max = 31;
 ```
 
-如果你没有集群，请使用`s3`代替`s3Cluster`：
+如果您没有集群，请使用`s3`而不是`s3Cluster`：
 
 ```sql
 INSERT INTO reddit
 SELECT *
 FROM s3(
-    'https://clickhouse-public-datasets.s3.amazonaws.com/reddit/original/RC_2005*',
+    'https://your-bucket.s3.amazonaws.com/reddit/original/RC_2005*',
     'JSONEachRow'
     )
 SETTINGS zstd_window_log_max = 31;
 ```
 
-9. 为了验证它是否成功，以下是每年的行数（截至2023年2月）：
+8. 为了验证插入是否成功，这里是每年的行数（截至2023年2月）：
 
 ```sql
 SELECT
@@ -264,7 +269,7 @@ GROUP BY year;
 └──────┴─────────────────────────────────┘
 ```
 
-10. 让我们看看插入了多少行，以及该表使用了多少磁盘空间：
+9. 让我们看看插入了多少行，以及表占用了多少磁盘空间：
 
 ```sql
 SELECT
@@ -276,7 +281,7 @@ FROM system.parts
 WHERE (table = 'reddit') AND active;
 ```
 
-注意到磁盘存储的压缩大小约为未压缩大小的三分之一：
+请注意，磁盘存储的压缩率约为未压缩大小的1/3：
 
 ```response
 ┌───────count─┬─formatReadableQuantity(sum(rows))─┬─disk_size─┬─uncompressed_size─┐
@@ -285,9 +290,10 @@ WHERE (table = 'reddit') AND active;
 
 1 row in set. Elapsed: 0.005 sec.
 ```
-## 示例查询 - 每月的评论、作者和子板块 {#example-query-comments}
 
-10. 下面的查询显示了我们每个月的评论、作者和子板块的数量：
+## 示例查询 - 每月的评论、作者和子版块 {#example-query-comments}
+
+10. 以下查询显示我们每个月有多少评论、作者和子版块：
 
 ```sql
 SELECT
@@ -303,7 +309,7 @@ GROUP BY firstOfMonth
 ORDER BY firstOfMonth ASC;
 ```
 
-这是一个庞大的查询，需要处理所有 146.9 亿行数据，但我们仍然获得了令人印象深刻的响应时间（约 48 秒）：
+这是一个大型查询，需要处理超过146.9亿行，但我们仍然获得了令人印象深刻的响应时间（约48秒）：
 
 ```response
 ┌─firstOfMonth─┬─────────c─┬─bar_count─────────────────┬──authors─┬─bar_authors───────────────┬─subreddits─┬─bar_subreddits────────────┐
@@ -357,11 +363,11 @@ ORDER BY firstOfMonth ASC;
 │   2009-11-01 │   2207444 │ █                         │    95940 │ ▍                         │       2141 │ ▌                         │
 │   2009-12-01 │   2560510 │ █▎                        │   104239 │ ▌                         │       2141 │ ▌                         │
 │   2010-01-01 │   2884096 │ █▍                        │   114314 │ ▌                         │       2313 │ ▌                         │
-│   2010-02-01 │   2687779 │ █▎                        │   115683 │ ▌                         │       2522 │ █▋                        │
-│   2010-03-01 │   3228254 │ █▌                        │   125775 │ █▌                        │       2890 │ █▌                        │
-│   2010-04-01 │   3209898 │ █▌                        │   128936 │ █▌                        │       3170 │ █▊                        │
-│   2010-05-01 │   3267363 │ █▋                        │   131851 │ █▊                        │       3166 │ █▊                        │
-│   2010-06-01 │   3532867 │ █▊                        │   139522 │ █▊                        │       3301 │ █▊                        │
+│   2010-02-01 │   2687779 │ █▎                        │   115683 │ ▌                         │       2522 │ ▋                         │
+│   2010-03-01 │   3228254 │ █▌                        │   125775 │ ▋                         │       2890 │ ▋                         │
+│   2010-04-01 │   3209898 │ █▌                        │   128936 │ ▋                         │       3170 │ ▊                         │
+│   2010-05-01 │   3267363 │ █▋                        │   131851 │ ▋                         │       3166 │ ▊                         │
+│   2010-06-01 │   3532867 │ █▊                        │   139522 │ ▋                         │       3301 │ ▊                         │
 │   2010-07-01 │    806612 │ ▍                         │    76486 │ ▍                         │       1955 │ ▍                         │
 │   2010-08-01 │   4247982 │ ██                        │   164071 │ ▊                         │       3653 │ ▉                         │
 │   2010-09-01 │   4704069 │ ██▎                       │   186613 │ ▉                         │       4009 │ █                         │
@@ -512,11 +518,12 @@ ORDER BY firstOfMonth ASC;
 │   2023-02-01 │ 221285501 │ █████████████████████████ │ 11537091 │ █████████████████████████ │     317879 │ █████████████████████████ │
 └──────────────┴───────────┴───────────────────────────┴──────────┴───────────────────────────┴────────────┴───────────────────────────┘
 
-203 行在集合中。耗时：48.492 秒。处理了 146.9 亿行数据，213.35 GB (302.91 百万行/秒，4.40 GB/秒)。
+203 rows in set. Elapsed: 48.492 sec. Processed 14.69 billion rows, 213.35 GB (302.91 million rows/s., 4.40 GB/s.)
 ```
+
 ## 更多查询 {#more-queries}
 
-11. 这是2022年的前10个subreddit:
+11. 这里是2022年的前10个子版块：
 
 ```sql
 SELECT
@@ -543,10 +550,10 @@ LIMIT 10;
 │ nba            │ 11586571 │
 └────────────────┴──────────┘
 
-10 行已返回。耗时: 5.956 秒。处理了 146.9 亿 行，126.19 GB (每秒 24.7 亿 行, 21.19 GB/s.)
+10 rows in set. Elapsed: 5.956 sec. Processed 14.69 billion rows, 126.19 GB (2.47 billion rows/s., 21.19 GB/s.)
 ```
 
-12. 让我们看看2018到2019年间评论数量增长最多的subreddit:
+12. 让我们看看在2018到2019年间，哪些子版块的评论数量增长最大：
 
 ```sql
 SELECT
@@ -575,7 +582,7 @@ LIMIT 50
 SETTINGS joined_subquery_requires_alias = 0;
 ```
 
-看起来2019年，memes和teenagers在Reddit上很忙:
+看起来2019年，表情包和青少年在Reddit上相当活跃：
 
 ```response
 ┌─subreddit────────────┬─────diff─┐
@@ -631,12 +638,12 @@ SETTINGS joined_subquery_requires_alias = 0;
 │ BattlefieldV         │  1053878 │
 └──────────────────────┴──────────┘
 
-50 行已返回。耗时: 10.680 秒。处理了 293.8 亿 行，198.67 GB (每秒 27.5 亿 行, 18.60 GB/s.)
+50 rows in set. Elapsed: 10.680 sec. Processed 29.38 billion rows, 198.67 GB (2.75 billion rows/s., 18.60 GB/s.)
 ```
 
 ## 其他查询 {#other-queries}
 
-13. 还可以再来一个查询：让我们比较一下ClickHouse与其他技术如Snowflake和Postgres的提及情况。这个查询比较大，因为它必须搜索所有146.9亿条评论三次以查找子字符串，但性能实际上相当不错。（不幸的是，ClickHouse用户在Reddit上还不够活跃）:
+13. 还有一个查询：让我们比较ClickHouse的提及量与其他技术，如Snowflake和Postgres。这个查询相当庞大，因为它需要对146.9亿条评论中的子串进行三次搜索，但性能实在相当令人印象深刻。（不幸的是，ClickHouse用户在Reddit上尚未非常活跃）：
 
 ```sql
 SELECT
@@ -648,79 +655,3 @@ FROM reddit
 GROUP BY quarter
 ORDER BY quarter ASC;
 ```
-
-```response
-┌────quarter─┬─clickhouse─┬─snowflake─┬─postgres─┐
-│ 2005-10-01 │          0 │         0 │        0 │
-│ 2006-01-01 │          0 │         2 │       23 │
-│ 2006-04-01 │          0 │         2 │       24 │
-│ 2006-07-01 │          0 │         4 │       13 │
-│ 2006-10-01 │          0 │        23 │       73 │
-│ 2007-01-01 │          0 │        14 │       91 │
-│ 2007-04-01 │          0 │        10 │       59 │
-│ 2007-07-01 │          0 │        39 │      116 │
-│ 2007-10-01 │          0 │        45 │      125 │
-│ 2008-01-01 │          0 │        53 │      234 │
-│ 2008-04-01 │          0 │        79 │      303 │
-│ 2008-07-01 │          0 │       102 │      174 │
-│ 2008-10-01 │          0 │       156 │      323 │
-│ 2009-01-01 │          0 │       206 │      208 │
-│ 2009-04-01 │          0 │       178 │      417 │
-│ 2009-07-01 │          0 │       300 │      295 │
-│ 2009-10-01 │          0 │       633 │      589 │
-│ 2010-01-01 │          0 │       555 │      501 │
-│ 2010-04-01 │          0 │       587 │      469 │
-│ 2010-07-01 │          0 │       601 │      696 │
-│ 2010-10-01 │          0 │      1246 │      505 │
-│ 2011-01-01 │          0 │       758 │      247 │
-│ 2011-04-01 │          0 │       537 │      113 │
-│ 2011-07-01 │          0 │       173 │       64 │
-│ 2011-10-01 │          0 │       649 │       96 │
-│ 2012-01-01 │          0 │      4621 │      662 │
-│ 2012-04-01 │          0 │      5737 │      785 │
-│ 2012-07-01 │          0 │      6097 │     1127 │
-│ 2012-10-01 │          0 │      7986 │      600 │
-│ 2013-01-01 │          0 │      9704 │      839 │
-│ 2013-04-01 │          0 │      8161 │      853 │
-│ 2013-07-01 │          0 │      9704 │     1028 │
-│ 2013-10-01 │          0 │     12879 │     1404 │
-│ 2014-01-01 │          0 │     12317 │     1548 │
-│ 2014-04-01 │          0 │     13181 │     1577 │
-│ 2014-07-01 │          0 │     15640 │     1710 │
-│ 2014-10-01 │          0 │     19479 │     1959 │
-│ 2015-01-01 │          0 │     20411 │     2104 │
-│ 2015-04-01 │          1 │     20309 │     9112 │
-│ 2015-07-01 │          0 │     20325 │     4771 │
-│ 2015-10-01 │          0 │     25087 │     3030 │
-│ 2016-01-01 │          0 │     23462 │     3126 │
-│ 2016-04-01 │          3 │     25496 │     2757 │
-│ 2016-07-01 │          4 │     28233 │     2928 │
-│ 2016-10-01 │          2 │     45445 │     2449 │
-│ 2017-01-01 │          9 │     76019 │     2808 │
-│ 2017-04-01 │          9 │     67919 │     2803 │
-│ 2017-07-01 │         13 │     68974 │     2771 │
-│ 2017-10-01 │         12 │     69730 │     2906 │
-│ 2018-01-01 │         17 │     67476 │     3152 │
-│ 2018-04-01 │          3 │     67139 │     3986 │
-│ 2018-07-01 │         14 │     67979 │     3609 │
-│ 2018-10-01 │         28 │     74147 │     3850 │
-│ 2019-01-01 │         14 │     80250 │     4305 │
-│ 2019-04-01 │         30 │     70307 │     3872 │
-│ 2019-07-01 │         33 │     77149 │     4164 │
-│ 2019-10-01 │         22 │    113011 │     4369 │
-│ 2020-01-01 │         34 │    238273 │     5133 │
-│ 2020-04-01 │         52 │    454467 │     6100 │
-│ 2020-07-01 │         37 │    406623 │     5507 │
-│ 2020-10-01 │         49 │    212143 │     5385 │
-│ 2021-01-01 │         56 │    151262 │     5749 │
-│ 2021-04-01 │         71 │    119928 │     6039 │
-│ 2021-07-01 │         53 │    110342 │     5765 │
-│ 2021-10-01 │         92 │    121144 │     6401 │
-│ 2022-01-01 │         93 │    107512 │     6772 │
-│ 2022-04-01 │        120 │     91560 │     6687 │
-│ 2022-07-01 │        183 │     99764 │     7377 │
-│ 2022-10-01 │        123 │     99447 │     7052 │
-│ 2023-01-01 │        126 │     58733 │     4891 │
-└────────────┴────────────┴───────────┴──────────┘
-
-70 行已返回。耗时: 325.835 秒。处理了 146.9 亿 行，2.57 TB (每秒 4508 万 行, 7.87 GB/s.)

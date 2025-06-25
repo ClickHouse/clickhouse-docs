@@ -1,11 +1,11 @@
 ---
-description: '一个用于机器生成日志数据的新分析基准'
-slug: /getting-started/example-datasets/brown-benchmark
-sidebar_label: '布朗大学基准'
-title: '布朗大学基准'
+'description': '用于机器生成日志数据的新分析基准'
+'sidebar_label': '布朗大学基准测试'
+'slug': '/getting-started/example-datasets/brown-benchmark'
+'title': '布朗大学基准测试'
 ---
 
-`MgBench` 是一种用于机器生成日志数据的新分析基准，[Andrew Crotty](http://cs.brown.edu/people/acrotty/)。
+`MgBench` 是一种新的分析基准，用于机器生成的日志数据， [Andrew Crotty](http://cs.brown.edu/people/acrotty/)。
 
 下载数据：
 ```bash
@@ -91,14 +91,14 @@ clickhouse-client --query "INSERT INTO mgbench.logs2 FORMAT CSVWithNames" < mgbe
 clickhouse-client --query "INSERT INTO mgbench.logs3 FORMAT CSVWithNames" < mgbench3.csv
 ```
 
-## 运行基准查询: {#run-benchmark-queries}
+## 运行基准查询： {#run-benchmark-queries}
 
 ```sql
 USE mgbench;
 ```
 
 ```sql
--- Q1.1: 自午夜以来，每个网络服务器的CPU/网络利用率是多少？
+-- Q1.1: What is the CPU/network utilization for each web server since midnight?
 
 SELECT machine_name,
        MIN(cpu) AS cpu_min,
@@ -124,7 +124,7 @@ GROUP BY machine_name;
 
 
 ```sql
--- Q1.2: 哪些计算机实验室机器在过去的一天中离线？
+-- Q1.2: Which computer lab machines have been offline in the past day?
 
 SELECT machine_name,
        log_time
@@ -138,7 +138,7 @@ ORDER BY machine_name,
 ```
 
 ```sql
--- Q1.3: 特定工作站在过去10天的每小时平均指标是多少？
+-- Q1.3: What are the hourly average metrics during the past 10 days for a specific workstation?
 
 SELECT dt,
        hr,
@@ -171,7 +171,7 @@ ORDER BY dt,
 ```
 
 ```sql
--- Q1.4: 在一个月内，每个服务器在磁盘I/O上阻塞的次数是多少？
+-- Q1.4: Over 1 month, how often was each server blocked on disk I/O?
 
 SELECT machine_name,
        COUNT(*) AS spikes
@@ -186,7 +186,7 @@ LIMIT 10;
 ```
 
 ```sql
--- Q1.5: 哪些可外部访问的虚拟机器内存不足？
+-- Q1.5: Which externally reachable VMs have run low on memory?
 
 SELECT machine_name,
        dt,
@@ -207,7 +207,7 @@ ORDER BY machine_name,
 ```
 
 ```sql
--- Q1.6: 所有文件服务器的总每小时网络流量是多少？
+-- Q1.6: What is the total hourly network traffic across all file servers?
 
 SELECT dt,
        hr,
@@ -233,7 +233,7 @@ LIMIT 10;
 ```
 
 ```sql
--- Q2.1: 在过去两周内，哪些请求导致了服务器错误？
+-- Q2.1: Which requests have caused server errors within the past 2 weeks?
 
 SELECT *
 FROM logs2
@@ -243,7 +243,7 @@ ORDER BY log_time;
 ```
 
 ```sql
--- Q2.2: 在特定的两周期间，用户密码文件是否泄露？
+-- Q2.2: During a specific 2-week period, was the user password file leaked?
 
 SELECT *
 FROM logs2
@@ -256,7 +256,7 @@ WHERE status_code >= 200
 
 
 ```sql
--- Q2.3: 在过去一个月中，顶级请求的平均路径深度是多少？
+-- Q2.3: What was the average path depth for top-level requests in the past month?
 
 SELECT top_level,
        AVG(LENGTH(request) - LENGTH(REPLACE(request, '/', ''))) AS depth_avg
@@ -282,7 +282,7 @@ ORDER BY top_level;
 
 
 ```sql
--- Q2.4: 在过去三个月内，哪些客户发出了过多请求？
+-- Q2.4: During the last 3 months, which clients have made an excessive number of requests?
 
 SELECT client_ip,
        COUNT(*) AS num_requests
@@ -295,7 +295,7 @@ ORDER BY num_requests DESC;
 
 
 ```sql
--- Q2.5: 每日独立访客数是多少？
+-- Q2.5: What are the daily unique visitors?
 
 SELECT dt,
        COUNT(DISTINCT client_ip)
@@ -310,7 +310,7 @@ ORDER BY dt;
 
 
 ```sql
--- Q2.6: 平均和最大数据传输速率（Gbps）是多少？
+-- Q2.6: What are the average and maximum data transfer rates (Gbps)?
 
 SELECT AVG(transfer) / 125000000.0 AS transfer_avg,
        MAX(transfer) / 125000000.0 AS transfer_max
@@ -324,7 +324,7 @@ FROM (
 
 
 ```sql
--- Q3.1: 在周末室内温度是否达到冰点？
+-- Q3.1: Did the indoor temperature reach freezing over the weekend?
 
 SELECT *
 FROM logs3
@@ -335,7 +335,7 @@ WHERE event_type = 'temperature'
 
 
 ```sql
--- Q3.4: 在过去6个月中，每扇门开启的频率是多少？
+-- Q3.4: Over the past 6 months, how frequently were each door opened?
 
 SELECT device_name,
        device_floor,
@@ -348,13 +348,13 @@ GROUP BY device_name,
 ORDER BY ct DESC;
 ```
 
-查询3.5使用了一个UNION。设置合并选择查询结果的模式。该设置仅在与UNION共享时使用，而没有明确指定UNION ALL或UNION DISTINCT。
+下面的查询 3.5 使用了 UNION。 设置用于组合 SELECT 查询结果的模式。 当共享与 UNION 时未明确指定 UNION ALL 或 UNION DISTINCT 时，仅使用该设置。
 ```sql
 SET union_default_mode = 'DISTINCT'
 ```
 
 ```sql
--- Q3.5: 在冬季和夏季，建筑内发生大温差的地方在哪里？
+-- Q3.5: Where in the building do large temperature variations occur in winter and summer?
 
 WITH temperature AS (
   SELECT dt,
@@ -409,7 +409,7 @@ WHERE dt >= DATE '2019-06-01'
 
 
 ```sql
--- Q3.6: 每种设备类别的每月用电量指标是多少？
+-- Q3.6: For each device category, what are the monthly power consumption metrics?
 
 SELECT yr,
        mo,
@@ -453,5 +453,4 @@ ORDER BY yr,
          mo;
 ```
 
-数据也可用于交互式查询，请访问 [Playground](https://sql.clickhouse.com)，[示例](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND)。
-```
+数据也可用于 [Playground](https://sql.clickhouse.com) 中的交互式查询，[示例](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND)。

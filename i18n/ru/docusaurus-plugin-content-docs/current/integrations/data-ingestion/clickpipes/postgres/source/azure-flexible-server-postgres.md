@@ -1,38 +1,40 @@
 ---
-sidebar_label: 'Azure Flexible Server для Postgres'
-description: 'Настройте Azure Flexible Server для Postgres как источник для ClickPipes'
+sidebar_label: 'Гибкий сервер Azure для Postgres'
+description: 'Настройка гибкого сервера Azure для Postgres в качестве источника для ClickPipes'
 slug: /integrations/clickpipes/postgres/source/azure-flexible-server-postgres
+title: 'Руководство по настройке источника гибкого сервера Azure для Postgres'
 ---
 
 import server_parameters from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/server_parameters.png';
 import wal_level from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/wal_level.png';
 import restart from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/restart.png';
 import firewall from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/firewall.png';
+import Image from '@theme/IdealImage';
 
 
-# Руководство по настройке источника Azure Flexible Server для Postgres
+# Руководство по настройке источника гибкого сервера Azure для Postgres
 
-ClickPipes поддерживает версии Postgres 12 и выше.
+ClickPipes поддерживает версию Postgres 12 и выше.
 
 ## Включение логической репликации {#enable-logical-replication}
 
-**Вам не нужно** выполнять следующие шаги, если `wal_level` установлен на `logical`. Эта настройка должна быть в основном предварительно настроена, если вы мигрируете с другого инструмента репликации данных.
+**Вам не нужно** следовать ниже приведённым шагам, если `wal_level` установлен в `logical`. Этот параметр, как правило, должен быть предварительно настроен, если вы мигрируете с другого инструмента репликации данных.
 
-1. Нажмите на раздел **Server parameters**
+1. Нажмите на раздел **Параметры сервера**
 
-<img src={server_parameters} alt="Параметры сервера в Azure Flexible Server для Postgres" />
+<Image img={server_parameters} alt="Параметры сервера в Гибком сервере Azure для Postgres" size="lg" border/>
 
 2. Измените `wal_level` на `logical`
 
-<img src={wal_level} alt="Изменить wal_level на logical в Azure Flexible Server для Postgres" />
+<Image img={wal_level} alt="Изменение wal_level на logical в Гибком сервере Azure для Postgres" size="lg" border/>
 
-3. Это изменение потребует перезапуска сервера. Перезапустите, когда будет запрошено.
+3. Это изменение потребует перезагрузки сервера. Поэтому перезагрузите сервер, когда будет предложено.
 
-<img src={restart} alt="Перезапустите сервер после изменения wal_level" />
+<Image img={restart} alt="Перезагрузка сервера после изменения wal_level" size="lg" border/>
 
-## Создание пользователя ClickPipes и предоставление прав {#creating-clickpipes-user-and-granting-permissions}
+## Создание пользователя ClickPipes и предоставление разрешений {#creating-clickpipes-user-and-granting-permissions}
 
-Подключитесь к вашему Azure Flexible Server Postgres через администратора и выполните следующие команды:
+Подключитесь к вашему Гибкому серверу Azure Postgres через администратора и выполните ниже приведённые команды:
 
 1. Создайте пользователя Postgres исключительно для ClickPipes.
 
@@ -40,7 +42,7 @@ ClickPipes поддерживает версии Postgres 12 и выше.
    CREATE USER clickpipes_user PASSWORD 'some-password';
    ```
 
-2. Предоставьте доступ только для чтения к схеме, из которой вы реплицируете таблицы в `clickpipes_user`. Пример ниже показывает настройку прав для схемы `public`. Если вы хотите предоставить доступ к нескольким схемам, вы можете выполнить эти три команды для каждой схемы.
+2. Предоставьте пользователю `clickpipes_user` доступ только для чтения к схеме, из которой вы реплицируете таблицы. Ниже приведённый пример показывает, как настроить разрешения для схемы `public`. Если вы хотите предоставить доступ к нескольким схемам, вы можете выполнить эти три команды для каждой схемы.
 
    ```sql
    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -70,10 +72,12 @@ ClickPipes поддерживает версии Postgres 12 и выше.
 
 Пожалуйста, выполните следующие шаги, чтобы добавить [IP-адреса ClickPipes](../../index.md#list-of-static-ips) в вашу сеть.
 
-1. Перейдите на вкладку **Networking** и добавьте [IP-адреса ClickPipes](../../index.md#list-of-static-ips) в брандмауэр вашего Azure Flexible Server Postgres ИЛИ Jump Server/Bastion, если вы используете SSH-туннелирование.
+1. Перейдите на вкладку **Сеть** и добавьте [IP-адреса ClickPipes](../../index.md#list-of-static-ips) в брандмауэр вашего Гибкого сервера Azure Postgres ИЛИ в Jump Server/Bastion, если вы используете SSH-туннелирование.
 
-<img src={firewall} alt="Добавить IP-адреса ClickPipes в брандмауэр в Azure Flexible Server для Postgres" />
+<Image img={firewall} alt="Добавление IP-адресов ClickPipes в брандмауэр Гибкого сервера Azure для Postgres" size="lg"/>
+
 
 ## Что дальше? {#whats-next}
 
-Теперь вы можете [создать свой ClickPipe](../index.md) и начать загружать данные из вашего экземпляра Postgres в ClickHouse Cloud. Не забудьте записать детали соединения, которые вы использовали при настройке вашего экземпляра Postgres, так как они понадобятся вам во время процесса создания ClickPipe.
+Теперь вы можете [создать свой ClickPipe](../index.md) и начать прием данных из вашей инстанции Postgres в ClickHouse Cloud.
+Не забудьте записать детали соединения, которые вы использовали при настройке вашей инстанции Postgres, так как они понадобятся вам в процессе создания ClickPipe.

@@ -24,7 +24,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - us-east-2 (Ohio)
 - us-west-2 (Oregon)
 
-**Under Consideration:**
+**Private Region:**
 - ca-central-1 (Canada)
 - af-south-1 (South Africa)
 - eu-north-1 (Stockholm)
@@ -38,7 +38,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - us-central1 (Iowa)
 - us-east1 (South Carolina)
 
-**Under Consideration:**
+**Private Region:**
 
 - us-west1 (Oregon)
 - australia-southeast1(Sydney)
@@ -53,7 +53,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - East US 2 (Virginia)
 - Germany West Central (Frankfurt)
 
-**Under Consideration:**
+**Private Region:**
 
 JapanEast
 :::note 
@@ -80,15 +80,21 @@ Additional requirements may apply for HIPAA compliance (including signing a BAA)
 <EnterprisePlanFeatureBadge feature="HIPAA" support="true"/>
 
 Customers must sign a Business Associate Agreement (BAA) and request onboarding through Sales or Support to set up services in HIPAA compliant regions. The following regions support HIPAA compliance:
-- AWS us-east-1
-- AWS us-west-2
-- GCP us-central1
-- GCP us-east1
+- AWS eu-central-1 (Frankfurt)
+- AWS eu-west-2 (London)
+- AWS us-east-1 (N. Virginia)
+- AWS us-east-2 (Ohio)
+- AWS us-west-2 (Oregon)
+- GCP us-central1 (Iowa)
+- GCP us-east1 (South Carolina)
 
 ## PCI Compliant Regions {#pci-compliant-regions}
 
-<EnterprisePlanFeatureBadge feature="HIPAA" support="true"/>
+<EnterprisePlanFeatureBadge feature="PCI" support="true"/>
 
 Customers must request onboarding through Sales or Support to set up services in PCI compliant regions. The following regions support PCI compliance:
-- AWS us-east-1
-- AWS us-west-2
+- AWS eu-central-1 (Frankfurt)
+- AWS eu-west-2 (London)
+- AWS us-east-1 (N. Virginia)
+- AWS us-east-2 (Ohio)
+- AWS us-west-2 (Oregon)

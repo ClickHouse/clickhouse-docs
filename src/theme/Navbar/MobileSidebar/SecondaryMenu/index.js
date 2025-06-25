@@ -7,7 +7,7 @@ import SearchBar from "@theme/SearchBar";
 import clsx from 'clsx'
 import { ThemeClassNames } from '@docusaurus/theme-common'
 import { useNavbarSecondaryMenu } from '@docusaurus/theme-common/internal';
-import styles from './styles.module.css'
+import styles from './styles.module.scss'
 import DocSidebarItems from '@theme/DocSidebarItems'
 import sidebars from '../../../../../sidebars';
 
@@ -23,7 +23,7 @@ function SecondaryMenuBackButton(props) {
     );
 }
 
-// The secondary menu slides from the right and shows the top nav items. This is alittle unusual - we use this to show the drop down items
+// The secondary menu slides from the right and shows the top nav items. This is a little unusual - we use this to show the drop down items
 export default function NavbarMobileSidebarSecondaryMenu() {
   const secondaryMenu = useNavbarSecondaryMenu();
   const mobileSidebar = useNavbarMobileSidebar();

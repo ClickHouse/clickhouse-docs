@@ -1,14 +1,14 @@
 ---
-slug: /interfaces/jdbc
-sidebar_position: 22
-sidebar_label: JDBCドライバー
+'description': 'JavaアプリケーションからClickHouseに接続するためのJDBCドライバーの使用ガイド'
+'sidebar_label': 'JDBC ドライバー'
+'sidebar_position': 20
+'slug': '/interfaces/jdbc'
+'title': 'JDBC ドライバー'
 ---
 
 
-# JDBCドライバー
 
-[公式JDBCドライバー](https://github.com/ClickHouse/clickhouse-jdbc)（およびJavaクライアント）を使用して、JavaアプリケーションからClickHouseにアクセスします。
 
-- サードパーティ製ドライバー：
-    - [ClickHouse-Native-JDBC](https://github.com/housepower/ClickHouse-Native-JDBC)
-    - [clickhouse4j](https://github.com/blynkkk/clickhouse4j)
+# JDBCドライバ
+
+JavaアプリケーションからClickHouseにアクセスするには、[公式JDBCドライバ](/integrations/language-clients/java/jdbc)（およびJavaクライアント）を使用してください。

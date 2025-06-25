@@ -1,17 +1,22 @@
 ---
-description: '包含来自 `system.events` 表的单个查询的内存和指标值历史记录，定期刷新到磁盘的系统表。'
-slug: /operations/system-tables/query_metric_log
-title: 'system.query_metric_log'
-keywords: ['system table', 'query_metric_log']
+'description': '系统表，包含来自表 `system.events` 的个别查询的内存和指标值的历史记录，定期刷新到磁盘。'
+'keywords':
+- 'system table'
+- 'query_metric_log'
+'slug': '/operations/system-tables/query_metric_log'
+'title': 'system.query_metric_log'
 ---
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+
+# system.query_metric_log
+
 <SystemTableCloud/>
 
-包含来自 `system.events` 表的单个查询的内存和指标值历史记录，定期刷新到磁盘。
+包含来自 `system.events` 表的个别查询的内存和指标值的历史记录，定期刷新到磁盘。
 
-查询启动后，数据会在 `query_metric_log_interval` 毫秒（默认为 1000） 的间隔中收集。当查询花费的时间超过 `query_metric_log_interval` 时，查询完成时也会收集数据。
+一旦查询开始，数据将在 `query_metric_log_interval` 毫秒（默认设置为 1000） 的周期性间隔内收集。如果查询持续时间超过 `query_metric_log_interval`，则在查询完成时也会收集数据。
 
 列：
 - `query_id` ([String](../../sql-reference/data-types/string.md)) — 查询的 ID。
@@ -22,11 +27,11 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
 **示例**
 
-``` sql
+```sql
 SELECT * FROM system.query_metric_log LIMIT 1 FORMAT Vertical;
 ```
 
-``` text
+```text
 Row 1:
 ──────
 query_id:                                                        97c8ba04-b6d4-4bd7-b13e-6201c5c6e49d
@@ -44,11 +49,11 @@ ProfileEvent_FailedSelectQuery:                                  0
 ...
 ```
 
-**另见**
+**另请参见**
 
-- [query_metric_log setting](../../operations/server-configuration-parameters/settings.md#query_metric_log) — 启用和禁用设置。
+- [query_metric_log 设置](../../operations/server-configuration-parameters/settings.md#query_metric_log) — 启用和禁用该设置。
 - [query_metric_log_interval](../../operations/settings/settings.md#query_metric_log_interval)
 - [system.asynchronous_metrics](../../operations/system-tables/asynchronous_metrics.md) — 包含定期计算的指标。
-- [system.events](/operations/system-tables/events) — 包含发生的若干事件。
+- [system.events](/operations/system-tables/events) — 包含发生的大量事件。
 - [system.metrics](../../operations/system-tables/metrics.md) — 包含即时计算的指标。
-- [Monitoring](../../operations/monitoring.md) — ClickHouse 监控的基本概念。
+- [监控](../../operations/monitoring.md) — ClickHouse 监控的基本概念。

@@ -1,9 +1,9 @@
 ---
-title: Установка chDB для Bun
-sidebar_label: Bun
+title: 'Установка chDB для Bun'
+sidebar_label: 'Bun'
 slug: /chdb/install/bun
-description: Как установить chDB для Bun
-keywords: [chdb, встроенный, clickhouse-lite, bun, установка]
+description: 'Как установить chDB для Bun'
+keywords: ['chdb', 'встраиваемый', 'clickhouse-lite', 'bun', 'установка']
 ---
 
 
@@ -50,5 +50,5 @@ console.log(result);
 
 // Перед очисткой вы можете найти файлы базы данных в `./chdb-bun-tmp`
 
-sess.cleanup(); // очистить сессию, это удалит базу данных
+sess.cleanup(); // очистка сессии, это удалит базу данных
 ```

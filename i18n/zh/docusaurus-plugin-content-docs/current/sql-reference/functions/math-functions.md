@@ -1,7 +1,9 @@
 ---
-slug: /sql-reference/functions/math-functions
-sidebar_position: 125
-sidebar_label: '数学函数'
+'description': '数学函数的 Documentation'
+'sidebar_label': '数学'
+'sidebar_position': 125
+'slug': '/sql-reference/functions/math-functions'
+'title': '数学函数'
 ---
 
 
@@ -30,6 +32,7 @@ e()
 ```sql
 pi()
 ```
+
 **返回值**
 
 类型: [Float64](../data-types/float.md)。
@@ -46,17 +49,17 @@ exp(x)
 
 **参数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT round(exp(-1), 4);
 ```
 
-结果:
+结果：
 
 ```response
 ┌─round(exp(-1), 4)─┐
@@ -82,7 +85,7 @@ log(x)
 
 **参数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
@@ -100,7 +103,7 @@ exp2(x)
 
 **参数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
@@ -108,7 +111,7 @@ exp2(x)
 
 ## intExp2 {#intexp2}
 
-类似于 [`exp`](#exp)，但返回一个 UInt64。
+类似于 [`exp`](#exp)，但返回 UInt64。
 
 **语法**
 
@@ -128,7 +131,7 @@ log2(x)
 
 **参数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
@@ -146,7 +149,7 @@ exp10(x)
 
 **参数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
@@ -154,7 +157,7 @@ exp10(x)
 
 ## intExp10 {#intexp10}
 
-类似于 [`exp10`](#exp10)，但返回一个 UInt64。
+类似于 [`exp10`](#exp10)，但返回 UInt64。
 
 **语法**
 
@@ -174,7 +177,7 @@ log10(x)
 
 **参数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
@@ -190,7 +193,7 @@ sqrt(x)
 
 **参数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
@@ -206,7 +209,7 @@ cbrt(x)
 
 **参数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
@@ -214,7 +217,7 @@ cbrt(x)
 
 ## erf {#erf}
 
-如果 `x` 是非负的，则 $erf(\frac{x}{\sigma\sqrt{2}})$ 是一个标准差为 $\sigma$ 的正态分布随机变量取值与期望值相差超过 `x` 的概率。
+如果 `x` 非负，则 $erf(\frac{x}{\sigma\sqrt{2}})$ 是一个随机变量具有标准差为 $\sigma$ 的正态分布时，取值与期望值相隔超过 `x` 的概率。
 
 **语法**
 
@@ -224,7 +227,7 @@ erf(x)
 
 **参数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
@@ -234,7 +237,7 @@ erf(x)
 
 （三个西格玛法则）
 
-``` sql
+```sql
 SELECT erf(3 / sqrt(2));
 ```
 
@@ -246,7 +249,7 @@ SELECT erf(3 / sqrt(2));
 
 ## erfc {#erfc}
 
-返回接近 $1-erf(x)$ 的数，对于大值 `x` 无损失精度。
+返回接近 $1-erf(x)$ 的数字，而在大 `x` 值下精度不丢失。
 
 **语法**
 
@@ -256,7 +259,7 @@ erfc(x)
 
 **参数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
@@ -274,7 +277,7 @@ lgamma(x)
 
 **参数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
@@ -292,7 +295,7 @@ gamma(x)
 
 **参数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
@@ -310,7 +313,7 @@ sin(x)
 
 **参数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
@@ -318,7 +321,7 @@ sin(x)
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT sin(1.23);
@@ -340,7 +343,7 @@ cos(x)
 
 **参数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
@@ -358,7 +361,7 @@ tan(x)
 
 **参数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
@@ -376,7 +379,7 @@ asin(x)
 
 **参数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
@@ -394,7 +397,7 @@ acos(x)
 
 **参数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
@@ -412,7 +415,7 @@ atan(x)
 
 **参数**
 
-- `x` - [(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` - [(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
@@ -432,8 +435,8 @@ pow(x, y)
 
 **参数**
 
-- `x` - [(U)Int8/16/32/64](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)
-- `y` - [(U)Int8/16/32/64](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)
+- `x` - [(U)Int8/16/32/64](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)
+- `y` - [(U)Int8/16/32/64](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)
 
 **返回值**
 
@@ -441,31 +444,31 @@ pow(x, y)
 
 ## cosh {#cosh}
 
-返回[双曲余弦](https://in.mathworks.com/help/matlab/ref/cosh.html)的值。
+返回参数的 [双曲余弦](https://in.mathworks.com/help/matlab/ref/cosh.html)。
 
 **语法**
 
-``` sql
+```sql
 cosh(x)
 ```
 
 **参数**
 
-- `x` — 角度，以弧度为单位。值的范围: $-\infty \lt x \lt +\infty$。[(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` — 角度，以弧度为单位。值在区间：$-\infty \lt x \lt +\infty$。[(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
-- 值的范围: $1 \le cosh(x) \lt +\infty$。
+- 值在区间：$1 \le cosh(x) \lt +\infty$。
 
 类型: [Float64](/sql-reference/data-types/float)。
 
 **示例**
 
-``` sql
+```sql
 SELECT cosh(0);
 ```
 
-结果:
+结果：
 
 ```result
 ┌─cosh(0)──┐
@@ -475,31 +478,31 @@ SELECT cosh(0);
 
 ## acosh {#acosh}
 
-返回[反双曲余弦](https://www.mathworks.com/help/matlab/ref/acosh.html)。
+返回 [反双曲余弦](https://www.mathworks.com/help/matlab/ref/acosh.html)。
 
 **语法**
 
-``` sql
+```sql
 acosh(x)
 ```
 
 **参数**
 
-- `x` — 角度的双曲余弦。值的范围: $1 \le x \lt +\infty$。[(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` — 角度的双曲余弦。值在区间：$1 \le x \lt +\infty$。[(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
-- 以弧度为单位的角度。值的范围: $0 \le acosh(x) \lt +\infty$。
+- 角度，以弧度为单位。值在区间：$0 \le acosh(x) \lt +\infty$。
 
 类型: [Float64](/sql-reference/data-types/float)。
 
 **示例**
 
-``` sql
+```sql
 SELECT acosh(1);
 ```
 
-结果:
+结果：
 
 ```result
 ┌─acosh(1)─┐
@@ -509,31 +512,31 @@ SELECT acosh(1);
 
 ## sinh {#sinh}
 
-返回[双曲正弦](https://www.mathworks.com/help/matlab/ref/sinh.html)。
+返回 [双曲正弦](https://www.mathworks.com/help/matlab/ref/sinh.html)。
 
 **语法**
 
-``` sql
+```sql
 sinh(x)
 ```
 
 **参数**
 
-- `x` — 角度，以弧度为单位。值的范围: $-\infty \lt x \lt +\infty$。[(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` — 角度，以弧度为单位。值在区间：$-\infty \lt x \lt +\infty$。[(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
-- 值的范围: $-\infty \lt sinh(x) \lt +\infty$。
+- 值在区间：$-\infty \lt sinh(x) \lt +\infty$。
 
 类型: [Float64](/sql-reference/data-types/float)。
 
 **示例**
 
-``` sql
+```sql
 SELECT sinh(0);
 ```
 
-结果:
+结果：
 
 ```result
 ┌─sinh(0)──┐
@@ -543,64 +546,65 @@ SELECT sinh(0);
 
 ## asinh {#asinh}
 
-返回[反双曲正弦](https://www.mathworks.com/help/matlab/ref/asinh.html)。
+返回 [反双曲正弦](https://www.mathworks.com/help/matlab/ref/asinh.html)。
 
 **语法**
 
-``` sql
+```sql
 asinh(x)
 ```
 
 **参数**
 
-- `x` — 角度的双曲正弦。值的范围: $-\infty \lt x \lt +\infty$。[(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` — 角度的双曲正弦。值在区间：$-\infty \lt x \lt +\infty$。[(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
-- 以弧度为单位的角度。值的范围: $-\infty \lt asinh(x) \lt +\infty$。
+- 角度，以弧度为单位。值在区间：$-\infty \lt asinh(x) \lt +\infty$。
 
 类型: [Float64](/sql-reference/data-types/float)。
 
 **示例**
 
-``` sql
+```sql
 SELECT asinh(0);
 ```
 
-结果:
+结果：
 
 ```result
 ┌─asinh(0)─┐
 │        0 │
 └──────────┘
 ```
+
 ## tanh {#tanh}
 
-返回[双曲正切](https://www.mathworks.com/help/matlab/ref/tanh.html)。
+返回 [双曲正切](https://www.mathworks.com/help/matlab/ref/tanh.html)。
 
 **语法**
 
-``` sql
+```sql
 tanh(x)
 ```
 
 **参数**
 
-- `x` — 角度，以弧度为单位。值的范围: $-\infty \lt x \lt +\infty$。[(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` — 角度，以弧度为单位。值在区间：$-\infty \lt x \lt +\infty$。[(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
-- 值的范围: $-1 \lt tanh(x) \lt 1$。
+- 值在区间：$-1 \lt tanh(x) \lt 1$。
 
 类型: [Float*](/sql-reference/data-types/float)。
 
 **示例**
 
-``` sql
+```sql
 SELECT tanh(0);
 ```
 
-结果:
+结果：
 
 ```result
 0
@@ -608,31 +612,31 @@ SELECT tanh(0);
 
 ## atanh {#atanh}
 
-返回[反双曲正切](https://www.mathworks.com/help/matlab/ref/atanh.html)。
+返回 [反双曲正切](https://www.mathworks.com/help/matlab/ref/atanh.html)。
 
 **语法**
 
-``` sql
+```sql
 atanh(x)
 ```
 
 **参数**
 
-- `x` — 角度的双曲正切。值的范围: $-1 \lt x \lt 1$。[(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` — 角度的双曲正切。值在区间：$-1 \lt x \lt 1$。[(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
-- 以弧度为单位的角度。值的范围: $-\infty \lt atanh(x) \lt +\infty$。
+- 角度，以弧度为单位。值在区间：$-\infty \lt atanh(x) \lt +\infty$。
 
 类型: [Float64](/sql-reference/data-types/float)。
 
 **示例**
 
-``` sql
+```sql
 SELECT atanh(0);
 ```
 
-结果:
+结果：
 
 ```result
 ┌─atanh(0)─┐
@@ -642,32 +646,32 @@ SELECT atanh(0);
 
 ## atan2 {#atan2}
 
-返回在欧几里得平面中给定点 `(x, y) ≠ (0, 0)` 的正 x 轴与光线的夹角（以弧度表示）。
+返回 [atan2](https://en.wikipedia.org/wiki/Atan2) 作为给定的 Euclidean 平面中，单位为弧度的角度，介于正 x 轴和指向点 `(x, y) ≠ (0, 0)` 的射线之间。
 
 **语法**
 
-``` sql
+```sql
 atan2(y, x)
 ```
 
 **参数**
 
-- `y` — 光线经过的点的 y 坐标。[(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
-- `x` — 光线经过的点的 x 坐标。[(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `y` — 射线经过的点的 y 坐标。[(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` — 射线经过的点的 x 坐标。[(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
-- 角度 `θ`，其范围为 $-\pi \lt 0 \le \pi$，以弧度表示。
+- 角度 `θ`，使得 $-\pi \lt 0 \le \pi$，以弧度为单位。
 
 类型: [Float64](/sql-reference/data-types/float)。
 
 **示例**
 
-``` sql
+```sql
 SELECT atan2(1, 1);
 ```
 
-结果:
+结果：
 
 ```result
 ┌────────atan2(1, 1)─┐
@@ -677,18 +681,18 @@ SELECT atan2(1, 1);
 
 ## hypot {#hypot}
 
-返回直角三角形的斜边长度。[Hypot](https://en.wikipedia.org/wiki/Hypot) 避免了对非常大或非常小的数字进行平方时发生的问题。
+返回直角三角形的斜边长度。 [Hypot](https://en.wikipedia.org/wiki/Hypot) 避免了平方过大或过小数字时出现的问题。
 
 **语法**
 
-``` sql
+```sql
 hypot(x, y)
 ```
 
 **参数**
 
-- `x` — 直角三角形的第一条直角边。[(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
-- `y` — 直角三角形的第二条直角边。[(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` — 直角三角形的第一条直角边。[(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `y` — 直角三角形的第二条直角边。[(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
@@ -698,11 +702,11 @@ hypot(x, y)
 
 **示例**
 
-``` sql
+```sql
 SELECT hypot(1, 1);
 ```
 
-结果:
+结果：
 
 ```result
 ┌────────hypot(1, 1)─┐
@@ -712,31 +716,31 @@ SELECT hypot(1, 1);
 
 ## log1p {#log1p}
 
-计算 `log(1+x)`。对于小值的 x，计算 `log1p(x)` 比 `log(1+x)` 更精确。
+计算 `log(1+x)`。 对于小的 `x` 值，[计算](https://en.wikipedia.org/wiki/Natural_logarithm#lnp1) `log1p(x)` 的精度比 `log(1+x)` 更高。
 
 **语法**
 
-``` sql
+```sql
 log1p(x)
 ```
 
 **参数**
 
-- `x` — 值的范围: $-1 \lt x \lt +\infty$。[(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` — 值在区间：$-1 \lt x \lt +\infty$。[(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
-- 值的范围: $-\infty < log1p(x) \lt +\infty$。
+- 值在区间：$-\infty < log1p(x) \lt +\infty$。
 
 类型: [Float64](/sql-reference/data-types/float)。
 
 **示例**
 
-``` sql
+```sql
 SELECT log1p(0);
 ```
 
-结果:
+结果：
 
 ```result
 ┌─log1p(0)─┐
@@ -750,31 +754,31 @@ SELECT log1p(0);
 
 **语法**
 
-``` sql
+```sql
 sign(x)
 ```
 
 **参数**
 
-- `x` — 范围从 $-\infty$ 到 $+\infty$。支持 ClickHouse 中的所有数值类型。
+- `x` — 从 $-\infty$ 到 $+\infty$ 的值。支持 ClickHouse 中的所有数字类型。
 
 **返回值**
 
-- `x < 0` 时返回 -1
-- `x = 0` 时返回 0
-- `x > 0` 时返回 1
+- 当 `x < 0` 时，返回 -1
+- 当 `x = 0` 时，返回 0
+- 当 `x > 0` 时，返回 1
 
 类型: [Int8](../data-types/int-uint.md)。
 
 **示例**
 
-零值符号：
+零值的符号：
 
-``` sql
+```sql
 SELECT sign(0);
 ```
 
-结果:
+结果：
 
 ```result
 ┌─sign(0)─┐
@@ -782,13 +786,13 @@ SELECT sign(0);
 └─────────┘
 ```
 
-正值符号：
+正值的符号：
 
-``` sql
+```sql
 SELECT sign(1);
 ```
 
-结果:
+结果：
 
 ```result
 ┌─sign(1)─┐
@@ -796,13 +800,13 @@ SELECT sign(1);
 └─────────┘
 ```
 
-负值符号：
+负值的符号：
 
-``` sql
+```sql
 SELECT sign(-1);
 ```
 
-结果:
+结果：
 
 ```result
 ┌─sign(-1)─┐
@@ -812,7 +816,7 @@ SELECT sign(-1);
 
 ## sigmoid {#sigmoid}
 
-返回[西格莫伊德函数](https://en.wikipedia.org/wiki/Sigmoid_function)。
+返回 [sigmoid 函数](https://en.wikipedia.org/wiki/Sigmoid_function)。
 
 **语法**
 
@@ -822,21 +826,21 @@ sigmoid(x)
 
 **参数**
 
-- `x` — 输入值。值的范围: $-\infty \lt x \lt +\infty$。[(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` — 输入值。值在区间：$-\infty \lt x \lt +\infty$。[(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
-- 对应于西格莫伊德曲线在 0 和 1 之间的值。类型: [Float64](../data-types/float.md)。
+- 位于 0 和 1 之间的 sigmoidal 曲线的对应值。[Float64](../data-types/float.md)。
 
 **示例**
 
-查询:
+查询：
 
-``` sql
+```sql
 SELECT round(sigmoid(x), 5) FROM (SELECT arrayJoin([-1, 0, 1]) AS x);
 ```
 
-结果:
+结果：
 
 ```result
 0.26894
@@ -850,25 +854,26 @@ SELECT round(sigmoid(x), 5) FROM (SELECT arrayJoin([-1, 0, 1]) AS x);
 
 **语法**
 
-``` sql
+```sql
 degrees(x)
 ```
 
 **参数**
 
-- `x` — 输入为弧度。[(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
-  
+- `x` — 以弧度为单位的输入。[（U）Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` — 以弧度为单位的输入。[（U）Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。  
+
 **返回值**
 
-- 以度数表示的值。类型: [Float64](/sql-reference/data-types/float)。
+- 度数值。[Float64](/sql-reference/data-types/float)。
 
 **示例**
 
-``` sql
+```sql
 SELECT degrees(3.141592653589793);
 ```
 
-结果:
+结果：
 
 ```result
 ┌─degrees(3.141592653589793)─┐
@@ -882,27 +887,27 @@ SELECT degrees(3.141592653589793);
 
 **语法**
 
-``` sql
+```sql
 radians(x)
 ```
 
 **参数**
 
-- `x` — 输入为度数。[(U)Int*](../data-types/int-uint.md), [Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
+- `x` — 以度数为单位的输入。[(U)Int*](../data-types/int-uint.md)，[Float*](../data-types/float.md) 或 [Decimal*](../data-types/decimal.md)。
 
 **返回值**
 
-- 以弧度表示的值。
+- 弧度中的值。
 
 类型: [Float64](/sql-reference/data-types/float)。
 
 **示例**
 
-``` sql
+```sql
 SELECT radians(180);
 ```
 
-结果:
+结果：
 
 ```result
 ┌──────radians(180)─┐
@@ -912,23 +917,23 @@ SELECT radians(180);
 
 ## factorial {#factorial}
 
-计算整数值的阶乘。适用于任何原生整数类型，包括 UInt(8|16|32|64) 和 Int(8|16|32|64)。返回类型为 UInt64。
+计算整数值的阶乘。适用于包括 UInt(8|16|32|64) 和 Int(8|16|32|64) 在内的任何原生整数类型。返回类型为 UInt64。
 
-0 的阶乘是 1。同样，factorial() 函数对于任何负值返回 1。输入参数的最大正值为 20，21 或更大的值将导致异常抛出。
+阶乘 0 的值为 1。同样，factorial() 函数对任何负值返回 1。输入参数的最大正值为 20，输入值 21 或更大将导致抛出异常。
 
 **语法**
 
-``` sql
+```sql
 factorial(n)
 ```
 
 **示例**
 
-``` sql
+```sql
 SELECT factorial(10);
 ```
 
-结果:
+结果：
 
 ```result
 ┌─factorial(10)─┐
@@ -938,24 +943,25 @@ SELECT factorial(10);
 
 ## width_bucket {#width_bucket}
 
-返回在拥有 `count` 个等宽桶的直方图中 `operand` 所在的桶。如果 `operand < low`，则返回 `0`，如果 `operand >= high`，则返回 `count+1`。
+返回 `operand` 在直方图中落入的桶的编号，该直方图具有 `count` 个等宽桶，跨越 `low` 到 `high` 的范围。如果 `operand < low`，则返回 `0`，如果 `operand >= high`，则返回 `count+1`。
 
-`operand`、`low`、`high` 可以是任何原生数字类型。`count` 只能是无符号原生整数，且其值不能为零。
+`operand`，`low`，`high` 可以是任何原生数字类型。`count` 只能是无符号原生整数，其值不能为零。
 
 **语法**
 
 ```sql
 widthBucket(operand, low, high, count)
 ```
+
 别名: `WIDTH_BUCKET`
 
 **示例**
 
-``` sql
+```sql
 SELECT widthBucket(10.15, -8.6, 23, 18);
 ```
 
-结果:
+结果：
 
 ```result
 ┌─widthBucket(10.15, -8.6, 23, 18)─┐
@@ -965,7 +971,7 @@ SELECT widthBucket(10.15, -8.6, 23, 18);
 
 ## proportionsZTest {#proportionsztest}
 
-返回两个比例 Z 检验的统计量 - 一种用于比较两个总体比例的统计检验 `x` 和 `y`。
+返回两个比例 Z 检验的测试统计量 - 用于比较来自两个总体 `x` 和 `y` 的比例的统计检验。
 
 **语法**
 
@@ -979,11 +985,11 @@ proportionsZTest(successes_x, successes_y, trials_x, trials_y, conf_level, pool_
 - `successes_y`: 总体 `y` 中的成功次数。 [UInt64](../data-types/int-uint.md)。
 - `trials_x`: 总体 `x` 中的试验次数。 [UInt64](../data-types/int-uint.md)。
 - `trials_y`: 总体 `y` 中的试验次数。 [UInt64](../data-types/int-uint.md)。
-- `conf_level`: 检验的置信水平。 [Float64](../data-types/float.md)。
-- `pool_type`: 选择分级（估计标准误的方法）。可以是 `unpooled` 或 `pooled`。 [String](../data-types/string.md)。 
+- `conf_level`: 检测的置信水平。 [Float64](../data-types/float.md)。
+- `pool_type`: 选择池化（估计标准误差的方式）。可以是 `unpooled` 或 `pooled`。 [String](../data-types/string.md)。 
 
 :::note
-关于参数 `pool_type`: 在联合版本中，两个比例被平均，仅使用一个比例来估计标准误。 在非联合版本中，两个比例分别使用。
+对于参数 `pool_type`：在池化版本中，两个比例平均，并且只使用一个比例来估计标准误差。在非池化版本中，则分别使用两个比例。
 :::
 
 **返回值**
@@ -995,16 +1001,25 @@ proportionsZTest(successes_x, successes_y, trials_x, trials_y, conf_level, pool_
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT proportionsZTest(10, 11, 100, 101, 0.95, 'unpooled');
 ```
 
-结果:
+结果：
 
 ```response
 ┌─proportionsZTest(10, 11, 100, 101, 0.95, 'unpooled')───────────────────────────────┐
 │ (-0.20656724435948853,0.8363478437079654,-0.09345975390115283,0.07563797172293502) │
 └────────────────────────────────────────────────────────────────────────────────────┘
 ```
+
+<!-- 
+The inner content of the tags below are replaced at doc framework build time with 
+docs generated from system.functions. Please do not modify or remove the tags.
+See: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+-->
+
+<!--AUTOGENERATED_START-->
+<!--AUTOGENERATED_END-->

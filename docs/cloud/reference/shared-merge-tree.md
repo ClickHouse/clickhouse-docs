@@ -33,7 +33,7 @@ As you can see, even though the data stored in the ReplicatedMergeTree are in ob
 
 <Image img={shared_merge_tree_2} alt="ReplicatedMergeTree Diagram with Metadata" size="md"  />
 
-Unlike ReplicatedMergeTree, SharedMergeTree doesn't require replicas to communicate with each other. Instead, all communication happens through shared storage and clickhouse-keeper. SharedMergeTree implements asynchronous leaderless replication and uses clickhouse-keeper for coordination and metadata storage. This means that metadata doesn’t need to be replicated as your service scales up and down. This leads to faster replication, mutation, merges and scale-up operations. SharedMergeTree allows for hundreds of replicas for each table, making it possible to dynamically scale without shards. A distributed query execution approach is used in ClickHouse Cloud to utilize more compute resources for a query.
+Unlike ReplicatedMergeTree, SharedMergeTree doesn't require replicas to communicate with each other. Instead, all communication happens through shared storage and clickhouse-keeper. SharedMergeTree implements asynchronous leaderless replication and uses clickhouse-keeper for coordination and metadata storage. This means that metadata doesn't need to be replicated as your service scales up and down. This leads to faster replication, mutation, merges and scale-up operations. SharedMergeTree allows for hundreds of replicas for each table, making it possible to dynamically scale without shards. A distributed query execution approach is used in ClickHouse Cloud to utilize more compute resources for a query.
 
 ## Introspection {#introspection}
 
@@ -52,7 +52,7 @@ This table is the alternative to `system.replicated_fetches` SharedMergeTree. It
 
 `SharedMergeTree` is enabled by default.
 
-For services that support SharedMergeTree table engine, you don’t need to enable anything manually. You can create tables the same way as you did before and it will automatically use a SharedMergeTree-based table engine corresponding to the engine specified in your CREATE TABLE query.
+For services that support SharedMergeTree table engine, you don't need to enable anything manually. You can create tables the same way as you did before and it will automatically use a SharedMergeTree-based table engine corresponding to the engine specified in your CREATE TABLE query.
 
 ```sql
 CREATE TABLE my_table(
@@ -65,7 +65,7 @@ ORDER BY key
 
 This will create the table `my_table` using the SharedMergeTree table engine.
 
-You don’t need to specify `ENGINE=MergeTree` as `default_table_engine=MergeTree` in ClickHouse Cloud. The following query is identical to the query above.
+You don't need to specify `ENGINE=MergeTree` as `default_table_engine=MergeTree` in ClickHouse Cloud. The following query is identical to the query above.
 
 ```sql
 CREATE TABLE my_table(
@@ -119,7 +119,3 @@ Most of the time, you should not be using `select_sequential_consistency` or `SY
 2. If you write to one replica and read from another, you can use `SYSTEM SYNC REPLICA LIGHTWEIGHT` to force the replica to fetch the metadata from ClickHouse-Keeper.
 
 3. Use `select_sequential_consistency` as a setting as part of your query.
-
-## Related Content {#related-content}
-
-- [ClickHouse Cloud boosts performance with SharedMergeTree and Lightweight Updates](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates)

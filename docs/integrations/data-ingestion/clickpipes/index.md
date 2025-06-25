@@ -13,7 +13,10 @@ import Warpstreamsvg from '@site/static/images/integrations/logos/warpstream.svg
 import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
 import Amazonkinesis from '@site/static/images/integrations/logos/amazon_kinesis_logo.svg';
 import Gcssvg from '@site/static/images/integrations/logos/gcs.svg';
+import DOsvg from '@site/static/images/integrations/logos/digitalocean.svg';
+import ABSsvg from '@site/static/images/integrations/logos/azureblobstorage.svg';
 import Postgressvg from '@site/static/images/integrations/logos/postgresql.svg';
+import Mysqlsvg from '@site/static/images/integrations/logos/mysql.svg';
 import redpanda_logo from '@site/static/images/integrations/logos/logo_redpanda.png';
 import clickpipes_stack from '@site/static/images/integrations/data-ingestion/clickpipes/clickpipes_stack.png';
 import cp_custom_role from '@site/static/images/integrations/data-ingestion/clickpipes/cp_custom_role.png';
@@ -29,37 +32,46 @@ import Image from '@theme/IdealImage';
 
 ## Supported Data Sources {#supported-data-sources}
 
-| Name                 |Logo|Type| Status          | Description                                                                                          |
-|----------------------|----|----|-----------------|------------------------------------------------------------------------------------------------------|
-| Apache Kafka         |<Kafkasvg class="image" alt="Apache Kafka logo" style={{width: '3rem', 'height': '3rem'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Apache Kafka into ClickHouse Cloud.     |
-| Confluent Cloud      |<Confluentsvg class="image" alt="Confluent Cloud logo" style={{width: '3rem'}}/>|Streaming| Stable          | Unlock the combined power of Confluent and ClickHouse Cloud through our direct integration.          |
-| Redpanda             |<Image img={redpanda_logo} size="logo" alt="Redpanda logo"/> |Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Redpanda into ClickHouse Cloud.         |
-| AWS MSK              |<Msksvg class="image" alt="AWS MSK logo" style={{width: '3rem', 'height': '3rem'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from AWS MSK into ClickHouse Cloud.          |
-| Azure Event Hubs     |<Azureeventhubssvg class="image" alt="Azure Event Hubs logo" style={{width: '3rem'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud. |
-| WarpStream           |<Warpstreamsvg class="image" alt="WarpStream logo" style={{width: '3rem'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.       |
-| Amazon S3            |<S3svg class="image" alt="Amazon S3 logo" style={{width: '3rem', height: 'auto'}}/>|Object Storage| Stable          | Configure ClickPipes to ingest large volumes of data from object storage.                            |
-| Google Cloud Storage |<Gcssvg class="image" alt="Google Cloud Storage logo" style={{width: '3rem', height: 'auto'}}/>|Object Storage| Stable          | Configure ClickPipes to ingest large volumes of data from object storage.                            |
-| Amazon Kinesis       |<Amazonkinesis class="image" alt="Amazon Kenesis logo" style={{width: '3rem', height: 'auto'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Amazon Kinesis into ClickHouse cloud.   |
-| Postgres             |<Postgressvg class="image" alt="Postgres logo" style={{width: '3rem', height: 'auto'}}/>|DBMS| Public Beta | Configure ClickPipes and start ingesting data from Postgres into ClickHouse Cloud.                   |
+| Name                 | Logo                                                                                             |Type| Status           | Description                                                                                          |
+|----------------------|--------------------------------------------------------------------------------------------------|----|------------------|------------------------------------------------------------------------------------------------------|
+| Apache Kafka         | <Kafkasvg class="image" alt="Apache Kafka logo" style={{width: '3rem', 'height': '3rem'}}/>      |Streaming| Stable           | Configure ClickPipes and start ingesting streaming data from Apache Kafka into ClickHouse Cloud.     |
+| Confluent Cloud      | <Confluentsvg class="image" alt="Confluent Cloud logo" style={{width: '3rem'}}/>                 |Streaming| Stable           | Unlock the combined power of Confluent and ClickHouse Cloud through our direct integration.          |
+| Redpanda             | <Image img={redpanda_logo} size="logo" alt="Redpanda logo"/>                                     |Streaming| Stable           | Configure ClickPipes and start ingesting streaming data from Redpanda into ClickHouse Cloud.         |
+| AWS MSK              | <Msksvg class="image" alt="AWS MSK logo" style={{width: '3rem', 'height': '3rem'}}/>             |Streaming| Stable           | Configure ClickPipes and start ingesting streaming data from AWS MSK into ClickHouse Cloud.          |
+| Azure Event Hubs     | <Azureeventhubssvg class="image" alt="Azure Event Hubs logo" style={{width: '3rem'}}/>           |Streaming| Stable           | Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud. |
+| WarpStream           | <Warpstreamsvg class="image" alt="WarpStream logo" style={{width: '3rem'}}/>                     |Streaming| Stable           | Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.       |
+| Amazon S3            | <S3svg class="image" alt="Amazon S3 logo" style={{width: '3rem', height: 'auto'}}/>              |Object Storage| Stable           | Configure ClickPipes to ingest large volumes of data from object storage.                            |
+| Google Cloud Storage | <Gcssvg class="image" alt="Google Cloud Storage logo" style={{width: '3rem', height: 'auto'}}/>  |Object Storage| Stable           | Configure ClickPipes to ingest large volumes of data from object storage.                            |
+| DigitalOcean Spaces | <DOsvg class="image" alt="Digital Ocean logo" style={{width: '3rem', height: 'auto'}}/> | Object Storage | Stable | Configure ClickPipes to ingest large volumes of data from object storage.
+| Azure Blob Storage | <ABSsvg class="image" alt="Azure Blob Storage logo" style={{width: '3rem', height: 'auto'}}/> | Object Storage | Private Beta | Configure ClickPipes to ingest large volumes of data from object storage.
+| Amazon Kinesis       | <Amazonkinesis class="image" alt="Amazon Kenesis logo" style={{width: '3rem', height: 'auto'}}/> |Streaming| Stable           | Configure ClickPipes and start ingesting streaming data from Amazon Kinesis into ClickHouse cloud.   |
+| Postgres             | <Postgressvg class="image" alt="Postgres logo" style={{width: '3rem', height: 'auto'}}/>         |DBMS| Stable      | Configure ClickPipes and start ingesting data from Postgres into ClickHouse Cloud.                   |
+| MySQL                | <Mysqlsvg class="image" alt="MySQL logo" style={{width: '3rem', height: 'auto'}}/>               |DBMS| Private Beta | Configure ClickPipes and start ingesting data from MySQL into ClickHouse Cloud.                      |
+
 
 More connectors will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
 
 ## List of Static IPs {#list-of-static-ips}
 
-The following are the static NAT IPs (separated by region) that ClickPipes uses to connect to your external services.
-Add your related instance region IPs to your IP allow list to allow traffic.
-If your instance region is not listed here, it will fall to the default region:
+The following are the static NAT IPs (separated by region) that ClickPipes uses to connect to your external services. Add your related instance region IPs to your IP allow list to allow traffic.
 
-- **eu-central-1** for EU regions
-- **us-east-1** for instances in `us-east-1`
-- **us-east-2** for other all regions
+For all services, ClickPipes traffic will originate from a default region based on your service's location:
+- **eu-central-1**: For all services in EU regions.
+- **us-east-1**: For all services in `us-east-1`.
+- **ap-south-1**: For services in `ap-south-1` created on or after 25 Jun 2025 (services created before this date use `us-east-1` IPs).
+- **ap-southeast-2**: For services in `ap-southeast-2` created on or after 25 Jun 2025 (services created before this date use `us-east-1` IPs).
+- **us-west-2**: For services in `us-west-2` created on or after 24 Jun 2025 (services created before this date use `us-east-1` IPs).
+- **us-east-2**: For all other regions not explicitly listed.
 
-| ClickHouse Cloud region | IP Addresses |
-|-------------------------|--------------|
-| **eu-central-1**        | `18.195.233.217`, `3.127.86.90`, `35.157.23.2`, `18.197.167.47`, `3.122.25.29`, `52.28.148.40` |
-| **us-east-2**           | `3.131.130.196`, `3.23.172.68`, `3.20.208.150`, `3.132.20.192`, `18.119.76.110`, `3.134.185.180` |
-| **us-east-1**           | `54.82.38.199`, `3.90.133.29`, `52.5.177.8`, `3.227.227.145`, `3.216.6.184`, `54.84.202.92`, `3.131.130.196`, `3.23.172.68`, `3.20.208.150` |
+| ClickHouse Cloud region                  | IP Addresses                                                                                                                                     |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **eu-central-1**                         | `18.195.233.217`, `3.127.86.90`, `35.157.23.2`, `18.197.167.47`, `3.122.25.29`, `52.28.148.40`                                                     |
+| **us-east-1**                            | `54.82.38.199`, `3.90.133.29`, `52.5.177.8`, `3.227.227.145`, `3.216.6.184`, `54.84.202.92`, `3.131.130.196`, `3.23.172.68`, `3.20.208.150`         |
+| **us-east-2**                            | `3.131.130.196`, `3.23.172.68`, `3.20.208.150`, `3.132.20.192`, `18.119.76.110`, `3.134.185.180`                                                     |
+| **ap-south-1** (from 25 Jun 2025)        | `13.203.140.189`, `13.232.213.12`, `13.235.145.208`, `35.154.167.40`, `65.0.39.245`, `65.1.225.89`                                                     |
+| **ap-southeast-2** (from 25 Jun 2025)    | `3.106.48.103`, `52.62.168.142`, `13.55.113.162`, `3.24.61.148`, `54.206.77.184`, `54.79.253.17`                                                     |
+| **us-west-2** (from 24 Jun 2025)         | `52.42.100.5`, `44.242.47.162`, `52.40.44.52`, `44.227.206.163`, `44.246.241.23`, `35.83.230.19`                                                     |
 
 ## Adjusting ClickHouse settings {#adjusting-clickhouse-settings}
 ClickHouse Cloud provides sensible defaults for most of the use cases. However, if you need to adjust some ClickHouse settings for the ClickPipes destination tables, a dedicated role for ClickPipes is the most flexible solution.

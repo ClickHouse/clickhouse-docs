@@ -1,12 +1,14 @@
 ---
-title: 如何使用 chDB 查询 Apache Arrow
-sidebar_label: 查询 Apache Arrow
-slug: /chdb/guides/apache-arrow
-description: 在本指南中，我们将学习如何使用 chDB 查询 Apache Arrow 表
-keywords: [chdb, Apache Arrow]
+'title': '如何使用 chDB 查询 Apache Arrow'
+'sidebar_label': '查询 Apache Arrow'
+'slug': '/chdb/guides/apache-arrow'
+'description': '在本指南中，我们将学习如何使用 chDB 查询 Apache Arrow 表'
+'keywords':
+- 'chdb'
+- 'Apache Arrow'
 ---
 
-[Apache Arrow](https://arrow.apache.org/) 是一种标准化的列式内存格式，在数据社区中越来越受到欢迎。
+[Apache Arrow](https://arrow.apache.org/) 是一种标准化的列式内存格式，已在数据社区中获得了广泛的认可。
 在本指南中，我们将学习如何使用 `Python` 表函数查询 Apache Arrow。
 
 ## 设置 {#setup}
@@ -18,30 +20,30 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-然后，我们将安装 chDB。
-确保您安装版本为 2.0.2 或更高：
+现在我们将安装 chDB。
+确保您安装的版本为 2.0.2 或更高：
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-接着，我们将安装 PyArrow、pandas 和 ipython：
+接下来，我们将安装 PyArrow、pandas 和 ipython：
 
 ```bash
 pip install pyarrow pandas ipython
 ```
 
-我们将使用 `ipython` 来运行本指南中的命令，您可以通过运行以下命令启动它：
+我们将使用 `ipython` 来运行本指南中的命令，您可以通过运行以下命令来启动它：
 
 ```bash
 ipython
 ```
 
-您也可以在 Python 脚本中或者您喜欢的笔记本中使用这些代码。
+您还可以在 Python 脚本或您喜欢的笔记本中使用代码。
 
 ## 从文件创建 Apache Arrow 表 {#creating-an-apache-arrow-table-from-a-file}
 
-首先，让我们下载一个 [Ookla 数据集](https://github.com/teamookla/ookla-open-data) 的 Parquet 文件，使用 [AWS CLI 工具](https://aws.amazon.com/cli/)：
+首先，我们下载 [Ookla 数据集](https://github.com/teamookla/ookla-open-data) 的一个 Parquet 文件，使用 [AWS CLI 工具](https://aws.amazon.com/cli/)：
 
 ```bash
 aws s3 cp \
@@ -50,7 +52,7 @@ aws s3 cp \
 ```
 
 :::note
-如果您想下载更多文件，可以使用 `aws s3 ls` 来获取所有文件的列表，然后更新上述命令。
+如果您想下载更多文件，请使用 `aws s3 ls` 获取所有文件的列表，然后更新上面的命令。
 :::
 
 接下来，我们将从 `pyarrow` 包中导入 Parquet 模块：
@@ -59,7 +61,7 @@ aws s3 cp \
 import pyarrow.parquet as pq
 ```
 
-然后，我们可以将 Parquet 文件读取到 Apache Arrow 表中：
+然后我们可以将 Parquet 文件读取到 Apache Arrow 表中：
 
 ```python
 arrow_table = pq.read_table("./2023-04-01_performance_mobile_tiles.parquet")
@@ -85,7 +87,7 @@ tests: int64
 devices: int64
 ```
 
-我们可以通过调用 `shape` 属性获取行和列的数量：
+我们可以通过调用 `shape` 属性来获取行数和列数：
 
 ```python
 arrow_table.shape
@@ -104,7 +106,7 @@ arrow_table.shape
 import chdb
 ```
 
-然后我们可以描述表：
+然后我们可以描述该表：
 
 ```python
 chdb.query("""
@@ -139,7 +141,7 @@ chdb.query("SELECT count() FROM Python(arrow_table)", "DataFrame")
 0  3864546
 ```
 
-现在，让我们做一些有趣的事情。
+现在，让我们做一些更有趣的事情。
 以下查询排除了 `quadkey` 和 `tile.*` 列，然后计算所有剩余列的平均值和最大值：
 
 ```python

@@ -3,6 +3,9 @@ import math from "remark-math";
 import katex from "rehype-katex";
 import chHeader from "./plugins/header.js";
 import fixLinks from "./src/hooks/fixLinks.js";
+import prismLight from "./src/utils/prismLight";
+import prismDark from "./src/utils/prismDark";
+const remarkCustomBlocks = require('./plugins/remark-custom-blocks');
 
 // Helper function to skip over index.md files.
 function skipIndex(items) {
@@ -69,11 +72,6 @@ const config = {
         htmlLang: "en",
         path: "en",
       },
-      ru: {
-        label: "Русский",
-        htmlLang: "ru",
-        path: "ru",
-      },
       jp: {
         label: "日本語",
         htmlLang: "jp",
@@ -84,6 +82,11 @@ const config = {
         htmlLang: "zh",
         path: "zh",
       },
+      ru: {
+        label: "Русский",
+        htmlLang: "ru",
+        path: "ru",
+      }
     },
   },
   staticDirectories: ["static"],
@@ -128,7 +131,7 @@ const config = {
           showLastUpdateTime: false,
           sidebarCollapsed: true,
           routeBasePath: "/",
-          remarkPlugins: [math],
+          remarkPlugins: [math, remarkCustomBlocks],
           beforeDefaultRemarkPlugins: [fixLinks],
           rehypePlugins: [katex],
         },
@@ -203,6 +206,9 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      metadata: [
+        {name: 'Accept-Language', content: 'ru-RU,ru;q=0.9'},
+      ],
       algolia: {
         appId: "5H9UG7CX5W",
         apiKey: "4a7bf25cf3edbef29d78d5e1eecfdca5",
@@ -256,9 +262,9 @@ const config = {
         copyright: `© 2016&ndash;${new Date().getFullYear()} ClickHouse, Inc.`,
       },
       prism: {
-        theme: themes.darkTheme,
-        darkTheme: themes.darkTheme,
-        additionalLanguages: ["java", "cpp", "rust"],
+        theme: prismLight,
+        darkTheme: prismDark,
+        additionalLanguages: ["java", "cpp", "rust", "python", "javascript", "yaml", "bash", "docker"],
         magicComments: [
           // Remember to extend the default highlight class name as well!
           {
@@ -302,6 +308,7 @@ const config = {
       },
     ],
     chHeader,
+    ['./plugins/tailwind-config.js', {}],
   ],
   customFields: {
     blogSidebarLink: "/docs/knowledgebase", // Used for KB article page

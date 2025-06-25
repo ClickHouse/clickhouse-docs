@@ -1,8 +1,8 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/exponentialTimeDecayedAvg'
-sidebar_position: 133
-title: 'exponentialTimeDecayedAvg'
-description: '返回时间序列在时间点 `t` 的指数平滑加权移动平均值。'
+'description': '返回时间序列在时间点 `t` 处值的指数平滑加权移动平均。'
+'sidebar_position': 133
+'slug': '/sql-reference/aggregate-functions/reference/exponentialTimeDecayedAvg'
+'title': 'exponentialTimeDecayedAvg'
 ---
 
 ## exponentialTimeDecayedAvg {#exponentialtimedecayedavg}
@@ -17,12 +17,12 @@ exponentialTimeDecayedAvg(x)(v, t)
 
 **参数**
 
-- `v` — 值。 [整数](../../../sql-reference/data-types/int-uint.md), [浮点数](../../../sql-reference/data-types/float.md) 或 [小数](../../../sql-reference/data-types/decimal.md)。
-- `t` — 时间。 [整数](../../../sql-reference/data-types/int-uint.md), [浮点数](../../../sql-reference/data-types/float.md) 或 [小数](../../../sql-reference/data-types/decimal.md), [日期时间](../../data-types/datetime.md), [日期时间64](../../data-types/datetime64.md)。
+- `v` — 值。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)。
+- `t` — 时间。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)、[日期时间](../../data-types/datetime.md)、[DateTime64](../../data-types/datetime64.md)。
 
 **参数说明**
 
-- `x` — 半衰期。 [整数](../../../sql-reference/data-types/int-uint.md), [浮点数](../../../sql-reference/data-types/float.md) 或 [小数](../../../sql-reference/data-types/decimal.md)。
+- `x` — 半衰期。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)。
 
 **返回值**
 

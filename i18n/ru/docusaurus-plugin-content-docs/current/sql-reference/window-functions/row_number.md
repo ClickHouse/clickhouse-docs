@@ -1,13 +1,15 @@
 ---
-slug: /sql-reference/window-functions/row_number
-sidebar_label: row_number
+description: 'Документация для оконной функции row_number'
+sidebar_label: 'row_number'
 sidebar_position: 2
+slug: /sql-reference/window-functions/row_number
+title: 'row_number'
 ---
 
 
 # row_number
 
-Нумерует текущую строку в пределах её партиции, начиная с 1.
+Нумерует текущую строку внутри ее партиции, начиная с 1.
 
 **Синтаксис**
 
@@ -19,15 +21,15 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-Для получения более подробной информации о синтаксисе оконных функций, см.: [Window Functions - Syntax](./index.md/#syntax).
+Для более подробной информации о синтаксисе оконных функций смотрите: [Оконные функции - Синтаксис](./index.md/#syntax).
 
 **Возвращаемое значение**
 
-- Число для текущей строки в пределах её партиции. [UInt64](../data-types/int-uint.md).
+- Число для текущей строки внутри ее партиции. [UInt64](../data-types/int-uint.md).
 
 **Пример**
 
-Следующий пример основан на примере, приведенном в видеоинструкции [Ranking window functions in ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA).
+Следующий пример основан на примере, представленном в учебном видео [Ранжирование оконных функций в ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA).
 
 Запрос:
 

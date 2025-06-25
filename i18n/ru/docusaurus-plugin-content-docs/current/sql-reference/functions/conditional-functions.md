@@ -1,7 +1,9 @@
 ---
-slug: /sql-reference/functions/conditional-functions
+description: 'Документация для условных функций'
+sidebar_label: 'Условные'
 sidebar_position: 40
-sidebar_label: Условные
+slug: /sql-reference/functions/conditional-functions
+title: 'Условные функции'
 ---
 
 
@@ -11,15 +13,15 @@ sidebar_label: Условные
 
 Выполняет условную ветвление.
 
-Если условие `cond` оценивается как ненулевое значение, функция возвращает результат выражения `then`. Если `cond` оценивается как ноль или `NULL`, возвращается результат выражения `else`.
+Если условие `cond` оценивается в ненулевое значение, функция возвращает результат выражения `then`. Если `cond` оценивается в ноль или `NULL`, то возвращается результат выражения `else`.
 
-Настройка [short_circuit_function_evaluation](/operations/settings/settings#short_circuit_function_evaluation) управляет использованием короткой оценки (short-circuit evaluation). Если включено, выражение `then` оценивается только для строк, где `cond` истинно, а выражение `else` - где `cond` ложно. Например, при использовании короткой оценки не возникает исключение деления на ноль при выполнении запроса `SELECT if(number = 0, 0, intDiv(42, number)) FROM numbers(10)`.
+Настройка [short_circuit_function_evaluation](/operations/settings/settings#short_circuit_function_evaluation) управляет тем, используется ли краткая оценка. Если включена, выражение `then` оценивалось только для строк, где `cond` равно `true`, а выражение `else` - для строк, где `cond` равно `false`. Например, при краткой оценке исключение деления на ноль не выбрасывается при выполнении запроса `SELECT if(number = 0, 0, intDiv(42, number)) FROM numbers(10)`.
 
-`then` и `else` должны быть одного типа.
+`then` и `else` должны быть похожими по типу.
 
 **Синтаксис**
 
-``` sql
+```sql
 if(cond, then, else)
 ```
 Псевдоним: `cond ? then : else` (тернарный оператор)
@@ -32,17 +34,17 @@ if(cond, then, else)
 
 **Возвращаемые значения**
 
-Результат либо выражения `then`, либо `else`, в зависимости от условия `cond`.
+Результат любого из выражений `then` или `else`, в зависимости от условия `cond`.
 
 **Пример**
 
-``` sql
+```sql
 SELECT if(1, plus(2, 2), plus(2, 6));
 ```
 
 Результат:
 
-``` text
+```text
 ┌─plus(2, 2)─┐
 │          4 │
 └────────────┘
@@ -50,32 +52,32 @@ SELECT if(1, plus(2, 2), plus(2, 6));
 
 ## multiIf {#multiif}
 
-Позволяет написать оператор [CASE](../../sql-reference/operators/index.md#conditional-expression) более компактно в запросе.
+Позволяет записывать оператор [CASE](../../sql-reference/operators/index.md#conditional-expression) компактнее в запросе.
 
 **Синтаксис**
 
-``` sql
+```sql
 multiIf(cond_1, then_1, cond_2, then_2, ..., else)
 ```
 
-Настройка [short_circuit_function_evaluation](/operations/settings/settings#short_circuit_function_evaluation) управляет использованием короткой оценки. Если включено, выражение `then_i` оценивается только для строк, где `((NOT cond_1) AND (NOT cond_2) AND ... AND (NOT cond_{i-1}) AND cond_i)` истинно, `cond_i` будет оцениваться только для строк, где `((NOT cond_1) AND (NOT cond_2) AND ... AND (NOT cond_{i-1}))` истинно. Например, при использовании короткой оценки не возникает исключение деления на ноль при выполнении запроса `SELECT multiIf(number = 2, intDiv(1, number), number = 5) FROM numbers(10)`.
+Настройка [short_circuit_function_evaluation](/operations/settings/settings#short_circuit_function_evaluation) управляет тем, используется ли краткая оценка. Если включена, выражение `then_i` оценивается только для строк, где `((NOT cond_1) AND (NOT cond_2) AND ... AND (NOT cond_{i-1}) AND cond_i)` равно `true`, `cond_i` будет оцениваться только для строк, где `((NOT cond_1) AND (NOT cond_2) AND ... AND (NOT cond_{i-1}))` равно `true`. Например, при краткой оценке исключение деления на ноль не выбрасывается при выполнении запроса `SELECT multiIf(number = 2, intDiv(1, number), number = 5) FROM numbers(10)`.
 
 **Аргументы**
 
 Функция принимает `2N+1` параметров:
-- `cond_N` — N-е оцениваемое условие, которое определяет, вернется ли `then_N`.
+- `cond_N` — N-е оцениваемое условие, которое управляет тем, будет ли возвращено `then_N`.
 - `then_N` — Результат функции, когда `cond_N` истинно.
 - `else` — Результат функции, если ни одно из условий не истинно.
 
 **Возвращаемые значения**
 
-Результат либо любого из выражений `then_N`, либо `else`, в зависимости от условий `cond_N`.
+Результат любого из выражений `then_N` или `else`, в зависимости от условий `cond_N`.
 
 **Пример**
 
-Предположим, эта таблица:
+Предположим, есть такая таблица:
 
-``` text
+```text
 ┌─left─┬─right─┐
 │ ᴺᵁᴸᴸ │     4 │
 │    1 │     3 │
@@ -85,7 +87,7 @@ multiIf(cond_1, then_1, cond_2, then_2, ..., else)
 └──────┴───────┘
 ```
 
-``` sql
+```sql
 SELECT
     left,
     right,
@@ -101,11 +103,11 @@ FROM LEFT_RIGHT
 └──────┴───────┴─────────────────┘
 ```
 
-## Прямое использование условий {#using-conditional-results-directly}
+## Использование условных результатов напрямую {#using-conditional-results-directly}
 
-Условия всегда возвращают `0`, `1` или `NULL`. Поэтому вы можете использовать результаты условий напрямую, как это:
+Условные функции всегда возвращают `0`, `1` или `NULL`. Поэтому вы можете использовать условные результаты напрямую вот так:
 
-``` sql
+```sql
 SELECT left < right AS is_small
 FROM LEFT_RIGHT
 
@@ -118,11 +120,11 @@ FROM LEFT_RIGHT
 └──────────┘
 ```
 
-## NULL значения в условиях {#null-values-in-conditionals}
+## NULL-значения в условных функциях {#null-values-in-conditionals}
 
-Когда в условиях участвуют `NULL` значения, результат также будет `NULL`.
+Когда в условных выражениях участвуют значения `NULL`, результат также будет `NULL`.
 
-``` sql
+```sql
 SELECT
     NULL < 1,
     2 < NULL,
@@ -134,11 +136,11 @@ SELECT
 └───────────────┴───────────────┴──────────────────┴────────────────────┘
 ```
 
-Поэтому вы должны аккуратно строить свои запросы, если типы `Nullable`.
+Поэтому вам следует осторожно составлять свои запросы, если типы являются `Nullable`.
 
 Следующий пример демонстрирует это, не добавляя условие равенства в `multiIf`.
 
-``` sql
+```sql
 SELECT
     left,
     right,
@@ -188,7 +190,7 @@ SELECT greatest(toDateTime32(now() + toIntervalDay(1)), toDateTime64(now(), 3))
 ```response
 ┌─greatest(toDateTime32(plus(now(), toIntervalDay(1))), toDateTime64(now(), 3))─┐
 │                                                       2023-05-12 01:16:59.000 │
-└───────────────┴───────────────────────────────────────────────────────────────┘
+└──―──────────────────────────────────────────────────────────────────────────┘
 ```
 
 :::note
@@ -242,19 +244,19 @@ SELECT least(toDateTime32(now() + toIntervalDay(1)), toDateTime64(now(), 3))
 
 **Синтаксис**
 
-``` sql
+```sql
 clamp(value, min, max)
 ```
 
 **Аргументы**
 
 - `value` – Входное значение.
-- `min` – Ограничивает нижнюю границу.
-- `max` – Ограничивает верхнюю границу.
+- `min` – Ограничение нижней границы.
+- `max` – Ограничение верхней границы.
 
 **Возвращаемые значения**
 
-Если значение меньше минимально допустимого, возвращается минимальное значение; если оно больше максимального, возвращается максимальное значение; в противном случае возвращается текущее значение.
+Если значение меньше минимального, возвращается минимальное значение; если больше максимального, возвращается максимальное значение; в противном случае возвращается текущее значение.
 
 Примеры:
 
@@ -265,4 +267,177 @@ SELECT clamp(1, 2, 3) result,  toTypeName(result) type;
 ┌─result─┬─type────┐
 │      2 │ Float64 │
 └────────┴─────────┘
+```
+
+## Оператор CASE {#case-statement}
+
+Выражение CASE в ClickHouse предоставляет условную логику, аналогичную оператору SQL CASE. Оно оценивает условия и возвращает значения на основе первого совпадающего условия.
+
+ClickHouse поддерживает две формы CASE:
+
+1. `CASE WHEN ... THEN ... ELSE ... END`
+<br/>
+Эта форма позволяет полную гибкость и реализуется внутри с помощью функции [multiIf](/sql-reference/functions/conditional-functions#multiif). Каждое условие оценивается независимо, и выражения могут включать не константные значения.
+
+```sql
+SELECT
+    number,
+    CASE
+        WHEN number % 2 = 0 THEN number + 1
+        WHEN number % 2 = 1 THEN number * 10
+        ELSE number
+    END AS result
+FROM system.numbers
+WHERE number < 5;
+
+-- преобразуется в
+SELECT
+    number,
+    multiIf((number % 2) = 0, number + 1, (number % 2) = 1, number * 10, number) AS result
+FROM system.numbers
+WHERE number < 5
+
+┌─number─┬─result─┐
+│      0 │      1 │
+│      1 │     10 │
+│      2 │      3 │
+│      3 │     30 │
+│      4 │      5 │
+└────────┴────────┘
+
+5 строк в наборе. Время: 0.002 сек.
+```
+
+2. `CASE <expr> WHEN <val1> THEN ... WHEN <val2> THEN ... ELSE ... END`
+<br/>
+Эта более компактная форма оптимизирована для сопоставления значений констант и использует `caseWithExpression()` внутри.
+
+Например, следующее является допустимым:
+
+```sql
+SELECT
+    number,
+    CASE number
+        WHEN 0 THEN 100
+        WHEN 1 THEN 200
+        ELSE 0
+    END AS result
+FROM system.numbers
+WHERE number < 3;
+
+-- преобразуется в
+
+SELECT
+    number,
+    caseWithExpression(number, 0, 100, 1, 200, 0) AS result
+FROM system.numbers
+WHERE number < 3
+
+┌─number─┬─result─┐
+│      0 │    100 │
+│      1 │    200 │
+│      2 │      0 │
+└────────┴────────┘
+
+3 строки в наборе. Время: 0.002 сек.
+```
+
+Эта форма также не требует, чтобы возвращаемые выражения были константами.
+
+```sql
+SELECT
+    number,
+    CASE number
+        WHEN 0 THEN number + 1
+        WHEN 1 THEN number * 10
+        ELSE number
+    END
+FROM system.numbers
+WHERE number < 3;
+
+-- преобразуется в
+
+SELECT
+    number,
+    caseWithExpression(number, 0, number + 1, 1, number * 10, number)
+FROM system.numbers
+WHERE number < 3
+
+┌─number─┬─caseWithExpr⋯0), number)─┐
+│      0 │                        1 │
+│      1 │                       10 │
+│      2 │                        2 │
+└────────┴──────────────────────────┘
+
+3 строки в наборе. Время: 0.001 сек.
+```
+
+### Замечания  {#caveats}
+
+ClickHouse определяет тип результата выражения CASE (или его внутреннего эквивалента, например `multiIf`) до оценки любых условий. Это важно, когда возвращаемые выражения отличаются по типу, например, разные временные зоны или числовые типы.
+
+- Тип результата выбирается на основе наибольшего совместимого типа среди всех ветвей.
+- После выбора этого типа все другие ветви неявно приводятся к нему - даже если их логика никогда не будет выполнена во время выполнения.
+- Для типов, таких как DateTime64, где временная зона является частью сигнатуры типа, это может привести к неожиданному поведению: первая встреченная временная зона может быть использована для всех ветвей, даже если другие ветви указывают на разные временные зоны.
+
+Например, ниже все строки возвращают временную метку в часовом поясе первой соответствующей ветви, т.е. `Asia/Kolkata`
+
+```sql
+SELECT
+    number,
+    CASE
+        WHEN number = 0 THEN fromUnixTimestamp64Milli(0, 'Asia/Kolkata')
+        WHEN number = 1 THEN fromUnixTimestamp64Milli(0, 'America/Los_Angeles')
+        ELSE fromUnixTimestamp64Milli(0, 'UTC')
+    END AS tz
+FROM system.numbers
+WHERE number < 3;
+
+-- преобразуется в
+
+SELECT
+    number,
+    multiIf(number = 0, fromUnixTimestamp64Milli(0, 'Asia/Kolkata'), number = 1, fromUnixTimestamp64Milli(0, 'America/Los_Angeles'), fromUnixTimestamp64Milli(0, 'UTC')) AS tz
+FROM system.numbers
+WHERE number < 3
+
+┌─number─┬──────────────────────tz─┐
+│      0 │ 1970-01-01 05:30:00.000 │
+│      1 │ 1970-01-01 05:30:00.000 │
+│      2 │ 1970-01-01 05:30:00.000 │
+└────────┴─────────────────────────┘
+
+3 строки в наборе. Время: 0.011 сек.
+```
+
+Здесь ClickHouse видит несколько типов `DateTime64(3, <timezone>)`. Он выводит общий тип как `DateTime64(3, 'Asia/Kolkata'`, так как это первый, который он видит, неявно приводя другие ветви к этому типу.
+
+Это можно решить, преобразовав в строку, чтобы сохранить предполагаемое форматирование временной зоны:
+
+```sql
+SELECT
+    number,
+    multiIf(
+        number = 0, formatDateTime(fromUnixTimestamp64Milli(0), '%F %T', 'Asia/Kolkata'),
+        number = 1, formatDateTime(fromUnixTimestamp64Milli(0), '%F %T', 'America/Los_Angeles'),
+        formatDateTime(fromUnixTimestamp64Milli(0), '%F %T', 'UTC')
+    ) AS tz
+FROM system.numbers
+WHERE number < 3;
+
+-- преобразуется в
+
+SELECT
+    number,
+    multiIf(number = 0, formatDateTime(fromUnixTimestamp64Milli(0), '%F %T', 'Asia/Kolkata'), number = 1, formatDateTime(fromUnixTimestamp64Milli(0), '%F %T', 'America/Los_Angeles'), formatDateTime(fromUnixTimestamp64Milli(0), '%F %T', 'UTC')) AS tz
+FROM system.numbers
+WHERE number < 3
+
+┌─number─┬─tz──────────────────┐
+│      0 │ 1970-01-01 05:30:00 │
+│      1 │ 1969-12-31 16:00:00 │
+│      2 │ 1970-01-01 00:00:00 │
+└────────┴─────────────────────┘
+
+3 строки в наборе. Время: 0.002 сек.
 ```

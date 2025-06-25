@@ -131,7 +131,7 @@
   },
   "theme.navbar.mobileSidebarSecondaryMenu.backButtonLabel": {
     "message": "← Перейти к главному меню",
-    "description": "The label of the back button to return to main menu, inside the mobile navbar sidebar (notably used to display the docs sidebar)"
+    "description": "The label of the back button to return to main menu, inside the mobile navbar sidebar secondary menu (notably used to display the docs sidebar)"
   },
   "theme.ErrorPageContent.title": {
     "message": "На странице произошёл сбой.",
@@ -864,9 +864,128 @@
     "message": "Эта документация переведена с помощью искусственного интеллекта"
   },
   "Spotted a translation issue? Help us to improve it by reporting translation issues.": {
-    "message": "Заметили проблему с переводом? Помогите нам улучшить его, сообщив о проблемах перевода."
+    "message": "Заметили проблему с переводом? Помогите нам улучшить его."
   },
   "Report an issue": {
     "message": "Сообщите о проблеме"
+  },
+  "topNav.navItems.Products": {
+    "message": "Products"
+  },
+  "topNav.navItems.Use cases": {
+    "message": "Use cases"
+  },
+  "topNav.navItems.Docs": {
+    "message": "Docs"
+  },
+  "topNav.navItems.Resources": {
+    "message": "Resources"
+  },
+  "topNav.navItems.Pricing": {
+    "message": "Pricing"
+  },
+  "topNav.navItems.Contact us": {
+    "message": "Contact us"
+  },
+  "theme.IdealImageMessage.loading": {
+    "message": "Загрузка...",
+    "description": "When the full-scale image is loading"
+  },
+  "theme.IdealImageMessage.load": {
+    "message": "Нажмите для загрузки {sizeMessage}",
+    "description": "To prompt users to load the full image. sizeMessage is a parenthesized size figure."
+  },
+  "theme.IdealImageMessage.offline": {
+    "message": "Ваш браузер находится в автономном режиме. Изображение не загружено",
+    "description": "When the user is viewing an offline document"
+  },
+  "theme.IdealImageMessage.404error": {
+    "message": "404. Изображение не найдено",
+    "description": "When the image is not found"
+  },
+  "theme.IdealImageMessage.error": {
+    "message": "Ошибка. Нажмите для перезагрузки",
+    "description": "When the image fails to load for unknown error"
+  },
+  "topNav.navItems.products.clickhouse_cloud_1": {
+    "message": "The best way to use ClickHouse."
+  },
+  "topNav.navItems.products.clickhouse_cloud_2": {
+    "message": "Available on AWS, GCP, and Azure."
+  },
+  "topNav.navItems.products.byoc_1": {
+    "message": "Bring Your Own Cloud"
+  },
+  "topNav.navItems.products.byoc_2": {
+    "message": "A fully managed ClickHouse Cloud service,"
+  },
+  "topNav.navItems.products.byoc_3": {
+    "message": "deployed in your own AWS account."
+  },
+  "topNav.navItems.products.oss": {
+    "message": "Spin up a database with open-source"
+  },
+  "topNav.navItems.products.oss_2": {
+    "message": "ClickHouse"
+  },
+  "topNav.navItems.products.integrations": {
+    "message": "View 100+ integrations"
+  },
+  "topNav.navItems.resources.User stories": {
+    "message": "User stories"
+  },
+  "topNav.navItems.resources.Blog": {
+    "message": "Blog"
+  },
+  "topNav.navItems.resources.Learning and Certification": {
+    "message": "Learning and Certification"
+  },
+  "topNav.navItems.resources.ClickHouse Academy": {
+    "message": "ClickHouse Academy"
+  },
+  "topNav.navItems.resources.Free live training": {
+    "message": "Free live training"
+  },
+  "topNav.navItems.resources.ClickHouse Certification": {
+    "message": "ClickHouse Certification"
+  },
+  "topNav.navItems.resources.Comparisons": {
+    "message": "Comparisons"
+  },
+  "topNav.navItems.resources.BigQuery": {
+    "message": "BigQuery"
+  },
+  "topNav.navItems.resources.PostgreSQL": {
+    "message": "PostgreSQL"
+  },
+  "topNav.navItems.resources.Redshift": {
+    "message": "Redshift"
+  },
+  "topNav.navItems.resources.Rockset": {
+    "message": "Rockset"
+  },
+  "topNav.navItems.resources.Snowflake": {
+    "message": "Snowflake"
+  },
+  "topNav.navItems.resources.Videos": {
+    "message": "Videos"
+  },
+  "topNav.navItems.resources.Demos": {
+    "message": "Demos"
+  },
+  "topNav.navItems.use_cases.Real-time analytics": {
+    "message": "Real-time analytics"
+  },
+  "topNav.navItems.use_cases.Machine learning and GenAI": {
+    "message": "Machine learning and GenAI"
+  },
+  "topNav.navItems.use_cases.Business intelligence": {
+    "message": "Business intelligence"
+  },
+  "topNav.navItems.use_cases.Logs, events, and traces": {
+    "message": "Logs, events, and traces"
+  },
+  "topNav.navItems.use_cases.All use cases": {
+    "message": "All use cases"
   }
 }
