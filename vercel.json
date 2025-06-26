@@ -3358,17 +3358,12 @@
     },
     {
       "source": "/docs/cloud/get-started/cloud-quick-start",
-      "destination": "/docs/cloud/get-started/sql-console",
+      "destination": "/docs/getting-started/quick-start/cloud",
       "permanent": true
     },
     {
-      "source": "/docs/cloud/get-started/cloud-quick-start",
-      "destination": "/docs/cloud/get-started/sql-console",
-      "permanent": true
-    },
-    {
-      "source" : "/docs/getting-started/quick-star",
-      "destination" : "/getting-started/quick-start/oss",
+      "source" : "/docs/getting-started/quick-start",
+      "destination" : "/docs/get-started/quick-start",
       "permanent" : true
     }
   ]
