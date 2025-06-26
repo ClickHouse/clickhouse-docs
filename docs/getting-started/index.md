@@ -12,7 +12,7 @@ title: 'Tutorials and Example Datasets'
 
 We have a lot of resources for helping you get started and learn how ClickHouse works:
 
-- If you need to get ClickHouse up and running, check out our [Quick Start](../quick-start.mdx)
+- If you need to get ClickHouse up and running, check out our [Quick Start](/get-started/quick-start)
 - The [ClickHouse Tutorial](../tutorial.md) analyzes a dataset of New York City taxi rides
 
 In addition, the sample datasets provide a great experience on working with ClickHouse,

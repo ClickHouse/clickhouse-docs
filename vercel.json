@@ -3355,6 +3355,16 @@
       "source": "/docs/migrations/rockset",
       "destination": "/docs/migrations/migrations",
       "permanent": true
+    },
+    {
+      "source": "/docs/cloud/get-started/cloud-quick-start",
+      "destination": "/docs/getting-started/quick-start/cloud",
+      "permanent": true
+    },
+    {
+      "source" : "/docs/getting-started/quick-start",
+      "destination" : "/docs/get-started/quick-start",
+      "permanent" : true
     }
   ]
 }
