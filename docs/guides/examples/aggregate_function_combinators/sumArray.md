@@ -39,8 +39,8 @@ INSERT INTO daily_category_sales VALUES
 SELECT 
     date,
     category_sales,
-    sumArray(category_sales) as total_sales_sumArray,
-    sum(arraySum(category_sales)) as total_sales_arraySum
+    sumArray(category_sales) AS total_sales_sumArray,
+    sum(arraySum(category_sales)) AS total_sales_arraySum
 FROM daily_category_sales
 GROUP BY date, category_sales;
 ```

@@ -39,7 +39,7 @@ INSERT INTO product_sales VALUES
     ('Watch', 199.99, 5),
     ('Headphones', 79.99, 20);
 
-SELECT argMaxIf(product_name, price, sales_count >= 10) as most_expensive_popular_product
+SELECT argMaxIf(product_name, price, sales_count >= 10) AS most_expensive_popular_product
 FROM product_sales;
 ```
 

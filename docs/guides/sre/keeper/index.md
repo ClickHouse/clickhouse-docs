@@ -1049,7 +1049,7 @@ Query id: 8f542664-4548-4a02-bd2a-6f2c973d0dc4
 4.  Create a distributed table
 
 ```sql
-create table db_uuid.dist_uuid_table1 on cluster 'cluster_1S_2R'
+CREATE TABLE db_uuid.dist_uuid_table1 ON CLUSTER 'cluster_1S_2R'
    (
      id UInt64,
      column1 String

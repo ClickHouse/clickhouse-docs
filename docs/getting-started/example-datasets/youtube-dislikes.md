@@ -287,8 +287,8 @@ Enabling comments seems to be correlated with a higher rate of engagement.
 SELECT
     toStartOfMonth(toDateTime(upload_date)) AS month,
     uniq(uploader_id) AS uploaders,
-    count() as num_videos,
-    sum(view_count) as view_count
+    count() AS num_videos,
+    sum(view_count) AS view_count
 FROM youtube
 GROUP BY month
 ORDER BY month ASC;
@@ -411,9 +411,9 @@ SELECT
 FROM
 (
 SELECT
-    power(10, CEILING(log10(view_count + 1))) as view_range,
+    power(10, CEILING(log10(view_count + 1))) AS view_range,
     is_comments_enabled,
-    avg(like_count / dislike_count) as like_ratio
+    avg(like_count / dislike_count) AS like_ratio
 FROM youtube WHERE dislike_count > 0
 GROUP BY
     view_range,
