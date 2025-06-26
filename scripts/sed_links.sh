@@ -7,4 +7,3 @@
 # on ClickHouse/clickhouse-docs
 
 sed -i '' 's|(../../quick-start\.mdx)|(/get-started/quick-start)|g' docs/operations/utilities/clickhouse-local.md
-sed -i '' 's|(/get-started/quick-start#download-the-binary)|(/getting-started/quick-start/oss/#download-the-binary)|g' docs/operations/utilities/clickhouse-local.md
