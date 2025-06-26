@@ -3355,6 +3355,21 @@
       "source": "/docs/migrations/rockset",
       "destination": "/docs/migrations/migrations",
       "permanent": true
+    },
+    {
+      "source": "/docs/cloud/get-started/cloud-quick-start",
+      "destination": "/docs/cloud/get-started/sql-console",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/get-started/cloud-quick-start",
+      "destination": "/docs/cloud/get-started/sql-console",
+      "permanent": true
+    },
+    {
+      "source" : "/docs/getting-started/quick-star",
+      "destination" : "/getting-started/quick-start/oss",
+      "permanent" : true
     }
   ]
 }

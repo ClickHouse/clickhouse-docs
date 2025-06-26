@@ -14,7 +14,16 @@ const sidebars = {
       link: { type: "doc", id: "introduction-index" },
       items: [
         "intro",
-        "quick-start",
+        {
+          type: "category",
+          label: "Quick start",
+          collapsed: false,
+          link: { type: "doc", id: "getting-started/quick-start/index" },
+          items: [
+            { type: "doc", id: "getting-started/quick-start/cloud" },
+            { type: "doc", id: "getting-started/quick-start/oss" }
+          ]
+        },
         "tutorial",
         {
           type: "category",
@@ -244,10 +253,6 @@ const sidebars = {
       link: { type: "doc", id: "cloud/get-started/index" },
       items: [
         "cloud-index",
-        {
-          type: "doc",
-          id: "cloud/get-started/cloud-quick-start",
-        },
         "cloud/get-started/sql-console",
         "cloud/get-started/query-insights",
         "cloud/get-started/query-endpoints",
