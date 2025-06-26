@@ -39,10 +39,16 @@ You will not be charged for the time that the service is under maintenance. _Mai
 
 ## Release channels (upgrade schedule) {#release-channels-upgrade-schedule}
 
-You are able to specify the upgrade schedule for your ClickHouse Cloud service by subscribing to a specific release channel. There are three release channels and the ability to configure the day and time of the week for upgrades with Scheduled upgrades.
-- Fast release channel for early access to upgrades, note that Basic tier services are automatically enlisted to the fast release channel
-- Regular release channel is the default and upgrades on this channel start two weeks after the Fast release channel upgrades. If your service on the Scale and Enterprise tier does not have a Release channel set, it is by default on the Regular release channel
-- Slow release channel is the deferred release and upgrades are spaced two weeks after the Regular release channel
+Users are able to specify the upgrade schedule for their ClickHouse Cloud service by subscribing to a specific release channel. There are three release channels, and the user has the ability to configure the day and time of the week for upgrades with the **scheduled upgrades** feature.
+
+The three release channels are:
+- The [**fast release channel**](#fast-release-channel-early-upgrades) for early access to upgrades.
+- The [**regular release channel**](#regular-release-channel) is the default, and upgrades on this channel start two weeks after the fast release channel upgrades. If your service on the Scale and Enterprise tier does not have a release channel set, it is on the regular release channel by default.
+- The [**slow release channel**](#slow-release-channel-deferred-upgrades) is for deferred release. Upgrades on this channel occur two weeks after the regular release channel upgrades.
+
+:::note
+Basic tier services are automatically enlisted to the fast release channel
+:::
 
 ### Fast release channel (early upgrades) {#fast-release-channel-early-upgrades}
 
