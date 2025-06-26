@@ -52,7 +52,7 @@ The template can either read the entire table or read specific records using a p
 All `ClickHouseIO` parameters default values could be found in [`ClickHouseIO` Apache Beam Connector](/integrations/apache-beam#clickhouseiowrite-parameters)
 :::
 
-## Source and Target Tables Schema {#source-and-target-tables-schema}
+## Source and target tables schema {#source-and-target-tables-schema}
 
 In order to effectively load the BigQuery dataset to ClickHouse, and a column infestation process is conducted with the
 following phases:
@@ -112,14 +112,14 @@ gcloud dataflow flex-template run "bigquery-clickhouse-dataflow-$(date +%Y%m%d-%
  --parameters inputTableSpec="<bigquery table id>",jdbcUrl="jdbc:clickhouse://<clickhouse host>:<clickhouse port>/<schema>?ssl=true&sslmode=NONE",clickHouseUsername="<username>",clickHousePassword="<password>",clickHouseTable="<clickhouse target table>"
 ```
 
-### Command Breakdown {#command-breakdown}
+### Command breakdown {#command-breakdown}
 
 - **Job Name:** The text following the `run` keyword is the unique job name.
 - **Template File:** The JSON file specified by `--template-file-gcs-location` defines the template structure and
   details about the accepted parameters. The mention file path is public and ready to use.
 - **Parameters:** Parameters are separated by commas. For string-based parameters, enclose the values in double quotes.
 
-### Expected Response {#expected-response}
+### Expected response {#expected-response}
 
 After running the command, you should see a response similar to the following:
 
@@ -151,6 +151,6 @@ This error occurs when ClickHouse runs out of memory while processing large batc
 * Decrease the batch size: Adjust the batch size in your Dataflow job configuration to send smaller chunks of data to ClickHouse, reducing memory consumption per batch.
 These changes might help balance resource usage during data ingestion.
 
-## Template Source Code {#template-source-code}
+## Template source code {#template-source-code}
 
 The template's source code is available in ClickHouse's [DataflowTemplates](https://github.com/ClickHouse/DataflowTemplates) fork.
