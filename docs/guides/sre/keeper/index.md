@@ -52,7 +52,7 @@ The main ClickHouse Keeper configuration tag is `<keeper_server>` and has the fo
 | `create_snapshot_on_exit`            | Create a snapshot during shutdown                                                                                                                                                                                                                   | -                                                                                                            |
 | `hostname_checks_enabled`            | Enable sanity hostname checks for cluster configuration (e.g. if localhost is used with remote endpoints)                                                                                                                                           | `True`                                                                                                       |
 | `four_letter_word_white_list`        | White list of 4lw commands.                                                                                                                                                                                                                         | `conf, cons, crst, envi, ruok, srst, srvr, stat, wchs, dirs, mntr, isro, rcvr, apiv, csnp, lgif, rqld, ydld` |
-
+|`enable_ipv6`| Enable IPv6 | `True`|
 
 Other common parameters are inherited from the ClickHouse server config (`listen_host`, `logger`, and so on).
 
