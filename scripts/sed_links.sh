@@ -6,5 +6,11 @@
 # change it over on ClickHouse/ClickHouse once the PR has been merged
 # on ClickHouse/clickhouse-docs
 
-pwd
-sed -i '' 's|(../../quick-start\.mdx)|(/get-started/quick-start)|g' docs/operations/utilities/clickhouse-local.md
+# Detect OS and use appropriate sed syntax
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS
+    sed -i '' 's|(../../quick-start\.mdx)|(/get-started/quick-start)|g' docs/operations/utilities/clickhouse-local.md
+else
+    # Linux
+    sed -i 's|(../../quick-start\.mdx)|(/get-started/quick-start)|g' docs/operations/utilities/clickhouse-local.md
+fi
