@@ -38,7 +38,7 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
   [blog](https://clickhouse.com/blog/new-terraform-provider-manage-clickhouse-database-users-roles-and-privileges-with-code)
   and our [docs](https://registry.terraform.io/providers/ClickHouse/clickhousedbops/latest/docs)
   for more information.
-- Enterprise tier services can now enlist in the slow release channel to defer 
+- Enterprise tier services can now enlist in the [slow release channel](/manage/updates/#slow-release-channel-deferred-upgrades) to defer 
   upgrades by two weeks after the regular release to permit additional time for 
   testing.
 
