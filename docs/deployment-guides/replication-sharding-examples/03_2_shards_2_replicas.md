@@ -636,7 +636,7 @@ It requires two parameters to be specified:
 The `zoo_path` parameter can be set to anything you choose, although it is recommended to follow 
 the convention of using prefix
 
-```
+```text
 /clickhouse/tables/{shard}/{database}/{table}
 ```
 
