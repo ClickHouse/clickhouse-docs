@@ -30,7 +30,7 @@ You have familiarized yourself with the [ClickPipes intro](./index.md).
 
 <VerticalStepper type="numbered" headerLevel="h3">
 
-### Navigate to Data Sources {#1-load-sql-console}
+### Navigate to data sources {#1-load-sql-console}
 Select the `Data Sources` button on the left-side menu and click on "Set up a ClickPipe"
 <Image img={cp_step0} alt="Select imports" size="md"/>
 
@@ -42,7 +42,7 @@ Select your data source.
 Fill out the form by providing your ClickPipe with a name, a description (optional), your credentials, and other connection details.
 <Image img={cp_step2} alt="Fill out connection details" size="md"/>
 
-### Configure a schema registry (Optional) {#4-configure-your-schema-registry}
+### Configure a schema registry (optional) {#4-configure-your-schema-registry}
 A valid schema is required for Avro streams and optional for JSON. This schema will be used to parse [AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent) or validate JSON messages on the selected topic.
 - Avro messages that cannot be parsed or JSON messages that fail validation will generate an error.
 - The "root" path of the schema registry.  For example, a Confluent Cloud schema registry URL is just an HTTPS url with no path, like `https://test-kk999.us-east-2.aws.confluent.cloud`  If only the root
@@ -54,7 +54,7 @@ will retrieve the latest version).  A complete url using a schema subject would 
 Note that in all cases ClickPipes will automatically retrieve an updated or different schema from the registry if indicated by the schema ID embedded in the message.  If the message is written
 without an embedded schema id, then the specific schema ID or subject must be specified to parse all messages.
 
-### Configure a Reverse Private Endpoint(Optional) {#5-configure-reverse-private-endpoint}
+### Configure a reverse private endpoint (optional) {#5-configure-reverse-private-endpoint}
 Configure a Reverse Private Endpoint to allow ClickPipes to connect to your Kafka cluster using AWS PrivateLink.
 See our [AWS PrivateLink documentation](./aws-privatelink.md) for more information.
 
