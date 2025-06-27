@@ -29,7 +29,7 @@ The architecture of the cluster you will be setting up is shown below:
 
 ## Prerequisites {#prerequisites}
 
-- You've set up a [local ClickHouse server](../getting-started/install/install.mdx) before
+- You've set up a [local ClickHouse server](/install) before
 - You are familiar with basic configuration concepts of ClickHouse such as [configuration files](/operations/configuration-files)
 - You have docker installed on your machine
 
