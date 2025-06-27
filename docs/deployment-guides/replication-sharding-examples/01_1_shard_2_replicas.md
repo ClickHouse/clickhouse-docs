@@ -8,9 +8,9 @@ description: 'Page describing an example architecture with five servers configur
 
 import Image from '@theme/IdealImage';
 import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';
+import ReplicationArchitecture from '@site/static/images/deployment-guides/replication-sharding-examples/replication.png';
 import ConfigFileNote from '@site/docs/_snippets/_config-files.md';
 import KeeperConfigFileNote from '@site/docs/_snippets/_keeper-config-files.md';
-import ReplicationArchitecture from '@site/static/images/deployment-guides/replication-sharding-examples/replication.png';
 import ConfigExplanation from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_config_explanation.mdx';
 import ListenHost from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_listen_host.mdx';
 import ServerParameterTable from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_server_parameter_table.mdx';
@@ -18,12 +18,12 @@ import KeeperConfig from '@site/docs/deployment-guides/replication-sharding-exam
 import KeeperConfigExplanation from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_keeper_explanation.mdx';
 import VerifyKeeperStatus from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_verify_keeper_using_mntr.mdx';
 import DedicatedKeeperServers from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_dedicated_keeper_servers.mdx';
+import ExampleFiles from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_working_example.mdx';
 
 > In this example, you'll learn how to set up a simple ClickHouse cluster which
 replicates the data. There are five servers configured. Two are used to host 
 copies of the data. The other three servers are used to coordinate the replication
-of data. With this example, we'll create a database and table that will be 
-replicated across both data nodes using the `ReplicatedMergeTree` table engine.
+of data. 
 
 The architecture of the cluster you will be setting up is shown below:
 
@@ -40,6 +40,8 @@ The architecture of the cluster you will be setting up is shown below:
 <VerticalStepper level="h2">
 
 ## Set up directory structure and test environment {#set-up}
+
+<ExampleFiles/>
 
 In this tutorial, you will use [Docker compose](https://docs.docker.com/compose/) to
 set up the ClickHouse cluster. This setup could be modified to work
@@ -533,11 +535,11 @@ SHOW DATABASES;
 
 ## Create a table on the cluster {#creating-a-table}
 
-Now that the database has been created, create a distributed table on the cluster.
+Now that the database has been created, create a table on the cluster.
 Run the following query from any of the host clients:
 
 ```sql
-CREATE TABLE IF NOT EXISTS uk.uk_price_paid
+CREATE TABLE IF NOT EXISTS uk.uk_price_paid_local
 --highlight-next-line
 ON CLUSTER cluster_1S_2R
 (
@@ -587,10 +589,13 @@ SHOW TABLES IN uk;
 
 ## Insert data {#inserting-data}
 
-Now insert data from `clickhouse-01`:
+As the data set is large and takes a few minutes to completely ingest, we will
+insert only a small subset to begin with.
+
+Insert a smaller subset of the data using the query below from `clickhouse-01`:
 
 ```sql
-INSERT INTO uk.uk_price_paid
+INSERT INTO uk.uk_price_paid_local
 SELECT
     toUInt32(price_string) AS price,
     parseDateTimeBestEffortUS(time) AS date,
@@ -626,18 +631,27 @@ FROM url(
     d String,
     e String'
 ) SETTINGS max_http_get_redirects=10;
+LIMIT 10000;
 ```
 
-Query the table from `clickhouse-02` or `clickhouse-01`:
+Notice that the data is completely replicated on each host:
 
-```sql title="Query"
-SELECT count(*) FROM uk.uk_price_paid;
-```
+```sql
+-- clickhouse-01
+SELECT count(*)
+FROM uk.uk_price_paid_local
 
-```response title="Response"
-   ┌──count()─┐
-1. │ 30212555 │ -- 30.21 million
-   └──────────┘
+--   ┌─count()─┐
+-- 1.│   10000 │
+--   └─────────┘
+
+-- clickhouse-02
+SELECT count(*)
+FROM uk.uk_price_paid_local
+
+--   ┌─count()─┐
+-- 1.│   10000 │
+--   └─────────┘
 ```
 
 To demonstrate what happens when one of the hosts fails, create a simple test database
@@ -715,11 +729,67 @@ SELECT * FROM test.test_table
    └────┴────────────────────┘
 ```
 
+If at this stage you would like to ingest the full UK property price dataset
+to play around with, you can run the following queries to do so:
+
+```sql
+TRUNCATE TABLE uk.uk_price_paid_local ON CLUSTER cluster_1S_2R;
+INSERT INTO uk.uk_price_paid_local
+SELECT
+    toUInt32(price_string) AS price,
+    parseDateTimeBestEffortUS(time) AS date,
+    splitByChar(' ', postcode)[1] AS postcode1,
+    splitByChar(' ', postcode)[2] AS postcode2,
+    transform(a, ['T', 'S', 'D', 'F', 'O'], ['terraced', 'semi-detached', 'detached', 'flat', 'other']) AS type,
+    b = 'Y' AS is_new,
+    transform(c, ['F', 'L', 'U'], ['freehold', 'leasehold', 'unknown']) AS duration,
+    addr1,
+    addr2,
+    street,
+    locality,
+    town,
+    district,
+    county
+FROM url(
+    'http://prod1.publicdata.landregistry.gov.uk.s3-website-eu-west-1.amazonaws.com/pp-complete.csv',
+    'CSV',
+    'uuid_string String,
+    price_string String,
+    time String,
+    postcode String,
+    a String,
+    b String,
+    c String,
+    addr1 String,
+    addr2 String,
+    street String,
+    locality String,
+    town String,
+    district String,
+    county String,
+    d String,
+    e String'
+    ) SETTINGS max_http_get_redirects=10;
+LIMIT 10000;
+```
+
+Query the table from `clickhouse-02` or `clickhouse-01`:
+
+```sql title="Query"
+SELECT count(*) FROM uk.uk_price_paid_local;
+```
+
+```response title="Response"
+   ┌──count()─┐
+1. │ 30212555 │ -- 30.21 million
+   └──────────┘
+```
+
 </VerticalStepper>
 
 ## Conclusion {#conclusion}
 
-As you saw, the advantage of this cluster topology is that with two replicas, 
+The advantage of this cluster topology is that with two replicas, 
 your data exists on two separate hosts. If one host fails, the other replica 
 continues serving data without any loss. This eliminates single points of 
 failure at the storage level.

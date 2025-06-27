@@ -6,12 +6,15 @@ title: 'Replication + Scaling'
 description: 'By going through this tutorial, you will learn how to set up a simple ClickHouse cluster.'
 ---
 
+import Image from '@theme/IdealImage';
+import SharedReplicatedArchitecture from '@site/static/images/deployment-guides/replication-sharding-examples/both.png';
 import ConfigExplanation from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_config_explanation.mdx';
 import ListenHost from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_listen_host.mdx';
 import KeeperConfig from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_keeper_config.mdx';
 import KeeperConfigExplanation from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_keeper_explanation.mdx';
 import VerifyKeeperStatus from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_verify_keeper_using_mntr.mdx';
 import DedicatedKeeperServers from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_dedicated_keeper_servers.mdx';
+import ExampleFiles from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_working_example.mdx';
 
 > In this example, you'll learn how to set up a simple ClickHouse cluster which
 both replicates and scales. It consisting of two shards and two replicas with a 
@@ -20,11 +23,7 @@ in the cluster.
 
 The architecture of the cluster you will be setting up is shown below:
 
-|Node|Description|
-|----|-----------|
-|`chnode1`|Data + ClickHouse Keeper|
-|`chnode2`|Data + ClickHouse Keeper|
-|`chnode3`|Used for ClickHouse Keeper quorum|
+<Image img={SharedReplicatedArchitecture} size='md' alt='Architecture diagram for 2 shards and 1 replica' />
 
 <DedicatedKeeperServers/>
 
@@ -37,6 +36,8 @@ The architecture of the cluster you will be setting up is shown below:
 <VerticalStepper level="h2">
 
 ## Set up directory structure and test environment {#set-up}
+
+<ExampleFiles/>
 
 In this tutorial, you will use [Docker compose](https://docs.docker.com/compose/) to
 set up the ClickHouse cluster. This setup could be modified to work
@@ -451,7 +452,7 @@ and then start the containers:
 
 ```bash
 [+] Running 8/8
- ✔ Network clickhouse-cluster_default  Created
+ ✔ Network   cluster_2s_2r_default     Created
  ✔ Container clickhouse-keeper-03      Started
  ✔ Container clickhouse-keeper-02      Started
  ✔ Container clickhouse-keeper-01      Started
@@ -581,9 +582,13 @@ SHOW DATABASES;
    └────────────────────┘
 ```
 
-## Create a local table on the cluster {#creating-a-table}
+## Create a distributed table on the cluster {#creating-a-table}
 
-Now that the database has been created, create a distributed table in the cluster.
+Now that the database has been created, next you will create a distributed table.
+Distributed tables are tables which have access to shards located on different
+hosts and are defined using the `Distributed` table engine. The distributed table
+acts as the interface across all the shards in the cluster.
+
 Run the following query from any of the host clients:
 
 ```sql
@@ -652,7 +657,7 @@ SHOW TABLES IN uk;
    └─────────────────────┘
 ```
 
-## Insert data using a distributed table {#inserting-data-using-distributed}
+## Insert data into a distributed table {#inserting-data-using-distributed}
 
 To insert data into the distributed table, `ON CLUSTER` cannot be used as it does
 not apply to DML (Data Manipulation Language) queries such as `INSERT`, `UPDATE`,
