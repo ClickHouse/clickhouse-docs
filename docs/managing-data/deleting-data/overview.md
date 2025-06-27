@@ -16,7 +16,7 @@ There are several ways to delete data in ClickHouse, each with its own advantage
 
 Here is a summary of the different ways to delete data in ClickHouse:
 
-## Lightweight Deletes {#lightweight-deletes}
+## Lightweight deletes {#lightweight-deletes}
 
 Lightweight deletes cause rows to be immediately marked as deleted such that they can be automatically filtered out of all subsequent `SELECT` queries. Subsequent removal of these deleted rows occurs during natural merge cycles and thus incurs less I/O. As a result, it is possible that for an unspecified period, data is not actually deleted from storage and is only marked as deleted. If you need to guarantee that data is deleted, consider the above mutation command.
 
@@ -33,7 +33,7 @@ In general, lightweight deletes should be preferred over mutations if the existe
 
 Read more about [lightweight deletes](/guides/developer/lightweight-delete).
 
-## Delete Mutations {#delete-mutations}
+## Delete mutations {#delete-mutations}
 
 Delete mutations can be issued through a `ALTER TABLE ... DELETE` command e.g. 
 
@@ -46,7 +46,7 @@ These can be executed either synchronously (by default if non-replicated) or asy
 
 Read more about [delete mutations](/sql-reference/statements/alter/delete).
 
-## Truncate Table {#truncate-table}
+## Truncate table {#truncate-table}
 
 If all data in a table needs to be deleted, use the `TRUNCATE TABLE` command shown below. This is a lightweight operation.
 
@@ -56,7 +56,7 @@ TRUNCATE TABLE posts
 
 Read more about [TRUNCATE TABLE](/sql-reference/statements/truncate).
 
-## Drop Partition {#drop-partition}
+## Drop partition {#drop-partition}
 
 If you have specified a custom partitioning key for your data, partitions can be efficiently dropped. Avoid high cardinality partitioning.
 

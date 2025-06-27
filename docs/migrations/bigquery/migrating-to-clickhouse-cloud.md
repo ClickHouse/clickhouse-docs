@@ -66,7 +66,7 @@ Before trying the following examples, we recommend users review the [permissions
 
 Change Data Capture (CDC) is the process by which tables are kept in sync between two databases. This is significantly more complex if updates and deletes are to be handled in near real-time. One approach is to simply schedule a periodic export using BigQuery's [scheduled query functionality](https://cloud.google.com/bigquery/docs/scheduling-queries). Provided you can accept some delay in the data being inserted into ClickHouse, this approach is easy to implement and maintain. An example is given in [this blog post](https://clickhouse.com/blog/clickhouse-bigquery-migrating-data-for-realtime-queries#using-scheduled-queries).
 
-## Designing Schemas {#designing-schemas}
+## Designing schemas {#designing-schemas}
 
 The Stack Overflow dataset contains a number of related tables. We recommend focusing on migrating the primary table first. This may not necessarily be the largest table but rather the one on which you expect to receive the most analytical queries. This will allow you to familiarize yourself with the main ClickHouse concepts. This table may require remodeling as additional tables are added to fully exploit ClickHouse features and obtain optimal performance. We explore this modeling process in our [Data Modeling docs](/data-modeling/schema-design#next-data-modeling-techniques).
 
@@ -499,7 +499,7 @@ MaxViewCount:            66975
 Peak memory usage: 377.26 MiB.
 ```
 
-## Conditionals and Arrays {#conditionals-and-arrays}
+## Conditionals and arrays {#conditionals-and-arrays}
 
 Conditional and array functions make queries significantly simpler. The following query computes the tags (with more than 10000 occurrences) with the largest percentage increase from 2022 to 2023. Note how the following ClickHouse query is succinct thanks to conditionals, array functions, and the ability to reuse aliases in the `HAVING` and `SELECT` clauses.
 

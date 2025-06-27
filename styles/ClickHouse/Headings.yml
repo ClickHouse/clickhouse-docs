@@ -7,6 +7,8 @@ match: $sentence
 indicators:
   - ":"
 exceptions:
+  - "^[a-z]+[A-Z][a-zA-Z]*$"  # Matches camelCase pattern
+  - "^[A-Z]+$"                # Matches words that are entirely uppercase
   - API
   - ANN
   - APPEND
@@ -181,6 +183,39 @@ exceptions:
   - Homebrew
   - WSL
   - London
+  - LowCardinality
   - Query 2. Average price per year in London
   - V24.5 changelog for Cloud
   - V24.6 changelog for Cloud
+  - SELECT
+  - PARTITION BY
+  - Common Table Expressions
+  - FixedString(N)
+  - AvgMerge
+  - AvgMergeState
+  - AvgState
+  - CountResample
+  - Avgmap
+  - Avgmergestate  
+  - Avgstate
+  - Countresample
+  - Grouparrayresample
+  - Grouparraydistinct
+  - Maxmap
+  - Minsimplestate
+  - Minmap
+  - Sumarray
+  - Summap
+  - Uniqarray
+  - Sumsimplestate
+  - CityHash
+  - FixedString(N)
+  - Avg merge
+  - Avg merge state
+  - Avg state
+  - Count resample
+  - avgMerge
+  - avgMergeState
+  - avgState
+  - countResample
+  - PREWHERE

@@ -456,7 +456,7 @@ The following features are available:
 - `create_if_not_exists` - support for `CreateIfNotExists` request, which will try to create a node if it doesn't exist. If it exists, no changes are applied and `ZOK` is returned. Default: `0`
 - `remove_recursive` - support for `RemoveRecursive` request, which removes the node along with its subtree. Default: `0`
 
-### Migration from ZooKeeper {#migration-from-zookeeper}
+### Migration from zookeeper {#migration-from-zookeeper}
 
 Seamless migration from ZooKeeper to ClickHouse Keeper is not possible. You have to stop your ZooKeeper cluster, convert data, and start ClickHouse Keeper. `clickhouse-keeper-converter` tool allows converting ZooKeeper logs and snapshots to ClickHouse Keeper snapshot. It works only with ZooKeeper > 3.4. Steps for migration:
 
