@@ -169,7 +169,7 @@ done
 
 ## Configure ClickHouse nodes {#configure-clickhouse-servers}
 
-### Server configuration {#cluster-configuration}
+### Server setup {#server-setup}
 
 Now modify each empty configuration file `config.xml` located at
 `fs/volumes/clickhouse-{}/etc/clickhouse-server/config.d`. The lines which are 
