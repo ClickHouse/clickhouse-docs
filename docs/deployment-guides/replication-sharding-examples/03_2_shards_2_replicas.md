@@ -642,7 +642,7 @@ the convention of using prefix
 
 where:
 - `{database}` and `{table}` will be replaced automatically. 
-- `{shard}` and `{replica}` are macros which were [defined](#configuration-explanation-clickhouse) 
+- `{shard}` and `{replica}` are macros which were [defined](#macros-config-explanation) 
    previously in the `config.xml` file of each ClickHouse node.
 
 You can run the query below from each host's client to confirm that the table has been created across the cluster:
