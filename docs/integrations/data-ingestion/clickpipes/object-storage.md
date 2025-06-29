@@ -173,7 +173,7 @@ Currently only protected buckets are supported for DigitalOcean spaces. You requ
 ### Azure Blob Storage {#azureblobstorage}
 Currently only protected buckets are supported for Azure Blob Storage. Authentication is done via a connection string, which supports access keys and shared keys. For more information, read [this guide](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string).
 
-## F.A.Q. {#faq}
+## FAQ {#faq}
 
 - **Does ClickPipes support GCS buckets prefixed with `gs://`?**
 

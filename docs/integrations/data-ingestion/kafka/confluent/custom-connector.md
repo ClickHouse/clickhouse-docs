@@ -59,7 +59,7 @@ Example:
 #### Gather your connection details {#gather-your-connection-details}
 <ConnectionDetails />
 
-#### Configure the Connector {#configure-the-connector}
+#### Configure the connector {#configure-the-connector}
 Navigate to `Connectors` -> `Add Connector` and use the following settings (note that the values are examples only):
 
 ```json

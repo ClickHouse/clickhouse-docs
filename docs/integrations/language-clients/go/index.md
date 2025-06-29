@@ -164,13 +164,13 @@ When choosing a client library, users should be aware of their respective pros a
 | clickhouse-go |       ✅       |        ✅        |       ✅       |          ✅         |           ✅           |         ✅        |      ✅      |          ✅         |
 |     ch-go     |       ✅       |        ✅        |               |                    |           ✅           |                  |      ✅      |                    |
 
-## Choosing a Client {#choosing-a-client}
+## Choosing a client {#choosing-a-client}
 
 Selecting a client library depends on your usage patterns and need for optimal performance. For insert heavy use cases, where millions of inserts are required per second, we recommend using the low level client [ch-go](https://github.com/ClickHouse/ch-go). This client avoids the associated overhead of pivoting the data from a row-orientated format to columns, as the ClickHouse native format requires. Furthermore, it avoids any reflection or use of the `interface{}` (`any`) type to simplify usage.
 
 For query workloads focused on aggregations or lower throughput insert workloads, the [clickhouse-go](https://github.com/ClickHouse/clickhouse-go) provides a familiar `database/sql` interface and more straightforward row semantics. Users can also optionally use HTTP for the transport protocol and take advantage of helper functions to marshal rows to and from structs.
 
-## The clickhouse-go Client {#the-clickhouse-go-client}
+## The clickhouse-go client {#the-clickhouse-go-client}
 
 The clickhouse-go client provides two API interfaces for communicating with ClickHouse:
 
@@ -1970,7 +1970,7 @@ func ConnectDSNHTTP() error {
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/connect_http.go)
 
-#### Connecting to Multiple Nodes {#connecting-to-multiple-nodes-1}
+#### Connecting to multiple nodes {#connecting-to-multiple-nodes-1}
 
 If using `OpenDB`, connect to multiple hosts using the same options approach as that used for the ClickHouse API - optionally specifying the `ConnOpenStrategy`.
 

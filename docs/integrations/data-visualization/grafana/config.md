@@ -57,7 +57,7 @@ secureJsonData:
 
 Note that a `version` property is added when the configuration is saved from the UI. This shows the version of the plugin that the config was saved with.
 
-### HTTP Protocol {#http-protocol}
+### HTTP protocol {#http-protocol}
 
 More settings will be displayed if you choose to connect via the HTTP protocol.
 

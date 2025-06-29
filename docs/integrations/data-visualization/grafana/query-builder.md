@@ -158,7 +158,7 @@ The trace query type supports [data links](#data-links).
 
 This query type will render the data with the table view for Trace Search mode, and the trace panel for Trace ID mode.
 
-## SQL Editor {#sql-editor}
+## SQL editor {#sql-editor}
 
 For queries that are too complex for the query builder, you can use the SQL Editor.
 This gives you full control over the query by allowing you to write and run plain ClickHouse SQL.
@@ -219,7 +219,7 @@ Before a query gets sent to the ClickHouse server, the plugin will expand the ma
 Queries from both the SQL Editor and Query Builder can use macros.
 
 
-### Using Macros {#using-macros}
+### Using macros {#using-macros}
 
 Macros can be included anywhere in the query, multiple times if needed.
 

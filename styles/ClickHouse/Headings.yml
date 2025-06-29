@@ -219,3 +219,33 @@ exceptions:
   - avgState
   - countResample
   - PREWHERE
+  - Splunk
+  - Retool
+  - Airbyte
+  - RawBLOB
+  - RowBinary
+  - MessagePack
+  - Protocol Buffers
+  - Cap'n Proto
+  - UPDATEs
+  - DELETEs
+  - INSERTs
+  - MERGEs
+  - DBT
+  - insert_overwrite
+  - Vector
+  - Nginx
+  - Dataflow
+  - QueryResult
+  - AsyncClient
+  - QueryContexts
+  - StreamContexts
+  - Easypanel
+  - Date32
+  - Node.js
+  - EventHubs
+  - Kafka Connect Sink
+  - String
+  - Map
+  - Nested
+  - flatten_nested

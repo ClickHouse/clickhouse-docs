@@ -952,7 +952,7 @@ sudo -u clickhouse \
   cp keeper.xml /etc/clickhouse-keeper/keeper.xml
 ```
 
-### Configure ClickHouse Server {#configure-clickhouse-server}
+### Configure ClickHouse server {#configure-clickhouse-server}
 
 #### Define a cluster {#define-a-cluster}
 

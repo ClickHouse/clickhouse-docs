@@ -811,7 +811,7 @@ Checking again the query_log table reveals the differences between the 2 increme
 
 In this run, only the new rows are added straight to `imdb_dbt.actor_summary` table and there is no table creation involved.
 
-### Delete+Insert mode (Experimental) {#deleteinsert-mode-experimental}
+### Delete and insert mode (experimental) {#deleteinsert-mode-experimental}
 
 Historically ClickHouse has had only limited support for updates and deletes, in the form of asynchronous [Mutations](/sql-reference/statements/alter/index.md). These can be extremely IO-intensive and should generally be avoided.
 
@@ -1028,7 +1028,7 @@ Note how a table actor_summary_snapshot has been created in the snapshots db (de
 For further details on dbt snapshots see [here](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots).
 
 
-## Using Seeds {#using-seeds}
+## Using seeds {#using-seeds}
 
 dbt provides the ability to load data from CSV files. This capability is not suited to loading large exports of a database and is more designed for small files typically used for code tables and [dictionaries](../../../../sql-reference/dictionaries/index.md), e.g. mapping country codes to country names. For a simple example, we generate and then upload a list of genre codes using the seed functionality.
 

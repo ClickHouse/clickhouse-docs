@@ -30,7 +30,7 @@ import Image from '@theme/IdealImage';
 
 <Image img={clickpipes_stack} alt="ClickPipes stack" size="lg" border/>
 
-## Supported Data Sources {#supported-data-sources}
+## Supported data sources {#supported-data-sources}
 
 | Name                 | Logo                                                                                             |Type| Status           | Description                                                                                          |
 |----------------------|--------------------------------------------------------------------------------------------------|----|------------------|------------------------------------------------------------------------------------------------------|

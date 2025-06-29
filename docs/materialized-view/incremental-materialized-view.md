@@ -1098,7 +1098,7 @@ Leave it disabled when:
 - You're debugging or auditing insert behavior and want deterministic replay
 
 
-## Materialized Views and Common Table Expressions (CTEs) {#materialized-views-common-table-expressions-ctes}
+## Materialized views and Common Table Expressions (CTE) {#materialized-views-common-table-expressions-ctes}
 
 **Non-recursive** Common Table Expressions (CTEs) are supported in Materialized Views.
 
