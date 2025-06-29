@@ -179,7 +179,7 @@ ORDER BY viewcount DESC
 LIMIT 10
 ```
 
-#### Refreshable Material view {#refreshable-material-view}
+#### Refreshable materialized view {#refreshable-material-view}
 
 Another approach is to use a [refreshable materialized view](/materialized-view/refreshable-materialized-view), which enables you to schedule query execution for deduplicating rows and storing the results in a destination table. With each scheduled refresh, the destination table is replaced with the latest query results.
 

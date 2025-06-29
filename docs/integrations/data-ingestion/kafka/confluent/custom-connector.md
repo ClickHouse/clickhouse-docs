@@ -35,15 +35,15 @@ We assume you are familiar with:
 This is meant to be a quick guide to get you started with the ClickHouse Sink Connector on Confluent Cloud.
 For more details, please refer to the [official Confluent documentation](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-qs.html#uploading-and-launching-the-connector).
 
-#### Create a Topic {#create-a-topic}
+#### Create a topic {#create-a-topic}
 Creating a topic on Confluent Cloud is fairly simple, and there are detailed instructions [here](https://docs.confluent.io/cloud/current/client-apps/topics/manage.html).
 
-#### Important Notes {#important-notes}
+#### Important notes {#important-notes}
 
 * The Kafka topic name must be the same as the ClickHouse table name. The way to tweak this is by using a transformer (for example [`ExtractTopic`](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html)).
 * More partitions does not always mean more performance - see our upcoming guide for more details and performance tips.
 
-#### Install Connector {#install-connector}
+#### Install connector {#install-connector}
 You can download the connector from our [repository](https://github.com/ClickHouse/clickhouse-kafka-connect/releases) - please feel free to submit comments and issues there as well!
 
 Navigate to "Connector Plugins" -> "Add plugin" and using the following settings:
@@ -93,7 +93,7 @@ You must specify HTTP(S) port. The Connector doesn't support Native protocol yet
 
 You should be all set!
 
-#### Known Limitations {#known-limitations}
+#### Known limitations {#known-limitations}
 * Custom Connectors must use public internet endpoints. Static IP addresses aren't supported.
 * You can override some Custom Connector properties. See the fill [list in the official documentation.](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-manage.html#override-configuration-properties)
 * Custom Connectors are available only in [some AWS regions](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-fands.html#supported-aws-regions)

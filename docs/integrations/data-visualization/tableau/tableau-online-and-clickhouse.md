@@ -24,10 +24,10 @@ import tableau_desktop_05 from '@site/static/images/integrations/data-visualizat
 
 Tableau Online can connect to ClickHouse Cloud or on-premise ClickHouse setup via MySQL interface using the official MySQL data source.
 
-## ClickHouse Cloud Setup {#clickhouse-cloud-setup}
+## ClickHouse Cloud setup {#clickhouse-cloud-setup}
 <MySQLCloudSetup />
 
-## On-premise ClickHouse Server Setup {#on-premise-clickhouse-server-setup}
+## On-premise ClickHouse server setup {#on-premise-clickhouse-server-setup}
 <MySQLOnPremiseSetup />
 
 ## Connecting Tableau Online to ClickHouse (on-premise without SSL) {#connecting-tableau-online-to-clickhouse-on-premise-without-ssl}

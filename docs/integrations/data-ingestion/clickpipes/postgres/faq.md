@@ -192,11 +192,11 @@ For manually created publications, please add any tables you want to the publica
 - **For Large Databases (High Transaction Volume):** Retain at least **2-3 times** the peak WAL generation per day.
 - **For Storage-Constrained Environments:** Tune this conservatively to **avoid disk exhaustion** while ensuring replication stability.
 
-### How to Calculate the Right Value {#how-to-calculate-the-right-value}
+### How to calculate the right value {#how-to-calculate-the-right-value}
 
 To determine the right setting, measure the WAL generation rate:
 
-#### For PostgreSQL 10+: {#for-postgresql-10}
+#### For PostgreSQL 10+ {#for-postgresql-10}
 
 ```sql
 SELECT pg_wal_lsn_diff(pg_current_wal_insert_lsn(), '0/0') / 1024 / 1024 AS wal_generated_mb;
@@ -213,7 +213,7 @@ SELECT pg_xlog_location_diff(pg_current_xlog_insert_location(), '0/0') / 1024 / 
 * Multiply that number by 2 or 3 to provide sufficient retention.
 * Set `max_slot_wal_keep_size` to the resulting value in MB or GB.
 
-#### Example: {#example}
+#### Example {#example}
 
 If your database generates 100 GB of WAL per day, set:
 
@@ -229,7 +229,7 @@ The most common cause of replication slot invalidation is a low `max_slot_wal_ke
 
 In rare cases, we have seen this issue occur even when `max_slot_wal_keep_size` is not configured. This could be due to an intricate and rare bug in PostgreSQL, although the cause remains unclear.
 
-## I am seeing Out Of Memory (OOMs) on ClickHouse while my ClickPipe is ingesting data. Can you help? {#i-am-seeing-out-of-memory-ooms-on-clickhouse-while-my-clickpipe-is-ingesting-data-can-you-help}
+## I am seeing out of memory (OOMs) on ClickHouse while my ClickPipe is ingesting data. Can you help? {#i-am-seeing-out-of-memory-ooms-on-clickhouse-while-my-clickpipe-is-ingesting-data-can-you-help}
 
 One common reason for OOMs on ClickHouse is that your service is undersized. This means that your current service configuration doesn't have enough resources (e.g., memory or CPU) to handle the ingestion load effectively. We strongly recommend scaling up the service to meet the demands of your ClickPipe data ingestion.
 

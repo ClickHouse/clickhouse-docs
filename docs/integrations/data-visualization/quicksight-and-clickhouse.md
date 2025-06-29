@@ -23,7 +23,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 QuickSight can connect to on-premise ClickHouse setup (23.11+) via MySQL interface using the official MySQL data source and Direct Query mode.
 
-## On-premise ClickHouse Server Setup {#on-premise-clickhouse-server-setup}
+## On-premise ClickHouse server setup {#on-premise-clickhouse-server-setup}
 
 Please refer to [the official documentation](/interfaces/mysql) on how to set up a ClickHouse server with enabled MySQL interface.
 

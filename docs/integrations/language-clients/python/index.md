@@ -42,7 +42,7 @@ and disadvantages (like slightly lower compression and performance, and a lack o
 For some use cases, you may consider using one of the [Community Python drivers](/interfaces/third-party/client-libraries.md) that uses native TCP-based protocol.
 :::
 
-### Requirements and Compatibility {#requirements-and-compatibility}
+### Requirements and compatibility {#requirements-and-compatibility}
 
 |    Python |   |       Platform¹ |   | ClickHouse |    | SQLAlchemy² |   | Apache Superset |   |
 |----------:|:--|----------------:|:--|-----------:|:---|------------:|:--|----------------:|:--|
@@ -77,14 +77,14 @@ ClickHouse Connect can also be installed from source:
 * (Optional) run `pip install cython` to build and enable the C/Cython optimizations
 * `cd` to the project root directory and run `pip install .`
 
-### Support Policy {#support-policy}
+### Support policy {#support-policy}
 
 ClickHouse Connect is currently in beta and only the current beta release is actively supported. Please update to the
 latest version before reported any issues. Issues should be filed in the [GitHub project](https://github.com/ClickHouse/clickhouse-connect/issues). Future releases of
 ClickHouse Connect are guaranteed to be compatible with actively supported ClickHouse versions at the time of release
 (generally the three most recent `stable` and two most recent `lts` releases).
 
-### Basic Usage {#basic-usage}
+### Basic usage {#basic-usage}
 
 ### Gather your connection details {#gather-your-connection-details}
 
@@ -144,7 +144,7 @@ Out[13]: [(2000, -50.9035)]
 ```
 
 
-## ClickHouse Connect Driver API {#clickhouse-connect-driver-api}
+## ClickHouse Connect driver API {#clickhouse-connect-driver-api}
 
 ***Note:*** Passing keyword arguments is recommended for most api methods given the number of
 possible arguments, most of which are optional.
@@ -157,7 +157,7 @@ The `clickhouse_connect.driver.client` class provides the primary interface betw
 ClickHouse database server. Use the `clickhouse_connect.get_client` function to obtain a Client instance, which accepts
 the following arguments:
 
-#### Connection Arguments {#connection-arguments}
+#### Connection arguments {#connection-arguments}
 
 | Parameter             | Type        | Default                       | Description                                                                                                                                                                                                                                            |
 |-----------------------|-------------|-------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -180,7 +180,7 @@ the following arguments:
 | https_proxy           | str         | *None*                        | HTTPS proxy address (equivalent to setting the HTTPS_PROXY environment variable).                                                                                                                                                                      |
 | apply_server_timezone | bool        | True                          | Use server timezone for timezone aware query results.  See [Timezone Precedence](#time-zones)                                                                                                                                                          |
 
-#### HTTPS/TLS Arguments {#httpstls-arguments}
+#### HTTPS/TLS arguments {#httpstls-arguments}
 
 | Parameter        | Type | Default | Description                                                                                                                                                                                                                                                                       |
 |------------------|------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -191,7 +191,7 @@ the following arguments:
 | server_host_name | str  | *None*  | The ClickHouse server hostname as identified by the CN or SNI of its TLS certificate.  Set this to avoid SSL errors when connecting through a proxy or tunnel with a different hostname                                                                                           |
 | tls_mode         | str  | *None*  | Controls advanced TLS behavior.  `proxy` and `strict` do not invoke ClickHouse mutual TLS connection, but do send client cert and key.  `mutual` assumes ClickHouse mutual TLS auth with a client certificate.  *None*/default behavior is `mutual`                               |
 
-#### Settings Argument {#settings-argument}
+#### Settings argument {#settings-argument}
 
 Finally, the `settings` argument to `get_client` is used to pass additional ClickHouse settings to the server for each
 client request. Note that in most cases, users with *readonly*=*1* access cannot alter settings sent with a query, so
@@ -212,7 +212,7 @@ HTTP queries/sessions used by ClickHouse Connect, and are not documented as gene
 For other ClickHouse settings that can be sent with each query,
 see [the ClickHouse documentation](/operations/settings/settings.md).
 
-#### Client Creation Examples {#client-creation-examples}
+#### Client creation examples {#client-creation-examples}
 
 - Without any parameters, a ClickHouse Connect client will connect to the default HTTP port on `localhost` with the
   default user and no password:
@@ -252,17 +252,17 @@ client.database
 Out[2]: 'github'
 ```
 
-### Common Method Arguments {#common-method-arguments}
+### Common method arguments {#common-method-arguments}
 
 Several client methods use one or both of the common `parameters` and `settings` arguments. These keyword
 arguments are described below.
 
-#### Parameters Argument {#parameters-argument}
+#### Parameters argument {#parameters-argument}
 
 ClickHouse Connect Client `query*` and `command` methods accept an optional `parameters` keyword argument used for
 binding Python expressions to a ClickHouse value expression. Two sorts of binding are available.
 
-##### Server Side Binding {#server-side-binding}
+##### Server side binding {#server-side-binding}
 
 ClickHouse supports [server side binding](/interfaces/cli.md#cli-queries-with-parameters)
 for most query values, where the bound value is sent separate from the query as an HTTP query parameter. ClickHouse
@@ -286,7 +286,7 @@ client.query('SELECT * FROM {table:Identifier} WHERE date >= {v1:DateTime} AND s
 **IMPORTANT** -- Server side binding is only supported (by the ClickHouse server) for `SELECT` queries.  It does not work for
 `ALTER`, `DELETE`, `INSERT`, or other types of queries.  This may change in the future, see https://github.com/ClickHouse/ClickHouse/issues/42092.
 
-##### Client Side Binding {#client-side-binding}
+##### Client side binding {#client-side-binding}
 
 ClickHouse Connect also supports client side parameter binding which can allow more flexibility in generating templated
 SQL queries. For client side binding, the `parameters` argument should be a dictionary or a sequence. Client side
@@ -341,7 +341,7 @@ To bind DateTime64 arguments (ClickHouse types with sub-second precision) requir
   ```
 :::
 
-#### Settings Argument {#settings-argument-1}
+#### Settings argument {#settings-argument-1}
 
 All the key ClickHouse Connect Client "insert" and "select" methods accept an optional `settings` keyword argument to
 pass ClickHouse server [user settings](/operations/settings/settings.md) for the included SQL statement. The `settings` argument should be a
@@ -456,7 +456,7 @@ There are three specialized versions of the main `query` method:
   addition, there is additional argument `use_strings` which determines whether the Arrow Table will render ClickHouse
   String types as strings (if True) or bytes (if False).
 
-### Client Streaming Query Methods {#client-streaming-query-methods}
+### Client streaming query methods {#client-streaming-query-methods}
 
 The ClickHouse Connect Client provides multiple methods for retrieving data as a stream (implemented as a Python
 generator):
@@ -606,7 +606,7 @@ to specify settings and insert format:
 It is the caller's responsibility that the `insert_block` is in the specified format and uses the specified compression
 method. ClickHouse Connect uses these raw inserts for file uploads and PyArrow Tables, delegating parsing to the ClickHouse server.
 
-### Utility Classes and Functions {#utility-classes-and-functions}
+### Utility classes and functions {#utility-classes-and-functions}
 
 The following classes and functions are also considered part of the "public" `clickhouse-connect` API and are, like the classes and methods documented above,
 stable across minor releases.  Breaking changes to these classes and functions will only occur with a minor (not patch) release and will be available with
@@ -623,7 +623,7 @@ The functions and the DT64Param class in the `clickhouse_connect.driver.binding`
 ClickHouse SQL queries.  Similarly, the functions in the `clickhouse_connect.driver.parser` module can be used to parse ClickHouse
 datatype names.
 
-### Multithreaded, Multiprocess, and Async/Event Driven Use Cases {#multithreaded-multiprocess-and-asyncevent-driven-use-cases}
+### Multithreaded, multiprocess, and async/event driven use cases {#multithreaded-multiprocess-and-asyncevent-driven-use-cases}
 
 ClickHouse Connect works well in multi-threaded, multiprocess, and event loop driven/asynchronous applications.  All
 query and insert processing occurs within a single thread, so operations are generally thread
@@ -638,7 +638,7 @@ Additionally, in an application that has two or more queries and/or inserts "in 
 further considerations to keep in mind.  The first is the ClickHouse "session" associated with the query/insert, and
 the second is the HTTP connection pool used by ClickHouse Connect Client instances.
 
-### AsyncClient wrapper {#asyncclient-wrapper}
+### Asyncclient wrapper {#asyncclient-wrapper}
 
 Since 0.7.16, ClickHouse Connect provides an async wrapper over the regular `Client`, 
 so that it is possible to use the client in an `asyncio` environment.
@@ -704,7 +704,7 @@ client = clickhouse_connect.get_client(host='somehost.com', user='dbuser', passw
 In this case ClickHouse Connect will not send any session id, and a random session id will be generated by the
 ClickHouse server.  Again, temporary tables and session level settings will not be available.
 
-### Customizing the HTTP Connection Pool {#customizing-the-http-connection-pool}
+### Customizing the HTTP connection pool {#customizing-the-http-connection-pool}
 
 ClickHouse Connect uses `urllib3` connection pools to handle the underlying HTTP connection to the server.  By default,
 all client instances share the same connection pool, which is sufficient for the majority of use cases.  This default
@@ -727,7 +727,7 @@ As demonstrated by the above example, clients can share a pool manager, or a sep
 each client.  For more details on the options available when creating a PoolManager, see the
 [`urllib3` documentation](https://urllib3.readthedocs.io/en/stable/advanced-usage.html#customizing-pool-behavior).
 
-## Querying Data with ClickHouse Connect:  Advanced Usage {#querying-data-with-clickhouse-connect--advanced-usage}
+## Querying data with ClickHouse Connect:  Advanced usage {#querying-data-with-clickhouse-connect--advanced-usage}
 
 ### QueryContexts {#querycontexts}
 
@@ -758,9 +758,9 @@ assert result.result_set[1][0] == 'first_value2'
 Note that QueryContexts are not thread safe, but a copy can be obtained in a multi-threaded environment by calling the
 `QueryContext.updated_copy` method.
 
-### Streaming Queries {#streaming-queries}
+### Streaming queries {#streaming-queries}
 
-#### Data Blocks {#data-blocks}
+#### Data blocks {#data-blocks}
 ClickHouse Connect processes all data from the primary `query` method as a stream of blocks received from the ClickHouse server.
 These blocks are transmitted in the custom "Native" format to and from ClickHouse. A "block" is simply a sequence of columns of binary data,
 where each column contains an equal number of data values of the specified data type. (As a columnar database, ClickHouse stores this data
@@ -779,7 +779,7 @@ loads a single block at a time.  This allows processing large amounts of data wi
 set into memory.  Note the application should be prepared to process any number of blocks and the exact size of each block
 cannot be controlled.
 
-#### HTTP Data Buffer for Slow Processing {#http-data-buffer-for-slow-processing}
+#### HTTP data buffer for slow processing {#http-data-buffer-for-slow-processing}
 
 Because of limitations in the HTTP protocol, if blocks are processed at a rate significantly slower than the ClickHouse server is streaming
 data, the ClickHouse server will close the connection, resulting in an Exception being thrown in the processing thread.  Some of this
@@ -808,7 +808,7 @@ after it has exited will produce a `StreamClosedError`.
 You can use the `source` property of the StreamContext to access the parent `QueryResult` object, which includes column names
 and types.
 
-#### Stream Types {#stream-types}
+#### Stream types {#stream-types}
 
 The `query_column_block_stream` method returns the block as a sequence of column data stored as native Python data types.  Using
 the above `taxi_trips` queries, the data returned will be a list where each element of the list is another list (or tuple)
@@ -842,7 +842,7 @@ with df_stream:
         <do something with the pandas DataFrame>
 ```
 
-### Read Formats {#read-formats}
+### Read formats {#read-formats}
 
 Read formats control the data types of values returned from the client `query`, `query_np`, and `query_df` methods.  (The `raw_query`
 and `query_arrow` do not modify incoming data from ClickHouse, so format control does not apply.)  For example, if the read format
@@ -878,7 +878,7 @@ client.query('SELECT user_id, user_uuid, device_uuid from users', query_formats=
 client.query('SELECT device_id, dev_address, gw_address from devices', column_formats={'dev_address':'string'})
 ```
 
-#### Read Format Options (Python Types) {#read-format-options-python-types}
+#### Read format options (Python types) {#read-format-options-python-types}
 
 | ClickHouse Type       | Native Python Type    | Read Formats | Comments                                                                                                          |
 |-----------------------|-----------------------|--------------|-------------------------------------------------------------------------------------------------------------------|
@@ -906,7 +906,7 @@ client.query('SELECT device_id, dev_address, gw_address from devices', column_fo
 | Dynamic               | object                | -            | Returns the matching Python type for the ClickHouse datatype stored for the value                                 |
 
 
-### External Data {#external-data}
+### External data {#external-data}
 
 ClickHouse queries can accept external data in any ClickHouse format.  This binary data is sent along with the query string to be used to process the data.  Details of
 the External Data feature are [here](/engines/table-engines/special/external-data.md).  The client `query*` methods accept an optional `external_data` parameter
@@ -941,7 +941,7 @@ result = client.query('SELECT name, avg(rating) FROM directors INNER JOIN movies
 Additional external data files can be added to the initial ExternalData object using the `add_file` method, which takes the same parameters
 as the constructor.  For HTTP, all external data is transmitted as part of a `multi-part/form-data` file upload.
 
-### Time Zones {#time-zones}
+### Time zones {#time-zones}
 There are multiple mechanisms for applying a time zone to ClickHouse DateTime and DateTime64 values.  Internally, the ClickHouse server always stores any DateTime or DateTime64
 object as a time zone naive number representing seconds since the epoch, 1970-01-01 00:00:00 UTC time.  For DateTime64 values, the representation can be milliseconds, microseconds,
 or nanoseconds since the epoch, depending on precision.  As a result, the application of any time zone information always occurs on the client side.  Note that this involves meaningful
@@ -961,7 +961,7 @@ timezone metadata is not available to clickhouse-connect for DateTime columns pr
 Note that if the applied timezone based on these rules is UTC, `clickhouse-connect` will _always_ return a time zone naive Python `datetime.datetime` object.  Additional timezone
 information can then be added to this timezone naive object by the application code if desired.
 
-## Inserting Data with ClickHouse Connect:  Advanced Usage {#inserting-data-with-clickhouse-connect--advanced-usage}
+## Inserting data with ClickHouse Connect:  Advanced usage {#inserting-data-with-clickhouse-connect--advanced-usage}
 
 ### InsertContexts {#insertcontexts}
 
@@ -990,7 +990,7 @@ assert qr[0][0] == 4
 InsertContexts include mutable state that is updated during the insert process, so they are not thread safe.
 
 
-### Write Formats {#write-formats}
+### Write formats {#write-formats}
 Write formats are currently implemented for limited number of types.  In most cases ClickHouse Connect will attempt to
 automatically determine the correct write format for a column by checking the type of the first (non-null) data value.
 For example, if inserting into a DateTime column, and the first insert value of the column is a Python integer, ClickHouse
@@ -999,7 +999,7 @@ Connect will directly insert the integer value under the assumption that it's ac
 In most cases, it is unnecessary to override the write format for a data type, but the associated methods in the
 `clickhouse_connect.datatypes.format` package can be used to do so at a global level.
 
-#### Write Format Options {#write-format-options}
+#### Write format options {#write-format-options}
 
 | ClickHouse Type       | Native Python Type    | Write Formats | Comments                                                                                                    |
 |-----------------------|-----------------------|---------------|-------------------------------------------------------------------------------------------------------------|
@@ -1027,11 +1027,11 @@ In most cases, it is unnecessary to override the write format for a data type, b
 | Dynamic               | object                |               | Warning -- at this time any inserts into a Dynamic column are persisted as a ClickHouse String              |
 
 
-## Additional Options {#additional-options}
+## Additional options {#additional-options}
 
 ClickHouse Connect provides a number of additional options for advanced use cases
 
-### Global Settings {#global-settings}
+### Global settings {#global-settings}
 
 There are a small number of settings that control ClickHouse Connect behavior globally.  They are accessed from the top
 level `common` package:
@@ -1092,7 +1092,7 @@ Note that the `raw*` client methods don't use the compression specified by the c
 We also recommend against using `gzip` compression, as it is significantly slower than the alternatives for both compressing
 and decompressing data.
 
-### HTTP Proxy Support {#http-proxy-support}
+### HTTP proxy support {#http-proxy-support}
 
 ClickHouse Connect adds basic HTTP proxy support using the `urllib`3` library.  It recognizes the standard `HTTP_PROXY` and
 `HTTPS_PROXY` environment variables.  Note that using these environment variables will apply to any client created with the
@@ -1103,25 +1103,25 @@ documentation.
 To use a Socks proxy, you can send a `urllib3` SOCKSProxyManager as the `pool_mgr` argument to `get_client`.  Note that
 this will require installing the PySocks library either directly or using the `[socks]` option for the `urllib3` dependency.
 
-### "Old" JSON Data Type {#old-json-data-type}
+### "Old" JSON data type {#old-json-data-type}
 
 The experimental `Object` (or `Object('json')`) data type is deprecated and should be avoided in a production environment.
 ClickHouse Connect continues to provide limited support for the data type for backward compatibility.  Note that this
 support does not include queries that are expected to return "top level" or "parent" JSON values as dictionaries or the
 equivalent, and such queries will result in an exception.
 
-### "New" Variant/Dynamic/JSON Datatypes (Experimental Feature) {#new-variantdynamicjson-datatypes-experimental-feature}
+### "New" Variant/Dynamic/JSON datatypes (experimental feature) {#new-variantdynamicjson-datatypes-experimental-feature}
 
 Beginning with the 0.8.0 release, `clickhouse-connect` provides experimental support for the new (also experimental)
 ClickHouse types Variant, Dynamic, and JSON.
 
-#### Usage Notes {#usage-notes}
+#### Usage notes {#usage-notes}
 - JSON data can be inserted as either a Python dictionary or a JSON string containing a JSON object `{}`.  Other
   forms of JSON data are not supported
 - Queries using subcolumns/paths for these types will return the type of the sub column.
 - See the main ClickHouse documentation for other usage notes
 
-#### Known limitations: {#known-limitations}
+#### Known limitations {#known-limitations}
 - Each of these types must be enabled in the ClickHouse settings before using.
 - The "new" JSON type is available started with the ClickHouse 24.8 release
 - Due to internal format changes, `clickhouse-connect` is only compatible with Variant types beginning with the ClickHouse 24.7 release

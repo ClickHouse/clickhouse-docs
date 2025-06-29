@@ -61,6 +61,6 @@ If QStudio detects that you do not have the ClickHouse JDBC driver installed, it
 
 <Image img={qstudio_running_query} size="lg" border alt="QStudio interface showing sample SQL query execution against ClickHouse database" />
 
-## Next Steps {#next-steps}
+## Next steps {#next-steps}
 
 See [QStudio](https://www.timestored.com/qstudio) to learn about the capabilities of QStudio, and the [ClickHouse documentation](https://clickhouse.com/docs) to learn about the capabilities of ClickHouse.

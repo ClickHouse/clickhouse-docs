@@ -27,7 +27,7 @@ This page shows a list of options available for configuration in the ClickHouse 
 
 For a quick overview of all the options, a full list of config options can be found [here](#all-yaml-options).
 
-## Common Settings {#common-settings}
+## Common settings {#common-settings}
 
 Example configuration screen:
 <Image size="sm" img={config_common} alt="Example secure native config" border />

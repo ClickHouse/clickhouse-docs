@@ -8,7 +8,7 @@ title: 'Dataflow Java Runner'
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Dataflow Java Runner
+# Dataflow Java runner
 
 <ClickHouseSupportedBadge/>
 

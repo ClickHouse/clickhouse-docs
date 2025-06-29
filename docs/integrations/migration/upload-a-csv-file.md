@@ -11,7 +11,7 @@ import uploadcsv3 from '@site/static/images/integrations/migration/uploadcsv3.pn
 import uploadcsv4 from '@site/static/images/integrations/migration/uploadcsv4.png';
 import uploadcsv5 from '@site/static/images/integrations/migration/uploadcsv5.png';
 
-# Upload a CSV File
+# Upload a CSV file
 
 You can upload a CSV or TSV file that contains a header row with the column names, and ClickHouse will preprocess a batch
 of rows to infer the data types of the columns, then insert the rows into a new table.

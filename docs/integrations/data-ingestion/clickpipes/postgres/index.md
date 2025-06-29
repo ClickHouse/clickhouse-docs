@@ -87,7 +87,7 @@ You can use AWS Private Link to connect to your source Postgres database if it i
 want to keep your data transfer private.
 You can follow the [setup guide to set up the connection](/integrations/clickpipes/aws-privatelink).
 
-#### (Optional) Setting up SSH Tunneling {#optional-setting-up-ssh-tunneling}
+#### (Optional) Setting up SSH tunneling {#optional-setting-up-ssh-tunneling}
 
 You can specify SSH tunneling details if your source Postgres database is not publicly accessible.
 
@@ -114,7 +114,7 @@ Once the connection details are filled in, click on "Next".
 
    <Image img={select_replication_slot} alt="Select replication slot" size="lg" border/>
 
-#### Advanced Settings {#advanced-settings}
+#### Advanced settings {#advanced-settings}
 
 You can configure the Advanced settings if needed. A brief description of each setting is provided below:
 

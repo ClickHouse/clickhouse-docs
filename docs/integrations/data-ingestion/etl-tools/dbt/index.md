@@ -49,7 +49,7 @@ For the following guides, we assume you have a ClickHouse instance available.
 
 ## Setup of dbt and the ClickHouse plugin {#setup-of-dbt-and-the-clickhouse-plugin}
 
-### dbt {#dbt}
+### DBT {#dbt}
 
 We assume the use of the dbt CLI for the following examples. Users may also wish to consider[ dbt Cloud](https://docs.getdbt.com/docs/dbt-cloud/cloud-overview), which offers a web-based Integrated Development Environment (IDE) allowing users to edit and run projects.
 
@@ -305,7 +305,7 @@ In the later guides, we will convert this query into a model - materializing it 
     Confirm the response includes `Connection test: [OK connection ok]` indicating a successful connection.
 
 
-## Creating a Simple View Materialization {#creating-a-simple-view-materialization}
+## Creating a simple view materialization {#creating-a-simple-view-materialization}
 
 When using the view materialization, a model is rebuilt as a view on each run, via a `CREATE VIEW AS` statement in ClickHouse. This doesn't require any additional storage of data but will be slower to query than table materializations.
 
@@ -433,7 +433,7 @@ When using the view materialization, a model is rebuilt as a view on each run, v
     +------+------------+----------+------------------+------+---------+-------------------+
     ```
 
-## Creating a Table Materialization {#creating-a-table-materialization}
+## Creating a table materialization {#creating-a-table-materialization}
 
 In the previous example, our model was materialized as a view. While this might offer sufficient performance for some queries, more complex SELECTs or frequently executed queries may be better materialized as a table.  This materialization is useful for models that will be queried by BI tools to ensure users have a faster experience. This effectively causes the query results to be stored as a new table, with the associated storage overheads - effectively, an `INSERT TO SELECT` is executed. Note that this table will be reconstructed each time i.e., it is not incremental. Large result sets may therefore result in long execution times - see [dbt Limitations](#limitations).
 
@@ -835,7 +835,7 @@ This process is shown below:
 
 <Image img={dbt_06} size="lg" alt="lightweight delete incremental" />
 
-### insert_overwrite mode (Experimental) {#insert_overwrite-mode-experimental}
+### insert_overwrite mode (experimental) {#insert_overwrite-mode-experimental}
 Performs the following steps:
 
 1. Create a staging (temporary) table with the same structure as the incremental model relation: `CREATE TABLE {staging} AS {target}`.
@@ -852,7 +852,7 @@ This approach has the following advantages:
 
 <Image img={dbt_07} size="lg" alt="insert overwrite incremental" />
 
-## Creating a Snapshot {#creating-a-snapshot}
+## Creating a snapshot {#creating-a-snapshot}
 
 dbt snapshots allow a record to be made of changes to a mutable model over time. This in turn allows point-in-time queries on models, where analysts can "look back in time" at the previous state of a model. This is achieved using [type-2 Slowly Changing Dimensions](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row) where from and to date columns record when a row was valid. This functionality is supported by the ClickHouse plugin and is demonstrated below.
 

@@ -165,7 +165,7 @@ ClickPipes support the JSON type in the following circumstances:
 Note that you will have to manually change the destination column to the desired JSON type, including any fixed or skipped paths.
 
 ### Avro {#avro}
-#### Supported Avro Data Types {#supported-avro-data-types}
+#### Supported Avro data types {#supported-avro-data-types}
 
 ClickPipes supports all Avro Primitive and Complex types, and all Avro Logical types except `time-millis`, `time-micros`, `local-timestamp-millis`, `local_timestamp-micros`, and `duration`.  Avro `record` types are converted to Tuple, `array` types to Array, and `map` to Map (string keys only).  In general the conversions listed [here](/interfaces/formats/Avro#data-types-matching) are available.  We recommend using exact type matching for Avro numeric types, as ClickPipes does not check for overflow or precision loss on type conversion.
 
@@ -210,7 +210,7 @@ view), it may improve ClickPipes performance to delete all the "non-virtual" col
 
 ## Best practices {#best-practices}
 
-### Message Compression {#compression}
+### Message compression {#compression}
 We strongly recommend using compression for your Kafka topics. Compression can result in a significant saving in data transfer costs with virtually no performance hit.
 To learn more about message compression in Kafka, we recommend starting with this [guide](https://www.confluent.io/blog/apache-kafka-message-compression/).
 
@@ -300,7 +300,7 @@ Role-based access only works for ClickHouse Cloud instances deployed to AWS.
 ```
 
 
-### Custom Certificates {#custom-certificates}
+### Custom certificates {#custom-certificates}
 ClickPipes for Kafka supports the upload of custom certificates for Kafka brokers with SASL & public SSL/TLS certificate. You can upload your certificate in the SSL Certificate section of the ClickPipe setup.
 :::note
 Please note that while we support uploading a single SSL certificate along with SASL for Kafka, SSL with Mutual TLS (mTLS) is not supported at this time.
@@ -333,7 +333,7 @@ Regardless number of running consumers, fault tolerance is available by design.
 If a consumer or its underlying infrastructure fails,
 the ClickPipe will automatically restart the consumer and continue processing messages.
 
-## F.A.Q {#faq}
+## FAQ {#faq}
 
 ### General {#general}
 

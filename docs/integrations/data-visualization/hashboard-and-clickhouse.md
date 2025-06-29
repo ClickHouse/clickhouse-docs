@@ -31,13 +31,13 @@ This guide will walk you through the steps to connect Hashboard with your ClickH
 - A ClickHouse database either hosted on your own infrastructure or on [ClickHouse Cloud](https://clickhouse.com/).
 - A [Hashboard account](https://hashboard.com/getAccess) and project.
 
-## Steps to Connect Hashboard to ClickHouse {#steps-to-connect-hashboard-to-clickhouse}
+## Steps to connect Hashboard to ClickHouse {#steps-to-connect-hashboard-to-clickhouse}
 
-### 1. Gather Your Connection Details {#1-gather-your-connection-details}
+### 1. Gather your connection details {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
-### 2. Add a New Database Connection in Hashboard {#2-add-a-new-database-connection-in-hashboard}
+### 2. Add a new database connection in Hashboard {#2-add-a-new-database-connection-in-hashboard}
 
 1. Navigate to your [Hashboard project](https://hashboard.com/app).
 2. Open the Settings page by clicking the gear icon in the side navigation bar.

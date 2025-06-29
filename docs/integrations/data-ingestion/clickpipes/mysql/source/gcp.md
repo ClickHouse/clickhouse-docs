@@ -69,7 +69,7 @@ This can be done either by editing the instance or by heading over to the `Conne
 
 <Image img={gcp_mysql_ip} alt="IP allowlisting in GCP MySQL" size="lg" border/>
 
-## Download and Use Root CA certificate {#download-root-ca-certificate-gcp-mysql}
+## Download and use root CA certificate {#download-root-ca-certificate-gcp-mysql}
 To connect to your Cloud SQL instance, you need to download the root CA certificate.
 
 1. Go to your Cloud SQL instance in the Cloud console.

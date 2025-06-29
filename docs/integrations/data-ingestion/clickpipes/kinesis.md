@@ -84,12 +84,12 @@ You have familiarized yourself with the [ClickPipes intro](./index.md) and setup
 10. **Congratulations!** you have successfully set up your first ClickPipe. If this is a streaming ClickPipe it will be continuously running, ingesting data in real-time from your remote data source. Otherwise it will ingest the batch and complete.
 
 
-## Supported Data Formats {#supported-data-formats}
+## Supported data formats {#supported-data-formats}
 
 The supported formats are:
 - [JSON](../../../interfaces/formats.md/#json)
 
-## Supported Data Types {#supported-data-types}
+## Supported data types {#supported-data-types}
 
 ### Standard types support {#standard-types-support}
 The following ClickHouse data types are currently supported in ClickPipes:
@@ -125,7 +125,7 @@ have to submit a support ticket to enable it on your service.
 JSON fields that are always a JSON object can be assigned to a JSON destination column.  You will have to manually change the destination
 column to the desired JSON type, including any fixed or skipped paths. 
 
-## Kinesis Virtual Columns {#kinesis-virtual-columns}
+## Kinesis virtual columns {#kinesis-virtual-columns}
 
 The following virtual columns are supported for Kinesis stream.  When creating a new destination table virtual columns can be added by using the `Add Column` button.
 

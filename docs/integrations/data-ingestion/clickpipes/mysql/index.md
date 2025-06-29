@@ -74,7 +74,7 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
 
    <Image img={mysql_connection_details} alt="Fill in connection details" size="lg" border/>
 
-#### (Optional) Set up SSH Tunneling {#optional-setting-up-ssh-tunneling}
+#### (Optional) Set up SSH tunneling {#optional-setting-up-ssh-tunneling}
 
 You can specify SSH tunneling details if your source MySQL database is not publicly accessible.
 

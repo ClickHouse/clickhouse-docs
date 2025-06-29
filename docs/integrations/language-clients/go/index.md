@@ -15,7 +15,7 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.
 
 Let's Go with a simple example.  This will connect to ClickHouse and select from the system database.  To get started you will need your connection details.
 
-### Connection Details {#connection-details}
+### Connection details {#connection-details}
 
 <ConnectionDetails />
 
@@ -146,7 +146,7 @@ go run .
 ### Learn more {#learn-more}
 The rest of the documentation in this category covers the details of the ClickHouse Go client.
 
-## ClickHouse Go Client {#clickhouse-go-client}
+## ClickHouse Go client {#clickhouse-go-client}
 
 ClickHouse supports two official Go clients. These clients are complementary and intentionally support different use cases.
 
@@ -252,7 +252,7 @@ The client supports:
 |     >= 2.3     |       1.18      |
 
 
-## ClickHouse Client API {#clickhouse-client-api}
+## ClickHouse client API {#clickhouse-client-api}
 
 All code examples for the ClickHouse Client API can be found [here](https://github.com/ClickHouse/clickhouse-go/tree/main/examples).
 
@@ -282,7 +282,7 @@ fmt.Println(v)
 
 **For all subsequent examples, unless explicitly shown, we assume the use of the ClickHouse `conn` variable has been created and is available.**
 
-#### Connection Settings {#connection-settings}
+#### Connection settings {#connection-settings}
 
 When opening a connection, an Options struct can be used to control client behavior. The following settings are available:
 
@@ -338,7 +338,7 @@ if err != nil {
 ```
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/connect_settings.go)
 
-#### Connection Pooling {#connection-pooling}
+#### Connection pooling {#connection-pooling}
 
 The client maintains a pool of connections, reusing these across queries as required. At most, `MaxOpenConns` will be used at any time, with the maximum pool size controlled by the `MaxIdleConns`. The client will acquire a connection from the pool for each query execution, returning it to the pool for reuse. A connection is used for the lifetime of a batch and released on `Send()`.
 
@@ -435,7 +435,7 @@ v, err := conn.ServerVersion()
 ```
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/auth.go)
 
-### Connecting to Multiple Nodes {#connecting-to-multiple-nodes}
+### Connecting to multiple nodes {#connecting-to-multiple-nodes}
 
 Multiple addresses can be specified via the `Addr` struct.
 
@@ -606,7 +606,7 @@ return batch.Send()
 
 For a full summary of supported go types for each column type, see [Type Conversions](#type-conversions).
 
-### Querying Row/s {#querying-rows}
+### Querying rows {#querying-rows}
 
 
 Users can either query for a single row using the `QueryRow` method or obtain a cursor for iteration over a result set via `Query`. While the former accepts a destination for the data to be serialized into, the latter requires the to call `Scan` on each row.
@@ -737,11 +737,11 @@ return batch.Send()
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/columnar_insert.go)
 
-### Using Structs {#using-structs}
+### Using structs {#using-structs}
 
 For users, Golang structs provide a logical representation of a row of data in ClickHouse. To assist with this, the native interface provides several convenient functions.
 
-#### Select with Serialize {#select-with-serialize}
+#### Select with serialize {#select-with-serialize}
 
 The Select method allows a set of response rows to be marshaled into a slice of structs with a single invocation.
 
@@ -764,7 +764,7 @@ for _, v := range result {
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/select_struct.go)
 
-#### Scan Struct {#scan-struct}
+#### Scan struct {#scan-struct}
 
 `ScanStruct` allows the marshaling of a single Row from a query into a struct.
 
@@ -780,7 +780,7 @@ if err := conn.QueryRow(context.Background(), "SELECT Col1, COUNT() AS count FRO
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/scan_struct.go)
 
-#### Append Struct {#append-struct}
+#### Append struct {#append-struct}
 
 `AppendStruct` allows a struct to be appended to an existing [batch](#batch-insert) and interpreted as a complete row. This requires the columns of the struct to align in both name and type with the table. While all columns must have an equivalent struct field, some struct fields may not have an equivalent column representation. These will simply be ignored.
 
@@ -807,7 +807,7 @@ for i := 0; i < 1_000; i++ {
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/append_struct.go)
 
-### Type Conversions {#type-conversions}
+### Type conversions {#type-conversions}
 
 The client aims to be as flexible as possible concerning accepting variable types for both insertion and marshaling of responses. In most cases, an equivalent Golang type exists for a ClickHouse column type, e.g., [UInt64](/sql-reference/data-types/int-uint/) to [uint64](https://pkg.go.dev/builtin#uint64). These logical mappings should always be supported. Users may wish to utilize variable types that can be inserted into columns or used to receive a response if the conversion of either the variable or received data takes place first. The client aims to support these conversions transparently, so users do not need to convert their data to align precisely before insertion and to provide flexible marshaling at query time. This transparent conversion does not allow for precision loss. For example, a uint32 cannot be used to receive data from a UInt64 column. Conversely, a string can be inserted into a datetime64 field provided it meets the format requirements.
 
@@ -815,7 +815,7 @@ The type conversions currently supported for primitive types are captured [here]
 
 This effort is ongoing and can be separated into insertion (`Append`/`AppendRow`) and read time (via a `Scan`). Should you need support for a specific conversion, please raise an issue.
 
-### Complex Types {#complex-types}
+### Complex types {#complex-types}
 
 #### Date/DateTime types {#datedatetime-types}
 
@@ -1160,7 +1160,7 @@ Note: Nested columns must have the same dimensions. For example, in the above ex
 
 Due to a more straightforward interface and official support for nesting, we recommend `flatten_nested=0`.
 
-#### Geo Types {#geo-types}
+#### Geo types {#geo-types}
 
 The client supports the geo types Point, Ring, Polygon, and Multi Polygon. These fields are in Golang using the package [github.com/paulmach/orb](https://github.com/paulmach/orb).
 
@@ -1515,7 +1515,7 @@ if err := batch.Send(); err != nil {
 
 Additional compression techniques are available if using the standard interface over HTTP. See [database/sql API - Compression](#compression) for further details.
 
-### Parameter Binding {#parameter-binding}
+### Parameter binding {#parameter-binding}
 
 The client supports parameter binding for the `Exec`, `Query`, and `QueryRow` methods. As shown in the example below, this is supported using named, numbered, and positional parameters. We provide examples of these below.
 
@@ -1543,7 +1543,7 @@ fmt.Printf("Named bind count: %d\n", count)
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/bind.go)
 
-#### Special Cases {#special-cases}
+#### Special cases {#special-cases}
 
 By default, slices will be unfolded into a comma-separated list of values if passed as a parameter to a query. If users require a set of values to be injected with wrapping `[ ]`, `ArraySet` should be used.
 
@@ -1582,7 +1582,7 @@ fmt.Printf("NamedDate count: %d\n", count)
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/bind_special.go)
 
-### Using Context {#using-context}
+### Using context {#using-context}
 
 Go contexts provide a means of passing deadlines, cancellation signals, and other request-scoped values across API boundaries. All methods on a connection accept a context as their first variable. While previous examples used context.Background(), users can use this capability to pass settings and deadlines and to cancel queries.
 
@@ -1683,7 +1683,7 @@ for i := 1; i <= 6; i++ {
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/context.go)
 
 
-### Progress/Profile/Log Information {#progressprofilelog-information}
+### Progress/profile/log information {#progressprofilelog-information}
 
 Progress, Profile, and Log information can be requested on queries. Progress information will report statistics on the number of rows and bytes that have been read and processed in ClickHouse. Conversely, Profile information provides a summary of data returned to the client, including totals of bytes (uncompressed), rows, and blocks. Finally, log information provides statistics on threads, e.g., memory usage and data speed.
 
@@ -1715,7 +1715,7 @@ rows.Close()
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/progress.go)
 
 
-### Dynamic Scanning {#dynamic-scanning}
+### Dynamic scanning {#dynamic-scanning}
 
 Users may need to read tables for which they do not know the schema or type of the fields being returned. This is common in cases where ad-hoc data analysis is performed or generic tooling is written. To achieve this, column-type information is available on query responses. This can be used with Go reflection to create runtime instances of correctly typed variables which can be passed to Scan.
 
@@ -1820,7 +1820,7 @@ fmt.Printf("external_table_1 UNION external_table_2: %d\n", count)
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/external_data.go)
 
-### Open Telemetry {#open-telemetry}
+### Open telemetry {#open-telemetry}
 
 ClickHouse allows a [trace context](/operations/opentelemetry/) to be passed as part of the native protocol. The client allows a Span to be created via the function `clickhouse.withSpan` and passed via the Context to achieve this.
 
@@ -1892,7 +1892,7 @@ func ConnectDSN() error {
 
 **For all subsequent examples, unless explicitly shown, we assume the use of the ClickHouse `conn` variable has been created and is available.**
 
-#### Connection Settings {#connection-settings-1}
+#### Connection settings {#connection-settings-1}
 
 The following parameters can be passed in the DSN string:
 
@@ -1929,7 +1929,7 @@ func ConnectSettings() error {
 ```
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/connect_settings.go)
 
-#### Connection Pooling {#connection-pooling-1}
+#### Connection pooling {#connection-pooling-1}
 
 Users can influence the use of the provided list of node addresses as described in [Connecting to Multiple Nodes](#connecting-to-multiple-nodes). Connection management and pooling is, however, delegated to `sql.DB` by design.
 
@@ -2168,7 +2168,7 @@ return scope.Commit()
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/batch.go)
 
-### Querying Row/s {#querying-rows-1}
+### Querying row/s {#querying-rows-1}
 
 Querying a single row can be achieved using the `QueryRow` method. This returns a  *sql.Row, on which Scan can be invoked with pointers to variables into which the columns should be marshaled. A `QueryRowContext` variant allows a context to be passed other than background - see [Using Context](#using-context).
 
@@ -2249,15 +2249,15 @@ ctx := clickhouse.Context(context.Background(), clickhouse.WithStdAsync(false))
 
 Not supported using the standard interface.
 
-### Using Structs {#using-structs-1}
+### Using structs {#using-structs-1}
 
 Not supported using the standard interface.
 
-### Type Conversions {#type-conversions-1}
+### Type conversions {#type-conversions-1}
 
 The standard `database/sql` interface should support the same types as the [ClickHouse API](#type-conversions). There are a few exceptions, primarily for complex types, that we document below. Similar to the ClickHouse API, the client aims to be as flexible as possible concerning accepting variable types for both insertion and marshaling of responses. See [Type Conversions](#type-conversions) for further details.
 
-### Complex Types {#complex-types-1}
+### Complex types {#complex-types-1}
 
 Unless stated, complex type handling should be the same as the [ClickHouse API](#complex-types). Differences are a result of `database/sql` internals.
 
@@ -2346,7 +2346,7 @@ The level of applied compression can be controlled by the DSN parameter compress
 * `br` - `0` (Best Speed) to `11` (Best Compression)
 * `zstd`, `lz4` - ignored
 
-### Parameter Binding {#parameter-binding-1}
+### Parameter binding {#parameter-binding-1}
 
 The standard API supports the same parameter binding capabilities as the [ClickHouse API](#parameter-binding), allowing parameters to be passed to the `Exec`, `Query` and `QueryRow` methods (and their equivalent [Context](#using-context) variants). Positional, named and numbered parameters are supported.
 
@@ -2376,7 +2376,7 @@ fmt.Printf("Named bind count: %d\n", count)
 
 Note [special cases](#special-cases) still apply.
 
-### Using Context {#using-context-1}
+### Using context {#using-context-1}
 
 The standard API supports the same ability to pass deadlines, cancellation signals, and other request-scoped values via the context as the [ClickHouse API](#using-context). Unlike the ClickHouse API, this is achieved by using `Context` variants of the methods i.e. methods such as `Exec`, which use the background context by default, have a variant `ExecContext` to which a context can be passed as the first parameter. This allows a context to be passed at any stage of an application flow. For example, users can pass a context when establishing a connection via `ConnContext` or when requesting a query row via `QueryRowContext`. Examples of all available methods are shown below.
 
@@ -2525,7 +2525,7 @@ for rows.Next() {
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/session.go)
 
-### Dynamic Scanning {#dynamic-scanning-1}
+### Dynamic scanning {#dynamic-scanning-1}
 
 Similar to the [ClickHouse API](#dynamic-scanning), column type information is available to allow users to create runtime instances of correctly typed variables which can be passed to Scan. This allows columns to be read where the type is not known.
 
@@ -2564,7 +2564,7 @@ for rows.Next() {
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/dynamic_scan_types.go)
 
-### External Tables {#external-tables-1}
+### External tables {#external-tables-1}
 
 [External tables](/engines/table-engines/special/external-data/) allow the client to send data to ClickHouse, with a `SELECT` query. This data is put in a temporary table and can be used in the query itself for evaluation.
 
@@ -2632,7 +2632,7 @@ fmt.Printf("external_table_1 UNION external_table_2: %d\n", count)
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/external_data.go)
 
 
-### Open Telemetry {#open-telemetry-1}
+### Open telemetry {#open-telemetry-1}
 
 ClickHouse allows a [trace context](/operations/opentelemetry/) to be passed as part of the native protocol. The client allows a Span to be created via the function `clickhouse.withSpan` and passed via the Context to achieve this. This is not supported when HTTP is used as transport.
 
@@ -2652,7 +2652,7 @@ fmt.Printf("count: %d\n", count)
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/open_telemetry.go)
 
-## Performance Tips {#performance-tips}
+## Performance tips {#performance-tips}
 
 * Utilize the ClickHouse API where possible, especially for primitive types. This avoids significant reflection and indirection.
 * If reading large datasets, consider modifying the [`BlockBufferSize`](#connection-settings). This will increase the memory footprint but will mean more blocks can be decoded in parallel during row iteration. The default value of 2 is conservative and minimizes memory overhead. Higher values will mean more blocks in memory. This requires testing since different queries can produce different block sizes. It can therefore be set on a [query level](#using-context) via the Context.

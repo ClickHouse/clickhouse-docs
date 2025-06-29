@@ -721,7 +721,7 @@ INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
 
 In the above operation, only one row is retrieved from the users table for the user id `2936484`. This lookup is also optimized with a table ordering key of `Id`.
 
-## Materialized Views and Unions {#materialized-views-and-unions}
+## Materialized views and unions {#materialized-views-and-unions}
 
 `UNION ALL` queries are commonly used to combine data from multiple source tables into a single result set.
 

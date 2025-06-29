@@ -19,9 +19,9 @@ If you are using ClickHouse Cloud on [Google Cloud](https://cloud.google.com), t
 
 ClickHouse recognizes that GCS represents an attractive storage solution for users seeking to separate storage and compute. To help achieve this, support is provided for using GCS as the storage for a MergeTree engine. This will enable users to exploit the scalability and cost benefits of GCS, and the insert and query performance of the MergeTree engine.
 
-## GCS Backed MergeTree {#gcs-backed-mergetree}
+## GCS backed MergeTree {#gcs-backed-mergetree}
 
-### Creating a Disk {#creating-a-disk}
+### Creating a disk {#creating-a-disk}
 
 To utilize a GCS bucket as a disk, we must first declare it within the ClickHouse configuration in a file under `conf.d`. An example of a GCS disk declaration is shown below.  This configuration includes multiple sections to configure the GCS "disk", the cache, and the policy that is specified in DDL queries when tables are to be created on the GCS disk.  Each of these are described below.
 
@@ -170,12 +170,12 @@ Depending on the hardware, this latter insert of 1m rows may take a few minutes 
 SELECT passenger_count, avg(tip_amount) as avg_tip, avg(total_amount) as avg_amount FROM trips_gcs GROUP BY passenger_count;
 ```
 
-### Handling Replication {#handling-replication}
+### Handling replication {#handling-replication}
 
 Replication with GCS disks can be accomplished by using the `ReplicatedMergeTree` table engine.  See the [replicating a single shard across two GCP regions using GCS](#gcs-multi-region) guide for details.
 
 
-### Learn More {#learn-more}
+### Learn more {#learn-more}
 
 The [Cloud Storage XML API](https://cloud.google.com/storage/docs/xml-api/overview) is interoperable with some tools and libraries that work with services such as Amazon Simple Storage Service (Amazon S3).
 
@@ -201,7 +201,7 @@ Sample requirements for high availability:
 
 ClickHouse Keeper requires two nodes to function, hence a requirement for three nodes for high availability.
 
-### Prepare VMs {#prepare-vms}
+### Prepare virtual machines {#prepare-vms}
 
 Deploy five VMS in three regions:
 
@@ -295,7 +295,7 @@ All of the ClickHouse Keeper nodes have the same configuration file except for t
 </clickhouse>
 ```
 
-### Configure ClickHouse Server {#configure-clickhouse-server}
+### Configure ClickHouse server {#configure-clickhouse-server}
 
 :::note best practice
 Some of the steps in this guide will ask you to place a configuration file in `/etc/clickhouse-server/config.d/`.  This is the default location on Linux systems for configuration override files.  When you put these files into that directory ClickHouse will merge the content with the default configuration.  By placing these files in the `config.d` directory you will avoid losing your configuration during an upgrade.

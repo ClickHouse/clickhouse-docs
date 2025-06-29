@@ -62,7 +62,7 @@ You'll need the following details for connecting to your ClickHouse instance:
 * Password - Password of the user
 * Database - Name of the database on the instance you want to connect to
 
-## Power BI Desktop {#power-bi-desktop}
+## Power BI desktop {#power-bi-desktop}
 
 To get started with querying data in Power BI Desktop, you'll need to complete the following steps:
 
@@ -85,7 +85,7 @@ Execute the supplied `.msi` installer and follow the wizard.
 `Debug symbols` are optional and not required
 :::
 
-#### Verify ODBC Driver {#verify-odbc-driver}
+#### Verify ODBC driver {#verify-odbc-driver}
 
 When the driver installation is completed, you can verify the installation was successful by:
 
@@ -150,13 +150,13 @@ import the data from ClickHouse.
 Once the import is complete, your ClickHouse Data should be accessible in Power BI as usual.
 <br/>
 
-## Power BI Service {#power-bi-service}
+## Power BI service {#power-bi-service}
 
 In order to use Microsoft Power BI Service, you need to create an [on-premise data gateway](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-onprem).
 
 For more details on how to setup custom connectors, please refer to Microsoft's documentation on how to [use custom data connectors with an on-premises data gateway](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-custom-connectors).
 
-## ODBC Driver (Import Only) {#odbc-driver-import-only}
+## ODBC driver (import only) {#odbc-driver-import-only}
 
 We recommend using the ClickHouse Connector that uses DirectQuery.
 
@@ -192,7 +192,7 @@ If you are using a deployment that has SSL enabled (e.g. ClickHouse Cloud or a s
 - `Timeout` is an integer representing seconds. Default value: `30 seconds`.
 :::
 
-### Get Data Into Power BI {#get-data-into-power-bi}
+### Get data into Power BI {#get-data-into-power-bi}
 
 In case you don't have Power BI installed
 yet, [download and install Power BI Desktop](https://www.microsoft.com/en-us/download/details.aspx?id=58494).
@@ -227,7 +227,7 @@ Finally, you should see the databases and tables in the Navigator view. Select t
 Once the import is complete, your ClickHouse Data should be accessible in Power BI as usual.
 
 
-## Known Limitations {#known-limitations}
+## Known limitations {#known-limitations}
 
 ### UInt64 {#uint64}
 

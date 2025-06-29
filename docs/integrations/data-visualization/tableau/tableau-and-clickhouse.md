@@ -35,7 +35,7 @@ follow the setup guide bellow.
 
 <TOCInline toc={toc}/>
 
-## Setup Required Prior Usage {#setup-required-prior-usage}
+## Setup required prior usage {#setup-required-prior-usage}
 
 
 1. Gather your connection details
@@ -177,7 +177,7 @@ You should see the following:
 Well done! You have successfully connected Tableau to ClickHouse, and you have opened up a whole world of possibilities
 for analyzing and visualizing your ClickHouse data.
 
-## Install the Connector Manually {#install-the-connector-manually}
+## Install the connector manually {#install-the-connector-manually}
 
 In case you use an outdated Tableau Desktop version that doesn't include the connector by default, you can install it manually by following these steps:
 
@@ -187,7 +187,7 @@ In case you use an outdated Tableau Desktop version that doesn't include the con
    * Windows: `C:\Users\[Windows User]\Documents\My Tableau Repository\Connectors`
 3. Restart Tableau Desktop, if your setup went successfully, you will set the connector under the `New Data Source` section.
 
-## Connection and Analysis Tips {#connection-and-analysis-tips}
+## Connection and analysis tips {#connection-and-analysis-tips}
 
 For more guidance on optimizing your Tableau-ClickHouse integration, 
 please visit [Connection Tips](/integrations/tableau/connection-tips) and [Analysis Tips](/integrations/tableau/analysis-tips).
