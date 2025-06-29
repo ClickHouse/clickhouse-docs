@@ -5,7 +5,7 @@ import BackToTopButton from '@theme/BackToTopButton';
 import DocPageLayoutSidebar from '@theme/DocRoot/Layout/Sidebar';
 import DocPageLayoutMain from '@theme/DocRoot/Layout/Main';
 import styles from './styles.module.css';
-import { useAnchorFix } from '../../hooks/useAnchorFix';
+import { useAnchorFix } from '../../../hooks/useAnchorFix';
 export default function DocPageLayout({children}) {
   useAnchorFix(); // fix for layout shifts which occur when navigating to an anchor
   const sidebar = useDocsSidebar();
