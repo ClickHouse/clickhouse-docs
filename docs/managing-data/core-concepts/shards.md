@@ -49,7 +49,7 @@ CREATE TABLE uk.uk_price_paid_simple_dist ON CLUSTER test_cluster
 ENGINE = Distributed('test_cluster', 'uk', 'uk_price_paid_simple', rand())
 ```
 
-The `ON CLUSTER` clause makes the DDL statement a [distributed DDL statement](/docs/sql-reference/distributed-ddl), instructing ClickHouse to create the table on all servers listed in the `test_cluster` [cluster definition](/docs/architecture/horizontal-scaling#replication-and-sharding-configuration). Distributed DDL requires an additional [Keeper](https://clickhouse.com/clickhouse/keeper) component in the [cluster architecture](/docs/architecture/horizontal-scaling#architecture-diagram).
+The `ON CLUSTER` clause makes the DDL statement a [distributed DDL statement](/docs/sql-reference/distributed-ddl), instructing ClickHouse to create the table on all servers listed in the `test_cluster` [cluster definition](/architecture/replication/#configure-clickhouse-servers). Distributed DDL requires an additional [Keeper](https://clickhouse.com/clickhouse/keeper) component in the [cluster architecture](/docs/architecture/horizontal-scaling#architecture-diagram).
 
 For the [distributed engine parameters](/docs/engines/table-engines/special/distributed#distributed-parameters), we specify the cluster name (`test_cluster`), the database name (`uk`) for the sharded target table, the sharded target table's name (`uk_price_paid_simple`), and the **sharding key** for INSERT routing. In this example, we use the [rand](/sql-reference/functions/random-functions#rand) function to randomly assign rows to shards. However, any expression—even complex ones—can be used as a sharding key, depending on the use case. The next section illustrates how INSERT routing works.
 
@@ -86,7 +86,7 @@ Then, the ClickHouse server hosting the initially targeted distributed table ③
 
 Replication in ClickHouse ensures **data integrity** and **failover** by maintaining **copies of shard data** across multiple servers. Since hardware failures are inevitable, replication prevents data loss by ensuring that each shard has multiple replicas. Writes can be directed to any replica, either directly or via a [distributed table](#distributed-table-creation), which selects a replica for the operation. Changes are automatically propagated to other replicas. In case of a failure or maintenance, data remains available on other replicas, and once a failed host recovers, it synchronizes automatically to stay up to date.
 
-Note that replication requires a [Keeper](https://clickhouse.com/clickhouse/keeper) component in the [cluster architecture](/docs/architecture/horizontal-scaling#architecture-diagram).
+Note that replication requires a [Keeper](https://clickhouse.com/clickhouse/keeper) component in the [cluster architecture](/architecture/horizontal-scaling).
 
 The following diagram illustrates a ClickHouse cluster with six servers, where the two table shards `Shard-1` and `Shard-2` introduced earlier each have three replicas. A query is sent to this cluster:
 
