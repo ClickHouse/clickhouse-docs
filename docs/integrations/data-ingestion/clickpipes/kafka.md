@@ -81,8 +81,8 @@ Clicking on "Create ClickPipe" will create and run your ClickPipe. It will now b
 ## Schema registries {#schema-registries}
 ClickPipes supports schema registries for Avro data streams.
 
-### Supported registries
-Schema registries that use the Confluent Schema Registry API are suppoirted. This includes:
+### Supported registries {#supported-schema-registries}
+Schema registries that use the Confluent Schema Registry API are supported. This includes:
 - Confluent Kafka and Cloud
 - Redpanda
 - AWS MSK
@@ -90,23 +90,23 @@ Schema registries that use the Confluent Schema Registry API are suppoirted. Thi
 
 ClickPipes is not currently compatible with the AWS Glue Schema registry or the Azure Schema Registry.
 
-### Configuration
+### Configuration {#schema-registry-configuration}
 
 A schema registry can be configured by when setting up a ClickPipe. This can be configured in one of three ways:
-
+ 
 1. Providing the root schema registry URL (e.g. `https://registry.example.com`). **This is the preferred method.**
 2. Providing a complete path to the schema id (e.g. `https://registry.example.com/schemas/ids/1000`)
 3. Providing a complete path to the schema subject (e.g. `https://registry.example.com/subjects/events`)
     - Optionally, a specific version can be referenced by appending `/versions/[version]` to the url (otherwise ClickPipes will retrieve the latest version).   
 
-### How it works
+### How it works {#how-schema-registries-work}
 ClickPipes dynamically retrieves and applies the Avro schema from the configured Schema Registry.
 - If there's a schema id embedded in the message, it will use that to retrieve the schema.
 - If there's no schema id embedded in the message, it will use the schema id or subject name specified in the ClickPipe configuration to retrieve the schema.
 - If the message is written without an embedded schema id, and no schema id or subject name is specified in the ClickPipe configuration, then the schema will not be retrieved and the message will be skipped with a `SOURCE_SCHEMA_ERROR` logged in the ClickPipes errors table.
 - If the message does not conform to the schema, then the message will be skipped with a `DATA_PARSING_ERROR` logged in the ClickPipes errors table.
 
-### Schema mapping
+### Schema mapping {#schema-mapping}
 The following rules are applied to the mapping between the retrieved Avro schema and the ClickHouse destination table:
 
 - If the Avro schema contains a field that is not included in the ClickHouse destination mapping, that field is ignored.
