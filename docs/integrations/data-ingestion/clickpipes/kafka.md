@@ -31,11 +31,11 @@ You have familiarized yourself with the [ClickPipes intro](./index.md).
 <VerticalStepper type="numbered" headerLevel="h3">
 
 ### Navigate to data sources {#1-load-sql-console}
-Select the `Data Sources` button on the left-side menu and click on "Set up a ClickPipe"
+Select the `Data Sources` button on the left-side menu and click on "Set up a ClickPipe".
 <Image img={cp_step0} alt="Select imports" size="md"/>
 
 ### Select a data source {#2-select-data-source}
-Select your data source.
+Select your Kafka data source from the list.
 <Image img={cp_step1} alt="Select data source type" size="md"/>
 
 ### Configure the data source {#3-configure-data-source}
@@ -43,16 +43,7 @@ Fill out the form by providing your ClickPipe with a name, a description (option
 <Image img={cp_step2} alt="Fill out connection details" size="md"/>
 
 ### Configure a schema registry (optional) {#4-configure-your-schema-registry}
-A valid schema is required for Avro streams and optional for JSON. This schema will be used to parse [AvroConfluent](../../../interfaces/formats.md/#data-format-avro-confluent) or validate JSON messages on the selected topic.
-- Avro messages that cannot be parsed or JSON messages that fail validation will generate an error.
-- The "root" path of the schema registry.  For example, a Confluent Cloud schema registry URL is just an HTTPS url with no path, like `https://test-kk999.us-east-2.aws.confluent.cloud`  If only the root
-path is specified, the schema used to determine column names and types in step 4 will be determined by the id embedded in the sampled Kafka messages.
-- the path `/schemas/ids/[ID]` to the schema document by the numeric schema id. A complete url using a schema id would be `https://registry.example.com/schemas/ids/1000`
-- the path `/subjects/[subject_name]` to the schema document by subject name.  Optionally, a specific version can be referenced by appending `/versions/[version]` to the url (otherwise ClickPipes
-will retrieve the latest version).  A complete url using a schema subject would be `https://registry.example.com/subjects/events` or `https://registry/example.com/subjects/events/versions/4`
-
-Note that in all cases ClickPipes will automatically retrieve an updated or different schema from the registry if indicated by the schema ID embedded in the message.  If the message is written
-without an embedded schema id, then the specific schema ID or subject must be specified to parse all messages.
+A valid schema is required for Avro streams. See [Schema registries](#schema-registries) for more details on how to configure a schema registry.
 
 ### Configure a reverse private endpoint (optional) {#5-configure-reverse-private-endpoint}
 Configure a Reverse Private Endpoint to allow ClickPipes to connect to your Kafka cluster using AWS PrivateLink.
@@ -86,6 +77,42 @@ Clicking on "Create ClickPipe" will create and run your ClickPipe. It will now b
 <Image img={cp_overview} alt="View overview" size="md"/>
 
 </VerticalStepper>
+
+## Schema registries {#schema-registries}
+ClickPipes supports schema registries for Avro data streams.
+
+### Supported registries
+Schema registries that use the Confluent Schema Registry API are suppoirted. This includes:
+- Confluent Kafka and Cloud
+- Redpanda
+- AWS MSK
+- Upstash
+
+ClickPipes is not currently compatible with the AWS Glue Schema registry or the Azure Schema Registry.
+
+### Configuration
+
+A schema registry can be configured by when setting up a ClickPipe. This can be configured in one of three ways:
+
+1. Providing the root schema registry URL (e.g. `https://registry.example.com`). **This is the preferred method.**
+2. Providing a complete path to the schema id (e.g. `https://registry.example.com/schemas/ids/1000`)
+3. Providing a complete path to the schema subject (e.g. `https://registry.example.com/subjects/events`)
+    - Optionally, a specific version can be referenced by appending `/versions/[version]` to the url (otherwise ClickPipes will retrieve the latest version).   
+
+### How it works
+ClickPipes dynamically retrieves and applies the Avro schema from the configured Schema Registry.
+- If there's a schema id embedded in the message, it will use that to retrieve the schema.
+- If there's no schema id embedded in the message, it will use the schema id or subject name specified in the ClickPipe configuration to retrieve the schema.
+- If the message is written without an embedded schema id, and no schema id or subject name is specified in the ClickPipe configuration, then the schema will not be retrieved and the message will be skipped with a `SOURCE_SCHEMA_ERROR` logged in the ClickPipes errors table.
+- If the message does not conform to the schema, then the message will be skipped with a `DATA_PARSING_ERROR` logged in the ClickPipes errors table.
+
+### Schema mapping
+The following rules are applied to the mapping between the retrieved Avro schema and the ClickHouse destination table:
+
+- If the Avro schema contains a field that is not included in the ClickHouse destination mapping, that field is ignored.
+- If the Avro schema is missing a field defined in the ClickHouse destination mapping, the ClickHouse column will be populated with a "zero" value, such as 0 or an empty string. Note that DEFAULT expressions are not currently evaluated for ClickPipes inserts (this is temporary limitation pending updates to the ClickHouse server default processing).
+- If the Avro schema field and the ClickHouse column are incompatible, inserts of that row/message will fail, and the failure will be recorded in the ClickPipes errors table. Note that several implicit conversions are supported (like between numeric types), but not all (for example, an Avro record field can not be inserted into an Int32 ClickHouse column).
+
 
 ## Supported data sources {#supported-data-sources}
 
@@ -164,17 +191,6 @@ Nullable types in Avro are defined by using a Union schema of `(T, null)` or `(n
 - A named Tuple with all default/zero values for a null Avro Record
 
 ClickPipes does not currently support schemas that contain other Avro Unions (this may change in the future with the maturity of the new ClickHouse Variant and JSON data types).  If the Avro schema contains a "non-null" union, ClickPipes will generate an error when attempting to calculate a mapping between the Avro schema and Clickhouse column types.
-
-#### Avro schema management {#avro-schema-management}
-
-ClickPipes dynamically retrieves and applies the Avro schema from the configured Schema Registry using the schema ID embedded in each message/event.  Schema updates are detected and processed automatically.
-
-At this time ClickPipes is only compatible with schema registries that use the [Confluent Schema Registry API](https://docs.confluent.io/platform/current/schema-registry/develop/api.html).  In addition to Confluent Kafka and Cloud, this includes the Redpanda, AWS MSK, and Upstash schema registries.  ClickPipes is not currently compatible with the AWS Glue Schema registry or the Azure Schema Registry (coming soon).
-
-The following rules are applied to the mapping between the retrieved Avro schema and the ClickHouse destination table:
-- If the Avro schema contains a field that is not included in the ClickHouse destination mapping, that field is ignored.
-- If the Avro schema is missing a field defined in the ClickHouse destination mapping, the ClickHouse column will be populated with a "zero" value, such as 0 or an empty string.  Note that [DEFAULT](/sql-reference/statements/create/table#default) expressions are not currently evaluated for ClickPipes inserts (this is temporary limitation pending updates to the ClickHouse server default processing).
-- If the Avro schema field and the ClickHouse column are incompatible, inserts of that row/message will fail, and the failure will be recorded in the ClickPipes errors table.  Note that several implicit conversions are supported (like between numeric types), but not all (for example, an Avro `record` field can not be inserted into an `Int32` ClickHouse column).
 
 ## Kafka virtual columns {#kafka-virtual-columns}
 
