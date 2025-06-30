@@ -46,8 +46,8 @@ for separate local machines, virtual machines or cloud instances as well.
 Run the following commands to set up the directory structure for this example:
 
 ```bash
-mkdir clickhouse-cluster
-cd clickhouse-cluster
+mkdir cluster_2S_2R
+cd cluster_2S_2R
 
 # Create clickhouse-keeper directories
 for i in {01..03}; do

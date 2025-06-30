@@ -49,7 +49,7 @@ CREATE TABLE uk.uk_price_paid_simple_dist ON CLUSTER test_cluster
 ENGINE = Distributed('test_cluster', 'uk', 'uk_price_paid_simple', rand())
 ```
 
-The `ON CLUSTER` clause makes the DDL statement a [distributed DDL statement](/docs/sql-reference/distributed-ddl), instructing ClickHouse to create the table on all servers listed in the `test_cluster` [cluster definition](/architecture/replication/#configure-clickhouse-servers). Distributed DDL requires an additional [Keeper](https://clickhouse.com/clickhouse/keeper) component in the [cluster architecture](/docs/architecture/horizontal-scaling#architecture-diagram).
+The `ON CLUSTER` clause makes the DDL statement a [distributed DDL statement](/docs/sql-reference/distributed-ddl), instructing ClickHouse to create the table on all servers listed in the `test_cluster` [cluster definition](/architecture/replication/#configure-clickhouse-servers). Distributed DDL requires an additional [Keeper](https://clickhouse.com/clickhouse/keeper) component in the [cluster architecture](/architecture/horizontal-scaling).
 
 For the [distributed engine parameters](/docs/engines/table-engines/special/distributed#distributed-parameters), we specify the cluster name (`test_cluster`), the database name (`uk`) for the sharded target table, the sharded target table's name (`uk_price_paid_simple`), and the **sharding key** for INSERT routing. In this example, we use the [rand](/sql-reference/functions/random-functions#rand) function to randomly assign rows to shards. However, any expression—even complex ones—can be used as a sharding key, depending on the use case. The next section illustrates how INSERT routing works.
 
