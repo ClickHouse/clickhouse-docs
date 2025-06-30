@@ -9,6 +9,16 @@ Insert operations can sometimes fail due to errors such as timeouts. When insert
 
 When an insert is retried, ClickHouse tries to determine whether the data has already been successfully inserted. If the inserted data is marked as a duplicate, ClickHouse does not insert it into the destination table. However, the user will still receive a successful operation status as if the data had been inserted normally.
 
+## Limitations
+
+### Uncertain Insert Status
+
+The user must retry the insert operation until it succeeds. If all retries fail, it is impossible to determine whether the data was inserted or not. When materialized views are involved, it is also unclear in which tables the data may have appeared. The materialized views could be out of sync with source table.
+
+### Deduplication Window Limit
+
+If more than `*_deduplication_window` other insert operations occur during the retry sequence, deduplication may not work as intended. In this case, the same data can be inserted multiple times.
+
 ## Enabling insert deduplication on retries {#enabling-insert-deduplication-on-retries}
 
 ### Insert deduplication for tables {#insert-deduplication-for-tables}
@@ -45,7 +55,8 @@ You can control this process using the following settings for the source table:
 - [`replicated_deduplication_window_seconds`](/operations/settings/merge-tree-settings#replicated_deduplication_window_seconds)
 - [`non_replicated_deduplication_window`](/operations/settings/merge-tree-settings#non_replicated_deduplication_window)
 
-You can also use the user profile setting [`deduplicate_blocks_in_dependent_materialized_views`](/operations/settings/settings#deduplicate_blocks_in_dependent_materialized_views).
+You have to also enable the user profile setting [`deduplicate_blocks_in_dependent_materialized_views`](/operations/settings/settings#deduplicate_blocks_in_dependent_materialized_views).
+With enabled setting `insert_deduplicate=1` an inserted data is deduplicated in source table. The setting `deduplicate_blocks_in_dependent_materialized_views=1` additionally enables deduplication in dependant tables. You have to enable both if full deduplication is desired.
 
 When inserting blocks into tables under materialized views, ClickHouse calculates the `block_id` by hashing a string that combines the `block_id`s from the source table and additional identifiers. This ensures accurate deduplication within materialized views, allowing data to be distinguished based on its original insertion, regardless of any transformations applied before reaching the destination table under the materialized view.
 
