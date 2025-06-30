@@ -9,11 +9,11 @@ Insert operations can sometimes fail due to errors such as timeouts. When insert
 
 When an insert is retried, ClickHouse tries to determine whether the data has already been successfully inserted. If the inserted data is marked as a duplicate, ClickHouse does not insert it into the destination table. However, the user will still receive a successful operation status as if the data had been inserted normally.
 
-## Limitations
+## Limitations {#limitations}
 
 ### Uncertain insert status {#uncertain-insert-status}
 
-The user must retry the insert operation until it succeeds. If all retries fail, it is impossible to determine whether the data was inserted or not. When materialized views are involved, it is also unclear in which tables the data may have appeared. The materialized views could be out of sync with source table.
+The user must retry the insert operation until it succeeds. If all retries fail, it is impossible to determine whether the data was inserted or not. When materialized views are involved, it is also unclear in which tables the data may have appeared. The materialized views could be out of sync with the source table.
 
 ### Deduplication window limit {#deduplication-window-limit}
 
