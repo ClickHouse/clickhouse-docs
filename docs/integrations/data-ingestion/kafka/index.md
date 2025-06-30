@@ -1,65 +1,87 @@
----
-sidebar_label: 'Integrating Kafka with ClickHouse'
-sidebar_position: 1
-slug: /integrations/kafka
-description: 'Introduction to Kafka with ClickHouse'
-title: 'Integrating Kafka with ClickHouse'
----
-
-import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';
-import Confluentsvg from '@site/static/images/integrations/logos/confluent.svg';
-import Msksvg from '@site/static/images/integrations/logos/msk.svg';
-import Azureeventhubssvg from '@site/static/images/integrations/logos/azure_event_hubs.svg';
-import Warpstreamsvg from '@site/static/images/integrations/logos/warpstream.svg';
-import redpanda_logo from '@site/static/images/integrations/logos/logo_redpanda.png';
-import Image from '@theme/IdealImage';
 
 # Integrating Kafka with ClickHouse
 
-[Apache Kafka](https://kafka.apache.org/) is an open-source distributed event streaming platform used by thousands of companies for high-performance data pipelines, streaming analytics, data integration, and mission-critical applications. ClickHouse provides different options to **read** data from and **write** data to Apache Kafka and other Kafka API-compatible brokers (e.g., Redpanda, Amazon MSK).
+[Apache Kafka](https://kafka.apache.org/) is an open-source distributed event streaming platform used by thousands of companies for high-performance data pipelines, streaming analytics, data integration, and mission-critical applications. ClickHouse provides multiple options to **read from** and **write to** Kafka and other Kafka API-compatible brokers (e.g., Redpanda, Amazon MSK).
 
-## Choosing an option {#choosing-an-option}
+## Available options {#available-options}
 
-Choosing the right option for your use case depends on multiple factors, including your ClickHouse deployment type, data flow direction and networking requirements.
+Choosing the right option for your use case depends on multiple factors, including your ClickHouse deployment type, data flow direction and operational requirements.
 
-|Option   | Deployment | Kafka to ClickHouse | ClickHouse to Kafka | Private Networking |
-|---------|------------|---------------------|---------------------|--------------------|
-| ClickPipes for Kafka | CH Cloud                  | ✅ | ❌ | ✅ |
-| Kafka Connect Sink   | CH Cloud, CH BYOC, CH OSS | ✅ | ❌ | ✅ |
-| Kafka table engine   | CH Cloud, CH BYOC, CH OSS | ✅ | ✅ | ❌ |
+|Option   | Deployment type | Kafka to ClickHouse | ClickHouse to Kafka | Fully managed      |
+|---------|------------|:-------------------:|:-------------------:|:------------------:|
+| [ClickPipes for Kafka](../clickpipes/kafka.md) | [CH Cloud]                  | ✅ |   | ✅ |
+| [Kafka Connect Sink](./kafka-clickhouse-connect-sink.md)   | [CH Cloud], [CH BYOC], [CH OSS] | ✅ |   |   |
+| [Kafka table engine](./kafka-table-engine.md)   | [CH Cloud], [CH BYOC], [CH OSS] | ✅ | ✅ |   |
 
-For a more detailed comparison between these options, see [Choosing an approach](#choosing-an-approach).
+For a more detailed comparison between these options, see [Choosing an option](#choosing-an-option).
 
 ### ClickPipes for Kafka {#clickpipes-for-kafka}
 
-[ClickPipes](../clickpipes.md) is the native integration engine in ClickHouse Cloud and makes ingesting massive volumes of data from a diverse set of sources as simple as clicking a few buttons. It natively supports **private network** connections (i.e., PrivateLink), scaling ingestion and cluster resources **independently**, and **comprehensive monitoring** for streaming data into ClickHouse from Apache Kafka and other Kafka API-compatible brokers.
+[ClickPipes](../clickpipes/index.md) is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons. Because it is fully managed and purpose-built for production workloads, ClickPipes significantly lowers infrastructure (CAPEX) and operational (OPEC'S) costs, removing the need for external data streaming and ETL tools.
 
-| Name                 |Logo|Type| Status          | Documentation                                                                                          |
-|----------------------|----|----|-----------------|------------------------------------------------------------------------------------------------------|
-| Apache Kafka         |<Kafkasvg class="image" alt="Apache Kafka logo" style={{width: '3rem', 'height': '3rem'}}/>|Streaming| Stable          | [ClickPipes for Kafka integration guide](../clickpipes/kafka.md)     |
-| Confluent Cloud      |<Confluentsvg class="image" alt="Confluent Cloud logo" style={{width: '3rem'}}/>|Streaming| Stable          | [ClickPipes for Kafka integration guide](../clickpipes/kafka.md)          |
-| Redpanda             |<Image img={redpanda_logo} size="logo" alt="Redpanda logo"/>|Streaming| Stable          | [ClickPipes for Kafka integration guide](../clickpipes/kafka.md)         |
-| AWS MSK              |<Msksvg class="image" alt="AWS MSK logo" style={{width: '3rem', 'height': '3rem'}}/>|Streaming| Stable          | [ClickPipes for Kafka integration guide](../clickpipes/kafka.md)          |
-| Azure Event Hubs     |<Azureeventhubssvg class="image" alt="Azure Event Hubs logo" style={{width: '3rem'}}/>|Streaming| Stable          | [ClickPipes for Kafka integration guide](../clickpipes/kafka.md) |
-| WarpStream           |<Warpstreamsvg class="image" alt="WarpStream logo" style={{width: '3rem'}}/>|Streaming| Stable          | [ClickPipes for Kafka integration guide](../clickpipes/kafka.md) |
+:::tip
+This is the recommended option if you're a ClickHouse Cloud user. ClickPipes is **fully managed** and purpose-built to deliver the **best performance** in Cloud environments.
+:::
 
-More connectors will get added to ClickPipes in the future. You can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
+#### Main features {#clickpipes-for-kafka-main-features}
+
+[//]: # "TODO(morsapaes) It isn't optimal to link to a static alpha-release of the Terraform provider. Link to a Terraform guide once that's available."
+
+* Optimized for ClickHouse Cloud, delivering blazing-fast performance
+* Horizontal and vertical scalability for high-throughput workloads
+* Built-in fault tolerance with configurable replicas and automatic retries
+* Deployment and management via ClickHouse Cloud UI, [Open API](../../../cloud/manage/api/api-overview.md), or [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.3.3-alpha2/docs/resources/clickpipe)
+* Enterprise-grade security with support for cloud-native authorization (IAM) and private connectivity (PrivateLink)
+* Support for a wide range of [data sources](../clickpipes/kafka.md#supported-data-sources), including Confluent Cloud, Amazon MSK, Redpanda Cloud, and Azure Event Hubs
+
+#### Getting started {#clickpipes-for-kafka-getting-started}
+
+To get started using ClickPipes for Kafka, see the [reference documentation](../clickpipes/kafka.md) or navigate to the `Data Sources` tab in the ClickHouse Cloud UI.
 
 ### Kafka Connect Sink {#kafka-connect-sink}
 
-Kafka Connect is an open-source framework that works as a centralized data hub for simple data integration between Kafka and other data systems. The [ClickHouse Kafka Connect Sink](./kafka-clickhouse-connect-sink.md) connector provides a scalable and reliable way to **read** data Apache Kafka and other Kafka API-compatible brokers.
+Kafka Connect is an open-source framework that works as a centralized data hub for simple data integration between Kafka and other data systems. The [ClickHouse Kafka Connect Sink](https://github.com/ClickHouse/clickhouse-kafka-connect) connector provides a scalable and highly-configurable option to read data from Apache Kafka and other Kafka API-compatible brokers.
+
+:::tip
+This is the recommended option if you're already a Kafka Connect user. The Kafka Connect Sink offers a rich set of features and configuration options for **advanced tuning**.
+:::
+
+#### Main features {#kafka-connect-sink-main-features}
+
+* Can be configured to support exactly-once semantics
+* Supports all ClickHouse data types
+* Handles structured data with declared schemas and unstructured JSON data
+* Tested continuously against ClickHouse Cloud
+
+#### Getting started {#kafka-connect-sink-getting-started}
+
+To get started using the ClickHouse Kafka Connect Sink, see the [reference documentation](./kafka-clickhouse-connect-sink.md).
 
 ### Kafka Table Engine {#kafka-table-engine}
 
-The [Kafka table engine](./kafka-table-engine.md) can be used to **read** data from and **write** data to Apache Kafka and other Kafka API-compatible brokers. This engine does **not** support private network connections, which means your broker(s) must be configured for public access.
+The [Kafka table engine](./kafka-table-engine.md) can be used to read data from and write data to Apache Kafka and other Kafka API-compatible brokers. This option is bundled with open-source ClickHouse and is available across all deployment types.
 
-### Choosing an approach {#choosing-an-approach}
+:::tip
+This is the recommended option if you're self-hosting ClickHouse and need a **low entry barrier** option, or if you need to **write** data to Kafka.
+:::
+
+#### Main features {#kafka-table-engine-main-features}
+
+* Can be used for reading and writing data
+* Bundled with open-source ClickHouse
+* Supports all ClickHouse data types
+
+#### Getting started {kafka-table-engine-getting-started}
+
+To get started using the Kafka Table Engine, see the [reference documentation](./kafka-table-engine.md).
+
+### Choosing an option {#choosing-an-option}
 
 | Product | Deployment | Strengths | Weaknesses |
 |---------|------------|-----------|------------|
-| **ClickPipes for Kafka** | CH Cloud | • Native CH Cloud experience for ingesting from Kafka. Built-in monitoring and schema management • Scalable architecture that ensures high throughput and low latency • Supports private networking connections on AWS (via PrivateLink) • Supports SSL/TLS authentication (incl. mTLS) and IAM authorization • Supports programmatic configuration (Terraform, API endpoints) | • Does not support pushing data to Kafka • Does not support AWS Private Link connections to Confluent Cloud • Does not support Private Service Connect or Azure Private Link • Not available on GCP or Azure, though it can connect to services in these cloud providers • At-least-once semantics • Protobuf is not supported yet, only Avro and JSON |
-| **Kafka Connect Sink** | CH Cloud CH BYOC OSS CH | • Exactly-once semantics • Allows granular control over data transformation, batching and error handling • Can be deployed in private networks • Allows real-time replication from databases not yet supported in ClickPipes via Debezium | • Does not support pushing data to Kafka • Operationally complex to set up and maintain • Requires Kafka and Kafka Connect expertise |
-| **Kafka Table Engine** | CH Cloud CH BYOC OSS CH | • Supports pushing data to Kafka • Supports most common formats (Avro, JSON, Protobuf) • Allows real-time replication from databases not yet supported in ClickPipes via Debezium | • At-least-once semantics • Requires brokers to be exposed to a public network (IP whitelisting possible) • Limited horizontal scaling for consumers. Cannot be scaled independently from the CH server • Limited error handling and debugging information • No SSL/TLS authentication in CH Cloud • Requires Kafka expertise |
+| **ClickPipes for Kafka** | [CH Cloud] | • Scalable architecture for high throughput and low latency<br/>• Built-in monitoring and schema management<br/>• Private networking connections (via PrivateLink)<br/>• Supports SSL/TLS authentication and IAM authorization<br/>• Supports programmatic configuration (Terraform, API endpoints) | • Does not support pushing data to Kafka<br/>• At-least-once semantics |
+| **Kafka Connect Sink** | [CH Cloud]<br/>[CH BYOC]<br/>[CH OSS] | • Exactly-once semantics<br/>• Allows granular control over data transformation, batching and error handling<br/>• Can be deployed in private networks<br/>• Allows real-time replication from databases not yet supported in ClickPipes via Debezium | • Does not support pushing data to Kafka<br/>• Operationally complex to set up and maintain<br/>• Requires Kafka and Kafka Connect expertise |
+| **Kafka Table Engine** | [CH Cloud]<br/>[CH BYOC]<br/>[CH OSS] | • Supports pushing data to Kafka<br/>• Allows real-time replication from databases not yet supported in ClickPipes via Debezium | • At-least-once semantics<br/>• Limited horizontal scaling for consumers. Cannot be scaled independently from the CH server<br/>• Limited error handling and debugging options<br/>• Requires Kafka expertise |
 
 ### Other options {#other-options}
 
@@ -70,3 +92,7 @@ The [Kafka table engine](./kafka-table-engine.md) can be used to **read** data f
 * [**JDBC Connect Sink**](./kafka-connect-jdbc.md) - The Kafka Connect JDBC Sink connector allows you to export data from Kafka topics to any relational database with a JDBC driver.
 
 * **Custom code** - Custom code using respective client libraries for Kafka and ClickHouse may be appropriate cases where custom processing of events is required. This is beyond the scope of this documentation.
+
+[CH BYOC]: ../../../cloud/reference/byoc.md
+[CH Cloud]: ../../../cloud-index.md
+[CH OSS]: ../../../intro.md
