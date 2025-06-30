@@ -11,11 +11,11 @@ When an insert is retried, ClickHouse tries to determine whether the data has al
 
 ## Limitations
 
-### Uncertain Insert Status
+### Uncertain insert status {#uncertain-insert-status}
 
 The user must retry the insert operation until it succeeds. If all retries fail, it is impossible to determine whether the data was inserted or not. When materialized views are involved, it is also unclear in which tables the data may have appeared. The materialized views could be out of sync with source table.
 
-### Deduplication Window Limit
+### Deduplication window limit {#deduplication-window-limit}
 
 If more than `*_deduplication_window` other insert operations occur during the retry sequence, deduplication may not work as intended. In this case, the same data can be inserted multiple times.
 
