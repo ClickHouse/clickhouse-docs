@@ -6,7 +6,7 @@ description: 'Using the Kafka Table Engine'
 title: 'Using the Kafka table engine'
 ---
 
-import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+import CloudAvailableBadge from '@theme/badges/CloudAvailableBadge';
 import Image from '@theme/IdealImage';
 import kafka_01 from '@site/static/images/integrations/data-ingestion/kafka/kafka_01.png';
 import kafka_02 from '@site/static/images/integrations/data-ingestion/kafka/kafka_02.png';
@@ -15,13 +15,15 @@ import kafka_04 from '@site/static/images/integrations/data-ingestion/kafka/kafk
 
 # Using the Kafka table engine
 
-<CloudNotSupportedBadge/>
+<CloudAvailableBadge/>
 
-:::note
-Kafka table engine is not supported on [ClickHouse Cloud](https://clickhouse.com/cloud). Please consider [ClickPipes](../clickpipes/kafka.md) or [Kafka Connect](./kafka-clickhouse-connect-sink.md)
-:::
+The Kafka table engine can be used to [**read** data from](#kafka-to-clickhouse) and [**write** data to](#clickhouse-to-kafka) Apache Kafka and other Kafka API-compatible brokers (e.g., Redpanda, Amazon MSK).
 
 ### Kafka to ClickHouse {#kafka-to-clickhouse}
+
+:::note
+If you're on ClickHouse Cloud, we recommend using [ClickPipes](/integrations/clickpipes) instead. ClickPipes natively supports private network connections, scaling ingestion and cluster resources independently, and comprehensive monitoring for streaming Kafka data into ClickHouse.
+:::
 
 To use the Kafka table engine, you should be broadly familiar with [ClickHouse materialized views](../../../guides/developer/cascading-materialized-views.md).
 
@@ -180,7 +182,7 @@ CREATE TABLE github_queue
     member_login LowCardinality(String)
 )
    ENGINE = Kafka('kafka_host:9092', 'github', 'clickhouse',
-            'JSONEachRow') settings kafka_thread_per_consumer = 0, kafka_num_consumers = 1;
+            'JSONEachRow') SETTINGS kafka_thread_per_consumer = 0, kafka_num_consumers = 1;
 ```
 
 
@@ -263,7 +265,7 @@ ATTACH TABLE github_queue;
 
 ```sql
 CREATE MATERIALIZED VIEW github_mv TO github AS
-SELECT *, _topic as topic, _partition as partition
+SELECT *, _topic AS topic, _partition as partition
 FROM github_queue;
 ```
 
@@ -414,7 +416,7 @@ CREATE TABLE github_out_queue
     member_login LowCardinality(String)
 )
    ENGINE = Kafka('host:port', 'github_out', 'clickhouse_out',
-            'JSONEachRow') settings kafka_thread_per_consumer = 0, kafka_num_consumers = 1;
+            'JSONEachRow') SETTINGS kafka_thread_per_consumer = 0, kafka_num_consumers = 1;
 ```
 
 Now create a new materialized view `github_out_mv` to point at the GitHub table, inserting rows to the above engine when it triggers. Additions to the GitHub table will, as a result, be pushed to our new Kafka topic.

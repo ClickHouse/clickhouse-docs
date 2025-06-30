@@ -21,7 +21,7 @@ You can read more about TOAST and its implementation in PostgreSQL here: https:/
 To identify if a table has TOAST columns, you can use the following SQL query:
 
 ```sql
-SELECT a.attname, pg_catalog.format_type(a.atttypid, a.atttypmod) as data_type
+SELECT a.attname, pg_catalog.format_type(a.atttypid, a.atttypmod) AS data_type
 FROM pg_attribute a
 JOIN pg_class c ON a.attrelid = c.oid
 WHERE c.relname = 'your_table_name'

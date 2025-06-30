@@ -698,7 +698,7 @@ FROM
     lineitem
 WHERE
     o_orderkey = l_orderkey
-    AND l_shipmode in ('MAIL', 'SHIP')
+    AND l_shipmode IN ('MAIL', 'SHIP')
     AND l_commitdate < l_receiptdate
     AND l_shipdate < l_commitdate
     AND l_receiptdate >= DATE '1994-01-01'
@@ -718,7 +718,7 @@ SELECT
 FROM (
     SELECT
         c_custkey,
-        count(o_orderkey) as c_count
+        count(o_orderkey) AS c_count
     FROM
         customer LEFT OUTER JOIN orders ON
             c_custkey = o_custkey
@@ -796,7 +796,7 @@ SELECT
     p_brand,
     p_type,
     p_size,
-    count(distinct ps_suppkey) AS supplier_cnt
+    count(DISTINCT ps_suppkey) AS supplier_cnt
 FROM
     partsupp,
     part
@@ -804,8 +804,8 @@ WHERE
     p_partkey = ps_partkey
     AND p_brand <> 'Brand#45'
     AND p_type NOT LIKE 'MEDIUM POLISHED%'
-    AND p_size in (49, 14, 23,  45, 19, 3, 36, 9)
-    AND ps_suppkey NOT in (
+    AND p_size IN (49, 14, 23,  45, 19, 3, 36, 9)
+    AND ps_suppkey NOT IN (
         SELECT
             s_suppkey
         FROM
@@ -894,7 +894,7 @@ FROM
     orders,
     lineitem
 WHERE
-    o_orderkey in (
+    o_orderkey IN (
         SELECT
             l_orderkey
         FROM
@@ -929,30 +929,30 @@ WHERE
     (
         p_partkey = l_partkey
         AND p_brand = 'Brand#12'
-        AND p_container in ('SM CASE', 'SM BOX', 'SM PACK', 'SM PKG')
+        AND p_container IN ('SM CASE', 'SM BOX', 'SM PACK', 'SM PKG')
         AND l_quantity >= 1 AND l_quantity <= 1 + 10
         AND p_size BETWEEN 1 AND 5
-        AND l_shipmode in ('AIR', 'AIR REG')
+        AND l_shipmode IN ('AIR', 'AIR REG')
         AND l_shipinstruct = 'DELIVER IN PERSON'
     )
     OR
     (
         p_partkey = l_partkey
         AND p_brand = 'Brand#23'
-        AND p_container in ('MED BAG', 'MED BOX', 'MED PKG', 'MED PACK')
+        AND p_container IN ('MED BAG', 'MED BOX', 'MED PKG', 'MED PACK')
         AND l_quantity >= 10 AND l_quantity <= 10 + 10
         AND p_size BETWEEN 1 AND 10
-        AND l_shipmode in ('AIR', 'AIR REG')
+        AND l_shipmode IN ('AIR', 'AIR REG')
         AND l_shipinstruct = 'DELIVER IN PERSON'
     )
     OR
     (
         p_partkey = l_partkey
         AND p_brand = 'Brand#34'
-        AND p_container in ('LG CASE', 'LG BOX', 'LG PACK', 'LG PKG')
+        AND p_container IN ('LG CASE', 'LG BOX', 'LG PACK', 'LG PKG')
         AND l_quantity >= 20 AND l_quantity <= 20 + 10
         AND p_size BETWEEN 1 AND 15
-        AND l_shipmode in ('AIR', 'AIR REG')
+        AND l_shipmode IN ('AIR', 'AIR REG')
         AND l_shipinstruct = 'DELIVER IN PERSON'
     );
 ```

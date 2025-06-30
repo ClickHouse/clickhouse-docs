@@ -135,8 +135,8 @@ Once compute-compute is enabled for a service (at least one secondary service wa
 6. **CREATE/RENAME/DROP DATABASE queries could be blocked by idled/stopped services by default.** These queries can hang. To bypass this, you  can run database management queries with `settings distributed_ddl_task_timeout=0` at the session or per query level. For example:
 
 ```sql
-create database db_test_ddl_single_query_setting
-settings distributed_ddl_task_timeout=0
+CREATE DATABASE db_test_ddl_single_query_setting
+SETTINGS distributed_ddl_task_timeout=0
 ```
 
 6. **In very rare cases, secondary services that are idled or stopped for a long time (days) without waking/starting up can cause performance degradation to other services in the same warehouse.** This issue will be resolved soon and is connected to mutations running in the background. If you think you are experiencing this issue, please contact ClickHouse [Support](https://clickhouse.com/support/program).

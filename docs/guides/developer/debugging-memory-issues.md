@@ -33,10 +33,10 @@ SELECT
 FROM
     system.asynchronous_metrics
 WHERE
-    metric like '%Cach%'
-    or metric like '%Mem%'
-order by
-    value desc;
+    metric LIKE '%Cach%'
+    OR metric LIKE '%Mem%'
+ORDER BY
+    value DESC;
 ```
 
 ## List tables by current memory usage {#list-tables-by-current-memory-usage}
