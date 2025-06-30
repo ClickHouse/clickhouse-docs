@@ -88,7 +88,7 @@ ClickPipes will create a table next to your destination table with the postfix `
 ### System Errors {#system-errors}
 Errors related to the operation of the ClickPipe will be stored in the `system.clickpipes_log` table. This will store all other errors related to the operation of your ClickPipe (network, connectivity, etc.). This table has a [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
 
-If ClickPipes cannot connect to a data source or destination after 15 min., the ClickPipes instance stops and stores an appropriate message in the system error table (providing the ClickHouse instance is available).
+If ClickPipes cannot connect to a data source after 15 min or to a destination after 1 hr, the ClickPipes instance stops and stores an appropriate message in the system error table (provided the ClickHouse instance is available).
 
 ## F.A.Q {#faq}
 - **What is ClickPipes?**
