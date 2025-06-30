@@ -6,6 +6,7 @@ description: 'Using the Kafka Table Engine'
 title: 'Using the Kafka table engine'
 ---
 
+import CloudAvailableBadge from '@theme/badges/CloudAvailableBadge';
 import Image from '@theme/IdealImage';
 import kafka_01 from '@site/static/images/integrations/data-ingestion/kafka/kafka_01.png';
 import kafka_02 from '@site/static/images/integrations/data-ingestion/kafka/kafka_02.png';
@@ -14,11 +15,15 @@ import kafka_04 from '@site/static/images/integrations/data-ingestion/kafka/kafk
 
 # Using the Kafka table engine
 
-:::note
-Kafka table engine is not supported on [ClickHouse Cloud](https://clickhouse.com/cloud). Please consider [ClickPipes](../clickpipes/kafka.md) or [Kafka Connect](./kafka-clickhouse-connect-sink.md)
-:::
+<CloudAvailableBadge/>
+
+The Kafka table engine can be used to [**read** data from](#kafka-to-clickhouse) and [**write** data to](#clickhouse-to-kafka) Apache Kafka and other Kafka API-compatible brokers (e.g., Redpanda, Amazon MSK).
 
 ### Kafka to ClickHouse {#kafka-to-clickhouse}
+
+:::note
+If you're on ClickHouse Cloud, we recommend using [ClickPipes](/integrations/clickpipes) instead. ClickPipes natively supports private network connections, scaling ingestion and cluster resources independently, and comprehensive monitoring for streaming Kafka data into ClickHouse.
+:::
 
 To use the Kafka table engine, you should be broadly familiar with [ClickHouse materialized views](../../../guides/developer/cascading-materialized-views.md).
 
