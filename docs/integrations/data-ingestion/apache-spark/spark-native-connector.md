@@ -481,7 +481,7 @@ so you can directly execute commands such as CREATE TABLE, TRUNCATE, and more - 
 
 ```sql
 
-use clickhouse; 
+USE clickhouse; 
 
 CREATE TABLE test_db.tbl_sql (
   create_time TIMESTAMP NOT NULL,

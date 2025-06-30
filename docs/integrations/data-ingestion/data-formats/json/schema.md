@@ -549,7 +549,7 @@ json: {"address":[{"city":"Wisokyburgh","geo":{"lat":-43.9509,"lng":-34.4618},"s
 We can determine the inferred sub columns and their types using [introspection functions](/sql-reference/data-types/newjson#introspection-functions). For example:
 
 ```sql
-SELECT JSONDynamicPathsWithTypes(json) as paths
+SELECT JSONDynamicPathsWithTypes(json) AS paths
 FROM people
 FORMAT PrettyJsonEachRow
 

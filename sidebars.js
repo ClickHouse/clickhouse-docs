@@ -14,7 +14,16 @@ const sidebars = {
       link: { type: "doc", id: "introduction-index" },
       items: [
         "intro",
-        "quick-start",
+        {
+          type: "category",
+          label: "Quick start",
+          collapsed: false,
+          link: { type: "doc", id: "getting-started/quick-start/index" },
+          items: [
+            { type: "doc", id: "getting-started/quick-start/cloud" },
+            { type: "doc", id: "getting-started/quick-start/oss" }
+          ]
+        },
         "tutorial",
         {
           type: "category",
@@ -212,9 +221,9 @@ const sidebars = {
         "integrations/data-ingestion/redshift/index",
         "integrations/data-ingestion/dbms/dynamodb/index",
         {
+          label: "Elasticsearch",
           type: "doc",
-          id: "integrations/migration/rockset",
-          label: "Rockset",
+          id: "use-cases/observability/clickstack/migration/elastic/index",
         },
       ],
     },
@@ -244,10 +253,6 @@ const sidebars = {
       link: { type: "doc", id: "cloud/get-started/index" },
       items: [
         "cloud-index",
-        {
-          type: "doc",
-          id: "cloud/get-started/cloud-quick-start",
-        },
         "cloud/get-started/sql-console",
         "cloud/get-started/query-insights",
         "cloud/get-started/query-endpoints",
@@ -479,11 +484,6 @@ const sidebars = {
         "integrations/migration/etl-tool-to-clickhouse",
         "integrations/migration/object-storage-to-clickhouse",
         "integrations/migration/upload-a-csv-file",
-        {
-          type: "link",
-          label: "Rockset",
-          href: "/migrations/rockset",
-        },
       ],
     },
   ],

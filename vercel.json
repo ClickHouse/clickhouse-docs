@@ -2872,11 +2872,6 @@
       "permanent": true
     },
     {
-      "source": "/docs/get-started/quick-start",
-      "destination": "/docs/getting-started/quick-start",
-      "permanent": true
-    },
-    {
       "source": "/docs/sql-reference/dictionaries/external-dictionaries/external-dict",
       "destination": "/docs/sql-reference/dictionaries#embedded-dictionaries",
       "permanent": true
@@ -3350,6 +3345,21 @@
       "source": "/docs/cloud/manage/api/members-api-reference",
       "destination": "/docs/cloud/manage/api/swagger#/paths/~1v1~1organizations~1%7BorganizationId%7D~1members/get",
       "permanent": true
+    },
+    {
+      "source": "/docs/migrations/rockset",
+      "destination": "/docs/migrations/migrations",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/get-started/cloud-quick-start",
+      "destination": "/docs/getting-started/quick-start/cloud",
+      "permanent": true
+    },
+    {
+      "source" : "/docs/getting-started/quick-start",
+      "destination" : "/docs/get-started/quick-start",
+      "permanent" : true
     }
   ]
 }
