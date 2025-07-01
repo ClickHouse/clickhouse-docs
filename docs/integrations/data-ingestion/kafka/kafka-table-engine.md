@@ -6,7 +6,6 @@ description: 'Using the Kafka Table Engine'
 title: 'Using the Kafka table engine'
 ---
 
-import CloudAvailableBadge from '@theme/badges/CloudAvailableBadge';
 import Image from '@theme/IdealImage';
 import kafka_01 from '@site/static/images/integrations/data-ingestion/kafka/kafka_01.png';
 import kafka_02 from '@site/static/images/integrations/data-ingestion/kafka/kafka_02.png';
@@ -14,8 +13,6 @@ import kafka_03 from '@site/static/images/integrations/data-ingestion/kafka/kafk
 import kafka_04 from '@site/static/images/integrations/data-ingestion/kafka/kafka_04.png';
 
 # Using the Kafka table engine
-
-<CloudAvailableBadge/>
 
 The Kafka table engine can be used to [**read** data from](#kafka-to-clickhouse) and [**write** data to](#clickhouse-to-kafka) Apache Kafka and other Kafka API-compatible brokers (e.g., Redpanda, Amazon MSK).
 

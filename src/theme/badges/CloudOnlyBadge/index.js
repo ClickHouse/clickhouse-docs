@@ -12,7 +12,7 @@ const Icon = () => {
     )
 }
 
-const CloudAvailableBadge = () => {
+const CloudOnlyBadge = () => {
     return (
         <div className={styles.cloudBadge}>
             <Icon />{'ClickHouse Cloud only'}
@@ -20,4 +20,4 @@ const CloudAvailableBadge = () => {
     )
 }
 
-export default CloudAvailableBadge
+export default CloudOnlyBadge
