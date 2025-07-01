@@ -9349,10 +9349,10 @@ markdownlint-cli2@^0.17.2:
     markdownlint-cli2-formatter-default "0.0.5"
     micromatch "4.0.8"
 
-markdownlint-rule-helpers@^0.28.0:
-  version "0.28.0"
-  resolved "https://registry.yarnpkg.com/markdownlint-rule-helpers/-/markdownlint-rule-helpers-0.28.0.tgz#0e7280e8d2218ee881ac213b4a8350742bd5d7c3"
-  integrity sha512-qBOQWESmc/yTNe6nVu3D7AU7pFg2e7T5svbQI+S7rocw4g4xZ3GHerKPl0Rw0cx4fnAViEdzoAcbrxeuXUCEAA==
+markdownlint-rule-helpers@^0.29.0:
+  version "0.29.0"
+  resolved "https://registry.yarnpkg.com/markdownlint-rule-helpers/-/markdownlint-rule-helpers-0.29.0.tgz#8b5bd5c57bbbb1821474032665427e264f6671eb"
+  integrity sha512-a03vOcfL2Cc2k+6RtUxdBMEDqcTDisL9YNwuC0IS1DEZnRpAHkt0ytaYSXzE4a4Ghz4B6R2wrgW+Y3Mb8QuSyQ==
 
 markdownlint@0.37.4:
   version "0.37.4"
