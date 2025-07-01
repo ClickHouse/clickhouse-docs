@@ -92,12 +92,12 @@ ClickPipes is not currently compatible with the AWS Glue Schema registry or the 
 
 ### Configuration {#schema-registry-configuration}
 
-A schema registry can be configured by when setting up a ClickPipe. This can be configured in one of three ways:
+ClickPipes with Avro data require a schema registry. This can be configured in one of three ways:
  
-1. Providing the root schema registry URL (e.g. `https://registry.example.com`). **This is the preferred method.**
+1. Providing a complete path to the schema subject (e.g. `https://registry.example.com/subjects/events`)
+    - Optionally, a specific version can be referenced by appending `/versions/[version]` to the url (otherwise ClickPipes will retrieve the latest version).
 2. Providing a complete path to the schema id (e.g. `https://registry.example.com/schemas/ids/1000`)
-3. Providing a complete path to the schema subject (e.g. `https://registry.example.com/subjects/events`)
-    - Optionally, a specific version can be referenced by appending `/versions/[version]` to the url (otherwise ClickPipes will retrieve the latest version).   
+3. Providing the root schema registry URL (e.g. `https://registry.example.com`) 
 
 ### How it works {#how-schema-registries-work}
 ClickPipes dynamically retrieves and applies the Avro schema from the configured Schema Registry.
@@ -189,8 +189,6 @@ Nullable types in Avro are defined by using a Union schema of `(T, null)` or `(n
 - An empty Array for a null Avro array
 - An empty Map for a null Avro Map
 - A named Tuple with all default/zero values for a null Avro Record
-
-ClickPipes does not currently support schemas that contain other Avro Unions (this may change in the future with the maturity of the new ClickHouse Variant and JSON data types).  If the Avro schema contains a "non-null" union, ClickPipes will generate an error when attempting to calculate a mapping between the Avro schema and Clickhouse column types.
 
 ## Kafka virtual columns {#kafka-virtual-columns}
 
