@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # This script is used to generate a list of feature badges in use in the docs
 # It runs as part of a weekly github action and the result is sent as a notification
 # to the #docs channel in Slack.
@@ -19,33 +18,41 @@ components=(
     "ExperimentalBadge"
     "PrivatePreviewBadge"
     "CloudNotSupportedBadge"
-    "CloudAvailableBadge"
+    "CloudOnlyBadge"
+)
+
+# Custom display names (must match order of components array)
+display_names=(
+    "Beta Features"
+    "Experimental Features"
+    "Private Preview Features"
+    "Cloud Unsupported Features"
+    "Cloud Only Features"
 )
 
 # Function to extract slug from a file's frontmatter
 extract_slug_from_file() {
     local filepath="$1"
     local slug=""
-
     # Look for "slug: some/path/slug" in the file
     slug=$(grep -m 1 "^slug:" "$filepath" 2>/dev/null | sed 's/^slug:[[:space:]]*//' | tr -d '"' | tr -d "'")
-
     # If no slug found, return the filepath as fallback
     if [ -z "$slug" ]; then
         slug="[no slug] $filepath"
     fi
-
     echo "$slug"
 }
 
 # Search for each component and collect all slugs
-for component in "${components[@]}"; do
-    echo "$component:"
-
+for i in "${!components[@]}"; do
+    component="${components[$i]}"
+    display_name="${display_names[$i]}"
+    
+    echo "$display_name:"
     # Get unique files containing the component
     files=$(grep -rl --include="*.md" --include="*.mdx" --include="*.jsx" --include="*.tsx" \
         -E "<$component[[:space:]/>]|</$component>" "$DOCS_DIR" 2>/dev/null | sort -u)
-
+    
     if [ -z "$files" ]; then
         echo "  (none)"
     else
@@ -60,6 +67,5 @@ for component in "${components[@]}"; do
             fi
         done <<< "$files"
     fi
-
     echo
 done
