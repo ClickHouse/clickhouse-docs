@@ -36,7 +36,7 @@
     "@clickhouse/client-web": "^1.11.1",
     "@docusaurus/core": "3.7.0",
     "@docusaurus/faster": "^3.7.0",
-    "@docusaurus/plugin-client-redirects": "^3.7.0",
+    "@docusaurus/plugin-client-redirects": "^3.8.1",
     "@docusaurus/plugin-google-tag-manager": "^3.7.0",
     "@docusaurus/plugin-ideal-image": "^3.7.0",
     "@docusaurus/plugin-vercel-analytics": "^3.7.0",
