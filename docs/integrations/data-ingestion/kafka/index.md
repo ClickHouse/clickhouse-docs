@@ -14,11 +14,11 @@ title: 'Integrating Kafka with ClickHouse'
 
 Choosing the right option for your use case depends on multiple factors, including your ClickHouse deployment type, data flow direction and operational requirements.
 
-|Option   | Deployment type | Kafka to ClickHouse | ClickHouse to Kafka | Fully managed      |
+|Option   | Deployment type | Fully managed | Kafka to ClickHouse | ClickHouse to Kafka |
 |---------|------------|:-------------------:|:-------------------:|:------------------:|
-| [ClickPipes for Kafka](../clickpipes/kafka.md) | [CH Cloud]                  | ✅ |   | ✅ |
-| [Kafka Connect Sink](./kafka-clickhouse-connect-sink.md)   | [CH Cloud], [CH BYOC], [CH OSS] | ✅ |   |   |
-| [Kafka table engine](./kafka-table-engine.md)   | [CH Cloud], [CH BYOC], [CH OSS] | ✅ | ✅ |   |
+| [ClickPipes for Kafka](../clickpipes/kafka.md) | [Cloud], [BYOC] (coming soon!)   | ✅ | ✅ |   |
+| [Kafka Connect Sink](./kafka-clickhouse-connect-sink.md)   | [Cloud], [BYOC], [Self-hosted] | | ✅ |   |
+| [Kafka table engine](./kafka-table-engine.md)   | [Cloud], [BYOC], [Self-hosted] | | ✅ | ✅ |
 
 For a more detailed comparison between these options, see [Choosing an option](#choosing-an-option).
 
@@ -40,6 +40,7 @@ This is the recommended option if you're a ClickHouse Cloud user. ClickPipes is 
 * Deployment and management via ClickHouse Cloud UI, [Open API](../../../cloud/manage/api/api-overview.md), or [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.3.3-alpha2/docs/resources/clickpipe)
 * Enterprise-grade security with support for cloud-native authorization (IAM) and private connectivity (PrivateLink)
 * Supports a wide range of [data sources](../clickpipes/kafka.md#supported-data-sources), including Confluent Cloud, Amazon MSK, Redpanda Cloud, and Azure Event Hubs
+* Supports most common serialization formats (JSON, Avro, Protobuf coming soon!)
 
 #### Getting started {#clickpipes-for-kafka-getting-started}
 
@@ -50,14 +51,13 @@ To get started using ClickPipes for Kafka, see the [reference documentation](../
 Kafka Connect is an open-source framework that works as a centralized data hub for simple data integration between Kafka and other data systems. The [ClickHouse Kafka Connect Sink](https://github.com/ClickHouse/clickhouse-kafka-connect) connector provides a scalable and highly-configurable option to read data from Apache Kafka and other Kafka API-compatible brokers.
 
 :::tip
-This is the recommended option if you're already a Kafka Connect user. The Kafka Connect Sink offers a rich set of features and configuration options for **advanced tuning**.
+This is the recommended option if you prefer **high configurability** or are already a Kafka Connect user.
 :::
 
 #### Main features {#kafka-connect-sink-main-features}
 
 * Can be configured to support exactly-once semantics
-* Supports all ClickHouse data types
-* Handles structured data with declared schemas and unstructured JSON data
+* Supports most common serialization formats (JSON, Avro, Protobuf)
 * Tested continuously against ClickHouse Cloud
 
 #### Getting started {#kafka-connect-sink-getting-started}
@@ -74,9 +74,9 @@ This is the recommended option if you're self-hosting ClickHouse and need a **lo
 
 #### Main features {#kafka-table-engine-main-features}
 
-* Can be used for reading and writing data
+* Can be used for [reading](./kafka-table-engine.md/#kafka-to-clickhouse) and [writing](./kafka-table-engine.md/#clickhouse-to-kafka) data
 * Bundled with open-source ClickHouse
-* Supports all ClickHouse data types
+* Supports most common serialization formats (JSON, Avro, Protobuf)
 
 #### Getting started {#kafka-table-engine-getting-started}
 
@@ -84,22 +84,22 @@ To get started using the Kafka table engine, see the [reference documentation](.
 
 ### Choosing an option {#choosing-an-option}
 
-| Product | Deployment | Strengths | Weaknesses |
-|---------|------------|-----------|------------|
-| **ClickPipes for Kafka** | [CH Cloud] | • Scalable architecture for high throughput and low latency<br/>• Built-in monitoring and schema management<br/>• Private networking connections (via PrivateLink)<br/>• Supports SSL/TLS authentication and IAM authorization<br/>• Supports programmatic configuration (Terraform, API endpoints) | • Does not support pushing data to Kafka<br/>• At-least-once semantics |
-| **Kafka Connect Sink** | [CH Cloud]<br/>[CH BYOC]<br/>[CH OSS] | • Exactly-once semantics<br/>• Allows granular control over data transformation, batching and error handling<br/>• Can be deployed in private networks<br/>• Allows real-time replication from databases not yet supported in ClickPipes via Debezium | • Does not support pushing data to Kafka<br/>• Operationally complex to set up and maintain<br/>• Requires Kafka and Kafka Connect expertise |
-| **Kafka table engine** | [CH Cloud]<br/>[CH BYOC]<br/>[CH OSS] | • Supports pushing data to Kafka<br/>• Allows real-time replication from databases not yet supported in ClickPipes via Debezium | • At-least-once semantics<br/>• Limited horizontal scaling for consumers. Cannot be scaled independently from the CH server<br/>• Limited error handling and debugging options<br/>• Requires Kafka expertise |
+| Product | Strengths | Weaknesses |
+|---------|-----------|------------|
+| **ClickPipes for Kafka** | • Scalable architecture for high throughput and low latency<br/>• Built-in monitoring and schema management<br/>• Private networking connections (via PrivateLink)<br/>• Supports SSL/TLS authentication and IAM authorization<br/>• Supports programmatic configuration (Terraform, API endpoints) | • Does not support pushing data to Kafka<br/>• At-least-once semantics |
+| **Kafka Connect Sink** | • Exactly-once semantics<br/>• Allows granular control over data transformation, batching and error handling<br/>• Can be deployed in private networks<br/>• Allows real-time replication from databases not yet supported in ClickPipes via Debezium | • Does not support pushing data to Kafka<br/>• Operationally complex to set up and maintain<br/>• Requires Kafka and Kafka Connect expertise |
+| **Kafka table engine** | • Supports [pushing data to Kafka](./kafka-table-engine.md/#clickhouse-to-kafka)<br/>• Operationally simple to set up | • At-least-once semantics<br/>• Limited horizontal scaling for consumers. Cannot be scaled independently from the ClickHouse server<br/>• Limited error handling and debugging options<br/>• Requires Kafka expertise |
 
 ### Other options {#other-options}
 
-* [**Confluent Cloud**](./confluent/index.md) - Confluent platform provides an option to upload and [run ClickHouse Connector Sink on Confluent Cloud](./confluent/custom-connector.md) or use [HTTP Sink Connector for Confluent Platform](./confluent/kafka-connect-http.md) that integrates Apache Kafka with an API via HTTP or HTTPS.
+* [**Confluent Cloud**](./confluent/index.md) - Confluent Platform provides an option to upload and [run ClickHouse Connector Sink on Confluent Cloud](./confluent/custom-connector.md) or use [HTTP Sink Connector for Confluent Platform](./confluent/kafka-connect-http.md) that integrates Apache Kafka with an API via HTTP or HTTPS.
 
-* [**Vector**](./kafka-vector.md) - Vector is a vendor agnostic data pipeline. With the ability to read from Kafka, and send events to ClickHouse, this represents a robust integration option.
+* [**Vector**](./kafka-vector.md) - Vector is a vendor-agnostic data pipeline. With the ability to read from Kafka, and send events to ClickHouse, this represents a robust integration option.
 
 * [**JDBC Connect Sink**](./kafka-connect-jdbc.md) - The Kafka Connect JDBC Sink connector allows you to export data from Kafka topics to any relational database with a JDBC driver.
 
-* **Custom code** - Custom code using respective client libraries for Kafka and ClickHouse may be appropriate cases where custom processing of events is required. This is beyond the scope of this documentation.
+* **Custom code** - Custom code using Kafka and ClickHouse [client libraries](../../language-clients/index.md) may be appropriate in cases where custom processing of events is required.
 
-[CH BYOC]: ../../../cloud/reference/byoc.md
-[CH Cloud]: ../../../cloud-index.md
-[CH OSS]: ../../../intro.md
+[BYOC]: ../../../cloud/reference/byoc.md
+[Cloud]: ../../../cloud-index.md
+[Self-hosted]: ../../../intro.md
