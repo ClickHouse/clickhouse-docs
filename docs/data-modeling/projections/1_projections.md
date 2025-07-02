@@ -49,7 +49,26 @@ ClickHouse automatically samples the primary keys and chooses a table that can
 generate the same correct result, but requires the least amount of data to be 
 read as shown in the figure below:
 
-<Image img={projections_1} size="lg" alt="Projections in ClickHouse"/>
+<Image img={projections_1} size="md" alt="Projections in ClickHouse"/>
+
+### Smarter storage with `_part_offset`
+
+Since version 25.5, ClickHouse supports the virtual column `_part_offset` in 
+projections which offers a new way to define a projection.
+
+There are now two ways to define a projection:
+
+- **Store full columns (the original behavior)**: The projection contains full 
+  data and can be read directly, offering faster performance when filters match 
+  the projection’s sort order.
+
+- **Store only the sorting key + `_part_offset`**: The projection works like an index. 
+  ClickHouse uses the projection’s primary index to locate matching rows, but reads the
+  actual data from the base table. This reduces storage overhead at the cost of 
+  slightly more I/O at query time.
+
+The approaches above can also be mixed, storing some columns in the projection and
+others indirectly via `_part_offset`.
 
 ## When to use Projections? {#when-to-use-projections}
 
@@ -68,8 +87,6 @@ users should be aware of and thus should be deployed sparingly.
 
 - Projections don't allow using different TTL for the source table and the 
   (hidden) target table, materialized views allow different TTLs.
-- Projections don't currently support `optimize_read_in_order` for the (hidden) 
-  target table.
 - Lightweight updates and deletes are not supported for tables with projections.
 - Materialized Views can be chained: the target table of one Materialized View 
   can be the source table of another Materialized View, and so on. This is not 
@@ -85,7 +102,7 @@ We recommend using projections when:
   to exploit projections that use a simple reordering, i.e., `SELECT * ORDER BY x`.
   Users can select a subset of columns in this expression to reduce storage 
   footprint.
-- Users are comfortable with the associated increase in storage footprint and 
+- Users are comfortable with the potential associated increase in storage footprint and 
   overhead of writing data twice. Test the impact on insertion speed and 
   [evaluate the storage overhead](/data-compression/compression-in-clickhouse).
 
@@ -290,7 +307,7 @@ becomes `AggregatingMergeTree`, and all aggregate functions are converted to
 The figure below is a visualization of the main table `uk_price_paid_with_projections`
 and its two projections:
 
-<Image img={projections_2} size="lg" alt="Visualization of the main table uk_price_paid_with_projections and its two projections"/>
+<Image img={projections_2} size="md" alt="Visualization of the main table uk_price_paid_with_projections and its two projections"/>
 
 If we now run the query that lists the counties in London for the three highest 
 paid prices again, we see an improvement in query performance:
@@ -516,6 +533,125 @@ LIMIT 100
 
 Again, the result is the same but notice the improvement in query performance for the 2nd query.
 
+### Combining projections in one query {#combining-projections}
+
+Starting in version 25.6, building on the `_part_offset` support introduced in 
+the previous version, ClickHouse can now use multiple projections to accelerate 
+a single query with multiple filters.
+
+Importantly, ClickHouse still reads data from only one projection (or the base table), 
+but can use other projections' primary indexes to prune unnecessary parts before reading.
+This is especially useful for queries that filter on multiple columns, each 
+potentially matching a different projection.
+
+> Currently, this mechanism only prunes entire parts. Granule-level pruning is 
+  not yet supported.
+
+To demonstrate this, we define the table (with projections using `_part_offset` columns)
+and insert five example rows matching the diagrams above.
+
+```sql
+CREATE TABLE page_views
+(
+    id UInt64,
+    event_date Date,
+    user_id UInt32,
+    url String,
+    region String,
+    PROJECTION region_proj
+    (
+        SELECT _part_offset ORDER BY region
+    ),
+    PROJECTION user_id_proj
+    (
+        SELECT _part_offset ORDER BY user_id
+    )
+)
+ENGINE = MergeTree
+ORDER BY (event_date, id);
+SETTINGS
+  index_granularity = 1, -- one row per granule
+  max_bytes_to_merge_at_max_space_in_pool = 1; -- disable merge
+```
+
+Then we insert data into the table:
+
+```sql
+INSERT INTO page_views VALUES (
+1, '2025-07-01', 101, 'https://example.com/page1', 'europe');
+INSERT INTO page_views VALUES (
+2, '2025-07-01', 102, 'https://example.com/page2', 'us_west');
+INSERT INTO page_views VALUES (
+3, '2025-07-02', 106, 'https://example.com/page3', 'us_west');
+INSERT INTO page_views VALUES (
+4, '2025-07-02', 107, 'https://example.com/page4', 'us_west');
+INSERT INTO page_views VALUES (
+5, '2025-07-03', 104, 'https://example.com/page5', 'asia');
+```
+
+:::note
+Note: The table uses custom settings for illustration, such as one-row granules 
+and disabled part merges, which are not recommended for production use.
+:::
+
+This setup produces:
+- Five separate parts (one per inserted row)
+- One primary index entry per row (in the base table and each projection)
+- Each part contains exactly one row
+
+With this setup, we run a query filtering on both `region` and `user_id`. 
+Since the base table’s primary index is built from `event_date` and `id`, it
+is unhelpful here, ClickHouse therefore uses:
+
+- `region_proj` to prune parts by region
+- `user_id_proj` to further prune by `user_id`
+
+This behavior is visible using `EXPLAIN projections = 1`, which shows how 
+ClickHouse selects and applies projections.
+
+```sql
+EXPLAIN projections=1
+SELECT * FROM page_views WHERE region = 'us_west' AND user_id = 107;
+```
+
+```response
+    ┌─explain────────────────────────────────────────────────────────────────────────────────┐
+ 1. │ Expression ((Project names + Projection))                                              │
+ 2. │   Expression                                                                           │                                                                        
+ 3. │     ReadFromMergeTree (default.page_views)                                             │
+ 4. │     Projections:                                                                       │
+ 5. │       Name: region_proj                                                                │
+ 6. │         Description: Projection has been analyzed and is used for part-level filtering │
+ 7. │         Condition: (region in ['us_west', 'us_west'])                                  │
+ 8. │         Search Algorithm: binary search                                                │
+ 9. │         Parts: 3                                                                       │
+10. │         Marks: 3                                                                       │
+11. │         Ranges: 3                                                                      │
+12. │         Rows: 3                                                                        │
+13. │         Filtered Parts: 2                                                              │
+14. │       Name: user_id_proj                                                               │
+15. │         Description: Projection has been analyzed and is used for part-level filtering │
+16. │         Condition: (user_id in [107, 107])                                             │
+17. │         Search Algorithm: binary search                                                │
+18. │         Parts: 1                                                                       │
+19. │         Marks: 1                                                                       │
+20. │         Ranges: 1                                                                      │
+21. │         Rows: 1                                                                        │
+22. │         Filtered Parts: 2                                                              │
+    └────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+The `EXPLAIN` output (shown above) reveals the logical query plan, top to bottom:
+
+| Row number | Description                                                                                              |
+|------------|----------------------------------------------------------------------------------------------------------|
+| 3          | Plans to read from the `page_views` base table                                                           |
+| 5-13       | Uses `region_proj` to identify 3 parts where region = 'us_west', pruning 2 of the 5 parts                |
+| 14-22      | Uses user`_id_proj` to identify 1 part where `user_id = 107`, further pruning 2 of the 3 remaining parts |
+
+In the end, just **1 out of 5 parts** is read from the base table.
+By combining the index analysis of multiple projections, ClickHouse significantly reduces the amount of data scanned, 
+improving performance while keeping storage overhead low.
 
 ## Related content {#related-content}
 - [A Practical Introduction to Primary Indexes in ClickHouse](/guides/best-practices/sparse-primary-indexes#option-3-projections)
