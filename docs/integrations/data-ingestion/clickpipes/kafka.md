@@ -112,7 +112,7 @@ without an embedded schema id, then the specific schema ID or subject must be sp
 | Azure Event Hubs     |<Azureeventhubssvg class="image" alt="Azure Event Hubs logo" style={{width: '3rem'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from Azure Event Hubs into ClickHouse Cloud. |
 | WarpStream           |<Warpstreamsvg class="image" alt="WarpStream logo" style={{width: '3rem'}}/>|Streaming| Stable          | Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.       |
 
-More connectors are will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
+More connectors will get added to ClickPipes in the future. You can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
 ## Supported data formats {#supported-data-formats}
 

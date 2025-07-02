@@ -62,6 +62,8 @@ exceptions:
   - Time To Live
   - Docker Compose
   - Kafka
+  - Kafka Connect
+  - Kafka Connect Sink
   - Google Cloud Run
   - NPM
   - OTel
