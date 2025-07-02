@@ -14,11 +14,11 @@ title: 'Integrating Kafka with ClickHouse'
 
 Choosing the right option for your use case depends on multiple factors, including your ClickHouse deployment type, data flow direction and operational requirements.
 
-|Option   | Deployment type | Fully managed | Kafka to ClickHouse | ClickHouse to Kafka |
-|---------|------------|:-------------------:|:-------------------:|:------------------:|
-| [ClickPipes for Kafka](../clickpipes/kafka.md) | [Cloud], [BYOC] (coming soon!)   | ✅ | ✅ |   |
-| [Kafka Connect Sink](./kafka-clickhouse-connect-sink.md)   | [Cloud], [BYOC], [Self-hosted] | | ✅ |   |
-| [Kafka table engine](./kafka-table-engine.md)   | [Cloud], [BYOC], [Self-hosted] | | ✅ | ✅ |
+| Option                                                  | Deployment type | Fully managed | Kafka to ClickHouse | ClickHouse to Kafka |
+|---------------------------------------------------------|------------|:-------------------:|:-------------------:|:------------------:|
+| [ClickPipes for Kafka](/integrations/clickpipes/kafka)                                | [Cloud], [BYOC] (coming soon!)   | ✅ | ✅ |   |
+| [Kafka Connect Sink](./kafka-clickhouse-connect-sink.md) | [Cloud], [BYOC], [Self-hosted] | | ✅ |   |
+| [Kafka table engine](./kafka-table-engine.md)           | [Cloud], [BYOC], [Self-hosted] | | ✅ | ✅ |
 
 For a more detailed comparison between these options, see [Choosing an option](#choosing-an-option).
 
@@ -39,12 +39,12 @@ This is the recommended option if you're a ClickHouse Cloud user. ClickPipes is 
 * Built-in fault tolerance with configurable replicas and automatic retries
 * Deployment and management via ClickHouse Cloud UI, [Open API](../../../cloud/manage/api/api-overview.md), or [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.3.3-alpha2/docs/resources/clickpipe)
 * Enterprise-grade security with support for cloud-native authorization (IAM) and private connectivity (PrivateLink)
-* Supports a wide range of [data sources](../clickpipes/kafka.md#supported-data-sources), including Confluent Cloud, Amazon MSK, Redpanda Cloud, and Azure Event Hubs
+* Supports a wide range of [data sources](/integrations/clickpipes/kafka/reference/), including Confluent Cloud, Amazon MSK, Redpanda Cloud, and Azure Event Hubs
 * Supports most common serialization formats (JSON, Avro, Protobuf coming soon!)
 
 #### Getting started {#clickpipes-for-kafka-getting-started}
 
-To get started using ClickPipes for Kafka, see the [reference documentation](../clickpipes/kafka.md) or navigate to the `Data Sources` tab in the ClickHouse Cloud UI.
+To get started using ClickPipes for Kafka, see the [reference documentation](/integrations/clickpipes/kafka/reference) or navigate to the `Data Sources` tab in the ClickHouse Cloud UI.
 
 ### Kafka Connect Sink {#kafka-connect-sink}
 
