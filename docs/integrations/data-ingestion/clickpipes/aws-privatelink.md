@@ -24,7 +24,7 @@ AWS services, your on-premises systems, and ClickHouse Cloud without exposing tr
 This document outlines the ClickPipes reverse private endpoint functionality
 that allows setting up an AWS PrivateLink VPC endpoint.
 
-## Supported ClickPipes data sources
+## Supported ClickPipes data sources {#supported-sources}
 
 ClickPipes reverse private endpoint functionality is limited to the following
 data source types:
