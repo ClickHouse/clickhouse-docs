@@ -16,7 +16,7 @@ Learn how to ingest and query data in ClickHouse using the New York City taxi ex
 
 ### Prerequisites {#prerequisites}
 
-You need access to a running ClickHouse service to complete this tutorial. For instructions, see the [quick start](/get-started/quick-start) guide.
+You need access to a running ClickHouse service to complete this tutorial. For instructions, see the [Quick Start](/get-started/quick-start) guide.
 
 <VerticalStepper>
 

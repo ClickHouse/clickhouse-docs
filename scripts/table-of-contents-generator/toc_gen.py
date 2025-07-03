@@ -138,6 +138,7 @@ def write_md_to_file(json_items, path_to_md_file, verbose=False):
     except Exception as e:
         log(f"An error occurred: {e}", True)  # Always show critical errors
         sys.exit(1)
+
 def write_to_file(json_items, directory, output=None, verbose=False):
     if output is not None:
         # output to the given path the toc.json file
@@ -165,15 +166,57 @@ def write_file(json_items, args, directory):
     elif (args.out is None) and (args.md is not None):
         write_md_to_file(json_items, args.md, args.verbose)
 
-def sort_by_title_before_underscore(json_items):
-    def sort_key(item):
-        title = item.get("title", "")
-        if "_" in title:
-            return title.lower().split("_")[0]  # Sort by part before underscore
-        else:
-            return title.lower()  # Sort by whole title if no underscore
+def get_title_sort_key(item):
+    """Helper function to get the title-based sort key"""
+    title = item.get("title", "")
+    if "_" in title:
+        return title.lower().split("_")[0]  # Sort by part before underscore
+    else:
+        return title.lower()  # Sort by whole title if no underscore
 
-    return sorted(json_items, key=sort_key)
+def sort_by_sidebar_position(json_items, verbose=False):
+    if verbose:
+        print("Sorting items:")
+        for i, item in enumerate(json_items):
+            title = item.get("title", "No title")
+            sidebar_pos = item.get("sidebar_position", "None")
+            print(f"  {i}: {title} (sidebar_position: {sidebar_pos})")
+
+    def sort_key(item):
+        # First priority: sidebar_position (if exists and is a number)
+        sidebar_position = item.get("sidebar_position")
+        if sidebar_position is not None:
+            try:
+                # Convert to float to handle both int and float values
+                key = (0, float(sidebar_position))
+                if verbose:
+                    print(f"  Using sidebar_position {sidebar_position} for {item.get('title', 'No title')}")
+                return key
+            except (ValueError, TypeError):
+                if verbose:
+                    print(f"  Invalid sidebar_position {sidebar_position} for {item.get('title', 'No title')}, falling back to title")
+                # If sidebar_position exists but isn't a valid number, fall through to title sorting
+                pass
+
+        # Fallback: use the existing title sorting logic
+        title_key = get_title_sort_key(item)
+        if verbose:
+            print(f"  Using title key '{title_key}' for {item.get('title', 'No title')}")
+        return (1, title_key)
+
+    sorted_items = sorted(json_items, key=sort_key)
+
+    if verbose:
+        print("After sorting:")
+        for i, item in enumerate(sorted_items):
+            title = item.get("title", "No title")
+            sidebar_pos = item.get("sidebar_position", "None")
+            print(f"  {i}: {title} (sidebar_position: {sidebar_pos})")
+
+    return sorted_items
+
+def sort_by_title_before_underscore(json_items):
+    return sorted(json_items, key=get_title_sort_key)
 
 def main():
     # Extract script arguments
@@ -202,24 +245,20 @@ def main():
                     result = extract_title_description_slug(full_path, args.verbose)
                     if result is not None:
                         json_items.append(result)
-                        if args.single_toc is False:
-                            # don't write toc.json for empty folders
-                            if len(json_items) != 0:
-                                json_items = sort_by_title_before_underscore(json_items)
-                                # output to the specified directory if arg --out is provided
-                                write_file(json_items, args, directory)
-                            else:
-                                log("Ran into an issue trying to extract YAML: empty result", args.verbose)
 
-        if args.single_toc is True:
-            # don't write toc.json for empty folders
-            if len(json_items) != 0:
-                json_array = sort_by_title_before_underscore(json_items)
-                # output to the specified directory if arg --out is provided
-                write_file(json_items, args, directory)
-                sys.exit(0)
-            else:
-                sys.exit(1)
+        # Sort once after collecting all items for this directory (if not single_toc)
+        if args.single_toc is False and len(json_items) > 0:
+            json_items = sort_by_sidebar_position(json_items, args.verbose)
+            write_file(json_items, args, directory)
+
+    # Sort once after collecting all items from all directories (if single_toc)
+    if args.single_toc is True:
+        if len(json_items) > 0:
+            json_items = sort_by_sidebar_position(json_items, args.verbose)
+            write_file(json_items, args, root_dir)  # Use root_dir instead of directory
+            sys.exit(0)
+        else:
+            sys.exit(1)
 
 if __name__ == "__main__":
     main()
