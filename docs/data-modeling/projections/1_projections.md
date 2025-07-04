@@ -51,7 +51,7 @@ read as shown in the figure below:
 
 <Image img={projections_1} size="md" alt="Projections in ClickHouse"/>
 
-### Smarter storage with `_part_offset`
+### Smarter storage with `_part_offset` {#smarter_storage_with_part_offset}
 
 Since version 25.5, ClickHouse supports the virtual column `_part_offset` in 
 projections which offers a new way to define a projection.
