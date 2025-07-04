@@ -8,7 +8,7 @@
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import BetaBadge from '@theme/badges/BetaBadge';
-import CloudAvailableBadge from '@theme/badges/CloudAvailableBadge';
+import CloudOnlyBadge from '@theme/badges/CloudOnlyBadge';
 import SettingsInfoBlock from '@theme/SettingsInfoBlock/SettingsInfoBlock';
 import VersionHistory from '@theme/VersionHistory/VersionHistory';
 
@@ -1267,7 +1267,7 @@ BACKUP ON CLUSTER または RESTORE ON CLUSTER 操作の初期化中の [Zoo]Kee
 Aws::Client::RetryStrategy の設定。Aws::Client は自動的にリトライします。0 はリトライしないことを意味します。バックアップ/復元のみに適用されます。
 ## cache_warmer_threads {#cache_warmer_threads} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="4" />
 
@@ -1715,7 +1715,7 @@ CROSS JOIN で圧縮するための最小行数。ゼロの値はこの閾値を
 分散テーブルへのINSERTクエリのタイムアウト。これは、insert_distributed_syncが有効な場合にのみ使用されます。ゼロ値はタイムアウトなしを意味します。
 ## distributed_cache_bypass_connection_pool {#distributed_cache_bypass_connection_pool} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 
 
@@ -1728,7 +1728,7 @@ CROSS JOIN で圧縮するための最小行数。ゼロの値はこの閾値を
 ClickHouse Cloud でのみ効果があります。分散キャッシュ接続プールをバイパスすることを許可します。
 ## distributed_cache_connect_max_tries {#distributed_cache_connect_max_tries} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 
 
@@ -1741,7 +1741,7 @@ ClickHouse Cloud でのみ効果があります。分散キャッシュ接続プ
 ClickHouse Cloud でのみ効果があります。接続が失敗した場合に分散キャッシュに接続する試行の回数。
 ## distributed_cache_data_packet_ack_window {#distributed_cache_data_packet_ack_window} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 
 
@@ -1754,7 +1754,7 @@ ClickHouse Cloud でのみ効果があります。接続が失敗した場合に
 ClickHouse Cloud でのみ効果があります。単一の分散キャッシュ読み取りリクエストにおけるDataPacketシーケンスのACKを送信するためのウィンドウ。
 ## distributed_cache_discard_connection_if_unread_data {#distributed_cache_discard_connection_if_unread_data} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 
 
@@ -1767,7 +1767,7 @@ ClickHouse Cloud でのみ効果があります。単一の分散キャッシュ
 ClickHouse Cloud でのみ効果があります。一部のデータが未読の場合、接続を破棄します。
 ## distributed_cache_fetch_metrics_only_from_current_az {#distributed_cache_fetch_metrics_only_from_current_az} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 
 
@@ -1780,7 +1780,7 @@ ClickHouse Cloud でのみ効果があります。一部のデータが未読の
 ClickHouse Cloud でのみ効果があります。system.distributed_cache_metrics、system.distributed_cache_eventsから現在のアベイラビリティゾーンのみからメトリクスを取得します。
 ## distributed_cache_log_mode {#distributed_cache_log_mode} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 
 
@@ -1793,7 +1793,7 @@ ClickHouse Cloud でのみ効果があります。system.distributed_cache_metri
 ClickHouse Cloud でのみ効果があります。system.distributed_cache_logへの書き込みモード。
 ## distributed_cache_max_unacked_inflight_packets {#distributed_cache_max_unacked_inflight_packets} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 
 
@@ -1806,7 +1806,7 @@ ClickHouse Cloud でのみ効果があります。system.distributed_cache_log�
 ClickHouse Cloud でのみ効果があります。単一の分散キャッシュ読み取りリクエストにおける未確認のフライトパケットの最大数。
 ## distributed_cache_min_bytes_for_seek {#distributed_cache_min_bytes_for_seek} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 
 
@@ -1819,7 +1819,7 @@ ClickHouse Cloud でのみ効果があります。単一の分散キャッシュ
 ClickHouse Cloud でのみ効果があります。分散キャッシュでシークを行うための最小バイト数。
 ## distributed_cache_pool_behaviour_on_limit {#distributed_cache_pool_behaviour_on_limit} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 
 
@@ -1832,7 +1832,7 @@ ClickHouse Cloud でのみ効果があります。分散キャッシュでシー
 ClickHouse Cloud でのみ効果があります。プールの制限に達した場合の分散キャッシュ接続の動作を特定します。
 ## distributed_cache_read_alignment {#distributed_cache_read_alignment} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 
 
@@ -1845,7 +1845,7 @@ ClickHouse Cloud でのみ効果があります。プールの制限に達した
 ClickHouse Cloud でのみ効果があります。テスト目的の設定です。変更しないでください。
 ## distributed_cache_read_only_from_current_az {#distributed_cache_read_only_from_current_az} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 
 
@@ -1858,7 +1858,7 @@ ClickHouse Cloud でのみ効果があります。テスト目的の設定です
 ClickHouse Cloud でのみ効果があります。現在のアベイラビリティゾーンからのみ読み取ることを許可します。無効にすると、すべてのアベイラビリティゾーンのすべてのキャッシュサーバーから読み取ります。
 ## distributed_cache_read_request_max_tries {#distributed_cache_read_request_max_tries} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 
 
@@ -1871,7 +1871,7 @@ ClickHouse Cloud でのみ効果があります。現在のアベイラビリテ
 ClickHouse Cloud でのみ効果があります。分散キャッシュ要求が失敗した場合の試行回数。
 ## distributed_cache_receive_response_wait_milliseconds {#distributed_cache_receive_response_wait_milliseconds} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 
 
@@ -1884,7 +1884,7 @@ ClickHouse Cloud でのみ効果があります。分散キャッシュ要求が
 ClickHouse Cloud でのみ効果があります。分散キャッシュから要求のデータを受信するために待機する時間（ミリ秒）。
 ## distributed_cache_receive_timeout_milliseconds {#distributed_cache_receive_timeout_milliseconds} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 
 
@@ -1897,7 +1897,7 @@ ClickHouse Cloud でのみ効果があります。分散キャッシュから要
 ClickHouse Cloud でのみ効果があります。分散キャッシュからの応答を受信するための待機時間（ミリ秒）。
 ## distributed_cache_throw_on_error {#distributed_cache_throw_on_error} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 
 
@@ -1910,7 +1910,7 @@ ClickHouse Cloud でのみ効果があります。分散キャッシュからの
 ClickHouse Cloud でのみ効果があります。分散キャッシュとの通信中に発生した例外または分散キャッシュから受信した例外を再スローします。それ以外は、エラー時に分散キャッシュをスキップします。
 ## distributed_cache_wait_connection_from_pool_milliseconds {#distributed_cache_wait_connection_from_pool_milliseconds} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 
 
@@ -2782,7 +2782,7 @@ ClickHouse は、テーブルの古いレプリカから最も関連性の高い
 ファイルシステムキャッシュの境界アラインメント。この設定は、非ディスクの読み取り（リモートテーブルエンジン/テーブル関数のキャッシュ用）のみで適用されますが、MergeTree テーブルのストレージ構成には適用されません。値が 0 の場合、アラインメントはありません。
 ## filesystem_cache_enable_background_download_during_fetch {#filesystem_cache_enable_background_download_during_fetch} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 
 
@@ -2795,7 +2795,7 @@ ClickHouse は、テーブルの古いレプリカから最も関連性の高い
 ClickHouse Cloud のみで効果があります。ファイルシステムキャッシュ内のスペース予約のためにキャッシュをロックするまでの待機時間。
 ## filesystem_cache_enable_background_download_for_metadata_files_in_packed_storage {#filesystem_cache_enable_background_download_for_metadata_files_in_packed_storage} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 
 
@@ -3737,7 +3737,7 @@ HTTP_NOT_FOUNDエラーのあるグロブ用のURLをスキップします
 - 正の整数（0 - 直ちに閉じる、0 秒後）。
 ## ignore_cold_parts_seconds {#ignore_cold_parts_seconds} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 
 
@@ -6043,7 +6043,7 @@ LIMITのために早く完了するクエリについては、より低い`max_t
 - いずれの正の偶数の整数。
 ## merge_tree_compact_parts_min_granules_to_multibuffer_read {#merge_tree_compact_parts_min_granules_to_multibuffer_read} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="16" />
 
@@ -7689,7 +7689,7 @@ SELECT avg(number) AS number, max(number) FROM numbers(10);
 
 ## prefer_warmed_unmerged_parts_seconds {#prefer_warmed_unmerged_parts_seconds} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="Int64" default_value="0" />
 
@@ -8396,7 +8396,7 @@ RabbitMQから読む際の待機時間です。リトライの前に待ちます
 
 ## read_through_distributed_cache {#read_through_distributed_cache} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -9955,7 +9955,7 @@ ORDER BY 句の WITH FILL 列の前のカラムがソートプレフィックス
 
 ## write_through_distributed_cache {#write_through_distributed_cache} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
