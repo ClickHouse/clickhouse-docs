@@ -225,6 +225,9 @@ KafkaSVG
 MskSVG
 WarpStreamSVG
 QStash
+--docs/integrations/data-ingestion/clickpipes/kafka/05_faq.md--
+EventHubs
+QStash
 --docs/chdb/guides/jupysql.md--
 Sackmann's
 --docs/integrations/data-visualization/splunk-and-clickhouse.md--

@@ -44,6 +44,7 @@ COMMANDS=(
     '--single-toc --dir="docs/cloud/changelogs" --md="docs/cloud/reference/release-notes-index.md"'
     '--single-toc --dir="docs/development" --md="docs/development/index.md" --ignore images'
     '--single-toc --dir="docs/getting-started/example-datasets" --md="docs/getting-started/index.md" --ignore images'
+    '--single-toc --dir="docs/integrations/data-ingestion/clickpipes/kafka" --md="docs/integrations/data-ingestion/clickpipes/kafka/index.md" --ignore images'
 )
 
 # Execute each command
