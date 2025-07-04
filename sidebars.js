@@ -1184,6 +1184,7 @@ const sidebars = {
       link: { type: "doc", id: "guides/developer/index" },
       items: [
         "guides/developer/dynamic-column-selection",
+        "guides/developer/merge-table-function",
         "guides/developer/alternative-query-languages",
         "guides/developer/cascading-materialized-views",
         "guides/developer/debugging-memory-issues",
