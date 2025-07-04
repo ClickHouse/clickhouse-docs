@@ -5,8 +5,6 @@ description: 'How to use JSON schema inference'
 keywords: ['json', 'schema', 'inference', 'schema inference']
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
-
 ClickHouse can automatically determine the structure of JSON data. This can be used to query JSON data directly e.g. on disk with `clickhouse-local` or S3 buckets, and/or automatically create schemas prior to loading the data into ClickHouse.
 
 ## When to use type inference {#when-to-use-type-inference}
@@ -280,8 +278,6 @@ FORMAT PrettyJSONEachRow
 Sometimes, you might have bad data. For example, specific columns that do not have the right type or an improperly formatted JSON object. For this, you can use the settings [`input_format_allow_errors_num`](/operations/settings/formats#input_format_allow_errors_num) and [`input_format_allow_errors_ratio`](/operations/settings/formats#input_format_allow_errors_ratio) to allow a certain number of rows to be ignored if the data is triggering insert errors. Additionally, [hints](/operations/settings/formats#schema_inference_hints) can be provided to assist inference.
 
 ## Working with semi-structured and dynamic data {#working-with-semi-structured-data}
-
-<PrivatePreviewBadge/>
 
 Our previous example used JSON which was static with well known key names and types. This is often not the case - keys can be added or their types can change. This is common in use cases such as Observability data.
 

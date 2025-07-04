@@ -24,6 +24,14 @@ AWS services, your on-premises systems, and ClickHouse Cloud without exposing tr
 This document outlines the ClickPipes reverse private endpoint functionality
 that allows setting up an AWS PrivateLink VPC endpoint.
 
+## Supported ClickPipes data sources {#supported-sources}
+
+ClickPipes reverse private endpoint functionality is limited to the following
+data source types:
+- Kafka
+- Postgres
+- MySQL
+
 ## Supported AWS PrivateLink endpoint types {#aws-privatelink-endpoint-types}
 
 ClickPipes reverse private endpoint can be configured with one of the following AWS PrivateLink approaches:
