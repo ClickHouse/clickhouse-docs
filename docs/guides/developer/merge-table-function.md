@@ -10,7 +10,7 @@ It does this by creating a temporary [Merge](https://clickhouse.com/docs/engines
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/b4YfRhD9SSI?si=MuoDwDWeikAV5ttk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-## Setup tables
+## Setup tables {#setup-tables}
 
 We're going to learn how to use this function with help from [Jeff Sackmann's tennis dataset](https://github.com/JeffSackmann/tennis_atp).
 We're going to process CSV files that contain matches going back to the 1960s, but we'll create a slightly different schema for each decade.
@@ -46,8 +46,8 @@ SETTINGS schema_inference_make_columns_nullable=0,
          schema_inference_hints='winner_seed Nullable(UInt16), loser_seed Nullable(UInt16), surface Enum(\'Hard\', \'Grass\', \'Clay\', \'Carpet\')';
 ```
 
-## Schema of multiple tables
-
+## Schema of multiple tables {#schema-multiple-tables}
+ 
 We can run the following query to list the columns in each table along with their types side by side, so that it's easier to see the differences.
 
 ```sql
@@ -85,7 +85,7 @@ Let's go through the differences:
 * 1980s changes `winner_seed` and `loser_seed` from `Nullable(UInt8)` to `Nullable(UInt16)`.
 * 1990s changes `surface` from `String` to `Enum('Hard', 'Grass', 'Clay', 'Carpet')` and adds the `walkover` and `retirement` columns.
 
-## Querying multiple tables with merge
+## Querying multiple tables with merge {#querying-multiple-tables}
 
 Let's write a query to find the matches that John McEnroe won against someone who was seeded #1:
 
@@ -141,7 +141,7 @@ The result of running the query is shown below:
 └───────────────┴───────────────┴─────────────┘
 ```
 
-## Which table do rows come from when using merge?
+## Which table do rows come from when using merge? {#which-table-merge}
 
 What if we want to know which table rows come from?
 We can use the `_table` virtual column to do this, as shown in the following query:
