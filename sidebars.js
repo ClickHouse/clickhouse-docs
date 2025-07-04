@@ -480,7 +480,7 @@ const sidebars = {
         "integrations/migration/clickhouse-local-etl",
         "integrations/migration/etl-tool-to-clickhouse",
         "integrations/migration/object-storage-to-clickhouse",
-        "integrations/migration/upload-a-csv-file",
+        "cloud/migrate/upload-a-csv-file",
       ],
     },
   ],
