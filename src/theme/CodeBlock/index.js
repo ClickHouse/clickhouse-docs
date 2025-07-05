@@ -4,6 +4,8 @@ import CodeViewer from "../../components/CodeViewer";
 
 
 function countLines(text) {
+  // Handle undefined or null input
+  if (!text) return 1; // Return 1 as default line count
   // Split the string by newline characters
   const lines = text.split('\n');
   // Return the number of lines
@@ -36,7 +38,7 @@ function parseMetaString(meta = '') {
 export default function CodeBlockWrapper(props) {
   const lineHeight = 18.85;
   const [isLoaded, setIsLoaded] = useState(false);
-  const [estimatedHeight, setEstimatedHeight] = useState(countLines(props.children)*lineHeight);
+  const [estimatedHeight, setEstimatedHeight] = useState(countLines(props.children || '') * lineHeight);
   const codeBlockRef = useRef(null);
 
   const handleIntersection = useCallback((entries) => {
