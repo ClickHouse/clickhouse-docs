@@ -11,7 +11,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-**This Guide Integrates:**
+**This guide Integrates:**
 
 <table>
   <tbody>
