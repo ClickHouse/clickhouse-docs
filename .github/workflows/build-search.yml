@@ -15,24 +15,23 @@ env:
 
 jobs:
   update-search:
-    if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'update search') && github.event.pull_request.base.ref == 'main'
-    #if: contains(github.event.pull_request.labels.*.name, 'update search') # Updated to trigger directly on PRs with the label
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'update search') && github.event.pull_request.base.ref == 'main')
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20' 
 
       - name: Run Prep from Master
-        run: yarn copy-clickhouse-repo-docs
+        run: yarn copy-clickhouse-repo-docs -f
 
       - name: Run Auto Generate Settings
-        run: yarn auto-generate-settings
+        run: yarn autogenerate-settings
 
       - name: Run Indexer
         run: yarn run-indexer

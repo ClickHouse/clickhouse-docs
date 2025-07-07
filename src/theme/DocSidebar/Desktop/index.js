@@ -4,7 +4,7 @@ import {useThemeConfig} from '@docusaurus/theme-common';
 import Logo from '@theme/Logo';
 import CollapseButton from '@theme/DocSidebar/Desktop/CollapseButton';
 import Content from '@theme/DocSidebar/Desktop/Content';
-import styles from './styles.module.css';
+import styles from './styles.module.scss';
 import SearchBar from "../../SearchBar";
 function DocSidebarDesktop({path, sidebar, onCollapse, isHidden, ...props}) {
   const {
@@ -32,7 +32,7 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden, ...props}) {
       if (!isVisible) {
         activeLink.scrollIntoView({
           behavior: 'auto',
-          block: 'center', // 'start' or 'end' depending on where you want the link
+          block: 'end',
         });
       }
     }
@@ -46,7 +46,6 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden, ...props}) {
         hideOnScroll && styles.sidebarWithHideableNavbar,
         isHidden && styles.sidebarHidden,
       )}
-        style={{position: 'fixed'}}
       >
       {hideOnScroll && <Logo tabIndex={-1} className={styles.sidebarLogo} />}
       <div className={styles.sidebarSearchContainer}>

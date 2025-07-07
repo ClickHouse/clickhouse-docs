@@ -1,13 +1,24 @@
 #! ./bin/bash
-echo "Copying API placeholder files over generated content"
-PLACEHOLDER=docs/en/_placeholders 
-DOCS=docs/en
-cp $PLACEHOLDER/api/_invitations-api-reference.md   $DOCS/cloud/manage/api/invitations-api-reference.md
-cp $PLACEHOLDER/api/_keys-api-reference.md          $DOCS/cloud/manage/api/keys-api-reference.md
-cp $PLACEHOLDER/api/_members-api-reference.md       $DOCS/cloud/manage/api/members-api-reference.md
-cp $PLACEHOLDER/api/_organizations-api-reference.md $DOCS/cloud/manage/api/organizations-api-reference.md
-cp $PLACEHOLDER/api/_services-api-reference.md      $DOCS/cloud/manage/api/services-api-reference.md
+echo "Copying placeholder files over generated content"
+PLACEHOLDER=docs/_placeholders 
+DOCS=docs
 
-cp $PLACEHOLDER/changelog/_index.md                 $DOCS/whats-new/changelog/index.md
+FOLDERS_TO_REMOVE="docs/development docs/engines docs/interfaces docs/operations docs/sql-reference"
+IFS=' ' read -ra FOLDER_ARRAY <<< "$FOLDERS_TO_REMOVE"
+
+echo "Removing ClickHouse/ClickHouse repository folders..."
+
+# Loop through each folder and remove it
+for folder in "${FOLDER_ARRAY[@]}"; do
+    if [ -d "$folder" ]; then
+        echo "Removing directory: $folder"
+        rm -rf "$folder"
+        echo "✓ Removed: $folder"
+    else
+        echo "⚠ Directory not found: $folder"
+    fi
+done
+
+cp $PLACEHOLDER/changelog/_index.md $DOCS/whats-new/changelog/index.md
 echo "Copying completed"
 echo "----END----"

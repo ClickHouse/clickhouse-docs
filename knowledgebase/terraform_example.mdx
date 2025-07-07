@@ -9,18 +9,18 @@ keywords: ['Terraform']
 {frontMatter.description}
 {/* truncate */}
 
-## Question
+## Question {#question}
 
 How can I use API to manage clusters on ClickHouse Cloud?
 
-## Answer
+## Answer {#answer}
 
 We will use Terraform to configure our infra and [ClickHouse Provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs) 
 
 Steps:
 
 1). Create an API Key on Cloud.
-Follow the docs here - https://clickhouse.com/docs/en/cloud/manage/openapi
+Follow the docs here - https://clickhouse.com/docs/cloud/manage/openapi
 
 Save the creds locally. 
 
@@ -266,4 +266,4 @@ Destroy complete! Resources: 1 destroyed.
 
 And it should be gone from the Cloud Console. 
 
-More details about the Cloud API can be found here - https://clickhouse.com/docs/en/cloud/manage/api/api-overview
+More details about the Cloud API can be found here - https://clickhouse.com/docs/cloud/manage/api/api-overview

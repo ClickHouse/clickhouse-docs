@@ -9,7 +9,7 @@ keywords: ['Add Column']
 {frontMatter.description}
 {/* truncate */}
 
-## Adding a Column to a Table
+## Adding a Column to a Table {#adding-a-column-to-a-table}
 
 We'll be using clickhouse-local:
 
@@ -47,10 +47,10 @@ FROM events;
 └────────────┴────────┘
 ```
 
-## Adding a new column
+## Adding a new column {#adding-a-new-column}
 
 Now let's say we're going to add a new column called `favoriteNumber`, which will be a `Float64`.
-We can do this using the [`ALTER TABLE...ADD COLUMN`](/docs/en/sql-reference/statements/alter/column#add-column) clause:
+We can do this using the [`ALTER TABLE...ADD COLUMN`](/sql-reference/statements/alter/column#add-column) clause:
 
 ```sql
 ALTER TABLE events 
@@ -85,9 +85,9 @@ If we query the `events` table, we'll see the following output:
 ```
 
 
-## Modifying a column's default value
+## Modifying a column's default value {#modifying-a-columns-default-value}
 
-If we modify the `favoriteNumber` column to have a different type using the [`ALTER TABLE...MODIFY COLUMN`](/docs/en/sql-reference/statements/alter/column#modify-column) clause, things get interesting:
+If we modify the `favoriteNumber` column to have a different type using the [`ALTER TABLE...MODIFY COLUMN`](/sql-reference/statements/alter/column#modify-column) clause, things get interesting:
 
 ```sql
 ALTER TABLE events 
@@ -109,7 +109,7 @@ If we query `events` again, we'll see this output:
 `Tyler` keeps a value of `7`, which was the default when that row was created.
 `Alexey` picks up the new default of `99` because the `favoriteNumber` column didn't exist when that row was created.
 
-If we want the `Alexey` row to use the current default right away, we need to call [`OPTIMIZE TABLE` ](/docs/en/sql-reference/statements/optimize) to force current defaults to be written to disk:
+If we want the `Alexey` row to use the current default right away, we need to call [`OPTIMIZE TABLE` ](/sql-reference/statements/optimize) to force current defaults to be written to disk:
 
 ```sql
 OPTIMIZE TABLE events;
@@ -144,7 +144,7 @@ Finally, let's query `events` one more time:
 
 `Tanya` picks up the new default of `21`, but `Alexey` has the old default of `99`.
 
-## Controlling column position in table
+## Controlling column position in table {#controlling-column-position-in-table}
 
 When we add a new column, by default it will be added at the end of the table.
 But, we can use the `FIRST` and `AFTER` clauses to control where a column is positioned.

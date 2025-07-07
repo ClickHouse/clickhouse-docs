@@ -1,0 +1,37 @@
+---
+'sidebar_label': 'データ転送'
+'slug': '/cloud/manage/network-data-transfer'
+'title': 'Data Transfer'
+'description': 'ClickHouse Cloud がデータ転送の送信および受信のデータを計測する方法について詳しく学ぶ'
+---
+
+import NetworkPricing from '@site/i18n/jp/docusaurus-plugin-content-docs/current/cloud/manage/_snippets/_network_transfer_rates.md';
+
+ClickHouse Cloudは、データの転送量をIngressとEgressで計測します。  
+これには、ClickHouse Cloudへのデータの出入りや、地域内および地域間のデータ転送が含まれます。  
+この使用量はサービスレベルで追跡されます。この使用量に基づいて、顧客はデータ転送料金を負担し、それが月々の請求書に追加されます。
+
+ClickHouse Cloudは以下に対して料金を請求します：
+- ClickHouse Cloudから公衆インターネットへのデータEgress、他のクラウドプロバイダーの他の地域への転送を含む。
+- 同じクラウドプロバイダーの別の地域へのデータEgress。
+
+地域内のデータ転送やPrivate Link/Private Service Connectの使用およびデータ転送には料金が発生しません。  
+ただし、ユーザーに適切に料金を請求する能力に影響を与える使用パターンが見られた場合、追加のデータ転送料金計算の次元を実施する権利を留保します。
+
+データ転送料金は、クラウドサービスプロバイダー（CSP）や地域によって異なります。  
+公衆インターネットEgressの料金は、発信元地域のみに基づいています。  
+地域間（またはクロス地域）の料金は、発信元と宛先の両方の地域に依存します。
+
+**データ転送コストを最小化するためのベストプラクティス**
+
+データをIngressおよびEgressする際に、データ転送コストを最小化するために考慮すべきいくつかのパターンがあります。
+1. ClickHouse CloudからデータをIngressまたはEgressする際には、データ転送量と関連コストを最小化するために可能な限り圧縮を使用してください。
+2. 非インライン値（例：INSERT INTO [TABLE] FROM INFILE [FILE] FORMAT NATIVE）を使用してネイティブプロトコル経由でINSERTを行う場合、ClickHouseクライアントはデータをパックするためにサーバーからメタデータを取得します。メタデータがINSERTペイロードより大きい場合、サーバーの視点からは受信量以上のEgressが見られることがあります。これが受け入れられない場合は、VALUES構文でデータをインライン化するか、HTTPプロトコルを使用してみてください。
+
+以下の表は、クラウドプロバイダーと地域によって公衆インターネットまたは地域間のEgressに対するデータ転送料金がどのように異なるかを示しています。
+
+:::note  
+ClickHouse Cloudは、発信元と宛先の地域に応じて、Tier 1からTier 4までの段階で地域間の使用量を計測します。以下の表は地域間データ転送の各組み合わせのティアを示しています。ClickHouse Cloudの請求使用画面では、ティアごとに区分されたデータ転送使用量を見ることができます。  
+:::
+
+<NetworkPricing/>

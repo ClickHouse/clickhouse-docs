@@ -1,0 +1,39 @@
+name: Translation Issue Report
+description: File a report for translated documentation.
+title: "[translation issue]: "
+labels: ["translation issue"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please report any problems found with translations of the documentation
+        using this form.
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language
+      description: For which language are you reporting a translation issue?
+      options:
+        - Русский (Russian)
+        - 中文 (Mandarin)
+        - 日本語 (Japanese)
+      default: 0
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: URL to page
+      description: Please provide the URL of the page in question.
+      placeholder: eg. https://clickhouse.com/docs/ru/architecture/replication
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is the problem?
+      description: Please tell us what the problem is
+      placeholder: Tell us what you see!
+      value: "The translation issue on this page is..."
+    validations:
+      required: true

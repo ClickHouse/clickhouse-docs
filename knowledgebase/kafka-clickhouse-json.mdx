@@ -8,12 +8,12 @@ tags: ['Data Formats', 'Data Ingestion']
 {frontMatter.description}
 {/* truncate */}
 
-## Kafka and the JSON Data Type
+## Kafka and the JSON Data Type {#kafka-and-the-json-data-type}
 
-With the introduction of the new [`JSON`](/docs/en/sql-reference/data-types/newjson) data type, ClickHouse is now a good choice of [database for doing JSON analytics](https://clickhouse.com/engineering-resources/json-database).
+With the introduction of the new [`JSON`](/sql-reference/data-types/newjson) data type, ClickHouse is now a good choice of [database for doing JSON analytics](https://clickhouse.com/engineering-resources/json-database).
 In this guide, we're going to learn how to load JSON messages from Apache Kafka directly into a single `JSON` column in ClickHouse.
 
-## Setup Kafka
+## Setup Kafka {#setup-kafka}
 
 Let's start by running a Kafka broker on our machine. We're also going to map port 9092 to port 9092 on our host operating system so that it's easier to interact with Kafka:
 
@@ -21,7 +21,7 @@ Let's start by running a Kafka broker on our machine. We're also going to map po
 docker run --name broker -p 9092:9092 apache/kafka:3.8.1
 ```
 
-## Ingest data into Kafka
+## Ingest data into Kafka {#ingest-data-into-kafka}
 
 Once that's running, we need to ingest some data.
 The Wikimedia recent changes feed is a good source of streaming data, so let's ingest that into the `wiki_events` topic:
@@ -46,7 +46,7 @@ kcat -C -b localhost:9092  -t wiki_events
 
 So far, so good.
 
-## Ingest data into ClickHouse
+## Ingest data into ClickHouse {#ingest-data-into-clickhouse}
 
 Next, we're going to ingest the data into ClickHouse.
 First, let's enable the JSON type (which is currently experimental), by setting the following property:
@@ -55,7 +55,7 @@ First, let's enable the JSON type (which is currently experimental), by setting 
 SET allow_experimental_json_type = 1;
 ```
 
-Now, we'll create the `wiki_queue` table, which uses the [`Kafka` table engine](/docs/en/integrations/kafka/kafka-table-engine).
+Now, we'll create the `wiki_queue` table, which uses the [`Kafka` table engine](/integrations/kafka/kafka-table-engine).
 
 ```sql
 CREATE TABLE wiki_queue
@@ -70,7 +70,7 @@ ENGINE = Kafka(
 );
 ```
 
-Note that we're using the [`JSONAsObject`](https://clickhouse.com/docs/en/interfaces/formats#jsonasobject) format, which will ensure that incoming messages are made available as a JSON object. 
+Note that we're using the [`JSONAsObject`](https://clickhouse.com/docs/interfaces/formats#jsonasobject) format, which will ensure that incoming messages are made available as a JSON object.
 This format can only be parsed into a table that has a single column with the `JSON` type.
 
 Next, we'll create the underlying table to store the Wiki data:
@@ -93,7 +93,7 @@ SELECT json
 FROM wiki_queue;
 ```
 
-## Querying JSON data in ClickHouse
+## Querying JSON data in ClickHouse {#querying-json-data-in-clickhouse}
 
 We can then write queries against the `wiki` table.
 For example, we could count the number of bots that have committed changes:

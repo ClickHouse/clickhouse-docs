@@ -1,0 +1,32 @@
+---
+'sidebar_label': '数据传输'
+'slug': '/cloud/manage/network-data-transfer'
+'title': '数据传输'
+'description': '了解更多关于 ClickHouse Cloud 如何计量传入和传出的数据'
+---
+
+import NetworkPricing from '@site/i18n/zh/docusaurus-plugin-content-docs/current/cloud/manage/_snippets/_network_transfer_rates.md';
+
+ClickHouse Cloud 计量传输的入站和出站数据。这包括任何进出 ClickHouse Cloud 的数据，以及任何区域内和跨区域的数据传输。此使用情况在服务级别进行跟踪。根据此使用情况，客户将产生数据传输费用，这些费用随后将被添加到他们的月账单中。
+
+ClickHouse Cloud 收取以下费用：
+- 从 ClickHouse Cloud 到公共互联网的数据出站，包括到其他云服务提供商的其他区域。
+- 向同一云服务提供商的另一个区域进行数据出站。
+
+对于区域内的数据传输或 Private Link/Private Service Connect 使用和数据传输没有费用。然而，如果我们观察到影响我们适当收费能力的使用模式，我们保留实施额外数据传输定价维度的权利。
+
+数据传输费用因云服务提供商（CSP）和区域而异。公共互联网出站定价仅基于起源区域。区域间（或跨区域）定价取决于起源和目标区域。
+
+**最小化数据传输成本的最佳实践**
+
+在进出 Clickhouse Cloud 数据时，有一些模式需要记住，以最小化数据传输成本。
+1. 在从 Clickhouse Cloud 进出数据时，尽量使用压缩，以最小化传输的数据量及相关费用。
+2. 请注意，当使用原生协议进行 INSERT 操作且包含非内联值时（例如 INSERT INTO [TABLE] FROM INFILE [FILE] FORMAT NATIVE），ClickHouse 客户端会从服务器提取元数据以打包数据。如果元数据大于 INSERT 负载，从服务器的角度来看，您可能会发现出站数据奇怪地多于入站数据。如果这不可接受，请考虑使用 VALUES 语法内联数据或使用 HTTP 协议。
+
+下表展示了不同云服务提供商和区域中公共互联网或跨区域的数据传输费用如何变化。
+
+:::note
+ClickHouse Cloud 以等级（Tier 1 到 Tier 4）计量区域间使用情况，具体取决于起源和目标区域。下表展示了每种区域间数据传输的组合所对应的等级。在 ClickHouse Cloud 的账单使用屏幕中，您将看到按等级细分的数据传输使用情况。
+:::
+
+<NetworkPricing/>

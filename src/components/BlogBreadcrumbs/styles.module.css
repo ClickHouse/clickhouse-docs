@@ -1,0 +1,86 @@
+.BlogBreadcrumbsContainer {
+    display: flex;
+    margin-top: 32px;
+}
+
+.BlogBreadcrumbs {
+    font-size: 14px;
+    margin-bottom: 16px;
+    display: flex;
+}
+
+.BreadcrumbLink {
+    font-weight: 400;
+    text-decoration: none;
+}
+
+[data-theme='light'] .BreadcrumbLink {
+    color: #8e8c8d !important;
+}
+
+.BreadcrumbLink:hover {
+    text-decoration: none;
+}
+
+/* the link + "/" (which is in a span element) */
+.breadCrumbLinkItem {
+    display: flex;
+}
+
+.forwardSlash {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+[data-theme='dark'] .forwardSlash {
+    color: #3c3c3c;
+}
+
+[data-theme='light'] .forwardSlash {
+    color: #8d8d8e;
+}
+
+[data-theme='dark'] .BreadcrumbLink:hover {
+    color: yellow !important;
+}
+
+[data-theme='light'] .BreadcrumbLink:hover {
+    color: #135BE6 !important;
+}
+
+.BreadcrumbLinkBold {
+    font-weight: 600;
+    cursor: default;
+}
+
+[data-theme='dark'] .BreadcrumbLinkBold {
+
+    color: white;
+
+}
+
+[data-theme='light'] .BreadcrumbLinkBold {
+    color: black;
+}
+
+.BreadcrumbLinkBold:hover {
+    text-decoration: none;
+    cursor: text;
+    font-weight: 600;
+}
+
+[data-theme='dark'] .BreadcrumbLinkBold:hover {
+    color: white;
+}
+
+[data-theme='light'] .BreadcrumbLinkBold:hover {
+    color: black;
+}
+
+[data-theme='dark'] .BlogBreadcrumbs .BreadcrumbLink {
+    color: white;
+}
+
+[data-theme='light'] .BlogBreadcrumbs .BreadcrumbLink {
+    color: black;
+}

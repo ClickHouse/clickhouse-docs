@@ -1,15 +1,40 @@
+@import '../../css/breakpoints.css';
+
 .docsNavDropdownContainer {
+  padding: 8px;
+  border-radius: 10px;
   position: relative;
   display: inline-block;
+  color: var(--ch-nav-v2-link-color);
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+
+  &:hover,
+  &.hover {
+    background-color: var(--ch-nav-v2-link-hover-bg);
+    text-decoration: none;
+    color: #FAFF69;
+  }
 }
+
+.docsNavDropdownContainer::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -30px; /* Adjust this for the hover area extension */
+  width: 100%;
+  height: 30px; /* Must match the bottom value */
+  pointer-events: auto;
+}
+
 
 .docsNavDropdownToolbarLink, .docsNavDropdownToolbarTopLevelLink {
   font-weight: bold;
-  font-size: 14px;
+  font-size: 0.875rem;
   cursor: default;
   color: #414040;
   color: black;
-  margin-right: 30px;
 }
 
 .docsNavDropdownToolbarLink:hover {
@@ -30,7 +55,7 @@
 }
 
 [data-theme="dark"] .docsNavDropdownToolbarLink:hover, [data-theme="dark"] .docsNavDropdownToolbarTopLevelLink:hover {
-  color: white;
+  color: #FAFF69;
 }
 
 .docsNavSelected {
@@ -40,14 +65,14 @@
 }
 
 [data-theme="dark"] .docsNavSelected {
-  color: white; 
+  color: #FAFF69;
   text-decoration: underline;
   text-underline-offset: 4px;
 }
 
 .docsNavDropdownMenu {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 30px);
   left: 0;
   z-index: 9999 !important;
   min-width: 300px;
@@ -55,11 +80,14 @@
   background-color: white;
   border: 1px solid var(--click-color-stroke);
   filter: drop-shadow(0px 2px 2px rgba(50, 50, 50, 0.1));
-  padding: 15px 10px 20px 10px;
-  border-radius: 4px;
+  padding: 10px 10px 10px 10px;
+  border-radius: 10px;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+  transform: translateY(30px);
 }
 
-@media (max-width: 768px) {
+@media (max-width: var(--mobile-breakpoint)) {
   .docsNavDropdownMenu {
     position: absolute;
     min-width: 95%;
@@ -84,35 +112,34 @@
 
 [data-theme="dark"] .docsNavDropdownMenu {
   color: white;
-  background-color: #282828;
+  background-color: #1F1F1C;
   border: 1px solid #4B4B4B;
   filter: drop-shadow(0px 10px 6px rgba(0, 0, 0, 0.5));
 }
 
+[data-theme="light"] .docsNavDropdownMenu {
+  color: black;
+}
+
 .docsNavMenuHeader {
-  color: var(--ifm-toc-link-color);
-  margin-left: 10px;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: bold;
 }
 
-.docsNavMenuDescription {
-  margin-top: 5px;
-  margin-bottom: 10px;
-  margin-left: 10px;
-  font-size: 14px;
-  color: var(--ifm-toc-link-color);
+[data-theme="light"] .docsNavMenuHeader {
+  color: black;
 }
 
-[data-theme="dark"] .docsNavMenuDescription {
-  color: #C0C0C0;
+
+.docsNavMenuDescription {
+  font-size: 0.75rem;
+  color: var(--ifm-toc-link-color);
 }
 
 .docsNavMenuDivider {
   border-top: 1px solid var(--click-color-stroke);
   width: 100%;
   margin: 0;
-  margin-top: 10px;
   margin-bottom: 5px;
 }
 
@@ -122,51 +149,71 @@
 
 .docsNavMenuItems {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  grid-template-columns: 1fr;
   width: 100%;
 }
 
 .docsNavMenuItem {
-  padding: 10px;
+  margin: 3px;
+  padding: 5px;
   max-width: 100%;
   word-wrap: break-word;
   word-break: break-word;
   white-space: normal;
   overflow-wrap: break-word;
-  border-radius: 4px;
+  border-radius: 10px;
+}
+
+[data-theme="dark"] .docsNavMenuItem:hover {
+  background-color: #272725;
 }
 
 .docsNavHovered {
-  background-color: rgb(245, 245, 245);
   cursor: pointer;
 }
 
 [data-theme="dark"] .docsNavHovered {
-  background-color: #3a3a3a;
+  background-color: #1F1F1C;
+  color: yellow;
+}
+
+[data-theme="light"] .docsNavHovered {
+  background-color: #f5f5f5;
+  color: yellow;
 }
 
 .docsNavItemTitle {
-  font-size: 14px;
+  font-size: 0.875rem;
   color: black;
   font-weight: bold;
 }
 
 [data-theme="dark"] .docsNavItemTitle {
-  font-size: 14px;
-  color: #FCFF74;
+  font-size: 0.875rem;
+  color: white;
+}
+
+[data-theme="dark"] .docsNavItemTitle:hover {
+  font-size: 0.875rem;
+  color: yellow;
 }
 
 .docsNavItemDescription {
   color: var(--ifm-toc-link-color);
-  font-size: 14px;
-  margin-top: 4px;
+  font-size: 0.75rem;
 }
 
-[data-theme="dark"] .docsNavItemDescription {
-  color: #C0C0C0;
+@media screen and (max-width: var(--laptop-breakpoint)) {
+  .docsNavDropdownContainer {
+    padding: 0px;
+  }
+
+  [data-theme="dark"] .docsNavDropdownContainer {
+
+  }
+
+  [data-theme="light"] .docsNavDropdownContainer {
+    background-color: white;
+  }
 }
 
-[data-theme="dark"] .docsNavMenuItem:hover .docsNavItemDescription {
-  color: white;
-}

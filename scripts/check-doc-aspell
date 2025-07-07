@@ -1,11 +1,23 @@
 #!/usr/bin/env bash
 
+echo "Checking spelling using aspell"
+
 # Only support OSX and Linux for now
 OS=$(uname | tr '[:upper:]' '[:lower:]')
 if [[ "$OS" != "darwin" && "$OS" != "linux" ]]; then
     echo "Unsupported OS: $OS"
     exit 1
 fi
+
+# Check if aspell is installed
+if ! command -v aspell &> /dev/null; then
+    echo "Error: aspell is not installed. Please install it using your package manager:"
+    echo "  macOS: brew install aspell"
+    echo "  Linux (Debian/Ubuntu): sudo apt install aspell"
+    echo "  Linux (Fedora/RHEL): sudo dnf install aspell"
+    exit 1
+fi
+
 
 # Perform spell checking on the docs
 if [[ ${1:-} == "--help" ]] || [[ ${1:-} == "-h" ]]; then
@@ -26,7 +38,7 @@ get_files_to_check() {
     if [[ ! -z ${1:-} ]]; then
         echo "${ROOT_PATH}/${1}"
     else
-        find "${ROOT_PATH}/docs/${CHECK_LANG}" -type f -name "*.md"
+        find "${ROOT_PATH}/docs" -type f -name "*.md"
     fi
 }
 
@@ -52,28 +64,57 @@ get_ignore_words_for_file() {
     printf "%s\n" "${ignore_words[@]}"
 }
 
-# Use this to filter out lines we don't wanna consider in spell-check - slugs, imports
+# Use this to filter out lines we don't wanna consider in spell-check - slugs, imports, and img src JSX elements
 preprocess_file() {
     local file=$1
-    sed -E 's/\{#[^}]*\}//g' "$file" | grep -Ev '^(slug:|import [[:alnum:]_]+ from)'
+
+    # Remove YAML frontmatter (everything between the first --- and second --- lines)
+    # Then apply other existing filters
+    awk '
+    BEGIN {
+        in_frontmatter = 0
+        frontmatter_ended = 0
+    }
+    # If first line is ---, we are starting frontmatter
+    /^---$/ && NR == 1 {
+        in_frontmatter = 1
+        next
+    }
+    # If we encounter --- while in frontmatter, end it
+    /^---$/ && in_frontmatter {
+        in_frontmatter = 0
+        frontmatter_ended = 1
+        next
+    }
+    # Print lines only if not in frontmatter
+    !in_frontmatter { print }
+    ' "$file" \
+        | sed -E 's/\{#[^}]*\}//g' \
+        | sed -E 's/<[A-Za-z0-9_]+svg[^>]*\/?>//g' \
+        | sed -E 's/<Image[^>]*\/?>//g' \
+        | grep -Ev '(^[[:space:]]*(slug:|<img src=\{[^}]+\})|^import .* from .*)'
 }
 
 # List of files to ignore
 IGNORE_LIST=(
-    "${ROOT_PATH}/docs/en/about-us/adopters.md"
-    "${ROOT_PATH}/docs/en/integrations/data-visualization.md"
-    "${ROOT_PATH}/docs/en/integrations/index.mdx"
-    "${ROOT_PATH}/docs/en/whats-new/security-changelog.md"
-    "${ROOT_PATH}/docs/en/fast-release-24-2.md"
-    "${ROOT_PATH}/docs/en/whats-new/changelog/*" # ignore all changelogs
-    "${ROOT_PATH}/docs/en/cloud/changelogs/changelog-24*"
-    "${ROOT_PATH}/docs/en/cloud/reference/*" # we ignore all files from ClickHouse/ClickHouse
-    "${ROOT_PATH}/docs/en/cloud/engines/*"
-    "${ROOT_PATH}/docs/en/cloud/getting-started/*"
-    "${ROOT_PATH}/docs/en/cloud/development/*"
-    "${ROOT_PATH}/docs/en/cloud/operations/*"
+    "${ROOT_PATH}/docs/about-us/adopters.md"
+    "${ROOT_PATH}/docs/integrations/data-visualization.md"
+    "${ROOT_PATH}/docs/integrations/index.mdx"
+    "${ROOT_PATH}/docs/whats-new/security-changelog.md"
+    "${ROOT_PATH}/docs/cloud/changelogs/*"
+    "${ROOT_PATH}/docs/whats-new/changelog/*" # ignore all changelogs
+    "${ROOT_PATH}/docs/sql-reference/*" # we ignore all files from ClickHouse/ClickHouse
+    "${ROOT_PATH}/docs/engines/*"
+    "${ROOT_PATH}/docs/getting-started/*"
+    "${ROOT_PATH}/docs/development/*"
+    "${ROOT_PATH}/docs/operations/*"
+    "${ROOT_PATH}/docs/interfaces/*"
+    "${ROOT_PATH}/docs/ru/*"
+    "${ROOT_PATH}/docs/zh/*"
+    "${ROOT_PATH}/docs/cloud/manage/api/*" # api files
+    "${ROOT_PATH}/docs/index.md"
     # Add more files to ignore here, e.g.:
-    # "${ROOT_PATH}/docs/en/some-other-file.md"
+    # "${ROOT_PATH}/docs/some-other-file.md"
 )
 
 # Function to check if a file is in the ignore list
@@ -92,7 +133,7 @@ if [[ ${1:-} == "-i" ]]; then
 
     for fname in ${FILES_TO_CHECK}; do
         if is_ignored "$fname"; then
-            echo "Skipping $fname"
+            #echo "Skipping $fname"
             continue
         fi
 
@@ -132,7 +173,7 @@ STATUS=0
 FILES_TO_CHECK=$(get_files_to_check "$1")
 for fname in $FILES_TO_CHECK; do
     if is_ignored "$fname"; then
-        echo "Skipping $fname"
+        #echo "Skipping $fname"
         continue
     fi
     ignore_words=$(get_ignore_words_for_file "$fname")

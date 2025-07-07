@@ -1,1 +1,2 @@
-/docs/en/integrations/ @ClickHouse/integrations
+*                      @ClickHouse/docs
+/docs/integrations/ @ClickHouse/integrations @ClickHouse/docs

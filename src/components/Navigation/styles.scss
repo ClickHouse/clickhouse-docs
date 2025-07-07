@@ -1,4 +1,6 @@
-$menu-breakpoint: 997px;
+@use '../../css/breakpoints.scss' as breakpoints;
+
+$menu-breakpoint: breakpoints.$laptop-breakpoint;
 
 :root {
   --ch-nav-v2-border-color: #dfdfdf;
@@ -404,3 +406,22 @@ ul.ch-nav-v2-sub-nav-resources {
 .ch-nav-v2-sub-nav-use-cases {
 
 }
+
+@media screen and (max-width: 1100px) {
+  .ch-nav-v2-item > a{
+    padding: 0px;
+  }
+
+  [data-theme="dark"] .ch-nav-v2-item > a {
+    background-color: #201c1c;
+  }
+
+  [data-theme="light"] .ch-nav-v2-item > a {
+    background-color: white;
+  }
+
+  .click-button {
+    padding: 8px;
+  }
+}
+

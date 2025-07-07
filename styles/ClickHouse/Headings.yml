@@ -1,0 +1,71 @@
+extends: capitalization
+message: "'%s' should use sentence-style capitalization."
+link: "https://developers.google.com/style/capitalization#capitalization-in-titles-and-headings"
+level: error
+scope: heading
+match: $sentence
+indicators:
+  - ":"
+exceptions:
+  - ClickHouse
+  - Cloud
+  - Azure
+  - CLI
+  - Cosmos
+  - Docker
+  - Emmet
+  - gRPC
+  - I
+  - Kubernetes
+  - Linux
+  - macOS
+  - Marketplace
+  - MongoDB
+  - REPL
+  - Studio
+  - TypeScript
+  - URLs
+  - Visual
+  - VS
+  - Windows
+  - JSON
+  - MergeTree
+  - ReplacingMergeTree
+  - AggregatingMergeTree
+  - DigitalOcean Spaces
+  - Azure Blob Storage
+  - VPC
+  - BYOC
+  - TiDB
+  - PlanetScale
+  - Vitess
+  - MySQL
+  - ClickPipe
+  - ClickPipes
+  - Postgres
+  - CDC
+  - FAQ
+  - Amazon Web Services
+  - AWS
+  - Frequently Asked Questions
+  - PostgreSQL
+  - TTL
+  - ClickStack
+  - OpenTelemetry
+  - Filebeat
+  - Elastic Agent
+  - HyperDX
+  - Helm
+  - EDOT
+  - SDK
+  - Docker
+  - Time To Live
+  - Docker Compose
+  - Kafka
+  - Kafka Connect
+  - Kafka Connect Sink
+  - Google Cloud Run
+  - NPM
+  - OTel
+  - SQL
+  - OSS

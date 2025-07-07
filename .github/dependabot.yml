@@ -6,13 +6,13 @@ updates:
     schedule:
       interval: "monthly"
   - package-ecosystem: "npm"
-    directory: "/docs/en/integrations"
+    directory: "/docs/integrations"
     schedule:
       interval: "monthly"
     # Disable version updates for dependencies in the code snippets
     open-pull-requests-limit: 0
   - package-ecosystem: "pip"
-    directory: "/docs/en/integrations"
+    directory: "/docs/integrations"
     schedule:
       interval: "monthly"
     # Disable version updates for dependencies in the code snippets

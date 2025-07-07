@@ -18,7 +18,15 @@
             "icon": "https://clickhouse.com/cloud.svg"
           },
           {
-            "id": 1,
+            "id": 2,
+            "name": "Bring Your Own Cloud",
+            "description": "A fully managed ClickHouse Cloud service, deployed in your own AWS account.",
+            "href": "/cloud/bring-your-own-cloud",
+            "target": "_self",
+            "icon": "https://clickhouse.com/cloud_byoc.svg"
+          },
+          {
+            "id": 3,
             "name": "ClickHouse",
             "description": "Spin up a database server with open-source ClickHouse.",
             "href": "/clickhouse",
@@ -26,7 +34,7 @@
             "icon": "https://clickhouse.com/drive.svg"
           },
           {
-            "id": 3,
+            "id": 4,
             "name": "View 100+ integrations",
             "href": "/integrations",
             "target": "_self"
@@ -150,13 +158,13 @@
           {
             "id": 2,
             "name": "Quick start",
-            "href": "https://clickhouse.com/docs/en/getting-started/quick-start",
+            "href": "https://clickhouse.com/docs/getting-started/quick-start",
             "target": "_self"
           },
           {
             "id": 3,
             "name": "Integrations",
-            "href": "https://clickhouse.com/docs/en/integrations",
+            "href": "https://clickhouse.com/docs/integrations",
             "target": "_self"
           },
           {

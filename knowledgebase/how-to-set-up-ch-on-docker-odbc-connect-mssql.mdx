@@ -6,14 +6,20 @@ tags: ['Native Clients and Interfaces']
 keywords: ['Docker', 'ODBC', 'Microsoft SQL Server', 'MSSQL']
 ---
 
+import Image from "@theme/IdealImage";
+import mssql_table from "@site/static/images/knowledgebase/ikb273/c8a5492f-5910-4454-bfbc-5c6ceda15ccd.png";
+import mssql_login from "@site/static/images/knowledgebase/ikb273/568f1143-475e-422f-a26a-2c23ac324771.png";
+import mssql_roles from "@site/static/images/knowledgebase/ikb273/63992978-7078-4985-b661-a3c095099ea7.png";
+import mssql_user from "@site/static/images/knowledgebase/ikb273/15a407ca-53c1-45b1-9beb-ddd8eedde64a.png";
+
 {frontMatter.description}
 {/* truncate */}
 
-## Question
+## Question {#question}
 
 How do I set up ClickHouse with a Docker image to connect to Microsoft SQL Server?
 
-## Answer
+## Answer {#answer}
 
 ***Notes on this example***
 - Uses the ClickHouse Docker Ubuntu image
@@ -23,25 +29,25 @@ How do I set up ClickHouse with a Docker image to connect to Microsoft SQL Serve
 - MSSQL Instance name `MARSDB2`
 - MSSQL Login and datbase users are `sql_user`
 
-### Example setup in MSSQL for testing ###
+### Example setup in MSSQL for testing ### {#example-setup-in-mssql-for-testing-}
 
 Database and table created in MSSQL:  
 
-![Screenshot 2024-01-01 at 8 25 50 PM](./images/ikb273/c8a5492f-5910-4454-bfbc-5c6ceda15ccd.png)  
+<Image img={mssql_table} size="md" alt="MSSQL database and table structure" border />
 
 MSSQL Login User, `sql_user`:  
 
-![Screenshot 2024-01-01 at 8 27 11 PM](./images/ikb273/568f1143-475e-422f-a26a-2c23ac324771.png)  
+<Image img={mssql_login} size="md" alt="MSSQL login user configuration" border />
 
 Database membership roles for `sql_user`:
 
-![Screenshot 2024-01-01 at 8 27 35 PM](./images/ikb273/63992978-7078-4985-b661-a3c095099ea7.png)  
+<Image img={mssql_roles} size="md" alt="MSSQL database membership roles" border />
 
 Database User with Login:  
 
-![Screenshot 2024-01-01 at 8 35 34 PM](./images/ikb273/15a407ca-53c1-45b1-9beb-ddd8eedde64a.png)  
+<Image img={mssql_user} size="md" alt="MSSQL database user with login" border />
 
-### Configuring ClickHouse with ODBC
+### Configuring ClickHouse with ODBC {#configuring-clickhouse-with-odbc}
 
 Create a working directory:
   
@@ -84,7 +90,7 @@ Setup = /usr/lib/x86_64-linux-gnu/odbc/libtdsS.so
 UsageCount = 1
 ```
 
-### Configure a Dockerfile to download the image and add the TDS and required ODBC libraries
+### Configure a Dockerfile to download the image and add the TDS and required ODBC libraries {#configure-a-dockerfile-to-download-the-image-and-add-the-tds-and-required-odbc-libraries}
 
 Create the Dockerfile:
 
@@ -168,7 +174,7 @@ CONTAINER ID   IMAGE                           COMMAND            CREATED       
 87a400b803ce   marsnet/clickhouse-odbc:23.10   "/entrypoint.sh"   57 minutes ago   Up About a minute   0.0.0.0:8123->8123/tcp, 0.0.0.0:9000->9000/tcp, 0.0.0.0:9009->9009/tcp   clickhouse-odbc
 ```
 
-### Test ODBC connection
+### Test ODBC connection {#test-odbc-connection}
 
 Login with the ClickHouse client:
 
@@ -227,5 +233,5 @@ Query id: 94724368-485d-4364-ae58-a435a225c37d
 
 For more information, please see:  
 - [https://hub.docker.com/_/clickhouse](https://hub.docker.com/_/clickhouse)
-- [https://clickhouse.com/docs/en/engines/table-engines/integrations/odbc](https://clickhouse.com/docs/en/engines/table-engines/integrations/odbc)
+- [https://clickhouse.com/docs/engines/table-engines/integrations/odbc](https://clickhouse.com/docs/engines/table-engines/integrations/odbc)
 - [https://github.com/ClickHouse/clickhouse-odbc](https://github.com/ClickHouse/clickhouse-odbc)

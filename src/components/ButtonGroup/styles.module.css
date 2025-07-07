@@ -1,0 +1,104 @@
+/* styles.module.css */
+.buttonGroupWrapper {
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 3px;
+    gap: 2px; /* Use CSS variables */
+    border-radius: 4px;
+}
+
+[data-theme='dark'] .buttonGroupWrapper {
+    border: 1px solid #414141;
+}
+
+[data-theme='light'] .buttonGroupWrapper {
+    border: 1px solid #E6E7E9;
+}
+
+.buttonGroupWrapper.fillWidth {
+    width: 100%;
+}
+
+.buttonGroupWrapper.borderless {
+    border: none; /* or other borderless styles */
+    gap: var(--click-button-button-group-space-gap-borderless);
+    border-radius: var(--click-button-group-radii-all);
+}
+
+
+.button {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    background: var(--click-button-group-color-background-default);
+    color: var(--click-button-group-color-text-default);
+    font: var(--click-button-group-typography-label-default);
+    gap: var(--click-button-basic-space-group);
+    cursor: pointer;
+}
+
+.button .borderless {
+    border-radius: var(--click-button-group-radii-all);
+}
+
+.button.fillWidth {
+    flex: 1;
+}
+
+.button:hover {
+    background: #414141;
+    color: white;
+}
+
+[data-theme='light'] .button:hover {
+    background: #EDEEF3;
+    color: black;
+}
+
+.button:disabled {
+    cursor: not-allowed;
+}
+
+.button:disabled.active {
+    background: var(--click-button-group-color-background-disabled-active);
+}
+
+.button:active,
+.button:focus,
+.button.active {
+    background: #414141;
+    border-radius: 4px;
+}
+
+.button.active:disabled {
+    background: var(--click-button-group-color-background-disabled-active);
+}
+
+.button.left {
+    border-radius: 4px;
+}
+
+.button.right {
+    border-radius: 4px;
+}
+
+.button.center {
+    border-radius: var(--click-button-button-group-radii-center);
+}
+
+.button.active {
+    background: #414141;
+    border-radius: 4px;
+}
+
+[data-theme='light'] .button.active {
+    background: #EDEEF3;
+    border-radius: 4px;
+}
+

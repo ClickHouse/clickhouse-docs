@@ -9,9 +9,9 @@ keywords: ['Map Performance']
 {frontMatter.description}
 {/* truncate */}
 
-## Problem
+## Problem {#problem}
 
-Map lookup such as `a['key']` works with linear complexity (mentioned [here](https://clickhouse.com/docs/en/sql-reference/data-types/map)) and can be inefficient. This is because selecting a value with a specific key from a table would require iterating through all keys (~M) across all rows (N) in the Map column, resulting in ~MxN lookups.
+Map lookup such as `a['key']` works with linear complexity (mentioned [here](https://clickhouse.com/docs/sql-reference/data-types/map)) and can be inefficient. This is because selecting a value with a specific key from a table would require iterating through all keys (~M) across all rows (N) in the Map column, resulting in ~MxN lookups.
 
 A lookup using Map can be 10x slower than a String column. The experiment below also shows ~10x slowdown for cold query, and difference in multiple magnitudes of data processed (7.21 MB vs 5.65 GB).
 

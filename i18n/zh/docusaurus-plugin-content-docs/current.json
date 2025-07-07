@@ -1,0 +1,734 @@
+{
+  "version.label": {
+    "message": "下一个",
+    "description": "The label for version current"
+  },
+  "sidebar.docs.category.Introduction": {
+    "message": "介绍",
+    "description": "The label for category Introduction in sidebar docs"
+  },
+  "sidebar.docs.category.Concepts": {
+    "message": "概念",
+    "description": "The label for category Concepts in sidebar docs"
+  },
+  "sidebar.docs.category.FAQ": {
+    "message": "常见问题",
+    "description": "The label for category FAQ in sidebar docs"
+  },
+  "sidebar.docs.category.Starter Guides": {
+    "message": "入门指南",
+    "description": "The label for category Starter Guides in sidebar docs"
+  },
+  "sidebar.docs.category.Use Case Guides": {
+    "message": "用例指南",
+    "description": "The label for category Use Case Guides in sidebar docs"
+  },
+  "sidebar.docs.category.Observability": {
+    "message": "可观察性",
+    "description": "The label for category Observability in sidebar docs"
+  },
+  "sidebar.docs.category.Migration Guides": {
+    "message": "迁移指南",
+    "description": "The label for category Migration Guides in sidebar docs"
+  },
+  "sidebar.docs.category.BigQuery": {
+    "message": "BigQuery",
+    "description": "The label for category BigQuery in sidebar docs"
+  },
+  "sidebar.docs.category.PostgreSQL": {
+    "message": "PostgreSQL",
+    "description": "The label for category PostgreSQL in sidebar docs"
+  },
+  "sidebar.docs.category.Example Datasets": {
+    "message": "示例数据集",
+    "description": "The label for category Example Datasets in sidebar docs"
+  },
+  "sidebar.docs.doc.Introduction": {
+    "message": "介绍",
+    "description": "The label for the doc item Introduction in sidebar docs, linking to the doc migrations/postgres/overview"
+  },
+  "sidebar.docs.doc.Rockset": {
+    "message": "Rockset",
+    "description": "The label for the doc item Rockset in sidebar docs, linking to the doc integrations/migration/rockset"
+  },
+  "sidebar.cloud.category.Get Started": {
+    "message": "开始使用",
+    "description": "The label for category Get Started in sidebar cloud"
+  },
+  "sidebar.cloud.category.Managing Cloud": {
+    "message": "管理云",
+    "description": "The label for category Managing Cloud in sidebar cloud"
+  },
+  "sidebar.cloud.category.Backups": {
+    "message": "备份",
+    "description": "The label for category Backups in sidebar cloud"
+  },
+  "sidebar.cloud.category.Monitoring": {
+    "message": "监控",
+    "description": "The label for category Monitoring in sidebar cloud"
+  },
+  "sidebar.cloud.category.Billing": {
+    "message": "账单",
+    "description": "The label for category Billing in sidebar cloud"
+  },
+  "sidebar.cloud.category.Marketplace": {
+    "message": "市场",
+    "description": "The label for category Marketplace in sidebar cloud"
+  },
+  "sidebar.cloud.category.Jan 2025 Changes FAQ": {
+    "message": "2025年1月更改常见问题",
+    "description": "The label for category Jan 2025 Changes FAQ in sidebar cloud"
+  },
+  "sidebar.cloud.category.Cloud API": {
+    "message": "云 API",
+    "description": "The label for category Cloud API in sidebar cloud"
+  },
+  "sidebar.cloud.category.API Reference": {
+    "message": "API 参考",
+    "description": "The label for category API Reference in sidebar cloud"
+  },
+  "sidebar.cloud.category.Cloud Reference ": {
+    "message": "云参考",
+    "description": "The label for category Cloud Reference  in sidebar cloud"
+  },
+  "sidebar.cloud.category.Changelogs": {
+    "message": "变更日志",
+    "description": "The label for category Changelogs in sidebar cloud"
+  },
+  "sidebar.cloud.category.Release Notes": {
+    "message": "版本说明",
+    "description": "The label for category Release Notes in sidebar cloud"
+  },
+  "sidebar.cloud.category.Best Practices": {
+    "message": "最佳实践",
+    "description": "The label for category Best Practices in sidebar cloud"
+  },
+  "sidebar.cloud.category.Security": {
+    "message": "安全",
+    "description": "The label for category Security in sidebar cloud"
+  },
+  "sidebar.cloud.category.Cloud Access Management": {
+    "message": "云访问管理",
+    "description": "The label for category Cloud Access Management in sidebar cloud"
+  },
+  "sidebar.cloud.category.Connectivity": {
+    "message": "连接性",
+    "description": "The label for category Connectivity in sidebar cloud"
+  },
+  "sidebar.cloud.category.Private Networking": {
+    "message": "私有网络",
+    "description": "The label for category Private Networking in sidebar cloud"
+  },
+  "sidebar.cloud.category.Privacy and Compliance": {
+    "message": "隐私和合规性",
+    "description": "The label for category Privacy and Compliance in sidebar cloud"
+  },
+  "sidebar.cloud.category.Migrating to Cloud": {
+    "message": "迁移到云",
+    "description": "The label for category Migrating to Cloud in sidebar cloud"
+  },
+  "sidebar.cloud.link.Rockset": {
+    "message": "Rockset",
+    "description": "The label for link Rockset in sidebar cloud, linking to /migrations/rockset"
+  },
+  "sidebar.sqlreference.category.Introduction": {
+    "message": "介绍",
+    "description": "The label for category Introduction in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Data Types": {
+    "message": "数据类型",
+    "description": "The label for category Data Types in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Special Data Types": {
+    "message": "特殊数据类型",
+    "description": "The label for category Special Data Types in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Statements": {
+    "message": "语句",
+    "description": "The label for category Statements in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.SELECT": {
+    "message": "SELECT",
+    "description": "The label for category SELECT in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.CREATE": {
+    "message": "CREATE",
+    "description": "The label for category CREATE in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.ALTER": {
+    "message": "ALTER",
+    "description": "The label for category ALTER in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Engines": {
+    "message": "引擎",
+    "description": "The label for category Engines in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Database Engines": {
+    "message": "数据库引擎",
+    "description": "The label for category Database Engines in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Table Engines": {
+    "message": "表引擎",
+    "description": "The label for category Table Engines in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.MergeTree Family": {
+    "message": "MergeTree 家族",
+    "description": "The label for category MergeTree Family in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Log Family": {
+    "message": "日志家族",
+    "description": "The label for category Log Family in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Integrations": {
+    "message": "集成",
+    "description": "The label for category Integrations in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Special": {
+    "message": "特殊",
+    "description": "The label for category Special in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Functions": {
+    "message": "函数",
+    "description": "The label for category Functions in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Regular Functions": {
+    "message": "常规函数",
+    "description": "The label for category Regular Functions in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Geo": {
+    "message": "地理",
+    "description": "The label for category Geo in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Aggregate Functions": {
+    "message": "聚合函数",
+    "description": "The label for category Aggregate Functions in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Table Functions": {
+    "message": "表函数",
+    "description": "The label for category Table Functions in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Window Functions": {
+    "message": "窗口函数",
+    "description": "The label for category Window Functions in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Other Features": {
+    "message": "其他功能",
+    "description": "The label for category Other Features in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Operators": {
+    "message": "运算符",
+    "description": "The label for category Operators in sidebar sqlreference"
+  },
+  "sidebar.integrations.category.Language Clients": {
+    "message": "语言客户端",
+    "description": "The label for category Language Clients in sidebar integrations"
+  },
+  "sidebar.integrations.category.Java": {
+    "message": "Java",
+    "description": "The label for category Java in sidebar integrations"
+  },
+  "sidebar.integrations.category.Third-party Clients": {
+    "message": "第三方客户端",
+    "description": "The label for category Third-party Clients in sidebar integrations"
+  },
+  "sidebar.integrations.category.ClickPipes": {
+    "message": "ClickPipes",
+    "description": "The label for category ClickPipes in sidebar integrations"
+  },
+  "sidebar.integrations.category.ClickPipes for Postgres": {
+    "message": "Postgres 的 ClickPipes",
+    "description": "The label for category ClickPipes for Postgres in sidebar integrations"
+  },
+  "sidebar.integrations.category.Source": {
+    "message": "源",
+    "description": "The label for category Source in sidebar integrations"
+  },
+  "sidebar.integrations.category.Native Clients & Interfaces": {
+    "message": "原生客户端和接口",
+    "description": "The label for category Native Clients & Interfaces in sidebar integrations"
+  },
+  "sidebar.integrations.category.Drivers and Interfaces": {
+    "message": "驱动程序和接口",
+    "description": "The label for category Drivers and Interfaces in sidebar integrations"
+  },
+  "sidebar.integrations.category.Data Sources": {
+    "message": "数据源",
+    "description": "The label for category Data Sources in sidebar integrations"
+  },
+  "sidebar.integrations.category.AWS S3": {
+    "message": "AWS S3",
+    "description": "The label for category AWS S3 in sidebar integrations"
+  },
+  "sidebar.integrations.category.Kafka": {
+    "message": "Kafka",
+    "description": "The label for category Kafka in sidebar integrations"
+  },
+  "sidebar.integrations.category.Apache Spark": {
+    "message": "Apache Spark",
+    "description": "The label for category Apache Spark in sidebar integrations"
+  },
+  "sidebar.integrations.category.Data Visualization": {
+    "message": "数据可视化",
+    "description": "The label for category Data Visualization in sidebar integrations"
+  },
+  "sidebar.integrations.category.Grafana": {
+    "message": "Grafana",
+    "description": "The label for category Grafana in sidebar integrations"
+  },
+  "sidebar.integrations.category.Tableau": {
+    "message": "Tableau",
+    "description": "The label for category Tableau in sidebar integrations"
+  },
+  "sidebar.integrations.category.Data Formats": {
+    "message": "数据格式",
+    "description": "The label for category Data Formats in sidebar integrations"
+  },
+  "sidebar.integrations.category.JSON": {
+    "message": "JSON",
+    "description": "The label for category JSON in sidebar integrations"
+  },
+  "sidebar.integrations.category.View All Formats": {
+    "message": "查看所有格式",
+    "description": "The label for category View All Formats in sidebar integrations"
+  },
+  "sidebar.integrations.category.Arrow": {
+    "message": "Arrow",
+    "description": "The label for category Arrow in sidebar integrations"
+  },
+  "sidebar.integrations.category.Avro": {
+    "message": "Avro",
+    "description": "The label for category Avro in sidebar integrations"
+  },
+  "sidebar.integrations.category.CSV": {
+    "message": "CSV",
+    "description": "The label for category CSV in sidebar integrations"
+  },
+  "sidebar.integrations.category.CustomSeparated": {
+    "message": "CustomSeparated",
+    "description": "The label for category CustomSeparated in sidebar integrations"
+  },
+  "sidebar.integrations.category.LineAsString": {
+    "message": "LineAsString",
+    "description": "The label for category LineAsString in sidebar integrations"
+  },
+  "sidebar.integrations.category.Parquet": {
+    "message": "Parquet",
+    "description": "The label for category Parquet in sidebar integrations"
+  },
+  "sidebar.integrations.category.Pretty": {
+    "message": "Pretty",
+    "description": "The label for category Pretty in sidebar integrations"
+  },
+  "sidebar.integrations.category.Protobuf": {
+    "message": "Protobuf",
+    "description": "The label for category Protobuf in sidebar integrations"
+  },
+  "sidebar.integrations.category.RowBinary": {
+    "message": "RowBinary",
+    "description": "The label for category RowBinary in sidebar integrations"
+  },
+  "sidebar.integrations.category.TabSeparated": {
+    "message": "TabSeparated",
+    "description": "The label for category TabSeparated in sidebar integrations"
+  },
+  "sidebar.integrations.category.Template": {
+    "message": "Template",
+    "description": "The label for category Template in sidebar integrations"
+  },
+  "sidebar.integrations.category.Data Ingestion": {
+    "message": "数据摄取",
+    "description": "The label for category Data Ingestion in sidebar integrations"
+  },
+  "sidebar.integrations.category.Google Dataflow": {
+    "message": "Google Dataflow",
+    "description": "The label for category Google Dataflow in sidebar integrations"
+  },
+  "sidebar.integrations.category.Dataflow Templates": {
+    "message": "Dataflow 模板",
+    "description": "The label for category Dataflow Templates in sidebar integrations"
+  },
+  "sidebar.integrations.category.Tools": {
+    "message": "工具",
+    "description": "The label for category Tools in sidebar integrations"
+  },
+  "sidebar.integrations.category.SQL Clients": {
+    "message": "SQL 客户端",
+    "description": "The label for category SQL Clients in sidebar integrations"
+  },
+  "sidebar.integrations.category.Data Integrations": {
+    "message": "数据集成",
+    "description": "The label for category Data Integrations in sidebar integrations"
+  },
+  "sidebar.integrations.category.Misc": {
+    "message": "其他",
+    "description": "The label for category Misc in sidebar integrations"
+  },
+  "sidebar.integrations.doc.Overview": {
+    "message": "概述",
+    "description": "The label for the doc item Overview in sidebar integrations, linking to the doc integrations/language-clients/java/index"
+  },
+  "sidebar.integrations.doc.Third-party Libraries": {
+    "message": "第三方库",
+    "description": "The label for the doc item Third-party Libraries in sidebar integrations, linking to the doc interfaces/third-party/integrations"
+  },
+  "sidebar.managingData.category.Core Concepts": {
+    "message": "核心概念",
+    "description": "The label for category Core Concepts in sidebar managingData"
+  },
+  "sidebar.managingData.category.Updating Data": {
+    "message": "更新数据",
+    "description": "The label for category Updating Data in sidebar managingData"
+  },
+  "sidebar.managingData.category.Deleting Data": {
+    "message": "删除数据",
+    "description": "The label for category Deleting Data in sidebar managingData"
+  },
+  "sidebar.managingData.category.Data Modeling": {
+    "message": "数据建模",
+    "description": "The label for category Data Modeling in sidebar managingData"
+  },
+  "sidebar.managingData.category.Dictionary": {
+    "message": "字典",
+    "description": "The label for category Dictionary in sidebar managingData"
+  },
+  "sidebar.managingData.category.Materialized Views": {
+    "message": "物化视图",
+    "description": "The label for category Materialized Views in sidebar managingData"
+  },
+  "sidebar.managingData.category.Data Compression": {
+    "message": "数据压缩",
+    "description": "The label for category Data Compression in sidebar managingData"
+  },
+  "sidebar.managingData.category.Advanced Guides": {
+    "message": "高级指南",
+    "description": "The label for category Advanced Guides in sidebar managingData"
+  },
+  "sidebar.managingData.category.Performance and Optimizations": {
+    "message": "性能和优化",
+    "description": "The label for category Performance and Optimizations in sidebar managingData"
+  },
+  "sidebar.managingData.doc.Lightweight Updates": {
+    "message": "轻量级更新",
+    "description": "The label for the doc item Lightweight Updates in sidebar managingData, linking to the doc guides/developer/lightweight-update"
+  },
+  "sidebar.managingData.doc.ReplacingMergeTree": {
+    "message": "ReplacingMergeTree",
+    "description": "The label for the doc item ReplacingMergeTree in sidebar managingData, linking to the doc migrations/postgres/replacing-merge-tree"
+  },
+  "sidebar.managingData.doc.Lightweight Deletes": {
+    "message": "轻量级删除",
+    "description": "The label for the doc item Lightweight Deletes in sidebar managingData, linking to the doc guides/developer/lightweight-delete"
+  },
+  "sidebar.aboutClickHouse.category.About ClickHouse": {
+    "message": "关于 ClickHouse",
+    "description": "The label for category About ClickHouse in sidebar aboutClickHouse"
+  },
+  "sidebar.aboutClickHouse.category.Changelogs": {
+    "message": "变更日志",
+    "description": "The label for category Changelogs in sidebar aboutClickHouse"
+  },
+  "sidebar.aboutClickHouse.category.Changelog": {
+    "message": "变更记录",
+    "description": "The label for category Changelog in sidebar aboutClickHouse"
+  },
+  "sidebar.aboutClickHouse.category.Changelog.link.generated-index.title": {
+    "message": "变更记录",
+    "description": "The generated-index page title for category Changelog in sidebar aboutClickHouse"
+  },
+  "sidebar.aboutClickHouse.category.Development and Contributing": {
+    "message": "开发与贡献",
+    "description": "The label for category Development and Contributing in sidebar aboutClickHouse"
+  },
+  "sidebar.aboutClickHouse.category.Native Protocol": {
+    "message": "原生协议",
+    "description": "The label for category Native Protocol in sidebar aboutClickHouse"
+  },
+  "sidebar.aboutClickHouse.category.FAQ": {
+    "message": "常见问题",
+    "description": "The label for category FAQ in sidebar aboutClickHouse"
+  },
+  "sidebar.serverAdmin.category.Manage and Deploy": {
+    "message": "管理与部署",
+    "description": "The label for category Manage and Deploy in sidebar serverAdmin"
+  },
+  "sidebar.serverAdmin.category.Deployment and Scaling": {
+    "message": "部署与扩展",
+    "description": "The label for category Deployment and Scaling in sidebar serverAdmin"
+  },
+  "sidebar.serverAdmin.category.Settings": {
+    "message": "设置",
+    "description": "The label for category Settings in sidebar serverAdmin"
+  },
+  "sidebar.serverAdmin.category.System Tables": {
+    "message": "系统表",
+    "description": "The label for category System Tables in sidebar serverAdmin"
+  },
+  "sidebar.serverAdmin.category.Security and Authentication": {
+    "message": "安全与认证",
+    "description": "The label for category Security and Authentication in sidebar serverAdmin"
+  },
+  "sidebar.serverAdmin.category.External Authenticators": {
+    "message": "外部认证器",
+    "description": "The label for category External Authenticators in sidebar serverAdmin"
+  },
+  "sidebar.serverAdmin.category.SSL": {
+    "message": "SSL",
+    "description": "The label for category SSL in sidebar serverAdmin"
+  },
+  "sidebar.serverAdmin.category.LDAP": {
+    "message": "LDAP",
+    "description": "The label for category LDAP in sidebar serverAdmin"
+  },
+  "sidebar.serverAdmin.category.Tools and Utilities": {
+    "message": "工具与实用程序",
+    "description": "The label for category Tools and Utilities in sidebar serverAdmin"
+  },
+  "sidebar.chdb.category.chDB": {
+    "message": "chDB",
+    "description": "The label for category chDB in sidebar chdb"
+  },
+  "sidebar.chdb.category.Language Integrations": {
+    "message": "语言集成",
+    "description": "The label for category Language Integrations in sidebar chdb"
+  },
+  "sidebar.chdb.category.Developer Guides": {
+    "message": "开发者指南",
+    "description": "The label for category Developer Guides in sidebar chdb"
+  },
+  "sidebar.chdb.category.Technical Reference": {
+    "message": "技术参考",
+    "description": "The label for category Technical Reference in sidebar chdb"
+  },
+  "sidebar.chdb.category.Integrations": {
+    "message": "集成",
+    "description": "The label for category Integrations in sidebar chdb"
+  },
+  "sidebar.chdb.category.About chDB": {
+    "message": "关于 chDB",
+    "description": "The label for category About chDB in sidebar chdb"
+  },
+  "sidebar.chdb.link.JupySQL": {
+    "message": "JupySQL",
+    "description": "The label for link JupySQL in sidebar chdb, linking to https://jupysql.ploomber.io/en/latest/integrations/chdb.html"
+  },
+  "sidebar.chdb.link.chdb-lambda": {
+    "message": "chdb-lambda",
+    "description": "The label for link chdb-lambda in sidebar chdb, linking to https://github.com/chdb-io/chdb-lambda"
+  },
+  "sidebar.chdb.link.chdb-cli": {
+    "message": "chdb-cli",
+    "description": "The label for link chdb-cli in sidebar chdb, linking to https://github.com/chdb-io/chdb-go?tab=readme-ov-file#chdb-go-cli"
+  },
+  "sidebar.chdb.link.Discord": {
+    "message": "Discord",
+    "description": "The label for link Discord in sidebar chdb, linking to https://discord.gg/Njw5YXSPPc"
+  },
+  "sidebar.chdb.link.Birth of chDB": {
+    "message": "chDB的诞生",
+    "description": "The label for link Birth of chDB in sidebar chdb, linking to https://auxten.com/the-birth-of-chdb/"
+  },
+  "sidebar.chdb.link.Joining ClickHouse, Inc.": {
+    "message": "加入 ClickHouse, Inc.",
+    "description": "The label for link Joining ClickHouse, Inc. in sidebar chdb, linking to https://clickhouse.com/blog/welcome-chdb-to-clickhouse"
+  },
+  "sidebar.chdb.link.Team and Contributors": {
+    "message": "团队和贡献者",
+    "description": "The label for link Team and Contributors in sidebar chdb, linking to https://github.com/chdb-io/chdb#contributors"
+  },
+  "sidebar.dropdownCategories.category.Getting Started": {
+    "message": "快速入门",
+    "description": "The label for category Getting Started in sidebar dropdownCategories"
+  },
+  "sidebar.dropdownCategories.category.Cloud": {
+    "message": "云",
+    "description": "The label for category Cloud in sidebar dropdownCategories"
+  },
+  "sidebar.dropdownCategories.category.Manage Data": {
+    "message": "管理数据",
+    "description": "The label for category Manage Data in sidebar dropdownCategories"
+  },
+  "sidebar.dropdownCategories.category.Server Admin": {
+    "message": "服务器管理",
+    "description": "The label for category Server Admin in sidebar dropdownCategories"
+  },
+  "sidebar.dropdownCategories.category.Reference": {
+    "message": "参考",
+    "description": "The label for category Reference in sidebar dropdownCategories"
+  },
+  "sidebar.dropdownCategories.category.Integrations": {
+    "message": "集成",
+    "description": "The label for category Integrations in sidebar dropdownCategories"
+  },
+  "sidebar.dropdownCategories.category.chDB": {
+    "message": "chDB",
+    "description": "The label for category chDB in sidebar dropdownCategories"
+  },
+  "sidebar.dropdownCategories.category.About": {
+    "message": "关于",
+    "description": "The label for category About in sidebar dropdownCategories"
+  },
+  "sidebar.dropdownCategories.link.Introduction": {
+    "message": "介绍",
+    "description": "The label for link Introduction in sidebar dropdownCategories, linking to /sql-reference"
+  },
+  "sidebar.dropdownCategories.link.Starter Guides": {
+    "message": "入门指南",
+    "description": "The label for link Starter Guides in sidebar dropdownCategories, linking to /starter-guides"
+  },
+  "sidebar.dropdownCategories.link.Concepts": {
+    "message": "概念",
+    "description": "The label for link Concepts in sidebar dropdownCategories, linking to /concepts"
+  },
+  "sidebar.dropdownCategories.link.Migration Guides": {
+    "message": "迁移指南",
+    "description": "The label for link Migration Guides in sidebar dropdownCategories, linking to /migrations/migrations"
+  },
+  "sidebar.dropdownCategories.link.Use Case Guides": {
+    "message": "用例指南",
+    "description": "The label for link Use Case Guides in sidebar dropdownCategories, linking to /use-cases"
+  },
+  "sidebar.dropdownCategories.link.Example datasets": {
+    "message": "示例数据集",
+    "description": "The label for link Example datasets in sidebar dropdownCategories, linking to /getting-started/example-datasets"
+  },
+  "sidebar.dropdownCategories.link.Get Started": {
+    "message": "开始使用",
+    "description": "The label for link Get Started in sidebar dropdownCategories, linking to /cloud/get-started/"
+  },
+  "sidebar.dropdownCategories.link.Managing Cloud": {
+    "message": "管理云",
+    "description": "The label for link Managing Cloud in sidebar dropdownCategories, linking to /cloud/bestpractices"
+  },
+  "sidebar.dropdownCategories.link.Cloud API": {
+    "message": "云 API",
+    "description": "The label for link Cloud API in sidebar dropdownCategories, linking to /cloud/manage/cloud-api/"
+  },
+  "sidebar.dropdownCategories.link.Cloud Reference": {
+    "message": "云参考",
+    "description": "The label for link Cloud Reference in sidebar dropdownCategories, linking to /cloud/reference/"
+  },
+  "sidebar.dropdownCategories.link.Best Practices": {
+    "message": "最佳实践",
+    "description": "The label for link Best Practices in sidebar dropdownCategories, linking to /cloud/bestpractices/"
+  },
+  "sidebar.dropdownCategories.link.Security": {
+    "message": "安全",
+    "description": "The label for link Security in sidebar dropdownCategories, linking to /cloud/security/"
+  },
+  "sidebar.dropdownCategories.link.Migrating to Cloud": {
+    "message": "迁移到云",
+    "description": "The label for link Migrating to Cloud in sidebar dropdownCategories, linking to /integrations/migration"
+  },
+  "sidebar.dropdownCategories.link.Core Data Concepts": {
+    "message": "核心数据概念",
+    "description": "The label for link Core Data Concepts in sidebar dropdownCategories, linking to /managing-data/core-concepts"
+  },
+  "sidebar.dropdownCategories.link.Updating Data": {
+    "message": "更新数据",
+    "description": "The label for link Updating Data in sidebar dropdownCategories, linking to /updating-data"
+  },
+  "sidebar.dropdownCategories.link.Deleting data": {
+    "message": "删除数据",
+    "description": "The label for link Deleting data in sidebar dropdownCategories, linking to /managing-data/deleting-data/overview"
+  },
+  "sidebar.dropdownCategories.link.Data Modeling": {
+    "message": "数据建模",
+    "description": "The label for link Data Modeling in sidebar dropdownCategories, linking to /data-modeling/overview"
+  },
+  "sidebar.dropdownCategories.link.Performance and Optimizations": {
+    "message": "性能和优化",
+    "description": "The label for link Performance and Optimizations in sidebar dropdownCategories, linking to /operations/overview"
+  },
+  "sidebar.dropdownCategories.link.Deployments and Scaling": {
+    "message": "部署和扩展",
+    "description": "The label for link Deployments and Scaling in sidebar dropdownCategories, linking to /deployment-guides/index"
+  },
+  "sidebar.dropdownCategories.link.Security and Authentication": {
+    "message": "安全与认证",
+    "description": "The label for link Security and Authentication in sidebar dropdownCategories, linking to /security-and-authentication"
+  },
+  "sidebar.dropdownCategories.link.Settings": {
+    "message": "设置",
+    "description": "The label for link Settings in sidebar dropdownCategories, linking to /operations/settings"
+  },
+  "sidebar.dropdownCategories.link.Tools and Utilities": {
+    "message": "工具与实用程序",
+    "description": "The label for link Tools and Utilities in sidebar dropdownCategories, linking to /operations/utilities"
+  },
+  "sidebar.dropdownCategories.link.System Tables": {
+    "message": "系统表",
+    "description": "The label for link System Tables in sidebar dropdownCategories, linking to /operations/system-tables"
+  },
+  "sidebar.dropdownCategories.link.Functions": {
+    "message": "函数",
+    "description": "The label for link Functions in sidebar dropdownCategories, linking to /sql-reference/functions"
+  },
+  "sidebar.dropdownCategories.link.Engines": {
+    "message": "引擎",
+    "description": "The label for link Engines in sidebar dropdownCategories, linking to /engines"
+  },
+  "sidebar.dropdownCategories.link.Other Features": {
+    "message": "其他功能",
+    "description": "The label for link Other Features in sidebar dropdownCategories, linking to /sql-reference/operators"
+  },
+  "sidebar.dropdownCategories.link.All Integrations": {
+    "message": "所有集成",
+    "description": "The label for link All Integrations in sidebar dropdownCategories, linking to /integrations"
+  },
+  "sidebar.dropdownCategories.link.Language Clients": {
+    "message": "语言客户端",
+    "description": "The label for link Language Clients in sidebar dropdownCategories, linking to /integrations/language-clients"
+  },
+  "sidebar.dropdownCategories.link.ClickPipes": {
+    "message": "ClickPipes",
+    "description": "The label for link ClickPipes in sidebar dropdownCategories, linking to /integrations/clickpipes"
+  },
+  "sidebar.dropdownCategories.link.Native Clients & Interfaces": {
+    "message": "原生客户端和接口",
+    "description": "The label for link Native Clients & Interfaces in sidebar dropdownCategories, linking to /interfaces/"
+  },
+  "sidebar.dropdownCategories.link.Data Sources": {
+    "message": "数据源",
+    "description": "The label for link Data Sources in sidebar dropdownCategories, linking to /integrations/index"
+  },
+  "sidebar.dropdownCategories.link.Data Visualization": {
+    "message": "数据可视化",
+    "description": "The label for link Data Visualization in sidebar dropdownCategories, linking to /integrations/data-visualization"
+  },
+  "sidebar.dropdownCategories.link.Data Formats": {
+    "message": "数据格式",
+    "description": "The label for link Data Formats in sidebar dropdownCategories, linking to /integrations/data-formats"
+  },
+  "sidebar.dropdownCategories.link.Data Ingestion": {
+    "message": "数据摄取",
+    "description": "The label for link Data Ingestion in sidebar dropdownCategories, linking to /integrations/data-ingestion-overview"
+  },
+  "sidebar.dropdownCategories.link.Learn chDB": {
+    "message": "学习 chDB",
+    "description": "The label for link Learn chDB in sidebar dropdownCategories, linking to /chdb"
+  },
+  "sidebar.dropdownCategories.link.Language Integrations": {
+    "message": "语言集成",
+    "description": "The label for link Language Integrations in sidebar dropdownCategories, linking to /chdb/install"
+  },
+  "sidebar.dropdownCategories.link.Guides": {
+    "message": "指南",
+    "description": "The label for link Guides in sidebar dropdownCategories, linking to /chdb/guides"
+  },
+  "sidebar.dropdownCategories.link.Adopters": {
+    "message": "用户",
+    "description": "The label for link Adopters in sidebar dropdownCategories, linking to /about-us/adopters"
+  },
+  "sidebar.dropdownCategories.link.Changelogs": {
+    "message": "变更日志",
+    "description": "The label for link Changelogs in sidebar dropdownCategories, linking to /whats-new/security-changelog"
+  },
+  "sidebar.dropdownCategories.link.Support": {
+    "message": "支持",
+    "description": "The label for link Support in sidebar dropdownCategories, linking to /about-us/support"
+  },
+  "sidebar.dropdownCategories.link.Development and Contributing": {
+    "message": "开发与贡献",
+    "description": "The label for link Development and Contributing in sidebar dropdownCategories, linking to /development/developer-instruction"
+  }
+}

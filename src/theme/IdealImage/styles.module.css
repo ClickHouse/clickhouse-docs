@@ -1,0 +1,19 @@
+.customZoom [data-rmiz-modal-overlay],
+.customZoom [data-rmiz-modal-img] {
+    transition-duration: 0.2s;
+    transition-timing-function: linear;
+    background-color: rgb(31 31 28);
+}
+.customZoom [data-rmiz-modal-overlay="hidden"] {
+    background-color: rgb(31 31 28);
+}
+.customZoom [data-rmiz-modal-overlay="visible"] {
+    background-color: rgb(31 31 28);
+}
+.customZoom [data-rmiz-btn-unzoom] {
+    display: none;
+}
+
+.customWhiteZoom [data-rmiz-modal-img] {
+    background-color: rgb(255 255 255) !important;
+}

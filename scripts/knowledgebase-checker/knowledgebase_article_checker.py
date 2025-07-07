@@ -65,6 +65,12 @@ def check_yaml_tags(directory, allowed_tags):
                         if tagged_correct and has_description and has_precontent_tags:
                             correctly_tagged_files.append(filename)
                         else:
+                            if not tagged_correct:
+                                print(f"KB article {filename} is incorrectly tagged")
+                            if not has_description:
+                                print(f"KB article {filename} is lacking a description")
+                            if not has_precontent_tags:
+                                print(f"KB article {filename} is missing \u007bfrontMatter.description/\u007d\u007b/* truncate */\u007d between YAML frontmatter and content.")
                             incorrectly_tagged_files.append(filename)
 
                     except yaml.YAMLError as e:

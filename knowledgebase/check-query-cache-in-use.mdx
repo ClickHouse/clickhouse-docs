@@ -9,13 +9,13 @@ keywords: ['Query Cache']
 {frontMatter.description}
 {/* truncate */}
 
-## How can I check that query cache is being used in my query?
+## How can I check that query cache is being used in my query? {#how-can-i-check-that-query-cache-is-being-used-in-my-query}
 
-See this example using [clickhouse client](https://clickhouse.com/docs/en/interfaces/cli) and ClickHouse Cloud service.
+See this example using [clickhouse client](https://clickhouse.com/docs/interfaces/cli) and ClickHouse Cloud service.
 
 create a `query_cache_test` table
 
-## Using clickhouse client
+## Using clickhouse client {#using-clickhouse-client}
 
 ```sql
 clickhouse-cloud :) CREATE TABLE query_cache_test (name String, age UInt8) ENGINE =MergeTree ORDER BY name
@@ -150,7 +150,7 @@ In the 1st execution, no entry was obviously found (`No entry found for query SE
 
 In the 2nd execution, they query made use of they query cache as it found the entry already stored (`Entry found for query SELECT...`).
 
-## Using just SQL
+## Using just SQL {#using-just-sql}
 
 Just through issuing SQL commands without inspecting the `clickhouse client` trace logs, 
 
@@ -216,5 +216,5 @@ In the last results we see 1 `QueryCacheMisses` for the first time the query `SE
 
 Keep also in mind that the default maximum cache entry size is 1048576 bytes (= 1 MiB) and by default results are stored in cache for 60 seconds only (you can use `query_cache_ttl=300` in `SETTINGS` for example to have a query cache result stored for 5 minutes instead).
 
-You can find more detailed info on ClickHouse Query Cache [here](https://clickhouse.com/docs/en/operations/query-cache)
+You can find more detailed info on ClickHouse Query Cache [here](https://clickhouse.com/docs/operations/query-cache)
 

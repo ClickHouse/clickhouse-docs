@@ -1,0 +1,64 @@
+@use '../../../css/breakpoints' as breakpoints;
+
+.sidebar {
+  max-height: calc(100vh - (var(--ifm-navbar-height) + 2rem));
+  overflow-y: auto;
+  position: sticky;
+  top: calc(var(--ifm-navbar-height) + 2rem);
+}
+
+.sidebarItemTitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: var(--ifm-h3-font-size);
+  font-weight: var(--ifm-font-weight-bold);
+}
+
+.sidebarItemList {
+  font-size: 0.9rem;
+}
+
+.sidebarItem {
+  margin-top: 0.7rem;
+}
+
+.sidebarItemLink {
+  color: var(--ifm-font-color-base);
+  display: block;
+}
+
+.sidebarItemNoResult{
+  color: var(--ifm-font-color-base);
+  display: block;
+  margin-top: 1rem;
+}
+
+.sidebarItemLink:hover {
+  text-decoration: none;
+}
+
+[data-theme='dark'] .sidebarItemLinkActive {
+  color: var(--click-color-primary-button-background);
+}
+
+[data-theme='light'] .sidebarItemLinkActive {
+  color: var(--click-color-link);
+}
+
+.sidebarSearchContainer {
+  margin-top: 2rem;
+  margin-bottom: 1.75rem;
+}
+
+@media (max-width: breakpoints.$mobile-breakpoint) {
+  .sidebar {
+    display: none;
+  }
+}
+
+.KBTitle {
+  font-size: 14px;
+  margin-bottom: 13.5px;
+  margin-top: 24px;
+}

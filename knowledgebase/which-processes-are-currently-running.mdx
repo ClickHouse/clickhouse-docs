@@ -8,7 +8,7 @@ tags: ['Server Admin']
 {frontMatter.description}
 {/* truncate */}
 
-## Check what code is currently running on a server
+## Check what code is currently running on a server {#check-what-code-is-currently-running-on-a-server}
 
 ClickHouse has a built-in debugger and introspection capabilities. 
 
@@ -26,7 +26,7 @@ FORMAT Vertical
 SETTINGS allow_introspection_functions = 1;
 ```
 
-The query result will show the locations in the ClickHouse source code where the threads are running or waiting. (You will need to set `allow_introspection_functions` to `1` to enable the [introspection functions](https://clickhouse.com/docs/en/sql-reference/functions/introspection).) The response looks like:
+The query result will show the locations in the ClickHouse source code where the threads are running or waiting. (You will need to set `allow_introspection_functions` to `1` to enable the [introspection functions](https://clickhouse.com/docs/sql-reference/functions/introspection).) The response looks like:
 
 ```response
 Row 1:
@@ -245,12 +245,12 @@ If you've installed ClickHouse as a single-binary, it already contains the debug
 :::tip
 For more high-level information, check out some of these other system tables:
 
-- [system.processes](https://clickhouse.com/docs/en/operations/system-tables/processes)
-- [system.query_log](https://clickhouse.com/docs/en/operations/system-tables/query_log)
-- [system.metric_log](https://clickhouse.com/docs/en/operations/system-tables/metric_log)
-- [system.asynchronous_metric_log](https://clickhouse.com/docs/en/operations/system-tables/asynchronous_metric_log)
-- [system.trace_log](https://clickhouse.com/docs/en/operations/system-tables/trace_log)
-- [system.processor_profile_log](https://clickhouse.com/docs/en/operations/system-tables/processors_profile_log)
+- [system.processes](https://clickhouse.com/docs/operations/system-tables/processes)
+- [system.query_log](https://clickhouse.com/docs/operations/system-tables/query_log)
+- [system.metric_log](https://clickhouse.com/docs/operations/system-tables/metric_log)
+- [system.asynchronous_metric_log](https://clickhouse.com/docs/operations/system-tables/asynchronous_metric_log)
+- [system.trace_log](https://clickhouse.com/docs/operations/system-tables/trace_log)
+- [system.processor_profile_log](https://clickhouse.com/docs/operations/system-tables/processors_profile_log)
 
-And there is handy info in the [other system tables](https://clickhouse.com/docs/en/operations/system-tables) also.
+And there is handy info in the [other system tables](https://clickhouse.com/docs/operations/system-tables) also.
 :::
