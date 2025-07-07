@@ -149,7 +149,7 @@ Sink, use [Kafka Connect Transformations](https://docs.confluent.io/platform/cur
 | STRUCT                                  | Variant(T1, T2, ...)    | ✅        | No        |
 | STRUCT                                  | Tuple(a T1, b T2, ...)  | ✅        | No        |
 | STRUCT                                  | Nested(a T1, b T2, ...) | ✅        | No        |
-| STRUCT                                  | JSON (1) (2)          | ✅        | No        |
+| STRUCT                                  | JSON. See below (1), (2)          | ✅        | No        |
 | BYTES                                   | String                | ✅        | No        |
 | org.apache.kafka.connect.data.Time      | Int64 / DateTime64    | ✅        | No        |
 | org.apache.kafka.connect.data.Timestamp | Int32 / Date32        | ✅        | No        |
