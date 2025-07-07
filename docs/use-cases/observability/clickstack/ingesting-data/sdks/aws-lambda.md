@@ -30,7 +30,7 @@ The OpenTelemetry project provides separate lambda layers to:
 1. Automatically instrument your Lambda function code with OpenTelemetry auto-instrumentation.
 2. Forward the collected logs, metrics, and traces to ClickStack.
 
-### Adding language-specific auto-instrumentation layer {#adding-language-specific-auto-instrumentation}
+### Adding the language-specific auto-instrumentation layer {#adding-language-specific-auto-instrumentation}
 
 The language-specific auto-instrumentation lambda layers automatically instrument your Lambda function code with OpenTelemetry auto-instrumentation package for your specific language. 
 
