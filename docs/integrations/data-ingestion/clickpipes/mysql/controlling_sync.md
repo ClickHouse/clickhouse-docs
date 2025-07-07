@@ -8,6 +8,7 @@ sidebar_label: 'Controlling syncs'
 import edit_sync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/edit_sync_button.png'
 import create_sync_settings from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/create_sync_settings.png'
 import edit_sync_settings from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/sync_settings_edit.png'
+import cdc_syncs from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/cdc_syncs.png'
 
 This document describes how to control the sync of a database ClickPipe (Postgres, MySQL etc.) when the ClickPipe is in **CDC (Running) mode**.
 
@@ -41,3 +42,8 @@ When editing an existing ClickPipe, you can head over to the **Settings** tab of
 
 This will open a flyout with the sync settings, where you can change the sync interval and pull batch size:
 <img src={edit_sync_settings} alt="Edit sync settings" />
+
+### Monitoring sync control behaviour
+You can see how long each batch takes in the **CDC Syncs** table in the **Metrics** tab of the ClickPipe. Note that the duration here includes push time and also if there are no rows incoming, the ClickPipe waits and the wait time is also included in the duration.
+
+<img src={cdc_syncs} alt="CDC Syncs table" />
