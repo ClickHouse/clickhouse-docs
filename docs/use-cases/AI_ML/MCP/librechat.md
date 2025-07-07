@@ -31,7 +31,7 @@ You will need Docker to run LibreChat and the MCP server. To get Docker:
 <br/>
 For more information, see the [Docker documentation](https://docs.docker.com/get-docker/).
 
-## Clone LibreChat repository {#clone-librechat-repo}
+## Clone the LibreChat repository {#clone-librechat-repo}
 
 Open a terminal (command prompt, terminal or PowerShell) and clone the 
 LibreChat repository using the following command:
