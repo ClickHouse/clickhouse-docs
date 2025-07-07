@@ -8,6 +8,7 @@ sidebar_label: 'Controlling syncs'
 import edit_sync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/edit_sync_button.png'
 import create_sync_settings from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/create_sync_settings.png'
 import edit_sync_settings from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/sync_settings_edit.png'
+import cdc_syncs from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/cdc_syncs.png'
 
 This document describes how to control the sync of a database ClickPipe (Postgres, MySQL etc.) when the ClickPipe is in **CDC (Running) mode**.
 
@@ -46,3 +47,8 @@ This will open a flyout with the sync settings, where you can change the sync in
 Let's talk about how to use these settings to handle a large replication slot of a CDC pipe.
 The pushing time to ClickHouse does not scale linearly with the pulling time from the source database. This can be leveraged to reduce the size of a large replication slot.
 By increasing both the sync interval and pull batch size, the ClickPipe will pull a whole lot of data from the source database in one go, and then push it to ClickHouse.
+
+### Monitoring sync control behaviour
+You can see how long each batch takes in the **CDC Syncs** table in the **Metrics** tab of the ClickPipe. Note that the duration here includes push time and also if there are no rows incoming, the ClickPipe waits and the wait time is also included in the duration.
+
+<img src={cdc_syncs} alt="CDC Syncs table" />
