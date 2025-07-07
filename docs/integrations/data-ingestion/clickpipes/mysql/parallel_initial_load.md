@@ -5,7 +5,7 @@ slug: /integrations/data-ingestion/clickpipes/mysql/parallel_initial_load
 sidebar_label: 'How parallel snapshot works'
 ---
 
-import snapshot_params from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/snapshot_params.png'
+import snapshot_params from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/snapshot_params.png'
 import partition_key from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/partition_key.png'
 
 This document explains parallelized snapshot/initial load in the MySQL ClickPipe works and talks about the snapshot parameters that can be used to control it.
