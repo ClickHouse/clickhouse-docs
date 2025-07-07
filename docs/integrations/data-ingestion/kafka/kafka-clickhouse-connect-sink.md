@@ -136,7 +136,7 @@ Sink, use [Kafka Connect Transformations](https://docs.confluent.io/platform/cur
 | Kafka Connect Type                      | ClickHouse Type       | Supported | Primitive |
 | --------------------------------------- |-----------------------| --------- | --------- |
 | STRING                                  | String                | ✅        | Yes       |
-| STRING                                  | JSON (1)              | ✅        | Yes       |
+| STRING                                  | JSON. See below (1)              | ✅        | Yes       |
 | INT8                                    | Int8                  | ✅        | Yes       |
 | INT16                                   | Int16                 | ✅        | Yes       |
 | INT32                                   | Int32                 | ✅        | Yes       |
