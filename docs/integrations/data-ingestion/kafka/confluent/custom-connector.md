@@ -10,7 +10,7 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 import Image from '@theme/IdealImage';
 import AddCustomConnectorPlugin from '@site/static/images/integrations/data-ingestion/kafka/confluent/AddCustomConnectorPlugin.png';
 
-# Integrating Confluent Platform with ClickHouse
+# Integrating Confluent platform with ClickHouse
 
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/SQAiPVbd3gg"
