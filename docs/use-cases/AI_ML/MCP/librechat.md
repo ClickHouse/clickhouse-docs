@@ -66,18 +66,6 @@ ANTHROPIC_API_KEY=user_provided
 Replace `user_provided` with your API key for the LLM provider you want to use,
 making sure it is quoted, e.g. `"A2bC3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z"`.
 
-Next uncomment the following line:
-
-```text title=".env"
-# ENDPOINTS=openAI,assistants,azureOpenAI,google,anthropic
-```
-
-Add `agents` to the list of endpoints:
-
-```text
-ENDPOINTS=openAI,assistants,azureOpenAI,google,anthropic,agents
-```
-
 :::note Using a local LLM
 If you don't have an API key you can use a local LLM like Ollama. You'll see how 
 to do this later in step ["Install Ollama"](#add-local-llm-using-ollama). For now
@@ -97,26 +85,29 @@ This creates the main [configuration file](https://www.librechat.ai/docs/configu
 ## Add ClickHouse MCP server to Docker compose {#add-clickhouse-mcp-server-to-docker-compose}
 
 Next we'll add the ClickHouse MCP server to the LibreChat Docker compose file 
-called `docker-compose.yaml` so that the LLM can interact with the 
+so that the LLM can interact with the 
 [ClickHouse SQL playground](https://sql.clickhouse.com/).
 
-Find the `services` section in the `docker-compose.yaml` file and add 
-`mcp-clickhouse` as a new service with the following configuration:
+Create a file called `docker-compose.override.yml` and add the following configuration to it:
 
-```yml title="docker-compose.yaml"
-mcp-clickhouse:
-  image: mcp/clickhouse
-  container_name: mcp-clickhouse
-  ports:
-    - 8001:8000
-  extra_hosts:
-    - "host.docker.internal:host-gateway"
-  environment:
-    - CLICKHOUSE_HOST=sql-clickhouse.clickhouse.com
-    - CLICKHOUSE_USER=demo
-    - CLICKHOUSE_PASSWORD=
-    - CLICKHOUSE_MCP_SERVER_TRANSPORT=sse
-    - CLICKHOUSE_MCP_BIND_HOST=0.0.0.0
+```yml title="docker-compose.override.yml"
+services:
+  api:
+    volumes:
+      - ./librechat.yaml:/app/librechat.yaml
+  mcp-clickhouse:
+    image: mcp/clickhouse
+    container_name: mcp-clickhouse
+    ports:
+      - 8001:8000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - CLICKHOUSE_HOST=sql-clickhouse.clickhouse.com
+      - CLICKHOUSE_USER=demo
+      - CLICKHOUSE_PASSWORD=
+      - CLICKHOUSE_MCP_SERVER_TRANSPORT=sse
+      - CLICKHOUSE_MCP_BIND_HOST=0.0.0.0
 ```
 
 If you want to explore your own data, you can do so by
@@ -142,36 +133,6 @@ title="Get started with ClickHouse Cloud"
 isSelected={true}
 />
 </Link>
-
-## Mount the librechat.yaml file {#mount-librechat-yaml-file}
-
-In `docker-compose.yml`, find the API service:
-
-```yml title="docker-compose.yaml"
-services:
-  #highlight-next-line
-  api:
-    container_name: LibreChat
-    ports:
-      - "${PORT}:${PORT}"
-    ⋮
-    #highlight-next-line
-    volumes:
-      - type: bind
-        source: ./.env
-        target: /app/.env
-      - ./images:/app/client/public/images
-      - ./uploads:/app/uploads
-      - ./logs:/app/api/logs
-```
-
-Under the volumes section, add the following line:
-
-```yml
-- ./librechat.yaml:/librechat/librechat.yaml
-```
-
-This will make the configuration file available to the backend service.
 
 ## Configure MCP server in librechat.yaml {#configure-mcp-server-in-librechat-yaml}
 
@@ -242,7 +203,7 @@ custom:
 From the root of the LibreChat project folder, run the following command to start the services:
 
 ```bash
-docker compose -f docker-compose.yml up
+docker compose up
 ```
 
 Wait until all services are fully running.
