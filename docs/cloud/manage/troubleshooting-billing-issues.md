@@ -19,7 +19,7 @@ credits are depleted, you have the following billing options to continue using
 ClickHouse Cloud:
 1. Add a valid credit card to your organization to Pay-As-You-Go (PAYG)
 2. Set up a Pay-As-You-Go subscription via a supported cloud marketplace provider (AWS, GCP, or Azure)
-3. Reach out to sales to negotiate a committed spend contract
+3. Reach out to [sales](https://clickhouse.com/company/contact) to negotiate a committed spend contract
    directly or through a cloud marketplace committed contract. 
 
 If your trial has ended and no credit card or additional credits have been added,
