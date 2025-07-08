@@ -34,16 +34,16 @@ ClickHouse is one of BladePipe's pre-built connectors, allowing users to integra
 
 2. Follow the instructions in <a href="https://doc.bladepipe.com/productOP/byoc/installation/install_worker_docker" target="_blank">Install Worker (Docker)</a> or <a href="https://doc.bladepipe.com/productOP/byoc/installation/install_worker_binary" target="_blank">Install Worker (Binary)</a> to download and install a BladePipe Worker.
 
-:::note
-Alternatively, you can download and deploy <a href="https://doc.bladepipe.com/productOP/onPremise/installation/install_all_in_one_binary" target="_blank">BladePipe Enterprise</a>
-:::
+  :::note
+  Alternatively, you can download and deploy <a href="https://doc.bladepipe.com/productOP/onPremise/installation/install_all_in_one_binary" target="_blank">BladePipe Enterprise</a>
+  :::
 
 ## 2. Add ClickHouse as a target {#2-add-clickhouse-as-a-target}
 
-:::note
-1. BladePipe supports ClickHouse version `20.12.3.3` or above.
-2. To use ClickHouse as a target, make sure that the user has SELECT, INSERT and common DDL permissions. 
-:::
+  :::note
+  1. BladePipe supports ClickHouse version `20.12.3.3` or above.
+  2. To use ClickHouse as a target, make sure that the user has SELECT, INSERT and common DDL permissions. 
+  :::
 
 1. In BladePipe, click **DataSource** > **Add DataSource**.
 
