@@ -638,7 +638,7 @@ INSERT INTO trips_s3 SELECT trip_id, pickup_date, pickup_datetime, dropoff_datet
 Depending on the hardware, this latter insert of 1m rows may take a few minutes to execute. You can confirm the progress via the system.processes table. Feel free to adjust the row count up to the limit of 10m and explore some sample queries.
 
 ```sql
-SELECT passenger_count, avg(tip_amount) as avg_tip, avg(total_amount) as avg_amount FROM trips_s3 GROUP BY passenger_count;
+SELECT passenger_count, avg(tip_amount) AS avg_tip, avg(total_amount) AS avg_amount FROM trips_s3 GROUP BY passenger_count;
 ```
 
 ### Modifying a Table {#modifying-a-table}
@@ -1286,7 +1286,7 @@ SETTINGS storage_policy = 's3_express';
 S3 storage is also supported but only for `Object URL` paths. Example:
 
 ``` sql
-select * from s3('https://test-bucket--eun1-az1--x-s3.s3express-eun1-az1.eu-north-1.amazonaws.com/file.csv', ...)
+SELECT * FROM s3('https://test-bucket--eun1-az1--x-s3.s3express-eun1-az1.eu-north-1.amazonaws.com/file.csv', ...)
 ```
 
 it also requires specifying bucket region in the config:

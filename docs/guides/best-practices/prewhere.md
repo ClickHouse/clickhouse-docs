@@ -113,7 +113,7 @@ SELECT
 FROM
    uk.uk_price_paid_simple
 WHERE
-   town = 'LONDON' and date > '2024-12-31' and price < 10_000
+   town = 'LONDON' AND date > '2024-12-31' AND price < 10_000
 SETTINGS optimize_move_to_prewhere = false;
 ```
 
@@ -137,7 +137,7 @@ SELECT
 FROM
    uk.uk_price_paid_simple
 WHERE
-   town = 'LONDON' and date > '2024-12-31' and price < 10_000
+   town = 'LONDON' AND date > '2024-12-31' AND price < 10_000
 SETTINGS optimize_move_to_prewhere = true;
 ```
 
@@ -188,7 +188,7 @@ SELECT
 FROM
    uk.uk_price_paid_simple
 WHERE
-   town = 'LONDON' and date > '2024-12-31' and price < 10_000
+   town = 'LONDON' AND date > '2024-12-31' AND price < 10_000
 SETTINGS send_logs_level = 'test';
 ```
 

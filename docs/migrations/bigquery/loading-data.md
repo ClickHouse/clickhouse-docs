@@ -94,7 +94,7 @@ To retrieve the data to `INSERT`, we can use the [s3Cluster function](/sql-refer
 INSERT INTO mytable
 SELECT
     timestamp,
-    ifNull(some_text, '') as some_text
+    ifNull(some_text, '') AS some_text
 FROM s3Cluster(
     'default',
     'https://storage.googleapis.com/mybucket/mytable/*.parquet.gz',
@@ -116,7 +116,7 @@ Alternatively, you can `SET input_format_null_as_default=1` and any missing or N
 To test whether your data was properly inserted, simply run a `SELECT` query on your new table:
 
 ```sql
-SELECT * FROM mytable limit 10;
+SELECT * FROM mytable LIMIT 10;
 ```
 
 To export more BigQuery tables, simply redo the steps above for each additional table.

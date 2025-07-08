@@ -58,9 +58,24 @@ Customers are recommended to prepare a dedicated AWS account for hosting the Cli
 
 With this account and the initial organization admin email, you can contact ClickHouse support.
 
-### Apply CloudFormation Template {#apply-cloudformation-template}
+### Initialize BYOC setup {#initialize-byoc-setup}
 
-BYOC setup is initialized via a [CloudFormation stack](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml), which creates only a role allowing BYOC controllers from ClickHouse Cloud to manage infrastructure. The S3, VPC, and compute resources for running ClickHouse are not included in this stack.
+The initial BYOC setup can be performed using either a CloudFormation template or a Terraform module. Both approaches create the same IAM role, enabling BYOC controllers from ClickHouse Cloud to manage your infrastructure. Note that S3, VPC, and compute resources required for running ClickHouse are not included in this initial setup.
+
+#### CloudFormation Template {#cloudformation-template}
+
+[BYOC CloudFormation template](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml)
+
+#### Terraform Module {#terraform-module}
+
+[BYOC Terraform module](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/tf/byoc.tar.gz)
+
+```hcl
+module "clickhouse_onboarding" {
+  source   = "https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/tf/byoc.tar.gz"
+  byoc_env = "production"
+}
+```
 
 <!-- TODO: Add Screenshot for the rest of onboarding, once self-served onboarding is implemented. -->
 

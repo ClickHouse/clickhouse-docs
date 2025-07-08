@@ -336,6 +336,12 @@ For example, below is the Logs source configured with correlated sources:
     - Useful for development and testing
     - Disable in production
 
+- `BETA_CH_OTEL_JSON_SCHEMA_ENABLED`
+    - **Default:** `false`
+    - **Description:** Enables Beta support for the JSON type in HyperDX. See also [`OTEL_AGENT_FEATURE_GATE_ARG`](#otel-collector) to enable JSON support in the OTel collector.
+    - **Guidance:**
+    - Set to `true` to enable JSON support in ClickStack.
+
 
 ## OpenTelemetry collector {#otel-collector}
 
@@ -382,6 +388,12 @@ See ["ClickStack OpenTelemetry Collector"](/use-cases/observability/clickstack/i
   - **Guidance:**  
     - Set if using a custom database name  
     - Ensure the specified user has access to this database  
+
+- `OTEL_AGENT_FEATURE_GATE_ARG`
+    - **Default:** `<empty string>`
+    - **Description:** Enables feature flags to enabled in the collector. If set to `--feature-gates=clickhouse.json` enables Beta support for the JSON type in collector, ensuring schemas are created with the type. See also [`BETA_CH_OTEL_JSON_SCHEMA_ENABLED`](#hyperdx) to enable JSON support in HyperDX.
+    - **Guidance:**
+    - Set to `true` to enable JSON support in ClickStack.
 
 ## ClickHouse {#clickhouse}
 

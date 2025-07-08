@@ -1248,10 +1248,10 @@
   resolved "https://registry.yarnpkg.com/@chevrotain/utils/-/utils-11.0.3.tgz#e39999307b102cff3645ec4f5b3665f5297a2224"
   integrity sha512-YslZMgtJUyuMbZ+aKvfF3x1f5liK4mWNxghFRv7jqRR9C3R3fAOGTTKvxXDa2Y1s9zSbcpuO0cAxDYsc9SrXoQ==
 
-"@clickhouse/click-ui@^0.0.199":
-  version "0.0.199"
-  resolved "https://registry.yarnpkg.com/@clickhouse/click-ui/-/click-ui-0.0.199.tgz#4a9f6ddf38cc5d04c24e0775805425ae1b3e9e36"
-  integrity sha512-39I8JHibF4/qMZQV0KJvSovDDP5mC9HIapBCqrxB3+KgpnAhtIqZaNtiIA4tM7goFSJti6xwpzc6OL2LE3H9yA==
+"@clickhouse/click-ui@^0.0.213":
+  version "0.0.213"
+  resolved "https://registry.yarnpkg.com/@clickhouse/click-ui/-/click-ui-0.0.213.tgz#4c889db92eda760d551685c8d7b689533194ddf5"
+  integrity sha512-3o0TtfP05uU2ZTc3xLSKuulr0KgG60Z+XKEGwZYSqqgQwa6BgNSgGYtbovvoV6RDj4KUYBTfKgSY+agFHvbIBQ==
   dependencies:
     "@h6s/calendar" "^2.0.1"
     "@radix-ui/react-accordion" "^1.1.2"
@@ -9349,10 +9349,10 @@ markdownlint-cli2@^0.17.2:
     markdownlint-cli2-formatter-default "0.0.5"
     micromatch "4.0.8"
 
-markdownlint-rule-helpers@^0.28.0:
-  version "0.28.0"
-  resolved "https://registry.yarnpkg.com/markdownlint-rule-helpers/-/markdownlint-rule-helpers-0.28.0.tgz#0e7280e8d2218ee881ac213b4a8350742bd5d7c3"
-  integrity sha512-qBOQWESmc/yTNe6nVu3D7AU7pFg2e7T5svbQI+S7rocw4g4xZ3GHerKPl0Rw0cx4fnAViEdzoAcbrxeuXUCEAA==
+markdownlint-rule-helpers@^0.29.0:
+  version "0.29.0"
+  resolved "https://registry.yarnpkg.com/markdownlint-rule-helpers/-/markdownlint-rule-helpers-0.29.0.tgz#8b5bd5c57bbbb1821474032665427e264f6671eb"
+  integrity sha512-a03vOcfL2Cc2k+6RtUxdBMEDqcTDisL9YNwuC0IS1DEZnRpAHkt0ytaYSXzE4a4Ghz4B6R2wrgW+Y3Mb8QuSyQ==
 
 markdownlint@0.37.4:
   version "0.37.4"

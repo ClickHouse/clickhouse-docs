@@ -105,5 +105,5 @@ Nested structures such as `some_file` are converted to JSON strings on copy by S
 To test whether your data was properly inserted, simply run a `SELECT` query on your new table:
 
 ```sql
-SELECT * FROM mydataset limit 10;
+SELECT * FROM mydataset LIMIT 10;
 ```

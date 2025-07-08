@@ -22,20 +22,10 @@ const config = {
       async: false,
     },
     {
-      src: "https://widget.kapa.ai/kapa-widget.bundle.js",
-      "data-website-id": "c0b5f156-1e92-49df-8252-adacc9feb21b",
-      "data-project-name": "ClickHouse",
-      "data-project-color": "#151515",
-      "data-project-logo":
-        "https://avatars.githubusercontent.com/u/54801242?s=200&v=4",
-      "data-modal-disclaimer":
-        "这是一个为ClickHouse定制的LLM，能够访问所有开发者文档、公开的GitHub问题、YouTube视频和已解决的StackOverflow帖子。请注意，答案由AI生成，可能并不完全准确，因此请根据您的判断使用这些信息。",
-      "data-modal-example-questions":
-        "如何加速查询？,如何使用物化视图？",
-      "data-kapa-branding-hide": "true",
+      src: "/docs/zh/js/kapa_widget.js",
       async: true,
       defer: true, // execute after document parsing, but before firing DOMContentLoaded event
-    },
+    }
   ],
   // Settings for Docusaurus Faster - build optimizations
   future: {

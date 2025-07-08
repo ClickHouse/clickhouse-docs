@@ -29,16 +29,16 @@ If you have a saved query, you can skip this step.
 Open a new query tab. For demonstration purposes, we'll use the [youtube dataset](/getting-started/example-datasets/youtube-dislikes), which contains approximately 4.5 billion records. As an example query, we'll return the top 10 uploaders by average views per video in a user-inputted `year` parameter:
 
 ```sql
-with sum(view_count) as view_sum,
-    round(view_sum / num_uploads, 2) as per_upload
-select
+WITH sum(view_count) AS view_sum,
+    round(view_sum / num_uploads, 2) AS per_upload
+SELECT
     uploader,
-    count() as num_uploads,
-    formatReadableQuantity(view_sum) as total_views,
-    formatReadableQuantity(per_upload) as views_per_video
-from
+    count() AS num_uploads,
+    formatReadableQuantity(view_sum) AS total_views,
+    formatReadableQuantity(per_upload) AS views_per_video
+FROM
     youtube
-where
+WHERE
     toYear(upload_date) = {year: UInt16}
 group by uploader
 order by per_upload desc
@@ -149,7 +149,7 @@ To upgrade the endpoint version from `v1` to `v2`, include the `x-clickhouse-end
 **Query API Endpoint SQL:**
 
 ```sql
-SELECT database, name as num_tables FROM system.tables limit 3;
+SELECT database, name AS num_tables FROM system.tables LIMIT 3;
 ```
 
 #### Version 1 {#version-1}
@@ -365,7 +365,7 @@ OK
 **Query API Endpoint SQL:**
 
 ```sql
-SELECT * from system.tables;
+SELECT * FROM system.tables;
 ```
 
 **cURL:**
@@ -401,7 +401,7 @@ fetch(
 **Query API Endpoint SQL:**
 
 ```sql
-SELECT name, database from system.tables;
+SELECT name, database FROM system.tables;
 ```
 
 **Typescript:**

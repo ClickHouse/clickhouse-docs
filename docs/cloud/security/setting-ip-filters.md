@@ -14,7 +14,7 @@ import ip_filter_add_single_ip from '@site/static/images/cloud/security/ip-filte
 IP access lists filter traffic to ClickHouse services or API keys by specifying which source addresses are permitted to connect.  These lists are configurable for each service and each API key.  Lists can be configured during service or API key creation, or afterward.
 
 :::important
-If you skip the creation of the IP access list for a ClickHouse Cloud service then no traffic will be permitted to the service.
+If you skip the creation of the IP access list for a ClickHouse Cloud service then no traffic will be permitted to the service. If IP access lists for ClickHouse services are set to `Allow from anywhere` your service may be periodically moved from an idle to an active state by internet crawlers and scanners that look for public IPs, which may result in nominal unexpected cost.
 :::
 
 ## Prepare {#prepare}

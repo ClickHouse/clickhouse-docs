@@ -8,7 +8,7 @@ description: 'Настройки, которые находятся в табл�
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import BetaBadge from '@theme/badges/BetaBadge';
-import CloudAvailableBadge from '@theme/badges/CloudAvailableBadge';
+import CloudOnlyBadge from '@theme/badges/CloudOnlyBadge';
 import SettingsInfoBlock from '@theme/SettingsInfoBlock/SettingsInfoBlock';
 import VersionHistory from '@theme/VersionHistory/VersionHistory';
 
@@ -1505,7 +1505,7 @@ description: 'Настройки и параметры конфигурации 
 
 ## cache_warmer_threads {#cache_warmer_threads} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="4" />
 
@@ -2267,7 +2267,7 @@ ENGINE = Log
 Таймаут для вставки запроса в распределенной базе данных. Настройка используется только с включенной опцией insert_distributed_sync. Нулевое значение означает отсутствие таймаута.
 ## distributed_cache_bypass_connection_pool {#distributed_cache_bypass_connection_pool} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2276,7 +2276,7 @@ ENGINE = Log
 Эта настройка имеет эффект только в ClickHouse Cloud. Позволяет обходить пул соединений к распределенному кэшу.
 ## distributed_cache_connect_max_tries {#distributed_cache_connect_max_tries} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="20" />
 
@@ -2285,7 +2285,7 @@ ENGINE = Log
 Эта настройка имеет эффект только в ClickHouse Cloud. Количество попыток подключения к распределенному кэшу в случае неудачи.
 ## distributed_cache_data_packet_ack_window {#distributed_cache_data_packet_ack_window} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="5" />
 
@@ -2294,7 +2294,7 @@ ENGINE = Log
 Эта настройка имеет эффект только в ClickHouse Cloud. Окно для отправки ACK для последовательности DataPacket в одном запросе чтения распределенного кэша.
 ## distributed_cache_discard_connection_if_unread_data {#distributed_cache_discard_connection_if_unread_data} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -2303,7 +2303,7 @@ ENGINE = Log
 Эта настройка имеет эффект только в ClickHouse Cloud. Отклоняет соединение, если некоторые данные не прочитаны.
 ## distributed_cache_fetch_metrics_only_from_current_az {#distributed_cache_fetch_metrics_only_from_current_az} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -2312,7 +2312,7 @@ ENGINE = Log
 Эта настройка имеет эффект только в ClickHouse Cloud. Получает метрики только из текущей зоны доступности в system.distributed_cache_metrics, system.distributed_cache_events.
 ## distributed_cache_log_mode {#distributed_cache_log_mode} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="DistributedCacheLogMode" default_value="on_error" />
 
@@ -2321,7 +2321,7 @@ ENGINE = Log
 Эта настройка имеет эффект только в ClickHouse Cloud. Режим записи в system.distributed_cache_log.
 ## distributed_cache_max_unacked_inflight_packets {#distributed_cache_max_unacked_inflight_packets} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
@@ -2330,7 +2330,7 @@ ENGINE = Log
 Эта настройка имеет эффект только в ClickHouse Cloud. Максимальное количество неподтвержденных пакетов, находящихся в пути, в одном запросе чтения распределенного кэша.
 ## distributed_cache_min_bytes_for_seek {#distributed_cache_min_bytes_for_seek} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2339,7 +2339,7 @@ ENGINE = Log
 Эта настройка имеет эффект только в ClickHouse Cloud. Минимальное количество байт для выполнения поиска в распределенном кэше.
 ## distributed_cache_pool_behaviour_on_limit {#distributed_cache_pool_behaviour_on_limit} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="DistributedCachePoolBehaviourOnLimit" default_value="wait" />
 
@@ -2348,7 +2348,7 @@ ENGINE = Log
 Эта настройка имеет эффект только в ClickHouse Cloud. Определяет поведение соединения к распределенному кэшу при достижении лимита пула.
 ## distributed_cache_read_alignment {#distributed_cache_read_alignment} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2357,7 +2357,7 @@ ENGINE = Log
 Эта настройка имеет эффект только в ClickHouse Cloud. Настройка для тестирования, не изменяйте ее.
 ## distributed_cache_read_only_from_current_az {#distributed_cache_read_only_from_current_az} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -2366,7 +2366,7 @@ ENGINE = Log
 Эта настройка имеет эффект только в ClickHouse Cloud. Разрешает читать только из текущей зоны доступности. Если отключено, будет произведено чтение со всех серверов кэша во всех зонах доступности.
 ## distributed_cache_read_request_max_tries {#distributed_cache_read_request_max_tries} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="20" />
 
@@ -2375,7 +2375,7 @@ ENGINE = Log
 Эта настройка имеет эффект только в ClickHouse Cloud. Количество попыток выполнения запроса к распределенному кэшу в случае неудачи.
 ## distributed_cache_receive_response_wait_milliseconds {#distributed_cache_receive_response_wait_milliseconds} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="60000" />
 
@@ -2384,7 +2384,7 @@ ENGINE = Log
 Эта настройка имеет эффект только в ClickHouse Cloud. Время ожидания в миллисекундах для получения данных по запросу от распределенного кэша.
 ## distributed_cache_receive_timeout_milliseconds {#distributed_cache_receive_timeout_milliseconds} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
@@ -2393,7 +2393,7 @@ ENGINE = Log
 Эта настройка имеет эффект только в ClickHouse Cloud. Время ожидания в миллисекундах для получения любого рода ответа от распределенного кэша.
 ## distributed_cache_throw_on_error {#distributed_cache_throw_on_error} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2402,7 +2402,7 @@ ENGINE = Log
 Эта настройка имеет эффект только в ClickHouse Cloud. Пробрасывает исключение, произошедшее во время общения с распределенным кэшем, или исключение, полученное от распределенного кэша. В противном случае возврат к пропуску распределенного кэша при ошибке.
 ## distributed_cache_wait_connection_from_pool_milliseconds {#distributed_cache_wait_connection_from_pool_milliseconds} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
@@ -3088,7 +3088,7 @@ ClickHouse выбирает наиболее подходящую из уста�
 
 ## filesystem_cache_enable_background_download_during_fetch {#filesystem_cache_enable_background_download_during_fetch} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3098,7 +3098,7 @@ ClickHouse выбирает наиболее подходящую из уста�
 
 ## filesystem_cache_enable_background_download_for_metadata_files_in_packed_storage {#filesystem_cache_enable_background_download_for_metadata_files_in_packed_storage} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -4153,7 +4153,7 @@ description: 'Имеет значение только в ClickHouse Cloud. Ис
 ```
 ## ignore_cold_parts_seconds {#ignore_cold_parts_seconds} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="Int64" default_value="0" />
 
@@ -6573,7 +6573,7 @@ ClickHouse может проводить различные действия, к
 
 ## merge_tree_compact_parts_min_granules_to_multibuffer_read {#merge_tree_compact_parts_min_granules_to_multibuffer_read} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="16" />
 
@@ -8133,7 +8133,7 @@ SELECT avg(number) AS number, max(number) FROM numbers(10);
 
 ## prefer_warmed_unmerged_parts_seconds {#prefer_warmed_unmerged_parts_seconds} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="Int64" default_value="0" />
 
@@ -8793,7 +8793,7 @@ description: 'Оптимизация плана запроса, использу
 Приоритет для чтения данных из локальной файловой системы или удаленной файловой системы. Поддерживается только для метода 'pread_threadpool' для локальной файловой системы и для метода `threadpool` для удаленной файловой системы.
 ## read_through_distributed_cache {#read_through_distributed_cache} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 
 
@@ -10487,7 +10487,7 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 
 ## write_through_distributed_cache {#write_through_distributed_cache} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 

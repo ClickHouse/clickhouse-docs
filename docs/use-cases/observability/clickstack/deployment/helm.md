@@ -10,6 +10,7 @@ description: 'Deploying ClickStack with Helm - The ClickHouse Observability Stac
 import Image from '@theme/IdealImage';
 import hyperdx_24 from '@site/static/images/use-cases/observability/hyperdx-24.png';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
+import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 The helm chart for HyperDX can be found [here](https://github.com/hyperdxio/helm-charts) and is the **recommended** method for production deployments.
 
@@ -219,6 +220,18 @@ clickhouse:
 
 otel:
   clickhouseEndpoint: ${CLICKHOUSE_URL}
+
+hyperdx:
+  defaultConnections: |
+    [
+      {
+        "name": "External ClickHouse",
+        "host": "http://your-clickhouse-server:8123",
+        "port": 8123,
+        "username": "your-username",
+        "password": "your-password"
+      }
+    ]
 ```
 
 ```shell
@@ -290,4 +303,34 @@ helm install my-hyperdx hyperdx/hdx-oss-v2 --debug --dry-run
 
 ```shell
 kubectl get pods -l app.kubernetes.io/name=hdx-oss-v2
+```
+
+<JSONSupport/>
+
+Users can set these environment variables via either parameters or the `values.yaml` e.g.
+
+
+*values.yaml*
+
+```yaml
+hyperdx:
+  ...
+  env:
+    - name: BETA_CH_OTEL_JSON_SCHEMA_ENABLED
+      value: "true"
+
+otel:
+  ...
+  env:
+    - name: OTEL_AGENT_FEATURE_GATE_ARG
+      value: "--feature-gates=clickhouse.json"
+```
+
+or via `--set`:
+
+```shell
+helm install myrelease hyperdx-helm --set "hyperdx.env[0].name=BETA_CH_OTEL_JSON_SCHEMA_ENABLED" \
+  --set "hyperdx.env[0].value=true" \
+  --set "otel.env[0].name=OTEL_AGENT_FEATURE_GATE_ARG" \
+  --set "otel.env[0].value=--feature-gates=clickhouse.json"
 ```

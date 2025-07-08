@@ -58,7 +58,7 @@ WITH
         name,
         ' {#'||name||'} \n\n',
         multiIf(tier == 'Experimental', '<ExperimentalBadge/>\n\n', tier == 'Beta', '<BetaBadge/>\n\n', ''),
-        if(description LIKE '%Only has an effect in ClickHouse Cloud%', '<CloudAvailableBadge/>\n\n', ''),
+        if(description LIKE '%Only has an effect in ClickHouse Cloud%', '<CloudOnlyBadge/>\n\n', ''),
         if(
             type != '' AND default != '',
             format(
@@ -83,7 +83,7 @@ description: ''Settings which are found in the ``system.settings`` table.''
 
 import ExperimentalBadge from \'@theme/badges/ExperimentalBadge\';
 import BetaBadge from \'@theme/badges/BetaBadge\';
-import CloudAvailableBadge from \'@theme/badges/CloudAvailableBadge\';
+import CloudOnlyBadge from \'@theme/badges/CloudOnlyBadge\';
 import SettingsInfoBlock from \'@theme/SettingsInfoBlock/SettingsInfoBlock\';
 import VersionHistory from \'@theme/VersionHistory/VersionHistory\';
 

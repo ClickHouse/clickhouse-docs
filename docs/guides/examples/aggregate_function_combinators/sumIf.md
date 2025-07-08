@@ -35,7 +35,7 @@ INSERT INTO sales VALUES
     (6, 175.25, 1);
 
 SELECT
-    sumIf(amount, is_successful = 1) as total_successful_sales
+    sumIf(amount, is_successful = 1) AS total_successful_sales
 FROM sales;
 ```
 

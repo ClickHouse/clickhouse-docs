@@ -71,7 +71,7 @@ template](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/c
 You are now ready to start sending SQL commands to ClickHouse!
 
 :::tip
-The [Quick Start](/quick-start.mdx) walks through the steps for creating tables and inserting data.
+The [Quick Start](/get-started/quick-start) walks through the steps for creating tables and inserting data.
 :::
 
 </VerticalStepper>

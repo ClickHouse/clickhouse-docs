@@ -919,6 +919,8 @@ supabase
 artitecture
 emqx
 mqttx
+--docs/integrations/data-ingestion/kafka/index.md--
+configurability
 --docs/integrations/data-ingestion/kafka/confluent/custom-connector.md--
 AddCustomConnectorPlugin
 --docs/integrations/data-ingestion/kafka/confluent/kafka-connect-http.md--

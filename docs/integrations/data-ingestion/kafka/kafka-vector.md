@@ -125,7 +125,7 @@ By default, a [health check](https://vector.dev/docs/reference/configuration/sin
 5. Confirm the insertion of the data.
 
 ```sql
-SELECT count() as count FROM github;
+SELECT count() AS count FROM github;
 ```
 
 | count |

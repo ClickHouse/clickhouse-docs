@@ -9,8 +9,7 @@ Welcome to ClickHouse Cloud! Explore the pages below to learn more about what Cl
 
 | Page                     | Description                                                                                                                                               |
 |--------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Overview](/cloud/overview)          | Overview of the benefits of using ClickHouse Cloud and what version of ClickHouse is used for it.                                                         | 
-| [Cloud Quick Start](/cloud/get-started/cloud-quick-start) | Quick start guide to get up and running with Cloud.                                                                                                       |
+| [Overview](/cloud/overview)          | Overview of the benefits of using ClickHouse Cloud and what version of ClickHouse is used for it.                                                         |
 | [SQL Console](/cloud/get-started/sql-console)       | Learn about the interactive SQL console available in Cloud                                                                                                |
 | [Query Insights](/cloud/get-started/query-insights)    | Learn about how Cloud's Query Insights feature makes ClickHouse's built-in query log easier to use through various visualizations and tables.             |
 | [Query Endpoints](/cloud/get-started/query-endpoints)   | Learn about the Query API Endpoints feature which allows you to create an API endpoint directly from any saved SQL query in the ClickHouse Cloud console. |

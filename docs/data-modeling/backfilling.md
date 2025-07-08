@@ -371,7 +371,7 @@ While we can add the target table, prior to adding the materialized view we modi
 ```sql
 CREATE MATERIALIZED VIEW pypi_downloads_per_day_mv TO pypi_downloads_per_day
 AS SELECT
- toStartOfHour(timestamp) as hour,
+ toStartOfHour(timestamp) AS hour,
  project, count() AS count
 FROM pypi WHERE timestamp >= '2024-12-17 09:00:00'
 GROUP BY hour, project

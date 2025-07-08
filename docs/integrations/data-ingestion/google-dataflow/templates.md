@@ -22,7 +22,7 @@ Google Dataflow templates provide a convenient way to execute prebuilt, ready-to
 
 ## How to Run Dataflow Templates {#how-to-run-dataflow-templates}
 
-As of today, the ClickHouse official template is available via the Google Cloud CLI or Dataflow REST API.
+As of today, the ClickHouse official template is available via the Google Cloud Console, CLI or Dataflow REST API.
 For detailed step-by-step instructions, refer to the [Google Dataflow Run Pipeline From a Template Guide](https://cloud.google.com/dataflow/docs/templates/provided-templates).
 
 

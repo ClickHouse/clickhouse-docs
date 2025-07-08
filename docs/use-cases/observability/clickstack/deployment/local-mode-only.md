@@ -10,7 +10,7 @@ description: 'Deploying ClickStack with Local Mode Only - The ClickHouse Observa
 import Image from '@theme/IdealImage';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
 import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png';
-
+import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 Similar to the [all-in-one image](/use-cases/observability/clickstack/deployment/docker-compose), this comprehensive Docker image bundles all ClickStack components:
 
@@ -55,3 +55,12 @@ Create a source, retain all default values, and complete the `Table` field with 
 <Image img={hyperdx_logs} alt="Create logs source" size="md"/>
 
 </VerticalStepper>
+
+
+<JSONSupport/>
+
+For the local mode only image, users only need to set the `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` parameter e.g.
+
+```shell
+docker run -e BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx-local
+```

@@ -4,6 +4,8 @@ import CodeViewer from "../../components/CodeViewer";
 
 
 function countLines(text) {
+  // Handle undefined or null input
+  if (!text) return 1; // Return 1 as default line count
   // Split the string by newline characters
   const lines = text.split('\n');
   // Return the number of lines

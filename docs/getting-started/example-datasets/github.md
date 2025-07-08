@@ -1245,8 +1245,8 @@ The `sign = -1` indicates a code deletion. We exclude punctuation and the insert
 
 ```sql
 SELECT
-    prev_author || '(a)' as add_author,
-    author  || '(d)' as delete_author,
+    prev_author || '(a)' AS add_author,
+    author  || '(d)' AS delete_author,
     count() AS c
 FROM git.line_changes
 WHERE (sign = -1) AND (file_extension IN ('h', 'cpp')) AND (line_type NOT IN ('Punct', 'Empty')) AND (author != prev_author) AND (prev_author != '')

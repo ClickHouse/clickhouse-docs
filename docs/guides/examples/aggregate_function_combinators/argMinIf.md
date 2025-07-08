@@ -41,7 +41,7 @@ INSERT INTO product_prices VALUES
 
 SELECT
     product_id,
-    argMinIf(price, timestamp, in_stock = 1) as lowest_price_when_in_stock
+    argMinIf(price, timestamp, in_stock = 1) AS lowest_price_when_in_stock
 FROM product_prices
 GROUP BY product_id;
 ```

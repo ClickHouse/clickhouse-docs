@@ -75,7 +75,7 @@ The following query lists the number of entries in the primary index for each da
 ```sql
 SELECT
     part_name,
-    max(mark_number) as entries
+    max(mark_number) AS entries
 FROM mergeTreeIndex('uk', 'uk_price_paid_simple')
 GROUP BY part_name;
 ```
@@ -93,7 +93,7 @@ This query shows the first 10 entries from the primary index of one of the curre
 
 ```sql 
 SELECT 
-    mark_number + 1 as entry,
+    mark_number + 1 AS entry,
     town,
     street
 FROM mergeTreeIndex('uk', 'uk_price_paid_simple')

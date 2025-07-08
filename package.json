@@ -7,7 +7,7 @@
     "autogen_needed_files": "src/Core/FormatFactorySettings.h src/Core/Settings.cpp CHANGELOG.md docs/en/operations/server-configuration-parameters/_server_settings_outside_source.md"
   },
   "scripts": {
-    "build": "yarn copy-clickhouse-repo-docs && yarn check-markdown && yarn generate-changelog && yarn autogenerate-settings && yarn autogenerate-table-of-contents && yarn build-swagger && yarn build-docs",
+    "build": "yarn copy-clickhouse-repo-docs && yarn check-markdown && yarn generate-changelog && yarn autogenerate-settings && yarn autogenerate-table-of-contents && yarn build-swagger && scripts/sed_links.sh && yarn build-docs",
     "clear": "docusaurus clear && bash ./placeholderReset.sh",
     "deploy": "docusaurus deploy",
     "docusaurus": "docusaurus",
@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@algolia/client-search": "^5.24.0",
-    "@clickhouse/click-ui": "^0.0.199",
+    "@clickhouse/click-ui": "^0.0.213",
     "@clickhouse/client-web": "^1.11.1",
     "@docusaurus/core": "3.7.0",
     "@docusaurus/faster": "^3.7.0",
@@ -85,7 +85,7 @@
     "@types/react": "^19.0.4",
     "@types/styled-jsx": "^3.4.4",
     "cheerio": "^1.0.0",
-    "markdownlint-rule-helpers": "^0.28.0",
+    "markdownlint-rule-helpers": "^0.29.0",
     "postcss": "^8.5.3",
     "rsync": "^0.6.1",
     "tailwindcss": "^4.1.3",

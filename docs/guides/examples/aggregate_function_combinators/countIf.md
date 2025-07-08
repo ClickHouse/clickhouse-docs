@@ -36,7 +36,7 @@ INSERT INTO login_attempts VALUES
 
 SELECT
     user_id,
-    countIf(is_successful = 1) as successful_logins
+    countIf(is_successful = 1) AS successful_logins
 FROM login_attempts
 GROUP BY user_id;
 ```

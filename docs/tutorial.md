@@ -12,11 +12,11 @@ show_related_blogs: true
 
 ## Overview {#overview}
 
-Learn how to ingest and query data in ClickHouse using a New York City taxi example dataset. 
+Learn how to ingest and query data in ClickHouse using the New York City taxi example dataset. 
 
 ### Prerequisites {#prerequisites}
 
-You need access to a running ClickHouse service to complete this tutorial. For instructions, see the [Quick Start](./quick-start.mdx) guide.
+You need access to a running ClickHouse service to complete this tutorial. For instructions, see the [Quick Start](/get-started/quick-start) guide.
 
 <VerticalStepper>
 

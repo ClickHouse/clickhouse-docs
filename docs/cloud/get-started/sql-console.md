@@ -251,17 +251,17 @@ Query result sets can be easily exported to CSV format directly from the SQL con
 Some data can be more easily interpreted in chart form. You can quickly create visualizations from query result data directly from the SQL console in just a few clicks. As an example, we'll use a query that calculates weekly statistics for NYC taxi trips:
 
 ```sql
-select
-   toStartOfWeek(pickup_datetime) as week,
-   sum(total_amount) as fare_total,
-   sum(trip_distance) as distance_total,
-   count(*) as trip_total
-from
+SELECT
+   toStartOfWeek(pickup_datetime) AS week,
+   sum(total_amount) AS fare_total,
+   sum(trip_distance) AS distance_total,
+   count(*) AS trip_total
+FROM
    nyc_taxi
-group by
+GROUP BY
    1
-order by
-   1 asc
+ORDER BY
+   1 ASC
 ```
 
 <Image img={tabular_query_results} size="md" alt='Tabular query results' />

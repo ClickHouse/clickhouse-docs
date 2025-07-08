@@ -35,7 +35,7 @@ INSERT INTO sales VALUES
     (6, 175.25, 1);
 
 SELECT
-    avgIf(amount, is_successful = 1) as avg_successful_sale
+    avgIf(amount, is_successful = 1) AS avg_successful_sale
 FROM sales;
 ```
 

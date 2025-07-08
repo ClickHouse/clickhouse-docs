@@ -140,7 +140,7 @@ LIMIT 1
 A simple analysis shows that `ViewCount` is correlated with the `CreationDate` (a primary key) as one might expect - the longer a post exists, the more time it has to be viewed.
 
 ```sql
-SELECT toDate(CreationDate) as day, avg(ViewCount) as view_count FROM stackoverflow.posts WHERE day > '2009-01-01'  GROUP BY day
+SELECT toDate(CreationDate) AS day, avg(ViewCount) AS view_count FROM stackoverflow.posts WHERE day > '2009-01-01'  GROUP BY day
 ```
 
 This therefore makes a logical choice for a data skipping index. Given the numeric type, a min_max index makes sense. We add an index using the following `ALTER TABLE` commands - first adding it, then "materializing it".

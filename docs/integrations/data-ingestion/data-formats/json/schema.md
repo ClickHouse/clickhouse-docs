@@ -6,7 +6,6 @@ keywords: ['json', 'clickhouse', 'inserting', 'loading', 'formats', 'schema', 's
 score: 20
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 import json_column_per_type from '@site/static/images/integrations/data-ingestion/data-formats/json_column_per_type.png';
 import json_offsets from '@site/static/images/integrations/data-ingestion/data-formats/json_offsets.png';
@@ -359,8 +358,6 @@ SELECT id, nickname FROM people
 
 ## Handling semi-structured/dynamic structures {#handling-semi-structured-dynamic-structures}
 
-<PrivatePreviewBadge/>
-
 If JSON data is semi-structured where keys can be dynamically added and/or have multiple types, the [`JSON`](/sql-reference/data-types/newjson) type is recommended.
 
 More specifically, use the JSON type when your data:
@@ -549,7 +546,7 @@ json: {"address":[{"city":"Wisokyburgh","geo":{"lat":-43.9509,"lng":-34.4618},"s
 We can determine the inferred sub columns and their types using [introspection functions](/sql-reference/data-types/newjson#introspection-functions). For example:
 
 ```sql
-SELECT JSONDynamicPathsWithTypes(json) as paths
+SELECT JSONDynamicPathsWithTypes(json) AS paths
 FROM people
 FORMAT PrettyJsonEachRow
 

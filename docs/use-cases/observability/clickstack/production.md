@@ -139,7 +139,7 @@ The following represents a simple deployment of ClickStack using ClickHouse Clou
 
 ### Create a service {#create-a-service}
 
-Follow the [getting started guide for ClickHouse Cloud](/cloud/get-started/cloud-quick-start#1-create-a-clickhouse-service) to create a service.
+Follow the [getting started guide for ClickHouse Cloud](/getting-started/quick-start/cloud/#1-create-a-clickhouse-service) to create a service.
 
 ### Copy connection details {#copy-connection-details}
 

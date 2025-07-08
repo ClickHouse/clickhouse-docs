@@ -651,7 +651,7 @@ CREATE TABLE geoip_url(
         latitude Float64,
         longitude Float64,
         timezone Nullable(String)
-) engine=URL('https://raw.githubusercontent.com/sapics/ip-location-db/master/dbip-city/dbip-city-ipv4.csv.gz', 'CSV')
+) ENGINE=URL('https://raw.githubusercontent.com/sapics/ip-location-db/master/dbip-city/dbip-city-ipv4.csv.gz', 'CSV')
 
 select count() from geoip_url;
 
@@ -665,18 +665,18 @@ Because our `ip_trie` dictionary requires IP address ranges to be expressed in C
 This CIDR for each range can be succinctly computed with the following query:
 
 ```sql
-with
-        bitXor(ip_range_start, ip_range_end) as xor,
-        if(xor != 0, ceil(log2(xor)), 0) as unmatched,
-        32 - unmatched as cidr_suffix,
-        toIPv4(bitAnd(bitNot(pow(2, unmatched) - 1), ip_range_start)::UInt64) as cidr_address
-select
+WITH
+        bitXor(ip_range_start, ip_range_end) AS xor,
+        if(xor != 0, ceil(log2(xor)), 0) AS unmatched,
+        32 - unmatched AS cidr_suffix,
+        toIPv4(bitAnd(bitNot(pow(2, unmatched) - 1), ip_range_start)::UInt64) AS cidr_address
+SELECT
         ip_range_start,
         ip_range_end,
-        concat(toString(cidr_address),'/',toString(cidr_suffix)) as cidr    
-from
+        concat(toString(cidr_address),'/',toString(cidr_suffix)) AS cidr    
+FROM
         geoip_url
-limit 4;
+LIMIT 4;
 
 ┌─ip_range_start─┬─ip_range_end─┬─cidr───────┐
 │ 1.0.0.0        │ 1.0.0.255    │ 1.0.0.0/24 │
