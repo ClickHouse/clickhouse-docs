@@ -58,7 +58,7 @@ Customers are recommended to prepare a dedicated AWS account for hosting the Cli
 
 With this account and the initial organization admin email, you can contact ClickHouse support.
 
-### Initialize BYOC Setup {#initialize-byoc-setup}
+### Initialize BYOC setup {#initialize-byoc-setup}
 
 The initial BYOC setup can be performed using either a CloudFormation template or a Terraform module. Both approaches create the same IAM role, enabling BYOC controllers from ClickHouse Cloud to manage your infrastructure. Note that S3, VPC, and compute resources required for running ClickHouse are not included in this initial setup.
 
