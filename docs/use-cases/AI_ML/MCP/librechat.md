@@ -186,6 +186,18 @@ mcpServers:
 
 This configures LibreChat to connect to the MCP server running on Docker.
 
+Find the following line: 
+
+```text title="librechat.yaml"
+socialLogins: ['github', 'google', 'discord', 'openid', 'facebook', 'apple', 'saml']
+```
+
+For simplicity, we will remove the need to authenticate for now:
+
+```text title="librechat.yaml"
+socialLogins: []
+```
+
 ## Add a local LLM using Ollama (optional) {#add-local-llm-using-ollama}
 
 ### Install Ollama {#install-ollama}
