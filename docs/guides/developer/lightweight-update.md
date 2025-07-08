@@ -6,7 +6,7 @@ keywords: ['On-fly mutation']
 description: 'Provides a description of on-fly mutations'
 ---
 
-## On-fly Mutation {#lightweight-update}
+## On-fly mutation {#lightweight-update}
 
 When on-fly mutations are enabled, updated rows are marked as updated immediately and subsequent `SELECT` queries will automatically return with the changed values. When on-fly mutations are not enabled, you may have to wait for your mutations to be applied via a background process to see the changed values.
 
@@ -73,7 +73,7 @@ The `SELECT` query now returns the correct result immediately, without having to
 └────┴───┘
 ```
 
-## Performance Impact {#performance-impact}
+## Performance impact {#performance-impact}
 
 When on-fly mutations are enabled, mutations are not materialized immediately but will only be applied during `SELECT` queries. However, please note that mutations are still being materialized asynchronously in the background, which is a heavy process.
 
