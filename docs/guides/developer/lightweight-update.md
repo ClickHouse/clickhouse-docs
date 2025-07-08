@@ -1,16 +1,16 @@
 ---
 slug: /guides/developer/lightweight-update
-sidebar_label: 'Lightweight Update'
-title: 'Lightweight Update'
-keywords: ['lightweight update']
-description: 'Provides a description of lightweight updates'
+sidebar_label: 'On-fly Mutation'
+title: 'On-fly Mutations'
+keywords: ['On-fly mutation']
+description: 'Provides a description of on-fly mutations'
 ---
 
-## Lightweight Update {#lightweight-update}
+## On-fly Mutation {#lightweight-update}
 
-When lightweight updates are enabled, updated rows are marked as updated immediately and subsequent `SELECT` queries will automatically return with the changed values. When lightweight updates are not enabled, you may have to wait for your mutations to be applied via a background process to see the changed values.
+When on-fly mutations are enabled, updated rows are marked as updated immediately and subsequent `SELECT` queries will automatically return with the changed values. When on-fly mutations are not enabled, you may have to wait for your mutations to be applied via a background process to see the changed values.
 
-Lightweight updates can be enabled for `MergeTree`-family tables by enabling the query-level setting `apply_mutations_on_fly`.
+On-fly mutations can be enabled for `MergeTree`-family tables by enabling the query-level setting `apply_mutations_on_fly`.
 
 ```sql
 SET apply_mutations_on_fly = 1;
@@ -56,10 +56,10 @@ Note that the values of the rows have not yet been updated when we query the new
 └────┴───┘
 ```
 
-Let's now see what happens when we enable lightweight updates:
+Let's now see what happens when we enable on-fly mutations:
 
 ```sql
--- Enable lightweight updates
+-- Enable on-fly mutations
 SET apply_mutations_on_fly = 1;
 
 SELECT id, v FROM test_on_fly_mutations ORDER BY id;
@@ -75,7 +75,7 @@ The `SELECT` query now returns the correct result immediately, without having to
 
 ## Performance Impact {#performance-impact}
 
-When lightweight updates are enabled, mutations are not materialized immediately but will only be applied during `SELECT` queries. However, please note that mutations are still being materialized asynchronously in the background, which is a heavy process.
+When on-fly mutations are enabled, mutations are not materialized immediately but will only be applied during `SELECT` queries. However, please note that mutations are still being materialized asynchronously in the background, which is a heavy process.
 
 If the number of submitted mutations constantly exceeds the number of mutations that are processed in the background over some time interval, the queue of unmaterialized mutations that have to be applied will continue to grow. This will result in the eventual degradation of `SELECT` query performance.
 
@@ -83,7 +83,7 @@ We suggest enabling the setting `apply_mutations_on_fly` together with other `Me
 
 ## Support for subqueries and non-deterministic functions {#support-for-subqueries-and-non-deterministic-functions}
 
-Lightweight updates have limited support with subqueries and non-deterministic functions. Only scalar subqueries with a result that have a reasonable size (controlled by the setting `mutations_max_literal_size_to_replace`) are supported. Only constant non-deterministic functions are supported (e.g. the function `now()`).
+On-fly mutations have limited support with subqueries and non-deterministic functions. Only scalar subqueries with a result that have a reasonable size (controlled by the setting `mutations_max_literal_size_to_replace`) are supported. Only constant non-deterministic functions are supported (e.g. the function `now()`).
 
 These behaviours are controlled by the following settings:
 
