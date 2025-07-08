@@ -66,6 +66,18 @@ ANTHROPIC_API_KEY=user_provided
 Replace `user_provided` with your API key for the LLM provider you want to use,
 making sure it is quoted, e.g. `"A2bC3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z"`.
 
+Next uncomment the following line:
+
+```text title=".env"
+# ENDPOINTS=openAI,assistants,azureOpenAI,google,anthropic
+```
+
+Add `agents` to the list of endpoints:
+
+```text
+ENDPOINTS=openAI,assistants,azureOpenAI,google,anthropic,agents
+```
+
 :::note Using a local LLM
 If you don't have an API key you can use a local LLM like Ollama. You'll see how 
 to do this later in step ["Install Ollama"](#add-local-llm-using-ollama). For now
