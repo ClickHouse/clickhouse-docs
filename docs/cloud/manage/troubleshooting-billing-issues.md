@@ -129,4 +129,4 @@ unpaid invoices before initiating data deletion. There will be no automatic data
 deletion after 30 days.
 
 If you’d like to add additional credits before your existing ones expire or are 
-depleted, please contact us at [sales@clickhouse.com](sales@clickhouse.com).
+depleted, please [contact us](https://clickhouse.com/company/contact).
