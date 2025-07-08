@@ -30,7 +30,7 @@ The MySQL ClickPipe uses a column on your source table to logically partition th
 The partition key column must be indexed in the source table to see a good performance boost.
 :::
 
-### Logical partitioning
+### Logical partitioning {#logical-partitioning}
 
 Let's talk about the below settings:
 
