@@ -2,8 +2,9 @@
 sidebar_label: 'Kafka Connector Sink on Confluent Cloud'
 sidebar_position: 2
 slug: /integrations/kafka/cloud/confluent/custom-connector
-description: 'Using Fully Managed ClickHouse Connector Sink on Confluent Cloud'
+description: 'Guide to using the fully managed ClickHouse Connector Sinkon Confluent Cloud'
 title: 'Integrating Confluent Cloud with ClickHouse'
+keywords: ['Kafka', 'Confluent Cloud']
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
@@ -37,7 +38,7 @@ For more details, please refer to the [official Confluent documentation](https:/
 #### Create a Topic {#create-a-topic}
 Creating a topic on Confluent Cloud is fairly simple, and there are detailed instructions [here](https://docs.confluent.io/cloud/current/client-apps/topics/manage.html).
 
-#### Important Notes {#important-notes}
+#### Important notes {#important-notes}
 
 * The Kafka topic name must be the same as the ClickHouse table name. The way to tweak this is by using a transformer (for example [`ExtractTopic`](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html)).
 * More partitions does not always mean more performance - see our upcoming guide for more details and performance tips.
@@ -47,7 +48,7 @@ Creating a topic on Confluent Cloud is fairly simple, and there are detailed ins
 
 
 #### Install Connector {#install-connector}
-Install the Fully Managed ClickHouse Sink Connector on Confluent Cloud following the [official documentation](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html).
+Install the fully managed ClickHouse Sink Connector on Confluent Cloud following the [official documentation](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html).
 
 
 #### Configure the Connector {#configure-the-connector}
@@ -60,5 +61,5 @@ During the configuration of the ClickHouse Sink Connector, you will need to prov
 
 The Confluent Cloud UI supports advanced configuration options to adjust poll intervals, batch sizes, and other parameters to optimize performance.
 
-#### Known Limitations {#known-limitations}
+#### Known limitations {#known-limitations}
 * See the list of [Connectors limitations in the official docs](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html#limitations)
