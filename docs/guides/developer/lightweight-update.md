@@ -24,7 +24,7 @@ CREATE TABLE test_on_fly_mutations (id UInt64, v String)
 ENGINE = MergeTree ORDER BY id;
 
 -- Disable background materialization of mutations to showcase
--- default behavior when lightweight updates are not enabled
+-- default behavior when on-the-fly mutations are not enabled
 SYSTEM STOP MERGES test_on_fly_mutations;
 SET mutations_sync = 0;
 
@@ -39,8 +39,9 @@ ALTER TABLE test_on_fly_mutations DELETE WHERE v = 'e';
 ```
 
 Let's check the result of the updates via a `SELECT` query:
+
 ```sql
--- Explicitly disable lightweight updates
+-- Explicitly disable on-the-fly-mutations
 SET apply_mutations_on_fly = 0;
 
 SELECT id, v FROM test_on_fly_mutations ORDER BY id;
