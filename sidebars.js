@@ -1004,6 +1004,7 @@ const sidebars = {
             },
           ],
         },
+        "integrations/data-ingestion/etl-tools/bladepipe-and-clickhouse",
         "integrations/data-ingestion/etl-tools/dbt/index",
         "integrations/data-ingestion/etl-tools/dlt-and-clickhouse",
         "integrations/data-ingestion/etl-tools/fivetran/index",
