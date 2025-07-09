@@ -38,7 +38,6 @@ Currently BladePipe supports for data integration to ClickHouse from the followi
 - PolarDB-MySQL
 - OceanBase
 - TiDB
-- Dameng
 
 More sources are to be supported.
 
