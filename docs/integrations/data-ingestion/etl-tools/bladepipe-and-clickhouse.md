@@ -28,6 +28,19 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 ClickHouse is one of BladePipe's pre-built connectors, allowing users to integrate data from various sources into ClickHouse automatically. This page will show how to load data into ClickHouse in real time step by step.
 
+## Supported sources {#supported-sources}
+Currently BladePipe supports for data integration to ClickHouse from the following sources:
+- MySQL/MariaDB/AuroraMySQL
+- Oracle
+- PostgreSQL/AuroraPostgreSQL
+- MongoDB
+- PolarDB-MySQL
+- OceanBase
+- TiDB
+- Dameng
+
+More sources are to be supported.
+
 
 ## 1. Download and run BladePipe {#1-run-bladepipe}
 1. Log in to <a href="https://www.bladepipe.com/" target="_blank">BladePipe Cloud</a>.
