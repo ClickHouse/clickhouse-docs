@@ -3357,9 +3357,14 @@
       "permanent": true
     },
     {
-      "source" : "/docs/getting-started/quick-start",
-      "destination" : "/docs/get-started/quick-start",
-      "permanent" : true
+      "source": "/docs/getting-started/quick-start",
+      "destination": "/docs/get-started/quick-start",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/migration/upload-a-csv-file",
+      "destination": "/docs/cloud/migrate/upload-a-csv-file",
+      "permanent": true
     }
   ]
 }

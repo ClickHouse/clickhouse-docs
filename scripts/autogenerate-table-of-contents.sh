@@ -45,6 +45,7 @@ COMMANDS=(
     '--single-toc --dir="docs/development" --md="docs/development/index.md" --ignore images'
     '--single-toc --dir="docs/getting-started/example-datasets" --md="docs/getting-started/index.md" --ignore images'
     '--single-toc --dir="docs/integrations/data-ingestion/clickpipes/kafka" --md="docs/integrations/data-ingestion/clickpipes/kafka/index.md" --ignore images'
+    '--single-toc --dir="docs/use-cases/AI_ML/MCP" --md="docs/use-cases/AI_ML/index.md" --ignore images'
 )
 
 # Execute each command

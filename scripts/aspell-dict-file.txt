@@ -1062,3 +1062,5 @@ microsoft
 microsoft
 --docs/use-cases/observability/clickstack/migration/elastic/migrating-data.md--
 clickstack
+--docs/use-cases/AI_ML/MCP/librechat.md--
+librechat

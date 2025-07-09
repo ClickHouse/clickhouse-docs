@@ -1,6 +1,6 @@
-personal_ws-1.1 en 3453 
 AArch
 ACLs
+AICPA
 ALTERs
 AMPLab
 AMQP
@@ -30,6 +30,7 @@ Airbyte
 Akka
 AlertManager
 Alexey
+Anthropic
 AnyEvent
 AppleClang
 Approximative
@@ -167,6 +168,7 @@ CellAreaM
 CellAreaRads
 CellsIntersect
 CentOS
+CertManager
 CertificateHandler
 Chadmin
 ChannelID
@@ -245,9 +247,7 @@ DDLWorkerThreads
 DDLWorkerThreadsActive
 DDLs
 DECRYPT
-Decrypter
 DELETEs
-Deno
 DESC
 DIEs
 DOGEFI
@@ -270,8 +270,8 @@ DatabaseOnDiskThreads
 DatabaseOnDiskThreadsActive
 DatabaseOrdinaryThreads
 DatabaseOrdinaryThreadsActive
-Datadog
 Databricks
+Datadog
 Datasource
 Datasources
 DateTime
@@ -283,6 +283,7 @@ DbCL
 DbVisualizer
 Debezium
 Decrypted
+Decrypter
 Deduplicate
 Deduplication
 Deepnote
@@ -291,6 +292,7 @@ DelayedInserts
 DeliveryTag
 DeltaLake
 Deltalake
+Deno
 Denormalization
 Denormalize
 DeprecatedBadge
@@ -356,9 +358,9 @@ FQDN
 Fabi
 Failover
 FarmHash
-Filebeat
 FileCluster
 FileLog
+Filebeat
 FilesystemCacheBytes
 FilesystemCacheElements
 FilesystemCacheFiles
@@ -512,6 +514,7 @@ IntervalYear
 IsPentagon
 IsResClassIII
 IsValid
+Istio
 JBOD
 JOINed
 JOINs
@@ -615,6 +618,7 @@ Lemire
 Levenshtein
 Liao
 LibFuzzer
+LibreChat
 Lifecycles
 LightHouse
 LineAsString
@@ -634,6 +638,7 @@ LoadBalancing
 LocalFSReadMethod
 LocalThread
 LocalThreadActive
+LogHouse
 LogQL
 LogQueriesType
 LogsLevel
@@ -762,8 +767,8 @@ Nambiar
 Namenode
 NamesAndTypesList
 Nano
-Nesterov
 NestJS
+Nesterov
 NetFlow
 NetworkReceive
 NetworkReceiveBytes
@@ -852,6 +857,8 @@ Oblakov
 Observability
 Octonica
 Ok
+Okta
+Ollama
 Omni
 OnTime
 Ookla
@@ -931,6 +938,7 @@ PostgreSQLWire
 Postgres
 PostgresSQL
 PowerDrill
+PowerShell
 Precompiled
 Preprocess
 PrettyCompact
@@ -1020,6 +1028,8 @@ Refreshable
 RegexpTree
 RemoteRead
 ReplacingMergeTree
+ReplacingReplicatedMergeTree
+ReplacingSharedMergeTree
 ReplicasMaxAbsoluteDelay
 ReplicasMaxInsertsInQueue
 ReplicasMaxMergesInQueue
@@ -1052,6 +1062,7 @@ Rockset
 RoleArn
 RoleName
 Rollup
+Rollups
 RowBinary
 RowBinaryWithDefaults
 RowBinaryWithNames
@@ -1086,6 +1097,7 @@ SSLManager
 SSRF
 SSSE
 SaaS
+Sackmann's
 Sanjeev
 Sankey
 Scalable
@@ -1108,6 +1120,7 @@ SeverityText
 ShareAlike
 ShareSet
 SharedJoin
+SharedMergeTree
 SharedMergeTree
 ShortCircuitFunctionEvaluation
 Shortkeys
@@ -1201,6 +1214,7 @@ TablesLoaderBackgroundThreadsActive
 TablesLoaderForegroundThreads
 TablesLoaderForegroundThreadsActive
 TablesToDropQueueSize
+Tailscale
 TargetSpecific
 Telecom
 Telegraf
@@ -1213,6 +1227,7 @@ Tencent
 Terraform
 Testflows
 Tgz
+Thanos
 Theil's
 ThreadMonotonic
 ThreadPoolFSReaderThreads
@@ -1221,7 +1236,9 @@ ThreadPoolRemoteFSReaderThreads
 ThreadPoolRemoteFSReaderThreadsActive
 ThreadsActive
 ThreadsInOvercommitTracker
+TiDB
 TimeSeries
+TimescaleDB
 TimescaleDB's
 Timeunit
 TinyLog
@@ -1306,6 +1323,7 @@ Vectorized
 Vercel
 VersionBadge
 VersionInteger
+VersionedCollapsing
 VersionedCollapsingMergeTree
 VideoContainer
 ViewAllLink
@@ -1390,10 +1408,10 @@ aggregatio
 aggretate
 aggthrow
 aiochclient
-allowlisted
-allowlisting
 alloc
 allocator
+allowlisted
+allowlisting
 alphaTokens
 altair
 amplab
@@ -1414,7 +1432,9 @@ approxtopk
 approxtopsum
 arXiv
 argMax
+argMaxIf
 argMin
+argMinIf
 argmax
 argmin
 arrayAUC
@@ -1511,6 +1531,14 @@ autoscaled
 autoscales
 autoscaling
 autostart
+avgIf
+avgMap
+avgMerge
+avgMerge
+avgMergeState
+avgResample
+avgState
+avgState
 avgWeighted
 avgweighted
 avro
@@ -1691,6 +1719,7 @@ codepoints
 collapsingmergetree
 colocates
 colocation
+columnstore
 combinator
 combinatorial
 combinators
@@ -1713,9 +1742,9 @@ const
 contrib
 convertCharset
 coroutines
-correlatable
 corrMatrix
 corrStable
+correlatable
 corrmatrix
 corrstable
 cors
@@ -1725,6 +1754,7 @@ countEqual
 countIf
 countMatches
 countMatchesCaseInsensitive
+countResample
 countSubstrings
 countSubstringsCaseInsensitive
 countSubstringsCaseInsensitiveUTF
@@ -1902,7 +1932,9 @@ domainWithoutWWWRFC
 dont
 dotProduct
 dotall
+downsampled
 downsampling
+downvotes
 dplyr
 dragonbox
 dropdown
@@ -2090,11 +2122,13 @@ greaterOrEquals
 greaterorequals
 greenspace
 groupArray
+groupArrayDistinct
 groupArrayInsertAt
 groupArrayIntersect
 groupArrayLast
 groupArrayMovingAvg
 groupArrayMovingSum
+groupArrayResample
 groupArraySample
 groupArraySorted
 groupBitAnd
@@ -2342,10 +2376,10 @@ libpq
 libpqxx
 librdkafka
 libs
-lifecycle
 libunwind
 libuv
 libvirt
+lifecycle
 linearizability
 linearizable
 linearized
@@ -2414,6 +2448,7 @@ materializedview
 maxIntersections
 maxIntersectionsPosition
 maxMap
+maxSimpleState
 maxintersections
 maxintersectionsposition
 maxmap
@@ -2441,6 +2476,8 @@ minMap
 minMappedArrays
 minSampleSizeContinuous
 minSampleSizeConversion
+minSimpleState
+minSimpleState
 mindsdb
 minimalistic
 mininum
@@ -2456,8 +2493,8 @@ mlock
 mlockall
 mmap
 mmapped
-modularization
 modularity
+modularization
 moduli
 moduloOrZero
 mongoc
@@ -2655,6 +2692,7 @@ permalink
 permalinked
 permalinks
 persistency
+personal_ws-1.1 en 3453 
 phpclickhouse
 picklist
 pipelined
@@ -2683,10 +2721,10 @@ polygonsWithinSpherical
 popcnt
 portRFC
 porthttps
-positionally
 positionCaseInsensitive
 positionCaseInsensitiveUTF
 positionUTF
+positionally
 positiveModulo
 postfix
 postfixes
@@ -2788,16 +2826,19 @@ quantiles
 quantilesExactExclusive
 quantilesExactInclusive
 quantilesGK
+quantilesTiming
+quantilesTimingArrayIf
+quantilesTimingIf
 quantilesTimingWeighted
 quantiletdigest
 quantiletdigestweighted
 quantiletiming
 quantiletimingweighted
 quartile
-queryable
 queryID
 queryString
 queryStringAndFragment
+queryable
 rabbitmq
 raduis
 randBernoulli
@@ -2886,6 +2927,7 @@ replicatedmergetree
 replxx
 repo
 representable
+reproducibility
 requestor
 requireTLSv
 rerange
@@ -2893,7 +2935,10 @@ resending
 resharding
 reshards
 resolvers
+restartable
 resultset
+resync
+resynchronization
 retentions
 rethrow
 retransmit
@@ -2912,7 +2957,6 @@ rocksdb
 rollout
 rollup
 rollups
-Rollups
 roundAge
 roundBankers
 roundDown
@@ -3008,6 +3052,7 @@ soundex
 sparkBar
 sparkbar
 sparsehash
+specificities
 speedscope
 splitBy
 splitByChar
@@ -3094,6 +3139,7 @@ subnet
 subnets
 subnetwork
 suboptimal
+subpath
 subpattern
 subpatterns
 subqueries
@@ -3127,13 +3173,17 @@ subtree
 subtrees
 subtype
 sudo
+sumArray
+sumArray
 sumCount
+sumForEach
 sumIf
 sumKahan
 sumMap
 sumMapFiltered
 sumMapFilteredWithOverflow
 sumMapWithOverflow
+sumSimpleState
 sumWithOverflow
 sumcount
 sumkahan
@@ -3179,7 +3229,6 @@ throughputs
 throwIf
 throwif
 timeDiff
-timespan
 timeSeriesData
 timeSeriesMetrics
 timeSeriesTags
@@ -3188,6 +3237,9 @@ timeSlots
 timeZone
 timeZoneOf
 timeZoneOffset
+timeslot
+timeslots
+timespan
 timezones
 tinylog
 tmp
@@ -3371,6 +3423,8 @@ unidimensional
 unigrams
 unintuitive
 uniq
+uniqArray
+uniqArrayIf
 uniqCombined
 uniqExact
 uniqHLL
@@ -3412,6 +3466,7 @@ upserts
 uptime
 uptimes
 uptrace
+upvotes
 uring
 url
 urlCluster
@@ -3438,8 +3493,8 @@ varpop
 varpopstable
 varsamp
 varsampstable
-vectorized
 vectorization
+vectorized
 vectorscan
 vendoring
 verificationDepth
@@ -3508,53 +3563,3 @@ znode
 znodes
 zookeeperSessionUptime
 zstd
-Okta
-specificities
-reproducibility
-CertManager
-Istio
-LogHouse
-Tailscale
-Thanos
-ReplacingReplicatedMergeTree
-ReplacingSharedMergeTree
-SharedMergeTree
-VersionedCollapsing
-subpath
-AICPA
-restartable
-sumArray
-sumForEach
-argMaxIf
-groupArrayResample
-downsampled
-uniqArrayIf
-minSimpleState
-sumArray
-avgMerge
-avgMergeState
-timeslot
-timeslots
-groupArrayDistinct
-avgMap
-avgState
-avgIf
-quantilesTiming
-quantilesTimingIf
-quantilesTimingArrayIf
-downvotes
-sumSimpleState
-upvotes
-uniqArray
-avgResample
-countResample
-avgMerge
-avgState
-argMinIf
-minSimpleState
-maxSimpleState
-TimescaleDB
-columnstore
-TiDB
-resync
-resynchronization

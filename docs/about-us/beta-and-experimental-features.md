@@ -22,7 +22,7 @@ The sections below explicitly describe the properties of **Beta** and **Experime
 - Possibly enabled in ClickHouse Cloud
 - The ClickHouse team supports beta features
 
-The following features are considered Beta in ClickHouse Cloud and are available for use in ClickHouse Cloud Services, even though they may be currently under a ClickHouse SETTING named ```allow_experimental_*```:
+You can find below the features considered Beta in ClickHouse Cloud and are available for use in your ClickHouse Cloud Services.
 
 Note: please be sure to be using a current version of the ClickHouse [compatibility](/operations/settings/settings#compatibility) setting to be using a recently introduced feature.
 
