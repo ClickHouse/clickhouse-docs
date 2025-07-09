@@ -38,7 +38,7 @@ function parseMetaString(meta = '') {
 export default function CodeBlockWrapper(props) {
   const lineHeight = 18.85;
   const [isLoaded, setIsLoaded] = useState(false);
-  const [estimatedHeight, setEstimatedHeight] = useState(countLines(props.children)*lineHeight);
+  const [estimatedHeight, setEstimatedHeight] = useState(countLines(props.children || '') * lineHeight);
   const codeBlockRef = useRef(null);
 
   const handleIntersection = useCallback((entries) => {
