@@ -63,8 +63,7 @@ ANTHROPIC_API_KEY=user_provided
 # ANTHROPIC_REVERSE_PROXY=
 ```
 
-Replace `user_provided` with your API key for the LLM provider you want to use,
-making sure it is quoted, e.g. `"A2bC3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z"`.
+Replace `user_provided` with your API key for the LLM provider you want to use.
 
 :::note Using a local LLM
 If you don't have an API key you can use a local LLM like Ollama. You'll see how 
