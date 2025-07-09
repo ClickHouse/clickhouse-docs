@@ -34,6 +34,7 @@ Currently BladePipe supports for data integration to ClickHouse from the followi
 - Oracle
 - PostgreSQL/AuroraPostgreSQL
 - MongoDB
+- Kafka
 - PolarDB-MySQL
 - OceanBase
 - TiDB
