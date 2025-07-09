@@ -24,18 +24,18 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 <ClickHouseSupportedBadge/>
 
 
-<a href="https://www.bladepipe.com/" target="_blank">BladePipe</a> is a real-time end-to-end data integration tool, boosting seamless data flow across platforms. 
+<a href="https://www.bladepipe.com/" target="_blank">BladePipe</a> is a real-time end-to-end data integration tool with sub-second latency, boosting seamless data flow across platforms. 
 
-ClickHouse is one of BladePipe's pre-built connectors, allowing users to integrate data from various sources into ClickHouse. This page will show how to load data into ClickHouse in real time step by step.
+ClickHouse is one of BladePipe's pre-built connectors, allowing users to integrate data from various sources into ClickHouse automatically. This page will show how to load data into ClickHouse in real time step by step.
 
 
-## 1. Run BladePipe {#1-run-bladepipe}
+## 1. Download and run BladePipe {#1-run-bladepipe}
 1. Log in to <a href="https://www.bladepipe.com/" target="_blank">BladePipe Cloud</a>.
 
 2. Follow the instructions in <a href="https://doc.bladepipe.com/productOP/byoc/installation/install_worker_docker" target="_blank">Install Worker (Docker)</a> or <a href="https://doc.bladepipe.com/productOP/byoc/installation/install_worker_binary" target="_blank">Install Worker (Binary)</a> to download and install a BladePipe Worker.
 
   :::note
-  Alternatively, you can download and deploy <a href="https://doc.bladepipe.com/productOP/onPremise/installation/install_all_in_one_binary" target="_blank">BladePipe Enterprise</a>
+  Alternatively, you can download and deploy <a href="https://doc.bladepipe.com/productOP/onPremise/installation/install_all_in_one_binary" target="_blank">BladePipe Enterprise</a>.
   :::
 
 ## 2. Add ClickHouse as a target {#2-add-clickhouse-as-a-target}
@@ -45,38 +45,38 @@ ClickHouse is one of BladePipe's pre-built connectors, allowing users to integra
   2. To use ClickHouse as a target, make sure that the user has SELECT, INSERT and common DDL permissions. 
   :::
 
-1. In BladePipe, click **DataSource** > **Add DataSource**.
+1. In BladePipe, click "DataSource" > "Add DataSource".
 
-2. Select ClickHouse, and fill out the settings by providing your ClickHouse host and port, username and password, and click **Test Connection**.
+2. Select `ClickHouse`, and fill out the settings by providing your ClickHouse host and port, username and password, and click "Test Connection".
 
     <Image img={bp_ck_1} size="lg" border alt="Add ClickHouse as a target" />
 
-3. Click **Add DataSource** at the bottom, and a ClickHouse instance is added.
+3. Click "Add DataSource" at the bottom, and a ClickHouse instance is added.
 
 ## 3. Add MySQL as a source {#3-add-mysql-as-a-source}
-In this tutorial, we use a MySQL instance as the source, and expalin the process of loading MySQL data to ClickHouse.
+In this tutorial, we use a MySQL instance as the source, and explain the process of loading MySQL data to ClickHouse.
 
 :::note
 To use MySQL as a source, make sure that the user has the <a href="https://doc.bladepipe.com/dataMigrationAndSync/datasource_func/MySQL/privs_for_mysql" target="_blank">requried permissions</a>. 
 :::
 
-1. In BladePipe, click **DataSource** > **Add DataSource**.
+1. In BladePipe, click "DataSource" > "Add DataSource".
 
-2. Select MySQL, and fill out the settings by providing your MySQL host and port, username and password, and click **Test Connection**.
+2. Select `MySQL`, and fill out the settings by providing your MySQL host and port, username and password, and click "Test Connection".
 
     <Image img={bp_ck_2} size="lg" border alt="Add MySQL as a source" />
 
-3. Click **Add DataSource** at the bottom, and a MySQL instance is added.
+3. Click "Add DataSource" at the bottom, and a MySQL instance is added.
 
 
 ## 4. Create a pipeline {#4-create-a-pipeline}
 
-1. In BladePipe, click **DataJob** > **Create DataJob**.
+1. In BladePipe, click "DataJob" > "Create DataJob".
 
-2. Select the added MySQL and ClickHouse instances and click **Test Connection** to ensure BladePipe is connected to the instances. Then, select the databases to be moved.
+2. Select the added MySQL and ClickHouse instances and click "Test Connection" to ensure BladePipe is connected to the instances. Then, select the databases to be moved.
    <Image img={bp_ck_3} size="lg" border alt="Select source and target" />
 
-3. Select **Incremental** for DataJob Type, together with the **Full Data** option.
+3. Select "Incremental" for DataJob Type, together with the "Full Data" option.
    <Image img={bp_ck_4} size="lg" border alt="Select sync type" />
 
 
@@ -93,12 +93,11 @@ To use MySQL as a source, make sure that the user has the <a href="https://doc.b
 
 ## 5. Verify the data {#5-verify-the-data}
 1. Stop data write in MySQL instance and wait for ClickHouse to merge data.
-
 :::note
 Due to the unpredictable timing of ClickHouse's automatic merging, you can manually trigger a merging by running the `OPTIMIZE TABLE xxx FINAL;` command. Note that there is a chance that this manual merging may not always succeed.
 
 Alternatively, you can run the `CREATE VIEW xxx_v AS SELECT * FROM xxx FINAL;` command to create a view and perform queries on the view to ensure the data is fully merged.
 :::
 
-2. Create a <a href="https://doc.bladepipe.com/operation/job_manage/create_job/create_period_verification_correction_job" target="_blank">Verification DataJob</a>. Once the Verification DataJob is completed, review the results to confirm that the data in ClickHouse are the same as the data in MySQL.
+2. Create a <a href="https://doc.bladepipe.com/operation/job_manage/create_job/create_period_verification_correction_job" target="_blank">Verification DataJob</a>. Once the Verification DataJob is completed, review the results to confirm that the data in ClickHouse is the same as the data in MySQL.
    <Image img={bp_ck_9} size="lg" border alt="Verify data" />
