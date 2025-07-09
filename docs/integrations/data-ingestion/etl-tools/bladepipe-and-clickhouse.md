@@ -70,7 +70,7 @@ More sources are to be supported.
 In this tutorial, we use a MySQL instance as the source, and explain the process of loading MySQL data to ClickHouse.
 
 :::note
-To use MySQL as a source, make sure that the user has the <a href="https://doc.bladepipe.com/dataMigrationAndSync/datasource_func/MySQL/privs_for_mysql" target="_blank">requried permissions</a>. 
+To use MySQL as a source, make sure that the user has the <a href="https://doc.bladepipe.com/dataMigrationAndSync/datasource_func/MySQL/privs_for_mysql" target="_blank">required permissions</a>. 
 :::
 
 1. In BladePipe, click "DataSource" > "Add DataSource".
