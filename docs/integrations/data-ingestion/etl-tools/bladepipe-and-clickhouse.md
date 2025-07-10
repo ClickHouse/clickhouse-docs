@@ -52,7 +52,7 @@ More sources are to be supported.
   Alternatively, you can download and deploy <a href="https://doc.bladepipe.com/productOP/onPremise/installation/install_all_in_one_binary" target="_blank">BladePipe Enterprise</a>.
   :::
 
-## 2. Add ClickHouse as a target {#2-add-clickhouse-as-a-target}
+## Add ClickHouse as a target {#2-add-clickhouse-as-a-target}
 
   :::note
   1. BladePipe supports ClickHouse version `20.12.3.3` or above.
