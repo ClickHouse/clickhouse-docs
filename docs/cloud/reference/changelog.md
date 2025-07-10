@@ -42,7 +42,7 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
   
   Read more about SharedCatalog in our [blog](https://clickhouse.com/blog/clickhouse-cloud-stateless-compute)
 
-- We now support HIPAA in GCP `europe-west4`
+- We now support the ability to launch HIPAA compliant services in GCP `europe-west4`
 
 ## June 27, 2025 {#june-27-2025}
 
