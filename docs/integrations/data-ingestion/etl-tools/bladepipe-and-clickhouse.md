@@ -105,7 +105,7 @@ To use MySQL as a source, make sure that the user has the <a href="https://doc.b
     <Image img={bp_ck_8} size="lg" border alt="DataJob is running" />
 
 
-## 5. Verify the data {#5-verify-the-data}
+## Verify the data {#5-verify-the-data}
 1. Stop data write in MySQL instance and wait for ClickHouse to merge data.
 :::note
 Due to the unpredictable timing of ClickHouse's automatic merging, you can manually trigger a merging by running the `OPTIMIZE TABLE xxx FINAL;` command. Note that there is a chance that this manual merging may not always succeed.
