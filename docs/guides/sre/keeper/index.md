@@ -457,8 +457,8 @@ The following features are available:
 - `remove_recursive` - support for `RemoveRecursive` request, which removes the node along with its subtree. Default: `1`
 
 :::note
-Some of the feature flags were enabled by default since 25.7.   
-The recommended way for upgrading Keeper to 25.7+ is to upgrade first to 24.9+ version.
+Some of the feature flags are enabled by default from version 25.7.   
+The recommended way of upgrading Keeper to 25.7+ is to first upgrade to version 24.9+.
 :::
 
 ### Migration from ZooKeeper {#migration-from-zookeeper}
