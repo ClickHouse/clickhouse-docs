@@ -159,7 +159,7 @@ const sidebars = {
             "use-cases/time-series/query-performance"
           ]
         },
-        { 
+        {
           type: "category",
           label: "Data lake",
           collapsed: true,
@@ -167,7 +167,7 @@ const sidebars = {
           link: { type: "doc", id: "use-cases/data_lake/index" },
           items: [
             "use-cases/data_lake/glue_catalog",
-            "use-cases/data_lake/unity_catalog" 
+            "use-cases/data_lake/unity_catalog"
           ]
         },
         {
@@ -905,6 +905,7 @@ const sidebars = {
         "integrations/data-visualization/omni-and-clickhouse",
         "integrations/data-visualization/powerbi-and-clickhouse",
         "integrations/data-visualization/quicksight-and-clickhouse",
+        "integrations/data-visualization/rill-and-clickhouse",
         "integrations/data-visualization/rocketbi-and-clickhouse",
         "integrations/data-visualization/superset-and-clickhouse",
         {
@@ -1057,7 +1058,7 @@ const sidebars = {
             "integrations/sql-clients/jupysql",
             "integrations/sql-clients/qstudio",
             "integrations/sql-clients/tablum",
-			      "integrations/sql-clients/marimo",
+            "integrations/sql-clients/marimo",
           ],
         },
         {
