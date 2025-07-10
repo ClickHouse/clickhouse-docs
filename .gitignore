@@ -71,3 +71,11 @@ docs/use-cases/AI_ML/index.md
 **.translated
 **.translate
 /ClickHouse/
+
+# Ignore table of contents files
+docs/cloud/reference/release-notes-index.md
+docs/whats-new/changelog/index.md
+docs/cloud/manage/api/api-reference-index.md
+docs/getting-started/index.md
+docs/data-modeling/projections/index.md
+docs/integrations/data-ingestion/clickpipes/kafka/index.md
