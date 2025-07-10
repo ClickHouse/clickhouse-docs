@@ -1889,7 +1889,7 @@ const sidebars = {
       items: [
         {
           type: "link",
-          label: "Introduction",
+          label: "Reference",
           description: "Learn ClickHouse syntax",
           href: "/sql-reference"
         },
