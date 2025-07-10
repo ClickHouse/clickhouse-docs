@@ -404,7 +404,3 @@ show_related_blogs: true
 
 This will show it on the page, assuming there is a matching blog. If there is no
 match then it remains hidden.
-
-## Edge Cases
-
-For more details on handling edge cases and gotchas, see the [Known Issues and Edge Cases](./known-issues.md) document.
