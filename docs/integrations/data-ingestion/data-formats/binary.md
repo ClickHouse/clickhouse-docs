@@ -117,7 +117,7 @@ Suppose we want to read an entire binary file and save it into a field in a tabl
 This is the case when the [RawBLOB format](/interfaces/formats.md/#rawblob) can be used. This format can be directly used with a single-column table only:
 
 ```sql
-CREATE TABLE images(data String) Engine = Memory
+CREATE TABLE images(data String) ENGINE = Memory
 ```
 
 Let's save an image file to the `images` table:

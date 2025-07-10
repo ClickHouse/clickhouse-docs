@@ -52,7 +52,7 @@ The main ClickHouse Keeper configuration tag is `<keeper_server>` and has the fo
 | `create_snapshot_on_exit`            | Create a snapshot during shutdown                                                                                                                                                                                                                   | -                                                                                                            |
 | `hostname_checks_enabled`            | Enable sanity hostname checks for cluster configuration (e.g. if localhost is used with remote endpoints)                                                                                                                                           | `True`                                                                                                       |
 | `four_letter_word_white_list`        | White list of 4lw commands.                                                                                                                                                                                                                         | `conf, cons, crst, envi, ruok, srst, srvr, stat, wchs, dirs, mntr, isro, rcvr, apiv, csnp, lgif, rqld, ydld` |
-
+|`enable_ipv6`| Enable IPv6 | `True`|
 
 Other common parameters are inherited from the ClickHouse server config (`listen_host`, `logger`, and so on).
 
@@ -480,7 +480,7 @@ If you have ClickHouse installed, you can use the binary directly:
 clickhouse keeper-converter ...
 ```
 
-Otherwise, you can [download the binary](/getting-started/quick-start#download-the-binary) and run the tool as described above without installing ClickHouse.
+Otherwise, you can [download the binary](/getting-started/quick-start/oss#download-the-binary) and run the tool as described above without installing ClickHouse.
 :::
 
 
@@ -1049,7 +1049,7 @@ Query id: 8f542664-4548-4a02-bd2a-6f2c973d0dc4
 4.  Create a distributed table
 
 ```sql
-create table db_uuid.dist_uuid_table1 on cluster 'cluster_1S_2R'
+CREATE TABLE db_uuid.dist_uuid_table1 ON CLUSTER 'cluster_1S_2R'
    (
      id UInt64,
      column1 String

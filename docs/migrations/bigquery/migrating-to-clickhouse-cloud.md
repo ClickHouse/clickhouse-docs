@@ -248,7 +248,11 @@ Important: Ensure your partitioning key expression does not result in a high car
 
 ClickHouse's concept of projections allows users to specify multiple `ORDER BY` clauses for a table.
 
-In [ClickHouse data modeling](/data-modeling/schema-design), we explore how materialized views can be used in ClickHouse to pre-compute aggregations, transform rows, and optimize queries for different access patterns. For the latter, we [provided an example](/materialized-view/incremental-materialized-view#lookup-table) where the materialized view sends rows to a target table with a different ordering key than the original table receiving inserts.
+In [ClickHouse data modeling](/data-modeling/schema-design), we explore how materialized views can be used
+in ClickHouse to pre-compute aggregations, transform rows, and optimize queries 
+for different access patterns. For the latter, we [provided an example](/materialized-view/incremental-materialized-view#lookup-table) where
+the materialized view sends rows to a target table with a different ordering key
+to the original table receiving inserts.
 
 For example, consider the following query:
 
@@ -260,12 +264,15 @@ WHERE UserId = 8592047
    ┌──────────avg(Score)─┐
    │ 0.18181818181818182 │
    └─────────────────────┘
-
+--highlight-next-line
 1 row in set. Elapsed: 0.040 sec. Processed 90.38 million rows, 361.59 MB (2.25 billion rows/s., 9.01 GB/s.)
 Peak memory usage: 201.93 MiB.
 ```
 
-This query requires all 90m rows to be scanned (admittedly quickly) as the `UserId` is not the ordering key. Previously, we solved this using a materialized view acting as a lookup for the `PostId`. The same problem can be solved with a projection. The command below adds a projection for the `ORDER BY user_id`.
+This query requires all 90m rows to be scanned (albeit quickly) as the `UserId`
+is not the ordering key. Previously, we solved this using a materialized view 
+acting as a lookup for the `PostId`. The same problem can be solved with a projection.
+The command below adds a projection with `ORDER BY user_id`.
 
 ```sql
 ALTER TABLE comments ADD PROJECTION comments_user_id (
@@ -275,35 +282,42 @@ SELECT * ORDER BY UserId
 ALTER TABLE comments MATERIALIZE PROJECTION comments_user_id
 ```
 
-Note that we have to first create the projection and then materialize it. This latter command causes the data to be stored twice on disk in two different orders. The projection can also be defined when the data is created, as shown below, and will be automatically maintained as data is inserted.
+Note that we have to first create the projection and then materialize it. 
+This latter command causes the data to be stored twice on disk in two different 
+orders. The projection can also be defined when the data is created, as shown below,
+and will be automatically maintained as data is inserted.
 
 ```sql
 CREATE TABLE comments
 (
-        `Id` UInt32,
-        `PostId` UInt32,
-        `Score` UInt16,
-        `Text` String,
-        `CreationDate` DateTime64(3, 'UTC'),
-        `UserId` Int32,
-        `UserDisplayName` LowCardinality(String),
-        PROJECTION comments_user_id
-        (
-        SELECT *
-        ORDER BY UserId
-        )
+    `Id` UInt32,
+    `PostId` UInt32,
+    `Score` UInt16,
+    `Text` String,
+    `CreationDate` DateTime64(3, 'UTC'),
+    `UserId` Int32,
+    `UserDisplayName` LowCardinality(String),
+    --highlight-begin
+    PROJECTION comments_user_id
+    (
+    SELECT *
+    ORDER BY UserId
+    )
+    --highlight-end
 )
 ENGINE = MergeTree
 ORDER BY PostId
 ```
 
-If the projection is created via an `ALTER` command, the creation is asynchronous when the `MATERIALIZE PROJECTION` command is issued. Users can confirm the progress of this operation with the following query, waiting for `is_done=1`.
+If the projection is created via an `ALTER` command, the creation is asynchronous 
+when the `MATERIALIZE PROJECTION` command is issued. Users can confirm the progress
+of this operation with the following query, waiting for `is_done=1`.
 
 ```sql
 SELECT
-        parts_to_do,
-        is_done,
-        latest_fail_reason
+    parts_to_do,
+    is_done,
+    latest_fail_reason
 FROM system.mutations
 WHERE (`table` = 'comments') AND (command LIKE '%MATERIALIZE%')
 
@@ -314,7 +328,8 @@ WHERE (`table` = 'comments') AND (command LIKE '%MATERIALIZE%')
 1 row in set. Elapsed: 0.003 sec.
 ```
 
-If we repeat the above query, we can see performance has improved significantly at the expense of additional storage.
+If we repeat the above query, we can see performance has improved significantly 
+at the expense of additional storage.
 
 ```sql
 SELECT avg(Score)
@@ -324,7 +339,7 @@ WHERE UserId = 8592047
    ┌──────────avg(Score)─┐
 1. │ 0.18181818181818182 │
    └─────────────────────┘
-
+--highlight-next-line
 1 row in set. Elapsed: 0.008 sec. Processed 16.36 thousand rows, 98.17 KB (2.15 million rows/s., 12.92 MB/s.)
 Peak memory usage: 4.06 MiB.
 ```
@@ -356,20 +371,21 @@ WHERE UserId = 8592047
 
 ### When to use projections {#when-to-use-projections}
 
-Projections are an appealing feature for new users as they are automatically maintained as data is inserted. Furthermore, queries can just be sent to a single table where the projections are exploited where possible to speed up the response time.
+Projections are an appealing feature for new users as they are automatically 
+maintained as data is inserted. Furthermore, queries can just be sent to a single
+table where the projections are exploited where possible to speed up the response
+time.
 
 <Image img={bigquery_7} size="md" alt="Projections"/>
 
-This is in contrast to materialized views, where the user has to select the appropriate optimized target table or rewrite their query, depending on the filters. This places greater emphasis on user applications and increases client-side complexity.
+This is in contrast to materialized views, where the user has to select the 
+appropriate optimized target table or rewrite their query, depending on the filters.
+This places greater emphasis on user applications and increases client-side 
+complexity.
 
-Despite these advantages, projections come with some inherent limitations which users should be aware of and thus should be deployed sparingly:
-
-- Projections don't allow using different TTL for the source table and the (hidden) - target table. Materialized views allow different TTLs.
-- Projections [don't currently support `optimize_read_in_order`](https://clickhouse.com/blog/clickhouse-faster-queries-with-projections-and-primary-indexes) for the (hidden) target table.
-- Lightweight updates and deletes are not supported for tables with projections.
-- Materialized views can be chained: the target table of one materialized view can be the source table of another materialized view, and so on. This is not possible with projections.
-- Projections don't support joins; materialized views do.
-- Projections don't support filters (`WHERE` clause); materialized views do.
+Despite these advantages, projections come with some inherent limitations which 
+users should be aware of and thus should be deployed sparingly. For further 
+details see ["materialized views versus projections"](/managing-data/materialized-views-versus-projections)
 
 We recommend using projections when:
 

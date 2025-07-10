@@ -152,7 +152,7 @@ WITH latest_deaths_data AS
             date,
             new_deceased,
             new_confirmed,
-            ROW_NUMBER() OVER (PARTITION BY location_key ORDER BY date DESC) as rn
+            ROW_NUMBER() OVER (PARTITION BY location_key ORDER BY date DESC) AS rn
      FROM covid19)
 SELECT location_key,
        date,

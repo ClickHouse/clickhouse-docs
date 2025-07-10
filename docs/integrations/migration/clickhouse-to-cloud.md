@@ -61,9 +61,9 @@ GRANT SELECT ON db.table TO exporter;
 
 - Copy the table definition
 ```sql
-select create_table_query
-from system.tables
-where database = 'db' and table = 'table'
+SELECT create_table_query
+FROM system.tables
+WHERE database = 'db' AND table = 'table'
 ```
 
 ### On the destination ClickHouse Cloud system: {#on-the-destination-clickhouse-cloud-system}

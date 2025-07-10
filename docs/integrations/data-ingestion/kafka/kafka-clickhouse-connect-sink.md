@@ -136,6 +136,7 @@ Sink, use [Kafka Connect Transformations](https://docs.confluent.io/platform/cur
 | Kafka Connect Type                      | ClickHouse Type       | Supported | Primitive |
 | --------------------------------------- |-----------------------| --------- | --------- |
 | STRING                                  | String                | ✅        | Yes       |
+| STRING                                  | JSON. See below (1)              | ✅        | Yes       |
 | INT8                                    | Int8                  | ✅        | Yes       |
 | INT16                                   | Int16                 | ✅        | Yes       |
 | INT32                                   | Int32                 | ✅        | Yes       |
@@ -148,10 +149,15 @@ Sink, use [Kafka Connect Transformations](https://docs.confluent.io/platform/cur
 | STRUCT                                  | Variant(T1, T2, ...)    | ✅        | No        |
 | STRUCT                                  | Tuple(a T1, b T2, ...)  | ✅        | No        |
 | STRUCT                                  | Nested(a T1, b T2, ...) | ✅        | No        |
+| STRUCT                                  | JSON. See below (1), (2)          | ✅        | No        |
 | BYTES                                   | String                | ✅        | No        |
 | org.apache.kafka.connect.data.Time      | Int64 / DateTime64    | ✅        | No        |
 | org.apache.kafka.connect.data.Timestamp | Int32 / Date32        | ✅        | No        |
 | org.apache.kafka.connect.data.Decimal   | Decimal               | ✅        | No        |
+
+- (1) - JSON is supported only when ClickHouse settings has `input_format_binary_read_json_as_string=1`. This works only for RowBinary format family and the setting affects all columns in the insert request so they all should be a string. Connector will convert STRUCT to a JSON string in this case. 
+
+- (2) - When struct has unions like `oneof` then converter should be configured to NOT add prefix/suffix to a field names. There is `generate.index.for.unions=false` [setting for `ProtobufConverter`](https://docs.confluent.io/platform/current/schema-registry/connect.html#protobuf).  
 
 **Without a schema declared:**
 
