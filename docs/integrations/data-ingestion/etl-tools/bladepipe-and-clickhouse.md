@@ -17,7 +17,7 @@ import bp_ck_6 from '@site/static/images/integrations/data-ingestion/etl-tools/b
 import bp_ck_7 from '@site/static/images/integrations/data-ingestion/etl-tools/bp_ck_7.png';
 import bp_ck_8 from '@site/static/images/integrations/data-ingestion/etl-tools/bp_ck_8.png';
 import bp_ck_9 from '@site/static/images/integrations/data-ingestion/etl-tools/bp_ck_9.png';
-import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # Connect BladePipe to ClickHouse
 
