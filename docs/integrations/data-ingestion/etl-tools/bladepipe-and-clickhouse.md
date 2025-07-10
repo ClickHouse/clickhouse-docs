@@ -21,7 +21,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # Connect BladePipe to ClickHouse
 
-<ClickHouseSupportedBadge/>
+<CommunityMaintainedBadge/>
 
 
 <a href="https://www.bladepipe.com/" target="_blank">BladePipe</a> is a real-time end-to-end data integration tool with sub-second latency, boosting seamless data flow across platforms. 
