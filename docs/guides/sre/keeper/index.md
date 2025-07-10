@@ -452,9 +452,14 @@ The following features are available:
 
 - `multi_read` - support for read multi request. Default: `1`
 - `filtered_list` - support for list request which filters results by the type of node (ephemeral or persistent). Default: `1`
-- `check_not_exists` - support for `CheckNotExists` request, which asserts that node doesn't exists. Default: `0`
-- `create_if_not_exists` - support for `CreateIfNotExists` request, which will try to create a node if it doesn't exist. If it exists, no changes are applied and `ZOK` is returned. Default: `0`
-- `remove_recursive` - support for `RemoveRecursive` request, which removes the node along with its subtree. Default: `0`
+- `check_not_exists` - support for `CheckNotExists` request, which asserts that node doesn't exists. Default: `1`
+- `create_if_not_exists` - support for `CreateIfNotExists` request, which will try to create a node if it doesn't exist. If it exists, no changes are applied and `ZOK` is returned. Default: `1`
+- `remove_recursive` - support for `RemoveRecursive` request, which removes the node along with its subtree. Default: `1`
+
+:::note
+Some of the feature flags were enabled by default since 25.7.   
+The recommended way for upgrading Keeper to 25.7+ is to upgrade first to 24.9+ version.
+:::
 
 ### Migration from ZooKeeper {#migration-from-zookeeper}
 
