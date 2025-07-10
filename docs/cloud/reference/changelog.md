@@ -31,6 +31,17 @@ import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.pn
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/cloud/reference/cloud-compatibility.md) page.
 
+## July 11, 2025 {#june-11-2025}
+
+- New services now store database and table metadata in a central **SharedCatalog**,
+  a new model for coordination and object lifecycles which enables:
+  - **Cloud-scale DDL**, even under high concurrency
+  - **Resilient deletion and new DDL operations**
+  - **Fast spin-up and wake-ups** as stateless nodes now launch with no disk dependencies
+  - **Stateless compute across both native and open formats**, including Iceberg and Delta Lake
+
+Read more about SharedCatalog in our [blog](https://clickhouse.com/blog/clickhouse-cloud-stateless-compute)
+
 ## June 27, 2025 {#june-27-2025}
 
 - We now officially support a Terraform provider for managing database privileges
