@@ -42,7 +42,8 @@ Currently BladePipe supports for data integration to ClickHouse from the followi
 More sources are to be supported.
 
 
-## 1. Download and run BladePipe {#1-run-bladepipe}
+<VerticalStepper headerLevel="h2">
+## Download and run BladePipe {#1-run-bladepipe}
 1. Log in to <a href="https://www.bladepipe.com/" target="_blank">BladePipe Cloud</a>.
 
 2. Follow the instructions in <a href="https://doc.bladepipe.com/productOP/byoc/installation/install_worker_docker" target="_blank">Install Worker (Docker)</a> or <a href="https://doc.bladepipe.com/productOP/byoc/installation/install_worker_binary" target="_blank">Install Worker (Binary)</a> to download and install a BladePipe Worker.
