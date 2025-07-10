@@ -113,7 +113,7 @@ AS
 SELECT
     toYear(toStartOfYear(month)) AS year,
     domain_name,
-    sumMerge(sumCountViews) as sumCountViews
+    sumMerge(sumCountViews) AS sumCountViews
 FROM analytics.monthly_aggregated_data
 GROUP BY
     domain_name,
@@ -179,7 +179,7 @@ Instead, let's try using the `Merge` suffix to get the `sumCountViews` value:
 
 ```sql
 SELECT
-   sumMerge(sumCountViews) as sumCountViews
+   sumMerge(sumCountViews) AS sumCountViews
 FROM analytics.monthly_aggregated_data;
 ```
 
@@ -197,7 +197,7 @@ In the `AggregatingMergeTree` we have defined the `AggregateFunction` as `sum`, 
 SELECT
     month,
     domain_name,
-    sumMerge(sumCountViews) as sumCountViews
+    sumMerge(sumCountViews) AS sumCountViews
 FROM analytics.monthly_aggregated_data
 GROUP BY
     domain_name,
@@ -212,7 +212,7 @@ Now that we have the data stored in the target table `monthly_aggregated_data` w
 SELECT
    month,
    domain_name,
-   sumMerge(sumCountViews) as sumCountViews
+   sumMerge(sumCountViews) AS sumCountViews
 FROM analytics.monthly_aggregated_data
 GROUP BY
    domain_name,

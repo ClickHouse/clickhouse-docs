@@ -33,10 +33,10 @@ SELECT
 FROM
     system.asynchronous_metrics
 WHERE
-    metric like '%Cach%'
-    or metric like '%Mem%'
-order by
-    value desc;
+    metric LIKE '%Cach%'
+    OR metric LIKE '%Mem%'
+ORDER BY
+    value DESC;
 ```
 
 ## List tables by current memory usage {#list-tables-by-current-memory-usage}
@@ -68,13 +68,15 @@ SELECT formatReadableSize(sum(memory_usage)) FROM system.processes;
 SELECT formatReadableSize(sum(bytes_allocated)) FROM system.dictionaries;
 ```
 
-## Output total memory used by primary keys {#output-total-memory-used-by-primary-keys}
+## Output total memory used by primary keys and index granularity {#output-total-memory-used-by-primary-keys}
 
 ```sql
 SELECT
-    sumIf(data_uncompressed_bytes, part_type = 'InMemory') as memory_parts,
+    sumIf(data_uncompressed_bytes, part_type = 'InMemory') AS memory_parts,
     formatReadableSize(sum(primary_key_bytes_in_memory)) AS primary_key_bytes_in_memory,
-    formatReadableSize(sum(primary_key_bytes_in_memory_allocated)) AS primary_key_bytes_in_memory_allocated
+    formatReadableSize(sum(primary_key_bytes_in_memory_allocated)) AS primary_key_bytes_in_memory_allocated,
+    formatReadableSize(sum(index_granularity_bytes_in_memory)) AS index_granularity_bytes_in_memory,
+    formatReadableSize(sum(index_granularity_bytes_in_memory_allocated)) AS index_granularity_bytes_in_memory_allocated
 FROM system.parts;
 ```
 

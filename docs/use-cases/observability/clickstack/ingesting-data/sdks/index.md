@@ -28,6 +28,7 @@ While ClickStack offers its own language SDKs with enhanced telemetry and featur
 
 | Language | Description | Link |
 |----------|-------------|------|
+| AWS Lambda | Instrument your AWS Lambda functions | [Documentation](/use-cases/observability/clickstack/sdks/aws_lambda) |
 | Browser | JavaScript SDK for Browser-based applications | [Documentation](/use-cases/observability/clickstack/sdks/browser) |
 | Elixir | Elixir applications | [Documentation](/use-cases/observability/clickstack/sdks/elixir) |
 | Go | Go applications and microservices | [Documentation](/use-cases/observability/clickstack/sdks/golang) |

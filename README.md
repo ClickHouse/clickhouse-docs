@@ -18,7 +18,7 @@
 
 ClickHouse is blazing fast, but understanding ClickHouse and using it effectively is a journey. The documentation is your source for gaining the knowledge you need to be successful with your ClickHouse projects and applications. [Head over to clickhouse.com/docs to learn more →](https://clickhouse.com/)
 
-## Table of contents {#table-of-contents}
+## Table of contents
 
 - [About this repo](#about-this-repo)
 - [Run locally](#run-locally)
@@ -26,11 +26,11 @@ ClickHouse is blazing fast, but understanding ClickHouse and using it effectivel
 - [Issues](#issues)
 - [License](#license)
 
-## About this repo {#about-this-repo}
+## About this repo
 
 This repository manages the documentation for [ClickHouse](https://clickhouse.com/docs). The content is built with [Docusaurus](https://docusaurus.io/) and hosted on [Vercel](https://vercel.com). Documentation content is written in Markdown and is held in the `/docs` directory.
 
-## Run locally {#run-locally}
+## Run locally
 
 You can run a copy of this website locally within a few steps. Some folks find this useful when contributing so they can see precisely what their changes will look like on the production site.
 
@@ -116,23 +116,19 @@ To check spelling and markdown is correct locally run:
 yarn check-style
 ```
 
-### Notes {#notes}
+### Notes
 
 Here are some things to keep in mind when building a local copy of the ClickHouse docs site.
 
-#### Build-time {#build-time}
-
-Due to the complex structure of this repo, the docs site can take some time to build locally. As a benchmark, it takes ~3 minutes to build on an M1 Macbook with 8GB RAM.
-
-#### Redirects {#redirects}
+#### Redirects
 
 Due to how the local server is built, redirects will not work. For example, visiting `clickhouse.com/docs` on the production site will lead you to `clickhouse.com/docs/intro`. However, on a local copy of the site, you will see a 404 page if you try to visit `localhost:8000/docs`.
 
-## Contributing {#contributing}
+## Contributing
 
 Want to help out? Contributions are always welcome! If you want to help out but aren't sure where to start, check out the [issues board](https://github.com/clickhouse/clickhouse-docs/issues).
 
-### Pull requests {#pull-requests}
+### Pull requests
 
 Please assign any pull request (PR) against an issue; this helps the docs team track who is working on what and what each PR is meant to address. If there isn't an issue for the specific _thing_ you want to work on, quickly create one and comment so that it can be assigned to you. One of the repository maintainers will add you as an assignee.
 
@@ -171,28 +167,28 @@ Have you noticed a typo or found some wonky formatting? For small contributions 
 
 1. Each page in Clickhouse.com/docs has an **Edit this page** link at the top:
 
-    ![The ClickHouse Docs website with the edit button highlighted.](./static/images/contribute/readme-edit-this-page.png)
+    ![The ClickHouse Docs website with the edit button highlighted.](./static/images/contributing/readme-edit-this-page.png)
 
     Click this button to edit this page in GitHub.
 
 1. Once you're in GitHub, click the pencil icon to edit this page:
 
-    ![README Pencil Icon](./static/images/contribute/readme-pencil-icon.png)
+    ![README Pencil Icon](./static/images/contributing/readme-pencil-icon.png)
 
 1. GitHub will _fork_ the repository for you. This creates a copy of the `clickhouse-docs` repository on your personal GitHub account.
 1. Make your changes in the textbox. Once you're done, click **Commit changes**:
 
-    ![README Commit Changes](./static/images/contribute/readme-commit-changes.png)
+    ![README Commit Changes](./static/images/contributing/readme-commit-changes.png)
 
 1. In the **Propose changes** popup, enter a descriptive title to explain the changes you just made. Keep this title to 10 words or less. If your changes are fairly complex and need further explanation, enter your comments into the **Extended description** field.
 1. Make sure **Create a new branch** is selected, and click **Propose changes**:
 
-    ![README Propose Changes](./static/images/contribute/readme-propose-changes.png)
+    ![README Propose Changes](./static/images/contributing/readme-propose-changes.png)
 
 1. A new page should open with a new pull request. Double-check that the title and description are accurate.
 1. If you've spoken to someone on the docs team about your changes, tag them into the **Reviewers** section:
 
-    ![README Create Pull Request](./static/images/contribute/readme-create-pull-request.png)
+    ![README Create Pull Request](./static/images/contributing/readme-create-pull-request.png)
 
     If you haven't mentioned your changes to anyone yet, leave the **Reviewers** section blank.
 

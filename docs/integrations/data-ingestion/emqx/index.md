@@ -176,11 +176,11 @@ Here's the rule used in this tutorial:
 
 ```sql
 SELECT
-   clientid as client_id,
-   (timestamp div 1000) as timestamp,
-   topic as topic,
-   payload.temp as temp,
-   payload.hum as hum
+   clientid AS client_id,
+   (timestamp div 1000) AS timestamp,
+   topic AS topic,
+   payload.temp AS temp,
+   payload.hum AS hum
 FROM
 "temp_hum/emqx"
 ```
