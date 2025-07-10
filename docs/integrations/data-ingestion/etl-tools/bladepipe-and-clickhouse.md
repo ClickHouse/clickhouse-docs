@@ -67,7 +67,7 @@ More sources are to be supported.
 
 3. Click "Add DataSource" at the bottom, and a ClickHouse instance is added.
 
-## 3. Add MySQL as a source {#3-add-mysql-as-a-source}
+## Add MySQL as a source {#3-add-mysql-as-a-source}
 In this tutorial, we use a MySQL instance as the source, and explain the process of loading MySQL data to ClickHouse.
 
 :::note
