@@ -450,11 +450,13 @@ Example of feature flag config that disables `multi_read` and enables `check_not
 
 The following features are available:
 
-- `multi_read` - support for read multi request. Default: `1`
-- `filtered_list` - support for list request which filters results by the type of node (ephemeral or persistent). Default: `1`
-- `check_not_exists` - support for `CheckNotExists` request, which asserts that node doesn't exists. Default: `1`
-- `create_if_not_exists` - support for `CreateIfNotExists` request, which will try to create a node if it doesn't exist. If it exists, no changes are applied and `ZOK` is returned. Default: `1`
-- `remove_recursive` - support for `RemoveRecursive` request, which removes the node along with its subtree. Default: `1`
+| Feature                | Description                                                                                                                                              | Default |
+|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| `multi_read`           | Support for read multi request                                                                                                                           | `1`     |
+| `filtered_list`        | Support for list request which filters results by the type of node (ephemeral or persistent)                                                             | `1`     |
+| `check_not_exists`     | Support for `CheckNotExists` request, which asserts that node doesn't exist                                                                              | `1`     |
+| `create_if_not_exists` | Support for `CreateIfNotExists` request, which will try to create a node if it doesn't exist. If it exists, no changes are applied and `ZOK` is returned | `1`     |
+| `remove_recursive`     | Support for `RemoveRecursive` request, which removes the node along with its subtree                                                                     | `1`     |
 
 :::note
 Some of the feature flags are enabled by default from version 25.7.   
