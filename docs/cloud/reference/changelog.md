@@ -31,6 +31,17 @@ import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.pn
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/cloud/reference/cloud-compatibility.md) page.
 
+## July 11, 2025 {#june-11-2025}
+
+- New services now store database and table metadata in a central **SharedCatalog**,
+  a new model for coordination and object lifecycles which enables:
+  - **Cloud-scale DDL**, even under high concurrency
+  - **Resilient deletion and new DDL operations**
+  - **Fast spin-up and wake-ups** as stateless nodes now launch with no disk dependencies
+  - **Stateless compute across both native and open formats**, including Iceberg and Delta Lake
+
+Read more about SharedCatalog in our [blog](https://clickhouse.com/blog/clickhouse-cloud-stateless-compute)
+
 ## June 27, 2025 {#june-27-2025}
 
 - We now officially support a Terraform provider for managing database privileges
@@ -344,7 +355,7 @@ You can now grant uni-directional access to a specific data source like AWS MSK.
 
 ### ClickPipes now supports IAM for AWS MSK {#clickpipes-now-supports-iam-for-aws-msk}
 
-You can now use IAM authentication to connect to an MSK broker with AWS MSK ClickPipes. To get started, review our [documentation](/integrations/clickpipes/kafka#iam).
+You can now use IAM authentication to connect to an MSK broker with AWS MSK ClickPipes. To get started, review our [documentation](/integrations/clickpipes/kafka/best-practices/#iam).
 
 ### Maximum replica size for new services on AWS {#maximum-replica-size-for-new-services-on-aws}
 
@@ -424,7 +435,7 @@ High throughput can demand extra resources to meet your data volume and latency 
 
 *Raw Message Ingestion for Kafka and Kinesis*
 
-It is now possible to  ingest an entire Kafka or Kinesis message without parsing it. ClickPipes now offers support for a `_raw_message` [virtual column](/integrations/clickpipes/kafka#kafka-virtual-columns), allowing users to map the full message into a single String column. This gives you the flexibility to work with raw data as needed.
+It is now possible to  ingest an entire Kafka or Kinesis message without parsing it. ClickPipes now offers support for a `_raw_message` [virtual column](/integrations/clickpipes/kafka/reference/#kafka-virtual-columns), allowing users to map the full message into a single String column. This gives you the flexibility to work with raw data as needed.
 
 ## August 29, 2024 {#august-29-2024}
 

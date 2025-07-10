@@ -48,7 +48,6 @@ docs/cloud/manage/api/services-api-reference.md
 docs/cloud/manage/api/privateEndpointConfig-api-reference.md
 docs/cloud/manage/api/prometheus-api-reference.md
 docs/cloud/manage/api/usageCost-api-reference.md
-docs/whats-new/changelog/index.md
 docs/about-us/beta-and-experimental-features.md
 static/knowledgebase_toc.json
 .floating-pages-validation-failed
@@ -62,6 +61,9 @@ docs/getting-started/index.md
 docs/data-modeling/projections/index.md
 docs/cloud/manage/jan2025_faq/index.md
 docs/chdb/guides/index.md
+docs/use-cases/AI_ML/index.md
+docs/whats-new/changelog/index.md
+docs/integrations/data-ingestion/clickpipes/kafka/index.md
 
 .vscode
 .aspell.en.prepl
