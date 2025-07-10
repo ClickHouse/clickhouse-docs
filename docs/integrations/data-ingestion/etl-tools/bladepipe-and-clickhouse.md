@@ -83,7 +83,7 @@ To use MySQL as a source, make sure that the user has the <a href="https://doc.b
 3. Click "Add DataSource" at the bottom, and a MySQL instance is added.
 
 
-## 4. Create a pipeline {#4-create-a-pipeline}
+## Create a pipeline {#4-create-a-pipeline}
 
 1. In BladePipe, click "DataJob" > "Create DataJob".
 
