@@ -115,3 +115,6 @@ Alternatively, you can run the `CREATE VIEW xxx_v AS SELECT * FROM xxx FINAL;` c
 
 2. Create a <a href="https://doc.bladepipe.com/operation/job_manage/create_job/create_period_verification_correction_job" target="_blank">Verification DataJob</a>. Once the Verification DataJob is completed, review the results to confirm that the data in ClickHouse is the same as the data in MySQL.
    <Image img={bp_ck_9} size="lg" border alt="Verify data" />
+   
+</VerticalStepper>
+
