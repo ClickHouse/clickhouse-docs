@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'Kafka Connector Sink on Confluent Platform'
-sidebar_position: 2
+sidebar_position: 3
 slug: /integrations/kafka/cloud/confluent/custom-connector
 description: 'Using ClickHouse Connector Sink with Kafka Connect and ClickHouse'
 title: 'Integrating Confluent Cloud with ClickHouse'
@@ -10,7 +10,7 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 import Image from '@theme/IdealImage';
 import AddCustomConnectorPlugin from '@site/static/images/integrations/data-ingestion/kafka/confluent/AddCustomConnectorPlugin.png';
 
-# Integrating Confluent Cloud with ClickHouse
+# Integrating Confluent platform with ClickHouse
 
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/SQAiPVbd3gg"
@@ -27,16 +27,16 @@ import AddCustomConnectorPlugin from '@site/static/images/integrations/data-inge
 ## Prerequisites {#prerequisites}
 We assume you are familiar with:
 * [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
-* Confluent Cloud and [Custom Connectors](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/overview.html).
+* Confluent Platform and [Custom Connectors](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/overview.html).
 
-## The official Kafka connector from ClickHouse with Confluent Cloud {#the-official-kafka-connector-from-clickhouse-with-confluent-cloud}
+## The official Kafka connector from ClickHouse with Confluent Platform {#the-official-kafka-connector-from-clickhouse-with-confluent-platform}
 
-### Installing on Confluent Cloud {#installing-on-confluent-cloud}
-This is meant to be a quick guide to get you started with the ClickHouse Sink Connector on Confluent Cloud.
+### Installing on Confluent platform {#installing-on-confluent-platform}
+This is meant to be a quick guide to get you started with the ClickHouse Sink Connector on Confluent Platform.
 For more details, please refer to the [official Confluent documentation](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-qs.html#uploading-and-launching-the-connector).
 
 #### Create a Topic {#create-a-topic}
-Creating a topic on Confluent Cloud is fairly simple, and there are detailed instructions [here](https://docs.confluent.io/cloud/current/client-apps/topics/manage.html).
+Creating a topic on Confluent Platform is fairly simple, and there are detailed instructions [here](https://docs.confluent.io/cloud/current/client-apps/topics/manage.html).
 
 #### Important Notes {#important-notes}
 
