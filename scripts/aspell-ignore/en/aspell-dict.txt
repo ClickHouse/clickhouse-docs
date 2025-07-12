@@ -53,6 +53,8 @@ Authy
 AutoFDO
 AutoML
 Autocompletion
+AuroraMySQL
+AuroraPostgreSQL
 AvroConfluent
 AzureQueue
 Azurite
@@ -98,6 +100,8 @@ BetaBadge
 Beyonce's
 Bigtable
 Blazingly
+BladePipe
+BladePipe's
 BlockActiveTime
 BlockDiscardBytes
 BlockDiscardMerges
@@ -274,6 +278,8 @@ Databricks
 Datadog
 Datasource
 Datasources
+DataSource
+DataJob
 DateTime
 DateTimeInputFormat
 DateTimeOutputFormat
@@ -797,6 +803,7 @@ NumberOfDatabases
 NumberOfDetachedByUserParts
 NumberOfDetachedParts
 NumberOfTables
+OceanBase
 ODBCDriver
 OFNS
 OLAP
@@ -890,6 +897,7 @@ PREWHERE
 PROCESSLIST
 PROXYv
 PRQL
+prql
 PSUN
 Packetbeat
 PagerDuty
@@ -928,6 +936,7 @@ Poess
 PointDistKm
 PointDistM
 PointDistRads
+PolarDB
 PostHistory
 PostHog
 PostLink
@@ -2079,6 +2088,7 @@ generateULID
 generateUUIDv
 geoDistance
 geoToH
+geotoh
 geoToS
 geobase
 geobases

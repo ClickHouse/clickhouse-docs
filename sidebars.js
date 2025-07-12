@@ -839,6 +839,7 @@ const sidebars = {
           items: [
             "integrations/data-ingestion/kafka/index",
             "integrations/data-ingestion/kafka/kafka-clickhouse-connect-sink",
+	    "integrations/data-ingestion/kafka/confluent/confluent-cloud",	  
             "integrations/data-ingestion/kafka/confluent/custom-connector",
             "integrations/data-ingestion/kafka/msk/index",
             "integrations/data-ingestion/kafka/kafka-vector",
@@ -1029,6 +1030,7 @@ const sidebars = {
             },
           ],
         },
+        "integrations/data-ingestion/etl-tools/bladepipe-and-clickhouse",
         "integrations/data-ingestion/etl-tools/dbt/index",
         "integrations/data-ingestion/etl-tools/dlt-and-clickhouse",
         "integrations/data-ingestion/etl-tools/fivetran/index",
