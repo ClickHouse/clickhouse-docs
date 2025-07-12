@@ -40,13 +40,13 @@ main() {
 
   if [[ -z "$locale" ]]; then
     echo "Building default Docusaurus (English)"
-    build_command="GENERATE_SOURCEMAP=false docusaurus build --dev --locale en"
+    build_command="GENERATE_SOURCEMAP=false docusaurus build --locale en"
   else
     echo "Setting locale to: $locale"
     export DOCUSUARUS_LOCALE="$locale"
 
     echo "Building Docusaurus en before $locale (currently required)"
-    build_command="GENERATE_SOURCEMAP=false docusaurus build --dev --locale en"
+    build_command="GENERATE_SOURCEMAP=false docusaurus build --locale en"
   fi
 
   # Append output directory if provided
@@ -64,7 +64,7 @@ main() {
 
   if [[ -n "$locale" ]]; then
     echo "Building Docusaurus with locale: $locale"
-    build_command="GENERATE_SOURCEMAP=false docusaurus build --dev --locale $locale"
+    build_command="GENERATE_SOURCEMAP=false docusaurus build --locale $locale"
 
     if [[ -n "$out_dir" ]]; then
       build_command+=" --out-dir $out_dir"
