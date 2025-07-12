@@ -102,7 +102,7 @@ INTO OUTFILE 'export.arrow'
 FORMAT Arrow
 ```
 
-Also, check [data types matching](/interfaces/formats/Arrow#data-type-mapping) to know if any should be converted manually.
+Also, check [data types matching](/interfaces/formats/Arrow#data-types-matching) to know if any should be converted manually.
 
 ### Arrow data streaming {#arrow-data-streaming}
 
