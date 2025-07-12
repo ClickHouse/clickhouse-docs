@@ -5,6 +5,17 @@ documentation. As documentation is a collective effort, these guidelines are
 intended to help all of us ensure we maintain quality and consistency across our
 documentation.
 
+### Table of Contents
+1. [YAML front matter](#yaml-front-matter)  
+2. [Explicit header tags](#explicit-header-tags)  
+3. [Images](#images)  
+4. [Codeblocks](#codeblocks)  
+5. [Broken links](#broken-links)  
+6. [Broken anchors](#broken-anchors)  
+7. [Floating pages](#floating-pages)  
+8. [Client versioning](#client-versioning)  
+9. [Related blog component](#related-blog-component)  
+10. [Edge Cases](#edge-cases)
 ## YAML front matter
 
 Begin every new Markdown document with YAML front-matter:
