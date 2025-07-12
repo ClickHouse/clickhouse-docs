@@ -40,7 +40,7 @@ main() {
 
   if [[ -z "$locale" ]]; then
     echo "Building default Docusaurus (English)"
-    build_command="GENERATE_SOURCEMAP=false docusaurus build --locale en"
+    build_command="GENERATE_SOURCEMAP=false docusaurus build --dev --locale en"
   else
     echo "Setting locale to: $locale"
     export DOCUSUARUS_LOCALE="$locale"
