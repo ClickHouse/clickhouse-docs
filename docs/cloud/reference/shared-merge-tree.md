@@ -13,8 +13,6 @@ import Image from '@theme/IdealImage';
 
 # SharedMergeTree Table Engine
 
-*\* Available exclusively in ClickHouse Cloud (and first party partner cloud services)*
-
 The SharedMergeTree table engine family is a cloud-native replacement of the ReplicatedMergeTree engines that is optimized to work on top of shared storage (e.g. Amazon S3, Google Cloud Storage, MinIO, Azure Blob Storage). There is a SharedMergeTree analog for every specific MergeTree engine type, i.e. ReplacingSharedMergeTree replaces ReplacingReplicatedMergeTree.
 
 The SharedMergeTree table engine family powers ClickHouse Cloud. For an end-user, nothing needs to be changed to start using the SharedMergeTree engine family instead of the ReplicatedMergeTree based engines. It provides the following additional benefits:
