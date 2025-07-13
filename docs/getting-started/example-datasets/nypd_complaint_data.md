@@ -365,7 +365,7 @@ of `ORDER BY` or `PRIMARY KEY` must be specified.  Here are some guidelines on d
 columns to includes in `ORDER BY`, and more information is in the *Next Steps* section at the end
 of this document.
 
-### Order by and primary key clauses {#order-by-and-primary-key-clauses}
+### `ORDER BY` and `PRIMARY KEY` clauses {#order-by-and-primary-key-clauses}
 
 - The `ORDER BY` tuple should include fields that are used in query filters
 - To maximize compression on disk the `ORDER BY` tuple should be ordered by ascending cardinality

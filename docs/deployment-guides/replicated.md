@@ -46,7 +46,7 @@ Install ClickHouse Keeper on the three servers `clickhouse-keeper-01`, `clickhou
 
 <ConfigFileNote />
 
-## Clickhouse-01 configuration {#clickhouse-01-configuration}
+## Configure `clickhouse-01` {#clickhouse-01-configuration}
 
 For clickhouse-01 there are five configuration files.  You may choose to combine these files into a single file, but for clarity in the documentation it may be simpler to look at them separately.  As you read through the configuration files you will see that most of the configuration is the same between clickhouse-01 and clickhouse-02; the differences will be highlighted.
 
@@ -143,7 +143,7 @@ This configuration file `use-keeper.xml` is configuring ClickHouse Server to use
 </clickhouse>
 ```
 
-## Clickhouse-02 configuration {#clickhouse-02-configuration}
+## Configure `clickhouse-02` {#clickhouse-02-configuration}
 
 As the configuration is very similar on clickhouse-01 and clickhouse-02 only the differences will be pointed out here.
 
@@ -232,7 +232,7 @@ This file is the same on both clickhouse-01 and clickhouse-02.
 </clickhouse>
 ```
 
-## Clickhouse-keeper-01 configuration {#clickhouse-keeper-01-configuration}
+## Configure `clickhouse-keeper-01` {#clickhouse-keeper-01-configuration}
 
 <KeeperConfigFileNote />
 
@@ -286,7 +286,7 @@ If for any reason a Keeper node is replaced or rebuilt, do not reuse an existing
 </clickhouse>
 ```
 
-## Clickhouse-keeper-02 configuration {#clickhouse-keeper-02-configuration}
+## Configure `clickhouse-keeper-02` {#clickhouse-keeper-02-configuration}
 
 There is only one line difference between `clickhouse-keeper-01` and `clickhouse-keeper-02`.  `server_id` is set to `2` on this node.
 
@@ -334,7 +334,7 @@ There is only one line difference between `clickhouse-keeper-01` and `clickhouse
 </clickhouse>
 ```
 
-## Clickhouse-keeper-03 configuration {#clickhouse-keeper-03-configuration}
+## Configure `clickhouse-keeper-03` {#clickhouse-keeper-03-configuration}
 
 There is only one line difference between `clickhouse-keeper-01` and `clickhouse-keeper-03`.  `server_id` is set to `3` on this node.
 

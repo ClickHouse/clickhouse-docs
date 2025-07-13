@@ -174,7 +174,7 @@ queries.  In circumstances where querying a table is too expensive unless a skip
 names will return an exception for any query that does not use the listed index.  This would prevent poorly written queries from
 consuming server resources.
 
-## Skip best practices {#skip-best-practices}
+## Skip index best practices {#skip-best-practices}
 
 Skip indexes are not intuitive, especially for users accustomed to secondary row-based indexes from the RDMS realm or inverted indexes from document stores. To get any benefit, applying a ClickHouse data skipping index must avoid enough granule reads to offset the cost of calculating the index. Critically, if a value occurs even once in an indexed block, it means the entire block must be read into memory and evaluated, and the index cost has been needlessly incurred.
 
