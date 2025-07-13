@@ -10,7 +10,7 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
 import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.png';
 import Image from '@theme/IdealImage';
 
-# Configuring ssl-tls
+# Configuring SSL-TLS
 
 <SelfManaged />
 
