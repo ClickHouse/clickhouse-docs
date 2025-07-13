@@ -88,7 +88,7 @@ Note that for on-the-fly updates, a mutation is still used to update the data; i
 
 Read more about [on-the-fly updates](/guides/developer/lightweight-update).
 
-## Collapsing merge tree {#collapsing-merge-tree}
+## `CollapsingMergeTree` {#collapsing-merge-tree}
 
 Stemming from the idea that updates are expensive but inserts can be leveraged to perform updates,
 the [`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree) table engine
