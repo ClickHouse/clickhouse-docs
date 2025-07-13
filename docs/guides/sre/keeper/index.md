@@ -463,7 +463,7 @@ Some of the feature flags are enabled by default from version 25.7.
 The recommended way of upgrading Keeper to 25.7+ is to first upgrade to version 24.9+.
 :::
 
-### Migration from zookeeper {#migration-from-zookeeper}
+### Migration from ZooKeeper {#migration-from-zookeeper}
 
 Seamless migration from ZooKeeper to ClickHouse Keeper is not possible. You have to stop your ZooKeeper cluster, convert data, and start ClickHouse Keeper. `clickhouse-keeper-converter` tool allows converting ZooKeeper logs and snapshots to ClickHouse Keeper snapshot. It works only with ZooKeeper > 3.4. Steps for migration:
 
