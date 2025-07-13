@@ -1057,7 +1057,6 @@ This release brings the public beta (now GA, see June 20th entry above) of Click
 - Supports both Development and Production services in all three initial regions
 - Provides strong security by default: End-to-end encryption in transit, data-at-rest encryption, IP Allow Lists
 
-{{ ... }}
 ### Integrations changes {#integrations-changes-18}
 - Golang client: Added proxy environment variables support
 - Grafana: Added the ability to specify ClickHouse custom settings and proxy environment variables in Grafana datasource setup

@@ -72,7 +72,7 @@ Having said that, your BigQuery dataset (either table or query) must have the ex
 target table.
 :::
 
-## Data types mapping {#data-types-mapping}
+## Data type mapping {#data-types-mapping}
 
 The BigQuery types are converted based on your ClickHouse table definition. Therefore, the above table lists the
 recommended mapping you should have in your target ClickHouse table (for a given BigQuery table/query):
@@ -87,7 +87,7 @@ recommended mapping you should have in your target ClickHouse table (for a given
 | [**Numeric - Integer Types**](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types) | [**Integer Types**](../../../sql-reference/data-types/int-uint) | In BigQuery all Int types (`INT`, `SMALLINT`, `INTEGER`, `BIGINT`, `TINYINT`, `BYTEINT`) are aliases to `INT64`. We recommend you setting in ClickHouse the right Integer size, as the template will convert the column based on the defined column type (`Int8`, `Int16`, `Int32`, `Int64`). The template will also convert unassigned Int types if used in ClickHouse table (`UInt8`, `UInt16`, `UInt32`, `UInt64`). |
 | [**Numeric - Float Types**](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types)   | [**Float Types**](../../../sql-reference/data-types/float)      | Supported ClickHouse types: `Float32` and `Float64`                                                                                                                                                                                                                                                                                                                                                                    |
 
-## Running the template {#running-the-template}
+## Running the Template {#running-the-template}
 
 The BigQuery to ClickHouse template is available for execution via the Google Cloud CLI.
 
@@ -169,20 +169,19 @@ job:
   startTime: '2025-01-26T14:34:04.608442Z'
 ```
 
-### Monitor the job {#monitor-the-job}
   </TabItem>
 </Tabs>
 
-### Monitor the Job {#monitor-the-job}
+### Monitor the job {#monitor-the-job}
 
-Navigate to the [Dataflow Jobs tab](https://console.cloud.google.com/dataflow/jobs) in your Google Cloud console to
+Navigate to the [Dataflow Jobs tab](https://console.cloud.google.com/dataflow/jobs) in your Google Cloud Console to
 monitor the status of the job. You'll find the job details, including progress and any errors:
 
 <Image img={dataflow_inqueue_job} size="lg" border alt="DataFlow console showing a running BigQuery to ClickHouse job" />
 
 ## Troubleshooting {#troubleshooting}
 
-### Code: 241. DB::Exception: Memory limit (total) exceeded {#code-241-dbexception-memory-limit-total-exceeded}
+### Memory limit (total) exceeded error (code 241) {#code-241-dbexception-memory-limit-total-exceeded}
 
 This error occurs when ClickHouse runs out of memory while processing large batches of data. To resolve this issue:
 
