@@ -45,7 +45,7 @@ This deployment mode is the go-to choice for production environments where relia
 
 <Image img={chCloud} alt="ClickHouse Cloud" size="sm"/>
 
-A key advantage of ClickHouse Cloud is its integrated tooling. [ClickPipes](/cloud/get-started/cloud-quick-start#clickpipes) provides a robust data ingestion framework, allowing you to easily connect and stream data from various sources without managing complex ETL pipelines. The platform also offers a dedicated [querying API](/cloud/get-started/query-endpoints), making it significantly easier to build applications.
+A key advantage of ClickHouse Cloud is its integrated tooling. [ClickPipes](/getting-started/quick-start/cloud/#clickpipes) provides a robust data ingestion framework, allowing you to easily connect and stream data from various sources without managing complex ETL pipelines. The platform also offers a dedicated [querying API](/cloud/get-started/query-endpoints), making it significantly easier to build applications.
 
 The SQL Console in ClickHouse Cloud includes a powerful [dashboarding](/cloud/manage/dashboards) feature that lets you transform your queries into interactive visualizations. You can create and share dashboards built from your saved queries, with the ability to add interactive elements through query parameters. These dashboards can be made dynamic using global filters, allowing users to explore data through customizable views – though it's important to note that users will need at least read access to the underlying saved queries to view the visualizations.
 

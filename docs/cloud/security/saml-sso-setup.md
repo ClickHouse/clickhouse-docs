@@ -110,6 +110,10 @@ We recommend setting up a **direct link to your organization** in addition to yo
    - For email + password accounts, please use `https://console.clickhouse.cloud/?with=email`.
    - For social logins, please click the appropriate button (**Continue with Google** or **Continue with Microsoft**)
 
+:::note
+`email` in `?with=email` above is the literal parameter value, not a placeholder
+:::
+
    5. Log out with your original authentication method and log back in via https://console.clickhouse.cloud OR the direct link you configured in 'Configure your SAML integration' above.
 
    6. Remove any non-SAML users to enforce SAML for the organization. Going forward users are assigned via your Identity Provider.
@@ -340,7 +344,9 @@ We only utilize service provider-initiated SSO. This means users go to `https://
 
 ### Assigning user roles {#assigning-user-roles}
 
-Users will appear in your ClickHouse Cloud console after they are assigned to your IdP application and log in for the first time. At least one SSO user should be assigned the Admin role in your organization. Use social login or `https://console.clickhouse.cloud/?with=email` to log in with your original authentication method to update your SSO role.
+Users will appear in your ClickHouse Cloud console after they are assigned to your IdP application and log in for the first time. At least one SSO user should be assigned the Admin role in your organization and additional users that login with SSO will be created with the role of ["Member"](/cloud/security/cloud-access-management/overview#console-users-and-roles), meaning that by default they do not have access to any services and should have their access and roles updated by an Admin.
+
+Use social login or `https://console.clickhouse.cloud/?with=email` to log in with your original authentication method to update your SSO role.
 
 ### Removing non-SSO users {#removing-non-sso-users}
 

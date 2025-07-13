@@ -38,8 +38,8 @@ INSERT INTO user_interests VALUES
     (3, ['reading', 'cooking']);
 
 SELECT 
-    uniqArray(interests) as unique_interests_total,
-    uniq(arrayJoin(interests)) as unique_interests_arrayJoin
+    uniqArray(interests) AS unique_interests_total,
+    uniq(arrayJoin(interests)) AS unique_interests_arrayJoin
 FROM user_interests;
 ```
 

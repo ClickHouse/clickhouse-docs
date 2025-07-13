@@ -43,7 +43,7 @@ In this guide we are going to do a deep dive into ClickHouse indexing. We will i
 - [what some of the best practices are for indexing in ClickHouse](#using-multiple-primary-indexes)
 
 You can optionally execute all ClickHouse SQL statements and queries given in this guide by yourself on your own machine.
-For installation of ClickHouse and getting started instructions, see the [Quick Start](/quick-start.mdx).
+For installation of ClickHouse and getting started instructions, see the [Quick Start](/get-started/quick-start).
 
 :::note
 This guide is focusing on ClickHouse sparse primary indexes.
@@ -125,7 +125,7 @@ after loading data into it. Why this is necessary for this example will become a
 Now we execute our first web analytics query. The following is calculating the top 10 most clicked urls for the internet user with the UserID 749927693:
 
 ```sql
-SELECT URL, count(URL) as Count
+SELECT URL, count(URL) AS Count
 FROM hits_NoPrimaryKey
 WHERE UserID = 749927693
 GROUP BY URL
@@ -924,7 +924,7 @@ Insert all 8.87 million rows from our [original table](#a-table-with-a-primary-k
 
 ```sql
 INSERT INTO hits_URL_UserID
-SELECT * from hits_UserID_URL;
+SELECT * FROM hits_UserID_URL;
 ```
 
 The response looks like:

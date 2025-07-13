@@ -7,6 +7,7 @@ sidebar_position: 0
 description: 'Deploying ClickStack with All In One - The ClickHouse Observability Stack'
 ---
 
+import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 import Image from '@theme/IdealImage';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
@@ -112,3 +113,11 @@ On connecting to the HyperDX UI, navigate to [`Team Settings`](http://localhost:
 ## Configuring the OpenTelemetry collector {#configuring-collector}
 
 The OTel collector configuration can be modified if required - see ["Modifying configuration"](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration).
+
+<JSONSupport/>
+
+For example:
+
+```shell
+docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
+```

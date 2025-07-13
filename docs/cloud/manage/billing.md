@@ -367,7 +367,7 @@ affordable for customers to move data from Postgres to ClickHouse for
 real-time analytics.
 
 The connector is over **5x more cost-effective** than external
-ETL tools and similar features in other database platforms. $^*$
+ETL tools and similar features in other database platforms.
 
 :::note
 Pricing will start being metered in monthly bills beginning **September 1st, 2025,**
@@ -376,10 +376,6 @@ then, usage is free. Customers have a 3-month window starting May 29 (GA announc
 to review and optimize their costs if needed, although we expect most will not need
 to make any changes.
 :::
-
-$^*$ _For example, the external ETL tool Airbyte, which offers similar CDC capabilities,
-charges $10/GB (excluding credits)—more than 20 times the cost of Postgres CDC in
-ClickPipes for moving 1TB of data._
 
 #### Pricing dimensions {#pricing-dimensions}
 

@@ -8,8 +8,6 @@ keywords: ['json', 'clickhouse', 'inserting', 'loading', 'inserting']
 score: 15
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
-
 # Loading JSON {#loading-json}
 
 The following examples provide a very simple example of loading structured and semi-structured JSON data. For more complex JSON, including nested structures, see the guide [**Designing JSON schema**](/integrations/data-formats/json/schema).
@@ -119,8 +117,6 @@ These examples assume the use of the `JSONEachRow` format. Other common JSON for
 
 
 ## Loading semi-structured JSON {#loading-semi-structured-json}
-
-<PrivatePreviewBadge/>
 
 Our previous example loaded JSON which was static with well known key names and types. This is often not the case - keys can be added or their types can change. This is common in use cases such as Observability data.
 

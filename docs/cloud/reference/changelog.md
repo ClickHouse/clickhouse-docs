@@ -30,10 +30,34 @@ import query_endpoints from '@site/static/images/cloud/reference/may-17-query-en
 import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.png';
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/cloud/reference/cloud-compatibility.md) page.
+
+## July 11, 2025 {#june-11-2025}
+
+- New services now store database and table metadata in a central **SharedCatalog**,
+  a new model for coordination and object lifecycles which enables:
+    - **Cloud-scale DDL**, even under high concurrency
+    - **Resilient deletion and new DDL operations**
+    - **Fast spin-up and wake-ups** as stateless nodes now launch with no disk dependencies
+    - **Stateless compute across both native and open formats**, including Iceberg and Delta Lake
+  
+  Read more about SharedCatalog in our [blog](https://clickhouse.com/blog/clickhouse-cloud-stateless-compute)
+
+- We now support the ability to launch HIPAA compliant services in GCP `europe-west4`
+
+## June 27, 2025 {#june-27-2025}
+
+- We now officially support a Terraform provider for managing database privileges
+  which is also compatible with self-managed deployments. Please refer to the
+  [blog](https://clickhouse.com/blog/new-terraform-provider-manage-clickhouse-database-users-roles-and-privileges-with-code)
+  and our [docs](https://registry.terraform.io/providers/ClickHouse/clickhousedbops/latest/docs)
+  for more information.
+- Enterprise tier services can now enlist in the [slow release channel](/manage/updates/#slow-release-channel-deferred-upgrades) to defer 
+  upgrades by two weeks after the regular release to permit additional time for 
+  testing.
+
 ## June 13, 2025 {#june-13-2025}
 
-- We're excited to announce that ClickHouse Cloud Dashboards are now generally available. Dashboards allow users to visualize queries on dashboards, interact with data via filters and query parameters, and manage sharing. 
-
+- We're excited to announce that ClickHouse Cloud Dashboards are now generally available. Dashboards allow users to visualize queries on dashboards, interact with data via filters and query parameters, and manage sharing.
 - API key IP filters: we are introducing an additional layer of protection for your interactions with ClickHouse Cloud. When generating an API key, you may setup an IP allow list to limit where the API key may be used.  Please refer to the [documentation](https://clickhouse.com/docs/cloud/security/setting-ip-filters) for details. 
 
 ## May 30, 2025 {#may-30-2025}
@@ -333,7 +357,7 @@ You can now grant uni-directional access to a specific data source like AWS MSK.
 
 ### ClickPipes now supports IAM for AWS MSK {#clickpipes-now-supports-iam-for-aws-msk}
 
-You can now use IAM authentication to connect to an MSK broker with AWS MSK ClickPipes. To get started, review our [documentation](/integrations/clickpipes/kafka#iam).
+You can now use IAM authentication to connect to an MSK broker with AWS MSK ClickPipes. To get started, review our [documentation](/integrations/clickpipes/kafka/best-practices/#iam).
 
 ### Maximum replica size for new services on AWS {#maximum-replica-size-for-new-services-on-aws}
 
@@ -413,7 +437,7 @@ High throughput can demand extra resources to meet your data volume and latency 
 
 *Raw Message Ingestion for Kafka and Kinesis*
 
-It is now possible to  ingest an entire Kafka or Kinesis message without parsing it. ClickPipes now offers support for a `_raw_message` [virtual column](/integrations/clickpipes/kafka#kafka-virtual-columns), allowing users to map the full message into a single String column. This gives you the flexibility to work with raw data as needed.
+It is now possible to  ingest an entire Kafka or Kinesis message without parsing it. ClickPipes now offers support for a `_raw_message` [virtual column](/integrations/clickpipes/kafka/reference/#kafka-virtual-columns), allowing users to map the full message into a single String column. This gives you the flexibility to work with raw data as needed.
 
 ## August 29, 2024 {#august-29-2024}
 

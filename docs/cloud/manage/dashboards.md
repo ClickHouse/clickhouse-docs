@@ -20,8 +20,6 @@ import dashboards_11 from '@site/static/images/cloud/dashboards/11_dashboards.pn
 
 # Dashboards
 
-<BetaBadge />
-
 The SQL Console's dashboards feature allows you to collect and share visualizations from saved queries. Get started by saving and visualizing queries, adding query visualizations to a dashboard, and making the dashboard interactive using query parameters.
 
 ## Core concepts {#core-concepts}

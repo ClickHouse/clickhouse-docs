@@ -170,19 +170,19 @@ The execution of these may vary depending on your bandwidth, but each should onl
 
 ```sql
 SELECT id,
-       any(actor_name)          as name,
-       uniqExact(movie_id)    as num_movies,
-       avg(rank)                as avg_rank,
-       uniqExact(genre)         as unique_genres,
-       uniqExact(director_name) as uniq_directors,
-       max(created_at)          as updated_at
+       any(actor_name)          AS name,
+       uniqExact(movie_id)    AS num_movies,
+       avg(rank)                AS avg_rank,
+       uniqExact(genre)         AS unique_genres,
+       uniqExact(director_name) AS uniq_directors,
+       max(created_at)          AS updated_at
 FROM (
-         SELECT imdb.actors.id  as id,
-                concat(imdb.actors.first_name, ' ', imdb.actors.last_name)  as actor_name,
-                imdb.movies.id as movie_id,
-                imdb.movies.rank as rank,
+         SELECT imdb.actors.id  AS id,
+                concat(imdb.actors.first_name, ' ', imdb.actors.last_name)  AS actor_name,
+                imdb.movies.id AS movie_id,
+                imdb.movies.rank AS rank,
                 genre,
-                concat(imdb.directors.first_name, ' ', imdb.directors.last_name) as director_name,
+                concat(imdb.directors.first_name, ' ', imdb.directors.last_name) AS director_name,
                 created_at
          FROM imdb.actors
                   JOIN imdb.roles ON imdb.roles.actor_id = imdb.actors.id
@@ -776,37 +776,37 @@ Note how much faster that incremental was compared to the insertion of "Clicky".
 Checking again the query_log table reveals the differences between the 2 incremental runs:
 
    ```sql
-   insert into imdb_dbt.actor_summary ("id", "name", "num_movies", "avg_rank", "genres", "directors", "updated_at")
-   with actor_summary as (
-      SELECT id,
-         any(actor_name) as name,
-         uniqExact(movie_id)    as num_movies,
-         avg(rank)                as avg_rank,
-         uniqExact(genre)         as genres,
-         uniqExact(director_name) as directors,
-         max(created_at) as updated_at
-      FROM (
-         SELECT imdb.actors.id as id,
-            concat(imdb.actors.first_name, ' ', imdb.actors.last_name) as actor_name,
-            imdb.movies.id as movie_id,
-            imdb.movies.rank as rank,
-            genre,
-            concat(imdb.directors.first_name, ' ', imdb.directors.last_name) as director_name,
-            created_at
-         FROM imdb.actors
-            JOIN imdb.roles ON imdb.roles.actor_id = imdb.actors.id
-            LEFT OUTER JOIN imdb.movies ON imdb.movies.id = imdb.roles.movie_id
-            LEFT OUTER JOIN imdb.genres ON imdb.genres.movie_id = imdb.movies.id
-            LEFT OUTER JOIN imdb.movie_directors ON imdb.movie_directors.movie_id = imdb.movies.id
-            LEFT OUTER JOIN imdb.directors ON imdb.directors.id = imdb.movie_directors.director_id
-      )
-      GROUP BY id
+INSERT INTO imdb_dbt.actor_summary ("id", "name", "num_movies", "avg_rank", "genres", "directors", "updated_at")
+WITH actor_summary AS (
+   SELECT id,
+      any(actor_name) AS name,
+      uniqExact(movie_id)    AS num_movies,
+      avg(rank)                AS avg_rank,
+      uniqExact(genre)         AS genres,
+      uniqExact(director_name) AS directors,
+      max(created_at) AS updated_at
+   FROM (
+      SELECT imdb.actors.id AS id,
+         concat(imdb.actors.first_name, ' ', imdb.actors.last_name) AS actor_name,
+         imdb.movies.id AS movie_id,
+         imdb.movies.rank AS rank,
+         genre,
+         concat(imdb.directors.first_name, ' ', imdb.directors.last_name) AS director_name,
+         created_at
+      FROM imdb.actors
+         JOIN imdb.roles ON imdb.roles.actor_id = imdb.actors.id
+         LEFT OUTER JOIN imdb.movies ON imdb.movies.id = imdb.roles.movie_id
+         LEFT OUTER JOIN imdb.genres ON imdb.genres.movie_id = imdb.movies.id
+         LEFT OUTER JOIN imdb.movie_directors ON imdb.movie_directors.movie_id = imdb.movies.id
+         LEFT OUTER JOIN imdb.directors ON imdb.directors.id = imdb.movie_directors.director_id
    )
+   GROUP BY id
+)
 
-   select *
-   from actor_summary
-   -- this filter will only be applied on an incremental run
-   where id > (select max(id) from imdb_dbt.actor_summary) or updated_at > (select max(updated_at) from imdb_dbt.actor_summary)
+SELECT *
+FROM actor_summary
+-- this filter will only be applied on an incremental run
+WHERE id > (SELECT max(id) FROM imdb_dbt.actor_summary) OR updated_at > (SELECT max(updated_at) FROM imdb_dbt.actor_summary)
    ```
 
 In this run, only the new rows are added straight to `imdb_dbt.actor_summary` table and there is no table creation involved.
