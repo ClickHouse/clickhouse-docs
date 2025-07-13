@@ -8,7 +8,7 @@ title: 'Google Dataflow Templates'
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Google Dataflow Templates
+# Google Dataflow templates
 
 <ClickHouseSupportedBadge/>
 

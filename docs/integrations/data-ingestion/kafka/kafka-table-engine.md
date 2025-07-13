@@ -484,7 +484,7 @@ Consider the following when looking to increase Kafka Engine table throughput pe
 
 Any settings changes should be tested. We recommend monitoring Kafka consumer lags to ensure you are properly scaled.
 
-#### Additional Settings {#additional-settings}
+#### Additional settings {#additional-settings}
 
 Aside from the settings discussed above, the following may be of interest:
 

@@ -415,7 +415,7 @@ efficiently. This method takes the following parameters.
 | external_data       | ExternalData     | *None*     | An ExternalData object containing file or binary data to use with the query.  See [Advanced Queries (External Data)](#external-data)                                               |
 | context             | QueryContext     | *None*     | A reusable QueryContext object can be used to encapsulate the above method arguments. See [Advanced Queries (QueryContexts)](#querycontexts)                                       |
 
-#### The QueryResult Object {#the-queryresult-object}
+#### The QueryResult object {#the-queryresult-object}
 
 The base `query` method returns a QueryResult object with the following public properties:
 

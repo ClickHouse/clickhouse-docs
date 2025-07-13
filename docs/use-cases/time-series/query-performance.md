@@ -7,7 +7,7 @@ keywords: ['time-series']
 show_related_blogs: true
 ---
 
-# Time-Series query performance
+# Time-series query performance
 
 After optimizing storage, the next step is improving query performance. 
 This section explores two key techniques: optimizing `ORDER BY` keys and using materialized views. 

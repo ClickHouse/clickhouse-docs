@@ -137,7 +137,7 @@ Save & Add the Chart to Dashboard
 
 <Image size="md" img={rocketbi_14} alt="Dashboard view showing the newly added pie chart with other controls" border />
 
-#### Use Date Control in a Time-series Chart {#use-date-control-in-a-time-series-chart}
+#### Use date control in a time-series chart {#use-date-control-in-a-time-series-chart}
 Let Use a Stacked Column Chart
 
 <Image size="md" img={rocketbi_15} alt="Stacked column chart creation interface with time-series data" border />

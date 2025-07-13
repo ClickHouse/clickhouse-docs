@@ -49,6 +49,6 @@ This guide will walk you through the steps to connect Hashboard with your ClickH
 
 Your ClickHouse database is now be connected to Hashboard and you can proceed by building [Data Models](https://docs.hashboard.com/docs/data-modeling/add-data-model), [Explorations](https://docs.hashboard.com/docs/visualizing-data/explorations), [Metrics](https://docs.hashboard.com/docs/metrics), and [Dashboards](https://docs.hashboard.com/docs/dashboards). See the corresponding Hashboard documentation for more detail on these features.
 
-## Learn More {#learn-more}
+## Learn more {#learn-more}
 
 For more advanced features and troubleshooting, visit [Hashboard's documentation](https://docs.hashboard.com/).

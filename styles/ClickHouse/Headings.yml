@@ -249,3 +249,142 @@ exceptions:
   - Map
   - Nested
   - flatten_nested
+  - Tableau Online
+  - SSL/TLS
+  - Delta Lake
+  - Embeddable
+  - Draxlr
+  - Rust
+  - Rockset
+  - Astrato
+  - Chartbrew
+  - Deepnote
+  - Zing Data
+  - Mitzu
+  - Tableau
+  - DataGrip
+  - Grafana
+  - Datadog
+  - Splunk Enterprise
+  - Explo
+  - Hashboard
+  - Luzmo
+  - QuickSight
+  - Metabase
+  - Superset
+  - clickhouse-static-files-disk-uploader
+  - OpenTelemetry
+  - Kubernetes
+  - Data Lake
+  - Unity
+  - Databricks
+  - Read Delta
+  - Google Cloud Run
+  - ClickStack
+  - Build-Your-Own
+  - Time-Series
+  - New Features
+  - Bug Fixes
+  - Bug Fix
+  - Backward Incompatible Changes
+  - Backward Incompatible Change
+  - Build Improvements
+  - Main Changes
+  - New Feature
+  - Experimental Feature
+  - Security Fix
+  - Performance Improvements
+  - Performance Improvement
+  - Documentation Updates
+  - Documentation Update
+  - Improved Workflow for Developing and Assembling ClickHouse
+  - Please Note When Upgrading
+  - Complete List of Changes
+  - Minor Changes
+  - ClickHouse Release
+  - Improvements
+  - Build Changes
+  - Experimental Features
+  - Table of Contents
+  - Upgrade Notes
+  - CVE-2021-42390
+  - CVE-2021-42391
+  - CVE-2021-25263
+  - CVE-2019-15024
+  - CVE-2019-16535
+  - CVE-2019-16536
+  - CVE-2019-18657
+  - CVE-2018-14672
+  - CVE-2018-14671
+  - CVE-2018-14668
+  - CVE-2018-14669
+  - CVE-2018-14670
+  - Performance Optimizations
+  - Code Cleanup
+  - Cloud Changelog
+  - CVE-2025-1385
+  - CVE-2024-6873
+  - CVE-2024-22412
+  - CVE-2023-47118
+  - CVE-2023-48298
+  - CVE-2023-48704
+  - CVE-2022-44011
+  - CVE-2022-44010
+  - CVE-2021-43304
+  - CVE-2021-43305
+  - CVE-2021-42387
+  - CVE-2021-42388
+  - CVE-2021-42389
+  - cmake-variants.yaml
+  - launch.json
+  - settings.json
+  - run-debug.sh
+  - tasks.json
+  - Third-Party Libraries
+  - Build Clickhouse with DEFLATE_QPL
+  - Run Benchmark with DEFLATE_QPL
+  - Rust Libraries
+  - DEFLATE_QPL
+  - Star Schema
+  - DockerHub
+  - cpp
+  - codespell
+  - aspell
+  - mypy
+  - AST
+  - "C\\+\\+"
+  - clang-tidy
+  - DataLakeCatalog
+  - MergeTree
+  - ReplacingMergeTree
+  - SummingMergeTree
+  - AggregatingMergeTree
+  - CollapsingMergeTree
+  - VersionedCollapsingMergeTree
+  - GraphiteMergeTree
+  - TinyLog
+  - StripeLog
+  - MaterializedView
+  - DROP/DETACH TABLE
+  - ReplicatedMergeTree
+  - AzureQueue
+  - DeltaLake
+  - AzureBlobStorage
+  - Hudi
+  - MinMax
+  - Bloom
+  - N-gram
+  - EmbeddedRocksDB
+  - HDFS
+  - Hive
+  - ORC
+  - Parquet
+  - NATS
+  - MySQL
+  - URL
+  - RabbitMQ
+  - Iceberg
+  - TimeSeries
+  - AggregateFunction
+  - SimpleAggregateFunction
+  - FileLog

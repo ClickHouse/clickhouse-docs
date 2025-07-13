@@ -187,7 +187,7 @@ In our example we only return a few rows. If measuring the performance of `SELEC
 When reading from queries, the initial query can often appear slower than if the same query is repeated. This can be attributed to both S3's own caching but also the [ClickHouse Schema Inference Cache](/operations/system-tables/schema_inference_cache). This stores the inferred schema for files and means the inference step can be skipped on subsequent accesses, thus reducing query time.
 :::
 
-## Using Threads for Reads {#using-threads-for-reads}
+## Using threads for reads {#using-threads-for-reads}
 
 Read performance on S3 will scale linearly with the number of cores, provided you are not limited by network bandwidth or local I/O. Increasing the number of threads also has memory overhead permutations that users should be aware of. The following can be modified to improve read throughput performance potentially:
 
@@ -233,7 +233,7 @@ SETTINGS max_threads = 64
 Peak memory usage: 639.99 MiB.
 ```
 
-## Tuning Threads and Block Size for Inserts {#tuning-threads-and-block-size-for-inserts}
+## Tuning threads and block size for inserts {#tuning-threads-and-block-size-for-inserts}
 
 To achieve maximum ingestion performance, you must choose (1) an insert block size and (2) an appropriate level of insert parallelism based on (3) the amount of available CPU cores and RAM available. In summary:
 
@@ -270,7 +270,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 
 As shown, tuning of these setting has improved insert performance by over `33%`. We leave this to the reader to see if they can improve single node performance further.
 
-## Scaling with Resources and Nodes {#scaling-with-resources-and-nodes}
+## Scaling with resources and nodes {#scaling-with-resources-and-nodes}
 
 Scaling with resources and nodes applies to both read and insert queries.
 

@@ -56,7 +56,7 @@ After that, all that remains is to click "Publish As" in the top right corner, a
 
 NB: if you want to use Tableau Online in combination with Tableau Desktop and share ClickHouse datasets between them, make sure you use Tableau Desktop with the default MySQL connector as well, following the setup guide that is displayed [here](https://www.tableau.com/support/drivers) if you select MySQL from the Data Source drop-down. If you have an M1 Mac, check [this troubleshooting thread](https://community.tableau.com/s/question/0D58b0000Ar6OhvCQE/unable-to-install-mysql-driver-for-m1-mac) for a driver installation workaround.
 
-## Connecting Tableau Online to ClickHouse (Cloud or on-premise setup with SSL) {#connecting-tableau-online-to-clickhouse-cloud-or-on-premise-setup-with-ssl}
+## Connecting Tableau Online to ClickHouse (cloud or on-premise setup with SSL) {#connecting-tableau-online-to-clickhouse-cloud-or-on-premise-setup-with-ssl}
 
 As it is not possible to provide the SSL certificates via the Tableau Online MySQL connection setup wizard, 
 the only way is to use Tableau Desktop to set the connection up, and then export it to Tableau Online. This process is, however, pretty straightforward.

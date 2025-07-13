@@ -393,3 +393,22 @@ show_related_blogs: true
 
 This will show it on the page, assuming there is a matching blog. If there is no
 match then it remains hidden.
+
+## Vale
+
+Vale is a command-line tool that brings code-like linting to prose.
+We have a number of rules set up to ensure that our documentation is
+consistent in style.
+
+The style rules are located at `/styles/ClickHouse`, and largely based
+off of the Google styleset, with some ClickHouse specific adaptions.
+If you want to check only a specific rule locally, you
+can run:
+
+```bash
+vale --filter='.Name == "ClickHouse.Headings"' docs/integrations
+```
+
+This will run only the rule named `Headings` on
+the `docs/integrations` directory. Specifying a specific markdown
+file is also possible.

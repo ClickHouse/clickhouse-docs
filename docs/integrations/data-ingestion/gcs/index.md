@@ -25,7 +25,7 @@ ClickHouse recognizes that GCS represents an attractive storage solution for use
 
 To utilize a GCS bucket as a disk, we must first declare it within the ClickHouse configuration in a file under `conf.d`. An example of a GCS disk declaration is shown below.  This configuration includes multiple sections to configure the GCS "disk", the cache, and the policy that is specified in DDL queries when tables are to be created on the GCS disk.  Each of these are described below.
 
-#### storage_configuration > disks > gcs {#storage_configuration--disks--gcs}
+#### Storage configuration > disks > gcs {#storage_configuration--disks--gcs}
 
 This part of the configuration is shown in the highlighted section and specifies that:
 - Batch deletes are not to be performed.  GCS does not currently support batch deletes, so the autodetect is disabled to suppress error messages.
@@ -61,7 +61,7 @@ This part of the configuration is shown in the highlighted section and specifies
     </storage_configuration>
 </clickhouse>
 ```
-#### storage_configuration > disks > cache {#storage_configuration--disks--cache}
+#### Storage configuration > disks > cache {#storage_configuration--disks--cache}
 
 The example configuration highlighted below enables a 10Gi memory cache for the disk `gcs`.
 
@@ -98,7 +98,7 @@ The example configuration highlighted below enables a 10Gi memory cache for the 
     </storage_configuration>
 </clickhouse>
 ```
-#### storage_configuration > policies > gcs_main {#storage_configuration--policies--gcs_main}
+#### Storage configuration > policies > gcs_main {#storage_configuration--policies--gcs_main}
 
 Storage configuration policies allow choosing where data is stored.  The policy highlighted below allows data to be stored on the disk `gcs` by specifying the policy `gcs_main`.  For example, `CREATE TABLE ... SETTINGS storage_policy='gcs_main'`.
 

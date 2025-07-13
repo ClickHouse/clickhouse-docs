@@ -7,7 +7,7 @@ keywords: ['time-series']
 show_related_blogs: true
 ---
 
-# Time-Series analysis functions
+# Time-series analysis functions
 
 Time series analysis in ClickHouse can be performed using standard SQL aggregation and window functions. 
 When working with time series data, you'll typically encounter three main types of metrics:
