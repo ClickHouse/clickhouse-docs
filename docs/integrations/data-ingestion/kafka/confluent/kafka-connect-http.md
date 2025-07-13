@@ -14,7 +14,7 @@ import httpAdvanced from '@site/static/images/integrations/data-ingestion/kafka/
 import createMessageInTopic from '@site/static/images/integrations/data-ingestion/kafka/confluent/create_message_in_topic.png';
 
 
-# Confluent HTTP Sink Connector
+# Confluent HTTP sink connector
 The HTTP Sink Connector is data type agnostic and thus does not need a Kafka schema as well as supporting ClickHouse specific data types such as Maps and Arrays. This additional flexibility comes at a slight increase in configuration complexity.
 
 Below we describe a simple installation, pulling messages from a single Kafka topic and inserting rows into a ClickHouse table.
@@ -29,7 +29,7 @@ Below we describe a simple installation, pulling messages from a single Kafka to
 <ConnectionDetails />
 
 
-#### 2. Run Kafka Connect and the HTTP Sink Connector {#2-run-kafka-connect-and-the-http-sink-connector}
+#### 2. Run Kafka Connect and the HTTP sink connector {#2-run-kafka-connect-and-the-http-sink-connector}
 
 You have two options:
 
@@ -109,7 +109,7 @@ From the [Sink documentation](https://docs.confluent.io/kafka-connectors/http/cu
 1. Verify your Kafka records have the same key.
 2. When you add parameters to the HTTP API URL, each record can result in a unique URL. For this reason, batching is disabled when using additional URL parameters.
 
-#### 400 Bad Request {#400-bad-request}
+#### 400 bad request {#400-bad-request}
 ##### CANNOT_PARSE_QUOTED_STRING {#cannot_parse_quoted_string}
 If HTTP Sink fails with the following message when inserting a JSON object into a `String` column:
 
@@ -123,7 +123,7 @@ Set `input_format_json_read_objects_as_strings=1` setting in URL as encoded stri
 
 Note that this example preserves the Array fields of the Github dataset. We assume you have an empty github topic in the examples and use [kcat](https://github.com/edenhill/kcat) for message insertion to Kafka.
 
-##### 1. Prepare Configuration {#1-prepare-configuration}
+##### 1. Prepare configuration {#1-prepare-configuration}
 
 Follow [these instructions](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#set-up-a-local-connect-worker-with-cp-install) for setting up Connect relevant to your installation type, noting the differences between a standalone and distributed cluster. If using Confluent Cloud, the distributed setup is relevant.
 

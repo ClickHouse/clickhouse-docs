@@ -40,7 +40,7 @@ Here is a preview of the dashboard created in this guide:
 
 <Image img={cell_towers_1} size="md" alt="Dashboard of cell towers by radio type in mcc 204"/>
 
-## Get the Dataset {#get-the-dataset}
+## Get the dataset {#get-the-dataset}
 
 This dataset is from [OpenCelliD](https://www.opencellid.org/) - The world's largest Open Database of Cell Towers.
 
@@ -167,7 +167,7 @@ Based on the above query and the [MCC list](https://en.wikipedia.org/wiki/Mobile
 
 You may want to create a [Dictionary](../../sql-reference/dictionaries/index.md) in ClickHouse to decode these values.
 
-## Use case: Incorporate geo data {#use-case}
+## Use case: incorporate geo data {#use-case}
 
 Using the [`pointInPolygon`](/sql-reference/functions/geo/coordinates.md/#pointinpolygon) function.
 
@@ -312,7 +312,7 @@ To build a Superset dashboard using the OpenCelliD dataset you should:
   If **ClickHouse Connect** is not one of your options, then you will need to install it. The command is `pip install clickhouse-connect`, and more info is [available here](https://pypi.org/project/clickhouse-connect/).
 :::
 
-#### Add your connection details: {#add-your-connection-details}
+#### Add your connection details {#add-your-connection-details}
 
 :::tip
   Make sure that you set **SSL** on when connecting to ClickHouse Cloud or other ClickHouse systems that enforce the use of SSL.

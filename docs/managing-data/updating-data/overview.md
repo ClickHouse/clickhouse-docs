@@ -27,7 +27,7 @@ In summary, update operations should be issued carefully, and the mutations queu
 | [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) | `ENGINE = CollapsingMergeTree(Sign)` | Use when updating individual rows frequently, or for scenarios where you need to maintain the latest state of objects that change over time. For example, tracking user activity or article stats.                                       |
 Here is a summary of the different ways to update data in ClickHouse:
 
-## Update Mutations {#update-mutations}
+## Update mutations {#update-mutations}
 
 Update mutations can be issued through a `ALTER TABLE ... UPDATE` command e.g.
 
@@ -88,7 +88,7 @@ Note that for on-the-fly updates, a mutation is still used to update the data; i
 
 Read more about [on-the-fly updates](/guides/developer/lightweight-update).
 
-## Collapsing Merge Tree {#collapsing-merge-tree}
+## `CollapsingMergeTree` {#collapsing-merge-tree}
 
 Stemming from the idea that updates are expensive but inserts can be leveraged to perform updates,
 the [`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree) table engine
@@ -135,6 +135,6 @@ for [`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingme
 for a more comprehensive overview.
 :::
 
-## More Resources {#more-resources}
+## More resources {#more-resources}
 
 - [Handling Updates and Deletes in ClickHouse](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

@@ -16,7 +16,7 @@ import Image from '@theme/IdealImage';
 
 You can insert data from S3 into ClickHouse and also use S3 as an export destination, thus allowing interaction with "Data Lake" architectures. Furthermore, S3 can provide "cold" storage tiers and assist with separating storage and compute. In the sections below we use the New York City taxi dataset to demonstrate the process of moving data between S3 and ClickHouse, as well as identifying key configuration parameters and providing hints on optimizing performance.
 
-## S3 Table Functions {#s3-table-functions}
+## S3 table functions {#s3-table-functions}
 
 The `s3` table function allows you to read and write files from and to S3 compatible storage. The outline for this syntax is:
 
@@ -235,7 +235,7 @@ clickhouse-local --query "INSERT INTO TABLE FUNCTION remote('localhost:9000', 'd
 To execute this over a secure SSL connection, utilize the `remoteSecure` function.
 :::
 
-### Exporting Data {#exporting-data}
+### Exporting data {#exporting-data}
 
 You can write to files in S3 using the `s3` table function. This will require appropriate permissions. We pass the credentials needed in the request, but view the [Managing Credentials](#managing-credentials) page for more options.
 
@@ -256,7 +256,7 @@ LIMIT 10000;
 
 Note here how the format of the file is inferred from the extension. We also don't need to specify the columns in the `s3` function - this can be inferred from the `SELECT`.
 
-### Splitting Large Files {#splitting-large-files}
+### Splitting large files {#splitting-large-files}
 
 It is unlikely you will want to export your data as a single file. Most tools, including ClickHouse, will achieve higher throughput performance when reading and writing to multiple files due to the possibility of parallelism. We could execute our `INSERT` command multiple times, targeting a subset of the data. ClickHouse offers a means of automatic splitting files using a `PARTITION` key.
 
@@ -293,7 +293,7 @@ FROM trips
 LIMIT 100000;
 ```
 
-### Utilizing Clusters {#utilizing-clusters}
+### Utilizing clusters {#utilizing-clusters}
 
 The above functions are all limited to execution on a single node. Read speeds will scale linearly with CPU cores until other resources (typically network) are saturated, allowing users to vertically scale. However, this approach has its limitations. While users can alleviate some resource pressure by inserting into a distributed table when performing an `INSERT INTO SELECT` query, this still leaves a single node reading, parsing, and processing the data. To address this challenge and allow us to scale reads horizontally, we have the [s3Cluster](/sql-reference/table-functions/s3Cluster.md) function.
 
@@ -329,7 +329,7 @@ INSERT INTO default.trips_all
 Inserts will occur against the initiator node. This means that while reads will occur on each node, the resulting rows will be routed to the initiator for distribution. In high throughput scenarios, this may prove a bottleneck. To address this, set the parameter [parallel_distributed_insert_select](/operations/settings/settings/#parallel_distributed_insert_select) for the `s3cluster` function.
 
 
-## S3 Table Engines {#s3-table-engines}
+## S3 table engines {#s3-table-engines}
 
 While the `s3` functions allow ad-hoc queries to be performed on data stored in S3, they are syntactically verbose. The `S3` table engine allows you to not have to specify the bucket URL and credentials over and over again. To address this, ClickHouse provides the S3 table engine.
 
@@ -344,7 +344,7 @@ CREATE TABLE s3_engine_table (name String, value UInt32)
 * `aws_access_key_id`, `aws_secret_access_key` - Long-term credentials for the AWS account user. You can use these to authenticate your requests. The parameter is optional. If credentials are not specified, configuration file values are used. For more information, see [Managing credentials](#managing-credentials).
 * `compression` — Compression type. Supported values: none, gzip/gz, brotli/br, xz/LZMA, zstd/zst. The parameter is optional. By default, it will autodetect compression by file extension.
 
-### Reading Data {#reading-data}
+### Reading data {#reading-data}
 
 In the following example, we create a table named `trips_raw` using the first ten TSV files located in the `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/` bucket. Each of these contains 1M rows each:
 
@@ -421,7 +421,7 @@ LIMIT 10;
 └──────────────────────────────────────────────────┘
 ```
 
-### Inserting Data {#inserting-data}
+### Inserting data {#inserting-data}
 
 The `S3` table engine supports parallel reads. Writes are only supported if the table definition does not contain glob patterns. The above table, therefore, would block writes.
 
@@ -482,7 +482,7 @@ Some notes about the `S3` table engine:
     * SAMPLE operations are not supported
     * There is no notion of indexes, i.e. primary or skip.
 
-## Managing Credentials {#managing-credentials}
+## Managing credentials {#managing-credentials}
 
 In the previous examples, we have passed credentials in the `s3` function or `S3` table definition. While this may be acceptable for occasional usage, users require less explicit authentication mechanisms in production. To address this, ClickHouse has several options:
 
@@ -524,7 +524,7 @@ In the previous examples, we have passed credentials in the `s3` function or `S3
    * Obtains the credentials via [Amazon EC2 instance metadata](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-metadata.html) provided [AWS_EC2_METADATA_DISABLED](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html#envvars-list-AWS_EC2_METADATA_DISABLED) is not set to true.
    * These same settings can also be set for a specific endpoint, using the same prefix matching rule.
 
-## Optimizing for Performance {#s3-optimizing-performance}
+## Optimizing for performance {#s3-optimizing-performance}
 
 For how to optimize reading and inserting using the S3 function, see the [dedicated performance guide](./performance.md).
 
@@ -532,7 +532,7 @@ For how to optimize reading and inserting using the S3 function, see the [dedica
 
 Internally, the ClickHouse merge tree uses two primary storage formats: [`Wide` and `Compact`](/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage). While the current implementation uses the default behavior of ClickHouse (controlled through the settings `min_bytes_for_wide_part` and `min_rows_for_wide_part`), we expect behavior to diverge for S3 in the future releases, e.g., a larger default value of `min_bytes_for_wide_part` encouraging a more `Compact` format and thus fewer files. Users may now wish to tune these settings when using exclusively S3 storage.
 
-## S3 Backed MergeTree {#s3-backed-mergetree}
+## S3 backed MergeTree {#s3-backed-mergetree}
 
 The `s3` functions and associated table engine allow us to query data in S3 using familiar ClickHouse syntax. However, concerning data management features and performance, they are limited. There is no support for primary indexes, no-cache support, and files inserts need to be managed by the user.
 
@@ -544,7 +544,7 @@ ClickHouse storage volumes allow physical disks to be abstracted from the MergeT
 
 Storage tiers unlock hot-cold architectures where the most recent data, which is typically also the most queried, requires only a small amount of space on high-performing storage, e.g., NVMe SSDs. As the data ages, SLAs for query times increase, as does query frequency. This fat tail of data can be stored on slower, less performant storage such as HDD or object storage such as S3.
 
-### Creating a Disk {#creating-a-disk}
+### Creating a disk {#creating-a-disk}
 
 To utilize an S3 bucket as a disk, we must first declare it within the ClickHouse configuration file. Either extend config.xml or preferably provide a new file under conf.d. An example of an S3 disk declaration is shown below:
 
@@ -576,7 +576,7 @@ To utilize an S3 bucket as a disk, we must first declare it within the ClickHous
 
 A complete list of settings relevant to this disk declaration can be found [here](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3). Note that credentials can be managed here using the same approaches described in [Managing credentials](#managing-credentials), i.e., the use_environment_credentials can be set to true in the above settings block to use IAM roles.
 
-### Creating a Storage Policy {#creating-a-storage-policy}
+### Creating a storage policy {#creating-a-storage-policy}
 
 Once configured, this "disk" can be used by a storage volume declared within a policy. For the example below, we assume s3 is our only storage. This ignores more complex hot-cold architectures where data can be relocated based on TTLs and fill rates.
 
@@ -641,7 +641,7 @@ Depending on the hardware, this latter insert of 1m rows may take a few minutes 
 SELECT passenger_count, avg(tip_amount) AS avg_tip, avg(total_amount) AS avg_amount FROM trips_s3 GROUP BY passenger_count;
 ```
 
-### Modifying a Table {#modifying-a-table}
+### Modifying a table {#modifying-a-table}
 
 Occasionally users may need to modify the storage policy of a specific table. Whilst this is possible, it comes with limitations. The new target policy must contain all of the disks and volumes of the previous policy, i.e., data will not be migrated to satisfy a policy change. When validating these constraints, volumes and disks will be identified by their name, with attempts to violate resulting in an error. However, assuming you use the previous examples, the following changes are valid.
 
@@ -674,11 +674,11 @@ ALTER TABLE trips_s3 MODIFY SETTING storage_policy='s3_tiered'
 
 Here we reuse the main volume in our new s3_tiered policy and introduce a new hot volume. This uses the default disk, which consists of only one disk configured via the parameter `<path>`. Note that our volume names and disks do not change.  New inserts to our table will reside on the default disk until this reaches move_factor * disk_size - at which data will be relocated to S3.
 
-### Handling Replication {#handling-replication}
+### Handling replication {#handling-replication}
 
 Replication with S3 disks can be accomplished by using the `ReplicatedMergeTree` table engine.  See the [replicating a single shard across two AWS regions using S3 Object Storage](#s3-multi-region) guide for details.
 
-### Read & Writes {#read--writes}
+### Read & writes {#read--writes}
 
 The following notes cover the implementation of S3 interactions with ClickHouse. Whilst generally only informative, it may help the readers when [Optimizing for Performance](#s3-optimizing-performance):
 
@@ -687,7 +687,7 @@ The following notes cover the implementation of S3 interactions with ClickHouse.
 * Writes are performed in parallel, with a maximum of 100 concurrent file writing threads. `max_insert_delayed_streams_for_parallel_write`, which has a default value of 1000,  controls the number of S3 blobs written in parallel. Since a buffer is required for each file being written (~1MB), this effectively limits the memory consumption of an INSERT. It may be appropriate to lower this value in low server memory scenarios.
 
 
-## Use S3 Object Storage as a ClickHouse disk {#configuring-s3-for-clickhouse-use}
+## Use S3 object storage as a ClickHouse disk {#configuring-s3-for-clickhouse-use}
 
 If you need step-by-step instructions to create buckets and an IAM role, then expand **Create S3 buckets and an IAM role** and follow along:
 
@@ -847,7 +847,7 @@ Deploy ClickHouse Keeper on three hosts, in the sample configurations these are 
 
 Refer to the [installation instructions](/getting-started/install/install.mdx) when performing the deployment steps on the ClickHouse Keeper nodes.
 
-### Create S3 Buckets {#create-s3-buckets}
+### Create S3 buckets {#create-s3-buckets}
 
 Create two S3 buckets, one in each of the regions that you have placed `chnode1` and `chnode2`.
 
@@ -952,7 +952,7 @@ sudo -u clickhouse \
   cp keeper.xml /etc/clickhouse-keeper/keeper.xml
 ```
 
-### Configure ClickHouse Server {#configure-clickhouse-server}
+### Configure ClickHouse server {#configure-clickhouse-server}
 
 #### Define a cluster {#define-a-cluster}
 
@@ -1088,7 +1088,7 @@ zk_synced_followers     2
 # highlight-end
 ```
 
-#### Run ClickHouse Server {#run-clickhouse-server}
+#### Run ClickHouse server {#run-clickhouse-server}
 
 On each ClickHouse server run
 
@@ -1096,7 +1096,7 @@ On each ClickHouse server run
 sudo service clickhouse-server start
 ```
 
-#### Verify ClickHouse Server {#verify-clickhouse-server}
+#### Verify ClickHouse server {#verify-clickhouse-server}
 
 When you added the [cluster configuration](#define-a-cluster) a single shard replicated across the two ClickHouse nodes was defined.  In this verification step you will check that the cluster was built when ClickHouse was started, and you will create a replicated table using that cluster.
 - Verify that the cluster exists:

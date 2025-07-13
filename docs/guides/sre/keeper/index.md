@@ -160,7 +160,7 @@ If you don't have the symlink (`clickhouse-keeper`) you can create it or specify
 clickhouse keeper --config /etc/your_path_to_config/config.xml
 ```
 
-### Four Letter Word Commands {#four-letter-word-commands}
+### Four letter word commands {#four-letter-word-commands}
 
 ClickHouse Keeper also provides 4lw commands which are almost the same with Zookeeper. Each command is composed of four letters such as `mntr`, `stat` etc. There are some more interesting commands: `stat` gives some general information about the server and connected clients, while `srvr` and `cons` give extended details on server and connections respectively.
 
@@ -409,7 +409,7 @@ AIOWriteBytes   0       Number of bytes written with Linux or FreeBSD AIO interf
 ...
 ```
 
-### HTTP Control {#http-control}
+### HTTP control {#http-control}
 
 ClickHouse Keeper provides an HTTP interface to check if a replica is ready to receive traffic. It may be used in cloud environments, such as [Kubernetes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes).
 
@@ -679,11 +679,11 @@ curl 127.0.0.1:9363/metrics
 
 Please also see the ClickHouse Cloud [Prometheus integration](/integrations/prometheus).
 
-## ClickHouse Keeper User Guide {#clickhouse-keeper-user-guide}
+## ClickHouse Keeper user guide {#clickhouse-keeper-user-guide}
 
 This guide provides simple and minimal settings to configure ClickHouse Keeper with an example on how to test distributed operations. This example is performed using 3 nodes on Linux.
 
-### 1. Configure Nodes with Keeper settings {#1-configure-nodes-with-keeper-settings}
+### 1. Configure nodes with Keeper settings {#1-configure-nodes-with-keeper-settings}
 
 1. Install 3 ClickHouse instances on 3 hosts (`chnode1`, `chnode2`, `chnode3`). (View the [Quick Start](/getting-started/install/install.mdx) for details on installing ClickHouse.)
 
@@ -954,7 +954,7 @@ this avoids having to wait several minutes for Keeper garbage collection
 to remove path entries as each time a path is created a new `uuid` is used
 in that path; paths are never reused.
 
-### Example Environment {#example-environment}
+### Example environment {#example-environment}
 A three node cluster that will be configured to have ClickHouse Keeper
 on all three nodes, and ClickHouse on two of the nodes. This provides
 ClickHouse Keeper with three nodes (including a tiebreaker node), and
@@ -1347,7 +1347,7 @@ Sometimes it's necessary to extend experimental keeper node into a cluster. Here
 
 To get confident with the process, here's a [sandbox repository](https://github.com/ClickHouse/keeper-extend-cluster).
 
-## Unsupported Features {#unsupported-features}
+## Unsupported features {#unsupported-features}
 
 While ClickHouse Keeper aims to be fully compatible with ZooKeeper, there are some features that are currently not implemented (although development is ongoing):
 

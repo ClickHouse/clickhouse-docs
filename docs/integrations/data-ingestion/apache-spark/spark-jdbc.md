@@ -347,7 +347,7 @@ reading in parallel from multiple workers.
 Please visit Apache Spark's official documentation for more information
 on [JDBC configurations](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option).
 
-## JDBC Limitations {#jdbc-limitations}
+## JDBC limitations {#jdbc-limitations}
 
 * As of today, you can insert data using JDBC only into existing tables (currently there is no way to auto create the
   table on DF insertion, as Spark does with other connectors).
