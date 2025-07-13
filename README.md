@@ -2,7 +2,7 @@
 
 [![Website](https://img.shields.io/website?up_message=AVAILABLE&down_message=DOWN&url=https%3A%2F%2Fclickhouse.com%2Fdocs&style=for-the-badge)](https://clickhouse.com)
 [![CC BY-NC-SA 4.0 License](https://img.shields.io/badge/license-CC-blueviolet?style=for-the-badge)](http://creativecommons.org/licenses/by-nc-sa/4.0/)
-![Checks](https://img.shields.io/github/actions/workflow/status/clickhouse/clickhouse-docs/debug.yml?style=for-the-badge&label=Checks)
+[![Checks](https://img.shields.io/github/actions/workflow/status/clickhouse/clickhouse-docs/debug.yml?style=for-the-badge&label=Checks)](https://github.com/ClickHouse/clickhouse-docs/actions)
 
 <picture align=center>
     <source media="(prefers-color-scheme: dark)" srcset="https://github.com/ClickHouse/clickhouse-docs/assets/9611008/4ef9c104-2d3f-4646-b186-507358d2fe28">
@@ -196,10 +196,10 @@ Have you noticed a typo or found some wonky formatting? For small contributions 
 
 At this point, your pull request will be handed over to the docs team, who will review it and suggest or make changes where necessary.
 
-## Issues {#issues}
+## Issues
 
 Found a problem with the Clickhouse docs site? [Please raise an issue](https://github.com/clickhouse/clickhouse-docs/issues/new). Be as specific and descriptive as possible; screenshots help!
 
-## License {#license}
+## License
 
 This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
