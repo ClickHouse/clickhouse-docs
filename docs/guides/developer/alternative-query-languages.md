@@ -14,7 +14,7 @@ The currently supported dialects are:
 - `prql`: [Pipelined Relational Query Language (PRQL)](https://prql-lang.org/)
 - `kusto`: [Kusto Query Language (KQL)](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query)
 
-Which query language is used is controlled by setting `dialect`.
+    Which query language is used is controlled by setting `dialect`.
 
 ## Standard SQL {#standard-sql}
 
@@ -36,7 +36,6 @@ SET dialect = 'prql'
 ```
 
 Example PRQL query:
-
 
 ```prql
 from trips

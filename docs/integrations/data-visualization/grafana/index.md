@@ -71,7 +71,7 @@ Before Grafana can connect to ClickHouse, you need to install the appropriate Gr
 
 2. Either scroll down and find the **ClickHouse** data source type, or you can search for it in the search bar of the **Add data source** page. Select the **ClickHouse** data source and the following page will appear:
 
-  <Image size="md" img={quick_config} alt="Connection configuration page" border />
+    <Image size="md" img={quick_config} alt="Connection configuration page" border />
 
 3. Enter your server settings and credentials. The key settings are:
 
@@ -81,7 +81,7 @@ Before Grafana can connect to ClickHouse, you need to install the appropriate Gr
 - **Secure connection** enable if your server requires a secure connection.
 - **Username** and **Password**: enter your ClickHouse user credentials. If you have not configured any users, try `default` for the username. It is recommended to [configure a read-only user](#2-making-a-read-only-user).
 
-For more settings, check the [plugin configuration](./config.md) documentation.
+    For more settings, check the [plugin configuration](./config.md) documentation.
 
 4. Click the **Save & test** button to verify that Grafana can connect to your ClickHouse service. If successful, you will see a **Data source is working** message:
 

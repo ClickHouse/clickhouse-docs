@@ -58,15 +58,15 @@ We're going to query ClickPy using the `remoteSecure` function.
 This function takes in a host name, table name, and username at a minimum.
 
 We can write the following query to return the number of downloads per day of the [`openai` package](https://clickpy.clickhouse.com/dashboard/openai) as a Pandas DataFrame:
- 
+
 ```python
 query = """
 SELECT
     toStartOfDay(date)::Date32 AS x,
     sum(count) AS y
 FROM remoteSecure(
-  'clickpy-clickhouse.clickhouse.com', 
-  'pypi.pypi_downloads_per_day', 
+  'clickpy-clickhouse.clickhouse.com',
+  'pypi.pypi_downloads_per_day',
   'play'
 )
 WHERE project = 'openai'
@@ -94,15 +94,14 @@ openai_df.sort_values(by=["x"], ascending=False).head(n=10)
 
 Now let's do the same to return the downloads for [`scikit-learn`](https://clickpy.clickhouse.com/dashboard/scikit-learn):
 
-
 ```python
 query = """
 SELECT
     toStartOfDay(date)::Date32 AS x,
     sum(count) AS y
 FROM remoteSecure(
-  'clickpy-clickhouse.clickhouse.com', 
-  'pypi.pypi_downloads_per_day', 
+  'clickpy-clickhouse.clickhouse.com',
+  'pypi.pypi_downloads_per_day',
   'play'
 )
 WHERE project = 'scikit-learn'
@@ -134,8 +133,8 @@ We now have two DataFrames, which we can merge together based on date (which is 
 
 ```python
 df = openai_df.merge(
-  sklearn_df, 
-  on="x", 
+  sklearn_df,
+  on="x",
   suffixes=("_openai", "_sklearn")
 )
 df.head(n=5)
@@ -168,7 +167,7 @@ df.head(n=5)
 
 ## Querying Pandas DataFrames {#querying-pandas-dataframes}
 
-Next, let's say we want to find the dates with the best and worst ratios. 
+Next, let's say we want to find the dates with the best and worst ratios.
 We can go back to chDB and compute those values:
 
 ```python

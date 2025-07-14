@@ -20,7 +20,6 @@ import cp_destination from '@site/static/images/integrations/data-ingestion/clic
 import cp_overview from '@site/static/images/integrations/data-ingestion/clickpipes/cp_overview.png';
 import Image from '@theme/IdealImage';
 
-
 # Integrating Amazon Kinesis with ClickHouse Cloud
 ## Prerequisite {#prerequisite}
 You have familiarized yourself with the [ClickPipes intro](./index.md) and setup [IAM credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) or an [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html). Follow the [Kinesis Role-Based Access guide](./secure-kinesis.md) for information on how to setup a role that works with ClickHouse Cloud.
@@ -29,60 +28,59 @@ You have familiarized yourself with the [ClickPipes intro](./index.md) and setup
 
 1. Access the SQL Console for your ClickHouse Cloud Service.
 
-<Image img={cp_service} alt="ClickPipes service" size="lg" border/>
+    <Image img={cp_service} alt="ClickPipes service" size="lg" border/>
 
 2. Select the `Data Sources` button on the left-side menu and click on "Set up a ClickPipe"
 
-<Image img={cp_step0} alt="Select imports" size="lg" border/>
+    <Image img={cp_step0} alt="Select imports" size="lg" border/>
 
 3. Select your data source.
 
-<Image img={cp_step1} alt="Select data source type" size="lg" border/>
+    <Image img={cp_step1} alt="Select data source type" size="lg" border/>
 
 4. Fill out the form by providing your ClickPipe with a name, a description (optional), your IAM role or credentials, and other connection details.
 
-<Image img={cp_step2_kinesis} alt="Fill out connection details" size="lg" border/>
+    <Image img={cp_step2_kinesis} alt="Fill out connection details" size="lg" border/>
 
 5. Select Kinesis Stream and starting offset. The UI will display a sample document from the selected source (Kafka topic, etc). You can also enable Enhanced Fan-out for Kinesis streams to improve the performance and stability of your ClickPipe (More information on Enhanced Fan-out can be found [here](https://aws.amazon.com/blogs/aws/kds-enhanced-fanout))
 
-<Image img={cp_step3_kinesis} alt="Set data format and topic" size="lg" border/>
+    <Image img={cp_step3_kinesis} alt="Set data format and topic" size="lg" border/>
 
 6. In the next step, you can select whether you want to ingest data into a new ClickHouse table or reuse an existing one. Follow the instructions in the screen to modify your table name, schema, and settings. You can see a real-time preview of your changes in the sample table at the top.
 
-<Image img={cp_step4a} alt="Set table, schema, and settings" size="lg" border/>
+    <Image img={cp_step4a} alt="Set table, schema, and settings" size="lg" border/>
 
-  You can also customize the advanced settings using the controls provided
+    You can also customize the advanced settings using the controls provided
 
-<Image img={cp_step4a3} alt="Set advanced controls" size="lg" border/>
+    <Image img={cp_step4a3} alt="Set advanced controls" size="lg" border/>
 
 7. Alternatively, you can decide to ingest your data in an existing ClickHouse table. In that case, the UI will allow you to map fields from the source to the ClickHouse fields in the selected destination table.
 
-<Image img={cp_step4b} alt="Use an existing table" size="lg" border/>
+    <Image img={cp_step4b} alt="Use an existing table" size="lg" border/>
 
 8. Finally, you can configure permissions for the internal ClickPipes user.
 
-  **Permissions:** ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user using a custom role or one of the predefined role:
+    **Permissions:** ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user using a custom role or one of the predefined role:
     - `Full access`: with the full access to the cluster. It might be useful if you use materialized view or Dictionary with the destination table.
     - `Only destination table`: with the `INSERT` permissions to the destination table only.
 
-<Image img={cp_step5} alt="Permissions" border/>
+    <Image img={cp_step5} alt="Permissions" border/>
 
 9. By clicking on "Complete Setup", the system will register you ClickPipe, and you'll be able to see it listed in the summary table.
 
-<Image img={cp_success} alt="Success notice" size="sm" border/>
+    <Image img={cp_success} alt="Success notice" size="sm" border/>
 
-<Image img={cp_remove} alt="Remove notice" size="lg" border/>
+    <Image img={cp_remove} alt="Remove notice" size="lg" border/>
 
-  The summary table provides controls to display sample data from the source or the destination table in ClickHouse
+    The summary table provides controls to display sample data from the source or the destination table in ClickHouse
 
-<Image img={cp_destination} alt="View destination" size="lg" border/>
+    <Image img={cp_destination} alt="View destination" size="lg" border/>
 
-  As well as controls to remove the ClickPipe and display a summary of the ingest job.
+    As well as controls to remove the ClickPipe and display a summary of the ingest job.
 
-<Image img={cp_overview} alt="View overview" size="lg" border/>
+    <Image img={cp_overview} alt="View overview" size="lg" border/>
 
 10. **Congratulations!** you have successfully set up your first ClickPipe. If this is a streaming ClickPipe it will be continuously running, ingesting data in real-time from your remote data source. Otherwise it will ingest the batch and complete.
-
 
 ## Supported data formats {#supported-data-formats}
 
@@ -109,7 +107,7 @@ The following ClickHouse data types are currently supported in ClickPipes:
 - all ClickHouse LowCardinality types
 - Map with keys and values using any of the above types (including Nullables)
 - Tuple and Array with elements using any of the above types (including Nullables, one level depth only)
-- 
+-
 ### Variant type support (experimental) {#variant-type-support}
 Variant type support is automatic if your Cloud service is running ClickHouse 25.3 or later.  Otherwise, you will
 have to submit a support ticket to enable it on your service.
@@ -123,7 +121,7 @@ JSON type support is automatic if your Cloud service is running ClickHouse 25.3 
 have to submit a support ticket to enable it on your service.
 
 JSON fields that are always a JSON object can be assigned to a JSON destination column.  You will have to manually change the destination
-column to the desired JSON type, including any fixed or skipped paths. 
+column to the desired JSON type, including any fixed or skipped paths.
 
 ## Kinesis virtual columns {#kinesis-virtual-columns}
 

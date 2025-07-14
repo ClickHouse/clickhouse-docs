@@ -13,73 +13,62 @@ Latest JDBC (0.7.2) version uses Client-V1
 
 - [OpenJDK](https://openjdk.java.net) version >= 8
 
-
 ### Setup {#setup}
 
 <Tabs groupId="client-v1-compression-deps">
-    <TabItem value="maven" label="Maven">
-
-        ```xml
-        <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
-        <dependency>
-            <groupId>com.clickhouse</groupId>
-            <artifactId>clickhouse-jdbc</artifactId>
-            <version>0.7.2</version>
-            <!-- use uber jar with all dependencies included, change classifier to http for smaller jar -->
-            <classifier>shaded-all</classifier>
-        </dependency>
-        ```
-
-    </TabItem>
-    <TabItem value="gradle-kt" label="Gradle (Kotlin)">
-
-        ```kotlin
-        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-        // use uber jar with all dependencies included, change classifier to http for smaller jar
-        implementation("com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all")
-        ```
-    </TabItem>
-    <TabItem value="gradle" label="Gradle">
-
-        ```groovy
-        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-        // use uber jar with all dependencies included, change classifier to http for smaller jar
-        implementation 'com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all'
-        ```
-
-    </TabItem>
+<TabItem value="maven" label="Maven">
+```xml
+<!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
+<dependency>
+<groupId>com.clickhouse</groupId>
+<artifactId>clickhouse-jdbc</artifactId>
+<version>0.7.2</version>
+<!-- use uber jar with all dependencies included, change classifier to http for smaller jar -->
+<classifier>shaded-all</classifier>
+</dependency>
+```
+</TabItem>
+<TabItem value="gradle-kt" label="Gradle (Kotlin)">
+```kotlin
+// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+// use uber jar with all dependencies included, change classifier to http for smaller jar
+implementation("com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all")
+```
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+```groovy
+// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+// use uber jar with all dependencies included, change classifier to http for smaller jar
+implementation 'com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all'
+```
+</TabItem>
 </Tabs>
 
 Since version `0.5.0`, we are using Apache HTTP Client that's packed the Client. Since there is not a shared version of the package, you need to add a logger as a dependency.
 
 <Tabs groupId="client-v1-compression-deps">
-    <TabItem value="maven" label="Maven" >
-
-        ```xml
-        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>2.0.16</version>
-        </dependency>
-        ```
-
-    </TabItem>
-    <TabItem value="gradle-kt" label="Gradle (Kotlin)">
-
-        ```kotlin
-        // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-        implementation("org.slf4j:slf4j-api:2.0.16")
-        ```
-    </TabItem>
-    <TabItem value="gradle" label="Gradle">
-
-        ```groovy
-        // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-        implementation 'org.slf4j:slf4j-api:2.0.16'
-        ```
-
-    </TabItem>
+<TabItem value="maven" label="Maven" >
+```xml
+<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+<dependency>
+<groupId>org.slf4j</groupId>
+<artifactId>slf4j-api</artifactId>
+<version>2.0.16</version>
+</dependency>
+```
+</TabItem>
+<TabItem value="gradle-kt" label="Gradle (Kotlin)">
+```kotlin
+// https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+implementation("org.slf4j:slf4j-api:2.0.16")
+```
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+```groovy
+// https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+implementation 'org.slf4j:slf4j-api:2.0.16'
+```
+</TabItem>
 </Tabs>
 
 ## Configuration {#configuration}
@@ -92,20 +81,20 @@ Since version `0.5.0`, we are using Apache HTTP Client that's packed the Client.
 - `jdbc:ch:https://localhost` is same as `jdbc:clickhouse:http://localhost:8443?ssl=true&sslmode=STRICT`
 - `jdbc:ch:grpc://localhost` is same as `jdbc:clickhouse:grpc://localhost:9100`
 
-**Connection Properties**:
+    **Connection Properties**:
 
-| Property                 | Default | Description                                                                                                                                                                                                                                                                                                                                                                                                                |
-| ------------------------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `continueBatchOnError`     | `false` | Whether to continue batch processing when error occurred                                                                                                                                                                                                                                                                                                                                                                   |
-| `createDatabaseIfNotExist` | `false` | Whether to create database if it does not exist                                                                                                                                                                                                                                                                                                                                                                            |
-| `custom_http_headers`      |         | comma separated custom http headers, for example: `User-Agent=client1,X-Gateway-Id=123`                                                                                                                                                                                                                                                                                                                                    |
-| `custom_http_params`       |         | comma separated custom http query parameters, for example: `extremes=0,max_result_rows=100`                                                                                                                                                                                                                                                                                                                                |
-| `nullAsDefault`            | `0`     | `0` - treat null value as is and throw exception when inserting null into non-nullable column; `1` - treat null value as is and disable null-check for inserting; `2` - replace null to default value of corresponding data type for both query and insert                                                                                                                                                                 |
-| `jdbcCompliance`           | `true`  | Whether to support standard synchronous UPDATE/DELETE and fake transaction                                                                                                                                                                                                                                                                                                                                                 |
-| `typeMappings`             |         | Customize mapping between ClickHouse data type and Java class, which will affect result of both [`getColumnType()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSetMetaData.html#getColumnType-int-) and [`getObject(Class<>?>`)](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-java.lang.String-java.lang.Class-). For example: `UInt128=java.lang.String,UInt256=java.lang.String` |
-| `wrapperObject`            | `false` | Whether [`getObject()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-int-) should return java.sql.Array / java.sql.Struct for Array / Tuple.                                                                                                                                                                                                                                                  |
+    | Property                 | Default | Description                                                                                                                                                                                                                                                                                                                                                                                                                |
+    | ------------------------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | `continueBatchOnError`     | `false` | Whether to continue batch processing when error occurred                                                                                                                                                                                                                                                                                                                                                                   |
+    | `createDatabaseIfNotExist` | `false` | Whether to create database if it does not exist                                                                                                                                                                                                                                                                                                                                                                            |
+    | `custom_http_headers`      |         | comma separated custom http headers, for example: `User-Agent=client1,X-Gateway-Id=123`                                                                                                                                                                                                                                                                                                                                    |
+    | `custom_http_params`       |         | comma separated custom http query parameters, for example: `extremes=0,max_result_rows=100`                                                                                                                                                                                                                                                                                                                                |
+    | `nullAsDefault`            | `0`     | `0` - treat null value as is and throw exception when inserting null into non-nullable column; `1` - treat null value as is and disable null-check for inserting; `2` - replace null to default value of corresponding data type for both query and insert                                                                                                                                                                 |
+    | `jdbcCompliance`           | `true`  | Whether to support standard synchronous UPDATE/DELETE and fake transaction                                                                                                                                                                                                                                                                                                                                                 |
+    | `typeMappings`             |         | Customize mapping between ClickHouse data type and Java class, which will affect result of both [`getColumnType()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSetMetaData.html#getColumnType-int-) and [`getObject(Class<>?>`)](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-java.lang.String-java.lang.Class-). For example: `UInt128=java.lang.String,UInt256=java.lang.String` |
+    | `wrapperObject`            | `false` | Whether [`getObject()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-int-) should return java.sql.Array / java.sql.Struct for Array / Tuple.                                                                                                                                                                                                                                                  |
 
-Note: please refer to [JDBC specific configuration](https://github.com/ClickHouse/clickhouse-java/blob/main/clickhouse-jdbc/src/main/java/com/clickhouse/jdbc/JdbcConfig.java) for more.
+    Note: please refer to [JDBC specific configuration](https://github.com/ClickHouse/clickhouse-java/blob/main/clickhouse-jdbc/src/main/java/com/clickhouse/jdbc/JdbcConfig.java) for more.
 
 ## Supported data types {#supported-data-types}
 
@@ -116,7 +105,7 @@ JDBC Driver supports same data formats as client library does.
 - Decimal - `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency
 - Enum - can be treated as both string and integer
 - UInt64 - mapped to `long` (in client-v1)
-:::
+    :::
 
 ## Creating Connection {#creating-connection}
 
@@ -148,19 +137,19 @@ try (Connection conn = dataSource.getConnection(...);
 
 :::note
 - Use `PreparedStatement` instead of `Statement`
-:::
+    :::
 
-It's easier to use but slower performance compare to input function (see below):
+    It's easier to use but slower performance compare to input function (see below):
 
-```java showLineNumbers
-try (PreparedStatement ps = conn.prepareStatement("insert into mytable(* except (description))")) {
+    ```java showLineNumbers
+    try (PreparedStatement ps = conn.prepareStatement("insert into mytable(* except (description))")) {
     ps.setString(1, "test"); // id
     ps.setObject(2, LocalDateTime.now()); // timestamp
     ps.addBatch(); // parameters will be write into buffered stream immediately in binary format
     ...
     ps.executeBatch(); // stream everything on-hand into ClickHouse
-}
-```
+    }
+    ```
 
 ### With input table function {#with-input-table-function}
 
@@ -224,21 +213,21 @@ try (ClickHouseConnection conn = newConnection(props);
                 "insert into test_batch_input select id, name, value from input('id Int32, name Nullable(String), desc Nullable(String), value AggregateFunction(groupBitmap, UInt32)')")) {
     s.execute("drop table if exists test_batch_input;"
             + "create table test_batch_input(id Int32, name Nullable(String), value AggregateFunction(groupBitmap, UInt32))engine=Memory");
-    Object[][] objs = new Object[][] {
-            new Object[] { 1, "a", "aaaaa", ClickHouseBitmap.wrap(1, 2, 3, 4, 5) },
-            new Object[] { 2, "b", null, ClickHouseBitmap.wrap(6, 7, 8, 9, 10) },
-            new Object[] { 3, null, "33333", ClickHouseBitmap.wrap(11, 12, 13) }
-    };
-    for (Object[] v : objs) {
-        stmt.setInt(1, (int) v[0]);
-        stmt.setString(2, (String) v[1]);
-        stmt.setString(3, (String) v[2]);
-        stmt.setObject(4, v[3]);
-        stmt.addBatch();
-    }
-    int[] results = stmt.executeBatch();
-    ...
-}
+                Object[][] objs = new Object[][] {
+                new Object[] { 1, "a", "aaaaa", ClickHouseBitmap.wrap(1, 2, 3, 4, 5) },
+                new Object[] { 2, "b", null, ClickHouseBitmap.wrap(6, 7, 8, 9, 10) },
+                new Object[] { 3, null, "33333", ClickHouseBitmap.wrap(11, 12, 13) }
+                };
+                for (Object[] v : objs) {
+                stmt.setInt(1, (int) v[0]);
+                stmt.setString(2, (String) v[1]);
+                stmt.setString(3, (String) v[2]);
+                stmt.setObject(4, v[3]);
+                stmt.addBatch();
+                }
+                int[] results = stmt.executeBatch();
+                ...
+                }
 
 // use bitmap as query parameter
 try (PreparedStatement stmt = conn.prepareStatement(
@@ -255,8 +244,6 @@ try (PreparedStatement stmt = conn.prepareStatement(
     Assert.assertFalse(rs.next());
 }
 ```
-
-<br/>
 
 ## Configuring HTTP library {#configuring-http-library}
 
@@ -356,33 +343,33 @@ On Linux, the equivalent settings alone may not resolve the issue. Additional st
 
 2. After modifying the kernel parameters, apply the changes by running the following command:
 
-```shell
-sudo sysctl -p
-   ```
+    ```shell
+    sudo sysctl -p
+    ```
 
-After Setting those settings, you need to ensure that your client enables the Keep Alive option on the socket:
+    After Setting those settings, you need to ensure that your client enables the Keep Alive option on the socket:
 
-```java
-properties.setProperty("socket_keepalive", "true");
-```
+    ```java
+    properties.setProperty("socket_keepalive", "true");
+    ```
 
-:::note
-Currently, you must use Apache HTTP Client library when setting the socket keep-alive, as the other two HTTP client libraries supported by `clickhouse-java` do not allow setting socket options. For a detailed guide, see [Configuring HTTP library](/integrations/language-clients/java/jdbc-v1#configuring-http-library).
-:::
+    :::note
+    Currently, you must use Apache HTTP Client library when setting the socket keep-alive, as the other two HTTP client libraries supported by `clickhouse-java` do not allow setting socket options. For a detailed guide, see [Configuring HTTP library](/integrations/language-clients/java/jdbc-v1#configuring-http-library).
+    :::
 
-Alternatively, you can add equivalent parameters to the JDBC URL.
+    Alternatively, you can add equivalent parameters to the JDBC URL.
 
-The default socket and connection timeout for the JDBC driver is 30 seconds. The timeout can be increased to support large data insert operations. Use the `options` method on `ClickHouseClient` together with the `SOCKET_TIMEOUT` and `CONNECTION_TIMEOUT` options as defined by `ClickHouseClientOption`:
+    The default socket and connection timeout for the JDBC driver is 30 seconds. The timeout can be increased to support large data insert operations. Use the `options` method on `ClickHouseClient` together with the `SOCKET_TIMEOUT` and `CONNECTION_TIMEOUT` options as defined by `ClickHouseClientOption`:
 
-```java showLineNumbers
-final int MS_12H = 12 * 60 * 60 * 1000; // 12 h in ms
-final String sql = "insert into table_a (c1, c2, c3) select c1, c2, c3 from table_b;";
+    ```java showLineNumbers
+    final int MS_12H = 12 * 60 * 60 * 1000; // 12 h in ms
+    final String sql = "insert into table_a (c1, c2, c3) select c1, c2, c3 from table_b;";
 
-try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP)) {
+    try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP)) {
     client.read(servers).write()
         .option(ClickHouseClientOption.SOCKET_TIMEOUT, MS_12H)
         .option(ClickHouseClientOption.CONNECTION_TIMEOUT, MS_12H)
         .query(sql)
         .executeAndWait();
-}
-```
+    }
+    ```

@@ -70,11 +70,11 @@ The returned array contains the following quantiles in order:
 - 1.0 (maximum)
 
 ```response title="Response"
-   ┌─endpoint─┬─response_time_quantiles─────────────────────────────────────────────┐
-1. │ orders   │ [82, 87, 92, 98, 103, 104, 105]                                     │
-2. │ products │ [45, 47, 49, 51, 52, 52, 53]                                        │
-3. │ users    │ [nan, nan, nan, nan, nan, nan, nan]                                 │
-   └──────────┴─────────────────────────────────────────────────────────────────────┘
+    ┌─endpoint─┬─response_time_quantiles─────────────────────────────────────────────┐
+ 1. │ orders   │ [82, 87, 92, 98, 103, 104, 105]                                     │
+ 2. │ products │ [45, 47, 49, 51, 52, 52, 53]                                        │
+ 3. │ users    │ [nan, nan, nan, nan, nan, nan, nan]                                 │
+    └──────────┴─────────────────────────────────────────────────────────────────────┘
 ```
 
 ## See also {#see-also}

@@ -83,13 +83,13 @@ ingress:
     kubernetes.io/ingress.class: nginx
   hosts:
     - host: hyperdx.example.com
-      paths:
+        paths:
         - path: /
           pathType: ImplementationSpecific
-  env:
+        env:
     - name: CLICKHOUSE_USER
-      value: abc
-```
+        value: abc
+        ```
 
 ## HyperDX {#hyperdx}
 
@@ -102,19 +102,19 @@ HyperDX relies on the user defining a source for each of the Observability data 
 - `Metrics`
 - `Sessions`
 
-This configuration can be performed inside the application from `Team Settings -> Sources`, as shown below for logs:
+    This configuration can be performed inside the application from `Team Settings -> Sources`, as shown below for logs:
 
-<Image img={hyperdx_25} alt="HyperDX Source configuration" size="lg"/>
+    <Image img={hyperdx_25} alt="HyperDX Source configuration" size="lg"/>
 
-Each of these sources require at least one table specified on creation as well as a set of columns which allow HyperDX to query the data.
+    Each of these sources require at least one table specified on creation as well as a set of columns which allow HyperDX to query the data.
 
-If using the [default OpenTelemetry (OTel) schema](/observability/integrating-opentelemetry#out-of-the-box-schema) distributed with ClickStack, these columns can be automatically inferred for each of the sources. If [modifying the schema](#clickhouse) or using a custom schema, users are required to specify and update these mappings.
+    If using the [default OpenTelemetry (OTel) schema](/observability/integrating-opentelemetry#out-of-the-box-schema) distributed with ClickStack, these columns can be automatically inferred for each of the sources. If [modifying the schema](#clickhouse) or using a custom schema, users are required to specify and update these mappings.
 
-:::note
-The default schema for ClickHouse distributed with ClickStack is the schema created by the [ClickHouse exporter for the OTel collector](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter). These column names correlate with the OTel official specification documented [here](https://opentelemetry.io/docs/specs/otel/logs/data-model/).
-:::
+    :::note
+    The default schema for ClickHouse distributed with ClickStack is the schema created by the [ClickHouse exporter for the OTel collector](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter). These column names correlate with the OTel official specification documented [here](https://opentelemetry.io/docs/specs/otel/logs/data-model/).
+    :::
 
-The following settings are available for each source:
+    The following settings are available for each source:
 
 #### Logs {#logs}
 
@@ -167,8 +167,6 @@ The following settings are available for each source:
 | `Span Events Expression`        | Expression to extract span events. Typically a `Nested` type column. This allows rendering of exception stack traces with supported language SDKs.                                                   | Yes      | Yes                         | `Events`                 |
 | `Implicit Column Expression`   | Column used for full-text search if no field is specified (Lucene-style). Typically the log body.  | Yes  | Yes  | `SpanName`|
 
-
-
 #### Metrics {#metrics}
 
 | Setting               | Description                                                                                   | Required | Inferred in Default Schema | Inferred Value              |
@@ -205,18 +203,18 @@ To enable full cross-source correlation in ClickStack, users must configure corr
 - `Metrics`: Can be correlated with logs.
 - `Sessions`: Can be correlated with traces.
 
-By setting these correlations, HyperDX can, for example, render relevant logs alongside a trace or surface metric anomalies linked to a session. Proper configuration ensures a unified and contextual observability experience.
+    By setting these correlations, HyperDX can, for example, render relevant logs alongside a trace or surface metric anomalies linked to a session. Proper configuration ensures a unified and contextual observability experience.
 
-For example, below is the Logs source configured with correlated sources:
+    For example, below is the Logs source configured with correlated sources:
 
-<Image img={hyperdx_26} alt="HyperDX Source correlated" size="md"/>
+    <Image img={hyperdx_26} alt="HyperDX Source correlated" size="md"/>
 
 ### Application configuration settings {#application-configuration-settings}
 
 - `HYPERDX_API_KEY`
     - **Default:** None (required)
     - **Description:** Authentication key for the HyperDX API.
-    - **Guidance:** 
+    - **Guidance:**
     - Required for telemetry and logging
     - In local development, can be any non-empty value
     - For production, use a secure, unique key
@@ -342,52 +340,51 @@ For example, below is the Logs source configured with correlated sources:
     - **Guidance:**
     - Set to `true` to enable JSON support in ClickStack.
 
-
 ## OpenTelemetry collector {#otel-collector}
 
 See ["ClickStack OpenTelemetry Collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector) for more details.
 
-- `CLICKHOUSE_ENDPOINT`  
-  - **Default:** *None (required)* if standalone image. If All-in-one or Docker Compose distribution this is set to the integrated ClickHouse instance.
-  - **Description:** The HTTPS URL of the ClickHouse instance to export telemetry data to.  
-  - **Guidance:**  
-    - Must be a full HTTPS endpoint including port (e.g., `https://clickhouse.example.com:8443`)  
-    - Required for the collector to send data to ClickHouse  
+- `CLICKHOUSE_ENDPOINT`
+    - **Default:** *None (required)* if standalone image. If All-in-one or Docker Compose distribution this is set to the integrated ClickHouse instance.
+    - **Description:** The HTTPS URL of the ClickHouse instance to export telemetry data to.
+    - **Guidance:**
+    - Must be a full HTTPS endpoint including port (e.g., `https://clickhouse.example.com:8443`)
+    - Required for the collector to send data to ClickHouse
 
-- `CLICKHOUSE_USER`  
-  - **Default:** `default`  
-  - **Description:** Username used to authenticate with the ClickHouse instance.  
-  - **Guidance:**  
-    - Ensure the user has `INSERT` and `CREATE TABLE` permissions  
-    - Recommended to create a dedicated user for ingestion  
+- `CLICKHOUSE_USER`
+    - **Default:** `default`
+    - **Description:** Username used to authenticate with the ClickHouse instance.
+    - **Guidance:**
+    - Ensure the user has `INSERT` and `CREATE TABLE` permissions
+    - Recommended to create a dedicated user for ingestion
 
-- `CLICKHOUSE_PASSWORD`  
-  - **Default:** *None (required if authentication is enabled)*  
-  - **Description:** Password for the specified ClickHouse user.  
-  - **Guidance:**  
-    - Required if the user account has a password set  
-    - Store securely via secrets in production deployments  
+- `CLICKHOUSE_PASSWORD`
+    - **Default:** *None (required if authentication is enabled)*
+    - **Description:** Password for the specified ClickHouse user.
+    - **Guidance:**
+    - Required if the user account has a password set
+    - Store securely via secrets in production deployments
 
-- `HYPERDX_LOG_LEVEL`  
-  - **Default:** `info`  
-  - **Description:** Log verbosity level for the collector.  
-  - **Guidance:**  
-    - Accepts values like `debug`, `info`, `warn`, `error`  
-    - Use `debug` during troubleshooting  
+- `HYPERDX_LOG_LEVEL`
+    - **Default:** `info`
+    - **Description:** Log verbosity level for the collector.
+    - **Guidance:**
+    - Accepts values like `debug`, `info`, `warn`, `error`
+    - Use `debug` during troubleshooting
 
-- `OPAMP_SERVER_URL`  
-  - **Default:** *None (required)* if standalone image. If All-in-one or Docker Compose distribution this points to the deployed HyperDX instance.
-  - **Description:** URL of the OpAMP server used to manage the collector (e.g., HyperDX instance). This is port `4320` by default.
-  - **Guidance:**  
-    - Must point to your HyperDX instance  
-    - Enables dynamic configuration and secure ingestion  
+- `OPAMP_SERVER_URL`
+    - **Default:** *None (required)* if standalone image. If All-in-one or Docker Compose distribution this points to the deployed HyperDX instance.
+    - **Description:** URL of the OpAMP server used to manage the collector (e.g., HyperDX instance). This is port `4320` by default.
+    - **Guidance:**
+    - Must point to your HyperDX instance
+    - Enables dynamic configuration and secure ingestion
 
-- `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`  
-  - **Default:** `default`  
-  - **Description:** ClickHouse database the collector writes telemetry data to.  
-  - **Guidance:**  
-    - Set if using a custom database name  
-    - Ensure the specified user has access to this database  
+- `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`
+    - **Default:** `default`
+    - **Description:** ClickHouse database the collector writes telemetry data to.
+    - **Guidance:**
+    - Set if using a custom database name
+    - Ensure the specified user has access to this database
 
 - `OTEL_AGENT_FEATURE_GATE_ARG`
     - **Default:** `<empty string>`

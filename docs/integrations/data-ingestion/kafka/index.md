@@ -100,6 +100,6 @@ To get started using the Kafka table engine, see the [reference documentation](.
 
 * **Custom code** - Custom code using Kafka and ClickHouse [client libraries](../../language-clients/index.md) may be appropriate in cases where custom processing of events is required.
 
-[BYOC]: ../../../cloud/reference/byoc.md
-[Cloud]: ../../../cloud-index.md
-[Self-hosted]: ../../../intro.md
+    [BYOC]: ../../../cloud/reference/byoc.md
+    [Cloud]: ../../../cloud-index.md
+    [Self-hosted]: ../../../intro.md

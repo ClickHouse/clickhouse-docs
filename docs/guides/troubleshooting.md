@@ -14,9 +14,9 @@ The `apt-key` feature with the [Advanced package tool (APT) has been deprecated]
 
 1. See if your `gpg` is installed:
 
-```shell
-sudo apt-get install gnupg
-```
+    ```shell
+    sudo apt-get install gnupg
+    ```
 
 ### Cannot get deb packages from ClickHouse repository with apt-get {#cannot-get-deb-packages-from-clickhouse-repository-with-apt-get}
 
@@ -104,33 +104,33 @@ If the server started successfully, you should see the strings:
 - `<Information> Application: starting up.` — Server started.
 - `<Information> Application: Ready for connections.` — Server is running and ready for connections.
 
-If `clickhouse-server` start failed with a configuration error, you should see the `<Error>` string with an error description. For example:
+    If `clickhouse-server` start failed with a configuration error, you should see the `<Error>` string with an error description. For example:
 
-```plaintext
-2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: Failed reloading 'event2id' external dictionary: Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
-```
+    ```plaintext
+    2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: Failed reloading 'event2id' external dictionary: Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
+    ```
 
-If you do not see an error at the end of the file, look through the entire file starting from the string:
+    If you do not see an error at the end of the file, look through the entire file starting from the string:
 
-```plaintext
-<Information> Application: starting up.
-```
+    ```plaintext
+    <Information> Application: starting up.
+    ```
 
-If you try to start a second instance of `clickhouse-server` on the server, you see the following log:
+    If you try to start a second instance of `clickhouse-server` on the server, you see the following log:
 
-```plaintext
-2019.01.11 15:25:11.151730 [ 1 ] {} <Information> : Starting ClickHouse 19.1.0 with revision 54413
-2019.01.11 15:25:11.154578 [ 1 ] {} <Information> Application: starting up
-2019.01.11 15:25:11.156361 [ 1 ] {} <Information> StatusFile: Status file ./status already exists - unclean restart. Contents:
-PID: 8510
-Started at: 2019-01-11 15:24:23
-Revision: 54413
+    ```plaintext
+    2019.01.11 15:25:11.151730 [ 1 ] {} <Information> : Starting ClickHouse 19.1.0 with revision 54413
+    2019.01.11 15:25:11.154578 [ 1 ] {} <Information> Application: starting up
+    2019.01.11 15:25:11.156361 [ 1 ] {} <Information> StatusFile: Status file ./status already exists - unclean restart. Contents:
+    PID: 8510
+    Started at: 2019-01-11 15:24:23
+    Revision: 54413
 
-2019.01.11 15:25:11.156673 [ 1 ] {} <Error> Application: DB::Exception: Cannot lock file ./status. Another server instance in same directory is already running.
-2019.01.11 15:25:11.156682 [ 1 ] {} <Information> Application: shutting down
-2019.01.11 15:25:11.156686 [ 1 ] {} <Debug> Application: Uninitializing subsystem: Logging Subsystem
-2019.01.11 15:25:11.156716 [ 2 ] {} <Information> BaseDaemon: Stop SignalListener thread
-```
+    2019.01.11 15:25:11.156673 [ 1 ] {} <Error> Application: DB::Exception: Cannot lock file ./status. Another server instance in same directory is already running.
+    2019.01.11 15:25:11.156682 [ 1 ] {} <Information> Application: shutting down
+    2019.01.11 15:25:11.156686 [ 1 ] {} <Debug> Application: Uninitializing subsystem: Logging Subsystem
+    2019.01.11 15:25:11.156716 [ 2 ] {} <Information> BaseDaemon: Stop SignalListener thread
+    ```
 
 #### See system.d logs {#see-systemd-logs}
 

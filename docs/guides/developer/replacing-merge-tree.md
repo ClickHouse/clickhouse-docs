@@ -25,30 +25,24 @@ During this process, the following occurs during part merging:
 - The row identified by the value 2 for column A has two update rows. The latter row is retained with a value of 6 for the price column.
 - The row identified by the value 3 for column A has a row with version 1 and a delete row with version 2. This delete row is retained.
 
-As a result of this merge process, we have four rows representing the final state:
+    As a result of this merge process, we have four rows representing the final state:
 
-<br />
+    <Image img={postgres_replacingmergetree} size="md" alt="ReplacingMergeTree process"/>
 
-<Image img={postgres_replacingmergetree} size="md" alt="ReplacingMergeTree process"/>
-
-<br />
-
-Note that deleted rows are never removed. They can be forcibly deleted with an `OPTIMIZE table FINAL CLEANUP`. This requires the experimental setting `allow_experimental_replacing_merge_with_cleanup=1`. This should only be issued under the following conditions:
+    Note that deleted rows are never removed. They can be forcibly deleted with an `OPTIMIZE table FINAL CLEANUP`. This requires the experimental setting `allow_experimental_replacing_merge_with_cleanup=1`. This should only be issued under the following conditions:
 
 1. You can be sure that no rows with old versions (for those that are being deleted with the cleanup) will be inserted after the operation is issued. If these are inserted, they will be incorrectly retained, as the deleted rows will no longer be present.
 2. Ensure all replicas are in sync prior to issuing the cleanup. This can be achieved with the command:
 
-<br />
+    ```sql
+    SYSTEM SYNC REPLICA table
+    ```
 
-```sql
-SYSTEM SYNC REPLICA table
-```
+    We recommend pausing inserts once (1) is guaranteed and until this command and the subsequent cleanup are complete.
 
-We recommend pausing inserts once (1) is guaranteed and until this command and the subsequent cleanup are complete.
+    > Handling deletes with the ReplacingMergeTree is only recommended for tables with a low to moderate number of deletes (less than 10%) unless periods can be scheduled for cleanup with the above conditions.
 
-> Handling deletes with the ReplacingMergeTree is only recommended for tables with a low to moderate number of deletes (less than 10%) unless periods can be scheduled for cleanup with the above conditions.
-
-> Tip: Users may also be able to issue `OPTIMIZE FINAL CLEANUP` against selective partitions no longer subject to changes.
+    > Tip: Users may also be able to issue `OPTIMIZE FINAL CLEANUP` against selective partitions no longer subject to changes.
 
 ## Choosing a primary/deduplication key {#choosing-a-primarydeduplication-key}
 

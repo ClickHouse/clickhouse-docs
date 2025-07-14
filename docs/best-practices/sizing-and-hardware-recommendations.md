@@ -65,7 +65,7 @@ The number of CPUs you should use depends on your workload. However, we generall
 - **[R-type](https://aws.amazon.com/ec2/instance-types/#Memory_Optimized) (data warehousing use cases):** 8:1 memory to CPU core ratio
 - **[C-type](https://aws.amazon.com/ec2/instance-types/#Compute_Optimized) (compute-optimized use cases):** 2:1 memory to CPU core ratio
 
-As an example, when using M-type CPUs, we recommend provisioning 100GB of memory per 25 CPU cores. To determine the amount of memory appropriate for your application, profiling your memory usage is necessary. You can read [this guide on debugging memory issues](/guides/developer/debugging-memory-issues) or use the [built-in observability dashboard](/operations/monitoring) to monitor ClickHouse.
+    As an example, when using M-type CPUs, we recommend provisioning 100GB of memory per 25 CPU cores. To determine the amount of memory appropriate for your application, profiling your memory usage is necessary. You can read [this guide on debugging memory issues](/guides/developer/debugging-memory-issues) or use the [built-in observability dashboard](/operations/monitoring) to monitor ClickHouse.
 
 ## Memory {#memory}
 
@@ -75,8 +75,8 @@ The required volume of RAM generally depends on:
 - The complexity of queries.
 - The amount of data that is processed in queries.
 
-In general, however, the more memory you have, the faster your queries will run. 
-If your use case is sensitive to price, lower amounts of memory will work as it is possible to enable settings ([`max_bytes_before_external_group_by`](/operations/settings/settings#max_bytes_before_external_group_by) and [`max_bytes_before_external_sort`](/operations/settings/settings#max_bytes_before_external_sort)) to allow spilling data to disk, but note that this may significantly affect query performance.
+    In general, however, the more memory you have, the faster your queries will run.
+    If your use case is sensitive to price, lower amounts of memory will work as it is possible to enable settings ([`max_bytes_before_external_group_by`](/operations/settings/settings#max_bytes_before_external_group_by) and [`max_bytes_before_external_sort`](/operations/settings/settings#max_bytes_before_external_sort)) to allow spilling data to disk, but note that this may significantly affect query performance.
 
 ### What should the memory to storage ratio be? {#what-should-the-memory-to-storage-ratio-be}
 

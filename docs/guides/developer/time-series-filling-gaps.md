@@ -118,7 +118,6 @@ We can see that the gaps have been filled with 0 values in the `count` column.
 
 There is, however, still a gap at the beginning of the time range, which we can fix by specifying `FROM`:
 
-
 ```sql
 SELECT
     toStartOfInterval(timestamp, toIntervalMillisecond(100)) AS bucket,
@@ -207,7 +206,7 @@ The gaps have all now been filled and we have entries for every 100 ms from `00:
 
 ## Cumulative count {#cumulative-count}
 
-Let's say we now want to keep a cumulative count of the number of images created across the buckets. 
+Let's say we now want to keep a cumulative count of the number of images created across the buckets.
 We can do this by adding a `cumulative` column, as shown below:
 
 ```sql
@@ -300,7 +299,7 @@ INTERPOLATE (cumulative);
 └─────────────────────────┴───────┴────────────┘
 ```
 
-That looks much better. 
+That looks much better.
 And now to finish it off, let's add a bar chart using the `bar` function, not forgetting to add our new column to the `INTERPOLATE` clause.
 
 ```sql

@@ -40,12 +40,11 @@ dbt provides 4 types of materialization:
 * **ephemeral**: The model is not directly built in the database but is instead pulled into dependent models as common table expressions.
 * **incremental**: The model is initially materialized as a table, and in subsequent runs, dbt inserts new rows and updates changed rows in the table.
 
-Additional syntax and clauses define how these models should be updated if their underlying data changes. dbt generally recommends starting with the view materialization until performance becomes a concern. The table materialization provides a query time performance improvement by capturing the results of the model's query as a table at the expense of increased storage. The incremental approach builds on this further to allow subsequent updates to the underlying data to be captured in the target table.
+    Additional syntax and clauses define how these models should be updated if their underlying data changes. dbt generally recommends starting with the view materialization until performance becomes a concern. The table materialization provides a query time performance improvement by capturing the results of the model's query as a table at the expense of increased storage. The incremental approach builds on this further to allow subsequent updates to the underlying data to be captured in the target table.
 
-The[ current plugin](https://github.com/silentsokolov/dbt-clickhouse) for ClickHouse supports the **view**, **table,**, **ephemeral** and **incremental** materializations. The plugin also supports dbt[ snapshots](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy) and [seeds](https://docs.getdbt.com/docs/building-a-dbt-project/seeds) which we explore in this guide.
+    The[ current plugin](https://github.com/silentsokolov/dbt-clickhouse) for ClickHouse supports the **view**, **table,**, **ephemeral** and **incremental** materializations. The plugin also supports dbt[ snapshots](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy) and [seeds](https://docs.getdbt.com/docs/building-a-dbt-project/seeds) which we explore in this guide.
 
-For the following guides, we assume you have a ClickHouse instance available.
-
+    For the following guides, we assume you have a ClickHouse instance available.
 
 ## Setup of dbt and the ClickHouse plugin {#setup-of-dbt-and-the-clickhouse-plugin}
 
@@ -73,13 +72,11 @@ pip install dbt-clickhouse
 
 dbt excels when modeling highly relational data. For the purposes of example, we provide a small IMDB dataset with the following relational schema. This dataset originates from the[ relational dataset repository](https://relational.fit.cvut.cz/dataset/IMDb). This is trivial relative to common schemas used with dbt but represents a manageable sample:
 
-
 <Image img={dbt_01} size="lg" alt="IMDB table schema" />
 
 We use a subset of these tables as shown.
 
 Create the following tables:
-
 
 ```sql
 CREATE DATABASE imdb;
@@ -212,7 +209,6 @@ The response should look like:
 
 In the later guides, we will convert this query into a model - materializing it in ClickHouse as a dbt view and table.
 
-
 ## Connecting to ClickHouse {#connecting-to-clickhouse}
 
 1. Create a dbt project. In this case we name this after our `imdb` source. When prompted, select `clickhouse` as the database source.
@@ -303,7 +299,6 @@ In the later guides, we will convert this query into a model - materializing it 
     ```
 
     Confirm the response includes `Connection test: [OK connection ok]` indicating a successful connection.
-
 
 ## Creating a simple view materialization {#creating-a-simple-view-materialization}
 
@@ -510,7 +505,6 @@ In the previous example, our model was materialized as a view. While this might 
     SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DESC LIMIT 10;
     ```
 
-
 ## Creating an Incremental Materialization {#creating-an-incremental-materialization}
 
 The previous example created a table to materialize the model. This table will be reconstructed for each dbt execution. This may be infeasible and extremely costly for larger result sets or complex transformations. To address this challenge and reduce the build time, dbt offers Incremental materializations. This allows dbt to insert or update records into a table since the last execution, making it appropriate for event-style data. Under the hood a temporary table is created with all the updated records and then all the untouched records as well as the updated records are inserted into a new target table. This results in similar [limitations](#limitations) for large result sets as for the table model.
@@ -698,17 +692,16 @@ AND event_time > subtractMinutes(now(), 15) ORDER BY event_time LIMIT 100;
 
 Adjust the above query to the period of execution. We leave result inspection to the user but highlight the general strategy used by the plugin to perform incremental updates:
 
-
 1. The plugin creates a temporary table `actor_sumary__dbt_tmp`. Rows that have changed are streamed into this table.
 2. A new table, `actor_summary_new,` is created. The rows from the old table are, in turn, streamed from the old to new, with a check to make sure row ids do not exist in the temporary table. This effectively handles updates and duplicates.
 3. The results from the temporary table are streamed into the new `actor_summary` table:
 4. Finally, the new table is exchanged atomically with the old version via an `EXCHANGE TABLES` statement. The old and temporary tables are in turn dropped.
 
-This is visualized below:
+    This is visualized below:
 
-<Image img={dbt_05} size="lg" alt="incremental updates dbt" />
+    <Image img={dbt_05} size="lg" alt="incremental updates dbt" />
 
-This strategy may encounter challenges on very large models. For further details see [Limitations](#limitations).
+    This strategy may encounter challenges on very large models. For further details see [Limitations](#limitations).
 
 ### Append Strategy (inserts-only mode) {#append-strategy-inserts-only-mode}
 
@@ -719,73 +712,73 @@ To illustrate this mode, we will add another new actor and re-execute dbt run wi
 
 1. Configure append only mode in actor_summary.sql:
 
-   ```sql
-   {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental', unique_key='id', incremental_strategy='append') }}
-   ```
+    ```sql
+    {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental', unique_key='id', incremental_strategy='append') }}
+    ```
 
 2. Let's add another famous actor - Danny DeBito
 
-   ```sql
-   INSERT INTO imdb.actors VALUES (845467, 'Danny', 'DeBito', 'M');
-   ```
+    ```sql
+    INSERT INTO imdb.actors VALUES (845467, 'Danny', 'DeBito', 'M');
+    ```
 
 3. Let's star Danny in 920 random movies.
 
-   ```sql
-   INSERT INTO imdb.roles
-   SELECT now() as created_at, 845467 as actor_id, id as movie_id, 'Himself' as role
-   FROM imdb.movies
-   LIMIT 920 OFFSET 10000;
-   ```
+    ```sql
+    INSERT INTO imdb.roles
+    SELECT now() as created_at, 845467 as actor_id, id as movie_id, 'Himself' as role
+    FROM imdb.movies
+    LIMIT 920 OFFSET 10000;
+    ```
 
 4. Execute a dbt run and confirm that Danny was added to the actor-summary table
 
-   ```response
-   clickhouse-user@clickhouse:~/imdb$ dbt run
-   16:12:16  Running with dbt=1.1.0
-   16:12:16  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 186 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
-   16:12:16
-   16:12:17  Concurrency: 1 threads (target='dev')
-   16:12:17
-   16:12:17  1 of 1 START incremental model imdb_dbt.actor_summary........................... [RUN]
-   16:12:24  1 of 1 OK created incremental model imdb_dbt.actor_summary...................... [OK in 0.17s]
-   16:12:24
-   16:12:24  Finished running 1 incremental model in 0.19s.
-   16:12:24
-   16:12:24  Completed successfully
-   16:12:24
-   16:12:24  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
-   ```
+    ```response
+    clickhouse-user@clickhouse:~/imdb$ dbt run
+    16:12:16  Running with dbt=1.1.0
+    16:12:16  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 186 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
+    16:12:16
+    16:12:17  Concurrency: 1 threads (target='dev')
+    16:12:17
+    16:12:17  1 of 1 START incremental model imdb_dbt.actor_summary........................... [RUN]
+    16:12:24  1 of 1 OK created incremental model imdb_dbt.actor_summary...................... [OK in 0.17s]
+    16:12:24
+    16:12:24  Finished running 1 incremental model in 0.19s.
+    16:12:24
+    16:12:24  Completed successfully
+    16:12:24
+    16:12:24  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
+    ```
 
-   ```sql
-   SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 3;
-   ```
+    ```sql
+    SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 3;
+    ```
 
-   ```response
-   +------+-------------------+----------+------------------+------+---------+-------------------+
-   |id    |name               |num_movies|avg_rank          |genres|directors|updated_at         |
-   +------+-------------------+----------+------------------+------+---------+-------------------+
-   |845467|Danny DeBito       |920       |1.4768987303293204|21    |670      |2022-04-26 16:22:06|
-   |845466|Clicky McClickHouse|910       |1.4687938697032283|21    |662      |2022-04-26 16:20:36|
-   |45332 |Mel Blanc          |909       |5.7884792542982515|19    |148      |2022-04-26 16:17:42|
-   +------+-------------------+----------+------------------+------+---------+-------------------+
-   ```
+    ```response
+    +------+-------------------+----------+------------------+------+---------+-------------------+
+    |id    |name               |num_movies|avg_rank          |genres|directors|updated_at         |
+    +------+-------------------+----------+------------------+------+---------+-------------------+
+    |845467|Danny DeBito       |920       |1.4768987303293204|21    |670      |2022-04-26 16:22:06|
+    |845466|Clicky McClickHouse|910       |1.4687938697032283|21    |662      |2022-04-26 16:20:36|
+    |45332 |Mel Blanc          |909       |5.7884792542982515|19    |148      |2022-04-26 16:17:42|
+    +------+-------------------+----------+------------------+------+---------+-------------------+
+    ```
 
-Note how much faster that incremental was compared to the insertion of "Clicky".
+    Note how much faster that incremental was compared to the insertion of "Clicky".
 
-Checking again the query_log table reveals the differences between the 2 incremental runs:
+    Checking again the query_log table reveals the differences between the 2 incremental runs:
 
-   ```sql
-INSERT INTO imdb_dbt.actor_summary ("id", "name", "num_movies", "avg_rank", "genres", "directors", "updated_at")
-WITH actor_summary AS (
-   SELECT id,
+    ```sql
+    INSERT INTO imdb_dbt.actor_summary ("id", "name", "num_movies", "avg_rank", "genres", "directors", "updated_at")
+    WITH actor_summary AS (
+    SELECT id,
       any(actor_name) AS name,
       uniqExact(movie_id)    AS num_movies,
       avg(rank)                AS avg_rank,
       uniqExact(genre)         AS genres,
       uniqExact(director_name) AS directors,
       max(created_at) AS updated_at
-   FROM (
+    FROM (
       SELECT imdb.actors.id AS id,
          concat(imdb.actors.first_name, ' ', imdb.actors.last_name) AS actor_name,
          imdb.movies.id AS movie_id,
@@ -799,17 +792,17 @@ WITH actor_summary AS (
          LEFT OUTER JOIN imdb.genres ON imdb.genres.movie_id = imdb.movies.id
          LEFT OUTER JOIN imdb.movie_directors ON imdb.movie_directors.movie_id = imdb.movies.id
          LEFT OUTER JOIN imdb.directors ON imdb.directors.id = imdb.movie_directors.director_id
-   )
-   GROUP BY id
-)
+    )
+    GROUP BY id
+    )
 
-SELECT *
-FROM actor_summary
--- this filter will only be applied on an incremental run
-WHERE id > (SELECT max(id) FROM imdb_dbt.actor_summary) OR updated_at > (SELECT max(updated_at) FROM imdb_dbt.actor_summary)
-   ```
+    SELECT *
+    FROM actor_summary
+    -- this filter will only be applied on an incremental run
+    WHERE id > (SELECT max(id) FROM imdb_dbt.actor_summary) OR updated_at > (SELECT max(updated_at) FROM imdb_dbt.actor_summary)
+    ```
 
-In this run, only the new rows are added straight to `imdb_dbt.actor_summary` table and there is no table creation involved.
+    In this run, only the new rows are added straight to `imdb_dbt.actor_summary` table and there is no table creation involved.
 
 ### Delete and insert mode (experimental) {#deleteinsert-mode-experimental}
 
@@ -831,9 +824,9 @@ In summary, this approach:
 2. A `DELETE` is issued against the current `actor_summary` table. Rows are deleted by id from `actor_sumary__dbt_tmp`
 3. The rows from `actor_sumary__dbt_tmp` are inserted into `actor_summary` using an `INSERT INTO actor_summary SELECT * FROM actor_sumary__dbt_tmp`.
 
-This process is shown below:
+    This process is shown below:
 
-<Image img={dbt_06} size="lg" alt="lightweight delete incremental" />
+    <Image img={dbt_06} size="lg" alt="lightweight delete incremental" />
 
 ### insert_overwrite mode (experimental) {#insert_overwrite-mode-experimental}
 Performs the following steps:
@@ -842,15 +835,13 @@ Performs the following steps:
 2. Insert only new records (produced by SELECT) into the staging table.
 3. Replace only new partitions (present in the staging table) into the target table.
 
-<br />
-
-This approach has the following advantages:
+    This approach has the following advantages:
 
 * It is faster than the default strategy because it doesn't copy the entire table.
 * It is safer than other strategies because it doesn't modify the original table until the INSERT operation completes successfully: in case of intermediate failure, the original table is not modified.
 * It implements "partitions immutability" data engineering best practice. Which simplifies incremental and parallel data processing, rollbacks, etc.
 
-<Image img={dbt_07} size="lg" alt="insert overwrite incremental" />
+    <Image img={dbt_07} size="lg" alt="insert overwrite incremental" />
 
 ## Creating a snapshot {#creating-a-snapshot}
 
@@ -921,7 +912,7 @@ This example assumes you have completed [Creating an Incremental Table Model](#c
     {% endsnapshot %}
     ```
 
-A few observations regarding this content:
+    A few observations regarding this content:
 * The select query defines the results you wish to snapshot over time. The function ref is used to reference our previously created actor_summary model.
 * We require a timestamp column to indicate record changes. Our updated_at column (see [Creating an Incremental Table Model](#creating-an-incremental-materialization)) can be used here. The parameter strategy indicates our use of a timestamp to denote updates, with the parameter updated_at specifying the column to use. If this is not present in your model you can alternatively use the [check strategy](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy). This is significantly more inefficient and requires the user to specify a list of columns to compare.  dbt compares the current and historical values of these columns, recording any changes (or doing nothing if identical).
 
@@ -944,7 +935,7 @@ A few observations regarding this content:
     13:26:25  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
     ```
 
-Note how a table actor_summary_snapshot has been created in the snapshots db (determined by the target_schema parameter).
+    Note how a table actor_summary_snapshot has been created in the snapshots db (determined by the target_schema parameter).
 
 4. Sampling this data you will see how dbt has included the columns dbt_valid_from and dbt_valid_to. The latter has values set to null. Subsequent runs will update this.
 
@@ -1005,7 +996,7 @@ Note how a table actor_summary_snapshot has been created in the snapshots db (de
     13:46:31  Completed successfully
     13:46:31
     13:46:31  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
-   ```
+    ```
 
 7. If we now query our snapshot, notice we have 2 rows for Clicky McClickHouse. Our previous entry now has a dbt_valid_to value. Our new value is recorded with the same value in the dbt_valid_from column, and a dbt_valid_to value of null. If we did have new rows, these would also be appended to the snapshot.
 
@@ -1025,8 +1016,7 @@ Note how a table actor_summary_snapshot has been created in the snapshots db (de
     +------+----------+------------+----------+-------------------+-------------------+
     ```
 
-For further details on dbt snapshots see [here](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots).
-
+    For further details on dbt snapshots see [here](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots).
 
 ## Using seeds {#using-seeds}
 
@@ -1082,7 +1072,6 @@ dbt provides the ability to load data from CSV files. This capability is not sui
     +-------+----+=
     ```
 
-
 ## Limitations {#limitations}
 
 The current ClickHouse plugin for dbt has several limitations users should be aware of:
@@ -1091,11 +1080,11 @@ The current ClickHouse plugin for dbt has several limitations users should be aw
 2. To use Distributed tables to represent a model, users must create the underlying replicated tables on each node manually. The Distributed table can, in turn, be created on top of these. The plugin does not manage cluster creation.
 3. When dbt creates a relation (table/view) in a database, it usually creates it as: `{{ database }}.{{ schema }}.{{ table/view id }}`. ClickHouse has no notion of schemas. The plugin therefore uses `{{schema}}.{{ table/view id }}`, where `schema` is the ClickHouse database.
 
-Further Information
+    Further Information
 
-The previous guides only touch the surface of dbt functionality. Users are recommended to read the excellent [dbt documentation](https://docs.getdbt.com/docs/introduction).
+    The previous guides only touch the surface of dbt functionality. Users are recommended to read the excellent [dbt documentation](https://docs.getdbt.com/docs/introduction).
 
-Additional configuration for the plugin is described [here](https://github.com/silentsokolov/dbt-clickhouse#model-configuration).
+    Additional configuration for the plugin is described [here](https://github.com/silentsokolov/dbt-clickhouse#model-configuration).
 
 ## Fivetran {#fivetran}
 

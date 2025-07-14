@@ -25,7 +25,6 @@ The Stack Overflow dataset contains a number of related tables. In any data mode
 
 The above schema is intentionally not optimal for the purposes of this guide.
 
-
 ## Establish initial schema {#establish-initial-schema}
 
 Since the `posts` table will be the target for most analytics queries, we focus on establishing a schema for this table. This data is available in the public S3 bucket `s3://datasets-documentation/stackoverflow/parquet/posts/*.parquet` with a file per year.
@@ -140,87 +139,84 @@ The largest initial improvement in compression and query performance can be obta
 
 - **Use strict types** - Our initial schema used Strings for many columns which are clearly numerics. Usage of the correct types will ensure the expected semantics when filtering and aggregating. The same applies to date types, which have been correctly provided in the Parquet files.
 - **Avoid nullable Columns** - By default the above columns have been assumed to be Null. The Nullable type allows queries to determine the difference between an empty and Null value. This creates a separate column of UInt8 type. This additional column has to be processed every time a user works with a nullable column. This leads to additional storage space used and almost always negatively affects query performance. Only use Nullable if there is a difference between the default empty value for a type and Null. For example, a value of 0 for empty values in the `ViewCount` column will likely be sufficient for most queries and not impact results. If empty values should be treated differently, they can often also be excluded from queries with a filter.
-Use the minimal precision for numeric types - ClickHouse has a number of numeric types designed for different numeric ranges and precision. Always aim to minimize the number of bits used to represent a column. As well as integers of different size e.g. Int16, ClickHouse offers unsigned variants whose minimum value is 0. These can allow fewer bits to be used for a column e.g. UInt16 has a maximum value of 65535, twice that of an Int16. Prefer these types over larger signed variants if possible.
+    Use the minimal precision for numeric types - ClickHouse has a number of numeric types designed for different numeric ranges and precision. Always aim to minimize the number of bits used to represent a column. As well as integers of different size e.g. Int16, ClickHouse offers unsigned variants whose minimum value is 0. These can allow fewer bits to be used for a column e.g. UInt16 has a maximum value of 65535, twice that of an Int16. Prefer these types over larger signed variants if possible.
 - **Minimal precision for date types** - ClickHouse supports a number of date and datetime types. Date and Date32 can be used for storing pure dates, with the latter supporting a larger date range at the expense of more bits. DateTime and DateTime64 provide support for date times. DateTime is limited to second granularity and uses 32 bits. DateTime64, as the name suggests, uses 64 bits but provides support up to nanosecond granularity. As ever, choose the more coarse version acceptable for queries, minimizing the number of bits needed.
 - **Use LowCardinality** - Numbers, strings, Date or DateTime columns with a low number of unique values can potentially be encoded using the LowCardinality type. This dictionary encodes values, reducing the size on disk. Consider this for columns with less than 10k unique values.
-FixedString for special cases - Strings which have a fixed length can be encoded with the FixedString type e.g. language and currency codes.  This is efficient when data has the length of precisely N bytes. In all other cases, it is likely to reduce efficiency and LowCardinality is preferred.
+    FixedString for special cases - Strings which have a fixed length can be encoded with the FixedString type e.g. language and currency codes.  This is efficient when data has the length of precisely N bytes. In all other cases, it is likely to reduce efficiency and LowCardinality is preferred.
 - **Enums for data validation** - The Enum type can be used to efficiently encode enumerated types. Enums can either be 8 or 16 bits, depending on the number of unique values they are required to store. Consider using this if you need either the associated validation at insert time (undeclared values will be rejected) or wish to perform queries which exploit a natural ordering in the Enum values e.g. imagine a feedback column containing user responses `Enum(':(' = 1, ':|' = 2, ':)' = 3)`.
 
-> Tip: To find the range of all columns, and the number of distinct values, users can use the simple query `SELECT * APPLY min, * APPLY  max, * APPLY uniq FROM table FORMAT Vertical`. We recommend performing this over a smaller subset of the data as this can be expensive. This query requires numerics to be at least defined as such for an accurate result i.e. not a String.
+    > Tip: To find the range of all columns, and the number of distinct values, users can use the simple query `SELECT * APPLY min, * APPLY  max, * APPLY uniq FROM table FORMAT Vertical`. We recommend performing this over a smaller subset of the data as this can be expensive. This query requires numerics to be at least defined as such for an accurate result i.e. not a String.
 
-By applying these simple rules to our posts table, we can identify an optimal type for each column:
+    By applying these simple rules to our posts table, we can identify an optimal type for each column:
 
+    | Column                  | Is Numeric | Min, Max                                                              | Unique Values | Nulls | Comment                                                                                      | Optimized Type                           |
+    |------------------------|------------|------------------------------------------------------------------------|----------------|--------|----------------------------------------------------------------------------------------------|------------------------------------------|
+    | `PostTypeId`             | Yes        | 1, 8                                                                   | 8              | No     |                                                                                              | `Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8)` |
+    | `AcceptedAnswerId`      | Yes        | 0, 78285170                                                            | 12282094       | Yes    | Differentiate Null with 0 value                                                               | UInt32                                   |
+    | `CreationDate`           | No         | 2008-07-31 21:42:52.667000000, 2024-03-31 23:59:17.697000000           | -              | No     | Millisecond granularity is not required, use DateTime                                        | DateTime                                 |
+    | `Score`                  | Yes        | -217, 34970                                                            | 3236           | No     |                                                                                              | Int32                                    |
+    | `ViewCount`              | Yes        | 2, 13962748                                                            | 170867         | No     |                                                                                              | UInt32                                   |
+    | `Body`                   | No         | -                                                                      | -              | No     |                                                                                              | String                                   |
+    | `OwnerUserId`            | Yes        | -1, 4056915                                                            | 6256237        | Yes    |                                                                                              | Int32                                    |
+    | `OwnerDisplayName`       | No         | -                                                                      | 181251         | Yes    | Consider Null to be empty string                                                             | String                                   |
+    | `LastEditorUserId`       | Yes        | -1, 9999993                                                            | 1104694        | Yes    | 0 is an unused value can be used for Nulls                                                   | Int32                                    |
+    | `LastEditorDisplayName`  | No         | -                                                                      | 70952          | Yes    | Consider Null to be an empty string. Tested LowCardinality and no benefit                    | String                                   |
+    | `LastEditDate`           | No         | 2008-08-01 13:24:35.051000000, 2024-04-06 21:01:22.697000000           | -              | No     | Millisecond granularity is not required, use DateTime                                        | DateTime                                 |
+    | `LastActivityDate`       | No         | 2008-08-01 12:19:17.417000000, 2024-04-06 21:01:22.697000000           | -              | No     | Millisecond granularity is not required, use DateTime                                        | DateTime                                 |
+    | `Title`                  | No         | -                                                                      | -              | No     | Consider Null to be an empty string                                                          | String                                   |
+    | `Tags`                   | No         | -                                                                      | -              | No     | Consider Null to be an empty string                                                          | String                                   |
+    | `AnswerCount`            | Yes        | 0, 518                                                                 | 216            | No     | Consider Null and 0 to same                                                                  | UInt16                                   |
+    | `CommentCount`           | Yes        | 0, 135                                                                 | 100            | No     | Consider Null and 0 to same                                                                  | UInt8                                    |
+    | `FavoriteCount`          | Yes        | 0, 225                                                                 | 6              | Yes    | Consider Null and 0 to same                                                                  | UInt8                                    |
+    | `ContentLicense`         | No         | -                                                                      | 3              | No     | LowCardinality outperforms FixedString                                                       | LowCardinality(String)                   |
+    | `ParentId`               | No         | -                                                                      | 20696028       | Yes    | Consider Null to be an empty string                                                          | String                                   |
+    | `CommunityOwnedDate`     | No         | 2008-08-12 04:59:35.017000000, 2024-04-01 05:36:41.380000000           | -              | Yes    | Consider default 1970-01-01 for Nulls. Millisecond granularity is not required, use DateTime | DateTime                                 |
+    | `ClosedDate`             | No         | 2008-09-04 20:56:44, 2024-04-06 18:49:25.393000000                     | -              | Yes    | Consider default 1970-01-01 for Nulls. Millisecond granularity is not required, use DateTime | DateTime                                 |
 
-| Column                  | Is Numeric | Min, Max                                                              | Unique Values | Nulls | Comment                                                                                      | Optimized Type                           |
-|------------------------|------------|------------------------------------------------------------------------|----------------|--------|----------------------------------------------------------------------------------------------|------------------------------------------|
-| `PostTypeId`             | Yes        | 1, 8                                                                   | 8              | No     |                                                                                              | `Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8)` |
-| `AcceptedAnswerId`      | Yes        | 0, 78285170                                                            | 12282094       | Yes    | Differentiate Null with 0 value                                                               | UInt32                                   |
-| `CreationDate`           | No         | 2008-07-31 21:42:52.667000000, 2024-03-31 23:59:17.697000000           | -              | No     | Millisecond granularity is not required, use DateTime                                        | DateTime                                 |
-| `Score`                  | Yes        | -217, 34970                                                            | 3236           | No     |                                                                                              | Int32                                    |
-| `ViewCount`              | Yes        | 2, 13962748                                                            | 170867         | No     |                                                                                              | UInt32                                   |
-| `Body`                   | No         | -                                                                      | -              | No     |                                                                                              | String                                   |
-| `OwnerUserId`            | Yes        | -1, 4056915                                                            | 6256237        | Yes    |                                                                                              | Int32                                    |
-| `OwnerDisplayName`       | No         | -                                                                      | 181251         | Yes    | Consider Null to be empty string                                                             | String                                   |
-| `LastEditorUserId`       | Yes        | -1, 9999993                                                            | 1104694        | Yes    | 0 is an unused value can be used for Nulls                                                   | Int32                                    |
-| `LastEditorDisplayName`  | No         | -                                                                      | 70952          | Yes    | Consider Null to be an empty string. Tested LowCardinality and no benefit                    | String                                   |
-| `LastEditDate`           | No         | 2008-08-01 13:24:35.051000000, 2024-04-06 21:01:22.697000000           | -              | No     | Millisecond granularity is not required, use DateTime                                        | DateTime                                 |
-| `LastActivityDate`       | No         | 2008-08-01 12:19:17.417000000, 2024-04-06 21:01:22.697000000           | -              | No     | Millisecond granularity is not required, use DateTime                                        | DateTime                                 |
-| `Title`                  | No         | -                                                                      | -              | No     | Consider Null to be an empty string                                                          | String                                   |
-| `Tags`                   | No         | -                                                                      | -              | No     | Consider Null to be an empty string                                                          | String                                   |
-| `AnswerCount`            | Yes        | 0, 518                                                                 | 216            | No     | Consider Null and 0 to same                                                                  | UInt16                                   |
-| `CommentCount`           | Yes        | 0, 135                                                                 | 100            | No     | Consider Null and 0 to same                                                                  | UInt8                                    |
-| `FavoriteCount`          | Yes        | 0, 225                                                                 | 6              | Yes    | Consider Null and 0 to same                                                                  | UInt8                                    |
-| `ContentLicense`         | No         | -                                                                      | 3              | No     | LowCardinality outperforms FixedString                                                       | LowCardinality(String)                   |
-| `ParentId`               | No         | -                                                                      | 20696028       | Yes    | Consider Null to be an empty string                                                          | String                                   |
-| `CommunityOwnedDate`     | No         | 2008-08-12 04:59:35.017000000, 2024-04-01 05:36:41.380000000           | -              | Yes    | Consider default 1970-01-01 for Nulls. Millisecond granularity is not required, use DateTime | DateTime                                 |
-| `ClosedDate`             | No         | 2008-09-04 20:56:44, 2024-04-06 18:49:25.393000000                     | -              | Yes    | Consider default 1970-01-01 for Nulls. Millisecond granularity is not required, use DateTime | DateTime                                 |
+    The above gives us the following schema:
 
-<br />
+    ```sql
+    CREATE TABLE posts_v2
+    (
+    `Id` Int32,
+    `PostTypeId` Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
+    `AcceptedAnswerId` UInt32,
+    `CreationDate` DateTime,
+    `Score` Int32,
+    `ViewCount` UInt32,
+    `Body` String,
+    `OwnerUserId` Int32,
+    `OwnerDisplayName` String,
+    `LastEditorUserId` Int32,
+    `LastEditorDisplayName` String,
+    `LastEditDate` DateTime,
+    `LastActivityDate` DateTime,
+    `Title` String,
+    `Tags` String,
+    `AnswerCount` UInt16,
+    `CommentCount` UInt8,
+    `FavoriteCount` UInt8,
+    `ContentLicense`LowCardinality(String),
+    `ParentId` String,
+    `CommunityOwnedDate` DateTime,
+    `ClosedDate` DateTime
+    )
+    ENGINE = MergeTree
+    ORDER BY tuple()
+    COMMENT 'Optimized types'
+    ```
 
-The above gives us the following schema:
+    We can populate this with a simple `INSERT INTO SELECT`, reading the data from our previous table and inserting into this one:
 
-```sql
-CREATE TABLE posts_v2
-(
-   `Id` Int32,
-   `PostTypeId` Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
-   `AcceptedAnswerId` UInt32,
-   `CreationDate` DateTime,
-   `Score` Int32,
-   `ViewCount` UInt32,
-   `Body` String,
-   `OwnerUserId` Int32,
-   `OwnerDisplayName` String,
-   `LastEditorUserId` Int32,
-   `LastEditorDisplayName` String,
-   `LastEditDate` DateTime,
-   `LastActivityDate` DateTime,
-   `Title` String,
-   `Tags` String,
-   `AnswerCount` UInt16,
-   `CommentCount` UInt8,
-   `FavoriteCount` UInt8,
-   `ContentLicense`LowCardinality(String),
-   `ParentId` String,
-   `CommunityOwnedDate` DateTime,
-   `ClosedDate` DateTime
-)
-ENGINE = MergeTree
-ORDER BY tuple()
-COMMENT 'Optimized types'
-```
+    ```sql
+    INSERT INTO posts_v2 SELECT * FROM posts
 
-We can populate this with a simple `INSERT INTO SELECT`, reading the data from our previous table and inserting into this one:
+    0 rows in set. Elapsed: 146.471 sec. Processed 59.82 million rows, 83.82 GB (408.40 thousand rows/s., 572.25 MB/s.)
+    ```
 
-```sql
-INSERT INTO posts_v2 SELECT * FROM posts
-
-0 rows in set. Elapsed: 146.471 sec. Processed 59.82 million rows, 83.82 GB (408.40 thousand rows/s., 572.25 MB/s.)
-```
-
-We don't retain any nulls in our new schema. The above insert converts these implicitly to default values for their respective types - 0 for integers and an empty value for strings. ClickHouse also automatically converts any numerics to their target precision.
-Primary (Ordering) Keys in ClickHouse
-Users coming from OLTP databases often look for the equivalent concept in ClickHouse.
+    We don't retain any nulls in our new schema. The above insert converts these implicitly to default values for their respective types - 0 for integers and an empty value for strings. ClickHouse also automatically converts any numerics to their target precision.
+    Primary (Ordering) Keys in ClickHouse
+    Users coming from OLTP databases often look for the equivalent concept in ClickHouse.
 
 ## Choosing an ordering key {#choosing-an-ordering-key}
 
@@ -235,11 +231,11 @@ The selected key in ClickHouse will determine not only the index, but also order
 Some simple rules can be applied to help choose an ordering key. The following can sometimes be in conflict, so consider these in order. Users can identify a number of keys from this process, with 4-5 typically sufficient:
 
 - Select columns which align with your common filters. If a column is used frequently in `WHERE` clauses, prioritize including these in your key over those which are used less frequently.
-Prefer columns which help exclude a large percentage of the total rows when filtered, thus reducing the amount of data which needs to be read.
+    Prefer columns which help exclude a large percentage of the total rows when filtered, thus reducing the amount of data which needs to be read.
 - Prefer columns which are likely to be highly correlated with other columns in the table. This will help ensure these values are also stored contiguously, improving compression.
-`GROUP BY` and `ORDER BY` operations for columns in the ordering key can be made more memory efficient.
+    `GROUP BY` and `ORDER BY` operations for columns in the ordering key can be made more memory efficient.
 
-When identifying the subset of columns for the ordering key, declare the columns in a specific order. This order can significantly influence both the efficiency of the filtering on secondary key columns in queries, and the compression ratio for the table's data files. In general, it is best to order the keys in ascending order of cardinality. This should be balanced against the fact that filtering on columns that appear later in the ordering key will be less efficient than filtering on those that appear earlier in the tuple. Balance these behaviors and consider your access patterns (and most importantly test variants).
+    When identifying the subset of columns for the ordering key, declare the columns in a specific order. This order can significantly influence both the efficiency of the filtering on secondary key columns in queries, and the compression ratio for the table's data files. In general, it is best to order the keys in ascending order of cardinality. This should be balanced against the fact that filtering on columns that appear later in the ordering key will be less efficient than filtering on those that appear earlier in the tuple. Balance these behaviors and consider your access patterns (and most importantly test variants).
 
 ### Example {#example}
 
@@ -312,7 +308,6 @@ INSERT INTO posts_v3 SELECT * FROM posts_v2
 0 rows in set. Elapsed: 158.074 sec. Processed 59.82 million rows, 76.21 GB (378.42 thousand rows/s., 482.14 MB/s.)
 Peak memory usage: 6.41 GiB.
 
-
 Our previous query improves the query response time by over 3x:
 
 SELECT
@@ -348,4 +343,4 @@ In order to minimize the use of Joins at query time, users have several tools/ap
 - [**Incremental Materialized Views**](/materialized-view/incremental-materialized-view) - A ClickHouse feature for shifting the cost of a computation from query time to insert time, including the ability to incrementally compute aggregate values.
 - [**Refreshable Materialized Views**](/materialized-view/refreshable-materialized-view) - Similar to materialized views used in other database products, this allows the results of a query to be periodically computed and the result cached.
 
-We explore each of these approaches in each guide, highlighting when each is appropriate with an example showing how it can be applied to solving questions for the Stack Overflow dataset.
+    We explore each of these approaches in each guide, highlighting when each is appropriate with an example showing how it can be applied to solving questions for the Stack Overflow dataset.

@@ -12,7 +12,6 @@ keywords: ['JSON', 'Codecs']
 
 Elasticsearch and ClickHouse support a wide variety of data types, but their underlying storage and query models are fundamentally different. This section maps commonly used Elasticsearch field types to their ClickHouse equivalents, where available, and provides context to help guide migrations. Where no equivalent exists, alternatives or notes are provided in the comments.
 
-
 | **Elasticsearch Type**        | **ClickHouse Equivalent**   | **Comments** |
 |-------------------------------|------------------------------|--------------|
 | `boolean`                     | [`UInt8`](/sql-reference/data-types/int-uint)  or [`Bool`](/sql-reference/data-types/boolean)        | ClickHouse supports `Boolean` as an alias for `UInt8` in newer versions. |

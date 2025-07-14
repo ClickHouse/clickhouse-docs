@@ -1,5 +1,5 @@
 ---
-description: 'Dataset with over 100 million records containing information about places on a map, such as shops, 
+description: 'Dataset with over 100 million records containing information about places on a map, such as shops,
 restaurants, parks, playgrounds, and monuments.'
 sidebar_label: 'Foursquare places'
 slug: /getting-started/example-datasets/foursquare-places
@@ -18,15 +18,15 @@ import visualization_4 from '@site/static/images/getting-started/example-dataset
 This dataset by Foursquare is available to [download](https://docs.foursquare.com/data-products/docs/access-fsq-os-places)
 and to use for free under the Apache 2.0 license.
 
-It contains over 100 million records of commercial points-of-interest (POI), 
+It contains over 100 million records of commercial points-of-interest (POI),
 such as shops, restaurants, parks, playgrounds, and monuments. It also includes
 additional metadata about those places, such as categories and social media
 information.
 
 ## Data exploration {#data-exploration}
 
-For exploring the data we'll use [`clickhouse-local`](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local), a small command-line tool 
-that provides the full ClickHouse engine, although you could also use 
+For exploring the data we'll use [`clickhouse-local`](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local), a small command-line tool
+that provides the full ClickHouse engine, although you could also use
 ClickHouse Cloud, `clickhouse-client` or even `chDB`.
 
 Run the following query to select the data from the s3 bucket where the data is stored:
@@ -145,14 +145,14 @@ DESCRIBE s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*
     │                     │↳    xmax Nullable(Float64),↴│
     │                     │↳    ymax Nullable(Float64)) │
     └─────────────────────┴─────────────────────────────┘
-```
+    ```
 
 ## Loading the data into ClickHouse {#loading-the-data}
 
-If you'd like to persist the data on disk, you can use `clickhouse-server` 
-or ClickHouse Cloud. 
+If you'd like to persist the data on disk, you can use `clickhouse-server`
+or ClickHouse Cloud.
 
-To create the table, run the following command: 
+To create the table, run the following command:
 
 ```sql title="Query"
 CREATE TABLE foursquare_mercator
@@ -197,7 +197,7 @@ CREATE TABLE foursquare_mercator
 ORDER BY mortonEncode(mercator_x, mercator_y)
 ```
 
-Take note of the use of the [`LowCardinality`](/sql-reference/data-types/lowcardinality) 
+Take note of the use of the [`LowCardinality`](/sql-reference/data-types/lowcardinality)
 data type for several columns which changes the internal representation of the data
 types to be dictionary-encoded. Operating with dictionary encoded data significantly
 increases the performance of `SELECT` queries for many applications.
@@ -221,49 +221,49 @@ This column converts a longitude value into an X coordinate in the Mercator proj
 - Dividing by 360 normalizes this to a value between 0 and 1
 - Multiplying by `0xFFFFFFFF` (hex for maximum 32-bit unsigned integer) scales this normalized value to the full range of a 32-bit integer
 
-**mercator_y**
+    **mercator_y**
 
-This column converts a latitude value into a Y coordinate in the Mercator projection:
+    This column converts a latitude value into a Y coordinate in the Mercator projection:
 
 - `latitude + 90` shifts latitude from [-90, 90] to [0, 180]
 - Dividing by 360 and multiplying by pi() converts to radians for the trigonometric functions
 - The `log(tan(...))` part is the core of the Mercator projection formula
 - multiplying by `0xFFFFFFFF` scales to the full 32-bit integer range
 
-Specifying `MATERIALIZED` makes sure that ClickHouse calculates the values for these 
-columns when we `INSERT` the data, without having to specify these columns (which are not
-part of the original data schema) in the `INSERT statement.
+    Specifying `MATERIALIZED` makes sure that ClickHouse calculates the values for these
+    columns when we `INSERT` the data, without having to specify these columns (which are not
+    part of the original data schema) in the `INSERT statement.
 
-The table is ordered by `mortonEncode(mercator_x, mercator_y)` which produces a 
-Z-order space-filling curve of `mercator_x`, `mercator_y` in order to significantly 
-improve geospatial query performance. This Z-order curve ordering ensures data is 
-physically organized by spatial proximity:
+    The table is ordered by `mortonEncode(mercator_x, mercator_y)` which produces a
+    Z-order space-filling curve of `mercator_x`, `mercator_y` in order to significantly
+    improve geospatial query performance. This Z-order curve ordering ensures data is
+    physically organized by spatial proximity:
 
-```sql
-ORDER BY mortonEncode(mercator_x, mercator_y)
-```
+    ```sql
+    ORDER BY mortonEncode(mercator_x, mercator_y)
+    ```
 
-Two `minmax` indices are also created for faster search:
+    Two `minmax` indices are also created for faster search:
 
-```sql
-INDEX idx_x mercator_x TYPE minmax,
-INDEX idx_y mercator_y TYPE minmax
-```
+    ```sql
+    INDEX idx_x mercator_x TYPE minmax,
+    INDEX idx_y mercator_y TYPE minmax
+    ```
 
-As you can see, ClickHouse has absolutely everything you need for real-time
-mapping applications!
+    As you can see, ClickHouse has absolutely everything you need for real-time
+    mapping applications!
 
-Run the following query to load the data:
+    Run the following query to load the data:
 
-```sql
-INSERT INTO foursquare_mercator 
-SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
-```
+    ```sql
+    INSERT INTO foursquare_mercator
+    SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
+    ```
 
 ## Visualizing the data {#data-visualization}
 
 To see what's possible with this dataset, check out [adsb.exposed](https://adsb.exposed/?dataset=Places&zoom=5&lat=52.3488&lng=4.9219).
-adsb.exposed was originally built by co-founder and CTO Alexey Milovidov to visualize ADS-B (Automatic Dependent Surveillance-Broadcast) 
+adsb.exposed was originally built by co-founder and CTO Alexey Milovidov to visualize ADS-B (Automatic Dependent Surveillance-Broadcast)
 flight data, which is 1000x times larger. During a company hackathon Alexey added the Foursquare data to the tool.
 
 Some of our favourite visualizations are produced here below for you to enjoy.
@@ -275,4 +275,3 @@ Some of our favourite visualizations are produced here below for you to enjoy.
 <Image img={visualization_3} size="md" alt="ATMs"/>
 
 <Image img={visualization_4} size="md" alt="Map of Europe with points of interest categorised by country"/>
-

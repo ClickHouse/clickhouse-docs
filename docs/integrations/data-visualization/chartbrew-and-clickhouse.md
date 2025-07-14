@@ -46,23 +46,23 @@ If you do not have a dataset to work with, you can add one of the examples. This
 1. Log in to [Chartbrew](https://chartbrew.com/login) and go to the **Connections** tab.
 2. Click **Create connection** and select **ClickHouse** from the available database options.
 
-   <Image img={chartbrew_02} size="lg" alt="Select ClickHouse connection in Chartbrew" />
+    <Image img={chartbrew_02} size="lg" alt="Select ClickHouse connection in Chartbrew" />
 
 3. Enter the connection details for your ClickHouse database:
 
-   - **Display Name**: A name to identify the connection in Chartbrew.
-   - **Host**: The hostname or IP address of your ClickHouse server.
-   - **Port**: Typically `8443` for HTTPS connections.
-   - **Database Name**: The database you want to connect to.
-   - **Username**: Your ClickHouse username.
-   - **Password**: Your ClickHouse password.
+    - **Display Name**: A name to identify the connection in Chartbrew.
+    - **Host**: The hostname or IP address of your ClickHouse server.
+    - **Port**: Typically `8443` for HTTPS connections.
+    - **Database Name**: The database you want to connect to.
+    - **Username**: Your ClickHouse username.
+    - **Password**: Your ClickHouse password.
 
-   <Image img={chartbrew_03} size="lg" alt="ClickHouse connection settings in Chartbrew" />
+    <Image img={chartbrew_03} size="lg" alt="ClickHouse connection settings in Chartbrew" />
 
 4. Click **Test connection** to verify that Chartbrew can connect to ClickHouse.
 5. If the test is successful, click **Save connection**. Chartbrew will automatically retrieve the schema from ClickHouse.
 
-   <Image img={chartbrew_04} size="lg" alt="ClickHouse JSON schema in Chartbrew" />
+    <Image img={chartbrew_04} size="lg" alt="ClickHouse JSON schema in Chartbrew" />
 
 ## 3. Create a dataset and run a SQL query {#3-create-a-dataset-and-run-a-sql-query}
 
@@ -91,7 +91,7 @@ If you do not have a dataset to work with, you can add one of the examples. This
 Once the data is retrieved, click **Configure dataset** to set up the visualization parameters.
 
 ## 4. Create a visualization {#4-create-a-visualization}
-   
+
   1. Define a metric (numerical value) and dimension (categorical value) for your visualization.
   2. Preview the dataset to ensure the query results are structured correctly.
   3. Choose a chart type (e.g., line chart, bar chart, pie chart) and add it to your dashboard.
@@ -104,7 +104,7 @@ Once the data is retrieved, click **Configure dataset** to set up the visualizat
   <Image img={chartbrew_01} size="lg" alt="Chartbrew dashboard with ClickHouse data" />
 
 ## 5. Automate data updates {#5-automate-data-updates}
-   
+
   To keep your dashboard up-to-date, you can schedule automatic data updates:
 
   1. Click the Calendar icon next to the dataset refresh button.

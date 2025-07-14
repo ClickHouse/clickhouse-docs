@@ -19,9 +19,9 @@ This Guide Integrates:
 - **Console Logs**
 - **Traces**
 
-:::note
-If you're looking for session replay/browser-side monitoring, you'll want to install the [Browser integration](/use-cases/observability/clickstack/sdks/browser) instead.
-:::
+    :::note
+    If you're looking for session replay/browser-side monitoring, you'll want to install the [Browser integration](/use-cases/observability/clickstack/sdks/browser) instead.
+    :::
 
 ## Installing {#installing}
 
@@ -36,7 +36,7 @@ const nextConfig = {
   experimental: {
     instrumentationHook: true,
   },
-  // Ignore otel pkgs warnings 
+  // Ignore otel pkgs warnings
   // https://github.com/open-telemetry/opentelemetry-js/issues/4173#issuecomment-1822938936
   webpack: (
     config,
@@ -56,18 +56,14 @@ module.exports = nextConfig;
 
 <Tabs groupId="npm">
 <TabItem value="npm" label="NPM" default>
-
-```shell 
-npm install @hyperdx/node-opentelemetry 
+```shell
+npm install @hyperdx/node-opentelemetry
 ```
-
 </TabItem>
 <TabItem value="yarn" label="Yarn" default>
-
-```shell  
-yarn add @hyperdx/node-opentelemetry 
+```shell
+yarn add @hyperdx/node-opentelemetry
 ```
-
 </TabItem>
 </Tabs>
 
@@ -89,7 +85,6 @@ export async function register() {
 ```
 
 This will allow Next.js to import the OpenTelemetry instrumentation for any serverless function invocation.
-
 
 ### Configure environment variables {#configure-environment-variables}
 

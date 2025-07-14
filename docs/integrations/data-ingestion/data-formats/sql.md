@@ -51,7 +51,6 @@ SELECT * FROM some_data LIMIT 3 FORMAT Values
 ('Bangor_City_Forest','2015-07-01',34),('Alireza_Afzal','2017-02-01',24),('Akhaura-Laksam-Chittagong_Line','2015-09-01',30)
 ```
 
-
 ## Inserting data from SQL dumps {#inserting-data-from-sql-dumps}
 
 To read SQL dumps, [MySQLDump](/interfaces/formats.md/#mysqldump) is used:
@@ -101,7 +100,6 @@ DESCRIBE TABLE table_from_mysql;
 └───────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-
 ## Other formats {#other-formats}
 
 ClickHouse introduces support for many formats, both text, and binary, to cover various scenarios and platforms. Explore more formats and ways to work with them in the following articles:
@@ -113,4 +111,4 @@ ClickHouse introduces support for many formats, both text, and binary, to cover 
 - [Native and binary formats](binary.md)
 - **SQL formats**
 
-And also check [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) - a portable full-featured tool to work on local/remote files without the need for ClickHouse server.
+    And also check [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) - a portable full-featured tool to work on local/remote files without the need for ClickHouse server.

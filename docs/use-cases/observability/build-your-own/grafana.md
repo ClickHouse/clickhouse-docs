@@ -39,7 +39,6 @@ The Traces configuration is slightly more complex (full list [here](/engines/tab
 
 <Image img={observability_15} alt="Connector config" size="sm"/>
 
-
 Once configured users can navigate to [Grafana Explore](https://grafana.com/docs/grafana/latest/explore/) and begin searching logs and traces.
 
 ## Logs {#logs}
@@ -168,22 +167,22 @@ Multi-line charts will be automatically rendered for a query provided the follow
 - field 2: value to group by. This should be a String.
 - field 3+: the metric values
 
-For example:
+    For example:
 
-```sql
-SELECT
-  $__timeInterval(Timestamp) as time,
-  ServiceName,
-  quantile(0.99)(Duration)/1000000 AS p99
-FROM otel_traces
-WHERE $__timeFilter(Timestamp)
-AND ( Timestamp  >= $__fromTime AND Timestamp <= $__toTime )
-GROUP BY ServiceName, time
-ORDER BY time ASC
-LIMIT 100000
-```
+    ```sql
+    SELECT
+    $__timeInterval(Timestamp) as time,
+    ServiceName,
+    quantile(0.99)(Duration)/1000000 AS p99
+    FROM otel_traces
+    WHERE $__timeFilter(Timestamp)
+    AND ( Timestamp  >= $__fromTime AND Timestamp <= $__toTime )
+    GROUP BY ServiceName, time
+    ORDER BY time ASC
+    LIMIT 100000
+    ```
 
-<Image img={observability_23} alt="Multi-line charts" size="lg" border/>
+    <Image img={observability_23} alt="Multi-line charts" size="lg" border/>
 
 ### Visualizing geo data {#visualizing-geo-data}
 

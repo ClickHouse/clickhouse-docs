@@ -33,7 +33,7 @@ You'll be asked to provide a **host**, **username** and **password**:
 *   **Username**: the username that will be used to connect to your ClickHouse cluster.
 *   **Password**: the password to connect to your ClickHouse cluster
 
-Please refer to the examples in our developer documentation to find out how to [create a connection to ClickHouse](https://developer.luzmo.com/api/createAccount?exampleSection=AccountCreateClickhouseRequestBody) via our API.
+    Please refer to the examples in our developer documentation to find out how to [create a connection to ClickHouse](https://developer.luzmo.com/api/createAccount?exampleSection=AccountCreateClickhouseRequestBody) via our API.
 
 ## 2. Add datasets {#2-add-datasets}
 

@@ -31,9 +31,9 @@ Consider the following JSON sample, representing a row from the [Python PyPI dat
 }
 ```
 
-In order to load this JSON object into ClickHouse, a table schema must be defined. 
+In order to load this JSON object into ClickHouse, a table schema must be defined.
 
-In this simple case, our structure is static, our column names are known, and their types are well-defined. 
+In this simple case, our structure is static, our column names are known, and their types are well-defined.
 
 Whereas ClickHouse supports semi-structured data through a JSON type, where key names and their types can be dynamic, this is unnecessary here.
 
@@ -115,7 +115,6 @@ FORMAT JSONEachRow
 
 These examples assume the use of the `JSONEachRow` format. Other common JSON formats are supported, with examples of loading these provided [here](/integrations/data-formats/json/other-formats).
 
-
 ## Loading semi-structured JSON {#loading-semi-structured-json}
 
 Our previous example loaded JSON which was static with well known key names and types. This is often not the case - keys can be added or their types can change. This is common in use cases such as Observability data.
@@ -123,7 +122,6 @@ Our previous example loaded JSON which was static with well known key names and 
 ClickHouse handles this through a dedicated [`JSON`](/sql-reference/data-types/newjson) type.
 
 Consider the following example from an extended version of the above [Python PyPI dataset](https://clickpy.clickhouse.com/) dataset. Here we have added an arbitrary `tags` column with random key value pairs.
-
 
 ```json
 {
@@ -191,7 +189,7 @@ LIMIT 2
 2 rows in set. Elapsed: 0.149 sec.
 ```
 
-Notice the performance difference here on loading data. The JSON column requires type inference at insert time as well as additional storage if columns exist that have more than one type. Although the JSON type can be configured (see [Designing JSON schema](/integrations/data-formats/json/schema)) for equivalent performance to explicitly declaring columns, it is intentionally flexible out-of-the-box. This flexibility, however, comes at some cost. 
+Notice the performance difference here on loading data. The JSON column requires type inference at insert time as well as additional storage if columns exist that have more than one type. Although the JSON type can be configured (see [Designing JSON schema](/integrations/data-formats/json/schema)) for equivalent performance to explicitly declaring columns, it is intentionally flexible out-of-the-box. This flexibility, however, comes at some cost.
 
 ### When to use the JSON type {#when-to-use-the-json-type}
 
@@ -201,10 +199,10 @@ Use the JSON type when your data:
 * Contains **values with varying types** (e.g., a path might sometimes contain a string, sometimes a number).
 * Requires schema flexibility where strict typing isn't viable.
 
-If your data structure is known and consistent, there is rarely a need for the JSON type, even if your data is in JSON format. Specifically, if your data has:
+    If your data structure is known and consistent, there is rarely a need for the JSON type, even if your data is in JSON format. Specifically, if your data has:
 
 * **A flat structure with known keys**: use standard column types e.g. String.
 * **Predictable nesting**: use Tuple, Array, or Nested types for these structures.
 * **Predictable structure with varying types**: consider Dynamic or Variant types instead.
 
-You can also mix approaches as we have done in the above example, using static columns for predictable top-level keys and a single JSON column for a dynamic section of the payload.
+    You can also mix approaches as we have done in the above example, using static columns for predictable top-level keys and a single JSON column for a dynamic section of the payload.

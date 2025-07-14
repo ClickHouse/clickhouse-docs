@@ -36,12 +36,12 @@ In this guide, we are going to cover the following:
 - Warehouse-native product analytics
 - How to integrate Mitzu to ClickHouse
 
-:::tip Example datasets
-If you do not have a data set to use for Mitzu, you can work with NYC Taxi Data.
-This dataset is available in ClickHouse Cloud or [can be loaded with these instructions](/getting-started/example-datasets/nyc-taxi).
-:::
+    :::tip Example datasets
+    If you do not have a data set to use for Mitzu, you can work with NYC Taxi Data.
+    This dataset is available in ClickHouse Cloud or [can be loaded with these instructions](/getting-started/example-datasets/nyc-taxi).
+    :::
 
-This guide is just a brief overview of how to use Mitzu. You can find more detailed information in the [Mitzu documentation](https://docs.mitzu.io/).
+    This guide is just a brief overview of how to use Mitzu. You can find more detailed information in the [Mitzu documentation](https://docs.mitzu.io/).
 
 ## 1. Gather your connection details {#1-gather-your-connection-details}
 
@@ -126,7 +126,6 @@ Get immediate conversion rate insights without writing a single line of SQL code
 :::tip Cohort retention
 Pick `Weekly cohort retention` to visualize how your retention rates change over time.
 :::
-
 
 ## 7. Run journey queries {#7-run-journey-queries}
 Select up to 9 steps for a funnel. Choose the time window within which your users can finish the journey. The Mitzu journey chart gives you a visual map of every path users take through the selected events.

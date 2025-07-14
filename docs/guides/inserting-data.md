@@ -72,8 +72,8 @@ This means inserts remain resilient in the following cases:
 - 1. If the node receiving the data has issues, the insert query will time out (or give a more specific error) and not get an acknowledgment.
 - 2. If the data got written by the node but the acknowledgement can't be returned to the sender of the query because of network interruptions, the sender will either get a time-out or a network error.
 
-From the client's perspective, (i) and (ii) can be hard to distinguish. However, in both cases, the unacknowledged insert can just be immediately retried.
-As long as the retried insert query contains the same data in the same order, ClickHouse will automatically ignore the retried insert if the (unacknowledged) original insert succeeded.
+    From the client's perspective, (i) and (ii) can be hard to distinguish. However, in both cases, the unacknowledged insert can just be immediately retried.
+    As long as the retried insert query contains the same data in the same order, ClickHouse will automatically ignore the retried insert if the (unacknowledged) original insert succeeded.
 
 ### Insert to a MergeTree table or a distributed table {#insert-to-a-mergetree-table-or-a-distributed-table}
 
@@ -109,7 +109,6 @@ Note that the data is not searchable by queries before being flushed to the data
 
 Full details on configuring asynchronous inserts can be found [here](/optimize/asynchronous-inserts#enabling-asynchronous-inserts), with a deep dive [here](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse).
 :::
-
 
 ### Use official ClickHouse clients {#use-official-clickhouse-clients}
 
@@ -148,11 +147,11 @@ See [HTTP Interface](/interfaces/http) for further details.
 For loading data from Postgres, users can use:
 
 - `PeerDB by ClickHouse`, an ETL tool specifically designed for PostgreSQL database replication. This is available in both:
-  - ClickHouse Cloud - available through our [new connector](/integrations/clickpipes/postgres) in ClickPipes, our managed ingestion service.
-  - Self-managed - via the [open-source project](https://github.com/PeerDB-io/peerdb).
+    - ClickHouse Cloud - available through our [new connector](/integrations/clickpipes/postgres) in ClickPipes, our managed ingestion service.
+    - Self-managed - via the [open-source project](https://github.com/PeerDB-io/peerdb).
 - The [PostgreSQL table engine](/integrations/postgresql#using-the-postgresql-table-engine) to read data directly as shown in previous examples. Typically appropriate if batch replication based on a known watermark, e.g., timestamp, is sufficient or if it's a one-off migration. This approach can scale to 10's millions of rows. Users looking to migrate larger datasets should consider multiple requests, each dealing with a chunk of the data. Staging tables can be used for each chunk prior to its partitions being moved to a final table. This allows failed requests to be retried. For further details on this bulk-loading strategy, see here.
 - Data can be exported from PostgreSQL in CSV format. This can then be inserted into ClickHouse from either local files or via object storage using table functions.
 
-:::note Need help inserting large datasets?
-If you need help inserting large datasets or encounter any errors when importing data into ClickHouse Cloud, please contact us at support@clickhouse.com and we can assist.
-:::
+    :::note Need help inserting large datasets?
+    If you need help inserting large datasets or encounter any errors when importing data into ClickHouse Cloud, please contact us at support@clickhouse.com and we can assist.
+    :::

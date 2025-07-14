@@ -22,7 +22,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   You can install a self-hosted version of TABLUM.IO on your Linux server in docker.
 :::
 
-
 ## 1. Sign up or sign in to the service {#1-sign-up-or-sign-in-to-the-service}
 
   First, sign up to TABLUM.IO using your email or use a quick-login via accounts in Google or Facebook.
@@ -64,7 +63,7 @@ With TABLUM.IO you can
 * create and utilise multiple ClickHouse connectors within your TABLUM.IO account,
 * run queries on any loaded data regardless of the data source,
 * share the results as a new ClickHouse database.
-:::
+    :::
 
 ## Learn more {#learn-more}
 

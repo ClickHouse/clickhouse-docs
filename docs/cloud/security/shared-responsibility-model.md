@@ -17,7 +17,6 @@ The Cloud architecture consists of the control plane and the data plane. The con
 
 Bring your own cloud (BYOC) enables customers to run the data plane in their own cloud account. For more information, review our [(BYOC) Bring Your Own Cloud](/cloud/reference/byoc) page.
 
-
 ## ClickHouse Cloud shared responsibility model {#clickhouse-cloud-shared-responsibility-model}
 The model below generally addresses ClickHouse responsibilities and shows responsibilities that should be addressed by customers of ClickHouse Cloud and ClickHouse BYOC, respectively. For more information on our PCI shared responsibility model, please download a copy of the overview available in our [Trust Center](https://trust.clickhouse.com).
 
@@ -43,63 +42,51 @@ The model below generally addresses ClickHouse responsibilities and shows respon
 ## ClickHouse Cloud configurable security features {#clickhouse-cloud-configurable-security-features}
 
 <details>
-  <summary>Network connectivity</summary>
-
-  | Setting                                                                                              | Status    | Cloud             | Service level        |  
-  |------------------------------------------------------------------------------------------------------|-----------|-------------------|----------------------|
-  | [IP filters](/cloud/security/setting-ip-filters) to restrict connections to services         | Available | AWS, GCP, Azure   | All                  |
-  | [Private link](/cloud/security/private-link-overview) to securely connect to services        | Available | AWS, GCP, Azure   | Scale or Enterprise  |
-  
+<summary>Network connectivity</summary>
+| Setting                                                                                              | Status    | Cloud             | Service level        |
+|------------------------------------------------------------------------------------------------------|-----------|-------------------|----------------------|
+| [IP filters](/cloud/security/setting-ip-filters) to restrict connections to services         | Available | AWS, GCP, Azure   | All                  |
+| [Private link](/cloud/security/private-link-overview) to securely connect to services        | Available | AWS, GCP, Azure   | Scale or Enterprise  |
 </details>
 <details>
-  <summary>Access management</summary>
-
-  
-  | Setting                                                                                              | Status    | Cloud             | Service level           |  
-  |------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
-  | [Standard role-based access](/cloud/security/cloud-access-management) in control plane | Available | AWS, GCP, Azure | All               | 
-  | [Multi-factor authentication (MFA)](/cloud/security/cloud-authentication#multi-factor-authentication) available | Available | AWS, GCP, Azure | All   |
-  | [SAML Single Sign-On](/cloud/security/saml-setup) to control plane available                 | Preview   | AWS, GCP, Azure   | Enterprise              |
-  | Granular [role-based access control](/cloud/security/cloud-access-management/overview#database-permissions) in databases | Available | AWS, GCP, Azure | All          |
-  
+<summary>Access management</summary>
+| Setting                                                                                              | Status    | Cloud             | Service level           |
+|------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
+| [Standard role-based access](/cloud/security/cloud-access-management) in control plane | Available | AWS, GCP, Azure | All               |
+| [Multi-factor authentication (MFA)](/cloud/security/cloud-authentication#multi-factor-authentication) available | Available | AWS, GCP, Azure | All   |
+| [SAML Single Sign-On](/cloud/security/saml-setup) to control plane available                 | Preview   | AWS, GCP, Azure   | Enterprise              |
+| Granular [role-based access control](/cloud/security/cloud-access-management/overview#database-permissions) in databases | Available | AWS, GCP, Azure | All          |
 </details>
 <details>
-  <summary>Data security</summary>
-
-  | Setting                                                                                              | Status    | Cloud             | Service level           |  
-  |------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
-  | [Cloud provider and region](/cloud/reference/supported-regions) selections                   | Available | AWS, GCP, Azure   | All                     |
-  | Limited [free daily backups](/cloud/manage/backups/overview#default-backup-policy)                    | Available | AWS, GCP, Azure   | All                     |
-  | [Custom backup configurations](/cloud/manage/backups/overview#configurable-backups) available         | Available | GCP, AWS, Azure   | Scale or Enterprise     |
-  | [Customer managed encryption keys (CMEK)](/cloud/security/cmek) for transparent<br/> data encryption available  | Available | AWS, GCP | Enterprise |
-  | [Field level encryption](/sql-reference/functions/encryption-functions) with manual key management for granular encryption | Available | GCP, AWS, Azure | All  |
-
-  
+<summary>Data security</summary>
+| Setting                                                                                              | Status    | Cloud             | Service level           |
+|------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
+| [Cloud provider and region](/cloud/reference/supported-regions) selections                   | Available | AWS, GCP, Azure   | All                     |
+| Limited [free daily backups](/cloud/manage/backups/overview#default-backup-policy)                    | Available | AWS, GCP, Azure   | All                     |
+| [Custom backup configurations](/cloud/manage/backups/overview#configurable-backups) available         | Available | GCP, AWS, Azure   | Scale or Enterprise     |
+| [Customer managed encryption keys (CMEK)](/cloud/security/cmek) for transparent<br/> data encryption available  | Available | AWS, GCP | Enterprise |
+| [Field level encryption](/sql-reference/functions/encryption-functions) with manual key management for granular encryption | Available | GCP, AWS, Azure | All  |
 </details>
 <details>
-  <summary>Data retention</summary>
-
-  | Setting                                                                                              | Status    | Cloud             | Service level           |  
-  |------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
-  | [Time to live (TTL)](/sql-reference/statements/alter/ttl) settings to manage retention       | Available | AWS, GCP, Azure   | All                     |
-  | [ALTER TABLE DELETE](/sql-reference/statements/alter/delete) for heavy deletion actions      | Available | AWS, GCP, Azure   | All                     |
-  | [Lightweight DELETE](/sql-reference/statements/delete) for measured deletion activities      | Available | AWS, GCP, Azure   | All                     |
-  
+<summary>Data retention</summary>
+| Setting                                                                                              | Status    | Cloud             | Service level           |
+|------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
+| [Time to live (TTL)](/sql-reference/statements/alter/ttl) settings to manage retention       | Available | AWS, GCP, Azure   | All                     |
+| [ALTER TABLE DELETE](/sql-reference/statements/alter/delete) for heavy deletion actions      | Available | AWS, GCP, Azure   | All                     |
+| [Lightweight DELETE](/sql-reference/statements/delete) for measured deletion activities      | Available | AWS, GCP, Azure   | All                     |
 </details>
 <details>
-  <summary>Auditing and logging</summary>
-
-  | Setting                                                                                              | Status    | Cloud             | Service level           |  
-  |------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
-  | [Audit log](/cloud/security/audit-logging) for control plane activities                      | Available | AWS, GCP, Azure   | All                     |
-  | [Session log](/operations/system-tables/session_log) for database activities                 | Available | AWS, GCP, Azure   | All                     |
-  | [Query log](/operations/system-tables/query_log) for database activities                     | Available | AWS, GCP, Azure   | All                     |
-  
+<summary>Auditing and logging</summary>
+| Setting                                                                                              | Status    | Cloud             | Service level           |
+|------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
+| [Audit log](/cloud/security/audit-logging) for control plane activities                      | Available | AWS, GCP, Azure   | All                     |
+| [Session log](/operations/system-tables/session_log) for database activities                 | Available | AWS, GCP, Azure   | All                     |
+| [Query log](/operations/system-tables/query_log) for database activities                     | Available | AWS, GCP, Azure   | All                     |
 </details>
 
 ## ClickHouse Cloud compliance {#clickhouse-cloud-compliance}
 
-  | Framework                                                                                            | Status    | Cloud             | Service level           |  
+  | Framework                                                                                            | Status    | Cloud             | Service level           |
   |------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
   | ISO 27001 compliance                                                                                 | Available | AWS, GCP, Azure   | All                     |
   | SOC 2 Type II compliance                                                                             | Available | AWS, GCP, Azure   | All                     |
@@ -108,4 +95,3 @@ The model below generally addresses ClickHouse responsibilities and shows respon
   | PCI compliance                                                                                       | Available | AWS               | Enterprise              |
 
   For more information on supported compliance frameworks, please review our [Security and Compliance](/cloud/security/security-and-compliance) page.
-

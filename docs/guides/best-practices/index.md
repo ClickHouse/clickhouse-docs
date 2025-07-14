@@ -7,8 +7,8 @@ title: 'Performance and Optimizations'
 
 # Performance and optimizations
 
-This section contains tips and best practices for improving performance with ClickHouse. 
-We recommend users read [Core Concepts](/parts) as a precursor to this section, 
+This section contains tips and best practices for improving performance with ClickHouse.
+We recommend users read [Core Concepts](/parts) as a precursor to this section,
 which covers the main concepts required to improve performance.
 
 | Topic                                                                                 | Description                                                                                                                                                                                                                                                                                                                                                             |

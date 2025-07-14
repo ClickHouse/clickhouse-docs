@@ -25,57 +25,48 @@ Classless Inter-domain Routing (CIDR) notation, allows you to specify IP address
 ## Create or modify an IP access list {#create-or-modify-an-ip-access-list}
 
 <details>
-  <summary>IP access list for ClickHouse services</summary>
-
-  When you create a ClickHouse service, the default setting for the IP allow list is 'Allow from nowhere.' 
-  
-  From your ClickHouse Cloud services list select the service and then select **Settings**.  Under the **Security** section, you will find the IP access list. Click on the Add IPs button.
-  
-  A sidebar will appear with options for you to configure:
-  
-  - Allow incoming traffic from anywhere to the service
-  - Allow access from specific locations to the service
-  - Deny all access to the service
-  
+<summary>IP access list for ClickHouse services</summary>
+When you create a ClickHouse service, the default setting for the IP allow list is 'Allow from nowhere.'
+From your ClickHouse Cloud services list select the service and then select **Settings**.  Under the **Security** section, you will find the IP access list. Click on the Add IPs button.
+A sidebar will appear with options for you to configure:
+- Allow incoming traffic from anywhere to the service
+- Allow access from specific locations to the service
+- Deny all access to the service
 </details>
 <details>
-  <summary>IP access list for API keys</summary>
-
-  When you create an API key, the default setting for the IP allow list is 'Allow from anywhere.'
-  
-  From the API key list, click the three dots next to the API key under the **Actions** column and select **Edit**. At the bottom of the screen you will find the IP access list and options to configure:
-
-  - Allow incoming traffic from anywhere to the service
-  - Allow access from specific locations to the service
-  - Deny all access to the service
-  
+<summary>IP access list for API keys</summary>
+When you create an API key, the default setting for the IP allow list is 'Allow from anywhere.'
+From the API key list, click the three dots next to the API key under the **Actions** column and select **Edit**. At the bottom of the screen you will find the IP access list and options to configure:
+- Allow incoming traffic from anywhere to the service
+- Allow access from specific locations to the service
+- Deny all access to the service
 </details>
 
 This screenshot shows an access list which allows traffic from a range of IP addresses, described as "NY Office range":
-  
+
 <Image img={ip_filtering_after_provisioning} size="md" alt="Existing access list in ClickHouse Cloud" border/>
 
 ### Possible actions {#possible-actions}
 
 1. To add an additional entry you can use **+ Add new IP**
 
-  This example adds a single IP address, with a description of `London server`:
+    This example adds a single IP address, with a description of `London server`:
 
-<Image img={ip_filter_add_single_ip} size="md" alt="Adding a single IP to the access list in ClickHouse Cloud" border/>
+    <Image img={ip_filter_add_single_ip} size="md" alt="Adding a single IP to the access list in ClickHouse Cloud" border/>
 
 1. Delete an existing entry
 
-  Clicking the cross (x) can deletes an entry
+    Clicking the cross (x) can deletes an entry
 
 1. Edit an existing entry
 
-  Directly modifying the entry
+    Directly modifying the entry
 
 1. Switch to allow access from **Anywhere**
 
-  This is not recommended, but it is allowed.  We recommend that you expose an application built on top of ClickHouse to the public and restrict access to the back-end ClickHouse Cloud service.
+    This is not recommended, but it is allowed.  We recommend that you expose an application built on top of ClickHouse to the public and restrict access to the back-end ClickHouse Cloud service.
 
-To apply the changes you made, you must click **Save**.
+    To apply the changes you made, you must click **Save**.
 
 ## Verification {#verification}
 

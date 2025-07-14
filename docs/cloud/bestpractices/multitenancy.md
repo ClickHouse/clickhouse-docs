@@ -25,7 +25,7 @@ In cases where there is a significant gap in data volume between tenants, smalle
 
 ### Example {#shared-table-example}
 
-This is an example of a shared table multi-tenancy model implementation. 
+This is an example of a shared table multi-tenancy model implementation.
 
 First, let's create a shared table with a field `tenant_id` included in the primary key.
 
@@ -64,12 +64,12 @@ VALUES
 Then let's create two users `user_1` and `user_2`.
 
 ```sql
--- Create users 
+-- Create users
 CREATE USER user_1 IDENTIFIED BY '<password>'
 CREATE USER user_2 IDENTIFIED BY '<password>'
 ```
 
-We [create row policies](/sql-reference/statements/create/row-policy) that restricts `user_1` and `user_2` to access only their tenants' data. 
+We [create row policies](/sql-reference/statements/create/row-policy) that restricts `user_1` and `user_2` to access only their tenants' data.
 
 ```sql
 -- Create row policies
@@ -77,7 +77,7 @@ CREATE ROW POLICY user_filter_1 ON default.events USING tenant_id=1 TO user_1
 CREATE ROW POLICY user_filter_2 ON default.events USING tenant_id=2 TO user_2
 ```
 
-Then [`GRANT SELECT`](/sql-reference/statements/grant#usage) privileges on the shared table using a common role. 
+Then [`GRANT SELECT`](/sql-reference/statements/grant#usage) privileges on the shared table using a common role.
 
 ```sql
 -- Create role
@@ -89,7 +89,7 @@ GRANT user_role TO user_1
 GRANT user_role TO user_2
 ```
 
-Now you can connect as `user_1` and run a simple select. Only rows from the first tenant are returned. 
+Now you can connect as `user_1` and run a simple select. Only rows from the first tenant are returned.
 
 ```sql
 -- Logged as user_1
@@ -102,8 +102,8 @@ FROM events
 3. │         1 │ 6b4d12e4-447d-4398-b3fa-1c1e94d71a2f │ user_logout │ 2025-03-19 08:10:00 │    1001 │ {"device": "desktop", "location": "LA"} │
 4. │         1 │ 83b5eb72-aba3-4038-bc52-6c08b6423615 │ purchase    │ 2025-03-19 08:45:00 │    1003 │ {"item": "monitor", "amount": 450}      │
 5. │         1 │ 975fb0c8-55bd-4df4-843b-34f5cfeed0a9 │ user_login  │ 2025-03-19 08:50:00 │    1004 │ {"device": "desktop", "location": "LA"} │
-   └───────────┴──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
-```
+    └───────────┴──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
+    ```
 
 ## Separate tables {#separate-tables}
 
@@ -111,18 +111,18 @@ In this approach, each tenant's data is stored in a separate table within the sa
 
 > **Using separate tables is a good choice when tenants have different data schemas.**
 
-For scenarios involving a few tenants with very large datasets where query performance is critical, this approach may outperform a shared table model. Since there is no need to filter out other tenants' data, queries can be more efficient. Additionally, primary keys can be further optimized, as there is no need to include an extra field (such as a tenant ID) in the primary key. 
+For scenarios involving a few tenants with very large datasets where query performance is critical, this approach may outperform a shared table model. Since there is no need to filter out other tenants' data, queries can be more efficient. Additionally, primary keys can be further optimized, as there is no need to include an extra field (such as a tenant ID) in the primary key.
 
 Note this approach doesn't scale for 1000s of tenants. See [usage limits](/cloud/bestpractices/usage-limits).
 
 ### Example {#separate-tables-example}
 
-This is an example of a separate tables multi-tenancy model implementation. 
+This is an example of a separate tables multi-tenancy model implementation.
 
 First, let's create two tables, one for events from `tenant_1` and one for the events from `tenant_2`.
 
 ```sql
--- Create table for tenant 1 
+-- Create table for tenant 1
 CREATE TABLE events_tenant_1
 (
     id UUID,                    -- Unique event ID
@@ -133,7 +133,7 @@ CREATE TABLE events_tenant_1
 )
 ORDER BY (timestamp, user_id) -- Primary key can focus on other attributes
 
--- Create table for tenant 2 
+-- Create table for tenant 2
 CREATE TABLE events_tenant_2
 (
     id UUID,                    -- Unique event ID
@@ -168,7 +168,7 @@ VALUES
 Then let's create two users `user_1` and `user_2`.
 
 ```sql
--- Create users 
+-- Create users
 CREATE USER user_1 IDENTIFIED BY '<password>'
 CREATE USER user_2 IDENTIFIED BY '<password>'
 ```
@@ -181,7 +181,7 @@ GRANT SELECT ON default.events_tenant_1 TO user_1
 GRANT SELECT ON default.events_tenant_2 TO user_2
 ```
 
-Now you can connect as `user_1` and run a simple select from the table corresponding to this user. Only rows from the first tenant are returned. 
+Now you can connect as `user_1` and run a simple select from the table corresponding to this user. Only rows from the first tenant are returned.
 
 ```sql
 -- Logged as user_1
@@ -194,8 +194,8 @@ FROM default.events_tenant_1
 3. │ 6b4d12e4-447d-4398-b3fa-1c1e94d71a2f │ user_logout │ 2025-03-19 08:10:00 │    1001 │ {"device": "desktop", "location": "LA"} │
 4. │ 83b5eb72-aba3-4038-bc52-6c08b6423615 │ purchase    │ 2025-03-19 08:45:00 │    1003 │ {"item": "monitor", "amount": 450}      │
 5. │ 975fb0c8-55bd-4df4-843b-34f5cfeed0a9 │ user_login  │ 2025-03-19 08:50:00 │    1004 │ {"device": "desktop", "location": "LA"} │
-   └──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
-```
+    └──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
+    ```
 
 ## Separate databases {#separate-databases}
 
@@ -209,7 +209,7 @@ Note this approach doesn't scale for 1000s of tenants. See [usage limits](/cloud
 
 ### Example {#separate-databases-example}
 
-This is an example of a separate databases multi-tenancy model implementation. 
+This is an example of a separate databases multi-tenancy model implementation.
 
 First, let's create two databases, one for `tenant_1` and one for `tenant_2`.
 
@@ -268,7 +268,7 @@ VALUES
 Then let's create two users `user_1` and `user_2`.
 
 ```sql
--- Create users 
+-- Create users
 CREATE USER user_1 IDENTIFIED BY '<password>'
 CREATE USER user_2 IDENTIFIED BY '<password>'
 ```
@@ -281,7 +281,7 @@ GRANT SELECT ON tenant_1.events TO user_1
 GRANT SELECT ON tenant_2.events TO user_2
 ```
 
-Now you can connect as `user_1` and run a simple select on the events table of the appropriate database. Only rows from the first tenant are returned. 
+Now you can connect as `user_1` and run a simple select on the events table of the appropriate database. Only rows from the first tenant are returned.
 
 ```sql
 -- Logged as user_1
@@ -294,20 +294,20 @@ FROM tenant_1.events
 3. │ 6b4d12e4-447d-4398-b3fa-1c1e94d71a2f │ user_logout │ 2025-03-19 08:10:00 │    1001 │ {"device": "desktop", "location": "LA"} │
 4. │ 83b5eb72-aba3-4038-bc52-6c08b6423615 │ purchase    │ 2025-03-19 08:45:00 │    1003 │ {"item": "monitor", "amount": 450}      │
 5. │ 975fb0c8-55bd-4df4-843b-34f5cfeed0a9 │ user_login  │ 2025-03-19 08:50:00 │    1004 │ {"device": "desktop", "location": "LA"} │
-   └──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
-```
+    └──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
+    ```
 
 ## Compute-compute separation {#compute-compute-separation}
 
-The three approaches described above can also be further isolated by using [Warehouses](/cloud/reference/warehouses#what-is-a-warehouse). Data is shared through a common object storage but each tenant can have its own compute service thanks to [compute-compute separation](/cloud/reference/warehouses#what-is-compute-compute-separation) with different CPU/Memory ratio. 
+The three approaches described above can also be further isolated by using [Warehouses](/cloud/reference/warehouses#what-is-a-warehouse). Data is shared through a common object storage but each tenant can have its own compute service thanks to [compute-compute separation](/cloud/reference/warehouses#what-is-compute-compute-separation) with different CPU/Memory ratio.
 
-User management is similar to the approaches described previously, since all services in a warehouse [share access controls](/cloud/reference/warehouses#database-credentials). 
+User management is similar to the approaches described previously, since all services in a warehouse [share access controls](/cloud/reference/warehouses#database-credentials).
 
 Note the number of child services in a warehouse is limited to a small number. See [Warehouse limitations](/cloud/reference/warehouses#limitations).
 
 ## Separate cloud service {#separate-service}
 
-The most radical approach is to use a different ClickHouse service per tenant. 
+The most radical approach is to use a different ClickHouse service per tenant.
 
 > **This less common method would be a solution if tenants data are required to be stored in different regions - for legal, security or proximity reasons.**
 
@@ -317,7 +317,7 @@ This approach is harder to manage and bring overhead with each service, as they 
 
 ### Example {#separate-service-example}
 
-This is an example of a separate service multi-tenancy model implementation. Note the example shows the creation of tables and users on one ClickHouse service, the same will have to be replicated on all services. 
+This is an example of a separate service multi-tenancy model implementation. Note the example shows the creation of tables and users on one ClickHouse service, the same will have to be replicated on all services.
 
 First, let's create the table `events`
 
@@ -349,7 +349,7 @@ VALUES
 Then let's create two users `user_1`
 
 ```sql
--- Create users 
+-- Create users
 CREATE USER user_1 IDENTIFIED BY '<password>'
 ```
 
@@ -360,7 +360,7 @@ Then `GRANT SELECT` privileges on the corresponding table.
 GRANT SELECT ON events TO user_1
 ```
 
-Now you can connect as `user_1` on the service for tenant 1 and run a simple select. Only rows from the first tenant are returned. 
+Now you can connect as `user_1` on the service for tenant 1 and run a simple select. Only rows from the first tenant are returned.
 
 ```sql
 -- Logged as user_1
@@ -373,6 +373,5 @@ FROM events
 3. │ 6b4d12e4-447d-4398-b3fa-1c1e94d71a2f │ user_logout │ 2025-03-19 08:10:00 │    1001 │ {"device": "desktop", "location": "LA"} │
 4. │ 83b5eb72-aba3-4038-bc52-6c08b6423615 │ purchase    │ 2025-03-19 08:45:00 │    1003 │ {"item": "monitor", "amount": 450}      │
 5. │ 975fb0c8-55bd-4df4-843b-34f5cfeed0a9 │ user_login  │ 2025-03-19 08:50:00 │    1004 │ {"device": "desktop", "location": "LA"} │
-   └──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
-```
-
+    └──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
+    ```

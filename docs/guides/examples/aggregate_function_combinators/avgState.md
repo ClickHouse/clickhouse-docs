@@ -10,14 +10,14 @@ sidebar_label: 'avgState'
 
 ## Description {#description}
 
-The [`State`](/sql-reference/aggregate-functions/combinators#-state) combinator 
-can be applied to the [`avg`](/sql-reference/aggregate-functions/reference/avg) 
+The [`State`](/sql-reference/aggregate-functions/combinators#-state) combinator
+can be applied to the [`avg`](/sql-reference/aggregate-functions/reference/avg)
 function to produce an intermediate state of `AggregateFunction(avg, T)` type where
 `T` is the specified type for the average.
 
 ## Example usage {#example-usage}
 
-In this example, we'll look at how we can use the `AggregateFunction` type, 
+In this example, we'll look at how we can use the `AggregateFunction` type,
 together with the `avgState` function to aggregate website traffic data.
 
 First create the source table for website traffic data:
@@ -34,8 +34,8 @@ ENGINE = MergeTree()
 ORDER BY (page_id, viewed_at);
 ```
 
-Create the aggregate table that will store average response times. Note that 
-`avg` cannot use the `SimpleAggregateFunction` type as it requires a complex 
+Create the aggregate table that will store average response times. Note that
+`avg` cannot use the `SimpleAggregateFunction` type as it requires a complex
 state (a sum and a count). We therefore use the `AggregateFunction` type:
 
 ```sql
@@ -49,7 +49,7 @@ ENGINE = AggregatingMergeTree()
 ORDER BY page_id;
 ```
 
-Create an Incremental materialized view that will act as an insert trigger to 
+Create an Incremental materialized view that will act as an insert trigger to
 new data and store the intermediate state data in the target table defined above:
 
 ```sql
@@ -89,7 +89,7 @@ INSERT INTO raw_page_views (page_id, page_name, response_time_ms) VALUES
 Examine the target table `page_performance`:
 
 ```sql
-SELECT 
+SELECT
     page_id,
     page_name,
     avg_response_time,
@@ -110,12 +110,12 @@ FROM page_performance
 ```
 
 Notice that the `avg_response_time` column is of type `AggregateFunction(avg, UInt32)`
-and stores intermediate state information. Also notice that the row data for the 
-`avg_response_time` is not useful to us and we see strange text characters such 
-as `�, n, F, }`. This is the terminals attempt to display binary data as text. 
-The reason for this is that `AggregateFunction` types store their state in a 
-binary format that's optimized for efficient storage and computation, not for 
-human readability. This binary state contains all the information needed to 
+and stores intermediate state information. Also notice that the row data for the
+`avg_response_time` is not useful to us and we see strange text characters such
+as `�, n, F, }`. This is the terminals attempt to display binary data as text.
+The reason for this is that `AggregateFunction` types store their state in a
+binary format that's optimized for efficient storage and computation, not for
+human readability. This binary state contains all the information needed to
 calculate the average.
 
 To make use of it, use the `Merge` combinator:

@@ -5,7 +5,6 @@ keywords: ['postgres', 'postgresql', 'data types', 'types']
 description: 'Additional information relative to migrating from PostgreSQL'
 ---
 
-
 import postgresReplicas from '@site/static/images/integrations/data-ingestion/dbms/postgres-replicas.png';
 import Image from '@theme/IdealImage';
 
@@ -94,12 +93,10 @@ This can be achieved in several ways (in order of preference):
 1. **Sync replicas manually** - If you write to one replica and read from another, you can use issue `SYSTEM SYNC REPLICA LIGHTWEIGHT` prior to reading.
 1. **Enable sequential consistency** - via the query setting [`select_sequential_consistency = 1`](/operations/settings/settings#select_sequential_consistency). In OSS, the setting `insert_quorum = 'auto'` must also be specified.
 
-<br />
+    See [here](/cloud/reference/shared-merge-tree#consistency) for further details on enabling these settings.
 
-See [here](/cloud/reference/shared-merge-tree#consistency) for further details on enabling these settings.
-
-> Use of sequential consistency will place a greater load on ClickHouse Keeper.  The result can
-mean slower inserts and reads. SharedMergeTree, used in ClickHouse Cloud as the main table engine, sequential consistency [incurs less overhead and will scale better](/cloud/reference/shared-merge-tree#consistency). OSS users should use this approach cautiously and measure Keeper load.
+    > Use of sequential consistency will place a greater load on ClickHouse Keeper.  The result can
+    mean slower inserts and reads. SharedMergeTree, used in ClickHouse Cloud as the main table engine, sequential consistency [incurs less overhead and will scale better](/cloud/reference/shared-merge-tree#consistency). OSS users should use this approach cautiously and measure Keeper load.
 
 ## Transactional (ACID) support {#transactional-acid-support}
 

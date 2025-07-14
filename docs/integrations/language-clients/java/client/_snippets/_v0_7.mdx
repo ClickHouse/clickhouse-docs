@@ -11,64 +11,53 @@ This library will be deprecated soon. Use the latest [Java Client](/integrations
 
 <Tabs groupId="client-v1-setup">
 <TabItem value="maven" label="Maven">
-
 ```xml
 <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client -->
 <dependency>
-    <groupId>com.clickhouse</groupId>
-    <artifactId>clickhouse-http-client</artifactId>
-    <version>0.7.2</version>
+<groupId>com.clickhouse</groupId>
+<artifactId>clickhouse-http-client</artifactId>
+<version>0.7.2</version>
 </dependency>
 ```
-
 </TabItem>
 <TabItem value="gradle-kt" label="Gradle (Kotlin)">
-
 ```kotlin
 // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client
 implementation("com.clickhouse:clickhouse-http-client:0.7.2")
 ```
 </TabItem>
 <TabItem value="gradle" label="Gradle">
-
 ```groovy
 // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client
 implementation 'com.clickhouse:clickhouse-http-client:0.7.2'
 ```
-
 </TabItem>
 </Tabs>
 
 Since version `0.5.0`, the driver uses a new client http library that needs to be added as a dependency.
 
-
 <Tabs groupId="client-v1-http-client">
 <TabItem value="maven" label="Maven">
-
 ```xml
 <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5 -->
 <dependency>
-    <groupId>org.apache.httpcomponents.client5</groupId>
-    <artifactId>httpclient5</artifactId>
-    <version>5.3.1</version>
+<groupId>org.apache.httpcomponents.client5</groupId>
+<artifactId>httpclient5</artifactId>
+<version>5.3.1</version>
 </dependency>
 ```
-
 </TabItem>
 <TabItem value="gradle-kt" label="Gradle (Kotlin)">
-
 ```kotlin
 // https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
 implementation("org.apache.httpcomponents.client5:httpclient5:5.3.1")
 ```
 </TabItem>
 <TabItem value="gradle" label="Gradle">
-
 ```groovy
 // https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
 implementation 'org.apache.httpcomponents.client5:httpclient5:5.3.1'
 ```
-
 </TabItem>
 </Tabs>
 
@@ -79,18 +68,18 @@ Connection URL Format: `protocol://host[:port][/database][?param[=value][&param[
 - `http://localhost:8443?ssl=true&sslmode=NONE`
 - `https://(https://explorer@play.clickhouse.com:443`
 
-Connect to a single node:
+    Connect to a single node:
 
-```java showLineNumbers
-ClickHouseNode server = ClickHouseNode.of("http://localhost:8123/default?compress=0");
-```
-Connect to a cluster with multiple nodes:
+    ```java showLineNumbers
+    ClickHouseNode server = ClickHouseNode.of("http://localhost:8123/default?compress=0");
+    ```
+    Connect to a cluster with multiple nodes:
 
-```java showLineNumbers
-ClickHouseNodes servers = ClickHouseNodes.of(
+    ```java showLineNumbers
+    ClickHouseNodes servers = ClickHouseNodes.of(
     "jdbc:ch:http://server1.domain,server2.domain,server3.domain/my_db"
     + "?load_balancing_policy=random&health_check_interval=5000&failover=2");
-```
+    ```
 
 ## Query API {#query-api}
 
@@ -124,14 +113,11 @@ try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.H
 }
 ```
 
-
 See [complete code example](https://github.com/ClickHouse/clickhouse-java/blob/main/examples/client/src/main/java/com/clickhouse/examples/jdbc/Main.java#L73) in the [repo](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client).
 
 ## Insert API {#insert-api}
 
 ```java showLineNumbers
-
-
 
 try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
      ClickHouseResponse response = client.read(servers).write()
@@ -152,7 +138,6 @@ RowBinary format is described on its [page](/interfaces/formats#rowbinarywithnam
 
 There is an example of [code](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/main/src/main/java/com/clickhouse/kafka/connect/sink/db/ClickHouseWriter.java#L622).
 
-
 ## Features {#features}
 ### Compression {#compression}
 
@@ -160,34 +145,28 @@ The client will by default use LZ4 compression, which requires this dependency:
 
 <Tabs groupId="client-v1-compression-deps">
 <TabItem value="maven" label="Maven" >
-
 ```xml
 <!-- https://mvnrepository.com/artifact/org.lz4/lz4-java -->
 <dependency>
-    <groupId>org.lz4</groupId>
-    <artifactId>lz4-java</artifactId>
-    <version>1.8.0</version>
+<groupId>org.lz4</groupId>
+<artifactId>lz4-java</artifactId>
+<version>1.8.0</version>
 </dependency>
 ```
-
 </TabItem>
 <TabItem value="gradle-kt" label="Gradle (Kotlin)">
-
 ```kotlin
 // https://mvnrepository.com/artifact/org.lz4/lz4-java
 implementation("org.lz4:lz4-java:1.8.0")
 ```
 </TabItem>
 <TabItem value="gradle" label="Gradle">
-
 ```groovy
 // https://mvnrepository.com/artifact/org.lz4/lz4-java
 implementation 'org.lz4:lz4-java:1.8.0'
 ```
-
 </TabItem>
 </Tabs>
-
 
 You can choose to use gzip instead by setting `compress_algorithm=gzip` in the connection URL.
 
@@ -196,14 +175,14 @@ Alternatively, you can disable compression a few ways.
 1. Disable by setting `compress=0` in the connection URL: `http://localhost:8123/default?compress=0`
 2. Disable via the client configuration:
 
-```java showLineNumbers
-ClickHouseClient client = ClickHouseClient.builder()
-   .config(new ClickHouseConfig(Map.of(ClickHouseClientOption.COMPRESS, false)))
-   .nodeSelector(ClickHouseNodeSelector.of(ClickHouseProtocol.HTTP))
-   .build();
-```
+    ```java showLineNumbers
+    ClickHouseClient client = ClickHouseClient.builder()
+    .config(new ClickHouseConfig(Map.of(ClickHouseClientOption.COMPRESS, false)))
+    .nodeSelector(ClickHouseNodeSelector.of(ClickHouseProtocol.HTTP))
+    .build();
+    ```
 
-See the [compression documentation](/data-compression/compression-modes) to learn more about different compression options.
+    See the [compression documentation](/data-compression/compression-modes) to learn more about different compression options.
 
 ### Multiple queries {#multiple-queries}
 
@@ -303,16 +282,16 @@ The Java client chooses a ClickHouse node to send requests to, according to the 
 2. Managing node's status.
 3. Optionally schedule a background process for node discovery (if auto-discovery is enabled) and run a health check.
 
-Here is a list of options to configure load balancing:
+    Here is a list of options to configure load balancing:
 
-| Property              | Default                                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|-----------------------|-------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| load_balancing_policy | `""`                                      | The load-balancing policy can be one of: <li>`firstAlive` - request is sent to the first healthy node from the managed node list</li><li>`random` - request is sent to a random node from the managed node list </li><li>`roundRobin` - request is sent to each node from the managed node list, in turn.</li><li>full qualified class name implementing `ClickHouseLoadBalancingPolicy` - custom load balancing policy</li>If it is not specified the request is sent to the first node from the managed node list |
-| load_balancing_tags   | `""`                                      | Load balancing tags for filtering out nodes. Requests are sent only to nodes that have the specified tags                                                                                                                                                                                                                                                                                                                                                                                                      |
-| health_check_interval | `0`                                       | Health check interval in milliseconds, zero or negative value means one-time.                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| health_check_method   | `ClickHouseHealthCheckMethod.SELECT_ONE`  | Health check method. Can be one of: <li>`ClickHouseHealthCheckMethod.SELECT_ONE` - check with `select 1` query</li> <li>`ClickHouseHealthCheckMethod.PING` - protocol-specific check, which is generally faster</li>                                                                                                                                                                                                                                                                                          |
-| node_check_interval   | `0`                                       | Node check interval in milliseconds, negative number is treated as zero. The node status is checked if the specified amount of time has passed since the last check.<br/>The difference between `health_check_interval` and `node_check_interval` is that the `health_check_interval` option schedules the background job, which checks the status for the list of nodes (all or faulty), but `node_check_interval` specifies the amount of time has passed since the last check for the particular node                |
-| check_all_nodes       | `false`                                   | Whether to perform a health check against all nodes or just faulty ones.                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+    | Property              | Default                                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+    |-----------------------|-------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    | load_balancing_policy | `""`                                      | The load-balancing policy can be one of: <li>`firstAlive` - request is sent to the first healthy node from the managed node list</li><li>`random` - request is sent to a random node from the managed node list </li><li>`roundRobin` - request is sent to each node from the managed node list, in turn.</li><li>full qualified class name implementing `ClickHouseLoadBalancingPolicy` - custom load balancing policy</li>If it is not specified the request is sent to the first node from the managed node list |
+    | load_balancing_tags   | `""`                                      | Load balancing tags for filtering out nodes. Requests are sent only to nodes that have the specified tags                                                                                                                                                                                                                                                                                                                                                                                                      |
+    | health_check_interval | `0`                                       | Health check interval in milliseconds, zero or negative value means one-time.                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+    | health_check_method   | `ClickHouseHealthCheckMethod.SELECT_ONE`  | Health check method. Can be one of: <li>`ClickHouseHealthCheckMethod.SELECT_ONE` - check with `select 1` query</li> <li>`ClickHouseHealthCheckMethod.PING` - protocol-specific check, which is generally faster</li>                                                                                                                                                                                                                                                                                          |
+    | node_check_interval   | `0`                                       | Node check interval in milliseconds, negative number is treated as zero. The node status is checked if the specified amount of time has passed since the last check.<br/>The difference between `health_check_interval` and `node_check_interval` is that the `health_check_interval` option schedules the background job, which checks the status for the list of nodes (all or faulty), but `node_check_interval` specifies the amount of time has passed since the last check for the particular node                |
+    | check_all_nodes       | `false`                                   | Whether to perform a health check against all nodes or just faulty ones.                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 
 ### Failover and retry {#failover-and-retry}
 

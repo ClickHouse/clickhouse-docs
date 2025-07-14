@@ -7,7 +7,6 @@ sidebar_position: 2
 description: 'Deploying ClickStack with Docker Compose - The ClickHouse Observability Stack'
 ---
 
-
 import Image from '@theme/IdealImage';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
@@ -20,9 +19,9 @@ All ClickStack components are distributed separately as individual Docker images
 * **OpenTelemetry (OTel) collector**
 * **MongoDB**
 
-These images can be combined and deployed locally using Docker Compose.
+    These images can be combined and deployed locally using Docker Compose.
 
-Docker Compose exposes additional ports for observability and ingestion based on the default `otel-collector` setup:
+    Docker Compose exposes additional ports for observability and ingestion based on the default `otel-collector` setup:
 
 - `13133`: Health check endpoint for the `health_check` extension
 - `24225`: Fluentd receiver for log ingestion
@@ -30,7 +29,7 @@ Docker Compose exposes additional ports for observability and ingestion based on
 - `4318`: OTLP HTTP receiver (alternative to gRPC)
 - `8888`: Prometheus metrics endpoint for monitoring the collector itself
 
-These ports enable integrations with a variety of telemetry sources and make the OpenTelemetry collector production-ready for diverse ingestion needs.
+    These ports enable integrations with a variety of telemetry sources and make the OpenTelemetry collector production-ready for diverse ingestion needs.
 
 ### Suitable for {#suitable-for}
 
@@ -43,11 +42,8 @@ These ports enable integrations with a variety of telemetry sources and make the
 <br/>
 
 <VerticalStepper headerLevel="h3">
-
 ### Clone the repo {#clone-the-repo}
-
 To deploy with Docker Compose clone the HyperDX repo, change into the directory and run `docker-compose up`:
-
 ```shell
 git clone git@github.com:hyperdxio/hyperdx.git
 cd hyperdx
@@ -55,33 +51,20 @@ cd hyperdx
 git checkout v2
 docker compose up
 ```
-
 ### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui}
-
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
-
-Create a user, providing a username and password which meets the requirements. 
-
+Create a user, providing a username and password which meets the requirements.
 On clicking `Create` data sources will be created for the ClickHouse instance deployed with the Helm chart.
-
 :::note Overriding default connection
 You can override the default connection to the integrated ClickHouse instance. For details, see ["Using ClickHouse Cloud"](#using-clickhouse-cloud).
 :::
-
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
-
 For an example of using an alternative ClickHouse instance, see ["Create a ClickHouse Cloud connection"](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
-
 ### Complete connection details {#complete-connection-details}
-
-To connect to the deployed ClickHouse instance, simply click **Create** and accept the default settings.  
-
+To connect to the deployed ClickHouse instance, simply click **Create** and accept the default settings.
 If you prefer to connect to your own **external ClickHouse cluster** e.g. ClickHouse Cloud, you can manually enter your connection credentials.
-
 If prompted to create a source, retain all default values and complete the `Table` field with the value `otel_logs`. All other settings should be auto-detected, allowing you to click `Save New Source`.
-
 <Image img={hyperdx_logs} alt="Create logs source" size="md"/>
-
 </VerticalStepper>
 
 ## Modifying compose settings {#modifying-settings}
@@ -153,28 +136,27 @@ This distribution can be used with ClickHouse Cloud. Users should:
 
 - On connecting to the HyperDX UI and creating a connection to ClickHouse, use your Cloud credentials.
 
-<JSONSupport/>
+    <JSONSupport/>
 
-To set these, modify the relevant services in the `docker-compose.yaml`:
+    To set these, modify the relevant services in the `docker-compose.yaml`:
 
-
-```yaml
-  app:
-    image: ${HDX_IMAGE_REPO}/${IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
-    ports:
-      - ${HYPERDX_API_PORT}:${HYPERDX_API_PORT}
-      - ${HYPERDX_APP_PORT}:${HYPERDX_APP_PORT}
-    environment:
-      BETA_CH_OTEL_JSON_SCHEMA_ENABLED: true # enable JSON
-      FRONTEND_URL: ${HYPERDX_APP_URL}:${HYPERDX_APP_PORT}
-      HYPERDX_API_KEY: ${HYPERDX_API_KEY}
-      HYPERDX_API_PORT: ${HYPERDX_API_PORT}
-    # truncated for brevity
-
-    otel-collector:
-    image: ${HDX_IMAGE_REPO}/${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
-    environment:
-      OTEL_AGENT_FEATURE_GATE_ARG: '--feature-gates=clickhouse.json' # enable JSON
-      CLICKHOUSE_ENDPOINT: 'tcp://ch-server:9000?dial_timeout=10s' 
+  ```yaml
+      app:
+      image: ${HDX_IMAGE_REPO}/${IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
+      ports:
+        - ${HYPERDX_API_PORT}:${HYPERDX_API_PORT}
+        - ${HYPERDX_APP_PORT}:${HYPERDX_APP_PORT}
+      environment:
+        BETA_CH_OTEL_JSON_SCHEMA_ENABLED: true # enable JSON
+        FRONTEND_URL: ${HYPERDX_APP_URL}:${HYPERDX_APP_PORT}
+        HYPERDX_API_KEY: ${HYPERDX_API_KEY}
+        HYPERDX_API_PORT: ${HYPERDX_API_PORT}
       # truncated for brevity
-```
+
+      otel-collector:
+      image: ${HDX_IMAGE_REPO}/${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
+      environment:
+        OTEL_AGENT_FEATURE_GATE_ARG: '--feature-gates=clickhouse.json' # enable JSON
+        CLICKHOUSE_ENDPOINT: 'tcp://ch-server:9000?dial_timeout=10s'
+        # truncated for brevity
+  ```

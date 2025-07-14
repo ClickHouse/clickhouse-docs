@@ -22,13 +22,13 @@ The import statements are shown below:
 CREATE OR REPLACE TABLE atp_matches_1960s ORDER BY tourney_id AS
 SELECT tourney_id, surface, winner_name, loser_name, winner_seed, loser_seed, score
 FROM url('https://raw.githubusercontent.com/JeffSackmann/tennis_atp/refs/heads/master/atp_matches_{1968..1969}.csv')
-SETTINGS schema_inference_make_columns_nullable=0, 
+SETTINGS schema_inference_make_columns_nullable=0,
          schema_inference_hints='winner_seed Nullable(String), loser_seed Nullable(UInt8)';
 
-CREATE OR REPLACE TABLE atp_matches_1970s ORDER BY tourney_id AS 
+CREATE OR REPLACE TABLE atp_matches_1970s ORDER BY tourney_id AS
 SELECT tourney_id, surface, winner_name, loser_name, winner_seed, loser_seed, splitByWhitespace(score) AS score
 FROM url('https://raw.githubusercontent.com/JeffSackmann/tennis_atp/refs/heads/master/atp_matches_{1970..1979}.csv')
-SETTINGS schema_inference_make_columns_nullable=0, 
+SETTINGS schema_inference_make_columns_nullable=0,
          schema_inference_hints='winner_seed Nullable(UInt8), loser_seed Nullable(UInt8)';
 
 CREATE OR REPLACE TABLE atp_matches_1980s ORDER BY tourney_id AS
@@ -47,7 +47,7 @@ SETTINGS schema_inference_make_columns_nullable=0,
 ```
 
 ## Schema of multiple tables {#schema-multiple-tables}
- 
+
 We can run the following query to list the columns in each table along with their types side by side, so that it's easier to see the differences.
 
 ```sql
@@ -169,7 +169,6 @@ AND multiIf(
 
 We could also use this virtual column as part of a query to count the values for the `walkover` column:
 
-
 ```sql
 SELECT _table, walkover, count()
 FROM merge('atp_matches*')
@@ -190,7 +189,6 @@ ORDER BY _table;
 We can see that the `walkover` column is `NULL` for everything except `atp_matches_1990s`.
 We'll need to update our query to check whether the `score` column contains the string `W/O` if the `walkover` column is `NULL`:
 
-
 ```sql
 SELECT _table,
    multiIf(
@@ -210,7 +208,6 @@ ORDER BY _table;
 ```
 
 If the underlying type of `score` is `Array(String)` we have to go over the array and look for `W/O`, whereas if it has a type of `String` we can just search for `W/O` in the string.
-
 
 ```text
 ┌─_table────────────┬─multiIf(isNo⋯, '%W/O%'))─┬─count()─┐

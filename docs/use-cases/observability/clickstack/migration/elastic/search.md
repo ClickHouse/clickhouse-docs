@@ -12,10 +12,9 @@ import Image from '@theme/IdealImage';
 import hyperdx_search from '@site/static/images/use-cases/observability/hyperdx-search.png';
 import hyperdx_sql from '@site/static/images/use-cases/observability/hyperdx-sql.png';
 
-
 ## Search in ClickStack and Elastic {#search-in-clickstack-and-elastic}
 
-ClickHouse is a SQL-native engine, designed from the ground up for high-performance analytical workloads. In contrast, Elasticsearch provides a SQL-like interface, transpiling SQL into the underlying Elasticsearch query DSL — meaning it is not a first-class citizen, and [feature parity](https://www.elastic.co/docs/explore-analyze/query-filter/languages/sql-limitations) is limited. 
+ClickHouse is a SQL-native engine, designed from the ground up for high-performance analytical workloads. In contrast, Elasticsearch provides a SQL-like interface, transpiling SQL into the underlying Elasticsearch query DSL — meaning it is not a first-class citizen, and [feature parity](https://www.elastic.co/docs/explore-analyze/query-filter/languages/sql-limitations) is limited.
 
 ClickHouse not only supports full SQL but extends it with a range of observability-focused functions, such as [`argMax`](/sql-reference/aggregate-functions/reference/argmax), [`histogram`](/sql-reference/aggregate-functions/parametric-functions#histogram), and [`quantileTiming`](/sql-reference/aggregate-functions/reference/quantiletiming), that simplify querying structured logs, metrics, and traces.
 
@@ -55,7 +54,6 @@ Both HyperDX and Elasticsearch provide flexible query languages to enable intuit
 | Field wildcard          | `service.*:error` | `service.*:error` | Not supported in HyperDX at present. |
 | Escaped special chars   | Escape reserved characters with `\` | Same      | Escaping required for reserved symbols. |
 
-
 ## Exists/missing differences {#empty-value-differences}
 
 Unlike Elasticsearch, where a field can be entirely omitted from an event and therefore truly "not exist," ClickHouse requires all columns in a table schema to exist. If a field is not provided in an insert event:
@@ -63,10 +61,10 @@ Unlike Elasticsearch, where a field can be entirely omitted from an event and th
 - For [`Nullable`](/sql-reference/data-types/nullable) fields, it will be set to `NULL`.
 - For non-nullable fields (the default), it will be populated with a default value (often an empty string, 0, or equivalent).
 
-In ClickStack, we use the latter as [`Nullable`](/sql-reference/data-types/nullable) is [not recommended](/optimize/avoid-nullable-columns).
+    In ClickStack, we use the latter as [`Nullable`](/sql-reference/data-types/nullable) is [not recommended](/optimize/avoid-nullable-columns).
 
-This behavior means that checking whether a field "exists”" in the Elasticsearch sense is not directly supported. 
+    This behavior means that checking whether a field "exists”" in the Elasticsearch sense is not directly supported.
 
-Instead, users can use `field:*` or `field != ''` to check for the presence of a non-empty value. It is thus not possible to distinguish between truly missing and explicitly empty fields.
+    Instead, users can use `field:*` or `field != ''` to check for the presence of a non-empty value. It is thus not possible to distinguish between truly missing and explicitly empty fields.
 
-In practice, this difference rarely causes issues for observability use cases, but it's important to keep in mind when translating queries between systems.
+    In practice, this difference rarely causes issues for observability use cases, but it's important to keep in mind when translating queries between systems.

@@ -45,8 +45,8 @@ In this case, it will average the amounts: 100.50, 200.75, 300.00, and 175.25.
 ```response title="Response"
    ┌─avg_successful_sale─┐
 1. │              193.88 │
-   └─────────────────────┘
-```
+    └─────────────────────┘
+    ```
 
 ## See also {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)

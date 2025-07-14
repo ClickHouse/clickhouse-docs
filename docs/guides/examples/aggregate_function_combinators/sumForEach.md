@@ -19,15 +19,15 @@ array columns, applying the aggregate to each element in the array across rows.
 
 For this example we'll make use of the `hits` dataset available in our [SQL playground](https://sql.clickhouse.com/).
 
-The `hits` table contains a column called `isMobile` of type UInt8 which can be 
+The `hits` table contains a column called `isMobile` of type UInt8 which can be
 `0` for Desktop or `1` for mobile:
 
 ```sql runnable
 SELECT EventTime, IsMobile FROM metrica.hits ORDER BY rand() LIMIT 10
 ```
 
-We'll use the `sumForEach` aggregate combinator function to analyze how 
-desktop versus mobile traffic varies by hour of the day. Click the play button 
+We'll use the `sumForEach` aggregate combinator function to analyze how
+desktop versus mobile traffic varies by hour of the day. Click the play button
 below to run the query interactively:
 
 ```sql runnable

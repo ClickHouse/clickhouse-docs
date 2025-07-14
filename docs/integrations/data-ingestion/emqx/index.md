@@ -53,7 +53,6 @@ With the infrastructure provided by cloud providers, EMQX Cloud serves dozens of
 * You have prepared a Clickhouse Cloud instance to persist device data.
 * We are using [MQTT X](https://mqttx.app/)  as an MQTT client testing tool to connect the deployment of EMQX Cloud to publish MQTT data. Or other methods connecting to the MQTT broker will do the job as well.
 
-
 ## Get your ClickHouse Cloud service {#get-your-clickhouse-cloudservice}
 
 During this setup, we deployed the ClickHouse instance on AWS in N. Virginia (us-east -1), while an EMQX Cloud instance was also deployed in the same region.
@@ -141,7 +140,6 @@ Go back to the Overview page and scroll down to the bottom of the page where you
 
 Once it has been created, you will find the public IP address in the widget. Please note that if you select "Connect from a specific location" during ClickHouse Cloud setup, you will need to add this IP address to the whitelist.
 
-
 ## Integration EMQX Cloud with ClickHouse Cloud {#integration-emqx-cloud-with-clickhouse-cloud}
 
 The [EMQX Cloud Data Integrations](https://docs.emqx.com/en/cloud/latest/rule_engine/introduction.html#general-flow) is used to configure the rules for handling and responding to EMQX message flows and device events. The Data Integrations not only provides a clear and flexible "configurable" architecture solution, but also simplifies the development process, improves user usability, and reduces the coupling degree between the business system and EMQX Cloud. It also provides a superior infrastructure for customization of EMQX Cloud's proprietary capabilities.
@@ -164,7 +162,7 @@ Click the ClickHouse card to create a new resource.
 - User: the username for connecting to your ClickHouse Cloud service.
 - Key: the password for the connection.
 
-<Image img={data_integration_resource} size="lg" border alt="EMQX Cloud ClickHouse Resource Setup form with connection details" />
+    <Image img={data_integration_resource} size="lg" border alt="EMQX Cloud ClickHouse Resource Setup form with connection details" />
 
 ### Create a new rule {#create-a-new-rule}
 
@@ -241,25 +239,25 @@ Click "New Connection" on MQTTX and fill the connection form:
 - Port: MQTT broker connection port. You can get it from the EMQX Cloud overview page.
 - Username/Password: Use the credential created above, which should be `emqx` and `xxxxxx` in this tutorial.
 
-<Image img={mqttx_new} size="lg" border alt="MQTTX New Connection Setup form with connection details" />
+    <Image img={mqttx_new} size="lg" border alt="MQTTX New Connection Setup form with connection details" />
 
-Click the "Connect" button on top right and the connection should be established.
+    Click the "Connect" button on top right and the connection should be established.
 
-Now you can send messages to the MQTT broker using this tool.
-Inputs:
+    Now you can send messages to the MQTT broker using this tool.
+    Inputs:
 1. Set payload format to "JSON".
 2. Set to topic: `temp_hum/emqx` (the topic we just set in the rule)
 3. JSON body:
 
-```bash
-{"temp": 23.1, "hum": 0.68}
-```
+    ```bash
+    {"temp": 23.1, "hum": 0.68}
+    ```
 
-Click the send button on the right. You can change the temperature value and send more data to MQTT broker.
+    Click the send button on the right. You can change the temperature value and send more data to MQTT broker.
 
-The data sent to EMQX Cloud should be processed by the rule engine and inserted into ClickHouse Cloud automatically.
+    The data sent to EMQX Cloud should be processed by the rule engine and inserted into ClickHouse Cloud automatically.
 
-<Image img={mqttx_publish} size="lg" border alt="MQTTX Publish MQTT Messages interface showing message composition" />
+    <Image img={mqttx_publish} size="lg" border alt="MQTTX Publish MQTT Messages interface showing message composition" />
 
 ### View rules monitoring {#view-rules-monitoring}
 

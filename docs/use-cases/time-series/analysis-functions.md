@@ -9,20 +9,20 @@ show_related_blogs: true
 
 # Time-series analysis functions
 
-Time series analysis in ClickHouse can be performed using standard SQL aggregation and window functions. 
+Time series analysis in ClickHouse can be performed using standard SQL aggregation and window functions.
 When working with time series data, you'll typically encounter three main types of metrics:
 
 * Counter metrics that monotonically increase over time (like page views or total events)
 * Gauge metrics that represent point-in-time measurements that can go up and down (like CPU usage or temperature)
 * Histograms that sample observations and count them in buckets (like request durations or response sizes)
 
-Common analysis patterns for these metrics include comparing values between periods, calculating cumulative totals, determining rates of change, and analyzing distributions. 
-These can all be achieved through combinations of aggregations, window functions like `sum() OVER`, and specialized functions like `histogram()`.
+    Common analysis patterns for these metrics include comparing values between periods, calculating cumulative totals, determining rates of change, and analyzing distributions.
+    These can all be achieved through combinations of aggregations, window functions like `sum() OVER`, and specialized functions like `histogram()`.
 
 ## Period-over-period changes {#time-series-period-over-period-changes}
 
-When analyzing time series data, we often need to understand how values change between time periods. 
-This is essential for both gauge and counter metrics. 
+When analyzing time series data, we often need to understand how values change between time periods.
+This is essential for both gauge and counter metrics.
 The [`lagInFrame`](/docs/sql-reference/window-functions/lagInFrame) window function lets us access the previous period's value to calculate these changes.
 
 The following query demonstrates this by calculating day-over-day changes in views for "Weird Al" Yankovic's Wikipedia page.
@@ -57,10 +57,10 @@ LIMIT 10;
 
 ## Cumulative values {#time-series-cumulative-values}
 
-Counter metrics naturally accumulate over time. 
+Counter metrics naturally accumulate over time.
 To analyze this cumulative growth, we can calculate running totals using window functions.
 
-The following query demonstrates this by using the `sum() OVER` clause creates a running total, while the `bar()` function provides a visual representation of the growth. 
+The following query demonstrates this by using the `sum() OVER` clause creates a running total, while the `bar()` function provides a visual representation of the growth.
 
 ```sql
 SELECT
@@ -92,10 +92,9 @@ LIMIT 10;
 
 ## Rate calculations {#time-series-rate-calculations}
 
-When analyzing time series data, it's often useful to understand the rate of events per unit of time. 
-This query calculates the rate of page views per second by dividing hourly totals by the number of seconds in an hour (3600). 
+When analyzing time series data, it's often useful to understand the rate of events per unit of time.
+This query calculates the rate of page views per second by dividing hourly totals by the number of seconds in an hour (3600).
 The visual bar helps identify peak hours of activity.
-
 
 ```sql
 SELECT
@@ -108,7 +107,6 @@ WHERE path = '"Weird_Al"_Yankovic'
 GROUP BY time
 LIMIT 10;
 ```
-
 
 ```text
 ┌────────────────time─┬───h─┬─rate─┬─b─────┐
@@ -127,7 +125,7 @@ LIMIT 10;
 
 ## Histograms {#time-series-histograms}
 
-A popular use case for time series data is to build histograms based on tracked events. 
+A popular use case for time series data is to build histograms based on tracked events.
 Suppose we wanted to understand the distribution of a number of pages based on their total hits, only including pages that have over 10,000 hits.
 We can use the `histogram()` function to automatically generate an adaptive histogram based on the number of bins:
 
@@ -154,7 +152,6 @@ hist: [(10033,23224.55065359477,60.625),(23224.55065359477,37855.38888888889,15.
 ```
 
 We can then use [`arrayJoin()`](/docs/sql-reference/functions/array-join) to massage the data and `bar()` to visualize it:
-
 
 ```sql
 WITH histogram(10)(hits) AS hist

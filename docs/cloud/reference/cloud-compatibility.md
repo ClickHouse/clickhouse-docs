@@ -25,10 +25,10 @@ ClickHouse Cloud provides access to a curated set of capabilities in the open so
 
 ### DDL syntax {#ddl-syntax}
 For the most part, the DDL syntax of ClickHouse Cloud should match what is available in self-managed installs. A few notable exceptions:
-  - Support for `CREATE AS SELECT`, which is currently not available. As a workaround, we suggest using `CREATE ... EMPTY ... AS SELECT` and then inserting into that table (see [this blog](https://clickhouse.com/blog/getting-data-into-clickhouse-part-1) for an example).
-  - Some experimental syntax may be disabled, for instance, `ALTER TABLE ... MODIFY QUERY` statement.
-  - Some introspection functionality may be disabled for security purposes, for example, the `addressToLine` SQL function.
-  - Do not use `ON CLUSTER` parameters in ClickHouse Cloud - these are not needed. While these are mostly no-op functions, they can still cause an error if you are trying to use [macros](/operations/server-configuration-parameters/settings#macros). Macros often do not work and are not needed in ClickHouse Cloud.
+- Support for `CREATE AS SELECT`, which is currently not available. As a workaround, we suggest using `CREATE ... EMPTY ... AS SELECT` and then inserting into that table (see [this blog](https://clickhouse.com/blog/getting-data-into-clickhouse-part-1) for an example).
+- Some experimental syntax may be disabled, for instance, `ALTER TABLE ... MODIFY QUERY` statement.
+- Some introspection functionality may be disabled for security purposes, for example, the `addressToLine` SQL function.
+- Do not use `ON CLUSTER` parameters in ClickHouse Cloud - these are not needed. While these are mostly no-op functions, they can still cause an error if you are trying to use [macros](/operations/server-configuration-parameters/settings#macros). Macros often do not work and are not needed in ClickHouse Cloud.
 
 ### Database and table engines {#database-and-table-engines}
 
@@ -36,33 +36,33 @@ ClickHouse Cloud provides a highly-available, replicated service by default. As 
 
 **Supported table engines**
 
-  - ReplicatedMergeTree (default, when none is specified)
-  - ReplicatedSummingMergeTree
-  - ReplicatedAggregatingMergeTree
-  - ReplicatedReplacingMergeTree
-  - ReplicatedCollapsingMergeTree
-  - ReplicatedVersionedCollapsingMergeTree
-  - MergeTree (converted to ReplicatedMergeTree)
-  - SummingMergeTree (converted to ReplicatedSummingMergeTree)
-  - AggregatingMergeTree (converted to ReplicatedAggregatingMergeTree)
-  - ReplacingMergeTree (converted to ReplicatedReplacingMergeTree)
-  - CollapsingMergeTree (converted to ReplicatedCollapsingMergeTree)
-  - VersionedCollapsingMergeTree (converted to ReplicatedVersionedCollapsingMergeTree)
-  - URL
-  - View
-  - MaterializedView
-  - GenerateRandom
-  - Null
-  - Buffer
-  - Memory
-  - Deltalake
-  - Hudi
-  - MySQL
-  - MongoDB
-  - NATS
-  - RabbitMQ
-  - PostgreSQL
-  - S3
+- ReplicatedMergeTree (default, when none is specified)
+- ReplicatedSummingMergeTree
+- ReplicatedAggregatingMergeTree
+- ReplicatedReplacingMergeTree
+- ReplicatedCollapsingMergeTree
+- ReplicatedVersionedCollapsingMergeTree
+- MergeTree (converted to ReplicatedMergeTree)
+- SummingMergeTree (converted to ReplicatedSummingMergeTree)
+- AggregatingMergeTree (converted to ReplicatedAggregatingMergeTree)
+- ReplacingMergeTree (converted to ReplicatedReplacingMergeTree)
+- CollapsingMergeTree (converted to ReplicatedCollapsingMergeTree)
+- VersionedCollapsingMergeTree (converted to ReplicatedVersionedCollapsingMergeTree)
+- URL
+- View
+- MaterializedView
+- GenerateRandom
+- Null
+- Buffer
+- Memory
+- Deltalake
+- Hudi
+- MySQL
+- MongoDB
+- NATS
+- RabbitMQ
+- PostgreSQL
+- S3
 
 ### Interfaces {#interfaces}
 ClickHouse Cloud supports HTTPS, native interfaces, and the [MySQL wire protocol](/interfaces/mysql). Support for more interfaces such as Postgres is coming soon.
@@ -72,14 +72,14 @@ Dictionaries are a popular way to speed up lookups in ClickHouse.  ClickHouse Cl
 
 ### Federated queries {#federated-queries}
 We support federated ClickHouse queries for cross-cluster communication in the cloud, and for communication with external self-managed ClickHouse clusters. ClickHouse Cloud currently supports federated queries using the following integration engines:
-  - Deltalake
-  - Hudi
-  - MySQL
-  - MongoDB
-  - NATS
-  - RabbitMQ
-  - PostgreSQL
-  - S3
+- Deltalake
+- Hudi
+- MySQL
+- MongoDB
+- NATS
+- RabbitMQ
+- PostgreSQL
+- S3
 
 Federated queries with some external database and table engines, such as SQLite, ODBC, JDBC, Redis, HDFS and Hive are not yet supported.
 
@@ -108,9 +108,9 @@ The following are default settings for ClickHouse Cloud services. In some cases,
 The default value of the `max_parts_in_total` setting for MergeTree tables has been lowered from 100,000 to 10,000. The reason for this change is that we observed that a large number of data parts is likely to cause a slow startup time of services in the cloud. A large number of parts usually indicate a choice of too granular partition key, which is typically done accidentally and should be avoided. The change of default will allow the detection of these cases earlier.
 
 #### `max_concurrent_queries: 1,000` {#max_concurrent_queries-1000}
-Increased this per-server setting from the default of `100` to `1000` to allow for more concurrency. 
-This will result in `number of replicas * 1,000` concurrent queries for the offered tier services. 
-`1000` concurrent queries for Basic tier service limited to a single replica and `1000+` for Scale and Enterprise, 
+Increased this per-server setting from the default of `100` to `1000` to allow for more concurrency.
+This will result in `number of replicas * 1,000` concurrent queries for the offered tier services.
+`1000` concurrent queries for Basic tier service limited to a single replica and `1000+` for Scale and Enterprise,
 depending on the number of replicas configured.
 
 #### `max_table_size_to_drop: 1,000,000,000,000` {#max_table_size_to_drop-1000000000000}

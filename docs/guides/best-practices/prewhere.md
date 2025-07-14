@@ -20,7 +20,6 @@ The [PREWHERE clause](/sql-reference/statements/select/prewhere) is a query exec
 
 This guide explains how PREWHERE works, how to measure its impact, and how to tune it for best performance.
 
-
 ## Query processing without PREWHERE optimization {#query-processing-without-prewhere-optimization}
 
 We'll start by illustrating how a query on the [uk_price_paid_simple](/parts) table is processed without using PREWHERE:
@@ -34,12 +33,11 @@ We'll start by illustrating how a query on the [uk_price_paid_simple](/parts) ta
 
 ③ It scans the index entries to identify which granules from the town column might contain rows matching the predicate.
 
-④ These potentially relevant granules are loaded into memory, along with positionally aligned granules from any other columns needed for the query. 
+④ These potentially relevant granules are loaded into memory, along with positionally aligned granules from any other columns needed for the query.
 
 ⑤ The remaining filters are then applied during query execution.
 
 As you can see, without PREWHERE, all potentially relevant columns are loaded before filtering, even if only a few rows actually match.
-
 
 ## How PREWHERE improves query efficiency {#how-prewhere-improves-query-efficiency}
 
@@ -100,7 +98,6 @@ ClickHouse follows this strategy by default as of version [23.2](https://clickho
 
 Starting with version [23.11](https://clickhouse.com/blog/clickhouse-release-23-11#column-statistics-for-prewhere), optional column statistics can further improve this by choosing the filter processing order based on actual data selectivity, not just column size.
 
-
 ## How to measure PREWHERE impact {#how-to-measure-prewhere-impact}
 
 To validate that PREWHERE is helping your queries, you can compare query performance with and without the `optimize_move_to_prewhere setting` enabled.
@@ -122,86 +119,86 @@ SETTINGS optimize_move_to_prewhere = false;
 1. │ MOYSER ROAD │
 2. │ AVENUE ROAD │
 3. │ AVENUE ROAD │
-   └─────────────┘
+    └─────────────┘
 
-3 rows in set. Elapsed: 0.056 sec. Processed 2.31 million rows, 23.36 MB (41.09 million rows/s., 415.43 MB/s.)
-Peak memory usage: 132.10 MiB.
-```
+    3 rows in set. Elapsed: 0.056 sec. Processed 2.31 million rows, 23.36 MB (41.09 million rows/s., 415.43 MB/s.)
+    Peak memory usage: 132.10 MiB.
+    ```
 
-ClickHouse read **23.36 MB** of column data while processing 2.31 million rows for the query.
+    ClickHouse read **23.36 MB** of column data while processing 2.31 million rows for the query.
 
-Next, we run the query with the `optimize_move_to_prewhere` setting enabled. (Note that this setting is optional, as the setting is enabled by default):
-```sql
-SELECT
+    Next, we run the query with the `optimize_move_to_prewhere` setting enabled. (Note that this setting is optional, as the setting is enabled by default):
+    ```sql
+    SELECT
     street
-FROM
-   uk.uk_price_paid_simple
-WHERE
-   town = 'LONDON' AND date > '2024-12-31' AND price < 10_000
-SETTINGS optimize_move_to_prewhere = true;
-```
+    FROM
+    uk.uk_price_paid_simple
+    WHERE
+    town = 'LONDON' AND date > '2024-12-31' AND price < 10_000
+    SETTINGS optimize_move_to_prewhere = true;
+    ```
 
-```txt
-   ┌─street──────┐
+    ```txt
+    ┌─street──────┐
 1. │ MOYSER ROAD │
 2. │ AVENUE ROAD │
 3. │ AVENUE ROAD │
-   └─────────────┘
+    └─────────────┘
 
-3 rows in set. Elapsed: 0.017 sec. Processed 2.31 million rows, 6.74 MB (135.29 million rows/s., 394.44 MB/s.)
-Peak memory usage: 132.11 MiB.
-```
+    3 rows in set. Elapsed: 0.017 sec. Processed 2.31 million rows, 6.74 MB (135.29 million rows/s., 394.44 MB/s.)
+    Peak memory usage: 132.11 MiB.
+    ```
 
-The same number of rows was processed (2.31 million), but thanks to PREWHERE, ClickHouse read over three times less column data—just 6.74 MB instead of 23.36 MB—which cut the total runtime by a factor of 3.
+    The same number of rows was processed (2.31 million), but thanks to PREWHERE, ClickHouse read over three times less column data—just 6.74 MB instead of 23.36 MB—which cut the total runtime by a factor of 3.
 
-For deeper insight into how ClickHouse applies PREWHERE behind the scenes, use EXPLAIN and trace logs. 
+    For deeper insight into how ClickHouse applies PREWHERE behind the scenes, use EXPLAIN and trace logs.
 
-We inspect the query's logical plan using the [EXPLAIN](/sql-reference/statements/explain#explain-plan) clause:
-```sql 
-EXPLAIN PLAN actions = 1
-SELECT
+    We inspect the query's logical plan using the [EXPLAIN](/sql-reference/statements/explain#explain-plan) clause:
+    ```sql
+    EXPLAIN PLAN actions = 1
+    SELECT
     street
-FROM
-   uk.uk_price_paid_simple
-WHERE
-   town = 'LONDON' and date > '2024-12-31' and price < 10_000;
-```
+    FROM
+    uk.uk_price_paid_simple
+    WHERE
+    town = 'LONDON' and date > '2024-12-31' and price < 10_000;
+    ```
 
-```txt
-...
-Prewhere info                                                                                                                                                                                                                                          
-  Prewhere filter column: 
-    and(greater(__table1.date, '2024-12-31'_String), 
-    less(__table1.price, 10000_UInt16), 
-    equals(__table1.town, 'LONDON'_String)) 
-...
-```
+    ```txt
+    ...
+    Prewhere info
+    Prewhere filter column:
+    and(greater(__table1.date, '2024-12-31'_String),
+    less(__table1.price, 10000_UInt16),
+    equals(__table1.town, 'LONDON'_String))
+    ...
+    ```
 
-We omit most of the plan output here, as it's quite verbose. In essence, it shows that all three column predicates were automatically moved to PREWHERE.
+    We omit most of the plan output here, as it's quite verbose. In essence, it shows that all three column predicates were automatically moved to PREWHERE.
 
-When reproducing this yourself, you'll also see in the query plan that the order of these predicates is based on the columns' data type sizes. Since we haven't enabled column statistics, ClickHouse uses size as the fallback for determining the PREWHERE processing order.
+    When reproducing this yourself, you'll also see in the query plan that the order of these predicates is based on the columns' data type sizes. Since we haven't enabled column statistics, ClickHouse uses size as the fallback for determining the PREWHERE processing order.
 
-If you want to go even further under the hood, you can observe each individual PREWHERE processing step by instructing ClickHouse to return all test-level log entries during query execution:
-```sql
-SELECT
+    If you want to go even further under the hood, you can observe each individual PREWHERE processing step by instructing ClickHouse to return all test-level log entries during query execution:
+    ```sql
+    SELECT
     street
-FROM
-   uk.uk_price_paid_simple
-WHERE
-   town = 'LONDON' AND date > '2024-12-31' AND price < 10_000
-SETTINGS send_logs_level = 'test';
-```
+    FROM
+    uk.uk_price_paid_simple
+    WHERE
+    town = 'LONDON' AND date > '2024-12-31' AND price < 10_000
+    SETTINGS send_logs_level = 'test';
+    ```
 
-```txt
-...
-<Trace> ... Condition greater(date, '2024-12-31'_String) moved to PREWHERE
-<Trace> ... Condition less(price, 10000_UInt16) moved to PREWHERE
-<Trace> ... Condition equals(town, 'LONDON'_String) moved to PREWHERE
-...
-<Test> ... Executing prewhere actions on block: greater(__table1.date, '2024-12-31'_String)
-<Test> ... Executing prewhere actions on block: less(__table1.price, 10000_UInt16)
-...
-```
+    ```txt
+    ...
+    <Trace> ... Condition greater(date, '2024-12-31'_String) moved to PREWHERE
+    <Trace> ... Condition less(price, 10000_UInt16) moved to PREWHERE
+    <Trace> ... Condition equals(town, 'LONDON'_String) moved to PREWHERE
+    ...
+    <Test> ... Executing prewhere actions on block: greater(__table1.date, '2024-12-31'_String)
+    <Test> ... Executing prewhere actions on block: less(__table1.price, 10000_UInt16)
+    ...
+    ```
 
 ## Key takeaways {#key-takeaways}
 

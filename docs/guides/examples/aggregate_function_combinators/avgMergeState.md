@@ -20,10 +20,10 @@ return a new intermediate aggregation state.
 
 ## Example usage {#example-usage}
 
-The `MergeState` combinator is particularly useful for multi-level aggregation 
-scenarios where you want to combine pre-aggregated states and maintain them as 
+The `MergeState` combinator is particularly useful for multi-level aggregation
+scenarios where you want to combine pre-aggregated states and maintain them as
 states (rather than finalizing them) for further processing. To illustrate, we'll
-look at an example in which we transform individual server performance metrics 
+look at an example in which we transform individual server performance metrics
 into hierarchical aggregations across multiple levels: Server level → Region level
 → Datacenter level.
 
@@ -123,12 +123,12 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
 We'll write three queries for each of the levels:
 
 <Tabs>
-  <TabItem value="Service level" label="Service level" default>
+<TabItem value="Service level" label="Service level" default>
 ```sql
 SELECT
-    server_id,
-    region,
-    avgMerge(avg_response_time) AS avg_response_ms
+server_id,
+region,
+avgMerge(avg_response_time) AS avg_response_ms
 FROM server_performance
 GROUP BY server_id, region
 ORDER BY region, server_id;
@@ -143,13 +143,13 @@ ORDER BY region, server_id;
 │       202 │ us-west    │             105 │
 └───────────┴────────────┴─────────────────┘
 ```
-  </TabItem>
-  <TabItem value="Regional level" label="Regional level">
+</TabItem>
+<TabItem value="Regional level" label="Regional level">
 ```sql
 SELECT
-    region,
-    datacenter,
-    avgMerge(avg_response_time) AS avg_response_ms
+region,
+datacenter,
+avgMerge(avg_response_time) AS avg_response_ms
 FROM region_performance
 GROUP BY region, datacenter
 ORDER BY datacenter, region;
@@ -161,12 +161,12 @@ ORDER BY datacenter, region;
 │ eu-central │ dc2        │                150 │
 └────────────┴────────────┴────────────────────┘
 ```
-  </TabItem>
-  <TabItem value="Datacenter level" label="Datacenter level">
+</TabItem>
+<TabItem value="Datacenter level" label="Datacenter level">
 ```sql
 SELECT
-    datacenter,
-    avgMerge(avg_response_time) AS avg_response_ms
+datacenter,
+avgMerge(avg_response_time) AS avg_response_ms
 FROM datacenter_performance
 GROUP BY datacenter
 ORDER BY datacenter;
@@ -177,7 +177,7 @@ ORDER BY datacenter;
 │ dc2        │             150 │
 └────────────┴─────────────────┘
 ```
-  </TabItem>
+</TabItem>
 </Tabs>
 
 We can insert more data:
@@ -189,7 +189,7 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
     (now(), 301, 'eu-central', 'dc2', 135);
 ```
 
-Let's check the datacenter-level performance again. Notice how the entire 
+Let's check the datacenter-level performance again. Notice how the entire
 aggregation chain updated automatically:
 
 ```sql

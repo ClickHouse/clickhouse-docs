@@ -14,10 +14,10 @@ While working through this guide you will:
 - **Preprocess and stream** the data to ClickHouse.
 - **Run some queries** against ClickHouse.
 
-The dataset used in this guide comes from the NYC Open Data team, and contains data about "all valid felony, misdemeanor, and violation crimes reported to the New York City Police Department (NYPD)". At the time of writing, the data file is 166MB, but it is updated regularly.
+    The dataset used in this guide comes from the NYC Open Data team, and contains data about "all valid felony, misdemeanor, and violation crimes reported to the New York City Police Department (NYPD)". At the time of writing, the data file is 166MB, but it is updated regularly.
 
-**Source**: [data.cityofnewyork.us](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243)
-**Terms of use**: https://www1.nyc.gov/home/terms-of-use.page
+    **Source**: [data.cityofnewyork.us](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243)
+    **Terms of use**: https://www1.nyc.gov/home/terms-of-use.page
 
 ## Prerequisites {#prerequisites}
 - Download the dataset by visiting the [NYPD Complaint Data Current (Year To Date)](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243) page, clicking the Export button, and choosing **TSV for Excel**.
@@ -28,9 +28,9 @@ There are two types of commands in this guide:
 - Some of the commands are querying the TSV files, these are run at the command prompt.
 - The rest of the commands are querying ClickHouse, and these are run in the `clickhouse-client` or Play UI.
 
-:::note
-The examples in this guide assume that you have saved the TSV file to `${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv`, please adjust the commands if needed.
-:::
+    :::note
+    The examples in this guide assume that you have saved the TSV file to `${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv`, please adjust the commands if needed.
+    :::
 
 ## Familiarize yourself with the TSV file {#familiarize-yourself-with-the-tsv-file}
 
@@ -271,9 +271,9 @@ Based on the above investigation:
 - Dates and times can be concatenated into DateTime types
 - There are some dates before January 1st 1970, which means we need a 64 bit DateTime
 
-:::note
-There are many more changes to be made to the types, they all can be determined by following the same investigation steps.  Look at the number of distinct strings in a field, the min and max of the numerics, and make your decisions.  The table schema that is given later in the guide has many low cardinality strings and unsigned integer fields and very few floating point numerics.
-:::
+    :::note
+    There are many more changes to be made to the types, they all can be determined by following the same investigation steps.  Look at the number of distinct strings in a field, the min and max of the numerics, and make your decisions.  The table schema that is given later in the guide has many low cardinality strings and unsigned integer fields and very few floating point numerics.
+    :::
 
 ## Concatenate the date and time fields {#concatenate-the-date-and-time-fields}
 
@@ -374,52 +374,51 @@ of this document.
 - The primary key index is created using the `PRIMARY KEY` tuple if specified, otherwise the `ORDER BY` tuple
 - The `PRIMARY KEY` index is kept in main memory
 
-Looking at the dataset and the questions that might be answered by querying it we might
-decide that we would look at the types of crimes reported over time in the five boroughs of
-New York City.  These fields might be then included in the `ORDER BY`:
+    Looking at the dataset and the questions that might be answered by querying it we might
+    decide that we would look at the types of crimes reported over time in the five boroughs of
+    New York City.  These fields might be then included in the `ORDER BY`:
 
-| Column      | Description (from the data dictionary)                 |
-| ----------- | --------------------------------------------------- |
-| OFNS_DESC   | Description of offense corresponding with key code     |
-| RPT_DT      | Date event was reported to police                      |
-| BORO_NM     | The name of the borough in which the incident occurred |
+    | Column      | Description (from the data dictionary)                 |
+    | ----------- | --------------------------------------------------- |
+    | OFNS_DESC   | Description of offense corresponding with key code     |
+    | RPT_DT      | Date event was reported to police                      |
+    | BORO_NM     | The name of the borough in which the incident occurred |
 
+    Querying the TSV file for the cardinality of the three candidate columns:
 
-Querying the TSV file for the cardinality of the three candidate columns:
-
-```bash
-clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
---query \
-"select formatReadableQuantity(uniq(OFNS_DESC)) as cardinality_OFNS_DESC,
+    ```bash
+    clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
+    --query \
+    "select formatReadableQuantity(uniq(OFNS_DESC)) as cardinality_OFNS_DESC,
         formatReadableQuantity(uniq(RPT_DT)) as cardinality_RPT_DT,
         formatReadableQuantity(uniq(BORO_NM)) as cardinality_BORO_NM
-  FROM
-  file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
-  FORMAT PrettyCompact"
-```
+    FROM
+    file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
+    FORMAT PrettyCompact"
+    ```
 
-Result:
-```response
-┌─cardinality_OFNS_DESC─┬─cardinality_RPT_DT─┬─cardinality_BORO_NM─┐
-│ 60.00                 │ 306.00             │ 6.00                │
-└───────────────────────┴────────────────────┴─────────────────────┘
-```
-Ordering by cardinality, the `ORDER BY` becomes:
+    Result:
+    ```response
+    ┌─cardinality_OFNS_DESC─┬─cardinality_RPT_DT─┬─cardinality_BORO_NM─┐
+    │ 60.00                 │ 306.00             │ 6.00                │
+    └───────────────────────┴────────────────────┴─────────────────────┘
+    ```
+    Ordering by cardinality, the `ORDER BY` becomes:
 
-```sql
-ORDER BY ( BORO_NM, OFNS_DESC, RPT_DT )
-```
-:::note
-The table below will use more easily read column names, the above names will be mapped to
-```sql
-ORDER BY ( borough, offense_description, date_reported )
-```
-:::
+    ```sql
+    ORDER BY ( BORO_NM, OFNS_DESC, RPT_DT )
+    ```
+    :::note
+    The table below will use more easily read column names, the above names will be mapped to
+    ```sql
+    ORDER BY ( borough, offense_description, date_reported )
+    ```
+    :::
 
-Putting together the changes to data types and the `ORDER BY` tuple gives this table structure:
+    Putting together the changes to data types and the `ORDER BY` tuple gives this table structure:
 
-```sql
-CREATE TABLE NYPD_Complaint (
+    ```sql
+    CREATE TABLE NYPD_Complaint (
     complaint_number     String,
     precinct             UInt8,
     borough              LowCardinality(String),
@@ -452,9 +451,9 @@ CREATE TABLE NYPD_Complaint (
     NY_y_coordinate      UInt32,
     Latitude             Float64,
     Longitude            Float64
-) ENGINE = MergeTree
-  ORDER BY ( borough, offense_description, date_reported )
-```
+    ) ENGINE = MergeTree
+    ORDER BY ( borough, offense_description, date_reported )
+    ```
 
 ### Finding the primary key of a table {#finding-the-primary-key-of-a-table}
 
@@ -578,7 +577,6 @@ Result:
 │ 8.63 MiB                        │
 └─────────────────────────────────┘
 ```
-
 
 ## Run some queries {#run-queries}
 

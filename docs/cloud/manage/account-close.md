@@ -41,15 +41,14 @@ below.
 4. Under 'Support' click 'Create case.'
 5. In the 'Create new case' screen, enter the following:
 
-```text
-Priority: Severity 3
-Subject: Please close my ClickHouse account
-Description: We would appreciate it if you would share a brief note about why you are cancelling.
-```
+    ```text
+    Priority: Severity 3
+    Subject: Please close my ClickHouse account
+    Description: We would appreciate it if you would share a brief note about why you are cancelling.
+    ```
 
 5. Click 'Create new case'
 6. We will close your account and send a confirmation email to let you know when it is complete.
-
 
 ## Request deletion of your personal data {#request-personal-data-deletion}
 Please note, only account administrators may request personal data deletion from ClickHouse. If you are not an account administrator, please contact

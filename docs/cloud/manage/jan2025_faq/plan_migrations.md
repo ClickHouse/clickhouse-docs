@@ -56,19 +56,17 @@ Please note that as part of this change, historical system table data will be re
 
 ### How will users be guided during migration, understanding what tier best fits their needs? {#how-will-users-be-guided-during-migration-understanding-what-tier-best-fits-their-needs}
 
-The console will prompt you with recommended options for each service based on historical use if you have a service. New users can review the capabilities and features listed in detail and decide on the tier that best suits their needs. 
+The console will prompt you with recommended options for each service based on historical use if you have a service. New users can review the capabilities and features listed in detail and decide on the tier that best suits their needs.
 
 ### How do users size and estimate the cost of "warehouses" in the new pricing? {#how-do-users-size-and-estimate-the-cost-of-warehouses-in-the-new-pricing}
 
 Please refer to the pricing calculator on the [Pricing](https://clickhouse.com/pricing) page, which will help estimate the cost based on your workload size and tier selection.
 
-
 ## Undertaking the migration {#undertaking-the-migration}
-
 
 ### What are service version pre-requisites to undertaking the migration? {#what-are-service-version-pre-requisites-to-undertaking-the-migration}
 
-Your service has to be on version 24.8 or later and already migrated to SharedMergeTree. 
+Your service has to be on version 24.8 or later and already migrated to SharedMergeTree.
 
 ### What is the migration experience for users of the current Development and Production services? Do users need to plan for a maintenance window where the service is unavailable? {#what-is-the-migration-experience-for-users-of-the-current-development-and-production-services-do-users-need-to-plan-for-a-maintenance-window-where-the-service-is-unavailable}
 
@@ -80,11 +78,11 @@ API access patterns will be different.
 
 Users that use our OpenAPI to create new services will be required to remove the `tier` field in the service creation `POST` request.
 
-The `tier` field has been removed from the service object as we no longer have service tiers.  
+The `tier` field has been removed from the service object as we no longer have service tiers.
 This will affect the objects returned by the `POST`, `GET`, and `PATCH` service requests. Therefore, any code that consumes these APIs may need to be adjusted to handle these changes.
 
 The number of replicas each service will be created with defaults to 3 for the Scale and Enterprise tiers, while it defaults to 1 for the Basic tier.
-For the Scale and the Enterprise tiers it is possible to adjust it by passing a `numReplicas` field in the service creation request. 
+For the Scale and the Enterprise tiers it is possible to adjust it by passing a `numReplicas` field in the service creation request.
 The value of the `numReplicas` field must be between 2 and 20 for the first service in a warehouse. Services that are created in an existing warehouse can have a number of replicas as low as 1.
 
 ### What changes should the users make if using the existing Terraform provider for automation? {#what-changes-should-the-users-make-if-using-the-existing-terraform-provider-for-automation}
@@ -98,7 +96,7 @@ After the migration, the `tier` field is no longer accepted, and references to i
 Users will also be able to specify the `num_replicas` field as a property of the service resource.
 
 The number of replicas each service will be created with defaults to 3 for the Scale and Enterprise tiers, while it defaults to 1 for the Basic tier.
-For the Scale and the Enterprise tiers, it is possible to adjust it by passing a `numReplicas` field in the service creation request. 
+For the Scale and the Enterprise tiers, it is possible to adjust it by passing a `numReplicas` field in the service creation request.
 The value of the `num_replicas` filed must be between 2 and 20 for the first service in a warehouse. Services that are created in an existing warehouse can have a number of replicas as low as 1.
 
 ### Will users have to make any changes to the database access? {#will-users-have-to-make-any-changes-to-the-database-access}

@@ -26,7 +26,6 @@ import Image from '@theme/IdealImage';
 # Integrating object storage with ClickHouse Cloud
 Object Storage ClickPipes provide a simple and resilient way to ingest data from Amazon S3, Google Cloud Storage, Azure Blob Storage, and DigitalOcean Spaces into ClickHouse Cloud. Both one-time and continuous ingestion are supported with exactly-once semantics.
 
-
 ## Prerequisite {#prerequisite}
 You have familiarized yourself with the [ClickPipes intro](./index.md).
 
@@ -34,59 +33,59 @@ You have familiarized yourself with the [ClickPipes intro](./index.md).
 
 1. In the cloud console, select the `Data Sources` button on the left-side menu and click on "Set up a ClickPipe"
 
-<Image img={cp_step0} alt="Select imports" size="lg" border/>
+    <Image img={cp_step0} alt="Select imports" size="lg" border/>
 
 2. Select your data source.
 
-<Image img={cp_step1} alt="Select data source type" size="lg" border/>
+    <Image img={cp_step1} alt="Select data source type" size="lg" border/>
 
 3. Fill out the form by providing your ClickPipe with a name, a description (optional), your IAM role or credentials, and bucket URL. You can specify multiple files using bash-like wildcards. For more information, [see the documentation on using wildcards in path](#limitations).
 
-<Image img={cp_step2_object_storage} alt="Fill out connection details" size="lg" border/>
+    <Image img={cp_step2_object_storage} alt="Fill out connection details" size="lg" border/>
 
 4. The UI will display a list of files in the specified bucket. Select your data format (we currently support a subset of ClickHouse formats) and if you want to enable continuous ingestion [More details below](#continuous-ingest).
 
-<Image img={cp_step3_object_storage} alt="Set data format and topic" size="lg" border/>
+    <Image img={cp_step3_object_storage} alt="Set data format and topic" size="lg" border/>
 
 5. In the next step, you can select whether you want to ingest data into a new ClickHouse table or reuse an existing one. Follow the instructions in the screen to modify your table name, schema, and settings. You can see a real-time preview of your changes in the sample table at the top.
 
-<Image img={cp_step4a} alt="Set table, schema, and settings" size="lg" border/>
+    <Image img={cp_step4a} alt="Set table, schema, and settings" size="lg" border/>
 
-  You can also customize the advanced settings using the controls provided
+    You can also customize the advanced settings using the controls provided
 
-<Image img={cp_step4a3} alt="Set advanced controls" size="lg" border/>
+    <Image img={cp_step4a3} alt="Set advanced controls" size="lg" border/>
 
 6. Alternatively, you can decide to ingest your data in an existing ClickHouse table. In that case, the UI will allow you to map fields from the source to the ClickHouse fields in the selected destination table.
 
-<Image img={cp_step4b} alt="Use an existing table" size="lg" border/>
+    <Image img={cp_step4b} alt="Use an existing table" size="lg" border/>
 
-:::info
-You can also map [virtual columns](../../sql-reference/table-functions/s3#virtual-columns), like `_path` or `_size`, to fields.
-:::
+    :::info
+    You can also map [virtual columns](../../sql-reference/table-functions/s3#virtual-columns), like `_path` or `_size`, to fields.
+    :::
 
 7. Finally, you can configure permissions for the internal ClickPipes user.
 
-  **Permissions:** ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user using a custom role or one of the predefined role:
+    **Permissions:** ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user using a custom role or one of the predefined role:
     - `Full access`: with the full access to the cluster. Required if you use materialized view or Dictionary with the destination table.
     - `Only destination table`: with the `INSERT` permissions to the destination table only.
 
-<Image img={cp_step5} alt="Permissions" size="lg" border/>
+    <Image img={cp_step5} alt="Permissions" size="lg" border/>
 
 8. By clicking on "Complete Setup", the system will register you ClickPipe, and you'll be able to see it listed in the summary table.
 
-<Image img={cp_success} alt="Success notice" size="sm" border/>
+    <Image img={cp_success} alt="Success notice" size="sm" border/>
 
-<Image img={cp_remove} alt="Remove notice" size="lg" border/>
+    <Image img={cp_remove} alt="Remove notice" size="lg" border/>
 
-  The summary table provides controls to display sample data from the source or the destination table in ClickHouse
+    The summary table provides controls to display sample data from the source or the destination table in ClickHouse
 
-<Image img={cp_destination} alt="View destination" size="lg" border/>
+    <Image img={cp_destination} alt="View destination" size="lg" border/>
 
-  As well as controls to remove the ClickPipe and display a summary of the ingest job.
+    As well as controls to remove the ClickPipe and display a summary of the ingest job.
 
-<Image img={cp_overview} alt="View overview" size="lg" border/>
+    <Image img={cp_overview} alt="View overview" size="lg" border/>
 
-Image
+    Image
 9. **Congratulations!** you have successfully set up your first ClickPipe. If this is a streaming ClickPipe it will be continuously running, ingesting data in real-time from your remote data source. Otherwise it will ingest the batch and complete.
 
 ## Supported data sources {#supported-data-sources}
@@ -130,20 +129,19 @@ To increase the throughput on large ingest jobs, we recommend scaling the ClickH
 - ClickPipes will only attempt to ingest objects at 10GB or smaller in size. If a file is greater than 10GB an error will be appended to the ClickPipes dedicated error table.
 - Azure Blob Storage pipes with continuous ingest on containers with over 100k files will have a latency of around 10–15 seconds in detecting new files. Latency increases with file count.
 - S3 / GCS ClickPipes **does not** share a listing syntax with the [S3 Table Function](/sql-reference/table-functions/s3), nor Azure with the [AzureBlobStorage Table function](/sql-reference/table-functions/azureBlobStorage).
-  - `?` — Substitutes any single character
-  - `*` — Substitutes any number of any characters except / including empty string
-  - `**` — Substitutes any number of any character include / including empty string
+    - `?` — Substitutes any single character
+    - `*` — Substitutes any number of any characters except / including empty string
+    - `**` — Substitutes any number of any character include / including empty string
 
-:::note
-This is a valid path (for S3):
+    :::note
+    This is a valid path (for S3):
 
-https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/**.ndjson.gz
+    https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/**.ndjson.gz
 
+    This is not a valid path. `{N..M}` are not supported in ClickPipes.
 
-This is not a valid path. `{N..M}` are not supported in ClickPipes.
-
-https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/{documents-01,documents-02}.ndjson.gz
-:::
+    https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/{documents-01,documents-02}.ndjson.gz
+    :::
 
 ## Continuous Ingest {#continuous-ingest}
 ClickPipes supports continuous ingestion from S3, GCS, Azure Blob Storage, and DigitalOcean Spaces. When enabled, ClickPipes continuously ingests data from the specified path, and polls for new files at a rate of once every 30 seconds. However, new files must be lexically greater than the last ingested file. This means that they must be named in a way that defines the ingestion order. For instance, files named `file1`, `file2`, `file3`, etc., will be ingested sequentially. If a new file is added with a name like `file0`, ClickPipes will not ingest it because it is not lexically greater than the last ingested file.
@@ -177,8 +175,8 @@ Currently only protected buckets are supported for Azure Blob Storage. Authentic
 
 - **Does ClickPipes support GCS buckets prefixed with `gs://`?**
 
-No. For interoperability reasons we ask you to replace your `gs://` bucket prefix with `https://storage.googleapis.com/`.
+    No. For interoperability reasons we ask you to replace your `gs://` bucket prefix with `https://storage.googleapis.com/`.
 
 - **What permissions does a GCS public bucket require?**
 
-`allUsers` requires appropriate role assignment. The `roles/storage.objectViewer` role must be granted at the bucket level. This role provides the `storage.objects.list` permission, which allows ClickPipes to list all objects in the bucket which is required for onboarding and ingestion. This role also includes the `storage.objects.get` permission, which is required to read or download individual objects in the bucket. See: [Google Cloud Access Control](https://cloud.google.com/storage/docs/access-control/iam-roles) for further information.
+    `allUsers` requires appropriate role assignment. The `roles/storage.objectViewer` role must be granted at the bucket level. This role provides the `storage.objects.list` permission, which allows ClickPipes to list all objects in the bucket which is required for onboarding and ingestion. This role also includes the `storage.objects.get` permission, which is required to read or download individual objects in the bucket. See: [Google Cloud Access Control](https://cloud.google.com/storage/docs/access-control/iam-roles) for further information.

@@ -5,7 +5,10 @@
 config:
   # turn settings on or off here
   default: false
+  MD007:
+    indent: 4
   MD010: true # Disallow hard tabs
+  MD012: true # Multiple consecutive blank lines
   MD040: true # Fenced code blocks should have a language specified
   #MD047: true # New line on end of file
   links-url-type: false # Disallow relative links to a .md or .mdx file

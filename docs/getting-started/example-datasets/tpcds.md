@@ -12,31 +12,31 @@ It includes 99 reporting and ad-hoc queries with random substitutions.
 References
 - [The Making of TPC-DS](https://dl.acm.org/doi/10.5555/1182635.1164217) (Nambiar), 2006
 
-First, checkout the TPC-DS repository and compile the data generator:
+    First, checkout the TPC-DS repository and compile the data generator:
 
-```bash
-git clone https://github.com/gregrahn/tpcds-kit.git
-cd tpcds-kit/tools
-make
-```
+    ```bash
+    git clone https://github.com/gregrahn/tpcds-kit.git
+    cd tpcds-kit/tools
+    make
+    ```
 
-Then, generate the data. Parameter `-scale` specifies the scale factor.
+    Then, generate the data. Parameter `-scale` specifies the scale factor.
 
-```bash
-./dsdgen -scale 1
-```
+    ```bash
+    ./dsdgen -scale 1
+    ```
 
-Then, generate the queries (use the same scale factor):
+    Then, generate the queries (use the same scale factor):
 
-```bash
-./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # generates 99 queries in out/query_0.sql
-```
+    ```bash
+    ./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # generates 99 queries in out/query_0.sql
+    ```
 
-Now create tables in ClickHouse.
-You can either use the original table definitions in tools/tpcds.sql or "tuned" table definitions with properly defined primary key indexes and LowCardinality-type column types where it makes sense.
+    Now create tables in ClickHouse.
+    You can either use the original table definitions in tools/tpcds.sql or "tuned" table definitions with properly defined primary key indexes and LowCardinality-type column types where it makes sense.
 
-```sql
-CREATE TABLE call_center(
+    ```sql
+    CREATE TABLE call_center(
       cc_call_center_sk         Int64,
       cc_call_center_id         LowCardinality(String),
       cc_rec_start_date         Nullable(Date),
@@ -69,9 +69,9 @@ CREATE TABLE call_center(
       cc_gmt_offset             Decimal(7,2),
       cc_tax_percentage         Decimal(7,2),
       PRIMARY KEY (cc_call_center_sk)
-);
+    );
 
-CREATE TABLE catalog_page(
+    CREATE TABLE catalog_page(
       cp_catalog_page_sk        Int64,
       cp_catalog_page_id        LowCardinality(String),
       cp_start_date_sk          Nullable(UInt32),
@@ -82,9 +82,9 @@ CREATE TABLE catalog_page(
       cp_description            LowCardinality(Nullable(String)),
       cp_type                   LowCardinality(Nullable(String)),
       PRIMARY KEY (cp_catalog_page_sk)
-);
+    );
 
-CREATE TABLE catalog_returns(
+    CREATE TABLE catalog_returns(
     cr_returned_date_sk       Int32,
     cr_returned_time_sk       Int64,
     cr_item_sk                Int64,
@@ -113,9 +113,9 @@ CREATE TABLE catalog_returns(
     cr_store_credit           Nullable(Decimal(7,2)),
     cr_net_loss               Nullable(Decimal(7,2)),
     PRIMARY KEY (cr_item_sk, cr_order_number)
-);
+    );
 
-CREATE TABLE catalog_sales (
+    CREATE TABLE catalog_sales (
     cs_sold_date_sk           Nullable(UInt32),
     cs_sold_time_sk           Nullable(Int64),
     cs_ship_date_sk           Nullable(UInt32),
@@ -151,9 +151,9 @@ CREATE TABLE catalog_sales (
     cs_net_paid_inc_ship_tax  Nullable(Decimal(7,2)),
     cs_net_profit             Decimal(7,2),
     PRIMARY KEY (cs_item_sk, cs_order_number)
-);
+    );
 
-CREATE TABLE customer_address (
+    CREATE TABLE customer_address (
     ca_address_sk             Int64,
     ca_address_id             LowCardinality(String),
     ca_street_number          LowCardinality(Nullable(String)),
@@ -168,9 +168,9 @@ CREATE TABLE customer_address (
     ca_gmt_offset             Nullable(Decimal(7,2)),
     ca_location_type          LowCardinality(Nullable(String)),
     PRIMARY KEY (ca_address_sk)
-);
+    );
 
-CREATE TABLE customer_demographics (
+    CREATE TABLE customer_demographics (
     cd_demo_sk                Int64,
     cd_gender                 LowCardinality(String),
     cd_marital_status         LowCardinality(String),
@@ -181,9 +181,9 @@ CREATE TABLE customer_demographics (
     cd_dep_employed_count     Int32,
     cd_dep_college_count      Int32,
     PRIMARY KEY (cd_demo_sk)
-);
+    );
 
-CREATE TABLE customer (
+    CREATE TABLE customer (
     c_customer_sk             Int64,
     c_customer_id             LowCardinality(String),
     c_current_cdemo_sk        Nullable(Int64),
@@ -203,9 +203,9 @@ CREATE TABLE customer (
     c_email_address           LowCardinality(Nullable(String)),
     c_last_review_date        LowCardinality(Nullable(String)),
     PRIMARY KEY (c_customer_sk)
-);
+    );
 
-CREATE TABLE date_dim (
+    CREATE TABLE date_dim (
     d_date_sk                 UInt32,
     d_date_id                 LowCardinality(String),
     d_date                    Date,
@@ -235,33 +235,33 @@ CREATE TABLE date_dim (
     d_current_quarter         LowCardinality(String),
     d_current_year            LowCardinality(String),
     PRIMARY KEY (d_date_sk)
-);
+    );
 
-CREATE TABLE household_demographics (
+    CREATE TABLE household_demographics (
     hd_demo_sk                Int64,
     hd_income_band_sk         Int64,
     hd_buy_potential          LowCardinality(String),
     hd_dep_count              Int32,
     hd_vehicle_count          Int32,
     PRIMARY KEY (hd_demo_sk)
-);
+    );
 
-CREATE TABLE income_band(
+    CREATE TABLE income_band(
     ib_income_band_sk         Int64,
     ib_lower_bound            Int32,
     ib_upper_bound            Int32,
     PRIMARY KEY (ib_income_band_sk),
-);
+    );
 
-CREATE TABLE inventory (
+    CREATE TABLE inventory (
     inv_date_sk             UInt32,
     inv_item_sk             Int64,
     inv_warehouse_sk        Int64,
     inv_quantity_on_hand    Nullable(Int32),
     PRIMARY KEY (inv_date_sk, inv_item_sk, inv_warehouse_sk),
-);
+    );
 
-CREATE TABLE item (
+    CREATE TABLE item (
     i_item_sk                 Int64,
     i_item_id                 LowCardinality(String),
     i_rec_start_date          LowCardinality(Nullable(String)),
@@ -285,9 +285,9 @@ CREATE TABLE item (
     i_manager_id              Nullable(Int32),
     i_product_name            LowCardinality(Nullable(String)),
     PRIMARY KEY (i_item_sk)
-);
+    );
 
-CREATE TABLE promotion (
+    CREATE TABLE promotion (
     p_promo_sk                Int64,
     p_promo_id                LowCardinality(String),
     p_start_date_sk           Nullable(UInt32),
@@ -308,16 +308,16 @@ CREATE TABLE promotion (
     p_purpose                 LowCardinality(Nullable(String)),
     p_discount_active         LowCardinality(Nullable(String)),
     PRIMARY KEY (p_promo_sk)
-);
+    );
 
-CREATE TABLE reason(
+    CREATE TABLE reason(
       r_reason_sk               Int64,
       r_reason_id               LowCardinality(String),
       r_reason_desc             LowCardinality(String),
       PRIMARY KEY (r_reason_sk)
-);
+    );
 
-CREATE TABLE ship_mode(
+    CREATE TABLE ship_mode(
       sm_ship_mode_sk           Int64,
       sm_ship_mode_id           LowCardinality(String),
       sm_type                   LowCardinality(String),
@@ -325,9 +325,9 @@ CREATE TABLE ship_mode(
       sm_carrier                LowCardinality(String),
       sm_contract               LowCardinality(String),
       PRIMARY KEY (sm_ship_mode_sk)
-);
+    );
 
-CREATE TABLE store_returns (
+    CREATE TABLE store_returns (
     sr_returned_date_sk       Nullable(UInt32),
     sr_return_time_sk         Nullable(Int64),
     sr_item_sk                Int64,
@@ -349,9 +349,9 @@ CREATE TABLE store_returns (
     sr_store_credit           Nullable(Decimal(7,2)),
     sr_net_loss               Nullable(Decimal(7,2)),
     PRIMARY KEY (sr_item_sk, sr_ticket_number)
-);
+    );
 
-CREATE TABLE store_sales (
+    CREATE TABLE store_sales (
     ss_sold_date_sk           Nullable(UInt32),
     ss_sold_time_sk           Nullable(Int64),
     ss_item_sk                Int64,
@@ -376,9 +376,9 @@ CREATE TABLE store_sales (
     ss_net_paid_inc_tax       Nullable(Decimal(7,2)),
     ss_net_profit             Nullable(Decimal(7,2)),
     PRIMARY KEY (ss_item_sk, ss_ticket_number)
-);
+    );
 
-CREATE TABLE store (
+    CREATE TABLE store (
     s_store_sk                Int64,
     s_store_id                LowCardinality(String),
     s_rec_start_date          LowCardinality(Nullable(String)),
@@ -409,9 +409,9 @@ CREATE TABLE store (
     s_gmt_offset              Nullable(Decimal(7,2)),
     s_tax_precentage          Nullable(Decimal(7,2)),
     PRIMARY KEY (s_store_sk)
-);
+    );
 
-CREATE TABLE time_dim (
+    CREATE TABLE time_dim (
     t_time_sk                 UInt32,
     t_time_id                 LowCardinality(String),
     t_time                    UInt32,
@@ -423,9 +423,9 @@ CREATE TABLE time_dim (
     t_sub_shift               LowCardinality(String),
     t_meal_time               LowCardinality(Nullable(String)),
     PRIMARY KEY (t_time_sk)
-);
+    );
 
-CREATE TABLE warehouse(
+    CREATE TABLE warehouse(
       w_warehouse_sk            Int64,
       w_warehouse_id            LowCardinality(String),
       w_warehouse_name          LowCardinality(Nullable(String)),
@@ -441,9 +441,9 @@ CREATE TABLE warehouse(
       w_country                 LowCardinality(Nullable(String)),
       w_gmt_offset              Decimal(7,2),
       PRIMARY KEY (w_warehouse_sk)
-);
+    );
 
-CREATE TABLE web_page(
+    CREATE TABLE web_page(
       wp_web_page_sk            Int64,
       wp_web_page_id            LowCardinality(String),
       wp_rec_start_date         LowCardinality(Nullable(String)),
@@ -459,9 +459,9 @@ CREATE TABLE web_page(
       wp_image_count            Nullable(Int32),
       wp_max_ad_count           Nullable(Int32),
       PRIMARY KEY (wp_web_page_sk)
-);
+    );
 
-CREATE TABLE web_returns (
+    CREATE TABLE web_returns (
     wr_returned_date_sk       Nullable(UInt32),
     wr_returned_time_sk       Nullable(Int64),
     wr_item_sk                Int64,
@@ -487,9 +487,9 @@ CREATE TABLE web_returns (
     wr_account_credit         Nullable(Decimal(7,2)),
     wr_net_loss               Nullable(Decimal(7,2)),
     PRIMARY KEY (wr_item_sk, wr_order_number)
-);
+    );
 
-CREATE TABLE web_sales (
+    CREATE TABLE web_sales (
     ws_sold_date_sk           Nullable(UInt32),
     ws_sold_time_sk           Nullable(Int64),
     ws_ship_date_sk           Nullable(UInt32),
@@ -525,9 +525,9 @@ CREATE TABLE web_sales (
     ws_net_paid_inc_ship_tax  Decimal(7,2),
     ws_net_profit             Decimal(7,2),
     PRIMARY KEY (ws_item_sk, ws_order_number)
-);
+    );
 
-CREATE TABLE web_site (
+    CREATE TABLE web_site (
     web_site_sk           Int64,
     web_site_id           LowCardinality(String),
     web_rec_start_date    LowCardinality(String),
@@ -555,41 +555,41 @@ CREATE TABLE web_site (
     web_gmt_offset        Decimal(7,2),
     web_tax_percentage    Decimal(7,2),
     PRIMARY KEY (web_site_sk)
-);
-```
+    );
+    ```
 
-The data can be imported as follows:
+    The data can be imported as follows:
 
-```bash
-clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO call_center FORMAT CSV" < call_center.tbl
-clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO catalog_page FORMAT CSV" < catalog_page.tbl
-clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO catalog_returns FORMAT CSV" < catalog_returns.tbl
-clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO catalog_sales FORMAT CSV" < catalog_sales.tbl
-clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO customer FORMAT CSV" < customer.tbl
-clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO customer_address FORMAT CSV" < customer_address.tbl
-clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO customer_demographics FORMAT CSV" < customer_demographics.tbl
-clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO date_dim FORMAT CSV" < date_dim.tbl
-clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO household_demographics FORMAT CSV" < household_demographics.tbl
-clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO income_band FORMAT CSV" < income_band.tbl
-clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO inventory FORMAT CSV" < inventory.tbl
-clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO item FORMAT CSV" < item.tbl
-clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO promotion FORMAT CSV" < promotion.tbl
-clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO reason FORMAT CSV" < reason.tbl
-clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO ship_mode FORMAT CSV" < ship_mode.tbl
-clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO store FORMAT CSV" < store.tbl
-clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO store_returns FORMAT CSV" < store_returns.tbl
-clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO store_sales FORMAT CSV" < store_sales.tbl
-clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO time_dim FORMAT CSV" < time_dim.tbl
-clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO warehouse FORMAT CSV" < warehouse.tbl
-clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO web_page FORMAT CSV" < web_page.tbl
-clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO web_returns FORMAT CSV" < web_returns.tbl
-clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO web_sales FORMAT CSV" < web_sales.tbl
-clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO web_site FORMAT CSV" < web_site.tbl
-```
+    ```bash
+    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO call_center FORMAT CSV" < call_center.tbl
+    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO catalog_page FORMAT CSV" < catalog_page.tbl
+    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO catalog_returns FORMAT CSV" < catalog_returns.tbl
+    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO catalog_sales FORMAT CSV" < catalog_sales.tbl
+    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO customer FORMAT CSV" < customer.tbl
+    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO customer_address FORMAT CSV" < customer_address.tbl
+    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO customer_demographics FORMAT CSV" < customer_demographics.tbl
+    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO date_dim FORMAT CSV" < date_dim.tbl
+    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO household_demographics FORMAT CSV" < household_demographics.tbl
+    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO income_band FORMAT CSV" < income_band.tbl
+    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO inventory FORMAT CSV" < inventory.tbl
+    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO item FORMAT CSV" < item.tbl
+    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO promotion FORMAT CSV" < promotion.tbl
+    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO reason FORMAT CSV" < reason.tbl
+    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO ship_mode FORMAT CSV" < ship_mode.tbl
+    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO store FORMAT CSV" < store.tbl
+    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO store_returns FORMAT CSV" < store_returns.tbl
+    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO store_sales FORMAT CSV" < store_sales.tbl
+    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO time_dim FORMAT CSV" < time_dim.tbl
+    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO warehouse FORMAT CSV" < warehouse.tbl
+    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO web_page FORMAT CSV" < web_page.tbl
+    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO web_returns FORMAT CSV" < web_returns.tbl
+    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO web_sales FORMAT CSV" < web_sales.tbl
+    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO web_site FORMAT CSV" < web_site.tbl
+    ```
 
-Then run the generated queries.
+    Then run the generated queries.
 
-::::warning
-TPC-DS makes heavy use of correlated subqueries which are at the time of writing (September 2024) not supported by ClickHouse ([issue #6697](https://github.com/ClickHouse/ClickHouse/issues/6697)).
-As a result, many of above benchmark queries will fail with errors.
-::::
+    ::::warning
+    TPC-DS makes heavy use of correlated subqueries which are at the time of writing (September 2024) not supported by ClickHouse ([issue #6697](https://github.com/ClickHouse/ClickHouse/issues/6697)).
+    As a result, many of above benchmark queries will fail with errors.
+    ::::

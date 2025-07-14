@@ -46,9 +46,9 @@ The three release channels are:
 - The [**regular release channel**](#regular-release-channel) is the default, and upgrades on this channel start two weeks after the fast release channel upgrades. If your service on the Scale and Enterprise tier does not have a release channel set, it is on the regular release channel by default.
 - The [**slow release channel**](#slow-release-channel-deferred-upgrades) is for deferred release. Upgrades on this channel occur two weeks after the regular release channel upgrades.
 
-:::note
-Basic tier services are automatically enlisted to the fast release channel
-:::
+    :::note
+    Basic tier services are automatically enlisted to the fast release channel
+    :::
 
 ### Fast release channel (early upgrades) {#fast-release-channel-early-upgrades}
 
@@ -61,19 +61,17 @@ Specifically, services will:
 - Receive the latest ClickHouse releases
 - More frequent upgrades as new releases are tested
 
-You can modify the release schedule of the service in the Cloud console as shown below:
+    You can modify the release schedule of the service in the Cloud console as shown below:
 
-<div class="eighty-percent">
+    <div class="eighty-percent">
     <Image img={fast_release} size="lg" alt="Select Plan" border/>
-</div>
-<br/>
+    </div>
 
-<div class="eighty-percent">
+    <div class="eighty-percent">
     <Image img={enroll_fast_release} size="lg" alt="Select Plan" border/>
-</div>
-<br/>
+    </div>
 
-This **Fast release** channel is suitable for testing new features in non-critical environments. **It is not recommended for production workloads with strict uptime and reliability requirements.**
+    This **Fast release** channel is suitable for testing new features in non-critical environments. **It is not recommended for production workloads with strict uptime and reliability requirements.**
 
 ### Regular release channel {#regular-release-channel}
 

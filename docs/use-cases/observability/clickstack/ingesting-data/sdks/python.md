@@ -10,7 +10,6 @@ title: 'Python'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 ClickStack uses the OpenTelemetry standard for collecting telemetry data (logs and
 traces). Traces are auto-generated with automatic instrumentation, so manual
 instrumentation isn't required to get value out of tracing.
@@ -45,7 +44,7 @@ Afterwards you'll need to configure the following environment variables in your 
 ```shell
 export HYPERDX_API_KEY='<YOUR_INGESTION_API_KEY>' \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
-OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 
+OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ```
 
 _The `OTEL_SERVICE_NAME` environment variable is used to identify your service in the HyperDX app, it can be any name you want._
@@ -60,41 +59,31 @@ opentelemetry-instrument python app.py
 
 #### If you are using `Gunicorn`, `uWSGI` or `uvicorn` {#using-uvicorn-gunicorn-uwsgi}
 
-In this case, the OpenTelemetry Python agent will require additional changes to work. 
+In this case, the OpenTelemetry Python agent will require additional changes to work.
 
 To configure OpenTelemetry for application servers using the pre-fork web server mode, make sure to call the `configure_opentelemetry` method within the post-fork hook.
 
-
 <Tabs groupId="python-alternative">
 <TabItem value="gunicorn" label="Gunicorn" default>
-
 ```python
 from hyperdx.opentelemetry import configure_opentelemetry
-
 def post_fork(server, worker):
-    configure_opentelemetry()
+configure_opentelemetry()
 ```
 </TabItem>
 <TabItem value="uwsgi" label="uWSGI" default>
-
 ```python
 from hyperdx.opentelemetry import configure_opentelemetry
 from uwsgidecorators import postfork
-
 @postfork
 def init_tracing():
-    configure_opentelemetry()
+configure_opentelemetry()
 ```
-
 </TabItem>
-
 <TabItem value="uvicorn" label="uvicorn" default>
-
-OpenTelemetry [currently does not work](https://github.com/open-telemetry/opentelemetry-python-contrib/issues/385) with `uvicorn` run using the `--reload` 
+OpenTelemetry [currently does not work](https://github.com/open-telemetry/opentelemetry-python-contrib/issues/385) with `uvicorn` run using the `--reload`
 flag or with multi-workers (`--workers`). We recommend disabling those flags while testing, or using Gunicorn.
-
 </TabItem>
-
 </Tabs>
 
 ## Advanced configuration {#advanced-configuration}
@@ -139,5 +128,3 @@ export DEBUG=true
 
 Read more about Python OpenTelemetry instrumentation here:
 [https://opentelemetry.io/docs/instrumentation/python/manual/](https://opentelemetry.io/docs/instrumentation/python/manual/)
-
-

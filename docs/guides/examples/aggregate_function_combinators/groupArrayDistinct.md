@@ -20,7 +20,7 @@ For this example we'll make use of the `hits` dataset available in our [SQL play
 
 Imagine you want to find out, for each distinct landing page domain (`URLDomain`)
 on your website, what are all the unique User Agent OS codes (`OS`) recorded for
-visitors landing on that domain. This could help you understand the variety of 
+visitors landing on that domain. This could help you understand the variety of
 operating systems interacting with different parts of your site.
 
 ```sql runnable

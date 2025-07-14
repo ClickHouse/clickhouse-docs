@@ -50,9 +50,9 @@ BigQuery supports exporting data to Google's object store (GCS). For our example
 
 2. Import the data into ClickHouse Cloud. For that we can use the [gcs table function](/sql-reference/table-functions/gcs). The DDL and import queries are available [here](https://pastila.nl/?00531abf/f055a61cc96b1ba1383d618721059976#Wf4Tn43D3VCU5Hx7tbf1Qw==). Note that because a ClickHouse Cloud instance consists of multiple compute nodes, instead of the `gcs` table function, we are using the [s3Cluster table function](/sql-reference/table-functions/s3Cluster) instead. This function also works with gcs buckets and [utilizes all nodes of a ClickHouse Cloud service](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#parallel-servers) to load the data in parallel.
 
-<Image img={bigquery_4} size="md" alt="Bulk loading"/>
+    <Image img={bigquery_4} size="md" alt="Bulk loading"/>
 
-This approach has a number of advantages:
+    This approach has a number of advantages:
 
 - BigQuery export functionality supports a filter for exporting a subset of data.
 - BigQuery supports exporting to [Parquet, Avro, JSON, and CSV](https://cloud.google.com/bigquery/docs/exporting-data) formats and several [compression types](https://cloud.google.com/bigquery/docs/exporting-data) - all supported by ClickHouse.
@@ -60,7 +60,7 @@ This approach has a number of advantages:
 - [Google allows up to 50TB per day to be exported to GCS for free](https://cloud.google.com/bigquery/quotas#export_jobs). Users only pay for GCS storage.
 - Exports produce multiple files automatically, limiting each to a maximum of 1GB of table data. This is beneficial to ClickHouse since it allows imports to be parallelized.
 
-Before trying the following examples, we recommend users review the [permissions required for export](https://cloud.google.com/bigquery/docs/exporting-data#required_permissions) and [locality recommendations](https://cloud.google.com/bigquery/docs/exporting-data#data-locations) to maximize export and import performance.
+    Before trying the following examples, we recommend users review the [permissions required for export](https://cloud.google.com/bigquery/docs/exporting-data#required_permissions) and [locality recommendations](https://cloud.google.com/bigquery/docs/exporting-data#data-locations) to maximize export and import performance.
 
 ### Real-time replication or CDC via scheduled queries {#real-time-replication-or-cdc-via-scheduled-queries}
 
@@ -152,11 +152,11 @@ In contrast to BigQuery, ClickHouse automatically creates [a (sparse) primary in
 - Memory and disk efficiency are paramount to the scale at which ClickHouse is often used. Data is written to ClickHouse tables in chunks known as parts, with rules applied for merging the parts in the background. In ClickHouse, each part has its own primary index. When parts are merged, then the merged part's primary indexes are also merged. Not that these indexes are not built for each row. Instead, the primary index for a part has one index entry per group of rows - this technique is called sparse indexing.
 - Sparse indexing is possible because ClickHouse stores the rows for a part on disk ordered by a specified key. Instead of directly locating single rows (like a B-Tree-based index), the sparse primary index allows it to quickly (via a binary search over index entries) identify groups of rows that could possibly match the query. The located groups of potentially matching rows are then, in parallel, streamed into the ClickHouse engine in order to find the matches. This index design allows for the primary index to be small (it completely fits into the main memory) while still significantly speeding up query execution times, especially for range queries that are typical in data analytics use cases. For more details, we recommend [this in-depth guide](/guides/best-practices/sparse-primary-indexes).
 
-<Image img={bigquery_5} size="md" alt="ClickHouse Primary keys"/>
+    <Image img={bigquery_5} size="md" alt="ClickHouse Primary keys"/>
 
-The selected primary key in ClickHouse will determine not only the index but also the order in which data is written on disk. Because of this, it can dramatically impact compression levels, which can, in turn, affect query performance. An ordering key that causes the values of most columns to be written in a contiguous order will allow the selected compression algorithm (and codecs) to compress the data more effectively.
+    The selected primary key in ClickHouse will determine not only the index but also the order in which data is written on disk. Because of this, it can dramatically impact compression levels, which can, in turn, affect query performance. An ordering key that causes the values of most columns to be written in a contiguous order will allow the selected compression algorithm (and codecs) to compress the data more effectively.
 
-> All columns in a table will be sorted based on the value of the specified ordering key, regardless of whether they are included in the key itself. For instance, if `CreationDate` is used as the key, the order of values in all other columns will correspond to the order of values in the `CreationDate` column. Multiple ordering keys can be specified - this will order with the same semantics as an `ORDER BY` clause in a `SELECT` query.
+    > All columns in a table will be sorted based on the value of the specified ordering key, regardless of whether they are included in the key itself. For instance, if `CreationDate` is used as the key, the order of values in all other columns will correspond to the order of values in the `CreationDate` column. Multiple ordering keys can be specified - this will order with the same semantics as an `ORDER BY` clause in a `SELECT` query.
 
 ### Choosing an ordering key {#choosing-an-ordering-key}
 
@@ -199,40 +199,40 @@ Partitioning in ClickHouse has similar applications as in BigQuery but with some
 
 - **Data management** - In ClickHouse, users should principally consider partitioning to be a data management feature, not a query optimization technique. By separating data logically based on a key, each partition can be operated on independently e.g. deleted. This allows users to move partitions, and thus subsets, between [storage tiers](/integrations/s3#storage-tiers) efficiently on time or [expire data/efficiently delete from the cluster](/sql-reference/statements/alter/partition). In example, below we remove posts from 2008:
 
-```sql
-SELECT DISTINCT partition
-FROM system.parts
-WHERE `table` = 'posts'
+    ```sql
+    SELECT DISTINCT partition
+    FROM system.parts
+    WHERE `table` = 'posts'
 
-┌─partition─┐
-│ 2008      │
-│ 2009      │
-│ 2010      │
-│ 2011      │
-│ 2012      │
-│ 2013      │
-│ 2014      │
-│ 2015      │
-│ 2016      │
-│ 2017      │
-│ 2018      │
-│ 2019      │
-│ 2020      │
-│ 2021      │
-│ 2022      │
-│ 2023      │
-│ 2024      │
-└───────────┘
+    ┌─partition─┐
+    │ 2008      │
+    │ 2009      │
+    │ 2010      │
+    │ 2011      │
+    │ 2012      │
+    │ 2013      │
+    │ 2014      │
+    │ 2015      │
+    │ 2016      │
+    │ 2017      │
+    │ 2018      │
+    │ 2019      │
+    │ 2020      │
+    │ 2021      │
+    │ 2022      │
+    │ 2023      │
+    │ 2024      │
+    └───────────┘
 
-17 rows in set. Elapsed: 0.002 sec.
+    17 rows in set. Elapsed: 0.002 sec.
 
-ALTER TABLE posts
-(DROP PARTITION '2008')
+    ALTER TABLE posts
+    (DROP PARTITION '2008')
 
-Ok.
+    Ok.
 
-0 rows in set. Elapsed: 0.103 sec.
-```
+    0 rows in set. Elapsed: 0.103 sec.
+    ```
 
 - **Query optimization** - While partitions can assist with query performance, this depends heavily on the access patterns. If queries target only a few partitions (ideally one), performance can potentially improve. This is only typically useful if the partitioning key is not in the primary key and you are filtering by it. However, queries that need to cover many partitions may perform worse than if no partitioning is used (as there may possibly be more parts as a result of partitioning). The benefit of targeting a single partition will be even less pronounced to non-existence if the partitioning key is already an early entry in the primary key. Partitioning can also be used to [optimize `GROUP BY` queries](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key) if values in each partition are unique. However, in general, users should ensure the primary key is optimized and only consider partitioning as a query optimization technique in exceptional cases where access patterns access a specific predictable subset of the day, e.g., partitioning by day, with most queries in the last day.
 
@@ -249,7 +249,7 @@ Important: Ensure your partitioning key expression does not result in a high car
 ClickHouse's concept of projections allows users to specify multiple `ORDER BY` clauses for a table.
 
 In [ClickHouse data modeling](/data-modeling/schema-design), we explore how materialized views can be used
-in ClickHouse to pre-compute aggregations, transform rows, and optimize queries 
+in ClickHouse to pre-compute aggregations, transform rows, and optimize queries
 for different access patterns. For the latter, we [provided an example](/materialized-view/incremental-materialized-view#lookup-table) where
 the materialized view sends rows to a target table with a different ordering key
 to the original table receiving inserts.
@@ -270,7 +270,7 @@ Peak memory usage: 201.93 MiB.
 ```
 
 This query requires all 90m rows to be scanned (albeit quickly) as the `UserId`
-is not the ordering key. Previously, we solved this using a materialized view 
+is not the ordering key. Previously, we solved this using a materialized view
 acting as a lookup for the `PostId`. The same problem can be solved with a projection.
 The command below adds a projection with `ORDER BY user_id`.
 
@@ -282,8 +282,8 @@ SELECT * ORDER BY UserId
 ALTER TABLE comments MATERIALIZE PROJECTION comments_user_id
 ```
 
-Note that we have to first create the projection and then materialize it. 
-This latter command causes the data to be stored twice on disk in two different 
+Note that we have to first create the projection and then materialize it.
+This latter command causes the data to be stored twice on disk in two different
 orders. The projection can also be defined when the data is created, as shown below,
 and will be automatically maintained as data is inserted.
 
@@ -309,7 +309,7 @@ ENGINE = MergeTree
 ORDER BY PostId
 ```
 
-If the projection is created via an `ALTER` command, the creation is asynchronous 
+If the projection is created via an `ALTER` command, the creation is asynchronous
 when the `MATERIALIZE PROJECTION` command is issued. Users can confirm the progress
 of this operation with the following query, waiting for `is_done=1`.
 
@@ -323,68 +323,68 @@ WHERE (`table` = 'comments') AND (command LIKE '%MATERIALIZE%')
 
    ┌─parts_to_do─┬─is_done─┬─latest_fail_reason─┐
 1. │           1 │       0 │                    │
-   └─────────────┴─────────┴────────────────────┘
+    └─────────────┴─────────┴────────────────────┘
 
-1 row in set. Elapsed: 0.003 sec.
-```
+    1 row in set. Elapsed: 0.003 sec.
+    ```
 
-If we repeat the above query, we can see performance has improved significantly 
-at the expense of additional storage.
+    If we repeat the above query, we can see performance has improved significantly
+    at the expense of additional storage.
 
-```sql
-SELECT avg(Score)
-FROM comments
-WHERE UserId = 8592047
+    ```sql
+    SELECT avg(Score)
+    FROM comments
+    WHERE UserId = 8592047
 
-   ┌──────────avg(Score)─┐
+    ┌──────────avg(Score)─┐
 1. │ 0.18181818181818182 │
-   └─────────────────────┘
---highlight-next-line
-1 row in set. Elapsed: 0.008 sec. Processed 16.36 thousand rows, 98.17 KB (2.15 million rows/s., 12.92 MB/s.)
-Peak memory usage: 4.06 MiB.
-```
+    └─────────────────────┘
+    --highlight-next-line
+    1 row in set. Elapsed: 0.008 sec. Processed 16.36 thousand rows, 98.17 KB (2.15 million rows/s., 12.92 MB/s.)
+    Peak memory usage: 4.06 MiB.
+    ```
 
-With an [`EXPLAIN` command](/sql-reference/statements/explain), we also confirm the projection was used to serve this query:
+    With an [`EXPLAIN` command](/sql-reference/statements/explain), we also confirm the projection was used to serve this query:
 
-```sql
-EXPLAIN indexes = 1
-SELECT avg(Score)
-FROM comments
-WHERE UserId = 8592047
+    ```sql
+    EXPLAIN indexes = 1
+    SELECT avg(Score)
+    FROM comments
+    WHERE UserId = 8592047
 
     ┌─explain─────────────────────────────────────────────┐
- 1. │ Expression ((Projection + Before ORDER BY))         │
- 2. │   Aggregating                                       │
- 3. │   Filter                                            │
- 4. │           ReadFromMergeTree (comments_user_id)      │
- 5. │           Indexes:                                  │
- 6. │           PrimaryKey                                │
- 7. │           Keys:                                     │
- 8. │           UserId                                    │
- 9. │           Condition: (UserId in [8592047, 8592047]) │
+    1. │ Expression ((Projection + Before ORDER BY))         │
+    2. │   Aggregating                                       │
+    3. │   Filter                                            │
+    4. │           ReadFromMergeTree (comments_user_id)      │
+    5. │           Indexes:                                  │
+    6. │           PrimaryKey                                │
+    7. │           Keys:                                     │
+    8. │           UserId                                    │
+    9. │           Condition: (UserId in [8592047, 8592047]) │
 10. │           Parts: 2/2                                │
 11. │           Granules: 2/11360                         │
     └─────────────────────────────────────────────────────┘
 
-11 rows in set. Elapsed: 0.004 sec.
-```
+    11 rows in set. Elapsed: 0.004 sec.
+    ```
 
 ### When to use projections {#when-to-use-projections}
 
-Projections are an appealing feature for new users as they are automatically 
+Projections are an appealing feature for new users as they are automatically
 maintained as data is inserted. Furthermore, queries can just be sent to a single
 table where the projections are exploited where possible to speed up the response
 time.
 
 <Image img={bigquery_7} size="md" alt="Projections"/>
 
-This is in contrast to materialized views, where the user has to select the 
+This is in contrast to materialized views, where the user has to select the
 appropriate optimized target table or rewrite their query, depending on the filters.
-This places greater emphasis on user applications and increases client-side 
+This places greater emphasis on user applications and increases client-side
 complexity.
 
-Despite these advantages, projections come with some inherent limitations which 
-users should be aware of and thus should be deployed sparingly. For further 
+Despite these advantages, projections come with some inherent limitations which
+users should be aware of and thus should be deployed sparingly. For further
 details see ["materialized views versus projections"](/managing-data/materialized-views-versus-projections)
 
 We recommend using projections when:
@@ -421,44 +421,41 @@ LIMIT 5
 3. │ anon             │    19814224 │
 4. │ Tim              │    19028260 │
 5. │ John             │    17638812 │
-   └──────────────────┴─────────────┘
+    └──────────────────┴─────────────┘
 
-5 rows in set. Elapsed: 0.076 sec. Processed 24.35 million rows, 140.21 MB (320.82 million rows/s., 1.85 GB/s.)
-Peak memory usage: 323.37 MiB.
-```
+    5 rows in set. Elapsed: 0.076 sec. Processed 24.35 million rows, 140.21 MB (320.82 million rows/s., 1.85 GB/s.)
+    Peak memory usage: 323.37 MiB.
+    ```
 
-**Which tags receive the most views:**
+    **Which tags receive the most views:**
 
-_BigQuery_
+    _BigQuery_
 
-<br />
+    <Image img={bigquery_9} size="sm" alt="BigQuery 1" border/>
 
-<Image img={bigquery_9} size="sm" alt="BigQuery 1" border/>
+    _ClickHouse_
 
-_ClickHouse_
-
-```sql
--- ClickHouse
-SELECT
+    ```sql
+    -- ClickHouse
+    SELECT
     arrayJoin(arrayFilter(t -> (t != ''), splitByChar('|', Tags))) AS tags,
     sum(ViewCount) AS views
-FROM stackoverflow.posts
-GROUP BY tags
-ORDER BY views DESC
-LIMIT 5
+    FROM stackoverflow.posts
+    GROUP BY tags
+    ORDER BY views DESC
+    LIMIT 5
 
-
-   ┌─tags───────┬──────views─┐
+    ┌─tags───────┬──────views─┐
 1. │ javascript │ 8190916894 │
 2. │ python     │ 8175132834 │
 3. │ java       │ 7258379211 │
 4. │ c#         │ 5476932513 │
 5. │ android    │ 4258320338 │
-   └────────────┴────────────┘
+    └────────────┴────────────┘
 
-5 rows in set. Elapsed: 0.318 sec. Processed 59.82 million rows, 1.45 GB (188.01 million rows/s., 4.54 GB/s.)
-Peak memory usage: 567.41 MiB.
-```
+    5 rows in set. Elapsed: 0.318 sec. Processed 59.82 million rows, 1.45 GB (188.01 million rows/s., 4.54 GB/s.)
+    Peak memory usage: 567.41 MiB.
+    ```
 
 ## Aggregate functions {#aggregate-functions}
 
@@ -483,7 +480,6 @@ WHERE PostTypeId = 'Question'
 GROUP BY Year
 ORDER BY Year ASC
 FORMAT Vertical
-
 
 Row 1:
 ──────

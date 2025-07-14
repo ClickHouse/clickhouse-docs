@@ -13,29 +13,29 @@ References:
 - [Star Schema Benchmark](https://cs.umb.edu/~poneil/StarSchemaB.pdf) (O'Neil et. al), 2009
 - [Variations of the Star Schema Benchmark to Test the Effects of Data Skew on Query Performance](https://doi.org/10.1145/2479871.2479927) (Rabl. et. al.), 2013
 
-First, checkout the star schema benchmark repository and compile the data generator:
+    First, checkout the star schema benchmark repository and compile the data generator:
 
-```bash
-git clone https://github.com/vadimtk/ssb-dbgen.git
-cd ssb-dbgen
-make
-```
+    ```bash
+    git clone https://github.com/vadimtk/ssb-dbgen.git
+    cd ssb-dbgen
+    make
+    ```
 
-Then, generate the data. Parameter `-s` specifies the scale factor. For example, with `-s 100`, 600 million rows are generated.
+    Then, generate the data. Parameter `-s` specifies the scale factor. For example, with `-s 100`, 600 million rows are generated.
 
-```bash
-./dbgen -s 1000 -T c
-./dbgen -s 1000 -T l
-./dbgen -s 1000 -T p
-./dbgen -s 1000 -T s
-./dbgen -s 1000 -T d
-```
+    ```bash
+    ./dbgen -s 1000 -T c
+    ./dbgen -s 1000 -T l
+    ./dbgen -s 1000 -T p
+    ./dbgen -s 1000 -T s
+    ./dbgen -s 1000 -T d
+    ```
 
-Now create tables in ClickHouse:
+    Now create tables in ClickHouse:
 
-```sql
-CREATE TABLE customer
-(
+    ```sql
+    CREATE TABLE customer
+    (
         C_CUSTKEY       UInt32,
         C_NAME          String,
         C_ADDRESS       String,
@@ -44,11 +44,11 @@ CREATE TABLE customer
         C_REGION        LowCardinality(String),
         C_PHONE         String,
         C_MKTSEGMENT    LowCardinality(String)
-)
-ENGINE = MergeTree ORDER BY (C_CUSTKEY);
+    )
+    ENGINE = MergeTree ORDER BY (C_CUSTKEY);
 
-CREATE TABLE lineorder
-(
+    CREATE TABLE lineorder
+    (
     LO_ORDERKEY             UInt32,
     LO_LINENUMBER           UInt8,
     LO_CUSTKEY              UInt32,
@@ -66,11 +66,11 @@ CREATE TABLE lineorder
     LO_TAX                  UInt8,
     LO_COMMITDATE           Date,
     LO_SHIPMODE             LowCardinality(String)
-)
-ENGINE = MergeTree PARTITION BY toYear(LO_ORDERDATE) ORDER BY (LO_ORDERDATE, LO_ORDERKEY);
+    )
+    ENGINE = MergeTree PARTITION BY toYear(LO_ORDERDATE) ORDER BY (LO_ORDERDATE, LO_ORDERKEY);
 
-CREATE TABLE part
-(
+    CREATE TABLE part
+    (
         P_PARTKEY       UInt32,
         P_NAME          String,
         P_MFGR          LowCardinality(String),
@@ -80,11 +80,11 @@ CREATE TABLE part
         P_TYPE          LowCardinality(String),
         P_SIZE          UInt8,
         P_CONTAINER     LowCardinality(String)
-)
-ENGINE = MergeTree ORDER BY P_PARTKEY;
+    )
+    ENGINE = MergeTree ORDER BY P_PARTKEY;
 
-CREATE TABLE supplier
-(
+    CREATE TABLE supplier
+    (
         S_SUPPKEY       UInt32,
         S_NAME          String,
         S_ADDRESS       String,
@@ -92,11 +92,11 @@ CREATE TABLE supplier
         S_NATION        LowCardinality(String),
         S_REGION        LowCardinality(String),
         S_PHONE         String
-)
-ENGINE = MergeTree ORDER BY S_SUPPKEY;
+    )
+    ENGINE = MergeTree ORDER BY S_SUPPKEY;
 
-CREATE TABLE date
-(
+    CREATE TABLE date
+    (
         D_DATEKEY            Date,
         D_DATE               FixedString(18),
         D_DAYOFWEEK          LowCardinality(String),
@@ -114,29 +114,29 @@ CREATE TABLE date
         D_LASTDAYINMONTHFL   UInt8,
         D_HOLIDAYFL          UInt8,
         D_WEEKDAYFL          UInt8
-)
-ENGINE = MergeTree ORDER BY D_DATEKEY;
-```
+    )
+    ENGINE = MergeTree ORDER BY D_DATEKEY;
+    ```
 
-The data can be imported as follows:
+    The data can be imported as follows:
 
-```bash
-clickhouse-client --query "INSERT INTO customer FORMAT CSV" < customer.tbl
-clickhouse-client --query "INSERT INTO part FORMAT CSV" < part.tbl
-clickhouse-client --query "INSERT INTO supplier FORMAT CSV" < supplier.tbl
-clickhouse-client --query "INSERT INTO lineorder FORMAT CSV" < lineorder.tbl
-clickhouse-client --query "INSERT INTO date FORMAT CSV" < date.tbl
-```
+    ```bash
+    clickhouse-client --query "INSERT INTO customer FORMAT CSV" < customer.tbl
+    clickhouse-client --query "INSERT INTO part FORMAT CSV" < part.tbl
+    clickhouse-client --query "INSERT INTO supplier FORMAT CSV" < supplier.tbl
+    clickhouse-client --query "INSERT INTO lineorder FORMAT CSV" < lineorder.tbl
+    clickhouse-client --query "INSERT INTO date FORMAT CSV" < date.tbl
+    ```
 
-In many use cases of ClickHouse, multiple tables are converted into a single denormalized flat table.
-This step is optional, below queries are listed in their original form and in a format rewritten for the denormalized table.
+    In many use cases of ClickHouse, multiple tables are converted into a single denormalized flat table.
+    This step is optional, below queries are listed in their original form and in a format rewritten for the denormalized table.
 
-```sql
-SET max_memory_usage = 20000000000;
+    ```sql
+    SET max_memory_usage = 20000000000;
 
-CREATE TABLE lineorder_flat
-ENGINE = MergeTree ORDER BY (LO_ORDERDATE, LO_ORDERKEY)
-AS SELECT
+    CREATE TABLE lineorder_flat
+    ENGINE = MergeTree ORDER BY (LO_ORDERDATE, LO_ORDERKEY)
+    AS SELECT
     l.LO_ORDERKEY AS LO_ORDERKEY,
     l.LO_LINENUMBER AS LO_LINENUMBER,
     l.LO_CUSTKEY AS LO_CUSTKEY,
@@ -175,349 +175,349 @@ AS SELECT
     p.P_TYPE AS P_TYPE,
     p.P_SIZE AS P_SIZE,
     p.P_CONTAINER AS P_CONTAINER
-FROM lineorder AS l
-INNER JOIN customer AS c ON c.C_CUSTKEY = l.LO_CUSTKEY
-INNER JOIN supplier AS s ON s.S_SUPPKEY = l.LO_SUPPKEY
-INNER JOIN part AS p ON p.P_PARTKEY = l.LO_PARTKEY;
-```
+    FROM lineorder AS l
+    INNER JOIN customer AS c ON c.C_CUSTKEY = l.LO_CUSTKEY
+    INNER JOIN supplier AS s ON s.S_SUPPKEY = l.LO_SUPPKEY
+    INNER JOIN part AS p ON p.P_PARTKEY = l.LO_PARTKEY;
+    ```
 
-The queries are generated by `./qgen -s <scaling_factor>`. Example queries for `s = 100`:
+    The queries are generated by `./qgen -s <scaling_factor>`. Example queries for `s = 100`:
 
-Q1.1
+    Q1.1
 
-```sql
-SELECT
+    ```sql
+    SELECT
     sum(LO_EXTENDEDPRICE * LO_DISCOUNT) AS REVENUE
-FROM
+    FROM
     lineorder,
     date
-WHERE
+    WHERE
     LO_ORDERDATE = D_DATEKEY
     AND D_YEAR = 1993
     AND LO_DISCOUNT BETWEEN 1 AND 3
     AND LO_QUANTITY < 25;
-```
+    ```
 
-Denormalized table:
+    Denormalized table:
 
-```sql
-SELECT
+    ```sql
+    SELECT
     sum(LO_EXTENDEDPRICE * LO_DISCOUNT) AS revenue
-FROM
+    FROM
     lineorder_flat
-WHERE
+    WHERE
     toYear(LO_ORDERDATE) = 1993
     AND LO_DISCOUNT BETWEEN 1 AND 3
     AND LO_QUANTITY < 25;
-```
+    ```
 
-Q1.2
+    Q1.2
 
-```sql
-SELECT
+    ```sql
+    SELECT
     sum(LO_EXTENDEDPRICE * LO_DISCOUNT) AS REVENUE
-FROM
+    FROM
     lineorder,
     date
-WHERE
+    WHERE
     LO_ORDERDATE = D_DATEKEY
     AND D_YEARMONTHNUM = 199401
     AND LO_DISCOUNT BETWEEN 4 AND 6
     AND LO_QUANTITY BETWEEN 26 AND 35;
-```
+    ```
 
-Denormalized table:
+    Denormalized table:
 
-```sql
-SELECT
+    ```sql
+    SELECT
     sum(LO_EXTENDEDPRICE * LO_DISCOUNT) AS revenue
-FROM
+    FROM
     lineorder_flat
-WHERE
+    WHERE
     toYYYYMM(LO_ORDERDATE) = 199401
     AND LO_DISCOUNT BETWEEN 4 AND 6
     AND LO_QUANTITY BETWEEN 26 AND 35;
-```
+    ```
 
-Q1.3
+    Q1.3
 
-```sql
-SELECT
+    ```sql
+    SELECT
     sum(LO_EXTENDEDPRICE*LO_DISCOUNT) AS REVENUE
-FROM
+    FROM
     lineorder,
     date
-WHERE
+    WHERE
     LO_ORDERDATE = D_DATEKEY
     AND D_WEEKNUMINYEAR = 6
     AND D_YEAR = 1994
     AND LO_DISCOUNT BETWEEN 5 AND 7
     AND LO_QUANTITY BETWEEN 26 AND 35;
-```
+    ```
 
-Denormalized table:
+    Denormalized table:
 
-```sql
-SELECT
+    ```sql
+    SELECT
     sum(LO_EXTENDEDPRICE * LO_DISCOUNT) AS revenue
-FROM
+    FROM
     lineorder_flat
-WHERE
+    WHERE
     toISOWeek(LO_ORDERDATE) = 6
     AND toYear(LO_ORDERDATE) = 1994
     AND LO_DISCOUNT BETWEEN 5 AND 7
     AND LO_QUANTITY BETWEEN 26 AND 35;
-```
+    ```
 
-Q2.1
+    Q2.1
 
-```sql
-SELECT
+    ```sql
+    SELECT
     sum(LO_REVENUE),
     D_YEAR,
     P_BRAND
-FROM
+    FROM
     lineorder,
     date,
     part,
     supplier
-WHERE
+    WHERE
     LO_ORDERDATE = D_DATEKEY
     AND LO_PARTKEY = P_PARTKEY
     AND LO_SUPPKEY = S_SUPPKEY
     AND P_CATEGORY = 'MFGR#12'
     AND S_REGION = 'AMERICA'
-GROUP BY
+    GROUP BY
     D_YEAR,
     P_BRAND
-ORDER BY
+    ORDER BY
     D_YEAR,
     P_BRAND;
-```
+    ```
 
-Denormalized table:
+    Denormalized table:
 
-```sql
-SELECT
+    ```sql
+    SELECT
     sum(LO_REVENUE),
     toYear(LO_ORDERDATE) AS year,
     P_BRAND
-FROM lineorder_flat
-WHERE
+    FROM lineorder_flat
+    WHERE
     P_CATEGORY = 'MFGR#12'
     AND S_REGION = 'AMERICA'
-GROUP BY
+    GROUP BY
     year,
     P_BRAND
-ORDER BY
+    ORDER BY
     year,
     P_BRAND;
-```
+    ```
 
-Q2.2
+    Q2.2
 
-```sql
-SELECT
+    ```sql
+    SELECT
     sum(LO_REVENUE),
     D_YEAR,
     P_BRAND
-FROM
+    FROM
     lineorder,
     date,
     part,
     supplier
-WHERE
+    WHERE
     LO_ORDERDATE = D_DATEKEY
     AND LO_PARTKEY = P_PARTKEY
     AND LO_SUPPKEY = S_SUPPKEY
     AND P_BRAND BETWEEN
     'MFGR#2221' AND 'MFGR#2228'
     AND S_REGION = 'ASIA'
-GROUP BY
+    GROUP BY
     D_YEAR,
     P_BRAND
-ORDER BY
+    ORDER BY
     D_YEAR,
     P_BRAND;
-```
+    ```
 
-Denormalized table:
+    Denormalized table:
 
-```sql
-SELECT
+    ```sql
+    SELECT
     sum(LO_REVENUE),
     toYear(LO_ORDERDATE) AS year,
     P_BRAND
-FROM lineorder_flat
-WHERE P_BRAND >= 'MFGR#2221' AND P_BRAND <= 'MFGR#2228' AND S_REGION = 'ASIA'
-GROUP BY
+    FROM lineorder_flat
+    WHERE P_BRAND >= 'MFGR#2221' AND P_BRAND <= 'MFGR#2228' AND S_REGION = 'ASIA'
+    GROUP BY
     year,
     P_BRAND
-ORDER BY
+    ORDER BY
     year,
     P_BRAND;
-```
+    ```
 
-Q2.3
+    Q2.3
 
-```sql
-SELECT
+    ```sql
+    SELECT
     sum(LO_REVENUE),
     D_YEAR,
     P_BRAND
-FROM
+    FROM
     lineorder,
     date,
     part,
     supplier
-WHERE
+    WHERE
     LO_ORDERDATE = D_DATEKEY
     AND LO_PARTKEY = P_PARTKEY
     AND LO_SUPPKEY = S_SUPPKEY
     AND P_BRAND = 'MFGR#2221'
     AND S_REGION = 'EUROPE'
-GROUP BY
+    GROUP BY
     D_YEAR,
     P_BRAND
-ORDER BY
+    ORDER BY
     D_YEAR,
     P_BRAND;
-```
+    ```
 
-Denormalized table:
+    Denormalized table:
 
-```sql
-SELECT
+    ```sql
+    SELECT
     sum(LO_REVENUE),
     toYear(LO_ORDERDATE) AS year,
     P_BRAND
-FROM lineorder_flat
-WHERE P_BRAND = 'MFGR#2239' AND S_REGION = 'EUROPE'
-GROUP BY
+    FROM lineorder_flat
+    WHERE P_BRAND = 'MFGR#2239' AND S_REGION = 'EUROPE'
+    GROUP BY
     year,
     P_BRAND
-ORDER BY
+    ORDER BY
     year,
     P_BRAND;
-```
+    ```
 
-Q3.1
+    Q3.1
 
-```sql
-SELECT
+    ```sql
+    SELECT
     C_NATION,
     S_NATION,
     D_YEAR,
     sum(LO_REVENUE) AS REVENUE
-FROM
+    FROM
     customer,
     lineorder,
     supplier,
     date
-WHERE
+    WHERE
     LO_CUSTKEY = C_CUSTKEY
     AND LO_SUPPKEY = S_SUPPKEY
     AND LO_ORDERDATE = D_DATEKEY
     AND C_REGION = 'ASIA' AND S_REGION = 'ASIA'
     AND D_YEAR >= 1992 AND D_YEAR <= 1997
-GROUP BY
+    GROUP BY
     C_NATION,
     S_NATION,
     D_YEAR
-ORDER BY
+    ORDER BY
     D_YEAR ASC,
     REVENUE DESC;
-```
+    ```
 
-Denormalized table:
+    Denormalized table:
 
-```sql
-SELECT
+    ```sql
+    SELECT
     C_NATION,
     S_NATION,
     toYear(LO_ORDERDATE) AS year,
     sum(LO_REVENUE) AS revenue
-FROM lineorder_flat
-WHERE
+    FROM lineorder_flat
+    WHERE
     C_REGION = 'ASIA'
     AND S_REGION = 'ASIA'
     AND year >= 1992
     AND year <= 1997
-GROUP BY
+    GROUP BY
     C_NATION,
     S_NATION,
     year
-ORDER BY
+    ORDER BY
     year ASC,
     revenue DESC;
-```
+    ```
 
-Q3.2
+    Q3.2
 
-```sql
-SELECT
+    ```sql
+    SELECT
     C_CITY,
     S_CITY,
     D_YEAR,
     sum(LO_REVENUE) AS REVENUE
-FROM
+    FROM
     customer,
     lineorder,
     supplier,
     date
-WHERE
+    WHERE
     LO_CUSTKEY = C_CUSTKEY
     AND LO_SUPPKEY = S_SUPPKEY
     AND LO_ORDERDATE = D_DATEKEY
     AND C_NATION = 'UNITED STATES'
     AND S_NATION = 'UNITED STATES'
     AND D_YEAR >= 1992 AND D_YEAR <= 1997
-GROUP BY
+    GROUP BY
     C_CITY,
     S_CITY,
     D_YEAR
-ORDER BY
+    ORDER BY
     D_YEAR ASC,
     REVENUE DESC;
-```
+    ```
 
-Denormalized table:
+    Denormalized table:
 
-```sql
-SELECT
+    ```sql
+    SELECT
     C_CITY,
     S_CITY,
     toYear(LO_ORDERDATE) AS year,
     sum(LO_REVENUE) AS revenue
-FROM lineorder_flat
-WHERE
+    FROM lineorder_flat
+    WHERE
     C_NATION = 'UNITED STATES'
     AND S_NATION = 'UNITED STATES'
     AND year >= 1992
     AND year <= 1997
-GROUP BY
+    GROUP BY
     C_CITY,
     S_CITY,
     year
-ORDER BY
+    ORDER BY
     year ASC,
     revenue DESC;
-```
+    ```
 
-Q3.3
+    Q3.3
 
-```sql
-SELECT
+    ```sql
+    SELECT
     C_CITY,
     S_CITY,
     D_YEAR,
     sum(LO_REVENUE) AS revenue
-FROM
+    FROM
     customer,
     lineorder,
     supplier,
     date
-WHERE
+    WHERE
     LO_CUSTKEY = C_CUSTKEY
     AND LO_SUPPKEY = S_SUPPKEY
     AND LO_ORDERDATE = D_DATEKEY
@@ -525,103 +525,103 @@ WHERE
     AND (S_CITY = 'UNITED KI1' OR S_CITY = 'UNITED KI5')
     AND D_YEAR >= 1992
     AND D_YEAR <= 1997
-GROUP BY
+    GROUP BY
     C_CITY,
     S_CITY,
     D_YEAR
-ORDER BY
+    ORDER BY
     D_YEAR ASC,
     revenue DESC;
-```
+    ```
 
-Denormalized table:
+    Denormalized table:
 
-```sql
-SELECT
+    ```sql
+    SELECT
     C_CITY,
     S_CITY,
     toYear(LO_ORDERDATE) AS year,
     sum(LO_REVENUE) AS revenue
-FROM lineorder_flat
-WHERE
+    FROM lineorder_flat
+    WHERE
     (C_CITY = 'UNITED KI1' OR C_CITY = 'UNITED KI5')
     AND (S_CITY = 'UNITED KI1' OR S_CITY = 'UNITED KI5')
     AND year >= 1992
     AND year <= 1997
-GROUP BY
+    GROUP BY
     C_CITY,
     S_CITY,
     year
-ORDER BY
+    ORDER BY
     year ASC,
     revenue DESC;
-```
+    ```
 
-Q3.4
+    Q3.4
 
-```sql
-SELECT
+    ```sql
+    SELECT
     C_CITY,
     S_CITY,
     D_YEAR,
     sum(LO_REVENUE) AS revenue
-FROM
+    FROM
     customer,
     lineorder,
     supplier,
     date
-WHERE
+    WHERE
     LO_CUSTKEY = C_CUSTKEY
     AND LO_SUPPKEY = S_SUPPKEY
     AND LO_ORDERDATE = D_DATEKEY
     AND (C_CITY='UNITED KI1' OR C_CITY='UNITED KI5')
     AND (S_CITY='UNITED KI1' OR S_CITY='UNITED KI5')
     AND D_YEARMONTH = 'Dec1997'
-GROUP BY
+    GROUP BY
     C_CITY,
     S_CITY,
     D_YEAR
-ORDER BY
+    ORDER BY
     D_YEAR ASC,
     revenue DESC;
-```
+    ```
 
-Denormalized table:
+    Denormalized table:
 
-```sql
-SELECT
+    ```sql
+    SELECT
     C_CITY,
     S_CITY,
     toYear(LO_ORDERDATE) AS year,
     sum(LO_REVENUE) AS revenue
-FROM lineorder_flat
-WHERE
+    FROM lineorder_flat
+    WHERE
     (C_CITY = 'UNITED KI1' OR C_CITY = 'UNITED KI5')
     AND (S_CITY = 'UNITED KI1' OR S_CITY = 'UNITED KI5')
     AND toYYYYMM(LO_ORDERDATE) = 199712
-GROUP BY
+    GROUP BY
     C_CITY,
     S_CITY,
     year
-ORDER BY
+    ORDER BY
     year ASC,
     revenue DESC;
-```
+    ```
 
-Q4.1
+    Q4.1
 
-```sql
-SELECT
+    ```sql
+    SELECT
     D_YEAR,
     C_NATION,
     sum(LO_REVENUE - LO_SUPPLYCOST) AS PROFIT
-FROM
+    FROM
     date,
     customer,
     supplier,
     part,
     lineorder
-WHERE
+    WHERE
     LO_CUSTKEY = C_CUSTKEY
     AND LO_SUPPKEY = S_SUPPKEY
     AND LO_PARTKEY = P_PARTKEY
@@ -629,46 +629,46 @@ WHERE
     AND C_REGION = 'AMERICA'
     AND S_REGION = 'AMERICA'
     AND (P_MFGR = 'MFGR#1' OR P_MFGR = 'MFGR#2')
-GROUP BY
+    GROUP BY
     D_YEAR,
     C_NATION
-ORDER BY
+    ORDER BY
     D_YEAR,
     C_NATION
-```
+    ```
 
-Denormalized table:
+    Denormalized table:
 
-```sql
-SELECT
+    ```sql
+    SELECT
     toYear(LO_ORDERDATE) AS year,
     C_NATION,
     sum(LO_REVENUE - LO_SUPPLYCOST) AS profit
-FROM lineorder_flat
-WHERE C_REGION = 'AMERICA' AND S_REGION = 'AMERICA' AND (P_MFGR = 'MFGR#1' OR P_MFGR = 'MFGR#2')
-GROUP BY
+    FROM lineorder_flat
+    WHERE C_REGION = 'AMERICA' AND S_REGION = 'AMERICA' AND (P_MFGR = 'MFGR#1' OR P_MFGR = 'MFGR#2')
+    GROUP BY
     year,
     C_NATION
-ORDER BY
+    ORDER BY
     year ASC,
     C_NATION ASC;
-```
+    ```
 
-Q4.2
+    Q4.2
 
-```sql
-SELECT
+    ```sql
+    SELECT
     D_YEAR,
     S_NATION,
     P_CATEGORY,
     sum(LO_REVENUE - LO_SUPPLYCOST) AS profit
-FROM
+    FROM
     date,
     customer,
     supplier,
     part,
     lineorder
-WHERE
+    WHERE
     LO_CUSTKEY = C_CUSTKEY
     AND LO_SUPPKEY = S_SUPPKEY
     AND LO_PARTKEY = P_PARTKEY
@@ -677,55 +677,55 @@ WHERE
     AND S_REGION = 'AMERICA'
     AND (D_YEAR = 1997 OR D_YEAR = 1998)
     AND (P_MFGR = 'MFGR#1' OR P_MFGR = 'MFGR#2')
-GROUP BY
+    GROUP BY
     D_YEAR,
     S_NATION,
     P_CATEGORY
-ORDER BY
+    ORDER BY
     D_YEAR,
     S_NATION,
     P_CATEGORY
-```
+    ```
 
-Denormalized table:
+    Denormalized table:
 
-```sql
-SELECT
+    ```sql
+    SELECT
     toYear(LO_ORDERDATE) AS year,
     S_NATION,
     P_CATEGORY,
     sum(LO_REVENUE - LO_SUPPLYCOST) AS profit
-FROM lineorder_flat
-WHERE
+    FROM lineorder_flat
+    WHERE
     C_REGION = 'AMERICA'
     AND S_REGION = 'AMERICA'
     AND (year = 1997 OR year = 1998)
     AND (P_MFGR = 'MFGR#1' OR P_MFGR = 'MFGR#2')
-GROUP BY
+    GROUP BY
     year,
     S_NATION,
     P_CATEGORY
-ORDER BY
+    ORDER BY
     year ASC,
     S_NATION ASC,
     P_CATEGORY ASC;
-```
+    ```
 
-Q4.3
+    Q4.3
 
-```sql
-SELECT
+    ```sql
+    SELECT
     D_YEAR,
     S_CITY,
     P_BRAND,
     sum(LO_REVENUE - LO_SUPPLYCOST) AS profit
-FROM
+    FROM
     date,
     customer,
     supplier,
     part,
     lineorder
-WHERE
+    WHERE
     LO_CUSTKEY = C_CUSTKEY
     AND LO_SUPPKEY = S_SUPPKEY
     AND LO_PARTKEY = P_PARTKEY
@@ -734,37 +734,36 @@ WHERE
     AND S_NATION = 'UNITED STATES'
     AND (D_YEAR = 1997 OR D_YEAR = 1998)
     AND P_CATEGORY = 'MFGR#14'
-GROUP BY
+    GROUP BY
     D_YEAR,
     S_CITY,
     P_BRAND
-ORDER BY
+    ORDER BY
     D_YEAR,
     S_CITY,
     P_BRAND
-```
+    ```
 
-Denormalized table:
+    Denormalized table:
 
-```sql
-SELECT
+    ```sql
+    SELECT
     toYear(LO_ORDERDATE) AS year,
     S_CITY,
     P_BRAND,
     sum(LO_REVENUE - LO_SUPPLYCOST) AS profit
-FROM
+    FROM
     lineorder_flat
-WHERE
+    WHERE
     S_NATION = 'UNITED STATES'
     AND (year = 1997 OR year = 1998)
     AND P_CATEGORY = 'MFGR#14'
-GROUP BY
+    GROUP BY
     year,
     S_CITY,
     P_BRAND
-ORDER BY
+    ORDER BY
     year ASC,
     S_CITY ASC,
     P_BRAND ASC;
-```
-
+    ```

@@ -33,4 +33,4 @@ ClickHouse offers [predefined templates](./templates) designed for specific use 
 - Quick and easy setup for simple use cases.
 - Suitable also for users with minimal programming expertise.
 
-Both approaches are fully compatible with Google Cloud and the ClickHouse ecosystem, offering flexibility depending on your technical expertise and project requirements.
+    Both approaches are fully compatible with Google Cloud and the ClickHouse ecosystem, offering flexibility depending on your technical expertise and project requirements.

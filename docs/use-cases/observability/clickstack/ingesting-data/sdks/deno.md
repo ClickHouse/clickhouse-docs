@@ -11,9 +11,9 @@ This guide Integrates the following:
 
 - **Logs**
 
-:::note
-Currently only supports OpenTelemetry Logging. For tracing support, [see the following guide](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example).
-:::
+    :::note
+    Currently only supports OpenTelemetry Logging. For tracing support, [see the following guide](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example).
+    :::
 
 ## Logging {#logging}
 

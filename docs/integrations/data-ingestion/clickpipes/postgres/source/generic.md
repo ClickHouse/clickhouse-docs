@@ -13,7 +13,6 @@ If you use one of the supported providers (in the sidebar), please refer to the 
 
 :::
 
-
 ClickPipes supports Postgres version 12 and later.
 
 ## Enable logical replication {#enable-logical-replication}
@@ -23,12 +22,12 @@ ClickPipes supports Postgres version 12 and later.
     ```sql
     wal_level = logical
     ```
-   To check the same, you can run the following SQL command:
+    To check the same, you can run the following SQL command:
     ```sql
     SHOW wal_level;
     ```
 
-   The output should be `logical`. If not, run:
+    The output should be `logical`. If not, run:
     ```sql
     ALTER SYSTEM SET wal_level = logical;
     ```
@@ -38,19 +37,18 @@ ClickPipes supports Postgres version 12 and later.
     max_wal_senders > 1
     max_replication_slots >= 4
     ```
-   To check the same, you can run the following SQL commands:
+    To check the same, you can run the following SQL commands:
     ```sql
     SHOW max_wal_senders;
     SHOW max_replication_slots;
     ```
 
-   If the values do not match the recommended values, you can run the following SQL commands to set them:
+    If the values do not match the recommended values, you can run the following SQL commands to set them:
     ```sql
     ALTER SYSTEM SET max_wal_senders = 10;
     ALTER SYSTEM SET max_replication_slots = 10;
     ```
 3. If you have made any changes to the configuration as mentioned above, you NEED to RESTART the Postgres instance for the changes to take effect.
-
 
 ## Creating a user with permissions and publication {#creating-a-user-with-permissions-and-publication}
 
@@ -76,7 +74,6 @@ Make sure to replace `clickpipes_user` and `clickpipes_password` with your desir
 
 :::
 
-
 ## Enabling connections in pg_hba.conf to the ClickPipes User {#enabling-connections-in-pg_hbaconf-to-the-clickpipes-user}
 
 If you are self serving, you need to allow connections to the ClickPipes user from the ClickPipes IP addresses by following the below steps. If you are using a managed service, you can do the same by following the provider's documentation.
@@ -90,7 +87,6 @@ If you are self serving, you need to allow connections to the ClickPipes user fr
     ```sql
     SELECT pg_reload_conf();
     ```
-
 
 ## Increase `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
 

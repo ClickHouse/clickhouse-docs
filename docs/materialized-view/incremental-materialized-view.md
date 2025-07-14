@@ -132,46 +132,46 @@ Since the merging of rows is asynchronous, there may be more than one vote per d
 - Use the `FINAL` modifier on the table name. We did this for the count query above.
 - Aggregate by the ordering key used in our final table i.e. `CreationDate` and sum the metrics. Typically this is more efficient and flexible (the table can be used for other things), but the former can be simpler for some queries. We show both below:
 
-```sql
-SELECT
+    ```sql
+    SELECT
         Day,
         UpVotes,
         DownVotes
-FROM up_down_votes_per_day
-FINAL
-ORDER BY Day ASC
-LIMIT 10
+    FROM up_down_votes_per_day
+    FINAL
+    ORDER BY Day ASC
+    LIMIT 10
 
-10 rows in set. Elapsed: 0.004 sec. Processed 8.97 thousand rows, 89.68 KB (2.09 million rows/s., 20.89 MB/s.)
-Peak memory usage: 289.75 KiB.
+    10 rows in set. Elapsed: 0.004 sec. Processed 8.97 thousand rows, 89.68 KB (2.09 million rows/s., 20.89 MB/s.)
+    Peak memory usage: 289.75 KiB.
 
-SELECT Day, sum(UpVotes) AS UpVotes, sum(DownVotes) AS DownVotes
-FROM up_down_votes_per_day
-GROUP BY Day
-ORDER BY Day ASC
-LIMIT 10
-┌────────Day─┬─UpVotes─┬─DownVotes─┐
-│ 2008-07-31 │       6 │         0 │
-│ 2008-08-01 │     182 │        50 │
-│ 2008-08-02 │     436 │       107 │
-│ 2008-08-03 │     564 │       100 │
-│ 2008-08-04 │    1306 │       259 │
-│ 2008-08-05 │    1368 │       269 │
-│ 2008-08-06 │    1701 │       211 │
-│ 2008-08-07 │    1544 │       211 │
-│ 2008-08-08 │    1241 │       212 │
-│ 2008-08-09 │     576 │        46 │
-└────────────┴─────────┴───────────┘
+    SELECT Day, sum(UpVotes) AS UpVotes, sum(DownVotes) AS DownVotes
+    FROM up_down_votes_per_day
+    GROUP BY Day
+    ORDER BY Day ASC
+    LIMIT 10
+    ┌────────Day─┬─UpVotes─┬─DownVotes─┐
+    │ 2008-07-31 │       6 │         0 │
+    │ 2008-08-01 │     182 │        50 │
+    │ 2008-08-02 │     436 │       107 │
+    │ 2008-08-03 │     564 │       100 │
+    │ 2008-08-04 │    1306 │       259 │
+    │ 2008-08-05 │    1368 │       269 │
+    │ 2008-08-06 │    1701 │       211 │
+    │ 2008-08-07 │    1544 │       211 │
+    │ 2008-08-08 │    1241 │       212 │
+    │ 2008-08-09 │     576 │        46 │
+    └────────────┴─────────┴───────────┘
 
-10 rows in set. Elapsed: 0.010 sec. Processed 8.97 thousand rows, 89.68 KB (907.32 thousand rows/s., 9.07 MB/s.)
-Peak memory usage: 567.61 KiB.
-```
+    10 rows in set. Elapsed: 0.010 sec. Processed 8.97 thousand rows, 89.68 KB (907.32 thousand rows/s., 9.07 MB/s.)
+    Peak memory usage: 567.61 KiB.
+    ```
 
-This has sped up our query from 0.133s to 0.004s – an over 25x improvement!
+    This has sped up our query from 0.133s to 0.004s – an over 25x improvement!
 
-:::important Important: `ORDER BY` = `GROUP BY`
-In most cases the columns used in the `GROUP BY` clause of the Materialized Views transformation, should be consistent with those used in the `ORDER BY` clause of the target table if using the `SummingMergeTree` or `AggregatingMergeTree` table engines. These engines rely on the `ORDER BY` columns to merge rows with identical values during background merge operations. Misalignment between `GROUP BY` and `ORDER BY` columns can lead to inefficient query performance, suboptimal merges, or even data discrepancies.
-:::
+    :::important Important: `ORDER BY` = `GROUP BY`
+    In most cases the columns used in the `GROUP BY` clause of the Materialized Views transformation, should be consistent with those used in the `ORDER BY` clause of the target table if using the `SummingMergeTree` or `AggregatingMergeTree` table engines. These engines rely on the `ORDER BY` columns to merge rows with identical values during background merge operations. Misalignment between `GROUP BY` and `ORDER BY` columns can lead to inefficient query performance, suboptimal merges, or even data discrepancies.
+    :::
 
 ### A more complex example {#a-more-complex-example}
 
@@ -337,7 +337,6 @@ CREATE TABLE comments_posts_users (
   UserId Int32
 ) ENGINE = MergeTree ORDER BY UserId
 
-
 CREATE TABLE comments_null AS comments
 ENGINE = Null
 
@@ -381,7 +380,7 @@ Incremental Materialized views in ClickHouse fully support `JOIN` operations, bu
 
 When an Incremental materialized view is defined using a `JOIN`, the left-most table in the `SELECT` query acts as the source. When new rows are inserted into this table, ClickHouse executes the materialized view query *only* with those newly inserted rows. Right-side tables in the JOIN are read in full during this execution, but changes to them alone do not trigger the view.
 
-This behavior makes JOINs in Materialized Views similar to a snapshot join against static dimension data. 
+This behavior makes JOINs in Materialized Views similar to a snapshot join against static dimension data.
 
 This works well for enriching data with reference or dimension tables. However, any updates to the right-side tables (e.g., user metadata) will not retroactively update the materialized view. To see updated data, new inserts must arrive in the source table.
 
@@ -520,7 +519,7 @@ WHERE DisplayName = 'gingerwizard'
 Notice the latency of the insert here. The inserted user row is joined against the entire `users` table, significantly impacting insert performance. We propose approaches to address this below in ["Using source table in filters and joins"](/materialized-view/incremental-materialized-view#using-source-table-in-filters-and-joins-in-materialized-views).
 :::
 
-Conversely, if we insert a badge for a new user, followed by the row for the user, our materialized view will fail to capture the users' metrics. 
+Conversely, if we insert a badge for a new user, followed by the row for the user, our materialized view will fail to capture the users' metrics.
 
 ```sql
 INSERT INTO badges VALUES (53505059, 23923286, 'Good Answer', now(), 'Bronze', 0);
@@ -592,7 +591,6 @@ CREATE MATERIALIZED VIEW mvw1 TO mvw1_inner
 AS SELECT count(*) AS c0
     FROM t0
     LEFT JOIN ( SELECT * FROM t0 ) AS x ON t0.c0 = x.c0;
-
 
 CREATE MATERIALIZED VIEW mvw2 TO mvw2_inner
 AS SELECT count(*) AS c0
@@ -758,7 +756,6 @@ ORDER BY UserId
 
 These can be populated with the following `INSERT INTO` commands:
 
-
 ```sql
 INSERT INTO stackoverflow.badges SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/badges.parquet')
@@ -839,7 +836,6 @@ ORDER BY last_activity DESC
 ```
 
 While this is valid syntactically, it will produce unintended results - the view will only trigger inserts to the `comments` table. For example:
-
 
 ```sql
 INSERT INTO comments VALUES (99999999, 23121, 1, 'The answer is 42', now(), 2936484, 'gingerwizard');
@@ -1082,21 +1078,20 @@ Enabling `parallel_view_processing=1` can significantly improve insert throughpu
 - **Increased insert pressure**: All Materialized Views are executed simultaneously, increasing CPU and memory usage. If each view performs heavy computation or JOINs, this can overload the system.
 - **Need for strict execution order**: In rare workflows where the order of view execution matters (e.g., chained dependencies), parallel execution may lead to inconsistent state or race conditions. While possible to design around this, such setups are fragile and may break with future versions.
 
-:::note Historical defaults and stability
-Sequential execution was the default for a long time, in part due to error handling complexities. Historically, a failure in one materialized view could prevent others from executing. Newer versions have improved this by isolating failures per block, but sequential execution still provides clearer failure semantics.
-:::
+    :::note Historical defaults and stability
+    Sequential execution was the default for a long time, in part due to error handling complexities. Historically, a failure in one materialized view could prevent others from executing. Newer versions have improved this by isolating failures per block, but sequential execution still provides clearer failure semantics.
+    :::
 
-In general, enable `parallel_view_processing=1` when:
+    In general, enable `parallel_view_processing=1` when:
 
 - You have multiple independent Materialized Views
 - You're aiming to maximize insert performance
 - You're aware of the system's capacity to handle concurrent view execution
 
-Leave it disabled when:
+    Leave it disabled when:
 - Materialized Views have dependencies on one another
 - You require predictable, ordered execution
 - You're debugging or auditing insert behavior and want deterministic replay
-
 
 ## Materialized views and Common Table Expressions (CTE) {#materialized-views-common-table-expressions-ctes}
 
@@ -1187,15 +1182,15 @@ In ClickHouse, CTEs are inlined which means they are effectively copy-pasted int
 - If your CTE references a different table from the source table (i.e., the one the materialized view is attached to), and is used in a `JOIN` or `IN` clause, it will behave like a subquery or join, not a trigger.
 - The materialized view will still only trigger on inserts into the main source table, but the CTE will be re-executed on every insert, which may cause unnecessary overhead, especially if the referenced table is large.
 
-For example,
+    For example,
 
-```sql
-WITH recent_users AS (
-  SELECT Id FROM stackoverflow.users WHERE CreationDate > now() - INTERVAL 7 DAY
-)
-SELECT * FROM stackoverflow.posts WHERE OwnerUserId IN (SELECT Id FROM recent_users)
-```
+    ```sql
+    WITH recent_users AS (
+    SELECT Id FROM stackoverflow.users WHERE CreationDate > now() - INTERVAL 7 DAY
+    )
+    SELECT * FROM stackoverflow.posts WHERE OwnerUserId IN (SELECT Id FROM recent_users)
+    ```
 
-In this case, the users CTE is re-evaluated on every insert into posts, and the materialized view will not update when new users are inserted - only when posts are.
+    In this case, the users CTE is re-evaluated on every insert into posts, and the materialized view will not update when new users are inserted - only when posts are.
 
-Generally, use CTEs for logic that operates on the same source table the materialized view is attached to or ensure that referenced tables are small and unlikely to cause performance bottlenecks. Alternatively, consider [the same optimizations as JOINs with Materialized Views](/materialized-view/incremental-materialized-view#join-best-practices).
+    Generally, use CTEs for logic that operates on the same source table the materialized view is attached to or ensure that referenced tables are small and unlikely to cause performance bottlenecks. Alternatively, consider [the same optimizations as JOINs with Materialized Views](/materialized-view/incremental-materialized-view#join-best-practices).

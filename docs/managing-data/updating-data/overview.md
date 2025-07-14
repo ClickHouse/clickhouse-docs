@@ -41,7 +41,7 @@ Read more about [update mutations](/sql-reference/statements/alter/update).
 
 ## Lightweight updates {#lightweight-updates}
 
-Lightweight updates are a ClickHouse feature that updates rows using "patch parts" - special data parts containing only the updated columns and rows, rather than rewriting entire columns like traditional mutations. The Lightweight UPDATE 
+Lightweight updates are a ClickHouse feature that updates rows using "patch parts" - special data parts containing only the updated columns and rows, rather than rewriting entire columns like traditional mutations. The Lightweight UPDATE
 Key characteristics:
 
 - Uses the standard `UPDATE` syntax and creates patch parts immediately without waiting for merges
@@ -49,7 +49,7 @@ Key characteristics:
 - Designed for small updates (up to ~10% of table) with predictable latency
 - Adds overhead to `SELECT` queries that need to apply patches, but avoids rewriting entire columns
 
-For more details see ["The Lightweight UPDATE Statement"](/sql-reference/statements/update)
+    For more details see ["The Lightweight UPDATE Statement"](/sql-reference/statements/update)
 
 ## On-the-fly Updates {#on-the-fly-updates}
 

@@ -57,8 +57,8 @@ These values can be customized as you wish.  This example configuration gives yo
 - the name displayed when you connect with `clickhouse-client` is `cluster_1S_2R node 1`
 - ClickHouse will listen on the IPV4 network on ports 8123 and 9000.
 
-```xml title="/etc/clickhouse-server/config.d/network-and-logging.xml on clickhouse-01"
-<clickhouse>
+    ```xml title="/etc/clickhouse-server/config.d/network-and-logging.xml on clickhouse-01"
+    <clickhouse>
     <logger>
         <level>debug</level>
         <log>/var/log/clickhouse-server/clickhouse-server.log</log>
@@ -70,8 +70,8 @@ These values can be customized as you wish.  This example configuration gives yo
     <listen_host>0.0.0.0</listen_host>
     <http_port>8123</http_port>
     <tcp_port>9000</tcp_port>
-</clickhouse>
-```
+    </clickhouse>
+    ```
 
 ### Macros configuration {#macros-configuration}
 
@@ -98,8 +98,8 @@ Starting from the top:
 - The cluster `cluster_1S_2R` has one shard, and two replicas.  Take a look at the architecture diagram toward the beginning of this document, and compare it with the `shard` definition in the XML below.  The shard definition contains two replicas.  The host and port for each replica is specified.  One replica is stored on `clickhouse-01`, and the other replica is stored on `clickhouse-02`.
 - Internal replication for the shard is set to true.  Each shard can have the internal_replication parameter defined in the config file. If this parameter is set to true, the write operation selects the first healthy replica and writes data to it.
 
-```xml title="/etc/clickhouse-server/config.d/remote-servers.xml on clickhouse-01"
-<clickhouse>
+    ```xml title="/etc/clickhouse-server/config.d/remote-servers.xml on clickhouse-01"
+    <clickhouse>
     <remote_servers replace="true">
         <cluster_1S_2R>
             <secret>mysecretphrase</secret>
@@ -116,8 +116,8 @@ Starting from the top:
             </shard>
         </cluster_1S_2R>
     </remote_servers>
-</clickhouse>
-```
+    </clickhouse>
+    ```
 
 ### Configuring the use of Keeper {#configuring-the-use-of-keeper}
 
@@ -456,105 +456,105 @@ Connect to node `clickhouse-01` with `clickhouse client` in one shell, and conne
 
 1. Create a database on the cluster configured above
 
-```sql title="run on either node clickhouse-01 or clickhouse-02"
-CREATE DATABASE db1 ON CLUSTER cluster_1S_2R
-```
-```response
-┌─host──────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-│ clickhouse-02 │ 9000 │      0 │       │                   1 │                0 │
-│ clickhouse-01 │ 9000 │      0 │       │                   0 │                0 │
-└───────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-```
+    ```sql title="run on either node clickhouse-01 or clickhouse-02"
+    CREATE DATABASE db1 ON CLUSTER cluster_1S_2R
+    ```
+    ```response
+    ┌─host──────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+    │ clickhouse-02 │ 9000 │      0 │       │                   1 │                0 │
+    │ clickhouse-01 │ 9000 │      0 │       │                   0 │                0 │
+    └───────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+    ```
 
 2. Create a table on the database using the ReplicatedMergeTree table engine
-```sql title="run on either node clickhouse-01 or clickhouse-02"
-CREATE TABLE db1.table1 ON CLUSTER cluster_1S_2R
-(
+    ```sql title="run on either node clickhouse-01 or clickhouse-02"
+    CREATE TABLE db1.table1 ON CLUSTER cluster_1S_2R
+    (
     `id` UInt64,
     `column1` String
-)
-ENGINE = ReplicatedMergeTree
-ORDER BY id
-```
-```response
-┌─host──────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-│ clickhouse-02 │ 9000 │      0 │       │                   1 │                0 │
-│ clickhouse-01 │ 9000 │      0 │       │                   0 │                0 │
-└───────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-```
+    )
+    ENGINE = ReplicatedMergeTree
+    ORDER BY id
+    ```
+    ```response
+    ┌─host──────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+    │ clickhouse-02 │ 9000 │      0 │       │                   1 │                0 │
+    │ clickhouse-01 │ 9000 │      0 │       │                   0 │                0 │
+    └───────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+    ```
 3. Insert data on one node and query it on another node
-```sql title="run on node clickhouse-01"
-INSERT INTO db1.table1 (id, column1) VALUES (1, 'abc');
-```
+    ```sql title="run on node clickhouse-01"
+    INSERT INTO db1.table1 (id, column1) VALUES (1, 'abc');
+    ```
 
 4. Query the table on the node `clickhouse-02`
-```sql title="run on node clickhouse-02"
-SELECT *
-FROM db1.table1
-```
-```response
-┌─id─┬─column1─┐
-│  1 │ abc     │
-└────┴─────────┘
-```
+    ```sql title="run on node clickhouse-02"
+    SELECT *
+    FROM db1.table1
+    ```
+    ```response
+    ┌─id─┬─column1─┐
+    │  1 │ abc     │
+    └────┴─────────┘
+    ```
 
 5. Insert data on the other node and query it on the node `clickhouse-01`
-```sql title="run on node clickhouse-02"
-INSERT INTO db1.table1 (id, column1) VALUES (2, 'def');
-```
+    ```sql title="run on node clickhouse-02"
+    INSERT INTO db1.table1 (id, column1) VALUES (2, 'def');
+    ```
 
-```sql title="run on node clickhouse-01"
-SELECT *
-FROM db1.table1
-```
-```response
-┌─id─┬─column1─┐
-│  1 │ abc     │
-└────┴─────────┘
-┌─id─┬─column1─┐
-│  2 │ def     │
-└────┴─────────┘
-```
+    ```sql title="run on node clickhouse-01"
+    SELECT *
+    FROM db1.table1
+    ```
+    ```response
+    ┌─id─┬─column1─┐
+    │  1 │ abc     │
+    └────┴─────────┘
+    ┌─id─┬─column1─┐
+    │  2 │ def     │
+    └────┴─────────┘
+    ```
 
 6. Stop one ClickHouse server node
-Stop one of the ClickHouse server nodes by running an operating system command similar to the command used to start the node.  If you used `systemctl start` to start the node, then use `systemctl stop` to stop it.
+    Stop one of the ClickHouse server nodes by running an operating system command similar to the command used to start the node.  If you used `systemctl start` to start the node, then use `systemctl stop` to stop it.
 
 7. Insert more data on the running node
-```sql title="run on the running node"
-INSERT INTO db1.table1 (id, column1) VALUES (3, 'ghi');
-```
+    ```sql title="run on the running node"
+    INSERT INTO db1.table1 (id, column1) VALUES (3, 'ghi');
+    ```
 
-Select the data:
-```sql title="run on the running node"
-SELECT *
-FROM db1.table1
-```
-```response
-┌─id─┬─column1─┐
-│  1 │ abc     │
-└────┴─────────┘
-┌─id─┬─column1─┐
-│  2 │ def     │
-└────┴─────────┘
-┌─id─┬─column1─┐
-│  3 │ ghi     │
-└────┴─────────┘
-```
+    Select the data:
+    ```sql title="run on the running node"
+    SELECT *
+    FROM db1.table1
+    ```
+    ```response
+    ┌─id─┬─column1─┐
+    │  1 │ abc     │
+    └────┴─────────┘
+    ┌─id─┬─column1─┐
+    │  2 │ def     │
+    └────┴─────────┘
+    ┌─id─┬─column1─┐
+    │  3 │ ghi     │
+    └────┴─────────┘
+    ```
 
 8. Restart the stopped node and select from there also
 
-```sql title="run on the restarted node"
-SELECT *
-FROM db1.table1
-```
-```response
-┌─id─┬─column1─┐
-│  1 │ abc     │
-└────┴─────────┘
-┌─id─┬─column1─┐
-│  2 │ def     │
-└────┴─────────┘
-┌─id─┬─column1─┐
-│  3 │ ghi     │
-└────┴─────────┘
-```
+    ```sql title="run on the restarted node"
+    SELECT *
+    FROM db1.table1
+    ```
+    ```response
+    ┌─id─┬─column1─┐
+    │  1 │ abc     │
+    └────┴─────────┘
+    ┌─id─┬─column1─┐
+    │  2 │ def     │
+    └────┴─────────┘
+    ┌─id─┬─column1─┐
+    │  3 │ ghi     │
+    └────┴─────────┘
+    ```

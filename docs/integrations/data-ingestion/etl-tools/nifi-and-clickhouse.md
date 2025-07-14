@@ -39,7 +39,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 1. For a new setup, download the binary from https://nifi.apache.org/download.html and start by running `./bin/nifi.sh start`
 
-
 ## 3. Download the ClickHouse JDBC driver {#3-download-the-clickhouse-jdbc-driver}
 
 1. Visit the <a href="https://github.com/ClickHouse/clickhouse-java/releases" target="_blank">ClickHouse JDBC driver release page</a> on GitHub and look for  the latest JDBC release version
@@ -66,13 +65,13 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 5. Under the "Properties" section, input the following values
 
-  | Property                    | Value                                                              | Remark                                                                        |
-  | --------------------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------- |
-  | Database Connection URL     | jdbc:ch:https://HOSTNAME:8443/default?ssl=true                     | Replace HOSTNAME in the connection URL accordingly                            |
-  | Database Driver Class Name  | com.clickhouse.jdbc.ClickHouseDriver                               ||
-  | Database Driver Location(s) | /etc/nifi/nifi-X.XX.X/lib/clickhouse-jdbc-0.X.X-patchXX-shaded.jar | Absolute path to the ClickHouse JDBC driver JAR file                          |
-  | Database User               | default                                                            | ClickHouse username                                                           |
-  | Password                    | password                                                 | ClickHouse password                                                           |
+    | Property                    | Value                                                              | Remark                                                                        |
+    | --------------------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------- |
+    | Database Connection URL     | jdbc:ch:https://HOSTNAME:8443/default?ssl=true                     | Replace HOSTNAME in the connection URL accordingly                            |
+    | Database Driver Class Name  | com.clickhouse.jdbc.ClickHouseDriver                               ||
+    | Database Driver Location(s) | /etc/nifi/nifi-X.XX.X/lib/clickhouse-jdbc-0.X.X-patchXX-shaded.jar | Absolute path to the ClickHouse JDBC driver JAR file                          |
+    | Database User               | default                                                            | ClickHouse username                                                           |
+    | Password                    | password                                                 | ClickHouse password                                                           |
 
 6. In the Settings section, change the name of the Controller Service to "ClickHouse JDBC" for easy reference
 
@@ -81,8 +80,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 7. Activate the `DBCPConnectionPool` Controller Service by clicking on the "lightning" button and then the "Enable" button
 
     <Image img={nifi06} size="lg" border alt="Controller Services list with lightning button highlighted" />
-
-    <br/>
 
     <Image img={nifi07} size="lg" border alt="Enable Controller Service confirmation dialog" />
 

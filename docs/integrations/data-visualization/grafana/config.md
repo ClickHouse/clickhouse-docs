@@ -89,8 +89,8 @@ Example YAML for plain/secure headers:
 jsonData:
   httpHeaders:
   - name: X-Example-Plain-Header
-    value: plain text value
-    secure: false
+      value: plain text value
+      secure: false
   - name: X-Example-Secure-Header
     # "value" is excluded
     secure: true
@@ -262,9 +262,9 @@ See [Grafana documentation](https://grafana.com/docs/grafana/latest/administrati
 ```yaml
 datasources:
   - name: Example ClickHouse
-    uid: clickhouse-example
-    type: grafana-clickhouse-datasource
-    jsonData:
+      uid: clickhouse-example
+      type: grafana-clickhouse-datasource
+      jsonData:
       host: 127.0.0.1
       port: 9000
       protocol: native
@@ -307,9 +307,9 @@ datasources:
         startTimeColumn: <string>
         tagsColumn: <string>
         serviceTagsColumn: <string>
-    secureJsonData:
+      secureJsonData:
       tlsCACert:     <string>
       tlsClientCert: <string>
       tlsClientKey:  <string>
       secureHttpHeaders.X-Example-Secure-Header: secure header value
-```
+      ```

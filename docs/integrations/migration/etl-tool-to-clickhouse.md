@@ -20,4 +20,4 @@ A great option for moving data from an external data source into ClickHouse is t
 - [dbt](/integrations/data-ingestion/etl-tools/dbt/index.md)
 - [Vector](/integrations/data-ingestion/etl-tools/vector-to-clickhouse.md)
 
-But there are many other ETL/ELT tools that integrate with ClickHouse, so check your favorite tool's documentation for details.
+    But there are many other ETL/ELT tools that integrate with ClickHouse, so check your favorite tool's documentation for details.

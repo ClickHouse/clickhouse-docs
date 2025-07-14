@@ -10,11 +10,11 @@ show_related_blogs: false
 
 # Updating and deleting ClickHouse data with mutations
 
-Although ClickHouse is geared toward high volume analytic workloads, it is possible in some situations to modify or 
+Although ClickHouse is geared toward high volume analytic workloads, it is possible in some situations to modify or
 delete existing data. These operations are labeled "mutations" and are executed using the `ALTER TABLE` command.
 
 :::tip
-If you need to perform frequent updates, consider using [deduplication](../developer/deduplication.md) in ClickHouse, which allows you to update 
+If you need to perform frequent updates, consider using [deduplication](../developer/deduplication.md) in ClickHouse, which allows you to update
 and/or delete rows without generating a mutation event. Alternatively, use [lightweight updates](/guides/developer/lightweight-update)
 or [lightweight deletes](/guides/developer/lightweight-delete)
 :::
@@ -55,9 +55,9 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
      WHERE visitor_id ILIKE '%robot%'
      ```
 
-:::note
-It is not possible to update columns that are part of the primary or sorting key.
-:::
+    :::note
+    It is not possible to update columns that are part of the primary or sorting key.
+    :::
 
 ## Deleting data {#deleting-data}
 
@@ -81,11 +81,11 @@ The `<filter_expr>` should return a UInt8 value for each row of data.
     ALTER TABLE clicks ON CLUSTER main_cluster DELETE WHERE visit_date < '2022-01-02 15:00:00' AND page_id = '573'
     ```
 
-:::note
-To delete all of the data in a table, it is more efficient to use the command `TRUNCATE TABLE [<database].]<table>` command.  This command can also be executed `ON CLUSTER`.
-:::
+    :::note
+    To delete all of the data in a table, it is more efficient to use the command `TRUNCATE TABLE [<database].]<table>` command.  This command can also be executed `ON CLUSTER`.
+    :::
 
-View the [`DELETE` statement](/sql-reference/statements/delete.md) docs page for more details.
+    View the [`DELETE` statement](/sql-reference/statements/delete.md) docs page for more details.
 
 ## Lightweight deletes {#lightweight-deletes}
 
@@ -104,4 +104,3 @@ DELETE FROM hits WHERE Title LIKE '%hello%';
 A few notes about lightweight deletes:
 - This feature is only available for the `MergeTree` table engine family.
 - Lightweight deletes are asynchronous by default. Set `mutations_sync` equal to 1 to wait for one replica to process the statement, and set `mutations_sync` to 2 to wait for all replicas.
-

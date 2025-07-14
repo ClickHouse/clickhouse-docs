@@ -15,7 +15,6 @@ Compression efficiency in ClickHouse depends mainly on three factors: the orderi
 
 Some straightforward guidelines can significantly enhance the schema:
 
-
 * **Use Strict Types:** Always select the correct data type for columns. Numeric and date fields should use appropriate numeric and date types rather than general-purpose String types. This ensures correct semantics for filtering and aggregations.
 
 * **Avoid nullable Columns:** Nullable columns introduce additional overhead by maintaining separate columns for tracking null values. Only use Nullable if explicitly required to distinguish between empty and null states. Otherwise, default or zero-equivalent values typically suffice. For further information on why this type should be avoided unless needed, see [Avoid nullable Columns](/best-practices/select-data-types#avoid-nullable-columns).
@@ -30,12 +29,11 @@ Some straightforward guidelines can significantly enhance the schema:
 
 ## Example {#example}
 
-ClickHouse offers built-in tools to streamline type optimization. For example, schema inference can automatically identify initial types. Consider the Stack Overflow dataset, publicly available in Parquet format. Running a simple schema inference via the [`DESCRIBE`](/sql-reference/statements/describe-table) command provides an initial non-optimized schema. 
+ClickHouse offers built-in tools to streamline type optimization. For example, schema inference can automatically identify initial types. Consider the Stack Overflow dataset, publicly available in Parquet format. Running a simple schema inference via the [`DESCRIBE`](/sql-reference/statements/describe-table) command provides an initial non-optimized schema.
 
 :::note
 By default, ClickHouse maps these to equivalent Nullable types. This is preferred as the schema is based on a sample of the rows only.
 :::
-
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
@@ -109,7 +107,7 @@ This results in the following optimized schema (with respect to types):
 CREATE TABLE posts
 (
    Id Int32,
-   PostTypeId Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 
+   PostTypeId Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5,
    'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
    AcceptedAnswerId UInt32,
    CreationDate DateTime,

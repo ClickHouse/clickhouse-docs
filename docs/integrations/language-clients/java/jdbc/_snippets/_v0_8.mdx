@@ -28,34 +28,29 @@ In 0.8 we tried to make the driver more strictly follow the JDBC specification, 
 ### Setup {#setup}
 
 <Tabs groupId="jdbc-base-dependencies">
-    <TabItem value="maven" label="Maven" >
-
-        ```xml
-        <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
-        <dependency>
-            <groupId>com.clickhouse</groupId>
-            <artifactId>clickhouse-jdbc</artifactId>
-            <version>0.8.2</version>
-            <classifier>shaded-all</classifier>
-        </dependency>
-        ```
-
-    </TabItem>
-    <TabItem value="gradle-kt" label="Gradle (Kotlin)">
-
-        ```kotlin
-        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-        implementation("com.clickhouse:clickhouse-jdbc:0.8.2:shaded-all")
-        ```
-    </TabItem>
-    <TabItem value="gradle" label="Gradle">
-
-        ```groovy
-        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-        implementation 'com.clickhouse:clickhouse-jdbc:0.8.2:shaded-all'
-        ```
-
-    </TabItem>
+<TabItem value="maven" label="Maven" >
+```xml
+<!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
+<dependency>
+<groupId>com.clickhouse</groupId>
+<artifactId>clickhouse-jdbc</artifactId>
+<version>0.8.2</version>
+<classifier>shaded-all</classifier>
+</dependency>
+```
+</TabItem>
+<TabItem value="gradle-kt" label="Gradle (Kotlin)">
+```kotlin
+// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+implementation("com.clickhouse:clickhouse-jdbc:0.8.2:shaded-all")
+```
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+```groovy
+// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+implementation 'com.clickhouse:clickhouse-jdbc:0.8.2:shaded-all'
+```
+</TabItem>
 </Tabs>
 
 ## Configuration {#configuration}
@@ -67,17 +62,17 @@ In 0.8 we tried to make the driver more strictly follow the JDBC specification, 
 - `jdbc:clickhouse:http://localhost:8123`
 - `jdbc:clickhouse:https://localhost:8443?ssl=true`
 
-**Connection Properties**:
+    **Connection Properties**:
 
-Beyond standard JDBC properties, the driver supports the ClickHouse-specific properties offered by the underlying [java client](/integrations/language-clients/java/client/client.mdx).
-Where possible methods will return an `SQLFeatureNotSupportedException` if the feature is not supported. Other custom properties include:
+    Beyond standard JDBC properties, the driver supports the ClickHouse-specific properties offered by the underlying [java client](/integrations/language-clients/java/client/client.mdx).
+    Where possible methods will return an `SQLFeatureNotSupportedException` if the feature is not supported. Other custom properties include:
 
-| Property                         | Default | Description                                                    |
-|----------------------------------|---------|----------------------------------------------------------------|
-| `disable_frameworks_detection`   | `true`  | Disable frameworks detection for User-Agent                    |
-| `jdbc_ignore_unsupported_values` | `false` | Suppresses `SQLFeatureNotSupportedException`                   |
-| `clickhouse.jdbc.v1`             | `false` | Use older JDBC implementation instead of new JDBC              |
-| `default_query_settings`         | `null`  | Allows passing of default query settings with query operations |
+    | Property                         | Default | Description                                                    |
+    |----------------------------------|---------|----------------------------------------------------------------|
+    | `disable_frameworks_detection`   | `true`  | Disable frameworks detection for User-Agent                    |
+    | `jdbc_ignore_unsupported_values` | `false` | Suppresses `SQLFeatureNotSupportedException`                   |
+    | `clickhouse.jdbc.v1`             | `false` | Use older JDBC implementation instead of new JDBC              |
+    | `default_query_settings`         | `null`  | Allows passing of default query settings with query operations |
 
 ## Supported data types {#supported-data-types}
 
@@ -172,7 +167,6 @@ try (HikariDataSource ds = new HikariDataSource(poolConfig);
 ## More Information {#more-information}
 For more information, see our [GitHub repository](https://github.com/ClickHouse/clickhouse-java) and [Java Client documentation](/integrations/language-clients/java/client/client.mdx).
 
-
 ## Troubleshooting {#troubleshooting}
 ### Logging {#logging}
 The driver uses [slf4j](https://www.slf4j.org/) for logging, and will use the first available implementation on the `classpath`.
@@ -202,23 +196,23 @@ On Linux, the equivalent settings alone may not resolve the issue. Additional st
 
 1. Adjust the following Linux kernel parameters in `/etc/sysctl.conf` or a related configuration file:
 
- - `net.inet.tcp.keepidle`: 60000
- - `net.inet.tcp.keepintvl`: 45000
- - `net.inet.tcp.keepinit`: 45000
- - `net.inet.tcp.keepcnt`: 8
- - `net.inet.tcp.always_keepalive`: 1
- - `net.ipv4.tcp_keepalive_intvl`: 75
- - `net.ipv4.tcp_keepalive_probes`: 9
- - `net.ipv4.tcp_keepalive_time`: 60 (You may consider lowering this value from the default 300 seconds)
+    - `net.inet.tcp.keepidle`: 60000
+    - `net.inet.tcp.keepintvl`: 45000
+    - `net.inet.tcp.keepinit`: 45000
+    - `net.inet.tcp.keepcnt`: 8
+    - `net.inet.tcp.always_keepalive`: 1
+    - `net.ipv4.tcp_keepalive_intvl`: 75
+    - `net.ipv4.tcp_keepalive_probes`: 9
+    - `net.ipv4.tcp_keepalive_time`: 60 (You may consider lowering this value from the default 300 seconds)
 
 2. After modifying the kernel parameters, apply the changes by running the following command:
 
-```shell
-sudo sysctl -p
-```
+    ```shell
+    sudo sysctl -p
+    ```
 
-After Setting those settings, you need to ensure that your client enables the Keep Alive option on the socket:
+    After Setting those settings, you need to ensure that your client enables the Keep Alive option on the socket:
 
-```java
-properties.setProperty("socket_keepalive", "true");
-```
+    ```java
+    properties.setProperty("socket_keepalive", "true");
+    ```

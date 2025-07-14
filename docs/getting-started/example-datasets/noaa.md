@@ -81,12 +81,11 @@ $ clickhouse-local --query "SELECT * FROM '2021.csv.gz' LIMIT 10" --format Prett
 
 Summarizing the [format documentation](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn):
 
-
 Summarizing the format documentation and the columns in order:
 
- - An 11 character station identification code. This itself encodes some useful information
- - YEAR/MONTH/DAY = 8 character date in YYYYMMDD format (e.g. 19860529 = May 29, 1986)
- - ELEMENT = 4 character indicator of element type. Effectively the measurement type. While there are many measurements available, we select the following:
+- An 11 character station identification code. This itself encodes some useful information
+- YEAR/MONTH/DAY = 8 character date in YYYYMMDD format (e.g. 19860529 = May 29, 1986)
+- ELEMENT = 4 character indicator of element type. Effectively the measurement type. While there are many measurements available, we select the following:
     - PRCP - Precipitation (tenths of mm)
     - SNOW - Snowfall (mm)
     - SNWD - Snow depth (mm)
@@ -103,21 +102,20 @@ Summarizing the format documentation and the columns in order:
 - S-FLAG is the source flag for the observation. Not useful for our analysis and ignored.
 - OBS-TIME = 4-character time of observation in hour-minute format (i.e. 0700 =7:00 am). Typically not present in older data. We ignore this for our purposes.
 
-A measurement per line would result in a sparse table structure in ClickHouse. We should transform to a row per time and station, with measurements as columns. First, we limit the dataset to those rows without issues i.e. where `qFlag` is equal to an empty string.
+    A measurement per line would result in a sparse table structure in ClickHouse. We should transform to a row per time and station, with measurements as columns. First, we limit the dataset to those rows without issues i.e. where `qFlag` is equal to an empty string.
 
 #### Clean the data {#clean-the-data}
 
 Using [ClickHouse local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) we can filter rows that represent measurements of interest and pass our quality requirements:
 
 ```bash
-clickhouse local --query "SELECT count() 
+clickhouse local --query "SELECT count()
 FROM file('*.csv.gz', CSV, 'station_id String, date String, measurement String, value Int64, mFlag String, qFlag String, sFlag String, obsTime String') WHERE qFlag = '' AND (measurement IN ('PRCP', 'SNOW', 'SNWD', 'TMAX', 'TAVG', 'TMIN', 'PSUN', 'AWND', 'WSFG') OR startsWith(measurement, 'WT'))"
 
 2679264563
 ```
 
 With over 2.6 billion rows, this isn't a fast query since it involves parsing all the files. On our 8 core  machine, this takes around 160 seconds.
-
 
 ### Pivot data {#pivot-data}
 
@@ -184,7 +182,7 @@ SELECT station_id,
        name
 FROM file('noaa.csv', CSV,
           'station_id String, date Date32, tempAvg Int32, tempMax Int32, tempMin Int32, precipitation Int32, snowfall Int32, snowDepth Int32, percentDailySun Int8, averageWindSpeed Int32, maxWindSpeed Int32, weatherType UInt8') as noaa LEFT OUTER
-         JOIN stations ON noaa.station_id = stations.id INTO OUTFILE 'noaa_enriched.parquet' FORMAT Parquet SETTINGS format_regexp='^(.{11})\s+(\-?\d{1,2}\.\d{4})\s+(\-?\d{1,3}\.\d{1,4})\s+(\-?\d*\.\d*)\s+(.*)\s+(?:[\d]*)'" 
+         JOIN stations ON noaa.station_id = stations.id INTO OUTFILE 'noaa_enriched.parquet' FORMAT Parquet SETTINGS format_regexp='^(.{11})\s+(\-?\d{1,2}\.\d{4})\s+(\-?\d{1,3}\.\d{1,4})\s+(\-?\d*\.\d*)\s+(.*)\s+(?:[\d]*)'"
 ```
 This query takes a few minutes to run and produces a 6.4 GB file, `noaa_enriched.parquet`.
 
@@ -224,7 +222,7 @@ Data can be inserted from a local file as follows (from the ClickHouse client):
 INSERT INTO noaa FROM INFILE '<path>/noaa_enriched.parquet'
 ```
 
-where `<path>` represents the full path to the local file on disk. 
+where `<path>` represents the full path to the local file on disk.
 
 See [here](https://clickhouse.com/blog/real-world-data-noaa-climate-data#load-the-data) for how to speed this load up.
 

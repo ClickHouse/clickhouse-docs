@@ -30,4 +30,3 @@ Ports described as **default** mean that the port number is configured in `/etc/
 |9281|Recommended Secure SSL ClickHouse Keeper port|
 |9440|Native protocol SSL/TLS port|
 |42000|Graphite default port|
-

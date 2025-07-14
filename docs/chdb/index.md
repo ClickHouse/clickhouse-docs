@@ -37,11 +37,10 @@ chDB supports Parquet, CSV, JSON, Apache Arrow, ORC, and [60+ more formats](/int
     * [Querying remote ClickHouse](guides/query-remote-clickhouse.md)
     * [Using clickhouse-local database](guides/clickhouse-local.md)
 
-<!-- ## What is chDB?
+    <!-- ## What is chDB?
 
-chDB lets you 
-
-- Supports Python DB API 2.0: [example](https://github.com/chdb-io/chdb/blob/main/examples/dbapi.py) and [custom UDF Functions](https://github.com/chdb-io/chdb/blob/main/examples/udf.py) -->
+    chDB lets you 
+    - Supports Python DB API 2.0: [example](https://github.com/chdb-io/chdb/blob/main/examples/dbapi.py) and [custom UDF Functions](https://github.com/chdb-io/chdb/blob/main/examples/udf.py) -->
 
 ## An introductory video {#an-introductory-video}
 
@@ -56,7 +55,6 @@ You can listen to a brief project introduction to chDB, courtesy of Alexey Milov
 - Read the full story about the birth of the chDB project on [Auxten's blog](https://clickhouse.com/blog/chdb-embedded-clickhouse-rocket-engine-on-a-bicycle)
 - Read about chDB and its use cases on the [Official ClickHouse Blog](https://clickhouse.com/blog/welcome-chdb-to-clickhouse)
 - Discover chDB in your browser using [codapi examples](https://antonz.org/trying-chdb/)
-
 
 ## What license does it use? {#what-license-does-it-use}
 

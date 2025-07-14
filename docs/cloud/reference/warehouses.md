@@ -25,27 +25,23 @@ Each ClickHouse Cloud service includes:
 - An endpoint (or multiple endpoints created via ClickHouse Cloud UI console), which is a service URL that you use to connect to the service (for example, `https://dv2fzne24g.us-east-1.aws.clickhouse.cloud:8443`).
 - An object storage folder where the service stores all the data and partially metadata:
 
-:::note
-Child single services can scale vertically unlike single parent services.
-:::
+    :::note
+    Child single services can scale vertically unlike single parent services.
+    :::
 
-<Image img={compute_1} size="md" alt="Current service in ClickHouse Cloud" />
+    <Image img={compute_1} size="md" alt="Current service in ClickHouse Cloud" />
 
-<br />
+    _Fig. 1 - current service in ClickHouse Cloud_
 
-_Fig. 1 - current service in ClickHouse Cloud_
+    Compute-compute separation allows users to create multiple compute node groups, each with its own endpoint, that are using the same object storage folder, and thus, with the same tables, views, etc.
 
-Compute-compute separation allows users to create multiple compute node groups, each with its own endpoint, that are using the same object storage folder, and thus, with the same tables, views, etc.
+    Each compute node group will have its own endpoint so you can choose which set of replicas to use for your workloads. Some of your workloads may be satisfied with only one small-size replica, and others may require full high-availability (HA) and hundreds of gigs of memory. Compute-compute separation also allows you to separate read operations from write operations so they don't interfere with each other:
 
-Each compute node group will have its own endpoint so you can choose which set of replicas to use for your workloads. Some of your workloads may be satisfied with only one small-size replica, and others may require full high-availability (HA) and hundreds of gigs of memory. Compute-compute separation also allows you to separate read operations from write operations so they don't interfere with each other:
+    <Image img={compute_2} size="md" alt="Compute separation in ClickHouse Cloud" />
 
-<Image img={compute_2} size="md" alt="Compute separation in ClickHouse Cloud" />
+    _Fig. 2 - compute separation in ClickHouse Cloud_
 
-<br />
-
-_Fig. 2 - compute separation in ClickHouse Cloud_
-
-It is possible to create extra services that share the same data with your existing services, or create a completely new setup with multiple services sharing the same data.
+    It is possible to create extra services that share the same data with your existing services, or create a completely new setup with multiple services sharing the same data.
 
 ## What is a warehouse? {#what-is-a-warehouse}
 
@@ -55,19 +51,17 @@ Each warehouse has a primary service (this service was created first) and second
 - Primary service `DWH Prod`
 - Secondary service `DWH Prod Subservice`
 
-<Image img={compute_8} size="lg" alt="Warehouse example with primary and secondary services" background='white' />
+    <Image img={compute_8} size="lg" alt="Warehouse example with primary and secondary services" background='white' />
 
-<br />
+    _Fig. 3 - Warehouse example_
 
-_Fig. 3 - Warehouse example_
-
-All services in a warehouse share the same:
+    All services in a warehouse share the same:
 
 - Region (for example, us-east1)
 - Cloud service provider (AWS, GCP or Azure)
 - ClickHouse database version
 
-You can sort services by the warehouse that they belong to.
+    You can sort services by the warehouse that they belong to.
 
 ## Access controls {#access-controls}
 
@@ -106,8 +100,7 @@ _Fig. 6 - Read-write and Read-only services in a warehouse_
 :::note
 1. Read-only services currently allow user management operations (create, drop, etc). This behavior may be changed in the future.
 2. Currently, refreshable materialized views are executed on all services in the warehouse, including read-only services. This behavior will be changed in the future, however, and they will be executed on RW services only.
-:::
-
+    :::
 
 ## Scaling {#scaling}
 
@@ -134,15 +127,14 @@ Once compute-compute is enabled for a service (at least one secondary service wa
 
 6. **CREATE/RENAME/DROP DATABASE queries could be blocked by idled/stopped services by default.** These queries can hang. To bypass this, you  can run database management queries with `settings distributed_ddl_task_timeout=0` at the session or per query level. For example:
 
-```sql
-CREATE DATABASE db_test_ddl_single_query_setting
-SETTINGS distributed_ddl_task_timeout=0
-```
+    ```sql
+    CREATE DATABASE db_test_ddl_single_query_setting
+    SETTINGS distributed_ddl_task_timeout=0
+    ```
 
 6. **In very rare cases, secondary services that are idled or stopped for a long time (days) without waking/starting up can cause performance degradation to other services in the same warehouse.** This issue will be resolved soon and is connected to mutations running in the background. If you think you are experiencing this issue, please contact ClickHouse [Support](https://clickhouse.com/support/program).
 
 7. **Currently there is a soft limit of 5 services per warehouse.** Contact the support team if you need more than 5 services in a single warehouse.
-
 
 ## Pricing {#pricing}
 
