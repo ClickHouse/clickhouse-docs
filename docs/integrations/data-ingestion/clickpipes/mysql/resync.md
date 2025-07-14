@@ -7,7 +7,7 @@ sidebar_label: 'Resync ClickPipe'
 
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'
 
-### What does Resync do?
+### What does Resync do? {#what-mysql-resync-do}
 
 Resync involves the following operations in order:
 1. The existing ClickPipe is dropped, and a new "resync" ClickPipe is kicked off. Thus, changes to source table structures will be picked up when you resync.
@@ -18,7 +18,7 @@ Resync involves the following operations in order:
 
 All the settings of the original ClickPipe are retained in the resync ClickPipe. The statistics of the original ClickPipe are cleared in the UI.
 
-### Use cases for resyncing a ClickPipe
+### Use cases for resyncing a ClickPipe {#use-cases-mysql-resync}
 Here are a few scenarios:
 
 1. You may need to perform major schema changes on the source tables which would break the existing ClickPipe and you would need to restart. You can just click Resync after performing the changes.
@@ -30,7 +30,7 @@ You can resync multiple times, however please account for the load on the source
 since initial load with parallel threads is involved each time.
 </Info>
 
-### Resync ClickPipe Guide
+### Resync ClickPipe Guide {#guide-mysql-resync}
 1. In the Data Sources tab, click on the MySQL ClickPipe you wish to resync.
 2. Head over to the **Settings** tab.
 3. Click on the **Resync** button.
