@@ -28,7 +28,7 @@ The REST Catalog is a standardized API specification for Iceberg catalogs, suppo
 
 :::note
 As this feature is experimental, you will need to enable it using:
-`SET allow_experimental_database_rest_catalog = 1;`
+`SET allow_experimental_database_iceberg = 1;`
 :::
 
 ## Local Development Setup {#local-development-setup}
