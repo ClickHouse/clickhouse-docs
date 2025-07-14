@@ -51,7 +51,7 @@ Once a service is encrypted with TDE, customers may update the key to enable CME
         "Sid": "Allow ClickHouse Access",
         "Effect": "Allow",
         "Principal": {
-            "AWS": "{ Encryption role ID }"
+            "AWS": [ "Encryption role ID " ]
         },
         "Action": [
             "kms:Encrypt",
