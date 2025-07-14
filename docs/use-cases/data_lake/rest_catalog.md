@@ -44,45 +44,40 @@ For local development and testing, you can use a containerized REST catalog setu
 
 You can use various containerized REST catalog implementations such as **[Databricks docker-spark-iceberg](https://github.com/databricks/docker-spark-iceberg/blob/main/docker-compose.yml?ref=blog.min.io)** which provides a complete Spark + Iceberg + REST catalog environment with docker-compose, making it ideal for testing Iceberg integrations.
 
-**Step 1:** Clone or download the docker-compose setup from the Databricks repository.
+**Step 1:** Create a new folder in which to run the example, then create a file `docker-compose.yml` with the configuration from [Databricks docker-spark-iceberg](https://github.com/databricks/docker-spark-iceberg/blob/main/docker-compose.yml?ref=blog.min.io).
 
-**Step 2:** Add ClickHouse as a service to your docker-compose.yml file:
-
-```yaml
-clickhouse:
-  image: clickhouse/clickhouse-server:main
-  container_name: clickhouse
-  user: '0:0'  # Ensures root permissions
-  ports:
-    - "8123:8123"
-    - "9002:9000"
-  volumes:
-    - ./clickhouse:/var/lib/clickhouse
-    - ./clickhouse/data_import:/var/lib/clickhouse/data_import  # Mount dataset folder
-  networks:
-    - iceberg_net
-  environment:
-    - CLICKHOUSE_DB=default
-    - CLICKHOUSE_USER=default
-    - CLICKHOUSE_DO_NOT_CHOWN=1
-    - CLICKHOUSE_PASSWORD=
-```
-
-**Step 3:** Ensure your docker-compose.yml includes the necessary network configuration:
+**Step 2:** Next, create a file `docker-compose.override.yml` and place the following ClickHouse container configuration into it:
 
 ```yaml
-networks:
-  iceberg_net:
-    driver: bridge
+version: '3.8'
+
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:main
+    container_name: clickhouse
+    user: '0:0'  # Ensures root permissions
+    ports:
+      - "8123:8123"
+      - "9002:9000"
+    volumes:
+      - ./clickhouse:/var/lib/clickhouse
+      - ./clickhouse/data_import:/var/lib/clickhouse/data_import  # Mount dataset folder
+    networks:
+      - iceberg_net
+    environment:
+      - CLICKHOUSE_DB=default
+      - CLICKHOUSE_USER=default
+      - CLICKHOUSE_DO_NOT_CHOWN=1
+      - CLICKHOUSE_PASSWORD=
 ```
 
-**Step 4:** Start the entire stack:
+**Step 3:** Run the following command to start the services:
 
 ```bash
-docker-compose up -d
+docker compose up
 ```
 
-**Step 5:** Wait for all services to be ready. You can check the logs:
+**Step 4:** Wait for all services to be ready. You can check the logs:
 
 ```bash
 docker-compose logs -f
