@@ -53,7 +53,7 @@ version: '3.8'
 
 services:
   clickhouse:
-    image: clickhouse/clickhouse-server:main
+    image: clickhouse/clickhouse-server:25.5.6
     container_name: clickhouse
     user: '0:0'  # Ensures root permissions
     ports:
@@ -98,6 +98,8 @@ docker exec -it clickhouse clickhouse-client
 Then create the database connection to the REST catalog:
 
 ```sql
+SET allow_experimental_database_iceberg = 1;
+
 CREATE DATABASE demo
 ENGINE = DataLakeCatalog('http://rest:8181/v1', 'admin', 'password')
 SETTINGS 
