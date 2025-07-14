@@ -35,7 +35,7 @@ since initial load with parallel threads is involved each time.
 2. Head over to the **Settings** tab.
 3. Click on the **Resync** button.
 <br/>
-<Image img={resync_button} border size="md"/>
+<img img={resync_button} border size="md"/>
 4. A dialog box should appear for confirmation. Click on Resync again.
 <br/>
 5. Head over to the **Metrics** tab.
