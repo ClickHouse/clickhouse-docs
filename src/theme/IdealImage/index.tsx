@@ -112,14 +112,8 @@ export default function IdealImage(
 
   // In dev env just use regular img with original file
   if (typeof img === "string" || (typeof img === "object" && img !== null && "default" in img)) {
-    console.log('=== Early Return Debug ===');
-    console.log('Image type:', typeof img);
-    console.log('Has default property:', typeof img === "object" && img !== null && "default" in img);
-    console.log('Image value:', img);
     const isGifInEarlyReturn = typeof img === "string" ? img.endsWith('.gif') :
         (typeof img === "object" && img !== null && typeof img.default === "string" && img.default.endsWith('.gif'));
-    console.log('Is this a GIF?', isGifInEarlyReturn);
-
     const gifStyles = isGifInEarlyReturn ? (
         size === "lg"
             ? {
@@ -148,10 +142,6 @@ export default function IdealImage(
                       : "none",
                 }
     ) : {};
-
-    console.log('GIF styles being applied:', gifStyles);
-    console.log('Size parameter:', size);
-    console.log('Max width should be:', MAX_SIZE_FILTERS[size]);
 
     return (
         <div style={{
@@ -208,18 +198,10 @@ export default function IdealImage(
   // Check if current image is a GIF
   const isCurrentGif = currentImage.path?.toLowerCase().endsWith('.gif') || false;
 
-  // Check if current image is a GIF
-  console.log('Current image object:', currentImage);
-  console.log('Current image path:', currentImage.path);
-  console.log('All images in set:', img.src.images);
-
   const isGif = currentImage.path?.toLowerCase().endsWith('.gif') || false;
-
-  console.log('Is GIF detected:', isGif);
 
   // Debug logging
   if (isGif) {
-    console.log('GIF detected:', {
       path: currentImage.path,
       size: size,
       maxWidth: MAX_SIZE_FILTERS[size],
@@ -260,17 +242,9 @@ export default function IdealImage(
                 }),
               };
 
-  // Debug logging after styles are created
-  console.log('=== IdealImage Debug ===');
-  console.log('Current image path:', currentImage.path);
-  console.log('Is GIF detected:', isCurrentGif);
-  console.log('Size parameter:', size);
-  console.log('Max width for size:', MAX_SIZE_FILTERS[size]);
-  console.log('Current image dimensions:', {
     width: currentImage.width,
     height: currentImage.height
   });
-  console.log('Image styles being applied:', imageStyles);
 
   const containerStyles: React.CSSProperties = {
     position: "relative",
@@ -321,7 +295,6 @@ export default function IdealImage(
       }, 1000); // 1 second timeout
 
       const testSpeed = async () => {
-        console.log("Downloading...");
         const url = currentImage.path!;
         const startTime = performance.now();
 
