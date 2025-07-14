@@ -89,7 +89,7 @@ Once you've updated the config, you'll need to restart Claude Desktop for the ch
 :::warning
 Depending how you installed `uv`, you might receive the following error when restarting Claude Desktop:
 
-```
+```text
 MCP mcp-clickhouse: spawn uv ENOENT
 ```
 
