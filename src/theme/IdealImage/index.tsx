@@ -39,8 +39,8 @@ const MAX_SIZE_FILTERS = {
 
 // Utility function to filter `srcSet` based on the `size`
 const filterSrcSet = (
-  srcSet: SrcType[],
-  size: keyof typeof MAX_SIZE_FILTERS,
+    srcSet: SrcType[],
+    size: keyof typeof MAX_SIZE_FILTERS,
 ) => {
   const max_size = MAX_SIZE_FILTERS[size] || MAX_SIZE_FILTERS["lg"];
   return srcSet.filter((image) => image.width <= max_size);
@@ -64,13 +64,13 @@ function getMessage(icon: IconKey, state: State) {
       const { size } = pickedSrc;
       const sizeMessage = size ? ` (${bytesToSize(size)})` : "";
       return translate(
-        {
-          id: "theme.IdealImageMessage.load",
-          message: "Click to load{sizeMessage}",
-          description:
-            "To prompt users to load the full image. sizeMessage is a parenthesized size figure.",
-        },
-        { sizeMessage },
+          {
+            id: "theme.IdealImageMessage.load",
+            message: "Click to load{sizeMessage}",
+            description:
+                "To prompt users to load the full image. sizeMessage is a parenthesized size figure.",
+          },
+          { sizeMessage },
       );
     }
     case "offline":
@@ -100,30 +100,84 @@ function getMessage(icon: IconKey, state: State) {
 }
 
 export default function IdealImage(
-  props: Props & {
-    size: keyof typeof MAX_SIZE_FILTERS;
-    alt: string;
-    background?: "white" | "black";
-    border?: boolean;
-    force?: boolean;
-  },
+    props: Props & {
+      size: keyof typeof MAX_SIZE_FILTERS;
+      alt: string;
+      background?: "white" | "black";
+      border?: boolean;
+      force?: boolean;
+    },
 ): ReactNode {
   const { img, size, alt, background, border, force, ...propsRest } = props;
 
   // In dev env just use regular img with original file
-  if (typeof img === "string" || "default" in img) {
+  if (typeof img === "string" || (typeof img === "object" && img !== null && "default" in img)) {
+    console.log('=== Early Return Debug ===');
+    console.log('Image type:', typeof img);
+    console.log('Has default property:', typeof img === "object" && img !== null && "default" in img);
+    console.log('Image value:', img);
+    const isGifInEarlyReturn = typeof img === "string" ? img.endsWith('.gif') :
+        (typeof img === "object" && img !== null && typeof img.default === "string" && img.default.endsWith('.gif'));
+    console.log('Is this a GIF?', isGifInEarlyReturn);
+
+    const gifStyles = isGifInEarlyReturn ? (
+        size === "lg"
+            ? {
+              width: "100%",
+              height: "auto",
+              maxWidth: "100%",
+              marginBottom: "-4px",
+              boxShadow: border
+                  ? "0px 1px 8px -1px rgba(21, 21, 21, 0.20)"
+                  : "none",
+            }
+            : size === "logo"
+                ? {
+                  width: `${MAX_SIZE_FILTERS[size]}px`,
+                  height: "auto",
+                  display: "block",
+                }
+                : {
+                  maxWidth: `${MAX_SIZE_FILTERS[size]}px`,
+                  width: "auto",
+                  height: "auto",
+                  margin: "0 auto",
+                  display: "block",
+                  boxShadow: border
+                      ? "0px 1px 8px -1px rgba(21, 21, 21, 0.20)"
+                      : "none",
+                }
+    ) : {};
+
+    console.log('GIF styles being applied:', gifStyles);
+    console.log('Size parameter:', size);
+    console.log('Max width should be:', MAX_SIZE_FILTERS[size]);
+
     return (
-      // eslint-disable-next-line jsx-a11y/alt-text
-      <img src={typeof img === "string" ? img : img.default} {...propsRest} />
+        <div style={{
+          position: "relative",
+          ...(background
+              ? { backgroundColor: background == "white" ? "white" : "rgb(31 31 28)" }
+              : {}),
+          marginBottom: "16px",
+          marginTop: "16px",
+        }}>
+          {/* eslint-disable-next-line jsx-a11y/alt-text */}
+          <img
+              src={typeof img === "string" ? img : img.default}
+              alt={alt}
+              style={gifStyles}
+          />
+        </div>
     );
   }
 
   // Filter images based on selected size
   const filteredSet = filterSrcSet(img.src.images, size);
   const currentImage =
-    filteredSet.length > 0
-      ? filteredSet[filteredSet.length - 1]
-      : img.src.images[img.src.images.length - 1];
+      filteredSet.length > 0
+          ? filteredSet[filteredSet.length - 1]
+          : img.src.images[img.src.images.length - 1];
   const highestResSrc = img.src.images[img.src.images.length - 1];
 
   const [isZoomed, setIsZoomed] = useState(false);
@@ -151,70 +205,112 @@ export default function IdealImage(
     setIsZoomed(shouldZoom);
   }, []);
 
+  // Check if current image is a GIF
+  const isCurrentGif = currentImage.path?.toLowerCase().endsWith('.gif') || false;
+
+  // Check if current image is a GIF
+  console.log('Current image object:', currentImage);
+  console.log('Current image path:', currentImage.path);
+  console.log('All images in set:', img.src.images);
+
+  const isGif = currentImage.path?.toLowerCase().endsWith('.gif') || false;
+
+  console.log('Is GIF detected:', isGif);
+
+  // Debug logging
+  if (isGif) {
+    console.log('GIF detected:', {
+      path: currentImage.path,
+      size: size,
+      maxWidth: MAX_SIZE_FILTERS[size],
+      currentImageWidth: currentImage.width,
+      currentImageHeight: currentImage.height
+    });
+  }
+
   // Apply conditional styles based on the `size`
   const imageStyles: React.CSSProperties =
-    size === "lg"
-      ? {
-          width: "100%",
-          height: "auto",
-          maxWidth: "100%",
-          marginBottom: "-4px",
-          boxShadow: border
-            ? "0px 1px 8px -1px rgba(21, 21, 21, 0.20)"
-            : "none",
-        }
-      : size == "logo"
-        ? {
-            width: `${MAX_SIZE_FILTERS[size]}px`,
-            display: "block",
-          }
-        : {
-            width: `${MAX_SIZE_FILTERS[size]}px`,
-            margin: "0 auto",
-            display: "block",
+      size === "lg"
+          ? {
+            width: "100%",
+            height: "auto",
+            maxWidth: "100%",
+            marginBottom: "-4px",
             boxShadow: border
-              ? "0px 1px 8px -1px rgba(21, 21, 21, 0.20)"
-              : "none",
-          };
+                ? "0px 1px 8px -1px rgba(21, 21, 21, 0.20)"
+                : "none",
+          }
+          : size == "logo"
+              ? {
+                width: `${MAX_SIZE_FILTERS[size]}px`,
+                display: "block",
+              }
+              : {
+                width: `${MAX_SIZE_FILTERS[size]}px`,
+                margin: "0 auto",
+                display: "block",
+                boxShadow: border
+                    ? "0px 1px 8px -1px rgba(21, 21, 21, 0.20)"
+                    : "none",
+                // For GIFs, add maxWidth and height auto to maintain aspect ratio
+                ...(isGif && {
+                  maxWidth: `${MAX_SIZE_FILTERS[size]}px`,
+                  width: "auto",
+                  height: "auto",
+                }),
+              };
+
+  // Debug logging after styles are created
+  console.log('=== IdealImage Debug ===');
+  console.log('Current image path:', currentImage.path);
+  console.log('Is GIF detected:', isCurrentGif);
+  console.log('Size parameter:', size);
+  console.log('Max width for size:', MAX_SIZE_FILTERS[size]);
+  console.log('Current image dimensions:', {
+    width: currentImage.width,
+    height: currentImage.height
+  });
+  console.log('Image styles being applied:', imageStyles);
 
   const containerStyles: React.CSSProperties = {
     position: "relative",
     ...(background
-      ? { backgroundColor: background == "white" ? "white" : "rgb(31 31 28)" }
-      : {}),
+        ? { backgroundColor: background == "white" ? "white" : "rgb(31 31 28)" }
+        : {}),
     marginBottom: "16px",
     marginTop: "16px",
   };
 
   const img_component = force ? (
-    <img
-      width={currentImage.width ?? 100}
-      alt={alt}
-      src={currentImage.path}
-      style={imageStyles}
-    />
+      <img
+          width={isGif ? undefined : (currentImage.width ?? 100)}
+          height={isGif ? undefined : (currentImage.height ?? 100)}
+          alt={alt}
+          src={currentImage.path}
+          style={imageStyles}
+      />
   ) : (
-    <ReactIdealImage
-      {...propsRest}
-      height={currentImage.height ?? 100}
-      alt={alt}
-      width={currentImage.width ?? 100}
-      placeholder={{ lqip: img.preSrc }}
-      src={currentImage.path}
-      srcSet={filteredSet.map((image) => ({
-        ...image,
-        src: image.path,
-      }))}
-      style={imageStyles}
-    />
+      <ReactIdealImage
+          {...propsRest}
+          height={isGif ? undefined : (currentImage.height ?? 100)}
+          alt={alt}
+          width={isGif ? undefined : (currentImage.width ?? 100)}
+          placeholder={{ lqip: img.preSrc }}
+          src={currentImage.path}
+          srcSet={filteredSet.map((image) => ({
+            ...image,
+            src: image.path,
+          }))}
+          style={imageStyles}
+      />
   );
 
   useEffect(() => {
     if ("connection" in navigator) {
       const connection =
-        navigator.connection ||
-        navigator.mozConnection ||
-        navigator.webkitConnection;
+          navigator.connection ||
+          navigator.mozConnection ||
+          navigator.webkitConnection;
       setNetworkType(connection.effectiveType);
     } else {
       const controller = new AbortController();
@@ -261,35 +357,35 @@ export default function IdealImage(
   }, [currentImage.path]);
 
   return (
-    <div style={containerStyles}>
-      {/* Zoomed Image */}
-      {networkType == "4g" && (
-        <ControlledZoom
-          isZoomed={isZoomed}
-          onZoomChange={handleZoomChange}
-          classDialog={`${styles.customZoom} ${background == "white" ? styles.customWhiteZoom : ""}`}
-        >
-          <img
-            src={highestResSrc.path}
-            alt={`${alt} - Zoomed`}
-            loading="lazy"
-            width={highestResSrc.width}
+      <div style={containerStyles}>
+        {/* Zoomed Image */}
+        {networkType == "4g" && (
+            <ControlledZoom
+                isZoomed={isZoomed}
+                onZoomChange={handleZoomChange}
+                classDialog={`${styles.customZoom} ${background == "white" ? styles.customWhiteZoom : ""}`}
+            >
+              <img
+                  src={highestResSrc.path}
+                  alt={`${alt} - Zoomed`}
+                  loading="lazy"
+                  width={highestResSrc.width}
+                  style={{
+                    position: "absolute",
+                    visibility: isZoomed ? "visible" : "hidden",
+                  }}
+              />
+            </ControlledZoom>
+        )}
+        <div
+            ref={imageRef}
+            onClick={() => networkType == "4g" && isLoaded && setIsZoomed(true)}
             style={{
-              position: "absolute",
-              visibility: isZoomed ? "visible" : "hidden",
+              cursor: networkType == "4g" && isLoaded ? "zoom-in" : "default",
             }}
-          />
-        </ControlledZoom>
-      )}
-      <div
-        ref={imageRef}
-        onClick={() => networkType == "4g" && isLoaded && setIsZoomed(true)}
-        style={{
-          cursor: networkType == "4g" && isLoaded ? "zoom-in" : "default",
-        }}
-      >
-        {img_component}
+        >
+          {img_component}
+        </div>
       </div>
-    </div>
   );
 }

@@ -22,13 +22,12 @@ import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-c
 > This guide explains how to set up Claude Desktop with a ClickHouse MCP server using uv
 > and connect it to the ClickHouse example datasets.
 
-<VerticalStepper headerLevel="h2" />
+<VerticalStepper headerLevel="h2">
 
 ## Install uv {#install-uv}
 
 You will need to install [uv](https://docs.astral.sh/uv/) to follow the instructions in this guide.
 If you don't want to use uv, you will need to update the MCP Server config to use an alternative package manager.
-
 
 ## Download Claude Desktop {#download-claude-desktop}
 
@@ -39,7 +38,7 @@ You'll also need to install the Claude Desktop app, which you can download from 
 Once you've got Claude Desktop installed, it's time to configure the [ClickHouse MCP server](https://github.com/ClickHouse/mcp-clickhouse).
 We can do this via the [Claude Desktop configuration file](https://claude.ai/docs/configuration).
 
-To find this file, first go to the settings page (`Cmd+,` on a Mac) and then click on the `Developer` tab on the left menu
+To find this file, first go to the settings page (`Cmd+,` on a Mac) and then click on the `Developer` tab on the left menu.
 You'll then see the following screen, on which you'll need to click on the `Edit config` button:
 
 <Image img={ClaudeDesktopConfig} alt="Claude Desktop configuration" size="md" />
@@ -87,7 +86,7 @@ For example, the ClickHouse MCP server configuration connecting to the ClickHous
 Once you've updated the config, you'll need to restart Claude Desktop for the changes to take effect. 
 
 :::warning
-Depending how you installed `uv`, you might receive the following error when restarting Claude Desktop:
+Depending on how you installed `uv`, you might receive the following error when restarting Claude Desktop:
 
 ```text
 MCP mcp-clickhouse: spawn uv ENOENT
@@ -101,6 +100,7 @@ If that happens, you'll need to update the `command` to have the full path to `u
 Once you've restarted Claude Desktop, you can find the ClickHouse MCP server by clicking on the `Search and tools` icon:
 
 <Image img={FindMCPServers} alt="Find MCP servers" size="md" />
+<br/>
 
 You can then choose whether to disable all or some of the tools.
 
@@ -114,3 +114,5 @@ Claude will ask us to confirm the use of each tool in the MCP Server the first t
 Below you can see part of a conversation that includes some tool calls to the ClickHouse MCP Server:
 
 <Image img={ClaudeConversation} alt="Claude conversation" size="md" />
+
+</VerticalStepper>
