@@ -6,6 +6,7 @@ config:
   # turn settings on or off here
   default: false
   MD010: true # Disallow hard tabs
+  MD029: true # Ordered list item prefix should be consistent
   MD040: true # Fenced code blocks should have a language specified
   #MD047: true # New line on end of file
   links-url-type: false # Disallow relative links to a .md or .mdx file

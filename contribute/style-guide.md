@@ -161,9 +161,32 @@ Processed 335.87 thousand rows,
 13.54 MB (12.91 million rows/s., 520.38 MB/s.)
 ```
 
+### List Items
+
+List items should be properly indented so they become part of the preceeding list item as intended.
+
+For example, rather than:
+
+```text
+1. Item one
+Additional Item one Element
+
+2. Item two
+```
+
+Proper indenting:
+
+```text
+1. Item one
+  Additional Item one Element
+
+2. Item two
+```
+
 ### Associated markdown rule or CI check
 
 - [`MD040` enforces that codeblocks have a language specified](/scripts/.markdownlint-cli2.yaml)
+- [`MD029` enforces proper indentation of ordered list items](/scripts/.markdownlint-cli2.yaml)
 
 ## Broken links
 
