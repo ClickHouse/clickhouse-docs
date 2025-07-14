@@ -66,6 +66,6 @@ The `type` tells Embeddable which driver to use
 
 The `credentials` is a JavaScript object containing the necessary credentials expected by the driver
 - These are securely encrypted and only used to retrieve exactly the data you have described in your data models.
-Embeddable strongly encourage you to create a read-only database user for each connection (Embeddable will only ever read from your database, not write).
+    Embeddable strongly encourage you to create a read-only database user for each connection (Embeddable will only ever read from your database, not write).
 
 In order to support connecting to different databases for prod, qa, test, etc (or to support different databases for different customers) you can assign each connection to an environment (see [Environments API](https://docs.embeddable.com/data/environments)).

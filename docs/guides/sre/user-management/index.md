@@ -423,7 +423,7 @@ Ok.
 The privileges must be granted by a user that not only has the `WITH GRANT OPTION` but also has the privileges themselves.
 
 1. To grant an admin user the privilege and also allow them to administer a set of privileges
-Below is an example:
+    Below is an example:
 
 ```sql
 GRANT SELECT, ALTER COLUMN ON my_db.my_table TO my_alter_admin WITH GRANT OPTION;

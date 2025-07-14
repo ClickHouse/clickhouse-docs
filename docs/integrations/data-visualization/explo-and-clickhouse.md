@@ -77,9 +77,9 @@ If you do not have a dataset to work with you can add one of the examples.  This
 <Image img={explo_06} size="md" alt="Security" border />
 
 8. Within Clickhouse, **Whitelist the Explo IPs**.
-`
-54.211.43.19, 52.55.98.121, 3.214.169.94, and 54.156.141.148
-`
+    `
+    54.211.43.19, 52.55.98.121, 3.214.169.94, and 54.156.141.148
+    `
 
 ## 3. Create a Dashboard {#3-create-a-dashboard}
 
@@ -98,10 +98,10 @@ If you do not have a dataset to work with you can add one of the examples.  This
 ## 4. Run a SQL query {#4-run-a-sql-query}
 
 1. Get your table name from the right hand sidebar under your schema title. You should then put the following command into your dataset editor:
-`
-SELECT * FROM YOUR_TABLE_NAME
-LIMIT 100
-`
+    `
+    SELECT * FROM YOUR_TABLE_NAME
+    LIMIT 100
+    `
 
 <Image img={explo_10} size="md" alt="Explo Dashboard" border />
 

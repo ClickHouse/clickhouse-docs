@@ -16,21 +16,21 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 ClickHouse Connect is a core database driver providing interoperability with a wide range of Python applications.
 
 - The main interface is the `Client` object in the  package `clickhouse_connect.driver`.  That core package 
-also includes assorted helper classes and utility functions used for communicating with the ClickHouse server and
-"context" implementations for advanced management of insert and select queries.
+    also includes assorted helper classes and utility functions used for communicating with the ClickHouse server and
+    "context" implementations for advanced management of insert and select queries.
 - The `clickhouse_connect.datatypes` package provides a base implementation and subclasses for all non-experimental
-ClickHouse datatypes.  Its primary functionality is serialization and deserialization of ClickHouse data into the
-ClickHouse "Native" binary columnar format, used to achieve the most efficient transport between ClickHouse and client
-applications.
+    ClickHouse datatypes.  Its primary functionality is serialization and deserialization of ClickHouse data into the
+    ClickHouse "Native" binary columnar format, used to achieve the most efficient transport between ClickHouse and client
+    applications.
 - The Cython/C classes in the `clickhouse_connect.cdriver` package optimize some of the most common serializations and
-deserializations for significantly improved performance over pure Python.
+    deserializations for significantly improved performance over pure Python.
 - There is a limited [SQLAlchemy](https://www.sqlalchemy.org/) dialect in the package `clickhouse_connect.cc_sqlalchemy` which is built off of
-the `datatypes` and `dbi` packages. This restricted implementation focuses on query/cursor functionality, and does not
-generally support SQLAlchemy DDL and ORM operations. (SQLAlchemy is targeted toward OLTP databases, and we recommend
-more specialized tools and frameworks to manage the ClickHouse OLAP oriented database.)
+    the `datatypes` and `dbi` packages. This restricted implementation focuses on query/cursor functionality, and does not
+    generally support SQLAlchemy DDL and ORM operations. (SQLAlchemy is targeted toward OLTP databases, and we recommend
+    more specialized tools and frameworks to manage the ClickHouse OLAP oriented database.)
 - The core driver and ClickHouse Connect SQLAlchemy implementation are the preferred method for connecting ClickHouse
-to Apache Superset.  Use the `ClickHouse Connect` database connection, or `clickhousedb` SQLAlchemy dialect connection
-string.
+    to Apache Superset.  Use the `ClickHouse Connect` database connection, or `clickhousedb` SQLAlchemy dialect connection
+    string.
 
 
 This documentation is current as of the beta release 0.8.2.
@@ -376,8 +376,8 @@ a single primitive or array value rather than a full dataset. This method takes 
 | external_data | ExternalData     | *None*     | An ExternalData object containing file or binary data to use with the query.  See [Advanced Queries (External Data)](#external-data)                          |
 
 - _command_ can be used for DDL statements.  If the SQL "command" does not return data, a "query summary"
-dictionary is returned instead.  This dictionary encapsulates the ClickHouse X-ClickHouse-Summary and
-X-ClickHouse-Query-Id headers, including the key/value pairs `written_rows`,`written_bytes`, and `query_id`.
+    dictionary is returned instead.  This dictionary encapsulates the ClickHouse X-ClickHouse-Summary and
+    X-ClickHouse-Query-Id headers, including the key/value pairs `written_rows`,`written_bytes`, and `query_id`.
 
 ```python
 client.command('CREATE TABLE test_command (col_1 String, col_2 DateTime) Engine MergeTree ORDER BY tuple()')
@@ -420,16 +420,16 @@ efficiently. This method takes the following parameters.
 The base `query` method returns a QueryResult object with the following public properties:
 
 - `result_rows` -- A matrix of the data returned in the form of a Sequence of rows, with each row element being a
-sequence of column values.
+    sequence of column values.
 - `result_columns` -- A matrix of the data returned in the form of a Sequence of columns, with each column element being
-a sequence of the row values for that column
+    a sequence of the row values for that column
 - `column_names` -- A tuple of strings representing the column names in the `result_set`
 - `column_types` -- A tuple of ClickHouseType instances representing the ClickHouse data type for each column in
-the `result_columns`
+    the `result_columns`
 - `query_id` -- The ClickHouse query_id (useful for examining the query in the `system.query_log` table)
 - `summary` -- Any data returned by the `X-ClickHouse-Summary` HTTP response header
 - `first_item` -- A convenience property for retrieving the first row of the response as a dictionary (keys are column
-names)
+    names)
 - `first_row` -- A convenience property to return the first row of the result
 - `column_block_stream` -- A generator of query results in column oriented format. This property should not be
   referenced directly (see below).
@@ -493,11 +493,11 @@ This method returns a "query summary" dictionary as described under the "command
 There are two specialized versions of the main `insert` method:
 
 - `insert_df` -- Instead of Python Sequence of Sequences `data` argument, the second parameter of this method requires
-a `df`argument that must be a Pandas Dataframe instance. ClickHouse Connect automatically processes the Dataframe as a
-column oriented datasource, so the `column_oriented` parameter is not required or available.
+    a `df`argument that must be a Pandas Dataframe instance. ClickHouse Connect automatically processes the Dataframe as a
+    column oriented datasource, so the `column_oriented` parameter is not required or available.
 - `insert_arrow` -- Instead of a Python Sequence of Sequences `data` argument, this method requires an `arrow_table`.
-ClickHouse Connect passes the Arrow table unmodified to the ClickHouse server for processing, so only the `database`
-and `settings` arguments are available in addition to `table` and `arrow_table`.
+    ClickHouse Connect passes the Arrow table unmodified to the ClickHouse server for processing, so only the `database`
+    and `settings` arguments are available in addition to `table` and `arrow_table`.
 
 *Note:* A NumPy array is a valid Sequence of Sequences and can be used as the `data` argument to the main `insert`
 method, so a specialized method is not required.
@@ -677,8 +677,8 @@ See also: [run_async example](https://github.com/ClickHouse/clickhouse-connect/b
 Each ClickHouse query occurs within the context of a ClickHouse "session".  Sessions are currently used for two
 purposes:
 - To associate specific ClickHouse settings with multiple queries (see the
-[user settings](/operations/settings/settings.md)).  The ClickHouse `SET` command is used to change the
-settings for the scope of a user session.
+    [user settings](/operations/settings/settings.md)).  The ClickHouse `SET` command is used to change the
+    settings for the scope of a user session.
 - To track [temporary tables.](/sql-reference/statements/create/table#temporary-tables)
 
 By default, each query executed with a ClickHouse Connect Client instance uses the same session id to enable this
@@ -687,12 +687,12 @@ client.  However, by design the ClickHouse server does not allow concurrent quer
 As a result, there are two options for a ClickHouse Connect application that will execute concurrent queries.
 
 - Create a separate `Client` instance for each thread of execution (thread, process, or event handler) that will
-have its own session id.  This is generally the best approach, as it preserves the session state for each client.
+    have its own session id.  This is generally the best approach, as it preserves the session state for each client.
 - Use a unique session id for each query.  This avoids the concurrent session problem in circumstances where
-temporary tables or shared session settings are not required.  (Shared settings can also be provided
-when creating the client, but these are sent with each request and not associated with a session).  The unique
-session_id can be added to the `settings` dictionary for each request, or you can disable the
-`autogenerate_session_id` common setting:
+    temporary tables or shared session settings are not required.  (Shared settings can also be provided
+    when creating the client, but these are sent with each request and not associated with a session).  The unique
+    session_id can be added to the `settings` dictionary for each request, or you can disable the
+    `autogenerate_session_id` common setting:
 
 ```python
 from clickhouse_connect import common
@@ -953,7 +953,7 @@ precedence rules:
 
 1. If the query method parameter `client_tzs` is specified for the query, the specific column time zone is applied
 2. If the ClickHouse column has timezone metadata (i.e., it is a type like DateTime64(3, 'America/Denver')), the ClickHouse column timezone is applied.  (Note this
-timezone metadata is not available to clickhouse-connect for DateTime columns previous to ClickHouse version 23.2)
+    timezone metadata is not available to clickhouse-connect for DateTime columns previous to ClickHouse version 23.2)
 3. If the query method parameter `query_tz` is specified for the query, the "query timezone" is applied.
 4. If a timezone setting is applied to the query or session, that timezone is applied.  (This functionality is not yet released in the ClickHouse Server)
 5. Finally, if the client `apply_server_timezone` parameter has been set to True (the default), the ClickHouse server timezone is applied.

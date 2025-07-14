@@ -69,22 +69,22 @@ If you do not have a dataset to work with, you can add one of the examples. This
   1. Click on the **Create dataset** button or navigate to the **Datasets** tab to create one.
   2. Select the ClickHouse connection you created earlier.
 
-  <Image img={chartbrew_05} size="lg" alt="Select ClickHouse connection for dataset" />
+      <Image img={chartbrew_05} size="lg" alt="Select ClickHouse connection for dataset" />
 
-  Write a SQL query to retrieve the data you want to visualize. For example, this query calculates the average price paid per year from the `uk_price_paid` dataset:
+      Write a SQL query to retrieve the data you want to visualize. For example, this query calculates the average price paid per year from the `uk_price_paid` dataset:
 
-  ```sql
-  SELECT toYear(date) AS year, avg(price) AS avg_price
-  FROM uk_price_paid
-  GROUP BY year
-  ORDER BY year;
-  ```
+      ```sql
+      SELECT toYear(date) AS year, avg(price) AS avg_price
+      FROM uk_price_paid
+      GROUP BY year
+      ORDER BY year;
+      ```
 
-  <Image img={chartbrew_07} size="lg" alt="ClickHouse SQL query in Chartbrew" />
+      <Image img={chartbrew_07} size="lg" alt="ClickHouse SQL query in Chartbrew" />
 
-  Click **Run query** to fetch the data.
+      Click **Run query** to fetch the data.
 
-  If you're unsure how to write the query, you can use **Chartbrew's AI assistant** to generate SQL queries based on your database schema.
+      If you're unsure how to write the query, you can use **Chartbrew's AI assistant** to generate SQL queries based on your database schema.
 
 <Image img={chartbrew_06} size="lg" alt="ClickHouse AI SQL assistant in Chartbrew" />
 
@@ -97,11 +97,11 @@ Once the data is retrieved, click **Configure dataset** to set up the visualizat
   3. Choose a chart type (e.g., line chart, bar chart, pie chart) and add it to your dashboard.
   4. Click **Complete dataset** to finalize the setup.
 
-  <Image img={chartbrew_08} size="lg" alt="Chartbrew dashboard with ClickHouse data" />
+      <Image img={chartbrew_08} size="lg" alt="Chartbrew dashboard with ClickHouse data" />
 
-  You can create as many datasets as you want to visualize different aspects of your data. Using these datasets, you can create multiple dashboards to keep track of different metrics.
+      You can create as many datasets as you want to visualize different aspects of your data. Using these datasets, you can create multiple dashboards to keep track of different metrics.
 
-  <Image img={chartbrew_01} size="lg" alt="Chartbrew dashboard with ClickHouse data" />
+      <Image img={chartbrew_01} size="lg" alt="Chartbrew dashboard with ClickHouse data" />
 
 ## 5. Automate data updates {#5-automate-data-updates}
    
@@ -111,7 +111,7 @@ Once the data is retrieved, click **Configure dataset** to set up the visualizat
   2. Configure the update interval (e.g., every hour, every day).
   3. Save the settings to enable automatic refresh.
 
-  <Image img={chartbrew_09} size="lg" alt="Chartbrew dataset refresh settings" />
+      <Image img={chartbrew_09} size="lg" alt="Chartbrew dataset refresh settings" />
 
 ## Learn more {#learn-more}
 

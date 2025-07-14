@@ -163,37 +163,37 @@ technologies that integrate with ClickHouse.
         that can be:
 
         1. used as the source of a `SELECT` query (allowing you to run ad-hoc queries and
-        leave your data in S3), or...
+            leave your data in S3), or...
         2. insert the resulting table into a `MergeTree` table (when you are ready to
-        move your data into ClickHouse)
+            move your data into ClickHouse)
 
-        An ad-hoc query looks like:
+            An ad-hoc query looks like:
 
-        ```sql
-        SELECT
-        passenger_count,
-        avg(toFloat32(total_amount))
-        FROM s3(
-        'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_0.gz',
-        'TabSeparatedWithNames'
-        )
-        GROUP BY passenger_count
-        ORDER BY passenger_count;
-        ```
+            ```sql
+            SELECT
+            passenger_count,
+            avg(toFloat32(total_amount))
+            FROM s3(
+            'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_0.gz',
+            'TabSeparatedWithNames'
+            )
+            GROUP BY passenger_count
+            ORDER BY passenger_count;
+            ```
 
-        Moving the data into a ClickHouse table looks like the following, where
-        `nyc_taxi` is a `MergeTree` table:
+            Moving the data into a ClickHouse table looks like the following, where
+            `nyc_taxi` is a `MergeTree` table:
 
-        ```sql
-        INSERT INTO nyc_taxi
-        SELECT * FROM s3(
-        'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_0.gz',
-        'TabSeparatedWithNames'
-        )
-        SETTINGS input_format_allow_errors_num=25000;
-        ```
+            ```sql
+            INSERT INTO nyc_taxi
+            SELECT * FROM s3(
+            'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_0.gz',
+            'TabSeparatedWithNames'
+            )
+            SETTINGS input_format_allow_errors_num=25000;
+            ```
 
-        View our [collection of AWS S3 documentation pages](/integrations/data-ingestion/s3/index.md) for lots more details and examples of using S3 with ClickHouse.
+            View our [collection of AWS S3 documentation pages](/integrations/data-ingestion/s3/index.md) for lots more details and examples of using S3 with ClickHouse.
         <br/>
     </TabItem>
     <TabItem value="GCS" label="GCS">

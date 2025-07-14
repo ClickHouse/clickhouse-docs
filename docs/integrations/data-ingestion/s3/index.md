@@ -815,7 +815,7 @@ SELECT * FROM s3_table1;
 2 rows in set. Elapsed: 0.284 sec.
 ```
 6.  In the AWS console, navigate to the buckets, and select the new one and the folder.
-You should see something like the following:
+    You should see something like the following:
 
 <Image img={S3J} size="lg" border alt="S3 bucket view in AWS console showing ClickHouse data files stored in S3" />
 

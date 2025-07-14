@@ -38,7 +38,7 @@ To create a free ClickHouse service in [ClickHouse Cloud](https://console.clickh
   - If you sign up using an email and password, remember to verify your email address within the next 24h via the link you receive in your email
   - Login using the username and password you just created
 
-<Image img={signup_page} size="md" alt='Select Plan' border/>
+      <Image img={signup_page} size="md" alt='Select Plan' border/>
 <br/>
 
 Once you are logged in, ClickHouse Cloud starts the onboarding wizard which walks you through creating a new ClickHouse service. You will initially be requested to [select a plan](/cloud/manage/cloud-tiers):
@@ -73,25 +73,22 @@ Congratulations! Your ClickHouse Cloud service is up and running and onboarding 
 There are 2 ways to connect to ClickHouse:
   - Connect using our web-based SQL console
   - Connect with your app
-<br/>
 ### Connect using SQL console {#connect-using-sql-console}
 
 For getting started quickly, ClickHouse provides a web-based SQL console to which you will be redirected on completing onboarding.
 
 <Image img={createservice8} size="md" alt='SQL Console' border/>
 
-
 Create a query tab and enter a simple query to verify that your connection is working:
 
-```sql
-SHOW databases
-```
+      ```sql
+    SHOW databases
+    ```
 
 You should see 4 databases in the list, plus any that you may have added.
 
 <Image img={show_databases} size="md" alt='SQL Console' border/>
 <br/>
-
 
 That's it - you are ready to start using your new ClickHouse service!
 
@@ -129,23 +126,23 @@ You can upload data using the following methods:
 
 Like most database management systems, ClickHouse logically groups tables into **databases**. Use the [`CREATE DATABASE`](../../sql-reference/statements/create/database.md) command to create a new database in ClickHouse:
 
-```sql
-CREATE DATABASE IF NOT EXISTS helloworld
-```
+      ```sql
+    CREATE DATABASE IF NOT EXISTS helloworld
+    ```
 
 Run the following command to create a table named `my_first_table` in the `helloworld` database:
 
-```sql
-CREATE TABLE helloworld.my_first_table
-(
+      ```sql
+    CREATE TABLE helloworld.my_first_table
+    (
     user_id UInt32,
     message String,
     timestamp DateTime,
     metric Float32
-)
-ENGINE = MergeTree()
-PRIMARY KEY (user_id, timestamp)
-```
+    )
+    ENGINE = MergeTree()
+    PRIMARY KEY (user_id, timestamp)
+    ```
 
 In the example above, `my_first_table` is a [`MergeTree`](../../engines/table-engines/mergetree-family/mergetree.md) table with four columns:
 
@@ -159,8 +156,7 @@ Table engines determine:
   - How and where data is stored
   - Which queries are supported
   - Whether or not the data is replicated
-<br/>
-There are many table engines to choose from, but for a simple table on a single-node ClickHouse server, [`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) is your likely choice.
+      There are many table engines to choose from, but for a simple table on a single-node ClickHouse server, [`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) is your likely choice.
 :::
 
 #### A Brief Intro to Primary Keys {#a-brief-intro-to-primary-keys}
@@ -196,13 +192,13 @@ rows at once. Don't worry - ClickHouse can easily handle that type of volume - a
 
 Even for a simple example, let's insert more than one row at a time:
 
-```sql
-INSERT INTO helloworld.my_first_table (user_id, message, timestamp, metric) VALUES
+      ```sql
+    INSERT INTO helloworld.my_first_table (user_id, message, timestamp, metric) VALUES
     (101, 'Hello, ClickHouse!',                                 now(),       -1.0    ),
     (102, 'Insert a lot of rows per batch',                     yesterday(), 1.41421 ),
     (102, 'Sort your data based on your commonly-used queries', today(),     2.718   ),
     (101, 'Granules are the smallest chunks of data read',      now() + 5,   3.14159 )
-```
+    ```
 
 :::note
 Notice the `timestamp` column is populated using various [**Date**](../../sql-reference/data-types/date.md) and [**DateTime**](../../sql-reference/data-types/datetime.md) functions. ClickHouse has hundreds of useful functions that you can [view in the **Functions** section](/sql-reference/functions/).
@@ -210,9 +206,9 @@ Notice the `timestamp` column is populated using various [**Date**](../../sql-re
 
 Let's verify it worked:
 
-```sql
-SELECT * FROM helloworld.my_first_table
-```
+      ```sql
+    SELECT * FROM helloworld.my_first_table
+    ```
 
 ### Add data using the ClickHouse Client {#add-data-using-the-clickhouse-client}
 
@@ -225,69 +221,63 @@ You can also connect to your ClickHouse Cloud service using a command-line tool 
 
 2. Run the command, substituting your hostname, username, and password:
 
-```bash
-./clickhouse client --host HOSTNAME.REGION.CSP.clickhouse.cloud \
---secure --port 9440 \
---user default \
---password <password>
-```
-If you get the smiley face prompt, you are ready to run queries!
-```response
-:)
-```
+    ```bash
+    ./clickhouse client --host HOSTNAME.REGION.CSP.clickhouse.cloud \
+    --secure --port 9440 \
+    --user default \
+    --password <password>
+    ```
+    If you get the smiley face prompt, you are ready to run queries!
+        ```response
+        :)
+        ```
 
 3. Give it a try by running the following query:
 
-<br/>
-
-```sql
-SELECT *
-FROM helloworld.my_first_table
-ORDER BY timestamp
-```
+    ```sql
+    SELECT *
+    FROM helloworld.my_first_table
+    ORDER BY timestamp
+    ```
 
 Notice the response comes back in a nice table format:
 
-```response
-┌─user_id─┬─message────────────────────────────────────────────┬───────────timestamp─┬──metric─┐
-│     102 │ Insert a lot of rows per batch                     │ 2022-03-21 00:00:00 │ 1.41421 │
-│     102 │ Sort your data based on your commonly-used queries │ 2022-03-22 00:00:00 │   2.718 │
-│     101 │ Hello, ClickHouse!                                 │ 2022-03-22 14:04:09 │      -1 │
-│     101 │ Granules are the smallest chunks of data read      │ 2022-03-22 14:04:14 │ 3.14159 │
-└─────────┴────────────────────────────────────────────────────┴─────────────────────┴─────────┘
-
-4 rows in set. Elapsed: 0.008 sec.
-```
+    ```response
+    ┌─user_id─┬─message────────────────────────────────────────────┬───────────timestamp─┬──metric─┐
+    │     102 │ Insert a lot of rows per batch                     │ 2022-03-21 00:00:00 │ 1.41421 │
+    │     102 │ Sort your data based on your commonly-used queries │ 2022-03-22 00:00:00 │   2.718 │
+    │     101 │ Hello, ClickHouse!                                 │ 2022-03-22 14:04:09 │      -1 │
+    │     101 │ Granules are the smallest chunks of data read      │ 2022-03-22 14:04:14 │ 3.14159 │
+    └─────────┴────────────────────────────────────────────────────┴─────────────────────┴─────────┘
+    
+    4 rows in set. Elapsed: 0.008 sec.
+    ```
 
 4. Add a [`FORMAT`](../../sql-reference/statements/select/format.md) clause to specify one of the [many supported output formats of ClickHouse](/interfaces/formats/):
 
-<br/>
-
-```sql
-SELECT *
-FROM helloworld.my_first_table
-ORDER BY timestamp
-FORMAT TabSeparated
-```
-In the above query, the output is returned as tab-separated:
-```response
-Query id: 3604df1c-acfd-4117-9c56-f86c69721121
-
-102 Insert a lot of rows per batch      2022-03-21 00:00:00     1.41421
-102 Sort your data based on your commonly-used queries  2022-03-22 00:00:00     2.718
-101 Hello, ClickHouse!  2022-03-22 14:04:09     -1
-101 Granules are the smallest chunks of data read       2022-03-22 14:04:14     3.14159
-
-4 rows in set. Elapsed: 0.005 sec.
-```
+    ```sql
+    SELECT *
+    FROM helloworld.my_first_table
+    ORDER BY timestamp
+    FORMAT TabSeparated
+    ```
+    In the above query, the output is returned as tab-separated:
+    ```response
+    Query id: 3604df1c-acfd-4117-9c56-f86c69721121
+    
+    102 Insert a lot of rows per batch      2022-03-21 00:00:00     1.41421
+    102 Sort your data based on your commonly-used queries  2022-03-22 00:00:00     2.718
+    101 Hello, ClickHouse!  2022-03-22 14:04:09     -1
+    101 Granules are the smallest chunks of data read       2022-03-22 14:04:14     3.14159
+    
+    4 rows in set. Elapsed: 0.005 sec.
+    ```
 
 5. To exit the `clickhouse client`, enter the **exit** command:
 
-<br/>
-
-```bash
-exit
-```
+    ```bash
+    exit
+    ```
 
 ### Upload a File {#upload-a-file}
 
@@ -297,30 +287,24 @@ the timestamp of the event.
 
 Suppose we have the following text in a CSV file named `data.csv`:
 
-```bash title="data.csv"
-102,This is data in a file,2022-02-22 10:43:28,123.45
-101,It is comma-separated,2022-02-23 00:00:00,456.78
-103,Use FORMAT to specify the format,2022-02-21 10:43:30,678.90
-```
+    ```bash title="data.csv"
+    102,This is data in a file,2022-02-22 10:43:28,123.45
+    101,It is comma-separated,2022-02-23 00:00:00,456.78
+    103,Use FORMAT to specify the format,2022-02-21 10:43:30,678.90
+    ```
 
 1. The following command inserts the data into `my_first_table`:
 
-<br/>
-
-```bash
-./clickhouse client --host HOSTNAME.REGION.CSP.clickhouse.cloud \
---secure --port 9440 \
---user default \
---password <password> \
---query='INSERT INTO helloworld.my_first_table FORMAT CSV' < data.csv
-```
+    ```bash
+    ./clickhouse client --host HOSTNAME.REGION.CSP.clickhouse.cloud \
+    --secure --port 9440 \
+    --user default \
+    --password <password> \
+    --query='INSERT INTO helloworld.my_first_table FORMAT CSV' < data.csv
+    ```
 
 2. Notice the new rows appear in the table now if querying from the SQL console:
-
-<br/>
-
-<Image img={new_rows_from_csv} size="md" alt='New rows from CSV file' />
-<br/>
+    <Image img={new_rows_from_csv} size="md" alt='New rows from CSV file' />
 
 </VerticalStepper>
 

@@ -433,7 +433,7 @@ INSERT INTO db1.table1 (id, column1) VALUES (2, 'def');
 ```
 
 6. Connect to either node, `chnode1` or `chnode2` and you will see only the row that was inserted into that table on that node.
-for example, on `chnode2`
+    for example, on `chnode2`
 
 ```sql title="Query"
 SELECT * FROM db1.table1;
@@ -447,7 +447,7 @@ SELECT * FROM db1.table1;
 
 
 7. Create a distributed table to query both shards on both nodes.
-(In this example, the `rand()` function is set as the sharding key so that it randomly distributes each insert)
+    (In this example, the `rand()` function is set as the sharding key so that it randomly distributes each insert)
 
 ```sql title="Query"
 CREATE TABLE db1.table1_dist ON CLUSTER cluster_2S_1R

@@ -64,7 +64,7 @@ We recommend setting up a **direct link to your organization** in addition to yo
    - Direct link to access your organization: `https://console.clickhouse.cloud/?connection={organizationid}` 
 
 
-   For specific configuration steps, refer to your specific identity provider below.
+       For specific configuration steps, refer to your specific identity provider below.
    
 </details>
 
@@ -217,7 +217,7 @@ You will configure one SAML app in Google for each organization and must provide
    
    1. Go to your Google Admin console (admin.google.com).
 
-   <Image img={samlGoogleApp} size="md" alt="Google SAML App" />
+       <Image img={samlGoogleApp} size="md" alt="Google SAML App" />
 
    2. Click **Apps**, then **Web and mobile apps** on the left.
    

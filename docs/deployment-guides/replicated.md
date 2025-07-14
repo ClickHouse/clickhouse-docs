@@ -517,7 +517,7 @@ FROM db1.table1
 ```
 
 6. Stop one ClickHouse server node
-Stop one of the ClickHouse server nodes by running an operating system command similar to the command used to start the node.  If you used `systemctl start` to start the node, then use `systemctl stop` to stop it.
+    Stop one of the ClickHouse server nodes by running an operating system command similar to the command used to start the node.  If you used `systemctl start` to start the node, then use `systemctl stop` to stop it.
 
 7. Insert more data on the running node
 ```sql title="run on the running node"

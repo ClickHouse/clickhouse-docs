@@ -34,7 +34,7 @@ Below we describe a simple installation, pulling messages from a single Kafka to
 You have two options:
 
 * **Self-managed:** Download the Confluent package and install it locally. Follow the installation instructions for installing the connector as documented [here](https://docs.confluent.io/kafka-connect-http/current/overview.html).
-If you use the confluent-hub installation method, your local configuration files will be updated.
+    If you use the confluent-hub installation method, your local configuration files will be updated.
 
 * **Confluent Cloud:** A fully managed version of HTTP Sink is available for those using Confluent Cloud for their Kafka hosting. This requires your ClickHouse environment to be accessible from Confluent Cloud.
 

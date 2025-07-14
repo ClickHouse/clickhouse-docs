@@ -40,8 +40,8 @@ When setting up your data connection, you'll need to know:
 ## Creating the data connection to ClickHouse {#creating-the-data-connection-to-clickhouse}
 
 - Select **Data** in the sidebar, and select the **Data Connection** tab
-(or, navigate to this link: https://app.astrato.io/data/sources)
-​
+    (or, navigate to this link: https://app.astrato.io/data/sources)
+    ​
 - Click on the **New Data Connection** button in the top right side of the screen.
 
 <Image size="sm" img={astrato_1_dataconnection} alt="Astrato Data Connection" border />
