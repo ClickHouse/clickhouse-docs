@@ -200,16 +200,6 @@ export default function IdealImage(
 
   const isGif = currentImage.path?.toLowerCase().endsWith('.gif') || false;
 
-  // Debug logging
-  if (isGif) {
-      path: currentImage.path,
-      size: size,
-      maxWidth: MAX_SIZE_FILTERS[size],
-      currentImageWidth: currentImage.width,
-      currentImageHeight: currentImage.height
-    });
-  }
-
   // Apply conditional styles based on the `size`
   const imageStyles: React.CSSProperties =
       size === "lg"
