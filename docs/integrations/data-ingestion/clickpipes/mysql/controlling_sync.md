@@ -28,6 +28,7 @@ Sync interval can be set to any positive integer value, but it is recommended to
 The pull batch size is the number of records that the ClickPipe will pull from the source database in one batch. Records mean inserts, updates and deletes done on the tables that are part of the pipe.
 
 The default is **100,000** records.
+A safe maximum is 10 million.
 
 ### An exception: Long-running transactions on source
 When a transaction is run on the source database, the ClickPipe waits until it receives the COMMIT of the transaction before it moves forward. This with **overrides** both the sync interval and the pull batch size.
