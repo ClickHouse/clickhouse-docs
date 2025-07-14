@@ -114,6 +114,7 @@ export default function IdealImage(
   if (typeof img === "string" || (typeof img === "object" && img !== null && "default" in img)) {
     const isGifInEarlyReturn = typeof img === "string" ? img.endsWith('.gif') :
         (typeof img === "object" && img !== null && typeof img.default === "string" && img.default.endsWith('.gif'));
+
     const gifStyles = isGifInEarlyReturn ? (
         size === "lg"
             ? {
@@ -231,10 +232,6 @@ export default function IdealImage(
                   height: "auto",
                 }),
               };
-
-    width: currentImage.width,
-    height: currentImage.height
-  });
 
   const containerStyles: React.CSSProperties = {
     position: "relative",
