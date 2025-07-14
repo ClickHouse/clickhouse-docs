@@ -5,7 +5,7 @@ title: 'REST Catalog'
 pagination_prev: null
 pagination_next: null
 description: 'In this guide, we will walk you through the steps to query
- your data in S3 buckets using ClickHouse and the REST Catalog.'
+ your data using ClickHouse and the REST Catalog.'
 keywords: ['REST', 'Tabular', 'Data Lake', 'Iceberg']
 show_related_blogs: true
 ---
@@ -44,15 +44,15 @@ For local development and testing, you can use a containerized REST catalog setu
 
 You can use various containerized REST catalog implementations such as **[Databricks docker-spark-iceberg](https://github.com/databricks/docker-spark-iceberg/blob/main/docker-compose.yml?ref=blog.min.io)** which provides a complete Spark + Iceberg + REST catalog environment with docker-compose, making it ideal for testing Iceberg integrations.
 
-You'll need to add ClickHouse as a dependency in your docker-compose setup:
+**Step 1:** Clone or download the docker-compose setup from the Databricks repository.
+
+**Step 2:** Add ClickHouse as a service to your docker-compose.yml file:
 
 ```yaml
 clickhouse:
   image: clickhouse/clickhouse-server:main
   container_name: clickhouse
   user: '0:0'  # Ensures root permissions
-  networks:
-    iceberg_net:
   ports:
     - "8123:8123"
     - "9002:9000"
@@ -67,6 +67,30 @@ clickhouse:
     - CLICKHOUSE_DO_NOT_CHOWN=1
     - CLICKHOUSE_PASSWORD=
 ```
+
+**Step 3:** Ensure your docker-compose.yml includes the necessary network configuration:
+
+```yaml
+networks:
+  iceberg_net:
+    driver: bridge
+```
+
+**Step 4:** Start the entire stack:
+
+```bash
+docker-compose up -d
+```
+
+**Step 5:** Wait for all services to be ready. You can check the logs:
+
+```bash
+docker-compose logs -f
+```
+
+:::note
+The REST catalog setup requires that sample data be loaded into the Iceberg tables first. Make sure the Spark environment has created and populated the tables before attempting to query them through ClickHouse. The availability of tables depends on the specific docker-compose setup and sample data loading scripts.
+:::
 
 ### Connecting to Local REST Catalog {#connecting-to-local-rest-catalog}
 
@@ -97,13 +121,27 @@ USE demo;
 SHOW TABLES;
 ```
 
+If your setup includes sample data (such as the taxi dataset), you should see tables like:
+
 ```sql title="Response"
 ┌─name──────────┐
 │ default.taxis │
 └───────────────┘
 ```
 
-To query a table:
+:::note
+If you don't see any tables, this usually means:
+1. The Spark environment hasn't created the sample tables yet
+2. The REST catalog service isn't fully initialized
+3. The sample data loading process hasn't completed
+
+You can check the Spark logs to see the table creation progress:
+```bash
+docker-compose logs spark
+```
+:::
+
+To query a table (if available):
 
 ```sql
 SELECT count(*) FROM `default.taxis`;
