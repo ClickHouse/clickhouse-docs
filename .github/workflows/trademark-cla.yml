@@ -28,7 +28,7 @@ jobs:
         run: |
           changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha}} ${{ github.event.pull_request.head.sha}})
           
-          if echo "$changed_files" | grep -E '^docs/specific-section/|^documentation/legal/|^README\.md' > /dev/null; then
+          if echo "$changed_files" | grep -E '^docs/integrations/|^static/images/' > /dev/null; then
             echo "docs_changed=true" >> $GITHUB_OUTPUT
             echo "requires_cla=true" >> $GITHUB_OUTPUT
           else
