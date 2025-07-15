@@ -1,4 +1,4 @@
-name: tradmark CLA
+name: Integrations - trademark license
 
 on:
   pull_request:
@@ -86,7 +86,7 @@ jobs:
 
       - name: Post CLA comment and block merge
         if: |
-          (steps.pr-info.outputs.isClickHouseMember == 'false') &&
+#          (steps.pr-info.outputs.isClickHouseMember == 'false') &&
           ((github.event_name == 'pull_request' && steps.docs-changed.outputs.requires_cla == 'true') ||
           (github.event_name == 'issue_comment' && steps.pr-info.outputs.has_docs_changes == 'true'))
         uses: actions/github-script@v7
@@ -201,7 +201,7 @@ jobs:
 
       - name: Check CLA agreement and manage merge blocking
         if: |
-          (steps.pr-info.outputs.isClickHouseMember == 'false') &&
+#          (steps.pr-info.outputs.isClickHouseMember == 'false') &&
           ((github.event_name == 'pull_request' && steps.docs-changed.outputs.requires_cla == 'true') ||
           (github.event_name == 'issue_comment' && steps.pr-info.outputs.has_docs_changes == 'true'))
         uses: actions/github-script@v7
