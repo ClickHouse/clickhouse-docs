@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: cactions/checkout@v4
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -268,7 +268,7 @@ jobs:
                   body: `
                   ## ✅ CLA Agreement Confirmed
             
-                  Thank you @${prAuthor}! Your CLA agreement has been recorded.
+                  Thank you @${prAuthor}! Your response has been recorded.
             
                   **Status:** ✅ Approved  
                   **Date:** ${new Date().toISOString()}  
