@@ -33,8 +33,6 @@ A diagram showing the architecture is below:
 
 <Image img={overview} alt="MCP overview" size="lg"/>
 
-The Claude Desktop application acts as a client that can connect to various MCP servers, enabling Claude to interact with external services like Google Drive, web APIs, Google Maps, and databases—including ClickHouse.
-
 ## Does ClickHouse have an MCP Server? {#clickhouse-mcp-server}
 
 It does!
@@ -43,7 +41,6 @@ The [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) offers
 * `run_select_query` - Execute SQL queries on your ClickHouse cluster.
 * `list_databases` - List all databases on your ClickHouse cluster.
 * `list_tables` - List all tables in a database.
-
 
 ## Guides for using the ClickHouse MCP Server {#clickhouse-mcp-server-guides}
 
