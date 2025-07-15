@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/AI/MCP/ollama
-sidebar_label: 'Ollama and ClickHouse MCP'
+sidebar_label: 'Integrate Ollama'
 title: 'Set Up ClickHouse MCP Server with Ollama'
 pagination_prev: null
 pagination_next: null
