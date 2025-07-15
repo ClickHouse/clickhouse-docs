@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/AI/MCP/claude-desktop
-sidebar_label: 'Claude Desktop and ClickHouse MCP'
+sidebar_label: 'Integrate Claude Desktop'
 title: 'Set Up ClickHouse MCP Server with Claude Desktop'
 pagination_prev: null
 pagination_next: null

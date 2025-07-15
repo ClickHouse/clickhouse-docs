@@ -44,22 +44,24 @@ Once a service is encrypted with TDE, customers may update the key to enable CME
 5. [Create a KMS key for AWS](https://docs.aws.amazon.com/kms/latest/developerguide/create-keys.html)
 6. Click the key
 7. Update the AWS key policy as follows:
-```json
-{
-"Sid": "Allow ClickHouse Access",
-"Effect": "Allow",
-"Principal": {
-"AWS": "{ Encryption role ID }"
-},
-"Action": [
-"kms:Encrypt",
-"kms:Decrypt",
-"kms:ReEncrypt*",
-"kms:DescribeKey"
-],
-"Resource": "*"
-}
-```
+    
+    ```json
+    {
+        "Sid": "Allow ClickHouse Access",
+        "Effect": "Allow",
+        "Principal": {
+            "AWS": [ "Encryption role ID " ]
+        },
+        "Action": [
+            "kms:Encrypt",
+            "kms:Decrypt",
+            "kms:ReEncrypt*",
+            "kms:DescribeKey"
+        ],
+        "Resource": "*"
+    }
+    ```
+    
 10. Save the Key policy
 11. Copy the Key ARN
 12. Return to ClickHouse Cloud and paste the Key ARN in the Transparent Data Encryption section of the Service Settings

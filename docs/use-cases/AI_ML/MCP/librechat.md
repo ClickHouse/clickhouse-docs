@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/AI/MCP/librechat
-sidebar_label: 'LibreChat and ClickHouse MCP'
+sidebar_label: 'Integrate LibreChat'
 title: 'Set Up ClickHouse MCP Server with LibreChat and ClickHouse Cloud'
 pagination_prev: null
 pagination_next: null

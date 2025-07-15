@@ -85,6 +85,7 @@ Customers must sign a Business Associate Agreement (BAA) and request onboarding 
 - AWS us-east-1 (N. Virginia)
 - AWS us-east-2 (Ohio)
 - AWS us-west-2 (Oregon)
+- GCP europe-west4 (Netherlands)
 - GCP us-central1 (Iowa)
 - GCP us-east1 (South Carolina)
 
