@@ -1427,9 +1427,13 @@ input::-ms-input-placeholder { /* Microsoft Edge */
 .custom-ul,
 .custom-ol {
   padding-inline-start: 2rem;
-  padding-block-end: 1.5rem;
 }
 
 .custom-li {
   padding-inline-start: 1rem;
+}
+
+.vertical-stepper .custom-ul
+.vertical-stepper .custom-ol {
+  padding-block-end: 1.5rem;
 }
