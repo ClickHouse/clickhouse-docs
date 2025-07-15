@@ -1,0 +1,283 @@
+name: tradmark CLA
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+  issue_comment:
+    types: [created, edited]
+
+jobs:
+  enforce-docs-cla:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: write
+      statuses: write
+      checks: write
+
+    steps:
+      - name: Check out code
+        uses: cactions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if docs changed
+        id: docs-changed
+        if: github.event_name == 'pull_request'
+        run: |
+          changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha}} ${{ github.event.pull_request.head.sha}})
+          
+          if echo "$changed_files" | grep -E '^docs/specific-section/|^documentation/legal/|^README\.md' > /dev/null; then
+            echo "docs_changed=true" >> $GITHUB_OUTPUT
+            echo "requires_cla=true" >> $GITHUB_OUTPUT
+          else
+            echo "docs_changed=false" >> $GITHUB_OUTPUT
+            echo "requires_cla=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Get PR info for comment events
+        id: pr-info
+        if: github.event_name == 'issue_comment'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            if (context.payload.issue.pull_request) {
+              const prNumber = context.payload.issue.number;
+              const { data: pr } = await github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber
+              });
+            
+              const { data: files } = await github.rest.pulls.listFiles({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber
+              });
+            
+              const hasIntegrationsChanges = files.some(file => 
+                file.filename.startsWith('docs/integrations/')
+                file.filename.startsWith('static/images/')
+              );
+            
+              // Check if PR author is part of ClickHouse organization
+              let isClickHouseMember = false;
+              try {
+                await github.rest.orgs.getMembershipForUser({
+                    org: 'ClickHouse',
+                    username: pr.user.login
+                });
+              isClickHouseMember = true;
+              } catch (error) {
+                // If error is 404, user is not a member or membership is private
+                // If error is 403, requestor doesn't have permission to check
+                console.log(`Could not determine membership for ${pr.user.login}: ${error.message}`);
+                isClickHouseMember = false;
+              }
+            
+              core.setOutput('pr_number', prNumber);
+              core.setOutput('has_docs_changes', hasDocsChanges);
+              core.setOutput('pr_head_sha', pr.head.sha);
+              core.setOutput('pr_author', pr.user.login);
+
+              return { prNumber, hasDocsChanges, headSha: pr.head.sha, author: pr.user.login, isClickHouseMember };
+            }
+
+      - name: Post CLA comment and block merge
+        if: |
+          (steps.pr-info.outputs.isClickHouseMember == 'false') &&
+          ((github.event_name == 'pull_request' && steps.docs-changed.outputs.requires_cla == 'true') ||
+          (github.event_name == 'issue_comment' && steps.pr-info.outputs.has_docs_changes == 'true'))
+        uses: actions/github-script@v7
+        with:
+          script: |
+            let prNumber, prAuthor;
+            
+            if (context.eventName == 'pull_request') {
+              prNumber = context.issue.number;
+              prAuthor = '${{ github.event.pull_request.user.login }}';
+            } else {
+              prNumber = ${{ steps.pr-info.outputs.pr_number || 'null' }};
+              prAuthor = '${{ steps.pr-info.outputs.pr_author }}';
+            }
+            
+            if (!prNumber || !prAuthor)
+              return;
+            
+            // Check if CLA comment already exists
+            const comments = await github.rest.issues.listComments({
+              issue_number: prNumber,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            
+            const existingClaComment = comments.data.find(comment => 
+              comment.user.login === 'github-actions[bot]' && 
+              comment.body.includes('🚫 CLA Agreement Required - MERGE BLOCKED')
+            );
+            
+            if (!existingClaComment && context.eventName === 'pull_request') {
+              const claText = `
+              # Trademark License Addendum
+            
+              <details>
+              <summary>Click to see Trademark License Addendum</summary>
+            
+              This Trademark License Addendum (“Addendum”) shall, if You have opted 
+              in by checking the appropriate box that references this Addendum, 
+              supplement the terms of the Individual Contributor License Agreement
+              between You and the Company (“Agreement”). Capitalized terms not
+              defined herein shall have the meanings ascribed to them in the 
+              Agreement.
+            
+              1. Grant of Trademark License. Subject to the terms and conditions 
+              of this Addendum, You grant to the Company a revocable, worldwide,
+              non-exclusive, non-sublicensable (except for contractors or agents
+              acting on the Company’s behalf, for whose compliance with this 
+              Addendum Company agrees to be responsible), royalty-free, and non-transferable
+              right to display the Partner Trademarks, solely for the purpose of
+              marketing and promoting your Contribution (i) on the Company’s website
+              and in any Company in-product integrations page; and (ii) in 
+              marketing, sales, and product materials for Company products. 
+              “Partner Trademarks” mean Your employer’s name and any employer 
+              brand features (e.g., logo) you submit to the Company in connection with your
+              Contribution.
+              2. Legal authority. You represent that you are legally entitled to
+              grant the above license. If your employer(s) has rights to 
+              intellectual property in the Partner Trademarks, you represent that
+              you have received permission to grant the above license on behalf 
+              of that employer, or that your employer has executed a separate 
+              agreement with the Company concerning the subject matter of this 
+              Addendum.
+              3. Conditions. The license in Section 1 is subject to the following
+              conditions:
+              i. The Company shall use the Partner Trademarks in accordance with
+                 any reasonable trademark usage guidelines You provide;
+              ii. You may revoke this license at any time upon thirty (30) days’
+                  written notice to the Company, after which the Company shall use
+                  commercially reasonable efforts to cease all further public
+                  use of the Partner Trademarks (but may maintain uses in archived
+                  web pages, changelogs, and previously distributed materials).
+              iii. The Company acknowledges and agrees that it does not own the 
+                   Partner Trademarks and that all goodwill derived from the use 
+                   of the Partner Trademarks inures solely to benefit of the 
+                   Partner Trademarks’ owner(s).
+              iv. The Company shall use the Partner Trademarks in a professional
+                  manner consistent with industry standards and shall not use 
+                  them in any way that would reasonably be expected to diminish 
+                  their value or harm the reputation of the Partner Trademarks’ 
+                  owner(s). The Company’s use of Partner Trademarks shall not 
+                  imply endorsement, sponsorship, or affiliation beyond the 
+                  existence of the Contribution in the Company's integration program.
+              v. The Company will not use the Partner Trademarks in connection 
+                 with search engine rankings, ad word purchases, or as part of a
+                 trade name, business name, or Internet domain name.
+              
+              </details>
+            
+              **🔒 To unblock this PR, reply with exactly:**
+            
+              \`\`\`
+              I have read and agree to the Contributor License Agreement.
+              CLA-SIGNATURE: ${prAuthor}
+              \`\`\`
+            
+              await github.rest.issues.createComment({
+                issue_number: prNumber,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: claText
+              });
+            
+              // Add a label to track CLA-required PRs
+              await github.rest.issues.addLabels({
+                issue_number: prNumber,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels: ['cla-required', 'docs-changes']
+              });
+            }
+
+      - name: Check CLA agreement and manage merge blocking
+        if: |
+          (steps.pr-info.outputs.isClickHouseMember == 'false') &&
+          ((github.event_name == 'pull_request' && steps.docs-changed.outputs.requires_cla == 'true') ||
+          (github.event_name == 'issue_comment' && steps.pr-info.outputs.has_docs_changes == 'true'))
+        uses: actions/github-script@v7
+        with:
+          script: |
+            let prNumber, prHeadSha, prAuthor;
+            
+            if (context.eventName === 'pull_request') {
+              prNumber = context.issue.number;
+              prHeadSha = '${{ github.event.pull_request.head.sha }}';
+              prAuthor = '${{ github.event.pull_request.user.login }}';
+            } else {
+              prNumber = ${{ steps.pr-info.outputs.pr_number || 'null' }};
+              prHeadSha = '${{ steps.pr-info.outputs.pr_head_sha }}';
+              prAuthor = '${{ steps.pr-info.outputs.pr_author }}';
+            }
+            
+            if (!prNumber) return;
+            
+            // Get all comments to check for CLA agreement
+            const comments = await github.rest.issues.listComments({
+              issue_number: prNumber,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            
+            const claAgreed = comments.data.some(comment => {
+              return comment.user.login === prAuthor && 
+                     comment.body.includes('I have read and agree to the Contributor License Agreement') &&
+                     comment.body.includes(`CLA-SIGNATURE: ${prAuthor}`);
+            });
+            
+            if (claAgreed) {
+              // CLA agreed - remove blocking labels and add approval
+              try {
+                await github.rest.issues.removeLabel({
+                  issue_number: prNumber,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: 'cla-required'
+                });
+              } catch (e) {
+                console.log('Label cla-required not found or already removed');
+              }
+            
+              await github.rest.issues.addLabels({
+                issue_number: prNumber,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels: ['cla-signed']
+              });
+            
+              // Post confirmation
+              const confirmationExists = comments.data.some(comment => 
+                comment.user.login === 'github-actions[bot]' && 
+                comment.body.includes('✅ CLA Agreement Confirmed')
+              );
+            
+              if (!confirmationExists) {
+                await github.rest.issues.createComment({
+                  issue_number: prNumber,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  body: `
+                  ## ✅ CLA Agreement Confirmed
+            
+                  Thank you @${prAuthor}! Your CLA agreement has been recorded.
+            
+                  **Status:** ✅ Approved  
+                  **Date:** ${new Date().toISOString()}  
+            
+                  🎉 This PR is now unblocked and can proceed with normal review!
+                  `
+                });
+              }
+            } else {
+              // CLA not agreed - keep it blocked
+              core.setFailed('Documentation CLA agreement required before merge');
+            }
