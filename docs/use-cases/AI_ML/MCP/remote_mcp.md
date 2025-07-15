@@ -7,6 +7,7 @@ pagination_next: null
 description: 'This guide explains how to enable and use the ClickHouse Cloud Remote MCP'
 keywords: ['AI', 'ClickHouse Cloud', 'MCP']
 show_related_blogs: true
+sidebar_position: 1
 ---
 
 import {CardHorizontal} from '@clickhouse/click-ui/bundled'
