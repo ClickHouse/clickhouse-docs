@@ -57,6 +57,39 @@ NAME                       ID              SIZE      MODIFIED
 qwen3:latest               500a1f067a9f    5.2 GB    3 days ago
 ```
 
+We can use the following command to see more information about the model that we've downloaded:
+
+```bash
+ollama show qwen3
+```
+
+```text
+  Model
+    architecture        qwen3
+    parameters          8.2B
+    context length      40960
+    embedding length    4096
+    quantization        Q4_K_M
+
+  Capabilities
+    completion
+    tools
+
+  Parameters
+    repeat_penalty    1
+    stop              "<|im_start|>"
+    stop              "<|im_end|>"
+    temperature       0.6
+    top_k             20
+    top_p             0.95
+
+  License
+    Apache License
+    Version 2.0, January 2004
+```
+
+We can see from this output that the default qwen3 model has just over 8 billion parameters.
+
 ## Install MCPHost {#install-mcphost}
 
 At the time of writing (July 2025) there is no native functionality for using Ollama with MCP Servers.
