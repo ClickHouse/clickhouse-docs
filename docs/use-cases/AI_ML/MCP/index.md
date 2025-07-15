@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP
 sidebar_label: 'MCP'
-title: 'Landing page for MCP guides'
+title: 'MCP guides'
 pagination_prev: null
 pagination_next: null
 description: 'This page contains a landing page with table of contentsfor MCP guides.'
