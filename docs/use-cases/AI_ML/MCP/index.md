@@ -12,7 +12,8 @@ show_related_blogs: true
 import Image from '@theme/IdealImage';
 import overview from '@site/static/images/use-cases/AI_ML/MCP/mcp_overview.png';
 
-[Model Context Protocol](https://www.anthropic.com/news/model-context-protocol) (MCP) is a standard developed by Anthropic that enables AI models to seamlessly integrate with external systems. This protocol allows AI assistants to connect to data sources, APIs, databases, and more in a secure and standardized way.
+[Model Context Protocol](https://www.anthropic.com/news/model-context-protocol) (MCP) is a standard developed by Anthropic that enables AI assistants to seamlessly integrate with external systems. 
+This protocol allows AI assistants to connect to data sources, APIs, databases, and more in a secure and standardized way.
 
 MCP creates a universal interface between AI models and various services, eliminating the need for custom tool implementations for each integration. 
 You can think of it as a universal API standard designed specifically for AI systems.
