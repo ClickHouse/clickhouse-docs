@@ -57,7 +57,7 @@ jobs:
               });
             
               const hasIntegrationsChanges = files.some(file => 
-                file.filename.startsWith('docs/integrations/')
+                file.filename.startsWith('docs/integrations/') ||
                 file.filename.startsWith('static/images/')
               );
             
