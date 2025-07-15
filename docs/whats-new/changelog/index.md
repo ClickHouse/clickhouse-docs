@@ -23,6 +23,7 @@ title: '2025 Changelog'
 **[Changelog for 2018](https://clickhouse.com/docs/whats-new/changelog/2018/)**<br/>
 **[Changelog for 2017](https://clickhouse.com/docs/whats-new/changelog/2017/)**<br/>
 
+
 ### ClickHouse release 25.6, 2025-06-26 {#256}
 
 #### Backward Incompatible Change
@@ -271,6 +272,7 @@ title: '2025 Changelog'
 * Introduce `flake.nix` for Nix builds. [#81463](https://github.com/ClickHouse/ClickHouse/pull/81463) ([Konstantin Bogdanov](https://github.com/thevar1able)).
 * Fix `delta-kernel-rs` requiring network access during build. Closes [#80609](https://github.com/ClickHouse/ClickHouse/issues/80609). [#81602](https://github.com/ClickHouse/ClickHouse/pull/81602) ([Konstantin Bogdanov](https://github.com/thevar1able)). Read the article [A Year of Rust in ClickHouse](https://clickhouse.com/blog/rust).
 
+
 ### ClickHouse release 25.5, 2025-05-22 {#255}
 
 #### Backward Incompatible Change
@@ -299,7 +301,7 @@ title: '2025 Changelog'
 
 #### Experimental Feature
 * New `Time`/`Time64` data types: `Time` (HHH:MM:SS) and `Time64` (HHH:MM:SS.`<fractional>`) and some basic cast functions and functions to interact with other data types. Also, changed the existing function's name toTime to toTimeWithFixedDate because the function toTime is required for the cast function. [#75735](https://github.com/ClickHouse/ClickHouse/pull/75735) ([Yarik Briukhovetskyi](https://github.com/yariks5s)).
-    72459).
+72459).
 * Hive metastore catalog for Iceberg datalake. [#77677](https://github.com/ClickHouse/ClickHouse/pull/77677) ([scanhex12](https://github.com/scanhex12)).
 * Indexes of type `full_text` were renamed to `gin`. This follows the more familiar terminology of PostgreSQL and other databases. Existing indexes of type `full_text` remain loadable but they will throw an exception (suggesting `gin` indexes instead) when one tries to use them in searches. [#79024](https://github.com/ClickHouse/ClickHouse/pull/79024) ([Robert Schulze](https://github.com/rschu1ze)).
 
@@ -455,6 +457,7 @@ title: '2025 Changelog'
 * Fixes to allow building with `clang20`. [#79588](https://github.com/ClickHouse/ClickHouse/pull/79588) ([Konstantin Bogdanov](https://github.com/thevar1able)).
 * `chcache`: Rust caching support. [#78691](https://github.com/ClickHouse/ClickHouse/pull/78691) ([Konstantin Bogdanov](https://github.com/thevar1able)).
 * Add unwind information for `zstd` assembly files. [#79288](https://github.com/ClickHouse/ClickHouse/pull/79288) ([Michael Kolupaev](https://github.com/al13n321)).
+
 
 ### ClickHouse release 25.4, 2025-04-22 {#254}
 
@@ -617,6 +620,7 @@ title: '2025 Changelog'
 #### Build/Testing/Packaging Improvement
 * Respect CPU target features in Rust and enable LTO in all crates. [#78590](https://github.com/ClickHouse/ClickHouse/pull/78590) ([Raúl Marín](https://github.com/Algunenano)).
 
+
 ### ClickHouse release 25.3 LTS, 2025-03-20 {#253}
 
 #### Backward Incompatible Change
@@ -736,6 +740,7 @@ title: '2025 Changelog'
 #### Build/Testing/Packaging Improvement
 * `clickhouse-odbc-bridge` and `clickhouse-library-bridge` are moved to a separate repository, https://github.com/ClickHouse/odbc-bridge/. [#76225](https://github.com/ClickHouse/ClickHouse/pull/76225) ([Alexey Milovidov](https://github.com/alexey-milovidov)).
 * Fix Rust cross-compilation and allow disabling Rust completely. [#76921](https://github.com/ClickHouse/ClickHouse/pull/76921) ([Raúl Marín](https://github.com/Algunenano)).
+
 
 ### ClickHouse release 25.2, 2025-02-27 {#252}
 
