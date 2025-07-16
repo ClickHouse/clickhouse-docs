@@ -135,7 +135,14 @@ the ClickPipe will automatically restart the consumer and continue processing me
 
 Below are some informal benchmarks for ClickPipes for Kafka that can be used get a general idea of ClickPipes performance. It is important to know that many factors can impact performance including message size, data types, and data format. Your mileage may vary, and what we show here is not a guarantee of performance.
 
-We used production ClickHouse Cloud services with enough resources to ensure that throughput was not bottlenecked by the insert processing on the ClickHouse side.
+Benchmark details:
+- We used production ClickHouse Cloud services with enough resources to ensure that throughput was not bottlenecked by the insert processing on the ClickHouse side.
+- The ClickHouse Cloud service, the Kafka cluster (confluent), and the ClickPipe were all running in the same region (us-east-2).
+- The ClickPipe was configured with a single consumer.
+- The sample data included nested data with a mix of uuid, string, and integer datatypes.
+  - Other datatypes, such as floats may be less performant.
+- There was no appreciable differene in performance between compressed and uncompressed data.
+
 
 | Replica Size | Message Size | Data Format | Throughput |
 |---------------|-----------|-------------|-----------|
