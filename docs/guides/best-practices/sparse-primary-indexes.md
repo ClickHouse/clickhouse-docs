@@ -750,7 +750,7 @@ As an example for both cases we will assume:
 
     There are three different scenarios for the granule selection process for our abstract sample data in the diagram above:
 
-1.  Index mark 0 for which the **URL value is smaller than W3 and for which the URL value of the directly succeeding index mark is also smaller than W3** can be excluded because mark 0, and 1 have the same UserID value. Note that this exclusion-precondition ensures that granule 0 is completely composed of U1 UserID values so that ClickHouse can assume that also the maximum URL value in granule 0 is smaller than W3 and exclude the granule.
+1. Index mark 0 for which the **URL value is smaller than W3 and for which the URL value of the directly succeeding index mark is also smaller than W3** can be excluded because mark 0, and 1 have the same UserID value. Note that this exclusion-precondition ensures that granule 0 is completely composed of U1 UserID values so that ClickHouse can assume that also the maximum URL value in granule 0 is smaller than W3 and exclude the granule.
 
 2. Index mark 1 for which the **URL value is smaller (or equal) than W3 and for which the URL value of the directly succeeding index mark is greater (or equal) than W3** is selected because it means that granule 1 can possibly contain rows with URL W3.
 

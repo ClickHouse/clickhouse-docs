@@ -41,11 +41,11 @@ QStudio is available at https://www.timestored.com/qstudio/download/
 
     <Image img={qstudio_add_connection} size="lg" border alt="QStudio database connection configuration screen showing ClickHouse connection settings" />
 
-1.   Server Type: Clickhouse.com
-2.    Note for Host you MUST include https://
+1. Server Type: Clickhouse.com
+2. Note for Host you MUST include https://
     Host: https://abc.def.clickhouse.cloud
     Port: 8443
-3.  Username: default
+3. Username: default
     Password: `XXXXXXXXXXX`
     4. Click Add
 

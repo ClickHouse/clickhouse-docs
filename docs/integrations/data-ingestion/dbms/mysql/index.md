@@ -25,7 +25,7 @@ The `MySQL` table engine allows you to connect ClickHouse to MySQL. **SELECT** a
 
 ### 1. Configure MySQL {#1-configure-mysql}
 
-1.  Create a database in MySQL:
+1. Create a database in MySQL:
     ```sql
     CREATE DATABASE db1;
     ```
@@ -128,7 +128,7 @@ The `MySQL` table engine allows you to connect ClickHouse to MySQL. **SELECT** a
     (5,'mno')
     ```
 
-4.  Notice the new row appears in MySQL:
+4. Notice the new row appears in MySQL:
     ```bash
     mysql> select id,column1 from db1.table1;
     ```

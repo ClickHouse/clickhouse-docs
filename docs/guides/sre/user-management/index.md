@@ -44,9 +44,9 @@ By default, the ClickHouse server provides the `default` user account which is n
 
 If you just started using ClickHouse, consider the following scenario:
 
-1.  [Enable](#enabling-access-control) SQL-driven access control and account management for the `default` user.
-2.  Log in to the `default` user account and create all the required users. Don't forget to create an administrator account (`GRANT ALL ON *.* TO admin_user_account WITH GRANT OPTION`).
-3.  [Restrict permissions](/operations/settings/permissions-for-queries) for the `default` user and disable SQL-driven access control and account management for it.
+1. [Enable](#enabling-access-control) SQL-driven access control and account management for the `default` user.
+2. Log in to the `default` user account and create all the required users. Don't forget to create an administrator account (`GRANT ALL ON *.* TO admin_user_account WITH GRANT OPTION`).
+3. [Restrict permissions](/operations/settings/permissions-for-queries) for the `default` user and disable SQL-driven access control and account management for it.
 
 ### Properties of current solution {#access-control-properties}
 
@@ -79,10 +79,10 @@ A user account is an access entity that allows to authorize someone in ClickHous
 
 Settings can be configured differently: for a user account, in its granted roles and in settings profiles. At user login, if a setting is configured for different access entities, the value and constraints of this setting are applied as follows (from higher to lower priority):
 
-1.  User account settings.
-2.  The settings for the default roles of the user account. If a setting is configured in some roles, then order of the setting application is undefined.
-3.  The settings from settings profiles assigned to a user or to its default roles. If a setting is configured in some profiles, then order of setting application is undefined.
-4.  Settings applied to the entire server by default or from the [default profile](/operations/server-configuration-parameters/settings#default_profile).
+1. User account settings.
+2. The settings for the default roles of the user account. If a setting is configured in some roles, then order of the setting application is undefined.
+3. The settings from settings profiles assigned to a user or to its default roles. If a setting is configured in some profiles, then order of setting application is undefined.
+4. Settings applied to the entire server by default or from the [default profile](/operations/server-configuration-parameters/settings#default_profile).
 
 ### Role {#role-management}
 
@@ -169,7 +169,7 @@ This article shows the basics of defining SQL users and roles and applying those
 
 ### Enabling SQL user mode {#enabling-sql-user-mode}
 
-1.  Enable SQL user mode in the `users.xml` file under the `<default>` user:
+1. Enable SQL user mode in the `users.xml` file under the `<default>` user:
     ```xml
     <access_management>1</access_management>
     <named_collection_control>1</named_collection_control>

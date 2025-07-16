@@ -10,8 +10,8 @@ description: 'This page provides guidance on which ClickHouse version to use in 
 
 First of all, let's discuss why people ask this question in the first place. There are two key reasons:
 
-1.  ClickHouse is developed with pretty high velocity, and usually there are 10+ stable releases per year. That makes a wide range of releases to choose from, which is not so trivial of a choice.
-2.  Some users want to avoid spending time figuring out which version works best for their use case and just follow someone else's advice.
+1. ClickHouse is developed with pretty high velocity, and usually there are 10+ stable releases per year. That makes a wide range of releases to choose from, which is not so trivial of a choice.
+2. Some users want to avoid spending time figuring out which version works best for their use case and just follow someone else's advice.
 
     The second reason is more fundamental, so we'll start with that one and then get back to navigating through various ClickHouse releases.
 
@@ -39,10 +39,10 @@ Here are some key points to get reasonable fidelity in a pre-production environm
 
     When you have your pre-production environment and testing infrastructure in place, choosing the best version is straightforward:
 
-1.  Routinely run your automated tests against new ClickHouse releases. You can do it even for ClickHouse releases that are marked as `testing`, but going forward to the next steps with them is not recommended.
-2.  Deploy the ClickHouse release that passed the tests to pre-production and check that all processes are running as expected.
-3.  Report any issues you discovered to [ClickHouse GitHub Issues](https://github.com/ClickHouse/ClickHouse/issues).
-4.  If there were no major issues, it should be safe to start deploying ClickHouse release to your production environment. Investing in gradual release automation that implements an approach similar to [canary releases](https://martinfowler.com/bliki/CanaryRelease.html) or [green-blue deployments](https://martinfowler.com/bliki/BlueGreenDeployment.html) might further reduce the risk of issues in production.
+1. Routinely run your automated tests against new ClickHouse releases. You can do it even for ClickHouse releases that are marked as `testing`, but going forward to the next steps with them is not recommended.
+2. Deploy the ClickHouse release that passed the tests to pre-production and check that all processes are running as expected.
+3. Report any issues you discovered to [ClickHouse GitHub Issues](https://github.com/ClickHouse/ClickHouse/issues).
+4. If there were no major issues, it should be safe to start deploying ClickHouse release to your production environment. Investing in gradual release automation that implements an approach similar to [canary releases](https://martinfowler.com/bliki/CanaryRelease.html) or [green-blue deployments](https://martinfowler.com/bliki/BlueGreenDeployment.html) might further reduce the risk of issues in production.
 
     As you might have noticed, there's nothing specific to ClickHouse in the approach described above - people do that for any piece of infrastructure they rely on if they take their production environment seriously.
 
@@ -50,8 +50,8 @@ Here are some key points to get reasonable fidelity in a pre-production environm
 
 If you look into the contents of the ClickHouse package repository, you'll see two kinds of packages:
 
-1.  `stable`
-2.  `lts` (long-term support)
+1. `stable`
+2. `lts` (long-term support)
 
     Here is some guidance on how to choose between them:
 

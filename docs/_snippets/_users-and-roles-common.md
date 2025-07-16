@@ -111,49 +111,49 @@ With this set of examples:
 
     Roles are used to define groups of users for certain privileges instead of managing each user separately.
 
-1.  Create a role to restrict users of this role to only see `column1` in database `db1` and `table1`:
+1. Create a role to restrict users of this role to only see `column1` in database `db1` and `table1`:
 
     ```sql
     CREATE ROLE column1_users;
     ```
 
-2.  Set privileges to allow view on `column1`
+2. Set privileges to allow view on `column1`
 
     ```sql
     GRANT SELECT(id, column1) ON db1.table1 TO column1_users;
     ```
 
-3.  Add the `column_user` user to the `column1_users` role
+3. Add the `column_user` user to the `column1_users` role
 
     ```sql
     GRANT column1_users TO column_user;
     ```
 
-4.  Create a role to restrict users of this role to only see selected rows, in this case, only rows containing `A` in `column1`
+4. Create a role to restrict users of this role to only see selected rows, in this case, only rows containing `A` in `column1`
 
     ```sql
     CREATE ROLE A_rows_users;
     ```
 
-5.  Add the `row_user` to the `A_rows_users` role
+5. Add the `row_user` to the `A_rows_users` role
 
     ```sql
     GRANT A_rows_users TO row_user;
     ```
 
-6.  Create a policy to allow view on only where `column1` has the values of `A`
+6. Create a policy to allow view on only where `column1` has the values of `A`
 
     ```sql
     CREATE ROW POLICY A_row_filter ON db1.table1 FOR SELECT USING column1 = 'A' TO A_rows_users;
     ```
 
-7.  Set privileges to the database and table
+7. Set privileges to the database and table
 
     ```sql
     GRANT SELECT(id, column1, column2) ON db1.table1 TO A_rows_users;
     ```
 
-8.  grant explicit permissions for other roles to still have access to all rows
+8. grant explicit permissions for other roles to still have access to all rows
 
     ```sql
     CREATE ROW POLICY allow_other_users_filter

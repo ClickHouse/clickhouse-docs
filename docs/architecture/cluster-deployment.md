@@ -14,10 +14,10 @@ By going through this tutorial, you'll learn how to set up a simple ClickHouse c
 
 This ClickHouse cluster will be a homogeneous cluster. Here are the steps:
 
-1.  Install ClickHouse server on all machines of the cluster
-2.  Set up cluster configs in configuration files
-3.  Create local tables on each instance
-4.  Create a [Distributed table](../engines/table-engines/special/distributed.md)
+1. Install ClickHouse server on all machines of the cluster
+2. Set up cluster configs in configuration files
+3. Create local tables on each instance
+4. Create a [Distributed table](../engines/table-engines/special/distributed.md)
 
     A [distributed table](../engines/table-engines/special/distributed.md) is a kind of "view" to the local tables in a ClickHouse cluster. A SELECT query from a distributed table executes using resources of all cluster's shards. You may specify configs for multiple clusters and create multiple distributed tables to provide views for different clusters.
 

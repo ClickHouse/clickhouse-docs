@@ -66,8 +66,8 @@ If you do not have a dataset to work with, you can add one of the examples. This
 
 ## 3. Create a dataset and run a SQL query {#3-create-a-dataset-and-run-a-sql-query}
 
-  1. Click on the **Create dataset** button or navigate to the **Datasets** tab to create one.
-  2. Select the ClickHouse connection you created earlier.
+1. Click on the **Create dataset** button or navigate to the **Datasets** tab to create one.
+2. Select the ClickHouse connection you created earlier.
 
   <Image img={chartbrew_05} size="lg" alt="Select ClickHouse connection for dataset" />
 
@@ -92,10 +92,10 @@ Once the data is retrieved, click **Configure dataset** to set up the visualizat
 
 ## 4. Create a visualization {#4-create-a-visualization}
 
-  1. Define a metric (numerical value) and dimension (categorical value) for your visualization.
-  2. Preview the dataset to ensure the query results are structured correctly.
-  3. Choose a chart type (e.g., line chart, bar chart, pie chart) and add it to your dashboard.
-  4. Click **Complete dataset** to finalize the setup.
+1. Define a metric (numerical value) and dimension (categorical value) for your visualization.
+2. Preview the dataset to ensure the query results are structured correctly.
+3. Choose a chart type (e.g., line chart, bar chart, pie chart) and add it to your dashboard.
+4. Click **Complete dataset** to finalize the setup.
 
   <Image img={chartbrew_08} size="lg" alt="Chartbrew dashboard with ClickHouse data" />
 
@@ -107,9 +107,9 @@ Once the data is retrieved, click **Configure dataset** to set up the visualizat
 
   To keep your dashboard up-to-date, you can schedule automatic data updates:
 
-  1. Click the Calendar icon next to the dataset refresh button.
-  2. Configure the update interval (e.g., every hour, every day).
-  3. Save the settings to enable automatic refresh.
+1. Click the Calendar icon next to the dataset refresh button.
+2. Configure the update interval (e.g., every hour, every day).
+3. Save the settings to enable automatic refresh.
 
   <Image img={chartbrew_09} size="lg" alt="Chartbrew dataset refresh settings" />
 

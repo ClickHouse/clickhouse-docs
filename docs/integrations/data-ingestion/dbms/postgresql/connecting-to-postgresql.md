@@ -24,7 +24,7 @@ The `PostgreSQL` table engine allows **SELECT** and **INSERT** operations on dat
 This article is to illustrate basic methods of integration using one table.
 
 ### 1. Setting up PostgreSQL {#1-setting-up-postgresql}
-1.  In `postgresql.conf`, add the following entry to enable PostgreSQL to listen on the network interfaces:
+1. In `postgresql.conf`, add the following entry to enable PostgreSQL to listen on the network interfaces:
     ```text
     listen_addresses = '*'
     ```
@@ -191,7 +191,7 @@ This article is to illustrate basic methods of integration using one database, o
 ***In the following procedures, the PostgreSQL CLI (psql) and the ClickHouse CLI (clickhouse-client) are used. The PostgreSQL server is installed on linux. The following has minimum settings if the postgresql database is new test install***
 
 ### 1. In PostgreSQL {#1-in-postgresql}
-1.  In `postgresql.conf`, set minimum listen levels, replication wal level and replication slots:
+1. In `postgresql.conf`, set minimum listen levels, replication wal level and replication slots:
 
     add the following entries:
     ```text

@@ -735,7 +735,7 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
     |hostname   |hostname, IP or FQDN of each server in the keeper cluster|`chnode1.domain.com`|
     |port|port to listen on for interserver keeper connections|9234|
 
-4.  Enable the Zookeeper component. It will use the ClickHouse Keeper engine:
+4. Enable the Zookeeper component. It will use the ClickHouse Keeper engine:
     ```xml
         <zookeeper>
             <node>
@@ -832,7 +832,7 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
 
 ### 3. Create and test distributed table {#3-create-and-test-distributed-table}
 
-1.  Create a new database on the new cluster using ClickHouse client on `chnode1`. The `ON CLUSTER` clause automatically creates the database on both nodes.
+1. Create a new database on the new cluster using ClickHouse client on `chnode1`. The `ON CLUSTER` clause automatically creates the database on both nodes.
     ```sql
     CREATE DATABASE db1 ON CLUSTER 'cluster_2S_1R';
     ```
@@ -884,7 +884,7 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
     ```
 
     On `chnode2`:
-6.
+6. 
     ```sql
     SELECT *
     FROM db1.table1
@@ -1045,7 +1045,7 @@ Example config for cluster:
     └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
     ```
 
-4.  Create a distributed table
+4. Create a distributed table
 
     ```sql
     CREATE TABLE db_uuid.dist_uuid_table1 ON CLUSTER 'cluster_1S_2R'
@@ -1073,7 +1073,7 @@ Example config for cluster:
     ```
 
 ### Testing {#testing}
-1.  Insert data into first node (e.g `chnode1`)
+1. Insert data into first node (e.g `chnode1`)
     ```sql
     INSERT INTO db_uuid.uuid_table1
     ( id, column1)

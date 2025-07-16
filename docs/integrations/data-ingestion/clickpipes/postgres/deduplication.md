@@ -84,7 +84,7 @@ _Take note of the WHERE clause in the following queries, used to filter out dele
     SELECT count(*) FROM posts FINAL WHERE _peerdb_is_deleted=0;
     ```
 
--  **Simple aggregation with JOIN**: Top 10 users who have accumulated the most views.
+- **Simple aggregation with JOIN**: Top 10 users who have accumulated the most views.
 
     An example of an aggregation on a single table. Having duplicates here would greatly affect the result of the sum function.
 

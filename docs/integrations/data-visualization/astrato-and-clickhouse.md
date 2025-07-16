@@ -60,7 +60,7 @@ When setting up your data connection, you'll need to know:
 
     <Image size="md" img={astrato_3_user_access} alt="Astrato connect to ClickHouse User Access" border />
 
--   A connection is created and a dataview is created.
+- A connection is created and a dataview is created.
 
     :::note
     if a duplicate is created, a timestamp is added to the data source name.

@@ -41,7 +41,7 @@ This example uses self-signed certificates with a self-signed CA. For production
     The CN is arbitrary and any string can be used as an identifier for the certificate. It is used when creating the user in the following steps.
     :::
 
-2.  Generate and sign the new user certificate that will be used for authentication. The basic format is the following:
+2. Generate and sign the new user certificate that will be used for authentication. The basic format is the following:
     ```bash
     openssl x509 -req -in <my_cert_name>.csr -out <my_cert_name>.crt -CA <my_ca_cert>.crt -CAkey <my_ca_cert>.key -days 365
     ```

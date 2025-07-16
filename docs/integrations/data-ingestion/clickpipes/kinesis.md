@@ -107,7 +107,7 @@ The following ClickHouse data types are currently supported in ClickPipes:
 - all ClickHouse LowCardinality types
 - Map with keys and values using any of the above types (including Nullables)
 - Tuple and Array with elements using any of the above types (including Nullables, one level depth only)
--
+- 
 ### Variant type support (experimental) {#variant-type-support}
 Variant type support is automatic if your Cloud service is running ClickHouse 25.3 or later.  Otherwise, you will
 have to submit a support ticket to enable it on your service.

@@ -236,7 +236,7 @@ For a full explanation of all options, visit https://clickhouse.com/docs/operati
 ## 5. Configure SSL-TLS interfaces on ClickHouse nodes {#5-configure-ssl-tls-interfaces-on-clickhouse-nodes}
 The settings below are configured in the ClickHouse server `config.xml`
 
-1.  Set the display name for the deployment (optional):
+1. Set the display name for the deployment (optional):
     ```xml
     <display_name>clickhouse</display_name>
     ```

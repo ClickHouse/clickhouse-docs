@@ -125,7 +125,7 @@ Data is loaded into ClickHouse using the most efficient method depending on the 
 
 1. `Clickhouse` has an experimental `object` datatype, but we have found it to be a bit unpredictable, so the dlt clickhouse destination will load the complex datatype to a text column. If you need this feature, get in touch with our Slack community, and we will consider adding it.
 2. `Clickhouse` does not support the `time` datatype. Time will be loaded to a `text` column.
-3.  `Clickhouse` does not support the `binary` datatype. Instead, binary data will be loaded into a `text` column. When loading from `jsonl`, the binary data will be a base64 string, and when loading from parquet, the `binary` object will be converted to `text`.
+3. `Clickhouse` does not support the `binary` datatype. Instead, binary data will be loaded into a `text` column. When loading from `jsonl`, the binary data will be a base64 string, and when loading from parquet, the `binary` object will be converted to `text`.
 5. `Clickhouse` accepts adding columns to a populated table that are not null.
 6. `Clickhouse` can produce rounding errors under certain conditions when using the float or double datatype. If you cannot afford to have rounding errors, make sure to use the decimal datatype. For example, loading the value 12.7001 into a double column with the loader file format set to `jsonl` will predictably produce a rounding error.
 

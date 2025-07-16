@@ -31,7 +31,7 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
 
 **Examples**:
 
- 1.  A mutation like this allows updating replacing `visitor_ids` with new ones using a dictionary lookup:
+1. A mutation like this allows updating replacing `visitor_ids` with new ones using a dictionary lookup:
 
      ```sql
      ALTER TABLE website.clicks
@@ -39,7 +39,7 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
      WHERE visit_date < '2022-01-01'
      ```
 
-2.   Modifying multiple values in one command can be more efficient than multiple commands:
+2. Modifying multiple values in one command can be more efficient than multiple commands:
 
      ```sql
      ALTER TABLE website.clicks
@@ -47,7 +47,7 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
      WHERE visit_date < '2022-01-01'
      ```
 
-3.  Mutations can be executed `ON CLUSTER` for sharded tables:
+3. Mutations can be executed `ON CLUSTER` for sharded tables:
 
      ```sql
      ALTER TABLE clicks ON CLUSTER main_cluster
@@ -76,7 +76,7 @@ The `<filter_expr>` should return a UInt8 value for each row of data.
     ALTER TABLE website.clicks DELETE WHERE visitor_id in (253, 1002, 4277)
     ```
 
-2.  What does this query alter?
+2. What does this query alter?
     ```sql
     ALTER TABLE clicks ON CLUSTER main_cluster DELETE WHERE visit_date < '2022-01-02 15:00:00' AND page_id = '573'
     ```

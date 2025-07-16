@@ -22,7 +22,7 @@ import s3_h from '@site/static/images/_snippets/s3/s3-h.png';
 This article demonstrates the basics of how to configure an AWS IAM user, create an S3 bucket and configure ClickHouse to use the bucket as an S3 disk. You should work with your security team to determine the permissions to be used, and consider these as a starting point.
 ### Create an AWS IAM user {#create-an-aws-iam-user}
 In this procedure, we'll be creating a service account user, not a login user.
-1.  Log into the AWS IAM Management Console.
+1. Log into the AWS IAM Management Console.
 2. In "users", select **Add users**
 <Image size="md" img={s3_1} alt="AWS IAM Management Console - Adding a new user" border force/>
 3. Enter the user name and set the credential type to **Access key - Programmatic access** and select **Next: Permissions**

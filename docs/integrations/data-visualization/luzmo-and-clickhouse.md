@@ -28,10 +28,10 @@ You'll be asked to provide a **host**, **username** and **password**:
 
 <Image img={luzmo_02} size="md" alt="Luzmo connection configuration form showing fields for ClickHouse host, username and password" border />
 
-*   **Host**: this is the host where your ClickHouse database is exposed. Note that only `https` is allowed here in order to securely transfer data over the wire. The structure of the host url expects: `https://url-to-clickhouse-db:port/database`
+* **Host**: this is the host where your ClickHouse database is exposed. Note that only `https` is allowed here in order to securely transfer data over the wire. The structure of the host url expects: `https://url-to-clickhouse-db:port/database`
     By default, the plugin will connect to the 'default' database and the 443 port. By providing a database after the '/' you can configure which database to connect to.
-*   **Username**: the username that will be used to connect to your ClickHouse cluster.
-*   **Password**: the password to connect to your ClickHouse cluster
+* **Username**: the username that will be used to connect to your ClickHouse cluster.
+* **Password**: the password to connect to your ClickHouse cluster
 
     Please refer to the examples in our developer documentation to find out how to [create a connection to ClickHouse](https://developer.luzmo.com/api/createAccount?exampleSection=AccountCreateClickhouseRequestBody) via our API.
 

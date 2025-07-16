@@ -301,9 +301,9 @@ Summarize in the table for easy reading.
 
 Let's understand a bit better what the queries achieve.
 
--   Query 1 calculates the distance distribution in rides with an average speed of over 30 miles per hour.
--   Query 2 finds the number and average cost of rides per week.
--   Query 3 calculates the average time of each trip in the dataset.
+- Query 1 calculates the distance distribution in rides with an average speed of over 30 miles per hour.
+- Query 2 finds the number and average cost of rides per week.
+- Query 3 calculates the average time of each trip in the dataset.
 
     None of these queries are doing very complex processing, except the first query that calculates the trip time on the fly every time the query executes. However, each of these queries takes more than one second to execute, which, in the ClickHouse world, is a very long time. We can also note the memory usage of these queries; more or less 400 Mb for each query is quite a lot of memory. Also, each query appears to read the same number of rows (i.e., 329.04 million). Let's quickly confirm how many rows are in this table.
 
@@ -315,7 +315,7 @@ Let's understand a bit better what the queries achieve.
   Query id: 733372c5-deaf-4719-94e3-261540933b23
 
      ┌───count()─┐
- 1. │ 329044175 │ -- 329.04 million
+  1. │ 329044175 │ -- 329.04 million
      └───────────┘
   ```
 
@@ -600,9 +600,9 @@ Choosing the correct set of primary keys is a complex topic, and it might requir
 
 For now, we're going to follow these simple practices:
 
--   Use fields that are used to filter in most queries
--   Choose columns with lower cardinality first
--   Consider a time-based component in your primary key, as filtering by time on a timestamp dataset is pretty common.
+- Use fields that are used to filter in most queries
+- Choose columns with lower cardinality first
+- Consider a time-based component in your primary key, as filtering by time on a timestamp dataset is pretty common.
 
     In our case, we will experiment with the following primary keys: `passenger_count`, `pickup_datetime`, and `dropoff_datetime`.
 
