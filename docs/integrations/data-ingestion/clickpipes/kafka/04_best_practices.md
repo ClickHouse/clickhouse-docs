@@ -137,7 +137,7 @@ Below are some informal benchmarks for ClickPipes for Kafka that can be used get
 
 Benchmark details:
 - We used production ClickHouse Cloud services with enough resources to ensure that throughput was not bottlenecked by the insert processing on the ClickHouse side.
-- The ClickHouse Cloud service, the Kafka cluster (confluent), and the ClickPipe were all running in the same region (us-east-2).
+- The ClickHouse Cloud service, the Kafka cluster (Confluent Cloud), and the ClickPipe were all running in the same region (us-east-2).
 - The ClickPipe was configured with a single consumer.
 - The sample data included nested data with a mix of uuid, string, and integer datatypes.
   - Other datatypes, such as floats may be less performant.
