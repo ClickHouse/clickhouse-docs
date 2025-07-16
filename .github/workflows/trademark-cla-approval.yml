@@ -1,7 +1,13 @@
-name: Trademark CLA Approval
+name: CLA Approval Handler
 
 on:
-  issues:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to approve CLA for'
+        required: true
+        type: string
+  pull_request:
     types: [labeled]
 
 permissions: write-all
@@ -9,7 +15,7 @@ permissions: write-all
 jobs:
   process-cla-approval:
     runs-on: ubuntu-latest
-    if: github.event.label.name == 'cla-signed'
+    if: github.event_name == 'workflow_dispatch' || github.event.label.name == 'cla-signed'
 
     steps:
       - name: Debug - Event info
@@ -17,10 +23,13 @@ jobs:
           echo "=== CLA APPROVAL DEBUG ==="
           echo "Event: ${{ github.event_name }}"
           echo "Action: ${{ github.event.action }}"
-          echo "Label: ${{ github.event.label.name }}"
-          echo "Added by: ${{ github.actor }}"
-          echo "Issue number: ${{ github.event.issue.number }}"
-          echo "Is PR: ${{ github.event.issue.pull_request != null }}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Manual trigger - PR: ${{ github.event.inputs.pr_number }}"
+          else
+            echo "Label: ${{ github.event.label.name }}"
+            echo "Added by: ${{ github.actor }}"
+            echo "PR number: ${{ github.event.number }}"
+          fi
           echo "================================="
 
       - name: Generate Token
@@ -32,22 +41,30 @@ jobs:
           private-key: "${{ secrets.WORKFLOW_AUTH_PUBLIC_PRIVATE_KEY }}"
 
       - name: Process CLA approval
-        if: github.event.issue.pull_request != null
         uses: actions/github-script@v7
         with:
           github-token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}
           script: |
             console.log('=== PROCESSING CLA APPROVAL ===');
+            console.log('Event:', context.eventName);
             console.log('Actor:', context.actor);
-            console.log('PR/Issue number:', context.issue.number);
             
-            // Check if this is actually a PR
-            if (!context.payload.issue.pull_request) {
-              console.log('This is not a PR, skipping...');
+            let prNumber;
+            
+            // Determine PR number
+            if (context.eventName === 'workflow_dispatch') {
+              prNumber = parseInt('${{ github.event.inputs.pr_number }}');
+              console.log('Manual trigger for PR:', prNumber);
+            } else if (context.eventName === 'pull_request') {
+              prNumber = context.payload.pull_request.number;
+              console.log('Label trigger for PR:', prNumber);
+              console.log('Label added:', context.payload.label.name);
+            } else {
+              console.log('Unexpected event type, skipping...');
               return;
             }
             
-            const prNumber = context.payload.issue.number;
+            console.log('Processing CLA approval for PR:', prNumber);
             
             // Get PR details
             const { data: pr } = await github.rest.pulls.get({
@@ -58,7 +75,7 @@ jobs:
             
             console.log('PR author:', pr.user.login);
             
-            // Check if the person adding the label has the right permissions
+            // Check if the person triggering has the right permissions
             try {
               const { data: collaboration } = await github.rest.repos.getCollaboratorPermissionLevel({
                 owner: context.repo.owner,
@@ -75,24 +92,53 @@ jobs:
               if (!isAuthorized) {
                 console.log('User does not have permission to approve CLA');
             
-                // Remove the label that was added by unauthorized user
-                await github.rest.issues.removeLabel({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: prNumber,
-                  name: 'cla-signed'
-                });
+                // If this was a label event, remove the label
+                if (context.eventName !== 'workflow_dispatch') {
+                  await github.rest.issues.removeLabel({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: prNumber,
+                    name: 'cla-signed'
+                  });
+                }
             
-                // Add a comment explaining why the label was removed
+                // Add a comment explaining why the action was blocked
                 await github.rest.issues.createComment({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: prNumber,
-                  body: `@${context.actor} Only repository maintainers can approve CLAs by adding the \`cla-signed\` label. The label has been removed.`
+                  body: `@${context.actor} Only repository maintainers can approve CLAs. ${context.eventName !== 'workflow_dispatch' ? 'The label has been removed.' : ''}`
                 });
             
                 console.log('Unauthorized approval attempt blocked');
                 return;
+              }
+            
+              // Check if PR has cla-required label
+              const { data: labels } = await github.rest.issues.listLabelsOnIssue({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber
+              });
+            
+              const hasClaMeeded = labels.some(label => label.name === 'cla-required');
+              console.log('PR has cla-required label:', hasClaMeeded);
+            
+              if (!hasClaMeeded) {
+                console.log('PR does not have cla-required label, no action needed');
+                return;
+              }
+            
+              // Ensure cla-signed label is present
+              const hasClaSigned = labels.some(label => label.name === 'cla-signed');
+              if (!hasClaSigned) {
+                console.log('Adding cla-signed label...');
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  labels: ['cla-signed']
+                });
               }
             
               // Authorized - proceed with approval
@@ -135,6 +181,7 @@ jobs:
               **Status:** Approved  
               **Date:** ${new Date().toISOString()}  
               **Approved by:** @${context.actor}
+              **Method:** ${context.eventName === 'workflow_dispatch' ? 'Manual approval' : 'Label approval'}
             
               This PR is now unblocked and can proceed with normal review!`
                 });
