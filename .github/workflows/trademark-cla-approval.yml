@@ -1,0 +1,151 @@
+name: Trademark CLA Approval
+
+on:
+  issues:
+    types: [labeled]
+
+permissions: write-all
+
+jobs:
+  process-cla-approval:
+    runs-on: ubuntu-latest
+    if: github.event.label.name == 'cla-signed'
+
+    steps:
+      - name: Debug - Event info
+        run: |
+          echo "=== CLA APPROVAL DEBUG ==="
+          echo "Event: ${{ github.event_name }}"
+          echo "Action: ${{ github.event.action }}"
+          echo "Label: ${{ github.event.label.name }}"
+          echo "Added by: ${{ github.actor }}"
+          echo "Issue number: ${{ github.event.issue.number }}"
+          echo "Is PR: ${{ github.event.issue.pull_request != null }}"
+          echo "================================="
+
+      - name: Generate Token
+        id: generate-token
+        continue-on-error: true
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: "${{ secrets.WORKFLOW_AUTH_PUBLIC_APP_ID }}"
+          private-key: "${{ secrets.WORKFLOW_AUTH_PUBLIC_PRIVATE_KEY }}"
+
+      - name: Process CLA approval
+        if: github.event.issue.pull_request != null
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}
+          script: |
+            console.log('=== PROCESSING CLA APPROVAL ===');
+            console.log('Actor:', context.actor);
+            console.log('PR/Issue number:', context.issue.number);
+            
+            // Check if this is actually a PR
+            if (!context.payload.issue.pull_request) {
+              console.log('This is not a PR, skipping...');
+              return;
+            }
+            
+            const prNumber = context.payload.issue.number;
+            
+            // Get PR details
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber
+            });
+            
+            console.log('PR author:', pr.user.login);
+            
+            // Check if the person adding the label has the right permissions
+            try {
+              const { data: collaboration } = await github.rest.repos.getCollaboratorPermissionLevel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                username: context.actor
+              });
+            
+              console.log('Actor permission level:', collaboration.permission);
+            
+              // Only admin, maintain, or write permissions can approve CLA
+              const isAuthorized = ['admin', 'maintain', 'write'].includes(collaboration.permission);
+              console.log('Is authorized to approve CLA:', isAuthorized);
+            
+              if (!isAuthorized) {
+                console.log('User does not have permission to approve CLA');
+            
+                // Remove the label that was added by unauthorized user
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  name: 'cla-signed'
+                });
+            
+                // Add a comment explaining why the label was removed
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  body: `@${context.actor} Only repository maintainers can approve CLAs by adding the \`cla-signed\` label. The label has been removed.`
+                });
+            
+                console.log('Unauthorized approval attempt blocked');
+                return;
+              }
+            
+              // Authorized - proceed with approval
+              console.log('Processing authorized CLA approval...');
+            
+              // Remove the blocking label
+              try {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  name: 'cla-required'
+                });
+                console.log('Removed cla-required label');
+              } catch (e) {
+                console.log('cla-required label not found or already removed:', e.message);
+              }
+            
+              // Check if confirmation comment already exists
+              const comments = await github.rest.issues.listComments({
+                issue_number: prNumber,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+              });
+            
+              const confirmationExists = comments.data.some(comment => 
+                (comment.user.login === 'github-actions[bot]' || comment.user.type === 'Bot') && 
+                comment.body.includes('CLA Agreement Confirmed')
+              );
+            
+              if (!confirmationExists) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  body: `## CLA Agreement Confirmed
+            
+              The trademark license agreement has been approved for @${pr.user.login}.
+            
+              **Status:** Approved  
+              **Date:** ${new Date().toISOString()}  
+              **Approved by:** @${context.actor}
+            
+              This PR is now unblocked and can proceed with normal review!`
+                });
+                console.log('Posted confirmation comment');
+              }
+            
+              console.log('CLA approval completed successfully');
+            
+            } catch (error) {
+              console.error('Error processing CLA approval:', error);
+              throw error;
+            }
+            
+            console.log('=== END CLA APPROVAL PROCESSING ===');

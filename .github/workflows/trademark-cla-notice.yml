@@ -1,10 +1,8 @@
-name: Integrations - trademark license
+name: Trademark CLA Notice
 
 on:
   pull_request:
     types: [opened, edited, synchronize]
-  pull_request_target:
-    types: [labeled]
 
 # Set repository-level permissions
 permissions: write-all
@@ -142,17 +140,8 @@ jobs:
             echo "PR event - requires CLA: ${{ steps.docs-changed.outputs.requires_cla }}"
           fi
           
-          if [ "${{ github.event_name }}" = "pull_request_target" ]; then
-            echo "Label event - label added: ${{ github.event.label.name }}"
-            echo "Label event - added by: ${{ github.actor }}"
-            echo "Label event - cla-signed added: ${{ steps.cla-signed-check.outputs.cla_signed_added }}"
-            echo "Label event - is authorized: ${{ steps.cla-signed-check.outputs.is_authorized }}"
-          fi
-          
           POST_CLA_CONDITION="${{ github.event_name == 'pull_request' && steps.docs-changed.outputs.requires_cla == 'true' }}"
-          PROCESS_CLA_CONDITION="${{ github.event_name == 'pull_request_target' && steps.cla-signed-check.outputs.cla_signed_added == 'true' && steps.cla-signed-check.outputs.is_authorized == 'true' }}"
           echo "Post CLA comment workflow will run: $POST_CLA_CONDITION"
-          echo "Process CLA approval workflow will run: $PROCESS_CLA_CONDITION"
           echo "================================="
 
       - name: Post CLA comment and block merge
@@ -286,73 +275,5 @@ jobs:
               console.log('=== END CLA COMMENT STEP DEBUG ===');
             } catch (error) {
               console.error('Error in CLA comment step:', error);
-              throw error;
-            }
-
-      - name: Process CLA approval and unblock merge
-        if: github.event_name == 'pull_request_target' && steps.cla-signed-check.outputs.cla_signed_added == 'true' && steps.cla-signed-check.outputs.is_authorized == 'true'
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}
-          script: |
-            console.log('=== CLA APPROVAL PROCESSING DEBUG ===');
-            console.log('Event name:', context.eventName);
-            console.log('Label added:', '${{ github.event.label.name }}');
-            
-            const prNumber = context.issue.number;
-            const prAuthor = '${{ github.event.pull_request.user.login }}';
-            
-            console.log(`Processing CLA approval for PR #${prNumber}, author: ${prAuthor}`);
-            
-            try {
-              // Remove the blocking label
-              console.log('Removing cla-required label...');
-              try {
-                await github.rest.issues.removeLabel({
-                  issue_number: prNumber,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  name: 'cla-required'
-                });
-                console.log('Removed cla-required label successfully');
-              } catch (e) {
-                console.log('Label cla-required not found or already removed:', e.message);
-              }
-            
-              // Check if confirmation comment already exists
-              const comments = await github.rest.issues.listComments({
-                issue_number: prNumber,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-              });
-            
-              const confirmationExists = comments.data.some(comment => 
-                (comment.user.login === 'github-actions[bot]' || comment.user.type === 'Bot') && 
-                comment.body.includes('CLA Agreement Confirmed')
-              );
-              console.log('Confirmation comment exists:', confirmationExists);
-            
-              if (!confirmationExists) {
-                await github.rest.issues.createComment({
-                  issue_number: prNumber,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  body: `## CLA Agreement Confirmed
-            
-                The trademark license agreement has been approved for @${prAuthor}.
-            
-                **Status:** Approved  
-                **Date:** ${new Date().toISOString()}  
-                **Approved by:** @${{ github.actor }}
-            
-                This PR is now unblocked and can proceed with normal review!`
-                });
-                console.log('Posted confirmation comment');
-              }
-            
-              console.log('CLA approval processing completed successfully');
-              console.log('=== END CLA APPROVAL PROCESSING DEBUG ===');
-            } catch (error) {
-              console.error('Error in CLA approval processing:', error);
               throw error;
             }
