@@ -7,13 +7,7 @@ on:
     types: [created, edited]
 
 # Set repository-level permissions
-permissions:
-  contents: read
-  issues: write
-  pull-requests: write
-  statuses: write
-  checks: write
-  actions: read
+permissions: write-all
 
 jobs:
   enforce-docs-cla:
