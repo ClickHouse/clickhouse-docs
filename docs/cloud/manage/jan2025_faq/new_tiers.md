@@ -35,7 +35,7 @@ Yes, single replica services are supported on all three tiers. Users can scale o
 
 ### Can users scale up/down and add more replicas on the Basic tier? {#can-users-scale-updown-and-add-more-replicas-on-the-basic-tier}
 
-No, services on this tier are meant to support workloads that are small and fixed size (single replica `1x8GiB` or `1x12GiB`). If users need to scale up/down or add replicas, they will be prompted to upgrade to Scale or Enterprise tiers.
+No, services on this tier are meant to support workloads that are small and fixed size (single replica `1x8GiB` or `1x12GiB`). The size of the single replica is fixed upon service creation and cannot be adjusted or scaled after service creation. If users need to scale up/down or add replicas, they will be prompted to upgrade to Scale or Enterprise tiers.
 
 ## Scale tier {#scale-tier}
 
