@@ -6,16 +6,36 @@ on:
   issue_comment:
     types: [created, edited]
 
-# Set repository-level permissions
 permissions: write-all
 
 jobs:
   enforce-docs-cla:
     runs-on: ubuntu-latest
-    # Job-level permissions (inherits from above but can be more restrictive)
     permissions: write-all
 
     steps:
+      - name: Debug - Check if secrets exist
+        run: |
+          echo "=== SECRET CHECK ==="
+          if [ -z "${{ secrets.WORKFLOW_AUTH_PUBLIC_APP_ID }}" ]; then
+            echo "WORKFLOW_AUTH_PUBLIC_APP_ID is empty or not set"
+          else
+            echo "WORKFLOW_AUTH_PUBLIC_APP_ID is set"
+          fi
+          
+          if [ -z "${{ secrets.WORKFLOW_AUTH_PUBLIC_PRIVATE_KEY }}" ]; then
+            echo "WORKFLOW_AUTH_PUBLIC_PRIVATE_KEY is empty or not set"
+          else
+            echo "WORKFLOW_AUTH_PUBLIC_PRIVATE_KEY is set"
+          fi
+          
+          if [ -z "${{ secrets.CLA_BOT_TOKEN }}" ]; then
+            echo "CLA_BOT_TOKEN is empty or not set"
+          else
+            echo "CLA_BOT_TOKEN is set"
+          fi
+          echo "==================="
+
       - name: Generate Token
         id: generate-token
         uses: actions/create-github-app-token@v1
@@ -132,11 +152,11 @@ jobs:
             
               const existingClaComment = comments.data.find(comment => 
                 (comment.user.login === 'github-actions[bot]' || comment.user.type === 'Bot') && 
-                comment.body.includes('🚫 CLA Agreement Required - MERGE BLOCKED')
+                comment.body.includes('CLA Agreement Required - MERGE BLOCKED')
               );
             
               if (!existingClaComment && context.eventName === 'pull_request') {
-                const claText = `# 🚫 CLA Agreement Required - MERGE BLOCKED
+                const claText = `# CLA Agreement Required - MERGE BLOCKED
             
               # Trademark License Addendum
             
@@ -195,7 +215,7 @@ jobs:
             
               </details>
             
-              **🔒 To unblock this PR, reply with exactly:**
+              **To unblock this PR, reply with exactly:**
             
               \`\`\`
               I have read and agree to the Contributor License Agreement.
@@ -293,7 +313,7 @@ jobs:
                 // Post confirmation
                 const confirmationExists = comments.data.some(comment => 
                   (comment.user.login === 'github-actions[bot]' || comment.user.type === 'Bot') && 
-                  comment.body.includes('✅ CLA Agreement Confirmed')
+                  comment.body.includes('CLA Agreement Confirmed')
                 );
             
                 if (!confirmationExists) {
@@ -301,14 +321,14 @@ jobs:
                     issue_number: prNumber,
                     owner: context.repo.owner,
                     repo: context.repo.repo,
-                    body: `## ✅ CLA Agreement Confirmed
+                    body: `## CLA Agreement Confirmed
             
                 Thank you @${prAuthor}! Your response has been recorded.
             
-                **Status:** ✅ Approved  
+                **Status:** Approved  
                 **Date:** ${new Date().toISOString()}  
             
-                🎉 This PR is now unblocked and can proceed with normal review!`
+                This PR is now unblocked and can proceed with normal review!`
                   });
                 }
             
