@@ -9,7 +9,7 @@ keywords: ['ClickHouse', 'MCP', 'Chainlit']
 show_related_blogs: true
 ---
 
-# Chainlit and the ClickHouse MCP Server
+# How to build an AI agent with Chainlit and the ClickHouse MCP Server
 
 This guide explores how to combine Chainlit's powerful chat interface framework 
 with the ClickHouse Model Context Protocol (MCP) Server to create interactive data

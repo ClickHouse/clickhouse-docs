@@ -9,7 +9,7 @@ keywords: ['ClickHouse', 'MCP', 'Slack', 'SlackBot', 'PydanticAI']
 show_related_blogs: true
 ---
 
-# How to build a slackbot agent using ClickHouse MCP Server
+# How to build a SlackBot agent using ClickHouse MCP Server
 
 In this guide, you'll learn how to build a [SlackBot](https://slack.com/intl/en-gb/help/articles/202026038-An-introduction-to-Slackbot) agent.
 This bot allows you to ask questions about your ClickHouse data directly from Slack, using natural language. It uses the

@@ -9,7 +9,7 @@ keywords: ['ClickHouse', 'MCP', 'copilotkit']
 show_related_blogs: true
 ---
 
-# CopilotKit and the ClickHouse MCP Server
+# How to build an AI agent with CopilotKit and the ClickHouse MCP Server
 
 This is an example of how to build an agentic application using data stored in 
 ClickHouse. It uses the [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 
