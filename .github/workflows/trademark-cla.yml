@@ -27,12 +27,37 @@ jobs:
       checks: write
 
     steps:
+      - name: Debug - Check if secrets exist
+        run: |
+          echo "Checking if APP_ID secret exists..."
+          if [ -z "${{ secrets.WORKFLOW_AUTH_PUBLIC_APP_ID }}" ]; then
+            echo "❌ WORKFLOW_AUTH_PUBLIC_APP_ID secret is empty or doesn't exist"
+          else
+            echo "✅ WORKFLOW_AUTH_PUBLIC_APP_ID secret exists (length: ${#APP_ID})"
+          fi
+          
+          echo "Checking if APP_ID variable exists..."
+          if [ -z "${{ vars.WORKFLOW_AUTH_PUBLIC_APP_ID }}" ]; then
+            echo "❌ WORKFLOW_AUTH_PUBLIC_APP_ID variable is empty or doesn't exist"
+          else
+            echo "✅ WORKFLOW_AUTH_PUBLIC_APP_ID variable exists (length: ${#APP_ID_VAR})"
+          fi
+          
+          if [ -z "${{ secrets.WORKFLOW_AUTH_PUBLIC_PRIVATE_KEY }}" ]; then
+            echo "❌ WORKFLOW_AUTH_PUBLIC_PRIVATE_KEY is empty or doesn't exist"
+          else
+            echo "✅ WORKFLOW_AUTH_PUBLIC_PRIVATE_KEY exists"
+          fi
+        env:
+          APP_ID: ${{ secrets.WORKFLOW_AUTH_PUBLIC_APP_ID }}
+          APP_ID_VAR: ${{ vars.WORKFLOW_AUTH_PUBLIC_APP_ID }}
+
       - name: Generate Token
         id: generate-token
         uses: actions/create-github-app-token@v1
         with:
-          app-id: ${{ secrets.WORKFLOW_AUTH_PUBLIC_APP_ID }}
-          private-key: ${{ secrets.WORKFLOW_AUTH_PUBLIC_PRIVATE_KEY }}
+          app-id: "${{ secrets.WORKFLOW_AUTH_PUBLIC_APP_ID }}"
+          private-key: "${{ secrets.WORKFLOW_AUTH_PUBLIC_PRIVATE_KEY }}"
 
       - name: Check out code
         uses: actions/checkout@v4
