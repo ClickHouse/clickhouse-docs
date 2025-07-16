@@ -29,11 +29,6 @@ jobs:
             echo "WORKFLOW_AUTH_PUBLIC_PRIVATE_KEY is set"
           fi
           
-          if [ -z "${{ secrets.CLA_BOT_TOKEN }}" ]; then
-            echo "CLA_BOT_TOKEN is empty or not set"
-          else
-            echo "CLA_BOT_TOKEN is set"
-          fi
           echo "==================="
 
       - name: Generate Token
