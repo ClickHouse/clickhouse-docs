@@ -19,7 +19,7 @@ You can find the source code for this example in the [examples repository](https
 :::
 
 ## Prerequisites {#prerequisites}
-- You'll need to have python installed on your system.
+- You'll need to have Python installed on your system.
   You'll need to have [`uv`](https://docs.astral.sh/uv/getting-started/installation/) installed
 - You'll need an Anthropic API key, or API key from another LLM provider
 

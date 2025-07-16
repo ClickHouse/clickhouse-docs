@@ -19,11 +19,11 @@ This example can be found as a notebook in the [examples repository](https://git
 :::
 
 ## Prerequisites {#prerequisites}
-- You'll need to have python installed on your system.
+- You'll need to have Python installed on your system.
 - You'll need to have `pip` installed on your system.
 - You'll need an Anthropic API key, or API key from another LLM provider
 
-You can run the following steps either from your python REPL or via script.
+You can run the following steps either from your Python REPL or via script.
 
 <VerticalStepper headerLevel="h2">
 
