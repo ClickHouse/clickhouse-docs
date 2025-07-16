@@ -6,11 +6,13 @@ on:
   issue_comment:
     types: [created, edited]
 
+# Set repository-level permissions
 permissions: write-all
 
 jobs:
   enforce-docs-cla:
     runs-on: ubuntu-latest
+    # Job-level permissions (inherits from above but can be more restrictive)
     permissions: write-all
 
     steps:
@@ -29,21 +31,38 @@ jobs:
             echo "WORKFLOW_AUTH_PUBLIC_PRIVATE_KEY is set"
           fi
           
+          if [ -z "${{ secrets.GITHUB_PAT }}" ]; then
+            echo "GITHUB_PAT is empty or not set"
+          else
+            echo "GITHUB_PAT is set"
+          fi
           echo "==================="
 
       - name: Generate Token
         id: generate-token
+        continue-on-error: true
         uses: actions/create-github-app-token@v1
         with:
           app-id: "${{ secrets.WORKFLOW_AUTH_PUBLIC_APP_ID }}"
           private-key: "${{ secrets.WORKFLOW_AUTH_PUBLIC_PRIVATE_KEY }}"
 
+      - name: Debug - Token generation result
+        run: |
+          echo "=== TOKEN GENERATION RESULT ==="
+          echo "Token step outcome: ${{ steps.generate-token.outcome }}"
+          if [ "${{ steps.generate-token.outcome }}" = "success" ]; then
+            echo "GitHub App token generated successfully"
+          else
+            echo "GitHub App token generation failed - will use GITHUB_TOKEN"
+          fi
+          echo "================================="
+
       - name: Check out code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          # Use the GitHub App token
-          token: ${{ steps.generate-token.outputs.token }}
+          # Use the GitHub App token if available, otherwise fallback to GITHUB_TOKEN
+          token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}
 
       - name: Check if docs changed
         id: docs-changed
@@ -118,7 +137,7 @@ jobs:
            (github.event_name == 'issue_comment' && steps.pr-info.outputs.has_docs_changes == 'true'))
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.CLA_BOT_TOKEN }}
+          github-token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}
           script: |
             let prNumber, prAuthor;
             
@@ -248,7 +267,7 @@ jobs:
            (github.event_name == 'issue_comment' && steps.pr-info.outputs.has_docs_changes == 'true'))
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.CLA_BOT_TOKEN }}
+          github-token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}
           script: |
             let prNumber, prHeadSha, prAuthor;
             
