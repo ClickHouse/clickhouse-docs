@@ -131,6 +131,27 @@ jobs:
             
             return null;
 
+      - name: Debug - CLA requirement check
+        run: |
+          echo "=== CLA REQUIREMENT DEBUG ==="
+          echo "Event name: ${{ github.event_name }}"
+          
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "PR event - docs changed: ${{ steps.docs-changed.outputs.docs_changed }}"
+            echo "PR event - requires CLA: ${{ steps.docs-changed.outputs.requires_cla }}"
+          fi
+          
+          if [ "${{ github.event_name }}" = "issue_comment" ]; then
+            echo "Comment event - has docs changes: ${{ steps.pr-info.outputs.has_docs_changes }}"
+            echo "Comment event - PR number: ${{ steps.pr-info.outputs.pr_number }}"
+            echo "Comment event - PR author: ${{ steps.pr-info.outputs.pr_author }}"
+            echo "Comment event - is ClickHouse member: ${{ steps.pr-info.outputs.isClickHouseMember }}"
+          fi
+          
+          CLA_CONDITION="${{ (github.event_name == 'pull_request' && steps.docs-changed.outputs.requires_cla == 'true') || (github.event_name == 'issue_comment' && steps.pr-info.outputs.has_docs_changes == 'true') }}"
+          echo "CLA workflow will run: $CLA_CONDITION"
+          echo "================================="
+
       - name: Post CLA comment and block merge
         if: |
           ((github.event_name == 'pull_request' && steps.docs-changed.outputs.requires_cla == 'true') ||
@@ -139,14 +160,19 @@ jobs:
         with:
           github-token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}
           script: |
+            console.log('=== CLA COMMENT STEP DEBUG ===');
+            console.log('Event name:', context.eventName);
+            
             let prNumber, prAuthor;
             
             if (context.eventName == 'pull_request') {
               prNumber = context.issue.number;
               prAuthor = '${{ github.event.pull_request.user.login }}';
+              console.log('PR event - Number:', prNumber, 'Author:', prAuthor);
             } else {
               prNumber = ${{ steps.pr-info.outputs.pr_number || 'null' }};
               prAuthor = '${{ steps.pr-info.outputs.pr_author }}';
+              console.log('Comment event - Number:', prNumber, 'Author:', prAuthor);
             }
             
             if (!prNumber || !prAuthor) {
@@ -158,16 +184,20 @@ jobs:
             
             try {
               // Check if CLA comment already exists
+              console.log('Fetching existing comments...');
               const comments = await github.rest.issues.listComments({
                 issue_number: prNumber,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
               });
+              console.log(`Found ${comments.data.length} existing comments`);
             
               const existingClaComment = comments.data.find(comment => 
                 (comment.user.login === 'github-actions[bot]' || comment.user.type === 'Bot') && 
                 comment.body.includes('CLA Agreement Required - MERGE BLOCKED')
               );
+            
+              console.log('Existing CLA comment found:', !!existingClaComment);
             
               if (!existingClaComment && context.eventName === 'pull_request') {
                 const claText = `# CLA Agreement Required - MERGE BLOCKED
@@ -243,6 +273,7 @@ jobs:
                   repo: context.repo.repo,
                   body: claText
                 });
+                console.log('CLA comment created successfully');
             
                 console.log('Adding labels...');
                 await github.rest.issues.addLabels({
@@ -251,11 +282,11 @@ jobs:
                   repo: context.repo.repo,
                   labels: ['cla-required', 'docs-changes']
                 });
-            
-                console.log('CLA comment and labels added successfully');
+                console.log('Labels added successfully');
               } else {
                 console.log('CLA comment already exists or not a pull request event');
               }
+              console.log('=== END CLA COMMENT STEP DEBUG ===');
             } catch (error) {
               console.error('Error in CLA comment step:', error);
               throw error;
@@ -269,16 +300,21 @@ jobs:
         with:
           github-token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}
           script: |
+            console.log('=== CLA AGREEMENT CHECK DEBUG ===');
+            console.log('Event name:', context.eventName);
+            
             let prNumber, prHeadSha, prAuthor;
             
             if (context.eventName === 'pull_request') {
               prNumber = context.issue.number;
               prHeadSha = '${{ github.event.pull_request.head.sha }}';
               prAuthor = '${{ github.event.pull_request.user.login }}';
+              console.log('PR event - Number:', prNumber, 'SHA:', prHeadSha, 'Author:', prAuthor);
             } else {
               prNumber = ${{ steps.pr-info.outputs.pr_number || 'null' }};
               prHeadSha = '${{ steps.pr-info.outputs.pr_head_sha }}';
               prAuthor = '${{ steps.pr-info.outputs.pr_author }}';
+              console.log('Comment event - Number:', prNumber, 'SHA:', prHeadSha, 'Author:', prAuthor);
             }
             
             if (!prNumber) {
@@ -290,17 +326,30 @@ jobs:
             
             try {
               // Get all comments to check for CLA agreement
+              console.log('Fetching all comments for CLA check...');
               const comments = await github.rest.issues.listComments({
                 issue_number: prNumber,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
               });
+              console.log(`Found ${comments.data.length} comments to check`);
             
               const claAgreed = comments.data.some(comment => {
-                return comment.user.login === prAuthor && 
-                       comment.body.includes('I have read and agree to the Contributor License Agreement') &&
-                       comment.body.includes(`CLA-SIGNATURE: ${prAuthor}`);
+                const isAuthor = comment.user.login === prAuthor;
+                const hasAgreement = comment.body.includes('I have read and agree to the Contributor License Agreement');
+                const hasSignature = comment.body.includes(`CLA-SIGNATURE: ${prAuthor}`);
+            
+                if (isAuthor && (hasAgreement || hasSignature)) {
+                  console.log(`Found potential CLA comment from ${comment.user.login}:`);
+                  console.log('- Has agreement text:', hasAgreement);
+                  console.log('- Has signature:', hasSignature);
+                  console.log('- Comment body preview:', comment.body.substring(0, 100) + '...');
+                }
+            
+                return isAuthor && hasAgreement && hasSignature;
               });
+            
+              console.log('CLA agreement status:', claAgreed);
             
               if (claAgreed) {
                 console.log('CLA agreement found, removing blocking labels...');
@@ -313,8 +362,9 @@ jobs:
                     repo: context.repo.repo,
                     name: 'cla-required'
                   });
+                  console.log('Removed cla-required label');
                 } catch (e) {
-                  console.log('Label cla-required not found or already removed');
+                  console.log('Label cla-required not found or already removed:', e.message);
                 }
             
                 await github.rest.issues.addLabels({
@@ -323,12 +373,14 @@ jobs:
                   repo: context.repo.repo,
                   labels: ['cla-signed']
                 });
+                console.log('Added cla-signed label');
             
                 // Post confirmation
                 const confirmationExists = comments.data.some(comment => 
                   (comment.user.login === 'github-actions[bot]' || comment.user.type === 'Bot') && 
                   comment.body.includes('CLA Agreement Confirmed')
                 );
+                console.log('Confirmation comment exists:', confirmationExists);
             
                 if (!confirmationExists) {
                   await github.rest.issues.createComment({
@@ -344,6 +396,7 @@ jobs:
             
                 This PR is now unblocked and can proceed with normal review!`
                   });
+                  console.log('Posted confirmation comment');
                 }
             
                 console.log('CLA processing completed successfully');
@@ -352,6 +405,7 @@ jobs:
                 // CLA not agreed - keep it blocked
                 core.setFailed('Documentation CLA agreement required before merge');
               }
+              console.log('=== END CLA AGREEMENT CHECK DEBUG ===');
             } catch (error) {
               console.error('Error in CLA agreement check:', error);
               throw error;
