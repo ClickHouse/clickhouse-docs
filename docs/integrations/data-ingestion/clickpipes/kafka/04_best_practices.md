@@ -130,3 +130,16 @@ This requires scaling to at least two consumers.
 Regardless number of running consumers, fault tolerance is available by design.
 If a consumer or its underlying infrastructure fails,
 the ClickPipe will automatically restart the consumer and continue processing messages.
+
+### Benchmarks {#benchmarks}
+
+Below are some informal benchmarks for ClickPipes for Kafka that can be used get a general idea of ClickPipes performance. It is important to know that many factors can impact performance including message size, data types, and data format. Your mileage may vary, and what we show here is not a guarantee of performance.
+
+We used production ClickHouse Cloud services with enough resources to ensure that throughput was not bottlenecked by the insert processing on the ClickHouse side.
+
+| Replica Size | Message Size | Data Format | Throughput |
+|---------------|-----------|-------------|-----------|
+| 1vcpu/4gb     | 1.6kb    |   JSON        | 63mb/s    |
+| 1vcpu/4gb    | 1.6kb    |   AVRO        | 99mb/s    |
+
+
