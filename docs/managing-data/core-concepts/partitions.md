@@ -18,7 +18,7 @@ import Image from '@theme/IdealImage';
 
 Partitions group the [data parts](/parts) of a table in the [MergeTree engine family](/engines/table-engines/mergetree-family) into organized, logical units, which is a way of organizing data that is conceptually meaningful and aligned with specific criteria, such as time ranges, categories, or other key attributes. These logical units make data easier to manage, query, and optimize.
 
-### Partition By {#partition-by}
+### PARTITION BY {#partition-by}
 
 Partitioning can be enabled when a table is initially defined via the [PARTITION BY clause](/engines/table-engines/mergetree-family/custom-partitioning-key). This clause can contain a SQL expression on any columns, the results of which will define which partition a row belongs to.
 

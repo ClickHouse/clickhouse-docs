@@ -83,7 +83,7 @@ This query returns the column names expected by Grafana, rendering a table of tr
 
 Users wishing to write more complex queries can switch to the `SQL Editor`.
 
-### View Trace details {#view-trace-details}
+### View trace details {#view-trace-details}
 
 As shown above, Trace ids are rendered as clickable links. On clicking on a trace Id, a user can choose to view the associated spans via the link `View Trace`. This issues the following query (assuming OTel columns) to retrieve the spans in the required structure, rendering the results as a waterfall.
 

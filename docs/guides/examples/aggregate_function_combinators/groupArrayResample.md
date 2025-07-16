@@ -17,7 +17,7 @@ and construct the resulting array by selecting one representative value
 (corresponding to the minimum key) from the data points falling into each interval.
 It creates a downsampled view of the data rather than collecting all values.
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 Let's look at an example. We'll create a table which contains the `name`, `age` and
 `wage` of employees, and we'll insert some data into it:

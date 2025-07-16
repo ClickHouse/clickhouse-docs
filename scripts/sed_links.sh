@@ -10,7 +10,9 @@
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # macOS
     sed -i '' 's|(../../quick-start\.mdx)|(/get-started/quick-start)|g' docs/operations/utilities/clickhouse-local.md
+    sed -i '' 's/{#data-types-matching}/{#data-type-mapping}/g' docs/interfaces/formats/Avro/Avro.md
 else
     # Linux
     sed -i 's|(../../quick-start\.mdx)|(/get-started/quick-start)|g' docs/operations/utilities/clickhouse-local.md
+    sed -i 's/{#data-types-matching}/{#data-type-mapping}/g' docs/interfaces/formats/Avro/Avro.md
 fi

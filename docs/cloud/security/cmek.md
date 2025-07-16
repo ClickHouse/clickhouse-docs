@@ -9,7 +9,7 @@ import Image from '@theme/IdealImage';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 import cmek_performance from '@site/static/images/_snippets/cmek-performance.png';
 
-# ClickHouse Enhanced Encryption
+# ClickHouse enhanced encryption
 
 <EnterprisePlanFeatureBadge feature="Enhanced Encryption"/>
 
@@ -51,7 +51,7 @@ Once a service is encrypted with TDE, customers may update the key to enable CME
         "Sid": "Allow ClickHouse Access",
         "Effect": "Allow",
         "Principal": {
-            "AWS": "{ Encryption role ID }"
+            "AWS": [ "Encryption role ID " ]
         },
         "Action": [
             "kms:Encrypt",
@@ -89,15 +89,15 @@ Once a service is encrypted with TDE, customers may update the key to enable CME
     
 </details>
 
-## Key Rotation {#key-rotation}
+## Key rotation {#key-rotation}
 
 Once you set up CMEK, rotate the key by following the procedures above for creating a new KMS key and granting permissions. Return to the service settings to paste the new ARN (AWS) or Key Resource Path (GCP) and save the settings. The service will restart to apply the new key.
 
-## Backup and Restore {#backup-and-restore}
+## Backup and restore {#backup-and-restore}
 
 Backups are encrypted using the same key as the associated service. When you restore an encrypted backup, it creates an encrypted instance that uses the same KMS key as the original instance. If needed, you can rotate the KMS key after restoration; see [Key Rotation](#key-rotation) for more details.
 
-## KMS Key Poller {#kms-key-poller}
+## KMS key poller {#kms-key-poller}
 
 When using CMEK, the validity of the provided KMS key is checked every 10 minutes. If access to the KMS key is invalid, the ClickHouse service will stop. To resume service, restore access to the KMS key by following the steps in this guide, and then restart the service.
 

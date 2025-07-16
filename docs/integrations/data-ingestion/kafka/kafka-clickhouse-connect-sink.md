@@ -29,7 +29,7 @@ The [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.htm
 |----------------------------------|--------------------|---------------|--------------------|
 | 1.0.0                            | > 23.3             | > 2.7         | > 6.1              |
 
-### Main Features {#main-features}
+### Main features {#main-features}
 
 - Shipped with out-of-the-box exactly-once semantics. It's powered by a new ClickHouse core feature named [KeeperMap](https://github.com/ClickHouse/ClickHouse/pull/39976) (used as a state store by the connector) and allows for minimalistic architecture.
 - Support for 3rd-party state stores: Currently defaults to In-memory but can use KeeperMap (Redis to be added soon).
@@ -44,7 +44,7 @@ The [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.htm
 
 <ConnectionDetails />
 
-#### General Installation Instructions {#general-installation-instructions}
+#### General installation instructions {#general-installation-instructions}
 
 The connector is distributed as a single JAR file containing all the class files necessary to run the plugin.
 
@@ -118,7 +118,7 @@ The full table of configuration options:
 | `tolerateStateMismatch`                         | Allows the connector to drop records "earlier" than the current offset stored AFTER_PROCESSING (e.g. if offset 5 is sent, and offset 250 was the last recorded offset)                                                             | `"false"`                                                |
 | `ignorePartitionsWhenBatching`                  | Will ignore partition when collecting messages for insert (though only if `exactlyOnce` is `false`). Performance Note: The more connector tasks, the fewer kafka partitions assigned per task - this can mean diminishing returns. | `"false"`                                                |
 
-### Target Tables {#target-tables}
+### Target tables {#target-tables}
 
 ClickHouse Connect Sink reads messages from Kafka topics and writes them to appropriate tables. ClickHouse Connect Sink writes data into existing tables. Please, make sure a target table with an appropriate schema was created in ClickHouse before starting to insert data into it.
 
@@ -129,13 +129,14 @@ Each topic requires a dedicated target table in ClickHouse. The target table nam
 If you need to transform outbound messages before they are sent to ClickHouse Kafka Connect
 Sink, use [Kafka Connect Transformations](https://docs.confluent.io/platform/current/connect/transforms/overview.html).
 
-### Supported Data types {#supported-data-types}
+### Supported data types {#supported-data-types}
 
 **With a schema declared:**
 
 | Kafka Connect Type                      | ClickHouse Type       | Supported | Primitive |
 | --------------------------------------- |-----------------------| --------- | --------- |
 | STRING                                  | String                | ✅        | Yes       |
+| STRING                                  | JSON. See below (1)              | ✅        | Yes       |
 | INT8                                    | Int8                  | ✅        | Yes       |
 | INT16                                   | Int16                 | ✅        | Yes       |
 | INT32                                   | Int32                 | ✅        | Yes       |
@@ -148,20 +149,25 @@ Sink, use [Kafka Connect Transformations](https://docs.confluent.io/platform/cur
 | STRUCT                                  | Variant(T1, T2, ...)    | ✅        | No        |
 | STRUCT                                  | Tuple(a T1, b T2, ...)  | ✅        | No        |
 | STRUCT                                  | Nested(a T1, b T2, ...) | ✅        | No        |
+| STRUCT                                  | JSON. See below (1), (2)          | ✅        | No        |
 | BYTES                                   | String                | ✅        | No        |
 | org.apache.kafka.connect.data.Time      | Int64 / DateTime64    | ✅        | No        |
 | org.apache.kafka.connect.data.Timestamp | Int32 / Date32        | ✅        | No        |
 | org.apache.kafka.connect.data.Decimal   | Decimal               | ✅        | No        |
 
+- (1) - JSON is supported only when ClickHouse settings has `input_format_binary_read_json_as_string=1`. This works only for RowBinary format family and the setting affects all columns in the insert request so they all should be a string. Connector will convert STRUCT to a JSON string in this case. 
+
+- (2) - When struct has unions like `oneof` then converter should be configured to NOT add prefix/suffix to a field names. There is `generate.index.for.unions=false` [setting for `ProtobufConverter`](https://docs.confluent.io/platform/current/schema-registry/connect.html#protobuf).  
+
 **Without a schema declared:**
 
 A record is converted into JSON and sent to ClickHouse as a value in [JSONEachRow](../../../sql-reference/formats.mdx#jsoneachrow) format.
 
-### Configuration Recipes {#configuration-recipes}
+### Configuration recipes {#configuration-recipes}
 
 These are some common configuration recipes to get you started quickly.
 
-#### Basic Configuration {#basic-configuration}
+#### Basic configuration {#basic-configuration}
 
 The most basic configuration to get you started - it assumes you're running Kafka Connect in distributed mode and have a ClickHouse server running on `localhost:8443` with SSL enabled, data is in schemaless JSON.
 
@@ -190,7 +196,7 @@ The most basic configuration to get you started - it assumes you're running Kafk
 }
 ```
 
-#### Basic Configuration with Multiple Topics {#basic-configuration-with-multiple-topics}
+#### Basic configuration with multiple topics {#basic-configuration-with-multiple-topics}
 
 The connector can consume data from multiple topics
 
@@ -206,7 +212,7 @@ The connector can consume data from multiple topics
 }
 ```
 
-#### Basic Configuration with DLQ {#basic-configuration-with-dlq}
+#### Basic configuration with DLQ {#basic-configuration-with-dlq}
 
 ```json
 {
@@ -223,7 +229,7 @@ The connector can consume data from multiple topics
 
 #### Using with different data formats {#using-with-different-data-formats}
 
-##### Avro Schema Support {#avro-schema-support}
+##### Avro schema support {#avro-schema-support}
 
 ```json
 {
@@ -238,7 +244,7 @@ The connector can consume data from multiple topics
 }
 ```
 
-##### Protobuf Schema Support {#protobuf-schema-support}
+##### Protobuf schema support {#protobuf-schema-support}
 
 ```json
 {
@@ -255,7 +261,7 @@ The connector can consume data from multiple topics
 
 Please note: if you encounter issues with missing classes, not every environment comes with the protobuf converter and you may need an alternate release of the jar bundled with dependencies.
 
-##### JSON Schema Support {#json-schema-support}
+##### JSON schema support {#json-schema-support}
 
 ```json
 {
@@ -268,7 +274,7 @@ Please note: if you encounter issues with missing classes, not every environment
 }
 ```
 
-##### String Support {#string-support}
+##### String support {#string-support}
 
 The connector supports the String Converter in different ClickHouse formats: [JSON](/interfaces/formats#jsoneachrow), [CSV](/interfaces/formats#csv), and [TSV](/interfaces/formats#tabseparated).
 
@@ -322,11 +328,11 @@ ClickHouse Kafka Connect reports the following metrics:
 - Batch size is inherited from the Kafka Consumer properties.
 - When using KeeperMap for exactly-once and the offset is changed or re-wound, you need to delete the content from KeeperMap for that specific topic. (See troubleshooting guide below for more details)
 
-### Tuning Performance {#tuning-performance}
+### Tuning performance {#tuning-performance}
 
 If you've ever though to yourself "I would like to adjust the batch size for the sink connector", then this is the section for you.
 
-##### Connect Fetch vs Connector Poll {#connect-fetch-vs-connector-poll}
+##### Connect fetch vs connector poll {#connect-fetch-vs-connector-poll}
 
 Kafka Connect (the framework our sink connector is built on) will fetch messages from kafka topics in the background (independent of the connector).
 

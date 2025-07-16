@@ -7,7 +7,7 @@ description: 'The official Rust client for connecting to ClickHouse.'
 title: 'ClickHouse Rust Client'
 ---
 
-# ClickHouse Rust Client
+# ClickHouse Rust client
 
 The official Rust client for connecting to ClickHouse, originally developed by [Paul Loyd](https://github.com/loyd). The client source code is available in the [GitHub repository](https://github.com/ClickHouse/clickhouse-rs).
 
@@ -332,7 +332,7 @@ This example relies on the legacy Hyper API and is a subject to change in the fu
 
 See also: [custom HTTP client example](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_client.rs) in the client repo.
 
-## Data Types {#data-types}
+## Data types {#data-types}
 
 :::info
 See also the additional examples:

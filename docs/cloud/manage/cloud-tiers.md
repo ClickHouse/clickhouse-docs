@@ -5,7 +5,7 @@ title: 'ClickHouse Cloud Tiers'
 description: 'Cloud tiers available in ClickHouse Cloud'
 ---
 
-# ClickHouse Cloud Tiers
+# ClickHouse Cloud tiers
 
 There are several tiers available in ClickHouse Cloud. 
 Tiers are assigned at any organizational level. Services within an organization therefore belong to the same tier.

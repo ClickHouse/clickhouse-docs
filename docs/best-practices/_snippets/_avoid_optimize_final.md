@@ -18,7 +18,7 @@ OPTIMIZE TABLE <table> FINAL;
 
 **you should avoid this operation in most cases** as it initiates resource intensive operations which may impact cluster performance.
 
-## Why Avoid?  {#why-avoid}
+## Why avoid?  {#why-avoid}
 
 ### It's expensive {#its-expensive}
 
