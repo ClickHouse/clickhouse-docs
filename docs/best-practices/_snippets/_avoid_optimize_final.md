@@ -21,7 +21,9 @@ resource intensive operations which may impact cluster performance.
 
 :::note OPTIMIZE FINAL vs FINAL
 `OPTIMIZE FINAL` is not the same as `FINAL`, which is sometimes necessary to use 
-for results without duplicates, such as with the `ReplacingMergeTree`.
+to get results without duplicates, such as with the `ReplacingMergeTree`. Generally,
+`FINAL` is okay to use if your queries are filtering on the same columns as those
+in your primary key.
 :::
 
 ## Why avoid?  {#why-avoid}
