@@ -14,7 +14,7 @@ The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be
 function to calculate the sum of values for rows where the condition is true,
 using the `sumIf` aggregate combinator function.
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 In this example, we'll create a table that stores sales data with success flags,
 and we'll use `sumIf` to calculate the total sales amount for successful transactions.
@@ -35,7 +35,7 @@ INSERT INTO sales VALUES
     (6, 175.25, 1);
 
 SELECT
-    sumIf(amount, is_successful = 1) as total_successful_sales
+    sumIf(amount, is_successful = 1) AS total_successful_sales
 FROM sales;
 ```
 

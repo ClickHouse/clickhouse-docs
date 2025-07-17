@@ -24,6 +24,14 @@ AWS services, your on-premises systems, and ClickHouse Cloud without exposing tr
 This document outlines the ClickPipes reverse private endpoint functionality
 that allows setting up an AWS PrivateLink VPC endpoint.
 
+## Supported ClickPipes data sources {#supported-sources}
+
+ClickPipes reverse private endpoint functionality is limited to the following
+data source types:
+- Kafka
+- Postgres
+- MySQL
+
 ## Supported AWS PrivateLink endpoint types {#aws-privatelink-endpoint-types}
 
 ClickPipes reverse private endpoint can be configured with one of the following AWS PrivateLink approaches:
@@ -32,26 +40,96 @@ ClickPipes reverse private endpoint can be configured with one of the following 
 - [MSK multi-VPC connectivity for MSK ClickPipe](https://docs.aws.amazon.com/msk/latest/developerguide/aws-access-mult-vpc.html)
 - [VPC endpoint service](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html)
 
-Follow the links above for detailed instructions on how to set up the respective AWS PrivateLink shares.
-
 ### VPC resource {#vpc-resource}
 
-Your VPC resources can be accessed in ClickPipes using PrivateLink.
+Your VPC resources can be accessed in ClickPipes using PrivateLink and [AWS VPC Lattice](https://docs.aws.amazon.com/vpc-lattice/latest/ug/what-is-vpc-lattice.html). This approach doesn't require setting up a load balancer in front of your data source.
+
 Resource configuration can be targeted with a specific host or RDS cluster ARN.
 Cross-region is not supported.
 
 It's the preferred choice for Postgres CDC ingesting data from an RDS cluster.
 
-See a [getting started](https://docs.aws.amazon.com/vpc/latest/privatelink/resource-configuration.html) guide for more details.
+To set up PrivateLink with VPC resource:
+1. Create a resource gateway
+2. Create a resource configuration
+3. Create a resource share
 
-:::info
-VPC resource needs to be shared with a ClickPipes account. Add `072088201116` to the allowed principals to your resource share configuration.
-See AWS guide for [sharing resources](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html) for more details.
-:::
+#### 1. Create a Resource-Gateway {#create-resource-gateway}
+
+Resource-Gateway is the point that receives traffic for specified resources in your VPC.
+
+You can create a Resource-Gateway from the [AWS console](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource-gateway.html) or with the following command:
+
+```bash
+aws vpc-lattice create-resource-gateway \
+    --vpc-identifier <VPC_ID> \
+    --subnet-ids <SUBNET_IDS> \
+    --security-group-ids <SG_IDs> \
+    --name <RESOURCE_GATEWAY_NAME>
+```
+
+The output will contain a Resource-Gateway id, which you will need for the next step.
+
+Before you can proceed,  you'll need to wait for the Resource-Gateway to enter into an `Active` state. You can check the state by running the following command:
+
+```bash
+aws vpc-lattice get-resource-gateway \
+    --resource-gateway-identifier <RESOURCE_GATEWAY_ID>
+```
+
+#### 2. Create a VPC Resource-Configuration {#create-resource-configuration}
+
+Resource-Configuration is associated with Resource-Gateway to make your resource accessible.
+
+You can create a Resource-Configuration from the [AWS console](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource-configuration.html) or with the following command:
+
+```bash
+aws vpc-lattice create-resource-configuration \
+    --resource-gateway-identifier <RESOURCE_GATEWAY_ID> \
+    --type <RESOURCE_CONFIGURATION_TYPE> \
+    --resource-configuration-definition <RESOURCE_CONFIGURATION_DEFINITION> \
+    --name <RESOURCE_CONFIGURATION_NAME>
+```
+
+The simplest [resource configuration type](https://docs.aws.amazon.com/vpc-lattice/latest/ug/resource-configuration.html#resource-configuration-types) is a single Resource-Configuration. You can configure with the ARN directly, or share an IP address or a domain name that is publicly resolvable.
+
+For example, to configure with the ARN of an RDS Cluster:
+
+```bash
+aws vpc-lattice create-resource-configuration \
+    --name my-rds-cluster-config \
+    --type ARN \
+    --resource-gateway-identifier rgw-0bba03f3d56060135 \
+    --resource-configuration-definition 'arnResource={arn=arn:aws:rds:us-east-1:123456789012:cluster:my-rds-cluster}'
+```
+
+The output will contain a Resource-Configuration ARN, which you will need for the next step. It will also contain a Resource-Configuration ID, which you will need to set up a ClickPipe connection with VPC resource.
+
+#### 3. Create a Resource-Share {#create-resource-share}
+
+Sharing your resource requires a Resource-Share. This is facilitated through the Resource Access Manager (RAM).
+
+You can put the Resource-Configuration into the Resource-Share through [AWS console](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html) or by running the following command with ClickPipes account ID `072088201116`:
+
+```bash
+aws ram create-resource-share \
+    --principals 072088201116 \
+    --resource-arns <RESOURCE_CONFIGURATION_ARN> \
+    --name <RESOURCE_SHARE_NAME>
+```
+
+The output will contain a Resource-Share ARN, which you will need to set up a ClickPipe connection with VPC resource.
+
+You are ready to [create a ClickPipe with Reverse private endpoint](#creating-clickpipe) using VPC resource. You will need to:
+- Set `VPC endpoint type` to `VPC Resource`.
+- Set `Resource configuration ID` to the ID of the Resource-Configuration created in step 2.
+- Set `Resource share ARN` to the ARN of the Resource-Share created in step 3.
+
+For more details on PrivateLink with VPC resource, see [AWS documentation](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html).
 
 ### MSK multi-VPC connectivity {#msk-multi-vpc}
 
-The MSK multi-VPC is a built-in feature of AWS MSK that allows you to connect multiple VPCs to a single MSK cluster.
+The [Multi-VPC connectivity](https://docs.aws.amazon.com/msk/latest/developerguide/aws-access-mult-vpc.html) is a built-in feature of AWS MSK that allows you to connect multiple VPCs to a single MSK cluster.
 Private DNS support is out of the box and does not require any additional configuration.
 Cross-region is not supported.
 
@@ -67,7 +145,7 @@ Follow our [MSK setup guide for ClickPipes](/knowledgebase/aws-privatelink-setup
 
 ### VPC endpoint service {#vpc-endpoint-service}
 
-VPC service is another approach to share your data source with ClickPipes.
+[VPC endpoint service](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html) is another approach to share your data source with ClickPipes.
 It requires setting up a NLB (Network Load Balancer) in front of your data source
 and configuring the VPC endpoint service to use the NLB.
 
@@ -166,13 +244,10 @@ You can manage existing reverse private endpoints in the ClickHouse Cloud servic
 
 ## Supported AWS regions {#aws-privatelink-regions}
 
-The following AWS regions are supported for AWS PrivateLink:
+AWS PrivateLink support is limited to specific AWS regions for ClickPipes.
+Please refer to the [ClickPipes regions list](/integrations/clickpipes#list-of-static-ips) to see the available regions.
 
-- `us-east-1` - for ClickHouse services running in `us-east-1` region
-- `eu-central-1` for ClickHouse services running in EU regions
-- `us-east-2` - for ClickHouse services running everywhere else
-
-This restriction does not apply to PrivateLink VPC endpoint service type since it supports cross-region connectivity.
+This restriction does not apply to PrivateLink VPC endpoint service with a cross-region connectivity enabled.
 
 ## Limitations {#limitations}
 

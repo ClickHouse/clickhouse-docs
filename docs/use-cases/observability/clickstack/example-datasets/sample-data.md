@@ -53,14 +53,14 @@ In order to populate the UI with sample data, download the following file:
 
 [Sample data](https://storage.googleapis.com/hyperdx/sample.tar.gz)
 
-```bash
+```shell
 # curl
 curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
 # or
 # wget https://storage.googleapis.com/hyperdx/sample.tar.gz
 ```
 
-This file contains example logs, metrics, and traces from our public [OpenTelemetry demo](http://example.com) - a simple e-commerce store with microservices. Copy this file to a directory of your choosing.
+This file contains example logs, metrics, and traces from our public [OpenTelemetry demo](https://github.com/ClickHouse/opentelemetry-demo) - a simple e-commerce store with microservices. Copy this file to a directory of your choosing.
 
 ## Load sample data {#load-sample-data}
 
@@ -68,14 +68,14 @@ To load this data, we simply send it to the HTTP endpoint of the deployed OpenTe
 
 First, export the API key copied above.
 
-```bash
+```shell
 # export API key
 export CLICKSTACK_API_KEY=<YOUR_INGESTION_API_KEY>
 ```
 
 Run the following command to send the data to the OTel collector:
 
-```bash
+```shell
 for filename in $(tar -tf sample.tar.gz); do
   endpoint="http://localhost:4318/v1/${filename%.json}"
   echo "loading ${filename%.json}"

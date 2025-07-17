@@ -13,7 +13,7 @@ There are a few tasks to be done before running `docker compose`:
 The commands below are to be run from the  top level of the GitHub repo, `superset`.
 :::
 
-## Official ClickHouse Connect driver {#official-clickhouse-connect-driver}
+## Official ClickHouse connect driver {#official-clickhouse-connect-driver}
 
 To make the ClickHouse Connect driver available in the Superset deployment add it to the local requirements file:
 

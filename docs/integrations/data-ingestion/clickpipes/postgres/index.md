@@ -16,7 +16,7 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
-# Ingesting Data from Postgres to ClickHouse (using CDC)
+# Ingesting data from Postgres to ClickHouse (using CDC)
 
 You can use ClickPipes to ingest data from your source Postgres database into ClickHouse Cloud. The source Postgres database can be hosted on-premises or in the cloud including Amazon RDS, Google Cloud SQL, Azure Database for Postgres, Supabase and others.
 
@@ -56,7 +56,7 @@ Once your source Postgres database is set up, you can continue creating your Cli
 Make sure you are logged in to your ClickHouse Cloud account. If you don't have an account yet, you can sign up [here](https://cloud.clickhouse.com/).
 
 [//]: # (   TODO update image here)
-1. In the ClickHouse Cloud Console, navigate to your ClickHouse Cloud Service.
+1. In the ClickHouse Cloud console, navigate to your ClickHouse Cloud Service.
 
 <Image img={cp_service} alt="ClickPipes service" size="lg" border/>
 
@@ -87,7 +87,7 @@ You can use AWS Private Link to connect to your source Postgres database if it i
 want to keep your data transfer private.
 You can follow the [setup guide to set up the connection](/integrations/clickpipes/aws-privatelink).
 
-#### (Optional) Setting up SSH Tunneling {#optional-setting-up-ssh-tunneling}
+#### (Optional) Setting up SSH tunneling {#optional-setting-up-ssh-tunneling}
 
 You can specify SSH tunneling details if your source Postgres database is not publicly accessible.
 
@@ -114,7 +114,7 @@ Once the connection details are filled in, click on "Next".
 
    <Image img={select_replication_slot} alt="Select replication slot" size="lg" border/>
 
-#### Advanced Settings {#advanced-settings}
+#### Advanced settings {#advanced-settings}
 
 You can configure the Advanced settings if needed. A brief description of each setting is provided below:
 
@@ -134,7 +134,7 @@ You can configure the Advanced settings if needed. A brief description of each s
 7. You can select the tables you want to replicate from the source Postgres database. While selecting the tables, you can also choose to rename the tables in the destination ClickHouse database as well as exclude specific columns.
 
    :::warning
-   If you are defining a Ordering Key in ClickHouse differently from the Primary Key in Postgres, please don’t forget to read all the [considerations](/integrations/clickpipes/postgres/ordering_keys) around it!
+   If you are defining an ordering key in ClickHouse differently than from the primary key in Postgres, don't forget to read all the [considerations](/integrations/clickpipes/postgres/ordering_keys) around it
    :::
 
 ### Review permissions and start the ClickPipe {#review-permissions-and-start-the-clickpipe}

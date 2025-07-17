@@ -15,7 +15,7 @@ combinator can be applied to the [`count`](/sql-reference/aggregate-functions/re
 aggregate function to count values of a specified key column in a fixed number
 of intervals (`N`).
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 ### Basic example {#basic-example}
 

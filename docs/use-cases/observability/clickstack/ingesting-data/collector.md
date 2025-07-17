@@ -8,6 +8,7 @@ title: 'ClickStack OpenTelemetry Collector'
 ---
 
 import Image from '@theme/IdealImage';
+import BetaBadge from '@theme/badges/BetaBadge';
 import observability_6 from '@site/static/images/use-cases/observability/observability-6.png';
 import observability_8 from '@site/static/images/use-cases/observability/observability-8.png';
 import clickstack_with_gateways from '@site/static/images/use-cases/observability/clickstack-with-gateways.png';
@@ -36,7 +37,7 @@ If you are managing your own OpenTelemetry collector in a standalone deployment 
 
 To deploy the ClickStack distribution of the OTel connector in a standalone mode, run the following docker command:
 
-```bash
+```shell
 docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector
 ```
 
@@ -60,14 +61,14 @@ All docker images, which include the OpenTelemetry collector, can be configured 
 
 For example the all-in-one image:
 
-```bash
+```shell
 export OPAMP_SERVER_URL=<OPAMP_SERVER_URL>
 export CLICKHOUSE_ENDPOINT=<HTTPS ENDPOINT>
 export CLICKHOUSE_USER=<CLICKHOUSE_USER>
 export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 ```
 
-```bash
+```shell
 docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
 
@@ -228,9 +229,9 @@ By default, inserts into ClickHouse are synchronous and idempotent if identical.
 
 From the collector's perspective, (1) and (2) can be hard to distinguish. However, in both cases, the unacknowledged insert can just be retried immediately. As long as the retried insert query contains the same data in the same order, ClickHouse will automatically ignore the retried insert if the original (unacknowledged) insert succeeded.
 
-For this reason, the ClickStack distribution of the OTel collector uses the batch [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md). This ensures inserts are sent as consistent batches of rows satisfying the above requirements. If a collector is expected to have high throughput (events per second), and at least 5000 events can be sent in each insert, this is usually the only batching required in the pipeline. In this case the collector will flush batches before the batch processor's `timeout` is reached, ensuring the end-to-end latency of the pipeline remains low and batches are of a consistent size.
+For this reason, the ClickStack distribution of the OTel collector uses the [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md). This ensures inserts are sent as consistent batches of rows satisfying the above requirements. If a collector is expected to have high throughput (events per second), and at least 5000 events can be sent in each insert, this is usually the only batching required in the pipeline. In this case the collector will flush batches before the batch processor's `timeout` is reached, ensuring the end-to-end latency of the pipeline remains low and batches are of a consistent size.
 
-### Use Asynchronous inserts {#use-asynchronous-inserts}
+### Use asynchronous inserts {#use-asynchronous-inserts}
 
 Typically, users are forced to send smaller batches when the throughput of a collector is low, and yet they still expect data to reach ClickHouse within a minimum end-to-end latency. In this case, small batches are sent when the `timeout` of the batch processor expires. This can cause problems and is when asynchronous inserts are required. This issue is rare if users are sending data to the ClickStack collector acting as a Gateway - by acting as aggregators, they alleviate this problem - see [Collector roles](#collector-roles).
 
@@ -291,3 +292,88 @@ For agent instances responsible for shipping events to a gateway, and only setti
 | 1k/second    | 0.2CPU, 0.2GiB              |
 | 5k/second    | 0.5 CPU, 0.5GiB             |
 | 10k/second   | 1 CPU, 1GiB                 |
+
+## JSON support {#json-support}
+
+<BetaBadge/>
+
+ClickStack has beta support for the [JSON type](/interfaces/formats/JSON) from version `2.0.4`.
+
+### Benefits of the JSON type {#benefits-json-type}
+
+The JSON type offers the following benefits to ClickStack users:
+
+- **Type preservation** - Numbers stay numbers, booleans stay booleans—no more flattening everything into strings. This means fewer casts, simpler queries, and more accurate aggregations.
+- **Path-level columns** - Each JSON path becomes its own sub-column, reducing I/O. Queries only read the fields they need, unlocking major performance gains over the old Map type which required the entire column to be read in order to query a specific field.
+- **Deep nesting just works** - Naturally handle complex, deeply nested structures without manual flattening (as required by the Map type) and subsequent awkward JSONExtract functions.
+- **Dynamic, evolving schemas** - Perfect for observability data where teams add new tags and attributes over time. JSON handles these changes automatically, without schema migrations. 
+- **Faster queries, lower memory** - Typical aggregations over attributes like `LogAttributes` see 5-10x less data read and dramatic speedups, cutting both query time and peak memory usage.
+- **Simple management** - No need to pre-materialize columns for performance. Each field becomes its own sub-column, delivering the same speed as native ClickHouse columns.
+
+### Enabling JSON support {#enabling-json-support}
+
+To enable this support for the collector, set the environment variable `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` on any deployment that includes the collector. This ensures the schemas are created in ClickHouse using the JSON type.
+
+:::note HyperDX support
+In order to query the JSON type, support must also be enabled in the HyperDX application layer via the environment variable `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true`.
+:::
+
+For example:
+
+```shell
+docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector
+```
+
+### Migrating from map-based schemas to the JSON type {#migrating-from-map-based-schemas-to-json}
+
+:::important Backwards compatibility
+The [JSON type](/interfaces/formats/JSON) type is not backwards compatible with existing map-based schemas. New tables will be created using the `JSON` type.
+:::
+
+
+To migrate from the Map-based schemas, follow these steps:
+
+<VerticalStepper headerLevel="h4">
+
+
+#### Stop the OTel collector {#stop-the-collector}
+
+#### Rename existing tables and update sources {#rename-existing-tables-sources}
+
+Rename existing tables and update data sources in HyperDX. 
+
+For example:
+
+```sql
+RENAME TABLE otel_logs TO otel_logs_map;
+RENAME TABLE otel_metrics TO otel_metrics_map;
+```
+
+#### Deploy the collector  {#deploy-the-collector}
+
+Deploy the collector with `OTEL_AGENT_FEATURE_GATE_ARG` set.
+
+#### Restart the HyperDX container with JSON schema support {#restart-the-hyperdx-container}
+
+```shell
+export BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true
+```
+
+#### Create new data sources {#create-new-data-sources}
+
+Create new data sources in HyperDX pointing to the JSON tables.
+
+</VerticalStepper>
+
+#### Migrating existing data (optional) {#migrating-existing-data}
+
+To move old data into the new JSON tables:
+
+```sql
+INSERT INTO otel_logs SELECT * FROM otel_logs_map;
+INSERT INTO otel_metrics SELECT * FROM otel_metrics_map;
+```
+
+:::warning
+Recommended only for datasets smaller than ~10 billion rows. Data previously stored with the Map type did not preserve type precision (all values were strings). As a result, this old data will appear as strings in the new schema until it ages out, requiring some casting on the frontend. Type for new data will be preserved with the JSON type.
+:::

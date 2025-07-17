@@ -15,7 +15,7 @@ import firewall1 from '@site/static/images/integrations/data-ingestion/clickpipe
 import firewall2 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/firewall2.png';
 import Image from '@theme/IdealImage';
 
-# Google Cloud SQL Postgres Source Setup Guide
+# Google Cloud SQL Postgres source setup guide
 
 :::info
 
@@ -28,7 +28,7 @@ If you use one of the supported providers (in the sidebar), please refer to the 
 
 Anything on or after Postgres 12
 
-## Enable Logical Replication {#enable-logical-replication}
+## Enable logical replication {#enable-logical-replication}
 
 **You don't need** to follow the below steps if the settings `cloudsql. logical_decoding` is on and `wal_sender_timeout` is 0. These settings should mostly be pre-configured if you are migrating from another data replication tool.
 
@@ -43,7 +43,7 @@ Anything on or after Postgres 12
 <Image img={cloudsql_logical_decoding3} alt="Restart Server" size="lg" border/>
 
 
-## Creating ClickPipes User and Granting permissions {#creating-clickpipes-user-and-granting-permissions}
+## Creating ClickPipes user and granting permissions {#creating-clickpipes-user-and-granting-permissions}
 
 Connect to your Cloud SQL Postgres through the admin user and run the below commands:
 

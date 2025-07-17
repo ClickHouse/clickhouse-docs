@@ -18,7 +18,7 @@ The `argMinIf` function is useful when you need to find the value associated
 with the minimum value in a dataset, but only for rows that satisfy a specific 
 condition.
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 In this example, we'll create a table that stores product prices and their timestamps,
 and we'll use `argMinIf` to find the lowest price for each product when it's in stock.
@@ -41,7 +41,7 @@ INSERT INTO product_prices VALUES
 
 SELECT
     product_id,
-    argMinIf(price, timestamp, in_stock = 1) as lowest_price_when_in_stock
+    argMinIf(price, timestamp, in_stock = 1) AS lowest_price_when_in_stock
 FROM product_prices
 GROUP BY product_id;
 ```

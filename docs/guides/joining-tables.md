@@ -88,7 +88,7 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 1 row in set. Elapsed: 1.519 sec. Processed 252.30 million rows, 1.62 GB (166.06 million rows/s., 1.07 GB/s.)
 ```
 
-Adding a filter to the right side table improves performance even further to 0.5s.
+Adding a filter to the left side table improves performance even further to 0.5s.
 
 ```sql
 SELECT countIf(VoteTypeId = 2) AS upvotes
@@ -123,7 +123,7 @@ WHERE (VoteTypeId = 2) AND (PostId IN (
 Peak memory usage: 250.66 MiB.
 ```
 
-## Choosing a join algorithm {#choosing-a-join-algorithm}
+## Choosing a JOIN algorithm {#choosing-a-join-algorithm}
 
 ClickHouse supports a number of [join algorithms](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1). These algorithms typically trade memory usage for performance. The following provides an overview of the ClickHouse join algorithms based on their relative memory consumption and execution time:
 

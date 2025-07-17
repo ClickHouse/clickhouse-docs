@@ -14,7 +14,7 @@ The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be
 function to calculate the arithmetic mean of values for rows where the condition is true,
 using the `avgIf` aggregate combinator function.
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 In this example, we'll create a table that stores sales data with success flags,
 and we'll use `avgIf` to calculate the average sale amount for successful transactions.
@@ -35,7 +35,7 @@ INSERT INTO sales VALUES
     (6, 175.25, 1);
 
 SELECT
-    avgIf(amount, is_successful = 1) as avg_successful_sale
+    avgIf(amount, is_successful = 1) AS avg_successful_sale
 FROM sales;
 ```
 

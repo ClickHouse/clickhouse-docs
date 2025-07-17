@@ -81,7 +81,7 @@ This is the simplest query you can run to check if the synchronization went fine
 SELECT count(*) FROM posts;
 
 -- ClickHouse 
-SELECT count(*) FROM posts FINAL where _peerdb_is_deleted=0;
+SELECT count(*) FROM posts FINAL WHERE _peerdb_is_deleted=0;
 ```
 
 -  **Simple aggregation with JOIN**: Top 10 users who have accumulated the most views.
@@ -92,8 +92,8 @@ An example of an aggregation on a single table. Having duplicates here would gre
 -- PostgreSQL 
 SELECT
     sum(p.viewcount) AS viewcount,
-    p.owneruserid as user_id,
-    u.displayname as display_name
+    p.owneruserid AS user_id,
+    u.displayname AS display_name
 FROM posts p
 LEFT JOIN users u ON u.id = p.owneruserid
 -- highlight-next-line
@@ -128,7 +128,7 @@ This setting can be applied either per query or for an entire session.
 
 ```sql
 -- Per query FINAL setting
-SELECT count(*) FROM posts SETTINGS final = 1;
+SELECT count(*) FROM posts SETTINGS FINAL = 1;
 
 -- Set FINAL for the session
 SET final = 1;
@@ -179,9 +179,9 @@ ORDER BY viewcount DESC
 LIMIT 10
 ```
 
-#### Refreshable Material view {#refreshable-material-view}
+#### Refreshable materialized view {#refreshable-material-view}
 
-Another approach is to use a [Refreshable Materialized View](/materialized-view/refreshable-materialized-view), which enables you to schedule query execution for deduplicating rows and storing the results in a destination table. With each scheduled refresh, the destination table is replaced with the latest query results.
+Another approach is to use a [refreshable materialized view](/materialized-view/refreshable-materialized-view), which enables you to schedule query execution for deduplicating rows and storing the results in a destination table. With each scheduled refresh, the destination table is replaced with the latest query results.
 
 The key advantage of this method is that the query using the FINAL keyword runs only once during the refresh, eliminating the need for subsequent queries on the destination table to use FINAL.
 

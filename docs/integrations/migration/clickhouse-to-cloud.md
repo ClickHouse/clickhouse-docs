@@ -61,9 +61,9 @@ GRANT SELECT ON db.table TO exporter;
 
 - Copy the table definition
 ```sql
-select create_table_query
-from system.tables
-where database = 'db' and table = 'table'
+SELECT create_table_query
+FROM system.tables
+WHERE database = 'db' AND table = 'table'
 ```
 
 ### On the destination ClickHouse Cloud system: {#on-the-destination-clickhouse-cloud-system}
@@ -198,7 +198,7 @@ Modify the allow list and allow access from **Anywhere** temporarily. See the [I
 
 - Verify the data in the destination service
 
-#### Re-establish the IP Access List on the source {#re-establish-the-ip-access-list-on-the-source}
+#### Re-establish the IP access list on the source {#re-establish-the-ip-access-list-on-the-source}
 
   If you exported the access list earlier, then you can re-import it using **Share**, otherwise re-add your entries to the access list.
 

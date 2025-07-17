@@ -6,7 +6,6 @@ description: 'Using the Kafka Table Engine'
 title: 'Using the Kafka table engine'
 ---
 
-import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import Image from '@theme/IdealImage';
 import kafka_01 from '@site/static/images/integrations/data-ingestion/kafka/kafka_01.png';
 import kafka_02 from '@site/static/images/integrations/data-ingestion/kafka/kafka_02.png';
@@ -15,13 +14,13 @@ import kafka_04 from '@site/static/images/integrations/data-ingestion/kafka/kafk
 
 # Using the Kafka table engine
 
-<CloudNotSupportedBadge/>
-
-:::note
-Kafka table engine is not supported on [ClickHouse Cloud](https://clickhouse.com/cloud). Please consider [ClickPipes](../clickpipes/kafka.md) or [Kafka Connect](./kafka-clickhouse-connect-sink.md)
-:::
+The Kafka table engine can be used to [**read** data from](#kafka-to-clickhouse) and [**write** data to](#clickhouse-to-kafka) Apache Kafka and other Kafka API-compatible brokers (e.g., Redpanda, Amazon MSK).
 
 ### Kafka to ClickHouse {#kafka-to-clickhouse}
+
+:::note
+If you're on ClickHouse Cloud, we recommend using [ClickPipes](/integrations/clickpipes) instead. ClickPipes natively supports private network connections, scaling ingestion and cluster resources independently, and comprehensive monitoring for streaming Kafka data into ClickHouse.
+:::
 
 To use the Kafka table engine, you should be broadly familiar with [ClickHouse materialized views](../../../guides/developer/cascading-materialized-views.md).
 
@@ -180,7 +179,7 @@ CREATE TABLE github_queue
     member_login LowCardinality(String)
 )
    ENGINE = Kafka('kafka_host:9092', 'github', 'clickhouse',
-            'JSONEachRow') settings kafka_thread_per_consumer = 0, kafka_num_consumers = 1;
+            'JSONEachRow') SETTINGS kafka_thread_per_consumer = 0, kafka_num_consumers = 1;
 ```
 
 
@@ -213,7 +212,7 @@ You should see 200,000 rows:
 └─────────┘
 ```
 
-#### Common Operations {#common-operations}
+#### Common operations {#common-operations}
 
 ##### Stopping & restarting message consumption {#stopping--restarting-message-consumption}
 
@@ -229,7 +228,7 @@ This will not impact the offsets of the consumer group. To restart consumption, 
 ATTACH TABLE github_queue;
 ```
 
-##### Adding Kafka Metadata {#adding-kafka-metadata}
+##### Adding Kafka metadata {#adding-kafka-metadata}
 
 It can be useful to keep track of the metadata from the original Kafka messages after it's been ingested into ClickHouse. For example, we may want to know how much of a specific topic or partition we have consumed. For this purpose, the Kafka table engine exposes several [virtual columns](../../../engines/table-engines/index.md#table_engines-virtual_columns). These can be persisted as columns in our target table by modifying our schema and materialized view's select statement.
 
@@ -263,7 +262,7 @@ ATTACH TABLE github_queue;
 
 ```sql
 CREATE MATERIALIZED VIEW github_mv TO github AS
-SELECT *, _topic as topic, _partition as partition
+SELECT *, _topic AS topic, _partition as partition
 FROM github_queue;
 ```
 
@@ -291,7 +290,7 @@ The result looks like:
 | Oxonium | CommitCommentEvent | 2011-02-12 12:31:28 | github | 0 |
 
 
-##### Modify Kafka Engine Settings {#modify-kafka-engine-settings}
+##### Modify Kafka engine settings {#modify-kafka-engine-settings}
 
 We recommend dropping the Kafka engine table and recreating it with the new settings. The materialized view does not need to be modified during this process - message consumption will resume once the Kafka engine table is recreated.
 
@@ -414,7 +413,7 @@ CREATE TABLE github_out_queue
     member_login LowCardinality(String)
 )
    ENGINE = Kafka('host:port', 'github_out', 'clickhouse_out',
-            'JSONEachRow') settings kafka_thread_per_consumer = 0, kafka_num_consumers = 1;
+            'JSONEachRow') SETTINGS kafka_thread_per_consumer = 0, kafka_num_consumers = 1;
 ```
 
 Now create a new materialized view `github_out_mv` to point at the GitHub table, inserting rows to the above engine when it triggers. Additions to the GitHub table will, as a result, be pushed to our new Kafka topic.
@@ -460,7 +459,7 @@ wc -l
 
 Although an elaborate example, this illustrates the power of materialized views when used in conjunction with the Kafka engine.
 
-### Clusters and Performance {#clusters-and-performance}
+### Clusters and performance {#clusters-and-performance}
 
 #### Working with ClickHouse Clusters {#working-with-clickhouse-clusters}
 
@@ -470,7 +469,7 @@ Multiple ClickHouse instances can all be configured to read from a topic using t
 
 <Image img={kafka_04} size="lg" alt="Kafka table engine with ClickHouse clusters diagram"/>
 
-#### Tuning Performance {#tuning-performance}
+#### Tuning performance {#tuning-performance}
 
 Consider the following when looking to increase Kafka Engine table throughput performance:
 
@@ -484,7 +483,7 @@ Consider the following when looking to increase Kafka Engine table throughput pe
 
 Any settings changes should be tested. We recommend monitoring Kafka consumer lags to ensure you are properly scaled.
 
-#### Additional Settings {#additional-settings}
+#### Additional settings {#additional-settings}
 
 Aside from the settings discussed above, the following may be of interest:
 

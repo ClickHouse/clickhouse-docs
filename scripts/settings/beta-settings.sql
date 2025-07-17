@@ -5,15 +5,15 @@ FORMAT TSVRaw;
 
 -- Then append the table content
 WITH
-    experimental_session_settings AS
+    beta_session_settings AS
         (
             SELECT
                 format('[{}](/operations/settings/settings#{})', name, name) AS Name,
                 format('`{}`', ifNull(default, ' ')) AS Default
 FROM system.settings
-WHERE tier = 'Beta' AND alias_for=''
+WHERE tier = 'Beta' AND alias_for='' AND name NOT LIKE 'vector_search_with_rescoring'
     ),
-    experimental_mergetree_settings AS
+    beta_mergetree_settings AS
     (
 SELECT
     format('[{}](/operations/settings/merge-tree-settings#{})', name, name) AS Name,
@@ -24,10 +24,10 @@ WHERE tier = 'Beta'
     combined AS
     (
 SELECT *
-FROM experimental_session_settings
+FROM beta_session_settings
 UNION ALL
 SELECT *
-FROM experimental_mergetree_settings
+FROM beta_mergetree_settings
 ORDER BY Name ASC
     )
 SELECT concat('| ', Name, ' | ', Default, ' |')

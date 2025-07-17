@@ -33,7 +33,7 @@ import sparsePrimaryIndexes15a from '@site/static/images/guides/best-practices/s
 import sparsePrimaryIndexes15b from '@site/static/images/guides/best-practices/sparse-primary-indexes-15b.png';
 import Image from '@theme/IdealImage';
 
-# A Practical Introduction to Primary Indexes in ClickHouse
+# A practical introduction to primary indexes in ClickHouse
 
 ## Introduction {#introduction}
 
@@ -43,7 +43,7 @@ In this guide we are going to do a deep dive into ClickHouse indexing. We will i
 - [what some of the best practices are for indexing in ClickHouse](#using-multiple-primary-indexes)
 
 You can optionally execute all ClickHouse SQL statements and queries given in this guide by yourself on your own machine.
-For installation of ClickHouse and getting started instructions, see the [Quick Start](/quick-start.mdx).
+For installation of ClickHouse and getting started instructions, see the [Quick Start](/get-started/quick-start).
 
 :::note
 This guide is focusing on ClickHouse sparse primary indexes.
@@ -52,7 +52,7 @@ For ClickHouse [secondary data skipping indexes](/engines/table-engines/mergetre
 :::
 
 
-### Data Set {#data-set}
+### Data set {#data-set}
 
 Throughout this guide we will use a sample anonymized web traffic data set.
 
@@ -66,7 +66,7 @@ With these three columns we can already formulate some typical web analytics que
 - "What are the top 10 users that most frequently clicked a specific URL?"
 - "What are the most popular times (e.g. days of the week) at which a user clicks on a specific URL?"
 
-### Test Machine {#test-machine}
+### Test machine {#test-machine}
 
 All runtime numbers given in this document are based on running ClickHouse 22.2.1 locally on a MacBook Pro with the Apple M1 Pro chip and 16GB of RAM.
 
@@ -125,7 +125,7 @@ after loading data into it. Why this is necessary for this example will become a
 Now we execute our first web analytics query. The following is calculating the top 10 most clicked urls for the internet user with the UserID 749927693:
 
 ```sql
-SELECT URL, count(URL) as Count
+SELECT URL, count(URL) AS Count
 FROM hits_NoPrimaryKey
 WHERE UserID = 749927693
 GROUP BY URL
@@ -157,7 +157,7 @@ ClickHouse client's result output indicates that ClickHouse executed a full tabl
 
 To make this (way) more efficient and (much) faster, we need to use a table with a appropriate primary key. This will allow ClickHouse to automatically (based on the primary key's column(s)) create a sparse primary index which can then be used to significantly speed up the execution of our example query.
 
-## ClickHouse Index Design {#clickhouse-index-design}
+## ClickHouse index design {#clickhouse-index-design}
 
 ### An index design for massive data scales {#an-index-design-for-massive-data-scales}
 
@@ -924,7 +924,7 @@ Insert all 8.87 million rows from our [original table](#a-table-with-a-primary-k
 
 ```sql
 INSERT INTO hits_URL_UserID
-SELECT * from hits_UserID_URL;
+SELECT * FROM hits_UserID_URL;
 ```
 
 The response looks like:

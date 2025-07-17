@@ -5,7 +5,7 @@ title: 'ClickHouse Cloud Tiers'
 description: 'Cloud tiers available in ClickHouse Cloud'
 ---
 
-# ClickHouse Cloud Tiers
+# ClickHouse Cloud tiers
 
 There are several tiers available in ClickHouse Cloud. 
 Tiers are assigned at any organizational level. Services within an organization therefore belong to the same tier.
@@ -196,11 +196,8 @@ Single replica services across all three tiers are meant to be fixed in size (`8
 
 ## Upgrading to a different tier {#upgrading-to-a-different-tier}
 
-You can always upgrade from Basic to Scale or from Scale to Enterprise.
+You can always upgrade from Basic to Scale or from Scale to Enterprise. Downgrading tiers will require disabling premium features.
 
-:::note
-Downgrading of tiers is not possible.
-:::
 
 ---
 

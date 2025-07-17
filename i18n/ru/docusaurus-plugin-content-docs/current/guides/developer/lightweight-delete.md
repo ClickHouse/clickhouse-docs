@@ -5,6 +5,6 @@ keywords: ['легковесное удаление']
 description: 'Предоставляет обзор легковесного удаления в ClickHouse'
 ---
 
-import Content from '@site/docs/sql-reference/statements/delete.md';
+import Content from '@site/i18n/ru/docusaurus-plugin-content-docs/current/sql-reference/statements/delete.md';
 
 <Content />

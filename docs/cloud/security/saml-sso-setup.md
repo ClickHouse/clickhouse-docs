@@ -13,13 +13,13 @@ import samlAzureApp from '@site/static/images/cloud/security/saml-azure-app.png'
 import samlAzureClaims from '@site/static/images/cloud/security/saml-azure-claims.png';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
-# SAML SSO Setup
+# SAML SSO setup
 
 <EnterprisePlanFeatureBadge feature="SAML SSO"/>
 
 ClickHouse Cloud supports single-sign on (SSO) via security assertion markup language (SAML). This enables you to sign in securely to your ClickHouse Cloud organization by authenticating with your identity provider (IdP).
 
-We currently support service provider initiated SSO, multiple organizations using separate connections, and just-in-time provisioning. We do not yet support a system for cross-domain identity management (SCIM) or attribute mapping.
+We currently support service provider-initiated SSO SSO, multiple organizations using separate connections, and just-in-time provisioning. We do not yet support a system for cross-domain identity management (SCIM) or attribute mapping.
 
 ## Before you begin {#before-you-begin}
 
@@ -27,7 +27,7 @@ You will need Admin permissions in your IdP and the **Admin** role in your Click
 
 We recommend setting up a **direct link to your organization** in addition to your SAML connection to simplify the login process. Each IdP handles this differently. Read on for how to do this for your IdP.
 
-## How to Configure Your IdP {#how-to-configure-your-idp}
+## How to configure your IdP {#how-to-configure-your-idp}
 
 ### Steps {#steps}
 
@@ -51,7 +51,7 @@ We recommend setting up a **direct link to your organization** in addition to yo
 <details> 
    <summary>  Configure your SAML integration  </summary>
    
-   ClickHouse uses service provider initiated SAML connections. This means you can log in via https://console.clickhouse.cloud or via a direct link. We do not currently support identity provider initiated connections. Basic SAML configurations include the following:
+   ClickHouse uses service provider-initiated SAML connections. This means you can log in via https://console.clickhouse.cloud or via a direct link. We do not currently support identity provider initiated connections. Basic SAML configurations include the following:
 
    - SSO URL or ACS URL:  `https://auth.clickhouse.cloud/login/callback?connection={organizationid}` 
 
@@ -109,6 +109,10 @@ We recommend setting up a **direct link to your organization** in addition to yo
    4. Log in with your original authentication method to assign the Admin role to your new SSO account.
    - For email + password accounts, please use `https://console.clickhouse.cloud/?with=email`.
    - For social logins, please click the appropriate button (**Continue with Google** or **Continue with Microsoft**)
+
+:::note
+`email` in `?with=email` above is the literal parameter value, not a placeholder
+:::
 
    5. Log out with your original authentication method and log back in via https://console.clickhouse.cloud OR the direct link you configured in 'Configure your SAML integration' above.
 
@@ -332,33 +336,35 @@ Azure (Microsoft) SAML may also be referred to as Azure Active Directory (AD) or
 </details>
 
 
-## How It Works {#how-it-works}
+## How it works {#how-it-works}
 
-### Service Provider Initiated SSO {#service-provider-initiated-sso}
+### Service provider-initiated SSO {#service-provider-initiated-sso}
 
-We only utilize service provider initiated SSO. This means users go to `https://console.clickhouse.cloud` and enter their email address to be redirected to the IdP for authentication. Users already authenticated via your IdP can use the direct link to automatically log in to your organization without entering their email address at the login page.
+We only utilize service provider-initiated SSO. This means users go to `https://console.clickhouse.cloud` and enter their email address to be redirected to the IdP for authentication. Users already authenticated via your IdP can use the direct link to automatically log in to your organization without entering their email address at the login page.
 
-### Assigning User Roles {#assigning-user-roles}
+### Assigning user roles {#assigning-user-roles}
 
-Users will appear in your ClickHouse Cloud console after they are assigned to your IdP application and log in for the first time. At least one SSO user should be assigned the Admin role in your organization. Use social login or `https://console.clickhouse.cloud/?with=email` to log in with your original authentication method to update your SSO role.
+Users will appear in your ClickHouse Cloud console after they are assigned to your IdP application and log in for the first time. At least one SSO user should be assigned the Admin role in your organization and additional users that login with SSO will be created with the role of ["Member"](/cloud/security/cloud-access-management/overview#console-users-and-roles), meaning that by default they do not have access to any services and should have their access and roles updated by an Admin.
 
-### Removing Non-SSO Users {#removing-non-sso-users}
+Use social login or `https://console.clickhouse.cloud/?with=email` to log in with your original authentication method to update your SSO role.
+
+### Removing non-SSO users {#removing-non-sso-users}
 
 Once you have SSO users set up and have assigned at least one user the Admin role, the Admin can remove users using other methods (e.g. social authentication or user ID + password). Google authentication will continue to work after SSO is set up. User ID + password users will be automatically redirected to SSO based on their email domain unless users use `https://console.clickhouse.cloud/?with=email`.
 
-### Managing Users {#managing-users}
+### Managing users {#managing-users}
 
 ClickHouse Cloud currently implements SAML for SSO. We have not yet implemented SCIM to manage users. This means SSO users must be assigned to the application in your IdP to access your ClickHouse Cloud organization. Users must log in to ClickHouse Cloud once to appear in the **Users** area in the organization. When users are removed in your IdP, they will not be able to log in to ClickHouse Cloud using SSO. However, the SSO user will still show in your organization until and administrator manually removes the user.
 
-### Multi-Org SSO {#multi-org-sso}
+### Multi-org SSO {#multi-org-sso}
 
 ClickHouse Cloud supports multi-organization SSO by providing a separate connection for each organization. Use the direct link (`https://console.clickhouse.cloud/?connection={organizationid}`) to log in to each respective organization. Be sure to log out of one organization before logging into another.
 
-## Additional Information {#additional-information}
+## Additional information {#additional-information}
 
 Security is our top priority when it comes to authentication. For this reason, we made a few decisions when implementing SSO that we need you to know.
 
-- **We only process service provider initiated authentication flows.** Users must navigate to `https://console.clickhouse.cloud` and enter an email address to be redirected to your identity provider. Instructions to add a bookmark application or shortcut are provided for your convenience so your users don't need to remember the URL.
+- **We only process service provider-initiated authentication flows.** Users must navigate to `https://console.clickhouse.cloud` and enter an email address to be redirected to your identity provider. Instructions to add a bookmark application or shortcut are provided for your convenience so your users don't need to remember the URL.
 
 - **All users assigned to your app via your IdP must have the same email domain.** If you have vendors, contractors or consultants you would like to have access to your ClickHouse account, they must have an email address with the same domain (e.g. user@domain.com) as your employees.
 

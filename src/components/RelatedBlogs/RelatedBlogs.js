@@ -119,7 +119,6 @@ const RelatedBlogs = (props) => {
 
                     // Search on title if there are no keywords
                     let search_query = keywords.length === 0 ? title : formatKeywords(keywords);
-                    console.log(formatKeywords(keywords))
 
                     const param_string = `attributesToRetrieve=title,image,url,date&hitsPerPage=3&optionalWords=${formatKeywords(keywords)}&filters=(category:Engineering)&filters=release_post:false&numericFilters=date>=${timestampCutoff}`;
 
@@ -145,11 +144,6 @@ const RelatedBlogs = (props) => {
             fetchRelatedBlogs();
         }
     }, [isVisible, dataFetched, client, indexName, title, keywords]);
-
-    // Debugging: see returned blog objects
-    useEffect(()=>{
-        console.log(relatedBlogs)
-    }, [relatedBlogs])
 
     // Don't render anything if not visible yet
     if (!isVisible) {

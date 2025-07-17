@@ -83,27 +83,27 @@ This query returns the column names expected by Grafana, rendering a table of tr
 
 Users wishing to write more complex queries can switch to the `SQL Editor`.
 
-### View Trace details {#view-trace-details}
+### View trace details {#view-trace-details}
 
 As shown above, Trace ids are rendered as clickable links. On clicking on a trace Id, a user can choose to view the associated spans via the link `View Trace`. This issues the following query (assuming OTel columns) to retrieve the spans in the required structure, rendering the results as a waterfall.
 
 ```sql
-WITH '<trace_id>' as trace_id,
+WITH '<trace_id>' AS trace_id,
   (SELECT min(Start) FROM "default"."otel_traces_trace_id_ts"
-    WHERE TraceId = trace_id) as trace_start,
+    WHERE TraceId = trace_id) AS trace_start,
   (SELECT max(End) + 1 FROM "default"."otel_traces_trace_id_ts"
-    WHERE TraceId = trace_id) as trace_end
-SELECT "TraceId" as traceID,
-  "SpanId" as spanID,
-  "ParentSpanId" as parentSpanID,
-  "ServiceName" as serviceName,
-  "SpanName" as operationName,
-  "Timestamp" as startTime,
-  multiply("Duration", 0.000001) as duration,
+    WHERE TraceId = trace_id) AS trace_end
+SELECT "TraceId" AS traceID,
+  "SpanId" AS spanID,
+  "ParentSpanId" AS parentSpanID,
+  "ServiceName" AS serviceName,
+  "SpanName" AS operationName,
+  "Timestamp" AS startTime,
+  multiply("Duration", 0.000001) AS duration,
   arrayMap(key -> map('key', key, 'value',"SpanAttributes"[key]),
-  mapKeys("SpanAttributes")) as tags,
+  mapKeys("SpanAttributes")) AS tags,
   arrayMap(key -> map('key', key, 'value',"ResourceAttributes"[key]),
-  mapKeys("ResourceAttributes")) as serviceTags
+  mapKeys("ResourceAttributes")) AS serviceTags
 FROM "default"."otel_traces"
 WHERE traceID = trace_id
   AND startTime >= trace_start
@@ -122,9 +122,9 @@ Note how the above query uses the materialized view `otel_traces_trace_id_ts` to
 If logs contain trace ids, users can navigate from a trace to its associated logs. To view the logs click on a trace id and select `View Logs`. This issues the following query assuming default OTel columns.
 
 ```sql
-SELECT Timestamp as "timestamp",
-  Body as "body", SeverityText as "level",
-  TraceId as "traceID" FROM "default"."otel_logs"
+SELECT Timestamp AS "timestamp",
+  Body AS "body", SeverityText AS "level",
+  TraceId AS "traceID" FROM "default"."otel_logs"
 WHERE ( traceID = '<trace_id>' )
 ORDER BY timestamp ASC LIMIT 1000
 ```

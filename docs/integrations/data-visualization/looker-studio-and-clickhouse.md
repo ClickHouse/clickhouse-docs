@@ -25,10 +25,10 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 Looker Studio can connect to ClickHouse via the MySQL interface using the official Google MySQL data source.
 
-## ClickHouse Cloud Setup {#clickhouse-cloud-setup}
+## ClickHouse Cloud setup {#clickhouse-cloud-setup}
 <MySQLCloudSetup />
 
-## On-premise ClickHouse Server Setup {#on-premise-clickhouse-server-setup}
+## On-premise ClickHouse server setup {#on-premise-clickhouse-server-setup}
 <MySQLOnPremiseSetup />
 
 ## Connecting Looker Studio to ClickHouse {#connecting-looker-studio-to-clickhouse}

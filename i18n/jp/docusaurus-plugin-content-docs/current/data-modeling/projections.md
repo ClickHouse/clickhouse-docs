@@ -441,5 +441,5 @@ LIMIT 100
 
 ## 関連コンテンツ {#related-content}
 - [ClickHouseにおける主インデックスの実用的な導入](/guides/best-practices/sparse-primary-indexes#option-3-projections)
-- [Materialized Views](/docs/materialized-views)
+- [Materialized Views](/materialized-views)
 - [ALTER PROJECTION](/sql-reference/statements/alter/projection)

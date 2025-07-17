@@ -175,7 +175,7 @@ Best for: large scale, mission critical deployments that have stringent security
 </tbody>
 </table>
 
-## Frequently Asked Questions {#faqs}
+## Frequently asked questions {#faqs}
 
 ### How is compute metered? {#how-is-compute-metered}
 
@@ -191,7 +191,7 @@ Storage costs are the same across tiers and vary by region and cloud service pro
 
 Storage and backups are counted towards storage costs and billed separately. 
 All services will default to one backup, retained for a day. 
-Users who need additional backups can do so by configuring additional [backups](backups/overview.md) under the settings tab of the Cloud Console.
+Users who need additional backups can do so by configuring additional [backups](backups/overview.md) under the settings tab of the Cloud console.
 
 ### How do I estimate compression? {#how-do-i-estimate-compression}
 
@@ -367,7 +367,7 @@ affordable for customers to move data from Postgres to ClickHouse for
 real-time analytics.
 
 The connector is over **5x more cost-effective** than external
-ETL tools and similar features in other database platforms. $^*$
+ETL tools and similar features in other database platforms.
 
 :::note
 Pricing will start being metered in monthly bills beginning **September 1st, 2025,**
@@ -376,10 +376,6 @@ then, usage is free. Customers have a 3-month window starting May 29 (GA announc
 to review and optimize their costs if needed, although we expect most will not need
 to make any changes.
 :::
-
-$^*$ _For example, the external ETL tool Airbyte, which offers similar CDC capabilities,
-charges $10/GB (excluding credits)—more than 20 times the cost of Postgres CDC in
-ClickPipes for moving 1TB of data._
 
 #### Pricing dimensions {#pricing-dimensions}
 
@@ -417,7 +413,7 @@ This dimension covers the compute units provisioned per service just for Postgre
 ClickPipes. Compute is shared across all Postgres pipes within a service. **It
 is provisioned when the first Postgres pipe is created and deallocated when no
 Postgres CDC pipes remain**. The amount of compute provisioned depends on your
-organization’s tier:
+organization's tier:
 
 | Tier                         | Cost                                          |
 |------------------------------|-----------------------------------------------|
@@ -426,7 +422,7 @@ organization’s tier:
 
 #### Example {#example}
 
-Let’s say your service is in Scale tier and has the following setup:
+Let's say your service is in Scale tier and has the following setup:
 
 - 2 Postgres ClickPipes running continuous replication
 - Each pipe ingests 500 GB of data changes (CDC) per month
@@ -540,7 +536,7 @@ Postgres CDC ClickPipes pricing begins appearing on monthly bills starting
 **September 1st, 2025**, for all customers—both existing and new. Until then, 
 usage is free. Customers have a **3-month window** starting from **May 29**
 (the GA announcement date) to review and optimize their usage if needed, although
-we expect most won’t need to make any changes.
+we expect most won't need to make any changes.
 
 </details>
 
@@ -550,7 +546,7 @@ we expect most won’t need to make any changes.
 
 No data ingestion charges apply while a pipe is paused, since no data is moved. 
 However, compute charges still apply—either 0.5 or 1 compute unit—based on your 
-organization’s tier. This is a fixed service-level cost and applies across all 
+organization's tier. This is a fixed service-level cost and applies across all 
 pipes within that service.
 
 </details>

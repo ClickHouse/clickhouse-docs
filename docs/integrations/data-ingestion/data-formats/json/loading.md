@@ -8,13 +8,11 @@ keywords: ['json', 'clickhouse', 'inserting', 'loading', 'inserting']
 score: 15
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
-
 # Loading JSON {#loading-json}
 
 The following examples provide a very simple example of loading structured and semi-structured JSON data. For more complex JSON, including nested structures, see the guide [**Designing JSON schema**](/integrations/data-formats/json/schema).
 
-## Loading Structured JSON {#loading-structured-json}
+## Loading structured JSON {#loading-structured-json}
 
 In this section, we assume the JSON data is in [`NDJSON`](https://github.com/ndjson/ndjson-spec) (Newline delimited JSON) format, known as [`JSONEachRow`](/interfaces/formats#jsoneachrow) in ClickHouse, and well structured i.e. the column names and types are fixed. `NDJSON` is the preferred format for loading JSON due to its brevity and efficient use of space, but others are supported for both [input and output](/interfaces/formats#json).
 
@@ -118,9 +116,7 @@ FORMAT JSONEachRow
 These examples assume the use of the `JSONEachRow` format. Other common JSON formats are supported, with examples of loading these provided [here](/integrations/data-formats/json/other-formats).
 
 
-## Loading Semi-structured JSON {#loading-semi-structured-json}
-
-<PrivatePreviewBadge/>
+## Loading semi-structured JSON {#loading-semi-structured-json}
 
 Our previous example loaded JSON which was static with well known key names and types. This is often not the case - keys can be added or their types can change. This is common in use cases such as Observability data.
 

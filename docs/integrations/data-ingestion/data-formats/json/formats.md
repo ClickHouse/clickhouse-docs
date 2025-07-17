@@ -227,7 +227,7 @@ SELECT * FROM file('objects.json', JSONObjectEachRow)
 
 Note how the `id` column has been populated by key values correctly.
 
-## JSON Arrays {#json-arrays}
+## JSON arrays {#json-arrays}
 
 Sometimes, for the sake of saving space, JSON files are encoded in arrays instead of objects. In this case, we deal with a [list of JSON arrays](../assets/arrays.json):
 

@@ -10,6 +10,7 @@ description: 'Deploying ClickStack with Helm - The ClickHouse Observability Stac
 import Image from '@theme/IdealImage';
 import hyperdx_24 from '@site/static/images/use-cases/observability/hyperdx-24.png';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
+import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 The helm chart for HyperDX can be found [here](https://github.com/hyperdxio/helm-charts) and is the **recommended** method for production deployments.
 
@@ -45,11 +46,11 @@ The chart supports standard Kubernetes best practices, including:
 - Kubernetes cluster (v1.20+ recommended)
 - `kubectl` configured to interact with your cluster
 
-### Add the HyperDX Helm Repository {#add-the-hyperdx-helm-repository}
+### Add the HyperDX Helm repository {#add-the-hyperdx-helm-repository}
 
 Add the HyperDX Helm repository:
 
-```sh
+```shell
 helm repo add hyperdx https://hyperdxio.github.io/helm-charts
 helm repo update
 ```
@@ -58,7 +59,7 @@ helm repo update
 
 To install the HyperDX chart with default values:
 
-```sh
+```shell
 helm install my-hyperdx hyperdx/hdx-oss-v2
 ```
 
@@ -66,7 +67,7 @@ helm install my-hyperdx hyperdx/hdx-oss-v2
 
 Verify the installation:
 
-```bash
+```shell
 kubectl get pods -l "app.kubernetes.io/name=hdx-oss-v2"
 ```
 
@@ -76,7 +77,7 @@ When all pods are ready, proceed.
 
 Port forwarding allows us to access and set up HyperDX. Users deploying to production should instead expose the service via an ingress or load balancer to ensure proper network access, TLS termination, and scalability. Port forwarding is best suited for local development or one-off administrative tasks, not long-term or high-availability environments.
 
-```bash
+```shell
 kubectl port-forward \
   pod/$(kubectl get pod -l app.kubernetes.io/name=hdx-oss-v2 -o jsonpath='{.items[0].metadata.name}') \
   8080:3000
@@ -99,16 +100,16 @@ You can override the default connection to the integrated ClickHouse instance. F
 
 For an example of using an alternative ClickHouse instance, see ["Create a ClickHouse Cloud connection"](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
 
-### Customizing values (Optional) {#customizing-values}
+### Customizing values (optional) {#customizing-values}
 
 You can customize settings by using `--set` flags. For example:
 
-```bash
+```shell
 helm install my-hyperdx hyperdx/hdx-oss-v2 --set key=value
 
 Alternatively, edit the `values.yaml`. To retrieve the default values:
 
-```sh
+```shell
 helm show values hyperdx/hdx-oss-v2 > values.yaml
 ```
 
@@ -134,15 +135,15 @@ ingress:
           pathType: ImplementationSpecific
 ```
 
-```bash
+```shell
 helm install my-hyperdx hyperdx/hdx-oss-v2 -f values.yaml
 ```
 
-### Using Secrets (Optional) {#using-secrets}
+### Using secrets (optional) {#using-secrets}
 
 For handling sensitive data such as API keys or database credentials, use Kubernetes secrets. The HyperDX Helm charts provide default secret files that you can modify and apply to your cluster.
 
-#### Using Pre-Configured Secrets {#using-pre-configured-secrets}
+#### Using pre-configured secrets {#using-pre-configured-secrets}
 
 The Helm chart includes a default secret template located at [`charts/hdx-oss-v2/templates/secrets.yaml`](https://github.com/hyperdxio/helm-charts/blob/main/charts/hdx-oss-v2/templates/secrets.yaml). This file provides a base structure for managing secrets.
 
@@ -163,20 +164,20 @@ data:
 
 Apply the secret to your cluster:
 
-```sh
+```shell
 kubectl apply -f secrets.yaml
 ```
 
-#### Creating a Custom Secret {#creating-a-custom-secret}
+#### Creating a custom secret {#creating-a-custom-secret}
 
 If you prefer, you can create a custom Kubernetes secret manually:
 
-```sh
+```shell
 kubectl create secret generic hyperdx-secret \
   --from-literal=API_KEY=my-secret-api-key
 ```
 
-#### Referencing a Secret {#referencing-a-secret}
+#### Referencing a secret {#referencing-a-secret}
 
 To reference a secret in `values.yaml`:
 
@@ -193,9 +194,9 @@ hyperdx:
 
 ## Using ClickHouse Cloud {#using-clickhouse-cloud}
 
-If using ClickHouse Cloud users disable the ClickHouse instance deployed by the Helm chart and specify the Cloud Cloud credentials:
+If using ClickHouse Cloud users disable the ClickHouse instance deployed by the Helm chart and specify the Cloud credentials:
 
-```bash
+```shell
 # specify ClickHouse Cloud credentials
 export CLICKHOUSE_URL=<CLICKHOUSE_CLOUD_URL> # full https url
 export CLICKHOUSE_USER=<CLICKHOUSE_USER>
@@ -219,9 +220,21 @@ clickhouse:
 
 otel:
   clickhouseEndpoint: ${CLICKHOUSE_URL}
+
+hyperdx:
+  defaultConnections: |
+    [
+      {
+        "name": "External ClickHouse",
+        "host": "http://your-clickhouse-server:8123",
+        "port": 8123,
+        "username": "your-username",
+        "password": "your-password"
+      }
+    ]
 ```
 
-```bash
+```shell
 helm install my-hyperdx hyperdx/hdx-oss-v2 -f values.yaml
 # or if installed...
 # helm upgrade my-hyperdx hyperdx/hdx-oss-v2 -f values.yaml
@@ -234,11 +247,11 @@ By default, this chart also installs ClickHouse and the OTel collector. However,
 
 To disable ClickHouse and the OTel collector, set the following values:
 
-```bash
+```shell
 helm install myrelease hyperdx-helm --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false --set otel.enabled=false
 ```
 
-## Task Configuration {#task-configuration}
+## Task configuration {#task-configuration}
 
 By default, there is one task in the chart setup as a cronjob, responsible for checking whether alerts should fire. Here are its configuration options:
 
@@ -248,17 +261,17 @@ By default, there is one task in the chart setup as a cronjob, responsible for c
 | `tasks.checkAlerts.schedule` | Cron schedule for the check-alerts task | `*/1 * * * *` |
 | `tasks.checkAlerts.resources` | Resource requests and limits for the check-alerts task | See `values.yaml` |
 
-## Upgrading the Chart {#upgrading-the-chart}
+## Upgrading the chart {#upgrading-the-chart}
 
 To upgrade to a newer version:
 
-```sh
+```shell
 helm upgrade my-hyperdx hyperdx/hdx-oss-v2 -f values.yaml
 ```
 
 To check available chart versions:
 
-```sh
+```shell
 helm search repo hyperdx
 ```
 
@@ -266,7 +279,7 @@ helm search repo hyperdx
 
 To remove the deployment:
 
-```sh
+```shell
 helm uninstall my-hyperdx
 ```
 
@@ -274,20 +287,50 @@ This will remove all resources associated with the release, but persistent data 
 
 ## Troubleshooting {#troubleshooting}
 
-### Checking Logs {#checking-logs}
+### Checking logs {#checking-logs}
 
-```sh
+```shell
 kubectl logs -l app.kubernetes.io/name=hdx-oss-v2
 ```
 
-### Debugging a Failed Install {#debugging-a-failed-instance}
+### Debugging a failed install {#debugging-a-failed-instance}
 
-```sh
+```shell
 helm install my-hyperdx hyperdx/hdx-oss-v2 --debug --dry-run
 ```
 
-### Verifying Deployment {#verifying-deployment}
+### Verifying deployment {#verifying-deployment}
 
-```sh
+```shell
 kubectl get pods -l app.kubernetes.io/name=hdx-oss-v2
+```
+
+<JSONSupport/>
+
+Users can set these environment variables via either parameters or the `values.yaml` e.g.
+
+
+*values.yaml*
+
+```yaml
+hyperdx:
+  ...
+  env:
+    - name: BETA_CH_OTEL_JSON_SCHEMA_ENABLED
+      value: "true"
+
+otel:
+  ...
+  env:
+    - name: OTEL_AGENT_FEATURE_GATE_ARG
+      value: "--feature-gates=clickhouse.json"
+```
+
+or via `--set`:
+
+```shell
+helm install myrelease hyperdx-helm --set "hyperdx.env[0].name=BETA_CH_OTEL_JSON_SCHEMA_ENABLED" \
+  --set "hyperdx.env[0].value=true" \
+  --set "otel.env[0].name=OTEL_AGENT_FEATURE_GATE_ARG" \
+  --set "otel.env[0].value=--feature-gates=clickhouse.json"
 ```

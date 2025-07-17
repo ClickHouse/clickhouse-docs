@@ -23,14 +23,14 @@ This guide explains how PREWHERE works, how to measure its impact, and how to tu
 
 ## Query processing without PREWHERE optimization {#query-processing-without-prewhere-optimization}
 
-We’ll start by illustrating how a query on the [uk_price_paid_simple](/parts) table is processed without using PREWHERE:
+We'll start by illustrating how a query on the [uk_price_paid_simple](/parts) table is processed without using PREWHERE:
 
 <Image img={visual01} size="md" alt="Query processing without PREWHERE optimization"/>
 
 <br/><br/>
-① The query includes a filter on the `town` column, which is part of the table’s primary key, and therefore also part of the primary index.
+① The query includes a filter on the `town` column, which is part of the table's primary key, and therefore also part of the primary index.
 
-② To accelerate the query, ClickHouse loads the table’s primary index into memory.
+② To accelerate the query, ClickHouse loads the table's primary index into memory.
 
 ③ It scans the index entries to identify which granules from the town column might contain rows matching the predicate.
 
@@ -50,13 +50,13 @@ The first three processing steps are the same as before:
 <Image img={visual02} size="md" alt="Query processing with PREWHERE optimization"/>
 
 <br/><br/>
-① The query includes a filter on the `town` column, which is part of the table’s primary key—and therefore also part of the primary index.
+① The query includes a filter on the `town` column, which is part of the table's primary key—and therefore also part of the primary index.
 
 ②  Similar to the run without the PREWHERE clause, to accelerate the query, ClickHouse loads the primary index into memory,
 
 ③ then scans the index entries to identify which granules from the `town` column might contain rows matching the predicate.
 
-Now, thanks to the PREWHERE clause, the next step differs: Instead of reading all relevant columns up front, ClickHouse filters data column by column, only loading what’s truly needed. This drastically reduces I/O, especially for wide tables.
+Now, thanks to the PREWHERE clause, the next step differs: Instead of reading all relevant columns up front, ClickHouse filters data column by column, only loading what's truly needed. This drastically reduces I/O, especially for wide tables.
 
 With each step, it only loads granules that contain at least one row that survived—i.e., matched—the previous filter. As a result, the number of granules to load and evaluate for each filter decreases monotonically:
 
@@ -92,9 +92,9 @@ Note that ClickHouse processes the same number of rows in both the PREWHERE and 
 
 ## PREWHERE optimization is automatically applied {#prewhere-optimization-is-automatically-applied}
 
-The PREWHERE clause can be added manually, as shown in the example above. However, you don’t need to write PREWHERE manually. When the setting [`optimize_move_to_prewhere`](/operations/settings/settings#optimize_move_to_prewhere) is enabled (true by default), ClickHouse automatically moves filter conditions from WHERE to PREWHERE, prioritizing those that will reduce read volume the most.
+The PREWHERE clause can be added manually, as shown in the example above. However, you don't need to write PREWHERE manually. When the setting [`optimize_move_to_prewhere`](/operations/settings/settings#optimize_move_to_prewhere) is enabled (true by default), ClickHouse automatically moves filter conditions from WHERE to PREWHERE, prioritizing those that will reduce read volume the most.
 
-The idea is that smaller columns are faster to scan, and by the time larger columns are processed, most granules have already been filtered out. Since all columns have the same number of rows, a column’s size is primarily determined by its data type, for example, a `UInt8` column is generally much smaller than a `String` column.
+The idea is that smaller columns are faster to scan, and by the time larger columns are processed, most granules have already been filtered out. Since all columns have the same number of rows, a column's size is primarily determined by its data type, for example, a `UInt8` column is generally much smaller than a `String` column.
 
 ClickHouse follows this strategy by default as of version [23.2](https://clickhouse.com/blog/clickhouse-release-23-02#multi-stage-prewhere--alexander-gololobov), sorting PREWHERE filter columns for multi-step processing in ascending order of uncompressed size.
 
@@ -113,7 +113,7 @@ SELECT
 FROM
    uk.uk_price_paid_simple
 WHERE
-   town = 'LONDON' and date > '2024-12-31' and price < 10_000
+   town = 'LONDON' AND date > '2024-12-31' AND price < 10_000
 SETTINGS optimize_move_to_prewhere = false;
 ```
 
@@ -137,7 +137,7 @@ SELECT
 FROM
    uk.uk_price_paid_simple
 WHERE
-   town = 'LONDON' and date > '2024-12-31' and price < 10_000
+   town = 'LONDON' AND date > '2024-12-31' AND price < 10_000
 SETTINGS optimize_move_to_prewhere = true;
 ```
 
@@ -156,7 +156,7 @@ The same number of rows was processed (2.31 million), but thanks to PREWHERE, Cl
 
 For deeper insight into how ClickHouse applies PREWHERE behind the scenes, use EXPLAIN and trace logs. 
 
-We inspect the query’s logical plan using the [EXPLAIN](/sql-reference/statements/explain#explain-plan) clause:
+We inspect the query's logical plan using the [EXPLAIN](/sql-reference/statements/explain#explain-plan) clause:
 ```sql 
 EXPLAIN PLAN actions = 1
 SELECT
@@ -177,9 +177,9 @@ Prewhere info
 ...
 ```
 
-We omit most of the plan output here, as it’s quite verbose. In essence, it shows that all three column predicates were automatically moved to PREWHERE.
+We omit most of the plan output here, as it's quite verbose. In essence, it shows that all three column predicates were automatically moved to PREWHERE.
 
-When reproducing this yourself, you’ll also see in the query plan that the order of these predicates is based on the columns’ data type sizes. Since we haven’t enabled column statistics, ClickHouse uses size as the fallback for determining the PREWHERE processing order.
+When reproducing this yourself, you'll also see in the query plan that the order of these predicates is based on the columns' data type sizes. Since we haven't enabled column statistics, ClickHouse uses size as the fallback for determining the PREWHERE processing order.
 
 If you want to go even further under the hood, you can observe each individual PREWHERE processing step by instructing ClickHouse to return all test-level log entries during query execution:
 ```sql
@@ -188,7 +188,7 @@ SELECT
 FROM
    uk.uk_price_paid_simple
 WHERE
-   town = 'LONDON' and date > '2024-12-31' and price < 10_000
+   town = 'LONDON' AND date > '2024-12-31' AND price < 10_000
 SETTINGS send_logs_level = 'test';
 ```
 

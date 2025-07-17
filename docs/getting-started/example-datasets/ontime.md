@@ -125,7 +125,7 @@ CREATE TABLE `ontime`
   ORDER BY (Year, Quarter, Month, DayofMonth, FlightDate, IATA_CODE_Reporting_Airline);
 ```
 
-## Import from Raw Data {#import-from-raw-data}
+## Import from raw data {#import-from-raw-data}
 
 Downloading data:
 
@@ -209,7 +209,7 @@ ORDER BY count(*) DESC;
 Q5. The percentage of delays by carrier for 2007
 
 ```sql
-SELECT Carrier, c, c2, c*100/c2 as c3
+SELECT Carrier, c, c2, c*100/c2 AS c3
 FROM
 (
     SELECT
@@ -245,7 +245,7 @@ ORDER BY c3 DESC
 Q6. The previous request for a broader range of years, 2000-2008
 
 ```sql
-SELECT Carrier, c, c2, c*100/c2 as c3
+SELECT Carrier, c, c2, c*100/c2 AS c3
 FROM
 (
     SELECT
@@ -284,19 +284,19 @@ Q7. Percentage of flights delayed for more than 10 minutes, by year
 SELECT Year, c1/c2
 FROM
 (
-    select
+    SELECT
         Year,
-        count(*)*100 as c1
-    from ontime
+        count(*)*100 AS c1
+    FROM ontime
     WHERE DepDelay>10
     GROUP BY Year
 ) q
 JOIN
 (
-    select
+    SELECT
         Year,
-        count(*) as c2
-    from ontime
+        count(*) AS c2
+    FROM ontime
     GROUP BY Year
 ) qq USING (Year)
 ORDER BY Year;
@@ -316,7 +316,7 @@ Q8. The most popular destinations by the number of directly connected cities for
 ```sql
 SELECT DestCityName, uniqExact(OriginCityName) AS u
 FROM ontime
-WHERE Year >= 2000 and Year <= 2010
+WHERE Year >= 2000 AND Year <= 2010
 GROUP BY DestCityName
 ORDER BY u DESC LIMIT 10;
 ```
@@ -341,9 +341,9 @@ WHERE
    DayOfWeek NOT IN (6,7) AND OriginState NOT IN ('AK', 'HI', 'PR', 'VI')
    AND DestState NOT IN ('AK', 'HI', 'PR', 'VI')
    AND FlightDate < '2010-01-01'
-GROUP by Carrier
-HAVING cnt>100000 and max(Year)>1990
-ORDER by rate DESC
+GROUP BY Carrier
+HAVING cnt>100000 AND max(Year)>1990
+ORDER BY rate DESC
 LIMIT 1000;
 ```
 

@@ -29,7 +29,7 @@ instrumentation isn't required to get value out of tracing.
 
 To install the OpenTelemetry and HyperDX Go packages, use the command below. It is recommended to check out the [current instrumentation packages](https://github.com/open-telemetry/opentelemetry-go-contrib/tree/v1.4.0/instrumentation#instrumentation-packages) and install the necessary packages to ensure that the trace information is attached correctly.
 
-```bash
+```shell
 go get -u go.opentelemetry.io/otel
 go get -u github.com/hyperdxio/otel-config-go
 go get -u github.com/hyperdxio/opentelemetry-go
@@ -40,7 +40,7 @@ go get -u github.com/hyperdxio/opentelemetry-logs-go
 
 For this example, we will be using `net/http/otelhttp`.
 
-```sh
+```shell
 go get -u go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp
 ```
 
@@ -149,7 +149,7 @@ func ExampleHandler(w http.ResponseWriter, r *http.Request) {
 
 For this example, we will be using `gin-gonic/gin`.
 
-```sh
+```shell
 go get -u go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin
 ```
 
@@ -234,7 +234,7 @@ func main() {
 
 Afterwards you'll need to configure the following environment variables in your shell to ship telemetry to ClickStack:
 
-```sh
+```shell
 export OTEL_EXPORTER_OTLP_ENDPOINT=https://localhost:4318 \
 OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \

@@ -14,11 +14,11 @@ import endpoints_completed from '@site/static/images/cloud/sqlconsole/endpoints-
 import endpoints_curltest from '@site/static/images/cloud/sqlconsole/endpoints-curltest.png';
 import endpoints_monitoring from '@site/static/images/cloud/sqlconsole/endpoints-monitoring.png';
 
-# Query API Endpoints
+# Query API endpoints
 
 The **Query API Endpoints** feature allows you to create an API endpoint directly from any saved SQL query in the ClickHouse Cloud console. You'll be able to access API endpoints via HTTP to execute your saved queries without needing to connect to your ClickHouse Cloud service via a native driver.
 
-## Quick-start Guide {#quick-start-guide}
+## Quick-start guide {#quick-start-guide}
 
 Before proceeding, ensure you have an API key and an Admin Console Role. You can follow this guide to [create an API key](/cloud/manage/openapi).
 
@@ -29,16 +29,16 @@ If you have a saved query, you can skip this step.
 Open a new query tab. For demonstration purposes, we'll use the [youtube dataset](/getting-started/example-datasets/youtube-dislikes), which contains approximately 4.5 billion records. As an example query, we'll return the top 10 uploaders by average views per video in a user-inputted `year` parameter:
 
 ```sql
-with sum(view_count) as view_sum,
-    round(view_sum / num_uploads, 2) as per_upload
-select
+WITH sum(view_count) AS view_sum,
+    round(view_sum / num_uploads, 2) AS per_upload
+SELECT
     uploader,
-    count() as num_uploads,
-    formatReadableQuantity(view_sum) as total_views,
-    formatReadableQuantity(per_upload) as views_per_video
-from
+    count() AS num_uploads,
+    formatReadableQuantity(view_sum) AS total_views,
+    formatReadableQuantity(per_upload) AS views_per_video
+FROM
     youtube
-where
+WHERE
     toYear(upload_date) = {year: UInt16}
 group by uploader
 order by per_upload desc
@@ -55,7 +55,7 @@ Next step, we'll go ahead and save the query:
 
 More documentation around saved queries can be found [here](/cloud/get-started/sql-console#saving-a-query).
 
-### Configuring the Query API Endpoint {#configuring-the-query-api-endpoint}
+### Configuring the query API endpoint {#configuring-the-query-api-endpoint}
 
 Query API endpoints can be configured directly from query view by clicking the **Share** button and selecting `API Endpoint`. You'll be prompted to specify which API key(s) should be able to access the endpoint:
 
@@ -79,7 +79,7 @@ After you've sent your first request, a new button should appear immediately to 
 
 <Image img={endpoints_monitoring} size="md" alt="Endpoint monitoring" />
 
-## Implementation Details {#implementation-details}
+## Implementation details {#implementation-details}
 
 ### Description {#description}
 
@@ -91,11 +91,11 @@ This route runs a query on a specified query endpoint. It supports different ver
 - **Method**: Basic Auth via OpenAPI Key/Secret
 - **Permissions**: Appropriate permissions for the query endpoint.
 
-### URL Parameters {#url-parameters}
+### URL parameters {#url-parameters}
 
 - `queryEndpointId` (required): The unique identifier of the query endpoint to run.
 
-### Query Parameters {#query-parameters}
+### Query parameters {#query-parameters}
 
 #### V1 {#v1}
 
@@ -112,7 +112,7 @@ None
 - `x-clickhouse-endpoint-version` (optional): The version of the query endpoint. Supported versions are `1` and `2`. If not provided, the default version is last saved for the endpoint.
 - `x-clickhouse-endpoint-upgrade` (optional): Set this header to upgrade the endpoint version. This works in conjunction with the `x-clickhouse-endpoint-version` header.
 
-### Request Body {#request-body}
+### Request body {#request-body}
 
 - `queryVariables` (optional): An object containing variables to be used in the query.
 - `format` (optional): The format of the response. If Query API Endpoint is version 2 any ClickHouse supported format is possible. Supported formats for v1 are:
@@ -132,24 +132,24 @@ None
 - **401 Unauthorized**: The request was made without authentication or with insufficient permissions.
 - **404 Not Found**: The specified query endpoint was not found.
 
-### Error Handling {#error-handling}
+### Error handling {#error-handling}
 
 - Ensure that the request includes valid authentication credentials.
 - Validate the `queryEndpointId` and `queryVariables` to ensure they are correct.
 - Handle any server errors gracefully, returning appropriate error messages.
 
-### Upgrading the Endpoint Version {#upgrading-the-endpoint-version}
+### Upgrading the endpoint version {#upgrading-the-endpoint-version}
 
 To upgrade the endpoint version from `v1` to `v2`, include the `x-clickhouse-endpoint-upgrade` header in the request and set it to `1`. This will trigger the upgrade process and allow you to use the features and improvements available in `v2`.
 
 ## Examples {#examples}
 
-### Basic Request {#basic-request}
+### Basic request {#basic-request}
 
 **Query API Endpoint SQL:**
 
 ```sql
-SELECT database, name as num_tables FROM system.tables limit 3;
+SELECT database, name AS num_tables FROM system.tables LIMIT 3;
 ```
 
 #### Version 1 {#version-1}
@@ -246,7 +246,7 @@ fetch(
 {"database":"INFORMATION_SCHEMA","num_tables":"REFERENTIAL_CONSTRAINTS"}
 ```
 
-### Request with Query Variables and Version 2 on JSONCompactEachRow Format {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
+### Request with query variables and version 2 on JSONCompactEachRow format {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
 
 **Query API Endpoint SQL:**
 
@@ -297,7 +297,7 @@ fetch(
 ["query_views_log", "system"]
 ```
 
-### Request with Array in the query variables that inserts data into a table {#request-with-array-in-the-query-variables-that-inserts-data-into-a-table}
+### Request with array in the query variables that inserts data into a table {#request-with-array-in-the-query-variables-that-inserts-data-into-a-table}
 
 **Table SQL:**
 
@@ -365,7 +365,7 @@ OK
 **Query API Endpoint SQL:**
 
 ```sql
-SELECT * from system.tables;
+SELECT * FROM system.tables;
 ```
 
 **cURL:**
@@ -401,7 +401,7 @@ fetch(
 **Query API Endpoint SQL:**
 
 ```sql
-SELECT name, database from system.tables;
+SELECT name, database FROM system.tables;
 ```
 
 **Typescript:**

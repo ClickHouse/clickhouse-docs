@@ -26,7 +26,7 @@ We use an aggregation query on the [uk_price_paid_simple](/parts) dataset to ill
 
 ## Step-by-step: How ClickHouse parallelizes an aggregation query {#step-by-step-how-clickHouse-parallelizes-an-aggregation-query}
 
-When ClickHouse ① runs an aggregation query with a filter on the table’s primary key, it ② loads the primary index into memory to ③ identify which granules need to be processed, and which can be safely skipped:
+When ClickHouse ① runs an aggregation query with a filter on the table's primary key, it ② loads the primary index into memory to ③ identify which granules need to be processed, and which can be safely skipped:
 
 <Image img={visual01} size="md" alt="Index analysis"/>
 
@@ -63,11 +63,11 @@ In ClickHouse Cloud, this same parallelism is achieved through [parallel replica
 
 ## Monitoring query parallelism {#monitoring-query-parallelism}
 
-Use these tools to verify that your query fully utilizes available CPU resources and to diagnose when it doesn’t.
+Use these tools to verify that your query fully utilizes available CPU resources and to diagnose when it doesn't.
 
-We’re running this on a test server with 59 CPU cores, which allows ClickHouse to fully showcase its query parallelism.
+We're running this on a test server with 59 CPU cores, which allows ClickHouse to fully showcase its query parallelism.
 
-To observe how the example query is executed, we can instruct the ClickHouse server to return all trace-level log entries during the aggregation query. For this demonstration, we removed the query’s predicate—otherwise, only 3 granules would be processed, which isn’t enough data for ClickHouse to make use of more than a few parallel processing lanes:
+To observe how the example query is executed, we can instruct the ClickHouse server to return all trace-level log entries during the aggregation query. For this demonstration, we removed the query's predicate—otherwise, only 3 granules would be processed, which isn't enough data for ClickHouse to make use of more than a few parallel processing lanes:
 ```sql runnable=false
 SELECT
    max(price)
@@ -115,7 +115,7 @@ FROM
 
 Note: Read the operator plan above from bottom to top. Each line represents a stage in the physical execution plan, starting with reading data from storage at the bottom and ending with the final processing steps at the top. Operators marked with `× 59` are executed concurrently on non-overlapping data regions across 59 parallel processing lanes. This reflects the value of `max_threads` and illustrates how each stage of the query is parallelized across CPU cores.
 
-ClickHouse’s [embedded web UI](/interfaces/http) (available at the `/play` endpoint) can render the physical plan from above as a graphical visualization. In this example, we set `max_threads` to `4` to keep the visualization compact, showing just 4 parallel processing lanes:
+ClickHouse's [embedded web UI](/interfaces/http) (available at the `/play` endpoint) can render the physical plan from above as a graphical visualization. In this example, we set `max_threads` to `4` to keep the visualization compact, showing just 4 parallel processing lanes:
 
 <Image img={visual05} alt="Query pipeline"/>
 
@@ -158,7 +158,7 @@ MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread) × 30
 
 As shown in the operator plan extract above, even though `max_threads` is set to `59`, ClickHouse uses only **30** concurrent streams to scan the data.
 
-Now let’s run the query:
+Now let's run the query:
 ```sql runnable=false
 SELECT
    max(price)
@@ -204,7 +204,7 @@ WHERE town = 'LONDON';
     └───────────────────────────────────────────────────────┘  
 ```
 
-Regardless of the configured `max_threads` value, ClickHouse only allocates additional parallel processing lanes when there’s enough data to justify them. The "max" in `max_threads` refers to an upper limit, not a guaranteed number of threads used.
+Regardless of the configured `max_threads` value, ClickHouse only allocates additional parallel processing lanes when there's enough data to justify them. The "max" in `max_threads` refers to an upper limit, not a guaranteed number of threads used.
 
 What "enough data" means is primarily determined by two settings, which define the minimum number of rows (163,840 by default) and the minimum number of bytes (2,097,152 by default) that each processing lane should handle:
 
@@ -216,15 +216,15 @@ For clusters with shared storage (e.g. ClickHouse Cloud):
 * [merge_tree_min_rows_for_concurrent_read_for_remote_filesystem](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_rows_for_concurrent_read_for_remote_filesystem)
 * [merge_tree_min_bytes_for_concurrent_read_for_remote_filesystem](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_for_concurrent_read_for_remote_filesystem)
 
-Additionally, there’s a hard lower limit for read task size, controlled by:
+Additionally, there's a hard lower limit for read task size, controlled by:
 * [Merge_tree_min_read_task_size](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_read_task_size) + [merge_tree_min_bytes_per_task_for_remote_reading](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_per_task_for_remote_reading)
 
 :::warning Don't modify these settings
-We don’t recommend modifying these settings in production. They’re shown here solely to illustrate why `max_threads` doesn’t always determine the actual level of parallelism.
+We don't recommend modifying these settings in production. They're shown here solely to illustrate why `max_threads` doesn't always determine the actual level of parallelism.
 :::
 
 
-For demonstration purposes, let’s inspect the physical plan with these settings overridden to force maximum concurrency:
+For demonstration purposes, let's inspect the physical plan with these settings overridden to force maximum concurrency:
 ```sql runnable=false
 EXPLAIN PIPELINE
 SELECT
@@ -258,9 +258,9 @@ This demonstrates that for queries on small datasets, ClickHouse will intentiona
 
 ## Where to find more information  {#where-to-find-more-information}
 
-If you’d like to dive deeper into how ClickHouse executes queries in parallel and how it achieves high performance at scale, explore the following resources: 
+If you'd like to dive deeper into how ClickHouse executes queries in parallel and how it achieves high performance at scale, explore the following resources: 
 
-* [Query Processing Layer – VLDB 2024 Paper (Web Edition)](/academic_overview#4-query-processing-layer) - A detailed breakdown of ClickHouse’s internal execution model, including scheduling, pipelining, and operator design.
+* [Query Processing Layer – VLDB 2024 Paper (Web Edition)](/academic_overview#4-query-processing-layer) - A detailed breakdown of ClickHouse's internal execution model, including scheduling, pipelining, and operator design.
 
 * [Partial aggregation states explained](https://clickhouse.com/blog/clickhouse_vs_elasticsearch_mechanics_of_count_aggregations#-multi-core-parallelization) - A technical deep dive into how partial aggregation states enable efficient parallel execution across processing lanes.
 

@@ -165,9 +165,9 @@ GROUP BY path, month;
 
 ### 宛先テーブルのバックフィル {#time-series-backfill-destination-table}
 
-この宛先テーブルは、`wikistat` テーブルに新しいレコードが挿入されるときにのみ populated されるため、[バックフィル](/docs/data-modeling/backfilling)を行う必要があります。
+この宛先テーブルは、`wikistat` テーブルに新しいレコードが挿入されるときにのみ populated されるため、[バックフィル](/data-modeling/backfilling)を行う必要があります。
 
-これを行う最も簡単な方法は、[`INSERT INTO SELECT`](/docs/sql-reference/statements/insert-into#inserting-the-results-of-select) ステートメントを使用して、マテリアライズドビューのターゲットテーブルに直接挿入することであり、ビューの SELECT クエリ (変換) を使用することです。
+これを行う最も簡単な方法は、[`INSERT INTO SELECT`](/sql-reference/statements/insert-into#inserting-the-results-of-select) ステートメントを使用して、マテリアライズドビューのターゲットテーブルに直接挿入することであり、ビューの SELECT クエリ (変換) を使用することです。
 
 ```sql
 INSERT INTO wikistat_top

@@ -25,7 +25,7 @@ This guide integrates the following:
 - **XHR/Fetch/Websocket Requests**
 - **Exceptions**
 
-## Getting Started {#getting-started}
+## Getting started {#getting-started}
 
 <br/>
 
@@ -36,13 +36,13 @@ This guide integrates the following:
 
 Use the following command to install the [browser package](https://www.npmjs.com/package/@hyperdx/browser).
 
-```bash
+```shell
 npm install @hyperdx/browser
 ```
 
 **Initialize ClickStack**
 
-```js
+```javascript
 import HyperDX from '@hyperdx/browser';
 
 HyperDX.init({
@@ -115,7 +115,7 @@ with the user information.
 corresponding values, but can be omitted. Any other additional values can be
 specified and used to search for events.
 
-```js
+```javascript
 HyperDX.setGlobalAttributes({
   userId: user.id,
   userEmail: user.email,
@@ -131,7 +131,7 @@ If you're using React, you can automatically capture errors that occur within
 React error boundaries by passing your error boundary component 
 into the `attachToReactErrorBoundary` function.
 
-```js
+```javascript
 // Import your ErrorBoundary (we're using react-error-boundary as an example)
 import { ErrorBoundary } from 'react-error-boundary';
 
@@ -148,7 +148,7 @@ event metadata.
 
 Example:
 
-```js
+```javascript
 HyperDX.addAction('Form-Completed', {
   formId: 'signup-form',
   formName: 'Signup Form',
@@ -160,7 +160,7 @@ HyperDX.addAction('Form-Completed', {
 
 To enable or disable network capture dynamically, simply invoke the `enableAdvancedNetworkCapture` or `disableAdvancedNetworkCapture` function as needed.
 
-```js
+```javascript
 HyperDX.enableAdvancedNetworkCapture();
 ```
 
@@ -174,7 +174,7 @@ download, etc. via [`PerformanceResourceTiming`](https://developer.mozilla.org/e
 If you're using `express` with `cors` packages, you can use the following
 snippet to enable the header:
 
-```js
+```javascript
 var cors = require('cors');
 var onHeaders = require('on-headers');
 

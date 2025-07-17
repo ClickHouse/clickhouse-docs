@@ -73,7 +73,7 @@ print(f"SQL read {res.rows_read()} rows, {res.bytes_read()} bytes, elapsed {res.
 chdb.query('select * from file("data.parquet", Parquet)', 'Dataframe')
 ```
 
-### Query On Table (Pandas DataFrame, Parquet file/bytes, Arrow bytes) {#query-on-table-pandas-dataframe-parquet-filebytes-arrow-bytes}
+### Query on table (Pandas DataFrame, Parquet file/bytes, Arrow bytes) {#query-on-table-pandas-dataframe-parquet-filebytes-arrow-bytes}
 
 **Query On Pandas DataFrame**
 
@@ -90,7 +90,7 @@ print(ret_tbl)
 print(ret_tbl.query('select b, sum(a) from __table__ group by b'))
 ```
 
-### Query with Stateful Session {#query-with-stateful-session}
+### Query with stateful session {#query-with-stateful-session}
 
  Sessions will keep the state of query. All DDL and DML state will be kept in a directory. Directory path can be passed in as an argument. If it is not passed, a temporary directory will be created.
 
@@ -169,7 +169,7 @@ Some notes on the chDB Python UDF (User Defined Function) decorator.
 
 see also: [test_udf.py](https://github.com/chdb-io/chdb/blob/main/tests/test_udf.py).
 
-### Python Table Engine {#python-table-engine}
+### Python table engine {#python-table-engine}
 
 ### Query on Pandas DataFrame {#query-on-pandas-dataframe}
 

@@ -49,7 +49,7 @@ For the following guides, we assume you have a ClickHouse instance available.
 
 ## Setup of dbt and the ClickHouse plugin {#setup-of-dbt-and-the-clickhouse-plugin}
 
-### dbt {#dbt}
+### DBT {#dbt}
 
 We assume the use of the dbt CLI for the following examples. Users may also wish to consider[ dbt Cloud](https://docs.getdbt.com/docs/dbt-cloud/cloud-overview), which offers a web-based Integrated Development Environment (IDE) allowing users to edit and run projects.
 
@@ -170,19 +170,19 @@ The execution of these may vary depending on your bandwidth, but each should onl
 
 ```sql
 SELECT id,
-       any(actor_name)          as name,
-       uniqExact(movie_id)    as num_movies,
-       avg(rank)                as avg_rank,
-       uniqExact(genre)         as unique_genres,
-       uniqExact(director_name) as uniq_directors,
-       max(created_at)          as updated_at
+       any(actor_name)          AS name,
+       uniqExact(movie_id)    AS num_movies,
+       avg(rank)                AS avg_rank,
+       uniqExact(genre)         AS unique_genres,
+       uniqExact(director_name) AS uniq_directors,
+       max(created_at)          AS updated_at
 FROM (
-         SELECT imdb.actors.id  as id,
-                concat(imdb.actors.first_name, ' ', imdb.actors.last_name)  as actor_name,
-                imdb.movies.id as movie_id,
-                imdb.movies.rank as rank,
+         SELECT imdb.actors.id  AS id,
+                concat(imdb.actors.first_name, ' ', imdb.actors.last_name)  AS actor_name,
+                imdb.movies.id AS movie_id,
+                imdb.movies.rank AS rank,
                 genre,
-                concat(imdb.directors.first_name, ' ', imdb.directors.last_name) as director_name,
+                concat(imdb.directors.first_name, ' ', imdb.directors.last_name) AS director_name,
                 created_at
          FROM imdb.actors
                   JOIN imdb.roles ON imdb.roles.actor_id = imdb.actors.id
@@ -305,7 +305,7 @@ In the later guides, we will convert this query into a model - materializing it 
     Confirm the response includes `Connection test: [OK connection ok]` indicating a successful connection.
 
 
-## Creating a Simple View Materialization {#creating-a-simple-view-materialization}
+## Creating a simple view materialization {#creating-a-simple-view-materialization}
 
 When using the view materialization, a model is rebuilt as a view on each run, via a `CREATE VIEW AS` statement in ClickHouse. This doesn't require any additional storage of data but will be slower to query than table materializations.
 
@@ -433,7 +433,7 @@ When using the view materialization, a model is rebuilt as a view on each run, v
     +------+------------+----------+------------------+------+---------+-------------------+
     ```
 
-## Creating a Table Materialization {#creating-a-table-materialization}
+## Creating a table materialization {#creating-a-table-materialization}
 
 In the previous example, our model was materialized as a view. While this might offer sufficient performance for some queries, more complex SELECTs or frequently executed queries may be better materialized as a table.  This materialization is useful for models that will be queried by BI tools to ensure users have a faster experience. This effectively causes the query results to be stored as a new table, with the associated storage overheads - effectively, an `INSERT TO SELECT` is executed. Note that this table will be reconstructed each time i.e., it is not incremental. Large result sets may therefore result in long execution times - see [dbt Limitations](#limitations).
 
@@ -776,47 +776,46 @@ Note how much faster that incremental was compared to the insertion of "Clicky".
 Checking again the query_log table reveals the differences between the 2 incremental runs:
 
    ```sql
-   insert into imdb_dbt.actor_summary ("id", "name", "num_movies", "avg_rank", "genres", "directors", "updated_at")
-   with actor_summary as (
-      SELECT id,
-         any(actor_name) as name,
-         uniqExact(movie_id)    as num_movies,
-         avg(rank)                as avg_rank,
-         uniqExact(genre)         as genres,
-         uniqExact(director_name) as directors,
-         max(created_at) as updated_at
-      FROM (
-         SELECT imdb.actors.id as id,
-            concat(imdb.actors.first_name, ' ', imdb.actors.last_name) as actor_name,
-            imdb.movies.id as movie_id,
-            imdb.movies.rank as rank,
-            genre,
-            concat(imdb.directors.first_name, ' ', imdb.directors.last_name) as director_name,
-            created_at
-         FROM imdb.actors
-            JOIN imdb.roles ON imdb.roles.actor_id = imdb.actors.id
-            LEFT OUTER JOIN imdb.movies ON imdb.movies.id = imdb.roles.movie_id
-            LEFT OUTER JOIN imdb.genres ON imdb.genres.movie_id = imdb.movies.id
-            LEFT OUTER JOIN imdb.movie_directors ON imdb.movie_directors.movie_id = imdb.movies.id
-            LEFT OUTER JOIN imdb.directors ON imdb.directors.id = imdb.movie_directors.director_id
-      )
-      GROUP BY id
+INSERT INTO imdb_dbt.actor_summary ("id", "name", "num_movies", "avg_rank", "genres", "directors", "updated_at")
+WITH actor_summary AS (
+   SELECT id,
+      any(actor_name) AS name,
+      uniqExact(movie_id)    AS num_movies,
+      avg(rank)                AS avg_rank,
+      uniqExact(genre)         AS genres,
+      uniqExact(director_name) AS directors,
+      max(created_at) AS updated_at
+   FROM (
+      SELECT imdb.actors.id AS id,
+         concat(imdb.actors.first_name, ' ', imdb.actors.last_name) AS actor_name,
+         imdb.movies.id AS movie_id,
+         imdb.movies.rank AS rank,
+         genre,
+         concat(imdb.directors.first_name, ' ', imdb.directors.last_name) AS director_name,
+         created_at
+      FROM imdb.actors
+         JOIN imdb.roles ON imdb.roles.actor_id = imdb.actors.id
+         LEFT OUTER JOIN imdb.movies ON imdb.movies.id = imdb.roles.movie_id
+         LEFT OUTER JOIN imdb.genres ON imdb.genres.movie_id = imdb.movies.id
+         LEFT OUTER JOIN imdb.movie_directors ON imdb.movie_directors.movie_id = imdb.movies.id
+         LEFT OUTER JOIN imdb.directors ON imdb.directors.id = imdb.movie_directors.director_id
    )
+   GROUP BY id
+)
 
-   select *
-   from actor_summary
-   -- this filter will only be applied on an incremental run
-   where id > (select max(id) from imdb_dbt.actor_summary) or updated_at > (select max(updated_at) from imdb_dbt.actor_summary)
+SELECT *
+FROM actor_summary
+-- this filter will only be applied on an incremental run
+WHERE id > (SELECT max(id) FROM imdb_dbt.actor_summary) OR updated_at > (SELECT max(updated_at) FROM imdb_dbt.actor_summary)
    ```
 
 In this run, only the new rows are added straight to `imdb_dbt.actor_summary` table and there is no table creation involved.
 
-### Delete+Insert mode (Experimental) {#deleteinsert-mode-experimental}
+### Delete and insert mode (experimental) {#deleteinsert-mode-experimental}
 
-Historically ClickHouse has had only limited support for updates and deletes, in the form of asynchronous [Mutations](/sql-reference/statements/alter/index.md).  These can be extremely IO-intensive and should generally be avoided.
+Historically ClickHouse has had only limited support for updates and deletes, in the form of asynchronous [Mutations](/sql-reference/statements/alter/index.md). These can be extremely IO-intensive and should generally be avoided.
 
-ClickHouse 22.8 introduced [Lightweight deletes](/sql-reference/statements/delete.md). These are currently experimental but offer a more performant means of deleting data.
-
+ClickHouse 22.8 introduced [lightweight deletes](/sql-reference/statements/delete.md) and ClickHouse 25.7 introduced [lightweight updates](/guides/developer/lightweight-update). With the introduction of these features, modifications from single update queries, even when being materialized asynchronously, will occur instantly from the user's perspective.
 
 This mode can be configured for a model via the `incremental_strategy` parameter i.e.
 
@@ -836,7 +835,7 @@ This process is shown below:
 
 <Image img={dbt_06} size="lg" alt="lightweight delete incremental" />
 
-### insert_overwrite mode (Experimental) {#insert_overwrite-mode-experimental}
+### insert_overwrite mode (experimental) {#insert_overwrite-mode-experimental}
 Performs the following steps:
 
 1. Create a staging (temporary) table with the same structure as the incremental model relation: `CREATE TABLE {staging} AS {target}`.
@@ -853,7 +852,7 @@ This approach has the following advantages:
 
 <Image img={dbt_07} size="lg" alt="insert overwrite incremental" />
 
-## Creating a Snapshot {#creating-a-snapshot}
+## Creating a snapshot {#creating-a-snapshot}
 
 dbt snapshots allow a record to be made of changes to a mutable model over time. This in turn allows point-in-time queries on models, where analysts can "look back in time" at the previous state of a model. This is achieved using [type-2 Slowly Changing Dimensions](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row) where from and to date columns record when a row was valid. This functionality is supported by the ClickHouse plugin and is demonstrated below.
 
@@ -1029,7 +1028,7 @@ Note how a table actor_summary_snapshot has been created in the snapshots db (de
 For further details on dbt snapshots see [here](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots).
 
 
-## Using Seeds {#using-seeds}
+## Using seeds {#using-seeds}
 
 dbt provides the ability to load data from CSV files. This capability is not suited to loading large exports of a database and is more designed for small files typically used for code tables and [dictionaries](../../../../sql-reference/dictionaries/index.md), e.g. mapping country codes to country names. For a simple example, we generate and then upload a list of genre codes using the seed functionality.
 

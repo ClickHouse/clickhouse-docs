@@ -8,7 +8,7 @@
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import BetaBadge from '@theme/badges/BetaBadge';
-import CloudAvailableBadge from '@theme/badges/CloudAvailableBadge';
+import CloudOnlyBadge from '@theme/badges/CloudOnlyBadge';
 import SettingsInfoBlock from '@theme/SettingsInfoBlock/SettingsInfoBlock';
 import VersionHistory from '@theme/VersionHistory/VersionHistory';
 
@@ -1533,7 +1533,7 @@ Azure SDK 中重试之间的最大退避时间
 Aws::Client::RetryStrategy 的设置， Aws::Client 会自行进行重试，0 表示不重试。仅在备份/恢复期间生效。
 ## cache_warmer_threads {#cache_warmer_threads} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="4" />
 
@@ -2212,7 +2212,7 @@ ENGINE = Log
 插入查询到分布式的超时。仅在启用 insert_distributed_sync 时使用。零值表示没有超时。
 ## distributed_cache_bypass_connection_pool {#distributed_cache_bypass_connection_pool} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2221,7 +2221,7 @@ ENGINE = Log
 仅在 ClickHouse Cloud 中生效。允许绕过分布式缓存连接池
 ## distributed_cache_connect_max_tries {#distributed_cache_connect_max_tries} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="20" />
 
@@ -2230,7 +2230,7 @@ ENGINE = Log
 仅在 ClickHouse Cloud 中生效。如果连接失败，则重新连接到分布式缓存的尝试次数
 ## distributed_cache_data_packet_ack_window {#distributed_cache_data_packet_ack_window} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="5" />
 
@@ -2239,7 +2239,7 @@ ENGINE = Log
 仅在 ClickHouse Cloud 中有效。用于在单个分布式缓存读取请求中发送 ACK 的数据包序列窗口。
 ## distributed_cache_discard_connection_if_unread_data {#distributed_cache_discard_connection_if_unread_data} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -2248,7 +2248,7 @@ ENGINE = Log
 仅在 ClickHouse Cloud 中有效。如果某些数据未被读取，则丢弃连接。
 ## distributed_cache_fetch_metrics_only_from_current_az {#distributed_cache_fetch_metrics_only_from_current_az} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -2257,7 +2257,7 @@ ENGINE = Log
 仅在 ClickHouse Cloud 中有效。仅从当前可用区获取 system.distributed_cache_metrics, system.distributed_cache_events 中的指标。
 ## distributed_cache_log_mode {#distributed_cache_log_mode} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="DistributedCacheLogMode" default_value="on_error" />
 
@@ -2266,7 +2266,7 @@ ENGINE = Log
 仅在 ClickHouse Cloud 中有效。提供写入 system.distributed_cache_log 的模式。
 ## distributed_cache_max_unacked_inflight_packets {#distributed_cache_max_unacked_inflight_packets} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
@@ -2275,7 +2275,7 @@ ENGINE = Log
 仅在 ClickHouse Cloud 中有效。单个分布式缓存读取请求中的最大未确认的在途数据包数量。
 ## distributed_cache_min_bytes_for_seek {#distributed_cache_min_bytes_for_seek} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2284,7 +2284,7 @@ ENGINE = Log
 仅在 ClickHouse Cloud 中有效。进行分布式缓存查找的最小字节数。
 ## distributed_cache_pool_behaviour_on_limit {#distributed_cache_pool_behaviour_on_limit} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="DistributedCachePoolBehaviourOnLimit" default_value="wait" />
 
@@ -2293,7 +2293,7 @@ ENGINE = Log
 仅在 ClickHouse Cloud 中有效。定义当达到池限制时分布式缓存连接的行为。
 ## distributed_cache_read_alignment {#distributed_cache_read_alignment} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2302,7 +2302,7 @@ ENGINE = Log
 仅在 ClickHouse Cloud 中有效。用于测试目的的设置，请勿更改。
 ## distributed_cache_read_only_from_current_az {#distributed_cache_read_only_from_current_az} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -2311,7 +2311,7 @@ ENGINE = Log
 仅在 ClickHouse Cloud 中有效。允许仅从当前可用区读取。如果禁用，将从所有可用区的所有缓存服务器读取。
 ## distributed_cache_read_request_max_tries {#distributed_cache_read_request_max_tries} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="20" />
 
@@ -2320,7 +2320,7 @@ ENGINE = Log
 仅在 ClickHouse Cloud 中有效。如果请求失败，尝试进行分布式缓存请求的次数。
 ## distributed_cache_receive_response_wait_milliseconds {#distributed_cache_receive_response_wait_milliseconds} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="60000" />
 
@@ -2329,7 +2329,7 @@ ENGINE = Log
 仅在 ClickHouse Cloud 中有效。等待时间（以毫秒为单位），以接收来自分布式缓存请求的数据。
 ## distributed_cache_receive_timeout_milliseconds {#distributed_cache_receive_timeout_milliseconds} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
@@ -2338,7 +2338,7 @@ ENGINE = Log
 仅在 ClickHouse Cloud 中有效。等待时间（以毫秒为单位），以接收来自分布式缓存的任何响应。
 ## distributed_cache_throw_on_error {#distributed_cache_throw_on_error} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2347,7 +2347,7 @@ ENGINE = Log
 仅在 ClickHouse Cloud 中有效。在与分布式缓存通信期间重新抛出发生的异常或从分布式缓存接收到的异常。否则在出现错误时会跳过分布式缓存。
 ## distributed_cache_wait_connection_from_pool_milliseconds {#distributed_cache_wait_connection_from_pool_milliseconds} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
@@ -2989,7 +2989,7 @@ ClickHouse 从过期副本中选择最相关的数据。
 文件系统缓存边界对齐。此设置仅应用于非磁盘读取（例如，远程表引擎 / 表函数的缓存，但不适用于 MergeTree 表的存储配置）。值为 0 意味着没有对齐。
 ## filesystem_cache_enable_background_download_during_fetch {#filesystem_cache_enable_background_download_during_fetch} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -2998,7 +2998,7 @@ ClickHouse 从过期副本中选择最相关的数据。
 仅在 ClickHouse Cloud 中有效。等待时间以锁定缓存以进行空间保留在文件系统缓存中。
 ## filesystem_cache_enable_background_download_for_metadata_files_in_packed_storage {#filesystem_cache_enable_background_download_for_metadata_files_in_packed_storage} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3939,7 +3939,7 @@ HTTP 发送超时（以秒为单位）。
 - 正整数（0 - 立即关闭，0秒后）。
 ## ignore_cold_parts_seconds {#ignore_cold_parts_seconds} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 
 
@@ -6201,7 +6201,7 @@ INSERT 查询的 VALUES 子句中的数据由单独的流解析器处理（占�
 - 任何正偶数。
 ## merge_tree_compact_parts_min_granules_to_multibuffer_read {#merge_tree_compact_parts_min_granules_to_multibuffer_read} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="16" />
 
@@ -7820,7 +7820,7 @@ SELECT avg(number) AS number, max(number) FROM numbers(10);
 
 ## prefer_warmed_unmerged_parts_seconds {#prefer_warmed_unmerged_parts_seconds} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="Int64" default_value="0" />
 
@@ -8405,7 +8405,7 @@ a   Tuple(
 从本地文件系统或远程文件系统读取数据的优先级。仅支持本地文件系统的 'pread_threadpool' 方法和远程文件系统的 `threadpool` 方法。
 ## read_through_distributed_cache {#read_through_distributed_cache} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -9803,7 +9803,7 @@ ORDER BY子句中与WITH FILL列前面的列形成排序前缀。排序前缀中
 用于访问资源的工作负载名称
 ## write_through_distributed_cache {#write_through_distributed_cache} 
 
-<CloudAvailableBadge/>
+<CloudOnlyBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 

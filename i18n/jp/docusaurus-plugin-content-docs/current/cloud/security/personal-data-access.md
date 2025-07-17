@@ -39,7 +39,7 @@ ClickHouseが収集する個人データやその使用方法については、C
 
 注意: `OrgID`を含むURLは、特定のアカウントの`OrgID`を反映するように更新する必要があります。
 
-### Current Customers {#current-customers}
+### Current customers {#current-customers}
 
 弊社とアカウントをお持ちで、セルフサービスオプションで個人データの問題が解決しない場合、プライバシーポリシーに基づきデータ主体アクセス要求を提出できます。そのためには、ClickHouseアカウントにログインし、[サポートケース](https://console.clickhouse.cloud/support)を開いてください。これにより、あなたの身元を確認し、リクエストに対応するプロセスをスムーズに進めることができます。
 

@@ -34,7 +34,7 @@ import adfCopyDataSource                        from '@site/static/images/integr
 import adfCopyDataSinkSelectPost                from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-sink-select-post.png';
 import adfCopyDataDebugSuccess                  from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-debug-success.png';
 
-# Using ClickHouse HTTP Interface in Azure Data Factory {#using-clickhouse-http-interface-in-azure-data-factory}
+# Using ClickHouse HTTP interface in Azure data factory {#using-clickhouse-http-interface-in-azure-data-factory}
 
 The [`azureBlobStorage` Table Function](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
 is a fast and convenient way to ingest data from Azure Blob Storage into
@@ -94,7 +94,7 @@ Azure Data Factory can handle this encoding automatically using its built-in
 :::
 
 Now you can send JSON-formatted data to this URL. The data should match the
-structure of the target table. Here’s a simple example using curl, assuming a
+structure of the target table. Here's a simple example using curl, assuming a
 table with three columns: `col_1`, `col_2`, and `col_3`.
 ```text
 curl \
@@ -104,13 +104,13 @@ curl \
 
 You can also send a JSON array of objects, or JSON Lines (newline-delimited
 JSON objects). Azure Data Factory uses the JSON array format, which works
-perfectly with ClickHouse’s `JSONEachRow` input.
+perfectly with ClickHouse's `JSONEachRow` input.
 
-As you can see, for this step you don’t need to do anything special on the ClickHouse
+As you can see, for this step you don't need to do anything special on the ClickHouse
 side. The HTTP interface already provides everything needed to act as a
 REST-like endpoint — no additional configuration required.
 
-Now that we’ve made ClickHouse behave like a REST endpoint, it's time to
+Now that we've made ClickHouse behave like a REST endpoint, it's time to
 configure Azure Data Factory to use it.
 
 In the next steps, we'll create an Azure Data Factory instance, set up a Linked
@@ -118,7 +118,7 @@ Service to your ClickHouse instance, define a Dataset for the
 [REST sink](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest),
 and create a Copy Data activity to send data from Azure to ClickHouse.
 
-## Creating an Azure Data Factory instance {#create-an-azure-data-factory-instance}
+## Creating an Azure data factory instance {#create-an-azure-data-factory-instance}
 
 This guide assumes that you have access to Microsoft Azure account, and you
 already have configured a subscription and a resource group. If you have
@@ -187,7 +187,7 @@ Data Factory instance.
 
 9. Back in the main form select Basic authentication, enter the username and
    password used to connect to your ClickHouse HTTP interface, click **Test
-   connection**. If everything is configured correctly, you’ll see a success
+   connection**. If everything is configured correctly, you'll see a success
    message.
    <Image img={adfNewLinkedServiceCheckConnection} size="lg" alt="New Linked Service Check Connection" border/>
 
@@ -257,7 +257,7 @@ Data](https://clickhouse.com/docs/getting-started/example-datasets/environmental
    <Image img={adfNewDatasetQuery} size="xl" alt="New Dataset Query" border/>
 
 6. Click OK to save the expression. Click Test connection. If everything is
-   configured correctly, you’ll see a Connection successful message. Click Publish
+   configured correctly, you'll see a Connection successful message. Click Publish
    all at the top of the page to save your changes.
    <Image img={adfNewDatasetConnectionSuccessful} size="xl" alt="New Dataset Connection Successful" border/>
 
@@ -321,7 +321,7 @@ Now that we've configured both the input and output datasets, we can set up a
 
 6. Once complete, click **Publish all** to save your pipeline and dataset changes.
 
-## Additional Resources {#additional-resources-1}
+## Additional resources {#additional-resources-1}
 - [HTTP Interface](https://clickhouse.com/docs/interfaces/http)
 - [Copy and transform data from and to a REST endpoint by using Azure Data Factory](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest?tabs=data-factory)
 - [Selecting an Insert Strategy](https://clickhouse.com/docs/best-practices/selecting-an-insert-strategy)

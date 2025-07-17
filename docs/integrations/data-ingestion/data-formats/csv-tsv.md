@@ -71,7 +71,7 @@ clickhouse-client -q "INSERT INTO sometable FORMAT CSVWithNames" < data_small_he
 In this case, ClickHouse skips the first row while importing data from the file.
 
 :::tip
-Starting from 23.1 [version](https://github.com/ClickHouse/ClickHouse/releases) ClickHouse will automatically detect headers in CSV files when `CSV` type is used, so no need to use `CSVWithNames` or `CSVWithNamesAndTypes`.
+Starting from [version](https://github.com/ClickHouse/ClickHouse/releases) 23.1, ClickHouse will automatically detect headers in CSV files when using the `CSV` format, so it is not necessary to use `CSVWithNames` or `CSVWithNamesAndTypes`.
 :::
 
 
@@ -160,7 +160,7 @@ SELECT * FROM file('nulls.csv')
 ```
 
 
-## TSV (Tab-separated) files {#tsv-tab-separated-files}
+## TSV (tab-separated) files {#tsv-tab-separated-files}
 
 Tab-separated data format is widely used as a data interchange format. To load data from a [TSV file](assets/data_small.tsv) to ClickHouse, the [TabSeparated](/interfaces/formats.md/#tabseparated) format is used:
 

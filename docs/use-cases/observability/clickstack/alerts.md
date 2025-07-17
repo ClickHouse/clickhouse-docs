@@ -16,7 +16,7 @@ import search_alert from '@site/static/images/use-cases/observability/search_ale
 After entering a [search](/use-cases/observability/clickstack/search), you can create an alert to be
 notified when the number of events (logs or spans) matching the search exceeds or falls below a threshold.
 
-### Creating an Alert {#creating-an-alert}
+### Creating an alert {#creating-an-alert}
 
 You can create an alert by clicking the `Alerts` button on the top right of the `Search` page. 
 
@@ -26,7 +26,7 @@ The `grouped by` value allows the search to be subject to an aggregation e.g. `S
 
 <Image img={search_alert} alt="Search alerts" size="lg"/>
 
-### Common Alert Scenarios {#common-alert-scenarios}
+### Common alert scenarios {#common-alert-scenarios}
 
 Here are a few common alert scenarios that you can use HyperDX for:
 

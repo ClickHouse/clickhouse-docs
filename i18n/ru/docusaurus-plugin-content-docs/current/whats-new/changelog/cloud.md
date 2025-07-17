@@ -8,6 +8,6 @@ description: 'Learn about Cloud Changelog'
 
 # Cloud Changelog
 
-import CloudChangelog from '@site/docs/cloud/reference/changelog.md';
+import CloudChangelog from '@site/i18n/ru/docusaurus-plugin-content-docs/current/cloud/reference/changelog.md';
 
 <CloudChangelog />

@@ -13,7 +13,7 @@ keywords: ['json', 'formats']
 Different techniques may be applied to different objects in the same schema. For example, some objects can be best solved with a `String` type and others with a `Map` type. Note that once a `String` type is used, no further schema decisions need to be made. Conversely, it is possible to nest sub-objects within a `Map` key - including a `String` representing JSON - as we show below:
 :::
 
-## Using String {#using-string}
+## Using the String type {#using-string}
 
 If the objects are highly dynamic, with no predictable structure and contain arbitrary nested objects, users should use the `String` type. Values can be extracted at query time using JSON functions as we show below.
 
@@ -61,7 +61,7 @@ FROM people
 The [`JSONExtract`](/sql-reference/functions/json-functions#jsonextract-functions) functions can be used to retrieve values from this JSON. Consider the simple example below:
 
 ```sql
-SELECT JSONExtractString(tags, 'holidays') as holidays FROM people
+SELECT JSONExtractString(tags, 'holidays') AS holidays FROM people
 
 ┌─holidays──────────────────────────────────────┐
 │ [{"year":2024,"location":"Azores, Portugal"}] │
@@ -150,7 +150,7 @@ String functions are appreciably slower (> 10x) than explicit type conversions w
 
 This approach's flexibility comes at a clear performance and syntax cost, and it should be used only for highly dynamic objects in the schema.
 
-### Simple JSON Functions {#simple-json-functions}
+### Simple JSON functions {#simple-json-functions}
 
 The above examples use the JSON* family of functions. These utilize a full JSON parser based on [simdjson](https://github.com/simdjson/simdjson), that is rigorous in its parsing and will distinguish between the same field nested at different levels. These functions are able to deal with JSON that is syntactically correct but not well-formatted, e.g. double spaces between keys.
 
@@ -202,7 +202,7 @@ Peak memory usage: 211.49 MiB.
 
 The above query uses the `simpleJSONExtractString` to extract the `created` key, exploiting the fact we want the first value only for the published date. In this case, the limitations of the `simpleJSON*` functions are acceptable for the gain in performance.
 
-## Using Map {#using-map}
+## Using the Map type {#using-map}
 
 If the object is used to store arbitrary keys, mostly of one type, consider using the `Map` type. Ideally, the number of unique keys should not exceed several hundred. The `Map` type can also be considered for objects with sub-objects, provided the latter have uniformity in their types. Generally, we recommend the `Map` type be used for labels and tags, e.g. Kubernetes pod labels in log data.
 
@@ -358,7 +358,7 @@ The application of maps in this case is typically rare, and suggests that the da
 
 
 
-## Using Nested {#using-nested}
+## Using the Nested type {#using-nested}
 
 The [Nested type](/sql-reference/data-types/nested-data-structures/nested) can be used to model static objects which are rarely subject to change, offering an alternative to `Tuple` and `Array(Tuple)`. We generally recommend avoiding using this type for JSON as its behavior is often confusing. The primary benefit of `Nested` is that sub-columns can be used in ordering keys.
 
@@ -581,11 +581,11 @@ size FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/doc
 Querying this data requires us to access the request fields as arrays. Below, we summarize the errors and http methods over a fixed time period.
 
 ```sql
-SELECT status, request.method[1] as method, count() as c
+SELECT status, request.method[1] AS method, count() AS c
 FROM http
 WHERE status >= 400
   AND toDateTime(timestamp) BETWEEN '1998-01-01 00:00:00' AND '1998-06-01 00:00:00'
-GROUP by method, status
+GROUP BY method, status
 ORDER BY c DESC LIMIT 5;
 
 ┌─status─┬─method─┬─────c─┐
@@ -599,7 +599,7 @@ ORDER BY c DESC LIMIT 5;
 5 rows in set. Elapsed: 0.007 sec.
 ```
 
-### Using Pairwise Arrays {#using-pairwise-arrays}
+### Using pairwise arrays {#using-pairwise-arrays}
 
 Pairwise arrays provide a balance between the flexibility of representing JSON as Strings and the performance of a more structured approach. The schema is flexible in that any new fields can be potentially added to the root. This, however, requires a significantly more complex query syntax and isn't compatible with nested structures.
 
@@ -646,13 +646,13 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/document
 Querying this structure requires using the [`indexOf`](/sql-reference/functions/array-functions#indexOf) function to identify the index of the required key (which should be consistent with the order of the values). This can be used to access the values array column i.e. `values[indexOf(keys, 'status')]`. We still require a JSON parsing method for the request column - in this case, `simpleJSONExtractString`.
 
 ```sql
-SELECT toUInt16(values[indexOf(keys, 'status')])                           as status,
-       simpleJSONExtractString(values[indexOf(keys, 'request')], 'method') as method,
-       count()                                                             as c
+SELECT toUInt16(values[indexOf(keys, 'status')])                           AS status,
+       simpleJSONExtractString(values[indexOf(keys, 'request')], 'method') AS method,
+       count()                                                             AS c
 FROM http_with_arrays
 WHERE status >= 400
   AND toDateTime(values[indexOf(keys, '@timestamp')]) BETWEEN '1998-01-01 00:00:00' AND '1998-06-01 00:00:00'
-GROUP by method, status ORDER BY c DESC LIMIT 5;
+GROUP BY method, status ORDER BY c DESC LIMIT 5;
 
 ┌─status─┬─method─┬─────c─┐
 │    404 │ GET    │ 11267 │

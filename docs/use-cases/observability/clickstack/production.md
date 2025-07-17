@@ -15,7 +15,7 @@ import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-l
 
 When deploying ClickStack in production, there are several additional considerations to ensure security, stability, and correct configuration.
 
-## Network and Port Security {#network-security}
+## Network and port security {#network-security}
 
 By default, Docker Compose exposes ports on the host, making them accessible from outside the container - even if tools like `ufw` (Uncomplicated Firewall) are enabled. This behavior is due to the Docker networking stack, which can bypass host-level firewall rules unless explicitly configured.
 
@@ -35,7 +35,7 @@ ports:
 
 Refer to the [Docker networking documentation](https://docs.docker.com/network/) for details on isolating containers and hardening access.
 
-## Session Secret Configuration {#session-secret}
+## Session secret configuration {#session-secret}
 
 In production, you must set a strong, random value for the `EXPRESS_SESSION_SECRET` environment variable to protect session data and prevent tampering.
 
@@ -69,7 +69,7 @@ Here's how to add it to your `docker-compose.yml` file for the app service:
 
 You can generate a strong secret using openssl:
 
-```bash
+```shell
 openssl rand -hex 32
 ```
 
@@ -87,7 +87,7 @@ Additionally, we recommend enabling TLS for OTLP endpoints and creating a [dedic
 
 For production deployments, we recommend using [ClickHouse Cloud](https://clickhouse.com/cloud), which applies industry-standard [security practices](/cloud/security) by default - including [enhanced encryption](/cloud/security/cmek), [authentication and connectivity](/cloud/security/connectivity), and [managed access controls](/cloud/security/cloud-access-management). See ["ClickHouse Cloud"](#clickhouse-cloud-production) for a step-by-step guide of using ClickHouse Cloud with best practices.
 
-### User Permissions {#user-permissions}
+### User permissions {#user-permissions}
 
 #### HyperDX user {#hyperdx-user}
 
@@ -123,7 +123,11 @@ ClickHouse OSS provides robust security features out of the box. However, these 
 
 See also [external authenticators](/operations/external-authenticators) and [query complexity settings](/operations/settings/query-complexity) for managing users and ensuring query/resource limits.
 
-## MongoDB Guidelines {#mongodb-guidelines}
+### Configure Time To Live (TTL) {#configure-ttl}
+
+Ensure the [Time To Live (TTL)](/use-cases/observability/clickstack/ttl) has been [appropriately configured](/use-cases/observability/clickstack/ttl#modifying-ttl) for your ClickStack deployment. This controls how long data is retained for - the default of 3 days often needs to be modified.
+
+## MongoDB guidelines {#mongodb-guidelines}
 
 Follow the official [MongoDB security checklist](https://www.mongodb.com/docs/manual/administration/security-checklist/).
 
@@ -135,7 +139,7 @@ The following represents a simple deployment of ClickStack using ClickHouse Clou
 
 ### Create a service {#create-a-service}
 
-Follow the [getting started guide for ClickHouse Cloud](/cloud/get-started/cloud-quick-start#1-create-a-clickhouse-service) to create a service.
+Follow the [getting started guide for ClickHouse Cloud](/getting-started/quick-start/cloud/#1-create-a-clickhouse-service) to create a service.
 
 ### Copy connection details {#copy-connection-details}
 

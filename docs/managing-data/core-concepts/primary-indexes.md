@@ -14,7 +14,7 @@ import Image from '@theme/IdealImage';
 
 
 :::tip Looking for advanced indexing details?
-This page introduces ClickHouse’s sparse primary index, how it’s built, how it works, and how it helps accelerate queries.
+This page introduces ClickHouse's sparse primary index, how it's built, how it works, and how it helps accelerate queries.
 
 For advanced indexing strategies and deeper technical detail, see the [primary indexes deep dive](/guides/best-practices/sparse-primary-indexes).
 :::
@@ -26,7 +26,7 @@ For advanced indexing strategies and deeper technical detail, see the [primary i
 
 <br/>
 
-The sparse primary index in ClickHouse helps efficiently identify [granules](https://clickhouse.com/docs/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)—blocks of rows—that might contain data matching a query’s condition on the table’s primary key columns. In the next section, we explain how this index is constructed from the values in those columns.
+The sparse primary index in ClickHouse helps efficiently identify [granules](https://clickhouse.com/docs/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)—blocks of rows—that might contain data matching a query's condition on the table's primary key columns. In the next section, we explain how this index is constructed from the values in those columns.
 
 ### Sparse primary index creation {#sparse-primary-index-creation}
 
@@ -38,7 +38,7 @@ As a [reminder](https://clickhouse.com/docs/parts), in our ① example table wit
 
 <br/><br/>
 
-For processing, each column’s data is ④ logically divided into granules—each covering 8,192 rows—which are the smallest units ClickHouse’s data processing mechanics work with.
+For processing, each column's data is ④ logically divided into granules—each covering 8,192 rows—which are the smallest units ClickHouse's data processing mechanics work with.
 
 This granule structure is also what makes the primary index **sparse**: instead of indexing every row, ClickHouse stores ⑤ the primary key values from just one row per granule—specifically, the first row. This results in one index entry per granule:
 
@@ -59,9 +59,9 @@ We sketch how the sparse primary index is used for query acceleration with anoth
 
 ① The example query includes a predicate on both primary key columns: `town = 'LONDON' AND street = 'OXFORD STREET'`.
 
-② To accelerate the query, ClickHouse loads the table’s primary index into memory.
+② To accelerate the query, ClickHouse loads the table's primary index into memory.
 
-③ It then scans the index entries to identify which granules might contain rows matching the predicate—in other words, which granules can’t be skipped.
+③ It then scans the index entries to identify which granules might contain rows matching the predicate—in other words, which granules can't be skipped.
 
 ④ These potentially relevant granules are then loaded and [processed](/optimize/query-parallelism) in memory, along with the corresponding granules from any other columns required for the query.
 
@@ -75,7 +75,7 @@ The following query lists the number of entries in the primary index for each da
 ```sql
 SELECT
     part_name,
-    max(mark_number) as entries
+    max(mark_number) AS entries
 FROM mergeTreeIndex('uk', 'uk_price_paid_simple')
 GROUP BY part_name;
 ```
@@ -93,7 +93,7 @@ This query shows the first 10 entries from the primary index of one of the curre
 
 ```sql 
 SELECT 
-    mark_number + 1 as entry,
+    mark_number + 1 AS entry,
     town,
     street
 FROM mergeTreeIndex('uk', 'uk_price_paid_simple')
@@ -118,7 +118,7 @@ LIMIT 10;
     └───────┴────────────────┴──────────────────┘
 ```
 
-Lastly, we use the [EXPLAIN](/sql-reference/statements/explain) clause to see how the primary indexes of all data parts are used to skip granules that can’t possibly contain rows matching the example query’s predicates. These granules are excluded from loading and processing:
+Lastly, we use the [EXPLAIN](/sql-reference/statements/explain) clause to see how the primary indexes of all data parts are used to skip granules that can't possibly contain rows matching the example query's predicates. These granules are excluded from loading and processing:
 ```sql
 EXPLAIN indexes = 1
 SELECT
@@ -196,7 +196,7 @@ SELECT count() FROM uk.uk_price_paid_simple;
 
 For a deeper look at how sparse primary indexes work in ClickHouse, including how they differ from traditional database indexes and best practices for using them, check out our detailed indexing [deep dive](/guides/best-practices/sparse-primary-indexes).
 
-If you’re interested in how ClickHouse processes data selected by the primary index scan in a highly parallel way, see the query parallelism guide [here](/optimize/query-parallelism).
+If you're interested in how ClickHouse processes data selected by the primary index scan in a highly parallel way, see the query parallelism guide [here](/optimize/query-parallelism).
 
 
 

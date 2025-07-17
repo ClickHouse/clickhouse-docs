@@ -23,6 +23,11 @@ ClickHouse supports integration with multiple catalogs (Unity, Glue, Polaris, et
 
 Databricks supports multiple data formats for their lakehouse. With ClickHouse, you can query Unity Catalog tables as both Delta and Iceberg.
 
+:::note
+As this feature is experimental, you will need to enable it using:
+`SET allow_experimental_database_unity_catalog = 1;`
+:::
+
 ## Configuring Unity in Databricks {#configuring-unity-in-databricks}
 
 To allow ClickHouse to interact with the Unity catalog, you need to make sure the Unity Catalog is configured to allow interaction with an external reader. This can be achieved by following the[ "Enable external data access to Unity Catalog"](https://docs.databricks.com/aws/en/external-access/admin) guide.
@@ -118,7 +123,7 @@ SELECT count(*) FROM `uniform.delta_hits`
 ```
 
 :::note Backticks required
-Backticks are required because ClickHouse doesn’t support more than one namespace.
+Backticks are required because ClickHouse doesn't support more than one namespace.
 :::
 
 To inspect the table DDL:
