@@ -40,6 +40,7 @@ The `merge level` of a part is incremented by one with each additional merge. A 
 ## Monitoring merges {#monitoring-merges}
 
 In the [what are table parts](/parts) example, we [showed](/parts#monitoring-table-parts) that ClickHouse tracks all table parts in the [parts](/operations/system-tables/parts) system table. We used the following query to retrieve the merge level and the number of stored rows per active part of the example table:
+
 ```sql
 SELECT
     name,
@@ -51,34 +52,35 @@ ORDER BY name ASC;
 ```
 
 The [previously documented](/parts#monitoring-table-parts) query result shows that the example table had four active parts, each created from a single merge of the initially inserted parts:
+
 ```response
    ┌─name────────┬─level─┬────rows─┐
 1. │ all_0_5_1   │     1 │ 6368414 │
 2. │ all_12_17_1 │     1 │ 6442494 │
 3. │ all_18_23_1 │     1 │ 5977762 │
 4. │ all_6_11_1  │     1 │ 6459763 │
-    └─────────────┴───────┴─────────┘
-    ```
+   └─────────────┴───────┴─────────┘
+```
 
-    [Running](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICBuYW1lLAogICAgbGV2ZWwsCiAgICByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCA9ICd1a19wcmljZV9wYWlkX3NpbXBsZScpIEFORCBhY3RpdmUKT1JERVIgQlkgbmFtZSBBU0M7&run_query=true&tab=results) the query now shows that the four parts have since merged into a single final part (as long as there are no further inserts into the table):
+[Running](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICBuYW1lLAogICAgbGV2ZWwsCiAgICByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCA9ICd1a19wcmljZV9wYWlkX3NpbXBsZScpIEFORCBhY3RpdmUKT1JERVIgQlkgbmFtZSBBU0M7&run_query=true&tab=results) the query now shows that the four parts have since merged into a single final part (as long as there are no further inserts into the table):
 
-    ```response
-    ┌─name───────┬─level─┬─────rows─┐
+```response
+┌─name───────┬─level─┬─────rows─┐
 1. │ all_0_23_2 │     2 │ 25248433 │
-    └────────────┴───────┴──────────┘
-    ```
+└────────────┴───────┴──────────┘
+```
 
-    In ClickHouse 24.10, a new [merges dashboard](https://presentations.clickhouse.com/2024-release-24.10/index.html#17) was added to the built-in [monitoring dashboards](https://clickhouse.com/blog/common-issues-you-can-solve-using-advanced-monitoring-dashboards). Available in both OSS and Cloud via the `/merges` HTTP handler, we can use it to visualize all part merges for our example table:
+In ClickHouse 24.10, a new [merges dashboard](https://presentations.clickhouse.com/2024-release-24.10/index.html#17) was added to the built-in [monitoring dashboards](https://clickhouse.com/blog/common-issues-you-can-solve-using-advanced-monitoring-dashboards). Available in both OSS and Cloud via the `/merges` HTTP handler, we can use it to visualize all part merges for our example table:
 
-    <Image img={merges_dashboard} size="lg" alt='PART MERGES'/>
+<Image img={merges_dashboard} size="lg" alt='PART MERGES'/>
 
-    The recorded dashboard above captures the entire process, from the initial data inserts to the final merge into a single part:
+The recorded dashboard above captures the entire process, from the initial data inserts to the final merge into a single part:
 
-    ① Number of active parts.
+① Number of active parts.
 
-    ② Part merges, visually represented with boxes (size reflects part size).
+② Part merges, visually represented with boxes (size reflects part size).
 
-    ③ [Write amplification](https://en.wikipedia.org/wiki/Write_amplification).
+③ [Write amplification](https://en.wikipedia.org/wiki/Write_amplification).
 
 ## Concurrent merges {#concurrent-merges}
 

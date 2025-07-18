@@ -21,9 +21,9 @@ By default, the Helm chart provisions all core components, including:
 * **OpenTelemetry (OTel) collector**
 * **MongoDB** (for persistent application state)
 
-    However, it can be easily customized to integrate with an existing ClickHouse deployment - for example, one hosted in **ClickHouse Cloud**.
+However, it can be easily customized to integrate with an existing ClickHouse deployment - for example, one hosted in **ClickHouse Cloud**.
 
-    The chart supports standard Kubernetes best practices, including:
+The chart supports standard Kubernetes best practices, including:
 
 - Environment-specific configuration via `values.yaml`
 - Resource limits and pod-level scaling

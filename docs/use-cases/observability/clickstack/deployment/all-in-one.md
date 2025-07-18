@@ -19,7 +19,7 @@ This comprehensive Docker image bundles all ClickStack components:
 * **OpenTelemetry (OTel) collector** (exposing OTLP on ports `4317` and `4318`)
 * **MongoDB** (for persistent application state)
 
-    This option includes authentication, enabling the persistence of dashboards, alerts, and saved searches across sessions and users.
+This option includes authentication, enabling the persistence of dashboards, alerts, and saved searches across sessions and users.
 
 ### Suitable for {#suitable-for}
 
