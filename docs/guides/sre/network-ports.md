@@ -11,7 +11,6 @@ description: 'Description of available network ports and what they are used for'
 Ports described as **default** mean that the port number is configured in `/etc/clickhouse-server/config.xml`.  To customize your settings, add a file to `/etc/clickhouse-server/config.d/`.  See the [configuration file](/operations/configuration-files) documentation.
 :::
 
-
 |Port|Description|Cloud|OSS|
 |----|-----------|-----|---|
 |2181|ZooKeeper default service port. **Note: see `9181` for ClickHouse Keeper**||✓|

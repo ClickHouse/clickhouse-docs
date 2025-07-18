@@ -198,7 +198,6 @@ Caters to large-scale, mission critical deployments that have stringent security
 
 You can always upgrade from Basic to Scale or from Scale to Enterprise. Downgrading tiers will require disabling premium features.
 
-
 ---
 
 If you have any questions about service types, please see the [pricing page](https://clickhouse.com/pricing) or contact support@clickhouse.com.
