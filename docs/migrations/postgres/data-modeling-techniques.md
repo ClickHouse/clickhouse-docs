@@ -71,7 +71,7 @@ PARTITION BY toYear(CreationDate)
 
 For a full description of partitioning see ["Table partitions"](/partitions).
 
-### Applications of Partitions {#applications-of-partitions}
+### Applications of partitions {#applications-of-partitions}
 
 Partitioning in ClickHouse has similar applications as in Postgres but with some subtle differences. More specifically:
 
@@ -114,7 +114,7 @@ Ok.
 
 - **Query optimization** - While partitions can assist with query performance, this depends heavily on the access patterns. If queries target only a few partitions (ideally one), performance can potentially improve. This is only typically useful if the partitioning key is not in the primary key and you are filtering by it. However, queries that need to cover many partitions may perform worse than if no partitioning is used (as there may possibly be more parts as a result of partitioning). The benefit of targeting a single partition will be even less pronounced to non-existence if the partitioning key is already an early entry in the primary key. Partitioning can also be used to [optimize GROUP BY queries](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key) if values in each partition are unique. However, in general, users should ensure the primary key is optimized and only consider partitioning as a query optimization technique in exceptional cases where access patterns access a specific predictable subset of the day, e.g., partitioning by day, with most queries in the last day.
 
-### Recommendations for Partitions {#recommendations-for-partitions}
+### Recommendations for partitions {#recommendations-for-partitions}
 
 Users should consider partitioning a data management technique. It is ideal when data needs to be expired from the cluster when operating with time series data e.g. the oldest partition can [simply be dropped](/sql-reference/statements/alter/partition#drop-partitionpart).
 
@@ -241,18 +241,37 @@ WHERE UserId = 8592047
 
 ### When to use projections {#when-to-use-projections}
 
-Projections are an appealing feature for new users as they are automatically maintained as data is inserted. Furthermore, queries can just be sent to a single table where the projections are exploited where possible to speed up the response time.
+Projections are an appealing feature for new users as they are automatically 
+maintained as data is inserted. Furthermore, queries can just be sent to a single
+table where the projections are exploited where possible to speed up the response
+time.
 
 <Image img={postgres_projections} size="md" alt="PostgreSQL projections in ClickHouse"/>
 
-This is in contrast to materialized views, where the user has to select the appropriate optimized target table or rewrite their query, depending on the filters. This places greater emphasis on user applications and increases client-side complexity.
+This is in contrast to materialized views, where the user has to select the 
+appropriate optimized target table or rewrite their query, depending on the filters.
+This places greater emphasis on user applications and increases client-side complexity.
 
-Despite these advantages, projections come with some [inherent limitations](/data-modeling/projections#when-to-use-projections) which users should be aware of and thus should be deployed sparingly.
+Despite these advantages, projections come with some [inherent limitations](/data-modeling/projections#when-to-use-projections) 
+which users should be aware of and thus should be deployed sparingly.
 
 We recommend using projections when:
 
-- A complete reordering of the data is required. While the expression in the projection can, in theory, use a `GROUP BY,` materialized views are more effective for maintaining aggregates. The query optimizer is also more likely to exploit projections that use a simple reordering, i.e., `SELECT * ORDER BY x`. Users can select a subset of columns in this expression to reduce storage footprint.
-- Users are comfortable with the associated increase in storage footprint and overhead of writing data twice. Test the impact on insertion speed and [evaluate the storage overhead](/data-compression/compression-in-clickhouse).
+- A complete reordering of the data is required. While the expression in the 
+  projection can, in theory, use a `GROUP BY,` materialized views are more 
+  effective for maintaining aggregates. The query optimizer is also more likely 
+  to exploit projections that use a simple reordering, i.e., `SELECT * ORDER BY x`. 
+  Users can select a subset of columns in this expression to reduce storage footprint.
+- Users are comfortable with the associated increase in storage footprint and 
+  overhead of writing data twice. Test the impact on insertion speed and 
+  [evaluate the storage overhead](/data-compression/compression-in-clickhouse).
+
+:::note
+Since version 25.5, ClickHouse supports the virtual column `_part_offset` in 
+projections. This unlocks a more space-efficient way to store projections.
+
+For more details see ["Projections"](/data-modeling/projections)
+:::
 
 ## Denormalization {#denormalization}
 

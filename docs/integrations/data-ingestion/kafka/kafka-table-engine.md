@@ -6,7 +6,6 @@ description: 'Using the Kafka Table Engine'
 title: 'Using the Kafka table engine'
 ---
 
-import CloudAvailableBadge from '@theme/badges/CloudAvailableBadge';
 import Image from '@theme/IdealImage';
 import kafka_01 from '@site/static/images/integrations/data-ingestion/kafka/kafka_01.png';
 import kafka_02 from '@site/static/images/integrations/data-ingestion/kafka/kafka_02.png';
@@ -14,8 +13,6 @@ import kafka_03 from '@site/static/images/integrations/data-ingestion/kafka/kafk
 import kafka_04 from '@site/static/images/integrations/data-ingestion/kafka/kafka_04.png';
 
 # Using the Kafka table engine
-
-<CloudAvailableBadge/>
 
 The Kafka table engine can be used to [**read** data from](#kafka-to-clickhouse) and [**write** data to](#clickhouse-to-kafka) Apache Kafka and other Kafka API-compatible brokers (e.g., Redpanda, Amazon MSK).
 
@@ -215,7 +212,7 @@ You should see 200,000 rows:
 └─────────┘
 ```
 
-#### Common Operations {#common-operations}
+#### Common operations {#common-operations}
 
 ##### Stopping & restarting message consumption {#stopping--restarting-message-consumption}
 
@@ -231,7 +228,7 @@ This will not impact the offsets of the consumer group. To restart consumption, 
 ATTACH TABLE github_queue;
 ```
 
-##### Adding Kafka Metadata {#adding-kafka-metadata}
+##### Adding Kafka metadata {#adding-kafka-metadata}
 
 It can be useful to keep track of the metadata from the original Kafka messages after it's been ingested into ClickHouse. For example, we may want to know how much of a specific topic or partition we have consumed. For this purpose, the Kafka table engine exposes several [virtual columns](../../../engines/table-engines/index.md#table_engines-virtual_columns). These can be persisted as columns in our target table by modifying our schema and materialized view's select statement.
 
@@ -293,7 +290,7 @@ The result looks like:
 | Oxonium | CommitCommentEvent | 2011-02-12 12:31:28 | github | 0 |
 
 
-##### Modify Kafka Engine Settings {#modify-kafka-engine-settings}
+##### Modify Kafka engine settings {#modify-kafka-engine-settings}
 
 We recommend dropping the Kafka engine table and recreating it with the new settings. The materialized view does not need to be modified during this process - message consumption will resume once the Kafka engine table is recreated.
 
@@ -462,7 +459,7 @@ wc -l
 
 Although an elaborate example, this illustrates the power of materialized views when used in conjunction with the Kafka engine.
 
-### Clusters and Performance {#clusters-and-performance}
+### Clusters and performance {#clusters-and-performance}
 
 #### Working with ClickHouse Clusters {#working-with-clickhouse-clusters}
 
@@ -472,7 +469,7 @@ Multiple ClickHouse instances can all be configured to read from a topic using t
 
 <Image img={kafka_04} size="lg" alt="Kafka table engine with ClickHouse clusters diagram"/>
 
-#### Tuning Performance {#tuning-performance}
+#### Tuning performance {#tuning-performance}
 
 Consider the following when looking to increase Kafka Engine table throughput performance:
 
@@ -486,7 +483,7 @@ Consider the following when looking to increase Kafka Engine table throughput pe
 
 Any settings changes should be tested. We recommend monitoring Kafka consumer lags to ensure you are properly scaled.
 
-#### Additional Settings {#additional-settings}
+#### Additional settings {#additional-settings}
 
 Aside from the settings discussed above, the following may be of interest:
 

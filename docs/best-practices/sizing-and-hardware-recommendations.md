@@ -1,12 +1,12 @@
 ---
 slug: /guides/sizing-and-hardware-recommendations
-sidebar_label: 'Sizing and Hardware Recommendations'
+sidebar_label: 'Sizing and hardware recommendations'
 sidebar_position: 4
-title: 'Sizing and Hardware Recommendations'
+title: 'Sizing and hardware recommendations'
 description: 'This guide discusses our general recommendations regarding hardware, compute, memory, and disk configurations for open-source users.'
 ---
 
-# Sizing and Hardware Recommendations
+# Sizing and hardware recommendations
 
 This guide discusses our general recommendations regarding hardware, compute, memory, and disk configurations for open-source users. If you would like to simplify your setup, we recommend using [ClickHouse Cloud](https://clickhouse.com/cloud) as it automatically scales and adapts to your workloads while minimizing costs pertaining to infrastructure management.
 

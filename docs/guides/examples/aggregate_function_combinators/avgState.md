@@ -15,7 +15,7 @@ can be applied to the [`avg`](/sql-reference/aggregate-functions/reference/avg)
 function to produce an intermediate state of `AggregateFunction(avg, T)` type where
 `T` is the specified type for the average.
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 In this example, we'll look at how we can use the `AggregateFunction` type, 
 together with the `avgState` function to aggregate website traffic data.
@@ -49,7 +49,7 @@ ENGINE = AggregatingMergeTree()
 ORDER BY page_id;
 ```
 
-Create an Incremental Materialized View that will act as an insert trigger to 
+Create an Incremental materialized view that will act as an insert trigger to 
 new data and store the intermediate state data in the target table defined above:
 
 ```sql

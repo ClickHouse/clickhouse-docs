@@ -314,7 +314,7 @@ LIMIT 4
 Peak memory usage: 666.82 MiB.
 ```
 
-## Advanced Dictionary Topics {#advanced-dictionary-topics}
+## Advanced dictionary topics {#advanced-dictionary-topics}
 
 ### Choosing the Dictionary `LAYOUT` {#choosing-the-dictionary-layout}
 

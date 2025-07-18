@@ -1,3 +1,5 @@
+@use '../../css/breakpoints' as breakpoints;
+
 /* Container for the entire component */
 .relatedBlogsContainer {
   display: flex;
@@ -5,13 +7,11 @@
   padding-top: 32px;
 }
 
-/* Container for just the cards (excluding header) */
 .blogCardsContainer {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.5em;
-  width: 100%;
-  height: 100%
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    width: 100%;
 }
 
 /* Container for individual card */
@@ -68,10 +68,11 @@
 
 /* Container for the bottom half of the card */
 [data-theme='light'] .cardBottom {
-  background-color: #c0c0c0;
+  background-color: #f7f7fa;
   border-left: 1px solid #c7c7c7;
   border-right: 1px solid #c7c7c7;
   border-bottom: 1px solid #c7c7c7;
+  border-top: 1px solid #c7c7c7;
 }
 
 /* Container for the bottom half of the card */
@@ -186,4 +187,17 @@
   100% {
     opacity: 0.6;
   }
+}
+
+@media (min-width: breakpoints.$laptop-breakpoint) {
+
+/* Container for just the cards (excluding header) */
+.blogCardsContainer {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5em;
+  width: 100%;
+  height: 100%
+}
+
 }

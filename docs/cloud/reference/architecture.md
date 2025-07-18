@@ -7,7 +7,7 @@ description: 'This page describes the architecture of ClickHouse Cloud'
 
 import Architecture from '@site/static/images/cloud/reference/architecture.svg';
 
-# ClickHouse Cloud Architecture
+# ClickHouse Cloud architecture
 
 <Architecture alt='ClickHouse Cloud architecture' class='image' />
 
@@ -43,10 +43,10 @@ For AWS, access to storage is controlled via AWS IAM, and each IAM role is uniqu
 
 For GCP and Azure, services have object storage isolation (all services have their own buckets or storage container).
 
-## Compute-Compute Separation {#compute-compute-separation}
+## Compute-compute separation {#compute-compute-separation}
 [Compute-compute separation](/cloud/reference/warehouses) lets users create multiple compute node groups, each with their own service URL, that all use the same shared object storage. This allows for compute isolation of different use cases such as reads from writes, that share the same data. It also leads to more efficient resource utilization by allowing for independent scaling of the compute groups as needed.
 
-## Concurrency Limits {#concurrency-limits}
+## Concurrency limits {#concurrency-limits}
 
 There is no limit to the number of queries per second (QPS) in your ClickHouse Cloud service. There is, however, a limit of 1000 concurrent queries per replica. QPS is ultimately a function of your average query execution time and the number of replicas in your service.
 

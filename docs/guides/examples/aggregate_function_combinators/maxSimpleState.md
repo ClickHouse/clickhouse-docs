@@ -14,7 +14,7 @@ The [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate)
 function to return the maximum value across all input values. It returns the
 result with type `SimpleAggregateState`.
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 The example given in [`minSimpleState`](/examples/aggregate-function-combinators/minSimpleState/#example-usage)
 demonstrates a usage of both `maxSimpleState` and `minSimpleState`.

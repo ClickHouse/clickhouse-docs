@@ -19,6 +19,8 @@ We support both `GTID` & `FilePos` replication. Unlike Postgres there is no slot
 
 It's also possible for an inactive database to rotate the log file without allowing ClickPipes to progress to a more recent offset. You may need to setup a heartbeat table with regularly scheduled updates.
 
+At the start of an initial load we record the binlog offset to start at. This offset must still be valid when the initial load finishes in order for CDC to progress. If you are ingesting a large amount of data be sure to configure an appropriate binlog retention period. While setting up tables you can speed up initial load by configuring *Use a custom partitioning key for initial load* for large tables under advanced settings so that we can load a single table in parallel.
+
 ### Why am I getting a TLS certificate validation error when connecting to MySQL? {#tls-certificate-validation-error}
 
 When connecting to MySQL, you may encounter certificate errors like `x509: certificate is not valid for any names` or `x509: certificate signed by unknown authority`. These occur because ClickPipes enables TLS encryption by default.

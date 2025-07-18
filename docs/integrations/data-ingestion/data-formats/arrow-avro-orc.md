@@ -50,7 +50,7 @@ FORMAT Avro;
 
 ### Avro and ClickHouse data types {#avro-and-clickhouse-data-types}
 
-Consider [data types matching](/interfaces/formats/Avro#data-types-matching) when importing or exporting Avro files. Use explicit type casting to convert when loading data from Avro files:
+Consider [data types matching](/interfaces/formats/Avro#data-type-mapping) when importing or exporting Avro files. Use explicit type casting to convert when loading data from Avro files:
 
 ```sql
 SELECT

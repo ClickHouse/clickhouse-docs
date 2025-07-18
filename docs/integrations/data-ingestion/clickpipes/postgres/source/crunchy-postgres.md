@@ -9,12 +9,12 @@ import firewall_rules_crunchy_bridge from '@site/static/images/integrations/data
 import add_firewall_rules_crunchy_bridge from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/crunchy-postgres/add_firewall_rules_crunchy_bridge.png'
 import Image from '@theme/IdealImage';
 
-# Crunchy Bridge Postgres Source Setup Guide
+# Crunchy Bridge Postgres source setup guide
 
 
 ClickPipes supports Postgres version 12 and later.
 
-## Enable Logical Replication {#enable-logical-replication}
+## Enable logical replication {#enable-logical-replication}
 
 Crunchy Bridge comes with logical replication enabled by [default](https://docs.crunchybridge.com/how-to/logical-replication). Ensure that the settings below are configured correctly. If not, adjust them accordingly.
 
@@ -24,7 +24,7 @@ SHOW max_wal_senders; -- should be 10
 SHOW max_replication_slots; -- should be 10
 ```
 
-## Creating ClickPipes User and Granting permissions {#creating-clickpipes-user-and-granting-permissions}
+## Creating ClickPipes user and granting permissions {#creating-clickpipes-user-and-granting-permissions}
 
 Connect to your Crunchy Bridge Postgres through the `postgres` user and run the below commands:
 
