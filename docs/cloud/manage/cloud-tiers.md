@@ -196,11 +196,8 @@ Caters to large-scale, mission critical deployments that have stringent security
 
 ## Upgrading to a different tier {#upgrading-to-a-different-tier}
 
-You can always upgrade from Basic to Scale or from Scale to Enterprise.
+You can always upgrade from Basic to Scale or from Scale to Enterprise. Downgrading tiers will require disabling premium features.
 
-:::note
-Downgrading of tiers is not possible.
-:::
 
 ---
 
