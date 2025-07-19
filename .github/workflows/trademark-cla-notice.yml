@@ -146,8 +146,7 @@ jobs:
               );
             
               if (!existingClaComment && context.eventName === 'pull_request') {
-                const claText = `
-# Trademark License Addendum
+                const claText = `# Trademark License Addendum
 
 Merging of this pull request is temporarily blocked. Please 
 read and agree to the Trademark License Addendum below to 
@@ -213,9 +212,8 @@ v. The Company will not use the Partner Trademarks in connection
 \`\`\`
 I agree to the Trademark License Addendum
 CLA-SIGNATURE: ${prAuthor}
-\`\`\`
-            `;
-            
+\`\`\``;
+      
                 await github.rest.issues.createComment({
                   issue_number: prNumber,
                   owner: context.repo.owner,
