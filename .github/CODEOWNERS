@@ -1,2 +1,3 @@
 *                      @ClickHouse/docs
-/docs/integrations/ @ClickHouse/integrations @ClickHouse/docs
+/docs/integrations/data-ingestion/clickpipes/ @ClickHouse/clickpipes @ClickHouse/docs
+/docs/integrations/ @ClickHouse/integrations-ecosystem @ClickHouse/docs
