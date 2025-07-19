@@ -50,18 +50,18 @@ jobs:
             // Check if any files match our patterns
             const hasDocsChanges = files.some(file => 
               file.filename.startsWith('docs/integrations/') ||
-              file.filename.startsWith('docs/static/')
+              file.filename.startsWith('static/images')
             );
             
             console.log('Changed files:');
             files.forEach(file => console.log(`  ${file.filename}`));
             
             if (hasDocsChanges) {
-              console.log('Found changes in docs/integrations/ or docs/static/ - CLA required');
+              console.log('Found changes in docs/integrations/ or static/images - trademark addendum signature required');
               core.setOutput('docs_changed', 'true');
               core.setOutput('requires_cla', 'true');
             } else {
-              console.log('No changes found in docs/integrations/ or docs/static/ - CLA not required');
+              console.log('No changes found in docs/integrations/ or static/images - trademark addendum signature not required');
               core.setOutput('docs_changed', 'false');
               core.setOutput('requires_cla', 'false');
             }
