@@ -17,7 +17,7 @@ permissions: write-all
 jobs:
   process-cla-approval:
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' || github.event.label.name == 'cla-signed' || github.event_name == 'issue_comment'
+    if: (github.event_name == 'workflow_dispatch' || github.event.label.name == 'cla-signed' || github.event_name == 'issue_comment') && !contains(github.actor, 'workflow-authentication-public')
 
     steps:
 
@@ -41,12 +41,6 @@ jobs:
         with:
           github-token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}
           script: |
-            // Exit early if this is the bot adding labels to prevent double execution
-            if (context.actor.includes('workflow-authentication-public')) {
-              console.log(`Skipping execution for bot actor: ${context.actor}`);
-              return;
-            }
-            
             let prNumber;
             let approvedBy;
             let prAuthor;
@@ -240,16 +234,16 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: prNumber,
-                body: `## Trademark license agreement confirmed
+                body: `## Trademark license agreement
             
-            The trademark license agreement has been approved for @${prAuthor}.
+            The trademark license agreement process has been completed for @${prAuthor}.
             
-            **Status:** Approved  
+            **Status:** Complete  
             **Date:** ${new Date().toISOString()}  
-            **Approved by:** @${approvedBy}
+            **Signed by:** @${approvedBy}
             **Method:** ${method}
             
-            This PR is now unblocked and can proceed with normal review!`
+            This PR is now unblocked and can proceed with normal review.`
               });
             }
             
