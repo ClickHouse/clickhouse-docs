@@ -17,7 +17,7 @@ permissions: write-all
 jobs:
   process-cla-approval:
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'issue_comment' || (github.event_name == 'pull_request_target' && github.event.label.name == 'cla-signed' && github.actor != 'workflow-authentication-public[bot]')
+    if: github.event_name == 'workflow_dispatch' || github.event.label.name == 'cla-signed' || github.event_name == 'issue_comment'
 
     steps:
 
@@ -41,6 +41,12 @@ jobs:
         with:
           github-token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}
           script: |
+            // Exit early if this is the bot adding labels to prevent double execution
+            if (context.actor.includes('workflow-authentication-public')) {
+              console.log(`Skipping execution for bot actor: ${context.actor}`);
+              return;
+            }
+            
             let prNumber;
             let approvedBy;
             let prAuthor;
@@ -272,7 +278,7 @@ jobs:
           PR_NUMBER="${{ steps.process-cla-approval.outputs.pr_number }}"
           APPROVED_BY="${{ steps.process-cla-approval.outputs.approved_by }}"
           
-          echo "Recording manual CLA approval:"
+          echo "Recording manual trademark addendum approval:"
           echo "  Username: $USERNAME"
           echo "  PR Number: $PR_NUMBER"
           echo "  Approved by: $APPROVED_BY"
@@ -294,7 +300,7 @@ jobs:
                  "approved_by": $approved_by
                }]' cla-signatures.json > tmp.json && mv tmp.json cla-signatures.json
           
-            echo "New CLA approval signature added"
+            echo "New trademark adendum signature added"
           else
             echo "Signature already exists for this user and PR"
           fi
@@ -303,7 +309,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add cla-signatures.json
-          git commit -m "Add manual CLA approval for @$USERNAME (PR #$PR_NUMBER) by @$APPROVED_BY" || echo "No changes to commit"
+          git commit -m "Add manual approval for @$USERNAME (PR #$PR_NUMBER) by @$APPROVED_BY" || echo "No changes to commit"
           git push
           
-          echo "Manual CLA approval recorded successfully"
+          echo "Manual trademark addendum approval recorded successfully"
