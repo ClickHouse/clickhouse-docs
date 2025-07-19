@@ -7,8 +7,6 @@ on:
         description: 'PR number to approve CLA for'
         required: true
         type: string
-  pull_request:
-    types: [labeled]
   pull_request_target:
     types: [labeled]
 
@@ -45,7 +43,7 @@ jobs:
             // Determine PR number
             if (context.eventName === 'workflow_dispatch') {
               prNumber = parseInt('${{ github.event.inputs.pr_number }}');
-            } else if (context.eventName === 'pull_request' || context.eventName === 'pull_request_target') {
+            } else if (context.eventName === 'pull_request_target') {
               prNumber = context.payload.pull_request.number;
             } else {
               return;
