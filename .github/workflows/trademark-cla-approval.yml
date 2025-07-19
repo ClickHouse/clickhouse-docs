@@ -17,7 +17,7 @@ permissions: write-all
 jobs:
   process-cla-approval:
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'issue_comment' || (github.event_name == 'pull_request_target' && github.event.label.name == 'cla-signed' && github.actor != 'github-actions[bot]')
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'issue_comment' || (github.event_name == 'pull_request_target' && github.event.label.name == 'cla-signed' && github.actor != 'workflow-authentication-public')
 
     steps:
 
