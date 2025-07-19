@@ -30,20 +30,41 @@ jobs:
           fetch-depth: 0
           # Use the GitHub App token if available, otherwise fallback to GITHUB_TOKEN
           token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}
+          # For pull_request_target, we need to fetch the PR head
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Check if docs changed
         id: docs-changed
         if: github.event_name == 'pull_request_target'
-        run: |
-          changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha}} ${{ github.event.pull_request.head.sha}})
-          
-          if echo "$changed_files" | grep -E '^docs/integrations/|^docs/static/' > /dev/null; then
-            echo "docs_changed=true" >> $GITHUB_OUTPUT
-            echo "requires_cla=true" >> $GITHUB_OUTPUT
-          else
-            echo "docs_changed=false" >> $GITHUB_OUTPUT
-            echo "requires_cla=false" >> $GITHUB_OUTPUT
-          fi
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}
+          script: |
+            // Get the list of changed files using GitHub API
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
+            });
+            
+            // Check if any files match our patterns
+            const hasDocsChanges = files.some(file => 
+              file.filename.startsWith('docs/integrations/') ||
+              file.filename.startsWith('docs/static/')
+            );
+            
+            console.log('Changed files:');
+            files.forEach(file => console.log(`  ${file.filename}`));
+            
+            if (hasDocsChanges) {
+              console.log('Found changes in docs/integrations/ or docs/static/ - CLA required');
+              core.setOutput('docs_changed', 'true');
+              core.setOutput('requires_cla', 'true');
+            } else {
+              console.log('No changes found in docs/integrations/ or docs/static/ - CLA not required');
+              core.setOutput('docs_changed', 'false');
+              core.setOutput('requires_cla', 'false');
+            }
 
       - name: Get PR info for comment events
         id: pr-info
