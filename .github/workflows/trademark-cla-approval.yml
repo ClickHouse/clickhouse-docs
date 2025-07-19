@@ -308,6 +308,11 @@ jobs:
           # Commit the updated file
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Configure git to use the token for authentication
+          TOKEN="${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}"
+          git remote set-url origin "https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git"
+          
           git add cla-signatures.json
           git commit -m "Add manual approval for @$USERNAME (PR #$PR_NUMBER) by @$APPROVED_BY" || echo "No changes to commit"
           git push
