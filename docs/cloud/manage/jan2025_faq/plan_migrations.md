@@ -36,7 +36,7 @@ Yes, users can upgrade self-serve, and the pricing will reflect the tier selecti
 ### Can users move from a higher to a lower-cost tier {#can-users-move-from-a-higher-to-a-lower-cost-tier-eg-enterprise--scale-scale--basic-enterprise--basic-self-serve}
 
 For example, Enterprise → Scale, Scale → Basic, Enterprise → Basic self-serve?
-No, we do not permit downgrading tiers.
+Yes, but users will need to remove all premium features and may be guided to scale their multi-replica services into a single replica.
 
 ### Can users with only development services in the organization migrate to the Basic tier? {#can-users-with-only-development-services-in-the-organization-migrate-to-the-basic-tier}
 

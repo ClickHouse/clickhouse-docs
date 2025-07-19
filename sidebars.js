@@ -901,7 +901,6 @@ const sidebars = {
         "integrations/data-visualization/looker-and-clickhouse",
         "integrations/data-visualization/looker-studio-and-clickhouse",
         "integrations/data-visualization/luzmo-and-clickhouse",
-        "integrations/data-visualization/made-up-integration-for-test",
         "integrations/data-visualization/metabase-and-clickhouse",
         "integrations/data-visualization/mitzu-and-clickhouse",
         "integrations/data-visualization/omni-and-clickhouse",
