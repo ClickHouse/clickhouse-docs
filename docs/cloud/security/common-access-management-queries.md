@@ -38,13 +38,13 @@ These automatically generated SQL Console users have the `default` role.
 
 ## Passwordless authentication {#passwordless-authentication}
 
-There are two roles available for SQL console: `sql_console_admin` with identical permissions to `default_role` and `sql_console_read_only` with read-only permissions. 
+There are two roles available for SQL console: `sql_console_admin` with identical permissions to `default_role` and `sql_console_read_only` with read-only permissions.
 
 Admin users are assigned the `sql_console_admin` role by default, so nothing changes for them. However, the `sql_console_read_only` role allows non-admin users to be granted read-only or full access to any instance. An admin needs to configure this access. The roles can be adjusted using the `GRANT` or `REVOKE` commands to better fit instance-specific requirements, and any modifications made to these roles will be persisted.
 
 ### Granular access control {#granular-access-control}
 
-This access control functionality can also be configured manually for user-level granularity. Before assigning the new `sql_console_*` roles to users, SQL console user-specific database roles matching the namespace `sql-console-role:<email>` should be created. For example: 
+This access control functionality can also be configured manually for user-level granularity. Before assigning the new `sql_console_*` roles to users, SQL console user-specific database roles matching the namespace `sql-console-role:<email>` should be created. For example:
 
 ```sql
 CREATE ROLE OR REPLACE sql-console-role:<email>;

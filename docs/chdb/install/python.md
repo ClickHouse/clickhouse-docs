@@ -167,7 +167,7 @@ Some notes on the chDB Python UDF (User Defined Function) decorator.
     ```
 6. The Python interpreter used is the same as the one used to run the script. You can get it from `sys.executable`.
 
-see also: [test_udf.py](https://github.com/chdb-io/chdb/blob/main/tests/test_udf.py).
+    see also: [test_udf.py](https://github.com/chdb-io/chdb/blob/main/tests/test_udf.py).
 
 ### Python table engine {#python-table-engine}
 
@@ -212,12 +212,10 @@ chdb.query(
     1. be stateful, the cursor should be updated in the `read` method.
 3. An optional `get_schema` method can be implemented to return the schema of the table. The prototype is `def get_schema(self) -> List[Tuple[str, str]]:`, the return value is a list of tuples, each tuple contains the column name and the column type. The column type should be one of [the following](/sql-reference/data-types).
 
-<br />
+    ```python
+    import chdb
 
-```python
-import chdb
-
-class myReader(chdb.PyReader):
+    class myReader(chdb.PyReader):
     def __init__(self, data):
         self.data = data
         self.cursor = 0
@@ -231,19 +229,19 @@ class myReader(chdb.PyReader):
         self.cursor += len(block[0])
         return block
 
-reader = myReader(
+    reader = myReader(
     {
         "a": [1, 2, 3, 4, 5, 6],
         "b": ["tom", "jerry", "auxten", "tom", "jerry", "auxten"],
     }
-)
+    )
 
-chdb.query(
+    chdb.query(
     "SELECT b, sum(a) FROM Python(reader) GROUP BY b ORDER BY b"
-).show()
-```
+    ).show()
+    ```
 
-See also: [test_query_py.py](https://github.com/chdb-io/chdb/blob/main/tests/test_query_py.py).
+    See also: [test_query_py.py](https://github.com/chdb-io/chdb/blob/main/tests/test_query_py.py).
 
 ## Limitations {#limitations}
 
@@ -252,7 +250,4 @@ See also: [test_query_py.py](https://github.com/chdb-io/chdb/blob/main/tests/tes
 1. Python Object type will be converted to String
 1. Pandas DataFrame performance is all of the best, Arrow Table is better than PyReader
 
-<br />
-
-For more examples, see [examples](https://github.com/chdb-io/chdb/tree/main/examples) and [tests](https://github.com/chdb-io/chdb/tree/main/tests).
-
+    For more examples, see [examples](https://github.com/chdb-io/chdb/tree/main/examples) and [tests](https://github.com/chdb-io/chdb/tree/main/tests).

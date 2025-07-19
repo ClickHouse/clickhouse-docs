@@ -153,16 +153,16 @@ ClickHouse supports two official Go clients. These clients are complementary and
 * [clickhouse-go](https://github.com/ClickHouse/clickhouse-go) - High level language client which supports either the Go standard database/sql interface or the native interface.
 * [ch-go](https://github.com/ClickHouse/ch-go) - Low level client. Native interface only.
 
-clickhouse-go provides a high-level interface, allowing users to query and insert data using row-orientated semantics and batching that are lenient with respect to data types - values will be converted provided no precision loss is potentially incurred. ch-go, meanwhile, provides an optimized column-orientated interface that provides fast data block streaming with low CPU and memory overhead at the expense of type strictness and more complex usage.
+    clickhouse-go provides a high-level interface, allowing users to query and insert data using row-orientated semantics and batching that are lenient with respect to data types - values will be converted provided no precision loss is potentially incurred. ch-go, meanwhile, provides an optimized column-orientated interface that provides fast data block streaming with low CPU and memory overhead at the expense of type strictness and more complex usage.
 
-From version 2.3, Clickhouse-go utilizes ch-go for low-level functions such as encoding, decoding, and compression. Note that clickhouse-go also supports the Go `database/sql` interface standard. Both clients use the native format for their encoding to provide optimal performance and can communicate over the native ClickHouse protocol. clickhouse-go also supports HTTP as its transport mechanism for cases where users have a requirement to proxy or load balance traffic.
+    From version 2.3, Clickhouse-go utilizes ch-go for low-level functions such as encoding, decoding, and compression. Note that clickhouse-go also supports the Go `database/sql` interface standard. Both clients use the native format for their encoding to provide optimal performance and can communicate over the native ClickHouse protocol. clickhouse-go also supports HTTP as its transport mechanism for cases where users have a requirement to proxy or load balance traffic.
 
-When choosing a client library, users should be aware of their respective pros and cons - see Choosing a Client Library.
+    When choosing a client library, users should be aware of their respective pros and cons - see Choosing a Client Library.
 
-|               | Native format | Native protocol | HTTP protocol | Row Orientated API | Column Orientated API | Type flexibility | Compression | Query Placeholders |
-|:-------------:|:-------------:|:---------------:|:-------------:|:------------------:|:---------------------:|:----------------:|:-----------:|:------------------:|
-| clickhouse-go |       ✅       |        ✅        |       ✅       |          ✅         |           ✅           |         ✅        |      ✅      |          ✅         |
-|     ch-go     |       ✅       |        ✅        |               |                    |           ✅           |                  |      ✅      |                    |
+    |               | Native format | Native protocol | HTTP protocol | Row Orientated API | Column Orientated API | Type flexibility | Compression | Query Placeholders |
+    |:-------------:|:-------------:|:---------------:|:-------------:|:------------------:|:---------------------:|:----------------:|:-----------:|:------------------:|
+    | clickhouse-go |       ✅       |        ✅        |       ✅       |          ✅         |           ✅           |         ✅        |      ✅      |          ✅         |
+    |     ch-go     |       ✅       |        ✅        |               |                    |           ✅           |                  |      ✅      |                    |
 
 ## Choosing a client {#choosing-a-client}
 
@@ -177,14 +177,14 @@ The clickhouse-go client provides two API interfaces for communicating with Clic
 * ClickHouse client-specific API
 * `database/sql` standard - generic interface around SQL databases provided by Golang.
 
-While the `database/sql` provides a database-agnostic interface, allowing developers to abstract their data store, it enforces some typing and query semantics that impact performance. For this reason, the client-specific API should be used where [performance is important](https://github.com/clickHouse/clickHouse-go#benchmark). However, users who wish to integrate ClickHouse into tooling, which supports multiple databases, may prefer to use the standard interface.
+    While the `database/sql` provides a database-agnostic interface, allowing developers to abstract their data store, it enforces some typing and query semantics that impact performance. For this reason, the client-specific API should be used where [performance is important](https://github.com/clickHouse/clickHouse-go#benchmark). However, users who wish to integrate ClickHouse into tooling, which supports multiple databases, may prefer to use the standard interface.
 
-Both interfaces encode data using the [native format](/native-protocol/basics.md) and native protocol for communication. Additionally, the standard interface supports communication over HTTP.
+    Both interfaces encode data using the [native format](/native-protocol/basics.md) and native protocol for communication. Additionally, the standard interface supports communication over HTTP.
 
-|                    | Native format | Native protocol | HTTP protocol | Bulk write support | Struct marshaling | Compression | Query Placeholders |
-|:------------------:|:-------------:|:---------------:|:-------------:|:------------------:|:-----------------:|:-----------:|:------------------:|
-|   ClickHouse API   |       ✅       |        ✅        |               |          ✅         |         ✅         |      ✅      |          ✅         |
-| `database/sql` API |       ✅       |        ✅        |       ✅       |          ✅         |                   |      ✅      |          ✅         |
+    |                    | Native format | Native protocol | HTTP protocol | Bulk write support | Struct marshaling | Compression | Query Placeholders |
+    |:------------------:|:-------------:|:---------------:|:-------------:|:------------------:|:-----------------:|:-----------:|:------------------:|
+    |   ClickHouse API   |       ✅       |        ✅        |               |          ✅         |         ✅         |      ✅      |          ✅         |
+    | `database/sql` API |       ✅       |        ✅        |       ✅       |          ✅         |                   |      ✅      |          ✅         |
 
 ## Installation {#installation}
 
@@ -251,7 +251,6 @@ The client supports:
 |  => 2.0 &lt;= 2.2 |    1.17, 1.18   |
 |     >= 2.3     |       1.18      |
 
-
 ## ClickHouse client API {#clickhouse-client-api}
 
 All code examples for the ClickHouse Client API can be found [here](https://github.com/ClickHouse/clickhouse-go/tree/main/examples).
@@ -302,8 +301,8 @@ When opening a connection, an Options struct can be used to control client behav
 * `ConnOpenStrategy` - determines how the list of node addresses should be consumed and used to open connections. See [Connecting to Multiple Nodes](#connecting-to-multiple-nodes).
 * `BlockBufferSize` - maximum number of blocks to decode into the buffer at once. Larger values will increase parallelization at the expense of memory. Block sizes are query dependent so while you can set this on the connection, we recommend you override per query based on the data it returns. Defaults to `2`.
 
-```go
-conn, err := clickhouse.Open(&clickhouse.Options{
+    ```go
+    conn, err := clickhouse.Open(&clickhouse.Options{
     Addr: []string{fmt.Sprintf("%s:%d", env.Host, env.Port)},
     Auth: clickhouse.Auth{
         Database: env.Database,
@@ -331,12 +330,12 @@ conn, err := clickhouse.Open(&clickhouse.Options{
     ConnMaxLifetime:  time.Duration(10) * time.Minute,
     ConnOpenStrategy: clickhouse.ConnOpenInOrder,
     BlockBufferSize: 10,
-})
-if err != nil {
+    })
+    if err != nil {
     return err
-}
-```
-[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/connect_settings.go)
+    }
+    ```
+    [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/connect_settings.go)
 
 #### Connection pooling {#connection-pooling}
 
@@ -460,16 +459,15 @@ fmt.Println(v.String())
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/1c0d81d0b1388dbb9e09209e535667df212f4ae4/examples/clickhouse_api/multi_host.go#L26-L45)
 
-
 Two connection strategies are available:
 
 * `ConnOpenInOrder` (default)  - addresses are consumed in order. Later addresses are only utilized in case of failure to connect using addresses earlier in the list. This is effectively a failure-over strategy.
 * `ConnOpenRoundRobin` - Load is balanced across the addresses using a round-robin strategy.
 
-This can be controlled through the option `ConnOpenStrategy`
+    This can be controlled through the option `ConnOpenStrategy`
 
-```go
-conn, err := clickhouse.Open(&clickhouse.Options{
+    ```go
+    conn, err := clickhouse.Open(&clickhouse.Options{
     Addr:             []string{"127.0.0.1:9001", "127.0.0.1:9002", fmt.Sprintf("%s:%d", env.Host, env.Port)},
     ConnOpenStrategy: clickhouse.ConnOpenRoundRobin,
     Auth: clickhouse.Auth{
@@ -477,17 +475,17 @@ conn, err := clickhouse.Open(&clickhouse.Options{
         Username: env.Username,
         Password: env.Password,
     },
-})
-if err != nil {
+    })
+    if err != nil {
     return err
-}
-v, err := conn.ServerVersion()
-if err != nil {
+    }
+    v, err := conn.ServerVersion()
+    if err != nil {
     return err
-}
-```
+    }
+    ```
 
-[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/1c0d81d0b1388dbb9e09209e535667df212f4ae4/examples/clickhouse_api/multi_host.go#L50-L67)
+    [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/1c0d81d0b1388dbb9e09209e535667df212f4ae4/examples/clickhouse_api/multi_host.go#L50-L67)
 
 ### Execution {#execution}
 
@@ -508,7 +506,6 @@ conn.Exec(context.Background(), "INSERT INTO example VALUES (1, 'test-1')")
 ```
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/exec.go)
-
 
 Note the ability to pass a Context to the query. This can be used to pass specific query level settings - see [Using Context](#using-context).
 
@@ -543,7 +540,6 @@ err = conn.Exec(ctx, `
 if err != nil {
     return err
 }
-
 
 batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
@@ -603,11 +599,9 @@ return batch.Send()
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/type_convert.go)
 
-
 For a full summary of supported go types for each column type, see [Type Conversions](#type-conversions).
 
 ### Querying rows {#querying-rows}
-
 
 Users can either query for a single row using the `QueryRow` method or obtain a cursor for iteration over a result set via `Query`. While the former accepts a destination for the data to be serialized into, the latter requires the to call `Scan` on each row.
 
@@ -760,7 +754,6 @@ for _, v := range result {
     fmt.Printf("row: col1=%d, col2=%s, col3=%s\n", v.Col1, v.Col2, v.ColumnWithName)
 }
 ```
-
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/select_struct.go)
 
@@ -1115,7 +1108,6 @@ if err != nil {
     return err
 }
 
-
 batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
 if err != nil {
     return err
@@ -1154,7 +1146,6 @@ if err := batch.Send(); err != nil {
 ```
 
 [Full Example - `flatten_nested=1`](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/nested.go#L123-L180)
-
 
 Note: Nested columns must have the same dimensions. For example, in the above example, `Col_2_2` and `Col_2_1` must have the same number of elements.
 
@@ -1512,7 +1503,6 @@ if err := batch.Send(); err != nil {
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/compression.go)
 
-
 Additional compression techniques are available if using the standard interface over HTTP. See [database/sql API - Compression](#compression) for further details.
 
 ### Parameter binding {#parameter-binding}
@@ -1682,7 +1672,6 @@ for i := 1; i <= 6; i++ {
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/context.go)
 
-
 ### Progress/profile/log information {#progressprofilelog-information}
 
 Progress, Profile, and Log information can be requested on queries. Progress information will report statistics on the number of rows and bytes that have been read and processed in ClickHouse. Conversely, Profile information provides a summary of data returned to the client, including totals of bytes (uncompressed), rows, and blocks. Finally, log information provides statistics on threads, e.g., memory usage and data speed.
@@ -1713,7 +1702,6 @@ rows.Close()
 ```
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/progress.go)
-
 
 ### Dynamic scanning {#dynamic-scanning}
 
@@ -1752,7 +1740,6 @@ for rows.Next() {
 ```
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/dynamic_scan_types.go)
-
 
 ### External tables {#external-tables}
 
@@ -1842,7 +1829,6 @@ fmt.Printf("count: %d\n", count)
 
 Full details on exploiting tracing can be found under [OpenTelemetry support](/operations/opentelemetry/).
 
-
 ## Database/SQL API {#databasesql-api}
 
 The `database/sql` or "standard" API allows users to use the client in scenarios where application code should be agnostic of the underlying databases by conforming to a standard interface. This comes at some expense - additional layers of abstraction and indirection and primitives which are not necessarily aligned with ClickHouse. These costs are, however, typically acceptable in scenarios where tooling needs to connect to multiple databases.
@@ -1873,7 +1859,6 @@ func Connect() error {
         })
         return conn.Ping()
 }
-
 
 func ConnectDSN() error {
         env, err := GetStdTestEnvironment()
@@ -1914,8 +1899,8 @@ The following parameters can be passed in the DSN string:
 * `skip_verify` - skip certificate verification (default is `false`)
 * `block_buffer_size` - allows users to control the block buffer size. See [`BlockBufferSize`](#connection-settings). (default is `2`)
 
-```go
-func ConnectSettings() error {
+    ```go
+    func ConnectSettings() error {
         env, err := GetStdTestEnvironment()
         if err != nil {
                 return err
@@ -1925,9 +1910,9 @@ func ConnectSettings() error {
                 return err
         }
         return conn.Ping()
-}
-```
-[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/connect_settings.go)
+    }
+    ```
+    [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/connect_settings.go)
 
 #### Connection pooling {#connection-pooling-1}
 
@@ -2043,7 +2028,6 @@ func ConnectSSL() error {
         }
         t.RootCAs = caCertPool
 
-
         conn := clickhouse.OpenDB(&clickhouse.Options{
                 Addr: []string{fmt.Sprintf("%s:%d", env.Host, env.SslPort)},
                 Auth: clickhouse.Auth{
@@ -2130,7 +2114,6 @@ _, err = conn.Exec("INSERT INTO example VALUES (1, 'test-1')")
 ```
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/exec.go)
-
 
 This method does not support receiving a context - by default, it executes with the background context. Users can use `ExecContext` if this is needed - see [Using Context](#using-context).
 
@@ -2314,7 +2297,6 @@ The standard API supports the same compression algorithms as native [ClickHouse 
 
 If using the `OpenDB` method to establish a connection, a Compression configuration can be passed. This includes the ability to specify the compression level (see below). If connecting via `sql.Open` with DSN, utilize the parameter `compress`. This can either be a specific compression algorithm i.e. `gzip`, `deflate`, `br`, `zstd` or `lz4` or a boolean flag. If set to true, `lz4` will be used. The default is `none` i.e. compression disabled.
 
-
 ```go
 conn := clickhouse.OpenDB(&clickhouse.Options{
     Addr: []string{fmt.Sprintf("%s:%d", env.Host, env.HttpPort)},
@@ -2331,7 +2313,6 @@ conn := clickhouse.OpenDB(&clickhouse.Options{
 })
 ```
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/compression.go#L27-L76)
-
 
 ```go
 conn, err := sql.Open("clickhouse", fmt.Sprintf("http://%s:%d?username=%s&password=%s&compress=gzip&compress_level=5", env.Host, env.HttpPort, env.Username, env.Password))
@@ -2462,7 +2443,6 @@ for rows.Next() {
 ```
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/context.go)
-
 
 ### Sessions {#sessions}
 
@@ -2613,7 +2593,6 @@ for rows.Next() {
 }
 rows.Close()
 
-
 var count uint64
 if err := conn.QueryRowContext(ctx, "SELECT COUNT(*) FROM external_table_1").Scan(&count); err != nil {
     return err
@@ -2630,7 +2609,6 @@ fmt.Printf("external_table_1 UNION external_table_2: %d\n", count)
 ```
 
 [Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/external_data.go)
-
 
 ### Open telemetry {#open-telemetry-1}
 

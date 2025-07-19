@@ -113,7 +113,7 @@ function CodeViewer({
   ): null
 
   return (
-      <div className={`code-viewer mb-[12px] mt-[12px] ${colorMode === 'dark' ? 'bg-[#282828]' : 'bg-[#f5f5f5]'}`}>
+      <div className={`code-viewer ${colorMode === 'dark' ? 'bg-[#282828]' : 'bg-[#f5f5f5]'}`}>
         <ClickUIProvider theme={colorMode}>
           { header }
           { code_block }

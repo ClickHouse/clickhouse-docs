@@ -27,7 +27,6 @@ The ClickHouse Observability Stack is our **recommended approach** for most user
 | [Search](/use-cases/observability/clickstack/search) | How to search and query your observability data |
 | [Production](/use-cases/observability/clickstack/production) | Best practices for production deployment |
 
-
 ## Build-your-own stack {#build-your-own-stack}
 
 For users with **custom requirements** — such as highly specialized ingestion pipelines, schema designs, or extreme scaling needs — we provide guidance to build a custom observability stack with ClickHouse as the core database.

@@ -5,7 +5,7 @@ description: 'Choosing ClickHouse compression algorithms'
 keywords: ['compression', 'codec', 'encoding']
 ---
 
-One of the secrets to ClickHouse query performance is compression. 
+One of the secrets to ClickHouse query performance is compression.
 
 Less data on disk means less I/O and faster queries and inserts. The overhead of any compression algorithm with respect to CPU is in most cases outweighed by the reduction in IO. Improving the compression of the data should therefore be the first focus when working on ensuring ClickHouse queries are fast.
 
@@ -16,7 +16,7 @@ Compression in ClickHouse will be impacted by 3 principal factors:
 - The data types
 - Which codecs are used
 
-All of these are configured through the schema.
+    All of these are configured through the schema.
 
 ## Choose the right data type to optimize compression {#choose-the-right-data-type-to-optimize-compression}
 
@@ -25,113 +25,113 @@ Let's use the Stack Overflow dataset as an example. Let's compare compression st
 - `posts` - A non type optimized schema with no ordering key.
 - `posts_v3` -  A type optimized schema with the appropriate type and bit size for each column with ordering key `(PostTypeId, toDate(CreationDate), CommentCount)`.
 
-Using the following queries, we can measure the current compressed and uncompressed size of each column. Let's examine the size of the initial optimized schema `posts` with no ordering key.
+    Using the following queries, we can measure the current compressed and uncompressed size of each column. Let's examine the size of the initial optimized schema `posts` with no ordering key.
 
-```sql
-SELECT name,
-   formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
-   formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
-   round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
-FROM system.columns
-WHERE table = 'posts'
-GROUP BY name
-
-┌─name──────────────────┬─compressed_size─┬─uncompressed_size─┬───ratio────┐
-│ Body                  │ 46.14 GiB       │ 127.31 GiB        │ 2.76       │
-│ Title                 │ 1.20 GiB        │ 2.63 GiB          │ 2.19       │
-│ Score                 │ 84.77 MiB       │ 736.45 MiB        │ 8.69       │
-│ Tags                  │ 475.56 MiB      │ 1.40 GiB          │ 3.02       │
-│ ParentId              │ 210.91 MiB      │ 696.20 MiB        │ 3.3        │
-│ Id                    │ 111.17 MiB      │ 736.45 MiB        │ 6.62       │
-│ AcceptedAnswerId      │ 81.55 MiB       │ 736.45 MiB        │ 9.03       │
-│ ClosedDate            │ 13.99 MiB       │ 517.82 MiB        │ 37.02      │
-│ LastActivityDate      │ 489.84 MiB      │ 964.64 MiB        │ 1.97       │
-│ CommentCount          │ 37.62 MiB       │ 565.30 MiB        │ 15.03      │
-│ OwnerUserId           │ 368.98 MiB      │ 736.45 MiB        │ 2          │
-│ AnswerCount           │ 21.82 MiB       │ 622.35 MiB        │ 28.53      │
-│ FavoriteCount         │ 280.95 KiB      │ 508.40 MiB        │ 1853.02    │
-│ ViewCount             │ 95.77 MiB       │ 736.45 MiB        │ 7.69       │
-│ LastEditorUserId      │ 179.47 MiB      │ 736.45 MiB        │ 4.1        │
-│ ContentLicense        │ 5.45 MiB        │ 847.92 MiB        │ 155.5      │
-│ OwnerDisplayName      │ 14.30 MiB       │ 142.58 MiB        │ 9.97       │
-│ PostTypeId            │ 20.93 MiB       │ 565.30 MiB        │ 27         │
-│ CreationDate          │ 314.17 MiB      │ 964.64 MiB        │ 3.07       │
-│ LastEditDate          │ 346.32 MiB      │ 964.64 MiB        │ 2.79       │
-│ LastEditorDisplayName │ 5.46 MiB        │ 124.25 MiB        │ 22.75      │
-│ CommunityOwnedDate    │ 2.21 MiB        │ 509.60 MiB        │ 230.94     │
-└───────────────────────┴─────────────────┴───────────────────┴────────────┘
-```
-
-We show both a compressed and uncompressed size here. Both are important. The compressed size equates to what we will need to read off disk - something we want to minimize for query performance (and storage cost). This data will need to be decompressed prior to reading. The size of this uncompressed size will be dependent on the data type used in this case. Minimizing this size will reduce memory overhead of queries and the amount of data which has to be processed by the query, improving utilization of caches and ultimately query times.
-
-> The above query relies on the table `columns` in the system database. This database is managed by ClickHouse and is a treasure trove of useful information, from query performance metrics to background cluster logs. We recommend ["System Tables and a Window into the Internals of ClickHouse"](https://clickhouse.com/blog/clickhouse-debugging-issues-with-system-tables) and accompanying articles[[1]](https://clickhouse.com/blog/monitoring-troubleshooting-insert-queries-clickhouse)[[2]](https://clickhouse.com/blog/monitoring-troubleshooting-select-queries-clickhouse) for the curious reader. 
-
-To summarize the total size of the table, we can simplify the above query:
-
-```sql
-SELECT formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
-    formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
-    round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
-FROM system.columns
-WHERE table = 'posts'
-
-┌─compressed_size─┬─uncompressed_size─┬─ratio─┐
-│ 50.16 GiB       │ 143.47 GiB        │  2.86 │
-└─────────────────┴───────────────────┴───────┘
-```
-
-Repeating this query for the `posts_v3`, the table with an optimized type and ordering key, we can see a significant reduction in uncompressed and compressed sizes. 
-
-```sql
-SELECT
+    ```sql
+    SELECT name,
     formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
     formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
     round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
-FROM system.columns
-WHERE `table` = 'posts_v3'
+    FROM system.columns
+    WHERE table = 'posts'
+    GROUP BY name
 
-┌─compressed_size─┬─uncompressed_size─┬─ratio─┐
-│ 25.15 GiB       │ 68.87 GiB         │  2.74 │
-└─────────────────┴───────────────────┴───────┘
-```
+    ┌─name──────────────────┬─compressed_size─┬─uncompressed_size─┬───ratio────┐
+    │ Body                  │ 46.14 GiB       │ 127.31 GiB        │ 2.76       │
+    │ Title                 │ 1.20 GiB        │ 2.63 GiB          │ 2.19       │
+    │ Score                 │ 84.77 MiB       │ 736.45 MiB        │ 8.69       │
+    │ Tags                  │ 475.56 MiB      │ 1.40 GiB          │ 3.02       │
+    │ ParentId              │ 210.91 MiB      │ 696.20 MiB        │ 3.3        │
+    │ Id                    │ 111.17 MiB      │ 736.45 MiB        │ 6.62       │
+    │ AcceptedAnswerId      │ 81.55 MiB       │ 736.45 MiB        │ 9.03       │
+    │ ClosedDate            │ 13.99 MiB       │ 517.82 MiB        │ 37.02      │
+    │ LastActivityDate      │ 489.84 MiB      │ 964.64 MiB        │ 1.97       │
+    │ CommentCount          │ 37.62 MiB       │ 565.30 MiB        │ 15.03      │
+    │ OwnerUserId           │ 368.98 MiB      │ 736.45 MiB        │ 2          │
+    │ AnswerCount           │ 21.82 MiB       │ 622.35 MiB        │ 28.53      │
+    │ FavoriteCount         │ 280.95 KiB      │ 508.40 MiB        │ 1853.02    │
+    │ ViewCount             │ 95.77 MiB       │ 736.45 MiB        │ 7.69       │
+    │ LastEditorUserId      │ 179.47 MiB      │ 736.45 MiB        │ 4.1        │
+    │ ContentLicense        │ 5.45 MiB        │ 847.92 MiB        │ 155.5      │
+    │ OwnerDisplayName      │ 14.30 MiB       │ 142.58 MiB        │ 9.97       │
+    │ PostTypeId            │ 20.93 MiB       │ 565.30 MiB        │ 27         │
+    │ CreationDate          │ 314.17 MiB      │ 964.64 MiB        │ 3.07       │
+    │ LastEditDate          │ 346.32 MiB      │ 964.64 MiB        │ 2.79       │
+    │ LastEditorDisplayName │ 5.46 MiB        │ 124.25 MiB        │ 22.75      │
+    │ CommunityOwnedDate    │ 2.21 MiB        │ 509.60 MiB        │ 230.94     │
+    └───────────────────────┴─────────────────┴───────────────────┴────────────┘
+    ```
 
-The full column breakdown shows considerable savings for the `Body`, `Title`, `Tags` and `CreationDate` columns achieved by ordering the data prior to compression and using the appropriate types.
+    We show both a compressed and uncompressed size here. Both are important. The compressed size equates to what we will need to read off disk - something we want to minimize for query performance (and storage cost). This data will need to be decompressed prior to reading. The size of this uncompressed size will be dependent on the data type used in this case. Minimizing this size will reduce memory overhead of queries and the amount of data which has to be processed by the query, improving utilization of caches and ultimately query times.
 
-```sql
-SELECT
+    > The above query relies on the table `columns` in the system database. This database is managed by ClickHouse and is a treasure trove of useful information, from query performance metrics to background cluster logs. We recommend ["System Tables and a Window into the Internals of ClickHouse"](https://clickhouse.com/blog/clickhouse-debugging-issues-with-system-tables) and accompanying articles[[1]](https://clickhouse.com/blog/monitoring-troubleshooting-insert-queries-clickhouse)[[2]](https://clickhouse.com/blog/monitoring-troubleshooting-select-queries-clickhouse) for the curious reader.
+
+    To summarize the total size of the table, we can simplify the above query:
+
+    ```sql
+    SELECT formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+    formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+    round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
+    FROM system.columns
+    WHERE table = 'posts'
+
+    ┌─compressed_size─┬─uncompressed_size─┬─ratio─┐
+    │ 50.16 GiB       │ 143.47 GiB        │  2.86 │
+    └─────────────────┴───────────────────┴───────┘
+    ```
+
+    Repeating this query for the `posts_v3`, the table with an optimized type and ordering key, we can see a significant reduction in uncompressed and compressed sizes.
+
+    ```sql
+    SELECT
+    formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+    formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+    round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
+    FROM system.columns
+    WHERE `table` = 'posts_v3'
+
+    ┌─compressed_size─┬─uncompressed_size─┬─ratio─┐
+    │ 25.15 GiB       │ 68.87 GiB         │  2.74 │
+    └─────────────────┴───────────────────┴───────┘
+    ```
+
+    The full column breakdown shows considerable savings for the `Body`, `Title`, `Tags` and `CreationDate` columns achieved by ordering the data prior to compression and using the appropriate types.
+
+    ```sql
+    SELECT
     name,
     formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
     formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
     round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
-FROM system.columns
-WHERE `table` = 'posts_v3'
-GROUP BY name
+    FROM system.columns
+    WHERE `table` = 'posts_v3'
+    GROUP BY name
 
-┌─name──────────────────┬─compressed_size─┬─uncompressed_size─┬───ratio─┐
-│ Body                  │ 23.10 GiB       │ 63.63 GiB         │    2.75 │
-│ Title                 │ 614.65 MiB      │ 1.28 GiB          │    2.14 │
-│ Score                 │ 40.28 MiB       │ 227.38 MiB        │    5.65 │
-│ Tags                  │ 234.05 MiB      │ 688.49 MiB        │    2.94 │
-│ ParentId              │ 107.78 MiB      │ 321.33 MiB        │    2.98 │
-│ Id                    │ 159.70 MiB      │ 227.38 MiB        │    1.42 │
-│ AcceptedAnswerId      │ 40.34 MiB       │ 227.38 MiB        │    5.64 │
-│ ClosedDate            │ 5.93 MiB        │ 9.49 MiB          │     1.6 │
-│ LastActivityDate      │ 246.55 MiB      │ 454.76 MiB        │    1.84 │
-│ CommentCount          │ 635.78 KiB      │ 56.84 MiB         │   91.55 │
-│ OwnerUserId           │ 183.86 MiB      │ 227.38 MiB        │    1.24 │
-│ AnswerCount           │ 9.67 MiB        │ 113.69 MiB        │   11.76 │
-│ FavoriteCount         │ 19.77 KiB       │ 147.32 KiB        │    7.45 │
-│ ViewCount             │ 45.04 MiB       │ 227.38 MiB        │    5.05 │
-│ LastEditorUserId      │ 86.25 MiB       │ 227.38 MiB        │    2.64 │
-│ ContentLicense        │ 2.17 MiB        │ 57.10 MiB         │   26.37 │
-│ OwnerDisplayName      │ 5.95 MiB        │ 16.19 MiB         │    2.72 │
-│ PostTypeId            │ 39.49 KiB       │ 56.84 MiB         │ 1474.01 │
-│ CreationDate          │ 181.23 MiB      │ 454.76 MiB        │    2.51 │
-│ LastEditDate          │ 134.07 MiB      │ 454.76 MiB        │    3.39 │
-│ LastEditorDisplayName │ 2.15 MiB        │ 6.25 MiB          │    2.91 │
-│ CommunityOwnedDate    │ 824.60 KiB      │ 1.34 MiB          │    1.66 │
-└───────────────────────┴─────────────────┴───────────────────┴─────────┘
-```
+    ┌─name──────────────────┬─compressed_size─┬─uncompressed_size─┬───ratio─┐
+    │ Body                  │ 23.10 GiB       │ 63.63 GiB         │    2.75 │
+    │ Title                 │ 614.65 MiB      │ 1.28 GiB          │    2.14 │
+    │ Score                 │ 40.28 MiB       │ 227.38 MiB        │    5.65 │
+    │ Tags                  │ 234.05 MiB      │ 688.49 MiB        │    2.94 │
+    │ ParentId              │ 107.78 MiB      │ 321.33 MiB        │    2.98 │
+    │ Id                    │ 159.70 MiB      │ 227.38 MiB        │    1.42 │
+    │ AcceptedAnswerId      │ 40.34 MiB       │ 227.38 MiB        │    5.64 │
+    │ ClosedDate            │ 5.93 MiB        │ 9.49 MiB          │     1.6 │
+    │ LastActivityDate      │ 246.55 MiB      │ 454.76 MiB        │    1.84 │
+    │ CommentCount          │ 635.78 KiB      │ 56.84 MiB         │   91.55 │
+    │ OwnerUserId           │ 183.86 MiB      │ 227.38 MiB        │    1.24 │
+    │ AnswerCount           │ 9.67 MiB        │ 113.69 MiB        │   11.76 │
+    │ FavoriteCount         │ 19.77 KiB       │ 147.32 KiB        │    7.45 │
+    │ ViewCount             │ 45.04 MiB       │ 227.38 MiB        │    5.05 │
+    │ LastEditorUserId      │ 86.25 MiB       │ 227.38 MiB        │    2.64 │
+    │ ContentLicense        │ 2.17 MiB        │ 57.10 MiB         │   26.37 │
+    │ OwnerDisplayName      │ 5.95 MiB        │ 16.19 MiB         │    2.72 │
+    │ PostTypeId            │ 39.49 KiB       │ 56.84 MiB         │ 1474.01 │
+    │ CreationDate          │ 181.23 MiB      │ 454.76 MiB        │    2.51 │
+    │ LastEditDate          │ 134.07 MiB      │ 454.76 MiB        │    3.39 │
+    │ LastEditorDisplayName │ 2.15 MiB        │ 6.25 MiB          │    2.91 │
+    │ CommunityOwnedDate    │ 824.60 KiB      │ 1.34 MiB          │    1.66 │
+    └───────────────────────┴─────────────────┴───────────────────┴─────────┘
+    ```
 
 ## Choosing the right column compression codec {#choosing-the-right-column-compression-codec}
 

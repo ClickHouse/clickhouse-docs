@@ -21,11 +21,11 @@ import image_9 from '@site/static/images/deployment-guides/parallel-replicas-9.p
 
 ## Introduction {#introduction}
 
-ClickHouse processes queries extremely quickly, but how are these queries 
-distributed and parallelized across multiple servers? 
+ClickHouse processes queries extremely quickly, but how are these queries
+distributed and parallelized across multiple servers?
 
 > In this guide, we will first discuss how ClickHouse distributes a query across
-multiple shards via distributed tables, and then how a query can leverage 
+multiple shards via distributed tables, and then how a query can leverage
 multiple replicas for its execution.
 
 ## Sharded architecture {#sharded-architecture}
@@ -46,8 +46,8 @@ The figure above visualizes what happens when a client queries a distributed tab
 
 <ol className="docs-ordered-list">
     <li>
-        The select query is sent to a distributed table on a node arbitrarily 
-        (via a round-robin strategy or after being routed to a specific server 
+        The select query is sent to a distributed table on a node arbitrarily
+        (via a round-robin strategy or after being routed to a specific server
         by a load balancer). This node is now going to act as a coordinator.
     </li>
     <li>
@@ -119,7 +119,7 @@ With parallel replicas:
         granules to process.
     </li>
     <li>
-        The coordinator splits the workload into a set of granules that can be 
+        The coordinator splits the workload into a set of granules that can be
         assigned to different replicas.
     </li>
     <li>
@@ -148,8 +148,8 @@ from working perfectly:
         Tail latency between replicas needs to be handled somehow.
     </li>
     <li>
-        The filesystem cache varies from replica to replica based on the 
-        activity on each replica, meaning that a random task assignment might 
+        The filesystem cache varies from replica to replica based on the
+        activity on each replica, meaning that a random task assignment might
         lead to less optimal performance given the cache locality.
     </li>
 </ol>
@@ -328,7 +328,7 @@ the label `comp-parallel-replicas`.
 
 ## Investigating issues with parallel replicas {#investigating-issues-with-parallel-replicas}
 
-You can check what settings are being used for each query in the 
+You can check what settings are being used for each query in the
 [`system.query_log`](/docs/operations/system-tables/query_log) table. You can
 also look at the [`system.events`](/docs/operations/system-tables/events)
 table to see all the events that have occured on the server, and you can use the
@@ -339,9 +339,9 @@ table to see all the events that have occured on the server, and you can use the
 SELECT
    hostname(),
    *
-FROM clusterAllReplicas('default', system.events)
-WHERE event ILIKE '%ParallelReplicas%'
-```
+       FROM clusterAllReplicas('default', system.events)
+       WHERE event ILIKE '%ParallelReplicas%'
+       ```
 <details>
 <summary>Response</summary>
 ```response title="Response"
@@ -392,7 +392,7 @@ WHERE event ILIKE '%ParallelReplicas%'
 ```
 </details>
 
-The [`system.text_log`](/docs/operations/system-tables/text_log) table also 
+The [`system.text_log`](/docs/operations/system-tables/text_log) table also
 contains information about the execution of queries using parallel replicas:
 
 ```sql title="Query"
@@ -419,34 +419,34 @@ ORDER BY event_time_microseconds ASC
 │ The number of replicas requested (100) is bigger than the real number available in the cluster (6). Will use the latter number to execute the query.                                                                                                       │
 │ Initial request from replica 4: 2 parts: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
 Received from 4 replica
-                                                                                                   │
+│
 │ Reading state is fully initialized: part all_0_2_1 with ranges [(0, 182)] in replicas [4]; part all_3_3_0 with ranges [(0, 62)] in replicas [4]                                                                                                            │
 │ Sent initial requests: 1 Replicas count: 6                                                                                                                                                                                                                 │
 │ Initial request from replica 2: 2 parts: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
 Received from 2 replica
-                                                                                                   │
+│
 │ Sent initial requests: 2 Replicas count: 6                                                                                                                                                                                                                 │
 │ Handling request from replica 4, minimal marks size is 240                                                                                                                                                                                                 │
 │ Going to respond to replica 4 with 1 parts: [part all_0_2_1 with ranges [(128, 182)]]. Finish: false; mine_marks=0, stolen_by_hash=54, stolen_rest=0                                                                                                       │
 │ Initial request from replica 1: 2 parts: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
 Received from 1 replica
-                                                                                                   │
+│
 │ Sent initial requests: 3 Replicas count: 6                                                                                                                                                                                                                 │
 │ Handling request from replica 4, minimal marks size is 240                                                                                                                                                                                                 │
 │ Going to respond to replica 4 with 2 parts: [part all_0_2_1 with ranges [(0, 128)], part all_3_3_0 with ranges [(0, 62)]]. Finish: false; mine_marks=0, stolen_by_hash=0, stolen_rest=190                                                                  │
 │ Initial request from replica 0: 2 parts: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
 Received from 0 replica
-                                                                                                   │
+│
 │ Sent initial requests: 4 Replicas count: 6                                                                                                                                                                                                                 │
 │ Initial request from replica 5: 2 parts: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
 Received from 5 replica
-                                                                                                   │
+│
 │ Sent initial requests: 5 Replicas count: 6                                                                                                                                                                                                                 │
 │ Handling request from replica 2, minimal marks size is 240                                                                                                                                                                                                 │
 │ Going to respond to replica 2 with 0 parts: []. Finish: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
 │ Initial request from replica 3: 2 parts: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
 Received from 3 replica
-                                                                                                   │
+│
 │ Sent initial requests: 6 Replicas count: 6                                                                                                                                                                                                                 │
 │ Total rows to read: 2000000                                                                                                                                                                                                                                │
 │ Handling request from replica 5, minimal marks size is 240                                                                                                                                                                                                 │
@@ -466,27 +466,27 @@ Received from 3 replica
 ```
 </details>
 
-Finally, you can also use the `EXPLAIN PIPELINE`. It highlights how ClickHouse 
-is going to execute a query and what resources are going to be used for the 
+Finally, you can also use the `EXPLAIN PIPELINE`. It highlights how ClickHouse
+is going to execute a query and what resources are going to be used for the
 execution of the query. Let's take the following query for example:
 
 ```sql
-SELECT count(), uniq(pageId) , min(timestamp), max(timestamp) 
-FROM session_events 
-WHERE type='type3' 
+SELECT count(), uniq(pageId) , min(timestamp), max(timestamp)
+FROM session_events
+WHERE type='type3'
 GROUP BY toYear(timestamp) LIMIT 10
 ```
 
 Let's have a look at the query pipeline without parallel replica:
 
 ```sql title="EXPLAIN PIPELINE (without parallel replica)"
-EXPLAIN PIPELINE graph = 1, compact = 0 
-SELECT count(), uniq(pageId) , min(timestamp), max(timestamp) 
-FROM session_events 
-WHERE type='type3' 
-GROUP BY toYear(timestamp) 
-LIMIT 10 
-SETTINGS allow_experimental_parallel_reading_from_replicas=0 
+EXPLAIN PIPELINE graph = 1, compact = 0
+SELECT count(), uniq(pageId) , min(timestamp), max(timestamp)
+FROM session_events
+WHERE type='type3'
+GROUP BY toYear(timestamp)
+LIMIT 10
+SETTINGS allow_experimental_parallel_reading_from_replicas=0
 FORMAT TSV;
 ```
 
@@ -495,13 +495,13 @@ FORMAT TSV;
 And now with parallel replica:
 
 ```sql title="EXPLAIN PIPELINE (with parallel replica)"
-EXPLAIN PIPELINE graph = 1, compact = 0 
-SELECT count(), uniq(pageId) , min(timestamp), max(timestamp) 
-FROM session_events 
-WHERE type='type3' 
-GROUP BY toYear(timestamp) 
-LIMIT 10 
-SETTINGS allow_experimental_parallel_reading_from_replicas=2 
+EXPLAIN PIPELINE graph = 1, compact = 0
+SELECT count(), uniq(pageId) , min(timestamp), max(timestamp)
+FROM session_events
+WHERE type='type3'
+GROUP BY toYear(timestamp)
+LIMIT 10
+SETTINGS allow_experimental_parallel_reading_from_replicas=2
 FORMAT TSV;
 ```
 

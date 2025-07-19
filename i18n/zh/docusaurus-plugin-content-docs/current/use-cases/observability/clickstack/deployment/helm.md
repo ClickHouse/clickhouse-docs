@@ -15,10 +15,10 @@ The helm chart for HyperDX can be found [here](https://github.com/hyperdxio/helm
 
 By default, the Helm chart provisions all core components, including:
 
-* **ClickHouse**
-* **HyperDX**
-* **OpenTelemetry (OTel) collector**
-* **MongoDB** (for persistent application state)
+***ClickHouse**
+***HyperDX**
+***OpenTelemetry (OTel) collector**
+***MongoDB** (for persistent application state)
 
 However, it can be easily customized to integrate with an existing ClickHouse deployment - for example, one hosted in **ClickHouse Cloud**.
 

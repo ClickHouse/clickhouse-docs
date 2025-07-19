@@ -25,7 +25,7 @@ Below section describes the two main strategies for migration: **Real-Time CDC**
 
 ### Real-time replication (CDC) {#real-time-replication-cdc}
 
-Change Data Capture (CDC) is the process by which tables are kept in sync between two databases. It is the most efficient approach for most migration from PostgreSQL, but yet more complex as it handles insert, updates and deletes from PostgreSQL to ClickHouse in near real-time. It is ideal for use cases where real-time analytics are important. 
+Change Data Capture (CDC) is the process by which tables are kept in sync between two databases. It is the most efficient approach for most migration from PostgreSQL, but yet more complex as it handles insert, updates and deletes from PostgreSQL to ClickHouse in near real-time. It is ideal for use cases where real-time analytics are important.
 
 Real-time Change Data Capture (CDC) can be implemented in ClickHouse using [ClickPipes](/integrations/clickpipes/postgres/deduplication), if you're using ClickHouse Cloud, or [PeerDB](https://github.com/PeerDB-io/peerdb) in case you're running ClickHouse on-prem. Those solutions handles the complexities of real-time data synchronization, including initial load, by capturing inserts, updates, and deletes from PostgreSQL and replicating them in ClickHouse. This approach ensures that the data in ClickHouse is always fresh and accurate without requiring manual intervention.
 

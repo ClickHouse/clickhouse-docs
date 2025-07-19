@@ -17,7 +17,7 @@ Dictionaries are useful for:
 - Improving the performance of queries, especially when used with `JOIN`s
 - Enriching ingested data on the fly without slowing down the ingestion process
 
-<Image img={dictionaryUseCases} size="lg" alt="Use cases for Dictionary in ClickHouse"/>
+    <Image img={dictionaryUseCases} size="lg" alt="Use cases for Dictionary in ClickHouse"/>
 
 ## Speeding up joins using a Dictionary {#speeding-up-joins-using-a-dictionary}
 
@@ -155,7 +155,6 @@ SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes
 │ (34999,32) │
 └────────────┘
 
-
 Exploiting this in our earlier query, we can remove the JOIN:
 
 WITH PostIds AS
@@ -206,8 +205,6 @@ FROM posts
 WHERE Title ILIKE '%clickhouse%'
 LIMIT 5
 FORMAT PrettyCompactMonoBlock
-
-
 
 ┌───────Id─┬─Title─────────────────────────────────────────────────────────┬─Location──────────────┐
 │ 52296928 │ Comparision between two Strings in ClickHouse                 │ Spain                 │

@@ -5,7 +5,6 @@ title: 'Устранение проблем с выставлением счет
 description: 'Статья по устранению распространённых проблем с выставлением счетов'
 ---
 
-import trial_expired from '@site/static/images/cloud/manage/trial-expired.png';
 import Image from '@theme/IdealImage';
 
 

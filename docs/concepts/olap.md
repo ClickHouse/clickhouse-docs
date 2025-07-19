@@ -11,13 +11,11 @@ keywords: ['OLAP']
 
 [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) stands for Online Analytical Processing. It is a broad term that can be looked at from two perspectives: technical and business. At the highest level, you can just read these words backward:
 
-
 **Processing** some source data is processed…
 
 **Analytical** …to produce some analytical reports and insights…
 
 **Online** …in real-time.
-
 
 ## OLAP from the business perspective {#olap-from-the-business-perspective}
 

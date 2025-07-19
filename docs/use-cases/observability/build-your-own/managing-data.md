@@ -9,7 +9,6 @@ show_related_blogs: true
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';
 import Image from '@theme/IdealImage';
 
-
 # Managing data
 
 Deployments of ClickHouse for Observability invariably involve large datasets, which need to be managed. ClickHouse offers a number of features to assist with data management.
@@ -143,7 +142,6 @@ ORDER BY c DESC
 This feature is exploited by TTL when the setting [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) is used. See [Data management with TTL](#data-management-with-ttl-time-to-live) for further details.
 :::
 
-
 ### Applications {#applications}
 
 The above illustrates how data can be efficiently moved and manipulated by partition. In reality, users will likely most frequently exploit partition operations in Observability use cases for two scenarios:
@@ -151,7 +149,7 @@ The above illustrates how data can be efficiently moved and manipulated by parti
 - **Tiered architectures** - Moving data between storage tiers (see [Storage tiers](#storage-tiers)), thus allowing hot-cold architectures to be constructed.
 - **Efficient deletion** - when data has reached a specified TTL (see [Data management with TTL](#data-management-with-ttl-time-to-live))
 
-We explore both of these in detail below.
+    We explore both of these in detail below.
 
 ### Query performance {#query-performance}
 

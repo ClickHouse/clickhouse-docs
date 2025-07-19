@@ -34,11 +34,11 @@ ClickPipes supports the following AWS MSK authentication
 - [SASL/SCRAM-SHA-512](https://docs.aws.amazon.com/msk/latest/developerguide/msk-password.html) authentication
 - [IAM Credentials or Role-based access](https://docs.aws.amazon.com/msk/latest/developerguide/how-to-use-iam-access-control.html) authentication
 
-When using IAM authentication to connect to an MSK broker, the IAM role must have the necessary permissions.
-Below is an example of the required IAM policy for Apache Kafka APIs for MSK:
+    When using IAM authentication to connect to an MSK broker, the IAM role must have the necessary permissions.
+    Below is an example of the required IAM policy for Apache Kafka APIs for MSK:
 
-```json
-{
+    ```json
+    {
     "Version": "2012-10-17",
     "Statement": [
         {
@@ -71,8 +71,8 @@ Below is an example of the required IAM policy for Apache Kafka APIs for MSK:
             ]
         }
     ]
-}
-```
+    }
+    ```
 
 #### Configuring a trusted relationship {#configuring-a-trusted-relationship}
 

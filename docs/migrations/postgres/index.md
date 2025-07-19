@@ -14,4 +14,3 @@ description: 'Landing page for the PostgreSQL migrations section'
 |[Rewriting PostgreSQL Queries](/migrations/postgresql/rewriting-queries)|Part 2 of a guide on migrating from PostgreSQL to ClickHouse. Using a practical example, it demonstrates how to efficiently carry out the migration with a real-time replication (CDC) approach. Many of the concepts covered are also applicable to manual bulk data transfers from PostgreSQL to ClickHouse.|
 |[Data modeling techniques](/migrations/postgresql/data-modeling-techniques)|Part 3 of a guide on migrating from PostgreSQL to ClickHouse. Using a practical example, it demonstrates how to model data in ClickHouse if migrating from PostgreSQL.|
 |[Appendix](/migrations/postgresql/appendix)|Additional information relevant to migrating from PostgreSQL|
-

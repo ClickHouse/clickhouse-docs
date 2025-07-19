@@ -18,13 +18,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 [Hashboard](https://hashboard.com) is an interactive data exploration tool that enables anyone in your organization to track metrics and discover actionable insights. Hashboard issues live SQL queries to your ClickHouse database and is particularly useful for self-serve, ad hoc data exploration use cases.
 
-
 <Image size="md" img={hashboard_01} alt="Hashboard data explorer interface showing interactive query builder and visualization" border />
 
 <br/>
 
 This guide will walk you through the steps to connect Hashboard with your ClickHouse instance. This information is also available on Hashboard's [ClickHouse integration documentation](https://docs.hashboard.com/docs/database-connections/clickhouse).
-
 
 ## Pre-requisites {#pre-requisites}
 
@@ -47,7 +45,7 @@ This guide will walk you through the steps to connect Hashboard with your ClickH
 6. Click "Test" to validate that the connection is configured successfully.
 7. Click "Add"
 
-Your ClickHouse database is now be connected to Hashboard and you can proceed by building [Data Models](https://docs.hashboard.com/docs/data-modeling/add-data-model), [Explorations](https://docs.hashboard.com/docs/visualizing-data/explorations), [Metrics](https://docs.hashboard.com/docs/metrics), and [Dashboards](https://docs.hashboard.com/docs/dashboards). See the corresponding Hashboard documentation for more detail on these features.
+    Your ClickHouse database is now be connected to Hashboard and you can proceed by building [Data Models](https://docs.hashboard.com/docs/data-modeling/add-data-model), [Explorations](https://docs.hashboard.com/docs/visualizing-data/explorations), [Metrics](https://docs.hashboard.com/docs/metrics), and [Dashboards](https://docs.hashboard.com/docs/dashboards). See the corresponding Hashboard documentation for more detail on these features.
 
 ## Learn more {#learn-more}
 

@@ -32,12 +32,12 @@ If not already configured, make sure to set these in the database flags section 
 2. `binlog_row_metadata` to `FULL`
 3. `binlog_row_image` to `FULL`
 
-To do this, click on the `Edit` button in the top right corner of the instance overview page.
-<Image img={gcp_mysql_edit_button} alt="Edit button in GCP MySQL" size="lg" border/>
+    To do this, click on the `Edit` button in the top right corner of the instance overview page.
+    <Image img={gcp_mysql_edit_button} alt="Edit button in GCP MySQL" size="lg" border/>
 
-Then scroll down to the `Flags` section and add the above flags.
+    Then scroll down to the `Flags` section and add the above flags.
 
-<Image img={gcp_mysql_flags} alt="Setting binlog flags in GCP" size="lg" border/>
+    <Image img={gcp_mysql_flags} alt="Setting binlog flags in GCP" size="lg" border/>
 
 ## Configure a database user {#configure-database-user-gcp}
 
@@ -77,8 +77,8 @@ To connect to your Cloud SQL instance, you need to download the root CA certific
 3. Click on the `Security` tab.
 4. In the `Manage server CA certificates` section, click on the `DOWNLOAD CERTIFICATES` button at the bottom.
 
-<Image img={gcp_mysql_cert} alt="Downloading GCP MySQL Cert" size="lg" border/>
+    <Image img={gcp_mysql_cert} alt="Downloading GCP MySQL Cert" size="lg" border/>
 
 5. In the ClickPipes UI, upload the downloaded certificate when creating a new MySQL ClickPipe.
 
-<Image img={rootca} alt="Using GCP MySQL Cert" size="lg" border/>
+    <Image img={rootca} alt="Using GCP MySQL Cert" size="lg" border/>

@@ -48,7 +48,7 @@ You will then have a cell that can be run to establish a connection.
 
 ## 3. Run SQL {#run-sql}
 
-Once you have set up a connection, you can create a new SQL cell and choose the clickhouse engine. 
+Once you have set up a connection, you can create a new SQL cell and choose the clickhouse engine.
 
 <Image img={choose_sql_engine} size="md" border alt="Choose SQL engine" />
 

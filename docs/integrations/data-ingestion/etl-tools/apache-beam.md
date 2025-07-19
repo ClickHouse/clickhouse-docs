@@ -37,7 +37,6 @@ The `ClickHouseIO` connector is recommended for use starting from Apache Beam ve
 Earlier versions may not fully support the connector's functionality.
 :::
 
-
 The artifacts could be found in the [official maven repository](https://mvnrepository.com/artifact/org.apache.beam/beam-sdks-java-io-clickhouse).
 
 ### Code example {#code-example}
@@ -58,9 +57,7 @@ import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.values.Row;
 import org.joda.time.DateTime;
 
-
 public class Main {
-
 
     public static void main(String[] args) {
         // Create a Pipeline object.
@@ -73,10 +70,8 @@ public class Main {
                         .addField(Schema.Field.of("insertion_time", Schema.FieldType.DATETIME).withNullable(false))
                         .build();
 
-
         // Apply transforms to the pipeline.
         PCollection<String> lines = p.apply("ReadLines", TextIO.read().from("src/main/resources/input.csv"));
-
 
         PCollection<Row> rows = lines.apply("ConvertToRow", ParDo.of(new DoFn<String, Row>() {
             @ProcessElement
@@ -147,7 +142,6 @@ Please consider the following limitations when using the connector:
 * As of today, only Sink operation is supported. The connector doesn't support Source operation.
 * ClickHouse performs deduplication when inserting into a `ReplicatedMergeTree` or a `Distributed` table built on top of a `ReplicatedMergeTree`. Without replication, inserting into a regular MergeTree can result in duplicates if an insert fails and then successfully retries. However, each block is inserted atomically, and the block size can be configured using `ClickHouseIO.Write.withMaxInsertBlockSize(long)`. Deduplication is achieved by using checksums of the inserted blocks. For more information about deduplication, please visit [Deduplication](/guides/developer/deduplication) and [Deduplicate insertion config](/operations/settings/settings#insert_deduplicate).
 * The connector doesn't perform any DDL statements; therefore, the target table must exist prior insertion.
-
 
 ## Related content {#related-content}
 * `ClickHouseIO` class [documentation](https://beam.apache.org/releases/javadoc/current/org/apache/beam/sdk/io/clickhouse/ClickHouseIO.html).

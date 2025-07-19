@@ -19,9 +19,9 @@ The Elastic Stack provides two types of language SDKs for instrumenting applicat
 
 2. **[Elastic Distributions of OpenTelemetry (EDOT SDKs)](https://www.elastic.co/docs/reference/opentelemetry/edot-sdks/)** – These are Elastic's distributions of the standard OpenTelemetry SDKs, available for .NET, Java, Node.js, PHP, and Python. If your application is already using an EDOT SDK, you do not need to re-instrument your code. Instead, you can simply reconfigure the SDK to export telemetry data to the OTLP Collector included in ClickStack. See ["Migrating EDOT SDKs"](#migrating-edot-sdks) for further details.
 
-:::note Use ClickStack SDKs where possible
-While standard OpenTelemetry SDKs are supported, we strongly recommend using the [**ClickStack-distributed SDKs**](/use-cases/observability/clickstack/sdks) for each language. These distributions include additional instrumentation, enhanced defaults, and custom extensions designed to work seamlessly with the ClickStack pipeline and HyperDX UI. By using the ClickStack SDKs, you can unlock advanced features such as exception stack traces that are not available with vanilla OpenTelemetry or EDOT SDKs.
-:::
+    :::note Use ClickStack SDKs where possible
+    While standard OpenTelemetry SDKs are supported, we strongly recommend using the [**ClickStack-distributed SDKs**](/use-cases/observability/clickstack/sdks) for each language. These distributions include additional instrumentation, enhanced defaults, and custom extensions designed to work seamlessly with the ClickStack pipeline and HyperDX UI. By using the ClickStack SDKs, you can unlock advanced features such as exception stack traces that are not available with vanilla OpenTelemetry or EDOT SDKs.
+    :::
 
 ## Migrating EDOT SDKs {#migrating-edot-sdks}
 

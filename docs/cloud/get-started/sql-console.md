@@ -82,7 +82,7 @@ To sort a table in the SQL console, open a table and select the 'Sort' button in
 
 <Image img={sort_descending_on_column} size="md" alt='sort descending on a column' />
 
-The SQL console also allows you to add multiple sorts to a table. Click the 'Sort' button again to add another sort. 
+The SQL console also allows you to add multiple sorts to a table. Click the 'Sort' button again to add another sort.
 
 :::note
 Sorts are applied in the order that they appear in the sort pane (top to bottom). To remove a sort, simply click the 'x' button next to the sort.
@@ -127,7 +127,7 @@ There are two ways to create a new query in the SQL console.
 - Click the '+' button in the tab bar
 - Select the 'New Query' button from the left sidebar query list
 
-<Image img={creating_a_query} size="md" alt='Creating a query' />
+    <Image img={creating_a_query} size="md" alt='Creating a query' />
 
 ### Running a query {#running-a-query}
 
@@ -139,23 +139,23 @@ By default, clicking the run button will run all commands contained in the SQL E
 - Run selected command(s)
 - Run command at the cursor
 
-To run selected command(s), highlight the desired command or sequence of commands and click the 'Run' button (or use the `cmd / ctrl + enter` shortcut). You can also select 'Run selected' from the SQL Editor context menu (opened by right-clicking anywhere within the editor) when a selection is present.
+    To run selected command(s), highlight the desired command or sequence of commands and click the 'Run' button (or use the `cmd / ctrl + enter` shortcut). You can also select 'Run selected' from the SQL Editor context menu (opened by right-clicking anywhere within the editor) when a selection is present.
 
-<Image img={run_selected_query} size="md" alt='run selected query' />
+    <Image img={run_selected_query} size="md" alt='run selected query' />
 
-Running the command at the current cursor position can be achieved in two ways:
+    Running the command at the current cursor position can be achieved in two ways:
 
 - Select 'At Cursor' from the extended run options menu (or use the corresponding `cmd / ctrl + shift + enter` keyboard shortcut
 
-<Image img={run_at_cursor_2} size="md" alt='run at cursor' />
+    <Image img={run_at_cursor_2} size="md" alt='run at cursor' />
 
-  - Selecting 'Run at cursor' from the SQL Editor context menu
+    - Selecting 'Run at cursor' from the SQL Editor context menu
 
-<Image img={run_at_cursor} size="md" alt='run at cursor' />
+    <Image img={run_at_cursor} size="md" alt='run at cursor' />
 
-:::note
-The command present at the cursor position will flash yellow on execution.
-:::
+    :::note
+    The command present at the cursor position will flash yellow on execution.
+    :::
 
 ### Canceling a query {#canceling-a-query}
 
@@ -188,23 +188,23 @@ The SQL console allows you to easily share queries with your team members. The S
 - Read-only access
 - No access
 
-After saving a query, click the "Share" button in the toolbar. A modal with sharing options will appear:
+    After saving a query, click the "Share" button in the toolbar. A modal with sharing options will appear:
 
-<Image img={sql_console_share} size="md" alt='Share query' />
+    <Image img={sql_console_share} size="md" alt='Share query' />
 
-To adjust query access for all organization members with access to the service, simply adjust the access level selector in the top line:
+    To adjust query access for all organization members with access to the service, simply adjust the access level selector in the top line:
 
-<Image img={sql_console_edit_access} size="md" alt='Edit access' />
+    <Image img={sql_console_edit_access} size="md" alt='Edit access' />
 
-After applying the above, the query can now be viewed (and executed) by all team members with access to the SQL console for the service.
+    After applying the above, the query can now be viewed (and executed) by all team members with access to the SQL console for the service.
 
-To adjust query access for specific members, select the desired team member from the "Add a team member" selector:
+    To adjust query access for specific members, select the desired team member from the "Add a team member" selector:
 
-<Image img={sql_console_add_team} size="md" alt='Add team member' />
+    <Image img={sql_console_add_team} size="md" alt='Add team member' />
 
-After selecting a team member, a new line item should appear with an access level selector:
+    After selecting a team member, a new line item should appear with an access level selector:
 
-<Image img={sql_console_edit_member} size="md" alt='Edit team member access' />
+    <Image img={sql_console_edit_member} size="md" alt='Edit team member access' />
 
 ### Accessing shared queries {#accessing-shared-queries}
 
@@ -298,10 +298,10 @@ A number of more advanced chart characteristics can also be adjusted in the 'Adv
 - Axis titles
 - Label orientation for the x-axis
 
-Our chart will be updated accordingly:
+    Our chart will be updated accordingly:
 
-<Image img={update_subtitle_etc} size="md" alt='Update subtitle etc.' />
+    <Image img={update_subtitle_etc} size="md" alt='Update subtitle etc.' />
 
-In some scenarios, it may be necessary to adjust the axis scales for each field independently. This can also be accomplished in the 'Advanced' section of the chart configuration pane by specifying min and max values for an axis range. As an example, the above chart looks good, but in order to demonstrate the correlation between our `trip_total` and `fare_total` fields, the axis ranges need some adjustment:
+    In some scenarios, it may be necessary to adjust the axis scales for each field independently. This can also be accomplished in the 'Advanced' section of the chart configuration pane by specifying min and max values for an axis range. As an example, the above chart looks good, but in order to demonstrate the correlation between our `trip_total` and `fare_total` fields, the axis ranges need some adjustment:
 
-<Image img={adjust_axis_scale} size="md" alt='Adjust axis scale' />
+    <Image img={adjust_axis_scale} size="md" alt='Adjust axis scale' />

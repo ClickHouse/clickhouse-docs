@@ -30,14 +30,13 @@ You will need the following details to export/restore backups to your own CSP st
     s3://<bucket_name>.s3.amazonaws.com/<directory>
     ```
 
-    For example: 
+    For example:
     ```text
     s3://testchbackups.s3.amazonaws.com/backups/
-   ```
+    ```
     Where:
-   - `testchbackups` is the name of the S3 bucket to export backups to.
-   - `backups` is an optional subdirectory.
-
+    - `testchbackups` is the name of the S3 bucket to export backups to.
+    - `backups` is an optional subdirectory.
 
 2. AWS access key and secret.
 
@@ -56,7 +55,7 @@ You will need the following details to export/restore backups to your own CSP st
     ```
 2. Access HMAC key and HMAC secret.
 
-<hr/>
+    <hr/>
 # Backup / Restore
 
 ## Backup / Restore to AWS S3 Bucket {#backup--restore-to-aws-s3-bucket}
@@ -66,7 +65,7 @@ You will need the following details to export/restore backups to your own CSP st
 **Full Backup**
 
 ```sql
-BACKUP DATABASE test_backups 
+BACKUP DATABASE test_backups
 TO S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key secret>')
 ```
 
@@ -74,22 +73,22 @@ Where `uuid` is a unique identifier, used to differentiate a set of backups.
 
 :::note
 You will need to use a different UUID for each new backup in this subdirectory, otherwise you will get a `BACKUP_ALREADY_EXISTS` error.
-For example, if you are taking daily backups, you will need to use a new UUID each day.  
+For example, if you are taking daily backups, you will need to use a new UUID each day.
 :::
 
 **Incremental Backup**
 
 ```sql
-BACKUP DATABASE test_backups 
-TO S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key secret>') 
+BACKUP DATABASE test_backups
+TO S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key secret>')
 SETTINGS base_backup = S3('https://testchbackups.s3.amazonaws.com/backups/<base-backup-uuid>', '<key id>', '<key secret>')
 ```
 
 ### Restore from a backup {#restore-from-a-backup}
 
 ```sql
-RESTORE DATABASE test_backups 
-AS test_backups_restored 
+RESTORE DATABASE test_backups
+AS test_backups_restored
 FROM S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key secret>')
 ```
 
@@ -102,7 +101,7 @@ See: [Configuring BACKUP/RESTORE to use an S3 Endpoint](/operations/backup#confi
 **Full Backup**
 
 ```sql
-BACKUP DATABASE test_backups 
+BACKUP DATABASE test_backups
 TO AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>');
 ```
 
@@ -111,16 +110,16 @@ Where `uuid` is a unique identifier, used to differentiate a set of backups.
 **Incremental Backup**
 
 ```sql
-BACKUP DATABASE test_backups 
-TO AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>/my_incremental') 
+BACKUP DATABASE test_backups
+TO AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>/my_incremental')
 SETTINGS base_backup = AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>')
 ```
 
 ### Restore from a backup {#restore-from-a-backup-1}
 
 ```sql
-RESTORE DATABASE test_backups 
-AS test_backups_restored_azure 
+RESTORE DATABASE test_backups
+AS test_backups_restored_azure
 FROM AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>')
 ```
 
@@ -133,7 +132,7 @@ See: [Configuring BACKUP/RESTORE to use an S3 Endpoint](/operations/backup#confi
 **Full Backup**
 
 ```sql
-BACKUP DATABASE test_backups 
+BACKUP DATABASE test_backups
 TO S3('https://storage.googleapis.com/<bucket>/<uuid>', <hmac-key>', <hmac-secret>)
 ```
 Where `uuid` is a unique identifier, used to differentiate a set of backups.
@@ -141,7 +140,7 @@ Where `uuid` is a unique identifier, used to differentiate a set of backups.
 **Incremental Backup**
 
 ```sql
-BACKUP DATABASE test_backups 
+BACKUP DATABASE test_backups
 TO S3('https://storage.googleapis.com/test_gcs_backups/<uuid>/my_incremental', 'key', 'secret')
 SETTINGS base_backup = S3('https://storage.googleapis.com/test_gcs_backups/<uuid>', 'key', 'secret')
 ```
@@ -149,7 +148,7 @@ SETTINGS base_backup = S3('https://storage.googleapis.com/test_gcs_backups/<uuid
 ### Restore from a backup {#restore-from-a-backup-2}
 
 ```sql
-RESTORE DATABASE test_backups 
-AS test_backups_restored_gcs 
+RESTORE DATABASE test_backups
+AS test_backups_restored_gcs
 FROM S3('https://storage.googleapis.com/test_gcs_backups/<uuid>', 'key', 'secret')
 ```

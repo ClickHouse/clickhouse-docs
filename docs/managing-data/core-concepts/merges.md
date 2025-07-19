@@ -15,7 +15,6 @@ import merges_07 from '@site/static/images/managing-data/core-concepts/merges_07
 import merges_dashboard from '@site/static/images/managing-data/core-concepts/merges-dashboard.gif';
 import Image from '@theme/IdealImage';
 
-
 ## What are part merges in ClickHouse? {#what-are-part-merges-in-clickhouse}
 
 <br/>
@@ -41,6 +40,7 @@ The `merge level` of a part is incremented by one with each additional merge. A 
 ## Monitoring merges {#monitoring-merges}
 
 In the [what are table parts](/parts) example, we [showed](/parts#monitoring-table-parts) that ClickHouse tracks all table parts in the [parts](/operations/system-tables/parts) system table. We used the following query to retrieve the merge level and the number of stored rows per active part of the example table:
+
 ```sql
 SELECT
     name,
@@ -52,6 +52,7 @@ ORDER BY name ASC;
 ```
 
 The [previously documented](/parts#monitoring-table-parts) query result shows that the example table had four active parts, each created from a single merge of the initially inserted parts:
+
 ```response
    ┌─name────────┬─level─┬────rows─┐
 1. │ all_0_5_1   │     1 │ 6368414 │
@@ -64,16 +65,14 @@ The [previously documented](/parts#monitoring-table-parts) query result shows th
 [Running](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICBuYW1lLAogICAgbGV2ZWwsCiAgICByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCA9ICd1a19wcmljZV9wYWlkX3NpbXBsZScpIEFORCBhY3RpdmUKT1JERVIgQlkgbmFtZSBBU0M7&run_query=true&tab=results) the query now shows that the four parts have since merged into a single final part (as long as there are no further inserts into the table):
 
 ```response
-   ┌─name───────┬─level─┬─────rows─┐
+┌─name───────┬─level─┬─────rows─┐
 1. │ all_0_23_2 │     2 │ 25248433 │
-   └────────────┴───────┴──────────┘
+└────────────┴───────┴──────────┘
 ```
 
 In ClickHouse 24.10, a new [merges dashboard](https://presentations.clickhouse.com/2024-release-24.10/index.html#17) was added to the built-in [monitoring dashboards](https://clickhouse.com/blog/common-issues-you-can-solve-using-advanced-monitoring-dashboards). Available in both OSS and Cloud via the `/merges` HTTP handler, we can use it to visualize all part merges for our example table:
 
 <Image img={merges_dashboard} size="lg" alt='PART MERGES'/>
-
-<br/>
 
 The recorded dashboard above captures the entire process, from the initial data inserts to the final merge into a single part:
 
@@ -130,7 +129,6 @@ Additional [metadata in data parts](/parts), such as secondary data skipping ind
 The mechanics of step ② depend on the specific [MergeTree engine](/engines/table-engines/mergetree-family) used, as different engines handle merging differently. For example, rows may be aggregated or replaced if outdated. As mentioned earlier, this approach **offloads all data processing to background merges**, enabling **super-fast inserts** by keeping write operations lightweight and efficient.
 
 Next, we will briefly outline the merge mechanics of specific engines in the MergeTree family.
-
 
 ### Standard merges {#standard-merges}
 

@@ -70,7 +70,6 @@ INSERT INTO stackoverflow.posts SELECT * FROM s3('https://datasets-documentation
 
 Posts are also available by year e.g. [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet)
 
-
 ### Votes {#votes}
 
 ```sql
@@ -92,7 +91,6 @@ INSERT INTO stackoverflow.votes SELECT * FROM s3('https://datasets-documentation
 ```
 
 Votes are also available by year e.g. [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet)
-
 
 ### Comments {#comments}
 
@@ -237,7 +235,7 @@ sudo apt install jq
 pip install yq
 ```
 
-The following steps apply to any of the above files. We use the `stackoverflow.com-Posts.7z` file as an example. Modify as required. 
+The following steps apply to any of the above files. We use the `stackoverflow.com-Posts.7z` file as an example. Modify as required.
 
 Extract the file using [p7zip](https://p7zip.sourceforge.net/). This will produce a single xml file - in this case `Posts.xml`.
 
@@ -262,7 +260,7 @@ After running the above users will have a set of files, each with 10000 lines. T
 find . -maxdepth 1 -type f -exec xq -c '.rows.row[]' {} \; | sed -e 's:"@:":g' > posts_v2.json
 ```
 
-The above command will produce a single `posts.json` file. 
+The above command will produce a single `posts.json` file.
 
 Load into ClickHouse with the following command. Note the schema is specified for the `posts.json` file. This will need to be adjusted per data type to align with the target table.
 

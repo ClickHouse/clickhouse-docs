@@ -29,9 +29,7 @@ Please note that the Airbyte source and destination for ClickHouse are currently
 
 <a href="https://www.airbyte.com/" target="_blank">Airbyte</a> is an open-source data integration platform. It allows the creation of <a href="https://airbyte.com/blog/why-the-future-of-etl-is-not-elt-but-el" target="_blank">ELT</a> data pipelines and is shipped with more than 140 out-of-the-box connectors. This step-by-step tutorial shows how to connect Airbyte to ClickHouse as a destination and load a sample dataset.
 
-
 ## 1. Download and run Airbyte {#1-download-and-run-airbyte}
-
 
 1. Airbyte runs on Docker and uses `docker-compose`. Make sure to download and install the latest versions of Docker.
 
@@ -71,21 +69,19 @@ In this section, we will display how to add a ClickHouse instance as a destinati
 
 4. Congratulations! you have now added ClickHouse as a destination in Airbyte.
 
-:::note
-In order to use ClickHouse as a destination, the user you'll use need to have the permissions to create databases, tables and insert rows. We recommend creating a dedicated user for Airbyte (eg. `my_airbyte_user`) with the following permissions:
+    :::note
+    In order to use ClickHouse as a destination, the user you'll use need to have the permissions to create databases, tables and insert rows. We recommend creating a dedicated user for Airbyte (eg. `my_airbyte_user`) with the following permissions:
 
-```sql
-CREATE USER 'my_airbyte_user'@'%' IDENTIFIED BY 'your_password_here';
+    ```sql
+    CREATE USER 'my_airbyte_user'@'%' IDENTIFIED BY 'your_password_here';
 
-GRANT CREATE ON * TO my_airbyte_user;
-```
-:::
-
+    GRANT CREATE ON * TO my_airbyte_user;
+    ```
+    :::
 
 ## 3. Add a dataset as a source {#3-add-a-dataset-as-a-source}
 
 The example dataset we will use is the <a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">New York City Taxi Data</a> (on <a href="https://github.com/toddwschneider/nyc-taxi-data" target="_blank">Github</a>). For this tutorial, we will use a subset of this dataset which corresponds to the month of Jan 2022.
-
 
 1. Within Airbyte, select the "Sources" page and add a new source of type file.
 
@@ -101,28 +97,25 @@ The example dataset we will use is the <a href="https://clickhouse.com/docs/gett
 
 3. Congratulations! You have now added a source file in Airbyte.
 
-
 ## 4. Create a connection and load the dataset into ClickHouse {#4-create-a-connection-and-load-the-dataset-into-clickhouse}
 
 1. Within Airbyte, select the "Connections" page and add a new connection
 
-
-<Image img={airbyte06} size="lg" border alt="Add a connection in Airbyte" />
-
+    <Image img={airbyte06} size="lg" border alt="Add a connection in Airbyte" />
 
 2. Select "Use existing source" and select the New York City Taxi Data, the select "Use existing destination" and select you ClickHouse instance.
 
 3. Fill out the "Set up the connection" form by choosing a Replication Frequency (we will use `manual` for this tutorial) and select `nyc_taxi_2022` as the stream you want to sync. Make sure you pick `Normalized Tabular Data` as a Normalization.
 
-<Image img={airbyte07} size="lg" border alt="Connection creation in Airbyte" />
+    <Image img={airbyte07} size="lg" border alt="Connection creation in Airbyte" />
 
 4. Now that the connection is created, click on "Sync now" to trigger the data loading (since we picked `Manual` as a Replication Frequency)
 
-<Image img={airbyte08} size="lg" border alt="Sync now in Airbyte" />
+    <Image img={airbyte08} size="lg" border alt="Sync now in Airbyte" />
 
 5. Your data will start loading, you can expand the view to see Airbyte logs and progress. Once the operation finishes, you'll see a `Completed successfully` message in the logs:
 
-<Image img={airbyte09} size="lg" border alt="Completed successfully" />
+    <Image img={airbyte09} size="lg" border alt="Completed successfully" />
 
 6. Connect to your ClickHouse instance using your preferred SQL Client and check the resulting table:
 
@@ -164,8 +157,6 @@ The example dataset we will use is the <a href="https://clickhouse.com/docs/gett
         └─────────┘
         ```
 
-
-
 7. Notice that Airbyte automatically inferred the data types and added 4 columns to the destination table. These columns are used by Airbyte to manage the replication logic and log the operations. More details are available in the  <a href="https://docs.airbyte.com/integrations/destinations/clickhouse#output-schema" target="_blank">Airbyte official documentation</a>.
 
         ```sql
@@ -176,6 +167,5 @@ The example dataset we will use is the <a href="https://clickhouse.com/docs/gett
         ```
 
         Now that the dataset is loaded on your ClickHouse instance, you can create an new table and use more suitable ClickHouse data types (<a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">more details</a>).
-
 
 8. Congratulations - you have successfully loaded the NYC taxi data into ClickHouse using Airbyte!

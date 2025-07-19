@@ -73,7 +73,6 @@ ORDER BY (date, path);
 
 Now we can import data using the `FROM INFILE` clause:
 
-
 ```sql
 INSERT INTO sometable
 FROM INFILE 'data.parquet' FORMAT Parquet;
@@ -129,7 +128,6 @@ DESCRIBE TABLE imported_from_parquet;
 
 By default, ClickHouse is strict with column names, types, and values. But sometimes, we can skip nonexistent columns or unsupported values during import. This can be managed with [Parquet settings](/interfaces/formats/Parquet#format-settings).
 
-
 ## Exporting to Parquet format {#exporting-to-parquet-format}
 
 :::tip
@@ -181,7 +179,6 @@ FROM file('time.parquet', Parquet);
 └───┴─────────────────────┘
 ```
 
-
 ## Further reading {#further-reading}
 
 ClickHouse introduces support for many formats, both text, and binary, to cover various scenarios and platforms. Explore more formats and ways to work with them in the following articles:
@@ -193,4 +190,4 @@ ClickHouse introduces support for many formats, both text, and binary, to cover 
 - [Native and binary formats](binary.md)
 - [SQL formats](sql.md)
 
-And also check [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) - a portable full-featured tool to work on local/remote files without the need for Clickhouse server.
+    And also check [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) - a portable full-featured tool to work on local/remote files without the need for Clickhouse server.

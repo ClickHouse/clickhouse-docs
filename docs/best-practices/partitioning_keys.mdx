@@ -36,7 +36,6 @@ Whenever a set of rows is inserted into the table, instead of creating (at[ leas
 
 <Image img={partitions} size="lg" alt="Partitions" />
 
-
 The ClickHouse server first splits the rows from the example insert with 4 rows sketched in the diagram above by their partition key value `toStartOfMonth(date)`. Then, for each identified partition, the rows are processed as[ usual](/parts) by performing several sequential steps (① Sorting, ② Splitting into columns, ③ Compression, ④ Writing to Disk).
 
 For a more detailed explanation of partitioning, we recommend [this guide](/partitions).
@@ -49,7 +48,7 @@ With partitioning enabled, ClickHouse only [merges](/merges) data parts within, 
 
 Partitioning is a powerful tool for managing large datasets in ClickHouse, especially in observability and analytics use cases. It enables efficient data life cycle operations by allowing entire partitions, often aligned with time or business logic, to be dropped, moved, or archived in a single metadata operation. This is significantly faster and less resource-intensive than row-level delete or copy operations. Partitioning also integrates cleanly with ClickHouse features like TTL and tiered storage, making it possible to implement retention policies or hot/cold storage strategies without custom orchestration. For example, recent data can be kept on fast SSD-backed storage, while older partitions are automatically moved to cheaper object storage.
 
-While partitioning can improve query performance for some workloads, it can also negatively impact response time. 
+While partitioning can improve query performance for some workloads, it can also negatively impact response time.
 
 If the partitioning key is not in the primary key and you are filtering by it, users may see an improvement in query performance with partitioning. See [here](/partitions#query-optimization) for an example.
 

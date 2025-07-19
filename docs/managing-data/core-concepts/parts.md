@@ -5,7 +5,6 @@ description: 'What are data parts in ClickHouse'
 keywords: ['part']
 ---
 
-
 import merges from '@site/static/images/managing-data/core-concepts/merges.png';
 import part from '@site/static/images/managing-data/core-concepts/part.png';
 import Image from '@theme/IdealImage';
@@ -17,7 +16,6 @@ import Image from '@theme/IdealImage';
 The data from each table in the ClickHouse [MergeTree engine family](/engines/table-engines/mergetree-family) is organized on disk as a collection of immutable `data parts`.
 
 To illustrate this, we use [this](https://sql.clickhouse.com/?query=U0hPVyBDUkVBVEUgVEFCTEUgdWsudWtfcHJpY2VfcGFpZF9zaW1wbGU&run_query=true&tab=results) table (adapted from the [UK property prices dataset](/getting-started/example-datasets/uk-price-paid)) tracking the date, town, street, and price for sold properties in the United Kingdom:
-
 
 ```sql
 CREATE TABLE uk.uk_price_paid_simple
@@ -78,27 +76,26 @@ ORDER BY _part ASC;
 2. │ all_12_17_1 │
 3. │ all_18_23_1 │
 4. │ all_6_11_1  │
-   └─────────────┘
-```
-The query above retrieves the names of directories on disk, with each directory representing an active data part of the table. The components of these directory names have specific meanings, which are documented [here](https://github.com/ClickHouse/ClickHouse/blob/f90551824bb90ade2d8a1d8edd7b0a3c0a459617/src/Storages/MergeTree/MergeTreeData.h#L130) for those interested in exploring further.
+    └─────────────┘
+    ```
+    The query above retrieves the names of directories on disk, with each directory representing an active data part of the table. The components of these directory names have specific meanings, which are documented [here](https://github.com/ClickHouse/ClickHouse/blob/f90551824bb90ade2d8a1d8edd7b0a3c0a459617/src/Storages/MergeTree/MergeTreeData.h#L130) for those interested in exploring further.
 
-Alternatively, ClickHouse tracks info for all parts of all tables in the [system.parts](/operations/system-tables/parts) system table, and the following query [returns](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICBuYW1lLAogICAgbGV2ZWwsCiAgICByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCA9ICd1a19wcmljZV9wYWlkX3NpbXBsZScpIEFORCBhY3RpdmUKT1JERVIgQlkgbmFtZSBBU0M7&run_query=true&tab=results) for our example table above the list of all currently active parts, their merge level, and the number of rows stored in these parts:
+    Alternatively, ClickHouse tracks info for all parts of all tables in the [system.parts](/operations/system-tables/parts) system table, and the following query [returns](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICBuYW1lLAogICAgbGV2ZWwsCiAgICByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCA9ICd1a19wcmljZV9wYWlkX3NpbXBsZScpIEFORCBhY3RpdmUKT1JERVIgQlkgbmFtZSBBU0M7&run_query=true&tab=results) for our example table above the list of all currently active parts, their merge level, and the number of rows stored in these parts:
 
-```sql
-SELECT
+    ```sql
+    SELECT
     name,
     level,
     rows
-FROM system.parts
-WHERE (database = 'uk') AND (`table` = 'uk_price_paid_simple') AND active
-ORDER BY name ASC;
+    FROM system.parts
+    WHERE (database = 'uk') AND (`table` = 'uk_price_paid_simple') AND active
+    ORDER BY name ASC;
 
-
-   ┌─name────────┬─level─┬────rows─┐
+    ┌─name────────┬─level─┬────rows─┐
 1. │ all_0_5_1   │     1 │ 6368414 │
 2. │ all_12_17_1 │     1 │ 6442494 │
 3. │ all_18_23_1 │     1 │ 5977762 │
 4. │ all_6_11_1  │     1 │ 6459763 │
-   └─────────────┴───────┴─────────┘
-```
-The merge level is incremented by one with each additional merge on the part. A level of 0 indicates this is a new part that has not been merged yet.
+    └─────────────┴───────┴─────────┘
+    ```
+    The merge level is incremented by one with each additional merge on the part. A level of 0 indicates this is a new part that has not been merged yet.

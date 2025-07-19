@@ -28,7 +28,7 @@ ClickHouse also plays a key role in the following processes:
 - Running queries for debugging the Yandex.Metrica engine.
 - Analyzing logs from the API and the user interface.
 
-Nowadays, there are a multiple dozen ClickHouse installations in other Yandex services and departments: search verticals, e-commerce, advertisement, business analytics, mobile development, personal services, and others.
+    Nowadays, there are a multiple dozen ClickHouse installations in other Yandex services and departments: search verticals, e-commerce, advertisement, business analytics, mobile development, personal services, and others.
 
 ## Aggregated and non-aggregated data {#aggregated-and-non-aggregated-data}
 
@@ -45,13 +45,12 @@ However data aggregation comes with a lot of limitations:
 - Users do not view all the reports we generate for them. A large portion of those calculations are useless.
 - The logical integrity of the data may be violated for various aggregations.
 
-If we do not aggregate anything and work with non-aggregated data, this might reduce the volume of calculations.
+    If we do not aggregate anything and work with non-aggregated data, this might reduce the volume of calculations.
 
-However, with aggregation, a significant part of the work is taken offline and completed relatively calmly. In contrast, online calculations require calculating as fast as possible, since the user is waiting for the result.
+    However, with aggregation, a significant part of the work is taken offline and completed relatively calmly. In contrast, online calculations require calculating as fast as possible, since the user is waiting for the result.
 
-Yandex.Metrica has a specialized system for aggregating data called Metrage, which was used for the majority of reports.
-Starting in 2009, Yandex.Metrica also used a specialized OLAP database for non-aggregated data called OLAPServer, which was previously used for the report builder.
-OLAPServer worked well for non-aggregated data, but it had many restrictions that did not allow it to be used for all reports as desired. These included a lack of support for data types (numbers only), and the inability to incrementally update data in real-time (it could only be done by rewriting data daily). OLAPServer is not a DBMS, but a specialized DB.
+    Yandex.Metrica has a specialized system for aggregating data called Metrage, which was used for the majority of reports.
+    Starting in 2009, Yandex.Metrica also used a specialized OLAP database for non-aggregated data called OLAPServer, which was previously used for the report builder.
+    OLAPServer worked well for non-aggregated data, but it had many restrictions that did not allow it to be used for all reports as desired. These included a lack of support for data types (numbers only), and the inability to incrementally update data in real-time (it could only be done by rewriting data daily). OLAPServer is not a DBMS, but a specialized DB.
 
-The initial goal for ClickHouse was to remove the limitations of OLAPServer and solve the problem of working with non-aggregated data for all reports, but over the years, it has grown into a general-purpose database management system suitable for a wide range of analytical tasks.
-
+    The initial goal for ClickHouse was to remove the limitations of OLAPServer and solve the problem of working with non-aggregated data for all reports, but over the years, it has grown into a general-purpose database management system suitable for a wide range of analytical tasks.

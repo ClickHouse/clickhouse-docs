@@ -22,13 +22,13 @@ Our Goal
 1. We need the data aggregated by month for each domain name,
 2. We also need the data aggregated by year for each domain name.
 
-You could choose one of these options:
+    You could choose one of these options:
 
 - Write queries that will read and aggregate the data during the SELECT request
 - Prepare the data at the ingest time to a new format
 - Prepare the data at the time of ingest to a specific aggregation.
 
-Preparing the data using Materialized views will allow you to limit the amount of data and calculation ClickHouse needs to do, making your SELECT requests faster.
+    Preparing the data using Materialized views will allow you to limit the amount of data and calculation ClickHouse needs to do, making your SELECT requests faster.
 
 ## Source table for the materialized views {#source-table-for-the-materialized-views}
 
@@ -106,27 +106,27 @@ This step defines the cascade. The `FROM` statement will use the `monthly_aggreg
 2. ClickHouse will forward the data received to the first materialized view `monthly_aggregated_data` table,
 3. Finally, the data received in step 2 will be forwarded to the `year_aggregated_data`.
 
-```sql
-CREATE MATERIALIZED VIEW analytics.year_aggregated_data_mv
-TO analytics.year_aggregated_data
-AS
-SELECT
+    ```sql
+    CREATE MATERIALIZED VIEW analytics.year_aggregated_data_mv
+    TO analytics.year_aggregated_data
+    AS
+    SELECT
     toYear(toStartOfYear(month)) AS year,
     domain_name,
     sumMerge(sumCountViews) AS sumCountViews
-FROM analytics.monthly_aggregated_data
-GROUP BY
+    FROM analytics.monthly_aggregated_data
+    GROUP BY
     domain_name,
     year
-```
+    ```
 
-:::note
-A common misinterpretation when working with Materialized views is that data is read from the table, This is not how `Materialized views` work; the data forwarded is the inserted block, not the final result in your table.
+    :::note
+    A common misinterpretation when working with Materialized views is that data is read from the table, This is not how `Materialized views` work; the data forwarded is the inserted block, not the final result in your table.
 
-Let's imagine in this example that the engine used in `monthly_aggregated_data` is a CollapsingMergeTree, the data forwarded to our second Materialized view `year_aggregated_data_mv` will not be the final result of the collapsed table, it will forward the block of data with the fields defined as in the `SELECT ... GROUP BY`.
+    Let's imagine in this example that the engine used in `monthly_aggregated_data` is a CollapsingMergeTree, the data forwarded to our second Materialized view `year_aggregated_data_mv` will not be the final result of the collapsed table, it will forward the block of data with the fields defined as in the `SELECT ... GROUP BY`.
 
-If you are using CollapsingMergeTree, ReplacingMergeTree, or even SummingMergeTree and you plan to create a cascade Materialized view you need to understand the limitations described here.
-:::
+    If you are using CollapsingMergeTree, ReplacingMergeTree, or even SummingMergeTree and you plan to create a cascade Materialized view you need to understand the limitations described here.
+    :::
 
 ## Sample data {#sample-data}
 
@@ -250,7 +250,6 @@ GROUP BY
 
 2 rows in set. Elapsed: 0.004 sec.
 ```
-
 
 ## Combining multiple source tables to single target table {#combining-multiple-source-tables-to-single-target-table}
 

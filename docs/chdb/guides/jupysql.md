@@ -99,7 +99,6 @@ Next, we'll display the display limit so that results of queries won't be trunca
 We've downloaded a bunch of files with the `atp_rankings` prefix.
 Let's use the `DESCRIBE` clause to understand the schema:
 
-
 ```python
 %%sql
 DESCRIBE file('atp_rankings*.csv')
@@ -213,7 +212,6 @@ Looks good - the output, as expected, is the same as when querying the CSV files
 We're going to follow the same process for the player metadata.
 This time the data is all in a single CSV file, so let's download that file:
 
-
 ```python
 _ = urlretrieve(
     f"{base}/atp_players.csv",
@@ -243,7 +241,6 @@ SETTINGS schema_inference_make_columns_nullable=0
 ```
 
 Once that's finished running, we can have a look at the data we've ingested:
-
 
 ```python
 %sql SELECT * FROM atp.players LIMIT 10
@@ -412,7 +409,6 @@ WHERE rank <= 100
 
 We can then create a histogram by running the following:
 
-
 ```python
 from sql.ggplot import ggplot, geom_histogram, aes
 
@@ -426,4 +422,3 @@ plot = (
 ```
 
 <Image img={PlayersPerRank} size="md" alt="Histogram of player rankings in ATP dataset" />
-

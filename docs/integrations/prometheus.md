@@ -14,7 +14,6 @@ import prometheus_grafana_metrics_explorer from '@site/static/images/integration
 import prometheus_datadog from '@site/static/images/integrations/prometheus-datadog.png';
 import Image from '@theme/IdealImage';
 
-
 # Prometheus Integration
 
 The feature supports integrating [Prometheus](https://prometheus.io/) to monitor ClickHouse Cloud services. Access to Prometheus metrics is exposed via the [ClickHouse Cloud API](/cloud/manage/api/api-overview) endpoint that allows users to securely connect and export metrics into their Prometheus metrics collector. These metrics can be integrated with dashboards e.g., Grafana, Datadog for visualization.
@@ -37,7 +36,6 @@ To get started, [generate an API key](/cloud/manage/openapi).
 | Organization ID  | Endpoint address | uuid               |
 | Service ID       | Endpoint address | uuid (optional)               |
 | filtered_metrics | Query param | boolean (optional) |
-
 
 ### Authentication {#authentication}
 
@@ -169,20 +167,20 @@ global:
 
 scrape_configs:
   - job_name: "prometheus"
-    static_configs:
-    - targets: ["localhost:9090"]
+      static_configs:
+      - targets: ["localhost:9090"]
   - job_name: "clickhouse"
-    static_configs:
+      static_configs:
       - targets: ["api.clickhouse.cloud"]
-    scheme: https
-    params:
+      scheme: https
+      params:
       filtered_metrics: ["true"]
-    metrics_path: "/v1/organizations/<ORG_ID>/prometheus"
-    basic_auth:
+      metrics_path: "/v1/organizations/<ORG_ID>/prometheus"
+      basic_auth:
       username: <KEY_ID>
       password: <KEY_SECRET>
-    honor_labels: true
-```
+      honor_labels: true
+      ```
 
 Note the `honor_labels` configuration parameter needs to be set to `true` for the instance label to be properly populated.  Additionally, `filtered_metrics` is set to `true` in the above example, but should be configured based on user preference.
 
@@ -193,7 +191,7 @@ Users have two primary ways to integrate with Grafana:
 - **Metrics Endpoint** – This approach has the advantage of not requiring any additional components or infrastructure. This offering is limited to Grafana Cloud and only requires the ClickHouse Cloud Prometheus Endpoint URL and credentials.
 - **Grafana Alloy** - Grafana Alloy is a vendor-neutral distribution of the OpenTelemetry (OTel) Collector, replacing the Grafana Agent. This can be used as a scraper, is deployable in your own infrastructure, and is compatible with any Prometheus endpoint.
 
-We provide instructions on using these options below, focusing on the details specific to the ClickHouse Cloud Prometheus Endpoint.
+    We provide instructions on using these options below, focusing on the details specific to the ClickHouse Cloud Prometheus Endpoint.
 
 ### Grafana Cloud with metrics endpoint {#grafana-cloud-with-metrics-endpoint}
 
@@ -202,17 +200,13 @@ We provide instructions on using these options below, focusing on the details sp
 - Configure the Scrape URL to point to the Prometheus endpoint and use basic auth to configure your connection with the API key/secret
 - Test the connection to ensure you are able to connect
 
-<Image img={prometheus_grafana_metrics_endpoint} size="md" alt="Configure Grafana Metrics Endpoint" border/>
+    <Image img={prometheus_grafana_metrics_endpoint} size="md" alt="Configure Grafana Metrics Endpoint" border/>
 
-<br />
+    Once configured, you should see the metrics in the drop-down that you can select to configure dashboards:
 
-Once configured, you should see the metrics in the drop-down that you can select to configure dashboards:
+    <Image img={prometheus_grafana_dropdown} size="md" alt="Grafana Metrics Explorer Drop-down" border/>
 
-<Image img={prometheus_grafana_dropdown} size="md" alt="Grafana Metrics Explorer Drop-down" border/>
-
-<br />
-
-<Image img={prometheus_grafana_chart} size="md" alt="Grafana Metrics Explorer Chart" border/>
+    <Image img={prometheus_grafana_chart} size="md" alt="Grafana Metrics Explorer Chart" border/>
 
 ### Grafana Cloud with Alloy {#grafana-cloud-with-alloy}
 
@@ -299,13 +293,11 @@ init_config:
 
 instances:
    - openmetrics_endpoint: 'https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/prometheus?filtered_metrics=true'
-     namespace: 'clickhouse'
-     metrics:
+       namespace: 'clickhouse'
+       metrics:
          - '^ClickHouse.*'
-     username: username
-     password: password
-```
-
-<br />
+       username: username
+       password: password
+       ```
 
 <Image img={prometheus_datadog} size="md" alt="Prometheus Datadog Integration" />

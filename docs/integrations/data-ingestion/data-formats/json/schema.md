@@ -11,7 +11,6 @@ import json_column_per_type from '@site/static/images/integrations/data-ingestio
 import json_offsets from '@site/static/images/integrations/data-ingestion/data-formats/json_offsets.png';
 import shared_json_column from '@site/static/images/integrations/data-ingestion/data-formats/json_shared_column.png';
 
-
 # Designing your schema
 
 While [schema inference](/integrations/data-formats/json/inference) can be used to establish an initial schema for JSON data and query JSON data files in place, e.g., in S3, users should aim to establish an optimized versioned schema for their data. We discuss the recommended approach for modeling JSON structures below.
@@ -21,23 +20,23 @@ While [schema inference](/integrations/data-formats/json/inference) can be used 
 The principal task on defining a schema for JSON is to determine the appropriate type for each key's value. We recommended users apply the following rules recursively on each key in the JSON hierarchy to determine the appropriate type for each key.
 
 1. **Primitive types** - If the key's value is a primitive type, irrespective of whether it is part of a sub-object or on the root, ensure you select its type according to general schema [design best practices](/data-modeling/schema-design) and [type optimization rules](/data-modeling/schema-design#optimizing-types). Arrays of primitives, such as `phone_numbers` below, can be modeled as `Array(<type>)` e.g., `Array(String)`.
-2. **Static vs dynamic** - If the key's value is a complex object i.e. either an object or an array of objects, establish whether it is subject to change. Objects that rarely have new keys, where the addition of a new key can be predicted and handled with a schema change via [`ALTER TABLE ADD COLUMN`](/sql-reference/statements/alter/column#add-column), can be considered **static**. This includes objects where only a subset of the keys may be provided on some JSON documents. Objects where new keys are added frequently and/or are not predictable should be considered **dynamic**. **The exception here is structures with hundreds or thousands of sub keys which can be considered dynamic for convenience purposes**. 
+2. **Static vs dynamic** - If the key's value is a complex object i.e. either an object or an array of objects, establish whether it is subject to change. Objects that rarely have new keys, where the addition of a new key can be predicted and handled with a schema change via [`ALTER TABLE ADD COLUMN`](/sql-reference/statements/alter/column#add-column), can be considered **static**. This includes objects where only a subset of the keys may be provided on some JSON documents. Objects where new keys are added frequently and/or are not predictable should be considered **dynamic**. **The exception here is structures with hundreds or thousands of sub keys which can be considered dynamic for convenience purposes**.
 
-To establish whether a value is **static** or **dynamic**, see the relevant sections [**Handling static objects**](/integrations/data-formats/json/schema#handling-static-structures) and [**Handling dynamic objects**](/integrations/data-formats/json/schema#handling-semi-structured-dynamic-structures) below.
+    To establish whether a value is **static** or **dynamic**, see the relevant sections [**Handling static objects**](/integrations/data-formats/json/schema#handling-static-structures) and [**Handling dynamic objects**](/integrations/data-formats/json/schema#handling-semi-structured-dynamic-structures) below.
 
-<p></p>
+    <p></p>
 
-**Important:** The above rules should be applied recursively. If a key's value is determined to be dynamic, no further evaluation is required and the guidelines in [**Handling dynamic objects**](/integrations/data-formats/json/schema#handling-semi-structured-dynamic-structures) can be followed. If the object is static, continue to assess the subkeys until either key values are primitive or dynamic keys are encountered.
+    **Important:** The above rules should be applied recursively. If a key's value is determined to be dynamic, no further evaluation is required and the guidelines in [**Handling dynamic objects**](/integrations/data-formats/json/schema#handling-semi-structured-dynamic-structures) can be followed. If the object is static, continue to assess the subkeys until either key values are primitive or dynamic keys are encountered.
 
-To illustrate these rules, we use the following JSON example representing a person:
+    To illustrate these rules, we use the following JSON example representing a person:
 
-```json
-{
-  "id": 1,
-  "name": "Clicky McCliickHouse",
-  "username": "Clicky",
-  "email": "clicky@clickhouse.com",
-  "address": [
+    ```json
+    {
+    "id": 1,
+    "name": "Clicky McCliickHouse",
+    "username": "Clicky",
+    "email": "clicky@clickhouse.com",
+    "address": [
     {
       "street": "Victor Plains",
       "suite": "Suite 879",
@@ -48,22 +47,22 @@ To illustrate these rules, we use the following JSON example representing a pers
         "lng": -34.4618
       }
     }
-  ],
-  "phone_numbers": [
+    ],
+    "phone_numbers": [
     "010-692-6593",
     "020-192-3333"
-  ],
-  "website": "clickhouse.com",
-  "company": {
+    ],
+    "website": "clickhouse.com",
+    "company": {
     "name": "ClickHouse",
     "catchPhrase": "The real-time data warehouse for analytics",
     "labels": {
       "type": "database systems",
       "founded": "2021"
     }
-  },
-  "dob": "2007-03-31",
-  "tags": {
+    },
+    "dob": "2007-03-31",
+    "tags": {
     "hobby": "Databases",
     "holidays": [
       {
@@ -75,20 +74,20 @@ To illustrate these rules, we use the following JSON example representing a pers
       "model": "Tesla",
       "year": 2023
     }
-  }
-}
-```
+    }
+    }
+    ```
 
-Applying these rules:
+    Applying these rules:
 
 - The root keys `name`, `username`, `email`, `website` can be represented as type `String`. The column `phone_numbers` is an Array primitive of type `Array(String)`, with `dob` and `id` type `Date` and `UInt32` respectively.
 - New keys will not be added to the `address` object (only new address objects), and it can thus be considered **static**. If we recurse, all of the sub-columns can be considered primitives (and type `String`) except `geo`. This is also a static structure with two `Float32` columns, `lat` and `lon`.
 - The `tags` column is **dynamic**. We assume new arbitrary tags can be added to this object of any type and structure.
 - The `company` object is **static** and will always contain at most the 3 keys specified. The subkeys `name` and `catchPhrase` are of type `String`. The key `labels` is **dynamic**. We assume new arbitrary tags can be added to this object. Values will always be key-value pairs of type string.
 
-:::note
-Structures with hundreds or thousands of static keys can be considered dynamic, as it is rarely realistic to statically declare the columns for these. However, where possible [skip paths](#using-type-hints-and-skipping-paths) which are not needed to save both storage and inference overhead.
-:::
+    :::note
+    Structures with hundreds or thousands of static keys can be considered dynamic, as it is rarely realistic to statically declare the columns for these. However, where possible [skip paths](#using-type-hints-and-skipping-paths) which are not needed to save both storage and inference overhead.
+    :::
 
 ## Handling static structures {#handling-static-structures}
 
@@ -199,7 +198,6 @@ CREATE TABLE people
 ENGINE = MergeTree
 ORDER BY company.name
 ```
-
 
 ### Handling default values {#handling-default-values}
 
@@ -367,18 +365,17 @@ More specifically, use the JSON type when your data:
 - Requires schema flexibility where strict typing isn't viable.
 - You have **hundreds or even thousands** of paths which are static but simply not realistic to declare explicitly. This tends to be a rare.
 
-Consider our [earlier person JSON](/integrations/data-formats/json/schema#static-vs-dynamic-json) where the `company.labels` object was determined to be dynamic.
+    Consider our [earlier person JSON](/integrations/data-formats/json/schema#static-vs-dynamic-json) where the `company.labels` object was determined to be dynamic.
 
-Let's suppose that `company.labels` contains arbitrary keys. Additionally, the type for any key in this structure may not be consistent between rows. For example:
+    Let's suppose that `company.labels` contains arbitrary keys. Additionally, the type for any key in this structure may not be consistent between rows. For example:
 
-
-```json
-{
-  "id": 1,
-  "name": "Clicky McCliickHouse",
-  "username": "Clicky",
-  "email": "clicky@clickhouse.com",
-  "address": [
+    ```json
+    {
+    "id": 1,
+    "name": "Clicky McCliickHouse",
+    "username": "Clicky",
+    "email": "clicky@clickhouse.com",
+    "address": [
     {
       "street": "Victor Plains",
       "suite": "Suite 879",
@@ -389,13 +386,13 @@ Let's suppose that `company.labels` contains arbitrary keys. Additionally, the t
         "lng": -34.4618
       }
     }
-  ],
-  "phone_numbers": [
+    ],
+    "phone_numbers": [
     "010-692-6593",
     "020-192-3333"
-  ],
-  "website": "clickhouse.com",
-  "company": {
+    ],
+    "website": "clickhouse.com",
+    "company": {
     "name": "ClickHouse",
     "catchPhrase": "The real-time data warehouse for analytics",
     "labels": {
@@ -403,9 +400,9 @@ Let's suppose that `company.labels` contains arbitrary keys. Additionally, the t
       "founded": "2021",
       "employees": 250
     }
-  },
-  "dob": "2007-03-31",
-  "tags": {
+    },
+    "dob": "2007-03-31",
+    "tags": {
     "hobby": "Databases",
     "holidays": [
       {
@@ -417,16 +414,16 @@ Let's suppose that `company.labels` contains arbitrary keys. Additionally, the t
       "model": "Tesla",
       "year": 2023
     }
-  }
-}
-```
+    }
+    }
+    ```
 
-```json
-{
-  "id": 2,
-  "name": "Analytica Rowe",
-  "username": "Analytica",
-  "address": [
+    ```json
+    {
+    "id": 2,
+    "name": "Analytica Rowe",
+    "username": "Analytica",
+    "address": [
     {
       "street": "Maple Avenue",
       "suite": "Apt. 402",
@@ -437,13 +434,13 @@ Let's suppose that `company.labels` contains arbitrary keys. Additionally, the t
         "lng": -74.006
       }
     }
-  ],
-  "phone_numbers": [
+    ],
+    "phone_numbers": [
     "123-456-7890",
     "555-867-5309"
-  ],
-  "website": "fastdata.io",
-  "company": {
+    ],
+    "website": "fastdata.io",
+    "company": {
     "name": "FastData Inc.",
     "catchPhrase": "Streamlined analytics at scale",
     "labels": {
@@ -454,9 +451,9 @@ Let's suppose that `company.labels` contains arbitrary keys. Additionally, the t
       "dissolved": 2023,
       "employees": 10
     }
-  },
-  "dob": "1992-07-15",
-  "tags": {
+    },
+    "dob": "1992-07-15",
+    "tags": {
     "hobby": "Running simulations",
     "holidays": [
       {
@@ -468,22 +465,22 @@ Let's suppose that `company.labels` contains arbitrary keys. Additionally, the t
       "model": "Audi e-tron",
       "year": 2022
     }
-  }
-}
-```
+    }
+    }
+    ```
 
-Given the dynamic nature of the `company.labels` column between objects, with respect to keys and types, we have several options to model this data:
+    Given the dynamic nature of the `company.labels` column between objects, with respect to keys and types, we have several options to model this data:
 
 - **Single JSON column** - represents the entire schema as a single `JSON` column, allowing all structures to be dynamic beneath this.
 - **Targeted JSON column** - only use the `JSON` type for the `company.labels` column, retaining the structured schema used above for all other columns.
 
-While the first approach [does not align with previous methodology](#static-vs-dynamic-json), a single JSON column approach is useful for prototyping and data engineering tasks. 
+    While the first approach [does not align with previous methodology](#static-vs-dynamic-json), a single JSON column approach is useful for prototyping and data engineering tasks.
 
-For production deployments of ClickHouse at scale, we recommend being specific with structure and using the JSON type for targeted dynamic sub-structures where possible. 
+    For production deployments of ClickHouse at scale, we recommend being specific with structure and using the JSON type for targeted dynamic sub-structures where possible.
 
-A strict schema has a number of benefits:
+    A strict schema has a number of benefits:
 
-- **Data validation** – enforcing a strict schema avoids the risk of column explosion, outside of specific structures. 
+- **Data validation** – enforcing a strict schema avoids the risk of column explosion, outside of specific structures.
 - **Avoids risk of column explosion** - Although the JSON type scales to potentially thousands of columns, where subcolumns are stored as dedicated columns, this can lead to a column file explosion where an excessive number of column files are created that impacts performance. To mitigate this, the underlying [Dynamic type](/sql-reference/data-types/dynamic) used by JSON offers a [`max_dynamic_paths`](/sql-reference/data-types/newjson#reading-json-paths-as-sub-columns) parameter, which limits the number of unique paths stored as separate column files. Once the threshold is reached, additional paths are stored in a shared column file using a compact encoded format, maintaining performance and storage efficiency while supporting flexible data ingestion. Accessing this shared column file is, however, not as performant. Note, however, that the JSON column can be used with [type hints](#using-type-hints-and-skipping-paths). "Hinted" columns will deliver the same performance as dedicated columns.
 - **Simpler introspection of paths and types** - Although the JSON type supports [introspection functions](/sql-reference/data-types/newjson#introspection-functions) to determine the types and paths that have been inferred, static structures can be simpler to explore e.g. with `DESCRIBE`.
 
@@ -515,7 +512,7 @@ We provide a [type hint](#using-type-hints-and-skipping-paths) for the `username
 Inserting rows into the above table can be achieved using the `JSONAsObject` format:
 
 ```sql
-INSERT INTO people FORMAT JSONAsObject 
+INSERT INTO people FORMAT JSONAsObject
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
 1 row in set. Elapsed: 0.028 sec.
@@ -525,7 +522,6 @@ INSERT INTO people FORMAT JSONAsObject
 
 1 row in set. Elapsed: 0.004 sec.
 ```
-
 
 ```sql
 SELECT *
@@ -637,7 +633,6 @@ FROM people
 
 In order to return nested sub-objects, the `^` is required. This is a design choice to avoid reading a high number of columns - unless explicitly requested. Objects accessed without `^` will return `NULL` as shown below:
 
-
 ```sql
 -- sub objects will not be returned by default
 SELECT json.company.labels
@@ -661,7 +656,6 @@ FROM people
 
 2 rows in set. Elapsed: 0.004 sec.
 ```
-
 
 ### Targeted JSON column {#targeted-json-column}
 
@@ -701,7 +695,6 @@ INSERT INTO people FORMAT JSONEachRow
 1 row in set. Elapsed: 0.440 sec.
 ```
 
-
 ```sql
 SELECT *
 FROM people
@@ -737,7 +730,6 @@ tags:          {"hobby":"Databases","holidays":[{"year":2024,"location":"Azores,
 ```
 
 [Introspection functions](/sql-reference/data-types/newjson#introspection-functions) can be used to determine the inferred paths and types for the `company.labels` column.
-
 
 ```sql
 SELECT JSONDynamicPathsWithTypes(company.labels) AS paths
@@ -920,12 +912,11 @@ FORMAT PrettyJSONEachRow
 2 rows in set. Elapsed: 0.004 sec.
 ```
 
+#### Optimizing performance with type hints {#optimizing-performance-with-type-hints}
 
-#### Optimizing performance with type hints {#optimizing-performance-with-type-hints}  
+Type hints offer more than just a way to avoid unnecessary type inference - they eliminate storage and processing indirection entirely, as well as allowing [optimal primitive types](/data-modeling/schema-design#optimizing-types) to be specified. JSON paths with type hints are always stored just like traditional columns, bypassing the need for [**discriminator columns**](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data) or dynamic resolution during query time.
 
-Type hints offer more than just a way to avoid unnecessary type inference - they eliminate storage and processing indirection entirely, as well as allowing [optimal primitive types](/data-modeling/schema-design#optimizing-types) to be specified. JSON paths with type hints are always stored just like traditional columns, bypassing the need for [**discriminator columns**](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data) or dynamic resolution during query time. 
-
-This means that with well-defined type hints, nested JSON keys achieve the same performance and efficiency as if they were modeled as top-level columns from the outset. 
+This means that with well-defined type hints, nested JSON keys achieve the same performance and efficiency as if they were modeled as top-level columns from the outset.
 
 As a result, for datasets that are mostly consistent but still benefit from the flexibility of JSON, type hints provide a convenient way to preserve performance without needing to restructure your schema or ingest pipeline.
 

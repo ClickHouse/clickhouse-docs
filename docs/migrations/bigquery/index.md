@@ -11,7 +11,6 @@ In this section of the docs, learn more about the similarities and differences b
 
 | Page                                                                              | Description                                                                                                                                            |
 |-----------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [BigQuery vs ClickHouse Cloud](./equivalent-concepts.md)                          | The way resources are organized in ClickHouse Cloud is similar to BigQuery's resource hierarchy. We describe the specific differences in this article. | 
+| [BigQuery vs ClickHouse Cloud](./equivalent-concepts.md)                          | The way resources are organized in ClickHouse Cloud is similar to BigQuery's resource hierarchy. We describe the specific differences in this article. |
 | [Migrating from BigQuery to ClickHouse Cloud](./migrating-to-clickhouse-cloud.md) | Learn about why you might want to migrate from BigQuery to ClickHouse Cloud.                                                                           |
 | [Loading Data](./loading-data.md)                                                 | A guide showing you how to migrate data from BigQuery to ClickHouse.                                                                                   |
-

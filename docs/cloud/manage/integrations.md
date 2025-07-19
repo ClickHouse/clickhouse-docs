@@ -15,7 +15,6 @@ Besides the dozens of integrations available for ClickHouse, there are also some
 
 [ClickPipes](/integrations/clickpipes) is a managed integration platform to ingest data into ClickHouse Cloud using a simple, web-based UI. It currently supports Apache Kafka, S3, GCS and Amazon Kinesis, with more integrations coming soon.
 
-
 ### Looker Studio for ClickHouse Cloud {#looker-studio-for-clickhouse-cloud}
 
 [Looker Studio](https://lookerstudio.google.com/) is a popular business intelligence tool provided by Google. Looker Studio does not currently provide a ClickHouse connector but instead relies on the MySQL wire protocol to connect to ClickHouse.

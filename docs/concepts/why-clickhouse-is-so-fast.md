@@ -49,13 +49,13 @@ Unlike other databases, ClickHouse keeps data writes lightweight and efficient b
 
 - **TTL (time-to-live) merges** compress, move, or delete rows based on certain time-based rules.
 
-The point of these transformations is to shift work (computation) from the time user queries run to merge time. This is important for two reasons:
+    The point of these transformations is to shift work (computation) from the time user queries run to merge time. This is important for two reasons:
 
-On the one hand, user queries may become significantly faster, sometimes by 1000x or more, if they can leverage "transformed" data, e.g. pre-aggregated data.
+    On the one hand, user queries may become significantly faster, sometimes by 1000x or more, if they can leverage "transformed" data, e.g. pre-aggregated data.
 
-On the other hand, the majority of the runtime of merges is consumed by loading the input parts and saving the output part. The additional effort to transform the data during merge does usually not impact the runtime of merges too much. All of this magic is completely transparent and does not affect the result of queries (besides their performance).
+    On the other hand, the majority of the runtime of merges is consumed by loading the input parts and saving the output part. The additional effort to transform the data during merge does usually not impact the runtime of merges too much. All of this magic is completely transparent and does not affect the result of queries (besides their performance).
 
-🤿 Deep dive into this in the [Merge-time Data Transformation](/docs/academic_overview#3-3-merge-time-data-transformation) section of the web version of our VLDB 2024 paper.
+    🤿 Deep dive into this in the [Merge-time Data Transformation](/docs/academic_overview#3-3-merge-time-data-transformation) section of the web version of our VLDB 2024 paper.
 
 ## Storage layer: data pruning {#storage-layer-data-pruning}
 
@@ -69,9 +69,9 @@ In practice, many queries are repetitive, i.e., run unchanged or only with sligh
 
 3. [Skipping indexes](/optimize/skipping-indexes) that embed additional data statistics into columns, e.g. the minimum and maximum column value, the set of unique values, etc. Skipping indexes are orthogonal to primary keys and table projections, and depending on the data distribution in the column, they can greatly speed up the evaluation of filters.
 
-All three techniques aim to skip as many rows during full-column reads as possible because the fastest way to read data is to not read it at all.
+    All three techniques aim to skip as many rows during full-column reads as possible because the fastest way to read data is to not read it at all.
 
-🤿 Deep dive into this in the [Data Pruning](/docs/academic_overview#3-2-data-pruning) section of the web version of our VLDB 2024 paper.
+    🤿 Deep dive into this in the [Data Pruning](/docs/academic_overview#3-2-data-pruning) section of the web version of our VLDB 2024 paper.
 
 ## Storage layer: data compression {#storage-layer-data-compression}
 
@@ -109,7 +109,6 @@ If a single node becomes too small to hold the table data, further nodes can be 
 
 What sets ClickHouse [apart](https://www.youtube.com/watch?v=CAS2otEoerM) is its meticulous attention to low-level optimization. Building a database that simply works is one thing, but engineering it to deliver speed across diverse query types, data structures, distributions, and index configurations is where the "[freak system](https://youtu.be/Vy2t_wZx4Is?si=K7MyzsBBxgmGcuGU&t=3579)" artistry shines.
 
-
 **Hash Tables.** Let's take a hash table as an example. Hash tables are central data structures used by joins and aggregations. As a programmer, one needs to consider these design decisions:
 
 * The hash function to choose,
@@ -118,20 +117,20 @@ What sets ClickHouse [apart](https://www.youtube.com/watch?v=CAS2otEoerM) is its
 * The fill factor: When and how to resize? How to move values during resize?
 * Deletions: Should the hash table allow evicting entries?
 
-A standard hash table provided by a third-party library would functionally work, but it would not be fast. Great performance requires meticulous benchmarking and experimentation.
+    A standard hash table provided by a third-party library would functionally work, but it would not be fast. Great performance requires meticulous benchmarking and experimentation.
 
-The [hash table implementation in ClickHouse](https://clickhouse.com/blog/hash-tables-in-clickhouse-and-zero-cost-abstractions) chooses one of **30+ precompiled hash table variants based** on the specifics of the query and the data.
+    The [hash table implementation in ClickHouse](https://clickhouse.com/blog/hash-tables-in-clickhouse-and-zero-cost-abstractions) chooses one of **30+ precompiled hash table variants based** on the specifics of the query and the data.
 
-**Algorithms.** The same goes for algorithms. For example, in sorting, you might consider:
+    **Algorithms.** The same goes for algorithms. For example, in sorting, you might consider:
 
 * What will be sorted: numbers, tuples, strings, or structures?
 * Is the data in RAM?
 * Is the sort required to be stable?
 * Should all data be sorted or will a partial sort suffice?
 
-Algorithms that rely on data characteristics often perform better than their generic counterparts. If the data characteristics are not known in advance, the system can try various implementations and choose the one that works best at runtime. For an example, see the [article on how LZ4 decompression is implemented in ClickHouse](https://habr.com/en/company/yandex/blog/457612/).
+    Algorithms that rely on data characteristics often perform better than their generic counterparts. If the data characteristics are not known in advance, the system can try various implementations and choose the one that works best at runtime. For an example, see the [article on how LZ4 decompression is implemented in ClickHouse](https://habr.com/en/company/yandex/blog/457612/).
 
-🤿 Deep dive into this in the [Holistic Performance Optimization](/academic_overview#4-4-holistic-performance-optimization) section of the web version of our VLDB 2024 paper.
+    🤿 Deep dive into this in the [Holistic Performance Optimization](/academic_overview#4-4-holistic-performance-optimization) section of the web version of our VLDB 2024 paper.
 
 ## VLDB 2024 paper {#vldb-2024-paper}
 

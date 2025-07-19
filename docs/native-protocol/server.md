@@ -41,7 +41,6 @@ Response to [client hello](./client.md#hello).
 | display_name  | String  | `Clickhouse`    | Server name for UI   |
 | version_patch | UVarInt | `3`             | Server patch version |
 
-
 ## Exception {#exception}
 
 Server exception during query processing.
@@ -123,7 +122,6 @@ Encoded as **data block** of columns, but is never compressed.
 
 The `value` type is `UInt64` or `Int64`, depending on server revision.
 :::
-
 
 | column       | type            |
 |--------------|-----------------|

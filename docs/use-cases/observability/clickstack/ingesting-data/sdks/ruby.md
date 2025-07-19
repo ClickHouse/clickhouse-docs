@@ -19,7 +19,6 @@ This guide integrates:
   </tbody>
 </table>
 
-
 _To send logs to ClickStack, please send logs via the [OpenTelemetry collector](/use-cases/observability/clickstack/ingesting-data/otel-collector)._
 
 ## Getting started {#getting-started}

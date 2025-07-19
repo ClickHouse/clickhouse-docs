@@ -34,9 +34,9 @@ In general, we would recommend denormalizing in the following cases:
 - Avoid denormalizing high cardinality relationships. If each row in a table has thousands of related entries in another table, these will need to be represented as an `Array` - either of a primitive type or tuples. Generally, arrays with more than 1000 tuples would not be recommended.
 - Rather than denormalizing all columns as nested objects, consider denormalizing just a statistic using materialized views (see below).
 
-All information doesn't need to be denormalized - just the key information that needs to be frequently accessed.
+    All information doesn't need to be denormalized - just the key information that needs to be frequently accessed.
 
-The denormalization work can be handled in either ClickHouse or upstream e.g. using Apache Flink.
+    The denormalization work can be handled in either ClickHouse or upstream e.g. using Apache Flink.
 
 ## Avoid denormalization on frequently updated data {#avoid-denormalization-on-frequently-updated-data}
 
@@ -49,9 +49,7 @@ Achieving this in real-time is often unrealistic and requires significant engine
 1. Triggering the correct join statements when a table row changes. This should ideally not cause all objects for the join to be updated - rather just those that have been impacted. Modifying the joins to filter to the correct rows efficiently, and achieving this under high throughput, requires external tooling or engineering.
 1. Row updates in ClickHouse need to be carefully managed, introducing additional complexity.
 
-<br />
-
-A batch update process is thus more common, where all of the denormalized objects are periodically reloaded.
+    A batch update process is thus more common, where all of the denormalized objects are periodically reloaded.
 
 ## Practical cases for denormalization {#practical-cases-for-denormalization}
 
@@ -297,63 +295,63 @@ In cases of complex objects or one-to-many relationships, users can use:
 - Named Tuples - These allow a related structure to be represented as a set of columns.
 - Array(Tuple) or Nested - An array of named tuples, also known as Nested, with each entry representing an object. Applicable to one-to-many relationships.
 
-As an example, we demonstrate denormalizing `PostLinks` on to `Posts` below.
+    As an example, we demonstrate denormalizing `PostLinks` on to `Posts` below.
 
-Each post can contain a number of links to other posts as shown in the `PostLinks` schema earlier. As a Nested type, we might represent these linked and duplicates posts as follows:
+    Each post can contain a number of links to other posts as shown in the `PostLinks` schema earlier. As a Nested type, we might represent these linked and duplicates posts as follows:
 
-```sql
-SET flatten_nested=0
-CREATE TABLE posts_with_links
-(
-  `Id` Int32 CODEC(Delta(4), ZSTD(1)),
-   ... -other columns
-   `LinkedPosts` Nested(CreationDate DateTime64(3, 'UTC'), PostId Int32),
-   `DuplicatePosts` Nested(CreationDate DateTime64(3, 'UTC'), PostId Int32),
-) ENGINE = MergeTree
-ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
-```
+    ```sql
+    SET flatten_nested=0
+    CREATE TABLE posts_with_links
+    (
+    `Id` Int32 CODEC(Delta(4), ZSTD(1)),
+    ... -other columns
+    `LinkedPosts` Nested(CreationDate DateTime64(3, 'UTC'), PostId Int32),
+    `DuplicatePosts` Nested(CreationDate DateTime64(3, 'UTC'), PostId Int32),
+    ) ENGINE = MergeTree
+    ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
+    ```
 
-> Note the use of the setting `flatten_nested=0`. We recommend disabling the flattening of nested data.
+    > Note the use of the setting `flatten_nested=0`. We recommend disabling the flattening of nested data.
 
-We can perform this denormalization using an `INSERT INTO SELECT` with an `OUTER JOIN` query:
+    We can perform this denormalization using an `INSERT INTO SELECT` with an `OUTER JOIN` query:
 
-```sql
-INSERT INTO posts_with_links
-SELECT
+    ```sql
+    INSERT INTO posts_with_links
+    SELECT
     posts.*,
     arrayMap(p -> (p.1, p.2), arrayFilter(p -> p.3 = 'Linked' AND p.2 != 0, Related)) AS LinkedPosts,
     arrayMap(p -> (p.1, p.2), arrayFilter(p -> p.3 = 'Duplicate' AND p.2 != 0, Related)) AS DuplicatePosts
-FROM posts
-LEFT JOIN (
+    FROM posts
+    LEFT JOIN (
     SELECT
          PostId,
          groupArray((CreationDate, RelatedPostId, LinkTypeId)) AS Related
     FROM postlinks
     GROUP BY PostId
-) AS postlinks ON posts.Id = postlinks.PostId
+    ) AS postlinks ON posts.Id = postlinks.PostId
 
-0 rows in set. Elapsed: 155.372 sec. Processed 66.37 million rows, 76.33 GB (427.18 thousand rows/s., 491.25 MB/s.)
-Peak memory usage: 6.98 GiB.
-```
+    0 rows in set. Elapsed: 155.372 sec. Processed 66.37 million rows, 76.33 GB (427.18 thousand rows/s., 491.25 MB/s.)
+    Peak memory usage: 6.98 GiB.
+    ```
 
-> Note the timing here. We've managed to denormalize 66m rows in around 2mins. As we'll see later, this is an operation we can schedule.
+    > Note the timing here. We've managed to denormalize 66m rows in around 2mins. As we'll see later, this is an operation we can schedule.
 
-Note the use of the `groupArray` functions to collapse the `PostLinks` down into an array for each `PostId`, prior to joining. This array is then filtered into two sublists: `LinkedPosts` and `DuplicatePosts`, which also exclude any empty results from the outer join.
+    Note the use of the `groupArray` functions to collapse the `PostLinks` down into an array for each `PostId`, prior to joining. This array is then filtered into two sublists: `LinkedPosts` and `DuplicatePosts`, which also exclude any empty results from the outer join.
 
-We can select some rows to see our new denormalized structure:
+    We can select some rows to see our new denormalized structure:
 
-```sql
-SELECT LinkedPosts, DuplicatePosts
-FROM posts_with_links
-WHERE (length(LinkedPosts) > 2) AND (length(DuplicatePosts) > 0)
-LIMIT 1
-FORMAT Vertical
+    ```sql
+    SELECT LinkedPosts, DuplicatePosts
+    FROM posts_with_links
+    WHERE (length(LinkedPosts) > 2) AND (length(DuplicatePosts) > 0)
+    LIMIT 1
+    FORMAT Vertical
 
-Row 1:
-──────
-LinkedPosts:    [('2017-04-11 11:53:09.583',3404508),('2017-04-11 11:49:07.680',3922739),('2017-04-11 11:48:33.353',33058004)]
-DuplicatePosts: [('2017-04-11 12:18:37.260',3922739),('2017-04-11 12:18:37.260',33058004)]
-```
+    Row 1:
+    ──────
+    LinkedPosts:    [('2017-04-11 11:53:09.583',3404508),('2017-04-11 11:49:07.680',3922739),('2017-04-11 11:48:33.353',33058004)]
+    DuplicatePosts: [('2017-04-11 12:18:37.260',3922739),('2017-04-11 12:18:37.260',33058004)]
+    ```
 
 ## Orchestrating and scheduling denormalization {#orchestrating-and-scheduling-denormalization}
 
@@ -367,7 +365,6 @@ Users have several options for orchestrating this in ClickHouse, assuming a peri
 
 - **[Refreshable Materialized Views](/materialized-view/refreshable-materialized-view)** - Refreshable materialized views can be used to periodically schedule a query with the results sent to a target table. On query execution, the view ensures the target table is atomically updated. This provides a ClickHouse native means of scheduling this work.
 - **External tooling** - Utilizing tools such as [dbt](https://www.getdbt.com/) and [Airflow](https://airflow.apache.org/) to periodically schedule the transformation. The [ClickHouse integration for dbt](/integrations/dbt) ensures this is performed atomically with a new version of the target table created and then atomically swapped with the version receiving queries (via the [EXCHANGE](/sql-reference/statements/exchange) command).
-
 
 ### Streaming {#streaming}
 

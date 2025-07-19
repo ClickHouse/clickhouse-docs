@@ -11,7 +11,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 The ClickStack browser SDK allows you to instrument your frontend application to
-send events to ClickStack. This allows you to view network 
+send events to ClickStack. This allows you to view network
 requests and exceptions alongside backend events in a single timeline.
 
 Additionally, it'll automatically capture and correlate session replay data, so
@@ -31,74 +31,61 @@ This guide integrates the following:
 
 <Tabs groupId="install">
 <TabItem value="package_import" label="Package Import" default>
-
 **Install via package import (Recommended)**
-
 Use the following command to install the [browser package](https://www.npmjs.com/package/@hyperdx/browser).
-
 ```shell
 npm install @hyperdx/browser
 ```
-
 **Initialize ClickStack**
-
 ```javascript
 import HyperDX from '@hyperdx/browser';
-
 HyperDX.init({
-    url: 'http://localhost:4318',
-    apiKey: 'YOUR_INGESTION_API_KEY',
-    service: 'my-frontend-app',
-    tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
-    consoleCapture: true, // Capture console logs (default false)
-    advancedNetworkCapture: true, // Capture full HTTP request/response headers and bodies (default false)
+url: 'http://localhost:4318',
+apiKey: 'YOUR_INGESTION_API_KEY',
+service: 'my-frontend-app',
+tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
+consoleCapture: true, // Capture console logs (default false)
+advancedNetworkCapture: true, // Capture full HTTP request/response headers and bodies (default false)
 });
 ```
-
 </TabItem>
 <TabItem value="script_tag" label="Script Tag">
-
 **Install via Script Tag (Alternative)**
-
 You can also include and install the script via a script tag as opposed to
 installing via NPM. This will expose the `HyperDX` global variable and can be
 used in the same way as the NPM package.
-
 This is recommended if your site is not currently built using a bundler.
-
 ```html
 <script src="//www.unpkg.com/@hyperdx/browser@0.21.0/build/index.js"></script>
 <script>
-  window.HyperDX.init({
-    url: 'http://localhost:4318',
-    apiKey: 'YOUR_INGESTION_API_KEY',
-    service: 'my-frontend-app',
-    tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
-  });
+window.HyperDX.init({
+url: 'http://localhost:4318',
+apiKey: 'YOUR_INGESTION_API_KEY',
+service: 'my-frontend-app',
+tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
+});
 </script>
 ```
-
 </TabItem>
 </Tabs>
-
 
 ### Options {#options}
 
 - `apiKey` - Your ClickStack Ingestion API Key.
 - `service` - The service name events will show up as in HyperDX UI.
 - `tracePropagationTargets` - A list of regex patterns to match against HTTP
-  requests to link frontend and backend traces, it will add an additional
-  `traceparent` header to all requests matching any of the patterns. This should
-  be set to your backend API domain (ex. `api.yoursite.com`).
+    requests to link frontend and backend traces, it will add an additional
+    `traceparent` header to all requests matching any of the patterns. This should
+    be set to your backend API domain (ex. `api.yoursite.com`).
 - `consoleCapture` - (Optional) Capture all console logs (default `false`).
 - `advancedNetworkCapture` - (Optional) Capture full request/response headers
-  and bodies (default false).
+    and bodies (default false).
 - `url` - (Optional) The OpenTelemetry collector URL, only needed for
-  self-hosted instances.
+    self-hosted instances.
 - `maskAllInputs` - (Optional) Whether to mask all input fields in session
-  replay (default `false`).
+    replay (default `false`).
 - `maskAllText` - (Optional) Whether to mask all text in session replay (default
-  `false`).
+    `false`).
 - `disableIntercom` - (Optional) Whether to disable Intercom integration (default `false`)
 - `disableReplay` - (Optional) Whether to disable session replay (default `false`)
 
@@ -128,7 +115,7 @@ HyperDX.setGlobalAttributes({
 ### Auto capture React error boundary errors {#auto-capture-react-error-boundary-errors}
 
 If you're using React, you can automatically capture errors that occur within
-React error boundaries by passing your error boundary component 
+React error boundaries by passing your error boundary component
 into the `attachToReactErrorBoundary` function.
 
 ```javascript

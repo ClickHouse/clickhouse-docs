@@ -11,14 +11,14 @@ sidebar_label: 'minSimpleState'
 ## Description {#description}
 
 The [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) combinator can be applied to the [`min`](/sql-reference/aggregate-functions/reference/min)
-function to return the minimum value across all input values. It returns the 
+function to return the minimum value across all input values. It returns the
 result with type [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction).
 
 ## Example usage {#example-usage}
 
-Let's look at a practical example using a table that tracks daily temperature 
+Let's look at a practical example using a table that tracks daily temperature
 readings. For each location, we want to maintain the lowest temperature recorded.
-Using the `SimpleAggregateFunction` type with `min` automatically updates the 
+Using the `SimpleAggregateFunction` type with `min` automatically updates the
 stored value when a lower temperature is encountered.
 
 Create the source table for raw temperature readings:
@@ -113,7 +113,7 @@ View the updated extremes after new data:
 SELECT
     location_id,
     location_name,
-    min_temp,  
+    min_temp,
     max_temp
 FROM temperature_extremes
 ORDER BY location_id;
@@ -140,7 +140,7 @@ the final result from the partial states we need to add a `GROUP BY`:
 SELECT
     location_id,
     location_name,
-    min(min_temp) AS min_temp,  -- Aggregate across all parts 
+    min(min_temp) AS min_temp,  -- Aggregate across all parts
     max(max_temp) AS max_temp   -- Aggregate across all parts
 FROM temperature_extremes
 GROUP BY location_id, location_name

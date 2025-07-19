@@ -58,7 +58,6 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 
 *Note*: Do not put the full bucket Arn but instead just the bucket name only.
 
-
 5 - Select the **I acknowledge that AWS CloudFormation might create IAM resources with custom names.** checkbox
 
 6 - Click **Create stack** button at bottom right
@@ -135,7 +134,6 @@ ClickHouse Cloud has a new feature that allows you to specify `extra_credentials
 ```sql
 DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWithNames',extra_credentials(role_arn = 'arn:aws:iam::111111111111:role/ClickHouseAccessRole-001'))
 ```
-
 
 Below is an example query that uses the `role_session_name` as a shared secret to query data from a bucket. If the `role_session_name` is not correct, this operation will fail.
 

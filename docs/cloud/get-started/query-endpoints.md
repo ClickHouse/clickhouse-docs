@@ -116,14 +116,14 @@ None
 
 - `queryVariables` (optional): An object containing variables to be used in the query.
 - `format` (optional): The format of the response. If Query API Endpoint is version 2 any ClickHouse supported format is possible. Supported formats for v1 are:
-  - TabSeparated
-  - TabSeparatedWithNames
-  - TabSeparatedWithNamesAndTypes
-  - JSON
-  - JSONEachRow
-  - CSV
-  - CSVWithNames
-  - CSVWithNamesAndTypes
+    - TabSeparated
+    - TabSeparatedWithNames
+    - TabSeparatedWithNamesAndTypes
+    - JSON
+    - JSONEachRow
+    - CSV
+    - CSVWithNames
+    - CSVWithNamesAndTypes
 
 ### Responses {#responses}
 

@@ -55,10 +55,10 @@ You can control this process using the following settings for the source table:
 - [`replicated_deduplication_window_seconds`](/operations/settings/merge-tree-settings#replicated_deduplication_window_seconds)
 - [`non_replicated_deduplication_window`](/operations/settings/merge-tree-settings#non_replicated_deduplication_window)
 
-You have to also enable the user profile setting [`deduplicate_blocks_in_dependent_materialized_views`](/operations/settings/settings#deduplicate_blocks_in_dependent_materialized_views).
-With enabled setting `insert_deduplicate=1` an inserted data is deduplicated in source table. The setting `deduplicate_blocks_in_dependent_materialized_views=1` additionally enables deduplication in dependant tables. You have to enable both if full deduplication is desired.
+    You have to also enable the user profile setting [`deduplicate_blocks_in_dependent_materialized_views`](/operations/settings/settings#deduplicate_blocks_in_dependent_materialized_views).
+    With enabled setting `insert_deduplicate=1` an inserted data is deduplicated in source table. The setting `deduplicate_blocks_in_dependent_materialized_views=1` additionally enables deduplication in dependant tables. You have to enable both if full deduplication is desired.
 
-When inserting blocks into tables under materialized views, ClickHouse calculates the `block_id` by hashing a string that combines the `block_id`s from the source table and additional identifiers. This ensures accurate deduplication within materialized views, allowing data to be distinguished based on its original insertion, regardless of any transformations applied before reaching the destination table under the materialized view.
+    When inserting blocks into tables under materialized views, ClickHouse calculates the `block_id` by hashing a string that combines the `block_id`s from the source table and additional identifiers. This ensures accurate deduplication within materialized views, allowing data to be distinguished based on its original insertion, regardless of any transformations applied before reaching the destination table under the materialized view.
 
 ## Examples {#examples}
 
@@ -183,7 +183,6 @@ CREATE TABLE dst
 ENGINE = MergeTree
 ORDER BY tuple()
 SETTINGS non_replicated_deduplication_window=1000;
-
 
 SET max_block_size=1;
 SET min_insert_block_size_rows=0;

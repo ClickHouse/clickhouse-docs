@@ -23,9 +23,9 @@ We recommend users always create their own schema for logs and traces for the fo
 - **Secondary indices** - The default schema uses secondary indices for speeding up access to Maps and accelerating text queries. These are typically not required and incur additional disk space. They can be used but should be tested to ensure they are required. See ["Secondary / Data Skipping indices"](#secondarydata-skipping-indices).
 - **Using Codecs** - Users may wish to customize codecs for columns if they understand the anticipated data and have evidence this improves compression.
 
-_We describe each of the above use cases in detail below._
+    _We describe each of the above use cases in detail below._
 
-**Important:** While users are encouraged to extend and modify their schema to achieve optimal compression and query performance, they should adhere to the OTel schema naming for core columns where possible. The ClickHouse Grafana plugin assumes the existence of some basic OTel columns to assist with query building e.g. Timestamp and SeverityText. The required columns for logs and traces are documented here [[1]](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)[[2]](https://grafana.com/docs/grafana/latest/explore/logs-integration/) and [here](https://grafana.com/docs/grafana/latest/explore/trace-integration/#data-frame-structure), respectively. You can choose to change these column names, overriding the defaults in the plugin configuration.
+    **Important:** While users are encouraged to extend and modify their schema to achieve optimal compression and query performance, they should adhere to the OTel schema naming for core columns where possible. The ClickHouse Grafana plugin assumes the existence of some basic OTel columns to assist with query building e.g. Timestamp and SeverityText. The required columns for logs and traces are documented here [[1]](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)[[2]](https://grafana.com/docs/grafana/latest/explore/logs-integration/) and [here](https://grafana.com/docs/grafana/latest/explore/trace-integration/#data-frame-structure), respectively. You can choose to change these column names, overriding the defaults in the plugin configuration.
 
 ## Extracting structure with SQL {#extracting-structure-with-sql}
 
@@ -34,124 +34,124 @@ Whether ingesting structured or unstructured logs, users often need the ability 
 - **Extract columns from string blobs**. Querying these will be faster than using string operations at query time.
 - **Extract keys from maps**. The default schema places arbitrary attributes into columns of the Map type. This type provides a schema-less capability that has the advantage of users not needing to pre-define the columns for attributes when defining logs and traces - often, this is impossible when collecting logs from Kubernetes and wanting to ensure pod labels are retained for later search. Accessing map keys and their values is slower than querying on normal ClickHouse columns. Extracting keys from maps to root table columns is, therefore, often desirable.
 
-Consider the following queries:
+    Consider the following queries:
 
-Suppose we wish to count which URL paths receive the most POST requests using the structured logs. The JSON blob is stored within the `Body` column as a String. Additionally, it may also be stored in the `LogAttributes` column as a `Map(String, String)` if the user has enabled the json_parser in the collector.
+    Suppose we wish to count which URL paths receive the most POST requests using the structured logs. The JSON blob is stored within the `Body` column as a String. Additionally, it may also be stored in the `LogAttributes` column as a `Map(String, String)` if the user has enabled the json_parser in the collector.
 
-```sql
-SELECT LogAttributes
-FROM otel_logs
-LIMIT 1
-FORMAT Vertical
+    ```sql
+    SELECT LogAttributes
+    FROM otel_logs
+    LIMIT 1
+    FORMAT Vertical
 
-Row 1:
-──────
-Body:           {"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","time_local":"2019-01-22 00:26:14.000","request_type":"GET","request_path":"\/filter\/27|13 ,27|  5 ,p53","request_protocol":"HTTP\/1.1","status":"200","size":"30577","referer":"-","user_agent":"Mozilla\/5.0 (compatible; AhrefsBot\/6.1; +http:\/\/ahrefs.com\/robot\/)"}
-LogAttributes: {'status':'200','log.file.name':'access-structured.log','request_protocol':'HTTP/1.1','run_time':'0','time_local':'2019-01-22 00:26:14.000','size':'30577','user_agent':'Mozilla/5.0 (compatible; AhrefsBot/6.1; +http://ahrefs.com/robot/)','referer':'-','remote_user':'-','request_type':'GET','request_path':'/filter/27|13 ,27|  5 ,p53','remote_addr':'54.36.149.41'}
-```
+    Row 1:
+    ──────
+    Body:           {"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","time_local":"2019-01-22 00:26:14.000","request_type":"GET","request_path":"\/filter\/27|13 ,27|  5 ,p53","request_protocol":"HTTP\/1.1","status":"200","size":"30577","referer":"-","user_agent":"Mozilla\/5.0 (compatible; AhrefsBot\/6.1; +http:\/\/ahrefs.com\/robot\/)"}
+    LogAttributes: {'status':'200','log.file.name':'access-structured.log','request_protocol':'HTTP/1.1','run_time':'0','time_local':'2019-01-22 00:26:14.000','size':'30577','user_agent':'Mozilla/5.0 (compatible; AhrefsBot/6.1; +http://ahrefs.com/robot/)','referer':'-','remote_user':'-','request_type':'GET','request_path':'/filter/27|13 ,27|  5 ,p53','remote_addr':'54.36.149.41'}
+    ```
 
-Assuming the `LogAttributes` is available, the query to count which URL paths of the site receive the most POST requests:
+    Assuming the `LogAttributes` is available, the query to count which URL paths of the site receive the most POST requests:
 
-```sql
-SELECT path(LogAttributes['request_path']) AS path, count() AS c
-FROM otel_logs
-WHERE ((LogAttributes['request_type']) = 'POST')
-GROUP BY path
-ORDER BY c DESC
-LIMIT 5
+    ```sql
+    SELECT path(LogAttributes['request_path']) AS path, count() AS c
+    FROM otel_logs
+    WHERE ((LogAttributes['request_type']) = 'POST')
+    GROUP BY path
+    ORDER BY c DESC
+    LIMIT 5
 
-┌─path─────────────────────┬─────c─┐
-│ /m/updateVariation       │ 12182 │
-│ /site/productCard        │ 11080 │
-│ /site/productPrice       │ 10876 │
-│ /site/productModelImages │ 10866 │
-│ /site/productAdditives   │ 10866 │
-└──────────────────────────┴───────┘
+    ┌─path─────────────────────┬─────c─┐
+    │ /m/updateVariation       │ 12182 │
+    │ /site/productCard        │ 11080 │
+    │ /site/productPrice       │ 10876 │
+    │ /site/productModelImages │ 10866 │
+    │ /site/productAdditives   │ 10866 │
+    └──────────────────────────┴───────┘
 
-5 rows in set. Elapsed: 0.735 sec. Processed 10.36 million rows, 4.65 GB (14.10 million rows/s., 6.32 GB/s.)
-Peak memory usage: 153.71 MiB.
-```
+    5 rows in set. Elapsed: 0.735 sec. Processed 10.36 million rows, 4.65 GB (14.10 million rows/s., 6.32 GB/s.)
+    Peak memory usage: 153.71 MiB.
+    ```
 
-Note the use of the map syntax here e.g. `LogAttributes['request_path']`, and the [`path` function](/sql-reference/functions/url-functions#path) for stripping query parameters from the URL.
+    Note the use of the map syntax here e.g. `LogAttributes['request_path']`, and the [`path` function](/sql-reference/functions/url-functions#path) for stripping query parameters from the URL.
 
-If the user has not enabled JSON parsing in the collector, then `LogAttributes` will be empty, forcing us to use [JSON functions](/sql-reference/functions/json-functions) to extract the columns from the String `Body`.
+    If the user has not enabled JSON parsing in the collector, then `LogAttributes` will be empty, forcing us to use [JSON functions](/sql-reference/functions/json-functions) to extract the columns from the String `Body`.
 
-:::note Prefer ClickHouse for parsing
-We generally recommend users perform JSON parsing in ClickHouse of structured logs. We are confident ClickHouse is the fastest JSON parsing implementation. However, we recognize users may wish to send logs to other sources and not have this logic reside in SQL.
-:::
+    :::note Prefer ClickHouse for parsing
+    We generally recommend users perform JSON parsing in ClickHouse of structured logs. We are confident ClickHouse is the fastest JSON parsing implementation. However, we recognize users may wish to send logs to other sources and not have this logic reside in SQL.
+    :::
 
-```sql
-SELECT path(JSONExtractString(Body, 'request_path')) AS path, count() AS c
-FROM otel_logs
-WHERE JSONExtractString(Body, 'request_type') = 'POST'
-GROUP BY path
-ORDER BY c DESC
-LIMIT 5
+    ```sql
+    SELECT path(JSONExtractString(Body, 'request_path')) AS path, count() AS c
+    FROM otel_logs
+    WHERE JSONExtractString(Body, 'request_type') = 'POST'
+    GROUP BY path
+    ORDER BY c DESC
+    LIMIT 5
 
-┌─path─────────────────────┬─────c─┐
-│ /m/updateVariation       │ 12182 │
-│ /site/productCard        │ 11080 │
-│ /site/productPrice       │ 10876 │
-│ /site/productAdditives   │ 10866 │
-│ /site/productModelImages │ 10866 │
-└──────────────────────────┴───────┘
+    ┌─path─────────────────────┬─────c─┐
+    │ /m/updateVariation       │ 12182 │
+    │ /site/productCard        │ 11080 │
+    │ /site/productPrice       │ 10876 │
+    │ /site/productAdditives   │ 10866 │
+    │ /site/productModelImages │ 10866 │
+    └──────────────────────────┴───────┘
 
-5 rows in set. Elapsed: 0.668 sec. Processed 10.37 million rows, 5.13 GB (15.52 million rows/s., 7.68 GB/s.)
-Peak memory usage: 172.30 MiB.
-```
+    5 rows in set. Elapsed: 0.668 sec. Processed 10.37 million rows, 5.13 GB (15.52 million rows/s., 7.68 GB/s.)
+    Peak memory usage: 172.30 MiB.
+    ```
 
-Now consider the same for unstructured logs:
+    Now consider the same for unstructured logs:
 
-```sql
-SELECT Body, LogAttributes
-FROM otel_logs
-LIMIT 1
-FORMAT Vertical
+    ```sql
+    SELECT Body, LogAttributes
+    FROM otel_logs
+    LIMIT 1
+    FORMAT Vertical
 
-Row 1:
-──────
-Body:           151.233.185.144 - - [22/Jan/2019:19:08:54 +0330] "GET /image/105/brand HTTP/1.1" 200 2653 "https://www.zanbil.ir/filter/b43,p56" "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36" "-"
-LogAttributes: {'log.file.name':'access-unstructured.log'}
-```
+    Row 1:
+    ──────
+    Body:           151.233.185.144 - - [22/Jan/2019:19:08:54 +0330] "GET /image/105/brand HTTP/1.1" 200 2653 "https://www.zanbil.ir/filter/b43,p56" "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36" "-"
+    LogAttributes: {'log.file.name':'access-unstructured.log'}
+    ```
 
-A similar query for the unstructured logs requires the use of regular expressions via the [`extractAllGroupsVertical` function](/sql-reference/functions/string-search-functions#extractallgroupsvertical).
+    A similar query for the unstructured logs requires the use of regular expressions via the [`extractAllGroupsVertical` function](/sql-reference/functions/string-search-functions#extractallgroupsvertical).
 
-```sql
-SELECT
+    ```sql
+    SELECT
         path((groups[1])[2]) AS path,
         count() AS c
-FROM
-(
+    FROM
+    (
         SELECT extractAllGroupsVertical(Body, '(\\w+)\\s([^\\s]+)\\sHTTP/\\d\\.\\d') AS groups
         FROM otel_logs
         WHERE ((groups[1])[1]) = 'POST'
-)
-GROUP BY path
-ORDER BY c DESC
-LIMIT 5
+    )
+    GROUP BY path
+    ORDER BY c DESC
+    LIMIT 5
 
-┌─path─────────────────────┬─────c─┐
-│ /m/updateVariation       │ 12182 │
-│ /site/productCard        │ 11080 │
-│ /site/productPrice       │ 10876 │
-│ /site/productModelImages │ 10866 │
-│ /site/productAdditives   │ 10866 │
-└──────────────────────────┴───────┘
+    ┌─path─────────────────────┬─────c─┐
+    │ /m/updateVariation       │ 12182 │
+    │ /site/productCard        │ 11080 │
+    │ /site/productPrice       │ 10876 │
+    │ /site/productModelImages │ 10866 │
+    │ /site/productAdditives   │ 10866 │
+    └──────────────────────────┴───────┘
 
-5 rows in set. Elapsed: 1.953 sec. Processed 10.37 million rows, 3.59 GB (5.31 million rows/s., 1.84 GB/s.)
-```
+    5 rows in set. Elapsed: 1.953 sec. Processed 10.37 million rows, 3.59 GB (5.31 million rows/s., 1.84 GB/s.)
+    ```
 
-The increased complexity and cost of queries for parsing unstructured logs (notice performance difference) is why we recommend users always use structured logs where possible.
+    The increased complexity and cost of queries for parsing unstructured logs (notice performance difference) is why we recommend users always use structured logs where possible.
 
-:::note Consider dictionaries
-The above query could be optimized to exploit regular expression dictionaries. See [Using Dictionaries](#using-dictionaries) for more detail.
-:::
+    :::note Consider dictionaries
+    The above query could be optimized to exploit regular expression dictionaries. See [Using Dictionaries](#using-dictionaries) for more detail.
+    :::
 
-Both of these use cases can be satisfied using ClickHouse by moving the above query logic to insert time. We explore several approaches below, highlighting when each is appropriate.
+    Both of these use cases can be satisfied using ClickHouse by moving the above query logic to insert time. We explore several approaches below, highlighting when each is appropriate.
 
-:::note OTel or ClickHouse for processing?
-Users may also perform processing using OTel Collector processors and operators as described [here](/observability/integrating-opentelemetry#processing---filtering-transforming-and-enriching). In most cases, users will find ClickHouse is significantly more resource-efficient and faster than the collector's processors. The principal downside of performing all event processing in SQL is the coupling of your solution to ClickHouse. For example, users may wish to send processed logs to alternative destinations from the OTel collector e.g. S3.
-:::
+    :::note OTel or ClickHouse for processing?
+    Users may also perform processing using OTel Collector processors and operators as described [here](/observability/integrating-opentelemetry#processing---filtering-transforming-and-enriching). In most cases, users will find ClickHouse is significantly more resource-efficient and faster than the collector's processors. The principal downside of performing all event processing in SQL is the coupling of your solution to ClickHouse. For example, users may wish to send processed logs to alternative destinations from the OTel collector e.g. S3.
+    :::
 
 ### Materialized columns {#materialized-columns}
 
@@ -160,7 +160,6 @@ Materialized columns offer the simplest solution to extract structure from other
 :::note Overhead
 Materialized columns incur additional storage overhead as the values are extracted to new columns on disk at insert time.
 :::
-
 
 Materialized columns support any ClickHouse expression and can exploit any of the analytical functions for [processing strings](/sql-reference/functions/string-functions) (including [regex and searching](/sql-reference/functions/string-search-functions)) and [urls](/sql-reference/functions/url-functions), performing [type conversions](/sql-reference/functions/type-conversion-functions), [extracting values from JSON](/sql-reference/functions/json-functions) or [mathematical operations](/sql-reference/functions/math-functions).
 
@@ -233,7 +232,6 @@ Materialized Views allow users to shift the cost of computation from query time 
 Materialized views in ClickHouse are updated in real time as data flows into the table they are based on, functioning more like continually updating indexes. In contrast, in other databases materialized views are typically static snapshots of a query that must be refreshed (similar to ClickHouse Refreshable Materialized Views).
 :::
 
-
 The query associated with the materialized view can theoretically be any query, including an aggregation although [limitations exist with Joins](https://clickhouse.com/blog/using-materialized-views-in-clickhouse#materialized-views-and-joins). For the transformations and filtering workloads required for logs and traces, users can consider any `SELECT` statement to be possible.
 
 Users should remember the query is just a trigger executing over the rows being inserted into a table (the source table), with the results sent to a new table (the target table).
@@ -267,7 +265,7 @@ Consider the following query. This transforms our rows into a format we wish to 
 
 ```sql
 SELECT
-        Body, 
+        Body,
         Timestamp::DateTime AS Timestamp,
         ServiceName,
         LogAttributes['status'] AS Status,
@@ -350,13 +348,12 @@ The types selected here are based on optimizations discussed in ["Optimizing typ
 Notice how we have dramatically changed our schema. In reality users will likely also have Trace columns they will want to preserve as well as the column `ResourceAttributes` (this usually contains Kubernetes metadata). Grafana can exploit trace columns to provide linking functionality between logs and traces - see ["Using Grafana"](/observability/grafana).
 :::
 
-
 Below, we create a materialized view `otel_logs_mv`, which executes the above select for the `otel_logs` table and sends the results to `otel_logs_v2`.
 
 ```sql
 CREATE MATERIALIZED VIEW otel_logs_mv TO otel_logs_v2 AS
 SELECT
-        Body, 
+        Body,
         Timestamp::DateTime AS Timestamp,
         ServiceName,
         LogAttributes['status']::UInt16 AS Status,
@@ -415,7 +412,7 @@ An equivalent Materialized view, which relies on extracting columns from the `Bo
 
 ```sql
 CREATE MATERIALIZED VIEW otel_logs_mv TO otel_logs_v2 AS
-SELECT  Body, 
+SELECT  Body,
         Timestamp::DateTime AS Timestamp,
         ServiceName,
         JSONExtractUInt(Body, 'status') AS Status,
@@ -443,9 +440,9 @@ The above materialized views rely on implicit casting - especially in the case o
 - Some types will not always be cast e.g. string representations of numerics will not be cast to enum values.
 - JSON extract functions return default values for their type if a value is not found. Ensure these values make sense!
 
-:::note Avoid Nullable
-Avoid using [Nullable](/sql-reference/data-types/nullable) in Clickhouse for Observability data. It is rarely required in logs and traces to be able to distinguish between empty and null. This feature incurs an additional storage overhead and will negatively impact query performance. See [here](/data-modeling/schema-design#optimizing-types) for further details.
-:::
+    :::note Avoid Nullable
+    Avoid using [Nullable](/sql-reference/data-types/nullable) in Clickhouse for Observability data. It is rarely required in logs and traces to be able to distinguish between empty and null. This feature incurs an additional storage overhead and will negatively impact query performance. See [here](/data-modeling/schema-design#optimizing-types) for further details.
+    :::
 
 ## Choosing a primary (ordering) key {#choosing-a-primary-ordering-key}
 
@@ -458,13 +455,11 @@ Some simple rules can be applied to help choose an ordering key. The following c
 3. Prefer columns that are likely to be highly correlated with other columns in the table. This will help ensure these values are also stored contiguously, improving compression.
 4. `GROUP BY` and `ORDER BY` operations for columns in the ordering key can be made more memory efficient.
 
-<br />
+    On identifying the subset of columns for the ordering key, they must be declared in a specific order. This order can significantly influence both the efficiency of the filtering on secondary key columns in queries and the compression ratio for the table's data files. In general, it is **best to order the keys in ascending order of cardinality**. This should be balanced against the fact that filtering on columns that appear later in the ordering key will be less efficient than filtering on those that appear earlier in the tuple. Balance these behaviors and consider your access patterns. Most importantly, test variants. For further understanding of ordering keys and how to optimize them, we recommend [this article](/guides/best-practices/sparse-primary-indexes).
 
-On identifying the subset of columns for the ordering key, they must be declared in a specific order. This order can significantly influence both the efficiency of the filtering on secondary key columns in queries and the compression ratio for the table's data files. In general, it is **best to order the keys in ascending order of cardinality**. This should be balanced against the fact that filtering on columns that appear later in the ordering key will be less efficient than filtering on those that appear earlier in the tuple. Balance these behaviors and consider your access patterns. Most importantly, test variants. For further understanding of ordering keys and how to optimize them, we recommend [this article](/guides/best-practices/sparse-primary-indexes).
-
-:::note Structure first
-We recommend deciding on your ordering keys once you have structured your logs. Do not use keys in attribute maps for the ordering key or JSON extraction expressions. Ensure you have your ordering keys as root columns in your table.
-:::
+    :::note Structure first
+    We recommend deciding on your ordering keys once you have structured your logs. Do not use keys in attribute maps for the ordering key or JSON extraction expressions. Ensure you have your ordering keys as root columns in your table.
+    :::
 
 ## Using maps {#using-maps}
 
@@ -488,7 +483,6 @@ Peak memory usage: 71.90 MiB.
 :::note Avoid dots
 We don't recommend using dots in Map column names and may deprecate its use. Use an `_`.
 :::
-
 
 ## Using aliases {#using-aliases}
 
@@ -592,7 +586,6 @@ While joins are rarely required in Observability use cases, dictionaries can sti
 Users interested in accelerating joins with dictionaries can find further details [here](/dictionary).
 :::
 
-
 ### Insert time vs query time {#insert-time-vs-query-time}
 
 Dictionaries can be used for enriching datasets at query time or insert time. Each of these approaches have their respective pros and cons. In summary:
@@ -600,9 +593,9 @@ Dictionaries can be used for enriching datasets at query time or insert time. Ea
 - **Insert time** - This is typically appropriate if the enrichment value does not change and exists in an external source which can be used to populate the dictionary. In this case, enriching the row at insert time avoids the query time lookup to the dictionary. This comes at the cost of insert performance as well as an additional storage overhead, as enriched values will be stored as columns.
 - **Query time** - If values in a dictionary change frequently, query time lookups are often more applicable. This avoids needing to update columns (and rewrite data) if mapped values change. This flexibility comes at the expense of a query time lookup cost. This query time cost is typically appreciable if a lookup is required for many rows, e.g. using a dictionary lookup in a filter clause. For result enrichment, i.e. in the `SELECT`, this overhead is typically not appreciable.
 
-We recommend that users familiarize themselves with the basics of dictionaries. Dictionaries provide an in-memory lookup table from which values can be retrieved using dedicated [specialist functions](/sql-reference/functions/ext-dict-functions#dictgetall).
+    We recommend that users familiarize themselves with the basics of dictionaries. Dictionaries provide an in-memory lookup table from which values can be retrieved using dedicated [specialist functions](/sql-reference/functions/ext-dict-functions#dictgetall).
 
-For simple enrichment examples see the guide on Dictionaries [here](/dictionary). Below, we focus on common observability enrichment tasks.
+    For simple enrichment examples see the guide on Dictionaries [here](/dictionary). Below, we focus on common observability enrichment tasks.
 
 ### Using IP dictionaries {#using-ip-dictionaries}
 
@@ -673,7 +666,7 @@ WITH
 SELECT
         ip_range_start,
         ip_range_end,
-        concat(toString(cidr_address),'/',toString(cidr_suffix)) AS cidr    
+        concat(toString(cidr_address),'/',toString(cidr_suffix)) AS cidr
 FROM
         geoip_url
 LIMIT 4;
@@ -715,7 +708,7 @@ SELECT
         concat(toString(cidr_address),'/',toString(cidr_suffix)) as cidr,
         latitude,
         longitude,
-        country_code    
+        country_code
 FROM geoip_url
 ```
 
@@ -1106,51 +1099,51 @@ Since the merging of rows is asynchronous, there may be more than one row per ho
 - Use the [`FINAL` modifier](/sql-reference/statements/select/from#final-modifier) on the table name (which we did for the count query above).
 - Aggregate by the ordering key used in our final table i.e. Timestamp and sum the metrics.
 
-Typically, the second option is more efficient and flexible (the table can be used for other things), but the first can be simpler for some queries. We show both below:
+    Typically, the second option is more efficient and flexible (the table can be used for other things), but the first can be simpler for some queries. We show both below:
 
-```sql
-SELECT
+    ```sql
+    SELECT
         Hour,
         sum(TotalBytes) AS TotalBytes
-FROM bytes_per_hour
-GROUP BY Hour
-ORDER BY Hour DESC
-LIMIT 5
+    FROM bytes_per_hour
+    GROUP BY Hour
+    ORDER BY Hour DESC
+    LIMIT 5
 
-┌────────────────Hour─┬─TotalBytes─┐
-│ 2019-01-26 16:00:00 │ 1661716343 │
-│ 2019-01-26 15:00:00 │ 1824015281 │
-│ 2019-01-26 14:00:00 │ 1506284139 │
-│ 2019-01-26 13:00:00 │ 1580955392 │
-│ 2019-01-26 12:00:00 │ 1736840933 │
-└─────────────────────┴────────────┘
+    ┌────────────────Hour─┬─TotalBytes─┐
+    │ 2019-01-26 16:00:00 │ 1661716343 │
+    │ 2019-01-26 15:00:00 │ 1824015281 │
+    │ 2019-01-26 14:00:00 │ 1506284139 │
+    │ 2019-01-26 13:00:00 │ 1580955392 │
+    │ 2019-01-26 12:00:00 │ 1736840933 │
+    └─────────────────────┴────────────┘
 
-5 rows in set. Elapsed: 0.008 sec.
+    5 rows in set. Elapsed: 0.008 sec.
 
-SELECT
+    SELECT
         Hour,
         TotalBytes
-FROM bytes_per_hour
-FINAL
-ORDER BY Hour DESC
-LIMIT 5
+    FROM bytes_per_hour
+    FINAL
+    ORDER BY Hour DESC
+    LIMIT 5
 
-┌────────────────Hour─┬─TotalBytes─┐
-│ 2019-01-26 16:00:00 │ 1661716343 │
-│ 2019-01-26 15:00:00 │ 1824015281 │
-│ 2019-01-26 14:00:00 │ 1506284139 │
-│ 2019-01-26 13:00:00 │ 1580955392 │
-│ 2019-01-26 12:00:00 │ 1736840933 │
-└─────────────────────┴────────────┘
+    ┌────────────────Hour─┬─TotalBytes─┐
+    │ 2019-01-26 16:00:00 │ 1661716343 │
+    │ 2019-01-26 15:00:00 │ 1824015281 │
+    │ 2019-01-26 14:00:00 │ 1506284139 │
+    │ 2019-01-26 13:00:00 │ 1580955392 │
+    │ 2019-01-26 12:00:00 │ 1736840933 │
+    └─────────────────────┴────────────┘
 
-5 rows in set. Elapsed: 0.005 sec.
-```
+    5 rows in set. Elapsed: 0.005 sec.
+    ```
 
-This has sped up our query from 0.6s to 0.008s - over 75 times!
+    This has sped up our query from 0.6s to 0.008s - over 75 times!
 
-:::note
-These savings can be even greater on larger datasets with more complex queries. See [here](https://github.com/ClickHouse/clickpy) for examples.
-:::
+    :::note
+    These savings can be even greater on larger datasets with more complex queries. See [here](https://github.com/ClickHouse/clickpy) for examples.
+    :::
 
 #### A more complex example {#a-more-complex-example}
 
@@ -1285,7 +1278,6 @@ CREATE TABLE otel_traces_trace_id_ts
 )
 ENGINE = MergeTree
 ORDER BY (TraceId, toUnixTimestamp(Start))
-
 
 CREATE MATERIALIZED VIEW otel_traces_trace_id_ts_mv TO otel_traces_trace_id_ts
 (
@@ -1573,7 +1565,6 @@ WHERE Referer LIKE '%ultra%'
 
 10 rows in set. Elapsed: 0.016 sec.
 
-
 EXPLAIN indexes = 1
 SELECT count()
 FROM otel_logs_bloom
@@ -1586,7 +1577,7 @@ WHERE Referer LIKE '%ultra%'
 │       Filter ((WHERE + Change column names to column identifiers)) │
 │       ReadFromMergeTree (default.otel_logs_bloom)                  │
 │       Indexes:                                                     │
-│               PrimaryKey                                           │ 
+│               PrimaryKey                                           │
 │               Condition: true                                      │
 │               Parts: 8/8                                           │
 │               Granules: 1276/1276                                  │
@@ -1616,7 +1607,6 @@ ORDER BY sum(data_compressed_bytes) DESC
 └─────────┴─────────────────┴───────────────────┴───────┘
 
 1 row in set. Elapsed: 0.018 sec.
-
 
 SELECT
         `table`,

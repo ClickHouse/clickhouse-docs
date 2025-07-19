@@ -57,21 +57,20 @@ The following settings need to be set as follows:
 
 1. `binlog_format` to `ROW`.
 
-<Image img={binlog_format} alt="Binlog format to ROW" size="lg" border/>
+    <Image img={binlog_format} alt="Binlog format to ROW" size="lg" border/>
 
 2. `binlog_row_metadata` to `FULL`
 
-<Image img={binlog_row_metadata} alt="Binlog row metadata" size="lg" border/>
+    <Image img={binlog_row_metadata} alt="Binlog row metadata" size="lg" border/>
 
 3. `binlog_row_image` to `FULL`
 
-<Image img={binlog_row_image} alt="Binlog row image" size="lg" border/>
+    <Image img={binlog_row_image} alt="Binlog row image" size="lg" border/>
 
-Then click on `Save Changes` in the top-right. You may need to reboot your instance for the changes to take effect - a way of knowing this is if you see `Pending reboot` next to the parameter group link in the Configurations tab of the RDS instance.
-<br/>
-:::tip
-If you have a MySQL cluster, the above parameters would be found in a [DB Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) parameter group and not the DB instance group.
-:::
+    Then click on `Save Changes` in the top-right. You may need to reboot your instance for the changes to take effect - a way of knowing this is if you see `Pending reboot` next to the parameter group link in the Configurations tab of the RDS instance.
+    :::tip
+    If you have a MySQL cluster, the above parameters would be found in a [DB Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) parameter group and not the DB instance group.
+    :::
 
 ## Enabling GTID mode {#gtid-mode-aurora}
 Global Transaction Identifiers (GTIDs) are unique IDs assigned to each committed transaction in MySQL. They simplify binlog replication and make troubleshooting more straightforward.
@@ -88,12 +87,11 @@ To enable GTID mode for your MySQL instance, follow the steps as follows:
 7. Click on `Save Changes` in the top-right corner.
 8. Reboot your instance for the changes to take effect.
 
-<Image img={enable_gtid} alt="GTID enabled" size="lg" border/>
+    <Image img={enable_gtid} alt="GTID enabled" size="lg" border/>
 
-<br/>
-:::info
-The MySQL ClickPipe also supports replication without GTID mode. However, enabling GTID mode is recommended for better performance and easier troubleshooting.
-:::
+    :::info
+    The MySQL ClickPipe also supports replication without GTID mode. However, enabling GTID mode is recommended for better performance and easier troubleshooting.
+    :::
 
 ## Configure a database user {#configure-database-user-aurora}
 

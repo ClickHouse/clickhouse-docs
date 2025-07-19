@@ -19,4 +19,3 @@ description: 'Landing page for the ClickHouse Observability Stack'
 | [Ingesting Data](/use-cases/observability/clickstack/ingesting-data) | Guidelines for ingesting data to ClickStack |
 | [Search](/use-cases/observability/clickstack/search) | How to search and query your observability data |
 | [Production](/use-cases/observability/clickstack/production) | Best practices for production deployment |
-

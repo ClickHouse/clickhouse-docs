@@ -9,10 +9,10 @@ show_related_blogs: true
 
 # Basic time-series operations
 
-ClickHouse provides several methods for working with time series data, allowing you to aggregate, group, and analyze data points across different time periods. 
+ClickHouse provides several methods for working with time series data, allowing you to aggregate, group, and analyze data points across different time periods.
 This section covers the fundamental operations commonly used when working with time-based data.
 
-Common operations include grouping data by time intervals, handling gaps in time series data, and calculating changes between time periods. 
+Common operations include grouping data by time intervals, handling gaps in time series data, and calculating changes between time periods.
 These operations can be performed using standard SQL syntax combined with ClickHouse's built-in time functions.
 
 We're going to explore ClickHouse time-series querying capabilities with the Wikistat (Wikipedia pageviews data) dataset:
@@ -33,9 +33,9 @@ ORDER BY (time);
 Let's populate this table with 1 billion records:
 
 ```sql
-INSERT INTO wikistat 
+INSERT INTO wikistat
 SELECT *
-FROM s3('https://ClickHouse-public-datasets.s3.amazonaws.com/wikistat/partitioned/wikistat*.native.zst') 
+FROM s3('https://ClickHouse-public-datasets.s3.amazonaws.com/wikistat/partitioned/wikistat*.native.zst')
 LIMIT 1e9;
 ```
 
@@ -65,11 +65,10 @@ LIMIT 5;
 
 We've used the [`toDate()`](/sql-reference/functions/type-conversion-functions#todate) function here, which converts the specified time to a date type. Alternatively, we can batch by an hour and filter on the specific date:
 
-
 ```sql
 SELECT
     toStartOfHour(time) AS hour,
-    sum(hits) AS hits    
+    sum(hits) AS hits
 FROM wikistat
 WHERE date(time) = '2015-07-01'
 GROUP BY ALL
@@ -87,12 +86,12 @@ LIMIT 5;
 └─────────────────────┴────────┘
 ```
 
-The [`toStartOfHour()`](/docs/sql-reference/functions/date-time-functions#tostartofhour) function used here converts the given time to the start of the hour. 
+The [`toStartOfHour()`](/docs/sql-reference/functions/date-time-functions#tostartofhour) function used here converts the given time to the start of the hour.
 You can also group by year, quarter, month, or day.
 
 ## Custom grouping intervals {#time-series-custom-grouping-intervals}
 
-We can even group by arbitrary intervals, e.g., 5 minutes using the [`toStartOfInterval()`](/docs/sql-reference/functions/date-time-functions#tostartofinterval) function. 
+We can even group by arbitrary intervals, e.g., 5 minutes using the [`toStartOfInterval()`](/docs/sql-reference/functions/date-time-functions#tostartofinterval) function.
 
 Let's say we want to group by 4-hour intervals.
 We can specify the grouping interval using the [`INTERVAL`](/docs/sql-reference/data-types/special-data-types/interval) clause:
@@ -216,14 +215,14 @@ ORDER BY hour ASC WITH FILL STEP toIntervalHour(1);
 
 ## Rolling time windows {#time-series-rolling-time-windows}
 
-Sometimes, we don't want to deal with the start of intervals (like the start of the day or an hour) but window intervals. 
-Let's say we want to understand the total hits for a window, not based on days but on a 24-hour period offset from 6 pm. 
+Sometimes, we don't want to deal with the start of intervals (like the start of the day or an hour) but window intervals.
+Let's say we want to understand the total hits for a window, not based on days but on a 24-hour period offset from 6 pm.
 
-We can use the [`date_diff()`](/docs/sql-reference/functions/date-time-functions#date_diff) function to calculate the difference between a reference time and each record's time. 
+We can use the [`date_diff()`](/docs/sql-reference/functions/date-time-functions#date_diff) function to calculate the difference between a reference time and each record's time.
 In this case, the `day` column will represent the difference in days (e.g., 1 day ago, 2 days ago, etc.):
 
 ```sql
-SELECT    
+SELECT
     dateDiff('day', toDateTime('2015-05-01 18:00:00'), time) AS day,
     sum(hits),
 FROM wikistat

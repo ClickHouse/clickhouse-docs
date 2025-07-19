@@ -73,9 +73,9 @@ In ClickHouse "low latency" means that queries can be processed without delay an
 
 ClickHouse provides various ways to trade accuracy for performance:
 
-1.  Aggregate functions for approximated calculation of the number of distinct values, medians, and quantiles.
-2.  Running a query based on a part ([SAMPLE](../sql-reference/statements/select/sample.md)) of data and getting an approximated result. In this case, proportionally less data is retrieved from the disk.
-3.  Running an aggregation for a limited number of random keys, instead of for all keys. Under certain conditions for key distribution in the data, this provides a reasonably accurate result while using fewer resources.
+1. Aggregate functions for approximated calculation of the number of distinct values, medians, and quantiles.
+2. Running a query based on a part ([SAMPLE](../sql-reference/statements/select/sample.md)) of data and getting an approximated result. In this case, proportionally less data is retrieved from the disk.
+3. Running an aggregation for a limited number of random keys, instead of for all keys. Under certain conditions for key distribution in the data, this provides a reasonably accurate result while using fewer resources.
 
 ## Adaptive join algorithm {#adaptive-join-algorithm}
 
@@ -93,6 +93,6 @@ ClickHouse implements user account management using SQL queries and allows for [
 
 ## Features that can be considered disadvantages {#clickhouse-features-that-can-be-considered-disadvantages}
 
-1.  No full-fledged transactions.
-2.  Lack of ability to modify or delete already inserted data with a high rate and low latency. There are batch deletes and updates available to clean up or modify data, for example, to comply with [GDPR](https://gdpr-info.eu).
-3.  The sparse index makes ClickHouse not so efficient for point queries retrieving single rows by their keys.
+1. No full-fledged transactions.
+2. Lack of ability to modify or delete already inserted data with a high rate and low latency. There are batch deletes and updates available to clean up or modify data, for example, to comply with [GDPR](https://gdpr-info.eu).
+3. The sparse index makes ClickHouse not so efficient for point queries retrieving single rows by their keys.

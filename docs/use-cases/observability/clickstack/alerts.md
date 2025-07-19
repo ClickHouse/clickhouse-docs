@@ -10,7 +10,6 @@ description: 'Alerts with ClickStack'
 import Image from '@theme/IdealImage';
 import search_alert from '@site/static/images/use-cases/observability/search_alert.png';
 
-
 ## Search alerts {#search-alerts}
 
 After entering a [search](/use-cases/observability/clickstack/search), you can create an alert to be
@@ -18,7 +17,7 @@ notified when the number of events (logs or spans) matching the search exceeds o
 
 ### Creating an alert {#creating-an-alert}
 
-You can create an alert by clicking the `Alerts` button on the top right of the `Search` page. 
+You can create an alert by clicking the `Alerts` button on the top right of the `Search` page.
 
 From here, you can name the alert, as well as set the threshold, duration, and notification method for the alert (Slack, Email, PagerDuty or Slack webhook).
 

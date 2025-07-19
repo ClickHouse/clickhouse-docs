@@ -5,7 +5,6 @@
 'description': '一般的な請求の問題のトラブルシューティング記事'
 ---
 
-import trial_expired from '@site/static/images/cloud/manage/trial-expired.png';
 import Image from '@theme/IdealImage';
 
 

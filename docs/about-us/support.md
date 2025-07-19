@@ -10,7 +10,7 @@ description: 'Information on ClickHouse Cloud support services'
 
 ClickHouse provides Support Services for our ClickHouse Cloud users and customers. Our objective is a Support Services team that represents the ClickHouse product – unparalleled performance, ease of use, and exceptionally fast, high-quality results. For details, [visit our ClickHouse Support Program](https://clickhouse.com/support/program/) page.
 
-[Login to the Cloud console](https://console.clickhouse.cloud/support) and select **Help -> Support** from the menu options to open a new support case and view the status of your submitted cases. 
+[Login to the Cloud console](https://console.clickhouse.cloud/support) and select **Help -> Support** from the menu options to open a new support case and view the status of your submitted cases.
 
 You can also subscribe to our [status page](https://status.clickhouse.com) to get notified quickly about any incidents affecting our platform.
 
@@ -19,4 +19,4 @@ Please note that only Subscription Customers have a Service Level Agreement on S
 
 - [ClickHouse Community Slack Channel](https://clickhouse.com/slack)
 - [Other Community Options](https://github.com/ClickHouse/ClickHouse/blob/master/README.md#useful-links)
-:::
+    :::

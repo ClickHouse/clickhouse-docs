@@ -18,7 +18,6 @@ Within Synapse, Spark pools provide on-demand, scalable [Apache Spark](https://s
 
 This article will show you how to integrate the [ClickHouse Spark connector](/integrations/apache-spark/spark-native-connector) when working with Apache Spark within Azure Synapse.
 
-
 <TOCInline toc={toc}></TOCInline>
 
 ## Add the connector's dependencies {#add-connector-dependencies}
@@ -27,13 +26,11 @@ Azure Synapse supports three levels of [packages maintenance](https://learn.micr
 2. Spark pool level
 3. Session level
 
-<br/>
+    Follow the [Manage libraries for Apache Spark pools guide](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-manage-pool-packages) and add the following required dependencies to your Spark application
+    - `clickhouse-spark-runtime-{spark_version}_{scala_version}-{connector_version}.jar` - [official maven](https://mvnrepository.com/artifact/com.clickhouse.spark)
+    - `clickhouse-jdbc-{java_client_version}-all.jar` - [official maven](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)
 
-Follow the [Manage libraries for Apache Spark pools guide](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-manage-pool-packages) and add the following required dependencies to your Spark application
-   - `clickhouse-spark-runtime-{spark_version}_{scala_version}-{connector_version}.jar` - [official maven](https://mvnrepository.com/artifact/com.clickhouse.spark)
-   - `clickhouse-jdbc-{java_client_version}-all.jar` - [official maven](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)
-
-Please visit our [Spark Connector Compatibility Matrix](/integrations/apache-spark/spark-native-connector#compatibility-matrix) docs to understand which versions suit your needs.
+    Please visit our [Spark Connector Compatibility Matrix](/integrations/apache-spark/spark-native-connector#compatibility-matrix) docs to understand which versions suit your needs.
 
 ## Add ClickHouse as a catalog {#add-clickhouse-as-catalog}
 
@@ -42,14 +39,14 @@ There are a variety of ways to add Spark configs to your session:
 * Add configurations via Azure Synapse UI
 * Add configurations in your Synapse notebook
 
-Follow this [Manage Apache Spark configuration](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-azure-create-spark-configuration) 
-and add the [connector required Spark configurations](/integrations/apache-spark/spark-native-connector#register-the-catalog-required).
+    Follow this [Manage Apache Spark configuration](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-azure-create-spark-configuration)
+    and add the [connector required Spark configurations](/integrations/apache-spark/spark-native-connector#register-the-catalog-required).
 
-For instance, you can configure your Spark session in your notebook with these settings:
+    For instance, you can configure your Spark session in your notebook with these settings:
 
-```python
-%%configure -f
-{
+    ```python
+    %%configure -f
+    {
     "conf": {
         "spark.sql.catalog.clickhouse": "com.clickhouse.spark.ClickHouseCatalog",
         "spark.sql.catalog.clickhouse.host": "<clickhouse host>",
@@ -59,18 +56,18 @@ For instance, you can configure your Spark session in your notebook with these s
         "spark.sql.catalog.clickhouse.password": "password",
         "spark.sql.catalog.clickhouse.database": "default"
     }
-}
-```
+    }
+    ```
 
-Make sure it will be in the first cell as follows:
+    Make sure it will be in the first cell as follows:
 
-<Image img={sparkConfigViaNotebook} size="xl" alt="Setting Spark configurations via notebook" border/>
+    <Image img={sparkConfigViaNotebook} size="xl" alt="Setting Spark configurations via notebook" border/>
 
-Please visit the [ClickHouse Spark configurations page](/integrations/apache-spark/spark-native-connector#configurations) for additional settings.
+    Please visit the [ClickHouse Spark configurations page](/integrations/apache-spark/spark-native-connector#configurations) for additional settings.
 
-:::info
-When working with ClickHouse Cloud Please make sure to set the [required Spark settings](/integrations/apache-spark/spark-native-connector#clickhouse-cloud-settings).  
-:::
+    :::info
+    When working with ClickHouse Cloud Please make sure to set the [required Spark settings](/integrations/apache-spark/spark-native-connector#clickhouse-cloud-settings).
+    :::
 
 ## Setup verification {#setup-verification}
 
@@ -78,7 +75,6 @@ To verify that the dependencies and configurations were set successfully, please
 There, look for your ClickHouse related settings:
 
 <Image img={sparkUICHSettings} size="xl" alt="Verifying ClickHouse settings using Spark UI" border/>
-
 
 ## Additional resources {#additional-resources}
 

@@ -50,17 +50,17 @@ Now you should be able to attach ClickHouse Datasource to your Looker project.
 ## 3. Known limitations {#3-known-limitations}
 
 1. The following data types are handled as strings by default:
-   * Array - serialization does not work as expected due to the JDBC driver limitations
-   * Decimal* - can be changed to number in the model
-   * LowCardinality(...) - can be changed to a proper type in the model
-   * Enum8, Enum16
-   * UUID
-   * Tuple
-   * Map
-   * JSON
-   * Nested
-   * FixedString
-   * Geo types
+    * Array - serialization does not work as expected due to the JDBC driver limitations
+    * Decimal* - can be changed to number in the model
+    * LowCardinality(...) - can be changed to a proper type in the model
+    * Enum8, Enum16
+    * UUID
+    * Tuple
+    * Map
+    * JSON
+    * Nested
+    * FixedString
+    * Geo types
      * MultiPolygon
      * Polygon
      * Point

@@ -47,8 +47,8 @@ The `countIf` function will count only the rows where `is_successful = 1` for ea
    ┌─user_id─┬─successful_logins─┐
 1. │       1 │                 2 │
 2. │       2 │                 2 │
-   └─────────┴───────────────────┘
-```
+    └─────────┴───────────────────┘
+    ```
 
 ## See also {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)

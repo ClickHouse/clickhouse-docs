@@ -113,11 +113,11 @@ Connect to your MySQL instance as the root user and execute the following comman
     GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
     ```
 
-:::note
+    :::note
 
-Make sure to replace `clickpipes_user` and `some_secure_password` with your desired username and password.
+    Make sure to replace `clickpipes_user` and `some_secure_password` with your desired username and password.
 
-:::
+    :::
 
 ## SSL/TLS configuration (recommended) {#ssl-tls-configuration}
 

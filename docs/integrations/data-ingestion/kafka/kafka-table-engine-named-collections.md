@@ -14,7 +14,7 @@ In this guide, we will explore how to connect ClickHouse to Kafka using named co
 - Changes to settings can be made without altering SQL table definitions.
 - Easier review and troubleshooting of configurations by inspecting a single configuration file.
 
-This guide has been tested on Apache Kafka 3.4.1 and ClickHouse 24.5.1.
+    This guide has been tested on Apache Kafka 3.4.1 and ClickHouse 24.5.1.
 
 ## Assumptions {#assumptions}
 
@@ -164,7 +164,7 @@ Create a materialized view to insert data from the first Kafka table into the fi
 
 ```sql
 CREATE MATERIALIZED VIEW kafka_testing.cluster_1_mv ON CLUSTER STAGE_CLICKHOUSE_CLUSTER TO first_replicated_table AS
-SELECT 
+SELECT
     id,
     first_name,
     last_name
@@ -175,7 +175,7 @@ Create a materialized view to insert data from the second Kafka table into the s
 
 ```sql
 CREATE MATERIALIZED VIEW kafka_testing.cluster_2_mv ON CLUSTER STAGE_CLICKHOUSE_CLUSTER TO second_replicated_table AS
-SELECT 
+SELECT
     id,
     first_name,
     last_name
@@ -188,15 +188,15 @@ You should now see the relative consumer groups on your Kafka clusters:
 - `cluster_1_clickhouse_consumer` on `cluster_1`
 - `cluster_2_clickhouse_consumer` on `cluster_2`
 
-Run the following queries on any of your ClickHouse nodes to see the data in both tables:
+    Run the following queries on any of your ClickHouse nodes to see the data in both tables:
 
-```sql
-SELECT * FROM first_replicated_table LIMIT 10;
-```
+    ```sql
+    SELECT * FROM first_replicated_table LIMIT 10;
+    ```
 
-```sql
-SELECT * FROM second_replicated_table LIMIT 10;
-```
+    ```sql
+    SELECT * FROM second_replicated_table LIMIT 10;
+    ```
 
 ### Note {#note}
 

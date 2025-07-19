@@ -117,7 +117,6 @@ quants: [0,9976599,2147776478,4209286886]
 
 We can also insert data into this database from chDB:
 
-
 ```python
 sess.query("""
 INSERT INTO foo.randomNumbers

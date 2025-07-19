@@ -12,7 +12,7 @@ ClickHouse can automatically determine the structure of JSON data. This can be u
 * **Consistent structure** - The data from which you are going to infer types contains all the keys that you are interested in. Type inference is based on sampling the data up to a [maximum number of rows](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference) or [bytes](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference). Data after the sample, with additional columns, will be ignored and can't be queried.
 * **Consistent types** - Data types for specific keys need to be compatible i.e. it must be possible to coerce one type to the other automatically.
 
-If you have more dynamic JSON, to which new keys are added and multiple types are possible for the same path, see ["Working with semi-structured and dynamic data"](/integrations/data-formats/json/inference#working-with-semi-structured-data).
+    If you have more dynamic JSON, to which new keys are added and multiple types are possible for the same path, see ["Working with semi-structured and dynamic data"](/integrations/data-formats/json/inference#working-with-semi-structured-data).
 
 ## Detecting types {#detecting-types}
 
@@ -65,7 +65,6 @@ As well as detecting the schema, JSON schema inference will automatically infer 
 :::
 
 Using the [s3 function](/sql-reference/table-functions/s3) with the `DESCRIBE` command shows the types that will be inferred.
-
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.json.gz')
@@ -287,7 +286,6 @@ If you know your JSON is highly dynamic with many unique keys and multiple types
 
 Consider the following example from an extended version of the above [Python PyPI dataset](https://clickpy.clickhouse.com/) dataset. Here we have added an arbitrary `tags` column with random key value pairs.
 
-
 ```json
 {
   "date": "2022-09-22",
@@ -315,11 +313,11 @@ DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi
 9 rows in set. Elapsed: 127.066 sec.
 ```
 
-The primary issue here is that the `JSONEachRow` format is used for inference. This attempts to infer **a column type per key in the JSON** - effectively trying to apply a static schema to the data without using the [`JSON`](/sql-reference/data-types/newjson) type. 
+The primary issue here is that the `JSONEachRow` format is used for inference. This attempts to infer **a column type per key in the JSON** - effectively trying to apply a static schema to the data without using the [`JSON`](/sql-reference/data-types/newjson) type.
 
 With thousands of unique columns this approach to inference is slow. As an alternative, users can use the `JSONAsObject` format.
 
-`JSONAsObject` treats the entire input as a single JSON object and stores it in a single column of type [`JSON`](/sql-reference/data-types/newjson), making it better suited for highly dynamic or nested JSON payloads. 
+`JSONAsObject` treats the entire input as a single JSON object and stores it in a single column of type [`JSON`](/sql-reference/data-types/newjson), making it better suited for highly dynamic or nested JSON payloads.
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample_rows.json.gz', 'JSONAsObject')

@@ -172,32 +172,32 @@ To know how to speed this up, please see our blog post on [tuning large data loa
 
 1. Let's see how many rows are inserted:
 
-```sql
-SELECT formatReadableQuantity(count())
-FROM tw_weather_data;
-```
+    ```sql
+    SELECT formatReadableQuantity(count())
+    FROM tw_weather_data;
+    ```
 
-```response
-┌─formatReadableQuantity(count())─┐
-│ 131.99 million                  │
-└─────────────────────────────────┘
-```
+    ```response
+    ┌─formatReadableQuantity(count())─┐
+    │ 131.99 million                  │
+    └─────────────────────────────────┘
+    ```
 
 2. Let's see how much disk space are used for this table:
 
-```sql
-SELECT
+    ```sql
+    SELECT
     formatReadableSize(sum(bytes)) AS disk_size,
     formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size
-FROM system.parts
-WHERE (`table` = 'tw_weather_data') AND active
-```
+    FROM system.parts
+    WHERE (`table` = 'tw_weather_data') AND active
+    ```
 
-```response
-┌─disk_size─┬─uncompressed_size─┐
-│ 2.13 GiB  │ 32.94 GiB         │
-└───────────┴───────────────────┘
-```
+    ```response
+    ┌─disk_size─┬─uncompressed_size─┐
+    │ 2.13 GiB  │ 32.94 GiB         │
+    └───────────┴───────────────────┘
+    ```
 
 ## Sample queries {#sample-queries}
 

@@ -50,11 +50,11 @@ We will use the `url` function to stream the data into ClickHouse. We need to pr
 - transforming the `is_new` field from a single-character string (`Y`/`N`) to a [UInt8](/sql-reference/data-types/int-uint) field with 0 or 1
 - drop the last two columns since they all have the same value (which is 0)
 
-The `url` function streams the data from the web server into your ClickHouse table. The following command inserts 5 million rows into the `uk_price_paid` table:
+    The `url` function streams the data from the web server into your ClickHouse table. The following command inserts 5 million rows into the `uk_price_paid` table:
 
-```sql
-INSERT INTO uk.uk_price_paid
-SELECT
+    ```sql
+    INSERT INTO uk.uk_price_paid
+    SELECT
     toUInt32(price_string) AS price,
     parseDateTimeBestEffortUS(time) AS date,
     splitByChar(' ', postcode)[1] AS postcode1,
@@ -69,7 +69,7 @@ SELECT
     town,
     district,
     county
-FROM url(
+    FROM url(
     'http://prod1.publicdata.landregistry.gov.uk.s3-website-eu-west-1.amazonaws.com/pp-complete.csv',
     'CSV',
     'uuid_string String,
@@ -88,10 +88,10 @@ FROM url(
     county String,
     d String,
     e String'
-) SETTINGS max_http_get_redirects=10;
-```
+    ) SETTINGS max_http_get_redirects=10;
+    ```
 
-Wait for the data to insert - it will take a minute or two depending on the network speed.
+    Wait for the data to insert - it will take a minute or two depending on the network speed.
 
 ## Validate the data {#validate-data}
 
@@ -171,4 +171,3 @@ We can speed up these queries with projections. See ["Projections"](/data-modeli
 ### Test it in the playground {#playground}
 
 The dataset is also available in the [Online Playground](https://sql.clickhouse.com?query_id=TRCWH5ZETY4SEEK8ISCCAX).
-

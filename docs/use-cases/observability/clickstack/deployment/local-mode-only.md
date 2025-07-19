@@ -19,7 +19,7 @@ Similar to the [all-in-one image](/use-cases/observability/clickstack/deployment
 * **OpenTelemetry (OTel) collector** (exposing OTLP on ports `4317` and `4318`)
 * **MongoDB** (for persistent application state)
 
-**However, user authentication is disabled for this distribution of HyperDX**
+    **However, user authentication is disabled for this distribution of HyperDX**
 
 ### Suitable for {#suitable-for}
 
@@ -31,31 +31,19 @@ Similar to the [all-in-one image](/use-cases/observability/clickstack/deployment
 <br/>
 
 <VerticalStepper headerLevel="h3">
-
 ### Deploy with Docker {#deploy-with-docker}
-
 Local mode deploys the HyperDX UI only, accessible on port 8080.
-
 ```shell
 docker run -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx-local
 ```
-
 ### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui}
-
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
-
 **You will not be prompted to create a user, as authentication is not enabled in this deployment mode.**
-
 Connect to your own external ClickHouse cluster e.g. ClickHouse Cloud.
-
 <Image img={hyperdx_2} alt="Create login" size="md"/>
-
 Create a source, retain all default values, and complete the `Table` field with the value `otel_logs`. All other settings should be auto-detected, allowing you to click `Save New Source`.
-
 <Image img={hyperdx_logs} alt="Create logs source" size="md"/>
-
 </VerticalStepper>
-
 
 <JSONSupport/>
 

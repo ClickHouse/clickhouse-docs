@@ -45,9 +45,9 @@ ClickStack consists of three core components:
 2. **OpenTelemetry collector** – a custom-built, preconfigured collector with an opinionated schema for logs, traces, and metrics
 3. **ClickHouse** – the high-performance analytical database at the heart of the stack
 
-These components can be deployed independently or together. A browser-hosted version of the HyperDX UI is also available, allowing users to connect to existing ClickHouse deployments without additional infrastructure.
+    These components can be deployed independently or together. A browser-hosted version of the HyperDX UI is also available, allowing users to connect to existing ClickHouse deployments without additional infrastructure.
 
-To get started, visit the [Getting started guide](/use-cases/observability/clickstack/getting-started) before loading a [sample dataset](/use-cases/observability/clickstack/sample-datasets). You can also explore documentation on [deployment options](/use-cases/observability/clickstack/deployment) and [production best practices](/use-cases/observability/clickstack/production).
+    To get started, visit the [Getting started guide](/use-cases/observability/clickstack/getting-started) before loading a [sample dataset](/use-cases/observability/clickstack/sample-datasets). You can also explore documentation on [deployment options](/use-cases/observability/clickstack/deployment) and [production best practices](/use-cases/observability/clickstack/production).
 
 ## Principles {#clickstack-principles}
 
@@ -83,17 +83,17 @@ ClickStack is fully open source and can be deployed anywhere. The schema is flex
 
 ClickStack consists of three core components:
 
-1. **HyperDX UI**  
-   A user-friendly interface built for observability. It supports both Lucene-style and SQL queries, interactive dashboards, alerting, trace exploration, and more—all optimized for ClickHouse as the backend.
+1. **HyperDX UI**
+    A user-friendly interface built for observability. It supports both Lucene-style and SQL queries, interactive dashboards, alerting, trace exploration, and more—all optimized for ClickHouse as the backend.
 
-2. **OpenTelemetry collector**  
-   A custom-built collector configured with an opinionated schema optimized for ClickHouse ingestion. It receives logs, metrics, and traces via OpenTelemetry protocols and writes them directly to ClickHouse using efficient batched inserts.
+2. **OpenTelemetry collector**
+    A custom-built collector configured with an opinionated schema optimized for ClickHouse ingestion. It receives logs, metrics, and traces via OpenTelemetry protocols and writes them directly to ClickHouse using efficient batched inserts.
 
-3. **ClickHouse**  
-   The high-performance analytical database that serves as the central data store for wide events. ClickHouse powers fast search, filtering, and aggregation at scale, leveraging its columnar engine and native support for JSON.
+3. **ClickHouse**
+    The high-performance analytical database that serves as the central data store for wide events. ClickHouse powers fast search, filtering, and aggregation at scale, leveraging its columnar engine and native support for JSON.
 
-In addition to these three components, ClickStack uses a **MongoDB instance** to store application state such as dashboards, user accounts, and configuration settings.
+    In addition to these three components, ClickStack uses a **MongoDB instance** to store application state such as dashboards, user accounts, and configuration settings.
 
-A full architectural diagram and deployment details can be found in the [Architecture section](/use-cases/observability/clickstack/architecture).
+    A full architectural diagram and deployment details can be found in the [Architecture section](/use-cases/observability/clickstack/architecture).
 
-For users interesting in deploying ClickStack to production, we recommend reading the ["Production"](/use-cases/observability/clickstack/production) guide.
+    For users interesting in deploying ClickStack to production, we recommend reading the ["Production"](/use-cases/observability/clickstack/production) guide.

@@ -166,41 +166,41 @@ A faster and more strict set of functions are available. These `simpleJSON*` fun
     "path": "/images/hm_bg.jpg", "version": "HTTP/1.0"}, "status": 200, "size": 24736}
     ```
 
-Whereas, the following will parse correctly:
+    Whereas, the following will parse correctly:
 
-```json
-{"@timestamp":893964617,"clientip":"40.135.0.0","request":{"method":"GET",
+    ```json
+    {"@timestamp":893964617,"clientip":"40.135.0.0","request":{"method":"GET",
     "path":"/images/hm_bg.jpg","version":"HTTP/1.0"},"status":200,"size":24736}
 
-In some circumstances, where performance is critical and your JSON meets the above requirements, these may be appropriate. An example of the earlier query, re-written to use `simpleJSON*` functions, is shown below:
+    In some circumstances, where performance is critical and your JSON meets the above requirements, these may be appropriate. An example of the earlier query, re-written to use `simpleJSON*` functions, is shown below:
 
-```sql
-SELECT
+    ```sql
+    SELECT
     toYear(parseDateTimeBestEffort(simpleJSONExtractString(simpleJSONExtractRaw(body, 'versions'), 'created'))) AS published_year,
     count() AS c
-FROM arxiv
-GROUP BY published_year
-ORDER BY published_year ASC
-LIMIT 10
+    FROM arxiv
+    GROUP BY published_year
+    ORDER BY published_year ASC
+    LIMIT 10
 
-┌─published_year─┬─────c─┐
-│           1986 │     1 │
-│           1988 │     1 │
-│           1989 │     6 │
-│           1990 │    26 │
-│           1991 │   353 │
-│           1992 │  3190 │
-│           1993 │  6729 │
-│           1994 │ 10078 │
-│           1995 │ 13006 │
-│           1996 │ 15872 │
-└────────────────┴───────┘
+    ┌─published_year─┬─────c─┐
+    │           1986 │     1 │
+    │           1988 │     1 │
+    │           1989 │     6 │
+    │           1990 │    26 │
+    │           1991 │   353 │
+    │           1992 │  3190 │
+    │           1993 │  6729 │
+    │           1994 │ 10078 │
+    │           1995 │ 13006 │
+    │           1996 │ 15872 │
+    └────────────────┴───────┘
 
-10 rows in set. Elapsed: 0.964 sec. Processed 2.48 million rows, 4.21 GB (2.58 million rows/s., 4.36 GB/s.)
-Peak memory usage: 211.49 MiB.
-```
+    10 rows in set. Elapsed: 0.964 sec. Processed 2.48 million rows, 4.21 GB (2.58 million rows/s., 4.36 GB/s.)
+    Peak memory usage: 211.49 MiB.
+    ```
 
-The above query uses the `simpleJSONExtractString` to extract the `created` key, exploiting the fact we want the first value only for the published date. In this case, the limitations of the `simpleJSON*` functions are acceptable for the gain in performance.
+    The above query uses the `simpleJSONExtractString` to extract the `created` key, exploiting the fact we want the first value only for the published date. In this case, the limitations of the `simpleJSON*` functions are acceptable for the gain in performance.
 
 ## Using the Map type {#using-map}
 
@@ -212,9 +212,9 @@ Although `Map`s give a simple way to represent nested structures, they have some
 - Accessing sub-columns requires a special map syntax since the fields don't exist as columns. The entire object _is_ a column.
 - Accessing a subcolumn loads the entire `Map` value i.e. all siblings and their respective values. For larger maps, this can result in a significant performance penalty.
 
-:::note String keys
-When modelling objects as `Map`s, a `String` key is used to store the JSON key name. The map will therefore always be `Map(String, T)`, where `T` depends on the data.
-:::
+    :::note String keys
+    When modelling objects as `Map`s, a `String` key is used to store the JSON key name. The map will therefore always be `Map(String, T)`, where `T` depends on the data.
+    :::
 
 #### Primitive values {#primitive-values}
 
@@ -351,13 +351,6 @@ The application of maps in this case is typically rare, and suggests that the da
 }
 ```
 
-
-
-
-
-
-
-
 ## Using the Nested type {#using-nested}
 
 The [Nested type](/sql-reference/data-types/nested-data-structures/nested) can be used to model static objects which are rarely subject to change, offering an alternative to `Tuple` and `Array(Tuple)`. We generally recommend avoiding using this type for JSON as its behavior is often confusing. The primary benefit of `Nested` is that sub-columns can be used in ordering keys.
@@ -437,8 +430,8 @@ A few important points to note here:
     ```
 * The nested fields `method`, `path`, and `version` need to be passed as JSON arrays i.e.
 
-  ```json
-  {
+    ```json
+    {
     "@timestamp": 897819077,
     "clientip": "45.212.12.0",
     "request": {
@@ -454,21 +447,21 @@ A few important points to note here:
     },
     "status": 200,
     "size": 3305
-  }
-  ```
+    }
+    ```
 
-Columns can be queried using a dot notation:
+    Columns can be queried using a dot notation:
 
-```sql
-SELECT clientip, status, size, `request.method` FROM http WHERE has(request.method, 'GET');
+    ```sql
+    SELECT clientip, status, size, `request.method` FROM http WHERE has(request.method, 'GET');
 
-┌─clientip────┬─status─┬─size─┬─request.method─┐
-│ 45.212.12.0 │    200 │ 3305 │ ['GET']        │
-└─────────────┴────────┴──────┴────────────────┘
-1 row in set. Elapsed: 0.002 sec.
-```
+    ┌─clientip────┬─status─┬─size─┬─request.method─┐
+    │ 45.212.12.0 │    200 │ 3305 │ ['GET']        │
+    └─────────────┴────────┴──────┴────────────────┘
+    1 row in set. Elapsed: 0.002 sec.
+    ```
 
-Note the use of `Array` for the sub-columns means the full breath [Array functions](/sql-reference/functions/array-functions) can potentially be exploited, including the [`ARRAY JOIN`](/sql-reference/statements/select/array-join) clause - useful if your columns have multiple values.
+    Note the use of `Array` for the sub-columns means the full breath [Array functions](/sql-reference/functions/array-functions) can potentially be exploited, including the [`ARRAY JOIN`](/sql-reference/statements/select/array-join) clause - useful if your columns have multiple values.
 
 #### flatten_nested=0 {#flatten_nested0}
 
@@ -515,8 +508,8 @@ A few important points to note here:
 * The `Nested` type is preserved in `SHOW CREATE TABLE`. Underneath this column is effectively a `Array(Tuple(Nested(method LowCardinality(String), path String, version LowCardinality(String))))`
 * As a result, we are required to insert `request` as an array i.e.
 
-  ```json
-  {
+    ```json
+    {
     "timestamp": 897819077,
     "clientip": "45.212.12.0",
     "request": [
@@ -528,19 +521,19 @@ A few important points to note here:
     ],
     "status": 200,
     "size": 3305
-  }
-  ```
+    }
+    ```
 
-Columns can again be queried using a dot notation:
+    Columns can again be queried using a dot notation:
 
-```sql
-SELECT clientip, status, size, `request.method` FROM http WHERE has(request.method, 'GET');
+    ```sql
+    SELECT clientip, status, size, `request.method` FROM http WHERE has(request.method, 'GET');
 
-┌─clientip────┬─status─┬─size─┬─request.method─┐
-│ 45.212.12.0 │    200 │ 3305 │ ['GET']        │
-└─────────────┴────────┴──────┴────────────────┘
-1 row in set. Elapsed: 0.002 sec.
-```
+    ┌─clientip────┬─status─┬─size─┬─request.method─┐
+    │ 45.212.12.0 │    200 │ 3305 │ ['GET']        │
+    └─────────────┴────────┴──────┴────────────────┘
+    1 row in set. Elapsed: 0.002 sec.
+    ```
 
 ### Example {#example}
 

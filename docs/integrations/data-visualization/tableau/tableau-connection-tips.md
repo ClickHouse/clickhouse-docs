@@ -14,7 +14,7 @@ import Image from '@theme/IdealImage';
 If the *Set Session ID* checkbox is activated on the Advanced tab (by default), feel free to set session level [settings](/operations/settings/settings/) using
 ```text
 SET my_setting=value;
-``` 
+```
 ## Advanced tab {#advanced-tab}
 
 In 99% of cases you don't need the Advanced tab, for the remaining 1% you can use the following settings:
@@ -24,7 +24,7 @@ In 99% of cases you don't need the Advanced tab, for the remaining 1% you can us
     ```text
     UInt256=java.lang.Double,Int256=java.lang.Double
     ```
-  Read more about mapping in the corresponding section
+    Read more about mapping in the corresponding section
 
 - **JDBC Driver URL Parameters**. You can pass the remaining [driver parameters](https://github.com/ClickHouse/clickhouse-jdbc#configuration), for example `jdbcCompliance`, in this field. Be careful, the parameter values must be passed in the URL Encoded format, and in the case of passing `custom_http_params` or `typeMappings` in this field and in the previous fields of the Advanced tab, the values of the preceding two fields on the Advanced tab have a higher priority
 - **Set Session ID** checkbox. It is needed to set session-level settings in Initial SQL tab, generates a `session_id` with a timestamp and a pseudo-random number in the format `"tableau-jdbc-connector-*{timestamp}*-*{number}*"`

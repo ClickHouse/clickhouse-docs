@@ -31,111 +31,56 @@ Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud
 
 1. You should have received an email with a link to review and accept your private offer.
 
-<br />
-
-<Image img={gcp_marketplace_committed_1} size="md" alt="GCP Marketplace private offer email" border />
-
-<br />
+    <Image img={gcp_marketplace_committed_1} size="md" alt="GCP Marketplace private offer email" border />
 
 2. Click on the **Review Offer** link in the email. This should take you to your GCP Marketplace page with the private offer details.
 
-<br />
+    <Image img={gcp_marketplace_committed_2} size="md" alt="GCP Marketplace offer summary" border/>
 
-<Image img={gcp_marketplace_committed_2} size="md" alt="GCP Marketplace offer summary" border/>
-
-<br />
-
-<Image img={gcp_marketplace_committed_3} size="md" alt="GCP Marketplace pricing summary" border/>
-
-<br />
+    <Image img={gcp_marketplace_committed_3} size="md" alt="GCP Marketplace pricing summary" border/>
 
 3. Review the private offer details and if everything is correct, click **Accept**.
 
-<br />
-
-<Image img={gcp_marketplace_committed_4} size="md" alt="GCP Marketplace accept page" border/>
-
-<br />
+    <Image img={gcp_marketplace_committed_4} size="md" alt="GCP Marketplace accept page" border/>
 
 4. Click on **Go to product page**.
 
-<br />
-
-<Image img={gcp_marketplace_committed_5} size="md" alt="GCP Marketplace acceptance confirmation" border/>
-
-<br />
+    <Image img={gcp_marketplace_committed_5} size="md" alt="GCP Marketplace acceptance confirmation" border/>
 
 5. Click on **Manage on provider**.
 
-<br />
+    <Image img={gcp_marketplace_committed_6} size="md" alt="GCP Marketplace ClickHouse Cloud page" border/>
 
-<Image img={gcp_marketplace_committed_6} size="md" alt="GCP Marketplace ClickHouse Cloud page" border/>
+    It is critical to redirect to ClickHouse Cloud at this point and sign up or sign in. Without completing this step, we will not be able to link your GCP Marketplace subscription to ClickHouse Cloud.
 
-<br />
+    <Image img={gcp_marketplace_committed_7} size="md" alt="GCP Marketplace leaving website confirmation modal" border/>
 
-It is critical to redirect to ClickHouse Cloud at this point and sign up or sign in. Without completing this step, we will not be able to link your GCP Marketplace subscription to ClickHouse Cloud.
+6. Once you redirect to ClickHouse Cloud, you can either login with an existing account, or register with a new account.
 
-<br />
+    <Image img={aws_marketplace_payg_6} size="md" alt="ClickHouse Cloud sign in page" border/>
 
-<Image img={gcp_marketplace_committed_7} size="md" alt="GCP Marketplace leaving website confirmation modal" border/>
+    If you are a new ClickHouse Cloud user, click **Register** at the bottom of the page. You will be prompted to create a new user and verify the email. After verifying your email, you can leave the ClickHouse Cloud login page and login using the new username at the [https://console.clickhouse.cloud](https://console.clickhouse.cloud).
 
-<br />
+    <Image img={aws_marketplace_payg_7} size="md" alt="ClickHouse Cloud sign up page" border/>
 
-6. Once you redirect to ClickHouse Cloud, you can either login with an existing account, or register with a new account. 
+    Note that if you are a new user, you will also need to provide some basic information about your business. See the screenshots below.
 
-<br />
+    <Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud sign up info form" border/>
 
-<Image img={aws_marketplace_payg_6} size="md" alt="ClickHouse Cloud sign in page" border/>
+    <Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud sign up info form 2" border/>
 
-<br />
-
-If you are a new ClickHouse Cloud user, click **Register** at the bottom of the page. You will be prompted to create a new user and verify the email. After verifying your email, you can leave the ClickHouse Cloud login page and login using the new username at the [https://console.clickhouse.cloud](https://console.clickhouse.cloud).
-
-<br />
-
-<Image img={aws_marketplace_payg_7} size="md" alt="ClickHouse Cloud sign up page" border/>
-
-<br />
-
-Note that if you are a new user, you will also need to provide some basic information about your business. See the screenshots below.
-
-<br />
-
-<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud sign up info form" border/>
-
-<br />
-
-<Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud sign up info form 2" border/>
-
-<br />
-
-If you are an existing ClickHouse Cloud user, simply log in using your credentials.
+    If you are an existing ClickHouse Cloud user, simply log in using your credentials.
 
 7. After successfully logging in, a new ClickHouse Cloud organization will be created. This organization will be connected to your GCP billing account and all usage will be billed via your GCP account.
 
 8. Once you login, you can confirm that your billing is in fact tied to the GCP Marketplace and start setting up your ClickHouse Cloud resources.
 
-<br />
+    <Image img={gcp_marketplace_payg_5} size="md" alt="ClickHouse Cloud sign in page" border/>
 
-<Image img={gcp_marketplace_payg_5} size="md" alt="ClickHouse Cloud sign in page" border/>
-
-<br />
-
-<Image img={aws_marketplace_payg_11} size="md" alt="ClickHouse Cloud new services page" border/>
-
-<br />
+    <Image img={aws_marketplace_payg_11} size="md" alt="ClickHouse Cloud new services page" border/>
 
 9. You should receive an email confirming the sign up:
 
-<br />
-<br />
+    <Image img={gcp_marketplace_payg_6} size="md" alt="GCP Marketplace confirmation email" border/>
 
-<Image img={gcp_marketplace_payg_6} size="md" alt="GCP Marketplace confirmation email" border/>
-
-<br />
-
-<br />
-
-If you run into any issues, please do not hesitate to contact [our support team](https://clickhouse.com/support/program).
-
-
+    If you run into any issues, please do not hesitate to contact [our support team](https://clickhouse.com/support/program).

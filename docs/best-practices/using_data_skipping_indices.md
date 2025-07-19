@@ -27,26 +27,26 @@ There are several types of data skipping indexes, each suited to different types
 * **bloom_filter**: Probabilistically determines if a value exists in a block, allowing fast approximate filtering for set membership. Effective for optimizing queries looking for the “needle in a haystack”, where a positive match is needed.
 * **tokenbf_v1 / ngrambf_v1**: Specialized Bloom filter variants designed for searching tokens or character sequences in strings - particularly useful for log data or text search use cases.
 
-While powerful, skip indexes must be used with care. They only provide benefit when they eliminate a meaningful number of data blocks, and can actually introduce overhead if the query or data structure doesn't align. If even a single matching value exists in a block, that entire block must still be read.
+    While powerful, skip indexes must be used with care. They only provide benefit when they eliminate a meaningful number of data blocks, and can actually introduce overhead if the query or data structure doesn't align. If even a single matching value exists in a block, that entire block must still be read.
 
-**Effective skip index usage often depends on a strong correlation between the indexed column and the table's primary key, or inserting data in a way that groups similar values together.**
+    **Effective skip index usage often depends on a strong correlation between the indexed column and the table's primary key, or inserting data in a way that groups similar values together.**
 
-In general, data skipping indices are best applied after ensuring proper primary key design and type optimization. They are particularly useful for:
+    In general, data skipping indices are best applied after ensuring proper primary key design and type optimization. They are particularly useful for:
 
 * Columns with high overall cardinality but low cardinality within a block.
 * Rare values that are critical for search (e.g. error codes, specific IDs).
 * Cases where filtering occurs on non-primary key columns with localized distribution.
 
-Always:
+    Always:
 
 1. test skip indexes on real data with realistic queries. Try different index types and granularity values.
-2. Evaluate their impact using tools like send_logs_level='trace' and `EXPLAIN indexes=1` to view index effectiveness. 
+2. Evaluate their impact using tools like send_logs_level='trace' and `EXPLAIN indexes=1` to view index effectiveness.
 3. Always evaluate the size of an index and how it is impacted by granularity. Reducing granularity size often will improve performance to a point, resulting in more granules being filtered and needing to be scanned. However, as index size increases with lower granularity performance can also degrade. Measure the performance and index size for various granularity data points. This is particularly pertinent on bloom filter indexes.
 
-<p/>
-**When used appropriately, skip indexes can provide a substantial performance boost - when used blindly, they can add unnecessary cost.**
+    <p/>
+    **When used appropriately, skip indexes can provide a substantial performance boost - when used blindly, they can add unnecessary cost.**
 
-For a more detailed guide on Data Skipping Indices see [here](/sql-reference/statements/alter/skipping-index).
+    For a more detailed guide on Data Skipping Indices see [here](/sql-reference/statements/alter/skipping-index).
 
 ## Example {#example}
 

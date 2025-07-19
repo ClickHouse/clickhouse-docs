@@ -127,7 +127,7 @@ There are two ways to create a new query in the SQL console.
 - Click the '+' button in the tab bar
 - Select the 'New Query' button from the left sidebar query list
 
-<Image img={creating_a_query} size="lg" border alt="Interface showing how to create a new query using the + button or New Query button"/>
+    <Image img={creating_a_query} size="lg" border alt="Interface showing how to create a new query using the + button or New Query button"/>
 
 ### Running a query {#running-a-query}
 
@@ -139,23 +139,23 @@ By default, clicking the run button will run all commands contained in the SQL E
 - Run selected command(s)
 - Run command at the cursor
 
-To run selected command(s), highlight the desired command or sequence of commands and click the 'Run' button (or use the `cmd / ctrl + enter` shortcut). You can also select 'Run selected' from the SQL Editor context menu (opened by right-clicking anywhere within the editor) when a selection is present.
+    To run selected command(s), highlight the desired command or sequence of commands and click the 'Run' button (or use the `cmd / ctrl + enter` shortcut). You can also select 'Run selected' from the SQL Editor context menu (opened by right-clicking anywhere within the editor) when a selection is present.
 
-<Image img={run_selected_query} size="lg" border alt="Interface showing how to run a selected portion of SQL query"/>
+    <Image img={run_selected_query} size="lg" border alt="Interface showing how to run a selected portion of SQL query"/>
 
-Running the command at the current cursor position can be achieved in two ways:
+    Running the command at the current cursor position can be achieved in two ways:
 
 - Select 'At Cursor' from the extended run options menu (or use the corresponding `cmd / ctrl + shift + enter` keyboard shortcut
 
-<Image img={run_at_cursor_2} size="lg" border alt="Run at cursor option in the extended run options menu"/>
+    <Image img={run_at_cursor_2} size="lg" border alt="Run at cursor option in the extended run options menu"/>
 
-  - Selecting 'Run at cursor' from the SQL Editor context menu
+    - Selecting 'Run at cursor' from the SQL Editor context menu
 
-<Image img={run_at_cursor} size="lg" border alt="Run at cursor option in the SQL Editor context menu"/>
+    <Image img={run_at_cursor} size="lg" border alt="Run at cursor option in the SQL Editor context menu"/>
 
-:::note
-The command present at the cursor position will flash yellow on execution.
-:::
+    :::note
+    The command present at the cursor position will flash yellow on execution.
+    :::
 
 ### Canceling a query {#canceling-a-query}
 
@@ -187,9 +187,9 @@ Let's import the UK Price Paid example dataset and use that to create some GenAI
 1. Create a new query by clicking the _+_ icon.
 1. Paste and run the following code:
 
-   ```sql
-   CREATE TABLE uk_price_paid
-   (
+    ```sql
+    CREATE TABLE uk_price_paid
+    (
        price UInt32,
        date Date,
        postcode1 LowCardinality(String),
@@ -204,20 +204,20 @@ Let's import the UK Price Paid example dataset and use that to create some GenAI
        town LowCardinality(String),
        district LowCardinality(String),
        county LowCardinality(String)
-   )
-   ENGINE = MergeTree
-   ORDER BY (postcode1, postcode2, addr1, addr2);
-   ```
+    )
+    ENGINE = MergeTree
+    ORDER BY (postcode1, postcode2, addr1, addr2);
+    ```
 
-   This query should take around 1 second to complete. Once it's done, you should have an empty table called `uk_price_paid.
+    This query should take around 1 second to complete. Once it's done, you should have an empty table called `uk_price_paid.
 
 1. Create a new query and paste the following query:
 
-   ```sql
-   INSERT INTO uk_price_paid
-   WITH
+    ```sql
+    INSERT INTO uk_price_paid
+    WITH
       splitByChar(' ', postcode) AS p
-   SELECT
+    SELECT
        toUInt32(price_string) AS price,
        parseDateTimeBestEffortUS(time) AS date,
        p[1] AS postcode1,
@@ -232,7 +232,7 @@ Let's import the UK Price Paid example dataset and use that to create some GenAI
        town,
        district,
        county
-   FROM url(
+    FROM url(
        'http://prod.publicdata.landregistry.gov.uk.s3-website-eu-west-1.amazonaws.com/pp-complete.csv',
        'CSV',
        'uuid_string String,
@@ -251,10 +251,10 @@ Let's import the UK Price Paid example dataset and use that to create some GenAI
        county String,
        d String,
        e String'
-   ) SETTINGS max_http_get_redirects=10;
-   ```
+    ) SETTINGS max_http_get_redirects=10;
+    ```
 
-This query grabs the dataset from the `gov.uk` website. This file is ~4GB, so this query will take a few minutes to complete. Once ClickHouse has processed the query, you should have the entire dataset within the `uk_price_paid` table.
+    This query grabs the dataset from the `gov.uk` website. This file is ~4GB, so this query will take a few minutes to complete. Once ClickHouse has processed the query, you should have the entire dataset within the `uk_price_paid` table.
 
 #### Query creation {#query-creation}
 
@@ -264,16 +264,16 @@ Let's create a query using natural language.
 1. Click **Generate SQL**. You may be asked to accept that your queries are sent to Chat-GPT. You must select **I agree** to continue.
 1. You can now use this prompt to enter a natural language query and have ChatGPT convert it into an SQL query. In this example we're going to enter:
 
-   > Show me the total price and total number of all uk_price_paid transactions by year.
+    > Show me the total price and total number of all uk_price_paid transactions by year.
 
 1. The console will generate the query we're looking for and display it in a new tab. In our example, GenAI created the following query:
 
-   ```sql
-   -- Show me the total price and total number of all uk_price_paid transactions by year.
-   SELECT year(date), sum(price) as total_price, Count(*) as total_transactions
-   FROM uk_price_paid
-   GROUP BY year(date)
-   ```
+    ```sql
+    -- Show me the total price and total number of all uk_price_paid transactions by year.
+    SELECT year(date), sum(price) as total_price, Count(*) as total_transactions
+    FROM uk_price_paid
+    GROUP BY year(date)
+    ```
 
 1. Once you've verified that the query is correct, click **Run** to execute it.
 
@@ -283,19 +283,19 @@ Now, let's test the query debugging capabilities of GenAI.
 
 1. Create a new query by clicking the _+_ icon and paste the following code:
 
-   ```sql
-   -- Show me the total price and total number of all uk_price_paid transactions by year.
-   SELECT year(date), sum(pricee) as total_price, Count(*) as total_transactions
-   FROM uk_price_paid
-   GROUP BY year(date)
-   ```
+    ```sql
+    -- Show me the total price and total number of all uk_price_paid transactions by year.
+    SELECT year(date), sum(pricee) as total_price, Count(*) as total_transactions
+    FROM uk_price_paid
+    GROUP BY year(date)
+    ```
 
 1. Click **Run**. The query fails since we're trying to get values from `pricee` instead of `price`.
 1. Click **Fix Query**.
 1. GenAI will attempt to fix the query. In this case, it changed `pricee` to `price`. It also realised that `toYear` is a better function to use in this scenario.
 1. Select **Apply** to add the suggested changes to your query and click **Run**.
 
-Keep in mind that GenAI is an experimental feature. Use caution when running GenAI-generated queries against any dataset.
+    Keep in mind that GenAI is an experimental feature. Use caution when running GenAI-generated queries against any dataset.
 
 ## Advanced querying features {#advanced-querying-features}
 
@@ -377,13 +377,13 @@ A number of more advanced chart characteristics can also be adjusted in the 'Adv
 - Axis titles
 - Label orientation for the x-axis
 
-Our chart will be updated accordingly:
+    Our chart will be updated accordingly:
 
-<Image img={update_subtitle_etc} size="lg" border alt="Update subtitle etc."/>
+    <Image img={update_subtitle_etc} size="lg" border alt="Update subtitle etc."/>
 
-In some scenarios, it may be necessary to adjust the axis scales for each field independently. This can also be accomplished in the 'Advanced' section of the chart configuration pane by specifying min and max values for an axis range. As an example, the above chart looks good, but in order to demonstrate the correlation between our `trip_total` and `fare_total` fields, the axis ranges need some adjustment:
+    In some scenarios, it may be necessary to adjust the axis scales for each field independently. This can also be accomplished in the 'Advanced' section of the chart configuration pane by specifying min and max values for an axis range. As an example, the above chart looks good, but in order to demonstrate the correlation between our `trip_total` and `fare_total` fields, the axis ranges need some adjustment:
 
-<Image img={adjust_axis_scale} size="lg" border alt="Adjust axis scale"/>
+    <Image img={adjust_axis_scale} size="lg" border alt="Adjust axis scale"/>
 
 ## Sharing queries {#sharing-queries}
 
@@ -404,4 +404,3 @@ A dialog will open, allowing you to share the query with all members of a team. 
 In some scenarios, it may be necessary to adjust the axis scales for each field independently. This can also be accomplished in the 'Advanced' section of the chart configuration pane by specifying min and max values for an axis range. As an example, the above chart looks good, but in order to demonstrate the correlation between our `trip_total` and `fare_total` fields, the axis ranges need some adjustment:
 
 <Image img={sql_console_access_queries} size="lg" border alt="Shared with me section in the query list"/>
-

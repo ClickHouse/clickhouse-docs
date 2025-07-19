@@ -9,7 +9,7 @@ This section of the documentation covers topics related to billing, and contains
 
 | Page                                  | Description                                                          |
 |---------------------------------------|----------------------------------------------------------------------|
-| [Overview](/cloud/marketplace/marketplace-billing)                       | Overview and FAQ pages for marketplace billing.                      | 
+| [Overview](/cloud/marketplace/marketplace-billing)                       | Overview and FAQ pages for marketplace billing.                      |
 | [Payment Thresholds](/cloud/billing/payment-thresholds)             | Learn more about how payment thresholds work and how to adjust them. |
 | [Troubleshooting Billing Issues](/manage/troubleshooting-billing-issues) | Troubleshoot common billing issues.                                  |
 | [Marketplace](/cloud/manage/)                    | Landing page for further marketplace related topics.                 |

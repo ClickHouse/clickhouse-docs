@@ -36,12 +36,12 @@ To allow ClickHouse to access your Azure Blob Storage, you'll need a connection 
 1. In the Azure portal, navigate to your **Storage Account**.
 
 2. In the left-hand menu, select **Access keys** under the **Security +
-   networking** section.
-   <Image img={azureDataStoreSettings} size="lg" alt="Azure Data Store Settings" border/>
+    networking** section.
+    <Image img={azureDataStoreSettings} size="lg" alt="Azure Data Store Settings" border/>
 
 3. Choose either **key1** or **key2**, and click the **Show** button next to
-   the **Connection string** field.
-   <Image img={azureDataStoreAccessKeys} size="lg" alt="Azure Data Store Access Keys" border/>
+    the **Connection string** field.
+    <Image img={azureDataStoreAccessKeys} size="lg" alt="Azure Data Store Access Keys" border/>
 
 4. Copy the connection string — you'll use this as a parameter in the azureBlobStorage table function.
 
@@ -84,40 +84,40 @@ As an example we will download a single file from the Environmental Sensors
 Dataset.
 
 1. Download a [sample file](https://clickhouse-public-datasets.s3.eu-central-1.amazonaws.com/sensors/monthly/2019-06_bmp180.csv.zst)
-   from the [Environmental Sensors Dataset](https://clickhouse.com/docs/getting-started/example-datasets/environmental-sensors)
+    from the [Environmental Sensors Dataset](https://clickhouse.com/docs/getting-started/example-datasets/environmental-sensors)
 
 2. In the Azure Portal, create a new storage account if you don't already have one.
 
-:::warning
-Make sure that **Allow storage account key access** is enabled for your storage
-account, otherwise you will not be able to use the account keys to access the
-data.
-:::
+    :::warning
+    Make sure that **Allow storage account key access** is enabled for your storage
+    account, otherwise you will not be able to use the account keys to access the
+    data.
+    :::
 
 3. Create a new container in your storage account. In this example, we name it sensors.
-   You can skip this step if you're using an existing container.
+    You can skip this step if you're using an existing container.
 
 4. Upload the previously downloaded `2019-06_bmp180.csv.zst` file to the
-   container.
+    container.
 
 5. Follow the steps described earlier to obtain the Azure Blob Storage
-   connection string.
+    connection string.
 
-Now that everything is set up, you can query the data directly from Azure Blob Storage:
+    Now that everything is set up, you can query the data directly from Azure Blob Storage:
 
     ```sql
     SELECT *
     FROM azureBlobStorage(
-        '<YOUR CONNECTION STRING>', 
+        '<YOUR CONNECTION STRING>',
         'sensors',
-        '2019-06_bmp180.csv.zst', 
+        '2019-06_bmp180.csv.zst',
         'CSVWithNames')
     LIMIT 10
     SETTINGS format_csv_delimiter = ';'
     ```
 
 7. To load the data into a table, create a simplified version of the
-   schema used in the original dataset:
+    schema used in the original dataset:
     ```sql
     CREATE TABLE sensors
     (
@@ -131,26 +131,26 @@ Now that everything is set up, you can query the data directly from Azure Blob S
     ORDER BY (timestamp, sensor_id);
     ```
 
-:::info
-For more information on configuration options and schema inference when
-querying external sources like Azure Blob Storage, see [Automatic schema
-inference from input data](https://clickhouse.com/docs/interfaces/schema-inference)
-:::
+    :::info
+    For more information on configuration options and schema inference when
+    querying external sources like Azure Blob Storage, see [Automatic schema
+    inference from input data](https://clickhouse.com/docs/interfaces/schema-inference)
+    :::
 
 8. Now insert the data from Azure Blob Storage into the sensors table:
     ```sql
     INSERT INTO sensors
     SELECT sensor_id, lat, lon, timestamp, temperature
     FROM azureBlobStorage(
-        '<YOUR CONNECTION STRING>', 
+        '<YOUR CONNECTION STRING>',
         'sensors',
-        '2019-06_bmp180.csv.zst', 
+        '2019-06_bmp180.csv.zst',
         'CSVWithNames')
     SETTINGS format_csv_delimiter = ';'
     ```
 
-Your sensors table is now populated with data from the `2019-06_bmp180.csv.zst`
-file stored in Azure Blob Storage.
+    Your sensors table is now populated with data from the `2019-06_bmp180.csv.zst`
+    file stored in Azure Blob Storage.
 
 ## Additional resources {#additional-resources}
 

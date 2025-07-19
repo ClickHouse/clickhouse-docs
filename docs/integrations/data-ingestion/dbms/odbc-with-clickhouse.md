@@ -9,5 +9,3 @@ description: 'Page describing the ODBC integration'
 import Content from '@site/docs/engines/table-engines/integrations/odbc.md';
 
 <Content />
-
-

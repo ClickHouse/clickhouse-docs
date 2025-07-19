@@ -87,7 +87,7 @@ chdb.query("""
 SELECT
     _file,
     count() AS count,
-    formatReadableQuantity(count) AS readableCount    
+    formatReadableQuantity(count) AS readableCount
 FROM s3('s3://datasets-documentation/amazon_reviews/*.parquet')
 GROUP BY ALL
 SETTINGS output_format_pretty_row_numbers=0
@@ -114,7 +114,7 @@ chdb.query("""
 SELECT
     _file,
     count() AS count,
-    formatReadableQuantity(count) AS readableCount    
+    formatReadableQuantity(count) AS readableCount
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/*.parquet')
 GROUP BY ALL
 SETTINGS output_format_pretty_row_numbers=0
@@ -148,33 +148,33 @@ SETTINGS describe_compact_output=1
 14. │ review_headline   │ Nullable(String) │
 15. │ review_body       │ Nullable(String) │
     └───────────────────┴──────────────────┘
-```
+    ```
 
-Let's now compute the top product categories based on number of reviews, as well as computing the average star rating:
+    Let's now compute the top product categories based on number of reviews, as well as computing the average star rating:
 
-```python
-chdb.query("""
-SELECT product_category, count() AS reviews, round(avg(star_rating), 2) as avg
-FROM s3('s3://datasets-documentation/amazon_reviews/*.parquet')
-GROUP BY ALL
-LIMIT 10
-""", 'PrettyCompact')
-```
+    ```python
+    chdb.query("""
+    SELECT product_category, count() AS reviews, round(avg(star_rating), 2) as avg
+    FROM s3('s3://datasets-documentation/amazon_reviews/*.parquet')
+    GROUP BY ALL
+    LIMIT 10
+    """, 'PrettyCompact')
+    ```
 
-```text
+    ```text
     ┌─product_category─┬──reviews─┬──avg─┐
- 1. │ Toys             │  4864056 │ 4.21 │
- 2. │ Apparel          │  5906085 │ 4.11 │
- 3. │ Luggage          │   348644 │ 4.22 │
- 4. │ Kitchen          │  4880297 │ 4.21 │
- 5. │ Books            │ 19530930 │ 4.34 │
- 6. │ Outdoors         │  2302327 │ 4.24 │
- 7. │ Video            │   380596 │ 4.19 │
- 8. │ Grocery          │  2402365 │ 4.31 │
- 9. │ Shoes            │  4366757 │ 4.24 │
+    1. │ Toys             │  4864056 │ 4.21 │
+    2. │ Apparel          │  5906085 │ 4.11 │
+    3. │ Luggage          │   348644 │ 4.22 │
+    4. │ Kitchen          │  4880297 │ 4.21 │
+    5. │ Books            │ 19530930 │ 4.34 │
+    6. │ Outdoors         │  2302327 │ 4.24 │
+    7. │ Video            │   380596 │ 4.19 │
+    8. │ Grocery          │  2402365 │ 4.31 │
+    9. │ Shoes            │  4366757 │ 4.24 │
 10. │ Jewelry          │  1767667 │ 4.14 │
     └──────────────────┴──────────┴──────┘
-```
+    ```
 
 ## Querying files in a private S3 bucket {#querying-files-in-a-private-s3-bucket}
 

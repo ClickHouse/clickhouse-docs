@@ -8,7 +8,7 @@ show_related_blogs: true
 keywords: ['Elasticsearch']
 ---
 
-This guide provides a comprehensive approach to migrating from Elastic Stack to ClickStack. We focus on a parallel operation strategy that minimizes risk while leveraging ClickHouse's strengths in observability workloads. 
+This guide provides a comprehensive approach to migrating from Elastic Stack to ClickStack. We focus on a parallel operation strategy that minimizes risk while leveraging ClickHouse's strengths in observability workloads.
 
 | Section | Description |
 |---------|-------------|
@@ -19,4 +19,3 @@ This guide provides a comprehensive approach to migrating from Elastic Stack to 
 | [Migrating Data](/use-cases/observability/clickstack/migration/elastic/migrating-data) | Strategies for data migration and parallel operation |
 | [Migrating Agents](/use-cases/observability/clickstack/migration/elastic/migrating-agents) | Transitioning from Elastic agents to OpenTelemetry |
 | [Migrating SDKs](/use-cases/observability/clickstack/migration/elastic/migrating-sdks) | Replacing Elastic APM agents with OpenTelemetry SDKs |
-

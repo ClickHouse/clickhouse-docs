@@ -38,29 +38,29 @@ Shared database engine builds on and improves the behavior of the Replicated dat
 ### Key benefits {#key-benefits}
 
 - **Atomic CREATE TABLE ... AS SELECT**
-  Table creation and data insertion are executed atomically—either the entire operation completes, or the table is not created at all.
+    Table creation and data insertion are executed atomically—either the entire operation completes, or the table is not created at all.
 
 - **RENAME TABLE between databases**
-  Enables atomic movement of tables across databases:
-  ```sql
-  RENAME TABLE db1.table TO db2.table;
-  ```
+    Enables atomic movement of tables across databases:
+    ```sql
+    RENAME TABLE db1.table TO db2.table;
+    ```
 
 - **Automatic table recovery with UNDROP TABLE**
-  Dropped tables are retained for a default period of 8 hours and can be restored:
-  ```sql
-  UNDROP TABLE my_table;
-  ```
-  The retention window is configurable via server settings.
+    Dropped tables are retained for a default period of 8 hours and can be restored:
+    ```sql
+    UNDROP TABLE my_table;
+    ```
+    The retention window is configurable via server settings.
 
 - **Improved compute-compute separation**
-  Unlike the Replicated database engine, which requires all replicas to be online to process a DROP query, Shared Catalog performs centralized metadata deletion. This allows operations to succeed even when some replicas are offline.
+    Unlike the Replicated database engine, which requires all replicas to be online to process a DROP query, Shared Catalog performs centralized metadata deletion. This allows operations to succeed even when some replicas are offline.
 
 - **Automatic metadata replication**
-  Shared Catalog ensures that database definitions are automatically replicated to all servers on startup. Operators do not need to manually configure or synchronize metadata on new instances.
+    Shared Catalog ensures that database definitions are automatically replicated to all servers on startup. Operators do not need to manually configure or synchronize metadata on new instances.
 
 - **Centralized, versioned metadata state**
-  Shared Catalog stores a single source of truth in ZooKeeper. When a replica starts, it fetches the latest state and applies the diff to reach consistency. During query execution, the system can wait for other replicas to reach at least the required version of metadata to ensure correctness.
+    Shared Catalog stores a single source of truth in ZooKeeper. When a replica starts, it fetches the latest state and applies the diff to reach consistency. During query execution, the system can wait for other replicas to reach at least the required version of metadata to ensure correctness.
 
 ## Usage in ClickHouse Cloud {#usage-in-clickhouse-cloud}
 
@@ -82,4 +82,4 @@ Shared Catalog and the Shared database engine provide:
 - Improved support for elastic, ephemeral, or partially offline compute environments
 - Seamless usage for ClickHouse Cloud users
 
-These capabilities make Shared Catalog the foundation for scalable, cloud-native metadata management in ClickHouse Cloud.
+    These capabilities make Shared Catalog the foundation for scalable, cloud-native metadata management in ClickHouse Cloud.

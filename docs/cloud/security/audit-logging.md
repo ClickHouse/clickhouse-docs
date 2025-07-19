@@ -10,7 +10,7 @@ import activity_log_1 from '@site/static/images/cloud/security/activity_log1.png
 import activity_log_2 from '@site/static/images/cloud/security/activity_log2.png';
 import activity_log_3 from '@site/static/images/cloud/security/activity_log3.png';
 
-In ClickHouse Cloud, navigate to your organization details. 
+In ClickHouse Cloud, navigate to your organization details.
 
 <Image img={activity_log_1} size="md" alt="ClickHouse Cloud activity tab" border />
 
@@ -18,24 +18,20 @@ In ClickHouse Cloud, navigate to your organization details.
 
 Select the **Audit** tab on the left menu to see what changes have been made to your ClickHouse Cloud organization - including who made the change and when it occurred.
 
-
 The **Activity** page displays a table containing a list of events logged about your organization. By default, this list is sorted in a reverse-chronological order (most-recent event at the top). Change the order of the table by clicking on the columns headers. Each item of the table contains the following fields:
-
 
 - **Activity:** A text snippet describing the event
 - **User:** The user that initiated the event
 - **IP Address:** When applicable, this flied lists the IP Address of the user that initiated the event
 - **Time:** The timestamp of the event
 
-<Image img={activity_log_2} size="md" alt="ClickHouse Cloud Activity Table" border />
+    <Image img={activity_log_2} size="md" alt="ClickHouse Cloud Activity Table" border />
 
-<br/>
+    You can use the search bar provided to isolate events based on some criteria like for example service name or IP address. You can also export this information in a CSV format for distribution or analysis in an external tool.
 
-You can use the search bar provided to isolate events based on some criteria like for example service name or IP address. You can also export this information in a CSV format for distribution or analysis in an external tool.
-
-<div class="eighty-percent">
+    <div class="eighty-percent">
     <Image img={activity_log_3} size="lg" alt="ClickHouse Cloud Activity CSV export" border />
-</div>
+    </div>
 
 ## List of events logged {#list-of-events-logged}
 
@@ -68,5 +64,5 @@ The different types of events captured for the organization are grouped in 3 cat
 
 ## API for audit events {#api-for-audit-events}
 
-Users can use the ClickHouse Cloud API `activity` endpoint to obtain an export 
+Users can use the ClickHouse Cloud API `activity` endpoint to obtain an export
 of audit events. Further details can be found in the [API reference](https://clickhouse.com/docs/cloud/manage/api/swagger).

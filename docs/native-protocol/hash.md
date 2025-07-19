@@ -12,7 +12,7 @@ ClickHouse uses **one of the previous** versions of [CityHash from Google](https
 :::info
 CityHash has changed the algorithm after we have added it into ClickHouse.
 
-CityHash documentation specifically notes that the user should not rely on 
+CityHash documentation specifically notes that the user should not rely on
 specific hash values and should not save it anywhere or use it as a sharding key.
 
 But as we exposed this function to the user, we had to fix the version of CityHash (to 1.0.2). And now we guarantee that the behaviour of CityHash functions available in SQL will not change.

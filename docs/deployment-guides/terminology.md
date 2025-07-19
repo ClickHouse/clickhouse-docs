@@ -20,8 +20,8 @@ These deployment examples are based on the advice provided to ClickHouse users b
 
 - The [**Replication for fault tolerance**](/deployment-guides/replicated.md) example shows how to replicate your data across two nodes, and use a ReplicatedMergeTree table.  This results in having data on two ClickHouse nodes.  In addition to the two ClickHouse server nodes there are three ClickHouse Keeper standalone nodes to manage replication.
 
-<div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/vBjCJtw_Ei0"
+    <div class='vimeo-container'>
+    <iframe src="//www.youtube.com/embed/vBjCJtw_Ei0"
     width="640"
     height="360"
     frameborder="0"
@@ -29,8 +29,8 @@ These deployment examples are based on the advice provided to ClickHouse users b
     fullscreen;
     picture-in-picture"
     allowfullscreen>
-  </iframe>
-</div>
+    </iframe>
+    </div>
 
 ### Intermediate {#intermediate}
 

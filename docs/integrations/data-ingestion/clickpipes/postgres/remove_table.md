@@ -18,9 +18,8 @@ The first step is to remove the table from the pipe. This can be done by the fol
 2. Click on Edit Table Settings.
 3. Locate your table - this can be done by searching it in the search bar.
 4. Deselect the table by clicking on the selected checkbox.
-<br/>
 
-<Image img={remove_table} border size="md"/>
+    <Image img={remove_table} border size="md"/>
 
 5. Click update.
 6. Upon successful update, in the **Metrics** tab the status will be **Running**. This table will no longer be replicated by this ClickPipe.

@@ -13,11 +13,11 @@ ClickHouse Cloud evaluates the security and compliance needs of our customers an
 
 ### SOC 2 Type II (since 2022) {#soc-2-type-ii-since-2022}
 
-System and Organization Controls (SOC) 2 is a report focusing on security, availability, confidentiality, processing integrity and privacy criteria contained in the Trust Services Criteria (TSC) as applied to an organization's systems and is designed to provide assurance about these controls to relying parties (our customers). ClickHouse works with independent external auditors to undergo an audit at least once per year addressing security, availability and processing integrity of our systems and confidentiality and privacy of the data processed by our systems. The report addresses both our ClickHouse Cloud and Bring Your Own Cloud (BYOC) offerings. 
+System and Organization Controls (SOC) 2 is a report focusing on security, availability, confidentiality, processing integrity and privacy criteria contained in the Trust Services Criteria (TSC) as applied to an organization's systems and is designed to provide assurance about these controls to relying parties (our customers). ClickHouse works with independent external auditors to undergo an audit at least once per year addressing security, availability and processing integrity of our systems and confidentiality and privacy of the data processed by our systems. The report addresses both our ClickHouse Cloud and Bring Your Own Cloud (BYOC) offerings.
 
 ### ISO 27001 (Since 2023) {#iso-27001-since-2023}
 
-International Standards Organization (ISO) 27001 is an international standard for information security. It requires companies to implement an Information Security Management System (ISMS) that includes processes for managing risks, creating and communicating policies, implementing security controls, and monitoring to ensure components remain relevant and effective. ClickHouse conducts internal audits and works with independent external auditors to undergo audits and interim inspections for the 2 years between certificate issuance. 
+International Standards Organization (ISO) 27001 is an international standard for information security. It requires companies to implement an Information Security Management System (ISMS) that includes processes for managing risks, creating and communicating policies, implementing security controls, and monitoring to ensure components remain relevant and effective. ClickHouse conducts internal audits and works with independent external auditors to undergo audits and interim inspections for the 2 years between certificate issuance.
 
 ### U.S. DPF (since 2024) {#us-dpf-since-2024}
 
@@ -53,7 +53,7 @@ In addition to the items above, ClickHouse maintains internal compliance program
 ### Processing locations {#processing-locations}
 
 - [Sub-Processors and Affiliates](https://clickhouse.com/legal/agreements/subprocessors)
-- [Data Processing Locations](https://trust.clickhouse.com) 
+- [Data Processing Locations](https://trust.clickhouse.com)
 
 ### Additional procedures {#additional-procedures}
 
@@ -62,4 +62,4 @@ In addition to the items above, ClickHouse maintains internal compliance program
 
 # Payment compliance
 
-ClickHouse provides a secure method to pay by credit card that is compliant with [PCI SAQ A v4.0](https://www.pcisecuritystandards.org/document_library/). 
+ClickHouse provides a secure method to pay by credit card that is compliant with [PCI SAQ A v4.0](https://www.pcisecuritystandards.org/document_library/).

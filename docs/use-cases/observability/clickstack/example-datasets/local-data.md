@@ -24,145 +24,109 @@ This getting started guide allows you collect local logs and metrics from your s
 The following example assumes you have started ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started) and connected to the [local ClickHouse instance](/use-cases/observability/clickstack/getting-started#complete-connection-credentials) or a [ClickHouse Cloud instance](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
 
 <VerticalStepper>
-
 ## Navigate to the HyperDX UI {#navigate-to-the-hyperdx-ui}
-
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
-
 ## Copy ingestion API key {#copy-ingestion-api-key}
-
 Navigate to [`Team Settings`](http://localhost:8080/team) and copy the `Ingestion API Key` from the `API Keys` section. This API key ensures data ingestion through the OpenTelemetry collector is secure.
-
 <Image img={copy_api_key} alt="Copy API key" size="lg"/>
-
 ## Create a local OpenTelemetry configuration {#create-otel-configuration}
-
 Create a `otel-file-collector.yaml` file with the following content.
-
 **Important**: Populate the value `<YOUR_INGESTION_API_KEY>` with your ingestion API key copied above.
-
 ```yaml
 receivers:
-  filelog:
-    include:
-      - /var/log/**/*.log             # Linux
-      - /var/log/syslog
-      - /var/log/messages
-      - /private/var/log/*.log       # macOS
-    start_at: beginning # modify to collect new files only
-
-  hostmetrics:
-    collection_interval: 1s
-    scrapers:
-      cpu:
-        metrics:
-          system.cpu.time:
-            enabled: true
-          system.cpu.utilization:
-            enabled: true
-      memory:
-        metrics:
-          system.memory.usage:
-            enabled: true
-          system.memory.utilization:
-            enabled: true
-      filesystem:
-        metrics:
-          system.filesystem.usage:
-            enabled: true
-          system.filesystem.utilization:
-            enabled: true
-      paging:
-        metrics:
-          system.paging.usage:
-            enabled: true
-          system.paging.utilization:
-            enabled: true
-          system.paging.faults:
-            enabled: true
-      disk:
-      load:
-      network:
-      processes:
-
+filelog:
+include:
+- /var/log/**/*.log             # Linux
+- /var/log/syslog
+- /var/log/messages
+- /private/var/log/*.log       # macOS
+start_at: beginning # modify to collect new files only
+hostmetrics:
+collection_interval: 1s
+scrapers:
+cpu:
+metrics:
+system.cpu.time:
+enabled: true
+system.cpu.utilization:
+enabled: true
+memory:
+metrics:
+system.memory.usage:
+enabled: true
+system.memory.utilization:
+enabled: true
+filesystem:
+metrics:
+system.filesystem.usage:
+enabled: true
+system.filesystem.utilization:
+enabled: true
+paging:
+metrics:
+system.paging.usage:
+enabled: true
+system.paging.utilization:
+enabled: true
+system.paging.faults:
+enabled: true
+disk:
+load:
+network:
+processes:
 exporters:
-  otlp:
-    endpoint: localhost:4317
-    headers:
-      authorization: <YOUR_INGESTION_API_KEY>
-    tls:
-      insecure: true
-    sending_queue:
-      enabled: true
-      num_consumers: 10
-      queue_size: 262144  # 262,144 items × ~8 KB per item ≈ 2 GB
-
+otlp:
+endpoint: localhost:4317
+headers:
+authorization: <YOUR_INGESTION_API_KEY>
+tls:
+insecure: true
+sending_queue:
+enabled: true
+num_consumers: 10
+queue_size: 262144  # 262,144 items × ~8 KB per item ≈ 2 GB
 service:
-  pipelines:
-    logs:
-      receivers: [filelog]
-      exporters: [otlp]
-    metrics:
-      receivers: [hostmetrics]
-      exporters: [otlp]
+pipelines:
+logs:
+receivers: [filelog]
+exporters: [otlp]
+metrics:
+receivers: [hostmetrics]
+exporters: [otlp]
 ```
-
 This configuration collects system logs and metric for OSX and Linux systems, sending the results to ClickStack via the OTLP endpoint on port 4317.
-
 :::note Ingestion timestamps
 This configuration adjusts timestamps at ingest, assigning an updated time value to each event. Users should ideally [preprocess or parse timestamps](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching) using OTel processors or operators in their log files to ensure accurate event time is retained.
-
 With this example setup, if the receiver or file processor is configured to start at the beginning of the file, all existing log entries will be assigned the same adjusted timestamp - the time of processing rather than the original event time. Any new events appended to the file will receive timestamps approximating their actual generation time.
-
 To avoid this behavior, you can set the start position to `end` in the receiver configuration. This ensures only new entries are ingested and timestamped near their true arrival time.
 :::
-
 For more details on the OpenTelemetry (OTel) configuration structure, we recommend [the official guide](https://opentelemetry.io/docs/collector/configuration/).
-
 ## Start the collector {#start-the-collector}
-
 Run the following docker command to start an instance of the OTel collector.
-
 ```shell
 docker run --network=host --rm -it \
-  --user 0:0 \
-  -v "$(pwd)/otel-file-collector.yaml":/etc/otel/config.yaml \
-  -v /var/log:/var/log:ro \
-  -v /private/var/log:/private/var/log:ro \
-  otel/opentelemetry-collector-contrib:latest \
-  --config /etc/otel/config.yaml
+--user 0:0 \
+-v "$(pwd)/otel-file-collector.yaml":/etc/otel/config.yaml \
+-v /var/log:/var/log:ro \
+-v /private/var/log:/private/var/log:ro \
+otel/opentelemetry-collector-contrib:latest \
+--config /etc/otel/config.yaml
 ```
-
 :::note Root user
 We run the collector as the root user to access all system logs—this is necessary to capture logs from protected paths on Linux-based systems. However, this approach is not recommended for production. In production environments, the OpenTelemetry Collector should be deployed as a local agent with only the minimal permissions required to access the intended log sources.
 :::
-
 The collector will immediately begin collecting local system logs and metrics.
-
 ## Explore system logs {#explore-system-logs}
-
 Navigate to the HyperDX UI. The search UI should be populated with local system logs. Expand the filters to select the `system.log`:
-
 <Image img={hyperdx_20} alt="HyperDX Local logs" size="lg"/>
-
 ## Explore system metrics {#explore-system-metrics}
-
 We can explore our metrics using charts.
-
-Navigate to the Chart Explorer via the left menu. Select the source `Metrics` and `Maximum` as the aggregation type. 
-
+Navigate to the Chart Explorer via the left menu. Select the source `Metrics` and `Maximum` as the aggregation type.
 For the `Select a Metric` menu simply type `memory` before selecting `system.memory.utilization (Gauge)`.
-
 Press the run button to visualize your memory utilization over time.
-
 <Image img={hyperdx_21} alt="Memory over time" size="lg"/>
-
-Note the number is returned as a floating point `%`. To render it more clearly, select `Set number format`. 
-
+Note the number is returned as a floating point `%`. To render it more clearly, select `Set number format`.
 <Image img={hyperdx_22} alt="Number format" size="lg"/>
-
 From the subsequent menu you can select `Percentage` from the `Output format` drop down before clicking `Apply`.
-
 <Image img={hyperdx_23} alt="Memory % of time" size="lg"/>
-
 </VerticalStepper>

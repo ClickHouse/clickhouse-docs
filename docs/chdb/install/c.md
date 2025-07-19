@@ -18,7 +18,6 @@ Install [libchdb](https://github.com/chdb-io/chdb):
 curl -sL https://lib.chdb.io | bash
 ```
 
-
 ## Usage {#usage}
 
 Follow the instructions for [libchdb](https://github.com/chdb-io/chdb/blob/main/bindings.md) to get started.
