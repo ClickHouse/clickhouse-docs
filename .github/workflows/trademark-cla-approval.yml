@@ -232,10 +232,10 @@ jobs:
               comment.body.includes('Trademark addendum agreement confirmed ✅')
             );
             
+            const method = isCommentApproval ? 'Self-signed agreement' : 
+                          (context.eventName === 'workflow_dispatch' ? 'Manual approval' : 'Label approval');
+            
             if (!confirmationExists) {
-              const method = isCommentApproval ? 'Self-signed agreement' : 
-                            (context.eventName === 'workflow_dispatch' ? 'Manual approval' : 'Label approval');
-              
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
