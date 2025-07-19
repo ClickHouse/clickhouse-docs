@@ -170,8 +170,8 @@ jobs:
             
               if (!existingClaComment && context.eventName === 'pull_request_target') {
                 const claText = '# Trademark License Addendum\n\n' +
-                  'Merging of this pull request is temporarily blocked as it potentially
-                  'contains a contribution containing a trademark. Please \n' +
+                  'Merging of this pull request is temporarily blocked as it potentially ' +
+                  'contains a contribution containing a trademark. git diffPlease \n' +
                   'read and agree to the Trademark License Addendum below to \n' +
                   'unblock merging of this pull request.\n\n' +
                   '<details>\n' +
