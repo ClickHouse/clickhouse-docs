@@ -17,7 +17,7 @@ permissions: write-all
 jobs:
   process-cla-approval:
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request_target' && github.event.label.name == 'cla-signed' && github.actor != 'github-actions[bot]') || github.event_name == 'issue_comment'
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'issue_comment' || (github.event_name == 'pull_request_target' && github.event.label.name == 'cla-signed' && github.actor != 'github-actions[bot]')
 
     steps:
 
@@ -250,11 +250,20 @@ jobs:
             console.log(`CLA approved for ${prAuthor} by ${approvedBy} via ${method}`)
 
       - name: Record manual CLA approval
-        if: steps.process-cla-approval.outputs.pr_number
+        if: always() && steps.process-cla-approval.outputs.pr_number != ''
         run: |
+          echo "=== DEBUG: Record manual CLA approval step starting ==="
+          echo "Available outputs:"
+          echo "  pr_number: '${{ steps.process-cla-approval.outputs.pr_number }}'"
+          echo "  pr_author: '${{ steps.process-cla-approval.outputs.pr_author }}'"
+          echo "  approved_by: '${{ steps.process-cla-approval.outputs.approved_by }}'"
+          
           # Ensure signatures file exists
           if [ ! -f "cla-signatures.json" ]; then
             echo '{"signatures": []}' > cla-signatures.json
+            echo "Created new cla-signatures.json file"
+          else
+            echo "cla-signatures.json already exists"
           fi
           
           # Extract approval details from previous step outputs
