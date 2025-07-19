@@ -250,7 +250,7 @@ jobs:
             console.log(`CLA approved for ${prAuthor} by ${approvedBy} via ${method}`)
 
       - name: Record manual CLA approval
-        if: always() && steps.process-cla-approval.outputs.pr_number != ''
+        if: success() && steps.process-cla-approval.outputs.pr_number != ''
         run: |
           echo "=== DEBUG: Record manual CLA approval step starting ==="
           echo "Available outputs:"
