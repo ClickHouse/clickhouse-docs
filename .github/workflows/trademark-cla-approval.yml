@@ -17,7 +17,7 @@ permissions: write-all
 jobs:
   process-cla-approval:
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' || github.event.label.name == 'cla-signed' || github.event_name == 'issue_comment'
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request_target' && github.event.label.name == 'cla-signed' && github.actor != 'github-actions[bot]') || github.event_name == 'issue_comment'
 
     steps:
 
@@ -123,6 +123,7 @@ jobs:
             }
             
             // For non-comment approvals, check if the person has the right permissions
+            console.log(`isCommentApproval: ${isCommentApproval}, context.eventName: ${context.eventName}, context.actor: ${context.actor}`);
             if (!isCommentApproval) {
               try {
                 const { data: collaboration } = await github.rest.repos.getCollaboratorPermissionLevel({
