@@ -1,0 +1,219 @@
+name: CLA Approval Handler
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to approve CLA for'
+        required: true
+        type: string
+  pull_request:
+    types: [labeled]
+
+permissions: write-all
+
+jobs:
+  process-cla-approval:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event.label.name == 'cla-signed'
+
+    steps:
+
+      - name: Generate Token
+        id: generate-token
+        continue-on-error: true
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: "${{ secrets.WORKFLOW_AUTH_PUBLIC_APP_ID }}"
+          private-key: "${{ secrets.WORKFLOW_AUTH_PUBLIC_PRIVATE_KEY }}"
+
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}
+
+      - name: Process CLA approval
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}
+          script: |
+            let prNumber;
+            
+            // Determine PR number
+            if (context.eventName === 'workflow_dispatch') {
+              prNumber = parseInt('${{ github.event.inputs.pr_number }}');
+            } else if (context.eventName === 'pull_request') {
+              prNumber = context.payload.pull_request.number;
+            } else {
+              return;
+            }
+            
+            // Get PR details
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber
+            });
+            
+            
+            // Check if the person triggering has the right permissions
+            try {
+              const { data: collaboration } = await github.rest.repos.getCollaboratorPermissionLevel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                username: context.actor
+              });
+            
+              // Only admin, maintain, or write permissions can approve CLA
+              const isAuthorized = ['admin', 'maintain', 'write'].includes(collaboration.permission);
+            
+              if (!isAuthorized) {
+            
+                // If this was a label event, remove the label
+                if (context.eventName !== 'workflow_dispatch') {
+                  await github.rest.issues.removeLabel({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: prNumber,
+                    name: 'cla-signed'
+                  });
+                }
+            
+                // Add a comment explaining why the action was blocked
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  body: `@${context.actor} Only repository maintainers can approve CLAs. ${context.eventName !== 'workflow_dispatch' ? 'The label has been removed.' : ''}`
+                });
+            
+                return;
+              }
+            
+              // Check if PR has cla-required label
+              const { data: labels } = await github.rest.issues.listLabelsOnIssue({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber
+              });
+            
+              const hasClaNeeded = labels.some(label => label.name === 'cla-required');
+            
+              if (!hasClaNeeded) {
+                return;
+              }
+            
+              // Ensure cla-signed label is present
+              const hasClaSigned = labels.some(label => label.name === 'cla-signed');
+              if (!hasClaSigned) {
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  labels: ['cla-signed']
+                });
+              }
+            
+              // Authorized - proceed with approval
+            
+              // Remove the blocking label
+              try {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  name: 'cla-required'
+                });
+              } catch (e) {
+                // Label not found or already removed
+              }
+            
+              // Store the manual approval information
+              core.setOutput('pr_number', prNumber);
+              core.setOutput('pr_author', pr.user.login);
+              core.setOutput('approved_by', context.actor);
+            
+              // Check if confirmation comment already exists
+              const comments = await github.rest.issues.listComments({
+                issue_number: prNumber,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+              });
+            
+              const confirmationExists = comments.data.some(comment => 
+                (comment.user.login === 'github-actions[bot]' || comment.user.type === 'Bot') && 
+                comment.body.includes('CLA Agreement Confirmed')
+              );
+            
+              if (!confirmationExists) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  body: `## CLA Agreement Confirmed
+            
+              The trademark license agreement has been approved for @${pr.user.login}.
+            
+              **Status:** Approved  
+              **Date:** ${new Date().toISOString()}  
+              **Approved by:** @${context.actor}
+              **Method:** ${context.eventName === 'workflow_dispatch' ? 'Manual approval' : 'Label approval'}
+            
+              This PR is now unblocked and can proceed with normal review!`
+                });
+              }
+            
+            } catch (error) {
+              throw error;
+            }
+
+      - name: Record manual CLA approval
+        if: steps.process-cla-approval.outputs.pr_number
+        run: |
+          # Ensure signatures file exists
+          if [ ! -f "cla-signatures.json" ]; then
+            echo '{"signatures": []}' > cla-signatures.json
+          fi
+          
+          # Extract approval details from previous step outputs
+          USERNAME="${{ steps.process-cla-approval.outputs.pr_author }}"
+          DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          PR_NUMBER="${{ steps.process-cla-approval.outputs.pr_number }}"
+          APPROVED_BY="${{ steps.process-cla-approval.outputs.approved_by }}"
+          
+          echo "Recording manual CLA approval:"
+          echo "  Username: $USERNAME"
+          echo "  PR Number: $PR_NUMBER"
+          echo "  Approved by: $APPROVED_BY"
+          echo "  Date: $DATE"
+          
+          # Check if this user already has a signature for this PR
+          EXISTING_SIGNATURE=$(jq --arg user "$USERNAME" --arg pr "$PR_NUMBER" '.signatures[] | select(.username == $user and .pr_number == ($pr | tonumber))' cla-signatures.json)
+          
+          if [ -z "$EXISTING_SIGNATURE" ]; then
+            # Add new signature entry
+            jq --arg user "$USERNAME" \
+               --arg date "$DATE" \
+               --arg pr "$PR_NUMBER" \
+               --arg approved_by "$APPROVED_BY" \
+               '.signatures += [{
+                 "username": $user,
+                 "date": $date,
+                 "pr_number": ($pr | tonumber),
+                 "approved_by": $approved_by
+               }]' cla-signatures.json > tmp.json && mv tmp.json cla-signatures.json
+          
+            echo "New CLA approval signature added"
+          else
+            echo "Signature already exists for this user and PR"
+          fi
+          
+          # Commit the updated file
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add cla-signatures.json
+          git commit -m "Add manual CLA approval for @$USERNAME (PR #$PR_NUMBER) by @$APPROVED_BY" || echo "No changes to commit"
+          git push
+          
+          echo "Manual CLA approval recorded successfully"
