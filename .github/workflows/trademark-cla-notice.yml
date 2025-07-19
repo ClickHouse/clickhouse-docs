@@ -209,10 +209,10 @@ v. The Company will not use the Partner Trademarks in connection
 
 **To unblock this PR, reply with exactly:**
 
-\`\`\`
+\\\`\\\`\\\`
 I agree to the Trademark License Addendum
 CLA-SIGNATURE: ${prAuthor}
-\`\`\``;
+\\\`\\\`\\\``;
       
                 await github.rest.issues.createComment({
                   issue_number: prNumber,
