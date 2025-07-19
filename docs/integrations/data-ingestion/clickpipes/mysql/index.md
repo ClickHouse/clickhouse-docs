@@ -2,7 +2,7 @@
 sidebar_label: 'Ingesting Data from MySQL to ClickHouse'
 description: 'Describes how to seamlessly connect your MySQL to ClickHouse Cloud.'
 slug: /integrations/clickpipes/mysql
-title: 'Ingesting Data from MySQL to ClickHouse (using CDC)'
+title: 'Ingesting data from MySQL to ClickHouse (using CDC)'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
@@ -15,7 +15,7 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
-# Ingesting data from MySQL to ClickHouse using CDC
+# Ingesting data from MySQL to ClickHouse (using CDC)
 
 <BetaBadge/>
 
