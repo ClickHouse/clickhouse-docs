@@ -141,7 +141,10 @@ jobs:
             core.setOutput('pr_number', prNumber);
             core.setOutput('pr_author', prAuthor);
             core.setOutput('approved_by', prAuthor);
+            core.setOutput('pr_head_sha', pr.head.sha);
             core.setOutput('pr_head_ref', pr.head.ref);
+            core.setOutput('pr_head_repo_full_name', pr.head.repo.full_name);
+            core.setOutput('is_fork', pr.head.repo.full_name !== context.repo.owner + '/' + context.repo.repo);
             
             // Add confirmation comment
             const confirmationBody = [
@@ -170,11 +173,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          # For issue_comment events, checkout the PR head branch
-          ref: ${{ steps.process-comment.outputs.pr_head_ref }}
+          # For forked PRs, we need to fetch from the fork and checkout the SHA
+          # For non-fork PRs, we can checkout the branch directly
+          ref: ${{ steps.process-comment.outputs.is_fork == 'true' && steps.process-comment.outputs.pr_head_sha || steps.process-comment.outputs.pr_head_ref }}
           token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}
 
       - name: Record signature to file
+        id: record-signature
         if: success() && steps.process-comment.outputs.pr_number != ''
         run: |
           set -e
@@ -251,10 +256,97 @@ jobs:
           
           # Check if there are staged changes
           if ! git diff --cached --quiet; then
-            git commit -m "Add trademark addendum signature for @$USERNAME (PR #$PR_NUMBER)" \
-                       -m "This signature was recorded automatically by the CLA approval workflow."
-            git push
-            echo "✅ Signature committed and pushed successfully"
+            IS_FORK="${{ steps.process-comment.outputs.is_fork }}"
+            
+            if [ "$IS_FORK" = "true" ]; then
+              echo "Fork detected - will create PR with signature changes"
+              # Create a unique branch name for the signature
+              TIMESTAMP=$(date +%s)
+              SIGNATURE_BRANCH="trademark-signature-$USERNAME-pr-$PR_NUMBER-$TIMESTAMP"
+              
+              # Switch to main and create new branch
+              git fetch origin main
+              git checkout -b "$SIGNATURE_BRANCH" origin/main
+              
+              # Re-apply our signature file changes to the new branch
+              mkdir -p contribute
+              if [ ! -f "$SIGNATURES_FILE" ]; then
+                echo '{"signatures": []}' > "$SIGNATURES_FILE"
+              fi
+              
+              # Re-add the signature (check if already exists to avoid duplicates)
+              EXISTING=$(jq --arg user "$USERNAME" --arg pr "$PR_NUMBER" '.signatures[] | select(.username == $user and .pr_number == ($pr | tonumber))' "$SIGNATURES_FILE" 2>/dev/null || echo "")
+              if [ -z "$EXISTING" ]; then
+                jq --arg user "$USERNAME" \
+                   --arg date "$DATE" \
+                   --arg pr "$PR_NUMBER" \
+                   --arg approved_by "$APPROVED_BY" \
+                   '.signatures += [{
+                     "username": $user,
+                     "date": $date,
+                     "pr_number": ($pr | tonumber),
+                     "approved_by": $approved_by
+                   }]' "$SIGNATURES_FILE" > tmp.json && mv tmp.json "$SIGNATURES_FILE"
+              fi
+              
+              git add "$SIGNATURES_FILE"
+              git commit -m "Add trademark addendum signature for @$USERNAME (PR #$PR_NUMBER)" \
+                         -m "This signature was recorded automatically by the CLA approval workflow."
+              
+              # Push the new branch
+              git push origin "$SIGNATURE_BRANCH"
+              
+              # Store branch name for next step
+              echo "signature_branch=$SIGNATURE_BRANCH" >> $GITHUB_OUTPUT
+              echo "✅ Signature committed to branch $SIGNATURE_BRANCH"
+            else
+              echo "Non-fork PR - committing to current branch"
+              git commit -m "Add trademark addendum signature for @$USERNAME (PR #$PR_NUMBER)" \
+                         -m "This signature was recorded automatically by the CLA approval workflow."
+              git push
+              echo "✅ Signature committed and pushed successfully"
+            fi
           else
             echo "ℹ️ No staged changes to commit"
           fi
+
+      - name: Create signature PR for forked contributions
+        if: success() && steps.process-comment.outputs.is_fork == 'true' && steps.process-comment.outputs.pr_number != ''
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}
+          script: |
+            const username = '${{ steps.process-comment.outputs.pr_author }}';
+            const prNumber = '${{ steps.process-comment.outputs.pr_number }}';
+            const signatureBranch = '${{ steps.record-signature.outputs.signature_branch }}';
+            
+            if (!signatureBranch) {
+              console.log('No signature branch created, skipping PR creation');
+              return;
+            }
+            
+            // Create PR for the signature
+            const { data: signaturePr } = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Add trademark signature for @${username} (PR #${prNumber})`,
+              head: signatureBranch,
+              base: 'main',
+              body: [
+                `## Trademark License Addendum Signature`,
+                ``,
+                `This PR automatically records the trademark license agreement signature for @${username} from PR #${prNumber}.`,
+                ``,
+                `**Details:**`,
+                `- **Contributor:** @${username}`,
+                `- **Original PR:** #${prNumber}`,
+                `- **Date:** ${new Date().toISOString()}`,
+                `- **Method:** Self-signed agreement via comment`,
+                ``,
+                `This signature was recorded automatically by the CLA approval workflow and should be merged to complete the signature recording process.`,
+                ``,
+                `Related to: #${prNumber}`
+              ].join('\n')
+            });
+            
+            console.log(`✅ Created signature PR #${signaturePr.number} for ${username}`);
