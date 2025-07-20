@@ -137,10 +137,82 @@ jobs:
             
             console.log('Added trademark-addendum-signed label successfully');
             
-            // Store the signature information for the next step
-            core.setOutput('pr_number', prNumber);
-            core.setOutput('pr_author', prAuthor);
-            core.setOutput('approved_by', prAuthor); // Self-signed agreement
+            // IMMEDIATELY record the signature in the same step
+            console.log('=== Recording signature immediately ===');
+            
+            // Record signature using GitHub's REST API to create/update the file
+            const currentDate = new Date().toISOString();
+            const signaturesFilePath = 'contribute/trade-addendum-signatures.json';
+            
+            // Get existing signatures file if it exists
+            let existingContent = { signatures: [] };
+            try {
+              const { data: existingFile } = await github.rest.repos.getContent({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                path: signaturesFilePath
+              });
+              
+              const content = Buffer.from(existingFile.content, 'base64').toString('utf8');
+              existingContent = JSON.parse(content);
+              console.log('Found existing signatures file');
+            } catch (error) {
+              console.log('No existing signatures file found, creating new one');
+              existingContent = { signatures: [] };
+            }
+            
+            // Check if signature already exists for this user and PR
+            const existingSignature = existingContent.signatures.find(sig => 
+              sig.username === prAuthor && sig.pr_number === parseInt(prNumber)
+            );
+            
+            if (!existingSignature) {
+              // Add new signature
+              const newSignature = {
+                username: prAuthor,
+                date: currentDate,
+                pr_number: parseInt(prNumber),
+                approved_by: prAuthor
+              };
+              
+              existingContent.signatures.push(newSignature);
+              console.log(`Adding new signature for ${prAuthor}`);
+              
+              // Create/update the file
+              const updatedContent = JSON.stringify(existingContent, null, 2);
+              const contentBase64 = Buffer.from(updatedContent).toString('base64');
+              
+              try {
+                // Try to update existing file
+                const { data: existingFile } = await github.rest.repos.getContent({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  path: signaturesFilePath
+                });
+                
+                await github.rest.repos.createOrUpdateFileContents({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  path: signaturesFilePath,
+                  message: `Add trademark addendum signature for @${prAuthor} (PR #${prNumber})\n\nThis signature was recorded automatically by the CLA approval workflow.`,
+                  content: contentBase64,
+                  sha: existingFile.sha
+                });
+              } catch (error) {
+                // File doesn't exist, create it
+                await github.rest.repos.createOrUpdateFileContents({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  path: signaturesFilePath,
+                  message: `Add trademark addendum signature for @${prAuthor} (PR #${prNumber})\n\nThis signature was recorded automatically by the CLA approval workflow.`,
+                  content: contentBase64
+                });
+              }
+              
+              console.log(`✅ Signature recorded successfully for ${prAuthor}`);
+            } else {
+              console.log(`ℹ️ Signature already exists for ${prAuthor} on PR #${prNumber}`);
+            }
             
             // Add confirmation comment
             const confirmationBody = [
@@ -162,168 +234,4 @@ jobs:
               body: confirmationBody
             });
             
-            console.log(`✅ CLA agreement processed successfully for ${prAuthor} - proceeding to record signature`);
-
-      - name: Check out code
-        if: success() && steps.process-comment.outputs.pr_number != ''
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}
-
-      - name: Record CLA Signature
-        if: success() && steps.process-comment.outputs.pr_number != ''
-        run: |
-          set -e  # Exit on any error
-          
-          echo "=== Recording CLA signature ==="
-          echo "Available outputs:"
-          echo "  pr_number: '${{ steps.process-comment.outputs.pr_number }}'"
-          echo "  pr_author: '${{ steps.process-comment.outputs.pr_author }}'"
-          echo "  approved_by: '${{ steps.process-comment.outputs.approved_by }}'"
-          
-          # Extract signature details
-          USERNAME="${{ steps.process-comment.outputs.pr_author }}"
-          DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          PR_NUMBER="${{ steps.process-comment.outputs.pr_number }}"
-          APPROVED_BY="${{ steps.process-comment.outputs.approved_by }}"
-          
-          # Validate required fields
-          if [ -z "$USERNAME" ] || [ -z "$PR_NUMBER" ] || [ -z "$APPROVED_BY" ]; then
-            echo "ERROR: Missing required fields for signature recording"
-            echo "  USERNAME: '$USERNAME'"
-            echo "  PR_NUMBER: '$PR_NUMBER'"
-            echo "  APPROVED_BY: '$APPROVED_BY'"
-            exit 1
-          fi
-          
-          echo "Recording CLA signature:"
-          echo "  Username: $USERNAME"
-          echo "  PR Number: $PR_NUMBER"
-          echo "  Approved by: $APPROVED_BY"
-          echo "  Date: $DATE"
-          
-          # Ensure contribute directory exists
-          mkdir -p contribute
-          
-          # Ensure signatures file exists and is valid JSON
-          SIGNATURES_FILE="contribute/trade-addendum-signatures.json"
-          if [ ! -f "$SIGNATURES_FILE" ]; then
-            echo '{"signatures": []}' > "$SIGNATURES_FILE"
-            echo "Created new $SIGNATURES_FILE file"
-          else
-            echo "$SIGNATURES_FILE already exists"
-            # Validate existing JSON
-            if ! jq empty "$SIGNATURES_FILE" 2>/dev/null; then
-              echo "WARNING: Existing $SIGNATURES_FILE is invalid JSON, recreating..."
-              cp "$SIGNATURES_FILE" "contribute/trade-addendum-signatures-backup-$(date +%s).json" || true
-              echo '{"signatures": []}' > "$SIGNATURES_FILE"
-            fi
-          fi
-          
-          # Check if this user already has a signature for this PR with error handling
-          EXISTING_SIGNATURE=""
-          if EXISTING_SIGNATURE=$(jq --arg user "$USERNAME" --arg pr "$PR_NUMBER" '.signatures[]? | select(.username == $user and .pr_number == ($pr | tonumber))' "$SIGNATURES_FILE" 2>/dev/null); then
-            echo "Successfully checked for existing signature"
-          else
-            echo "WARNING: Error checking for existing signature, assuming none exists"
-            EXISTING_SIGNATURE=""
-          fi
-          
-          if [ -z "$EXISTING_SIGNATURE" ]; then
-            # Add new signature entry with robust error handling
-            echo "Adding new signature entry..."
-            if jq --arg user "$USERNAME" \
-               --arg date "$DATE" \
-               --arg pr "$PR_NUMBER" \
-               --arg approved_by "$APPROVED_BY" \
-               '.signatures += [{
-                 "username": $user,
-                 "date": $date,
-                 "pr_number": ($pr | tonumber),
-                 "approved_by": $approved_by
-               }]' "$SIGNATURES_FILE" > tmp.json 2>/dev/null; then
-              mv tmp.json "$SIGNATURES_FILE"
-              echo "✅ New trademark addendum signature added successfully"
-            else
-              echo "ERROR: Failed to add signature with jq, using fallback method"
-              # Fallback: manually construct JSON entry
-              NEW_ENTRY="{\"username\": \"$USERNAME\", \"date\": \"$DATE\", \"pr_number\": $PR_NUMBER, \"approved_by\": \"$APPROVED_BY\"}"
-              if [ -s "$SIGNATURES_FILE" ]; then
-                # File has content, merge new entry
-                jq --argjson newEntry "$NEW_ENTRY" '.signatures += [$newEntry]' "$SIGNATURES_FILE" > tmp.json || {
-                  echo "Fallback failed, creating new signatures file with entry"
-                  echo "{\"signatures\": [$NEW_ENTRY]}" > "$SIGNATURES_FILE"
-                }
-                if [ -f tmp.json ]; then mv tmp.json "$SIGNATURES_FILE"; fi
-              else
-                echo "{\"signatures\": [$NEW_ENTRY]}" > "$SIGNATURES_FILE"
-              fi
-              echo "✅ Signature added using fallback method"
-            fi
-          else
-            echo "ℹ️ Signature already exists for this user and PR"
-          fi
-          
-          # Verify the signature was recorded
-          echo "=== Verifying signature was recorded ==="
-          if jq --arg user "$USERNAME" --arg pr "$PR_NUMBER" '.signatures[] | select(.username == $user and .pr_number == ($pr | tonumber))' "$SIGNATURES_FILE" >/dev/null 2>&1; then
-            echo "✅ VERIFICATION PASSED: Signature found in $SIGNATURES_FILE"
-          else
-            echo "❌ VERIFICATION FAILED: Signature NOT found in $SIGNATURES_FILE"
-            echo "Current signatures file content:"
-            cat "$SIGNATURES_FILE" || echo "Failed to read signatures file"
-            exit 1
-          fi
-          
-          # Commit the updated file with enhanced error handling
-          echo "=== Committing signature file ==="
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # Configure git to use the token for authentication
-          TOKEN="${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}"
-          if [ -n "$TOKEN" ]; then
-            git remote set-url origin "https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git"
-          else
-            echo "WARNING: No authentication token available"
-          fi
-          
-          # Check if there are changes to commit
-          if git diff --quiet "$SIGNATURES_FILE"; then
-            echo "ℹ️ No changes to commit in $SIGNATURES_FILE"
-          else
-            git add "$SIGNATURES_FILE"
-            if git commit -m "Add trademark addendum signature for @$USERNAME (PR #$PR_NUMBER) by @$APPROVED_BY
-
-            This signature was recorded automatically by the CLA approval workflow.
-            
-            Details:
-            - PR Number: #$PR_NUMBER
-            - PR Author: @$USERNAME  
-            - Approved By: @$APPROVED_BY
-            - Date: $DATE
-            - Event: ${{ github.event_name }}"; then
-              echo "✅ Successfully committed signature file"
-              
-              # Attempt to push with retry logic
-              for i in {1..3}; do
-                if git push; then
-                  echo "✅ Successfully pushed signature file (attempt $i)"
-                  break
-                elif [ $i -eq 3 ]; then
-                  echo "❌ Failed to push after 3 attempts"
-                  echo "Signature was recorded locally but failed to push to remote"
-                  exit 1
-                else
-                  echo "⚠️ Push attempt $i failed, retrying in 5 seconds..."
-                  sleep 5
-                fi
-              done
-            else
-              echo "❌ Failed to commit signature file"
-              exit 1
-            fi
-          fi
-          
-          echo "✅ CLA signature recorded successfully for ${prAuthor}"
+            console.log(`✅ CLA agreement processed successfully for ${prAuthor}`);
