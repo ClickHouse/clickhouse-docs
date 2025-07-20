@@ -116,7 +116,7 @@ const sidebars = {
         {
           type: "category",
           label: "Observability",
-          collapsed: false,
+          collapsed: true,
           collapsible: true,
           link: { type: "doc", id: "use-cases/observability/index" },
           items: [
