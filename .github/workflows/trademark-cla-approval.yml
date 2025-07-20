@@ -254,99 +254,35 @@ jobs:
           # Add the file to git and commit
           git add "$SIGNATURES_FILE"
           
-          # Check if there are staged changes
-          if ! git diff --cached --quiet; then
-            IS_FORK="${{ steps.process-comment.outputs.is_fork }}"
-            
-            if [ "$IS_FORK" = "true" ]; then
-              echo "Fork detected - will create PR with signature changes"
-              # Create a unique branch name for the signature
-              TIMESTAMP=$(date +%s)
-              SIGNATURE_BRANCH="trademark-signature-$USERNAME-pr-$PR_NUMBER-$TIMESTAMP"
-              
-              # Switch to main and create new branch
-              git fetch origin main
-              git checkout -b "$SIGNATURE_BRANCH" origin/main
-              
-              # Re-apply our signature file changes to the new branch
-              mkdir -p contribute
-              if [ ! -f "$SIGNATURES_FILE" ]; then
-                echo '{"signatures": []}' > "$SIGNATURES_FILE"
-              fi
-              
-              # Re-add the signature (check if already exists to avoid duplicates)
-              EXISTING=$(jq --arg user "$USERNAME" --arg pr "$PR_NUMBER" '.signatures[] | select(.username == $user and .pr_number == ($pr | tonumber))' "$SIGNATURES_FILE" 2>/dev/null || echo "")
-              if [ -z "$EXISTING" ]; then
-                jq --arg user "$USERNAME" \
-                   --arg date "$DATE" \
-                   --arg pr "$PR_NUMBER" \
-                   --arg approved_by "$APPROVED_BY" \
-                   '.signatures += [{
-                     "username": $user,
-                     "date": $date,
-                     "pr_number": ($pr | tonumber),
-                     "approved_by": $approved_by
-                   }]' "$SIGNATURES_FILE" > tmp.json && mv tmp.json "$SIGNATURES_FILE"
-              fi
-              
-              git add "$SIGNATURES_FILE"
-              git commit -m "Add trademark addendum signature for @$USERNAME (PR #$PR_NUMBER)" \
-                         -m "This signature was recorded automatically by the CLA approval workflow."
-              
-              # Push the new branch
-              git push origin "$SIGNATURE_BRANCH"
-              
-              # Store branch name for next step
-              echo "signature_branch=$SIGNATURE_BRANCH" >> $GITHUB_OUTPUT
-              echo "✅ Signature committed to branch $SIGNATURE_BRANCH"
-            else
-              echo "Non-fork PR - committing to current branch"
-              git commit -m "Add trademark addendum signature for @$USERNAME (PR #$PR_NUMBER)" \
-                         -m "This signature was recorded automatically by the CLA approval workflow."
-              git push
-              echo "✅ Signature committed and pushed successfully"
-            fi
+          # Store signature in ClickHouse
+          echo "Storing signature in ClickHouse..."
+          
+          # Format date for ClickHouse DateTime (YYYY-MM-DD HH:MM:SS)
+          CH_DATE=$(date -u +"%Y-%m-%d %H:%M:%S")
+          
+          # Prepare SQL INSERT query
+          SQL_QUERY="INSERT INTO docs_trademark_agreements.signatures (date, user_name, pr_number) VALUES ('$CH_DATE', '$USERNAME', $PR_NUMBER)"
+          
+          echo "Executing SQL: $SQL_QUERY"
+          
+          # Send to ClickHouse
+          RESPONSE=$(curl -s -w "%{http_code}" -o /tmp/ch_response.txt \
+            -X POST \
+            -H "x-clickhouse-user: docs_feedback" \
+            -H "x-clickhouse-key: " \
+            -H "Content-Type: text/plain" \
+            -d "$SQL_QUERY" \
+            "https://sql-clickhouse.clickhouse.com")
+          
+          HTTP_CODE="${RESPONSE: -3}"
+          RESPONSE_BODY=$(cat /tmp/ch_response.txt)
+          
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "✅ Signature stored successfully in ClickHouse"
           else
-            echo "ℹ️ No staged changes to commit"
+            echo "❌ Failed to store signature in ClickHouse"
+            echo "HTTP Code: $HTTP_CODE"
+            echo "Response: $RESPONSE_BODY"
+            # Don't exit 1 here - we don't want to fail the workflow if ClickHouse is down
+            echo "⚠️ Continuing workflow despite ClickHouse error"
           fi
-
-      - name: Create signature PR for forked contributions
-        if: success() && steps.process-comment.outputs.is_fork == 'true' && steps.process-comment.outputs.pr_number != ''
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}
-          script: |
-            const username = '${{ steps.process-comment.outputs.pr_author }}';
-            const prNumber = '${{ steps.process-comment.outputs.pr_number }}';
-            const signatureBranch = '${{ steps.record-signature.outputs.signature_branch }}';
-            
-            if (!signatureBranch) {
-              console.log('No signature branch created, skipping PR creation');
-              return;
-            }
-            
-            // Create PR for the signature
-            const { data: signaturePr } = await github.rest.pulls.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: `Add trademark signature for @${username} (PR #${prNumber})`,
-              head: signatureBranch,
-              base: 'main',
-              body: [
-                `## Trademark License Addendum Signature`,
-                ``,
-                `This PR automatically records the trademark license agreement signature for @${username} from PR #${prNumber}.`,
-                ``,
-                `**Details:**`,
-                `- **Contributor:** @${username}`,
-                `- **Original PR:** #${prNumber}`,
-                `- **Date:** ${new Date().toISOString()}`,
-                `- **Method:** Self-signed agreement via comment`,
-                ``,
-                `This signature was recorded automatically by the CLA approval workflow and should be merged to complete the signature recording process.`,
-                ``,
-                `Related to: #${prNumber}`
-              ].join('\n')
-            });
-            
-            console.log(`✅ Created signature PR #${signaturePr.number} for ${username}`);
