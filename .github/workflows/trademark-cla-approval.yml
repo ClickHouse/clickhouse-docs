@@ -1,18 +1,17 @@
-name: CLA Signature Recorder
+name: CLA Approval Handler
 
 on:
-  pull_request_target:
-    types: [labeled]
+  issue_comment:
+    types: [created]
 
 permissions: write-all
 
 jobs:
-  record-cla-signature:
+  process-cla-comment:
     runs-on: ubuntu-latest
-    if: github.event.label.name == 'cla-signed' && github.actor != 'workflow-authentication-public[bot]'
+    if: github.event_name == 'issue_comment' && github.actor != 'workflow-authentication-public[bot]'
 
     steps:
-
       - name: Generate Token
         id: generate-token
         continue-on-error: true
@@ -21,48 +20,173 @@ jobs:
           app-id: "${{ secrets.WORKFLOW_AUTH_PUBLIC_APP_ID }}"
           private-key: "${{ secrets.WORKFLOW_AUTH_PUBLIC_PRIVATE_KEY }}"
 
+      - name: Process CLA Agreement Comment
+        id: process-comment
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}
+          script: |
+            // Only process comments on pull requests
+            if (!context.payload.issue.pull_request) {
+              console.log('Comment is not on a pull request, skipping...');
+              return;
+            }
+            
+            const prNumber = context.payload.issue.number;
+            const commentBody = context.payload.comment.body;
+            const commenter = context.payload.comment.user.login;
+            
+            console.log(`Processing comment on PR #${prNumber} from ${commenter}`);
+            
+            // Check if this is a CLA agreement comment
+            const isClaAgreement = commentBody.includes('I agree to the Trademark License Addendum') && 
+                                   commentBody.includes('CLA-SIGNATURE:');
+            
+            if (!isClaAgreement) {
+              console.log('Comment is not a CLA agreement, skipping...');
+              return;
+            }
+            
+            console.log('Found CLA agreement comment, validating...');
+            
+            // Extract the signature from the comment
+            const signatureMatch = commentBody.match(/CLA-SIGNATURE:\s*(\S+)/);
+            if (!signatureMatch) {
+              console.log('CLA signature format is invalid');
+              return;
+            }
+            
+            const signatureUser = signatureMatch[1];
+            
+            // Get PR details to verify the commenter is the PR author
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber
+            });
+            
+            const prAuthor = pr.user.login;
+            console.log(`PR author: ${prAuthor}, commenter: ${commenter}, signature: ${signatureUser}`);
+            
+            // If someone other than PR author is trying to sign, silently ignore
+            if (commenter !== prAuthor) {
+              console.log(`Comment with CLA text from ${commenter} (not PR author ${prAuthor}), ignoring silently`);
+              return;
+            }
+            
+            // If PR author is signing but signature doesn't match their username, silently ignore
+            if (signatureUser !== commenter) {
+              console.log(`PR author ${commenter} used incorrect signature '${signatureUser}', ignoring silently`);
+              return;
+            }
+            
+            // Check if PR has trademark-addendum-required label
+            const { data: labels } = await github.rest.issues.listLabelsOnIssue({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber
+            });
+            
+            const hasTrademarkRequired = labels.some(label => label.name === 'trademark-addendum-required');
+            const hasTrademarkSigned = labels.some(label => label.name === 'trademark-addendum-signed');
+            
+            if (!hasTrademarkRequired) {
+              console.log('PR does not have trademark-addendum-required label, skipping...');
+              return;
+            }
+            
+            if (hasTrademarkSigned) {
+              console.log('PR already has trademark-addendum-signed label, skipping...');
+              return;
+            }
+            
+            console.log('Valid CLA agreement from PR author, processing...');
+            
+            // Remove blocking labels
+            try {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                name: 'trademark-addendum-required'
+              });
+              console.log('Removed trademark-addendum-required label');
+            } catch (e) {
+              console.log('trademark-addendum-required label not found or already removed');
+            }
+            
+            try {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                name: 'integrations-with-image-change'
+              });
+              console.log('Removed integrations-with-image-change label');
+            } catch (e) {
+              console.log('integrations-with-image-change label not found or already removed');
+            }
+            
+            // Add trademark-addendum-signed label
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              labels: ['trademark-addendum-signed']
+            });
+            
+            console.log('Added trademark-addendum-signed label successfully');
+            
+            // Store the signature information for the next step
+            core.setOutput('pr_number', prNumber);
+            core.setOutput('pr_author', prAuthor);
+            core.setOutput('approved_by', prAuthor); // Self-signed agreement
+            
+            // Add confirmation comment
+            const confirmationBody = [
+              '## Trademark license agreement confirmed ✅',
+              '',
+              `The trademark license agreement has been confirmed for @${prAuthor}.`,
+              '',
+              '**Status:** Confirmed',
+              `**Date:** ${new Date().toISOString()}`,
+              '**Method:** Self-signed agreement via comment',
+              '',
+              'This PR is now unblocked and can proceed with normal review.'
+            ].join('\n');
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: confirmationBody
+            });
+            
+            console.log(`✅ CLA agreement processed successfully for ${prAuthor} - proceeding to record signature`);
+
       - name: Check out code
+        if: success() && steps.process-comment.outputs.pr_number != ''
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}
 
-      - name: Extract PR Information
-        id: pr-info
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}
-          script: |
-            // Extract PR details from the event
-            const prNumber = context.payload.pull_request.number;
-            const prAuthor = context.payload.pull_request.user.login;
-            const approvedBy = context.actor;
-            
-            console.log(`Recording CLA signature for PR #${prNumber}`);
-            console.log(`PR Author: ${prAuthor}`);
-            console.log(`Approved by: ${approvedBy}`);
-            
-            // Store the information for the signature recording step
-            core.setOutput('pr_number', prNumber);
-            core.setOutput('pr_author', prAuthor);
-            core.setOutput('approved_by', approvedBy);
-
       - name: Record CLA Signature
-        if: success() && steps.pr-info.outputs.pr_number != ''
+        if: success() && steps.process-comment.outputs.pr_number != ''
         run: |
           set -e  # Exit on any error
           
           echo "=== Recording CLA signature ==="
           echo "Available outputs:"
-          echo "  pr_number: '${{ steps.pr-info.outputs.pr_number }}'"
-          echo "  pr_author: '${{ steps.pr-info.outputs.pr_author }}'"
-          echo "  approved_by: '${{ steps.pr-info.outputs.approved_by }}'"
+          echo "  pr_number: '${{ steps.process-comment.outputs.pr_number }}'"
+          echo "  pr_author: '${{ steps.process-comment.outputs.pr_author }}'"
+          echo "  approved_by: '${{ steps.process-comment.outputs.approved_by }}'"
           
           # Extract signature details
-          USERNAME="${{ steps.pr-info.outputs.pr_author }}"
+          USERNAME="${{ steps.process-comment.outputs.pr_author }}"
           DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          PR_NUMBER="${{ steps.pr-info.outputs.pr_number }}"
-          APPROVED_BY="${{ steps.pr-info.outputs.approved_by }}"
+          PR_NUMBER="${{ steps.process-comment.outputs.pr_number }}"
+          APPROVED_BY="${{ steps.process-comment.outputs.approved_by }}"
           
           # Validate required fields
           if [ -z "$USERNAME" ] || [ -z "$PR_NUMBER" ] || [ -z "$APPROVED_BY" ]; then
@@ -73,7 +197,7 @@ jobs:
             exit 1
           fi
           
-          echo "Recording manual trademark addendum approval:"
+          echo "Recording CLA signature:"
           echo "  Username: $USERNAME"
           echo "  PR Number: $PR_NUMBER"
           echo "  Approved by: $APPROVED_BY"
@@ -202,4 +326,4 @@ jobs:
             fi
           fi
           
-          echo "✅ Manual trademark addendum approval recorded successfully"
+          echo "✅ CLA signature recorded successfully for ${prAuthor}"
