@@ -242,7 +242,7 @@ jobs:
                   issue_number: prNumber,
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  labels: ['cla-required', 'integrations-with-image-change']
+                  labels: ['trademark-addendum-required', 'integrations-with-image-change']
                 });
               }
             } catch (error) {
