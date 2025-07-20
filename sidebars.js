@@ -49,8 +49,8 @@ const sidebars = {
       type: "category",
       label: "Concepts",
       className: "top-nav-item",
-      collapsed: false,
-      collapsible: false,
+      collapsed: true,
+      collapsible: true,
       link: { type: "doc", id: "concepts/index" },
       items: [
         "concepts/olap",
@@ -76,8 +76,8 @@ const sidebars = {
     {
       type: "category",
       label: "Starter Guides",
-      collapsed: false,
-      collapsible: false,
+      collapsed: true,
+      collapsible: true,
       link: { type: "doc", id: "starter-guides/index" },
       items: [
         "guides/creating-tables",
@@ -89,8 +89,8 @@ const sidebars = {
     {
       type: "category",
       label: "Best Practices",
-      collapsed: false,
-      collapsible: false,
+      collapsed: true,
+      collapsible: true,
       link: { type: "doc", id: "best-practices/index" },
       items: [
         "best-practices/sizing-and-hardware-recommendations",
@@ -109,8 +109,8 @@ const sidebars = {
     {
       type: "category",
       label: "Use Case Guides",
-      collapsed: false,
-      collapsible: false,
+      collapsed: true,
+      collapsible: true,
       link: { type: "doc", id: "use-cases/index" },
       items: [
         {
@@ -188,8 +188,8 @@ const sidebars = {
     {
       type: "category",
       label: "Migration Guides",
-      collapsed: false,
-      collapsible: false,
+      collapsed: true,
+      collapsible: true,
       link: { type: "doc", id: "migrations/index" },
       items: [
         {
