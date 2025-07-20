@@ -24,7 +24,7 @@ jobs:
         id: process-comment
         uses: actions/github-script@v7
         with:
-          github-token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}
+          github-token: ${{ steps.generate-token.outputs.token }}
           script: |
             // Only process comments on pull requests
             if (!context.payload.issue.pull_request) {
