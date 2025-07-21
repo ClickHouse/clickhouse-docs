@@ -24,10 +24,10 @@ Here are a few scenarios:
 1. You may need to perform major schema changes on the source tables which would break the existing ClickPipe and you would need to restart. You can just click Resync after performing the changes.
 2. Specifically for Clickhouse, maybe you needed to change the ORDER BY keys on the target tables. You can Resync to re-populate data into the new table with the right sorting key.
 
-<Info>
+:::note
 You can resync multiple times, however please account for the load on the source database when you resync,
 since initial load with parallel threads is involved each time.
-</Info>
+:::
 
 ### Resync ClickPipe Guide {#guide-mysql-resync}
 1. In the Data Sources tab, click on the MySQL ClickPipe you wish to resync.
