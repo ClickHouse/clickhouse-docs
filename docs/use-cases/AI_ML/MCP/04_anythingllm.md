@@ -85,6 +85,10 @@ Create a file called `anythingllm_mcp_servers.json` in the `plugins` directory a
 }
 ```
 
+If you want to explore your own data, you can do so by
+using the [host, username and password](https://clickhouse.com/docs/getting-started/quick-start/cloud#connect-with-your-app) 
+of your own ClickHouse Cloud service.
+
 ## Start the AnythingLLM Docker container {#start-anythingllm-docker-container}
 
 Run the following command to start the AnythingLLM Docker container:
