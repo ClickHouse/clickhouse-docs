@@ -25,10 +25,10 @@ Here are a few scenarios:
 2. Specifically for Clickhouse, maybe you needed to change the ORDER BY keys on the target tables. You can Resync to re-populate data into the new table with the right sorting key.
 3. The replication slot of the ClickPipe is invalidated: Resync creates a new ClickPipe and a new slot on the source database.
 
-<Info>
+:::note
 You can resync multiple times, however please account for the load on the source database when you resync,
 since initial load with parallel threads is involved each time.
-</Info>
+:::
 
 ### Resync ClickPipe Guide {#guide-postgres-resync}
 1. In the Data Sources tab, click on the Postgres ClickPipe you wish to resync.
