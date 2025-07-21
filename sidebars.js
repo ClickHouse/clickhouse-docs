@@ -167,7 +167,8 @@ const sidebars = {
           link: { type: "doc", id: "use-cases/data_lake/index" },
           items: [
             "use-cases/data_lake/glue_catalog",
-            "use-cases/data_lake/unity_catalog" 
+            "use-cases/data_lake/unity_catalog",
+            "use-cases/data_lake/rest_catalog"
           ]
         },
         {
