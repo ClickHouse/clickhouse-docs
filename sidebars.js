@@ -9,8 +9,8 @@ const sidebars = {
     {
       type: "category",
       label: "Introduction",
-      collapsed: false,
-      collapsible: false,
+      collapsed: true,
+      collapsible: true,
       link: { type: "doc", id: "introduction-index" },
       items: [
         "intro",
@@ -116,7 +116,7 @@ const sidebars = {
         {
           type: "category",
           label: "Observability",
-          collapsed: false,
+          collapsed: true,
           collapsible: true,
           link: { type: "doc", id: "use-cases/observability/index" },
           items: [
