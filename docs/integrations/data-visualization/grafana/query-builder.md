@@ -34,7 +34,7 @@ The available query types are:
 - [Traces](#traces): optimized for searching/viewing traces. Works best in explore view with [defaults configured](./config.md#traces).
 - [SQL Editor](#sql-editor): the SQL Editor can be used when you want full control over the query. In this mode, any SQL query can be executed.
 
-## Query Types {#query-types}
+## Query types {#query-types}
 
 The *Query Type* setting will change the layout of the query builder to match the type of query being built.
 The query type also determines which panel is used when visualizing data.
@@ -90,7 +90,7 @@ Extra columns that are selected in the query can be viewed in the expanded log r
 <Image size="md" img={demo_logs_query_fields} alt="Example of extra fields on logs query" border />
 
 
-### Time Series {#time-series}
+### Time series {#time-series}
 
 The time series query type is similar to [table](#table), but with a focus on time series data.
 
@@ -158,7 +158,7 @@ The trace query type supports [data links](#data-links).
 
 This query type will render the data with the table view for Trace Search mode, and the trace panel for Trace ID mode.
 
-## SQL Editor {#sql-editor}
+## SQL editor {#sql-editor}
 
 For queries that are too complex for the query builder, you can use the SQL Editor.
 This gives you full control over the query by allowing you to write and run plain ClickHouse SQL.
@@ -172,7 +172,7 @@ This switch also has an effect even in dashboard view, notably with time series 
 
 <Image size="md" img={demo_raw_sql_query} alt="Example raw SQL query" border />
 
-## Data Links {#data-links}
+## Data links {#data-links}
 
 Grafana [data links](https://grafana.com/docs/grafana/latest/panels-visualizations/configure-data-links)
 can be used to link to new queries.
@@ -219,7 +219,7 @@ Before a query gets sent to the ClickHouse server, the plugin will expand the ma
 Queries from both the SQL Editor and Query Builder can use macros.
 
 
-### Using Macros {#using-macros}
+### Using macros {#using-macros}
 
 Macros can be included anywhere in the query, multiple times if needed.
 
@@ -243,7 +243,7 @@ In this example, the Grafana dashboard's time range is applied to the `log_time`
 
 The plugin also supports notation using braces `{}`. Use this notation when queries are needed inside [parameters](/sql-reference/syntax.md#defining-and-using-query-parameters).
 
-### List of Macros {#list-of-macros}
+### List of macros {#list-of-macros}
 
 This is a list of all macros available in the plugin:
 
