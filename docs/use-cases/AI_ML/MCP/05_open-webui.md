@@ -88,7 +88,7 @@ If we click on the tool icon, we can then list the available tools:
 
 <Image img={ListOfTools} alt="Open WebUI tool listing" size="md"/>
 
-## Configure OpenAI
+## Configure OpenAI {#configure-openai}
 
 By default, Open WebUI works with Ollama models, but we can add OpenAI compatible endpoints as well.
 These are configured via the settings menu, but this time we need to click on the `Connections` tab:
@@ -103,7 +103,7 @@ The OpenAI models will then be available on the top menu:
 
 <Image img={OpenAIModels} alt="Open WebUI - Models" size="md"/>
 
-## Chat to ClickHouse MCP Server
+## Chat to ClickHouse MCP Server with Open WebUI {#chat-to-clickhouse-mcp-server}
 
 We can then have a conversation and Open WebUI will call the MCP Server if necessary:
 
