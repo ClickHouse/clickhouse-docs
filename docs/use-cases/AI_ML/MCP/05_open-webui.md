@@ -52,7 +52,7 @@ Navigate to http://localhost:8080/ to see the UI.
 To setup the ClickHouse MCP Server, we'll need to convert the MCP Server to Open API endpoints.
 Let's first set environmental variables that will let us connect to the ClickHouse SQL Playground:
 
-```
+```bash
 export CLICKHOUSE_HOST="sql-clickhouse.clickhouse.com"
 export CLICKHOUSE_USER="demo"
 export CLICKHOUSE_PASSWORD=""
