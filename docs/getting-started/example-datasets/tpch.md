@@ -43,7 +43,7 @@ Detailed table sizes with scale factor 100:
 | partsupp | 80.000.000     | 4.37 GB                         |
 | customer | 15.000.000     | 1.19 GB                         |
 | orders   | 150.000.000    | 6.15 GB                         |
-| lineitem | 600.00.00      | 26.69 GB                        |
+| lineitem | 600.000.000    | 26.69 GB                        |
 
 (Compressed sizes in ClickHouse are taken from `system.tables.total_bytes` and based on below table definitions.)
 
