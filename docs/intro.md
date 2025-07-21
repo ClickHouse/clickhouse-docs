@@ -50,7 +50,7 @@ You can [run this query on the ClickHouse SQL Playground](https://sql.clickhouse
 
 <Image img={column_example} alt="Example query in a column-oriented database" size="lg"/>
 
-As you can see in the stats section in the above diagram, the query processed 100 million rows in 92 milliseconds, a throughput of approximately 300 million rows or just under 7 GB per second.
+As you can see in the stats section in the above diagram, the query processed 100 million rows in 92 milliseconds, a throughput of approximately over 1 billion rows per second or just under 7 GB of data transferred per second.
 
 **Row-oriented DBMS**
 
