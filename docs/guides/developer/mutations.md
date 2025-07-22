@@ -15,7 +15,7 @@ delete existing data. These operations are labeled "mutations" and are executed 
 
 :::tip
 If you need to perform frequent updates, consider using [deduplication](../developer/deduplication.md) in ClickHouse, which allows you to update 
-and/or delete rows without generating a mutation event. Alternatively, use [lightweight updates](/guides/developer/lightweight-update)
+and/or delete rows without generating a mutation event. Alternatively, use [lightweight updates](/docs/sql-reference/statements/update)
 or [lightweight deletes](/guides/developer/lightweight-delete)
 :::
 
