@@ -27,5 +27,5 @@ These are in addition to the standard best practices which apply to all deployme
 | [Selecting an Insert Strategy](/best-practices/selecting-an-insert-strategy) | Strategies for efficient data insertion in ClickHouse.             |
 | [Data Skipping Indices](/best-practices/use-data-skipping-indices-where-appropriate) | When to apply data skipping indices for performance gains.    |
 | [Avoid Mutations](/best-practices/avoid-mutations)                   | Reasons to avoid mutations and how to design without them.               |
-| [Avoid OPTIMIZE FINAL](/best-practices/avoid-optimize-final)         | Why `OPTIMIZE FINAL` can be costly and how to work around it.           |
+| [Avoid `OPTIMIZE FINAL`](/best-practices/avoid-optimize-final)         | Why `OPTIMIZE FINAL` can be costly and how to work around it.           |
 | [Use JSON where appropriate](/best-practices/use-json-where-appropriate) | Considerations for using JSON columns in ClickHouse.               |
