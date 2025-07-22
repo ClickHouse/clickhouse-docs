@@ -6,32 +6,42 @@ hide_title: true
 
 # Get started with ClickHouse Cloud
 
-In this section of the docs you will find all the information you may need
-as a user wishing to evaluate the suitability of ClickHouse Cloud for your use
-case.
+New to ClickHouse Cloud and not sure where to begin? In this section of the docs,
+we'll walk you through everything you need to get up and running quickly.
 
-This section of our docs is arranged into three subsections to help guide you 
-through each step of the process as you evaluate ClickHouse Cloud for your
-particular use case.
+We've arranged this getting started section into three subsections to help guide 
+you through each step of the process as you explore ClickHouse Cloud.
 
 <VerticalStepper headerLevel="h2">
 
 ## Discover ClickHouse Cloud {#discover-clickhouse-cloud}
 
-In this section, you'll discover what ClickHouse Cloud is, how it differs from open-source
-ClickHouse, what the major use cases for ClickHouse Cloud are, and why you might
-want to consider using it for your use case.
+- Learn about what ClickHouse Cloud is, and how it differs from the open-source version
+- Discover the main use-cases of ClickHouse Cloud
 
 ## Get set up with ClickHouse Cloud {#get-set-up-with-clickhouse-cloud}
 
-In this section, you will find articles that will help you get set up with ClickHouse
-Cloud, migrate your existing data to ClickHouse Cloud from other platforms, along with some general
-best practices and answers to common issues that new users face.
+Now that you know what ClickHouse Cloud is, we'll walk you through the process
+of getting your data into ClickHouse Cloud, show you the main features available
+and point you towards some general best practices you should know.
 
-## Evaluate ClickHouse Cloud {#evaluate-clickhouse-cloud}
+Topics include: 
 
-In this section, you will find a series of articles with the aim of assisting you
-to evaluate the success of your trial. Topics covered include how to monitor query
-performance, storage, and cost.
+- Migration guides from various platforms
+- Architectures
+- Cloud features
+
+## Explore ClickHouse Cloud {#evaluate-clickhouse-cloud}
+
+Now that your data is in ClickHouse Cloud, we'll walk you through some more advanced
+topics to help you get the most out of your ClickHouse Cloud experience and explore
+what the platform has to offer.
+
+Topics include:
+
+- Query performance
+- Monitoring
+- Security considerations
+- Troubleshooting tips
 
 </VerticalStepper>

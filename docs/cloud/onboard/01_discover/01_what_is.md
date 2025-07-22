@@ -1,6 +1,6 @@
 ---
 slug: /cloud/get-started/cloud/what-is-clickhouse-cloud
-title: 'Overview'
+title: 'Introduction'
 keywords: ['clickhouse cloud', 'what is clickhouse cloud', 'clickhouse cloud overview', 'clickhouse cloud features']
 hide_title: true
 ---

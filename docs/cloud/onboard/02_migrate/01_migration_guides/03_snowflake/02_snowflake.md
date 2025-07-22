@@ -1,23 +1,27 @@
 ---
 sidebar_label: 'Snowflake'
-sidebar_position: 20
 slug: /migrations/snowflake
 description: 'Migrating from Snowflake to ClickHouse'
 keywords: ['Snowflake']
 title: 'Migrating from Snowflake to ClickHouse'
-show_related_blogs: true
+show_related_blogs: false
 ---
 
 import migrate_snowflake_clickhouse from '@site/static/images/migrations/migrate_snowflake_clickhouse.png';
 import Image from '@theme/IdealImage';
 
-# Migrating from Snowflake to ClickHouse
+# Migrate from Snowflake to ClickHouse
 
-This guide shows how to migrate data from Snowflake to ClickHouse.
+> This guide shows you how to migrate data from Snowflake to ClickHouse.
 
-Migrating data between Snowflake and ClickHouse requires the use of an object store, such as S3, as an intermediate storage for transfer. The migration process also relies on using the commands `COPY INTO` from Snowflake and `INSERT INTO SELECT` of ClickHouse.
+Migrating data between Snowflake and ClickHouse requires the use of an object store,
+such as S3, as an intermediate storage for transfer. The migration process also 
+relies on using the commands `COPY INTO` from Snowflake and `INSERT INTO SELECT` 
+of ClickHouse.
 
-## 1. Exporting data from Snowflake {#1-exporting-data-from-snowflake}
+<VerticalStepper headerLevel="h2">
+
+## Export data from Snowflake {#1-exporting-data-from-snowflake}
 
 <Image img={migrate_snowflake_clickhouse} size="md" alt="Migrating from Snowflake to ClickHouse"/>
 
@@ -54,7 +58,7 @@ COPY INTO @external_stage/mydataset from mydataset max_file_size=157286400 heade
 
 For a dataset around 5TB of data with a maximum file size of 150MB, and using a 2X-Large Snowflake warehouse located in the same AWS `us-east-1` region, copying data to the S3 bucket will take around 30 minutes.
 
-## 2. Importing to ClickHouse {#2-importing-to-clickhouse}
+## Import to ClickHouse {#2-importing-to-clickhouse}
 
 Once the data is staged in intermediary object storage, ClickHouse functions such as the [s3 table function](/sql-reference/table-functions/s3) can be used to insert the data into a table, as shown below.
 
@@ -100,10 +104,12 @@ The `VARIANT` and `OBJECT` columns in the original Snowflake table schema will b
 Nested structures such as `some_file` are converted to JSON strings on copy by Snowflake. Importing this data requires us to transform these structures to Tuples at insert time in ClickHouse, using the [JSONExtract function](/sql-reference/functions/json-functions#jsonextract) as shown above.
 :::
 
-## 3. Testing successful data export {#3-testing-successful-data-export}
+## Test successful data export {#3-testing-successful-data-export}
 
 To test whether your data was properly inserted, simply run a `SELECT` query on your new table:
 
 ```sql
 SELECT * FROM mydataset LIMIT 10;
 ```
+
+</VerticalStepper>

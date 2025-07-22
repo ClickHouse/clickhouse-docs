@@ -1,9 +1,10 @@
 ---
 slug: /migrations/postgresql/data-modeling-techniques
 title: 'Data modeling techniques'
-description: 'Data modeling for migrating from PostgreSQL to ClickHouse'
+description: 'Part 3 of a guide on migrating from PostgreSQL to ClickHouse'
 keywords: ['postgres', 'postgresql']
 show_related_blogs: true
+sidebar_label: 'Part 3'
 ---
 
 import postgres_b_tree from '@site/static/images/migrations/postgres-b-tree.png';

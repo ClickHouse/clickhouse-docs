@@ -1,9 +1,12 @@
 ---
 slug: /migrations/postgresql/overview
-title: 'Migrating from PostgreSQL to ClickHouse'
+title: 'Comparing PostgreSQL and ClickHouse'
 description: 'A guide to migrating from PostgreSQL to ClickHouse'
 keywords: ['postgres', 'postgresql', 'migrate', 'migration']
+sidebar_label: 'Overview'
 ---
+
+# Comparing ClickHouse and PostgreSQL
 
 ## Why use ClickHouse over Postgres? {#why-use-clickhouse-over-postgres}
 

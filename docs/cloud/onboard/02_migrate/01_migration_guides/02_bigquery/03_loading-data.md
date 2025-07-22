@@ -24,7 +24,9 @@ Exporting data from BigQuery to ClickHouse is dependent on the size of your data
 | [contracts](https://github.com/ClickHouse/examples/blob/main/ethereum/schemas/contracts.md)       | 57,225,837    | 350            | 45.35GB   | 16 sec          | 1 hr 51 min     | 39.4 secs         |
 | Total                                                                                             | 8.26 billion  | 23,577         | 3.982TB   | 8 min 3 sec     | \> 6 days 5 hrs | 53 mins 45 secs   |
 
-## 1. Export table data to GCS {#1-export-table-data-to-gcs}
+<VerticalStepper headerLevel="h2">
+
+## Export table data to GCS {#1-export-table-data-to-gcs}
 
 In this step, we utilize the [BigQuery SQL workspace](https://cloud.google.com/bigquery/docs/bigquery-web-ui) to execute our SQL commands. Below, we export a BigQuery table named `mytable` to a GCS bucket using the [`EXPORT DATA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/other-statements) statement.
 
@@ -60,7 +62,7 @@ This approach has a number of advantages:
 - Exports produce multiple files automatically, limiting each to a maximum of 1GB of table data. This is beneficial to ClickHouse since it allows imports to be parallelized.
 - Parquet, as a column-oriented format, represents a better interchange format since it is inherently compressed and faster for BigQuery to export and ClickHouse to query
 
-## 2. Importing data into ClickHouse from GCS {#2-importing-data-into-clickhouse-from-gcs}
+## Importing data into ClickHouse from GCS {#2-importing-data-into-clickhouse-from-gcs}
 
 Once the export is complete, we can import this data into a ClickHouse table. You can use the [ClickHouse SQL console](/integrations/sql-clients/sql-console) or [`clickhouse-client`](/interfaces/cli) to execute the commands below.
 
@@ -111,7 +113,7 @@ In the above query, we use the [`ifNull` function](/sql-reference/functions/func
 Alternatively, you can `SET input_format_null_as_default=1` and any missing or NULL values will be replaced by default values for their respective columns, if those defaults are specified.
 :::
 
-## 3. Testing successful data export {#3-testing-successful-data-export}
+## Testing successful data export {#3-testing-successful-data-export}
 
 To test whether your data was properly inserted, simply run a `SELECT` query on your new table:
 
@@ -120,6 +122,8 @@ SELECT * FROM mytable LIMIT 10;
 ```
 
 To export more BigQuery tables, simply redo the steps above for each additional table.
+
+</VerticalStepper>
 
 ## Further reading and support {#further-reading-and-support}
 
