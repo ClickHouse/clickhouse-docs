@@ -8,7 +8,7 @@ description: 'Describes the recommended usage limits in ClickHouse Cloud'
 While ClickHouse is known for its speed and reliability, optimal performance is achieved within certain operating parameters. For example, having too many tables, databases or parts could negatively impact performance. To avoid this, Clickhouse Cloud has guardrails set up for several types of items. You can find details of these guardrails below.
 
 :::tip
-If you've run up against one of these guardrails, it's possible that you are implementing your use case in an unoptimized way. Contact our support team and we will gladly help you refine your use case to avoid exceeding the guardrails or look together at how we can increase them in a controlled manner.
+If you've run up against one of these guardrails, it's possible that you are implementing your use case in an unoptimized way. Contact our support team and we will gladly help you refine your use case to avoid exceeding the guardrails or look together at how we can increase them in a controlled manner. 
 :::
 
 | Dimension | Limit |

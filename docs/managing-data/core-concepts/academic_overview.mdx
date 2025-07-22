@@ -54,9 +54,9 @@ ClickHouse is designed to address five key challenges of modern analytical data 
 
 5. **Industry-grade robustness and versatile deployment**. As commodity hardware is unreliable, databases must provide data replication for robustness against node failures. Also, databases should run on any hardware, from old laptops to powerful servers. Finally, to avoid the overhead of garbage collection in JVM-based programs and enable bare-metal performance (e.g. SIMD), databases are ideally deployed as native binaries for the target platform.
 
-    <Anchor id="page-1-0"/><Image img={image_01} size="lg" alt="Image 01"/>
+<Anchor id="page-1-0"/><Image img={image_01} size="lg" alt="Image 01"/>
 
-    Figure 1: ClickHouse timeline.
+Figure 1: ClickHouse timeline.
 
 ## 2 ARCHITECTURE {#2-architecture}
 
@@ -240,13 +240,13 @@ This section presents selected key performance optimizations applied to differen
 - instant clearing of hash tables for reuse using per-hash-map and per-cell version counters,
 - usage of CPU prefetch (__builtin_prefetch) to speed up the retrieval of values after hashing the key.
 
-    **Joins**. As ClickHouse originally supported joins only rudimentarily, many use cases historically resorted to denormalized tables. Today, the database [offers](https://clickhou.se/joins) all join types available in SQL (inner, left- /right/full outer, cross, as-of), as well as different join algorithms such as hash join (naïve, grace), sort-merge join, and index join for table engines with fast key-value lookup (usually dictionaries).
+**Joins**. As ClickHouse originally supported joins only rudimentarily, many use cases historically resorted to denormalized tables. Today, the database [offers](https://clickhou.se/joins) all join types available in SQL (inner, left- /right/full outer, cross, as-of), as well as different join algorithms such as hash join (naïve, grace), sort-merge join, and index join for table engines with fast key-value lookup (usually dictionaries).
 
-    Since joins are among the most expensive database operations, it is important to provide parallel variants of the classic join algorithms, ideally with configurable space/time trade-ofs. For hash joins, ClickHouse implements the non-blocking, shared partition algorithm from [\[7\]](#page-12-23). For example, the query in [Figure 9](#page-8-3) computes how users move between URLs via a self-join on a page hit statistics table. The build phase of the join is split into three lanes, covering three disjoint ranges of the source table. Instead of a global hash table, a partitioned hash table is used. The (typically three) worker threads determine the target partition for each input row of the build side by computing the modulo of a hash function. Access to the hash table partitions is synchronized using Gather exchange operators. The probe phase finds the target partition of its input tuples similarly. While this algorithm introduces two additional hash calculations per tuple, it greatly reduces latch contention in the build phase, depending on the number of hash table partitions.
+Since joins are among the most expensive database operations, it is important to provide parallel variants of the classic join algorithms, ideally with configurable space/time trade-ofs. For hash joins, ClickHouse implements the non-blocking, shared partition algorithm from [\[7\]](#page-12-23). For example, the query in [Figure 9](#page-8-3) computes how users move between URLs via a self-join on a page hit statistics table. The build phase of the join is split into three lanes, covering three disjoint ranges of the source table. Instead of a global hash table, a partitioned hash table is used. The (typically three) worker threads determine the target partition for each input row of the build side by computing the modulo of a hash function. Access to the hash table partitions is synchronized using Gather exchange operators. The probe phase finds the target partition of its input tuples similarly. While this algorithm introduces two additional hash calculations per tuple, it greatly reduces latch contention in the build phase, depending on the number of hash table partitions.
 
-    <Anchor id="page-8-3"/><Image img={image_09} size="lg" alt="Image 09"/>
+<Anchor id="page-8-3"/><Image img={image_09} size="lg" alt="Image 09"/>
 
-    Figure 9: Parallel hash join with three hash table partitions.
+Figure 9: Parallel hash join with three hash table partitions.
 
 ### <Anchor id="page-9-1"/>4.5 Workload Isolation {#4-5-workload-isolation}
 

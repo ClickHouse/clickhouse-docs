@@ -25,24 +25,30 @@ During this process, the following occurs during part merging:
 - The row identified by the value 2 for column A has two update rows. The latter row is retained with a value of 6 for the price column.
 - The row identified by the value 3 for column A has a row with version 1 and a delete row with version 2. This delete row is retained.
 
-    As a result of this merge process, we have four rows representing the final state:
+As a result of this merge process, we have four rows representing the final state:
 
-    <Image img={postgres_replacingmergetree} size="md" alt="ReplacingMergeTree process"/>
+<br />
 
-    Note that deleted rows are never removed. They can be forcibly deleted with an `OPTIMIZE table FINAL CLEANUP`. This requires the experimental setting `allow_experimental_replacing_merge_with_cleanup=1`. This should only be issued under the following conditions:
+<Image img={postgres_replacingmergetree} size="md" alt="ReplacingMergeTree process"/>
+
+<br />
+
+Note that deleted rows are never removed. They can be forcibly deleted with an `OPTIMIZE table FINAL CLEANUP`. This requires the experimental setting `allow_experimental_replacing_merge_with_cleanup=1`. This should only be issued under the following conditions:
 
 1. You can be sure that no rows with old versions (for those that are being deleted with the cleanup) will be inserted after the operation is issued. If these are inserted, they will be incorrectly retained, as the deleted rows will no longer be present.
 2. Ensure all replicas are in sync prior to issuing the cleanup. This can be achieved with the command:
 
-    ```sql
-    SYSTEM SYNC REPLICA table
-    ```
+<br />
 
-    We recommend pausing inserts once (1) is guaranteed and until this command and the subsequent cleanup are complete.
+```sql
+SYSTEM SYNC REPLICA table
+```
 
-    > Handling deletes with the ReplacingMergeTree is only recommended for tables with a low to moderate number of deletes (less than 10%) unless periods can be scheduled for cleanup with the above conditions.
+We recommend pausing inserts once (1) is guaranteed and until this command and the subsequent cleanup are complete.
 
-    > Tip: Users may also be able to issue `OPTIMIZE FINAL CLEANUP` against selective partitions no longer subject to changes.
+> Handling deletes with the ReplacingMergeTree is only recommended for tables with a low to moderate number of deletes (less than 10%) unless periods can be scheduled for cleanup with the above conditions.
+
+> Tip: Users may also be able to issue `OPTIMIZE FINAL CLEANUP` against selective partitions no longer subject to changes.
 
 ## Choosing a primary/deduplication key {#choosing-a-primarydeduplication-key}
 
@@ -306,15 +312,15 @@ ORDER BY year ASC
 
 As shown, partitioning has significantly improved query performance in this case by allowing the deduplication process to occur at a partition level in parallel.
 
-## Merge behavior considerations {#merge-behavior-considerations}
+## Merge Behavior Considerations {#merge-behavior-considerations}
 
 ClickHouse's merge selection mechanism goes beyond simple merging of parts. Below, we examine this behavior in the context of ReplacingMergeTree, including configuration options for enabling more aggressive merging of older data and considerations for larger parts.
 
-### Merge selection logic {#merge-selection-logic}
+### Merge Selection Logic {#merge-selection-logic}
 
 While merging aims to minimize the number of parts, it also balances this goal against the cost of write amplification. Consequently, some ranges of parts are excluded from merging if they would lead to excessive write amplification, based on internal calculations. This behavior helps prevent unnecessary resource usage and extends the lifespan of storage components.
 
-### Merging behavior on large parts {#merging-behavior-on-large-parts}
+### Merging Behavior on Large Parts {#merging-behavior-on-large-parts}
 
 The ReplacingMergeTree engine in ClickHouse is optimized for managing duplicate rows by merging data parts, keeping only the latest version of each row based on a specified unique key. However, when a merged part reaches the max_bytes_to_merge_at_max_space_in_pool threshold, it will no longer be selected for further merging, even if min_age_to_force_merge_seconds is set. As a result, automatic merges can no longer be relied upon to remove duplicates that may accumulate with ongoing data insertion.
 
@@ -322,11 +328,11 @@ To address this, users can invoke OPTIMIZE FINAL to manually merge parts and rem
 
 For a more sustainable solution that maintains performance, partitioning the table is recommended. This can help prevent data parts from reaching the maximum merge size and reduces the need for ongoing manual optimizations.
 
-### Partitioning and merging across partitions {#partitioning-and-merging-across-partitions}
+### Partitioning and Merging Across Partitions {#partitioning-and-merging-across-partitions}
 
 As discussed in Exploiting Partitions with ReplacingMergeTree, we recommend partitioning tables as a best practice. Partitioning isolates data for more efficient merges and avoids merging across partitions, particularly during query execution. This behavior is enhanced in versions from 23.12 onward: if the partition key is a prefix of the sorting key, merging across partitions is not performed at query time, leading to faster query performance.
 
-### Tuning merges for better query performance {#tuning-merges-for-better-query-performance}
+### Tuning Merges for Better Query Performance {#tuning-merges-for-better-query-performance}
 
 By default, min_age_to_force_merge_seconds and min_age_to_force_merge_on_partition_only are set to 0 and false, respectively, disabling these features. In this configuration, ClickHouse will apply standard merging behavior without forcing merges based on partition age.
 
@@ -334,7 +340,7 @@ If a value for min_age_to_force_merge_seconds is specified, ClickHouse will igno
 
 This behavior can be further tuned by setting min_age_to_force_merge_on_partition_only=true, requiring all parts in the partition to be older than min_age_to_force_merge_seconds for aggressive merging. This configuration allows older partitions to merge down to a single part over time, which consolidates data and maintains query performance.
 
-### Recommended settings {#recommended-settings}
+### Recommended Settings {#recommended-settings}
 
 :::warning
 Tuning merge behavior is an advanced operation. We recommend consulting with ClickHouse support before enabling these settings in production workloads.

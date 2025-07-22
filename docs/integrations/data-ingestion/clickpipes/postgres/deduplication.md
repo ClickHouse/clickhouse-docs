@@ -74,51 +74,51 @@ _Take note of the WHERE clause in the following queries, used to filter out dele
 
 - **Simple count query**: Count the number of posts.
 
-    This is the simplest query you can run to check if the synchronization went fine. The two queries should return the same count.
+This is the simplest query you can run to check if the synchronization went fine. The two queries should return the same count.
 
-    ```sql
-    -- PostgreSQL
-    SELECT count(*) FROM posts;
+```sql
+-- PostgreSQL
+SELECT count(*) FROM posts;
 
-    -- ClickHouse
-    SELECT count(*) FROM posts FINAL WHERE _peerdb_is_deleted=0;
-    ```
+-- ClickHouse 
+SELECT count(*) FROM posts FINAL WHERE _peerdb_is_deleted=0;
+```
 
-- **Simple aggregation with JOIN**: Top 10 users who have accumulated the most views.
+-  **Simple aggregation with JOIN**: Top 10 users who have accumulated the most views.
 
-    An example of an aggregation on a single table. Having duplicates here would greatly affect the result of the sum function.
+An example of an aggregation on a single table. Having duplicates here would greatly affect the result of the sum function.
 
-    ```sql
-    -- PostgreSQL
-    SELECT
+```sql
+-- PostgreSQL 
+SELECT
     sum(p.viewcount) AS viewcount,
     p.owneruserid AS user_id,
     u.displayname AS display_name
-    FROM posts p
-    LEFT JOIN users u ON u.id = p.owneruserid
-    -- highlight-next-line
-    WHERE p.owneruserid > 0
-    GROUP BY user_id, display_name
-    ORDER BY viewcount DESC
-    LIMIT 10;
+FROM posts p
+LEFT JOIN users u ON u.id = p.owneruserid
+-- highlight-next-line
+WHERE p.owneruserid > 0
+GROUP BY user_id, display_name
+ORDER BY viewcount DESC
+LIMIT 10;
 
-    -- ClickHouse
-    SELECT
+-- ClickHouse 
+SELECT
     sum(p.viewcount) AS viewcount,
     p.owneruserid AS user_id,
     u.displayname AS display_name
-    FROM posts AS p
-    FINAL
-    LEFT JOIN users AS u
-    FINAL ON (u.id = p.owneruserid) AND (u._peerdb_is_deleted = 0)
-    -- highlight-next-line
-    WHERE (p.owneruserid > 0) AND (p._peerdb_is_deleted = 0)
-    GROUP BY
+FROM posts AS p
+FINAL
+LEFT JOIN users AS u
+FINAL ON (u.id = p.owneruserid) AND (u._peerdb_is_deleted = 0)
+-- highlight-next-line
+WHERE (p.owneruserid > 0) AND (p._peerdb_is_deleted = 0)
+GROUP BY
     user_id,
     display_name
-    ORDER BY viewcount DESC
-    LIMIT 10
-    ```
+ORDER BY viewcount DESC
+LIMIT 10
+```
 
 #### FINAL setting {#final-setting}
 
@@ -132,7 +132,7 @@ SELECT count(*) FROM posts SETTINGS FINAL = 1;
 
 -- Set FINAL for the session
 SET final = 1;
-SELECT count(*) FROM posts;
+SELECT count(*) FROM posts; 
 ```
 
 #### ROW policy {#row-policy}
@@ -148,7 +148,7 @@ CREATE ROW POLICY cdc_policy ON votes FOR SELECT USING _peerdb_is_deleted = 0 TO
 
 ### Query like with Postgres {#query-like-with-postgres}
 
-Migrating an analytical dataset from PostgreSQL to ClickHouse often requires modifying application queries to account for differences in data handling and query execution.
+Migrating an analytical dataset from PostgreSQL to ClickHouse often requires modifying application queries to account for differences in data handling and query execution. 
 
 This section will explore techniques for deduplicating data while keeping the original queries unchanged.
 
@@ -165,7 +165,7 @@ CREATE VIEW votes_view AS SELECT * FROM votes FINAL WHERE _peerdb_is_deleted=0;
 CREATE VIEW comments_view AS SELECT * FROM comments FINAL WHERE _peerdb_is_deleted=0;
 ```
 
-Then, we can query the views using the same query we would use in PostgreSQL.
+Then, we can query the views using the same query we would use in PostgreSQL. 
 
 ```sql
 -- Most viewed posts
@@ -179,21 +179,21 @@ ORDER BY viewcount DESC
 LIMIT 10
 ```
 
-#### Refreshable materialized view {#refreshable-material-view}
+#### Refreshable Material view {#refreshable-material-view}
 
-Another approach is to use a [refreshable materialized view](/materialized-view/refreshable-materialized-view), which enables you to schedule query execution for deduplicating rows and storing the results in a destination table. With each scheduled refresh, the destination table is replaced with the latest query results.
+Another approach is to use a [Refreshable Materialized View](/materialized-view/refreshable-materialized-view), which enables you to schedule query execution for deduplicating rows and storing the results in a destination table. With each scheduled refresh, the destination table is replaced with the latest query results.
 
 The key advantage of this method is that the query using the FINAL keyword runs only once during the refresh, eliminating the need for subsequent queries on the destination table to use FINAL.
 
 However, a drawback is that the data in the destination table is only as up-to-date as the most recent refresh. That said, for many use cases, refresh intervals ranging from several minutes to a few hours may be sufficient.
 
 ```sql
--- Create deduplicated posts table
+-- Create deduplicated posts table 
 CREATE TABLE deduplicated_posts AS posts;
 
 -- Create the Materialized view and schedule to run every hour
-CREATE MATERIALIZED VIEW deduplicated_posts_mv REFRESH EVERY 1 HOUR TO deduplicated_posts AS
-SELECT * FROM posts FINAL WHERE _peerdb_is_deleted=0
+CREATE MATERIALIZED VIEW deduplicated_posts_mv REFRESH EVERY 1 HOUR TO deduplicated_posts AS 
+SELECT * FROM posts FINAL WHERE _peerdb_is_deleted=0 
 ```
 
 Then, you can query the table `deduplicated_posts` normally.

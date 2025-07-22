@@ -29,18 +29,19 @@ chDB supports Parquet, CSV, JSON, Apache Arrow, ORC, and [60+ more formats](/int
 
 * If you're using [Go](install/go.md), [Rust](install/rust.md), [NodeJS](install/nodejs.md), or [Bun](install/bun.md), take a look at the corresponding language pages.
 * If you're using Python, see the [getting started developer guide](getting-started.md). There are also guides showing how to do common tasks like:
-    * [JupySQL](guides/jupysql.md)
-    * [Querying Pandas](guides/querying-pandas.md)
-    * [Querying Apache Arrow](guides/querying-apache-arrow.md)
-    * [Querying data in S3](guides/querying-s3-bucket.md)
-    * [Querying Parquet files](guides/querying-parquet.md)
-    * [Querying remote ClickHouse](guides/query-remote-clickhouse.md)
-    * [Using clickhouse-local database](guides/clickhouse-local.md)
+  * [JupySQL](guides/jupysql.md)
+  * [Querying Pandas](guides/querying-pandas.md)
+  * [Querying Apache Arrow](guides/querying-apache-arrow.md)
+  * [Querying data in S3](guides/querying-s3-bucket.md)
+  * [Querying Parquet files](guides/querying-parquet.md)
+  * [Querying remote ClickHouse](guides/query-remote-clickhouse.md)
+  * [Using clickhouse-local database](guides/clickhouse-local.md)
 
-    <!-- ## What is chDB?
+<!-- ## What is chDB?
 
-    chDB lets you 
-    - Supports Python DB API 2.0: [example](https://github.com/chdb-io/chdb/blob/main/examples/dbapi.py) and [custom UDF Functions](https://github.com/chdb-io/chdb/blob/main/examples/udf.py) -->
+chDB lets you 
+
+- Supports Python DB API 2.0: [example](https://github.com/chdb-io/chdb/blob/main/examples/dbapi.py) and [custom UDF Functions](https://github.com/chdb-io/chdb/blob/main/examples/udf.py) -->
 
 ## An introductory video {#an-introductory-video}
 

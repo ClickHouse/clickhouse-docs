@@ -9,7 +9,7 @@ import supabase_commands from '@site/static/images/integrations/data-ingestion/c
 import supabase_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-connection-details.jpg'
 import Image from '@theme/IdealImage';
 
-# Supabase source setup guide
+# Supabase Source Setup Guide
 
 This is a guide on how to setup Supabase Postgres for usage in ClickPipes.
 

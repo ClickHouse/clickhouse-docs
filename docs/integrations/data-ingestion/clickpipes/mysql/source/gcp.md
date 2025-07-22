@@ -32,12 +32,12 @@ If not already configured, make sure to set these in the database flags section 
 2. `binlog_row_metadata` to `FULL`
 3. `binlog_row_image` to `FULL`
 
-    To do this, click on the `Edit` button in the top right corner of the instance overview page.
-    <Image img={gcp_mysql_edit_button} alt="Edit button in GCP MySQL" size="lg" border/>
+To do this, click on the `Edit` button in the top right corner of the instance overview page.
+<Image img={gcp_mysql_edit_button} alt="Edit button in GCP MySQL" size="lg" border/>
 
-    Then scroll down to the `Flags` section and add the above flags.
+Then scroll down to the `Flags` section and add the above flags.
 
-    <Image img={gcp_mysql_flags} alt="Setting binlog flags in GCP" size="lg" border/>
+<Image img={gcp_mysql_flags} alt="Setting binlog flags in GCP" size="lg" border/>
 
 ## Configure a database user {#configure-database-user-gcp}
 
@@ -65,20 +65,20 @@ Connect to your Cloud SQL MySQL instance as the root user and execute the follow
 ## Configure network access {#configure-network-access-gcp-mysql}
 
 If you want to restrict traffic to your Cloud SQL instance, please add the [documented static NAT IPs](../../index.md#list-of-static-ips) to the allowlisted IPs of your Cloud SQL MySQL instance.
-This can be done either by editing the instance or by heading over to the `Connections` tab in the sidebar in Cloud console.
+This can be done either by editing the instance or by heading over to the `Connections` tab in the sidebar in Cloud Console.
 
 <Image img={gcp_mysql_ip} alt="IP allowlisting in GCP MySQL" size="lg" border/>
 
-## Download and use root CA certificate {#download-root-ca-certificate-gcp-mysql}
+## Download and Use Root CA certificate {#download-root-ca-certificate-gcp-mysql}
 To connect to your Cloud SQL instance, you need to download the root CA certificate.
 
-1. Go to your Cloud SQL instance in the Cloud console.
+1. Go to your Cloud SQL instance in the Cloud Console.
 2. Click on `Connections` in the sidebar.
 3. Click on the `Security` tab.
 4. In the `Manage server CA certificates` section, click on the `DOWNLOAD CERTIFICATES` button at the bottom.
 
-    <Image img={gcp_mysql_cert} alt="Downloading GCP MySQL Cert" size="lg" border/>
+<Image img={gcp_mysql_cert} alt="Downloading GCP MySQL Cert" size="lg" border/>
 
 5. In the ClickPipes UI, upload the downloaded certificate when creating a new MySQL ClickPipe.
 
-    <Image img={rootca} alt="Using GCP MySQL Cert" size="lg" border/>
+<Image img={rootca} alt="Using GCP MySQL Cert" size="lg" border/>

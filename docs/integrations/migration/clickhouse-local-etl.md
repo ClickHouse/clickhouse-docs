@@ -49,37 +49,43 @@ On that host machine, download the appropriate build of `clickhouse-local` based
 
 <Tabs groupId="os">
 <TabItem value="linux" label="Linux" >
+
 1. The simplest way to download `clickhouse-local` locally is to run the following command:
-```bash
-curl https://clickhouse.com/ | sh
-```
+  ```bash
+  curl https://clickhouse.com/ | sh
+  ```
+
 1. Run `clickhouse-local` (it will just print its version):
-```bash
-./clickhouse-local
-```
+  ```bash
+  ./clickhouse-local
+  ```
+
 </TabItem>
 <TabItem value="mac" label="macOS">
+
 1. The simplest way to download `clickhouse-local` locally is to run the following command:
-```bash
-curl https://clickhouse.com/ | sh
-```
+  ```bash
+  curl https://clickhouse.com/ | sh
+  ```
+
 1. Run `clickhouse-local` (it will just print its version):
-```bash
-./clickhouse local
-```
+  ```bash
+  ./clickhouse local
+  ```
+
 </TabItem>
 </Tabs>
 
-    :::info Important
-    The examples throughout this guide use the Linux commands for running `clickhouse-local` (`./clickhouse-local`).
-    To run `clickhouse-local` on a Mac, use `./clickhouse local`.
-    :::
+:::info Important
+The examples throughout this guide use the Linux commands for running `clickhouse-local` (`./clickhouse-local`).
+To run `clickhouse-local` on a Mac, use `./clickhouse local`.
+:::
 
-    :::tip Add the remote system to your ClickHouse Cloud service IP Access List
-    In order for the `remoteSecure` function to connect to your ClickHouse Cloud service, the IP address of the remote system needs to be allowed by the IP Access List.  Expand **Manage your IP Access List** below this tip for more information.
-    :::
+:::tip Add the remote system to your ClickHouse Cloud service IP Access List
+In order for the `remoteSecure` function to connect to your ClickHouse Cloud service, the IP address of the remote system needs to be allowed by the IP Access List.  Expand **Manage your IP Access List** below this tip for more information.
+:::
 
-    <AddARemoteSystem />
+  <AddARemoteSystem />
 
 ## Example 1: Migrating from MySQL to ClickHouse Cloud with an Integration engine {#example-1-migrating-from-mysql-to-clickhouse-cloud-with-an-integration-engine}
 

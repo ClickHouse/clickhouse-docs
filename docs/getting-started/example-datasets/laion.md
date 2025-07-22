@@ -39,7 +39,7 @@ text_npy =  "text_emb_" + str_i + '.npy'
 
 # load all files
 im_emb = np.load(npy_file)
-text_emb = np.load(text_npy)
+text_emb = np.load(text_npy) 
 data = pd.read_parquet(metadata_file)
 
 # combine files

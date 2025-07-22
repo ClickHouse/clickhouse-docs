@@ -72,11 +72,11 @@ While small for ClickHouse, this dataset is substantial for Postgres. The above 
 
 Refer to this [guide](/integrations/clickpipes/postgres) to set up ClickPipes for PostgreSQL. The guide is covering many different types of source Postgres instances.
 
-With CDC approach using ClickPipes or PeerDB, each tables in the PostgreSQL database are automatically replicated in ClickHouse.
+With CDC approach using ClickPipes or PeerDB, each tables in the PostgreSQL database are automatically replicated in ClickHouse. 
 
 To handle updates and deletes in near real-time, ClickPipes maps Postgres tables to ClickHouse using [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) engine, specifically designed to handle updates and deletes in ClickHouse. You can find more information on how the data gets replicated to ClickHouse using ClickPipes [here](/integrations/clickpipes/postgres/deduplication#how-does-data-get-replicated). It is important to note that replication using CDC creates duplicated rows in ClickHouse when replicating updates or deletes operations. [See techniques](/integrations/clickpipes/postgres/deduplication#deduplicate-using-final-keyword) using the [FINAL](https://clickhouse.com/docs/sql-reference/statements/select/from#final-modifier) modifier for handling those in ClickHouse.
 
-Let's have a look on how the table `users` is created in ClickHouse using ClickPipes.
+Let's have a look on how the table `users` is created in ClickHouse using ClickPipes. 
 
 ```sql
 CREATE TABLE users
@@ -102,7 +102,7 @@ PRIMARY KEY id
 ORDER BY id;
 ```
 
-Once set up, ClickPipes starts migrating all data from PostgreSQL to ClickHouse. Depending on the network and size of the deployments, this should take only a few minutes for the Stack Overflow dataset.
+Once set up, ClickPipes starts migrating all data from PostgreSQL to ClickHouse. Depending on the network and size of the deployments, this should take only a few minutes for the Stack Overflow dataset. 
 
 ### Manual bulk load with periodic updates {#initial-bulk-load-with-periodic-updates}
 
@@ -111,70 +111,70 @@ Using a manual approach, the initial bulk load of the dataset can be achieved vi
 - **Table functions** - Using the [Postgres table function](/sql-reference/table-functions/postgresql) in ClickHouse to `SELECT` data from Postgres and `INSERT` it into a ClickHouse table. Relevant to bulk loads up to datasets of several hundred GB.
 - **Exports** - Exporting to intermediary formats such as CSV or SQL script file. These files can then be loaded into ClickHouse from either the client via the `INSERT FROM INFILE` clause or using object storage and their associated functions i.e. s3, gcs.
 
-    When loading data manually from PostgreSQL, you need to first create the tables in ClickHouse. Refer to this [Data Modeling documentation](/data-modeling/schema-design#establish-initial-schema) to that also uses the Stack Overflow dataset to optimize the table schema in ClickHouse.
+When loading data manually from PostgreSQL, you need to first create the tables in ClickHouse. Refer to this [Data Modeling documentation](/data-modeling/schema-design#establish-initial-schema) to that also uses the Stack Overflow dataset to optimize the table schema in ClickHouse. 
 
-    Data types between PostgreSQL and ClickHouse might differ. To establish the equivalent types for each of the table columns, we can use the `DESCRIBE` command with the [Postgres table function](/sql-reference/table-functions/postgresql). The following command describe the table `posts` in PostgreSQL, modify it according to your environment:
+Data types between PostgreSQL and ClickHouse might differ. To establish the equivalent types for each of the table columns, we can use the `DESCRIBE` command with the [Postgres table function](/sql-reference/table-functions/postgresql). The following command describe the table `posts` in PostgreSQL, modify it according to your environment:
 
-    ```sql title="Query"
-    DESCRIBE TABLE postgresql('<host>:<port>', 'postgres', 'posts', '<username>', '<password>')
-    SETTINGS describe_compact_output = 1
-    ```
+```sql title="Query"
+DESCRIBE TABLE postgresql('<host>:<port>', 'postgres', 'posts', '<username>', '<password>')
+SETTINGS describe_compact_output = 1
+```
 
-    For an overview of data type mapping between PostgreSQL and ClickHouse, refer to the [appendix documentation](/migrations/postgresql/appendix#data-type-mappings).
+For an overview of data type mapping between PostgreSQL and ClickHouse, refer to the [appendix documentation](/migrations/postgresql/appendix#data-type-mappings).
 
-    The steps for optimizing the types for this schema are identical to if the data has been loaded from other sources e.g. Parquet on S3. Applying the process described in this [alternate guide using Parquet](/data-modeling/schema-design) results in the following schema:
+The steps for optimizing the types for this schema are identical to if the data has been loaded from other sources e.g. Parquet on S3. Applying the process described in this [alternate guide using Parquet](/data-modeling/schema-design) results in the following schema:
 
-    ```sql title="Query"
-    CREATE TABLE stackoverflow.posts
-    (
-    `Id` Int32,
-    `PostTypeId` Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
-    `AcceptedAnswerId` UInt32,
-    `CreationDate` DateTime,
-    `Score` Int32,
-    `ViewCount` UInt32,
-    `Body` String,
-    `OwnerUserId` Int32,
-    `OwnerDisplayName` String,
-    `LastEditorUserId` Int32,
-    `LastEditorDisplayName` String,
-    `LastEditDate` DateTime,
-    `LastActivityDate` DateTime,
-    `Title` String,
-    `Tags` String,
-    `AnswerCount` UInt16,
-    `CommentCount` UInt8,
-    `FavoriteCount` UInt8,
-    `ContentLicense`LowCardinality(String),
-    `ParentId` String,
-    `CommunityOwnedDate` DateTime,
-    `ClosedDate` DateTime
-    )
-    ENGINE = MergeTree
-    ORDER BY tuple()
-    COMMENT 'Optimized types'
-    ```
+```sql title="Query"
+CREATE TABLE stackoverflow.posts
+(
+   `Id` Int32,
+   `PostTypeId` Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
+   `AcceptedAnswerId` UInt32,
+   `CreationDate` DateTime,
+   `Score` Int32,
+   `ViewCount` UInt32,
+   `Body` String,
+   `OwnerUserId` Int32,
+   `OwnerDisplayName` String,
+   `LastEditorUserId` Int32,
+   `LastEditorDisplayName` String,
+   `LastEditDate` DateTime,
+   `LastActivityDate` DateTime,
+   `Title` String,
+   `Tags` String,
+   `AnswerCount` UInt16,
+   `CommentCount` UInt8,
+   `FavoriteCount` UInt8,
+   `ContentLicense`LowCardinality(String),
+   `ParentId` String,
+   `CommunityOwnedDate` DateTime,
+   `ClosedDate` DateTime
+)
+ENGINE = MergeTree
+ORDER BY tuple()
+COMMENT 'Optimized types'
+```
 
-    We can populate this with a simple `INSERT INTO SELECT`, reading the data from PostgresSQL and inserting into ClickHouse:
+We can populate this with a simple `INSERT INTO SELECT`, reading the data from PostgresSQL and inserting into ClickHouse:
 
-    ```sql title="Query"
-    INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>:<port>', 'postgres', 'posts', '<username>', '<password>')
-    0 rows in set. Elapsed: 146.471 sec. Processed 59.82 million rows, 83.82 GB (408.40 thousand rows/s., 572.25 MB/s.)
-    ```
+```sql title="Query"
+INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>:<port>', 'postgres', 'posts', '<username>', '<password>')
+0 rows in set. Elapsed: 146.471 sec. Processed 59.82 million rows, 83.82 GB (408.40 thousand rows/s., 572.25 MB/s.)
+```
 
-    Incremental loads can, in turn, be scheduled. If the Postgres table only receives inserts and an incrementing id or timestamp exists, users can use the above table function approach to load increments, i.e. a `WHERE` clause can be applied to the `SELECT`.  This approach may also be used to support updates if these are guaranteed to update the same column. Supporting deletes will, however, require a complete reload, which may be difficult to achieve as the table grows.
+Incremental loads can, in turn, be scheduled. If the Postgres table only receives inserts and an incrementing id or timestamp exists, users can use the above table function approach to load increments, i.e. a `WHERE` clause can be applied to the `SELECT`.  This approach may also be used to support updates if these are guaranteed to update the same column. Supporting deletes will, however, require a complete reload, which may be difficult to achieve as the table grows.
 
-    We demonstrate an initial load and incremental load using the `CreationDate` (we assume this gets updated if rows are updated)..
+We demonstrate an initial load and incremental load using the `CreationDate` (we assume this gets updated if rows are updated)..
 
-    ```sql
-    -- initial load
-    INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', 'posts', 'postgres', '<password')
+```sql
+-- initial load
+INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', 'posts', 'postgres', '<password')
 
-    INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', 'posts', 'postgres', '<password') WHERE CreationDate > ( SELECT (max(CreationDate) FROM stackoverflow.posts)
-    ```
+INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', 'posts', 'postgres', '<password') WHERE CreationDate > ( SELECT (max(CreationDate) FROM stackoverflow.posts)
+```
 
-    > ClickHouse will push down simple `WHERE` clauses such as `=`, `!=`, `>`,`>=`, `<`, `<=`, and IN to the PostgreSQL server. Incremental loads can thus be made more efficient by ensuring an index exists on columns used to identify the change set.
+> ClickHouse will push down simple `WHERE` clauses such as `=`, `!=`, `>`,`>=`, `<`, `<=`, and IN to the PostgreSQL server. Incremental loads can thus be made more efficient by ensuring an index exists on columns used to identify the change set.
 
-    > A possible method to detect UPDATE operations when using query replication is using the [`XMIN` system column](https://www.postgresql.org/docs/9.1/ddl-system-columns.html) (transaction IDs) as a watermark - a change in this column is indicative of a change and therefore can be applied to the destination table. Users employing this approach should be aware that `XMIN` values can wrap around and comparisons require a full table scan, making tracking changes more complex.
+> A possible method to detect UPDATE operations when using query replication is using the [`XMIN` system column](https://www.postgresql.org/docs/9.1/ddl-system-columns.html) (transaction IDs) as a watermark - a change in this column is indicative of a change and therefore can be applied to the destination table. Users employing this approach should be aware that `XMIN` values can wrap around and comparisons require a full table scan, making tracking changes more complex.
 
-    [Click here for Part 2](./rewriting-queries.md)
+[Click here for Part 2](./rewriting-queries.md)

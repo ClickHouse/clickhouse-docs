@@ -49,7 +49,7 @@ To configure a read-only user, follow these steps:
 2. Ensure the `readonly` user has enough permission to modify the `max_execution_time` setting required by the underlying [clickhouse-go client](https://github.com/ClickHouse/clickhouse-go).
 3. If you're using a public ClickHouse instance, it is not recommended to set `readonly=2` in the `readonly` profile. Instead, leave `readonly=1` and set the constraint type of `max_execution_time` to [changeable_in_readonly](/operations/settings/constraints-on-settings) to allow modification of this setting.
 
-## 3.  Install the ClickHouse plugin for Grafana {#3--install-the-clickhouse-plugin-for-grafana}
+## 3.  Install the ClickHouse Plugin for Grafana {#3--install-the-clickhouse-plugin-for-grafana}
 
 Before Grafana can connect to ClickHouse, you need to install the appropriate Grafana plugin. Assuming you are logged in to Grafana, follow these steps:
 
@@ -71,7 +71,7 @@ Before Grafana can connect to ClickHouse, you need to install the appropriate Gr
 
 2. Either scroll down and find the **ClickHouse** data source type, or you can search for it in the search bar of the **Add data source** page. Select the **ClickHouse** data source and the following page will appear:
 
-    <Image size="md" img={quick_config} alt="Connection configuration page" border />
+  <Image size="md" img={quick_config} alt="Connection configuration page" border />
 
 3. Enter your server settings and credentials. The key settings are:
 
@@ -81,13 +81,13 @@ Before Grafana can connect to ClickHouse, you need to install the appropriate Gr
 - **Secure connection** enable if your server requires a secure connection.
 - **Username** and **Password**: enter your ClickHouse user credentials. If you have not configured any users, try `default` for the username. It is recommended to [configure a read-only user](#2-making-a-read-only-user).
 
-    For more settings, check the [plugin configuration](./config.md) documentation.
+For more settings, check the [plugin configuration](./config.md) documentation.
 
 4. Click the **Save & test** button to verify that Grafana can connect to your ClickHouse service. If successful, you will see a **Data source is working** message:
 
     <Image size="md" img={valid_ds} alt="Select Save & test" border />
 
-## 5. Next steps {#5-next-steps}
+## 5. Next Steps {#5-next-steps}
 
 Your data source is now ready to use! Learn more about how to build queries with the [query builder](./query-builder.md).
 
@@ -95,7 +95,7 @@ For more details on configuration, check the [plugin configuration](./config.md)
 
 If you're looking for more information that is not included in these docs, check the [plugin repository on GitHub](https://github.com/grafana/clickhouse-datasource).
 
-## Upgrading plugin versions {#upgrading-plugin-versions}
+## Upgrading Plugin Versions {#upgrading-plugin-versions}
 
 Starting with v4, configurations and queries are able to be upgraded as new versions are released.
 

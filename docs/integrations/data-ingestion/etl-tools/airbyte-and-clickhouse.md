@@ -69,15 +69,15 @@ In this section, we will display how to add a ClickHouse instance as a destinati
 
 4. Congratulations! you have now added ClickHouse as a destination in Airbyte.
 
-    :::note
-    In order to use ClickHouse as a destination, the user you'll use need to have the permissions to create databases, tables and insert rows. We recommend creating a dedicated user for Airbyte (eg. `my_airbyte_user`) with the following permissions:
+:::note
+In order to use ClickHouse as a destination, the user you'll use need to have the permissions to create databases, tables and insert rows. We recommend creating a dedicated user for Airbyte (eg. `my_airbyte_user`) with the following permissions:
 
-    ```sql
-    CREATE USER 'my_airbyte_user'@'%' IDENTIFIED BY 'your_password_here';
+```sql
+CREATE USER 'my_airbyte_user'@'%' IDENTIFIED BY 'your_password_here';
 
-    GRANT CREATE ON * TO my_airbyte_user;
-    ```
-    :::
+GRANT CREATE ON * TO my_airbyte_user;
+```
+:::
 
 ## 3. Add a dataset as a source {#3-add-a-dataset-as-a-source}
 
@@ -101,21 +101,21 @@ The example dataset we will use is the <a href="https://clickhouse.com/docs/gett
 
 1. Within Airbyte, select the "Connections" page and add a new connection
 
-    <Image img={airbyte06} size="lg" border alt="Add a connection in Airbyte" />
+<Image img={airbyte06} size="lg" border alt="Add a connection in Airbyte" />
 
 2. Select "Use existing source" and select the New York City Taxi Data, the select "Use existing destination" and select you ClickHouse instance.
 
 3. Fill out the "Set up the connection" form by choosing a Replication Frequency (we will use `manual` for this tutorial) and select `nyc_taxi_2022` as the stream you want to sync. Make sure you pick `Normalized Tabular Data` as a Normalization.
 
-    <Image img={airbyte07} size="lg" border alt="Connection creation in Airbyte" />
+<Image img={airbyte07} size="lg" border alt="Connection creation in Airbyte" />
 
 4. Now that the connection is created, click on "Sync now" to trigger the data loading (since we picked `Manual` as a Replication Frequency)
 
-    <Image img={airbyte08} size="lg" border alt="Sync now in Airbyte" />
+<Image img={airbyte08} size="lg" border alt="Sync now in Airbyte" />
 
 5. Your data will start loading, you can expand the view to see Airbyte logs and progress. Once the operation finishes, you'll see a `Completed successfully` message in the logs:
 
-    <Image img={airbyte09} size="lg" border alt="Completed successfully" />
+<Image img={airbyte09} size="lg" border alt="Completed successfully" />
 
 6. Connect to your ClickHouse instance using your preferred SQL Client and check the resulting table:
 

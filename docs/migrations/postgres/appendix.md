@@ -12,7 +12,7 @@ import Image from '@theme/IdealImage';
 
 Users coming from OLTP systems who are used to ACID transactions should be aware that ClickHouse makes deliberate compromises in not fully providing these in exchange for performance. ClickHouse semantics can deliver high durability guarantees and high write throughput if well understood. We highlight some key concepts below that users should be familiar with prior to working with ClickHouse from Postgres.
 
-### Shards vs replicas {#shards-vs-replicas}
+### Shards vs Replicas {#shards-vs-replicas}
 
 Sharding and replication are two strategies used for scaling beyond one Postgres instance when storage and/or compute become a bottleneck to performance. Sharding in Postgres involves splitting a large database into smaller, more manageable pieces across multiple nodes. However, Postgres does not support sharding natively. Instead, sharding can be achieved using extensions such as [Citus](https://www.citusdata.com/), in which Postgres becomes a distributed database capable of scaling horizontally. This approach allows Postgres to handle higher transaction rates and larger datasets by spreading the load across several machines. Shards can be row or schema-based in order to provide flexibility for workload types, such as transactional or analytical. Sharding can introduce significant complexity in terms of data management and query execution as it requires coordination across multiple machines and consistency guarantees.
 
@@ -93,10 +93,12 @@ This can be achieved in several ways (in order of preference):
 1. **Sync replicas manually** - If you write to one replica and read from another, you can use issue `SYSTEM SYNC REPLICA LIGHTWEIGHT` prior to reading.
 1. **Enable sequential consistency** - via the query setting [`select_sequential_consistency = 1`](/operations/settings/settings#select_sequential_consistency). In OSS, the setting `insert_quorum = 'auto'` must also be specified.
 
-    See [here](/cloud/reference/shared-merge-tree#consistency) for further details on enabling these settings.
+<br />
 
-    > Use of sequential consistency will place a greater load on ClickHouse Keeper.  The result can
-    mean slower inserts and reads. SharedMergeTree, used in ClickHouse Cloud as the main table engine, sequential consistency [incurs less overhead and will scale better](/cloud/reference/shared-merge-tree#consistency). OSS users should use this approach cautiously and measure Keeper load.
+See [here](/cloud/reference/shared-merge-tree#consistency) for further details on enabling these settings.
+
+> Use of sequential consistency will place a greater load on ClickHouse Keeper.  The result can
+mean slower inserts and reads. SharedMergeTree, used in ClickHouse Cloud as the main table engine, sequential consistency [incurs less overhead and will scale better](/cloud/reference/shared-merge-tree#consistency). OSS users should use this approach cautiously and measure Keeper load.
 
 ## Transactional (ACID) support {#transactional-acid-support}
 

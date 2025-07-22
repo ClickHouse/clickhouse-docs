@@ -32,9 +32,9 @@ We provide examples of reading and loading JSON in other common formats below.
 
 ## Reading JSON as an object {#reading-json-as-an-object}
 
-Our previous examples show how `JSONEachRow` reads newline-delimited JSON, with each line read as a separate object mapped to a table row and each key to a column. This is ideal for cases where the JSON is predictable with single types for each column.
+Our previous examples show how `JSONEachRow` reads newline-delimited JSON, with each line read as a separate object mapped to a table row and each key to a column. This is ideal for cases where the JSON is predictable with single types for each column. 
 
-In contrast, `JSONAsObject` treats each line as a single `JSON` object and stores it in a single column, of type [`JSON`](/sql-reference/data-types/newjson), making it better suited for nested JSON payloads and cases where the keys are dynamic and have potentially more than one type.
+In contrast, `JSONAsObject` treats each line as a single `JSON` object and stores it in a single column, of type [`JSON`](/sql-reference/data-types/newjson), making it better suited for nested JSON payloads and cases where the keys are dynamic and have potentially more than one type. 
 
 Use `JSONEachRow` for row-wise inserts, and [`JSONAsObject`](/interfaces/formats/JSONAsObject) when storing flexible or dynamic JSON data.
 
@@ -96,7 +96,7 @@ Code: 117. DB::Exception: JSON objects have ambiguous data: in some objects path
 To increase the maximum number of rows/bytes to read for structure determination, use setting input_format_max_rows_to_read_for_schema_inference/input_format_max_bytes_to_read_for_schema_inference.
 You can specify the structure manually: (in file/uri bluesky/file_0001.json.gz). (CANNOT_EXTRACT_TABLE_STRUCTURE)
 ```
-
+ 
 Conversely, `JSONAsObject` can be used in this case as the `JSON` type supports multiple types for the same subcolumn.
 
 ```sql
@@ -227,7 +227,7 @@ SELECT * FROM file('objects.json', JSONObjectEachRow)
 
 Note how the `id` column has been populated by key values correctly.
 
-## JSON arrays {#json-arrays}
+## JSON Arrays {#json-arrays}
 
 Sometimes, for the sake of saving space, JSON files are encoded in arrays instead of objects. In this case, we deal with a [list of JSON arrays](../assets/arrays.json):
 

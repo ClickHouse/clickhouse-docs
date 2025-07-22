@@ -6,7 +6,7 @@ hide_title: true
 description: 'Overview page for Managing Cloud'
 ---
 
-# Managing Cloud
+# Managing Cloud 
 
 In this section of the docs you will find all the information you may need about managing ClickHouse cloud. This section contains the following pages:
 

@@ -16,85 +16,85 @@ As well as the data formats that ClickHouse supports, chDB also supports:
 - `DataFrame` as an input and output format, the type is Python `pandas.DataFrame`. For examples, see [`test_joindf.py`](https://github.com/chdb-io/chdb/blob/main/tests/test_joindf.py)
 - `Debug` as ab output (as an alias of `CSV`), but with enabled debug verbose output from ClickHouse.
 
-    The supported data formats from ClickHouse are:
+The supported data formats from ClickHouse are:
 
-    | Format                          | Input | Output |
-    |---------------------------------|-------|--------|
-    | TabSeparated                    | ✔     | ✔      |
-    | TabSeparatedRaw                 | ✔     | ✔      |
-    | TabSeparatedWithNames           | ✔     | ✔      |
-    | TabSeparatedWithNamesAndTypes   | ✔     | ✔      |
-    | TabSeparatedRawWithNames        | ✔     | ✔      |
-    | TabSeparatedRawWithNamesAndTypes| ✔     | ✔      |
-    | Template                        | ✔     | ✔      |
-    | TemplateIgnoreSpaces            | ✔     | ✗      |
-    | CSV                             | ✔     | ✔      |
-    | CSVWithNames                    | ✔     | ✔      |
-    | CSVWithNamesAndTypes            | ✔     | ✔      |
-    | CustomSeparated                 | ✔     | ✔      |
-    | CustomSeparatedWithNames        | ✔     | ✔      |
-    | CustomSeparatedWithNamesAndTypes| ✔     | ✔      |
-    | SQLInsert                       | ✗     | ✔      |
-    | Values                          | ✔     | ✔      |
-    | Vertical                        | ✗     | ✔      |
-    | JSON                            | ✔     | ✔      |
-    | JSONAsString                    | ✔     | ✗      |
-    | JSONStrings                     | ✔     | ✔      |
-    | JSONColumns                     | ✔     | ✔      |
-    | JSONColumnsWithMetadata         | ✔     | ✔      |
-    | JSONCompact                     | ✔     | ✔      |
-    | JSONCompactStrings              | ✗     | ✔      |
-    | JSONCompactColumns              | ✔     | ✔      |
-    | JSONEachRow                     | ✔     | ✔      |
-    | PrettyJSONEachRow               | ✗     | ✔      |
-    | JSONEachRowWithProgress         | ✗     | ✔      |
-    | JSONStringsEachRow              | ✔     | ✔      |
-    | JSONStringsEachRowWithProgress  | ✗     | ✔      |
-    | JSONCompactEachRow              | ✔     | ✔      |
-    | JSONCompactEachRowWithNames     | ✔     | ✔      |
-    | JSONCompactEachRowWithNamesAndTypes | ✔  | ✔      |
-    | JSONCompactStringsEachRow       | ✔     | ✔      |
-    | JSONCompactStringsEachRowWithNames | ✔  | ✔      |
-    | JSONCompactStringsEachRowWithNamesAndTypes | ✔ | ✔ |
-    | JSONObjectEachRow               | ✔     | ✔      |
-    | BSONEachRow                     | ✔     | ✔      |
-    | TSKV                            | ✔     | ✔      |
-    | Pretty                          | ✗     | ✔      |
-    | PrettyNoEscapes                 | ✗     | ✔      |
-    | PrettyMonoBlock                 | ✗     | ✔      |
-    | PrettyNoEscapesMonoBlock        | ✗     | ✔      |
-    | PrettyCompact                   | ✗     | ✔      |
-    | PrettyCompactNoEscapes          | ✗     | ✔      |
-    | PrettyCompactMonoBlock          | ✗     | ✔      |
-    | PrettyCompactNoEscapesMonoBlock | ✗     | ✔      |
-    | PrettySpace                     | ✗     | ✔      |
-    | PrettySpaceNoEscapes            | ✗     | ✔      |
-    | PrettySpaceMonoBlock            | ✗     | ✔      |
-    | PrettySpaceNoEscapesMonoBlock   | ✗     | ✔      |
-    | Prometheus                      | ✗     | ✔      |
-    | Protobuf                        | ✔     | ✔      |
-    | ProtobufSingle                  | ✔     | ✔      |
-    | Avro                            | ✔     | ✔      |
-    | AvroConfluent                   | ✔     | ✗      |
-    | Parquet                         | ✔     | ✔      |
-    | ParquetMetadata                 | ✔     | ✗      |
-    | Arrow                           | ✔     | ✔      |
-    | ArrowStream                     | ✔     | ✔      |
-    | ORC                             | ✔     | ✔      |
-    | One                             | ✔     | ✗      |
-    | RowBinary                       | ✔     | ✔      |
-    | RowBinaryWithNames              | ✔     | ✔      |
-    | RowBinaryWithNamesAndTypes      | ✔     | ✔      |
-    | RowBinaryWithDefaults           | ✔     | ✔      |
-    | Native                          | ✔     | ✔      |
-    | Null                            | ✗     | ✔      |
-    | XML                             | ✗     | ✔      |
-    | CapnProto                       | ✔     | ✔      |
-    | LineAsString                    | ✔     | ✔      |
-    | Regexp                          | ✔     | ✗      |
-    | RawBLOB                         | ✔     | ✔      |
-    | MsgPack                         | ✔     | ✔      |
-    | MySQLDump                       | ✔     | ✗      |
-    | Markdown                        | ✗     | ✔      |
+| Format                          | Input | Output |
+|---------------------------------|-------|--------|
+| TabSeparated                    | ✔     | ✔      |
+| TabSeparatedRaw                 | ✔     | ✔      |
+| TabSeparatedWithNames           | ✔     | ✔      |
+| TabSeparatedWithNamesAndTypes   | ✔     | ✔      |
+| TabSeparatedRawWithNames        | ✔     | ✔      |
+| TabSeparatedRawWithNamesAndTypes| ✔     | ✔      |
+| Template                        | ✔     | ✔      |
+| TemplateIgnoreSpaces            | ✔     | ✗      |
+| CSV                             | ✔     | ✔      |
+| CSVWithNames                    | ✔     | ✔      |
+| CSVWithNamesAndTypes            | ✔     | ✔      |
+| CustomSeparated                 | ✔     | ✔      |
+| CustomSeparatedWithNames        | ✔     | ✔      |
+| CustomSeparatedWithNamesAndTypes| ✔     | ✔      |
+| SQLInsert                       | ✗     | ✔      |
+| Values                          | ✔     | ✔      |
+| Vertical                        | ✗     | ✔      |
+| JSON                            | ✔     | ✔      |
+| JSONAsString                    | ✔     | ✗      |
+| JSONStrings                     | ✔     | ✔      |
+| JSONColumns                     | ✔     | ✔      |
+| JSONColumnsWithMetadata         | ✔     | ✔      |
+| JSONCompact                     | ✔     | ✔      |
+| JSONCompactStrings              | ✗     | ✔      |
+| JSONCompactColumns              | ✔     | ✔      |
+| JSONEachRow                     | ✔     | ✔      |
+| PrettyJSONEachRow               | ✗     | ✔      |
+| JSONEachRowWithProgress         | ✗     | ✔      |
+| JSONStringsEachRow              | ✔     | ✔      |
+| JSONStringsEachRowWithProgress  | ✗     | ✔      |
+| JSONCompactEachRow              | ✔     | ✔      |
+| JSONCompactEachRowWithNames     | ✔     | ✔      |
+| JSONCompactEachRowWithNamesAndTypes | ✔  | ✔      |
+| JSONCompactStringsEachRow       | ✔     | ✔      |
+| JSONCompactStringsEachRowWithNames | ✔  | ✔      |
+| JSONCompactStringsEachRowWithNamesAndTypes | ✔ | ✔ |
+| JSONObjectEachRow               | ✔     | ✔      |
+| BSONEachRow                     | ✔     | ✔      |
+| TSKV                            | ✔     | ✔      |
+| Pretty                          | ✗     | ✔      |
+| PrettyNoEscapes                 | ✗     | ✔      |
+| PrettyMonoBlock                 | ✗     | ✔      |
+| PrettyNoEscapesMonoBlock        | ✗     | ✔      |
+| PrettyCompact                   | ✗     | ✔      |
+| PrettyCompactNoEscapes          | ✗     | ✔      |
+| PrettyCompactMonoBlock          | ✗     | ✔      |
+| PrettyCompactNoEscapesMonoBlock | ✗     | ✔      |
+| PrettySpace                     | ✗     | ✔      |
+| PrettySpaceNoEscapes            | ✗     | ✔      |
+| PrettySpaceMonoBlock            | ✗     | ✔      |
+| PrettySpaceNoEscapesMonoBlock   | ✗     | ✔      |
+| Prometheus                      | ✗     | ✔      |
+| Protobuf                        | ✔     | ✔      |
+| ProtobufSingle                  | ✔     | ✔      |
+| Avro                            | ✔     | ✔      |
+| AvroConfluent                   | ✔     | ✗      |
+| Parquet                         | ✔     | ✔      |
+| ParquetMetadata                 | ✔     | ✗      |
+| Arrow                           | ✔     | ✔      |
+| ArrowStream                     | ✔     | ✔      |
+| ORC                             | ✔     | ✔      |
+| One                             | ✔     | ✗      |
+| RowBinary                       | ✔     | ✔      |
+| RowBinaryWithNames              | ✔     | ✔      |
+| RowBinaryWithNamesAndTypes      | ✔     | ✔      |
+| RowBinaryWithDefaults           | ✔     | ✔      |
+| Native                          | ✔     | ✔      |
+| Null                            | ✗     | ✔      |
+| XML                             | ✗     | ✔      |
+| CapnProto                       | ✔     | ✔      |
+| LineAsString                    | ✔     | ✔      |
+| Regexp                          | ✔     | ✗      |
+| RawBLOB                         | ✔     | ✔      |
+| MsgPack                         | ✔     | ✔      |
+| MySQLDump                       | ✔     | ✗      |
+| Markdown                        | ✗     | ✔      |
 
-    For further information and examples, see [ClickHouse formats for input and output data](/interfaces/formats).
+For further information and examples, see [ClickHouse formats for input and output data](/interfaces/formats).

@@ -25,7 +25,7 @@ At the heart of ClickStack is ClickHouse, a column-oriented database designed fo
 - Native support for semi-structured JSON data, allowing dynamic schema evolution
 - A powerful SQL engine with hundreds of built-in analytical functions
 
-    ClickHouse handles observability data as wide events, allowing for deep correlation across logs, metrics, and traces in a single unified structure.
+ClickHouse handles observability data as wide events, allowing for deep correlation across logs, metrics, and traces in a single unified structure.
 
 ## OpenTelemetry collector: data ingestion {#open-telemetry-collector}
 
@@ -34,7 +34,7 @@ ClickStack includes a pre-configured OpenTelemetry (OTel) collector to ingest te
 - gRPC (port `4317`)
 - HTTP (port `4318`)
 
-    The collector exports telemetry to ClickHouse in efficient batches. It supports optimized table schemas per data source, ensuring scalable performance across all signal types.
+The collector exports telemetry to ClickHouse in efficient batches. It supports optimized table schemas per data source, ensuring scalable performance across all signal types.
 
 ## HyperDX: the interface {#hyperdx}
 
@@ -47,7 +47,7 @@ HyperDX is the user interface for ClickStack. It offers:
 - Dashboard creation and alert configuration
 - SQL query interface for advanced analysis
 
-    Designed specifically for ClickHouse, HyperDX combines powerful search with intuitive workflows, enabling users to spot anomalies, investigate issues, and gain insights fast.
+Designed specifically for ClickHouse, HyperDX combines powerful search with intuitive workflows, enabling users to spot anomalies, investigate issues, and gain insights fast. 
 
 ## MongoDB: application state {#mongo}
 
@@ -58,6 +58,6 @@ ClickStack uses MongoDB to store application-level state, including:
 - User profiles
 - Saved visualizations
 
-    This separation of state from event data ensures performance and scalability while simplifying backup and configuration.
+This separation of state from event data ensures performance and scalability while simplifying backup and configuration.
 
-    This modular architecture enables ClickStack to deliver an out-of-the-box observability platform that is fast, flexible, and open-source.
+This modular architecture enables ClickStack to deliver an out-of-the-box observability platform that is fast, flexible, and open-source.

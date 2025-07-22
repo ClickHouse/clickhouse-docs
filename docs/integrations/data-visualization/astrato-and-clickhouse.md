@@ -35,36 +35,36 @@ When setting up your data connection, you'll need to know:
 
 - Database Credentials: Username, Password
 
-    <ConnectionDetails />
+<ConnectionDetails />
 
 ## Creating the data connection to ClickHouse {#creating-the-data-connection-to-clickhouse}
 
 - Select **Data** in the sidebar, and select the **Data Connection** tab
-    (or, navigate to this link: https://app.astrato.io/data/sources)
-    ​
+(or, navigate to this link: https://app.astrato.io/data/sources)
+​
 - Click on the **New Data Connection** button in the top right side of the screen.
 
-    <Image size="sm" img={astrato_1_dataconnection} alt="Astrato Data Connection" border />
+<Image size="sm" img={astrato_1_dataconnection} alt="Astrato Data Connection" border />
 
 - Select **ClickHouse**.
 
-    <Image size="sm" img={astrato_2a_clickhouse_connection} alt="Astrato ClickHouse Data Connection" border />
+<Image size="sm" img={astrato_2a_clickhouse_connection} alt="Astrato ClickHouse Data Connection" border />
 
 - Complete the required fields in the connection dialogue box
 
-    <Image size="sm" img={astrato_2b_clickhouse_connection} alt="Astrato connect to ClickHouse required fields" border />
+<Image size="sm" img={astrato_2b_clickhouse_connection} alt="Astrato connect to ClickHouse required fields" border />
 
 - Click **Test Connection**. If the connection is successful, give the data connection a **name** and click **Next.**
 
 - Set the **user access** to the data connection and click **connect.**
 
-    <Image size="md" img={astrato_3_user_access} alt="Astrato connect to ClickHouse User Access" border />
+<Image size="md" img={astrato_3_user_access} alt="Astrato connect to ClickHouse User Access" border />
 
-- A connection is created and a dataview is created.
+-   A connection is created and a dataview is created.
 
-    :::note
-    if a duplicate is created, a timestamp is added to the data source name.
-    :::
+:::note
+if a duplicate is created, a timestamp is added to the data source name.
+:::
 
 ## Creating a semantic model / data view {#creating-a-semantic-model--data-view}
 
@@ -90,7 +90,7 @@ In just a few steps, you can build your first chart in Astrato.
 3. Add dimension(s)
 4. Add measure(s)
 
-    <Image size="lg" img={astrato_5a_clickhouse_build_chart} alt="Astrato connect to ClickHouse User Access" border />
+<Image size="lg" img={astrato_5a_clickhouse_build_chart} alt="Astrato connect to ClickHouse User Access" border />
 
 ### View generated SQL supporting each visualization {#view-generated-sql-supporting-each-visualization}
 

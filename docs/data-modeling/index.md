@@ -5,7 +5,7 @@ description: 'Overview of Data Modelling'
 keywords: ['data modelling', 'schema design', 'dictionary', 'materialized view', 'data compression', 'denormalizing data']
 ---
 
-# Data Modeling
+# Data Modeling 
 
 This section is about data modeling in ClickHouse and contains the following topics:
 

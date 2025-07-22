@@ -39,110 +39,155 @@ The chart supports standard Kubernetes best practices, including:
 <br/>
 
 <VerticalStepper headerLevel="h3">
+
 ### Prerequisites {#prerequisites}
+
 - [Helm](https://helm.sh/) v3+
 - Kubernetes cluster (v1.20+ recommended)
 - `kubectl` configured to interact with your cluster
+
 ### Add the HyperDX Helm repository {#add-the-hyperdx-helm-repository}
+
 Add the HyperDX Helm repository:
+
 ```shell
 helm repo add hyperdx https://hyperdxio.github.io/helm-charts
 helm repo update
 ```
+
 ### Installing HyperDX {#installing-hyperdx}
+
 To install the HyperDX chart with default values:
+
 ```shell
 helm install my-hyperdx hyperdx/hdx-oss-v2
 ```
+
 ### Verify the installation {#verify-the-installation}
+
 Verify the installation:
+
 ```shell
 kubectl get pods -l "app.kubernetes.io/name=hdx-oss-v2"
 ```
+
 When all pods are ready, proceed.
+
 ### Forward ports {#forward-ports}
+
 Port forwarding allows us to access and set up HyperDX. Users deploying to production should instead expose the service via an ingress or load balancer to ensure proper network access, TLS termination, and scalability. Port forwarding is best suited for local development or one-off administrative tasks, not long-term or high-availability environments.
+
 ```shell
 kubectl port-forward \
-pod/$(kubectl get pod -l app.kubernetes.io/name=hdx-oss-v2 -o jsonpath='{.items[0].metadata.name}') \
-8080:3000
+  pod/$(kubectl get pod -l app.kubernetes.io/name=hdx-oss-v2 -o jsonpath='{.items[0].metadata.name}') \
+  8080:3000
 ```
+
 ### Navigate to the UI {#navigate-to-the-ui}
+
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
-Create a user, providing a username and password which means the requirements.
+
+Create a user, providing a username and password which means the requirements. 
+
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
+
 On clicking `Create`, data sources will be created for the ClickHouse instance deployed with the Helm chart.
+
 :::note Overriding default connection
 You can override the default connection to the integrated ClickHouse instance. For details, see ["Using ClickHouse Cloud"](#using-clickhouse-cloud).
 :::
+
 For an example of using an alternative ClickHouse instance, see ["Create a ClickHouse Cloud connection"](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
+
 ### Customizing values (optional) {#customizing-values}
+
 You can customize settings by using `--set` flags. For example:
+
 ```shell
 helm install my-hyperdx hyperdx/hdx-oss-v2 --set key=value
+
 Alternatively, edit the `values.yaml`. To retrieve the default values:
+
 ```shell
 helm show values hyperdx/hdx-oss-v2 > values.yaml
 ```
+
 Example config:
+
 ```yaml
 replicaCount: 2
 resources:
-limits:
-cpu: 500m
-memory: 512Mi
-requests:
-cpu: 250m
-memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
 ingress:
-enabled: true
-annotations:
-kubernetes.io/ingress.class: nginx
-hosts:
-- host: hyperdx.example.com
-paths:
-- path: /
-pathType: ImplementationSpecific
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  hosts:
+    - host: hyperdx.example.com
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
 ```
+
 ```shell
 helm install my-hyperdx hyperdx/hdx-oss-v2 -f values.yaml
 ```
+
 ### Using secrets (optional) {#using-secrets}
+
 For handling sensitive data such as API keys or database credentials, use Kubernetes secrets. The HyperDX Helm charts provide default secret files that you can modify and apply to your cluster.
+
 #### Using pre-configured secrets {#using-pre-configured-secrets}
+
 The Helm chart includes a default secret template located at [`charts/hdx-oss-v2/templates/secrets.yaml`](https://github.com/hyperdxio/helm-charts/blob/main/charts/hdx-oss-v2/templates/secrets.yaml). This file provides a base structure for managing secrets.
+
 If you need to manually apply a secret, modify and apply the provided `secrets.yaml` template:
+
 ```yaml
 apiVersion: v1
 kind: Secret
 metadata:
-name: hyperdx-secret
-annotations:
-"helm.sh/resource-policy": keep
+  name: hyperdx-secret
+  annotations:
+    "helm.sh/resource-policy": keep
 type: Opaque
 data:
-API_KEY: <base64-encoded-api-key>
+  API_KEY: <base64-encoded-api-key>
 ```
+
 Apply the secret to your cluster:
+
 ```shell
 kubectl apply -f secrets.yaml
 ```
+
 #### Creating a custom secret {#creating-a-custom-secret}
+
 If you prefer, you can create a custom Kubernetes secret manually:
+
 ```shell
 kubectl create secret generic hyperdx-secret \
---from-literal=API_KEY=my-secret-api-key
+  --from-literal=API_KEY=my-secret-api-key
 ```
+
 #### Referencing a secret {#referencing-a-secret}
+
 To reference a secret in `values.yaml`:
+
 ```yaml
 hyperdx:
-apiKey:
-valueFrom:
-secretKeyRef:
-name: hyperdx-secret
-key: API_KEY
+  apiKey:
+    valueFrom:
+      secretKeyRef:
+        name: hyperdx-secret
+        key: API_KEY
 ```
+
 </VerticalStepper>
 
 ## Using ClickHouse Cloud {#using-clickhouse-cloud}
@@ -268,14 +313,14 @@ hyperdx:
   ...
   env:
     - name: BETA_CH_OTEL_JSON_SCHEMA_ENABLED
-        value: "true"
+      value: "true"
 
 otel:
   ...
   env:
     - name: OTEL_AGENT_FEATURE_GATE_ARG
-        value: "--feature-gates=clickhouse.json"
-        ```
+      value: "--feature-gates=clickhouse.json"
+```
 
 or via `--set`:
 

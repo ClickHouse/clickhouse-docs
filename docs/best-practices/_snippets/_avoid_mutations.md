@@ -1,8 +1,8 @@
-In ClickHouse, **mutations** refer to operations that modify or delete existing data in a table - typically using `ALTER TABLE ... DELETE` or `ALTER TABLE ... UPDATE`. While these statements may appear similar to standard SQL operations, they are fundamentally different under the hood.
+In ClickHouse, **mutations** refer to operations that modify or delete existing data in a table - typically using `ALTER TABLE ... DELETE` or `ALTER TABLE ... UPDATE`. While these statements may appear similar to standard SQL operations, they are fundamentally different under the hood. 
 
 Rather than modifying rows in place, mutations in ClickHouse are asynchronous background processes that rewrite entire [data parts](/parts) affected by the change. This approach is necessary due to ClickHouse's column-oriented, immutable storage model, but it can lead to significant I/O and resource usage.
 
-When a mutation is issued, ClickHouse schedules the creation of new **mutated parts**, leaving the original parts untouched until the new ones are ready. Once ready, the mutated parts atomically replace the originals. However, because the operation rewrites entire parts, even a minor change (such as updating a single row) may result in large-scale rewrites and excessive write amplification.
+When a mutation is issued, ClickHouse schedules the creation of new **mutated parts**, leaving the original parts untouched until the new ones are ready. Once ready, the mutated parts atomically replace the originals. However, because the operation rewrites entire parts, even a minor change (such as updating a single row) may result in large-scale rewrites and excessive write amplification. 
 
 For large datasets, this can produce a substantial spike in disk I/O and degrade overall cluster performance. Unlike merges, mutations can't be rolled back once submitted and will continue to execute even after server restarts unless explicitly cancelled - see [`KILL MUTATION`](/sql-reference/statements/kill#kill-mutation).
 

@@ -6,8 +6,8 @@ hide_title: false
 description: 'Article comparing materialized views and projections in ClickHouse, including their use cases, performance, and limitations.'
 ---
 
-> A common question from users is when they should use materialized views versus
-projections. In this article we will explore the key differences between the two and why you
+> A common question from users is when they should use materialized views versus 
+projections. In this article we will explore the key differences between the two and why you 
 may want to pick one over the other in certain scenarios.
 
 ## Summary of key differences {#key-differences}
@@ -69,20 +69,20 @@ You should consider avoiding the use of projections when:
 
 ## Summary {#summary}
 
-Materialized views and projections are both powerful tools in your toolkit for
+Materialized views and projections are both powerful tools in your toolkit for 
 optimizing queries and transforming data, and in general, we recommend not to view
-using them as an either/or choice. Instead, they can be used in a complementary
+using them as an either/or choice. Instead, they can be used in a complementary 
 manner to get the most out of your queries. As such, the choice between materialized
 views and projections in ClickHouse really depends on your specific use case and
 access patterns.
 
 As a general rule of thumb, you should consider using materialized views when
 you need to aggregate data from one or more source tables into a target table or
-perform complex transformations at scale. Materialized views are excellent for shifting
-the work of expensive aggregations from query time to insert time. They are a
-great choice for daily or monthly rollups, real-time dashboards or data summaries.
+perform complex transformations at scale. Materialized views are excellent for shifting 
+the work of expensive aggregations from query time to insert time. They are a 
+great choice for daily or monthly rollups, real-time dashboards or data summaries. 
 
-On the other hand, you should use projections when you need to optimize queries
+On the other hand, you should use projections when you need to optimize queries 
 which filter on different columns than those which are used in the table's primary
 key which determines the physical ordering of the data on disk. They are particularly
 useful when it's no longer possible to change the primary key of a table, or when

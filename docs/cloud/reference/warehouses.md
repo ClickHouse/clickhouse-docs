@@ -16,7 +16,7 @@ import Image from '@theme/IdealImage';
 
 # Warehouses
 
-## What is compute-compute separation? {#what-is-compute-compute-separation}
+## What is Compute-Compute Separation? {#what-is-compute-compute-separation}
 
 Compute-compute separation is available for Scale and Enterprise tiers.
 
@@ -25,25 +25,29 @@ Each ClickHouse Cloud service includes:
 - An endpoint (or multiple endpoints created via ClickHouse Cloud UI console), which is a service URL that you use to connect to the service (for example, `https://dv2fzne24g.us-east-1.aws.clickhouse.cloud:8443`).
 - An object storage folder where the service stores all the data and partially metadata:
 
-    :::note
-    Child single services can scale vertically unlike single parent services.
-    :::
+:::note
+Child single services can scale vertically unlike single parent services.
+:::
 
-    <Image img={compute_1} size="md" alt="Current service in ClickHouse Cloud" />
+<Image img={compute_1} size="md" alt="Current service in ClickHouse Cloud" />
 
-    _Fig. 1 - current service in ClickHouse Cloud_
+<br />
 
-    Compute-compute separation allows users to create multiple compute node groups, each with its own endpoint, that are using the same object storage folder, and thus, with the same tables, views, etc.
+_Fig. 1 - current service in ClickHouse Cloud_
 
-    Each compute node group will have its own endpoint so you can choose which set of replicas to use for your workloads. Some of your workloads may be satisfied with only one small-size replica, and others may require full high-availability (HA) and hundreds of gigs of memory. Compute-compute separation also allows you to separate read operations from write operations so they don't interfere with each other:
+Compute-compute separation allows users to create multiple compute node groups, each with its own endpoint, that are using the same object storage folder, and thus, with the same tables, views, etc.
 
-    <Image img={compute_2} size="md" alt="Compute separation in ClickHouse Cloud" />
+Each compute node group will have its own endpoint so you can choose which set of replicas to use for your workloads. Some of your workloads may be satisfied with only one small-size replica, and others may require full high-availability (HA) and hundreds of gigs of memory. Compute-compute separation also allows you to separate read operations from write operations so they don't interfere with each other:
 
-    _Fig. 2 - compute separation in ClickHouse Cloud_
+<Image img={compute_2} size="md" alt="Compute separation in ClickHouse Cloud" />
 
-    It is possible to create extra services that share the same data with your existing services, or create a completely new setup with multiple services sharing the same data.
+<br />
 
-## What is a warehouse? {#what-is-a-warehouse}
+_Fig. 2 - compute separation in ClickHouse Cloud_
+
+It is possible to create extra services that share the same data with your existing services, or create a completely new setup with multiple services sharing the same data.
+
+## What is a Warehouse? {#what-is-a-warehouse}
 
 In ClickHouse Cloud, a _warehouse_ is a set of services that share the same data.
 Each warehouse has a primary service (this service was created first) and secondary service(s). For example, in the screenshot below you can see a warehouse "DWH Prod" with two services:
@@ -51,17 +55,19 @@ Each warehouse has a primary service (this service was created first) and second
 - Primary service `DWH Prod`
 - Secondary service `DWH Prod Subservice`
 
-    <Image img={compute_8} size="lg" alt="Warehouse example with primary and secondary services" background='white' />
+<Image img={compute_8} size="lg" alt="Warehouse example with primary and secondary services" background='white' />
 
-    _Fig. 3 - Warehouse example_
+<br />
 
-    All services in a warehouse share the same:
+_Fig. 3 - Warehouse example_
+
+All services in a warehouse share the same:
 
 - Region (for example, us-east1)
 - Cloud service provider (AWS, GCP or Azure)
 - ClickHouse database version
 
-    You can sort services by the warehouse that they belong to.
+You can sort services by the warehouse that they belong to.
 
 ## Access controls {#access-controls}
 
@@ -100,7 +106,7 @@ _Fig. 6 - Read-write and Read-only services in a warehouse_
 :::note
 1. Read-only services currently allow user management operations (create, drop, etc). This behavior may be changed in the future.
 2. Currently, refreshable materialized views are executed on all services in the warehouse, including read-only services. This behavior will be changed in the future, however, and they will be executed on RW services only.
-    :::
+:::
 
 ## Scaling {#scaling}
 
@@ -127,10 +133,10 @@ Once compute-compute is enabled for a service (at least one secondary service wa
 
 6. **CREATE/RENAME/DROP DATABASE queries could be blocked by idled/stopped services by default.** These queries can hang. To bypass this, you  can run database management queries with `settings distributed_ddl_task_timeout=0` at the session or per query level. For example:
 
-    ```sql
-    CREATE DATABASE db_test_ddl_single_query_setting
-    SETTINGS distributed_ddl_task_timeout=0
-    ```
+```sql
+CREATE DATABASE db_test_ddl_single_query_setting
+SETTINGS distributed_ddl_task_timeout=0
+```
 
 6. **In very rare cases, secondary services that are idled or stopped for a long time (days) without waking/starting up can cause performance degradation to other services in the same warehouse.** This issue will be resolved soon and is connected to mutations running in the background. If you think you are experiencing this issue, please contact ClickHouse [Support](https://clickhouse.com/support/program).
 
@@ -145,9 +151,9 @@ Compute prices are the same for all services in a warehouse (primary and seconda
 - As all services in a single warehouse share the same storage, backups are made only on the primary (initial) service. By this, the data for all services in a warehouse is backed up.
 - If you restore a backup from a primary service of a warehouse, it will be restored to a completely new service, not connected to the existing warehouse. You can then add more services to the new service immediately after the restore is finished.
 
-## Using warehouses {#using-warehouses}
+## Using Warehouses {#using-warehouses}
 
-### Creating a warehouse {#creating-a-warehouse}
+### Creating a Warehouse {#creating-a-warehouse}
 
 To create a warehouse, you need to create a second service that will share the data with an existing service. This can be done by clicking the plus sign on any of the existing services:
 
@@ -159,7 +165,7 @@ _Fig. 7 - Click the plus sign to create a new service in a warehouse_
 
 On the service creation screen, the original service will be selected in the dropdown as the source for the data of the new service. Once created, these two services will form a warehouse.
 
-### Renaming a warehouse {#renaming-a-warehouse}
+### Renaming a Warehouse {#renaming-a-warehouse}
 
 There are two ways to rename a warehouse:
 

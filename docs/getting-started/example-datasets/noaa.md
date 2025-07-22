@@ -86,30 +86,30 @@ Summarizing the format documentation and the columns in order:
 - An 11 character station identification code. This itself encodes some useful information
 - YEAR/MONTH/DAY = 8 character date in YYYYMMDD format (e.g. 19860529 = May 29, 1986)
 - ELEMENT = 4 character indicator of element type. Effectively the measurement type. While there are many measurements available, we select the following:
-    - PRCP - Precipitation (tenths of mm)
-    - SNOW - Snowfall (mm)
-    - SNWD - Snow depth (mm)
-    - TMAX - Maximum temperature (tenths of degrees C)
-    - TAVG - Average temperature (tenths of a degree C)
-    - TMIN - Minimum temperature (tenths of degrees C)
-    - PSUN - Daily percent of possible sunshine (percent)
-    - AWND - Average daily wind speed (tenths of meters per second)
-    - WSFG - Peak gust wind speed (tenths of meters per second)
-    - WT** = Weather Type where ** defines the weather type. Full list of weather types here.
+  - PRCP - Precipitation (tenths of mm)
+  - SNOW - Snowfall (mm)
+  - SNWD - Snow depth (mm)
+  - TMAX - Maximum temperature (tenths of degrees C)
+  - TAVG - Average temperature (tenths of a degree C)
+  - TMIN - Minimum temperature (tenths of degrees C)
+  - PSUN - Daily percent of possible sunshine (percent)
+  - AWND - Average daily wind speed (tenths of meters per second)
+  - WSFG - Peak gust wind speed (tenths of meters per second)
+  - WT** = Weather Type where ** defines the weather type. Full list of weather types here.
 - DATA VALUE = 5 character data value for ELEMENT i.e. the value of the measurement.
 - M-FLAG = 1 character Measurement Flag. This has 10 possible values. Some of these values indicate questionable data accuracy. We accept data where this is set to "P" - identified as missing presumed zero, as this is only relevant to the PRCP, SNOW and SNWD measurements.
 - Q-FLAG is the measurement quality flag with 14 possible values. We are only interested in data with an empty value i.e. it did not fail any quality assurance checks.
 - S-FLAG is the source flag for the observation. Not useful for our analysis and ignored.
 - OBS-TIME = 4-character time of observation in hour-minute format (i.e. 0700 =7:00 am). Typically not present in older data. We ignore this for our purposes.
 
-    A measurement per line would result in a sparse table structure in ClickHouse. We should transform to a row per time and station, with measurements as columns. First, we limit the dataset to those rows without issues i.e. where `qFlag` is equal to an empty string.
+A measurement per line would result in a sparse table structure in ClickHouse. We should transform to a row per time and station, with measurements as columns. First, we limit the dataset to those rows without issues i.e. where `qFlag` is equal to an empty string.
 
 #### Clean the data {#clean-the-data}
 
 Using [ClickHouse local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) we can filter rows that represent measurements of interest and pass our quality requirements:
 
 ```bash
-clickhouse local --query "SELECT count()
+clickhouse local --query "SELECT count() 
 FROM file('*.csv.gz', CSV, 'station_id String, date String, measurement String, value Int64, mFlag String, qFlag String, sFlag String, obsTime String') WHERE qFlag = '' AND (measurement IN ('PRCP', 'SNOW', 'SNWD', 'TMAX', 'TAVG', 'TMIN', 'PSUN', 'AWND', 'WSFG') OR startsWith(measurement, 'WT'))"
 
 2679264563
@@ -182,7 +182,7 @@ SELECT station_id,
        name
 FROM file('noaa.csv', CSV,
           'station_id String, date Date32, tempAvg Int32, tempMax Int32, tempMin Int32, precipitation Int32, snowfall Int32, snowDepth Int32, percentDailySun Int8, averageWindSpeed Int32, maxWindSpeed Int32, weatherType UInt8') as noaa LEFT OUTER
-         JOIN stations ON noaa.station_id = stations.id INTO OUTFILE 'noaa_enriched.parquet' FORMAT Parquet SETTINGS format_regexp='^(.{11})\s+(\-?\d{1,2}\.\d{4})\s+(\-?\d{1,3}\.\d{1,4})\s+(\-?\d*\.\d*)\s+(.*)\s+(?:[\d]*)'"
+         JOIN stations ON noaa.station_id = stations.id INTO OUTFILE 'noaa_enriched.parquet' FORMAT Parquet SETTINGS format_regexp='^(.{11})\s+(\-?\d{1,2}\.\d{4})\s+(\-?\d{1,3}\.\d{1,4})\s+(\-?\d*\.\d*)\s+(.*)\s+(?:[\d]*)'" 
 ```
 This query takes a few minutes to run and produces a 6.4 GB file, `noaa_enriched.parquet`.
 
@@ -222,7 +222,7 @@ Data can be inserted from a local file as follows (from the ClickHouse client):
 INSERT INTO noaa FROM INFILE '<path>/noaa_enriched.parquet'
 ```
 
-where `<path>` represents the full path to the local file on disk.
+where `<path>` represents the full path to the local file on disk. 
 
 See [here](https://clickhouse.com/blog/real-world-data-noaa-climate-data#load-the-data) for how to speed this load up.
 

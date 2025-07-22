@@ -7,7 +7,7 @@ description: 'The official Rust client for connecting to ClickHouse.'
 title: 'ClickHouse Rust Client'
 ---
 
-# ClickHouse Rust client
+# ClickHouse Rust Client
 
 The official Rust client for connecting to ClickHouse, originally developed by [Paul Loyd](https://github.com/loyd). The client source code is available in the [GitHub repository](https://github.com/ClickHouse/clickhouse-rs).
 
@@ -16,7 +16,7 @@ The official Rust client for connecting to ClickHouse, originally developed by [
 * Uses `serde` for encoding/decoding rows.
 * Supports `serde` attributes: `skip_serializing`, `skip_deserializing`, `rename`.
 * Uses [`RowBinary`](/interfaces/formats#rowbinary) format over the HTTP transport.
-    * There are plans to switch to [`Native`](/interfaces/formats#native) over TCP.
+  * There are plans to switch to [`Native`](/interfaces/formats#native) over TCP.
 * Supports TLS (via `native-tls` and `rustls-tls` features).
 * Supports compression and decompression (LZ4).
 * Provides APIs for selecting or inserting data, executing DDLs, and client-side batching.
@@ -47,16 +47,16 @@ See also: [crates.io page](https://crates.io/crates/clickhouse).
 * `uuid` — adds `serde::uuid` to work with [uuid](https://docs.rs/uuid) crate.
 * `time` — adds `serde::time` to work with [time](https://docs.rs/time) crate.
 
-    :::important
-    When connecting to ClickHouse via an `HTTPS` url, either the `native-tls` or `rustls-tls` feature should be enabled.
-    If both are enabled, the `rustls-tls` feature will take precedence.
-    :::
+:::important
+When connecting to ClickHouse via an `HTTPS` url, either the `native-tls` or `rustls-tls` feature should be enabled.
+If both are enabled, the `rustls-tls` feature will take precedence.
+:::
 
 ## ClickHouse versions compatibility {#clickhouse-versions-compatibility}
 
 The client is compatible with the LTS or newer versions of ClickHouse, as well as ClickHouse Cloud.
 
-ClickHouse server older than v22.6 handles RowBinary [incorrectly in some rare cases](https://github.com/ClickHouse/ClickHouse/issues/37420).
+ClickHouse server older than v22.6 handles RowBinary [incorrectly in some rare cases](https://github.com/ClickHouse/ClickHouse/issues/37420). 
 You could use v0.11+ and enable `wa-37420` feature to solve this problem. Note: this feature should not be used with newer ClickHouse versions.
 
 ## Examples {#examples}
@@ -109,7 +109,7 @@ let client = Client::default()
     .with_password(read_env_var("CLICKHOUSE_PASSWORD"));
 ```
 
-See also:
+See also: 
 - [HTTPS with ClickHouse Cloud example](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/clickhouse_cloud.rs) in the client repo. This should be applicable to on-premise HTTPS connections as well.
 
 ### Selecting rows {#selecting-rows}
@@ -141,11 +141,11 @@ while let Some(row) = cursor.next().await? { .. }
 * Convenient `fetch_one::<Row>()` and `fetch_all::<Row>()` methods can be used to get a first row or all rows, correspondingly.
 * `sql::Identifier` can be used to bind table names.
 
-    NB: as the entire response is streamed, cursors can return an error even after producing some rows. If this happens in your use case, you could try `query(...).with_option("wait_end_of_query", "1")` in order to enable response buffering on the server-side. [More details](/interfaces/http/#response-buffering). The `buffer_size` option can be useful, too.
+NB: as the entire response is streamed, cursors can return an error even after producing some rows. If this happens in your use case, you could try `query(...).with_option("wait_end_of_query", "1")` in order to enable response buffering on the server-side. [More details](/interfaces/http/#response-buffering). The `buffer_size` option can be useful, too.
 
-    :::warning
-    Use `wait_end_of_query` with caution when selecting rows, as it can will to higher memory consumption on the server side and will likely decrease the overall performance.
-    :::
+:::warning
+Use `wait_end_of_query` with caution when selecting rows, as it can will to higher memory consumption on the server side and will likely decrease the overall performance.
+:::
 
 ### Inserting rows {#inserting-rows}
 
@@ -215,12 +215,12 @@ inserter.end().await?;
 * Time thresholds implemented by using [quanta](https://docs.rs/quanta) crate to speed the `inserter` up. Not used if `test-util` is enabled (thus, time can be managed by `tokio::time::advance()` in custom tests).
 * All rows between `commit()` calls are inserted in the same `INSERT` statement.
 
-    :::warning
-    Do not forget to flush if you want to terminate/finalize inserting:
-    ```rust
-    inserter.end().await?;
-    ```
-    :::
+:::warning
+Do not forget to flush if you want to terminate/finalize inserting:
+```rust
+inserter.end().await?;
+```
+:::
 
 ### Executing DDLs {#executing-ddls}
 
@@ -332,13 +332,13 @@ This example relies on the legacy Hyper API and is a subject to change in the fu
 
 See also: [custom HTTP client example](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_client.rs) in the client repo.
 
-## Data types {#data-types}
+## Data Types {#data-types}
 
 :::info
 See also the additional examples:
 * [Simpler ClickHouse data types](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/data_types_derive_simple.rs)
 * [Container-like ClickHouse data types](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/data_types_derive_containers.rs)
-    :::
+:::
 
 * `(U)Int(8|16|32|64|128)` maps to/from corresponding `(u|i)(8|16|32|64|128)` types or newtypes around them.
 * `(U)Int256` are not supported directly, but there is [a workaround for it](https://github.com/ClickHouse/clickhouse-rs/issues/48).
@@ -347,100 +347,100 @@ See also the additional examples:
 * `Boolean` maps to/from `bool` or newtypes around it.
 * `String` maps to/from any string or bytes types, e.g. `&str`, `&[u8]`, `String`, `Vec<u8>` or [`SmartString`](https://docs.rs/smartstring/latest/smartstring/struct.SmartString.html). New types are also supported. To store bytes, consider using [`serde_bytes`](https://docs.rs/serde_bytes/latest/serde_bytes/), because it's more efficient.
 
-    ```rust
-    #[derive(Row, Debug, Serialize, Deserialize)]
-    struct MyRow<'a> {
+```rust
+#[derive(Row, Debug, Serialize, Deserialize)]
+struct MyRow<'a> {
     str: &'a str,
     string: String,
     #[serde(with = "serde_bytes")]
     bytes: Vec<u8>,
     #[serde(with = "serde_bytes")]
     byte_slice: &'a [u8],
-    }
-    ```
+}
+```
 
 * `FixedString(N)` is supported as an array of bytes, e.g. `[u8; N]`.
 
-    ```rust
-    #[derive(Row, Debug, Serialize, Deserialize)]
-    struct MyRow {
+```rust
+#[derive(Row, Debug, Serialize, Deserialize)]
+struct MyRow {
     fixed_str: [u8; 16], // FixedString(16)
-    }
-    ```
+}
+```
 * `Enum(8|16)` are supported using [`serde_repr`](https://docs.rs/serde_repr/latest/serde_repr/).
 
-    ```rust
-    use serde_repr::{Deserialize_repr, Serialize_repr};
+```rust
+use serde_repr::{Deserialize_repr, Serialize_repr};
 
-    #[derive(Row, Serialize, Deserialize)]
-    struct MyRow {
+#[derive(Row, Serialize, Deserialize)]
+struct MyRow {
     level: Level,
-    }
+}
 
-    #[derive(Debug, Serialize_repr, Deserialize_repr)]
-    #[repr(u8)]
-    enum Level {
+#[derive(Debug, Serialize_repr, Deserialize_repr)]
+#[repr(u8)]
+enum Level {
     Debug = 1,
     Info = 2,
     Warn = 3,
     Error = 4,
-    }
-    ```
+}
+```
 * `UUID` maps to/from [`uuid::Uuid`](https://docs.rs/uuid/latest/uuid/struct.Uuid.html) by using `serde::uuid`. Requires the `uuid` feature.
 
-    ```rust
-    #[derive(Row, Serialize, Deserialize)]
-    struct MyRow {
+```rust
+#[derive(Row, Serialize, Deserialize)]
+struct MyRow {
     #[serde(with = "clickhouse::serde::uuid")]
     uuid: uuid::Uuid,
-    }
-    ```
+}
+```
 * `IPv6` maps to/from [`std::net::Ipv6Addr`](https://doc.rust-lang.org/stable/std/net/struct.Ipv6Addr.html).
 * `IPv4` maps to/from [`std::net::Ipv4Addr`](https://doc.rust-lang.org/stable/std/net/struct.Ipv4Addr.html) by using `serde::ipv4`.
 
-    ```rust
-    #[derive(Row, Serialize, Deserialize)]
-    struct MyRow {
+```rust
+#[derive(Row, Serialize, Deserialize)]
+struct MyRow {
     #[serde(with = "clickhouse::serde::ipv4")]
     ipv4: std::net::Ipv4Addr,
-    }
-    ```
+}
+```
 * `Date` maps to/from `u16` or a newtype around it and represents a number of days elapsed since `1970-01-01`. Also, [`time::Date`](https://docs.rs/time/latest/time/struct.Date.html) is supported by using `serde::time::date`, that requires the `time` feature.
 
-    ```rust
-    #[derive(Row, Serialize, Deserialize)]
-    struct MyRow {
+```rust
+#[derive(Row, Serialize, Deserialize)]
+struct MyRow {
     days: u16,
     #[serde(with = "clickhouse::serde::time::date")]
     date: Date,
-    }
-    ```
+}
+```
 * `Date32` maps to/from `i32` or a newtype around it and represents a number of days elapsed since `1970-01-01`. Also, [`time::Date`](https://docs.rs/time/latest/time/struct.Date.html) is supported by using `serde::time::date32`, that requires the `time` feature.
 
-    ```rust
-    #[derive(Row, Serialize, Deserialize)]
-    struct MyRow {
+```rust
+#[derive(Row, Serialize, Deserialize)]
+struct MyRow {
     days: i32,
     #[serde(with = "clickhouse::serde::time::date32")]
     date: Date,
-    }
-    ```
+}
+```
 * `DateTime` maps to/from `u32` or a newtype around it and represents a number of seconds elapsed since UNIX epoch. Also, [`time::OffsetDateTime`](https://docs.rs/time/latest/time/struct.OffsetDateTime.html) is supported by using `serde::time::datetime`, that requires the `time` feature.
 
-    ```rust
-    #[derive(Row, Serialize, Deserialize)]
-    struct MyRow {
+```rust
+#[derive(Row, Serialize, Deserialize)]
+struct MyRow {
     ts: u32,
     #[serde(with = "clickhouse::serde::time::datetime")]
     dt: OffsetDateTime,
-    }
-    ```
+}
+```
 
 * `DateTime64(_)` maps to/from `i32` or a newtype around it and represents a time elapsed since UNIX epoch. Also, [`time::OffsetDateTime`](https://docs.rs/time/latest/time/struct.OffsetDateTime.html) is supported by using `serde::time::datetime64::*`, that requires the `time` feature.
 
-    ```rust
-    #[derive(Row, Serialize, Deserialize)]
-    struct MyRow {
+```rust
+#[derive(Row, Serialize, Deserialize)]
+struct MyRow {
     ts: i64, // elapsed s/us/ms/ns depending on `DateTime64(X)`
     #[serde(with = "clickhouse::serde::time::datetime64::secs")]
     dt64s: OffsetDateTime,  // `DateTime64(0)`
@@ -450,8 +450,8 @@ See also the additional examples:
     dt64us: OffsetDateTime, // `DateTime64(6)`
     #[serde(with = "clickhouse::serde::time::datetime64::nanos")]
     dt64ns: OffsetDateTime, // `DateTime64(9)`
-    }
-    ```
+}
+```
 
 * `Tuple(A, B, ...)` maps to/from `(A, B, ...)` or a newtype around it.
 * `Array(_)` maps to/from any slice, e.g. `Vec<_>`, `&[_]`. New types are also supported.
@@ -459,43 +459,43 @@ See also the additional examples:
 * `LowCardinality(_)` is supported seamlessly.
 * `Nullable(_)` maps to/from `Option<_>`. For `clickhouse::serde::*` helpers add `::option`.
 
-    ```rust
-    #[derive(Row, Serialize, Deserialize)]
-    struct MyRow {
+```rust
+#[derive(Row, Serialize, Deserialize)]
+struct MyRow {
     #[serde(with = "clickhouse::serde::ipv4::option")]
     ipv4_opt: Option<Ipv4Addr>,
-    }
-    ```
+}
+```
 * `Nested` is supported by providing multiple arrays with renaming.
-    ```rust
-    // CREATE TABLE test(items Nested(name String, count UInt32))
-    #[derive(Row, Serialize, Deserialize)]
-    struct MyRow {
+```rust
+// CREATE TABLE test(items Nested(name String, count UInt32))
+#[derive(Row, Serialize, Deserialize)]
+struct MyRow {
     #[serde(rename = "items.name")]
     items_name: Vec<String>,
     #[serde(rename = "items.count")]
     items_count: Vec<u32>,
-    }
-    ```
+}
+```
 * `Geo` types are supported. `Point` behaves like a tuple `(f64, f64)`, and the rest of the types are just slices of points.
-    ```rust
-    type Point = (f64, f64);
-    type Ring = Vec<Point>;
-    type Polygon = Vec<Ring>;
-    type MultiPolygon = Vec<Polygon>;
-    type LineString = Vec<Point>;
-    type MultiLineString = Vec<LineString>;
+```rust
+type Point = (f64, f64);
+type Ring = Vec<Point>;
+type Polygon = Vec<Ring>;
+type MultiPolygon = Vec<Polygon>;
+type LineString = Vec<Point>;
+type MultiLineString = Vec<LineString>;
 
-    #[derive(Row, Serialize, Deserialize)]
-    struct MyRow {
+#[derive(Row, Serialize, Deserialize)]
+struct MyRow {
     point: Point,
     ring: Ring,
     polygon: Polygon,
     multi_polygon: MultiPolygon,
     line_string: LineString,
     multi_line_string: MultiLineString,
-    }
-    ```
+}
+```
 
 * `Variant`, `Dynamic`, (new) `JSON` data types aren't supported yet.
 
@@ -508,7 +508,7 @@ See [the example](https://github.com/ClickHouse/clickhouse-rs/tree/main/examples
 
 ### CANNOT_READ_ALL_DATA {#cannot_read_all_data}
 
-The most common cause for the `CANNOT_READ_ALL_DATA` error is that the row definition on the application side does match that in ClickHouse.
+The most common cause for the `CANNOT_READ_ALL_DATA` error is that the row definition on the application side does match that in ClickHouse. 
 
 Consider the following table:
 

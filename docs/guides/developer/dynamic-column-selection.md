@@ -38,34 +38,34 @@ This query returns the first 10 rows, but only for columns whose names match the
  9. │           5 │          0 │            0 │          5.8 │
 10. │           5 │          0 │            0 │          5.8 │
     └─────────────┴────────────┴──────────────┴──────────────┘
-    ```
+```
 
-    Let’s say we also want to return columns that contain the terms `fee` or `tax`.
-    We can update the regular expression to include those:
+Let’s say we also want to return columns that contain the terms `fee` or `tax`. 
+We can update the regular expression to include those:
 
-    ```sql
-    SELECT COLUMNS('.*_amount|fee|tax')
-    FROM nyc_taxi.trips
-    ORDER BY rand()
-    LIMIT 3;
-    ```
+```sql
+SELECT COLUMNS('.*_amount|fee|tax')
+FROM nyc_taxi.trips
+ORDER BY rand() 
+LIMIT 3;
+```
 
-    > [Try this query in the SQL playground](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykKRlJPTSBueWNfdGF4aS50cmlwcwpPUkRFUiBCWSByYW5kKCkgCkxJTUlUIDM7&run_query=true)
+> [Try this query in the SQL playground](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykKRlJPTSBueWNfdGF4aS50cmlwcwpPUkRFUiBCWSByYW5kKCkgCkxJTUlUIDM7&run_query=true)
 
-    ```text
-    ┌─fare_amount─┬─mta_tax─┬─tip_amount─┬─tolls_amount─┬─ehail_fee─┬─total_amount─┐
+```text
+   ┌─fare_amount─┬─mta_tax─┬─tip_amount─┬─tolls_amount─┬─ehail_fee─┬─total_amount─┐
 1. │           5 │     0.5 │          1 │            0 │         0 │          7.8 │
 2. │        12.5 │     0.5 │          0 │            0 │         0 │         13.8 │
 3. │         4.5 │     0.5 │       1.66 │            0 │         0 │         9.96 │
-    └─────────────┴─────────┴────────────┴──────────────┴───────────┴──────────────┘
-    ```
+   └─────────────┴─────────┴────────────┴──────────────┴───────────┴──────────────┘
+```
 
 ## Selecting multiple patterns  {#selecting-multiple-patterns}
 
 We can combine multiple column patterns in a single query:
 
 ```sql
-SELECT
+SELECT 
     COLUMNS('.*_amount'),
     COLUMNS('.*_date.*')
 FROM nyc_taxi.trips
@@ -81,12 +81,12 @@ LIMIT 5;
 3. │         3.5 │          0 │            0 │          4.8 │  2001-01-01 │ 2001-01-01 00:02:08 │   2001-01-01 │ 2001-01-01 01:00:02 │
 4. │         3.5 │          0 │            0 │          4.8 │  2001-01-01 │ 2001-01-01 00:02:08 │   2001-01-01 │ 2001-01-01 01:00:02 │
 5. │         3.5 │          0 │            0 │          4.3 │  2001-01-01 │ 2001-01-01 00:02:26 │   2001-01-01 │ 2001-01-01 00:04:49 │
-    └─────────────┴────────────┴──────────────┴──────────────┴─────────────┴─────────────────────┴──────────────┴─────────────────────┘
-    ```
+   └─────────────┴────────────┴──────────────┴──────────────┴─────────────┴─────────────────────┴──────────────┴─────────────────────┘
+```
 
 ## Apply functions to all columns  {#applying-functions}
 
-We can also use the [`APPLY`](https://clickhouse.com/docs/sql-reference/statements/select#apply) modifier to apply functions across every column.
+We can also use the [`APPLY`](https://clickhouse.com/docs/sql-reference/statements/select#apply) modifier to apply functions across every column. 
 For example, if we wanted to find the maximum value of each of those columns, we could run the following query:
 
 ```sql
@@ -99,66 +99,66 @@ FROM nyc_taxi.trips;
 ```text
    ┌─max(fare_amount)─┬─max(mta_tax)─┬─max(tip_amount)─┬─max(tolls_amount)─┬─max(ehail_fee)─┬─max(total_amount)─┐
 1. │           998310 │     500000.5 │       3950588.8 │           7999.92 │           1.95 │         3950611.5 │
-    └──────────────────┴──────────────┴─────────────────┴───────────────────┴────────────────┴───────────────────┘
-    ```
+   └──────────────────┴──────────────┴─────────────────┴───────────────────┴────────────────┴───────────────────┘
+```
 
-    Or maybe, we’d like to see the average instead:
+Or maybe, we’d like to see the average instead:
 
-    ```sql
-    SELECT COLUMNS('.*_amount|fee|tax') APPLY(avg)
-    FROM nyc_taxi.trips
-    ```
+```sql
+SELECT COLUMNS('.*_amount|fee|tax') APPLY(avg)
+FROM nyc_taxi.trips
+```
 
-    > [Try this query in the SQL playground](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkoYXZnKQpGUk9NIG55Y190YXhpLnRyaXBzOw&run_query=true)
+> [Try this query in the SQL playground](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkoYXZnKQpGUk9NIG55Y190YXhpLnRyaXBzOw&run_query=true)
 
-    ```text
-    ┌─avg(fare_amount)─┬───────avg(mta_tax)─┬────avg(tip_amount)─┬──avg(tolls_amount)─┬──────avg(ehail_fee)─┬──avg(total_amount)─┐
+```text
+   ┌─avg(fare_amount)─┬───────avg(mta_tax)─┬────avg(tip_amount)─┬──avg(tolls_amount)─┬──────avg(ehail_fee)─┬──avg(total_amount)─┐
 1. │ 11.8044154834777 │ 0.4555942672733423 │ 1.3469850969211845 │ 0.2256511991414463 │ 3.37600560437412e-9 │ 14.423323722271563 │
-    └──────────────────┴────────────────────┴────────────────────┴────────────────────┴─────────────────────┴────────────────────┘
-    ```
+   └──────────────────┴────────────────────┴────────────────────┴────────────────────┴─────────────────────┴────────────────────┘
+```
 
-    Those values contain a lot of decimal places, but luckily we can fix that by chaining functions. In this case, we’ll apply the avg function, followed by the round function:
+Those values contain a lot of decimal places, but luckily we can fix that by chaining functions. In this case, we’ll apply the avg function, followed by the round function:
 
-    ```sql
-    SELECT COLUMNS('.*_amount|fee|tax') APPLY(avg) APPLY(round)
-    FROM nyc_taxi.trips;
-    ```
+```sql
+SELECT COLUMNS('.*_amount|fee|tax') APPLY(avg) APPLY(round)
+FROM nyc_taxi.trips;
+```
 
-    > [Try this query in the SQL playground](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkoYXZnKSBBUFBMWShyb3VuZCkKRlJPTSBueWNfdGF4aS50cmlwczs&run_query=true)
+> [Try this query in the SQL playground](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkoYXZnKSBBUFBMWShyb3VuZCkKRlJPTSBueWNfdGF4aS50cmlwczs&run_query=true)
 
-    ```text
-    ┌─round(avg(fare_amount))─┬─round(avg(mta_tax))─┬─round(avg(tip_amount))─┬─round(avg(tolls_amount))─┬─round(avg(ehail_fee))─┬─round(avg(total_amount))─┐
+```text
+   ┌─round(avg(fare_amount))─┬─round(avg(mta_tax))─┬─round(avg(tip_amount))─┬─round(avg(tolls_amount))─┬─round(avg(ehail_fee))─┬─round(avg(total_amount))─┐
 1. │                      12 │                   0 │                      1 │                        0 │                     0 │                       14 │
-    └─────────────────────────┴─────────────────────┴────────────────────────┴──────────────────────────┴───────────────────────┴──────────────────────────┘
-    ```
+   └─────────────────────────┴─────────────────────┴────────────────────────┴──────────────────────────┴───────────────────────┴──────────────────────────┘
+```
 
-    But that rounds the averages to whole numbers. If we want to round to, say, 2 decimal places, we can do that as well. As well as taking in functions, the `APPLY` modifier accepts a lambda, which gives us the flexibility to have the round function round our average values to 2 decimal places:
+But that rounds the averages to whole numbers. If we want to round to, say, 2 decimal places, we can do that as well. As well as taking in functions, the `APPLY` modifier accepts a lambda, which gives us the flexibility to have the round function round our average values to 2 decimal places:
 
-    ```sql
-    SELECT COLUMNS('.*_amount|fee|tax') APPLY(avg) APPLY(x -> round(x, 2))
-    FROM nyc_taxi.trips;
-    ```
+```sql
+SELECT COLUMNS('.*_amount|fee|tax') APPLY(avg) APPLY(x -> round(x, 2))
+FROM nyc_taxi.trips;
+```
 
-    > [Try this query in the SQL playground](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkgYXZnIEFQUExZIHggLT4gcm91bmQoeCwgMikKRlJPTSBueWNfdGF4aS50cmlwcw&run_query=true)
+> [Try this query in the SQL playground](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkgYXZnIEFQUExZIHggLT4gcm91bmQoeCwgMikKRlJPTSBueWNfdGF4aS50cmlwcw&run_query=true)
 
-    ```text
-    ┌─round(avg(fare_amount), 2)─┬─round(avg(mta_tax), 2)─┬─round(avg(tip_amount), 2)─┬─round(avg(tolls_amount), 2)─┬─round(avg(ehail_fee), 2)─┬─round(avg(total_amount), 2)─┐
+```text
+   ┌─round(avg(fare_amount), 2)─┬─round(avg(mta_tax), 2)─┬─round(avg(tip_amount), 2)─┬─round(avg(tolls_amount), 2)─┬─round(avg(ehail_fee), 2)─┬─round(avg(total_amount), 2)─┐
 1. │                       11.8 │                   0.46 │                      1.35 │                        0.23 │                        0 │                       14.42 │
-    └────────────────────────────┴────────────────────────┴───────────────────────────┴─────────────────────────────┴──────────────────────────┴─────────────────────────────┘
-    ```
+   └────────────────────────────┴────────────────────────┴───────────────────────────┴─────────────────────────────┴──────────────────────────┴─────────────────────────────┘
+```
 
 ## Replacing columns  {#replacing-columns}
 
 So far so good. But let’s say we want to adjust one of the values, while leaving the other ones as they are. For example, maybe we want to double the total amount and divide the MTA tax by 1.1. We can do that by using the [`REPLACE`](/sql-reference/statements/select#replace) modifier, which will replace a column while leaving the other ones as they are.
 
 ```sql
-FROM nyc_taxi.trips
-SELECT
+FROM nyc_taxi.trips 
+SELECT 
   COLUMNS('.*_amount|fee|tax')
   REPLACE(
     total_amount*2 AS total_amount,
     mta_tax/1.1 AS mta_tax
-  )
+  ) 
   APPLY(avg)
   APPLY(col -> round(col, 2));
 ```
@@ -168,21 +168,21 @@ SELECT
 ```text
    ┌─round(avg(fare_amount), 2)─┬─round(avg(di⋯, 1.1)), 2)─┬─round(avg(tip_amount), 2)─┬─round(avg(tolls_amount), 2)─┬─round(avg(ehail_fee), 2)─┬─round(avg(mu⋯nt, 2)), 2)─┐
 1. │                       11.8 │                     0.41 │                      1.35 │                        0.23 │                        0 │                    28.85 │
-    └────────────────────────────┴──────────────────────────┴───────────────────────────┴─────────────────────────────┴──────────────────────────┴──────────────────────────┘
-    ```
+   └────────────────────────────┴──────────────────────────┴───────────────────────────┴─────────────────────────────┴──────────────────────────┴──────────────────────────┘
+```
 
 ## Excluding columns  {#excluding-columns}
 
 We can also choose to exclude a field by using the [`EXCEPT`](/sql-reference/statements/select#except) modifier. For example, to remove the `tolls_amount` column, we would write the following query:
 
 ```sql
-FROM nyc_taxi.trips
-SELECT
+FROM nyc_taxi.trips 
+SELECT 
   COLUMNS('.*_amount|fee|tax') EXCEPT(tolls_amount)
   REPLACE(
     total_amount*2 AS total_amount,
     mta_tax/1.1 AS mta_tax
-  )
+  ) 
   APPLY(avg)
   APPLY(col -> round(col, 2));
 ```
@@ -192,5 +192,5 @@ SELECT
 ```text
    ┌─round(avg(fare_amount), 2)─┬─round(avg(di⋯, 1.1)), 2)─┬─round(avg(tip_amount), 2)─┬─round(avg(ehail_fee), 2)─┬─round(avg(mu⋯nt, 2)), 2)─┐
 1. │                       11.8 │                     0.41 │                      1.35 │                        0 │                    28.85 │
-    └────────────────────────────┴──────────────────────────┴───────────────────────────┴──────────────────────────┴──────────────────────────┘
-    ```
+   └────────────────────────────┴──────────────────────────┴───────────────────────────┴──────────────────────────┴──────────────────────────┘
+```

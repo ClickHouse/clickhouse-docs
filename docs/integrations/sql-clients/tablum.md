@@ -63,7 +63,7 @@ With TABLUM.IO you can
 * create and utilise multiple ClickHouse connectors within your TABLUM.IO account,
 * run queries on any loaded data regardless of the data source,
 * share the results as a new ClickHouse database.
-    :::
+:::
 
 ## Learn more {#learn-more}
 

@@ -9,7 +9,7 @@ slug: /concepts/glossary
 
 ## Atomicity {#atomicity}
 
-Atomicity ensures that a transaction (a series of database operations) is treated as a single, indivisible unit. This means that either all operations within the transaction occur, or none do. An example of an atomic transaction is transferring money from one bank account to another. If either step of the transfer fails, the transaction fails, and the money stays in the first account. Atomicity ensures no money is lost or created.
+Atomicity ensures that a transaction (a series of database operations) is treated as a single, indivisible unit. This means that either all operations within the transaction occur, or none do. An example of an atomic transaction is transferring money from one bank account to another. If either step of the transfer fails, the transaction fails, and the money stays in the first account. Atomicity ensures no money is lost or created. 
 
 ## Cluster {#cluster}
 
@@ -17,7 +17,7 @@ A collection of nodes (servers) that work together to store and process data.
 
 ## CMEK {#cmek}
 
-Customer-managed encryption keys (CMEK) allow customers to use their key-management service (KMS) key to encrypt the ClickHouse disk data key and protect their data at rest.
+Customer-managed encryption keys (CMEK) allow customers to use their key-management service (KMS) key to encrypt the ClickHouse disk data key and protect their data at rest. 
 
 ## Dictionary {#dictionary}
 
@@ -33,4 +33,4 @@ A copy of the data stored in a ClickHouse database. You can have any number of r
 
 ## Shard {#shard}
 
-A subset of data. ClickHouse always has at least one shard for your data. If you do not split the data across multiple servers, your data will be stored in one shard. Sharding data across multiple servers can be used to divide the load if you exceed the capacity of a single server.
+A subset of data. ClickHouse always has at least one shard for your data. If you do not split the data across multiple servers, your data will be stored in one shard. Sharding data across multiple servers can be used to divide the load if you exceed the capacity of a single server. 

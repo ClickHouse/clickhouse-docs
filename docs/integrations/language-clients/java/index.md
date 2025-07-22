@@ -9,19 +9,19 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-# Java clients overview
+# Java Clients Overview
 
 - [Client 0.8+](./client/client.mdx)
 - [JDBC 0.8+](./jdbc/jdbc.mdx)
 - [R2DBC Driver](./r2dbc.md)
 
-## ClickHouse client {#clickhouse-client}
+## ClickHouse Client {#clickhouse-client}
 
 Java client is a library implementing own API that abstracts details of network communications with ClickHouse server. Currently HTTP Interface is supported only. The library provide utilities to work with different ClickHouse formats and other related functions.
 
-Java Client was developed far back in 2015. Its codebase became very hard to maintain, API is confusing, it is hard to optimize it further. So we have refactored it in 2024 into a new component  `client-v2`. It has clear API, lighter codebase and more performance improvements, better ClickHouse formats support (RowBinary & Native mainly). JDBC will use this client in near feature.
+Java Client was developed far back in 2015. Its codebase became very hard to maintain, API is confusing, it is hard to optimize it further. So we have refactored it in 2024 into a new component  `client-v2`. It has clear API, lighter codebase and more performance improvements, better ClickHouse formats support (RowBinary & Native mainly). JDBC will use this client in near feature.  
 
-### Supported data types {#supported-data-types}
+### Supported Data Types {#supported-data-types}
 
 |**Data Type**          |**Client V2 Support**|**Client V1 Support**|
 |-----------------------|---------------------|---------------------|
@@ -82,8 +82,8 @@ Java Client was developed far back in 2015. Its codebase became very hard to mai
 - AggregatedFunction - :warning: does not support `SELECT * FROM table ...`
 - Decimal - `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency
 - Enum - can be treated as both string and integer
-- UInt64 - mapped to `long` in client-v1
-    :::
+- UInt64 - mapped to `long` in client-v1 
+:::
 
 ### Features {#features}
 
@@ -93,7 +93,7 @@ Table of features of the clients:
 |----------------------------------------------|:---------:|:---------:|:---------:|
 | Http Connection                              |✔       |✔      | |
 | Http Compression (LZ4)                       |✔       |✔      | |
-| Server Response Compression - LZ4            |✔       |✔      | |
+| Server Response Compression - LZ4            |✔       |✔      | | 
 | Client Request Compression - LZ4             |✔       |✔      | |
 | HTTPS                                        |✔       |✔      | |
 | Client SSL Cert (mTLS)                       |✔       |✔      | |
@@ -121,7 +121,7 @@ JDBC Drive inherits same features as underlying client implementation. Other JDB
 
 ### Logging {#logging}
 
-Our Java language client uses [SLF4J](https://www.slf4j.org/) for logging. You can use any SLF4J-compatible logging framework, such as `Logback` or `Log4j`.
+Our Java language client uses [SLF4J](https://www.slf4j.org/) for logging. You can use any SLF4J-compatible logging framework, such as `Logback` or `Log4j`. 
 For example, if you are using Maven you could add the following dependency to your `pom.xml` file:
 
 ```xml title="pom.xml"
@@ -149,7 +149,7 @@ For example, if you are using Maven you could add the following dependency to yo
 </dependencies>
 ```
 
-#### Configuring logging {#configuring-logging}
+#### Configuring Logging {#configuring-logging}
 
 This is going to depend on the logging framework you are using. For example, if you are using `Logback`, you could configure logging in a file called `logback.xml`:
 

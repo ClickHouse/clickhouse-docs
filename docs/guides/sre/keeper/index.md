@@ -100,20 +100,20 @@ The main parameters for each `<server>` are:
 - `port` — Port where this server listens for connections.
 - `can_become_leader` — Set to `false` to set up the server as a `learner`. If omitted, the value is `true`.
 
-    :::note
-    In the case of a change in the topology of your ClickHouse Keeper cluster (e.g., replacing a server), please make sure to keep the mapping of `server_id` to `hostname` consistent and avoid shuffling or reusing an existing `server_id` for different servers (e.g., it can happen if your rely on automation scripts to deploy ClickHouse Keeper)
+:::note
+In the case of a change in the topology of your ClickHouse Keeper cluster (e.g., replacing a server), please make sure to keep the mapping of `server_id` to `hostname` consistent and avoid shuffling or reusing an existing `server_id` for different servers (e.g., it can happen if your rely on automation scripts to deploy ClickHouse Keeper)
 
-    If the host of a Keeper instance can change, we recommend to define and use a hostname instead of raw IP addresses. Changing hostname is equal to removing and adding the server back which in some cases can be impossible to do (e.g. not enough Keeper instances for quorum).
-    :::
+If the host of a Keeper instance can change, we recommend to define and use a hostname instead of raw IP addresses. Changing hostname is equal to removing and adding the server back which in some cases can be impossible to do (e.g. not enough Keeper instances for quorum).
+:::
 
-    :::note
-    `async_replication` is disabled by default to avoid breaking backwards compatibility. If you have all your Keeper instances in a cluster running a version supporting `async_replication` (v23.9+), we recommend enabling it because it can improve performance without any downsides.
-    :::
+:::note
+`async_replication` is disabled by default to avoid breaking backwards compatibility. If you have all your Keeper instances in a cluster running a version supporting `async_replication` (v23.9+), we recommend enabling it because it can improve performance without any downsides.
+:::
 
-    Examples of configuration for quorum with three nodes can be found in [integration tests](https://github.com/ClickHouse/ClickHouse/tree/master/tests/integration) with `test_keeper_` prefix. Example configuration for server #1:
+Examples of configuration for quorum with three nodes can be found in [integration tests](https://github.com/ClickHouse/ClickHouse/tree/master/tests/integration) with `test_keeper_` prefix. Example configuration for server #1:
 
-    ```xml
-    <keeper_server>
+```xml
+<keeper_server>
     <tcp_port>2181</tcp_port>
     <server_id>1</server_id>
     <log_storage_path>/var/lib/clickhouse/coordination/log</log_storage_path>
@@ -142,8 +142,8 @@ The main parameters for each `<server>` are:
             <port>9234</port>
         </server>
     </raft_configuration>
-    </keeper_server>
-    ```
+</keeper_server>
+```
 
 ### How to run {#how-to-run}
 
@@ -159,7 +159,7 @@ If you don't have the symlink (`clickhouse-keeper`) you can create it or specify
 clickhouse keeper --config /etc/your_path_to_config/config.xml
 ```
 
-### Four letter word commands {#four-letter-word-commands}
+### Four Letter Word Commands {#four-letter-word-commands}
 
 ClickHouse Keeper also provides 4lw commands which are almost the same with Zookeeper. Each command is composed of four letters such as `mntr`, `stat` etc. There are some more interesting commands: `stat` gives some general information about the server and connected clients, while `srvr` and `cons` give extended details on server and connections respectively.
 
@@ -175,239 +175,239 @@ Bellow is the detailed 4lw commands:
 
 - `ruok`: Tests if server is running in a non-error state. The server will respond with `imok` if it is running. Otherwise, it will not respond at all. A response of `imok` does not necessarily indicate that the server has joined the quorum, just that the server process is active and bound to the specified client port. Use "stat" for details on state with respect to quorum and client connection information.
 
-    ```response
-    imok
-    ```
+```response
+imok
+```
 
 - `mntr`: Outputs a list of variables that could be used for monitoring the health of the cluster.
 
-    ```response
-    zk_version      v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
-    zk_avg_latency  0
-    zk_max_latency  0
-    zk_min_latency  0
-    zk_packets_received     68
-    zk_packets_sent 68
-    zk_num_alive_connections        1
-    zk_outstanding_requests 0
-    zk_server_state leader
-    zk_znode_count  4
-    zk_watch_count  1
-    zk_ephemerals_count     0
-    zk_approximate_data_size        723
-    zk_open_file_descriptor_count   310
-    zk_max_file_descriptor_count    10240
-    zk_followers    0
-    zk_synced_followers     0
-    ```
+```response
+zk_version      v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
+zk_avg_latency  0
+zk_max_latency  0
+zk_min_latency  0
+zk_packets_received     68
+zk_packets_sent 68
+zk_num_alive_connections        1
+zk_outstanding_requests 0
+zk_server_state leader
+zk_znode_count  4
+zk_watch_count  1
+zk_ephemerals_count     0
+zk_approximate_data_size        723
+zk_open_file_descriptor_count   310
+zk_max_file_descriptor_count    10240
+zk_followers    0
+zk_synced_followers     0
+```
 
 - `srvr`: Lists full details for the server.
 
-    ```response
-    ClickHouse Keeper version: v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
-    Latency min/avg/max: 0/0/0
-    Received: 2
-    Sent : 2
-    Connections: 1
-    Outstanding: 0
-    Zxid: 34
-    Mode: leader
-    Node count: 4
-    ```
+```response
+ClickHouse Keeper version: v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
+Latency min/avg/max: 0/0/0
+Received: 2
+Sent : 2
+Connections: 1
+Outstanding: 0
+Zxid: 34
+Mode: leader
+Node count: 4
+```
 
 - `stat`: Lists brief details for the server and connected clients.
 
-    ```response
-    ClickHouse Keeper version: v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
-    Clients:
-    192.168.1.1:52852(recved=0,sent=0)
-    192.168.1.1:52042(recved=24,sent=48)
-    Latency min/avg/max: 0/0/0
-    Received: 4
-    Sent : 4
-    Connections: 1
-    Outstanding: 0
-    Zxid: 36
-    Mode: leader
-    Node count: 4
-    ```
+```response
+ClickHouse Keeper version: v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
+Clients:
+ 192.168.1.1:52852(recved=0,sent=0)
+ 192.168.1.1:52042(recved=24,sent=48)
+Latency min/avg/max: 0/0/0
+Received: 4
+Sent : 4
+Connections: 1
+Outstanding: 0
+Zxid: 36
+Mode: leader
+Node count: 4
+```
 
 - `srst`: Reset server statistics. The command will affect the result of `srvr`, `mntr` and `stat`.
 
-    ```response
-    Server stats reset.
-    ```
+```response
+Server stats reset.
+```
 
 - `conf`: Print details about serving configuration.
 
-    ```response
-    server_id=1
-    tcp_port=2181
-    four_letter_word_white_list=*
-    log_storage_path=./coordination/logs
-    snapshot_storage_path=./coordination/snapshots
-    max_requests_batch_size=100
-    session_timeout_ms=30000
-    operation_timeout_ms=10000
-    dead_session_check_period_ms=500
-    heart_beat_interval_ms=500
-    election_timeout_lower_bound_ms=1000
-    election_timeout_upper_bound_ms=2000
-    reserved_log_items=1000000000000000
-    snapshot_distance=10000
-    auto_forwarding=true
-    shutdown_timeout=5000
-    startup_timeout=240000
-    raft_logs_level=information
-    snapshots_to_keep=3
-    rotate_log_storage_interval=100000
-    stale_log_gap=10000
-    fresh_log_gap=200
-    max_requests_batch_size=100
-    quorum_reads=false
-    force_sync=false
-    compress_logs=true
-    compress_snapshots_with_zstd_format=true
-    configuration_change_tries_count=20
-    ```
+```response
+server_id=1
+tcp_port=2181
+four_letter_word_white_list=*
+log_storage_path=./coordination/logs
+snapshot_storage_path=./coordination/snapshots
+max_requests_batch_size=100
+session_timeout_ms=30000
+operation_timeout_ms=10000
+dead_session_check_period_ms=500
+heart_beat_interval_ms=500
+election_timeout_lower_bound_ms=1000
+election_timeout_upper_bound_ms=2000
+reserved_log_items=1000000000000000
+snapshot_distance=10000
+auto_forwarding=true
+shutdown_timeout=5000
+startup_timeout=240000
+raft_logs_level=information
+snapshots_to_keep=3
+rotate_log_storage_interval=100000
+stale_log_gap=10000
+fresh_log_gap=200
+max_requests_batch_size=100
+quorum_reads=false
+force_sync=false
+compress_logs=true
+compress_snapshots_with_zstd_format=true
+configuration_change_tries_count=20
+```
 
 - `cons`: List full connection/session details for all clients connected to this server. Includes information on numbers of packets received/sent, session id, operation latencies, last operation performed, etc...
 
-    ```response
-    192.168.1.1:52163(recved=0,sent=0,sid=0xffffffffffffffff,lop=NA,est=1636454787393,to=30000,lzxid=0xffffffffffffffff,lresp=0,llat=0,minlat=0,avglat=0,maxlat=0)
-    192.168.1.1:52042(recved=9,sent=18,sid=0x0000000000000001,lop=List,est=1636454739887,to=30000,lcxid=0x0000000000000005,lzxid=0x0000000000000005,lresp=1636454739892,llat=0,minlat=0,avglat=0,maxlat=0)
-    ```
+```response
+ 192.168.1.1:52163(recved=0,sent=0,sid=0xffffffffffffffff,lop=NA,est=1636454787393,to=30000,lzxid=0xffffffffffffffff,lresp=0,llat=0,minlat=0,avglat=0,maxlat=0)
+ 192.168.1.1:52042(recved=9,sent=18,sid=0x0000000000000001,lop=List,est=1636454739887,to=30000,lcxid=0x0000000000000005,lzxid=0x0000000000000005,lresp=1636454739892,llat=0,minlat=0,avglat=0,maxlat=0)
+```
 
 - `crst`: Reset connection/session statistics for all connections.
 
-    ```response
-    Connection stats reset.
-    ```
+```response
+Connection stats reset.
+```
 
 - `envi`: Print details about serving environment
 
-    ```response
-    Environment:
-    clickhouse.keeper.version=v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
-    host.name=ZBMAC-C02D4054M.local
-    os.name=Darwin
-    os.arch=x86_64
-    os.version=19.6.0
-    cpu.count=12
-    user.name=root
-    user.home=/Users/JackyWoo/
-    user.dir=/Users/JackyWoo/project/jd/clickhouse/cmake-build-debug/programs/
-    user.tmp=/var/folders/b4/smbq5mfj7578f2jzwn602tt40000gn/T/
-    ```
+```response
+Environment:
+clickhouse.keeper.version=v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
+host.name=ZBMAC-C02D4054M.local
+os.name=Darwin
+os.arch=x86_64
+os.version=19.6.0
+cpu.count=12
+user.name=root
+user.home=/Users/JackyWoo/
+user.dir=/Users/JackyWoo/project/jd/clickhouse/cmake-build-debug/programs/
+user.tmp=/var/folders/b4/smbq5mfj7578f2jzwn602tt40000gn/T/
+```
 
 - `dirs`: Shows the total size of snapshot and log files in bytes
 
-    ```response
-    snapshot_dir_size: 0
-    log_dir_size: 3875
-    ```
+```response
+snapshot_dir_size: 0
+log_dir_size: 3875
+```
 
 - `isro`: Tests if server is running in read-only mode. The server will respond with `ro` if in read-only mode or `rw` if not in read-only mode.
 
-    ```response
-    rw
-    ```
+```response
+rw
+```
 
 - `wchs`: Lists brief information on watches for the server.
 
-    ```response
-    1 connections watching 1 paths
-    Total watches:1
-    ```
+```response
+1 connections watching 1 paths
+Total watches:1
+```
 
 - `wchc`: Lists detailed information on watches for the server, by session. This outputs a list of sessions (connections) with associated watches (paths). Note, depending on the number of watches this operation may be expensive (impact server performance), use it carefully.
 
-    ```response
-    0x0000000000000001
+```response
+0x0000000000000001
     /clickhouse/task_queue/ddl
-    ```
+```
 
 - `wchp`: Lists detailed information on watches for the server, by path. This outputs a list of paths (znodes) with associated sessions. Note, depending on the number of watches this operation may be expensive (i.e., impact server performance), use it carefully.
 
-    ```response
-    /clickhouse/task_queue/ddl
+```response
+/clickhouse/task_queue/ddl
     0x0000000000000001
-    ```
+```
 
 - `dump`: Lists the outstanding sessions and ephemeral nodes. This only works on the leader.
 
-    ```response
-    Sessions dump (2):
-    0x0000000000000001
-    0x0000000000000002
-    Sessions with Ephemerals (1):
-    0x0000000000000001
-    /clickhouse/task_queue/ddl
-    ```
+```response
+Sessions dump (2):
+0x0000000000000001
+0x0000000000000002
+Sessions with Ephemerals (1):
+0x0000000000000001
+ /clickhouse/task_queue/ddl
+```
 
 - `csnp`: Schedule a snapshot creation task. Return the last committed log index of the scheduled snapshot if success or `Failed to schedule snapshot creation task.` if failed. Note that `lgif` command can help you determine whether the snapshot is done.
 
-    ```response
-    100
-    ```
+```response
+100
+```
 
 - `lgif`: Keeper log information. `first_log_idx` : my first log index in log store; `first_log_term` : my first log term; `last_log_idx` : my last log index in log store; `last_log_term` : my last log term; `last_committed_log_idx` : my last committed log index in state machine; `leader_committed_log_idx` : leader's committed log index from my perspective; `target_committed_log_idx` : target log index should be committed to; `last_snapshot_idx` : the largest committed log index in last snapshot.
 
-    ```response
-    first_log_idx   1
-    first_log_term  1
-    last_log_idx    101
-    last_log_term   1
-    last_committed_log_idx  100
-    leader_committed_log_idx    101
-    target_committed_log_idx    101
-    last_snapshot_idx   50
-    ```
+```response
+first_log_idx   1
+first_log_term  1
+last_log_idx    101
+last_log_term   1
+last_committed_log_idx  100
+leader_committed_log_idx    101
+target_committed_log_idx    101
+last_snapshot_idx   50
+```
 
 - `rqld`: Request to become new leader. Return `Sent leadership request to leader.` if request sent or `Failed to send leadership request to leader.` if request not sent. Note that if node is already leader the outcome is same as the request is sent.
 
-    ```response
-    Sent leadership request to leader.
-    ```
+```response
+Sent leadership request to leader.
+```
 
 - `ftfl`: Lists all feature flags and whether they are enabled for the Keeper instance.
 
-    ```response
-    filtered_list   1
-    multi_read  1
-    check_not_exists    0
-    ```
+```response
+filtered_list   1
+multi_read  1
+check_not_exists    0
+```
 
 - `ydld`: Request to yield leadership and become follower. If the server receiving the request is leader, it will pause write operations first, wait until the successor (current leader can never be successor) finishes the catch-up of the latest log, and then resign. The successor will be chosen automatically. Return `Sent yield leadership request to leader.` if request sent or `Failed to send yield leadership request to leader.` if request not sent. Note that if node is already follower the outcome is same as the request is sent.
 
-    ```response
-    Sent yield leadership request to leader.
-    ```
+```response
+Sent yield leadership request to leader.
+```
 
 - `pfev`: Returns the values for all collected events. For each event it returns event name, event value, and event's description.
 
-    ```response
-    FileOpen        62      Number of files opened.
-    Seek    4       Number of times the 'lseek' function was called.
-    ReadBufferFromFileDescriptorRead        126     Number of reads (read/pread) from a file descriptor. Does not include sockets.
-    ReadBufferFromFileDescriptorReadFailed  0       Number of times the read (read/pread) from a file descriptor have failed.
-    ReadBufferFromFileDescriptorReadBytes   178846  Number of bytes read from file descriptors. If the file is compressed, this will show the compressed data size.
-    WriteBufferFromFileDescriptorWrite      7       Number of writes (write/pwrite) to a file descriptor. Does not include sockets.
-    WriteBufferFromFileDescriptorWriteFailed        0       Number of times the write (write/pwrite) to a file descriptor have failed.
-    WriteBufferFromFileDescriptorWriteBytes 153     Number of bytes written to file descriptors. If the file is compressed, this will show compressed data size.
-    FileSync        2       Number of times the F_FULLFSYNC/fsync/fdatasync function was called for files.
-    DirectorySync   0       Number of times the F_FULLFSYNC/fsync/fdatasync function was called for directories.
-    FileSyncElapsedMicroseconds     12756   Total time spent waiting for F_FULLFSYNC/fsync/fdatasync syscall for files.
-    DirectorySyncElapsedMicroseconds        0       Total time spent waiting for F_FULLFSYNC/fsync/fdatasync syscall for directories.
-    ReadCompressedBytes     0       Number of bytes (the number of bytes before decompression) read from compressed sources (files, network).
-    CompressedReadBufferBlocks      0       Number of compressed blocks (the blocks of data that are compressed independent of each other) read from compressed sources (files, network).
-    CompressedReadBufferBytes       0       Number of uncompressed bytes (the number of bytes after decompression) read from compressed sources (files, network).
-    AIOWrite        0       Number of writes with Linux or FreeBSD AIO interface
-    AIOWriteBytes   0       Number of bytes written with Linux or FreeBSD AIO interface
-    ...
-    ```
+```response
+FileOpen        62      Number of files opened.
+Seek    4       Number of times the 'lseek' function was called.
+ReadBufferFromFileDescriptorRead        126     Number of reads (read/pread) from a file descriptor. Does not include sockets.
+ReadBufferFromFileDescriptorReadFailed  0       Number of times the read (read/pread) from a file descriptor have failed.
+ReadBufferFromFileDescriptorReadBytes   178846  Number of bytes read from file descriptors. If the file is compressed, this will show the compressed data size.
+WriteBufferFromFileDescriptorWrite      7       Number of writes (write/pwrite) to a file descriptor. Does not include sockets.
+WriteBufferFromFileDescriptorWriteFailed        0       Number of times the write (write/pwrite) to a file descriptor have failed.
+WriteBufferFromFileDescriptorWriteBytes 153     Number of bytes written to file descriptors. If the file is compressed, this will show compressed data size.
+FileSync        2       Number of times the F_FULLFSYNC/fsync/fdatasync function was called for files.
+DirectorySync   0       Number of times the F_FULLFSYNC/fsync/fdatasync function was called for directories.
+FileSyncElapsedMicroseconds     12756   Total time spent waiting for F_FULLFSYNC/fsync/fdatasync syscall for files.
+DirectorySyncElapsedMicroseconds        0       Total time spent waiting for F_FULLFSYNC/fsync/fdatasync syscall for directories.
+ReadCompressedBytes     0       Number of bytes (the number of bytes before decompression) read from compressed sources (files, network).
+CompressedReadBufferBlocks      0       Number of compressed blocks (the blocks of data that are compressed independent of each other) read from compressed sources (files, network).
+CompressedReadBufferBytes       0       Number of uncompressed bytes (the number of bytes after decompression) read from compressed sources (files, network).
+AIOWrite        0       Number of writes with Linux or FreeBSD AIO interface
+AIOWriteBytes   0       Number of bytes written with Linux or FreeBSD AIO interface
+...
+```
 
-### HTTP control {#http-control}
+### HTTP Control {#http-control}
 
 ClickHouse Keeper provides an HTTP interface to check if a replica is ready to receive traffic. It may be used in cloud environments, such as [Kubernetes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes).
 
@@ -448,18 +448,11 @@ Example of feature flag config that disables `multi_read` and enables `check_not
 
 The following features are available:
 
-| Feature                | Description                                                                                                                                              | Default |
-|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
-| `multi_read`           | Support for read multi request                                                                                                                           | `1`     |
-| `filtered_list`        | Support for list request which filters results by the type of node (ephemeral or persistent)                                                             | `1`     |
-| `check_not_exists`     | Support for `CheckNotExists` request, which asserts that node doesn't exist                                                                              | `1`     |
-| `create_if_not_exists` | Support for `CreateIfNotExists` request, which will try to create a node if it doesn't exist. If it exists, no changes are applied and `ZOK` is returned | `1`     |
-| `remove_recursive`     | Support for `RemoveRecursive` request, which removes the node along with its subtree                                                                     | `1`     |
-
-:::note
-Some of the feature flags are enabled by default from version 25.7.
-The recommended way of upgrading Keeper to 25.7+ is to first upgrade to version 24.9+.
-:::
+- `multi_read` - support for read multi request. Default: `1`
+- `filtered_list` - support for list request which filters results by the type of node (ephemeral or persistent). Default: `1`
+- `check_not_exists` - support for `CheckNotExists` request, which asserts that node doesn't exists. Default: `0`
+- `create_if_not_exists` - support for `CreateIfNotExists` request, which will try to create a node if it doesn't exist. If it exists, no changes are applied and `ZOK` is returned. Default: `0`
+- `remove_recursive` - support for `RemoveRecursive` request, which removes the node along with its subtree. Default: `0`
 
 ### Migration from ZooKeeper {#migration-from-zookeeper}
 
@@ -471,22 +464,22 @@ Seamless migration from ZooKeeper to ClickHouse Keeper is not possible. You have
 
 3. Run `clickhouse-keeper-converter` on a leader, for example:
 
-    ```bash
-    clickhouse-keeper-converter --zookeeper-logs-dir /var/lib/zookeeper/version-2 --zookeeper-snapshots-dir /var/lib/zookeeper/version-2 --output-dir /path/to/clickhouse/keeper/snapshots
-    ```
+```bash
+clickhouse-keeper-converter --zookeeper-logs-dir /var/lib/zookeeper/version-2 --zookeeper-snapshots-dir /var/lib/zookeeper/version-2 --output-dir /path/to/clickhouse/keeper/snapshots
+```
 
 4. Copy snapshot to ClickHouse server nodes with a configured `keeper` or start ClickHouse Keeper instead of ZooKeeper. The snapshot must persist on all nodes, otherwise, empty nodes can be faster and one of them can become a leader.
 
-    :::note
-    `keeper-converter` tool is not available from the Keeper standalone binary.
-    If you have ClickHouse installed, you can use the binary directly:
+:::note
+`keeper-converter` tool is not available from the Keeper standalone binary.
+If you have ClickHouse installed, you can use the binary directly:
 
-    ```bash
-    clickhouse keeper-converter ...
-    ```
+```bash
+clickhouse keeper-converter ...
+```
 
-    Otherwise, you can [download the binary](/getting-started/quick-start/oss#download-the-binary) and run the tool as described above without installing ClickHouse.
-    :::
+Otherwise, you can [download the binary](/getting-started/quick-start/oss#download-the-binary) and run the tool as described above without installing ClickHouse.
+:::
 
 ### Recovering after losing quorum {#recovering-after-losing-quorum}
 
@@ -504,7 +497,7 @@ Important things to note before continuing:
 - Make sure that the failed nodes cannot connect to the cluster again.
 - Do not start any of the new nodes until it's specified in the steps.
 
-    After making sure that the above things are true, you need to do following:
+After making sure that the above things are true, you need to do following:
 1. Pick a single Keeper node to be your new leader. Be aware that the data of that node will be used for the entire cluster, so we recommend using a node with the most up-to-date state.
 2. Before doing anything else, make a backup of the `log_storage_path` and `snapshot_storage_path` folders of the picked node.
 3. Reconfigure the cluster on all of the nodes you want to use.
@@ -522,10 +515,10 @@ Supported types of disks are:
 - s3
 - local
 
-    Following is an example of disk definitions contained inside a config.
+Following is an example of disk definitions contained inside a config.
 
-    ```xml
-    <clickhouse>
+```xml
+<clickhouse>
     <storage_configuration>
         <disks>
             <log_local>
@@ -556,28 +549,28 @@ Supported types of disks are:
             </state_s3_plain>
         </disks>
     </storage_configuration>
-    </clickhouse>
-    ```
+</clickhouse>
+```
 
-    To use a disk for logs `keeper_server.log_storage_disk` config should be set to the name of disk.
-    To use a disk for snapshots `keeper_server.snapshot_storage_disk` config should be set to the name of disk.
-    Additionally, different disks can be used for the latest logs or snapshots by using `keeper_server.latest_log_storage_disk` and `keeper_server.latest_snapshot_storage_disk` respectively.
-    In that case, Keeper will automatically move files to correct disks when new logs or snapshots are created.
-    To use a disk for state file, `keeper_server.state_storage_disk` config should be set to the name of disk.
+To use a disk for logs `keeper_server.log_storage_disk` config should be set to the name of disk.
+To use a disk for snapshots `keeper_server.snapshot_storage_disk` config should be set to the name of disk.
+Additionally, different disks can be used for the latest logs or snapshots by using `keeper_server.latest_log_storage_disk` and `keeper_server.latest_snapshot_storage_disk` respectively.
+In that case, Keeper will automatically move files to correct disks when new logs or snapshots are created.
+To use a disk for state file, `keeper_server.state_storage_disk` config should be set to the name of disk.
 
-    Moving files between disks is safe and there is no risk of losing data if Keeper stops in the middle of transfer.
-    Until the file is completely moved to the new disk, it's not deleted from the old one.
+Moving files between disks is safe and there is no risk of losing data if Keeper stops in the middle of transfer.
+Until the file is completely moved to the new disk, it's not deleted from the old one.
 
-    Keeper with `keeper_server.coordination_settings.force_sync` set to `true` (`true` by default) cannot satisfy some guarantees for all types of disks.
-    Right now, only disks of type `local` support persistent sync.
-    If `force_sync` is used, `log_storage_disk` should be a `local` disk if `latest_log_storage_disk` is not used.
-    If `latest_log_storage_disk` is used, it should always be a `local` disk.
-    If `force_sync` is disabled, disks of all types can be used in any setup.
+Keeper with `keeper_server.coordination_settings.force_sync` set to `true` (`true` by default) cannot satisfy some guarantees for all types of disks.
+Right now, only disks of type `local` support persistent sync.
+If `force_sync` is used, `log_storage_disk` should be a `local` disk if `latest_log_storage_disk` is not used.
+If `latest_log_storage_disk` is used, it should always be a `local` disk.
+If `force_sync` is disabled, disks of all types can be used in any setup.
 
-    A possible storage setup for a Keeper instance could look like following:
+A possible storage setup for a Keeper instance could look like following:
 
-    ```xml
-    <clickhouse>
+```xml
+<clickhouse>
     <keeper_server>
         <log_storage_disk>log_s3_plain</log_storage_disk>
         <latest_log_storage_disk>log_local</latest_log_storage_disk>
@@ -585,11 +578,11 @@ Supported types of disks are:
         <snapshot_storage_disk>snapshot_s3_plain</snapshot_storage_disk>
         <latest_snapshot_storage_disk>snapshot_local</latest_snapshot_storage_disk>
     </keeper_server>
-    </clickhouse>
-    ```
+</clickhouse>
+```
 
-    This instance will store all but the latest logs on disk `log_s3_plain`, while the latest log will be on the `log_local` disk.
-    Same logic applies for snapshots, all but the latest snapshots will be stored on `snapshot_s3_plain`, while the latest snapshot will be on the `snapshot_local` disk.
+This instance will store all but the latest logs on disk `log_s3_plain`, while the latest log will be on the `log_local` disk.
+Same logic applies for snapshots, all but the latest snapshots will be stored on `snapshot_s3_plain`, while the latest snapshot will be on the `snapshot_local` disk.
 
 ### Changing disk setup {#changing-disk-setup}
 
@@ -630,12 +623,12 @@ The limit is controlled with these two configs:
 - `latest_logs_cache_size_threshold` - total size of latest logs stored in cache
 - `commit_logs_cache_size_threshold` - total size of subsequent logs that need to be committed next
 
-    If the default values are too big, you can reduce the memory usage by reducing these two configs.
+If the default values are too big, you can reduce the memory usage by reducing these two configs.
 
-    :::note
-    You can use `pfev` command to check amount of logs read from each cache and from a file.
-    You can also use metrics from Prometheus endpoint to track the current size of both caches.
-    :::
+:::note
+You can use `pfev` command to check amount of logs read from each cache and from a file.
+You can also use metrics from Prometheus endpoint to track the current size of both caches.
+:::
 
 ## Prometheus {#prometheus}
 
@@ -649,10 +642,10 @@ Settings:
 - `events` – Flag that sets to expose metrics from the [system.events](/operations/system-tables/events) table.
 - `asynchronous_metrics` – Flag that sets to expose current metrics values from the [system.asynchronous_metrics](/operations/system-tables/asynchronous_metrics) table.
 
-    **Example**
+**Example**
 
-    ``` xml
-    <clickhouse>
+``` xml
+<clickhouse>
     <listen_host>0.0.0.0</listen_host>
     <http_port>8123</http_port>
     <tcp_port>9000</tcp_port>
@@ -665,21 +658,21 @@ Settings:
         <asynchronous_metrics>true</asynchronous_metrics>
     </prometheus>
     <!-- highlight-end -->
-    </clickhouse>
-    ```
+</clickhouse>
+```
 
-    Check (replace `127.0.0.1` with the IP addr or hostname of your ClickHouse server):
-    ```bash
-    curl 127.0.0.1:9363/metrics
-    ```
+Check (replace `127.0.0.1` with the IP addr or hostname of your ClickHouse server):
+```bash
+curl 127.0.0.1:9363/metrics
+```
 
-    Please also see the ClickHouse Cloud [Prometheus integration](/integrations/prometheus).
+Please also see the ClickHouse Cloud [Prometheus integration](/integrations/prometheus).
 
-## ClickHouse Keeper user guide {#clickhouse-keeper-user-guide}
+## ClickHouse Keeper User Guide {#clickhouse-keeper-user-guide}
 
 This guide provides simple and minimal settings to configure ClickHouse Keeper with an example on how to test distributed operations. This example is performed using 3 nodes on Linux.
 
-### 1. Configure nodes with Keeper settings {#1-configure-nodes-with-keeper-settings}
+### 1. Configure Nodes with Keeper settings {#1-configure-nodes-with-keeper-settings}
 
 1. Install 3 ClickHouse instances on 3 hosts (`chnode1`, `chnode2`, `chnode3`). (View the [Quick Start](/getting-started/install/install.mdx) for details on installing ClickHouse.)
 
@@ -735,7 +728,7 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
     |hostname   |hostname, IP or FQDN of each server in the keeper cluster|`chnode1.domain.com`|
     |port|port to listen on for interserver keeper connections|9234|
 
-4. Enable the Zookeeper component. It will use the ClickHouse Keeper engine:
+4.  Enable the Zookeeper component. It will use the ClickHouse Keeper engine:
     ```xml
         <zookeeper>
             <node>
@@ -832,7 +825,7 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
 
 ### 3. Create and test distributed table {#3-create-and-test-distributed-table}
 
-1. Create a new database on the new cluster using ClickHouse client on `chnode1`. The `ON CLUSTER` clause automatically creates the database on both nodes.
+1.  Create a new database on the new cluster using ClickHouse client on `chnode1`. The `ON CLUSTER` clause automatically creates the database on both nodes.
     ```sql
     CREATE DATABASE db1 ON CLUSTER 'cluster_2S_1R';
     ```
@@ -884,7 +877,7 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
     ```
 
     On `chnode2`:
-6. 
+6.
     ```sql
     SELECT *
     FROM db1.table1
@@ -946,7 +939,7 @@ this avoids having to wait several minutes for Keeper garbage collection
 to remove path entries as each time a path is created a new `uuid` is used
 in that path; paths are never reused.
 
-### Example environment {#example-environment}
+### Example Environment {#example-environment}
 A three node cluster that will be configured to have ClickHouse Keeper
 on all three nodes, and ClickHouse on two of the nodes. This provides
 ClickHouse Keeper with three nodes (including a tiebreaker node), and
@@ -985,211 +978,211 @@ Example config for cluster:
 ### Procedures to set up tables to use `{uuid}` {#procedures-to-set-up-tables-to-use-uuid}
 
 1. Configure Macros on each server
-    example for server 1:
-    ```xml
+example for server 1:
+```xml
     <macros>
         <shard>1</shard>
         <replica>replica_1</replica>
     </macros>
-    ```
-    :::note
-    Notice that we define macros for `shard` and `replica`, but that `{uuid}` is not defined here, it is built-in and there is no need to define.
-    :::
+```
+:::note
+Notice that we define macros for `shard` and `replica`, but that `{uuid}` is not defined here, it is built-in and there is no need to define.
+:::
 
 2. Create a Database
 
-    ```sql
-    CREATE DATABASE db_uuid
+```sql
+CREATE DATABASE db_uuid
       ON CLUSTER 'cluster_1S_2R'
       ENGINE Atomic;
-    ```
+```
 
-    ```response
-    CREATE DATABASE db_uuid ON CLUSTER cluster_1S_2R
-    ENGINE = Atomic
+```response
+CREATE DATABASE db_uuid ON CLUSTER cluster_1S_2R
+ENGINE = Atomic
 
-    Query id: 07fb7e65-beb4-4c30-b3ef-bd303e5c42b5
+Query id: 07fb7e65-beb4-4c30-b3ef-bd303e5c42b5
 
-    ┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-    │ chnode2.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
-    │ chnode1.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
-    └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-    ```
+┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+│ chnode2.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
+│ chnode1.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
+└───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+```
 
 3. Create a table on the cluster using the macros and `{uuid}`
 
-    ```sql
-    CREATE TABLE db_uuid.uuid_table1 ON CLUSTER 'cluster_1S_2R'
-    (
+```sql
+CREATE TABLE db_uuid.uuid_table1 ON CLUSTER 'cluster_1S_2R'
+   (
      id UInt64,
      column1 String
-    )
-    ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/db_uuid/{uuid}', '{replica}' )
-    ORDER BY (id);
-    ```
+   )
+   ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/db_uuid/{uuid}', '{replica}' )
+   ORDER BY (id);
+```
 
-    ```response
-    CREATE TABLE db_uuid.uuid_table1 ON CLUSTER cluster_1S_2R
-    (
+```response
+CREATE TABLE db_uuid.uuid_table1 ON CLUSTER cluster_1S_2R
+(
     `id` UInt64,
     `column1` String
-    )
-    ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/db_uuid/{uuid}', '{replica}')
-    ORDER BY id
+)
+ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/db_uuid/{uuid}', '{replica}')
+ORDER BY id
 
-    Query id: 8f542664-4548-4a02-bd2a-6f2c973d0dc4
+Query id: 8f542664-4548-4a02-bd2a-6f2c973d0dc4
 
-    ┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-    │ chnode1.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
-    │ chnode2.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
-    └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-    ```
+┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+│ chnode1.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
+│ chnode2.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
+└───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+```
 
-4. Create a distributed table
+4.  Create a distributed table
 
-    ```sql
-    CREATE TABLE db_uuid.dist_uuid_table1 ON CLUSTER 'cluster_1S_2R'
-    (
+```sql
+CREATE TABLE db_uuid.dist_uuid_table1 ON CLUSTER 'cluster_1S_2R'
+   (
      id UInt64,
      column1 String
-    )
-    ENGINE = Distributed('cluster_1S_2R', 'db_uuid', 'uuid_table1' );
-    ```
+   )
+   ENGINE = Distributed('cluster_1S_2R', 'db_uuid', 'uuid_table1' );
+```
 
-    ```response
-    CREATE TABLE db_uuid.dist_uuid_table1 ON CLUSTER cluster_1S_2R
-    (
+```response
+CREATE TABLE db_uuid.dist_uuid_table1 ON CLUSTER cluster_1S_2R
+(
     `id` UInt64,
     `column1` String
-    )
-    ENGINE = Distributed('cluster_1S_2R', 'db_uuid', 'uuid_table1')
+)
+ENGINE = Distributed('cluster_1S_2R', 'db_uuid', 'uuid_table1')
 
-    Query id: 3bc7f339-ab74-4c7d-a752-1ffe54219c0e
+Query id: 3bc7f339-ab74-4c7d-a752-1ffe54219c0e
 
-    ┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-    │ chnode2.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
-    │ chnode1.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
-    └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-    ```
+┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+│ chnode2.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
+│ chnode1.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
+└───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+```
 
 ### Testing {#testing}
-1. Insert data into first node (e.g `chnode1`)
-    ```sql
-    INSERT INTO db_uuid.uuid_table1
-    ( id, column1)
-    VALUES
-    ( 1, 'abc');
-    ```
+1.  Insert data into first node (e.g `chnode1`)
+```sql
+INSERT INTO db_uuid.uuid_table1
+   ( id, column1)
+   VALUES
+   ( 1, 'abc');
+```
 
-    ```response
-    INSERT INTO db_uuid.uuid_table1 (id, column1) FORMAT Values
+```response
+INSERT INTO db_uuid.uuid_table1 (id, column1) FORMAT Values
 
-    Query id: 0f178db7-50a6-48e2-9a1b-52ed14e6e0f9
+Query id: 0f178db7-50a6-48e2-9a1b-52ed14e6e0f9
 
-    Ok.
+Ok.
 
-    1 row in set. Elapsed: 0.033 sec.
-    ```
+1 row in set. Elapsed: 0.033 sec.
+```
 
 2. Insert data into second node (e.g., `chnode2`)
-    ```sql
-    INSERT INTO db_uuid.uuid_table1
-    ( id, column1)
-    VALUES
-    ( 2, 'def');
-    ```
+```sql
+INSERT INTO db_uuid.uuid_table1
+   ( id, column1)
+   VALUES
+   ( 2, 'def');
+```
 
-    ```response
-    INSERT INTO db_uuid.uuid_table1 (id, column1) FORMAT Values
+```response
+INSERT INTO db_uuid.uuid_table1 (id, column1) FORMAT Values
 
-    Query id: edc6f999-3e7d-40a0-8a29-3137e97e3607
+Query id: edc6f999-3e7d-40a0-8a29-3137e97e3607
 
-    Ok.
+Ok.
 
-    1 row in set. Elapsed: 0.529 sec.
-    ```
+1 row in set. Elapsed: 0.529 sec.
+```
 
 3. View records using distributed table
-    ```sql
-    SELECT * FROM db_uuid.dist_uuid_table1;
-    ```
+```sql
+SELECT * FROM db_uuid.dist_uuid_table1;
+```
 
-    ```response
-    SELECT *
-    FROM db_uuid.dist_uuid_table1
+```response
+SELECT *
+FROM db_uuid.dist_uuid_table1
 
-    Query id: 6cbab449-9e7f-40fe-b8c2-62d46ba9f5c8
+Query id: 6cbab449-9e7f-40fe-b8c2-62d46ba9f5c8
 
-    ┌─id─┬─column1─┐
-    │  1 │ abc     │
-    └────┴─────────┘
-    ┌─id─┬─column1─┐
-    │  2 │ def     │
-    └────┴─────────┘
+┌─id─┬─column1─┐
+│  1 │ abc     │
+└────┴─────────┘
+┌─id─┬─column1─┐
+│  2 │ def     │
+└────┴─────────┘
 
-    2 rows in set. Elapsed: 0.007 sec.
-    ```
+2 rows in set. Elapsed: 0.007 sec.
+```
 
 ### Alternatives {#alternatives}
 The default replication path can be defined beforehand by macros and using also `{uuid}`
 
 1. Set default for tables on each node
-    ```xml
-    <default_replica_path>/clickhouse/tables/{shard}/db_uuid/{uuid}</default_replica_path>
-    <default_replica_name>{replica}</default_replica_name>
-    ```
-    :::tip
-    You can also define a macro `{database}` on each node if nodes are used for certain databases.
-    :::
+```xml
+<default_replica_path>/clickhouse/tables/{shard}/db_uuid/{uuid}</default_replica_path>
+<default_replica_name>{replica}</default_replica_name>
+```
+:::tip
+You can also define a macro `{database}` on each node if nodes are used for certain databases.
+:::
 
 2. Create table without explicit parameters:
-    ```sql
-    CREATE TABLE db_uuid.uuid_table1 ON CLUSTER 'cluster_1S_2R'
-    (
+```sql
+CREATE TABLE db_uuid.uuid_table1 ON CLUSTER 'cluster_1S_2R'
+   (
      id UInt64,
      column1 String
-    )
-    ENGINE = ReplicatedMergeTree
-    ORDER BY (id);
-    ```
+   )
+   ENGINE = ReplicatedMergeTree
+   ORDER BY (id);
+```
 
-    ```response
-    CREATE TABLE db_uuid.uuid_table1 ON CLUSTER cluster_1S_2R
-    (
+```response
+CREATE TABLE db_uuid.uuid_table1 ON CLUSTER cluster_1S_2R
+(
     `id` UInt64,
     `column1` String
-    )
-    ENGINE = ReplicatedMergeTree
-    ORDER BY id
+)
+ENGINE = ReplicatedMergeTree
+ORDER BY id
 
-    Query id: ab68cda9-ae41-4d6d-8d3b-20d8255774ee
+Query id: ab68cda9-ae41-4d6d-8d3b-20d8255774ee
 
-    ┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-    │ chnode2.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
-    │ chnode1.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
-    └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+│ chnode2.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
+│ chnode1.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
+└───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 
-    2 rows in set. Elapsed: 1.175 sec.
-    ```
+2 rows in set. Elapsed: 1.175 sec.
+```
 
 3. Verify it used the settings used in default config
-    ```sql
-    SHOW CREATE TABLE db_uuid.uuid_table1;
-    ```
+```sql
+SHOW CREATE TABLE db_uuid.uuid_table1;
+```
 
-    ```response
-    SHOW CREATE TABLE db_uuid.uuid_table1
+```response
+SHOW CREATE TABLE db_uuid.uuid_table1
 
-    CREATE TABLE db_uuid.uuid_table1
-    (
+CREATE TABLE db_uuid.uuid_table1
+(
     `id` UInt64,
     `column1` String
-    )
-    ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/db_uuid/{uuid}', '{replica}')
-    ORDER BY id
+)
+ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/db_uuid/{uuid}', '{replica}')
+ORDER BY id
 
-    1 row in set. Elapsed: 0.003 sec.
-    ```
+1 row in set. Elapsed: 0.003 sec.
+```
 
 ### Troubleshooting {#troubleshooting}
 
@@ -1260,38 +1253,38 @@ server.id2 = ...
 - Each server entry is delimited by a newline.
 - `server_type` is either `participant` or `learner` ([learner](https://github.com/eBay/NuRaft/blob/master/docs/readonly_member.md) does not participate in leader elections).
 - `server_priority` is a non-negative integer telling [which nodes should be prioritised on leader elections](https://github.com/eBay/NuRaft/blob/master/docs/leader_election_priority.md).
-    Priority of 0 means server will never be a leader.
+  Priority of 0 means server will never be a leader.
 
-    Example:
+Example:
 
-    ```sql
-    :) get /keeper/config
-    server.1=zoo1:9234;participant;1
-    server.2=zoo2:9234;participant;1
-    server.3=zoo3:9234;participant;1
-    ```
+```sql
+:) get /keeper/config
+server.1=zoo1:9234;participant;1
+server.2=zoo2:9234;participant;1
+server.3=zoo3:9234;participant;1
+```
 
-    You can use `reconfig` command to add new servers, remove existing ones, and change existing servers'
-    priorities, here are examples (using `clickhouse-keeper-client`):
+You can use `reconfig` command to add new servers, remove existing ones, and change existing servers'
+priorities, here are examples (using `clickhouse-keeper-client`):
 
-    ```bash
-    # Add two new servers
-    reconfig add "server.5=localhost:123,server.6=localhost:234;learner"
-    # Remove two other servers
-    reconfig remove "3,4"
-    # Change existing server priority to 8
-    reconfig add "server.5=localhost:5123;participant;8"
-    ```
+```bash
+# Add two new servers
+reconfig add "server.5=localhost:123,server.6=localhost:234;learner"
+# Remove two other servers
+reconfig remove "3,4"
+# Change existing server priority to 8
+reconfig add "server.5=localhost:5123;participant;8"
+```
 
-    And here are examples for `kazoo`:
+And here are examples for `kazoo`:
 
-    ```python
-    # Add two new servers, remove two other servers
-    reconfig(joining="server.5=localhost:123,server.6=localhost:234;learner", leaving="3,4")
+```python
+# Add two new servers, remove two other servers
+reconfig(joining="server.5=localhost:123,server.6=localhost:234;learner", leaving="3,4")
 
-    # Change existing server priority to 8
-    reconfig(joining="server.5=localhost:5123;participant;8", leaving=None)
-    ```
+# Change existing server priority to 8
+reconfig(joining="server.5=localhost:5123;participant;8", leaving=None)
+```
 
 Servers in `joining` should be in server format described above. Server entries should be delimited by commas.
 While adding new servers, you can omit `server_priority` (default value is 1) and `server_type` (default value
@@ -1307,23 +1300,23 @@ There are some caveats in Keeper reconfiguration implementation:
 
 - Only incremental reconfiguration is supported. Requests with non-empty `new_members` are declined.
 
-    ClickHouse Keeper implementation relies on NuRaft API to change membership dynamically. NuRaft has a way to
-    add a single server or remove a single server, one at a time. This means each change to configuration
-    (each part of `joining`, each part of `leaving`) must be decided on separately. Thus there is no bulk
-    reconfiguration available as it would be misleading for end users.
+  ClickHouse Keeper implementation relies on NuRaft API to change membership dynamically. NuRaft has a way to
+  add a single server or remove a single server, one at a time. This means each change to configuration
+  (each part of `joining`, each part of `leaving`) must be decided on separately. Thus there is no bulk
+  reconfiguration available as it would be misleading for end users.
 
-    Changing server type (participant/learner) isn't possible either as it's not supported by NuRaft, and
-    the only way would be to remove and add server, which again would be misleading.
+  Changing server type (participant/learner) isn't possible either as it's not supported by NuRaft, and
+  the only way would be to remove and add server, which again would be misleading.
 
 - You cannot use the returned `znodestat` value.
 - The `from_version` field is not used. All requests with set `from_version` are declined.
-    This is due to the fact `/keeper/config` is a virtual node, which means it is not stored in
-    persistent storage, but rather generated on-the-fly with the specified node config for every request.
-    This decision was made as to not duplicate data as NuRaft already stores this config.
+  This is due to the fact `/keeper/config` is a virtual node, which means it is not stored in
+  persistent storage, but rather generated on-the-fly with the specified node config for every request.
+  This decision was made as to not duplicate data as NuRaft already stores this config.
 - Unlike ZooKeeper, there is no way to wait on cluster reconfiguration by submitting a `sync` command.
-    New config will be _eventually_ applied but with no time guarantees.
+  New config will be _eventually_ applied but with no time guarantees.
 - `reconfig` command may fail for various reasons. You can check cluster's state and see whether the update
-    was applied.
+  was applied.
 
 ## Converting a single-node keeper into a cluster {#converting-a-single-node-keeper-into-a-cluster}
 
@@ -1337,9 +1330,9 @@ Sometimes it's necessary to extend experimental keeper node into a cluster. Here
 - Update the `clickhouse-server` configuration by adding new keeper node there and restart it to apply the changes.
 - Update the raft configuration of the node 1 and, optionally, restart it.
 
-    To get confident with the process, here's a [sandbox repository](https://github.com/ClickHouse/keeper-extend-cluster).
+To get confident with the process, here's a [sandbox repository](https://github.com/ClickHouse/keeper-extend-cluster).
 
-## Unsupported features {#unsupported-features}
+## Unsupported Features {#unsupported-features}
 
 While ClickHouse Keeper aims to be fully compatible with ZooKeeper, there are some features that are currently not implemented (although development is ongoing):
 

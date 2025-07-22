@@ -57,21 +57,22 @@ Settings `binlog_format`, `binlog_row_metadata` and `binlog_row_image` need to b
 
 1. `binlog_format` to `ROW`.
 
-    <Image img={binlog_format} alt="Binlog format to ROW" size="lg" border/>
+<Image img={binlog_format} alt="Binlog format to ROW" size="lg" border/>
 
 2. `binlog_row_metadata` to `FULL`
 
-    <Image img={binlog_row_metadata} alt="Binlog row metadata to FULL" size="lg" border/>
+<Image img={binlog_row_metadata} alt="Binlog row metadata to FULL" size="lg" border/>
 
 3. `binlog_row_image` to `FULL`
 
-    <Image img={binlog_row_image} alt="Binlog row image to FULL" size="lg" border/>
+<Image img={binlog_row_image} alt="Binlog row image to FULL" size="lg" border/>
 
-    Next, click on `Save Changes` in the top-right. You may need to reboot your instance for the changes to take effect. If you see `Pending reboot` next to the parameter group link in the Configurations tab of the RDS instance, this is a good indication that a reboot of your instance is needed.
+Next, click on `Save Changes` in the top-right. You may need to reboot your instance for the changes to take effect. If you see `Pending reboot` next to the parameter group link in the Configurations tab of the RDS instance, this is a good indication that a reboot of your instance is needed.
 
-    :::tip
-    If you have a MariaDB cluster, the above parameters would be found in a [DB Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) parameter group and not the DB instance group.
-    :::
+<br/>
+:::tip
+If you have a MariaDB cluster, the above parameters would be found in a [DB Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) parameter group and not the DB instance group.
+:::
 
 ## Enabling GTID Mode {#gtid-mode-rds}
 Global Transaction Identifiers (GTIDs) are unique IDs assigned to each committed transaction in MySQL/MariaDB. They simplify binlog replication and make troubleshooting more straightforward. MariaDB enables GTID mode by default, so no user action is needed to use it.

@@ -24,10 +24,10 @@ import tableau_desktop_05 from '@site/static/images/integrations/data-visualizat
 
 Tableau Online can connect to ClickHouse Cloud or on-premise ClickHouse setup via MySQL interface using the official MySQL data source.
 
-## ClickHouse Cloud setup {#clickhouse-cloud-setup}
+## ClickHouse Cloud Setup {#clickhouse-cloud-setup}
 <MySQLCloudSetup />
 
-## On-premise ClickHouse server setup {#on-premise-clickhouse-server-setup}
+## On-premise ClickHouse Server Setup {#on-premise-clickhouse-server-setup}
 <MySQLOnPremiseSetup />
 
 ## Connecting Tableau Online to ClickHouse (on-premise without SSL) {#connecting-tableau-online-to-clickhouse-on-premise-without-ssl}
@@ -56,22 +56,22 @@ After that, all that remains is to click "Publish As" in the top right corner, a
 
 NB: if you want to use Tableau Online in combination with Tableau Desktop and share ClickHouse datasets between them, make sure you use Tableau Desktop with the default MySQL connector as well, following the setup guide that is displayed [here](https://www.tableau.com/support/drivers) if you select MySQL from the Data Source drop-down. If you have an M1 Mac, check [this troubleshooting thread](https://community.tableau.com/s/question/0D58b0000Ar6OhvCQE/unable-to-install-mysql-driver-for-m1-mac) for a driver installation workaround.
 
-## Connecting Tableau Online to ClickHouse (cloud or on-premise setup with SSL) {#connecting-tableau-online-to-clickhouse-cloud-or-on-premise-setup-with-ssl}
+## Connecting Tableau Online to ClickHouse (Cloud or on-premise setup with SSL) {#connecting-tableau-online-to-clickhouse-cloud-or-on-premise-setup-with-ssl}
 
-As it is not possible to provide the SSL certificates via the Tableau Online MySQL connection setup wizard,
+As it is not possible to provide the SSL certificates via the Tableau Online MySQL connection setup wizard, 
 the only way is to use Tableau Desktop to set the connection up, and then export it to Tableau Online. This process is, however, pretty straightforward.
 
 Run Tableau Desktop on a Windows or Mac machine, and select "Connect" -> "To a Server" -> "MySQL".
-Likely, it will be required to install the MySQL driver on your machine first.
-You can do that by following the setup guide that is displayed [here](https://www.tableau.com/support/drivers) if you select MySQL from the Data Source drop-down.
+Likely, it will be required to install the MySQL driver on your machine first. 
+You can do that by following the setup guide that is displayed [here](https://www.tableau.com/support/drivers) if you select MySQL from the Data Source drop-down. 
 If you have an M1 Mac, check [this troubleshooting thread](https://community.tableau.com/s/question/0D58b0000Ar6OhvCQE/unable-to-install-mysql-driver-for-m1-mac) for a driver installation workaround.
 
 <Image size="md" img={tableau_desktop_01} alt="Tableau Desktop interface showing the Connect menu with MySQL option highlighted" border />
 <br/>
 
 :::note
-In the MySQL connection setup UI, make sure that the "SSL" option is enabled.
-ClickHouse Cloud's SSL certificate is signed by [Let's Encrypt](https://letsencrypt.org/certificates/).
+In the MySQL connection setup UI, make sure that the "SSL" option is enabled. 
+ClickHouse Cloud's SSL certificate is signed by [Let's Encrypt](https://letsencrypt.org/certificates/). 
 You can download this root cert [here](https://letsencrypt.org/certs/isrgrootx1.pem).
 :::
 
@@ -80,7 +80,7 @@ Provide your ClickHouse Cloud instance MySQL user credentials and the path to th
 <Image size="sm" img={tableau_desktop_02} alt="Tableau Desktop MySQL connection dialog with SSL option enabled and fields for server, username, password and certificate" border />
 <br/>
 
-Choose the desired tables as usual (similarly to Tableau Online),
+Choose the desired tables as usual (similarly to Tableau Online), 
 and select "Server" -> "Publish Data Source" -> Tableau Cloud.
 
 <Image size="md" img={tableau_desktop_03} alt="Tableau Desktop showing Server menu with Publish Data Source option highlighted" border />

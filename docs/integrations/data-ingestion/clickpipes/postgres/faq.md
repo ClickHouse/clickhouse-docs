@@ -35,17 +35,17 @@ Yes, partitioned tables are supported out of the box, as long as they have a PRI
 Yes! ClickPipes for Postgres offers two ways to connect to databases in private networks:
 
 1. **SSH Tunneling**
-    - Works well for most use cases
-    - See the setup instructions [here](/integrations/clickpipes/postgres#adding-your-source-postgres-database-connection)
-    - Works across all regions
+   - Works well for most use cases
+   - See the setup instructions [here](/integrations/clickpipes/postgres#adding-your-source-postgres-database-connection)
+   - Works across all regions
 
 2. **AWS PrivateLink**
-    - Available in three AWS regions:
+   - Available in three AWS regions: 
      - us-east-1
-     - us-east-2
+     - us-east-2 
      - eu-central-1
-    - For detailed setup instructions, see our [PrivateLink documentation](/knowledgebase/aws-privatelink-setup-for-clickpipes)
-    - For regions where PrivateLink is not available, please use SSH tunneling
+   - For detailed setup instructions, see our [PrivateLink documentation](/knowledgebase/aws-privatelink-setup-for-clickpipes)
+   - For regions where PrivateLink is not available, please use SSH tunneling
 
 ### How do you handle UPDATEs and DELETEs? {#how-do-you-handle-updates-and-deletes}
 
@@ -70,41 +70,41 @@ For detailed pricing information, please refer to the [ClickPipes for Postgres C
 
 If you're noticing that the size of your Postgres replication slot keeps increasing or isn't coming back down, it usually means that **WAL (Write-Ahead Log) records aren't being consumed (or "replayed") quickly enough** by your CDC pipeline or replication process. Below are the most common causes and how you can address them.
 
-1. **Sudden Spikes in Database Activity**
-    - Large batch updates, bulk inserts, or significant schema changes can quickly generate a lot of WAL data.
-    - The replication slot will hold these WAL records until they are consumed, causing a temporary spike in size.
+1. **Sudden Spikes in Database Activity**  
+   - Large batch updates, bulk inserts, or significant schema changes can quickly generate a lot of WAL data.  
+   - The replication slot will hold these WAL records until they are consumed, causing a temporary spike in size.
 
-2. **Long-Running Transactions**
-    - An open transaction forces Postgres to keep all WAL segments generated since the transaction began, which can dramatically increase slot size.
-    - Set `statement_timeout` and `idle_in_transaction_session_timeout` to reasonable values to prevent transactions from staying open indefinitely:
+2. **Long-Running Transactions**  
+   - An open transaction forces Postgres to keep all WAL segments generated since the transaction began, which can dramatically increase slot size.  
+   - Set `statement_timeout` and `idle_in_transaction_session_timeout` to reasonable values to prevent transactions from staying open indefinitely:
      ```sql
-     SELECT
+     SELECT 
          pid,
          state,
          age(now(), xact_start) AS transaction_duration,
          query AS current_query
-     FROM
+     FROM 
          pg_stat_activity
-     WHERE
+     WHERE 
          xact_start IS NOT NULL
-     ORDER BY
+     ORDER BY 
          age(now(), xact_start) DESC;
      ```
      Use this query to identify unusually long-running transactions.
 
-3. **Maintenance or Utility Operations (e.g., `pg_repack`)**
-    - Tools like `pg_repack` can rewrite entire tables, generating large amounts of WAL data in a short time.
-    - Schedule these operations during slower traffic periods or monitor your WAL usage closely while they run.
+3. **Maintenance or Utility Operations (e.g., `pg_repack`)**  
+   - Tools like `pg_repack` can rewrite entire tables, generating large amounts of WAL data in a short time.  
+   - Schedule these operations during slower traffic periods or monitor your WAL usage closely while they run.
 
-4. **VACUUM and VACUUM ANALYZE**
-    - Although necessary for database health, these operations can create extra WAL traffic—especially if they scan large tables.
-    - Consider using autovacuum tuning parameters or scheduling manual VACUUM operations during off-peak hours.
+4. **VACUUM and VACUUM ANALYZE**  
+   - Although necessary for database health, these operations can create extra WAL traffic—especially if they scan large tables.  
+   - Consider using autovacuum tuning parameters or scheduling manual VACUUM operations during off-peak hours.
 
-5. **Replication Consumer Not Actively Reading the Slot**
-    - If your CDC pipeline (e.g., ClickPipes) or another replication consumer stops, pauses, or crashes, WAL data will accumulate in the slot.
-    - Ensure your pipeline is continuously running and check logs for connectivity or authentication errors.
+5. **Replication Consumer Not Actively Reading the Slot**  
+   - If your CDC pipeline (e.g., ClickPipes) or another replication consumer stops, pauses, or crashes, WAL data will accumulate in the slot.  
+   - Ensure your pipeline is continuously running and check logs for connectivity or authentication errors.
 
-    For an excellent deep dive into this topic, check out our blog post: [Overcoming Pitfalls of Postgres Logical Decoding](https://blog.peerdb.io/overcoming-pitfalls-of-postgres-logical-decoding#heading-beware-of-replication-slot-growth-how-to-monitor-it).
+For an excellent deep dive into this topic, check out our blog post: [Overcoming Pitfalls of Postgres Logical Decoding](https://blog.peerdb.io/overcoming-pitfalls-of-postgres-logical-decoding#heading-beware-of-replication-slot-growth-how-to-monitor-it).
 
 ### How are Postgres data types mapped to ClickHouse? {#how-are-postgres-data-types-mapped-to-clickhouse}
 
@@ -122,12 +122,12 @@ JSON and JSONB columns are replicated as String type in ClickHouse. Since ClickH
 
 When you pause the mirror, the messages are queued up in the replication slot on the source Postgres, ensuring they are buffered and not lost. However, pausing and resuming the mirror will re-establish the connection, which could take some time depending on the source.
 
-During this process, both the sync (pulling data from Postgres and streaming it into the ClickHouse raw table) and normalize (from raw table to target table) operations are aborted. However, they retain the state required to resume durably.
+During this process, both the sync (pulling data from Postgres and streaming it into the ClickHouse raw table) and normalize (from raw table to target table) operations are aborted. However, they retain the state required to resume durably. 
 
 - For sync, if it is canceled mid-way, the confirmed_flush_lsn in Postgres is not advanced, so the next sync will start from the same position as the aborted one, ensuring data consistency.
 - For normalize, the ReplacingMergeTree insert order handles deduplication.
 
-    In summary, while sync and normalize processes are terminated during a pause, it is safe to do so as they can resume without data loss or inconsistency.
+In summary, while sync and normalize processes are terminated during a pause, it is safe to do so as they can resume without data loss or inconsistency.
 
 ### Can ClickPipe creation be automated or done via API or CLI? {#can-clickpipe-creation-be-automated-or-done-via-api-or-cli}
 
@@ -143,7 +143,7 @@ For Postgres versions 13 or lower, CTID range scans are slower, and these settin
 2. **Delete destination tables on ClickHouse**: Ensure that the tables created by the previous pipe are removed.
 3. **Create a new pipe with optimized settings**: Typically, increase the snapshot number of rows per partition to between 1 million and 10 million, depending on your specific requirements and the load your Postgres instance can handle.
 
-    These adjustments should significantly enhance the performance of the initial load, especially for older Postgres versions. If you are using Postgres 14 or later, these settings are less impactful due to improved support for CTID range scans.
+These adjustments should significantly enhance the performance of the initial load, especially for older Postgres versions. If you are using Postgres 14 or later, these settings are less impactful due to improved support for CTID range scans.
 
 ### How should I scope my publications when setting up replication? {#how-should-i-scope-my-publications-when-setting-up-replication}
 
@@ -166,36 +166,36 @@ WHERE
 You have two options when dealing with tables without primary keys:
 
 1. **Exclude tables without primary keys from ClickPipes**:
-    Create the publication with only the tables that have a primary key:
-    ```sql
-    CREATE PUBLICATION clickpipes_publication FOR TABLE table_with_primary_key1, table_with_primary_key2, ...;
-    ```
+   Create the publication with only the tables that have a primary key:
+   ```sql
+   CREATE PUBLICATION clickpipes_publication FOR TABLE table_with_primary_key1, table_with_primary_key2, ...;
+   ```
 
 2. **Include tables without primary keys in ClickPipes**:
-    If you want to include tables without a primary key, you need to alter their replica identity to `FULL`. This ensures that UPDATE and DELETE operations work correctly:
-    ```sql
-    ALTER TABLE table_without_primary_key1 REPLICA IDENTITY FULL;
-    ALTER TABLE table_without_primary_key2 REPLICA IDENTITY FULL;
-    CREATE PUBLICATION clickpipes_publication FOR TABLE <...>, <...>;
-    ```
+   If you want to include tables without a primary key, you need to alter their replica identity to `FULL`. This ensures that UPDATE and DELETE operations work correctly:
+   ```sql
+   ALTER TABLE table_without_primary_key1 REPLICA IDENTITY FULL;
+   ALTER TABLE table_without_primary_key2 REPLICA IDENTITY FULL;
+   CREATE PUBLICATION clickpipes_publication FOR TABLE <...>, <...>;
+   ```
 
-    :::tip
-    If you're creating a publication manually instead of letting ClickPipes manage it, we don't recommend creating a publication `FOR ALL TABLES`, this leads to more traffic from Postgres to ClickPipes (to sending changes for other tables not in the pipe) and reduces overall efficiency.
+:::tip
+If you're creating a publication manually instead of letting ClickPipes manage it, we don't recommend creating a publication `FOR ALL TABLES`, this leads to more traffic from Postgres to ClickPipes (to sending changes for other tables not in the pipe) and reduces overall efficiency.
 
-    For manually created publications, please add any tables you want to the publication before adding them to the pipe.
-    :::
+For manually created publications, please add any tables you want to the publication before adding them to the pipe.
+::: 
 
-## Recommended `max_slot_wal_keep_size` settings {#recommended-max_slot_wal_keep_size-settings}
+## Recommended `max_slot_wal_keep_size` Settings {#recommended-max_slot_wal_keep_size-settings}
 
 - **At Minimum:** Set [`max_slot_wal_keep_size`](https://www.postgresql.org/docs/devel/runtime-config-replication.html#GUC-MAX-SLOT-WAL-KEEP-SIZE) to retain at least **two days' worth** of WAL data.
 - **For Large Databases (High Transaction Volume):** Retain at least **2-3 times** the peak WAL generation per day.
 - **For Storage-Constrained Environments:** Tune this conservatively to **avoid disk exhaustion** while ensuring replication stability.
 
-### How to calculate the right value {#how-to-calculate-the-right-value}
+### How to Calculate the Right Value {#how-to-calculate-the-right-value}
 
 To determine the right setting, measure the WAL generation rate:
 
-#### For PostgreSQL 10+ {#for-postgresql-10}
+#### For PostgreSQL 10+: {#for-postgresql-10}
 
 ```sql
 SELECT pg_wal_lsn_diff(pg_current_wal_insert_lsn(), '0/0') / 1024 / 1024 AS wal_generated_mb;
@@ -212,7 +212,7 @@ SELECT pg_xlog_location_diff(pg_current_xlog_insert_location(), '0/0') / 1024 / 
 * Multiply that number by 2 or 3 to provide sufficient retention.
 * Set `max_slot_wal_keep_size` to the resulting value in MB or GB.
 
-#### Example {#example}
+#### Example: {#example}
 
 If your database generates 100 GB of WAL per day, set:
 
@@ -228,7 +228,7 @@ The most common cause of replication slot invalidation is a low `max_slot_wal_ke
 
 In rare cases, we have seen this issue occur even when `max_slot_wal_keep_size` is not configured. This could be due to an intricate and rare bug in PostgreSQL, although the cause remains unclear.
 
-## I am seeing out of memory (OOMs) on ClickHouse while my ClickPipe is ingesting data. Can you help? {#i-am-seeing-out-of-memory-ooms-on-clickhouse-while-my-clickpipe-is-ingesting-data-can-you-help}
+## I am seeing Out Of Memory (OOMs) on ClickHouse while my ClickPipe is ingesting data. Can you help? {#i-am-seeing-out-of-memory-ooms-on-clickhouse-while-my-clickpipe-is-ingesting-data-can-you-help}
 
 One common reason for OOMs on ClickHouse is that your service is undersized. This means that your current service configuration doesn't have enough resources (e.g., memory or CPU) to handle the ingestion load effectively. We strongly recommend scaling up the service to meet the demands of your ClickPipe data ingestion.
 
@@ -242,7 +242,7 @@ Another reason we've observed is the presence of downstream Materialized Views w
 
 The `invalid snapshot identifier` error occurs when there is a connection drop between ClickPipes and your Postgres database. This can happen due to gateway timeouts, database restarts, or other transient issues.
 
-It is recommended that you do not carry out any disruptive operations like upgrades or restarts on your Postgres database while Initial Load is in progress and ensure that the network connection to your database is stable.
+It is recommended that you do not carry out any disruptive operations like upgrades or restarts on your Postgres database while Initial Load is in progress and ensure that the network connection to your database is stable. 
 
 To resolve this issue, you can trigger a resync from the ClickPipes UI. This will restart the initial load process from the beginning.
 
@@ -255,17 +255,17 @@ To recover your ClickPipe after dropping a publication:
 1. Create a new publication with the same name and required tables in Postgres
 2. Click the 'Resync tables' button in the Settings tab of your ClickPipe
 
-    This resync is necessary because the recreated publication will have a different Object Identifier (OID) in Postgres, even if it has the same name. The resync process refreshes your destination tables and restores the connection.
+This resync is necessary because the recreated publication will have a different Object Identifier (OID) in Postgres, even if it has the same name. The resync process refreshes your destination tables and restores the connection.
 
-    Alternatively, you can create an entirely new pipe if preferred.
+Alternatively, you can create an entirely new pipe if preferred.
 
-    Note that if you're working with partitioned tables, make sure to create your publication with the appropriate settings:
+Note that if you're working with partitioned tables, make sure to create your publication with the appropriate settings:
 
-    ```sql
-    CREATE PUBLICATION clickpipes_publication
-    FOR TABLE <...>, <...>
-    WITH (publish_via_partition_root = true);
-    ```
+```sql
+CREATE PUBLICATION clickpipes_publication 
+FOR TABLE <...>, <...>  
+WITH (publish_via_partition_root = true);
+```
 
 ## What if I am seeing `Unexpected Datatype` errors or `Cannot parse type XX ...` {#what-if-i-am-seeing-unexpected-datatype-errors}
 

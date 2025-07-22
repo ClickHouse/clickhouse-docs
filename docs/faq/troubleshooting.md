@@ -4,7 +4,7 @@ slug: /faq/troubleshooting
 description: 'How to troubleshoot common ClickHouse Cloud error messages.'
 ---
 
-## ClickHouse Cloud troubleshooting {#clickhouse-cloud-troubleshooting}
+## ClickHouse Cloud Troubleshooting {#clickhouse-cloud-troubleshooting}
 
 ### Unable to access a ClickHouse Cloud service {#unable-to-access-a-clickhouse-cloud-service}
 

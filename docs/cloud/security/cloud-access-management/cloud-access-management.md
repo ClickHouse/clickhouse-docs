@@ -19,22 +19,22 @@ Users must be assigned an organization level role and may optionally be assigned
 - Users added to an organization via a SAML integration are automatically assigned the Member role, with least privilege and without access to any services until configured.
 - Service Admin is assigned the SQL console admin role by default. SQL console permissions may be removed in the service settings page.
 
-    | Context      | Role                   | Description                                      |
-    |:-------------|:-----------------------|:-------------------------------------------------|
-    | Organization | Admin                  | Perform all administrative activities for an organization and control all settings. Assigned to the first user in the organization by default. |
-    | Organization | Developer             | View access to everything except Services, ability to generate read-only API keys. |
-    | Organization | Billing               | View usage and invoices, and manage payment methods. |
-    | Organization | Member                | Sign-in only with the ability to manage personal profile settings. Assigned to SAML SSO users by default. |
-    | Service      | Service Admin         | Manage service settings.                        |
-    | Service      | Service Read Only     | View services and settings.                     |
-    | SQL console  | SQL console admin     | Administrative access to databases within the service equivalent to the Default database role. |
-    | SQL console  | SQL console read only | Read only access to databases within the service |
-    | SQL console  | Custom                | Configure using SQL [`GRANT`](/sql-reference/statements/grant) statement; assign the role to a SQL console user by naming the role after the user |
-
-    To create a custom role for a SQL console user and grant it a general role, run the following commands. The email address must match the user's email address in the console.
-
+| Context      | Role                   | Description                                      |
+|:-------------|:-----------------------|:-------------------------------------------------|
+| Organization | Admin                  | Perform all administrative activities for an organization and control all settings. Assigned to the first user in the organization by default. |
+| Organization | Developer             | View access to everything except Services, ability to generate read-only API keys. |
+| Organization | Billing               | View usage and invoices, and manage payment methods. |
+| Organization | Member                | Sign-in only with the ability to manage personal profile settings. Assigned to SAML SSO users by default. |
+| Service      | Service Admin         | Manage service settings.                        |
+| Service      | Service Read Only     | View services and settings.                     |
+| SQL console  | SQL console admin     | Administrative access to databases within the service equivalent to the Default database role. |
+| SQL console  | SQL console read only | Read only access to databases within the service |
+| SQL console  | Custom                | Configure using SQL [`GRANT`](/sql-reference/statements/grant) statement; assign the role to a SQL console user by naming the role after the user |
+  
+To create a custom role for a SQL console user and grant it a general role, run the following commands. The email address must match the user's email address in the console. 
+    
 1. Create the database_developer role and grant `SHOW`, `CREATE`, `ALTER`, and `DELETE` permissions.
-
+    
     ```sql
     CREATE ROLE OR REPLACE database_developer;
     GRANT SHOW ON * TO database_developer;
@@ -42,9 +42,9 @@ Users must be assigned an organization level role and may optionally be assigned
     GRANT ALTER ON * TO database_developer;
     GRANT DELETE ON * TO database_developer;
     ```
-
+    
 2. Create a role for the SQL console user my.user@domain.com and assign it the database_developer role.
-
+    
     ```sql
     CREATE ROLE OR REPLACE `sql-console-role:my.user@domain.com`;
     GRANT database_developer TO `sql-console-role:my.user@domain.com`;
@@ -65,18 +65,18 @@ Configure the following within the services and databases using the SQL [GRANT](
 - Database roles can be granted to other roles, resulting in a hierarchical structure. Roles inherit all permissions of the roles for which it is a member.
 - Database roles are unique per service and may be applied across multiple databases within the same service.
 
-    The illustration below shows the different ways a user could be granted permissions.
+The illustration below shows the different ways a user could be granted permissions.
 
-    <Image img={user_grant_permissions_options} alt='An illustration showing the different ways a user could be granted permissions' size="md" background="black"/>
+<Image img={user_grant_permissions_options} alt='An illustration showing the different ways a user could be granted permissions' size="md" background="black"/>
 
-### Initial settings {#initial-settings}
+### Initial settings {#initial-settings} 
 Databases have an account named `default` that is added automatically and granted the default_role upon service creation. The user that creates the service is presented with the automatically generated, random password that is assigned to the `default` account when the service is created. The password is not shown after initial setup, but may be changed by any user with Service Admin permissions in the console at a later time. This account or an account with Service Admin privileges within the console may set up additional database users and roles at any time.
 
 :::note
 To change the password assigned to the `default` account in the console, go to the Services menu on the left, access the service, go to the Settings tab and click the Reset password button.
 :::
 
-We recommend creating a new user account associated with a person and granting the user the default_role. This is so activities performed by users are identified to their user IDs and the `default` account is reserved for break-glass type activities.
+We recommend creating a new user account associated with a person and granting the user the default_role. This is so activities performed by users are identified to their user IDs and the `default` account is reserved for break-glass type activities. 
 
   ```sql
   CREATE USER userID IDENTIFIED WITH sha256_hash by 'hashed_password';
@@ -88,7 +88,7 @@ Users can use a SHA256 hash generator or code function such as `hashlib` in Pyth
 ### Database access listings with SQL console users {#database-access-listings-with-sql-console-users}
 The following process can be used to generate a complete access listing across the SQL console and databases in your organization.
 
-1. Run the following queries to get a list of all grants in the database.
+1. Run the following queries to get a list of all grants in the database. 
 
     ```sql
     SELECT grants.user_name,
@@ -99,9 +99,9 @@ The following process can be used to generate a complete access listing across t
       grants.table
     FROM system.grants LEFT OUTER JOIN system.role_grants ON grants.role_name = role_grants.granted_role_name
       LEFT OUTER JOIN system.users ON role_grants.user_name = users.name
-
+    
     UNION ALL
-
+    
     SELECT grants.user_name,
       grants.role_name,
       role_grants.role_name AS role_member,
@@ -111,9 +111,9 @@ The following process can be used to generate a complete access listing across t
     FROM system.role_grants LEFT OUTER JOIN system.grants ON role_grants.granted_role_name = grants.role_name
     WHERE role_grants.user_name is null;
     ```
-
+    
 2. Associate this list to Console users with access to SQL console.
-
+   
     a. Go to the Console.
 
     b. Select the relevant service.

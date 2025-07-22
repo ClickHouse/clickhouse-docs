@@ -11,7 +11,7 @@ Most SQL queries from your PostgreSQL setup should run in ClickHouse without mod
 
 ## Deduplication using CDC {#deduplication-cdc}
 
-When using real-time replication with CDC, keep in mind that updates and deletes may result in duplicate rows. To manage this, you can use techniques involving Views and Refreshable Materialized Views.
+When using real-time replication with CDC, keep in mind that updates and deletes may result in duplicate rows. To manage this, you can use techniques involving Views and Refreshable Materialized Views. 
 
 Refer to this [guide](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres) to learn how to migrate your application from PostgreSQL to ClickHouse with minimal friction when migrating using real-time replication with CDC.
 
@@ -21,7 +21,7 @@ While this is possible to migrate with minimum query rewriting, it is recommende
 
 The examples here covers common query patterns and show how to optimize them with ClickHouse. They use the full [Stack Overflow dataset](/getting-started/example-datasets/stackoverflow) (up to April 2024) on equivalent resources in PostgreSQL and ClickHouse (8 cores, 32GiB RAM).
 
-> For simplicity, the queries below omit the use of techniques to deduplicate the data.
+> For simplicity, the queries below omit the use of techniques to deduplicate the data. 
 
 > Counts here will slightly differ as the Postgres data only contains rows which satisfy the referential integrity of the foreign keys. ClickHouse imposes no such constraints and thus has the full dataset e.g. inc. anon users.
 

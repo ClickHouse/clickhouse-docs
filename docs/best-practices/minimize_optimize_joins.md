@@ -20,9 +20,9 @@ In general, denormalize when:
 - Only a limited subset of the columns will be queried, i.e. certain columns can be excluded from denormalization.
 - You have the capability to shift processing out of ClickHouse into upstream systems like Flink, where real-time enrichment or flattening can be managed.
 
-    Not all data needs to be denormalized - focus on the attributes that are frequently queried. Also consider [materialized views](/best-practices/use-materialized-views) to incrementally compute aggregates instead of duplicating entire sub-tables. When schema updates are rare and latency is critical, denormalization offers the best performance trade-off.
+Not all data needs to be denormalized - focus on the attributes that are frequently queried. Also consider [materialized views](/best-practices/use-materialized-views) to incrementally compute aggregates instead of duplicating entire sub-tables. When schema updates are rare and latency is critical, denormalization offers the best performance trade-off.
 
-    For a full guide on denormalizing data in ClickHouse see [here](/data-modeling/denormalization).
+For a full guide on denormalizing data in ClickHouse see [here](/data-modeling/denormalization).
 
 ## When JOINs are required {#when-joins-are-required}
 
@@ -37,32 +37,31 @@ Follow these best practices to improve JOIN performance:
 * **Avoid disk-spilling JOINs**: Intermediate states of JOINs (e.g. hash tables) can become so big that they no longer fit into main memory. In this situation, ClickHouse will return an out-of-memory error by default. Some join algorithms (see below), for example [`grace_hash`](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2), [`partial_merge`](https://clickhouse.com/blog/clickhouse-fully-supports-joins-full-sort-partial-merge-part3) and [`full_sorting_merge`](https://clickhouse.com/blog/clickhouse-fully-supports-joins-full-sort-partial-merge-part3), are able to spill intermediate states to disk and continue query execution. These join algorithms should nevertheless be used with care as disk access can significantly slow down join processing. We instead recommend optimizing the JOIN query in other ways to reduce the size of intermediate states.
 * **Default values as no-match markers in outer JOINs**: Left/right/full outer joins include all values from the left/right/both tables. If no join partner is found in the other table for some value, ClickHouse replaces the join partner by a special marker. The SQL standard mandates that databases use NULL as such a marker. In ClickHouse, this requires wrapping the result column in Nullable, creating an additional memory and performance overhead. As an alternative, you can configure the setting `join_use_nulls = 0` and use the default value of the result column data type as marker.
 
-    :::note Use dictionaries carefully
-    When using dictionaries for JOINs in ClickHouse, it's important to understand that dictionaries, by design, do not allow duplicate keys. During data loading, any duplicate keys are silently deduplicated—only the last loaded value for a given key is retained. This behavior makes dictionaries ideal for one-to-one or many-to-one relationships where only the latest or authoritative value is needed. However, using a dictionary for a one-to-many or many-to-many relationship (e.g. joining roles to actors where an actor can have multiple roles) will result in silent data loss, as all but one of the matching rows will be discarded. As a result, dictionaries are not suitable for scenarios requiring full relational fidelity across multiple matches.
-    :::
+:::note Use dictionaries carefully
+When using dictionaries for JOINs in ClickHouse, it's important to understand that dictionaries, by design, do not allow duplicate keys. During data loading, any duplicate keys are silently deduplicated—only the last loaded value for a given key is retained. This behavior makes dictionaries ideal for one-to-one or many-to-one relationships where only the latest or authoritative value is needed. However, using a dictionary for a one-to-many or many-to-many relationship (e.g. joining roles to actors where an actor can have multiple roles) will result in silent data loss, as all but one of the matching rows will be discarded. As a result, dictionaries are not suitable for scenarios requiring full relational fidelity across multiple matches.
+:::
 
 ## Choosing the right JOIN Algorithm {#choosing-the-right-join-algorithm}
 
 ClickHouse supports several JOIN algorithms that trade off between speed and memory:
-
 * **Parallel Hash JOIN (default):** Fast for small-to-medium right-hand tables that fit in memory.
 * **Direct JOIN:** Ideal when using dictionaries (or other table engines with key-value characteristics) with `INNER` or `LEFT ANY JOIN`  - the fastest method for point lookups as it eliminates the need to build a hash table.
 * **Full Sorting Merge JOIN:** Efficient when both tables are sorted on the join key.
 * **Partial Merge JOIN:** Minimizes memory but is slower—best for joining large tables with limited memory.
 * **Grace Hash JOIN:** Flexible and memory-tunable, good for large datasets with adjustable performance characteristics.
 
-    <Image img={joins} size="md" alt="Joins - speed vs memory"/>
+<Image img={joins} size="md" alt="Joins - speed vs memory"/>
 
-    :::note
-    Each algorithm has varying support for JOIN types. A full list of supported join types for each algorithm can be found [here](/guides/joining-tables#choosing-a-join-algorithm).
-    :::
+:::note
+Each algorithm has varying support for JOIN types. A full list of supported join types for each algorithm can be found [here](/guides/joining-tables#choosing-a-join-algorithm).
+:::
 
-    You can let ClickHouse choose the best algorithm by setting `join_algorithm = 'auto'` (the default), or explicitly control it based on your workload. If you need to select a join algorithm to optimize for performance or memory overhead, we recommend [this guide](/guides/joining-tables#choosing-a-join-algorithm).
+You can let ClickHouse choose the best algorithm by setting `join_algorithm = 'auto'` (the default), or explicitly control it based on your workload. If you need to select a join algorithm to optimize for performance or memory overhead, we recommend [this guide](/guides/joining-tables#choosing-a-join-algorithm).
 
-    For optimal performance:
+For optimal performance:
 
 * Keep JOINs to a minimum in high-performance workloads.
 * Avoid more than 3–4 joins per query.
 * Benchmark different algorithms on real data - performance varies based on JOIN key distribution and data size.
 
-    For more on JOIN optimization strategies, JOIN algorithms, and how to tune them, refer to the[ ClickHouse documentation](/guides/joining-tables) and this [blog series](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1).
+For more on JOIN optimization strategies, JOIN algorithms, and how to tune them, refer to the[ ClickHouse documentation](/guides/joining-tables) and this [blog series](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1).

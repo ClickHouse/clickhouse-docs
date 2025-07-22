@@ -20,11 +20,12 @@ Choosing an effective primary key in ClickHouse is crucial for query performance
 
 1. When selecting an ordering key, prioritize columns frequently used in query filters (i.e. the `WHERE` clause), especially those that exclude large numbers of rows.
 2. Columns highly correlated with other data in the table are also beneficial, as contiguous storage improves compression ratios and memory efficiency during `GROUP BY` and `ORDER BY` operations.
-    Some simple rules can be applied to help choose an ordering key. The following can sometimes be in conflict, so consider these in order. **Users can identify a number of keys from this process, with 4-5 typically sufficient**:
+<br/>
+Some simple rules can be applied to help choose an ordering key. The following can sometimes be in conflict, so consider these in order. **Users can identify a number of keys from this process, with 4-5 typically sufficient**:
 
-    :::note Important
-    Ordering keys must be defined on table creation and cannot be added. Additional ordering can be added to a table after (or before) data insertion through a feature known as projections. Be aware these result in data duplication. Further details [here](/sql-reference/statements/alter/projection).
-    :::
+:::note Important
+Ordering keys must be defined on table creation and cannot be added. Additional ordering can be added to a table after (or before) data insertion through a feature known as projections. Be aware these result in data duplication. Further details [here](/sql-reference/statements/alter/projection).
+:::
 
 ## Example {#example}
 
@@ -36,7 +37,7 @@ This table has no primary key - as indicated by `ORDER BY tuple()`.
 CREATE TABLE posts_unordered
 (
   `Id` Int32,
-  `PostTypeId` Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4,
+  `PostTypeId` Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 
   'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
   `AcceptedAnswerId` UInt32,
   `CreationDate` DateTime,
@@ -104,7 +105,7 @@ Assume a table `posts_ordered`, containing the same data, is defined with an `OR
 CREATE TABLE posts_ordered
 (
   `Id` Int32,
-  `PostTypeId` Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6,
+  `PostTypeId` Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 
   'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
 ...
 )
@@ -112,7 +113,7 @@ ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate))
 ```
 
-`PostTypeId` has a cardinality of 8 and represents the logical choice for the first entry in our ordering key. Recognizing date granularity filtering is likely to be sufficient (it will still benefit datetime filters) so we use `toDate(CreationDate)` as the 2nd component of our key. This will also produce a smaller index as a date can be represented by 16 bits, speeding up filtering.
+`PostTypeId` has a cardinality of 8 and represents the logical choice for the first entry in our ordering key. Recognizing date granularity filtering is likely to be sufficient (it will still benefit datetime filters) so we use `toDate(CreationDate)` as the 2nd component of our key. This will also produce a smaller index as a date can be represented by 16 bits, speeding up filtering. 
 
 The following animation shows how an optimized sparse primary index is created for the Stack Overflow posts table. Instead of indexing individual rows, the index targets blocks of rows:
 
@@ -132,7 +133,7 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 1 row in set. Elapsed: 0.013 sec. Processed 196.53 thousand rows, 1.77 MB (14.64 million rows/s., 131.78 MB/s.)
 ```
 
-This query now leverages sparse indexing, significantly reducing the amount of data read and speeding up the execution time by 4x - note the reduction of rows and bytes read.
+This query now leverages sparse indexing, significantly reducing the amount of data read and speeding up the execution time by 4x - note the reduction of rows and bytes read. 
 
 The use of the index can be confirmed with an `EXPLAIN indexes=1`.
 

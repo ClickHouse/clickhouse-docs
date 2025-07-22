@@ -34,19 +34,23 @@ When using `clickhouse-static-files-disk-uploader`, you must obtain the metadata
 
 1. Run the following query specifying your target table and database:
 
-    ```sql
-    SELECT data_paths
-    FROM system.tables
-    WHERE name = 'mytable' AND database = 'default';
-    ```
+<br />
+
+```sql
+SELECT data_paths
+  FROM system.tables
+  WHERE name = 'mytable' AND database = 'default';
+```
 
 2. This should return the path to the data directory for the specified table:
 
-    ```response
-    ┌─data_paths────────────────────────────────────────────┐
-    │ ['./store/bcc/bccc1cfd-d43d-43cf-a5b6-1cda8178f1ee/'] │
-    └───────────────────────────────────────────────────────┘
-    ```
+<br />
+
+```response
+┌─data_paths────────────────────────────────────────────┐
+│ ['./store/bcc/bccc1cfd-d43d-43cf-a5b6-1cda8178f1ee/'] │
+└───────────────────────────────────────────────────────┘
+```
 
 ## Output table metadata directory to the local filesystem {#output-table-metadata-directory-to-the-local-filesystem}
 

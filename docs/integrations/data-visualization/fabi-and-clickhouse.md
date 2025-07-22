@@ -31,12 +31,12 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 Log in or create your Fabi.ai account: https://app.fabi.ai/
 
 1. You’ll be prompted to connect your database when you first create your account, or if you already have an account, click on the data source panel on the left of any Smartbook and select Add Data Source.
-
-    <Image size="lg" img={fabi_02} alt="Add data source" border />
+   
+   <Image size="lg" img={fabi_02} alt="Add data source" border />
 
 2. You’ll then be prompted to enter your connection details.
 
-    <Image size="md" img={fabi_03} alt="ClickHouse credentials form" border />
+   <Image size="md" img={fabi_03} alt="ClickHouse credentials form" border />
 
 3. Congratulations! You have now integrated ClickHouse into Fabi.ai.
 

@@ -98,19 +98,19 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 
 Make a note of the `endpointServiceId`. You'll use it in the next step.
 
-## Create a private endpoint in Azure {#create-private-endpoint-in-azure}
+## Create a Private Endpoint in Azure {#create-private-endpoint-in-azure}
 
 :::important
-This section covers ClickHouse-specific details for configuring ClickHouse via Azure Private Link. Azure-specific steps are provided as a reference to guide you on where to look, but they may change over time without notice from the Azure cloud provider. Please consider Azure configuration based on your specific use case.
+This section covers ClickHouse-specific details for configuring ClickHouse via Azure Private Link. Azure-specific steps are provided as a reference to guide you on where to look, but they may change over time without notice from the Azure cloud provider. Please consider Azure configuration based on your specific use case.  
 
-Please note that ClickHouse is not responsible for configuring the required Azure private endpoints, DNS records.
+Please note that ClickHouse is not responsible for configuring the required Azure private endpoints, DNS records.  
 
 For any issues related to Azure configuration tasks, contact Azure Support directly.
 :::
 
 In this section, we're going to create a Private Endpoint in Azure. You can use either the Azure Portal or Terraform.
 
-### Option 1: Using Azure Portal to create a private endpoint in Azure {#option-1-using-azure-portal-to-create-a-private-endpoint-in-azure}
+### Option 1: Using Azure Portal to create a Private Endpoint in Azure {#option-1-using-azure-portal-to-create-a-private-endpoint-in-azure}
 
 In the Azure Portal, open **Private Link Center → Private Endpoints**.
 
@@ -128,58 +128,58 @@ In the following screen, specify the following options:
 - **Name**: Set a name for the **Private Endpoint**.
 - **Region**: Choose region where the deployed VNet that will be connected to ClickHouse Cloud via Private Link.
 
-    After you have completed the above steps, click the **Next: Resource** button.
+After you have completed the above steps, click the **Next: Resource** button.
 
-    <Image img={azure_pe_create_basic} size="md" alt="Create Private Endpoint Basic" border />
+<Image img={azure_pe_create_basic} size="md" alt="Create Private Endpoint Basic" border />
 
-    ---
+---
 
-    Select the option **Connect to an Azure resource by resource ID or alias**.
+Select the option **Connect to an Azure resource by resource ID or alias**.
 
-    For the **Resource ID or alias**, use the `endpointServiceId` you have obtained from the [Obtain Azure connection alias for Private Link](#obtain-azure-connection-alias-for-private-link) step.
+For the **Resource ID or alias**, use the `endpointServiceId` you have obtained from the [Obtain Azure connection alias for Private Link](#obtain-azure-connection-alias-for-private-link) step.
 
-    Click **Next: Virtual Network** button.
+Click **Next: Virtual Network** button.
 
-    <Image img={azure_pe_resource} size="md" alt="Private Endpoint Resource Selection" border />
+<Image img={azure_pe_resource} size="md" alt="Private Endpoint Resource Selection" border />
 
-    ---
+---
 
 - **Virtual network**: Choose the VNet you want to connect to ClickHouse Cloud using Private Link
 - **Subnet**: Choose the subnet where Private Endpoint will be created
 
-    Optional:
+Optional:
 
 - **Application security group**: You can attach ASG to Private Endpoint and use it in Network Security Groups to filter network traffic to/from Private Endpoint.
 
-    Click **Next: DNS** button.
+Click **Next: DNS** button.
 
-    <Image img={azure_pe_create_vnet} size="md" alt="Private Endpoint Virtual Network Selection" border />
+<Image img={azure_pe_create_vnet} size="md" alt="Private Endpoint Virtual Network Selection" border />
 
-    Click the **Next: Tags** button.
+Click the **Next: Tags** button.
 
-    ---
+---
 
-    <Image img={azure_pe_create_dns} size="md" alt="Private Endpoint DNS Configuration" border />
+<Image img={azure_pe_create_dns} size="md" alt="Private Endpoint DNS Configuration" border />
 
-    Optionally, you can attach tags to your Private Endpoint.
+Optionally, you can attach tags to your Private Endpoint.
 
-    Click the **Next: Review + create** button.
+Click the **Next: Review + create** button.
 
-    ---
+---
 
-    <Image img={azure_pe_create_tags} size="md" alt="Private Endpoint Tags" border />
+<Image img={azure_pe_create_tags} size="md" alt="Private Endpoint Tags" border />
 
-    Finally, click the **Create** button.
+Finally, click the **Create** button.
 
-    <Image img={azure_pe_create_review} size="md" alt="Private Endpoint Review" border />
+<Image img={azure_pe_create_review} size="md" alt="Private Endpoint Review" border />
 
-    The **Connection status** of the created Private Endpoint will be in **Pending** state. It will change to **Approved** state once you add this Private Endpoint to the service allow list.
+The **Connection status** of the created Private Endpoint will be in **Pending** state. It will change to **Approved** state once you add this Private Endpoint to the service allow list.
 
-    Open the network interface associated with Private Endpoint and copy the **Private IPv4 address**(10.0.0.4 in this example), you will need this information in the next steps.
+Open the network interface associated with Private Endpoint and copy the **Private IPv4 address**(10.0.0.4 in this example), you will need this information in the next steps.
 
-    <Image img={azure_pe_ip} size="lg" alt="Private Endpoint IP Address" border />
+<Image img={azure_pe_ip} size="lg" alt="Private Endpoint IP Address" border />
 
-### Option 2: Using Terraform to create a private endpoint in Azure {#option-2-using-terraform-to-create-a-private-endpoint-in-azure}
+### Option 2: Using Terraform to create a Private Endpoint in Azure {#option-2-using-terraform-to-create-a-private-endpoint-in-azure}
 
 Use the template below to use Terraform to create a Private Endpoint:
 
@@ -198,7 +198,7 @@ resource "azurerm_private_endpoint" "example_clickhouse_cloud" {
 }
 ```
 
-### Obtaining the private endpoint `resourceGuid` {#obtaining-private-endpoint-resourceguid}
+### Obtaining the Private Endpoint `resourceGuid` {#obtaining-private-endpoint-resourceguid}
 
 In order to use Private Link, you need to add the Private Endpoint connection GUID to your service allow list.
 
@@ -243,21 +243,21 @@ Create a wildcard record and point to your Private Endpoint:
 4. For IP Address, type the IP address you see for Private Endpoint.
 5. Select **OK**.
 
-    <Image img={azure_pl_dns_wildcard} size="lg" alt="Private Link DNS Wildcard Setup" border />
+<Image img={azure_pl_dns_wildcard} size="lg" alt="Private Link DNS Wildcard Setup" border />
 
-    **Option 2: Using Terraform**
+**Option 2: Using Terraform**
 
-    Use the following Terraform template to create a wildcard DNS record:
+Use the following Terraform template to create a wildcard DNS record:
 
-    ```json
-    resource "azurerm_private_dns_a_record" "example" {
-    name                = "*"
-    zone_name           = var.zone_name
-    resource_group_name = var.resource_group_name
-    ttl                 = 300
-    records             = ["10.0.0.4"]
-    }
-    ```
+```json
+resource "azurerm_private_dns_a_record" "example" {
+  name                = "*"
+  zone_name           = var.zone_name
+  resource_group_name = var.resource_group_name
+  ttl                 = 300
+  records             = ["10.0.0.4"]
+}
+```
 
 ### Create a virtual network link {#create-a-virtual-network-link}
 
@@ -424,7 +424,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: ap
 
 Each service with Private Link enabled has a public and private endpoint. In order to connect using Private Link, you need to use a private endpoint which will be `privateDnsHostname`<sup>API</sup> or `DNS name`<sup>console</sup> taken from [Obtain Azure connection alias for Private Link](#obtain-azure-connection-alias-for-private-link).
 
-### Obtaining the private DNS hostname {#obtaining-the-private-dns-hostname}
+### Obtaining the Private DNS Hostname {#obtaining-the-private-dns-hostname}
 
 #### Option 1: ClickHouse Cloud console {#option-1-clickhouse-cloud-console-3}
 
@@ -485,7 +485,7 @@ Address: 10.0.0.4
 
 Most likely, the Private Endpoint GUID was not added to the service allow-list. Revisit the [_Add Private Endpoint GUID to your services allow-list_ step](#add-private-endpoint-guid-to-services-allow-list).
 
-### Private Endpoint is in pending state {#private-endpoint-is-in-pending-state}
+### Private Endpoint is in Pending state {#private-endpoint-is-in-pending-state}
 
 Most likely, the Private Endpoint GUID was not added to the service allow-list. Revisit the [_Add Private Endpoint GUID to your services allow-list_ step](#add-private-endpoint-guid-to-services-allow-list).
 
@@ -520,7 +520,7 @@ Early data was not sent
 Verify return code: 0 (ok)
 ```
 
-### Checking private endpoint filters {#checking-private-endpoint-filters}
+### Checking Private Endpoint filters {#checking-private-endpoint-filters}
 
 Set the following environment variables before running any commands:
 

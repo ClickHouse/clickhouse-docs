@@ -14,11 +14,11 @@ The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be
 function to find the value of `arg` that corresponds to the minimum value of `val` for rows where the condition is true,
 using the `argMinIf` aggregate combinator function.
 
-The `argMinIf` function is useful when you need to find the value associated
-with the minimum value in a dataset, but only for rows that satisfy a specific
+The `argMinIf` function is useful when you need to find the value associated 
+with the minimum value in a dataset, but only for rows that satisfy a specific 
 condition.
 
-## Example usage {#example-usage}
+## Example Usage {#example-usage}
 
 In this example, we'll create a table that stores product prices and their timestamps,
 and we'll use `argMinIf` to find the lowest price for each product when it's in stock.
@@ -52,10 +52,10 @@ but only considering rows where `in_stock = 1`. For example:
 - Product 2: Among in-stock rows, 20.99 has the earliest timestamp (11:00:00)
 
 ```response title="Response"
-    ┌─product_id─┬─lowest_price_when_in_stock─┐
- 1. │          1 │                      10.99 │
- 2. │          2 │                      20.99 │
-    └────────────┴────────────────────────────┘
+   ┌─product_id─┬─lowest_price_when_in_stock─┐
+1. │          1 │                      10.99 │
+2. │          2 │                      20.99 │
+   └────────────┴────────────────────────────┘
 ```
 
 ## See also {#see-also}

@@ -38,7 +38,7 @@ You have access to a machine that has:
 3. a current version of **Java** (e.g. <a href="https://openjdk.java.net" target="_blank">OpenJDK</a> Version >= 17) installed
 4. a current version of **MySQL** (e.g. <a href="https://www.mysql.com" target="_blank">MySQL</a> Version >=8) installed and running
 5. a current version of **ClickHouse** [installed](/getting-started/install/install.mdx) and running
-    :::
+:::
 
 ## Install the ClickHouse JDBC Bridge locally {#install-the-clickhouse-jdbc-bridge-locally}
 
@@ -85,16 +85,18 @@ in the config file above
 - in the value for the `jdbcUrl` you need to replace `<host>`, and `<port>` with appropriate values according to your running MySQL instance, e.g. `"jdbc:mysql://localhost:3306"`
 - you need to replace `<username>` and `<password>` with your MySQL credentials, if you don't use a password, you can delete the `"password": "<password>"` line in the config file above
 - in the value for `driverUrls` we just specified a URL from which the <a href="https://repo1.maven.org/maven2/mysql/mysql-connector-java/" target="_blank">current version</a> of the MySQL JDBC driver can be downloaded. That's all we have to do, and the ClickHouse JDBC Bridge will automatically download that JDBC driver (into a OS specific directory).
-    :::
+:::
 
-    Now we are ready to start the ClickHouse JDBC Bridge:
-    ```bash
-    cd ~/clickhouse-jdbc-bridge
-    java -jar clickhouse-jdbc-bridge-2.0.7-shaded.jar
-    ```
-    :::note
-    We started the ClickHouse JDBC Bridge in foreground mode. In order to stop the Bridge you can bring the Unix shell window from above in foreground and press `CTRL+C`.
-    :::
+<br/>
+
+Now we are ready to start the ClickHouse JDBC Bridge:
+ ```bash
+ cd ~/clickhouse-jdbc-bridge
+ java -jar clickhouse-jdbc-bridge-2.0.7-shaded.jar
+ ```
+:::note
+We started the ClickHouse JDBC Bridge in foreground mode. In order to stop the Bridge you can bring the Unix shell window from above in foreground and press `CTRL+C`.
+:::
 
 ## Use the JDBC connection from within ClickHouse {#use-the-jdbc-connection-from-within-clickhouse}
 
@@ -104,28 +106,28 @@ The easiest way to execute the following examples is to copy and paste them into
 
 - jdbc Table Function:
 
-    ```sql
-    SELECT * FROM jdbc('mysql8', 'mydatabase', 'mytable');
-    ```
-    :::note
-    As the first parameter for the jdbc table function we are using the name of the named data source that we configured above.
-    :::
+ ```sql
+ SELECT * FROM jdbc('mysql8', 'mydatabase', 'mytable');
+ ```
+:::note
+As the first parameter for the jdbc table function we are using the name of the named data source that we configured above.
+:::
 
 - JDBC Table Engine:
-    ```sql
-    CREATE TABLE mytable (
+ ```sql
+ CREATE TABLE mytable (
       <column> <column_type>,
       ...
-    )
-    ENGINE = JDBC('mysql8', 'mydatabase', 'mytable');
+ )
+ ENGINE = JDBC('mysql8', 'mydatabase', 'mytable');
 
-    SELECT * FROM mytable;
-    ```
-    :::note
-    As the first parameter for the jdbc engine clause we are using the name of the named data source that we configured above
+ SELECT * FROM mytable;
+ ```
+:::note
+ As the first parameter for the jdbc engine clause we are using the name of the named data source that we configured above
 
-    The schema of the ClickHouse JDBC engine table and schema of the connected MySQL table must be aligned, e.g. the column names and order must be the same, and the column data types must be compatible
-    :::
+ The schema of the ClickHouse JDBC engine table and schema of the connected MySQL table must be aligned, e.g. the column names and order must be the same, and the column data types must be compatible
+:::
 
 ## Install the ClickHouse JDBC Bridge externally {#install-the-clickhouse-jdbc-bridge-externally}
 
@@ -141,36 +143,40 @@ In order to install the ClickHouse JDBC Bridge externally, we do the following s
 
 <Tabs>
 <TabItem value="xml" label="XML">
+
 ```xml
 <jdbc_bridge>
-<host>JDBC-Bridge-Host</host>
-<port>9019</port>
+   <host>JDBC-Bridge-Host</host>
+   <port>9019</port>
 </jdbc_bridge>
 ```
+
 </TabItem>
 <TabItem value="yaml" label="YAML">
+
 ```yaml
 jdbc_bridge:
-host: JDBC-Bridge-Host
-port: 9019
+    host: JDBC-Bridge-Host
+    port: 9019
 ```
+
 </TabItem>
 </Tabs>
 
-    :::note
-    - you need to replace `JDBC-Bridge-Host` with the hostname or ip address of the dedicated ClickHouse JDBC Bridge host
-    - we specified the default ClickHouse JDBC Bridge port `9019`, if you are using a different port for the JDBC Bridge then you must adapt the configuration above accordingly
-    :::
+:::note
+- you need to replace `JDBC-Bridge-Host` with the hostname or ip address of the dedicated ClickHouse JDBC Bridge host
+- we specified the default ClickHouse JDBC Bridge port `9019`, if you are using a different port for the JDBC Bridge then you must adapt the configuration above accordingly
+:::
 
-    [//]: # (## 4. Additional Info)
+[//]: # (## 4. Additional Info)
 
-    [//]: # ()
-    [//]: # (TODO: )
+[//]: # ()
+[//]: # (TODO: )
 
-    [//]: # (- mention that for jdbc table function it is more performant &#40;not two queries each time&#41; to also specify the schema as a parameter)
+[//]: # (- mention that for jdbc table function it is more performant &#40;not two queries each time&#41; to also specify the schema as a parameter)
 
-    [//]: # ()
-    [//]: # (- mention ad hoc query vs table query, saved query, named query)
+[//]: # ()
+[//]: # (- mention ad hoc query vs table query, saved query, named query)
 
-    [//]: # ()
-    [//]: # (- mention insert into )
+[//]: # ()
+[//]: # (- mention insert into )

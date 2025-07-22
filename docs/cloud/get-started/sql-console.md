@@ -51,9 +51,9 @@ SQL console is the fastest and easiest way to explore and query your databases i
 - Execute queries and visualize result data in just a few clicks
 - Share queries with team members and collaborate more effectively.
 
-### Exploring tables {#exploring-tables}
+### Exploring Tables {#exploring-tables}
 
-### Viewing table list and schema info {#viewing-table-list-and-schema-info}
+### Viewing Table List and Schema Info {#viewing-table-list-and-schema-info}
 
 An overview of tables contained in your ClickHouse instance can be found in the left sidebar area. Use the database selector at the top of the left bar to view the tables in a specific database
 
@@ -62,19 +62,19 @@ Tables in the list can also be expanded to view columns and types
 
 <Image img={view_columns} size="md" alt='view columns' />
 
-### Exploring table data {#exploring-table-data}
+### Exploring Table Data {#exploring-table-data}
 
 Click on a table in the list to open it in a new tab. In the Table View, data can be easily viewed, selected, and copied. Note that structure and formatting are preserved when copy-pasting to spreadsheet applications such as Microsoft Excel and Google Sheets. You can flip between pages of table data (paginated in 30-row increments) using the navigation in the footer.
 
 <Image img={abc} size="md" alt='abc' />
 
-### Inspecting cell data {#inspecting-cell-data}
+### Inspecting Cell Data {#inspecting-cell-data}
 
 The Cell Inspector tool can be used to view large amounts of data contained within a single cell. To open it, right-click on a cell and select 'Inspect Cell'. The contents of the cell inspector can be copied by clicking the copy icon in the top right corner of the inspector contents.
 
 <Image img={inspecting_cell_content} size="md" alt='inspecting cell content' />
 
-## Filtering and sorting tables {#filtering-and-sorting-tables}
+## Filtering and Sorting Tables {#filtering-and-sorting-tables}
 
 ### Sorting a table {#sorting-a-table}
 
@@ -82,7 +82,7 @@ To sort a table in the SQL console, open a table and select the 'Sort' button in
 
 <Image img={sort_descending_on_column} size="md" alt='sort descending on a column' />
 
-The SQL console also allows you to add multiple sorts to a table. Click the 'Sort' button again to add another sort.
+The SQL console also allows you to add multiple sorts to a table. Click the 'Sort' button again to add another sort. 
 
 :::note
 Sorts are applied in the order that they appear in the sort pane (top to bottom). To remove a sort, simply click the 'x' button next to the sort.
@@ -118,18 +118,18 @@ Filters and sorts are not mandatory when using the 'Create Query' feature.
 
 You can learn more about querying in the SQL console by reading the (link) query documentation.
 
-## Creating and running a query {#creating-and-running-a-query}
+## Creating and Running a Query {#creating-and-running-a-query}
 
-### Creating a query {#creating-a-query}
+### Creating a Query {#creating-a-query}
 
 There are two ways to create a new query in the SQL console.
 
 - Click the '+' button in the tab bar
 - Select the 'New Query' button from the left sidebar query list
 
-    <Image img={creating_a_query} size="md" alt='Creating a query' />
+<Image img={creating_a_query} size="md" alt='Creating a query' />
 
-### Running a query {#running-a-query}
+### Running a Query {#running-a-query}
 
 To run a query, type your SQL command(s) into the SQL Editor and click the 'Run' button or use the shortcut `cmd / ctrl + enter`. To write and run multiple commands sequentially, make sure to add a semicolon after each command.
 
@@ -139,31 +139,31 @@ By default, clicking the run button will run all commands contained in the SQL E
 - Run selected command(s)
 - Run command at the cursor
 
-    To run selected command(s), highlight the desired command or sequence of commands and click the 'Run' button (or use the `cmd / ctrl + enter` shortcut). You can also select 'Run selected' from the SQL Editor context menu (opened by right-clicking anywhere within the editor) when a selection is present.
+To run selected command(s), highlight the desired command or sequence of commands and click the 'Run' button (or use the `cmd / ctrl + enter` shortcut). You can also select 'Run selected' from the SQL Editor context menu (opened by right-clicking anywhere within the editor) when a selection is present.
 
-    <Image img={run_selected_query} size="md" alt='run selected query' />
+<Image img={run_selected_query} size="md" alt='run selected query' />
 
-    Running the command at the current cursor position can be achieved in two ways:
+Running the command at the current cursor position can be achieved in two ways:
 
 - Select 'At Cursor' from the extended run options menu (or use the corresponding `cmd / ctrl + shift + enter` keyboard shortcut
 
-    <Image img={run_at_cursor_2} size="md" alt='run at cursor' />
+<Image img={run_at_cursor_2} size="md" alt='run at cursor' />
 
-    - Selecting 'Run at cursor' from the SQL Editor context menu
+- Selecting 'Run at cursor' from the SQL Editor context menu
 
-    <Image img={run_at_cursor} size="md" alt='run at cursor' />
+<Image img={run_at_cursor} size="md" alt='run at cursor' />
 
-    :::note
-    The command present at the cursor position will flash yellow on execution.
-    :::
+:::note
+The command present at the cursor position will flash yellow on execution.
+:::
 
-### Canceling a query {#canceling-a-query}
+### Canceling a Query {#canceling-a-query}
 
 While a query is running, the 'Run' button in the Query Editor toolbar will be replaced with a 'Cancel' button. Simply click this button or press `Esc` to cancel the query. Note: Any results that have already been returned will persist after cancellation.
 
 <Image img={cancel_a_query} size="md" alt='Cancel a query' />
 
-### Saving a query {#saving-a-query}
+### Saving a Query {#saving-a-query}
 
 Saving queries allows you to easily find them later and share them with your teammates. The SQL console also allows you to organize your queries into folders.
 
@@ -179,7 +179,7 @@ Alternatively, you can simultaneously name and save a query by clicking on "Unti
 
 <Image img={sql_console_rename} size="md" alt='Rename query' />
 
-### Query sharing {#query-sharing}
+### Query Sharing {#query-sharing}
 
 The SQL console allows you to easily share queries with your team members. The SQL console supports four levels of access that can be adjusted both globally and on a per-user basis:
 
@@ -188,25 +188,25 @@ The SQL console allows you to easily share queries with your team members. The S
 - Read-only access
 - No access
 
-    After saving a query, click the "Share" button in the toolbar. A modal with sharing options will appear:
+After saving a query, click the "Share" button in the toolbar. A modal with sharing options will appear:
 
-    <Image img={sql_console_share} size="md" alt='Share query' />
+<Image img={sql_console_share} size="md" alt='Share query' />
 
-    To adjust query access for all organization members with access to the service, simply adjust the access level selector in the top line:
+To adjust query access for all organization members with access to the service, simply adjust the access level selector in the top line:
 
-    <Image img={sql_console_edit_access} size="md" alt='Edit access' />
+<Image img={sql_console_edit_access} size="md" alt='Edit access' />
 
-    After applying the above, the query can now be viewed (and executed) by all team members with access to the SQL console for the service.
+After applying the above, the query can now be viewed (and executed) by all team members with access to the SQL console for the service.
 
-    To adjust query access for specific members, select the desired team member from the "Add a team member" selector:
+To adjust query access for specific members, select the desired team member from the "Add a team member" selector:
 
-    <Image img={sql_console_add_team} size="md" alt='Add team member' />
+<Image img={sql_console_add_team} size="md" alt='Add team member' />
 
-    After selecting a team member, a new line item should appear with an access level selector:
+After selecting a team member, a new line item should appear with an access level selector:
 
-    <Image img={sql_console_edit_member} size="md" alt='Edit team member access' />
+<Image img={sql_console_edit_member} size="md" alt='Edit team member access' />
 
-### Accessing shared queries {#accessing-shared-queries}
+### Accessing Shared Queries {#accessing-shared-queries}
 
 If a query has been shared with you, it will be displayed in the "Queries" tab of the SQL console left sidebar:
 
@@ -218,7 +218,7 @@ Saved queries are also permalinked, meaning that you can send and receive links 
 
 Values for any parameters that may exist in a query are automatically added to the saved query URL as query parameters. For example, if a query contains `{start_date: Date}` and `{end_date: Date}` parameters, the permalink can look like: `https://console.clickhouse.cloud/services/:serviceId/console/query/:queryId?param_start_date=2015-01-01&param_end_date=2016-01-01`.
 
-## Advanced querying features {#advanced-querying-features}
+## Advanced Querying Features {#advanced-querying-features}
 
 ### Searching query results {#searching-query-results}
 
@@ -246,7 +246,7 @@ Query result sets can be easily exported to CSV format directly from the SQL con
 
 <Image img={download_as_csv} size="md" alt='Download as CSV' />
 
-## Visualizing query data {#visualizing-query-data}
+## Visualizing Query Data {#visualizing-query-data}
 
 Some data can be more easily interpreted in chart form. You can quickly create visualizations from query result data directly from the SQL console in just a few clicks. As an example, we'll use a query that calculates weekly statistics for NYC taxi trips:
 
@@ -298,10 +298,10 @@ A number of more advanced chart characteristics can also be adjusted in the 'Adv
 - Axis titles
 - Label orientation for the x-axis
 
-    Our chart will be updated accordingly:
+Our chart will be updated accordingly:
 
-    <Image img={update_subtitle_etc} size="md" alt='Update subtitle etc.' />
+<Image img={update_subtitle_etc} size="md" alt='Update subtitle etc.' />
 
-    In some scenarios, it may be necessary to adjust the axis scales for each field independently. This can also be accomplished in the 'Advanced' section of the chart configuration pane by specifying min and max values for an axis range. As an example, the above chart looks good, but in order to demonstrate the correlation between our `trip_total` and `fare_total` fields, the axis ranges need some adjustment:
+In some scenarios, it may be necessary to adjust the axis scales for each field independently. This can also be accomplished in the 'Advanced' section of the chart configuration pane by specifying min and max values for an axis range. As an example, the above chart looks good, but in order to demonstrate the correlation between our `trip_total` and `fare_total` fields, the axis ranges need some adjustment:
 
-    <Image img={adjust_axis_scale} size="md" alt='Adjust axis scale' />
+<Image img={adjust_axis_scale} size="md" alt='Adjust axis scale' />

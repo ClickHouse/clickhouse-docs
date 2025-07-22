@@ -8,7 +8,7 @@ description: 'Overview page for ClickHouse Cloud pricing'
 import ClickPipesFAQ from './jan2025_faq/_snippets/_clickpipes_faq.md'
 
 For pricing information, see the [ClickHouse Cloud Pricing](https://clickhouse.com/pricing#pricing-calculator) page.
-ClickHouse Cloud bills based on the usage of compute, storage, [data transfer](/cloud/manage/network-data-transfer) (egress over the internet and cross-region), and [ClickPipes](/integrations/clickpipes).
+ClickHouse Cloud bills based on the usage of compute, storage, [data transfer](/cloud/manage/network-data-transfer) (egress over the internet and cross-region), and [ClickPipes](/integrations/clickpipes). 
 To understand what can affect your bill, and ways that you can manage your spend, keep reading.
 
 ## Amazon Web Services (AWS) example {#amazon-web-services-aws-example}
@@ -16,7 +16,7 @@ To understand what can affect your bill, and ways that you can manage your spend
 :::note
 - Prices reflect AWS us-east-1 pricing.
 - Explore applicable data transfer and ClickPipes charges [here](jan2025_faq/dimensions.md).
-    :::
+:::
 
 ### Basic: from $66.52 per month {#basic-from-6652-per-month}
 
@@ -29,48 +29,48 @@ Best for: Departmental use cases with smaller data volumes that do not have hard
 - 10 GB of public internet egress data transfer
 - 5 GB of cross-region data transfer
 
-    Pricing breakdown for this example:
+Pricing breakdown for this example:
 
-    <table><thead>
-    <tr>
+<table><thead>
+  <tr>
     <th></th>
     <th>Active 6 hours a day</th>
     <th>Active 12 hours a day</th>
     <th>Active 24 hours a day</th>
-    </tr></thead>
-    <tbody>
-    <tr>
+  </tr></thead>
+<tbody>
+  <tr>
     <td>Compute</td>
     <td>\$39.91</td>
     <td>\$79.83</td>
     <td>\$159.66</td>
-    </tr>
-    <tr>
+  </tr>
+  <tr>
     <td>Storage</td>
     <td>\$25.30</td>
     <td>\$25.30</td>
     <td>\$25.30</td>
-    </tr>
-    <tr>
+  </tr>
+  <tr>
     <td>Public internet egress data transfer</td>
     <td>\$1.15</td>
     <td>\$1.15</td>
     <td>\$1.15</td>
-    </tr>
-    <tr>
+  </tr>
+  <tr>
     <td>Cross-region data transfer</td>
     <td>\$0.16</td>
     <td>\$0.16</td>
     <td>\$0.16</td>
-    </tr>
-    <tr>
+  </tr>
+  <tr>
     <td>Total</td>
     <td>\$66.52</td>
     <td>\$106.44</td>
     <td>\$186.27</td>
-    </tr>
-    </tbody>
-    </table>
+  </tr>
+</tbody>
+</table>
 
 ### Scale (always-on, auto-scaling): from $499.38 per month {#scale-always-on-auto-scaling-from-49938-per-month}
 
@@ -82,48 +82,48 @@ Best for: workloads requiring enhanced SLAs (2+ replica services), scalability, 
 - 100 GB of public internet egress data transfer
 - 10 GB of cross-region data transfer
 
-    Pricing breakdown for this example:
+Pricing breakdown for this example:
 
-    <table><thead>
-    <tr>
+<table><thead>
+  <tr>
     <th></th>
     <th>Example 1</th>
     <th>Example 2</th>
     <th>Example 3</th>
-    </tr></thead>
-    <tbody>
-    <tr>
+  </tr></thead>
+<tbody>
+  <tr>
     <td>Compute</td>
     <td>2 replicas x 8 GiB RAM, 2 vCPU<br></br>\$436.95</td>
     <td>2 replicas x 16 GiB RAM, 4 vCPU<br></br>\$873.89</td>
     <td>3 replicas x 16 GiB RAM, 4 vCPU<br></br>\$1,310.84</td>
-    </tr>
-    <tr>
+  </tr>
+  <tr>
     <td>Storage</td>
     <td>1 TB of data + 1 backup<br></br>\$50.60</td>
     <td>2 TB of data + 1 backup<br></br>\$101.20</td>
     <td>3 TB of data + 1 backup<br></br>\$151.80</td>
-    </tr>
-    <tr>
+  </tr>
+  <tr>
     <td>Public internet egress data transfer</td>
     <td>\$11.52</td>
     <td>\$11.52</td>
     <td>\$11.52</td>
-    </tr>
-    <tr>
+  </tr>
+  <tr>
     <td>Cross-region data transfer</td>
     <td>\$0.31</td>
     <td>\$0.31</td>
     <td>\$0.31</td>
-    </tr>
-    <tr>
+  </tr>
+  <tr>
     <td>Total</td>
     <td>\$499.38</td>
     <td>\$986.92</td>
     <td>\$1,474.47</td>
-    </tr>
-    </tbody>
-    </table>
+  </tr>
+</tbody>
+</table>
 
 ### Enterprise: Starting prices vary {#enterprise-starting-prices-vary}
 
@@ -134,85 +134,85 @@ Best for: large scale, mission critical deployments that have stringent security
 - 1 TB of public internet egress data transfer
 - 500 GB of cross-region data transfer
 
-    <table><thead>
-    <tr>
+<table><thead>
+  <tr>
     <th></th>
     <th>Example 1</th>
     <th>Example 2</th>
     <th>Example 3</th>
-    </tr></thead>
-    <tbody>
-    <tr>
+  </tr></thead>
+<tbody>
+  <tr>
     <td>Compute</td>
     <td>2 replicas x 32 GiB RAM, 8 vCPU<br></br>\$2,285.60</td>
     <td>2 replicas x 64 GiB RAM, 16 vCPU<br></br>\$4,571.19</td>
     <td>2 x 120 GiB RAM, 30 vCPU<br></br>\$8,570.99</td>
-    </tr>
-    <tr>
+  </tr>
+  <tr>
     <td>Storage</td>
     <td>5 TB + 1 backup<br></br>\$253.00</td>
     <td>10 TB + 1 backup<br></br>\$506.00</td>
     <td>20 TB + 1 backup<br></br>\$1,012.00</td>
-    </tr>
-    <tr>
+  </tr>
+  <tr>
     <td>Public internet egress data transfer</td>
     <td>\$115.20</td>
     <td>\$115.20</td>
     <td>\$115.20</td>
-    </tr>
-    <tr>
+  </tr>
+  <tr>
     <td>Cross-region data transfer</td>
     <td>\$15.60</td>
     <td>\$15.60</td>
     <td>\$15.60</td>
-    </tr>
-    <tr>
+  </tr>
+  <tr>
     <td>Total</td>
     <td>\$2,669.40</td>
     <td>\$5,207.99</td>
     <td>\$9,713.79</td>
-    </tr>
-    </tbody>
-    </table>
+  </tr>
+</tbody>
+</table>
 
-## Frequently asked questions {#faqs}
+## Frequently Asked Questions {#faqs}
 
 ### How is compute metered? {#how-is-compute-metered}
 
-ClickHouse Cloud meters compute on a per-minute basis, in 8G RAM increments.
+ClickHouse Cloud meters compute on a per-minute basis, in 8G RAM increments. 
 Compute costs will vary by tier, region, and cloud service provider.
 
 ### How is storage on disk calculated? {#how-is-storage-on-disk-calculated}
 
-ClickHouse Cloud uses cloud object storage and usage is metered on the compressed size of data stored in ClickHouse tables.
-Storage costs are the same across tiers and vary by region and cloud service provider.
+ClickHouse Cloud uses cloud object storage and usage is metered on the compressed size of data stored in ClickHouse tables. 
+Storage costs are the same across tiers and vary by region and cloud service provider. 
 
 ### Do backups count toward total storage? {#do-backups-count-toward-total-storage}
 
-Storage and backups are counted towards storage costs and billed separately.
-All services will default to one backup, retained for a day.
-Users who need additional backups can do so by configuring additional [backups](backups/overview.md) under the settings tab of the Cloud console.
+Storage and backups are counted towards storage costs and billed separately. 
+All services will default to one backup, retained for a day. 
+Users who need additional backups can do so by configuring additional [backups](backups/overview.md) under the settings tab of the Cloud Console.
 
 ### How do I estimate compression? {#how-do-i-estimate-compression}
 
-Compression can vary from dataset to dataset.
-How much it varies is dependent on how compressible the data is in the first place (number of high vs. low cardinality fields),
-and how the user sets up the schema (using optional codecs or not, for instance).
-It can be on the order of 10x for common types of analytical data, but it can be significantly lower or higher as well.
-See the [optimizing documentation](/optimize/asynchronous-inserts) for guidance and this [Uber blog](https://www.uber.com/blog/logging/) for a detailed logging use case example.
+Compression can vary from dataset to dataset. 
+How much it varies is dependent on how compressible the data is in the first place (number of high vs. low cardinality fields), 
+and how the user sets up the schema (using optional codecs or not, for instance). 
+It can be on the order of 10x for common types of analytical data, but it can be significantly lower or higher as well. 
+See the [optimizing documentation](/optimize/asynchronous-inserts) for guidance and this [Uber blog](https://www.uber.com/blog/logging/) for a detailed logging use case example. 
 The only practical way to know exactly is to ingest your dataset into ClickHouse and compare the size of the dataset with the size stored in ClickHouse.
 
 You can use the query:
 
 ```sql title="Estimating compression"
-SELECT formatReadableSize(total_bytes)
-FROM system.tables
+SELECT formatReadableSize(total_bytes) 
+FROM system.tables 
 WHERE name = <your table name>
 ```
 
 ### What tools does ClickHouse offer to estimate the cost of running a service in the cloud if I have a self-managed deployment? {#what-tools-does-clickhouse-offer-to-estimate-the-cost-of-running-a-service-in-the-cloud-if-i-have-a-self-managed-deployment}
 
-The ClickHouse query log captures [key metrics](/operations/system-tables/query_log) that can be used to estimate the cost of running a workload in ClickHouse Cloud.
+The ClickHouse query log captures [key metrics](/operations/system-tables/query_log) that can be used to estimate the cost of running a workload in ClickHouse Cloud. 
 For details on migrating from self-managed to ClickHouse Cloud please refer to the [migration documentation](/cloud/migration/clickhouse-to-cloud), and contact [ClickHouse Cloud support](https://console.clickhouse.cloud/support) if you have further questions.
 
 ### What billing options are available for ClickHouse Cloud? {#what-billing-options-are-available-for-clickhouse-cloud}
@@ -258,101 +258,101 @@ All marketplace subscriptions are billed and invoiced by the marketplace. You ca
 ### Why do the dates on the Usage statements not match my Marketplace Invoice? {#why-do-the-dates-on-the-usage-statements-not-match-my-marketplace-invoice}
 
 AWS Marketplace billing follows the calendar month cycle.
-For example, for usage between dates 01-Dec-2024 and 01-Jan-2025,
+For example, for usage between dates 01-Dec-2024 and 01-Jan-2025, 
 an invoice is generated between 3-Jan and 5-Jan-2025
 
-ClickHouse Cloud usage statements follow a different billing cycle where usage is metered
+ClickHouse Cloud usage statements follow a different billing cycle where usage is metered 
 and reported over 30 days starting from the day of sign up.
 
 The usage and invoice dates will differ if these dates are not the same. Since usage statements track usage by day for a given service, users can rely on statements to see the breakdown of costs.
 
 ### Are there any restrictions around the usage of prepaid credits? {#are-there-any-restrictions-around-the-usage-of-prepaid-credits}
 
-ClickHouse Cloud prepaid credits (whether direct through ClickHouse, or via a cloud provider's marketplace)
-can only be leveraged for the terms of the contract.
-This means they can be applied on the acceptance date, or a future date, and not for any prior periods.
+ClickHouse Cloud prepaid credits (whether direct through ClickHouse, or via a cloud provider's marketplace) 
+can only be leveraged for the terms of the contract. 
+This means they can be applied on the acceptance date, or a future date, and not for any prior periods. 
 Any overages not covered by prepaid credits must be covered by a credit card payment or marketplace monthly billing.
 
 ### Is there a difference in ClickHouse Cloud pricing, whether paying through the cloud provider marketplace or directly to ClickHouse? {#is-there-a-difference-in-clickhouse-cloud-pricing-whether-paying-through-the-cloud-provider-marketplace-or-directly-to-clickhouse}
 
-There is no difference in pricing between marketplace billing and signing up directly with ClickHouse.
-In either case, your usage of ClickHouse Cloud is tracked in terms of ClickHouse Cloud Credits (CHCs),
+There is no difference in pricing between marketplace billing and signing up directly with ClickHouse. 
+In either case, your usage of ClickHouse Cloud is tracked in terms of ClickHouse Cloud Credits (CHCs), 
 which are metered in the same way and billed accordingly.
 
 ### How is compute-compute separation billed? {#how-is-compute-compute-separation-billed}
 
-When creating a service in addition to an existing service,
-you can choose if this new service should share the same data with the existing one.
-If yes, these two services now form a [warehouse](../reference/warehouses.md).
+When creating a service in addition to an existing service, 
+you can choose if this new service should share the same data with the existing one. 
+If yes, these two services now form a [warehouse](../reference/warehouses.md). 
 A warehouse has the data stored in it with multiple compute services accessing this data.
 
-As the data is stored only once, you only pay for one copy of data, though multiple services are accessing it.
+As the data is stored only once, you only pay for one copy of data, though multiple services are accessing it. 
 You pay for compute as usual — there are no additional fees for compute-compute separation / warehouses.
 By leveraging shared storage in this deployment, users benefit from cost savings on both storage and backups.
 
-Compute-compute separation can save you a significant amount of ClickHouse Credits in some cases.
+Compute-compute separation can save you a significant amount of ClickHouse Credits in some cases. 
 A good example is the following setup:
 
 1. You have ETL jobs that are running 24/7 and ingesting data into the service. These ETL jobs do not require a lot of memory so they can run on a small instance with, for example, 32 GiB of RAM.
 
 2. A data scientist on the same team that has ad hoc reporting requirements, says they need to run a query that requires a significant amount of memory - 236 GiB, however does not need high availability and can wait and rerun queries if the first run fails.
 
-    In this example you, as an administrator for the database, can do the following:
+In this example you, as an administrator for the database, can do the following:
 
 1. Create a small service with two replicas 16 GiB each - this will satisfy the ETL jobs and provide high availability.
 
 2. For the data scientist, you can create a second service in the same warehouse with only one replica with 236 GiB. You can enable idling for this service so you will not be paying for this service when the data scientist is not using it.
 
-    Cost estimation (per month) for this example on the **Scale Tier**:
+Cost estimation (per month) for this example on the **Scale Tier**:
 - Parent service active 24 hours day: 2 replicas x 16 GiB 4 vCPU per replica
 - Child service: 1 replica x 236 GiB 59 vCPU per replica per replica
 - 3 TB of compressed data + 1 backup
 - 100 GB of public internet egress data transfer
 - 50 GB of cross-region data transfer
 
-    <table class="nowrap-header"><thead>
-    <tr>
+<table class="nowrap-header"><thead>
+  <tr>
     <th></th>
     <th><span>Child service</span><br/><span>active 1 hour/day</span></th>
     <th><span>Child service</span><br/><span>active 2 hours/day</span></th>
     <th><span>Child service</span><br/><span>active 4 hours/day</span></th>
-    </tr></thead>
-    <tbody>
-    <tr>
+  </tr></thead>
+<tbody>
+  <tr>
     <td>Compute</td>
     <td>\$1,142.43</td>
     <td>\$1,410.97</td>
     <td>\$1,948.05</td>
-    </tr>
-    <tr>
+  </tr>
+  <tr>
     <td>Storage</td>
     <td>\$151.80</td>
     <td>\$151.80</td>
     <td>\$151.80</td>
-    </tr>
-    <tr>
+  </tr>
+  <tr>
     <td>Public internet egress data transfer</td>
     <td>\$11.52</td>
     <td>\$11.52</td>
     <td>\$11.52</td>
-    </tr>
-    <tr>
+  </tr>
+  <tr>
     <td>Cross-region data transfer</td>
     <td>\$1.56</td>
     <td>\$1.56</td>
     <td>\$1.56</td>
-    </tr>
-    <tr>
+  </tr>
+  <tr>
     <td>Total</td>
     <td>\$1,307.31</td>
     <td>\$1,575.85</td>
     <td>\$2,112.93</td>
-    </tr>
-    </tbody>
-    </table>
+  </tr>
+</tbody>
+</table>
 
-    Without warehouses, you would have to pay for the amount of memory that the data engineer needs for his queries.
-    However, combining two services in a warehouse and idling one of them helps you save money.
+Without warehouses, you would have to pay for the amount of memory that the data engineer needs for his queries. 
+However, combining two services in a warehouse and idling one of them helps you save money.
 
 ## ClickPipes pricing {#clickpipes-pricing}
 
@@ -382,30 +382,30 @@ to make any changes.
 There are two main dimensions to pricing:
 
 1. **Ingested Data**: The raw, uncompressed bytes coming from Postgres and
-    ingested into ClickHouse.
+   ingested into ClickHouse.
 2. **Compute**: The compute units provisioned per service manage multiple
-    Postgres CDC ClickPipes and are separate from the compute units used by the
-    ClickHouse Cloud service. This additional compute is dedicated specifically
-    to Postgres CDC ClickPipes. Compute is billed at the service level, not per
-    individual pipe. Each compute unit includes 2 vCPUs and 8 GB of RAM.
+   Postgres CDC ClickPipes and are separate from the compute units used by the
+   ClickHouse Cloud service. This additional compute is dedicated specifically
+   to Postgres CDC ClickPipes. Compute is billed at the service level, not per
+   individual pipe. Each compute unit includes 2 vCPUs and 8 GB of RAM.
 
 #### Ingested data {#ingested-data}
 
 The Postgres CDC connector operates in two main phases:
 
 - **Initial load / resync**: This captures a full snapshot of Postgres tables
-    and occurs when a pipe is first created or re-synced.
+  and occurs when a pipe is first created or re-synced.
 - **Continuous Replication (CDC)**: Ongoing replication of changes—such as inserts,
-    updates, deletes, and schema changes—from Postgres to ClickHouse.
+  updates, deletes, and schema changes—from Postgres to ClickHouse.
 
-    In most use cases, continuous replication accounts for over 90% of a ClickPipe
-    life cycle. Because initial loads involve transferring a large volume of data all
-    at once, we offer a lower rate for that phase.
+In most use cases, continuous replication accounts for over 90% of a ClickPipe
+life cycle. Because initial loads involve transferring a large volume of data all
+at once, we offer a lower rate for that phase.
 
-    | Phase                            | Cost         |
-    |----------------------------------|--------------|
-    | **Initial load / resync**        | $0.10 per GB |
-    | **Continuous Replication (CDC)** | $0.20 per GB |
+| Phase                            | Cost         |
+|----------------------------------|--------------|
+| **Initial load / resync**        | $0.10 per GB |
+| **Continuous Replication (CDC)** | $0.20 per GB |
 
 #### Compute {#compute}
 
@@ -430,13 +430,13 @@ Let's say your service is in Scale tier and has the following setup:
 
 ##### Monthly cost breakdown {#cost-breakdown}
 
-**Ingested Data (CDC)**:
+**Ingested Data (CDC)**: 
 
-$$ 2 \text{ pipes} \times 500 \text{ GB} = 1,000 \text{ GB per month} $$
+$$ 2 \text{ pipes} \times 500 \text{ GB} = 1,000 \text{ GB per month} $$ 
 
 $$ 1,000 \text{ GB} \times \$0.20/\text{GB} = \$200 $$
 
-**Compute**:
+**Compute**: 
 
 $$1 \text{ compute unit} \times \$0.20/\text{hr} \times 730 \text{ hours (approximate month)} = \$146$$
 
@@ -444,10 +444,10 @@ $$1 \text{ compute unit} \times \$0.20/\text{hr} \times 730 \text{ hours (approx
 Compute is shared across both pipes
 :::
 
-**Total Monthly Cost**:
+**Total Monthly Cost**: 
 
 $$\$200 \text{ (ingest)} + \$146 \text{ (compute)} = \$346$$
-
+ 
 ### ClickPipes for streaming and object storage {#clickpipes-for-streaming-object-storage}
 
 This section outlines the pricing model of ClickPipes for streaming and object storage.
@@ -457,12 +457,12 @@ This section outlines the pricing model of ClickPipes for streaming and object s
 It consists of two dimensions
 
 - **Compute**: Price per unit per hour
-    Compute represents the cost of running the ClickPipes replica pods whether they actively ingest data or not.
-    It applies to all ClickPipes types.
+  Compute represents the cost of running the ClickPipes replica pods whether they actively ingest data or not.
+  It applies to all ClickPipes types.
 - **Ingested data**: per GB pricing
-    The ingested data rate applies to all streaming ClickPipes
-    (Kafka, Confluent, Amazon MSK, Amazon Kinesis, Redpanda, WarpStream, Azure Event Hubs)
-    for the data transferred via the replica pods. The ingested data size (GB) is charged based on bytes received from the source (uncompressed or compressed).
+  The ingested data rate applies to all streaming ClickPipes
+  (Kafka, Confluent, Amazon MSK, Amazon Kinesis, Redpanda, WarpStream, Azure Event Hubs)
+  for the data transferred via the replica pods. The ingested data size (GB) is charged based on bytes received from the source (uncompressed or compressed).
 
 #### What are ClickPipes replicas? {#what-are-clickpipes-replicas}
 
@@ -513,69 +513,93 @@ effective data transfer is assumed by the underlying Clickhouse Service_
 ## ClickPipes pricing FAQ {#clickpipes-pricing-faq}
 
 Below, you will find frequently asked questions about CDC ClickPipes and streaming
-and object-based storage ClickPipes.
+and object-based storage ClickPipes. 
 
 ### FAQ for Postgres CDC ClickPipes {#faq-postgres-cdc-clickpipe}
 
 <details>
+
 <summary>Is the ingested data measured in pricing based on compressed or uncompressed size?</summary>
-The ingested data is measured as _uncompressed data_ coming from Postgres—both
-during the initial load and CDC (via the replication slot). Postgres does not
-compress data during transit by default, and ClickPipe processes the raw,
+
+The ingested data is measured as _uncompressed data_ coming from Postgres—both 
+during the initial load and CDC (via the replication slot). Postgres does not 
+compress data during transit by default, and ClickPipe processes the raw, 
 uncompressed bytes.
+
 </details>
 
 <details>
+
 <summary>When will Postgres CDC pricing start appearing on my bills?</summary>
+
 Postgres CDC ClickPipes pricing begins appearing on monthly bills starting
-**September 1st, 2025**, for all customers—both existing and new. Until then,
+**September 1st, 2025**, for all customers—both existing and new. Until then, 
 usage is free. Customers have a **3-month window** starting from **May 29**
 (the GA announcement date) to review and optimize their usage if needed, although
 we expect most won't need to make any changes.
+
 </details>
 
 <details>
+
 <summary>Will I be charged if I pause my pipes?</summary>
-No data ingestion charges apply while a pipe is paused, since no data is moved.
-However, compute charges still apply—either 0.5 or 1 compute unit—based on your
-organization's tier. This is a fixed service-level cost and applies across all
+
+No data ingestion charges apply while a pipe is paused, since no data is moved. 
+However, compute charges still apply—either 0.5 or 1 compute unit—based on your 
+organization's tier. This is a fixed service-level cost and applies across all 
 pipes within that service.
+
 </details>
 
 <details>
+
 <summary>How can I estimate my pricing?</summary>
+
 The Overview page in ClickPipes provides metrics for both initial load/resync and
-CDC data volumes. You can estimate your Postgres CDC costs using these metrics
+CDC data volumes. You can estimate your Postgres CDC costs using these metrics 
 in conjunction with the ClickPipes pricing.
+
 </details>
 
 <details>
+
 <summary>Can I scale the compute allocated for Postgres CDC in my service?</summary>
-By default, compute scaling is not user-configurable. The provisioned resources
-are optimized to handle most customer workloads optimally. If your use case
-requires more or less compute, please open a support ticket so we can evaluate
+
+By default, compute scaling is not user-configurable. The provisioned resources 
+are optimized to handle most customer workloads optimally. If your use case 
+requires more or less compute, please open a support ticket so we can evaluate 
 your request.
+
 </details>
 
 <details>
+
 <summary>What is the pricing granularity?</summary>
+
 - **Compute**: Billed per hour. Partial hours are rounded up to the next hour.
 - **Ingested Data**: Measured and billed per gigabyte (GB) of uncompressed data.
+
 </details>
 
 <details>
+
 <summary>Can I use my ClickHouse Cloud credits for Postgres CDC via ClickPipes?</summary>
-Yes. ClickPipes pricing is part of the unified ClickHouse Cloud pricing. Any
+
+Yes. ClickPipes pricing is part of the unified ClickHouse Cloud pricing. Any 
 platform credits you have will automatically apply to ClickPipes usage as well.
+
 </details>
 
 <details>
+
 <summary>How much additional cost should I expect from Postgres CDC ClickPipes in my existing monthly ClickHouse Cloud spend?</summary>
-The cost varies based on your use case, data volume, and organization tier.
-That said, most existing customers see an increase of **0–15%** relative to their
-existing monthly ClickHouse Cloud spend post trial. Actual costs may vary
-depending on your workload—some workloads involve high data volumes with
+
+The cost varies based on your use case, data volume, and organization tier. 
+That said, most existing customers see an increase of **0–15%** relative to their 
+existing monthly ClickHouse Cloud spend post trial. Actual costs may vary 
+depending on your workload—some workloads involve high data volumes with 
 lesser processing, while others require more processing with less data.
+
 </details>
 
 ### FAQ for streaming and object storage ClickPipes {#faq-streaming-and-object-storage}

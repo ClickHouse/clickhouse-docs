@@ -18,6 +18,7 @@ Although there is no Glue ClickHouse connector available yet, the official JDBC 
 
 <Tabs>
 <TabItem value="Java" label="Java" default>
+
 ```java
 import com.amazonaws.services.glue.util.Job
 import com.amazonaws.services.glue.util.GlueArgParser
@@ -27,34 +28,42 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.DataFrame
 import scala.collection.JavaConverters._
 import com.amazonaws.services.glue.log.GlueLogger
+
+
 // Initialize Glue job
 object GlueJob {
-def main(sysArgs: Array[String]) {
-val sc: SparkContext = new SparkContext()
-val glueContext: GlueContext = new GlueContext(sc)
-val spark: SparkSession = glueContext.getSparkSession
-val logger = new GlueLogger
-import spark.implicits._
-// @params: [JOB_NAME]
-val args = GlueArgParser.getResolvedOptions(sysArgs, Seq("JOB_NAME").toArray)
-Job.init(args("JOB_NAME"), glueContext, args.asJava)
-// JDBC connection details
-val jdbcUrl = "jdbc:ch://{host}:{port}/{schema}"
-val jdbcProperties = new java.util.Properties()
-jdbcProperties.put("user", "default")
-jdbcProperties.put("password", "*******")
-jdbcProperties.put("driver", "com.clickhouse.jdbc.ClickHouseDriver")
-// Load the table from ClickHouse
-val df: DataFrame = spark.read.jdbc(jdbcUrl, "my_table", jdbcProperties)
-// Show the Spark df, or use it for whatever you like
-df.show()
-// Commit the job
-Job.commit()
-}
+  def main(sysArgs: Array[String]) {
+    val sc: SparkContext = new SparkContext()
+    val glueContext: GlueContext = new GlueContext(sc)
+    val spark: SparkSession = glueContext.getSparkSession
+    val logger = new GlueLogger
+     import spark.implicits._
+    // @params: [JOB_NAME]
+    val args = GlueArgParser.getResolvedOptions(sysArgs, Seq("JOB_NAME").toArray)
+    Job.init(args("JOB_NAME"), glueContext, args.asJava)
+
+    // JDBC connection details
+    val jdbcUrl = "jdbc:ch://{host}:{port}/{schema}"
+    val jdbcProperties = new java.util.Properties()
+    jdbcProperties.put("user", "default")
+    jdbcProperties.put("password", "*******")
+    jdbcProperties.put("driver", "com.clickhouse.jdbc.ClickHouseDriver")
+
+    // Load the table from ClickHouse
+    val df: DataFrame = spark.read.jdbc(jdbcUrl, "my_table", jdbcProperties)
+
+    // Show the Spark df, or use it for whatever you like
+    df.show()
+
+    // Commit the job
+    Job.commit()
+  }
 }
 ```
+
 </TabItem>
 <TabItem value="Python" label="Python">
+
 ```python
 import sys
 from awsglue.transforms import *
@@ -62,8 +71,10 @@ from awsglue.utils import getResolvedOptions
 from pyspark.context import SparkContext
 from awsglue.context import GlueContext
 from awsglue.job import Job
+
 ## @params: [JOB_NAME]
 args = getResolvedOptions(sys.argv, ['JOB_NAME'])
+
 sc = SparkContext()
 glueContext = GlueContext(sc)
 logger = glueContext.get_logger()
@@ -74,18 +85,22 @@ jdbc_url = "jdbc:ch://{host}:{port}/{schema}"
 query = "select * from my_table"
 # For cloud usage, please add ssl options
 df = (spark.read.format("jdbc")
-.option("driver", 'com.clickhouse.jdbc.ClickHouseDriver')
-.option("url", jdbc_url)
-.option("user", 'default')
-.option("password", '*******')
-.option("query", query)
-.load())
+    .option("driver", 'com.clickhouse.jdbc.ClickHouseDriver')
+    .option("url", jdbc_url)
+    .option("user", 'default')
+    .option("password", '*******')
+    .option("query", query)
+    .load())
+
 logger.info("num of rows:")
 logger.info(str(df.count()))
 logger.info("Data sample:")
 logger.info(str(df.take(10)))
+
+
 job.commit()
 ```
+
 </TabItem>
 </Tabs>
 

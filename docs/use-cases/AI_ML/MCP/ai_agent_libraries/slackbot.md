@@ -41,27 +41,27 @@ in the Slack documentation.
 ## Configure Slack app settings {#configure-slack-app-settings}
 
 - Go to `App Home`
-    - Under `Show Tabs` → `Messages Tab`: Enable `Allow users to send Slash commands and messages from the messages tab`
-        - Go to `Socket Mode`
-            - Enable `Socket Mode`**`
-            - Note down the `Socket Mode Handler`**` for the environment variable `SLACK_APP_TOKEN`
-        - Go to `OAuth & Permissions`
-            - Add the following `Bot Token Scopes`:
-                - `app_mentions:read`
-                - `assistant:write`
-                - `chat:write`
-                - `im:history`
-                - `im:read`
-                - `im:write`
-                - `channels:history`
-            - Install the app to your workspace and note down the `Bot User OAuth Token` for the environment variable `SLACK_BOT_TOKEN`.
-        - Go to `Event Subscriptions`
-            - Enable `Events`
-            - Under `Subscribe to bot events`, add:
-                - `app_mention`
-                - `assistant_thread_started`
-                - `message:im`
-            - Save Changes
+  - Under `Show Tabs` → `Messages Tab`: Enable `Allow users to send Slash commands and messages from the messages tab`
+  - Go to `Socket Mode`
+    - Enable `Socket Mode`**`
+    - Note down the `Socket Mode Handler`**` for the environment variable `SLACK_APP_TOKEN`
+  - Go to `OAuth & Permissions`
+    - Add the following `Bot Token Scopes`:
+      - `app_mentions:read`
+      - `assistant:write`
+      - `chat:write`
+      - `im:history`
+      - `im:read`
+      - `im:write`
+      - `channels:history`
+    - Install the app to your workspace and note down the `Bot User OAuth Token` for the environment variable `SLACK_BOT_TOKEN`.
+  - Go to `Event Subscriptions`
+        - Enable `Events`
+        - Under `Subscribe to bot events`, add:
+        - `app_mention`
+        - `assistant_thread_started`
+        - `message:im`
+  - Save Changes
 
 ## Add environment variables (`.env`) {#add-env-vars}
 

@@ -29,7 +29,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ## How to connect {#how-to-connect}
 1. Gather your connection details.
-    <ConnectionDetails />
+<ConnectionDetails />
 
 2. Download or visit Zing Data
 
@@ -44,28 +44,33 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
     * To add a datasource on web, click on **Data Sources** on the top menu, click on **New Datasource** and select **Clickhouse** from the dropdown menu
 
     <Image size="md" img={zing_01} alt="Zing Data interface showing New Datasource button and ClickHouse option in the dropdown menu" border />
+    <br/>
 
 4. Fill out the connection details and click on **Check Connection**.
 
     <Image size="md" img={zing_02} alt="ClickHouse connection configuration form in Zing Data with fields for server, port, database, username and password" border />
+    <br/>
 
 5. If the connection is successful, Zing will proceed you to table selection. Select the required tables and click on **Save**. If Zing cannot connect to your data source, you'll see a message asking your to check your credentials and retry. If even after checking your credentials and retrying you still experience issues, <a id="contact_link" href="mailto:hello@getzingdata.com">reach out to Zing support here.</a>
 
     <Image size="md" img={zing_03} alt="Zing Data table selection interface showing available ClickHouse tables with checkboxes" border />
+    <br/>
 
 6. Once the Clickhouse datasource is added, it will be available to everyone in your Zing organization, under the **Data Sources** / **Sources** tab.
 
-## Creating charts and dashboards in Zing Data {#creating-charts-and-dashboards-in-zing-data}
+## Creating Charts and Dashboards in Zing Data {#creating-charts-and-dashboards-in-zing-data}
 
 1. After your Clickhouse datasource is added, click on **Zing App** on the web, or click on the datasource on mobile to start creating charts.
 
 2. Click on a table under the table's list to create a chart.
 
     <Image size="sm" img={zing_04} alt="Zing Data interface showing the table list with available ClickHouse tables" border />
+    <br/>
 
 3. Use the visual query builder to pick the desired fields, aggregations, etc., and click on **Run Question**.
 
     <Image size="md" img={zing_05} alt="Zing Data visual query builder interface with field selection and aggregation options" border />
+    <br/>
 
 4. If you familiar with SQL, you can also write custom SQL to run queries and create a chart.
 
@@ -75,12 +80,14 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 5. An example chart would look as follows. The question can be saved using the three-dot menu. You can comment on the chart, tag your team members, create real-time alerts, change the chart type, etc.
 
     <Image size="md" img={zing_08} alt="Example chart visualization in Zing Data showing data from ClickHouse with options menu" border />
+    <br/>
 
 6. Dashboards can be created using the "+" icon under **Dashboards** on the Home screen. Existing questions can be dragged in, to be displayed on the dashboard.
 
     <Image size="md" img={zing_09} alt="Zing Data dashboard view showing multiple visualizations arranged in a dashboard layout" border />
+    <br/>
 
-## Related content {#related-content}
+## Related Content {#related-content}
 
 - [Documentation](https://docs.getzingdata.com/docs/)
 - [Quick Start](https://getzingdata.com/quickstart/)

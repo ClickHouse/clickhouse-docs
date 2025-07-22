@@ -8,9 +8,9 @@ slug: /cloud/reference/supported-regions
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
-# Supported cloud regions
+# Supported Cloud Regions
 
-## AWS regions {#aws-regions}
+## AWS Regions {#aws-regions}
 
 - ap-northeast-1 (Tokyo)
 - ap-south-1 (Mumbai)
@@ -24,13 +24,13 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - us-east-2 (Ohio)
 - us-west-2 (Oregon)
 
-    **Private Region:**
+**Private Region:**
 - ca-central-1 (Canada)
 - af-south-1 (South Africa)
 - eu-north-1 (Stockholm)
 - sa-east-1 (South America)
 - ap-northeast-2 (South Korea, Seoul)
-
+ 
 ## Google Cloud regions {#google-cloud-regions}
 
 - asia-southeast1 (Singapore)
@@ -38,7 +38,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - us-central1 (Iowa)
 - us-east1 (South Carolina)
 
-    **Private Region:**
+**Private Region:**
 
 - us-west1 (Oregon)
 - australia-southeast1(Sydney)
@@ -53,12 +53,12 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - East US 2 (Virginia)
 - Germany West Central (Frankfurt)
 
-    **Private Region:**
+**Private Region:**
 
-    JapanEast
-    :::note
-    Need to deploy to a region not currently listed? [Submit a request](https://clickhouse.com/pricing?modal=open).
-    :::
+JapanEast
+:::note 
+Need to deploy to a region not currently listed? [Submit a request](https://clickhouse.com/pricing?modal=open). 
+:::
 
 ## Private regions {#private-regions}
 
@@ -72,10 +72,10 @@ Key considerations for private regions:
 - Manual scaling (both vertical and horizontal) can be enabled with a support ticket.
 - If a service requires configuration with CMEK, the customer must provide the AWS KMS key during service launch.
 - To launch services new and additional, requests will need to be made through a support ticket.
+  
+Additional requirements may apply for HIPAA compliance (including signing a BAA). Note that HIPAA is currently available only for Enterprise tier services
 
-    Additional requirements may apply for HIPAA compliance (including signing a BAA). Note that HIPAA is currently available only for Enterprise tier services
-
-## HIPAA compliant regions {#hipaa-compliant-regions}
+## HIPAA Compliant Regions {#hipaa-compliant-regions}
 
 <EnterprisePlanFeatureBadge feature="HIPAA" support="true"/>
 
@@ -85,11 +85,10 @@ Customers must sign a Business Associate Agreement (BAA) and request onboarding 
 - AWS us-east-1 (N. Virginia)
 - AWS us-east-2 (Ohio)
 - AWS us-west-2 (Oregon)
-- GCP europe-west4 (Netherlands)
 - GCP us-central1 (Iowa)
 - GCP us-east1 (South Carolina)
 
-## PCI compliant regions {#pci-compliant-regions}
+## PCI Compliant Regions {#pci-compliant-regions}
 
 <EnterprisePlanFeatureBadge feature="PCI" support="true"/>
 

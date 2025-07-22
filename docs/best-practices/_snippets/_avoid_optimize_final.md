@@ -1,7 +1,7 @@
 import Image from '@theme/IdealImage';
 import simple_merges from '@site/static/images/bestpractices/simple_merges.png';
 
-ClickHouse tables using the **MergeTree engine** store data on disk as **immutable parts**, which are created every time data is inserted.
+ClickHouse tables using the **MergeTree engine** store data on disk as **immutable parts**, which are created every time data is inserted. 
 
 Each insert creates a new part containing sorted, compressed column files, along with metadata like indexes and checksums. For a detailed description of part structures and how they are formed we recommend this [guide](/parts).
 
@@ -17,7 +17,7 @@ OPTIMIZE TABLE <table> FINAL;
 
 **you should avoid this operation in most cases** as it initiates resource intensive operations which may impact cluster performance.
 
-## Why avoid?  {#why-avoid}
+## Why Avoid?  {#why-avoid}
 
 ### It's expensive {#its-expensive}
 
@@ -28,7 +28,7 @@ Running `OPTIMIZE FINAL` forces ClickHouse to merge **all** active parts into a 
 3. **Compressing** it again
 4. **Writing** the final part to disk or object storage
 
-    These steps are **CPU and I/O-intensive** and can put significant strain on your system, especially when large datasets are involved.
+These steps are **CPU and I/O-intensive** and can put significant strain on your system, especially when large datasets are involved.
 
 ### It ignores safety limits {#it-ignores-safety-limits}
 

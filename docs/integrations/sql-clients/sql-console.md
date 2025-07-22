@@ -54,9 +54,9 @@ SQL console is the fastest and easiest way to explore and query your databases i
 - Execute queries and visualize result data in just a few clicks
 - Share queries with team members and collaborate more effectively.
 
-## Exploring tables {#exploring-tables}
+## Exploring Tables {#exploring-tables}
 
-### Viewing table list and schema info {#viewing-table-list-and-schema-info}
+### Viewing Table List and Schema Info {#viewing-table-list-and-schema-info}
 
 An overview of tables contained in your ClickHouse instance can be found in the left sidebar area. Use the database selector at the top of the left bar to view the tables in a specific database
 
@@ -66,19 +66,19 @@ Tables in the list can also be expanded to view columns and types
 
 <Image img={view_columns} size="lg" border alt="View of expanded table showing column names and data types"/>
 
-### Exploring table data {#exploring-table-data}
+### Exploring Table Data {#exploring-table-data}
 
 Click on a table in the list to open it in a new tab. In the Table View, data can be easily viewed, selected, and copied. Note that structure and formatting are preserved when copy-pasting to spreadsheet applications such as Microsoft Excel and Google Sheets. You can flip between pages of table data (paginated in 30-row increments) using the navigation in the footer.
 
 <Image img={abc} size="lg" border alt="Table view showing data that can be selected and copied"/>
 
-### Inspecting cell data {#inspecting-cell-data}
+### Inspecting Cell Data {#inspecting-cell-data}
 
 The Cell Inspector tool can be used to view large amounts of data contained within a single cell. To open it, right-click on a cell and select 'Inspect Cell'. The contents of the cell inspector can be copied by clicking the copy icon in the top right corner of the inspector contents.
 
 <Image img={inspecting_cell_content} size="lg" border alt="Cell inspector dialog showing the content of a selected cell"/>
 
-## Filtering and sorting tables {#filtering-and-sorting-tables}
+## Filtering and Sorting Tables {#filtering-and-sorting-tables}
 
 ### Sorting a table {#sorting-a-table}
 
@@ -118,18 +118,18 @@ Filters and sorts are not mandatory when using the 'Create Query' feature.
 
 You can learn more about querying in the SQL console by reading the (link) query documentation.
 
-## Creating and running a query {#creating-and-running-a-query}
+## Creating and Running a Query {#creating-and-running-a-query}
 
-### Creating a query {#creating-a-query}
+### Creating a Query {#creating-a-query}
 
 There are two ways to create a new query in the SQL console.
 
 - Click the '+' button in the tab bar
 - Select the 'New Query' button from the left sidebar query list
 
-    <Image img={creating_a_query} size="lg" border alt="Interface showing how to create a new query using the + button or New Query button"/>
+<Image img={creating_a_query} size="lg" border alt="Interface showing how to create a new query using the + button or New Query button"/>
 
-### Running a query {#running-a-query}
+### Running a Query {#running-a-query}
 
 To run a query, type your SQL command(s) into the SQL Editor and click the 'Run' button or use the shortcut `cmd / ctrl + enter`. To write and run multiple commands sequentially, make sure to add a semicolon after each command.
 
@@ -139,31 +139,31 @@ By default, clicking the run button will run all commands contained in the SQL E
 - Run selected command(s)
 - Run command at the cursor
 
-    To run selected command(s), highlight the desired command or sequence of commands and click the 'Run' button (or use the `cmd / ctrl + enter` shortcut). You can also select 'Run selected' from the SQL Editor context menu (opened by right-clicking anywhere within the editor) when a selection is present.
+To run selected command(s), highlight the desired command or sequence of commands and click the 'Run' button (or use the `cmd / ctrl + enter` shortcut). You can also select 'Run selected' from the SQL Editor context menu (opened by right-clicking anywhere within the editor) when a selection is present.
 
-    <Image img={run_selected_query} size="lg" border alt="Interface showing how to run a selected portion of SQL query"/>
+<Image img={run_selected_query} size="lg" border alt="Interface showing how to run a selected portion of SQL query"/>
 
-    Running the command at the current cursor position can be achieved in two ways:
+Running the command at the current cursor position can be achieved in two ways:
 
 - Select 'At Cursor' from the extended run options menu (or use the corresponding `cmd / ctrl + shift + enter` keyboard shortcut
 
-    <Image img={run_at_cursor_2} size="lg" border alt="Run at cursor option in the extended run options menu"/>
+<Image img={run_at_cursor_2} size="lg" border alt="Run at cursor option in the extended run options menu"/>
 
-    - Selecting 'Run at cursor' from the SQL Editor context menu
+- Selecting 'Run at cursor' from the SQL Editor context menu
 
-    <Image img={run_at_cursor} size="lg" border alt="Run at cursor option in the SQL Editor context menu"/>
+<Image img={run_at_cursor} size="lg" border alt="Run at cursor option in the SQL Editor context menu"/>
 
-    :::note
-    The command present at the cursor position will flash yellow on execution.
-    :::
+:::note
+The command present at the cursor position will flash yellow on execution.
+:::
 
-### Canceling a query {#canceling-a-query}
+### Canceling a Query {#canceling-a-query}
 
 While a query is running, the 'Run' button in the Query Editor toolbar will be replaced with a 'Cancel' button. Simply click this button or press `Esc` to cancel the query. Note: Any results that have already been returned will persist after cancellation.
 
 <Image img={cancel_a_query} size="lg" border alt="Cancel button that appears during query execution"/>
 
-### Saving a query {#saving-a-query}
+### Saving a Query {#saving-a-query}
 
 If not previously named, your query should be called 'Untitled Query'. Click on the query name to change it. Renaming a query will cause the query to be saved.
 
@@ -187,9 +187,9 @@ Let's import the UK Price Paid example dataset and use that to create some GenAI
 1. Create a new query by clicking the _+_ icon.
 1. Paste and run the following code:
 
-    ```sql
-    CREATE TABLE uk_price_paid
-    (
+   ```sql
+   CREATE TABLE uk_price_paid
+   (
        price UInt32,
        date Date,
        postcode1 LowCardinality(String),
@@ -204,20 +204,20 @@ Let's import the UK Price Paid example dataset and use that to create some GenAI
        town LowCardinality(String),
        district LowCardinality(String),
        county LowCardinality(String)
-    )
-    ENGINE = MergeTree
-    ORDER BY (postcode1, postcode2, addr1, addr2);
-    ```
+   )
+   ENGINE = MergeTree
+   ORDER BY (postcode1, postcode2, addr1, addr2);
+   ```
 
-    This query should take around 1 second to complete. Once it's done, you should have an empty table called `uk_price_paid.
+   This query should take around 1 second to complete. Once it's done, you should have an empty table called `uk_price_paid.
 
 1. Create a new query and paste the following query:
 
-    ```sql
-    INSERT INTO uk_price_paid
-    WITH
+   ```sql
+   INSERT INTO uk_price_paid
+   WITH
       splitByChar(' ', postcode) AS p
-    SELECT
+   SELECT
        toUInt32(price_string) AS price,
        parseDateTimeBestEffortUS(time) AS date,
        p[1] AS postcode1,
@@ -232,7 +232,7 @@ Let's import the UK Price Paid example dataset and use that to create some GenAI
        town,
        district,
        county
-    FROM url(
+   FROM url(
        'http://prod.publicdata.landregistry.gov.uk.s3-website-eu-west-1.amazonaws.com/pp-complete.csv',
        'CSV',
        'uuid_string String,
@@ -251,10 +251,10 @@ Let's import the UK Price Paid example dataset and use that to create some GenAI
        county String,
        d String,
        e String'
-    ) SETTINGS max_http_get_redirects=10;
-    ```
+   ) SETTINGS max_http_get_redirects=10;
+   ```
 
-    This query grabs the dataset from the `gov.uk` website. This file is ~4GB, so this query will take a few minutes to complete. Once ClickHouse has processed the query, you should have the entire dataset within the `uk_price_paid` table.
+This query grabs the dataset from the `gov.uk` website. This file is ~4GB, so this query will take a few minutes to complete. Once ClickHouse has processed the query, you should have the entire dataset within the `uk_price_paid` table.
 
 #### Query creation {#query-creation}
 
@@ -264,16 +264,16 @@ Let's create a query using natural language.
 1. Click **Generate SQL**. You may be asked to accept that your queries are sent to Chat-GPT. You must select **I agree** to continue.
 1. You can now use this prompt to enter a natural language query and have ChatGPT convert it into an SQL query. In this example we're going to enter:
 
-    > Show me the total price and total number of all uk_price_paid transactions by year.
+   > Show me the total price and total number of all uk_price_paid transactions by year.
 
 1. The console will generate the query we're looking for and display it in a new tab. In our example, GenAI created the following query:
 
-    ```sql
-    -- Show me the total price and total number of all uk_price_paid transactions by year.
-    SELECT year(date), sum(price) as total_price, Count(*) as total_transactions
-    FROM uk_price_paid
-    GROUP BY year(date)
-    ```
+   ```sql
+   -- Show me the total price and total number of all uk_price_paid transactions by year.
+   SELECT year(date), sum(price) as total_price, Count(*) as total_transactions
+   FROM uk_price_paid
+   GROUP BY year(date)
+   ```
 
 1. Once you've verified that the query is correct, click **Run** to execute it.
 
@@ -283,21 +283,21 @@ Now, let's test the query debugging capabilities of GenAI.
 
 1. Create a new query by clicking the _+_ icon and paste the following code:
 
-    ```sql
-    -- Show me the total price and total number of all uk_price_paid transactions by year.
-    SELECT year(date), sum(pricee) as total_price, Count(*) as total_transactions
-    FROM uk_price_paid
-    GROUP BY year(date)
-    ```
+   ```sql
+   -- Show me the total price and total number of all uk_price_paid transactions by year.
+   SELECT year(date), sum(pricee) as total_price, Count(*) as total_transactions
+   FROM uk_price_paid
+   GROUP BY year(date)
+   ```
 
 1. Click **Run**. The query fails since we're trying to get values from `pricee` instead of `price`.
 1. Click **Fix Query**.
 1. GenAI will attempt to fix the query. In this case, it changed `pricee` to `price`. It also realised that `toYear` is a better function to use in this scenario.
 1. Select **Apply** to add the suggested changes to your query and click **Run**.
 
-    Keep in mind that GenAI is an experimental feature. Use caution when running GenAI-generated queries against any dataset.
+Keep in mind that GenAI is an experimental feature. Use caution when running GenAI-generated queries against any dataset.
 
-## Advanced querying features {#advanced-querying-features}
+## Advanced Querying Features {#advanced-querying-features}
 
 ### Searching query results {#searching-query-results}
 
@@ -325,7 +325,7 @@ Query result sets can be easily exported to CSV format directly from the SQL con
 
 <Image img={download_as_csv} size="lg" border alt="Download as CSV"/>
 
-## Visualizing query data {#visualizing-query-data}
+## Visualizing Query Data {#visualizing-query-data}
 
 Some data can be more easily interpreted in chart form. You can quickly create visualizations from query result data directly from the SQL console in just a few clicks. As an example, we'll use a query that calculates weekly statistics for NYC taxi trips:
 
@@ -377,15 +377,15 @@ A number of more advanced chart characteristics can also be adjusted in the 'Adv
 - Axis titles
 - Label orientation for the x-axis
 
-    Our chart will be updated accordingly:
+Our chart will be updated accordingly:
 
-    <Image img={update_subtitle_etc} size="lg" border alt="Update subtitle etc."/>
+<Image img={update_subtitle_etc} size="lg" border alt="Update subtitle etc."/>
 
-    In some scenarios, it may be necessary to adjust the axis scales for each field independently. This can also be accomplished in the 'Advanced' section of the chart configuration pane by specifying min and max values for an axis range. As an example, the above chart looks good, but in order to demonstrate the correlation between our `trip_total` and `fare_total` fields, the axis ranges need some adjustment:
+In some scenarios, it may be necessary to adjust the axis scales for each field independently. This can also be accomplished in the 'Advanced' section of the chart configuration pane by specifying min and max values for an axis range. As an example, the above chart looks good, but in order to demonstrate the correlation between our `trip_total` and `fare_total` fields, the axis ranges need some adjustment:
 
-    <Image img={adjust_axis_scale} size="lg" border alt="Adjust axis scale"/>
+<Image img={adjust_axis_scale} size="lg" border alt="Adjust axis scale"/>
 
-## Sharing queries {#sharing-queries}
+## Sharing Queries {#sharing-queries}
 
 The SQL console enables you to share queries with your team. When a query is shared, all members of the team can see and edit the query. Shared queries are a great way to collaborate with your team.
 

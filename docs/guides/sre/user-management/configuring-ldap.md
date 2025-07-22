@@ -8,7 +8,7 @@ description: 'Describes how to configure ClickHouse to use LDAP for authenticati
 
 import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
-# Configuring ClickHouse to use LDAP for authentication and role mapping
+# Configuring ClickHouse to Use LDAP for Authentication and Role Mapping
 
 <SelfManaged />
 
@@ -143,7 +143,7 @@ The procedures in this section assumes that SQL Access Control and Account Manag
     Use the `ldapsearch` command in step 1 to view all of the users available in the directory and for all of the users the password is `password`
     :::
 
-2. Test that the user was mapped correctly to the `scientists_role` role and has admin permissions
+2.  Test that the user was mapped correctly to the `scientists_role` role and has admin permissions
     ```sql
     SHOW DATABASES
     ```

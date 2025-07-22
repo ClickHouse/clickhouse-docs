@@ -73,7 +73,7 @@ print(f"SQL read {res.rows_read()} rows, {res.bytes_read()} bytes, elapsed {res.
 chdb.query('select * from file("data.parquet", Parquet)', 'Dataframe')
 ```
 
-### Query on table (Pandas DataFrame, Parquet file/bytes, Arrow bytes) {#query-on-table-pandas-dataframe-parquet-filebytes-arrow-bytes}
+### Query On Table (Pandas DataFrame, Parquet file/bytes, Arrow bytes) {#query-on-table-pandas-dataframe-parquet-filebytes-arrow-bytes}
 
 **Query On Pandas DataFrame**
 
@@ -90,7 +90,7 @@ print(ret_tbl)
 print(ret_tbl.query('select b, sum(a) from __table__ group by b'))
 ```
 
-### Query with stateful session {#query-with-stateful-session}
+### Query with Stateful Session {#query-with-stateful-session}
 
  Sessions will keep the state of query. All DDL and DML state will be kept in a directory. Directory path can be passed in as an argument. If it is not passed, a temporary directory will be created.
 
@@ -167,9 +167,9 @@ Some notes on the chDB Python UDF (User Defined Function) decorator.
     ```
 6. The Python interpreter used is the same as the one used to run the script. You can get it from `sys.executable`.
 
-    see also: [test_udf.py](https://github.com/chdb-io/chdb/blob/main/tests/test_udf.py).
+see also: [test_udf.py](https://github.com/chdb-io/chdb/blob/main/tests/test_udf.py).
 
-### Python table engine {#python-table-engine}
+### Python Table Engine {#python-table-engine}
 
 ### Query on Pandas DataFrame {#query-on-pandas-dataframe}
 
@@ -212,10 +212,12 @@ chdb.query(
     1. be stateful, the cursor should be updated in the `read` method.
 3. An optional `get_schema` method can be implemented to return the schema of the table. The prototype is `def get_schema(self) -> List[Tuple[str, str]]:`, the return value is a list of tuples, each tuple contains the column name and the column type. The column type should be one of [the following](/sql-reference/data-types).
 
-    ```python
-    import chdb
+<br />
 
-    class myReader(chdb.PyReader):
+```python
+import chdb
+
+class myReader(chdb.PyReader):
     def __init__(self, data):
         self.data = data
         self.cursor = 0
@@ -229,19 +231,19 @@ chdb.query(
         self.cursor += len(block[0])
         return block
 
-    reader = myReader(
+reader = myReader(
     {
         "a": [1, 2, 3, 4, 5, 6],
         "b": ["tom", "jerry", "auxten", "tom", "jerry", "auxten"],
     }
-    )
+)
 
-    chdb.query(
+chdb.query(
     "SELECT b, sum(a) FROM Python(reader) GROUP BY b ORDER BY b"
-    ).show()
-    ```
+).show()
+```
 
-    See also: [test_query_py.py](https://github.com/chdb-io/chdb/blob/main/tests/test_query_py.py).
+See also: [test_query_py.py](https://github.com/chdb-io/chdb/blob/main/tests/test_query_py.py).
 
 ## Limitations {#limitations}
 
@@ -250,4 +252,6 @@ chdb.query(
 1. Python Object type will be converted to String
 1. Pandas DataFrame performance is all of the best, Arrow Table is better than PyReader
 
-    For more examples, see [examples](https://github.com/chdb-io/chdb/tree/main/examples) and [tests](https://github.com/chdb-io/chdb/tree/main/tests).
+<br />
+
+For more examples, see [examples](https://github.com/chdb-io/chdb/tree/main/examples) and [tests](https://github.com/chdb-io/chdb/tree/main/tests).

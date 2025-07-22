@@ -125,7 +125,7 @@ CREATE TABLE `ontime`
   ORDER BY (Year, Quarter, Month, DayofMonth, FlightDate, IATA_CODE_Reporting_Airline);
 ```
 
-## Import from raw data {#import-from-raw-data}
+## Import from Raw Data {#import-from-raw-data}
 
 Downloading data:
 

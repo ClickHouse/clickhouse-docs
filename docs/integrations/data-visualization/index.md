@@ -7,7 +7,7 @@ slug: /integrations/data-visualization
 description: 'Learn about Visualizing Data in ClickHouse'
 ---
 
-# Visualizing data in ClickHouse
+# Visualizing Data in ClickHouse
 
 <div class='vimeo-container'>
 <iframe
@@ -43,7 +43,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 - [Tableau](./tableau/tableau-and-clickhouse.md)
 - [Zing Data](./zingdata-and-clickhouse.md)
 
-## ClickHouse Cloud compatibility with data visualization tools {#clickhouse-cloud-compatibility-with-data-visualization-tools}
+## ClickHouse Cloud Compatibility with Data Visualization Tools {#clickhouse-cloud-compatibility-with-data-visualization-tools}
 
 | Tool                                                                    | Supported via                 | Tested | Documented | Comment                                                                                                                                 |
 |-------------------------------------------------------------------------|-------------------------------|--------|------------|-----------------------------------------------------------------------------------------------------------------------------------------|
@@ -60,12 +60,12 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 | Looker                                                                  | MySQL interface               | 🚧     | ❌          |                                                                                                                                         |
 | [Luzmo](./luzmo-and-clickhouse.md)                   | ClickHouse official connector | ✅      | ✅          |                                                                                                                                         |
 | [Looker Studio](./looker-studio-and-clickhouse.md)   | MySQL interface               | ✅      | ✅          |                                                                                                                                         |
-| [Metabase](./metabase-and-clickhouse.md)             | ClickHouse official connector | ✅      | ✅          |
+| [Metabase](./metabase-and-clickhouse.md)             | ClickHouse official connector | ✅      | ✅          |                                                                                                        
 | [Mitzu](./mitzu-and-clickhouse.md)                   |  Native connector | ✅      | ✅          |                                                                                                                                         |
 | [Omni](./omni-and-clickhouse.md)                     | Native connector              | ✅      | ✅          |                                                                                                                                         |
 | [Power BI Desktop](./powerbi-and-clickhouse.md)      | ClickHouse official connector | ✅      | ✅          | Via ODBC, supports direct query mode                                                                                                    |
 | [Power BI service](/integrations/powerbi#power-bi-service)                                                    | ClickHouse official connector | ✅    | ✅          | A [Microsoft Data Gateway](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-custom-connectors) setup is required |
-| [Rill](https://docs.rilldata.com/reference/olap-engines/clickhouse)     | Native connector              | ✅      | ✅          |
+| [Rill](https://docs.rilldata.com/reference/olap-engines/clickhouse)     | Native connector              | ✅      | ✅          |        
 | [Rocket BI](./rocketbi-and-clickhouse.md)            | Native connector              | ✅      | ❌          |                                                                                                                                         |
 | [Tableau Desktop](./tableau/tableau-and-clickhouse.md)       | ClickHouse official connector | ✅      | ✅          |                                                                                                               |
 | [Tableau Online](./tableau/tableau-online-and-clickhouse.md) | MySQL interface               | ✅      | ✅          | Works with some limitations, see [the documentation](./tableau/tableau-online-and-clickhouse.md) for more details            |

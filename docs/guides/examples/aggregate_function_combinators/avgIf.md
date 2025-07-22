@@ -14,7 +14,7 @@ The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be
 function to calculate the arithmetic mean of values for rows where the condition is true,
 using the `avgIf` aggregate combinator function.
 
-## Example usage {#example-usage}
+## Example Usage {#example-usage}
 
 In this example, we'll create a table that stores sales data with success flags,
 and we'll use `avgIf` to calculate the average sale amount for successful transactions.
@@ -45,8 +45,8 @@ In this case, it will average the amounts: 100.50, 200.75, 300.00, and 175.25.
 ```response title="Response"
    ┌─avg_successful_sale─┐
 1. │              193.88 │
-    └─────────────────────┘
-    ```
+   └─────────────────────┘
+```
 
 ## See also {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)

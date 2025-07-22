@@ -23,9 +23,9 @@ This guide explores the four main ways to deploy and use ClickHouse:
 * clickhouse-local for command-line data processing
 * chDB for embedding ClickHouse directly in applications
 
-    Each deployment mode has its own strengths and ideal use cases, which we'll explore in detail below.
+Each deployment mode has its own strengths and ideal use cases, which we'll explore in detail below.
 
-    <iframe width="1024" height="576" src="https://www.youtube.com/embed/EOXEW_-r10A?si=6IanDSJlRzN8f9Mo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/EOXEW_-r10A?si=6IanDSJlRzN8f9Mo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## ClickHouse Server {#clickhouse-server}
 

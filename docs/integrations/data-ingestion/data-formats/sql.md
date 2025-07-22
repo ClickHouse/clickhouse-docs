@@ -111,4 +111,4 @@ ClickHouse introduces support for many formats, both text, and binary, to cover 
 - [Native and binary formats](binary.md)
 - **SQL formats**
 
-    And also check [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) - a portable full-featured tool to work on local/remote files without the need for ClickHouse server.
+And also check [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) - a portable full-featured tool to work on local/remote files without the need for ClickHouse server.

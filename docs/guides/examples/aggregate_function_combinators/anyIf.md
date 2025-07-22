@@ -14,7 +14,7 @@ The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be
 aggregate function to select the first encountered element from a given column
 that matches the given condition.
 
-## Example usage {#example-usage}
+## Example Usage {#example-usage}
 
 In this example, we'll create a table that stores sales data with success flags,
 and we'll use `anyIf` to select the first `transaction_id`s which are above and
@@ -27,7 +27,7 @@ CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
     is_successful UInt8
-)
+) 
 ENGINE = MergeTree()
 ORDER BY tuple();
 

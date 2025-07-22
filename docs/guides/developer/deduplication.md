@@ -9,7 +9,7 @@ title: 'Deduplication Strategies'
 import deduplication from '@site/static/images/guides/developer/de_duplication.png';
 import Image from '@theme/IdealImage';
 
-# Deduplication strategies
+# Deduplication Strategies
 
 **Deduplication** refers to the process of ***removing duplicate rows of a dataset***. In an OLTP database, this is done easily because each row has a unique primary key-but at the cost of slower inserts. Every inserted row needs to first be searched for and, if found, needs to be replaced.
 
@@ -19,13 +19,13 @@ ClickHouse is built for speed when it comes to data insertion. The storage files
 - The actual removal of duplicate rows occurs during the merging of parts
 - Your queries need to allow for the possibility of duplicates
 
-    <div class='transparent-table'>
+<div class='transparent-table'>
 
-    |||
-    |------|----|
-    |<Image img={deduplication}  alt="Deduplication Logo" size="sm"/>|ClickHouse provides free training on deduplication and many other topics.  The [Deleting and Updating Data training module](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs) is a good place to start.|
+|||
+|------|----|
+|<Image img={deduplication}  alt="Deduplication Logo" size="sm"/>|ClickHouse provides free training on deduplication and many other topics.  The [Deleting and Updating Data training module](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs) is a good place to start.|
 
-    </div>
+</div>
 
 ## Options for deduplication {#options-for-deduplication}
 
@@ -35,7 +35,7 @@ Deduplication is implemented in ClickHouse using the following table engines:
 
 2. Collapsing rows: the `CollapsingMergeTree` and `VersionedCollapsingMergeTree` table engines use a logic where an existing row is "canceled" and a new row is inserted. They are more complex to implement than `ReplacingMergeTree`, but your queries and aggregations can be simpler to write without worrying about whether or not data has been merged yet. These two table engines are useful when you need to update data frequently.
 
-    We walk through both of these techniques below. For more details, check out our free on-demand [Deleting and Updating Data training module](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs).
+We walk through both of these techniques below. For more details, check out our free on-demand [Deleting and Updating Data training module](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs).
 
 ## Using ReplacingMergeTree for Upserts {#using-replacingmergetree-for-upserts}
 
@@ -162,7 +162,7 @@ Grouping as shown in the query above can actually be more efficient (in terms of
 
 Our [Deleting and Updating Data training module](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs) expands on this example, including how to use a `version` column with `ReplacingMergeTree`.
 
-## Using CollapsingMergeTree for updating columns frequently {#using-collapsingmergetree-for-updating-columns-frequently}
+## Using CollapsingMergeTree for Updating Columns Frequently {#using-collapsingmergetree-for-updating-columns-frequently}
 
 Updating a column involves deleting an existing row and replacing it with new values. As you have already seen, this type of mutation in ClickHouse happens _eventually_ - during merges. If you have a lot of rows to update, it can actually be more efficient to avoid `ALTER TABLE..UPDATE` and instead just insert the new data alongside the existing data. We could add a column that denotes whether or not the data is stale or new... and there is actually a table engine that already implements this behavior very nicely, especially considering that it deletes the stale data automatically for you. Let's see how it works.
 
@@ -189,64 +189,64 @@ What is the sign column of a `CollapsingMergeTree` table? It represents the _sta
 - Rows that cancel each other out are deleted during merges
 - Rows that do not have a matching pair are kept
 
-    Let's add a row to the `hackernews_views` table. Since it is the only row for this primary key, we set its state to 1:
+Let's add a row to the `hackernews_views` table. Since it is the only row for this primary key, we set its state to 1:
 
-    ```sql
-    INSERT INTO hackernews_views VALUES
-    (123, 'ricardo', 0, 1)
-    ```
+```sql
+INSERT INTO hackernews_views VALUES
+   (123, 'ricardo', 0, 1)
+```
 
-    Now suppose we want to change the views column. You insert two rows: one that cancels the existing row, and one that contains the new state of the row:
+Now suppose we want to change the views column. You insert two rows: one that cancels the existing row, and one that contains the new state of the row:
 
-    ```sql
-    INSERT INTO hackernews_views VALUES
-    (123, 'ricardo', 0, -1),
-    (123, 'ricardo', 150, 1)
-    ```
+```sql
+INSERT INTO hackernews_views VALUES
+   (123, 'ricardo', 0, -1),
+   (123, 'ricardo', 150, 1)
+```
 
-    The table now has 3 rows with the primary key `(123, 'ricardo')`:
+The table now has 3 rows with the primary key `(123, 'ricardo')`:
 
-    ```sql
-    SELECT *
-    FROM hackernews_views
-    ```
+```sql
+SELECT *
+FROM hackernews_views
+```
 
-    ```response
-    ┌──id─┬─author──┬─views─┬─sign─┐
-    │ 123 │ ricardo │     0 │   -1 │
-    │ 123 │ ricardo │   150 │    1 │
-    └─────┴─────────┴───────┴──────┘
-    ┌──id─┬─author──┬─views─┬─sign─┐
-    │ 123 │ ricardo │     0 │    1 │
-    └─────┴─────────┴───────┴──────┘
-    ```
+```response
+┌──id─┬─author──┬─views─┬─sign─┐
+│ 123 │ ricardo │     0 │   -1 │
+│ 123 │ ricardo │   150 │    1 │
+└─────┴─────────┴───────┴──────┘
+┌──id─┬─author──┬─views─┬─sign─┐
+│ 123 │ ricardo │     0 │    1 │
+└─────┴─────────┴───────┴──────┘
+```
 
-    Notice adding `FINAL` returns the current state row:
+Notice adding `FINAL` returns the current state row:
 
-    ```sql
-    SELECT *
-    FROM hackernews_views
-    FINAL
-    ```
+```sql
+SELECT *
+FROM hackernews_views
+FINAL
+```
 
-    ```response
-    ┌──id─┬─author──┬─views─┬─sign─┐
-    │ 123 │ ricardo │   150 │    1 │
-    └─────┴─────────┴───────┴──────┘
-    ```
+```response
+┌──id─┬─author──┬─views─┬─sign─┐
+│ 123 │ ricardo │   150 │    1 │
+└─────┴─────────┴───────┴──────┘
+```
 
-    But of course, using `FINAL` is not recommended for large tables.
+But of course, using `FINAL` is not recommended for large tables.
 
-    :::note
-    The value passed in for the `views` column in our example is not really needed, nor does it have to match the current value of `views` of the old row. In fact, you can cancel a row with just the primary key and a -1:
+:::note
+The value passed in for the `views` column in our example is not really needed, nor does it have to match the current value of `views` of the old row. In fact, you can cancel a row with just the primary key and a -1:
 
-    ```sql
-    INSERT INTO hackernews_views(id, author, sign) VALUES
-    (123, 'ricardo', -1)
-    ```
-    :::
+```sql
+INSERT INTO hackernews_views(id, author, sign) VALUES
+   (123, 'ricardo', -1)
+```
+:::
 
-## Real-time updates from multiple threads {#real-time-updates-from-multiple-threads}
+## Real-time Updates from Multiple Threads {#real-time-updates-from-multiple-threads}
 
 With a `CollapsingMergeTree` table, rows cancel each other using a sign column, and the state of a row is determined by the last row inserted. But this can be problematic if you are inserting rows from different threads where rows can be inserted out of order. Using the "last" row does not work in this situation.
 
@@ -272,69 +272,69 @@ Notice the table uses `VersionsedCollapsingMergeTree` as the engine and passes i
 - The order that rows were inserted does not matter
 - Note that if the version column is not a part of the primary key, ClickHouse adds it to the primary key implicitly as the last field
 
-    You use the same type of logic when writing queries - group by the primary key and use clever logic to avoid rows that have been canceled but not deleted yet. Let's add some rows to the `hackernews_views_vcmt` table:
+You use the same type of logic when writing queries - group by the primary key and use clever logic to avoid rows that have been canceled but not deleted yet. Let's add some rows to the `hackernews_views_vcmt` table:
 
-    ```sql
-    INSERT INTO hackernews_views_vcmt VALUES
-    (1, 'ricardo', 0, 1, 1),
-    (2, 'ch_fan', 0, 1, 1),
-    (3, 'kenny', 0, 1, 1)
-    ```
+```sql
+INSERT INTO hackernews_views_vcmt VALUES
+   (1, 'ricardo', 0, 1, 1),
+   (2, 'ch_fan', 0, 1, 1),
+   (3, 'kenny', 0, 1, 1)
+```
 
-    Now we update two of the rows and delete one of them. To cancel a row, be sure to include the prior version number (since it is a part of the primary key):
+Now we update two of the rows and delete one of them. To cancel a row, be sure to include the prior version number (since it is a part of the primary key):
 
-    ```sql
-    INSERT INTO hackernews_views_vcmt VALUES
-    (1, 'ricardo', 0, -1, 1),
-    (1, 'ricardo', 50, 1, 2),
-    (2, 'ch_fan', 0, -1, 1),
-    (3, 'kenny', 0, -1, 1),
-    (3, 'kenny', 1000, 1, 2)
-    ```
+```sql
+INSERT INTO hackernews_views_vcmt VALUES
+   (1, 'ricardo', 0, -1, 1),
+   (1, 'ricardo', 50, 1, 2),
+   (2, 'ch_fan', 0, -1, 1),
+   (3, 'kenny', 0, -1, 1),
+   (3, 'kenny', 1000, 1, 2)
+```
 
-    We will run the same query as before that cleverly adds and subtracts values based on the sign column:
+We will run the same query as before that cleverly adds and subtracts values based on the sign column:
 
-    ```sql
-    SELECT
+```sql
+SELECT
     id,
     author,
     sum(views * sign)
-    FROM hackernews_views_vcmt
-    GROUP BY (id, author)
-    HAVING sum(sign) > 0
-    ORDER BY id ASC
-    ```
+FROM hackernews_views_vcmt
+GROUP BY (id, author)
+HAVING sum(sign) > 0
+ORDER BY id ASC
+```
 
-    The result is two rows:
+The result is two rows:
 
-    ```response
-    ┌─id─┬─author──┬─sum(multiply(views, sign))─┐
-    │  1 │ ricardo │                         50 │
-    │  3 │ kenny   │                       1000 │
-    └────┴─────────┴────────────────────────────┘
-    ```
+```response
+┌─id─┬─author──┬─sum(multiply(views, sign))─┐
+│  1 │ ricardo │                         50 │
+│  3 │ kenny   │                       1000 │
+└────┴─────────┴────────────────────────────┘
+```
 
-    Let's force a table merge:
+Let's force a table merge:
 
-    ```sql
-    OPTIMIZE TABLE hackernews_views_vcmt
-    ```
+```sql
+OPTIMIZE TABLE hackernews_views_vcmt
+```
 
-    There should only be two rows in the result:
+There should only be two rows in the result:
 
-    ```sql
-    SELECT *
-    FROM hackernews_views_vcmt
-    ```
+```sql
+SELECT *
+FROM hackernews_views_vcmt
+```
 
-    ```response
-    ┌─id─┬─author──┬─views─┬─sign─┬─version─┐
-    │  1 │ ricardo │    50 │    1 │       2 │
-    │  3 │ kenny   │  1000 │    1 │       2 │
-    └────┴─────────┴───────┴──────┴─────────┘
-    ```
+```response
+┌─id─┬─author──┬─views─┬─sign─┬─version─┐
+│  1 │ ricardo │    50 │    1 │       2 │
+│  3 │ kenny   │  1000 │    1 │       2 │
+└────┴─────────┴───────┴──────┴─────────┘
+```
 
-    A `VersionedCollapsingMergeTree` table is quite handy when you want to implement deduplication while inserting rows from multiple clients and/or threads.
+A `VersionedCollapsingMergeTree` table is quite handy when you want to implement deduplication while inserting rows from multiple clients and/or threads.
 
 ## Why aren't my rows being deduplicated? {#why-arent-my-rows-being-deduplicated}
 

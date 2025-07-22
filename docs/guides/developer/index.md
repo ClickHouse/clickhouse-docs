@@ -5,7 +5,7 @@ description: 'Overview of the advanced guides'
 title: 'Advanced Guides'
 ---
 
-# Advanced guides
+# Advanced Guides
 
 This section contains the following advanced guides:
 

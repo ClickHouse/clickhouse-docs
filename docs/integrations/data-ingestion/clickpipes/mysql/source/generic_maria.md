@@ -49,8 +49,6 @@ binlog_row_metadata = FULL  ; only in 10.5.0 and newer
 expire_logs_days = 1
 ```
 
-If the source database is a replica, make sure to also turn on `log_slave_updates`.
-
 You NEED to RESTART the MariaDB instance for the changes to take effect.
 
 :::note
@@ -82,11 +80,11 @@ Connect to your MariaDB instance as the root user and execute the following comm
     GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
     ```
 
-    :::note
+:::note
 
-    Make sure to replace `clickpipes_user` and `some_secure_password` with your desired username and password.
+Make sure to replace `clickpipes_user` and `some_secure_password` with your desired username and password.
 
-    :::
+:::
 
 ## SSL/TLS configuration (recommended) {#ssl-tls-configuration}
 

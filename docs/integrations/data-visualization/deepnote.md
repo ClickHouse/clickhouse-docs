@@ -31,22 +31,21 @@ If you would like to explore an interactive example of querying ClickHouse from 
 
 1. Within Deepnote, select the "Integrations" overview and click on the ClickHouse tile.
 
-    <Image size="lg" img={deepnote_01} alt="ClickHouse integration tile" border />
+<Image size="lg" img={deepnote_01} alt="ClickHouse integration tile" border />
 
 2. Provide the connection details for your ClickHouse instance:
-    <ConnectionDetails />
+<ConnectionDetails />
 
-    <Image size="md" img={deepnote_02} alt="ClickHouse details dialog" border />
+   <Image size="md" img={deepnote_02} alt="ClickHouse details dialog" border />
 
-    **_NOTE:_** If your connection to ClickHouse is protected with an IP Access List, you might need to allow Deepnote's IP addresses. Read more about it in [Deepnote's docs](https://docs.deepnote.com/integrations/authorize-connections-from-deepnote-ip-addresses).
-
+  **_NOTE:_** If your connection to ClickHouse is protected with an IP Access List, you might need to allow Deepnote's IP addresses. Read more about it in [Deepnote's docs](https://docs.deepnote.com/integrations/authorize-connections-from-deepnote-ip-addresses).
 3. Congratulations! You have now integrated ClickHouse into Deepnote.
 
 ## Using ClickHouse integration. {#using-clickhouse-integration}
 
 1. Start by connecting to the ClickHouse integration on the right of your notebook.
 
-    <Image size="lg" img={deepnote_03} alt="ClickHouse details dialog" border />
+   <Image size="lg" img={deepnote_03} alt="ClickHouse details dialog" border />
 
 2. Now create a new ClickHouse query block and query your database. The query results will be saved as a DataFrame and stored in the variable specified in the SQL block.
 3. You can also convert any existing [SQL block](https://docs.deepnote.com/features/sql-cells) to a ClickHouse block.

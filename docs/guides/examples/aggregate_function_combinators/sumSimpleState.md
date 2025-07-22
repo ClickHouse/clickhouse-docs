@@ -11,18 +11,18 @@ sidebar_label: 'sumSimpleState'
 ## Description {#description}
 
 The [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) combinator can be applied to the [`sum`](/sql-reference/aggregate-functions/reference/sum)
-function to return the sum across all input values. It returns the result with
+function to return the sum across all input values. It returns the result with 
 type [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction).
 
-## Example usage {#example-usage}
+## Example Usage {#example-usage}
 
 ### Tracking upvotes and downvotes {#tracking-post-votes}
 
-Let's look at a practical example using a table that tracks votes on posts.
-For each post, we want to maintain running totals of upvotes, downvotes, and an
+Let's look at a practical example using a table that tracks votes on posts. 
+For each post, we want to maintain running totals of upvotes, downvotes, and an 
 overall score. Using the `SimpleAggregateFunction` type with sum is suited for
-this use case as we only need to store the running totals, not the entire state
-of the aggregation. As a result, it will be faster and will not require merging
+this use case as we only need to store the running totals, not the entire state 
+of the aggregation. As a result, it will be faster and will not require merging 
 of partial aggregate states.
 
 First, we create a table for the raw data:
@@ -51,8 +51,8 @@ ENGINE = AggregatingMergeTree()
 ORDER BY post_id;
 ```
 
-We then create a materialized view with `SimpleAggregateFunction` type columns:
-
+We then create a Materialized View with `SimpleAggregateFunction` type columns:
+       
 ```sql
 CREATE MATERIALIZED VIEW mv_vote_processor TO vote_aggregates
 AS
@@ -68,7 +68,7 @@ FROM raw_votes;
 ```
 
 Insert sample data:
-
+       
 ```sql
 INSERT INTO raw_votes VALUES
     (1, 'upvote'),
@@ -79,7 +79,7 @@ INSERT INTO raw_votes VALUES
     (3, 'downvote');
 ```
 
-Query the materialized view using the `SimpleState` combinator:
+Query the Materialized View using the `SimpleState` combinator:
 
 ```sql
 SELECT

@@ -6,7 +6,7 @@ description: 'ClickHouse does not support automatic shard rebalancing, so we pro
 title: 'Rebalancing Data'
 ---
 
-# Rebalancing data
+# Rebalancing Data
 
 ClickHouse does not support automatic shard rebalancing. However, there are ways to rebalance shards in order of preference:
 

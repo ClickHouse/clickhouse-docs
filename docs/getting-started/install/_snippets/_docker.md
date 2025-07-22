@@ -1,7 +1,7 @@
 # Install ClickHouse using Docker
 
 The guide on [Docker Hub](https://hub.docker.com/r/clickhouse/clickhouse-server/)
-is reproduced below for convenience. The Docker images available make use of
+is reproduced below for convenience. The Docker images available make use of 
 the official ClickHouse deb packages.
 
 Docker pull command:
@@ -21,14 +21,14 @@ docker pull clickhouse/clickhouse-server
 ### Compatibility {#compatibility}
 
 - The amd64 image requires support for [SSE3 instructions](https://en.wikipedia.org/wiki/SSE3).
-    Virtually all x86 CPUs after 2005 support SSE3.
+  Virtually all x86 CPUs after 2005 support SSE3.
 - The arm64 image requires support for the [ARMv8.2-A architecture](https://en.wikipedia.org/wiki/AArch64#ARMv8.2-A) and
-    additionally the Load-Acquire RCpc register. The register is optional in version ARMv8.2-A and mandatory in
-    [ARMv8.3-A](https://en.wikipedia.org/wiki/AArch64#ARMv8.3-A). Supported in Graviton >=2, Azure and GCP instances.
-    Examples for unsupported devices are Raspberry Pi 4 (ARMv8.0-A) and Jetson AGX Xavier/Orin (ARMv8.2-A).
+  additionally the Load-Acquire RCpc register. The register is optional in version ARMv8.2-A and mandatory in 
+  [ARMv8.3-A](https://en.wikipedia.org/wiki/AArch64#ARMv8.3-A). Supported in Graviton >=2, Azure and GCP instances.
+  Examples for unsupported devices are Raspberry Pi 4 (ARMv8.0-A) and Jetson AGX Xavier/Orin (ARMv8.2-A).
 - Since ClickHouse 24.11 Ubuntu images began using `ubuntu:22.04` as its base image. It requires docker version >= `20.10.10`
-    containing [patch](https://github.com/moby/moby/commit/977283509f75303bc6612665a04abf76ff1d2468). As a workaround you could
-    use `docker run --security-opt seccomp=unconfined` instead, however this has security implications.
+  containing [patch](https://github.com/moby/moby/commit/977283509f75303bc6612665a04abf76ff1d2468). As a workaround you could
+  use `docker run --security-opt seccomp=unconfined` instead, however this has security implications.
 
 ## How to use this image {#how-to-use-image}
 
@@ -101,14 +101,14 @@ Typically you may want to mount the following folders inside your container to a
 - `/var/lib/clickhouse/` - main folder where ClickHouse stores the data
 - `/var/log/clickhouse-server/` - logs
 
-    ```bash
-    docker run -d \
+```bash
+docker run -d \
     -v "$PWD/ch_data:/var/lib/clickhouse/" \
     -v "$PWD/ch_logs:/var/log/clickhouse-server/" \
     --name some-clickhouse-server --ulimit nofile=262144:262144 clickhouse/clickhouse-server
-    ```
+```
 
-    You may also want to mount:
+You may also want to mount:
 
 - `/etc/clickhouse-server/config.d/*.xml` - files with server configuration adjustments
 - `/etc/clickhouse-server/users.d/*.xml` - files with user settings adjustments
@@ -178,7 +178,7 @@ docker run --rm -e CLICKHOUSE_SKIP_USER_SETUP=1 -p 9000:9000/tcp clickhouse/clic
 
 ## How to extend this image {#how-to-extend-image}
 
-To perform additional initialization in an image derived from this one, add one or more `*.sql`, `*.sql.gz`, or `*.sh` scripts under `/docker-entrypoint-initdb.d`. After the entrypoint calls `initdb`, it will run any `*.sql` files, run any executable `*.sh` scripts, and source any non-executable `*.sh` scripts found in that directory to do further initialization before starting the service.
+To perform additional initialization in an image derived from this one, add one or more `*.sql`, `*.sql.gz`, or `*.sh` scripts under `/docker-entrypoint-initdb.d`. After the entrypoint calls `initdb`, it will run any `*.sql` files, run any executable `*.sh` scripts, and source any non-executable `*.sh` scripts found in that directory to do further initialization before starting the service.  
 Also, you can provide environment variables `CLICKHOUSE_USER` & `CLICKHOUSE_PASSWORD` that will be used for clickhouse-client during initialization.
 
 For example, to add another user and database, add the following to `/docker-entrypoint-initdb.d/init-db.sh`:

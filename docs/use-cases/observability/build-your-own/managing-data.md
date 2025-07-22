@@ -9,7 +9,7 @@ show_related_blogs: true
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';
 import Image from '@theme/IdealImage';
 
-# Managing data
+# Managing Data
 
 Deployments of ClickHouse for Observability invariably involve large datasets, which need to be managed. ClickHouse offers a number of features to assist with data management.
 
@@ -149,9 +149,9 @@ The above illustrates how data can be efficiently moved and manipulated by parti
 - **Tiered architectures** - Moving data between storage tiers (see [Storage tiers](#storage-tiers)), thus allowing hot-cold architectures to be constructed.
 - **Efficient deletion** - when data has reached a specified TTL (see [Data management with TTL](#data-management-with-ttl-time-to-live))
 
-    We explore both of these in detail below.
+We explore both of these in detail below.
 
-### Query performance {#query-performance}
+### Query Performance {#query-performance}
 
 While partitions can assist with query performance, this depends heavily on the access patterns. If queries target only a few partitions (ideally one), performance can potentially improve. This is only typically useful if the partitioning key is not in the primary key and you are filtering by it. However, queries which need to cover many partitions may perform worse than if no partitioning is used (as there may possibly be more parts). The benefit of targeting a single partition will be even less pronounced to non-existent if the partitioning key is already an early entry in the primary key. Partitioning can also be used to [optimize GROUP BY queries](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key) if values in each partition are unique. However, in general, users should ensure the primary key is optimized and only consider partitioning as a query optimization technique in exceptional cases where access patterns access a specific predictable subset of the data, e.g., partitioning by day, with most queries in the last day. See [here](https://medium.com/datadenys/using-partitions-in-clickhouse-3ea0decb89c4) for an example of this behavior.
 

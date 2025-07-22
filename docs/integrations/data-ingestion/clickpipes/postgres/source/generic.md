@@ -5,7 +5,7 @@ slug: /integrations/clickpipes/postgres/source/generic
 title: 'Generic Postgres Source Setup Guide'
 ---
 
-# Generic Postgres source setup guide
+# Generic Postgres Source Setup Guide
 
 :::info
 
@@ -15,19 +15,19 @@ If you use one of the supported providers (in the sidebar), please refer to the 
 
 ClickPipes supports Postgres version 12 and later.
 
-## Enable logical replication {#enable-logical-replication}
+## Enable Logical Replication {#enable-logical-replication}
 
 1. To enable replication on your Postgres instance, we need to make sure that the following settings are set:
 
     ```sql
     wal_level = logical
     ```
-    To check the same, you can run the following SQL command:
+   To check the same, you can run the following SQL command:
     ```sql
     SHOW wal_level;
     ```
 
-    The output should be `logical`. If not, run:
+   The output should be `logical`. If not, run:
     ```sql
     ALTER SYSTEM SET wal_level = logical;
     ```
@@ -37,13 +37,13 @@ ClickPipes supports Postgres version 12 and later.
     max_wal_senders > 1
     max_replication_slots >= 4
     ```
-    To check the same, you can run the following SQL commands:
+   To check the same, you can run the following SQL commands:
     ```sql
     SHOW max_wal_senders;
     SHOW max_replication_slots;
     ```
 
-    If the values do not match the recommended values, you can run the following SQL commands to set them:
+   If the values do not match the recommended values, you can run the following SQL commands to set them:
     ```sql
     ALTER SYSTEM SET max_wal_senders = 10;
     ALTER SYSTEM SET max_replication_slots = 10;

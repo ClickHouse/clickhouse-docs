@@ -50,7 +50,7 @@ FORMAT Avro;
 
 ### Avro and ClickHouse data types {#avro-and-clickhouse-data-types}
 
-Consider [data types matching](/interfaces/formats/Avro#data-type-mapping) when importing or exporting Avro files. Use explicit type casting to convert when loading data from Avro files:
+Consider [data types matching](/interfaces/formats/Avro#data-types-matching) when importing or exporting Avro files. Use explicit type casting to convert when loading data from Avro files:
 
 ```sql
 SELECT
@@ -164,4 +164,4 @@ ClickHouse introduces support for many formats, both text, and binary, to cover 
 - [Native and binary formats](binary.md)
 - [SQL formats](sql.md)
 
-    And also check [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) - a portable full-featured tool to work on local/remote files without the need for Clickhouse server.
+And also check [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) - a portable full-featured tool to work on local/remote files without the need for Clickhouse server.

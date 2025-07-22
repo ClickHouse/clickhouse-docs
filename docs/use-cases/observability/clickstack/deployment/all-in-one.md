@@ -30,19 +30,31 @@ This option includes authentication, enabling the persistence of dashboards, ale
 <br/>
 
 <VerticalStepper headerLevel="h3">
+
 ### Deploy with Docker {#deploy-with-docker}
+
 The following will run an OpenTelemetry collector (on port 4317 and 4318) and the HyperDX UI (on port 8080).
+
 ```shell
 docker run -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
+
 ### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui}
+
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
-Create a user, providing a username and password which meets the requirements.
+
+Create a user, providing a username and password which meets the requirements. 
+
 On clicking `Create` data sources will be created for the integrated ClickHouse instance.
+
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
+
 For an example of using an alternative ClickHouse instance, see ["Create a ClickHouse Cloud connection"](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
+
 ### Ingest data {#ingest-data}
+
 To ingest data see ["Ingesting data"](/use-cases/observability/clickstack/ingesting-data).
+
 </VerticalStepper>
 
 ## Persisting data and settings {#persisting-data-and-settings}
@@ -82,7 +94,7 @@ docker run -p 8080:8080 -p 4317:4317 -p 4999:4318 docker.hyperdx.io/hyperdx/hype
 
 ## Using ClickHouse Cloud {#using-clickhouse-cloud}
 
-This distribution can be used with ClickHouse Cloud. While the local ClickHouse instance will still be deployed (and ignored), the OTel collector can be configured to use a ClickHouse Cloud instance by setting the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_PASSWORD`.
+This distribution can be used with ClickHouse Cloud. While the local ClickHouse instance will still be deployed (and ignored), the OTel collector can be configured to use a ClickHouse Cloud instance by setting the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_PASSWORD`. 
 
 For example:
 

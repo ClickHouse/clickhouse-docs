@@ -28,7 +28,7 @@ QStudio uses JDBC over HTTP(S) to connect to ClickHouse; you need:
 - username
 - password
 
-    <ConnectionDetails />
+<ConnectionDetails />
 
 ## 2. Download QStudio {#2-download-qstudio}
 
@@ -39,17 +39,17 @@ QStudio is available at https://www.timestored.com/qstudio/download/
 - When you first open QStudio click on the menu options **Server->Add Server** or on the add server button on the toolbar.
 - Then set the details:
 
-    <Image img={qstudio_add_connection} size="lg" border alt="QStudio database connection configuration screen showing ClickHouse connection settings" />
+<Image img={qstudio_add_connection} size="lg" border alt="QStudio database connection configuration screen showing ClickHouse connection settings" />
 
-1. Server Type: Clickhouse.com
-2. Note for Host you MUST include https://
+1.   Server Type: Clickhouse.com
+2.    Note for Host you MUST include https://
     Host: https://abc.def.clickhouse.cloud
     Port: 8443
-3. Username: default
+3.  Username: default
     Password: `XXXXXXXXXXX`
-    4. Click Add
+ 4. Click Add
 
-    If QStudio detects that you do not have the ClickHouse JDBC driver installed, it will offer to download them for you:
+If QStudio detects that you do not have the ClickHouse JDBC driver installed, it will offer to download them for you:
 
 ## 4. Query ClickHouse {#4-query-clickhouse}
 
@@ -59,8 +59,8 @@ QStudio is available at https://www.timestored.com/qstudio/download/
 
 - An example query:
 
-    <Image img={qstudio_running_query} size="lg" border alt="QStudio interface showing sample SQL query execution against ClickHouse database" />
+<Image img={qstudio_running_query} size="lg" border alt="QStudio interface showing sample SQL query execution against ClickHouse database" />
 
-## Next steps {#next-steps}
+## Next Steps {#next-steps}
 
 See [QStudio](https://www.timestored.com/qstudio) to learn about the capabilities of QStudio, and the [ClickHouse documentation](https://clickhouse.com/docs) to learn about the capabilities of ClickHouse.

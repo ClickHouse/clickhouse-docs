@@ -6,7 +6,7 @@ title: 'Configuring SSL User Certificate for Authentication'
 description: 'This guide provides simple and minimal settings to configure authentication with SSL user certificates.'
 ---
 
-# Configuring SSL user certificate for authentication
+# Configuring SSL User Certificate for Authentication
 import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
@@ -41,7 +41,7 @@ This example uses self-signed certificates with a self-signed CA. For production
     The CN is arbitrary and any string can be used as an identifier for the certificate. It is used when creating the user in the following steps.
     :::
 
-2. Generate and sign the new user certificate that will be used for authentication. The basic format is the following:
+2.  Generate and sign the new user certificate that will be used for authentication. The basic format is the following:
     ```bash
     openssl x509 -req -in <my_cert_name>.csr -out <my_cert_name>.crt -CA <my_ca_cert>.crt -CAkey <my_ca_cert>.key -days 365
     ```

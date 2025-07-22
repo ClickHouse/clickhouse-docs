@@ -7,7 +7,7 @@ description: 'Backup policy in new tiers'
 
 ## What is the backup policy? {#what-is-the-backup-policy}
 In Basic, Scale, and Enterprise tiers backups are metered and billed separately from storage.
-All services will default to one daily backup with the ability to configure more, starting with the Scale tier, via the Settings tab of the Cloud console. Each backup will be retained for at least 24 hours.
+All services will default to one daily backup with the ability to configure more, starting with the Scale tier, via the Settings tab of the Cloud Console. Each backup will be retained for at least 24 hours.
 
 ## What happens to current configurations that users have set up separate from default backups? {#what-happens-to-current-configurations-that-users-have-set-up-separate-from-default-backups}
 

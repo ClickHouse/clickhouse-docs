@@ -82,7 +82,7 @@ This query returns the column names expected by Grafana, rendering a table of tr
 
 Users wishing to write more complex queries can switch to the `SQL Editor`.
 
-### View trace details {#view-trace-details}
+### View Trace details {#view-trace-details}
 
 As shown above, Trace ids are rendered as clickable links. On clicking on a trace Id, a user can choose to view the associated spans via the link `View Trace`. This issues the following query (assuming OTel columns) to retrieve the spans in the required structure, rendering the results as a waterfall.
 
@@ -167,22 +167,22 @@ Multi-line charts will be automatically rendered for a query provided the follow
 - field 2: value to group by. This should be a String.
 - field 3+: the metric values
 
-    For example:
+For example:
 
-    ```sql
-    SELECT
-    $__timeInterval(Timestamp) as time,
-    ServiceName,
-    quantile(0.99)(Duration)/1000000 AS p99
-    FROM otel_traces
-    WHERE $__timeFilter(Timestamp)
-    AND ( Timestamp  >= $__fromTime AND Timestamp <= $__toTime )
-    GROUP BY ServiceName, time
-    ORDER BY time ASC
-    LIMIT 100000
-    ```
+```sql
+SELECT
+  $__timeInterval(Timestamp) as time,
+  ServiceName,
+  quantile(0.99)(Duration)/1000000 AS p99
+FROM otel_traces
+WHERE $__timeFilter(Timestamp)
+AND ( Timestamp  >= $__fromTime AND Timestamp <= $__toTime )
+GROUP BY ServiceName, time
+ORDER BY time ASC
+LIMIT 100000
+```
 
-    <Image img={observability_23} alt="Multi-line charts" size="lg" border/>
+<Image img={observability_23} alt="Multi-line charts" size="lg" border/>
 
 ### Visualizing geo data {#visualizing-geo-data}
 

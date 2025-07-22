@@ -10,12 +10,12 @@ sidebar_label: 'countResample'
 
 ## Description {#description}
 
-The [`Resample`](/sql-reference/aggregate-functions/combinators#-resample)
+The [`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
 combinator can be applied to the [`count`](/sql-reference/aggregate-functions/reference/count)
 aggregate function to count values of a specified key column in a fixed number
 of intervals (`N`).
 
-## Example usage {#example-usage}
+## Example Usage {#example-usage}
 
 ### Basic example {#basic-example}
 
@@ -23,12 +23,12 @@ Let's look at an example. We'll create a table which contains the `name`, `age` 
 `wage` of employees, and we'll insert some data into it:
 
 ```sql
-CREATE TABLE employee_data
+CREATE TABLE employee_data 
 (
     name String,
     age UInt8,
     wage Float32
-)
+) 
 ENGINE = MergeTree()
 ORDER BY tuple()
 
@@ -41,9 +41,9 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-Let's count all the people whose age lies in the intervals of `[30,60)`
+Let's count all the people whose age lies in the intervals of `[30,60)` 
 and `[60,75)`. Since we use integer representation for age, we get ages in the
-`[30, 59]` and `[60,74]` intervals. To do so we apply the `Resample` combinator
+`[30, 59]` and `[60,74]` intervals. To do so we apply the `Resample` combinator 
 to `count`
 
 ```sql

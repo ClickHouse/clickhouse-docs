@@ -27,7 +27,7 @@ Data transfer and ClickPipes pricing doesn't apply to legacy plans, i.e. Develop
 - Data transfer pricing does **not** vary between organizational tiers.
 - Public egress pricing is based only on the origin region. Inter-region (or cross-region) pricing depends on both the origin and destination regions.
 
-    <NetworkPricing/>
+<NetworkPricing/>
 
 ### Will data transfer pricing be tiered as usage increases? {#will-data-transfer-pricing-be-tiered-as-usage-increases}
 

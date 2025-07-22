@@ -14,7 +14,7 @@ The currently supported dialects are:
 - `prql`: [Pipelined Relational Query Language (PRQL)](https://prql-lang.org/)
 - `kusto`: [Kusto Query Language (KQL)](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query)
 
-    Which query language is used is controlled by setting `dialect`.
+Which query language is used is controlled by setting `dialect`.
 
 ## Standard SQL {#standard-sql}
 
@@ -24,7 +24,7 @@ Standard SQL is the default query language of ClickHouse.
 SET dialect = 'clickhouse'
 ```
 
-## Pipelined relational query language (PRQL) {#pipelined-relational-query-language-prql}
+## Pipelined Relational Query Language (PRQL) {#pipelined-relational-query-language-prql}
 
 <ExperimentalBadge/>
 
@@ -47,7 +47,7 @@ aggregate {
 
 Under the hood, ClickHouse uses transpilation from PRQL to SQL to run PRQL queries.
 
-## Kusto query language (KQL) {#kusto-query-language-kql}
+## Kusto Query Language (KQL) {#kusto-query-language-kql}
 
 <ExperimentalBadge/>
 

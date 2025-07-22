@@ -78,104 +78,104 @@ GROUP BY part_name;
 1. │ all_2_2_0 │     914 │
 2. │ all_1_1_0 │    1343 │
 3. │ all_0_0_0 │    1349 │
-    └───────────┴─────────┘
-    ```
+   └───────────┴─────────┘
+```
 
-    This query shows the first 10 entries from the primary index of one of the current data parts. Note that these parts are continuously [merged](/merges) in the background into larger parts:
+This query shows the first 10 entries from the primary index of one of the current data parts. Note that these parts are continuously [merged](/merges) in the background into larger parts:
 
-    ```sql
-    SELECT
+```sql 
+SELECT 
     mark_number + 1 AS entry,
     town,
     street
-    FROM mergeTreeIndex('uk', 'uk_price_paid_simple')
-    WHERE part_name = (SELECT any(part_name) FROM mergeTreeIndex('uk', 'uk_price_paid_simple'))
-    ORDER BY mark_number ASC
-    LIMIT 10;
-    ```
+FROM mergeTreeIndex('uk', 'uk_price_paid_simple')
+WHERE part_name = (SELECT any(part_name) FROM mergeTreeIndex('uk', 'uk_price_paid_simple')) 
+ORDER BY mark_number ASC
+LIMIT 10;
+```
 
-    ```txt
+```txt
     ┌─entry─┬─town───────────┬─street───────────┐
-    1. │     1 │ ABBOTS LANGLEY │ ABBEY DRIVE      │
-    2. │     2 │ ABERDARE       │ RICHARDS TERRACE │
-    3. │     3 │ ABERGELE       │ PEN Y CAE        │
-    4. │     4 │ ABINGDON       │ CHAMBRAI CLOSE   │
-    5. │     5 │ ABINGDON       │ THORNLEY CLOSE   │
-    6. │     6 │ ACCRINGTON     │ MAY HILL CLOSE   │
-    7. │     7 │ ADDLESTONE     │ HARE HILL        │
-    8. │     8 │ ALDEBURGH      │ LINDEN ROAD      │
-    9. │     9 │ ALDERSHOT      │ HIGH STREET      │
+ 1. │     1 │ ABBOTS LANGLEY │ ABBEY DRIVE      │
+ 2. │     2 │ ABERDARE       │ RICHARDS TERRACE │
+ 3. │     3 │ ABERGELE       │ PEN Y CAE        │
+ 4. │     4 │ ABINGDON       │ CHAMBRAI CLOSE   │
+ 5. │     5 │ ABINGDON       │ THORNLEY CLOSE   │
+ 6. │     6 │ ACCRINGTON     │ MAY HILL CLOSE   │
+ 7. │     7 │ ADDLESTONE     │ HARE HILL        │
+ 8. │     8 │ ALDEBURGH      │ LINDEN ROAD      │
+ 9. │     9 │ ALDERSHOT      │ HIGH STREET      │
 10. │    10 │ ALFRETON       │ ALMA STREET      │
     └───────┴────────────────┴──────────────────┘
-    ```
+```
 
-    Lastly, we use the [EXPLAIN](/sql-reference/statements/explain) clause to see how the primary indexes of all data parts are used to skip granules that can't possibly contain rows matching the example query's predicates. These granules are excluded from loading and processing:
-    ```sql
-    EXPLAIN indexes = 1
-    SELECT
+Lastly, we use the [EXPLAIN](/sql-reference/statements/explain) clause to see how the primary indexes of all data parts are used to skip granules that can't possibly contain rows matching the example query's predicates. These granules are excluded from loading and processing:
+```sql
+EXPLAIN indexes = 1
+SELECT
     max(price)
-    FROM
+FROM
     uk.uk_price_paid_simple
-    WHERE
+WHERE
     town = 'LONDON' AND street = 'OXFORD STREET';
-    ```
+```
 
-    ```txt
+```txt
     ┌─explain────────────────────────────────────────────────────────────────────────────────────────────────────┐
-    1. │ Expression ((Project names + Projection))                                                                  │
-    2. │   Aggregating                                                                                              │
-    3. │     Expression (Before GROUP BY)                                                                           │
-    4. │       Expression                                                                                           │
-    5. │         ReadFromMergeTree (uk.uk_price_paid_simple)                                                        │
-    6. │         Indexes:                                                                                           │
-    7. │           PrimaryKey                                                                                       │
-    8. │             Keys:                                                                                          │
-    9. │               town                                                                                         │
+ 1. │ Expression ((Project names + Projection))                                                                  │
+ 2. │   Aggregating                                                                                              │
+ 3. │     Expression (Before GROUP BY)                                                                           │
+ 4. │       Expression                                                                                           │
+ 5. │         ReadFromMergeTree (uk.uk_price_paid_simple)                                                        │
+ 6. │         Indexes:                                                                                           │
+ 7. │           PrimaryKey                                                                                       │
+ 8. │             Keys:                                                                                          │
+ 9. │               town                                                                                         │
 10. │               street                                                                                       │
 11. │             Condition: and((street in ['OXFORD STREET', 'OXFORD STREET']), (town in ['LONDON', 'LONDON'])) │
 12. │             Parts: 3/3                                                                                     │
 13. │             Granules: 3/3609                                                                               │
     └────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-    ```
+```
 
-    Note how row 13 of the EXPLAIN output above shows that only 3 out of 3,609 granules across all data parts were selected by the primary index analysis for processing. The remaining granules were skipped entirely.
+Note how row 13 of the EXPLAIN output above shows that only 3 out of 3,609 granules across all data parts were selected by the primary index analysis for processing. The remaining granules were skipped entirely.
 
-    We can also observe that most of the data was skipped by simply running the query:
-    ```sql
-    SELECT max(price)
-    FROM uk.uk_price_paid_simple
-    WHERE (town = 'LONDON') AND (street = 'OXFORD STREET');
-    ```
+We can also observe that most of the data was skipped by simply running the query:
+```sql 
+SELECT max(price)
+FROM uk.uk_price_paid_simple
+WHERE (town = 'LONDON') AND (street = 'OXFORD STREET');
+```
 
-    ```txt
-    ┌─max(price)─┐
+```txt
+   ┌─max(price)─┐
 1. │  263100000 │ -- 263.10 million
-    └────────────┘
+   └────────────┘
 
-    1 row in set. Elapsed: 0.010 sec. Processed 24.58 thousand rows, 159.04 KB (2.53 million rows/s., 16.35 MB/s.)
-    Peak memory usage: 13.00 MiB.
-    ```
+1 row in set. Elapsed: 0.010 sec. Processed 24.58 thousand rows, 159.04 KB (2.53 million rows/s., 16.35 MB/s.)
+Peak memory usage: 13.00 MiB.
+```
 
-    As shown above, only around 25,000 rows were processed out of approximately 30 million rows in the example table:
-    ```sql
-    SELECT count() FROM uk.uk_price_paid_simple;
-    ```
+As shown above, only around 25,000 rows were processed out of approximately 30 million rows in the example table:
+```sql 
+SELECT count() FROM uk.uk_price_paid_simple;
+```
 
-    ```txt
-    ┌──count()─┐
+```txt
+   ┌──count()─┐
 1. │ 29556244 │ -- 29.56 million
-    └──────────┘
-    ```
+   └──────────┘
+```
 
 ##  Key takeaways {#key-takeaways}
 
-* **Sparse primary indexes** help ClickHouse skip unnecessary data by identifying which granules might contain rows matching query conditions on primary key columns.
+* **Sparse primary indexes** help ClickHouse skip unnecessary data by identifying which granules might contain rows matching query conditions on primary key columns. 
 
-* Each index stores only the primary key values from the **first row of every granule** (a granule has 8,192 rows by default), making it compact enough to fit in memory.
+* Each index stores only the primary key values from the **first row of every granule** (a granule has 8,192 rows by default), making it compact enough to fit in memory. 
 
-* **Each data part** in a MergeTree table has its **own primary index**, which is used independently during query execution.
+* **Each data part** in a MergeTree table has its **own primary index**, which is used independently during query execution. 
 
-* During queries, the index allows ClickHouse to **skip granules**, reducing I/O and memory usage while accelerating performance.
+* During queries, the index allows ClickHouse to **skip granules**, reducing I/O and memory usage while accelerating performance. 
 
 * You can **inspect index contents** using the `mergeTreeIndex` table function and monitor index usage with the `EXPLAIN` clause.
 

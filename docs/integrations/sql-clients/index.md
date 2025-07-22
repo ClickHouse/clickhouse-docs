@@ -5,7 +5,7 @@ keywords: ['integrations', 'DataGrip', 'DBeaver', 'DbVisualizer', 'Jupyter Noteb
 title: 'SQL Client Integrations'
 ---
 
-# SQL client integrations
+# SQL Client Integrations
 
 This section describes how to integrate ClickHouse with various common database management, analysis and visualization tools.
 

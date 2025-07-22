@@ -17,7 +17,7 @@ notified when the number of events (logs or spans) matching the search exceeds o
 
 ### Creating an alert {#creating-an-alert}
 
-You can create an alert by clicking the `Alerts` button on the top right of the `Search` page.
+You can create an alert by clicking the `Alerts` button on the top right of the `Search` page. 
 
 From here, you can name the alert, as well as set the threshold, duration, and notification method for the alert (Slack, Email, PagerDuty or Slack webhook).
 
@@ -28,7 +28,6 @@ The `grouped by` value allows the search to be subject to an aggregation e.g. `S
 ### Common alert scenarios {#common-alert-scenarios}
 
 Here are a few common alert scenarios that you can use HyperDX for:
-
 **Errors:** We first recommend setting up alerts for the default
 `All Error Events` and `HTTP Status >= 400` saved searches to be notified when
 excess error occurs.

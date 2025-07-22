@@ -1,6 +1,6 @@
 ---
 slug: /materialized-view/incremental-materialized-view
-title: 'Incremental materialized view'
+title: 'Incremental Materialized View'
 description: 'How to use incremental materialized views to speed up queries'
 keywords: ['incremental materialized views', 'speed up queries', 'query optimization']
 score: 10000
@@ -13,7 +13,7 @@ import Image from '@theme/IdealImage';
 
 Incremental Materialized Views (Materialized Views) allow users to shift the cost of computation from query time to insert time, resulting in faster `SELECT` queries.
 
-Unlike in transactional databases like Postgres, a ClickHouse materialized view is just a trigger that runs a query on blocks of data as they are inserted into a table. The result of this query is inserted into a second "target" table. Should more rows be inserted, results will again be sent to the target table where the intermediate results will be updated and merged. This merged result is the equivalent of running the query over all of the original data.
+Unlike in transactional databases like Postgres, a ClickHouse Materialized View is just a trigger that runs a query on blocks of data as they are inserted into a table. The result of this query is inserted into a second "target" table. Should more rows be inserted, results will again be sent to the target table where the intermediate results will be updated and merged. This merged result is the equivalent of running the query over all of the original data.
 
 The principal motivation for Materialized Views is that the results inserted into the target table represent the results of an aggregation, filtering, or transformation on rows. These results will often be a smaller representation of the original data (a partial sketch in the case of aggregations). This, along with the resulting query for reading the results from the target table being simple, ensures query times are faster than if the same computation was performed on the original data, shifting computation (and thus query latency) from query time to insert time.
 
@@ -75,7 +75,7 @@ Peak memory usage: 363.22 MiB.
 
 This query is already fast thanks to ClickHouse, but can we do better?
 
-If we want to compute this at insert time using a materialized view, we need a table to receive the results. This table should only keep 1 row per day. If an update is received for an existing day, the other columns should be merged into the existing day's row. For this merge of incremental states to happen, partial states must be stored for the other columns.
+If we want to compute this at insert time using a Materialized View, we need a table to receive the results. This table should only keep 1 row per day. If an update is received for an existing day, the other columns should be merged into the existing day's row. For this merge of incremental states to happen, partial states must be stored for the other columns.
 
 This requires a special engine type in ClickHouse: the [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree). This replaces all the rows with the same ordering key with one row which contains summed values for the numeric columns. The following table will merge any rows with the same date, summing any numerical columns:
 
@@ -90,7 +90,7 @@ ENGINE = SummingMergeTree
 ORDER BY Day
 ```
 
-To demonstrate our materialized view, assume our votes table is empty and have yet to receive any data. Our materialized view performs the above `SELECT` on data inserted into `votes`, with the results sent to `up_down_votes_per_day`:
+To demonstrate our Materialized View, assume our votes table is empty and have yet to receive any data. Our Materialized View performs the above `SELECT` on data inserted into `votes`, with the results sent to `up_down_votes_per_day`:
 
 ```sql
 CREATE MATERIALIZED VIEW up_down_votes_per_day_mv TO up_down_votes_per_day AS
@@ -132,46 +132,46 @@ Since the merging of rows is asynchronous, there may be more than one vote per d
 - Use the `FINAL` modifier on the table name. We did this for the count query above.
 - Aggregate by the ordering key used in our final table i.e. `CreationDate` and sum the metrics. Typically this is more efficient and flexible (the table can be used for other things), but the former can be simpler for some queries. We show both below:
 
-    ```sql
-    SELECT
+```sql
+SELECT
         Day,
         UpVotes,
         DownVotes
-    FROM up_down_votes_per_day
-    FINAL
-    ORDER BY Day ASC
-    LIMIT 10
+FROM up_down_votes_per_day
+FINAL
+ORDER BY Day ASC
+LIMIT 10
 
-    10 rows in set. Elapsed: 0.004 sec. Processed 8.97 thousand rows, 89.68 KB (2.09 million rows/s., 20.89 MB/s.)
-    Peak memory usage: 289.75 KiB.
+10 rows in set. Elapsed: 0.004 sec. Processed 8.97 thousand rows, 89.68 KB (2.09 million rows/s., 20.89 MB/s.)
+Peak memory usage: 289.75 KiB.
 
-    SELECT Day, sum(UpVotes) AS UpVotes, sum(DownVotes) AS DownVotes
-    FROM up_down_votes_per_day
-    GROUP BY Day
-    ORDER BY Day ASC
-    LIMIT 10
-    ┌────────Day─┬─UpVotes─┬─DownVotes─┐
-    │ 2008-07-31 │       6 │         0 │
-    │ 2008-08-01 │     182 │        50 │
-    │ 2008-08-02 │     436 │       107 │
-    │ 2008-08-03 │     564 │       100 │
-    │ 2008-08-04 │    1306 │       259 │
-    │ 2008-08-05 │    1368 │       269 │
-    │ 2008-08-06 │    1701 │       211 │
-    │ 2008-08-07 │    1544 │       211 │
-    │ 2008-08-08 │    1241 │       212 │
-    │ 2008-08-09 │     576 │        46 │
-    └────────────┴─────────┴───────────┘
+SELECT Day, sum(UpVotes) AS UpVotes, sum(DownVotes) AS DownVotes
+FROM up_down_votes_per_day
+GROUP BY Day
+ORDER BY Day ASC
+LIMIT 10
+┌────────Day─┬─UpVotes─┬─DownVotes─┐
+│ 2008-07-31 │       6 │         0 │
+│ 2008-08-01 │     182 │        50 │
+│ 2008-08-02 │     436 │       107 │
+│ 2008-08-03 │     564 │       100 │
+│ 2008-08-04 │    1306 │       259 │
+│ 2008-08-05 │    1368 │       269 │
+│ 2008-08-06 │    1701 │       211 │
+│ 2008-08-07 │    1544 │       211 │
+│ 2008-08-08 │    1241 │       212 │
+│ 2008-08-09 │     576 │        46 │
+└────────────┴─────────┴───────────┘
 
-    10 rows in set. Elapsed: 0.010 sec. Processed 8.97 thousand rows, 89.68 KB (907.32 thousand rows/s., 9.07 MB/s.)
-    Peak memory usage: 567.61 KiB.
-    ```
+10 rows in set. Elapsed: 0.010 sec. Processed 8.97 thousand rows, 89.68 KB (907.32 thousand rows/s., 9.07 MB/s.)
+Peak memory usage: 567.61 KiB.
+```
 
-    This has sped up our query from 0.133s to 0.004s – an over 25x improvement!
+This has sped up our query from 0.133s to 0.004s – an over 25x improvement!
 
-    :::important Important: `ORDER BY` = `GROUP BY`
-    In most cases the columns used in the `GROUP BY` clause of the Materialized Views transformation, should be consistent with those used in the `ORDER BY` clause of the target table if using the `SummingMergeTree` or `AggregatingMergeTree` table engines. These engines rely on the `ORDER BY` columns to merge rows with identical values during background merge operations. Misalignment between `GROUP BY` and `ORDER BY` columns can lead to inefficient query performance, suboptimal merges, or even data discrepancies.
-    :::
+:::important Important: `ORDER BY` = `GROUP BY`
+In most cases the columns used in the `GROUP BY` clause of the Materialized Views transformation, should be consistent with those used in the `ORDER BY` clause of the target table if using the `SummingMergeTree` or `AggregatingMergeTree` table engines. These engines rely on the `ORDER BY` columns to merge rows with identical values during background merge operations. Misalignment between `GROUP BY` and `ORDER BY` columns can lead to inefficient query performance, suboptimal merges, or even data discrepancies.
+:::
 
 ### A more complex example {#a-more-complex-example}
 
@@ -206,17 +206,17 @@ LIMIT 10
 Peak memory usage: 658.84 MiB.
 ```
 
-As before, we can create a materialized view which executes the above query as new posts are inserted into our `posts` table.
+As before, we can create a Materialized View which executes the above query as new posts are inserted into our `posts` table.
 
-For the purposes of example, and to avoid loading the posts data from S3, we will create a duplicate table `posts_null` with the same schema as `posts`. However, this table will not store any data and simply be used by the materialized view when rows are inserted. To prevent storage of data, we can use the [`Null` table engine type](/engines/table-engines/special/null).
+For the purposes of example, and to avoid loading the posts data from S3, we will create a duplicate table `posts_null` with the same schema as `posts`. However, this table will not store any data and simply be used by the Materialized View when rows are inserted. To prevent storage of data, we can use the [`Null` table engine type](/engines/table-engines/special/null).
 
 ```sql
 CREATE TABLE posts_null AS posts ENGINE = Null
 ```
 
-The Null table engine is a powerful optimization - think of it as `/dev/null`. Our materialized view will compute and store our summary statistics when our `posts_null` table receives rows at insert time - it's just a trigger. However, the raw data will not be stored. While in our case, we probably still want to store the original posts, this approach can be used to compute aggregates while avoiding storage overhead of the raw data.
+The Null table engine is a powerful optimization - think of it as `/dev/null`. Our Materialized View will compute and store our summary statistics when our `posts_null` table receives rows at insert time - it's just a trigger. However, the raw data will not be stored. While in our case, we probably still want to store the original posts, this approach can be used to compute aggregates while avoiding storage overhead of the raw data.
 
-The materialized view thus becomes:
+The Materialized View thus becomes:
 
 ```sql
 CREATE MATERIALIZED VIEW post_stats_mv TO post_stats_per_day AS
@@ -247,7 +247,7 @@ ORDER BY Day
 While earlier the `SummingMergeTree` was sufficient to store counts, we require a more advanced engine type for other functions: the [`AggregatingMergeTree`](/engines/table-engines/mergetree-family/aggregatingmergetree).
 To ensure ClickHouse knows that aggregate states will be stored, we define the `Score_quantiles` and `AvgCommentCount` as the type `AggregateFunction`, specifying the function source of the partial states and the type of their source columns. Like the `SummingMergeTree`, rows with the same `ORDER BY` key value will be merged (`Day` in the above example).
 
-To populate our `post_stats_per_day` via our materialized view, we can simply insert all rows from `posts` into `posts_null`:
+To populate our `post_stats_per_day` via our Materialized View, we can simply insert all rows from `posts` into `posts_null`:
 
 ```sql
 INSERT INTO posts_null SELECT * FROM posts
@@ -255,7 +255,7 @@ INSERT INTO posts_null SELECT * FROM posts
 0 rows in set. Elapsed: 13.329 sec. Processed 119.64 million rows, 76.99 GB (8.98 million rows/s., 5.78 GB/s.)
 ```
 
-> In production, you would likely attach the materialized view to the `posts` table. We have used `posts_null` here to demonstrate the null table.
+> In production, you would likely attach the Materialized View to the `posts` table. We have used `posts_null` here to demonstrate the null table.
 
 Our final query needs to utilize the `Merge` suffix for our functions (as the columns store partial aggregation states):
 
@@ -280,9 +280,9 @@ The above focuses primarily on using Materialized Views to incrementally update 
 
 In some situations, we may wish to only insert a subset of the rows and columns on insertion. In this case, our `posts_null` table could receive inserts, with a `SELECT` query filtering rows prior to insertion into the `posts` table. For example, suppose we wished to transform a `Tags` column in our `posts` table. This contains a pipe delimited list of tag names. By converting these into an array, we can more easily aggregate by individual tag values.
 
-> We could perform this transformation when running an `INSERT INTO SELECT`. The materialized view allows us to encapsulate this logic in ClickHouse DDL and keep our `INSERT` simple, with the transformation applied to any new rows.
+> We could perform this transformation when running an `INSERT INTO SELECT`. The Materialized View allows us to encapsulate this logic in ClickHouse DDL and keep our `INSERT` simple, with the transformation applied to any new rows.
 
-Our materialized view for this transformation is shown below:
+Our Materialized View for this transformation is shown below:
 
 ```sql
 CREATE MATERIALIZED VIEW posts_mv TO posts AS
@@ -327,15 +327,16 @@ WHERE UserId = 8592047
 Peak memory usage: 217.08 MiB.
 ```
 
-While fast (the data is small for ClickHouse), we can tell this requires a full table scan from the number of rows processed - 90.38 million. For larger datasets, we can use a materialized view to lookup our ordering key values `PostId` for filtering column `UserId`. These values can then be used to perform an efficient lookup.
+While fast (the data is small for ClickHouse), we can tell this requires a full table scan from the number of rows processed - 90.38 million. For larger datasets, we can use a Materialized View to lookup our ordering key values `PostId` for filtering column `UserId`. These values can then be used to perform an efficient lookup.
 
-In this example, our materialized view can be very simple, selecting only the `PostId` and `UserId` from `comments` on insert. These results are in turn sent to a table `comments_posts_users` which is ordered by `UserId`. We create a null version of the `Comments` table below and use this to populate our view and `comments_posts_users` table:
+In this example, our Materialized View can be very simple, selecting only the `PostId` and `UserId` from `comments` on insert. These results are in turn sent to a table `comments_posts_users` which is ordered by `UserId`. We create a null version of the `Comments` table below and use this to populate our view and `comments_posts_users` table:
 
 ```sql
 CREATE TABLE comments_posts_users (
   PostId UInt32,
   UserId Int32
 ) ENGINE = MergeTree ORDER BY UserId
+
 
 CREATE TABLE comments_null AS comments
 ENGINE = Null
@@ -370,23 +371,23 @@ WHERE PostId IN (
 
 Materialized views can be chained, allowing complex workflows to be established. For a practical example, we recommend reading this [blog post](https://clickhouse.com/blog/chaining-materialized-views).
 
-## Materialized views and JOINs {#materialized-views-and-joins}
+## Materialized Views and JOINs {#materialized-views-and-joins}
 
 :::note Refreshable Materialized Views
 The following applies to Incremental Materialized Views only. Refreshable Materialized Views execute their query periodically over the full target dataset and fully support JOINs. Consider using them for complex JOINs if a reduction in result freshness can be tolerated.
 :::
 
-Incremental Materialized views in ClickHouse fully support `JOIN` operations, but with one crucial constraint: **the materialized view only triggers on inserts to the source table (the left-most table in the query).** Right-side tables in JOINs do not trigger updates, even if their data changes. This behavior is especially important when building **Incremental** Materialized Views, where data is aggregated or transformed during insert time.
+Incremental Materialized views in ClickHouse fully support `JOIN` operations, but with one crucial constraint: **the Materialized View only triggers on inserts to the source table (the left-most table in the query).** Right-side tables in JOINs do not trigger updates, even if their data changes. This behavior is especially important when building **Incremental** Materialized Views, where data is aggregated or transformed during insert time.
 
-When an Incremental materialized view is defined using a `JOIN`, the left-most table in the `SELECT` query acts as the source. When new rows are inserted into this table, ClickHouse executes the materialized view query *only* with those newly inserted rows. Right-side tables in the JOIN are read in full during this execution, but changes to them alone do not trigger the view.
+When an Incremental Materialized View is defined using a `JOIN`, the left-most table in the `SELECT` query acts as the source. When new rows are inserted into this table, ClickHouse executes the Materialized View query *only* with those newly inserted rows. Right-side tables in the JOIN are read in full during this execution, but changes to them alone do not trigger the view.
 
-This behavior makes JOINs in Materialized Views similar to a snapshot join against static dimension data.
+This behavior makes JOINs in Materialized Views similar to a snapshot join against static dimension data. 
 
-This works well for enriching data with reference or dimension tables. However, any updates to the right-side tables (e.g., user metadata) will not retroactively update the materialized view. To see updated data, new inserts must arrive in the source table.
+This works well for enriching data with reference or dimension tables. However, any updates to the right-side tables (e.g., user metadata) will not retroactively update the Materialized View. To see updated data, new inserts must arrive in the source table.
 
 ### Example {#materialized-views-and-joins-example}
 
-Let's walk through a concrete example using the [Stack Overflow dataset](/data-modeling/schema-design). We'll use a materialized view to compute **daily badges per user**, including the display name of the user from the `users` table.
+Let's walk through a concrete example using the [Stack Overflow dataset](/data-modeling/schema-design). We'll use a Materialized View to compute **daily badges per user**, including the display name of the user from the `users` table.
 
 As a reminder, our table schemas are:
 
@@ -426,7 +427,7 @@ INSERT INTO users
 SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/users.parquet');
 ```
 
-The materialized view and its associated target table are defined as:
+The Materialized View and its associated target table are defined as:
 
 ```sql
 CREATE TABLE daily_badges_by_user
@@ -455,7 +456,7 @@ GROUP BY Day, b.UserId, u.DisplayName;
 ```
 
 :::note Grouping and Ordering Alignment
-The `GROUP BY` clause in the materialized view must include `DisplayName`, `UserId`, and `Day` to match the `ORDER BY` in the `SummingMergeTree` target table. This ensures rows are correctly aggregated and merged. Omitting any of these can lead to incorrect results or inefficient merges.
+The `GROUP BY` clause in the Materialized View must include `DisplayName`, `UserId`, and `Day` to match the `ORDER BY` in the `SummingMergeTree` target table. This ensures rows are correctly aggregated and merged. Omitting any of these can lead to incorrect results or inefficient merges.
 :::
 
 If we now populate the badges, the view will be triggered - populating our `daily_badges_by_user` table.
@@ -516,10 +517,10 @@ WHERE DisplayName = 'gingerwizard'
 ```
 
 :::warning
-Notice the latency of the insert here. The inserted user row is joined against the entire `users` table, significantly impacting insert performance. We propose approaches to address this below in ["Using source table in filters and joins"](/materialized-view/incremental-materialized-view#using-source-table-in-filters-and-joins-in-materialized-views).
+Notice the latency of the insert here. The inserted user row is joined against the entire `users` table, significantly impacting insert performance. We propose approaches to address this below in ["Using Source Table in Filters and Joins"](/materialized-view/incremental-materialized-view#using-source-table-in-filters-and-joins-in-materialized-views).
 :::
 
-Conversely, if we insert a badge for a new user, followed by the row for the user, our materialized view will fail to capture the users' metrics.
+Conversely, if we insert a badge for a new user, followed by the row for the user, our Materialized View will fail to capture the users' metrics. 
 
 ```sql
 INSERT INTO badges VALUES (53505059, 23923286, 'Good Answer', now(), 'Bronze', 0);
@@ -554,9 +555,9 @@ WHERE DisplayName = 'brand_new_user'
 
 Note, however, that this result is incorrect.
 
-### Best practices for JOINs in materialized views {#join-best-practices}
+### Best Practices for JOINs in Materialized Views {#join-best-practices}
 
-- **Use the left-most table as the trigger.** Only the table on the left side of the `SELECT` statement triggers the materialized view. Changes to right-side tables will not trigger updates.
+- **Use the left-most table as the trigger.** Only the table on the left side of the `SELECT` statement triggers the Materialized View. Changes to right-side tables will not trigger updates.
 
 - **Pre-insert joined data.** Ensure that data in joined tables exists before inserting rows into the source table. The JOIN is evaluated at insert time, so missing data will result in unmatched rows or nulls.
 
@@ -572,11 +573,11 @@ Note, however, that this result is incorrect.
 
 - **Consider insert volume and frequency.** JOINs work well in moderate insert workloads. For high-throughput ingestion, consider using staging tables, pre-joins, or other approaches such as Dictionaries and [Refreshable Materialized Views](/materialized-view/refreshable-materialized-view).
 
-### Using source table in filters and joins {#using-source-table-in-filters-and-joins-in-materialized-views}
+### Using Source Table in Filters and Joins {#using-source-table-in-filters-and-joins-in-materialized-views}
 
-When working with Materialized Views in ClickHouse, it's important to understand how the source table is treated during the execution of the materialized view's query. Specifically, the source table in the materialized view's query is replaced with the inserted block of data. This behavior can lead to some unexpected results if not properly understood.
+When working with Materialized Views in ClickHouse, it's important to understand how the source table is treated during the execution of the Materialized View's query. Specifically, the source table in the Materialized View's query is replaced with the inserted block of data. This behavior can lead to some unexpected results if not properly understood.
 
-#### Example scenario {#example-scenario}
+#### Example Scenario {#example-scenario}
 
 Consider the following setup:
 
@@ -591,6 +592,7 @@ CREATE MATERIALIZED VIEW mvw1 TO mvw1_inner
 AS SELECT count(*) AS c0
     FROM t0
     LEFT JOIN ( SELECT * FROM t0 ) AS x ON t0.c0 = x.c0;
+
 
 CREATE MATERIALIZED VIEW mvw2 TO mvw2_inner
 AS SELECT count(*) AS c0
@@ -618,15 +620,15 @@ SELECT * FROM mvw2;
 
 In the above example, we have two Materialized Views `mvw1` and `mvw2` that perform similar operations but with a slight difference in how they reference the source table `t0`.
 
-In `mvw1`, table `t0` is directly referenced inside a `(SELECT * FROM t0)` subquery on the right side of the JOIN. When data is inserted into `t0`, the materialized view's query is executed with the inserted block of data replacing `t0`. This means that the JOIN operation is performed only on the newly inserted rows, not the entire table.
+In `mvw1`, table `t0` is directly referenced inside a `(SELECT * FROM t0)` subquery on the right side of the JOIN. When data is inserted into `t0`, the Materialized View's query is executed with the inserted block of data replacing `t0`. This means that the JOIN operation is performed only on the newly inserted rows, not the entire table.
 
 In the second case with joining `vt0`, the view reads all the data from `t0`. This ensures that the JOIN operation considers all rows in `t0`, not just the newly inserted block.
 
-The key difference lies in how ClickHouse handles the source table in the materialized view's query. When a materialized view is triggered by an insert, the source table (`t0` in this case) is replaced by the inserted block of data. This behavior can be leveraged to optimize queries but also requires careful consideration to avoid unexpected results.
+The key difference lies in how ClickHouse handles the source table in the Materialized View's query. When a Materialized View is triggered by an insert, the source table (`t0` in this case) is replaced by the inserted block of data. This behavior can be leveraged to optimize queries but also requires careful consideration to avoid unexpected results.
 
-### Use cases and caveats {#use-cases-and-caveats}
+### Use Cases and Caveats {#use-cases-and-caveats}
 
-In practice, you may use this behavior to optimize Materialized Views that only need to process a subset of the source table's data. For example, you can use a subquery to filter the source table before joining it with other tables. This can help reduce the amount of data processed by the materialized view and improve performance.
+In practice, you may use this behavior to optimize Materialized Views that only need to process a subset of the source table's data. For example, you can use a subquery to filter the source table before joining it with other tables. This can help reduce the amount of data processed by the Materialized View and improve performance.
 
 ```sql
 CREATE TABLE t0 (id UInt32, value String) ENGINE = MergeTree() ORDER BY id;
@@ -644,9 +646,9 @@ ON t0.id = t1.id;
 
 In this example, the set built from the `IN (SELECT id FROM t0)` subquery has only the newly inserted rows, which can help to filter `t1` against it.
 
-#### Example with stack overflow {#example-with-stack-overflow}
+#### Example with Stack Overflow {#example-with-stack-overflow}
 
-Consider our [earlier materialized view example](/materialized-view/incremental-materialized-view#example) to compute **daily badges per user**, including the user's display name from the `users` table.
+Consider our [earlier Materialized View example](/materialized-view/incremental-materialized-view#example) to compute **daily badges per user**, including the user's display name from the `users` table.
 
 ```sql
 CREATE MATERIALIZED VIEW daily_badges_by_user_mv TO daily_badges_by_user
@@ -719,11 +721,11 @@ INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
 
 In the above operation, only one row is retrieved from the users table for the user id `2936484`. This lookup is also optimized with a table ordering key of `Id`.
 
-## Materialized views and unions {#materialized-views-and-unions}
+## Materialized Views and Unions {#materialized-views-and-unions}
 
 `UNION ALL` queries are commonly used to combine data from multiple source tables into a single result set.
 
-While `UNION ALL` is not directly supported in Incremental Materialized Views, you can achieve the same outcome by creating a separate materialized view for each `SELECT` branch and writing their results to a shared target table.
+While `UNION ALL` is not directly supported in Incremental Materialized Views, you can achieve the same outcome by creating a separate Materialized View for each `SELECT` branch and writing their results to a shared target table.
 
 For our example, we'll use the Stack Overflow dataset. Consider the `badges` and `comments` tables below, which represent the badges earned by a user and the comments they make on posts:
 
@@ -806,7 +808,7 @@ ENGINE = AggregatingMergeTree
 ORDER BY UserId
 ```
 
-Wanting this table to update as new rows are inserted into either `badges` or `comments`, a naive approach to this problem may be to try and create a materialized view with the previous union query:
+Wanting this table to update as new rows are inserted into either `badges` or `comments`, a naive approach to this problem may be to try and create a Materialized View with the previous union query:
 
 ```sql
 CREATE MATERIALIZED VIEW user_activity_mv TO user_activity AS
@@ -877,7 +879,7 @@ GROUP BY UserId;
 1 row in set. Elapsed: 0.005 sec.
 ```
 
-To solve this, we simply create a materialized view for each SELECT statement:
+To solve this, we simply create a Materialized View for each SELECT statement:
 
 ```sql
 DROP TABLE user_activity_mv;
@@ -1078,22 +1080,22 @@ Enabling `parallel_view_processing=1` can significantly improve insert throughpu
 - **Increased insert pressure**: All Materialized Views are executed simultaneously, increasing CPU and memory usage. If each view performs heavy computation or JOINs, this can overload the system.
 - **Need for strict execution order**: In rare workflows where the order of view execution matters (e.g., chained dependencies), parallel execution may lead to inconsistent state or race conditions. While possible to design around this, such setups are fragile and may break with future versions.
 
-    :::note Historical defaults and stability
-    Sequential execution was the default for a long time, in part due to error handling complexities. Historically, a failure in one materialized view could prevent others from executing. Newer versions have improved this by isolating failures per block, but sequential execution still provides clearer failure semantics.
-    :::
+:::note Historical defaults and stability
+Sequential execution was the default for a long time, in part due to error handling complexities. Historically, a failure in one Materialized View could prevent others from executing. Newer versions have improved this by isolating failures per block, but sequential execution still provides clearer failure semantics.
+:::
 
-    In general, enable `parallel_view_processing=1` when:
+In general, enable `parallel_view_processing=1` when:
 
 - You have multiple independent Materialized Views
 - You're aiming to maximize insert performance
 - You're aware of the system's capacity to handle concurrent view execution
 
-    Leave it disabled when:
+Leave it disabled when:
 - Materialized Views have dependencies on one another
 - You require predictable, ordered execution
 - You're debugging or auditing insert behavior and want deterministic replay
 
-## Materialized views and Common Table Expressions (CTE) {#materialized-views-common-table-expressions-ctes}
+## Materialized Views and Common Table Expressions (CTEs) {#materialized-views-common-table-expressions-ctes}
 
 **Non-recursive** Common Table Expressions (CTEs) are supported in Materialized Views.
 
@@ -1179,18 +1181,18 @@ Peak memory usage: 989.53 KiB.
 
 In ClickHouse, CTEs are inlined which means they are effectively copy-pasted into the query during optimization and **not** materialized. This means:
 
-- If your CTE references a different table from the source table (i.e., the one the materialized view is attached to), and is used in a `JOIN` or `IN` clause, it will behave like a subquery or join, not a trigger.
-- The materialized view will still only trigger on inserts into the main source table, but the CTE will be re-executed on every insert, which may cause unnecessary overhead, especially if the referenced table is large.
+- If your CTE references a different table from the source table (i.e., the one the Materialized View is attached to), and is used in a `JOIN` or `IN` clause, it will behave like a subquery or join, not a trigger.
+- The Materialized View will still only trigger on inserts into the main source table, but the CTE will be re-executed on every insert, which may cause unnecessary overhead, especially if the referenced table is large.
 
-    For example,
+For example,
 
-    ```sql
-    WITH recent_users AS (
-    SELECT Id FROM stackoverflow.users WHERE CreationDate > now() - INTERVAL 7 DAY
-    )
-    SELECT * FROM stackoverflow.posts WHERE OwnerUserId IN (SELECT Id FROM recent_users)
-    ```
+```sql
+WITH recent_users AS (
+  SELECT Id FROM stackoverflow.users WHERE CreationDate > now() - INTERVAL 7 DAY
+)
+SELECT * FROM stackoverflow.posts WHERE OwnerUserId IN (SELECT Id FROM recent_users)
+```
 
-    In this case, the users CTE is re-evaluated on every insert into posts, and the materialized view will not update when new users are inserted - only when posts are.
+In this case, the users CTE is re-evaluated on every insert into posts, and the Materialized View will not update when new users are inserted - only when posts are.
 
-    Generally, use CTEs for logic that operates on the same source table the materialized view is attached to or ensure that referenced tables are small and unlikely to cause performance bottlenecks. Alternatively, consider [the same optimizations as JOINs with Materialized Views](/materialized-view/incremental-materialized-view#join-best-practices).
+Generally, use CTEs for logic that operates on the same source table the Materialized View is attached to or ensure that referenced tables are small and unlikely to cause performance bottlenecks. Alternatively, consider [the same optimizations as JOINs with Materialized Views](/materialized-view/incremental-materialized-view#join-best-practices).

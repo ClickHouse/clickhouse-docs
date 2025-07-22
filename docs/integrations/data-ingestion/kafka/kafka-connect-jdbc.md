@@ -8,7 +8,7 @@ title: 'JDBC Connector'
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
-# JDBC connector
+# JDBC Connector
 
 :::note
 This connector should only be used if your data is simple and consists of primitive data types e.g., int. ClickHouse specific types such as maps are not supported.
@@ -45,7 +45,7 @@ Common Issue: the docs suggest copying the jar to `share/java/kafka-connect-jdbc
 
 :::
 
-#### 3. Prepare configuration {#3-prepare-configuration}
+#### 3. Prepare Configuration {#3-prepare-configuration}
 
 Follow [these instructions](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#set-up-a-local-connect-worker-with-cp-install) for setting up a Connect relevant to your installation type, noting the differences between a standalone and distributed cluster. If using Confluent Cloud the distributed setup is relevant.
 
@@ -66,14 +66,14 @@ The following parameters are relevant to using the JDBC connector with ClickHous
 * `key.converter` - Set according to the types of your keys.
 * `value.converter` - Set based on the type of data on your topic. This data must have a supported schema - JSON, Avro or Protobuf formats.
 
-    If using our sample dataset for testing, ensure the following are set:
+If using our sample dataset for testing, ensure the following are set:
 
 * `value.converter.schemas.enable` - Set to false as we utilize a schema registry. Set to true if you are embedding the schema in each message.
 * `key.converter` - Set to "org.apache.kafka.connect.storage.StringConverter". We utilise String keys.
 * `value.converter` - Set "io.confluent.connect.json.JsonSchemaConverter".
 * `value.converter.schema.registry.url` - Set to the schema server url along with the credentials for the schema server via the parameter `value.converter.schema.registry.basic.auth.user.info`.
 
-    Example configuration files for the Github sample data can be found [here](https://github.com/ClickHouse/kafka-samples/tree/main/github_events/jdbc_sink), assuming Connect is run in standalone mode and Kafka is hosted in Confluent Cloud.
+Example configuration files for the Github sample data can be found [here](https://github.com/ClickHouse/kafka-samples/tree/main/github_events/jdbc_sink), assuming Connect is run in standalone mode and Kafka is hosted in Confluent Cloud.
 
 #### 4. Create the ClickHouse table {#4-create-the-clickhouse-table}
 
@@ -141,7 +141,7 @@ SELECT count() FROM default.github;
 | 10000 |
 ```
 
-### Recommended further reading {#recommended-further-reading}
+### Recommended Further Reading {#recommended-further-reading}
 
 * [Kafka Sink Configuration Parameters](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/sink_config_options.html#sink-config-options)
 * [Kafka Connect Deep Dive – JDBC Source Connector](https://www.confluent.io/blog/kafka-connect-deep-dive-jdbc-source-connector)

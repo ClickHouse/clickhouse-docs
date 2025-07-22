@@ -7,7 +7,7 @@ title: 'General Questions About ClickHouse'
 description: 'Index page listing general questions about ClickHouse'
 ---
 
-# General questions about ClickHouse
+# General Questions About ClickHouse
 
 - [What is ClickHouse?](../../intro.md)
 - [Why is ClickHouse so fast?](../../concepts/why-clickhouse-is-so-fast.md)
@@ -20,6 +20,6 @@ description: 'Index page listing general questions about ClickHouse'
 - [Why not use something like MapReduce?](../../faq/general/mapreduce.md)
 - [How do I contribute code to ClickHouse?](/knowledgebase/how-do-i-contribute-code-to-clickhouse)
 
-    :::info Don't see what you're looking for?
-    Check out our [Knowledge Base](/knowledgebase/) and also browse the many helpful articles found here in the documentation.
-    :::
+:::info Don't see what you're looking for?
+Check out our [Knowledge Base](/knowledgebase/) and also browse the many helpful articles found here in the documentation.
+:::

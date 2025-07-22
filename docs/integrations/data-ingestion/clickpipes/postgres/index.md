@@ -42,43 +42,43 @@ To get started, you first need to make sure that your Postgres database is set u
 
 9. [TimescaleDB](./postgres/source/timescale), if you are using the TimescaleDB extension on a managed service or self-hosted instance.
 
-    :::warning
+:::warning
 
-    Postgres Proxies like PgBouncer, RDS Proxy, Supabase Pooler, etc., are not supported for CDC based replication. Please make sure to NOT use them for the ClickPipes setup and instead add connection details of the actual Postgres database.
+Postgres Proxies like PgBouncer, RDS Proxy, Supabase Pooler, etc., are not supported for CDC based replication. Please make sure to NOT use them for the ClickPipes setup and instead add connection details of the actual Postgres database.
 
-    :::
+:::
 
-    Once your source Postgres database is set up, you can continue creating your ClickPipe.
+Once your source Postgres database is set up, you can continue creating your ClickPipe.
 
 ## Creating your ClickPipe {#creating-your-clickpipe}
 
 Make sure you are logged in to your ClickHouse Cloud account. If you don't have an account yet, you can sign up [here](https://cloud.clickhouse.com/).
 
 [//]: # (   TODO update image here)
-1. In the ClickHouse Cloud console, navigate to your ClickHouse Cloud Service.
+1. In the ClickHouse Cloud Console, navigate to your ClickHouse Cloud Service.
 
-    <Image img={cp_service} alt="ClickPipes service" size="lg" border/>
+<Image img={cp_service} alt="ClickPipes service" size="lg" border/>
 
 2. Select the `Data Sources` button on the left-side menu and click on "Set up a ClickPipe"
 
-    <Image img={cp_step0} alt="Select imports" size="lg" border/>
+<Image img={cp_step0} alt="Select imports" size="lg" border/>
 
 3. Select the `Postgres CDC` tile
 
-    <Image img={postgres_tile} alt="Select Postgres" size="lg" border/>
+   <Image img={postgres_tile} alt="Select Postgres" size="lg" border/>
 
 ### Adding your source Postgres database connection {#adding-your-source-postgres-database-connection}
 
 4. Fill in the connection details for your source Postgres database which you configured in the prerequisites step.
 
-    :::info
+   :::info
 
-    Before you start adding your connection details make sure that you have whitelisted ClickPipes IP addresses in your firewall rules. You can find the list of ClickPipes IP addresses [here](../index.md#list-of-static-ips).
-    For more information refer to the source Postgres setup guides linked at [the top of this page](#prerequisites).
+   Before you start adding your connection details make sure that you have whitelisted ClickPipes IP addresses in your firewall rules. You can find the list of ClickPipes IP addresses [here](../index.md#list-of-static-ips).
+   For more information refer to the source Postgres setup guides linked at [the top of this page](#prerequisites).
 
-    :::
+   :::
 
-    <Image img={postgres_connection_details} alt="Fill in connection details" size="lg" border/>
+   <Image img={postgres_connection_details} alt="Fill in connection details" size="lg" border/>
 
 #### (Optional) Setting up AWS Private Link {#optional-setting-up-aws-private-link}
 
@@ -86,33 +86,33 @@ You can use AWS Private Link to connect to your source Postgres database if it i
 want to keep your data transfer private.
 You can follow the [setup guide to set up the connection](/integrations/clickpipes/aws-privatelink).
 
-#### (Optional) Setting up SSH tunneling {#optional-setting-up-ssh-tunneling}
+#### (Optional) Setting up SSH Tunneling {#optional-setting-up-ssh-tunneling}
 
 You can specify SSH tunneling details if your source Postgres database is not publicly accessible.
 
 1. Enable the "Use SSH Tunnelling" toggle.
 2. Fill in the SSH connection details.
 
-    <Image img={ssh_tunnel} alt="SSH tunneling" size="lg" border/>
+   <Image img={ssh_tunnel} alt="SSH tunneling" size="lg" border/>
 
 3. To use Key-based authentication, click on "Revoke and generate key pair" to generate a new key pair and copy the generated public key to your SSH server under `~/.ssh/authorized_keys`.
 4. Click on "Verify Connection" to verify the connection.
 
-    :::note
+:::note
 
-    Make sure to whitelist [ClickPipes IP addresses](../clickpipes#list-of-static-ips) in your firewall rules for the SSH bastion host so that ClickPipes can establish the SSH tunnel.
+Make sure to whitelist [ClickPipes IP addresses](../clickpipes#list-of-static-ips) in your firewall rules for the SSH bastion host so that ClickPipes can establish the SSH tunnel.
 
-    :::
+:::
 
-    Once the connection details are filled in, click on "Next".
+Once the connection details are filled in, click on "Next".
 
 ### Configuring the replication settings {#configuring-the-replication-settings}
 
 5. Make sure to select the replication slot from the dropdown list you created in the prerequisites step.
 
-    <Image img={select_replication_slot} alt="Select replication slot" size="lg" border/>
+   <Image img={select_replication_slot} alt="Select replication slot" size="lg" border/>
 
-#### Advanced settings {#advanced-settings}
+#### Advanced Settings {#advanced-settings}
 
 You can configure the Advanced settings if needed. A brief description of each setting is provided below:
 
@@ -126,19 +126,19 @@ You can configure the Advanced settings if needed. A brief description of each s
 
 6. Here you can select the destination database for your ClickPipe. You can either select an existing database or create a new one.
 
-    <Image img={select_destination_db} alt="Select destination database" size="lg" border/>
+   <Image img={select_destination_db} alt="Select destination database" size="lg" border/>
 
 7. You can select the tables you want to replicate from the source Postgres database. While selecting the tables, you can also choose to rename the tables in the destination ClickHouse database as well as exclude specific columns.
 
-    :::warning
-    If you are defining an ordering key in ClickHouse differently than from the primary key in Postgres, don't forget to read all the [considerations](/integrations/clickpipes/postgres/ordering_keys) around it
-    :::
+   :::warning
+   If you are defining an ordering key in ClickHouse differently than from the primary key in Postgres, don't forget to read all the [considerations](/integrations/clickpipes/postgres/ordering_keys) around it
+   :::
 
 ### Review permissions and start the ClickPipe {#review-permissions-and-start-the-clickpipe}
 
 8. Select the "Full access" role from the permissions dropdown and click "Complete Setup".
 
-    <Image img={ch_permissions} alt="Review permissions" size="lg" border/>
+   <Image img={ch_permissions} alt="Review permissions" size="lg" border/>
 
 ## What's next? {#whats-next}
 

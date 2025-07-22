@@ -19,13 +19,13 @@ If you are using ClickHouse Cloud on [Google Cloud](https://cloud.google.com), t
 
 ClickHouse recognizes that GCS represents an attractive storage solution for users seeking to separate storage and compute. To help achieve this, support is provided for using GCS as the storage for a MergeTree engine. This will enable users to exploit the scalability and cost benefits of GCS, and the insert and query performance of the MergeTree engine.
 
-## GCS backed MergeTree {#gcs-backed-mergetree}
+## GCS Backed MergeTree {#gcs-backed-mergetree}
 
-### Creating a disk {#creating-a-disk}
+### Creating a Disk {#creating-a-disk}
 
 To utilize a GCS bucket as a disk, we must first declare it within the ClickHouse configuration in a file under `conf.d`. An example of a GCS disk declaration is shown below.  This configuration includes multiple sections to configure the GCS "disk", the cache, and the policy that is specified in DDL queries when tables are to be created on the GCS disk.  Each of these are described below.
 
-#### Storage configuration > disks > gcs {#storage_configuration--disks--gcs}
+#### storage_configuration > disks > gcs {#storage_configuration--disks--gcs}
 
 This part of the configuration is shown in the highlighted section and specifies that:
 - Batch deletes are not to be performed.  GCS does not currently support batch deletes, so the autodetect is disabled to suppress error messages.
@@ -34,8 +34,8 @@ This part of the configuration is shown in the highlighted section and specifies
 - The service account HMAC key and secret
 - The metadata path on the local disk
 
-    ```xml
-    <clickhouse>
+```xml
+<clickhouse>
     <storage_configuration>
         <disks>
             <gcs>
@@ -59,9 +59,9 @@ This part of the configuration is shown in the highlighted section and specifies
             </gcs_main>
         </policies>
     </storage_configuration>
-    </clickhouse>
-    ```
-#### Storage configuration > disks > cache {#storage_configuration--disks--cache}
+</clickhouse>
+```
+#### storage_configuration > disks > cache {#storage_configuration--disks--cache}
 
 The example configuration highlighted below enables a 10Gi memory cache for the disk `gcs`.
 
@@ -98,7 +98,7 @@ The example configuration highlighted below enables a 10Gi memory cache for the 
     </storage_configuration>
 </clickhouse>
 ```
-#### Storage configuration > policies > gcs_main {#storage_configuration--policies--gcs_main}
+#### storage_configuration > policies > gcs_main {#storage_configuration--policies--gcs_main}
 
 Storage configuration policies allow choosing where data is stored.  The policy highlighted below allows data to be stored on the disk `gcs` by specifying the policy `gcs_main`.  For example, `CREATE TABLE ... SETTINGS storage_policy='gcs_main'`.
 
@@ -170,11 +170,11 @@ Depending on the hardware, this latter insert of 1m rows may take a few minutes 
 SELECT passenger_count, avg(tip_amount) AS avg_tip, avg(total_amount) AS avg_amount FROM trips_gcs GROUP BY passenger_count;
 ```
 
-### Handling replication {#handling-replication}
+### Handling Replication {#handling-replication}
 
 Replication with GCS disks can be accomplished by using the `ReplicatedMergeTree` table engine.  See the [replicating a single shard across two GCP regions using GCS](#gcs-multi-region) guide for details.
 
-### Learn more {#learn-more}
+### Learn More {#learn-more}
 
 The [Cloud Storage XML API](https://cloud.google.com/storage/docs/xml-api/overview) is interoperable with some tools and libraries that work with services such as Amazon Simple Storage Service (Amazon S3).
 
@@ -197,9 +197,9 @@ Sample requirements for high availability:
 - Two GCS buckets, deployed in the same regions as the two ClickHouse server nodes
 - Three ClickHouse Keeper nodes, two of them are deployed in the same regions as the ClickHouse server nodes. The third can be in the same region as one of the first two Keeper nodes, but in a different availability zone.
 
-    ClickHouse Keeper requires two nodes to function, hence a requirement for three nodes for high availability.
+ClickHouse Keeper requires two nodes to function, hence a requirement for three nodes for high availability.
 
-### Prepare virtual machines {#prepare-vms}
+### Prepare VMs {#prepare-vms}
 
 Deploy five VMS in three regions:
 
@@ -247,8 +247,8 @@ All of the ClickHouse Keeper nodes have the same configuration file except for t
 - Copy the file into place (`/etc/clickhouse-keeper/keeper_config.xml` on each of the Keeper servers
 - Edit the `server_id` on each machine, based on its entry number in the `raft_configuration`
 
-    ```xml title=/etc/clickhouse-keeper/keeper_config.xml
-    <clickhouse>
+```xml title=/etc/clickhouse-keeper/keeper_config.xml
+<clickhouse>
     <logger>
         <level>trace</level>
         <log>/var/log/clickhouse-keeper/clickhouse-keeper.log</log>
@@ -259,7 +259,7 @@ All of the ClickHouse Keeper nodes have the same configuration file except for t
     <listen_host>0.0.0.0</listen_host>
     <keeper_server>
         <tcp_port>9181</tcp_port>
-    <!--highlight-next-line-->
+<!--highlight-next-line-->
         <server_id>3</server_id>
         <log_storage_path>/var/lib/clickhouse/coordination/log</log_storage_path>
         <snapshot_storage_path>/var/lib/clickhouse/coordination/snapshots</snapshot_storage_path>
@@ -281,19 +281,19 @@ All of the ClickHouse Keeper nodes have the same configuration file except for t
                 <hostname>keepernode2.us-east4-c.c.clickhousegcs-374921.internal</hostname>
                 <port>9234</port>
             </server>
-    <!--highlight-start-->
+<!--highlight-start-->
             <server>
                 <id>3</id>
                 <hostname>keepernode3.us-east5-a.c.clickhousegcs-374921.internal</hostname>
                 <port>9234</port>
             </server>
-    <!--highlight-end-->
+<!--highlight-end-->
         </raft_configuration>
     </keeper_server>
-    </clickhouse>
-    ```
+</clickhouse>
+```
 
-### Configure ClickHouse server {#configure-clickhouse-server}
+### Configure ClickHouse Server {#configure-clickhouse-server}
 
 :::note best practice
 Some of the steps in this guide will ask you to place a configuration file in `/etc/clickhouse-server/config.d/`.  This is the default location on Linux systems for configuration override files.  When you put these files into that directory ClickHouse will merge the content with the default configuration.  By placing these files in the `config.d` directory you will avoid losing your configuration during an upgrade.
@@ -314,8 +314,8 @@ Replication is coordinated by ClickHouse Keeper.  This configuration file identi
 
 - Edit the hostnames to match your Keeper hosts
 
-    ```xml title=/etc/clickhouse-server/config.d/use-keeper.xml
-    <clickhouse>
+```xml title=/etc/clickhouse-server/config.d/use-keeper.xml
+<clickhouse>
     <zookeeper>
         <node index="1">
             <host>keepernode1.us-east1-b.c.clickhousegcs-374921.internal</host>
@@ -330,8 +330,8 @@ Replication is coordinated by ClickHouse Keeper.  This configuration file identi
             <port>9181</port>
         </node>
     </zookeeper>
-    </clickhouse>
-    ```
+</clickhouse>
+```
 
 #### Remote ClickHouse servers {#remote-clickhouse-servers}
 
@@ -339,8 +339,8 @@ This file configures the hostname and port of each ClickHouse server in the clus
 
 - Edit the file with your hostnames, and make sure that they resolve from the ClickHouse server nodes
 
-    ```xml title=/etc/clickhouse-server/config.d/remote-servers.xml
-    <clickhouse>
+```xml title=/etc/clickhouse-server/config.d/remote-servers.xml
+<clickhouse>
     <remote_servers replace="true">
         <cluster_1S_2R>
             <shard>
@@ -355,8 +355,8 @@ This file configures the hostname and port of each ClickHouse server in the clus
             </shard>
         </cluster_1S_2R>
     </remote_servers>
-    </clickhouse>
-    ```
+</clickhouse>
+```
 
 #### Replica identification {#replica-identification}
 
@@ -386,12 +386,12 @@ These substitutions differ between the two ClickHouse server nodes:
 - `REPLICA 1 BUCKET` should be set to the name of the bucket in the same region as the server
 - `REPLICA 1 FOLDER` should be changed to `replica_1` on one of the servers, and `replica_2` on the other
 
-    These substitutions are common across the two nodes:
+These substitutions are common across the two nodes:
 - The `access_key_id` should be set to the HMAC Key generated earlier
 - The `secret_access_key` should be set to HMAC Secret generated earlier
 
-    ```xml title=/etc/clickhouse-server/config.d/storage.xml
-    <clickhouse>
+```xml title=/etc/clickhouse-server/config.d/storage.xml
+<clickhouse>
     <storage_configuration>
         <disks>
             <gcs>
@@ -419,8 +419,8 @@ These substitutions differ between the two ClickHouse server nodes:
             </gcs_main>
         </policies>
     </storage_configuration>
-    </clickhouse>
-    ```
+</clickhouse>
+```
 
 ### Start ClickHouse Keeper {#start-clickhouse-keeper}
 
@@ -485,62 +485,62 @@ sudo service clickhouse-server status
 - gcs
 - cache
 
-    ```sql
-    SELECT *
-    FROM system.disks
-    FORMAT Vertical
-    ```
-    ```response
-    Row 1:
-    ──────
-    name:             cache
-    path:             /var/lib/clickhouse/disks/gcs/
-    free_space:       18446744073709551615
-    total_space:      18446744073709551615
-    unreserved_space: 18446744073709551615
-    keep_free_space:  0
-    type:             s3
-    is_encrypted:     0
-    is_read_only:     0
-    is_write_once:    0
-    is_remote:        1
-    is_broken:        0
-    cache_path:       /var/lib/clickhouse/disks/gcs_cache/
+```sql
+SELECT *
+FROM system.disks
+FORMAT Vertical
+```
+```response
+Row 1:
+──────
+name:             cache
+path:             /var/lib/clickhouse/disks/gcs/
+free_space:       18446744073709551615
+total_space:      18446744073709551615
+unreserved_space: 18446744073709551615
+keep_free_space:  0
+type:             s3
+is_encrypted:     0
+is_read_only:     0
+is_write_once:    0
+is_remote:        1
+is_broken:        0
+cache_path:       /var/lib/clickhouse/disks/gcs_cache/
 
-    Row 2:
-    ──────
-    name:             default
-    path:             /var/lib/clickhouse/
-    free_space:       6555529216
-    total_space:      10331889664
-    unreserved_space: 6555529216
-    keep_free_space:  0
-    type:             local
-    is_encrypted:     0
-    is_read_only:     0
-    is_write_once:    0
-    is_remote:        0
-    is_broken:        0
-    cache_path:
+Row 2:
+──────
+name:             default
+path:             /var/lib/clickhouse/
+free_space:       6555529216
+total_space:      10331889664
+unreserved_space: 6555529216
+keep_free_space:  0
+type:             local
+is_encrypted:     0
+is_read_only:     0
+is_write_once:    0
+is_remote:        0
+is_broken:        0
+cache_path:
 
-    Row 3:
-    ──────
-    name:             gcs
-    path:             /var/lib/clickhouse/disks/gcs/
-    free_space:       18446744073709551615
-    total_space:      18446744073709551615
-    unreserved_space: 18446744073709551615
-    keep_free_space:  0
-    type:             s3
-    is_encrypted:     0
-    is_read_only:     0
-    is_write_once:    0
-    is_remote:        1
-    is_broken:        0
-    cache_path:
+Row 3:
+──────
+name:             gcs
+path:             /var/lib/clickhouse/disks/gcs/
+free_space:       18446744073709551615
+total_space:      18446744073709551615
+unreserved_space: 18446744073709551615
+keep_free_space:  0
+type:             s3
+is_encrypted:     0
+is_read_only:     0
+is_write_once:    0
+is_remote:        1
+is_broken:        0
+cache_path:
 
-    3 rows in set. Elapsed: 0.002 sec.
-    ```
+3 rows in set. Elapsed: 0.002 sec.
+```
 #### Verify that tables created on the cluster are created on both nodes {#verify-that-tables-created-on-the-cluster-are-created-on-both-nodes}
 ```sql
 -- highlight-next-line
@@ -620,7 +620,7 @@ formatReadableSize(total_bytes): 36.42 MiB
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-#### Verify in Google Cloud console {#verify-in-google-cloud-console}
+#### Verify in Google Cloud Console {#verify-in-google-cloud-console}
 
 Looking at the buckets you will see that a folder was created in each bucket with the name that was used in the `storage.xml` configuration file.  Expand the folders and you will see many files, representing the data partitions.
 #### Bucket for replica one {#bucket-for-replica-one}

@@ -100,8 +100,8 @@ PARTITION BY toYYYYMM(pickup_date)
 ORDER BY pickup_datetime;
 ```
 
-    * clickhouse://default:***@localhost:8123/default
-        Done.
+    *  clickhouse://default:***@localhost:8123/default
+    Done.
 
 <table>
     <tr>
@@ -162,8 +162,8 @@ SELECT * FROM s3(
 ") SETTINGS input_format_try_infer_datetimes = 0
 ```
 
-    * clickhouse://default:***@localhost:8123/default
-        Done.
+    *  clickhouse://default:***@localhost:8123/default
+    Done.
 
 <table>
     <tr>
@@ -174,8 +174,8 @@ SELECT * FROM s3(
 %sql SELECT count() FROM trips limit 5;
 ```
 
-    * clickhouse://default:***@localhost:8123/default
-        Done.
+    *  clickhouse://default:***@localhost:8123/default
+    Done.
 
 <table>
     <tr>
@@ -190,8 +190,8 @@ SELECT * FROM s3(
 %sql SELECT DISTINCT(pickup_ntaname) FROM trips limit 5;
 ```
 
-    * clickhouse://default:***@localhost:8123/default
-        Done.
+    *  clickhouse://default:***@localhost:8123/default
+    Done.
 
 <table>
     <tr>
@@ -218,8 +218,8 @@ SELECT * FROM s3(
 %sql SELECT round(avg(tip_amount), 2) FROM trips
 ```
 
-    * clickhouse://default:***@localhost:8123/default
-        Done.
+    *  clickhouse://default:***@localhost:8123/default
+    Done.
 
 <table>
     <tr>
@@ -239,8 +239,8 @@ FROM trips
 GROUP BY passenger_count
 ```
 
-    * clickhouse://default:***@localhost:8123/default
-        Done.
+    *  clickhouse://default:***@localhost:8123/default
+    Done.
 
 <table>
     <tr>
@@ -301,10 +301,10 @@ ORDER BY pickup_date ASC
 limit 5;
 ```
 
-* clickhouse://default:***@localhost:8123/default
-    Done.
+*  clickhouse://default:***@localhost:8123/default
+Done.
 
-    <table>
+<table>
     <tr>
         <th>pickup_date</th>
         <th>pickup_ntaname</th>
@@ -335,7 +335,7 @@ limit 5;
         <td>Queensbridge-Ravenswood-Long Island City</td>
         <td>9</td>
     </tr>
-    </table>
+</table>
 
 ```python
 # %sql DESCRIBE trips;
@@ -352,8 +352,8 @@ FROM trips
 WHERE trip_distance < 6.3
 ```
 
-    * clickhouse://default:***@localhost:8123/default
-        Skipping execution...
+    *  clickhouse://default:***@localhost:8123/default
+    Skipping execution...
 
 ```python
 %sqlplot histogram --table short-trips --column trip_distance --bins 10 --with short-trips

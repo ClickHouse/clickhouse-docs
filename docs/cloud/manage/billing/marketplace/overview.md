@@ -31,13 +31,13 @@ Signing up for ClickHouse Cloud from the cloud provider marketplace is a two ste
 1. You first "subscribe" to ClickHouse Cloud on the cloud providers' marketplace portal.  After you have finished subscribing, you click on "Pay Now" or "Manage on Provider" (depending on the marketplace). This redirects you to ClickHouse Cloud.
 2. On Clickhouse Cloud you either register for a new account, or sign in with an existing account.  Either way, a new ClickHouse Cloud organization will be created for you which is tied to your marketplace billing.
 
-    NOTE: Your existing services and organizations from any prior ClickHouse Cloud signups will remain and they will not be connected to the marketplace billing.  ClickHouse Cloud allows you to use the same account to manage multiple organization, each with different billing.
+NOTE: Your existing services and organizations from any prior ClickHouse Cloud signups will remain and they will not be connected to the marketplace billing.  ClickHouse Cloud allows you to use the same account to manage multiple organization, each with different billing.
 
-    You can switch between organizations from the bottom left menu of the ClickHouse Cloud console.
+You can switch between organizations from the bottom left menu of the ClickHouse Cloud console.
 
 ### I am an existing ClickHouse Cloud user. What should I do if I want my existing services to be billed via marketplace?​ {#i-am-an-existing-clickhouse-cloud-user-what-should-i-do-if-i-want-my-existing-services-to-be-billed-via-marketplace}
 
-You will need to subscribe to ClickHouse Cloud via the cloud provider marketplace. Once you finish subscribing on the marketplace, and redirect to ClickHouse Cloud you will have the option of linking an existing ClickHouse Cloud organization to marketplace billing. From that point on, your existing resources will now get billed via the marketplace.
+You will need to subscribe to ClickHouse Cloud via the cloud provider marketplace. Once you finish subscribing on the marketplace, and redirect to ClickHouse Cloud you will have the option of linking an existing ClickHouse Cloud organization to marketplace billing. From that point on, your existing resources will now get billed via the marketplace. 
 
 <Image img={marketplace_signup_and_org_linking} size='md' alt='Marketplace signup and org linking' border/>
 
@@ -60,7 +60,7 @@ In that case please subscribe to the ClickHouse Cloud as usual (see sections on 
 - For AWS marketplace a new ClickHouse Cloud organization will be created and connected to the marketplace.
 - For the GCP marketplace your old organization will be reactivated.
 
-    If you have any trouble with reactivating your marketplace org, please contact [ClickHouse Cloud Support](https://clickhouse.com/support/program).
+If you have any trouble with reactivating your marketplace org, please contact [ClickHouse Cloud Support](https://clickhouse.com/support/program).
 
 ### How do I access my invoice for my marketplace subscription to the ClickHouse Cloud service?​ {#how-do-i-access-my-invoice-for-my-marketplace-subscription-to-the-clickhouse-cloud-service}
 
@@ -89,4 +89,4 @@ A single ClickHouse organization can only be configured to bill to a single Clou
 
 ### If my ClickHouse Organization is billed through a cloud marketplace committed spend agreement will I automatically move to PAYG billing when I run out of credits? {#automatically-move-to-PAYG-when-running-out-of-credit}
 
-If your marketplace committed spend contract is active and you run out of credits we will automatically move your organization to PAYG billing. However, when your existing contract expires, you will need to link a new marketplace contract to your organization or move your organization to direct billing via credit card.
+If your marketplace committed spend contract is active and you run out of credits we will automatically move your organization to PAYG billing. However, when your existing contract expires, you will need to link a new marketplace contract to your organization or move your organization to direct billing via credit card. 

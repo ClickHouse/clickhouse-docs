@@ -5,11 +5,11 @@ title: 'Cloud Compatibility'
 description: 'This guide provides an overview of what to expect functionally and operationally in ClickHouse Cloud.'
 ---
 
-# ClickHouse Cloud compatibility guide
+# ClickHouse Cloud — Compatibility Guide
 
 This guide provides an overview of what to expect functionally and operationally in ClickHouse Cloud. While ClickHouse Cloud is based on the open-source ClickHouse distribution, there may be some differences in architecture and implementation. You may find this blog on [how we built ClickHouse Cloud](https://clickhouse.com/blog/building-clickhouse-cloud-from-scratch-in-a-year) interesting and relevant to read as background.
 
-## ClickHouse Cloud architecture {#clickhouse-cloud-architecture}
+## ClickHouse Cloud Architecture {#clickhouse-cloud-architecture}
 ClickHouse Cloud significantly simplifies operational overhead and reduces the costs of running ClickHouse at scale. There is no need to size your deployment upfront, set up replication for high availability, manually shard your data, scale up your servers when your workload increases, or scale them down when you are not using them — we handle this for you.
 
 These benefits come as a result of architectural choices underlying ClickHouse Cloud:
@@ -99,7 +99,7 @@ The [Kafka Table Engine](/integrations/data-ingestion/kafka/index.md) is not gen
 
 [Named collections](/operations/named-collections) are not currently supported in ClickHouse Cloud.
 
-## Operational defaults and considerations {#operational-defaults-and-considerations}
+## Operational Defaults and Considerations {#operational-defaults-and-considerations}
 The following are default settings for ClickHouse Cloud services. In some cases, these settings are fixed to ensure the correct operation of the service, and in others, they can be adjusted.
 
 ### Operational limits {#operational-limits}
@@ -108,9 +108,9 @@ The following are default settings for ClickHouse Cloud services. In some cases,
 The default value of the `max_parts_in_total` setting for MergeTree tables has been lowered from 100,000 to 10,000. The reason for this change is that we observed that a large number of data parts is likely to cause a slow startup time of services in the cloud. A large number of parts usually indicate a choice of too granular partition key, which is typically done accidentally and should be avoided. The change of default will allow the detection of these cases earlier.
 
 #### `max_concurrent_queries: 1,000` {#max_concurrent_queries-1000}
-Increased this per-server setting from the default of `100` to `1000` to allow for more concurrency.
-This will result in `number of replicas * 1,000` concurrent queries for the offered tier services.
-`1000` concurrent queries for Basic tier service limited to a single replica and `1000+` for Scale and Enterprise,
+Increased this per-server setting from the default of `100` to `1000` to allow for more concurrency. 
+This will result in `number of replicas * 1,000` concurrent queries for the offered tier services. 
+`1000` concurrent queries for Basic tier service limited to a single replica and `1000+` for Scale and Enterprise, 
 depending on the number of replicas configured.
 
 #### `max_table_size_to_drop: 1,000,000,000,000` {#max_table_size_to_drop-1000000000000}

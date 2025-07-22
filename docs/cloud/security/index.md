@@ -6,7 +6,7 @@ hide_title: true
 description: 'Landing page for ClickHouse Cloud Security'
 ---
 
-# ClickHouse Cloud security
+# ClickHouse Cloud Security
 
 This section delves into security in ClickHouse Cloud and contains the following pages:
 

@@ -20,7 +20,8 @@ This can be done by the following steps:
 2. Click on Edit Table settings.
 3. Locate your table - this can be done by searching it in the search bar.
 4. Select the table by clicking on the checkbox.
-    <Image img={add_table} border size="md"/>
+<br/>
+<Image img={add_table} border size="md"/>
 
 5. Click update.
 6. Upon successful update, the pipe will have statuses `Setup`, `Snapshot` and `Running` in that order. The table's initial load can be tracked in the **Tables** tab.

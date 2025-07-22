@@ -7,7 +7,7 @@ slug: /getting-started/playground
 title: 'ClickHouse Playground'
 ---
 
-# ClickHouse playground
+# ClickHouse Playground
 
 [ClickHouse Playground](https://sql.clickhouse.com) allows people to experiment with ClickHouse by running queries instantly, without setting up their server or cluster.
 Several example datasets are available in Playground.
@@ -30,7 +30,7 @@ The queries are executed as a read-only user. It implies some limitations:
 - DDL queries are not allowed
 - INSERT queries are not allowed
 
-    The service also have quotas on its usage.
+The service also have quotas on its usage.
 
 ## Examples {#examples}
 

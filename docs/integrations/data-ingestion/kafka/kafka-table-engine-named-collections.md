@@ -5,7 +5,7 @@ keywords: ['named collection', 'how to', 'kafka']
 slug: /integrations/data-ingestion/kafka/kafka-table-engine-named-collections
 ---
 
-# Integrating ClickHouse with Kafka using named collections
+# Integrating ClickHouse with Kafka using Named Collections
 
 ## Introduction {#introduction}
 
@@ -14,7 +14,7 @@ In this guide, we will explore how to connect ClickHouse to Kafka using named co
 - Changes to settings can be made without altering SQL table definitions.
 - Easier review and troubleshooting of configurations by inspecting a single configuration file.
 
-    This guide has been tested on Apache Kafka 3.4.1 and ClickHouse 24.5.1.
+This guide has been tested on Apache Kafka 3.4.1 and ClickHouse 24.5.1.
 
 ## Assumptions {#assumptions}
 
@@ -89,24 +89,24 @@ Add the following section to your ClickHouse `config.xml` file:
 </named_collections>
 ```
 
-### Configuration notes {#configuration-notes}
+### Configuration Notes {#configuration-notes}
 
 1. Adjust Kafka addresses and related configurations to match your Kafka cluster setup.
 2. The section before `<kafka>` contains ClickHouse Kafka engine parameters. For a full list of parameters, refer to the [Kafka engine parameters ](/engines/table-engines/integrations/kafka).
 3. The section within `<kafka>` contains extended Kafka configuration options. For more options, refer to the [librdkafka configuration](https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md).
 4. This example uses the `SASL_SSL` security protocol and `PLAIN` mechanism. Adjust these settings based on your Kafka cluster configuration.
 
-## Creating tables and databases {#creating-tables-and-databases}
+## Creating Tables and Databases {#creating-tables-and-databases}
 
 Create the necessary databases and tables on your ClickHouse cluster. If you run ClickHouse as a single node, omit the cluster part of the SQL command and use any other engine instead of `ReplicatedMergeTree`.
 
-### Create the database {#create-the-database}
+### Create the Database {#create-the-database}
 
 ```sql
 CREATE DATABASE kafka_testing ON CLUSTER LAB_CLICKHOUSE_CLUSTER;
 ```
 
-### Create Kafka tables {#create-kafka-tables}
+### Create Kafka Tables {#create-kafka-tables}
 
 Create the first Kafka table for the first Kafka cluster:
 
@@ -132,7 +132,7 @@ CREATE TABLE kafka_testing.second_kafka_table ON CLUSTER STAGE_CLICKHOUSE_CLUSTE
 ENGINE = Kafka(cluster_2);
 ```
 
-### Create replicated tables {#create-replicated-tables}
+### Create Replicated Tables {#create-replicated-tables}
 
 Create a table for the first Kafka table:
 
@@ -158,13 +158,13 @@ CREATE TABLE kafka_testing.second_replicated_table ON CLUSTER STAGE_CLICKHOUSE_C
 ORDER BY id;
 ```
 
-### Create materialized views {#create-materialized-views}
+### Create Materialized Views {#create-materialized-views}
 
 Create a materialized view to insert data from the first Kafka table into the first replicated table:
 
 ```sql
 CREATE MATERIALIZED VIEW kafka_testing.cluster_1_mv ON CLUSTER STAGE_CLICKHOUSE_CLUSTER TO first_replicated_table AS
-SELECT
+SELECT 
     id,
     first_name,
     last_name
@@ -175,28 +175,28 @@ Create a materialized view to insert data from the second Kafka table into the s
 
 ```sql
 CREATE MATERIALIZED VIEW kafka_testing.cluster_2_mv ON CLUSTER STAGE_CLICKHOUSE_CLUSTER TO second_replicated_table AS
-SELECT
+SELECT 
     id,
     first_name,
     last_name
 FROM second_kafka_table;
 ```
 
-## Verifying the setup {#verifying-the-setup}
+## Verifying the Setup {#verifying-the-setup}
 
 You should now see the relative consumer groups on your Kafka clusters:
 - `cluster_1_clickhouse_consumer` on `cluster_1`
 - `cluster_2_clickhouse_consumer` on `cluster_2`
 
-    Run the following queries on any of your ClickHouse nodes to see the data in both tables:
+Run the following queries on any of your ClickHouse nodes to see the data in both tables:
 
-    ```sql
-    SELECT * FROM first_replicated_table LIMIT 10;
-    ```
+```sql
+SELECT * FROM first_replicated_table LIMIT 10;
+```
 
-    ```sql
-    SELECT * FROM second_replicated_table LIMIT 10;
-    ```
+```sql
+SELECT * FROM second_replicated_table LIMIT 10;
+```
 
 ### Note {#note}
 

@@ -53,26 +53,26 @@ We stick as closely as possible to the rules of the TPC-H specification:
 - Primary keys are created only for the columns mentioned in section 1.4.2.2 of the specification.
 - Substitution parameters were replaced by the values for query validation in sections 2.1.x.4 of the specification.
 - As per section 1.4.2.1, the table definitions do not use the optional `NOT NULL` constraints, even if `dbgen` generates them by default.
-    The performance of `SELECT` queries in ClickHouse is not affected by the presence or absence of `NOT NULL` constraints.
+  The performance of `SELECT` queries in ClickHouse is not affected by the presence or absence of `NOT NULL` constraints.
 - As per section 1.3.1, we use ClickHouse's native datatypes (e.g. `Int32`, `String`) to implement the abstract datatypes mentioned in the
-    specification (e.g. `Identifier`, `Variable text, size N`). The only effect of this is better readability, the SQL-92 datatypes generated
-    by `dbgen` (e.g. `INTEGER`, `VARCHAR(40)`) would also work in ClickHouse.
+  specification (e.g. `Identifier`, `Variable text, size N`). The only effect of this is better readability, the SQL-92 datatypes generated
+  by `dbgen` (e.g. `INTEGER`, `VARCHAR(40)`) would also work in ClickHouse.
 
-    ```sql
-    CREATE TABLE nation (
+```sql
+CREATE TABLE nation (
     n_nationkey  Int32,
     n_name       String,
     n_regionkey  Int32,
     n_comment    String)
-    ORDER BY (n_nationkey);
+ORDER BY (n_nationkey);
 
-    CREATE TABLE region (
+CREATE TABLE region (
     r_regionkey  Int32,
     r_name       String,
     r_comment    String)
-    ORDER BY (r_regionkey);
+ORDER BY (r_regionkey);
 
-    CREATE TABLE part (
+CREATE TABLE part (
     p_partkey     Int32,
     p_name        String,
     p_mfgr        String,
@@ -82,9 +82,9 @@ We stick as closely as possible to the rules of the TPC-H specification:
     p_container   String,
     p_retailprice Decimal(15,2),
     p_comment     String)
-    ORDER BY (p_partkey);
+ORDER BY (p_partkey);
 
-    CREATE TABLE supplier (
+CREATE TABLE supplier (
     s_suppkey     Int32,
     s_name        String,
     s_address     String,
@@ -92,17 +92,17 @@ We stick as closely as possible to the rules of the TPC-H specification:
     s_phone       String,
     s_acctbal     Decimal(15,2),
     s_comment     String)
-    ORDER BY (s_suppkey);
+ORDER BY (s_suppkey);
 
-    CREATE TABLE partsupp (
+CREATE TABLE partsupp (
     ps_partkey     Int32,
     ps_suppkey     Int32,
     ps_availqty    Int32,
     ps_supplycost  Decimal(15,2),
     ps_comment     String)
-    ORDER BY (ps_partkey, ps_suppkey);
+ORDER BY (ps_partkey, ps_suppkey);
 
-    CREATE TABLE customer (
+CREATE TABLE customer (
     c_custkey     Int32,
     c_name        String,
     c_address     String,
@@ -111,9 +111,9 @@ We stick as closely as possible to the rules of the TPC-H specification:
     c_acctbal     Decimal(15,2),
     c_mktsegment  String,
     c_comment     String)
-    ORDER BY (c_custkey);
+ORDER BY (c_custkey);
 
-    CREATE TABLE orders  (
+CREATE TABLE orders  (
     o_orderkey       Int32,
     o_custkey        Int32,
     o_orderstatus    String,
@@ -123,12 +123,12 @@ We stick as closely as possible to the rules of the TPC-H specification:
     o_clerk          String,
     o_shippriority   Int32,
     o_comment        String)
-    ORDER BY (o_orderkey);
-    -- The following is an alternative order key which is not compliant with the official TPC-H rules but recommended by sec. 4.5 in
-    -- "Quantifying TPC-H Choke Points and Their Optimizations":
-    -- ORDER BY (o_orderdate, o_orderkey);
+ORDER BY (o_orderkey);
+-- The following is an alternative order key which is not compliant with the official TPC-H rules but recommended by sec. 4.5 in
+-- "Quantifying TPC-H Choke Points and Their Optimizations":
+-- ORDER BY (o_orderdate, o_orderkey);
 
-    CREATE TABLE lineitem (
+CREATE TABLE lineitem (
     l_orderkey       Int32,
     l_partkey        Int32,
     l_suppkey        Int32,
@@ -145,51 +145,51 @@ We stick as closely as possible to the rules of the TPC-H specification:
     l_shipinstruct   String,
     l_shipmode       String,
     l_comment        String)
-    ORDER BY (l_orderkey, l_linenumber);
-    -- The following is an alternative order key which is not compliant with the official TPC-H rules but recommended by sec. 4.5 in
-    -- "Quantifying TPC-H Choke Points and Their Optimizations":
-    -- ORDER BY (l_shipdate, l_orderkey, l_linenumber);
-    ```
+ORDER BY (l_orderkey, l_linenumber);
+-- The following is an alternative order key which is not compliant with the official TPC-H rules but recommended by sec. 4.5 in
+-- "Quantifying TPC-H Choke Points and Their Optimizations":
+-- ORDER BY (l_shipdate, l_orderkey, l_linenumber);
+```
 
-    The data can be imported as follows:
+The data can be imported as follows:
 
-    ```bash
-    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO nation FORMAT CSV" < nation.tbl
-    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO region FORMAT CSV" < region.tbl
-    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO part FORMAT CSV" < part.tbl
-    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO supplier FORMAT CSV" < supplier.tbl
-    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO partsupp FORMAT CSV" < partsupp.tbl
-    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO customer FORMAT CSV" < customer.tbl
-    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO orders FORMAT CSV" < orders.tbl
-    clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO lineitem FORMAT CSV" < lineitem.tbl
-    ```
+```bash
+clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO nation FORMAT CSV" < nation.tbl
+clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO region FORMAT CSV" < region.tbl
+clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO part FORMAT CSV" < part.tbl
+clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO supplier FORMAT CSV" < supplier.tbl
+clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO partsupp FORMAT CSV" < partsupp.tbl
+clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO customer FORMAT CSV" < customer.tbl
+clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO orders FORMAT CSV" < orders.tbl
+clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO lineitem FORMAT CSV" < lineitem.tbl
+```
 
-    :::note
-    Instead of using tpch-kit and generating the tables by yourself, you can alternatively import the data from a public S3 bucket. Make sure
-    to create empty tables first using above `CREATE` statements.
+:::note
+Instead of using tpch-kit and generating the tables by yourself, you can alternatively import the data from a public S3 bucket. Make sure
+to create empty tables first using above `CREATE` statements.
 
-    ```sql
-    -- Scaling factor 1
-    INSERT INTO nation SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/nation.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
-    INSERT INTO region SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/region.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
-    INSERT INTO part SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/part.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
-    INSERT INTO supplier SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/supplier.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
-    INSERT INTO partsupp SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/partsupp.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
-    INSERT INTO customer SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/customer.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
-    INSERT INTO orders SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/orders.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
-    INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/lineitem.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
+```sql
+-- Scaling factor 1
+INSERT INTO nation SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/nation.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
+INSERT INTO region SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/region.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
+INSERT INTO part SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/part.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
+INSERT INTO supplier SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/supplier.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
+INSERT INTO partsupp SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/partsupp.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
+INSERT INTO customer SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/customer.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
+INSERT INTO orders SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/orders.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
+INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/lineitem.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 
-    -- Scaling factor 100
-    INSERT INTO nation SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/nation.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
-    INSERT INTO region SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/region.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
-    INSERT INTO part SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/part.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
-    INSERT INTO supplier SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/supplier.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
-    INSERT INTO partsupp SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/partsupp.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
-    INSERT INTO customer SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/customer.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
-    INSERT INTO orders SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/orders.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
-    INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/lineitem.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
-    ````
-    :::
+-- Scaling factor 100
+INSERT INTO nation SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/nation.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
+INSERT INTO region SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/region.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
+INSERT INTO part SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/part.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
+INSERT INTO supplier SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/supplier.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
+INSERT INTO partsupp SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/partsupp.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
+INSERT INTO customer SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/customer.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
+INSERT INTO orders SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/orders.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
+INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/lineitem.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
+````
+:::
 
 ## Queries {#queries}
 
@@ -379,17 +379,17 @@ WHERE
     AND EXISTS (
         SELECT
             *
-                FROM
-                lineitem
-                WHERE
-                l_orderkey = o_orderkey
-                AND l_commitdate < l_receiptdate
-                )
-                GROUP BY
-                o_orderpriority
-                ORDER BY
-                o_orderpriority;
-                ```
+        FROM
+            lineitem
+        WHERE
+            l_orderkey = o_orderkey
+            AND l_commitdate < l_receiptdate
+    )
+GROUP BY
+    o_orderpriority
+ORDER BY
+    o_orderpriority;
+```
 
 ::::note
 Until v25.5, the query did not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697
@@ -1025,33 +1025,33 @@ WHERE
     AND EXISTS (
         SELECT
             *
-                FROM
-                lineitem l2
-                WHERE
-                l2.l_orderkey = l1.l_orderkey
-                AND l2.l_suppkey <> l1.l_suppkey
-                )
-                AND NOT EXISTS (
-                SELECT
+        FROM
+            lineitem l2
+        WHERE
+            l2.l_orderkey = l1.l_orderkey
+            AND l2.l_suppkey <> l1.l_suppkey
+    )
+    AND NOT EXISTS (
+        SELECT
             *
-                FROM
-                lineitem l3
-                WHERE
-                l3.l_orderkey = l1.l_orderkey
-                AND l3.l_suppkey <> l1.l_suppkey
-                AND l3.l_receiptdate > l3.l_commitdate
-                )
-                AND s_nationkey = n_nationkey
-                AND n_name = 'SAUDI ARABIA'
-                GROUP BY
-                s_name
-                ORDER BY
-                numwait DESC,
-                s_name;
-                ```
-                ::::note
-                Until v25.5, the query did not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697
-                ::::
+        FROM
+            lineitem l3
+        WHERE
+            l3.l_orderkey = l1.l_orderkey
+            AND l3.l_suppkey <> l1.l_suppkey
+            AND l3.l_receiptdate > l3.l_commitdate
+    )
+    AND s_nationkey = n_nationkey
+    AND n_name = 'SAUDI ARABIA'
+GROUP BY
+    s_name
+ORDER BY
+    numwait DESC,
+    s_name;
+```
+::::note
+Until v25.5, the query did not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697
+::::
 
 **Q22**
 
@@ -1084,17 +1084,17 @@ FROM (
         AND NOT EXISTS (
             SELECT
                 *
-                    FROM
-                    orders
-                    WHERE
-                    o_custkey = c_custkey
-                    )
-                    ) AS custsale
-                    GROUP BY
-                    cntrycode
-                    ORDER BY
-                    cntrycode;
-                    ```
+            FROM
+                orders
+            WHERE
+                o_custkey = c_custkey
+        )
+    ) AS custsale
+GROUP BY
+    cntrycode
+ORDER BY
+    cntrycode;
+```
 
 ::::note
 Until v25.5, the query did not work out-of-the box due to correlated subqueries. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/6697

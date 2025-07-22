@@ -11,14 +11,14 @@ sidebar_label: 'minSimpleState'
 ## Description {#description}
 
 The [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) combinator can be applied to the [`min`](/sql-reference/aggregate-functions/reference/min)
-function to return the minimum value across all input values. It returns the
+function to return the minimum value across all input values. It returns the 
 result with type [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction).
 
-## Example usage {#example-usage}
+## Example Usage {#example-usage}
 
-Let's look at a practical example using a table that tracks daily temperature
+Let's look at a practical example using a table that tracks daily temperature 
 readings. For each location, we want to maintain the lowest temperature recorded.
-Using the `SimpleAggregateFunction` type with `min` automatically updates the
+Using the `SimpleAggregateFunction` type with `min` automatically updates the 
 stored value when a lower temperature is encountered.
 
 Create the source table for raw temperature readings:
@@ -49,7 +49,7 @@ ENGINE = AggregatingMergeTree()
 ORDER BY location_id;
 ```
 
-Create an Incremental materialized view that will act as an insert trigger
+Create an Incremental Materialized View that will act as an insert trigger
 for inserted data and maintains the minimum, maximum temperatures per location.
 
 ```sql
@@ -74,7 +74,7 @@ INSERT INTO raw_temperature_readings (location_id, location_name, temperature) V
 (4, 'East', 8);
 ```
 
-These readings are automatically processed by the materialized view. Let's check
+These readings are automatically processed by the Materialized View. Let's check
 the current state:
 
 ```sql
@@ -113,7 +113,7 @@ View the updated extremes after new data:
 SELECT
     location_id,
     location_name,
-    min_temp,
+    min_temp,  
     max_temp
 FROM temperature_extremes
 ORDER BY location_id;
@@ -140,7 +140,7 @@ the final result from the partial states we need to add a `GROUP BY`:
 SELECT
     location_id,
     location_name,
-    min(min_temp) AS min_temp,  -- Aggregate across all parts
+    min(min_temp) AS min_temp,  -- Aggregate across all parts 
     max(max_temp) AS max_temp   -- Aggregate across all parts
 FROM temperature_extremes
 GROUP BY location_id, location_name

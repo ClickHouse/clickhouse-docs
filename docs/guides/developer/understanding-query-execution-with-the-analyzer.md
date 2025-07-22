@@ -12,7 +12,7 @@ import analyzer4 from '@site/static/images/guides/developer/analyzer4.png';
 import analyzer5 from '@site/static/images/guides/developer/analyzer5.png';
 import Image from '@theme/IdealImage';
 
-# Understanding query execution with the analyzer
+# Understanding Query Execution with the Analyzer
 
 ClickHouse processes queries extremely quickly, but the execution of a query is not a simple story. Let's try to understand how a `SELECT` query gets executed. To illustrate it, let's add some data in a table in ClickHouse:
 
@@ -198,6 +198,7 @@ SELECT
 FROM session_events
 GROUP BY type
 
+
 ┌─explain────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ Expression ((Projection + Before ORDER BY))                                                                                                │
 │ Actions: INPUT :: 0 -> type String : 0                                                                                                     │
@@ -238,7 +239,7 @@ GROUP BY type
 
 You can now see all the inputs, functions, aliases, and data types that are being used. You can see some of the optimizations that the planner is going to apply [here](https://github.com/ClickHouse/ClickHouse/blob/master/src/Processors/QueryPlan/Optimizations/Optimizations.h).
 
-## Query pipeline {#query-pipeline}
+## Query Pipeline {#query-pipeline}
 
 A query pipeline is generated from the query plan. The query pipeline is very similar to the query plan, with the difference that it's not a tree but a graph. It highlights how ClickHouse is going to execute a query and what resources are going to be used. Analyzing the query pipeline is very useful to see where the bottleneck is in terms of inputs/outputs. Let's take our previous query and look at the query pipeline execution:
 

@@ -15,7 +15,7 @@ We will next explain in more detail what makes ClickHouse so fast, especially co
 
 From an architectural perspective, databases consist (at least) of a storage layer and a query processing layer. While the storage layer is responsible for saving, loading, and maintaining the table data, the query processing layer executes user queries. Compared to other databases, ClickHouse provides innovations in both layers that enable extremely fast inserts and Select queries.
 
-## Storage layer: concurrent inserts are isolated from each other {#storage-layer-concurrent-inserts-are-isolated-from-each-other}
+## Storage Layer: Concurrent inserts are isolated from each other {#storage-layer-concurrent-inserts-are-isolated-from-each-other}
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/vsykFYns0Ws?si=hE2qnOf6cDKn-otP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -29,7 +29,7 @@ This approach has several advantages: All data processing can be [offloaded to b
 
 🤿 Deep dive into this in the [On-Disk Format](/docs/academic_overview#3-1-on-disk-format) section of the web version of our VLDB 2024 paper.
 
-## Storage layer: concurrent inserts and selects are isolated {#storage-layer-concurrent-inserts-and-selects-are-isolated}
+## Storage Layer: Concurrent inserts and selects are isolated {#storage-layer-concurrent-inserts-and-selects-are-isolated}
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/dvGlPh2bJFo?si=F3MSALPpe0gAoq5k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -37,7 +37,7 @@ Inserts are fully isolated from SELECT queries, and merging inserted data parts 
 
 🤿 Deep dive into this in the [Storage Layer](/docs/academic_overview#3-storage-layer) section of the web version of our VLDB 2024 paper.
 
-## Storage layer: merge-time computation {#storage-layer-merge-time-computation}
+## Storage Layer: Merge-time computation {#storage-layer-merge-time-computation}
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/_w3zQg695c0?si=g0Wa_Petn-LcmC-6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -49,15 +49,15 @@ Unlike other databases, ClickHouse keeps data writes lightweight and efficient b
 
 - **TTL (time-to-live) merges** compress, move, or delete rows based on certain time-based rules.
 
-    The point of these transformations is to shift work (computation) from the time user queries run to merge time. This is important for two reasons:
+The point of these transformations is to shift work (computation) from the time user queries run to merge time. This is important for two reasons:
 
-    On the one hand, user queries may become significantly faster, sometimes by 1000x or more, if they can leverage "transformed" data, e.g. pre-aggregated data.
+On the one hand, user queries may become significantly faster, sometimes by 1000x or more, if they can leverage "transformed" data, e.g. pre-aggregated data.
 
-    On the other hand, the majority of the runtime of merges is consumed by loading the input parts and saving the output part. The additional effort to transform the data during merge does usually not impact the runtime of merges too much. All of this magic is completely transparent and does not affect the result of queries (besides their performance).
+On the other hand, the majority of the runtime of merges is consumed by loading the input parts and saving the output part. The additional effort to transform the data during merge does usually not impact the runtime of merges too much. All of this magic is completely transparent and does not affect the result of queries (besides their performance).
 
-    🤿 Deep dive into this in the [Merge-time Data Transformation](/docs/academic_overview#3-3-merge-time-data-transformation) section of the web version of our VLDB 2024 paper.
+🤿 Deep dive into this in the [Merge-time Data Transformation](/docs/academic_overview#3-3-merge-time-data-transformation) section of the web version of our VLDB 2024 paper.
 
-## Storage layer: data pruning {#storage-layer-data-pruning}
+## Storage Layer: Data pruning {#storage-layer-data-pruning}
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/UJpVAx7o1aY?si=w-AfhBcRIO-e3Ysj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -69,11 +69,11 @@ In practice, many queries are repetitive, i.e., run unchanged or only with sligh
 
 3. [Skipping indexes](/optimize/skipping-indexes) that embed additional data statistics into columns, e.g. the minimum and maximum column value, the set of unique values, etc. Skipping indexes are orthogonal to primary keys and table projections, and depending on the data distribution in the column, they can greatly speed up the evaluation of filters.
 
-    All three techniques aim to skip as many rows during full-column reads as possible because the fastest way to read data is to not read it at all.
+All three techniques aim to skip as many rows during full-column reads as possible because the fastest way to read data is to not read it at all.
 
-    🤿 Deep dive into this in the [Data Pruning](/docs/academic_overview#3-2-data-pruning) section of the web version of our VLDB 2024 paper.
+🤿 Deep dive into this in the [Data Pruning](/docs/academic_overview#3-2-data-pruning) section of the web version of our VLDB 2024 paper.
 
-## Storage layer: data compression {#storage-layer-data-compression}
+## Storage Layer: Data compression {#storage-layer-data-compression}
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/MH10E3rVvnM?si=duWmS_OatCLx-akH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -117,20 +117,20 @@ What sets ClickHouse [apart](https://www.youtube.com/watch?v=CAS2otEoerM) is its
 * The fill factor: When and how to resize? How to move values during resize?
 * Deletions: Should the hash table allow evicting entries?
 
-    A standard hash table provided by a third-party library would functionally work, but it would not be fast. Great performance requires meticulous benchmarking and experimentation.
+A standard hash table provided by a third-party library would functionally work, but it would not be fast. Great performance requires meticulous benchmarking and experimentation.
 
-    The [hash table implementation in ClickHouse](https://clickhouse.com/blog/hash-tables-in-clickhouse-and-zero-cost-abstractions) chooses one of **30+ precompiled hash table variants based** on the specifics of the query and the data.
+The [hash table implementation in ClickHouse](https://clickhouse.com/blog/hash-tables-in-clickhouse-and-zero-cost-abstractions) chooses one of **30+ precompiled hash table variants based** on the specifics of the query and the data.
 
-    **Algorithms.** The same goes for algorithms. For example, in sorting, you might consider:
+**Algorithms.** The same goes for algorithms. For example, in sorting, you might consider:
 
 * What will be sorted: numbers, tuples, strings, or structures?
 * Is the data in RAM?
 * Is the sort required to be stable?
 * Should all data be sorted or will a partial sort suffice?
 
-    Algorithms that rely on data characteristics often perform better than their generic counterparts. If the data characteristics are not known in advance, the system can try various implementations and choose the one that works best at runtime. For an example, see the [article on how LZ4 decompression is implemented in ClickHouse](https://habr.com/en/company/yandex/blog/457612/).
+Algorithms that rely on data characteristics often perform better than their generic counterparts. If the data characteristics are not known in advance, the system can try various implementations and choose the one that works best at runtime. For an example, see the [article on how LZ4 decompression is implemented in ClickHouse](https://habr.com/en/company/yandex/blog/457612/).
 
-    🤿 Deep dive into this in the [Holistic Performance Optimization](/academic_overview#4-4-holistic-performance-optimization) section of the web version of our VLDB 2024 paper.
+🤿 Deep dive into this in the [Holistic Performance Optimization](/academic_overview#4-4-holistic-performance-optimization) section of the web version of our VLDB 2024 paper.
 
 ## VLDB 2024 paper {#vldb-2024-paper}
 

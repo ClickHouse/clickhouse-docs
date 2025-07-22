@@ -150,7 +150,7 @@ SELECT * FROM file('nulls.csv')
 └────────┴──────┘
 ```
 
-## TSV (tab-separated) files {#tsv-tab-separated-files}
+## TSV (Tab-separated) files {#tsv-tab-separated-files}
 
 Tab-separated data format is widely used as a data interchange format. To load data from a [TSV file](assets/data_small.tsv) to ClickHouse, the [TabSeparated](/interfaces/formats.md/#tabseparated) format is used:
 
@@ -374,4 +374,4 @@ ClickHouse introduces support for many formats, both text, and binary, to cover 
 - [Native and binary formats](binary.md)
 - [SQL formats](sql.md)
 
-    And also check [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) - a portable full-featured tool to work on local/remote files without the need for Clickhouse server.
+And also check [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) - a portable full-featured tool to work on local/remote files without the need for Clickhouse server.

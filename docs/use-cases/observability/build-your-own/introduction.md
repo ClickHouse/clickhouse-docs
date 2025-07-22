@@ -10,7 +10,7 @@ import observability_1 from '@site/static/images/use-cases/observability/observa
 import observability_2 from '@site/static/images/use-cases/observability/observability-2.png';
 import Image from '@theme/IdealImage';
 
-# Using ClickHouse for observability
+# Using ClickHouse for Observability
 
 ## Introduction {#introduction}
 
@@ -57,7 +57,7 @@ SQL-based observability is for you if:
 - You want to be in control of the TCO (total cost of ownership) and avoid spiraling observability costs.
 - You can't or don't want to get stuck with small data retention periods for your observability data just to manage the costs.
 
-    SQL-based observability may not be for you if:
+SQL-based observability may not be for you if:
 
 - Learning (or generating!) SQL is not appealing to you or your team(s).
 - You are looking for a packaged, end-to-end observability experience.
@@ -73,18 +73,18 @@ We currently recommend ClickHouse for storing two types of observability data:
 
 - **Logs** - Logs are time-stamped records of events occurring within a system, capturing detailed information about various aspects of software operations. The data in logs is typically unstructured or semi-structured and can include error messages, user activity logs, system changes, and other events. Logs are crucial for troubleshooting, anomaly detection, and understanding the specific events leading up to issues within the system.
 
-    ```response
-    54.36.149.41 - - [22/Jan/2019:03:56:14 +0330] "GET
-    /filter/27|13%20%D9%85%DA%AF%D8%A7%D9%BE%DB%8C%DA%A9%D8%B3%D9%84,27|%DA%A9%D9%85%D8%AA%D8%B1%20%D8%A7%D8%B2%205%20%D9%85%DA%AF%D8%A7%D9%BE%DB%8C%DA%A9%D8%B3%D9%84,p53 HTTP/1.1" 200 30577 "-" "Mozilla/5.0 (compatible; AhrefsBot/6.1; +http://ahrefs.com/robot/)" "-"
-    ```
+```response
+54.36.149.41 - - [22/Jan/2019:03:56:14 +0330] "GET
+/filter/27|13%20%D9%85%DA%AF%D8%A7%D9%BE%DB%8C%DA%A9%D8%B3%D9%84,27|%DA%A9%D9%85%D8%AA%D8%B1%20%D8%A7%D8%B2%205%20%D9%85%DA%AF%D8%A7%D9%BE%DB%8C%DA%A9%D8%B3%D9%84,p53 HTTP/1.1" 200 30577 "-" "Mozilla/5.0 (compatible; AhrefsBot/6.1; +http://ahrefs.com/robot/)" "-"
+```
 
 - **Traces** - Traces capture the journey of requests as they traverse through different services in a distributed system, detailing the path and performance of these requests. The data in traces is highly structured, consisting of spans and traces that map out each step a request takes, including timing information. Traces provide valuable insights into system performance, helping identify bottlenecks, latency issues, and optimize the efficiency of microservices.
 
-    :::note Metrics
-    While ClickHouse can be used to store metrics data, this pillar is less mature in ClickHouse with pending support for features such as support for the Prometheus data format and PromQL.
-    :::
+:::note Metrics
+While ClickHouse can be used to store metrics data, this pillar is less mature in ClickHouse with pending support for features such as support for the Prometheus data format and PromQL.
+:::
 
-### Distributed tracing {#distributed-tracing}
+### Distributed Tracing {#distributed-tracing}
 
 Distributed tracing is a critical feature of Observability. A distributed trace, simply called a trace, maps the journey of a request through a system. The request will originate from an end user or application and proliferate throughout a system, typically resulting in a flow of actions between microservices. By recording this sequence, and allowing the subsequent events to be correlated, it allows an observability user or SRE to be able to diagnose issues in an application flow irrespective of how complex or serverless the architecture is.
 

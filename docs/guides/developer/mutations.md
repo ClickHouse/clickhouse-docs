@@ -2,21 +2,19 @@
 slug: /guides/developer/mutations
 sidebar_label: 'Updating and Deleting Data'
 sidebar_position: 1
-keywords: ['UPDATE', 'DELETE', 'mutations']
+keywords: ['UPDATE', 'DELETE']
 title: 'Updating and deleting ClickHouse data'
 description: 'Describes how to perform update and delete operations in ClickHouse'
 show_related_blogs: false
 ---
 
-# Updating and deleting ClickHouse data with mutations
+# Updating and deleting ClickHouse data
 
-Although ClickHouse is geared toward high volume analytic workloads, it is possible in some situations to modify or
-delete existing data. These operations are labeled "mutations" and are executed using the `ALTER TABLE` command.
+Although ClickHouse is geared toward high volume analytic workloads, it is possible in some situations to modify or delete existing data.  These operations are labeled "mutations" and are executed using the `ALTER TABLE` command. You can also `DELETE` a row using the lightweight
+delete capability of ClickHouse.
 
 :::tip
-If you need to perform frequent updates, consider using [deduplication](../developer/deduplication.md) in ClickHouse, which allows you to update
-and/or delete rows without generating a mutation event. Alternatively, use [lightweight updates](/guides/developer/lightweight-update)
-or [lightweight deletes](/guides/developer/lightweight-delete)
+If you need to perform frequent updates, consider using [deduplication](../developer/deduplication.md) in ClickHouse, which allows you to update and/or delete rows without generating a mutation event.
 :::
 
 ## Updating data {#updating-data}
@@ -31,7 +29,7 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
 
 **Examples**:
 
-1. A mutation like this allows updating replacing `visitor_ids` with new ones using a dictionary lookup:
+ 1.  A mutation like this allows updating replacing `visitor_ids` with new ones using a dictionary lookup:
 
      ```sql
      ALTER TABLE website.clicks
@@ -39,7 +37,7 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
      WHERE visit_date < '2022-01-01'
      ```
 
-2. Modifying multiple values in one command can be more efficient than multiple commands:
+2.   Modifying multiple values in one command can be more efficient than multiple commands:
 
      ```sql
      ALTER TABLE website.clicks
@@ -47,7 +45,7 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
      WHERE visit_date < '2022-01-01'
      ```
 
-3. Mutations can be executed `ON CLUSTER` for sharded tables:
+3.  Mutations can be executed `ON CLUSTER` for sharded tables:
 
      ```sql
      ALTER TABLE clicks ON CLUSTER main_cluster
@@ -55,9 +53,9 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
      WHERE visitor_id ILIKE '%robot%'
      ```
 
-    :::note
-    It is not possible to update columns that are part of the primary or sorting key.
-    :::
+:::note
+It is not possible to update columns that are part of the primary or sorting key.
+:::
 
 ## Deleting data {#deleting-data}
 
@@ -76,16 +74,16 @@ The `<filter_expr>` should return a UInt8 value for each row of data.
     ALTER TABLE website.clicks DELETE WHERE visitor_id in (253, 1002, 4277)
     ```
 
-2. What does this query alter?
+2.  What does this query alter?
     ```sql
     ALTER TABLE clicks ON CLUSTER main_cluster DELETE WHERE visit_date < '2022-01-02 15:00:00' AND page_id = '573'
     ```
 
-    :::note
-    To delete all of the data in a table, it is more efficient to use the command `TRUNCATE TABLE [<database].]<table>` command.  This command can also be executed `ON CLUSTER`.
-    :::
+:::note
+To delete all of the data in a table, it is more efficient to use the command `TRUNCATE TABLE [<database].]<table>` command.  This command can also be executed `ON CLUSTER`.
+:::
 
-    View the [`DELETE` statement](/sql-reference/statements/delete.md) docs page for more details.
+View the [`DELETE` statement](/sql-reference/statements/delete.md) docs page for more details.
 
 ## Lightweight deletes {#lightweight-deletes}
 

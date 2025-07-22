@@ -51,7 +51,7 @@ Before you get started you will need:
 - Admin or SSH access to your Splunk Enterprise OS Instance
 - ClickHouse connection details (see [here](/integrations/metabase#1-gather-your-connection-details) if you're using ClickHouse Cloud)
 
-## Install and configure DB Connect on Splunk Enterprise {#install-and-configure-db-connect-on-splunk-enterprise}
+## Install and Configure DB Connect on Splunk Enterprise {#install-and-configure-db-connect-on-splunk-enterprise}
 
 You must first install the Java Runtime Environment on your Splunk Enterprise instance. If you're using Docker, you can use the command `microdnf install java-11-openjdk`.
 
@@ -63,11 +63,11 @@ Ensure that the DB Connect App is installed on Splunk Enterprise. You can find i
 - Click the green "Install" button next to Splunk DB Connect
 - Click "Restart Splunk"
 
-    If you're having issues installing the DB Connect App, please see [this link](https://splunkbase.splunk.com/app/2686) for additional instructions.
+If you're having issues installing the DB Connect App, please see [this link](https://splunkbase.splunk.com/app/2686) for additional instructions.
 
-    Once you've verified that the DB Connect App is installed, add the java_home path  to the DB Connect App in Configuration -> Settings, and click save then reset.
+Once you've verified that the DB Connect App is installed, add the java_home path  to the DB Connect App in Configuration -> Settings, and click save then reset.
 
-    <Image img={splunk_2} size="md" border alt="Splunk DB Connect settings page showing Java Home configuration" />
+<Image img={splunk_2} size="md" border alt="Splunk DB Connect settings page showing Java Home configuration" />
 
 ## Configure JDBC for ClickHouse {#configure-jdbc-for-clickhouse}
 
@@ -97,7 +97,7 @@ Navigate back to the DB Connect App and go to Configuration > Settings > Drivers
 
 <Image img={splunk_3} size="lg" border alt="Splunk DB Connect drivers page showing ClickHouse driver successfully installed" />
 
-## Connect Splunk search to ClickHouse {#connect-splunk-search-to-clickhouse}
+## Connect Splunk Search to ClickHouse {#connect-splunk-search-to-clickhouse}
 
 Navigate to DB Connect App Configuration -> Databases -> Identities: Create a Identity for your ClickHouse.
 
@@ -131,7 +131,7 @@ Execute a SQL query on the `trips` table that returns the count of all the recor
 
 If your query is successful, you should see the results.
 
-## Create a dashboard {#create-a-dashboard}
+## Create a Dashboard {#create-a-dashboard}
 
 Let's create a dashboard that leverages a combination of SQL plus the powerful Splunk Processing Language (SPL).
 
@@ -175,7 +175,7 @@ Our final dashboard should look like this:
 
 <Image img={splunk_10} size="lg" border alt="Final Splunk dashboard with multiple visualizations of NYC taxi data" />
 
-## Time series data {#time-series-data}
+## Time Series Data {#time-series-data}
 
 Splunk has hundreds of built-in functions that dashboards can use for visualization and presentation of time series data. This example will combine SQL + SPL to create a query that can work with time series data in Splunk
 

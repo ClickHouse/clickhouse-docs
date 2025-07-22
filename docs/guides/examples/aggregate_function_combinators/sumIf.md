@@ -14,7 +14,7 @@ The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be
 function to calculate the sum of values for rows where the condition is true,
 using the `sumIf` aggregate combinator function.
 
-## Example usage {#example-usage}
+## Example Usage {#example-usage}
 
 In this example, we'll create a table that stores sales data with success flags,
 and we'll use `sumIf` to calculate the total sales amount for successful transactions.
@@ -45,8 +45,8 @@ In this case, it will sum: 100.50 + 200.75 + 300.00 + 175.25.
 ```response title="Response"
    ┌─total_successful_sales─┐
 1. │                  776.50 │
-    └───────────────────────┘
-    ```
+   └───────────────────────┘
+```
 
 ### Calculate trading volume by price direction {#calculate-trading-vol-price-direction}
 
@@ -54,7 +54,7 @@ In this example we'll use the `stock` table available at [ClickHouse playground]
 to calculate trading volume by price direction in the first half of the year 2002.
 
 ```sql title="Query"
-SELECT
+SELECT 
     toStartOfMonth(date) AS month,
     formatReadableQuantity(sumIf(volume, price > open)) AS volume_on_up_days,
     formatReadableQuantity(sumIf(volume, price < open)) AS volume_on_down_days,
@@ -81,7 +81,7 @@ ORDER BY month;
 11. │ 2002-11-01 │ 34.90 billion     │ 25.47 billion       │ 998.34 million         │ 61.37 billion │
 12. │ 2002-12-01 │ 22.99 billion     │ 28.65 billion       │ 1.14 billion           │ 52.79 billion │
     └────────────┴───────────────────┴─────────────────────┴────────────────────────┴───────────────┘
-    ```
+```
 
 ### Calculate trading volume by stock symbol {#calculate-trading-volume}
 
@@ -90,7 +90,7 @@ to calculate trading volume by stock symbol in 2006 for three of the largest tec
 companies at the time.
 
 ```sql title="Query"
-SELECT
+SELECT 
     toStartOfMonth(date) AS month,
     formatReadableQuantity(sumIf(volume, symbol = 'AAPL')) AS apple_volume,
     formatReadableQuantity(sumIf(volume, symbol = 'MSFT')) AS microsoft_volume,
@@ -118,7 +118,7 @@ ORDER BY month;
 11. │ 2006-11-01 │ 494.37 million │ 1.24 billion     │ 118.49 million │  90177365500 │                  2.06 │
 12. │ 2006-12-01 │ 603.95 million │ 1.14 billion     │ 91.77 million  │  80499584100 │                  2.28 │
     └────────────┴────────────────┴──────────────────┴────────────────┴──────────────┴───────────────────────┘
-    ```
+```
 
 ## See also {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)

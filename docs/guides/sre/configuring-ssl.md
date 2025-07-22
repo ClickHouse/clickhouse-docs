@@ -236,7 +236,7 @@ For a full explanation of all options, visit https://clickhouse.com/docs/operati
 ## 5. Configure SSL-TLS interfaces on ClickHouse nodes {#5-configure-ssl-tls-interfaces-on-clickhouse-nodes}
 The settings below are configured in the ClickHouse server `config.xml`
 
-1. Set the display name for the deployment (optional):
+1.  Set the display name for the deployment (optional):
     ```xml
     <display_name>clickhouse</display_name>
     ```
@@ -376,67 +376,66 @@ The settings below are configured in the ClickHouse server `config.xml`
     |9444 | ClickHouse Keeper Raft port |
 
 3. Verify ClickHouse Keeper health
-    The typical [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-commands) commands will not work using `echo` without TLS, here is how to use the commands with `openssl`.
-    - Start an interactive session with `openssl`
+The typical [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-commands) commands will not work using `echo` without TLS, here is how to use the commands with `openssl`.
+   - Start an interactive session with `openssl`
 
-    ```bash
-    openssl s_client -connect chnode1.marsnet.local:9281
-    ```
-    ```response
-    CONNECTED(00000003)
-    depth=0 CN = chnode1
-    verify error:num=20:unable to get local issuer certificate
-    verify return:1
-    depth=0 CN = chnode1
-    verify error:num=21:unable to verify the first certificate
-    verify return:1
-    ---
-    Certificate chain
-    0 s:CN = chnode1
+  ```bash
+  openssl s_client -connect chnode1.marsnet.local:9281
+  ```
+  ```response
+  CONNECTED(00000003)
+  depth=0 CN = chnode1
+  verify error:num=20:unable to get local issuer certificate
+  verify return:1
+  depth=0 CN = chnode1
+  verify error:num=21:unable to verify the first certificate
+  verify return:1
+  ---
+  Certificate chain
+   0 s:CN = chnode1
      i:CN = marsnet.local CA
-    ---
-    Server certificate
-    -----BEGIN CERTIFICATE-----
-    MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
-    ...
-    ```
+  ---
+  Server certificate
+  -----BEGIN CERTIFICATE-----
+  MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
+  ...
+  ```
 
-    - Send the 4LW commands in the openssl session
-
-    ```bash
-    mntr
-    ```
-    ```response
-    ---
-    Post-Handshake New Session Ticket arrived:
-    SSL-Session:
-    Protocol  : TLSv1.3
-    ...
-    read R BLOCK
-    zk_version      v22.7.3.5-stable-e140b8b5f3a5b660b6b576747063fd040f583cf3
-    zk_avg_latency  0
-    # highlight-next-line
-    zk_max_latency  4087
-    zk_min_latency  0
-    zk_packets_received     4565774
-    zk_packets_sent 4565773
-    zk_num_alive_connections        2
-    zk_outstanding_requests 0
-    # highlight-next-line
-    zk_server_state leader
-    zk_znode_count  1087
-    zk_watch_count  26
-    zk_ephemerals_count     12
-    zk_approximate_data_size        426062
-    zk_key_arena_size       258048
-    zk_latest_snapshot_size 0
-    zk_open_file_descriptor_count   187
-    zk_max_file_descriptor_count    18446744073709551615
-    # highlight-next-line
-    zk_followers    2
-    zk_synced_followers     1
-    closed
-    ```
+- Send the 4LW commands in the openssl session
+  ```bash
+  mntr
+  ```
+  ```response
+  ---
+  Post-Handshake New Session Ticket arrived:
+  SSL-Session:
+      Protocol  : TLSv1.3
+  ...
+  read R BLOCK
+  zk_version      v22.7.3.5-stable-e140b8b5f3a5b660b6b576747063fd040f583cf3
+  zk_avg_latency  0
+  # highlight-next-line
+  zk_max_latency  4087
+  zk_min_latency  0
+  zk_packets_received     4565774
+  zk_packets_sent 4565773
+  zk_num_alive_connections        2
+  zk_outstanding_requests 0
+  # highlight-next-line
+  zk_server_state leader
+  zk_znode_count  1087
+  zk_watch_count  26
+  zk_ephemerals_count     12
+  zk_approximate_data_size        426062
+  zk_key_arena_size       258048
+  zk_latest_snapshot_size 0
+  zk_open_file_descriptor_count   187
+  zk_max_file_descriptor_count    18446744073709551615
+  # highlight-next-line
+  zk_followers    2
+  zk_synced_followers     1
+  closed
+  ```
 
 4. Start the ClickHouse client using `--secure` flag and SSL port:
     ```bash

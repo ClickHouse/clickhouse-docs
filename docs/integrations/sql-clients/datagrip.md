@@ -28,36 +28,36 @@ DataGrip is available at https://www.jetbrains.com/datagrip/
 
 1. Launch DataGrip, and on the **Data Sources** tab in the **Data Sources and Drivers** dialog, click the **+** icon
 
-    <Image img={datagrip_5} size="lg" border alt="DataGrip Data Sources tab with + icon highlighted" />
+<Image img={datagrip_5} size="lg" border alt="DataGrip Data Sources tab with + icon highlighted" />
 
-    Select **ClickHouse**
+  Select **ClickHouse**
 
-    :::tip
-    As you establish connections the order changes, ClickHouse may not be at the top of your list yet.
-    :::
+  :::tip
+  As you establish connections the order changes, ClickHouse may not be at the top of your list yet.
+  :::
 
-    <Image img={datagrip_6} size="sm" border alt="DataGrip selecting ClickHouse from the data sources list" />
+<Image img={datagrip_6} size="sm" border alt="DataGrip selecting ClickHouse from the data sources list" />
 
 - Switch to the **Drivers** tab and load the ClickHouse driver
 
-    DataGrip does not ship with drivers in order to minimize the download size.  On the **Drivers** tab
-    Select **ClickHouse** from the **Complete Support** list, and expand the **+** sign.  Choose the **Latest stable** driver from the **Provided Driver** option:
+  DataGrip does not ship with drivers in order to minimize the download size.  On the **Drivers** tab
+  Select **ClickHouse** from the **Complete Support** list, and expand the **+** sign.  Choose the **Latest stable** driver from the **Provided Driver** option:
 
-    <Image img={datagrip_1} size="lg" border alt="DataGrip Drivers tab showing ClickHouse driver installation" />
+<Image img={datagrip_1} size="lg" border alt="DataGrip Drivers tab showing ClickHouse driver installation" />
 
 ## 3. Connect to ClickHouse {#3-connect-to-clickhouse}
 
 - Specify your database connection details, and click **Test Connection**:
 
-    In step one you gathered your connection details, fill in the host URL, port, username, password, and database name, then test the connection.
+  In step one you gathered your connection details, fill in the host URL, port, username, password, and database name, then test the connection.
 
-    :::tip
-    The **HOST** entry in the DataGrip dialog is actually a URL, see the image below.
+  :::tip
+  The **HOST** entry in the DataGrip dialog is actually a URL, see the image below.
 
-    For more details on JDBC URL settings, please refer to the [ClickHouse JDBC driver](https://github.com/ClickHouse/clickhouse-java) repository.
-    :::
+  For more details on JDBC URL settings, please refer to the [ClickHouse JDBC driver](https://github.com/ClickHouse/clickhouse-java) repository.
+  :::
 
-    <Image img={datagrip_7} size="md" border alt="DataGrip connection details form with ClickHouse settings" />
+<Image img={datagrip_7} size="md" border alt="DataGrip connection details form with ClickHouse settings" />
 
 ## Learn more {#learn-more}
 

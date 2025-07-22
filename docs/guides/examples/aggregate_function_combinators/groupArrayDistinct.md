@@ -14,13 +14,13 @@ The [`groupArrayDistinct`](/sql-reference/aggregate-functions/combinators#-forea
 can be applied to the [`groupArray`](/sql-reference/aggregate-functions/reference/sum) aggregate function to create an array
 of distinct argument values.
 
-## Example usage {#example-usage}
+## Example Usage {#example-usage}
 
 For this example we'll make use of the `hits` dataset available in our [SQL playground](https://sql.clickhouse.com/).
 
 Imagine you want to find out, for each distinct landing page domain (`URLDomain`)
 on your website, what are all the unique User Agent OS codes (`OS`) recorded for
-visitors landing on that domain. This could help you understand the variety of
+visitors landing on that domain. This could help you understand the variety of 
 operating systems interacting with different parts of your site.
 
 ```sql runnable

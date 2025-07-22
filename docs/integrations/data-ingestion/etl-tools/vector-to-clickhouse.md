@@ -179,4 +179,4 @@ Having the logs in ClickHouse is great, but storing each event as a single strin
     The lesson above stored the data in two tables, but you could change the initial `nginxdb.access_logs` table to use the **Null** table engine - the parsed data will still end up in the `nginxdb.access_logs_view` table, but the raw data will not be stored in a table.
     :::
 
-    **Summary:** By using Vector, which only required a simple install and quick configuration, we can send logs from an Nginx server to a table in ClickHouse. By using a clever materialized view, we can parse those logs into columns for easier analytics.
+**Summary:** By using Vector, which only required a simple install and quick configuration, we can send logs from an Nginx server to a table in ClickHouse. By using a clever materialized view, we can parse those logs into columns for easier analytics.

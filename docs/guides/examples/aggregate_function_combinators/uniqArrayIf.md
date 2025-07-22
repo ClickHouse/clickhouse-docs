@@ -11,22 +11,22 @@ sidebar_label: 'uniqArrayIf'
 ## Description {#description}
 
 The [`Array`](/sql-reference/aggregate-functions/combinators#-array) and [`If`](/sql-reference/aggregate-functions/combinators#-if) combinators can be applied to the [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
-function to count the number of unique values in arrays for rows where the
+function to count the number of unique values in arrays for rows where the 
 condition is true, using the `uniqArrayIf` aggregate combinator function.
 
 :::note
 -`If` and -`Array` can be combined. However, `Array` must come first, then `If`.
 :::
 
-This is useful when you want to count unique elements in an array based on
+This is useful when you want to count unique elements in an array based on 
 specific conditions without having to use `arrayJoin`.
 
-## Example usage {#example-usage}
+## Example Usage {#example-usage}
 
 ### Count unique products viewed by segment type and engagement level {#count-unique-products}
 
-In this example, we'll use a table with user shopping session data to count the
-number of unique products viewed by users of a specific user segment and with
+In this example, we'll use a table with user shopping session data to count the 
+number of unique products viewed by users of a specific user segment and with 
 an engagement metric of time spent in the session.
 
 ```sql title="Query"
@@ -47,7 +47,7 @@ INSERT INTO user_shopping_sessions VALUES
     ('2024-01-02', 'premium', ['smartphone_x', 'smartwatch_b', 'headphones_y'], 22);
 
 -- Count unique products viewed by segment type and engagement level
-SELECT
+SELECT 
     session_date,
     -- Count unique products viewed in long sessions by new customers
     uniqArrayIf(viewed_products, user_segment = 'new_customer' AND session_duration_minutes > 10) AS new_customer_engaged_products,

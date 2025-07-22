@@ -14,55 +14,55 @@ import security_group_in_rds_postgres from '@site/static/images/integrations/dat
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-# RDS Postgres source setup guide
+# RDS Postgres Source Setup Guide
 
 ## Supported Postgres versions {#supported-postgres-versions}
 
 ClickPipes supports Postgres version 12 and later.
 
-## Enable logical replication {#enable-logical-replication}
+## Enable Logical Replication {#enable-logical-replication}
 
 You can skip this section if your RDS instance already has the following settings configured:
 - `rds.logical_replication = 1`
 - `wal_sender_timeout = 0`
 
-    These settings are typically pre-configured if you previously used another data replication tool.
+These settings are typically pre-configured if you previously used another data replication tool.
 
-    ```text
-    postgres=> SHOW rds.logical_replication ;
-    rds.logical_replication
-    -------------------------
-    on
-    (1 row)
+```text
+postgres=> SHOW rds.logical_replication ;
+ rds.logical_replication
+-------------------------
+ on
+(1 row)
 
-    postgres=> SHOW wal_sender_timeout ;
-    wal_sender_timeout
-    --------------------
-    0
-    (1 row)
-    ```
+postgres=> SHOW wal_sender_timeout ;
+ wal_sender_timeout
+--------------------
+ 0
+(1 row)
+```
 
-    If not already configured, follow these steps:
+If not already configured, follow these steps:
 
 1. Create a new parameter group for your Postgres version with the required settings:
     - Set `rds.logical_replication` to 1
     - Set `wal_sender_timeout` to 0
 
-    <Image img={parameter_group_in_blade} alt="Where to find Parameter groups in RDS?" size="lg" border/>
+<Image img={parameter_group_in_blade} alt="Where to find Parameter groups in RDS?" size="lg" border/>
 
-    <Image img={change_rds_logical_replication} alt="Changing rds.logical_replication" size="lg" border/>
+<Image img={change_rds_logical_replication} alt="Changing rds.logical_replication" size="lg" border/>
 
-    <Image img={change_wal_sender_timeout} alt="Changing wal_sender_timeout" size="lg" border/>
+<Image img={change_wal_sender_timeout} alt="Changing wal_sender_timeout" size="lg" border/>
 
 2. Apply the new parameter group to your RDS Postgres database
 
-    <Image img={modify_parameter_group} alt="Modifying RDS Postgres with new parameter group" size="lg" border/>
+<Image img={modify_parameter_group} alt="Modifying RDS Postgres with new parameter group" size="lg" border/>
 
 3. Reboot your RDS instance to apply the changes
 
-    <Image img={reboot_rds} alt="Reboot RDS Postgres" size="lg" border/>
+<Image img={reboot_rds} alt="Reboot RDS Postgres" size="lg" border/>
 
-## Configure database user {#configure-database-user}
+## Configure Database User {#configure-database-user}
 
 Connect to your RDS Postgres instance as an admin user and execute the following commands:
 
@@ -92,9 +92,9 @@ Connect to your RDS Postgres instance as an admin user and execute the following
     CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
     ```
 
-## Configure network access {#configure-network-access}
+## Configure Network Access {#configure-network-access}
 
-### IP-based access control {#ip-based-access-control}
+### IP-based Access Control {#ip-based-access-control}
 
 If you want to restrict traffic to your RDS instance, please add the [documented static NAT IPs](../../index.md#list-of-static-ips) to the `Inbound rules` of your RDS security group.
 

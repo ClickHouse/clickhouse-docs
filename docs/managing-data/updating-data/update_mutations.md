@@ -1,7 +1,7 @@
 ---
 slug: /managing-data/update_mutations
-sidebar_label: 'Update mutations'
-title: 'Update mutations'
+sidebar_label: 'Update Mutations'
+title: 'Update Mutations'
 hide_title: false
 description: 'Page describing update mutations - ALTER queries that manipulate table data through updates'
 ---

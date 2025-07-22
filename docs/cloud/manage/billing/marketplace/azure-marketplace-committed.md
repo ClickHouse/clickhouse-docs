@@ -30,56 +30,108 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 1. You should have received an email with a link to review and accept your private offer.
 
-    <Image img={azure_marketplace_committed_1} size="md" alt="Azure Marketplace private offer email" border/>
+<br />
+
+<Image img={azure_marketplace_committed_1} size="md" alt="Azure Marketplace private offer email" border/>
+
+<br />
 
 2. Click on the **Review Private Offer** link in the email. This should take you to your GCP Marketplace page with the private offer details.
 
-    <Image img={azure_marketplace_committed_2} size="md" alt="Azure Marketplace private offer details" border/>
+<br />
+
+<Image img={azure_marketplace_committed_2} size="md" alt="Azure Marketplace private offer details" border/>
+
+<br />
 
 3. Once you accept the offer, you will be taken to a **Private Offer Management** screen. Azure may take some time to prepare the offer for purchase.
 
-    <Image img={azure_marketplace_committed_3} size="md" alt="Azure Marketplace Private Offer Management page" border/>
+<br />
 
-    <Image img={azure_marketplace_committed_4} size="md" alt="Azure Marketplace Private Offer Management page loading" border/>
+<Image img={azure_marketplace_committed_3} size="md" alt="Azure Marketplace Private Offer Management page" border/>
+
+<br />
+
+<Image img={azure_marketplace_committed_4} size="md" alt="Azure Marketplace Private Offer Management page loading" border/>
+
+<br />
 
 4. After a few minutes, refresh the page. The offer should be ready for **Purchase**.
 
-    <Image img={azure_marketplace_committed_5} size="md" alt="Azure Marketplace Private Offer Management page purchase enabled" border/>
+<br />
+
+<Image img={azure_marketplace_committed_5} size="md" alt="Azure Marketplace Private Offer Management page purchase enabled" border/>
+
+<br />
 
 5. Click on **Purchase** - you will see a flyout open. Complete the following:
 
-- Subscription and resource group
+<br />
+
+- Subscription and resource group 
 - Provide a name for the SaaS subscription
-- Choose the billing plan that you have a private offer for. Only the term that the private offer was created (for example, 1 year) will have an amount against it. Other billing term options will be for $0 amounts.
+- Choose the billing plan that you have a private offer for. Only the term that the private offer was created (for example, 1 year) will have an amount against it. Other billing term options will be for $0 amounts. 
 - Choose whether you want recurring billing or not. If recurring billing is not selected, the contract will end at the end of the billing period and the resources will be set to decommissioned.
 - Click on **Review + subscribe**.
 
-    <Image img={azure_marketplace_committed_6} size="md" alt="Azure Marketplace subscription form" border/>
+<br />
+
+<Image img={azure_marketplace_committed_6} size="md" alt="Azure Marketplace subscription form" border/>
+
+<br />
 
 6. On the next screen, review all the details and hit **Subscribe**.
 
-    <Image img={azure_marketplace_committed_7} size="md" alt="Azure Marketplace subscription confirmation" border/>
+<br />
+
+<Image img={azure_marketplace_committed_7} size="md" alt="Azure Marketplace subscription confirmation" border/>
+
+<br />
 
 7. On the next screen, you will see **Your SaaS subscription in progress**.
 
-    <Image img={azure_marketplace_committed_8} size="md" alt="Azure Marketplace subscription submitting page" border/>
+<br />
+
+<Image img={azure_marketplace_committed_8} size="md" alt="Azure Marketplace subscription submitting page" border/>
+
+<br />
 
 8. Once ready, you can click on **Configure account now**. Note that is a critical step that binds the Azure subscription to a ClickHouse Cloud organization for your account. Without this step, your Marketplace subscription is not complete.
 
-    <Image img={azure_marketplace_committed_9} size="md" alt="Azure Marketplace configure account now button" border/>
+<br />
+
+<Image img={azure_marketplace_committed_9} size="md" alt="Azure Marketplace configure account now button" border/>
+
+<br />
 
 9. You will be redirected to the ClickHouse Cloud sign up or sign in page. You can either sign up using a new account or sign in using an existing account. Once you are signed in, a new organization will be created that is ready to be used and billed via the Azure Marketplace.
 
 10. You will need to answer a few questions - address and company details - before you can proceed.
 
-    <Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud sign up info form" border/>
+<br />
 
-    <Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud sign up info form 2" border/>
+<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud sign up info form" border/>
+
+<br />
+
+<Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud sign up info form 2" border/>
+
+<br />
 
 11. Once you hit **Complete sign up**, you will be taken to your organization within ClickHouse Cloud where you can view the billing screen to ensure you are being billed via the Azure Marketplace and can create services.
 
-    <Image img={azure_marketplace_payg_11} size="sm" alt="ClickHouse Cloud sign up info form" border/>
+<br />
 
-    <Image img={azure_marketplace_payg_12} size="md" alt="ClickHouse Cloud sign up info form" border/>
+<br />
 
-    If you run into any issues, please do not hesitate to contact [our support team](https://clickhouse.com/support/program).
+<Image img={azure_marketplace_payg_11} size="sm" alt="ClickHouse Cloud sign up info form" border/>
+
+<br />
+
+<br />
+
+<Image img={azure_marketplace_payg_12} size="md" alt="ClickHouse Cloud sign up info form" border/>
+
+<br />
+
+If you run into any issues, please do not hesitate to contact [our support team](https://clickhouse.com/support/program).

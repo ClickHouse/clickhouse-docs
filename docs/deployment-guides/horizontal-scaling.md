@@ -19,7 +19,7 @@ This example architecture is designed to provide scalability.  It includes three
 <ReplicationShardingTerminology />
 
 ## Environment {#environment}
-### Architecture diagram {#architecture-diagram}
+### Architecture Diagram {#architecture-diagram}
 
 <Image img={scalingOut1} size='md' alt='Architecture diagram for 2 shards and 1 replica' />
 
@@ -41,7 +41,7 @@ Install Clickhouse on three servers following the [instructions for your archive
 
 <ConfigFileNote />
 
-## Chnode1 configuration {#chnode1-configuration}
+## chnode1 configuration {#chnode1-configuration}
 
 For `chnode1`, there are five configuration files.  You may choose to combine these files into a single file, but for clarity in the documentation it may be simpler to look at them separately.  As you read through the configuration files, you will see that most of the configuration is the same between `chnode1` and `chnode2`; the differences will be highlighted.
 
@@ -136,9 +136,9 @@ Starting from the top:
 - The cluster `cluster_2S_1R` has two shards, and each of those shards has one replica.  Take a look at the architecture diagram toward the beginning of this document, and compare it with the two `shard` definitions in the XML below.  In each of the shard definitions there is one replica.  The replica is for that specific shard.  The host and port for that replica is specified.  The replica for the first shard in the configuration is stored on `chnode1`, and the replica for the second shard in the configuration is stored on `chnode2`.
 - Internal replication for the shards is set to true.  Each shard can have the `internal_replication` parameter defined in the config file. If this parameter is set to true, the write operation selects the first healthy replica and writes data to it.
 
-    ```xml title="remote-servers.xml on chnode1"
-    <clickhouse>
-    <remote_servers replace="true">
+```xml title="remote-servers.xml on chnode1"
+<clickhouse>
+  <remote_servers replace="true">
     <cluster_2S_1R>
     <secret>mysecretphrase</secret>
         <shard>
@@ -156,9 +156,9 @@ Starting from the top:
             </replica>
         </shard>
     </cluster_2S_1R>
-    </remote_servers>
-    </clickhouse>
-    ```
+  </remote_servers>
+</clickhouse>
+```
 
 ### Configuring the use of Keeper {#configuring-the-use-of-keeper}
 
@@ -183,7 +183,7 @@ Up above a few files ClickHouse Keeper was configured.  This configuration file 
 </clickhouse>
 ```
 
-## Chnode2 configuration {#chnode2-configuration}
+## chnode2 configuration {#chnode2-configuration}
 
 As the configuration is very similar on `chnode1` and `chnode2`, only the differences will be pointed out here.
 
@@ -309,7 +309,7 @@ The macros configuration has one of the differences between `chnode1` and `chnod
 </clickhouse>
 ```
 
-## Chnode3 configuration {#chnode3-configuration}
+## chnode3 configuration {#chnode3-configuration}
 
 As `chnode3` is not storing data and is only used for ClickHouse Keeper to provide the third node in the quorum, `chnode3` has only two configuration files, one to configure the network and logging, and one to configure ClickHouse Keeper.
 
@@ -376,110 +376,110 @@ As `chnode3` is not storing data and is only used for ClickHouse Keeper to provi
 
 1. Connect to `chnode1` and verify that the cluster `cluster_2S_1R` configured above exists
 
-    ```sql title="Query"
-    SHOW CLUSTERS
-    ```
+```sql title="Query"
+SHOW CLUSTERS
+```
 
-    ```response title="Response"
-    ┌─cluster───────┐
-    │ cluster_2S_1R │
-    └───────────────┘
-    ```
+```response title="Response"
+┌─cluster───────┐
+│ cluster_2S_1R │
+└───────────────┘
+```
 
 2. Create a database on the cluster
 
-    ```sql title="Query"
-    CREATE DATABASE db1 ON CLUSTER cluster_2S_1R
-    ```
+```sql title="Query"
+CREATE DATABASE db1 ON CLUSTER cluster_2S_1R
+```
 
-    ```response title="Response"
-    ┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-    │ chnode2 │ 9000 │      0 │       │                   1 │                0 │
-    │ chnode1 │ 9000 │      0 │       │                   0 │                0 │
-    └─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-    ```
+```response title="Response"
+┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+│ chnode2 │ 9000 │      0 │       │                   1 │                0 │
+│ chnode1 │ 9000 │      0 │       │                   0 │                0 │
+└─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+```
 
 3. Create a table with MergeTree table engine on the cluster.
-    :::note
-    We do not need not to specify parameters on the table engine since these will be automatically defined based on our macros
-    :::
+:::note
+We do not need not to specify parameters on the table engine since these will be automatically defined based on our macros
+:::
 
-    ```sql title="Query"
-    CREATE TABLE db1.table1 ON CLUSTER cluster_2S_1R
-    (
+```sql title="Query"
+CREATE TABLE db1.table1 ON CLUSTER cluster_2S_1R
+(
     `id` UInt64,
     `column1` String
-    )
-    ENGINE = MergeTree
-    ORDER BY id
-    ```
-    ```response title="Response"
-    ┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-    │ chnode1 │ 9000 │      0 │       │                   1 │                0 │
-    │ chnode2 │ 9000 │      0 │       │                   0 │                0 │
-    └─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-    ```
+)
+ENGINE = MergeTree
+ORDER BY id
+```
+```response title="Response"
+┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+│ chnode1 │ 9000 │      0 │       │                   1 │                0 │
+│ chnode2 │ 9000 │      0 │       │                   0 │                0 │
+└─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+```
 
 4. Connect to `chnode1` and insert a row
 
-    ```sql title="Query"
-    INSERT INTO db1.table1 (id, column1) VALUES (1, 'abc');
-    ```
+```sql title="Query"
+INSERT INTO db1.table1 (id, column1) VALUES (1, 'abc');
+```
 
 5. Connect to `chnode2` and insert a row
 
-    ```sql title="Query"
-    INSERT INTO db1.table1 (id, column1) VALUES (2, 'def');
-    ```
+```sql title="Query"
+INSERT INTO db1.table1 (id, column1) VALUES (2, 'def');
+```
 
 6. Connect to either node, `chnode1` or `chnode2` and you will see only the row that was inserted into that table on that node.
-    for example, on `chnode2`
+for example, on `chnode2`
 
-    ```sql title="Query"
-    SELECT * FROM db1.table1;
-    ```
+```sql title="Query"
+SELECT * FROM db1.table1;
+```
 
-    ```response title="Response"
-    ┌─id─┬─column1─┐
-    │  2 │ def     │
-    └────┴─────────┘
-    ```
+```response title="Response"
+┌─id─┬─column1─┐
+│  2 │ def     │
+└────┴─────────┘
+```
 
 7. Create a distributed table to query both shards on both nodes.
-    (In this example, the `rand()` function is set as the sharding key so that it randomly distributes each insert)
+(In this example, the `rand()` function is set as the sharding key so that it randomly distributes each insert)
 
-    ```sql title="Query"
-    CREATE TABLE db1.table1_dist ON CLUSTER cluster_2S_1R
-    (
+```sql title="Query"
+CREATE TABLE db1.table1_dist ON CLUSTER cluster_2S_1R
+(
     `id` UInt64,
     `column1` String
-    )
-    ENGINE = Distributed('cluster_2S_1R', 'db1', 'table1', rand())
-    ```
+)
+ENGINE = Distributed('cluster_2S_1R', 'db1', 'table1', rand())
+```
 
-    ```response title="Response"
-    ┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-    │ chnode2 │ 9000 │      0 │       │                   1 │                0 │
-    │ chnode1 │ 9000 │      0 │       │                   0 │                0 │
-    └─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-    ```
+```response title="Response"
+┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+│ chnode2 │ 9000 │      0 │       │                   1 │                0 │
+│ chnode1 │ 9000 │      0 │       │                   0 │                0 │
+└─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+```
 
 8. Connect to either `chnode1` or `chnode2` and query the distributed table to see both rows.
 
-    ```sql title="Query"
-    SELECT * FROM db1.table1_dist;
-    ```
+```sql title="Query"
+SELECT * FROM db1.table1_dist;
+```
 
-    ```reponse title="Response"
-    ┌─id─┬─column1─┐
-    │  2 │ def     │
-    └────┴─────────┘
-    ┌─id─┬─column1─┐
-    │  1 │ abc     │
-    └────┴─────────┘
-    ```
+```reponse title="Response"
+┌─id─┬─column1─┐
+│  2 │ def     │
+└────┴─────────┘
+┌─id─┬─column1─┐
+│  1 │ abc     │
+└────┴─────────┘
+```
 
-## More information about {#more-information-about}
+## More information about: {#more-information-about}
 
 - The [Distributed Table Engine](/engines/table-engines/special/distributed.md)
 - [ClickHouse Keeper](/guides/sre/keeper/index.md)

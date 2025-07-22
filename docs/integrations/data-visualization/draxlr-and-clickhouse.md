@@ -38,7 +38,7 @@ Draxlr offers an intuitive interface for connecting to your ClickHouse database,
 
 5. Add the connection details in the form.
 
-    <Image size="md" img={draxlr_01} alt="Draxlr connection form showing ClickHouse database configuration options" border />
+  <Image size="md" img={draxlr_01} alt="Draxlr connection form showing ClickHouse database configuration options" border />
 
 6. Click on the **Next** button and wait for the connection to be established. You will see the tables page if the connection is successful.
 
@@ -50,11 +50,11 @@ Draxlr offers an intuitive interface for connecting to your ClickHouse database,
 
 3. You can start adding the filters, make joins and add sort to your data.
 
-    <Image size="md" img={draxlr_02} alt="Draxlr data exploration interface showing filters and sorting options" border />
+  <Image size="md" img={draxlr_02} alt="Draxlr data exploration interface showing filters and sorting options" border />
 
 4. You can also use the **Graph** button and select the graph type to visualize the data.
 
-    <Image size="md" img={draxlr_05} alt="Draxlr graph visualization options for ClickHouse data" border />
+  <Image size="md" img={draxlr_05} alt="Draxlr graph visualization options for ClickHouse data" border />
 
 ## 4. Using SQL queries {#4-using-sql-queries}
 
@@ -62,7 +62,7 @@ Draxlr offers an intuitive interface for connecting to your ClickHouse database,
 
 2. Click the **Raw Query** button and enter your query in the text area.
 
-    <Image size="md" img={draxlr_03} alt="Draxlr SQL query interface for ClickHouse" border />
+  <Image size="md" img={draxlr_03} alt="Draxlr SQL query interface for ClickHouse" border />
 
 3. Click on the **Execute Query** button to see the results.
 
@@ -70,7 +70,7 @@ Draxlr offers an intuitive interface for connecting to your ClickHouse database,
 
 1. After executing your query, click on the **Save Query** button.
 
-    <Image size="md" img={draxlr_04} alt="Draxlr save query dialog with dashboard options" border />
+  <Image size="md" img={draxlr_04} alt="Draxlr save query dialog with dashboard options" border />
 
 2. You can name to query in **Query Name** text box and select a folder to categories it.
 
@@ -78,11 +78,11 @@ Draxlr offers an intuitive interface for connecting to your ClickHouse database,
 
 4. Click on the **Save** button to save the query.
 
-## 5. Building dashboards {#5-building-dashboards}
+## 5. Building Dashboards {#5-building-dashboards}
 
 1. Click on the **Dashboards** button on the navbar.
 
-    <Image size="md" img={draxlr_06} alt="Draxlr dashboard management interface" border />
+  <Image size="md" img={draxlr_06} alt="Draxlr dashboard management interface" border />
 
 2. You can add a new dashboard by clicking on the **Add +** button on the left sidebar.
 

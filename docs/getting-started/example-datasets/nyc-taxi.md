@@ -18,10 +18,10 @@ The full dataset can be obtained in a couple of ways:
 - download prepared partitions
 - Alternatively users can query the full dataset in our demo environment at [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19).
 
-    :::note
-    The example queries below were executed on a **Production** instance of ClickHouse Cloud. For more information see
-    ["Playground specifications"](/getting-started/playground#specifications).
-    :::
+:::note
+The example queries below were executed on a **Production** instance of ClickHouse Cloud. For more information see
+["Playground specifications"](/getting-started/playground#specifications).
+:::
 
 ## Create the table trips {#create-the-table-trips}
 
@@ -54,73 +54,77 @@ ENGINE = MergeTree
 PRIMARY KEY (pickup_datetime, dropoff_datetime);
 ```
 
-## Load the data directly from object storage {#load-the-data-directly-from-object-storage}
+## Load the Data directly from Object Storage {#load-the-data-directly-from-object-storage}
 
 Users' can grab a small subset of the data (3 million rows) for getting familiar with it. The data is in TSV files in object storage, which is easily streamed into
-ClickHouse Cloud using the `s3` table function.
+ClickHouse Cloud using the `s3` table function. 
 
 The same data is stored in both S3 and GCS; choose either tab.
 
 <Tabs groupId="storageVendor">
 <TabItem value="s3" label="S3">
+
 The following command streams three files from an S3 bucket into the `trips_small` table (the `{0..2}` syntax is a wildcard for the values 0, 1, and 2):
+
 ```sql
 INSERT INTO nyc_taxi.trips_small
 SELECT
-trip_id,
-pickup_datetime,
-dropoff_datetime,
-pickup_longitude,
-pickup_latitude,
-dropoff_longitude,
-dropoff_latitude,
-passenger_count,
-trip_distance,
-fare_amount,
-extra,
-tip_amount,
-tolls_amount,
-total_amount,
-payment_type,
-pickup_ntaname,
-dropoff_ntaname
+    trip_id,
+    pickup_datetime,
+    dropoff_datetime,
+    pickup_longitude,
+    pickup_latitude,
+    dropoff_longitude,
+    dropoff_latitude,
+    passenger_count,
+    trip_distance,
+    fare_amount,
+    extra,
+    tip_amount,
+    tolls_amount,
+    total_amount,
+    payment_type,
+    pickup_ntaname,
+    dropoff_ntaname
 FROM s3(
-'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{0..2}.gz',
-'TabSeparatedWithNames'
+    'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{0..2}.gz',
+    'TabSeparatedWithNames'
 );
 ```
 </TabItem>
 <TabItem value="gcs" label="GCS" default>
+
 The following command streams three files from a GCS bucket into the `trips` table (the `{0..2}` syntax is a wildcard for the values 0, 1, and 2):
+
 ```sql
 INSERT INTO nyc_taxi.trips_small
 SELECT
-trip_id,
-pickup_datetime,
-dropoff_datetime,
-pickup_longitude,
-pickup_latitude,
-dropoff_longitude,
-dropoff_latitude,
-passenger_count,
-trip_distance,
-fare_amount,
-extra,
-tip_amount,
-tolls_amount,
-total_amount,
-payment_type,
-pickup_ntaname,
-dropoff_ntaname
+    trip_id,
+    pickup_datetime,
+    dropoff_datetime,
+    pickup_longitude,
+    pickup_latitude,
+    dropoff_longitude,
+    dropoff_latitude,
+    passenger_count,
+    trip_distance,
+    fare_amount,
+    extra,
+    tip_amount,
+    tolls_amount,
+    total_amount,
+    payment_type,
+    pickup_ntaname,
+    dropoff_ntaname
 FROM gcs(
-'https://storage.googleapis.com/clickhouse-public-datasets/nyc-taxi/trips_{0..2}.gz',
-'TabSeparatedWithNames'
+    'https://storage.googleapis.com/clickhouse-public-datasets/nyc-taxi/trips_{0..2}.gz',
+    'TabSeparatedWithNames'
 );
 ```
 </TabItem>
 </Tabs>
 
-## Sample queries {#sample-queries}
+## Sample Queries {#sample-queries}
 
 The following queries are executed on the sample described above. Users can run the sample queries on the full dataset in [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19), modifying the queries below to use the table `nyc_taxi.trips`.
 
@@ -176,7 +180,7 @@ GROUP BY passenger_count
 ORDER BY passenger_count ASC
 ```
 
-## Download of prepared partitions {#download-of-prepared-partitions}
+## Download of Prepared Partitions {#download-of-prepared-partitions}
 
 :::note
 The following steps provide information about the original dataset, and a method for loading prepared partitions into a self-managed ClickHouse server environment.
@@ -202,7 +206,7 @@ $ clickhouse-client --query "select count(*) from datasets.trips_mergetree"
 If you will run the queries described below, you have to use the full table name, `datasets.trips_mergetree`.
 :::
 
-## Results on single server {#results-on-single-server}
+## Results on Single Server {#results-on-single-server}
 
 Q1:
 

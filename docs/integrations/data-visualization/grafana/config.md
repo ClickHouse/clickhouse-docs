@@ -27,7 +27,7 @@ This page shows a list of options available for configuration in the ClickHouse 
 
 For a quick overview of all the options, a full list of config options can be found [here](#all-yaml-options).
 
-## Common settings {#common-settings}
+## Common Settings {#common-settings}
 
 Example configuration screen:
 <Image size="sm" img={config_common} alt="Example secure native config" border />
@@ -57,13 +57,13 @@ secureJsonData:
 
 Note that a `version` property is added when the configuration is saved from the UI. This shows the version of the plugin that the config was saved with.
 
-### HTTP protocol {#http-protocol}
+### HTTP Protocol {#http-protocol}
 
 More settings will be displayed if you choose to connect via the HTTP protocol.
 
 <Image size="md" img={config_http} alt="Extra HTTP config options" border />
 
-#### HTTP path {#http-path}
+#### HTTP Path {#http-path}
 
 If your HTTP server is exposed under a different URL path, you can add that here.
 
@@ -73,7 +73,7 @@ jsonData:
   path: additional/path/example
 ```
 
-#### Custom HTTP headers {#custom-http-headers}
+#### Custom HTTP Headers {#custom-http-headers}
 
 You can add custom headers to the requests sent to your server.
 
@@ -89,8 +89,8 @@ Example YAML for plain/secure headers:
 jsonData:
   httpHeaders:
   - name: X-Example-Plain-Header
-      value: plain text value
-      secure: false
+    value: plain text value
+    secure: false
   - name: X-Example-Secure-Header
     # "value" is excluded
     secure: true
@@ -98,7 +98,7 @@ secureJsonData:
   secureHttpHeaders.X-Example-Secure-Header: secure header value
 ```
 
-## Additional settings {#additional-settings}
+## Additional Settings {#additional-settings}
 
 These additional settings are optional.
 
@@ -185,7 +185,7 @@ jsonData:
     serviceTagsColumn:   <string>    # service tags column. This is expected to be a map type.
 ```
 
-### Column aliases {#column-aliases}
+### Column Aliases {#column-aliases}
 
 Column aliasing is a convenient way to query your data under different names and types.
 With aliasing, you can take a nested schema and flatten it so it can be easily selected in Grafana.
@@ -196,7 +196,7 @@ Aliasing may be relevant to you if:
 - You store JSON as strings
 - You often apply functions to transform the columns you select
 
-#### Table-defined ALIAS columns {#table-defined-alias-columns}
+#### Table-defined ALIAS Columns {#table-defined-alias-columns}
 
 ClickHouse has column aliasing built-in and works with Grafana out of the box.
 Alias columns can be defined directly on the table.
@@ -214,7 +214,7 @@ Table-defined aliases will not be returned with `SELECT *`, but this can be conf
 
 For more info, read the documentation for the [ALIAS](/sql-reference/statements/create/table#alias) column type.
 
-#### Column alias tables {#column-alias-tables}
+#### Column Alias Tables {#column-alias-tables}
 
 By default, Grafana will provide column suggestions based on the response from `DESC table`.
 In some cases, you may want to completely override the columns that Grafana sees.
@@ -252,7 +252,7 @@ Now Grafana will see the results of the alias table instead of the results from 
 
 Both types of aliasing can be used to perform complex type conversions or JSON field extraction.
 
-## All YAML options {#all-yaml-options}
+## All YAML Options {#all-yaml-options}
 
 These are all of the YAML configuration options made available by the plugin.
 Some fields have example values while others simply show the field's type.
@@ -262,9 +262,9 @@ See [Grafana documentation](https://grafana.com/docs/grafana/latest/administrati
 ```yaml
 datasources:
   - name: Example ClickHouse
-      uid: clickhouse-example
-      type: grafana-clickhouse-datasource
-      jsonData:
+    uid: clickhouse-example
+    type: grafana-clickhouse-datasource
+    jsonData:
       host: 127.0.0.1
       port: 9000
       protocol: native
@@ -307,9 +307,9 @@ datasources:
         startTimeColumn: <string>
         tagsColumn: <string>
         serviceTagsColumn: <string>
-      secureJsonData:
+    secureJsonData:
       tlsCACert:     <string>
       tlsClientCert: <string>
       tlsClientKey:  <string>
       secureHttpHeaders.X-Example-Secure-Header: secure header value
-      ```
+```

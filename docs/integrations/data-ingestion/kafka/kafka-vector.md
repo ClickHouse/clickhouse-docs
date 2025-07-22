@@ -30,18 +30,18 @@ Vector is distributed under the [MPL-2.0 License](https://github.com/vectordotde
 
 1. Create the Kafka `github` topic and insert the [Github dataset](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson).
 
-    ```bash
-    cat /opt/data/github/github_all_columns.ndjson | kcat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username> -X sasl.password=<password> -t github
-    ```
+```bash
+cat /opt/data/github/github_all_columns.ndjson | kcat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username> -X sasl.password=<password> -t github
+```
 
-    This dataset consists of 200,000 rows focused on the `ClickHouse/ClickHouse` repository.
+This dataset consists of 200,000 rows focused on the `ClickHouse/ClickHouse` repository.
 
 2. Ensure the target table is created. Below we use the default database.
 
-    ```sql
+```sql
 
-    CREATE TABLE github
-    (
+CREATE TABLE github
+(
     file_time DateTime,
     event_type Enum('CommitCommentEvent' = 1, 'CreateEvent' = 2, 'DeleteEvent' = 3, 'ForkEvent' = 4,
                     'GollumEvent' = 5, 'IssueCommentEvent' = 6, 'IssuesEvent' = 7, 'MemberEvent' = 8, 'PublicEvent' = 9, 'PullRequestEvent' = 10, 'PullRequestReviewCommentEvent' = 11, 'PushEvent' = 12, 'ReleaseEvent' = 13, 'SponsorshipEvent' = 14, 'WatchEvent' = 15, 'GistEvent' = 16, 'FollowEvent' = 17, 'DownloadEvent' = 18, 'PullRequestReviewEvent' = 19, 'ForkApplyEvent' = 20, 'Event' = 21, 'TeamAddEvent' = 22),
@@ -68,41 +68,41 @@ Vector is distributed under the [MPL-2.0 License](https://github.com/vectordotde
     merged_by LowCardinality(String),
     review_comments UInt32,
     member_login LowCardinality(String)
-    ) ENGINE = MergeTree ORDER BY (event_type, repo_name, created_at);
+) ENGINE = MergeTree ORDER BY (event_type, repo_name, created_at);
 
-    ```
+```
 
 3. [Download and install Vector](https://vector.dev/docs/setup/quickstart/). Create a `kafka.toml` configuration file and modify the values for your Kafka and ClickHouse instances.
 
-    ```toml
-    [sources.github]
-    type = "kafka"
-    auto_offset_reset = "smallest"
-    bootstrap_servers = "<kafka_host>:<kafka_port>"
-    group_id = "vector"
-    topics = [ "github" ]
-    tls.enabled = true
-    sasl.enabled = true
-    sasl.mechanism = "PLAIN"
-    sasl.username = "<username>"
-    sasl.password = "<password>"
-    decoding.codec = "json"
+```toml
+[sources.github]
+type = "kafka"
+auto_offset_reset = "smallest"
+bootstrap_servers = "<kafka_host>:<kafka_port>"
+group_id = "vector"
+topics = [ "github" ]
+tls.enabled = true
+sasl.enabled = true
+sasl.mechanism = "PLAIN"
+sasl.username = "<username>"
+sasl.password = "<password>"
+decoding.codec = "json"
 
-    [sinks.clickhouse]
-    type = "clickhouse"
-    inputs = ["github"]
-    endpoint = "http://localhost:8123"
-    database = "default"
-    table = "github"
-    skip_unknown_fields = true
-    auth.strategy = "basic"
-    auth.user = "username"
-    auth.password = "password"
-    buffer.max_events = 10000
-    batch.timeout_secs = 1
-    ```
+[sinks.clickhouse]
+type = "clickhouse"
+inputs = ["github"]
+endpoint = "http://localhost:8123"
+database = "default"
+table = "github"
+skip_unknown_fields = true
+auth.strategy = "basic"
+auth.user = "username"
+auth.password = "password"
+buffer.max_events = 10000
+batch.timeout_secs = 1
+```
 
-    A few important notes on this configuration and behavior of Vector:
+A few important notes on this configuration and behavior of Vector:
 
 - This example has been tested against Confluent Cloud. Therefore, the `sasl.*` and `ssl.enabled` security options may not be appropriate in self-managed cases.
 - A protocol prefix is not required for the configuration parameter `bootstrap_servers` e.g. `pkc-2396y.us-east-1.aws.confluent.cloud:9092`
@@ -114,18 +114,18 @@ Vector is distributed under the [MPL-2.0 License](https://github.com/vectordotde
 
 4. Start Vector
 
-    ```bash
-    vector --config ./kafka.toml
-    ```
+```bash
+vector --config ./kafka.toml
+```
 
-    By default, a [health check](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#healthcheck) is required before insertions begin to ClickHouse. This ensures connectivity can be established and the schema read. Prepend `VECTOR_LOG=debug`to obtain further logging which can be helpful should you encounter issues.
+By default, a [health check](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#healthcheck) is required before insertions begin to ClickHouse. This ensures connectivity can be established and the schema read. Prepend `VECTOR_LOG=debug`to obtain further logging which can be helpful should you encounter issues.
 
 5. Confirm the insertion of the data.
 
-    ```sql
-    SELECT count() AS count FROM github;
-    ```
+```sql
+SELECT count() AS count FROM github;
+```
 
-    | count |
-    | :--- |
-    | 200000 |
+| count |
+| :--- |
+| 200000 |

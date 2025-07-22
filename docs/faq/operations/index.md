@@ -17,6 +17,6 @@ description: 'Landing page for questions about operating ClickHouse servers and 
 - [Can you update or delete rows in ClickHouse?](/guides/developer/mutations.md)
 - [Does ClickHouse support multi-region replication?](/faq/operations/multi-region-replication.md)
 
-    :::info Don't see what you're looking for?
-    Check out our [Knowledge Base](/knowledgebase/) and also browse the many helpful articles found here in the documentation.
-    :::
+:::info Don't see what you're looking for?
+Check out our [Knowledge Base](/knowledgebase/) and also browse the many helpful articles found here in the documentation.
+:::

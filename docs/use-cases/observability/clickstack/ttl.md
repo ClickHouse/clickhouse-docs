@@ -54,13 +54,13 @@ TTL TimestampTime + toIntervalDay(3)
 SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1
 ```
 
-Partitioning in ClickHouse allows data to be logically separated on disk according to a column or SQL expression. By separating data logically, each partition can be operated on independently e.g. deleted when it expires according to a TTL policy.
+Partitioning in ClickHouse allows data to be logically separated on disk according to a column or SQL expression. By separating data logically, each partition can be operated on independently e.g. deleted when it expires according to a TTL policy. 
 
 As shown in the above example, partitioning is specified on a table when it is initially defined via the `PARTITION BY` clause. This clause can contain an SQL expression on any column/s, the results of which will define which partition a row is sent to. This causes data to be logically associated (via a common folder name prefix) with each partition on the disk, which can then be queried in isolation. For the example above, the default `otel_logs` schema partitions by day using the expression `toDate(Timestamp).` As rows are inserted into ClickHouse, this expression will be evaluated against each row and routed to the resulting partition if it exists (if the row is the first for a day, the partition will be created). For further details on partitioning and its other applications, see ["Table Partitions"](/partitions).
 
 <Image img={observability_14} alt="Partitions" size="lg"/>
 
-The table schema also includes a `TTL TimestampTime + toIntervalDay(3)` and setting `ttl_only_drop_parts = 1`. The former clause ensures data will be dropped once it is older than 3 days. The setting `ttl_only_drop_parts = 1` enforces only expiring data parts where all of the data has expired (vs. attempting to partially delete rows). With partitioning ensuring data from separate days is never "merged," data can thus be efficiently dropped.
+The table schema also includes a `TTL TimestampTime + toIntervalDay(3)` and setting `ttl_only_drop_parts = 1`. The former clause ensures data will be dropped once it is older than 3 days. The setting `ttl_only_drop_parts = 1` enforces only expiring data parts where all of the data has expired (vs. attempting to partially delete rows). With partitioning ensuring data from separate days is never "merged," data can thus be efficiently dropped. 
 
 :::important `ttl_only_drop_parts`
 We recommend always using the setting [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts). When this setting is enabled, ClickHouse drops a whole part when all rows in it are expired. Dropping whole parts instead of partial cleaning TTL-d rows (achieved through resource-intensive mutations when `ttl_only_drop_parts=0`) allows having shorter `merge_with_ttl_timeout` times and lower impact on system performance. If data is partitioned by the same unit at which you perform TTL expiration e.g. day, parts will naturally only contain data from the defined interval. This will ensure `ttl_only_drop_parts=1` can be efficiently applied.
@@ -78,19 +78,19 @@ To modify TTL users can either:
 
 1. **Modify the table schemas (recommended)**. This requires connecting to the ClickHouse instance e.g. using the [clickhouse-client](/interfaces/cli) or [Cloud SQL Console](/cloud/get-started/sql-console). For example, we can modify the TTL for the `otel_logs` table using the following DDL:
 
-    ```sql
-    ALTER TABLE default.otel_logs
-    MODIFY TTL TimestampTime + toIntervalDay(7);
-    ```
+```sql
+ALTER TABLE default.otel_logs
+MODIFY TTL TimestampTime + toIntervalDay(7);
+```
 
 2. **Modify the OTel collector**. The ClickStack OpenTelemetry collector creates tables in ClickHouse if they do not exist. This is achieved via the ClickHouse exporter, which itself exposes a `ttl` parameter used for controlling the default TTL expression e.g.
 
-    ```yaml
-    exporters:
-    clickhouse:
-    endpoint: tcp://localhost:9000?dial_timeout=10s&compress=lz4&async_insert=1
-    ttl: 72h
-    ```
+```yaml
+exporters:
+ clickhouse:
+   endpoint: tcp://localhost:9000?dial_timeout=10s&compress=lz4&async_insert=1
+   ttl: 72h
+```
 
 ### Column level TTL {#column-level-ttl}
 

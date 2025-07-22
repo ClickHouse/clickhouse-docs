@@ -10,7 +10,7 @@ show_related_blogs: true
 import postgres_inserts from '@site/static/images/guides/postgres-inserts.png';
 import Image from '@theme/IdealImage';
 
-## Basic example {#basic-example}
+## Basic Example {#basic-example}
 
 You can use the familiar `INSERT INTO TABLE` command with ClickHouse. Let's insert some data into the table that we created in the start guide ["Creating Tables in ClickHouse"](./creating-tables).
 
@@ -38,7 +38,7 @@ user_id message                                             timestamp           
 102         Sort your data based on your commonly-used queries  2024-11-13 00:00:00     2.718
 ```
 
-## Inserting into ClickHouse vs. OLTP databases {#inserting-into-clickhouse-vs-oltp-databases}
+## Inserting into ClickHouse vs. OLTP Databases {#inserting-into-clickhouse-vs-oltp-databases}
 
 As an OLAP (Online Analytical Processing) database, ClickHouse is optimized for high performance and scalability, allowing potentially millions of rows to be inserted per second.
 This is achieved through a combination of a highly parallelized architecture and efficient column-oriented compression, but with compromises on immediate consistency.
@@ -51,7 +51,7 @@ These transactions can potentially involve a small number of rows at a time, wit
 To achieve high insert performance while maintaining strong consistency guarantees, users should adhere to the simple rules described below when inserting data into ClickHouse.
 Following these rules will help to avoid issues users commonly encounter the first time they use ClickHouse, and try to replicate an insert strategy that works for OLTP databases.
 
-## Best practices for Inserts {#best-practices-for-inserts}
+## Best Practices for Inserts {#best-practices-for-inserts}
 
 ### Insert in large batch sizes {#insert-in-large-batch-sizes}
 
@@ -72,8 +72,8 @@ This means inserts remain resilient in the following cases:
 - 1. If the node receiving the data has issues, the insert query will time out (or give a more specific error) and not get an acknowledgment.
 - 2. If the data got written by the node but the acknowledgement can't be returned to the sender of the query because of network interruptions, the sender will either get a time-out or a network error.
 
-    From the client's perspective, (i) and (ii) can be hard to distinguish. However, in both cases, the unacknowledged insert can just be immediately retried.
-    As long as the retried insert query contains the same data in the same order, ClickHouse will automatically ignore the retried insert if the (unacknowledged) original insert succeeded.
+From the client's perspective, (i) and (ii) can be hard to distinguish. However, in both cases, the unacknowledged insert can just be immediately retried.
+As long as the retried insert query contains the same data in the same order, ClickHouse will automatically ignore the retried insert if the (unacknowledged) original insert succeeded.
 
 ### Insert to a MergeTree table or a distributed table {#insert-to-a-mergetree-table-or-a-distributed-table}
 
@@ -117,7 +117,7 @@ These are optimized to ensure that inserts are performed correctly and natively 
 
 See [Clients and Drivers](/interfaces/cli) for a full list of available ClickHouse clients and drivers.
 
-### Prefer the native format {#prefer-the-native-format}
+### Prefer the Native format {#prefer-the-native-format}
 
 ClickHouse supports many [input formats](/interfaces/formats) at insert (and query) time.
 This is a significant difference with OLTP databases and makes loading data from external sources much easier - especially when coupled with [table functions](/sql-reference/table-functions) and the ability to load data from files on disk.
@@ -147,11 +147,11 @@ See [HTTP Interface](/interfaces/http) for further details.
 For loading data from Postgres, users can use:
 
 - `PeerDB by ClickHouse`, an ETL tool specifically designed for PostgreSQL database replication. This is available in both:
-    - ClickHouse Cloud - available through our [new connector](/integrations/clickpipes/postgres) in ClickPipes, our managed ingestion service.
-    - Self-managed - via the [open-source project](https://github.com/PeerDB-io/peerdb).
+  - ClickHouse Cloud - available through our [new connector](/integrations/clickpipes/postgres) in ClickPipes, our managed ingestion service.
+  - Self-managed - via the [open-source project](https://github.com/PeerDB-io/peerdb).
 - The [PostgreSQL table engine](/integrations/postgresql#using-the-postgresql-table-engine) to read data directly as shown in previous examples. Typically appropriate if batch replication based on a known watermark, e.g., timestamp, is sufficient or if it's a one-off migration. This approach can scale to 10's millions of rows. Users looking to migrate larger datasets should consider multiple requests, each dealing with a chunk of the data. Staging tables can be used for each chunk prior to its partitions being moved to a final table. This allows failed requests to be retried. For further details on this bulk-loading strategy, see here.
 - Data can be exported from PostgreSQL in CSV format. This can then be inserted into ClickHouse from either local files or via object storage using table functions.
 
-    :::note Need help inserting large datasets?
-    If you need help inserting large datasets or encounter any errors when importing data into ClickHouse Cloud, please contact us at support@clickhouse.com and we can assist.
-    :::
+:::note Need help inserting large datasets?
+If you need help inserting large datasets or encounter any errors when importing data into ClickHouse Cloud, please contact us at support@clickhouse.com and we can assist.
+:::

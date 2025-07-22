@@ -67,11 +67,11 @@ We recommend starting with a **single shard** and scaling vertically. This confi
 
 - **[ClickHouse Cloud](https://clickhouse.com/cloud)**: Uses a single-shard, multi-replica architecture by default. Storage and compute scale independently, making it ideal for observability use cases with unpredictable ingest patterns and read-heavy workloads.
 - **ClickHouse OSS**: In self-managed deployments, we recommend:
-    - Starting with a single shard
-    - Scaling vertically with additional CPU and RAM
-    - Using [tiered storage](/observability/managing-data#storage-tiers) to extend local disk with S3-compatible object storage
-    - Using [`ReplicatedMergeTree`](/engines/table-engines/mergetree-family/replication) if high availability is required
-    - For fault tolerance, [1 replica of your shard](/engines/table-engines/mergetree-family/replication) is typically sufficient in Observability workloads.
+  - Starting with a single shard
+  - Scaling vertically with additional CPU and RAM
+  - Using [tiered storage](/observability/managing-data#storage-tiers) to extend local disk with S3-compatible object storage
+  - Using [`ReplicatedMergeTree`](/engines/table-engines/mergetree-family/replication) if high availability is required
+  - For fault tolerance, [1 replica of your shard](/engines/table-engines/mergetree-family/replication) is typically sufficient in Observability workloads.
 
 ### When to shard {#when-to-shard}
 

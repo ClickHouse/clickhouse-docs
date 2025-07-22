@@ -34,19 +34,19 @@ follow the setup guide bellow.
 
 <TOCInline toc={toc}/>
 
-## Setup required prior usage {#setup-required-prior-usage}
+## Setup Required Prior Usage {#setup-required-prior-usage}
 
 1. Gather your connection details
-    <ConnectionDetails />
+   <ConnectionDetails />
 
 2. Download and install  <a href="https://www.tableau.com/products/desktop/download" target="_blank">Tableau
-    desktop</a>.
+   desktop</a>.
 3. Follow `clickhouse-tableau-connector-jdbc` instructions to download the compatible version
-    of <a href="https://github.com/ClickHouse/clickhouse-java/releases/" target="_blank">ClickHouse JDBC driver</a>.
+   of <a href="https://github.com/ClickHouse/clickhouse-java/releases/" target="_blank">ClickHouse JDBC driver</a>.
 
-    :::note
-    Make sure you download the **clickhouse-jdbc-x.x.x-shaded-all.jar** JAR file. Currently, we recommended using versions `0.8.X`.
-    :::
+:::note
+Make sure you download the **clickhouse-jdbc-x.x.x-shaded-all.jar** JAR file. Currently, we recommended using versions `0.8.X`.
+:::
 
 4. Store the JDBC driver in the following folder (based on your OS, if the folder doesn't exist you can create it):
     - macOS: `~/Library/Tableau/Drivers`
@@ -62,21 +62,24 @@ source in Tableau that connects to the **TPCD** database in ClickHouse.
 
 2. From the left-side menu, click on **More** under the **To a Server** section. Search for **ClickHouse by ClickHouse** in the available connectors list:
 
-    <Image size="md" img={tableau_connecttoserver} alt="Tableau connection screen showing the connector selection menu with ClickHouse by ClickHouse option highlighted" border />
+<Image size="md" img={tableau_connecttoserver} alt="Tableau connection screen showing the connector selection menu with ClickHouse by ClickHouse option highlighted" border />
+<br/>
 
-    :::note
-    Don't see the **ClickHouse by ClickHouse** connector in your connectors list? It might be related to an old Tableau Desktop version.
-    To solve that, consider upgrading your Tableau Desktop application, or [install the connector manually](#install-the-connector-manually).
-    :::
+:::note
+Don't see the **ClickHouse by ClickHouse** connector in your connectors list? It might be related to an old Tableau Desktop version.
+To solve that, consider upgrading your Tableau Desktop application, or [install the connector manually](#install-the-connector-manually).
+:::
 
 3. Click on **ClickHouse by ClickHouse**  and the following dialog will pop up:
 
-    <Image size="md" img={tableau_connector_details} alt="Tableau connector installation dialog showing ClickHouse JDBC connector details and install button" border />
-
+<Image size="md" img={tableau_connector_details} alt="Tableau connector installation dialog showing ClickHouse JDBC connector details and install button" border />
+<br/>
+ 
 4. Click **Install and Restart Tableau**. Restart the application.
 5. After restarting, the connector will have its full name: `ClickHouse JDBC by ClickHouse, Inc.`. When clicking it the following dialog will pop up:
 
-    <Image size="md" img={tableau_connector_dialog} alt="ClickHouse connection dialog in Tableau showing fields for server, port, database, username and password" border />
+<Image size="md" img={tableau_connector_dialog} alt="ClickHouse connection dialog in Tableau showing fields for server, port, database, username and password" border />
+<br/>
 
 6. Enter your connection details:
 
@@ -88,25 +91,28 @@ source in Tableau that connects to the **TPCD** database in ClickHouse.
     | Username | **default**                                            |
     | Password | *\*****                                                |
 
-    :::note
-    When working with ClickHouse cloud, it's required to enable the SSL checkbox for secured connections.
-    :::
+:::note
+When working with ClickHouse cloud, it's required to enable the SSL checkbox for secured connections.
+:::
+<br/>
 
-    :::note
-    Our ClickHouse database is named **TPCD**, but you must set the **Database** to **default** in the dialog above, then
-    select **TPCD** for the **Schema** in the next step. (This is likely due to a bug in the connector, so this behavior
-    could change, but for now you must use **default** as the database.)
-    :::
+:::note
+Our ClickHouse database is named **TPCD**, but you must set the **Database** to **default** in the dialog above, then
+select **TPCD** for the **Schema** in the next step. (This is likely due to a bug in the connector, so this behavior
+could change, but for now you must use **default** as the database.)
+:::
 
 7. Click the **Sign In** button and you should see a new Tableau workbook:
 
-    <Image size="md" img={tableau_newworkbook} alt="New Tableau workbook showing the initial connection screen with database selection options" border />
+<Image size="md" img={tableau_newworkbook} alt="New Tableau workbook showing the initial connection screen with database selection options" border />
+<br/>
 
 8. Select **TPCD** from the **Schema** dropdown and you should see the list of tables in **TPCD**:
 
-    <Image size="md" img={tableau_tpcdschema} alt="Tableau schema selection showing TPCD database tables including CUSTOMER, LINEITEM, NATION, ORDERS, and others" border />
+<Image size="md" img={tableau_tpcdschema} alt="Tableau schema selection showing TPCD database tables including CUSTOMER, LINEITEM, NATION, ORDERS, and others" border />
+<br/>
 
-    You are now ready to build some visualizations in Tableau!
+You are now ready to build some visualizations in Tableau!
 
 ## Building Visualizations in Tableau {#building-visualizations-in-tableau}
 
@@ -114,65 +120,66 @@ Now that have a ClickHouse data source configured in Tableau, let's visualize th
 
 1. Drag the **CUSTOMER** table onto the workbook. Notice the columns appear, but the data table is empty:
 
-    <Image size="md" img={tableau_workbook1} alt="Tableau workbook with CUSTOMER table dragged to canvas showing column headers but no data" border />
+<Image size="md" img={tableau_workbook1} alt="Tableau workbook with CUSTOMER table dragged to canvas showing column headers but no data" border />
+<br/>
 
 2. Click the **Update Now** button and 100 rows from **CUSTOMER** will populate the table.
 
 3. Drag the **ORDERS** table into the workbook, then set **Custkey** as the relationship field between the two tables:
 
-    <Image size="md" img={tableau_workbook2} alt="Tableau relationship editor showing connection between CUSTOMER and ORDERS tables using Custkey field" border />
+<Image size="md" img={tableau_workbook2} alt="Tableau relationship editor showing connection between CUSTOMER and ORDERS tables using Custkey field" border />
+<br/>
 
 4. You now have the **ORDERS** and **LINEITEM** tables associated with each other as your data source, so you can use
-    this relationship to answer questions about the data. Select the **Sheet 1** tab at the bottom of the workbook.
+   this relationship to answer questions about the data. Select the **Sheet 1** tab at the bottom of the workbook.
 
-    <Image size="md" img={tableau_workbook3} alt="Tableau worksheet showing the dimensions and measures from ClickHouse tables available for analysis" border />
+<Image size="md" img={tableau_workbook3} alt="Tableau worksheet showing the dimensions and measures from ClickHouse tables available for analysis" border />
+<br/>
 
-5. Suppose you want to know how many specific items were ordered each year. Drag **OrderDate** from **ORDERS** into the
-    **Columns** section (the horizontal field), then drag **Quantity** from **LINEITEM** into the **Rows**. Tableau will
-    generate the following line chart:
+5. Suppose you want to know how many specific items were ordered each year. Drag **OrderDate** from **ORDERS** into the **Columns** section (the horizontal field), then drag **Quantity** from **LINEITEM** into the **Rows**. Tableau will   generate the following line chart:
 
-    <Image size="sm" img={tableau_workbook4} alt="Tableau line chart showing quantity ordered by year from ClickHouse data" border />
+<Image size="sm" img={tableau_workbook4} alt="Tableau line chart showing quantity ordered by year from ClickHouse data" border />
+<br/>
 
-    Not a very exciting line chart, but the dataset was generated by a script and built for testing query performance, so
-    you will notice there is not a lot of variations in the simulated orders of the TCPD data.
+Not a very exciting line chart, but the dataset was generated by a script and built for testing query performance, so
+you will notice there is not a lot of variations in the simulated orders of the TCPD data.
 
 6. Suppose you want to know the average order amount (in dollars) by quarter and also by shipping mode (air, mail, ship,
-    truck, etc.):
+   truck, etc.):
 
     - Click the **New Worksheet** tab create a new sheet
     - Drag **OrderDate** from **ORDERS** into **Columns** and change it from **Year** to **Quarter**
     - Drag **Shipmode** from **LINEITEM** into **Rows**
 
-    You should see the following:
+You should see the following:
 
-    <Image size="sm" img={tableau_workbook5} alt="Tableau crosstab view with quarters as columns and shipment modes as rows" border />
+<Image size="sm" img={tableau_workbook5} alt="Tableau crosstab view with quarters as columns and shipment modes as rows" border />
+<br/>
 
-7. The **Abc** values are just filling in the space until you drag a metric onto the table. Drag **Totalprice** from *
-    *ORDERS** onto the table. Notice the default calculation is to **SUM** the **Totalprices**:
+7. The **Abc** values are just filling in the space until you drag a metric onto the table. Drag **Totalprice** from **ORDERS** onto the table. Notice the default calculation is to **SUM** the **Totalprices**:
+<Image size="md" img={tableau_workbook6} alt="Tableau crosstab showing sum of total price by quarter and shipment mode" border />
+<br/>
 
-    <Image size="md" img={tableau_workbook6} alt="Tableau crosstab showing sum of total price by quarter and shipment mode" border />
+8. Click on **SUM** and change the **Measure** to **Average**. From the same dropdown menu, select **Format** change the **Numbers** to **Currency (Standard)**:
+<Image size="md" img={tableau_workbook7} alt="Tableau crosstab showing average order price by quarter and shipment mode with currency formatting" border />
+<br/>
 
-8. Click on **SUM** and change the **Measure** to **Average**. From the same dropdown menu, select **Format** change the
-    **Numbers** to **Currency (Standard)**:
+Well done! You have successfully connected Tableau to ClickHouse, and you have opened up a whole world of possibilities
+for analyzing and visualizing your ClickHouse data.
 
-    <Image size="md" img={tableau_workbook7} alt="Tableau crosstab showing average order price by quarter and shipment mode with currency formatting" border />
-
-    Well done! You have successfully connected Tableau to ClickHouse, and you have opened up a whole world of possibilities
-    for analyzing and visualizing your ClickHouse data.
-
-## Install the connector manually {#install-the-connector-manually}
+## Install the Connector Manually {#install-the-connector-manually}
 
 In case you use an outdated Tableau Desktop version that doesn't include the connector by default, you can install it manually by following these steps:
 
 1. Download the latest taco file from [Tableau Exchange](https://exchange.tableau.com/products/1064)
 2. Place the taco file in
-    * macOS: `~/Documents/My Tableau Repository/Connectors`
-    * Windows: `C:\Users\[Windows User]\Documents\My Tableau Repository\Connectors`
+   * macOS: `~/Documents/My Tableau Repository/Connectors`
+   * Windows: `C:\Users\[Windows User]\Documents\My Tableau Repository\Connectors`
 3. Restart Tableau Desktop, if your setup went successfully, you will set the connector under the `New Data Source` section.
 
-## Connection and analysis tips {#connection-and-analysis-tips}
+## Connection and Analysis Tips {#connection-and-analysis-tips}
 
-For more guidance on optimizing your Tableau-ClickHouse integration,
+For more guidance on optimizing your Tableau-ClickHouse integration, 
 please visit [Connection Tips](/integrations/tableau/connection-tips) and [Analysis Tips](/integrations/tableau/analysis-tips).
 
 ## Tests {#tests}

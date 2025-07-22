@@ -14,7 +14,7 @@ The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be
 function to calculate quantiles of timing values for rows where the condition is true,
 using the `quantilesTimingIf` aggregate combinator function.
 
-## Example usage {#example-usage}
+## Example Usage {#example-usage}
 
 In this example, we'll create a table that stores API response times for different endpoints,
 and we'll use `quantilesTimingIf` to calculate response time quantiles for successful requests.
@@ -70,11 +70,11 @@ The returned array contains the following quantiles in order:
 - 1.0 (maximum)
 
 ```response title="Response"
-    ┌─endpoint─┬─response_time_quantiles─────────────────────────────────────────────┐
- 1. │ orders   │ [82, 87, 92, 98, 103, 104, 105]                                     │
- 2. │ products │ [45, 47, 49, 51, 52, 52, 53]                                        │
- 3. │ users    │ [nan, nan, nan, nan, nan, nan, nan]                                 │
-    └──────────┴─────────────────────────────────────────────────────────────────────┘
+   ┌─endpoint─┬─response_time_quantiles─────────────────────────────────────────────┐
+1. │ orders   │ [82, 87, 92, 98, 103, 104, 105]                                     │
+2. │ products │ [45, 47, 49, 51, 52, 52, 53]                                        │
+3. │ users    │ [nan, nan, nan, nan, nan, nan, nan]                                 │
+   └──────────┴─────────────────────────────────────────────────────────────────────┘
 ```
 
 ## See also {#see-also}

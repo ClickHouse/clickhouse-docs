@@ -15,7 +15,7 @@ import InsertThreads from '@site/static/images/integrations/data-ingestion/s3/in
 import S3Cluster from '@site/static/images/integrations/data-ingestion/s3/s3Cluster.png';
 import HardwareSize from '@site/static/images/integrations/data-ingestion/s3/hardware_size.png';
 
-This section focuses on optimizing performance when reading and inserting data from S3 using the [s3 table functions](/sql-reference/table-functions/s3).
+This section focuses on optimizing performance when reading and inserting data from S3 using the [s3 table functions](/sql-reference/table-functions/s3). 
 
 :::info
 **The lesson described in this guide can be applied to other object storage implementations with their own dedicated table functions such as [GCS](/sql-reference/table-functions/gcs) and [Azure Blob storage](/sql-reference/table-functions/azureBlobStorage).**
@@ -27,7 +27,7 @@ Before tuning threads and block sizes to improve insert performance, we recommen
 
 Two main factors, in addition to hardware size, influence the performance and resource usage of ClickHouse's data insert mechanics (for a single node): **insert block size** and **insert parallelism**.
 
-### Insert block size {#insert-block-size}
+### Insert Block Size {#insert-block-size}
 
 <Image img={InsertMechanics} size="lg" border alt="Insert block size mechanics in ClickHouse" />
 
@@ -35,7 +35,7 @@ When performing an `INSERT INTO SELECT`, ClickHouse receives some data portion, 
 
 The insert block size impacts both the [disk file I/O usage](https://en.wikipedia.org/wiki/Category:Disk_file_systems) and memory usage of a ClickHouse server. Larger insert blocks use more memory but generate larger and fewer initial parts. The fewer parts ClickHouse needs to create for loading a large amount of data, the less disk file I/O and automatic [background merges required](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges).
 
-When using an `INSERT INTO SELECT` query in combination with an integration table engine or a table function, the data is pulled by the ClickHouse server:
+When using an `INSERT INTO SELECT` query in combination with an integration table engine or a table function, the data is pulled by the ClickHouse server: 
 
 <Image img={Pull} size="lg" border alt="Pulling data from external sources in ClickHouse" />
 
@@ -46,7 +46,7 @@ Until the data is completely loaded, the server executes a loop:
 
 ② Write the block into a new part on storage.
 
-Go to ①
+Go to ① 
 ```
 
 In ①, the size depends on the insert block size, which can be controlled with two settings:
@@ -54,13 +54,13 @@ In ①, the size depends on the insert block size, which can be controlled with 
 - [`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows) (default: `1048545` million rows)
 - [`min_insert_block_size_bytes`](/operations/settings/settings#min_insert_block_size_bytes) (default: `256 MiB`)
 
-    When either the specified number of rows is collected in the insert block, or the configured amount of data is reached (whichever happens first), then this will trigger the block being written into a new part. The insert loop continues at step ①.
+When either the specified number of rows is collected in the insert block, or the configured amount of data is reached (whichever happens first), then this will trigger the block being written into a new part. The insert loop continues at step ①.
 
-    Note that the `min_insert_block_size_bytes` value denotes the uncompressed in-memory block size (and not the compressed on-disk part size). Also, note that the created blocks and parts rarely precisely contain the configured number of rows or bytes because ClickHouse streams and [processes](https://clickhouse.com/company/events/query-performance-introspection) data row-[block](/operations/settings/settings#max_block_size)-wise. Therefore, these settings specify minimum thresholds.
+Note that the `min_insert_block_size_bytes` value denotes the uncompressed in-memory block size (and not the compressed on-disk part size). Also, note that the created blocks and parts rarely precisely contain the configured number of rows or bytes because ClickHouse streams and [processes](https://clickhouse.com/company/events/query-performance-introspection) data row-[block](/operations/settings/settings#max_block_size)-wise. Therefore, these settings specify minimum thresholds.
 
 #### Be aware of merges {#be-aware-of-merges}
 
-The smaller the configured insert block size is, the more initial parts get created for a large data load, and the more background part merges are executed concurrently with the data ingestion. This can cause resource contention (CPU and memory) and require additional time (for reaching a [healthy](/operations/settings/merge-tree-settings#parts_to_throw_insert) (3000) number of parts) after the ingestion is finished.
+The smaller the configured insert block size is, the more initial parts get created for a large data load, and the more background part merges are executed concurrently with the data ingestion. This can cause resource contention (CPU and memory) and require additional time (for reaching a [healthy](/operations/settings/merge-tree-settings#parts_to_throw_insert) (3000) number of parts) after the ingestion is finished. 
 
 :::important
 ClickHouse query performance will be negatively impacted if the part count exceeds the [recommended limits](/operations/settings/merge-tree-settings#parts_to_throw_insert).
@@ -86,37 +86,37 @@ Note that [increasing](https://clickhouse.com/blog/supercharge-your-clickhouse-d
 
 Parts that were merged into larger parts are marked as [inactive](/operations/system-tables/parts) and finally deleted after a [configurable](/operations/settings/merge-tree-settings#old_parts_lifetime) number of minutes. Over time, this creates a tree of merged parts (hence the name [`MergeTree`](/engines/table-engines/mergetree-family) table).
 
-### Insert parallelism {#insert-parallelism}
+### Insert Parallelism {#insert-parallelism}
 
 <Image img={ResourceUsage} size="lg" border alt="Resource usage for insert parallelism" />
 
 A ClickHouse server can process and insert data in parallel. The level of insert parallelism impacts the ingest throughput and memory usage of a ClickHouse server. Loading and processing data in parallel requires more main memory but increases the ingest throughput as data is processed faster.
 
-Table functions like s3 allow specifying sets of to-be-loaded-file names via glob patterns. When a glob pattern matches multiple existing files, ClickHouse can parallelize reads across and within these files and insert the data in parallel into a table by utilizing parallel running insert threads (per server):
+Table functions like s3 allow specifying sets of to-be-loaded-file names via glob patterns. When a glob pattern matches multiple existing files, ClickHouse can parallelize reads across and within these files and insert the data in parallel into a table by utilizing parallel running insert threads (per server): 
 
 <Image img={InsertThreads} size="lg" border alt="Parallel insert threads in ClickHouse" />
 
-Until all data from all files is processed, each insert thread executes a loop:
+Until all data from all files is processed, each insert thread executes a loop: 
 
 ```bash
 ① Get the next portion of unprocessed file data (portion size is based on the configured block size) and create an in-memory data block from it.
 
 ② Write the block into a new part on storage.
 
-Go to ①.
+Go to ①. 
 ```
 
 The number of such parallel insert threads can be configured with the [`max_insert_threads`](/operations/settings/settings#max_insert_threads) setting. The default value is `1` for open-source ClickHouse and 4 for [ClickHouse Cloud](https://clickhouse.com/cloud).
 
-With a large number of files, the parallel processing by multiple insert threads works well. It can fully saturate both the available CPU cores and the network bandwidth (for parallel file downloads). In scenarios where just a few large files will be loaded into a table, ClickHouse automatically establishes a high level of data processing parallelism and optimizes network bandwidth usage by spawning additional reader threads per insert thread for reading (downloading) more distinct ranges within large files in parallel.
+With a large number of files, the parallel processing by multiple insert threads works well. It can fully saturate both the available CPU cores and the network bandwidth (for parallel file downloads). In scenarios where just a few large files will be loaded into a table, ClickHouse automatically establishes a high level of data processing parallelism and optimizes network bandwidth usage by spawning additional reader threads per insert thread for reading (downloading) more distinct ranges within large files in parallel. 
 
 For the s3 function and table, parallel downloading of an individual file is determined by the values [max_download_threads](https://clickhouse.com/codebrowser/ClickHouse/src/Core/Settings.h.html#DB::SettingsTraits::Data::max_download_threads) and [max_download_buffer_size](https://clickhouse.com/codebrowser/ClickHouse/src/Core/Settings.h.html#DB::SettingsTraits::Data::max_download_buffer_size). Files will only be downloaded in parallel if their size is greater than `2 * max_download_buffer_size`. By default, the `max_download_buffer_size` default is set to 10MiB. In some cases, you can safely increase this buffer size to 50 MB (`max_download_buffer_size=52428800`), with the aim of ensuring each file was downloaded by a single thread. This can reduce the time each thread spends making S3 calls and thus also lower the S3 wait time. Furthermore, for files that are too small for parallel reading, to increase throughput, ClickHouse automatically prefetches data by pre-reading such files asynchronously.
 
-## Measuring performance {#measuring-performance}
+## Measuring Performance {#measuring-performance}
 
 Optimizing the performance of queries using the S3 table functions is required when both running queries against data in place i.e. ad-hoc querying where only ClickHouse compute is used and the data remains in S3 in its original format, and when inserting data from S3 into a ClickHouse MergeTree table engine. Unless specified the following recommendations apply to both scenarios.
 
-## Impact of hardware size {#impact-of-hardware-size}
+## Impact of Hardware Size {#impact-of-hardware-size}
 
 <Image img={HardwareSize} size="lg" border alt="Impact of hardware size on ClickHouse performance" />
 
@@ -126,9 +126,9 @@ The number of available CPU cores and the size of RAM impacts the:
 - possible level of [insert parallelism](#insert-parallelism)
 - throughput of [background part merges](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges)
 
-    and, therefore, the overall ingest throughput.
+and, therefore, the overall ingest throughput.
 
-## Region locality {#region-locality}
+## Region Locality {#region-locality}
 
 Ensure your buckets are located in the same region as your ClickHouse instances. This simple optimization can dramatically improve throughput performance, especially if you deploy your ClickHouse instances on AWS infrastructure.
 
@@ -144,9 +144,9 @@ ClickHouse can read files stored in S3 buckets in the [supported formats](/inter
 
 ## Example dataset {#example-dataset}
 
-To illustrate further potential optimizations, purposes we will use [the posts from the Stack Overflow dataset](/data-modeling/schema-design#stack-overflow-dataset) - optimizing both the query and insert performance of this data.
+To illustrate further potential optimizations, purposes we will use [the posts from the Stack Overflow dataset](/data-modeling/schema-design#stack-overflow-dataset) - optimizing both the query and insert performance of this data. 
 
-This dataset consists of 189 Parquet files, with one for every month between July 2008 and March 2024.
+This dataset consists of 189 Parquet files, with one for every month between July 2008 and March 2024. 
 
 Note that we use Parquet for performance, per our [recommendations above](#formats), executing all queries on a ClickHouse Cluster located in the same region as the bucket. This cluster has 3 nodes, each with 32GiB of RAM and 8 vCPUs.
 
@@ -187,7 +187,7 @@ In our example we only return a few rows. If measuring the performance of `SELEC
 When reading from queries, the initial query can often appear slower than if the same query is repeated. This can be attributed to both S3's own caching but also the [ClickHouse Schema Inference Cache](/operations/system-tables/schema_inference_cache). This stores the inferred schema for files and means the inference step can be skipped on subsequent accesses, thus reducing query time.
 :::
 
-## Using threads for reads {#using-threads-for-reads}
+## Using Threads for Reads {#using-threads-for-reads}
 
 Read performance on S3 will scale linearly with the number of cores, provided you are not limited by network bandwidth or local I/O. Increasing the number of threads also has memory overhead permutations that users should be aware of. The following can be modified to improve read throughput performance potentially:
 
@@ -196,81 +196,81 @@ Read performance on S3 will scale linearly with the number of cores, provided yo
 * In low thread count scenarios, users may benefit from setting `remote_filesystem_read_method` to "read" to cause the synchronous reading of files from S3.
 * For the s3 function and table, parallel downloading of an individual file is determined by the values [`max_download_threads`](/operations/settings/settings#max_download_threads) and [`max_download_buffer_size`](/operations/settings/settings#max_download_buffer_size). While [`max_download_threads`](/operations/settings/settings#max_download_threads) controls the number of threads used, files will only be downloaded in parallel if their size is greater than 2 * `max_download_buffer_size`. By default, the `max_download_buffer_size` default is set to 10MiB. In some cases, you can safely increase this buffer size to 50 MB (`max_download_buffer_size=52428800`), with the aim of ensuring smaller files are only downloaded by a single thread. This can reduce the time each thread spends making S3 calls and thus also lower the S3 wait time. See [this blog post](https://clickhouse.com/blog/clickhouse-1-trillion-row-challenge) for an example of this.
 
-    Before making any changes to improve performance, ensure you measure appropriately. As S3 API calls are sensitive to latency and may impact client timings, use the query log for performance metrics, i.e., `system.query_log`.
+Before making any changes to improve performance, ensure you measure appropriately. As S3 API calls are sensitive to latency and may impact client timings, use the query log for performance metrics, i.e., `system.query_log`.
 
-    Consider our earlier query, doubling the `max_threads` to `16` (default `max_thread` is the number of cores on a node) improves our read query performance by 2x at the expense of higher memory. Further increasing `max_threads` has diminishing returns as shown.
+Consider our earlier query, doubling the `max_threads` to `16` (default `max_thread` is the number of cores on a node) improves our read query performance by 2x at the expense of higher memory. Further increasing `max_threads` has diminishing returns as shown.
 
-    ```sql
-    SELECT
+```sql
+SELECT
     OwnerDisplayName,
     count() AS num_posts
-    FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet')
-    WHERE OwnerDisplayName NOT IN ('', 'anon')
-    GROUP BY OwnerDisplayName
-    ORDER BY num_posts DESC
-    LIMIT 5
-    SETTINGS max_threads = 16
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet')
+WHERE OwnerDisplayName NOT IN ('', 'anon')
+GROUP BY OwnerDisplayName
+ORDER BY num_posts DESC
+LIMIT 5
+SETTINGS max_threads = 16
 
-    ┌─OwnerDisplayName─┬─num_posts─┐
-    │ user330315       │     10344 │
-    │ user4039065      │      5316 │
-    │ user149341       │      4102 │
-    │ user529758       │      3700 │
-    │ user3559349      │      3068 │
-    └──────────────────┴───────────┘
+┌─OwnerDisplayName─┬─num_posts─┐
+│ user330315       │     10344 │
+│ user4039065      │      5316 │
+│ user149341       │      4102 │
+│ user529758       │      3700 │
+│ user3559349      │      3068 │
+└──────────────────┴───────────┘
 
-    5 rows in set. Elapsed: 1.505 sec. Processed 59.82 million rows, 24.03 GB (39.76 million rows/s., 15.97 GB/s.)
-    Peak memory usage: 178.58 MiB.
+5 rows in set. Elapsed: 1.505 sec. Processed 59.82 million rows, 24.03 GB (39.76 million rows/s., 15.97 GB/s.)
+Peak memory usage: 178.58 MiB.
 
-    SETTINGS max_threads = 32
+SETTINGS max_threads = 32
 
-    5 rows in set. Elapsed: 0.779 sec. Processed 59.82 million rows, 24.03 GB (76.81 million rows/s., 30.86 GB/s.)
-    Peak memory usage: 369.20 MiB.
+5 rows in set. Elapsed: 0.779 sec. Processed 59.82 million rows, 24.03 GB (76.81 million rows/s., 30.86 GB/s.)
+Peak memory usage: 369.20 MiB.
 
-    SETTINGS max_threads = 64
+SETTINGS max_threads = 64
 
-    5 rows in set. Elapsed: 0.674 sec. Processed 59.82 million rows, 24.03 GB (88.81 million rows/s., 35.68 GB/s.)
-    Peak memory usage: 639.99 MiB.
-    ```
+5 rows in set. Elapsed: 0.674 sec. Processed 59.82 million rows, 24.03 GB (88.81 million rows/s., 35.68 GB/s.)
+Peak memory usage: 639.99 MiB.
+```
 
-## Tuning threads and block size for inserts {#tuning-threads-and-block-size-for-inserts}
+## Tuning Threads and Block Size for Inserts {#tuning-threads-and-block-size-for-inserts}
 
 To achieve maximum ingestion performance, you must choose (1) an insert block size and (2) an appropriate level of insert parallelism based on (3) the amount of available CPU cores and RAM available. In summary:
 
-- The larger we [configure the insert block size](#insert-block-size), the fewer parts ClickHouse has to create, and the fewer [disk file I/O](https://en.wikipedia.org/wiki/Category:Disk_file_systems) and [background merges](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges) are required.
+- The larger we [configure the insert block size](#insert-block-size), the fewer parts ClickHouse has to create, and the fewer [disk file I/O](https://en.wikipedia.org/wiki/Category:Disk_file_systems) and [background merges](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges) are required.  
 - The higher we configure the [number of parallel insert threads](#insert-parallelism), the faster the data will be processed.
 
-    There is a conflicting tradeoff between these two performance factors (plus a tradeoff with the background part merging). The amount of available main memory of ClickHouse servers is limited. Larger blocks use more main memory, which limits the number of parallel insert threads we can utilize. Conversely, a higher number of parallel insert threads requires more main memory, as the number of insert threads determines the number of insert blocks created in memory concurrently. This limits the possible size of insert blocks. Additionally, there can be resource contention between insert threads and background merge threads. A high number of configured insert threads (1) creates more parts that need to be merged and (2) takes away CPU cores and memory space from background merge threads.
+There is a conflicting tradeoff between these two performance factors (plus a tradeoff with the background part merging). The amount of available main memory of ClickHouse servers is limited. Larger blocks use more main memory, which limits the number of parallel insert threads we can utilize. Conversely, a higher number of parallel insert threads requires more main memory, as the number of insert threads determines the number of insert blocks created in memory concurrently. This limits the possible size of insert blocks. Additionally, there can be resource contention between insert threads and background merge threads. A high number of configured insert threads (1) creates more parts that need to be merged and (2) takes away CPU cores and memory space from background merge threads.
 
-    For a detailed description of how the behavior of these parameters impacts performance and resources, we recommend [reading this blog post](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2). As described in this blog post, tuning can involve a careful balance of the two parameters. This exhaustive testing is often impractical, so in summary, we recommend:
+For a detailed description of how the behavior of these parameters impacts performance and resources, we recommend [reading this blog post](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2). As described in this blog post, tuning can involve a careful balance of the two parameters. This exhaustive testing is often impractical, so in summary, we recommend:
 
-    ```bash
-    • max_insert_threads: choose ~ half of the available CPU cores for insert threads (to leave enough dedicated cores for background merges)
+```bash
+• max_insert_threads: choose ~ half of the available CPU cores for insert threads (to leave enough dedicated cores for background merges)
 
-    • peak_memory_usage_in_bytes: choose an intended peak memory usage; either all available RAM (if it is an isolated ingest) or half or less (to leave room for other concurrent tasks)
+• peak_memory_usage_in_bytes: choose an intended peak memory usage; either all available RAM (if it is an isolated ingest) or half or less (to leave room for other concurrent tasks)
 
-    Then:
-    min_insert_block_size_bytes = peak_memory_usage_in_bytes / (~3 * max_insert_threads)
-    ```
+Then:
+min_insert_block_size_bytes = peak_memory_usage_in_bytes / (~3 * max_insert_threads)
+```
 
-    With this formula, you can set `min_insert_block_size_rows` to 0 (to disable the row based threshold) while setting `max_insert_threads` to the chosen value and `min_insert_block_size_bytes` to the calculated result from the above formula.
+With this formula, you can set `min_insert_block_size_rows` to 0 (to disable the row based threshold) while setting `max_insert_threads` to the chosen value and `min_insert_block_size_bytes` to the calculated result from the above formula.
 
-    Using this formula with our earlier Stack Overflow example.
+Using this formula with our earlier Stack Overflow example.
 
 - `max_insert_threads=4` (8 cores per node)
 - `peak_memory_usage_in_bytes` - 32 GiB (100% of node resources) or `34359738368` bytes.
 - `min_insert_block_size_bytes` = `34359738368/(3*4) = 2863311530`
 
-    ```sql
-    INSERT INTO posts SELECT *
-    FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet') SETTINGS min_insert_block_size_rows=0, max_insert_threads=4, min_insert_block_size_bytes=2863311530
+```sql
+INSERT INTO posts SELECT *
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet') SETTINGS min_insert_block_size_rows=0, max_insert_threads=4, min_insert_block_size_bytes=2863311530
 
-    0 rows in set. Elapsed: 128.566 sec. Processed 59.82 million rows, 24.03 GB (465.28 thousand rows/s., 186.92 MB/s.)
-    ```
+0 rows in set. Elapsed: 128.566 sec. Processed 59.82 million rows, 24.03 GB (465.28 thousand rows/s., 186.92 MB/s.)
+```
 
-    As shown, tuning of these setting has improved insert performance by over `33%`. We leave this to the reader to see if they can improve single node performance further.
+As shown, tuning of these setting has improved insert performance by over `33%`. We leave this to the reader to see if they can improve single node performance further.
 
-## Scaling with resources and nodes {#scaling-with-resources-and-nodes}
+## Scaling with Resources and Nodes {#scaling-with-resources-and-nodes}
 
 Scaling with resources and nodes applies to both read and insert queries.
 
@@ -305,7 +305,7 @@ Individual nodes can also be bottlenecked by network and S3 GET requests, preven
 
 Eventually, horizontal scaling is often necessary due to hardware availability and cost-efficiency. In ClickHouse Cloud, production clusters have at least 3 nodes. Users may also wish to therefore utilize all nodes for an insert.
 
-Utilizing a cluster for S3 reads requires using the `s3Cluster` function as described in [Utilizing Clusters](/integrations/s3#utilizing-clusters). This allows reads to be distributed across nodes.
+Utilizing a cluster for S3 reads requires using the `s3Cluster` function as described in [Utilizing Clusters](/integrations/s3#utilizing-clusters). This allows reads to be distributed across nodes.  
 
 The server that initially receives the insert query first resolves the glob pattern and then dispatches the processing of each matching file dynamically to itself and the other servers.
 

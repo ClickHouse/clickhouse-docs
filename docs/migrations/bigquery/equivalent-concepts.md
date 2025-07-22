@@ -9,7 +9,7 @@ show_related_blogs: true
 import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';
 import Image from '@theme/IdealImage';
 
-# BigQuery vs ClickHouse Cloud: equivalent and different concepts
+# BigQuery vs ClickHouse Cloud: Equivalent and different concepts
 
 ## Resource organization {#resource-organization}
 
@@ -21,7 +21,7 @@ The way resources are organized in ClickHouse Cloud is similar to [BigQuery's re
 
 Similar to BigQuery, organizations are the root nodes in the ClickHouse cloud resource hierarchy. The first user you set up in your ClickHouse Cloud account is automatically assigned to an organization owned by the user. The user may invite additional users to the organization.
 
-### BigQuery projects vs ClickHouse Cloud services {#bigquery-projects-vs-clickhouse-cloud-services}
+### BigQuery Projects vs ClickHouse Cloud Services {#bigquery-projects-vs-clickhouse-cloud-services}
 
 Within organizations, you can create services loosely equivalent to BigQuery projects because stored data in ClickHouse Cloud is associated with a service. There are [several service types available](/cloud/manage/cloud-tiers) in ClickHouse Cloud. Each ClickHouse Cloud service is deployed in a specific region and includes:
 
@@ -29,15 +29,15 @@ Within organizations, you can create services loosely equivalent to BigQuery pro
 2. An object storage folder where the service stores all the data.
 3. An endpoint (or multiple endpoints created via ClickHouse Cloud UI console)  - a service URL that you use to connect to the service (for example, `https://dv2fzne24g.us-east-1.aws.clickhouse.cloud:8443`)
 
-### BigQuery datasets vs ClickHouse Cloud databases {#bigquery-datasets-vs-clickhouse-cloud-databases}
+### BigQuery Datasets vs ClickHouse Cloud Databases {#bigquery-datasets-vs-clickhouse-cloud-databases}
 
 ClickHouse logically groups tables into databases. Like BigQuery datasets, ClickHouse databases are logical containers that organize and control access to table data.
 
-### BigQuery folders {#bigquery-folders}
+### BigQuery Folders {#bigquery-folders}
 
 ClickHouse Cloud currently has no concept equivalent to BigQuery folders.
 
-### BigQuery slot reservations and quotas {#bigquery-slot-reservations-and-quotas}
+### BigQuery Slot reservations and Quotas {#bigquery-slot-reservations-and-quotas}
 
 Like BigQuery slot reservations, you can [configure vertical and horizontal autoscaling](/manage/scaling#configuring-vertical-auto-scaling) in ClickHouse Cloud. For vertical autoscaling, you can set the minimum and maximum size for the memory and CPU cores of the compute nodes for a service. The service will then scale as needed within those bounds. These settings are also available during the initial service creation flow. Each compute node in the service has the same size. You can change the number of compute nodes within a service with [horizontal scaling](/manage/scaling#manual-horizontal-scaling).
 
@@ -78,7 +78,7 @@ When presented with multiple options for ClickHouse types, consider the actual r
 
 ## Query acceleration techniques {#query-acceleration-techniques}
 
-### Primary and foreign keys and primary index {#primary-and-foreign-keys-and-primary-index}
+### Primary and Foreign keys and Primary index {#primary-and-foreign-keys-and-primary-index}
 
 In BigQuery, a table can have [primary key and foreign key constraints](https://cloud.google.com/bigquery/docs/information-schema-table-constraints). Typically, primary and foreign keys are used in relational databases to ensure data integrity. A primary key value is normally unique for each row and is not `NULL`. Each foreign key value in a row must be present in the primary key column of the primary key table or be `NULL`. In BigQuery, these constraints are not enforced, but the query optimizer may use this information to optimize queries better.
 
@@ -89,13 +89,13 @@ In ClickHouse, a table can also have a primary key. Like BigQuery, ClickHouse do
 In addition to the primary index created from the values of a table's primary key columns, ClickHouse allows you to create secondary indexes on columns other than those in the primary key.  ClickHouse offers several types of secondary indexes, each suited to different types of queries:
 
 - **Bloom Filter Index**:
-    - Used to speed up queries with equality conditions (e.g., =, IN).
-    - Uses probabilistic data structures to determine whether a value exists in a data block.
+  - Used to speed up queries with equality conditions (e.g., =, IN).
+  - Uses probabilistic data structures to determine whether a value exists in a data block.
 - **Token Bloom Filter Index**:
-    - Similar to a Bloom Filter Index but used for tokenized strings and  suitable for full-text search queries.
+  - Similar to a Bloom Filter Index but used for tokenized strings and  suitable for full-text search queries.
 - **Min-Max Index**:
-    - Maintains the minimum and maximum values of a column for each data part.
-    - Helps to skip reading data parts that do not fall within the specified range.
+  - Maintains the minimum and maximum values of a column for each data part.
+  - Helps to skip reading data parts that do not fall within the specified range.
 
 ## Search indexes {#search-indexes}
 
@@ -206,151 +206,151 @@ FROM
 )
    ┌─new_array─┐
 1. │ [1,2,3]   │
-    └───────────┘
-    ```
+   └───────────┘
+```
 
-    **Convert an array into a set of rows**
+**Convert an array into a set of rows**
 
-    _BigQuery_
+_BigQuery_
 
-    [`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator
+[`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator
 
-    ```sql
-    SELECT *
-    FROM UNNEST(['foo', 'bar', 'baz', 'qux', 'corge', 'garply', 'waldo', 'fred'])
-    AS element
-    WITH OFFSET AS offset
-    ORDER BY offset;
+```sql
+SELECT *
+FROM UNNEST(['foo', 'bar', 'baz', 'qux', 'corge', 'garply', 'waldo', 'fred'])
+  AS element
+WITH OFFSET AS offset
+ORDER BY offset;
 
-    /*----------+--------*
-    | element  | offset |
-    +----------+--------+
-    | foo      | 0      |
-    | bar      | 1      |
-    | baz      | 2      |
-    | qux      | 3      |
-    | corge    | 4      |
-    | garply   | 5      |
-    | waldo    | 6      |
-    | fred     | 7      |
-    *----------+--------*/
-    ```
+/*----------+--------*
+ | element  | offset |
+ +----------+--------+
+ | foo      | 0      |
+ | bar      | 1      |
+ | baz      | 2      |
+ | qux      | 3      |
+ | corge    | 4      |
+ | garply   | 5      |
+ | waldo    | 6      |
+ | fred     | 7      |
+ *----------+--------*/
+```
 
-    _ClickHouse_
+_ClickHouse_
 
-    [ARRAY JOIN](/sql-reference/statements/select/array-join) clause
+[ARRAY JOIN](/sql-reference/statements/select/array-join) clause
 
-    ```sql
-    WITH ['foo', 'bar', 'baz', 'qux', 'corge', 'garply', 'waldo', 'fred'] AS values
-    SELECT element, num-1 AS offset
-    FROM (SELECT values AS element) AS subquery
-    ARRAY JOIN element, arrayEnumerate(element) AS num;
+```sql
+WITH ['foo', 'bar', 'baz', 'qux', 'corge', 'garply', 'waldo', 'fred'] AS values
+SELECT element, num-1 AS offset
+FROM (SELECT values AS element) AS subquery
+ARRAY JOIN element, arrayEnumerate(element) AS num;
 
-    /*----------+--------*
-    | element  | offset |
-    +----------+--------+
-    | foo      | 0      |
-    | bar      | 1      |
-    | baz      | 2      |
-    | qux      | 3      |
-    | corge    | 4      |
-    | garply   | 5      |
-    | waldo    | 6      |
-    | fred     | 7      |
-    *----------+--------*/
-    ```
+/*----------+--------*
+ | element  | offset |
+ +----------+--------+
+ | foo      | 0      |
+ | bar      | 1      |
+ | baz      | 2      |
+ | qux      | 3      |
+ | corge    | 4      |
+ | garply   | 5      |
+ | waldo    | 6      |
+ | fred     | 7      |
+ *----------+--------*/
+```
 
-    **Return an array of dates**
+**Return an array of dates**
 
-    _BigQuery_
+_BigQuery_
 
-    [GENERATE_DATE_ARRAY](https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions#generate_date_array) function
+[GENERATE_DATE_ARRAY](https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions#generate_date_array) function
 
-    ```sql
-    SELECT GENERATE_DATE_ARRAY('2016-10-05', '2016-10-08') AS example;
+```sql
+SELECT GENERATE_DATE_ARRAY('2016-10-05', '2016-10-08') AS example;
 
-    /*--------------------------------------------------*
-    | example                                          |
-    +--------------------------------------------------+
-    | [2016-10-05, 2016-10-06, 2016-10-07, 2016-10-08] |
-    *--------------------------------------------------*/
-    ```
+/*--------------------------------------------------*
+ | example                                          |
+ +--------------------------------------------------+
+ | [2016-10-05, 2016-10-06, 2016-10-07, 2016-10-08] |
+ *--------------------------------------------------*/
+```
 
-    [range](/sql-reference/functions/array-functions#range) + [arrayMap](/sql-reference/functions/array-functions#arrayMap) functions
+[range](/sql-reference/functions/array-functions#range) + [arrayMap](/sql-reference/functions/array-functions#arrayMap) functions
 
-    _ClickHouse_
+_ClickHouse_
 
-    ```sql
-    SELECT arrayMap(x -> (toDate('2016-10-05') + x), range(toUInt32((toDate('2016-10-08') - toDate('2016-10-05')) + 1))) AS example
+```sql
+SELECT arrayMap(x -> (toDate('2016-10-05') + x), range(toUInt32((toDate('2016-10-08') - toDate('2016-10-05')) + 1))) AS example
 
-    ┌─example───────────────────────────────────────────────┐
+   ┌─example───────────────────────────────────────────────┐
 1. │ ['2016-10-05','2016-10-06','2016-10-07','2016-10-08'] │
-    └───────────────────────────────────────────────────────┘
-    ```
+   └───────────────────────────────────────────────────────┘
+```
 
-    **Return an array of timestamps**
+**Return an array of timestamps**
 
-    _BigQuery_
+_BigQuery_
 
-    [GENERATE_TIMESTAMP_ARRAY](https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions#generate_timestamp_array) function
+[GENERATE_TIMESTAMP_ARRAY](https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions#generate_timestamp_array) function
 
-    ```sql
-    SELECT GENERATE_TIMESTAMP_ARRAY('2016-10-05 00:00:00', '2016-10-07 00:00:00',
+```sql
+SELECT GENERATE_TIMESTAMP_ARRAY('2016-10-05 00:00:00', '2016-10-07 00:00:00',
                                 INTERVAL 1 DAY) AS timestamp_array;
 
-    /*--------------------------------------------------------------------------*
-    | timestamp_array                                                          |
-    +--------------------------------------------------------------------------+
-    | [2016-10-05 00:00:00+00, 2016-10-06 00:00:00+00, 2016-10-07 00:00:00+00] |
-    *--------------------------------------------------------------------------*/
-    ```
+/*--------------------------------------------------------------------------*
+ | timestamp_array                                                          |
+ +--------------------------------------------------------------------------+
+ | [2016-10-05 00:00:00+00, 2016-10-06 00:00:00+00, 2016-10-07 00:00:00+00] |
+ *--------------------------------------------------------------------------*/
+```
 
-    _ClickHouse_
+_ClickHouse_
 
-    [range](/sql-reference/functions/array-functions#range) + [arrayMap](/sql-reference/functions/array-functions#arrayMap) functions
+[range](/sql-reference/functions/array-functions#range) + [arrayMap](/sql-reference/functions/array-functions#arrayMap) functions
 
-    ```sql
-    SELECT arrayMap(x -> (toDateTime('2016-10-05 00:00:00') + toIntervalDay(x)), range(dateDiff('day', toDateTime('2016-10-05 00:00:00'), toDateTime('2016-10-07 00:00:00')) + 1)) AS timestamp_array
+```sql
+SELECT arrayMap(x -> (toDateTime('2016-10-05 00:00:00') + toIntervalDay(x)), range(dateDiff('day', toDateTime('2016-10-05 00:00:00'), toDateTime('2016-10-07 00:00:00')) + 1)) AS timestamp_array
 
-    Query id: b324c11f-655b-479f-9337-f4d34fd02190
+Query id: b324c11f-655b-479f-9337-f4d34fd02190
 
-    ┌─timestamp_array─────────────────────────────────────────────────────┐
+   ┌─timestamp_array─────────────────────────────────────────────────────┐
 1. │ ['2016-10-05 00:00:00','2016-10-06 00:00:00','2016-10-07 00:00:00'] │
-    └─────────────────────────────────────────────────────────────────────┘
-    ```
+   └─────────────────────────────────────────────────────────────────────┘
+```
 
-    **Filtering arrays**
+**Filtering arrays**
 
-    _BigQuery_
+_BigQuery_
 
-    Requires temporarily converting arrays back to tables via [`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator
+Requires temporarily converting arrays back to tables via [`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator
 
-    ```sql
-    WITH Sequences AS
-    (SELECT [0, 1, 1, 2, 3, 5] AS some_numbers
-    UNION ALL SELECT [2, 4, 8, 16, 32] AS some_numbers
-    UNION ALL SELECT [5, 10] AS some_numbers)
-    SELECT
-    ARRAY(SELECT x * 2
+```sql
+WITH Sequences AS
+  (SELECT [0, 1, 1, 2, 3, 5] AS some_numbers
+   UNION ALL SELECT [2, 4, 8, 16, 32] AS some_numbers
+   UNION ALL SELECT [5, 10] AS some_numbers)
+SELECT
+  ARRAY(SELECT x * 2
         FROM UNNEST(some_numbers) AS x
         WHERE x < 5) AS doubled_less_than_five
-    FROM Sequences;
+FROM Sequences;
 
-    /*------------------------*
-    | doubled_less_than_five |
-    +------------------------+
-    | [0, 2, 2, 4, 6]        |
-    | [4, 8]                 |
-    | []                     |
-    *------------------------*/
-    ```
+/*------------------------*
+ | doubled_less_than_five |
+ +------------------------+
+ | [0, 2, 2, 4, 6]        |
+ | [4, 8]                 |
+ | []                     |
+ *------------------------*/
+```
 
-    _ClickHouse_
+_ClickHouse_
 
-    [arrayFilter](/sql-reference/functions/array-functions#arrayFilter) function
+[arrayFilter](/sql-reference/functions/array-functions#arrayFilter) function
 
-    ```sql
-    WITH Sequences AS
+```sql
+WITH Sequences AS
     (
         SELECT [0, 1, 1, 2, 3, 5] AS some_numbers
         UNION ALL
@@ -358,34 +358,34 @@ FROM
         UNION ALL
         SELECT [5, 10] AS some_numbers
     )
-    SELECT arrayMap(x -> (x * 2), arrayFilter(x -> (x < 5), some_numbers)) AS doubled_less_than_five
-    FROM Sequences;
-    ┌─doubled_less_than_five─┐
+SELECT arrayMap(x -> (x * 2), arrayFilter(x -> (x < 5), some_numbers)) AS doubled_less_than_five
+FROM Sequences;
+   ┌─doubled_less_than_five─┐
 1. │ [0,2,2,4,6]            │
-    └────────────────────────┘
-    ┌─doubled_less_than_five─┐
+   └────────────────────────┘
+   ┌─doubled_less_than_five─┐
 2. │ []                     │
-    └────────────────────────┘
-    ┌─doubled_less_than_five─┐
+   └────────────────────────┘
+   ┌─doubled_less_than_five─┐
 3. │ [4,8]                  │
-    └────────────────────────┘
-    ```
+   └────────────────────────┘
+```
 
-    **Zipping arrays**
+**Zipping arrays**
 
-    _BigQuery_
+_BigQuery_
 
-    Requires temporarily converting arrays back to tables via [`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator
+Requires temporarily converting arrays back to tables via [`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator
 
-    ```sql
-    WITH
-    Combinations AS (
+```sql
+WITH
+  Combinations AS (
     SELECT
       ['a', 'b'] AS letters,
       [1, 2, 3] AS numbers
-    )
-    SELECT
-    ARRAY(
+  )
+SELECT
+  ARRAY(
     SELECT AS STRUCT
       letters[SAFE_OFFSET(index)] AS letter,
       numbers[SAFE_OFFSET(index)] AS number
@@ -396,65 +396,65 @@ FROM
           0,
           LEAST(ARRAY_LENGTH(letters), ARRAY_LENGTH(numbers)) - 1)) AS index
     ORDER BY index
-    );
+  );
 
-    /*------------------------------*
-    | pairs                        |
-    +------------------------------+
-    | [{ letter: "a", number: 1 }, |
-    |  { letter: "b", number: 2 }] |
-    *------------------------------*/
-    ```
+/*------------------------------*
+ | pairs                        |
+ +------------------------------+
+ | [{ letter: "a", number: 1 }, |
+ |  { letter: "b", number: 2 }] |
+ *------------------------------*/
+```
 
-    _ClickHouse_
+_ClickHouse_
 
-    [arrayZip](/sql-reference/functions/array-functions#arrayZip) function
+[arrayZip](/sql-reference/functions/array-functions#arrayZip) function
 
-    ```sql
-    WITH Combinations AS
+```sql
+WITH Combinations AS
     (
         SELECT
             ['a', 'b'] AS letters,
             [1, 2, 3] AS numbers
     )
-    SELECT arrayZip(letters, arrayResize(numbers, length(letters))) AS pairs
-    FROM Combinations;
-    ┌─pairs─────────────┐
+SELECT arrayZip(letters, arrayResize(numbers, length(letters))) AS pairs
+FROM Combinations;
+   ┌─pairs─────────────┐
 1. │ [('a',1),('b',2)] │
-    └───────────────────┘
-    ```
+   └───────────────────┘
+```
 
-    **Aggregating arrays**
+**Aggregating arrays**
 
-    _BigQuery_
+_BigQuery_
 
-    Requires converting arrays back to tables via [`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator
+Requires converting arrays back to tables via [`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) operator
 
-    ```sql
-    WITH Sequences AS
-    (SELECT [0, 1, 1, 2, 3, 5] AS some_numbers
-    UNION ALL SELECT [2, 4, 8, 16, 32] AS some_numbers
-    UNION ALL SELECT [5, 10] AS some_numbers)
-    SELECT some_numbers,
-    (SELECT SUM(x)
-    FROM UNNEST(s.some_numbers) AS x) AS sums
-    FROM Sequences AS s;
+```sql
+WITH Sequences AS
+  (SELECT [0, 1, 1, 2, 3, 5] AS some_numbers
+   UNION ALL SELECT [2, 4, 8, 16, 32] AS some_numbers
+   UNION ALL SELECT [5, 10] AS some_numbers)
+SELECT some_numbers,
+  (SELECT SUM(x)
+   FROM UNNEST(s.some_numbers) AS x) AS sums
+FROM Sequences AS s;
 
-    /*--------------------+------*
-    | some_numbers       | sums |
-    +--------------------+------+
-    | [0, 1, 1, 2, 3, 5] | 12   |
-    | [2, 4, 8, 16, 32]  | 62   |
-    | [5, 10]            | 15   |
-    *--------------------+------*/
-    ```
+/*--------------------+------*
+ | some_numbers       | sums |
+ +--------------------+------+
+ | [0, 1, 1, 2, 3, 5] | 12   |
+ | [2, 4, 8, 16, 32]  | 62   |
+ | [5, 10]            | 15   |
+ *--------------------+------*/
+```
 
-    _ClickHouse_
+_ClickHouse_
 
-    [arraySum](/sql-reference/functions/array-functions#arraySum), [arrayAvg](/sql-reference/functions/array-functions#arrayAvg), ... function, or any of the over 90 existing aggregate function names as argument for the [arrayReduce](/sql-reference/functions/array-functions#arrayReduce) function
+[arraySum](/sql-reference/functions/array-functions#arraySum), [arrayAvg](/sql-reference/functions/array-functions#arrayAvg), ... function, or any of the over 90 existing aggregate function names as argument for the [arrayReduce](/sql-reference/functions/array-functions#arrayReduce) function
 
-    ```sql
-    WITH Sequences AS
+```sql
+WITH Sequences AS
     (
         SELECT [0, 1, 1, 2, 3, 5] AS some_numbers
         UNION ALL
@@ -462,17 +462,17 @@ FROM
         UNION ALL
         SELECT [5, 10] AS some_numbers
     )
-    SELECT
+SELECT
     some_numbers,
     arraySum(some_numbers) AS sums
-    FROM Sequences;
-    ┌─some_numbers──┬─sums─┐
+FROM Sequences;
+   ┌─some_numbers──┬─sums─┐
 1. │ [0,1,1,2,3,5] │   12 │
-    └───────────────┴──────┘
-    ┌─some_numbers──┬─sums─┐
+   └───────────────┴──────┘
+   ┌─some_numbers──┬─sums─┐
 2. │ [2,4,8,16,32] │   62 │
-    └───────────────┴──────┘
-    ┌─some_numbers─┬─sums─┐
+   └───────────────┴──────┘
+   ┌─some_numbers─┬─sums─┐
 3. │ [5,10]       │   15 │
-    └──────────────┴──────┘
-    ```
+   └──────────────┴──────┘
+```
