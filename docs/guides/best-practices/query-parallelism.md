@@ -17,7 +17,7 @@ import Image from '@theme/IdealImage';
 # How ClickHouse executes a query in parallel
 
 ClickHouse is [built for speed](/concepts/why-clickhouse-is-so-fast). It executes queries in a highly parallel fashion, using all available CPU cores, distributing data across processing lanes, and often pushing hardware close to its limits.
-
+ 
 This guide walks through how query parallelism works in ClickHouse and how you can tune or monitor it to improve performance on large workloads.
 
 We use an aggregation query on the [uk_price_paid_simple](/parts) dataset to illustrate key concepts.

@@ -13,9 +13,9 @@ This guide integrates the following:
 - **Logs**
 - **Infra Metrics**
 
-    :::note
-    To send over application-level metrics or APM/traces, you'll need to add the corresponding language integration to your application as well.
-    :::
+:::note
+To send over application-level metrics or APM/traces, you'll need to add the corresponding language integration to your application as well.
+:::
 
 ## Creating the OTel Helm chart configuration files {#creating-the-otel-helm-chart-config-files}
 
@@ -37,9 +37,9 @@ clusterRole:
   rules:
     - apiGroups:
         - ''
-        resources:
+      resources:
         - nodes/proxy
-        verbs:
+      verbs:
         - get
 
 presets:
@@ -108,10 +108,10 @@ config:
       logs:
         exporters:
           - otlphttp
-              metrics:
-              exporters:
+      metrics:
+        exporters:
           - otlphttp
-              ```
+```
 
 ### Creating the deployment configuration {#creating-the-deployment-configuration}
 
@@ -159,10 +159,10 @@ config:
       logs:
         exporters:
           - otlphttp
-              metrics:
-              exporters:
+      metrics:
+        exporters:
           - otlphttp
-              ```
+```
 
 ## Deploying the OpenTelemetry collector {#deploying-the-otel-collector}
 
@@ -216,31 +216,31 @@ spec:
     spec:
       containers:
         - name: app-container
-            image: my-image
-            env:
+          image: my-image
+          env:
             # ... other environment variables
             # Collect K8s metadata from the downward API to forward to the app
             - name: POD_NAME
-                valueFrom:
+              valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
             - name: POD_UID
-                valueFrom:
+              valueFrom:
                 fieldRef:
                   fieldPath: metadata.uid
             - name: POD_NAMESPACE
-                valueFrom:
+              valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: NODE_NAME
-                valueFrom:
+              valueFrom:
                 fieldRef:
                   fieldPath: spec.nodeName
             - name: DEPLOYMENT_NAME
-                valueFrom:
+              valueFrom:
                 fieldRef:
                   fieldPath: metadata.labels['deployment']
             # Forward the K8s metadata to the app via OTEL_RESOURCE_ATTRIBUTES
             - name: OTEL_RESOURCE_ATTRIBUTES
-                value: k8s.pod.name=$(POD_NAME),k8s.pod.uid=$(POD_UID),k8s.namespace.name=$(POD_NAMESPACE),k8s.node.name=$(NODE_NAME),k8s.deployment.name=$(DEPLOYMENT_NAME)
-                ```
+              value: k8s.pod.name=$(POD_NAME),k8s.pod.uid=$(POD_UID),k8s.namespace.name=$(POD_NAMESPACE),k8s.node.name=$(NODE_NAME),k8s.deployment.name=$(DEPLOYMENT_NAME)
+```

@@ -2410,7 +2410,7 @@ FORMAT PrettyCompactMonoBlock
 3 rows in set. Elapsed: 0.170 sec. Processed 611.53 thousand rows, 41.76 MB (3.60 million rows/s., 246.07 MB/s.)
 ```
 
-## Unsolved Questions {#unsolved-questions}
+## Unsolved questions {#unsolved-questions}
 
 ### Git blame {#git-blame}
 

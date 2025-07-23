@@ -7,7 +7,7 @@ title: 'General Questions About ClickHouse'
 description: 'Index page listing general questions about ClickHouse'
 ---
 
-# General Questions About ClickHouse
+# General questions about ClickHouse
 
 - [What is ClickHouse?](../../intro.md)
 - [Why is ClickHouse so fast?](../../concepts/why-clickhouse-is-so-fast.md)

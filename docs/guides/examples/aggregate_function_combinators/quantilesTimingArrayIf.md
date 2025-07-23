@@ -15,7 +15,7 @@ combinator can be applied to the [`quantilesTiming`](/sql-reference/aggregate-fu
 function to calculate quantiles of timing values in arrays for rows where the condition is true,
 using the `quantilesTimingArrayIf` aggregate combinator function.
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 In this example, we'll create a table that stores API response times for different endpoints,
 and we'll use `quantilesTimingArrayIf` to calculate response time quantiles for successful requests.

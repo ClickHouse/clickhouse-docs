@@ -321,7 +321,7 @@ Run some queries to analyze the data. Explore the following examples or try your
 
     </p>
     </details>
-
+    
 7. Retrieve  rides to LaGuardia or JFK airports:
     ```sql
     SELECT

@@ -5,7 +5,7 @@ slug: /integrations/clickpipes/postgres/source/generic
 title: 'Generic Postgres Source Setup Guide'
 ---
 
-# Generic Postgres Source Setup Guide
+# Generic Postgres source setup guide
 
 :::info
 
@@ -15,7 +15,7 @@ If you use one of the supported providers (in the sidebar), please refer to the 
 
 ClickPipes supports Postgres version 12 and later.
 
-## Enable Logical Replication {#enable-logical-replication}
+## Enable logical replication {#enable-logical-replication}
 
 1. To enable replication on your Postgres instance, we need to make sure that the following settings are set:
 

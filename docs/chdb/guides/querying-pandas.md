@@ -156,7 +156,7 @@ Name: 0, dtype: object
 
 ## Querying Pandas DataFrames {#querying-pandas-dataframes}
 
-Next, let's see how to query these DataFrames using chDB.
+Next, let's see how to query these DataFrames using chDB. 
 We'll import the library:
 
 ```python
@@ -337,7 +337,7 @@ Then, create an `events` table based on `events_df`:
 ```python
 sess.query("""
 CREATE TABLE statsbomb.events ORDER BY id AS
-SELECT *
+SELECT * 
 FROM Python(events_df)
 """)
 ```

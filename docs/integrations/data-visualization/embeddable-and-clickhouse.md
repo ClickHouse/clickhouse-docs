@@ -47,7 +47,6 @@ fetch('https://api.embeddable.com/api/v1/connections', {
   }),
 });
 
-
 Response:
 Status 201 { errorMessage: null }
 ```

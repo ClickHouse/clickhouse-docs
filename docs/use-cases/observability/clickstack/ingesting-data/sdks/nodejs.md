@@ -29,14 +29,18 @@ Use the following command to install the [ClickStack OpenTelemetry package](http
 
 <Tabs groupId="install">
 <TabItem value="npm" label="NPM" default>
-```shell
-npm install @hyperdx/node-opentelemetry
+
+```shell 
+npm install @hyperdx/node-opentelemetry 
 ```
+
 </TabItem>
 <TabItem value="yarn" label="Yarn" default>
-```shell
-yarn add @hyperdx/node-opentelemetry
+
+```shell  
+yarn add @hyperdx/node-opentelemetry 
 ```
+
 </TabItem>
 </Tabs>
 
@@ -46,22 +50,28 @@ To initialize the SDK, you'll need to call the `init` function at the top of the
 
 <Tabs groupId="initialize">
 <TabItem value="require" label="require" default>
+
 ```javascript
 const HyperDX = require('@hyperdx/node-opentelemetry');
+
 HyperDX.init({
-apiKey: 'YOUR_INGESTION_API_KEY',
-service: 'my-service'
+    apiKey: 'YOUR_INGESTION_API_KEY',
+    service: 'my-service'
 });
 ```
+
 </TabItem>
 <TabItem value="import" label="import">
+
 ```javascript
 import * as HyperDX from '@hyperdx/node-opentelemetry';
+
 HyperDX.init({
-apiKey: 'YOUR_INGESTION_API_KEY',
-service: 'my-service'
+    apiKey: 'YOUR_INGESTION_API_KEY',
+    service: 'my-service'
 });
 ```
+
 </TabItem>
 </Tabs>
 
@@ -77,93 +87,120 @@ integrations if applicable (such as [Kubernetes](/use-cases/observability/clicks
 
 <Tabs groupId="logging">
 <TabItem value="Winston" label="Winston" default>
+
 If you're using `winston` as your logger, you'll need to add the following transport to your logger.
+
 ```typescript
-import winston from 'winston';
-import * as HyperDX from '@hyperdx/node-opentelemetry';
-const logger = winston.createLogger({
-level: 'info',
-format: winston.format.json(),
-transports: [
-new winston.transports.Console(),
-HyperDX.getWinstonTransport('info', { // Send logs info and above
-detectResources: true,
-}),
-],
-});
-export default logger;
+    import winston from 'winston';
+    import * as HyperDX from '@hyperdx/node-opentelemetry';
+
+    const logger = winston.createLogger({
+      level: 'info',
+      format: winston.format.json(),
+      transports: [
+        new winston.transports.Console(),
+        HyperDX.getWinstonTransport('info', { // Send logs info and above
+          detectResources: true,
+        }),
+      ],
+    });
+
+    export default logger;
 ```
+
 </TabItem>
 <TabItem value="Pino" label="Pino">
+
 If you're using `pino` as your logger, you'll need to add the following transport to your logger and specify a `mixin` to correlate logs with traces.
+
 ```typescript
 import pino from 'pino';
 import * as HyperDX from '@hyperdx/node-opentelemetry';
+
 const logger = pino(
-pino.transport({
-mixin: HyperDX.getPinoMixinFunction,
-targets: [
-HyperDX.getPinoTransport('info', { // Send logs info and above
-detectResources: true,
-}),
-],
-}),
+    pino.transport({
+    mixin: HyperDX.getPinoMixinFunction,
+    targets: [
+        HyperDX.getPinoTransport('info', { // Send logs info and above
+        detectResources: true,
+        }),
+    ],
+    }),
 );
+
 export default logger;
 ```
+
 </TabItem>
+
 <TabItem value="console.log" label="console.log">
-By default, `console.*` methods are supported out of the box. No additional configuration is required.
+By default, `console.*` methods are supported out of the box. No additional configuration is required. 
+
 You can disable this by setting the `HDX_NODE_CONSOLE_CAPTURE` environment variable to 0 or by passing `consoleCapture: false` to the `init` function.
+
 </TabItem>
 </Tabs>
 
 ### Setup error collection {#setup-error-collection}
 
-The ClickStack SDK can automatically capture uncaught exceptions and errors in your application with full stack trace and code context.
+The ClickStack SDK can automatically capture uncaught exceptions and errors in your application with full stack trace and code context. 
 
 To enable this, you'll need to add the following code to the end of your application's error handling middleware, or manually capture exceptions using the `recordException` function.
 
 <Tabs groupId="setup">
 <TabItem value="Express" label="Express" default>
-```javascript
+
+```javascript 
 const HyperDX = require('@hyperdx/node-opentelemetry');
 HyperDX.init({
-apiKey: 'YOUR_INGESTION_API_KEY',
-service: 'my-service'
+    apiKey: 'YOUR_INGESTION_API_KEY',
+    service: 'my-service'
 });
 const app = express();
+
 // Add your routes, etc.
+
 // Add this after all routes,
 // but before any and other error-handling middlewares are defined
 HyperDX.setupExpressErrorHandler(app);
+
 app.listen(3000);
 ```
+
 </TabItem>
 <TabItem value="Koa" label="Koa">
-```javascript
+
+```javascript 
 const Koa = require("koa");
 const Router = require("@koa/router");
 const HyperDX = require('@hyperdx/node-opentelemetry');
 HyperDX.init({
-apiKey: 'YOUR_INGESTION_API_KEY',
-service: 'my-service'
+    apiKey: 'YOUR_INGESTION_API_KEY',
+    service: 'my-service'
 });
+
 const router = new Router();
 const app = new Koa();
+
 HyperDX.setupKoaErrorHandler(app);
+
 // Add your routes, etc.
+
 app.listen(3030);
 ```
+
 </TabItem>
 <TabItem value="Manual" label="Manual">
+
 ```javascript
 const HyperDX = require('@hyperdx/node-opentelemetry');
+
 function myErrorHandler(error, req, res, next) {
-// This can be used anywhere in your application
-HyperDX.recordException(error);
+    // This can be used anywhere in your application
+    HyperDX.recordException(error);
 }
 ```
+
 </TabItem>
 </Tabs>
 
@@ -275,26 +312,35 @@ Node.js `--require` flag. The CLI installation exposes a wider range of auto-ins
 
 <Tabs groupId="cli">
 <TabItem value="npx" label="Using NPX" default>
+
 ```shell
 HYPERDX_API_KEY='<YOUR_INGESTION_KEY>' OTEL_SERVICE_NAME='<YOUR_APP_NAME>' npx opentelemetry-instrument index.js
 ```
+
 </TabItem>
 <TabItem value="custom" label="Custom Entry Point (ex. Nodemon, ts-node, etc.)">
+
 ```shell
 HYPERDX_API_KEY='<YOUR_INGESTION_KEY>' OTEL_SERVICE_NAME='<YOUR_APP_NAME>' ts-node -r '@hyperdx/node-opentelemetry/build/src/tracing' index.js
 ```
+
 </TabItem>
+
 <TabItem value="code_import" label="Code Import">
-```javascript
+
+```javascript 
 // Import this at the very top of the first file loaded in your application
 // You'll still specify your API key via the `HYPERDX_API_KEY` environment variable
 import { initSDK } from '@hyperdx/node-opentelemetry';
+
 initSDK({
-consoleCapture: true, // optional, default: true
-additionalInstrumentations: [], // optional, default: []
+    consoleCapture: true, // optional, default: true
+    additionalInstrumentations: [], // optional, default: []
 });
 ```
+
 </TabItem>
+
 </Tabs>
 
 _The `OTEL_SERVICE_NAME` environment variable is used to identify your service in the HyperDX app, it can be any name you want._

@@ -129,8 +129,6 @@ See [complete code example](https://github.com/ClickHouse/clickhouse-java/blob/m
 
 ```java showLineNumbers
 
-
-
 try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
      ClickHouseResponse response = client.read(servers).write()
         .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)

@@ -28,6 +28,7 @@ The `grouped by` value allows the search to be subject to an aggregation e.g. `S
 ### Common alert scenarios {#common-alert-scenarios}
 
 Here are a few common alert scenarios that you can use HyperDX for:
+
 **Errors:** We first recommend setting up alerts for the default
 `All Error Events` and `HTTP Status >= 400` saved searches to be notified when
 excess error occurs.

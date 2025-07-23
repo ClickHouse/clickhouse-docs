@@ -81,10 +81,10 @@ have to submit a support ticket to enable it on your service.
 
 ClickPipes supports the Variant type in the following circumstances:
 - Avro Unions.  If your Avro schema contains a union with multiple non-null types, ClickPipes will infer the
-    appropriate variant type.  Variant types are not otherwise supported for Avro data.
+  appropriate variant type.  Variant types are not otherwise supported for Avro data.
 - JSON fields.  You can manually specify a Variant type (such as `Variant(String, Int64, DateTime)`) for any JSON field
-    in the source data stream.  Because of the way ClickPipes determines the correct variant subtype to use, only one integer or datetime
-    type can be used in the Variant definition - for example, `Variant(Int64, UInt32)` is not supported.
+  in the source data stream.  Because of the way ClickPipes determines the correct variant subtype to use, only one integer or datetime
+  type can be used in the Variant definition - for example, `Variant(Int64, UInt32)` is not supported.
 
 #### JSON type support {#json-type-support}
 
@@ -98,7 +98,7 @@ ClickPipes support the JSON type in the following circumstances:
 - Avro String and Bytes types can be assigned to a JSON column if the column actually holds JSON String objects.
 - JSON fields that are always a JSON object can be assigned to a JSON destination column.
 
-    Note that you will have to manually change the destination column to the desired JSON type, including any fixed or skipped paths.
+Note that you will have to manually change the destination column to the desired JSON type, including any fixed or skipped paths.
 
 ## Kafka virtual columns {#kafka-virtual-columns}
 
@@ -115,6 +115,6 @@ The following virtual columns are supported for Kafka compatible streaming data 
 | `_header_values` | Parallel array of headers in the record Headers | `Array(String)`        |
 | `_raw_message`   | Full Kafka Message                              | `String`               |
 
-Note that the `_raw_message` column is only recommended for JSON data.
+Note that the `_raw_message` column is only recommended for JSON data. 
 For use cases where only the JSON string is required (such as using ClickHouse [`JsonExtract*`](/sql-reference/functions/json-functions#jsonextract-functions) functions to
 populate a downstream materialized view), it may improve ClickPipes performance to delete all the "non-virtual" columns.

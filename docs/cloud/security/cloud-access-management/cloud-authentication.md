@@ -8,11 +8,11 @@ description: 'This guide explains some good practices for configuring your authe
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
-# Cloud Authentication
+# Cloud authentication
 
 ClickHouse Cloud provides a number of ways to authenticate. This guide explains some good practices for configuring your authentication. Always check with your security team when selecting authentication methods.
 
-## Password Settings {#password-settings}
+## Password settings {#password-settings}
 
 Minimum password settings for our console and services (databases) currently comply with [NIST 800-63B](https://pages.nist.gov/800-63-3/sp800-63b.html#sec4) Authenticator Assurance Level 1:
 - Minimum 12 characters
@@ -22,15 +22,15 @@ Minimum password settings for our console and services (databases) currently com
   - 1 number
   - 1 special character
 
-## Email + Password {#email--password}
+## Email and password {#email--password}
 
 ClickHouse Cloud allows you to authenticate with an email address and password. When using this method the best way to protect your ClickHouse account use a strong password. There are many online resources to help you devise a password you can remember. Alternatively, you can use a random password generator and store your password in a password manager for increased security.
 
-## SSO Using Google or Microsoft Social Authentication {#sso-using-google-or-microsoft-social-authentication}
+## SSO using Google or Microsoft social authentication {#sso-using-google-or-microsoft-social-authentication}
 
 If your company uses Google Workspace or Microsoft 365, you can leverage your current single sign-on setup within ClickHouse Cloud. To do this, simply sign up using your company email address and invite other users using their company email. The effect is that your users must login using your company's login flows, whether via your identity provider or directly through Google or Microsoft authentication, before they can authenticate into ClickHouse Cloud. 
 
-## Multi-Factor Authentication {#multi-factor-authentication}
+## Multi-factor authentication {#multi-factor-authentication}
 
 Users with email + password or social authentication can further secure their account using multi-factor authentication (MFA). To set up MFA:
 1. Log into console.clickhouse.cloud
@@ -118,7 +118,7 @@ Users with email + password or social authentication can further secure their ac
 
 ClickHouse Cloud also supports security assertion markup language (SAML) single sign on (SSO). For more information, see [SAML SSO Setup](/cloud/security/saml-setup).
 
-## Database User ID + Password {#database-user-id--password}
+## Database user ID and password {#database-user-id--password}
 
 Use the SHA256_hash method when [creating user accounts](/sql-reference/statements/create/user.md) to secure passwords.
 

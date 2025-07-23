@@ -191,7 +191,7 @@ Modify the allow list and allow access from **Anywhere** temporarily. See the [I
 
 - Verify the data in the destination service
 
-#### Re-establish the IP Access List on the source {#re-establish-the-ip-access-list-on-the-source}
+#### Re-establish the IP access list on the source {#re-establish-the-ip-access-list-on-the-source}
 
   If you exported the access list earlier, then you can re-import it using **Share**, otherwise re-add your entries to the access list.
 

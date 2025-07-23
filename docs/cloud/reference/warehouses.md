@@ -16,7 +16,7 @@ import Image from '@theme/IdealImage';
 
 # Warehouses
 
-## What is Compute-Compute Separation? {#what-is-compute-compute-separation}
+## What is compute-compute separation? {#what-is-compute-compute-separation}
 
 Compute-compute separation is available for Scale and Enterprise tiers.
 
@@ -47,7 +47,7 @@ _Fig. 2 - compute separation in ClickHouse Cloud_
 
 It is possible to create extra services that share the same data with your existing services, or create a completely new setup with multiple services sharing the same data.
 
-## What is a Warehouse? {#what-is-a-warehouse}
+## What is a warehouse? {#what-is-a-warehouse}
 
 In ClickHouse Cloud, a _warehouse_ is a set of services that share the same data.
 Each warehouse has a primary service (this service was created first) and secondary service(s). For example, in the screenshot below you can see a warehouse "DWH Prod" with two services:
@@ -151,9 +151,9 @@ Compute prices are the same for all services in a warehouse (primary and seconda
 - As all services in a single warehouse share the same storage, backups are made only on the primary (initial) service. By this, the data for all services in a warehouse is backed up.
 - If you restore a backup from a primary service of a warehouse, it will be restored to a completely new service, not connected to the existing warehouse. You can then add more services to the new service immediately after the restore is finished.
 
-## Using Warehouses {#using-warehouses}
+## Using warehouses {#using-warehouses}
 
-### Creating a Warehouse {#creating-a-warehouse}
+### Creating a warehouse {#creating-a-warehouse}
 
 To create a warehouse, you need to create a second service that will share the data with an existing service. This can be done by clicking the plus sign on any of the existing services:
 
@@ -165,7 +165,7 @@ _Fig. 7 - Click the plus sign to create a new service in a warehouse_
 
 On the service creation screen, the original service will be selected in the dropdown as the source for the data of the new service. Once created, these two services will form a warehouse.
 
-### Renaming a Warehouse {#renaming-a-warehouse}
+### Renaming a warehouse {#renaming-a-warehouse}
 
 There are two ways to rename a warehouse:
 

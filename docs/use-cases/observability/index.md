@@ -9,7 +9,7 @@ keywords: ['observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafa
 
 ClickHouse offers unmatched speed, scale, and cost-efficiency for observability. This guide provides two paths depending on your needs:
 
-## ClickStack - The ClickHouse Observability Stack {#clickstack}
+## ClickStack - the ClickHouse observability stack {#clickstack}
 
 The ClickHouse Observability Stack is our **recommended approach** for most users.
 
@@ -27,7 +27,7 @@ The ClickHouse Observability Stack is our **recommended approach** for most user
 | [Search](/use-cases/observability/clickstack/search) | How to search and query your observability data |
 | [Production](/use-cases/observability/clickstack/production) | Best practices for production deployment |
 
-## Build-Your-Own Stack {#build-your-own-stack}
+## Build-your-own stack {#build-your-own-stack}
 
 For users with **custom requirements** — such as highly specialized ingestion pipelines, schema designs, or extreme scaling needs — we provide guidance to build a custom observability stack with ClickHouse as the core database.
 

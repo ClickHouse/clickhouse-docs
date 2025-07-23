@@ -19,7 +19,7 @@ This example architecture is designed to provide scalability.  It includes three
 <ReplicationShardingTerminology />
 
 ## Environment {#environment}
-### Architecture Diagram {#architecture-diagram}
+### Architecture diagram {#architecture-diagram}
 
 <Image img={scalingOut1} size='md' alt='Architecture diagram for 2 shards and 1 replica' />
 
@@ -41,7 +41,7 @@ Install Clickhouse on three servers following the [instructions for your archive
 
 <ConfigFileNote />
 
-## chnode1 configuration {#chnode1-configuration}
+## Chnode1 configuration {#chnode1-configuration}
 
 For `chnode1`, there are five configuration files.  You may choose to combine these files into a single file, but for clarity in the documentation it may be simpler to look at them separately.  As you read through the configuration files, you will see that most of the configuration is the same between `chnode1` and `chnode2`; the differences will be highlighted.
 
@@ -183,7 +183,7 @@ Up above a few files ClickHouse Keeper was configured.  This configuration file 
 </clickhouse>
 ```
 
-## chnode2 configuration {#chnode2-configuration}
+## Chnode2 configuration {#chnode2-configuration}
 
 As the configuration is very similar on `chnode1` and `chnode2`, only the differences will be pointed out here.
 
@@ -309,7 +309,7 @@ The macros configuration has one of the differences between `chnode1` and `chnod
 </clickhouse>
 ```
 
-## chnode3 configuration {#chnode3-configuration}
+## Chnode3 configuration {#chnode3-configuration}
 
 As `chnode3` is not storing data and is only used for ClickHouse Keeper to provide the third node in the quorum, `chnode3` has only two configuration files, one to configure the network and logging, and one to configure ClickHouse Keeper.
 
@@ -479,7 +479,7 @@ SELECT * FROM db1.table1_dist;
 └────┴─────────┘
 ```
 
-## More information about: {#more-information-about}
+## More information about {#more-information-about}
 
 - The [Distributed Table Engine](/engines/table-engines/special/distributed.md)
 - [ClickHouse Keeper](/guides/sre/keeper/index.md)

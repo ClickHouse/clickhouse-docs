@@ -29,7 +29,6 @@ import org.apache.spark.sql.DataFrame
 import scala.collection.JavaConverters._
 import com.amazonaws.services.glue.log.GlueLogger
 
-
 // Initialize Glue job
 object GlueJob {
   def main(sysArgs: Array[String]) {
@@ -96,7 +95,6 @@ logger.info("num of rows:")
 logger.info(str(df.count()))
 logger.info("Data sample:")
 logger.info(str(df.take(10)))
-
 
 job.commit()
 ```

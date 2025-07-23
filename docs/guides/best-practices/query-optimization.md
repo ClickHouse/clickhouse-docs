@@ -10,7 +10,7 @@ import Image from '@theme/IdealImage';
 
 # A simple guide for query optimization
 
-This section aims to illustrate through common scenarios how to use different performance and optimization techniques, such as [analyzer](/operations/analyzer), [query profiling](/operations/optimizing-performance/sampling-query-profiler) or [avoid Nullable Columns](/optimize/avoid-nullable-columns), in order to improve your ClickHouse query performances.
+This section aims to illustrate through common scenarios how to use different performance and optimization techniques, such as [analyzer](/operations/analyzer), [query profiling](/operations/optimizing-performance/sampling-query-profiler) or [avoid nullable Columns](/optimize/avoid-nullable-columns), in order to improve your ClickHouse query performances.
 
 ## Understand query performance {#understand-query-performance}
 

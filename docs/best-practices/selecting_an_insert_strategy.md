@@ -129,7 +129,7 @@ When data arrives pre-sorted, ClickHouse can skip or simplify the internal sorti
 
 <AsyncInserts />
 
-## Choose an interface - HTTP or Native {#choose-an-interface}
+## Choose an interface - HTTP or native {#choose-an-interface}
 
 ### Native {#choose-an-interface-native}
 

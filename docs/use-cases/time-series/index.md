@@ -20,4 +20,4 @@ This guide walks you through everything you need to know about working with time
 * [Optimize storage efficiency for temporal data](./storage-efficiency.md)
 * [Tune query performance for time-series workloads](./query-performance.md)
 
-    Whether you're new to time-series analysis or looking to optimize an existing implementation, this guide will help you make the most of ClickHouse's time-series capabilities.
+Whether you're new to time-series analysis or looking to optimize an existing implementation, this guide will help you make the most of ClickHouse's time-series capabilities.

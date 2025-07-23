@@ -30,11 +30,11 @@ If you're using the [HyperDX-only](/use-cases/observability/clickstack/deploymen
 - Running your own OpenTelemetry collector and pointing it at ClickHouse - see below.
 - Sending directly to ClickHouse using alternative tooling, such as [Vector](https://vector.dev/), [Fluentd](https://www.fluentd.org/) etc, or even the default [OTel contrib collector distribution](https://github.com/open-telemetry/opentelemetry-collector-contrib).
 
-    :::note We recommend using the ClickStack OpenTelemetry collector
-    This allows users to benefit from standardized ingestion, enforced schemas, and out-of-the-box compatibility with the HyperDX UI. Using the default schema enables automatic source detection and preconfigured column mappings.
-    :::
+:::note We recommend using the ClickStack OpenTelemetry collector
+This allows users to benefit from standardized ingestion, enforced schemas, and out-of-the-box compatibility with the HyperDX UI. Using the default schema enables automatic source detection and preconfigured column mappings.
+:::
 
-    For further details see ["Deploying the collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector).
+For further details see ["Deploying the collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector).
 
 ## Sending OpenTelemetry data {#sending-otel-data}
 
@@ -43,23 +43,23 @@ To send data to ClickStack, point your OpenTelemetry instrumentation to the foll
 - **HTTP (OTLP):** `http://localhost:4318`
 - **gRPC (OTLP):** `localhost:4317`
 
-    For most [language SDKs](/use-cases/observability/clickstack/sdks) and telemetry libraries that support OpenTelemetry, users can simply set `OTEL_EXPORTER_OTLP_ENDPOINT` environment variable in your application:
+For most [language SDKs](/use-cases/observability/clickstack/sdks) and telemetry libraries that support OpenTelemetry, users can simply set `OTEL_EXPORTER_OTLP_ENDPOINT` environment variable in your application:
 
-    ```shell
-    export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
-    ```
+```shell
+export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
+```
 
-    In addition, an authorization header containing the API ingestion key is required. You can find the key in the HyperDX app under `Team Settings → API Keys`.
+In addition, an authorization header containing the API ingestion key is required. You can find the key in the HyperDX app under `Team Settings → API Keys`.
 
-    <Image img={ingestion_key} alt="Ingestion keys" size="lg"/>
+<Image img={ingestion_key} alt="Ingestion keys" size="lg"/>
 
-    For language SDKs, this can either be set by an `init` function or via an`OTEL_EXPORTER_OTLP_HEADERS` environment variable e.g.:
+For language SDKs, this can either be set by an `init` function or via an`OTEL_EXPORTER_OTLP_HEADERS` environment variable e.g.:
 
-    ```shell
-    OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
-    ```
+```shell
+OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
+```
 
-    Agents should likewise include this authorization header in any OTLP communication. For example, if deploying a [contrib distribution of the OTel collector](https://github.com/open-telemetry/opentelemetry-collector-contrib) in the agent role, they can use the OTLP exporter. An example agent config consuming this [structured log file](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz), is shown below. Note the need to specify an authorization key - see `<YOUR_API_INGESTION_KEY>`.
+Agents should likewise include this authorization header in any OTLP communication. For example, if deploying a [contrib distribution of the OTel collector](https://github.com/open-telemetry/opentelemetry-collector-contrib) in the agent role, they can use the OTLP exporter. An example agent config consuming this [structured log file](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz), is shown below. Note the need to specify an authorization key - see `<YOUR_API_INGESTION_KEY>`.
 
 ```yaml
 # clickhouse-agent-config.yaml
@@ -67,20 +67,20 @@ receivers:
   filelog:
     include:
       - /opt/data/logs/access-structured.log
-          start_at: beginning
-          operators:
+    start_at: beginning
+    operators:
       - type: json_parser
-          timestamp:
+        timestamp:
           parse_from: attributes.time_local
           layout: '%Y-%m-%d %H:%M:%S'
-          exporters:
+exporters:
   # HTTP setup
   otlphttp/hdx:
     endpoint: 'http://localhost:4318'
     headers:
       authorization: <YOUR_API_INGESTION_KEY>
     compression: gzip
-
+ 
   # gRPC setup (alternative)
   otlp/hdx:
     endpoint: 'localhost:4317'

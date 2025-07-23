@@ -20,9 +20,9 @@ The feature supports integrating [Prometheus](https://prometheus.io/) to monitor
 
 To get started, [generate an API key](/cloud/manage/openapi).
 
-## Prometheus Endpoint API to retrieve ClickHouse Cloud Metrics {#prometheus-endpoint-api-to-retrieve-clickhouse-cloud-metrics}
+## Prometheus endpoint API to retrieve ClickHouse Cloud metrics {#prometheus-endpoint-api-to-retrieve-clickhouse-cloud-metrics}
 
-### API Reference {#api-reference}
+### API reference {#api-reference}
 
 | Method | Path                                                                                                               | Description                                                        |
 | ------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ |
@@ -57,7 +57,7 @@ export SERVICE_ID=<service_id>
 curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/prometheus?filtered_metrics=true
 ```
 
-### Sample Response {#sample-response}
+### Sample response {#sample-response}
 
 ```response
 # HELP ClickHouse_ServiceInfo Information about service, including cluster status and ClickHouse version
@@ -119,7 +119,7 @@ ClickPipes_FetchedBytesCompressed_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-
 ClickPipes_FetchedEvents_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickhouse_service="82b83b6a-5568-4a82-aa78-fed9239db83f",clickhouse_service_name="ClickPipes demo instace",clickpipe_id="642bb967-940b-459e-9f63-a2833f62ec44",clickpipe_name="Confluent demo pipe",clickpipe_source="confluent"} 5535376
 ```
 
-### Metric Labels {#metric-labels}
+### Metric labels {#metric-labels}
 
 All metrics have the following labels:
 
@@ -137,7 +137,7 @@ For ClickPipes, metrics will also have the following labels:
 | clickpipe_name | ClickPipe Name |
 | clickpipe_source | ClickPipe Source Type |
 
-### Information Metrics {#information-metrics}
+### Information metrics {#information-metrics}
 
 ClickHouse Cloud provides a special metric `ClickHouse_ServiceInfo` which is a `gauge` that always has the value of `1`. This metric contains all the **Metric Labels** as well as the following labels:
 
@@ -193,7 +193,7 @@ Users have two primary ways to integrate with Grafana:
 
 We provide instructions on using these options below, focusing on the details specific to the ClickHouse Cloud Prometheus Endpoint.
 
-### Grafana Cloud with Metrics Endpoint {#grafana-cloud-with-metrics-endpoint}
+### Grafana Cloud with metrics endpoint {#grafana-cloud-with-metrics-endpoint}
 
 - Login to your Grafana Cloud account
 - Add a new connection by selecting the **Metrics Endpoint**

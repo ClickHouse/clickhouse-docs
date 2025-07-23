@@ -50,20 +50,20 @@ Now you should be able to attach ClickHouse Datasource to your Looker project.
 ## 3. Known limitations {#3-known-limitations}
 
 1. The following data types are handled as strings by default:
-* Array - serialization does not work as expected due to the JDBC driver limitations
-* Decimal* - can be changed to number in the model
-* LowCardinality(...) - can be changed to a proper type in the model
-* Enum8, Enum16
-* UUID
-* Tuple
-* Map
-* JSON
-* Nested
-* FixedString
-* Geo types
-  * MultiPolygon
-  * Polygon
-  * Point
-  * Ring
+   * Array - serialization does not work as expected due to the JDBC driver limitations
+   * Decimal* - can be changed to number in the model
+   * LowCardinality(...) - can be changed to a proper type in the model
+   * Enum8, Enum16
+   * UUID
+   * Tuple
+   * Map
+   * JSON
+   * Nested
+   * FixedString
+   * Geo types
+     * MultiPolygon
+     * Polygon
+     * Point
+     * Ring
 2. [Symmetric aggregate feature](https://cloud.google.com/looker/docs/reference/param-explore-symmetric-aggregates) is not supported
 3. [Full outer join](https://cloud.google.com/looker/docs/reference/param-explore-join-type#full_outer) is not yet implemented in the driver

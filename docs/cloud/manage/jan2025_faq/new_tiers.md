@@ -14,7 +14,7 @@ description: 'Description of new tiers and features'
 - **Enhanced Encryption:** This feature is available in Enterprise tier services, including for single replica services, in AWS and GCP. Services are encrypted by our key by default and can be rotated to their key to enable Customer Managed Encryption Keys (CMEK).
 - **Single Sign On (SSO):** This feature is offered in Enterprise tier and requires a support ticket to be enabled for an Organization. Users who have multiple Organizations should ensure all of their organizations are on the Enterprise tier to use SSO for each organization.
 
-## Basic Tier {#basic-tier}
+## Basic tier {#basic-tier}
 
 ### What are the considerations for the Basic tier? {#what-are-the-considerations-for-the-basic-tier}
 
@@ -34,9 +34,9 @@ Yes, single replica services are supported on all three tiers. Users can scale o
 
 ### Can users scale up/down and add more replicas on the Basic tier? {#can-users-scale-updown-and-add-more-replicas-on-the-basic-tier}
 
-No, services on this tier are meant to support workloads that are small and fixed size (single replica `1x8GiB` or `1x12GiB`). If users need to scale up/down or add replicas, they will be prompted to upgrade to Scale or Enterprise tiers.
+No, services on this tier are meant to support workloads that are small and fixed size (single replica `1x8GiB` or `1x12GiB`). The size of the single replica is fixed upon service creation and cannot be adjusted or scaled after service creation. If users need to scale up/down or add replicas, they will be prompted to upgrade to Scale or Enterprise tiers.
 
-## Scale Tier {#scale-tier}
+## Scale tier {#scale-tier}
 
 ### Which tiers on the new plans (Basic/Scale/Enterprise) support compute-compute separation? {#which-tiers-on-the-new-plans-basicscaleenterprise-support-compute-compute-separation}
 
@@ -46,7 +46,7 @@ Only Scale and Enterprise tiers support compute-compute separation. Please also 
 
 Compute-compute separation is not supported on existing Development and Production services, except for users who already participated in the Private Preview and Beta. If you have additional questions, please contact [support](https://clickhouse.com/support/program).
 
-## Enterprise Tier {#enterprise-tier}
+## Enterprise tier {#enterprise-tier}
 
 ### What different hardware profiles are supported for the Enterprise tier? {#what-different-hardware-profiles-are-supported-for-the-enterprise-tier}
 

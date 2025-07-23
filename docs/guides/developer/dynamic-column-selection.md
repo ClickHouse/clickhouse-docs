@@ -86,7 +86,7 @@ LIMIT 5;
 
 ## Apply functions to all columns  {#applying-functions}
 
-We can also use the [`APPLY`](https://clickhouse.com/docs/sql-reference/statements/select#apply) modifier to apply functions across every column. 
+We can also use the [`APPLY`](/sql-reference/statements/select) modifier to apply functions across every column. 
 For example, if we wanted to find the maximum value of each of those columns, we could run the following query:
 
 ```sql
@@ -149,7 +149,7 @@ FROM nyc_taxi.trips;
 
 ## Replacing columns  {#replacing-columns}
 
-So far so good. But let’s say we want to adjust one of the values, while leaving the other ones as they are. For example, maybe we want to double the total amount and divide the MTA tax by 1.1. We can do that by using the [`REPLACE`](/sql-reference/statements/select#replace) modifier, which will replace a column while leaving the other ones as they are.
+So far so good. But let’s say we want to adjust one of the values, while leaving the other ones as they are. For example, maybe we want to double the total amount and divide the MTA tax by 1.1. We can do that by using the [`REPLACE`](/sql-reference/statements/select) modifier, which will replace a column while leaving the other ones as they are.
 
 ```sql
 FROM nyc_taxi.trips 
@@ -173,7 +173,7 @@ SELECT
 
 ## Excluding columns  {#excluding-columns}
 
-We can also choose to exclude a field by using the [`EXCEPT`](/sql-reference/statements/select#except) modifier. For example, to remove the `tolls_amount` column, we would write the following query:
+We can also choose to exclude a field by using the [`EXCEPT`](/sql-reference/statements/select) modifier. For example, to remove the `tolls_amount` column, we would write the following query:
 
 ```sql
 FROM nyc_taxi.trips 

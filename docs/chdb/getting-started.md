@@ -10,7 +10,7 @@ keywords: ['chdb', 'embedded', 'clickhouse-lite', 'in-process', 'in process']
 
 In this guide, we're going to get up and running with the Python variant of chDB.
 We'll start by querying a JSON file on S3, before creating a table in chDB based on the JSON file, and doing some queries on the data.
-We'll also see how to have queries return data in different formats, including Apache Arrow and Panda, and finally we'll learn how to query Pandas DataFrames.
+We'll also see how to have queries return data in different formats, including Apache Arrow and Panda, and finally we'll learn how to query Pandas DataFrames. 
 
 ## Setup {#setup}
 
@@ -48,7 +48,7 @@ pip install pandas pyarrow
 
 ## Querying a JSON file in S3 {#querying-a-json-file-in-s3}
 
-Let's now have a look at how to query a JSON file that's stored in an S3 bucket.
+Let's now have a look at how to query a JSON file that's stored in an S3 bucket. 
 The [YouTube dislikes dataset](/getting-started/example-datasets/youtube-dislikes) contains more than 4 billion rows of dislikes on YouTube videos up to 2021.
 We're going to work with one of the JSON files from that dataset.
 
@@ -145,7 +145,7 @@ This is fine to do with variables defined in your program, but don't do it with 
 
 ## Configuring the output format {#configuring-the-output-format}
 
-The default output format is `CSV`, but we can change that via the `output_format` parameter.
+The default output format is `CSV`, but we can change that via the `output_format` parameter. 
 chDB supports the ClickHouse data formats, as well as [some of its own](/chdb/reference/data-formats.md), including `DataFrame`, which returns a Pandas DataFrame:
 
 ```python
@@ -197,7 +197,7 @@ count(): [[315746,20686]]
 
 ## Creating a table from JSON file {#creating-a-table-from-json-file}
 
-Next, let's have a look at how to create a table in chDB.
+Next, let's have a look at how to create a table in chDB. 
 We need to use a different API to do that, so let's first import that:
 
 ```python
@@ -224,9 +224,9 @@ We'll use the [`schema_inference_make_columns_nullable`](/operations/settings/fo
 ```python
 sess.query(f"""
   CREATE TABLE youtube.dislikes
-  ORDER BY fetch_date
-  EMPTY AS
-  SELECT *
+  ORDER BY fetch_date 
+  EMPTY AS 
+  SELECT * 
   FROM s3('{path}','JSONLines')
   SETTINGS schema_inference_make_columns_nullable=0
   """
@@ -279,7 +279,7 @@ Next, let's populate that table:
 ```python
 sess.query(f"""
   INSERT INTO youtube.dislikes
-  SELECT *
+  SELECT * 
   FROM s3('{path}','JSONLines')
   SETTINGS schema_inference_make_columns_nullable=0
   """
@@ -292,9 +292,9 @@ Let's create a different table using that technique:
 ```python
 sess.query(f"""
   CREATE TABLE youtube.dislikes2
-  ORDER BY fetch_date
-  AS
-  SELECT *
+  ORDER BY fetch_date 
+  AS 
+  SELECT * 
   FROM s3('{path}','JSONLines')
   SETTINGS schema_inference_make_columns_nullable=0
   """
@@ -371,7 +371,7 @@ You can also read more about querying Pandas DataFrames in the [Querying Pandas 
 
 ## Next steps {#next-steps}
 
-Hopefully, this guide has given you a good overview of chDB.
+Hopefully, this guide has given you a good overview of chDB. 
 To learn more about how to use it, see the following developer guides:
 
 * [Querying Pandas DataFrames](guides/querying-pandas.md)

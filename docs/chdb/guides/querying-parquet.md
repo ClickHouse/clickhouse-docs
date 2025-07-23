@@ -54,7 +54,7 @@ Let's use the `DESCRIBE` clause to see the fields returned when we use this form
 ```python
 query = """
 DESCRIBE s3(
-  'https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_2015.snappy.parquet',
+  'https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_2015.snappy.parquet', 
   ParquetMetadata
 )
 SETTINGS describe_compact_output=1
@@ -82,7 +82,7 @@ Let's have now have a look at the metadata for this file.
 query = """
 SELECT * EXCEPT(columns, row_groups)
 FROM s3(
-  'https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_2015.snappy.parquet',
+  'https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_2015.snappy.parquet', 
   ParquetMetadata
 )
 """
@@ -119,7 +119,7 @@ WITH rowGroups AS (
     ARRAY JOIN row_groups AS rg
     LIMIT 1
 )
-SELECT tupleElement(c, 'name') AS name, tupleElement(c, 'total_compressed_size') AS total_compressed_size,
+SELECT tupleElement(c, 'name') AS name, tupleElement(c, 'total_compressed_size') AS total_compressed_size, 
        tupleElement(c, 'total_uncompressed_size') AS total_uncompressed_size,
        tupleElement(tupleElement(c, 'statistics'), 'min') AS min,
        tupleElement(tupleElement(c, 'statistics'), 'max') AS max

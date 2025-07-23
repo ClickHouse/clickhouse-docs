@@ -18,7 +18,7 @@ Schema registries that use the Confluent Schema Registry API are supported. This
 - AWS MSK
 - Upstash
 
-    ClickPipes is not currently compatible with the AWS Glue Schema registry or the Azure Schema Registry.
+ClickPipes is not currently compatible with the AWS Glue Schema registry or the Azure Schema Registry.
 
 ## Configuration {#schema-registry-configuration}
 

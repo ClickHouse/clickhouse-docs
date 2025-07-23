@@ -7,9 +7,14 @@ If you need a SQL client connection, your ClickHouse Cloud service has an associ
 :::
 
 <details>
-<summary>Connect to SQL console</summary>
+    <summary>Connect to SQL console</summary>
+
 From your ClickHouse Cloud services list, click on a service.
+
 <Image img={cloud_connect_to_sql_console}  alt="Connect to SQL Console" size="lg" force border/>
+
 This will redirect you to the SQL console.
+
 <Image img={createservice8}  alt="SQL Console" size="lg" force border/>
+
 </details>

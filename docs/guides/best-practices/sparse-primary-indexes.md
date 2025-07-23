@@ -33,7 +33,7 @@ import sparsePrimaryIndexes15a from '@site/static/images/guides/best-practices/s
 import sparsePrimaryIndexes15b from '@site/static/images/guides/best-practices/sparse-primary-indexes-15b.png';
 import Image from '@theme/IdealImage';
 
-# A Practical Introduction to Primary Indexes in ClickHouse
+# A practical introduction to primary indexes in ClickHouse
 
 ## Introduction {#introduction}
 
@@ -51,7 +51,7 @@ This guide is focusing on ClickHouse sparse primary indexes.
 For ClickHouse [secondary data skipping indexes](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-data_skipping-indexes), see the [Tutorial](/guides/best-practices/skipping-indexes.md).
 :::
 
-### Data Set {#data-set}
+### Data set {#data-set}
 
 Throughout this guide we will use a sample anonymized web traffic data set.
 
@@ -65,7 +65,7 @@ With these three columns we can already formulate some typical web analytics que
 - "What are the top 10 users that most frequently clicked a specific URL?"
 - "What are the most popular times (e.g. days of the week) at which a user clicks on a specific URL?"
 
-### Test Machine {#test-machine}
+### Test machine {#test-machine}
 
 All runtime numbers given in this document are based on running ClickHouse 22.2.1 locally on a MacBook Pro with the Apple M1 Pro chip and 16GB of RAM.
 
@@ -150,7 +150,7 @@ ClickHouse client's result output indicates that ClickHouse executed a full tabl
 
 To make this (way) more efficient and (much) faster, we need to use a table with a appropriate primary key. This will allow ClickHouse to automatically (based on the primary key's column(s)) create a sparse primary index which can then be used to significantly speed up the execution of our example query.
 
-## ClickHouse Index Design {#clickhouse-index-design}
+## ClickHouse index design {#clickhouse-index-design}
 
 ### An index design for massive data scales {#an-index-design-for-massive-data-scales}
 
@@ -274,7 +274,6 @@ data_compressed_bytes:       206.94 MiB
 primary_key_bytes_in_memory: 96.93 KiB
 marks:                       1083
 bytes_on_disk:               207.07 MiB
-
 
 1 rows in set. Elapsed: 0.003 sec.
 ```

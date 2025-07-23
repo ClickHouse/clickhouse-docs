@@ -7,7 +7,7 @@ description: 'Integrations for ClickHouse'
 
 To see a full list of integrations for ClickHouse, please see [this page](/integrations).
 
-## Proprietary Integrations for ClickHouse Cloud {#proprietary-integrations-for-clickhouse-cloud}
+## Proprietary integrations for ClickHouse Cloud {#proprietary-integrations-for-clickhouse-cloud}
 
 Besides the dozens of integrations available for ClickHouse, there are also some proprietary integrations only available for ClickHouse Cloud:
 
@@ -23,9 +23,9 @@ Looker Studio can be connected to ClickHouse Cloud by enabling the [MySQL interf
 
 ### MySQL Interface {#mysql-interface}
 
-Some applications currently do not support the ClickHouse wire protocol. To use ClickHouse Cloud with these applications, you can enable the MySQL wire protocol through the Cloud Console. Please see [this page](/interfaces/mysql#enabling-the-mysql-interface-on-clickhouse-cloud) for details on how to enable the MySQL wire protocol through the Cloud Console.
+Some applications currently do not support the ClickHouse wire protocol. To use ClickHouse Cloud with these applications, you can enable the MySQL wire protocol through the Cloud console. Please see [this page](/interfaces/mysql#enabling-the-mysql-interface-on-clickhouse-cloud) for details on how to enable the MySQL wire protocol through the Cloud console.
 
-## Unsupported Integrations {#unsupported-integrations}
+## Unsupported integrations {#unsupported-integrations}
 
 The following features for integrations are not currently available for ClickHouse Cloud as they are experimental features. If you need to support these features in your application, please contact support@clickhouse.com.
 

@@ -48,7 +48,7 @@ Once your source MySQL database is set up, you can continue creating your ClickP
 Make sure you are logged in to your ClickHouse Cloud account. If you don't have an account yet, you can sign up [here](https://cloud.clickhouse.com/).
 
 [//]: # (   TODO update image here)
-1. In the ClickHouse Cloud Console, navigate to your ClickHouse Cloud Service.
+1. In the ClickHouse Cloud console, navigate to your ClickHouse Cloud Service.
 
 <Image img={cp_service} alt="ClickPipes service" size="lg" border/>
 
@@ -73,7 +73,7 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
 
    <Image img={mysql_connection_details} alt="Fill in connection details" size="lg" border/>
 
-#### (Optional) Set up SSH Tunneling {#optional-setting-up-ssh-tunneling}
+#### (Optional) Set up SSH tunneling {#optional-setting-up-ssh-tunneling}
 
 You can specify SSH tunneling details if your source MySQL database is not publicly accessible.
 

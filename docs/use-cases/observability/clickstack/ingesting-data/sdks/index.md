@@ -10,7 +10,7 @@ Users typically send data to ClickStack via the **OpenTelemetry (OTel) collector
 
 Language SDKs are responsible for collecting telemetry from within your application - most notably **traces** and **logs** - and exporting this data to the OpenTelemetry collector, via the OTLP endpoint, which handles ingestion into ClickHouse.
 
-In browser-based environments, SDKs may also be responsible for collecting **session data**, including UI events, clicks, and navigation thus enabling replays of user sessions.
+In browser-based environments, SDKs may also be responsible for collecting **session data**, including UI events, clicks, and navigation thus enabling replays of user sessions. 
 
 ## How it works {#how-it-works}
 
@@ -65,4 +65,4 @@ All SDKs support automatic correlation with Kubernetes metadata (pod name, names
 - Correlate application logs and traces with infrastructure metrics
 - Track resource usage and performance across your Kubernetes cluster
 
-    To enable this feature, configure the OpenTelemetry collector to forward resource tags to pods. See the [Kubernetes integration guide](/use-cases/observability/clickstack/ingesting-data/kubernetes#forwarding-resouce-tags-to-pods) for detailed setup instructions.
+To enable this feature, configure the OpenTelemetry collector to forward resource tags to pods. See the [Kubernetes integration guide](/use-cases/observability/clickstack/ingesting-data/kubernetes#forwarding-resouce-tags-to-pods) for detailed setup instructions.

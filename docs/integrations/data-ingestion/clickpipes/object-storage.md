@@ -23,7 +23,7 @@ import cp_destination from '@site/static/images/integrations/data-ingestion/clic
 import cp_overview from '@site/static/images/integrations/data-ingestion/clickpipes/cp_overview.png';
 import Image from '@theme/IdealImage';
 
-# Integrating Object Storage with ClickHouse Cloud
+# Integrating object storage with ClickHouse Cloud
 Object Storage ClickPipes provide a simple and resilient way to ingest data from Amazon S3, Google Cloud Storage, Azure Blob Storage, and DigitalOcean Spaces into ClickHouse Cloud. Both one-time and continuous ingestion are supported with exactly-once semantics.
 
 ## Prerequisite {#prerequisite}
@@ -65,9 +65,9 @@ You can also map [virtual columns](../../sql-reference/table-functions/s3#virtua
 
 7. Finally, you can configure permissions for the internal ClickPipes user.
 
-**Permissions:** ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user using a custom role or one of the predefined role:
-- `Full access`: with the full access to the cluster. Required if you use Materialized View or Dictionary with the destination table.
-- `Only destination table`: with the `INSERT` permissions to the destination table only.
+  **Permissions:** ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user using a custom role or one of the predefined role:
+    - `Full access`: with the full access to the cluster. Required if you use materialized view or Dictionary with the destination table.
+    - `Only destination table`: with the `INSERT` permissions to the destination table only.
 
 <Image img={cp_step5} alt="Permissions" size="lg" border/>
 
@@ -88,7 +88,7 @@ You can also map [virtual columns](../../sql-reference/table-functions/s3#virtua
 Image
 9. **Congratulations!** you have successfully set up your first ClickPipe. If this is a streaming ClickPipe it will be continuously running, ingesting data in real-time from your remote data source. Otherwise it will ingest the batch and complete.
 
-## Supported Data Sources {#supported-data-sources}
+## Supported data sources {#supported-data-sources}
 
 | Name                 |Logo|Type| Status          | Description                                                                                          |
 |----------------------|----|----|-----------------|------------------------------------------------------------------------------------------------------|
@@ -99,7 +99,7 @@ Image
 
 More connectors will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
-## Supported Data Formats {#supported-data-formats}
+## Supported data formats {#supported-data-formats}
 
 The supported formats are:
 - [JSON](/interfaces/formats/JSON)
@@ -107,11 +107,11 @@ The supported formats are:
 - [Parquet](/interfaces/formats/Parquet)
 - [Avro](/interfaces/formats/Avro)
 
-## Exactly-Once Semantics {#exactly-once-semantics}
+## Exactly-once semantics {#exactly-once-semantics}
 
 Various types of failures can occur when ingesting large dataset, which can result in a partial inserts or duplicate data. Object Storage ClickPipes are resilient to insert failures and provides exactly-once semantics. This is accomplished by using temporary "staging" tables. Data is first inserted into the staging tables. If something goes wrong with this insert, the staging table can be truncated and the insert can be retried from a clean state. Only when an insert is completed and successful, the partitions in the staging table are moved to target table. To read more about this strategy, check-out [this blog post](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part3).
 
-### View Support {#view-support}
+### View support {#view-support}
 Materialized views on the target table are also supported. ClickPipes will create staging tables not only for the target table, but also any dependent materialized view.
 
 We do not create staging tables for non-materialized views. This means that if you have a target table with one of more downstream materialized views, those materialized views should avoid selecting data via a view from the target table. Otherwise, you may find that you are missing data in the materialized view.
@@ -172,7 +172,7 @@ Currently only protected buckets are supported for DigitalOcean spaces. You requ
 ### Azure Blob Storage {#azureblobstorage}
 Currently only protected buckets are supported for Azure Blob Storage. Authentication is done via a connection string, which supports access keys and shared keys. For more information, read [this guide](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string).
 
-## F.A.Q. {#faq}
+## FAQ {#faq}
 
 - **Does ClickPipes support GCS buckets prefixed with `gs://`?**
 

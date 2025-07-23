@@ -24,7 +24,7 @@ You should consider moving to ClickStack if:
 - You are committed to OpenTelemetry and want to avoid vendor lock-in.
 - You want to take advantage of the separation of storage and compute in ClickHouse Cloud, enabling virtually unlimited scale — paying only for ingestion compute and object storage during idle periods.
 
-    However, ClickStack may not be suitable if:
+However, ClickStack may not be suitable if:
 
 - You use observability data primarily for security use cases and need a SIEM-focused product.
 - Universal profiling is a critical part of your workflow.

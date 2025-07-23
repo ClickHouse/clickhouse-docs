@@ -57,7 +57,7 @@ During the configuration of the ClickHouse Sink Connector, you will need to prov
 - database name in ClickHouse where the data will be written
 - topic name in Kafka that will be used to write data to ClickHouse
 
-    The Confluent Cloud UI supports advanced configuration options to adjust poll intervals, batch sizes, and other parameters to optimize performance.
+The Confluent Cloud UI supports advanced configuration options to adjust poll intervals, batch sizes, and other parameters to optimize performance.
 
 #### Known limitations {#known-limitations}
 * See the list of [Connectors limitations in the official docs](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html#limitations)

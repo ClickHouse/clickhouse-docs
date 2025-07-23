@@ -51,8 +51,8 @@ If `REPLICA IDENTITY FULL` is not set for a table with TOAST columns, you may en
 1. For INSERT operations, all columns (including TOAST columns) will be replicated correctly.
 
 2. For UPDATE operations:
-- If a TOAST column is not modified, its value will appear as NULL or empty in ClickHouse.
-- If a TOAST column is modified, it will be replicated correctly.
+   - If a TOAST column is not modified, its value will appear as NULL or empty in ClickHouse.
+   - If a TOAST column is modified, it will be replicated correctly.
 
 3. For DELETE operations, TOAST column values will appear as NULL or empty in ClickHouse.
 

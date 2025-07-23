@@ -6,7 +6,9 @@ description: 'How to install chDB for C and C++'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'install']
 ---
 
+<!-- vale ClickHouse.Headings = NO -->
 # Installing chDB for C and C++
+<!-- vale ClickHouse.Headings = YES -->
 
 ## Requirements {#requirements}
 

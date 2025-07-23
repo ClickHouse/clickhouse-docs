@@ -365,7 +365,7 @@ of `ORDER BY` or `PRIMARY KEY` must be specified.  Here are some guidelines on d
 columns to includes in `ORDER BY`, and more information is in the *Next Steps* section at the end
 of this document.
 
-### Order By and Primary Key clauses {#order-by-and-primary-key-clauses}
+### `ORDER BY` and `PRIMARY KEY` clauses {#order-by-and-primary-key-clauses}
 
 - The `ORDER BY` tuple should include fields that are used in query filters
 - To maximize compression on disk the `ORDER BY` tuple should be ordered by ascending cardinality
@@ -484,7 +484,7 @@ table:         NYPD_Complaint
 1 row in set. Elapsed: 0.001 sec.
 ```
 
-## Preprocess and Import Data {#preprocess-import-data}
+## Preprocess and import data {#preprocess-import-data}
 
 We will use `clickhouse-local` tool for data preprocessing and `clickhouse-client` to upload it.
 
@@ -538,7 +538,7 @@ cat ${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv \
   | clickhouse-client --query='INSERT INTO NYPD_Complaint FORMAT TSV'
 ```
 
-## Validate the Data {#validate-data}
+## Validate the data {#validate-data}
 
 :::note
 The dataset changes once or more per year, your counts may not match what is in this document.
@@ -578,7 +578,7 @@ Result:
 └─────────────────────────────────┘
 ```
 
-## Run Some Queries {#run-queries}
+## Run some queries {#run-queries}
 
 ### Query 1. Compare the number of complaints by month {#query-1-compare-the-number-of-complaints-by-month}
 
@@ -616,7 +616,7 @@ Query id: 7fbd4244-b32a-4acf-b1f3-c3aa198e74d9
 12 rows in set. Elapsed: 0.006 sec. Processed 208.99 thousand rows, 417.99 KB (37.48 million rows/s., 74.96 MB/s.)
 ```
 
-### Query 2. Compare total number of complaints by Borough {#query-2-compare-total-number-of-complaints-by-borough}
+### Query 2. Compare total number of complaints by borough {#query-2-compare-total-number-of-complaints-by-borough}
 
 Query:
 
@@ -646,6 +646,6 @@ Query id: 8cdcdfd4-908f-4be0-99e3-265722a2ab8d
 6 rows in set. Elapsed: 0.008 sec. Processed 208.99 thousand rows, 209.43 KB (27.14 million rows/s., 27.20 MB/s.)
 ```
 
-## Next Steps {#next-steps}
+## Next steps {#next-steps}
 
 [A Practical Introduction to Sparse Primary Indexes in ClickHouse](/guides/best-practices/sparse-primary-indexes.md) discusses the differences in ClickHouse indexing compared to traditional relational databases, how ClickHouse builds and uses a sparse primary index, and indexing best practices.

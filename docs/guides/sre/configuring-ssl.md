@@ -402,6 +402,7 @@ The typical [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-c
   ```
 
 - Send the 4LW commands in the openssl session
+
   ```bash
   mntr
   ```

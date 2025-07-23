@@ -71,14 +71,14 @@ Please visit the [ClickHouse Spark configurations page](/integrations/apache-spa
 When working with ClickHouse Cloud Please make sure to set the [required Spark settings](/integrations/apache-spark/spark-native-connector#clickhouse-cloud-settings).  
 :::
 
-## Setup Verification {#setup-verification}
+## Setup verification {#setup-verification}
 
 To verify that the dependencies and configurations were set successfully, please visit your session's Spark UI, and go to your `Environment` tab.
 There, look for your ClickHouse related settings:
 
 <Image img={sparkUICHSettings} size="xl" alt="Verifying ClickHouse settings using Spark UI" border/>
 
-## Additional Resources {#additional-resources}
+## Additional resources {#additional-resources}
 
 - [ClickHouse Spark Connector Docs](/integrations/apache-spark)
 - [Azure Synapse Spark Pools Overview](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-overview)

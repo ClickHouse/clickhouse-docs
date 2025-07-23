@@ -34,7 +34,7 @@ follow the setup guide bellow.
 
 <TOCInline toc={toc}/>
 
-## Setup Required Prior Usage {#setup-required-prior-usage}
+## Setup required prior usage {#setup-required-prior-usage}
 
 1. Gather your connection details
    <ConnectionDetails />
@@ -136,7 +136,9 @@ Now that have a ClickHouse data source configured in Tableau, let's visualize th
 <Image size="md" img={tableau_workbook3} alt="Tableau worksheet showing the dimensions and measures from ClickHouse tables available for analysis" border />
 <br/>
 
-5. Suppose you want to know how many specific items were ordered each year. Drag **OrderDate** from **ORDERS** into the **Columns** section (the horizontal field), then drag **Quantity** from **LINEITEM** into the **Rows**. Tableau will   generate the following line chart:
+5. Suppose you want to know how many specific items were ordered each year. Drag **OrderDate** from **ORDERS** into the
+   **Columns** section (the horizontal field), then drag **Quantity** from **LINEITEM** into the **Rows**. Tableau will
+   generate the following line chart:
 
 <Image size="sm" img={tableau_workbook4} alt="Tableau line chart showing quantity ordered by year from ClickHouse data" border />
 <br/>
@@ -156,18 +158,22 @@ You should see the following:
 <Image size="sm" img={tableau_workbook5} alt="Tableau crosstab view with quarters as columns and shipment modes as rows" border />
 <br/>
 
-7. The **Abc** values are just filling in the space until you drag a metric onto the table. Drag **Totalprice** from **ORDERS** onto the table. Notice the default calculation is to **SUM** the **Totalprices**:
+7. The **Abc** values are just filling in the space until you drag a metric onto the table. Drag **Totalprice** from *
+   *ORDERS** onto the table. Notice the default calculation is to **SUM** the **Totalprices**:
+
 <Image size="md" img={tableau_workbook6} alt="Tableau crosstab showing sum of total price by quarter and shipment mode" border />
 <br/>
 
-8. Click on **SUM** and change the **Measure** to **Average**. From the same dropdown menu, select **Format** change the **Numbers** to **Currency (Standard)**:
+8. Click on **SUM** and change the **Measure** to **Average**. From the same dropdown menu, select **Format** change the
+   **Numbers** to **Currency (Standard)**:
+
 <Image size="md" img={tableau_workbook7} alt="Tableau crosstab showing average order price by quarter and shipment mode with currency formatting" border />
 <br/>
 
 Well done! You have successfully connected Tableau to ClickHouse, and you have opened up a whole world of possibilities
 for analyzing and visualizing your ClickHouse data.
 
-## Install the Connector Manually {#install-the-connector-manually}
+## Install the connector manually {#install-the-connector-manually}
 
 In case you use an outdated Tableau Desktop version that doesn't include the connector by default, you can install it manually by following these steps:
 
@@ -177,7 +183,7 @@ In case you use an outdated Tableau Desktop version that doesn't include the con
    * Windows: `C:\Users\[Windows User]\Documents\My Tableau Repository\Connectors`
 3. Restart Tableau Desktop, if your setup went successfully, you will set the connector under the `New Data Source` section.
 
-## Connection and Analysis Tips {#connection-and-analysis-tips}
+## Connection and analysis tips {#connection-and-analysis-tips}
 
 For more guidance on optimizing your Tableau-ClickHouse integration, 
 please visit [Connection Tips](/integrations/tableau/connection-tips) and [Analysis Tips](/integrations/tableau/analysis-tips).

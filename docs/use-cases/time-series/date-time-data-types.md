@@ -9,13 +9,13 @@ show_related_blogs: true
 
 # Date and time data types
 
-Having a comprehensive suite of date and time types is necessary for effective time series data management, and ClickHouse delivers exactly that.
+Having a comprehensive suite of date and time types is necessary for effective time series data management, and ClickHouse delivers exactly that. 
 From compact date representations to high-precision timestamps with nanosecond accuracy, these types are designed to balance storage efficiency with practical requirements for different time series applications.
 
-Whether you're working with historical financial data, IoT sensor readings, or future-dated events, ClickHouse's date and time types provide the flexibility needed to handle various temporal data scenarios.
+Whether you're working with historical financial data, IoT sensor readings, or future-dated events, ClickHouse's date and time types provide the flexibility needed to handle various temporal data scenarios. 
 The range of supported types allows you to optimize both storage space and query performance while maintaining the precision your use case demands.
 
-* The [`Date`](/sql-reference/data-types/date) type should be sufficient in most cases. This type requires 2 bytes to store a date and limits the range to `[1970-01-01, 2149-06-06]`.
+* The [`Date`](/sql-reference/data-types/date) type should be sufficient in most cases. This type requires 2 bytes to store a date and limits the range to `[1970-01-01, 2149-06-06]`. 
 
 * [`Date32`](/sql-reference/data-types/date32) covers a wider range of dates. It requires 4 bytes to store a date and limits the range to `[1900-01-01, 2299-12-31]`
 
@@ -23,48 +23,48 @@ The range of supported types allows you to optimize both storage space and query
 
 * For cases where more precision is required, [`DateTime64`](/sql-reference/data-types/datetime64) can be used. This allows storing time with up to nanoseconds precision, with a range of `[1900-01-01 00:00:00, 2299-12-31 23:59:59.99999999]`. It requires 8 bytes per value.
 
-    Let's create a table that stores various date types:
+Let's create a table that stores various date types:
 
-    ```sql
-    CREATE TABLE dates
-    (
+```sql
+CREATE TABLE dates
+(
     `date` Date,
     `wider_date` Date32,
     `datetime` DateTime,
     `precise_datetime` DateTime64(3),
     `very_precise_datetime` DateTime64(9)
-    )
-    ENGINE = MergeTree
-    ORDER BY tuple();
-    ```
+)
+ENGINE = MergeTree
+ORDER BY tuple();
+```
 
-    We can use the [`now()`](/sql-reference/functions/date-time-functions#now) function to return the current time and [`now64()`](/sql-reference/functions/date-time-functions#now64) to get it in a specified precision via the first argument.
+We can use the [`now()`](/sql-reference/functions/date-time-functions#now) function to return the current time and [`now64()`](/sql-reference/functions/date-time-functions#now64) to get it in a specified precision via the first argument.
 
-    ```sql
-    INSERT INTO dates
-    SELECT now(),
+```sql
+INSERT INTO dates 
+SELECT now(), 
        now()::Date32 + toIntervalYear(100),
-       now(),
-       now64(3),
+       now(), 
+       now64(3), 
        now64(9) + toIntervalYear(200);
-    ```
+```
 
-    This will populate our columns with time accordingly to the column type:
+This will populate our columns with time accordingly to the column type:
 
-    ```sql
-    SELECT * FROM dates
-    FORMAT Vertical;
-    ```
+```sql
+SELECT * FROM dates
+FORMAT Vertical;
+```
 
-    ```text
-    Row 1:
-    ──────
-    date:                  2025-03-12
-    wider_date:            2125-03-12
-    datetime:              2025-03-12 11:39:07
-    precise_datetime:      2025-03-12 11:39:07.196
-    very_precise_datetime: 2025-03-12 11:39:07.196724000
-    ```
+```text
+Row 1:
+──────
+date:                  2025-03-12
+wider_date:            2125-03-12
+datetime:              2025-03-12 11:39:07
+precise_datetime:      2025-03-12 11:39:07.196
+very_precise_datetime: 2025-03-12 11:39:07.196724000
+```
 
 ## Timezones {#time-series-timezones}
 
@@ -86,14 +86,14 @@ ORDER BY id;
 Having defined a timezone in our DDL, we can now insert times using different timezones:
 
 ```sql
-INSERT INTO dtz
-SELECT 1,
+INSERT INTO dtz 
+SELECT 1, 
        toDateTime('2022-12-12 12:13:14', 'America/New_York'),
        toDateTime('2022-12-12 12:13:14', 'America/New_York'),
        toDateTime64('2022-12-12 12:13:14.123456789', 9, 'America/New_York'),
        toDateTime64('2022-12-12 12:13:14.123456789', 9, 'America/New_York')
 UNION ALL
-SELECT 2,
+SELECT 2, 
        toDateTime('2022-12-12 12:13:15'),
        toDateTime('2022-12-12 12:13:15'),
        toDateTime64('2022-12-12 12:13:15.123456789', 9),
@@ -128,8 +128,8 @@ In the first row, we inserted all values using the `America/New_York` timezone.
 * `dt_1` and `dt64_1` are automatically converted to `Europe/Berlin` at query time.
 * `dt_2` and `dt64_2` didn't have a time zone specified, so they use the server's local time zone, which in this case is `Europe/London`.
 
-    In the second row, we inserted all the values without a timezone, so the server's local time zone was used.
-    As in the first row, `dt_1` and `dt_3` are converted to `Europe/Berlin`, while `dt_2` and `dt64_2` use the server's local time zone.
+In the second row, we inserted all the values without a timezone, so the server's local time zone was used.
+As in the first row, `dt_1` and `dt_3` are converted to `Europe/Berlin`, while `dt_2` and `dt64_2` use the server's local time zone.
 
 ## Date and time functions {#time-series-date-time-functions}
 
@@ -143,7 +143,7 @@ SELECT
     toTypeName(current_time),
     toDate(current_time) AS date_only,
     toTypeName(date_only)
-FORMAT Vertical;
+FORMAT Vertical;    
 ```
 
 ```text

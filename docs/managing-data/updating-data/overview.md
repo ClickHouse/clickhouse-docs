@@ -18,7 +18,6 @@ There are several ways to update data in ClickHouse, each with its own advantage
 For both operations, if the number of submitted mutations constantly exceeds the number of mutations that are processed in the background over some time interval, the queue of non-materialized mutations that have to be applied will continue to grow. This will result in the eventual degradation of `SELECT` query performance.
 
 In summary, update operations should be issued carefully, and the mutations queue should be tracked closely using the `system.mutations` table. Do not issue updates frequently as you would in OLTP databases. If you have a requirement for frequent updates, see [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree).
-
 | Method                                                                                | Syntax                               | When to use                                                                                                                                                                                                                              |
 |---------------------------------------------------------------------------------------|--------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [Update mutation](/sql-reference/statements/alter/update)                          | `ALTER TABLE [table] UPDATE`         | Use when data must be updated to disk immediately (e.g. for compliance). Negatively affects `SELECT` performance.                                                                                                                        |
@@ -26,10 +25,9 @@ In summary, update operations should be issued carefully, and the mutations queu
 | [On-the-fly updates](/guides/developer/on-the-fly-mutations)                         | `ALTER TABLE [table] UPDATE`         | Enable using `SET apply_mutations_on_fly = 1;`. Use when updating small amounts of data. Rows are immediately returned with updated data in all subsequent `SELECT` queries but are initially only internally marked as updated on disk. |
 | [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)   | `ENGINE = ReplacingMergeTree`        | Use when updating large amounts of data. This table engine is optimized for data deduplication on merges.                                                                                                                                |
 | [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) | `ENGINE = CollapsingMergeTree(Sign)` | Use when updating individual rows frequently, or for scenarios where you need to maintain the latest state of objects that change over time. For example, tracking user activity or article stats.                                       |
-
 Here is a summary of the different ways to update data in ClickHouse:
 
-## Update Mutations {#update-mutations}
+## Update mutations {#update-mutations}
 
 Update mutations can be issued through a `ALTER TABLE ... UPDATE` command e.g.
 
@@ -41,9 +39,21 @@ These are extremely IO-heavy, rewriting all the parts that match the `WHERE` exp
 
 Read more about [update mutations](/sql-reference/statements/alter/update).
 
-## Lightweight Updates {#lightweight-updates}
+## Lightweight updates {#lightweight-updates}
 
-Lightweight updates provide a mechanism to update rows such that they are updated immediately, and subsequent `SELECT` queries will automatically return with the changed values (this incurs an overhead and will slow queries). This effectively addresses the atomicity limitation of normal mutations. We show an example below:
+Lightweight updates are a ClickHouse feature that updates rows using "patch parts" - special data parts containing only the updated columns and rows, rather than rewriting entire columns like traditional mutations. The Lightweight UPDATE 
+Key characteristics:
+
+- Uses the standard `UPDATE` syntax and creates patch parts immediately without waiting for merges
+- Updated values are immediately visible in `SELECT` queries through patch application, but physically materialized only during subsequent merges
+- Designed for small updates (up to ~10% of table) with predictable latency
+- Adds overhead to `SELECT` queries that need to apply patches, but avoids rewriting entire columns
+
+For more details see ["The Lightweight UPDATE Statement"](/sql-reference/statements/update)
+
+## On-the-fly Updates {#on-the-fly-updates}
+
+On-the-fly updates provide a mechanism to update rows such that they are updated immediately, and subsequent `SELECT` queries will automatically return with the changed values (this incurs an overhead and will slow queries). This effectively addresses the atomicity limitation of normal mutations. We show an example below:
 
 ```sql
 SET apply_mutations_on_fly = 1;
@@ -53,7 +63,7 @@ FROM posts
 WHERE Id = 404346
 
 ┌─ViewCount─┐
-│       26762   │
+│   26762   │
 └───────────┘
 
 1 row in set. Elapsed: 0.115 sec. Processed 59.55 million rows, 238.25 MB (517.83 million rows/s., 2.07 GB/s.)
@@ -78,7 +88,7 @@ Note that for on-the-fly updates, a mutation is still used to update the data; i
 
 Read more about [on-the-fly updates](/guides/developer/on-the-fly-mutations).
 
-## Collapsing Merge Tree {#collapsing-merge-tree}
+## `CollapsingMergeTree` {#collapsing-merge-tree}
 
 Stemming from the idea that updates are expensive but inserts can be leveraged to perform updates,
 the [`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree) table engine
@@ -125,6 +135,6 @@ for [`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingme
 for a more comprehensive overview.
 :::
 
-## More Resources {#more-resources}
+## More resources {#more-resources}
 
 - [Handling Updates and Deletes in ClickHouse](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

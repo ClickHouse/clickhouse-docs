@@ -8,7 +8,7 @@ title: 'JDBC Connector'
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
-# JDBC Connector
+# JDBC connector
 
 :::note
 This connector should only be used if your data is simple and consists of primitive data types e.g., int. ClickHouse specific types such as maps are not supported.
@@ -45,7 +45,7 @@ Common Issue: the docs suggest copying the jar to `share/java/kafka-connect-jdbc
 
 :::
 
-#### 3. Prepare Configuration {#3-prepare-configuration}
+#### 3. Prepare configuration {#3-prepare-configuration}
 
 Follow [these instructions](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#set-up-a-local-connect-worker-with-cp-install) for setting up a Connect relevant to your installation type, noting the differences between a standalone and distributed cluster. If using Confluent Cloud the distributed setup is relevant.
 
@@ -141,7 +141,7 @@ SELECT count() FROM default.github;
 | 10000 |
 ```
 
-### Recommended Further Reading {#recommended-further-reading}
+### Recommended further reading {#recommended-further-reading}
 
 * [Kafka Sink Configuration Parameters](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/sink_config_options.html#sink-config-options)
 * [Kafka Connect Deep Dive – JDBC Source Connector](https://www.confluent.io/blog/kafka-connect-deep-dive-jdbc-source-connector)

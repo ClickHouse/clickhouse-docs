@@ -44,6 +44,7 @@ When using dictionaries for JOINs in ClickHouse, it's important to understand th
 ## Choosing the right JOIN Algorithm {#choosing-the-right-join-algorithm}
 
 ClickHouse supports several JOIN algorithms that trade off between speed and memory:
+
 * **Parallel Hash JOIN (default):** Fast for small-to-medium right-hand tables that fit in memory.
 * **Direct JOIN:** Ideal when using dictionaries (or other table engines with key-value characteristics) with `INNER` or `LEFT ANY JOIN`  - the fastest method for point lookups as it eliminates the need to build a hash table.
 * **Full Sorting Merge JOIN:** Efficient when both tables are sorted on the join key.

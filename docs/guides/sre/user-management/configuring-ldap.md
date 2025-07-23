@@ -8,7 +8,7 @@ description: 'Describes how to configure ClickHouse to use LDAP for authenticati
 
 import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
-# Configuring ClickHouse to Use LDAP for Authentication and Role Mapping
+# Configuring ClickHouse to use LDAP for authentication and role mapping
 
 <SelfManaged />
 

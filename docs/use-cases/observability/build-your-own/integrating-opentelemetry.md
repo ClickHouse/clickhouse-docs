@@ -15,7 +15,7 @@ import observability_8 from '@site/static/images/use-cases/observability/observa
 import observability_9 from '@site/static/images/use-cases/observability/observability-9.png';
 import Image from '@theme/IdealImage';
 
-# Integrating OpenTelemetry for Data Collection
+# Integrating OpenTelemetry for data collection
 
 Any Observability solution requires a means of collecting and exporting logs and traces. For this purpose, ClickHouse recommends [the OpenTelemetry (OTel) project](https://opentelemetry.io/).
 
@@ -82,7 +82,7 @@ This approach requires users to instrument their code with their [appropriate la
 [`otelbin.io`](https://www.otelbin.io/) is useful to validate and visualize configurations.
 :::
 
-## Structured vs Unstructured {#structured-vs-unstructured}
+## Structured vs unstructured {#structured-vs-unstructured}
 
 Logs can either be structured or unstructured.
 
@@ -201,7 +201,7 @@ The above messages don't have a `TraceID` or `SpanID` field. If present, e.g. in
 
 For users needing to collect local or Kubernetes log files, we recommend users become familiar with the configuration options available for the [filelog receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/filelogreceiver/README.md#configuration) and how [offsets](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver#offset-tracking) and [multiline log parsing is handled](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver#example---multiline-logs-parsing).
 
-## Collecting Kubernetes Logs {#collecting-kubernetes-logs}
+## Collecting Kubernetes logs {#collecting-kubernetes-logs}
 
 For the collection of Kubernetes logs, we recommend the [OpenTelemetry documentation guide](https://opentelemetry.io/docs/kubernetes/). The [Kubernetes Attributes Processor](https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-attributes-processor) is recommended for enriching logs and metrics with pod metadata. This can potentially produce dynamic metadata e.g. labels, stored in the column `ResourceAttributes`. ClickHouse currently uses the type `Map(String, String)` for this column. See [Using Maps](/use-cases/observability/schema-design#using-maps) and [Extracting from maps](/use-cases/observability/schema-design#extracting-from-maps) for further details on handling and optimizing this type.
 
@@ -381,7 +381,6 @@ exporters:
       max_interval: 30s
       max_elapsed_time: 300s
 
-
 service:
   pipelines:
     logs:
@@ -449,7 +448,6 @@ LogAttributes:          {'referer':'https://www.zanbil.ir/filter/p3%2Cb2','log.f
 
 1 row in set. Elapsed: 0.012 sec. Processed 5.04 thousand rows, 4.62 MB (414.14 thousand rows/s., 379.48 MB/s.)
 Peak memory usage: 5.41 MiB.
-
 
 Likewise, for trace events, users can check the `otel_traces` table:
 
@@ -601,7 +599,7 @@ From the collector's perspective, (1) and (2) can be hard to distinguish. Howeve
 
 We recommend users use the [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md) shown in earlier configurations to satisfy the above. This ensures inserts are sent as consistent batches of rows satisfying the above requirements. If a collector is expected to have high throughput (events per second), and at least 5000 events can be sent in each insert, this is usually the only batching required in the pipeline. In this case the collector will flush batches before the batch processor's `timeout` is reached, ensuring the end-to-end latency of the pipeline remains low and batches are of a consistent size.
 
-### Use Asynchronous inserts {#use-asynchronous-inserts}
+### Use asynchronous inserts {#use-asynchronous-inserts}
 
 Typically, users are forced to send smaller batches when the throughput of a collector is low, and yet they still expect data to reach ClickHouse within a minimum end-to-end latency. In this case, small batches are sent when the `timeout` of the batch processor expires. This can cause problems and is when asynchronous inserts are required. This case typically arises when **collectors in the agent role are configured to send directly to ClickHouse**. Gateways, by acting as aggregators, can alleviate this problem - see [Scaling with Gateways](#scaling-with-gateways).
 
@@ -623,7 +621,7 @@ Finally, the previous deduplication behavior associated with synchronous inserts
 
 Full details on configuring this feature can be found [here](/optimize/asynchronous-inserts#enabling-asynchronous-inserts), with a deep dive [here](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse).
 
-## Deployment Architectures {#deployment-architectures}
+## Deployment architectures {#deployment-architectures}
 
 Several deployment architectures are possible when using the OTel collector with Clickhouse. We describe each below and when it is likely applicable.
 
@@ -641,7 +639,7 @@ Users should consider migrating to a Gateway-based architecture once the number 
 - **Processing at the edge** - Any transformations or event processing has to be performed at the edge or in ClickHouse in this architecture. As well as being restrictive this can either mean complex ClickHouse materialized views or pushing significant computation to the edge - where critical services may be impacted and resources scarce.
 - **Small batches and latencies** - Agent collectors may individually collect very few events. This typically means they need to be configured to flush at a set interval to satisfy delivery SLAs. This can result in the collector sending small batches to ClickHouse. While a disadvantage, this can be mitigated with Asynchronous inserts - see [Optimizing inserts](#optimizing-inserts).
 
-### Scaling with Gateways {#scaling-with-gateways}
+### Scaling with gateways {#scaling-with-gateways}
 
 OTel collectors can be deployed as Gateway instances to address the above limitations. These provide a standalone service, typically per data center or per region. These receive events from applications (or other collectors in the agent role) via a single OTLP endpoint. Typically a set of gateway instances are deployed, with an out-of-the-box load balancer used to distribute the load amongst them.
 

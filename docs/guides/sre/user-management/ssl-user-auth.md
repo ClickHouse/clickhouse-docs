@@ -6,7 +6,7 @@ title: 'Configuring SSL User Certificate for Authentication'
 description: 'This guide provides simple and minimal settings to configure authentication with SSL user certificates.'
 ---
 
-# Configuring SSL User Certificate for Authentication
+# Configuring SSL user certificate for authentication
 import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />

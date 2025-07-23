@@ -50,12 +50,12 @@ If you do not have a dataset to work with, you can add one of the examples. This
 
 3. Enter the connection details for your ClickHouse database:
 
-    - **Display Name**: A name to identify the connection in Chartbrew.
-    - **Host**: The hostname or IP address of your ClickHouse server.
-    - **Port**: Typically `8443` for HTTPS connections.
-    - **Database Name**: The database you want to connect to.
-    - **Username**: Your ClickHouse username.
-    - **Password**: Your ClickHouse password.
+   - **Display Name**: A name to identify the connection in Chartbrew.
+   - **Host**: The hostname or IP address of your ClickHouse server.
+   - **Port**: Typically `8443` for HTTPS connections.
+   - **Database Name**: The database you want to connect to.
+   - **Username**: Your ClickHouse username.
+   - **Password**: Your ClickHouse password.
 
    <Image img={chartbrew_03} size="lg" alt="ClickHouse connection settings in Chartbrew" />
 

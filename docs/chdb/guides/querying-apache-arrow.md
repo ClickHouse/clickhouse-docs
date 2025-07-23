@@ -139,7 +139,7 @@ chdb.query("SELECT count() FROM Python(arrow_table)", "DataFrame")
 0  3864546
 ```
 
-Now, let's do something a bit more interesting.
+Now, let's do something a bit more interesting. 
 The following query excludes the `quadkey` and `tile.*` columns and then computes the average and max values for all remaining column:
 
 ```python

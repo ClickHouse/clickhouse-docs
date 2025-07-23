@@ -9,12 +9,12 @@ show_related_blogs: true
 
 # Time-series storage efficiency
 
-After exploring how to query our Wikipedia statistics dataset, let's focus on optimizing its storage efficiency in ClickHouse.
+After exploring how to query our Wikipedia statistics dataset, let's focus on optimizing its storage efficiency in ClickHouse. 
 This section demonstrates practical techniques to reduce storage requirements while maintaining query performance.
 
 ## Type optimization {#time-series-type-optimization}
 
-The general approach to optimizing storage efficiency is using optimal data types.
+The general approach to optimizing storage efficiency is using optimal data types. 
 Let's take the `project` and `subproject` columns. These columns are of type String, but have a relatively small amount of unique values:
 
 ```sql
@@ -62,7 +62,7 @@ This will reduce the size of this column in memory by at least 2 times. Note tha
 
 ## Specialized codecs {#time-series-specialized-codecs}
 
-When we deal with sequential data, like time-series, we can further improve storage efficiency by using special codecs.
+When we deal with sequential data, like time-series, we can further improve storage efficiency by using special codecs. 
 The general idea is to store changes between values instead of absolute values themselves, which results in much less space needed when dealing with slowly changing data:
 
 ```sql
@@ -70,11 +70,11 @@ ALTER TABLE wikistat
 MODIFY COLUMN `time` CODEC(Delta, ZSTD);
 ```
 
-We've used the Delta codec for time column, which is a good fit for time series data.
+We've used the Delta codec for time column, which is a good fit for time series data. 
 
-The right ordering key can also save disk space.
+The right ordering key can also save disk space. 
 Since we usually want to filter by a path, we will add `path` to the sorting key.
-This requires recreation of the table.
+This requires recreation of the table. 
 
 Below we can see the `CREATE` command for our initial table and the optimized table:
 

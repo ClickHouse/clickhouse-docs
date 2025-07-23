@@ -13,7 +13,7 @@ keywords: ['json', 'formats']
 Different techniques may be applied to different objects in the same schema. For example, some objects can be best solved with a `String` type and others with a `Map` type. Note that once a `String` type is used, no further schema decisions need to be made. Conversely, it is possible to nest sub-objects within a `Map` key - including a `String` representing JSON - as we show below:
 :::
 
-## Using String {#using-string}
+## Using the String type {#using-string}
 
 If the objects are highly dynamic, with no predictable structure and contain arbitrary nested objects, users should use the `String` type. Values can be extracted at query time using JSON functions as we show below.
 
@@ -150,7 +150,7 @@ String functions are appreciably slower (> 10x) than explicit type conversions w
 
 This approach's flexibility comes at a clear performance and syntax cost, and it should be used only for highly dynamic objects in the schema.
 
-### Simple JSON Functions {#simple-json-functions}
+### Simple JSON functions {#simple-json-functions}
 
 The above examples use the JSON* family of functions. These utilize a full JSON parser based on [simdjson](https://github.com/simdjson/simdjson), that is rigorous in its parsing and will distinguish between the same field nested at different levels. These functions are able to deal with JSON that is syntactically correct but not well-formatted, e.g. double spaces between keys.
 
@@ -202,7 +202,7 @@ Peak memory usage: 211.49 MiB.
 
 The above query uses the `simpleJSONExtractString` to extract the `created` key, exploiting the fact we want the first value only for the published date. In this case, the limitations of the `simpleJSON*` functions are acceptable for the gain in performance.
 
-## Using Map {#using-map}
+## Using the Map type {#using-map}
 
 If the object is used to store arbitrary keys, mostly of one type, consider using the `Map` type. Ideally, the number of unique keys should not exceed several hundred. The `Map` type can also be considered for objects with sub-objects, provided the latter have uniformity in their types. Generally, we recommend the `Map` type be used for labels and tags, e.g. Kubernetes pod labels in log data.
 
@@ -351,7 +351,7 @@ The application of maps in this case is typically rare, and suggests that the da
 }
 ```
 
-## Using Nested {#using-nested}
+## Using the Nested type {#using-nested}
 
 The [Nested type](/sql-reference/data-types/nested-data-structures/nested) can be used to model static objects which are rarely subject to change, offering an alternative to `Tuple` and `Array(Tuple)`. We generally recommend avoiding using this type for JSON as its behavior is often confusing. The primary benefit of `Nested` is that sub-columns can be used in ordering keys.
 
@@ -592,7 +592,7 @@ ORDER BY c DESC LIMIT 5;
 5 rows in set. Elapsed: 0.007 sec.
 ```
 
-### Using Pairwise Arrays {#using-pairwise-arrays}
+### Using pairwise arrays {#using-pairwise-arrays}
 
 Pairwise arrays provide a balance between the flexibility of representing JSON as Strings and the performance of a more structured approach. The schema is flexible in that any new fields can be potentially added to the root. This, however, requires a significantly more complex query syntax and isn't compatible with nested structures.
 

@@ -78,7 +78,7 @@ Draxlr offers an intuitive interface for connecting to your ClickHouse database,
 
 4. Click on the **Save** button to save the query.
 
-## 5. Building Dashboards {#5-building-dashboards}
+## 5. Building dashboards {#5-building-dashboards}
 
 1. Click on the **Dashboards** button on the navbar.
 
