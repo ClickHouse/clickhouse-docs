@@ -716,6 +716,7 @@ const sidebars = {
         "integrations/data-ingestion/clickpipes/object-storage",
         "integrations/data-ingestion/clickpipes/kinesis",
         "integrations/data-ingestion/clickpipes/secure-kinesis",
+        "integrations/data-ingestion/clickpipes/secure-rds",
         "integrations/data-ingestion/clickpipes/aws-privatelink",
         {
           type: "category",
