@@ -52,7 +52,8 @@ Let's call this value `{ClickHouse_IAM_ARN}`. This is the IAM role that will be 
 
 #### Setting up the Database User {#setting-up-the-database-user}
 
-##### PostgreSQL
+##### PostgreSQL {#setting-up-the-database-user-postgres}
+
 1. Connect to your RDS/Aurora instance and create a new database user with the following command:
     ```sql
     CREATE USER clickpipes_iam_user; 
@@ -60,15 +61,13 @@ Let's call this value `{ClickHouse_IAM_ARN}`. This is the IAM role that will be 
     ```
 2. Follow the rest of the steps in the [PostgreSQL source setup guide](postgres/source/rds) to configure your RDS instance for ClickPipes.
 
-
-##### MySQL / MariaDB
+##### MySQL / MariaDB {#setting-up-the-database-user-mysql}
 
 1. Connect to your RDS/Aurora instance and create a new database user with the following command:
     ```sql
     CREATE USER 'clickpipes_iam_user' IDENTIFIED WITH AWSAuthenticationPlugin AS 'RDS';
     ```
 2. Follow the rest of the steps in the [MySQL source setup guide](mysql/source/rds) to configure your RDS/Aurora instance for ClickPipes.
-
 
 ### Setting up the IAM role {#setting-up-iam-role}
 
@@ -120,6 +119,5 @@ IAM policy (Please replace `{RDS_RESOURCE_ID}` with the Resource ID of your RDS 
 ```
 
 4 - Copy the new **IAM Role Arn** after creation. This is what needed to access your AWS Database securely from ClickPipes. Let's call this `{RDS_ACCESS_IAM_ROLE_ARN}`.
-
 
 You can now use this IAM role to authenticate with your RDS/Aurora instance from ClickPipes.
