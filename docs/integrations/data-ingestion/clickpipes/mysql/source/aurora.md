@@ -142,4 +142,4 @@ To connect to your Aurora MySQL instance through a private network, you can use 
 
 ## What's next? {#whats-next}
 
-Now that your Amazon Aurora MySQL instance is configured for binlog replication and securely connecting to ClickHouse Cloud, you can [create your first MySQL ClickPipe](../index.md#creating-your-clickpipe). For common questions around MySQL CDC, see the [MySQL FAQs page](/integrations/data-ingestion/clickpipes/mysql/faq.md).
+Now that your Amazon Aurora MySQL instance is configured for binlog replication and securely connecting to ClickHouse Cloud, you can [create your first MySQL ClickPipe](/integrations/clickpipes/mysql/#create-your-clickpipe). For common questions around MySQL CDC, see the [MySQL FAQs page](/integrations/data-ingestion/clickpipes/mysql/faq.md).

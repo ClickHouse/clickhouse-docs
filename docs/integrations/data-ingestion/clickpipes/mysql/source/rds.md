@@ -141,4 +141,4 @@ To connect to your RDS instance through a private network, you can use AWS Priva
 
 ## Next steps {#next-steps}
 
-Now that your Amazon RDS MySQL instance is configured for binlog replication and securely connecting to ClickHouse Cloud, you can [create your first MySQL ClickPipe](../index.md#creating-your-clickpipe). For common questions around MySQL CDC, see the [MySQL FAQs page](/integrations/data-ingestion/clickpipes/mysql/faq.md).
+Now that your Amazon RDS MySQL instance is configured for binlog replication and securely connecting to ClickHouse Cloud, you can [create your first MySQL ClickPipe](/integrations/clickpipes/mysql/#create-your-clickpipe). For common questions around MySQL CDC, see the [MySQL FAQs page](/integrations/data-ingestion/clickpipes/mysql/faq.md).
