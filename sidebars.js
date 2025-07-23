@@ -1123,7 +1123,7 @@ const sidebars = {
         {
           type: "doc",
           label: "Lightweight Updates",
-          id: "guides/developer/lightweight-update"
+          id: "guides/developer/on-fly-mutations"
         },
         {
           type: "doc",
