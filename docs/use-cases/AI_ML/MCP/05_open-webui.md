@@ -36,7 +36,6 @@ import Conversation from '@site/static/images/use-cases/AI_ML/MCP/9_conversation
 You will need to install [uv](https://docs.astral.sh/uv/) to follow the instructions in this guide.
 If you don't want to use uv, you will need to update the MCP Server config to use an alternative package manager.
 
-
 ## Launch Open WebUI {#launch-open-webui}
 
 To launch Open WebUI, you can run the following command:
