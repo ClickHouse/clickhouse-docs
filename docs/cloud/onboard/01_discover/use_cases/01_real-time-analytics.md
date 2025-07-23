@@ -8,6 +8,8 @@ sidebar_label: 'Real-time analytics'
 import Image from '@theme/IdealImage';
 import rta_0 from '@site/static/images/cloud/onboard/discover/use_cases/0_rta.png';
 import rta_1 from '@site/static/images/cloud/onboard/discover/use_cases/1_rta.png';
+import rta_2 from '@site/static/images/cloud/onboard/discover/use_cases/2_rta.png';
+import rta_3 from '@site/static/images/cloud/onboard/discover/use_cases/3_rta.png';
 
 ## What is real-time analytics?
 
@@ -99,6 +101,65 @@ With real-time analytics, businesses can gain instant insights into customer
 behavior, preferences, and needs. This lets businesses offer timely assistance, 
 personalize interactions, and create more engaging experiences that keep 
 customers returning.
+
+## Real-time analytics use cases {#real-time-analytics-use-cases}
+
+The actual value of real-time analytics becomes evident when we consider its 
+practical applications. Let’s examine some of them.
+
+### Fraud detection {#fraud-detection}
+
+Fraud detection is about detecting fraudulent patterns, ranging from fake accounts
+to payment fraud. We want to detect this fraud as quickly as possible, flagging 
+suspicious activities, blocking transactions, and disabling accounts when necessary.
+
+This use case stretches across industries: healthcare, digital banking, financial
+services, retail, and more.
+
+[Instacart](https://www.instacart.com/) is North America's leading online grocery
+company, with millions of active customers and shoppers. It uses ClickHouse as 
+part of Yoda, its fraud detection platform. In addition to the general types of 
+fraud described above, it also tries to detect collusion between customers and 
+shoppers.
+
+<Image img={rta_2} size="md" border alt="Real-time analytics for fraud detection" />
+
+They identified the following characteristics of ClickHouse that enable real-time
+fraud detection:
+
+> ClickHouse supports LSM-tree based MergeTree family engines. 
+> These are optimized for writing which is suitable for ingesting large amounts 
+> of data in real-time.
+
+> ClickHouse is designed and optimized explicitly for analytical queries. This 
+> fits perfectly with the needs of applications where data is continuously 
+> analyzed for patterns that might indicate fraud.
+
+### Time-sensitive decision making {#ftime-sensitive-decision-making}
+
+Time-sensitive decision-making refers to situations where users or organizations 
+need to make informed choices quickly based on the most current information 
+available. Real-time analytics empowers users to make informed choices in 
+dynamic environments, whether they're traders reacting to market fluctuations, 
+consumers making purchasing decisions, or professionals adapting to real-time 
+operational changes.
+
+Coinhall provides its users with real-time insights into price movements over 
+time via a candlestick chart, which shows the open, high, low, and close prices 
+for each trading period. They needed to be able to run these types of queries 
+quickly and with a large number of concurrent users.
+
+<Image img={rta_3} size="md" border alt="Real-time analutics for time-sensitive decision making" />
+
+> In terms of performance, ClickHouse was the clear winner, executing candlestick queries in 20 milliseconds, compared 
+> to 400 milliseconds or more for the other databases. It ran latest-price queries in 8 milliseconds, outpacing the 
+> next-best performance (SingleStore) which came in at 45 milliseconds. Finally, it handled ASOF JOIN queries in 
+> 50 milliseconds, while Snowflake took 20 minutes and Rockset timed out.
+
+
+
+
+
 
 
 
