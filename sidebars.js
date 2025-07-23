@@ -766,6 +766,7 @@ const sidebars = {
           items: [
             "integrations/data-ingestion/clickpipes/mysql/index",
             "integrations/data-ingestion/clickpipes/mysql/faq",
+	    "integrations/data-ingestion/clickpipes/mysql/schema-changes",
             {
               type: "category",
               label: "Source",
