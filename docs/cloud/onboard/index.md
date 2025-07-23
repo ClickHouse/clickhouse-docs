@@ -31,7 +31,7 @@ Topics include:
 - Architectures
 - Cloud features
 
-## Explore ClickHouse Cloud {#evaluate-clickhouse-cloud}
+## Scale and Optimize with ClickHouse Cloud {#evaluate-clickhouse-cloud}
 
 Now that your data is in ClickHouse Cloud, we'll walk you through some more advanced
 topics to help you get the most out of your ClickHouse Cloud experience and explore

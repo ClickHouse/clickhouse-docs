@@ -1,0 +1,12 @@
+| Page                                                                                 | Description                                                                                             |
+|--------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| [Choosing a Primary Key](/best-practices/choosing-a-primary-key)                     | How to select primary keys that maximize query performance and minimize storage overhead.               |
+| [Select Data Types](/best-practices/select-data-types)                               | Choose optimal data types to reduce memory usage, improve compression, and accelerate queries.          |
+| [Use Materialized Views](/best-practices/use-materialized-views)                     | Leverage materialized views to pre-aggregate data and dramatically speed up analytical queries.         |
+| [Minimize and Optimize JOINs](/best-practices/minimize-optimize-joins)               | Best practices for using ClickHouse's `JOIN` capabilities efficiently.                                  |
+| [Choosing a Partitioning Key](/best-practices/choosing-a-partitioning-key)           | Select partitioning strategies that enable efficient data pruning and faster query execution.           |
+| [Selecting an Insert Strategy](/best-practices/selecting-an-insert-strategy)         | Optimize data ingestion throughput and reduce resource consumption with proper insert patterns.         |
+| [Data Skipping Indices](/best-practices/use-data-skipping-indices-where-appropriate) | Apply secondary indices strategically to skip irrelevant data blocks and accelerate filtered queries.   |
+| [Avoid Mutations](/best-practices/avoid-mutations)                                   | Design schemas and workflows that eliminate costly `UPDATE`/`DELETE` operations for better performance. |
+| [Avoid OPTIMIZE FINAL](/best-practices/avoid-optimize-final)                         | Prevent performance bottlenecks by understanding when `OPTIMIZE FINAL` hurts more than it helps.        |
+| [Use JSON where appropriate](/best-practices/use-json-where-appropriate)             | Balance flexibility and performance when working with semi-structured JSON data in ClickHouse.          |
