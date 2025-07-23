@@ -8,7 +8,6 @@ description: 'A simple guide for query optimization that describe common path to
 import queryOptimizationDiagram1 from '@site/static/images/guides/best-practices/query_optimization_diagram_1.png';
 import Image from '@theme/IdealImage';
 
-
 # A simple guide for query optimization
 
 This section aims to illustrate through common scenarios how to use different performance and optimization techniques, such as [analyzer](/operations/analyzer), [query profiling](/operations/optimizing-performance/sampling-query-profiler) or [avoid nullable Columns](/optimize/avoid-nullable-columns), in order to improve your ClickHouse query performances.
@@ -33,19 +32,19 @@ The following part is deliberately simplified and takes some shortcuts; the idea
 
 From a very high-level standpoint, when ClickHouse executes a query, the following happens: 
 
-  - **Query parsing and analysis**
+- **Query parsing and analysis**
 
 The query is parsed and analyzed, and a generic query execution plan is created. 
 
-  - **Query optimization**
+- **Query optimization**
 
 The query execution plan is optimized, unnecessary data is pruned, and a query pipeline is built from the query plan. 
 
-  - **Query pipeline execution**
+- **Query pipeline execution**
 
 The data is read and processed in parallel. This is the stage where ClickHouse actually executes the query operations such as filtering, aggregations, and sorting. 
 
-  - **Final processing**
+- **Final processing**
 
 The results are merged, sorted, and formatted into a final result before being sent to the client.
 
@@ -239,7 +238,6 @@ LIMIT 30
 Let's isolate the long-running queries we found and rerun them a few times to understand the response time. 
 
 At this point, it is essential to turn off the filesystem cache by setting the `enable_filesystem_cache` setting to 0 to improve reproducibility.
-
 
 ```sql
 -- Disable filesystem cache

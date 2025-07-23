@@ -28,4 +28,3 @@ There are two main ways to connect Apache Spark and ClickHouse:
 <br/>
 <br/>
 Both solutions have been successfully tested and are fully compatible with various APIs, including Java, Scala, PySpark, and Spark SQL.
-

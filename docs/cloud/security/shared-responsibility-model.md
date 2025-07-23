@@ -17,7 +17,6 @@ The Cloud architecture consists of the control plane and the data plane. The con
 
 Bring your own cloud (BYOC) enables customers to run the data plane in their own cloud account. For more information, review our [(BYOC) Bring Your Own Cloud](/cloud/reference/byoc) page.
 
-
 ## ClickHouse Cloud shared responsibility model {#clickhouse-cloud-shared-responsibility-model}
 The model below generally addresses ClickHouse responsibilities and shows responsibilities that should be addressed by customers of ClickHouse Cloud and ClickHouse BYOC, respectively. For more information on our PCI shared responsibility model, please download a copy of the overview available in our [Trust Center](https://trust.clickhouse.com).
 
@@ -53,7 +52,6 @@ The model below generally addresses ClickHouse responsibilities and shows respon
 </details>
 <details>
   <summary>Access management</summary>
-
   
   | Setting                                                                                              | Status    | Cloud             | Service level           |  
   |------------------------------------------------------------------------------------------------------|-----------|-------------------|-------------------------|
@@ -73,7 +71,6 @@ The model below generally addresses ClickHouse responsibilities and shows respon
   | [Custom backup configurations](/cloud/manage/backups/overview#configurable-backups) available         | Available | GCP, AWS, Azure   | Scale or Enterprise     |
   | [Customer managed encryption keys (CMEK)](/cloud/security/cmek) for transparent<br/> data encryption available  | Available | AWS, GCP | Enterprise |
   | [Field level encryption](/sql-reference/functions/encryption-functions) with manual key management for granular encryption | Available | GCP, AWS, Azure | All  |
-
   
 </details>
 <details>
@@ -108,4 +105,3 @@ The model below generally addresses ClickHouse responsibilities and shows respon
   | PCI compliance                                                                                       | Available | AWS               | Enterprise              |
 
   For more information on supported compliance frameworks, please review our [Security and Compliance](/cloud/security/security-and-compliance) page.
-

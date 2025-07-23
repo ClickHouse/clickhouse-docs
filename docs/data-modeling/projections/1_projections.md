@@ -465,7 +465,6 @@ ORDER BY year ASC
 ```
 The results should be the same, but the performance better on the latter example!
 
-
 #### Query 2. Average price per year in London {#average-price-london-projections}
 
 ```sql runnable
@@ -479,7 +478,6 @@ GROUP BY year
 ORDER BY year ASC
 SETTINGS optimize_use_projections=0
 ```
-
 
 ```sql runnable
 SELECT

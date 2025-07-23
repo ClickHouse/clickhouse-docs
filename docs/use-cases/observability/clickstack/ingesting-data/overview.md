@@ -31,5 +31,3 @@ More specifically:
 :::note OpenTelemetry compatibility
 While ClickStack offers its own language SDKs and a custom OpenTelemetry, with enhanced telemetry and features, users can also use their existing OpenTelemetry SDKs and agents seamlessly.
 :::
-
-

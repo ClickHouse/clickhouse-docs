@@ -58,7 +58,6 @@ We stick as closely as possible to the rules of the TPC-H specification:
   specification (e.g. `Identifier`, `Variable text, size N`). The only effect of this is better readability, the SQL-92 datatypes generated
   by `dbgen` (e.g. `INTEGER`, `VARCHAR(40)`) would also work in ClickHouse.
 
-
 ```sql
 CREATE TABLE nation (
     n_nationkey  Int32,

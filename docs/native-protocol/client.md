@@ -83,7 +83,6 @@ password as defaults.
 | trace_state       | String          | Tracing state                  |
 | trace_flags       | Byte            | Tracing flags                  |
 
-
 ### Settings {#settings}
 
 | field     | type   | value             | description           |
@@ -101,7 +100,6 @@ Encoded as list, blank key and value denotes end of list.
 | 0     | FetchColumns       | Only fetch column types                     |
 | 1     | WithMergeableState | Until mergeable state                       |
 | 2     | Complete           | Until full completeness (should be default) |
-
 
 ## Data {#data}
 
@@ -127,4 +125,3 @@ No packet body. Server should cancel query.
 ## Ping {#ping}
 
 No packet body. Server should [respond with pong](./server.md#pong).
-

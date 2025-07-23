@@ -14,7 +14,6 @@ import TabItem from '@theme/TabItem';
 
 [Amazon Glue](https://aws.amazon.com/glue/) is a fully managed, serverless data integration service provided by Amazon Web Services (AWS). It simplifies the process of discovering, preparing, and transforming data for analytics, machine learning, and application development.
 
-
 Although there is no Glue ClickHouse connector available yet, the official JDBC connector can be leveraged to connect and integrate with ClickHouse:
 
 <Tabs>
@@ -29,7 +28,6 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.DataFrame
 import scala.collection.JavaConverters._
 import com.amazonaws.services.glue.log.GlueLogger
-
 
 // Initialize Glue job
 object GlueJob {
@@ -98,7 +96,6 @@ logger.info(str(df.count()))
 logger.info("Data sample:")
 logger.info(str(df.take(10)))
 
-
 job.commit()
 ```
 
@@ -106,5 +103,3 @@ job.commit()
 </Tabs>
 
 For more details, please visit our [Spark & JDBC documentation](/integrations/apache-spark/spark-jdbc#read-data).
-
-

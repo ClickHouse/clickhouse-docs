@@ -315,7 +315,6 @@ We repeat our earlier read query distributing the workload across 3 nodes, adjus
 
 As noted in [Utilizing Clusters](/integrations/s3#utilizing-clusters) this work is distributed a file level. To benefit from this feature users will require a sufficient number of files i.e. at least > the number of nodes.
 
-
 ```sql
 SELECT
     OwnerDisplayName,

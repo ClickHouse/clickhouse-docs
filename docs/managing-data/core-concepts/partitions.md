@@ -10,11 +10,9 @@ import merges_with_partitions from '@site/static/images/managing-data/core-conce
 import partition_pruning from '@site/static/images/managing-data/core-concepts/partition-pruning.png';
 import Image from '@theme/IdealImage';
 
-
 ## What are table partitions in ClickHouse? {#what-are-table-partitions-in-clickhouse}
 
 <br/>
-
 
 Partitions group the [data parts](/parts) of a table in the [MergeTree engine family](/engines/table-engines/mergetree-family) into organized, logical units, which is a way of organizing data that is conceptually meaningful and aligned with specific criteria, such as time ranges, categories, or other key attributes. These logical units make data easier to manage, query, and optimize.
 
@@ -85,8 +83,6 @@ GROUP BY partition
 ORDER BY partition ASC;
 ```
 
-
-
 ## What are table partitions used for? {#what-are-table-partitions-used-for}
 
 ### Data management {#data-management}
@@ -107,7 +103,6 @@ ORDER BY (town, street)
 TTL date + INTERVAL 12 MONTH DELETE;
 ```
 Since the table is partitioned by `toStartOfMonth(date)`, entire partitions (sets of [table parts](/parts)) that meet the TTL condition will be dropped, making the cleanup operation more efficient, [without having to rewrite parts](/sql-reference/statements/alter#mutations).
-
 
 Similarly, instead of deleting old data, it can be automatically and efficiently moved to a more cost-effective [storage tier](/integrations/s3#storage-tiers):
 
@@ -158,7 +153,6 @@ FROM uk.uk_price_paid_simple_partitioned
 WHERE date >= '2020-12-01'
   AND date <= '2020-12-31'
   AND town = 'LONDON';
-
 
     ┌─explain──────────────────────────────────────────────────────────────────────────────────────────────────────┐
  1. │ Expression ((Project names + Projection))                                                                    │
@@ -231,7 +225,6 @@ GROUP BY table;
 ```
 As shown further above, the partitioned table `uk_price_paid_simple_partitioned` has over 600 partitions, and therefore at 600 306 active data parts. Whereas for our non-partitioned table `uk_price_paid_simple` all [initial](/parts) data parts could be merged into a single active part by background merges.
 
-
 When we [check](https://sql.clickhouse.com/?query=RVhQTEFJTiBpbmRleGVzID0gMQpTRUxFQ1QgTUFYKHByaWNlKSBBUyBoaWdoZXN0X3ByaWNlCkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQKV0hFUkUgdG93biA9ICdMT05ET04nOw&run_query=true&tab=results) the physical query execution plan with an [EXPLAIN](/sql-reference/statements/explain) clause for our example query from above without the partition filter running over the partitioned table, we can see in row 19 and 20 of the output below that ClickHouse identified 671 out of 3257 existing [granules](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (blocks of rows) spread over 431 out of 436 existing active data parts that potentially contain rows matching the query's filter, and therefore will be scanned and processed by the query engine:
 
 ```sql
@@ -239,7 +232,6 @@ EXPLAIN indexes = 1
 SELECT MAX(price) AS highest_price
 FROM uk.uk_price_paid_simple_partitioned
 WHERE town = 'LONDON';
-
 
     ┌─explain─────────────────────────────────────────────────────────┐
  1. │ Expression ((Project names + Projection))                       │
@@ -273,7 +265,6 @@ SELECT MAX(price) AS highest_price
 FROM uk.uk_price_paid_simple
 WHERE town = 'LONDON';
 
-
     ┌─explain───────────────────────────────────────────────┐
  1. │ Expression ((Project names + Projection))             │
  2. │   Aggregating                                         │
@@ -304,7 +295,6 @@ WHERE town = 'LONDON';
 1 row in set. Elapsed: 0.090 sec. Processed 5.48 million rows, 27.95 MB (60.66 million rows/s., 309.51 MB/s.)
 Peak memory usage: 163.44 MiB.
 ```
-
 
 Whereas for [running](https://sql.clickhouse.com/?query=U0VMRUNUIE1BWChwcmljZSkgQVMgaGlnaGVzdF9wcmljZQpGUk9NIHVrLnVrX3ByaWNlX3BhaWRfc2ltcGxlCldIRVJFIHRvd24gPSAnTE9ORE9OJzs&run_query=true&tab=results) the query over the non-partitioned table, ClickHouse scans and processes 241 blocks (~ 2 million rows) of rows in 12 milliseconds:
 

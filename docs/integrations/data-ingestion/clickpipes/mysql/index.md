@@ -19,6 +19,10 @@ import Image from '@theme/IdealImage';
 
 <BetaBadge/>
 
+:::info
+Currently, ingesting data from MySQL to ClickHouse Cloud via ClickPipes is in Private Preview.
+:::
+
 You can use ClickPipes to ingest data from your source MySQL database into ClickHouse Cloud. The source MySQL database can be hosted on-premises or in the cloud using services like Amazon RDS, Google Cloud SQL, and others.
 
 ## Prerequisites {#prerequisites}
@@ -71,7 +75,6 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
 
 You can specify SSH tunneling details if your source MySQL database is not publicly accessible.
 
-
 1. Enable the "Use SSH Tunnelling" toggle.
 2. Fill in the SSH connection details.
 
@@ -95,7 +98,6 @@ You can configure the advanced settings if needed. A brief description of each s
 - **Pull batch size**: The number of rows to fetch in a single batch. This is a best effort setting and may not be respected in all cases.
 - **Snapshot number of rows per partition**: This is the number of rows that will be fetched in each partition during the initial snapshot. This is useful when you have a large number of rows in your tables and you want to control the number of rows fetched in each partition.
 - **Snapshot number of tables in parallel**: This is the number of tables that will be fetched in parallel during the initial snapshot. This is useful when you have a large number of tables and you want to control the number of tables fetched in parallel.
-
 
 ### Configure the tables {#configure-the-tables}
 

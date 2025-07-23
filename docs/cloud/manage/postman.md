@@ -86,7 +86,6 @@ The Postman Application is available for use within a web browser or can be down
 
 <Image img={postman11} size="md" alt="Organization ID and Service ID" border/>
 
-
 ## Test the ClickHouse Cloud API functionalities {#test-the-clickhouse-cloud-api-functionalities}
 
 ### Test "GET list of available organizations" {#test-get-list-of-available-organizations}
@@ -126,4 +125,3 @@ The Postman Application is available for use within a web browser or can be down
 <Image img={postman17} size="md" alt="List of services" border/>
 
 * The returned results should deliver a list of your services and their details with "status": 200. (If you receive a "status" 400 with no service(s) information your configuration is not correct).
-

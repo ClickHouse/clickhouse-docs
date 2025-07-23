@@ -46,7 +46,6 @@ The[ current plugin](https://github.com/silentsokolov/dbt-clickhouse) for ClickH
 
 For the following guides, we assume you have a ClickHouse instance available.
 
-
 ## Setup of dbt and the ClickHouse plugin {#setup-of-dbt-and-the-clickhouse-plugin}
 
 ### DBT {#dbt}
@@ -73,13 +72,11 @@ pip install dbt-clickhouse
 
 dbt excels when modeling highly relational data. For the purposes of example, we provide a small IMDB dataset with the following relational schema. This dataset originates from the[ relational dataset repository](https://relational.fit.cvut.cz/dataset/IMDb). This is trivial relative to common schemas used with dbt but represents a manageable sample:
 
-
 <Image img={dbt_01} size="lg" alt="IMDB table schema" />
 
 We use a subset of these tables as shown.
 
 Create the following tables:
-
 
 ```sql
 CREATE DATABASE imdb;
@@ -212,7 +209,6 @@ The response should look like:
 
 In the later guides, we will convert this query into a model - materializing it in ClickHouse as a dbt view and table.
 
-
 ## Connecting to ClickHouse {#connecting-to-clickhouse}
 
 1. Create a dbt project. In this case we name this after our `imdb` source. When prompted, select `clickhouse` as the database source.
@@ -303,7 +299,6 @@ In the later guides, we will convert this query into a model - materializing it 
     ```
 
     Confirm the response includes `Connection test: [OK connection ok]` indicating a successful connection.
-
 
 ## Creating a simple view materialization {#creating-a-simple-view-materialization}
 
@@ -510,7 +505,6 @@ In the previous example, our model was materialized as a view. While this might 
     SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DESC LIMIT 10;
     ```
 
-
 ## Creating an Incremental Materialization {#creating-an-incremental-materialization}
 
 The previous example created a table to materialize the model. This table will be reconstructed for each dbt execution. This may be infeasible and extremely costly for larger result sets or complex transformations. To address this challenge and reduce the build time, dbt offers Incremental materializations. This allows dbt to insert or update records into a table since the last execution, making it appropriate for event-style data. Under the hood a temporary table is created with all the updated records and then all the untouched records as well as the updated records are inserted into a new target table. This results in similar [limitations](#limitations) for large result sets as for the table model.
@@ -697,7 +691,6 @@ AND event_time > subtractMinutes(now(), 15) ORDER BY event_time LIMIT 100;
 ```
 
 Adjust the above query to the period of execution. We leave result inspection to the user but highlight the general strategy used by the plugin to perform incremental updates:
-
 
 1. The plugin creates a temporary table `actor_sumary__dbt_tmp`. Rows that have changed are streamed into this table.
 2. A new table, `actor_summary_new,` is created. The rows from the old table are, in turn, streamed from the old to new, with a check to make sure row ids do not exist in the temporary table. This effectively handles updates and duplicates.
@@ -1027,7 +1020,6 @@ Note how a table actor_summary_snapshot has been created in the snapshots db (de
 
 For further details on dbt snapshots see [here](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots).
 
-
 ## Using seeds {#using-seeds}
 
 dbt provides the ability to load data from CSV files. This capability is not suited to loading large exports of a database and is more designed for small files typically used for code tables and [dictionaries](../../../../sql-reference/dictionaries/index.md), e.g. mapping country codes to country names. For a simple example, we generate and then upload a list of genre codes using the seed functionality.
@@ -1081,7 +1073,6 @@ dbt provides the ability to load data from CSV files. This capability is not sui
     |War    |WAR |
     +-------+----+=
     ```
-
 
 ## Limitations {#limitations}
 

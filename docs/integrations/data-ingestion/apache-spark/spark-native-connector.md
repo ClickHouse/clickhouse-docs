@@ -366,7 +366,6 @@ df.show()
                 DataTypes.createStructField("name", DataTypes.StringType, false),
         });
 
-
         List<Row> data = Arrays.asList(
                 RowFactory.create(1, "Alice"),
                 RowFactory.create(2, "Bob")
@@ -454,8 +453,6 @@ df = spark.createDataFrame(data)
 
 # Write DataFrame to ClickHouse
 df.writeTo("clickhouse.default.example_table").append()
-
-
 
 ```
 

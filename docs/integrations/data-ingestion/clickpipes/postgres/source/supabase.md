@@ -19,7 +19,6 @@ ClickPipes supports Supabase via IPv6 natively for seamless replication.
 
 :::
 
-
 ## Creating a user with permissions and replication slot {#creating-a-user-with-permissions-and-replication-slot}
 
 Let's create a new user for ClickPipes with the necessary permissions suitable for CDC,
@@ -42,7 +41,6 @@ Here, we can run the following SQL commands:
 
 <Image img={supabase_commands} alt="User and publication commands" size="large" border/>
 
-
 Click on **Run** to have a publication and a user ready.
 
 :::note
@@ -53,9 +51,7 @@ Also, remember to use the same publication name when creating the mirror in Clic
 
 :::
 
-
 ## Increase `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
-
 
 :::warning
 
@@ -80,7 +76,6 @@ Head over to your Supabase Project's `Project Settings` -> `Database` (under `Co
 The connection pooler is not supported for CDC based replication, hence it needs to be disabled.
 
 :::
-
 
 ## What's next? {#whats-next}
 

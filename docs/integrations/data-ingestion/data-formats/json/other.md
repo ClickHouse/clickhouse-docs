@@ -351,13 +351,6 @@ The application of maps in this case is typically rare, and suggests that the da
 }
 ```
 
-
-
-
-
-
-
-
 ## Using the Nested type {#using-nested}
 
 The [Nested type](/sql-reference/data-types/nested-data-structures/nested) can be used to model static objects which are rarely subject to change, offering an alternative to `Tuple` and `Array(Tuple)`. We generally recommend avoiding using this type for JSON as its behavior is often confusing. The primary benefit of `Nested` is that sub-columns can be used in ordering keys.

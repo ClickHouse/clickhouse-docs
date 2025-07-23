@@ -313,7 +313,6 @@ Now that we've configured both the input and output datasets, we can set up a
    :::
    <Image img={adfCopyDataSinkSelectPost} size="lg" alt="Copy Data Sink Select Post" border/>
 
-
 5. Click **Debug** at the top of the canvas to run the pipeline. After a short
    wait, the activity will be queued and executed. If everything is configured
    correctly, the task should finish with a **Success** status.

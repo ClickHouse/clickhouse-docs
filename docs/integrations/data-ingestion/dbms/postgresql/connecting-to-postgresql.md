@@ -111,7 +111,6 @@ Check the ClickHouse [Cloud Endpoints API](/cloud/get-started/query-endpoints) f
   View the [PostgreSQL table engine](/engines/table-engines/integrations/postgresql) doc page for a complete list of parameters.
   :::
 
-
 ### 3 Test the Integration {#3-test-the-integration}
 
 1. In ClickHouse, view initial rows:
@@ -207,7 +206,6 @@ _*ClickHouse needs minimum of `logical` wal level and minimum `2` replication sl
 CREATE ROLE clickhouse_user SUPERUSER LOGIN PASSWORD 'ClickHouse_123';
 ```
 _*for demonstration purposes, full superuser rights have been granted._
-
 
 3. create a new database:
 ```sql

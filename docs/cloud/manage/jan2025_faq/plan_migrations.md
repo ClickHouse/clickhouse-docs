@@ -62,9 +62,7 @@ The console will prompt you with recommended options for each service based on h
 
 Please refer to the pricing calculator on the [Pricing](https://clickhouse.com/pricing) page, which will help estimate the cost based on your workload size and tier selection.
 
-
 ## Undertaking the migration {#undertaking-the-migration}
-
 
 ### What are service version pre-requisites to undertaking the migration? {#what-are-service-version-pre-requisites-to-undertaking-the-migration}
 
