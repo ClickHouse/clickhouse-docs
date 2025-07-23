@@ -185,7 +185,6 @@ If you're creating a publication manually instead of letting ClickPipes manage i
 For manually created publications, please add any tables you want to the publication before adding them to the pipe.
 ::: 
 
-
 ## Recommended `max_slot_wal_keep_size` settings {#recommended-max_slot_wal_keep_size-settings}
 
 - **At Minimum:** Set [`max_slot_wal_keep_size`](https://www.postgresql.org/docs/devel/runtime-config-replication.html#GUC-MAX-SLOT-WAL-KEEP-SIZE) to retain at least **two days' worth** of WAL data.

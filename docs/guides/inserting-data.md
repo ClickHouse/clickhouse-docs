@@ -110,7 +110,6 @@ Note that the data is not searchable by queries before being flushed to the data
 Full details on configuring asynchronous inserts can be found [here](/optimize/asynchronous-inserts#enabling-asynchronous-inserts), with a deep dive [here](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse).
 :::
 
-
 ### Use official ClickHouse clients {#use-official-clickhouse-clients}
 
 ClickHouse has clients in the most popular programming languages.

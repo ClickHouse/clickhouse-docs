@@ -198,7 +198,6 @@ Single replica services across all three tiers are meant to be fixed in size (`8
 
 You can always upgrade from Basic to Scale or from Scale to Enterprise. Downgrading tiers will require disabling premium features.
 
-
 ---
 
 If you have any questions about service types, please see the [pricing page](https://clickhouse.com/pricing) or contact support@clickhouse.com.

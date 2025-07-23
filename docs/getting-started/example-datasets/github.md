@@ -79,13 +79,13 @@ The following data can be used to reproduce a working environment. Alternatively
 Generated files for the following repositories can be found below:
 
 - ClickHouse (Nov 8th 2022)
-    - https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/commits.tsv.xz - 2.5 MB
-    - https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/file_changes.tsv.xz - 4.5MB
-    - https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/line_changes.tsv.xz - 127.4 MB
+  - https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/commits.tsv.xz - 2.5 MB
+  - https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/file_changes.tsv.xz - 4.5MB
+  - https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/line_changes.tsv.xz - 127.4 MB
 - Linux (Nov 8th 2022)
-    - https://datasets-documentation.s3.amazonaws.com/github/commits/linux/commits.tsv.xz - 44 MB
-    - https://datasets-documentation.s3.amazonaws.com/github/commits/linux/file_changes.tsv.xz - 467MB
-    - https://datasets-documentation.s3.amazonaws.com/github/commits/linux/line_changes.tsv.xz - 1.1G
+  - https://datasets-documentation.s3.amazonaws.com/github/commits/linux/commits.tsv.xz - 44 MB
+  - https://datasets-documentation.s3.amazonaws.com/github/commits/linux/file_changes.tsv.xz - 467MB
+  - https://datasets-documentation.s3.amazonaws.com/github/commits/linux/line_changes.tsv.xz - 1.1G
 
 To insert this data, prepare the database by executing the following queries:
 
@@ -184,7 +184,6 @@ CREATE TABLE git.line_changes
 
 Insert the data using `INSERT INTO SELECT` and the [s3 function](/sql-reference/table-functions/s3). For example, below, we insert the ClickHouse files into each of their respective tables:
 
-
 *commits*
 
 ```sql
@@ -255,7 +254,6 @@ LIMIT 10
 
 10 rows in set. Elapsed: 0.006 sec. Processed 12.10 thousand rows, 1.60 MB (1.93 million rows/s., 255.40 MB/s.)
 ```
-
 
 We can also review the line changes, excluding renames i.e. we won't show changes before a rename event when the file existed under a different name:
 
@@ -1287,7 +1285,6 @@ A Sankey chart (SuperSet) allows this to be visualized nicely. Note we increase 
 
 <Image img={superset_authors_matrix} alt="Superset authors matrix" size="md"/>
 
-
 Alexey clearly likes removing other peoples code. Lets exclude him for a more balanced view of code removal.
 
 <Image img={superset_authors_matrix_v2} alt="Superset authors matrix v2" size="md"/>
@@ -1541,7 +1538,6 @@ LIMIT 10
 ```
 
 ### List files that were rewritten most number of times? {#list-files-that-were-rewritten-most-number-of-times}
-
 
 The simplest approach to this question might be to simply count the most number of line modifications per path (restricted to current files) e.g.:
 

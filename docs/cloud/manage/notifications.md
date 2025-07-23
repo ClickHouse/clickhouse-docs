@@ -23,9 +23,7 @@ Notifications can be received via various channels. For now, ClickHouse Cloud su
 
 <Image img={notifications_1} size="md" alt="ClickHouse Cloud notifications flyout" border/>
 
-
 <Image img={notifications_2} size="md" alt="ClickHouse Cloud notifications activity log" border/>
-
 
 ## Customizing notifications {#customizing-notifications}
 

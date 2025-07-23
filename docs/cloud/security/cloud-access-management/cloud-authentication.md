@@ -17,10 +17,10 @@ ClickHouse Cloud provides a number of ways to authenticate. This guide explains 
 Minimum password settings for our console and services (databases) currently comply with [NIST 800-63B](https://pages.nist.gov/800-63-3/sp800-63b.html#sec4) Authenticator Assurance Level 1:
 - Minimum 12 characters
 - Includes 3 of the following 4 items:
-   - 1 uppercase letter
-   - 1 lowercase letter
-   - 1 number
-   - 1 special character
+  - 1 uppercase letter
+  - 1 lowercase letter
+  - 1 number
+  - 1 special character
 
 ## Email and password {#email--password}
 

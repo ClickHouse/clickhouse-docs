@@ -37,7 +37,6 @@ Each shard holds a subset of the data and functions as a regular ClickHouse tabl
 
 To illustrate **SELECT** query forwarding and **INSERT** routing, we consider the [What are table parts](/parts) example table split across two shards on two ClickHouse servers. First, we show the DDL statement for creating a corresponding **Distributed table** for this setup:
 
-
 ```sql
 CREATE TABLE uk.uk_price_paid_simple_dist ON CLUSTER test_cluster
 (
@@ -79,7 +78,6 @@ This diagram shows how SELECT queries are processed with a distributed table in 
 
 ② The Distributed table forwards the query to all servers hosting shards of the target table, where each ClickHouse server computes its local aggregation result **in parallel**.
 
-
 Then, the ClickHouse server hosting the initially targeted distributed table ③ collects all local results, ④ merges them into the final global result, and ⑤ returns it to the query sender.
 
 ## What are table replicas in ClickHouse? {#what-are-table-replicas-in-clickhouse}
@@ -105,8 +103,6 @@ Query processing works similarly to setups without replicas, with only a single 
 The rest works the [same](#select-forwarding) as in setups without replicas and is not shown in the diagram above. The ClickHouse server hosting the initially targeted distributed table collects all local results, merges them into the final global result, and returns it to the query sender.
 
 Note that ClickHouse allows configuring the query forwarding strategy for ②. By default—unlike in the diagram above—the distributed table [prefers](/docs/operations/settings/settings#prefer_localhost_replica) a local replica if available, but other load balancing [strategies](/docs/operations/settings/settings#load_balancing) can be used.
-
-
 
 ## Where to find more information {#where-to-find-more-information}
 

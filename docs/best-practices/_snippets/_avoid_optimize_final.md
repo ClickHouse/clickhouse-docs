@@ -1,7 +1,6 @@
 import Image from '@theme/IdealImage';
 import simple_merges from '@site/static/images/bestpractices/simple_merges.png';
 
-
 ClickHouse tables using the **MergeTree engine** store data on disk as **immutable parts**, which are created every time data is inserted. 
 
 Each insert creates a new part containing sorted, compressed column files, along with metadata like indexes and checksums. For a detailed description of part structures and how they are formed we recommend this [guide](/parts).
@@ -16,7 +15,15 @@ While it's tempting to manually trigger this merge using:
 OPTIMIZE TABLE <table> FINAL;
 ```
 
-**you should avoid this operation in most cases** as it initiates resource intensive operations which may impact cluster performance.
+**you should avoid the `OPTIMIZE FINAL` operation in most cases** as it initiates 
+resource intensive operations which may impact cluster performance.
+
+:::note OPTIMIZE FINAL vs FINAL
+`OPTIMIZE FINAL` is not the same as `FINAL`, which is sometimes necessary to use 
+to get results without duplicates, such as with the `ReplacingMergeTree`. Generally,
+`FINAL` is okay to use if your queries are filtering on the same columns as those
+in your primary key.
+:::
 
 ## Why avoid?  {#why-avoid}
 

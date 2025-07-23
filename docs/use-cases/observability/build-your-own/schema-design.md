@@ -161,7 +161,6 @@ Materialized columns offer the simplest solution to extract structure from other
 Materialized columns incur additional storage overhead as the values are extracted to new columns on disk at insert time.
 :::
 
-
 Materialized columns support any ClickHouse expression and can exploit any of the analytical functions for [processing strings](/sql-reference/functions/string-functions) (including [regex and searching](/sql-reference/functions/string-search-functions)) and [urls](/sql-reference/functions/url-functions), performing [type conversions](/sql-reference/functions/type-conversion-functions), [extracting values from JSON](/sql-reference/functions/json-functions) or [mathematical operations](/sql-reference/functions/math-functions).
 
 We recommend materialized columns for basic processing. They are especially useful for extracting values from maps, promoting them to root columns, and performing type conversions. They are often most useful when used in very basic schemas or in conjunction with materialized views. Consider the following schema for logs from which the JSON has been extracted to the `LogAttributes` column by the collector:
@@ -232,7 +231,6 @@ Materialized Views allow users to shift the cost of computation from query time 
 :::note Real-time updates
 Materialized views in ClickHouse are updated in real time as data flows into the table they are based on, functioning more like continually updating indexes. In contrast, in other databases materialized views are typically static snapshots of a query that must be refreshed (similar to ClickHouse Refreshable Materialized Views).
 :::
-
 
 The query associated with the materialized view can theoretically be any query, including an aggregation although [limitations exist with Joins](https://clickhouse.com/blog/using-materialized-views-in-clickhouse#materialized-views-and-joins). For the transformations and filtering workloads required for logs and traces, users can consider any `SELECT` statement to be possible.
 
@@ -349,7 +347,6 @@ The types selected here are based on optimizations discussed in ["Optimizing typ
 :::note
 Notice how we have dramatically changed our schema. In reality users will likely also have Trace columns they will want to preserve as well as the column `ResourceAttributes` (this usually contains Kubernetes metadata). Grafana can exploit trace columns to provide linking functionality between logs and traces - see ["Using Grafana"](/observability/grafana).
 :::
-
 
 Below, we create a materialized view `otel_logs_mv`, which executes the above select for the `otel_logs` table and sends the results to `otel_logs_v2`.
 
@@ -489,7 +486,6 @@ Peak memory usage: 71.90 MiB.
 We don't recommend using dots in Map column names and may deprecate its use. Use an `_`.
 :::
 
-
 ## Using aliases {#using-aliases}
 
 Querying map types is slower than querying normal columns - see ["Accelerating queries"](#accelerating-queries). In addition, it's more syntactically complicated and can be cumbersome for users to write. To address this latter issue we recommend using Alias columns.
@@ -591,7 +587,6 @@ While joins are rarely required in Observability use cases, dictionaries can sti
 :::note Accelerating joins
 Users interested in accelerating joins with dictionaries can find further details [here](/dictionary).
 :::
-
 
 ### Insert time vs query time {#insert-time-vs-query-time}
 
@@ -1286,7 +1281,6 @@ CREATE TABLE otel_traces_trace_id_ts
 ENGINE = MergeTree
 ORDER BY (TraceId, toUnixTimestamp(Start))
 
-
 CREATE MATERIALIZED VIEW otel_traces_trace_id_ts_mv TO otel_traces_trace_id_ts
 (
         `TraceId` String,
@@ -1573,7 +1567,6 @@ WHERE Referer LIKE '%ultra%'
 
 10 rows in set. Elapsed: 0.016 sec.
 
-
 EXPLAIN indexes = 1
 SELECT count()
 FROM otel_logs_bloom
@@ -1616,7 +1609,6 @@ ORDER BY sum(data_compressed_bytes) DESC
 └─────────┴─────────────────┴───────────────────┴───────┘
 
 1 row in set. Elapsed: 0.018 sec.
-
 
 SELECT
         `table`,

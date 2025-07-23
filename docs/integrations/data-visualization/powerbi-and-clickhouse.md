@@ -77,7 +77,6 @@ Download the most recent [ClickHouse ODBC release](https://github.com/ClickHouse
 
 Execute the supplied `.msi` installer and follow the wizard.
 
-
 <Image size="md" img={powerbi_odbc_install} alt="ClickHouse ODBC driver installation wizard showing installation options" border />
 <br/>
 
@@ -181,7 +180,6 @@ Choose the Unicode version of the ODBC driver.
 
 Fill in the connection details.
 
-
 <Image size="sm" img={powerbi_connection_details} alt="ClickHouse ODBC Driver configuration dialog with connection parameters" border />
 <br/>
 
@@ -225,7 +223,6 @@ Finally, you should see the databases and tables in the Navigator view. Select t
 <br/>
 
 Once the import is complete, your ClickHouse Data should be accessible in Power BI as usual.
-
 
 ## Known limitations {#known-limitations}
 

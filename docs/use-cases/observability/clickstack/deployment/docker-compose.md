@@ -7,7 +7,6 @@ sidebar_position: 2
 description: 'Deploying ClickStack with Docker Compose - The ClickHouse Observability Stack'
 ---
 
-
 import Image from '@theme/IdealImage';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
@@ -156,7 +155,6 @@ This distribution can be used with ClickHouse Cloud. Users should:
 <JSONSupport/>
 
 To set these, modify the relevant services in the `docker-compose.yaml`:
-
 
 ```yaml
   app:

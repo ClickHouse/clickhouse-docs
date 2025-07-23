@@ -42,7 +42,6 @@ To get started, you first need to make sure that your Postgres database is set u
 
 9. [TimescaleDB](./postgres/source/timescale), if you are using the TimescaleDB extension on a managed service or self-hosted instance.
 
-
 :::warning
 
 Postgres Proxies like PgBouncer, RDS Proxy, Supabase Pooler, etc., are not supported for CDC based replication. Please make sure to NOT use them for the ClickPipes setup and instead add connection details of the actual Postgres database.
@@ -91,7 +90,6 @@ You can follow the [setup guide to set up the connection](/integrations/clickpip
 
 You can specify SSH tunneling details if your source Postgres database is not publicly accessible.
 
-
 1. Enable the "Use SSH Tunnelling" toggle.
 2. Fill in the SSH connection details.
 
@@ -124,7 +122,6 @@ You can configure the Advanced settings if needed. A brief description of each s
 - **Snapshot number of rows per partition**: This is the number of rows that will be fetched in each partition during the initial snapshot. This is useful when you have a large number of rows in your tables and you want to control the number of rows fetched in each partition.
 - **Snapshot number of tables in parallel**: This is the number of tables that will be fetched in parallel during the initial snapshot. This is useful when you have a large number of tables and you want to control the number of tables fetched in parallel.
 
-
 ### Configuring the tables {#configuring-the-tables}
 
 6. Here you can select the destination database for your ClickPipe. You can either select an existing database or create a new one.
@@ -145,6 +142,6 @@ You can configure the Advanced settings if needed. A brief description of each s
 
 ## What's next? {#whats-next}
 
-Once you've moved data from Postgres to ClickHouse, the next obvious question is how to query and model your data in ClickHouse to make the most of it. Please refer to the [migration guide](/migrations/postgresql/overview) to a step by step approaches on how to migrate from PostgreSQL to ClickHouse. Alongside the migration guide, make sure to check the pages about [Deduplication strategies (using CDC)](/integrations/clickpipes/postgres/deduplication) and [Ordering Keys](/integrations/clickpipes/postgres/ordering_keys) to understand how to handle duplicates and customize ordering keys when using CDC.
+Once you've set up your ClickPipe to replicate data from PostgreSQL to ClickHouse Cloud, you can focus on how to query and model your data for optimal performance. See the [migration guide](/migrations/postgresql/overview) to assess which startegy best suits your requirements, as well as the [Deduplication strategies (using CDC)](/integrations/clickpipes/postgres/deduplication) and [Ordering Keys](/integrations/clickpipes/postgres/ordering_keys) pages for best practices on CDC workloads.
 
-Finally, please refer to the ["ClickPipes for Postgres FAQ"](/integrations/clickpipes/postgres/faq) page for more information about common issues and how to resolve them.
+For common questions around PostgreSQL CDC and troubleshooting, see the [Postgres FAQs page](/integrations/clickpipes/postgres/faq).

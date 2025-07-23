@@ -76,7 +76,6 @@ Java Client was developed far back in 2015. Its codebase became very hard to mai
 |Dynamic                |✔                    |✗                    |
 |JSON                   |✔                    |✗                    |
 
-
 [ClickHouse Data Types](/sql-reference/data-types)
 
 :::note
@@ -110,7 +109,6 @@ Table of features of the clients:
 | Session Roles                                |✔       |✔      | |
 | SSL Client Authentication                    |✔       |✔      | |
 | Session timezone                             |✔       |✔      | |
-
 
 JDBC Drive inherits same features as underlying client implementation. Other JDBC features are listed on its [page](/integrations/language-clients/java/jdbc).
 
