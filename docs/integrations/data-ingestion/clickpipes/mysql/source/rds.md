@@ -25,15 +25,15 @@ This step-by-step guide shows you how to configure Amazon RDS MySQL to replicate
 
 The binary log is a set of log files that contain information about data modifications made to an MySQL server instance, and binary log files are required for replication. To configure binary log retention in RDS MySQL, you must [enable binary logging](#enable-binlog-logging) and [increase the binlog retention interval](#binlog-retention-interval).
 
-### 1. Enable binary logging via automated backup{#enable-binlog-logging}
+### 1. Enable binary logging via automated backup {#enable-binlog-logging}
 
-The automated backups feature determines whether binary logging is turned on or off for MySQL. It can be set in the AWS console:
+The automated backups feature determines whether binary logging is turned on or off for MySQL. Automated backups can be configured for your instance in the RDS Console by navigating to **Modify** > **Additional configuration** > **Backup** and selecting the **Enable automated backups** checkbox (if not selected already).
 
 <Image img={rds_backups} alt="Enabling automated backups in RDS" size="lg" border/>
 
-We recommend setting backup retention to a reasonably long value, depending on the replication use case.
+We recommend setting the **Backup retention period** to a reasonably long value, depending on the replication use case.
 
-### 2. Increase the binlog retention interval{#binlog-retention-interval}
+### 2. Increase the binlog retention interval {#binlog-retention-interval}
 
 :::warning
 If ClickPipes tries to resume replication and the required binlog files have been purged due to the configured binlog retention value, the ClickPipe will enter an errored state and a resync is required.
@@ -49,18 +49,18 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 72);
 
 If this configuration isn't set or is set to a low interval, it can lead to gaps in the binary logs, compromising ClickPipes' ability to resume replication. 
 
-## Configure binlog settings in the parameter group {#binlog-parameter-group}
+## Configure binlog settings {#binlog-settings}
 
-The parameter group can be found when you click on your MySQL instance in the RDS Console, and then heading over to the `Configurations` tab.
+The parameter group can be found when you click on your MySQL instance in the RDS Console, and then navigate to the **Configuration** tab.
 
 :::tip
-If you have a MySQL cluster, the parameters below can be found in the [DB Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) parameter group instead of the DB instance group.
+If you have a MySQL cluster, the parameters below can be found in the [DB cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) parameter group instead of the DB instance group.
 :::
 
 <Image img={rds_config} alt="Where to find parameter group in RDS" size="lg" border/>
 
 <br/>
-Click the parameter group link, which will take you to its dedicated page. You should see an `Edit` button in the top right.
+Click the parameter group link, which will take you to its dedicated page. You should see an **Edit** button in the top right.
 
 <Image img={edit_button} alt="Edit parameter group" size="lg" border/>
 
@@ -79,7 +79,7 @@ The following parameters need to be set as follows:
 <Image img={binlog_row_image} alt="Binlog row image to FULL" size="lg" border/>
 
 <br/>
-Then, click on `Save Changes` in the top right corner. You may need to reboot your instance for the changes to take effect — a way of knowing this is if you see `Pending reboot` next to the parameter group link in the `Configurations` tab of the RDS instance.
+Then, click on **Save Changes** in the top right corner. You may need to reboot your instance for the changes to take effect — a way of knowing this is if you see `Pending reboot` next to the parameter group link in the **Configuration** tab of the RDS instance.
 
 ## Enable GTID Mode {#gtid-mode}
 
@@ -92,12 +92,12 @@ The MySQL ClickPipe also supports replication without GTID mode. However, enabli
 GTID-based replication is supported for Amazon RDS for MySQL versions 5.7, 8.0 and 8.4. To enable GTID mode for your Aurora MySQL instance, follow these steps:
 
 1. In the RDS Console, click on your MySQL instance.
-2. Click on the `Configurations` tab.
+2. Click on the **Configuration** tab.
 3. Click on the parameter group link.
-4. Click on the `Edit` button in the top right corner.
+4. Click on the **Edit** button in the top right corner.
 5. Set `enforce_gtid_consistency` to `ON`.
 6. Set `gtid-mode` to `ON`.
-7. Click on `Save Changes` in the top right corner.
+7. Click on **Save Changes** in the top right corner.
 8. Reboot your instance for the changes to take effect.
 
 <Image img={enable_gtid} alt="GTID enabled" size="lg" border/>
@@ -129,7 +129,7 @@ Connect to your RDS MySQL instance as an admin user and execute the following co
 
 ### IP-based access control {#ip-based-access-control}
 
-To restrict traffic to your Aurora MySQL instance, add the [documented static NAT IPs](../../index.md#list-of-static-ips) to the `Inbound rules` of your RDS security group.
+To restrict traffic to your Aurora MySQL instance, add the [documented static NAT IPs](../../index.md#list-of-static-ips) to the **Inbound rules** of your RDS security group.
 
 <Image img={security_group_in_rds_mysql} alt="Where to find security group in RDS MySQL?" size="lg" border/>
 
