@@ -6,6 +6,7 @@ description: 'Integrate ClickHouse and Amazon Glue'
 keywords: ['clickhouse', 'amazon', 'aws', 'glue', 'migrating', 'data', 'spark']
 title: 'Integrating Amazon Glue with ClickHouse and Spark'
 ---
+
 import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
