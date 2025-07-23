@@ -566,7 +566,7 @@ CREATE TABLE page_views
     )
 )
 ENGINE = MergeTree
-ORDER BY (event_date, id);
+ORDER BY (event_date, id)
 SETTINGS
   index_granularity = 1, -- one row per granule
   max_bytes_to_merge_at_max_space_in_pool = 1; -- disable merge
