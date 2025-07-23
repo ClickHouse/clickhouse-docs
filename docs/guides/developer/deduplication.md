@@ -105,7 +105,9 @@ FINAL
 The result only has 2 rows, and the last row inserted is the row that gets returned.
 
 :::note
-Using `FINAL` works OK if you have a small amount of data. If you are dealing with a large amount of data, using `FINAL` is probably not the best option. Let's discuss a better option for finding the latest value of a column...
+Using `FINAL` works okay if you have a small amount of data. If you are dealing with a large amount of data, 
+using `FINAL` is probably not the best option. Let's discuss a better option for 
+finding the latest value of a column.
 :::
 
 ### Avoiding FINAL {#avoiding-final}

@@ -16,7 +16,15 @@ While it's tempting to manually trigger this merge using:
 OPTIMIZE TABLE <table> FINAL;
 ```
 
-**you should avoid this operation in most cases** as it initiates resource intensive operations which may impact cluster performance.
+**you should avoid the `OPTIMIZE FINAL` operation in most cases** as it initiates 
+resource intensive operations which may impact cluster performance.
+
+:::note OPTIMIZE FINAL vs FINAL
+`OPTIMIZE FINAL` is not the same as `FINAL`, which is sometimes necessary to use 
+to get results without duplicates, such as with the `ReplacingMergeTree`. Generally,
+`FINAL` is okay to use if your queries are filtering on the same columns as those
+in your primary key.
+:::
 
 ## Why avoid?  {#why-avoid}
 
