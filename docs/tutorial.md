@@ -25,8 +25,8 @@ You need access to a running ClickHouse service to complete this tutorial. For i
 The New York City taxi dataset contains details about millions of taxi rides, with columns including tip amount, tolls, payment type, and more. Create a table to store this data.
 
 1. Connect to the SQL console:
-- For ClickHouse Cloud, select a service from the dropdown menu and then select **SQL Console** from the left navigation menu.
-- For self-managed ClickHouse, connect to the SQL console at `https://_hostname_:8443/play`. Check with your ClickHouse administrator for the details.
+    - For ClickHouse Cloud, select a service from the dropdown menu and then select **SQL Console** from the left navigation menu.
+    - For self-managed ClickHouse, connect to the SQL console at `https://_hostname_:8443/play`. Check with your ClickHouse administrator for the details.
 
 2. Create the following `trips` table in the `default` database:
     ```sql
