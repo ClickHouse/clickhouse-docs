@@ -368,7 +368,6 @@ Users have several options for orchestrating this in ClickHouse, assuming a peri
 - **[Refreshable Materialized Views](/materialized-view/refreshable-materialized-view)** - Refreshable materialized views can be used to periodically schedule a query with the results sent to a target table. On query execution, the view ensures the target table is atomically updated. This provides a ClickHouse native means of scheduling this work.
 - **External tooling** - Utilizing tools such as [dbt](https://www.getdbt.com/) and [Airflow](https://airflow.apache.org/) to periodically schedule the transformation. The [ClickHouse integration for dbt](/integrations/dbt) ensures this is performed atomically with a new version of the target table created and then atomically swapped with the version receiving queries (via the [EXCHANGE](/sql-reference/statements/exchange) command).
 
-
 ### Streaming {#streaming}
 
 Users may alternatively wish to perform this outside of ClickHouse, prior to insertion, using streaming technologies such as [Apache Flink](https://flink.apache.org/). Alternatively, incremental [materialized views](/guides/developer/cascading-materialized-views) can be used to perform this process as data is inserted.

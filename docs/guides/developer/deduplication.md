@@ -9,7 +9,6 @@ title: 'Deduplication Strategies'
 import deduplication from '@site/static/images/guides/developer/de_duplication.png';
 import Image from '@theme/IdealImage';
 
-
 # Deduplication strategies
 
 **Deduplication** refers to the process of ***removing duplicate rows of a dataset***. In an OLTP database, this is done easily because each row has a unique primary key-but at the cost of slower inserts. Every inserted row needs to first be searched for and, if found, needs to be replaced.
@@ -141,7 +140,6 @@ FROM hackernews_rmt
 │  1 │ ricardo │ This is post #1 │   150 │
 └────┴─────────┴─────────────────┴───────┘
 ```
-
 
 Instead of using `FINAL`, let's use some business logic - we know that the `views` column is always increasing, so we can select the row with the largest value using the `max` function after grouping by the desired columns:
 

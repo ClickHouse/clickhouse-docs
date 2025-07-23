@@ -53,8 +53,6 @@ aws s3 cp \
 If you want to download more files, use `aws s3 ls` to get a list of all the files and then update the above command.
 :::
 
-
-
 Next, we'll import the Parquet module from the `pyarrow` package:
 
 ```python
@@ -143,7 +141,6 @@ chdb.query("SELECT count() FROM Python(arrow_table)", "DataFrame")
 
 Now, let's do something a bit more interesting. 
 The following query excludes the `quadkey` and `tile.*` columns and then computes the average and max values for all remaining column:
-
 
 ```python
 chdb.query("""

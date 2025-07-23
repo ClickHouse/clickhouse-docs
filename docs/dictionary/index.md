@@ -155,7 +155,6 @@ SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes
 │ (34999,32) │
 └────────────┘
 
-
 Exploiting this in our earlier query, we can remove the JOIN:
 
 WITH PostIds AS
@@ -206,8 +205,6 @@ FROM posts
 WHERE Title ILIKE '%clickhouse%'
 LIMIT 5
 FORMAT PrettyCompactMonoBlock
-
-
 
 ┌───────Id─┬─Title─────────────────────────────────────────────────────────┬─Location──────────────┐
 │ 52296928 │ Comparision between two Strings in ClickHouse                 │ Spain                 │

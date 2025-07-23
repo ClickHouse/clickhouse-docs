@@ -6,7 +6,6 @@ sidebar_position: 1
 title: 'Kafka ClickPipes FAQ'
 ---
 
-
 ## Kafka ClickPipes FAQ {#faq}
 
 ### General {#general}

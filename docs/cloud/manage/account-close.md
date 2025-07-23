@@ -50,7 +50,6 @@ Description: We would appreciate it if you would share a brief note about why yo
 5. Click 'Create new case'
 6. We will close your account and send a confirmation email to let you know when it is complete.
 
-
 ## Request deletion of your personal data {#request-personal-data-deletion}
 Please note, only account administrators may request personal data deletion from ClickHouse. If you are not an account administrator, please contact
 your ClickHouse account administrator to request to be removed from the account.

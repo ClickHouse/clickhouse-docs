@@ -116,7 +116,6 @@ Create a support ticket with the following information:
 * The Private Subnet IDs you've allocated for ClickHouse
 * The availability zones these subnets are in
 
-
 ### Optional: Setup VPC Peering {#optional-setup-vpc-peering}
 
 To create or delete VPC peering for ClickHouse BYOC, follow the steps:

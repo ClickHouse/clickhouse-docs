@@ -149,7 +149,7 @@ Running the command at the current cursor position can be achieved in two ways:
 
 <Image img={run_at_cursor_2} size="md" alt='run at cursor' />
 
-  - Selecting 'Run at cursor' from the SQL Editor context menu
+- Selecting 'Run at cursor' from the SQL Editor context menu
 
 <Image img={run_at_cursor} size="md" alt='run at cursor' />
 

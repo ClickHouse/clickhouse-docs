@@ -29,7 +29,6 @@ If you use AWS NLB with the MySQL interface, you have to ask AWS support to enab
 This example uses self-signed certificates with a self-signed CA. For production environments, create a CSR and submit to your PKI team or certificate provider to obtain a proper certificate.
 :::
 
-
 1. Generate a Certificate Signing Request (CSR) and key. The basic format is the following:
     ```bash
     openssl req -newkey rsa:2048 -nodes -subj "/CN=<my_host>:<my_user>"  -keyout <my_cert_name>.key -out <my_cert_name>.csr
@@ -89,7 +88,6 @@ For details on how to enable SQL users and set roles, refer to [Defining SQL Use
     ```
     :::
 
-
 ## 3. Testing {#3-testing}
 
 1. Copy the user certificate, user key and CA certificate to a remote node.
@@ -114,7 +112,6 @@ For details on how to enable SQL users and set roles, refer to [Defining SQL Use
     Note that the password passed to clickhouse-client is ignored when a certificate is specified in the config.
     :::
 
-
 ## 4. Testing HTTP {#4-testing-http}
 
 1. Copy the user certificate, user key and CA certificate to a remote node.
@@ -137,7 +134,6 @@ For details on how to enable SQL users and set roles, refer to [Defining SQL Use
     :::note
     Notice that no password was specified, the certificate is used in lieu of a password and is how ClickHouse will authenticate the user.
     :::
-
 
 ## Summary {#summary}
 

@@ -66,9 +66,9 @@ If you do not have a dataset to work with you can add one of the examples. This 
 <br/>
 
 3. In the second step:
-  - Set SSL on or off.
-  - Enter the connection information that you collected earlier
-  - Specify the **DISPLAY NAME**: this can be any name you prefer. If you will be connecting to multiple ClickHouse databases then make the name more descriptive.
+- Set SSL on or off.
+- Enter the connection information that you collected earlier
+- Specify the **DISPLAY NAME**: this can be any name you prefer. If you will be connecting to multiple ClickHouse databases then make the name more descriptive.
 
 <Image size="sm" img={superset_03} alt="Superset connection configuration form showing ClickHouse connection parameters" border />
 <br/>
@@ -85,7 +85,6 @@ If you do not have a dataset to work with you can add one of the examples. This 
 <br/>
 
 3. Click the **ADD** button at the bottom of the dialog window and your table appears in the list of datasets. You are ready to build a dashboard and analyze your ClickHouse data!
-
 
 ## 5.  Creating charts and a dashboard in Superset {#5--creating-charts-and-a-dashboard-in-superset}
 

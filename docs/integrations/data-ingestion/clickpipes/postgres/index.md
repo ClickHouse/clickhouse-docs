@@ -42,7 +42,6 @@ To get started, you first need to make sure that your Postgres database is set u
 
 9. [TimescaleDB](./postgres/source/timescale), if you are using the TimescaleDB extension on a managed service or self-hosted instance.
 
-
 :::warning
 
 Postgres Proxies like PgBouncer, RDS Proxy, Supabase Pooler, etc., are not supported for CDC based replication. Please make sure to NOT use them for the ClickPipes setup and instead add connection details of the actual Postgres database.
@@ -91,7 +90,6 @@ You can follow the [setup guide to set up the connection](/integrations/clickpip
 
 You can specify SSH tunneling details if your source Postgres database is not publicly accessible.
 
-
 1. Enable the "Use SSH Tunnelling" toggle.
 2. Fill in the SSH connection details.
 
@@ -123,7 +121,6 @@ You can configure the Advanced settings if needed. A brief description of each s
 - **Pull batch size**: The number of rows to fetch in a single batch. This is a best effort setting and may not be respected in all cases.
 - **Snapshot number of rows per partition**: This is the number of rows that will be fetched in each partition during the initial snapshot. This is useful when you have a large number of rows in your tables and you want to control the number of rows fetched in each partition.
 - **Snapshot number of tables in parallel**: This is the number of tables that will be fetched in parallel during the initial snapshot. This is useful when you have a large number of tables and you want to control the number of tables fetched in parallel.
-
 
 ### Configuring the tables {#configuring-the-tables}
 

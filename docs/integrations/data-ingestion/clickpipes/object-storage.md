@@ -26,7 +26,6 @@ import Image from '@theme/IdealImage';
 # Integrating object storage with ClickHouse Cloud
 Object Storage ClickPipes provide a simple and resilient way to ingest data from Amazon S3, Google Cloud Storage, Azure Blob Storage, and DigitalOcean Spaces into ClickHouse Cloud. Both one-time and continuous ingestion are supported with exactly-once semantics.
 
-
 ## Prerequisite {#prerequisite}
 You have familiarized yourself with the [ClickPipes intro](./index.md).
 
@@ -139,7 +138,6 @@ To increase the throughput on large ingest jobs, we recommend scaling the ClickH
 This is a valid path (for S3):
 
 https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/**.ndjson.gz
-
 
 This is not a valid path. `{N..M}` are not supported in ClickPipes.
 

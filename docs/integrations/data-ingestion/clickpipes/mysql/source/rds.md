@@ -102,6 +102,11 @@ GTID-based replication is supported for Amazon RDS for MySQL versions 5.7, 8.0 a
 
 <Image img={enable_gtid} alt="GTID enabled" size="lg" border/>
 
+<br/>
+:::tip
+The MySQL ClickPipe also supports replication without GTID mode. However, enabling GTID mode is recommended for better performance and easier troubleshooting.
+:::
+
 ## Configure a database user {#configure-database-user}
 
 Connect to your RDS MySQL instance as an admin user and execute the following commands:

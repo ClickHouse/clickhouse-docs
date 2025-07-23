@@ -1,7 +1,6 @@
 import Image from '@theme/IdealImage';
 import simple_merges from '@site/static/images/bestpractices/simple_merges.png';
 
-
 ClickHouse tables using the **MergeTree engine** store data on disk as **immutable parts**, which are created every time data is inserted. 
 
 Each insert creates a new part containing sorted, compressed column files, along with metadata like indexes and checksums. For a detailed description of part structures and how they are formed we recommend this [guide](/parts).

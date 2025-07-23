@@ -251,7 +251,6 @@ GROUP BY
 2 rows in set. Elapsed: 0.004 sec.
 ```
 
-
 ## Combining multiple source tables to single target table {#combining-multiple-source-tables-to-single-target-table}
 
 Materialized views can also be used to combine multiple source tables into the same destination table. This is useful for creating a materialized view that is similar to a `UNION ALL` logic.

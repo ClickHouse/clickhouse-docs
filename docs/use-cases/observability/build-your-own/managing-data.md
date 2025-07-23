@@ -9,7 +9,6 @@ show_related_blogs: true
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';
 import Image from '@theme/IdealImage';
 
-
 # Managing data
 
 Deployments of ClickHouse for Observability invariably involve large datasets, which need to be managed. ClickHouse offers a number of features to assist with data management.
@@ -142,7 +141,6 @@ ORDER BY c DESC
 :::note
 This feature is exploited by TTL when the setting [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) is used. See [Data management with TTL](#data-management-with-ttl-time-to-live) for further details.
 :::
-
 
 ### Applications {#applications}
 

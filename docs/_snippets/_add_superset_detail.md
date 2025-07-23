@@ -44,4 +44,3 @@ TAG=2.0.0 docker-compose -f docker-compose-non-dev.yml up
 ```
 
 </details>
-

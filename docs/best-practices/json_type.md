@@ -211,7 +211,6 @@ Suppose another column called `tags` is added. If this was simply a list of stri
 
 In this case, we could model the arXiv documents as either all JSON or simply add a JSON `tags` column. We provide both examples below:
 
-
 ```sql
 CREATE TABLE arxiv
 (

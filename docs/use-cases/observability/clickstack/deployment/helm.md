@@ -91,7 +91,6 @@ Create a user, providing a username and password which means the requirements.
 
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
 
-
 On clicking `Create`, data sources will be created for the ClickHouse instance deployed with the Helm chart.
 
 :::note Overriding default connection
@@ -146,7 +145,6 @@ For handling sensitive data such as API keys or database credentials, use Kubern
 #### Using pre-configured secrets {#using-pre-configured-secrets}
 
 The Helm chart includes a default secret template located at [`charts/hdx-oss-v2/templates/secrets.yaml`](https://github.com/hyperdxio/helm-charts/blob/main/charts/hdx-oss-v2/templates/secrets.yaml). This file provides a base structure for managing secrets.
-
 
 If you need to manually apply a secret, modify and apply the provided `secrets.yaml` template:
 
@@ -240,7 +238,6 @@ helm install my-hyperdx hyperdx/hdx-oss-v2 -f values.yaml
 # helm upgrade my-hyperdx hyperdx/hdx-oss-v2 -f values.yaml
 ```
 
-
 ## Production notes {#production-notes}
 
 By default, this chart also installs ClickHouse and the OTel collector. However, for production, it is recommended that you manage ClickHouse and the OTel collector separately.
@@ -308,7 +305,6 @@ kubectl get pods -l app.kubernetes.io/name=hdx-oss-v2
 <JSONSupport/>
 
 Users can set these environment variables via either parameters or the `values.yaml` e.g.
-
 
 *values.yaml*
 

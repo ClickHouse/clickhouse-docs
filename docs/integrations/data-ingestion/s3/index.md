@@ -153,7 +153,6 @@ ORDER BY pickup_datetime
 
 Note the use of [partitioning](/engines/table-engines/mergetree-family/custom-partitioning-key) on the `pickup_date` field. Usually a partition key is for data management, but later on we will use this key to parallelize writes to S3.
 
-
 Each entry in our taxi dataset contains a taxi trip. This anonymized data consists of 20M records compressed in the S3 bucket https://datasets-documentation.s3.eu-west-3.amazonaws.com/ under the folder **nyc-taxi**. The data is in the TSV format with approximately 1M rows per file.
 
 ### Reading Data from S3 {#reading-data-from-s3}
@@ -188,7 +187,6 @@ LIMIT 5;
 
 Confirm the number of rows in this sample dataset. Note the use of wildcards for file expansion, so we consider all twenty files. This query will take around 10 seconds, depending on the number of cores on the ClickHouse instance:
 
-
 ```sql
 SELECT count() AS count
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames');
@@ -214,7 +212,6 @@ clickhouse-local --query "SELECT * FROM s3('https://datasets-documentation.s3.eu
 
 To exploit the full capabilities of ClickHouse, we next read and insert the data into our instance.
 We combine our `s3` function with a simple `INSERT` statement to achieve this. Note that we aren't required to list our columns because our target table provides the required structure. This requires the columns to appear in the order specified in the table DDL statement: columns are mapped according to their position in the `SELECT` clause. The insertion of all 10m rows can take a few minutes depending on the ClickHouse instance. Below we insert 1M rows to ensure a prompt response. Adjust the `LIMIT` clause or column selection to import subsets as required:
-
 
 ```sql
 INSERT INTO trips
@@ -261,7 +258,6 @@ Note here how the format of the file is inferred from the extension. We also don
 It is unlikely you will want to export your data as a single file. Most tools, including ClickHouse, will achieve higher throughput performance when reading and writing to multiple files due to the possibility of parallelism. We could execute our `INSERT` command multiple times, targeting a subset of the data. ClickHouse offers a means of automatic splitting files using a `PARTITION` key.
 
 In the example below, we create ten files using a modulus of the `rand()` function. Notice how the resulting partition ID is referenced in the filename. This results in ten files with a numerical suffix, e.g. `trips_0.csv.lz4`, `trips_1.csv.lz4` etc...:
-
 
 ```sql
 INSERT INTO FUNCTION
@@ -311,7 +307,6 @@ s3Cluster(cluster_name, source, [access_key_id, secret_access_key,] format, stru
 * `format` — The [format](/interfaces/formats#formats-overview) of the file.
 * `structure` — Structure of the table. Format 'column1_name column1_type, column2_name column2_type, ...'.
 
-
 Like any `s3` functions, the credentials are optional if the bucket is insecure or you define security through the environment, e.g., IAM roles. Unlike the s3 function, however, the structure must be specified in the request as of 22.3.1, i.e., the schema is not inferred.
 
 This function will be used as part of an `INSERT INTO SELECT` in most cases. In this case, you will often be inserting a distributed table. We illustrate a simple example below where trips_all is a distributed table. While this table uses the events cluster, the consistency of the nodes used for reads and writes is not a requirement:
@@ -327,7 +322,6 @@ INSERT INTO default.trips_all
 ```
 
 Inserts will occur against the initiator node. This means that while reads will occur on each node, the resulting rows will be routed to the initiator for distribution. In high throughput scenarios, this may prove a bottleneck. To address this, set the parameter [parallel_distributed_insert_select](/operations/settings/settings/#parallel_distributed_insert_select) for the `s3cluster` function.
-
 
 ## S3 table engines {#s3-table-engines}
 
@@ -347,7 +341,6 @@ CREATE TABLE s3_engine_table (name String, value UInt32)
 ### Reading data {#reading-data}
 
 In the following example, we create a table named `trips_raw` using the first ten TSV files located in the `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/` bucket. Each of these contains 1M rows each:
-
 
 ```sql
 CREATE TABLE trips_raw
@@ -478,9 +471,9 @@ Some notes about the `S3` table engine:
 - Unlike a traditional `MergeTree` family table, dropping an `S3` table will not delete the underlying data.
 - Full settings for this table type can be found [here](/engines/table-engines/integrations/s3.md/#settings).
 - Be aware of the following caveats when using this engine:
-    * ALTER queries are not supported
-    * SAMPLE operations are not supported
-    * There is no notion of indexes, i.e. primary or skip.
+  * ALTER queries are not supported
+  * SAMPLE operations are not supported
+  * There is no notion of indexes, i.e. primary or skip.
 
 ## Managing credentials {#managing-credentials}
 
@@ -517,12 +510,12 @@ In the previous examples, we have passed credentials in the `s3` function or `S3
 
     This setting turns on an attempt to retrieve S3 credentials from the environment, thus allowing access through IAM roles. Specifically, the following order of retrieval is performed:
 
-   * A lookup for the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `AWS_SESSION_TOKEN`
-   * Check performed in **$HOME/.aws**
-   * Temporary credentials obtained via the AWS Security Token Service - i.e. via [`AssumeRole`](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) API
-   * Checks for credentials in the ECS environment variables `AWS_CONTAINER_CREDENTIALS_RELATIVE_URI` or `AWS_CONTAINER_CREDENTIALS_FULL_URI` and `AWS_ECS_CONTAINER_AUTHORIZATION_TOKEN`.
-   * Obtains the credentials via [Amazon EC2 instance metadata](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-metadata.html) provided [AWS_EC2_METADATA_DISABLED](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html#envvars-list-AWS_EC2_METADATA_DISABLED) is not set to true.
-   * These same settings can also be set for a specific endpoint, using the same prefix matching rule.
+  * A lookup for the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `AWS_SESSION_TOKEN`
+  * Check performed in **$HOME/.aws**
+  * Temporary credentials obtained via the AWS Security Token Service - i.e. via [`AssumeRole`](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) API
+  * Checks for credentials in the ECS environment variables `AWS_CONTAINER_CREDENTIALS_RELATIVE_URI` or `AWS_CONTAINER_CREDENTIALS_FULL_URI` and `AWS_ECS_CONTAINER_AUTHORIZATION_TOKEN`.
+  * Obtains the credentials via [Amazon EC2 instance metadata](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-metadata.html) provided [AWS_EC2_METADATA_DISABLED](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html#envvars-list-AWS_EC2_METADATA_DISABLED) is not set to true.
+  * These same settings can also be set for a specific endpoint, using the same prefix matching rule.
 
 ## Optimizing for performance {#s3-optimizing-performance}
 
@@ -685,7 +678,6 @@ The following notes cover the implementation of S3 interactions with ClickHouse.
 * By default, the maximum number of query processing threads used by any stage of the query processing pipeline is equal to the number of cores. Some stages are more parallelizable than others, so this value provides an upper bound.  Multiple query stages may execute at once since data is streamed from the disk. The exact number of threads used for a query may thus exceed this. Modify through the setting [max_threads](/operations/settings/settings#max_threads).
 * Reads on S3 are asynchronous by default. This behavior is determined by setting `remote_filesystem_read_method`, set to the value `threadpool` by default. When serving a request, ClickHouse reads granules in stripes. Each of these stripes potentially contain many columns. A thread will read the columns for their granules one by one. Rather than doing this synchronously, a prefetch is made for all columns before waiting for the data. This offers significant performance improvements over synchronous waits on each column. Users will not need to change this setting in most cases - see [Optimizing for Performance](#s3-optimizing-performance).
 * Writes are performed in parallel, with a maximum of 100 concurrent file writing threads. `max_insert_delayed_streams_for_parallel_write`, which has a default value of 1000,  controls the number of S3 blobs written in parallel. Since a buffer is required for each file being written (~1MB), this effectively limits the memory consumption of an INSERT. It may be appropriate to lower this value in low server memory scenarios.
-
 
 ## Use S3 object storage as a ClickHouse disk {#configuring-s3-for-clickhouse-use}
 
@@ -1008,7 +1000,6 @@ This setting should be false for two reasons: 1) this feature is not production 
    </merge_tree>
 </clickhouse>
 ```
-
 
 ClickHouse Keeper is responsible for coordinating the replication of data across the ClickHouse nodes.  To inform ClickHouse about the ClickHouse Keeper nodes add a configuration file to each of the ClickHouse nodes.
 

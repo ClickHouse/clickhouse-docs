@@ -30,7 +30,6 @@ For ClickHouse specifically, we are leveraging the [Splunk DB Connect App](https
 
 The ideal use case for this integration is when you are using ClickHouse for large data sources such as NetFlow, Avro or Protobuf binary data, DNS, VPC flow logs, and other OTEL logs that can be shared with your team on Splunk to search and create dashboards. By using this approach, the data is not ingested into the Splunk index layer and is simply queried directly from ClickHouse similarly to other visualization integrations such as [Metabase](https://www.metabase.com/) or [Superset](https://superset.apache.org/).
 
-
 ## Goal​ {#goal}
 
 In this guide, we will use the ClickHouse JDBC driver to connect ClickHouse to Splunk. We will install a local version of Splunk Enterprise but we are not indexing any data. Instead, we are using the search functions through the DB Connect query engine.
@@ -154,7 +153,6 @@ We will now create a dashboard by clicking Save As > Save to a Dashboard.
 
 Let's add another query that shows the average fare based on the number of passengers.
 
-
 ```sql
 dbxquery query="SELECT passenger_count,avg(total_amount)
 FROM default.trips GROUP BY passenger_count;" connection="chc"
@@ -165,7 +163,6 @@ This time, let's create a bar chart visualization and save it to the previous da
 <Image img={splunk_9} size="lg" border alt="Splunk bar chart showing average fare by passenger count" />
 
 Finally, let's add one more query that shows the correlation between the number of passengers and the distance of the trip:
-
 
 ```sql
 dbxquery query="SELECT passenger_count, toYear(pickup_datetime) AS year,

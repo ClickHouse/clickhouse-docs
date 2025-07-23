@@ -53,4 +53,3 @@ console.log(result);
 
 sess.cleanup(); // cleanup session, this will delete the database
 ```
-
