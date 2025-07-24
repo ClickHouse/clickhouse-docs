@@ -10,7 +10,7 @@ description: 'Index page listing general questions about ClickHouse'
 # General questions about ClickHouse
 
 - [What is ClickHouse?](../../intro.md)
-- [Why is ClickHouse so fast?](../../concepts/why-clickhouse-is-so-fast.md)
+- [Why is ClickHouse so fast?](../../concepts/why-clickhouse-is-so-fast.mdx)
 - [Who is using ClickHouse?](../../faq/general/who-is-using-clickhouse.md)
 - [What does "ClickHouse" mean?](../../faq/general/dbms-naming.md)
 - [What does "Не тормозит" mean?](../../faq/general/ne-tormozit.md)

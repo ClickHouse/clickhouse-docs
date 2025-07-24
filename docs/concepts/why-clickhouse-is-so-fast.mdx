@@ -19,7 +19,7 @@ From an architectural perspective, databases consist (at least) of a storage lay
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/vsykFYns0Ws?si=hE2qnOf6cDKn-otP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-In ClickHouse, each table consists of multiple "table parts". A [part](/parts) is created whenever a user inserts data into the table (INSERT statement). A query is always executed against all table parts that exist at the time the query starts.
+In ClickHouse, each table consists of multiple "table <GlossaryTooltip term="Parts" />". A [part](/parts) is created whenever a user inserts data into the table (INSERT statement). A query is always executed against all table parts that exist at the time the query starts.
 
 To avoid that too many parts accumulate, ClickHouse runs a [merge](/merges) operation in the background which continuously combines multiple smaller parts into a single bigger part.
 
@@ -97,7 +97,7 @@ Finally, ClickHouse uses a vectorized query processing layer that parallelizes q
 
 Modern systems have dozens of CPU cores. To utilize all cores, ClickHouse unfolds the query plan into multiple lanes, typically one per core. Each lane processes a disjoint range of the table data. That way, the performance of the database scales "vertically" with the number of available cores.
 
-If a single node becomes too small to hold the table data, further nodes can be added to form a cluster. Tables can be split ("sharded") and distributed across the nodes. ClickHouse will run queries on all nodes that store table data and thereby scale "horizontally" with the number of available nodes.
+If a single node becomes too small to hold the table data, further nodes can be added to form a <GlossaryTooltip term="Cluster" />. Tables can be split ("sharded") and distributed across the nodes. ClickHouse will run queries on all nodes that store table data and thereby scale "horizontally" with the number of available nodes.
 
 🤿 Deep dive into this in the [Query Processing Layer](/academic_overview#4-query-processing-layer) section of the web version of our VLDB 2024 paper.
 

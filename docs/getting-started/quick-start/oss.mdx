@@ -107,7 +107,7 @@ PRIMARY KEY (user_id, timestamp)
 
 You can use the familiar `INSERT INTO TABLE` command with ClickHouse, but it is
 important to understand that each insert into a `MergeTree` table causes what we
-call a **part** in ClickHouse to be created in storage. These parts later get
+call a **part** in ClickHouse to be created in storage. These <GlossaryTooltip term="Parts" /> later get
 merged in the background by ClickHouse.
 
 In ClickHouse, we try to bulk insert lots of rows at a time
@@ -373,4 +373,3 @@ technologies that integrate with ClickHouse.
 - The user guide on [primary keys](/guides/best-practices/sparse-primary-indexes.md) is everything you need to know about primary keys and how to define them.
 
 </VerticalStepper>
-
