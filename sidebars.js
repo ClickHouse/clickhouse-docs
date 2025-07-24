@@ -782,7 +782,6 @@ const sidebars = {
                 "integrations/data-ingestion/clickpipes/postgres/add_table",
                 "integrations/data-ingestion/clickpipes/postgres/pause_and_resume",
                 "integrations/data-ingestion/clickpipes/postgres/remove_table",
-                "integrations/data-ingestion/clickpipes/mysql/table_resync",
                 "integrations/data-ingestion/clickpipes/mysql/resync",
                 "integrations/data-ingestion/clickpipes/mysql/controlling_sync"
               ],
