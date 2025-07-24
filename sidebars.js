@@ -732,8 +732,7 @@ const sidebars = {
             "integrations/data-ingestion/clickpipes/postgres/toast",
             "integrations/data-ingestion/clickpipes/postgres/schema-changes",
             "integrations/data-ingestion/clickpipes/postgres/faq",
-            "integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql",
-            "integrations/data-ingestion/dbms/postgresql/inserting-data",
+            "integrations/data-ingestion/clickpipes/postgres/parallel_initial_load",
             {
               type: "category",
               label: "Operations",
@@ -742,6 +741,8 @@ const sidebars = {
                 "integrations/data-ingestion/clickpipes/postgres/pause_and_resume",
                 "integrations/data-ingestion/clickpipes/postgres/remove_table",
                 "integrations/data-ingestion/clickpipes/postgres/table_resync",
+                "integrations/data-ingestion/clickpipes/postgres/resync",
+                "integrations/data-ingestion/clickpipes/postgres/controlling_sync"
               ],
             },
             {
@@ -769,7 +770,21 @@ const sidebars = {
           items: [
             "integrations/data-ingestion/clickpipes/mysql/index",
             "integrations/data-ingestion/clickpipes/mysql/faq",
-	    "integrations/data-ingestion/clickpipes/mysql/schema-changes",
+            "integrations/data-ingestion/clickpipes/mysql/datatypes",
+            "integrations/data-ingestion/clickpipes/mysql/parallel_initial_load",
+	          "integrations/data-ingestion/clickpipes/mysql/schema-changes",
+            {
+              type: "category",
+              label: "Operations",
+              items: [
+                "integrations/data-ingestion/clickpipes/postgres/add_table",
+                "integrations/data-ingestion/clickpipes/postgres/pause_and_resume",
+                "integrations/data-ingestion/clickpipes/postgres/remove_table",
+                "integrations/data-ingestion/clickpipes/mysql/table_resync",
+                "integrations/data-ingestion/clickpipes/mysql/resync",
+                "integrations/data-ingestion/clickpipes/mysql/controlling_sync"
+              ],
+            },
             {
               type: "category",
               label: "Source",
