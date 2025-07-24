@@ -61,42 +61,67 @@ To add the required jars manually, please follow the following:
 <TabItem value="Java" label="Java" default>
 
 ```java
-import com.amazonaws.services.glue.util.Job
-import com.amazonaws.services.glue.util.GlueArgParser
 import com.amazonaws.services.glue.GlueContext
-import org.apache.spark.SparkContext
+import com.amazonaws.services.glue.util.GlueArgParser
+import com.amazonaws.services.glue.util.Job
+import com.clickhouseScala.Native.NativeSparkRead.spark
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.DataFrame
+
 import scala.collection.JavaConverters._
-import com.amazonaws.services.glue.log.GlueLogger
+import org.apache.spark.sql.types._
+import org.apache.spark.sql.functions._
 
-
-// Initialize Glue job
-object GlueJob {
+object ClickHouseGlueExample {
   def main(sysArgs: Array[String]) {
-    val sc: SparkContext = new SparkContext()
-    val glueContext: GlueContext = new GlueContext(sc)
-    val spark: SparkSession = glueContext.getSparkSession
-    val logger = new GlueLogger
-     import spark.implicits._
-    // @params: [JOB_NAME]
     val args = GlueArgParser.getResolvedOptions(sysArgs, Seq("JOB_NAME").toArray)
+
+    val sparkSession: SparkSession = SparkSession.builder
+      .config("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
+      .config("spark.sql.catalog.clickhouse.host", "<your-clickhouse-host>")
+      .config("spark.sql.catalog.clickhouse.protocol", "https")
+      .config("spark.sql.catalog.clickhouse.http_port", "<your-clickhouse-port>")
+      .config("spark.sql.catalog.clickhouse.user", "default")
+      .config("spark.sql.catalog.clickhouse.password", "<your-password>")
+      .config("spark.sql.catalog.clickhouse.database", "default")
+      // for ClickHouse cloud
+      .config("spark.sql.catalog.clickhouse.option.ssl", "true")
+      .config("spark.sql.catalog.clickhouse.option.ssl_mode", "NONE")
+      .getOrCreate
+
+    val glueContext = new GlueContext(sparkSession.sparkContext)
     Job.init(args("JOB_NAME"), glueContext, args.asJava)
+    import sparkSession.implicits._
 
-    // JDBC connection details
-    val jdbcUrl = "jdbc:ch://{host}:{port}/{schema}"
-    val jdbcProperties = new java.util.Properties()
-    jdbcProperties.put("user", "default")
-    jdbcProperties.put("password", "*******")
-    jdbcProperties.put("driver", "com.clickhouse.jdbc.ClickHouseDriver")
+    val url = "s3://{path_to_cell_tower_data}/cell_towers.csv.gz"
 
-    // Load the table from ClickHouse
-    val df: DataFrame = spark.read.jdbc(jdbcUrl, "my_table", jdbcProperties)
+    val schema = StructType(Seq(
+      StructField("radio", StringType, nullable = false),
+      StructField("mcc", IntegerType, nullable = false),
+      StructField("net", IntegerType, nullable = false),
+      StructField("area", IntegerType, nullable = false),
+      StructField("cell", LongType, nullable = false),
+      StructField("unit", IntegerType, nullable = false),
+      StructField("lon", DoubleType, nullable = false),
+      StructField("lat", DoubleType, nullable = false),
+      StructField("range", IntegerType, nullable = false),
+      StructField("samples", IntegerType, nullable = false),
+      StructField("changeable", IntegerType, nullable = false),
+      StructField("created", TimestampType, nullable = false),
+      StructField("updated", TimestampType, nullable = false),
+      StructField("averageSignal", IntegerType, nullable = false)
+    ))
 
-    // Show the Spark df, or use it for whatever you like
-    df.show()
+    val df = sparkSession.read
+      .option("header", "true")
+      .schema(schema)
+      .csv(url)
 
-    // Commit the job
+    // Write to ClickHouse
+    df.writeTo("clickhouse.default.cell_towers").append()
+
+
+    // Read from ClickHouse
+    val dfRead = spark.sql("select * from clickhouse.default.cell_towers")
     Job.commit()
   }
 }
