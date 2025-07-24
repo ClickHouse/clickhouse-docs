@@ -15,7 +15,6 @@ Resync involves the following operations in order:
 3. Initial load is performed on the `_resync` tables.
 4. The `_resync` tables are then swapped with the original tables. Soft deleted rows are transferred from the original tables to the `_resync` tables before the swap.
 
-
 All the settings of the original ClickPipe are retained in the resync ClickPipe. The statistics of the original ClickPipe are cleared in the UI.
 
 ### Use cases for resyncing a ClickPipe {#use-cases-postgres-resync}
