@@ -32,7 +32,7 @@ To access the connector in your account, subscribe to the ClickHouse AWS Glue Co
 Ensure your Glue job’s IAM role has the necessary permissions, as described in the minimum privileges [guide](https://docs.aws.amazon.com/glue/latest/dg/getting-started-min-privs-job.html#getting-started-min-privs-connectors).
 
 3. <h3 id="activate-the-connector">Activate the Connector & Create a Connection</h3>
-You can activate the connector and create a connection directly by clicking [this link](https://console.aws.amazon.com/gluestudio/home#/connector/add-connection?connectorName="ClickHouse%20AWS%20Glue%20Connector"&connectorType="Spark"&connectorUrl=https://709825985650.dkr.ecr.us-east-1.amazonaws.com/clickhouse/clickhouse-glue:0.1&connectorClassName="com.clickhouse.spark.ClickHouseCatalog"), which opens the Glue connection creation page with key fields pre-filled. Give the connection a name, and press create.
+You can activate the connector and create a connection directly by clicking [this link](https://console.aws.amazon.com/gluestudio/home#/connector/add-connection?connectorName="ClickHouse%20AWS%20Glue%20Connector"&connectorType="Spark"&connectorUrl=https://709825985650.dkr.ecr.us-east-1.amazonaws.com/clickhouse/clickhouse-glue:0.1&connectorClassName="com.clickhouse.spark.ClickHouseCatalog"), which opens the Glue connection creation page with key fields pre-filled. Give the connection a name, and press create (no need to provide the ClickHouse connection details at this stage).
 
 4. <h3 id="use-in-glue-job">Use in Glue Job</h3>
 In your Glue job, select the `Job details` tab, and expend the `Advanced properties` window. Under the `Connections` section, select the connection you just created. The connector automatically injects the required JARs into the job runtime.
@@ -58,7 +58,7 @@ To add the required jars manually, please follow the following:
 
 ## Example {#example}
 <Tabs>
-<TabItem value="Java" label="Java" default>
+<TabItem value="Scala" label="Scala" default>
 
 ```java
 import com.amazonaws.services.glue.GlueContext
@@ -137,6 +137,8 @@ from awsglue.utils import getResolvedOptions
 from pyspark.context import SparkContext
 from awsglue.context import GlueContext
 from awsglue.job import Job
+from pyspark.sql import Row
+
 
 ## @params: [JOB_NAME]
 args = getResolvedOptions(sys.argv, ['JOB_NAME'])
@@ -147,20 +149,29 @@ logger = glueContext.get_logger()
 spark = glueContext.spark_session
 job = Job(glueContext)
 job.init(args['JOB_NAME'], args)
-jdbc_url = "jdbc:ch://{host}:{port}/{schema}"
-query = "select * from my_table"
-# For cloud usage, please add ssl options
-df = (spark.read.format("jdbc")
-    .option("driver", 'com.clickhouse.jdbc.ClickHouseDriver')
-    .option("url", jdbc_url)
-    .option("user", 'default')
-    .option("password", '*******')
-    .option("query", query)
-    .load())
 
-logger.info("num of rows:")
-logger.info(str(df.count()))
-logger.info("Data sample:")
+spark.conf.set("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
+spark.conf.set("spark.sql.catalog.clickhouse.host", "<your-clickhouse-host>")
+spark.conf.set("spark.sql.catalog.clickhouse.protocol", "https")
+spark.conf.set("spark.sql.catalog.clickhouse.http_port", "<your-clickhouse-port>")
+spark.conf.set("spark.sql.catalog.clickhouse.user", "default")
+spark.conf.set("spark.sql.catalog.clickhouse.password", "<your-password>")
+spark.conf.set("spark.sql.catalog.clickhouse.database", "default")
+spark.conf.set("spark.clickhouse.write.format", "json")
+spark.conf.set("spark.clickhouse.read.format", "arrow")
+# for ClickHouse cloud
+spark.conf.set("spark.sql.catalog.clickhouse.option.ssl", "true")
+spark.conf.set("spark.sql.catalog.clickhouse.option.ssl_mode", "NONE")
+
+# Create DataFrame
+data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
+df = spark.createDataFrame(data)
+
+# Write DataFrame to ClickHouse
+df.writeTo("clickhouse.default.example_table").append()
+
+# Read DataFrame from ClickHouse
+df_read = spark.sql("select * from clickhouse.default.example_table")
 logger.info(str(df.take(10)))
 
 
@@ -170,6 +181,6 @@ job.commit()
 </TabItem>
 </Tabs>
 
-For more details, please visit our [Spark & JDBC documentation](/integrations/apache-spark/spark-jdbc#read-data).
+For more details, please visit our [Spark documentation](/integrations/apache-spark).
 
 
