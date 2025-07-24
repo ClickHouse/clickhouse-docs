@@ -1,6 +1,6 @@
 ---
-title: Resyncing a Database ClickPipe
-description: Doc for resyncing a database ClickPipe
+title: 'Resyncing a Database ClickPipe'
+description: 'Doc for resyncing a database ClickPipe'
 slug: /integrations/clickpipes/postgres/resync
 sidebar_label: 'Resync ClickPipe'
 ---
