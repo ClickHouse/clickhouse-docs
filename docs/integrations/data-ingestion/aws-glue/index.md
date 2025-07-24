@@ -25,22 +25,23 @@ To integrate your Glue code with ClickHouse, you can use our official Spark conn
 <Tabs>
 <TabItem value="AWS Marketplace" label="AWS Marketplace" default>
 
-1. ### Subscribe to the Connector {#subscribe-to-the-connector}
+1. <h3 id="subscribe-to-the-connector">Subscribe to the Connector</h3>
 To access the connector in your account, subscribe to the ClickHouse AWS Glue Connector from AWS Marketplace.
 
-2. ### Grant Required Permissions {#grant-required-permissions}
+2. <h3 id="grant-required-permissions">Grant Required Permissions</h3>
 Ensure your Glue job’s IAM role has the necessary permissions, as described in the minimum privileges [guide](https://docs.aws.amazon.com/glue/latest/dg/getting-started-min-privs-job.html#getting-started-min-privs-connectors).
 
-3. ### Activate the Connector & Create a Connection {#activate-the-connector}
-You can activate the connector and create a connection directly by clicking [this link](https://console.aws.amazon.com/gluestudio/home#/connector/add-connection?connectorName="ClickHouse%20AWS%20Glue%20Connector"&connectorType="Spark"&connectorUrl=https://709825985650.dkr.ecr.us-east-1.amazonaws.com/clickhouse/clickhouse-glue:0.1&connectorClassName="com.clickhouse.spark.ClickHouseCatalog"), which opens the Glue connector creation page with key fields pre-filled.
+3. <h3 id="activate-the-connector">Activate the Connector & Create a Connection</h3>
+You can activate the connector and create a connection directly by clicking [this link](https://console.aws.amazon.com/gluestudio/home#/connector/add-connection?connectorName="ClickHouse%20AWS%20Glue%20Connector"&connectorType="Spark"&connectorUrl=https://709825985650.dkr.ecr.us-east-1.amazonaws.com/clickhouse/clickhouse-glue:0.1&connectorClassName="com.clickhouse.spark.ClickHouseCatalog"), which opens the Glue connection creation page with key fields pre-filled. Give the connection a name, and press create.
 
-4. ### Set Up a Connection {#set-a-connection}
-Create a new Glue connection using the connector, providing your ClickHouse JDBC URL and credentials.
-
-5. ### Use in Glue Job {#use-in-glue-jon}
+4. <h3 id="use-in-glue-job">Use in Glue Job</h3>
 In your Glue job, select the `Job details` tab, and expend the `Advanced properties` window. Under the `Connections` section, select the connection you just created. The connector automatically injects the required JARs into the job runtime.
 
 <Image img={notebook_connections_config} size='md' alt='Glue Notebook connections config'  />
+
+:::note
+The JARs used in the Glue connector are built for `Spark 3.2`, `Scala 2`, and `Python 3`. Make sure to select these versions when configuring your Glue job.
+:::
 
 </TabItem>
 <TabItem value="Manual Installation" label="Manual Installation">
