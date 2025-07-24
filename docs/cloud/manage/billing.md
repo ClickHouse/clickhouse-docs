@@ -472,17 +472,27 @@ For this reason, it uses dedicated compute replicas.
 
 #### What is the default number of replicas and their size? {#what-is-the-default-number-of-replicas-and-their-size}
 
-Each ClickPipe defaults to 1 replica that is provided with 2 GiB of RAM and 0.5 vCPU.
-This corresponds to **0.25** ClickHouse compute units (1 unit = 8 GiB RAM, 2 vCPUs).
+Each ClickPipe defaults to 1 replica that is provided with 512 MiB of RAM and 0.125 vCPU.
+This corresponds to **0.0625** ClickHouse compute units (1 unit = 8 GiB RAM, 2 vCPUs).
 
 #### What are the ClickPipes public prices? {#what-are-the-clickpipes-public-prices}
 
-- Compute: \$0.20 per unit per hour (\$0.05 per replica per hour)
+**Vertical Instance Types and Pricing:**
+
+| Instance Type | Compute Units | RAM | vCPU | Price per Hour |
+|---------------|---------------|-----|------|----------------|
+| Extra Small   | 0.0625         | 512 MiB | 0.125| $0.0125 |
+| Small         | 0.125         | 1 GiB | 0.25   | $0.025  |
+| Medium        | 0.25          | 2 GiB | 0.5 | $0.05     |
+| Large         | 0.5           | 4 GiB | 1.0    | $0.10  |
+| Extra Large   | 1.0           | 8 GiB | 2.0    | $0.20  |
+
+**Additional Pricing:**
 - Ingested data: \$0.04 per GB
 
 #### How does it look in an illustrative example? {#how-does-it-look-in-an-illustrative-example}
 
-The following examples assume a single replica unless explicitly mentioned.
+The following examples assume a single medium size replica unless explicitly mentioned.
 
 <table><thead>
   <tr>
