@@ -2,7 +2,7 @@
 
 ### Install
 
- - Requires python 3.11
+- Requires python 3.11
 
 ```bash
 pip install -r requirements.txt
@@ -39,7 +39,7 @@ We use this to compute an average nDCG.
 
 ### Install
 
- - Requires python 3.11
+- Requires python 3.11
 
 ```bash
 pip install -r requirements.txt
@@ -50,7 +50,6 @@ pip install -r requirements.txt
 ```bash
 python compute_ndcg.py -d
 ```
-
 
 ```bash
 usage: compute_ndcg.py [-h] [-d] [-v] [input_csv]

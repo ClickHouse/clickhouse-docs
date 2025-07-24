@@ -135,7 +135,6 @@ SELECT count() FROM pypi
 SELECT sum(count)
 FROM pypi_downloads
 
-
 ┌─sum(count)─┐
 │   20612750 │ -- 20.61 million
 └────────────┘
@@ -353,7 +352,6 @@ CREATE TABLE pypi_downloads_per_day
 )
 ENGINE = SummingMergeTree
 ORDER BY (project, hour)
-
 
 CREATE MATERIALIZED VIEW pypi_downloads_per_day_mv TO pypi_downloads_per_day
 AS SELECT
@@ -573,7 +571,6 @@ CREATE TABLE pypi_downloads_per_day
 )
 ENGINE = SummingMergeTree
 ORDER BY (project, hour)
-
 
 CREATE MATERIALIZED VIEW pypi_downloads_per_day_mv TO pypi_downloads_per_day
 AS SELECT

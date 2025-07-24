@@ -39,7 +39,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 1. For a new setup, download the binary from https://nifi.apache.org/download.html and start by running `./bin/nifi.sh start`
 
-
 ## 3. Download the ClickHouse JDBC driver {#3-download-the-clickhouse-jdbc-driver}
 
 1. Visit the <a href="https://github.com/ClickHouse/clickhouse-java/releases" target="_blank">ClickHouse JDBC driver release page</a> on GitHub and look for  the latest JDBC release version

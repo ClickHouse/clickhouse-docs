@@ -161,7 +161,6 @@ Materialized columns offer the simplest solution to extract structure from other
 Materialized columns incur additional storage overhead as the values are extracted to new columns on disk at insert time.
 :::
 
-
 Materialized columns support any ClickHouse expression and can exploit any of the analytical functions for [processing strings](/sql-reference/functions/string-functions) (including [regex and searching](/sql-reference/functions/string-search-functions)) and [urls](/sql-reference/functions/url-functions), performing [type conversions](/sql-reference/functions/type-conversion-functions), [extracting values from JSON](/sql-reference/functions/json-functions) or [mathematical operations](/sql-reference/functions/math-functions).
 
 We recommend materialized columns for basic processing. They are especially useful for extracting values from maps, promoting them to root columns, and performing type conversions. They are often most useful when used in very basic schemas or in conjunction with materialized views. Consider the following schema for logs from which the JSON has been extracted to the `LogAttributes` column by the collector:
@@ -225,14 +224,13 @@ Materialized columns will, by default, not be returned in a `SELECT *`.  This is
 
 [Materialized views](/materialized-views) provide a more powerful means of applying SQL filtering and transformations to logs and traces.
 
-Materialized Views allow users to shift the cost of computation from query time to insert time. A ClickHouse Materialized View is just a trigger that runs a query on blocks of data as they are inserted into a table. The results of this query are inserted into a second "target" table.
+Materialized Views allow users to shift the cost of computation from query time to insert time. A ClickHouse materialized view is just a trigger that runs a query on blocks of data as they are inserted into a table. The results of this query are inserted into a second "target" table.
 
 <Image img={observability_10} alt="Materialized view" size="md"/>
 
 :::note Real-time updates
 Materialized views in ClickHouse are updated in real time as data flows into the table they are based on, functioning more like continually updating indexes. In contrast, in other databases materialized views are typically static snapshots of a query that must be refreshed (similar to ClickHouse Refreshable Materialized Views).
 :::
-
 
 The query associated with the materialized view can theoretically be any query, including an aggregation although [limitations exist with Joins](https://clickhouse.com/blog/using-materialized-views-in-clickhouse#materialized-views-and-joins). For the transformations and filtering workloads required for logs and traces, users can consider any `SELECT` statement to be possible.
 
@@ -349,7 +347,6 @@ The types selected here are based on optimizations discussed in ["Optimizing typ
 :::note
 Notice how we have dramatically changed our schema. In reality users will likely also have Trace columns they will want to preserve as well as the column `ResourceAttributes` (this usually contains Kubernetes metadata). Grafana can exploit trace columns to provide linking functionality between logs and traces - see ["Using Grafana"](/observability/grafana).
 :::
-
 
 Below, we create a materialized view `otel_logs_mv`, which executes the above select for the `otel_logs` table and sends the results to `otel_logs_v2`.
 
@@ -489,8 +486,7 @@ Peak memory usage: 71.90 MiB.
 We don't recommend using dots in Map column names and may deprecate its use. Use an `_`.
 :::
 
-
-## Using Aliases {#using-aliases}
+## Using aliases {#using-aliases}
 
 Querying map types is slower than querying normal columns - see ["Accelerating queries"](#accelerating-queries). In addition, it's more syntactically complicated and can be cumbersome for users to write. To address this latter issue we recommend using Alias columns.
 
@@ -571,7 +567,7 @@ By default, `SELECT *` excludes ALIAS columns. This behavior can be disabled by 
 
 The [general Clickhouse best practices](/data-modeling/schema-design#optimizing-types) for optimizing types apply to the ClickHouse use case.
 
-## Using Codecs {#using-codecs}
+## Using codecs {#using-codecs}
 
 In addition to type optimizations, users can follow the [general best practices for codecs](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec) when attempting to optimize compression for ClickHouse Observability schemas.
 
@@ -579,7 +575,7 @@ In general, users will find the `ZSTD` codec highly applicable to logging and tr
 
 Furthermore, timestamps, while benefiting from delta encoding with respect to compression, have been shown to cause slow query performance if this column is used in the primary/ordering key. We recommend users assess the respective compression vs. query performance tradeoffs.
 
-## Using Dictionaries {#using-dictionaries}
+## Using dictionaries {#using-dictionaries}
 
 [Dictionaries](/sql-reference/dictionaries) are a [key feature](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse) of ClickHouse providing in-memory [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) representation of data from various internal and external [sources](/sql-reference/dictionaries#dictionary-sources), optimized for super-low latency lookup queries.
 
@@ -592,7 +588,6 @@ While joins are rarely required in Observability use cases, dictionaries can sti
 Users interested in accelerating joins with dictionaries can find further details [here](/dictionary).
 :::
 
-
 ### Insert time vs query time {#insert-time-vs-query-time}
 
 Dictionaries can be used for enriching datasets at query time or insert time. Each of these approaches have their respective pros and cons. In summary:
@@ -604,7 +599,7 @@ We recommend that users familiarize themselves with the basics of dictionaries. 
 
 For simple enrichment examples see the guide on Dictionaries [here](/dictionary). Below, we focus on common observability enrichment tasks.
 
-### Using IP Dictionaries {#using-ip-dictionaries}
+### Using IP dictionaries {#using-ip-dictionaries}
 
 Geo-enriching logs and traces with latitude and longitude values using IP addresses is a common Observability requirement. We can achieve this using `ip_trie` structured dictionary.
 
@@ -825,7 +820,7 @@ Users are likely to want the ip enrichment dictionary to be periodically updated
 
 The above countries and coordinates offer visualization capabilities beyond grouping and filtering by country. For inspiration see ["Visualizing geo data"](/observability/grafana#visualizing-geo-data).
 
-### Using Regex Dictionaries (User Agent parsing) {#using-regex-dictionaries-user-agent-parsing}
+### Using regex dictionaries (user agent parsing) {#using-regex-dictionaries-user-agent-parsing}
 
 The parsing of [user agent strings](https://en.wikipedia.org/wiki/User_agent) is a classical regular expression problem and a common requirement in log and trace based datasets. ClickHouse provides efficient parsing of user agents using Regular Expression Tree Dictionaries.
 
@@ -1286,7 +1281,6 @@ CREATE TABLE otel_traces_trace_id_ts
 ENGINE = MergeTree
 ORDER BY (TraceId, toUnixTimestamp(Start))
 
-
 CREATE MATERIALIZED VIEW otel_traces_trace_id_ts_mv TO otel_traces_trace_id_ts
 (
         `TraceId` String,
@@ -1335,7 +1329,7 @@ The CTE here identifies the minimum and maximum timestamp for the trace id `ae92
 
 This same approach can be applied for similar access patterns. We explore a similar example in Data Modeling [here](/materialized-view/incremental-materialized-view#lookup-table).
 
-### Using Projections {#using-projections}
+### Using projections {#using-projections}
 
 ClickHouse projections allow users to specify multiple `ORDER BY` clauses for a table.
 
@@ -1444,7 +1438,7 @@ Peak memory usage: 27.85 MiB.
 
 In the above example, we specify the columns used in the earlier query in the projection. This will mean only these specified columns will be stored on disk as part of the projection, ordered by Status. If alternatively, we used `SELECT *` here, all columns would be stored. While this would allow more queries (using any subset of columns) to benefit from the projection, additional storage will be incurred. For measuring disk space and compression, see ["Measuring table size & compression"](#measuring-table-size--compression).
 
-### Secondary/Data Skipping indices {#secondarydata-skipping-indices}
+### Secondary/data skipping indices {#secondarydata-skipping-indices}
 
 No matter how well the primary key is tuned in ClickHouse, some queries will inevitably require full table scans. While this can be mitigated using Materialized views (and projections for some queries), these require additional maintenance and users to be aware of their availability in order to ensure they are exploited.  While traditional relational databases solve this with secondary indexes, these are ineffective in column-oriented databases like ClickHouse. Instead, ClickHouse uses "Skip" indexes, which can significantly improve query performance by allowing the database to skip over large data chunks with no matching values.
 
@@ -1573,7 +1567,6 @@ WHERE Referer LIKE '%ultra%'
 
 10 rows in set. Elapsed: 0.016 sec.
 
-
 EXPLAIN indexes = 1
 SELECT count()
 FROM otel_logs_bloom
@@ -1616,7 +1609,6 @@ ORDER BY sum(data_compressed_bytes) DESC
 └─────────┴─────────────────┴───────────────────┴───────┘
 
 1 row in set. Elapsed: 0.018 sec.
-
 
 SELECT
         `table`,

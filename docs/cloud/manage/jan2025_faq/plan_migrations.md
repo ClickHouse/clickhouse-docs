@@ -28,19 +28,21 @@ Yes, see below for guidance on self-serve migrations:
 
 Users can upgrade during the trial and continue to use the trial credits to evaluate the new service tiers and the features it supports. However, if they choose to continue using the same Development and Production services, they can do so and upgrade to PAYG. They will still have to migrate before July 23, 2025.
 
-### Can users upgrade their tiers, i.e. Basic → Scale, Scale → Enterprise, etc? {#can-users-upgrade-their-tiers-ie-basic--scale-scale--enterprise-etc}
+### Can users upgrade their tiers {#can-users-upgrade-their-tiers-ie-basic--scale-scale--enterprise-etc}
 
-Yes, users can upgrade self-serve and the pricing will reflect the tier selection after upgrade.
+Can users upgrade their tiers, for example, Basic → Scale, Scale → Enterprise, etc.
+Yes, users can upgrade self-serve, and the pricing will reflect the tier selection after upgrade.
 
-### Can users move from a higher to a lower-cost tier, e.g., Enterprise → Scale, Scale → Basic, Enterprise → Basic self-serve? {#can-users-move-from-a-higher-to-a-lower-cost-tier-eg-enterprise--scale-scale--basic-enterprise--basic-self-serve}
+### Can users move from a higher to a lower-cost tier {#can-users-move-from-a-higher-to-a-lower-cost-tier-eg-enterprise--scale-scale--basic-enterprise--basic-self-serve}
 
-No, we do not permit downgrading tiers.
+For example, Enterprise → Scale, Scale → Basic, Enterprise → Basic self-serve?
+Yes, but users will need to remove all premium features and may be guided to scale their multi-replica services into a single replica.
 
-### Can users with only Development services in the organization migrate to the Basic tier? {#can-users-with-only-development-services-in-the-organization-migrate-to-the-basic-tier}
+### Can users with only development services in the organization migrate to the Basic tier? {#can-users-with-only-development-services-in-the-organization-migrate-to-the-basic-tier}
 
 Yes, this would be permitted. Users will be given a recommendation based on their past use and can select Basic `1x8GiB` or `1x12GiB`.
 
-### Can users with a Development and Production service in the same organization move to the Basic Tier? {#can-users-with-a-development-and-production-service-in-the-same-organization-move-to-the-basic-tier}
+### Can users with a development and production service in the same organization move to the basic tier? {#can-users-with-a-development-and-production-service-in-the-same-organization-move-to-the-basic-tier}
 
 No, if a user has both Development and Production services in the same organization, they can self-serve and migrate only to the Scale or Enterprise tier. If they want to migrate to Basic, they should delete all existing Production services.
 
@@ -60,9 +62,7 @@ The console will prompt you with recommended options for each service based on h
 
 Please refer to the pricing calculator on the [Pricing](https://clickhouse.com/pricing) page, which will help estimate the cost based on your workload size and tier selection.
 
-
 ## Undertaking the migration {#undertaking-the-migration}
-
 
 ### What are service version pre-requisites to undertaking the migration? {#what-are-service-version-pre-requisites-to-undertaking-the-migration}
 

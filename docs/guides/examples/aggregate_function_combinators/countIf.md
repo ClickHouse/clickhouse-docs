@@ -14,7 +14,7 @@ The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be
 function to count the number of rows where the condition is true,
 using the `countIf` aggregate combinator function.
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 In this example, we'll create a table that stores user login attempts,
 and we'll use `countIf` to count the number of successful logins.

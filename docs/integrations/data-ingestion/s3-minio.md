@@ -12,7 +12,6 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
-
 All S3 functions and tables and compatible with [MinIO](https://min.io/). Users may experience superior throughput on self-hosted MinIO stores, especially in the event of optimal network locality.
 
 Also backed merge tree configuration is compatible too, with some minor changes in configuration:

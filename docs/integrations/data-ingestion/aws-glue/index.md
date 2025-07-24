@@ -16,6 +16,7 @@ import dependent_jars_path_option from '@site/static/images/integrations/data-in
 
 [Amazon Glue](https://aws.amazon.com/glue/) is a fully managed, serverless data integration service provided by Amazon Web Services (AWS). It simplifies the process of discovering, preparing, and transforming data for analytics, machine learning, and application development.
 
+
 # Installation
 
 To integrate your Glue code with ClickHouse, you can use our official Spark connector in Glue via one of the following:
@@ -174,7 +175,6 @@ df.writeTo("clickhouse.default.example_table").append()
 df_read = spark.sql("select * from clickhouse.default.example_table")
 logger.info(str(df.take(10)))
 
-
 job.commit()
 ```
 
@@ -182,5 +182,4 @@ job.commit()
 </Tabs>
 
 For more details, please visit our [Spark documentation](/integrations/apache-spark).
-
 

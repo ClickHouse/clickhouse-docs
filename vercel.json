@@ -3365,6 +3365,11 @@
       "source": "/docs/integrations/migration/upload-a-csv-file",
       "destination": "/docs/cloud/migrate/upload-a-csv-file",
       "permanent": true
+    },
+    {
+      "source": "/docs/guides/developer/lightweight-update",
+      "destination": "/docs/guides/developer/on-the-fly-mutations",
+      "permanent": true
     }
   ]
 }

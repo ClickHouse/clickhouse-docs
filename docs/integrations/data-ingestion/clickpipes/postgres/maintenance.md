@@ -13,4 +13,3 @@ There is an upcoming maintenance window for Postgres ClickPipes scheduled on:
 
 During this time, your Postgres Pipes will experience a brief downtime.
 The ClickPipes will be available again after the maintenance window and will resume normal operations.
-

@@ -12,7 +12,6 @@ import pause_status from '@site/static/images/integrations/data-ingestion/clickp
 import resume_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resume_button.png'
 import resume_dialog from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resume_dialog.png'
 
-
 There are scenarios where it would be useful to pause a Postgres ClickPipe. For example, you may want to run some analytics on existing data in a static state. Or, you might be performing upgrades on Postgres. Here is how you can pause and resume a Postgres ClickPipe.
 
 ## Steps to pause a Postgres ClickPipe {#pause-clickpipe-steps}
@@ -31,6 +30,12 @@ There are scenarios where it would be useful to pause a Postgres ClickPipe. For 
 
 4. Head over to the **Metrics** tab.
 5. In around 5 seconds (and also on page refresh), the status of the pipe should be **Paused**.
+<br/>
+
+:::warning
+Pausing a Postgres ClickPipe will not pause the growth of replication slots.
+:::
+
 <br/>
 
 <Image img={pause_status} border size="md"/>

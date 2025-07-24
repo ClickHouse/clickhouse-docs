@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Inviting new users'
 slug: /cloud/security/inviting-new-users
-title: 'Inviting New Users'
+title: 'Inviting new users'
 description: 'This page describes how administrators can invite new users to their organisation and assign roles to them'
 ---
 

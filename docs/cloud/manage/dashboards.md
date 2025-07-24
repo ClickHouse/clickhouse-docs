@@ -22,9 +22,9 @@ import dashboards_11 from '@site/static/images/cloud/dashboards/11_dashboards.pn
 
 The SQL Console's dashboards feature allows you to collect and share visualizations from saved queries. Get started by saving and visualizing queries, adding query visualizations to a dashboard, and making the dashboard interactive using query parameters.
 
-## Core Concepts {#core-concepts}
+## Core concepts {#core-concepts}
 
-### Query Sharing {#query-sharing}
+### Query sharing {#query-sharing}
 
 In order to share your dashboard with colleagues, please be sure to share the underlying saved query. To view a visualization, users must have, at a minimum, read-only access to the underlying saved query. 
 
@@ -34,11 +34,11 @@ Use [query parameters](/sql-reference/syntax#defining-and-using-query-parameters
 
 You can toggle the query parameter input via the **Global** filters side pane by selecting a “filter” type in the visualization settings. You can also toggle the query parameter input by linking to another object (like a table) on the dashboard. Please see the “[configure a filter](/cloud/manage/dashboards#configure-a-filter)” section of the quick start guide below. 
 
-## Quick Start {#quick-start}
+## Quick start {#quick-start}
 
 Let's create a dashboard to monitor our ClickHouse service using the [query\_log](/operations/system-tables/query_log) system table. 
 
-## Quick Start {#quick-start-1}
+## Quick start {#quick-start-1}
 
 ### Create a saved query {#create-a-saved-query}
 

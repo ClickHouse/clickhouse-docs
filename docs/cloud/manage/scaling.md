@@ -15,7 +15,7 @@ import scaling_configure from '@site/static/images/cloud/manage/scaling-configur
 import scaling_memory_allocation from '@site/static/images/cloud/manage/scaling-memory-allocation.png';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
-# Automatic Scaling
+# Automatic scaling
 
 Scaling is the ability to adjust available resources to meet client demands. Scale and Enterprise (with standard 1:4 profile) tier services can be scaled horizontally by calling an API programmatically, or changing settings on the UI to adjust system resources. Alternatively, these services can be **autoscaled** vertically to meet application demands.
 
@@ -33,7 +33,7 @@ For Enterprise tier services scaling works as follows:
   - Custom profiles will not support vertical autoscaling or manual vertical scaling at launch. However, these services can be scaled vertically by contacting support.
 
 :::note
-We are introducing a new vertical scaling mechanism for compute replicas, which we call "Make Before Break" (MBB). This approach adds one or more replicas of the new size before removing the old replicas, preventing any loss of capacity during scaling operations. By eliminating the gap between removing existing replicas and adding new ones, MBB creates a more seamless and less disruptive scaling process. It is especially beneficial in scale-up scenarios, where high resource utilization triggers the need for additional capacity, since removing replicas prematurely would only exacerbate the resource constraints.
+Scaling in ClickHouse Cloud happens in what we call "Make Before Break" (MBB) approach. This adds one or more replicas of the new size before removing the old replicas, preventing any loss of capacity during scaling operations. By eliminating the gap between removing existing replicas and adding new ones, MBB creates a more seamless and less disruptive scaling process. It is especially beneficial in scale-up scenarios, where high resource utilization triggers the need for additional capacity, since removing replicas prematurely would only exacerbate the resource constraints. As part of this approach we wait up to an hour to let any existing queries complete on the older replicas before we will remove them. This balances the need for existing queries to complete, while at the same time ensuring that older replicas do not linger around for too long.
 
 Please note that as part of this change, historical system table data will be retained for up to a maximum of 30 days as part of scaling events. In addition, any system table data older than December 19, 2024, for services on AWS or GCP and older than January 14, 2025, for services on Azure will not be retained as part of the migration to the new organization tiers.
 :::
@@ -110,7 +110,7 @@ Once the service has scaled, the metrics dashboard in the cloud console should s
 
 <Image img={scaling_memory_allocation} size="md" alt="Scaling memory allocation" border />
 
-## Automatic Idling {#automatic-idling}
+## Automatic idling {#automatic-idling}
 In the **Settings** page, you can also choose whether or not to allow automatic idling of your service when it is inactive as shown in the image above (i.e. when the service is not executing any user-submitted queries).  Automatic idling reduces the cost of your service, as you are not billed for compute resources when the service is paused.
 
 :::note
@@ -123,7 +123,8 @@ The service may enter an idle state where it suspends refreshes of [refreshable 
 Use automatic idling only if your use case can handle a delay before responding to queries, because when a service is paused, connections to the service will time out. Automatic idling is ideal for services that are used infrequently and where a delay can be tolerated. It is not recommended for services that power customer-facing features that are used frequently.
 :::
 
-## Handling bursty workloads {#handling-bursty-workloads}
+## Handling spikes in workload {#handling-bursty-workloads}
+
 If you have an upcoming expected spike in your workload, you can use the
 [ClickHouse Cloud API](/cloud/manage/api/api-overview) to 
 preemptively scale up your service to handle the spike and scale it down once

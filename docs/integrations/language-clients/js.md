@@ -25,7 +25,7 @@ When using TypeScript, make sure it is at least [version 4.5](https://www.typesc
 
 The client source code is available in the [ClickHouse-JS GitHub repository](https://github.com/ClickHouse/clickhouse-js).
 
-## Environment requirements (Node.js) {#environment-requirements-nodejs}
+## Environment requirements (node.js) {#environment-requirements-nodejs}
 
 Node.js must be available in the environment to run the client.
 The client is compatible with all the [maintained](https://github.com/nodejs/release#readme) Node.js releases.
@@ -41,7 +41,7 @@ Current Node.js versions support:
 | 18.x            | ✔           |
 | 16.x            | Best effort |
 
-## Environment requirements (Web) {#environment-requirements-web}
+## Environment requirements (web) {#environment-requirements-web}
 
 The web version of the client is officially tested with the latest Chrome/Firefox browsers and can be used as a dependency in, for example, React/Vue/Angular applications, or Cloudflare workers.
 
@@ -737,7 +737,7 @@ There are several file streaming examples with popular data formats (NDJSON, CSV
 Streaming other formats into a file should be similar to Parquet, 
 the only difference will be in the format used for `query` call (`JSONEachRow`, `CSV`, etc.) and the output file name.
 
-## Supported Data formats {#supported-data-formats}
+## Supported data formats {#supported-data-formats}
 
 The client handles data formats as JSON or text.
 
@@ -1105,7 +1105,7 @@ const client = createClient({
 
 See full examples for [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/basic_tls.ts) and [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/mutual_tls.ts) TLS in the repository.
 
-### Keep-Alive configuration (Node.js only) {#keep-alive-configuration-nodejs-only}
+### Keep-alive configuration (Node.js only) {#keep-alive-configuration-nodejs-only}
 
 The client enables Keep-Alive in the underlying HTTP agent by default, meaning that the connected sockets will be reused for subsequent requests, and `Connection: keep-alive` header will be sent. Sockets that are idling will remain in the connection pool for 2500 milliseconds by default (see the [notes about adjusting this option](./js.md#adjusting-idle_socket_ttl)).
 
@@ -1136,7 +1136,7 @@ Check the values of `Connection` and `Keep-Alive` headers in the response. For e
 
 In this case, `keep_alive_timeout` is 10 seconds, and you could try increasing `keep_alive.idle_socket_ttl` to 9000 or even 9500 milliseconds to keep the idling sockets open for a bit longer than by default. Keep an eye on potential "Socket hang-up" errors, which will indicate that the server closes the connections before the client does so, and lower the value until the errors disappear.
 
-#### Keep-Alive troubleshooting {#keep-alive-troubleshooting}
+#### Keep-alive troubleshooting {#keep-alive-troubleshooting}
 
 If you are experiencing `socket hang up` errors while using Keep-Alive, there are the following options to resolve this issue:
 
@@ -1288,13 +1288,13 @@ const client = createClient({
 
 With certificates _and_ a custom _HTTPS_ Agent, it is likely necessary to disable the default authorization header via the `set_basic_auth_header` setting (introduced in 1.2.0), as it conflicts with the TLS headers. All the TLS headers should be provided manually.
 
-## Known limitations (Node.js/Web) {#known-limitations-nodejsweb}
+## Known limitations (Node.js/web) {#known-limitations-nodejsweb}
 
 - There are no data mappers for the result sets, so only language primitives are used. Certain data type mappers are planned with [RowBinary format support](https://github.com/ClickHouse/clickhouse-js/issues/216).
 - There are some [Decimal* and Date\* / DateTime\* data types caveats](./js.md#datedate32-types-caveats).
 - When using JSON* family formats, numbers larger than Int32 are represented as strings, as Int64+ types maximum values are larger than `Number.MAX_SAFE_INTEGER`. See the [Integral types](./js.md#integral-types-int64-int128-int256-uint64-uint128-uint256) section for more details.
 
-## Known limitations (Web) {#known-limitations-web}
+## Known limitations (web) {#known-limitations-web}
 
 - Streaming for select queries works, but it is disabled for inserts (on the type level as well).
 - Request compression is disabled and configuration is ignored. Response compression works.

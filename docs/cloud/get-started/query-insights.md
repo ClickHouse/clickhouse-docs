@@ -17,7 +17,7 @@ import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_q
 
 The **Query Insights** feature makes ClickHouse's built-in query log easier to use through various visualizations and tables. ClickHouse's `system.query_log` table is a key source of information for query optimization, debugging, and monitoring overall cluster health and performance.
 
-## Query Overview {#query-overview}
+## Query overview {#query-overview}
 
 After selecting a service, the **Monitoring** navigation item in the left sidebar should expand to reveal a new **Query insights** sub-item. Clicking on this option opens the new Query insights page:
 

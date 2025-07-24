@@ -18,7 +18,5 @@ Cloud
 
 Self-managed
 
-
 </TabItem>
 </Tabs>
-
