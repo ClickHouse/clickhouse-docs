@@ -7,6 +7,7 @@ sidebar_label: 'How parallel snapshot works'
 
 import snapshot_params from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/snapshot_params.png'
 import partition_key from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/partition_key.png'
+import Image from '@theme/IdealImage';
 
 This document explains parallelized snapshot/initial load in the MySQL ClickPipe works and talks about the snapshot parameters that can be used to control it.
 
@@ -18,7 +19,7 @@ However, the MySQL ClickPipe can parallelize this process, which can significant
 ### Partition key column {#key-mysql-snapshot}
 
 Once we've enabled the feature flag, you should see the below setting in the ClickPipe table picker (both during creation and editing of a ClickPipe):
-<img src={partition_key} alt="Partition key column" />
+<Image src={partition_key} alt="Partition key column" size="md"/>
 
 The MySQL ClickPipe uses a column on your source table to logically partition the source tables. This column is called the **partition key column**. It is used to divide the source table into partitions, which can then be processed in parallel by the ClickPipe.
 
@@ -30,7 +31,7 @@ The partition key column must be indexed in the source table to see a good perfo
 
 Let's talk about the below settings:
 
-<img src={snapshot_params} alt="Snapshot parameters" />
+<Image src={snapshot_params} alt="Snapshot parameters" size="md"/>
 
 #### Snapshot number of rows per partition {#numrows-mysql-snapshot}
 This setting controls how many rows constitute a partition. The ClickPipe will read the source table in chunks of this size, and chunks will be processed in parallel based on the initial load parallelism set. The default value is 100,000 rows per partition.
