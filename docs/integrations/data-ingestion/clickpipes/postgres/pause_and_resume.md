@@ -19,24 +19,19 @@ There are scenarios where it would be useful to pause a Postgres ClickPipe. For 
 1. In the Data Sources tab, click on the Postgres ClickPipe you wish to pause.
 2. Head over to the **Settings** tab.
 3. Click on the **Pause** button.
-<br/>
 
 <Image img={pause_button} border size="md"/>
 
 4. A dialog box should appear for confirmation. Click on Pause again.
-<br/>
 
 <Image img={pause_dialog} border size="md"/>
 
 4. Head over to the **Metrics** tab.
 5. In around 5 seconds (and also on page refresh), the status of the pipe should be **Paused**.
-<br/>
 
 :::warning
 Pausing a Postgres ClickPipe will not pause the growth of replication slots.
 :::
-
-<br/>
 
 <Image img={pause_status} border size="md"/>
 
@@ -44,12 +39,10 @@ Pausing a Postgres ClickPipe will not pause the growth of replication slots.
 1. In the Data Sources tab, click on the Postgres ClickPipe you wish to resume. The status of the mirror should be **Paused** initially.
 2. Head over to the **Settings** tab.
 3. Click on the **Resume** button.
-<br/>
 
 <Image img={resume_button} border size="md"/>
 
 4. A dialog box should appear for confirmation. Click on Resume again.
-<br/>
 
 <Image img={resume_dialog} border size="md"/>
 
