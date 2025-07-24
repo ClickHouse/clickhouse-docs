@@ -143,10 +143,7 @@ Benchmark details:
   - Other datatypes, such as Floats, Decimals, and DateTime types may be less performant.
 - There was no appreciable difference in performance between compressed and uncompressed data.
 
-
 | Replica Size | Message Size | Data Format | Throughput |
 |---------------|-----------|-------------|-----------|
 | 1vcpu/4gb     | 1.6kb    |   JSON        | 63mb/s    |
 | 1vcpu/4gb    | 1.6kb    |   AVRO        | 99mb/s    |
-
-
