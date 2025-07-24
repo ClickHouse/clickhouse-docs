@@ -1,6 +1,6 @@
 ---
-title: Controlling the Syncing of a Database ClickPipe
-description: Doc for controllling the sync a database ClickPipe
+title: 'Controlling the Syncing of a Database ClickPipe'
+description: 'Doc for controllling the sync a database ClickPipe'
 slug: /integrations/clickpipes/mysql/sync_control
 sidebar_label: 'Controlling syncs'
 ---
