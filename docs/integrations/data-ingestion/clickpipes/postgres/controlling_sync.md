@@ -9,6 +9,7 @@ import edit_sync_button from '@site/static/images/integrations/data-ingestion/cl
 import create_sync_settings from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/create_sync_settings.png'
 import edit_sync_settings from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/sync_settings_edit.png'
 import cdc_syncs from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/cdc_syncs.png'
+import Image from '@theme/IdealImage';
 
 This document describes how to control the sync of a database ClickPipe (Postgres, MySQL etc.) when the ClickPipe is in **CDC (Running) mode**.
 
