@@ -97,6 +97,10 @@ Specifically, services will:
 - Receive ClickHouse releases ~ 2 weeks after the regular release
 - Be meant for customers that want additional time to test ClickHouse releases on their non-production environments before the production upgrade. Non-production environments can either get upgrades on the Fast or the Regular release channel for testing and validation.
 
+:::note
+You can change release channels at any time. However, in certain cases, the change will only apply to future releases. For example, if your service is already on the Fast release channel and has received the upgrade, switching to a regular or slow release channel will not downgrade your service to a previous version. It will follow the channel specific release schedule for upcoming updates.
+:::
+
 ## Scheduled upgrades {#scheduled-upgrades}
 
 <EnterprisePlanFeatureBadge feature="Scheduled upgrades" linking_verb_are="true"/>
