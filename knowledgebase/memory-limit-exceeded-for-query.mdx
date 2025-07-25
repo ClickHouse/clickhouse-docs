@@ -9,6 +9,9 @@ keywords: ['OOM', 'memory limit exceeded']
 {frontMatter.description}
 {/* truncate */}
 
+import IdealImage from "@theme/IdealImage";
+import joins from '@site/static/images/knowledgebase/memory-limit-exceeded-for-query.png';
+
 ## Memory limit exceeded for query {#troubleshooting-out-of-memory-issues}
 
 As a new user, ClickHouse can often seem like magic - every query is super fast,
@@ -61,9 +64,13 @@ impossible, e.g. a complex subquery. In this case, both the right and left side
 are sorted on disk if they do not fit in memory, allowing large tables to be
 joined.
 
+<Image img={joins} size="md" alt="Joins algorithms"/>
 
-
-
-
+Since 20.3, ClickHouse has supported an auto value for the `join_algorithm` setting.
+This instructs ClickHouse to apply an adaptive join approach, where the hash-join
+algorithm is preferred until memory limits are violated, at which point the
+partial_merge algorithm is attempted. Finally, concerning joins, we encourage
+readers to be aware of the behavior of distributed joins and how to minimize
+their memory consumption. More information can be found [here](/sql-reference/operators/in#distributed-subqueries).
 
 
