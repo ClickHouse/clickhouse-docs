@@ -181,4 +181,3 @@ job.commit()
 </Tabs>
 
 For more details, please visit our [Spark documentation](/integrations/apache-spark).
-
