@@ -23,7 +23,7 @@ The Postgres ClickPipe uses the CTID column to logically partition source tables
 
 Let's talk about the below settings:
 
-<Image src={snapshot_params} alt="Snapshot parameters" size="md"/>
+<Image img={snapshot_params} alt="Snapshot parameters" size="md"/>
 
 #### Snapshot number of rows per partition {#numrows-pg-snapshot}
 
