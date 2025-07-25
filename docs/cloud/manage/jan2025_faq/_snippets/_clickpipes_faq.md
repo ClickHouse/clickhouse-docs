@@ -54,7 +54,7 @@ This corresponds to **0.25** ClickHouse compute units (1 unit = 8 GiB RAM, 2 vCP
 
 Yes, ClickPipes for streaming can be scaled both horizontally and vertically.
 Horizontal scaling adds more replicas to increase throughput, while vertical scaling increases the resources (CPU and RAM) allocated to each replica to handle more intensive workloads.
-Both can be done via the UI during the creation of the ClickPipe or later in the editing mode under "Settings" -> "Advanced Settings" -> "Scaling"
+This can be configured during ClickPipe creation, or at any other point under **Settings** -> **Advanced Settings** -> **Scaling**.
 
 </details>
 

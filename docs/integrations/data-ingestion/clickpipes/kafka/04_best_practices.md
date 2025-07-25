@@ -121,8 +121,7 @@ ClickPipes does not provide any guarantees concerning latency. If you have speci
 
 ### Scaling {#scaling}
 
-ClickPipes for Kafka is designed to scale horizontally. By default, we create a consumer group with one consumer.
-This can be changed with the scaling controls in the ClickPipe details view.
+ClickPipes for Kafka is designed to scale horizontally and vertically. By default, we create a consumer group with one consumer. This can be configured during ClickPipe creation, or at any other point under **Settings** -> **Advanced Settings** -> **Scaling**.
 
 ClickPipes provides a high-availability with an availability zone distributed architecture.
 This requires scaling to at least two consumers.
@@ -133,17 +132,17 @@ the ClickPipe will automatically restart the consumer and continue processing me
 
 ### Benchmarks {#benchmarks}
 
-Below are some informal benchmarks for ClickPipes for Kafka that can be used get a general idea of ClickPipes performance. It is important to know that many factors can impact performance including message size, data types, and data format. Your mileage may vary, and what we show here is not a guarantee of performance.
+Below are some informal benchmarks for ClickPipes for Kafka that can be used to get a general idea of the baseline performance. It's important to know that many factors can impact performance, including message size, data types, and data format. Your mileage may vary, and what we show here is not a guarantee of actual performance.
 
 Benchmark details:
+
 - We used production ClickHouse Cloud services with enough resources to ensure that throughput was not bottlenecked by the insert processing on the ClickHouse side.
 - The ClickHouse Cloud service, the Kafka cluster (Confluent Cloud), and the ClickPipe were all running in the same region (`us-east-2`).
-- The ClickPipe was configured with a single replica.
-- The sample data included nested data with a mix of UUID, String, and Int datatypes.
-  - Other datatypes, such as Floats, Decimals, and DateTime types may be less performant.
-- There was no appreciable difference in performance between compressed and uncompressed data.
+- The ClickPipe was configured with a single L-sized replica (4 GiB of RAM and 1 vCPU).
+- The sample data included nested data with a mix of `UUID`, `String`, and `Int` datatypes. Other datatypes, such as `Float`, `Decimal`, and `DateTime`, may be less performant.
+- There was no appreciable difference in performance using compressed and uncompressed data.
 
-| Replica Size | Message Size | Data Format | Throughput |
-|---------------|-----------|-------------|-----------|
-| 1vcpu/4gb     | 1.6kb    |   JSON        | 63mb/s    |
-| 1vcpu/4gb    | 1.6kb    |   AVRO        | 99mb/s    |
+| Replica Size  | Message Size | Data Format | Throughput |
+|---------------|--------------|-------------|------------|
+| Large (L)     | 1.6kb        |   JSON      | 63mb/s     |
+| Large (L)     | 1.6kb        |   Avro      | 99mb/s     |

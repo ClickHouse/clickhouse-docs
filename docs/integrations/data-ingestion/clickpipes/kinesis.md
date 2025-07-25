@@ -161,10 +161,9 @@ If you have specific low-latency requirements, please [contact us](https://click
 
 ### Scaling {#scaling}
 
-ClickPipes for Kinesis is designed to scale horizontally. By default, we create a consumer group with one consumer.
-This can be changed with the scaling controls in the ClickPipe details view.
+ClickPipes for Kinesis is designed to scale both horizontally and vertically. By default, we create a consumer group with one consumer. This can be configured during ClickPipe creation, or at any other point under **Settings** -> **Advanced Settings** -> **Scaling**.
 
-ClickPipes provides a high-availability with an availability zone distributed architecture.
+ClickPipes provides high-availability with an availability zone distributed architecture.
 This requires scaling to at least two consumers.
 
 Regardless number of running consumers, fault tolerance is available by design.
