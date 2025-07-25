@@ -6,6 +6,7 @@ sidebar_label: 'Resync ClickPipe'
 ---
 
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'
+import Image from '@theme/IdealImage';
 
 ### What does Resync do? {#what-postgres-resync-do}
 
@@ -18,6 +19,7 @@ Resync involves the following operations in order:
 All the settings of the original ClickPipe are retained in the resync ClickPipe. The statistics of the original ClickPipe are cleared in the UI.
 
 ### Use cases for resyncing a ClickPipe {#use-cases-postgres-resync}
+
 Here are a few scenarios:
 
 1. You may need to perform major schema changes on the source tables which would break the existing ClickPipe and you would need to restart. You can just click Resync after performing the changes.
@@ -30,13 +32,14 @@ since initial load with parallel threads is involved each time.
 :::
 
 ### Resync ClickPipe Guide {#guide-postgres-resync}
+
 1. In the Data Sources tab, click on the Postgres ClickPipe you wish to resync.
 2. Head over to the **Settings** tab.
 3. Click on the **Resync** button.
-<br/>
-<img img={resync_button} border size="md"/>
+
+<Image img={resync_button} border size="md"/>
+
 4. A dialog box should appear for confirmation. Click on Resync again.
-<br/>
 5. Head over to the **Metrics** tab.
 6. In around 5 seconds (and also on page refresh), the status of the pipe should be **Setup** or **Snapshot**.
 7. The initial load of the resync can be monitored in the **Tables** tab - in the **Initial Load Stats** section.
