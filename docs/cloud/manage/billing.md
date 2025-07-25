@@ -477,9 +477,9 @@ This corresponds to **0.0625** ClickHouse compute units (1 unit = 8 GiB RAM, 2 v
 
 #### What are the ClickPipes public prices? {#what-are-the-clickpipes-public-prices}
 
-**Vertical Instance Types and Pricing:**
+**Vertical Replica Sizes and Pricing:**
 
-| Instance Type | Compute Units | RAM | vCPU | Price per Hour |
+| Replica Size | Compute Units | RAM | vCPU | Price per Hour |
 |---------------|---------------|-----|------|----------------|
 | Extra Small   | 0.0625         | 512 MiB | 0.125| $0.0125 |
 | Small         | 0.125         | 1 GiB | 0.25   | $0.025  |
