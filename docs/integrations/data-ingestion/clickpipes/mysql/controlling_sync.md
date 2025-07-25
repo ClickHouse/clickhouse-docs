@@ -42,18 +42,18 @@ When a transaction is run on the source database, the ClickPipe waits until it r
 You can set the sync interval and pull batch size when you create a ClickPipe or edit an existing one.
 When creating a ClickPipe it will be seen in the second step of the creation wizard, as shown below:
 
-<Image src={create_sync_settings} alt="Create sync settings" size="md"/>
+<Image img={create_sync_settings} alt="Create sync settings" size="md"/>
 
 When editing an existing ClickPipe, you can head over to the **Settings** tab of the pipe, pause the pipe and then click on **Configure** here:
 
-<Image src={edit_sync_button} alt="Edit sync button" size="md"/>
+<Image img={edit_sync_button} alt="Edit sync button" size="md"/>
 
 This will open a flyout with the sync settings, where you can change the sync interval and pull batch size:
 
-<Image src={edit_sync_settings} alt="Edit sync settings" size="md"/>
+<Image img={edit_sync_settings} alt="Edit sync settings" size="md"/>
 
 ### Monitoring sync control behaviour {#monitoring-mysql-sync}
 
 You can see how long each batch takes in the **CDC Syncs** table in the **Metrics** tab of the ClickPipe. Note that the duration here includes push time and also if there are no rows incoming, the ClickPipe waits and the wait time is also included in the duration.
 
-<Image src={cdc_syncs} alt="CDC Syncs table" size="md"/>
+<Image img={cdc_syncs} alt="CDC Syncs table" size="md"/>
