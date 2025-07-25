@@ -25,7 +25,6 @@ In summary, update operations should be issued carefully, and the mutations queu
 | [On-the-fly updates](/guides/developer/on-the-fly-mutations)                         | `ALTER TABLE [table] UPDATE`         | Enable using `SET apply_mutations_on_fly = 1;`. Use when updating small amounts of data. Rows are immediately returned with updated data in all subsequent `SELECT` queries but are initially only internally marked as updated on disk. |
 | [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)   | `ENGINE = ReplacingMergeTree`        | Use when updating large amounts of data. This table engine is optimized for data deduplication on merges.                                                                                                                                |
 | [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) | `ENGINE = CollapsingMergeTree(Sign)` | Use when updating individual rows frequently, or for scenarios where you need to maintain the latest state of objects that change over time. For example, tracking user activity or article stats.                                       |
-Here is a summary of the different ways to update data in ClickHouse:
 
 ## Update mutations {#update-mutations}
 
