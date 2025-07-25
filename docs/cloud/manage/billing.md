@@ -454,12 +454,12 @@ This section outlines the pricing model of ClickPipes for streaming and object s
 
 #### What does the ClickPipes pricing structure look like? {#what-does-the-clickpipes-pricing-structure-look-like}
 
-It consists of two dimensions
+It consists of two dimensions:
 
-- **Compute**: Price per unit per hour
+- **Compute**: Price **per unit per hour**.
   Compute represents the cost of running the ClickPipes replica pods whether they actively ingest data or not.
   It applies to all ClickPipes types.
-- **Ingested data**: per GB pricing
+- **Ingested data**: Price **per GB**.
   The ingested data rate applies to all streaming ClickPipes
   (Kafka, Confluent, Amazon MSK, Amazon Kinesis, Redpanda, WarpStream, Azure Event Hubs)
   for the data transferred via the replica pods. The ingested data size (GB) is charged based on bytes received from the source (uncompressed or compressed).
@@ -472,27 +472,27 @@ For this reason, it uses dedicated compute replicas.
 
 #### What is the default number of replicas and their size? {#what-is-the-default-number-of-replicas-and-their-size}
 
-Each ClickPipe defaults to 1 replica that is provided with 512 MiB of RAM and 0.125 vCPU.
+Each ClickPipe defaults to 1 replica that is provided with 512 MiB of RAM and 0.125 vCPU (XS).
 This corresponds to **0.0625** ClickHouse compute units (1 unit = 8 GiB RAM, 2 vCPUs).
 
 #### What are the ClickPipes public prices? {#what-are-the-clickpipes-public-prices}
 
-**Vertical Replica Sizes and Pricing:**
-
-| Replica Size | Compute Units | RAM | vCPU | Price per Hour |
-|---------------|---------------|-----|------|----------------|
-| Extra Small   | 0.0625         | 512 MiB | 0.125| $0.0125 |
-| Small         | 0.125         | 1 GiB | 0.25   | $0.025  |
-| Medium        | 0.25          | 2 GiB | 0.5 | $0.05     |
-| Large         | 0.5           | 4 GiB | 1.0    | $0.10  |
-| Extra Large   | 1.0           | 8 GiB | 2.0    | $0.20  |
-
-**Additional Pricing:**
+- Compute: \$0.20 per unit per hour (\$0.0125 per replica per hour for the default replica size)
 - Ingested data: \$0.04 per GB
+
+The price for the Compute dimension depends on the **number** and **size** of replica(s) in a ClickPipe. The default replica size can be adjusted using vertical scaling, and each replica size is priced as follows:
+
+| Replica Size               | Compute Units | RAM     | vCPU   | Price per Hour |
+|----------------------------|---------------|---------|--------|----------------|
+| Extra Small (XS) (default) | 0.0625        | 512 MiB | 0.125. | $0.0125        |
+| Small (S)                  | 0.125         | 1 GiB   | 0.25   | $0.025         |
+| Medium (M)                 | 0.25          | 2 GiB   | 0.5    | $0.05          |
+| Large (L)                  | 0.5           | 4 GiB   | 1.0    | $0.10          |
+| Extra Large (XL)           | 1.0           | 8 GiB   | 2.0    | $0.20          |
 
 #### How does it look in an illustrative example? {#how-does-it-look-in-an-illustrative-example}
 
-The following examples assume a single medium size replica unless explicitly mentioned.
+The following examples assume a single M-sized replica, unless explicitly mentioned.
 
 <table><thead>
   <tr>
