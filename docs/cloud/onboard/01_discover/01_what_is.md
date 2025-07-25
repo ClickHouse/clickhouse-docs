@@ -1,5 +1,5 @@
 ---
-slug: /cloud/get-started/cloud/what-is-clickhouse-cloud
+slug: /cloud/overview
 title: 'Introduction'
 keywords: ['clickhouse cloud', 'what is clickhouse cloud', 'clickhouse cloud overview', 'clickhouse cloud features']
 hide_title: true

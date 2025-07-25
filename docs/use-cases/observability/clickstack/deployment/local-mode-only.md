@@ -56,7 +56,6 @@ Create a source, retain all default values, and complete the `Table` field with 
 
 </VerticalStepper>
 
-
 <JSONSupport/>
 
 For the local mode only image, users only need to set the `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` parameter e.g.

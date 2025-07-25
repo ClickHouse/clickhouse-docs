@@ -22,7 +22,7 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 
 ## Setup {#setup}
 
-### Obtaining the ClickHouse service IAM role Arn {#obtaining-the-clickhouse-service-iam-role-arn}
+### Obtaining the ClickHouse service IAM role ARN {#obtaining-the-clickhouse-service-iam-role-arn}
 
 1 - Login to your ClickHouse cloud account.
 
@@ -58,7 +58,6 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 
 *Note*: Do not put the full bucket Arn but instead just the bucket name only.
 
-
 5 - Select the **I acknowledge that AWS CloudFormation might create IAM resources with custom names.** checkbox
 
 6 - Click **Create stack** button at bottom right
@@ -71,7 +70,7 @@ This approach allows customers to manage all access to their S3 buckets in a sin
 
 <Image img={s3_output} size="lg" alt="CloudFormation stack output showing IAM Role ARN" border />
 
-#### Option 2: Manually create IAM role. {#option-2-manually-create-iam-role}
+#### Option 2: Manually create IAM role {#option-2-manually-create-iam-role}
 
 1 - Login to your AWS Account in the web browser with an IAM user that has permission to create & manage IAM role.
 
@@ -128,14 +127,13 @@ IAM policy (Please replace `{BUCKET_NAME}` with your bucket name):
 
 4 - Copy the new **IAM Role Arn** after creation. This is what needed to access your S3 bucket.
 
-## Access your S3 bucket with the ClickHouseAccess Role {#access-your-s3-bucket-with-the-clickhouseaccess-role}
+## Access your S3 bucket with the ClickHouseAccess role {#access-your-s3-bucket-with-the-clickhouseaccess-role}
 
 ClickHouse Cloud has a new feature that allows you to specify `extra_credentials` as part of the S3 table function. Below is an example of how to run a query using the newly created role copied from above.
 
 ```sql
 DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWithNames',extra_credentials(role_arn = 'arn:aws:iam::111111111111:role/ClickHouseAccessRole-001'))
 ```
-
 
 Below is an example query that uses the `role_session_name` as a shared secret to query data from a bucket. If the `role_session_name` is not correct, this operation will fail.
 

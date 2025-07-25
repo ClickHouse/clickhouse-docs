@@ -23,14 +23,12 @@ Note that the current implementation of the ClickHouse sink utilizes the HTTP in
 ### License {#license}
 Vector is distributed under the [MPL-2.0 License](https://github.com/vectordotdev/vector/blob/master/LICENSE)
 
-
 ### Gather your connection details {#gather-your-connection-details}
 <ConnectionDetails />
 
 ### Steps {#steps}
 
 1. Create the Kafka `github` topic and insert the [Github dataset](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson).
-
 
 ```bash
 cat /opt/data/github/github_all_columns.ndjson | kcat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username> -X sasl.password=<password> -t github

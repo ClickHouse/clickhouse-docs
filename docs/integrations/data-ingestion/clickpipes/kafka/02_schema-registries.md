@@ -44,5 +44,3 @@ The following rules are applied to the mapping between the retrieved Avro schema
 - If the Avro schema contains a field that is not included in the ClickHouse destination mapping, that field is ignored.
 - If the Avro schema is missing a field defined in the ClickHouse destination mapping, the ClickHouse column will be populated with a "zero" value, such as 0 or an empty string. Note that DEFAULT expressions are not currently evaluated for ClickPipes inserts (this is temporary limitation pending updates to the ClickHouse server default processing).
 - If the Avro schema field and the ClickHouse column are incompatible, inserts of that row/message will fail, and the failure will be recorded in the ClickPipes errors table. Note that several implicit conversions are supported (like between numeric types), but not all (for example, an Avro record field can not be inserted into an Int32 ClickHouse column).
-
-

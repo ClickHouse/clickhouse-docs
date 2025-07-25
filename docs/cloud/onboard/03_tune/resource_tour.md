@@ -5,42 +5,51 @@ keywords: ['clickhouse cloud']
 hide_title: true
 ---
 
-import TableOfContents from '@site/docs/best-practices/_snippets/_table_of_contents.md';
+import TableOfContentsBestPractices from '@site/docs/best-practices/_snippets/_table_of_contents.md';
 import TableOfContentsOptimizationAndPerformance from '@site/docs/guides/best-practices/_snippets/_performance_optimizations_table_of_contents.md';
+import TableOfContentsSecurity from '@site/docs/cloud/security/_snippets/_security_table_of_contents.md';
 
 # Resource tour
 
 This article is intended to provide you with an overview of the resources available
 to you in the docs to learn how to get the most out of your ClickHouse Cloud deployment.
-We've broken down the resources available to you into the following categories:
+Explore resource organised by the following topics:
 
-- Query optimization techniques and performance tuning
-- Scaling strategies and resource management
-- Monitoring
-- Security best practices and compliance features
-- Cost optimization strategies
-- Troubleshooting common issues
+- [Query optimization techniques and performance tuning](#query-optimization)
+- [Scaling strategies and resource management](#scaling)
+- [Monitoring](#monitoring)
+- [Security best practices and compliance features](#security)
+- [Cost optimization and billing](#cost-optimization)
+- Troubleshooting common issues (coming soon)
 - Production readiness checklist (coming soon)
 
 Before diving into more specific tipics, we recommend you start with our general
 ClickHouse best practice guides which cover general best practices to follow when
 using ClickHouse:
 
-<details>
-<summary>ClickHouse general best practices</summary>
-<TableOfContents />
-</details>
+<TableOfContentsBestPractices />
 
-<details>
-<summary>Query optimization techniques and performance tuning</summary>
+## Query optimization techniques and performance tuning {#query-optimization}
+
 <TableOfContentsOptimizationAndPerformance/>
-</details>
 
-<details>
-<summary>Monitoring</summary>
+## Scaling strategies and resource management {#scaling}
 
-| Page                                               | Description                              |
-|----------------------------------------------------|------------------------------------------|
-| [Prometheus integration](/integrations/prometheus) | Use Prometheus to monitor Cloud services |
-</details>
 
+## Monitoring {#monitoring}
+
+| Page                                                            | Description                                                                   |
+|-----------------------------------------------------------------|-------------------------------------------------------------------------------|
+| [Advanced dashboard](/cloud/manage/monitor/advanced-dashboard)  | Use the built in advanced dashboard to monitor service health and performance |
+| [Prometheus integration](/integrations/prometheus)              | Use Prometheus to monitor Cloud services                                      |
+
+## Security {#security}
+
+<TableOfContentsSecurity/>
+
+## Cost optimization and billing {#cost-optimization}
+
+| Page                                                | Description                                                                                               |
+|-----------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
+| [Data transfer](/cloud/manage/network-data-transfer)| Understand how ClickHouse Cloud meters data transferred ingress and egress                                |
+| [Notifications](/cloud/notifications)               | Set up notifications for your ClickHouse Cloud service. For example, when credit usage passes a threshold |
