@@ -37,7 +37,6 @@ SET dialect = 'prql'
 
 Example PRQL query:
 
-
 ```prql
 from trips
 aggregate {

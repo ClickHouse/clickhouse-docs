@@ -15,7 +15,7 @@ delete existing data. These operations are labeled "mutations" and are executed 
 
 :::tip
 If you need to perform frequent updates, consider using [deduplication](../developer/deduplication.md) in ClickHouse, which allows you to update 
-and/or delete rows without generating a mutation event. Alternatively, use [lightweight updates](/guides/developer/lightweight-update)
+and/or delete rows without generating a mutation event. Alternatively, use [lightweight updates](/docs/sql-reference/statements/update)
 or [lightweight deletes](/guides/developer/lightweight-delete)
 :::
 
@@ -104,4 +104,3 @@ DELETE FROM hits WHERE Title LIKE '%hello%';
 A few notes about lightweight deletes:
 - This feature is only available for the `MergeTree` table engine family.
 - Lightweight deletes are asynchronous by default. Set `mutations_sync` equal to 1 to wait for one replica to process the statement, and set `mutations_sync` to 2 to wait for all replicas.
-

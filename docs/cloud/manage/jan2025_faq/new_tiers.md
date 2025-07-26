@@ -14,7 +14,6 @@ description: 'Description of new tiers and features'
 - **Enhanced Encryption:** This feature is available in Enterprise tier services, including for single replica services, in AWS and GCP. Services are encrypted by our key by default and can be rotated to their key to enable Customer Managed Encryption Keys (CMEK).
 - **Single Sign On (SSO):** This feature is offered in Enterprise tier and requires a support ticket to be enabled for an Organization. Users who have multiple Organizations should ensure all of their organizations are on the Enterprise tier to use SSO for each organization.
 
-
 ## Basic tier {#basic-tier}
 
 ### What are the considerations for the Basic tier? {#what-are-the-considerations-for-the-basic-tier}
@@ -57,11 +56,9 @@ The enterprise tier will support standard profiles (1:4 vCPU:memory ratio), as w
 
 - **Custom profiles:** Options for instance type selection standard profiles (1:4 vCPU: memory ratio) and `highMem (1:8 ratio)` and `highCPU (1:2 ratio)` custom profiles.
 - **Enterprise-grade security:**
-    - **Single Sign On (SSO**)
-    - **Enhanced Encryption:** For AWS and GCP services. Services are encrypted by our key by default and can be rotated to their key to enable Customer Managed Encryption Keys (CMEK).
+  - **Single Sign On (SSO**)
+  - **Enhanced Encryption:** For AWS and GCP services. Services are encrypted by our key by default and can be rotated to their key to enable Customer Managed Encryption Keys (CMEK).
 - **Scheduled upgrades:** Users can select the day of the week/time window for upgrades, both database and cloud releases.  
 - **HIPAA Compliance:** The customer must sign a Business Associate Agreement (BAA) through Legal before we enable HIPAA-compliant regions for them.
 - **Private Regions:** It is not self-serve enabled and will need users to route requests through Sales sales@clickhouse.com.
 - **Export Backups** to the customer's cloud account.
-
-

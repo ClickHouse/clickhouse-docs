@@ -445,7 +445,6 @@ SELECT * FROM db1.table1;
 └────┴─────────┘
 ```
 
-
 7. Create a distributed table to query both shards on both nodes.
 (In this example, the `rand()` function is set as the sharding key so that it randomly distributes each insert)
 
@@ -479,7 +478,6 @@ SELECT * FROM db1.table1_dist;
 │  1 │ abc     │
 └────┴─────────┘
 ```
-
 
 ## More information about {#more-information-about}
 

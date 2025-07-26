@@ -9,7 +9,3 @@
 |us-east-1 c1  | com.amazonaws.vpce.us-east-1.vpce-svc-096c118db1ff20ea4     | use1-az6 use1-az4 use1-az2   |
 |us-east-2     | com.amazonaws.vpce.us-east-2.vpce-svc-0b99748bf269a86b4     | use2-az1 use2-az2 use2-az3   |
 |us-west-2     | com.amazonaws.vpce.us-west-2.vpce-svc-049bbd33f61271781     | usw2-az2 usw2-az1 usw2-az3   |
-
-
-
-

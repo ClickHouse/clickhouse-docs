@@ -26,7 +26,6 @@ import Image from '@theme/IdealImage';
 # Integrating object storage with ClickHouse Cloud
 Object Storage ClickPipes provide a simple and resilient way to ingest data from Amazon S3, Google Cloud Storage, Azure Blob Storage, and DigitalOcean Spaces into ClickHouse Cloud. Both one-time and continuous ingestion are supported with exactly-once semantics.
 
-
 ## Prerequisite {#prerequisite}
 You have familiarized yourself with the [ClickPipes intro](./index.md).
 
@@ -129,7 +128,8 @@ To increase the throughput on large ingest jobs, we recommend scaling the ClickH
 - Role authentication is not available for S3 ClickPipes for ClickHouse Cloud instances deployed into GCP or Azure. It is only supported for AWS ClickHouse Cloud instances.
 - ClickPipes will only attempt to ingest objects at 10GB or smaller in size. If a file is greater than 10GB an error will be appended to the ClickPipes dedicated error table.
 - Azure Blob Storage pipes with continuous ingest on containers with over 100k files will have a latency of around 10–15 seconds in detecting new files. Latency increases with file count.
-- S3 / GCS ClickPipes **does not** share a listing syntax with the [S3 Table Function](/sql-reference/table-functions/s3), nor Azure with the [AzureBlobStorage Table function](/sql-reference/table-functions/azureBlobStorage).
+- Object Storage ClickPipes ClickPipes inserting into a destination using [Null table engine](/engines/table-engines/special/null) won't have data for "Total records" or "Data ingested" in the UI.
+- Object Storage ClickPipes **does not** share a listing syntax with the [S3 Table Function](/sql-reference/table-functions/s3), nor Azure with the [AzureBlobStorage Table function](/sql-reference/table-functions/azureBlobStorage).
   - `?` — Substitutes any single character
   - `*` — Substitutes any number of any characters except / including empty string
   - `**` — Substitutes any number of any character include / including empty string
@@ -138,7 +138,6 @@ To increase the throughput on large ingest jobs, we recommend scaling the ClickH
 This is a valid path (for S3):
 
 https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/**.ndjson.gz
-
 
 This is not a valid path. `{N..M}` are not supported in ClickPipes.
 

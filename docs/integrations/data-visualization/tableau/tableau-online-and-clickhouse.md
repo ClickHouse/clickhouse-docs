@@ -98,7 +98,6 @@ Additionally, choose "Update workbook to use the published data source".
 
 Finally, click "Publish", and your datasource with embedded credentials will be opened automatically in Tableau Online.
 
-
 ## Known limitations (ClickHouse 23.11) {#known-limitations-clickhouse-2311}
 
 All the known limitations has been fixed in ClickHouse `23.11`. If you encounter any other incompatibilities, please do not hesitate to [contact us](https://clickhouse.com/company/contact) or create a [new issue](https://github.com/ClickHouse/ClickHouse/issues).

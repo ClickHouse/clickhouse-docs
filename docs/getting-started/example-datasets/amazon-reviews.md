@@ -149,7 +149,6 @@ ORDER BY size DESC
 
 The original data was about 70G, but compressed in ClickHouse it takes up about 30G.
 
-
 ## Example queries {#example-queries}
 
 7. Let's run some queries. Here are the top 10 most-helpful reviews in the dataset:

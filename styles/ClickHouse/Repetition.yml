@@ -5,7 +5,7 @@ description: |
 extends: repetition
 message: "Remove this duplicate word: '%s'."
 vocab: false
-level: error
+level: warning
 alpha: true
 tokens:
   - '[^\s]+'

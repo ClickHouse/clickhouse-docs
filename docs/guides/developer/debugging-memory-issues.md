@@ -79,4 +79,3 @@ SELECT
     formatReadableSize(sum(index_granularity_bytes_in_memory_allocated)) AS index_granularity_bytes_in_memory_allocated
 FROM system.parts;
 ```
-

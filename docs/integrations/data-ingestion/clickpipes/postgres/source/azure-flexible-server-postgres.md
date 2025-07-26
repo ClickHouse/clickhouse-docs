@@ -67,7 +67,6 @@ Connect to your Azure Flexible Server Postgres through the admin user and run th
    ALTER ROLE clickpipes_user SET wal_sender_timeout to 0;
    ```
 
-
 ## Add ClickPipes IPs to Firewall {#add-clickpipes-ips-to-firewall}
 
 Please follow the below steps to add [ClickPipes IPs](../../index.md#list-of-static-ips) to your network.
@@ -76,7 +75,6 @@ Please follow the below steps to add [ClickPipes IPs](../../index.md#list-of-sta
    of your Azure Flexible Server Postgres OR the Jump Server/Bastion if you are using SSH tunneling.
 
 <Image img={firewall} alt="Add ClickPipes IPs to Firewall in Azure Flexible Server for Postgres" size="lg"/>
-
 
 ## What's next? {#whats-next}
 

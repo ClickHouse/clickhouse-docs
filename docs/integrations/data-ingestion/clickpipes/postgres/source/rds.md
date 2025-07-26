@@ -92,7 +92,6 @@ Connect to your RDS Postgres instance as an admin user and execute the following
     CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
     ```
 
-
 ## Configure network access {#configure-network-access}
 
 ### IP-based access control {#ip-based-access-control}

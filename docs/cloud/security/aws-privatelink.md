@@ -28,21 +28,17 @@ To restrict access to your ClickHouse Cloud services exclusively through AWS Pri
 ClickHouse Cloud currently supports [cross-region PrivateLink](https://aws.amazon.com/about-aws/whats-new/2024/11/aws-privatelink-across-region-connectivity/) in beta.
 :::
 
-
 **Please complete the following to enable AWS PrivateLink**:
 1. Obtain Endpoint "Service name".
 1. Create AWS Endpoint.
 1. Add "Endpoint ID" to ClickHouse Cloud organization.
 1. Add "Endpoint ID" to ClickHouse service allow list.
 
-
 Find Terraform examples [here](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/).
-
 
 ## Points of attention {#attention}
 ClickHouse attempts to group your services to reuse the same published [service endpoint](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html#endpoint-service-overview) within the AWS region. However, this grouping is not guaranteed, especially if you spread your services across multiple ClickHouse organizations.
 If you already have PrivateLink configured for other services in your ClickHouse organization, you can often skip most of the steps because of that grouping and proceed directly to the final step: Add ClickHouse "Endpoint ID" to ClickHouse service allow list.
-
 
 ## Prerequisites for this process {#prerequisites}
 
@@ -267,7 +263,6 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
 ### Accessing an instance using PrivateLink {#accessing-an-instance-using-privatelink}
 
 Each service with Private Link enabled has a public and private endpoint. In order to connect using Private Link, you need to use a private endpoint which will be `privateDnsHostname`<sup>API</sup> or `DNS Name`<sup>console</sup> taken from [Obtain Endpoint "Service name"](#obtain-endpoint-service-info).
-
 
 #### Getting private DNS hostname {#getting-private-dns-hostname}
 

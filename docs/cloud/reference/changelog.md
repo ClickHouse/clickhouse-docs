@@ -31,6 +31,16 @@ import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.pn
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/cloud/reference/cloud-compatibility.md) page.
 
+## July 24, 2025 {#july-24-2025}
+
+**ClickPipes for MySQL CDC now in public beta**
+
+The MySQL CDC connector in ClickPipes is now widely available in public beta. With just a few clicks, 
+you can start replicating your MySQL (or MariaDB) data directly into ClickHouse Cloud in real-time,
+with no external dependencies. Read the [blogpost](https://clickhouse.com/blog/mysql-cdc-connector-clickpipes-beta)
+for an overview of the connector and follow the [quickstart](https://clickhouse.com/docs/integrations/clickpipes/mysql)
+to get up and running.
+
 ## July 11, 2025 {#june-11-2025}
 
 - New services now store database and table metadata in a central **SharedCatalog**,
@@ -80,7 +90,6 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
   - You can now add a table or chart from the SQL console to a dashboard from the query view.
 
 <Image img={dashboards} size="md" alt="Dashboards improvements" border />
-
 
 - We are enlisting preview participants for [Distributed cache](https://clickhouse.com/cloud/distributed-cache-waitlist) 
   for AWS and GCP. Read more in the [blog](https://clickhouse.com/blog/building-a-distributed-cache-for-s3).
@@ -205,7 +214,6 @@ in use.
 - If your service is already above these limits, we will permit a 10% increase.
   Please contact [support](https://clickhouse.com/support/program) if you have any questions.
 
-
 ## January 27, 2025 {#january-27-2025}
 
 ### Changes to ClickHouse Cloud tiers {#changes-to-clickhouse-cloud-tiers}
@@ -279,7 +287,6 @@ We've added several enhancements for the Prometheus integration:
   This functionality is available via an optional query parameter in the API, making it easier to optimize your data collection and streamline integrations with tools like Grafana and Datadog.
 
   The filtered metrics feature is now available for all users. You can find more details [here](/integrations/prometheus).
-
 
 ## December 20, 2024 {#december-20-2024}
 
@@ -643,7 +650,6 @@ Other changes:
 - Java client: Fixed bug with incorrect error code parsing
 - Python client: Fixed parameters binding for numeric types, fixed bugs with number list in query binding, added SQLAlchemy Point support.
 
-
 ## April 4, 2024 {#april-4-2024}
 
 ### Introducing the new ClickHouse Cloud console {#introducing-the-new-clickhouse-cloud-console}
@@ -779,7 +785,6 @@ This release brings availability of ClickPipes for Azure Event Hub, dramatically
 * Metabase
   * Added support for a connection to multiple databases
 
-
 ## January 18, 2024 {#january-18-2024}
 
 This release brings a new region in AWS (London / eu-west-2), adds ClickPipes support for Redpanda, Upstash, and Warpstream, and improves reliability of the [is_deleted](/engines/table-engines/mergetree-family/replacingmergetree#is_deleted) core database capability.
@@ -804,7 +809,6 @@ This release brings a new region in AWS (London / eu-west-2), adds ClickPipes su
 
 ### Reliability changes {#reliability-changes}
 - User-facing backward incompatible change: Previously, two features ([is_deleted](/engines/table-engines/mergetree-family/replacingmergetree#is_deleted) and ``OPTIMIZE CLEANUP``) under certain conditions could lead to corruption of the data in ClickHouse. To protect the integrity of the data of our users, while keeping the core of the functionality, we adjusted how this feature works. Specifically, the MergeTree setting ``clean_deleted_rows`` is now deprecated and has no effect anymore. The ``CLEANUP`` keyword is not allowed by default (to use it you will need to enable ``allow_experimental_replacing_merge_with_cleanup``). If you decide to use ``CLEANUP``, you need to make sure that it is always used together with ``FINAL``, and you must guarantee that no rows with older versions will be inserted after you run ``OPTIMIZE FINAL CLEANUP``.
-
 
 ## December 18, 2023 {#december-18-2023}
 
@@ -834,7 +838,6 @@ This release brings a new region in GCP (us-east1), ability to self-service secu
   - CVE 2023-47118 (CVSS 7.0) - a heap buffer overflow vulnerability affecting the native interface running by default on port 9000/tcp
   - CVE-2023-48704 (CVSS 7.0) - a heap buffer overflow vulnerability affecting the native interface running by default on port 9000/tcp
   - CVE 2023-48298 (CVSS 5.9) - an integer underflow vulnerability in the FPC compressions codec
-
 
 ## November 22, 2023 {#november-22-2023}
 
@@ -1146,7 +1149,6 @@ This release brings an API for retrieving cloud endpoints, an advanced scaling c
 ### Bug fixes {#bug-fixes-1}
 * Fixed behavior where running `INSERT INTO ... SELECT ...` from the SQL console incorrectly applied the same row limit as select queries
 
-
 ## March 23, 2023 {#march-23-2023}
 
 This release brings database password complexity rules, significant speedup in restoring large backups, and support for displaying traces in Grafana Trace View.
@@ -1179,7 +1181,6 @@ This release brings database password complexity rules, significant speedup in r
 ### Bug fixes {#bug-fixes-2}
 - Fixed a bug resulting in slow initial provisioning and startup times for new services
 - Fixed a bug that resulted in slower query performance due to cache misconfiguration
-
 
 ## March 9, 2023 {#march-9-2023}
 
@@ -1265,7 +1266,6 @@ This release brings an officially supported Metabase integration, a major Java c
 - Improved the scale-down behavior via more accurate activity tracking
 - Fixed a bug where SQL console CSV export was truncated
 - Fixed a bug resulting in intermittent sample data upload failures
-
 
 ## January 12, 2023 {#january-12-2023}
 
@@ -1445,7 +1445,6 @@ This release removes read & write units from pricing (see the [pricing page](htt
 - Added MySQL-compatible syntax to reset settings `SET setting_name = DEFAULT`.
 - Added functions for Morton curve encoding, Java integer hashing, and random number generation.
 - See the [detailed 22.10 changelog](/whats-new/cloud#clickhouse-2210-version-upgrade) for the complete list of changes.
-
 
 ## October 25, 2022 {#october-25-2022}
 

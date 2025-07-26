@@ -51,7 +51,6 @@ If you do not have a dataset to work with you can add one of the examples.  This
 
 5. Access Metabase at <a href="http://localhost:3000/" target="_blank">http://hostname:3000</a>. On the initial startup, you will see a welcome screen and have to work your way through a list of questions. If prompted to select a database, select "**I'll add my data later**":
 
-
 ## 3.  Connect Metabase to ClickHouse {#3--connect-metabase-to-clickhouse}
 
 1. Click on the gear icon in the top-right corner and select **Admin Settings** to visit your <a href="http://localhost:3000/admin/settings/setup" target="_blank">Metabase admin page</a>.

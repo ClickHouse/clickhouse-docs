@@ -94,5 +94,4 @@ claude mcp add --transport http clickhouse_cloud https://mcp.clickhouse.com/mcp
 
 <Image img={img7} alt="Claude Code MCP Usage" size="md"/>
 
-
 </VerticalStepper>

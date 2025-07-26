@@ -53,16 +53,15 @@ We recommend setting up a **direct link to your organization** in addition to yo
    
    ClickHouse uses service provider-initiated SAML connections. This means you can log in via https://console.clickhouse.cloud or via a direct link. We do not currently support identity provider initiated connections. Basic SAML configurations include the following:
 
-   - SSO URL or ACS URL:  `https://auth.clickhouse.cloud/login/callback?connection={organizationid}` 
+- SSO URL or ACS URL:  `https://auth.clickhouse.cloud/login/callback?connection={organizationid}` 
 
-   - Audience URI or Entity ID: `urn:auth0:ch-production:{organizationid}` 
+- Audience URI or Entity ID: `urn:auth0:ch-production:{organizationid}` 
 
-   - Application username: `email`
+- Application username: `email`
 
-   - Attribute mapping: `email = user.email`
+- Attribute mapping: `email = user.email`
 
-   - Direct link to access your organization: `https://console.clickhouse.cloud/?connection={organizationid}` 
-
+- Direct link to access your organization: `https://console.clickhouse.cloud/?connection={organizationid}` 
 
    For specific configuration steps, refer to your specific identity provider below.
    
@@ -74,7 +73,6 @@ We recommend setting up a **direct link to your organization** in addition to yo
    Obtain your Identity provider SSO URL and x.509 certificate. Refer to your specific identity provider below for instructions on how to retrieve this information.
 
 </details>
-
 
 <details>
    <summary>  Submit a support case </summary>
@@ -107,8 +105,8 @@ We recommend setting up a **direct link to your organization** in addition to yo
    3. Log out of the ClickHouse organization. 
 
    4. Log in with your original authentication method to assign the Admin role to your new SSO account.
-   - For email + password accounts, please use `https://console.clickhouse.cloud/?with=email`.
-   - For social logins, please click the appropriate button (**Continue with Google** or **Continue with Microsoft**)
+- For email + password accounts, please use `https://console.clickhouse.cloud/?with=email`.
+- For social logins, please click the appropriate button (**Continue with Google** or **Continue with Microsoft**)
 
 :::note
 `email` in `?with=email` above is the literal parameter value, not a placeholder
@@ -206,7 +204,6 @@ You will configure two App Integrations in Okta for each ClickHouse organization
      - X.509 Certificate
    
 </details>
-
 
 ### Configure Google SAML {#configure-google-saml}
 
@@ -334,7 +331,6 @@ Azure (Microsoft) SAML may also be referred to as Azure Active Directory (AD) or
       - Certificate
    
 </details>
-
 
 ## How it works {#how-it-works}
 

@@ -32,7 +32,6 @@ more specialized tools and frameworks to manage the ClickHouse OLAP oriented dat
 to Apache Superset.  Use the `ClickHouse Connect` database connection, or `clickhousedb` SQLAlchemy dialect connection
 string.
 
-
 This documentation is current as of the beta release 0.8.2.
 
 :::note
@@ -53,7 +52,6 @@ For some use cases, you may consider using one of the [Community Python drivers]
 |    3.11.x | ✅ |         Windows | ✅ |     24.8.x | ✅  |             |   |           2.1.x | ✅ |
 |    3.12.x | ✅ |                 |   |     24.9.x | ✅  |             |   |           3.0.x | ✅ |
 
-
 ¹ClickHouse Connect has been explicitly tested against the listed platforms.  In addition, untested binary wheels
 (with C optimization) are built for all architectures supported by the excellent [`cibuildwheel``](https://cibuildwheel.readthedocs.io/en/stable/) project.
 Finally, because ClickHouse Connect can also run as pure Python, the source installation should work on any recent
@@ -64,7 +62,6 @@ Python installation.
 ³ClickHouse Connect has been tested against all currently supported ClickHouse versions. Because it uses the HTTP
 protocol, it should also work correctly for most other versions of ClickHouse, although there may be some
 incompatibilities with certain advanced data types.
-
 
 ### Installation {#installation}
 
@@ -98,7 +95,6 @@ There are two examples shown for connecting to ClickHouse:
 
 ##### Use a ClickHouse Connect client instance to connect to a ClickHouse server on localhost: {#use-a-clickhouse-connect-client-instance-to-connect-to-a-clickhouse-server-on-localhost}
 
-
 ```python
 import clickhouse_connect
 
@@ -110,7 +106,6 @@ client = clickhouse_connect.get_client(host='localhost', username='default', pas
 :::tip
 Use the connection details gathered earlier.  ClickHouse Cloud services require TLS, so use port 8443.
 :::
-
 
 ```python
 import clickhouse_connect
@@ -142,7 +137,6 @@ result = client.query('SELECT max(key), avg(metric) FROM new_table')
 result.result_rows
 Out[13]: [(2000, -50.9035)]
 ```
-
 
 ## ClickHouse Connect driver API {#clickhouse-connect-driver-api}
 
@@ -651,12 +645,10 @@ import asyncio
 
 import clickhouse_connect
 
-
 async def main():
     client = await clickhouse_connect.get_async_client()
     result = await client.query("SELECT name FROM system.databases LIMIT 1")
     print(result.result_rows)
-
 
 asyncio.run(main())
 ```
@@ -905,7 +897,6 @@ client.query('SELECT device_id, dev_address, gw_address from devices', column_fo
 | Variant               | object                | -            | Returns the matching Python type for the ClickHouse datatype stored for the value                                 |
 | Dynamic               | object                | -            | Returns the matching Python type for the ClickHouse datatype stored for the value                                 |
 
-
 ### External data {#external-data}
 
 ClickHouse queries can accept external data in any ClickHouse format.  This binary data is sent along with the query string to be used to process the data.  Details of
@@ -922,7 +913,6 @@ for that object accepts the follow arguments:
 | types     | str or seq of str | A list of column data types in the external data.  If a string, types should be separated by commas.  Either `types` or `structure` is required |
 | structure | str or seq of str | A list of column name + data type in the data (see examples).  Either `structure` or `types` is required                                        |
 | mime_type | str               | Optional MIME type of the file data.  Currently ClickHouse ignores this HTTP subheader                                                          |
-
 
 To send a query with an external CSV file containing "movie" data, and combine that data with an `directors` table already present on the ClickHouse server:
 
@@ -989,7 +979,6 @@ assert qr[0][0] == 4
 
 InsertContexts include mutable state that is updated during the insert process, so they are not thread safe.
 
-
 ### Write formats {#write-formats}
 Write formats are currently implemented for limited number of types.  In most cases ClickHouse Connect will attempt to
 automatically determine the correct write format for a column by checking the type of the first (non-null) data value.
@@ -1025,7 +1014,6 @@ In most cases, it is unnecessary to override the write format for a data type, b
 | JSON/Object('json')   | dict                  | string        | Either dictionaries or JSON strings can be inserted into JSON Columns (note `Object('json')` is deprecated) |
 | Variant               | object                |               | At this time on all variants are inserted as Strings and parsed by the ClickHouse server                    |
 | Dynamic               | object                |               | Warning -- at this time any inserts into a Dynamic column are persisted as a ClickHouse String              |
-
 
 ## Additional options {#additional-options}
 

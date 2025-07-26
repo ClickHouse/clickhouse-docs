@@ -171,4 +171,3 @@ We can speed up these queries with projections. See ["Projections"](/data-modeli
 ### Test it in the playground {#playground}
 
 The dataset is also available in the [Online Playground](https://sql.clickhouse.com?query_id=TRCWH5ZETY4SEEK8ISCCAX).
-

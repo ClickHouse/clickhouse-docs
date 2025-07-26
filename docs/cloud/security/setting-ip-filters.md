@@ -33,9 +33,9 @@ Classless Inter-domain Routing (CIDR) notation, allows you to specify IP address
   
   A sidebar will appear with options for you to configure:
   
-  - Allow incoming traffic from anywhere to the service
-  - Allow access from specific locations to the service
-  - Deny all access to the service
+- Allow incoming traffic from anywhere to the service
+- Allow access from specific locations to the service
+- Deny all access to the service
   
 </details>
 <details>
@@ -45,9 +45,9 @@ Classless Inter-domain Routing (CIDR) notation, allows you to specify IP address
   
   From the API key list, click the three dots next to the API key under the **Actions** column and select **Edit**. At the bottom of the screen you will find the IP access list and options to configure:
 
-  - Allow incoming traffic from anywhere to the service
-  - Allow access from specific locations to the service
-  - Deny all access to the service
+- Allow incoming traffic from anywhere to the service
+- Allow access from specific locations to the service
+- Deny all access to the service
   
 </details>
 

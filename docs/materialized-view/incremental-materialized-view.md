@@ -337,7 +337,6 @@ CREATE TABLE comments_posts_users (
   UserId Int32
 ) ENGINE = MergeTree ORDER BY UserId
 
-
 CREATE TABLE comments_null AS comments
 ENGINE = Null
 
@@ -593,7 +592,6 @@ AS SELECT count(*) AS c0
     FROM t0
     LEFT JOIN ( SELECT * FROM t0 ) AS x ON t0.c0 = x.c0;
 
-
 CREATE MATERIALIZED VIEW mvw2 TO mvw2_inner
 AS SELECT count(*) AS c0
     FROM t0
@@ -758,7 +756,6 @@ ORDER BY UserId
 
 These can be populated with the following `INSERT INTO` commands:
 
-
 ```sql
 INSERT INTO stackoverflow.badges SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/badges.parquet')
@@ -839,7 +836,6 @@ ORDER BY last_activity DESC
 ```
 
 While this is valid syntactically, it will produce unintended results - the view will only trigger inserts to the `comments` table. For example:
-
 
 ```sql
 INSERT INTO comments VALUES (99999999, 23121, 1, 'The answer is 42', now(), 2936484, 'gingerwizard');
@@ -1096,7 +1092,6 @@ Leave it disabled when:
 - Materialized Views have dependencies on one another
 - You require predictable, ordered execution
 - You're debugging or auditing insert behavior and want deterministic replay
-
 
 ## Materialized views and Common Table Expressions (CTE) {#materialized-views-common-table-expressions-ctes}
 

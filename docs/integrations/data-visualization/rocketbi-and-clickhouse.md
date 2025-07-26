@@ -82,7 +82,6 @@ Rename filters & Save Control to Dashboard
 
 <Image size="md" img={rocketbi_04} alt="Metrics control with renamed filters ready to save to dashboard" border />
 
-
 #### Create a date type control {#create-a-date-type-control}
 Choose a Date field as Main Date column:
 

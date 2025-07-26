@@ -255,4 +255,3 @@ See also: [test_query_py.py](https://github.com/chdb-io/chdb/blob/main/tests/tes
 <br />
 
 For more examples, see [examples](https://github.com/chdb-io/chdb/tree/main/examples) and [tests](https://github.com/chdb-io/chdb/tree/main/tests).
-

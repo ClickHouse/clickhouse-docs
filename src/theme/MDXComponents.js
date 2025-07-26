@@ -9,6 +9,9 @@ import VStepper from '@site/src/components/Stepper/Stepper';
 // Define the enhanced components
 const enhancedComponents = {
     ...MDXComponents,
+    ul: (props) => <ul className="custom-ul" {...props} />,
+    ol: (props) => <ol className="custom-ol" {...props} />,
+    li: (props) => <li className="custom-li" {...props} />,
 
     // Map to the components expected from the remark plugin
     Stepper: VStepper,

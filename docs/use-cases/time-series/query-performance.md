@@ -112,7 +112,6 @@ LIMIT 10;
 
 Another option is to use materialized views to aggregate and store the results of popular queries. These results can be queried instead of the original table. Suppose the following query is executed quite often in our case:
 
-
 ```sql
 SELECT path, SUM(hits) AS v
 FROM wikistat
@@ -192,7 +191,6 @@ Depending on the cardinality of the raw data set (we have 1 billion rows!), this
 
 With that approach, rows from the raw data set are copied block-wise into the temporary table (which doesn't store any of these rows), and for each block of rows, a partial state is calculated and written to the target table, where these states are incrementally merged in the background.
 
-
 ```sql
 CREATE TABLE wikistat_backfill
 (
@@ -206,7 +204,6 @@ ENGINE = Null;
 ```
 
 Next, we'll create a materialized view to read from `wikistat_backfill` and write into `wikistat_top`
-
 
 ```sql
 CREATE MATERIALIZED VIEW wikistat_backfill_top_mv 
@@ -237,7 +234,6 @@ DROP TABLE wikistat_backfill;
 
 Now we can query the materialized view instead of the original table:
 
-
 ```sql
 SELECT path, sum(hits) AS hits
 FROM wikistat_top
@@ -264,7 +260,5 @@ LIMIT 10;
 10 rows in set. Elapsed: 0.004 sec.
 ```
 
-
 Our performance improvement here is dramatic. 
 Before it took just over 2 seconds to compute the answer to this query and now it takes only 4 milliseconds.
-
