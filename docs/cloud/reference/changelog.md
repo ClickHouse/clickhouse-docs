@@ -31,6 +31,16 @@ import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.pn
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/cloud/reference/cloud-compatibility.md) page.
 
+## July 24, 2025 {#july-24-2025}
+
+**ClickPipes for MySQL CDC now in public beta**
+
+The MySQL CDC connector in ClickPipes is now widely available in public beta. With just a few clicks, 
+you can start replicating your MySQL (or MariaDB) data directly into ClickHouse Cloud in real-time,
+with no external dependencies. Read the [blogpost](https://clickhouse.com/blog/mysql-cdc-connector-clickpipes-beta)
+for an overview of the connector and follow the [quickstart](https://clickhouse.com/docs/integrations/clickpipes/mysql)
+to get up and running.
+
 ## July 11, 2025 {#june-11-2025}
 
 - New services now store database and table metadata in a central **SharedCatalog**,
