@@ -38,7 +38,7 @@ You can activate the connector and create a connection directly by clicking [thi
 4. <h3 id="use-in-glue-job">Use in Glue Job</h3>
 In your Glue job, select the `Job details` tab, and expend the `Advanced properties` window. Under the `Connections` section, select the connection you just created. The connector automatically injects the required JARs into the job runtime.
 
-<Image img={notebook_connections_config} size='md' alt='Glue Notebook connections config'  />
+<Image img={notebook_connections_config} size='md' alt='Glue Notebook connections config' force='true' />
 
 :::note
 The JARs used in the Glue connector are built for `Spark 3.2`, `Scala 2`, and `Python 3`. Make sure to select these versions when configuring your Glue job.
@@ -51,7 +51,7 @@ To add the required jars manually, please follow the following:
 2. Make sure the Glue job has access to this bucket.
 3. Under the `Job details` tab, scroll down and expend the `Advanced properties` drop down, and fill the jars path in `Dependent JARs path`:
 
-<Image img={dependent_jars_path_option} size='md' alt='Glue Notebook JAR path options'  />
+<Image img={dependent_jars_path_option} size='md' alt='Glue Notebook JAR path options' force='true' />
 
 </TabItem>
 </Tabs>
