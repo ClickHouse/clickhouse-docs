@@ -53,7 +53,7 @@ jobs:
           exit_code=$?
           elif [[ "${{ matrix.check_type }}" == "glossary-check" ]]; then
             echo "Extracting glossary from markdown..."
-            python3 scripts/glossary/extract-glossary.py
+            python3 scripts/glossary/extract-glossary-terms.py
             echo "Checking glossary coverage..."
             python3 scripts/glossary/wrap-glossary-terms.py --check || echo "::warning::Glossary check found unwrapped terms (non-blocking)"
             exit_code=0  # Always succeed for glossary check
