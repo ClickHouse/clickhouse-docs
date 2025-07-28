@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        check_type: [spellcheck, kbcheck, md-lint]
+        check_type: [spellcheck, kbcheck, md-lint, glossary-check]
     steps:
       # Add setup steps per check here
       - uses: actions/checkout@v4
@@ -24,7 +24,7 @@ jobs:
         if: matrix.check_type == 'spellcheck'
         run: sudo apt-get update && sudo apt-get install -y aspell aspell-en
       - name: Set up Python
-        if: matrix.check_type == 'kbcheck'
+        if: matrix.check_type == 'kbcheck' || matrix.check_type == 'glossary-check'
         run: |
           curl -Ls https://astral.sh/uv/install.sh | sh
           uv clean
@@ -51,6 +51,12 @@ jobs:
           elif [[ "${{ matrix.check_type }}" == "md-lint" ]]; then
             yarn check-markdown
           exit_code=$?
+          elif [[ "${{ matrix.check_type }}" == "glossary-check" ]]; then
+            echo "Extracting glossary from markdown..."
+            python3 scripts/glossary/extract_glossary.py
+            echo "Checking glossary coverage..."
+            python3 scripts/glossary/wrap_glossary_terms.py --check || echo "::warning::Glossary check found unwrapped terms (non-blocking)"
+            exit_code=0  # Always succeed for glossary check
           fi
           
           if [[ $exit_code -ne 0 ]]; then
@@ -75,4 +81,3 @@ jobs:
         run: |
           echo "::error::One or more checks of the style check failed."
           exit 1
-          

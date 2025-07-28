@@ -173,10 +173,12 @@ def main():
     parser.add_argument('--glossary', default='./src/components/GlossaryTooltip/glossary.json', help='Glossary JSON file')
     parser.add_argument('--dry-run', action='store_true', help='Show changes without writing files')
     parser.add_argument('--force', action='store_true', help='Process files even if they already have glossary syntax')
+    parser.add_argument('--check', action='store_true', help='Check for unwrapped terms and show warnings (non-blocking)')
     
     args = parser.parse_args()
     
-    print("🚀 Starting Glossary Term Wrapper...\n")
+    if not args.check:
+        print("🚀 Starting Glossary Term Wrapper...\n")
     
     # Load glossary
     if not os.path.exists(args.glossary):
@@ -192,45 +194,67 @@ def main():
     # Filter out skip patterns
     files = [f for f in all_files if not should_skip_file(f)]
     
-    print(f"📁 Found {len(all_files)} MDX files, processing {len(files)} files")
-    print(f"⏭️  Skipped {len(all_files) - len(files)} files based on skip patterns")
-    
-    if args.force:
-        print("💪 FORCE MODE - Processing files even with existing glossary syntax")
-    
-    if args.dry_run:
-        print("🔍 DRY RUN MODE - No files will be modified")
-    
-    print()
+    if not args.check:
+        print(f"📁 Found {len(all_files)} MDX files, processing {len(files)} files")
+        print(f"⏭️  Skipped {len(all_files) - len(files)} files based on skip patterns")
+        
+        if args.force:
+            print("💪 FORCE MODE - Processing files even with existing glossary syntax")
+        
+        if args.dry_run:
+            print("🔍 DRY RUN MODE - No files will be modified")
+        
+        print()
     
     # Process files
     stats = {'modified': 0, 'unchanged': 0, 'skipped': 0, 'error': 0, 'terms_wrapped': 0}
+    file_details = []  # Track which files had terms for warning display
     
     for file_path in files:
         rel_path = os.path.relpath(file_path, args.docs_dir)
-        status, changes = process_file(file_path, terms, args.dry_run, args.force)
+        # For check mode, always use dry_run=True to avoid writing files
+        status, changes = process_file(file_path, terms, args.dry_run or args.check, args.force)
         
-        if status == 'modified':
-            print(f"✅ Modified {rel_path} ({changes} terms)")
-        elif status == 'unchanged':
+        if status == 'modified' and changes > 0:
+            file_details.append((rel_path, changes))
+            if not args.check:
+                print(f"✅ Modified {rel_path} ({changes} terms)")
+        elif status == 'unchanged' and not args.check:
             print(f"➖ No changes needed for {rel_path}")
-        elif status == 'skipped':
+        elif status == 'skipped' and not args.check:
             print(f"⏭️  Skipped {rel_path} (already has glossary syntax)")
         
         stats[status] += 1
         stats['terms_wrapped'] += changes
     
-    # Print summary
-    print(f"\n📊 Summary:")
-    print(f"   Files processed: {stats['modified'] + stats['unchanged']}")
-    print(f"   Files modified: {stats['modified']}")
-    print(f"   Files skipped: {stats['skipped']}")
-    print(f"   Terms wrapped: {stats['terms_wrapped']}")
-    
-    if args.dry_run:
-        print("\n💡 Run without --dry-run to apply changes")
-    if not args.force and stats['skipped'] > 0:
-        print("💡 Use --force to process files with existing glossary syntax")
+    # Show results
+    if args.check:
+        # Check mode: show warning if terms found
+        if stats['terms_wrapped'] > 0:
+            print(f"⚠️  GLOSSARY WARNING: Found {stats['terms_wrapped']} unwrapped glossary terms in {len(file_details)} files")
+            print("💡 Run 'python3 scripts/wrap_glossary_terms.py' to add glossary tooltips")
+            
+            # Show files with opportunities (limit to top 10 to avoid spam)
+            if file_details:
+                print("   Files with unwrapped terms:")
+                for rel_path, count in sorted(file_details, key=lambda x: x[1], reverse=True)[:10]:
+                    print(f"   - {rel_path} ({count} terms)")
+                if len(file_details) > 10:
+                    print(f"   ... and {len(file_details) - 10} more files")
+        else:
+            print("✅ All glossary terms are properly wrapped")
+    else:
+        # Normal mode: show detailed summary
+        print(f"\n📊 Summary:")
+        print(f"   Files processed: {stats['modified'] + stats['unchanged']}")
+        print(f"   Files modified: {stats['modified']}")
+        print(f"   Files skipped: {stats['skipped']}")
+        print(f"   Terms wrapped: {stats['terms_wrapped']}")
+        
+        if args.dry_run:
+            print("\n💡 Run without --dry-run to apply changes")
+        if not args.force and stats['skipped'] > 0:
+            print("💡 Use --force to process files with existing glossary syntax")
 
 if __name__ == '__main__':
     main()
