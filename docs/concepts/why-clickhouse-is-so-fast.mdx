@@ -19,9 +19,9 @@ From an architectural perspective, databases consist (at least) of a storage lay
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/vsykFYns0Ws?si=hE2qnOf6cDKn-otP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-In ClickHouse, each table consists of multiple "table ^^parts^^". A [part](/parts) is created whenever a user inserts data into the table (INSERT statement). A query is always executed against all table parts that exist at the time the query starts.
+In ClickHouse, each table consists of multiple "table ^^parts^^". A [part](/parts) is created whenever a user inserts data into the table (INSERT statement). A query is always executed against all table ^^parts^^ that exist at the time the query starts.
 
-To avoid that too many parts accumulate, ClickHouse runs a [merge](/merges) operation in the background which continuously combines multiple smaller parts into a single bigger part.
+To avoid that too many ^^parts^^ accumulate, ClickHouse runs a [merge](/merges) operation in the background which continuously combines multiple smaller ^^parts^^ into a single bigger part.
 
 This approach has several advantages: All data processing can be [offloaded to background part merges](/concepts/why-clickhouse-is-so-fast#storage-layer-merge-time-computation), keeping data writes lightweight and highly efficient. Individual inserts are "local" in the sense that they do not need to update global, i.e. per-table data structures. As a result, multiple simultaneous inserts need no mutual synchronization or synchronization with existing table data, and thus inserts can be performed almost at the speed of disk I/O.
 
@@ -33,7 +33,7 @@ This approach has several advantages: All data processing can be [offloaded to b
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/dvGlPh2bJFo?si=F3MSALPpe0gAoq5k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-Inserts are fully isolated from SELECT queries, and merging inserted data parts happens in the background without affecting concurrent queries.
+Inserts are fully isolated from SELECT queries, and merging inserted data ^^parts^^ happens in the background without affecting concurrent queries.
 
 🤿 Deep dive into this in the [Storage Layer](/docs/academic_overview#3-storage-layer) section of the web version of our VLDB 2024 paper.
 
@@ -43,7 +43,7 @@ Inserts are fully isolated from SELECT queries, and merging inserted data parts 
 
 Unlike other databases, ClickHouse keeps data writes lightweight and efficient by performing all additional data transformations during the [merge](/merges) background process. Examples of this include:
 
-- **Replacing merges** which retain only the most recent version of a row in the input parts and discard all other row versions. Replacing merges can be thought of as a merge-time cleanup operation.
+- **Replacing merges** which retain only the most recent version of a row in the input ^^parts^^ and discard all other row versions. Replacing merges can be thought of as a merge-time cleanup operation.
 
 - **Aggregating merges** which combine intermediate aggregation states in the input part to a new aggregation state. While this seems difficult to understand, it really actually only implements an incremental aggregation.
 
@@ -53,7 +53,7 @@ The point of these transformations is to shift work (computation) from the time 
 
 On the one hand, user queries may become significantly faster, sometimes by 1000x or more, if they can leverage "transformed" data, e.g. pre-aggregated data.
 
-On the other hand, the majority of the runtime of merges is consumed by loading the input parts and saving the output part. The additional effort to transform the data during merge does usually not impact the runtime of merges too much. All of this magic is completely transparent and does not affect the result of queries (besides their performance).
+On the other hand, the majority of the runtime of merges is consumed by loading the input ^^parts^^ and saving the output part. The additional effort to transform the data during merge does usually not impact the runtime of merges too much. All of this magic is completely transparent and does not affect the result of queries (besides their performance).
 
 🤿 Deep dive into this in the [Merge-time Data Transformation](/docs/academic_overview#3-3-merge-time-data-transformation) section of the web version of our VLDB 2024 paper.
 
