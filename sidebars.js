@@ -1715,7 +1715,7 @@ const sidebars = {
   dropdownCategories: [
     {
       type: "category",
-      label: "Getting Started",
+      label: "Get Started",
       description: "Learn how to use ClickHouse",
       customProps: {
         href: "/introduction-clickhouse",
