@@ -223,6 +223,8 @@ ClickHouse Cloud supports the following billing options:
 - Direct-sales annual / multi-year (through pre-paid "ClickHouse Credits", in USD, with additional payment options).
 - Through the AWS, GCP, and Azure marketplaces (either pay-as-you-go (PAYG) or commit to a contract with ClickHouse Cloud through the marketplace).
 
+Note: ClickHouse Cloud Credits for PAYG are invoiced in $0.01 units, allowing us to charge customers for partial ClickHouse credits based on their usage. This differs from committed spend ClickHouse credits, which are purchased in advance in whole $1 units.
+
 ### How long is the billing cycle? {#how-long-is-the-billing-cycle}
 
 Billing follows a monthly billing cycle and the start date is tracked as the date when the ClickHouse Cloud organization was created.
