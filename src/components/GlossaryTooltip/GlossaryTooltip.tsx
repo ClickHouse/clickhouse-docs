@@ -4,7 +4,21 @@ import Link from '@docusaurus/Link';
 
 const GlossaryTooltip = ({ term, capitalize = false, plural = '' }) => {
   const [visible, setVisible] = useState(false);
-  const definition = glossary[term];
+  
+  // Case-insensitive lookup
+  let definition = glossary[term]; // Try exact match first
+  let matchedKey = term;
+  
+  if (!definition) {
+    // Try to find a case-insensitive match
+    const foundKey = Object.keys(glossary).find(key => 
+      key.toLowerCase() === term.toLowerCase()
+    );
+    if (foundKey) {
+      definition = glossary[foundKey];
+      matchedKey = foundKey;
+    }
+  }
 
   if (!definition) {
     console.warn(`Glossary term not found: ${term}`);
@@ -15,7 +29,7 @@ const GlossaryTooltip = ({ term, capitalize = false, plural = '' }) => {
   }
 
   const displayTerm = capitalize ? capitalizeWord(term) : term.toLowerCase();
-  const anchorId = term.toLowerCase().replace(/\s+/g, '-');
+  const anchorId = matchedKey.toLowerCase().replace(/\s+/g, '-');
   const glossarySlug = `/concepts/glossary#${anchorId}`;
 
   return (

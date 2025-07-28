@@ -5,7 +5,7 @@ import MDXComponents from '@theme-original/MDXComponents';
 // Import the custom Stepper component
 // Make sure the path matches your project structure
 import VStepper from '@site/src/components/Stepper/Stepper';
-import GlossaryTooltip from '../../src/components/GlossaryTooltip/GlossaryTooltip.tsx';
+import GlossaryTooltip from '@site/src/components/GlossaryTooltip/GlossaryTooltip';
 
 // Define the enhanced components
 const enhancedComponents = {
