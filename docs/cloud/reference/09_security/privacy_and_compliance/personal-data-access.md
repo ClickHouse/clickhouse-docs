@@ -1,7 +1,7 @@
 ---
-sidebar_label: 'Personal Data Access'
+sidebar_label: 'Personal data access'
 slug: /cloud/security/personal-data-access
-title: 'Personal Data Access'
+title: 'Personal data access'
 description: 'As a registered user, ClickHouse allows you to view and manage your personal account data, including contact information.'
 ---
 

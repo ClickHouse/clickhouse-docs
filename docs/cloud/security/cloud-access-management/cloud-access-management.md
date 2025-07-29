@@ -32,23 +32,31 @@ Users must be assigned an organization level role and may optionally be assigned
 | SQL console  | Custom                | Configure using SQL [`GRANT`](/sql-reference/statements/grant) statement; assign the role to a SQL console user by naming the role after the user |
   
 To create a custom role for a SQL console user and grant it a general role, run the following commands. The email address must match the user's email address in the console. 
+
+<VerticalStepper headerLevel="h4">
+
+#### Create `database_developer` and grant permissions {#create-database_developer-and-grant-permissions}
+
+Create the `database_developer` role and grant `SHOW`, `CREATE`, `ALTER`, and `DELETE` permissions.
     
-1. Create the database_developer role and grant `SHOW`, `CREATE`, `ALTER`, and `DELETE` permissions.
+```sql
+CREATE ROLE OR REPLACE database_developer;
+GRANT SHOW ON * TO database_developer;
+GRANT CREATE ON * TO database_developer;
+GRANT ALTER ON * TO database_developer;
+GRANT DELETE ON * TO database_developer;
+```
+
+#### Create SQL console user role {#create-sql-console-user-role}
+
+Create a role for the SQL console user my.user@domain.com and assign it the database_developer role.
     
-    ```sql
-    CREATE ROLE OR REPLACE database_developer;
-    GRANT SHOW ON * TO database_developer;
-    GRANT CREATE ON * TO database_developer;
-    GRANT ALTER ON * TO database_developer;
-    GRANT DELETE ON * TO database_developer;
-    ```
-    
-2. Create a role for the SQL console user my.user@domain.com and assign it the database_developer role.
-    
-    ```sql
-    CREATE ROLE OR REPLACE `sql-console-role:my.user@domain.com`;
-    GRANT database_developer TO `sql-console-role:my.user@domain.com`;
-    ```
+```sql
+CREATE ROLE OR REPLACE `sql-console-role:my.user@domain.com`;
+GRANT database_developer TO `sql-console-role:my.user@domain.com`;
+```
+
+</VerticalStepper>
 
 ### SQL console passwordless authentication {#sql-console-passwordless-authentication}
 SQL console users are created for each session and authenticated using X.509 certificates that are automatically rotated. The user is removed when the session is terminated. When generating access lists for audits, please navigate to the Settings tab for the service in the console and note the SQL console access in addition to the database users that exist in the database. If custom roles are configured, the user's access is listed in the role ending with the user's username.
@@ -88,38 +96,46 @@ Users can use a SHA256 hash generator or code function such as `hashlib` in Pyth
 ### Database access listings with SQL console users {#database-access-listings-with-sql-console-users}
 The following process can be used to generate a complete access listing across the SQL console and databases in your organization.
 
-1. Run the following queries to get a list of all grants in the database. 
+<VerticalStepper headerLevel="h4">
 
-    ```sql
-    SELECT grants.user_name,
-      grants.role_name,
-      users.name AS role_member,
-      grants.access_type,
-      grants.database,
-      grants.table
-    FROM system.grants LEFT OUTER JOIN system.role_grants ON grants.role_name = role_grants.granted_role_name
-      LEFT OUTER JOIN system.users ON role_grants.user_name = users.name
-    
-    UNION ALL
-    
-    SELECT grants.user_name,
-      grants.role_name,
-      role_grants.role_name AS role_member,
-      grants.access_type,
-      grants.database,
-      grants.table
-    FROM system.role_grants LEFT OUTER JOIN system.grants ON role_grants.granted_role_name = grants.role_name
-    WHERE role_grants.user_name is null;
-    ```
-    
-2. Associate this list to Console users with access to SQL console.
+#### Get a list of all database grants {#get-a-list-of-all-database-grants}
+
+Run the following queries to get a list of all grants in the database. 
+
+```sql
+SELECT grants.user_name,
+grants.role_name,
+users.name AS role_member,
+grants.access_type,
+grants.database,
+grants.table
+FROM system.grants LEFT OUTER JOIN system.role_grants ON grants.role_name = role_grants.granted_role_name
+LEFT OUTER JOIN system.users ON role_grants.user_name = users.name
+
+UNION ALL
+
+SELECT grants.user_name,
+grants.role_name,
+role_grants.role_name AS role_member,
+grants.access_type,
+grants.database,
+grants.table
+FROM system.role_grants LEFT OUTER JOIN system.grants ON role_grants.granted_role_name = grants.role_name
+WHERE role_grants.user_name is null;
+```
+
+#### Associate grant list to Console users with access to SQL console {#associate-grant-list-to-console-users-with-access-to-sql-console}
+
+Associate this list with Console users that have access to SQL console.
    
-    a. Go to the Console.
+a. Go to the Console.
 
-    b. Select the relevant service.
+b. Select the relevant service.
 
-    c. Select Settings on the left.
+c. Select Settings on the left.
 
-    d. Scroll to the SQL console access section.
+d. Scroll to the SQL console access section.
 
-    e. Click the link for the number of users with access to the database `There are # users with access to this service.` to see the user listing.
+e. Click the link for the number of users with access to the database `There are # users with access to this service.` to see the user listing.
+
+</VerticalStepper>

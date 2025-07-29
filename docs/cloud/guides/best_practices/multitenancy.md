@@ -1,6 +1,6 @@
 ---
 slug: /cloud/bestpractices/multi-tenancy
-sidebar_label: 'Implement multi tenancy'
+sidebar_label: 'Multi tenancy'
 title: 'Multi tenancy'
 description: 'Best practices to implement multi tenancy'
 ---

@@ -1,9 +1,3 @@
----
-sidebar_label: 'Security and Compliance'
-slug: /cloud/security/security-and-compliance
-title: 'Security and Compliance'
-description: 'This page describes the security and compliance measures implemented by ClickHouse Cloud to protect customer data.'
----
 
 import BetaBadge from '@theme/badges/BetaBadge';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge';
