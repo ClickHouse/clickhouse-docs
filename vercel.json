@@ -3375,6 +3375,11 @@
       "source": "/docs/cloud/migrate/upload-a-csv-file",
       "destination": "/docs/knowledge-base/upload-a-file",
       "permanent": true
+    },
+    {
+      "source": "/docs/faq/troubleshooting",
+      "destination": "/docs/knowledge-base/unable-to-access-cloud-service",
+      "permanent": true
     }
   ]
 }

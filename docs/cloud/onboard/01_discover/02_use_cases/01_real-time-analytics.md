@@ -11,6 +11,8 @@ import rta_1 from '@site/static/images/cloud/onboard/discover/use_cases/1_rta.pn
 import rta_2 from '@site/static/images/cloud/onboard/discover/use_cases/2_rta.png';
 import rta_3 from '@site/static/images/cloud/onboard/discover/use_cases/3_rta.png';
 
+<iframe width="758" height="426" src="https://www.youtube.com/embed/SnFff0KYwuo?si=aNpGzSobzFhUlyX5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 ## What is real-time analytics?
 
 Real-time analytics refers to data processing that delivers insights to end users

@@ -5,6 +5,8 @@ keywords: ['use cases', 'observability']
 sidebar_label: 'Observability'
 ---
 
+<iframe width="758" height="426" src="https://www.youtube.com/embed/eKlZoT6hPwI?si=Wyrft2T04E1v8US6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 Modern software systems are complex. Microservices, cloud infrastructure, and 
 distributed systems have made it increasingly difficult to understand what's 
 happening inside our applications. When something goes wrong, teams need to know
@@ -14,6 +16,7 @@ This is where observability comes in. It's evolved from simple system monitoring
 into a comprehensive approach to understanding system behavior. However, 
 implementing effective observability isn't straightforward - it requires 
 understanding technical concepts and organizational challenges.
+
 
 ## What is Observability?
 
