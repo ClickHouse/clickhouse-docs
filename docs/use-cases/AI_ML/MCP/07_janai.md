@@ -46,7 +46,6 @@ To enable OpenAI, we need to provide an API key, as shown below:
 
 <Image img={OpenAIModels} alt="Enable OpenAI models" size="md"/>
 
-
 ## Enable MCP Servers {#enable-mcp-servers}
 
 At the time of writing, MCP Servers are an experimental feature in Jan.ai.
