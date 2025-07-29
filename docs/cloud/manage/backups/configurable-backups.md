@@ -25,7 +25,7 @@ The custom schedule will override the default backup policy in ClickHouse Cloud 
 :::
 
 :::note
-In some rare scenarios, the backup scheduler will not respect the **Start Time** specified for backups. Specifically, this happens if there was a successful backup triggered < 24 hours from the time of the currently scheduled backup. This could happen due to a retry mechanism we have in place for backups.  In such instances, the scheduler will skip over the backup for the current day, and will retry the backup the next day at the scheduled time. 
+In some rare scenarios, the backup scheduler will not respect the **Start Time** specified for backups. Specifically, this happens if there was a successful backup triggered < 24 hours from the time of the currently scheduled backup. This could happen due to a retry mechanism we have in place for backups. In such instances, the scheduler will skip over the backup for the current day, and will retry the backup the next day at the scheduled time. 
 :::
 
 To configure the backup schedule for a service, go to the **Settings** tab in the console and click on **Change backup configuration**.
