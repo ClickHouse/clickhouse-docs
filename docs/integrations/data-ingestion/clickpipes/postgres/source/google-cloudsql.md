@@ -68,8 +68,14 @@ Connect to your Cloud SQL Postgres through the admin user and run the below comm
 4. Create publication that you'll be using for creating the MIRROR (replication) in future.
 
    ```sql
-   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
+   CREATE PUBLICATION clickpipes_publication FOR TABLE schema.table1, schema.table2;
    ```
+
+   :::note
+
+   For detailed information about publication management, including automatic creation, table-specific vs all-tables publications, and billing implications, see our [Publication Management Guide](./publication-management.md).
+
+   :::
 
 [//]: # (TODO Add SSH Tunneling)
 

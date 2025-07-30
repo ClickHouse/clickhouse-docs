@@ -66,11 +66,13 @@ For this, you can connect to your Postgres instance and run the following SQL co
   ALTER USER clickpipes_user REPLICATION;
 
 -- Create a publication. We will use this when creating the pipe
-  CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
+  CREATE PUBLICATION clickpipes_publication FOR TABLE schema.table1, schema.table2;
 ```
 :::note
 
 Make sure to replace `clickpipes_user` and `clickpipes_password` with your desired username and password.
+
+For detailed information about publication management, including automatic creation, table-specific vs all-tables publications, and billing implications, see our [Publication Management Guide](./publication-management.md).
 
 :::
 

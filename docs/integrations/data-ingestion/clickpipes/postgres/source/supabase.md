@@ -36,10 +36,16 @@ Here, we can run the following SQL commands:
   ALTER USER clickpipes_user REPLICATION;
 
 -- Create a publication. We will use this when creating the mirror
-  CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
+  CREATE PUBLICATION clickpipes_publication FOR TABLE schema.table1, schema.table2;
 ```
 
 <Image img={supabase_commands} alt="User and publication commands" size="large" border/>
+
+:::note
+
+For detailed information about publication management, including automatic creation, table-specific vs all-tables publications, and billing implications, see our [Publication Management Guide](./publication-management.md).
+
+:::
 
 Click on **Run** to have a publication and a user ready.
 
