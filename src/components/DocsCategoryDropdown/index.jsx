@@ -143,24 +143,23 @@ const DropdownContent = ({
           className={`${styles.docsNavDropdownMenu} ${isVisible ? styles.visible : ''}`}
           style={{ position: "fixed", ...dropdownStyles }}
       >
-        <div
+        <Link
             key={99}
+            to={dropdownCategory.customProps.href}
             className={`${styles.docsNavMenuItem} ${hovered === 99 ? styles.docsNavHovered : ""}`}
             onMouseEnter={() => setHovered(99)}
             onMouseLeave={() => setHovered(null)}
+            onClick={handleMouseLeave}
+            style={{ textDecoration: 'none', display: 'block' }}
         >
-          <Link
-              to={dropdownCategory.customProps.href}
-              className={styles.docsNavMenuHeader}
-              onClick={handleMouseLeave}
-          >
+          <div className={styles.docsNavMenuHeader}>
             <Translate
                 id={`sidebar.dropdownCategories.category.${dropdownCategory.label}`}
                 description={`Translation for ${dropdownCategory.label}`}
             >
               {dropdownCategory.label}
             </Translate>
-          </Link>
+          </div>
           <div className={styles.docsNavMenuDescription}>
             <Translate
                 id={`sidebar.dropdownCategories.category.description.${dropdownCategory.label}`}
@@ -169,29 +168,27 @@ const DropdownContent = ({
               {dropdownCategory.description}
             </Translate>
           </div>
-        </div>
+        </Link>
         <hr className={styles.docsNavMenuDivider} />
         <div className={styles.docsNavMenuItems}>
           {dropdownCategory.items.map((item, index) => (
-              <div
+              <Link
                   key={index}
+                  to={item.href}
                   className={`${styles.docsNavMenuItem} ${hovered === index ? styles.docsNavHovered : ""}`}
                   onMouseEnter={() => setHovered(index)}
                   onMouseLeave={() => setHovered(null)}
+                  onClick={handleMouseLeave}
+                  style={{ textDecoration: 'none', display: 'block' }}
               >
-                <Link
-                    to={item.href}
-                    className={styles.docsNavItemTitle}
-                    onClick={handleMouseLeave}
-                >
+                <div className={styles.docsNavItemTitle}>
                   <Translate
                       id={`sidebar.dropdownCategories.category.${dropdownCategory.label}.${item.label}`}
                       description={`Translation for ${dropdownCategory.label}.${item.label}`}
                   >
                     {item.label}
                   </Translate>
-
-                </Link>
+                </div>
                 <div className={styles.docsNavItemDescription}>
                   <Translate
                       id={`sidebar.dropdownCategories.category.${dropdownCategory.label}.${item.label}.description`}
@@ -199,9 +196,8 @@ const DropdownContent = ({
                   >
                     {item.description}
                   </Translate>
-
                 </div>
-              </div>
+              </Link>
           ))}
         </div>
       </div>

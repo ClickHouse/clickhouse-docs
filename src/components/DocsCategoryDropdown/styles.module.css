@@ -24,6 +24,12 @@
   }
 }
 
+.docsNavDropdownContainer .docsNavDropdownToolbarTopLevelLink {
+  margin: -8px;
+  padding: 8px;
+  display: inline-block;
+}
+
 [data-theme="dark"] .docsNavDropdownContainer:hover .docsNavDropdownToolbarLink,
 [data-theme="dark"] .docsNavDropdownContainer:hover .docsNavDropdownToolbarTopLevelLink {
   color: #FAFF69 !important;
