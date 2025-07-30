@@ -10,19 +10,29 @@ import styles from "./styles.module.css";
 
 function DocsCategoryDropdown({ dropdownCategory }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const [dropdownStyles, setDropdownStyles] = useState({
     top: "0px",
     left: "0px",
   });
   const dropdownMenuRef = useRef(null);
   const triggerRef = useRef(null); // Reference for the individual menu item trigger
+  const hideTimeoutRef = useRef(null);
 
   const handleMouseEnter = () => {
+    if (hideTimeoutRef.current) {
+      clearTimeout(hideTimeoutRef.current);
+      hideTimeoutRef.current = null;
+    }
     setIsOpen(true);
+    setTimeout(() => setIsVisible(true), 10);
   };
 
   const handleMouseLeave = () => {
-    setIsOpen(false);
+    setIsVisible(false);
+    hideTimeoutRef.current = setTimeout(() => {
+      setIsOpen(false);
+    }, 150);
   };
 
   // Use useEffect to update the dropdown position when isOpen changes
@@ -42,17 +52,17 @@ function DocsCategoryDropdown({ dropdownCategory }) {
       } else {
         // Align to center
         left =
-          triggerRect.left + triggerRect.width / 2 - dropdownRect.width / 2;
+            triggerRect.left + triggerRect.width / 2 - dropdownRect.width / 2;
       }
 
       // Ensure the dropdown doesn't go off-screen
       left = Math.max(
-        10,
-        Math.min(left, viewportWidth - dropdownRect.width - 10),
+          10,
+          Math.min(left, viewportWidth - dropdownRect.width - 10),
       );
 
       setDropdownStyles({
-        top: `${triggerRect.bottom}px`, // Align the dropdown below the menu item
+        top: `${triggerRect.bottom}px`, // Back to original positioning
         left: `${left}px`, // Align the dropdown with the menu item
       });
     }
@@ -67,132 +77,134 @@ function DocsCategoryDropdown({ dropdownCategory }) {
 
   // Guard against undefined sidebar
   const isSelected =
-    sidebar && sidebar.name && dropdownCategory
-      ? sidebar.name === dropdownCategory.customProps.sidebar
-      : false;
+      sidebar && sidebar.name && dropdownCategory
+          ? sidebar.name === dropdownCategory.customProps.sidebar
+          : false;
 
   return (
-    <div
-      className={styles.docsNavDropdownContainer}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
+      <div
+          className={styles.docsNavDropdownContainer}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+      >
       <span
-        className={styles.docsNavDropdownToolbarLink}
-        ref={triggerRef} // Attach the ref to the individual link that triggers the dropdown
+          className={styles.docsNavDropdownToolbarLink}
+          ref={triggerRef} // Attach the ref to the individual link that triggers the dropdown
       >
         <Link
-          className={`${styles.docsNavDropdownToolbarTopLevelLink} ${isSelected ? styles.docsNavSelected : ""
+            className={`${styles.docsNavDropdownToolbarTopLevelLink} ${isSelected ? styles.docsNavSelected : ""
             }`}
-          href={dropdownCategory.customProps.href}
+            href={dropdownCategory.customProps.href}
         >
           <Translate
-            id={`sidebar.dropdownCategories.category.${dropdownCategory.label}`}
-            description={`Translation for ${dropdownCategory.label}`}
+              id={`sidebar.dropdownCategories.category.${dropdownCategory.label}`}
+              description={`Translation for ${dropdownCategory.label}`}
           >
             {dropdownCategory.label}
           </Translate>
         </Link>{" "}
         <DropdownCaret />
       </span>
-      {isOpen && (
-        <DropdownContent
-          dropdownCategory={dropdownCategory}
-          handleMouseLeave={handleMouseLeave}
-          dropdownStyles={dropdownStyles} // Pass the dynamic styles to position the dropdown
-          dropdownMenuRef={dropdownMenuRef} // Pass the ref to the dropdown content
-        />
-      )}
-    </div>
+        {isOpen && (
+            <DropdownContent
+                dropdownCategory={dropdownCategory}
+                handleMouseLeave={handleMouseLeave}
+                dropdownStyles={dropdownStyles} // Pass the dynamic styles to position the dropdown
+                dropdownMenuRef={dropdownMenuRef} // Pass the ref to the dropdown content
+                isVisible={isVisible}
+            />
+        )}
+      </div>
   );
 }
 
 export const DocsCategoryDropdownLinkOnly = ({ title, link }) => {
   return (
-    <div className={styles.docsNavDropdownContainer}>
-      <Link href={link} className={styles.docsNavDropdownToolbarTopLevelLink}>
-        <span>{title}</span>
-      </Link>
-    </div>
+      <div className={styles.docsNavDropdownContainer}>
+        <Link href={link} className={styles.docsNavDropdownToolbarTopLevelLink}>
+          <span>{title}</span>
+        </Link>
+      </div>
   );
 };
 
 const DropdownContent = ({
-  dropdownCategory,
-  handleMouseLeave,
-  dropdownStyles,
-  dropdownMenuRef,
-}) => {
+                           dropdownCategory,
+                           handleMouseLeave,
+                           dropdownStyles,
+                           dropdownMenuRef,
+                           isVisible,
+                         }) => {
   const [hovered, setHovered] = useState(null);
 
   return (
-    <div
-      ref={dropdownMenuRef}
-      className={styles.docsNavDropdownMenu}
-      style={{ position: "fixed", ...dropdownStyles }}
-    >
       <div
-        key={99}
-        className={`${styles.docsNavMenuItem} ${hovered === 99 ? styles.docsNavHovered : ""}`}
-        onMouseEnter={() => setHovered(99)}
-        onMouseLeave={() => setHovered(null)}
+          ref={dropdownMenuRef}
+          className={`${styles.docsNavDropdownMenu} ${isVisible ? styles.visible : ''}`}
+          style={{ position: "fixed", ...dropdownStyles }}
       >
-        <Link
-          to={dropdownCategory.customProps.href}
-          className={styles.docsNavMenuHeader}
-          onClick={handleMouseLeave}
+        <div
+            key={99}
+            className={`${styles.docsNavMenuItem} ${hovered === 99 ? styles.docsNavHovered : ""}`}
+            onMouseEnter={() => setHovered(99)}
+            onMouseLeave={() => setHovered(null)}
         >
-          <Translate
-            id={`sidebar.dropdownCategories.category.${dropdownCategory.label}`}
-            description={`Translation for ${dropdownCategory.label}`}
+          <Link
+              to={dropdownCategory.customProps.href}
+              className={styles.docsNavMenuHeader}
+              onClick={handleMouseLeave}
           >
-            {dropdownCategory.label}
-          </Translate>
-        </Link>
-        <div className={styles.docsNavMenuDescription}>
-          <Translate
-            id={`sidebar.dropdownCategories.category.description.${dropdownCategory.label}`}
-            description={`Translation for ${dropdownCategory.label} description`}
-          >
-            {dropdownCategory.description}
-          </Translate>
+            <Translate
+                id={`sidebar.dropdownCategories.category.${dropdownCategory.label}`}
+                description={`Translation for ${dropdownCategory.label}`}
+            >
+              {dropdownCategory.label}
+            </Translate>
+          </Link>
+          <div className={styles.docsNavMenuDescription}>
+            <Translate
+                id={`sidebar.dropdownCategories.category.description.${dropdownCategory.label}`}
+                description={`Translation for ${dropdownCategory.label} description`}
+            >
+              {dropdownCategory.description}
+            </Translate>
+          </div>
+        </div>
+        <hr className={styles.docsNavMenuDivider} />
+        <div className={styles.docsNavMenuItems}>
+          {dropdownCategory.items.map((item, index) => (
+              <div
+                  key={index}
+                  className={`${styles.docsNavMenuItem} ${hovered === index ? styles.docsNavHovered : ""}`}
+                  onMouseEnter={() => setHovered(index)}
+                  onMouseLeave={() => setHovered(null)}
+              >
+                <Link
+                    to={item.href}
+                    className={styles.docsNavItemTitle}
+                    onClick={handleMouseLeave}
+                >
+                  <Translate
+                      id={`sidebar.dropdownCategories.category.${dropdownCategory.label}.${item.label}`}
+                      description={`Translation for ${dropdownCategory.label}.${item.label}`}
+                  >
+                    {item.label}
+                  </Translate>
+
+                </Link>
+                <div className={styles.docsNavItemDescription}>
+                  <Translate
+                      id={`sidebar.dropdownCategories.category.${dropdownCategory.label}.${item.label}.description`}
+                      description={`Translation for ${dropdownCategory.label}.${item.label} description`}
+                  >
+                    {item.description}
+                  </Translate>
+
+                </div>
+              </div>
+          ))}
         </div>
       </div>
-      <hr className={styles.docsNavMenuDivider} />
-      <div className={styles.docsNavMenuItems}>
-        {dropdownCategory.items.map((item, index) => (
-          <div
-            key={index}
-            className={`${styles.docsNavMenuItem} ${hovered === index ? styles.docsNavHovered : ""}`}
-            onMouseEnter={() => setHovered(index)}
-            onMouseLeave={() => setHovered(null)}
-          >
-            <Link
-              to={item.href}
-              className={styles.docsNavItemTitle}
-              onClick={handleMouseLeave}
-            >
-              <Translate
-                id={`sidebar.dropdownCategories.category.${dropdownCategory.label}.${item.label}`}
-                description={`Translation for ${dropdownCategory.label}.${item.label}`}
-              >
-                {item.label}
-              </Translate>
-
-            </Link>
-            <div className={styles.docsNavItemDescription}>
-              <Translate
-                id={`sidebar.dropdownCategories.category.${dropdownCategory.label}.${item.label}.description`}
-                description={`Translation for ${dropdownCategory.label}.${item.label} description`}
-              >
-                {item.description}
-              </Translate>
-
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
   );
 };
 
@@ -211,20 +223,20 @@ const DropdownCaret = () => {
   };
 
   return (
-    <span style={{ marginLeft: "8px" }}>
+      <span style={{ marginLeft: "8px" }}>
       <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="6"
-        height="10"
-        viewBox="0 0 6 10"
-        style={rotatedIconStyle}
+          xmlns="http://www.w3.org/2000/svg"
+          width="6"
+          height="10"
+          viewBox="0 0 6 10"
+          style={rotatedIconStyle}
       >
         <path
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="1.5"
-          d="M1 9L5 5 1 1"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="1.5"
+            d="M1 9L5 5 1 1"
         />
       </svg>
     </span>
