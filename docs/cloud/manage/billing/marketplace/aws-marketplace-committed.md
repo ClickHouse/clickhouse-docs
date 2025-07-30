@@ -20,6 +20,11 @@ Get started with ClickHouse Cloud on the [AWS Marketplace](https://aws.amazon.co
 ## Prerequisites {#prerequisites}
 
 - A Private Offer from ClickHouse based on specific contract terms.
+- To connect a ClickHouse organization to your committed spend offer, you must be an admin of that organization.
+
+[Required permissions to view and accept your committed contract in AWS](https://docs.aws.amazon.com/marketplace/latest/buyerguide/private-offers-page.html#private-offers-page-permissions):
+- If you use AWS managed policies it is required to have the following permissions: AWSMarketplaceRead-only, AWSMarketplaceManageSubscriptions, or AWSMarketplaceFullAccess.
+- If you aren't using AWS managed policies it is required to have the following permissions: IAM action aws-marketplace:ListPrivateListings and aws-marketplace:ViewSubscriptions.
 
 ## Steps to sign up {#steps-to-sign-up}
 
