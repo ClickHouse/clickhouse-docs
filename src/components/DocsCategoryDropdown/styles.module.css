@@ -16,23 +16,39 @@
     text-decoration: none;
     color: #FAFF69;
   }
+
+  /* ONLY ADD: Make text turn yellow when container is hovered */
+  &:hover .docsNavDropdownToolbarLink,
+  &:hover .docsNavDropdownToolbarTopLevelLink {
+    color: #FAFF69 !important;
+  }
+}
+
+.docsNavDropdownContainer .docsNavDropdownToolbarTopLevelLink {
+  margin: -8px;
+  padding: 8px;
+  display: inline-block;
+}
+
+[data-theme="dark"] .docsNavDropdownContainer:hover .docsNavDropdownToolbarLink,
+[data-theme="dark"] .docsNavDropdownContainer:hover .docsNavDropdownToolbarTopLevelLink {
+  color: #FAFF69 !important;
 }
 
 .docsNavDropdownContainer::after {
   content: "";
   position: absolute;
   left: 0;
-  bottom: -30px; /* Adjust this for the hover area extension */
+  bottom: -5px;
   width: 100%;
-  height: 30px; /* Must match the bottom value */
+  height: 5px;
   pointer-events: auto;
 }
-
 
 .docsNavDropdownToolbarLink, .docsNavDropdownToolbarTopLevelLink {
   font-weight: bold;
   font-size: 0.875rem;
-  cursor: default;
+  cursor: default; /* Keep original cursor behavior */
   color: #414040;
   color: black;
 }
@@ -46,22 +62,24 @@
   cursor: pointer;
 }
 
-.docsNavDropdownToolbarLink:hover, .docsNavDropdownToolbarTopLevelLink:hover {
+/* ONLY CHANGE: Comment out individual hover rules */
+/* .docsNavDropdownToolbarLink:hover, .docsNavDropdownToolbarTopLevelLink:hover {
   color: black;
-}
+} */
 
 [data-theme="dark"] .docsNavDropdownToolbarLink, [data-theme="dark"] .docsNavDropdownToolbarTopLevelLink {
   color: #C0C0C0;
 }
 
-[data-theme="dark"] .docsNavDropdownToolbarLink:hover, [data-theme="dark"] .docsNavDropdownToolbarTopLevelLink:hover {
+/* ONLY CHANGE: Comment out individual dark hover rules */
+/* [data-theme="dark"] .docsNavDropdownToolbarLink:hover, [data-theme="dark"] .docsNavDropdownToolbarTopLevelLink:hover {
   color: #FAFF69;
-}
+} */
 
 .docsNavSelected {
-  color: black; 
+  color: black;
   text-decoration: underline;
-  text-underline-offset: 4px; 
+  text-underline-offset: 4px;
 }
 
 [data-theme="dark"] .docsNavSelected {
@@ -82,9 +100,19 @@
   filter: drop-shadow(0px 2px 2px rgba(50, 50, 50, 0.1));
   padding: 10px 10px 10px 10px;
   border-radius: 10px;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  transform: translateY(30px);
+}
+
+.docsNavDropdownMenu.visible {
   opacity: 1;
   transition: opacity 0.3s ease-in-out;
-  transform: translateY(30px);
+}
+
+.docsNavDropdownMenu.hiding {
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out;
 }
 
 @media (max-width: var(--mobile-breakpoint)) {
@@ -130,7 +158,6 @@
   color: black;
 }
 
-
 .docsNavMenuDescription {
   font-size: 0.75rem;
   color: var(--ifm-toc-link-color);
@@ -162,6 +189,14 @@
   white-space: normal;
   overflow-wrap: break-word;
   border-radius: 10px;
+}
+
+.docsNavMenuItem:hover .docsNavItemTitle {
+  color: yellow !important;
+}
+
+[data-theme="dark"] .docsNavMenuItem:hover .docsNavItemTitle {
+  color: yellow !important;
 }
 
 [data-theme="dark"] .docsNavMenuItem:hover {
@@ -216,4 +251,3 @@
     background-color: white;
   }
 }
-
