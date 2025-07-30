@@ -13,18 +13,18 @@ This guide covers best practices and considerations for managing PostgreSQL publ
 
 You have two main approaches for managing publications with ClickPipes:
 
-### Option 1: Automatic Publication Creation (Recommended for Simplicity) {#automatic-publication-creation}
+### Option 1: Automatic Publication Creation (Let ClickPipes Manage It) {#automatic-publication-creation}
 
-If you **don't specify a publication** during ClickPipe creation, ClickPipes will automatically create a publication scoped to only the tables you select for replication.
+If you want ClickPipes to handle publication management and not worry about the intricacies of PostgreSQL publications, simply **don't specify a publication** during ClickPipe creation. ClickPipes will automatically create a publication scoped to only the tables you select for replication.
 
 **Requirements:**
 - The ClickPipes user must have **table owner permissions** for all tables you want to replicate
-- This is the easiest approach for getting started
 
 **Advantages:**
 - No manual publication management required
 - Publication is automatically scoped to only selected tables
-- No risk of billing for unwanted table data
+- Same cost-effective billing as table-specific publications (only pay for selected tables)
+- Easiest approach for getting started
 
 **Disadvantages:**
 - Requires higher privileges (table owner permissions)
@@ -46,7 +46,7 @@ CREATE PUBLICATION clickpipes_publication FOR TABLE schema.table1, schema.table2
 - Fine-grained control over which tables are included
 - Only requires SELECT permissions on tables (not ownership)
 - Clear visibility into what data will be replicated
-- Optimal billing - only pay for data you actually need
+- Same cost-effective billing as automatic creation (only pay for selected tables)
 
 **Disadvantages:**
 - Manual management required
@@ -122,21 +122,23 @@ SELECT * FROM pg_publication;
 
 ## Best Practices {#best-practices}
 
-1. **Start with table-specific publications** for production workloads to maintain cost control and clarity
+1. **Choose either automatic creation or table-specific publications** for production workloads - both provide the same cost control, with automatic being easier and manual providing more control
 
-2. **Use automatic creation for development/testing** when you want to get started quickly and don't mind granting higher privileges
+2. **Use automatic creation** when you want ClickPipes to handle publication management and don't mind granting table owner privileges
 
 3. **Plan your table selection carefully** - adding/removing tables later requires publication changes
 
-4. **Monitor your data usage** to ensure you're only paying for data you actually need
+4. **Avoid all-tables publications** unless you specifically need all tables - this is the only approach that increases costs
 
-5. **Document your publication strategy** so team members understand the setup
+5. **Monitor your data usage** to ensure you're only paying for data you actually need
+
+6. **Document your publication strategy** so team members understand the setup
 
 ## Billing Implications {#billing-implications}
 
 - **Table-specific publications**: You pay only for data changes from explicitly listed tables
-- **All-tables publications**: You pay for data changes from all tables in the database, even if ClickPipes only processes a subset
-- **Automatic creation**: You pay only for data from selected tables (most cost-effective)
+- **Automatic creation**: You pay only for data changes from selected tables (same cost as table-specific)
+- **All-tables publications**: You pay for data changes from **all tables** in the database, even if ClickPipes only processes a subset - this is the costly approach to avoid
 
 ## Additional Resources {#additional-resources}
 
