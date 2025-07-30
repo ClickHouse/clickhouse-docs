@@ -185,6 +185,14 @@
   border-radius: 10px;
 }
 
+.docsNavMenuItem:hover .docsNavItemTitle {
+  color: yellow !important;
+}
+
+[data-theme="dark"] .docsNavMenuItem:hover .docsNavItemTitle {
+  color: yellow !important;
+}
+
 [data-theme="dark"] .docsNavMenuItem:hover {
   background-color: #272725;
 }
