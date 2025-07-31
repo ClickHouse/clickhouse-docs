@@ -21,7 +21,7 @@ options to continue using ClickHouse Cloud:
 | Billing option                                      | Description                                                                             |
 |-----------------------------------------------------|-----------------------------------------------------------------------------------------|
 | [Direct PAYG](#direct-payg)                         | Add a valid credit card to your organization to Pay-As-You-Go                           |
-| [Marketplace PAYG](#marketplace-payg)               | Set up a Pay-As-You-Go subscription via a supported cloud marketplace provider          |
+| [Marketplace PAYG](#cloud-marketplace-payg)         | Set up a Pay-As-You-Go subscription via a supported cloud marketplace provider          |
 | [Commited spend contract](#commited-spend-contract) | Enter into a committed spend contract directly or through a supported cloud marketplace |
 
 If your trial ends and no billing option has been configured for your organization,
@@ -61,7 +61,7 @@ within the organization will be stopped. If payment is still not received by the
 end of this 30 day period and we have not granted an extension, all data and 
 services associated with your organization will be deleted.
 
-### Cloud marketplace pay-as-you-go billing {#marketplace-payg}
+### Cloud marketplace pay-as-you-go billing {#cloud-marketplace-payg}
 
 Pay-As-You-Go billing can also be configured to charge an organization through one of our supported cloud marketplaces 
 (AWS, GCP, or Azure). To sign up for Marketplace PAYG billing, follow these 
