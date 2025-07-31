@@ -17,10 +17,15 @@
     color: #FAFF69;
   }
 
-  /* ONLY ADD: Make text turn yellow when container is hovered */
-  &:hover .docsNavDropdownToolbarLink,
+
+[data-theme="light"] &:hover .docsNavDropdownToolbarLink,
   &:hover .docsNavDropdownToolbarTopLevelLink {
-    color: #FAFF69 !important;
+    color: black !important;
+  }
+
+[data-theme="dark"] &:hover .docsNavDropdownToolbarLink,
+  &:hover .docsNavDropdownToolbarTopLevelLink {
+    color: black !important;
   }
 }
 
@@ -192,15 +197,19 @@
 }
 
 .docsNavMenuItem:hover .docsNavItemTitle {
-  color: yellow !important;
+  color: black !important;
 }
 
 [data-theme="dark"] .docsNavMenuItem:hover .docsNavItemTitle {
-  color: yellow !important;
+  color: black !important;
 }
 
 [data-theme="dark"] .docsNavMenuItem:hover {
   background-color: #272725;
+}
+
+[data-theme="light"] .docsNavMenuItem:hover {
+  background-color: #f5f5f5;
 }
 
 .docsNavHovered {
@@ -214,7 +223,7 @@
 
 [data-theme="light"] .docsNavHovered {
   background-color: #f5f5f5;
-  color: yellow;
+  color: black;
 }
 
 .docsNavItemTitle {
