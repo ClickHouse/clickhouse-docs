@@ -68,7 +68,6 @@ We will want to create three tables:
 2. A table to store the final flattened data (destination table)
 3. A materialized view to flatten the data
 
-
 For the example DynamoDB data above, the ClickHouse tables would look like this:
 
 ```sql

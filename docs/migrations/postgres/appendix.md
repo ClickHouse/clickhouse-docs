@@ -5,7 +5,6 @@ keywords: ['postgres', 'postgresql', 'data types', 'types']
 description: 'Additional information relative to migrating from PostgreSQL'
 ---
 
-
 import postgresReplicas from '@site/static/images/integrations/data-ingestion/dbms/postgres-replicas.png';
 import Image from '@theme/IdealImage';
 

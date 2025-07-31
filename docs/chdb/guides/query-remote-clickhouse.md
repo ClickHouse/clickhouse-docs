@@ -94,7 +94,6 @@ openai_df.sort_values(by=["x"], ascending=False).head(n=10)
 
 Now let's do the same to return the downloads for [`scikit-learn`](https://clickpy.clickhouse.com/dashboard/scikit-learn):
 
-
 ```python
 query = """
 SELECT

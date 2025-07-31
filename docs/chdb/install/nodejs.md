@@ -26,7 +26,6 @@ npm i chdb
 
 You can find the GitHub repository for the project at [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node).
 
-
 ## Usage {#usage}
 
 You can leverage the power of chdb in your NodeJS applications by importing and using the chdb-node module:
@@ -64,4 +63,3 @@ npm run libchdb
 npm install
 npm run test
 ```
-

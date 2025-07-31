@@ -47,7 +47,6 @@ Additional charges may be applied to inter-region traffic. Please check latest A
 1. Add the Private Endpoint GUID to your service(s) allow list
 1. Access your ClickHouse Cloud service using Private Link
 
-
 ## Attention {#attention}
 ClickHouse attempts to group your services to reuse the same published [Private Link service](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview) within the Azure region. However, this grouping is not guaranteed, especially if you spread your services across multiple ClickHouse organizations.
 If you already have Private Link configured for other services in your ClickHouse organization, you can often skip most of the steps because of that grouping and proceed directly to the final step: [Add the Private Endpoint GUID to your service(s) allow list](#add-private-endpoint-guid-to-services-allow-list).
@@ -276,7 +275,6 @@ There are various ways to configure DNS. Please set up DNS according to your spe
 
 You need to point "DNS name", taken from [Obtain Azure connection alias for Private Link](#obtain-azure-connection-alias-for-private-link) step, to Private Endpoint IP address. This ensures that services/components within your VPC/Network can resolve it properly.
 
-
 ### Verify DNS setup {#verify-dns-setup}
 
 `xxxxxxxxxx.westus3.privatelink.azure.clickhouse.cloud` domain should be pointed to the Private Endpoint IP. (10.0.0.4 in this example).
@@ -425,7 +423,6 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: ap
 ## Access your ClickHouse Cloud service using Private Link {#access-your-clickhouse-cloud-service-using-private-link}
 
 Each service with Private Link enabled has a public and private endpoint. In order to connect using Private Link, you need to use a private endpoint which will be `privateDnsHostname`<sup>API</sup> or `DNS name`<sup>console</sup> taken from [Obtain Azure connection alias for Private Link](#obtain-azure-connection-alias-for-private-link).
-
 
 ### Obtaining the private DNS hostname {#obtaining-the-private-dns-hostname}
 

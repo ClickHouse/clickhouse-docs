@@ -19,7 +19,6 @@ The end result is the ability to deliver fast, interactive customer-facing analy
 
 Built-in row-level security means that every user only ever sees exactly the data they're allowed to see. And two levels of fully-configurable caching mean you can deliver fast, real time analytics at scale.
 
-
 ## 1. Gather your connection details {#1-gather-your-connection-details}
 <ConnectionDetails />
 
@@ -47,7 +46,6 @@ fetch('https://api.embeddable.com/api/v1/connections', {
     },
   }),
 });
-
 
 Response:
 Status 201 { errorMessage: null }

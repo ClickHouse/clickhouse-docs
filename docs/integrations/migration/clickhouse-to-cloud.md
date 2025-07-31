@@ -42,7 +42,6 @@ The process is:
 1. Remove the source server from the IP Access List on the destination (if applicable)
 1. Remove the read-only user from the source service
 
-
 ### Migration of tables from one system to another: {#migration-of-tables-from-one-system-to-another}
 This example migrates one table from a self-managed ClickHouse server to ClickHouse Cloud.
 
@@ -83,7 +82,6 @@ Change the ENGINE to to ReplicatedMergeTree without any parameters when you run 
 CREATE TABLE db.table ...
 ```
 
-
 - Use the `remoteSecure` function to pull the data from the self-managed source
 
 <Image img={self_managed_03} size='sm' alt='Migrating Self-managed ClickHouse' background='white' />
@@ -113,8 +111,6 @@ remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table',
 'default', 'PASS') SELECT * FROM db.table
 ```
 
-
-
 ## Migrating between ClickHouse Cloud services {#migrating-between-clickhouse-cloud-services}
 
 <Image img={self_managed_05} size='lg' alt='Migrating Self-managed ClickHouse' background='white' />
@@ -135,7 +131,6 @@ There are a few steps in the migration:
 1. Copy the data from source to destination
 1. Re-establish the IP Access List on the destination
 1. Remove the read-only user from the source service
-
 
 #### Add a read-only user to the source service {#add-a-read-only-user-to-the-source-service}
 
@@ -165,8 +160,6 @@ On the destination create the database if it is not there already:
   ```sql
   CREATE DATABASE db
   ```
-
-
 
 - Using the CREATE TABLE statement from the source, create the destination.
 

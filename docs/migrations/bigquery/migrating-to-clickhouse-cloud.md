@@ -447,7 +447,6 @@ GROUP BY tags
 ORDER BY views DESC
 LIMIT 5
 
-
    ┌─tags───────┬──────views─┐
 1. │ javascript │ 8190916894 │
 2. │ python     │ 8175132834 │
@@ -483,7 +482,6 @@ WHERE PostTypeId = 'Question'
 GROUP BY Year
 ORDER BY Year ASC
 FORMAT Vertical
-
 
 Row 1:
 ──────

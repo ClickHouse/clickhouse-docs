@@ -50,7 +50,7 @@ You can [run this query on the ClickHouse SQL Playground](https://sql.clickhouse
 
 <Image img={column_example} alt="Example query in a column-oriented database" size="lg"/>
 
-As you can see in the stats section in the above diagram, the query processed 100 million rows in 92 milliseconds, a throughput of approximately 300 million rows or just under 7 GB per second.
+As you can see in the stats section in the above diagram, the query processed 100 million rows in 92 milliseconds, a throughput of approximately over 1 billion rows per second or just under 7 GB of data transferred per second.
 
 **Row-oriented DBMS**
 
@@ -90,8 +90,6 @@ ClickHouse chooses the join algorithm adaptively, it starts with fast hash joins
 ClickHouse is well known for having extremely fast query performance.
 To learn why ClickHouse is so fast, see the [Why is ClickHouse fast?](/concepts/why-clickhouse-is-so-fast.md) guide.
 
-
-
 <!--
 ## What is OLAP? {#what-is-olap}
 OLAP scenarios require real-time responses on top of large datasets for complex analytical queries with the following characteristics:
@@ -108,7 +106,6 @@ In a column-oriented DBMS, data is stored in columns, with values from the same 
 ## Why column-oriented databases work better in the OLAP scenario {#why-column-oriented-databases-work-better-in-the-olap-scenario}
 
 Column-oriented databases are better suited to OLAP scenarios: they are at least 100 times faster in processing most queries. The reasons are explained in detail below, but the fact is easier to demonstrate visually:
-
 
 See the difference?
 
@@ -170,8 +167,6 @@ The higher the load on the system, the more important it is to customize the sys
 - Transactions are not necessary.
 
 It is easy to see that the OLAP scenario is very different from other popular scenarios (such as OLTP or Key-Value access). So it does not make sense to try to use OLTP or a Key-Value DB for processing analytical queries if you want to get decent performance. For example, if you try to use MongoDB or Redis for analytics, you will get very poor performance compared to OLAP databases.
-
-
 
 ### Input/output {#inputoutput}
 

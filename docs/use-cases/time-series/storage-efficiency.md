@@ -32,7 +32,6 @@ FROM wikistat;
 
 This means we can use the LowCardinality() data type, which uses dictionary-based encoding. This causes ClickHouse to store the internal value ID instead of the original string value, which in turn saves a lot of space:
 
-
 ```sql
 ALTER TABLE wikistat
 MODIFY COLUMN `project` LowCardinality(String),

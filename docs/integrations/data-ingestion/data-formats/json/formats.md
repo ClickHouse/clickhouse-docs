@@ -432,7 +432,6 @@ ClickHouse allows exporting to and importing data from [BSON](https://bsonspec.o
 
 To import BSON data, we use the [BSONEachRow](/interfaces/formats.md/#bsoneachrow) format. Let's import data from [this BSON file](../assets/data.bson):
 
-
 ```sql
 SELECT * FROM file('data.bson', BSONEachRow)
 ```

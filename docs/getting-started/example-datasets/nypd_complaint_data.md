@@ -384,7 +384,6 @@ New York City.  These fields might be then included in the `ORDER BY`:
 | RPT_DT      | Date event was reported to police                      |
 | BORO_NM     | The name of the borough in which the incident occurred |
 
-
 Querying the TSV file for the cardinality of the three candidate columns:
 
 ```bash
@@ -578,7 +577,6 @@ Result:
 │ 8.63 MiB                        │
 └─────────────────────────────────┘
 ```
-
 
 ## Run some queries {#run-queries}
 

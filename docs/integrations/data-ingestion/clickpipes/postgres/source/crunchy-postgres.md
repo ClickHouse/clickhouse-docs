@@ -11,7 +11,6 @@ import Image from '@theme/IdealImage';
 
 # Crunchy Bridge Postgres source setup guide
 
-
 ClickPipes supports Postgres version 12 and later.
 
 ## Enable logical replication {#enable-logical-replication}
@@ -61,8 +60,6 @@ Safelist [ClickPipes IPs](../../index.md#list-of-static-ips) by adding the Firew
 <Image size="lg" img={firewall_rules_crunchy_bridge} alt="Where to find Firewall Rules in Crunchy Bridge?" border/>
 
 <Image size="lg" img={add_firewall_rules_crunchy_bridge} alt="Add the Firewall Rules for ClickPipes" border/>
-
-
 
 ## What's next? {#whats-next}
 

@@ -39,7 +39,6 @@ The Traces configuration is slightly more complex (full list [here](/engines/tab
 
 <Image img={observability_15} alt="Connector config" size="sm"/>
 
-
 Once configured users can navigate to [Grafana Explore](https://grafana.com/docs/grafana/latest/explore/) and begin searching logs and traces.
 
 ## Logs {#logs}

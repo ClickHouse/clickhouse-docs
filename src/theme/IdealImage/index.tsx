@@ -150,8 +150,6 @@ export default function IdealImage(
           ...(background
               ? { backgroundColor: background == "white" ? "white" : "rgb(31 31 28)" }
               : {}),
-          marginBottom: "16px",
-          marginTop: "16px",
         }}>
           {/* eslint-disable-next-line jsx-a11y/alt-text */}
           <img

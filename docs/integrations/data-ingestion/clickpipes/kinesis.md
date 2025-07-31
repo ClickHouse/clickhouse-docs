@@ -20,7 +20,6 @@ import cp_destination from '@site/static/images/integrations/data-ingestion/clic
 import cp_overview from '@site/static/images/integrations/data-ingestion/clickpipes/cp_overview.png';
 import Image from '@theme/IdealImage';
 
-
 # Integrating Amazon Kinesis with ClickHouse Cloud
 ## Prerequisite {#prerequisite}
 You have familiarized yourself with the [ClickPipes intro](./index.md) and setup [IAM credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) or an [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html). Follow the [Kinesis Role-Based Access guide](./secure-kinesis.md) for information on how to setup a role that works with ClickHouse Cloud.
@@ -82,7 +81,6 @@ You have familiarized yourself with the [ClickPipes intro](./index.md) and setup
 <Image img={cp_overview} alt="View overview" size="lg" border/>
 
 10. **Congratulations!** you have successfully set up your first ClickPipe. If this is a streaming ClickPipe it will be continuously running, ingesting data in real-time from your remote data source. Otherwise it will ingest the batch and complete.
-
 
 ## Supported data formats {#supported-data-formats}
 
@@ -161,10 +159,9 @@ If you have specific low-latency requirements, please [contact us](https://click
 
 ### Scaling {#scaling}
 
-ClickPipes for Kinesis is designed to scale horizontally. By default, we create a consumer group with one consumer.
-This can be changed with the scaling controls in the ClickPipe details view.
+ClickPipes for Kinesis is designed to scale both horizontally and vertically. By default, we create a consumer group with one consumer. This can be configured during ClickPipe creation, or at any other point under **Settings** -> **Advanced Settings** -> **Scaling**.
 
-ClickPipes provides a high-availability with an availability zone distributed architecture.
+ClickPipes provides high-availability with an availability zone distributed architecture.
 This requires scaling to at least two consumers.
 
 Regardless number of running consumers, fault tolerance is available by design.

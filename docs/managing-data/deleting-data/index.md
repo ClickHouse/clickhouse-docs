@@ -15,4 +15,3 @@ we will explore how to delete data in ClickHouse.
 | [Delete mutations](/managing-data/delete_mutations)         | Learn about Delete Mutations.                                                                                                |
 | [Truncate table](/managing-data/truncate)                   | Learn about how to use Truncate, which allows the data in a table or database to be removed, while preserving its existence. |
 | [Drop partitions](/managing-data/drop_partition)            | Learn about Dropping Partitions in ClickHouse.                                                                               |
-

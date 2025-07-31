@@ -46,10 +46,8 @@ Creating a topic on Confluent Cloud is fairly simple, and there are detailed ins
 #### Gather your connection details {#gather-your-connection-details}
 <ConnectionDetails />
 
-
 #### Install Connector {#install-connector}
 Install the fully managed ClickHouse Sink Connector on Confluent Cloud following the [official documentation](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html).
-
 
 #### Configure the Connector {#configure-the-connector}
 During the configuration of the ClickHouse Sink Connector, you will need to provide the following details:
