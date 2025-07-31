@@ -233,8 +233,8 @@ const config = {
         {name: 'Accept-Language', content: 'en-US,en;q=0.9'},
       ],
       algolia: {
-        appId: "5H9UG7CX5W",
-        apiKey: "4a7bf25cf3edbef29d78d5e1eecfdca5",
+        appId: "7AL1W7YVZK",
+        apiKey: "a655da807f7a3be5725cb9b5ef8a77f4",
         indexName: "clickhouse",
         contextualSearch: false,
         searchPagePath: "search",
