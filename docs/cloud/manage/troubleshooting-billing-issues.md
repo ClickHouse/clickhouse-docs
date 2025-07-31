@@ -44,7 +44,7 @@ the organization.
 
 The credit card on file normally will be charged at the end of your monthly 
 billing cycle, but payment charges will be accelerated if the intracycle amount
-due reaches $10,000 USD (more info on payment thresholds [here](/cloud/billing/payment-thresholds).
+due reaches $10,000 USD (more info on payment thresholds [here](/cloud/billing/payment-thresholds)).
 
 The credit card on file must be valid, not expired, and have enough available 
 credit to cover your invoice total.If, for any reason, we are unable to charge 
