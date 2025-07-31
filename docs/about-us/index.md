@@ -2,6 +2,7 @@
 slug: /about
 title: 'About ClickHouse'
 description: 'Landing page for About ClickHouse'
+keywords: ['about', 'overview', 'introduction']
 ---
 
 # About ClickHouse

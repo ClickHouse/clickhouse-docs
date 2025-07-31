@@ -4,6 +4,7 @@ title: 'FAQ'
 description: 'Landing page for FAQ'
 pagination_prev: null
 pagination_next: null
+keywords: ['FAQ', 'questions', 'answers']
 ---
 
 | Page                                                          | Description                                                                            |
