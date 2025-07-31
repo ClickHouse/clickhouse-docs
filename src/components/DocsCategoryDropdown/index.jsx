@@ -209,7 +209,6 @@ const DropdownCaret = () => {
     width: "6px",
     height: "10px",
     fill: "none",
-    transition: "all 0.3s ease",
     color: "#6B7280",
   };
 

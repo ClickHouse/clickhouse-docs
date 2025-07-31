@@ -6,9 +6,6 @@
   position: relative;
   display: inline-block;
   color: var(--ch-nav-v2-link-color);
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
 
   &:hover,
   &.hover {
@@ -44,9 +41,9 @@
   content: "";
   position: absolute;
   left: 0;
-  bottom: -5px;
+  bottom: -30px;
   width: 100%;
-  height: 5px;
+  height: 30px;
   pointer-events: auto;
 }
 
@@ -89,8 +86,12 @@
 
 [data-theme="dark"] .docsNavSelected {
   color: #FAFF69;
-  text-decoration: underline;
-  text-underline-offset: 4px;
+  text-decoration: none;
+}
+
+[data-theme="light"] .docsNavSelected {
+  color: black;
+  text-decoration: none;
 }
 
 .docsNavDropdownMenu {
@@ -106,18 +107,15 @@
   padding: 10px 10px 10px 10px;
   border-radius: 10px;
   opacity: 0;
-  transition: opacity 0.2s ease-in-out;
   transform: translateY(30px);
 }
 
 .docsNavDropdownMenu.visible {
   opacity: 1;
-  transition: opacity 0.3s ease-in-out;
 }
 
 .docsNavDropdownMenu.hiding {
   opacity: 0;
-  transition: opacity 0.15s ease-in-out;
 }
 
 @media (max-width: var(--mobile-breakpoint)) {
@@ -201,7 +199,7 @@
 }
 
 [data-theme="dark"] .docsNavMenuItem:hover .docsNavItemTitle {
-  color: black !important;
+  color: yellow !important;
 }
 
 [data-theme="dark"] .docsNavMenuItem:hover {
