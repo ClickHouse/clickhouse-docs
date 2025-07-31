@@ -801,6 +801,24 @@ const sidebars = {
             "integrations/data-ingestion/clickpipes/mysql/datatypes"
           ],
         },
+        {
+          type: "category",
+          label: "ClickPipes for MongoDB",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "integrations/data-ingestion/clickpipes/mongodb/index",
+            "integrations/data-ingestion/clickpipes/mongodb/datatypes",
+            {
+              type: "category",
+              label: "Source",
+              items: [
+                "integrations/data-ingestion/clickpipes/mongodb/source/atlas",
+                "integrations/data-ingestion/clickpipes/mongodb/source/generic",
+              ],
+            },
+          ],
+        }
       ],
     },
     {
