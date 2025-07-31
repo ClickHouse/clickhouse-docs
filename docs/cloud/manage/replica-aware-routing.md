@@ -33,4 +33,4 @@ Customers need to manually add a DNS entry to make name resolution work for the 
 
 ## Configuring replica-aware routing {#configuring-replica-aware-routing}
 
-To enable Replica-aware routing, please contact [our support team](https://clickhouse.com/support).
+To enable Replica-aware routing, please contact [our support team](https://clickhouse.com/support/program).
