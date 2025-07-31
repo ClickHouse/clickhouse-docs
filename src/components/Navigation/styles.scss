@@ -74,9 +74,6 @@ ul.ch-nav-v2-list {
   font-size: 14px;
   line-height: 1em;
   font-weight: 500;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
 
   &:hover {
     background-color: var(--ch-nav-v2-link-hover-bg);
@@ -134,9 +131,6 @@ ul.ch-nav-v2-list {
   flex-shrink: 0;
   flex-grow: 0;
   transform-origin: center center;
-  transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
 
   &.up {
     transform: rotate(-90deg);
@@ -168,9 +162,6 @@ ul.ch-nav-v2-list {
   font-weight: 500;
   text-decoration: none;
   color: var(--ch-nav-v2-link-color);
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
 
   &:hover,
   &.hover {
@@ -191,9 +182,6 @@ ul.ch-nav-v2-list {
   height: auto;
   width: 100%;
   color: #fff;
-  transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
 
   &.open {
     pointer-events: auto;
@@ -321,8 +309,6 @@ ul.ch-nav-v2-list {
       > div {
         transform-origin: top center;
         transition-property: all;
-        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        transition-duration: 150ms;
         border-radius: 0.5rem;
         background-color: var(--ch-nav-v2-dropdown-bg);
         border: 1px solid var(--ch-nav-v2-border-color);
@@ -376,9 +362,6 @@ ul.ch-nav-v2-sub-nav-products {
       font-size: 0.75rem;
       line-height: 1rem;
       color: var(--ch-nav-v2-item-description-color);
-      transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-      transition-duration: 150ms;
     }
 
     &:hover {
