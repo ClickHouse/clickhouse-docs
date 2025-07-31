@@ -185,8 +185,6 @@ ul.ch-nav-v2-list {
   width: 100%;
   color: #fff;
   transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
 
   &.open {
     pointer-events: auto;
@@ -314,8 +312,6 @@ ul.ch-nav-v2-list {
       > div {
         transform-origin: top center;
         transition-property: all;
-        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        transition-duration: 150ms;
         border-radius: 0.5rem;
         background-color: var(--ch-nav-v2-dropdown-bg);
         border: 1px solid var(--ch-nav-v2-border-color);
