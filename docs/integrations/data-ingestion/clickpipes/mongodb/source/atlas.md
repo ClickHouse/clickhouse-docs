@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'Mongo Atlas'
-description: 'Step-by-step guide on how to set up Mongo Atlas as a source for ClickPipes'
+sidebar_label: 'MongoDB Atlas'
+description: 'Step-by-step guide on how to set up MongoDB Atlas as a source for ClickPipes'
 slug: /integrations/clickpipes/mongodb/source/atlas
-title: 'Mongo Atlas source setup guide'
+title: 'MongoDB Atlas source setup guide'
 ---
 
 import mongo_atlas_configuration from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/mongo-atlas-cluster-overview-configuration.png'
@@ -13,13 +13,13 @@ import mongo_atlas_add_roles from '@site/static/images/integrations/data-ingesti
 import mongo_atlas_restrict_access from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/mongo-atlas-restrict-access.png'
 import Image from '@theme/IdealImage';
 
-# Mongo Atlas source setup guide
+# MongoDB Atlas source setup guide
 
 ## Configure oplog retention {#enable-oplog-retention}
 
 Minimum oplog retention of 24 hours is required for replication. We recommend setting the oplog retention to 72 hours or longer to ensure that the oplog is not truncated before the initial snapshot is completed. To set the oplog retention via UI:
 
-1. Navigate to your cluster's `Overview` tab in the Atlas console and click on the `Configuration` tab.
+1. Navigate to your cluster's `Overview` tab in the MongoDB Atlas console and click on the `Configuration` tab.
 <Image img={mongo_atlas_configuration} alt="Navigate to cluster configuration" size="lg" border/>
 
 2. Click `Additional Settings` and scroll down to `More Configuration Options`.
@@ -32,7 +32,7 @@ Minimum oplog retention of 24 hours is required for replication. We recommend se
 
 ## Configure a database user {#configure-database-user}
 
-Once you are logged in to your Atlas console, click `Database Access` under the Security tab in the left navigation bar. Click on "Add New Database User". 
+Once you are logged in to your MongoDB Atlas console, click `Database Access` under the Security tab in the left navigation bar. Click on "Add New Database User".
 
 ClickPipes requires password authentication:
 
@@ -43,7 +43,7 @@ ClickPipes requires a user with the following roles:
 - `readAnyDatabase`
 - `clusterMonitor`
 
-You can find them in the `Specific Priviledges` section:
+You can find them in the `Specific Privileges` section:
 
 <Image img={mongo_atlas_add_roles} alt="Configure user roles" size="lg" border/>
 

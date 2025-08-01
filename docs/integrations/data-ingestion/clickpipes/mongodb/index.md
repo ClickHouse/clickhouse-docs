@@ -23,13 +23,17 @@ import Image from '@theme/IdealImage';
 Currently, ingesting data from MongoDB to ClickHouse Cloud via ClickPipes is in Private Preview.
 :::
 
-You can use ClickPipes to ingest data from your MongoDB database into ClickHouse Cloud. The source MongoDB database can be hosted on-premises or in the cloud using services like Mongo Atlas.
+:::note
+In the ClickHouse Cloud console and documentation, "table" and "collection" are used interchangeably for MongoDB.
+:::
+
+You can use ClickPipes to ingest data from your MongoDB database into ClickHouse Cloud. The source MongoDB database can be hosted on-premises or in the cloud using services like MongoDB Atlas.
 
 ## Prerequisites {#prerequisites}
 
 To get started, you first need to ensure that your MongoDB database is correctly configured for replication. The configuration steps depend on how you're deploying MongoDB, so please follow the relevant guide below:
 
-1. [Mongo Atlas](./mongodb/source/atlas)
+1. [MongoDB Atlas](./mongodb/source/atlas)
 
 2. [Generic MongoDB](./mongodb/source/generic)
 
@@ -39,7 +43,6 @@ Once your source MongoDB database is set up, you can continue creating your Clic
 
 Make sure you are logged in to your ClickHouse Cloud account. If you don't have an account yet, you can sign up [here](https://cloud.clickhouse.com/).
 
-[//]: # (   TODO update image here)
 1. In the ClickHouse Cloud console, navigate to your ClickHouse Cloud Service.
 
 <Image img={cp_service} alt="ClickPipes service" size="lg" border/>

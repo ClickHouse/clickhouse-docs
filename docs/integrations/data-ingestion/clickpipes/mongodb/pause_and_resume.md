@@ -27,7 +27,7 @@ There are scenarios where it would be useful to pause a MongoDB ClickPipe. For e
 <Image img={pause_dialog} border size="md"/>
 
 4. Head over to the **Metrics** tab.
-5. In around 5 seconds (and also on page refresh), the status of the pipe should be **Paused**.
+5. Wait for the status of the pipe to be **Paused**.
 
 <Image img={pause_status} border size="md"/>
 
@@ -43,4 +43,4 @@ There are scenarios where it would be useful to pause a MongoDB ClickPipe. For e
 <Image img={resume_dialog} border size="md"/>
 
 5. Head over to the **Metrics** tab.
-6. In around 5 seconds (and also on page refresh), the status of the pipe should be **Running**.
+6. Wait for the status of the pipe to be **Running**.

@@ -41,5 +41,5 @@ since initial load with parallel threads is involved each time.
 
 4. A dialog box should appear for confirmation. Click on Resync again.
 5. Head over to the **Metrics** tab.
-6. In around 5 seconds (and also on page refresh), the status of the pipe should be **Setup** or **Snapshot**.
+6. Wait for the status of the pipe to be **Setup** or **Snapshot**.
 7. The initial load of the resync can be monitored in the **Tables** tab - in the **Initial Load Stats** section.
