@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'Kafka Table Engine'
-'sidebar_position': 5
-'slug': '/integrations/kafka/kafka-table-engine'
-'description': 'Using the Kafka Table Engine'
-'title': 'Using the Kafka table engine'
+sidebar_label: 'Kafka Table Engine'
+sidebar_position: 5
+slug: '/integrations/kafka/kafka-table-engine'
+description: 'Using the Kafka Table Engine'
+title: 'Using the Kafka table engine'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

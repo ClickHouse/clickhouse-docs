@@ -1,10 +1,10 @@
 ---
-'description': 'Documentation for the DateTime data type in ClickHouse, which stores
+description: 'Documentation for the DateTime data type in ClickHouse, which stores
   timestamps with second precision'
-'sidebar_label': 'DateTime'
-'sidebar_position': 16
-'slug': '/sql-reference/data-types/datetime'
-'title': 'DateTime'
+sidebar_label: 'DateTime'
+sidebar_position: 16
+slug: '/sql-reference/data-types/datetime'
+title: 'DateTime'
 ---
 
 

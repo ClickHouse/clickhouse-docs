@@ -1,8 +1,8 @@
 ---
-'title': 'Grafana の使用方法'
-'description': '可観測性のための Grafana と ClickHouse の使用方法'
-'slug': '/observability/grafana'
-'keywords':
+title: 'Grafana の使用方法'
+description: '可観測性のための Grafana と ClickHouse の使用方法'
+slug: '/observability/grafana'
+keywords:
 - 'observability'
 - 'logs'
 - 'traces'

@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouseのサードパーティー使用法とサードパーティーライブラリの追加と管理方法について説明するページ。'
-'sidebar_label': 'サードパーティーライブラリ'
-'sidebar_position': 60
-'slug': '/development/contrib'
-'title': 'Third-Party Libraries'
+description: 'ClickHouseのサードパーティー使用法とサードパーティーライブラリの追加と管理方法について説明するページ。'
+sidebar_label: 'サードパーティーライブラリ'
+sidebar_position: 60
+slug: '/development/contrib'
+title: 'Third-Party Libraries'
 ---
 
 

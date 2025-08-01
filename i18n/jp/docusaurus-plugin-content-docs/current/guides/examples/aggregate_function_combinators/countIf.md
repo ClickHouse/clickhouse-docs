@@ -1,14 +1,14 @@
 ---
-'slug': '/examples/aggregate-function-combinators/countIf'
-'title': 'countIf'
-'description': 'countIfコンビネータの使用例'
-'keywords':
+slug: '/examples/aggregate-function-combinators/countIf'
+title: 'countIf'
+description: 'countIfコンビネータの使用例'
+keywords:
 - 'count'
 - 'if'
 - 'combinator'
 - 'examples'
 - 'countIf'
-'sidebar_label': 'countIf'
+sidebar_label: 'countIf'
 ---
 
 

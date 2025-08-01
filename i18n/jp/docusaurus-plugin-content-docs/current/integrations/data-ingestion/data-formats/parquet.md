@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'Parquet'
-'sidebar_position': 3
-'slug': '/integrations/data-formats/parquet'
-'title': 'ClickHouse における Parquet の操作'
-'description': 'ClickHouse で Parquet を操作する方法について説明したページ'
+sidebar_label: 'Parquet'
+sidebar_position: 3
+slug: '/integrations/data-formats/parquet'
+title: 'ClickHouse における Parquet の操作'
+description: 'ClickHouse で Parquet を操作する方法について説明したページ'
 ---
 
 

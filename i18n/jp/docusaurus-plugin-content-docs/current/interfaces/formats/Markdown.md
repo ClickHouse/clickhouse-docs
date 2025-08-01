@@ -1,9 +1,9 @@
 ---
-'description': 'Markdown formatの文書'
-'keywords':
+description: 'Markdown formatの文書'
+keywords:
 - 'Markdown'
-'slug': '/interfaces/formats/Markdown'
-'title': 'Markdown'
+slug: '/interfaces/formats/Markdown'
+title: 'Markdown'
 ---
 
 

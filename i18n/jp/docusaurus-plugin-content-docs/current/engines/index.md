@@ -1,7 +1,7 @@
 ---
-'description': 'テーブル・オブ・コンテンツ ページ for Engines'
-'slug': '/engines'
-'title': 'Engines'
+description: 'テーブル・オブ・コンテンツ ページ for Engines'
+slug: '/engines'
+title: 'Engines'
 ---
 
 

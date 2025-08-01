@@ -1,9 +1,9 @@
 ---
-'title': 'How to query Pandas DataFrames with chDB'
-'sidebar_label': 'Querying Pandas'
-'slug': '/chdb/guides/pandas'
-'description': 'Learn how to query Pandas DataFrames with chDB'
-'keywords':
+title: 'How to query Pandas DataFrames with chDB'
+sidebar_label: 'Querying Pandas'
+slug: '/chdb/guides/pandas'
+description: 'Learn how to query Pandas DataFrames with chDB'
+keywords:
 - 'chdb'
 - 'pandas'
 ---

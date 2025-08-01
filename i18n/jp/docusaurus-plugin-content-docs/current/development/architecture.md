@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouseのアーキテクチャと列指向設計の包括的な概要'
-'sidebar_label': 'アーキテクチャの概要'
-'sidebar_position': 50
-'slug': '/development/architecture'
-'title': 'アーキテクチャの概要'
+description: 'ClickHouseのアーキテクチャと列指向設計の包括的な概要'
+sidebar_label: 'アーキテクチャの概要'
+sidebar_position: 50
+slug: '/development/architecture'
+title: 'アーキテクチャの概要'
 ---
 
 

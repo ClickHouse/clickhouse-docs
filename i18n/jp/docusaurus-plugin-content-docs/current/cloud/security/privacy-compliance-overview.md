@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'プライバシーとコンプライアンスの概要'
-'slug': '/cloud/security/privacy-compliance-overview'
-'title': 'プライバシーとコンプライアンス'
-'description': 'プライバシーとコンプライアンスのランディングページ'
+sidebar_label: 'プライバシーとコンプライアンスの概要'
+slug: '/cloud/security/privacy-compliance-overview'
+title: 'プライバシーとコンプライアンス'
+description: 'プライバシーとコンプライアンスのランディングページ'
 ---
 
 

@@ -1,10 +1,10 @@
 ---
-'description': 'System table containing information about cached DNS records.'
-'keywords':
+description: 'System table containing information about cached DNS records.'
+keywords:
 - 'system table'
 - 'dns_cache'
-'slug': '/operations/system-tables/dns_cache'
-'title': 'system.dns_cache'
+slug: '/operations/system-tables/dns_cache'
+title: 'system.dns_cache'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

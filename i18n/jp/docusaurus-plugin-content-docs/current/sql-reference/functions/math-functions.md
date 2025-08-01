@@ -1,9 +1,9 @@
 ---
-'description': '数学関数のドキュメント'
-'sidebar_label': '数学'
-'sidebar_position': 125
-'slug': '/sql-reference/functions/math-functions'
-'title': 'Mathematical Functions'
+description: '数学関数のドキュメント'
+sidebar_label: '数学'
+sidebar_position: 125
+slug: '/sql-reference/functions/math-functions'
+title: 'Mathematical Functions'
 ---
 
 

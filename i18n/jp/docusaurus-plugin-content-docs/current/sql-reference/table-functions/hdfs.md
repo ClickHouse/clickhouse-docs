@@ -1,10 +1,10 @@
 ---
-'description': 'Creates a table from files in HDFS. This table function is similar
+description: 'Creates a table from files in HDFS. This table function is similar
   to the url and file table functions.'
-'sidebar_label': 'HDFS'
-'sidebar_position': 80
-'slug': '/sql-reference/table-functions/hdfs'
-'title': 'HDFS'
+sidebar_label: 'HDFS'
+sidebar_position: 80
+slug: '/sql-reference/table-functions/hdfs'
+title: 'HDFS'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';

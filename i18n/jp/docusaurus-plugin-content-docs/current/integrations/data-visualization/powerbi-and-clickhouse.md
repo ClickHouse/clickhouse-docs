@@ -1,14 +1,14 @@
 ---
-'sidebar_label': 'Power BI'
-'slug': '/integrations/powerbi'
-'keywords':
+sidebar_label: 'Power BI'
+slug: '/integrations/powerbi'
+keywords:
 - 'clickhouse'
 - 'Power BI'
 - 'connect'
 - 'integrate'
 - 'ui'
-'description': 'Microsoft Power BIは、Microsoftによって開発された対話型のデータ可視化ソフトウェア製品で、ビジネスインテリジェンスを主眼に置いています。'
-'title': 'Power BI'
+description: 'Microsoft Power BIは、Microsoftによって開発された対話型のデータ可視化ソフトウェア製品で、ビジネスインテリジェンスを主眼に置いています。'
+title: 'Power BI'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';

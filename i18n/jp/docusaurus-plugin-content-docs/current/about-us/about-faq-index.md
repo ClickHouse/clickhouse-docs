@@ -1,7 +1,7 @@
 ---
-'title': 'FAQ'
-'slug': '/about-us/faq'
-'description': 'Landing page'
+title: 'FAQ'
+slug: '/about-us/faq'
+description: 'Landing page'
 ---
 
 

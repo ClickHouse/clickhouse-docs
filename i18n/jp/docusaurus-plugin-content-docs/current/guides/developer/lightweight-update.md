@@ -1,10 +1,10 @@
 ---
-'slug': '/guides/developer/lightweight-update'
-'sidebar_label': '軽量更新'
-'title': '軽量更新'
-'keywords':
+slug: '/guides/developer/lightweight-update'
+sidebar_label: '軽量更新'
+title: '軽量更新'
+keywords:
 - 'lightweight update'
-'description': '軽量更新の説明を提供します'
+description: '軽量更新の説明を提供します'
 ---
 
 

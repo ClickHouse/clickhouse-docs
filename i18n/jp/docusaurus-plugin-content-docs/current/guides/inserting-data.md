@@ -1,12 +1,12 @@
 ---
-'title': 'ClickHouseデータの挿入'
-'description': 'ClickHouseにデータを挿入する方法'
-'keywords':
+title: 'ClickHouseデータの挿入'
+description: 'ClickHouseにデータを挿入する方法'
+keywords:
 - 'insert'
 - 'insert data'
 - 'insert into table'
-'sidebar_label': 'ClickHouseデータの挿入'
-'slug': '/guides/inserting-data'
+sidebar_label: 'ClickHouseデータの挿入'
+slug: '/guides/inserting-data'
 ---
 
 import postgres_inserts from '@site/static/images/guides/postgres-inserts.png';

@@ -1,9 +1,9 @@
 ---
-'title': 'リモートClickHouseサーバーのクエリ方法'
-'sidebar_label': 'リモートClickHouseのクエリ'
-'slug': '/chdb/guides/query-remote-clickhouse'
-'description': 'このガイドでは、chDBからリモートClickHouseサーバーにクエリする方法について学びます。'
-'keywords':
+title: 'リモートClickHouseサーバーのクエリ方法'
+sidebar_label: 'リモートClickHouseのクエリ'
+slug: '/chdb/guides/query-remote-clickhouse'
+description: 'このガイドでは、chDBからリモートClickHouseサーバーにクエリする方法について学びます。'
+keywords:
 - 'chdb'
 - 'clickhouse'
 ---

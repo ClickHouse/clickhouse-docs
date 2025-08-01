@@ -1,8 +1,8 @@
 ---
-'description': 'GROUP BY句のドキュメント'
-'sidebar_label': 'GROUP BY'
-'slug': '/sql-reference/statements/select/group-by'
-'title': 'GROUP BY Clause'
+description: 'GROUP BY句のドキュメント'
+sidebar_label: 'GROUP BY'
+slug: '/sql-reference/statements/select/group-by'
+title: 'GROUP BY Clause'
 ---
 
 

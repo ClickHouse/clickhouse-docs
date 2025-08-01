@@ -1,8 +1,8 @@
 ---
-'description': '決定された時間における値の指数移動平均を計算します。'
-'sidebar_position': 132
-'slug': '/sql-reference/aggregate-functions/reference/exponentialMovingAverage'
-'title': '指数移動平均'
+description: '決定された時間における値の指数移動平均を計算します。'
+sidebar_position: 132
+slug: '/sql-reference/aggregate-functions/reference/exponentialMovingAverage'
+title: '指数移動平均'
 ---
 
 

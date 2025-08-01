@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouseのデータ型に関するドキュメント'
-'sidebar_label': 'データ型の一覧'
-'sidebar_position': 1
-'slug': '/sql-reference/data-types/'
-'title': 'ClickHouseのデータ型'
+description: 'ClickHouseのデータ型に関するドキュメント'
+sidebar_label: 'データ型の一覧'
+sidebar_position: 1
+slug: '/sql-reference/data-types/'
+title: 'ClickHouseのデータ型'
 ---
 
 

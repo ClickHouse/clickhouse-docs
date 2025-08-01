@@ -1,9 +1,9 @@
 ---
-'title': 'ClickPipe に特定のテーブルを追加する'
-'description': '特定のテーブルを ClickPipe に追加する手順を説明します。'
-'sidebar_label': 'テーブルの追加'
-'slug': '/integrations/clickpipes/postgres/add_table'
-'show_title': false
+title: 'ClickPipe に特定のテーブルを追加する'
+description: '特定のテーブルを ClickPipe に追加する手順を説明します。'
+sidebar_label: 'テーブルの追加'
+slug: '/integrations/clickpipes/postgres/add_table'
+show_title: false
 ---
 
 import Image from '@theme/IdealImage';

@@ -1,8 +1,8 @@
 ---
-'slug': '/native-protocol/client'
-'sidebar_position': 2
-'title': 'ネイティブクライアントパケット'
-'description': 'ネイティブプロトコルクライアント'
+slug: '/native-protocol/client'
+sidebar_position: 2
+title: 'ネイティブクライアントパケット'
+description: 'ネイティブプロトコルクライアント'
 ---
 
 

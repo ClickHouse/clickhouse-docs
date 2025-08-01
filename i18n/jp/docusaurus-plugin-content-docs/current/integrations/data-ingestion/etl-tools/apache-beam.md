@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'Apache Beam'
-'slug': '/integrations/apache-beam'
-'description': 'Apache Beam を使用してデータを ClickHouse に取り込むことができます'
-'title': 'Apache Beam と ClickHouse の統合'
+sidebar_label: 'Apache Beam'
+slug: '/integrations/apache-beam'
+description: 'Apache Beam を使用してデータを ClickHouse に取り込むことができます'
+title: 'Apache Beam と ClickHouse の統合'
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';

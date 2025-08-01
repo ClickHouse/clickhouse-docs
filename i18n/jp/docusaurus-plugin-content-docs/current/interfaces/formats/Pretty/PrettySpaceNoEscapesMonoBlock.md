@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'PrettySpaceNoEscapesMonoBlock形式のドキュメント'
-'input_format': false
-'keywords':
+alias: []
+description: 'PrettySpaceNoEscapesMonoBlock形式のドキュメント'
+input_format: false
+keywords:
 - 'PrettySpaceNoEscapesMonoBlock'
-'output_format': true
-'slug': '/interfaces/formats/PrettySpaceNoEscapesMonoBlock'
-'title': 'PrettySpaceNoEscapesMonoBlock'
+output_format: true
+slug: '/interfaces/formats/PrettySpaceNoEscapesMonoBlock'
+title: 'PrettySpaceNoEscapesMonoBlock'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';

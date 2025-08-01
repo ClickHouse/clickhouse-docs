@@ -1,9 +1,9 @@
 ---
-'slug': '/use-cases'
-'title': 'ユースケースガイド'
-'pagination_prev': null
-'pagination_next': null
-'description': 'ユースケースガイドのランディングページ'
+slug: '/use-cases'
+title: 'ユースケースガイド'
+pagination_prev: null
+pagination_next: null
+description: 'ユースケースガイドのランディングページ'
 ---
 
 

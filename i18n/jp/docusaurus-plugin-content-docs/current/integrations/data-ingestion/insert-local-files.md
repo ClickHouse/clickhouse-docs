@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'ローカルファイルの挿入'
-'sidebar_position': 2
-'title': 'ローカルファイルの挿入'
-'slug': '/integrations/data-ingestion/insert-local-files'
-'description': 'ローカルファイルの挿入について学ぶ'
+sidebar_label: 'ローカルファイルの挿入'
+sidebar_position: 2
+title: 'ローカルファイルの挿入'
+slug: '/integrations/data-ingestion/insert-local-files'
+description: 'ローカルファイルの挿入について学ぶ'
 ---
 
 

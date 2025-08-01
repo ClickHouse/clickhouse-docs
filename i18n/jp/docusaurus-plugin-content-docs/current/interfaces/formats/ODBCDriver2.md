@@ -1,9 +1,9 @@
 ---
-'description': 'ODBCDriver2フォーマットのドキュメント'
-'keywords':
+description: 'ODBCDriver2フォーマットのドキュメント'
+keywords:
 - 'ODBCDriver2'
-'slug': '/interfaces/formats/ODBCDriver2'
-'title': 'ODBCDriver2'
+slug: '/interfaces/formats/ODBCDriver2'
+title: 'ODBCDriver2'
 ---
 
 
