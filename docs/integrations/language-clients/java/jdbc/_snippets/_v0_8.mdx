@@ -35,7 +35,7 @@ In 0.8 we tried to make the driver more strictly follow the JDBC specification, 
         <dependency>
             <groupId>com.clickhouse</groupId>
             <artifactId>clickhouse-jdbc</artifactId>
-            <version>0.8.2</version>
+            <version>0.9.1</version>
             <classifier>shaded-all</classifier>
         </dependency>
         ```
@@ -45,14 +45,14 @@ In 0.8 we tried to make the driver more strictly follow the JDBC specification, 
 
         ```kotlin
         // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-        implementation("com.clickhouse:clickhouse-jdbc:0.8.2:shaded-all")
+        implementation("com.clickhouse:clickhouse-jdbc:0.9.1:shaded-all")
         ```
     </TabItem>
     <TabItem value="gradle" label="Gradle">
 
         ```groovy
         // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-        implementation 'com.clickhouse:clickhouse-jdbc:0.8.2:shaded-all'
+        implementation 'com.clickhouse:clickhouse-jdbc:0.9.1:shaded-all'
         ```
 
     </TabItem>
@@ -78,6 +78,8 @@ Where possible methods will return an `SQLFeatureNotSupportedException` if the f
 | `jdbc_ignore_unsupported_values` | `false` | Suppresses `SQLFeatureNotSupportedException`                   |
 | `clickhouse.jdbc.v1`             | `false` | Use older JDBC implementation instead of new JDBC              |
 | `default_query_settings`         | `null`  | Allows passing of default query settings with query operations |
+| `jdbc_resultset_auto_close`      | `true`  | Automatically closes `ResultSet` when `Statement` is closed    |
+| `beta.row_binary_for_simple_insert` | `false` | Use `PreparedStatement` implementation based on `RowBinary` writer. Works only for `INSERT INTO ... VALUES` queries. |
 
 ## Supported data types {#supported-data-types}
 
