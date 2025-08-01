@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'ClickPipes for MySQL'
-'description': 'Describes how to seamlessly connect your MySQL to ClickHouse Cloud.'
-'slug': '/integrations/clickpipes/mysql'
-'title': 'Ingesting Data from MySQL to ClickHouse (using CDC)'
+sidebar_label: 'ClickPipes for MySQL'
+description: 'Describes how to seamlessly connect your MySQL to ClickHouse Cloud.'
+slug: '/integrations/clickpipes/mysql'
+title: 'Ingesting Data from MySQL to ClickHouse (using CDC)'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';

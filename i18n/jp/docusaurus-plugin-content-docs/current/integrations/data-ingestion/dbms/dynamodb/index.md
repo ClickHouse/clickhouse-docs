@@ -1,15 +1,15 @@
 ---
-'sidebar_label': 'DynamoDB'
-'sidebar_position': 10
-'slug': '/integrations/dynamodb'
-'description': 'ClickPipes allows you to connect ClickHouse to DynamoDB.'
-'keywords':
+sidebar_label: 'DynamoDB'
+sidebar_position: 10
+slug: '/integrations/dynamodb'
+description: 'ClickPipes allows you to connect ClickHouse to DynamoDB.'
+keywords:
 - 'clickhouse'
 - 'DynamoDB'
 - 'connect'
 - 'integrate'
 - 'table'
-'title': 'CDC from DynamoDB to ClickHouse'
+title: 'CDC from DynamoDB to ClickHouse'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

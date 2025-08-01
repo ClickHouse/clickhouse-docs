@@ -1,9 +1,9 @@
 ---
-'slug': '/faq/use-cases/time-series'
-'title': 'ClickHouseを時系列データベースとして使用することは可能ですか？'
-'toc_hidden': true
-'toc_priority': 101
-'description': 'ClickHouseを時系列データベースとして使用する方法について説明するページ'
+slug: '/faq/use-cases/time-series'
+title: 'ClickHouseを時系列データベースとして使用することは可能ですか？'
+toc_hidden: true
+toc_priority: 101
+description: 'ClickHouseを時系列データベースとして使用する方法について説明するページ'
 ---
 
 

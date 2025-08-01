@@ -1,6 +1,6 @@
 ---
-'slug': '/integrations/index'
-'keywords':
+slug: '/integrations/index'
+keywords:
 - 'AWS S3'
 - 'Azure Data Factory'
 - 'PostgreSQL'
@@ -25,8 +25,8 @@
 - 'local files'
 - 'JDBC'
 - 'ODBC'
-'description': 'データソース概要ページ'
-'title': 'データソース'
+description: 'データソース概要ページ'
+title: 'データソース'
 ---
 
 

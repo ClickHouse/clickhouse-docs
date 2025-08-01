@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for clickhouse-benchmark'
-'sidebar_label': 'clickhouse-benchmark'
-'sidebar_position': 61
-'slug': '/operations/utilities/clickhouse-benchmark'
-'title': 'clickhouse-benchmark'
+description: 'Documentation for clickhouse-benchmark'
+sidebar_label: 'clickhouse-benchmark'
+sidebar_position: 61
+slug: '/operations/utilities/clickhouse-benchmark'
+title: 'clickhouse-benchmark'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'slug': '/architecture/horizontal-scaling'
-'sidebar_label': 'スケーリングアウト'
-'sidebar_position': 10
-'title': 'スケーリングアウト'
-'description': 'スケーラビリティを提供するために設計された例のアーキテクチャについて説明するページ'
+slug: '/architecture/horizontal-scaling'
+sidebar_label: 'スケーリングアウト'
+sidebar_position: 10
+title: 'スケーリングアウト'
+description: 'スケーラビリティを提供するために設計された例のアーキテクチャについて説明するページ'
 ---
 
 import Image from '@theme/IdealImage';

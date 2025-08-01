@@ -1,17 +1,17 @@
 ---
-'sidebar_label': 'Hashboard'
-'sidebar_position': 132
-'slug': '/integrations/hashboard'
-'keywords':
+sidebar_label: 'Hashboard'
+sidebar_position: 132
+slug: '/integrations/hashboard'
+keywords:
 - 'clickhouse'
 - 'Hashboard'
 - 'connect'
 - 'integrate'
 - 'ui'
 - 'analytics'
-'description': 'Hashboard is a robust analytics platform that can be easily integrated
+description: 'Hashboard is a robust analytics platform that can be easily integrated
   with ClickHouse for real-time data analysis.'
-'title': 'Connecting ClickHouse to Hashboard'
+title: 'Connecting ClickHouse to Hashboard'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';

@@ -1,16 +1,16 @@
 ---
-'sidebar_label': 'Airbyte'
-'sidebar_position': 11
-'keywords':
+sidebar_label: 'Airbyte'
+sidebar_position: 11
+keywords:
 - 'clickhouse'
 - 'Airbyte'
 - 'connect'
 - 'integrate'
 - 'etl'
 - 'data integration'
-'slug': '/integrations/airbyte'
-'description': 'Stream data into ClickHouse using Airbyte data pipelines'
-'title': 'Connect Airbyte to ClickHouse'
+slug: '/integrations/airbyte'
+description: 'Stream data into ClickHouse using Airbyte data pipelines'
+title: 'Connect Airbyte to ClickHouse'
 ---
 
 import Image from '@theme/IdealImage';

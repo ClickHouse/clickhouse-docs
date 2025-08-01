@@ -1,9 +1,9 @@
 ---
-'title': 'GCP Private Service Connect'
-'description': 'このドキュメントでは、Google Cloud Platform (GCP) プライベートサービス接続（PSC）を使用してClickHouse
+title: 'GCP Private Service Connect'
+description: 'このドキュメントでは、Google Cloud Platform (GCP) プライベートサービス接続（PSC）を使用してClickHouse
   Cloudに接続し、ClickHouse CloudのIPアクセスリストを使用してGCP PSCアドレス以外からのClickHouse Cloudサービスへのアクセスを無効にする方法について説明します。'
-'sidebar_label': 'GCP Private Service Connect'
-'slug': '/manage/security/gcp-private-service-connect'
+sidebar_label: 'GCP Private Service Connect'
+slug: '/manage/security/gcp-private-service-connect'
 ---
 
 import Image from '@theme/IdealImage';

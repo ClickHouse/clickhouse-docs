@@ -1,9 +1,9 @@
 ---
-'description': 'このページでは、ClickHouseサーバーがXMLまたはYAML構文の構成ファイルでどのように構成できるかについて説明します。'
-'sidebar_label': '設定ファイル'
-'sidebar_position': 50
-'slug': '/operations/configuration-files'
-'title': 'Configuration Files'
+description: 'このページでは、ClickHouseサーバーがXMLまたはYAML構文の構成ファイルでどのように構成できるかについて説明します。'
+sidebar_label: '設定ファイル'
+sidebar_position: 50
+slug: '/operations/configuration-files'
+title: 'Configuration Files'
 ---
 
 

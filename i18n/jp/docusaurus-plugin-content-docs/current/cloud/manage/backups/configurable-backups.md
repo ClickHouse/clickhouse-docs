@@ -1,9 +1,9 @@
 ---
-'sidebar_label': '設定可能なバックアップ'
-'slug': '/cloud/manage/backups/configurable-backups'
-'description': '設定可能なバックアップ'
-'title': '設定可能なバックアップ'
-'keywords':
+sidebar_label: '設定可能なバックアップ'
+slug: '/cloud/manage/backups/configurable-backups'
+description: '設定可能なバックアップ'
+title: '設定可能なバックアップ'
+keywords:
 - 'backups'
 - 'cloud backups'
 - 'restore'

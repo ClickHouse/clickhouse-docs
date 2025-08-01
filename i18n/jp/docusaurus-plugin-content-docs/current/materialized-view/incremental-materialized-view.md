@@ -1,12 +1,12 @@
 ---
-'slug': '/materialized-view/incremental-materialized-view'
-'title': 'インクリメンタルマテリアライズドビュー'
-'description': 'クエリの高速化にインクリメンタルマテリアライズドビューを使用する方法'
-'keywords':
+slug: '/materialized-view/incremental-materialized-view'
+title: 'インクリメンタルマテリアライズドビュー'
+description: 'クエリの高速化にインクリメンタルマテリアライズドビューを使用する方法'
+keywords:
 - 'incremental materialized views'
 - 'speed up queries'
 - 'query optimization'
-'score': 10000
+score: 10000
 ---
 
 import materializedViewDiagram from '@site/static/images/materialized-view/materialized-view-diagram.png';

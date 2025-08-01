@@ -1,15 +1,15 @@
 ---
-'slug': '/operations/access-rights'
-'sidebar_position': 1
-'sidebar_label': 'ユーザーとロール'
-'title': 'アクセス制御とアカウント管理'
-'keywords':
+slug: '/operations/access-rights'
+sidebar_position: 1
+sidebar_label: 'ユーザーとロール'
+title: 'アクセス制御とアカウント管理'
+keywords:
 - 'ClickHouse Cloud'
 - 'Access Control'
 - 'User Management'
 - 'RBAC'
 - 'Security'
-'description': 'ClickHouse Cloud におけるアクセス制御とアカウント管理の説明'
+description: 'ClickHouse Cloud におけるアクセス制御とアカウント管理の説明'
 ---
 
 

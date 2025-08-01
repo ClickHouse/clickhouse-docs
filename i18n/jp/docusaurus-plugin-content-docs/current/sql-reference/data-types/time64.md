@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouseにおけるTime64データ型のドキュメント。サブセカンド精度で時間範囲を格納します。'
-'slug': '/sql-reference/data-types/time64'
-'sidebar_position': 17
-'sidebar_label': 'Time64'
-'title': 'Time64'
+description: 'ClickHouseにおけるTime64データ型のドキュメント。サブセカンド精度で時間範囲を格納します。'
+slug: '/sql-reference/data-types/time64'
+sidebar_position: 17
+sidebar_label: 'Time64'
+title: 'Time64'
 ---
 
 

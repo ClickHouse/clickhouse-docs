@@ -1,14 +1,14 @@
 ---
-'slug': '/examples/aggregate-function-combinators/sumIf'
-'title': 'sumIf'
-'description': 'sumIfコンビネータの使用例'
-'keywords':
+slug: '/examples/aggregate-function-combinators/sumIf'
+title: 'sumIf'
+description: 'sumIfコンビネータの使用例'
+keywords:
 - 'sum'
 - 'if'
 - 'combinator'
 - 'examples'
 - 'sumIf'
-'sidebar_label': 'sumIf'
+sidebar_label: 'sumIf'
 ---
 
 

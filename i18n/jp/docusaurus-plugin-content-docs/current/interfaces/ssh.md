@@ -1,13 +1,13 @@
 ---
-'description': 'ClickHouseにおけるSSHインターフェースのドキュメント'
-'keywords':
+description: 'ClickHouseにおけるSSHインターフェースのドキュメント'
+keywords:
 - 'client'
 - 'ssh'
 - 'putty'
-'sidebar_label': 'SSH インターフェース'
-'sidebar_position': 60
-'slug': '/interfaces/ssh'
-'title': 'SSH Interface'
+sidebar_label: 'SSH インターフェース'
+sidebar_position: 60
+slug: '/interfaces/ssh'
+title: 'SSH Interface'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';

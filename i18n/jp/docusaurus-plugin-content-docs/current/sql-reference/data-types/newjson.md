@@ -1,12 +1,12 @@
 ---
-'description': 'JSONデータ型に関するClickHouseのドキュメントで、JSONデータを扱うためのネイティブサポートを提供します'
-'keywords':
+description: 'JSONデータ型に関するClickHouseのドキュメントで、JSONデータを扱うためのネイティブサポートを提供します'
+keywords:
 - 'json'
 - 'data type'
-'sidebar_label': 'JSON'
-'sidebar_position': 63
-'slug': '/sql-reference/data-types/newjson'
-'title': 'JSON データ型'
+sidebar_label: 'JSON'
+sidebar_position: 63
+slug: '/sql-reference/data-types/newjson'
+title: 'JSON データ型'
 ---
 
 import {CardSecondary} from '@clickhouse/click-ui/bundled';

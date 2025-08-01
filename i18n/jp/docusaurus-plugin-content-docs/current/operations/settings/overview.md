@@ -1,8 +1,8 @@
 ---
-'description': 'Overview page for settings.'
-'sidebar_position': 1
-'slug': '/operations/settings/overview'
-'title': 'Settings Overview'
+description: 'Overview page for settings.'
+sidebar_position: 1
+slug: '/operations/settings/overview'
+title: 'Settings Overview'
 ---
 
 

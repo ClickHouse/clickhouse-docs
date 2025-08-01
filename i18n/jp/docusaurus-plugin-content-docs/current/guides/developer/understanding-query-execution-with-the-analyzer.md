@@ -1,8 +1,8 @@
 ---
-'slug': '/guides/developer/understanding-query-execution-with-the-analyzer'
-'sidebar_label': 'Understanding Query Execution with the Analyzer'
-'title': 'Understanding Query Execution with the Analyzer'
-'description': 'Describes how you can use the analyzer to understand how ClickHouse
+slug: '/guides/developer/understanding-query-execution-with-the-analyzer'
+sidebar_label: 'Understanding Query Execution with the Analyzer'
+title: 'Understanding Query Execution with the Analyzer'
+description: 'Describes how you can use the analyzer to understand how ClickHouse
   executes your queries'
 ---
 

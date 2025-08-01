@@ -1,16 +1,16 @@
 ---
-'sidebar_label': 'MySQL'
-'sidebar_position': 10
-'slug': '/integrations/connecting-to-mysql'
-'description': 'The MySQL table engine allows you to connect ClickHouse to MySQL.'
-'keywords':
+sidebar_label: 'MySQL'
+sidebar_position: 10
+slug: '/integrations/connecting-to-mysql'
+description: 'The MySQL table engine allows you to connect ClickHouse to MySQL.'
+keywords:
 - 'clickhouse'
 - 'mysql'
 - 'connect'
 - 'integrate'
 - 'table'
 - 'engine'
-'title': 'Integrating MySQL with ClickHouse'
+title: 'Integrating MySQL with ClickHouse'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

@@ -801,6 +801,34 @@ const sidebars = {
             "integrations/data-ingestion/clickpipes/mysql/datatypes"
           ],
         },
+        {
+          type: "category",
+          label: "ClickPipes for MongoDB",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "integrations/data-ingestion/clickpipes/mongodb/index",
+            "integrations/data-ingestion/clickpipes/mongodb/datatypes",
+            {
+              type: "category",
+              label: "Operations",
+              items: [
+                "integrations/data-ingestion/clickpipes/mongodb/add_table",
+                "integrations/data-ingestion/clickpipes/mongodb/remove_table",
+                "integrations/data-ingestion/clickpipes/mongodb/pause_and_resume",
+                "integrations/data-ingestion/clickpipes/mongodb/resync",
+              ],
+            },
+            {
+              type: "category",
+              label: "Source",
+              items: [
+                "integrations/data-ingestion/clickpipes/mongodb/source/atlas",
+                "integrations/data-ingestion/clickpipes/mongodb/source/generic",
+              ],
+            },
+          ],
+        }
       ],
     },
     {

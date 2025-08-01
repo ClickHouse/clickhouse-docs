@@ -1,13 +1,13 @@
 ---
-'slug': '/cloud/manage'
-'keywords':
+slug: '/cloud/manage'
+keywords:
 - 'AWS'
 - 'Cloud'
 - 'serverless'
 - 'management'
-'title': '概要'
-'hide_title': true
-'description': 'クラウドの管理ページの概要'
+title: '概要'
+hide_title: true
+description: 'クラウドの管理ページの概要'
 ---
 
 

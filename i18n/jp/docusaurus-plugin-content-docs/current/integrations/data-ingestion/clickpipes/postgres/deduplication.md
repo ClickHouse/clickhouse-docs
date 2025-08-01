@@ -1,8 +1,8 @@
 ---
-'sidebar_label': '重複除去戦略'
-'description': '重複と削除された行の処理。'
-'slug': '/integrations/clickpipes/postgres/deduplication'
-'title': '重複除去戦略 (CDCを使用)'
+sidebar_label: '重複除去戦略'
+description: '重複と削除された行の処理。'
+slug: '/integrations/clickpipes/postgres/deduplication'
+title: '重複除去戦略 (CDCを使用)'
 ---
 
 import clickpipes_initial_load from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-cdc-initial-load.png';

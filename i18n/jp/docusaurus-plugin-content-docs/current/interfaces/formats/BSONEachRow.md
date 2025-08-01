@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'BSONEachRowフォーマットのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'BSONEachRowフォーマットのドキュメント'
+input_format: true
+keywords:
 - 'BSONEachRow'
-'output_format': true
-'slug': '/interfaces/formats/BSONEachRow'
-'title': 'BSONEachRow'
+output_format: true
+slug: '/interfaces/formats/BSONEachRow'
+title: 'BSONEachRow'
 ---
 
 

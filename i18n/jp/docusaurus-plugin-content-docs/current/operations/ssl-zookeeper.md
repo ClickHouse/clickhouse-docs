@@ -1,10 +1,10 @@
 ---
-'description': 'Guide to configuring secure SSL/TLS communication between ClickHouse
+description: 'Guide to configuring secure SSL/TLS communication between ClickHouse
   and ZooKeeper'
-'sidebar_label': 'Secured Communication with Zookeeper'
-'sidebar_position': 45
-'slug': '/operations/ssl-zookeeper'
-'title': 'Optional secured communication between ClickHouse and Zookeeper'
+sidebar_label: 'Secured Communication with Zookeeper'
+sidebar_position: 45
+slug: '/operations/ssl-zookeeper'
+title: 'Optional secured communication between ClickHouse and Zookeeper'
 ---
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';

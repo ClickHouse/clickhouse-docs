@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'LDAPの構成'
-'sidebar_position': 2
-'slug': '/guides/sre/configuring-ldap'
-'title': 'LDAPを使用したClickHouseの認証とロールマッピングの構成'
-'description': 'ClickHouseをLDAPを使用して認証とロールマッピングに設定する方法について説明します'
+sidebar_label: 'LDAPの構成'
+sidebar_position: 2
+slug: '/guides/sre/configuring-ldap'
+title: 'LDAPを使用したClickHouseの認証とロールマッピングの構成'
+description: 'ClickHouseをLDAPを使用して認証とロールマッピングに設定する方法について説明します'
 ---
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';

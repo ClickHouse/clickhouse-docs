@@ -1,8 +1,8 @@
 ---
-'slug': '/primary-indexes'
-'title': '主キーインデックス'
-'description': 'ClickHouseにおけるスパース主キーインデックスの動作'
-'keywords':
+slug: '/primary-indexes'
+title: '主キーインデックス'
+description: 'ClickHouseにおけるスパース主キーインデックスの動作'
+keywords:
 - 'sparse primary index'
 - 'primary index'
 - 'index'

@@ -1,14 +1,14 @@
 ---
-'slug': '/examples/aggregate-function-combinators/avgIf'
-'title': 'avgIf'
-'description': 'avgIfコンビネータの使用例'
-'keywords':
+slug: '/examples/aggregate-function-combinators/avgIf'
+title: 'avgIf'
+description: 'avgIfコンビネータの使用例'
+keywords:
 - 'avg'
 - 'if'
 - 'combinator'
 - 'examples'
 - 'avgIf'
-'sidebar_label': 'avgIf'
+sidebar_label: 'avgIf'
 ---
 
 

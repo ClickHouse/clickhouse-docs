@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'Regexp形式のドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'Regexp形式のドキュメント'
+input_format: true
+keywords:
 - 'Regexp'
-'output_format': false
-'slug': '/interfaces/formats/Regexp'
-'title': 'Regexp'
+output_format: false
+slug: '/interfaces/formats/Regexp'
+title: 'Regexp'
 ---
 
 

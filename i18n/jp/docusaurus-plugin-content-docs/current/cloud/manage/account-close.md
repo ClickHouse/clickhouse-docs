@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'アカウント削除'
-'slug': '/cloud/manage/close_account'
-'title': 'アカウントクローズ＆削除'
-'description': '時々、アカウントを閉鎖する必要がある状況があります。このガイドは、そのプロセスをサポートします。'
+sidebar_label: 'アカウント削除'
+slug: '/cloud/manage/close_account'
+title: 'アカウントクローズ＆削除'
+description: '時々、アカウントを閉鎖する必要がある状況があります。このガイドは、そのプロセスをサポートします。'
 ---
 
 

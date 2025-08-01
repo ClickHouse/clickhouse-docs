@@ -1,14 +1,14 @@
 ---
-'slug': '/faq/integration/'
-'sidebar_position': 1
-'sidebar_label': '他のシステムとのClickHouse統合'
-'keywords':
+slug: '/faq/integration/'
+sidebar_position: 1
+sidebar_label: '他のシステムとのClickHouse統合'
+keywords:
 - 'clickhouse'
 - 'faq'
 - 'questions'
 - 'integrations'
-'title': 'ClickHouseと他のシステムの統合に関する質問'
-'description': 'ClickHouseを他のシステムと統合する関連質問をリストアップしたページ'
+title: 'ClickHouseと他のシステムの統合に関する質問'
+description: 'ClickHouseを他のシステムと統合する関連質問をリストアップしたページ'
 ---
 
 

@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'Amazon Aurora MySQL'
-'description': 'ClickPipesのソースとしてAmazon Aurora MySQLを設定する手順についての詳細ガイド'
-'slug': '/integrations/clickpipes/mysql/source/aurora'
-'title': 'Aurora MySQLのソース設定ガイド'
+sidebar_label: 'Amazon Aurora MySQL'
+description: 'ClickPipesのソースとしてAmazon Aurora MySQLを設定する手順についての詳細ガイド'
+slug: '/integrations/clickpipes/mysql/source/aurora'
+title: 'Aurora MySQLのソース設定ガイド'
 ---
 
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';

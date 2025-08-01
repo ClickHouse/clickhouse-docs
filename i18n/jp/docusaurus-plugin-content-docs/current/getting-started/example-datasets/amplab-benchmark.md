@@ -1,9 +1,9 @@
 ---
-'description': 'A benchmark dataset used for comparing the performance of data warehousing
+description: 'A benchmark dataset used for comparing the performance of data warehousing
   solutions.'
-'sidebar_label': 'AMPLab Big Data Benchmark'
-'slug': '/getting-started/example-datasets/amplab-benchmark'
-'title': 'AMPLab Big Data Benchmark'
+sidebar_label: 'AMPLab Big Data Benchmark'
+slug: '/getting-started/example-datasets/amplab-benchmark'
+title: 'AMPLab Big Data Benchmark'
 ---
 
 

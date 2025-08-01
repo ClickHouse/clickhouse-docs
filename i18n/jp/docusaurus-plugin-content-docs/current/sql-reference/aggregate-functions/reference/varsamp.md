@@ -1,8 +1,8 @@
 ---
-'description': 'データセットのサンプル分散を計算します。'
-'sidebar_position': 212
-'slug': '/sql-reference/aggregate-functions/reference/varSamp'
-'title': 'varSamp'
+description: 'データセットのサンプル分散を計算します。'
+sidebar_position: 212
+slug: '/sql-reference/aggregate-functions/reference/varSamp'
+title: 'varSamp'
 ---
 
 

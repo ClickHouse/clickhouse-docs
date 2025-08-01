@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'ClickHouse Kafka Connect Sink'
-'sidebar_position': 2
-'slug': '/integrations/kafka/clickhouse-kafka-connect-sink'
-'description': 'The official Kafka connector from ClickHouse.'
-'title': 'ClickHouse Kafka Connect Sink'
+sidebar_label: 'ClickHouse Kafka Connect Sink'
+sidebar_position: 2
+slug: '/integrations/kafka/clickhouse-kafka-connect-sink'
+description: 'The official Kafka connector from ClickHouse.'
+title: 'ClickHouse Kafka Connect Sink'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';

@@ -1,7 +1,7 @@
 ---
-'description': 'ClickHouse におけるトランザクショナル（ACID）サポートを説明するページ'
-'slug': '/guides/developer/transactional'
-'title': 'Transactional (ACID) サポート'
+description: 'ClickHouse におけるトランザクショナル（ACID）サポートを説明するページ'
+slug: '/guides/developer/transactional'
+title: 'Transactional (ACID) サポート'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';

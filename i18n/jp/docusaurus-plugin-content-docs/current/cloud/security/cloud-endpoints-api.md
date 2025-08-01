@@ -1,8 +1,8 @@
 ---
-'slug': '/manage/security/cloud-endpoints-api'
-'sidebar_label': 'Cloud IP アドレス'
-'title': 'Cloud IP アドレス'
-'description': 'このページは、ClickHouse内のCloud Endpoints APIセキュリティ機能に関するドキュメントです。認証および認可メカニズムを介してアクセスを管理することで、ClickHouseデプロイメントをセキュアにする方法について詳細に説明しています。'
+slug: '/manage/security/cloud-endpoints-api'
+sidebar_label: 'Cloud IP アドレス'
+title: 'Cloud IP アドレス'
+description: 'このページは、ClickHouse内のCloud Endpoints APIセキュリティ機能に関するドキュメントです。認証および認可メカニズムを介してアクセスを管理することで、ClickHouseデプロイメントをセキュアにする方法について詳細に説明しています。'
 ---
 
 import Image from '@theme/IdealImage';

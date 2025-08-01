@@ -1,8 +1,8 @@
 ---
-'description': 'ClickHouse におけるクラスター検出のドキュメント'
-'sidebar_label': 'クラスター検出'
-'slug': '/operations/cluster-discovery'
-'title': 'クラスター検出'
+description: 'ClickHouse におけるクラスター検出のドキュメント'
+sidebar_label: 'クラスター検出'
+slug: '/operations/cluster-discovery'
+title: 'クラスター検出'
 ---
 
 

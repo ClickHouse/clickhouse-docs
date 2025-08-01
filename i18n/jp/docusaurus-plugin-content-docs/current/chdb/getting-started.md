@@ -1,9 +1,9 @@
 ---
-'title': 'Getting started with chDB'
-'sidebar_label': 'Getting started'
-'slug': '/chdb/getting-started'
-'description': 'chDBはClickHouseを搭載したインプロセスSQL OLAPエンジンです'
-'keywords':
+title: 'Getting started with chDB'
+sidebar_label: 'Getting started'
+slug: '/chdb/getting-started'
+description: 'chDBはClickHouseを搭載したインプロセスSQL OLAPエンジンです'
+keywords:
 - 'chdb'
 - 'embedded'
 - 'clickhouse-lite'

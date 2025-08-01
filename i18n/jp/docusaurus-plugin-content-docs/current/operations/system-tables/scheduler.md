@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing information about and status of scheduling
+description: 'System table containing information about and status of scheduling
   nodes residing on the local server.'
-'keywords':
+keywords:
 - 'system table'
 - 'scheduler'
-'slug': '/operations/system-tables/scheduler'
-'title': 'system.scheduler'
+slug: '/operations/system-tables/scheduler'
+title: 'system.scheduler'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

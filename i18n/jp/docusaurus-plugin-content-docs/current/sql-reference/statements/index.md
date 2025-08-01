@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouse SQL文のドキュメント'
-'sidebar_label': 'ステートメントのリスト'
-'sidebar_position': 1
-'slug': '/sql-reference/statements/'
-'title': 'ClickHouse SQL文'
+description: 'ClickHouse SQL文のドキュメント'
+sidebar_label: 'ステートメントのリスト'
+sidebar_position: 1
+slug: '/sql-reference/statements/'
+title: 'ClickHouse SQL文'
 ---
 
 

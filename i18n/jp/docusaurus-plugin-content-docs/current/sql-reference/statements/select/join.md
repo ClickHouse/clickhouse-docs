@@ -1,8 +1,8 @@
 ---
-'description': 'Documentation for JOIN Clause'
-'sidebar_label': 'JOIN'
-'slug': '/sql-reference/statements/select/join'
-'title': 'JOIN Clause'
+description: 'Documentation for JOIN Clause'
+sidebar_label: 'JOIN'
+slug: '/sql-reference/statements/select/join'
+title: 'JOIN Clause'
 ---
 
 

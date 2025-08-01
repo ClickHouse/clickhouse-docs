@@ -1,11 +1,11 @@
 ---
-'description': 'ClickHouse Keeper または ZooKeeper が設定されている場合にのみ存在するシステムテーブル。構成で定義された
+description: 'ClickHouse Keeper または ZooKeeper が設定されている場合にのみ存在するシステムテーブル。構成で定義された
   Keeper クラスタからデータを公開します。'
-'keywords':
+keywords:
 - 'system table'
 - 'zookeeper'
-'slug': '/operations/system-tables/zookeeper'
-'title': 'system.zookeeper'
+slug: '/operations/system-tables/zookeeper'
+title: 'system.zookeeper'
 ---
 
 

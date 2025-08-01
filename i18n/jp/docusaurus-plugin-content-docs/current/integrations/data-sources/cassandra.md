@@ -1,8 +1,8 @@
 ---
-'slug': '/integrations/cassandra'
-'sidebar_label': 'Cassandra'
-'title': 'Cassandra'
-'description': 'Page describing how users can integrate with Cassandra via a dictionary.'
+slug: '/integrations/cassandra'
+sidebar_label: 'Cassandra'
+title: 'Cassandra'
+description: 'Page describing how users can integrate with Cassandra via a dictionary.'
 ---
 
 

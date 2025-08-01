@@ -1,9 +1,9 @@
 ---
-'description': 'System iceberg snapshot history'
-'keywords':
+description: 'System iceberg snapshot history'
+keywords:
 - 'system iceberg_history'
-'slug': '/operations/system-tables/iceberg_history'
-'title': 'system.iceberg_history'
+slug: '/operations/system-tables/iceberg_history'
+title: 'system.iceberg_history'
 ---
 
 

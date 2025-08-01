@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for Check Grant'
-'sidebar_label': 'CHECK GRANT'
-'sidebar_position': 56
-'slug': '/sql-reference/statements/check-grant'
-'title': 'CHECK GRANT Statement'
+description: 'Documentation for Check Grant'
+sidebar_label: 'CHECK GRANT'
+sidebar_position: 56
+slug: '/sql-reference/statements/check-grant'
+title: 'CHECK GRANT Statement'
 ---
 
 

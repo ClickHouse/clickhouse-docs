@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing information about the databases that are available
+description: 'System table containing information about the databases that are available
   to the current user.'
-'keywords':
+keywords:
 - 'system table'
 - 'databases'
-'slug': '/operations/system-tables/databases'
-'title': 'system.databases'
+slug: '/operations/system-tables/databases'
+title: 'system.databases'
 ---
 
 

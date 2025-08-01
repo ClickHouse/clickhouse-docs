@@ -1,10 +1,10 @@
 ---
-'description': 'This engine allows processing of application log files as a stream
+description: 'This engine allows processing of application log files as a stream
   of records.'
-'sidebar_label': 'FileLog'
-'sidebar_position': 160
-'slug': '/engines/table-engines/special/filelog'
-'title': 'FileLog Engine'
+sidebar_label: 'FileLog'
+sidebar_position: 160
+slug: '/engines/table-engines/special/filelog'
+title: 'FileLog Engine'
 ---
 
 
