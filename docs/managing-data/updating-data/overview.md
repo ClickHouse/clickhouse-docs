@@ -22,12 +22,11 @@ In summary, update operations should be issued carefully, and the mutations queu
 |---------------------------------------------------------------------------------------|--------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [Update mutation](/sql-reference/statements/alter/update)                          | `ALTER TABLE [table] UPDATE`         | Use when data must be updated to disk immediately (e.g. for compliance). Negatively affects `SELECT` performance.                                                                                                                        |
 | [Lightweight updates](/sql-reference/statements/update)                            | `UPDATE [table] SET ... WHERE`       | Use for updating small amounts of data (up to ~10% of table). Creates patch parts for immediate visibility without rewriting entire columns. Adds overhead to `SELECT` queries but has predictable latency. Currently experimental.      |
-| [On-the-fly updates](/guides/developer/lightweight-update)                         | `ALTER TABLE [table] UPDATE`         | Enable using `SET apply_mutations_on_fly = 1;`. Use when updating small amounts of data. Rows are immediately returned with updated data in all subsequent `SELECT` queries but are initially only internally marked as updated on disk. |
+| [On-the-fly updates](/guides/developer/on-the-fly-mutations)                         | `ALTER TABLE [table] UPDATE`         | Enable using `SET apply_mutations_on_fly = 1;`. Use when updating small amounts of data. Rows are immediately returned with updated data in all subsequent `SELECT` queries but are initially only internally marked as updated on disk. |
 | [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)   | `ENGINE = ReplacingMergeTree`        | Use when updating large amounts of data. This table engine is optimized for data deduplication on merges.                                                                                                                                |
 | [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) | `ENGINE = CollapsingMergeTree(Sign)` | Use when updating individual rows frequently, or for scenarios where you need to maintain the latest state of objects that change over time. For example, tracking user activity or article stats.                                       |
-Here is a summary of the different ways to update data in ClickHouse:
 
-## Update Mutations {#update-mutations}
+## Update mutations {#update-mutations}
 
 Update mutations can be issued through a `ALTER TABLE ... UPDATE` command e.g.
 
@@ -84,11 +83,11 @@ WHERE Id = 404346
 1 row in set. Elapsed: 0.149 sec. Processed 59.55 million rows, 259.91 MB (399.99 million rows/s., 1.75 GB/s.)
 ```
 
-Note that for on-the-fly updates, a mutation is still used to update the data; it is just not materialized immediately and applied during `SELECT` queries. It will still be applied in the background as an asynchronous process and incurs the same heavy overhead as a mutation and thus is an I/O intense operation that should be used sparingly. The expressions that can be used with this operation are also limited (see here for [details](/guides/developer/lightweight-update#support-for-subqueries-and-non-deterministic-functions)).
+Note that for on-the-fly updates, a mutation is still used to update the data; it is just not materialized immediately and applied during `SELECT` queries. It will still be applied in the background as an asynchronous process and incurs the same heavy overhead as a mutation and thus is an I/O intense operation that should be used sparingly. The expressions that can be used with this operation are also limited (see here for [details](/guides/developer/on-the-fly-mutations#support-for-subqueries-and-non-deterministic-functions)).
 
-Read more about [on-the-fly updates](/guides/developer/lightweight-update).
+Read more about [on-the-fly updates](/guides/developer/on-the-fly-mutations).
 
-## Collapsing Merge Tree {#collapsing-merge-tree}
+## `CollapsingMergeTree` {#collapsing-merge-tree}
 
 Stemming from the idea that updates are expensive but inserts can be leveraged to perform updates,
 the [`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree) table engine
@@ -135,6 +134,6 @@ for [`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingme
 for a more comprehensive overview.
 :::
 
-## More Resources {#more-resources}
+## More resources {#more-resources}
 
 - [Handling Updates and Deletes in ClickHouse](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

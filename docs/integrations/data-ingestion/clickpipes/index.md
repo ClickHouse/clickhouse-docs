@@ -30,7 +30,7 @@ import Image from '@theme/IdealImage';
 
 <Image img={clickpipes_stack} alt="ClickPipes stack" size="lg" border/>
 
-## Supported Data Sources {#supported-data-sources}
+## Supported data sources {#supported-data-sources}
 
 | Name                                               | Logo                                                                                             |Type| Status           | Description                                                                                          |
 |----------------------------------------------------|--------------------------------------------------------------------------------------------------|----|------------------|------------------------------------------------------------------------------------------------------|
@@ -48,9 +48,7 @@ import Image from '@theme/IdealImage';
 | [Postgres](/integrations/clickpipes/postgres)      | <Postgressvg class="image" alt="Postgres logo" style={{width: '3rem', height: 'auto'}}/>         |DBMS| Stable      | Configure ClickPipes and start ingesting data from Postgres into ClickHouse Cloud.                   |
 | [MySQL](/integrations/clickpipes/mysql)            | <Mysqlsvg class="image" alt="MySQL logo" style={{width: '3rem', height: 'auto'}}/>               |DBMS| Private Beta | Configure ClickPipes and start ingesting data from MySQL into ClickHouse Cloud.                      |
 
-
 More connectors will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
-
 
 ## List of Static IPs {#list-of-static-ips}
 
@@ -90,7 +88,7 @@ Errors related to the operation of the ClickPipe will be stored in the `system.c
 
 If ClickPipes cannot connect to a data source after 15 min or to a destination after 1 hr, the ClickPipes instance stops and stores an appropriate message in the system error table (provided the ClickHouse instance is available).
 
-## F.A.Q {#faq}
+## FAQ {#faq}
 - **What is ClickPipes?**
 
   ClickPipes is a ClickHouse Cloud feature that makes it easy for users to connect their ClickHouse services to external data sources, specifically Kafka. With ClickPipes for Kafka, users can easily continuously load data into ClickHouse, making it available for real-time analytics.

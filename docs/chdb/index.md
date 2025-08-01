@@ -29,13 +29,13 @@ chDB supports Parquet, CSV, JSON, Apache Arrow, ORC, and [60+ more formats](/int
 
 * If you're using [Go](install/go.md), [Rust](install/rust.md), [NodeJS](install/nodejs.md), or [Bun](install/bun.md), take a look at the corresponding language pages.
 * If you're using Python, see the [getting started developer guide](getting-started.md). There are also guides showing how to do common tasks like:
-    * [JupySQL](guides/jupysql.md)
-    * [Querying Pandas](guides/querying-pandas.md)
-    * [Querying Apache Arrow](guides/querying-apache-arrow.md)
-    * [Querying data in S3](guides/querying-s3-bucket.md)
-    * [Querying Parquet files](guides/querying-parquet.md)
-    * [Querying remote ClickHouse](guides/query-remote-clickhouse.md)
-    * [Using clickhouse-local database](guides/clickhouse-local.md)
+  * [JupySQL](guides/jupysql.md)
+  * [Querying Pandas](guides/querying-pandas.md)
+  * [Querying Apache Arrow](guides/querying-apache-arrow.md)
+  * [Querying data in S3](guides/querying-s3-bucket.md)
+  * [Querying Parquet files](guides/querying-parquet.md)
+  * [Querying remote ClickHouse](guides/query-remote-clickhouse.md)
+  * [Using clickhouse-local database](guides/clickhouse-local.md)
 
 <!-- ## What is chDB?
 
@@ -56,7 +56,6 @@ You can listen to a brief project introduction to chDB, courtesy of Alexey Milov
 - Read the full story about the birth of the chDB project on [Auxten's blog](https://clickhouse.com/blog/chdb-embedded-clickhouse-rocket-engine-on-a-bicycle)
 - Read about chDB and its use cases on the [Official ClickHouse Blog](https://clickhouse.com/blog/welcome-chdb-to-clickhouse)
 - Discover chDB in your browser using [codapi examples](https://antonz.org/trying-chdb/)
-
 
 ## What license does it use? {#what-license-does-it-use}
 

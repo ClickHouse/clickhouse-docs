@@ -45,5 +45,3 @@ Legacy plans are available for reference [here](https://clickhouse.com/pricing?l
 ### Are there changes to how users are charged via the CSP marketplaces? {#are-there-changes-to-how-users-are-charged-via-the-csp-marketplaces}
 
 Users who sign up to ClickHouse Cloud via a CSP Marketplace incur usage in terms of CHCs (ClickHouse Cloud Credits). This behavior has not changed. However, the underlying composition of the credit usage will align with the pricing and packaging changes outlined here and include charges for any data transfer usage and ClickPipes once those are live.
-
-

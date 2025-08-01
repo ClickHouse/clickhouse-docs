@@ -1,6 +1,6 @@
 ---
 slug: /cloud/bestpractices
-keywords: ['Cloud', 'Best Practices', 'Bulk Inserts', 'Asynchronous Inserts', 'Avoid Mutations', 'Avoid Nullable Columns', 'Avoid Optimize Final', 'Low Cardinality Partitioning Key', 'Multi Tenancy', 'Usage Limits']
+keywords: ['Cloud', 'Best Practices', 'Bulk Inserts', 'Asynchronous Inserts', 'Avoid mutations', 'Avoid nullable columns', 'Avoid Optimize Final', 'Low Cardinality Partitioning Key', 'Multi Tenancy', 'Usage Limits']
 title: 'Overview'
 hide_title: true
 description: 'Landing page for Best Practices section in ClickHouse Cloud'
@@ -27,5 +27,5 @@ These are in addition to the standard best practices which apply to all deployme
 | [Selecting an Insert Strategy](/best-practices/selecting-an-insert-strategy) | Strategies for efficient data insertion in ClickHouse.             |
 | [Data Skipping Indices](/best-practices/use-data-skipping-indices-where-appropriate) | When to apply data skipping indices for performance gains.    |
 | [Avoid Mutations](/best-practices/avoid-mutations)                   | Reasons to avoid mutations and how to design without them.               |
-| [Avoid OPTIMIZE FINAL](/best-practices/avoid-optimize-final)         | Why `OPTIMIZE FINAL` can be costly and how to work around it.           |
+| [Avoid `OPTIMIZE FINAL`](/best-practices/avoid-optimize-final)         | Why `OPTIMIZE FINAL` can be costly and how to work around it.           |
 | [Use JSON where appropriate](/best-practices/use-json-where-appropriate) | Considerations for using JSON columns in ClickHouse.               |

@@ -34,7 +34,7 @@ On Day 1, a full backup is taken to start the backup chain. On Day 2, an increme
 
 ## Default backup policy {#default-backup-policy}
 
-In the Basic, Scale, and Enterprise tiers, backups are metered and billed separately from storage. All services will default to one backup with the ability to configure more, starting with the Scale tier, via the Settings tab of the Cloud Console.
+In the Basic, Scale, and Enterprise tiers, backups are metered and billed separately from storage. All services will default to one backup with the ability to configure more, starting with the Scale tier, via the Settings tab of the Cloud console.
 
 ## Backup status list {#backup-status-list}
 
@@ -50,7 +50,6 @@ To understand the backup cost, you can view the backup cost per service from the
 
 <Image img={backup_usage} size="md" alt="Backup usage chart in ClickHouse Cloud" border/>
 
-
 Estimating the total cost for your backups requires you to set a schedule. We are also working on updating our [pricing calculator](https://clickhouse.com/pricing), so you can get a monthly cost estimate before setting a schedule. You will need to provide the following inputs in order to estimate the cost:
 - Size of the full and incremental backups
 - Desired frequency
@@ -60,7 +59,6 @@ Estimating the total cost for your backups requires you to set a schedule. We ar
 :::note
 Keep in mind that the estimated cost for backups will change as the size of the data in the service grows over time.
 :::
-
 
 ## Restore a backup {#restore-a-backup}
 
@@ -171,7 +169,7 @@ SYNC SETTINGS max_table_size_to_drop=2097152 -- increases the limit to 2TB
 ```
 :::
 
-## Configurable Backups {#configurable-backups}
+## Configurable backups {#configurable-backups}
 
 If you want to set up a backups schedule different from the default backup schedule, take a look at [Configurable Backups](./configurable-backups.md).
 

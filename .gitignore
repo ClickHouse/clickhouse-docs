@@ -63,6 +63,9 @@ docs/data-modeling/projections/index.md
 docs/cloud/manage/jan2025_faq/index.md
 docs/chdb/guides/index.md
 docs/use-cases/AI_ML/index.md
+docs/use-cases/AI_ML/MCP/index.md
+docs/use-cases/AI_ML/MCP/ai_agent_libraries/index.md
+docs/integrations/data-ingestion/clickpipes/kafka/index.md
 
 .vscode
 .aspell.en.prepl
@@ -71,11 +74,3 @@ docs/use-cases/AI_ML/index.md
 **.translated
 **.translate
 /ClickHouse/
-
-# Ignore table of contents files
-docs/cloud/reference/release-notes-index.md
-docs/whats-new/changelog/index.md
-docs/cloud/manage/api/api-reference-index.md
-docs/getting-started/index.md
-docs/data-modeling/projections/index.md
-docs/integrations/data-ingestion/clickpipes/kafka/index.md

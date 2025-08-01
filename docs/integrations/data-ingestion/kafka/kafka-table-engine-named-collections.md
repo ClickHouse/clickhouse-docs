@@ -5,7 +5,7 @@ keywords: ['named collection', 'how to', 'kafka']
 slug: /integrations/data-ingestion/kafka/kafka-table-engine-named-collections
 ---
 
-# Integrating ClickHouse with Kafka using Named Collections
+# Integrating ClickHouse with Kafka using named collections
 
 ## Introduction {#introduction}
 
@@ -89,24 +89,24 @@ Add the following section to your ClickHouse `config.xml` file:
 </named_collections>
 ```
 
-### Configuration Notes {#configuration-notes}
+### Configuration notes {#configuration-notes}
 
 1. Adjust Kafka addresses and related configurations to match your Kafka cluster setup.
 2. The section before `<kafka>` contains ClickHouse Kafka engine parameters. For a full list of parameters, refer to the [Kafka engine parameters ](/engines/table-engines/integrations/kafka).
 3. The section within `<kafka>` contains extended Kafka configuration options. For more options, refer to the [librdkafka configuration](https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md).
 4. This example uses the `SASL_SSL` security protocol and `PLAIN` mechanism. Adjust these settings based on your Kafka cluster configuration.
 
-## Creating Tables and Databases {#creating-tables-and-databases}
+## Creating tables and databases {#creating-tables-and-databases}
 
 Create the necessary databases and tables on your ClickHouse cluster. If you run ClickHouse as a single node, omit the cluster part of the SQL command and use any other engine instead of `ReplicatedMergeTree`.
 
-### Create the Database {#create-the-database}
+### Create the database {#create-the-database}
 
 ```sql
 CREATE DATABASE kafka_testing ON CLUSTER LAB_CLICKHOUSE_CLUSTER;
 ```
 
-### Create Kafka Tables {#create-kafka-tables}
+### Create Kafka tables {#create-kafka-tables}
 
 Create the first Kafka table for the first Kafka cluster:
 
@@ -132,7 +132,7 @@ CREATE TABLE kafka_testing.second_kafka_table ON CLUSTER STAGE_CLICKHOUSE_CLUSTE
 ENGINE = Kafka(cluster_2);
 ```
 
-### Create Replicated Tables {#create-replicated-tables}
+### Create replicated tables {#create-replicated-tables}
 
 Create a table for the first Kafka table:
 
@@ -158,7 +158,7 @@ CREATE TABLE kafka_testing.second_replicated_table ON CLUSTER STAGE_CLICKHOUSE_C
 ORDER BY id;
 ```
 
-### Create Materialized Views {#create-materialized-views}
+### Create materialized views {#create-materialized-views}
 
 Create a materialized view to insert data from the first Kafka table into the first replicated table:
 
@@ -182,7 +182,7 @@ SELECT
 FROM second_kafka_table;
 ```
 
-## Verifying the Setup {#verifying-the-setup}
+## Verifying the setup {#verifying-the-setup}
 
 You should now see the relative consumer groups on your Kafka clusters:
 - `cluster_1_clickhouse_consumer` on `cluster_1`

@@ -8,9 +8,9 @@ slug: /cloud/reference/supported-regions
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
-# Supported Cloud Regions
+# Supported cloud regions
 
-## AWS Regions {#aws-regions}
+## AWS regions {#aws-regions}
 
 - ap-northeast-1 (Tokyo)
 - ap-south-1 (Mumbai)
@@ -55,7 +55,8 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 **Private Region:**
 
-JapanEast
+- JapanEast
+
 :::note 
 Need to deploy to a region not currently listed? [Submit a request](https://clickhouse.com/pricing?modal=open). 
 :::
@@ -75,7 +76,7 @@ Key considerations for private regions:
   
 Additional requirements may apply for HIPAA compliance (including signing a BAA). Note that HIPAA is currently available only for Enterprise tier services
 
-## HIPAA Compliant Regions {#hipaa-compliant-regions}
+## HIPAA compliant regions {#hipaa-compliant-regions}
 
 <EnterprisePlanFeatureBadge feature="HIPAA" support="true"/>
 
@@ -85,10 +86,11 @@ Customers must sign a Business Associate Agreement (BAA) and request onboarding 
 - AWS us-east-1 (N. Virginia)
 - AWS us-east-2 (Ohio)
 - AWS us-west-2 (Oregon)
+- GCP europe-west4 (Netherlands)
 - GCP us-central1 (Iowa)
 - GCP us-east1 (South Carolina)
 
-## PCI Compliant Regions {#pci-compliant-regions}
+## PCI compliant regions {#pci-compliant-regions}
 
 <EnterprisePlanFeatureBadge feature="PCI" support="true"/>
 

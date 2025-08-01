@@ -1,12 +1,12 @@
 ---
-slug: /guides/developer/lightweight-update
+slug: /guides/developer/on-the-fly-mutations
 sidebar_label: 'On-the-fly mutation'
 title: 'On-the-fly Mutations'
 keywords: ['On-the-fly mutation']
 description: 'Provides a description of on-the-fly mutations'
 ---
 
-## On-the-fly mutations {#lightweight-update}
+## On-the-fly mutations {#on-the-fly-mutations}
 
 When on-the-fly mutations are enabled, updated rows are marked as updated immediately and subsequent `SELECT` queries will automatically return with the changed values. When on-the-fly mutations are not enabled, you may have to wait for your mutations to be applied via a background process to see the changed values.
 
@@ -90,5 +90,4 @@ These behaviours are controlled by the following settings:
 
 - `mutations_execute_nondeterministic_on_initiator` - if true, non-deterministic functions are executed on the initiator replica and are replaced as literals in `UPDATE` and `DELETE` queries. Default value: `false`.
 - `mutations_execute_subqueries_on_initiator` - if true, scalar subqueries are executed on the initiator replica and are replaced as literals in `UPDATE` and `DELETE` queries. Default value: `false`.
- - `mutations_max_literal_size_to_replace` - The maximum size of serialized literals in bytes to replace in `UPDATE` and `DELETE` queries. Default value: `16384` (16 KiB).
-
+- `mutations_max_literal_size_to_replace` - The maximum size of serialized literals in bytes to replace in `UPDATE` and `DELETE` queries. Default value: `16384` (16 KiB).

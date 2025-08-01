@@ -26,18 +26,17 @@ You will need the following details to export/restore backups to your own CSP st
 
 1. AWS S3 endpoint, in the format:
 
-    ```text
-    s3://<bucket_name>.s3.amazonaws.com/<directory>
-    ```
+  ```text
+  s3://<bucket_name>.s3.amazonaws.com/<directory>
+  ```
 
-    For example: 
-    ```text
-    s3://testchbackups.s3.amazonaws.com/backups/
-   ```
-    Where:
-   - `testchbackups` is the name of the S3 bucket to export backups to.
-   - `backups` is an optional subdirectory.
-
+  For example: 
+  ```text
+  s3://testchbackups.s3.amazonaws.com/backups/
+  ```
+  Where:
+    - `testchbackups` is the name of the S3 bucket to export backups to.
+    - `backups` is an optional subdirectory.
 
 2. AWS access key and secret. AWS role based authentication is also supported and can be used in place of AWS access key and secret.
 
@@ -65,7 +64,7 @@ In order to use role based authentication, please follow the Secure s3 [setup](h
 
 ## Backup / Restore to AWS S3 Bucket {#backup--restore-to-aws-s3-bucket}
 
-### Take a DB Backup {#take-a-db-backup}
+### Take a DB backup {#take-a-db-backup}
 
 **Full Backup**
 
@@ -101,7 +100,7 @@ See: [Configuring BACKUP/RESTORE to use an S3 Endpoint](/operations/backup#confi
 
 ## Backup / Restore to Azure Blob Storage {#backup--restore-to-azure-blob-storage}
 
-### Take a DB Backup {#take-a-db-backup-1}
+### Take a DB backup {#take-a-db-backup-1}
 
 **Full Backup**
 
@@ -132,7 +131,7 @@ See: [Configuring BACKUP/RESTORE to use an S3 Endpoint](/operations/backup#confi
 
 ## Backup / Restore to Google Cloud Storage (GCS) {#backup--restore-to-google-cloud-storage-gcs}
 
-### Take a DB Backup {#take-a-db-backup-2}
+### Take a DB backup {#take-a-db-backup-2}
 
 **Full Backup**
 
