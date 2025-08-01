@@ -102,8 +102,9 @@ You may purchase credits for your organization through a committed contract by:
    agreement with that marketplace. To pay through a marketplace, follow these
    [instructions](#marketplace-payg).
 
-Credits applied to an organization (e.g. through committed contracts or refunds) 
-are available for your use for the term specified in the accepted private offer. 
+Credits applied to an organization (e.g. through committed contracts or refunds) are
+available for your use for the term specified in the order form or accepted private 
+offer.
 Credits are consumed starting on the day credit was granted in billing periods 
 based on the date the first organization tier (Basic, Scale, or Enterprise) is 
 selected.
