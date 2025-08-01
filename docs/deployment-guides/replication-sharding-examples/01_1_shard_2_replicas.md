@@ -19,6 +19,7 @@ import KeeperConfigExplanation from '@site/docs/deployment-guides/replication-sh
 import VerifyKeeperStatus from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_verify_keeper_using_mntr.mdx';
 import DedicatedKeeperServers from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_dedicated_keeper_servers.mdx';
 import ExampleFiles from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_working_example.mdx';
+import CloudTip from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_cloud_tip.mdx';
 
 > In this example, you'll learn how to set up a simple ClickHouse cluster which
 replicates the data. There are five servers configured. Two are used to host 
@@ -394,6 +395,8 @@ In this example, each `users.xml` file is identical for all nodes in the cluster
 | `fs/volumes/clickhouse-keeper-03/etc/clickhouse-server/config.d` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_1S_2R/fs/volumes/clickhouse-keeper-03/etc/clickhouse-keeper/keeper_config.xml) |
 
 <KeeperConfigExplanation/>
+
+<CloudTip/>
 
 ## Test the setup {#test-the-setup}
 
