@@ -1,10 +1,10 @@
 ---
-'description': 'System table containing information about stack traces for fatal errors.'
-'keywords':
+description: 'System table containing information about stack traces for fatal errors.'
+keywords:
 - 'system table'
 - 'crash_log'
-'slug': '/operations/system-tables/crash-log'
-'title': 'system.crash_log'
+slug: '/operations/system-tables/crash-log'
+title: 'system.crash_log'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

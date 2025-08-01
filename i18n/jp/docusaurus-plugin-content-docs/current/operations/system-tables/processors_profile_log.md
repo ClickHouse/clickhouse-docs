@@ -1,12 +1,12 @@
 ---
-'description': 'System table containing profiling information on the processors level
+description: 'System table containing profiling information on the processors level
   (which can be found in `EXPLAIN PIPELINE`)'
-'keywords':
+keywords:
 - 'system table'
 - 'processors_profile_log'
 - 'EXPLAIN PIPELINE'
-'slug': '/operations/system-tables/processors_profile_log'
-'title': 'system.processors_profile_log'
+slug: '/operations/system-tables/processors_profile_log'
+title: 'system.processors_profile_log'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

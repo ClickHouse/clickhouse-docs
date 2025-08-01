@@ -1,9 +1,9 @@
 ---
-'slug': '/integrations/s3/performance'
-'sidebar_position': 2
-'sidebar_label': 'パフォーマンスの最適化'
-'title': 'S3挿入および読み取りパフォーマンスの最適化'
-'description': 'S3読み取りおよび挿入のパフォーマンスの最適化'
+slug: '/integrations/s3/performance'
+sidebar_position: 2
+sidebar_label: 'パフォーマンスの最適化'
+title: 'S3挿入および読み取りパフォーマンスの最適化'
+description: 'S3読み取りおよび挿入のパフォーマンスの最適化'
 ---
 
 import Image from '@theme/IdealImage';

@@ -1,9 +1,9 @@
 ---
-'description': '構造引数が指定されていない場合、データから抽出された構造に従ってデータをパースします。'
-'slug': '/sql-reference/table-functions/format'
-'sidebar_position': 65
-'sidebar_label': 'フォーマット'
-'title': 'フォーマット'
+description: '構造引数が指定されていない場合、データから抽出された構造に従ってデータをパースします。'
+slug: '/sql-reference/table-functions/format'
+sidebar_position: 65
+sidebar_label: 'フォーマット'
+title: 'フォーマット'
 ---
 
 

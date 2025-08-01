@@ -1,10 +1,10 @@
 ---
-'description': 'Calculates the `arg` value for a minimum `val` value. If there are
+description: 'Calculates the `arg` value for a minimum `val` value. If there are
   multiple rows with equal `val` being the maximum, which of the associated `arg`
   is returned is not deterministic.'
-'sidebar_position': 110
-'slug': '/sql-reference/aggregate-functions/reference/argmin'
-'title': 'argMin'
+sidebar_position: 110
+slug: '/sql-reference/aggregate-functions/reference/argmin'
+title: 'argMin'
 ---
 
 

@@ -1,8 +1,8 @@
 ---
-'description': '正規分布された複数の観察値のグループ間での統計的テストを提供します。すべてのグループが同じ平均値を持っているかどうかを調べるテストです。'
-'sidebar_position': 101
-'slug': '/sql-reference/aggregate-functions/reference/analysis_of_variance'
-'title': '分散分析'
+description: '正規分布された複数の観察値のグループ間での統計的テストを提供します。すべてのグループが同じ平均値を持っているかどうかを調べるテストです。'
+sidebar_position: 101
+slug: '/sql-reference/aggregate-functions/reference/analysis_of_variance'
+title: '分散分析'
 ---
 
 

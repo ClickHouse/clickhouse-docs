@@ -1,9 +1,9 @@
 ---
-'slug': '/faq/operations/multi-region-replication'
-'title': 'ClickHouseはマルチリージョンレプリケーションをサポートしていますか？'
-'toc_hidden': true
-'toc_priority': 30
-'description': 'このページは、ClickHouseがマルチリージョンレプリケーションをサポートしているかどうかについて回答します。'
+slug: '/faq/operations/multi-region-replication'
+title: 'ClickHouseはマルチリージョンレプリケーションをサポートしていますか？'
+toc_hidden: true
+toc_priority: 30
+description: 'このページは、ClickHouseがマルチリージョンレプリケーションをサポートしているかどうかについて回答します。'
 ---
 
 

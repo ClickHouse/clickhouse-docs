@@ -1,8 +1,8 @@
 ---
-'description': 'YouTubeビデオのディスライクのコレクションです。'
-'sidebar_label': 'YouTubeのディスライク'
-'slug': '/getting-started/example-datasets/youtube-dislikes'
-'title': 'YouTube dataset of dislikes'
+description: 'YouTubeビデオのディスライクのコレクションです。'
+sidebar_label: 'YouTubeのディスライク'
+slug: '/getting-started/example-datasets/youtube-dislikes'
+title: 'YouTube dataset of dislikes'
 ---
 
 

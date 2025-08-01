@@ -1,9 +1,9 @@
 ---
-'title': '解析機能 - タイムシリーズ'
-'sidebar_label': '解析機能'
-'description': 'ClickHouse で時系列データを解析するための機能。'
-'slug': '/use-cases/time-series/analysis-functions'
-'keywords':
+title: '解析機能 - タイムシリーズ'
+sidebar_label: '解析機能'
+description: 'ClickHouse で時系列データを解析するための機能。'
+slug: '/use-cases/time-series/analysis-functions'
+keywords:
 - 'time-series'
 ---
 

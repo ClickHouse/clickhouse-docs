@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'JSONObjectEachRowフォーマットのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'JSONObjectEachRowフォーマットのドキュメント'
+input_format: true
+keywords:
 - 'JSONObjectEachRow'
-'output_format': true
-'slug': '/interfaces/formats/JSONObjectEachRow'
-'title': 'JSONObjectEachRow'
+output_format: true
+slug: '/interfaces/formats/JSONObjectEachRow'
+title: 'JSONObjectEachRow'
 ---
 
 

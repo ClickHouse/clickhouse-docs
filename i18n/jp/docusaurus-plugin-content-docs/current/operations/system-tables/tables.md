@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing metadata of each table that the server knows
+description: 'System table containing metadata of each table that the server knows
   about.'
-'keywords':
+keywords:
 - 'system table'
 - 'tables'
-'slug': '/operations/system-tables/tables'
-'title': 'system.tables'
+slug: '/operations/system-tables/tables'
+title: 'system.tables'
 ---
 
 

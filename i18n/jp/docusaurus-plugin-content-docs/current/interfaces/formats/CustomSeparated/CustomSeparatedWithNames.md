@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'CustomSeparatedWithNames formatのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'CustomSeparatedWithNames formatのドキュメント'
+input_format: true
+keywords:
 - 'CustomSeparatedWithNames'
-'output_format': true
-'slug': '/interfaces/formats/CustomSeparatedWithNames'
-'title': 'CustomSeparatedWithNames'
+output_format: true
+slug: '/interfaces/formats/CustomSeparatedWithNames'
+title: 'CustomSeparatedWithNames'
 ---
 
 

@@ -1,10 +1,10 @@
 ---
-'description': '成功と失敗したすべてのログインとログアウトイベントに関する情報を含むシステムテーブルです。'
-'keywords':
+description: '成功と失敗したすべてのログインとログアウトイベントに関する情報を含むシステムテーブルです。'
+keywords:
 - 'system table'
 - 'session_log'
-'slug': '/operations/system-tables/session_log'
-'title': 'system.session_log'
+slug: '/operations/system-tables/session_log'
+title: 'system.session_log'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

@@ -1,7 +1,7 @@
 ---
-'slug': '/about'
-'title': 'ClickHouseについて'
-'description': 'ClickHouseに関するランディングページ'
+slug: '/about'
+title: 'ClickHouseについて'
+description: 'ClickHouseに関するランディングページ'
 ---
 
 

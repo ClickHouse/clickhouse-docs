@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'AvroConfluent フォーマットのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'AvroConfluent フォーマットのドキュメント'
+input_format: true
+keywords:
 - 'AvroConfluent'
-'output_format': false
-'slug': '/interfaces/formats/AvroConfluent'
-'title': 'AvroConfluent'
+output_format: false
+slug: '/interfaces/formats/AvroConfluent'
+title: 'AvroConfluent'
 ---
 
 import DataTypesMatching from './_snippets/data-types-matching.md'

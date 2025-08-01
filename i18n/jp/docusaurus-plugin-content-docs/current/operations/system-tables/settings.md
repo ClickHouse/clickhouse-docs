@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing information about session settings for current
+description: 'System table containing information about session settings for current
   user.'
-'keywords':
+keywords:
 - 'system table'
 - 'settings'
-'slug': '/operations/system-tables/settings'
-'title': 'system.settings'
+slug: '/operations/system-tables/settings'
+title: 'system.settings'
 ---
 
 

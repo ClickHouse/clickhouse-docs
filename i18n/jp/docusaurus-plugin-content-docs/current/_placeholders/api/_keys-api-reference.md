@@ -1,6 +1,6 @@
 ---
-'sidebar_label': 'キー'
-'title': 'キー'
+sidebar_label: 'キー'
+title: 'キー'
 ---
 
 

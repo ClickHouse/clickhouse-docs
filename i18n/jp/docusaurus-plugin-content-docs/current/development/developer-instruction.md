@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouse 開発の前提条件とセットアップ手順'
-'sidebar_label': '事前条件'
-'sidebar_position': 5
-'slug': '/development/developer-instruction'
-'title': '開発者の事前条件'
+description: 'ClickHouse 開発の前提条件とセットアップ手順'
+sidebar_label: '事前条件'
+sidebar_position: 5
+slug: '/development/developer-instruction'
+title: '開発者の事前条件'
 ---
 
 

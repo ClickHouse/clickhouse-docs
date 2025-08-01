@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'FAQ'
-'description': 'Frequently asked questions about ClickPipes for MySQL.'
-'slug': '/integrations/clickpipes/mysql/faq'
-'sidebar_position': 2
-'title': 'ClickPipes for MySQL FAQ'
+sidebar_label: 'FAQ'
+description: 'Frequently asked questions about ClickPipes for MySQL.'
+slug: '/integrations/clickpipes/mysql/faq'
+sidebar_position: 2
+title: 'ClickPipes for MySQL FAQ'
 ---
 
 

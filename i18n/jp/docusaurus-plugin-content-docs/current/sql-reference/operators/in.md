@@ -1,7 +1,7 @@
 ---
-'description': 'IN operatorsを対象としたドキュメント、NOT IN、GLOBAL IN、およびGLOBAL NOT IN演算子は別途扱われています。'
-'slug': '/sql-reference/operators/in'
-'title': 'IN Operators'
+description: 'IN operatorsを対象としたドキュメント、NOT IN、GLOBAL IN、およびGLOBAL NOT IN演算子は別途扱われています。'
+slug: '/sql-reference/operators/in'
+title: 'IN Operators'
 ---
 
 

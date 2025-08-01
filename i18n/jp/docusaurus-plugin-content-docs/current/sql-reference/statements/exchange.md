@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for EXCHANGE Statement'
-'sidebar_label': 'EXCHANGE'
-'sidebar_position': 49
-'slug': '/sql-reference/statements/exchange'
-'title': 'EXCHANGE Statement'
+description: 'Documentation for EXCHANGE Statement'
+sidebar_label: 'EXCHANGE'
+sidebar_position: 49
+slug: '/sql-reference/statements/exchange'
+title: 'EXCHANGE Statement'
 ---
 
 

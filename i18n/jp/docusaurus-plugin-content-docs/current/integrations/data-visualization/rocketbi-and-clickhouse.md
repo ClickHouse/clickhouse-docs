@@ -1,17 +1,17 @@
 ---
-'sidebar_label': 'Rocket BI'
-'sidebar_position': 131
-'slug': '/integrations/rocketbi'
-'keywords':
+sidebar_label: 'Rocket BI'
+sidebar_position: 131
+slug: '/integrations/rocketbi'
+keywords:
 - 'clickhouse'
 - 'RocketBI'
 - 'connect'
 - 'integrate'
 - 'ui'
-'description': 'RocketBI is a self-service business intelligence platform that helps
+description: 'RocketBI is a self-service business intelligence platform that helps
   you quickly analyze data, build drag-n-drop visualizations and collaborate with
   colleagues right on your web browser.'
-'title': 'GOAL: BUILD YOUR 1ST DASHBOARD'
+title: 'GOAL: BUILD YOUR 1ST DASHBOARD'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';

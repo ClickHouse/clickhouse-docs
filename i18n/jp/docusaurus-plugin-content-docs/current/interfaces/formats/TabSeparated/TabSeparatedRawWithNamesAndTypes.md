@@ -1,16 +1,16 @@
 ---
-'alias':
+alias:
 - 'TSVRawWithNamesAndTypes'
 - 'RawWithNamesAndTypes'
-'description': 'TabSeparatedRawWithNamesAndTypes フォーマットのドキュメント'
-'input_format': true
-'keywords':
+description: 'TabSeparatedRawWithNamesAndTypes フォーマットのドキュメント'
+input_format: true
+keywords:
 - 'TabSeparatedRawWithNamesAndTypes'
 - 'TSVRawWithNamesAndTypes'
 - 'RawWithNamesAndTypes'
-'output_format': true
-'slug': '/interfaces/formats/TabSeparatedRawWithNamesAndTypes'
-'title': 'TabSeparatedRawWithNamesAndTypes'
+output_format: true
+slug: '/interfaces/formats/TabSeparatedRawWithNamesAndTypes'
+title: 'TabSeparatedRawWithNamesAndTypes'
 ---
 
 

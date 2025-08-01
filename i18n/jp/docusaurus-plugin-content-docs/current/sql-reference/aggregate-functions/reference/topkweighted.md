@@ -1,8 +1,8 @@
 ---
-'description': '指定されたカラム内のおおよそ最も頻繁に出現する値の配列を返します。結果の配列は値自体ではなく、おおよその出現頻度の降順でソートされます。さらに、値の重みも考慮されます。'
-'sidebar_position': 203
-'slug': '/sql-reference/aggregate-functions/reference/topkweighted'
-'title': 'topKWeighted'
+description: '指定されたカラム内のおおよそ最も頻繁に出現する値の配列を返します。結果の配列は値自体ではなく、おおよその出現頻度の降順でソートされます。さらに、値の重みも考慮されます。'
+sidebar_position: 203
+slug: '/sql-reference/aggregate-functions/reference/topkweighted'
+title: 'topKWeighted'
 ---
 
 

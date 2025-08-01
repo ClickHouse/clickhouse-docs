@@ -1,9 +1,9 @@
 ---
-'title': '日付と時刻データ型 - タイムシリーズ'
-'sidebar_label': '日付と時刻データ型'
-'description': 'ClickHouse におけるタイムシリーズデータ型。'
-'slug': '/use-cases/time-series/date-time-data-types'
-'keywords':
+title: '日付と時刻データ型 - タイムシリーズ'
+sidebar_label: '日付と時刻データ型'
+description: 'ClickHouse におけるタイムシリーズデータ型。'
+slug: '/use-cases/time-series/date-time-data-types'
+keywords:
 - 'time-series'
 ---
 

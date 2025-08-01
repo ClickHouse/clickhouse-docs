@@ -1,8 +1,8 @@
 ---
-'description': '`key` 配列で指定されたキーに従って `value` 配列から最大値を計算します。'
-'sidebar_position': 165
-'slug': '/sql-reference/aggregate-functions/reference/maxmap'
-'title': 'maxMap'
+description: '`key` 配列で指定されたキーに従って `value` 配列から最大値を計算します。'
+sidebar_position: 165
+slug: '/sql-reference/aggregate-functions/reference/maxmap'
+title: 'maxMap'
 ---
 
 

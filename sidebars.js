@@ -1439,6 +1439,7 @@ const sidebars = {
         "operations/settings/settings-users",
         "operations/named-collections",
         "operations/configuration-files",
+	"operations/settings/tcp-connection-limits"
       ],
     },
     {

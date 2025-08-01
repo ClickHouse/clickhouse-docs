@@ -1,9 +1,9 @@
 ---
-'description': 'Nullable値を扱うための機能に関するドキュメント'
-'sidebar_label': 'Nullable'
-'sidebar_position': 135
-'slug': '/sql-reference/functions/functions-for-nulls'
-'title': 'Nullable Values用の機能'
+description: 'Nullable値を扱うための機能に関するドキュメント'
+sidebar_label: 'Nullable'
+sidebar_position: 135
+slug: '/sql-reference/functions/functions-for-nulls'
+title: 'Nullable Values用の機能'
 ---
 
 

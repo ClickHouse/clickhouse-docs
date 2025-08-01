@@ -1,9 +1,9 @@
 ---
-'description': 'Adds the difference between consecutive rows. If the difference is
+description: 'Adds the difference between consecutive rows. If the difference is
   negative, it is ignored.'
-'sidebar_position': 130
-'slug': '/sql-reference/aggregate-functions/reference/deltasumtimestamp'
-'title': 'deltaSumTimestamp'
+sidebar_position: 130
+slug: '/sql-reference/aggregate-functions/reference/deltasumtimestamp'
+title: 'deltaSumTimestamp'
 ---
 
 

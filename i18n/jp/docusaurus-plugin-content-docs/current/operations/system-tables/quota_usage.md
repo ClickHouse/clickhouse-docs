@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing formation about quota usage by the current
+description: 'System table containing formation about quota usage by the current
   user such as how much of the quota is used and how much is left.'
-'keywords':
+keywords:
 - 'system table'
 - 'quota_usage'
-'slug': '/operations/system-tables/quota_usage'
-'title': 'system.quota_usage'
+slug: '/operations/system-tables/quota_usage'
+title: 'system.quota_usage'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

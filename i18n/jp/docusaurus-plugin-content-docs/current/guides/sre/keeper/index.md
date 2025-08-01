@@ -1,14 +1,14 @@
 ---
-'slug': '/guides/sre/keeper/clickhouse-keeper'
-'sidebar_label': 'ClickHouse Keeper'
-'sidebar_position': 10
-'keywords':
+slug: '/guides/sre/keeper/clickhouse-keeper'
+sidebar_label: 'ClickHouse Keeper'
+sidebar_position: 10
+keywords:
 - 'Keeper'
 - 'ZooKeeper'
 - 'clickhouse-keeper'
-'description': 'ClickHouse Keeper, or clickhouse-keeper, replaces ZooKeeper and provides
+description: 'ClickHouse Keeper, or clickhouse-keeper, replaces ZooKeeper and provides
   replication and coordination.'
-'title': 'ClickHouse Keeper'
+title: 'ClickHouse Keeper'
 ---
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';

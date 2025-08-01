@@ -1,10 +1,10 @@
 ---
-'description': 'The `Dictionary` engine displays the dictionary data as a ClickHouse
+description: 'The `Dictionary` engine displays the dictionary data as a ClickHouse
   table.'
-'sidebar_label': 'Dictionary'
-'sidebar_position': 20
-'slug': '/engines/table-engines/special/dictionary'
-'title': 'Dictionary Table Engine'
+sidebar_label: 'Dictionary'
+sidebar_position: 20
+slug: '/engines/table-engines/special/dictionary'
+title: 'Dictionary Table Engine'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'slug': '/faq/use-cases/'
-'sidebar_position': 2
-'sidebar_label': 'ClickHouseのユースケースに関する質問'
-'title': 'ClickHouseのユースケースについての質問'
-'description': 'ClickHouseのユースケースに関する一般的な質問をリストアップしたランディングページ'
+slug: '/faq/use-cases/'
+sidebar_position: 2
+sidebar_label: 'ClickHouseのユースケースに関する質問'
+title: 'ClickHouseのユースケースについての質問'
+description: 'ClickHouseのユースケースに関する一般的な質問をリストアップしたランディングページ'
 ---
 
 
