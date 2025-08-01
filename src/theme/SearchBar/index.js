@@ -37,14 +37,77 @@ function Hit({ hit, children }) {
 
 function ResultsFooter({ state, onClose }) {
   const generateSearchPageLink = useSearchLinkCreator();
+
+  const handleKapaClick = useCallback(() => {
+    onClose(); // Close search modal first
+    
+    // Use Kapa's official API to open with query
+    if (typeof window !== 'undefined' && window.Kapa) {
+      window.Kapa('open', { 
+        query: state.query || '',
+        submit: !!state.query 
+      });
+    } else {
+      console.warn('Kapa widget not loaded');
+    }
+  }, [state.query, onClose]);
+
   return (
-      <Link to={generateSearchPageLink(state.query)} onClick={onClose}>
+    <div style={{ 
+      padding: '12px 16px',
+      borderTop: '1px solid var(--docsearch-modal-shadow)',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '8px'
+    }}>
+      {/* Kapa AI Button */}
+      <button 
+        onClick={handleKapaClick}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+          padding: '12px 16px',
+          backgroundColor: '#5b4cfe',
+          color: 'white',
+          border: 'none',
+          borderRadius: '6px',
+          fontSize: '14px',
+          cursor: 'pointer',
+          fontWeight: 600,
+          transition: 'all 0.2s ease'
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.backgroundColor = '#4a3dcc';
+          e.target.style.transform = 'translateY(-1px)';
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.backgroundColor = '#5b4cfe';
+          e.target.style.transform = 'translateY(0)';
+        }}
+      >
+        🤖 Ask AI{state.query ? ` about "${state.query}"` : ''}
+      </button>
+      
+      {/* Original "See all results" link */}
+      <Link 
+        to={generateSearchPageLink(state.query)} 
+        onClick={onClose}
+        style={{
+          textAlign: 'center',
+          fontSize: '13px',
+          color: 'var(--docsearch-muted-color)',
+          textDecoration: 'none'
+        }}
+      >
         <Translate
             id="theme.SearchBar.seeAll"
             values={{ count: state.context.nbHits }}>
           {'See all {count} results'}
         </Translate>
       </Link>
+    </div>
   );
 }
 
@@ -69,6 +132,7 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
     ...props.searchParameters,
     facetFilters,
     clickAnalytics: true,
+    hitsPerPage: 3,
   };
   const { isAskAIOpen, currentMode } = useAskAI();
   const history = useHistory();
