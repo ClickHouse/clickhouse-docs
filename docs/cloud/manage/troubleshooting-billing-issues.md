@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'ClickHouse Cloud billing compliance'
-slug: /manage/troubleshooting-billing-issues
+slug: /manage/clickHouse-cloud-billing-compliance
 title: 'ClickHouse Cloud billing compliance'
 description: 'Page describing ClickHouse Cloud billing compliance'
 keywords: ['billing compliance', 'pay-as-you-go']
@@ -47,7 +47,7 @@ billing cycle, but payment charges will be accelerated if the intracycle amount
 due reaches $10,000 USD (more info on payment thresholds [here](/cloud/billing/payment-thresholds)).
 
 The credit card on file must be valid, not expired, and have enough available 
-credit to cover your invoice total.If, for any reason, we are unable to charge 
+credit to cover your invoice total. If, for any reason, we are unable to charge 
 the full amount due, the following unpaid invoice restrictions will immediately
 apply:
 
@@ -86,7 +86,7 @@ However, if your PAYG marketplace subscription is canceled or fails to renew
 automatically, billing will fall back to the credit card on file for the 
 organization, if any. To add a credit card, please [contact support](/about-us/support)
 for help. If a valid credit card has not been provided, the same unpaid invoice 
-restrictions outlined above for [direct PAYG](#direct-payg) will apply - this 
+restrictions outlined above for [Direct PAYG](#direct-payg) will apply - this 
 includes service suspension and eventual data deletion.
 
 ### Committed contract billing {#commited-spend-contract}
@@ -94,8 +94,7 @@ includes service suspension and eventual data deletion.
 You may purchase credits for your organization through a committed contract by:
 
 1. Contacting sales to buy credits directly, with payment options including ACH 
-   or wire transfer. Payment terms will be set forth in the applicable order form 
-   and credit.
+   or wire transfer. Payment terms will be set forth in the applicable order form.
 2. Contacting sales to buy credits through a subscription on one of our supported
    cloud marketplaces (AWS, GCP, or Azure). Fees will be reported to the applicable
    marketplace upon acceptance of the private offer and thereafter in accordance 
