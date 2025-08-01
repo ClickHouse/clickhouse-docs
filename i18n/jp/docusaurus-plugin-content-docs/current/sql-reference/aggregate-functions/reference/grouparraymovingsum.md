@@ -1,8 +1,8 @@
 ---
-'description': '入力値の移動合計を計算します。'
-'sidebar_position': 144
-'slug': '/sql-reference/aggregate-functions/reference/grouparraymovingsum'
-'title': 'groupArrayMovingSum'
+description: '入力値の移動合計を計算します。'
+sidebar_position: 144
+slug: '/sql-reference/aggregate-functions/reference/grouparraymovingsum'
+title: 'groupArrayMovingSum'
 ---
 
 

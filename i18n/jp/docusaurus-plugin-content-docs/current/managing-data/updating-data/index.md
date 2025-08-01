@@ -1,8 +1,8 @@
 ---
-'slug': '/updating-data'
-'title': 'データの更新'
-'description': 'データの更新 目次'
-'keywords':
+slug: '/updating-data'
+title: 'データの更新'
+description: 'データの更新 目次'
+keywords:
 - 'update'
 - 'updating data'
 ---

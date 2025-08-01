@@ -1,15 +1,15 @@
 ---
-'description': 'ハードウェアリソースの利用状況やClickHouseサーバーのメトリクスを監視できます。'
-'keywords':
+description: 'ハードウェアリソースの利用状況やClickHouseサーバーのメトリクスを監視できます。'
+keywords:
 - 'monitoring'
 - 'observability'
 - 'advanced dashboard'
 - 'dashboard'
 - 'observability dashboard'
-'sidebar_label': 'モニタリング'
-'sidebar_position': 45
-'slug': '/operations/monitoring'
-'title': 'モニタリング'
+sidebar_label: 'モニタリング'
+sidebar_position: 45
+slug: '/operations/monitoring'
+title: 'モニタリング'
 ---
 
 import Image from '@theme/IdealImage';

@@ -1,8 +1,8 @@
 ---
-'slug': '/guides/developer/overview'
-'sidebar_label': '高度なガイドの概要'
-'description': '高度なガイドの概要'
-'title': 'Advanced Guides'
+slug: '/guides/developer/overview'
+sidebar_label: '高度なガイドの概要'
+description: '高度なガイドの概要'
+title: 'Advanced Guides'
 ---
 
 

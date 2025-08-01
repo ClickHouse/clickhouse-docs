@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing descriptions of table engines supported by
+description: 'System table containing descriptions of table engines supported by
   the server and the features they support.'
-'keywords':
+keywords:
 - 'system table'
 - 'table_engines'
-'slug': '/operations/system-tables/table_engines'
-'title': 'system.table_engine'
+slug: '/operations/system-tables/table_engines'
+title: 'system.table_engine'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'slug': '/data-compression/compression-modes'
-'sidebar_position': 6
-'title': '圧縮モード'
-'description': 'ClickHouseのカラム圧縮モード'
-'keywords':
+slug: '/data-compression/compression-modes'
+sidebar_position: 6
+title: '圧縮モード'
+description: 'ClickHouseのカラム圧縮モード'
+keywords:
 - 'compression'
 - 'codec'
 - 'encoding'

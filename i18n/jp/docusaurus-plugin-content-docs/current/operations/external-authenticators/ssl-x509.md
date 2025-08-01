@@ -1,7 +1,7 @@
 ---
-'description': 'Documentation for Ssl X509'
-'slug': '/operations/external-authenticators/ssl-x509'
-'title': 'SSL X.509 certificate authentication'
+description: 'Documentation for Ssl X509'
+slug: '/operations/external-authenticators/ssl-x509'
+title: 'SSL X.509 certificate authentication'
 ---
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';

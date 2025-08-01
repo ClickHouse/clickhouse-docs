@@ -1,9 +1,9 @@
 ---
-'description': '主キーとは異なり、同じソートキー値（`ORDER BY`テーブルセクションではなく`PRIMARY KEY`）を持つ重複エントリを削除します。'
-'sidebar_label': 'ReplacingMergeTree'
-'sidebar_position': 40
-'slug': '/engines/table-engines/mergetree-family/replacingmergetree'
-'title': 'ReplacingMergeTree'
+description: '主キーとは異なり、同じソートキー値（`ORDER BY`テーブルセクションではなく`PRIMARY KEY`）を持つ重複エントリを削除します。'
+sidebar_label: 'ReplacingMergeTree'
+sidebar_position: 40
+slug: '/engines/table-engines/mergetree-family/replacingmergetree'
+title: 'ReplacingMergeTree'
 ---
 
 

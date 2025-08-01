@@ -1,8 +1,8 @@
 ---
-'slug': '/cloud/manage/billing'
-'title': '請求'
-'description': '請求の目次ページ。'
-'keywords':
+slug: '/cloud/manage/billing'
+title: '請求'
+description: '請求の目次ページ。'
+keywords:
 - 'billing'
 - 'payment thresholds'
 - 'trouble shooting'

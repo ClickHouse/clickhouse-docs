@@ -1,11 +1,11 @@
 ---
-'description': '軽量削除はデータベースからデータを削除するプロセスを簡素化します。'
-'keywords':
+description: '軽量削除はデータベースからデータを削除するプロセスを簡素化します。'
+keywords:
 - 'delete'
-'sidebar_label': '削除'
-'sidebar_position': 36
-'slug': '/sql-reference/statements/delete'
-'title': '軽量削除ステートメント'
+sidebar_label: '削除'
+sidebar_position: 36
+slug: '/sql-reference/statements/delete'
+title: '軽量削除ステートメント'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for Show'
-'sidebar_label': 'SHOW'
-'sidebar_position': 37
-'slug': '/sql-reference/statements/show'
-'title': 'SHOW Statements'
+description: 'Documentation for Show'
+sidebar_label: 'SHOW'
+sidebar_position: 37
+slug: '/sql-reference/statements/show'
+title: 'SHOW Statements'
 ---
 
 

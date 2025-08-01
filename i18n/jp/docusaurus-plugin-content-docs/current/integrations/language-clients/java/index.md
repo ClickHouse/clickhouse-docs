@@ -1,14 +1,14 @@
 ---
-'title': 'Java'
-'keywords':
+title: 'Java'
+keywords:
 - 'clickhouse'
 - 'java'
 - 'jdbc'
 - 'client'
 - 'integrate'
 - 'r2dbc'
-'description': 'Options for connecting to ClickHouse from Java'
-'slug': '/integrations/java'
+description: 'Options for connecting to ClickHouse from Java'
+slug: '/integrations/java'
 ---
 
 import Tabs from '@theme/Tabs';

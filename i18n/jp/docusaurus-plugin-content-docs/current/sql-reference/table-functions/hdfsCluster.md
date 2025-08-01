@@ -1,9 +1,9 @@
 ---
-'description': '指定されたクラスタ内の多くのノードから並列にHDFSファイルを処理することを可能にします。'
-'sidebar_label': 'HDFSクラスタ'
-'sidebar_position': 81
-'slug': '/sql-reference/table-functions/hdfsCluster'
-'title': 'hdfsCluster'
+description: '指定されたクラスタ内の多くのノードから並列にHDFSファイルを処理することを可能にします。'
+sidebar_label: 'HDFSクラスタ'
+sidebar_position: 81
+slug: '/sql-reference/table-functions/hdfsCluster'
+title: 'hdfsCluster'
 ---
 
 

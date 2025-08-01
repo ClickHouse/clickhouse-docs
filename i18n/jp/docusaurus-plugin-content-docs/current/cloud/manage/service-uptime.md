@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'サービスの稼働時間とSLA'
-'slug': '/cloud/manage/service-uptime'
-'title': 'サービスの稼働時間'
-'description': 'ユーザーは今、ステータスページで地域ごとの稼働時間を確認し、サービスの障害に関するアラートを購読できます。'
+sidebar_label: 'サービスの稼働時間とSLA'
+slug: '/cloud/manage/service-uptime'
+title: 'サービスの稼働時間'
+description: 'ユーザーは今、ステータスページで地域ごとの稼働時間を確認し、サービスの障害に関するアラートを購読できます。'
 ---
 
 

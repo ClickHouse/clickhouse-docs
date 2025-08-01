@@ -1,13 +1,13 @@
 ---
-'slug': '/guides/developer/mutations'
-'sidebar_label': 'データの更新と削除'
-'sidebar_position': 1
-'keywords':
+slug: '/guides/developer/mutations'
+sidebar_label: 'データの更新と削除'
+sidebar_position: 1
+keywords:
 - 'update'
 - 'delete'
 - 'mutation'
-'title': 'ClickHouseデータの更新と削除'
-'description': 'ClickHouseでの更新および削除操作の方法について説明します'
+title: 'ClickHouseデータの更新と削除'
+description: 'ClickHouseでの更新および削除操作の方法について説明します'
 ---
 
 

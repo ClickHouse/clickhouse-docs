@@ -1,7 +1,7 @@
 ---
-'slug': '/cloud/reference/changelogs/release-notes'
-'title': 'Cloud Release Notes'
-'description': 'Landing page for Cloud release notes'
+slug: '/cloud/reference/changelogs/release-notes'
+title: 'Cloud Release Notes'
+description: 'Landing page for Cloud release notes'
 ---
 
 

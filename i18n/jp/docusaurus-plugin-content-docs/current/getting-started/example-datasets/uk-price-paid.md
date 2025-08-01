@@ -1,11 +1,11 @@
 ---
-'description': 'Learn how to use projections to improve the performance of queries
+description: 'Learn how to use projections to improve the performance of queries
   that you run frequently using the UK property dataset, which contains data about
   prices paid for real-estate property in England and Wales'
-'sidebar_label': 'UK Property Prices'
-'sidebar_position': 1
-'slug': '/getting-started/example-datasets/uk-price-paid'
-'title': 'The UK property prices dataset'
+sidebar_label: 'UK Property Prices'
+sidebar_position: 1
+slug: '/getting-started/example-datasets/uk-price-paid'
+title: 'The UK property prices dataset'
 ---
 
 

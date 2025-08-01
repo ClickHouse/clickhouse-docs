@@ -1,9 +1,9 @@
 ---
-'slug': '/best-practices/use-data-skipping-indices-where-appropriate'
-'sidebar_position': 10
-'sidebar_label': 'データスキッピングインデックス'
-'title': '適切な場所でデータスキッピングインデックスを使用する'
-'description': 'データスキッピングインデックスの使用方法とタイミングについて説明するページ'
+slug: '/best-practices/use-data-skipping-indices-where-appropriate'
+sidebar_position: 10
+sidebar_label: 'データスキッピングインデックス'
+title: '適切な場所でデータスキッピングインデックスを使用する'
+description: 'データスキッピングインデックスの使用方法とタイミングについて説明するページ'
 ---
 
 import Image from '@theme/IdealImage';

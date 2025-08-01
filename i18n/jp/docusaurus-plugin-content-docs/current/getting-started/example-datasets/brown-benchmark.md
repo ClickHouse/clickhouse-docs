@@ -1,8 +1,8 @@
 ---
-'description': 'A new analytical benchmark for machine-generated log data'
-'sidebar_label': 'Brown University Benchmark'
-'slug': '/getting-started/example-datasets/brown-benchmark'
-'title': 'Brown University Benchmark'
+description: 'A new analytical benchmark for machine-generated log data'
+sidebar_label: 'Brown University Benchmark'
+slug: '/getting-started/example-datasets/brown-benchmark'
+title: 'Brown University Benchmark'
 ---
 
 

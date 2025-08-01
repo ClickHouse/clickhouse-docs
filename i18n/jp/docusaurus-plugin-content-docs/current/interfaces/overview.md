@@ -1,6 +1,6 @@
 ---
-'description': 'ClickHouseへの接続のためのネットワークインターフェース、ドライバー、およびツールの概要'
-'keywords':
+description: 'ClickHouseへの接続のためのネットワークインターフェース、ドライバー、およびツールの概要'
+keywords:
 - 'clickhouse'
 - 'network'
 - 'interfaces'
@@ -12,9 +12,9 @@
 - 'jdbc'
 - 'odbc'
 - 'driver'
-'sidebar_label': '概要'
-'slug': '/interfaces/overview'
-'title': 'Drivers and Interfaces'
+sidebar_label: '概要'
+slug: '/interfaces/overview'
+title: 'Drivers and Interfaces'
 ---
 
 

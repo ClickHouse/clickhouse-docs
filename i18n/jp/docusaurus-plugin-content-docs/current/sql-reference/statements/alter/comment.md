@@ -1,10 +1,10 @@
 ---
-'description': 'ALTER TABLE ... MODIFY COMMENT により、テーブルコメントの追加、変更、削除が可能となるドキュメント'
-'sidebar_label': 'ALTER TABLE ... MODIFY COMMENT'
-'sidebar_position': 51
-'slug': '/sql-reference/statements/alter/comment'
-'title': 'ALTER TABLE ... MODIFY COMMENT'
-'keywords':
+description: 'ALTER TABLE ... MODIFY COMMENT により、テーブルコメントの追加、変更、削除が可能となるドキュメント'
+sidebar_label: 'ALTER TABLE ... MODIFY COMMENT'
+sidebar_position: 51
+slug: '/sql-reference/statements/alter/comment'
+title: 'ALTER TABLE ... MODIFY COMMENT'
+keywords:
 - 'ALTER TABLE'
 - 'MODIFY COMMENT'
 ---

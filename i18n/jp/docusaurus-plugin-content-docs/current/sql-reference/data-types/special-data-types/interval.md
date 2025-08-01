@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for the Interval special data type'
-'sidebar_label': 'Interval'
-'sidebar_position': 61
-'slug': '/sql-reference/data-types/special-data-types/interval'
-'title': 'Interval'
+description: 'Documentation for the Interval special data type'
+sidebar_label: 'Interval'
+sidebar_position: 61
+slug: '/sql-reference/data-types/special-data-types/interval'
+title: 'Interval'
 ---
 
 

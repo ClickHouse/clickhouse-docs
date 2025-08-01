@@ -1,10 +1,10 @@
 ---
-'description': '分散エンジンを使用したテーブルは独自のデータを保存しませんが、複数のサーバー上での分散クエリ処理を可能にします。 読み取りは自動的に並列化されます。
+description: '分散エンジンを使用したテーブルは独自のデータを保存しませんが、複数のサーバー上での分散クエリ処理を可能にします。 読み取りは自動的に並列化されます。
   読み取り中、リモートサーバー上のテーブルインデックスがある場合は使用されます。'
-'sidebar_label': '分散'
-'sidebar_position': 10
-'slug': '/engines/table-engines/special/distributed'
-'title': '分散テーブルエンジン'
+sidebar_label: '分散'
+sidebar_position: 10
+slug: '/engines/table-engines/special/distributed'
+title: '分散テーブルエンジン'
 ---
 
 

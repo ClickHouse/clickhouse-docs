@@ -1,9 +1,9 @@
 ---
-'description': 'SELECT クエリのドキュメント'
-'sidebar_label': 'SELECT'
-'sidebar_position': 32
-'slug': '/sql-reference/statements/select/'
-'title': 'SELECT クエリ'
+description: 'SELECT クエリのドキュメント'
+sidebar_label: 'SELECT'
+sidebar_position: 32
+slug: '/sql-reference/statements/select/'
+title: 'SELECT クエリ'
 ---
 
 

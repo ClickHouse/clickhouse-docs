@@ -1,8 +1,8 @@
 ---
-'description': 'ClickHouse Keeperクライアントユーティリティのドキュメンテーション'
-'sidebar_label': 'clickhouse-keeper-client'
-'slug': '/operations/utilities/clickhouse-keeper-client'
-'title': 'ClickHouse Keeperクライアントユーティリティ'
+description: 'ClickHouse Keeperクライアントユーティリティのドキュメンテーション'
+sidebar_label: 'clickhouse-keeper-client'
+slug: '/operations/utilities/clickhouse-keeper-client'
+title: 'ClickHouse Keeperクライアントユーティリティ'
 ---
 
 

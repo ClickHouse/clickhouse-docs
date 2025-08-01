@@ -1,8 +1,8 @@
 ---
-'description': '異なる引数値のおおよその数を計算します。'
-'sidebar_position': 205
-'slug': '/sql-reference/aggregate-functions/reference/uniqcombined'
-'title': 'uniqCombined'
+description: '異なる引数値のおおよその数を計算します。'
+sidebar_position: 205
+slug: '/sql-reference/aggregate-functions/reference/uniqcombined'
+title: 'uniqCombined'
 ---
 
 

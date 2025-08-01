@@ -1,10 +1,10 @@
 ---
-'description': 'Designed for thinning and aggregating/averaging (rollup) Graphite
+description: 'Designed for thinning and aggregating/averaging (rollup) Graphite
   data.'
-'sidebar_label': 'GraphiteMergeTree'
-'sidebar_position': 90
-'slug': '/engines/table-engines/mergetree-family/graphitemergetree'
-'title': 'GraphiteMergeTree'
+sidebar_label: 'GraphiteMergeTree'
+sidebar_position: 90
+slug: '/engines/table-engines/mergetree-family/graphitemergetree'
+title: 'GraphiteMergeTree'
 ---
 
 

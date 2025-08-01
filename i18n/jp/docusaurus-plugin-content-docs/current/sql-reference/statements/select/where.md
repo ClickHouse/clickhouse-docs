@@ -1,8 +1,8 @@
 ---
-'description': 'Documentation for WHERE Clause'
-'sidebar_label': 'WHERE'
-'slug': '/sql-reference/statements/select/where'
-'title': 'WHERE Clause'
+description: 'Documentation for WHERE Clause'
+sidebar_label: 'WHERE'
+slug: '/sql-reference/statements/select/where'
+title: 'WHERE Clause'
 ---
 
 

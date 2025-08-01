@@ -1,9 +1,9 @@
 ---
-'description': '機械学習関数のドキュメント'
-'sidebar_label': '機械学習'
-'sidebar_position': 115
-'slug': '/sql-reference/functions/machine-learning-functions'
-'title': 'Machine Learning Functions'
+description: '機械学習関数のドキュメント'
+sidebar_label: '機械学習'
+sidebar_position: 115
+slug: '/sql-reference/functions/machine-learning-functions'
+title: 'Machine Learning Functions'
 ---
 
 

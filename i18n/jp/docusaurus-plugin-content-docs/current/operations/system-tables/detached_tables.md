@@ -1,10 +1,10 @@
 ---
-'description': 'システムテーブルには各デタッチテーブルの情報が含まれています。'
-'keywords':
+description: 'システムテーブルには各デタッチテーブルの情報が含まれています。'
+keywords:
 - 'system table'
 - 'detached_tables'
-'slug': '/operations/system-tables/detached_tables'
-'title': 'system.detached_tables'
+slug: '/operations/system-tables/detached_tables'
+title: 'system.detached_tables'
 ---
 
 

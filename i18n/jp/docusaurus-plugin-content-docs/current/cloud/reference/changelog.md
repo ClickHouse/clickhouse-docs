@@ -1,8 +1,8 @@
 ---
-'slug': '/whats-new/cloud'
-'sidebar_label': 'クラウド変更履歴'
-'title': 'クラウド変更履歴'
-'description': '各ClickHouse Cloudリリースの新機能に関する説明を提供するClickHouse Cloud変更履歴'
+slug: '/whats-new/cloud'
+sidebar_label: 'クラウド変更履歴'
+title: 'クラウド変更履歴'
+description: '各ClickHouse Cloudリリースの新機能に関する説明を提供するClickHouse Cloud変更履歴'
 ---
 
 import Image from '@theme/IdealImage';

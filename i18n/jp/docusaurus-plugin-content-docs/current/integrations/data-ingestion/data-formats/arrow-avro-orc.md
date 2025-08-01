@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'Avro、Arrow および ORC'
-'sidebar_position': 5
-'slug': '/integrations/data-formats/arrow-avro-orc'
-'title': 'ClickHouse で Avro、Arrow、および ORC データを操作する'
-'description': 'Avro、Arrow、および ORC データの ClickHouse での操作方法を説明するページ'
+sidebar_label: 'Avro、Arrow および ORC'
+sidebar_position: 5
+slug: '/integrations/data-formats/arrow-avro-orc'
+title: 'ClickHouse で Avro、Arrow、および ORC データを操作する'
+description: 'Avro、Arrow、および ORC データの ClickHouse での操作方法を説明するページ'
 ---
 
 

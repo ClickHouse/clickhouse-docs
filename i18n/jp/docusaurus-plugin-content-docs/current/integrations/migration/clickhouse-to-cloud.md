@@ -1,9 +1,9 @@
 ---
-'sidebar_position': 10
-'sidebar_label': 'ClickHouseからClickHouseクラウドへの移行'
-'slug': '/cloud/migration/clickhouse-to-cloud'
-'title': 'セルフマネージドClickHouseとClickHouseクラウド間の移行'
-'description': 'セルフマネージドClickHouseとClickHouseクラウド間を移行する方法について説明するページ'
+sidebar_position: 10
+sidebar_label: 'ClickHouseからClickHouseクラウドへの移行'
+slug: '/cloud/migration/clickhouse-to-cloud'
+title: 'セルフマネージドClickHouseとClickHouseクラウド間の移行'
+description: 'セルフマネージドClickHouseとClickHouseクラウド間を移行する方法について説明するページ'
 ---
 
 import Image from '@theme/IdealImage';

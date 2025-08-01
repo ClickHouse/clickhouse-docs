@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'JSONColumnsWithMetadata フォーマットのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'JSONColumnsWithMetadata フォーマットのドキュメント'
+input_format: true
+keywords:
 - 'JSONColumnsWithMetadata'
-'output_format': true
-'slug': '/interfaces/formats/JSONColumnsWithMetadata'
-'title': 'JSONColumnsWithMetadata'
+output_format: true
+slug: '/interfaces/formats/JSONColumnsWithMetadata'
+title: 'JSONColumnsWithMetadata'
 ---
 
 

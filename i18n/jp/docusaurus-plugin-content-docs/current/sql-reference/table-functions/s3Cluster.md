@@ -1,9 +1,9 @@
 ---
-'description': '指定されたクラスタ内の多くのノードで、Amazon S3およびGoogle Cloud Storageからファイルを並列処理するs3テーブル関数の拡張機能。'
-'sidebar_label': 's3クラスタ'
-'sidebar_position': 181
-'slug': '/sql-reference/table-functions/s3Cluster'
-'title': 's3Cluster'
+description: '指定されたクラスタ内の多くのノードで、Amazon S3およびGoogle Cloud Storageからファイルを並列処理するs3テーブル関数の拡張機能。'
+sidebar_label: 's3クラスタ'
+sidebar_position: 181
+slug: '/sql-reference/table-functions/s3Cluster'
+title: 's3Cluster'
 ---
 
 

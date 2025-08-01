@@ -1,8 +1,8 @@
 ---
-'description': 'Applies bit-wise `OR` to a series of numbers.'
-'sidebar_position': 152
-'slug': '/sql-reference/aggregate-functions/reference/groupbitor'
-'title': 'groupBitOr'
+description: 'Applies bit-wise `OR` to a series of numbers.'
+sidebar_position: 152
+slug: '/sql-reference/aggregate-functions/reference/groupbitor'
+title: 'groupBitOr'
 ---
 
 

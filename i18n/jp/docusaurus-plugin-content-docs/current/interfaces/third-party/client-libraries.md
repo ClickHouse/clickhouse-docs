@@ -1,9 +1,9 @@
 ---
-'description': '異なるプログラミング言語用の利用可能なサードパーティークライアントライブラリの概要'
-'sidebar_label': 'クライアントライブラリ'
-'sidebar_position': 26
-'slug': '/interfaces/third-party/client-libraries'
-'title': 'サードパーティー開発者によるクライアントライブラリ'
+description: '異なるプログラミング言語用の利用可能なサードパーティークライアントライブラリの概要'
+sidebar_label: 'クライアントライブラリ'
+sidebar_position: 26
+slug: '/interfaces/third-party/client-libraries'
+title: 'サードパーティー開発者によるクライアントライブラリ'
 ---
 
 

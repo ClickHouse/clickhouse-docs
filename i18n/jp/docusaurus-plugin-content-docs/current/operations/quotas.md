@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouse のリソース使用量クォータの設定と管理ガイド'
-'sidebar_label': 'クォータ'
-'sidebar_position': 51
-'slug': '/operations/quotas'
-'title': 'クォータ'
+description: 'ClickHouse のリソース使用量クォータの設定と管理ガイド'
+sidebar_label: 'クォータ'
+sidebar_position: 51
+slug: '/operations/quotas'
+title: 'クォータ'
 ---
 
 

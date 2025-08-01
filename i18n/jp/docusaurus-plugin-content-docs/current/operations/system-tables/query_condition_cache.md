@@ -1,10 +1,10 @@
 ---
-'description': 'クエリ条件キャッシュの内容を表示するシステムテーブル'
-'keywords':
+description: 'クエリ条件キャッシュの内容を表示するシステムテーブル'
+keywords:
 - 'system table'
 - 'query_condition_cache'
-'slug': '/operations/system-tables/query_condition_cache'
-'title': 'system.query_condition_cache'
+slug: '/operations/system-tables/query_condition_cache'
+title: 'system.query_condition_cache'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
