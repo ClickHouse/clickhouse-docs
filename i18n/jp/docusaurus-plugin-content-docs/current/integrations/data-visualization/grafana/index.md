@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'Quick Start'
-'sidebar_position': 1
-'slug': '/integrations/grafana'
-'description': 'ClickHouseとGrafanaの使用方法の紹介'
-'title': 'ClickHouse data source plugin for Grafana'
+sidebar_label: 'Quick Start'
+sidebar_position: 1
+slug: '/integrations/grafana'
+description: 'ClickHouseとGrafanaの使用方法の紹介'
+title: 'ClickHouse data source plugin for Grafana'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';

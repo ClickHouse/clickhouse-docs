@@ -46,10 +46,9 @@ The[ current plugin](https://github.com/silentsokolov/dbt-clickhouse) for ClickH
 
 For the following guides, we assume you have a ClickHouse instance available.
 
-
 ## Setup of dbt and the ClickHouse plugin {#setup-of-dbt-and-the-clickhouse-plugin}
 
-### dbt {#dbt}
+### DBT {#dbt}
 
 We assume the use of the dbt CLI for the following examples. Users may also wish to consider[ dbt Cloud](https://docs.getdbt.com/docs/dbt-cloud/cloud-overview), which offers a web-based Integrated Development Environment (IDE) allowing users to edit and run projects.
 
@@ -73,13 +72,11 @@ pip install dbt-clickhouse
 
 dbt excels when modeling highly relational data. For the purposes of example, we provide a small IMDB dataset with the following relational schema. This dataset originates from the[ relational dataset repository](https://relational.fit.cvut.cz/dataset/IMDb). This is trivial relative to common schemas used with dbt but represents a manageable sample:
 
-
 <Image img={dbt_01} size="lg" alt="IMDB table schema" />
 
 We use a subset of these tables as shown.
 
 Create the following tables:
-
 
 ```sql
 CREATE DATABASE imdb;
@@ -212,7 +209,6 @@ The response should look like:
 
 In the later guides, we will convert this query into a model - materializing it in ClickHouse as a dbt view and table.
 
-
 ## Connecting to ClickHouse {#connecting-to-clickhouse}
 
 1. Create a dbt project. In this case we name this after our `imdb` source. When prompted, select `clickhouse` as the database source.
@@ -304,8 +300,7 @@ In the later guides, we will convert this query into a model - materializing it 
 
     Confirm the response includes `Connection test: [OK connection ok]` indicating a successful connection.
 
-
-## Creating a Simple View Materialization {#creating-a-simple-view-materialization}
+## Creating a simple view materialization {#creating-a-simple-view-materialization}
 
 When using the view materialization, a model is rebuilt as a view on each run, via a `CREATE VIEW AS` statement in ClickHouse. This doesn't require any additional storage of data but will be slower to query than table materializations.
 
@@ -433,7 +428,7 @@ When using the view materialization, a model is rebuilt as a view on each run, v
     +------+------------+----------+------------------+------+---------+-------------------+
     ```
 
-## Creating a Table Materialization {#creating-a-table-materialization}
+## Creating a table materialization {#creating-a-table-materialization}
 
 In the previous example, our model was materialized as a view. While this might offer sufficient performance for some queries, more complex SELECTs or frequently executed queries may be better materialized as a table.  This materialization is useful for models that will be queried by BI tools to ensure users have a faster experience. This effectively causes the query results to be stored as a new table, with the associated storage overheads - effectively, an `INSERT TO SELECT` is executed. Note that this table will be reconstructed each time i.e., it is not incremental. Large result sets may therefore result in long execution times - see [dbt Limitations](#limitations).
 
@@ -509,7 +504,6 @@ In the previous example, our model was materialized as a view. While this might 
     ```sql
     SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DESC LIMIT 10;
     ```
-
 
 ## Creating an Incremental Materialization {#creating-an-incremental-materialization}
 
@@ -698,7 +692,6 @@ AND event_time > subtractMinutes(now(), 15) ORDER BY event_time LIMIT 100;
 
 Adjust the above query to the period of execution. We leave result inspection to the user but highlight the general strategy used by the plugin to perform incremental updates:
 
-
 1. The plugin creates a temporary table `actor_sumary__dbt_tmp`. Rows that have changed are streamed into this table.
 2. A new table, `actor_summary_new,` is created. The rows from the old table are, in turn, streamed from the old to new, with a check to make sure row ids do not exist in the temporary table. This effectively handles updates and duplicates.
 3. The results from the temporary table are streamed into the new `actor_summary` table:
@@ -811,11 +804,11 @@ WHERE id > (SELECT max(id) FROM imdb_dbt.actor_summary) OR updated_at > (SELECT 
 
 In this run, only the new rows are added straight to `imdb_dbt.actor_summary` table and there is no table creation involved.
 
-### Delete+Insert mode (Experimental) {#deleteinsert-mode-experimental}
+### Delete and insert mode (experimental) {#deleteinsert-mode-experimental}
 
 Historically ClickHouse has had only limited support for updates and deletes, in the form of asynchronous [Mutations](/sql-reference/statements/alter/index.md). These can be extremely IO-intensive and should generally be avoided.
 
-ClickHouse 22.8 introduced [lightweight deletes](/sql-reference/statements/delete.md) and ClickHouse 25.7 introduced [lightweight updates](/guides/developer/lightweight-update). With the introduction of these features, modifications from single update queries, even when being materialized asynchronously, will occur instantly from the user's perspective.
+ClickHouse 22.8 introduced [lightweight deletes](/sql-reference/statements/delete.md) and ClickHouse 25.7 introduced [lightweight updates](/sql-reference/statements/update). With the introduction of these features, modifications from single update queries, even when being materialized asynchronously, will occur instantly from the user's perspective.
 
 This mode can be configured for a model via the `incremental_strategy` parameter i.e.
 
@@ -835,7 +828,7 @@ This process is shown below:
 
 <Image img={dbt_06} size="lg" alt="lightweight delete incremental" />
 
-### insert_overwrite mode (Experimental) {#insert_overwrite-mode-experimental}
+### insert_overwrite mode (experimental) {#insert_overwrite-mode-experimental}
 Performs the following steps:
 
 1. Create a staging (temporary) table with the same structure as the incremental model relation: `CREATE TABLE {staging} AS {target}`.
@@ -852,7 +845,7 @@ This approach has the following advantages:
 
 <Image img={dbt_07} size="lg" alt="insert overwrite incremental" />
 
-## Creating a Snapshot {#creating-a-snapshot}
+## Creating a snapshot {#creating-a-snapshot}
 
 dbt snapshots allow a record to be made of changes to a mutable model over time. This in turn allows point-in-time queries on models, where analysts can "look back in time" at the previous state of a model. This is achieved using [type-2 Slowly Changing Dimensions](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row) where from and to date columns record when a row was valid. This functionality is supported by the ClickHouse plugin and is demonstrated below.
 
@@ -1027,8 +1020,7 @@ Note how a table actor_summary_snapshot has been created in the snapshots db (de
 
 For further details on dbt snapshots see [here](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots).
 
-
-## Using Seeds {#using-seeds}
+## Using seeds {#using-seeds}
 
 dbt provides the ability to load data from CSV files. This capability is not suited to loading large exports of a database and is more designed for small files typically used for code tables and [dictionaries](../../../../sql-reference/dictionaries/index.md), e.g. mapping country codes to country names. For a simple example, we generate and then upload a list of genre codes using the seed functionality.
 
@@ -1081,7 +1073,6 @@ dbt provides the ability to load data from CSV files. This capability is not sui
     |War    |WAR |
     +-------+----+=
     ```
-
 
 ## Limitations {#limitations}
 

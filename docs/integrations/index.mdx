@@ -11,11 +11,12 @@ import Amazonmsksvg from '@site/static/images/integrations/logos/amazon_msk.svg'
 import Astratosvg from '@site/static/images/integrations/logos/astrato_logo.svg';
 import apachestreamparkpng from '@site/static/images/integrations/logos/apache-streampark.png';
 import Azureeventhubssvg from '@site/static/images/integrations/logos/azure_event_hubs.svg';
+import BladePipesvg from '@site/static/images/integrations/logos/bladepipe.svg';
 import blinkopspng from '@site/static/images/integrations/logos/blinkops_logo.png';
+import CloudCanalsvg from '@site/static/images/integrations/logos/cloudcanal.svg';
 import Chdbsvg from '@site/static/images/integrations/logos/chdb.svg';
 import Clickhousesvg from '@site/static/images/integrations/logos/clickhouse.svg';
 import Clickhousemonitoringdashboardsvg from '@site/static/images/integrations/logos/clickhouse-monitoring-dashboard.svg';
-import Cloudcanalsvg from '@site/static/images/integrations/logos/clougence.svg';
 import Cloudquerysvg from '@site/static/images/integrations/logos/cloudquery_logo.svg';
 import Confluentsvg from '@site/static/images/integrations/logos/confluent.svg';
 import Csharpsvg from '@site/static/images/integrations/logos/csharp.svg';
@@ -204,7 +205,7 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |Amazon Kinesis|<Kinesissvg style={{width: '3rem', height: '3rem'}} alt="Kenesis logo"/> |Data ingestion|Integration with Amazon Kinesis.|[Documentation](/integrations/clickpipes/kinesis/)|
 |Amazon MSK|<Amazonmsksvg style={{width: '3rem'}} alt="Amazon MSK logo"/> |Data ingestion|Integration with Amazon Managed Streaming for Apache Kafka (MSK).|[Documentation](/integrations/kafka/cloud/amazon-msk/)|
 |Amazon S3|<S3svg style={{width: '3rem', height: '3rem'}} alt="Amazon S3 logo"/>|Data ingestion|Import from, export to, and transform S3 data in flight with ClickHouse built-in S3 functions.|[Documentation](/integrations/data-ingestion/s3/index.md)|
-|Amazon Glue|<Image img={glue_logo} size="logo" alt="Amazon Glue logo"/>|Data ingestion|Query ClickHouse over JDBC|[Documentation](/integrations/glue)|
+|Amazon Glue|<Image img={glue_logo} size="logo" alt="Amazon Glue logo"/>|Data ingestion|Query ClickHouse over Spark using our official Glue connector|[Documentation](/integrations/glue)|
 |Apache Spark|<Sparksvg alt="Amazon Spark logo" style={{width: '3rem'}}/>|Data ingestion|Spark ClickHouse Connector is a high performance connector built on top of Spark DataSource V2.|[GitHub](https://github.com/housepower/spark-clickhouse-connector),<br/>[Documentation](/integrations/data-ingestion/apache-spark/index.md)|
 |Azure Event Hubs|<Azureeventhubssvg alt="Azure Events Hub logo" style={{width: '3rem'}}/>|Data ingestion|A data streaming platform that supports Apache Kafka's native protocol|[Website](https://azure.microsoft.com/en-gb/products/event-hubs)|
 |Azure Synapse|<Image img={azure_synapse_logo} size="logo" alt="Azure Synapse logo"/>|Data ingestion|A cloud-based analytics service for big data and data warehousing.|[Documentation](/integrations/azure-synapse)|
@@ -244,6 +245,7 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |RabbitMQ|<Rabbitmqsvg alt="RabbitMQ logo" style={{width: '3rem', 'height': '3rem'}}/>|Data ingestion|Allows ClickHouse to connect [RabbitMQ](https://www.rabbitmq.com/).|[Documentation](/engines/table-engines/integrations/rabbitmq)|
 |Redis|<Redissvg alt="Redis logo" style={{width: '3rem', 'height': '3rem'}}/>|Data ingestion|Allows ClickHouse to use [Redis](https://redis.io/) as a dictionary source.|[Documentation](/sql-reference/dictionaries/index.md#redis)|
 |Redpanda|<Image img={redpanda} alt="Redpanda logo" size="logo"/>|Data ingestion|Redpanda is the streaming data platform for developers. It's API-compatible with Apache Kafka, but 10x faster, much easier to use, and more cost effective|[Blog](https://redpanda.com/blog/real-time-olap-database-clickhouse-redpanda)|
+|REST Catalog||Data ingestion|Integration with REST Catalog specification for Iceberg tables, supporting multiple catalog providers including Tabular.io.|[Documentation](/use-cases/data-lake/rest-catalog)|
 |Rust|<Image img={rust} size="logo" alt="Rust logo"/>|Language client|A typed client for ClickHouse|[Documentation](/integrations/language-clients/rust.md)|
 |SQLite|<Sqlitesvg alt="Sqlite logo" style={{width: '3rem', 'height': '3rem'}}/>|Data ingestion|Allows to import and export data to SQLite and supports queries to SQLite tables directly from ClickHouse.|[Documentation](/engines/table-engines/integrations/sqlite)|
 |Superset|<Supersetsvg alt="Superset logo" style={{width: '3rem'}}/>|Data visualization|Explore and visualize your ClickHouse data with Apache Superset.|[Documentation](/integrations/data-visualization/superset-and-clickhouse.md)|
@@ -264,13 +266,14 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |Atlas|<Image img={atlas_logo} size="logo" alt="Atlas logo"/>|Schema management|Manage your ClickHouse schema as code. |[Documentation](https://atlasgo.io/guides/clickhouse?utm_source=clickhouse&utm_term=docs)|
 |Astrato|<Astratosvg alt="Astrato logo" style={{width: '3rem', height: '48px'}}/>|Data visualization|Astrato brings true Self-Service BI to Enterprises & Data Businesses by putting analytics in the hands of every user, enabling them to build dashboards, reports & data apps without IT.|[Documentation](/integrations/astrato)|
 |AutoMQ|<Image img={automq_logo} size="logo" alt="AutoMQ logo"/>|Data ingestion|Cloud-native Kafka and RocketMQ alternatives that decouples durability to S3 and EBS|[Website](https://www.automq.com/)|
+|BladePipe|<BladePipesvg alt="BladePipe logo" style={{width: '5rem'}}/>|Data ingestion|A real-time end-to-end data integration tool with sub-second latency.|[Documentation](/integrations/data-ingestion/etl-tools/bladepipe-and-clickhouse.md)|
 |BlinkOps|<Image img={blinkops_logo} size="logo" alt="BlinkOps Logo"/>|Security automation|Create automations to manage data and user permissions.|[Documentation](https://docs.blinkops.com/docs/integrations/clickhouse)|
 |Bytewax|<Bytewaxsvg alt="ByteWax Logo" style={{width: '3rem'}}/>|Data ingestion|Open source Python stream processor for transforming and ingesting data to ClickHouse|[Documentation](https://bytewax.io/blog/building-a-click-house-sink-for-bytewax)|
 |Calyptia (Fluent Bit)|<Image img={calyptia_logo} size="logo" alt="Calyptia logo"/>|Data ingestion|CNCF graduated open-source project for the collection, processing, and delivery of logs, metrics, and traces|[Blog](https://clickhouse.com/blog/kubernetes-logs-to-clickhouse-fluent-bit)|
 |Chartbrew|<Image img={chartbrew_logo} size="logo" alt="Chartbrew logo" style={{width: '3rem', 'backgroundColor': 'transparent', 'boxShadow': 'none'}}/>|Data visualization|Chartbrew is a data visualization platform that allows users to create dashboards and monitor data in real time.|[Documentation](/integrations/chartbrew-and-clickhouse),<br />[Website](https://chartbrew.com/integrations/clickhouse),<br />[Blog](https://chartbrew.com/blog/visualizing-clickhouse-data-with-chartbrew-a-step-by-step-guide/)|
-|CloudCanal|<Cloudcanalsvg className="image" alt="CloudCanal logo" style={{width: '3rem'}}/>|Data integration|A data synchronization and migration tool.|[Website](https://www.cloudcanalx.com/us/)|
 |CloudQuery|<Cloudquerysvg className="image" alt="CloudQuery logo" style={{width: '3rem'}}/>|Data ingestion|Open source high-performance ELT framework.|[Documentation](https://www.cloudquery.io/docs/plugins/destinations/clickhouse/overview)|
 |Cube.js|<Cubejssvg  alt="Cubejs logo" style={{width: '3rem'}}/>|Data visualization|Cube is the Semantic Layer for building data apps.|[Website](https://cube.dev/for/clickhouse-dashboard)|
+|CloudCanal|<CloudCanalsvg alt="CloudCanal logo" style={{width: '5rem'}}/>|Data ingestion|A real-time data replication tool for seamless and easy data flow.|[Website](https://www.clougence.com/)|
 |DBeaver|<Dbeaversvg alt="Dbeaver logo" style={{width: '3rem'}}/>|SQL client|Free multi-platform database administration tool. Connects to Clickhouse through JDBC driver.|[Documentation](/integrations/sql-clients/dbeaver.md)|
 |DataGrip|<Datagripsvg alt="Datagrip logo" style={{width: '3rem'}}/>|SQL client|DataGrip is a powerful database IDE with dedicated support for ClickHouse.|[Documentation](/integrations/sql-clients/datagrip.md)|
 |Dataddo|<Image img={dataddo_logo} size="logo" alt="Dataddo logo"/>|Data integration|Data integration platform|[Website](https://www.dataddo.com/storage/clickhouse)|
@@ -395,3 +398,7 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |VulcanSQL|<Image img={vulcansql_logo} size="logo" alt="VulcanSQL logo"/>|Data API Framework|It's a Data API Framework for data applications that helps data folks create and share data APIs faster. It turns your SQL templates into data APIs. No backend skills required.|[Website](https://vulcansql.com/), <br/>[Documentation](https://vulcansql.com/docs/connect/clickhouse)|
 |marimo|<Image img={marimo_logo} size="logo" alt="marimo logo"/>|SQL Client|An open-source reactive notebook for Python with SQL built-in. Create data visualizations, shareable apps or executable scripts.|[Website](https://marimo.io/), <br/>[Documentation](https://docs.marimo.io/guides/working_with_data/sql/?h=sql#clickhouse-support)|
 </div>
+
+:::info Notice
+Third-party logos and trademarks belong to their respective owners and are shown only to indicate available integrations. No endorsement is implied.
+:::

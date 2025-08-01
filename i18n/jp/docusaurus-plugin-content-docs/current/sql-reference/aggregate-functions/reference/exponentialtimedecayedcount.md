@@ -1,9 +1,9 @@
 ---
-'description': 'Returns the cumulative exponential decay over a time series at the
+description: 'Returns the cumulative exponential decay over a time series at the
   index `t` in time.'
-'sidebar_position': 134
-'slug': '/sql-reference/aggregate-functions/reference/exponentialTimeDecayedCount'
-'title': 'exponentialTimeDecayedCount'
+sidebar_position: 134
+slug: '/sql-reference/aggregate-functions/reference/exponentialTimeDecayedCount'
+title: 'exponentialTimeDecayedCount'
 ---
 
 

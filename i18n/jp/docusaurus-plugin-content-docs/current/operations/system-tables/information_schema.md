@@ -1,11 +1,11 @@
 ---
-'description': 'System database providing an almost standardized DBMS-agnostic view
+description: 'System database providing an almost standardized DBMS-agnostic view
   on metadata of database objects.'
-'keywords':
+keywords:
 - 'system database'
 - 'information_schema'
-'slug': '/operations/system-tables/information_schema'
-'title': 'INFORMATION_SCHEMA'
+slug: '/operations/system-tables/information_schema'
+title: 'INFORMATION_SCHEMA'
 ---
 
 

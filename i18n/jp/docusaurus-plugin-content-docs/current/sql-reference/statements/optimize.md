@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for Optimize'
-'sidebar_label': 'OPTIMIZE'
-'sidebar_position': 47
-'slug': '/sql-reference/statements/optimize'
-'title': 'OPTIMIZE Statement'
+description: 'Documentation for Optimize'
+sidebar_label: 'OPTIMIZE'
+sidebar_position: 47
+slug: '/sql-reference/statements/optimize'
+title: 'OPTIMIZE Statement'
 ---
 
 

@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'Overview'
-'slug': '/cloud/security/cloud-access-management/overview'
-'title': 'Cloud access management'
-'description': 'Describes how access control in ClickHouse cloud works, including
+sidebar_label: 'Overview'
+slug: '/cloud/security/cloud-access-management/overview'
+title: 'Cloud access management'
+description: 'Describes how access control in ClickHouse cloud works, including
   information on role types'
 ---
 

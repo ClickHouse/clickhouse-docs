@@ -5,9 +5,7 @@
 'description': '用于常见账单问题的故障排除文章'
 ---
 
-import trial_expired from '@site/static/images/cloud/manage/trial-expired.png';
 import Image from '@theme/IdealImage';
-
 
 # 故障排除账单问题
 
@@ -21,4 +19,3 @@ import Image from '@theme/IdealImage';
 
 <br />
 
-<Image img={trial_expired} size="md" alt="试用已过期" border/>

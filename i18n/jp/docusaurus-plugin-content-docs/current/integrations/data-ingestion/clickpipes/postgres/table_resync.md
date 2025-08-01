@@ -1,8 +1,8 @@
 ---
-'title': '特定のテーブルの再同期'
-'description': 'Postgres ClickPipe内の特定のテーブルを再同期します'
-'slug': '/integrations/clickpipes/postgres/table_resync'
-'sidebar_label': 'テーブル再同期'
+title: '特定のテーブルの再同期'
+description: 'Postgres ClickPipe内の特定のテーブルを再同期します'
+slug: '/integrations/clickpipes/postgres/table_resync'
+sidebar_label: 'テーブル再同期'
 ---
 
 

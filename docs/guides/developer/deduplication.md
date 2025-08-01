@@ -9,8 +9,7 @@ title: 'Deduplication Strategies'
 import deduplication from '@site/static/images/guides/developer/de_duplication.png';
 import Image from '@theme/IdealImage';
 
-
-# Deduplication Strategies
+# Deduplication strategies
 
 **Deduplication** refers to the process of ***removing duplicate rows of a dataset***. In an OLTP database, this is done easily because each row has a unique primary key-but at the cost of slower inserts. Every inserted row needs to first be searched for and, if found, needs to be replaced.
 
@@ -105,7 +104,9 @@ FINAL
 The result only has 2 rows, and the last row inserted is the row that gets returned.
 
 :::note
-Using `FINAL` works OK if you have a small amount of data. If you are dealing with a large amount of data, using `FINAL` is probably not the best option. Let's discuss a better option for finding the latest value of a column...
+Using `FINAL` works okay if you have a small amount of data. If you are dealing with a large amount of data, 
+using `FINAL` is probably not the best option. Let's discuss a better option for 
+finding the latest value of a column.
 :::
 
 ### Avoiding FINAL {#avoiding-final}
@@ -140,7 +141,6 @@ FROM hackernews_rmt
 └────┴─────────┴─────────────────┴───────┘
 ```
 
-
 Instead of using `FINAL`, let's use some business logic - we know that the `views` column is always increasing, so we can select the row with the largest value using the `max` function after grouping by the desired columns:
 
 ```sql
@@ -164,7 +164,7 @@ Grouping as shown in the query above can actually be more efficient (in terms of
 
 Our [Deleting and Updating Data training module](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs) expands on this example, including how to use a `version` column with `ReplacingMergeTree`.
 
-## Using CollapsingMergeTree for Updating Columns Frequently {#using-collapsingmergetree-for-updating-columns-frequently}
+## Using CollapsingMergeTree for updating columns frequently {#using-collapsingmergetree-for-updating-columns-frequently}
 
 Updating a column involves deleting an existing row and replacing it with new values. As you have already seen, this type of mutation in ClickHouse happens _eventually_ - during merges. If you have a lot of rows to update, it can actually be more efficient to avoid `ALTER TABLE..UPDATE` and instead just insert the new data alongside the existing data. We could add a column that denotes whether or not the data is stale or new... and there is actually a table engine that already implements this behavior very nicely, especially considering that it deletes the stale data automatically for you. Let's see how it works.
 
@@ -248,7 +248,7 @@ INSERT INTO hackernews_views(id, author, sign) VALUES
 ```
 :::
 
-## Real-time Updates from Multiple Threads {#real-time-updates-from-multiple-threads}
+## Real-time updates from multiple threads {#real-time-updates-from-multiple-threads}
 
 With a `CollapsingMergeTree` table, rows cancel each other using a sign column, and the state of a row is determined by the last row inserted. But this can be problematic if you are inserting rows from different threads where rows can be inserted out of order. Using the "last" row does not work in this situation.
 

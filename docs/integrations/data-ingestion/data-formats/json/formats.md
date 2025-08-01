@@ -227,7 +227,7 @@ SELECT * FROM file('objects.json', JSONObjectEachRow)
 
 Note how the `id` column has been populated by key values correctly.
 
-## JSON Arrays {#json-arrays}
+## JSON arrays {#json-arrays}
 
 Sometimes, for the sake of saving space, JSON files are encoded in arrays instead of objects. In this case, we deal with a [list of JSON arrays](../assets/arrays.json):
 
@@ -431,7 +431,6 @@ ClickHouse will throw exceptions in cases of inconsistent JSON and table columns
 ClickHouse allows exporting to and importing data from [BSON](https://bsonspec.org/) encoded files. This format is used by some DBMSs, e.g. [MongoDB](https://github.com/mongodb/mongo) database.
 
 To import BSON data, we use the [BSONEachRow](/interfaces/formats.md/#bsoneachrow) format. Let's import data from [this BSON file](../assets/data.bson):
-
 
 ```sql
 SELECT * FROM file('data.bson', BSONEachRow)

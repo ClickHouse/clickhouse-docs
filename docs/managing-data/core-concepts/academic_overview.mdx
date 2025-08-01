@@ -82,7 +82,6 @@ Finally, the ClickHouse database engine can be operated in on-premise, cloud, st
 
 This section discusses MergeTree* table engines as ClickHouse's native storage format. We describe their on-disk representation and discuss three data pruning techniques in ClickHouse. Afterwards, we present merge strategies which continuously transform data without impacting simultaneous inserts. Finally, we explain how updates and deletes are implemented, as well as data deduplication, data replication, and ACID compliance.
 
-
 ### <Anchor id="page-2-2"/>3.1 On-Disk Format {#3-1-on-disk-format}
 
 Each table in the MergeTree* table engine is organized as a collection of immutable table parts. A part is created whenever a set of rows is inserted into the table. Parts are self-contained in the sense that they include all metadata required to interpret their content without additional lookups to a central catalog. To keep the number of parts per table low, a background merge job periodically combines multiple smaller parts into a larger part until a configurable part size is reached (150 GB by default). Since parts are sorted by the table's primary key columns (see Section [3.2)](#page-3-0), efficient k-way merge sort [\[40\]](#page-12-5) is used for merging. The source parts are marked as inactive and eventually deleted as soon as their reference count drops to zero, i.e. no further queries read from them.
@@ -180,9 +179,7 @@ To maximize the performance of concurrent read and write operations, ClickHouse 
 
 In practice, most of ClickHouse's write-heavy decision making use cases even tolerate a small risk of losing new data in case of a power outage. The database takes advantage of this by not forcing a commit (fsync) of newly inserted parts to disk by default, allowing the kernel to batch writes at the cost of forgoing atomicity.
 
-
 ## <Anchor id="page-6-0"/>4 QUERY PROCESSING LAYER {#4-query-processing-layer}
-
 
 <Anchor id="page-6-1"/><Image img={image_07} size="lg" alt="Image 07"/>
 
@@ -283,7 +280,6 @@ Second, integration **database engines** map all tables of a table schema in a r
 
 Third, **dictionaries** can be populated using arbitrary queries against almost all possible data sources with a corresponding integration table function or engine. The runtime behavior is active since data is pulled in constant intervals from remote storage.
 
-
 Data Formats. To interact with 3rd party systems, modern analytical databases must also be able to process data in any format. Besides its native format, ClickHouse supports [90+](https://clickhou.se/query-formats) formats, including CSV, JSON, Parquet, Avro, ORC, Arrow, and Protobuf. Each format can be an input format (which ClickHouse can read), an output format (which ClickHouse can export), or both. Some analytics-oriented formats like Parquet are also integrated with query processing, i.e, the optimizer can exploit embedded statistics, and filters are evaluated directly on compressed data.
 
 Compatibility interfaces. Besides its native binary wire protocol and HTTP, clients can interact with ClickHouse over MySQL or PostgreSQL wire-protocol-compatible interfaces. This compatibility feature is useful to enable access from proprietary applications (e.g. certain business intelligence tools), where vendors have not yet implemented native ClickHouse connectivity.
@@ -306,7 +302,6 @@ A wide range of tools is available to investigate performance bottlenecks in ind
 
 ### 6.2 Benchmarks {#6-2-benchmarks}
 
-
 While benchmarking has been criticized for being not realistic enough [\[10,](#page-12-27) [52,](#page-13-22) [66,](#page-13-23) [74\]](#page-13-24), it is still useful to identify the strengths and weaknesses of databases. In the following, we discuss how benchmarks are used to evaluate the performance of ClickHouse.
 
 #### 6.2.1 Denormalized Tables {#6-2-1-denormalized-tables}
@@ -319,7 +314,6 @@ Filter and aggregation queries on denormalized fact tables historically represen
 
 Figure 10: Relative cold and hot runtimes of ClickBench.
 
-
 To track the performance of SELECTs in more diverse workloads over time, we [use](https://clickhou.se/performance-over-years) a combination of four benchmarks called VersionsBench [\[19\]](#page-12-30). This benchmark is executed once per month when a new release is published to assess its performance [\[20\]](#page-12-31) and identify code changes that potentially degraded performance: Individual benchmarks include: 1. ClickBench (described above), 2. 15 MgBench [\[21\]](#page-12-32) queries, 3. 13 queries against a denormalized Star Schema Benchmark [\[57\]](#page-13-26) fact table with 600 million rows. 4. 4 queries against [NYC Taxi Rides](https://clickhou.se/nyc-taxi-rides-benchmark) with 3.4 billion rows [\[70\]](#page-13-27).
 
 [Figure 11](#page-10-5) shows the development of the VersionsBench runtimes for 77 ClickHouse versions between March 2018 and March 2024. To compensate for differences in the relative runtime of individual queries, we normalize the runtimes using a geometric mean with the ratio to the minimum query runtime across all versions as weight. The performance of VersionBench improved by 1.72 × over the past six years. Dates for releases with long-term support (LTS) are marked on the x-axis. Although performance deteriorated temporarily in some periods, LTS releases generally have comparable or better performance than the previous LTS version. The significant improvement in August 2022 was caused by the column-by-column filter evaluation technique described in Section [4.4.](#page-7-0)
@@ -327,7 +321,6 @@ To track the performance of SELECTs in more diverse workloads over time, we [use
 <Anchor id="page-10-5"/><Image img={image_12} size="lg" alt="Image 12"/>
 
 Figure 11: Relative hot runtimes of VersionsBench 2018-2024.
-
 
 #### 6.2.2 Normalized tables {#6-2-2-normalized-tables}
 

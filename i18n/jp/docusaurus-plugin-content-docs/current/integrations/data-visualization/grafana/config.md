@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'プラグイン構成'
-'sidebar_position': 3
-'slug': '/integrations/grafana/config'
-'description': 'Grafana における ClickHouse データソースプラグインの構成オプション'
-'title': 'Grafana での ClickHouse データソースの構成'
+sidebar_label: 'プラグイン構成'
+sidebar_position: 3
+slug: '/integrations/grafana/config'
+description: 'Grafana における ClickHouse データソースプラグインの構成オプション'
+title: 'Grafana での ClickHouse データソースの構成'
 ---
 
 import Image from '@theme/IdealImage';

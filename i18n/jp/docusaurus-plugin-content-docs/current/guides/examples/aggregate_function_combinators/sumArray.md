@@ -1,14 +1,14 @@
 ---
-'slug': '/examples/aggregate-function-combinators/sumArray'
-'title': 'sumArray'
-'description': 'sumArray combinatorの使用例'
-'keywords':
+slug: '/examples/aggregate-function-combinators/sumArray'
+title: 'sumArray'
+description: 'sumArray combinatorの使用例'
+keywords:
 - 'sum'
 - 'array'
 - 'combinator'
 - 'examples'
 - 'sumArray'
-'sidebar_label': 'sumArray'
+sidebar_label: 'sumArray'
 ---
 
 

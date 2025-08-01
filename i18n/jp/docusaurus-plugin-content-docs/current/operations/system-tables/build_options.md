@@ -1,8 +1,8 @@
 ---
-'description': 'ClickHouseサーバーのビルドオプションに関する情報を含むシステムテーブル'
-'slug': '/operations/system-tables/build_options'
-'title': 'system.build_options'
-'keywords':
+description: 'ClickHouseサーバーのビルドオプションに関する情報を含むシステムテーブル'
+slug: '/operations/system-tables/build_options'
+title: 'system.build_options'
+keywords:
 - 'system table'
 - 'build_options'
 ---

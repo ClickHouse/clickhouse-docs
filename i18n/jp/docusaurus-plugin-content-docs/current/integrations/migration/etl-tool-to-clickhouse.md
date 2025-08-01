@@ -1,7 +1,7 @@
 ---
-'sidebar_label': 'Using a 3rd-party ETL Tool'
-'sidebar_position': 20
-'keywords':
+sidebar_label: 'Using a 3rd-party ETL Tool'
+sidebar_position: 20
+keywords:
 - 'clickhouse'
 - 'migrate'
 - 'migration'
@@ -11,9 +11,9 @@
 - 'elt'
 - 'clickhouse-local'
 - 'clickhouse-client'
-'slug': '/cloud/migration/etl-tool-to-clickhouse'
-'title': 'Using a 3rd-party ETL Tool'
-'description': 'Page describing how to use a 3rd-party ETL tool with ClickHouse'
+slug: '/cloud/migration/etl-tool-to-clickhouse'
+title: 'Using a 3rd-party ETL Tool'
+description: 'Page describing how to use a 3rd-party ETL tool with ClickHouse'
 ---
 
 import Image from '@theme/IdealImage';

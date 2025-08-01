@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'Prometheusフォーマットのドキュメント'
-'input_format': false
-'keywords':
+alias: []
+description: 'Prometheusフォーマットのドキュメント'
+input_format: false
+keywords:
 - 'Prometheus'
-'output_format': true
-'slug': '/interfaces/formats/Prometheus'
-'title': 'Prometheus'
+output_format: true
+slug: '/interfaces/formats/Prometheus'
+title: 'Prometheus'
 ---
 
 

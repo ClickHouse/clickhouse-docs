@@ -1,9 +1,9 @@
 ---
-'description': '名前付きコレクションに関するドキュメント'
-'sidebar_label': '名前付きコレクション'
-'sidebar_position': 69
-'slug': '/operations/named-collections'
-'title': '名前付きコレクション'
+description: '名前付きコレクションに関するドキュメント'
+sidebar_label: '名前付きコレクション'
+sidebar_position: 69
+slug: '/operations/named-collections'
+title: '名前付きコレクション'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

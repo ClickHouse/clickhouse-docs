@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'SSLユーザー証明書認証'
-'sidebar_position': 3
-'slug': '/guides/sre/ssl-user-auth'
-'title': 'SSLユーザー証明書を使用した認証の構成'
-'description': 'このガイドでは、SSLユーザー証明書を使用した認証を構成するためのシンプルで最小限の設定を提供します。'
+sidebar_label: 'SSLユーザー証明書認証'
+sidebar_position: 3
+slug: '/guides/sre/ssl-user-auth'
+title: 'SSLユーザー証明書を使用した認証の構成'
+description: 'このガイドでは、SSLユーザー証明書を使用した認証を構成するためのシンプルで最小限の設定を提供します。'
 ---
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';

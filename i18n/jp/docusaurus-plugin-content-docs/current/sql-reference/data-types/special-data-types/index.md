@@ -1,9 +1,9 @@
 ---
-'description': 'クエリ実行中に中間結果に使用されるClickHouseの特殊データ型に関する概要'
-'sidebar_label': '特殊データ型'
-'sidebar_position': 55
-'slug': '/sql-reference/data-types/special-data-types/'
-'title': '特殊データ型'
+description: 'クエリ実行中に中間結果に使用されるClickHouseの特殊データ型に関する概要'
+sidebar_label: '特殊データ型'
+sidebar_position: 55
+slug: '/sql-reference/data-types/special-data-types/'
+title: '特殊データ型'
 ---
 
 

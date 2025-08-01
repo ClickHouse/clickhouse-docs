@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'クラウド認証'
-'slug': '/cloud/security/cloud-authentication'
-'title': 'クラウド認証'
-'description': 'このガイドでは、認証の構成に関するいくつかの良い手法を説明しています。'
+sidebar_label: 'クラウド認証'
+slug: '/cloud/security/cloud-authentication'
+title: 'クラウド認証'
+description: 'このガイドでは、認証の構成に関するいくつかの良い手法を説明しています。'
 ---
 
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'

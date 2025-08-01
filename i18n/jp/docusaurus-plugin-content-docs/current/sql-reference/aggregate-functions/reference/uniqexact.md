@@ -1,8 +1,8 @@
 ---
-'description': '異なる引数値の正確な数を計算します。'
-'sidebar_position': 207
-'slug': '/sql-reference/aggregate-functions/reference/uniqexact'
-'title': 'uniqExact'
+description: '異なる引数値の正確な数を計算します。'
+sidebar_position: 207
+slug: '/sql-reference/aggregate-functions/reference/uniqexact'
+title: 'uniqExact'
 ---
 
 

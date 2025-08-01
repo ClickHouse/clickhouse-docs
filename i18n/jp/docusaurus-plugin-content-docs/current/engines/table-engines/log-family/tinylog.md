@@ -1,9 +1,9 @@
 ---
-'description': 'TinyLogのドキュメント'
-'slug': '/engines/table-engines/log-family/tinylog'
-'toc_priority': 34
-'toc_title': 'TinyLog'
-'title': 'TinyLog'
+description: 'TinyLogのドキュメント'
+slug: '/engines/table-engines/log-family/tinylog'
+toc_priority: 34
+toc_title: 'TinyLog'
+title: 'TinyLog'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'description': 'TRUNCATE ステートメントのドキュメント'
-'sidebar_label': 'TRUNCATE'
-'sidebar_position': 52
-'slug': '/sql-reference/statements/truncate'
-'title': 'TRUNCATE ステートメント'
+description: 'TRUNCATE ステートメントのドキュメント'
+sidebar_label: 'TRUNCATE'
+sidebar_position: 52
+slug: '/sql-reference/statements/truncate'
+title: 'TRUNCATE ステートメント'
 ---
 
 

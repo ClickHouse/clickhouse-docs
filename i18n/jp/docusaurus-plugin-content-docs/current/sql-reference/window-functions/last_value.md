@@ -1,9 +1,9 @@
 ---
-'description': '最後の値ウィンドウ関数のドキュメント'
-'sidebar_label': '最後の値'
-'sidebar_position': 4
-'slug': '/sql-reference/window-functions/last_value'
-'title': 'last_value'
+description: '最後の値ウィンドウ関数のドキュメント'
+sidebar_label: '最後の値'
+sidebar_position: 4
+slug: '/sql-reference/window-functions/last_value'
+title: 'last_value'
 ---
 
 

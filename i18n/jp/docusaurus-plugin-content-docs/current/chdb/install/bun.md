@@ -1,9 +1,9 @@
 ---
-'title': 'Bun 用の chDB のインストール'
-'sidebar_label': 'Bun'
-'slug': '/chdb/install/bun'
-'description': 'Bun 用の chDB のインストール方法'
-'keywords':
+title: 'Bun 用の chDB のインストール'
+sidebar_label: 'Bun'
+slug: '/chdb/install/bun'
+description: 'Bun 用の chDB のインストール方法'
+keywords:
 - 'chdb'
 - 'embedded'
 - 'clickhouse-lite'
@@ -42,7 +42,9 @@ var result = query("SELECT version()", "CSV");
 console.log(result); // 23.10.1.1
 ```
 
+<!-- vale ClickHouse.Headings = NO -->
 ### Session.Query(query, *format) {#sessionqueryquery-format}
+<!-- vale ClickHouse.Headings = YES -->
 
 ```javascript
 const sess = new Session('./chdb-bun-tmp');

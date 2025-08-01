@@ -1,9 +1,9 @@
 ---
-'slug': '/best-practices/use-json-where-appropriate'
-'sidebar_position': 10
-'sidebar_label': 'JSON の使用'
-'title': '適切な場面で JSON を使用する'
-'description': 'JSON の使用タイミングについて説明したページ'
+slug: '/best-practices/use-json-where-appropriate'
+sidebar_position: 10
+sidebar_label: 'JSON の使用'
+title: '適切な場面で JSON を使用する'
+description: 'JSON の使用タイミングについて説明したページ'
 ---
 
 

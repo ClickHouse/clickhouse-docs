@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'PrettySpaceNoEscapes フォーマットに関するドキュメント'
-'input_format': false
-'keywords':
+alias: []
+description: 'PrettySpaceNoEscapes フォーマットに関するドキュメント'
+input_format: false
+keywords:
 - 'PrettySpaceNoEscapes'
-'output_format': true
-'slug': '/interfaces/formats/PrettySpaceNoEscapes'
-'title': 'PrettySpaceNoEscapes'
+output_format: true
+slug: '/interfaces/formats/PrettySpaceNoEscapes'
+title: 'PrettySpaceNoEscapes'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';

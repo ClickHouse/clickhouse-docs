@@ -22,7 +22,6 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) via a committed contract. A committed contract, also known as a a Private Offer, allows customers to commit to spending a certain amount on ClickHouse Cloud over a period of time.
 
-
 ## Prerequisites {#prerequisites}
 
 - A Private Offer from ClickHouse based on specific contract terms.
@@ -136,4 +135,3 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 <br />
 
 If you run into any issues, please do not hesitate to contact [our support team](https://clickhouse.com/support/program).
-

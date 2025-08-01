@@ -5,7 +5,6 @@ description: 'What are data parts in ClickHouse'
 keywords: ['part']
 ---
 
-
 import merges from '@site/static/images/managing-data/core-concepts/merges.png';
 import part from '@site/static/images/managing-data/core-concepts/part.png';
 import Image from '@theme/IdealImage';
@@ -17,7 +16,6 @@ import Image from '@theme/IdealImage';
 The data from each table in the ClickHouse [MergeTree engine family](/engines/table-engines/mergetree-family) is organized on disk as a collection of immutable `data parts`.
 
 To illustrate this, we use [this](https://sql.clickhouse.com/?query=U0hPVyBDUkVBVEUgVEFCTEUgdWsudWtfcHJpY2VfcGFpZF9zaW1wbGU&run_query=true&tab=results) table (adapted from the [UK property prices dataset](/getting-started/example-datasets/uk-price-paid)) tracking the date, town, street, and price for sold properties in the United Kingdom:
-
 
 ```sql
 CREATE TABLE uk.uk_price_paid_simple
@@ -92,7 +90,6 @@ SELECT
 FROM system.parts
 WHERE (database = 'uk') AND (`table` = 'uk_price_paid_simple') AND active
 ORDER BY name ASC;
-
 
    ┌─name────────┬─level─┬────rows─┐
 1. │ all_0_5_1   │     1 │ 6368414 │

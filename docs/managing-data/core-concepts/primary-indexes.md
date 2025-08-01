@@ -5,22 +5,17 @@ description: 'How does the sparse primary index work in ClickHouse'
 keywords: ['sparse primary index', 'primary index', 'index']
 ---
 
-
 import visual01 from '@site/static/images/managing-data/core-concepts/primary-index-light_01.gif';
 import visual02 from '@site/static/images/managing-data/core-concepts/primary-index-light_02.gif';
 import visual03 from '@site/static/images/managing-data/core-concepts/primary-index-light_03.gif';
 
 import Image from '@theme/IdealImage';
 
-
 :::tip Looking for advanced indexing details?
 This page introduces ClickHouse's sparse primary index, how it's built, how it works, and how it helps accelerate queries.
 
 For advanced indexing strategies and deeper technical detail, see the [primary indexes deep dive](/guides/best-practices/sparse-primary-indexes).
 :::
-
-
-
 
 ## How does the sparse primary index work in ClickHouse? {#how-does-the-sparse-primary-index-work-in-clickHouse}
 
@@ -48,7 +43,6 @@ This granule structure is also what makes the primary index **sparse**: instead 
 
 Thanks to its sparseness, the primary index is small enough to fit entirely in memory, enabling fast filtering for queries with predicates on primary key columns. In the next section, we show how it helps accelerate such queries.
 
-
 ### Primary index usage {#primary-index-usage}
 
 We sketch how the sparse primary index is used for query acceleration with another animation:
@@ -65,7 +59,6 @@ We sketch how the sparse primary index is used for query acceleration with anoth
 
 ④ These potentially relevant granules are then loaded and [processed](/optimize/query-parallelism) in memory, along with the corresponding granules from any other columns required for the query.
 
-
 ## Monitoring primary indexes {#monitoring-primary-indexes}
 
 Each [data part](/parts) in the table has its own primary index. We can inspect the contents of these indexes using the [mergeTreeIndex](/sql-reference/table-functions/mergeTreeIndex) table function.
@@ -79,7 +72,6 @@ SELECT
 FROM mergeTreeIndex('uk', 'uk_price_paid_simple')
 GROUP BY part_name;
 ```
-
 
 ```txt
    ┌─part_name─┬─entries─┐
@@ -101,7 +93,6 @@ WHERE part_name = (SELECT any(part_name) FROM mergeTreeIndex('uk', 'uk_price_pai
 ORDER BY mark_number ASC
 LIMIT 10;
 ```
-
 
 ```txt
     ┌─entry─┬─town───────────┬─street───────────┐
@@ -129,7 +120,6 @@ WHERE
     town = 'LONDON' AND street = 'OXFORD STREET';
 ```
 
-
 ```txt
     ┌─explain────────────────────────────────────────────────────────────────────────────────────────────────────┐
  1. │ Expression ((Project names + Projection))                                                                  │
@@ -148,7 +138,6 @@ WHERE
     └────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
 Note how row 13 of the EXPLAIN output above shows that only 3 out of 3,609 granules across all data parts were selected by the primary index analysis for processing. The remaining granules were skipped entirely.
 
 We can also observe that most of the data was skipped by simply running the query:
@@ -157,7 +146,6 @@ SELECT max(price)
 FROM uk.uk_price_paid_simple
 WHERE (town = 'LONDON') AND (street = 'OXFORD STREET');
 ```
-
 
 ```txt
    ┌─max(price)─┐
@@ -191,12 +179,8 @@ SELECT count() FROM uk.uk_price_paid_simple;
 
 * You can **inspect index contents** using the `mergeTreeIndex` table function and monitor index usage with the `EXPLAIN` clause.
 
-
 ## Where to find more information {#where-to-find-more-information}
 
 For a deeper look at how sparse primary indexes work in ClickHouse, including how they differ from traditional database indexes and best practices for using them, check out our detailed indexing [deep dive](/guides/best-practices/sparse-primary-indexes).
 
 If you're interested in how ClickHouse processes data selected by the primary index scan in a highly parallel way, see the query parallelism guide [here](/optimize/query-parallelism).
-
-
-

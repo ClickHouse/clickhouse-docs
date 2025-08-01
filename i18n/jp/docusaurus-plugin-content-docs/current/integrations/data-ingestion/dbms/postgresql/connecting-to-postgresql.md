@@ -1,7 +1,7 @@
 ---
-'slug': '/integrations/postgresql/connecting-to-postgresql'
-'title': 'Connecting to PostgreSQL'
-'keywords':
+slug: '/integrations/postgresql/connecting-to-postgresql'
+title: 'Connecting to PostgreSQL'
+keywords:
 - 'clickhouse'
 - 'postgres'
 - 'postgresql'
@@ -9,7 +9,7 @@
 - 'integrate'
 - 'table'
 - 'engine'
-'description': 'Page describing the various ways to connect PostgreSQL to ClickHouse'
+description: 'Page describing the various ways to connect PostgreSQL to ClickHouse'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

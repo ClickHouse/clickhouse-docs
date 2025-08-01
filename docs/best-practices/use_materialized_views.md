@@ -12,11 +12,9 @@ import Image from '@theme/IdealImage';
 import incremental_materialized_view from '@site/static/images/bestpractices/incremental_materialized_view.gif';
 import refreshable_materialized_view from '@site/static/images/bestpractices/refreshable_materialized_view.gif';
 
-
 ClickHouse supports two types of materialized views: [**incremental**](/materialized-view/incremental-materialized-view) and [**refreshable**](/materialized-view/refreshable-materialized-view). While both are designed to accelerate queries by pre-computing and storing results, they differ significantly in how and when the underlying queries are executed, what workloads they are suited for, and how data freshness is handled.
 
 **Users should consider materialized views for specific query patterns which need to be accelerated, assuming previous best practices [regarding type](/best-practices/select-data-types) and [primary key optimization](/best-practices/choosing-a-primary-key) have been performed.**
-
 
 **Incremental materialized views** are updated in real-time. As new data is inserted into the source table, ClickHouse automatically applies the materialized view's query to the new data block and writes the results to a separate target table. Over time, ClickHouse merges these partial results to produce a complete, up-to-date view. This approach is highly efficient because it shifts the computational cost to insert time and only processes new data. As a result, `SELECT` queries against the target table are fast and lightweight. Incremental views support all aggregation functions and scale well—even to petabytes of data—because each query operates on a small, recent subset of the dataset being inserted.
 
@@ -28,7 +26,7 @@ ClickHouse supports two types of materialized views: [**incremental**](/material
 
 The choice between incremental and refreshable materialized views depends largely on the nature of the query, how frequently data changes, and whether updates to the view must reflect every row as it is inserted, or if a periodic refresh is acceptable. Understanding these trade-offs is key to designing performant, scalable materialized views in ClickHouse.
 
-## When to Use Incremental Materialized Views {#when-to-use-incremental-materialized-views}
+## When to use incremental materialized views {#when-to-use-incremental-materialized-views}
 
 Incremental materialized views are generally preferred, as they update automatically in real-time whenever the source tables receive new data. They support all aggregation functions and are particularly effective for aggregations over a single table. By computing results incrementally at insert-time, queries run against significantly smaller data subsets, allowing these views to scale effortlessly even to petabytes of data. In most cases they will have no appreciable impact on overall cluster performance.
 
@@ -40,7 +38,7 @@ Use incremental materialized views when:
 
 For examples of incremental materialized views see [here](/materialized-view/incremental-materialized-view).
 
-## When to Use Refreshable Materialized Views {#when-to-use-refreshable-materialized-views}
+## When to use refreshable materialized views {#when-to-use-refreshable-materialized-views}
 
 Refreshable materialized views execute their queries periodically rather than incrementally, storing the query result set for rapid retrieval. 
 
@@ -60,7 +58,7 @@ In summary, use refreshable materialized views when:
 
 For examples of refreshable materialized views see [here](/materialized-view/refreshable-materialized-view).
 
-### APPEND vs REPLACE Mode {#append-vs-replace-mode}
+### APPEND vs REPLACE mode {#append-vs-replace-mode}
 
 Refreshable materialized views support two modes for writing data to the target table: `APPEND` and `REPLACE`. These modes define how the result of the view's query is written when the view is refreshed.
 
@@ -81,4 +79,3 @@ Choose `REPLACE` mode when:
 - The view represents a current state or lookup.
 
 Users can find an application of the `APPEND` functionality if building a [Medallion architecture](https://clickhouse.com/blog/building-a-medallion-architecture-for-bluesky-json-data-with-clickhouse).
-

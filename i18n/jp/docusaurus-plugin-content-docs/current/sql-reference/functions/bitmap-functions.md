@@ -1,9 +1,9 @@
 ---
-'description': 'ビットマップ関数のドキュメント'
-'sidebar_label': 'ビットマップ'
-'sidebar_position': 25
-'slug': '/sql-reference/functions/bitmap-functions'
-'title': 'Bitmap Functions'
+description: 'ビットマップ関数のドキュメント'
+sidebar_label: 'ビットマップ'
+sidebar_position: 25
+slug: '/sql-reference/functions/bitmap-functions'
+title: 'Bitmap Functions'
 ---
 
 

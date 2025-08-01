@@ -1,9 +1,9 @@
 ---
-'description': 'このエンジンは、Amazon S3内の既存の Apache Hudi テーブルとの読み取り専用統合を提供します。'
-'sidebar_label': 'Hudi'
-'sidebar_position': 86
-'slug': '/engines/table-engines/integrations/hudi'
-'title': 'Hudi テーブルエンジン'
+description: 'このエンジンは、Amazon S3内の既存の Apache Hudi テーブルとの読み取り専用統合を提供します。'
+sidebar_label: 'Hudi'
+sidebar_position: 86
+slug: '/engines/table-engines/integrations/hudi'
+title: 'Hudi テーブルエンジン'
 ---
 
 

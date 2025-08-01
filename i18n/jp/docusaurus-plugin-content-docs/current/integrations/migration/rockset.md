@@ -1,8 +1,8 @@
 ---
-'title': 'Rockset からの移行'
-'slug': '/migrations/rockset'
-'description': 'Rockset から ClickHouse への移行'
-'keywords':
+title: 'Rockset からの移行'
+slug: '/migrations/rockset'
+description: 'Rockset から ClickHouse への移行'
+keywords:
 - 'migrate'
 - 'migration'
 - 'migrating'

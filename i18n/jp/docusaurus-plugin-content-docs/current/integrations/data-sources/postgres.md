@@ -1,9 +1,9 @@
 ---
-'slug': '/integrations/postgresql'
-'sidebar_label': 'PostgreSQL'
-'title': 'PostgreSQL'
-'hide_title': false
-'description': 'Page describing how to integrate Postgres with ClickHouse'
+slug: '/integrations/postgresql'
+sidebar_label: 'PostgreSQL'
+title: 'PostgreSQL'
+hide_title: false
+description: 'Page describing how to integrate Postgres with ClickHouse'
 ---
 
 import PostgreSQL from '@site/i18n/jp/docusaurus-plugin-content-docs/current/integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql.md';

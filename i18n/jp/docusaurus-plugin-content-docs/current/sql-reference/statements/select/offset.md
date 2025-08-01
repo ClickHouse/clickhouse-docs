@@ -1,8 +1,8 @@
 ---
-'description': 'Documentation for Offset'
-'sidebar_label': 'OFFSET'
-'slug': '/sql-reference/statements/select/offset'
-'title': 'OFFSET FETCH Clause'
+description: 'Documentation for Offset'
+sidebar_label: 'OFFSET'
+slug: '/sql-reference/statements/select/offset'
+title: 'OFFSET FETCH Clause'
 ---
 
 

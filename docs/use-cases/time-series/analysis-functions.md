@@ -7,7 +7,7 @@ keywords: ['time-series']
 show_related_blogs: true
 ---
 
-# Time-Series analysis functions
+# Time-series analysis functions
 
 Time series analysis in ClickHouse can be performed using standard SQL aggregation and window functions. 
 When working with time series data, you'll typically encounter three main types of metrics:
@@ -96,7 +96,6 @@ When analyzing time series data, it's often useful to understand the rate of eve
 This query calculates the rate of page views per second by dividing hourly totals by the number of seconds in an hour (3600). 
 The visual bar helps identify peak hours of activity.
 
-
 ```sql
 SELECT
     toStartOfHour(time) AS time,
@@ -108,7 +107,6 @@ WHERE path = '"Weird_Al"_Yankovic'
 GROUP BY time
 LIMIT 10;
 ```
-
 
 ```text
 ┌────────────────time─┬───h─┬─rate─┬─b─────┐
@@ -154,7 +152,6 @@ hist: [(10033,23224.55065359477,60.625),(23224.55065359477,37855.38888888889,15.
 ```
 
 We can then use [`arrayJoin()`](/docs/sql-reference/functions/array-join) to massage the data and `bar()` to visualize it:
-
 
 ```sql
 WITH histogram(10)(hits) AS hist

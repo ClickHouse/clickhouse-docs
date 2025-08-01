@@ -1,8 +1,8 @@
 ---
-'sidebar_label': '監査ログ'
-'slug': '/cloud/security/audit-logging'
-'title': 'Audit Logging'
-'description': 'このページはClickHouse Cloudでの監査ログについて説明しています。ClickHouse Cloudの組織に対する変更を記録する監査ログへのアクセス方法と解釈方法について説明しています。'
+sidebar_label: '監査ログ'
+slug: '/cloud/security/audit-logging'
+title: 'Audit Logging'
+description: 'このページはClickHouse Cloudでの監査ログについて説明しています。ClickHouse Cloudの組織に対する変更を記録する監査ログへのアクセス方法と解釈方法について説明しています。'
 ---
 
 import Image from '@theme/IdealImage';

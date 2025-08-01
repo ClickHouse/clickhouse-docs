@@ -1,8 +1,8 @@
 ---
-'title': 'Notifications'
-'slug': '/cloud/notifications'
-'description': 'ClickHouse Cloud サービス用の通知'
-'keywords':
+title: 'Notifications'
+slug: '/cloud/notifications'
+description: 'ClickHouse Cloud サービス用の通知'
+keywords:
 - 'cloud'
 - 'notifications'
 ---

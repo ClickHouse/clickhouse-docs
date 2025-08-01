@@ -12,7 +12,7 @@ import analyzer4 from '@site/static/images/guides/developer/analyzer4.png';
 import analyzer5 from '@site/static/images/guides/developer/analyzer5.png';
 import Image from '@theme/IdealImage';
 
-# Understanding Query Execution with the Analyzer
+# Understanding query execution with the analyzer
 
 ClickHouse processes queries extremely quickly, but the execution of a query is not a simple story. Let's try to understand how a `SELECT` query gets executed. To illustrate it, let's add some data in a table in ClickHouse:
 
@@ -79,7 +79,6 @@ The new architecture should provide us with a better framework to improve ClickH
 
 The analyzer is an important step of the query execution. It takes an AST and transforms it into a query tree. The main benefit of a query tree over an AST is that a lot of the components will be resolved, like the storage for instance. We also know from which table to read, aliases are also resolved, and the tree knows the different data types used. With all these benefits, the analyzer can apply optimizations. The way these optimizations work is via "passes". Every pass is going to look for different optimizations. You can see all the passes [here](https://github.com/ClickHouse/ClickHouse/blob/76578ebf92af3be917cd2e0e17fea2965716d958/src/Analyzer/QueryTreePassManager.cpp#L249), let's see it in practice with our previous query:
 
-
 ```sql
 EXPLAIN QUERY TREE passes=0 SELECT min(timestamp) AS minimum_date, max(timestamp) AS maximum_date FROM session_events SETTINGS allow_experimental_analyzer=1;
 
@@ -126,7 +125,6 @@ EXPLAIN QUERY TREE passes=20 SELECT min(timestamp) AS minimum_date, max(timestam
 ```
 
 Between the two executions, you can see the resolution of aliases and projections.
-
 
 ## Planner {#planner}
 
@@ -200,7 +198,6 @@ SELECT
 FROM session_events
 GROUP BY type
 
-
 ┌─explain────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ Expression ((Projection + Before ORDER BY))                                                                                                │
 │ Actions: INPUT :: 0 -> type String : 0                                                                                                     │
@@ -241,7 +238,7 @@ GROUP BY type
 
 You can now see all the inputs, functions, aliases, and data types that are being used. You can see some of the optimizations that the planner is going to apply [here](https://github.com/ClickHouse/ClickHouse/blob/master/src/Processors/QueryPlan/Optimizations/Optimizations.h).
 
-## Query Pipeline {#query-pipeline}
+## Query pipeline {#query-pipeline}
 
 A query pipeline is generated from the query plan. The query pipeline is very similar to the query plan, with the difference that it's not a tree but a graph. It highlights how ClickHouse is going to execute a query and what resources are going to be used. Analyzing the query pipeline is very useful to see where the bottleneck is in terms of inputs/outputs. Let's take our previous query and look at the query pipeline execution:
 

@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'クエリビルダー'
-'sidebar_position': 2
-'slug': '/integrations/grafana/query-builder'
-'description': 'ClickHouse Grafanaプラグイン内のクエリビルダーの使用方法'
-'title': 'クエリビルダー'
+sidebar_label: 'クエリビルダー'
+sidebar_position: 2
+slug: '/integrations/grafana/query-builder'
+description: 'ClickHouse Grafanaプラグイン内のクエリビルダーの使用方法'
+title: 'クエリビルダー'
 ---
 
 import Image from '@theme/IdealImage';

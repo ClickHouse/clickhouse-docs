@@ -36,7 +36,6 @@ Whenever a set of rows is inserted into the table, instead of creating (at[ leas
 
 <Image img={partitions} size="lg" alt="Partitions" />
 
-
 The ClickHouse server first splits the rows from the example insert with 4 rows sketched in the diagram above by their partition key value `toStartOfMonth(date)`. Then, for each identified partition, the rows are processed as[ usual](/parts) by performing several sequential steps (① Sorting, ② Splitting into columns, ③ Compression, ④ Writing to Disk).
 
 For a more detailed explanation of partitioning, we recommend [this guide](/partitions).

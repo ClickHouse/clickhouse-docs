@@ -1,8 +1,8 @@
 ---
-'slug': '/cloud/bestpractices/usage-limits'
-'sidebar_label': 'Usage Limits'
-'title': 'Usage limits'
-'description': 'Describes the recommended usage limits in ClickHouse Cloud'
+slug: '/cloud/bestpractices/usage-limits'
+sidebar_label: 'Usage Limits'
+title: 'Usage limits'
+description: 'Describes the recommended usage limits in ClickHouse Cloud'
 ---
 
 

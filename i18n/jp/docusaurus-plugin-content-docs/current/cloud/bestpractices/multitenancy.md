@@ -1,8 +1,8 @@
 ---
-'slug': '/cloud/bestpractices/multi-tenancy'
-'sidebar_label': 'Implement multi tenancy'
-'title': 'Multi tenancy'
-'description': 'Best practices to implement multi tenancy'
+slug: '/cloud/bestpractices/multi-tenancy'
+sidebar_label: 'Implement multi tenancy'
+title: 'Multi tenancy'
+description: 'Best practices to implement multi tenancy'
 ---
 
 
