@@ -40,7 +40,7 @@
     "@docusaurus/plugin-content-docs": "^3.8.1",
     "@docusaurus/plugin-google-tag-manager": "^3.8.1",
     "@docusaurus/plugin-ideal-image": "^3.8.1",
-    "@docusaurus/plugin-vercel-analytics": "^3.7.0",
+    "@docusaurus/plugin-vercel-analytics": "^3.8.1",
     "@docusaurus/preset-classic": "^3.8.1",
     "@docusaurus/theme-mermaid": "^3.8.1",
     "@docusaurus/theme-search-algolia": "^3.8.1",
@@ -82,7 +82,7 @@
   "devDependencies": {
     "@argos-ci/cli": "^2.5.5",
     "@argos-ci/playwright": "^5.0.4",
-    "@docusaurus/module-type-aliases": "3.7.0",
+    "@docusaurus/module-type-aliases": "^3.8.1",
     "@playwright/test": "^1.52.0",
     "@tailwindcss/postcss": "^4.1.5",
     "@tailwindcss/typography": "^0.5.16",
@@ -114,6 +114,6 @@
     ]
   },
   "engines": {
-    "node": ">=20.18"
+    "node": "20.19.3"
   }
 }
