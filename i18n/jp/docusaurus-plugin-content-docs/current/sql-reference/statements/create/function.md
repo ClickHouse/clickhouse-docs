@@ -1,9 +1,9 @@
 ---
-'description': 'Functionのためのドキュメント'
-'sidebar_label': 'FUNCTION'
-'sidebar_position': 38
-'slug': '/sql-reference/statements/create/function'
-'title': 'CREATE FUNCTION -ユーザー定義関数 (UDF)'
+description: 'Functionのためのドキュメント'
+sidebar_label: 'FUNCTION'
+sidebar_position: 38
+slug: '/sql-reference/statements/create/function'
+title: 'CREATE FUNCTION -ユーザー定義関数 (UDF)'
 ---
 
 

@@ -51,7 +51,6 @@ SELECT * FROM some_data LIMIT 3 FORMAT Values
 ('Bangor_City_Forest','2015-07-01',34),('Alireza_Afzal','2017-02-01',24),('Akhaura-Laksam-Chittagong_Line','2015-09-01',30)
 ```
 
-
 ## Inserting data from SQL dumps {#inserting-data-from-sql-dumps}
 
 To read SQL dumps, [MySQLDump](/interfaces/formats.md/#mysqldump) is used:
@@ -100,7 +99,6 @@ DESCRIBE TABLE table_from_mysql;
 │ hits  │ Nullable(UInt32) │              │                    │         │                  │                │
 └───────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
-
 
 ## Other formats {#other-formats}
 

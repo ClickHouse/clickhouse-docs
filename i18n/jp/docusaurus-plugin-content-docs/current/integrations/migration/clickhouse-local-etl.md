@@ -1,7 +1,7 @@
 ---
-'sidebar_label': 'clickhouse-local の使用'
-'sidebar_position': 20
-'keywords':
+sidebar_label: 'clickhouse-local の使用'
+sidebar_position: 20
+keywords:
 - 'clickhouse'
 - 'migrate'
 - 'migration'
@@ -11,9 +11,9 @@
 - 'elt'
 - 'clickhouse-local'
 - 'clickhouse-client'
-'slug': '/cloud/migration/clickhouse-local'
-'title': 'ClickHouse を使用して clickhouse-local に移行する'
-'description': 'clickhouse-local を使用して ClickHouse に移行する方法を示すガイド'
+slug: '/cloud/migration/clickhouse-local'
+title: 'ClickHouse を使用して clickhouse-local に移行する'
+description: 'clickhouse-local を使用して ClickHouse に移行する方法を示すガイド'
 ---
 
 import Image from '@theme/IdealImage';

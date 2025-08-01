@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'Confluent Platform向けHTTPシンクコネクタ'
-'sidebar_position': 3
-'slug': '/integrations/kafka/cloud/confluent/http'
-'description': 'Kafka ConnectおよびClickHouseを使用したHTTPコネクタシンク'
-'title': 'Confluent HTTP Sink Connector'
+sidebar_label: 'Confluent Platform向けHTTPシンクコネクタ'
+sidebar_position: 3
+slug: '/integrations/kafka/cloud/confluent/http'
+description: 'Kafka ConnectおよびClickHouseを使用したHTTPコネクタシンク'
+title: 'Confluent HTTP Sink Connector'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';

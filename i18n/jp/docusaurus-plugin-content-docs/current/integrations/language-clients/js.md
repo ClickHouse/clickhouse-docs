@@ -1,7 +1,7 @@
 ---
-'sidebar_label': 'JavaScript'
-'sidebar_position': 4
-'keywords':
+sidebar_label: 'JavaScript'
+sidebar_position: 4
+keywords:
 - 'clickhouse'
 - 'js'
 - 'JavaScript'
@@ -13,9 +13,9 @@
 - 'client'
 - 'connect'
 - 'integrate'
-'slug': '/integrations/javascript'
-'description': 'The official JS client for connecting to ClickHouse.'
-'title': 'ClickHouse JS'
+slug: '/integrations/javascript'
+description: 'The official JS client for connecting to ClickHouse.'
+title: 'ClickHouse JS'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';

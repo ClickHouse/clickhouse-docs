@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing a history of memory and metric values from
+description: 'System table containing a history of memory and metric values from
   table `system.events` for individual queries, periodically flushed to disk.'
-'keywords':
+keywords:
 - 'system table'
 - 'query_metric_log'
-'slug': '/operations/system-tables/query_metric_log'
-'title': 'system.query_metric_log'
+slug: '/operations/system-tables/query_metric_log'
+title: 'system.query_metric_log'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

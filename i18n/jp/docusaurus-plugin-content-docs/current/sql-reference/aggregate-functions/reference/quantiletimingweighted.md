@@ -1,8 +1,8 @@
 ---
-'description': '各シーケンスメンバーの重みに従って、数値データシーケンスの分位数を決定された精度で計算します。'
-'sidebar_position': 181
-'slug': '/sql-reference/aggregate-functions/reference/quantiletimingweighted'
-'title': 'quantileTimingWeighted'
+description: '各シーケンスメンバーの重みに従って、数値データシーケンスの分位数を決定された精度で計算します。'
+sidebar_position: 181
+slug: '/sql-reference/aggregate-functions/reference/quantiletimingweighted'
+title: 'quantileTimingWeighted'
 ---
 
 

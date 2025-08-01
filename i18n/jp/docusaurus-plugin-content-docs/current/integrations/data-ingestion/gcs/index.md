@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'Google Cloud Storage (GCS)'
-'sidebar_position': 4
-'slug': '/integrations/gcs'
-'description': 'Google Cloud Storage (GCS) Backed MergeTree'
-'title': 'Integrate Google Cloud Storage with ClickHouse'
+sidebar_label: 'Google Cloud Storage (GCS)'
+sidebar_position: 4
+slug: '/integrations/gcs'
+description: 'Google Cloud Storage (GCS) Backed MergeTree'
+title: 'Integrate Google Cloud Storage with ClickHouse'
 ---
 
 import BucketDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_GCS_authentication_and_bucket.md';

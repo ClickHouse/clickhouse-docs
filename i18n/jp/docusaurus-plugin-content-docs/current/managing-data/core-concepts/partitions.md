@@ -1,8 +1,8 @@
 ---
-'slug': '/partitions'
-'title': 'テーブルパーティション'
-'description': 'ClickHouseのテーブルパーティションとは何ですか'
-'keywords':
+slug: '/partitions'
+title: 'テーブルパーティション'
+description: 'ClickHouseのテーブルパーティションとは何ですか'
+keywords:
 - 'partitions'
 - 'partition by'
 ---

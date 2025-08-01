@@ -1,9 +1,9 @@
 ---
-'description': 'ハッシュ関数のドキュメント'
-'sidebar_label': 'ハッシュ'
-'sidebar_position': 85
-'slug': '/sql-reference/functions/hash-functions'
-'title': 'ハッシュ関数'
+description: 'ハッシュ関数のドキュメント'
+sidebar_label: 'ハッシュ'
+sidebar_position: 85
+slug: '/sql-reference/functions/hash-functions'
+title: 'ハッシュ関数'
 ---
 
 

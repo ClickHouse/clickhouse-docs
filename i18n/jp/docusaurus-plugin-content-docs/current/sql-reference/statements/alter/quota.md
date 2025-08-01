@@ -1,9 +1,9 @@
 ---
-'description': 'クォータのドキュメント'
-'sidebar_label': 'クォータ'
-'sidebar_position': 46
-'slug': '/sql-reference/statements/alter/quota'
-'title': 'ALTER QUOTA'
+description: 'クォータのドキュメント'
+sidebar_label: 'クォータ'
+sidebar_position: 46
+slug: '/sql-reference/statements/alter/quota'
+title: 'ALTER QUOTA'
 ---
 
 

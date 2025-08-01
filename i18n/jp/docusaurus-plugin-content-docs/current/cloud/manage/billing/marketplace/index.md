@@ -1,14 +1,12 @@
 ---
-'slug': '/cloud/manage/marketplace/'
-'title': 'マーケットプレイス'
-'description': 'マーケットプレイスの目次ページ'
-'keywords':
+slug: '/cloud/manage/marketplace/'
+title: 'マーケットプレイス'
+description: 'マーケットプレイスの目次ページ'
+keywords:
 - 'Marketplace Billing'
 - 'AWS'
 - 'GCP'
 ---
-
-
 
 このセクションでは、マーケットプレイスに関連する請求トピックについて詳しく説明します。
 

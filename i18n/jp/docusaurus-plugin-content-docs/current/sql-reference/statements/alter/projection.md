@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for Manipulating Projections'
-'sidebar_label': 'PROJECTION'
-'sidebar_position': 49
-'slug': '/sql-reference/statements/alter/projection'
-'title': 'Projections'
+description: 'Documentation for Manipulating Projections'
+sidebar_label: 'PROJECTION'
+sidebar_position: 49
+slug: '/sql-reference/statements/alter/projection'
+title: 'Projections'
 ---
 
 

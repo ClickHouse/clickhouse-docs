@@ -9,7 +9,7 @@ import supabase_commands from '@site/static/images/integrations/data-ingestion/c
 import supabase_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-connection-details.jpg'
 import Image from '@theme/IdealImage';
 
-# Supabase Source Setup Guide
+# Supabase source setup guide
 
 This is a guide on how to setup Supabase Postgres for usage in ClickPipes.
 
@@ -18,7 +18,6 @@ This is a guide on how to setup Supabase Postgres for usage in ClickPipes.
 ClickPipes supports Supabase via IPv6 natively for seamless replication.
 
 :::
-
 
 ## Creating a user with permissions and replication slot {#creating-a-user-with-permissions-and-replication-slot}
 
@@ -42,7 +41,6 @@ Here, we can run the following SQL commands:
 
 <Image img={supabase_commands} alt="User and publication commands" size="large" border/>
 
-
 Click on **Run** to have a publication and a user ready.
 
 :::note
@@ -53,9 +51,7 @@ Also, remember to use the same publication name when creating the mirror in Clic
 
 :::
 
-
 ## Increase `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
-
 
 :::warning
 
@@ -80,7 +76,6 @@ Head over to your Supabase Project's `Project Settings` -> `Database` (under `Co
 The connection pooler is not supported for CDC based replication, hence it needs to be disabled.
 
 :::
-
 
 ## What's next? {#whats-next}
 

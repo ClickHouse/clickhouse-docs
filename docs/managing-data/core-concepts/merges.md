@@ -15,7 +15,6 @@ import merges_07 from '@site/static/images/managing-data/core-concepts/merges_07
 import merges_dashboard from '@site/static/images/managing-data/core-concepts/merges-dashboard.gif';
 import Image from '@theme/IdealImage';
 
-
 ## What are part merges in ClickHouse? {#what-are-part-merges-in-clickhouse}
 
 <br/>
@@ -130,7 +129,6 @@ Additional [metadata in data parts](/parts), such as secondary data skipping ind
 The mechanics of step ② depend on the specific [MergeTree engine](/engines/table-engines/mergetree-family) used, as different engines handle merging differently. For example, rows may be aggregated or replaced if outdated. As mentioned earlier, this approach **offloads all data processing to background merges**, enabling **super-fast inserts** by keeping write operations lightweight and efficient.
 
 Next, we will briefly outline the merge mechanics of specific engines in the MergeTree family.
-
 
 ### Standard merges {#standard-merges}
 

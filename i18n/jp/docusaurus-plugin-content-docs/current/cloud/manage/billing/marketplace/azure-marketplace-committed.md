@@ -1,8 +1,8 @@
 ---
-'slug': '/cloud/billing/marketplace/azure-marketplace-committed-contract'
-'title': 'Azure Marketplace Committed Contract'
-'description': 'Azure Marketplace (Committed Contract) を通じて ClickHouse Cloud に登録する'
-'keywords':
+slug: '/cloud/billing/marketplace/azure-marketplace-committed-contract'
+title: 'Azure Marketplace Committed Contract'
+description: 'Azure Marketplace (Committed Contract) を通じて ClickHouse Cloud に登録する'
+keywords:
 - 'Microsoft'
 - 'Azure'
 - 'marketplace'

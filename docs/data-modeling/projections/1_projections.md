@@ -22,7 +22,7 @@ queries by creating a reordering of data by attributes of interest. This can be:
 
 1. A complete reordering
 2. A subset of the original table with a different order
-3. A precomputed aggregation (similar to a Materialized View) but with an ordering
+3. A precomputed aggregation (similar to a materialized view) but with an ordering
    aligned to the aggregation.
 
 <br/>
@@ -88,8 +88,8 @@ users should be aware of and thus should be deployed sparingly.
 - Projections don't allow using different TTL for the source table and the 
   (hidden) target table, materialized views allow different TTLs.
 - Lightweight updates and deletes are not supported for tables with projections.
-- Materialized Views can be chained: the target table of one Materialized View 
-  can be the source table of another Materialized View, and so on. This is not 
+- Materialized Views can be chained: the target table of one materialized view 
+  can be the source table of another materialized view, and so on. This is not 
   possible with projections.
 - Projections don't support joins, but Materialized Views do.
 - Projections don't support filters (`WHERE` clause), but Materialized Views do.
@@ -465,7 +465,6 @@ ORDER BY year ASC
 ```
 The results should be the same, but the performance better on the latter example!
 
-
 #### Query 2. Average price per year in London {#average-price-london-projections}
 
 ```sql runnable
@@ -479,7 +478,6 @@ GROUP BY year
 ORDER BY year ASC
 SETTINGS optimize_use_projections=0
 ```
-
 
 ```sql runnable
 SELECT
@@ -568,7 +566,7 @@ CREATE TABLE page_views
     )
 )
 ENGINE = MergeTree
-ORDER BY (event_date, id);
+ORDER BY (event_date, id)
 SETTINGS
   index_granularity = 1, -- one row per granule
   max_bytes_to_merge_at_max_space_in_pool = 1; -- disable merge

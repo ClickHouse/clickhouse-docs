@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'JSONAsObjectフォーマットのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'JSONAsObjectフォーマットのドキュメント'
+input_format: true
+keywords:
 - 'JSONAsObject'
-'output_format': false
-'slug': '/interfaces/formats/JSONAsObject'
-'title': 'JSONAsObject'
+output_format: false
+slug: '/interfaces/formats/JSONAsObject'
+title: 'JSONAsObject'
 ---
 
 

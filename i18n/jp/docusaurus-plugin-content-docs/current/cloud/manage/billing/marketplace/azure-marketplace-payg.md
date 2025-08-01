@@ -1,8 +1,8 @@
 ---
-'slug': '/cloud/billing/marketplace/azure-marketplace-payg'
-'title': 'Azure Marketplace PAYG'
-'description': 'Subscribe to ClickHouse Cloud through the Azure Marketplace (PAYG).'
-'keywords':
+slug: '/cloud/billing/marketplace/azure-marketplace-payg'
+title: 'Azure Marketplace PAYG'
+description: 'Subscribe to ClickHouse Cloud through the Azure Marketplace (PAYG).'
+keywords:
 - 'azure'
 - 'marketplace'
 - 'billing'

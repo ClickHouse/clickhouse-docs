@@ -1,14 +1,14 @@
 ---
-'slug': '/examples/aggregate-function-combinators/uniqArray'
-'title': 'uniqArray'
-'description': 'uniqArray combinator の使用例'
-'keywords':
+slug: '/examples/aggregate-function-combinators/uniqArray'
+title: 'uniqArray'
+description: 'uniqArray combinator の使用例'
+keywords:
 - 'uniq'
 - 'array'
 - 'combinator'
 - 'examples'
 - 'uniqArray'
-'sidebar_label': 'uniqArray'
+sidebar_label: 'uniqArray'
 ---
 
 

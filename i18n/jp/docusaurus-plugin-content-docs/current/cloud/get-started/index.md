@@ -1,8 +1,8 @@
 ---
-'slug': '/cloud/get-started'
-'title': 'はじめに'
-'description': 'はじめにの目次'
-'keywords':
+slug: '/cloud/get-started'
+title: 'はじめに'
+description: 'はじめにの目次'
+keywords:
 - 'Cloud Quick Start'
 - 'SQL Console'
 - 'Query Insights'

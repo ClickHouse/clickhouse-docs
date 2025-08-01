@@ -1,7 +1,7 @@
 ---
-'description': 'Clickhouse Compressorのドキュメント'
-'slug': '/operations/utilities/clickhouse-compressor'
-'title': 'clickhouse-compressor'
+description: 'Clickhouse Compressorのドキュメント'
+slug: '/operations/utilities/clickhouse-compressor'
+title: 'clickhouse-compressor'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for http://hadoop.apache.org/zookeeper/docs/current/zookeeperAdmin.html'
-'sidebar_label': 'Usage Recommendations'
-'sidebar_position': 58
-'slug': '/operations/tips'
-'title': 'Usage Recommendations'
+description: 'Documentation for http://hadoop.apache.org/zookeeper/docs/current/zookeeperAdmin.html'
+sidebar_label: 'Usage Recommendations'
+sidebar_position: 58
+slug: '/operations/tips'
+title: 'Usage Recommendations'
 ---
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';

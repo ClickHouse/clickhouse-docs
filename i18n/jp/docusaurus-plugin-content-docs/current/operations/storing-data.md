@@ -1,9 +1,9 @@
 ---
-'description': 'highlight-next-lineのドキュメント'
-'sidebar_label': 'データを保存するための外部ディスク'
-'sidebar_position': 68
-'slug': '/operations/storing-data'
-'title': 'External Disks for Storing Data'
+description: 'highlight-next-lineのドキュメント'
+sidebar_label: 'データを保存するための外部ディスク'
+sidebar_position: 68
+slug: '/operations/storing-data'
+title: 'External Disks for Storing Data'
 ---
 
 

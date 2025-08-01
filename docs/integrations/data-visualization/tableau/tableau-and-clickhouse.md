@@ -32,11 +32,9 @@ The connector is based on ClickHouse's advanced [JDBC driver](/integrations/lang
 With this connector, Tableau integrates ClickHouse databases and tables as data sources. To enable this functionality,
 follow the setup guide bellow.
 
-
 <TOCInline toc={toc}/>
 
-## Setup Required Prior Usage {#setup-required-prior-usage}
-
+## Setup required prior usage {#setup-required-prior-usage}
 
 1. Gather your connection details
    <ConnectionDetails />
@@ -98,7 +96,6 @@ When working with ClickHouse cloud, it's required to enable the SSL checkbox for
 :::
 <br/>
 
-
 :::note
 Our ClickHouse database is named **TPCD**, but you must set the **Database** to **default** in the dialog above, then
 select **TPCD** for the **Schema** in the next step. (This is likely due to a bug in the connector, so this behavior
@@ -127,7 +124,6 @@ Now that have a ClickHouse data source configured in Tableau, let's visualize th
 <br/>
 
 2. Click the **Update Now** button and 100 rows from **CUSTOMER** will populate the table.
-
 
 3. Drag the **ORDERS** table into the workbook, then set **Custkey** as the relationship field between the two tables:
 
@@ -177,7 +173,7 @@ You should see the following:
 Well done! You have successfully connected Tableau to ClickHouse, and you have opened up a whole world of possibilities
 for analyzing and visualizing your ClickHouse data.
 
-## Install the Connector Manually {#install-the-connector-manually}
+## Install the connector manually {#install-the-connector-manually}
 
 In case you use an outdated Tableau Desktop version that doesn't include the connector by default, you can install it manually by following these steps:
 
@@ -187,7 +183,7 @@ In case you use an outdated Tableau Desktop version that doesn't include the con
    * Windows: `C:\Users\[Windows User]\Documents\My Tableau Repository\Connectors`
 3. Restart Tableau Desktop, if your setup went successfully, you will set the connector under the `New Data Source` section.
 
-## Connection and Analysis Tips {#connection-and-analysis-tips}
+## Connection and analysis tips {#connection-and-analysis-tips}
 
 For more guidance on optimizing your Tableau-ClickHouse integration, 
 please visit [Connection Tips](/integrations/tableau/connection-tips) and [Analysis Tips](/integrations/tableau/analysis-tips).

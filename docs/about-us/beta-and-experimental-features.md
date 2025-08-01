@@ -14,7 +14,7 @@ Due to the uncertainty of when features are classified as generally available, w
 
 The sections below explicitly describe the properties of **Beta** and **Experimental** features:
 
-## Beta Features {#beta-features}
+## Beta features {#beta-features}
 
 - Under active development to make them generally available (GA)
 - Main known issues can be tracked on GitHub
@@ -26,7 +26,7 @@ You can find below the features considered Beta in ClickHouse Cloud and are avai
 
 Note: please be sure to be using a current version of the ClickHouse [compatibility](/operations/settings/settings#compatibility) setting to be using a recently introduced feature.
 
-## Experimental Features {#experimental-features}
+## Experimental features {#experimental-features}
 
 - May never become GA
 - May be removed

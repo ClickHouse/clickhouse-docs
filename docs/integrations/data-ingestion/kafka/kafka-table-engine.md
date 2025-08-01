@@ -36,16 +36,13 @@ To persist this data from a read of the table engine, we need a means of capturi
 
 #### Steps {#steps}
 
-
 ##### 1. Prepare {#1-prepare}
 
 If you have data populated on a target topic, you can adapt the following for use in your dataset. Alternatively, a sample Github dataset is provided [here](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson). This dataset is used in the examples below and uses a reduced schema and subset of the rows (specifically, we limit to Github events concerning the [ClickHouse repository](https://github.com/ClickHouse/ClickHouse)), compared to the full dataset available [here](https://ghe.clickhouse.tech/), for brevity. This is still sufficient for most of the queries [published with the dataset](https://ghe.clickhouse.tech/) to work.
 
-
 ##### 2. Configure ClickHouse {#2-configure-clickhouse}
 
 This step is required if you are connecting to a secure Kafka. These settings cannot be passed through the SQL DDL commands and must be configured in the ClickHouse config.xml. We assume you are connecting to a SASL secured instance. This is the simplest method when interacting with Confluent Cloud.
-
 
 ```xml
 <clickhouse>
@@ -182,7 +179,6 @@ CREATE TABLE github_queue
             'JSONEachRow') SETTINGS kafka_thread_per_consumer = 0, kafka_num_consumers = 1;
 ```
 
-
 We discuss engine settings and performance tuning below. At this point, a simple select on the table `github_queue` should read some rows.  Note that this will move the consumer offsets forward, preventing these rows from being re-read without a [reset](#common-operations). Note the limit and required parameter `stream_like_engine_allow_direct_select.`
 
 ##### 6. Create the materialized view {#6-create-the-materialized-view}
@@ -212,7 +208,7 @@ You should see 200,000 rows:
 └─────────┘
 ```
 
-#### Common Operations {#common-operations}
+#### Common operations {#common-operations}
 
 ##### Stopping & restarting message consumption {#stopping--restarting-message-consumption}
 
@@ -228,7 +224,7 @@ This will not impact the offsets of the consumer group. To restart consumption, 
 ATTACH TABLE github_queue;
 ```
 
-##### Adding Kafka Metadata {#adding-kafka-metadata}
+##### Adding Kafka metadata {#adding-kafka-metadata}
 
 It can be useful to keep track of the metadata from the original Kafka messages after it's been ingested into ClickHouse. For example, we may want to know how much of a specific topic or partition we have consumed. For this purpose, the Kafka table engine exposes several [virtual columns](../../../engines/table-engines/index.md#table_engines-virtual_columns). These can be persisted as columns in our target table by modifying our schema and materialized view's select statement.
 
@@ -289,8 +285,7 @@ The result looks like:
 | jpn | CommitCommentEvent | 2011-02-12 12:24:31 | github | 0 |
 | Oxonium | CommitCommentEvent | 2011-02-12 12:31:28 | github | 0 |
 
-
-##### Modify Kafka Engine Settings {#modify-kafka-engine-settings}
+##### Modify Kafka engine settings {#modify-kafka-engine-settings}
 
 We recommend dropping the Kafka engine table and recreating it with the new settings. The materialized view does not need to be modified during this process - message consumption will resume once the Kafka engine table is recreated.
 
@@ -339,7 +334,6 @@ Our initial objective is best illustrated:
 <Image img={kafka_02} size="lg" alt="Kafka table engine with inserts diagram" />
 
 We assume you have the tables and views created under steps for [Kafka to ClickHouse](#kafka-to-clickhouse) and that the topic has been fully consumed.
-
 
 ##### 1. Inserting rows directly {#1-inserting-rows-directly}
 
@@ -459,7 +453,7 @@ wc -l
 
 Although an elaborate example, this illustrates the power of materialized views when used in conjunction with the Kafka engine.
 
-### Clusters and Performance {#clusters-and-performance}
+### Clusters and performance {#clusters-and-performance}
 
 #### Working with ClickHouse Clusters {#working-with-clickhouse-clusters}
 
@@ -469,10 +463,9 @@ Multiple ClickHouse instances can all be configured to read from a topic using t
 
 <Image img={kafka_04} size="lg" alt="Kafka table engine with ClickHouse clusters diagram"/>
 
-#### Tuning Performance {#tuning-performance}
+#### Tuning performance {#tuning-performance}
 
 Consider the following when looking to increase Kafka Engine table throughput performance:
-
 
 * The performance will vary depending on the message size, format, and target table types. 100k rows/sec on a single table engine should be considered obtainable. By default, messages are read in blocks, controlled by the parameter kafka_max_block_size. By default, this is set to the [max_insert_block_size](/operations/settings/settings#max_insert_block_size), defaulting to 1,048,576. Unless messages are extremely large, this should nearly always be increased. Values between 500k to 1M are not uncommon. Test and evaluate the effect on throughput performance.
 * The number of consumers for a table engine can be increased using kafka_num_consumers. However, by default, inserts will be linearized in a single thread unless kafka_thread_per_consumer is changed from the default value of 1. Set this to 1 to ensure flushes are performed in parallel. Note that creating a Kafka engine table with N consumers (and kafka_thread_per_consumer=1) is logically equivalent to creating N Kafka engines, each with a materialized view and kafka_thread_per_consumer=0.
@@ -483,7 +476,7 @@ Consider the following when looking to increase Kafka Engine table throughput pe
 
 Any settings changes should be tested. We recommend monitoring Kafka consumer lags to ensure you are properly scaled.
 
-#### Additional Settings {#additional-settings}
+#### Additional settings {#additional-settings}
 
 Aside from the settings discussed above, the following may be of interest:
 

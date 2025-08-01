@@ -1,9 +1,9 @@
 ---
-'description': 'IN演算子を実装するための関数のドキュメント'
-'sidebar_label': 'IN演算子'
-'sidebar_position': 90
-'slug': '/sql-reference/functions/in-functions'
-'title': 'IN演算子の実装に関する関数'
+description: 'IN演算子を実装するための関数のドキュメント'
+sidebar_label: 'IN演算子'
+sidebar_position: 90
+slug: '/sql-reference/functions/in-functions'
+title: 'IN演算子の実装に関する関数'
 ---
 
 

@@ -1,14 +1,14 @@
 ---
-'slug': '/examples/aggregate-function-combinators/avgMap'
-'title': 'avgMap'
-'description': 'avgMap combinatorの使用例'
-'keywords':
+slug: '/examples/aggregate-function-combinators/avgMap'
+title: 'avgMap'
+description: 'avgMap combinatorの使用例'
+keywords:
 - 'avg'
 - 'map'
 - 'combinator'
 - 'examples'
 - 'avgMap'
-'sidebar_label': 'avgMap'
+sidebar_label: 'avgMap'
 ---
 
 

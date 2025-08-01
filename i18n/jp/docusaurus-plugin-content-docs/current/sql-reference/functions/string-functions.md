@@ -1,9 +1,9 @@
 ---
-'description': '文字列操作用の関数のドキュメント'
-'sidebar_label': '文字列'
-'sidebar_position': 170
-'slug': '/sql-reference/functions/string-functions'
-'title': 'Functions for Working with Strings'
+description: '文字列操作用の関数のドキュメント'
+sidebar_label: '文字列'
+sidebar_position: 170
+slug: '/sql-reference/functions/string-functions'
+title: 'Functions for Working with Strings'
 ---
 
 import VersionBadge from '@theme/badges/VersionBadge';

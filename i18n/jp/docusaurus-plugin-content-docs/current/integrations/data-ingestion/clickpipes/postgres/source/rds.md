@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'Amazon RDS Postgres'
-'description': 'ClickPipes 用の Amazon RDS Postgres ソースの設定'
-'slug': '/integrations/clickpipes/postgres/source/rds'
-'title': 'RDS Postgres Source Setup Guide'
+sidebar_label: 'Amazon RDS Postgres'
+description: 'ClickPipes 用の Amazon RDS Postgres ソースの設定'
+slug: '/integrations/clickpipes/postgres/source/rds'
+title: 'RDS Postgres Source Setup Guide'
 ---
 
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';

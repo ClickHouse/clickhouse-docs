@@ -1,10 +1,10 @@
 ---
-'description': 'timeSeriesData テーブルエンジンがTimeSeriesである `db_name.time_series_table`
+description: 'timeSeriesData テーブルエンジンがTimeSeriesである `db_name.time_series_table`
   テーブルで使用されるデータテーブルを返します。'
-'sidebar_label': 'timeSeriesData'
-'sidebar_position': 145
-'slug': '/sql-reference/table-functions/timeSeriesData'
-'title': 'timeSeriesData'
+sidebar_label: 'timeSeriesData'
+sidebar_position: 145
+slug: '/sql-reference/table-functions/timeSeriesData'
+title: 'timeSeriesData'
 ---
 
 

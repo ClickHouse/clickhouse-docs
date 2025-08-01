@@ -1,9 +1,9 @@
 ---
-'slug': '/use-cases/observability'
-'title': '観測可能性'
-'pagination_prev': null
-'pagination_next': null
-'description': '観測可能性ユースケースガイドのランディングページ'
+slug: '/use-cases/observability'
+title: '観測可能性'
+pagination_prev: null
+pagination_next: null
+description: '観測可能性ユースケースガイドのランディングページ'
 ---
 
 

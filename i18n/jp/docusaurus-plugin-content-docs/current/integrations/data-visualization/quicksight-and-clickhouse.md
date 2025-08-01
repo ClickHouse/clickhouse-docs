@@ -1,7 +1,7 @@
 ---
-'sidebar_label': 'QuickSight'
-'slug': '/integrations/quicksight'
-'keywords':
+sidebar_label: 'QuickSight'
+slug: '/integrations/quicksight'
+keywords:
 - 'clickhouse'
 - 'aws'
 - 'amazon'
@@ -10,8 +10,8 @@
 - 'connect'
 - 'integrate'
 - 'ui'
-'description': 'Amazon QuickSightは、統合されたビジネスインテリジェンス（BI）でデータ駆動型の組織を支援します。'
-'title': 'QuickSight'
+description: 'Amazon QuickSightは、統合されたビジネスインテリジェンス（BI）でデータ駆動型の組織を支援します。'
+title: 'QuickSight'
 ---
 
 import MySQLOnPremiseSetup from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_clickhouse_mysql_on_premise_setup.mdx';

@@ -124,7 +124,7 @@ const VStepper = ({
     return (
         <OriginalVerticalStepper
             type={type}
-            className={className}
+            className={`vertical-stepper ${className || ''}`}
             {...domProps}
         >
             {enhancedChildren}

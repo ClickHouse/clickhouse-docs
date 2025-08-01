@@ -1446,3 +1446,26 @@ input::-ms-input-placeholder { /* Microsoft Edge */
 .DocSearch-Cancel {
   color: var(--docsearch-text-color) !important;
 }
+
+.custom-ul,
+.custom-ol {
+  //padding-inline-start: 2rem; // if we want to indent the lists
+  margin-bottom: var(--ifm-paragraph-margin-bottom);
+}
+
+.custom-li {
+  padding-inline-start: 0.5rem;
+}
+
+.vertical-stepper .custom-ul
+.vertical-stepper .custom-ol {
+  padding-block-end: 1.5rem;
+}
+
+.vertical-stepper > *:last-child {
+  margin-bottom: 0;
+}
+
+.code-viewer {
+  margin-bottom: var(--ifm-paragraph-margin-bottom);
+}

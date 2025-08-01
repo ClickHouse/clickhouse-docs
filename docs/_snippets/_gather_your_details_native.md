@@ -2,7 +2,6 @@ import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-bu
 import connection_details_native from '@site/static/images/_snippets/connection-details-native.png';
 import Image from '@theme/IdealImage';
 
-
 To connect to ClickHouse with native TCP you need this information:
 
 - The HOST and PORT: typically, the port is 9440 when using TLS, or 9000 when not using TLS.

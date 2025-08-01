@@ -1,9 +1,9 @@
 ---
-'description': 'Apply mask of deleted rowsのドキュメント'
-'sidebar_label': '削除済み行のマスクを適用する'
-'sidebar_position': 46
-'slug': '/sql-reference/statements/alter/apply-deleted-mask'
-'title': 'Apply mask of deleted rows'
+description: 'Apply mask of deleted rowsのドキュメント'
+sidebar_label: '削除済み行のマスクを適用する'
+sidebar_position: 46
+slug: '/sql-reference/statements/alter/apply-deleted-mask'
+title: 'Apply mask of deleted rows'
 ---
 
 

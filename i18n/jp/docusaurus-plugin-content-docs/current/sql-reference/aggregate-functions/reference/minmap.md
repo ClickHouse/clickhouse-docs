@@ -1,9 +1,9 @@
 ---
-'description': 'Calculates the minimum from `value` array according to the keys specified
+description: 'Calculates the minimum from `value` array according to the keys specified
   in the `key` array.'
-'sidebar_position': 169
-'slug': '/sql-reference/aggregate-functions/reference/minmap'
-'title': 'minMap'
+sidebar_position: 169
+slug: '/sql-reference/aggregate-functions/reference/minmap'
+title: 'minMap'
 ---
 
 

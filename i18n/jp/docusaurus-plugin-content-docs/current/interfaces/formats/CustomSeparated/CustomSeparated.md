@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'CustomSeparated フォーマットのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'CustomSeparated フォーマットのドキュメント'
+input_format: true
+keywords:
 - 'CustomSeparated'
-'output_format': true
-'slug': '/interfaces/formats/CustomSeparated'
-'title': 'CustomSeparated'
+output_format: true
+slug: '/interfaces/formats/CustomSeparated'
+title: 'CustomSeparated'
 ---
 
 

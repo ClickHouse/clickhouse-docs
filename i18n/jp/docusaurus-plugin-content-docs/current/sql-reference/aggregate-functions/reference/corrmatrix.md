@@ -1,8 +1,8 @@
 ---
-'description': 'N個の変数にわたる相関行列を計算します。'
-'sidebar_position': 118
-'slug': '/sql-reference/aggregate-functions/reference/corrmatrix'
-'title': 'corrMatrix'
+description: 'N個の変数にわたる相関行列を計算します。'
+sidebar_position: 118
+slug: '/sql-reference/aggregate-functions/reference/corrmatrix'
+title: 'corrMatrix'
 ---
 
 

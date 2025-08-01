@@ -1,10 +1,10 @@
 ---
-'description': 'MergeTree テーブルの進行中のデータパーツ移動に関する情報を含むシステムテーブルです。各データパーツの移動が単一の行で表されます。'
-'keywords':
+description: 'MergeTree テーブルの進行中のデータパーツ移動に関する情報を含むシステムテーブルです。各データパーツの移動が単一の行で表されます。'
+keywords:
 - 'system table'
 - 'moves'
-'slug': '/operations/system-tables/moves'
-'title': 'system.moves'
+slug: '/operations/system-tables/moves'
+title: 'system.moves'
 ---
 
 

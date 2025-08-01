@@ -1,8 +1,8 @@
 ---
-'slug': '/integrations/dbeaver'
-'sidebar_label': 'DBeaver'
-'description': 'DBeaver はマルチプラットフォームのデータベースツールです。'
-'title': 'ClickHouse への DBeaver の接続'
+slug: '/integrations/dbeaver'
+sidebar_label: 'DBeaver'
+description: 'DBeaver はマルチプラットフォームのデータベースツールです。'
+title: 'ClickHouse への DBeaver の接続'
 ---
 
 import Image from '@theme/IdealImage';
