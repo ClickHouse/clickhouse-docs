@@ -6,7 +6,7 @@ keywords: ['SharedCatalog', 'SharedDatabaseEngine']
 description: 'Describes the Shared Catalog component and the Shared database engine in ClickHouse Cloud'
 ---
 
-# Shared Catalog and Shared Database Engine {#shared-catalog-and-shared-database-engine}
+# Shared catalog and shared database engine {#shared-catalog-and-shared-database-engine}
 
 **Available exclusively in ClickHouse Cloud (and first party partner cloud services)**
 
@@ -21,7 +21,7 @@ It supports replication of the following database engines:
 - MySQL
 - DataLakeCatalog
 
-## Architecture and Metadata Storage {#architecture-and-metadata-storage}
+## Architecture and metadata storage {#architecture-and-metadata-storage}
 
 All metadata and DDL query history in Shared Catalog is stored centrally in ZooKeeper. Nothing is persisted on local disk. This architecture ensures:
 
@@ -29,7 +29,7 @@ All metadata and DDL query history in Shared Catalog is stored centrally in ZooK
 - Statelessness of compute nodes
 - Fast, reliable replica bootstrapping
 
-## Shared Database Engine {#shared-database-engine}
+## Shared database engine {#shared-database-engine}
 
 The **Shared database engine** works in conjunction with Shared Catalog to manage databases whose tables use **stateless table engines** such as `SharedMergeTree`. These table engines do not write persistent state to disk and are compatible with dynamic compute environments.
 

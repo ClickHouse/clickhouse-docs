@@ -10,7 +10,6 @@ title: 'Python'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 ClickStack uses the OpenTelemetry standard for collecting telemetry data (logs and
 traces). Traces are auto-generated with automatic instrumentation, so manual
 instrumentation isn't required to get value out of tracing.
@@ -63,7 +62,6 @@ opentelemetry-instrument python app.py
 In this case, the OpenTelemetry Python agent will require additional changes to work. 
 
 To configure OpenTelemetry for application servers using the pre-fork web server mode, make sure to call the `configure_opentelemetry` method within the post-fork hook.
-
 
 <Tabs groupId="python-alternative">
 <TabItem value="gunicorn" label="Gunicorn" default>
@@ -139,5 +137,3 @@ export DEBUG=true
 
 Read more about Python OpenTelemetry instrumentation here:
 [https://opentelemetry.io/docs/instrumentation/python/manual/](https://opentelemetry.io/docs/instrumentation/python/manual/)
-
-

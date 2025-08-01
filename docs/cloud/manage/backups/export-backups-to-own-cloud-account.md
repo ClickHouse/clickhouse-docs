@@ -38,7 +38,6 @@ You will need the following details to export/restore backups to your own CSP st
    - `testchbackups` is the name of the S3 bucket to export backups to.
    - `backups` is an optional subdirectory.
 
-
 2. AWS access key and secret.
 
 ### Azure {#azure}
@@ -61,7 +60,7 @@ You will need the following details to export/restore backups to your own CSP st
 
 ## Backup / Restore to AWS S3 Bucket {#backup--restore-to-aws-s3-bucket}
 
-### Take a DB Backup {#take-a-db-backup}
+### Take a DB backup {#take-a-db-backup}
 
 **Full Backup**
 
@@ -97,7 +96,7 @@ See: [Configuring BACKUP/RESTORE to use an S3 Endpoint](/operations/backup#confi
 
 ## Backup / Restore to Azure Blob Storage {#backup--restore-to-azure-blob-storage}
 
-### Take a DB Backup {#take-a-db-backup-1}
+### Take a DB backup {#take-a-db-backup-1}
 
 **Full Backup**
 
@@ -128,7 +127,7 @@ See: [Configuring BACKUP/RESTORE to use an S3 Endpoint](/operations/backup#confi
 
 ## Backup / Restore to Google Cloud Storage (GCS) {#backup--restore-to-google-cloud-storage-gcs}
 
-### Take a DB Backup {#take-a-db-backup-2}
+### Take a DB backup {#take-a-db-backup-2}
 
 **Full Backup**
 

@@ -51,9 +51,9 @@ SQL console is the fastest and easiest way to explore and query your databases i
 - Execute queries and visualize result data in just a few clicks
 - Share queries with team members and collaborate more effectively.
 
-### Exploring Tables {#exploring-tables}
+### Exploring tables {#exploring-tables}
 
-### Viewing Table List and Schema Info {#viewing-table-list-and-schema-info}
+### Viewing table list and schema info {#viewing-table-list-and-schema-info}
 
 An overview of tables contained in your ClickHouse instance can be found in the left sidebar area. Use the database selector at the top of the left bar to view the tables in a specific database
 
@@ -62,19 +62,19 @@ Tables in the list can also be expanded to view columns and types
 
 <Image img={view_columns} size="md" alt='view columns' />
 
-### Exploring Table Data {#exploring-table-data}
+### Exploring table data {#exploring-table-data}
 
 Click on a table in the list to open it in a new tab. In the Table View, data can be easily viewed, selected, and copied. Note that structure and formatting are preserved when copy-pasting to spreadsheet applications such as Microsoft Excel and Google Sheets. You can flip between pages of table data (paginated in 30-row increments) using the navigation in the footer.
 
 <Image img={abc} size="md" alt='abc' />
 
-### Inspecting Cell Data {#inspecting-cell-data}
+### Inspecting cell data {#inspecting-cell-data}
 
 The Cell Inspector tool can be used to view large amounts of data contained within a single cell. To open it, right-click on a cell and select 'Inspect Cell'. The contents of the cell inspector can be copied by clicking the copy icon in the top right corner of the inspector contents.
 
 <Image img={inspecting_cell_content} size="md" alt='inspecting cell content' />
 
-## Filtering and Sorting Tables {#filtering-and-sorting-tables}
+## Filtering and sorting tables {#filtering-and-sorting-tables}
 
 ### Sorting a table {#sorting-a-table}
 
@@ -118,9 +118,9 @@ Filters and sorts are not mandatory when using the 'Create Query' feature.
 
 You can learn more about querying in the SQL console by reading the (link) query documentation.
 
-## Creating and Running a Query {#creating-and-running-a-query}
+## Creating and running a query {#creating-and-running-a-query}
 
-### Creating a Query {#creating-a-query}
+### Creating a query {#creating-a-query}
 
 There are two ways to create a new query in the SQL console.
 
@@ -129,7 +129,7 @@ There are two ways to create a new query in the SQL console.
 
 <Image img={creating_a_query} size="md" alt='Creating a query' />
 
-### Running a Query {#running-a-query}
+### Running a query {#running-a-query}
 
 To run a query, type your SQL command(s) into the SQL Editor and click the 'Run' button or use the shortcut `cmd / ctrl + enter`. To write and run multiple commands sequentially, make sure to add a semicolon after each command.
 
@@ -149,7 +149,7 @@ Running the command at the current cursor position can be achieved in two ways:
 
 <Image img={run_at_cursor_2} size="md" alt='run at cursor' />
 
-  - Selecting 'Run at cursor' from the SQL Editor context menu
+- Selecting 'Run at cursor' from the SQL Editor context menu
 
 <Image img={run_at_cursor} size="md" alt='run at cursor' />
 
@@ -157,13 +157,13 @@ Running the command at the current cursor position can be achieved in two ways:
 The command present at the cursor position will flash yellow on execution.
 :::
 
-### Canceling a Query {#canceling-a-query}
+### Canceling a query {#canceling-a-query}
 
 While a query is running, the 'Run' button in the Query Editor toolbar will be replaced with a 'Cancel' button. Simply click this button or press `Esc` to cancel the query. Note: Any results that have already been returned will persist after cancellation.
 
 <Image img={cancel_a_query} size="md" alt='Cancel a query' />
 
-### Saving a Query {#saving-a-query}
+### Saving a query {#saving-a-query}
 
 Saving queries allows you to easily find them later and share them with your teammates. The SQL console also allows you to organize your queries into folders.
 
@@ -179,7 +179,7 @@ Alternatively, you can simultaneously name and save a query by clicking on "Unti
 
 <Image img={sql_console_rename} size="md" alt='Rename query' />
 
-### Query Sharing {#query-sharing}
+### Query sharing {#query-sharing}
 
 The SQL console allows you to easily share queries with your team members. The SQL console supports four levels of access that can be adjusted both globally and on a per-user basis:
 
@@ -206,7 +206,7 @@ After selecting a team member, a new line item should appear with an access leve
 
 <Image img={sql_console_edit_member} size="md" alt='Edit team member access' />
 
-### Accessing Shared Queries {#accessing-shared-queries}
+### Accessing shared queries {#accessing-shared-queries}
 
 If a query has been shared with you, it will be displayed in the "Queries" tab of the SQL console left sidebar:
 
@@ -218,7 +218,7 @@ Saved queries are also permalinked, meaning that you can send and receive links 
 
 Values for any parameters that may exist in a query are automatically added to the saved query URL as query parameters. For example, if a query contains `{start_date: Date}` and `{end_date: Date}` parameters, the permalink can look like: `https://console.clickhouse.cloud/services/:serviceId/console/query/:queryId?param_start_date=2015-01-01&param_end_date=2016-01-01`.
 
-## Advanced Querying Features {#advanced-querying-features}
+## Advanced querying features {#advanced-querying-features}
 
 ### Searching query results {#searching-query-results}
 
@@ -246,7 +246,7 @@ Query result sets can be easily exported to CSV format directly from the SQL con
 
 <Image img={download_as_csv} size="md" alt='Download as CSV' />
 
-## Visualizing Query Data {#visualizing-query-data}
+## Visualizing query data {#visualizing-query-data}
 
 Some data can be more easily interpreted in chart form. You can quickly create visualizations from query result data directly from the SQL console in just a few clicks. As an example, we'll use a query that calculates weekly statistics for NYC taxi trips:
 

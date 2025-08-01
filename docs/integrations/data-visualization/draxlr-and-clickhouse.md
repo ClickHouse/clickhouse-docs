@@ -23,7 +23,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 Draxlr offers an intuitive interface for connecting to your ClickHouse database, enabling your team to explore, visualize, and publish insights within minutes. This guide will walk you through the steps to establish a successful connection.
 
-
 ## 1. Get your ClickHouse credentials {#1-get-your-clickhouse-credentials}
 <ConnectionDetails />
 
@@ -57,7 +56,6 @@ Draxlr offers an intuitive interface for connecting to your ClickHouse database,
 
   <Image size="md" img={draxlr_05} alt="Draxlr graph visualization options for ClickHouse data" border />
 
-
 ## 4. Using SQL queries {#4-using-sql-queries}
 
 1. Click on the Explore button on the navbar.
@@ -67,7 +65,6 @@ Draxlr offers an intuitive interface for connecting to your ClickHouse database,
   <Image size="md" img={draxlr_03} alt="Draxlr SQL query interface for ClickHouse" border />
 
 3. Click on the **Execute Query** button to see the results.
-
 
 ## 4. Saving you query {#4-saving-you-query}
 
@@ -81,8 +78,7 @@ Draxlr offers an intuitive interface for connecting to your ClickHouse database,
 
 4. Click on the **Save** button to save the query.
 
-
-## 5. Building Dashboards {#5-building-dashboards}
+## 5. Building dashboards {#5-building-dashboards}
 
 1. Click on the **Dashboards** button on the navbar.
 

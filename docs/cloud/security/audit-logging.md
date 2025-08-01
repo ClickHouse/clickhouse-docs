@@ -18,9 +18,7 @@ In ClickHouse Cloud, navigate to your organization details.
 
 Select the **Audit** tab on the left menu to see what changes have been made to your ClickHouse Cloud organization - including who made the change and when it occurred.
 
-
 The **Activity** page displays a table containing a list of events logged about your organization. By default, this list is sorted in a reverse-chronological order (most-recent event at the top). Change the order of the table by clicking on the columns headers. Each item of the table contains the following fields:
-
 
 - **Activity:** A text snippet describing the event
 - **User:** The user that initiated the event

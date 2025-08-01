@@ -10,8 +10,7 @@ import shared_merge_tree from '@site/static/images/cloud/reference/shared-merge-
 import shared_merge_tree_2 from '@site/static/images/cloud/reference/shared-merge-tree-2.png';
 import Image from '@theme/IdealImage';
 
-
-# SharedMergeTree Table Engine
+# SharedMergeTree table engine
 
 The SharedMergeTree table engine family is a cloud-native replacement of the ReplicatedMergeTree engines that is optimized to work on top of shared storage (e.g. Amazon S3, Google Cloud Storage, MinIO, Azure Blob Storage). There is a SharedMergeTree analog for every specific MergeTree engine type, i.e. ReplacingSharedMergeTree replaces ReplacingReplicatedMergeTree.
 
@@ -40,7 +39,6 @@ Most of the system tables used for introspection of ReplicatedMergeTree exist fo
 **system.virtual_parts**
 
 This table serves as the alternative to `system.replication_queue` for SharedMergeTree. It stores information about the most recent set of current parts, as well as future parts in progress such as merges, mutations, and dropped partitions.
-
 
 **system.shared_merge_tree_fetches**
 

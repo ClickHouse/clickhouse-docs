@@ -42,7 +42,6 @@ To get started, you first need to make sure that your Postgres database is set u
 
 9. [TimescaleDB](./postgres/source/timescale), if you are using the TimescaleDB extension on a managed service or self-hosted instance.
 
-
 :::warning
 
 Postgres Proxies like PgBouncer, RDS Proxy, Supabase Pooler, etc., are not supported for CDC based replication. Please make sure to NOT use them for the ClickPipes setup and instead add connection details of the actual Postgres database.
@@ -56,7 +55,7 @@ Once your source Postgres database is set up, you can continue creating your Cli
 Make sure you are logged in to your ClickHouse Cloud account. If you don't have an account yet, you can sign up [here](https://cloud.clickhouse.com/).
 
 [//]: # (   TODO update image here)
-1. In the ClickHouse Cloud Console, navigate to your ClickHouse Cloud Service.
+1. In the ClickHouse Cloud console, navigate to your ClickHouse Cloud Service.
 
 <Image img={cp_service} alt="ClickPipes service" size="lg" border/>
 
@@ -87,10 +86,9 @@ You can use AWS Private Link to connect to your source Postgres database if it i
 want to keep your data transfer private.
 You can follow the [setup guide to set up the connection](/integrations/clickpipes/aws-privatelink).
 
-#### (Optional) Setting up SSH Tunneling {#optional-setting-up-ssh-tunneling}
+#### (Optional) Setting up SSH tunneling {#optional-setting-up-ssh-tunneling}
 
 You can specify SSH tunneling details if your source Postgres database is not publicly accessible.
-
 
 1. Enable the "Use SSH Tunnelling" toggle.
 2. Fill in the SSH connection details.
@@ -114,7 +112,7 @@ Once the connection details are filled in, click on "Next".
 
    <Image img={select_replication_slot} alt="Select replication slot" size="lg" border/>
 
-#### Advanced Settings {#advanced-settings}
+#### Advanced settings {#advanced-settings}
 
 You can configure the Advanced settings if needed. A brief description of each setting is provided below:
 
@@ -123,7 +121,6 @@ You can configure the Advanced settings if needed. A brief description of each s
 - **Pull batch size**: The number of rows to fetch in a single batch. This is a best effort setting and may not be respected in all cases.
 - **Snapshot number of rows per partition**: This is the number of rows that will be fetched in each partition during the initial snapshot. This is useful when you have a large number of rows in your tables and you want to control the number of rows fetched in each partition.
 - **Snapshot number of tables in parallel**: This is the number of tables that will be fetched in parallel during the initial snapshot. This is useful when you have a large number of tables and you want to control the number of tables fetched in parallel.
-
 
 ### Configuring the tables {#configuring-the-tables}
 
@@ -145,6 +142,6 @@ You can configure the Advanced settings if needed. A brief description of each s
 
 ## What's next? {#whats-next}
 
-Once you've moved data from Postgres to ClickHouse, the next obvious question is how to query and model your data in ClickHouse to make the most of it. Please refer to the [migration guide](/migrations/postgresql/overview) to a step by step approaches on how to migrate from PostgreSQL to ClickHouse. Alongside the migration guide, make sure to check the pages about [Deduplication strategies (using CDC)](/integrations/clickpipes/postgres/deduplication) and [Ordering Keys](/integrations/clickpipes/postgres/ordering_keys) to understand how to handle duplicates and customize ordering keys when using CDC.
+Once you've set up your ClickPipe to replicate data from PostgreSQL to ClickHouse Cloud, you can focus on how to query and model your data for optimal performance. See the [migration guide](/migrations/postgresql/overview) to assess which startegy best suits your requirements, as well as the [Deduplication strategies (using CDC)](/integrations/clickpipes/postgres/deduplication) and [Ordering Keys](/integrations/clickpipes/postgres/ordering_keys) pages for best practices on CDC workloads.
 
-Finally, please refer to the ["ClickPipes for Postgres FAQ"](/integrations/clickpipes/postgres/faq) page for more information about common issues and how to resolve them.
+For common questions around PostgreSQL CDC and troubleshooting, see the [Postgres FAQs page](/integrations/clickpipes/postgres/faq).

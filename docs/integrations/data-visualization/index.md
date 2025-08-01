@@ -7,7 +7,7 @@ slug: /integrations/data-visualization
 description: 'Learn about Visualizing Data in ClickHouse'
 ---
 
-# Visualizing Data in ClickHouse
+# Visualizing data in ClickHouse
 
 <div class='vimeo-container'>
 <iframe
@@ -43,7 +43,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 - [Tableau](./tableau/tableau-and-clickhouse.md)
 - [Zing Data](./zingdata-and-clickhouse.md)
 
-## ClickHouse Cloud Compatibility with Data Visualization Tools {#clickhouse-cloud-compatibility-with-data-visualization-tools}
+## ClickHouse Cloud compatibility with data visualization tools {#clickhouse-cloud-compatibility-with-data-visualization-tools}
 
 | Tool                                                                    | Supported via                 | Tested | Documented | Comment                                                                                                                                 |
 |-------------------------------------------------------------------------|-------------------------------|--------|------------|-----------------------------------------------------------------------------------------------------------------------------------------|

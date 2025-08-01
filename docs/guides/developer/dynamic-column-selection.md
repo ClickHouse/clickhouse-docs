@@ -86,7 +86,7 @@ LIMIT 5;
 
 ## Apply functions to all columns  {#applying-functions}
 
-We can also use the [`APPLY`](https://clickhouse.com/docs/sql-reference/statements/select#apply) modifier to apply functions across every column. 
+We can also use the [`APPLY`](/sql-reference/statements/select) modifier to apply functions across every column. 
 For example, if we wanted to find the maximum value of each of those columns, we could run the following query:
 
 ```sql
@@ -95,7 +95,6 @@ FROM nyc_taxi.trips;
 ```
 
 > [Try this query in the SQL playground](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkobWF4KQpGUk9NIG55Y190YXhpLnRyaXBzOw&run_query=true)
-
 
 ```text
    ┌─max(fare_amount)─┬─max(mta_tax)─┬─max(tip_amount)─┬─max(tolls_amount)─┬─max(ehail_fee)─┬─max(total_amount)─┐
@@ -112,13 +111,11 @@ FROM nyc_taxi.trips
 
 > [Try this query in the SQL playground](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkoYXZnKQpGUk9NIG55Y190YXhpLnRyaXBzOw&run_query=true)
 
-
 ```text
    ┌─avg(fare_amount)─┬───────avg(mta_tax)─┬────avg(tip_amount)─┬──avg(tolls_amount)─┬──────avg(ehail_fee)─┬──avg(total_amount)─┐
 1. │ 11.8044154834777 │ 0.4555942672733423 │ 1.3469850969211845 │ 0.2256511991414463 │ 3.37600560437412e-9 │ 14.423323722271563 │
    └──────────────────┴────────────────────┴────────────────────┴────────────────────┴─────────────────────┴────────────────────┘
 ```
-
 
 Those values contain a lot of decimal places, but luckily we can fix that by chaining functions. In this case, we’ll apply the avg function, followed by the round function:
 
@@ -129,13 +126,11 @@ FROM nyc_taxi.trips;
 
 > [Try this query in the SQL playground](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkoYXZnKSBBUFBMWShyb3VuZCkKRlJPTSBueWNfdGF4aS50cmlwczs&run_query=true)
 
-
 ```text
    ┌─round(avg(fare_amount))─┬─round(avg(mta_tax))─┬─round(avg(tip_amount))─┬─round(avg(tolls_amount))─┬─round(avg(ehail_fee))─┬─round(avg(total_amount))─┐
 1. │                      12 │                   0 │                      1 │                        0 │                     0 │                       14 │
    └─────────────────────────┴─────────────────────┴────────────────────────┴──────────────────────────┴───────────────────────┴──────────────────────────┘
 ```
-
 
 But that rounds the averages to whole numbers. If we want to round to, say, 2 decimal places, we can do that as well. As well as taking in functions, the `APPLY` modifier accepts a lambda, which gives us the flexibility to have the round function round our average values to 2 decimal places:
 
@@ -146,7 +141,6 @@ FROM nyc_taxi.trips;
 
 > [Try this query in the SQL playground](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkgYXZnIEFQUExZIHggLT4gcm91bmQoeCwgMikKRlJPTSBueWNfdGF4aS50cmlwcw&run_query=true)
 
-
 ```text
    ┌─round(avg(fare_amount), 2)─┬─round(avg(mta_tax), 2)─┬─round(avg(tip_amount), 2)─┬─round(avg(tolls_amount), 2)─┬─round(avg(ehail_fee), 2)─┬─round(avg(total_amount), 2)─┐
 1. │                       11.8 │                   0.46 │                      1.35 │                        0.23 │                        0 │                       14.42 │
@@ -155,7 +149,7 @@ FROM nyc_taxi.trips;
 
 ## Replacing columns  {#replacing-columns}
 
-So far so good. But let’s say we want to adjust one of the values, while leaving the other ones as they are. For example, maybe we want to double the total amount and divide the MTA tax by 1.1. We can do that by using the [`REPLACE`](/sql-reference/statements/select#replace) modifier, which will replace a column while leaving the other ones as they are.
+So far so good. But let’s say we want to adjust one of the values, while leaving the other ones as they are. For example, maybe we want to double the total amount and divide the MTA tax by 1.1. We can do that by using the [`REPLACE`](/sql-reference/statements/select) modifier, which will replace a column while leaving the other ones as they are.
 
 ```sql
 FROM nyc_taxi.trips 
@@ -171,7 +165,6 @@ SELECT
 
 > [Try this query in the SQL playground](https://sql.clickhouse.com?query=RlJPTSBueWNfdGF4aS50cmlwcyAKU0VMRUNUIAogIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykKICBSRVBMQUNFKAogICAgdG90YWxfYW1vdW50KjIgQVMgdG90YWxfYW1vdW50LAogICAgbXRhX3RheC8xLjEgQVMgbXRhX3RheAogICkgCiAgQVBQTFkoYXZnKQogIEFQUExZKGNvbCAtPiByb3VuZChjb2wsIDIpKTs&run_query=true)
 
-
 ```text
    ┌─round(avg(fare_amount), 2)─┬─round(avg(di⋯, 1.1)), 2)─┬─round(avg(tip_amount), 2)─┬─round(avg(tolls_amount), 2)─┬─round(avg(ehail_fee), 2)─┬─round(avg(mu⋯nt, 2)), 2)─┐
 1. │                       11.8 │                     0.41 │                      1.35 │                        0.23 │                        0 │                    28.85 │
@@ -180,7 +173,7 @@ SELECT
 
 ## Excluding columns  {#excluding-columns}
 
-We can also choose to exclude a field by using the [`EXCEPT`](/sql-reference/statements/select#except) modifier. For example, to remove the `tolls_amount` column, we would write the following query:
+We can also choose to exclude a field by using the [`EXCEPT`](/sql-reference/statements/select) modifier. For example, to remove the `tolls_amount` column, we would write the following query:
 
 ```sql
 FROM nyc_taxi.trips 
@@ -195,8 +188,6 @@ SELECT
 ```
 
 > [Try this query in the SQL playground](https://sql.clickhouse.com?query=RlJPTSBueWNfdGF4aS50cmlwcyAKU0VMRUNUIAogIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgRVhDRVBUKHRvbGxzX2Ftb3VudCkKICBSRVBMQUNFKAogICAgdG90YWxfYW1vdW50KjIgQVMgdG90YWxfYW1vdW50LAogICAgbXRhX3RheC8xLjEgQVMgbXRhX3RheAogICkgCiAgQVBQTFkoYXZnKQogIEFQUExZKGNvbCAtPiByb3VuZChjb2wsIDIpKTs&run_query=true)
-
-
 
 ```text
    ┌─round(avg(fare_amount), 2)─┬─round(avg(di⋯, 1.1)), 2)─┬─round(avg(tip_amount), 2)─┬─round(avg(ehail_fee), 2)─┬─round(avg(mu⋯nt, 2)), 2)─┐

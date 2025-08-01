@@ -11,11 +11,11 @@ import restart from '@site/static/images/integrations/data-ingestion/clickpipes/
 import firewall from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/firewall.png';
 import Image from '@theme/IdealImage';
 
-# Azure Flexible Server for Postgres Source Setup Guide
+# Azure flexible server for Postgres source setup guide
 
 ClickPipes supports Postgres version 12 and later.
 
-## Enable Logical Replication {#enable-logical-replication}
+## Enable logical replication {#enable-logical-replication}
 
 **You don't need** to follow the below steps if `wal_level` is set to `logical`. This setting should mostly be pre-configured if you are migrating from another data replication tool.
 
@@ -31,7 +31,7 @@ ClickPipes supports Postgres version 12 and later.
 
 <Image img={restart} alt="Restart server after changing wal_level" size="lg" border/>
 
-## Creating ClickPipes User and Granting permissions {#creating-clickpipes-user-and-granting-permissions}
+## Creating ClickPipes users and granting permissions {#creating-clickpipes-user-and-granting-permissions}
 
 Connect to your Azure Flexible Server Postgres through the admin user and run the below commands:
 
@@ -67,7 +67,6 @@ Connect to your Azure Flexible Server Postgres through the admin user and run th
    ALTER ROLE clickpipes_user SET wal_sender_timeout to 0;
    ```
 
-
 ## Add ClickPipes IPs to Firewall {#add-clickpipes-ips-to-firewall}
 
 Please follow the below steps to add [ClickPipes IPs](../../index.md#list-of-static-ips) to your network.
@@ -76,7 +75,6 @@ Please follow the below steps to add [ClickPipes IPs](../../index.md#list-of-sta
    of your Azure Flexible Server Postgres OR the Jump Server/Bastion if you are using SSH tunneling.
 
 <Image img={firewall} alt="Add ClickPipes IPs to Firewall in Azure Flexible Server for Postgres" size="lg"/>
-
 
 ## What's next? {#whats-next}
 
