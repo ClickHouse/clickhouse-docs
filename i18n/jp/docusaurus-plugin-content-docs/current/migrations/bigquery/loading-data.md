@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'データのロード'
-'title': 'BigQueryからClickHouseへのデータのロード'
-'slug': '/migrations/bigquery/loading-data'
-'description': 'BigQueryからClickHouseへのデータをロードする方法'
-'keywords':
+sidebar_label: 'データのロード'
+title: 'BigQueryからClickHouseへのデータのロード'
+slug: '/migrations/bigquery/loading-data'
+description: 'BigQueryからClickHouseへのデータをロードする方法'
+keywords:
 - 'migrate'
 - 'migration'
 - 'migrating'

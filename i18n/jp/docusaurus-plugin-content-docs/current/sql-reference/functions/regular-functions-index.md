@@ -1,7 +1,7 @@
 ---
-'description': 'Regular Functions のランディングページ'
-'slug': '/sql-reference/functions/regular-functions'
-'title': 'Regular Functions'
+description: 'Regular Functions のランディングページ'
+slug: '/sql-reference/functions/regular-functions'
+title: 'Regular Functions'
 ---
 
 

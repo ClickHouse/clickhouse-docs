@@ -1,8 +1,8 @@
 ---
-'title': 'Language Integrations Index'
-'slug': '/chdb/install'
-'description': 'Index page for chDB language integrations'
-'keywords':
+title: 'Language Integrations Index'
+slug: '/chdb/install'
+description: 'Index page for chDB language integrations'
+keywords:
 - 'python'
 - 'NodeJS'
 - 'Go'

@@ -17,6 +17,29 @@ html[data-theme="dark"] {
   background-attachment: fixed;
 }
 
+/* This is a fix for the issue where paragraphs have 1rem margin bottom but
+look strange when there is a code block after the paragraph
+*/
+p {
+  margin-bottom: 0rem;
+}
+
+/* We only want to have a gap between successive paragraphs elements,
+not between paragraphs and other elements like code blocks
+*/
+p + * {
+  margin-top: 1rem;
+}
+
+/*
+Fix for the issue where there is no gap between a paragraph which follows
+a list
+ */
+ul + p,
+ol + p {
+  margin-top: 1rem;
+}
+
 body {
   font-size: var(--default-font);
   line-height: var(--default-line-height);

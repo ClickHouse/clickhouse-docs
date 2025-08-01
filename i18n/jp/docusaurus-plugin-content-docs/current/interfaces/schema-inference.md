@@ -1,8 +1,8 @@
 ---
-'description': 'ClickHouse における入力データからの自動スキーマ推論を説明するページ'
-'sidebar_label': 'スキーマ推論'
-'slug': '/interfaces/schema-inference'
-'title': '入力データからの自動スキーマ推論'
+description: 'ClickHouse における入力データからの自動スキーマ推論を説明するページ'
+sidebar_label: 'スキーマ推論'
+slug: '/interfaces/schema-inference'
+title: '入力データからの自動スキーマ推論'
 ---
 
 

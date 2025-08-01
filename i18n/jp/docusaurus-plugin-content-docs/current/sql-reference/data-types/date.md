@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouseのDateデータ型のドキュメント'
-'sidebar_label': '日付'
-'sidebar_position': 12
-'slug': '/sql-reference/data-types/date'
-'title': 'Date'
+description: 'ClickHouseのDateデータ型のドキュメント'
+sidebar_label: '日付'
+sidebar_position: 12
+slug: '/sql-reference/data-types/date'
+title: 'Date'
 ---
 
 

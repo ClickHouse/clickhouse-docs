@@ -1,11 +1,11 @@
 ---
-'description': 'このセクションには、セッションまたはクエリレベルで変更できないサーバー設定に関する説明が含まれています。'
-'keywords':
+description: 'このセクションには、セッションまたはクエリレベルで変更できないサーバー設定に関する説明が含まれています。'
+keywords:
 - 'global server settings'
-'sidebar_label': 'サーバー設定'
-'sidebar_position': 57
-'slug': '/operations/server-configuration-parameters/settings'
-'title': 'サーバー設定'
+sidebar_label: 'サーバー設定'
+sidebar_position: 57
+slug: '/operations/server-configuration-parameters/settings'
+title: 'サーバー設定'
 ---
 
 import Tabs from '@theme/Tabs';

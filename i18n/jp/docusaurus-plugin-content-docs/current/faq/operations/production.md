@@ -1,9 +1,9 @@
 ---
-'slug': '/faq/operations/production'
-'title': 'プロダクションで使用するClickHouseバージョンは？'
-'toc_hidden': true
-'toc_priority': 10
-'description': 'このページでは、プロダクションで使用するClickHouseバージョンについてのガイダンスを提供します'
+slug: '/faq/operations/production'
+title: 'プロダクションで使用するClickHouseバージョンは？'
+toc_hidden: true
+toc_priority: 10
+description: 'このページでは、プロダクションで使用するClickHouseバージョンについてのガイダンスを提供します'
 ---
 
 

@@ -1,8 +1,8 @@
 ---
-'description': 'HAVING句のドキュメント'
-'sidebar_label': 'HAVING'
-'slug': '/sql-reference/statements/select/having'
-'title': 'HAVING Clause'
+description: 'HAVING句のドキュメント'
+sidebar_label: 'HAVING'
+slug: '/sql-reference/statements/select/having'
+title: 'HAVING Clause'
 ---
 
 

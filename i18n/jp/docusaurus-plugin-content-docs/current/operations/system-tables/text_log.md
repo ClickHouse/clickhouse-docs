@@ -1,10 +1,10 @@
 ---
-'description': 'System table containing logging entries.'
-'keywords':
+description: 'System table containing logging entries.'
+keywords:
 - 'system table'
 - 'text_log'
-'slug': '/operations/system-tables/text_log'
-'title': 'system.text_log'
+slug: '/operations/system-tables/text_log'
+title: 'system.text_log'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

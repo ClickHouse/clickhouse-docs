@@ -1,14 +1,14 @@
 ---
-'description': 'ClickHouse SQLリファレンスのドキュメント'
-'keywords':
+description: 'ClickHouse SQLリファレンスのドキュメント'
+keywords:
 - 'clickhouse'
 - 'docs'
 - 'sql reference'
 - 'sql statements'
 - 'sql'
 - 'syntax'
-'slug': '/sql-reference'
-'title': 'SQLリファレンス'
+slug: '/sql-reference'
+title: 'SQLリファレンス'
 ---
 
 import { TwoColumnList } from '/src/components/two_column_list'

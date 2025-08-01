@@ -1,7 +1,7 @@
 ---
-'title': 'Cloud API'
-'slug': '/cloud/manage/cloud-api'
-'description': 'クラウドAPIセクションのランディングページ'
+title: 'Cloud API'
+slug: '/cloud/manage/cloud-api'
+description: 'クラウドAPIセクションのランディングページ'
 ---
 
 

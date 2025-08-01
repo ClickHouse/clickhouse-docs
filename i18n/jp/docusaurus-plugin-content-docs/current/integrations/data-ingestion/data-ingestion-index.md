@@ -1,6 +1,6 @@
 ---
-'slug': '/integrations/data-ingestion-overview'
-'keywords':
+slug: '/integrations/data-ingestion-overview'
+keywords:
 - 'Airbyte'
 - 'Apache Spark'
 - 'Spark'
@@ -12,8 +12,8 @@
 - 'NiFi'
 - 'dlt'
 - 'Vector'
-'title': 'データインジェスション'
-'description': 'データインジェスションセクションのトップページ'
+title: 'データインジェスション'
+description: 'データインジェスションセクションのトップページ'
 ---
 
 

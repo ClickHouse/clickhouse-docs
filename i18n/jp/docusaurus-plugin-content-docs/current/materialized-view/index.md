@@ -1,8 +1,8 @@
 ---
-'slug': '/materialized-views'
-'title': 'Materialized View'
-'description': 'Materialized Viewに関するインデックスページ'
-'keywords':
+slug: '/materialized-views'
+title: 'Materialized View'
+description: 'Materialized Viewに関するインデックスページ'
+keywords:
 - 'materialized views'
 - 'speed up queries'
 - 'query optimization'

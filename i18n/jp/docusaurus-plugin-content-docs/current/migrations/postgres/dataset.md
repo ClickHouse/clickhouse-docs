@@ -1,8 +1,8 @@
 ---
-'slug': '/migrations/postgresql/dataset'
-'title': 'データの移行'
-'description': 'PostgreSQLからClickHouseへの移行のためのデータセットの例'
-'keywords':
+slug: '/migrations/postgresql/dataset'
+title: 'データの移行'
+description: 'PostgreSQLからClickHouseへの移行のためのデータセットの例'
+keywords:
 - 'postgres'
 - 'postgresql'
 - 'migrate'

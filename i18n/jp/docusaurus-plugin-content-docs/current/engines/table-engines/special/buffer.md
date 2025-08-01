@@ -1,11 +1,11 @@
 ---
-'description': 'Buffers the data to write in RAM, periodically flushing it to another
+description: 'Buffers the data to write in RAM, periodically flushing it to another
   table. During the read operation, data is read from the buffer and the other table
   simultaneously.'
-'sidebar_label': 'Buffer'
-'sidebar_position': 120
-'slug': '/engines/table-engines/special/buffer'
-'title': 'Buffer Table Engine'
+sidebar_label: 'Buffer'
+sidebar_position: 120
+slug: '/engines/table-engines/special/buffer'
+title: 'Buffer Table Engine'
 ---
 
 

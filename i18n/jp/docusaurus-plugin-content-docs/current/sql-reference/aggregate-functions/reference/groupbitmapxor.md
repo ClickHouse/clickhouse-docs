@@ -1,8 +1,8 @@
 ---
-'description': 'ビットマップ列のXORを計算し、型UInt64の基数を返します。suffix -Stateで使用すると、ビットマップオブジェクトを返します。'
-'sidebar_position': 151
-'slug': '/sql-reference/aggregate-functions/reference/groupbitmapxor'
-'title': 'groupBitmapXor'
+description: 'ビットマップ列のXORを計算し、型UInt64の基数を返します。suffix -Stateで使用すると、ビットマップオブジェクトを返します。'
+sidebar_position: 151
+slug: '/sql-reference/aggregate-functions/reference/groupbitmapxor'
+title: 'groupBitmapXor'
 ---
 
 

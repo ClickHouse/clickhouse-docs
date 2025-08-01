@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'DWARFフォーマットのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'DWARFフォーマットのドキュメント'
+input_format: true
+keywords:
 - 'DWARF'
-'output_format': false
-'slug': '/interfaces/formats/DWARF'
-'title': 'DWARF'
+output_format: false
+slug: '/interfaces/formats/DWARF'
+title: 'DWARF'
 ---
 
 

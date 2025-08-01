@@ -1,10 +1,10 @@
 ---
-'description': 'MergeTree テーブルのデタッチされたパーツに関する情報を含むシステムテーブル'
-'keywords':
+description: 'MergeTree テーブルのデタッチされたパーツに関する情報を含むシステムテーブル'
+keywords:
 - 'system table'
 - 'detached_parts'
-'slug': '/operations/system-tables/detached_parts'
-'title': 'system.detached_parts'
+slug: '/operations/system-tables/detached_parts'
+title: 'system.detached_parts'
 ---
 
 

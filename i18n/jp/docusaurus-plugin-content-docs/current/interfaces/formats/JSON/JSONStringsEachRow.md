@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'JSONStringsEachRow フォーマットのドキュメント'
-'input_format': false
-'keywords':
+alias: []
+description: 'JSONStringsEachRow フォーマットのドキュメント'
+input_format: false
+keywords:
 - 'JSONStringsEachRow'
-'output_format': true
-'slug': '/interfaces/formats/JSONStringsEachRow'
-'title': 'JSONStringsEachRow'
+output_format: true
+slug: '/interfaces/formats/JSONStringsEachRow'
+title: 'JSONStringsEachRow'
 ---
 
 

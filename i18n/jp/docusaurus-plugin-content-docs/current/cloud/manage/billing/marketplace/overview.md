@@ -1,8 +1,8 @@
 ---
-'slug': '/cloud/marketplace/marketplace-billing'
-'title': 'Marketplace Billing'
-'description': 'Subscribe to ClickHouse Cloud through the AWS, GCP, and Azure marketplace.'
-'keywords':
+slug: '/cloud/marketplace/marketplace-billing'
+title: 'Marketplace Billing'
+description: 'Subscribe to ClickHouse Cloud through the AWS, GCP, and Azure marketplace.'
+keywords:
 - 'aws'
 - 'azure'
 - 'gcp'

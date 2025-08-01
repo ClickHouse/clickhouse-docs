@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing licenses of third-party libraries that are
+description: 'System table containing licenses of third-party libraries that are
   located in the contrib directory of ClickHouse sources.'
-'keywords':
+keywords:
 - 'system table'
 - 'licenses'
-'slug': '/operations/system-tables/licenses'
-'title': 'system.licenses'
+slug: '/operations/system-tables/licenses'
+title: 'system.licenses'
 ---
 
 

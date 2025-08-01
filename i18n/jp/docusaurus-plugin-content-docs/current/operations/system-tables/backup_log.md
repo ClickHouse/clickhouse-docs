@@ -1,10 +1,10 @@
 ---
-'description': 'システムテーブルには、`BACKUP`および`RESTORE`操作に関する情報を含むログエントリが含まれています。'
-'keywords':
+description: 'システムテーブルには、`BACKUP`および`RESTORE`操作に関する情報を含むログエントリが含まれています。'
+keywords:
 - 'system table'
 - 'backup_log'
-'slug': '/operations/system-tables/backup_log'
-'title': 'system.backup_log'
+slug: '/operations/system-tables/backup_log'
+title: 'system.backup_log'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

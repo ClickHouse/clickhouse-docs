@@ -1,10 +1,10 @@
 ---
-'description': 'An extension to the iceberg table function which allows processing
+description: 'An extension to the iceberg table function which allows processing
   files from Apache Iceberg in parallel from many nodes in a specified cluster.'
-'sidebar_label': 'icebergCluster'
-'sidebar_position': 91
-'slug': '/sql-reference/table-functions/icebergCluster'
-'title': 'icebergCluster'
+sidebar_label: 'icebergCluster'
+sidebar_position: 91
+slug: '/sql-reference/table-functions/icebergCluster'
+title: 'icebergCluster'
 ---
 
 

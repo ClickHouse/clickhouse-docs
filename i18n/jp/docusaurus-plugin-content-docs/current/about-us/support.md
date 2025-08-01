@@ -1,9 +1,9 @@
 ---
-'slug': '/about-us/support'
-'sidebar_label': 'サポート'
-'title': 'ClickHouseクラウドサポートサービス'
-'sidebar_position': 30
-'description': 'ClickHouseクラウドサポートサービスに関する情報'
+slug: '/about-us/support'
+sidebar_label: 'サポート'
+title: 'ClickHouseクラウドサポートサービス'
+sidebar_position: 30
+description: 'ClickHouseクラウドサポートサービスに関する情報'
 ---
 
 

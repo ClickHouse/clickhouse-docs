@@ -1,10 +1,10 @@
 ---
-'description': '完全な集約関数のリストを備えたランディングページ'
-'sidebar_position': 36
-'slug': '/sql-reference/aggregate-functions/reference/'
-'title': '集約関数'
-'toc_folder_title': 'Reference'
-'toc_hidden': true
+description: '完全な集約関数のリストを備えたランディングページ'
+sidebar_position: 36
+slug: '/sql-reference/aggregate-functions/reference/'
+title: '集約関数'
+toc_folder_title: 'Reference'
+toc_hidden: true
 ---
 
 

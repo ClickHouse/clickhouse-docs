@@ -1,10 +1,10 @@
 ---
-'description': 'ClickHouseユーザーアカウントに付与された特権を示すシステムテーブル。'
-'keywords':
+description: 'ClickHouseユーザーアカウントに付与された特権を示すシステムテーブル。'
+keywords:
 - 'system table'
 - 'grants'
-'slug': '/operations/system-tables/grants'
-'title': 'system.grants'
+slug: '/operations/system-tables/grants'
+title: 'system.grants'
 ---
 
 

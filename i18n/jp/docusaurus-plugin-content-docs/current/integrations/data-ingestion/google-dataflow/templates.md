@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'テンプレート'
-'slug': '/integrations/google-dataflow/templates'
-'sidebar_position': 3
-'description': 'ユーザーは Google Dataflow テンプレートを使用してデータを ClickHouse に取り込むことができます。'
-'title': 'Google Dataflow テンプレート'
+sidebar_label: 'テンプレート'
+slug: '/integrations/google-dataflow/templates'
+sidebar_position: 3
+description: 'ユーザーは Google Dataflow テンプレートを使用してデータを ClickHouse に取り込むことができます。'
+title: 'Google Dataflow テンプレート'
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';

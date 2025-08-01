@@ -1,8 +1,8 @@
 ---
-'slug': '/cloud/security/secure-s3'
-'sidebar_label': 'Amazon Simple Storage Service(S3) データの安全なアクセス'
-'title': 'Amazon Simple Storage Service(S3) データの安全なアクセス'
-'description': 'この記事では、ClickHouse Cloud の顧客が、Amazon Simple Storage Service(S3) と認証するためにロールベースのアクセスを活用してデータに安全にアクセスする方法を示しています。'
+slug: '/cloud/security/secure-s3'
+sidebar_label: 'Amazon Simple Storage Service(S3) データの安全なアクセス'
+title: 'Amazon Simple Storage Service(S3) データの安全なアクセス'
+description: 'この記事では、ClickHouse Cloud の顧客が、Amazon Simple Storage Service(S3) と認証するためにロールベースのアクセスを活用してデータに安全にアクセスする方法を示しています。'
 ---
 
 import Image from '@theme/IdealImage';

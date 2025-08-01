@@ -1,10 +1,10 @@
 ---
-'title': 'ClickHouse における JOIN の使用方法'
-'description': 'ClickHouse でのテーブルの結合方法'
-'keywords':
+title: 'ClickHouse における JOIN の使用方法'
+description: 'ClickHouse でのテーブルの結合方法'
+keywords:
 - 'joins'
 - 'join tables'
-'slug': '/guides/joining-tables'
+slug: '/guides/joining-tables'
 ---
 
 import Image from '@theme/IdealImage';

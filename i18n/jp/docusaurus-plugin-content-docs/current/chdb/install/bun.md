@@ -1,9 +1,9 @@
 ---
-'title': 'Bun 用の chDB のインストール'
-'sidebar_label': 'Bun'
-'slug': '/chdb/install/bun'
-'description': 'Bun 用の chDB のインストール方法'
-'keywords':
+title: 'Bun 用の chDB のインストール'
+sidebar_label: 'Bun'
+slug: '/chdb/install/bun'
+description: 'Bun 用の chDB のインストール方法'
+keywords:
 - 'chdb'
 - 'embedded'
 - 'clickhouse-lite'

@@ -1,9 +1,9 @@
 ---
-'description': 'Log Engine Familyのドキュメント'
-'sidebar_label': 'ログファミリー'
-'sidebar_position': 20
-'slug': '/engines/table-engines/log-family/'
-'title': 'Log Engine Family'
+description: 'Log Engine Familyのドキュメント'
+sidebar_label: 'ログファミリー'
+sidebar_position: 20
+slug: '/engines/table-engines/log-family/'
+title: 'Log Engine Family'
 ---
 
 

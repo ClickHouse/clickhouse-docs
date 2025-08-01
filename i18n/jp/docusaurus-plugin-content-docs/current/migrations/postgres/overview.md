@@ -1,8 +1,8 @@
 ---
-'slug': '/migrations/postgresql/overview'
-'title': 'PostgreSQLからClickHouseへの移行'
-'description': 'PostgreSQLからClickHouseへの移行に関するガイド'
-'keywords':
+slug: '/migrations/postgresql/overview'
+title: 'PostgreSQLからClickHouseへの移行'
+description: 'PostgreSQLからClickHouseへの移行に関するガイド'
+keywords:
 - 'postgres'
 - 'postgresql'
 - 'migrate'

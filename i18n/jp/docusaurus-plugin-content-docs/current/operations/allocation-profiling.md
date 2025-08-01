@@ -1,8 +1,8 @@
 ---
-'description': 'ClickHouse における割り当てプロファイリングに関するページ'
-'sidebar_label': 'アロケーションプロファイリング'
-'slug': '/operations/allocation-profiling'
-'title': 'Allocation profiling'
+description: 'ClickHouse における割り当てプロファイリングに関するページ'
+sidebar_label: 'アロケーションプロファイリング'
+slug: '/operations/allocation-profiling'
+title: 'Allocation profiling'
 ---
 
 import Tabs from '@theme/Tabs';

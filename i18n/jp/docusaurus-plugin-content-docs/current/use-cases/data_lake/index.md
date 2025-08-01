@@ -1,9 +1,9 @@
 ---
-'description': 'データレイクユースケースガイドのランディングページ'
-'pagination_prev': null
-'pagination_next': null
-'slug': '/use-cases/data-lake'
-'title': 'データレイク'
+description: 'データレイクユースケースガイドのランディングページ'
+pagination_prev: null
+pagination_next: null
+slug: '/use-cases/data-lake'
+title: 'データレイク'
 ---
 
 
