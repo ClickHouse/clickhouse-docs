@@ -1,5 +1,5 @@
 ---
-title: 'ClickPipes for MongoDB: Supported data types'
+title: 'Supported data types'
 slug: /integrations/clickpipes/mongodb/datatypes
 description: 'Page describing MongoDB ClickPipe datatype mapping from MongoDB to ClickHouse'
 ---
@@ -18,10 +18,10 @@ MongoDB stores data records as BSON documents. In ClickPipes, you can configure 
 | Regular Expression       | \{Options: String, Pattern: String\}   | MongoDB regex with fixed fields: Options (regex flags) and Pattern (regex pattern) |
 | Timestamp                | \{T: Int64, I: Int64\}                 | MongoDB internal timestamp format with fixed fields: T (timestamp) and I (increment) |
 | Decimal128               | String                                 |                          |
-| Binary data              | \{Data: String, Subtype: Int64\}       | MongoDB binary data with fixed fields: Data (base64-encoded string) and Subtype (binary data type, see [MongoDB documentation](https://www.mongodb.com/docs/manual/reference/bson-types/#binary-data).) |
+| Binary data              | \{Data: String, Subtype: Int64\}       | MongoDB binary data with fixed fields: Data (base64-encoded) and Subtype ([type of binary](https://www.mongodb.com/docs/manual/reference/bson-types/#binary-data)) |
 | JavaScript               | String                                 |                          |
 | Null                     | Null                                   |                          |
-| Array                    | Dynamic                                | Arrays with homogeneous types become Array(Nullable(T)). Arrays with mixed primitive types are promoted to the most general common type. Arrays with complex incompatible types become Tuples |
+| Array                    | Dynamic                                | Arrays with homogeneous types become Array(Nullable(T)); arrays with mixed primitive types are promoted to the most general common type; arrays with complex incompatible types become Tuples |
 | Object                   | Dynamic                                | Each nested field is mapped recursively |
 
 :::info
