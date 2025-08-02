@@ -3373,7 +3373,7 @@
     },
     {
       "source": "/docs/manage/troubleshooting-billing-issues",
-      "destination": "/docs/manage/clickHouse-cloud-billing-compliance",
+      "destination": "/docs/manage/clickhouse-cloud-billing-compliance",
       "permanent": true
     }
   ]
