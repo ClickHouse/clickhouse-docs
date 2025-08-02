@@ -47,7 +47,7 @@ Unlike other databases, ClickHouse keeps data writes lightweight and efficient b
 
 - **Aggregating merges** which combine intermediate aggregation states in the input part to a new aggregation state. While this seems difficult to understand, it really actually only implements an incremental aggregation.
 
-- **TTL (time-to-live) merges** compress, move, or delete rows based on certain time-based rules.
+- **^^TTL^^ (time-to-live) merges** compress, move, or delete rows based on certain time-based rules.
 
 The point of these transformations is to shift work (computation) from the time user queries run to merge time. This is important for two reasons:
 
@@ -63,9 +63,9 @@ On the other hand, the majority of the runtime of merges is consumed by loading 
 
 In practice, many queries are repetitive, i.e., run unchanged or only with slight modifications (e.g. different parameter values) in periodic intervals. Running the same or similar queries again and again allows adding indexes or re-organize the data in a way that frequent queries can access it faster. This approach is also known as "data pruning" and ClickHouse provides three techniques for that:
 
-1. [Primary key indexes](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design) which define the sort order of the table data. A well-chosen primary key allows to evaluate filters (like the WHERE clauses in the above query) using fast binary searches instead of full-column scans. In more technical terms, the runtime of scans becomes logarithmic instead of linear in the data size.
+1. [Primary key indexes](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design) which define the sort order of the table data. A well-chosen ^^primary key^^ allows to evaluate filters (like the WHERE clauses in the above query) using fast binary searches instead of full-column scans. In more technical terms, the runtime of scans becomes logarithmic instead of linear in the data size.
 
-2. [Table projections](/sql-reference/statements/alter/projection) as alternative, internal versions of a table, storing the same data but sorted by a different primary key. Projections can be useful when there is more than one frequent filter condition.
+2. [Table projections](/sql-reference/statements/alter/projection) as alternative, internal versions of a table, storing the same data but sorted by a different ^^primary key^^. Projections can be useful when there is more than one frequent filter condition.
 
 3. [Skipping indexes](/optimize/skipping-indexes) that embed additional data statistics into columns, e.g. the minimum and maximum column value, the set of unique values, etc. Skipping indexes are orthogonal to primary keys and table projections, and depending on the data distribution in the column, they can greatly speed up the evaluation of filters.
 

@@ -3,7 +3,6 @@ const { visit } = require('unist-util-visit');
 const fs = require('fs');
 const path = require('path');
 
-// Cache glossary terms globally
 let cachedGlossary = null;
 let glossaryModTime = null;
 
@@ -36,7 +35,7 @@ function createGlossaryTransformer(options = {}) {
       const glossaryMap = new Map();
       
       Object.entries(glossaryData).forEach(([term, definition]) => {
-        glossaryMap.set(term.toLowerCase(), { originalTerm: term, definition });
+        glossaryMap.set(term.toLowerCase(), definition);
       });
       
       cachedGlossary = glossaryMap;
@@ -84,7 +83,6 @@ function createGlossaryTransformer(options = {}) {
         const cleanTerm = term.trim();
         const cleanPlural = plural.trim();
         
-        // Add text before match
         if (match.index > lastIndex) {
           newNodes.push({
             type: 'text',
@@ -92,20 +90,17 @@ function createGlossaryTransformer(options = {}) {
           });
         }
         
-        // Get original term from glossary or use as-is
-        const glossaryEntry = glossary.get(cleanTerm.toLowerCase());
-        const originalTerm = glossaryEntry?.originalTerm || cleanTerm;
+        const definition = glossary.get(cleanTerm.toLowerCase());
         
-        if (!glossaryEntry && config.validateTerms) {
+        if (!definition && config.validateTerms) {
           console.warn(`Glossary term not found: ${cleanTerm}`);
         }
         
-        // Create MDX JSX element
         newNodes.push({
           type: 'mdxJsxTextElement',
           name: 'GlossaryTooltip',
           attributes: [
-            { type: 'mdxJsxAttribute', name: 'term', value: originalTerm },
+            { type: 'mdxJsxAttribute', name: 'term', value: cleanTerm },
             { type: 'mdxJsxAttribute', name: 'plural', value: cleanPlural }
           ],
           children: []
@@ -114,8 +109,7 @@ function createGlossaryTransformer(options = {}) {
         transformCount++;
         lastIndex = match.index + fullMatch.length;
       }
-      
-      // Add remaining text
+
       if (lastIndex < node.value.length) {
         newNodes.push({
           type: 'text',
@@ -123,7 +117,6 @@ function createGlossaryTransformer(options = {}) {
         });
       }
       
-      // Replace node if we made changes
       if (newNodes.length > 0) {
         parent.children.splice(index, 1, ...newNodes);
       }

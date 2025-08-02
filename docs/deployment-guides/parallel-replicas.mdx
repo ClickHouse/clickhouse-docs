@@ -32,27 +32,27 @@ multiple replicas for its execution.
 
 In a shared-nothing architecture, clusters are commonly split into
 multiple shards, with each ^^shard^^ containing a subset of the overall data. A
-distributed table sits on top of these shards, providing a unified view of the
+^^distributed table^^ sits on top of these shards, providing a unified view of the
 complete data.
 
 Reads can be sent to the local table. Query execution will occur only
-on the specified ^^shard^^, or it can be sent to the distributed table, and in that
+on the specified ^^shard^^, or it can be sent to the ^^distributed table^^, and in that
 case, each ^^shard^^ will execute the given queries. The server where the distributed
 table was queried will aggregate the data and respond to the client:
 
 <Image img={image_1} size="md" alt="sharded archtiecture" />
 
-The figure above visualizes what happens when a client queries a distributed table:
+The figure above visualizes what happens when a client queries a ^^distributed table^^:
 
 <ol className="docs-ordered-list">
     <li>
-        The select query is sent to a distributed table on a node arbitrarily 
+        The select query is sent to a ^^distributed table^^ on a node arbitrarily 
         (via a round-robin strategy or after being routed to a specific server 
         by a load balancer). This node is now going to act as a coordinator.
     </li>
     <li>
         The node will locate each ^^shard^^ that needs to execute the query
-        via the information specified by the distributed table, and the query is
+        via the information specified by the ^^distributed table^^, and the query is
         sent to each ^^shard^^.
     </li>
     <li>
