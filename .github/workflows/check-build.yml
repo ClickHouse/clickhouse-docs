@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        check_type: [spellcheck, kbcheck, md-lint]
+        check_type: [spellcheck, kbcheck, md-lint, glossary-check]
     steps:
       # Add setup steps per check here
       - uses: actions/checkout@v4
@@ -24,7 +24,7 @@ jobs:
         if: matrix.check_type == 'spellcheck'
         run: sudo apt-get update && sudo apt-get install -y aspell aspell-en
       - name: Set up Python
-        if: matrix.check_type == 'kbcheck'
+        if: matrix.check_type == 'kbcheck' || matrix.check_type == 'glossary-check'
         run: |
           curl -Ls https://astral.sh/uv/install.sh | sh
           uv clean
@@ -39,31 +39,25 @@ jobs:
         run: yarn add -D markdownlint-cli2
 
       # Run the checks here
-      - name: Run checks
-        id: check_step
-        run: |
-          if [[ "${{ matrix.check_type }}" == "spellcheck" ]]; then
-            yarn check-spelling
-          exit_code=$?
-          elif [[ "${{ matrix.check_type }}" == "kbcheck" ]]; then
-            yarn check-kb
-          exit_code=$?
-          elif [[ "${{ matrix.check_type }}" == "md-lint" ]]; then
-            yarn check-markdown
-          exit_code=$?
-          fi
-          
-          if [[ $exit_code -ne 0 ]]; then
-            echo "::error::${{ matrix.check_type }} check failed. See logs for details."
-            exit 1
-          fi
+      - name: Run spellcheck
+        if: matrix.check_type == 'spellcheck'
+        run: yarn check-spelling
 
-      - name: Set check status
-        if: steps.check_step.outcome != 'success'
-        uses: actions/github-script@v6
-        with:
-          script: |
-            core.setFailed('${{ matrix.check_type }} check failed.');
+      - name: Run KB check  
+        if: matrix.check_type == 'kbcheck'
+        run: yarn check-kb
+
+      - name: Run markdown lint
+        if: matrix.check_type == 'md-lint' 
+        run: yarn check-markdown
+
+      - name: Run glossary check
+        if: matrix.check_type == 'glossary-check'
+        run: |
+          echo "Extracting glossary from markdown..."
+          python3 scripts/glossary/extract-glossary-terms.py
+          echo "Checking glossary coverage..."
+          python3 scripts/glossary/wrap-glossary-terms.py --check || echo "::warning::Glossary check found unwrapped terms (non-blocking)"
           
   check_overall_status:
     needs: stylecheck
@@ -75,4 +69,3 @@ jobs:
         run: |
           echo "::error::One or more checks of the style check failed."
           exit 1
-          

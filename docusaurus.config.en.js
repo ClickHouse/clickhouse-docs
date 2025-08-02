@@ -13,6 +13,7 @@ const frontmatterValidator = require('./plugins/frontmatter-validation/frontmatt
 import pluginLlmsTxt from './plugins/llms-txt-plugin.ts'
 import prismLight from "./src/utils/prismLight";
 import prismDark from "./src/utils/prismDark";
+import glossaryTransformer from "./plugins/glossary-transformer.js";
 
 // Helper function to skip over index.md files.
 function skipIndex(items) {
@@ -151,7 +152,7 @@ const config = {
           showLastUpdateTime: false,
           sidebarCollapsed: true,
           routeBasePath: "/",
-          remarkPlugins: [math, remarkCustomBlocks],
+          remarkPlugins: [math, remarkCustomBlocks, glossaryTransformer],
           beforeDefaultRemarkPlugins: [fixLinks],
           rehypePlugins: [katex],
         },
