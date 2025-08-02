@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'ClickHouse Cloud billing compliance'
-slug: /manage/clickHouse-cloud-billing-compliance
+slug: /manage/clickhouse-cloud-billing-compliance
 title: 'ClickHouse Cloud billing compliance'
 description: 'Page describing ClickHouse Cloud billing compliance'
 keywords: ['billing compliance', 'pay-as-you-go']
