@@ -43,7 +43,7 @@ Join the waitlist by filling out the form at [clickhouse.ai](https://www.clickho
 2. Copy the URL of the ClickHouse Cloud MCP Server from the `Connect` view or below
 
 ```bash 
-https://mcp.clickhouse.com/mcp
+https://mcp.clickhouse.cloud/mcp
 ```
 
 ## Add the ClickHouse MCP Server in Claude Code {#add-clickhouse-mcp-server-claude-code}
@@ -51,7 +51,7 @@ https://mcp.clickhouse.com/mcp
 1. In your working directory, run the following command to add the ClickHouse Cloud MCP Server configuration to Claude Code. In this example, we named the MCP server in the Claude Code config `clickhouse_cloud`
 
 ```bash
-claude mcp add --transport http clickhouse_cloud https://mcp.clickhouse.com/mcp
+claude mcp add --transport http clickhouse_cloud https://mcp.clickhouse.cloud/mcp
 ```
 
 1b. Depending on the MCP Client used, you can also edit the JSON config directly
@@ -60,7 +60,7 @@ claude mcp add --transport http clickhouse_cloud https://mcp.clickhouse.com/mcp
 {
   "mcpServers": {
     "clickhouse-remote": {
-      "url": "https://mcp.clickhouse.com/mcp"
+      "url": "https://mcp.clickhouse.cloud/mcp"
     }
   }
 }
