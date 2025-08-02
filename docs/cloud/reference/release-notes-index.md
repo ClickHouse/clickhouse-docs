@@ -2,6 +2,7 @@
 slug: /cloud/reference/changelogs/release-notes
 title: 'Cloud Release Notes'
 description: 'Landing page for Cloud release notes'
+keywords: [clickhouse cloud release notes, cloud releases, version updates, release history]
 ---
 
 <!-- The table of contents below is generated automatically from YAML front matter

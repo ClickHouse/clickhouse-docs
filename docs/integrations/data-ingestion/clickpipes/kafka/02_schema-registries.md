@@ -4,6 +4,7 @@ description: 'Information on schema registries for Kafka ClickPipe'
 slug: /integrations/clickpipes/kafka/schema-registries
 sidebar_position: 1
 title: 'Schema registries for Kafka ClickPipe'
+keywords: ['schema registries', 'kafka', 'clickpipes', 'avro', 'confluent']
 ---
 
 # Schema registries {#schema-registries}

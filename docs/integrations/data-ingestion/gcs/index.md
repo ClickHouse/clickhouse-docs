@@ -4,6 +4,7 @@ sidebar_position: 4
 slug: /integrations/gcs
 description: 'Google Cloud Storage (GCS) Backed MergeTree'
 title: 'Integrate Google Cloud Storage with ClickHouse'
+keywords: [gcs, google cloud storage, object storage, mergetree, storage policy, disk configuration, replication, s3 api, cloud storage]
 ---
 
 import BucketDetails from '@site/docs/_snippets/_GCS_authentication_and_bucket.md';

@@ -4,6 +4,7 @@ sidebar_label: 'ClickHouse to ClickHouse Cloud'
 slug: /cloud/migration/clickhouse-to-cloud
 title: 'Migrating between self-managed ClickHouse and ClickHouse Cloud'
 description: 'Page describing how to migrate between self-managed ClickHouse and ClickHouse Cloud'
+keywords: [migration, clickhouse cloud, self-managed, remote secure, data migration, table migration, user management, ip access list]
 ---
 
 import Image from '@theme/IdealImage';

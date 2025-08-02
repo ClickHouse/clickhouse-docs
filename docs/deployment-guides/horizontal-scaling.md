@@ -4,6 +4,7 @@ sidebar_label: 'Scaling out'
 sidebar_position: 10
 title: 'Scaling out'
 description: 'Page describing an example architecture designed to provide scalability'
+keywords: ['horizontal scaling', 'sharding', 'distributed table', 'ClickHouse Keeper', 'cluster configuration']
 ---
 
 import Image from '@theme/IdealImage';

@@ -5,6 +5,7 @@ slug: /whats-new/changelog/
 sidebar_position: 2
 sidebar_label: '2025'
 title: '2025 Changelog'
+keywords: ['ClickHouse 2025', 'changelog 2025', 'latest releases', 'new features', 'recent updates']
 ---
 
 ### Table of Contents

@@ -3,6 +3,7 @@ sidebar_label: 'Cloud Authentication'
 slug: /cloud/security/cloud-authentication
 title: 'Cloud Authentication'
 description: 'This guide explains some good practices for configuring your authentication.'
+keywords: [ClickHouse Cloud, authentication, password security, MFA, multi-factor authentication, SSO, single sign-on, Google authentication, Microsoft authentication, SAML, account recovery, NIST compliance, SHA256 hash]
 ---
 
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'

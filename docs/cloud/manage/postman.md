@@ -3,6 +3,7 @@ slug: /cloud/manage/postman
 sidebar_label: 'Programmatic API access with Postman'
 title: 'Programmatic API access with Postman'
 description: 'This guide will help you test the ClickHouse Cloud API using Postman'
+keywords: ['ClickHouse Cloud', 'Postman', 'API testing', 'cloud API', 'REST API']
 ---
 
 import Image from '@theme/IdealImage';

@@ -4,6 +4,7 @@ title: 'Deployment Options'
 pagination_prev: null
 pagination_next: null
 description: 'Deploying ClickStack - The ClickHouse Observability Stack'
+keywords: [clickstack, observability, deployment, options, docker, helm, kubernetes, docker-compose, hyperdx, clickhouse, all-in-one, local-mode, production, monitoring]
 ---
 
 ClickStack provides multiple deployment options to suit various use cases.

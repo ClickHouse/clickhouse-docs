@@ -4,6 +4,7 @@ description: 'Details best practices to follow when working with Kafka ClickPipe
 slug: /integrations/clickpipes/kafka/best-practices
 sidebar_position: 1
 title: 'Best practices'
+keywords: ['kafka best practices', 'clickpipes', 'compression', 'authentication', 'scaling']
 ---
 
 # Best practices {#best-practices}

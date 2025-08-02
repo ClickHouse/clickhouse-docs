@@ -3,6 +3,7 @@ sidebar_label: 'Privacy and Compliance Overview'
 slug: /cloud/security/privacy-compliance-overview
 title: 'Privacy and Compliance'
 description: 'Landing page for privacy and compliance'
+keywords: [ClickHouse Cloud, privacy, compliance, security reports, personal data access, GDPR, CCPA, data protection, privacy policy]
 ---
 
 # Privacy and compliance

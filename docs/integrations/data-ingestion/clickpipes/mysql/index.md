@@ -3,6 +3,7 @@ sidebar_label: 'Ingesting Data from MySQL to ClickHouse'
 description: 'Describes how to seamlessly connect your MySQL to ClickHouse Cloud.'
 slug: /integrations/clickpipes/mysql
 title: 'Ingesting data from MySQL to ClickHouse (using CDC)'
+keywords: ['MySQL', 'ClickPipes', 'CDC', 'change data capture', 'database replication']
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';

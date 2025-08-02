@@ -5,6 +5,7 @@ sidebar_position: 0
 pagination_prev: null
 pagination_next: null
 description: 'Getting started with ClickStack and a sample dataset with logs, sessions, traces and metrics'
+keywords: [clickstack, observability, sample-data, logs, traces, metrics, sessions, opentelemetry-demo, e-commerce, session-replay, getting-started, tutorial]
 ---
 
 import Image from '@theme/IdealImage';

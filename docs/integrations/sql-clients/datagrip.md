@@ -3,6 +3,7 @@ sidebar_label: 'DataGrip'
 slug: /integrations/datagrip
 description: 'DataGrip is a database IDE that supports ClickHouse out of the box.'
 title: 'Connecting DataGrip to ClickHouse'
+keywords: ['DataGrip', 'database IDE', 'JetBrains', 'SQL client', 'integrated development environment']
 ---
 
 import Image from '@theme/IdealImage';

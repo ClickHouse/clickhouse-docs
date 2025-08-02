@@ -3,6 +3,7 @@ slug: /native-protocol/hash
 sidebar_position: 5
 title: 'CityHash'
 description: 'Native protocol hash'
+keywords: ['CityHash', 'native protocol hash', 'hash function', 'Google CityHash', 'protocol hashing']
 ---
 
 # CityHash

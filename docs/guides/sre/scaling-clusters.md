@@ -4,6 +4,7 @@ sidebar_label: 'Rebalancing Shards'
 sidebar_position: 20
 description: 'ClickHouse does not support automatic shard rebalancing, so we provide some best practices for how to rebalance shards.'
 title: 'Rebalancing Data'
+keywords: ['scaling clusters', 'shard rebalancing', 'cluster management', 'data rebalancing', 'SRE guide']
 ---
 
 # Rebalancing data

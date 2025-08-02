@@ -5,6 +5,7 @@ pagination_prev: null
 pagination_next: null
 sidebar_position: 1
 description: 'Deploying ClickStack with Helm - The ClickHouse Observability Stack'
+keywords: [clickstack, observability, helm, kubernetes, k8s, hyperdx, clickhouse, opentelemetry, otel, mongodb, deployment, monitoring, traces, logs, metrics, production, charts]
 ---
 
 import Image from '@theme/IdealImage';

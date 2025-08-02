@@ -3,6 +3,7 @@ slug: /whats-new/cloud-compatibility
 sidebar_label: 'Cloud Compatibility'
 title: 'Cloud Compatibility'
 description: 'This guide provides an overview of what to expect functionally and operationally in ClickHouse Cloud.'
+keywords: [clickhouse cloud compatibility, cloud architecture, compute storage separation, auto scaling, hibernation]
 ---
 
 # ClickHouse Cloud compatibility guide

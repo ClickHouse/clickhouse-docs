@@ -5,6 +5,7 @@ slug: /integrations/vector
 description: 'How to tail a log file into ClickHouse using Vector'
 title: 'Integrating Vector with ClickHouse'
 show_related_blogs: true
+keywords: ['vector', 'log processing', 'nginx logs', 'materialized views', 'data pipeline']
 ---
 
 import Image from '@theme/IdealImage';

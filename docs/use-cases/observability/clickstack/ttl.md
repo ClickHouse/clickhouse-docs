@@ -5,6 +5,7 @@ sidebar_label: 'Managing TTL'
 pagination_prev: null
 pagination_next: null
 description: 'Managing TTL with ClickStack'
+keywords: [clickstack, observability, ttl, time-to-live, data-retention, partitioning, mergetree, storage-management, data-lifecycle, column-ttl, clickhouse]
 ---
 
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';

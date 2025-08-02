@@ -3,6 +3,7 @@ title: 'Pausing and Resuming a MySQL ClickPipe'
 description: 'Pausing and Resuming a MySQL ClickPipe'
 sidebar_label: 'Pause Table'
 slug: /integrations/clickpipes/mysql/pause_and_resume
+keywords: ['mysql pause', 'mysql resume', 'clickpipes', 'pause table', 'cdc control']
 ---
 
 import Image from '@theme/IdealImage';

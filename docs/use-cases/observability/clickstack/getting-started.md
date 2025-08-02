@@ -5,6 +5,7 @@ sidebar_label: 'Getting Started'
 pagination_prev: null
 pagination_next: use-cases/observability/clickstack/example-datasets/index
 description: 'Getting started with ClickStack - The ClickHouse Observability Stack'
+keywords: ['ClickStack', 'getting started', 'Docker deployment', 'HyperDX UI', 'ClickHouse Cloud', 'local deployment']
 ---
 
 import Image from '@theme/IdealImage';

@@ -5,6 +5,7 @@ sidebar_label: 'Overview'
 pagination_prev: null
 pagination_next: use-cases/observability/clickstack/getting-started
 description: 'Overview for ClickStack - The ClickHouse Observability Stack'
+keywords: ['ClickStack', 'observability platform', 'HyperDX', 'OpenTelemetry collector', 'high-performance', 'JSON support']
 ---
 
 import Image from '@theme/IdealImage';

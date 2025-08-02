@@ -4,6 +4,7 @@ slug: /integrations/dbt
 sidebar_position: 1
 description: 'Users can transform and model their data in ClickHouse using dbt'
 title: 'Integrating dbt and ClickHouse'
+keywords: ['dbt', 'data transformation', 'analytics engineering', 'SQL modeling', 'ELT pipeline']
 ---
 
 import TOCInline from '@theme/TOCInline';

@@ -4,6 +4,7 @@ title: 'Build Your Own Observability Stack'
 pagination_prev: null
 pagination_next: null
 description: 'Landing page building your own observability stack'
+keywords: ['observability', 'custom stack', 'build your own', 'logs', 'traces', 'metrics', 'OpenTelemetry']
 ---
 
 This guide helps you build a custom observability stack using ClickHouse as the foundation. Learn how to design, implement, and optimize your observability solution for logs, metrics, and traces, with practical examples and best practices.

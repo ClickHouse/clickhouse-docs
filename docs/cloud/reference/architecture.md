@@ -3,6 +3,7 @@ sidebar_label: 'Architecture'
 slug: /cloud/reference/architecture
 title: 'ClickHouse Cloud Architecture'
 description: 'This page describes the architecture of ClickHouse Cloud'
+keywords: ['ClickHouse Cloud', 'cloud architecture', 'system architecture', 'cloud infrastructure', 'scalable architecture']
 ---
 
 import Architecture from '@site/static/images/cloud/reference/architecture.svg';

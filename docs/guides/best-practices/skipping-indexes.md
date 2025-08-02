@@ -4,6 +4,7 @@ sidebar_label: 'Data Skipping Indexes'
 sidebar_position: 2
 description: 'Skip indexes enable ClickHouse to skip reading significant chunks of data that are guaranteed to have no matching values.'
 title: 'Understanding ClickHouse Data Skipping Indexes'
+keywords: ['data skipping indexes', 'skip indexes', 'query optimization', 'indexing strategy', 'performance optimization']
 ---
 
 import simple_skip from '@site/static/images/guides/best-practices/simple_skip.png';

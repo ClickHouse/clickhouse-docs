@@ -2,6 +2,7 @@
 slug: /cloud/reference/changelogs
 title: 'Changelogs'
 description: 'Landing page for Cloud changelogs'
+keywords: [clickhouse cloud changelog, cloud release notes, cloud updates, version history]
 ---
 
 | Page                                                          | Description                                     |

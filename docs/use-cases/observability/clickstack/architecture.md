@@ -4,6 +4,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Architecture of ClickStack - The ClickHouse Observability Stack'
 title: 'Architecture'
+keywords: ['ClickStack architecture', 'observability architecture', 'HyperDX', 'OpenTelemetry collector', 'MongoDB', 'system design']
 ---
 
 import Image from '@theme/IdealImage';

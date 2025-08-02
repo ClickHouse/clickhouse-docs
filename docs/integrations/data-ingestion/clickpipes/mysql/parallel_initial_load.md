@@ -3,6 +3,7 @@ title: 'Parallel Snapshot In The MySQL ClickPipe'
 description: 'Doc for explaining parallel snapshot in the MySQL ClickPipe'
 slug: /integrations/data-ingestion/clickpipes/mysql/parallel_initial_load
 sidebar_label: 'How parallel snapshot works'
+keywords: [clickpipes, mysql, parallel snapshot, initial load, partition key, parallelism, performance optimization, mysql connector]
 ---
 
 import snapshot_params from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/snapshot_params.png'

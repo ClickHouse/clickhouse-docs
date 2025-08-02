@@ -4,6 +4,7 @@ description: 'Frequently asked questions about ClickPipes for Postgres.'
 slug: /integrations/clickpipes/postgres/faq
 sidebar_position: 2
 title: 'ClickPipes for Postgres FAQ'
+keywords: ['postgres faq', 'clickpipes', 'toast columns', 'replication slot', 'publications']
 ---
 
 # ClickPipes for Postgres FAQ

@@ -3,6 +3,7 @@ sidebar_label: 'Private link overview'
 slug: /cloud/security/private-link-overview
 title: 'Private link overview'
 description: 'Landing page for private link'
+keywords: [ClickHouse Cloud, private link, private networking, AWS PrivateLink, GCP Private Service Connect, Azure Private Link, VPC, network security, secure connections]
 ---
 
 # Private link overview

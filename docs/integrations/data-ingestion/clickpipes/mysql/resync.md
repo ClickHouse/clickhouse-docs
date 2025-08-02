@@ -3,6 +3,7 @@ title: 'Resyncing a Database ClickPipe'
 description: 'Doc for resyncing a database ClickPipe'
 slug: /integrations/clickpipes/mysql/resync
 sidebar_label: 'Resync ClickPipe'
+keywords: [clickpipes, mysql, resync, database resync, schema changes, initial load, mysql connector, table refresh]
 ---
 
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'

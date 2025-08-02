@@ -5,6 +5,7 @@ sidebar_position: 1
 pagination_prev: null
 pagination_next: null
 description: 'Getting started with ClickStack local and system data and metrics'
+keywords: [clickstack, observability, local-data, system-logs, system-metrics, opentelemetry, otel, hostmetrics, filelog, collector, macos, linux, tutorial]
 ---
 
 import Image from '@theme/IdealImage';

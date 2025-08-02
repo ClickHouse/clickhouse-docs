@@ -5,6 +5,7 @@ pagination_prev: null
 pagination_next: null
 sidebar_position: 2
 description: 'Deploying ClickStack with Docker Compose - The ClickHouse Observability Stack'
+keywords: [clickstack, observability, docker-compose, docker, hyperdx, clickhouse, opentelemetry, otel, mongodb, deployment, monitoring, traces, logs, metrics, containers, orchestration]
 ---
 
 import Image from '@theme/IdealImage';

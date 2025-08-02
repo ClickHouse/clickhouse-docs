@@ -2,6 +2,7 @@
 title: 'Troubleshooting'
 description: 'Installation troubleshooting guide'
 slug: /guides/troubleshooting
+keywords: ['troubleshooting', 'installation issues', 'debugging guide', 'common problems', 'technical support']
 ---
 
 ## Installation {#installation}

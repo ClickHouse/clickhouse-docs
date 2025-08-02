@@ -4,6 +4,7 @@ description: 'A benchmark dataset used for comparing the performance of data war
 sidebar_label: 'AMPLab Big Data Benchmark'
 slug: /getting-started/example-datasets/amplab-benchmark
 title: 'AMPLab Big Data Benchmark'
+keywords: ['AMPLab benchmark', 'big data benchmark', 'data warehousing performance', 'benchmark dataset', 'getting started']
 ---
 
 See https://amplab.cs.berkeley.edu/benchmark/

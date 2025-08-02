@@ -5,6 +5,7 @@ pagination_prev: null
 pagination_next: null
 sidebar_position: 4
 description: 'Deploying HyperDX only'
+keywords: [clickstack, observability, hyperdx, clickhouse, mongodb, deployment, monitoring, visualization, dashboard, existing-clickhouse, custom-pipelines, docker]
 ---
 
 import Image from '@theme/IdealImage';

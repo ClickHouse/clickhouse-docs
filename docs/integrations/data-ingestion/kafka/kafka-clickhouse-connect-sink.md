@@ -4,6 +4,7 @@ sidebar_position: 2
 slug: /integrations/kafka/clickhouse-kafka-connect-sink
 description: 'The official Kafka connector from ClickHouse.'
 title: 'ClickHouse Kafka Connect Sink'
+keywords: [kafka connect, clickhouse sink connector, exactly once semantics, keepermap, data streaming, schema support, avro, protobuf, json]
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

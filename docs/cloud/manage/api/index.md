@@ -2,6 +2,7 @@
 title: 'Cloud API'
 slug: /cloud/manage/cloud-api
 description: 'Landing page for the Cloud API section'
+keywords: ['ClickHouse Cloud', 'cloud API', 'API documentation', 'REST API reference', 'cloud management API']
 ---
 
 This section contains reference documentation for Cloud API and contains the following pages:

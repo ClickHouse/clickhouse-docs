@@ -4,6 +4,7 @@ title: 'Migrations'
 pagination_prev: null
 pagination_next: null
 description: 'Landing page for the migrations section'
+keywords: ['database migration', 'ClickHouse migration', 'data migration guides', 'migration tools', 'database conversion']
 ---
 
 | Page                                                                   | Description                                     |

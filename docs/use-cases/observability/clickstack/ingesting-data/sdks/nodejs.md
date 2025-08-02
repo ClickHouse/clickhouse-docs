@@ -5,6 +5,7 @@ pagination_next: null
 sidebar_position: 5
 description: 'Node.js SDK for ClickStack - The ClickHouse Observability Stack'
 title: 'Node.js'
+keywords: [clickstack, nodejs, opentelemetry, traces, auto-instrumentation]
 ---
 
 import Tabs from '@theme/Tabs';

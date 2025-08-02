@@ -6,6 +6,7 @@ sidebar_label: 'UK Property Prices'
 sidebar_position: 1
 slug: /getting-started/example-datasets/uk-price-paid
 title: 'The UK property prices dataset'
+keywords: ['UK property prices', 'real estate data', 'projections tutorial', 'example dataset', 'getting started']
 ---
 
 This data contains prices paid for real-estate property in England and Wales. The data is available since 1995, and the size of the dataset in uncompressed form is about 4 GiB (which will only take about 278 MiB in ClickHouse).

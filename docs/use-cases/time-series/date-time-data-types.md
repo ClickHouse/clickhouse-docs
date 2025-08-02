@@ -3,7 +3,7 @@ title: 'Date and time data types - Time-series'
 sidebar_label: 'Date and time data types'
 description: 'Time-series data types in ClickHouse.'
 slug: /use-cases/time-series/date-time-data-types
-keywords: ['Time Series', 'DateTime']
+keywords: ['time-series', 'DateTime', 'DateTime64', 'Date', 'data types', 'temporal data', 'timestamp']
 show_related_blogs: true
 ---
 

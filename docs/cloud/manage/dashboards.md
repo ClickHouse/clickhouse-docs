@@ -3,6 +3,7 @@ sidebar_label: 'Dashboards'
 slug: /cloud/manage/dashboards
 title: 'Dashboards'
 description: 'The SQL Console''s dashboards feature allows you to collect and share visualizations from saved queries.'
+keywords: ['ClickHouse Cloud', 'dashboards', 'data visualization', 'SQL console dashboards', 'cloud analytics']
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';

@@ -4,6 +4,7 @@ sidebar_label: 'Drop Partition'
 title: 'Dropping Partitions'
 hide_title: false
 description: 'Page describing drop partitions'
+keywords: ['DROP PARTITION', 'drop partition', 'delete partition', 'remove partition', 'partition management']
 ---
 
 ## Background {#background}

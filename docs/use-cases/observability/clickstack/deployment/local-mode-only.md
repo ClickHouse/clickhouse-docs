@@ -5,6 +5,7 @@ pagination_prev: null
 pagination_next: null
 sidebar_position: 5
 description: 'Deploying ClickStack with Local Mode Only - The ClickHouse Observability Stack'
+keywords: [clickstack, observability, local-mode, docker, hyperdx, clickhouse, opentelemetry, otel, mongodb, development, demo, debugging, no-auth, browser-storage]
 ---
 
 import Image from '@theme/IdealImage';

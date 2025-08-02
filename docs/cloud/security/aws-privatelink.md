@@ -2,6 +2,7 @@
 title: 'AWS PrivateLink'
 description: 'This document describes how to connect to ClickHouse Cloud using AWS PrivateLink.'
 slug: /manage/security/aws-privatelink
+keywords: [aws privatelink, clickhouse cloud security, private connectivity, vpc endpoint, secure connection]
 ---
 
 import Image from '@theme/IdealImage';

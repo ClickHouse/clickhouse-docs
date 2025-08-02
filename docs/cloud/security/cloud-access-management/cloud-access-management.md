@@ -3,6 +3,7 @@ sidebar_label: 'Overview'
 slug: /cloud/security/cloud-access-management/overview
 title: 'Cloud access management'
 description: 'Describes how access control in ClickHouse cloud works, including information on role types'
+keywords: [ClickHouse Cloud, access control, user management, roles, permissions, console users, database users, SQL console, authentication, security, RBAC, grants, default role, organization admin, service admin]
 ---
 
 import Image from '@theme/IdealImage';

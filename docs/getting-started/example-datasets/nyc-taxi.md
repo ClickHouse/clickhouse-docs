@@ -5,6 +5,7 @@ sidebar_label: 'New York Taxi Data'
 sidebar_position: 2
 slug: /getting-started/example-datasets/nyc-taxi
 title: 'New York Taxi Data'
+keywords: ['NYC taxi data', 'example dataset', 'transportation data', 'getting started', 'sample data']
 ---
 
 import Tabs from '@theme/Tabs';

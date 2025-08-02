@@ -4,6 +4,7 @@ sidebar_position: 1
 sidebar_label: 'Integrating S3 with ClickHouse'
 title: 'Integrating S3 with ClickHouse'
 description: 'Page describing how to integrate S3 with ClickHouse'
+keywords: ['Amazon S3', 'object storage', 'cloud storage', 'data lake', 'S3 integration']
 ---
 
 import BucketDetails from '@site/docs/_snippets/_S3_authentication_and_bucket.md';

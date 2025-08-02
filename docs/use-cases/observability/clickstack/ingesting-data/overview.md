@@ -6,6 +6,7 @@ sidebar_position: 0
 pagination_prev: null
 pagination_next: use-cases/observability/clickstack/ingesting-data/opentelemetry
 description: 'Overview for ingesting data to ClickStack'
+keywords: [clickstack, observability, data-ingestion, overview, opentelemetry, otel-collector, otlp, sdks, agents, architecture, gateway, logs, metrics, traces, sessions]
 ---
 
 import Image from '@theme/IdealImage';

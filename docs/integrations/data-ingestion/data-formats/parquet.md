@@ -4,6 +4,7 @@ sidebar_position: 3
 slug: /integrations/data-formats/parquet
 title: 'Working with Parquet in ClickHouse'
 description: 'Page describing how to work with Parquet in ClickHouse'
+keywords: ['Parquet format', 'columnar storage', 'data import', 'data export', 'file format']
 ---
 
 # Working with Parquet in ClickHouse

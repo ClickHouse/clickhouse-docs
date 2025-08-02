@@ -3,6 +3,7 @@ sidebar_label: 'SAML SSO Setup'
 slug: /cloud/security/saml-setup
 title: 'SAML SSO Setup'
 description: 'How to set up SAML SSO with ClickHouse Cloud'
+keywords: [ClickHouse Cloud, SAML, SSO, single sign-on, identity provider, IdP, Okta, Google SAML, Azure AD, Microsoft Entra, Duo, authentication, enterprise security, organization management]
 ---
 
 import Image from '@theme/IdealImage';

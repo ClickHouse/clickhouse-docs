@@ -3,6 +3,7 @@ title: 'Controlling the Syncing of a Database ClickPipe'
 description: 'Doc for controlling the sync a database ClickPipe'
 slug: /integrations/clickpipes/postgres/sync_control
 sidebar_label: 'Controlling syncs'
+keywords: ['sync control', 'postgres', 'clickpipes', 'batch size', 'sync interval']
 ---
 
 import edit_sync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/edit_sync_button.png'

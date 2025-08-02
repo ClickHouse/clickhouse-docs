@@ -4,6 +4,7 @@ sidebar_label: 'Query Parallelism'
 sidebar_position: 20
 description: 'ClickHouse parallelizes query execution using processing lanes and the max_threads setting.'
 title: 'How ClickHouse executes a query in parallel'
+keywords: ['query parallelism', 'parallel execution', 'max_threads setting', 'performance optimization', 'processing lanes']
 ---
 
 import visual01 from '@site/static/images/guides/best-practices/query-parallelism_01.gif';

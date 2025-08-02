@@ -4,6 +4,7 @@ slug: /use-cases/time-series
 title: 'Time-Series'
 pagination_prev: null
 pagination_next: null
+keywords: ['time-series', 'time-based data', 'metrics', 'sensor data', 'temporal analysis', 'trend analysis']
 ---
 
 Welcome to our time-series use case guide. In this guide you'll learn how you can get setup and use ClickHouse for time-series.

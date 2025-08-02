@@ -3,6 +3,7 @@ sidebar_label: 'ClickPipes for Object Storage'
 description: 'Seamlessly connect your object storage to ClickHouse Cloud.'
 slug: /integrations/clickpipes/object-storage
 title: 'Integrating Object Storage with ClickHouse Cloud'
+keywords: ['object storage', 'clickpipes', 's3', 'gcs', 'azure blob storage']
 ---
 
 import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';

@@ -3,6 +3,7 @@ description: 'The TPC-H benchmark data set and queries.'
 sidebar_label: 'TPC-H'
 slug: /getting-started/example-datasets/tpch
 title: 'TPC-H (1999)'
+keywords: ['TPC-H benchmark', 'OLAP benchmark', 'data warehouse benchmark', 'example dataset', 'getting started']
 ---
 
 A popular benchmark which models the internal data warehouse of a wholesale supplier.

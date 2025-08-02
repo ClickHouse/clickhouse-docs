@@ -3,6 +3,7 @@ title: 'Roadmap'
 slug: /whats-new/roadmap
 sidebar_position: 50
 description: 'Present and past ClickHouse road maps'
+keywords: ['ClickHouse roadmap', 'development roadmap', 'future features', 'planned features', 'product roadmap']
 ---
 
 ## Current roadmap {#current-roadmap}

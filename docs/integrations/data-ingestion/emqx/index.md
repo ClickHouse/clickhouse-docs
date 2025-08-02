@@ -4,6 +4,7 @@ sidebar_position: 1
 slug: /integrations/emqx
 description: 'Introduction to EMQX with ClickHouse'
 title: 'Integrating EMQX with ClickHouse'
+keywords: [emqx, mqtt, iot, message broker, real-time messaging, data integration, emqx cloud, mqtt client, event streaming]
 ---
 
 import emqx_cloud_artitecture from '@site/static/images/integrations/data-ingestion/emqx/emqx-cloud-artitecture.png';

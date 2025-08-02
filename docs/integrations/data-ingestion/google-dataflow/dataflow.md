@@ -4,6 +4,7 @@ slug: /integrations/google-dataflow/dataflow
 sidebar_position: 1
 description: 'Users can ingest data into ClickHouse using Google Dataflow'
 title: 'Integrating Google Dataflow with ClickHouse'
+keywords: [google dataflow, apache beam, clickhouse io, data processing, etl, stream processing, batch processing, java runner, templates]
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';

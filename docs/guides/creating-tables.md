@@ -4,6 +4,7 @@ sidebar_label: 'Creating tables'
 title: 'Creating tables in ClickHouse'
 slug: /guides/creating-tables
 description: 'Learn about Creating Tables in ClickHouse'
+keywords: ['creating tables', 'CREATE TABLE', 'table creation', 'database guide', 'MergeTree engine']
 ---
 
 # Creating tables in ClickHouse

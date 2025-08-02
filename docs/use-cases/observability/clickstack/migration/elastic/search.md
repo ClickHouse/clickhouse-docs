@@ -6,6 +6,7 @@ pagination_next: null
 sidebar_label: 'Search'
 sidebar_position: 3
 description: 'Searching in ClickStack and Elastic'
+keywords: [clickstack, observability, migration, elasticsearch, elastic, search, lucene, sql, query-language, kibana, hyperdx, field-match, wildcards, ranges, boolean-queries]
 ---
 
 import Image from '@theme/IdealImage';

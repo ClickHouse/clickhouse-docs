@@ -5,6 +5,7 @@ pagination_prev: null
 pagination_next: null
 sidebar_position: 0
 description: 'Deploying ClickStack with All In One - The ClickHouse Observability Stack'
+keywords: [clickstack, observability, all-in-one, docker, hyperdx, clickhouse, opentelemetry, otel, mongodb, deployment, monitoring, traces, logs, metrics, container]
 ---
 
 import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';

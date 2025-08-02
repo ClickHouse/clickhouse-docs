@@ -3,6 +3,7 @@ sidebar_label: 'Amazon RDS MySQL'
 description: 'Step-by-step guide on how to set up Amazon RDS MySQL as a source for ClickPipes'
 slug: /integrations/clickpipes/mysql/source/rds
 title: 'RDS MySQL source setup guide'
+keywords: [clickpipes, mysql, rds, amazon rds, aws, binlog, gtid, replication, mysql connector, database setup, parameter group]
 ---
 
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';

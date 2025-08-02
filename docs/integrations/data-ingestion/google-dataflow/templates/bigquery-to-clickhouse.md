@@ -4,6 +4,7 @@ sidebar_position: 1
 slug: /integrations/google-dataflow/templates/bigquery-to-clickhouse
 description: 'Users can ingest data from BigQuery into ClickHouse using Google Dataflow Template'
 title: 'Dataflow BigQuery to ClickHouse template'
+keywords: [bigquery, clickhouse, google dataflow, template, batch pipeline, data migration, etl, clickhouse io, data type mapping]
 ---
 
 import TOCInline from '@theme/TOCInline';

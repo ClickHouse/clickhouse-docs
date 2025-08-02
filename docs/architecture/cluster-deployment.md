@@ -4,6 +4,7 @@ sidebar_label: 'Cluster deployment'
 sidebar_position: 100
 title: 'Cluster deployment'
 description: 'By going through this tutorial, you will learn how to set up a simple ClickHouse cluster.'
+keywords: [clickhouse cluster, cluster deployment, distributed tables, sharding, replication, zookeeper, mergetree, cluster configuration]
 ---
 
 This tutorial assumes you've already set up a [local ClickHouse server](../getting-started/install/install.mdx)

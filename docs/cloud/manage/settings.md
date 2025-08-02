@@ -3,6 +3,7 @@ sidebar_label: 'Configuring Settings'
 slug: /manage/settings
 title: 'Configuring Settings'
 description: 'How to configure settings for your ClickHouse Cloud service for a specific user or role'
+keywords: ['ClickHouse Cloud', 'settings configuration', 'cloud settings', 'user settings', 'role settings']
 ---
 
 import Image from '@theme/IdealImage';

@@ -3,6 +3,7 @@ sidebar_label: 'Shared Responsibility Model'
 slug: /cloud/security/shared-responsibility-model
 title: 'Security Shared Responsibility Model'
 description: 'Learn more about the security model of ClickHouse Cloud'
+keywords: [ClickHouse Cloud, shared responsibility, security model, BYOC, bring your own cloud, control plane, data plane, compliance, encryption, network security, access management, backup, audit logging]
 ---
 
 ## Service types {#service-types}

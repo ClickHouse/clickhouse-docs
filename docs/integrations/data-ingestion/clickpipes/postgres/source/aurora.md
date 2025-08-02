@@ -3,6 +3,7 @@ sidebar_label: 'Amazon Aurora Postgres'
 description: 'Set up Amazon Aurora Postgres as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/aurora
 title: 'Aurora Postgres Source Setup Guide'
+keywords: ['Amazon Aurora', 'PostgreSQL', 'ClickPipes', 'AWS database', 'logical replication setup']
 ---
 
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';

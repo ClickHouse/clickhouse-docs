@@ -3,6 +3,7 @@ slug: /integrations/marimo
 sidebar_label: 'marimo'
 description: 'marimo is a next-generation Python notebook for interacting with data'
 title: 'Using marimo with ClickHouse'
+keywords: ['marimo', 'Python notebook', 'interactive computing', 'data analysis', 'reactive programming']
 ---
 
 import Image from '@theme/IdealImage';

@@ -2,6 +2,7 @@
 slug: /cloud/security/connectivity
 title: 'connectivity overview'
 description: 'Landing page for Connectivity'
+keywords: [ClickHouse Cloud, connectivity, network security, IP filters, private networking, private link, S3 security, cloud endpoints, secure connections]
 ---
 
 # Connectivity

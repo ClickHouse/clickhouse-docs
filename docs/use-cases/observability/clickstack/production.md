@@ -5,6 +5,7 @@ sidebar_label: 'Production'
 pagination_prev: null
 pagination_next: null
 description: 'Going to production with ClickStack'
+keywords: ['ClickStack production', 'production deployment', 'scalability', 'performance optimization', 'monitoring best practices']
 ---
 
 import Image from '@theme/IdealImage';

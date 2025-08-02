@@ -4,6 +4,7 @@ slug: /integrations/google-dataflow/templates
 sidebar_position: 3
 description: 'Users can ingest data into ClickHouse using Google Dataflow Templates'
 title: 'Google Dataflow Templates'
+keywords: [google dataflow, templates, no-code, bigquery, gcs, pub sub, clickhouse io, apache beam, prebuilt pipelines]
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';

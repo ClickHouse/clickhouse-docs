@@ -3,6 +3,7 @@ sidebar_label: 'Enhanced Encryption'
 slug: /cloud/security/cmek
 title: 'Customer Managed Encryption Keys (CMEK)'
 description: 'Learn more about customer managed encryption keys'
+keywords: [ClickHouse Cloud, CMEK, customer managed encryption keys, TDE, transparent data encryption, AWS KMS, GCP KMS, encryption at rest, key rotation, data security, AES 256, enterprise security]
 ---
 
 import Image from '@theme/IdealImage';

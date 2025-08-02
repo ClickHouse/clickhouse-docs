@@ -4,6 +4,7 @@ sidebar_position: 5
 slug: /integrations/kafka/kafka-table-engine
 description: 'Using the Kafka Table Engine'
 title: 'Using the Kafka table engine'
+keywords: [kafka table engine, materialized views, kafka consumer, real-time ingestion, streaming data, mergetree, virtual columns, performance tuning]
 ---
 
 import Image from '@theme/IdealImage';

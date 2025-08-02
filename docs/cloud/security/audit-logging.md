@@ -3,6 +3,7 @@ sidebar_label: 'Audit Logging'
 slug: /cloud/security/audit-logging
 title: 'Audit Logging'
 description: 'This page describes Audit Logging in ClickHouse Cloud. It explains how to access and interpret the audit logs, which record changes made to a ClickHouse Cloud organization.'
+keywords: [clickhouse cloud audit logging, audit logs, activity tracking, security monitoring, organization changes]
 ---
 
 import Image from '@theme/IdealImage';

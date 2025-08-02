@@ -3,6 +3,7 @@ title: 'Controlling the Syncing of a Database ClickPipe'
 description: 'Doc for controllling the sync a database ClickPipe'
 slug: /integrations/clickpipes/mysql/sync_control
 sidebar_label: 'Controlling syncs'
+keywords: [clickpipes, mysql, sync control, cdc, replication, batch size, sync interval, database sync, data ingestion, mysql connector]
 ---
 
 import edit_sync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/edit_sync_button.png'

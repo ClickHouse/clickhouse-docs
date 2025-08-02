@@ -4,6 +4,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Data ingestion with OpenTelemetry for ClickStack - The ClickHouse Observability Stack'
 title: 'Ingesting with OpenTelemetry'
+keywords: [clickstack, observability, opentelemetry, otel, data-ingestion, otlp, grpc, http, collector, sdks, ingestion-key, authorization]
 ---
 
 import Image from '@theme/IdealImage';

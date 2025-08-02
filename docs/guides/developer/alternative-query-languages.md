@@ -3,6 +3,7 @@ slug: /guides/developer/alternative-query-languages
 sidebar_label: 'Alternative Query Languages'
 title: 'Alternative Query Languages'
 description: 'Use alternative query languages in ClickHouse'
+keywords: ['alternative query languages', 'query dialects', 'MySQL dialect', 'PostgreSQL dialect', 'developer guide']
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';

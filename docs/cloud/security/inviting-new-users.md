@@ -3,6 +3,7 @@ sidebar_label: 'Inviting new users'
 slug: /cloud/security/inviting-new-users
 title: 'Inviting new users'
 description: 'This page describes how administrators can invite new users to their organisation and assign roles to them'
+keywords: [ClickHouse Cloud, user management, invite users, organization, admin, developer, billing admin, roles, permissions, console users, email invitations]
 ---
 
 import Image from '@theme/IdealImage';

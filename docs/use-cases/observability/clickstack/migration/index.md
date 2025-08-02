@@ -5,6 +5,7 @@ pagination_prev: null
 pagination_next: null
 sidebar_label: 'Migration guides'
 description: 'Migrating to ClickStack from other Observability solutions'
+keywords: [clickstack, observability, migration, elastic-stack, migration-guides, data-migration, agent-transition, elasticsearch, kibana, observability-solutions]
 ---
 
 This section provides comprehensive guides for migrating from various observability solutions to ClickStack. Each guide includes detailed instructions for transitioning your data, agents, and workflows while maintaining operational continuity.

@@ -4,6 +4,7 @@ sidebar_position: 6
 slug: /integrations/minio
 description: 'Page describing how to use MinIO with ClickHouse'
 title: 'Using MinIO'
+keywords: [minio, s3 compatible, object storage, self-hosted, storage configuration, backed merge tree, disk configuration]
 ---
 
 # Using MinIO

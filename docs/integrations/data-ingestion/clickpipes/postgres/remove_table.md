@@ -3,6 +3,7 @@ title: 'Removing specific tables from a ClickPipe'
 description: 'Removing specific tables from a ClickPipe'
 sidebar_label: 'Remove Table'
 slug: /integrations/clickpipes/postgres/removing_tables
+keywords: ['ClickPipes', 'PostgreSQL', 'remove table', 'table exclusion', 'data replication management']
 ---
 
 import Image from '@theme/IdealImage';

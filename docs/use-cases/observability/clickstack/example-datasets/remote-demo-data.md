@@ -5,6 +5,7 @@ sidebar_position: 2
 pagination_prev: null
 pagination_next: null
 description: 'Getting started with ClickStack and a remote demo dataset'
+keywords: [clickstack, observability, remote-demo, demo-dataset, opentelemetry-demo, e-commerce, microservices, payment-failure, troubleshooting, traces, logs, metrics, sessions, debugging]
 ---
 
 import Image from '@theme/IdealImage';

@@ -3,6 +3,7 @@ sidebar_label: 'Common Access Management Queries'
 title: 'Common Access Management Queries'
 slug: /cloud/security/common-access-management-queries
 description: 'This article shows the basics of defining SQL users and roles and applying those privileges and permissions to databases, tables, rows, and columns.'
+keywords: [ClickHouse Cloud, SQL users, roles, permissions, GRANT, REVOKE, database security, access control, default user, admin user, passwordless authentication, granular access control, SQL console]
 ---
 
 import CommonUserRolesContent from '@site/docs/_snippets/_users-and-roles-common.md';

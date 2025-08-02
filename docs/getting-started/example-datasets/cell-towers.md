@@ -5,6 +5,7 @@ sidebar_label: 'Geo Data'
 sidebar_position: 3
 slug: /getting-started/example-datasets/cell-towers
 title: 'Geo Data using the Cell Tower Dataset'
+keywords: ['cell tower data', 'geo data', 'OpenCelliD', 'geospatial dataset', 'getting started']
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
