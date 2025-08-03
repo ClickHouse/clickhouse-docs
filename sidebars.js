@@ -684,6 +684,7 @@ const sidebars = {
         },
         "integrations/language-clients/python/index",
         "integrations/language-clients/rust",
+        "integrations/language-clients/csharp",
         {
           type: "category",
           label: "Third-party Clients",
