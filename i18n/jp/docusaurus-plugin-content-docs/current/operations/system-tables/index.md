@@ -1,13 +1,13 @@
 ---
-'description': 'システムテーブルとその有用性の概要。'
-'keywords':
+description: 'システムテーブルとその有用性の概要。'
+keywords:
 - 'system tables'
 - 'overview'
-'pagination_next': 'operations/system-tables/asynchronous_metric_log'
-'sidebar_label': '概要'
-'sidebar_position': 52
-'slug': '/operations/system-tables/'
-'title': 'システムテーブル'
+pagination_next: 'operations/system-tables/asynchronous_metric_log'
+sidebar_label: '概要'
+sidebar_position: 52
+slug: '/operations/system-tables/'
+title: 'システムテーブル'
 ---
 
 

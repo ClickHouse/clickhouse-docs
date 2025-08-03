@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'Vector'
-'sidebar_position': 220
-'slug': '/integrations/vector'
-'description': 'How to tail a log file into ClickHouse using Vector'
-'title': 'Integrating Vector with ClickHouse'
+sidebar_label: 'Vector'
+sidebar_position: 220
+slug: '/integrations/vector'
+description: 'How to tail a log file into ClickHouse using Vector'
+title: 'Integrating Vector with ClickHouse'
 ---
 
 import Image from '@theme/IdealImage';

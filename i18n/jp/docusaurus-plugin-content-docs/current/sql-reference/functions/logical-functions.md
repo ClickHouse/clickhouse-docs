@@ -1,9 +1,9 @@
 ---
-'description': '論理関数のドキュメント'
-'sidebar_label': '論理'
-'sidebar_position': 110
-'slug': '/sql-reference/functions/logical-functions'
-'title': 'Logical Functions'
+description: '論理関数のドキュメント'
+sidebar_label: '論理'
+sidebar_position: 110
+slug: '/sql-reference/functions/logical-functions'
+title: 'Logical Functions'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'slug': '/best-practices/select-data-types'
-'sidebar_position': 10
-'sidebar_label': 'データ型を選択'
-'title': 'データ型を選択'
-'description': 'ClickHouse でデータ型を選択する方法を説明したページ'
+slug: '/best-practices/select-data-types'
+sidebar_position: 10
+sidebar_label: 'データ型を選択'
+title: 'データ型を選択'
+description: 'ClickHouse でデータ型を選択する方法を説明したページ'
 ---
 
 import NullableColumns from '@site/i18n/jp/docusaurus-plugin-content-docs/current/best-practices/_snippets/_avoid_nullable_columns.md';

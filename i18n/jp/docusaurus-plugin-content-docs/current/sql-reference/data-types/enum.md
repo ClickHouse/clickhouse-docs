@@ -1,10 +1,10 @@
 ---
-'description': 'Documentation for the Enum data type in ClickHouse, which represents
+description: 'Documentation for the Enum data type in ClickHouse, which represents
   a set of named constant values'
-'sidebar_label': 'Enum'
-'sidebar_position': 20
-'slug': '/sql-reference/data-types/enum'
-'title': 'Enum'
+sidebar_label: 'Enum'
+sidebar_position: 20
+slug: '/sql-reference/data-types/enum'
+title: 'Enum'
 ---
 
 

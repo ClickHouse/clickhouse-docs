@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'Parquetフォーマットのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'Parquetフォーマットのドキュメント'
+input_format: true
+keywords:
 - 'Parquet'
-'output_format': true
-'slug': '/interfaces/formats/Parquet'
-'title': 'Parquet'
+output_format: true
+slug: '/interfaces/formats/Parquet'
+title: 'Parquet'
 ---
 
 

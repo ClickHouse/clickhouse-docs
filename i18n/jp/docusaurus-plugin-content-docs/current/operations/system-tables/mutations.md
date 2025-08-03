@@ -1,10 +1,10 @@
 ---
-'description': 'MergeTree テーブルとその進行状況に関する変異に関する情報を含むシステムテーブル。各変異コマンドは単一の行で表されます。'
-'keywords':
+description: 'MergeTree テーブルとその進行状況に関する変異に関する情報を含むシステムテーブル。各変異コマンドは単一の行で表されます。'
+keywords:
 - 'system table'
 - 'mutations'
-'slug': '/operations/system-tables/mutations'
-'title': 'system.mutations'
+slug: '/operations/system-tables/mutations'
+title: 'system.mutations'
 ---
 
 

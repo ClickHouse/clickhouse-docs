@@ -1,9 +1,9 @@
 ---
-'sidebar_position': 3
-'sidebar_label': 'データの選択'
-'title': 'ClickHouseデータの選択'
-'slug': '/guides/writing-queries'
-'description': 'ClickHouseデータの選択について学びます'
+sidebar_position: 3
+sidebar_label: 'データの選択'
+title: 'ClickHouseデータの選択'
+slug: '/guides/writing-queries'
+description: 'ClickHouseデータの選択について学びます'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouse でベースタイプに追加機能を持たせたドメインタイプの概要'
-'sidebar_label': 'ドメイン'
-'sidebar_position': 56
-'slug': '/sql-reference/data-types/domains/'
-'title': 'ドメイン'
+description: 'ClickHouse でベースタイプに追加機能を持たせたドメインタイプの概要'
+sidebar_label: 'ドメイン'
+sidebar_position: 56
+slug: '/sql-reference/data-types/domains/'
+title: 'ドメイン'
 ---
 
 

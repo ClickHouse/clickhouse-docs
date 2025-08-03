@@ -1,9 +1,9 @@
 ---
-'description': 'MySQLWireフォーマットのドキュメント'
-'keywords':
+description: 'MySQLWireフォーマットのドキュメント'
+keywords:
 - 'MySQLWire'
-'slug': '/interfaces/formats/MySQLWire'
-'title': 'MySQLWire'
+slug: '/interfaces/formats/MySQLWire'
+title: 'MySQLWire'
 ---
 
 

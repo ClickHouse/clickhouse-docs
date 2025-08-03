@@ -1,8 +1,8 @@
 ---
-'slug': '/materialized-view/refreshable-materialized-view'
-'title': 'リフレッシュ可能なMaterialized View'
-'description': 'Materialized Viewを使用してクエリの速度を向上させる方法'
-'keywords':
+slug: '/materialized-view/refreshable-materialized-view'
+title: 'リフレッシュ可能なMaterialized View'
+description: 'Materialized Viewを使用してクエリの速度を向上させる方法'
+keywords:
 - 'refreshable materialized view'
 - 'refresh'
 - 'materialized views'

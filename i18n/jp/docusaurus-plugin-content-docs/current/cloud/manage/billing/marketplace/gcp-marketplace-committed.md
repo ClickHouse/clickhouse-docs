@@ -1,9 +1,9 @@
 ---
-'slug': '/cloud/billing/marketplace/gcp-marketplace-committed-contract'
-'title': 'GCP Marketplace Committed Contract'
-'description': 'Subscribe to ClickHouse Cloud through the GCP Marketplace (Committed
+slug: '/cloud/billing/marketplace/gcp-marketplace-committed-contract'
+title: 'GCP Marketplace Committed Contract'
+description: 'Subscribe to ClickHouse Cloud through the GCP Marketplace (Committed
   Contract)'
-'keywords':
+keywords:
 - 'gcp'
 - 'google'
 - 'marketplace'

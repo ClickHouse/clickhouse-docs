@@ -1,9 +1,9 @@
 ---
-'title': '概念'
-'slug': '/concepts'
-'description': '概念のランディングページ'
-'pagination_next': null
-'pagination_prev': null
+title: '概念'
+slug: '/concepts'
+description: '概念のランディングページ'
+pagination_next: null
+pagination_prev: null
 ---
 
 

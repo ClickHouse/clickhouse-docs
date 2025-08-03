@@ -1,8 +1,8 @@
 ---
-'title': 'Jan 2025 Changes FAQ'
-'slug': '/cloud/manage/jan-2025-faq'
-'description': '新しい価格設定FAQのインデックスページ'
-'keywords':
+title: 'Jan 2025 Changes FAQ'
+slug: '/cloud/manage/jan-2025-faq'
+description: '新しい価格設定FAQのインデックスページ'
+keywords:
 - 'new pricing'
 - 'faq'
 ---

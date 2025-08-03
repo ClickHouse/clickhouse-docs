@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'Integrations'
-'slug': '/manage/integrations'
-'title': 'Integrations'
-'description': 'Integrations for ClickHouse'
+sidebar_label: 'Integrations'
+slug: '/manage/integrations'
+title: 'Integrations'
+description: 'Integrations for ClickHouse'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for Settings Profile'
-'sidebar_label': 'SETTINGS PROFILE'
-'sidebar_position': 43
-'slug': '/sql-reference/statements/create/settings-profile'
-'title': 'CREATE SETTINGS PROFILE'
+description: 'Documentation for Settings Profile'
+sidebar_label: 'SETTINGS PROFILE'
+sidebar_position: 43
+slug: '/sql-reference/statements/create/settings-profile'
+title: 'CREATE SETTINGS PROFILE'
 ---
 
 

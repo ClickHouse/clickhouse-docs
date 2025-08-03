@@ -1,9 +1,9 @@
 ---
-'title': 'S3 バケット内のデータのクエリ方法'
-'sidebar_label': 'S3 でのデータクエリ'
-'slug': '/chdb/guides/querying-s3'
-'description': 'chDB で S3 バケット内のデータをクエリする方法を学びます。'
-'keywords':
+title: 'S3 バケット内のデータのクエリ方法'
+sidebar_label: 'S3 でのデータクエリ'
+slug: '/chdb/guides/querying-s3'
+description: 'chDB で S3 バケット内のデータをクエリする方法を学びます。'
+keywords:
 - 'chdb'
 - 's3'
 ---

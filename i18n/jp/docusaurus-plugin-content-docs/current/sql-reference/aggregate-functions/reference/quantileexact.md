@@ -1,9 +1,9 @@
 ---
-'description': 'quantileExact, quantileExactLow, quantileExactHigh, quantileExactExclusive,
+description: 'quantileExact, quantileExactLow, quantileExactHigh, quantileExactExclusive,
   quantileExactInclusive 関数'
-'sidebar_position': 173
-'slug': '/sql-reference/aggregate-functions/reference/quantileexact'
-'title': 'quantileExact Functions'
+sidebar_position: 173
+slug: '/sql-reference/aggregate-functions/reference/quantileexact'
+title: 'quantileExact Functions'
 ---
 
 

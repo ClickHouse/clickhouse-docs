@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'Redshift'
-'slug': '/integrations/redshift'
-'description': 'Redshift から ClickHouse へのデータ移行'
-'title': 'Redshift から ClickHouse へのデータ移行'
+sidebar_label: 'Redshift'
+slug: '/integrations/redshift'
+description: 'Redshift から ClickHouse へのデータ移行'
+title: 'Redshift から ClickHouse へのデータ移行'
 ---
 
 import redshiftToClickhouse from '@site/static/images/integrations/data-ingestion/redshift/redshift-to-clickhouse.png';

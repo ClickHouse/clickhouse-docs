@@ -1,9 +1,9 @@
 ---
-'description': '暗号化関数のドキュメント'
-'sidebar_label': '暗号化'
-'sidebar_position': 70
-'slug': '/sql-reference/functions/encryption-functions'
-'title': 'Encryption Functions'
+description: '暗号化関数のドキュメント'
+sidebar_label: '暗号化'
+sidebar_position: 70
+slug: '/sql-reference/functions/encryption-functions'
+title: 'Encryption Functions'
 ---
 
 

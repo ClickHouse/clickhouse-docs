@@ -1,15 +1,15 @@
 ---
-'sidebar_label': '概要'
-'sidebar_position': 1
-'slug': '/integrations/migration/overview'
-'keywords':
+sidebar_label: '概要'
+sidebar_position: 1
+slug: '/integrations/migration/overview'
+keywords:
 - 'clickhouse'
 - 'migrate'
 - 'migration'
 - 'migrating'
 - 'data'
-'title': 'ClickHouseへのデータ移行'
-'description': 'ClickHouseへのデータ移行のオプションについて説明するページです。'
+title: 'ClickHouseへのデータ移行'
+description: 'ClickHouseへのデータ移行のオプションについて説明するページです。'
 ---
 
 

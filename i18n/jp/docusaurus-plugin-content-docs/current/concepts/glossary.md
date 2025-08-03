@@ -1,8 +1,8 @@
 ---
-'sidebar_label': '用語集'
-'description': 'このページには、ClickHouseに関する一般的に使用される用語やフレーズのリストが含まれています。'
-'title': '用語集'
-'slug': '/concepts/glossary'
+sidebar_label: '用語集'
+description: 'このページには、ClickHouseに関する一般的に使用される用語やフレーズのリストが含まれています。'
+title: '用語集'
+slug: '/concepts/glossary'
 ---
 
 

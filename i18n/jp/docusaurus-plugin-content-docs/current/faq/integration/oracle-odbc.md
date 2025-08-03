@@ -1,9 +1,9 @@
 ---
-'slug': '/faq/integration/oracle-odbc'
-'title': 'Oracleを使用する際にODBC経由でエンコードに問題が発生した場合はどうすればよいですか？'
-'toc_hidden': true
-'toc_priority': 20
-'description': 'このページでは、Oracleを使用する際にODBC経由でエンコーディングに問題が発生した場合の対処方法についてのガイダンスを提供します。'
+slug: '/faq/integration/oracle-odbc'
+title: 'Oracleを使用する際にODBC経由でエンコードに問題が発生した場合はどうすればよいですか？'
+toc_hidden: true
+toc_priority: 20
+description: 'このページでは、Oracleを使用する際にODBC経由でエンコーディングに問題が発生した場合の対処方法についてのガイダンスを提供します。'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'Integrating Dataflow with ClickHouse'
-'slug': '/integrations/google-dataflow/dataflow'
-'sidebar_position': 1
-'description': 'Users can ingest data into ClickHouse using Google Dataflow'
-'title': 'Integrating Google Dataflow with ClickHouse'
+sidebar_label: 'Integrating Dataflow with ClickHouse'
+slug: '/integrations/google-dataflow/dataflow'
+sidebar_position: 1
+description: 'Users can ingest data into ClickHouse using Google Dataflow'
+title: 'Integrating Google Dataflow with ClickHouse'
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';

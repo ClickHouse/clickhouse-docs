@@ -1,13 +1,13 @@
 ---
-'alias': []
-'description': 'Nullフォーマットのドキュメント'
-'input_format': false
-'keywords':
+alias: []
+description: 'Nullフォーマットのドキュメント'
+input_format: false
+keywords:
 - 'Null'
 - 'format'
-'output_format': true
-'slug': '/interfaces/formats/Null'
-'title': 'Null'
+output_format: true
+slug: '/interfaces/formats/Null'
+title: 'Null'
 ---
 
 

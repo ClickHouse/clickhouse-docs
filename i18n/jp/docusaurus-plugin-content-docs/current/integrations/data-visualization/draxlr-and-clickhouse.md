@@ -1,16 +1,16 @@
 ---
-'sidebar_label': 'Draxlr'
-'sidebar_position': 131
-'slug': '/integrations/draxlr'
-'keywords':
+sidebar_label: 'Draxlr'
+sidebar_position: 131
+slug: '/integrations/draxlr'
+keywords:
 - 'clickhouse'
 - 'Draxlr'
 - 'connect'
 - 'integrate'
 - 'ui'
-'description': 'Draxlr is a Business intelligence tool with data visualization and
+description: 'Draxlr is a Business intelligence tool with data visualization and
   analytics.'
-'title': 'Connecting Draxlr to ClickHouse'
+title: 'Connecting Draxlr to ClickHouse'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';

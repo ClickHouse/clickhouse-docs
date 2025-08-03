@@ -1,9 +1,9 @@
 ---
-'sidebar_label': '概要'
-'sidebar_position': 1
-'title': 'ClickHouse Cloud API'
-'slug': '/cloud/manage/api/api-overview'
-'description': 'ClickHouse Cloud APIについて学ぶ'
+sidebar_label: '概要'
+sidebar_position: 1
+title: 'ClickHouse Cloud API'
+slug: '/cloud/manage/api/api-overview'
+description: 'ClickHouse Cloud APIについて学ぶ'
 ---
 
 

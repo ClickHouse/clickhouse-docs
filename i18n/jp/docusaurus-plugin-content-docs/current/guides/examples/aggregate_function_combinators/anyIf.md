@@ -1,14 +1,14 @@
 ---
-'slug': '/examples/aggregate-function-combinators/anyIf'
-'title': 'anyIf'
-'description': '使用例：anyIf コンビネーター'
-'keywords':
+slug: '/examples/aggregate-function-combinators/anyIf'
+title: 'anyIf'
+description: '使用例：anyIf コンビネーター'
+keywords:
 - 'any'
 - 'if'
 - 'combinator'
 - 'examples'
 - 'anyIf'
-'sidebar_label': 'anyIf'
+sidebar_label: 'anyIf'
 ---
 
 

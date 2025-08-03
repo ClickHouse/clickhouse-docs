@@ -1,14 +1,14 @@
 ---
-'slug': '/examples/aggregate-function-combinators/avgResample'
-'title': 'avgResample'
-'description': '平均を利用した Resample combinator の例'
-'keywords':
+slug: '/examples/aggregate-function-combinators/avgResample'
+title: 'avgResample'
+description: '平均を利用した Resample combinator の例'
+keywords:
 - 'avg'
 - 'Resample'
 - 'combinator'
 - 'examples'
 - 'avgResample'
-'sidebar_label': 'avgResample'
+sidebar_label: 'avgResample'
 ---
 
 

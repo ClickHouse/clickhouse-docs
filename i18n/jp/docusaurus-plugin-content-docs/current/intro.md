@@ -1,8 +1,8 @@
 ---
-'slug': '/intro'
-'sidebar_label': 'ClickHouseとは？'
-'description': 'ClickHouse®は、オンライン分析処理（OLAP）のための列指向SQLデータベース管理システム（DBMS）です。オープンソースソフトウェアとしても、クラウド提供としても利用可能です。'
-'title': 'ClickHouseとは？'
+slug: '/intro'
+sidebar_label: 'ClickHouseとは？'
+description: 'ClickHouse®は、オンライン分析処理（OLAP）のための列指向SQLデータベース管理システム（DBMS）です。オープンソースソフトウェアとしても、クラウド提供としても利用可能です。'
+title: 'ClickHouseとは？'
 ---
 
 import column_example from '@site/static/images/column-oriented-example-query.png';

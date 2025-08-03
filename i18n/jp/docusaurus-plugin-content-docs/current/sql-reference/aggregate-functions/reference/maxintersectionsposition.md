@@ -1,8 +1,8 @@
 ---
-'description': 'maxIntersections 関数の出現位置を計算する集約関数です。'
-'sidebar_position': 164
-'slug': '/sql-reference/aggregate-functions/reference/maxintersectionsposition'
-'title': 'maxIntersectionsPosition'
+description: 'maxIntersections 関数の出現位置を計算する集約関数です。'
+sidebar_position: 164
+slug: '/sql-reference/aggregate-functions/reference/maxintersectionsposition'
+title: 'maxIntersectionsPosition'
 ---
 
 

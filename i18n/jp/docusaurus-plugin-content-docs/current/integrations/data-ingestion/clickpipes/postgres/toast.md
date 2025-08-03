@@ -1,7 +1,7 @@
 ---
-'title': 'TOASTカラムの処理'
-'description': 'PostgreSQLからClickHouseへデータをレプリケートする際にTOASTカラムの処理方法を学びます。'
-'slug': '/integrations/clickpipes/postgres/toast'
+title: 'TOASTカラムの処理'
+description: 'PostgreSQLからClickHouseへデータをレプリケートする際にTOASTカラムの処理方法を学びます。'
+slug: '/integrations/clickpipes/postgres/toast'
 ---
 
 

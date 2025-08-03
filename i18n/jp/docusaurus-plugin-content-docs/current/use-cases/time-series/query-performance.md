@@ -1,9 +1,9 @@
 ---
-'title': 'クエリ性能 - タイムシリーズ'
-'sidebar_label': 'クエリ性能'
-'description': 'タイムシリーズクエリ性能の向上'
-'slug': '/use-cases/time-series/query-performance'
-'keywords':
+title: 'クエリ性能 - タイムシリーズ'
+sidebar_label: 'クエリ性能'
+description: 'タイムシリーズクエリ性能の向上'
+slug: '/use-cases/time-series/query-performance'
+keywords:
 - 'time-series'
 ---
 

@@ -1,9 +1,9 @@
 ---
-'description': '同じ主キー（あるいは正確には同じ[ソーティングキー](../../../engines/table-engines/mergetree-family/mergetree.md)を使用している行）を、1つのデータ部分内に集計関数の状態の組み合わせを格納する単一の行に置き換えます。'
-'sidebar_label': 'AggregatingMergeTree'
-'sidebar_position': 60
-'slug': '/engines/table-engines/mergetree-family/aggregatingmergetree'
-'title': 'AggregatingMergeTree'
+description: '同じ主キー（あるいは正確には同じ[ソーティングキー](../../../engines/table-engines/mergetree-family/mergetree.md)を使用している行）を、1つのデータ部分内に集計関数の状態の組み合わせを格納する単一の行に置き換えます。'
+sidebar_label: 'AggregatingMergeTree'
+sidebar_position: 60
+slug: '/engines/table-engines/mergetree-family/aggregatingmergetree'
+title: 'AggregatingMergeTree'
 ---
 
 

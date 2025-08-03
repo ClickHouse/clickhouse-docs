@@ -1,9 +1,9 @@
 ---
-'title': 'Apache ArrowをchDBでクエリする方法'
-'sidebar_label': 'Apache Arrowのクエリ'
-'slug': '/chdb/guides/apache-arrow'
-'description': 'このガイドでは、Apache ArrowのテーブルをchDBでクエリする方法について学びます'
-'keywords':
+title: 'Apache ArrowをchDBでクエリする方法'
+sidebar_label: 'Apache Arrowのクエリ'
+slug: '/chdb/guides/apache-arrow'
+description: 'このガイドでは、Apache ArrowのテーブルをchDBでクエリする方法について学びます'
+keywords:
 - 'chdb'
 - 'Apache Arrow'
 ---

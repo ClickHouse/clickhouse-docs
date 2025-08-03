@@ -1,14 +1,14 @@
 ---
-'sidebar_label': 'azureBlobStorageテーブル関数の使用'
-'slug': '/integrations/azure-data-factory/table-function'
-'description': 'ClickHouseのazureBlobStorageテーブル関数の使用'
-'keywords':
+sidebar_label: 'azureBlobStorageテーブル関数の使用'
+slug: '/integrations/azure-data-factory/table-function'
+description: 'ClickHouseのazureBlobStorageテーブル関数の使用'
+keywords:
 - 'azure data factory'
 - 'azure'
 - 'microsoft'
 - 'data'
 - 'azureBlobStorage'
-'title': 'ClickHouseのazureBlobStorageテーブル関数を使用してAzureデータをClickHouseに取り込む'
+title: 'ClickHouseのazureBlobStorageテーブル関数を使用してAzureデータをClickHouseに取り込む'
 ---
 
 import Image from '@theme/IdealImage';
