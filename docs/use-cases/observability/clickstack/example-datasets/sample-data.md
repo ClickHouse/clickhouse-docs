@@ -31,19 +31,28 @@ import copy_api_key from '@site/static/images/use-cases/observability/copy_api_k
 
 # ClickStack - Sample logs, traces and metrics {#clickstack-sample-dataset}
 
-The following example assumes you have started ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started) and connected to the [local ClickHouse instance](/use-cases/observability/clickstack/getting-started#complete-connection-credentials) or a [ClickHouse Cloud instance](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
+The following example assumes you have started ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started) and connected to the [local ClickHouse instance](/use-cases/observability/clickstack/getting-started#complete-connection-credentials) or a [ClickHouse Cloud instance](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection). 
+
+:::note HyperDX in ClickHouse Cloud
+This sample dataset can also be used with HyperDX in ClickHouse Cloud, with only minor adjustments to the flow as noted. If using HyperDX in ClickHouse Cloud, users will require an Open Telemetry collector to be running locally as described in the [getting started guide for this deployment model](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud).
+:::
 
 <VerticalStepper>
 
 ## Navigate to the HyperDX UI {#navigate-to-the-hyperdx-ui}
 
-Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
+Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI if deploying locally. If using HyperDX in ClickHouse Cloud, select your service and `HyperDX` from the left menu.
 
 <Image img={hyperdx} alt="HyperDX UI" size="lg"/>
 
 ## Copy ingestion API key {#copy-ingestion-api-key}
 
+:::note HyperDX in ClickHouse Cloud
+This step is not required if using HyperDX in ClickHouse Cloud, where ingestion key support is not currently supported.
+:::
+
 Navigate to [`Team Settings`](http://localhost:8080/team) and copy the `Ingestion API Key` from the `API Keys` section. This API key ensures data ingestion through the OpenTelemetry collector is secure.
+
 
 <Image img={copy_api_key} alt="Copy API key" size="lg"/>
 
@@ -68,6 +77,10 @@ To load this data, we simply send it to the HTTP endpoint of the deployed OpenTe
 
 First, export the API key copied above.
 
+:::note HyperDX in ClickHouse Cloud
+This step is not required if using HyperDX in ClickHouse Cloud, where ingestion key support is not currently supported.
+:::
+
 ```shell
 # export API key
 export CLICKSTACK_API_KEY=<YOUR_INGESTION_API_KEY>
@@ -90,7 +103,7 @@ done
 
 This simulates OLTP log, trace, and metric sources sending data to the OTel collector. In production, these sources may be language clients or even other OTel collectors.
 
-Returning to the `Search` view, you should see that data has started to load:
+Returning to the `Search` view, you should see that data has started to load (adjust the timeframe to the `Last 1 hour` if the data does not rendwer):
 
 <Image img={hyperdx_10} alt="HyperDX search" size="lg"/>
 
