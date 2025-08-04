@@ -1,5 +1,27 @@
 #!/usr/bin/env bash
 
+check_aspell_dict_header() {
+    local dict_file="$1"
+    local expected_lang="$2"
+
+    if [[ ! -f "$dict_file" ]]; then
+        echo "Error: Dictionary file '$dict_file' does not exist"
+        return 1
+    fi
+
+    local first_line=$(head -n 1 "$dict_file")
+
+    # Check if first line matches the expected format: personal_ws-1.1 LANG NUMBER
+    if [[ ! "$first_line" =~ ^personal_ws-1\.1[[:space:]]+${expected_lang}[[:space:]]+[0-9]+$ ]]; then
+        echo "Error: Dictionary file '$dict_file' missing or invalid header"
+        echo "Expected format: personal_ws-1.1 ${expected_lang} <word_count>"
+        echo "Found: $first_line"
+        return 1
+    fi
+
+    return 0
+}
+
 echo "Checking spelling using aspell"
 
 # Only support OSX and Linux for now
@@ -32,6 +54,12 @@ ROOT_PATH=$(git rev-parse --show-toplevel)
 CHECK_LANG=en
 ASPELL_DICT_FILE="${ROOT_PATH}/scripts/aspell-dict-file.txt"
 ASPELL_IGNORE_PATH="${ROOT_PATH}/scripts/aspell-ignore/${CHECK_LANG}"
+
+# Check if main aspell dictionary has proper header
+if ! check_aspell_dict_header "${ASPELL_IGNORE_PATH}/aspell-dict.txt" "$CHECK_LANG"; then
+    echo "Please ensure aspell-dict.txt has the proper header format"
+    exit 1
+fi
 
 # Function to get a list of files
 get_files_to_check() {
