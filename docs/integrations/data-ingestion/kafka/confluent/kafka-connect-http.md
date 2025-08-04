@@ -4,7 +4,7 @@ sidebar_position: 4
 slug: /integrations/kafka/cloud/confluent/http
 description: 'Using HTTP Connector Sink with Kafka Connect and ClickHouse'
 title: 'Confluent HTTP Sink Connector'
-keywords: [confluent http sink, kafka connect, http connector, kafka integration, json data, rest api, clickhouse http interface]
+keywords: [confluent http sink, http connector, kafka integration, json data, rest api, clickhouse http interface]
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
