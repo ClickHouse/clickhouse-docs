@@ -282,7 +282,7 @@ const config = {
       prism: {
         theme: prismLight,
         darkTheme: prismDark,
-        additionalLanguages: ["java", "cpp", "rust", "python", "javascript", "yaml", "bash", "docker"],
+        additionalLanguages: ["java", "cpp", "rust", "python", "javascript", "yaml", "bash", "docker", "csharp"],
         magicComments: [
           // Remember to extend the default highlight class name as well!
           {
