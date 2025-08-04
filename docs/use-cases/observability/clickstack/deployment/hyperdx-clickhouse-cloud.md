@@ -31,11 +31,11 @@ This deployment pattern is ideal in the following scenarios:
 
 1. You already have observability data in ClickHouse Cloud and wish to visualize it using HyperDX.
 2. You operate a large observability deployment and need the dedicated performance and scalability of ClickStack with ClickHouse Cloud.
-3. You're already using ClickHouse Cloud for analytics and want to instrument your application using ClickStack’s instrumentation libraries — sending data to the same cluster. In this case, we recommend using [warehouses](/cloud/reference/warehouses) to isolate compute for observability workloads.
+3. You're already using ClickHouse Cloud for analytics and want to instrument your application using ClickStack instrumentation libraries — sending data to the same cluster. In this case, we recommend using [warehouses](/cloud/reference/warehouses) to isolate compute for observability workloads.
 
 ## Deployment steps {#deployment-steps}
 
-The following guide assumes you have already created a ClickHouse Cloud service. If you haven't created a service, follow the ["Create a ClicKhouse service"](/getting-started/quick-start/cloud#1-create-a-clickhouse-service) step from our Quick Start guide.
+The following guide assumes you have already created a ClickHouse Cloud service. If you haven't created a service, follow the ["Create a ClickHouse service"](/getting-started/quick-start/cloud#1-create-a-clickhouse-service) step from our Quick Start guide.
 
 <VerticalStepper headerLevel="h3">
 
@@ -56,7 +56,7 @@ Press the `Connect` button from the navigation menu. A modal will open offering 
 This step ensures tables are created with an Open Telemetry (OTel) schema, which can in turn be used seamlessly to create a data source in HyperDX. This also provides an OLTP endpoint which can be used for loading [sample datasets](/use-cases/observability/clickstack/sample-datasets) and sending OTel events to ClickStack.
 
 :::note Use of standard Open Telemetry collector
-The following instructions use the standard distribution of the OTel collector, rather than the ClickStack distribution. The latter requires an OpAMP server for configutation. This is currently not supported in private preview. The configuration below replicates the version used by the ClickStack distribution of the collector, providing an OTLP endpoint to which events can be sent.
+The following instructions use the standard distribution of the OTel collector, rather than the ClickStack distribution. The latter requires an OpAMP server for configuration. This is currently not supported in private preview. The configuration below replicates the version used by the ClickStack distribution of the collector, providing an OTLP endpoint to which events can be sent.
 :::
 
 Create a `otel-file-collector.yaml` file with the following content:
