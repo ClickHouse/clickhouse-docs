@@ -255,7 +255,7 @@ In production, we recommend creating a dedicated user for ingestion, restricting
 
 ### Connect to HyperDX {#connect-to-hyperdx}
 
-Select your service followed `HyperDX` from the left menu.
+Select your service, then select `HyperDX` from the left menu.
 
 <Image img={hyperdx_cloud} alt="ClickHouse Cloud HyperDX" size="lg"/>
 
