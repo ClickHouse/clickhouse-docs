@@ -15,7 +15,7 @@ HyperDX is the user interface for [**ClickStack**](/use-cases/observability/clic
 
 HyperDX is a purpose-built frontend for exploring and visualizing observability data, supporting both Lucene-style and SQL queries, interactive dashboards, alerting, trace exploration, and more—all optimized for ClickHouse as the backend.
 
-HyperDX in ClickHouse Cloud allows users can enjoy a more turnkey ClickStack experience - no infrastructure to manage, no separate authentication to configure. 
+HyperDX in ClickHouse Cloud allows users to enjoy a more turnkey ClickStack experience - no infrastructure to manage, no separate authentication to configure. 
 HyperDX can be launched with a single click and connected to your data -  fully integrated into the ClickHouse Cloud authentication system for seamless, secure access to your observability insights.
 
 ## Deployment {#main-concepts}
