@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Export Backups to your Own Cloud Account'
+sidebar_label: 'Overview'
 slug: /cloud/manage/backups/export-backups-to-own-cloud-account
 title: 'Export Backups to your Own Cloud Account'
 description: 'Describes how to export backups to your own Cloud account'
@@ -25,11 +25,11 @@ different region in the same cloud provider will incur [data transfer](/cloud/ma
 charges. Currently, we do not support cross-cloud backups.
 :::
 
-To export backups to your own cloud account, you can leverage the UI capability 
+To export backups to your own cloud account, you can leverage the [UI capability](/cloud/manage/backups/backup-restore-via-ui) 
 from the cloud console. This also allows you to also set backups to happen
 on a specific schedule by using [configurable backups](/cloud/manage/backups/configurable-backups).
-Alternatively, you can use SQL commands to export backups to your bucket. Both 
-approaches are explained in this document.
+Alternatively, you can use [SQL commands](/cloud/manage/backups/backup-restore-via-commands)
+to export backups to your bucket. Both approaches are explained in this document.
 
 :::note
 If you configure backups to your own bucket, ClickHouse Cloud will still take 

@@ -16,6 +16,7 @@ import gcp_configure from '@site/static/images/cloud/manage/backups/gcp_configur
 import gcp_stored_backups from '@site/static/images/cloud/manage/backups/gcp_stored_backups.png'
 import gcp_restore_command from '@site/static/images/cloud/manage/backups/gcp_restore_command.png'
 import azure_connection_details from '@site/static/images/cloud/manage/backups/azure_connection_details.png'
+import view_backups_azure from '@site/static/images/cloud/manage/backups/view_backups_azure.png'
 
 # Take a backup or restore a backup from the UI {#ui-experience}
 
@@ -324,8 +325,37 @@ you can configure the backup schedule from the “Settings” page. If configure
 the custom schedule is used to write backups to your bucket and the default schedule
 (backups every 24 hours) is used for backups in ClickHouse cloud owned bucket.
 
-##### 
+##### View backups stored in your bucket {#azure-view-backups-stored-in-your-bucket}
 
+The Backups page should display these backups in your bucket in a separate table 
+as shown below:
 
+<Image img={view_backups_azure} alt="View backups stored in your bucket" size="lg" />
+
+</VerticalStepper>
+
+### Restoring backups from Azure {#azure-restore-steps}
+
+To restore backups from Azure, follow the steps below:
+
+<VerticalStepper headerLevel="h5">
+
+##### Create a new service to restore to {#azure-create-new-service-to-restore-to}
+
+Create a new service to restore the backup to. Currently, we only support 
+restoring a backup into a new service.
+
+##### Get SQL command used to restore backup {#azure-obtain-sql-command-to-restore-backup}
+
+Click on the `access or restore a backup` link above the list of backups in the 
+UI to obtain the SQL command to restore the backup. The command should look like
+this, and you can pick the appropriate backup from the dropdown to get the 
+restore command for that specific backup. You will need to add your Azure 
+storage account connection string to the command.
+
+##### Run SQL command to restore backup {#azure-run-sql-command-to-restore-backup}
+
+Run the restore command from the SQL console in the newly created service to 
+restore the backup.
 
 </VerticalStepper>
