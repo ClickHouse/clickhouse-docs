@@ -34,9 +34,9 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 
 ## July 31, 2025 {#july-31-2025}
 
-** Vertical scaling for ClickPipes now available **
+**Vertical scaling for ClickPipes now available**
 
-[vertical scaling is now available for streaming ClickPipes](https://clickhouse.com/blog/clickpipes-flexible-scaling-monitoring). 
+[Vertical scaling is now available for streaming ClickPipes](https://clickhouse.com/blog/clickpipes-flexible-scaling-monitoring). 
 This feature allows you to control the size of each replica, in addition to the 
 number of replicas (horizontal scaling). The details page for each ClickPipe now
 also includes per-replica CPU and memory utilization, which helps you better 
