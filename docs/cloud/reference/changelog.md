@@ -31,6 +31,17 @@ import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.pn
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/cloud/reference/cloud-compatibility.md) page.
 
+
+## July 31, 2025 {#july-31-2025}
+
+**Vertical scaling for ClickPipes now available**
+
+[Vertical scaling is now available for streaming ClickPipes](https://clickhouse.com/blog/clickpipes-flexible-scaling-monitoring). 
+This feature allows you to control the size of each replica, in addition to the 
+number of replicas (horizontal scaling). The details page for each ClickPipe now
+also includes per-replica CPU and memory utilization, which helps you better 
+understand your workloads and plan re-sizing operations with confidence.
+
 ## July 24, 2025 {#july-24-2025}
 
 **ClickPipes for MySQL CDC now in public beta**

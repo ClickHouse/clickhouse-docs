@@ -60,7 +60,7 @@ Select your desired region for deploying the service, and give your new service 
 <Image img={createservice1} size="md" alt='New ClickHouse Service' border/>
 <br/>
 
-By default, the scale tier will create 3 replicas each with 4 VCPUs and 16 GiB RAM. [Vertical autoscaling](/manage/scaling#vertical-auto-scaling) will be enabled by default in the Scale tier.
+By default, the scale tier will create 3 ^^replica^^s each with 4 VCPUs and 16 GiB RAM. [Vertical autoscaling](/manage/scaling#vertical-auto-scaling) will be enabled by default in the Scale tier.
 
 Users can customize the service resources if required, specifying a minimum and maximum size for replicas to scale between. When ready, select `Create service`.
 
@@ -168,15 +168,15 @@ of primary keys might seem unexpected!):
 
   - primary keys in ClickHouse are **_not unique_** for each row in a table
 
-The primary key of a ClickHouse table determines how the data is sorted when written to disk. Every 8,192 rows or 10MB of
-data (referred to as the **index granularity**) creates an entry in the primary key index file. This granularity concept
-creates a **sparse index** that can easily fit in memory, and the granules represent a stripe of the smallest amount of
+The ^^primary key^^ of a ClickHouse table determines how the data is sorted when written to disk. Every 8,192 rows or 10MB of
+data (referred to as the **index granularity**) creates an entry in the ^^primary key^^ index file. This granularity concept
+creates a **^^sparse index^^** that can easily fit in memory, and the granules represent a stripe of the smallest amount of
 column data that gets processed during `SELECT` queries.
 
-The primary key can be defined using the `PRIMARY KEY` parameter. If you define a table without a `PRIMARY KEY` specified,
-then the key becomes the tuple specified in the `ORDER BY` clause. If you specify both a `PRIMARY KEY` and an `ORDER BY`, the primary key must be a subset of the sort order.
+The ^^primary key^^ can be defined using the `PRIMARY KEY` parameter. If you define a table without a `PRIMARY KEY` specified,
+then the key becomes the tuple specified in the `ORDER BY` clause. If you specify both a `PRIMARY KEY` and an `ORDER BY`, the ^^primary key^^ must be a subset of the sort order.
 
-The primary key is also the sorting key, which is a tuple of `(user_id, timestamp)`.  Therefore, the data stored in each
+The ^^primary key^^ is also the ^^sorting key^^, which is a tuple of `(user_id, timestamp)`.  Therefore, the data stored in each
 column file will be sorted by `user_id`, then `timestamp`.
 
 For a deep dive into core ClickHouse concepts, see ["Core Concepts"](../../managing-data/core-concepts/index.md).

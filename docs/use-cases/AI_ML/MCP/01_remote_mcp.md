@@ -74,7 +74,7 @@ claude mcp add --transport http clickhouse_cloud https://mcp.clickhouse.cloud/mc
 
 ## Authenticate to ClickHouse Cloud via OAuth {#authenticate-via-oauth}
 
-1. Claude Code will open a browser window on the firgst session. Otherwise, you can also trigger a connection by running the `/mcp` command in Claude Code and selecting the `clickhouse_cloud` MCP server
+1. Claude Code will open a browser window on the first session. Otherwise, you can also trigger a connection by running the `/mcp` command in Claude Code and selecting the `clickhouse_cloud` MCP server
 
 2. Authenticate using your ClickHouse Cloud credentials
 
