@@ -62,7 +62,7 @@ Select the `Line/Bar` visualization type from the top menu, followed by the `Tra
 
 Note that users can filter events using either a SQL `WHERE` clause or Lucene syntax and set the time frame over which events should be visualized. Multiple series are also supported.
 
-For example, filter to the service `frontend` by adding the filter `ServiceName:"frontend"`. Add a second series for the count of events over time with the alias `Count` by clicking `Add Series`.
+For example, filter by the service `frontend` by adding the filter `ServiceName:"frontend"`. Add a second series for the count of events over time with the alias `Count` by clicking `Add Series`.
 
 <Image img={visualization_3} alt="Simple visualization 2" size="lg"/>
 
