@@ -18,11 +18,11 @@ valid billing method configured. After your 30 day trial ends or your trial
 credits are depleted, whichever occurs first, you have the following billing 
 options to continue using ClickHouse Cloud:
 
-| Billing option                                      | Description                                                                             |
-|-----------------------------------------------------|-----------------------------------------------------------------------------------------|
-| [Direct PAYG](#direct-payg)                         | Add a valid credit card to your organization to Pay-As-You-Go                           |
-| [Marketplace PAYG](#cloud-marketplace-payg)         | Set up a Pay-As-You-Go subscription via a supported cloud marketplace provider          |
-| [Commited spend contract](#commited-spend-contract) | Enter into a committed spend contract directly or through a supported cloud marketplace |
+| Billing option                                       | Description                                                                             |
+|------------------------------------------------------|-----------------------------------------------------------------------------------------|
+| [Direct PAYG](#direct-payg)                          | Add a valid credit card to your organization to Pay-As-You-Go                           |
+| [Marketplace PAYG](#cloud-marketplace-payg)          | Set up a Pay-As-You-Go subscription via a supported cloud marketplace provider          |
+| [Committed spend contract](#committed-spend-contract) | Enter into a committed spend contract directly or through a supported cloud marketplace |
 
 If your trial ends and no billing option has been configured for your organization,
 all your services will be stopped. If a billing method still has not been 
@@ -89,7 +89,7 @@ for help. If a valid credit card has not been provided, the same unpaid invoice
 restrictions outlined above for [Direct PAYG](#direct-payg) will apply - this 
 includes service suspension and eventual data deletion.
 
-### Committed contract billing {#commited-spend-contract}
+### Committed contract billing {#committed-spend-contract}
 
 You may purchase credits for your organization through a committed contract by:
 
