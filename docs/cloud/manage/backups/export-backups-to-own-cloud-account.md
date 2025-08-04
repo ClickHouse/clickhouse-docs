@@ -41,7 +41,7 @@ You will need the following details to export/restore backups to your own CSP st
 2. AWS access key and secret. AWS role based authentication is also supported and can be used in place of AWS access key and secret.
 
 :::note
-In order to use role based authentication, please follow the Secure s3 [setup](https://clickhouse.com/docs/cloud/security/secure-s3). In addition, you will need to add `s3:PutObject`, and `s3:DeleteObject` permissions to the IAM policy decribed [here.](https://clickhouse.com/docs/cloud/security/secure-s3#option-2-manually-create-iam-role)
+In order to use role based authentication, please follow the Secure s3 [setup](https://clickhouse.com/docs/cloud/security/secure-s3). In addition, you will need to add `s3:PutObject`, and `s3:DeleteObject` permissions to the IAM policy described [here.](https://clickhouse.com/docs/cloud/security/secure-s3#option-2-manually-create-iam-role)
 :::
 
 ### Azure {#azure}

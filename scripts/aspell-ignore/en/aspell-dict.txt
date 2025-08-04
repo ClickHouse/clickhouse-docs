@@ -1,3 +1,4 @@
+personal_ws-1.1 en 3498
 AArch
 ACLs
 AICPA
@@ -1982,6 +1983,7 @@ enum's
 enums
 erfc
 errorCodeToName
+errored
 etag
 evalMLMethod
 exFAT
@@ -2649,6 +2651,7 @@ openldap
 opensky
 openssl
 opentelemetry
+oplog
 outfile
 overcommit
 overcommitted
@@ -2702,7 +2705,6 @@ permalink
 permalinked
 permalinks
 persistency
-personal_ws-1.1 en 3453 
 phpclickhouse
 picklist
 pipelined
@@ -2948,6 +2950,7 @@ resolvers
 restartable
 resultset
 resync
+resyncing
 resynchronization
 retentions
 rethrow
@@ -3625,3 +3628,40 @@ resync
 resynchronization
 Sackmann's
 JARs
+DSPy
+PydanticAI
+REPL
+SlackBot
+CopilotKit
+Copilotkit
+agentic
+fastmcp
+LangChain
+LangGraph
+Langchain
+Agno
+Streamlit
+Chainlit
+LlamaIndex
+LLMs
+MCPHost
+eleviate
+inprocess
+qwen
+streamable
+AnythingLLM
+OAuth
+waitlist
+WebUI
+librechat
+OpenMetrics
+clickpipe
+Unbatched
+unbatched
+UNIONs
+SharedCatalog
+blogpost
+lifecycles
+quickstart
+poller
+intracycle
