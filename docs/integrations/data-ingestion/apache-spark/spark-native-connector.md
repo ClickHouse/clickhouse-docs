@@ -476,7 +476,6 @@ ClickHouse.
 Spark SQL allows you to write queries exactly as you would in ClickHouse,
 so you can directly execute commands such as CREATE TABLE, TRUNCATE, and more - without modification, for instance:
 
-
 note:::
 When using Spark SQL, only one statement can be executed at a time.
 :::
@@ -486,8 +485,6 @@ USE clickhouse;
 ```
 
 ```sql
-
-USE clickhouse; 
 
 CREATE TABLE test_db.tbl_sql (
   create_time TIMESTAMP NOT NULL,
