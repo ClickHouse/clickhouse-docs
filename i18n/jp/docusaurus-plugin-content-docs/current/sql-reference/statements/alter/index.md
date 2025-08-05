@@ -1,9 +1,9 @@
 ---
-'description': 'ALTER のドキュメント'
-'sidebar_label': 'ALTER'
-'sidebar_position': 35
-'slug': '/sql-reference/statements/alter/'
-'title': 'ALTER'
+description: 'ALTER のドキュメント'
+sidebar_label: 'ALTER'
+sidebar_position: 35
+slug: '/sql-reference/statements/alter/'
+title: 'ALTER'
 ---
 
 

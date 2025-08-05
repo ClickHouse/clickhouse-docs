@@ -12,7 +12,6 @@ import Image from '@theme/IdealImage';
 import hyperdx_search from '@site/static/images/use-cases/observability/hyperdx-search.png';
 import hyperdx_sql from '@site/static/images/use-cases/observability/hyperdx-sql.png';
 
-
 ## Search in ClickStack and Elastic {#search-in-clickstack-and-elastic}
 
 ClickHouse is a SQL-native engine, designed from the ground up for high-performance analytical workloads. In contrast, Elasticsearch provides a SQL-like interface, transpiling SQL into the underlying Elasticsearch query DSL — meaning it is not a first-class citizen, and [feature parity](https://www.elastic.co/docs/explore-analyze/query-filter/languages/sql-limitations) is limited. 
@@ -54,7 +53,6 @@ Both HyperDX and Elasticsearch provide flexible query languages to enable intuit
 | Boosting                | `quick^2 fox` | `quick^2 fox` | Not supported in HyperDX at present. |
 | Field wildcard          | `service.*:error` | `service.*:error` | Not supported in HyperDX at present. |
 | Escaped special chars   | Escape reserved characters with `\` | Same      | Escaping required for reserved symbols. |
-
 
 ## Exists/missing differences {#empty-value-differences}
 

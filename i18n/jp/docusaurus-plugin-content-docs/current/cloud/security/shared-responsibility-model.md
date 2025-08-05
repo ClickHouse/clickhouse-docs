@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'Shared Responsibility Model'
-'slug': '/cloud/security/shared-responsibility-model'
-'title': 'セキュリティ共有責任モデル'
-'description': 'Learn more about the security model of ClickHouse Cloud'
+sidebar_label: 'Shared Responsibility Model'
+slug: '/cloud/security/shared-responsibility-model'
+title: 'セキュリティ共有責任モデル'
+description: 'Learn more about the security model of ClickHouse Cloud'
 ---
 
 

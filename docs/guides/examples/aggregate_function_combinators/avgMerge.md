@@ -14,7 +14,7 @@ The [`Merge`](/sql-reference/aggregate-functions/combinators#-state) combinator
 can be applied to the [`avg`](/sql-reference/aggregate-functions/reference/avg)
 function to produce a final result by combining partial aggregate states.
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 The `Merge` combinator is closely related to the `State` combinator. Refer to 
 ["avgState example usage"](/examples/aggregate-function-combinators/avgState/#example-usage)

@@ -1,8 +1,8 @@
 ---
-'slug': '/integrations/jupysql'
-'sidebar_label': 'Jupyterノートブック'
-'description': 'JupySQLはJupyter向けのマルチプラットフォームデータベースツールです。'
-'title': 'ClickHouseとJupySQLの使用方法'
+slug: '/integrations/jupysql'
+sidebar_label: 'Jupyterノートブック'
+description: 'JupySQLはJupyter向けのマルチプラットフォームデータベースツールです。'
+title: 'ClickHouseとJupySQLの使用方法'
 ---
 
 import Image from '@theme/IdealImage';

@@ -1,9 +1,9 @@
 ---
-'description': 'row_number window 関数のドキュメント'
-'sidebar_label': 'row_number'
-'sidebar_position': 2
-'slug': '/sql-reference/window-functions/row_number'
-'title': 'row_number'
+description: 'row_number window 関数のドキュメント'
+sidebar_label: 'row_number'
+sidebar_position: 2
+slug: '/sql-reference/window-functions/row_number'
+title: 'row_number'
 ---
 
 

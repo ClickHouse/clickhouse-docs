@@ -1,9 +1,9 @@
 ---
-'description': 'Expression 特殊データ型のドキュメント'
-'sidebar_label': '式'
-'sidebar_position': 58
-'slug': '/sql-reference/data-types/special-data-types/expression'
-'title': 'Expression'
+description: 'Expression 特殊データ型のドキュメント'
+sidebar_label: '式'
+sidebar_position: 58
+slug: '/sql-reference/data-types/special-data-types/expression'
+title: 'Expression'
 ---
 
 

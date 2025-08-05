@@ -10,7 +10,6 @@ description: 'Alerts with ClickStack'
 import Image from '@theme/IdealImage';
 import search_alert from '@site/static/images/use-cases/observability/search_alert.png';
 
-
 ## Search alerts {#search-alerts}
 
 After entering a [search](/use-cases/observability/clickstack/search), you can create an alert to be

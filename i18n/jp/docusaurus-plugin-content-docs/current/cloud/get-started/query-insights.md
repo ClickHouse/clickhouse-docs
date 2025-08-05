@@ -1,13 +1,13 @@
 ---
-'sidebar_title': 'Query Insights'
-'slug': '/cloud/get-started/query-insights'
-'description': 'system.query_logのデータを可視化して、クエリのデバッグとパフォーマンスの最適化を簡素化'
-'keywords':
+sidebar_title: 'Query Insights'
+slug: '/cloud/get-started/query-insights'
+description: 'system.query_logのデータを可視化して、クエリのデバッグとパフォーマンスの最適化を簡素化'
+keywords:
 - 'query insights'
 - 'query log'
 - 'query log ui'
 - 'system.query_log insights'
-'title': 'クエリインサイト'
+title: 'クエリインサイト'
 ---
 
 import Image from '@theme/IdealImage';

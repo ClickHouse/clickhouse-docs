@@ -1,7 +1,7 @@
 ---
-'title': 'AWS プライベートリンク'
-'description': 'このドキュメントでは、AWS プライベートリンクを使用して ClickHouse Cloud に接続する方法について説明します。'
-'slug': '/manage/security/aws-privatelink'
+title: 'AWS プライベートリンク'
+description: 'このドキュメントでは、AWS プライベートリンクを使用して ClickHouse Cloud に接続する方法について説明します。'
+slug: '/manage/security/aws-privatelink'
 ---
 
 import Image from '@theme/IdealImage';

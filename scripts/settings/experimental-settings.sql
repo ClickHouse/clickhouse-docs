@@ -11,7 +11,7 @@ WITH
                 format('[{}](/operations/settings/settings#{})', name, name) AS Name,
                 format('`{}`', default) AS Default
 FROM system.settings
-WHERE tier = 'Experimental' AND alias_for='' AND name NOT LIKE 'allow_experimental_inverted_index'
+WHERE tier = 'Experimental' AND alias_for=''
     ),
     experimental_mergetree_settings AS
     (

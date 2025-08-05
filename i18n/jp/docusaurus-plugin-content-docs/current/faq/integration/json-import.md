@@ -1,9 +1,9 @@
 ---
-'slug': '/faq/integration/json-import'
-'title': 'ClickHouseへのJSONインポート方法'
-'toc_hidden': true
-'toc_priority': 11
-'description': 'このページでは、JSONをClickHouseにインポートする方法について説明します。'
+slug: '/faq/integration/json-import'
+title: 'ClickHouseへのJSONインポート方法'
+toc_hidden: true
+toc_priority: 11
+description: 'このページでは、JSONをClickHouseにインポートする方法について説明します。'
 ---
 
 

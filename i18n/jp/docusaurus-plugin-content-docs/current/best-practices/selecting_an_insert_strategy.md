@@ -1,9 +1,9 @@
 ---
-'slug': '/best-practices/selecting-an-insert-strategy'
-'sidebar_position': 10
-'sidebar_label': 'インサートストラテジーの選択'
-'title': 'インサートストラテジーの選択'
-'description': 'ClickHouse でインサートストラテジーを選択する方法について説明したページ'
+slug: '/best-practices/selecting-an-insert-strategy'
+sidebar_position: 10
+sidebar_label: 'インサートストラテジーの選択'
+title: 'インサートストラテジーの選択'
+description: 'ClickHouse でインサートストラテジーを選択する方法について説明したページ'
 ---
 
 import Image from '@theme/IdealImage';

@@ -1,8 +1,8 @@
 ---
-'sidebar_label': '新しいユーザーの招待'
-'slug': '/cloud/security/inviting-new-users'
-'title': '新しいユーザーの招待'
-'description': 'このページでは管理者が組織に新しいユーザーを招待し、それらに役割を割り当てる方法について説明しています'
+sidebar_label: '新しいユーザーの招待'
+slug: '/cloud/security/inviting-new-users'
+title: '新しいユーザーの招待'
+description: 'このページでは管理者が組織に新しいユーザーを招待し、それらに役割を割り当てる方法について説明しています'
 ---
 
 import Image from '@theme/IdealImage';

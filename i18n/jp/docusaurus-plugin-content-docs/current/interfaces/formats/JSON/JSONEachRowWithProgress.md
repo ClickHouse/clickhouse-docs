@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'JSONEachRowWithProgress フォーマットのドキュメント'
-'input_format': false
-'keywords':
+alias: []
+description: 'JSONEachRowWithProgress フォーマットのドキュメント'
+input_format: false
+keywords:
 - 'JSONEachRowWithProgress'
-'output_format': true
-'slug': '/interfaces/formats/JSONEachRowWithProgress'
-'title': 'JSONEachRowWithProgress'
+output_format: true
+slug: '/interfaces/formats/JSONEachRowWithProgress'
+title: 'JSONEachRowWithProgress'
 ---
 
 

@@ -40,7 +40,6 @@ Once your catalog is configured, you must generate credentials for ClickHouse. T
 
 * For Delta clients, use a Personal Access Token ([PAT](https://docs.databricks.com/aws/en/dev-tools/auth/pat)).
 
-
 ## Creating a connection between Unity Catalog and ClickHouse {#creating-a-connection-between-unity-catalog-and-clickhouse}
 
 With your Unity Catalog configured and authentication in place, establish a connection between ClickHouse and Unity Catalog.

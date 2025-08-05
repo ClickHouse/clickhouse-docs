@@ -1,9 +1,9 @@
 ---
-'slug': '/best-practices/use-materialized-views'
-'sidebar_position': 10
-'sidebar_label': 'Materialized View'
-'title': 'Materialized View'
-'description': 'Page describing Materialized Views'
+slug: '/best-practices/use-materialized-views'
+sidebar_position: 10
+sidebar_label: 'Materialized View'
+title: 'Materialized View'
+description: 'Page describing Materialized Views'
 ---
 
 import Image from '@theme/IdealImage';

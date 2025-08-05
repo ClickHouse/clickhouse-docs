@@ -1,8 +1,8 @@
 ---
-'slug': '/data-compression/compression-in-clickhouse'
-'title': 'ClickHouseにおける圧縮'
-'description': 'ClickHouseの圧縮アルゴリズムの選択'
-'keywords':
+slug: '/data-compression/compression-in-clickhouse'
+title: 'ClickHouseにおける圧縮'
+description: 'ClickHouseの圧縮アルゴリズムの選択'
+keywords:
 - 'compression'
 - 'codec'
 - 'encoding'

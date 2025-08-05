@@ -1,9 +1,9 @@
 ---
-'description': 'Overview page for window functions'
-'sidebar_label': 'Window Functions'
-'sidebar_position': 1
-'slug': '/sql-reference/window-functions/'
-'title': 'Window Functions'
+description: 'Overview page for window functions'
+sidebar_label: 'Window Functions'
+sidebar_position: 1
+slug: '/sql-reference/window-functions/'
+title: 'Window Functions'
 ---
 
 # ウィンドウ関数

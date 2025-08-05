@@ -1,9 +1,9 @@
 ---
-'description': 'JSONCompactStringsEachRowWithNamesAndTypes フォーマットのドキュメント'
-'keywords':
+description: 'JSONCompactStringsEachRowWithNamesAndTypes フォーマットのドキュメント'
+keywords:
 - 'JSONCompactStringsEachRowWithNamesAndTypes'
-'slug': '/interfaces/formats/JSONCompactStringsEachRowWithNamesAndTypes'
-'title': 'JSONCompactStringsEachRowWithNamesAndTypes'
+slug: '/interfaces/formats/JSONCompactStringsEachRowWithNamesAndTypes'
+title: 'JSONCompactStringsEachRowWithNamesAndTypes'
 ---
 
 

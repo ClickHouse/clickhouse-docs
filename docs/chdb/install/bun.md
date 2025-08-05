@@ -36,7 +36,9 @@ var result = query("SELECT version()", "CSV");
 console.log(result); // 23.10.1.1
 ```
 
+<!-- vale ClickHouse.Headings = NO -->
 ### Session.Query(query, *format) {#sessionqueryquery-format}
+<!-- vale ClickHouse.Headings = YES -->
 
 ```javascript
 import { Session } from 'chdb-bun';
@@ -51,4 +53,3 @@ console.log(result);
 
 sess.cleanup(); // cleanup session, this will delete the database
 ```
-

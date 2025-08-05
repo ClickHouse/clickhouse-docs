@@ -201,7 +201,7 @@ Users can schedule upgrades for their services. This feature is supported for En
 
 [Golang](https://github.com/ClickHouse/clickhouse-go/releases/tag/v2.30.1), [Python](https://github.com/ClickHouse/clickhouse-connect/releases/tag/v0.8.11), and [NodeJS](https://github.com/ClickHouse/clickhouse-js/releases/tag/1.10.1) clients added support for Dynamic, Variant, and JSON types.
 
-### DBT support for Refreshable Materialized Views {#dbt-support-for-refreshable-materialized-views}
+### DBT support for refreshable materialized views {#dbt-support-for-refreshable-materialized-views}
 
 DBT now [supports Refreshable Materialized Views](https://github.com/ClickHouse/dbt-clickhouse/releases/tag/v1.8.7) in the `1.8.7` release.
 
@@ -360,7 +360,7 @@ Compute-compute separation allows you to designate specific services as read-wri
 
 Customers using multi-factor authentication can now obtain recovery codes that can be used in the event of a lost phone or accidentally deleted token. Customers enrolling in MFA for the first time will be provided the code on set up. Customers with existing MFA can obtain a recovery code by removing their existing MFA token and adding a new one.
 
-### ClickPipes Update: Custom Certificates, Latency Insights, and More! {#clickpipes-update-custom-certificates-latency-insights-and-more}
+### ClickPipes update: custom certificates, latency insights, and more! {#clickpipes-update-custom-certificates-latency-insights-and-more}
 
 We're excited to share the latest updates for ClickPipes, the easiest way to ingest data into your ClickHouse service! These new features are designed to enhance your control over data ingestion and provide greater visibility into performance metrics.
 
@@ -414,7 +414,7 @@ ClickPipes is the easiest way to ingest data into ClickHouse Cloud. We're happy 
 
 ## July 18, 2024 {#july-18-2024}
 
-### Prometheus Endpoint for Metrics is now Generally Available {#prometheus-endpoint-for-metrics-is-now-generally-available}
+### Prometheus endpoint for metrics is now generally available {#prometheus-endpoint-for-metrics-is-now-generally-available}
 
 In our last cloud changelog, we announced the Private Preview for exporting [Prometheus](https://prometheus.io/) metrics from ClickHouse Cloud. This feature allows you to use the [ClickHouse Cloud API](/cloud/manage/api/api-overview) to get your metrics into tools like [Grafana](https://grafana.com/) and [Datadog](https://www.datadoghq.com/) for visualization. We're happy to announce that this feature is now **Generally Available**. Please see [our docs](/integrations/prometheus) to learn more about this feature.
 
@@ -449,13 +449,13 @@ This release also includes support for subscriptions via the [Microsoft Azure Ma
 
 If you'd like any specific region to be supported, please [contact us](https://clickhouse.com/support/program).
 
-### Query Log Insights {#query-log-insights}
+### Query log insights {#query-log-insights}
 
 Our new Query Insights UI in the Cloud Console makes ClickHouse's built-in query log a lot easier to use. ClickHouse's `system.query_log` table is a key source of information for query optimization, debugging, and monitoring overall cluster health and performance.  There's just one caveat: with 70+ fields and multiple records per query, interpreting the query log represents a steep learning curve. This initial version of query insights provides a blueprint for future work to simplify query debugging and optimization patterns. We'd love to hear your feedback as we continue to iterate on this feature, so please reach out—your input will be greatly appreciated!
 
 <Image img={query_insights} size="lg" alt="ClickHouse Cloud Query Insights UI showing query performance metrics and analysis" border />
 
-### Prometheus Endpoint for Metrics (Private Preview) {#prometheus-endpoint-for-metrics-private-preview}
+### Prometheus endpoint for metrics (private preview) {#prometheus-endpoint-for-metrics-private-preview}
 
 Perhaps one of our most requested features: you can now export [Prometheus](https://prometheus.io/) metrics from ClickHouse Cloud to [Grafana](https://grafana.com/) and [Datadog](https://www.datadoghq.com/) for visualization. Prometheus provides an open-source solution to monitor ClickHouse and set up custom alerts. Access to Prometheus metrics for your ClickHouse Cloud service is available via the [ClickHouse Cloud API](/integrations/prometheus). This feature is currently in Private Preview. Please reach out to the [support team](https://clickhouse.com/support/program) to enable this feature for your organization.
 

@@ -1,14 +1,14 @@
 ---
-'alias':
+alias:
 - 'TSVRaw'
 - 'Raw'
-'description': 'TabSeparatedRawフォーマットのドキュメント'
-'input_format': true
-'keywords':
+description: 'TabSeparatedRawフォーマットのドキュメント'
+input_format: true
+keywords:
 - 'TabSeparatedRaw'
-'output_format': true
-'slug': '/interfaces/formats/TabSeparatedRaw'
-'title': 'TabSeparatedRaw'
+output_format: true
+slug: '/interfaces/formats/TabSeparatedRaw'
+title: 'TabSeparatedRaw'
 ---
 
 

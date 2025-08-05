@@ -1,16 +1,16 @@
 ---
-'sidebar_label': 'Superset'
-'sidebar_position': 198
-'slug': '/integrations/superset'
-'keywords':
+sidebar_label: 'Superset'
+sidebar_position: 198
+slug: '/integrations/superset'
+keywords:
 - 'clickhouse'
 - 'superset'
 - 'connect'
 - 'integrate'
 - 'ui'
-'description': 'Apache Superset is an open-source data exploration and visualization
+description: 'Apache Superset is an open-source data exploration and visualization
   platform.'
-'title': 'Connect Superset to ClickHouse'
+title: 'Connect Superset to ClickHouse'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';

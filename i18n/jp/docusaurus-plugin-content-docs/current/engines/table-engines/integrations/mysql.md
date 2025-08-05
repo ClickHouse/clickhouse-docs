@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for MySQL Table Engine'
-'sidebar_label': 'MySQL'
-'sidebar_position': 138
-'slug': '/engines/table-engines/integrations/mysql'
-'title': 'The MySQL engine allows you to perform `SELECT` and `INSERT` queries on
+description: 'Documentation for MySQL Table Engine'
+sidebar_label: 'MySQL'
+sidebar_position: 138
+slug: '/engines/table-engines/integrations/mysql'
+title: 'The MySQL engine allows you to perform `SELECT` and `INSERT` queries on
   data that is stored on a remote MySQL server.'
 ---
 

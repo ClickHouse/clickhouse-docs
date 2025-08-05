@@ -1,9 +1,9 @@
 ---
-'description': 'Dictionaryのためのドキュメント'
-'sidebar_label': 'DICTIONARY'
-'sidebar_position': 38
-'slug': '/sql-reference/statements/create/dictionary'
-'title': 'CREATE DICTIONARY'
+description: 'Dictionaryのためのドキュメント'
+sidebar_label: 'DICTIONARY'
+sidebar_position: 38
+slug: '/sql-reference/statements/create/dictionary'
+title: 'CREATE DICTIONARY'
 ---
 
 

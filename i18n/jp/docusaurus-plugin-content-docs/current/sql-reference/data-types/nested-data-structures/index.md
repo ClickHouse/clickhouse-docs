@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouse における入れ子データ構造の概要'
-'sidebar_label': '入れ子（名前1 タイプ1、名前2 タイプ2、...）'
-'sidebar_position': 57
-'slug': '/sql-reference/data-types/nested-data-structures/nested'
-'title': '入れ子'
+description: 'ClickHouse における入れ子データ構造の概要'
+sidebar_label: '入れ子（名前1 タイプ1、名前2 タイプ2、...）'
+sidebar_position: 57
+slug: '/sql-reference/data-types/nested-data-structures/nested'
+title: '入れ子'
 ---
 
 

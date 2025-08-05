@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'CSV 形式のドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'CSV 形式のドキュメント'
+input_format: true
+keywords:
 - 'CSV'
-'output_format': true
-'slug': '/interfaces/formats/CSV'
-'title': 'CSV'
+output_format: true
+slug: '/interfaces/formats/CSV'
+title: 'CSV'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'slug': '/guides/sre/configuring-ssl'
-'sidebar_label': 'SSL-TLSの設定'
-'sidebar_position': 20
-'title': 'SSL-TLSの設定'
-'description': 'このガイドでは、ClickHouseをOpenSSL証明書を使用して接続を検証するように構成するためのシンプルで最小限の設定を提供しています。'
+slug: '/guides/sre/configuring-ssl'
+sidebar_label: 'SSL-TLSの設定'
+sidebar_position: 20
+title: 'SSL-TLSの設定'
+description: 'このガイドでは、ClickHouseをOpenSSL証明書を使用して接続を検証するように構成するためのシンプルで最小限の設定を提供しています。'
 ---
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';

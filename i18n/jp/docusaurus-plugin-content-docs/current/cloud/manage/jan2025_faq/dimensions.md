@@ -1,10 +1,10 @@
 ---
-'title': 'New Pricing Dimensions'
-'slug': '/cloud/manage/jan-2025-faq/pricing-dimensions'
-'keywords':
+title: 'New Pricing Dimensions'
+slug: '/cloud/manage/jan-2025-faq/pricing-dimensions'
+keywords:
 - 'new pricing'
 - 'dimensions'
-'description': 'Pricing dimensions for data transfer and ClickPipes'
+description: 'Pricing dimensions for data transfer and ClickPipes'
 ---
 
 import Image from '@theme/IdealImage';

@@ -1,11 +1,11 @@
 ---
-'description': 'RowBinaryWithNames形式のドキュメント'
-'input_format': true
-'keywords':
+description: 'RowBinaryWithNames形式のドキュメント'
+input_format: true
+keywords:
 - 'RowBinaryWithNames'
-'output_format': true
-'slug': '/interfaces/formats/RowBinaryWithNames'
-'title': 'RowBinaryWithNames'
+output_format: true
+slug: '/interfaces/formats/RowBinaryWithNames'
+title: 'RowBinaryWithNames'
 ---
 
 import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settings.md'

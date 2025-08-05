@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'Template フォーマットのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'Template フォーマットのドキュメント'
+input_format: true
+keywords:
 - 'Template'
-'output_format': true
-'slug': '/interfaces/formats/Template'
-'title': 'テンプレート'
+output_format: true
+slug: '/interfaces/formats/Template'
+title: 'テンプレート'
 ---
 
 

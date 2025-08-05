@@ -66,7 +66,6 @@ As well as detecting the schema, JSON schema inference will automatically infer 
 
 Using the [s3 function](/sql-reference/table-functions/s3) with the `DESCRIBE` command shows the types that will be inferred.
 
-
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.json.gz')
 SETTINGS describe_compact_output = 1
@@ -286,7 +285,6 @@ ClickHouse handles this through a dedicated [`JSON`](/sql-reference/data-types/n
 If you know your JSON is highly dynamic with many unique keys and multiple types for the same keys, we recommend not using schema inference with `JSONEachRow` to try and infer a column for each key - even if the data is in newline-delimited JSON format.
 
 Consider the following example from an extended version of the above [Python PyPI dataset](https://clickpy.clickhouse.com/) dataset. Here we have added an arbitrary `tags` column with random key value pairs.
-
 
 ```json
 {

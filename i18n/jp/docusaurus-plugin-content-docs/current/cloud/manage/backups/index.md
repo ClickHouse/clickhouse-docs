@@ -1,8 +1,8 @@
 ---
-'slug': '/cloud/manage/backups'
-'title': 'バックアップ'
-'description': 'バックアップに関する目次ページ。'
-'keywords':
+slug: '/cloud/manage/backups'
+title: 'バックアップ'
+description: 'バックアップに関する目次ページ。'
+keywords:
 - 'backups'
 - 'configurable backups'
 - 'export backups to own cloud'

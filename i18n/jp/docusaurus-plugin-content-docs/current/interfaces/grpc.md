@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouse における gRPC インターフェースのドキュメント'
-'sidebar_label': 'gRPC インターフェース'
-'sidebar_position': 25
-'slug': '/interfaces/grpc'
-'title': 'gRPC Interface'
+description: 'ClickHouse における gRPC インターフェースのドキュメント'
+sidebar_label: 'gRPC インターフェース'
+sidebar_position: 25
+slug: '/interfaces/grpc'
+title: 'gRPC Interface'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'Javaランナー'
-'slug': '/integrations/google-dataflow/java-runner'
-'sidebar_position': 2
-'description': 'Users can ingest data into ClickHouse using Google Dataflow Java Runner'
-'title': 'Dataflow Java Runner'
+sidebar_label: 'Javaランナー'
+slug: '/integrations/google-dataflow/java-runner'
+sidebar_position: 2
+description: 'Users can ingest data into ClickHouse using Google Dataflow Java Runner'
+title: 'Dataflow Java Runner'
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';

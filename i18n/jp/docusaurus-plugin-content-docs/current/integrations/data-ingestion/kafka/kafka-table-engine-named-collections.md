@@ -1,11 +1,11 @@
 ---
-'title': 'Integrating ClickHouse with Kafka using Named Collections'
-'description': 'How to use named collections to connect clickhouse to kafka'
-'keywords':
+title: 'Integrating ClickHouse with Kafka using Named Collections'
+description: 'How to use named collections to connect clickhouse to kafka'
+keywords:
 - 'named collection'
 - 'how to'
 - 'kafka'
-'slug': '/integrations/data-ingestion/kafka/kafka-table-engine-named-collections'
+slug: '/integrations/data-ingestion/kafka/kafka-table-engine-named-collections'
 ---
 
 

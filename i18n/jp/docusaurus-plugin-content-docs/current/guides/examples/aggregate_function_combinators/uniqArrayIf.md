@@ -1,15 +1,15 @@
 ---
-'slug': '/examples/aggregate-function-combinators/uniqArrayIf'
-'title': 'uniqArrayIf'
-'description': 'uniqArrayIfコンビネータの使用例'
-'keywords':
+slug: '/examples/aggregate-function-combinators/uniqArrayIf'
+title: 'uniqArrayIf'
+description: 'uniqArrayIfコンビネータの使用例'
+keywords:
 - 'uniq'
 - 'array'
 - 'if'
 - 'combinator'
 - 'examples'
 - 'uniqArrayIf'
-'sidebar_label': 'uniqArrayIf'
+sidebar_label: 'uniqArrayIf'
 ---
 
 

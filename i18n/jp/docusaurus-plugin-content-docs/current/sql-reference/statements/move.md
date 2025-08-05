@@ -1,9 +1,9 @@
 ---
-'description': 'MOVEアクセスエンティティステートメントのドキュメント'
-'sidebar_label': 'MOVE'
-'sidebar_position': 54
-'slug': '/sql-reference/statements/move'
-'title': 'MOVEアクセスエンティティステートメント'
+description: 'MOVEアクセスエンティティステートメントのドキュメント'
+sidebar_label: 'MOVE'
+sidebar_position: 54
+slug: '/sql-reference/statements/move'
+title: 'MOVEアクセスエンティティステートメント'
 ---
 
 

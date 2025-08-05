@@ -1,6 +1,6 @@
 ---
-'slug': '/cloud/reference'
-'keywords':
+slug: '/cloud/reference'
+keywords:
 - 'Cloud'
 - 'reference'
 - 'architecture'
@@ -10,9 +10,9 @@
 - 'Changelogs'
 - 'Supported Cloud Regions'
 - 'Cloud Compatibility'
-'title': '概要'
-'hide_title': true
-'description': 'Cloudリファレンスセクションのランディングページ'
+title: '概要'
+hide_title: true
+description: 'Cloudリファレンスセクションのランディングページ'
 ---
 
 

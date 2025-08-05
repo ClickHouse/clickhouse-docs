@@ -1,6 +1,6 @@
 ---
 slug: /materialized-view/refreshable-materialized-view
-title: 'Refreshable Materialized View'
+title: 'Refreshable materialized view'
 description: 'How to use materialized views to speed up queries'
 keywords: ['refreshable materialized view', 'refresh', 'materialized views', 'speed up queries', 'query optimization']
 ---
@@ -14,11 +14,9 @@ The diagram explains how Refreshable Materialized Views work:
 
 <Image img={refreshableMaterializedViewDiagram} size="lg" alt="Refreshable materialized view diagram"/>
 
-
 You can also see the following video:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-KhFJSY8yrs?si=VPRSZb20vaYkuR_C" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
 
 ## When should refreshable materialized views be used? {#when-should-refreshable-materialized-views-be-used}
 

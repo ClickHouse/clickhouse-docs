@@ -1,8 +1,8 @@
 ---
-'description': 'サーバーのCPU過負荷時の挙動の制御'
-'sidebar_label': 'サーバー過負荷'
-'slug': '/operations/settings/server-overload'
-'title': 'サーバーの過負荷'
+description: 'サーバーのCPU過負荷時の挙動の制御'
+sidebar_label: 'サーバー過負荷'
+slug: '/operations/settings/server-overload'
+title: 'サーバーの過負荷'
 ---
 
 

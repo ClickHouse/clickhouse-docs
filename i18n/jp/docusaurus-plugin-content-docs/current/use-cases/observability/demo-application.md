@@ -1,8 +1,8 @@
 ---
-'title': 'デモアプリケーション'
-'description': '可観測性のためのデモアプリケーション'
-'slug': '/observability/demo-application'
-'keywords':
+title: 'デモアプリケーション'
+description: '可観測性のためのデモアプリケーション'
+slug: '/observability/demo-application'
+keywords:
 - 'observability'
 - 'logs'
 - 'traces'

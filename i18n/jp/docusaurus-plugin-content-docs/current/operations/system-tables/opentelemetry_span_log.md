@@ -1,10 +1,10 @@
 ---
-'description': '実行されたクエリのトレーススパンに関する情報を含むシステムテーブル。'
-'keywords':
+description: '実行されたクエリのトレーススパンに関する情報を含むシステムテーブル。'
+keywords:
 - 'system table'
 - 'opentelemetry_span_log'
-'slug': '/operations/system-tables/opentelemetry_span_log'
-'title': 'system.opentelemetry_span_log'
+slug: '/operations/system-tables/opentelemetry_span_log'
+title: 'system.opentelemetry_span_log'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

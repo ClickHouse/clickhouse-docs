@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'EMQX'
-'sidebar_position': 1
-'slug': '/integrations/emqx'
-'description': 'ClickHouse との EMQX 統合についての紹介'
-'title': 'ClickHouse との EMQX 統合'
+sidebar_label: 'EMQX'
+sidebar_position: 1
+slug: '/integrations/emqx'
+description: 'ClickHouse との EMQX 統合についての紹介'
+title: 'ClickHouse との EMQX 統合'
 ---
 
 import emqx_cloud_artitecture from '@site/static/images/integrations/data-ingestion/emqx/emqx-cloud-artitecture.png';

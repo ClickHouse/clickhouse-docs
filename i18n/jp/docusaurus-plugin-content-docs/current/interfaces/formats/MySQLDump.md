@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'MySQLDump形式のドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'MySQLDump形式のドキュメント'
+input_format: true
+keywords:
 - 'MySQLDump'
-'output_format': false
-'slug': '/interfaces/formats/MySQLDump'
-'title': 'MySQLDump'
+output_format: false
+slug: '/interfaces/formats/MySQLDump'
+title: 'MySQLDump'
 ---
 
 

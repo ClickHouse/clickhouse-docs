@@ -1,8 +1,8 @@
 ---
-'description': 'Documentation for FROM Clause'
-'sidebar_label': 'FROM'
-'slug': '/sql-reference/statements/select/from'
-'title': 'FROM Clause'
+description: 'Documentation for FROM Clause'
+sidebar_label: 'FROM'
+slug: '/sql-reference/statements/select/from'
+title: 'FROM Clause'
 ---
 
 

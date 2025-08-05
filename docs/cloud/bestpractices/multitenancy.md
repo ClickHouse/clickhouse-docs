@@ -305,7 +305,7 @@ User management is similar to the approaches described previously, since all ser
 
 Note the number of child services in a warehouse is limited to a small number. See [Warehouse limitations](/cloud/reference/warehouses#limitations).
 
-## Separate Cloud service {#separate-service}
+## Separate cloud service {#separate-service}
 
 The most radical approach is to use a different ClickHouse service per tenant. 
 
@@ -375,4 +375,3 @@ FROM events
 5. │ 975fb0c8-55bd-4df4-843b-34f5cfeed0a9 │ user_login  │ 2025-03-19 08:50:00 │    1004 │ {"device": "desktop", "location": "LA"} │
    └──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
 ```
-

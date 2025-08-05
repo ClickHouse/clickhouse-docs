@@ -1,9 +1,9 @@
 ---
-'description': 'テーブルTTLの操作に関するドキュメント'
-'sidebar_label': 'TTL'
-'sidebar_position': 44
-'slug': '/sql-reference/statements/alter/ttl'
-'title': 'テーブルTTLの操作'
+description: 'テーブルTTLの操作に関するドキュメント'
+sidebar_label: 'TTL'
+sidebar_position: 44
+slug: '/sql-reference/statements/alter/ttl'
+title: 'テーブルTTLの操作'
 ---
 
 

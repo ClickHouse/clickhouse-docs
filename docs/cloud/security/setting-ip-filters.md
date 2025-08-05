@@ -9,7 +9,7 @@ import Image from '@theme/IdealImage';
 import ip_filtering_after_provisioning from '@site/static/images/cloud/security/ip-filtering-after-provisioning.png';
 import ip_filter_add_single_ip from '@site/static/images/cloud/security/ip-filter-add-single-ip.png';
 
-## Setting IP Filters {#setting-ip-filters}
+## Setting IP filters {#setting-ip-filters}
 
 IP access lists filter traffic to ClickHouse services or API keys by specifying which source addresses are permitted to connect.  These lists are configurable for each service and each API key.  Lists can be configured during service or API key creation, or afterward.
 
@@ -33,9 +33,9 @@ Classless Inter-domain Routing (CIDR) notation, allows you to specify IP address
   
   A sidebar will appear with options for you to configure:
   
-  - Allow incoming traffic from anywhere to the service
-  - Allow access from specific locations to the service
-  - Deny all access to the service
+- Allow incoming traffic from anywhere to the service
+- Allow access from specific locations to the service
+- Deny all access to the service
   
 </details>
 <details>
@@ -45,9 +45,9 @@ Classless Inter-domain Routing (CIDR) notation, allows you to specify IP address
   
   From the API key list, click the three dots next to the API key under the **Actions** column and select **Edit**. At the bottom of the screen you will find the IP access list and options to configure:
 
-  - Allow incoming traffic from anywhere to the service
-  - Allow access from specific locations to the service
-  - Deny all access to the service
+- Allow incoming traffic from anywhere to the service
+- Allow access from specific locations to the service
+- Deny all access to the service
   
 </details>
 

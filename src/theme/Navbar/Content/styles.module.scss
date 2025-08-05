@@ -52,7 +52,7 @@
   }
 }
 
-@media screen and (min-width: breakpoints.$mobile-breakpoint) {
+@media screen and (min-width: breakpoints.$laptop-breakpoint) {
   .navRight .mobileSearchBar {
     display: none;
   }

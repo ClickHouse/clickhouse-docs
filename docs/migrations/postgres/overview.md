@@ -23,7 +23,7 @@ When migrating from PostgreSQL to ClickHouse, the right strategy depends on your
 
 Below section describes the two main strategies for migration: **Real-Time CDC** and **Manual Bulk Load + Periodic Updates**.
 
-### Real-Time replication (CDC) {#real-time-replication-cdc}
+### Real-time replication (CDC) {#real-time-replication-cdc}
 
 Change Data Capture (CDC) is the process by which tables are kept in sync between two databases. It is the most efficient approach for most migration from PostgreSQL, but yet more complex as it handles insert, updates and deletes from PostgreSQL to ClickHouse in near real-time. It is ideal for use cases where real-time analytics are important. 
 

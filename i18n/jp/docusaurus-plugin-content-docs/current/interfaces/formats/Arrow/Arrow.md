@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'Arrow形式のドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'Arrow形式のドキュメント'
+input_format: true
+keywords:
 - 'Arrow'
-'output_format': true
-'slug': '/interfaces/formats/Arrow'
-'title': 'Arrow'
+output_format: true
+slug: '/interfaces/formats/Arrow'
+title: 'Arrow'
 ---
 
 

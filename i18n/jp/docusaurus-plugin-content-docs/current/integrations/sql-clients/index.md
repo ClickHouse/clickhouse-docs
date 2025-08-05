@@ -1,7 +1,7 @@
 ---
-'slug': '/integrations/sql-clients/'
-'description': 'ClickHouse SQLクライアントの概要ページ。'
-'keywords':
+slug: '/integrations/sql-clients/'
+description: 'ClickHouse SQLクライアントの概要ページ。'
+keywords:
 - 'integrations'
 - 'DataGrip'
 - 'DBeaver'
@@ -10,7 +10,7 @@
 - 'QStudio'
 - 'TABLUM.IO'
 - 'marimo'
-'title': 'SQLクライアント統合'
+title: 'SQLクライアント統合'
 ---
 
 

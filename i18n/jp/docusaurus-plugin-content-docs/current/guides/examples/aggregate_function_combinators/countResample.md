@@ -1,14 +1,14 @@
 ---
-'slug': '/examples/aggregate-function-combinators/countResample'
-'title': 'countResample'
-'description': 'countとResampleコンビネータの使用例'
-'keywords':
+slug: '/examples/aggregate-function-combinators/countResample'
+title: 'countResample'
+description: 'countとResampleコンビネータの使用例'
+keywords:
 - 'count'
 - 'Resample'
 - 'combinator'
 - 'examples'
 - 'countResample'
-'sidebar_label': 'countResample'
+sidebar_label: 'countResample'
 ---
 
 

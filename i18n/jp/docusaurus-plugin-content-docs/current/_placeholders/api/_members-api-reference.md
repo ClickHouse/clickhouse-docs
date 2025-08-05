@@ -1,6 +1,6 @@
 ---
-'sidebar_label': 'メンバー'
-'title': 'メンバー'
+sidebar_label: 'メンバー'
+title: 'メンバー'
 ---
 
 

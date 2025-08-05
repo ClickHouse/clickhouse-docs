@@ -1,7 +1,7 @@
 ---
-'description': 'ClickHouseのループテーブル関数は、クエリの結果を無限ループで返すために使用されます。'
-'slug': '/sql-reference/table-functions/loop'
-'title': 'ループ'
+description: 'ClickHouseのループテーブル関数は、クエリの結果を無限ループで返すために使用されます。'
+slug: '/sql-reference/table-functions/loop'
+title: 'ループ'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'sidebar_position': 1
-'sidebar_label': 'ClickHouseでのテーブル作成'
-'title': 'ClickHouseでのテーブル作成'
-'slug': '/guides/creating-tables'
-'description': 'ClickHouse でのテーブル作成について学びます'
+sidebar_position: 1
+sidebar_label: 'ClickHouseでのテーブル作成'
+title: 'ClickHouseでのテーブル作成'
+slug: '/guides/creating-tables'
+description: 'ClickHouse でのテーブル作成について学びます'
 ---
 
 

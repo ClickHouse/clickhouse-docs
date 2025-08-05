@@ -1,8 +1,8 @@
 ---
-'slug': '/managing-data/core-concepts'
-'title': 'コア概念'
-'description': 'ClickHouse の動作に関するコア概念を学ぶ'
-'keywords':
+slug: '/managing-data/core-concepts'
+title: 'コア概念'
+description: 'ClickHouse の動作に関するコア概念を学ぶ'
+keywords:
 - 'concepts'
 - 'part'
 - 'partition'

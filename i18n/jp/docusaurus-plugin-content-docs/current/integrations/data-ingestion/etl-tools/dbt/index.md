@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'dbt'
-'slug': '/integrations/dbt'
-'sidebar_position': 1
-'description': 'ユーザーはdbtを使用してClickHouseでデータを変換およびモデル化することができます'
-'title': 'dbt と ClickHouse の統合'
+sidebar_label: 'dbt'
+slug: '/integrations/dbt'
+sidebar_position: 1
+description: 'ユーザーはdbtを使用してClickHouseでデータを変換およびモデル化することができます'
+title: 'dbt と ClickHouse の統合'
 ---
 
 import TOCInline from '@theme/TOCInline';

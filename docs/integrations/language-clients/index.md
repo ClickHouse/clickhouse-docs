@@ -11,6 +11,7 @@ that ClickHouse offers.
 | Page                                                                    | Description                                                                      |
 |-------------------------------------------------------------------------|----------------------------------------------------------------------------------|
 | [C++](/interfaces/cpp)                                          | C++ Client Library and userver Asynchronous Framework                            |
+| [C#](/integrations/csharp)                                  | Learn how to connect your C# projects to ClickHouse.                         |
 | [Go](/integrations/go)                                          | Learn how to connect your Go projects to ClickHouse.                             |
 | [JavaScript](/integrations/javascript)                          | Learn how to connect your JS projects to ClickHouse with the official JS client. |
 | [Java](/integrations/java)                                      | Learn more about several integrations for Java and ClickHouse.                   |

@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for uniqTheta Functions'
-'sidebar_label': 'uniqTheta'
-'sidebar_position': 210
-'slug': '/sql-reference/functions/uniqtheta-functions'
-'title': 'uniqTheta Functions'
+description: 'Documentation for uniqTheta Functions'
+sidebar_label: 'uniqTheta'
+sidebar_position: 210
+slug: '/sql-reference/functions/uniqtheta-functions'
+title: 'uniqTheta Functions'
 ---
 
 

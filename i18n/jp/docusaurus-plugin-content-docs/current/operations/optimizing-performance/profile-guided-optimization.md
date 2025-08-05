@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for Profile Guided Optimization'
-'sidebar_label': 'Profile Guided Optimization (PGO)'
-'sidebar_position': 54
-'slug': '/operations/optimizing-performance/profile-guided-optimization'
-'title': 'Profile Guided Optimization'
+description: 'Documentation for Profile Guided Optimization'
+sidebar_label: 'Profile Guided Optimization (PGO)'
+sidebar_position: 54
+slug: '/operations/optimizing-performance/profile-guided-optimization'
+title: 'Profile Guided Optimization'
 ---
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';

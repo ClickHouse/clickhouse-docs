@@ -1,7 +1,7 @@
 ---
-'description': 'Guide to configuring LDAP authentication for ClickHouse'
-'slug': '/operations/external-authenticators/ldap'
-'title': 'LDAP'
+description: 'Guide to configuring LDAP authentication for ClickHouse'
+slug: '/operations/external-authenticators/ldap'
+title: 'LDAP'
 ---
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';

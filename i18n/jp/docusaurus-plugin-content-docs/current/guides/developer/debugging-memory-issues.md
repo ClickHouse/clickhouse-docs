@@ -1,11 +1,11 @@
 ---
-'slug': '/guides/developer/debugging-memory-issues'
-'sidebar_label': 'メモリのデバッグ'
-'sidebar_position': 1
-'description': 'メモリの問題をデバッグするためのクエリ。'
-'keywords':
+slug: '/guides/developer/debugging-memory-issues'
+sidebar_label: 'メモリのデバッグ'
+sidebar_position: 1
+description: 'メモリの問題をデバッグするためのクエリ。'
+keywords:
 - 'memory issues'
-'title': 'メモリのデバッグ'
+title: 'メモリのデバッグ'
 ---
 
 

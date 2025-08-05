@@ -1,7 +1,7 @@
 ---
-'title': 'トラブルシューティング'
-'description': 'インストールのトラブルシューティングガイド'
-'slug': '/guides/troubleshooting'
+title: 'トラブルシューティング'
+description: 'インストールのトラブルシューティングガイド'
+slug: '/guides/troubleshooting'
 ---
 
 

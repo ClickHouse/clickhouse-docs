@@ -1,9 +1,9 @@
 ---
-'title': '他のJSON形式の取り扱い'
-'slug': '/integrations/data-formats/json/other-formats'
-'description': '他のJSON形式の取り扱い'
-'sidebar_label': '他の形式の取り扱い'
-'keywords':
+title: '他のJSON形式の取り扱い'
+slug: '/integrations/data-formats/json/other-formats'
+description: '他のJSON形式の取り扱い'
+sidebar_label: '他の形式の取り扱い'
+keywords:
 - 'json'
 - 'formats'
 - 'json formats'

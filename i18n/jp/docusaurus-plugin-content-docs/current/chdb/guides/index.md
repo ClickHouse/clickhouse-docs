@@ -1,8 +1,8 @@
 ---
-'title': 'chDB ガイド'
-'slug': '/chdb/guides'
-'description': 'chDB ガイドのインデックスページ'
-'keywords':
+title: 'chDB ガイド'
+slug: '/chdb/guides'
+description: 'chDB ガイドのインデックスページ'
+keywords:
 - 'chdb'
 - 'guides'
 ---

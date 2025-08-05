@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'PrettyCompactNoEscapes 形式のドキュメント'
-'input_format': false
-'keywords':
+alias: []
+description: 'PrettyCompactNoEscapes 形式のドキュメント'
+input_format: false
+keywords:
 - 'PrettyCompactNoEscapes'
-'output_format': true
-'slug': '/interfaces/formats/PrettyCompactNoEscapes'
-'title': 'PrettyCompactNoEscapes'
+output_format: true
+slug: '/interfaces/formats/PrettyCompactNoEscapes'
+title: 'PrettyCompactNoEscapes'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';

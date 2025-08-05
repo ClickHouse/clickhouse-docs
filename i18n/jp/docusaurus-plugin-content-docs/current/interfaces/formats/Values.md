@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': '値の形式のドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: '値の形式のドキュメント'
+input_format: true
+keywords:
 - 'Values'
-'output_format': true
-'slug': '/interfaces/formats/Values'
-'title': 'Values'
+output_format: true
+slug: '/interfaces/formats/Values'
+title: 'Values'
 ---
 
 

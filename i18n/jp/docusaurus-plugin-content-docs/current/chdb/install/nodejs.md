@@ -1,9 +1,9 @@
 ---
-'title': 'NodeJS 用の chDB のインストール'
-'sidebar_label': 'NodeJS'
-'slug': '/chdb/install/nodejs'
-'description': 'NodeJS 用の chDB のインストール方法'
-'keywords':
+title: 'NodeJS 用の chDB のインストール'
+sidebar_label: 'NodeJS'
+slug: '/chdb/install/nodejs'
+description: 'NodeJS 用の chDB のインストール方法'
+keywords:
 - 'chdb'
 - 'embedded'
 - 'clickhouse-lite'

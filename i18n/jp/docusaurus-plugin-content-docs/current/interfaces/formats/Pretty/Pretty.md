@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'Pretty format'
-'input_format': false
-'keywords':
+alias: []
+description: 'Pretty format'
+input_format: false
+keywords:
 - 'Pretty'
-'output_format': true
-'slug': '/interfaces/formats/Pretty'
-'title': 'Pretty'
+output_format: true
+slug: '/interfaces/formats/Pretty'
+title: 'Pretty'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';

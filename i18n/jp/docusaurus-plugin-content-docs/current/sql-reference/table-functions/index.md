@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for Table Functions'
-'sidebar_label': 'Table Functions'
-'sidebar_position': 1
-'slug': '/sql-reference/table-functions/'
-'title': 'Table Functions'
+description: 'Documentation for Table Functions'
+sidebar_label: 'Table Functions'
+sidebar_position: 1
+slug: '/sql-reference/table-functions/'
+title: 'Table Functions'
 ---
 
 

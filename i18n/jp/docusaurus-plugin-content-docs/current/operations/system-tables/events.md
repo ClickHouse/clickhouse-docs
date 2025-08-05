@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing information about the number of events that
+description: 'System table containing information about the number of events that
   have occurred in the system.'
-'keywords':
+keywords:
 - 'system table'
 - 'events'
-'slug': '/operations/system-tables/events'
-'title': 'system.events'
+slug: '/operations/system-tables/events'
+title: 'system.events'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

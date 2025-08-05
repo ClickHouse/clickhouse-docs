@@ -1,8 +1,8 @@
 ---
-'sidebar_label': '設定の構成'
-'slug': '/manage/settings'
-'title': '設定の構成'
-'description': '特定のユーザーまたはロールのためにClickHouse Cloudサービスの設定を構成する方法'
+sidebar_label: '設定の構成'
+slug: '/manage/settings'
+title: '設定の構成'
+description: '特定のユーザーまたはロールのためにClickHouse Cloudサービスの設定を構成する方法'
 ---
 
 import Image from '@theme/IdealImage';

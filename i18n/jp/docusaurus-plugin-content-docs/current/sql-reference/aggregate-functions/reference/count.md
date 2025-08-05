@@ -1,8 +1,8 @@
 ---
-'description': 'Counts the number of rows or not-NULL values.'
-'sidebar_position': 120
-'slug': '/sql-reference/aggregate-functions/reference/count'
-'title': 'count'
+description: 'Counts the number of rows or not-NULL values.'
+sidebar_position: 120
+slug: '/sql-reference/aggregate-functions/reference/count'
+title: 'count'
 ---
 
 

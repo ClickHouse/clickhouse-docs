@@ -1,10 +1,10 @@
 ---
-'description': 'Returns the population variance. Unlike varPop , this function uses
+description: 'Returns the population variance. Unlike varPop , this function uses
   a numerically stable algorithm. It works slower but provides a lower computational
   error.'
-'sidebar_position': 211
-'slug': '/sql-reference/aggregate-functions/reference/varpopstable'
-'title': 'varPopStable'
+sidebar_position: 211
+slug: '/sql-reference/aggregate-functions/reference/varpopstable'
+title: 'varPopStable'
 ---
 
 

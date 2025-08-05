@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing metrics which can be calculated instantly,
+description: 'System table containing metrics which can be calculated instantly,
   or have a current value.'
-'keywords':
+keywords:
 - 'system table'
 - 'metrics'
-'slug': '/operations/system-tables/metrics'
-'title': 'system.metrics'
+slug: '/operations/system-tables/metrics'
+title: 'system.metrics'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

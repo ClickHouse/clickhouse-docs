@@ -1,11 +1,11 @@
 ---
-'slug': '/integrations/tools/data-integrations'
-'keywords':
+slug: '/integrations/tools/data-integrations'
+keywords:
 - 'Retool'
 - 'Easypanel'
 - 'Splunk'
-'title': 'データインテグレーション'
-'description': 'データインテグレーションセクションのランディングページ'
+title: 'データインテグレーション'
+description: 'データインテグレーションセクションのランディングページ'
 ---
 
 

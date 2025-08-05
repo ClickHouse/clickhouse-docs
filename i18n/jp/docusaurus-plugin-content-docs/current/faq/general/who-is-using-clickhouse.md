@@ -1,9 +1,9 @@
 ---
-'slug': '/faq/general/who-is-using-clickhouse'
-'title': 'Who is using ClickHouse?'
-'toc_hidden': true
-'toc_priority': 9
-'description': 'Describes who is using ClickHouse'
+slug: '/faq/general/who-is-using-clickhouse'
+title: 'Who is using ClickHouse?'
+toc_hidden: true
+toc_priority: 9
+description: 'Describes who is using ClickHouse'
 ---
 
 

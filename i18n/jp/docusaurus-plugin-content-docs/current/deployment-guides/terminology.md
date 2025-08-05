@@ -1,9 +1,9 @@
 ---
-'slug': '/architecture/introduction'
-'sidebar_label': '紹介'
-'title': '紹介'
-'sidebar_position': 1
-'description': 'ClickHouseのサポートおよびサービス機関から提供されたアドバイスに基づいて、展開の例を示すページ'
+slug: '/architecture/introduction'
+sidebar_label: '紹介'
+title: '紹介'
+sidebar_position: 1
+description: 'ClickHouseのサポートおよびサービス機関から提供されたアドバイスに基づいて、展開の例を示すページ'
 ---
 
 import ReplicationShardingTerminology from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_replication-sharding-terminology.md';

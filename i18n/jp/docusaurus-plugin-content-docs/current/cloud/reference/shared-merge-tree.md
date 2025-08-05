@@ -1,10 +1,10 @@
 ---
-'slug': '/cloud/reference/shared-merge-tree'
-'sidebar_label': 'SharedMergeTree'
-'title': 'SharedMergeTree'
-'keywords':
+slug: '/cloud/reference/shared-merge-tree'
+sidebar_label: 'SharedMergeTree'
+title: 'SharedMergeTree'
+keywords:
 - 'SharedMergeTree'
-'description': 'SharedMergeTree テーブルエンジンについて説明します'
+description: 'SharedMergeTree テーブルエンジンについて説明します'
 ---
 
 import shared_merge_tree from '@site/static/images/cloud/reference/shared-merge-tree-1.png';

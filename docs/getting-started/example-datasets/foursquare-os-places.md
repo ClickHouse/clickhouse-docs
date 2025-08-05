@@ -275,4 +275,3 @@ Some of our favourite visualizations are produced here below for you to enjoy.
 <Image img={visualization_3} size="md" alt="ATMs"/>
 
 <Image img={visualization_4} size="md" alt="Map of Europe with points of interest categorised by country"/>
-

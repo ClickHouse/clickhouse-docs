@@ -1,9 +1,9 @@
 ---
-'description': 'ParquetMetadata フォーマットのドキュメント'
-'keywords':
+description: 'ParquetMetadata フォーマットのドキュメント'
+keywords:
 - 'ParquetMetadata'
-'slug': '/interfaces/formats/ParquetMetadata'
-'title': 'ParquetMetadata'
+slug: '/interfaces/formats/ParquetMetadata'
+title: 'ParquetMetadata'
 ---
 
 

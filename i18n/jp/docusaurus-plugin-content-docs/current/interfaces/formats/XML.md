@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'XML形式のドキュメント'
-'input_format': false
-'keywords':
+alias: []
+description: 'XML形式のドキュメント'
+input_format: false
+keywords:
 - 'XML'
-'output_format': true
-'slug': '/interfaces/formats/XML'
-'title': 'XML'
+output_format: true
+slug: '/interfaces/formats/XML'
+title: 'XML'
 ---
 
 

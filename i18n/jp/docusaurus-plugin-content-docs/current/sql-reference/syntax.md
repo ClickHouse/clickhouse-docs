@@ -1,10 +1,10 @@
 ---
-'description': 'Syntaxのドキュメント'
-'displayed_sidebar': 'sqlreference'
-'sidebar_label': '構文'
-'sidebar_position': 2
-'slug': '/sql-reference/syntax'
-'title': 'Syntax'
+description: 'Syntaxのドキュメント'
+displayed_sidebar: 'sqlreference'
+sidebar_label: '構文'
+sidebar_position: 2
+slug: '/sql-reference/syntax'
+title: 'Syntax'
 ---
 
 

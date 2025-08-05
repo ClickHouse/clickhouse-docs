@@ -1,9 +1,9 @@
 ---
-'title': 'Azure プライベートリンク'
-'sidebar_label': 'Azure プライベートリンク'
-'slug': '/cloud/security/azure-privatelink'
-'description': 'Azure プライベートリンクの設定方法'
-'keywords':
+title: 'Azure プライベートリンク'
+sidebar_label: 'Azure プライベートリンク'
+slug: '/cloud/security/azure-privatelink'
+description: 'Azure プライベートリンクの設定方法'
+keywords:
 - 'azure'
 - 'private link'
 - 'privatelink'

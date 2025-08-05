@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'Tableau Online'
-'sidebar_position': 2
-'slug': '/integrations/tableau-online'
-'keywords':
+sidebar_label: 'Tableau Online'
+sidebar_position: 2
+slug: '/integrations/tableau-online'
+keywords:
 - 'clickhouse'
 - 'tableau'
 - 'online'
@@ -10,9 +10,9 @@
 - 'connect'
 - 'integrate'
 - 'ui'
-'description': 'Tableau Online streamlines the power of data to make people faster
+description: 'Tableau Online streamlines the power of data to make people faster
   and more confident decision makers from anywhere.'
-'title': 'Tableau Online'
+title: 'Tableau Online'
 ---
 
 import MySQLCloudSetup from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_clickhouse_mysql_cloud_setup.mdx';

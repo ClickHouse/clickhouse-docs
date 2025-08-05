@@ -1,10 +1,10 @@
 ---
-'description': 'timeSeriesTags テーブル関数は、テーブルエンジンが TimeSeries エンジンである `db_name.time_series_table`
+description: 'timeSeriesTags テーブル関数は、テーブルエンジンが TimeSeries エンジンである `db_name.time_series_table`
   テーブルで使用されるタグテーブルを返します。'
-'sidebar_label': 'timeSeriesTags'
-'sidebar_position': 145
-'slug': '/sql-reference/table-functions/timeSeriesTags'
-'title': 'timeSeriesTags'
+sidebar_label: 'timeSeriesTags'
+sidebar_position: 145
+slug: '/sql-reference/table-functions/timeSeriesTags'
+title: 'timeSeriesTags'
 ---
 
 

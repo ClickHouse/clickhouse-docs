@@ -1,8 +1,8 @@
 ---
-'slug': '/integrations/language-clients'
-'title': 'Language Clients'
-'description': 'Language Clients の目次ページ。'
-'keywords':
+slug: '/integrations/language-clients'
+title: 'Language Clients'
+description: 'Language Clients の目次ページ。'
+keywords:
 - 'Language Clients'
 - 'C++'
 - 'Go'

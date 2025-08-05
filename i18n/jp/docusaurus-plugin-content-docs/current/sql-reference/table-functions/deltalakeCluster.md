@@ -1,9 +1,9 @@
 ---
-'description': 'これはdeltaLakeテーブル機能の拡張機能です。'
-'sidebar_label': 'デルタレイククラスタ'
-'sidebar_position': 46
-'slug': '/sql-reference/table-functions/deltalakeCluster'
-'title': 'deltaLakeCluster'
+description: 'これはdeltaLakeテーブル機能の拡張機能です。'
+sidebar_label: 'デルタレイククラスタ'
+sidebar_position: 46
+slug: '/sql-reference/table-functions/deltalakeCluster'
+title: 'deltaLakeCluster'
 ---
 
 

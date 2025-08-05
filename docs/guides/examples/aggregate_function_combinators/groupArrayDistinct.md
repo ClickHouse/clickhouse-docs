@@ -14,7 +14,7 @@ The [`groupArrayDistinct`](/sql-reference/aggregate-functions/combinators#-forea
 can be applied to the [`groupArray`](/sql-reference/aggregate-functions/reference/sum) aggregate function to create an array
 of distinct argument values.
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 For this example we'll make use of the `hits` dataset available in our [SQL playground](https://sql.clickhouse.com/).
 

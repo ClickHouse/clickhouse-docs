@@ -1,9 +1,9 @@
 ---
-'slug': '/optimize/prewhere'
-'sidebar_label': 'PREWHERE 最適化'
-'sidebar_position': 21
-'description': 'PREWHERE は、不要なカラムデータの読み取りを回避することにより、I/O を削減します。'
-'title': 'PREWHERE 最適化はどのように機能しますか？'
+slug: '/optimize/prewhere'
+sidebar_label: 'PREWHERE 最適化'
+sidebar_position: 21
+description: 'PREWHERE は、不要なカラムデータの読み取りを回避することにより、I/O を削減します。'
+title: 'PREWHERE 最適化はどのように機能しますか？'
 ---
 
 import visual01 from '@site/static/images/guides/best-practices/prewhere_01.gif';

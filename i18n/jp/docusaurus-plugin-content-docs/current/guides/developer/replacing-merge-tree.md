@@ -1,8 +1,8 @@
 ---
-'slug': '/guides/replacing-merge-tree'
-'title': 'ReplacingMergeTree'
-'description': 'ClickHouse で ReplacingMergeTree エンジンを使用する'
-'keywords':
+slug: '/guides/replacing-merge-tree'
+title: 'ReplacingMergeTree'
+description: 'ClickHouse で ReplacingMergeTree エンジンを使用する'
+keywords:
 - 'replacingmergetree'
 - 'inserts'
 - 'deduplication'

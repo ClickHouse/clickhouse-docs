@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'JSONStrings形式のドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'JSONStrings形式のドキュメント'
+input_format: true
+keywords:
 - 'JSONStrings'
-'output_format': true
-'slug': '/interfaces/formats/JSONStrings'
-'title': 'JSONStrings'
+output_format: true
+slug: '/interfaces/formats/JSONStrings'
+title: 'JSONStrings'
 ---
 
 

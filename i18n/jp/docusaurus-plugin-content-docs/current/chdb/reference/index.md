@@ -1,8 +1,8 @@
 ---
-'title': 'chDB Technical Reference'
-'slug': '/chdb/reference'
-'description': 'Data Formats for chDB'
-'keywords':
+title: 'chDB Technical Reference'
+slug: '/chdb/reference'
+description: 'Data Formats for chDB'
+keywords:
 - 'chdb'
 - 'data formats'
 ---

@@ -1,12 +1,12 @@
 ---
-'description': 'Page listing various useful ClickHouse tools and utilities.'
-'keywords':
+description: 'Page listing various useful ClickHouse tools and utilities.'
+keywords:
 - 'tools'
 - 'utilities'
-'sidebar_label': 'List of tools and utilities'
-'sidebar_position': 56
-'slug': '/operations/utilities/'
-'title': 'List of tools and utilities'
+sidebar_label: 'List of tools and utilities'
+sidebar_position: 56
+slug: '/operations/utilities/'
+title: 'List of tools and utilities'
 ---
 
 

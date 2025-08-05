@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'RowBinaryフォーマットのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'RowBinaryフォーマットのドキュメント'
+input_format: true
+keywords:
 - 'RowBinary'
-'output_format': true
-'slug': '/interfaces/formats/RowBinary'
-'title': 'RowBinary'
+output_format: true
+slug: '/interfaces/formats/RowBinary'
+title: 'RowBinary'
 ---
 
 import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settings.md'

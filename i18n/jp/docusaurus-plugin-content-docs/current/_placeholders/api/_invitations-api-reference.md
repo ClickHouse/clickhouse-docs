@@ -1,6 +1,6 @@
 ---
-'sidebar_label': '招待'
-'title': '招待'
+sidebar_label: '招待'
+title: '招待'
 ---
 
 

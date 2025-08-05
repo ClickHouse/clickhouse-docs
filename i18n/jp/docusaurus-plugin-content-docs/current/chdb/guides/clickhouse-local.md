@@ -1,9 +1,9 @@
 ---
-'title': 'Using a clickhouse-local database'
-'sidebar_label': 'Using clickhouse-local database'
-'slug': '/chdb/guides/clickhouse-local'
-'description': 'Learn how to use a clickhouse-local database with chDB'
-'keywords':
+title: 'Using a clickhouse-local database'
+sidebar_label: 'Using clickhouse-local database'
+slug: '/chdb/guides/clickhouse-local'
+description: 'Learn how to use a clickhouse-local database with chDB'
+keywords:
 - 'chdb'
 - 'clickhouse-local'
 ---

@@ -1,10 +1,10 @@
 ---
-'description': 'サーバーでサポートされているデータベースエンジンのリストを含むシステムテーブル。'
-'keywords':
+description: 'サーバーでサポートされているデータベースエンジンのリストを含むシステムテーブル。'
+keywords:
 - 'system table'
 - 'database_engines'
-'slug': '/operations/system-tables/database_engines'
-'title': 'system.database_engines'
+slug: '/operations/system-tables/database_engines'
+title: 'system.database_engines'
 ---
 
 

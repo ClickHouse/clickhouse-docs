@@ -1,7 +1,7 @@
 ---
-'description': 'Documentation for Odbc Bridge'
-'slug': '/operations/utilities/odbc-bridge'
-'title': 'clickhouse-odbc-bridge'
+description: 'Documentation for Odbc Bridge'
+slug: '/operations/utilities/odbc-bridge'
+title: 'clickhouse-odbc-bridge'
 ---
 
 

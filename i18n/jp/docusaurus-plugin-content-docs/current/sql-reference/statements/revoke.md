@@ -1,9 +1,9 @@
 ---
-'description': 'REVOKEステートメントのドキュメント'
-'sidebar_label': 'REVOKE'
-'sidebar_position': 39
-'slug': '/sql-reference/statements/revoke'
-'title': 'REVOKEステートメント'
+description: 'REVOKEステートメントのドキュメント'
+sidebar_label: 'REVOKE'
+sidebar_position: 39
+slug: '/sql-reference/statements/revoke'
+title: 'REVOKEステートメント'
 ---
 
 

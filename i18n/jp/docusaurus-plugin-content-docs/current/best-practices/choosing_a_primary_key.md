@@ -1,9 +1,9 @@
 ---
-'slug': '/best-practices/choosing-a-primary-key'
-'sidebar_position': 10
-'sidebar_label': '主キーの選択'
-'title': '主キーの選択'
-'description': 'ClickHouse で主キーを選択する方法について説明したページ'
+slug: '/best-practices/choosing-a-primary-key'
+sidebar_position: 10
+sidebar_label: '主キーの選択'
+title: '主キーの選択'
+description: 'ClickHouse で主キーを選択する方法について説明したページ'
 ---
 
 import Image from '@theme/IdealImage';

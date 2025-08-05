@@ -1,9 +1,9 @@
 ---
-'description': 'INSERT INTO ステートメントのドキュメント'
-'sidebar_label': 'INSERT INTO'
-'sidebar_position': 33
-'slug': '/sql-reference/statements/insert-into'
-'title': 'INSERT INTO ステートメント'
+description: 'INSERT INTO ステートメントのドキュメント'
+sidebar_label: 'INSERT INTO'
+sidebar_position: 33
+slug: '/sql-reference/statements/insert-into'
+title: 'INSERT INTO ステートメント'
 ---
 
 

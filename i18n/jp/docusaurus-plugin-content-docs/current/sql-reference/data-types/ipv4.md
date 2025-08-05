@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouseにおけるIPv4データ型のドキュメント'
-'sidebar_label': 'IPv4'
-'sidebar_position': 28
-'slug': '/sql-reference/data-types/ipv4'
-'title': 'IPv4'
+description: 'ClickHouseにおけるIPv4データ型のドキュメント'
+sidebar_label: 'IPv4'
+sidebar_position: 28
+slug: '/sql-reference/data-types/ipv4'
+title: 'IPv4'
 ---
 
 

@@ -1,10 +1,10 @@
 ---
-'description': '通常および集約関数に関する情報を含むシステムテーブル。'
-'keywords':
+description: '通常および集約関数に関する情報を含むシステムテーブル。'
+keywords:
 - 'system table'
 - 'functions'
-'slug': '/operations/system-tables/functions'
-'title': 'システム関数'
+slug: '/operations/system-tables/functions'
+title: 'システム関数'
 ---
 
 

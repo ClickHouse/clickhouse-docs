@@ -8,7 +8,7 @@ slug: /getting-started/example-datasets/
 title: 'Tutorials and Example Datasets'
 ---
 
-# Tutorials and Example Datasets
+# Tutorials and example datasets
 
 We have a lot of resources for helping you get started and learn how ClickHouse works:
 

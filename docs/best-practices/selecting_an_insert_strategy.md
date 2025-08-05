@@ -50,7 +50,6 @@ After ⑥ receiving the data, ClickHouse ⑦ decompresses it if compression was 
 
 Using the values from that formatted data and the target table's [DDL](/sql-reference/statements/create/table) statement, ClickHouse ⑨ builds an in-memory [block](/development/architecture#block) in the MergeTree format, ⑩ [sorts](/parts#what-are-table-parts-in-clickhouse) rows by the primary key columns if they are not already pre-sorted, ⑪ creates a [sparse primary index](/guides/best-practices/sparse-primary-indexes), ⑫ applies [per-column compression](/parts#what-are-table-parts-in-clickhouse), and ⑬ writes the data as a new ⑭ [data part](/parts) to disk.
 
-
 ### Batch inserts if synchronous {#batch-inserts-if-synchronous}
 
 <BulkInserts/>
@@ -130,7 +129,7 @@ When data arrives pre-sorted, ClickHouse can skip or simplify the internal sorti
 
 <AsyncInserts />
 
-## Choose an interface - HTTP or Native {#choose-an-interface}
+## Choose an interface - HTTP or native {#choose-an-interface}
 
 ### Native {#choose-an-interface-native}
 
@@ -147,6 +146,3 @@ This is often preferable to ClickHouse's native protocol as it allows traffic to
 However, it lacks the native protocol's deeper integration and cannot perform client-side optimizations like materialized value computation or automatic conversion to Native format. While HTTP inserts can still be compressed using standard HTTP headers (e.g. `Content-Encoding: lz4`), the compression is applied to the entire payload rather than individual data blocks. This interface is often preferred in environments where protocol simplicity, load balancing, or broad format compatibility is more important than raw performance.
 
 For a more detailed description of these interfaces see [here](/interfaces/overview).
-
-
-

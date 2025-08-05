@@ -1,9 +1,9 @@
 ---
-'description': 'ランダム数値を生成するための関数に関するドキュメント'
-'sidebar_label': 'ランダム数値'
-'sidebar_position': 145
-'slug': '/sql-reference/functions/random-functions'
-'title': 'ランダム数値生成のための関数'
+description: 'ランダム数値を生成するための関数に関するドキュメント'
+sidebar_label: 'ランダム数値'
+sidebar_position: 145
+slug: '/sql-reference/functions/random-functions'
+title: 'ランダム数値生成のための関数'
 ---
 
 

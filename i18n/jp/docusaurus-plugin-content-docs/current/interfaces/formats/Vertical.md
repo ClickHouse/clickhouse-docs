@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'Vertical formatのドキュメント'
-'input_format': false
-'keywords':
+alias: []
+description: 'Vertical formatのドキュメント'
+input_format: false
+keywords:
 - 'Vertical'
-'output_format': true
-'slug': '/interfaces/formats/Vertical'
-'title': 'Vertical'
+output_format: true
+slug: '/interfaces/formats/Vertical'
+title: 'Vertical'
 ---
 
 

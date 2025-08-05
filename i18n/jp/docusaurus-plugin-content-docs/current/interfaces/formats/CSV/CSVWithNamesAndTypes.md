@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'CSVWithNamesAndTypes 形式のドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'CSVWithNamesAndTypes 形式のドキュメント'
+input_format: true
+keywords:
 - 'CSVWithNamesAndTypes'
-'output_format': true
-'slug': '/interfaces/formats/CSVWithNamesAndTypes'
-'title': 'CSVWithNamesAndTypes'
+output_format: true
+slug: '/interfaces/formats/CSVWithNamesAndTypes'
+title: 'CSVWithNamesAndTypes'
 ---
 
 

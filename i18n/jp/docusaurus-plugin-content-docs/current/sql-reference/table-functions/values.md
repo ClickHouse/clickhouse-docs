@@ -1,12 +1,12 @@
 ---
-'description': '列に値を入れて一時的なストレージを作成します。'
-'keywords':
+description: '列に値を入れて一時的なストレージを作成します。'
+keywords:
 - 'values'
 - 'table function'
-'sidebar_label': '値'
-'sidebar_position': 210
-'slug': '/sql-reference/table-functions/values'
-'title': 'values'
+sidebar_label: '値'
+sidebar_position: 210
+slug: '/sql-reference/table-functions/values'
+title: 'values'
 ---
 
 

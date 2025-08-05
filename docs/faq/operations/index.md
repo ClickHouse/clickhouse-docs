@@ -20,4 +20,3 @@ description: 'Landing page for questions about operating ClickHouse servers and 
 :::info Don't see what you're looking for?
 Check out our [Knowledge Base](/knowledgebase/) and also browse the many helpful articles found here in the documentation.
 :::
-

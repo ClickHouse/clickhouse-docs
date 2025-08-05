@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouse でクエリ条件キャッシュ機能を使用および構成するためのガイド'
-'sidebar_label': 'クエリ条件キャッシュ'
-'sidebar_position': 64
-'slug': '/operations/query-condition-cache'
-'title': 'クエリ条件キャッシュ'
+description: 'ClickHouse でクエリ条件キャッシュ機能を使用および構成するためのガイド'
+sidebar_label: 'クエリ条件キャッシュ'
+sidebar_position: 64
+slug: '/operations/query-condition-cache'
+title: 'クエリ条件キャッシュ'
 ---
 
 

@@ -1,11 +1,11 @@
 ---
-'description': 'ZooKeeper が構成されている場合にのみ存在するシステムテーブル。現在の ZooKeeper への接続を表示します（補助的な
+description: 'ZooKeeper が構成されている場合にのみ存在するシステムテーブル。現在の ZooKeeper への接続を表示します（補助的な
   ZooKeeper を含む）。'
-'keywords':
+keywords:
 - 'system table'
 - 'zookeeper_connection'
-'slug': '/operations/system-tables/zookeeper_connection'
-'title': 'system.zookeeper_connection'
+slug: '/operations/system-tables/zookeeper_connection'
+title: 'system.zookeeper_connection'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

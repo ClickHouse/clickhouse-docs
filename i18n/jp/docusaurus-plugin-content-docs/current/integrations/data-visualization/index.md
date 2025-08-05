@@ -1,7 +1,7 @@
 ---
-'sidebar_label': '概要'
-'sidebar_position': 1
-'keywords':
+sidebar_label: '概要'
+sidebar_position: 1
+keywords:
 - 'ClickHouse'
 - 'connect'
 - 'Luzmo'
@@ -18,9 +18,9 @@
 - 'bi'
 - 'visualization'
 - 'tool'
-'title': 'ClickHouseでデータを可視化する'
-'slug': '/integrations/data-visualization'
-'description': 'ClickHouseでデータの可視化について学ぶ'
+title: 'ClickHouseでデータを可視化する'
+slug: '/integrations/data-visualization'
+description: 'ClickHouseでデータの可視化について学ぶ'
 ---
 
 

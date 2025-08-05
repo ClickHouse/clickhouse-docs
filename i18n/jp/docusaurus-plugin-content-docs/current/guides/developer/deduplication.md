@@ -1,9 +1,9 @@
 ---
-'slug': '/guides/developer/deduplication'
-'sidebar_label': '重複排除戦略'
-'sidebar_position': 3
-'description': '頻繁なupsert、更新、削除を行う場合に、重複排除を使用します。'
-'title': '重複排除戦略'
+slug: '/guides/developer/deduplication'
+sidebar_label: '重複排除戦略'
+sidebar_position: 3
+description: '頻繁なupsert、更新、削除を行う場合に、重複排除を使用します。'
+title: '重複排除戦略'
 ---
 
 import deduplication from '@site/static/images/guides/developer/de_duplication.png';

@@ -1,8 +1,8 @@
 ---
-'title': '紹介'
-'description': '観測ソリューションとしてClickHouseを使用する'
-'slug': '/use-cases/observability/introduction'
-'keywords':
+title: '紹介'
+description: '観測ソリューションとしてClickHouseを使用する'
+slug: '/use-cases/observability/introduction'
+keywords:
 - 'observability'
 - 'logs'
 - 'traces'

@@ -1,8 +1,8 @@
 ---
-'title': 'Other JSON approaches'
-'slug': '/integrations/data-formats/json/other-approaches'
-'description': 'Other approaches to modeling JSON'
-'keywords':
+title: 'Other JSON approaches'
+slug: '/integrations/data-formats/json/other-approaches'
+description: 'Other approaches to modeling JSON'
+keywords:
 - 'json'
 - 'formats'
 ---

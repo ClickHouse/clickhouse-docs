@@ -1,8 +1,8 @@
 ---
-'slug': '/integrations/iceberg'
-'sidebar_label': 'Iceberg'
-'title': 'Iceberg'
-'description': 'Page describing the IcebergFunction which can be used to integrate
+slug: '/integrations/iceberg'
+sidebar_label: 'Iceberg'
+title: 'Iceberg'
+description: 'Page describing the IcebergFunction which can be used to integrate
   ClickHouse with the Iceberg table format'
 ---
 

@@ -1,9 +1,9 @@
 ---
-'description': '入力データに最大三角形三バケットアルゴリズムを適用します。'
-'sidebar_label': 'largestTriangleThreeBuckets'
-'sidebar_position': 159
-'slug': '/sql-reference/aggregate-functions/reference/largestTriangleThreeBuckets'
-'title': 'largestTriangleThreeBuckets'
+description: '入力データに最大三角形三バケットアルゴリズムを適用します。'
+sidebar_label: 'largestTriangleThreeBuckets'
+sidebar_position: 159
+slug: '/sql-reference/aggregate-functions/reference/largestTriangleThreeBuckets'
+title: 'largestTriangleThreeBuckets'
 ---
 
 

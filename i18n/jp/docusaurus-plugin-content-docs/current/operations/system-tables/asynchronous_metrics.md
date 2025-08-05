@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing metrics that are calculated periodically in
+description: 'System table containing metrics that are calculated periodically in
   the background. For example, the amount of RAM in use.'
-'keywords':
+keywords:
 - 'system table'
 - 'asynchronous_metrics'
-'slug': '/operations/system-tables/asynchronous_metrics'
-'title': 'system.asynchronous_metrics'
+slug: '/operations/system-tables/asynchronous_metrics'
+title: 'system.asynchronous_metrics'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

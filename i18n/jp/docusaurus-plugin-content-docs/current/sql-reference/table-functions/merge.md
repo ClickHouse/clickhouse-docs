@@ -1,9 +1,9 @@
 ---
-'description': '一時的なMergeテーブルを作成します。構造は、基になるテーブルからの列のunionおよび共通の型の導出によって派生されます。'
-'sidebar_label': 'マージ'
-'sidebar_position': 130
-'slug': '/sql-reference/table-functions/merge'
-'title': 'Merge'
+description: '一時的なMergeテーブルを作成します。構造は、基になるテーブルからの列のunionおよび共通の型の導出によって派生されます。'
+sidebar_label: 'マージ'
+sidebar_position: 130
+slug: '/sql-reference/table-functions/merge'
+title: 'Merge'
 ---
 
 

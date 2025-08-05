@@ -1,9 +1,9 @@
 ---
-'description': 'JSONLines フォーマットのドキュメント'
-'keywords':
+description: 'JSONLines フォーマットのドキュメント'
+keywords:
 - 'JSONLines'
-'slug': '/interfaces/formats/JSONLines'
-'title': 'JSONLines'
+slug: '/interfaces/formats/JSONLines'
+title: 'JSONLines'
 ---
 
 

@@ -1,10 +1,10 @@
 ---
-'description': 'Represents the contents of index and marks files of MergeTree tables.
+description: 'Represents the contents of index and marks files of MergeTree tables.
   It can be used for introspection.'
-'sidebar_label': 'mergeTreeIndex'
-'sidebar_position': 77
-'slug': '/sql-reference/table-functions/mergeTreeIndex'
-'title': 'mergeTreeIndex'
+sidebar_label: 'mergeTreeIndex'
+sidebar_position: 77
+slug: '/sql-reference/table-functions/mergeTreeIndex'
+title: 'mergeTreeIndex'
 ---
 
 

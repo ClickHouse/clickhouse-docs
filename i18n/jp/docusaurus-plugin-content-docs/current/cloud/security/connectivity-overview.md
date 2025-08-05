@@ -1,7 +1,7 @@
 ---
-'slug': '/cloud/security/connectivity'
-'title': 'コネクティビティの概要'
-'description': 'コネクティビティのためのランディングページ'
+slug: '/cloud/security/connectivity'
+title: 'コネクティビティの概要'
+description: 'コネクティビティのためのランディングページ'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'description': 'Mapデータ型のClickHouseに関するドキュメント'
-'sidebar_label': 'Map(K, V)'
-'sidebar_position': 36
-'slug': '/sql-reference/data-types/map'
-'title': 'Map(K, V)'
+description: 'Mapデータ型のClickHouseに関するドキュメント'
+sidebar_label: 'Map(K, V)'
+sidebar_position: 36
+slug: '/sql-reference/data-types/map'
+title: 'Map(K, V)'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'description': 'Distance Functions のドキュメント'
-'sidebar_label': '距離'
-'sidebar_position': 55
-'slug': '/sql-reference/functions/distance-functions'
-'title': 'Distance Functions'
+description: 'Distance Functions のドキュメント'
+sidebar_label: '距離'
+sidebar_position: 55
+slug: '/sql-reference/functions/distance-functions'
+title: 'Distance Functions'
 ---
 
 

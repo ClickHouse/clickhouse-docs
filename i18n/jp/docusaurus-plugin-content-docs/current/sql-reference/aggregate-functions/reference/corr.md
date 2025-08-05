@@ -1,8 +1,8 @@
 ---
-'description': 'Pearson相関係数を計算します。'
-'sidebar_position': 117
-'slug': '/sql-reference/aggregate-functions/reference/corr'
-'title': 'corr'
+description: 'Pearson相関係数を計算します。'
+sidebar_position: 117
+slug: '/sql-reference/aggregate-functions/reference/corr'
+title: 'corr'
 ---
 
 

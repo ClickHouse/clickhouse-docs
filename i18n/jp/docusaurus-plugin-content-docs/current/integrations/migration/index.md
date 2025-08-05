@@ -1,15 +1,15 @@
 ---
-'sidebar_label': '概要'
-'sidebar_position': 1
-'keywords':
+sidebar_label: '概要'
+sidebar_position: 1
+keywords:
 - 'clickhouse'
 - 'migrate'
 - 'migration'
 - 'migrating'
 - 'data'
-'description': 'クラウドへの移行の目次'
-'title': 'クラウドへの移行'
-'slug': '/integrations/migration'
+description: 'クラウドへの移行の目次'
+title: 'クラウドへの移行'
+slug: '/integrations/migration'
 ---
 
 

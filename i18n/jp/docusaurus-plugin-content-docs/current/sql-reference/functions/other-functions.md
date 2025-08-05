@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for Other Functions'
-'sidebar_label': 'Other'
-'sidebar_position': 140
-'slug': '/sql-reference/functions/other-functions'
-'title': 'Other Functions'
+description: 'Documentation for Other Functions'
+sidebar_label: 'Other'
+sidebar_position: 140
+slug: '/sql-reference/functions/other-functions'
+title: 'Other Functions'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';

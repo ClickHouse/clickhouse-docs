@@ -1,9 +1,9 @@
 ---
-'description': 'エンジンはAtomicエンジンに基づいています。特定のデータベースのすべてのレプリカで書き込まれたDDLログをZooKeeperにレプリゼンテーションすることにより、メタデータのレプリケーションをサポートします。'
-'sidebar_label': 'レプリカ'
-'sidebar_position': 30
-'slug': '/engines/database-engines/replicated'
-'title': 'レプリカ'
+description: 'エンジンはAtomicエンジンに基づいています。特定のデータベースのすべてのレプリカで書き込まれたDDLログをZooKeeperにレプリゼンテーションすることにより、メタデータのレプリケーションをサポートします。'
+sidebar_label: 'レプリカ'
+sidebar_position: 30
+slug: '/engines/database-engines/replicated'
+title: 'レプリカ'
 ---
 
 

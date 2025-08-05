@@ -1,9 +1,9 @@
 ---
-'slug': '/managing-data/drop_partition'
-'sidebar_label': 'パーティションを削除'
-'title': 'パーティションの削除'
-'hide_title': false
-'description': 'パーティションを削除に関するページ'
+slug: '/managing-data/drop_partition'
+sidebar_label: 'パーティションを削除'
+title: 'パーティションの削除'
+hide_title: false
+description: 'パーティションを削除に関するページ'
 ---
 
 

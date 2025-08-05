@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'Npyフォーマットのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'Npyフォーマットのドキュメント'
+input_format: true
+keywords:
 - 'Npy'
-'output_format': true
-'slug': '/interfaces/formats/Npy'
-'title': 'Npy'
+output_format: true
+slug: '/interfaces/formats/Npy'
+title: 'Npy'
 ---
 
 

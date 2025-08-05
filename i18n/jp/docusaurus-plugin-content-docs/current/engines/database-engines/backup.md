@@ -1,10 +1,10 @@
 ---
-'description': 'Allows to instantly attach table/database from backups in read-only
+description: 'Allows to instantly attach table/database from backups in read-only
   mode.'
-'sidebar_label': 'バックアップ'
-'sidebar_position': 60
-'slug': '/engines/database-engines/backup'
-'title': 'Backup'
+sidebar_label: 'バックアップ'
+sidebar_position: 60
+slug: '/engines/database-engines/backup'
+title: 'Backup'
 ---
 
 

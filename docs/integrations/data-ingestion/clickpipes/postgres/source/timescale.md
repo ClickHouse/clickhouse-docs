@@ -8,7 +8,7 @@ keywords: ['TimescaleDB']
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-# Postgres with TimescaleDB Source Setup Guide
+# Postgres with TimescaleDB source setup guide
 
 <BetaBadge/>
 
@@ -35,7 +35,7 @@ to the process of replicating them, which is why the ability to replicate Timesc
 
 ClickPipes supports Postgres version 12 and later.
 
-## Enable Logical Replication {#enable-logical-replication}
+## Enable logical replication {#enable-logical-replication}
 
 The steps to be follow depend on how your Postgres instance with TimescaleDB is deployed. 
 
@@ -115,7 +115,7 @@ ERROR: transparent decompression only supports tableoid system column (SQLSTATE 
 
 You may need to disable [compression](https://docs.timescale.com/api/latest/compression/decompress_chunk) or [hypercore columnstore](https://docs.timescale.com/api/latest/hypercore/convert_to_rowstore) for these tables.
 
-## Configure Network Access {#configure-network-access}
+## Configure network access {#configure-network-access}
 
 If you want to restrict traffic to your Timescale instance, please allowlist the [documented static NAT IPs](../../index.md#list-of-static-ips).
 Instructions to do this will vary across providers, please consult the sidebar if your provider is listed or raise a 

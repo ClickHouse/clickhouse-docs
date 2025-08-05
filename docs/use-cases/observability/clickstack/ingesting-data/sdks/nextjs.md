@@ -90,7 +90,6 @@ export async function register() {
 
 This will allow Next.js to import the OpenTelemetry instrumentation for any serverless function invocation.
 
-
 ### Configure environment variables {#configure-environment-variables}
 
 If you're sending traces directly to ClickStack, you'll need to start your Next.js

@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'Regexp とテンプレート'
-'sidebar_position': 3
-'slug': '/integrations/data-formats/templates-regexp'
-'title': 'テンプレートと正規表現を使用して ClickHouse でカスタムテキストデータをインポートおよびエクスポートする方法'
-'description': 'テンプレートと正規表現を使用して ClickHouse でカスタムテキストデータをインポートおよびエクスポートする方法を説明したページ'
+sidebar_label: 'Regexp とテンプレート'
+sidebar_position: 3
+slug: '/integrations/data-formats/templates-regexp'
+title: 'テンプレートと正規表現を使用して ClickHouse でカスタムテキストデータをインポートおよびエクスポートする方法'
+description: 'テンプレートと正規表現を使用して ClickHouse でカスタムテキストデータをインポートおよびエクスポートする方法を説明したページ'
 ---
 
 

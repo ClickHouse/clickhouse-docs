@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'MsgPack形式のドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'MsgPack形式のドキュメント'
+input_format: true
+keywords:
 - 'MsgPack'
-'output_format': true
-'slug': '/interfaces/formats/MsgPack'
-'title': 'MsgPack'
+output_format: true
+slug: '/interfaces/formats/MsgPack'
+title: 'MsgPack'
 ---
 
 

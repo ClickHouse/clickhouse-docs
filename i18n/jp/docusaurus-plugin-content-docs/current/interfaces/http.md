@@ -1,10 +1,10 @@
 ---
-'description': 'ClickHouse の HTTP インターフェースに関するドキュメントで、任意のプラットフォームやプログラミング言語から ClickHouse
+description: 'ClickHouse の HTTP インターフェースに関するドキュメントで、任意のプラットフォームやプログラミング言語から ClickHouse
   への REST API アクセスを提供します'
-'sidebar_label': 'HTTP インターフェース'
-'sidebar_position': 15
-'slug': '/interfaces/http'
-'title': 'HTTP Interface'
+sidebar_label: 'HTTP インターフェース'
+sidebar_position: 15
+slug: '/interfaces/http'
+title: 'HTTP Interface'
 ---
 
 import PlayUI from '@site/static/images/play.png';

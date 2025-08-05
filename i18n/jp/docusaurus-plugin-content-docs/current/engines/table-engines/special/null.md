@@ -1,9 +1,9 @@
 ---
-'description': 'Null テーブルに書き込むと、データは無視されます。Null テーブルから読み取ると、応答は空になります。'
-'sidebar_label': 'Null'
-'sidebar_position': 50
-'slug': '/engines/table-engines/special/null'
-'title': 'Nullテーブルエンジン'
+description: 'Null テーブルに書き込むと、データは無視されます。Null テーブルから読み取ると、応答は空になります。'
+sidebar_label: 'Null'
+sidebar_position: 50
+slug: '/engines/table-engines/special/null'
+title: 'Nullテーブルエンジン'
 ---
 
 

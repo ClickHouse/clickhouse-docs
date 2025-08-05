@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'LineAsString フォーマットのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'LineAsString フォーマットのドキュメント'
+input_format: true
+keywords:
 - 'LineAsString'
-'output_format': true
-'slug': '/interfaces/formats/LineAsString'
-'title': 'LineAsString'
+output_format: true
+slug: '/interfaces/formats/LineAsString'
+title: 'LineAsString'
 ---
 
 

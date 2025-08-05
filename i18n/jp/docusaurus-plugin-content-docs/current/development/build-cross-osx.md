@@ -1,9 +1,9 @@
 ---
-'description': 'macOS システムのために Linux からのクロスコンパイルガイド'
-'sidebar_label': 'Linux で macOS 用にビルドする'
-'sidebar_position': 20
-'slug': '/development/build-cross-osx'
-'title': 'Linux から macOS 用にビルドする'
+description: 'macOS システムのために Linux からのクロスコンパイルガイド'
+sidebar_label: 'Linux で macOS 用にビルドする'
+sidebar_position: 20
+slug: '/development/build-cross-osx'
+title: 'Linux から macOS 用にビルドする'
 ---
 
 

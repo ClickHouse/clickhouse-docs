@@ -1,7 +1,7 @@
 ---
-'description': 'Clickhouse Obfuscatorのドキュメント'
-'slug': '/operations/utilities/clickhouse-obfuscator'
-'title': 'clickhouse-obfuscator'
+description: 'Clickhouse Obfuscatorのドキュメント'
+slug: '/operations/utilities/clickhouse-obfuscator'
+title: 'clickhouse-obfuscator'
 ---
 
 

@@ -1,8 +1,8 @@
 ---
-'slug': '/data-modeling/denormalization'
-'title': 'データの非正規化'
-'description': 'クエリパフォーマンスを向上させるための非正規化の使用方法'
-'keywords':
+slug: '/data-modeling/denormalization'
+title: 'データの非正規化'
+description: 'クエリパフォーマンスを向上させるための非正規化の使用方法'
+keywords:
 - 'data denormalization'
 - 'denormalize'
 - 'query optimization'

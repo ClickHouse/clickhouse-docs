@@ -1,9 +1,9 @@
 ---
-'slug': '/sql-reference/table-functions/generate_series'
-'sidebar_position': 146
-'sidebar_label': 'generate_series'
-'title': 'generate_series (generateSeries)'
-'description': 'start から stop までの整数を含む、単一の `generate_series` カラム (UInt64) を持つテーブルを返します。'
+slug: '/sql-reference/table-functions/generate_series'
+sidebar_position: 146
+sidebar_label: 'generate_series'
+title: 'generate_series (generateSeries)'
+description: 'start から stop までの整数を含む、単一の `generate_series` カラム (UInt64) を持つテーブルを返します。'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'description': '時系列ユースケースガイドのインデックスページ'
-'slug': '/use-cases/time-series'
-'title': '時系列'
-'pagination_prev': null
-'pagination_next': null
+description: '時系列ユースケースガイドのインデックスページ'
+slug: '/use-cases/time-series'
+title: '時系列'
+pagination_prev: null
+pagination_next: null
 ---
 
 

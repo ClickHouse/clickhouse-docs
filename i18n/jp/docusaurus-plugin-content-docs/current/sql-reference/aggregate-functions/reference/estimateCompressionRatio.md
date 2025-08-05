@@ -1,8 +1,8 @@
 ---
-'description': '指定されたカラムの圧縮率を圧縮せずに推定します。'
-'sidebar_position': 132
-'slug': '/sql-reference/aggregate-functions/reference/estimateCompressionRatio'
-'title': 'estimateCompressionRatio'
+description: '指定されたカラムの圧縮率を圧縮せずに推定します。'
+sidebar_position: 132
+slug: '/sql-reference/aggregate-functions/reference/estimateCompressionRatio'
+title: 'estimateCompressionRatio'
 ---
 
 

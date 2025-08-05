@@ -1,8 +1,8 @@
 ---
-'slug': '/migrations/postgresql/data-modeling-techniques'
-'title': 'データモデリングの手法'
-'description': 'PostgreSQL から ClickHouse への移行用データモデリング'
-'keywords':
+slug: '/migrations/postgresql/data-modeling-techniques'
+title: 'データモデリングの手法'
+description: 'PostgreSQL から ClickHouse への移行用データモデリング'
+keywords:
 - 'postgres'
 - 'postgresql'
 - 'migrate'

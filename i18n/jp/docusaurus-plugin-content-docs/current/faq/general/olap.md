@@ -1,9 +1,9 @@
 ---
-'slug': '/faq/general/olap'
-'title': 'OLAPとは何ですか？'
-'toc_hidden': true
-'toc_priority': 100
-'description': 'オンライン解析処理とは何かについての説明'
+slug: '/faq/general/olap'
+title: 'OLAPとは何ですか？'
+toc_hidden: true
+toc_priority: 100
+description: 'オンライン解析処理とは何かについての説明'
 ---
 
 

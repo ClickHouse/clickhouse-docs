@@ -94,7 +94,6 @@ sources:
 If Mutual TLS is required, generate certificates and keys using the Elastic guide ["Configure SSL/TLS for the Logstash output"](https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#use-ls-output). These can then be specified in the configuration as shown above.
 :::
 
-
 Events will be received in ECS format. These can be converted to the OpenTelemetry schema using a Vector Remap Language (VRL) transformer. Configuration of this transformer is simple - with the script file held in a separate file:
 
 ```yaml
@@ -267,7 +266,6 @@ sources:
         #ca_file: /data/elasticsearch-9.0.1/ca/ca.crt
         #verify_certificate: true
 
-
 transforms:
   remap_filebeat:
     inputs: ["beats"]
@@ -312,7 +310,6 @@ output.logstash:
 ```
 
 </VerticalStepper>
-
 
 ## Migrating from Elastic Agent {#migrating-from-elastic-agent}
 
@@ -374,7 +371,6 @@ Users running the EDOT collector distributed with Elastic Agent will not be able
 :::
 
 To run the Elastic Agent with the EDOT collector, see the [official Elastic guide](https://www.elastic.co/docs/reference/fleet/otel-agent-transform). Rather than configuring the Elastic endpoint, as indicated in the guide, remove existing `exporters` and configure the OTLP output - sending data to the ClickStack OpenTelemetry collector. For example, the configuration for the exporters becomes:
-
 
 ```yaml
 exporters:

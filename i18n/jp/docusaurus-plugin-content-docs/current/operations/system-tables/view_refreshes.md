@@ -1,10 +1,10 @@
 ---
-'description': 'リフレッシュ可能なマテリアライズドビューに関する情報を含むシステムテーブルです。'
-'keywords':
+description: 'リフレッシュ可能なマテリアライズドビューに関する情報を含むシステムテーブルです。'
+keywords:
 - 'system table'
 - 'view_refreshes'
-'slug': '/operations/system-tables/view_refreshes'
-'title': 'system.view_refreshes'
+slug: '/operations/system-tables/view_refreshes'
+title: 'system.view_refreshes'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

@@ -106,7 +106,6 @@ chdb.query(
 
 We can also count the number of rows in that file:
 
-
 ```python
 chdb.query(
   """
@@ -236,7 +235,6 @@ sess.query(f"""
 
 We can then use the `DESCRIBE` clause to inspect the schema:
 
-
 ```python
 sess.query(f"""
    DESCRIBE youtube.dislikes
@@ -275,7 +273,6 @@ sess.query(f"""
 "uploader_badges","String"
 "video_badges","String"
 ```
-
 
 Next, let's populate that table:
 

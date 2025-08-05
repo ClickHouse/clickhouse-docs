@@ -1,14 +1,14 @@
 ---
-'slug': '/examples/aggregate-function-combinators/avgState'
-'title': 'avgState'
-'description': 'avgState combinatorの使用例'
-'keywords':
+slug: '/examples/aggregate-function-combinators/avgState'
+title: 'avgState'
+description: 'avgState combinatorの使用例'
+keywords:
 - 'avg'
 - 'state'
 - 'combinator'
 - 'examples'
 - 'avgState'
-'sidebar_label': 'avgState'
+sidebar_label: 'avgState'
 ---
 
 

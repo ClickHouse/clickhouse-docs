@@ -1,8 +1,8 @@
 ---
-'description': 'Bitmapまたは符号なし整数カラムからの集計計算は、UInt64型の濃度を返します。-State接尾辞を追加すると、ビットマップオブジェクトが返されます。'
-'sidebar_position': 148
-'slug': '/sql-reference/aggregate-functions/reference/groupbitmap'
-'title': 'groupBitmap'
+description: 'Bitmapまたは符号なし整数カラムからの集計計算は、UInt64型の濃度を返します。-State接尾辞を追加すると、ビットマップオブジェクトが返されます。'
+sidebar_position: 148
+slug: '/sql-reference/aggregate-functions/reference/groupbitmap'
+title: 'groupBitmap'
 ---
 
 

@@ -1,8 +1,8 @@
 ---
-'slug': '/data-modeling/backfilling'
-'title': 'バックフィーリングデータ'
-'description': 'ClickHouse で大規模なデータセットをバックフィルする方法'
-'keywords':
+slug: '/data-modeling/backfilling'
+title: 'バックフィーリングデータ'
+description: 'ClickHouse で大規模なデータセットをバックフィルする方法'
+keywords:
 - 'materialized views'
 - 'backfilling'
 - 'inserting data'

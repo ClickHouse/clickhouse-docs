@@ -1,10 +1,10 @@
 ---
-'description': 'System table which contains properties of configured setting profiles.'
-'keywords':
+description: 'System table which contains properties of configured setting profiles.'
+keywords:
 - 'system table'
 - 'settings_profiles'
-'slug': '/operations/system-tables/settings_profiles'
-'title': 'system.settings_profiles'
+slug: '/operations/system-tables/settings_profiles'
+title: 'system.settings_profiles'
 ---
 
 

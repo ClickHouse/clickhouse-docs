@@ -1,10 +1,10 @@
 ---
-'description': 'Documentation for the CustomSeparatedIgnoreSpacesWithNamesAndTypes
+description: 'Documentation for the CustomSeparatedIgnoreSpacesWithNamesAndTypes
   format'
-'keywords':
+keywords:
 - 'CustomSeparatedIgnoreSpacesWithNamesAndTypes'
-'slug': '/interfaces/formats/CustomSeparatedIgnoreSpacesWithNamesAndTypes'
-'title': 'CustomSeparatedIgnoreSpacesWithNamesAndTypes'
+slug: '/interfaces/formats/CustomSeparatedIgnoreSpacesWithNamesAndTypes'
+title: 'CustomSeparatedIgnoreSpacesWithNamesAndTypes'
 ---
 
 

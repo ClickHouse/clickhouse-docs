@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouseの継続的インテグレーションシステムの概要'
-'sidebar_label': '継続的インテグレーション（CI）'
-'sidebar_position': 55
-'slug': '/development/continuous-integration'
-'title': '継続的インテグレーション（CI）'
+description: 'ClickHouseの継続的インテグレーションシステムの概要'
+sidebar_label: '継続的インテグレーション（CI）'
+sidebar_position: 55
+slug: '/development/continuous-integration'
+title: '継続的インテグレーション（CI）'
 ---
 
 # 継続的インテグレーション (CI)

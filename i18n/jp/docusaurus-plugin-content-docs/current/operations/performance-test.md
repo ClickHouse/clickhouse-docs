@@ -1,9 +1,9 @@
 ---
-'description': 'Guide to testing and benchmarking hardware performance with ClickHouse'
-'sidebar_label': 'Testing Hardware'
-'sidebar_position': 54
-'slug': '/operations/performance-test'
-'title': 'How to Test Your Hardware with ClickHouse'
+description: 'Guide to testing and benchmarking hardware performance with ClickHouse'
+sidebar_label: 'Testing Hardware'
+sidebar_position: 54
+slug: '/operations/performance-test'
+title: 'How to Test Your Hardware with ClickHouse'
 ---
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';

@@ -1,9 +1,9 @@
 ---
-'description': 'Creates a table from the `URL` with given `format` and `structure`'
-'sidebar_label': 'url'
-'sidebar_position': 200
-'slug': '/sql-reference/table-functions/url'
-'title': 'url'
+description: 'Creates a table from the `URL` with given `format` and `structure`'
+sidebar_label: 'url'
+sidebar_position: 200
+slug: '/sql-reference/table-functions/url'
+title: 'url'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';

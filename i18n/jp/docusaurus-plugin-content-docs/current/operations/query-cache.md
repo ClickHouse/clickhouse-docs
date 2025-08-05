@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouse でクエリキャッシュ機能の使用と設定方法に関するガイド'
-'sidebar_label': 'クエリキャッシュ'
-'sidebar_position': 65
-'slug': '/operations/query-cache'
-'title': 'クエリキャッシュ'
+description: 'ClickHouse でクエリキャッシュ機能の使用と設定方法に関するガイド'
+sidebar_label: 'クエリキャッシュ'
+sidebar_position: 65
+slug: '/operations/query-cache'
+title: 'クエリキャッシュ'
 ---
 
 

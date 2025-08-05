@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing information about the dependent views executed
+description: 'System table containing information about the dependent views executed
   when running a query, for example, the view type or the execution time.'
-'keywords':
+keywords:
 - 'system table'
 - 'query_views_log'
-'slug': '/operations/system-tables/query_views_log'
-'title': 'system.query_views_log'
+slug: '/operations/system-tables/query_views_log'
+title: 'system.query_views_log'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

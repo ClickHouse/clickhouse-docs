@@ -81,7 +81,6 @@ This is recommended if your site is not currently built using a bundler.
 </TabItem>
 </Tabs>
 
-
 ### Options {#options}
 
 - `apiKey` - Your ClickStack Ingestion API Key.

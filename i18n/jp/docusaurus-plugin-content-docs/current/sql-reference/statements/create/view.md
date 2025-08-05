@@ -1,9 +1,9 @@
 ---
-'description': 'CREATE VIEW のドキュメント'
-'sidebar_label': 'ビュー'
-'sidebar_position': 37
-'slug': '/sql-reference/statements/create/view'
-'title': 'CREATE VIEW'
+description: 'CREATE VIEW のドキュメント'
+sidebar_label: 'ビュー'
+sidebar_position: 37
+slug: '/sql-reference/statements/create/view'
+title: 'CREATE VIEW'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';

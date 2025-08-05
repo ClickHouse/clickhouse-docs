@@ -1,8 +1,8 @@
 ---
-'description': 'JSONカラムに保存された一意のパスのリストを計算します。'
-'sidebar_position': 216
-'slug': '/sql-reference/aggregate-functions/reference/distinctjsonpaths'
-'title': 'distinctJSONPaths'
+description: 'JSONカラムに保存された一意のパスのリストを計算します。'
+sidebar_position: 216
+slug: '/sql-reference/aggregate-functions/reference/distinctjsonpaths'
+title: 'distinctJSONPaths'
 ---
 
 

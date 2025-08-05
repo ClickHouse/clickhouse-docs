@@ -1,9 +1,9 @@
 ---
-'title': 'データ形式'
-'sidebar_label': 'データ形式'
-'slug': '/chdb/reference/data-formats'
-'description': 'chDBのデータ形式'
-'keywords':
+title: 'データ形式'
+sidebar_label: 'データ形式'
+slug: '/chdb/reference/data-formats'
+description: 'chDBのデータ形式'
+keywords:
 - 'chdb'
 - 'data formats'
 ---

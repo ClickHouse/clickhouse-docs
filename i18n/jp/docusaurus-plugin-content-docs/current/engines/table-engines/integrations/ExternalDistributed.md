@@ -1,11 +1,11 @@
 ---
-'description': 'The `ExternalDistributed` engine allows to perform `SELECT` queries
+description: 'The `ExternalDistributed` engine allows to perform `SELECT` queries
   on data that is stored on a remote servers MySQL or PostgreSQL. Accepts MySQL or
   PostgreSQL engines as an argument so sharding is possible.'
-'sidebar_label': 'ExternalDistributed'
-'sidebar_position': 55
-'slug': '/engines/table-engines/integrations/ExternalDistributed'
-'title': 'ExternalDistributed'
+sidebar_label: 'ExternalDistributed'
+sidebar_position: 55
+slug: '/engines/table-engines/integrations/ExternalDistributed'
+title: 'ExternalDistributed'
 ---
 
 

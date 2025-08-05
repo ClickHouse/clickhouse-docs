@@ -1,10 +1,10 @@
 ---
-'description': 'The File table engine keeps the data in a file in one of the supported
+description: 'The File table engine keeps the data in a file in one of the supported
   file formats (`TabSeparated`, `Native`, etc.).'
-'sidebar_label': 'File'
-'sidebar_position': 40
-'slug': '/engines/table-engines/special/file'
-'title': 'File テーブルエンジン'
+sidebar_label: 'File'
+sidebar_position: 40
+slug: '/engines/table-engines/special/file'
+title: 'File テーブルエンジン'
 ---
 
 

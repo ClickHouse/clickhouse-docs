@@ -1,9 +1,9 @@
 ---
-'description': 'サブクエリをテーブルに変換します。この機能はビューを実装します。'
-'sidebar_label': 'ビュー'
-'sidebar_position': 210
-'slug': '/sql-reference/table-functions/view'
-'title': 'ビュー'
+description: 'サブクエリをテーブルに変換します。この機能はビューを実装します。'
+sidebar_label: 'ビュー'
+sidebar_position: 210
+slug: '/sql-reference/table-functions/view'
+title: 'ビュー'
 ---
 
 

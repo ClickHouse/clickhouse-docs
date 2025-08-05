@@ -1,7 +1,7 @@
 ---
-'title': 'Warehouses'
-'slug': '/cloud/reference/warehouses'
-'keywords':
+title: 'Warehouses'
+slug: '/cloud/reference/warehouses'
+keywords:
 - 'compute separation'
 - 'cloud'
 - 'architecture'
@@ -9,7 +9,7 @@
 - 'warehouse'
 - 'warehouses'
 - 'hydra'
-'description': 'ClickHouse Cloud における Compute-compute separation'
+description: 'ClickHouse Cloud における Compute-compute separation'
 ---
 
 import compute_1 from '@site/static/images/cloud/reference/compute-compute-1.png';

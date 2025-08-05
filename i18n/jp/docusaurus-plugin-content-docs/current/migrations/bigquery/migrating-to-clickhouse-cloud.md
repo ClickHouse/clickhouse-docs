@@ -1,8 +1,8 @@
 ---
-'title': 'BigQuery から ClickHouse Cloud への移行'
-'slug': '/migrations/bigquery/migrating-to-clickhouse-cloud'
-'description': 'BigQuery から ClickHouse Cloud へのデータ移行方法'
-'keywords':
+title: 'BigQuery から ClickHouse Cloud への移行'
+slug: '/migrations/bigquery/migrating-to-clickhouse-cloud'
+description: 'BigQuery から ClickHouse Cloud へのデータ移行方法'
+keywords:
 - 'migrate'
 - 'migration'
 - 'migrating'

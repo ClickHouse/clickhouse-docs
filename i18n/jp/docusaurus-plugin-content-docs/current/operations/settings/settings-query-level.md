@@ -1,8 +1,8 @@
 ---
-'description': 'Settings at the query-level'
-'sidebar_label': 'Query-level Session Settings'
-'slug': '/operations/settings/query-level'
-'title': 'Query-level Session Settings'
+description: 'Settings at the query-level'
+sidebar_label: 'Query-level Session Settings'
+slug: '/operations/settings/query-level'
+title: 'Query-level Session Settings'
 ---
 
 

@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'PrettyCompactNoEscapesMonoBlock フォーマットのドキュメント'
-'input_format': false
-'keywords':
+alias: []
+description: 'PrettyCompactNoEscapesMonoBlock フォーマットのドキュメント'
+input_format: false
+keywords:
 - 'PrettyCompactNoEscapesMonoBlock'
-'output_format': true
-'slug': '/interfaces/formats/PrettyCompactNoEscapesMonoBlock'
-'title': 'PrettyCompactNoEscapesMonoBlock'
+output_format: true
+slug: '/interfaces/formats/PrettyCompactNoEscapesMonoBlock'
+title: 'PrettyCompactNoEscapesMonoBlock'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';

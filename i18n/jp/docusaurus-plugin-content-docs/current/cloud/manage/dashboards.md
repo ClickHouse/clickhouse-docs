@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'ダッシュボード'
-'slug': '/cloud/manage/dashboards'
-'title': 'ダッシュボード'
-'description': 'SQLコンソールのダッシュボード機能を使用すると、保存されたクエリからの可視化情報を収集および共有できます。'
+sidebar_label: 'ダッシュボード'
+slug: '/cloud/manage/dashboards'
+title: 'ダッシュボード'
+description: 'SQLコンソールのダッシュボード機能を使用すると、保存されたクエリからの可視化情報を収集および共有できます。'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';

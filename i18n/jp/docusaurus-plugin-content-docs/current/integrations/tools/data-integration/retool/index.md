@@ -1,7 +1,7 @@
 ---
-'sidebar_label': 'Retool'
-'slug': '/integrations/retool'
-'keywords':
+sidebar_label: 'Retool'
+slug: '/integrations/retool'
+keywords:
 - 'clickhouse'
 - 'retool'
 - 'connect'
@@ -12,9 +12,9 @@
 - 'dashboard'
 - 'nocode'
 - 'no-code'
-'description': 'Quickly build web and mobile apps with rich user interfaces, automate
+description: 'Quickly build web and mobile apps with rich user interfaces, automate
   complex tasks, and integrate AI—all powered by your data.'
-'title': 'Connecting Retool to ClickHouse'
+title: 'Connecting Retool to ClickHouse'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';

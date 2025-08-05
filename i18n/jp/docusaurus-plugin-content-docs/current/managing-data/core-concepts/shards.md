@@ -1,8 +1,8 @@
 ---
-'slug': '/shards'
-'title': 'テーブルシャードとレプリカ'
-'description': 'ClickHouseにおけるテーブルシャードとレプリカとは何ですか'
-'keywords':
+slug: '/shards'
+title: 'テーブルシャードとレプリカ'
+description: 'ClickHouseにおけるテーブルシャードとレプリカとは何ですか'
+keywords:
 - 'shard'
 - 'shards'
 - 'sharding'
@@ -52,6 +52,7 @@ CREATE TABLE uk.uk_price_paid_simple_dist ON CLUSTER test_cluster
     price UInt32
 )
 ENGINE = Distributed('test_cluster', 'uk', 'uk_price_paid_simple', rand())
+```
 
 `ON CLUSTER` 句により、DDL ステートメントは [分散 DDL ステートメント](/sql-reference/distributed-ddl) となり、ClickHouse に `test_cluster` [クラスター定義](/architecture/horizontal-scaling#replication-and-sharding-configuration) にリストされているすべてのサーバーでテーブルを作成するよう指示します。分散 DDL には、[クラスターアーキテクチャ](/architecture/horizontal-scaling#architecture-diagram) において追加の [Keeper](https://clickhouse.com/clickhouse/keeper) コンポーネントが必要です。
 

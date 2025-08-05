@@ -1,9 +1,9 @@
 ---
-'description': 'Analyzing Stack Overflow data with ClickHouse'
-'sidebar_label': 'Stack Overflow'
-'sidebar_position': 1
-'slug': '/getting-started/example-datasets/stackoverflow'
-'title': 'Analyzing Stack Overflow data with ClickHouse'
+description: 'Analyzing Stack Overflow data with ClickHouse'
+sidebar_label: 'Stack Overflow'
+sidebar_position: 1
+slug: '/getting-started/example-datasets/stackoverflow'
+title: 'Analyzing Stack Overflow data with ClickHouse'
 ---
 
 import Image from '@theme/IdealImage';

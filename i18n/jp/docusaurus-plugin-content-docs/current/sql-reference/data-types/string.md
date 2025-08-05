@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouse における String データ型のドキュメント'
-'sidebar_label': '文字列'
-'sidebar_position': 8
-'slug': '/sql-reference/data-types/string'
-'title': 'String'
+description: 'ClickHouse における String データ型のドキュメント'
+sidebar_label: '文字列'
+sidebar_position: 8
+slug: '/sql-reference/data-types/string'
+title: 'String'
 ---
 
 

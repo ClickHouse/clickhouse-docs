@@ -1,8 +1,8 @@
 ---
-'slug': '/cloud/billing/marketplace/aws-marketplace-payg'
-'title': 'AWS Marketplace PAYG'
-'description': 'AWS Marketplaceを通じてClickHouse Cloudに登録（PAYG）します。'
-'keywords':
+slug: '/cloud/billing/marketplace/aws-marketplace-payg'
+title: 'AWS Marketplace PAYG'
+description: 'AWS Marketplaceを通じてClickHouse Cloudに登録（PAYG）します。'
+keywords:
 - 'aws'
 - 'marketplace'
 - 'billing'

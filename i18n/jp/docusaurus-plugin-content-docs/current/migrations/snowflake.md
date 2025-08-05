@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'Snowflake'
-'sidebar_position': 20
-'slug': '/migrations/snowflake'
-'description': 'Snowflake から ClickHouse への移行'
-'keywords':
+sidebar_label: 'Snowflake'
+sidebar_position: 20
+slug: '/migrations/snowflake'
+description: 'Snowflake から ClickHouse への移行'
+keywords:
 - 'migrate'
 - 'migration'
 - 'migrating'
@@ -11,7 +11,7 @@
 - 'etl'
 - 'elt'
 - 'snowflake'
-'title': 'Snowflake から ClickHouse への移行'
+title: 'Snowflake から ClickHouse への移行'
 ---
 
 import migrate_snowflake_clickhouse from '@site/static/images/migrations/migrate_snowflake_clickhouse.png';

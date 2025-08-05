@@ -1,8 +1,8 @@
 ---
-'description': 'Selects the last encountered value of a column.'
-'sidebar_position': 105
-'slug': '/sql-reference/aggregate-functions/reference/anylast'
-'title': 'anyLast'
+description: 'Selects the last encountered value of a column.'
+sidebar_position: 105
+slug: '/sql-reference/aggregate-functions/reference/anylast'
+title: 'anyLast'
 ---
 
 

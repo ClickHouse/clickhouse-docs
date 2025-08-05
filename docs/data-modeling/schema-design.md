@@ -25,7 +25,6 @@ The Stack Overflow dataset contains a number of related tables. In any data mode
 
 The above schema is intentionally not optimal for the purposes of this guide.
 
-
 ## Establish initial schema {#establish-initial-schema}
 
 Since the `posts` table will be the target for most analytics queries, we focus on establishing a schema for this table. This data is available in the public S3 bucket `s3://datasets-documentation/stackoverflow/parquet/posts/*.parquet` with a file per year.
@@ -139,7 +138,7 @@ Compression in ClickHouse will be impacted by 3 main factors: the ordering key, 
 The largest initial improvement in compression and query performance can be obtained through a simple process of type optimization. A few simple rules can be applied to optimize the schema:
 
 - **Use strict types** - Our initial schema used Strings for many columns which are clearly numerics. Usage of the correct types will ensure the expected semantics when filtering and aggregating. The same applies to date types, which have been correctly provided in the Parquet files.
-- **Avoid Nullable Columns** - By default the above columns have been assumed to be Null. The Nullable type allows queries to determine the difference between an empty and Null value. This creates a separate column of UInt8 type. This additional column has to be processed every time a user works with a nullable column. This leads to additional storage space used and almost always negatively affects query performance. Only use Nullable if there is a difference between the default empty value for a type and Null. For example, a value of 0 for empty values in the `ViewCount` column will likely be sufficient for most queries and not impact results. If empty values should be treated differently, they can often also be excluded from queries with a filter.
+- **Avoid nullable Columns** - By default the above columns have been assumed to be Null. The Nullable type allows queries to determine the difference between an empty and Null value. This creates a separate column of UInt8 type. This additional column has to be processed every time a user works with a nullable column. This leads to additional storage space used and almost always negatively affects query performance. Only use Nullable if there is a difference between the default empty value for a type and Null. For example, a value of 0 for empty values in the `ViewCount` column will likely be sufficient for most queries and not impact results. If empty values should be treated differently, they can often also be excluded from queries with a filter.
 Use the minimal precision for numeric types - ClickHouse has a number of numeric types designed for different numeric ranges and precision. Always aim to minimize the number of bits used to represent a column. As well as integers of different size e.g. Int16, ClickHouse offers unsigned variants whose minimum value is 0. These can allow fewer bits to be used for a column e.g. UInt16 has a maximum value of 65535, twice that of an Int16. Prefer these types over larger signed variants if possible.
 - **Minimal precision for date types** - ClickHouse supports a number of date and datetime types. Date and Date32 can be used for storing pure dates, with the latter supporting a larger date range at the expense of more bits. DateTime and DateTime64 provide support for date times. DateTime is limited to second granularity and uses 32 bits. DateTime64, as the name suggests, uses 64 bits but provides support up to nanosecond granularity. As ever, choose the more coarse version acceptable for queries, minimizing the number of bits needed.
 - **Use LowCardinality** - Numbers, strings, Date or DateTime columns with a low number of unique values can potentially be encoded using the LowCardinality type. This dictionary encodes values, reducing the size on disk. Consider this for columns with less than 10k unique values.
@@ -149,7 +148,6 @@ FixedString for special cases - Strings which have a fixed length can be encoded
 > Tip: To find the range of all columns, and the number of distinct values, users can use the simple query `SELECT * APPLY min, * APPLY  max, * APPLY uniq FROM table FORMAT Vertical`. We recommend performing this over a smaller subset of the data as this can be expensive. This query requires numerics to be at least defined as such for an accurate result i.e. not a String.
 
 By applying these simple rules to our posts table, we can identify an optimal type for each column:
-
 
 | Column                  | Is Numeric | Min, Max                                                              | Unique Values | Nulls | Comment                                                                                      | Optimized Type                           |
 |------------------------|------------|------------------------------------------------------------------------|----------------|--------|----------------------------------------------------------------------------------------------|------------------------------------------|
@@ -311,7 +309,6 @@ INSERT INTO posts_v3 SELECT * FROM posts_v2
 
 0 rows in set. Elapsed: 158.074 sec. Processed 59.82 million rows, 76.21 GB (378.42 thousand rows/s., 482.14 MB/s.)
 Peak memory usage: 6.41 GiB.
-
 
 Our previous query improves the query response time by over 3x:
 

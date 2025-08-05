@@ -1,10 +1,10 @@
 ---
-'description': 'Provides a read-only table-like interface to the Delta Lake tables
+description: 'Provides a read-only table-like interface to the Delta Lake tables
   in Amazon S3.'
-'sidebar_label': 'deltaLake'
-'sidebar_position': 45
-'slug': '/sql-reference/table-functions/deltalake'
-'title': 'deltaLake'
+sidebar_label: 'deltaLake'
+sidebar_position: 45
+slug: '/sql-reference/table-functions/deltalake'
+title: 'deltaLake'
 ---
 
 

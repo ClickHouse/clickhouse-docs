@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'SQL ダンプ'
-'slug': '/integrations/data-formats/sql'
-'title': 'ClickHouse で SQL データの挿入とダンプ'
-'description': '他のデータベースと ClickHouse 間でデータを SQL ダンプを使用して転送する方法について説明するページ。'
+sidebar_label: 'SQL ダンプ'
+slug: '/integrations/data-formats/sql'
+title: 'ClickHouse で SQL データの挿入とダンプ'
+description: '他のデータベースと ClickHouse 間でデータを SQL ダンプを使用して転送する方法について説明するページ。'
 ---
 
 

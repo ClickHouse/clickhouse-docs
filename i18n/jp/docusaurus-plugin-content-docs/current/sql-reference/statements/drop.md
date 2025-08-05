@@ -1,9 +1,9 @@
 ---
-'description': 'DROP ステートメントのドキュメント'
-'sidebar_label': 'DROP'
-'sidebar_position': 44
-'slug': '/sql-reference/statements/drop'
-'title': 'DROP ステートメント'
+description: 'DROP ステートメントのドキュメント'
+sidebar_label: 'DROP'
+sidebar_position: 44
+slug: '/sql-reference/statements/drop'
+title: 'DROP ステートメント'
 ---
 
 

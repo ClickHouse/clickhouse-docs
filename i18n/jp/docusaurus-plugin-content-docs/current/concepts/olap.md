@@ -1,9 +1,9 @@
 ---
-'sidebar_position': 2
-'sidebar_label': 'OLAPとは何ですか？'
-'description': 'OLAPとは、Online Analytical Processing の略で、技術的およびビジネスの観点から見ることができる広範な用語です。'
-'title': 'OLAPとは何ですか？'
-'slug': '/concepts/olap'
+sidebar_position: 2
+sidebar_label: 'OLAPとは何ですか？'
+description: 'OLAPとは、Online Analytical Processing の略で、技術的およびビジネスの観点から見ることができる広範な用語です。'
+title: 'OLAPとは何ですか？'
+slug: '/concepts/olap'
 ---
 
 

@@ -1,10 +1,10 @@
 ---
-'description': 'MergeTree のパーツに関する情報を含むシステムテーブル'
-'keywords':
+description: 'MergeTree のパーツに関する情報を含むシステムテーブル'
+keywords:
 - 'system table'
 - 'parts'
-'slug': '/operations/system-tables/parts'
-'title': 'system.parts'
+slug: '/operations/system-tables/parts'
+title: 'system.parts'
 ---
 
 

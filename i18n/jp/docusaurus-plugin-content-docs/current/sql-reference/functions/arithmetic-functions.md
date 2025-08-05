@@ -1,9 +1,9 @@
 ---
-'description': '算術関数のドキュメント'
-'sidebar_label': '算術'
-'sidebar_position': 5
-'slug': '/sql-reference/functions/arithmetic-functions'
-'title': 'Arithmetic Functions'
+description: '算術関数のドキュメント'
+sidebar_label: '算術'
+sidebar_position: 5
+slug: '/sql-reference/functions/arithmetic-functions'
+title: 'Arithmetic Functions'
 ---
 
 

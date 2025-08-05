@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'HTTP Sink Connector for Confluent Platform'
-sidebar_position: 3
+sidebar_position: 4
 slug: /integrations/kafka/cloud/confluent/http
 description: 'Using HTTP Connector Sink with Kafka Connect and ClickHouse'
 title: 'Confluent HTTP Sink Connector'
@@ -13,8 +13,7 @@ import httpAuth from '@site/static/images/integrations/data-ingestion/kafka/conf
 import httpAdvanced from '@site/static/images/integrations/data-ingestion/kafka/confluent/http_advanced.png';
 import createMessageInTopic from '@site/static/images/integrations/data-ingestion/kafka/confluent/create_message_in_topic.png';
 
-
-# Confluent HTTP Sink Connector
+# Confluent HTTP sink connector
 The HTTP Sink Connector is data type agnostic and thus does not need a Kafka schema as well as supporting ClickHouse specific data types such as Maps and Arrays. This additional flexibility comes at a slight increase in configuration complexity.
 
 Below we describe a simple installation, pulling messages from a single Kafka topic and inserting rows into a ClickHouse table.
@@ -28,8 +27,7 @@ Below we describe a simple installation, pulling messages from a single Kafka to
 #### 1. Gather your connection details {#1-gather-your-connection-details}
 <ConnectionDetails />
 
-
-#### 2. Run Kafka Connect and the HTTP Sink Connector {#2-run-kafka-connect-and-the-http-sink-connector}
+#### 2. Run Kafka Connect and the HTTP sink connector {#2-run-kafka-connect-and-the-http-sink-connector}
 
 You have two options:
 
@@ -68,10 +66,10 @@ Create a Kafka topic and an instance of HTTP Sink Connector:
 Configure HTTP Sink Connector:
 * Provide the topic name you created
 * Authentication
-    * `HTTP Url` - ClickHouse Cloud URL with a `INSERT` query specified `<protocol>://<clickhouse_host>:<clickhouse_port>?query=INSERT%20INTO%20<database>.<table>%20FORMAT%20JSONEachRow`. **Note**: the query must be encoded.
-    * `Endpoint Authentication type` - BASIC
-    * `Auth username` - ClickHouse username
-    * `Auth password` - ClickHouse password
+  * `HTTP Url` - ClickHouse Cloud URL with a `INSERT` query specified `<protocol>://<clickhouse_host>:<clickhouse_port>?query=INSERT%20INTO%20<database>.<table>%20FORMAT%20JSONEachRow`. **Note**: the query must be encoded.
+  * `Endpoint Authentication type` - BASIC
+  * `Auth username` - ClickHouse username
+  * `Auth password` - ClickHouse password
 
 :::note
   This HTTP Url is error-prone. Ensure escaping is precise to avoid issues.
@@ -81,14 +79,14 @@ Configure HTTP Sink Connector:
 <br/>
 
 * Configuration
-    * `Input Kafka record value format`Depends on your source data but in most cases JSON or Avro. We assume `JSON` in the following settings.
-    * In `advanced configurations` section:
-        * `HTTP Request Method` - Set to POST
-        * `Request Body Format` - json
-        * `Batch batch size` - Per ClickHouse recommendations, set this to **at least 1000**.
-        * `Batch json as array` - true
-        * `Retry on HTTP codes` - 400-500 but adapt as required e.g. this may change if you have an HTTP proxy in front of ClickHouse.
-        * `Maximum Reties` - the default (10) is appropriate but feel to adjust for more robust retries.
+  * `Input Kafka record value format`Depends on your source data but in most cases JSON or Avro. We assume `JSON` in the following settings.
+  * In `advanced configurations` section:
+    * `HTTP Request Method` - Set to POST
+    * `Request Body Format` - json
+    * `Batch batch size` - Per ClickHouse recommendations, set this to **at least 1000**.
+    * `Batch json as array` - true
+    * `Retry on HTTP codes` - 400-500 but adapt as required e.g. this may change if you have an HTTP proxy in front of ClickHouse.
+    * `Maximum Reties` - the default (10) is appropriate but feel to adjust for more robust retries.
 
 <Image img={httpAdvanced} size="sm" alt="Confluent Cloud interface showing advanced configuration options for the HTTP Sink connector" border/>
 
@@ -109,7 +107,7 @@ From the [Sink documentation](https://docs.confluent.io/kafka-connectors/http/cu
 1. Verify your Kafka records have the same key.
 2. When you add parameters to the HTTP API URL, each record can result in a unique URL. For this reason, batching is disabled when using additional URL parameters.
 
-#### 400 Bad Request {#400-bad-request}
+#### 400 bad request {#400-bad-request}
 ##### CANNOT_PARSE_QUOTED_STRING {#cannot_parse_quoted_string}
 If HTTP Sink fails with the following message when inserting a JSON object into a `String` column:
 
@@ -123,7 +121,7 @@ Set `input_format_json_read_objects_as_strings=1` setting in URL as encoded stri
 
 Note that this example preserves the Array fields of the Github dataset. We assume you have an empty github topic in the examples and use [kcat](https://github.com/edenhill/kcat) for message insertion to Kafka.
 
-##### 1. Prepare Configuration {#1-prepare-configuration}
+##### 1. Prepare configuration {#1-prepare-configuration}
 
 Follow [these instructions](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#set-up-a-local-connect-worker-with-cp-install) for setting up Connect relevant to your installation type, noting the differences between a standalone and distributed cluster. If using Confluent Cloud, the distributed setup is relevant.
 
@@ -136,7 +134,6 @@ http://localhost:8123?query=INSERT%20INTO%20default.github%20FORMAT%20JSONEachRo
 ```
 
 The following additional parameters are relevant to using the HTTP Sink with ClickHouse. A complete parameter list can be found [here](https://docs.confluent.io/kafka-connect-http/current/connector_config.html):
-
 
 * `request.method` - Set to **POST**
 * `retry.on.status.codes` - Set to 400-500 to retry on any error codes. Refine based expected errors in data.
@@ -157,7 +154,6 @@ Example configuration files for the Github sample data can be found [here](https
 ##### 2. Create the ClickHouse table {#2-create-the-clickhouse-table}
 
 Ensure the table has been created. An example for a minimal github dataset using a standard MergeTree is shown below.
-
 
 ```sql
 CREATE TABLE github
@@ -200,7 +196,6 @@ head -n 10000 github_all_columns.ndjson | kcat -b <host>:<port> -X security.prot
 ```
 
 A simple read on the target table "Github" should confirm the insertion of data.
-
 
 ```sql
 SELECT count() FROM default.github;

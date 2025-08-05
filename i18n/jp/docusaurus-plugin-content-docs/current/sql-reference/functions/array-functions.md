@@ -1,9 +1,9 @@
 ---
-'description': 'Array Functionsのドキュメント'
-'sidebar_label': '配列'
-'sidebar_position': 10
-'slug': '/sql-reference/functions/array-functions'
-'title': 'Array Functions'
+description: 'Array Functionsのドキュメント'
+sidebar_label: '配列'
+sidebar_position: 10
+slug: '/sql-reference/functions/array-functions'
+title: 'Array Functions'
 ---
 
 

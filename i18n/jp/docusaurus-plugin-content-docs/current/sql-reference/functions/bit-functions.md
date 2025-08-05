@@ -1,9 +1,9 @@
 ---
-'description': 'Bit Functions のドキュメント'
-'sidebar_label': 'ビット'
-'sidebar_position': 20
-'slug': '/sql-reference/functions/bit-functions'
-'title': 'Bit Functions'
+description: 'Bit Functions のドキュメント'
+sidebar_label: 'ビット'
+sidebar_position: 20
+slug: '/sql-reference/functions/bit-functions'
+title: 'Bit Functions'
 ---
 
 # ビット関数

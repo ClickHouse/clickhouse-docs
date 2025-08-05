@@ -1,8 +1,8 @@
 ---
-'slug': '/whats-new/cloud-compatibility'
-'sidebar_label': 'クラウド互換性'
-'title': 'クラウド互換性'
-'description': 'このガイドでは、ClickHouseクラウドで機能的および運用上何が期待されるかについて概説します。'
+slug: '/whats-new/cloud-compatibility'
+sidebar_label: 'クラウド互換性'
+title: 'クラウド互換性'
+description: 'このガイドでは、ClickHouseクラウドで機能的および運用上何が期待されるかについて概説します。'
 ---
 
 

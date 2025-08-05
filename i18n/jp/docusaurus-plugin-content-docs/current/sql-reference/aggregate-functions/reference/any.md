@@ -1,8 +1,8 @@
 ---
-'description': 'カラムの最初に出会った値を選択します。'
-'sidebar_position': 102
-'slug': '/sql-reference/aggregate-functions/reference/any'
-'title': 'any'
+description: 'カラムの最初に出会った値を選択します。'
+sidebar_position: 102
+slug: '/sql-reference/aggregate-functions/reference/any'
+title: 'any'
 ---
 
 

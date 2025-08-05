@@ -1,13 +1,13 @@
 ---
-'sidebar_title': 'Query API Endpoints'
-'slug': '/cloud/get-started/query-endpoints'
-'description': '保存したクエリから簡単に REST API エンドポイントを作成します'
-'keywords':
+sidebar_title: 'Query API Endpoints'
+slug: '/cloud/get-started/query-endpoints'
+description: '保存したクエリから簡単に REST API エンドポイントを作成します'
+keywords:
 - 'api'
 - 'query api endpoints'
 - 'query endpoints'
 - 'query rest api'
-'title': 'クエリ API エンドポイント'
+title: 'クエリ API エンドポイント'
 ---
 
 import Image from '@theme/IdealImage';

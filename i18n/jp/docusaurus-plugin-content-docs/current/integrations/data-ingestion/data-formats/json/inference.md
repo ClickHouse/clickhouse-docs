@@ -1,8 +1,8 @@
 ---
-'title': 'JSON schema inference'
-'slug': '/integrations/data-formats/json/inference'
-'description': 'How to use JSON schema inference'
-'keywords':
+title: 'JSON schema inference'
+slug: '/integrations/data-formats/json/inference'
+description: 'How to use JSON schema inference'
+keywords:
 - 'json'
 - 'schema'
 - 'inference'

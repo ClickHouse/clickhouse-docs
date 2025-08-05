@@ -1,9 +1,9 @@
 ---
-'slug': '/faq/operations/delete-old-data'
-'title': 'ClickHouseテーブルから古いレコードを削除することは可能ですか？'
-'toc_hidden': true
-'toc_priority': 20
-'description': 'このページでは、ClickHouseテーブルから古いレコードを削除することが可能かどうかについて説明します。'
+slug: '/faq/operations/delete-old-data'
+title: 'ClickHouseテーブルから古いレコードを削除することは可能ですか？'
+toc_hidden: true
+toc_priority: 20
+description: 'このページでは、ClickHouseテーブルから古いレコードを削除することが可能かどうかについて説明します。'
 ---
 
 

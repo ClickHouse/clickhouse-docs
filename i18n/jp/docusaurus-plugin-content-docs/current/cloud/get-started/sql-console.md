@@ -1,13 +1,13 @@
 ---
-'sidebar_title': 'SQL Console'
-'slug': '/cloud/get-started/sql-console'
-'description': 'SQLコンソールを使用してクエリを実行し、可視化を作成します。'
-'keywords':
+sidebar_title: 'SQL Console'
+slug: '/cloud/get-started/sql-console'
+description: 'SQLコンソールを使用してクエリを実行し、可視化を作成します。'
+keywords:
 - 'sql console'
 - 'sql client'
 - 'cloud console'
 - 'console'
-'title': 'SQL Console'
+title: 'SQL Console'
 ---
 
 import Image from '@theme/IdealImage';

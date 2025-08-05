@@ -1,8 +1,8 @@
 ---
-'title': 'JSONのエクスポート'
-'slug': '/integrations/data-formats/json/exporting'
-'description': 'ClickHouseからJSONデータをエクスポートする'
-'keywords':
+title: 'JSONのエクスポート'
+slug: '/integrations/data-formats/json/exporting'
+description: 'ClickHouseからJSONデータをエクスポートする'
+keywords:
 - 'json'
 - 'clickhouse'
 - 'formats'

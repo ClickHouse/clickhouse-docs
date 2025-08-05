@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouse コマンドラインクライアントインターフェースのドキュメント'
-'sidebar_label': 'ClickHouse クライアント'
-'sidebar_position': 17
-'slug': '/interfaces/cli'
-'title': 'ClickHouse クライアント'
+description: 'ClickHouse コマンドラインクライアントインターフェースのドキュメント'
+sidebar_label: 'ClickHouse クライアント'
+sidebar_position: 17
+slug: '/interfaces/cli'
+title: 'ClickHouse クライアント'
 ---
 
 import Image from '@theme/IdealImage';

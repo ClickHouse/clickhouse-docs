@@ -1,9 +1,9 @@
 ---
-'description': 'lagInFrameウィンドウ関数のドキュメント'
-'sidebar_label': 'lagInFrame'
-'sidebar_position': 9
-'slug': '/sql-reference/window-functions/lagInFrame'
-'title': 'lagInFrame'
+description: 'lagInFrameウィンドウ関数のドキュメント'
+sidebar_label: 'lagInFrame'
+sidebar_position: 9
+slug: '/sql-reference/window-functions/lagInFrame'
+title: 'lagInFrame'
 ---
 
 

@@ -1,11 +1,11 @@
 ---
-'description': 'System table useful for C++ experts and ClickHouse engineers containing
+description: 'System table useful for C++ experts and ClickHouse engineers containing
   information for introspection of the `clickhouse` binary.'
-'keywords':
+keywords:
 - 'system table'
 - 'symbols'
-'slug': '/operations/system-tables/symbols'
-'title': 'system.symbols'
+slug: '/operations/system-tables/symbols'
+title: 'system.symbols'
 ---
 
 

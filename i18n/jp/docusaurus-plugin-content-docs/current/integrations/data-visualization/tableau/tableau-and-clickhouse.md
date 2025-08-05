@@ -1,15 +1,15 @@
 ---
-'sidebar_label': 'Tableau Desktop'
-'sidebar_position': 1
-'slug': '/integrations/tableau'
-'keywords':
+sidebar_label: 'Tableau Desktop'
+sidebar_position: 1
+slug: '/integrations/tableau'
+keywords:
 - 'clickhouse'
 - 'tableau'
 - 'connect'
 - 'integrate'
 - 'ui'
-'description': 'TableauはClickHouseデータベースとテーブルをデータソースとして使用できます。'
-'title': 'Connecting Tableau to ClickHouse'
+description: 'TableauはClickHouseデータベースとテーブルをデータソースとして使用できます。'
+title: 'Connecting Tableau to ClickHouse'
 ---
 
 import TOCInline from '@theme/TOCInline';

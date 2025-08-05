@@ -1,10 +1,10 @@
 ---
-'description': 'System table containing information about configured roles.'
-'keywords':
+description: 'System table containing information about configured roles.'
+keywords:
 - 'system table'
 - 'roles'
-'slug': '/operations/system-tables/roles'
-'title': 'system.roles'
+slug: '/operations/system-tables/roles'
+title: 'system.roles'
 ---
 
 

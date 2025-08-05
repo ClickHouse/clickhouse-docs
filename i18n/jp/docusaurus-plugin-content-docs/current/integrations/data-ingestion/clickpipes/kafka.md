@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'ClickPipes for Kafka'
-'description': 'Seamlessly connect your Kafka data sources to ClickHouse Cloud.'
-'slug': '/integrations/clickpipes/kafka'
-'sidebar_position': 1
-'title': 'Integrating Kafka with ClickHouse Cloud'
+sidebar_label: 'ClickPipes for Kafka'
+description: 'Seamlessly connect your Kafka data sources to ClickHouse Cloud.'
+slug: '/integrations/clickpipes/kafka'
+sidebar_position: 1
+title: 'Integrating Kafka with ClickHouse Cloud'
 ---
 
 import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';

@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'Form形式のドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'Form形式のドキュメント'
+input_format: true
+keywords:
 - 'Form'
-'output_format': false
-'slug': '/interfaces/formats/Form'
-'title': 'フォーム'
+output_format: false
+slug: '/interfaces/formats/Form'
+title: 'フォーム'
 ---
 
 

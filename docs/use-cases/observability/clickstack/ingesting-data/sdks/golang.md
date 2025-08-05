@@ -144,7 +144,6 @@ func ExampleHandler(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-
 ### Gin application example {#gin-application-example}
 
 For this example, we will be using `gin-gonic/gin`.
@@ -228,7 +227,6 @@ func main() {
   router.Run(":7777")
 }
 ```
-
 
 ### Configure environment variables {#configure-environment-variables}
 

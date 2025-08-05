@@ -1,16 +1,16 @@
 ---
-'sidebar_label': 'Luzmo'
-'slug': '/integrations/luzmo'
-'keywords':
+sidebar_label: 'Luzmo'
+slug: '/integrations/luzmo'
+keywords:
 - 'clickhouse'
 - 'Luzmo'
 - 'connect'
 - 'integrate'
 - 'ui'
 - 'embedded'
-'description': 'Luzmoは、ネイティブのClickHouse統合を備えた埋め込み型分析プラットフォームであり、ソフトウェアおよびSaaSアプリケーション向けに特別に設計されています。'
-'title': 'Integrating Luzmo with ClickHouse'
-'sidebar': 'integrations'
+description: 'Luzmoは、ネイティブのClickHouse統合を備えた埋め込み型分析プラットフォームであり、ソフトウェアおよびSaaSアプリケーション向けに特別に設計されています。'
+title: 'Integrating Luzmo with ClickHouse'
+sidebar: 'integrations'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';

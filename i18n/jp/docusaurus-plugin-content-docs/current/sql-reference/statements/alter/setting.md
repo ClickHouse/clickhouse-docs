@@ -1,9 +1,9 @@
 ---
-'description': 'テーブル設定操作のドキュメント'
-'sidebar_label': 'セッティング'
-'sidebar_position': 38
-'slug': '/sql-reference/statements/alter/setting'
-'title': 'テーブル設定の操作'
+description: 'テーブル設定操作のドキュメント'
+sidebar_label: 'セッティング'
+sidebar_position: 38
+slug: '/sql-reference/statements/alter/setting'
+title: 'テーブル設定の操作'
 ---
 
 

@@ -26,7 +26,7 @@ $ echo '{"foo":"bar"}'  | clickhouse-client --query="INSERT INTO test FORMAT JSO
 
 Instead of inserting data manually, you might consider to use an [integration tool](../../integrations/index.mdx) instead.
 
-## Useful Settings {#useful-settings}
+## Useful settings {#useful-settings}
 
 - `input_format_skip_unknown_fields` allows to insert JSON even if there were additional fields not present in table schema (by discarding them).
 - `input_format_import_nested_json` allows to insert nested JSON objects into columns of [Nested](../../sql-reference/data-types/nested-data-structures/index.md) type.

@@ -19,7 +19,6 @@ Users must be assigned an organization level role and may optionally be assigned
 - Users added to an organization via a SAML integration are automatically assigned the Member role, with least privilege and without access to any services until configured.
 - Service Admin is assigned the SQL console admin role by default. SQL console permissions may be removed in the service settings page.
 
-
 | Context      | Role                   | Description                                      |
 |:-------------|:-----------------------|:-------------------------------------------------|
 | Organization | Admin                  | Perform all administrative activities for an organization and control all settings. Assigned to the first user in the organization by default. |
@@ -61,7 +60,6 @@ Configure the following within the services and databases using the SQL [GRANT](
 |:----------------------|:------------------------------------------------------------------------------|
 | Default               | Full administrative access to services                                        |
 | Custom                | Configure using the SQL [`GRANT`](/sql-reference/statements/grant) statement |
-
 
 - Database roles are additive. This means if a user is a member of two roles, the user has the most access granted to the two roles. They do not lose access by adding roles.
 - Database roles can be granted to other roles, resulting in a hierarchical structure. Roles inherit all permissions of the roles for which it is a member.
@@ -125,4 +123,3 @@ The following process can be used to generate a complete access listing across t
     d. Scroll to the SQL console access section.
 
     e. Click the link for the number of users with access to the database `There are # users with access to this service.` to see the user listing.
-

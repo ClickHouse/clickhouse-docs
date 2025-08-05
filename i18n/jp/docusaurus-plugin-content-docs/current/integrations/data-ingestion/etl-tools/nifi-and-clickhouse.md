@@ -1,16 +1,16 @@
 ---
-'sidebar_label': 'NiFi'
-'sidebar_position': 12
-'keywords':
+sidebar_label: 'NiFi'
+sidebar_position: 12
+keywords:
 - 'clickhouse'
 - 'NiFi'
 - 'connect'
 - 'integrate'
 - 'etl'
 - 'data integration'
-'slug': '/integrations/nifi'
-'description': 'NiFiデータパイプラインを使用してClickHouseにデータをストリーム配信する'
-'title': 'Connect Apache NiFi to ClickHouse'
+slug: '/integrations/nifi'
+description: 'NiFiデータパイプラインを使用してClickHouseにデータをストリーム配信する'
+title: 'Connect Apache NiFi to ClickHouse'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';

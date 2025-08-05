@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing information about disks defined in the server
+description: 'System table containing information about disks defined in the server
   configuration'
-'keywords':
+keywords:
 - 'system table'
 - 'disks'
-'slug': '/operations/system-tables/disks'
-'title': 'system.disks'
+slug: '/operations/system-tables/disks'
+title: 'system.disks'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

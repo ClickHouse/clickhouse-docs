@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouseは、`SELECT`クエリと一緒にクエリ処理に必要なデータをサーバーに送信することを可能にします。このデータは一時テーブルに配置され、クエリ内で使用できます（たとえば、`IN`演算子で）。'
-'sidebar_label': '外部データ'
-'sidebar_position': 130
-'slug': '/engines/table-engines/special/external-data'
-'title': 'クエリ処理の外部データ'
+description: 'ClickHouseは、`SELECT`クエリと一緒にクエリ処理に必要なデータをサーバーに送信することを可能にします。このデータは一時テーブルに配置され、クエリ内で使用できます（たとえば、`IN`演算子で）。'
+sidebar_label: '外部データ'
+sidebar_position: 130
+slug: '/engines/table-engines/special/external-data'
+title: 'クエリ処理の外部データ'
 ---
 
 

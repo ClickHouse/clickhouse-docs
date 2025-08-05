@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'SAML SSOセットアップ'
-'slug': '/cloud/security/saml-setup'
-'title': 'SAML SSOセットアップ'
-'description': 'ClickHouse CloudでSAML SSOのセットアップ方法'
+sidebar_label: 'SAML SSOセットアップ'
+slug: '/cloud/security/saml-setup'
+title: 'SAML SSOセットアップ'
+description: 'ClickHouse CloudでSAML SSOのセットアップ方法'
 ---
 
 import Image from '@theme/IdealImage';

@@ -22,7 +22,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   You can install a self-hosted version of TABLUM.IO on your Linux server in docker.
 :::
 
-
 ## 1. Sign up or sign in to the service {#1-sign-up-or-sign-in-to-the-service}
 
   First, sign up to TABLUM.IO using your email or use a quick-login via accounts in Google or Facebook.

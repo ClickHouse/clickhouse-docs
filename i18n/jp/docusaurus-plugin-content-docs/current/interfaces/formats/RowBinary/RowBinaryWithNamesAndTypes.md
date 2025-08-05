@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'RowBinaryWithNamesAndTypes フォーマットのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'RowBinaryWithNamesAndTypes フォーマットのドキュメント'
+input_format: true
+keywords:
 - 'RowBinaryWithNamesAndTypes'
-'output_format': true
-'slug': '/interfaces/formats/RowBinaryWithNamesAndTypes'
-'title': 'RowBinaryWithNamesAndTypes'
+output_format: true
+slug: '/interfaces/formats/RowBinaryWithNamesAndTypes'
+title: 'RowBinaryWithNamesAndTypes'
 ---
 
 import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settings.md'

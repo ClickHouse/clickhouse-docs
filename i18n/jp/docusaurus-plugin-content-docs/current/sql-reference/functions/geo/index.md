@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for Index'
-'sidebar_label': 'Geo'
-'sidebar_position': 62
-'slug': '/sql-reference/functions/geo/'
-'title': 'Geo Functions'
+description: 'Documentation for Index'
+sidebar_label: 'Geo'
+sidebar_position: 62
+slug: '/sql-reference/functions/geo/'
+title: 'Geo Functions'
 ---
 
 

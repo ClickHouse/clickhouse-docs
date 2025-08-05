@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouse におけるデータレプリケーションの概要'
-'sidebar_label': 'データレプリケーション'
-'sidebar_position': 20
-'slug': '/engines/table-engines/mergetree-family/replication'
-'title': 'データレプリケーション'
+description: 'ClickHouse におけるデータレプリケーションの概要'
+sidebar_label: 'データレプリケーション'
+sidebar_position: 20
+slug: '/engines/table-engines/mergetree-family/replication'
+title: 'データレプリケーション'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'description': 'ALTER TABLE ... MODIFY QUERY ステートメントのドキュメント'
-'sidebar_label': 'ビュー'
-'sidebar_position': 50
-'slug': '/sql-reference/statements/alter/view'
-'title': 'ALTER TABLE ... MODIFY QUERY ステートメント'
+description: 'ALTER TABLE ... MODIFY QUERY ステートメントのドキュメント'
+sidebar_label: 'ビュー'
+sidebar_position: 50
+slug: '/sql-reference/statements/alter/view'
+title: 'ALTER TABLE ... MODIFY QUERY ステートメント'
 ---
 
 

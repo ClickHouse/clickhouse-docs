@@ -1,10 +1,10 @@
 ---
-'description': 'テーブルエンジンのドキュメント'
-'slug': '/engines/table-engines/'
-'toc_folder_title': 'Table Engines'
-'toc_priority': 26
-'toc_title': 'Introduction'
-'title': 'テーブルエンジン'
+description: 'テーブルエンジンのドキュメント'
+slug: '/engines/table-engines/'
+toc_folder_title: 'Table Engines'
+toc_priority: 26
+toc_title: 'Introduction'
+title: 'テーブルエンジン'
 ---
 
 

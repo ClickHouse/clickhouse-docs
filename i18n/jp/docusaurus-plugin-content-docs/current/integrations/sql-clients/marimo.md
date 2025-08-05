@@ -1,8 +1,8 @@
 ---
-'slug': '/integrations/marimo'
-'sidebar_label': 'marimo'
-'description': 'marimoはデータとやり取りするための次世代Pythonノートブックです。'
-'title': 'ClickHouseとmarimoの使用方法'
+slug: '/integrations/marimo'
+sidebar_label: 'marimo'
+description: 'marimoはデータとやり取りするための次世代Pythonノートブックです。'
+title: 'ClickHouseとmarimoの使用方法'
 ---
 
 import Image from '@theme/IdealImage';

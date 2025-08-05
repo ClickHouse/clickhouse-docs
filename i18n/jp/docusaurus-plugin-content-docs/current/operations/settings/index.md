@@ -1,8 +1,8 @@
 ---
-'description': '設定の目次ページ'
-'sidebar_position': 1
-'slug': '/operations/settings/'
-'title': '設定'
+description: '設定の目次ページ'
+sidebar_position: 1
+slug: '/operations/settings/'
+title: '設定'
 ---
 
 

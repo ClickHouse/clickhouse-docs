@@ -1,6 +1,6 @@
 ---
-'sidebar_label': '組織'
-'title': '組織'
+sidebar_label: '組織'
+title: '組織'
 ---
 
 

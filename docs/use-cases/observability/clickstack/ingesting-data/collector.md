@@ -106,7 +106,6 @@ The default ClickStack configuration for the OpenTelemetry (OTel) collector can 
 
 For details on configuring OTel collectors, including [`receivers`](https://opentelemetry.io/docs/collector/transforming-telemetry/), [`operators`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md), and [`processors`](https://opentelemetry.io/docs/collector/configuration/#processors), we recommend the [official OpenTelemetry collector documentation](https://opentelemetry.io/docs/collector/configuration).
 
-
 ## Securing the collector {#securing-the-collector}
 
 The ClickStack distribution of the OpenTelemetry collector includes built-in support for OpAMP (Open Agent Management Protocol), which it uses to securely configure and manage the OTLP endpoint. On startup, users must provide an `OPAMP_SERVER_URL` environment variable — this should point to the HyperDX app, which hosts the OpAMP API at `/v1/opamp`.
@@ -161,7 +160,6 @@ We recommend users avoid doing excessive event processing using operators or [tr
 The following configuration shows collection of this [unstructured log file](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-unstructured.log.gz). This configuration could be used by a collector in the agent role sending data to the ClickStack gateway.
 
 Note the use of operators to extract structure from the log lines (`regex_parser`) and filter events, along with a processor to batch events and limit memory usage.
-
 
 ```yaml
 # config-unstructured-logs-with-processor.yaml
@@ -330,11 +328,9 @@ docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e O
 The [JSON type](/interfaces/formats/JSON) type is not backwards compatible with existing map-based schemas. New tables will be created using the `JSON` type.
 :::
 
-
 To migrate from the Map-based schemas, follow these steps:
 
 <VerticalStepper headerLevel="h4">
-
 
 #### Stop the OTel collector {#stop-the-collector}
 

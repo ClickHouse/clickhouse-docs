@@ -1,12 +1,12 @@
 ---
-'title': 'バックアップポリシー'
-'slug': '/cloud/manage/jan-2025-faq/backup'
-'keywords':
+title: 'バックアップポリシー'
+slug: '/cloud/manage/jan-2025-faq/backup'
+keywords:
 - 'new tiers'
 - 'plans'
 - 'pricing'
 - 'backups'
-'description': '新しい階層のバックアップポリシー'
+description: '新しい階層のバックアップポリシー'
 ---
 
 

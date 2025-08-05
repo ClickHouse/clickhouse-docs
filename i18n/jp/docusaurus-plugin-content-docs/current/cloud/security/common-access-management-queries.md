@@ -1,8 +1,8 @@
 ---
-'sidebar_label': '共通アクセス管理クエリ'
-'title': '共通アクセス管理クエリ'
-'slug': '/cloud/security/common-access-management-queries'
-'description': 'この記事では、SQLユーザーとロールの基本的な定義方法、そしてそれらの権限とアクセス許可をデータベース、テーブル、行、およびカラムに適用する方法を示します。'
+sidebar_label: '共通アクセス管理クエリ'
+title: '共通アクセス管理クエリ'
+slug: '/cloud/security/common-access-management-queries'
+description: 'この記事では、SQLユーザーとロールの基本的な定義方法、そしてそれらの権限とアクセス許可をデータベース、テーブル、行、およびカラムに適用する方法を示します。'
 ---
 
 import CommonUserRolesContent from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_users-and-roles-common.md';

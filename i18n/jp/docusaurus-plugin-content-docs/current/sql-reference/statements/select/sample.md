@@ -1,8 +1,8 @@
 ---
-'description': 'SAMPLE Clause のドキュメント'
-'sidebar_label': 'サンプル'
-'slug': '/sql-reference/statements/select/sample'
-'title': 'SAMPLE Clause'
+description: 'SAMPLE Clause のドキュメント'
+sidebar_label: 'サンプル'
+slug: '/sql-reference/statements/select/sample'
+title: 'SAMPLE Clause'
 ---
 
 

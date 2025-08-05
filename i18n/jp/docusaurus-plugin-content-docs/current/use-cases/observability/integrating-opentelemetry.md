@@ -1,8 +1,8 @@
 ---
-'title': 'Integrating OpenTelemetry'
-'description': 'Integrating OpenTelemetry and ClickHouse for observability'
-'slug': '/observability/integrating-opentelemetry'
-'keywords':
+title: 'Integrating OpenTelemetry'
+description: 'Integrating OpenTelemetry and ClickHouse for observability'
+slug: '/observability/integrating-opentelemetry'
+keywords:
 - 'observability'
 - 'logs'
 - 'traces'

@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'ArrowStream フォーマットのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'ArrowStream フォーマットのドキュメント'
+input_format: true
+keywords:
 - 'ArrowStream'
-'output_format': true
-'slug': '/interfaces/formats/ArrowStream'
-'title': 'ArrowStream'
+output_format: true
+slug: '/interfaces/formats/ArrowStream'
+title: 'ArrowStream'
 ---
 
 

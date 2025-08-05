@@ -1,8 +1,8 @@
 ---
-'description': 'Documentation for UNDROP TABLE'
-'sidebar_label': 'UNDROP'
-'slug': '/sql-reference/statements/undrop'
-'title': 'UNDROP TABLE'
+description: 'Documentation for UNDROP TABLE'
+sidebar_label: 'UNDROP'
+slug: '/sql-reference/statements/undrop'
+title: 'UNDROP TABLE'
 ---
 
 

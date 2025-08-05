@@ -1,8 +1,8 @@
 ---
-'slug': '/cloud/billing/marketplace/gcp-marketplace-payg'
-'title': 'GCP Marketplace PAYG'
-'description': 'Subscribe to ClickHouse Cloud through the GCP Marketplace (PAYG).'
-'keywords':
+slug: '/cloud/billing/marketplace/gcp-marketplace-payg'
+title: 'GCP Marketplace PAYG'
+description: 'Subscribe to ClickHouse Cloud through the GCP Marketplace (PAYG).'
+keywords:
 - 'gcp'
 - 'marketplace'
 - 'billing'

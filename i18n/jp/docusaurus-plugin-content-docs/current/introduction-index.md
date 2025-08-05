@@ -1,8 +1,8 @@
 ---
-'slug': '/introduction-clickhouse'
-'title': 'はじめに'
-'description': 'はじめにのランディングページ'
-'pagination_next': null
+slug: '/introduction-clickhouse'
+title: 'はじめに'
+description: 'はじめにのランディングページ'
+pagination_next: null
 ---
 
 

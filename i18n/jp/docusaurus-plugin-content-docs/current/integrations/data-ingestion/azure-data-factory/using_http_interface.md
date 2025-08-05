@@ -1,15 +1,15 @@
 ---
-'sidebar_label': 'Using the HTTP interface'
-'slug': '/integrations/azure-data-factory/http-interface'
-'description': 'Using ClickHouse''s HTTP interface to bring data from Azure Data Factory
+sidebar_label: 'Using the HTTP interface'
+slug: '/integrations/azure-data-factory/http-interface'
+description: 'Using ClickHouse''s HTTP interface to bring data from Azure Data Factory
   into ClickHouse'
-'keywords':
+keywords:
 - 'azure data factory'
 - 'azure'
 - 'microsoft'
 - 'data'
 - 'http interface'
-'title': 'Using ClickHouse HTTP Interface to bring Azure data into ClickHouse'
+title: 'Using ClickHouse HTTP Interface to bring Azure data into ClickHouse'
 ---
 
 import Image from '@theme/IdealImage';

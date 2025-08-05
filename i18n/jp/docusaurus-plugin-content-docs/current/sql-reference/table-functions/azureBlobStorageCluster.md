@@ -1,9 +1,9 @@
 ---
-'description': '指定されたクラスタ内の多数のノードでAzure Blobストレージからファイルを並行処理することを可能にします。'
-'sidebar_label': 'Azure Blobストレージクラスタ'
-'sidebar_position': 15
-'slug': '/sql-reference/table-functions/azureBlobStorageCluster'
-'title': 'azureBlobStorageCluster'
+description: '指定されたクラスタ内の多数のノードでAzure Blobストレージからファイルを並行処理することを可能にします。'
+sidebar_label: 'Azure Blobストレージクラスタ'
+sidebar_position: 15
+slug: '/sql-reference/table-functions/azureBlobStorageCluster'
+title: 'azureBlobStorageCluster'
 ---
 
 

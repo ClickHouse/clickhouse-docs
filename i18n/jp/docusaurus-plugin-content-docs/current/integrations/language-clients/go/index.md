@@ -1,15 +1,15 @@
 ---
-'sidebar_label': 'Go'
-'sidebar_position': 1
-'keywords':
+sidebar_label: 'Go'
+sidebar_position: 1
+keywords:
 - 'clickhouse'
 - 'go'
 - 'client'
 - 'golang'
-'slug': '/integrations/go'
-'description': 'The Go clients for ClickHouse allows users to connect to ClickHouse
+slug: '/integrations/go'
+description: 'The Go clients for ClickHouse allows users to connect to ClickHouse
   using either the Go standard database/sql interface or an optimized native interface.'
-'title': 'ClickHouse Go'
+title: 'ClickHouse Go'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';

@@ -1,7 +1,7 @@
 ---
-'description': 'GROUPING 集約関数のドキュメント'
-'slug': '/sql-reference/aggregate-functions/grouping_function'
-'title': 'GROUPING'
+description: 'GROUPING 集約関数のドキュメント'
+slug: '/sql-reference/aggregate-functions/grouping_function'
+title: 'GROUPING'
 ---
 
 

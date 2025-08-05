@@ -1,9 +1,9 @@
 ---
-'description': 'WATCHステートメントのドキュメント'
-'sidebar_label': 'WATCH'
-'sidebar_position': 53
-'slug': '/sql-reference/statements/watch'
-'title': 'WATCHステートメント'
+description: 'WATCHステートメントのドキュメント'
+sidebar_label: 'WATCH'
+sidebar_position: 53
+slug: '/sql-reference/statements/watch'
+title: 'WATCHステートメント'
 ---
 
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';

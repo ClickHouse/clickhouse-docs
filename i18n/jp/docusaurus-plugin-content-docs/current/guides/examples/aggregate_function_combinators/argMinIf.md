@@ -1,14 +1,14 @@
 ---
-'slug': '/examples/aggregate-function-combinators/argMinIf'
-'title': 'argMinIf'
-'description': 'Example of using the argMinIf combinator'
-'keywords':
+slug: '/examples/aggregate-function-combinators/argMinIf'
+title: 'argMinIf'
+description: 'Example of using the argMinIf combinator'
+keywords:
 - 'argMin'
 - 'if'
 - 'combinator'
 - 'examples'
 - 'argMinIf'
-'sidebar_label': 'argMinIf'
+sidebar_label: 'argMinIf'
 ---
 
 

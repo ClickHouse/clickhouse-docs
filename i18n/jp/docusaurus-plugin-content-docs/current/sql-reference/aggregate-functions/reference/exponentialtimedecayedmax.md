@@ -1,9 +1,9 @@
 ---
-'description': 'Returns the maximum of the computed exponentially smoothed moving
+description: 'Returns the maximum of the computed exponentially smoothed moving
   average at index `t` in time with that at `t-1`. '
-'sidebar_position': 135
-'slug': '/sql-reference/aggregate-functions/reference/exponentialTimeDecayedMax'
-'title': '指数時間経過最大値'
+sidebar_position: 135
+slug: '/sql-reference/aggregate-functions/reference/exponentialTimeDecayedMax'
+title: '指数時間経過最大値'
 ---
 
 

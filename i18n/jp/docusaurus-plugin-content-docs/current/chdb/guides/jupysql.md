@@ -1,9 +1,9 @@
 ---
-'title': 'JupySQL and chDB'
-'sidebar_label': 'JupySQL'
-'slug': '/chdb/guides/jupysql'
-'description': 'How to install chDB for Bun'
-'keywords':
+title: 'JupySQL and chDB'
+sidebar_label: 'JupySQL'
+slug: '/chdb/guides/jupysql'
+description: 'How to install chDB for Bun'
+keywords:
 - 'chdb'
 - 'JupySQL'
 ---

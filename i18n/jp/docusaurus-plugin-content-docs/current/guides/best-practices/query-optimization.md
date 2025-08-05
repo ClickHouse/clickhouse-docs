@@ -1,8 +1,8 @@
 ---
-'slug': '/optimize/query-optimization'
-'sidebar_label': 'クエリ最適化'
-'title': 'クエリ最適化ガイド'
-'description': 'クエリパフォーマンスを向上させるための一般的な方法を説明したシンプルな最適化ガイド'
+slug: '/optimize/query-optimization'
+sidebar_label: 'クエリ最適化'
+title: 'クエリ最適化ガイド'
+description: 'クエリパフォーマンスを向上させるための一般的な方法を説明したシンプルな最適化ガイド'
 ---
 
 import queryOptimizationDiagram1 from '@site/static/images/guides/best-practices/query_optimization_diagram_1.png';

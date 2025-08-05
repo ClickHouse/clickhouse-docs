@@ -1,10 +1,10 @@
 ---
-'slug': '/faq/operations/deploy-separate-storage-and-compute'
-'title': 'ClickHouseのストレージと計算を別々に展開することは可能ですか？'
-'sidebar_label': 'ClickHouseのストレージと計算を別々に展開することは可能ですか？'
-'toc_hidden': true
-'toc_priority': 20
-'description': 'このページでは、ClickHouseをストレージと計算を別々に展開することが可能かどうかについて回答しています。'
+slug: '/faq/operations/deploy-separate-storage-and-compute'
+title: 'ClickHouseのストレージと計算を別々に展開することは可能ですか？'
+sidebar_label: 'ClickHouseのストレージと計算を別々に展開することは可能ですか？'
+toc_hidden: true
+toc_priority: 20
+description: 'このページでは、ClickHouseをストレージと計算を別々に展開することが可能かどうかについて回答しています。'
 ---
 
 

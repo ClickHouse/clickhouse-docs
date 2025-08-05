@@ -1,9 +1,9 @@
 ---
-'description': 'Amazon S3内のApache Hudiテーブルに対する読み取り専用のテーブルのようなインターフェースを提供します。'
-'sidebar_label': 'hudi'
-'sidebar_position': 85
-'slug': '/sql-reference/table-functions/hudi'
-'title': 'hudi'
+description: 'Amazon S3内のApache Hudiテーブルに対する読み取り専用のテーブルのようなインターフェースを提供します。'
+sidebar_label: 'hudi'
+sidebar_position: 85
+slug: '/sql-reference/table-functions/hudi'
+title: 'hudi'
 ---
 
 

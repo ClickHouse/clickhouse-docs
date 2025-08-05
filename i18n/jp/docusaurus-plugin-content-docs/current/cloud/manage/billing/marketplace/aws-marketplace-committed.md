@@ -1,9 +1,9 @@
 ---
-'slug': '/cloud/billing/marketplace/aws-marketplace-committed-contract'
-'title': 'AWS Marketplace Committed Contract'
-'description': 'Subscribe to ClickHouse Cloud through the AWS Marketplace (Committed
+slug: '/cloud/billing/marketplace/aws-marketplace-committed-contract'
+title: 'AWS Marketplace Committed Contract'
+description: 'Subscribe to ClickHouse Cloud through the AWS Marketplace (Committed
   Contract)'
-'keywords':
+keywords:
 - 'aws'
 - 'amazon'
 - 'marketplace'

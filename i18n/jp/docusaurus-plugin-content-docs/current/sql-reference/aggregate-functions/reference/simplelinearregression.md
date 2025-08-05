@@ -1,8 +1,8 @@
 ---
-'description': 'シンプル（一次元）線形回帰を実行します。'
-'sidebar_position': 183
-'slug': '/sql-reference/aggregate-functions/reference/simplelinearregression'
-'title': 'simpleLinearRegression'
+description: 'シンプル（一次元）線形回帰を実行します。'
+sidebar_position: 183
+slug: '/sql-reference/aggregate-functions/reference/simplelinearregression'
+title: 'simpleLinearRegression'
 ---
 
 

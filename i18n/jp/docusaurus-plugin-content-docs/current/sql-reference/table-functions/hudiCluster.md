@@ -1,9 +1,9 @@
 ---
-'description': 'Amazon S3内のApache Hudiテーブルからファイルを指定されたクラスターの多数のノードで並列処理するための拡張機能。'
-'sidebar_label': 'hudiCluster'
-'sidebar_position': 86
-'slug': '/sql-reference/table-functions/hudiCluster'
-'title': 'hudiCluster Table Function'
+description: 'Amazon S3内のApache Hudiテーブルからファイルを指定されたクラスターの多数のノードで並列処理するための拡張機能。'
+sidebar_label: 'hudiCluster'
+sidebar_position: 86
+slug: '/sql-reference/table-functions/hudiCluster'
+title: 'hudiCluster Table Function'
 ---
 
 

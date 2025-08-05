@@ -1,14 +1,14 @@
 ---
-'slug': '/examples/aggregate-function-combinators/argMaxIf'
-'title': 'argMaxIf'
-'description': 'argMaxIf combinatorの使用例'
-'keywords':
+slug: '/examples/aggregate-function-combinators/argMaxIf'
+title: 'argMaxIf'
+description: 'argMaxIf combinatorの使用例'
+keywords:
 - 'argMax'
 - 'if'
 - 'combinator'
 - 'examples'
 - 'argMaxIf'
-'sidebar_label': 'argMaxIf'
+sidebar_label: 'argMaxIf'
 ---
 
 

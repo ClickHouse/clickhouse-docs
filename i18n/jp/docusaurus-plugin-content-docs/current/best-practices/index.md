@@ -1,6 +1,6 @@
 ---
-'slug': '/best-practices'
-'keywords':
+slug: '/best-practices'
+keywords:
 - 'Cloud'
 - 'Primary key'
 - 'Ordering key'
@@ -12,9 +12,9 @@
 - 'Avoid Nullable Columns'
 - 'Avoid Optimize Final'
 - 'Partitioning Key'
-'title': '概要'
-'hide_title': true
-'description': 'ClickHouseのベストプラクティスセクションのランディングページ'
+title: '概要'
+hide_title: true
+description: 'ClickHouseのベストプラクティスセクションのランディングページ'
 ---
 
 

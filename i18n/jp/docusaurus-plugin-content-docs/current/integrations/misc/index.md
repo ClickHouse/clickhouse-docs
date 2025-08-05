@@ -1,11 +1,11 @@
 ---
-'slug': '/integrations/misc'
-'keywords':
+slug: '/integrations/misc'
+keywords:
 - 'Retool'
 - 'Easypanel'
 - 'Splunk'
-'title': 'ツール'
-'description': 'ツールセクションのランディングページ'
+title: 'ツール'
+description: 'ツールセクションのランディングページ'
 ---
 
 

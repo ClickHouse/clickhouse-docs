@@ -1,14 +1,14 @@
 ---
-'slug': '/examples/aggregate-function-combinators/avgMergeState'
-'title': 'avgMergeState'
-'description': 'avgMergeState combinator の使用例'
-'keywords':
+slug: '/examples/aggregate-function-combinators/avgMergeState'
+title: 'avgMergeState'
+description: 'avgMergeState combinator の使用例'
+keywords:
 - 'avg'
 - 'MergeState'
 - 'combinator'
 - 'examples'
 - 'avgMergeState'
-'sidebar_label': 'avgMergeState'
+sidebar_label: 'avgMergeState'
 ---
 
 import Tabs from '@theme/Tabs';

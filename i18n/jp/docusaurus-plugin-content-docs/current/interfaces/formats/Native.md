@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'Nativeフォーマットのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'Nativeフォーマットのドキュメント'
+input_format: true
+keywords:
 - 'Native'
-'output_format': true
-'slug': '/interfaces/formats/Native'
-'title': 'Native'
+output_format: true
+slug: '/interfaces/formats/Native'
+title: 'Native'
 ---
 
 

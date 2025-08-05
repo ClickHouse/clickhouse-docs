@@ -1,8 +1,8 @@
 ---
-'slug': '/operations/overview'
-'sidebar_label': 'パフォーマンスと最適化の概要'
-'description': 'パフォーマンスと最適化の概要ページ'
-'title': 'パフォーマンスと最適化'
+slug: '/operations/overview'
+sidebar_label: 'パフォーマンスと最適化の概要'
+description: 'パフォーマンスと最適化の概要ページ'
+title: 'パフォーマンスと最適化'
 ---
 
 

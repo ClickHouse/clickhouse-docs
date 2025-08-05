@@ -1,8 +1,8 @@
 ---
-'title': 'Postgres ClickPipeの一時停止と再開'
-'description': 'Postgres ClickPipeの一時停止と再開'
-'sidebar_label': 'テーブルの一時停止'
-'slug': '/integrations/clickpipes/postgres/pause_and_resume'
+title: 'Postgres ClickPipeの一時停止と再開'
+description: 'Postgres ClickPipeの一時停止と再開'
+sidebar_label: 'テーブルの一時停止'
+slug: '/integrations/clickpipes/postgres/pause_and_resume'
 ---
 
 import Image from '@theme/IdealImage';

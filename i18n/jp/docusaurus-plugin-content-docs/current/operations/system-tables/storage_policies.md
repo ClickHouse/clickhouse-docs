@@ -1,10 +1,10 @@
 ---
-'description': 'サーバー構成で定義されたストレージポリシーとボリュームに関する情報を含むシステムテーブルです。'
-'keywords':
+description: 'サーバー構成で定義されたストレージポリシーとボリュームに関する情報を含むシステムテーブルです。'
+keywords:
 - 'system table'
 - 'storage_policies'
-'slug': '/operations/system-tables/storage_policies'
-'title': 'system.storage_policies'
+slug: '/operations/system-tables/storage_policies'
+title: 'system.storage_policies'
 ---
 
 

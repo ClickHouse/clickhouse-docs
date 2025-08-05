@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for the percent_rank window function'
-'sidebar_label': 'percent_rank'
-'sidebar_position': 8
-'slug': '/sql-reference/window-functions/percent_rank'
-'title': 'percent_rank'
+description: 'Documentation for the percent_rank window function'
+sidebar_label: 'percent_rank'
+sidebar_position: 8
+slug: '/sql-reference/window-functions/percent_rank'
+title: 'percent_rank'
 ---
 
 

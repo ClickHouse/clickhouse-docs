@@ -110,7 +110,6 @@ If the host of a Keeper instance can change, we recommend to define and use a ho
 `async_replication` is disabled by default to avoid breaking backwards compatibility. If you have all your Keeper instances in a cluster running a version supporting `async_replication` (v23.9+), we recommend enabling it because it can improve performance without any downsides.
 :::
 
-
 Examples of configuration for quorum with three nodes can be found in [integration tests](https://github.com/ClickHouse/ClickHouse/tree/master/tests/integration) with `test_keeper_` prefix. Example configuration for server #1:
 
 ```xml
@@ -160,7 +159,7 @@ If you don't have the symlink (`clickhouse-keeper`) you can create it or specify
 clickhouse keeper --config /etc/your_path_to_config/config.xml
 ```
 
-### Four Letter Word Commands {#four-letter-word-commands}
+### Four letter word commands {#four-letter-word-commands}
 
 ClickHouse Keeper also provides 4lw commands which are almost the same with Zookeeper. Each command is composed of four letters such as `mntr`, `stat` etc. There are some more interesting commands: `stat` gives some general information about the server and connected clients, while `srvr` and `cons` give extended details on server and connections respectively.
 
@@ -301,7 +300,6 @@ user.dir=/Users/JackyWoo/project/jd/clickhouse/cmake-build-debug/programs/
 user.tmp=/var/folders/b4/smbq5mfj7578f2jzwn602tt40000gn/T/
 ```
 
-
 - `dirs`: Shows the total size of snapshot and log files in bytes
 
 ```response
@@ -409,7 +407,7 @@ AIOWriteBytes   0       Number of bytes written with Linux or FreeBSD AIO interf
 ...
 ```
 
-### HTTP Control {#http-control}
+### HTTP control {#http-control}
 
 ClickHouse Keeper provides an HTTP interface to check if a replica is ready to receive traffic. It may be used in cloud environments, such as [Kubernetes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes).
 
@@ -450,11 +448,18 @@ Example of feature flag config that disables `multi_read` and enables `check_not
 
 The following features are available:
 
-- `multi_read` - support for read multi request. Default: `1`
-- `filtered_list` - support for list request which filters results by the type of node (ephemeral or persistent). Default: `1`
-- `check_not_exists` - support for `CheckNotExists` request, which asserts that node doesn't exists. Default: `0`
-- `create_if_not_exists` - support for `CreateIfNotExists` request, which will try to create a node if it doesn't exist. If it exists, no changes are applied and `ZOK` is returned. Default: `0`
-- `remove_recursive` - support for `RemoveRecursive` request, which removes the node along with its subtree. Default: `0`
+| Feature                | Description                                                                                                                                              | Default |
+|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| `multi_read`           | Support for read multi request                                                                                                                           | `1`     |
+| `filtered_list`        | Support for list request which filters results by the type of node (ephemeral or persistent)                                                             | `1`     |
+| `check_not_exists`     | Support for `CheckNotExists` request, which asserts that node doesn't exist                                                                              | `1`     |
+| `create_if_not_exists` | Support for `CreateIfNotExists` request, which will try to create a node if it doesn't exist. If it exists, no changes are applied and `ZOK` is returned | `1`     |
+| `remove_recursive`     | Support for `RemoveRecursive` request, which removes the node along with its subtree                                                                     | `1`     |
+
+:::note
+Some of the feature flags are enabled by default from version 25.7.   
+The recommended way of upgrading Keeper to 25.7+ is to first upgrade to version 24.9+.
+:::
 
 ### Migration from ZooKeeper {#migration-from-zookeeper}
 
@@ -482,7 +487,6 @@ clickhouse keeper-converter ...
 
 Otherwise, you can [download the binary](/getting-started/quick-start/oss#download-the-binary) and run the tool as described above without installing ClickHouse.
 :::
-
 
 ### Recovering after losing quorum {#recovering-after-losing-quorum}
 
@@ -633,7 +637,6 @@ You can use `pfev` command to check amount of logs read from each cache and from
 You can also use metrics from Prometheus endpoint to track the current size of both caches.
 :::
 
-
 ## Prometheus {#prometheus}
 
 Keeper can expose metrics data for scraping from [Prometheus](https://prometheus.io).
@@ -672,11 +675,11 @@ curl 127.0.0.1:9363/metrics
 
 Please also see the ClickHouse Cloud [Prometheus integration](/integrations/prometheus).
 
-## ClickHouse Keeper User Guide {#clickhouse-keeper-user-guide}
+## ClickHouse Keeper user guide {#clickhouse-keeper-user-guide}
 
 This guide provides simple and minimal settings to configure ClickHouse Keeper with an example on how to test distributed operations. This example is performed using 3 nodes on Linux.
 
-### 1. Configure Nodes with Keeper settings {#1-configure-nodes-with-keeper-settings}
+### 1. Configure nodes with Keeper settings {#1-configure-nodes-with-keeper-settings}
 
 1. Install 3 ClickHouse instances on 3 hosts (`chnode1`, `chnode2`, `chnode3`). (View the [Quick Start](/getting-started/install/install.mdx) for details on installing ClickHouse.)
 
@@ -732,7 +735,6 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
     |hostname   |hostname, IP or FQDN of each server in the keeper cluster|`chnode1.domain.com`|
     |port|port to listen on for interserver keeper connections|9234|
 
-
 4.  Enable the Zookeeper component. It will use the ClickHouse Keeper engine:
     ```xml
         <zookeeper>
@@ -781,7 +783,6 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
     └────────────┴───────┴───────┴───────┴─────────────────────┴─────────────────────┴─────────┴──────────┴──────────┴────────────────┴────────────┴─────────────┴───────┴─────────────┘
     ```
 
-
 ### 2.  Configure a cluster in ClickHouse {#2--configure-a-cluster-in-clickhouse}
 
 1. Let's configure a simple cluster with 2 shards and only one replica on 2 of the nodes. The third node will be used to achieve a quorum for the requirement in ClickHouse Keeper. Update the configuration on `chnode1` and `chnode2`. The following cluster defines 1 shard on each node for a total of 2 shards with no replication. In this example, some of the data will be on node and some will be on the other node:
@@ -816,7 +817,6 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
     |port|port used to communicate using the native tcp protocol|9000|
     |user|username that will be used to authenticate to the cluster instances|default|
     |password|password for the user define to allow connections to cluster instances|`ClickHouse123!`|
-
 
 2. Restart ClickHouse and verify the cluster was created:
     ```bash
@@ -933,7 +933,6 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
 
 This guide demonstrated how to set up a cluster using ClickHouse Keeper. With ClickHouse Keeper, you can configure clusters and define distributed tables that can be replicated across shards.
 
-
 ## Configuring ClickHouse Keeper with unique paths {#configuring-clickhouse-keeper-with-unique-paths}
 
 <SelfManaged />
@@ -947,7 +946,7 @@ this avoids having to wait several minutes for Keeper garbage collection
 to remove path entries as each time a path is created a new `uuid` is used
 in that path; paths are never reused.
 
-### Example Environment {#example-environment}
+### Example environment {#example-environment}
 A three node cluster that will be configured to have ClickHouse Keeper
 on all three nodes, and ClickHouse on two of the nodes. This provides
 ClickHouse Keeper with three nodes (including a tiebreaker node), and
@@ -1340,7 +1339,7 @@ Sometimes it's necessary to extend experimental keeper node into a cluster. Here
 
 To get confident with the process, here's a [sandbox repository](https://github.com/ClickHouse/keeper-extend-cluster).
 
-## Unsupported Features {#unsupported-features}
+## Unsupported features {#unsupported-features}
 
 While ClickHouse Keeper aims to be fully compatible with ZooKeeper, there are some features that are currently not implemented (although development is ongoing):
 

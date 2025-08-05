@@ -1,15 +1,15 @@
 ---
-'sidebar_label': 'Spark JDBC'
-'sidebar_position': 3
-'slug': '/integrations/apache-spark/spark-jdbc'
-'description': 'ClickHouseとの統合に関するApache Sparkの概要'
-'keywords':
+sidebar_label: 'Spark JDBC'
+sidebar_position: 3
+slug: '/integrations/apache-spark/spark-jdbc'
+description: 'ClickHouseとの統合に関するApache Sparkの概要'
+keywords:
 - 'clickhouse'
 - 'Apache Spark'
 - 'jdbc'
 - 'migrating'
 - 'data'
-'title': 'Spark JDBC'
+title: 'Spark JDBC'
 ---
 
 import Tabs from '@theme/Tabs';

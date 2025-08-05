@@ -1,14 +1,14 @@
 ---
-'sidebar_label': 'Sparkネイティブコネクタ'
-'sidebar_position': 2
-'slug': '/integrations/apache-spark/spark-native-connector'
-'description': 'ClickHouseとのApache Sparkへの導入'
-'keywords':
+sidebar_label: 'Sparkネイティブコネクタ'
+sidebar_position: 2
+slug: '/integrations/apache-spark/spark-native-connector'
+description: 'ClickHouseとのApache Sparkへの導入'
+keywords:
 - 'clickhouse'
 - 'Apache Spark'
 - 'migrating'
 - 'data'
-'title': 'Spark Connector'
+title: 'Spark Connector'
 ---
 
 import Tabs from '@theme/Tabs';

@@ -1,9 +1,9 @@
 ---
-'description': 'リモートのHTTP/HTTPSサーバーとの間でデータをクエリします。このエンジンはFileエンジンと類似しています。'
-'sidebar_label': 'URL'
-'sidebar_position': 80
-'slug': '/engines/table-engines/special/url'
-'title': 'URL テーブルエンジン'
+description: 'リモートのHTTP/HTTPSサーバーとの間でデータをクエリします。このエンジンはFileエンジンと類似しています。'
+sidebar_label: 'URL'
+sidebar_position: 80
+slug: '/engines/table-engines/special/url'
+title: 'URL テーブルエンジン'
 ---
 
 

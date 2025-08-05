@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for SYSTEM Statements'
-'sidebar_label': 'SYSTEM'
-'sidebar_position': 36
-'slug': '/sql-reference/statements/system'
-'title': 'SYSTEM Statements'
+description: 'Documentation for SYSTEM Statements'
+sidebar_label: 'SYSTEM'
+sidebar_position: 36
+slug: '/sql-reference/statements/system'
+title: 'SYSTEM Statements'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

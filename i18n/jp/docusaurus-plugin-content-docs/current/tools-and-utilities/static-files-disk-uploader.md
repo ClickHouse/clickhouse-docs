@@ -1,12 +1,12 @@
 ---
-'slug': '/operations/utilities/static-files-disk-uploader'
-'title': 'clickhouse-static-files-disk-uploader'
-'keywords':
+slug: '/operations/utilities/static-files-disk-uploader'
+title: 'clickhouse-static-files-disk-uploader'
+keywords:
 - 'clickhouse-static-files-disk-uploader'
 - 'utility'
 - 'disk'
 - 'uploader'
-'description': 'clickhouse-static-files-disk-uploader ユーティリティの説明を提供します'
+description: 'clickhouse-static-files-disk-uploader ユーティリティの説明を提供します'
 ---
 
 

@@ -1,8 +1,8 @@
 ---
-'slug': '/native-protocol/basics'
-'sidebar_position': 1
-'title': '基本'
-'description': 'ネイティブプロトコルの基本'
+slug: '/native-protocol/basics'
+sidebar_position: 1
+title: '基本'
+description: 'ネイティブプロトコルの基本'
 ---
 
 import Tabs from '@theme/Tabs';

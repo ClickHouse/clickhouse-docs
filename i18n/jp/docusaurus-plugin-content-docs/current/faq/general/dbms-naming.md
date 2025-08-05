@@ -1,9 +1,9 @@
 ---
-'title': 'ClickHouseとは何を意味するのか？'
-'toc_hidden': true
-'toc_priority': 10
-'slug': '/faq/general/dbms-naming'
-'description': '"ClickHouse"の意味について学びます。'
+title: 'ClickHouseとは何を意味するのか？'
+toc_hidden: true
+toc_priority: 10
+slug: '/faq/general/dbms-naming'
+description: '"ClickHouse"の意味について学びます。'
 ---
 
 

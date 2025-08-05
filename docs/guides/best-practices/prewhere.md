@@ -20,7 +20,6 @@ The [PREWHERE clause](/sql-reference/statements/select/prewhere) is a query exec
 
 This guide explains how PREWHERE works, how to measure its impact, and how to tune it for best performance.
 
-
 ## Query processing without PREWHERE optimization {#query-processing-without-prewhere-optimization}
 
 We'll start by illustrating how a query on the [uk_price_paid_simple](/parts) table is processed without using PREWHERE:
@@ -39,7 +38,6 @@ We'll start by illustrating how a query on the [uk_price_paid_simple](/parts) ta
 ⑤ The remaining filters are then applied during query execution.
 
 As you can see, without PREWHERE, all potentially relevant columns are loaded before filtering, even if only a few rows actually match.
-
 
 ## How PREWHERE improves query efficiency {#how-prewhere-improves-query-efficiency}
 
@@ -99,7 +97,6 @@ The idea is that smaller columns are faster to scan, and by the time larger colu
 ClickHouse follows this strategy by default as of version [23.2](https://clickhouse.com/blog/clickhouse-release-23-02#multi-stage-prewhere--alexander-gololobov), sorting PREWHERE filter columns for multi-step processing in ascending order of uncompressed size.
 
 Starting with version [23.11](https://clickhouse.com/blog/clickhouse-release-23-11#column-statistics-for-prewhere), optional column statistics can further improve this by choosing the filter processing order based on actual data selectivity, not just column size.
-
 
 ## How to measure PREWHERE impact {#how-to-measure-prewhere-impact}
 

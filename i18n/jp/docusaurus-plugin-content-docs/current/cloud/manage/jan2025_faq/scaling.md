@@ -1,11 +1,11 @@
 ---
-'title': 'スケーリング'
-'slug': '/cloud/manage/jan-2025-faq/scaling'
-'keywords':
+title: 'スケーリング'
+slug: '/cloud/manage/jan-2025-faq/scaling'
+keywords:
 - 'new pricing'
 - 'faq'
 - 'scaling'
-'description': '新しい価格体系におけるスケーリング動作'
+description: '新しい価格体系におけるスケーリング動作'
 ---
 
 

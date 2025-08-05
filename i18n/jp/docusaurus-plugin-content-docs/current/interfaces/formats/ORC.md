@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'ORC フォーマットのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'ORC フォーマットのドキュメント'
+input_format: true
+keywords:
 - 'ORC'
-'output_format': true
-'slug': '/interfaces/formats/ORC'
-'title': 'ORC'
+output_format: true
+slug: '/interfaces/formats/ORC'
+title: 'ORC'
 ---
 
 

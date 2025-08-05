@@ -1,7 +1,7 @@
 ---
-'description': 'クエリの柔軟なメモリ制限を設定できるようにするための実験的なテクニック。'
-'slug': '/operations/settings/memory-overcommit'
-'title': 'メモリオーバーコミット'
+description: 'クエリの柔軟なメモリ制限を設定できるようにするための実験的なテクニック。'
+slug: '/operations/settings/memory-overcommit'
+title: 'メモリオーバーコミット'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'description': 'JSONStringsEachRowWithProgress フォーマットのドキュメント'
-'keywords':
+description: 'JSONStringsEachRowWithProgress フォーマットのドキュメント'
+keywords:
 - 'JSONStringsEachRowWithProgress'
-'slug': '/interfaces/formats/JSONStringsEachRowWithProgress'
-'title': 'JSONStringsEachRowWithProgress'
+slug: '/interfaces/formats/JSONStringsEachRowWithProgress'
+title: 'JSONStringsEachRowWithProgress'
 ---
 
 

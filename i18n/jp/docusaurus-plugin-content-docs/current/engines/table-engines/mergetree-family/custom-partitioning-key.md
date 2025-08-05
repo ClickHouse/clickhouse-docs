@@ -1,9 +1,9 @@
 ---
-'description': 'MergeTree テーブルにカスタムパーティショニングキーを追加する方法について学びます。'
-'sidebar_label': 'カスタムパーティショニングキー'
-'sidebar_position': 30
-'slug': '/engines/table-engines/mergetree-family/custom-partitioning-key'
-'title': 'カスタムパーティショニングキー'
+description: 'MergeTree テーブルにカスタムパーティショニングキーを追加する方法について学びます。'
+sidebar_label: 'カスタムパーティショニングキー'
+sidebar_position: 30
+slug: '/engines/table-engines/mergetree-family/custom-partitioning-key'
+title: 'カスタムパーティショニングキー'
 ---
 
 

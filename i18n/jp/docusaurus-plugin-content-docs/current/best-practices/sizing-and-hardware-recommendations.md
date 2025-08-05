@@ -1,9 +1,9 @@
 ---
-'slug': '/guides/sizing-and-hardware-recommendations'
-'sidebar_label': 'サイジングおよびハードウェアの推奨事項'
-'sidebar_position': 4
-'title': 'サイジングおよびハードウェアの推奨事項'
-'description': 'このガイドでは、オープンソースユーザー向けのハードウェア、コンピュート、メモリおよびディスク構成に関する一般的な推奨事項について説明しています。'
+slug: '/guides/sizing-and-hardware-recommendations'
+sidebar_label: 'サイジングおよびハードウェアの推奨事項'
+sidebar_position: 4
+title: 'サイジングおよびハードウェアの推奨事項'
+description: 'このガイドでは、オープンソースユーザー向けのハードウェア、コンピュート、メモリおよびディスク構成に関する一般的な推奨事項について説明しています。'
 ---
 
 

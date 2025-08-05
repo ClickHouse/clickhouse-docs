@@ -1,9 +1,9 @@
 ---
-'description': '文字列内の検索に関する機能のドキュメント'
-'sidebar_label': '文字列内の検索'
-'sidebar_position': 160
-'slug': '/sql-reference/functions/string-search-functions'
-'title': 'Functions for Searching in Strings'
+description: '文字列内の検索に関する機能のドキュメント'
+sidebar_label: '文字列内の検索'
+sidebar_position: 160
+slug: '/sql-reference/functions/string-search-functions'
+title: 'Functions for Searching in Strings'
 ---
 
 

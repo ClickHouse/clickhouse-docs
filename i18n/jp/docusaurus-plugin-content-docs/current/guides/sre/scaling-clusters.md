@@ -1,9 +1,9 @@
 ---
-'slug': '/guides/sre/scaling-clusters'
-'sidebar_label': 'シャードの再バランス'
-'sidebar_position': 20
-'description': 'ClickHouseは自動的なシャードの再バランスをサポートしていませんので、シャードの再バランス方法についていくつかのベストプラクティスを提供しています。'
-'title': 'データの再バランス'
+slug: '/guides/sre/scaling-clusters'
+sidebar_label: 'シャードの再バランス'
+sidebar_position: 20
+description: 'ClickHouseは自動的なシャードの再バランスをサポートしていませんので、シャードの再バランス方法についていくつかのベストプラクティスを提供しています。'
+title: 'データの再バランス'
 ---
 
 

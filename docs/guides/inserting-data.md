@@ -10,7 +10,7 @@ show_related_blogs: true
 import postgres_inserts from '@site/static/images/guides/postgres-inserts.png';
 import Image from '@theme/IdealImage';
 
-## Basic Example {#basic-example}
+## Basic example {#basic-example}
 
 You can use the familiar `INSERT INTO TABLE` command with ClickHouse. Let's insert some data into the table that we created in the start guide ["Creating Tables in ClickHouse"](./creating-tables).
 
@@ -38,7 +38,7 @@ user_id message                                             timestamp           
 102         Sort your data based on your commonly-used queries  2024-11-13 00:00:00     2.718
 ```
 
-## Inserting into ClickHouse vs. OLTP Databases {#inserting-into-clickhouse-vs-oltp-databases}
+## Inserting into ClickHouse vs. OLTP databases {#inserting-into-clickhouse-vs-oltp-databases}
 
 As an OLAP (Online Analytical Processing) database, ClickHouse is optimized for high performance and scalability, allowing potentially millions of rows to be inserted per second.
 This is achieved through a combination of a highly parallelized architecture and efficient column-oriented compression, but with compromises on immediate consistency.
@@ -51,7 +51,7 @@ These transactions can potentially involve a small number of rows at a time, wit
 To achieve high insert performance while maintaining strong consistency guarantees, users should adhere to the simple rules described below when inserting data into ClickHouse.
 Following these rules will help to avoid issues users commonly encounter the first time they use ClickHouse, and try to replicate an insert strategy that works for OLTP databases.
 
-## Best Practices for Inserts {#best-practices-for-inserts}
+## Best practices for Inserts {#best-practices-for-inserts}
 
 ### Insert in large batch sizes {#insert-in-large-batch-sizes}
 
@@ -110,7 +110,6 @@ Note that the data is not searchable by queries before being flushed to the data
 Full details on configuring asynchronous inserts can be found [here](/optimize/asynchronous-inserts#enabling-asynchronous-inserts), with a deep dive [here](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse).
 :::
 
-
 ### Use official ClickHouse clients {#use-official-clickhouse-clients}
 
 ClickHouse has clients in the most popular programming languages.
@@ -118,7 +117,7 @@ These are optimized to ensure that inserts are performed correctly and natively 
 
 See [Clients and Drivers](/interfaces/cli) for a full list of available ClickHouse clients and drivers.
 
-### Prefer the Native format {#prefer-the-native-format}
+### Prefer the native format {#prefer-the-native-format}
 
 ClickHouse supports many [input formats](/interfaces/formats) at insert (and query) time.
 This is a significant difference with OLTP databases and makes loading data from external sources much easier - especially when coupled with [table functions](/sql-reference/table-functions) and the ability to load data from files on disk.

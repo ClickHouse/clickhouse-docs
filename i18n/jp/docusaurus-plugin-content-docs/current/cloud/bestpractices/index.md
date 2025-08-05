@@ -1,6 +1,6 @@
 ---
-'slug': '/cloud/bestpractices'
-'keywords':
+slug: '/cloud/bestpractices'
+keywords:
 - 'Cloud'
 - 'Best Practices'
 - 'Bulk Inserts'
@@ -11,9 +11,9 @@
 - 'Low Cardinality Partitioning Key'
 - 'Multi Tenancy'
 - 'Usage Limits'
-'title': '概要'
-'hide_title': true
-'description': 'ClickHouse Cloud の Best Practices セクションのランディングページ'
+title: '概要'
+hide_title: true
+description: 'ClickHouse Cloud の Best Practices セクションのランディングページ'
 ---
 
 

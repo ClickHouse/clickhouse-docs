@@ -4,7 +4,6 @@ slug: /migrations/bigquery/biquery-vs-clickhouse-cloud
 description: 'Как BigQuery отличается от ClickHouse Cloud'
 keywords: ['migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'BigQuery']
 ---
-```
 
 import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';
 import Image from '@theme/IdealImage';

@@ -1,35 +1,72 @@
 @import '../../css/breakpoints.css';
 
 .docsNavDropdownContainer {
-  padding: 8px;
   border-radius: 10px;
   position: relative;
   display: inline-block;
   color: var(--ch-nav-v2-link-color);
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
+  width: fit-content;
+  padding: 8px; /* Keep original padding for non-dropdown items */
+}
 
-  &:hover,
-  &.hover {
-    background-color: var(--ch-nav-v2-link-hover-bg);
-    text-decoration: none;
-    color: #FAFF69;
-  }
+/* Only remove padding for dropdown containers */
+.docsNavDropdownContainer.hasDropdown {
+  padding: 0;
+}
+
+.docsNavDropdownContainer:hover,
+.docsNavDropdownContainer.hover {
+  background-color: var(--ch-nav-v2-link-hover-bg);
+  text-decoration: none;
+}
+
+/* Apply hover styles to dropdown containers */
+.docsNavDropdownContainer.hasDropdown:hover {
+  background-color: var(--ch-nav-v2-link-hover-bg);
+  text-decoration: none;
+}
+
+.docsNavDropdownToolbarLink {
+  /* Add padding here instead, so hover covers the entire clickable area */
+  padding: 8px;
+  display: inline-block;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 0.875rem;
+  cursor: default;
+  color: #414040;
+  color: black;
+  /* Ensure the span covers the full width including caret */
+  width: 100%;
+}
+
+.docsNavDropdownToolbarLink:hover {
+  background-color: var(--ch-nav-v2-link-hover-bg);
+  text-decoration: none;
+}
+
+.docsNavDropdownContainer .docsNavDropdownToolbarTopLevelLink {
+  margin: -8px;
+  padding: 8px;
+  display: inline-block;
+}
+
+[data-theme="dark"] .docsNavDropdownToolbarLink:hover,
+[data-theme="dark"] .docsNavDropdownContainer:hover .docsNavDropdownToolbarTopLevelLink {
+  color: #FAFF69 !important;
 }
 
 .docsNavDropdownContainer::after {
   content: "";
   position: absolute;
   left: 0;
-  bottom: -30px; /* Adjust this for the hover area extension */
+  bottom: -20px; /* Increased to bridge the gap better */
   width: 100%;
-  height: 30px; /* Must match the bottom value */
+  height: 20px; /* Increased to cover more area */
   pointer-events: auto;
 }
 
-
-.docsNavDropdownToolbarLink, .docsNavDropdownToolbarTopLevelLink {
+.docsNavDropdownToolbarTopLevelLink {
   font-weight: bold;
   font-size: 0.875rem;
   cursor: default;
@@ -59,20 +96,24 @@
 }
 
 .docsNavSelected {
-  color: black; 
-  text-decoration: underline;
-  text-underline-offset: 4px; 
-}
-
-[data-theme="dark"] .docsNavSelected {
-  color: #FAFF69;
+  color: black;
   text-decoration: underline;
   text-underline-offset: 4px;
 }
 
+[data-theme="dark"] .docsNavSelected {
+  color: #FAFF69;
+  text-decoration: none;
+}
+
+[data-theme="light"] .docsNavSelected {
+  color: black;
+  text-decoration: none;
+}
+
 .docsNavDropdownMenu {
   position: absolute;
-  top: calc(100% + 30px);
+  top: calc(100% + 4px); /* Reduced from + 8px to + 4px */
   left: 0;
   z-index: 9999 !important;
   min-width: 300px;
@@ -82,9 +123,17 @@
   filter: drop-shadow(0px 2px 2px rgba(50, 50, 50, 0.1));
   padding: 10px 10px 10px 10px;
   border-radius: 10px;
-  opacity: 1;
-  transition: opacity 0.3s ease-in-out;
+
+  opacity: 0;
   transform: translateY(30px);
+}
+
+.docsNavDropdownMenu.visible {
+  opacity: 1;
+}
+
+.docsNavDropdownMenu.hiding {
+  opacity: 0;
 }
 
 @media (max-width: var(--mobile-breakpoint)) {
@@ -130,7 +179,6 @@
   color: black;
 }
 
-
 .docsNavMenuDescription {
   font-size: 0.75rem;
   color: var(--ifm-toc-link-color);
@@ -164,8 +212,20 @@
   border-radius: 10px;
 }
 
+.docsNavMenuItem:hover .docsNavItemTitle {
+  color: black !important;
+}
+
+[data-theme="dark"] .docsNavMenuItem:hover .docsNavItemTitle {
+  color: yellow !important;
+}
+
 [data-theme="dark"] .docsNavMenuItem:hover {
   background-color: #272725;
+}
+
+[data-theme="light"] .docsNavMenuItem:hover {
+  background-color: #f5f5f5;
 }
 
 .docsNavHovered {
@@ -179,7 +239,7 @@
 
 [data-theme="light"] .docsNavHovered {
   background-color: #f5f5f5;
-  color: yellow;
+  color: black;
 }
 
 .docsNavItemTitle {
@@ -203,17 +263,20 @@
   font-size: 0.75rem;
 }
 
+.docsNavDropdownMenu a {
+  text-decoration: none !important;
+}
+
+.docsNavDropdownMenu a:hover {
+  text-decoration: none !important;
+}
+
 @media screen and (max-width: var(--laptop-breakpoint)) {
   .docsNavDropdownContainer {
     padding: 0px;
-  }
-
-  [data-theme="dark"] .docsNavDropdownContainer {
-
   }
 
   [data-theme="light"] .docsNavDropdownContainer {
     background-color: white;
   }
 }
-

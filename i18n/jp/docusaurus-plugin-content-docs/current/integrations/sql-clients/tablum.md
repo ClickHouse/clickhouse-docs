@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'TABLUM.IO'
-'slug': '/integrations/tablumio'
-'description': 'TABLUM.IO is a data management SaaS that supports ClickHouse out of
+sidebar_label: 'TABLUM.IO'
+slug: '/integrations/tablumio'
+description: 'TABLUM.IO is a data management SaaS that supports ClickHouse out of
   the box.'
-'title': 'Connecting TABLUM.IO to ClickHouse'
+title: 'Connecting TABLUM.IO to ClickHouse'
 ---
 
 import Image from '@theme/IdealImage';

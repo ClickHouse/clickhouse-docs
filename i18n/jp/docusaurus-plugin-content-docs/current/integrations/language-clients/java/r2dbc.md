@@ -1,15 +1,15 @@
 ---
-'sidebar_label': 'R2DBC ドライバ'
-'sidebar_position': 5
-'keywords':
+sidebar_label: 'R2DBC ドライバ'
+sidebar_position: 5
+keywords:
 - 'clickhouse'
 - 'java'
 - 'driver'
 - 'integrate'
 - 'r2dbc'
-'description': 'ClickHouse R2DBC ドライバ'
-'slug': '/integrations/java/r2dbc'
-'title': 'R2DBC driver'
+description: 'ClickHouse R2DBC ドライバ'
+slug: '/integrations/java/r2dbc'
+title: 'R2DBC driver'
 ---
 
 import Tabs from '@theme/Tabs';

@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouse での外部辞書機能の概要'
-'sidebar_label': '辞書の定義'
-'sidebar_position': 35
-'slug': '/sql-reference/dictionaries'
-'title': 'Dictionaries'
+description: 'ClickHouse での外部辞書機能の概要'
+sidebar_label: '辞書の定義'
+sidebar_position: 35
+slug: '/sql-reference/dictionaries'
+title: 'Dictionaries'
 ---
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';

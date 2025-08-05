@@ -1,9 +1,9 @@
 ---
-'slug': '/architecture/replication'
-'sidebar_label': '障害耐性のためのレプリケーション'
-'sidebar_position': 10
-'title': '障害耐性のためのレプリケーション'
-'description': '5台のサーバーが構成された例のアーキテクチャについてのページ。2台はデータのコピーをホストするために使用され、残りのサーバーはデータのレプリケーションを調整するために使用されます。'
+slug: '/architecture/replication'
+sidebar_label: '障害耐性のためのレプリケーション'
+sidebar_position: 10
+title: '障害耐性のためのレプリケーション'
+description: '5台のサーバーが構成された例のアーキテクチャについてのページ。2台はデータのコピーをホストするために使用され、残りのサーバーはデータのレプリケーションを調整するために使用されます。'
 ---
 
 import Image from '@theme/IdealImage';

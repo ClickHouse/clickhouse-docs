@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'MinIO'
-'sidebar_position': 6
-'slug': '/integrations/minio'
-'description': 'ClickHouse と MinIO の使用方法を説明するページ'
-'title': 'Using MinIO'
+sidebar_label: 'MinIO'
+sidebar_position: 6
+slug: '/integrations/minio'
+description: 'ClickHouse と MinIO の使用方法を説明するページ'
+title: 'Using MinIO'
 ---
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';

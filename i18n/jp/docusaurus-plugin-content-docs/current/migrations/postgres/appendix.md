@@ -1,12 +1,12 @@
 ---
-'slug': '/migrations/postgresql/appendix'
-'title': '付録'
-'keywords':
+slug: '/migrations/postgresql/appendix'
+title: '付録'
+keywords:
 - 'postgres'
 - 'postgresql'
 - 'data types'
 - 'types'
-'description': 'PostgreSQL からの移行に関連する追加情報'
+description: 'PostgreSQL からの移行に関連する追加情報'
 ---
 
 import postgresReplicas from '@site/static/images/integrations/data-ingestion/dbms/postgres-replicas.png';

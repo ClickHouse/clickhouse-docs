@@ -1,9 +1,9 @@
 ---
-'description': 'rank ウィンドウ関数のドキュメント'
-'sidebar_label': 'ランク'
-'sidebar_position': 6
-'slug': '/sql-reference/window-functions/rank'
-'title': 'rank'
+description: 'rank ウィンドウ関数のドキュメント'
+sidebar_label: 'ランク'
+sidebar_position: 6
+slug: '/sql-reference/window-functions/rank'
+title: 'rank'
 ---
 
 

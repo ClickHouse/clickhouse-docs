@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'PrettyMonoBlockフォーマットのドキュメント'
-'input_format': false
-'keywords':
+alias: []
+description: 'PrettyMonoBlockフォーマットのドキュメント'
+input_format: false
+keywords:
 - 'PrettyMonoBlock'
-'output_format': true
-'slug': '/interfaces/formats/PrettyMonoBlock'
-'title': 'PrettyMonoBlock'
+output_format: true
+slug: '/interfaces/formats/PrettyMonoBlock'
+title: 'PrettyMonoBlock'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';

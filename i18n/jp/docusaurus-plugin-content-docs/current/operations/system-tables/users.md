@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing a list of user accounts configured on the
+description: 'System table containing a list of user accounts configured on the
   server.'
-'keywords':
+keywords:
 - 'system table'
 - 'users'
-'slug': '/operations/system-tables/users'
-'title': 'system.users'
+slug: '/operations/system-tables/users'
+title: 'system.users'
 ---
 
 

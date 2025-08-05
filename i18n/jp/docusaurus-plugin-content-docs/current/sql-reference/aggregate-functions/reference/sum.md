@@ -1,8 +1,8 @@
 ---
-'description': '合計を計算します。数字にしか適用されません。'
-'sidebar_position': 195
-'slug': '/sql-reference/aggregate-functions/reference/sum'
-'title': 'sum'
+description: '合計を計算します。数字にしか適用されません。'
+sidebar_position: 195
+slug: '/sql-reference/aggregate-functions/reference/sum'
+title: 'sum'
 ---
 
 

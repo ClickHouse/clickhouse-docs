@@ -1,9 +1,9 @@
 ---
-'description': 'サーバーに送信されたデータを指定された構造で効果的に変換および挿入し、別の構造のテーブルに変換するテーブル関数。'
-'sidebar_label': '入力'
-'sidebar_position': 95
-'slug': '/sql-reference/table-functions/input'
-'title': 'input'
+description: 'サーバーに送信されたデータを指定された構造で効果的に変換および挿入し、別の構造のテーブルに変換するテーブル関数。'
+sidebar_label: '入力'
+sidebar_position: 95
+slug: '/sql-reference/table-functions/input'
+title: 'input'
 ---
 
 

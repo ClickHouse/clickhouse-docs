@@ -1,11 +1,11 @@
 ---
-'slug': '/cloud/security'
-'keywords':
+slug: '/cloud/security'
+keywords:
 - 'Cloud'
 - 'Security'
-'title': '概要'
-'hide_title': true
-'description': 'ClickHouseクラウドセキュリティのランディングページ'
+title: '概要'
+hide_title: true
+description: 'ClickHouseクラウドセキュリティのランディングページ'
 ---
 
 

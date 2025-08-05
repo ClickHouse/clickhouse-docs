@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing history of metrics values from tables `system.metrics`
+description: 'System table containing history of metrics values from tables `system.metrics`
   and `system.events`, periodically flushed to disk.'
-'keywords':
+keywords:
 - 'system table'
 - 'metric_log'
-'slug': '/operations/system-tables/metric_log'
-'title': 'system.metric_log'
+slug: '/operations/system-tables/metric_log'
+title: 'system.metric_log'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

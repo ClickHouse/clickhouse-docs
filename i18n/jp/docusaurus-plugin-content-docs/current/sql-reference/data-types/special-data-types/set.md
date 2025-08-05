@@ -1,9 +1,9 @@
 ---
-'description': 'IN式で使用される特別なデータ型のSetに関するドキュメント'
-'sidebar_label': 'セット'
-'sidebar_position': 59
-'slug': '/sql-reference/data-types/special-data-types/set'
-'title': 'セット'
+description: 'IN式で使用される特別なデータ型のSetに関するドキュメント'
+sidebar_label: 'セット'
+sidebar_position: 59
+slug: '/sql-reference/data-types/special-data-types/set'
+title: 'セット'
 ---
 
 

@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing formation about global settings for the server,
+description: 'System table containing formation about global settings for the server,
   which are specified in `config.xml`.'
-'keywords':
+keywords:
 - 'system table'
 - 'server_settings'
-'slug': '/operations/system-tables/server_settings'
-'title': 'system.server_settings'
+slug: '/operations/system-tables/server_settings'
+title: 'system.server_settings'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

@@ -1,15 +1,15 @@
 ---
-'slug': '/examples/aggregate-function-combinators/sumSimpleState'
-'title': 'sumSimpleState'
-'description': 'sumSimpleStateコンビネータの使用例'
-'keywords':
+slug: '/examples/aggregate-function-combinators/sumSimpleState'
+title: 'sumSimpleState'
+description: 'sumSimpleStateコンビネータの使用例'
+keywords:
 - 'sum'
 - 'state'
 - 'simple'
 - 'combinator'
 - 'examples'
 - 'sumSimpleState'
-'sidebar_label': 'sumSimpleState'
+sidebar_label: 'sumSimpleState'
 ---
 
 

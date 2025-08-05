@@ -1,13 +1,13 @@
 ---
-'slug': '/about-us/history'
-'sidebar_label': 'ClickHouseの歴史'
-'sidebar_position': 40
-'description': 'ClickHouse開発の歴史'
-'keywords':
+slug: '/about-us/history'
+sidebar_label: 'ClickHouseの歴史'
+sidebar_position: 40
+description: 'ClickHouse開発の歴史'
+keywords:
 - 'history'
 - 'development'
 - 'Metrica'
-'title': 'ClickHouseの歴史'
+title: 'ClickHouseの歴史'
 ---
 
 

@@ -1,10 +1,10 @@
 ---
-'description': 'System table which shows the content of the query cache.'
-'keywords':
+description: 'System table which shows the content of the query cache.'
+keywords:
 - 'system table'
 - 'query_cache'
-'slug': '/operations/system-tables/query_cache'
-'title': 'system.query_cache'
+slug: '/operations/system-tables/query_cache'
+title: 'system.query_cache'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'PrettySpace フォーマットのドキュメント'
-'input_format': false
-'keywords':
+alias: []
+description: 'PrettySpace フォーマットのドキュメント'
+input_format: false
+keywords:
 - 'PrettySpace'
-'output_format': true
-'slug': '/interfaces/formats/PrettySpace'
-'title': 'PrettySpace'
+output_format: true
+slug: '/interfaces/formats/PrettySpace'
+title: 'PrettySpace'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';

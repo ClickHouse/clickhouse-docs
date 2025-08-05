@@ -1,7 +1,7 @@
 ---
-'title': 'スキーマ設計'
-'description': '観測可能性のためのスキーマ設計'
-'keywords':
+title: 'スキーマ設計'
+description: '観測可能性のためのスキーマ設計'
+keywords:
 - 'observability'
 - 'logs'
 - 'traces'
@@ -9,7 +9,7 @@
 - 'OpenTelemetry'
 - 'Grafana'
 - 'OTel'
-'slug': '/use-cases/observability/schema-design'
+slug: '/use-cases/observability/schema-design'
 ---
 
 import observability_10 from '@site/static/images/use-cases/observability/observability-10.png';

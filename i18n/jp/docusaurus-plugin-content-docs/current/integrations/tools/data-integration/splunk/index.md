@@ -1,13 +1,13 @@
 ---
-'sidebar_label': 'Splunk'
-'slug': '/integrations/audit-splunk'
-'keywords':
+sidebar_label: 'Splunk'
+slug: '/integrations/audit-splunk'
+keywords:
 - 'clickhouse'
 - 'Splunk'
 - 'audit'
 - 'cloud'
-'description': 'ClickHouse Cloudの監査ログをSplunkに保存します。'
-'title': 'ClickHouse Cloudの監査ログをSplunkに保存する'
+description: 'ClickHouse Cloudの監査ログをSplunkに保存します。'
+title: 'ClickHouse Cloudの監査ログをSplunkに保存する'
 ---
 
 import Image from '@theme/IdealImage';

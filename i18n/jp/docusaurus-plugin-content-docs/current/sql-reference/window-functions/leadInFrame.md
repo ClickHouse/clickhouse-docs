@@ -1,9 +1,9 @@
 ---
-'description': 'leadInFrame ウィンドウ関数のドキュメント'
-'sidebar_label': 'leadInFrame'
-'sidebar_position': 10
-'slug': '/sql-reference/window-functions/leadInFrame'
-'title': 'leadInFrame'
+description: 'leadInFrame ウィンドウ関数のドキュメント'
+sidebar_label: 'leadInFrame'
+sidebar_position: 10
+slug: '/sql-reference/window-functions/leadInFrame'
+title: 'leadInFrame'
 ---
 
 

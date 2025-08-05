@@ -1,9 +1,9 @@
 ---
-'slug': '/managing-data/delete_mutations'
-'sidebar_label': '削除ミューテーション'
-'title': '削除ミューテーション'
-'hide_title': false
-'description': 'テーブルデータを削除によって操作するALTERクエリを説明するページ'
+slug: '/managing-data/delete_mutations'
+sidebar_label: '削除ミューテーション'
+title: '削除ミューテーション'
+hide_title: false
+description: 'テーブルデータを削除によって操作するALTERクエリを説明するページ'
 ---
 
 import DeleteMutations from '@site/i18n/jp/docusaurus-plugin-content-docs/current/sql-reference/statements/alter/delete.md';

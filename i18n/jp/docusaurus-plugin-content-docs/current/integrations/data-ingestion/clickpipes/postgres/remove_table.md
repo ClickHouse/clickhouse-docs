@@ -1,8 +1,8 @@
 ---
-'title': 'ClickPipe から特定のテーブルを削除する'
-'description': 'ClickPipe から特定のテーブルを削除する'
-'sidebar_label': 'テーブルの削除'
-'slug': '/integrations/clickpipes/postgres/removing_tables'
+title: 'ClickPipe から特定のテーブルを削除する'
+description: 'ClickPipe から特定のテーブルを削除する'
+sidebar_label: 'テーブルの削除'
+slug: '/integrations/clickpipes/postgres/removing_tables'
 ---
 
 import Image from '@theme/IdealImage';

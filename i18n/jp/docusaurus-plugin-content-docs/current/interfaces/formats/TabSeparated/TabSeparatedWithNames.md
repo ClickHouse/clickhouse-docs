@@ -1,13 +1,13 @@
 ---
-'alias':
+alias:
 - 'TSVWithNames'
-'description': 'TabSeparatedWithNames フォーマットのドキュメント'
-'input_format': true
-'keywords':
+description: 'TabSeparatedWithNames フォーマットのドキュメント'
+input_format: true
+keywords:
 - 'TabSeparatedWithNames'
-'output_format': true
-'slug': '/interfaces/formats/TabSeparatedWithNames'
-'title': 'TabSeparatedWithNames'
+output_format: true
+slug: '/interfaces/formats/TabSeparatedWithNames'
+title: 'TabSeparatedWithNames'
 ---
 
 

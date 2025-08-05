@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing information about currently running background
+description: 'System table containing information about currently running background
   fetches.'
-'keywords':
+keywords:
 - 'system table'
 - 'replicated_fetches'
-'slug': '/operations/system-tables/replicated_fetches'
-'title': 'system.replicated_fetches'
+slug: '/operations/system-tables/replicated_fetches'
+title: 'system.replicated_fetches'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

@@ -1,9 +1,9 @@
 ---
-'slug': '/faq/use-cases/key-value'
-'title': 'ClickHouseをキー値ストレージとして使用できますか？'
-'toc_hidden': true
-'toc_priority': 101
-'description': 'ClickHouseをキー値ストレージとして使用できるかどうかについてのよくある質問に答えます。'
+slug: '/faq/use-cases/key-value'
+title: 'ClickHouseをキー値ストレージとして使用できますか？'
+toc_hidden: true
+toc_priority: 101
+description: 'ClickHouseをキー値ストレージとして使用できるかどうかについてのよくある質問に答えます。'
 ---
 
 

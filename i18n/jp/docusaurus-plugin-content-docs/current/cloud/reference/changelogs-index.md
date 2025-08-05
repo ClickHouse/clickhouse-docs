@@ -1,7 +1,7 @@
 ---
-'slug': '/cloud/reference/changelogs'
-'title': 'Changelogs'
-'description': 'クラウド変更履歴のランディングページ'
+slug: '/cloud/reference/changelogs'
+title: 'Changelogs'
+description: 'クラウド変更履歴のランディングページ'
 ---
 
 

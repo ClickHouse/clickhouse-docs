@@ -1,9 +1,9 @@
 ---
-'description': 'SQLiteデータベースに格納されたデータにクエリを実行できます。'
-'sidebar_label': 'sqlite'
-'sidebar_position': 185
-'slug': '/sql-reference/table-functions/sqlite'
-'title': 'sqlite'
+description: 'SQLiteデータベースに格納されたデータにクエリを実行できます。'
+sidebar_label: 'sqlite'
+sidebar_position: 185
+slug: '/sql-reference/table-functions/sqlite'
+title: 'sqlite'
 ---
 
 

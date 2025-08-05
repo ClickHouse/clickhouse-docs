@@ -1,8 +1,8 @@
 ---
-'slug': '/native-protocol/server'
-'sidebar_position': 3
-'title': 'サーバーパケット'
-'description': 'ネイティブプロトコルサーバー'
+slug: '/native-protocol/server'
+sidebar_position: 3
+title: 'サーバーパケット'
+description: 'ネイティブプロトコルサーバー'
 ---
 
 

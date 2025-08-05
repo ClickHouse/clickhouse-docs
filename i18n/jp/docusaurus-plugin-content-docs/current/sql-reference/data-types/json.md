@@ -1,12 +1,12 @@
 ---
-'description': 'ClickHouse で廃止された Object データ型のドキュメント'
-'keywords':
+description: 'ClickHouse で廃止された Object データ型のドキュメント'
+keywords:
 - 'object'
 - 'data type'
-'sidebar_label': 'オブジェクトデータ型'
-'sidebar_position': 26
-'slug': '/sql-reference/data-types/object-data-type'
-'title': 'Object Data Type'
+sidebar_label: 'オブジェクトデータ型'
+sidebar_position: 26
+slug: '/sql-reference/data-types/object-data-type'
+title: 'Object Data Type'
 ---
 
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';

@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'JSONCompactColumns フォーマットのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'JSONCompactColumns フォーマットのドキュメント'
+input_format: true
+keywords:
 - 'JSONCompactColumns'
-'output_format': true
-'slug': '/interfaces/formats/JSONCompactColumns'
-'title': 'JSONCompactColumns'
+output_format: true
+slug: '/interfaces/formats/JSONCompactColumns'
+title: 'JSONCompactColumns'
 ---
 
 

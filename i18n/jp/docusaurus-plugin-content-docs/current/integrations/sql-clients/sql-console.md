@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'SQLコンソール'
-'sidebar_position': 1
-'title': 'SQLコンソール'
-'slug': '/integrations/sql-clients/sql-console'
-'description': 'SQLコンソールについて学ぶ'
+sidebar_label: 'SQLコンソール'
+sidebar_position: 1
+title: 'SQLコンソール'
+slug: '/integrations/sql-clients/sql-console'
+description: 'SQLコンソールについて学ぶ'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';

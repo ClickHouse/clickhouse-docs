@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'LineAsStringWithNames フォーマットのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'LineAsStringWithNames フォーマットのドキュメント'
+input_format: true
+keywords:
 - 'LineAsStringWithNames'
-'output_format': true
-'slug': '/interfaces/formats/LineAsStringWithNames'
-'title': 'LineAsStringWithNames'
+output_format: true
+slug: '/interfaces/formats/LineAsStringWithNames'
+title: 'LineAsStringWithNames'
 ---
 
 

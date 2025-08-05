@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'Protobufフォーマットのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'Protobufフォーマットのドキュメント'
+input_format: true
+keywords:
 - 'Protobuf'
-'output_format': true
-'slug': '/interfaces/formats/Protobuf'
-'title': 'Protobuf'
+output_format: true
+slug: '/interfaces/formats/Protobuf'
+title: 'Protobuf'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for User'
-'sidebar_label': 'ユーザー'
-'sidebar_position': 39
-'slug': '/sql-reference/statements/create/user'
-'title': 'CREATE USER'
+description: 'Documentation for User'
+sidebar_label: 'ユーザー'
+sidebar_position: 39
+slug: '/sql-reference/statements/create/user'
+title: 'CREATE USER'
 ---
 
 

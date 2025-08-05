@@ -1,8 +1,8 @@
 ---
-'slug': '/guides/developer/deduplicating-inserts-on-retries'
-'title': 'リトライ時の挿入重複の排除'
-'description': '挿入操作をリトライする際に重複データを防ぐ方法'
-'keywords':
+slug: '/guides/developer/deduplicating-inserts-on-retries'
+title: 'リトライ時の挿入重複の排除'
+description: '挿入操作をリトライする際に重複データを防ぐ方法'
+keywords:
 - 'deduplication'
 - 'deduplicate'
 - 'insert retries'

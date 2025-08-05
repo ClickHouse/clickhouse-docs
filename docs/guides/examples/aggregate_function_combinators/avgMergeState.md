@@ -18,7 +18,7 @@ can be applied to the [`avg`](/sql-reference/aggregate-functions/reference/avg)
 function to merge partial aggregate states of type `AverageFunction(avg, T)` and
 return a new intermediate aggregation state.
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 The `MergeState` combinator is particularly useful for multi-level aggregation 
 scenarios where you want to combine pre-aggregated states and maintain them as 
@@ -43,7 +43,7 @@ ORDER BY (region, server_id, timestamp);
 ```
 
 We'll create a server-level aggregation target table and define an Incremental
-Materialized View acting as an insert trigger to it:
+materialized view acting as an insert trigger to it:
 
 ```sql
 CREATE TABLE server_performance
@@ -88,7 +88,7 @@ AS SELECT
 FROM server_performance
 GROUP BY region, datacenter;
 
--- datacenter level table and Materialized View
+-- datacenter level table and materialized view
 
 CREATE TABLE datacenter_performance
 (

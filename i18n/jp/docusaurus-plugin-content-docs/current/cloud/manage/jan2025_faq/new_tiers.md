@@ -1,12 +1,12 @@
 ---
-'title': '新しい階層の説明'
-'slug': '/cloud/manage/jan-2025-faq/new-tiers'
-'keywords':
+title: '新しい階層の説明'
+slug: '/cloud/manage/jan-2025-faq/new-tiers'
+keywords:
 - 'new tiers'
 - 'features'
 - 'pricing'
 - 'description'
-'description': '新しい階層と機能の説明'
+description: '新しい階層と機能の説明'
 ---
 
 

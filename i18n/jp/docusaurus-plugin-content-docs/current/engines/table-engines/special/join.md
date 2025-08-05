@@ -1,9 +1,9 @@
 ---
-'description': 'JOIN 操作で使用するためのオプションの準備済みデータ構造。'
-'sidebar_label': 'Join'
-'sidebar_position': 70
-'slug': '/engines/table-engines/special/join'
-'title': 'Join テーブルエンジン'
+description: 'JOIN 操作で使用するためのオプションの準備済みデータ構造。'
+sidebar_label: 'Join'
+sidebar_position: 70
+slug: '/engines/table-engines/special/join'
+title: 'Join テーブルエンジン'
 ---
 
 

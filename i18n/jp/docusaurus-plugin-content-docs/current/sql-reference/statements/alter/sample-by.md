@@ -1,9 +1,9 @@
 ---
-'description': 'SAMPLE BY式の操作に関するドキュメント'
-'sidebar_label': 'サンプリングキーの操作'
-'sidebar_position': 41
-'slug': '/sql-reference/statements/alter/sample-by'
-'title': 'Sampling-Key Expressions Manipulation'
+description: 'SAMPLE BY式の操作に関するドキュメント'
+sidebar_label: 'サンプリングキーの操作'
+sidebar_position: 41
+slug: '/sql-reference/statements/alter/sample-by'
+title: 'Sampling-Key Expressions Manipulation'
 ---
 
 

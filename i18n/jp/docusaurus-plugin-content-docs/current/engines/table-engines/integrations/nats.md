@@ -1,10 +1,10 @@
 ---
-'description': 'This engine allows integrating ClickHouse with NATS to publish or
+description: 'This engine allows integrating ClickHouse with NATS to publish or
   subscribe to message subjects, and process new messages as they become available.'
-'sidebar_label': 'NATS'
-'sidebar_position': 140
-'slug': '/engines/table-engines/integrations/nats'
-'title': 'NATS Engine'
+sidebar_label: 'NATS'
+sidebar_position: 140
+slug: '/engines/table-engines/integrations/nats'
+title: 'NATS Engine'
 ---
 
 

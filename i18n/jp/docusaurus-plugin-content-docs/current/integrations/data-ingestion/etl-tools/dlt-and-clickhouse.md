@@ -1,15 +1,15 @@
 ---
-'sidebar_label': 'dlt'
-'keywords':
+sidebar_label: 'dlt'
+keywords:
 - 'clickhouse'
 - 'dlt'
 - 'connect'
 - 'integrate'
 - 'etl'
 - 'data integration'
-'description': 'Load data into ClickHouse using dlt integration'
-'title': 'Connect dlt to ClickHouse'
-'slug': '/integrations/data-ingestion/etl-tools/dlt-and-clickhouse'
+description: 'Load data into ClickHouse using dlt integration'
+title: 'Connect dlt to ClickHouse'
+slug: '/integrations/data-ingestion/etl-tools/dlt-and-clickhouse'
 ---
 
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';

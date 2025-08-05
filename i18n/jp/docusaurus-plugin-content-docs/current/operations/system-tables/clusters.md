@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing information about clusters available in the
+description: 'System table containing information about clusters available in the
   config file and the servers defined in them.'
-'keywords':
+keywords:
 - 'system table'
 - 'clusters'
-'slug': '/operations/system-tables/clusters'
-'title': 'system.clusters'
+slug: '/operations/system-tables/clusters'
+title: 'system.clusters'
 ---
 
 

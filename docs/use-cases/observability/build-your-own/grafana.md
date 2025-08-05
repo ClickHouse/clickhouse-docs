@@ -39,7 +39,6 @@ The Traces configuration is slightly more complex (full list [here](/engines/tab
 
 <Image img={observability_15} alt="Connector config" size="sm"/>
 
-
 Once configured users can navigate to [Grafana Explore](https://grafana.com/docs/grafana/latest/explore/) and begin searching logs and traces.
 
 ## Logs {#logs}
@@ -83,7 +82,7 @@ This query returns the column names expected by Grafana, rendering a table of tr
 
 Users wishing to write more complex queries can switch to the `SQL Editor`.
 
-### View Trace details {#view-trace-details}
+### View trace details {#view-trace-details}
 
 As shown above, Trace ids are rendered as clickable links. On clicking on a trace Id, a user can choose to view the associated spans via the link `View Trace`. This issues the following query (assuming OTel columns) to retrieve the spans in the required structure, rendering the results as a waterfall.
 

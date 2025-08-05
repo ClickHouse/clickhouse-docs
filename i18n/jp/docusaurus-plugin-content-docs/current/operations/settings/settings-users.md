@@ -1,9 +1,9 @@
 ---
-'description': 'ユーザーとロールの設定に関する設定'
-'sidebar_label': 'ユーザー設定'
-'sidebar_position': 63
-'slug': '/operations/settings/settings-users'
-'title': 'Users and Roles Settings'
+description: 'ユーザーとロールの設定に関する設定'
+sidebar_label: 'ユーザー設定'
+sidebar_position: 63
+slug: '/operations/settings/settings-users'
+title: 'Users and Roles Settings'
 ---
 
 

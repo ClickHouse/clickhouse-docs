@@ -1,14 +1,14 @@
 ---
-'sidebar_label': 'Omni'
-'slug': '/integrations/omni'
-'keywords':
+sidebar_label: 'Omni'
+slug: '/integrations/omni'
+keywords:
 - 'clickhouse'
 - 'Omni'
 - 'connect'
 - 'integrate'
 - 'ui'
-'description': 'Omniは、BI、データアプリケーション、組み込みアナリティクス向けのエンタープライズプラットフォームであり、リアルタイムで洞察を探索し共有するのに役立ちます。'
-'title': 'Omni'
+description: 'Omniは、BI、データアプリケーション、組み込みアナリティクス向けのエンタープライズプラットフォームであり、リアルタイムで洞察を探索し共有するのに役立ちます。'
+title: 'Omni'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';

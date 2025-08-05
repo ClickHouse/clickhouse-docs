@@ -1,14 +1,14 @@
 ---
-'alias':
+alias:
 - 'TSV'
-'description': 'TSVフォーマットのドキュメント'
-'input_format': true
-'keywords':
+description: 'TSVフォーマットのドキュメント'
+input_format: true
+keywords:
 - 'TabSeparated'
 - 'TSV'
-'output_format': true
-'slug': '/interfaces/formats/TabSeparated'
-'title': 'TabSeparated'
+output_format: true
+slug: '/interfaces/formats/TabSeparated'
+title: 'TabSeparated'
 ---
 
 

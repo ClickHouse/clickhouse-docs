@@ -16,7 +16,7 @@ the ClickHouse community [homebrew formula](https://formulae.brew.sh/cask/clickh
 brew install --cask clickhouse
 ```
 
-## Fix the developer verification error in MacOS {#fix-developer-verification-error-macos}
+## Fix the developer verification error in macOS {#fix-developer-verification-error-macos}
 
 If you install ClickHouse using `brew`, you may encounter an error from MacOS.
 By default, MacOS will not run applications or tools created by a developer who cannot be verified.

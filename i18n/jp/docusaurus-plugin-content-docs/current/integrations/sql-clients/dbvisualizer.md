@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'DbVisualizer'
-'slug': '/integrations/dbvisualizer'
-'description': 'DbVisualizerはClickHouseに対する拡張サポートを備えたデータベースツールです。'
-'title': 'Connecting DbVisualizer to ClickHouse'
+sidebar_label: 'DbVisualizer'
+slug: '/integrations/dbvisualizer'
+description: 'DbVisualizerはClickHouseに対する拡張サポートを備えたデータベースツールです。'
+title: 'Connecting DbVisualizer to ClickHouse'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';

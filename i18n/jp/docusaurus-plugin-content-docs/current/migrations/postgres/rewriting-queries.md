@@ -1,12 +1,12 @@
 ---
-'slug': '/migrations/postgresql/rewriting-queries'
-'title': 'PostgreSQLクエリの書き直し'
-'keywords':
+slug: '/migrations/postgresql/rewriting-queries'
+title: 'PostgreSQLクエリの書き直し'
+keywords:
 - 'postgres'
 - 'postgresql'
 - 'rewriting queries'
 - 'rewrite query'
-'description': 'PostgreSQLからClickHouseへの移行ガイドの第2部'
+description: 'PostgreSQLからClickHouseへの移行ガイドの第2部'
 ---
 
 

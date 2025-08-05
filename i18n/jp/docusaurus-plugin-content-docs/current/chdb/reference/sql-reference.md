@@ -1,9 +1,9 @@
 ---
-'title': 'SQLリファレンス'
-'sidebar_label': 'SQLリファレンス'
-'slug': '/chdb/reference/sql-reference'
-'description': 'chDBのSQLリファレンス'
-'keywords':
+title: 'SQLリファレンス'
+sidebar_label: 'SQLリファレンス'
+slug: '/chdb/reference/sql-reference'
+description: 'chDBのSQLリファレンス'
+keywords:
 - 'chdb'
 - 'sql reference'
 ---

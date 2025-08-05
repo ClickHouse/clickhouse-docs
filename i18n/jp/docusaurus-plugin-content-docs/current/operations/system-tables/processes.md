@@ -1,10 +1,10 @@
 ---
-'description': 'System table used for implementing the `SHOW PROCESSLIST` query.'
-'keywords':
+description: 'System table used for implementing the `SHOW PROCESSLIST` query.'
+keywords:
 - 'system table'
 - 'processes'
-'slug': '/operations/system-tables/processes'
-'title': 'system.processes'
+slug: '/operations/system-tables/processes'
+title: 'system.processes'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

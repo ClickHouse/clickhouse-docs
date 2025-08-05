@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'Connection Tips'
-'sidebar_position': 3
-'slug': '/integrations/tableau/connection-tips'
-'keywords':
+sidebar_label: 'Connection Tips'
+sidebar_position: 3
+slug: '/integrations/tableau/connection-tips'
+keywords:
 - 'clickhouse'
 - 'tableau'
 - 'online'
@@ -10,8 +10,8 @@
 - 'connect'
 - 'integrate'
 - 'ui'
-'description': 'Tableau connection tips when using ClickHouse official connector.'
-'title': 'Connection tips'
+description: 'Tableau connection tips when using ClickHouse official connector.'
+title: 'Connection tips'
 ---
 
 import Image from '@theme/IdealImage';

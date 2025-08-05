@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing information about tables that drop table has
+description: 'System table containing information about tables that drop table has
   been executed on but for which data cleanup has not yet been performed'
-'keywords':
+keywords:
 - 'system table'
 - 'dropped_tables'
-'slug': '/operations/system-tables/dropped_tables'
-'title': 'system.dropped_tables'
+slug: '/operations/system-tables/dropped_tables'
+title: 'system.dropped_tables'
 ---
 
 

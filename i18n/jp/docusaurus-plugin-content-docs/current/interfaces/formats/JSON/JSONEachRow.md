@@ -1,9 +1,9 @@
 ---
-'description': 'JSONEachRowフォーマットのドキュメント'
-'keywords':
+description: 'JSONEachRowフォーマットのドキュメント'
+keywords:
 - 'JSONEachRow'
-'slug': '/interfaces/formats/JSONEachRow'
-'title': 'JSONEachRow'
+slug: '/interfaces/formats/JSONEachRow'
+title: 'JSONEachRow'
 ---
 
 

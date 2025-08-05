@@ -1,8 +1,8 @@
 ---
-'description': 'Contains the history of all latency buckets, periodically flushed
+description: 'Contains the history of all latency buckets, periodically flushed
   to disk.'
-'slug': '/operations/system-tables/latency_log'
-'title': 'system.latency_log'
+slug: '/operations/system-tables/latency_log'
+title: 'system.latency_log'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

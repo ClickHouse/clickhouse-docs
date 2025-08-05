@@ -1,8 +1,8 @@
 ---
-'description': 'この関数は確率的線形回帰を実装します。学習率、L2正則化係数、ミニバッチサイズのカスタムパラメータをサポートし、重みの更新用のいくつかのメソッド（Adam、シンプルSGD、モメンタム、ネステロフ）を持っています。'
-'sidebar_position': 192
-'slug': '/sql-reference/aggregate-functions/reference/stochasticlinearregression'
-'title': 'stochasticLinearRegression'
+description: 'この関数は確率的線形回帰を実装します。学習率、L2正則化係数、ミニバッチサイズのカスタムパラメータをサポートし、重みの更新用のいくつかのメソッド（Adam、シンプルSGD、モメンタム、ネステロフ）を持っています。'
+sidebar_position: 192
+slug: '/sql-reference/aggregate-functions/reference/stochasticlinearregression'
+title: 'stochasticLinearRegression'
 ---
 
 

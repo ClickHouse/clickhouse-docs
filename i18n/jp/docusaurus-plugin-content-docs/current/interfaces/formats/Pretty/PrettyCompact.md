@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'Documentation for the PrettyCompact format'
-'input_format': false
-'keywords':
+alias: []
+description: 'Documentation for the PrettyCompact format'
+input_format: false
+keywords:
 - 'PrettyCompact'
-'output_format': true
-'slug': '/interfaces/formats/PrettyCompact'
-'title': 'PrettyCompact'
+output_format: true
+slug: '/interfaces/formats/PrettyCompact'
+title: 'PrettyCompact'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';

@@ -1,14 +1,14 @@
 ---
-'description': 'Documentation for Table'
-'keywords':
+description: 'Documentation for Table'
+keywords:
 - 'compression'
 - 'codec'
 - 'schema'
 - 'DDL'
-'sidebar_label': 'TABLE'
-'sidebar_position': 36
-'slug': '/sql-reference/statements/create/table'
-'title': 'CREATE TABLE'
+sidebar_label: 'TABLE'
+sidebar_position: 36
+slug: '/sql-reference/statements/create/table'
+title: 'CREATE TABLE'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

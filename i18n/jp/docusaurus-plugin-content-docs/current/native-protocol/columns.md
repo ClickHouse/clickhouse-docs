@@ -1,8 +1,8 @@
 ---
-'slug': '/native-protocol/columns'
-'sidebar_position': 4
-'title': '列の種類'
-'description': 'ネイティブプロトコルのための列の種類'
+slug: '/native-protocol/columns'
+sidebar_position: 4
+title: '列の種類'
+description: 'ネイティブプロトコルのための列の種類'
 ---
 
 

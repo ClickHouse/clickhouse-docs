@@ -1,8 +1,8 @@
 ---
-'description': 'EXCEPT 句のドキュメント'
-'sidebar_label': 'EXCEPT'
-'slug': '/sql-reference/statements/select/except'
-'title': 'EXCEPT Clause'
+description: 'EXCEPT 句のドキュメント'
+sidebar_label: 'EXCEPT'
+slug: '/sql-reference/statements/select/except'
+title: 'EXCEPT Clause'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'description': 'クォータのドキュメント'
-'sidebar_label': 'クォータ'
-'sidebar_position': 42
-'slug': '/sql-reference/statements/create/quota'
-'title': 'CREATE QUOTA'
+description: 'クォータのドキュメント'
+sidebar_label: 'クォータ'
+sidebar_position: 42
+slug: '/sql-reference/statements/create/quota'
+title: 'CREATE QUOTA'
 ---
 
 

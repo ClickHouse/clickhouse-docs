@@ -19,4 +19,3 @@ This guide provides a comprehensive approach to migrating from Elastic Stack to 
 | [Migrating Data](/use-cases/observability/clickstack/migration/elastic/migrating-data) | Strategies for data migration and parallel operation |
 | [Migrating Agents](/use-cases/observability/clickstack/migration/elastic/migrating-agents) | Transitioning from Elastic agents to OpenTelemetry |
 | [Migrating SDKs](/use-cases/observability/clickstack/migration/elastic/migrating-sdks) | Replacing Elastic APM agents with OpenTelemetry SDKs |
-

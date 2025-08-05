@@ -1,12 +1,12 @@
 ---
-'slug': '/integrations/azure-data-factory'
-'description': 'Azure データを ClickHouse に取り込む'
-'keywords':
+slug: '/integrations/azure-data-factory'
+description: 'Azure データを ClickHouse に取り込む'
+keywords:
 - 'azure data factory'
 - 'azure'
 - 'microsoft'
 - 'data'
-'title': 'ClickHouse への Azure データの取り込み'
+title: 'ClickHouse への Azure データの取り込み'
 ---
 
 

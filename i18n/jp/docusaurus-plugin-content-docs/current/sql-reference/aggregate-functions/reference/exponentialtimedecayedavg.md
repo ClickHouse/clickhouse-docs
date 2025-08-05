@@ -1,8 +1,8 @@
 ---
-'description': '時間系列の値の指数平滑加重移動平均を時刻 `t` で返します。'
-'sidebar_position': 133
-'slug': '/sql-reference/aggregate-functions/reference/exponentialTimeDecayedAvg'
-'title': '指数時系列減衰平均'
+description: '時間系列の値の指数平滑加重移動平均を時刻 `t` で返します。'
+sidebar_position: 133
+slug: '/sql-reference/aggregate-functions/reference/exponentialTimeDecayedAvg'
+title: '指数時系列減衰平均'
 ---
 
 

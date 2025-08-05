@@ -1,9 +1,9 @@
 ---
-'sidebar_position': 1
-'sidebar_label': 'ストレージとコンピューティングの分離'
-'slug': '/guides/separation-storage-compute'
-'title': 'Separation of Storage and Compute'
-'description': 'このガイドでは、ClickHouseとS3を使用して、ストレージとコンピューティングを分離したアーキテクチャを実装する方法について探ります。'
+sidebar_position: 1
+sidebar_label: 'ストレージとコンピューティングの分離'
+slug: '/guides/separation-storage-compute'
+title: 'Separation of Storage and Compute'
+description: 'このガイドでは、ClickHouseとS3を使用して、ストレージとコンピューティングを分離したアーキテクチャを実装する方法について探ります。'
 ---
 
 import Image from '@theme/IdealImage';

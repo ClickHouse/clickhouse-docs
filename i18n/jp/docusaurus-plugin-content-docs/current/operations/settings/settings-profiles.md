@@ -1,9 +1,9 @@
 ---
-'description': '同じ名前の下にグループ化された設定のコレクション。'
-'sidebar_label': '設定プロファイル'
-'sidebar_position': 61
-'slug': '/operations/settings/settings-profiles'
-'title': 'Settings Profiles'
+description: '同じ名前の下にグループ化された設定のコレクション。'
+sidebar_label: '設定プロファイル'
+sidebar_position: 61
+slug: '/operations/settings/settings-profiles'
+title: 'Settings Profiles'
 ---
 
 

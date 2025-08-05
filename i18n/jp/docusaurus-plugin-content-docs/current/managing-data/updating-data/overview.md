@@ -1,8 +1,8 @@
 ---
-'slug': '/updating-data/overview'
-'title': '概要'
-'description': 'ClickHouseでデータを更新する方法'
-'keywords':
+slug: '/updating-data/overview'
+title: '概要'
+description: 'ClickHouseでデータを更新する方法'
+keywords:
 - 'update'
 - 'updating data'
 ---

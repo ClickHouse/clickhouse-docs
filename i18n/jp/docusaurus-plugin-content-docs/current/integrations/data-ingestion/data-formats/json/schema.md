@@ -1,8 +1,8 @@
 ---
-'title': 'JSONスキーマの設計'
-'slug': '/integrations/data-formats/json/schema'
-'description': 'JSONスキーマを最適に設計する方法'
-'keywords':
+title: 'JSONスキーマの設計'
+slug: '/integrations/data-formats/json/schema'
+description: 'JSONスキーマを最適に設計する方法'
+keywords:
 - 'json'
 - 'clickhouse'
 - 'inserting'
@@ -11,7 +11,7 @@
 - 'schema'
 - 'structured'
 - 'semi-structured'
-'score': 20
+score: 20
 ---
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';

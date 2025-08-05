@@ -1,15 +1,15 @@
 ---
-'sidebar_label': 'Metabase'
-'sidebar_position': 131
-'slug': '/integrations/metabase'
-'keywords':
+sidebar_label: 'Metabase'
+sidebar_position: 131
+slug: '/integrations/metabase'
+keywords:
 - 'ClickHouse'
 - 'Metabase'
 - 'connect'
 - 'integrate'
 - 'ui'
-'description': 'Metabaseは、データに関する質問をするための使いやすいオープンソースUIツールです。'
-'title': 'Connecting Metabase to ClickHouse'
+description: 'Metabaseは、データに関する質問をするための使いやすいオープンソースUIツールです。'
+title: 'Connecting Metabase to ClickHouse'
 ---
 
 import Image from '@theme/IdealImage';

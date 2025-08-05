@@ -1,9 +1,9 @@
 ---
-'description': 'PostgreSQLWire formatのドキュメント'
-'keywords':
+description: 'PostgreSQLWire formatのドキュメント'
+keywords:
 - 'PostgreSQLWire'
-'slug': '/interfaces/formats/PostgreSQLWire'
-'title': 'PostgreSQLWire'
+slug: '/interfaces/formats/PostgreSQLWire'
+title: 'PostgreSQLWire'
 ---
 
 

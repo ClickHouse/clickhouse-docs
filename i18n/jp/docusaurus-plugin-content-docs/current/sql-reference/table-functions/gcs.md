@@ -1,13 +1,13 @@
 ---
-'description': 'Google Cloud Storage からデータを `SELECT` および `INSERT` するためのテーブルのようなインターフェースを提供します。
+description: 'Google Cloud Storage からデータを `SELECT` および `INSERT` するためのテーブルのようなインターフェースを提供します。
   `Storage Object User` IAM ロールが必要です。'
-'keywords':
+keywords:
 - 'gcs'
 - 'bucket'
-'sidebar_label': 'gcs'
-'sidebar_position': 70
-'slug': '/sql-reference/table-functions/gcs'
-'title': 'gcs'
+sidebar_label: 'gcs'
+sidebar_position: 70
+slug: '/sql-reference/table-functions/gcs'
+title: 'gcs'
 ---
 
 

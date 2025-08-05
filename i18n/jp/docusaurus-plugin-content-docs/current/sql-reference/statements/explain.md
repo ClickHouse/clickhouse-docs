@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for Explain'
-'sidebar_label': 'EXPLAIN'
-'sidebar_position': 39
-'slug': '/sql-reference/statements/explain'
-'title': 'EXPLAIN Statement'
+description: 'Documentation for Explain'
+sidebar_label: 'EXPLAIN'
+sidebar_position: 39
+slug: '/sql-reference/statements/explain'
+title: 'EXPLAIN Statement'
 ---
 
 

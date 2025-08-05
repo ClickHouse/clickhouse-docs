@@ -8,7 +8,7 @@ description: 'How to configure settings for your ClickHouse Cloud service for a 
 import Image from '@theme/IdealImage';
 import cloud_settings_sidebar from '@site/static/images/cloud/manage/cloud-settings-sidebar.png';
 
-# Configuring Settings
+# Configuring settings
 
 To specify settings for your ClickHouse Cloud service for a specific [user](/operations/access-rights#user-account-management) or [role](/operations/access-rights#role-management), you must use [SQL-driven Settings Profiles](/operations/access-rights#settings-profiles-management). Applying Settings Profiles ensures that the settings you configure persist, even when your services stop, idle, and upgrade. To learn more about Settings Profiles, please see [this page](/operations/settings/settings-profiles.md).
 

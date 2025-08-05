@@ -1,8 +1,8 @@
 ---
-'description': 'The RecipeNLG dataset, containing 2.2 million recipes'
-'sidebar_label': 'Recipes Dataset'
-'slug': '/getting-started/example-datasets/recipes'
-'title': 'Recipes Dataset'
+description: 'The RecipeNLG dataset, containing 2.2 million recipes'
+sidebar_label: 'Recipes Dataset'
+slug: '/getting-started/example-datasets/recipes'
+title: 'Recipes Dataset'
 ---
 
 

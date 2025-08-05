@@ -1,16 +1,16 @@
 ---
-'alias':
+alias:
 - 'PrettyJSONLines'
 - 'PrettyNDJSON'
-'description': 'PrettyJSONEachRow フォーマットのドキュメント'
-'input_format': false
-'keywords':
+description: 'PrettyJSONEachRow フォーマットのドキュメント'
+input_format: false
+keywords:
 - 'PrettyJSONEachRow'
 - 'PrettyJSONLines'
 - 'PrettyNDJSON'
-'output_format': true
-'slug': '/interfaces/formats/PrettyJSONEachRow'
-'title': 'PrettyJSONEachRow'
+output_format: true
+slug: '/interfaces/formats/PrettyJSONEachRow'
+title: 'PrettyJSONEachRow'
 ---
 
 

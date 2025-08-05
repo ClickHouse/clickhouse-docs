@@ -1,9 +1,9 @@
 ---
-'description': 'カラム統計の操作に関するドキュメント'
-'sidebar_label': '統計'
-'sidebar_position': 45
-'slug': '/sql-reference/statements/alter/statistics'
-'title': 'カラム統計の操作'
+description: 'カラム統計の操作に関するドキュメント'
+sidebar_label: '統計'
+sidebar_position: 45
+slug: '/sql-reference/statements/alter/statistics'
+title: 'カラム統計の操作'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';

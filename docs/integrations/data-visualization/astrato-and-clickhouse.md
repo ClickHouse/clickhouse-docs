@@ -92,13 +92,11 @@ In just a few steps, you can build your first chart in Astrato.
 
 <Image size="lg" img={astrato_5a_clickhouse_build_chart} alt="Astrato connect to ClickHouse User Access" border />
 
-
 ### View generated SQL supporting each visualization {#view-generated-sql-supporting-each-visualization}
 
 Transparency and accuracy are at the heart of Astrato. We ensure that every query generated is visible, letting you keep full control. All compute happens directly in ClickHouse, taking advantage of its speed while maintaining robust security and governance.
 
 <Image size="lg" img={astrato_5b_clickhouse_view_sql} alt="Astrato connect to ClickHouse User Access" border />
-
 
 ### Example completed dashboard {#example-completed-dashboard}
 

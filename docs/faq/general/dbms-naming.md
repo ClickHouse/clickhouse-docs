@@ -6,7 +6,7 @@ slug: /faq/general/dbms-naming
 description: 'Learn about What does "ClickHouse" mean?'
 ---
 
-# What Does "ClickHouse" Mean? {#what-does-clickhouse-mean}
+# What does "ClickHouse" mean? {#what-does-clickhouse-mean}
 
 It's a combination of "**Click**stream" and "Data ware**House**". It comes from the original use case at Yandex.Metrica, where ClickHouse was supposed to keep records of all clicks by people from all over the Internet, and it still does the job. You can read more about this use case on [ClickHouse history](../../about-us/history.md) page.
 

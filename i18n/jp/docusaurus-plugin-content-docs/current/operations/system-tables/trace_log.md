@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing stack traces collected by the sampling query
+description: 'System table containing stack traces collected by the sampling query
   profiler.'
-'keywords':
+keywords:
 - 'system table'
 - 'trace_log'
-'slug': '/operations/system-tables/trace_log'
-'title': 'system.trace_log'
+slug: '/operations/system-tables/trace_log'
+title: 'system.trace_log'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

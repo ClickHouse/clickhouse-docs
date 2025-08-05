@@ -1,10 +1,10 @@
 ---
-'description': 'ユーザーとロールの権限を含むシステムテーブル。'
-'keywords':
+description: 'ユーザーとロールの権限を含むシステムテーブル。'
+keywords:
 - 'system table'
 - 'role_grants'
-'slug': '/operations/system-tables/role-grants'
-'title': 'system.role_grants'
+slug: '/operations/system-tables/role-grants'
+title: 'system.role_grants'
 ---
 
 

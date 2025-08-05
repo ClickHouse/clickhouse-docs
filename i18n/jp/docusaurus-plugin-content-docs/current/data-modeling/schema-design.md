@@ -1,8 +1,8 @@
 ---
-'slug': '/data-modeling/schema-design'
-'title': 'スキーマ設計'
-'description': 'クエリパフォーマンスの最適化のためのClickHouseスキーマ'
-'keywords':
+slug: '/data-modeling/schema-design'
+title: 'スキーマ設計'
+description: 'クエリパフォーマンスの最適化のためのClickHouseスキーマ'
+keywords:
 - 'schema'
 - 'schema design'
 - 'query optimization'

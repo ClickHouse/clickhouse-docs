@@ -19,7 +19,7 @@ The `uniqArray` function is useful when you need to count unique elements across
 multiple arrays in a dataset. It's equivalent to using `uniq(arrayJoin())`, where 
 `arrayJoin` first flattens the arrays and then `uniq` counts the unique elements.
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 In this example, we'll use a sample dataset of user interests across different 
 categories to demonstrate how `uniqArray` works. We'll compare it with 

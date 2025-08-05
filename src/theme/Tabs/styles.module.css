@@ -1,8 +1,6 @@
 .tabList {
-  margin-bottom: var(--ifm-leading);
   scrollbar-width: none;
   border-bottom: 1px solid var(--click-color-stroke);
-  overflow: auto;
 }
 .tabList::-webkit-scrollbar {
   display: none;

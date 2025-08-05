@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'DataGrip'
-'slug': '/integrations/datagrip'
-'description': 'DataGripは、ボックスからClickHouseをサポートするデータベースIDEです。'
-'title': 'Connecting DataGrip to ClickHouse'
+sidebar_label: 'DataGrip'
+slug: '/integrations/datagrip'
+description: 'DataGripは、ボックスからClickHouseをサポートするデータベースIDEです。'
+title: 'Connecting DataGrip to ClickHouse'
 ---
 
 import Image from '@theme/IdealImage';

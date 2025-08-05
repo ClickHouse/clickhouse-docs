@@ -47,7 +47,6 @@ If you do not have a dataset to work with you can add one of the examples.  This
 ## 1. Gather your connection details {#1-gather-your-connection-details}
 <ConnectionDetails />
 
-
 ## 2.  Connect Explo to ClickHouse {#2--connect-explo-to-clickhouse}
 
 1. Sign up for an Explo account.

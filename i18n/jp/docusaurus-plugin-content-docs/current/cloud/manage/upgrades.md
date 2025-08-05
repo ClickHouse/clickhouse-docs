@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'アップグレード'
-'slug': '/manage/updates'
-'title': 'Upgrades'
-'description': 'ClickHouse Cloudを使用すると、パッチ適用とアップグレードの心配はありません。定期的に修正、新機能、パフォーマンスの改善を含むアップグレードを展開します。'
+sidebar_label: 'アップグレード'
+slug: '/manage/updates'
+title: 'Upgrades'
+description: 'ClickHouse Cloudを使用すると、パッチ適用とアップグレードの心配はありません。定期的に修正、新機能、パフォーマンスの改善を含むアップグレードを展開します。'
 ---
 
 import Image from '@theme/IdealImage';

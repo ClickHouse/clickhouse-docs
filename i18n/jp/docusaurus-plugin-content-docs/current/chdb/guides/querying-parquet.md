@@ -1,9 +1,9 @@
 ---
-'title': 'Parquetファイルのクエリ方法'
-'sidebar_label': 'Parquetファイルのクエリ'
-'slug': '/chdb/guides/querying-parquet'
-'description': 'chDBでParquetファイルをクエリする方法について学びます。'
-'keywords':
+title: 'Parquetファイルのクエリ方法'
+sidebar_label: 'Parquetファイルのクエリ'
+slug: '/chdb/guides/querying-parquet'
+description: 'chDBでParquetファイルをクエリする方法について学びます。'
+keywords:
 - 'chdb'
 - 'parquet'
 ---

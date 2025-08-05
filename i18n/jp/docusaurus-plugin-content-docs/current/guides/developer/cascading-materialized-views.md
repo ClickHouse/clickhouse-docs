@@ -1,8 +1,8 @@
 ---
-'slug': '/guides/developer/cascading-materialized-views'
-'title': 'Cascading Materialized Views'
-'description': 'ソーステーブルから複数のマテリアライズドビューを使用する方法。'
-'keywords':
+slug: '/guides/developer/cascading-materialized-views'
+title: 'Cascading Materialized Views'
+description: 'ソーステーブルから複数のマテリアライズドビューを使用する方法。'
+keywords:
 - 'materialized view'
 - 'aggregation'
 ---

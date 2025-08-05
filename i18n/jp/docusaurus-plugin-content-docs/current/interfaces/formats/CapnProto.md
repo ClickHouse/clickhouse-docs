@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'Capnprotoのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'Capnprotoのドキュメント'
+input_format: true
+keywords:
 - 'CapnProto'
-'output_format': true
-'slug': '/interfaces/formats/CapnProto'
-'title': 'CapnProto'
+output_format: true
+slug: '/interfaces/formats/CapnProto'
+title: 'CapnProto'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

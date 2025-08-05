@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing logging entries with information about various
+description: 'System table containing logging entries with information about various
   blob storage operations such as uploads and deletes.'
-'keywords':
+keywords:
 - 'system table'
 - 'blob_storage_log'
-'slug': '/operations/system-tables/blob_storage_log'
-'title': 'system.blob_storage_log'
+slug: '/operations/system-tables/blob_storage_log'
+title: 'system.blob_storage_log'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

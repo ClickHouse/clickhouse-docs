@@ -1,7 +1,7 @@
 ---
-'description': 'Documentation for Http'
-'slug': '/operations/external-authenticators/http'
-'title': 'HTTP'
+description: 'Documentation for Http'
+slug: '/operations/external-authenticators/http'
+title: 'HTTP'
 ---
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';

@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'セキュリティとコンプライアンス'
-'slug': '/cloud/security/security-and-compliance'
-'title': 'セキュリティとコンプライアンス'
-'description': 'このページでは、ClickHouse Cloud によって実装されたセキュリティとコンプライアンス対策について説明します。'
+sidebar_label: 'セキュリティとコンプライアンス'
+slug: '/cloud/security/security-and-compliance'
+title: 'セキュリティとコンプライアンス'
+description: 'このページでは、ClickHouse Cloud によって実装されたセキュリティとコンプライアンス対策について説明します。'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';

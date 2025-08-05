@@ -81,7 +81,6 @@ The examples throughout this guide use the Linux commands for running `clickhous
 To run `clickhouse-local` on a Mac, use `./clickhouse local`.
 :::
 
-
 :::tip Add the remote system to your ClickHouse Cloud service IP Access List
 In order for the `remoteSecure` function to connect to your ClickHouse Cloud service, the IP address of the remote system needs to be allowed by the IP Access List.  Expand **Manage your IP Access List** below this tip for more information.
 :::
@@ -128,7 +127,6 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');"
 No data is stored locally on the `clickhouse-local` host machine. Instead, the data is read from the source MySQL table
   and then immediately written to the destination table on the ClickHouse Cloud service.
 :::
-
 
 ## Example 2: Migrating from MySQL to ClickHouse Cloud with the JDBC bridge {#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge}
 

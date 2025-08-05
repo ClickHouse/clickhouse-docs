@@ -1,7 +1,7 @@
 ---
-'title': 'トラブルシューティング'
-'slug': '/faq/troubleshooting'
-'description': '一般的な ClickHouse Cloud エラーメッセージのトラブルシューティング方法。'
+title: 'トラブルシューティング'
+slug: '/faq/troubleshooting'
+description: '一般的な ClickHouse Cloud エラーメッセージのトラブルシューティング方法。'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'description': 'Calculates the Pearson correlation coefficient, but uses a numerically
+description: 'Calculates the Pearson correlation coefficient, but uses a numerically
   stable algorithm.'
-'sidebar_position': 119
-'slug': '/sql-reference/aggregate-functions/reference/corrstable'
-'title': 'corrStable'
+sidebar_position: 119
+slug: '/sql-reference/aggregate-functions/reference/corrstable'
+title: 'corrStable'
 ---
 
 

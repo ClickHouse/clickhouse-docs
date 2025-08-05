@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'AWS PrivateLink for ClickPipes'
-'description': 'ClickPipes とデータソース間の安全な接続を AWS PrivateLink を使用して確立します。'
-'slug': '/integrations/clickpipes/aws-privatelink'
-'title': 'AWS PrivateLink for ClickPipes'
+sidebar_label: 'AWS PrivateLink for ClickPipes'
+description: 'ClickPipes とデータソース間の安全な接続を AWS PrivateLink を使用して確立します。'
+slug: '/integrations/clickpipes/aws-privatelink'
+title: 'AWS PrivateLink for ClickPipes'
 ---
 
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';

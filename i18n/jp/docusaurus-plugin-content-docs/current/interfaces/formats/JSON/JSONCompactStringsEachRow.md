@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'JSONCompactStringsEachRowフォーマットのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'JSONCompactStringsEachRowフォーマットのドキュメント'
+input_format: true
+keywords:
 - 'JSONCompactStringsEachRow'
-'output_format': true
-'slug': '/interfaces/formats/JSONCompactStringsEachRow'
-'title': 'JSONCompactStringsEachRow'
+output_format: true
+slug: '/interfaces/formats/JSONCompactStringsEachRow'
+title: 'JSONCompactStringsEachRow'
 ---
 
 

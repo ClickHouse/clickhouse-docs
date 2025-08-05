@@ -25,7 +25,6 @@ The range of supported types allows you to optimize both storage space and query
 
 Let's create a table that stores various date types:
 
-
 ```sql
 CREATE TABLE dates
 (
@@ -71,7 +70,6 @@ very_precise_datetime: 2025-03-12 11:39:07.196724000
 
 Many use cases require having timezones stored as well. We can set the timezone as the last argument to the `DateTime` or `DateTime64` types:
 
-
 ```sql
 CREATE TABLE dtz
 (
@@ -86,7 +84,6 @@ ORDER BY id;
 ```
 
 Having defined a timezone in our DDL, we can now insert times using different timezones:
-
 
 ```sql
 INSERT INTO dtz 
@@ -133,7 +130,6 @@ In the first row, we inserted all values using the `America/New_York` timezone.
 
 In the second row, we inserted all the values without a timezone, so the server's local time zone was used.
 As in the first row, `dt_1` and `dt_3` are converted to `Europe/Berlin`, while `dt_2` and `dt64_2` use the server's local time zone.
-
 
 ## Date and time functions {#time-series-date-time-functions}
 

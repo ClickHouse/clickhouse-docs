@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'Azure Synapse'
-'slug': '/integrations/azure-synapse'
-'description': 'Introduction to Azure Synapse with ClickHouse'
-'keywords':
+sidebar_label: 'Azure Synapse'
+slug: '/integrations/azure-synapse'
+description: 'Introduction to Azure Synapse with ClickHouse'
+keywords:
 - 'clickhouse'
 - 'azure synapse'
 - 'azure'
@@ -10,7 +10,7 @@
 - 'microsoft'
 - 'azure spark'
 - 'data'
-'title': 'Integrating Azure Synapse with ClickHouse'
+title: 'Integrating Azure Synapse with ClickHouse'
 ---
 
 import TOCInline from '@theme/TOCInline';

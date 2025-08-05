@@ -1,14 +1,14 @@
 ---
-'slug': '/faq/general/'
-'sidebar_position': 1
-'sidebar_label': 'ClickHouseに関する一般的な質問'
-'keywords':
+slug: '/faq/general/'
+sidebar_position: 1
+sidebar_label: 'ClickHouseに関する一般的な質問'
+keywords:
 - 'clickhouse'
 - 'faq'
 - 'questions'
 - 'what is'
-'title': 'ClickHouseに関する一般的な質問'
-'description': 'ClickHouseに関する一般的な質問を一覧表示するインデックスページ'
+title: 'ClickHouseに関する一般的な質問'
+description: 'ClickHouseに関する一般的な質問を一覧表示するインデックスページ'
 ---
 
 

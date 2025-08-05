@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing information about pending asynchronous inserts
+description: 'System table containing information about pending asynchronous inserts
   in queue.'
-'keywords':
+keywords:
 - 'system table'
 - 'asynchronous_inserts'
-'slug': '/operations/system-tables/asynchronous_inserts'
-'title': 'system.asynchronous_inserts'
+slug: '/operations/system-tables/asynchronous_inserts'
+title: 'system.asynchronous_inserts'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

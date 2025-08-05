@@ -1,16 +1,16 @@
 ---
-'slug': '/integrations/data-formats'
-'sidebar_label': '概要'
-'sidebar_position': 1
-'keywords':
+slug: '/integrations/data-formats'
+sidebar_label: '概要'
+sidebar_position: 1
+keywords:
 - 'clickhouse'
 - 'CSV'
 - 'TSV'
 - 'Parquet'
 - 'clickhouse-client'
 - 'clickhouse-local'
-'title': 'ClickHouseへのさまざまなデータ形式からのインポート'
-'description': 'さまざまなデータ形式をClickHouseにインポートする方法について説明するページ'
+title: 'ClickHouseへのさまざまなデータ形式からのインポート'
+description: 'さまざまなデータ形式をClickHouseにインポートする方法について説明するページ'
 ---
 
 

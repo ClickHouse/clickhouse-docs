@@ -15,7 +15,7 @@ can be applied to the [`sum`](/sql-reference/aggregate-functions/reference/sum) 
 function which operates on row values to an aggregate function which operates on
 array columns, applying the aggregate to each element in the array across rows.
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 For this example we'll make use of the `hits` dataset available in our [SQL playground](https://sql.clickhouse.com/).
 

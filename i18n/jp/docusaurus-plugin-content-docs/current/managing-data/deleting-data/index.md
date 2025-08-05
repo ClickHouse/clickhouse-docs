@@ -1,8 +1,8 @@
 ---
-'slug': '/managing-data/deleting-data/overview'
-'title': 'データの削除'
-'description': 'ClickHouseでデータを削除する方法 目次'
-'keywords':
+slug: '/managing-data/deleting-data/overview'
+title: 'データの削除'
+description: 'ClickHouseでデータを削除する方法 目次'
+keywords:
 - 'delete'
 - 'truncate'
 - 'drop'

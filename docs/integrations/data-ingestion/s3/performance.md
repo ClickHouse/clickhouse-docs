@@ -27,7 +27,7 @@ Before tuning threads and block sizes to improve insert performance, we recommen
 
 Two main factors, in addition to hardware size, influence the performance and resource usage of ClickHouse's data insert mechanics (for a single node): **insert block size** and **insert parallelism**.
 
-### Insert Block Size {#insert-block-size}
+### Insert block size {#insert-block-size}
 
 <Image img={InsertMechanics} size="lg" border alt="Insert block size mechanics in ClickHouse" />
 
@@ -86,7 +86,7 @@ Note that [increasing](https://clickhouse.com/blog/supercharge-your-clickhouse-d
 
 Parts that were merged into larger parts are marked as [inactive](/operations/system-tables/parts) and finally deleted after a [configurable](/operations/settings/merge-tree-settings#old_parts_lifetime) number of minutes. Over time, this creates a tree of merged parts (hence the name [`MergeTree`](/engines/table-engines/mergetree-family) table).
 
-### Insert Parallelism {#insert-parallelism}
+### Insert parallelism {#insert-parallelism}
 
 <Image img={ResourceUsage} size="lg" border alt="Resource usage for insert parallelism" />
 
@@ -112,11 +112,11 @@ With a large number of files, the parallel processing by multiple insert threads
 
 For the s3 function and table, parallel downloading of an individual file is determined by the values [max_download_threads](https://clickhouse.com/codebrowser/ClickHouse/src/Core/Settings.h.html#DB::SettingsTraits::Data::max_download_threads) and [max_download_buffer_size](https://clickhouse.com/codebrowser/ClickHouse/src/Core/Settings.h.html#DB::SettingsTraits::Data::max_download_buffer_size). Files will only be downloaded in parallel if their size is greater than `2 * max_download_buffer_size`. By default, the `max_download_buffer_size` default is set to 10MiB. In some cases, you can safely increase this buffer size to 50 MB (`max_download_buffer_size=52428800`), with the aim of ensuring each file was downloaded by a single thread. This can reduce the time each thread spends making S3 calls and thus also lower the S3 wait time. Furthermore, for files that are too small for parallel reading, to increase throughput, ClickHouse automatically prefetches data by pre-reading such files asynchronously.
 
-## Measuring Performance {#measuring-performance}
+## Measuring performance {#measuring-performance}
 
 Optimizing the performance of queries using the S3 table functions is required when both running queries against data in place i.e. ad-hoc querying where only ClickHouse compute is used and the data remains in S3 in its original format, and when inserting data from S3 into a ClickHouse MergeTree table engine. Unless specified the following recommendations apply to both scenarios.
 
-## Impact of Hardware Size {#impact-of-hardware-size}
+## Impact of hardware size {#impact-of-hardware-size}
 
 <Image img={HardwareSize} size="lg" border alt="Impact of hardware size on ClickHouse performance" />
 
@@ -128,7 +128,7 @@ The number of available CPU cores and the size of RAM impacts the:
 
 and, therefore, the overall ingest throughput.
 
-## Region Locality {#region-locality}
+## Region locality {#region-locality}
 
 Ensure your buckets are located in the same region as your ClickHouse instances. This simple optimization can dramatically improve throughput performance, especially if you deploy your ClickHouse instances on AWS infrastructure.
 
@@ -187,7 +187,7 @@ In our example we only return a few rows. If measuring the performance of `SELEC
 When reading from queries, the initial query can often appear slower than if the same query is repeated. This can be attributed to both S3's own caching but also the [ClickHouse Schema Inference Cache](/operations/system-tables/schema_inference_cache). This stores the inferred schema for files and means the inference step can be skipped on subsequent accesses, thus reducing query time.
 :::
 
-## Using Threads for Reads {#using-threads-for-reads}
+## Using threads for reads {#using-threads-for-reads}
 
 Read performance on S3 will scale linearly with the number of cores, provided you are not limited by network bandwidth or local I/O. Increasing the number of threads also has memory overhead permutations that users should be aware of. The following can be modified to improve read throughput performance potentially:
 
@@ -233,7 +233,7 @@ SETTINGS max_threads = 64
 Peak memory usage: 639.99 MiB.
 ```
 
-## Tuning Threads and Block Size for Inserts {#tuning-threads-and-block-size-for-inserts}
+## Tuning threads and block size for inserts {#tuning-threads-and-block-size-for-inserts}
 
 To achieve maximum ingestion performance, you must choose (1) an insert block size and (2) an appropriate level of insert parallelism based on (3) the amount of available CPU cores and RAM available. In summary:
 
@@ -270,7 +270,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 
 As shown, tuning of these setting has improved insert performance by over `33%`. We leave this to the reader to see if they can improve single node performance further.
 
-## Scaling with Resources and Nodes {#scaling-with-resources-and-nodes}
+## Scaling with resources and nodes {#scaling-with-resources-and-nodes}
 
 Scaling with resources and nodes applies to both read and insert queries.
 
@@ -314,7 +314,6 @@ The server that initially receives the insert query first resolves the glob patt
 We repeat our earlier read query distributing the workload across 3 nodes, adjusting the query to use `s3Cluster`. This is performed automatically in ClickHouse Cloud, by referring to the `default` cluster.
 
 As noted in [Utilizing Clusters](/integrations/s3#utilizing-clusters) this work is distributed a file level. To benefit from this feature users will require a sufficient number of files i.e. at least > the number of nodes.
-
 
 ```sql
 SELECT

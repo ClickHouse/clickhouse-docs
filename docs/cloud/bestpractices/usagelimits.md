@@ -29,5 +29,3 @@ If you've run up against one of these guardrails, it's possible that you are imp
 :::note
 For Single Replica Services, the maximum number of databases is restricted to 100, and the maximum number of tables is restricted to 500. In addition, storage for Basic Tier Services is limited to 1 TB.
 :::
-
-

@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'JSONCompactStrings フォーマットのドキュメント'
-'input_format': false
-'keywords':
+alias: []
+description: 'JSONCompactStrings フォーマットのドキュメント'
+input_format: false
+keywords:
 - 'JSONCompactStrings'
-'output_format': true
-'slug': '/interfaces/formats/JSONCompactStrings'
-'title': 'JSONCompactStrings'
+output_format: true
+slug: '/interfaces/formats/JSONCompactStrings'
+title: 'JSONCompactStrings'
 ---
 
 

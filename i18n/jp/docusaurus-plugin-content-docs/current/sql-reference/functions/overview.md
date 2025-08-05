@@ -1,9 +1,9 @@
 ---
-'description': 'Regular Functionsのドキュメント'
-'sidebar_label': '概要'
-'sidebar_position': 1
-'slug': '/sql-reference/functions/overview'
-'title': 'Regular Functions'
+description: 'Regular Functionsのドキュメント'
+sidebar_label: '概要'
+sidebar_position: 1
+slug: '/sql-reference/functions/overview'
+title: 'Regular Functions'
 ---
 
 

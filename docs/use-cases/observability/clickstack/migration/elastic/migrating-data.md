@@ -424,7 +424,6 @@ GET .ds-logs-system.syslog-default-2025.06.03-000001/_mapping
 ```
 </details>
 
-
 The equivalent ClickHouse table schema:
 
 <details>
@@ -510,17 +509,17 @@ ORDER BY (`host.name`, `@timestamp`)
 
 Note that:
 
- - Tuples are used to represent nested structures instead of dot notation
- - Used appropriate ClickHouse types based on the mapping:
-   - `keyword` → `String`
-   - `date` → `DateTime`
-   - `boolean` → `UInt8`
-   - `long` → `Int64`
-   - `ip` → `Array(Variant(IPv4, IPv6))`. We use a [`Variant(IPv4, IPv6)`](/sql-reference/data-types/variant) here as the field contains a mixture of [`IPv4`](/sql-reference/data-types/ipv4) and [`IPv6`](/sql-reference/data-types/ipv6).
-   - `object` → `JSON` for the syslog object whose structure is unpredictable.
- - Columns `host.ip` and `host.mac` are explicit `Array` type, unlike in Elasticsearch where all types are arrays.
- - An `ORDER BY` clause is added using timestamp and hostname for efficient time-based queries
- - `MergeTree`, which is optimal for log data, is used as the engine type
+- Tuples are used to represent nested structures instead of dot notation
+- Used appropriate ClickHouse types based on the mapping:
+  - `keyword` → `String`
+  - `date` → `DateTime`
+  - `boolean` → `UInt8`
+  - `long` → `Int64`
+  - `ip` → `Array(Variant(IPv4, IPv6))`. We use a [`Variant(IPv4, IPv6)`](/sql-reference/data-types/variant) here as the field contains a mixture of [`IPv4`](/sql-reference/data-types/ipv4) and [`IPv6`](/sql-reference/data-types/ipv6).
+  - `object` → `JSON` for the syslog object whose structure is unpredictable.
+- Columns `host.ip` and `host.mac` are explicit `Array` type, unlike in Elasticsearch where all types are arrays.
+- An `ORDER BY` clause is added using timestamp and hostname for efficient time-based queries
+- `MergeTree`, which is optimal for log data, is used as the engine type
 
 **This approach of statically defining the schema and using the JSON type selectively where required [is recommended](/integrations/data-formats/json/schema#handling-semi-structured-dynamic-structures).**
 

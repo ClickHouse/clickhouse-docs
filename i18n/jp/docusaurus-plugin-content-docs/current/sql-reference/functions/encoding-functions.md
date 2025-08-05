@@ -1,9 +1,9 @@
 ---
-'description': 'エンコーディング関数のドキュメント'
-'sidebar_label': 'エンコーディング'
-'sidebar_position': 65
-'slug': '/sql-reference/functions/encoding-functions'
-'title': 'Encoding Functions'
+description: 'エンコーディング関数のドキュメント'
+sidebar_label: 'エンコーディング'
+sidebar_position: 65
+slug: '/sql-reference/functions/encoding-functions'
+title: 'Encoding Functions'
 ---
 
 

@@ -1,10 +1,10 @@
 ---
-'description': 'The PostgreSQL engine allows `SELECT` and `INSERT` queries on data
+description: 'The PostgreSQL engine allows `SELECT` and `INSERT` queries on data
   stored on a remote PostgreSQL server.'
-'sidebar_label': 'PostgreSQL'
-'sidebar_position': 160
-'slug': '/engines/table-engines/integrations/postgresql'
-'title': 'PostgreSQL テーブルエンジン'
+sidebar_label: 'PostgreSQL'
+sidebar_position: 160
+slug: '/engines/table-engines/integrations/postgresql'
+title: 'PostgreSQL テーブルエンジン'
 ---
 
 

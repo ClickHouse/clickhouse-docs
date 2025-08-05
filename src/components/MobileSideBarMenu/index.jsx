@@ -27,7 +27,7 @@ const MobileSideBarMenu = ({sidebar, menu}) => {
     }, [currentMenuState]);
 
     // Define the breakpoint where mobile menu should be hidden (laptop breakpoint)
-    const LAPTOP_BREAKPOINT = 1330;
+    const LAPTOP_BREAKPOINT = 1100;
 
     // Initialize the previous location ref on first render and monitor location changes
     useEffect(() => {

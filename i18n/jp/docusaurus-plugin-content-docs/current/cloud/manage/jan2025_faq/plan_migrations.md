@@ -1,13 +1,13 @@
 ---
-'title': '新しいプランへの移行'
-'slug': '/cloud/manage/jan-2025-faq/plan-migrations'
-'keywords':
+title: '新しいプランへの移行'
+slug: '/cloud/manage/jan-2025-faq/plan-migrations'
+keywords:
 - 'migration'
 - 'new tiers'
 - 'pricing'
 - 'cost'
 - 'estimation'
-'description': '新プラン、階層、価格への移行、決定方法とコストの見積もり'
+description: '新プラン、階層、価格への移行、決定方法とコストの見積もり'
 ---
 
 

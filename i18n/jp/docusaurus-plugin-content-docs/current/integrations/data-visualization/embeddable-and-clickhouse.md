@@ -1,15 +1,15 @@
 ---
-'sidebar_label': 'Embeddable'
-'slug': '/integrations/embeddable'
-'keywords':
+sidebar_label: 'Embeddable'
+slug: '/integrations/embeddable'
+keywords:
 - 'clickhouse'
 - 'Embeddable'
 - 'connect'
 - 'integrate'
 - 'ui'
-'description': 'Embeddable is a developer toolkit for building fast, interactive,
+description: 'Embeddable is a developer toolkit for building fast, interactive,
   fully-custom analytics experiences directly into your app.'
-'title': 'Connecting Embeddable to ClickHouse'
+title: 'Connecting Embeddable to ClickHouse'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';

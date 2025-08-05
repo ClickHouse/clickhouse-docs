@@ -49,6 +49,8 @@ binlog_row_metadata = FULL  ; only in 10.5.0 and newer
 expire_logs_days = 1
 ```
 
+If the source database is a replica, make sure to also turn on `log_slave_updates`.
+
 You NEED to RESTART the MariaDB instance for the changes to take effect.
 
 :::note

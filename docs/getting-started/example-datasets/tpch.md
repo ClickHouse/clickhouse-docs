@@ -43,7 +43,7 @@ Detailed table sizes with scale factor 100:
 | partsupp | 80.000.000     | 4.37 GB                         |
 | customer | 15.000.000     | 1.19 GB                         |
 | orders   | 150.000.000    | 6.15 GB                         |
-| lineitem | 600.00.00      | 26.69 GB                        |
+| lineitem | 600.000.000    | 26.69 GB                        |
 
 (Compressed sizes in ClickHouse are taken from `system.tables.total_bytes` and based on below table definitions.)
 
@@ -57,7 +57,6 @@ We stick as closely as possible to the rules of the TPC-H specification:
 - As per section 1.3.1, we use ClickHouse's native datatypes (e.g. `Int32`, `String`) to implement the abstract datatypes mentioned in the
   specification (e.g. `Identifier`, `Variable text, size N`). The only effect of this is better readability, the SQL-92 datatypes generated
   by `dbgen` (e.g. `INTEGER`, `VARCHAR(40)`) would also work in ClickHouse.
-
 
 ```sql
 CREATE TABLE nation (

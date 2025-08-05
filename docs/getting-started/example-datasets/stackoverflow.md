@@ -70,7 +70,6 @@ INSERT INTO stackoverflow.posts SELECT * FROM s3('https://datasets-documentation
 
 Posts are also available by year e.g. [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet)
 
-
 ### Votes {#votes}
 
 ```sql
@@ -92,7 +91,6 @@ INSERT INTO stackoverflow.votes SELECT * FROM s3('https://datasets-documentation
 ```
 
 Votes are also available by year e.g. [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet)
-
 
 ### Comments {#comments}
 

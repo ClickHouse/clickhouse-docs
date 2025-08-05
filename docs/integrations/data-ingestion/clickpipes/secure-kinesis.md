@@ -88,7 +88,9 @@ IAM policy (Please replace `{STREAM_NAME}` with your Kinesis stream name):
         {
             "Action": [
                 "kinesis:SubscribeToShard",
-                "kinesis:DescribeStreamConsumer"
+                "kinesis:DescribeStreamConsumer",
+                "kinesis:RegisterStreamConsumer",
+                "kinesis:DeregisterStreamConsumer"
             ],
             "Resource": [
                 "arn:aws:kinesis:region:account-id:stream/{STREAM_NAME}/*"

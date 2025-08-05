@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for Special Table Engines'
-'sidebar_label': 'Special'
-'sidebar_position': 50
-'slug': '/engines/table-engines/special/'
-'title': 'Special Table Engines'
+description: 'Documentation for Special Table Engines'
+sidebar_label: 'Special'
+sidebar_position: 50
+slug: '/engines/table-engines/special/'
+title: 'Special Table Engines'
 ---
 
 

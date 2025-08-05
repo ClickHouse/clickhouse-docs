@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'Private Link Overview'
-'slug': '/cloud/security/private-link-overview'
-'title': 'Private Link Overview'
-'description': 'Landing page for Private Link'
+sidebar_label: 'Private Link Overview'
+slug: '/cloud/security/private-link-overview'
+title: 'Private Link Overview'
+description: 'Landing page for Private Link'
 ---
 
 

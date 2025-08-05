@@ -1,8 +1,8 @@
 ---
-'description': 'quantiles, quantilesExactExclusive, quantilesExactInclusive, quantilesGK'
-'sidebar_position': 177
-'slug': '/sql-reference/aggregate-functions/reference/quantiles'
-'title': 'quantiles 関数'
+description: 'quantiles, quantilesExactExclusive, quantilesExactInclusive, quantilesGK'
+sidebar_position: 177
+slug: '/sql-reference/aggregate-functions/reference/quantiles'
+title: 'quantiles 関数'
 ---
 
 

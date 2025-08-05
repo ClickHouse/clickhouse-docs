@@ -1,8 +1,8 @@
 ---
-'description': 'QUALIFY 句のドキュメント'
-'sidebar_label': 'QUALIFY'
-'slug': '/sql-reference/statements/select/qualify'
-'title': 'QUALIFY Clause'
+description: 'QUALIFY 句のドキュメント'
+sidebar_label: 'QUALIFY'
+slug: '/sql-reference/statements/select/qualify'
+title: 'QUALIFY Clause'
 ---
 
 

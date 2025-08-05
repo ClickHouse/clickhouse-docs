@@ -1,10 +1,10 @@
 ---
-'description': 'JSONフォーマットの設定のリスト'
-'keywords':
+description: 'JSONフォーマットの設定のリスト'
+keywords:
 - 'Format Settings'
 - 'JSON'
-'slug': '/interfaces/formats/JSON/format-settings'
-'title': 'JSON用フォーマット設定'
+slug: '/interfaces/formats/JSON/format-settings'
+title: 'JSON用フォーマット設定'
 ---
 
 

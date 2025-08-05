@@ -1,15 +1,15 @@
 ---
-'sidebar_label': 'Amazon MSK with Kafka Connector Sink'
-'sidebar_position': 1
-'slug': '/integrations/kafka/cloud/amazon-msk/'
-'description': 'The official Kafka connector from ClickHouse with Amazon MSK'
-'keywords':
+sidebar_label: 'Amazon MSK with Kafka Connector Sink'
+sidebar_position: 1
+slug: '/integrations/kafka/cloud/amazon-msk/'
+description: 'The official Kafka connector from ClickHouse with Amazon MSK'
+keywords:
 - 'integration'
 - 'kafka'
 - 'amazon msk'
 - 'sink'
 - 'connector'
-'title': 'Amazon MSK with ClickHouse との統合'
+title: 'Amazon MSK with ClickHouse との統合'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';

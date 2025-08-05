@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'オーダリングキー'
-'description': 'カスタムオーダリングキーの定義方法。'
-'slug': '/integrations/clickpipes/postgres/ordering_keys'
-'title': 'オーダリングキー'
+sidebar_label: 'オーダリングキー'
+description: 'カスタムオーダリングキーの定義方法。'
+slug: '/integrations/clickpipes/postgres/ordering_keys'
+title: 'オーダリングキー'
 ---
 
 

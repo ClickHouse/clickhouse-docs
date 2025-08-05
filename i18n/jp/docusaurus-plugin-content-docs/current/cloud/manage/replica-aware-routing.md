@@ -1,8 +1,8 @@
 ---
-'title': 'レプリカ意識型ルーティング'
-'slug': '/manage/replica-aware-routing'
-'description': 'キャッシュ再利用を増やすためのレプリカ意識型ルーティングの使用方法'
-'keywords':
+title: 'レプリカ意識型ルーティング'
+slug: '/manage/replica-aware-routing'
+description: 'キャッシュ再利用を増やすためのレプリカ意識型ルーティングの使用方法'
+keywords:
 - 'cloud'
 - 'sticky endpoints'
 - 'sticky'

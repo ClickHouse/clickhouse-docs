@@ -1,10 +1,10 @@
 ---
-'description': 'This table contains warning messages about clickhouse server.'
-'keywords':
+description: 'This table contains warning messages about clickhouse server.'
+keywords:
 - 'system table'
 - 'warnings'
-'slug': '/operations/system-tables/system_warnings'
-'title': 'system.warnings'
+slug: '/operations/system-tables/system_warnings'
+title: 'system.warnings'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

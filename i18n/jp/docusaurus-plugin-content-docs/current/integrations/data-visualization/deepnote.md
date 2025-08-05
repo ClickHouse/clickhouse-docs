@@ -1,16 +1,16 @@
 ---
-'sidebar_label': 'Deepnote'
-'sidebar_position': 11
-'slug': '/integrations/deepnote'
-'keywords':
+sidebar_label: 'Deepnote'
+sidebar_position: 11
+slug: '/integrations/deepnote'
+keywords:
 - 'clickhouse'
 - 'Deepnote'
 - 'connect'
 - 'integrate'
 - 'notebook'
-'description': 'Efficiently query very large datasets, analyzing and modeling in the
+description: 'Efficiently query very large datasets, analyzing and modeling in the
   comfort of known notebook environment.'
-'title': 'Connect ClickHouse to Deepnote'
+title: 'Connect ClickHouse to Deepnote'
 ---
 
 import deepnote_01 from '@site/static/images/integrations/data-visualization/deepnote_01.png';

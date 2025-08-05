@@ -1,6 +1,6 @@
 ---
-'sidebar_label': 'サービス'
-'title': 'サービス'
+sidebar_label: 'サービス'
+title: 'サービス'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'slug': '/optimize/skipping-indexes'
-'sidebar_label': 'データスキッピングインデックス'
-'sidebar_position': 2
-'description': 'スキップインデックスは、ClickHouseが一致する値がないことが保証されているデータの大きなチャンクを読み飛ばすことを可能にします。'
-'title': 'ClickHouse データスキッピングインデックスの理解'
+slug: '/optimize/skipping-indexes'
+sidebar_label: 'データスキッピングインデックス'
+sidebar_position: 2
+description: 'スキップインデックスは、ClickHouseが一致する値がないことが保証されているデータの大きなチャンクを読み飛ばすことを可能にします。'
+title: 'ClickHouse データスキッピングインデックスの理解'
 ---
 
 import simple_skip from '@site/static/images/guides/best-practices/simple_skip.png';

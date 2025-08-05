@@ -1,8 +1,8 @@
 ---
-'slug': '/data-modeling/overview'
-'title': 'データモデリングの概要'
-'description': 'データモデル作成の概要'
-'keywords':
+slug: '/data-modeling/overview'
+title: 'データモデリングの概要'
+description: 'データモデル作成の概要'
+keywords:
 - 'data modelling'
 - 'schema design'
 - 'dictionary'

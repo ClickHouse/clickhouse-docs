@@ -1,9 +1,9 @@
 ---
-'slug': '/optimize/query-parallelism'
-'sidebar_label': 'Query Parallelism'
-'sidebar_position': 20
-'description': 'ClickHouseクエリ実行の並列化には、処理レーンとmax_threads設定が使用されます。'
-'title': 'How ClickHouse executes a query in parallel'
+slug: '/optimize/query-parallelism'
+sidebar_label: 'Query Parallelism'
+sidebar_position: 20
+description: 'ClickHouseクエリ実行の並列化には、処理レーンとmax_threads設定が使用されます。'
+title: 'How ClickHouse executes a query in parallel'
 ---
 
 import visual01 from '@site/static/images/guides/best-practices/query-parallelism_01.gif';

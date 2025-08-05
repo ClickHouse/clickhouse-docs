@@ -1,10 +1,10 @@
 ---
-'description': 'Learn how to load OpenCelliD data into ClickHouse, connect Apache
+description: 'Learn how to load OpenCelliD data into ClickHouse, connect Apache
   Superset to ClickHouse and build a dashboard based on data'
-'sidebar_label': 'Geo Data'
-'sidebar_position': 3
-'slug': '/getting-started/example-datasets/cell-towers'
-'title': 'Geo Data using the Cell Tower Dataset'
+sidebar_label: 'Geo Data'
+sidebar_position: 3
+slug: '/getting-started/example-datasets/cell-towers'
+title: 'Geo Data using the Cell Tower Dataset'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';

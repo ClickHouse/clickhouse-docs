@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouse と連携するサードパーティー製 GUI ツールとアプリケーションのリスト'
-'sidebar_label': 'ビジュアルインタフェース'
-'sidebar_position': 28
-'slug': '/interfaces/third-party/gui'
-'title': 'サードパーティー開発者によるビジュアルインターフェース'
+description: 'ClickHouse と連携するサードパーティー製 GUI ツールとアプリケーションのリスト'
+sidebar_label: 'ビジュアルインタフェース'
+sidebar_position: 28
+slug: '/interfaces/third-party/gui'
+title: 'サードパーティー開発者によるビジュアルインターフェース'
 ---
 
 

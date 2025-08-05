@@ -1,13 +1,13 @@
 ---
-'description': 'ClickHouse用のネイティブクライアントとインタフェース'
-'keywords':
+description: 'ClickHouse用のネイティブクライアントとインタフェース'
+keywords:
 - 'clients'
 - 'interfaces'
 - 'CLI'
 - 'SQL console'
 - 'drivers'
-'slug': '/interfaces/natives-clients-and-interfaces'
-'title': 'ネイティブクライアントとインタフェース'
+slug: '/interfaces/natives-clients-and-interfaces'
+title: 'ネイティブクライアントとインタフェース'
 ---
 
 

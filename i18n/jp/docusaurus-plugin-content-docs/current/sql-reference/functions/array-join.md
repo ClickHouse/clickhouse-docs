@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for arrayJoin function'
-'sidebar_label': 'arrayJoin'
-'sidebar_position': 15
-'slug': '/sql-reference/functions/array-join'
-'title': 'arrayJoin function'
+description: 'Documentation for arrayJoin function'
+sidebar_label: 'arrayJoin'
+sidebar_position: 15
+slug: '/sql-reference/functions/array-join'
+title: 'arrayJoin function'
 ---
 
 

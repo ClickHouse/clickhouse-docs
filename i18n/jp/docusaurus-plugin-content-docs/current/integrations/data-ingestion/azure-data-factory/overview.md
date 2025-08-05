@@ -1,13 +1,13 @@
 ---
-'sidebar_label': '概要'
-'slug': '/integrations/azure-data-factory/overview'
-'description': 'Azure データを ClickHouse に取り込む - 概要'
-'keywords':
+sidebar_label: '概要'
+slug: '/integrations/azure-data-factory/overview'
+description: 'Azure データを ClickHouse に取り込む - 概要'
+keywords:
 - 'azure data factory'
 - 'azure'
 - 'microsoft'
 - 'data'
-'title': 'Bringing Azure Data into ClickHouse'
+title: 'Bringing Azure Data into ClickHouse'
 ---
 
 

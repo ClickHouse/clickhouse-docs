@@ -6,7 +6,7 @@ description: 'Payment thresholds and automatic invoicing for ClickHouse Cloud.'
 keywords: ['billing', 'payment thresholds', 'automatic invoicing', 'invoice']
 ---
 
-# Payment Thresholds
+# Payment thresholds
 
 When your amount due in a billing period for ClickHouse Cloud reaches $10,000 USD or the equivalent value, your payment method will be automatically charged. A failed charge will result in the suspension or termination of your services after a grace period. 
 

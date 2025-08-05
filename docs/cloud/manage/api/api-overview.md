@@ -25,14 +25,14 @@ consume the ClickHouse Cloud API docs, we offer a JSON-based Swagger endpoint
 via https://api.clickhouse.cloud/v1. You can also find the API docs via
 the [Swagger UI](https://clickhouse.com/docs/cloud/manage/api/swagger).
 
-## Rate Limits {#rate-limits}
+## Rate limits {#rate-limits}
 
 Developers are limited to 100 API keys per organization. Each API key has a 
 limit of 10 requests over a 10-second window. If you'd like to increase the 
 number of API keys or requests per 10-second window for your organization, 
 please contact support@clickhouse.com
 
-## Terraform Provider {#terraform-provider}
+## Terraform provider {#terraform-provider}
 
 The official ClickHouse Terraform Provider lets you use [Infrastructure as Code](https://www.redhat.com/en/topics/automation/what-is-infrastructure-as-code-iac)
 to create predictable, version-controlled configurations to make deployments much

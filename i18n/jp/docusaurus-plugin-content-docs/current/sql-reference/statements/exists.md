@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for EXISTS Statement'
-'sidebar_label': 'EXISTS'
-'sidebar_position': 45
-'slug': '/sql-reference/statements/exists'
-'title': 'EXISTS Statement'
+description: 'Documentation for EXISTS Statement'
+sidebar_label: 'EXISTS'
+sidebar_position: 45
+slug: '/sql-reference/statements/exists'
+title: 'EXISTS Statement'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'description': '集約関数のドキュメント'
-'sidebar_label': '集約関数'
-'sidebar_position': 33
-'slug': '/sql-reference/aggregate-functions/'
-'title': '集約関数'
+description: '集約関数のドキュメント'
+sidebar_label: '集約関数'
+sidebar_position: 33
+slug: '/sql-reference/aggregate-functions/'
+title: '集約関数'
 ---
 
 

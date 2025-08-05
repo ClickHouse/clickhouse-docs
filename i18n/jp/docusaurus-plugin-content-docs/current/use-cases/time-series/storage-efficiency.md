@@ -1,9 +1,9 @@
 ---
-'title': 'ストレージ効率 - 時系列'
-'sidebar_label': 'ストレージ効率'
-'description': '時系列ストレージ効率の向上'
-'slug': '/use-cases/time-series/storage-efficiency'
-'keywords':
+title: 'ストレージ効率 - 時系列'
+sidebar_label: 'ストレージ効率'
+description: '時系列ストレージ効率の向上'
+slug: '/use-cases/time-series/storage-efficiency'
+keywords:
 - 'time-series'
 ---
 

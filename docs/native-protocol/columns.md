@@ -5,7 +5,7 @@ title: 'Column types'
 description: 'Column types for the native protocol'
 ---
 
-# Column Types
+# Column types
 
 See [Data Types](/sql-reference/data-types/) for general reference.
 
@@ -77,7 +77,7 @@ Alias of `FixedString(16)`, UUID value represented as binary.
 
 Alias of `Int8` or `Int16`, but each integer is mapped to some `String` value.
 
-## Low Cardinality {#low-cardinality}
+## `LowCardinality` type {#low-cardinality}
 
 `LowCardinality(T)` consists of `Index T, Keys K`,
 where `K` is one of (UInt8, UInt16, UInt32, UInt64) depending on size of `Index`.

@@ -1,15 +1,15 @@
 ---
-'sidebar_label': 'Zing Data'
-'sidebar_position': 206
-'slug': '/integrations/zingdata'
-'keywords':
+sidebar_label: 'Zing Data'
+sidebar_position: 206
+slug: '/integrations/zingdata'
+keywords:
 - 'clickhouse'
 - 'Zing Data'
 - 'connect'
 - 'integrate'
 - 'ui'
-'description': 'Zing Dataは、iOS、Android、およびWeb用に作成された、ClickHouse向けのシンプルなソーシャルビジネスインテリジェンスです。'
-'title': 'Zing DataをClickHouseに接続する'
+description: 'Zing Dataは、iOS、Android、およびWeb用に作成された、ClickHouse向けのシンプルなソーシャルビジネスインテリジェンスです。'
+title: 'Zing DataをClickHouseに接続する'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';

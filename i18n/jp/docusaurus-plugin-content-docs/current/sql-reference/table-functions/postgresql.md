@@ -1,10 +1,10 @@
 ---
-'description': 'Allows `SELECT` and `INSERT` queries to be performed on data that
+description: 'Allows `SELECT` and `INSERT` queries to be performed on data that
   is stored on a remote PostgreSQL server.'
-'sidebar_label': 'postgresql'
-'sidebar_position': 160
-'slug': '/sql-reference/table-functions/postgresql'
-'title': 'postgresql'
+sidebar_label: 'postgresql'
+sidebar_position: 160
+slug: '/sql-reference/table-functions/postgresql'
+title: 'postgresql'
 ---
 
 

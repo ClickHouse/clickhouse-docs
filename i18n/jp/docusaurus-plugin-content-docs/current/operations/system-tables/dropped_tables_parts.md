@@ -1,10 +1,10 @@
 ---
-'description': 'MergeTreeのドロップされたテーブルのパーツに関する情報を含むシステムテーブル'
-'keywords':
+description: 'MergeTreeのドロップされたテーブルのパーツに関する情報を含むシステムテーブル'
+keywords:
 - 'system table'
 - 'dropped_tables_parts'
-'slug': '/operations/system-tables/dropped_tables_parts'
-'title': 'system.dropped_tables_parts'
+slug: '/operations/system-tables/dropped_tables_parts'
+title: 'system.dropped_tables_parts'
 ---
 
 

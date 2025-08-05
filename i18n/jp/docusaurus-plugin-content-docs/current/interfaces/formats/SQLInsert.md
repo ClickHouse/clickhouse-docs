@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'SQLInsert フォーマットのドキュメント'
-'input_format': false
-'keywords':
+alias: []
+description: 'SQLInsert フォーマットのドキュメント'
+input_format: false
+keywords:
 - 'SQLInsert'
-'output_format': true
-'slug': '/interfaces/formats/SQLInsert'
-'title': 'SQLInsert'
+output_format: true
+slug: '/interfaces/formats/SQLInsert'
+title: 'SQLInsert'
 ---
 
 

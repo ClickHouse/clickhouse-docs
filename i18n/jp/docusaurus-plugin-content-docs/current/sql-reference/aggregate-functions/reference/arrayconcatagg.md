@@ -1,8 +1,8 @@
 ---
-'description': 'array_concat_agg 関数のドキュメント'
-'sidebar_position': 111
-'slug': '/sql-reference/aggregate-functions/reference/array_concat_agg'
-'title': 'array_concat_agg'
+description: 'array_concat_agg 関数のドキュメント'
+sidebar_position: 111
+slug: '/sql-reference/aggregate-functions/reference/array_concat_agg'
+title: 'array_concat_agg'
 ---
 
 

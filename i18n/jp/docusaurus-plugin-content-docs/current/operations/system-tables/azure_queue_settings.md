@@ -1,10 +1,10 @@
 ---
-'description': 'AzureQueue テーブルの設定情報に関するシステムテーブル。サーバーバージョン `24.10` から利用可能。'
-'keywords':
+description: 'AzureQueue テーブルの設定情報に関するシステムテーブル。サーバーバージョン `24.10` から利用可能。'
+keywords:
 - 'system table'
 - 'azure_queue_settings'
-'slug': '/operations/system-tables/azure_queue_settings'
-'title': 'system.azure_queue_settings'
+slug: '/operations/system-tables/azure_queue_settings'
+title: 'system.azure_queue_settings'
 ---
 
 

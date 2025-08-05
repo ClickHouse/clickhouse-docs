@@ -1,8 +1,8 @@
 ---
-'description': 'INTERSECT句のドキュメント'
-'sidebar_label': 'INTERSECT'
-'slug': '/sql-reference/statements/select/intersect'
-'title': 'INTERSECT Clause'
+description: 'INTERSECT句のドキュメント'
+sidebar_label: 'INTERSECT'
+slug: '/sql-reference/statements/select/intersect'
+title: 'INTERSECT Clause'
 ---
 
 

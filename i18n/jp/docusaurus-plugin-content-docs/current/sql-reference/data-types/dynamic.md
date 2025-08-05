@@ -1,9 +1,9 @@
 ---
-'description': 'Dynamicデータ型に関するClickHouseのドキュメント。1つのカラムに異なるタイプの値を格納できます。'
-'sidebar_label': 'ダイナミック'
-'sidebar_position': 62
-'slug': '/sql-reference/data-types/dynamic'
-'title': 'Dynamic'
+description: 'Dynamicデータ型に関するClickHouseのドキュメント。1つのカラムに異なるタイプの値を格納できます。'
+sidebar_label: 'ダイナミック'
+sidebar_position: 62
+slug: '/sql-reference/data-types/dynamic'
+title: 'Dynamic'
 ---
 
 

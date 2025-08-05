@@ -1,12 +1,12 @@
 ---
-'description': 'MergeTree から継承され、マージプロセス中に行を折り畳むロジックが追加されています。'
-'keywords':
+description: 'MergeTree から継承され、マージプロセス中に行を折り畳むロジックが追加されています。'
+keywords:
 - 'updates'
 - 'collapsing'
-'sidebar_label': 'CollapsingMergeTree'
-'sidebar_position': 70
-'slug': '/engines/table-engines/mergetree-family/collapsingmergetree'
-'title': 'CollapsingMergeTree'
+sidebar_label: 'CollapsingMergeTree'
+sidebar_position: 70
+slug: '/engines/table-engines/mergetree-family/collapsingmergetree'
+title: 'CollapsingMergeTree'
 ---
 
 

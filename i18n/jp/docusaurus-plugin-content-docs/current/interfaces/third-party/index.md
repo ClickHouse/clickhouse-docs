@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouse で利用可能なサードパーティーツール、ライブラリ、および統合の概要'
-'sidebar_position': 24
-'slug': '/interfaces/third-party/'
-'toc_folder_title': 'Third-Party'
-'title': 'サードパーティーインターフェース'
+description: 'ClickHouse で利用可能なサードパーティーツール、ライブラリ、および統合の概要'
+sidebar_position: 24
+slug: '/interfaces/third-party/'
+toc_folder_title: 'Third-Party'
+title: 'サードパーティーインターフェース'
 ---
 
 

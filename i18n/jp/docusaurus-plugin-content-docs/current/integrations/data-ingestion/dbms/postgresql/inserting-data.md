@@ -1,11 +1,11 @@
 ---
-'slug': '/integrations/postgresql/inserting-data'
-'title': 'How to insert data from PostgreSQL'
-'keywords':
+slug: '/integrations/postgresql/inserting-data'
+title: 'How to insert data from PostgreSQL'
+keywords:
 - 'postgres'
 - 'postgresql'
 - 'inserts'
-'description': 'Page describing how to insert data from PostgresSQL using ClickPipes,
+description: 'Page describing how to insert data from PostgresSQL using ClickPipes,
   PeerDB or the Postgres table function'
 ---
 

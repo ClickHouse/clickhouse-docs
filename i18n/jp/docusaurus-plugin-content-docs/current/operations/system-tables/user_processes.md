@@ -1,10 +1,10 @@
 ---
-'description': 'システムテーブルには、メモリ使用状況の概要およびユーザーのProfileEventsに役立つ情報が含まれています。'
-'keywords':
+description: 'システムテーブルには、メモリ使用状況の概要およびユーザーのProfileEventsに役立つ情報が含まれています。'
+keywords:
 - 'system table'
 - 'user_processes'
-'slug': '/operations/system-tables/user_processes'
-'title': 'system.user_processes'
+slug: '/operations/system-tables/user_processes'
+title: 'system.user_processes'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

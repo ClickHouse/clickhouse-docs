@@ -1,8 +1,8 @@
 ---
-'title': 'Managing Data'
-'description': '可観測性のためのデータ管理'
-'slug': '/observability/managing-data'
-'keywords':
+title: 'Managing Data'
+description: '可観測性のためのデータ管理'
+slug: '/observability/managing-data'
+keywords:
 - 'observability'
 - 'logs'
 - 'traces'

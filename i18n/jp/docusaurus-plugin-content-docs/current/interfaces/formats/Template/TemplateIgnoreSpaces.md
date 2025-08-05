@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'TemplateIgnoreSpaces フォーマットのドキュメンテーション'
-'input_format': true
-'keywords':
+alias: []
+description: 'TemplateIgnoreSpaces フォーマットのドキュメンテーション'
+input_format: true
+keywords:
 - 'TemplateIgnoreSpaces'
-'output_format': false
-'slug': '/interfaces/formats/TemplateIgnoreSpaces'
-'title': 'TemplateIgnoreSpaces'
+output_format: false
+slug: '/interfaces/formats/TemplateIgnoreSpaces'
+title: 'TemplateIgnoreSpaces'
 ---
 
 

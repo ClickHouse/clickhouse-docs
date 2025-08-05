@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'メンテナンスウィンドウ'
-'description': 'Postgres用のClickPipesのメンテナンスウィンドウ。'
-'slug': '/integrations/clickpipes/postgres/maintenance'
-'title': 'Postgres用ClickPipesのメンテナンスウィンドウ'
+sidebar_label: 'メンテナンスウィンドウ'
+description: 'Postgres用のClickPipesのメンテナンスウィンドウ。'
+slug: '/integrations/clickpipes/postgres/maintenance'
+title: 'Postgres用ClickPipesのメンテナンスウィンドウ'
 ---
 
 

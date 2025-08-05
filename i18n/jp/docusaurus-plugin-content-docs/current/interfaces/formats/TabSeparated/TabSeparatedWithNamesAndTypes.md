@@ -1,9 +1,9 @@
 ---
-'description': 'TabSeparatedWithNamesAndTypes形式のドキュメント'
-'keywords':
+description: 'TabSeparatedWithNamesAndTypes形式のドキュメント'
+keywords:
 - 'TabSeparatedWithNamesAndTypes'
-'slug': '/interfaces/formats/TabSeparatedWithNamesAndTypes'
-'title': 'TabSeparatedWithNamesAndTypes'
+slug: '/interfaces/formats/TabSeparatedWithNamesAndTypes'
+title: 'TabSeparatedWithNamesAndTypes'
 ---
 
 

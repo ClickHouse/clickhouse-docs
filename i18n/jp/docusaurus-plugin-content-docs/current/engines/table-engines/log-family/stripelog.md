@@ -1,9 +1,9 @@
 ---
-'description': 'StripeLog のドキュメント'
-'slug': '/engines/table-engines/log-family/stripelog'
-'toc_priority': 32
-'toc_title': 'StripeLog'
-'title': 'StripeLog'
+description: 'StripeLog のドキュメント'
+slug: '/engines/table-engines/log-family/stripelog'
+toc_priority: 32
+toc_title: 'StripeLog'
+title: 'StripeLog'
 ---
 
 

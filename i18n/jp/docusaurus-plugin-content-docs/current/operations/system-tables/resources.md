@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing information about resources residing on the
+description: 'System table containing information about resources residing on the
   local server with one row for every resource.'
-'keywords':
+keywords:
 - 'system table'
 - 'resources'
-'slug': '/operations/system-tables/resources'
-'title': 'system.resources'
+slug: '/operations/system-tables/resources'
+title: 'system.resources'
 ---
 
 

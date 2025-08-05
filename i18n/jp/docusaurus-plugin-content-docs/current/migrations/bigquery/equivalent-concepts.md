@@ -1,8 +1,8 @@
 ---
-'title': 'BigQueryとClickHouse Cloudの比較'
-'slug': '/migrations/bigquery/biquery-vs-clickhouse-cloud'
-'description': 'BigQueryがClickHouse Cloudとどのように異なるか'
-'keywords':
+title: 'BigQueryとClickHouse Cloudの比較'
+slug: '/migrations/bigquery/biquery-vs-clickhouse-cloud'
+description: 'BigQueryがClickHouse Cloudとどのように異なるか'
+keywords:
 - 'migrate'
 - 'migration'
 - 'migrating'

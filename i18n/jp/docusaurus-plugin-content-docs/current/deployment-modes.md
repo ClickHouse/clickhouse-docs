@@ -1,8 +1,8 @@
 ---
-'slug': '/deployment-modes'
-'sidebar_label': 'デプロイメントモード'
-'description': 'ClickHouseは、すべて同じ強力なデータベースエンジンを使用する4つのデプロイメントオプションを提供しており、特定のニーズに合わせて異なる形でパッケージ化されています。'
-'title': 'デプロイメントモード'
+slug: '/deployment-modes'
+sidebar_label: 'デプロイメントモード'
+description: 'ClickHouseは、すべて同じ強力なデータベースエンジンを使用する4つのデプロイメントオプションを提供しており、特定のニーズに合わせて異なる形でパッケージ化されています。'
+title: 'デプロイメントモード'
 ---
 
 import chServer from '@site/static/images/deployment-modes/ch-server.png';

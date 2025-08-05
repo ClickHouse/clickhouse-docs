@@ -1,9 +1,9 @@
 ---
-'title': 'chDB'
-'sidebar_label': '概要'
-'slug': '/chdb'
-'description': 'chDB は ClickHouse によってパワーアップされたインプロセス SQL OLAP エンジンです。'
-'keywords':
+title: 'chDB'
+sidebar_label: '概要'
+slug: '/chdb'
+description: 'chDB は ClickHouse によってパワーアップされたインプロセス SQL OLAP エンジンです。'
+keywords:
 - 'chdb'
 - 'embedded'
 - 'clickhouse-lite'

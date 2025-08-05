@@ -1,8 +1,8 @@
 ---
-'description': '隣接する行との算術差を合計します。'
-'sidebar_position': 129
-'slug': '/sql-reference/aggregate-functions/reference/deltasum'
-'title': 'deltaSum'
+description: '隣接する行との算術差を合計します。'
+sidebar_position: 129
+slug: '/sql-reference/aggregate-functions/reference/deltasum'
+title: 'deltaSum'
 ---
 
 

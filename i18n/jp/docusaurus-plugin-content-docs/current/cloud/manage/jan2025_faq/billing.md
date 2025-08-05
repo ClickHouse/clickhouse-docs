@@ -1,10 +1,10 @@
 ---
-'title': '課金'
-'slug': '/cloud/manage/jan-2025-faq/billing'
-'keywords':
+title: '課金'
+slug: '/cloud/manage/jan-2025-faq/billing'
+keywords:
 - 'new pricing'
 - 'billing'
-'description': '新しい価格層の課金詳細'
+description: '新しい価格層の課金詳細'
 ---
 
 

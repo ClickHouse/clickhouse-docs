@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouse C++ 開発のコーディングスタイルガイド'
-'sidebar_label': 'C++スタイルガイド'
-'sidebar_position': 70
-'slug': '/development/style'
-'title': 'C++スタイルガイド'
+description: 'ClickHouse C++ 開発のコーディングスタイルガイド'
+sidebar_label: 'C++スタイルガイド'
+sidebar_position: 70
+slug: '/development/style'
+title: 'C++スタイルガイド'
 ---
 
 # C++ スタイルガイド

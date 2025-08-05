@@ -1,8 +1,8 @@
 ---
-'slug': '/deletes/overview'
-'title': '削除の概要'
-'description': 'ClickHouseでデータを削除する方法'
-'keywords':
+slug: '/deletes/overview'
+title: '削除の概要'
+description: 'ClickHouseでデータを削除する方法'
+keywords:
 - 'delete'
 - 'truncate'
 - 'drop'

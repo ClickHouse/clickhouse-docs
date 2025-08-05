@@ -1,12 +1,12 @@
 ---
-'description': 'システムテーブルとその有用性の概要。'
-'keywords':
+description: 'システムテーブルとその有用性の概要。'
+keywords:
 - 'system tables'
 - 'overview'
-'sidebar_label': '概要'
-'sidebar_position': 52
-'slug': '/operations/system-tables/overview'
-'title': 'System Tables Overview'
+sidebar_label: '概要'
+sidebar_position: 52
+slug: '/operations/system-tables/overview'
+title: 'System Tables Overview'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'title': 'Installing chDB for Python'
-'sidebar_label': 'Python'
-'slug': '/chdb/install/python'
-'description': 'How to install chDB for Python'
-'keywords':
+title: 'Installing chDB for Python'
+sidebar_label: 'Python'
+slug: '/chdb/install/python'
+description: 'How to install chDB for Python'
+keywords:
 - 'chdb'
 - 'embedded'
 - 'clickhouse-lite'

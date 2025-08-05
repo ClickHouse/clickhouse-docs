@@ -1,14 +1,14 @@
 ---
-'sidebar_label': 'Integrating Apache Spark with ClickHouse'
-'sidebar_position': 1
-'slug': '/integrations/apache-spark'
-'description': 'Apache SparkとClickHouseの統合'
-'keywords':
+sidebar_label: 'Integrating Apache Spark with ClickHouse'
+sidebar_position: 1
+slug: '/integrations/apache-spark'
+description: 'Apache SparkとClickHouseの統合'
+keywords:
 - 'clickhouse'
 - 'Apache Spark'
 - 'migrating'
 - 'data'
-'title': 'Integrating Apache Spark with ClickHouse'
+title: 'Integrating Apache Spark with ClickHouse'
 ---
 
 import Tabs from '@theme/Tabs';

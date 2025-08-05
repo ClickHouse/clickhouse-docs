@@ -1,8 +1,8 @@
 ---
-'description': 'インデックス用のドキュメント'
-'sidebar': 'sqlreference'
-'slug': '/sql-reference/functions'
-'title': '関数のランディングページ'
+description: 'インデックス用のドキュメント'
+sidebar: 'sqlreference'
+slug: '/sql-reference/functions'
+title: '関数のランディングページ'
 ---
 
 

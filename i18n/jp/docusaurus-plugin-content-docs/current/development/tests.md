@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouseのテストおよびテストスイートの実行方法ガイド'
-'sidebar_label': 'テスト'
-'sidebar_position': 40
-'slug': '/development/tests'
-'title': 'ClickHouseのテスト'
+description: 'ClickHouseのテストおよびテストスイートの実行方法ガイド'
+sidebar_label: 'テスト'
+sidebar_position: 40
+slug: '/development/tests'
+title: 'ClickHouseのテスト'
 ---
 
 # Testing ClickHouse

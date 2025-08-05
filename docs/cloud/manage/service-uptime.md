@@ -5,7 +5,7 @@ title: 'Service Uptime'
 description: 'Users can now see regional uptimes on the status page and subscribe to alerts on service disruptions.'
 ---
 
-## Uptime Alerts {#uptime-alerts}
+## Uptime alerts {#uptime-alerts}
 
 Users can now see regional uptimes on the [status page](https://status.clickhouse.com/) and subscribe to alerts on service disruptions.
 

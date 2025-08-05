@@ -1,9 +1,9 @@
 ---
-'slug': '/starter-guides'
-'title': 'スターターガイド'
-'description': 'スターターガイドのランディングページ'
-'pagination_prev': null
-'pagination_next': null
+slug: '/starter-guides'
+title: 'スターターガイド'
+description: 'スターターガイドのランディングページ'
+pagination_prev: null
+pagination_next: null
 ---
 
 

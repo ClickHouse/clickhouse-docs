@@ -1,15 +1,15 @@
 ---
-'description': 'ソースから ClickHouse をコンパイルする方法や CI で生成されたバイナリをインストールする手順'
-'keywords':
+description: 'ソースから ClickHouse をコンパイルする方法や CI で生成されたバイナリをインストールする手順'
+keywords:
 - 'ClickHouse'
 - 'install'
 - 'advanced'
 - 'compile from source'
 - 'CI generated binary'
-'sidebar_label': '高度なインストール'
-'slug': '/install/advanced'
-'title': '高度なインストール方法'
-'hide_title': false
+sidebar_label: '高度なインストール'
+slug: '/install/advanced'
+title: '高度なインストール方法'
+hide_title: false
 ---
 
 

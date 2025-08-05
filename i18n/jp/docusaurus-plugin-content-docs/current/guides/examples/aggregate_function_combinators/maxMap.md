@@ -1,14 +1,14 @@
 ---
-'slug': '/examples/aggregate-function-combinators/maxMap'
-'title': 'maxMap'
-'description': 'maxMapコンビネータの使用例'
-'keywords':
+slug: '/examples/aggregate-function-combinators/maxMap'
+title: 'maxMap'
+description: 'maxMapコンビネータの使用例'
+keywords:
 - 'max'
 - 'map'
 - 'combinator'
 - 'examples'
 - 'maxMap'
-'sidebar_label': 'maxMap'
+sidebar_label: 'maxMap'
 ---
 
 

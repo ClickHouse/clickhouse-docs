@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for Table Engines for Integrations'
-'sidebar_label': 'Integrations'
-'sidebar_position': 40
-'slug': '/engines/table-engines/integrations/'
-'title': 'Table Engines for Integrations'
+description: 'Documentation for Table Engines for Integrations'
+sidebar_label: 'Integrations'
+sidebar_position: 40
+slug: '/engines/table-engines/integrations/'
+title: 'Table Engines for Integrations'
 ---
 
 

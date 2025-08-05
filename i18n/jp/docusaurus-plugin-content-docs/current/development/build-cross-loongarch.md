@@ -1,9 +1,9 @@
 ---
-'description': 'LoongArch64アーキテクチャ向けにソースからClickHouseをビルドするためのガイド'
-'sidebar_label': 'LoongArch64向けLinuxでのビルド'
-'sidebar_position': 35
-'slug': '/development/build-cross-loongarch'
-'title': 'LoongArch64向けLinuxでのビルド'
+description: 'LoongArch64アーキテクチャ向けにソースからClickHouseをビルドするためのガイド'
+sidebar_label: 'LoongArch64向けLinuxでのビルド'
+sidebar_position: 35
+slug: '/development/build-cross-loongarch'
+title: 'LoongArch64向けLinuxでのビルド'
 ---
 
 

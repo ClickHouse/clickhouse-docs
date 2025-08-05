@@ -1,12 +1,12 @@
 ---
-'title': 'BYOC (Bring Your Own Cloud) for AWS'
-'slug': '/cloud/reference/byoc'
-'sidebar_label': 'BYOC (Bring Your Own Cloud)'
-'keywords':
+title: 'BYOC (Bring Your Own Cloud) for AWS'
+slug: '/cloud/reference/byoc'
+sidebar_label: 'BYOC (Bring Your Own Cloud)'
+keywords:
 - 'BYOC'
 - 'cloud'
 - 'bring your own cloud'
-'description': 'Deploy ClickHouse on your own cloud infrastructure'
+description: 'Deploy ClickHouse on your own cloud infrastructure'
 ---
 
 import Image from '@theme/IdealImage';

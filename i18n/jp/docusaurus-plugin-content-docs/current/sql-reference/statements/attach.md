@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for Attach'
-'sidebar_label': 'ATTACH'
-'sidebar_position': 40
-'slug': '/sql-reference/statements/attach'
-'title': 'ATTACH Statement'
+description: 'Documentation for Attach'
+sidebar_label: 'ATTACH'
+sidebar_position: 40
+slug: '/sql-reference/statements/attach'
+title: 'ATTACH Statement'
 ---
 
 

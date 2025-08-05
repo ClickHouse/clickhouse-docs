@@ -1,10 +1,10 @@
 ---
-'description': 'System table containing information about all cached file schemas.'
-'keywords':
+description: 'System table containing information about all cached file schemas.'
+keywords:
 - 'system table'
 - 'schema_inference_cache'
-'slug': '/operations/system-tables/schema_inference_cache'
-'title': 'system.schema_inference_cache'
+slug: '/operations/system-tables/schema_inference_cache'
+title: 'system.schema_inference_cache'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

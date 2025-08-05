@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing historical values for `system.asynchronous_metrics`,
+description: 'System table containing historical values for `system.asynchronous_metrics`,
   which are saved once per time interval (one second by default)'
-'keywords':
+keywords:
 - 'system table'
 - 'asynchronous_metric_log'
-'slug': '/operations/system-tables/asynchronous_metric_log'
-'title': 'system.asynchronous_metric_log'
+slug: '/operations/system-tables/asynchronous_metric_log'
+title: 'system.asynchronous_metric_log'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

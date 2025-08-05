@@ -1,9 +1,9 @@
 ---
-'description': '条件付き関数のドキュメント'
-'sidebar_label': '条件付き関数'
-'sidebar_position': 40
-'slug': '/sql-reference/functions/conditional-functions'
-'title': 'Conditional Functions'
+description: '条件付き関数のドキュメント'
+sidebar_label: '条件付き関数'
+sidebar_position: 40
+slug: '/sql-reference/functions/conditional-functions'
+title: 'Conditional Functions'
 ---
 
 

@@ -1,7 +1,7 @@
 ---
-'title': 'CSVファイルをアップロード'
-'slug': '/integrations/migration/upload-a-csv-file'
-'description': 'CSVファイルのアップロードについて学ぶ'
+title: 'CSVファイルをアップロード'
+slug: '/integrations/migration/upload-a-csv-file'
+description: 'CSVファイルのアップロードについて学ぶ'
 ---
 
 import Image from '@theme/IdealImage';

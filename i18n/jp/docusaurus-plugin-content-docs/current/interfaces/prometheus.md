@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouse での Prometheus プロトコルサポートのドキュメント'
-'sidebar_label': 'Prometheus プロトコル'
-'sidebar_position': 19
-'slug': '/interfaces/prometheus'
-'title': 'Prometheus プロトコル'
+description: 'ClickHouse での Prometheus プロトコルサポートのドキュメント'
+sidebar_label: 'Prometheus プロトコル'
+sidebar_position: 19
+slug: '/interfaces/prometheus'
+title: 'Prometheus プロトコル'
 ---
 
 

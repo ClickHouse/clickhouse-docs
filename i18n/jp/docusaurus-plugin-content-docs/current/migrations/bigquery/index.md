@@ -1,9 +1,9 @@
 ---
-'slug': '/migrations/bigquery'
-'title': 'BigQuery'
-'pagination_prev': null
-'pagination_next': null
-'description': 'BigQueryの移行セクションのランディングページ'
+slug: '/migrations/bigquery'
+title: 'BigQuery'
+pagination_prev: null
+pagination_next: null
+description: 'BigQueryの移行セクションのランディングページ'
 ---
 
 

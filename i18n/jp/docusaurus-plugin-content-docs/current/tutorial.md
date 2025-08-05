@@ -1,10 +1,10 @@
 ---
-'slug': '/tutorial'
-'sidebar_label': '高度なチュートリアル'
-'title': '高度なチュートリアル'
-'description': 'ニューヨーク市のタクシーデータセットを使用して、ClickHouseでデータを取り込み、クエリを実行する方法を学びます。'
-'sidebar_position': 0.5
-'keywords':
+slug: '/tutorial'
+sidebar_label: '高度なチュートリアル'
+title: '高度なチュートリアル'
+description: 'ニューヨーク市のタクシーデータセットを使用して、ClickHouseでデータを取り込み、クエリを実行する方法を学びます。'
+sidebar_position: 0.5
+keywords:
 - 'clickhouse'
 - 'install'
 - 'tutorial'

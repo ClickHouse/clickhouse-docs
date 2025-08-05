@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'JSON フォーマットのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'JSON フォーマットのドキュメント'
+input_format: true
+keywords:
 - 'JSON'
-'output_format': true
-'slug': '/interfaces/formats/JSON'
-'title': 'JSON'
+output_format: true
+slug: '/interfaces/formats/JSON'
+title: 'JSON'
 ---
 
 

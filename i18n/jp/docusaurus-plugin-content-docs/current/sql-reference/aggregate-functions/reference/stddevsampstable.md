@@ -1,9 +1,9 @@
 ---
-'description': 'The result is equal to the square root of varSamp. Unlike this function
+description: 'The result is equal to the square root of varSamp. Unlike this function
   uses a numerically stable algorithm.'
-'sidebar_position': 191
-'slug': '/sql-reference/aggregate-functions/reference/stddevsampstable'
-'title': 'stddevSampStable'
+sidebar_position: 191
+slug: '/sql-reference/aggregate-functions/reference/stddevsampstable'
+title: 'stddevSampStable'
 ---
 
 

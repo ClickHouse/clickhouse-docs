@@ -10,7 +10,7 @@ import Image from '@theme/IdealImage';
 import BucketDetails from '@site/docs/_snippets/_S3_authentication_and_bucket.md';
 import s3_bucket_example from '@site/static/images/guides/s3_bucket_example.png';
 
-# Separation of Storage and Compute
+# Separation of storage and compute
 
 ## Overview {#overview}
 
@@ -170,7 +170,7 @@ For fault tolerance, you can use multiple ClickHouse server nodes distributed ac
 Replication with S3 disks can be accomplished by using the `ReplicatedMergeTree` table engine. See the following guide for details:
 - [Replicating a single shard across two AWS regions using S3 Object Storage](/integrations/s3#s3-multi-region).
 
-## Further Reading {#further-reading}
+## Further reading {#further-reading}
 
 - [SharedMergeTree table engine](/cloud/reference/shared-merge-tree)
 - [SharedMergeTree announcement blog](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates)

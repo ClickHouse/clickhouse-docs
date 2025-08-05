@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing information about and status of recent asynchronous
+description: 'System table containing information about and status of recent asynchronous
   jobs (e.g. for tables which are loading). The table contains a row for every job.'
-'keywords':
+keywords:
 - 'system table'
 - 'asynchronous_loader'
-'slug': '/operations/system-tables/asynchronous_loader'
-'title': 'system.asynchronous_loader'
+slug: '/operations/system-tables/asynchronous_loader'
+title: 'system.asynchronous_loader'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

@@ -1,10 +1,10 @@
 ---
-'sidebar_position': 1
-'sidebar_label': 'ClickHouse はなぜ高速なのか？'
-'description': 'それは速さを目指して設計されました。クエリの実行パフォーマンスは常に開発プロセスの中で最優先事項でしたが、使いやすさ、拡張性、セキュリティなどの他の重要な特性も考慮され、ClickHouse
+sidebar_position: 1
+sidebar_label: 'ClickHouse はなぜ高速なのか？'
+description: 'それは速さを目指して設計されました。クエリの実行パフォーマンスは常に開発プロセスの中で最優先事項でしたが、使いやすさ、拡張性、セキュリティなどの他の重要な特性も考慮され、ClickHouse
   が実際のプロダクションシステムになることができました。'
-'title': 'ClickHouse はなぜ高速なのか？'
-'slug': '/concepts/why-clickhouse-is-so-fast'
+title: 'ClickHouse はなぜ高速なのか？'
+slug: '/concepts/why-clickhouse-is-so-fast'
 ---
 
 

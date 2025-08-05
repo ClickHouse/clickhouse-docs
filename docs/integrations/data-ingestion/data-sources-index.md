@@ -5,7 +5,7 @@ description: 'Datasources overview page'
 title: 'Data Sources'
 ---
 
-# Data Sources
+# Data sources
 
 ClickHouse allows you to easily ingest data into your database from a variety of sources.
 For further information see the pages listed below:

@@ -1,9 +1,9 @@
 ---
-'slug': '/faq/operations/'
-'sidebar_position': 3
-'sidebar_label': 'ClickHouseサーバーとクラスターの運用に関する質問'
-'title': 'ClickHouseサーバーとクラスターの運用に関する質問'
-'description': 'ClickHouseサーバーとクラスターの運用に関する質問のランディングページ'
+slug: '/faq/operations/'
+sidebar_position: 3
+sidebar_label: 'ClickHouseサーバーとクラスターの運用に関する質問'
+title: 'ClickHouseサーバーとクラスターの運用に関する質問'
+description: 'ClickHouseサーバーとクラスターの運用に関する質問のランディングページ'
 ---
 
 

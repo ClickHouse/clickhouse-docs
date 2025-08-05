@@ -64,7 +64,6 @@ tar -xzvf "clickhouse-common-static-$LATEST_VERSION-${ARCH}.tgz" \
 sudo "clickhouse-common-static-$LATEST_VERSION/install/doinst.sh"
 ```
 
-
 - `clickhouse-common-static-dbg`
 
 ```bash
@@ -92,7 +91,5 @@ tar -xzvf "clickhouse-client-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-client-$LATEST_VERSION.tgz"
 sudo "clickhouse-client-$LATEST_VERSION/install/doinst.sh"
 ```
-
-
 
 </VerticalStepper>

@@ -1,10 +1,10 @@
 ---
-'description': 'MergeTreeファミリーのテーブルに関するマージとパーツ変更の情報を含むシステムテーブル。'
-'keywords':
+description: 'MergeTreeファミリーのテーブルに関するマージとパーツ変更の情報を含むシステムテーブル。'
+keywords:
 - 'system table'
 - 'merges'
-'slug': '/operations/system-tables/merges'
-'title': 'system.merges'
+slug: '/operations/system-tables/merges'
+title: 'system.merges'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

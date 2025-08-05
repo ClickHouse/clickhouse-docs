@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'バイナリとネイティブ'
-'slug': '/integrations/data-formats/binary-native'
-'title': 'ClickHouse でのネイティブおよびバイナリ形式の使用'
-'description': 'ClickHouse でのネイティブおよびバイナリ形式の使用方法について説明したページ'
+sidebar_label: 'バイナリとネイティブ'
+slug: '/integrations/data-formats/binary-native'
+title: 'ClickHouse でのネイティブおよびバイナリ形式の使用'
+description: 'ClickHouse でのネイティブおよびバイナリ形式の使用方法について説明したページ'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

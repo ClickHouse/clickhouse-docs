@@ -1,14 +1,14 @@
 ---
-'slug': '/examples/aggregate-function-combinators/minMap'
-'title': 'minMap'
-'description': 'minMap combinatorの使用例'
-'keywords':
+slug: '/examples/aggregate-function-combinators/minMap'
+title: 'minMap'
+description: 'minMap combinatorの使用例'
+keywords:
 - 'min'
 - 'map'
 - 'combinator'
 - 'examples'
 - 'minMap'
-'sidebar_label': 'minMap'
+sidebar_label: 'minMap'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for UDFs User Defined Functions'
-'sidebar_label': 'UDF'
-'sidebar_position': 15
-'slug': '/sql-reference/functions/udf'
-'title': 'UDFs User Defined Functions'
+description: 'Documentation for UDFs User Defined Functions'
+sidebar_label: 'UDF'
+sidebar_position: 15
+slug: '/sql-reference/functions/udf'
+title: 'UDFs User Defined Functions'
 ---
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';

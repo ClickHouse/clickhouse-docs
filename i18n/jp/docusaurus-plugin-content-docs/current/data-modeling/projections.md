@@ -1,8 +1,8 @@
 ---
-'slug': '/data-modeling/projections'
-'title': 'Projections'
-'description': 'Projectionsとは、クエリのパフォーマンスを向上させるためにどのように使用できるか、およびMaterialized Viewsとの違いについて説明するページです。'
-'keywords':
+slug: '/data-modeling/projections'
+title: 'Projections'
+description: 'Projectionsとは、クエリのパフォーマンスを向上させるためにどのように使用できるか、およびMaterialized Viewsとの違いについて説明するページです。'
+keywords:
 - 'projection'
 - 'projections'
 - 'query optimization'

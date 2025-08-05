@@ -118,7 +118,6 @@ We can see that the gaps have been filled with 0 values in the `count` column.
 
 There is, however, still a gap at the beginning of the time range, which we can fix by specifying `FROM`:
 
-
 ```sql
 SELECT
     toStartOfInterval(timestamp, toIntervalMillisecond(100)) AS bucket,
