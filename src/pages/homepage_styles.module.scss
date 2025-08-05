@@ -1,3 +1,5 @@
+@use '../css/breakpoints.scss' as breakpoints;
+
 .yellowStrip {
   height: 3px;
   background: linear-gradient(to right, transparent, #faff69, transparent);
@@ -7,14 +9,18 @@
 .topLevelContainer {
   position: absolute;
   left: 0;
-  top: 7.5rem;
+  top: 4rem;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
 
-  /* yellow effect at the top */
+@media (min-width: breakpoints.$laptop-breakpoint) {
+  .topLevelContainer {
+    top: 7.5rem;
+  }
 }
 
 .exploreDocs {
@@ -227,3 +233,4 @@
   content: '⤵';
   font-size: 16px;
 }
+
