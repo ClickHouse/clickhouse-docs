@@ -122,7 +122,6 @@ export default function Hello() {
                 <div className={homepage_styles.yellowStrip}></div>
                 <HeroSection/>
                 <ExploreDocs/>
-                <NavatticDemoSection />
             </div>
         </Layout>
     );
