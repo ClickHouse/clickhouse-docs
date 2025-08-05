@@ -11,9 +11,9 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import CardActionArea from '@mui/material/CardActionArea';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 import ColorModeToggle from "@theme-original/ColorModeToggle";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -61,13 +61,116 @@ const NavatticDemo = ({
     );
 };
 
+// Sparkle Icon Component
+const SparkleIcon = ({ size = 20, color = 'currentColor' }) => (
+    <svg 
+        width={size} 
+        height={size} 
+        viewBox="0 0 24 24" 
+        fill={color}
+    >
+        <path d="M12 0l3.09 6.91L22 10l-6.91 3.09L12 20l-3.09-6.91L2 10l6.91-3.09L12 0z"/>
+        <path d="M19 0l1.5 3.5L24 5l-3.5 1.5L19 10l-1.5-3.5L14 5l3.5-1.5L19 0z"/>
+        <path d="M7 14l1 2.5L11 17l-3 1.5L7 21l-1-2.5L3 17l3-1.5L7 14z"/>
+    </svg>
+);
+
+// Migration Option Button Component
+const MigrationOptionButton = ({ icon, link, children }) => {
+    return (
+        <Box
+            component={Link}
+            to={link}
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                textDecoration: 'none',
+                color: 'inherit',
+                borderRadius: '4px',
+                padding: '6px',
+                flex: 1,
+                minWidth: '60px',
+                '&:hover': {
+                    backgroundColor: 'rgba(245, 245, 245, 0.8)',
+                    textDecoration: 'none',
+                    color: 'inherit',
+                }
+            }}
+        >
+            <Box
+                sx={{
+                    width: '32px',
+                    height: '32px',
+                    border: '1px solid #ddd',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: '4px',
+                    marginBottom: '4px',
+                    backgroundColor: 'background.paper',
+                }}
+            >
+                <img 
+                    src={useBaseUrl(icon)} 
+                    alt={children}
+                    style={{ width: '24px', height: '24px', objectFit: 'contain' }}
+                />
+            </Box>
+            <Typography variant="caption" sx={{ fontWeight: 500, fontSize: '10px', textAlign: 'center' }}>
+                {children}
+            </Typography>
+        </Box>
+    );
+};
+
 const HeroSection = () => {
+    const handleAskAIClick = () => {
+        // Open Kapa widget
+        if (window.kapa && window.kapa.open) {
+            window.kapa.open();
+        }
+    };
+
     return (
         <div className={homepage_styles.heroSection}>
             <ClickHouseLogo className={homepage_styles.logo}/>
             <h2>The fastest and most resource efficient real-time data warehouse and open-source database.</h2>
-            <SearchBar/>
-    </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center', flexWrap: 'nowrap' }}>
+                <SearchBar/>
+                <Button
+                    variant="contained"
+                    onClick={handleAskAIClick}
+                    sx={{
+                        backgroundColor: '#2d2d2d',
+                        color: '#ffffff',
+                        fontWeight: 'bold',
+                        borderRadius: '8px',
+                        height: '40px',
+                        padding: '8px 16px',
+                        textTransform: 'none',
+                        fontSize: '14px',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '6px',
+                        '&:hover': {
+                            backgroundColor: '#404040',
+                        },
+                        '& .MuiButton-startIcon': {
+                            marginLeft: 0,
+                            marginRight: 0,
+                            display: 'flex',
+                            alignItems: 'center',
+                        }
+                    }}
+                >
+                    <SparkleIcon size={16} color="#ffffff" />
+                    Ask AI
+                </Button>
+            </div>
+        </div>
     );
 }
 const NavatticDemoSection = () => {
@@ -84,13 +187,22 @@ const ExploreDocs = () => {
     
     return (
         <div className={homepage_styles.exploreDocs}>
-            <Grid container spacing={3} justifyContent="center" alignItems="stretch" sx={{ padding: '0 16px', minHeight: '400px', maxWidth: '1400px', margin: '0 auto' }}>
-                <Grid item xs={12} sm={6} md={4} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+            <Box sx={{ 
+                padding: '0 16px',
+                minHeight: '400px',
+                maxWidth: '1400px',
+                margin: '0 auto'
+            }}>
+                {/* Main Grid for Get Started, Learn, and Reference Cards */}
+                <Box sx={{ 
+                    display: 'grid',
+                    gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
+                    gap: 3,
+                    marginBottom: 3
+                }}>
+                    {/* Get Started Card */}
                     <Card sx={{ 
-                        width: { xs: '100%', sm: '280px' },
-                        maxWidth: '400px',
                         height: '300px',
-                        minWidth: { xs: '280px', sm: '280px' },
                         backgroundColor: 'background.paper',
                         color: 'text.primary',
                         boxShadow: 3,
@@ -129,83 +241,10 @@ const ExploreDocs = () => {
                             </CardContent>
                         </CardActionArea>
                     </Card>
-                    
-                    {/* Changelog Cards stacked under Get Started */}
+
+                    {/* Learn Card */}
                     <Card sx={{ 
-                        width: { xs: '100%', sm: '280px' },
-                        maxWidth: '400px',
-                        height: '80px',
-                        display: 'flex',
-                        backgroundColor: 'background.paper',
-                        color: 'text.primary',
-                        boxShadow: 3,
-                        '&:hover': {
-                            boxShadow: 6,
-                        }
-                    }}>
-                        <CardMedia
-                            component="img"
-                            sx={{ width: 80, height: 80, objectFit: 'contain' }}
-                            image={useBaseUrl('/images/homepage/cloud_icon.png')}
-                            alt="Cloud Changelog"
-                        />
-                        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1 }}>
-                            <CardContent sx={{ py: 1 }}>
-                                <Typography component="div" variant="subtitle1" sx={{ fontSize: '0.9rem', mb: 0.5 }}>
-                                    Cloud Changelog
-                                </Typography>
-                                <Typography
-                                    variant="h6"
-                                    component="div"
-                                    sx={{ color: versionColor, fontWeight: 'bold' }}
-                                >
-                                    v24.12
-                                </Typography>
-                            </CardContent>
-                        </Box>
-                    </Card>
-                    
-                    <Card sx={{ 
-                        width: { xs: '100%', sm: '280px' },
-                        maxWidth: '400px',
-                        height: '80px',
-                        display: 'flex',
-                        backgroundColor: 'background.paper',
-                        color: 'text.primary',
-                        boxShadow: 3,
-                        '&:hover': {
-                            boxShadow: 6,
-                        }
-                    }}>
-                        <CardMedia
-                            component="img"
-                            sx={{ width: 80, height: 80, objectFit: 'contain' }}
-                            image={useBaseUrl('/images/homepage/oss_icon.png')}
-                            alt="OSS Changelog"
-                        />
-                        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1 }}>
-                            <CardContent sx={{ py: 1 }}>
-                                <Typography component="div" variant="subtitle1" sx={{ fontSize: '0.9rem', mb: 0.5 }}>
-                                    OSS Changelog
-                                </Typography>
-                                <Typography
-                                    variant="h6"
-                                    component="div"
-                                    sx={{ color: versionColor, fontWeight: 'bold' }}
-                                >
-                                    v24.12.1
-                                </Typography>
-                            </CardContent>
-                        </Box>
-                    </Card>
-                </Grid>
-                
-                <Grid item xs={12} sm={6} md={4} sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <Card sx={{ 
-                        width: { xs: '100%', sm: '280px' },
-                        maxWidth: '400px',
                         height: '300px',
-                        minWidth: { xs: '280px', sm: '280px' },
                         backgroundColor: 'background.paper',
                         color: 'text.primary',
                         boxShadow: 3,
@@ -244,14 +283,10 @@ const ExploreDocs = () => {
                             </CardContent>
                         </CardActionArea>
                     </Card>
-                </Grid>
-                
-                <Grid item xs={12} sm={6} md={4} sx={{ display: 'flex', justifyContent: 'center' }}>
+
+                    {/* Reference Card */}
                     <Card sx={{ 
-                        width: { xs: '100%', sm: '280px' },
-                        maxWidth: '400px',
                         height: '300px',
-                        minWidth: { xs: '280px', sm: '280px' },
                         backgroundColor: 'background.paper',
                         color: 'text.primary',
                         boxShadow: 3,
@@ -290,8 +325,163 @@ const ExploreDocs = () => {
                             </CardContent>
                         </CardActionArea>
                     </Card>
-                </Grid>
-            </Grid>
+                </Box>
+
+                {/* Bottom Section with Changelog and Migrate Cards */}
+                <Box sx={{ 
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: 3,
+                    justifyContent: 'center'
+                }}>
+                    {/* Changelog Cards Container */}
+                    <Box sx={{ 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        gap: 2,
+                        flex: '1 1 280px',
+                        maxWidth: '400px'
+                    }}>
+                        <Card sx={{ 
+                            height: '80px',
+                            display: 'flex',
+                            backgroundColor: 'background.paper',
+                            color: 'text.primary',
+                            boxShadow: 3,
+                            '&:hover': {
+                                boxShadow: 6,
+                            }
+                        }}>
+                            <CardMedia
+                                component="img"
+                                sx={{ width: 80, height: 80, objectFit: 'contain' }}
+                                image={useBaseUrl('/images/homepage/cloud_icon.png')}
+                                alt="Cloud Changelog"
+                            />
+                            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1 }}>
+                                <CardContent sx={{ py: 1 }}>
+                                    <Typography component="div" variant="subtitle1" sx={{ fontSize: '0.9rem', mb: 0.5 }}>
+                                        Cloud Changelog
+                                    </Typography>
+                                    <Typography
+                                        variant="h6"
+                                        component="div"
+                                        sx={{ color: versionColor, fontWeight: 'bold' }}
+                                    >
+                                        v24.12
+                                    </Typography>
+                                </CardContent>
+                            </Box>
+                        </Card>
+                        
+                        <Card sx={{ 
+                            height: '80px',
+                            display: 'flex',
+                            backgroundColor: 'background.paper',
+                            color: 'text.primary',
+                            boxShadow: 3,
+                            '&:hover': {
+                                boxShadow: 6,
+                            }
+                        }}>
+                            <CardMedia
+                                component="img"
+                                sx={{ width: 80, height: 80, objectFit: 'contain' }}
+                                image={useBaseUrl('/images/homepage/oss_icon.png')}
+                                alt="OSS Changelog"
+                            />
+                            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1 }}>
+                                <CardContent sx={{ py: 1 }}>
+                                    <Typography component="div" variant="subtitle1" sx={{ fontSize: '0.9rem', mb: 0.5 }}>
+                                        OSS Changelog
+                                    </Typography>
+                                    <Typography
+                                        variant="h6"
+                                        component="div"
+                                        sx={{ color: versionColor, fontWeight: 'bold' }}
+                                    >
+                                        v24.12.1
+                                    </Typography>
+                                </CardContent>
+                            </Box>
+                        </Card>
+                    </Box>
+                    
+                    {/* Migrate Card */}
+                    <Card sx={{ 
+                        flex: '2 1 560px',
+                        maxWidth: '584px',
+                        height: '180px',
+                        backgroundColor: 'background.paper',
+                        color: 'text.primary',
+                        boxShadow: 3,
+                        '&:hover': {
+                            boxShadow: 6,
+                        },
+                        display: 'flex',
+                        flexDirection: 'column'
+                    }}>
+                        <CardContent sx={{ 
+                            backgroundColor: 'background.paper',
+                            color: 'text.primary',
+                            flex: 1,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            padding: '16px'
+                        }}>
+                            <div>
+                                <h3>Migrate</h3>
+                                <p style={{ fontSize: '14px', marginBottom: '12px' }}>Migrate from your existing data platform</p>
+                            </div>
+                            <div style={{ marginTop: 'auto' }}>
+                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                                    <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
+                                        <MigrationOptionButton 
+                                            icon="/docs/images/logo-snowflake.svg"
+                                            link="/docs/migrations/snowflake"
+                                        >
+                                            Snowflake
+                                        </MigrationOptionButton>
+                                        <MigrationOptionButton 
+                                            icon="/docs/images/logo-bigquery.svg"
+                                            link="/docs/migrations/bigquery"
+                                        >
+                                            BigQuery
+                                        </MigrationOptionButton>
+                                        <MigrationOptionButton 
+                                            icon="/docs/images/logo-redshift.svg"
+                                            link="/docs/integrations/redshift"
+                                        >
+                                            Redshift
+                                        </MigrationOptionButton>
+                                    </Box>
+                                    <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
+                                        <MigrationOptionButton 
+                                            icon="/docs/images/logo-postgres.svg"
+                                            link="/docs/integrations/postgresql"
+                                        >
+                                            Postgres
+                                        </MigrationOptionButton>
+                                        <MigrationOptionButton 
+                                            icon="/docs/images/logo-mysql.svg"
+                                            link="/docs/integrations/mysql"
+                                        >
+                                            MySQL
+                                        </MigrationOptionButton>
+                                        <MigrationOptionButton 
+                                            icon="/docs/images/logo-s3.svg"
+                                            link="/docs/integrations/s3"
+                                        >
+                                            S3
+                                        </MigrationOptionButton>
+                                    </Box>
+                                </Box>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </Box>
+                
+            </Box>
         </div>
     );
 }
