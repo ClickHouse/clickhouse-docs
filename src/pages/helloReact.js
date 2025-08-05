@@ -87,10 +87,10 @@ const MigrationOptionButton = ({ icon, link, children }) => {
                 alignItems: 'center',
                 textDecoration: 'none',
                 color: 'inherit',
-                borderRadius: '4px',
-                padding: '6px',
+                borderRadius: '6px',
+                padding: '8px',
                 flex: 1,
-                minWidth: '60px',
+                minWidth: '80px',
                 '&:hover': {
                     backgroundColor: 'rgba(245, 245, 245, 0.8)',
                     textDecoration: 'none',
@@ -100,24 +100,24 @@ const MigrationOptionButton = ({ icon, link, children }) => {
         >
             <Box
                 sx={{
-                    width: '32px',
-                    height: '32px',
+                    width: '48px',
+                    height: '48px',
                     border: '1px solid #ddd',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    borderRadius: '4px',
-                    marginBottom: '4px',
+                    borderRadius: '6px',
+                    marginBottom: '6px',
                     backgroundColor: 'background.paper',
                 }}
             >
                 <img 
                     src={useBaseUrl(icon)} 
                     alt={children}
-                    style={{ width: '24px', height: '24px', objectFit: 'contain' }}
+                    style={{ width: '36px', height: '36px', objectFit: 'contain' }}
                 />
             </Box>
-            <Typography variant="caption" sx={{ fontWeight: 500, fontSize: '10px', textAlign: 'center' }}>
+            <Typography variant="caption" sx={{ fontWeight: 500, fontSize: '11px', textAlign: 'center', lineHeight: 1.2 }}>
                 {children}
             </Typography>
         </Box>
@@ -408,64 +408,80 @@ const ExploreDocs = () => {
                             boxShadow: 6,
                         },
                         display: 'flex',
-                        flexDirection: 'column'
+                        flexDirection: 'row'
                     }}>
                         <CardContent sx={{ 
                             backgroundColor: 'background.paper',
                             color: 'text.primary',
                             flex: 1,
                             display: 'flex',
-                            flexDirection: 'column',
-                            padding: '16px'
+                            flexDirection: 'row',
+                            padding: '16px',
+                            gap: 3
                         }}>
-                            <div>
-                                <h3>Migrate</h3>
-                                <p style={{ fontSize: '14px', marginBottom: '12px' }}>Migrate from your existing data platform</p>
-                            </div>
-                            <div style={{ marginTop: 'auto' }}>
-                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                                    <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
-                                        <MigrationOptionButton 
-                                            icon="/docs/images/logo-snowflake.svg"
-                                            link="/docs/migrations/snowflake"
-                                        >
-                                            Snowflake
-                                        </MigrationOptionButton>
-                                        <MigrationOptionButton 
-                                            icon="/docs/images/logo-bigquery.svg"
-                                            link="/docs/migrations/bigquery"
-                                        >
-                                            BigQuery
-                                        </MigrationOptionButton>
-                                        <MigrationOptionButton 
-                                            icon="/docs/images/logo-redshift.svg"
-                                            link="/docs/integrations/redshift"
-                                        >
-                                            Redshift
-                                        </MigrationOptionButton>
-                                    </Box>
-                                    <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
-                                        <MigrationOptionButton 
-                                            icon="/docs/images/logo-postgres.svg"
-                                            link="/docs/integrations/postgresql"
-                                        >
-                                            Postgres
-                                        </MigrationOptionButton>
-                                        <MigrationOptionButton 
-                                            icon="/docs/images/logo-mysql.svg"
-                                            link="/docs/integrations/mysql"
-                                        >
-                                            MySQL
-                                        </MigrationOptionButton>
-                                        <MigrationOptionButton 
-                                            icon="/docs/images/logo-s3.svg"
-                                            link="/docs/integrations/s3"
-                                        >
-                                            S3
-                                        </MigrationOptionButton>
-                                    </Box>
-                                </Box>
-                            </div>
+                            {/* Left side - Text content */}
+                            <Box sx={{ 
+                                flex: '0 0 auto',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'flex-start',
+                                minWidth: '160px',
+                                maxWidth: '180px'
+                            }}>
+                                <h3 style={{ margin: '0 0 6px 0', fontSize: '18px' }}>Migrate</h3>
+                                <p style={{ fontSize: '13px', margin: '0', color: 'text.secondary', lineHeight: 1.3 }}>
+                                    Migrate from your existing data platform
+                                </p>
+                            </Box>
+                            
+                            {/* Right side - 3x2 Grid of icons */}
+                            <Box sx={{ 
+                                flex: 1,
+                                display: 'grid',
+                                gridTemplateColumns: 'repeat(3, 1fr)',
+                                gridTemplateRows: 'repeat(2, 1fr)',
+                                gap: 1,
+                                alignItems: 'center',
+                                justifyItems: 'center',
+                                minHeight: '120px'
+                            }}>
+                                <MigrationOptionButton 
+                                    icon="/docs/images/logo-snowflake.svg"
+                                    link="/docs/migrations/snowflake"
+                                >
+                                    Snowflake
+                                </MigrationOptionButton>
+                                <MigrationOptionButton 
+                                    icon="/docs/images/logo-bigquery.svg"
+                                    link="/docs/migrations/bigquery"
+                                >
+                                    BigQuery
+                                </MigrationOptionButton>
+                                <MigrationOptionButton 
+                                    icon="/docs/images/logo-redshift.svg"
+                                    link="/docs/integrations/redshift"
+                                >
+                                    Redshift
+                                </MigrationOptionButton>
+                                <MigrationOptionButton 
+                                    icon="/docs/images/logo-postgres.svg"
+                                    link="/docs/integrations/postgresql"
+                                >
+                                    Postgres
+                                </MigrationOptionButton>
+                                <MigrationOptionButton 
+                                    icon="/docs/images/logo-mysql.svg"
+                                    link="/docs/integrations/mysql"
+                                >
+                                    MySQL
+                                </MigrationOptionButton>
+                                <MigrationOptionButton 
+                                    icon="/docs/images/logo-s3.svg"
+                                    link="/docs/integrations/s3"
+                                >
+                                    S3
+                                </MigrationOptionButton>
+                            </Box>
                         </CardContent>
                     </Card>
                 </Box>
