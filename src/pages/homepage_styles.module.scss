@@ -24,10 +24,8 @@
 }
 
 .exploreDocs {
-  display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-  flex-direction: row;
-  width: 1000px;
+  width: 100%;
+  max-width: 1000px;
   margin-bottom: 2rem;
   margin-top: 2rem;
 }
