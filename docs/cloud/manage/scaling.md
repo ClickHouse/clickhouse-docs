@@ -34,7 +34,7 @@ For Enterprise tier services scaling works as follows:
 - **Horizontal scaling**: Manual horizontal scaling will be available across all standard and custom profiles on the enterprise tier.
 - **Vertical scaling**:
   - Standard profiles (1:4) will support vertical autoscaling.
-  - Custom profiles (`highMemory` and `highCPU`) currently do not support vertical autoscaling or manual vertical scaling. However, these services can be scaled vertically by contacting support.
+  - Custom profiles (`highMemory` and `highCPU`) do not support vertical autoscaling or manual vertical scaling. However, these services can be scaled vertically by contacting support.
 
 :::note
 Scaling in ClickHouse Cloud happens in what we call "Make Before Break" (MBB) approach. This adds one or more replicas of the new size before removing the old replicas, preventing any loss of capacity during scaling operations. By eliminating the gap between removing existing replicas and adding new ones, MBB creates a more seamless and less disruptive scaling process. It is especially beneficial in scale-up scenarios, where high resource utilization triggers the need for additional capacity, since removing replicas prematurely would only exacerbate the resource constraints. As part of this approach we wait up to an hour to let any existing queries complete on the older replicas before we will remove them. This balances the need for existing queries to complete, while at the same time ensuring that older replicas do not linger around for too long.
