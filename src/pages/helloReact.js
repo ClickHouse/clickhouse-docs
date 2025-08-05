@@ -193,14 +193,14 @@ const ExploreDocs = () => {
                 maxWidth: '1400px',
                 margin: '0 auto'
             }}>
-                {/* Main Grid for Get Started, Learn, and Reference Cards */}
+                {/* Unified Grid Layout */}
                 <Box sx={{ 
                     display: 'grid',
                     gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
-                    gap: 3,
-                    marginBottom: 3
+                    gridTemplateRows: 'auto auto',
+                    gap: 3
                 }}>
-                    {/* Get Started Card */}
+                    {/* Get Started Card - Row 1, Column 1 */}
                     <Card sx={{ 
                         height: '300px',
                         backgroundColor: 'background.paper',
@@ -242,7 +242,7 @@ const ExploreDocs = () => {
                         </CardActionArea>
                     </Card>
 
-                    {/* Learn Card */}
+                    {/* Learn Card - Row 1, Column 2 */}
                     <Card sx={{ 
                         height: '300px',
                         backgroundColor: 'background.paper',
@@ -284,7 +284,7 @@ const ExploreDocs = () => {
                         </CardActionArea>
                     </Card>
 
-                    {/* Reference Card */}
+                    {/* Reference Card - Row 1, Column 3 */}
                     <Card sx={{ 
                         height: '300px',
                         backgroundColor: 'background.paper',
@@ -325,22 +325,12 @@ const ExploreDocs = () => {
                             </CardContent>
                         </CardActionArea>
                     </Card>
-                </Box>
 
-                {/* Bottom Section with Changelog and Migrate Cards */}
-                <Box sx={{ 
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    gap: 3,
-                    justifyContent: 'center'
-                }}>
-                    {/* Changelog Cards Container */}
+                    {/* Changelog Cards Container - Row 2, Column 1 */}
                     <Box sx={{ 
                         display: 'flex', 
                         flexDirection: 'column', 
-                        gap: 2,
-                        flex: '1 1 280px',
-                        maxWidth: '400px'
+                        gap: 2
                     }}>
                         <Card sx={{ 
                             height: '80px',
@@ -407,10 +397,9 @@ const ExploreDocs = () => {
                         </Card>
                     </Box>
                     
-                    {/* Migrate Card */}
+                    {/* Migrate Card - Row 2, Columns 2-3 (spans 2 columns) */}
                     <Card sx={{ 
-                        flex: '2 1 560px',
-                        maxWidth: '584px',
+                        gridColumn: { xs: '1', sm: '1 / span 2', md: '2 / span 2' },
                         height: '180px',
                         backgroundColor: 'background.paper',
                         color: 'text.primary',
