@@ -13,6 +13,12 @@ Starting from ClickHouse 25.7, [ClickHouse Client](https://clickhouse.com/docs/i
 
 This capability is particularly useful for users who may not be familiar with complex SQL syntax or need to quickly generate queries for exploratory data analysis. The feature works with standard ClickHouse tables and supports common query patterns including filtering, aggregation, and joins.
 
+It does this with help from the following in-built tools/functions:
+
+* `list_databases` - List all available databases in the ClickHouse instance
+* `list_tables_in_database` - List all tables in a specific database
+* `get_schema_for_table` - Get the `CREATE TABLE` statement (schema) for a specific table
+
 ## Prerequisites {#prerequisites}
 
 We'll need to add an Anthropic or OpenAI key as an environment variable:
