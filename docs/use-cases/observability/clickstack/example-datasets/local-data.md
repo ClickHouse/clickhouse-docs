@@ -23,13 +23,21 @@ This getting started guide allows you collect local logs and metrics from your s
 
 The following example assumes you have started ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started) and connected to the [local ClickHouse instance](/use-cases/observability/clickstack/getting-started#complete-connection-credentials) or a [ClickHouse Cloud instance](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
 
+:::note HyperDX in ClickHouse Cloud
+This sample dataset can also be used with HyperDX in ClickHouse Cloud, with only minor adjustments to the flow as noted. If using HyperDX in ClickHouse Cloud, users will require an Open Telemetry collector to be running locally as described in the [getting started guide for this deployment model](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud).
+:::
+
 <VerticalStepper>
 
 ## Navigate to the HyperDX UI {#navigate-to-the-hyperdx-ui}
 
-Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
+Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI if deploying locally. If using HyperDX in ClickHouse Cloud, select your service and `HyperDX` from the left menu.
 
 ## Copy ingestion API key {#copy-ingestion-api-key}
+
+:::note HyperDX in ClickHouse Cloud
+This step is not required if using HyperDX in ClickHouse Cloud.
+:::
 
 Navigate to [`Team Settings`](http://localhost:8080/team) and copy the `Ingestion API Key` from the `API Keys` section. This API key ensures data ingestion through the OpenTelemetry collector is secure.
 
@@ -37,9 +45,9 @@ Navigate to [`Team Settings`](http://localhost:8080/team) and copy the `Ingestio
 
 ## Create a local OpenTelemetry configuration {#create-otel-configuration}
 
-Create a `otel-file-collector.yaml` file with the following content.
+Create a `otel-local-file-collector.yaml` file with the following content.
 
-**Important**: Populate the value `<YOUR_INGESTION_API_KEY>` with your ingestion API key copied above.
+**Important**: Populate the value `<YOUR_INGESTION_API_KEY>` with your ingestion API key copied above (not required for HyperDX in ClickHouse Cloud).
 
 ```yaml
 receivers:
@@ -49,6 +57,7 @@ receivers:
       - /var/log/syslog
       - /var/log/messages
       - /private/var/log/*.log       # macOS
+      - /tmp/all_events.log # macos - see below
     start_at: beginning # modify to collect new files only
 
   hostmetrics:
@@ -119,6 +128,10 @@ To avoid this behavior, you can set the start position to `end` in the receiver 
 
 For more details on the OpenTelemetry (OTel) configuration structure, we recommend [the official guide](https://opentelemetry.io/docs/collector/configuration/).
 
+:::note Detailed logs for OSX
+Users wanting more detailed logs on OSX can run the command `log stream --debug --style ndjson >> /tmp/all_events.log` before starting the collector below. This will capture detailed operating system logs to the file `/tmp/all_events.log`, already included in the above configuration.
+:::
+
 ## Start the collector {#start-the-collector}
 
 Run the following docker command to start an instance of the OTel collector.
@@ -126,7 +139,7 @@ Run the following docker command to start an instance of the OTel collector.
 ```shell
 docker run --network=host --rm -it \
   --user 0:0 \
-  -v "$(pwd)/otel-file-collector.yaml":/etc/otel/config.yaml \
+  -v "$(pwd)/otel-local-file-collector.yaml":/etc/otel/config.yaml \
   -v /var/log:/var/log:ro \
   -v /private/var/log:/private/var/log:ro \
   otel/opentelemetry-collector-contrib:latest \

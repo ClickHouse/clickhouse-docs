@@ -42,6 +42,10 @@ import edit_connection from '@site/static/images/use-cases/observability/edit_co
 
 This guide uses a sample dataset hosted on the public ClickHouse playground at [sql.clickhouse.com](https://sql.clickhpouse.com), which you can connect to from your local ClickStack deployment.
 
+:::warning Not supported with HyperDX in ClickHouse Cloud
+Remote databases are not supported when HyperDX is hosted in ClickHouse Cloud. This dataset is therefore not supported. 
+:::
+
 It contains approximately 40 hours of data captured from the ClickHouse version of the official OpenTelemetry (OTel) demo. The data is replayed nightly with timestamps adjusted to the current time window, allowing users to explore system behavior using HyperDX's integrated logs, traces, and metrics.
 
 :::note Data variations
