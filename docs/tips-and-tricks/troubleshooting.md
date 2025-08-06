@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-slug: /getting-started/troubleshooting
+slug: /tips-and-tricks/troubleshooting
 sidebar_label: 'Troubleshooting'
 keywords: [
   'clickhouse troubleshooting',
