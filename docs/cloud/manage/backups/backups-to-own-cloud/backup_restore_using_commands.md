@@ -86,7 +86,7 @@ FROM S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>',
 )
 ```
 
-See: [Configuring BACKUP/RESTORE to use an S3 Endpoint](/docs/en/operations/backup#configuring-backuprestore-to-use-an-s3-endpoint) for more details.
+See: [Configuring BACKUP/RESTORE to use an S3 Endpoint](/operations/backup#configuring-backuprestore-to-use-an-s3-endpoint) for more details.
 
 ## Backup / Restore to Azure Blob Storage {#azure-blob-storage}
 
