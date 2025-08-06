@@ -184,7 +184,7 @@ Create a storage bucket in your GCP account to export backups.
 
 ##### Generate an HMAC Key and Secret {#generate-an-hmac-key-and-secret}
 
-Generate an HMAC Key and Secret, which is required for password-based authentication. Follow the steps belowto generate the keys:
+Generate an HMAC Key and Secret, which is required for password-based authentication. Follow the steps below to generate the keys:
 
 * a. Create a service account
   * I.  Navigate to the IAM & Admin section in the Google Cloud Console and select Service Accounts.

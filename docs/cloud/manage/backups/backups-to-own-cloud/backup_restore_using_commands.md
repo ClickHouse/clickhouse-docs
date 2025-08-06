@@ -20,7 +20,7 @@ You will need the following details to export/restore backups to your own CSP st
     1. AWS S3 endpoint, in the format: `s3://<bucket_name>.s3.amazonaws.com/<directory>`
        For example: `s3://testchbackups.s3.amazonaws.com/backups/
        Where:
-         * `testchbackup`s is the name of the S3 bucket to export backups to.
+         * `testchbackups` is the name of the S3 bucket to export backups to.
          * `backups` is an optional subdirectory.
     2. AWS access key and secret. (for key/secret-based authentication. We also 
        support role based authentication which is covered in the UI experience above) 
