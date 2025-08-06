@@ -41,7 +41,6 @@ clickhouse client -mn \
 We'll assume you have ClickHouse installed, but if not, refer to the [installation guide](https://clickhouse.com/docs/install)
 :::
 
-
 ## Asking ClickHouse questions in natural language {#asking-clickhouse-questions-in-natural-language}
 
 Now it's time to start asking some questions!
