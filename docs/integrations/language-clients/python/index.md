@@ -355,7 +355,7 @@ settings = {'merge_tree_min_rows_for_concurrent_read': 65535,
 client.query("SELECT event_type, sum(timeout) FROM event_errors WHERE event_time > '2022-08-01'", settings=settings)
 ```
 
-### Client _command_ Method {#client-_command_-method}
+### Client `command` Method {#client-command-method}
 
 Use the `Client.command` method to send SQL queries to the ClickHouse Server that do not normally return data or returns
 a single primitive or array value rather than a full dataset. This method takes the following parameters:
@@ -387,7 +387,7 @@ result
 Out[7]: 110
 ```
 
-### Client _query_ Method {#client-_query_-method}
+### Client `query` Method {#client-query-method}
 
 The `Client.query` method is the primary way to retrieve a single "batch" dataset from the ClickHouse Server. It
 utilizes the Native ClickHouse format over HTTP to transmit large datasets (up to approximately one million rows)
@@ -465,7 +465,7 @@ generator):
 Each of these methods returns a `ContextStream` object that must be opened via a `with` statement to start consuming the
 stream. See [Advanced Queries (Streaming Queries)](#streaming-queries) for details and examples.
 
-### Client _insert_ Method {#client-_insert_-method}
+### Client `insert` method {#client-insert-method}
 
 For the common use case of inserting multiple records into ClickHouse, there is the `Client.insert` method. It takes the
 following parameters:
