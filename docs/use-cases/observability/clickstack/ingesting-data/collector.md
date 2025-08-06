@@ -161,51 +161,8 @@ The following configuration shows collection of this [unstructured log file](htt
 
 Note the use of operators to extract structure from the log lines (`regex_parser`) and filter events, along with a processor to batch events and limit memory usage.
 
-```yaml
-# config-unstructured-logs-with-processor.yaml
-receivers:
-  filelog:
-    include:
-      - /opt/data/logs/access-unstructured.log
-    start_at: beginning
-    operators:
-      - type: regex_parser
-        regex: '^(?P<ip>[\d.]+)\s+-\s+-\s+\[(?P<timestamp>[^\]]+)\]\s+"(?P<method>[A-Z]+)\s+(?P<url>[^\s]+)\s+HTTP/[^\s]+"\s+(?P<status>\d+)\s+(?P<size>\d+)\s+"(?P<referrer>[^"]*)"\s+"(?P<user_agent>[^"]*)"'
-        timestamp:
-          parse_from: attributes.timestamp
-          layout: '%d/%b/%Y:%H:%M:%S %z'
-          #22/Jan/2019:03:56:14 +0330
-processors:
-  batch:
-    timeout: 1s
-    send_batch_size: 100
-  memory_limiter:
-    check_interval: 1s
-    limit_mib: 2048
-    spike_limit_mib: 256
-exporters:
-  # HTTP setup
-  otlphttp/hdx:
-    endpoint: 'http://localhost:4318'
-    headers:
-      authorization: <YOUR_INGESTION_API_KEY>
-    compression: gzip
- 
-  # gRPC setup (alternative)
-  otlp/hdx:
-    endpoint: 'localhost:4317'
-    headers:
-      authorization: <YOUR_API_INGESTION_KEY>
-    compression: gzip
-service:
-  telemetry:
-    metrics:
-      address: 0.0.0.0:9888 # Modified as 2 collectors running on same host
-  pipelines:
-    logs:
-      receivers: [filelog]
-      processors: [batch]
-      exporters: [otlphttp/hdx]
+```yaml file=code_snippets/ClickStack/config-unstructured-logs-with-processor.yaml
+place holder text
 ```
 
 Note the need to include an [authorization header containing your ingestion API key](#securing-the-collector) in any OTLP communication.

@@ -5,6 +5,7 @@ import chHeader from "./plugins/header.js";
 import fixLinks from "./src/hooks/fixLinks.js";
 const path = require('path');
 const remarkCustomBlocks = require('./plugins/remark-custom-blocks');
+const remarkCodeImport = require('./plugins/remark-code-import');
 
 // Import custom plugins
 const { customParseFrontMatter } = require('./plugins/frontmatter-validation/customParseFrontMatter');
@@ -152,7 +153,7 @@ const config = {
           showLastUpdateTime: false,
           sidebarCollapsed: true,
           routeBasePath: "/",
-          remarkPlugins: [math, remarkCustomBlocks, glossaryTransformer],
+          remarkPlugins: [math, remarkCustomBlocks, glossaryTransformer, [remarkCodeImport, { baseDir: __dirname }]],
           beforeDefaultRemarkPlugins: [fixLinks],
           rehypePlugins: [katex],
         },
