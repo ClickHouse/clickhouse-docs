@@ -172,7 +172,3 @@ FROM S3('https://storage.googleapis.com/testbyob/<uuid>',
   '<secret>'
 )
 ```
-
-
-
-

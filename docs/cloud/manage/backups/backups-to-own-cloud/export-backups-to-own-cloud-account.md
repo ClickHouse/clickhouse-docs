@@ -44,4 +44,3 @@ that backups in your bucket are managed appropriately, for compliance reasons as
 well as to manage cost. If the backups are corrupted and / or moved to another 
 location, restoring the backups will not work.
 :::
-

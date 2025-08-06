@@ -20,9 +20,9 @@ import view_backups_azure from '@site/static/images/cloud/manage/backups/view_ba
 
 # Take a backup or restore a backup from the UI {#ui-experience}
 
-## AWS
+## AWS {#AWS}
 
-### Taking backups to AWS {#aws}
+### Taking backups to AWS {#taking-backups-to-aws}
 
 #### Steps to follow in AWS {#aws-steps}
 
@@ -170,11 +170,11 @@ restore the backup.
 
 ## GCP {#gcp}
 
-### Taking backups to GCP {#gcp-steps}
+### Taking backups to GCP {#taking-backups-to-gcp}
 
 Follow the steps below to take backups to GCP:
 
-#### Steps to follow in GCP {#gcp-steps}
+#### Steps to follow in GCP {#gcp-steps-to-follow}
 
 <VerticalStepper headerLevel="h5">
 
@@ -274,11 +274,11 @@ restore the backup.
 
 ## Azure {#azure}
 
-### Taking backups to Azure {#azure-steps}
+### Taking backups to Azure {#taking-backups-to-azure}
 
 Follow the steps below to take backups to Azure:
 
-#### Steps to follow in Azure {#azure-steps}
+#### Steps to follow in Azure {#steps-to-follow-in-azure}
 
 <VerticalStepper headerLevel="h5">
 
