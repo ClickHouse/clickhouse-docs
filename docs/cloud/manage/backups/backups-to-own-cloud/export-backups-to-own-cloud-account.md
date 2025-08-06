@@ -25,11 +25,10 @@ different region in the same cloud provider will incur [data transfer](/cloud/ma
 charges. Currently, we do not support cross-cloud backups.
 :::
 
-To export backups to your own cloud account, you can leverage the [UI capability](/cloud/manage/backups/backup-restore-via-ui) 
-from the cloud console. This also allows you to also set backups to happen
-on a specific schedule by using [configurable backups](/cloud/manage/backups/configurable-backups).
-Alternatively, you can use [SQL commands](/cloud/manage/backups/backup-restore-via-commands)
-to export backups to your bucket. Both approaches are explained in this document.
+To export backups to your own cloud account, you have two options:
+- You can leverage the [UI capability](/cloud/manage/backups/backup-restore-via-ui) from the cloud console. This also 
+  allows you to also set backups to happen on a specific schedule by using [configurable backups](/cloud/manage/backups/configurable-backups).
+- You can use [SQL commands](/cloud/manage/backups/backup-restore-via-commands) to export backups to your bucket.
 
 :::note
 If you configure backups to your own bucket, ClickHouse Cloud will still take 
@@ -45,10 +44,4 @@ that backups in your bucket are managed appropriately, for compliance reasons as
 well as to manage cost. If the backups are corrupted and / or moved to another 
 location, restoring the backups will not work.
 :::
-
-
-
-
-
-
 
