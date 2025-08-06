@@ -18,7 +18,7 @@ function countLines(text = '') {
 
 function parseMetaString(meta = '') {
   const result = {}
-  const implicit_settings = ['runnable', 'run', 'show_statistics', 'click_ui']
+  const implicit_settings = ['runnable', 'run', 'show_statistics', 'click_ui', 'editable']
 
   meta.split(' ').forEach((part) => {
     if (!part) return
