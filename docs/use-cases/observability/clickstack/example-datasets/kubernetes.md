@@ -231,7 +231,7 @@ kubectl create secret generic hyperdx-secret \
 kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_COLLECTOR_ENDPOINT=http://my-hyperdx-hdx-oss-v2-otel-collector:4318
 ```
 
-Restart the OpenTelemetry demo application pods to take in account the Ingestion API Key. 
+Restart the OpenTelemetry demo application pods to take into account the Ingestion API Key. 
 
 ```shell
 kubectl rollout restart deployment -n otel-demo -l app.kubernetes.io/part-of=opentelemetry-demo
