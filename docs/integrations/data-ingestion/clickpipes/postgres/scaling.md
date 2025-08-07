@@ -50,7 +50,7 @@ https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/click
   "status": 200
 }
 ```
-Reference: [Get CDC ClickPipes scaling](/cloud/manage/api/swagger.html#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipesCdcScaling/get)
+Reference: [Get CDC ClickPipes scaling](/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipesCdcScaling/get)
 
 Set the desired scaling. Supported configurations include 1..16 CPU cores and memory GB that is 4× the core count:
 
@@ -67,9 +67,9 @@ curl --silent --user $KEY_ID:$KEY_SECRET \
 https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/clickpipesCdcScaling \
 -d @cdc_scaling.json | jq
 ```
-Reference: [Update CDC ClickPipes scaling](/cloud/manage/api/swagger.html#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipesCdcScaling/patch)
+Reference: [Update CDC ClickPipes scaling](/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipesCdcScaling/patch)
 
-Wait for a minute or two for the command to propagate. After the scaling is finished, the GET endpoint will reflect the new values:
+Wait for the command to propagate - this usually takes 3-5 minutes. After the scaling is finished, the GET endpoint will reflect the new values:
 
 ```bash
 curl --silent --user $KEY_ID:$KEY_SECRET \
@@ -86,4 +86,4 @@ https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/click
   "status": 200
 }
 ```
-Reference: [Get CDC ClickPipes scaling](/cloud/manage/api/swagger.html#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipesCdcScaling/get)
+Reference: [Get CDC ClickPipes scaling](/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipesCdcScaling/get)
