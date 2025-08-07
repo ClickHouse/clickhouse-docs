@@ -12,6 +12,10 @@ import DemoArchitecture from '@site/docs/use-cases/observability/clickstack/exam
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import hyperdx_kubernetes_data from '@site/static/images/use-cases/observability/hyperdx-kubernetes-data.png';
 import copy_api_key from '@site/static/images/use-cases/observability/copy_api_key.png';
+import hyperdx_cloud_datasource from '@site/static/images/use-cases/observability/hyperdx_cloud_datasource.png';
+import hyperdx_create_new_source from '@site/static/images/use-cases/observability/hyperdx_create_new_source.png';
+import hyperdx_create_trace_datasource from '@site/static/images/use-cases/observability/hyperdx_create_trace_datasource.png';
+import dashboard_kubernetes from '@site/static/images/use-cases/observability/hyperdx-dashboard-kubernetes.png';
 
 This guide allows you to collect logs and metrics from your Kubernetes system, sending them to **ClickStack** for visualization and analysis. For demo data we use optionally use the ClickStack fork of the official Open Telemetry demo.
 
@@ -19,10 +23,9 @@ This guide allows you to collect logs and metrics from your Kubernetes system, s
 
 This guide requires you to have:
 
-- A **Kubernetes cluster** (v1.20+ recommended) with:
-    - atleast 32GiB of RAM and 100GB of disk space available on one node for ClickHouse.
+- A **Kubernetes cluster** (v1.20+ recommended) with at least 32 GiB of RAM and 100GB of disk space available on one node for ClickHouse.
 - **[Helm](https://helm.sh/)** v3+
-- **kubectl**, configured to interact with your cluster
+- **`kubectl`**, configured to interact with your cluster
 
 ## Deployment options {#deployment-options}
 
@@ -43,8 +46,9 @@ To simulate application traffic, you can optionally deploy the ClickStack fork o
 
 If your setup needs TLS certificates, install [cert-manager](https://cert-manager.io/) using Helm:
 
-```
-# Add Cert manager repo
+```shell
+# Add Cert manager repo 
+
 helm repo add jetstack https://charts.jetstack.io 
 
 helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --set startupapicheck.timeout=5m --set installCRDs=true --set global.leaderElection.namespace=cert-manager
@@ -54,7 +58,7 @@ helm install cert-manager jetstack/cert-manager --namespace cert-manager --creat
 
 This **step is optional and intended for users with no existing pods to monitor**. Although users with existing services deployed in their Kubernetes environment can skip, this demo does include instrumented microservices which generate trace and session replay data - allowing users to explore all features of ClickStack.
 
-This following deploys the full ClickStack fork of the OpenTelemetry Demo application stack within a Kubernetes cluster, tailored for observability testing and showcasing instrumentation. It includes backend microservices, load generators, telemetry pipelines, supporting infrastructure (e.g., Kafka, Redis/Valkey), and integrations with HyperDX and ClickHouse.
+The following deploys the ClickStack fork of the OpenTelemetry Demo application stack within a Kubernetes cluster, tailored for observability testing and showcasing instrumentation. It includes backend microservices, load generators, telemetry pipelines, supporting infrastructure (e.g., Kafka, Redis), and SDK integrations with ClickStack.
 
 All services are deployed to the `otel-demo` namespace. Each deployment includes:
 
@@ -62,16 +66,15 @@ All services are deployed to the `otel-demo` namespace. Each deployment includes
 - All services send their instrumentation to a `my-hyperdx-hdx-oss-v2-otel-collector` OpenTelemetry collector (not deployed)
 - [Forwarding of resource tags](/use-cases/observability/clickstack/ingesting-data/kubernetes#forwarding-resouce-tags-to-pods) to correlate logs, metrics and traces via the environment variable `OTEL_RESOURCE_ATTRIBUTES`.
 
-
 ```shell
-## download demo kubernertes manifest file
+## download demo Kubernetes manifest file
 curl -O https://raw.githubusercontent.com/ClickHouse/opentelemetry-demo/refs/heads/main/kubernetes/opentelemetry-demo.yaml
 # wget alternative
 # wget https://raw.githubusercontent.com/ClickHouse/opentelemetry-demo/refs/heads/main/kubernetes/opentelemetry-demo.yaml
 kubectl apply --namespace otel-demo -f opentelemetry-demo.yaml
 ```
 
-On deployment of the demo, confirm all pods have been successfuly created and are in the `Running` state:
+On deployment of the demo, confirm all pods have been successfully created and are in the `Running` state:
 
 ```shell
 kubectl get pods -n=otel-demo
@@ -103,7 +106,7 @@ valkey-cart-5f7b667bb7-gl5v4         1/1     Running   0          13m
 
 ### Add the ClickStack Helm chart repository {#add-helm-clickstack}
 
-To deploy ClickStack we use the [official Helm chart](https://clickhouse.com/docs/use-cases/observability/clickstack/deployment/helm).
+To deploy ClickStack, we use the [official Helm chart](https://clickhouse.com/docs/use-cases/observability/clickstack/deployment/helm).
 
 This requires us to add the HyperDX Helm repository:
 
@@ -115,7 +118,6 @@ helm repo update
 ### Deploy ClickStack {#deploy-clickstack}
 
 With the Helm chart installed, you can deploy ClickStack to your cluster. You can either run all components, including ClickHouse and HyperDX, within your Kubernetes environment, or use ClickHouse Cloud, where HyperDX is also available as a managed service.
-
 
 <details>
 <summary>Self-managed deployment</summary>
@@ -138,12 +140,15 @@ helm install my-hyperdx hyperdx/hdx-oss-v2   --set clickhouse.persistence.dataSi
 ```
 
 :::warning ClickStack in production
-This chart also installs ClickHouse and the otel-collector. For production it is recommended that you use the clickhouse and otel-collector operators instead and/or use ClickHouse Cloud.
 
-To disable clickhouse and otel-collector, set the following values:
-```
+This chart also installs ClickHouse and the OTel collector. For production, it is recommended that you use the clickhouse and OTel collector operators and/or use ClickHouse Cloud.
+
+To disable clickhouse and OTel collector, set the following values:
+
+```shell
 helm install myrelease <chart-name-or-path> --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false --set otel.enabled=false
 ```
+
 :::
 
 </details>
@@ -151,13 +156,13 @@ helm install myrelease <chart-name-or-path> --set clickhouse.enabled=false --set
 <details>
 <summary>Using ClickHouse Cloud</summary>
 
-If you'd rather use ClickHouse Cloud, you can deploy Clickstack and [disable the included ClickHouse](https://clickhouse.com/docs/use-cases/observability/clickstack/deployment/helm#using-clickhouse-cloud). 
+If you'd rather use ClickHouse Cloud, you can deploy ClickStack and [disable the included ClickHouse](https://clickhouse.com/docs/use-cases/observability/clickstack/deployment/helm#using-clickhouse-cloud). 
 
 :::note
 The chart currently always deploys both HyperDX and MongoDB. While these components offer an alternative access path, they are not integrated with ClickHouse Cloud authentication. These components are intended for administrators in this deployment model, [providing access to the secure ingestion key](#retrieve-ingestion-api-key) needed to ingest through the deployed OTel collector, but should not be exposed to end users.
 :::
 
-```
+```shell
 # specify ClickHouse Cloud credentials
 export CLICKHOUSE_URL=<CLICKHOUSE_CLOUD_URL> # full https url
 export CLICKHOUSE_USER=<CLICKHOUSE_USER>
@@ -165,8 +170,8 @@ export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 
 helm install my-hyperdx hyperdx/hdx-oss-v2  --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false --set otel.clickhouseEndpoint=${CLICKHOUSE_URL} --set clickhouse.config.users.otelUser=${CLICKHOUSE_USER} --set clickhouse.config.users.otelUserPassword=${CLICKHOUSE_PASSWORD} --set global.storageClassName="standard-rwo" -n otel-demo
 ```
-</details>
 
+</details>
 
 To verify the deployment status, run the following command and confirm all components are in the `Running` state. Note that ClickHouse will be absent from this for users using ClickHouse Cloud:
 
@@ -186,15 +191,15 @@ my-hyperdx-hdx-oss-v2-otel-collector-64cf698f5c-8s7qj   1/1     Running   0     
 Even when using ClickHouse Cloud, the local HyperDX instance deployed in the Kubernetes cluster is still required. It provides an ingestion key managed by the OpAMP server bundled with HyperDX, with secures ingestion through the deployed OTel collector - a capability not currently available in the ClickHouse Cloud-hosted version.
 :::
 
-For security, the service uses ClusterIP and is not exposed externally by default.
+For security, the service uses `ClusterIP` and is not exposed externally by default.
 
 To access the HyperDX UI, port forward from 3000 to the local port 8080.
 
 ```shell
 kubectl port-forward \
-  pod/$(kubectl get pod -l app.kubernetes.io/name=hdx-oss-v2 -o jsonpath='{.items[0].metadata.name}' -n otel-demo) \
+ pod/$(kubectl get pod -l app.kubernetes.io/name=hdx-oss-v2 -o jsonpath='{.items[0].metadata.name}' -n otel-demo) \
   8080:3000 \
-  -n otel-demo
+ -n otel-demo
 ```
 
 Navigate [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
@@ -211,10 +216,9 @@ Navigate to [`Team Settings`](http://localhost:8080/team) and copy the `Ingestio
 
 <Image img={copy_api_key} alt="Copy API key" size="lg"/>
 
-
 ### Create API Key Kubernetes Secret {#create-api-key-kubernetes-secret}
 
-Create a new Kubernetes secret with the Ingestion API Key and config map containing the location of the OTel collector deployed with the ClickStack helm chart. This will be used by later components to allow ingest into collector deployed with the ClickStack helm chart:
+Create a new Kubernetes secret with the Ingestion API Key and a config map containing the location of the OTel collector deployed with the ClickStack helm chart. Later components will use this to allow ingest into the collector deployed with the ClickStack Helm chart:
 
 ```shell
 # create secret with the ingestion API key
@@ -238,7 +242,7 @@ Trace and log data from demo services should now begin to flow into HyperDX.
 
 ### Add the OpenTelemetry Helm repo {#add-otel-helm-repo}
 
-To collect Kubernetes metrics we will deploy a standard OTel collector, configuring this to send data securely to our ClickStack collector using the above ingestion API key.
+To collect Kubernetes metrics, we will deploy a standard OTel collector, configuring this to send data securely to our ClickStack collector using the above ingestion API key.
 
 This requires us to install the OpenTelemetry Helm repo:
 
@@ -249,7 +253,7 @@ helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm
 
 ### Deploy Kubernetes collector components {#deploy-kubernetes-collector-components}
 
-To collect logs and metrics from both each node and the cluster itself, we'll need to deploy two separate OpenTelemetry collectors each with its own manifest. The two manifests provided — `k8s_deployment.yaml` and `k8s_daemonset.yaml` — work together to collect comprehensive telemetry data from your Kubernetes cluster.
+To collect logs and metrics from both each node and the cluster itself, we'll need to deploy two separate OpenTelemetry collectors, each with its own manifest. The two manifests provided - `k8s_deployment.yaml` and `k8s_daemonset.yaml`  - work together to collect comprehensive telemetry data from your Kubernetes cluster.
 
 - `k8s_deployment.yaml` deploys a **single OpenTelemetry Collector instance** responsible for collecting **cluster-wide events and metadata**. It gathers Kubernetes events, cluster metrics, and enriches telemetry data with pod labels and annotations. This collector runs as a standalone deployment with a single replica to avoid duplicate data.
 
@@ -257,7 +261,7 @@ To collect logs and metrics from both each node and the cluster itself, we'll ne
 
 Together, these manifests enable full-stack observability across the cluster, from infrastructure to application-level telemetry, and send the enriched data to ClickStack for centralized analysis.
 
-First install the collector as a deployment:
+First, install the collector as a deployment:
 
 ```shell
 # download manifest file
@@ -270,7 +274,7 @@ helm install --namespace otel-demo k8s-otel-deployment open-telemetry/openteleme
 <summary>k8s_deployment.yaml</summary>
 
 ```yaml
-# deployment.yaml
+# k8s_deployment.yaml
 mode: deployment
 
 image:
@@ -283,14 +287,14 @@ replicaCount: 1
 presets:
   kubernetesAttributes:
     enabled: true
-    # When enabled the processor will extra all labels for an associated pod and add them as resource attributes.
+    # When enabled, the processor will extract all labels for an associated pod and add them as resource attributes.
     # The label's exact name will be the key.
     extractAllPodLabels: true
-    # When enabled the processor will extra all annotations for an associated pod and add them as resource attributes.
+    # When enabled, the processor will extract all annotations for an associated pod and add them as resource attributes.
     # The annotation's exact name will be the key.
     extractAllPodAnnotations: true
-  # Configures the collector to collect kubernetes events.
-  # Adds the k8sobject receiver to the logs pipeline and collects kubernetes events by default.
+  # Configures the collector to collect Kubernetes events.
+  # Adds the k8sobject receiver to the logs pipeline and collects Kubernetes events by default.
   # More Info: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-objects-receiver
   kubernetesEvents:
     enabled: true
@@ -332,8 +336,7 @@ config:
 
 </details>
 
-
-Next deploy the collector as a DaemonSet for node and pod-level metrics and logs:
+Next, deploy the collector as a DaemonSet for node and pod-level metrics and logs:
 
 ```shell
 # download manifest file
@@ -344,10 +347,12 @@ helm install --namespace otel-demo k8s-otel-daemonset open-telemetry/opentelemet
 
 <details>
 
-<summary>k8s_daemonset.yaml</summary>
+<summary>
+`k8s_daemonset.yaml`
+</summary>
 
 ```yaml
-# daemonset.yaml
+# k8s_daemonset.yaml
 mode: daemonset
 
 image:
@@ -375,10 +380,10 @@ presets:
   # More Info: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-attributes-processor
   kubernetesAttributes:
     enabled: true
-    # When enabled the processor will extra all labels for an associated pod and add them as resource attributes.
+    # When enabled, the processor will extract all labels for an associated pod and add them as resource attributes.
     # The label's exact name will be the key.
     extractAllPodLabels: true
-    # When enabled the processor will extra all annotations for an associated pod and add them as resource attributes.
+    # When enabled, the processor will extract all annotations for an associated pod and add them as resource attributes.
     # The annotation's exact name will be the key.
     extractAllPodAnnotations: true
   # Configures the collector to collect node, pod, and container metrics from the API server on a kubelet..
@@ -453,23 +458,48 @@ config:
 
 ### Explore Kubernetes data in HyperDX {#explore-kubernetes-data-hyperdx}
 
-Navigate to your HyperDX UI - either your Kubernetes deployed instance or ClickHouse Cloud instance.
+Navigate to your HyperDX UI - either using your Kubernetes-deployed instance or via ClickHouse Cloud.
 
+<p/>
+<details>
+<summary>Using ClickHouse Cloud</summary>
 
-If using ClickHouse Cloud, simply login into your ClickHouse Cloud service and select HyperDX from the left menu.
+If using ClickHouse Cloud, simply log in to your ClickHouse Cloud service and select "HyperDX" from the left menu. You will be automatically authenticated and will not need to create a user.
 
+When prompted to create a datasource, retain all default values within the create source model, completing the Table field with the value `otel_logs` - to create a logs source. All other settings should be auto-detected, allowing you to click `Save New Source`.
 
+<Image force img={hyperdx_cloud_datasource} alt="ClickHouse Cloud HyperDX Datasource" size="lg"/>
+
+You will also need to create a datasource for traces and metrics.
+
+For example, to create sources for traces and OTel metrics, users can select `Create New Source` from the top menu.
+
+<Image force img={hyperdx_create_new_source} alt="HyperDX create new source" size="lg"/>
+
+From here, select the required source type followed by the appropriate table e.g. for traces, select the table `otel_traces`. All settings should be auto-detected.
+
+<Image force img={hyperdx_create_trace_datasource} alt="HyperDX create trace source" size="lg"/>
+
+:::note Correlating sources
+Note that different data sources in ClickStack—such as logs and traces—can be correlated with each other. To enable this, additional configuration is required on each source. For example, in the logs source, you can specify a corresponding trace source, and vice versa in the traces source. See "Correlated sources" for further details.
+:::
+
+</details>
+
+<details>
+
+<summary>Using self-managed deployment</summary>
 
 To access the local deployed HyperDX, you can port forward using the local command and access HyperDX at [http://localhost:8080](http://localhost:8080).
 
 ```shell
 kubectl port-forward \
-  pod/$(kubectl get pod -l app.kubernetes.io/name=hdx-oss-v2 -o jsonpath='{.items[0].metadata.name}' -n otel-demo) \
+ pod/$(kubectl get pod -l app.kubernetes.io/name=hdx-oss-v2 -o jsonpath='{.items[0].metadata.name}' -n otel-demo) \
   8080:3000 \
-  -n otel-demo
+ -n otel-demo
 ```
 
-:::ClickStack in production
+:::note ClickStack in production
 In production, if not using HyperDX in ClickHouse Cloud, we recommend using an ingress with TLS if not using HyperDX in ClickHouse Cloud. For example:
 
 ```shell
@@ -480,10 +510,12 @@ helm upgrade my-hyperdx hyperdx/hdx-oss-v2 \
 ```
 ::::
 
+</details>
 
 To explore the Kubernetes data, navigate to the dedicated present dashboard at `/kubernetes` e.g. [http://localhost:8080/kubernetes](http://localhost:8080/kubernetes).
 
-
-
+Each of the tabs, Pods, Nodes, and Namespaces, should be populated with data.
 
 </VerticalStepper>
+
+<Image img={dashboard_kubernetes} alt="ClickHouse kubernetes" size="lg"/>

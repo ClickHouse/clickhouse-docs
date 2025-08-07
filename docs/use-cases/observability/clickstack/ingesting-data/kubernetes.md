@@ -43,14 +43,14 @@ kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_
 
 The DaemonSet will collect logs and metrics from each node in the cluster but will not collect Kubernetes events or cluster-wide metrics.
 
-Download the daemonset manifest:
+Download the DaemonSet manifest:
 
 ```shell
 curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/main/docs/use-cases/observability/clickstack/example-datasets/_snippets/k8s_daemonset.yaml
 ```
 <details>
 
-<summary>k8s_daemonset.yaml</summary>
+<summary>`k8s_daemonset.yaml`</summary>
 
 ```yaml
 # daemonset.yaml
@@ -228,7 +228,6 @@ config:
 ```
 
 </details>
-
 
 ## Deploying the OpenTelemetry collector {#deploying-the-otel-collector}
 
