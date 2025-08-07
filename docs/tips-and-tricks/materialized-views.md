@@ -24,7 +24,7 @@ description: 'Find solutions to the most common ClickHouse problems including sl
 # Materialized Views: The Double-Edged Sword {#materialized-views-the-double-edged-sword}
 *This guide is part of a collection of findings gained from community meetups. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
 *Too many parts bogging your database down? Check out the [Too Many Parts](./too-many-parts.md) community insights guide.*
-*Learn more about [Materialized Views](/materialized-views)*
+*Learn more about [Materialized Views](/materialized-views).*
 
 **Community warning from real production incidents:** Teams get *"over enthusiastic about materialized views and we end up creating too many of them and that kind of slows down... our injection as well"*
 
