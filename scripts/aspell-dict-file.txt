@@ -1089,3 +1089,7 @@ processlist
 Chainlit's
 --docs/use-cases/AI_ML/MCP/index.md--
 MCP's
+--docs/use-cases/observability/clickstack/example-datasets/kubernetes.md--
+daemonset
+--docs/use-cases/observability/clickstack/ingesting-data/kubernetes.md--
+daemonset
