@@ -23,7 +23,7 @@ description: 'Find solutions to the most common ClickHouse problems including sl
 
 # The Too Many Parts Problem {#the-too-many-parts-problem}
 *This guide is part of a collection of findings gained from community meetups. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
-*Need more performace optimization tips? Check out the [Performance Optimization](./performance-optimization.md) community insights guide.*
+*Need more performance optimization tips? Check out the [Performance Optimization](./performance-optimization.md) community insights guide.*
 
 **Universal pain point:** Small frequent inserts create performance degradation through part explosion.
 
