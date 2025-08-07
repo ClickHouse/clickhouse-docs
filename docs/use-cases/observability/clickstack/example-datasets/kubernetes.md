@@ -118,6 +118,7 @@ helm repo update
 ### Deploy ClickStack {#deploy-clickstack}
 
 With the Helm chart installed, you can deploy ClickStack to your cluster. You can either run all components, including ClickHouse and HyperDX, within your Kubernetes environment, or use ClickHouse Cloud, where HyperDX is also available as a managed service.
+<br/>
 
 <details>
 <summary>Self-managed deployment</summary>
