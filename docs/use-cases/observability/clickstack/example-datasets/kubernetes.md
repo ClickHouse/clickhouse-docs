@@ -501,7 +501,7 @@ kubectl port-forward \
 ```
 
 :::note ClickStack in production
-In production, if not using HyperDX in ClickHouse Cloud, we recommend using an ingress with TLS if not using HyperDX in ClickHouse Cloud. For example:
+In production, we recommend using an ingress with TLS if you are not using HyperDX in ClickHouse Cloud. For example:
 
 ```shell
 helm upgrade my-hyperdx hyperdx/hdx-oss-v2 \
