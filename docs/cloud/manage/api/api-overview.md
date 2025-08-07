@@ -43,6 +43,12 @@ You can view the Terraform provider docs in the [Terraform registry](https://reg
 If you'd like to contribute to the ClickHouse Terraform Provider, you can view 
 the source [in the GitHub repo](https://github.com/ClickHouse/terraform-provider-clickhouse).
 
+:::note 
+If your organization has been migrated to one of the [new pricing plans](https://clickhouse.com/pricing?plan=scale&provider=aws&region=us-east-1&hours=8&storageCompressed=false), you will be required to use our [ClickHouse Terraform provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs) version 2.0.0 or above. This upgrade is required to handle changes in the tier attribute of the service since, after pricing migration, the tier field is no longer accepted and references to it should be removed.
+
+You will now also be able to specify the num_replicas field as a property of the service resource. The number of replicas each service will be created with defaults to 3 for the Scale and Enterprise tiers, while it defaults to 1 for the Basic tier. For the Scale and the Enterprise tiers, it is possible to adjust it by passing a numReplicas field in the service creation request. The value of the num_replicas filed must be between 2 and 20 for the first service in a warehouse. Services that are created in an existing warehouse can have a number of replicas as low as 1.
+:::
+
 ## Support {#support}
 
 We recommend visiting [our Slack channel](https://clickhouse.com/slack) first to get quick support. If 
