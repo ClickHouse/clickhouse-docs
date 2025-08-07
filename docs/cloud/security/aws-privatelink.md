@@ -25,7 +25,36 @@ You can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to establish 
 To restrict access to your ClickHouse Cloud services exclusively through AWS PrivateLink addresses, follow the instructions provided by ClickHouse Cloud [IP Access Lists](/cloud/security/setting-ip-filters).
 
 :::note
-ClickHouse Cloud currently supports [cross-region PrivateLink](https://aws.amazon.com/about-aws/whats-new/2024/11/aws-privatelink-across-region-connectivity/) in beta.
+ClickHouse Cloud supports [cross-region PrivateLink](https://aws.amazon.com/about-aws/whats-new/2024/11/aws-privatelink-across-region-connectivity/) from the following regions:
+- sa-east-1
+- il-central-1
+- me-central-1
+- me-south-1
+- eu-central-2
+- eu-north-1
+- eu-south-2
+- eu-west-3
+- eu-south-1
+- eu-west-2
+- eu-west-1
+- eu-central-1
+- ca-west-1
+- ca-central-1
+- ap-northeast-1
+- ap-southeast-2
+- ap-southeast-1
+- ap-northeast-2
+- ap-northeast-3
+- ap-south-1
+- ap-southeast-4
+- ap-southeast-3
+- ap-south-2
+- ap-east-1
+- af-south-1
+- us-west-2
+- us-west-1
+- us-east-2
+- us-east-1
 :::
 
 **Please complete the following to enable AWS PrivateLink**:
