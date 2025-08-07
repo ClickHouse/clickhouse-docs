@@ -52,7 +52,6 @@ https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/click
 ```
 Reference: [Get CDC ClickPipes scaling](/cloud/manage/api/swagger.html#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipesCdcScaling/get)
 
-
 Set the desired scaling. Supported configurations include 1..16 CPU cores and memory GB that is 4× the core count:
 
 ```bash
