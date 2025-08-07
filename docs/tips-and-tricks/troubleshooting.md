@@ -43,7 +43,7 @@ Queries running slowly, timeouts, or getting specific error messages like "Memor
 - [Set up asynchronous inserts](/docs/optimize/asynchronous-inserts)
 <br/>
 ### Advanced Analysis Tools {#advanced-analysis-tools}
-- [Profile with LLVM XRay](/docs/knowledgebase/profiling-clickhouse-with-llvm-xray)
+<!-- - [Profile with LLVM XRay](/docs/knowledgebase/profiling-clickhouse-with-llvm-xray) -->
 - [Check what processes are running](/docs/knowledgebase/which-processes-are-currently-running)
 - [Monitor system performance](/docs/operations/system-tables/processes)
 <br/>
