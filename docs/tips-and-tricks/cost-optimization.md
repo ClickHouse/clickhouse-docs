@@ -2,6 +2,7 @@
 sidebar_position: 1
 slug: /community-wisdom/cost-optimization
 sidebar_label: 'Performance Optimization'
+doc_type: 'how-to-guide'
 keywords: [
   'cost optimization',
   'storage costs', 
@@ -156,7 +157,3 @@ ORDER BY sort_order;
 ```
 
 **The key insight:** Instead of deleting entire rows, strategically drop the expensive columns first while preserving the essential data structure for longer periods. This can save "several terabytes" as Displayce discovered.
-
-## How to Use This Guide {#how-to-use-guide}
-
-*This interactive guide represents collective wisdom from hundreds of production deployments. Each runnable example helps you understand ClickHouse patterns using real GitHub events data - practice these concepts to avoid common mistakes and accelerate your success.*

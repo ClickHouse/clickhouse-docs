@@ -2,17 +2,20 @@
 sidebar_position: 1
 slug: /community-wisdom/performance-optimization
 sidebar_label: 'Performance Optimization'
+doc_type: 'how-to-guide'
 keywords: [
-  'clickhouse troubleshooting',
-  'clickhouse errors',
-  'slow queries',
-  'memory problems', 
-  'connection issues',
   'performance optimization',
-  'database errors',
-  'configuration problems',
-  'debug',
-  'solutions'
+  'query performance',
+  'database tuning',
+  'slow queries',
+  'memory optimization',
+  'cardinality analysis',
+  'indexing strategies',
+  'aggregation optimization',
+  'sampling techniques',
+  'database performance',
+  'query analysis',
+  'performance troubleshooting'
 ]
 title: 'Lessons - Performance Optimization'
 description: 'Find solutions to the most common ClickHouse problems including slow queries, memory errors, connection issues, and configuration problems.'
@@ -21,7 +24,7 @@ description: 'Find solutions to the most common ClickHouse problems including sl
 # Performance Optimization: Production-Tested Strategies {#performance-optimization}
 *This guide is part of a collection of findings gained from community meetups. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
 *Having trouble with Materialized Views? Check out the [Materialized Views](./materialized-views.md) community insights guide.*
-*If you're experiencing slow queries and want more examples, we also have a [Query Optimization](../../guides/best-practices/query-optimization.md) guide.*
+*If you're experiencing slow queries and want more examples, we also have a [Query Optimization](/optimize/query-optimization) guide.*
 
 ## Order by Cardinality (Lowest to Highest) {#rule-1-cardinality-ordering}
 
@@ -238,9 +241,5 @@ FROM sampled_data, full_data;
 
 **The key diagnostic question:** Is your query slow because it's reading too many rows, or because it's creating too many aggregation groups? The solution strategies are completely different.
 
-## How to Use This Guide {#how-to-use-guide}
-
-*This interactive guide represents collective wisdom from hundreds of production deployments. Each runnable example helps you understand ClickHouse patterns using real GitHub events data - practice these concepts to avoid common mistakes and accelerate your success.*
-
 **Read Next**:
-- [Query Optimization Guide](../../guides/best-practices/query-optimization.md)
+- [Query Optimization Guide](/optimize/query-optimization)

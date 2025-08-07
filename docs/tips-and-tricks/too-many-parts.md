@@ -2,17 +2,20 @@
 sidebar_position: 1
 slug: /tips-and-tricks/too-many-parts
 sidebar_label: 'Too Many Parts'
+doc_type: 'how-to-guide'
 keywords: [
-  'clickhouse troubleshooting',
-  'clickhouse errors',
-  'slow queries',
-  'memory problems', 
-  'connection issues',
-  'performance optimization',
-  'database errors',
-  'configuration problems',
-  'debug',
-  'solutions'
+  'clickhouse too many parts',
+  'too many parts error',
+  'clickhouse insert batching',
+  'part explosion problem',
+  'clickhouse merge performance',
+  'batch insert optimization',
+  'clickhouse async inserts',
+  'small insert problems',
+  'clickhouse parts management',
+  'insert performance optimization',
+  'clickhouse batching strategy',
+  'database insert patterns'
 ]
 title: 'Lessons - Too Many Parts Problem'
 description: 'Find solutions to the most common ClickHouse problems including slow queries, memory errors, connection issues, and configuration problems.'
@@ -109,6 +112,3 @@ SET wait_for_async_insert = 1;  -- For consistency guarantees
 SET async_insert_max_data_size = 10485760;  -- 10MB buffer size
 SET async_insert_busy_timeout_ms = 30000;   -- 30 second timeout
 ```
-## How to Use This Guide {#how-to-use-guide}
-
-*This interactive guide represents collective wisdom from hundreds of production deployments. Each runnable example helps you understand ClickHouse patterns using real GitHub events data - practice these concepts to avoid common mistakes and accelerate your success.*

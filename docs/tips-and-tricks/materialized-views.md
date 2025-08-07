@@ -2,17 +2,20 @@
 sidebar_position: 1
 slug: /tips-and-tricks/materialized-views
 sidebar_label: 'Materialized Views'
+doc_type: 'how-to-guide'
 keywords: [
-  'clickhouse troubleshooting',
-  'clickhouse errors',
-  'slow queries',
-  'memory problems', 
-  'connection issues',
-  'performance optimization',
-  'database errors',
-  'configuration problems',
-  'debug',
-  'solutions'
+  'clickhouse materialized views',
+  'materialized view optimization',
+  'materialized view storage issues',
+  'materialized view best practices',
+  'database aggregation patterns',
+  'materialized view anti-patterns',
+  'storage explosion problems',
+  'materialized view performance',
+  'database view optimization',
+  'aggregation strategy',
+  'materialized view troubleshooting',
+  'view storage overhead'
 ]
 title: 'Lessons - Materialized Views'
 description: 'Find solutions to the most common ClickHouse problems including slow queries, memory errors, connection issues, and configuration problems.'
@@ -21,7 +24,7 @@ description: 'Find solutions to the most common ClickHouse problems including sl
 # Materialized Views: The Double-Edged Sword {#materialized-views-the-double-edged-sword}
 *This guide is part of a collection of findings gained from community meetups. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
 *Too many parts bogging your database down? Check out the [Too Many Parts](./too-many-parts.md) community insights guide.*
-*Learn more about [Materialized Views]()*
+*Learn more about [Materialized Views](/materialized-views)*
 
 **Community warning from real production incidents:** Teams get *"over enthusiastic about materialized views and we end up creating too many of them and that kind of slows down... our injection as well"*
 
@@ -93,7 +96,3 @@ LIMIT 1;
 **Decision Framework:**
 - **Keep MV:** Query frequency × speed improvement > storage cost × maintenance overhead
 - **Replace with cron:** Aggregations that are *"not very critical like if you have a 5 minute aggregation 1 hour aggregation already created... maybe it can wait"*
-
-## How to Use This Guide {#how-to-use-guide}
-
-*This interactive guide represents collective wisdom from hundreds of production deployments. Each runnable example helps you understand ClickHouse patterns using real GitHub events data - practice these concepts to avoid common mistakes and accelerate your success.*

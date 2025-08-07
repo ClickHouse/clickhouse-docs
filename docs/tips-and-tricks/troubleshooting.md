@@ -2,17 +2,20 @@
 sidebar_position: 1
 slug: /tips-and-tricks/troubleshooting
 sidebar_label: 'Troubleshooting'
+doc_type: 'reference'
 keywords: [
   'clickhouse troubleshooting',
   'clickhouse errors',
-  'slow queries',
-  'memory problems', 
-  'connection issues',
-  'performance optimization',
-  'database errors',
-  'configuration problems',
-  'debug',
-  'solutions'
+  'database troubleshooting',
+  'clickhouse connection issues',
+  'memory limit exceeded',
+  'clickhouse performance problems',
+  'database error messages',
+  'clickhouse configuration issues',
+  'connection refused error',
+  'clickhouse debugging',
+  'database connection problems',
+  'troubleshooting guide'
 ]
 title: 'Troubleshooting Common Issues'
 description: 'Find solutions to the most common ClickHouse problems including slow queries, memory errors, connection issues, and configuration problems.'

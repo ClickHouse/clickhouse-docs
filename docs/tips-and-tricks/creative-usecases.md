@@ -2,17 +2,20 @@
 sidebar_position: 1
 slug: /community-wisdom/creative-use-cases
 sidebar_label: 'Creative Use Cases'
+doc_type: 'how-to-guide'
 keywords: [
-  'clickhouse troubleshooting',
-  'clickhouse errors',
-  'slow queries',
-  'memory problems', 
-  'connection issues',
-  'performance optimization',
-  'database errors',
-  'configuration problems',
-  'debug',
-  'solutions'
+  'clickhouse creative use cases',
+  'clickhouse success stories',
+  'unconventional database uses',
+  'clickhouse rate limiting',
+  'analytics database applications',
+  'clickhouse mobile analytics',
+  'customer-facing analytics',
+  'database innovation',
+  'clickhouse real-time applications',
+  'alternative database solutions',
+  'breaking database conventions',
+  'production success stories'
 ]
 title: 'Lessons - Creative Use Cases'
 description: 'Find solutions to the most common ClickHouse problems including slow queries, memory errors, connection issues, and configuration problems.'
@@ -131,7 +134,3 @@ ORDER BY segment_size DESC;
 - *"We wanted to give customers the ability to... slice and dice everything as much as they wanted"* - ServiceNow
 
 **The lesson:** Sometimes the "wrong" tool for the job becomes the right tool when you understand its strengths and design around them.
-
-## How to Use This Guide {#how-to-use-guide}
-
-*This interactive guide represents collective wisdom from hundreds of production deployments. Each runnable example helps you understand ClickHouse patterns using real GitHub events data - practice these concepts to avoid common mistakes and accelerate your success.*

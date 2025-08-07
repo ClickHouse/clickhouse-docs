@@ -2,17 +2,20 @@
 sidebar_position: 1
 slug: /tips-and-tricks/community-wisdom
 sidebar_label: 'Community Wisdom'
+doc_type: 'overview'
 keywords: [
-  'clickhouse troubleshooting',
-  'clickhouse errors',
-  'slow queries',
-  'memory problems', 
-  'connection issues',
+  'database tips',
+  'community wisdom',
+  'production troubleshooting',
   'performance optimization',
-  'database errors',
-  'configuration problems',
-  'debug',
-  'solutions'
+  'database debugging',
+  'clickhouse guides',
+  'real world examples',
+  'database best practices',
+  'meetup insights',
+  'production lessons',
+  'interactive tutorials',
+  'database solutions'
 ]
 title: 'ClickHouse Community Wisdom'
 description: 'Learn from the ClickHouse community with real world scenarios and lessons learned'
@@ -20,12 +23,9 @@ description: 'Learn from the ClickHouse community with real world scenarios and 
 
 # ClickHouse Community Wisdom: Tips and Tricks from Meetups {#community-wisdom}
 
-*Real-world wisdom from companies processing billions of events*
+*These interactive guides represent collective wisdom from hundreds of production deployments. Each runnable example helps you understand ClickHouse patterns using real GitHub events data - practice these concepts to avoid common mistakes and accelerate your success.*
 
-## How to Use This Guide {#how-to-use-guide}
-
-*This interactive guide represents collective wisdom from hundreds of production deployments. Each runnable example helps you understand ClickHouse patterns using real GitHub events data - practice these concepts to avoid common mistakes and accelerate your success.*
-
+Combine this collected knowledge with our [Best Practices](/best-practices) guide for optimal ClickHouse Experience.
 
 ## Problem-Specific Quick Jumps {#problem-specific-quick-jumps}
 
@@ -34,9 +34,9 @@ description: 'Learn from the ClickHouse community with real world scenarios and 
 | **Production Issue**   | [Debugging-Toolkit](./debugging-toolkit.md) | Copy/Paste Queries, production debugging guidance |
 | **Slow Queries**       | [Performance Optimization](./performance-optimization.md) | Optimize Performance |
 | **Materialized Views** | [MV Double-Edged Sword](./materialized-views.md) | Avoid 10x storage instances |
-| **Too Many Parts**     | [Too Many Parts](./too-many-parts.md) | Avoid 10x storage instances |
+| **Too Many Parts**     | [Too Many Parts](./too-many-parts.md) | Addressing the 'Too Many Parts' error and performance slowdown |
 | **High Costs**         | [Cost Optimization](./cost-optimization.md) | Optimize Cost |
-| **Creative Usecases**  | [Debugging-Toolkit](./creative-usecases.md) | Examples of ClickHouse in 'Outside the Box' use cases |
+| **Creative Use Cases**  | [Success Stories](./creative-usecases.md) | Examples of ClickHouse in 'Outside the Box' use cases |
 
 ### Usage Instructions {#usage-instructions}
 

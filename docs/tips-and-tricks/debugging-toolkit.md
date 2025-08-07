@@ -2,6 +2,7 @@
 sidebar_position: 1
 slug: /community-wisdom/debugging-toolkit
 sidebar_label: 'Debugging Toolkit'
+doc_type: 'how-to-guide'
 keywords: [
   'clickhouse troubleshooting',
   'clickhouse errors',
@@ -188,7 +189,3 @@ ORDER BY data_year DESC;
 - *"Always validate timestamps before they hit production"*
 
 **The key insight:** Most 2AM incidents are preventable if you recognize the warning signs and have ready-to-use diagnostic queries.
-
-## How to Use This Guide {#how-to-use-guide}
-
-*This interactive guide represents collective wisdom from hundreds of production deployments. Each runnable example helps you understand ClickHouse patterns using real GitHub events data - practice these concepts to avoid common mistakes and accelerate your success.*
