@@ -5,15 +5,22 @@ slug: /integrations/clickpipes/postgres/scaling
 sidebar_label: 'Scaling'
 ---
 
-Default configuration of CDC ClickPipes was designed to handle most use-cases as-is. If your workload exceeds 1 TB for the initial load or 5,000 row changes a second, or the data needs to be moved as quickly as possible regardless of cost, this API might be what you need.
+:::caution Most users won't need this API
+Default configuration of CDC ClickPipes is designed to handle the majority of workloads out of the box. If you think your workload requires scaling, open a [support case](https://clickhouse.com/support/program) and we'll guide you through the optimal settings for the use case.
+:::
+
+Scaling API may be useful for:
+- Large initial loads (over 4 TB)
+- Migrating a moderate amount of data at a very high speed (sub-1 hour)
+- Supporting over 8 CDC ClickPipes under the same service
 
 Other signs that scaling may be necessary:
 - Initial load is taking longer than 24 hours while the load on the source DB is low
-  - Consider tweaking the [initial load parallelism and partitioning](/integrations/data-ingestion/clickpipes/postgres/parallel_initial_load) first
+  - First consider adjusting the [initial load parallelism and partitioning](/integrations/data-ingestion/clickpipes/postgres/parallel_initial_load) when creating the ClickPipe
 - The new rows taking more than 2× the sync interval to appear on the destination table
   - As long as there are no [long-running transactions](/integrations/clickpipes/postgres/sync_control#transactions-pg-sync) on the source
 
-For more information about the underlying infrastructure and costs, see [Postgres CDC Pricing](/cloud/manage/billing/overview#clickpipes-for-postgres-cdc).
+Increasing the CDC scale will proportionally increase your ClickPipes compute costs. If you're scaling up just for the initial loads, it's important to scale down after the snapshot is finished to avoid unexpected charges. For more details on pricing, see [Postgres CDC Pricing](/cloud/manage/billing/overview#clickpipes-for-postgres-cdc).
 
 ## Prerequisites for this process {#prerequisites}
 
