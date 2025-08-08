@@ -11,14 +11,13 @@ Default configuration of CDC ClickPipes is designed to handle the majority of wo
 
 Scaling API may be useful for:
 - Large initial loads (over 4 TB)
-- Migrating a moderate amount of data at a very high speed (sub-1 hour)
+- Migrating a moderate amount of data as quickly as possible
 - Supporting over 8 CDC ClickPipes under the same service
 
-Other signs that scaling may be necessary:
-- Initial load is taking longer than 24 hours while the load on the source DB is low
-  - First consider adjusting the [initial load parallelism and partitioning](/integrations/data-ingestion/clickpipes/postgres/parallel_initial_load) when creating the ClickPipe
-- The new rows taking more than 2× the sync interval to appear on the destination table
-  - As long as there are no [long-running transactions](/integrations/clickpipes/postgres/sync_control#transactions-pg-sync) on the source
+Before attempting to scale up, consider:
+- Ensuring the source DB has sufficient available capacity
+- First adjusting [initial load parallelism and partitioning](/integrations/data-ingestion/clickpipes/postgres/parallel_initial_load) when creating a ClickPipe
+- Checking for [long-running transactions](/integrations/clickpipes/postgres/sync_control#transactions-pg-sync) on the source that could be causing CDC delays
 
 Increasing the CDC scale will proportionally increase your ClickPipes compute costs. If you're scaling up just for the initial loads, it's important to scale down after the snapshot is finished to avoid unexpected charges. For more details on pricing, see [Postgres CDC Pricing](/cloud/manage/billing/overview#clickpipes-for-postgres-cdc).
 
@@ -58,7 +57,7 @@ https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/click
 }
 ```
 
-Set the desired scaling. Supported configurations include 1..16 CPU cores and memory GB that is 4× the core count:
+Set the desired scaling. Supported configurations include 1-16 CPU cores with memory (GB) set to 4× the core count:
 
 ```bash
 cat <<EOF | tee cdc_scaling.json
@@ -74,7 +73,7 @@ https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/click
 -d @cdc_scaling.json | jq
 ```
 
-Wait for the command to propagate - this usually takes 3-5 minutes. After the scaling is finished, the GET endpoint will reflect the new values:
+Wait for the configuration to propagate (typically 3-5 minutes). After the scaling is finished, the GET endpoint will reflect the new values:
 
 ```bash
 curl --silent --user $KEY_ID:$KEY_SECRET \
