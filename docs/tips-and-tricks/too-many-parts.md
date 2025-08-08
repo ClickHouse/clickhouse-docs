@@ -28,7 +28,7 @@ description: 'Find solutions to the most common ClickHouse problems including sl
 **Universal pain point:** Small frequent inserts create performance degradation through part explosion.
 
 **Clear warnings from ClickHouse engineers and users:**
-- *"If you are doing 100,000 inserts it is going to create 100,000 parts and behind the scenes over time click house is going to merge those parts... more parts you create the more meta work that you create for click house to merge"*
+- *"If you are doing 100,000 inserts it is going to create 100,000 parts, and behind the scenes, over time, ClickHouse is going to merge those parts... the more parts you create, the more meta work that you create for ClickHouse to merge"*
 - *"If the inserts are too small then you have another problem in that these small parts will not get merged together in time in the background. When too many parts accumulate, you'll get the "too many parts" error which will slow down your writing throughput"*
 - *"We encourage our users to insert data in batches. For example, 20,000 rows at once"*
 
