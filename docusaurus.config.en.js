@@ -5,7 +5,7 @@ import chHeader from "./plugins/header.js";
 import fixLinks from "./src/hooks/fixLinks.js";
 const path = require('path');
 const remarkCustomBlocks = require('./plugins/remark-custom-blocks');
-const remarkCodeImport = require('./plugins/remark-code-import');
+const codeImportPlugin = require('./plugins/code-import-plugin');
 
 // Import custom plugins
 const { customParseFrontMatter } = require('./plugins/frontmatter-validation/customParseFrontMatter');
@@ -153,7 +153,7 @@ const config = {
           showLastUpdateTime: false,
           sidebarCollapsed: true,
           routeBasePath: "/",
-          remarkPlugins: [math, remarkCustomBlocks, glossaryTransformer, [remarkCodeImport, { baseDir: __dirname }]],
+          remarkPlugins: [math, remarkCustomBlocks, glossaryTransformer],
           beforeDefaultRemarkPlugins: [fixLinks],
           rehypePlugins: [katex],
         },
@@ -355,6 +355,10 @@ const config = {
     ],
     [
         './plugins/tailwind-config.js',
+        {}
+    ],
+    [
+        codeImportPlugin,
         {}
     ]
   ],
