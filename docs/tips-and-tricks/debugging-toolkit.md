@@ -25,7 +25,7 @@ description: 'Find solutions to the most common ClickHouse problems including sl
 
 ## When Everything is Broken: Emergency Diagnostics {#emergency-diagnostics}
 
-**Community philosophy:** *"If something looks odd even just slightly something is wrong - investigate before it gets worse"*
+**Community philosophy:** *"If something looks odd, even just slightly, something is wrong. Investigate before it gets worse."*
 
 **The nightmare scenario:** *"One of the worst days of my life over the past three years... it locked the database you couldn't insert anything couldn't read anything CPU went crazy memory usage went crazy"*
 
