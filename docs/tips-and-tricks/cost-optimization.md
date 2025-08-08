@@ -22,7 +22,7 @@ description: 'Find solutions to the most common ClickHouse problems including sl
 ---
 
 # Cost Optimization: Battle-Tested Strategies {#cost-optimization}
-*This guide is part of a collection of findings gained from community meetups. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
+*This guide is part of a collection of findings gained from community meetups. The findings on this page cover community wisdom related to optimizing cost while using ClickHouse. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
 *Want to learn about creative use cases for ClickHouse? Check out the [Creative Use Cases](./creative-usecases.md) community insights guide.*
 
 ## The Partition Deletion vs TTL Discovery {#partition-vs-ttl}
