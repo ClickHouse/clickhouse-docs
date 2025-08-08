@@ -112,11 +112,43 @@ SELECT * FROM system.contributors;
 \```
 ```
 
+Note: in the snippet above `\` is used only for formatting purposes in this guide.
+You should not include it when you write markdown.
+
 Code blocks:
 - Should always have a language defined immediately next to the opening 3
   backticks, without any space.
 - Have a title (optional) such as 'Query' or 'Response'
 - Use language `response` if it is for the result of a query.
+
+#### Importing code from files or URLs
+
+There are a few additional parameters you can include on a code block if you want
+to import code.
+
+To import from a file use `file=`:
+
+```text
+\```python file=code_snippets/integrations/example.py
+Code will be inserted here
+\```
+```
+
+When `yarn build` is run, the code from the file will be inserted as text into
+the code block.
+
+To import from a url use `url=`:
+
+```text
+\```python url=https://raw.githubusercontent.com/ClickHouse/clickhouse-connect/refs/heads/main/examples/pandas_examples.py
+Code will be inserted here
+\```
+```
+
+You should commit the code inserted to the snippet as we want people (or LLMs) 
+reading the markdown to be able to see the code. The advantage of importing code
+to snippets this way is that you can test your snippets externally or store them
+wherever you want.
 
 ### Highlighting
 

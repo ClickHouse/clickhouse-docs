@@ -1,6 +1,26 @@
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
+const https = require('https');
+const http = require('http');
+
+// Helper function to fetch content from URL
+function fetchUrl(url) {
+  return new Promise((resolve, reject) => {
+    const client = url.startsWith('https:') ? https : http;
+    
+    client.get(url, (res) => {
+      if (res.statusCode !== 200) {
+        reject(new Error(`HTTP ${res.statusCode}: ${res.statusMessage}`));
+        return;
+      }
+      
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => resolve(data));
+    }).on('error', reject);
+  });
+}
 
 function codeImportPlugin(context, options) {
   return {
@@ -22,24 +42,44 @@ function codeImportPlugin(context, options) {
           let content = fs.readFileSync(filePath, 'utf8');
           let modified = false;
           
-          // Process code blocks with file= syntax
-          content = content.replace(/```(\w+)?\s*(file=[^\s\n]+)([^\n]*)\n([^`]*?)```/g, (match, lang, fileParam, additionalMeta, existingContent) => {
+          // Process code blocks with file= or url= syntax
+          const fileUrlRegex = /```(\w+)?\s*((?:file|url)=[^\s\n]+)([^\n]*)\n([^`]*?)```/g;
+          const matches = [...content.matchAll(fileUrlRegex)];
+          
+          for (const match of matches) {
+            const [fullMatch, lang, param, additionalMeta, existingContent] = match;
+            
             try {
-              const importPath = fileParam.replace('file=', '');
-              const absoluteImportPath = path.resolve(context.siteDir, importPath);
-              const importedContent = fs.readFileSync(absoluteImportPath, 'utf8');
+              let importedContent;
+              
+              if (param.startsWith('file=')) {
+                // Handle file import
+                const importPath = param.replace('file=', '');
+                const absoluteImportPath = path.resolve(context.siteDir, importPath);
+                importedContent = fs.readFileSync(absoluteImportPath, 'utf8');
+              } else if (param.startsWith('url=')) {
+                // Handle URL import
+                const url = param.replace('url=', '');
+                try {
+                  importedContent = await fetchUrl(url);
+                } catch (urlError) {
+                  console.warn(`Could not fetch URL ${url} in ${filePath}: ${urlError.message}`);
+                  continue; // Skip this replacement if URL fetch fails
+                }
+              }
+              
+              // Preserve the complete metadata
+              const fullMeta = `${param}${additionalMeta}`;
+              const metaStr = fullMeta ? ` ${fullMeta}` : '';
+              const replacement = `\`\`\`${lang || ''}${metaStr}\n${importedContent}\`\`\``;
+              
+              content = content.replace(fullMatch, replacement);
               modified = true;
               
-              // Preserve the complete metadata including file= and any additional parameters
-              const fullMeta = `${fileParam}${additionalMeta}`;
-              const metaStr = fullMeta ? ` ${fullMeta}` : '';
-              
-              return `\`\`\`${lang || ''}${metaStr}\n${importedContent}\`\`\``;
             } catch (error) {
-              console.warn(`Could not import file ${importPath} in ${filePath}: ${error.message}`);
-              return match; // Return original if import fails
+              console.warn(`Could not process ${param} in ${filePath}: ${error.message}`);
             }
-          });
+          }
           
           if (modified) {
             processedFiles.push({
