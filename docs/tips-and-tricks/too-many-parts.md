@@ -30,7 +30,7 @@ description: 'Find solutions to the most common ClickHouse problems including sl
 **Clear warnings from ClickHouse engineers and users:**
 - *"If you are doing 100,000 inserts it is going to create 100,000 parts and behind the scenes over time click house is going to merge those parts... more parts you create the more meta work that you create for click house to merge"*
 - *"If the inserts are too small we have another question that the background merging stress will not merge these small parts together in time then when the parts accumulating too many it will easy to get too many parts error which will slow down our writing throughput"*
-- *"We encourage our users to insert the data in batches for example 20,000 rows at once"*
+- *"We encourage our users to insert data in batches. For example, 20,000 rows at once"*
 
 ## Recognize the Problem Early {#recognize-parts-problem}
 
