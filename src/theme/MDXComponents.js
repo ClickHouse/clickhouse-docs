@@ -6,10 +6,12 @@ import MDXComponents from '@theme-original/MDXComponents';
 // Make sure the path matches your project structure
 import VStepper from '@site/src/components/Stepper/Stepper';
 import GlossaryTooltip from '@site/src/components/GlossaryTooltip/GlossaryTooltip';
+import KapaLink from '@site/src/components/KapaAI/KapaLink';
 
 // Define the enhanced components
 const enhancedComponents = {
     ...MDXComponents,
+    KapaLink,
     GlossaryTooltip,
     ul: (props) => <ul className="custom-ul" {...props} />,
     ol: (props) => <ol className="custom-ol" {...props} />,
