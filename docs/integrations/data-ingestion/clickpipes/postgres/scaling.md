@@ -1,12 +1,12 @@
 ---
-title: 'Scaling CDC ClickPipes via OpenAPI'
-description: 'Doc for scaling CDC ClickPipes via OpenAPI'
+title: 'Scaling DB ClickPipes via OpenAPI'
+description: 'Doc for scaling DB ClickPipes via OpenAPI'
 slug: /integrations/clickpipes/postgres/scaling
 sidebar_label: 'Scaling'
 ---
 
 :::caution Most users won't need this API
-Default configuration of CDC ClickPipes is designed to handle the majority of workloads out of the box. If you think your workload requires scaling, open a [support case](https://clickhouse.com/support/program) and we'll guide you through the optimal settings for the use case.
+Default configuration of DB ClickPipes is designed to handle the majority of workloads out of the box. If you think your workload requires scaling, open a [support case](https://clickhouse.com/support/program) and we'll guide you through the optimal settings for the use case.
 :::
 
 Scaling API may be useful for:
@@ -19,16 +19,16 @@ Before attempting to scale up, consider:
 - First adjusting [initial load parallelism and partitioning](/integrations/data-ingestion/clickpipes/postgres/parallel_initial_load) when creating a ClickPipe
 - Checking for [long-running transactions](/integrations/clickpipes/postgres/sync_control#transactions-pg-sync) on the source that could be causing CDC delays
 
-Increasing the CDC scale will proportionally increase your ClickPipes compute costs. If you're scaling up just for the initial loads, it's important to scale down after the snapshot is finished to avoid unexpected charges. For more details on pricing, see [Postgres CDC Pricing](/cloud/manage/billing/overview#clickpipes-for-postgres-cdc).
+Increasing the scale will proportionally increase your ClickPipes compute costs. If you're scaling up just for the initial loads, it's important to scale down after the snapshot is finished to avoid unexpected charges. For more details on pricing, see [Postgres CDC Pricing](/cloud/manage/billing/overview#clickpipes-for-postgres-cdc).
 
 ## Prerequisites for this process {#prerequisites}
 
 Before you get started you will need:
 
 1. [ClickHouse API key](/cloud/manage/openapi) with Admin permissions on the target ClickHouse Cloud service.
-2. A CDC ClickPipe (Postgres, MySQL or MongoDB) provisioned in the service at some point in time. CDC infrastructure gets created along with the first ClickPipe, and the scaling endpoints become available from that point onwards.
+2. A DB ClickPipe (Postgres, MySQL or MongoDB) provisioned in the service at some point in time. CDC infrastructure gets created along with the first ClickPipe, and the scaling endpoints become available from that point onwards.
 
-## Steps to scale CDC ClickPipes {#cdc-scaling-steps}
+## Steps to scale DB ClickPipes {#cdc-scaling-steps}
 
 Set the following environment variables before running any commands:
 
@@ -57,13 +57,13 @@ https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/click
 }
 ```
 
-Set the desired scaling. Supported configurations include 1-16 CPU cores with memory (GB) set to 4× the core count:
+Set the desired scaling. Supported configurations include 1-24 CPU cores with memory (GB) set to 4× the core count:
 
 ```bash
 cat <<EOF | tee cdc_scaling.json
 {
-  "replicaCpuMillicores": 16000,
-  "replicaMemoryGb": 64
+  "replicaCpuMillicores": 24000,
+  "replicaMemoryGb": 96
 }
 EOF
 
@@ -83,8 +83,8 @@ https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/click
 # example result:
 {
   "result": {
-    "replicaCpuMillicores": 16000,
-    "replicaMemoryGb": 64
+    "replicaCpuMillicores": 24000,
+    "replicaMemoryGb": 96
   },
   "requestId": "5a76d642-d29f-45af-a857-8c4d4b947bf0",
   "status": 200
