@@ -16,7 +16,7 @@ Run the command below from a shell on `clickhouse-keeper-01`, `clickhouse-keeper
 for `clickhouse-keeper-01` is shown below:
 
 ```bash
-docker exec -it clickhouse-keeper-01 echo mntr | nc localhost 9181
+docker exec -it clickhouse-keeper-01  /bin/sh -c 'echo mntr | nc 127.0.0.1 9181'
 ```
 
 The response below shows an example response from a follower node:
