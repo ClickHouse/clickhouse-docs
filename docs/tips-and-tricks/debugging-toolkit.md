@@ -146,7 +146,7 @@ ORDER BY data_year DESC;
 ### Phase 1: Immediate Triage (30 seconds) {#phase-1-immediate-triage}
 
 1. Run `system.errors` - any non-zero = active incident
-2. Check disk space - *"It took us from 12 to 4 AM... it was as simple as low disk"*
+2. Check disk space - *"It was as simple as low disk it took us from 12 to 4 AM"*
 3. Look for replication lag > 5 minutes
 
 ### Phase 2: Resource Investigation (2 minutes) {#phase-2-resource-investigation}
@@ -166,26 +166,29 @@ ORDER BY data_year DESC;
 
 | Problem | Detection Query | Solution |
 |---------|-----------------|----------|
-| **Memory OOM** | `SELECT * FROM system.processes WHERE memory_usage > 8GB` | Enable `external_aggregation=1` |
+| **Memory OOM** | `SELECT * FROM system.processes WHERE memory_usage > 8GB` | *"Enable external aggregation so it will be a little bit slower like two or three times but it will use much less memory"* |
 | **Disk Full** | `SELECT sum(bytes_on_disk) FROM system.parts` | Delete old partitions, expand disk |
 | **Replication Lag** | `SELECT * FROM system.replicas WHERE absolute_delay > 300` | Check network, restart lagging replica |
 | **Stuck Query** | `SELECT * FROM system.processes WHERE elapsed > 300` | `KILL QUERY WHERE query_id = '...'` |
 | **Parts Explosion** | `SELECT count() FROM system.parts WHERE active=1` | Enable async_insert, increase batch sizes |
 
-**The golden rule:** *"Problems very rarely just pop out of nowhere there are signs... investigate before it goes from 15 milliseconds to 30 seconds"*
+**The golden rule:** *"Problems very rarely just pop out of nowhere there are signs... investigate it before it goes from 15 milliseconds to 30 seconds"*
 
 ## Community War Stories & Lessons {#war-stories}
 
 **Disk Space Issues:**
-- *"Default AWS EBS limit of 16TB hits you when you least expect it"*
-- *"Other nodes keep sending data to the full node creating cascading failure"*
+- *"Default general purpose disks that AWS gives you they have a limit of 16 terabytes and you can imagine that we got to 16 terabytes really quickly"*
+- *"Other nodes are like why are you behind us take this and it's accepting only half of it and they just keep sending all of that data"*
 
 **Memory Exhaustion:**  
 - *"Out of memory typically appears when you have a big aggregation with a lot of keys"*
-- *"Enable external aggregation - query will be slower but won't crash"*
+- Solution: *"Enable external aggregation so it will be a little bit slower like two or three times but it will not use much less memory"*
 
 **Bad Data:**
-- *"Developers send data from 1998 or 2050 causing partition chaos"*
-- *"Always validate timestamps before they hit production"*
+- *"We enable developers to put whatever timestamp they want on their logs... they tend to do really silly things like sending you data from 1998 or sending you data for 2050"*
+- Always validate timestamps before they hit production
 
 **The key insight:** Most 2AM incidents are preventable if you recognize the warning signs and have ready-to-use diagnostic queries.
+
+## Video Resources
+- [10 Lessons from Operating ClickHouse](https://www.youtube.com/watch?v=liTgGiTuhJE) - Source of the disk space, memory, and bad data lessons from production operations

@@ -2,7 +2,7 @@
 sidebar_position: 1
 slug: /tips-and-tricks/materialized-views
 sidebar_label: 'Materialized Views'
-doc_type: 'how-to-guide'
+doc_type: 'how-to'
 keywords: [
   'clickhouse materialized views',
   'materialized view optimization',
@@ -18,15 +18,13 @@ keywords: [
   'view storage overhead'
 ]
 title: 'Lessons - Materialized Views'
-description: 'Find solutions to the most common ClickHouse problems including slow queries, memory errors, connection issues, and configuration problems.'
+description: 'Real world examples of materialized views, problems and solutions'
 ---
 
 # Materialized Views: The Double-Edged Sword {#materialized-views-the-double-edged-sword}
 *This guide is part of a collection of findings gained from community meetups. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
 *Too many parts bogging your database down? Check out the [Too Many Parts](./too-many-parts.md) community insights guide.*
 *Learn more about [Materialized Views](/materialized-views).*
-
-**Community warning from real production incidents:** Teams get *"over enthusiastic about materialized views and we end up creating too many of them and that kind of slows down... our injection as well"*
 
 ## The 10x Storage Anti-Pattern {#storage-antipattern}
 
@@ -61,10 +59,6 @@ LIMIT 1;
 
 ## The Successful MV Patterns {#successful-mv-patterns}
 
-**From companies with excellent MV results:**
-
-*"Because of how we put it into the disk we are compressing from 72 to 3 gigabytes which is 25x which is pretty good"* - Example of proper MV achieving massive compression
-
 ```sql runnable editable
 -- Challenge: Try this pattern with different low-cardinality column combinations
 -- Experiment: Change the time granularity to see how it affects compression
@@ -87,12 +81,13 @@ WHERE created_at >= '2024-01-01'
 LIMIT 1;
 ```
 
-## Recovery Strategy for Over-Enthusiastic MV Usage {#mv-recovery-strategy}
+## When MVs Become a Problem {#mv-problems}
 
-**From companies that fixed their MV problems:**
+**Common mistake:** Teams create too many materialized views and hurt insert performance.
 
-*"One thing we did was remove the Mater if you have lot of materialized views remove the selected materialized views and create the tables for them instead... we create the tables and then run periodically run a cron job to populate those tables instead of relying materialized views"*
+**Simple fix:** Replace non-critical MVs with regular tables populated by cron jobs. You get the same query benefits without slowing down inserts.
 
-**Decision Framework:**
-- **Keep MV:** Query frequency × speed improvement > storage cost × maintenance overhead
-- **Replace with cron:** Aggregations that are *"not very critical like if you have a 5 minute aggregation 1 hour aggregation already created... maybe it can wait"*
+**Which MVs to remove:** Start with redundant time windows (like 2-hour aggregations when you already have 1-hour) and low-frequency queries.
+
+## Related Video Resources
+- [ClickHouse at CommonRoom - Kirill Sapchuk](https://www.youtube.com/watch?v=liTgGiTuhJE) - Source of the "over enthusiastic about materialized views" and "20GB→190GB explosion" case study
