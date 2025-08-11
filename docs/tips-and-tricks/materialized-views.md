@@ -89,5 +89,5 @@ LIMIT 1;
 
 **Which MVs to remove:** Start with redundant time windows (like 2-hour aggregations when you already have 1-hour) and low-frequency queries.
 
-## Related Video Resources
+## Video Sources {#video-sources}
 - [ClickHouse at CommonRoom - Kirill Sapchuk](https://www.youtube.com/watch?v=liTgGiTuhJE) - Source of the "over enthusiastic about materialized views" and "20GB→190GB explosion" case study

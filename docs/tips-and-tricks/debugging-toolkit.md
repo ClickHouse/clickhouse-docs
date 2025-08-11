@@ -190,5 +190,5 @@ ORDER BY data_year DESC;
 
 **The key insight:** Most 2AM incidents are preventable if you recognize the warning signs and have ready-to-use diagnostic queries.
 
-## Video Resources
+## Video Sources {#video-sources}
 - [10 Lessons from Operating ClickHouse](https://www.youtube.com/watch?v=liTgGiTuhJE) - Source of the disk space, memory, and bad data lessons from production operations
