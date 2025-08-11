@@ -5,6 +5,7 @@ pagination_next: null
 sidebar_position: 7
 description: 'Ruby on Rails SDK for ClickStack - The ClickHouse Observability Stack'
 title: 'Ruby on Rails'
+doc_type: 'how-to'
 ---
 
 This guide integrates:

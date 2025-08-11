@@ -5,6 +5,7 @@ sidebar_label: 'Advanced install'
 slug: /install/advanced
 title: 'Advanced installation methods'
 hide_title: false
+doc_type: 'how-to'
 ---
 
 ## Compile from source {#compile-from-source}

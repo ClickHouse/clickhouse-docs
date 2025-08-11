@@ -3,6 +3,7 @@ sidebar_label: 'Enhanced Encryption'
 slug: /cloud/security/cmek
 title: 'Customer Managed Encryption Keys (CMEK)'
 description: 'Learn more about customer managed encryption keys'
+doc_type: 'how-to'
 ---
 
 import Image from '@theme/IdealImage';

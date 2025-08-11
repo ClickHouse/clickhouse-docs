@@ -3,6 +3,7 @@ sidebar_label: 'Integrations'
 slug: /manage/integrations
 title: 'Integrations'
 description: 'Integrations for ClickHouse'
+doc_type: 'how-to'
 ---
 
 To see a full list of integrations for ClickHouse, please see [this page](/integrations).

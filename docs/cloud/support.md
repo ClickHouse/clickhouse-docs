@@ -4,6 +4,7 @@ title: 'Cloud Support'
 slug: /cloud/support
 description: 'Learn about Cloud Support'
 hide_title: true
+doc_type: 'tutorial'
 ---
 
 import Content from '@site/docs/about-us/support.md';

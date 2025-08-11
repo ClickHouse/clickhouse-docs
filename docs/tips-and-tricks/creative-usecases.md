@@ -2,7 +2,7 @@
 sidebar_position: 1
 slug: /community-wisdom/creative-use-cases
 sidebar_label: 'Creative Use Cases'
-doc_type: 'how-to-guide'
+doc_type: 'how-to'
 keywords: [
   'clickhouse creative use cases',
   'clickhouse success stories',
@@ -18,7 +18,7 @@ keywords: [
   'production success stories'
 ]
 title: 'Lessons - Creative Use Cases'
-description: 'Find solutions to the most common ClickHouse problems including slow queries, memory errors, connection issues, and configuration problems.'
+description: 'Creative, outside the box use cases for ClickHouse'
 ---
 
 # Breaking the Rules: Success Stories {#breaking-the-rules}

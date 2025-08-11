@@ -4,6 +4,7 @@ sidebar_label: 'SharedMergeTree'
 title: 'SharedMergeTree'
 keywords: ['SharedMergeTree']
 description: 'Describes the SharedMergeTree table engine'
+doc_type: 'how-to'
 ---
 
 import shared_merge_tree from '@site/static/images/cloud/reference/shared-merge-tree-1.png';

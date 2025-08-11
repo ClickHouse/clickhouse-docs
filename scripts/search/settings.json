@@ -7,156 +7,94 @@
     "searchableAttributes": [
       "title",
       "h1",
-      "h2", 
-      "h3",
       "keywords",
+      "h2",
+      "h3",
+      "h4",
+      "content"
+    ],
+    "attributesToRetrieve": [
+      "objectID",
+      "url", 
+      "url_without_anchor",
+      "title",
       "content",
+      "type",
+      "hierarchy",
+      "anchor",
+      "h1",
+      "h2",
+      "h3",
       "h4"
     ],
     "numericAttributesToIndex": null,
-    "attributesToRetrieve": [
-      "hierarchy",
-      "content",
-      "anchor",
-      "url",
-      "url_without_anchor",
-      "type",
-      "title"
-    ],
-    "camelCaseAttributes": [
-      "h1",
-      "h2",
-      "h3", 
-      "title"
-    ],
+    "camelCaseAttributes": ["h1", "h2", "h3", "h4", "title"],
     "attributeCriteriaComputedByMinProximity": false,
     "distinct": true,
     "unretrievableAttributes": null,
     "optionalWords": [
-      "clickhouse",
-      "database",
-      "function", 
-      "query",
-      "table",
-      "how",
-      "to",
-      "what",
-      "is",
-      "can",
-      "do",
-      "does",
-      "will",
-      "should",
-      "the",
-      "a",
-      "an"
+      "clickhouse", "database", "function", "query", "table", "data",
+      "how", "to", "what", "is", "can", "do", "does", "will", "should",
+      "the", "a", "an", "and", "or", "but", "in", "on", "at", "for"
     ],
     "attributesForFaceting": null,
     "attributesToSnippet": [
-      "content:15",
-      "title:10"
+      "content:50",
+      "title:15"
     ],
     "attributesToHighlight": [
-      "hierarchy",
-      "content",
-      "title",
-      "h1",
-      "h2",
-      "h3"
-    ],
-    "paginationLimitedTo": 1000,
-    "attributeForDistinct": "url",
-    "exactOnSingleWordQuery": "word",
-    "disableExactOnAttributes": [
       "content"
     ],
+    "paginationLimitedTo": 1000,
+    "attributeForDistinct": "url_without_anchor",
+    "exactOnSingleWordQuery": "word",
+    "disableExactOnAttributes": ["content"],
     "disablePrefixOnAttributes": [],
     "ranking": [
-      "typo",
       "words",
       "proximity",
-      "attribute",
+      "typo",
+      "attribute", 
       "exact",
       "custom"
     ],
     "customRanking": [
-      "desc(score)",
-      "desc(page_rank)"
+      "desc(doc_type_score)",
+      "desc(content_score)",
+      "desc(page_rank)",
+      "desc(score)"
     ],
     "separatorsToIndex": "_-",
     "removeWordsIfNoResults": "allOptional",
     "queryType": "prefixLast",
     "highlightPreTag": "<em>",
-    "highlightPostTag": "</span>",
-    "snippetEllipsisText": "",
-    "alternativesAsExact": [
-      "ignorePlurals",
-      "singleWordSynonym"
-    ],
-    "indexLanguages": [
-      "en"
-    ]
+    "highlightPostTag": "</em>",
+    "snippetEllipsisText": "…",
+    "alternativesAsExact": ["ignorePlurals", "singleWordSynonym"],
+    "indexLanguages": ["en"]
   },
   "rules": [
     {
-      "conditions": [
-        {
-          "anchoring": "contains",
-          "pattern": "how to scale"
-        }
-      ],
-      "consequence": {
-        "params": {
-          "query": "scaling horizontal distributed"
-        }
-      },
+      "conditions": [{"anchoring": "contains", "pattern": "how to scale"}],
+      "consequence": {"params": {"query": "scaling horizontal distributed"}},
       "enabled": true,
       "objectID": "how-to-scale-rule"
     },
     {
-      "conditions": [
-        {
-          "anchoring": "contains", 
-          "pattern": "how to optimize"
-        }
-      ],
-      "consequence": {
-        "params": {
-          "query": "optimization performance tuning"
-        }
-      },
-      "enabled": true,
+      "conditions": [{"anchoring": "contains", "pattern": "how to optimize"}],
+      "consequence": {"params": {"query": "optimization performance tuning"}},
+      "enabled": true, 
       "objectID": "how-to-optimize-rule"
     },
     {
-      "conditions": [
-        {
-          "anchoring": "contains",
-          "pattern": "what is"
-        }
-      ],
-      "consequence": {
-        "params": {
-          "removeWordsIfNoResults": "allOptional"
-        }
-      },
+      "conditions": [{"anchoring": "contains", "pattern": "what is"}],
+      "consequence": {"params": {"removeWordsIfNoResults": "allOptional"}},
       "enabled": true,
       "objectID": "what-is-rule"
     },
     {
-      "conditions": [
-        {
-          "anchoring": "is",
-          "pattern": "clickhouse",
-          "alternatives": true
-        }
-      ],
-      "consequence": {
-        "params": {
-          "query": "What is ClickHouse"
-        },
-        "filterPromotes": true
-      },
+      "conditions": [{"anchoring": "is", "pattern": "clickhouse", "alternatives": true}],
+      "consequence": {"params": {"query": "What is ClickHouse"}, "filterPromotes": true},
       "enabled": true,
       "objectID": "qr-clickhouse-main"
     }

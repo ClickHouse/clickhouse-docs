@@ -3,6 +3,7 @@ slug: /guides/developer/deduplicating-inserts-on-retries
 title: 'Deduplicating Inserts on Retries'
 description: 'Preventing duplicate data when retrying insert operations'
 keywords: ['deduplication', 'deduplicate', 'insert retries', 'inserts']
+doc_type: 'how-to'
 ---
 
 Insert operations can sometimes fail due to errors such as timeouts. When inserts fail, data may or may not have been successfully inserted. This guide covers how to enable deduplication on insert retries such that the same data does not get inserted more than once.

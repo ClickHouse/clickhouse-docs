@@ -3,6 +3,7 @@ sidebar_label: 'Glossary'
 description: 'This page contains a list of commonly used words and phrases regarding ClickHouse, as well as their definitions.'
 title: 'Glossary'
 slug: /concepts/glossary
+doc_type: 'how-to'
 ---
 
 <!-- no-glossary -->

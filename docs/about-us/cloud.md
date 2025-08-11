@@ -22,7 +22,6 @@ Some of the benefits of using ClickHouse Cloud are described below:
 - **Total cost of ownership**: Best price / performance ratio and low administrative overhead.
 - **Broad ecosystem**: Bring your favorite data connectors, visualization tools, SQL and language clients with you.
 
-<!--
 ## OSS vs ClickHouse Cloud comparison {#oss-vs-clickhouse-cloud}
 
 | Feature                        | Benefits                                                                                                                                                                                                                                                                                                   | OSS ClickHouse  | ClickHouse Cloud  |
@@ -41,7 +40,6 @@ Some of the benefits of using ClickHouse Cloud are described below:
 | **Backups**                    | Backups and restore functionality ensures data durability and supports graceful recovery in the event of outages or other disruptions.                                                                                                                                                                     | ❌               | ✅                 |
 | **Compute-compute separation** | Users can scale compute resources independently of storage, so teams and workloads can share the same storage and maintain dedicated compute resources. This ensures that the performance of one workload doesn't interfere with another, enhancing flexibility, performance, and cost-efficiency.         | ❌               | ✅                 |
 | **Managed services**           | With a cloud-managed service, teams can focus on business outcomes and accelerate time-to-market without having to worry about the operational overhead of sizing, setup, and maintenance of ClickHouse.                                                                                                   | ❌               | ✅                 |
--->
 
 ## What version of ClickHouse does ClickHouse Cloud use? {#what-version-of-clickhouse-does-clickhouse-cloud-use}
 

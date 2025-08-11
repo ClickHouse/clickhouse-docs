@@ -5,6 +5,7 @@ keywords: ['INSERT', 'Batch Insert']
 sidebar_label: 'Inserting ClickHouse data'
 slug: /guides/inserting-data
 show_related_blogs: true
+doc_type: 'how-to'
 ---
 
 import postgres_inserts from '@site/static/images/guides/postgres-inserts.png';

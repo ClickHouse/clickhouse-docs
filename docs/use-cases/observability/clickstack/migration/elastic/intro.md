@@ -8,6 +8,7 @@ sidebar_position: 0
 description: 'Overview for migrating to the ClickHouse Observability Stack from Elastic'
 show_related_blogs: true
 keywords: ['Elasticsearch']
+doc_type: 'how-to'
 ---
 
 ## Migrating to ClickStack from Elastic {#migrating-to-clickstack-from-elastic}

@@ -4,6 +4,7 @@ description: 'Frequently asked questions about ClickPipes for MySQL.'
 slug: /integrations/clickpipes/mysql/faq
 sidebar_position: 2
 title: 'ClickPipes for MySQL FAQ'
+doc_type: 'how-to'
 ---
 
 # ClickPipes for MySQL FAQ

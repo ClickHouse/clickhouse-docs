@@ -4,6 +4,7 @@ sidebar_label: 'Using clickhouse-local database'
 slug: /chdb/guides/clickhouse-local
 description: 'Learn how to use a clickhouse-local database with chDB'
 keywords: ['chdb', 'clickhouse-local']
+doc_type: 'how-to'
 ---
 
 [clickhouse-local](/operations/utilities/clickhouse-local) is a CLI with an embedded version of ClickHouse.

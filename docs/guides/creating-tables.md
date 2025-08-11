@@ -4,6 +4,7 @@ sidebar_label: 'Creating tables'
 title: 'Creating tables in ClickHouse'
 slug: /guides/creating-tables
 description: 'Learn about Creating Tables in ClickHouse'
+doc_type: 'reference'
 ---
 
 # Creating tables in ClickHouse

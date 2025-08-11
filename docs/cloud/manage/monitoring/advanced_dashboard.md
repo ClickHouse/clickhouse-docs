@@ -6,6 +6,7 @@ sidebar_label: 'Advanced dashboard'
 sidebar_position: 45
 slug: /cloud/manage/monitor/advanced-dashboard
 title: 'Advanced dashboard in ClickHouse Cloud'
+doc_type: 'reference'
 ---
 
 import AdvancedDashboard from '@site/static/images/cloud/manage/monitoring/advanced_dashboard.png';

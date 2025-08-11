@@ -18,6 +18,7 @@ import {useLocation} from "@docusaurus/router";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import RelatedBlogs from "../../../components/RelatedBlogs/RelatedBlogs";
 import {galaxyOnClick} from "../../../lib/galaxy/galaxy";
+import ContextNavigation from '../../../components/ContextNavigation/ContextNavigation';
 /**
  * Decide if the toc should be rendered, on mobile or desktop viewports
  */
@@ -108,6 +109,7 @@ export default function DocItemLayout({children}) {
             
             <DocItemContent>{children}</DocItemContent>
             <DocItemFooter />
+            <ContextNavigation />
           </article>
           {frontMatter.show_related_blogs === true ? <RelatedBlogs frontMatter={frontMatter}/> : <></>}
           <DocItemPaginator />

@@ -6,6 +6,7 @@ description: 'Migrating from Snowflake to ClickHouse'
 keywords: ['Snowflake']
 title: 'Migrating from Snowflake to ClickHouse'
 show_related_blogs: true
+doc_type: 'reference'
 ---
 
 import migrate_snowflake_clickhouse from '@site/static/images/migrations/migrate_snowflake_clickhouse.png';

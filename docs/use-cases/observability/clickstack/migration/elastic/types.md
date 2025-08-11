@@ -8,6 +8,7 @@ sidebar_position: 2
 description: 'Mapping types in ClickHouse and Elasticsearch'
 show_related_blogs: true
 keywords: ['JSON', 'Codecs']
+doc_type: 'reference'
 ---
 
 Elasticsearch and ClickHouse support a wide variety of data types, but their underlying storage and query models are fundamentally different. This section maps commonly used Elasticsearch field types to their ClickHouse equivalents, where available, and provides context to help guide migrations. Where no equivalent exists, alternatives or notes are provided in the comments.

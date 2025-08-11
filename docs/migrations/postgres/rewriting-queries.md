@@ -3,6 +3,7 @@ slug: /migrations/postgresql/rewriting-queries
 title: 'Rewriting PostgreSQL Queries'
 keywords: ['postgres', 'postgresql', 'rewriting queries']
 description: 'Part 2 of a guide on migrating from PostgreSQL to ClickHouse'
+doc_type: 'how-to'
 ---
 
 > This is **Part 2** of a guide on migrating from PostgreSQL to ClickHouse. Using a practical example, it demonstrates how to efficiently carry out the migration with a real-time replication (CDC) approach. Many of the concepts covered are also applicable to manual bulk data transfers from PostgreSQL to ClickHouse.
