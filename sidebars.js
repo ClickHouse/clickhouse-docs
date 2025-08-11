@@ -1814,7 +1814,7 @@ const sidebars = {
         },
         {
           type: "link",
-          label: "Tips and Tricks",
+          label: "Tips and Community Wisdom",
           description: "Community Lessons and Troubleshooting",
           href: "/tips-and-tricks/community-wisdom"
         },
