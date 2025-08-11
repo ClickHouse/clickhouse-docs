@@ -2,7 +2,7 @@
 sidebar_position: 1
 slug: /tips-and-tricks/too-many-parts
 sidebar_label: 'Too Many Parts'
-doc_type: 'how-to-guide'
+doc_type: 'how-to'
 keywords: [
   'clickhouse too many parts',
   'too many parts error',
@@ -18,7 +18,7 @@ keywords: [
   'database insert patterns'
 ]
 title: 'Lessons - Too Many Parts Problem'
-description: 'Find solutions to the most common ClickHouse problems including slow queries, memory errors, connection issues, and configuration problems.'
+description: 'Solutions and prevention of Too Many Parts'
 ---
 
 # The Too Many Parts Problem {#the-too-many-parts-problem}
@@ -26,11 +26,6 @@ description: 'Find solutions to the most common ClickHouse problems including sl
 *Need more performance optimization tips? Check out the [Performance Optimization](./performance-optimization.md) community insights guide.*
 
 **Universal pain point:** Small frequent inserts create performance degradation through part explosion.
-
-**Clear warnings from ClickHouse engineers and users:**
-- *"If you are doing 100,000 inserts it is going to create 100,000 parts, and behind the scenes, over time, ClickHouse is going to merge those parts... the more parts you create, the more meta work that you create for ClickHouse to merge"*
-- *"If the inserts are too small then you have another problem in that these small parts will not get merged together in time in the background. When too many parts accumulate, you'll get the "too many parts" error which will slow down your writing throughput"*
-- *"We encourage our users to insert data in batches. For example, 20,000 rows at once"*
 
 ## Recognize the Problem Early {#recognize-parts-problem}
 
@@ -70,8 +65,6 @@ LIMIT 20;
 
 **Community-proven batching strategy from production deployments:**
 
-*"All these batching services they buffer the traffic... either for 30 seconds or till the data size hits 200 MB... there is a fine balance that needs to be struck here for how much to buffer... we don't want to insert again too frequently because then it unnecessarily consumes click house cycles"* - Production observability platform processing TB/day
-
 ```python
 # Python example - battle-tested batching approach from production systems
 import clickhouse_driver
@@ -103,7 +96,7 @@ class ProductionBatchInserter:
 
 **Alternative: Async Inserts (ClickHouse 21.11+)**
 
-*"We developed a function called async insert... this mechanism is straightforward. It's similar to buffer table. We insert to the server side and use a buffer to collect these inserts. By default we have 16 threads to collect this buffer and if the buffer is large enough, or we reach a timeout, we will flush the buffer to the storage so a part will contain multiple inserts"* - ClickHouse team explaining the built-in solution
+*"We developed a function called async insert... this mechanism is straightforward similar to buffer table we insert to the server side and use some buffer to collect these inserts by default we have 16 threads to collect this buffer and if the buffer is large enough or reach timeout we will flush the buffer to the storage so a part will contain multiple inserts"* - ClickHouse team explaining built-in solution
 
 ```sql
 -- Enable async inserts to automatically batch small inserts
@@ -112,3 +105,9 @@ SET wait_for_async_insert = 1;  -- For consistency guarantees
 SET async_insert_max_data_size = 10485760;  -- 10MB buffer size
 SET async_insert_busy_timeout_ms = 30000;   -- 30 second timeout
 ```
+
+## Related Video Resources
+
+**📺 Essential Too Many Parts Videos:**
+- [Fast, Concurrent, and Consistent Asynchronous INSERTS in ClickHouse](https://www.youtube.com/watch?v=AsMPEfN5QtM) - ClickHouse team member explains async inserts and the too many parts problem
+- [Production ClickHouse at Scale](https://www.youtube.com/watch?v=liTgGiTuhJE) - Real-world batching strategies from observability platforms
