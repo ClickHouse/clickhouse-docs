@@ -6,7 +6,7 @@ import clsx from "clsx";
 import IconClose from '@theme/Icon/Close';
 import styles from './styles.module.scss'
 import Feedback from '../../../../components/Feedback';
-import {galaxyOnClick} from "../../../../../lib/galaxy/galaxy";
+import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy';
 
 const AD_DATA_ENDPOINT = 'https://cms.clickhouse-dev.com:1337/api/docs-ad'
 
