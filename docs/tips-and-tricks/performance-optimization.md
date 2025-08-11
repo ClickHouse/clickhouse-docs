@@ -18,7 +18,7 @@ keywords: [
   'performance troubleshooting'
 ]
 title: 'Lessons - Performance Optimization'
-description: 'Find solutions to the most common ClickHouse problems including slow queries, memory errors, connection issues, and configuration problems.'
+description: 'Real world examples of performance optimization strategies'
 ---
 
 # Performance Optimization: Production-Tested Strategies {#performance-optimization}
@@ -90,7 +90,7 @@ WHERE created_at >= '2024-01-01';
 
 ## Focus on Individual Queries, Not Averages {#focus-on-individual-queries-not-averages}
 
-**Alexey Milovidov's core insight:** *"The right way is to ask yourself why this particular query was processed in five seconds... I don't care if median and other queries process quickly I only care about my query"*
+*"The right way is to ask yourself why this particular query was processed in five seconds... I don't care if median and other queries process quickly. I only care about my query"*
 
 Instead of looking at average performance, identify specific query patterns that cause problems:
 
@@ -239,7 +239,84 @@ SELECT
 FROM sampled_data, full_data;
 ```
 
-**The key diagnostic question:** Is your query slow because it's reading too many rows, or because it's creating too many aggregation groups? The solution strategies are completely different.
+## Sentry's Bit Mask Optimization: From Memory Explosion to 8 Bytes {#bit-mask-optimization}
+
+**The Problem:** When aggregating by high-cardinality columns (like URLs), each unique value creates a separate aggregation state in memory, leading to memory exhaustion.
+
+**Sentry's Solution:** Instead of grouping by the actual URL strings, group by boolean expressions that collapse into bit masks.
+
+**PROBLEM: Memory explosion with unbounded string arrays**
+
+```sql runnable editable
+-- This creates separate aggregation states for every unique repo
+-- Challenge: Watch the memory usage - each user stores ALL their repo names
+SELECT 
+    actor_login,
+    groupArray(repo_name) as all_repos,
+    length(all_repos) as repo_count
+FROM github.github_events
+WHERE created_at >= '2024-01-01' AND created_at < '2024-01-02'
+GROUP BY actor_login
+HAVING repo_count > 5
+ORDER BY repo_count DESC
+LIMIT 10;
+```
+
+**SOLUTION: Boolean expressions that collapse to single integers**
+
+```sql runnable editable
+-- Each condition becomes a bit in a single integer per user
+-- Challenge: Add more repo conditions and see how memory stays bounded
+SELECT 
+    actor_login,
+    -- Each sumIf creates a single integer counter, not arrays of strings
+    sumIf(1, repo_name LIKE '%microsoft%') as microsoft_activity,
+    sumIf(1, repo_name LIKE '%google%') as google_activity, 
+    sumIf(1, repo_name LIKE '%kubernetes%') as k8s_activity,
+    sumIf(1, event_type = 'PushEvent') as total_pushes,
+    -- Complex conditions still collapse to single counters
+    sumIf(1, repo_name LIKE '%microsoft%' AND event_type = 'PushEvent') as microsoft_pushes
+FROM github.github_events
+WHERE created_at >= '2024-01-01' AND created_at < '2024-01-02'
+GROUP BY actor_login
+HAVING microsoft_activity > 0 OR google_activity > 0
+ORDER BY (microsoft_activity + google_activity + k8s_activity) DESC
+LIMIT 20;
+```
+
+**Compare the memory efficiency:**
+
+```sql runnable editable
+-- Challenge: Compare cardinality - how many unique values vs simple counters?
+SELECT 
+    'High Cardinality (Memory Explosion)' as approach,
+    uniq(repo_name) as unique_repos,
+    'Each user aggregation state stores array of ALL repo names' as memory_impact
+FROM github.github_events
+WHERE created_at >= '2024-01-01' AND created_at < '2024-01-02'
+
+UNION ALL
+
+SELECT 
+    'Bit Mask Approach (Memory Bounded)',
+    4 as unique_conditions, -- microsoft, google, k8s, pushes
+    'Each user aggregation state = 4 integers (32 bytes total)' as memory_impact;
+```
+
+**The Memory Impact:**
+- **Before:** Each user stores arrays of ALL unique repo names (potentially MBs per user)
+- **After:** Each user stores fixed number of counters (32 bytes for 4 conditions)  
+- **Result:** Sentry achieved 100x memory reduction for certain query patterns
+
+**Production Insight:** *"Don't look for 10 or 20% improvements, look for orders of magnitude... you want to see like 10x, 100x less memory consumed."*
+
+**Why This Works:** Instead of storing every unique string in memory, you're storing the *answer to questions about those strings* as integers. The aggregation state becomes bounded and tiny, regardless of data diversity.
+
+## Video Sources {#video-sources}
+- [Lost in the Haystack - Optimizing High Cardinality Aggregations](https://www.youtube.com/watch?v=paK84-EUJCA) - Sentry's production lessons on memory optimization
+- [ClickHouse Performance Analysis](https://www.youtube.com/watch?v=lxKbvmcLngo) - Alexey Milovidov on debugging methodology
+- [ClickHouse Meetup: Query Optimization Techniques](https://www.youtube.com/watch?v=JBomQk4Icjo) - Community optimization strategies
 
 **Read Next**:
 - [Query Optimization Guide](/optimize/query-optimization)
+- [Materialized Views Community Insights](./materialized-views.md)
