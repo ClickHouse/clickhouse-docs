@@ -55,7 +55,7 @@ ClickHouse Cloud supports [cross-region PrivateLink](https://aws.amazon.com/abou
 - us-west-1
 - us-east-2
 - us-east-1
-Pricing considerations: AWS will charge users for cross region data transfer, see pricinng [here](https://aws.amazon.com/privatelink/pricing/).
+Pricing considerations: AWS will charge users for cross region data transfer, see pricing [here](https://aws.amazon.com/privatelink/pricing/).
 :::
 
 **Please complete the following to enable AWS PrivateLink**:
