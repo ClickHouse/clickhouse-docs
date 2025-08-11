@@ -13,6 +13,10 @@ The official C# client for connecting to ClickHouse.
 The client source code is available in the [GitHub repository](https://github.com/ClickHouse/clickhouse-cs).
 Originally developed by [Oleg V. Kozlyuk](https://github.com/DarkWanderer).
 
+## Migration guide {#migration-guide}
+1. Update `.csproj` with `ClickHouse.Driver` name and [the latest version of the package](https://www.nuget.org/packages/ClickHouse.Driver).
+2. Update your code to use the new `ClickHouse.Driver` namespace and classes.
+
 ## Supported .NET Versions {#supported-net-versions}
 
 `ClickHouse.Driver` supports the following .NET versions:

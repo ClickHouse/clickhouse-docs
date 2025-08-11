@@ -355,7 +355,7 @@ settings = {'merge_tree_min_rows_for_concurrent_read': 65535,
 client.query("SELECT event_type, sum(timeout) FROM event_errors WHERE event_time > '2022-08-01'", settings=settings)
 ```
 
-### Client _command_ Method {#client-_command_-method}
+### Client `command` Method {#client-command-method}
 
 Use the `Client.command` method to send SQL queries to the ClickHouse Server that do not normally return data or returns
 a single primitive or array value rather than a full dataset. This method takes the following parameters:
@@ -387,7 +387,7 @@ result
 Out[7]: 110
 ```
 
-### Client _query_ Method {#client-_query_-method}
+### Client `query` Method {#client-query-method}
 
 The `Client.query` method is the primary way to retrieve a single "batch" dataset from the ClickHouse Server. It
 utilizes the Native ClickHouse format over HTTP to transmit large datasets (up to approximately one million rows)
@@ -465,7 +465,7 @@ generator):
 Each of these methods returns a `ContextStream` object that must be opened via a `with` statement to start consuming the
 stream. See [Advanced Queries (Streaming Queries)](#streaming-queries) for details and examples.
 
-### Client _insert_ Method {#client-_insert_-method}
+### Client `insert` method {#client-insert-method}
 
 For the common use case of inserting multiple records into ClickHouse, there is the `Client.insert` method. It takes the
 following parameters:
@@ -561,7 +561,7 @@ Similarly, you could save data in [TabSeparated](/interfaces/formats#tabseparate
 For use cases which do not require transformation between ClickHouse data and native or third party data types and
 structures, the ClickHouse Connect client provides two methods for direct usage of the ClickHouse connection.
 
-#### Client _raw_query_ Method {#client-_raw_query_-method}
+#### Client `raw_query` Method {#client_raw_query_method}
 
 The `Client.raw_query` method allows direct usage of the ClickHouse HTTP query interface using the client connection.
 The return value is an unprocessed `bytes` object. It offers a convenient wrapper with parameter binding,
@@ -579,11 +579,11 @@ error handling, retries, and settings management using a minimal interface:
 It is the caller's responsibility to handle the resulting `bytes` object. Note that the `Client.query_arrow` is just a
 thin wrapper around this method using the ClickHouse `Arrow` output format.
 
-#### Client _raw_stream_ Method {#client-_raw_stream_-method}
+#### Client `raw_stream` Method {#client_raw_stream_method}
 The `Client.raw_stream` method has the same API as the `raw_query` method, but returns an `io.IOBase` object which can be used
 as a generator/stream source of `bytes` objects.  It is currently utilized by the `query_arrow_stream` method.
 
-#### Client _raw_insert_ Method {#client-_raw_insert_-method}
+#### Client `raw_insert` Method {#client_raw_insert_method}
 
 The `Client.raw_insert` method allows direct inserts of `bytes` objects or `bytes` object generators using the client
 connection. Because it does no processing of the insert payload, it is highly performant. The method provides options

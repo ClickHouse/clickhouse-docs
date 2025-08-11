@@ -86,12 +86,12 @@ LIMIT 5;
 └─────────────────────┴────────┘
 ```
 
-The [`toStartOfHour()`](/docs/sql-reference/functions/date-time-functions#tostartofhour) function used here converts the given time to the start of the hour. 
+The [`toStartOfHour()`](/docs/sql-reference/functions/date-time-functions#toStartOfHour) function used here converts the given time to the start of the hour. 
 You can also group by year, quarter, month, or day.
 
 ## Custom grouping intervals {#time-series-custom-grouping-intervals}
 
-We can even group by arbitrary intervals, e.g., 5 minutes using the [`toStartOfInterval()`](/docs/sql-reference/functions/date-time-functions#tostartofinterval) function. 
+We can even group by arbitrary intervals, e.g., 5 minutes using the [`toStartOfInterval()`](/docs/sql-reference/functions/date-time-functions#toStartOfInterval) function. 
 
 Let's say we want to group by 4-hour intervals.
 We can specify the grouping interval using the [`INTERVAL`](/docs/sql-reference/data-types/special-data-types/interval) clause:
@@ -218,7 +218,7 @@ ORDER BY hour ASC WITH FILL STEP toIntervalHour(1);
 Sometimes, we don't want to deal with the start of intervals (like the start of the day or an hour) but window intervals. 
 Let's say we want to understand the total hits for a window, not based on days but on a 24-hour period offset from 6 pm. 
 
-We can use the [`date_diff()`](/docs/sql-reference/functions/date-time-functions#date_diff) function to calculate the difference between a reference time and each record's time. 
+We can use the [`date_diff()`](/docs/sql-reference/functions/date-time-functions#timeDiff) function to calculate the difference between a reference time and each record's time. 
 In this case, the `day` column will represent the difference in days (e.g., 1 day ago, 2 days ago, etc.):
 
 ```sql
