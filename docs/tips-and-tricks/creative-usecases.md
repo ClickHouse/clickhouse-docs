@@ -81,8 +81,6 @@ Craigslist's moment came when Brad asked: *"What do you think of this idea? Mayb
 
 Both teams succeeded because they designed around ClickHouse's unique strengths rather than trying to force it into traditional database patterns. They understood that sometimes the "analytical database" becomes the perfect operational solution when speed and SQL flexibility matter more than traditional OLTP guarantees. ClickHouse's combination of speed, SQL flexibility, and operational simplicity enables use cases that traditional database categories can't address—proving that the best tool is often the one that solves your specific problems, not the one that fits the textbook definition.
 
----
-
 ## Video Sources {#video-sources}
 
 - **[Breaking the Rules - Building a Rate Limiter with ClickHouse](https://www.youtube.com/watch?v=wRwqrbUjRe4)** - Brad Lhotsky (Craigslist)
