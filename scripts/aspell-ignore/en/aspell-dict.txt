@@ -1,4 +1,4 @@
-personal_ws-1.1 en 3626
+personal_ws-1.1 en 3638 
 AArch
 ACLs
 AICPA
@@ -32,6 +32,7 @@ Airbyte
 Akka
 AlertManager
 Alexey
+Amir
 Anthropic
 AnyEvent
 AnythingLLM
@@ -219,6 +220,7 @@ CodeLLDB
 Codecs
 CollapsingMergeTree
 Combinators
+CommonRoom
 Compat
 CompiledExpressionCacheBytes
 CompiledExpressionCacheCount
@@ -231,6 +233,9 @@ ConcurrencyControlSoftLimit
 Config
 ConnectionDetails
 Const
+ContentSquare
+ContentSquare's
+Contentsquare
 ContextLockWait
 Contrib
 CopilotKit
@@ -335,6 +340,7 @@ DistributedFilesToInsert
 DistributedProductMode
 DistributedSend
 DockerHub
+Doron
 DoubleDelta
 Doxygen
 Draxlr
@@ -444,6 +450,7 @@ GraphQL
 GraphiteMergeTree
 Greenwald
 Gunicorn
+Guram
 HANA
 HDDs
 HHMM
@@ -617,6 +624,7 @@ Kerberos
 Khanna
 Kibana
 Kinesis
+Kirill
 KittenHouse
 Klickhouse
 Kolmogorov
@@ -642,6 +650,7 @@ LangGraph
 Langchain
 Lemire
 Levenshtein
+Lhotsky
 Liao
 LibFuzzer
 LibreChat
@@ -1136,6 +1145,7 @@ SaaS
 Sackmann's
 Sanjeev
 Sankey
+Sapchuk
 Scalable
 Scatterplot
 Schaefer
@@ -1163,6 +1173,7 @@ SharedMergeTree
 ShortCircuitFunctionEvaluation
 Shortkeys
 Signup
+Sigua
 SimHash
 Simhash
 SimpleAggregateFunction
@@ -1361,6 +1372,7 @@ VPCs
 VPNs
 Vadim
 Valgrind
+Vaza
 Vectorization
 Vectorized
 Vercel
