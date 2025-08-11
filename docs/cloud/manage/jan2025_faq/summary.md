@@ -3,6 +3,7 @@ title: 'Summary'
 slug: /cloud/manage/jan-2025-faq/summary
 keywords: ['new tiers', 'packaging', 'pricing faq', 'summary']
 description: 'Summary of New ClickHouse Cloud Tiers'
+doc_type: 'how-to'
 ---
 
 The following FAQ summarizes common questions with respect to new tiers introduced in ClickHouse Cloud starting in January 2025.

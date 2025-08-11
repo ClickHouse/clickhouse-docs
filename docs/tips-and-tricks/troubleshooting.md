@@ -2,7 +2,7 @@
 sidebar_position: 1
 slug: /tips-and-tricks/troubleshooting
 sidebar_label: 'Troubleshooting'
-doc_type: 'reference'
+doc_type: 'how-to'
 keywords: [
   'clickhouse troubleshooting',
   'clickhouse errors',
@@ -18,7 +18,7 @@ keywords: [
   'troubleshooting guide'
 ]
 title: 'Troubleshooting Common Issues'
-description: 'Find solutions to the most common ClickHouse problems including slow queries, memory errors, connection issues, and configuration problems.'
+description: 'Find solutions to the most common troubleshooting problems including slow queries, memory errors, connection issues, and configuration problems.'
 ---
 
 # Troubleshooting Common Issues {#troubleshooting-common-issues}

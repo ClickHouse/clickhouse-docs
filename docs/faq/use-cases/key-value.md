@@ -4,6 +4,7 @@ title: 'Can I use ClickHouse as a key-value storage?'
 toc_hidden: true
 toc_priority: 101
 description: 'Answers the frequently asked question of whether or not ClickHouse can be used as a key-value storage?'
+doc_type: 'overview'
 ---
 
 # Can I use ClickHouse as a key-value storage? {#can-i-use-clickhouse-as-a-key-value-storage}

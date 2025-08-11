@@ -4,6 +4,7 @@ description: 'Step-by-step guide to creating your first Kafka ClickPipe.'
 slug: /integrations/clickpipes/kafka/create-your-first-kafka-clickpipe
 sidebar_position: 1
 title: 'Creating your first Kafka ClickPipe'
+doc_type: 'how-to'
 ---
 
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';

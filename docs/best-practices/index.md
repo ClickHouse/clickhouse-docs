@@ -4,6 +4,7 @@ keywords: ['Cloud', 'Primary key', 'Ordering key', 'Materialized Views', 'Best P
 title: 'Overview'
 hide_title: true
 description: 'Landing page for Best Practices section in ClickHouse'
+doc_type: 'reference'
 ---
 
 # Best Practices in ClickHouse {#best-practices-in-clickhouse}

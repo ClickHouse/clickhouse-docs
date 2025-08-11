@@ -4,6 +4,7 @@ title: 'FAQ'
 description: 'Landing page for FAQ'
 pagination_prev: null
 pagination_next: null
+doc_type: 'overview'
 ---
 
 | Page                                                          | Description                                                                            |

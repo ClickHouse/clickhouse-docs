@@ -3,6 +3,7 @@ slug: /integrations/jupysql
 sidebar_label: 'Jupyter notebooks'
 description: 'JupySQL is a multi-platform database tool for Jupyter.'
 title: 'Using JupySQL with ClickHouse'
+doc_type: 'how-to'
 ---
 
 import Image from '@theme/IdealImage';

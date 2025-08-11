@@ -5,6 +5,7 @@ sidebar_label: 'Alerts'
 pagination_prev: null
 pagination_next: null
 description: 'Alerts with ClickStack'
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';

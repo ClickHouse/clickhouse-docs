@@ -5,6 +5,7 @@ sidebar_position: 0
 pagination_prev: null
 pagination_next: null
 description: 'Getting started with ClickStack and a sample dataset with logs, sessions, traces and metrics'
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';

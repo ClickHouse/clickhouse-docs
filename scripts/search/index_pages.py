@@ -9,7 +9,7 @@ from algoliasearch.search.client import SearchClientSync
 import networkx as nx
 from urllib.parse import urlparse, urlunparse
 
-IGNORE_FILES = ["index.md"]
+IGNORE_FILES = ["index.md", "changelog.md", "CHANGELOG.md"]
 IGNORE_DIRS = ["ru", "zh"]
 
 SUB_DIRECTORIES = {
@@ -25,6 +25,20 @@ files_processed = set()
 link_data = []
 
 
+def is_changelog(file_path):
+    """Check if a file is a changelog based on path or filename"""
+    changelog_patterns = [
+        'changelog',
+        'change-log', 
+        'release-notes',
+        'releases',
+        'history',
+        'news'
+    ]
+    file_path_lower = file_path.lower()
+    return any(pattern in file_path_lower for pattern in changelog_patterns)
+
+
 def split_url_and_anchor(url):
     parsed_url = urlparse(url)
     url_without_anchor = urlunparse(parsed_url._replace(fragment=""))
@@ -38,9 +52,21 @@ def read_metadata(text):
     for part in parts:
         parts = part.split(":")
         if len(parts) == 2:
-            if parts[0] in ['title', 'description', 'slug', 'keyword', 'score']:
+            if parts[0] in ['title', 'description', 'slug', 'keyword', 'keywords', 'score', 'doc_type']:
                 metadata[parts[0]] = int(parts[1].strip()) if parts[0] == 'score' else parts[1].strip()
     return metadata
+
+
+def get_doc_type_score(doc_type):
+    """Calculate doc_type_score based on Diataxis classification"""
+    doc_type_scores = {
+        'tutorial': 1000,
+        'how-to': 900, 
+        'explanation': 800,
+        'overview': 700,
+        'reference': 100
+    }
+    return doc_type_scores.get(doc_type, 500)  # default score for unknown types
 
 
 def parse_metadata_and_content(directory, base_directory, md_file_path, log_snippet_failure=True):
@@ -62,8 +88,15 @@ def parse_metadata_and_content(directory, base_directory, md_file_path, log_snip
     yaml = YAML()
     yaml.preserve_quotes = True
     for block in metadata_blocks:
-        block_data = read_metadata(block)
-        metadata.update(block_data)
+        try:
+            # Use proper YAML parsing instead of basic read_metadata
+            block_data = yaml.load(block) or {}
+            metadata.update(block_data)
+        except Exception as e:
+            # Silently fall back to basic parsing for malformed YAML
+            # This handles cases with unescaped quotes or other YAML formatting issues
+            block_data = read_metadata(block)
+            metadata.update(block_data)
     # Remove all metadata blocks from the content
     content = re.sub(metadata_pattern, '', content, flags=re.DOTALL)
     # Add file path to metadata
@@ -77,6 +110,18 @@ def parse_metadata_and_content(directory, base_directory, md_file_path, log_snip
     content = re.sub(r'<[A-Za-z0-9_-]+\s*[^>]*\/>', '', content)  # report components
     metadata['slug'] = slug
     metadata['title'] = metadata.get('title', '').strip()
+    
+    # Handle keywords - normalize to string format for Algolia
+    keywords = metadata.get('keywords', metadata.get('keyword', ''))
+    if isinstance(keywords, list):
+        # Convert array to comma-separated string
+        metadata['keywords'] = ', '.join(str(k) for k in keywords)
+    elif keywords:
+        # Already a string, keep as-is
+        metadata['keywords'] = str(keywords)
+    else:
+        metadata['keywords'] = ''
+    
     return metadata, content
 
 
@@ -233,6 +278,9 @@ def parse_markdown_content(metadata, content, base_url):
     current_h1 = metadata.get('title', '')
     current_h2 = None
     current_h3 = None
+    doc_type = metadata.get('doc_type', 'reference')
+    doc_type_score = get_doc_type_score(doc_type)
+    
     current_subdoc = {
         'file_path': metadata.get('file_path', ''),
         'slug': slug,
@@ -242,6 +290,8 @@ def parse_markdown_content(metadata, content, base_url):
         'title': metadata.get('title', ''),
         'content': metadata.get('description', ''),
         'keywords': metadata.get('keywords', ''),
+        'doc_type': doc_type,
+        'doc_type_score': doc_type_score,
         'objectID': get_object_id(heading_slug),
         'type': 'lvl1',
         'hierarchy': {
@@ -287,6 +337,8 @@ def parse_markdown_content(metadata, content, base_url):
                 'h2_camel': current_h2,
                 'content': '',
                 'keywords': metadata.get('keywords', ''),
+                'doc_type': doc_type,
+                'doc_type_score': doc_type_score,
                 'objectID': get_object_id(f'{heading_slug}-{current_h2}'),
                 'type': 'lvl2',
                 'hierarchy': {
@@ -315,6 +367,8 @@ def parse_markdown_content(metadata, content, base_url):
                 'h3_camel': current_h3,
                 'content': '',
                 'keywords': metadata.get('keywords', ''),
+                'doc_type': doc_type,
+                'doc_type_score': doc_type_score,
                 'objectID': get_object_id(f'{heading_slug}-{current_h3}'),
                 'type': 'lvl3',
                 'hierarchy': {
@@ -340,6 +394,8 @@ def parse_markdown_content(metadata, content, base_url):
                 'h4_camel': current_h4,
                 'content': '',
                 'keywords': metadata.get('keywords', ''),
+                'doc_type': doc_type,
+                'doc_type_score': doc_type_score,
                 'objectID': get_object_id(f'{heading_slug}-{current_h4}'),
                 'type': 'lvl4',
                 'hierarchy': {
@@ -364,7 +420,7 @@ def process_markdown_directory(directory, base_directory, base_url):
         dirs[:] = [d for d in dirs if d != '_snippets' and d != '_placeholders' and d not in IGNORE_DIRS]
         for file in files:
             relative_file_path = os.path.relpath(os.path.join(root, file), directory)
-            if (file.endswith('.md') or file.endswith('.mdx')) and relative_file_path not in IGNORE_FILES:
+            if (file.endswith('.md') or file.endswith('.mdx')) and relative_file_path not in IGNORE_FILES and not is_changelog(relative_file_path):
                 md_file_path = os.path.join(root, file)
                 if md_file_path not in files_processed:
                     files_processed.add(md_file_path)
@@ -443,7 +499,7 @@ def main(base_directory, algolia_app_id, algolia_api_key, algolia_index_name,
             send_to_algolia(client, temp_index_name, batch)
         else:
             for d in batch:
-                print(f"{d['url']} - {d['page_rank']}")
+                print(f"{d['url']} - {d['page_rank']} - {d['doc_type']} ({d['doc_type_score']}) - keywords: {d.get('keywords', 'None')}")
         print(f'{'processed' if dry_run else 'indexed'} {len(batch)} records')
         t += len(batch)
     print(f'total {'processed' if dry_run else 'indexed'} {t} records')

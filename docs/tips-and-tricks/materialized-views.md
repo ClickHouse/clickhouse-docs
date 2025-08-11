@@ -18,7 +18,7 @@ keywords: [
   'view storage overhead'
 ]
 title: 'Lessons - Materialized Views'
-description: 'Real world examples of materialized views, problems and solutions'
+description: 'Real world examples of materialized views, problems and solutions.'
 ---
 
 # Materialized Views: The Double-Edged Sword {#materialized-views-the-double-edged-sword}

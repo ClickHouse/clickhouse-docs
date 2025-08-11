@@ -5,6 +5,7 @@ keywords: ['clickhouse', 'NiFi', 'connect', 'integrate', 'etl', 'data integratio
 slug: /integrations/nifi
 description: 'Stream data into ClickHouse using NiFi data pipelines'
 title: 'Connect Apache NiFi to ClickHouse'
+doc_type: 'reference'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

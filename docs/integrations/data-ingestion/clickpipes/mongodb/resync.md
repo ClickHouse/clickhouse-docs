@@ -3,6 +3,7 @@ title: 'Resyncing a Database ClickPipe'
 description: 'Doc for resyncing a database ClickPipe'
 slug: /integrations/clickpipes/mongodb/resync
 sidebar_label: 'Resync ClickPipe'
+doc_type: 'how-to'
 ---
 
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'

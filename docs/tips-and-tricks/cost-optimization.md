@@ -18,7 +18,7 @@ keywords: [
   'retention analysis'
 ]
 title: 'Lessons - Cost Optimization'
-description: 'Battle-tested cost optimization strategies from ClickHouse community meetups with real production examples and verified techniques.'
+description: 'Real World Examples of Cost Optimization Strategies'
 ---
 
 # Cost Optimization: Battle-Tested Strategies {#cost-optimization}

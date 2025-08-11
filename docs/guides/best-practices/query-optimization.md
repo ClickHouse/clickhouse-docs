@@ -2,7 +2,9 @@
 slug: /optimize/query-optimization
 sidebar_label: 'Query optimization'
 title: 'Guide for Query optimization'
-description: 'A simple guide for query optimization that describe common path to improve query performance'
+description: 'A comprehensive guide for optimizing slow queries and improving query performance in ClickHouse'
+doc_type: 'how-to'
+keywords: ['slow queries', 'query optimization', 'performance tuning', 'query performance', 'slow query troubleshooting', 'identify slow queries', 'explain statement', 'primary keys', 'nullable columns', 'low cardinality', 'data types', 'query profiling', 'schema design', 'query logs', 'optimization techniques']
 ---
 
 import queryOptimizationDiagram1 from '@site/static/images/guides/best-practices/query_optimization_diagram_1.png';
