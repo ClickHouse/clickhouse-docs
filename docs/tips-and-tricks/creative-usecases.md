@@ -25,112 +25,67 @@ description: 'Find solutions to the most common ClickHouse problems including sl
 *This guide is part of a collection of findings gained from community meetups. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
 *Need tips on debugging an issue in prod? Check out the [Debugging Toolkit](./debugging-toolkit.md) community insights guide.*
 
-## ClickHouse as Rate Limiter (Craigslist Story) {#clickhouse-rate-limiter}
+These stories showcase how companies found success by using ClickHouse for unconventional use cases, challenging traditional database categories and proving that sometimes the "wrong" tool becomes exactly the right solution.
 
-**Conventional wisdom:** Use Redis for rate limiting.
+## ClickHouse as Rate Limiter {#clickhouse-rate-limiter}
 
-**Craigslist's breakthrough:** *"Everyone uses Redis for rate limiter implementations... Why not just do it in Redis?"*
+When Craigslist needed to add tier-one rate limiting to protect their users, they faced the same decision every engineering team encounters: follow conventional wisdom and use Redis, or explore something different. Brad Lhotsky, working at Craigslist, knew Redis was the standard choice—virtually every rate limiting tutorial and example online uses Redis for good reason. It has rich primitives for rate limiting operations, well-established patterns, and proven track record. But Craigslist's experience with Redis wasn't matching the textbook examples. *"Our experience with Redis is not like what you've seen in the movies... there are a lot of weird maintenance issues that we've hit where we reboot a node in a Redis cluster and some latency spike hits the front end."* For a small team that values maintenance simplicity, these operational headaches were becoming a real problem.
 
-**The problem with Redis:** *"Our experience with Redis is not like what you've seen in the movies... weird maintenance issues... we will reboot a node in a Redis cluster and some weird latency spike hits the front end"*
+So when Brad was approached with the rate limiting requirements, he took a different approach: *"I asked my boss, 'What do you think of this idea? Maybe I can try this with ClickHouse?'"* The idea was unconventional—using an analytical database for what's typically a caching layer problem—but it addressed their core requirements: fail open, impose no latency penalties, and be maintenance-safe for a small team. The solution leveraged their existing infrastructure where access logs were already flowing into ClickHouse via Kafka. Instead of maintaining a separate Redis cluster, they could analyze request patterns directly from the access log data and inject rate limiting rules into their existing ACL API. The approach meant slightly higher latency than Redis, which *"is kind of cheating by instantiating that data set upfront"* rather than doing real-time aggregate queries, but the queries still completed in under 100 milliseconds.
 
-**Test rate limiting logic using ClickHouse approach:**
+**Key Results:**
+- Dramatic improvement over Redis infrastructure
+- Built-in TTL for automatic cleanup eliminated maintenance overhead
+- SQL flexibility enabled complex rate limiting rules beyond simple counters
+- Leveraged existing data pipeline instead of requiring separate infrastructure
+
+## ClickHouse for Customer Analytics {#customer-analytics}
+
+When ServiceNow needed to upgrade their mobile analytics platform, they faced a simple question: *"Why would we replace something that works?"* Amir Vaza from ServiceNow knew their existing system was reliable, but customer demands were outgrowing what it could handle. *"The motivation to replace an existing reliable model is actually from the product world,"* Amir explained. ServiceNow offered mobile analytics as part of their solution for web, mobile, and chatbots, but customers wanted analytical flexibility that went beyond pre-aggregated data.
+
+Their previous system used about 30 different tables with pre-aggregated data segmented by fixed dimensions: application, app version, and platform. For custom properties—key-value pairs that customers could send—they created separate counters for each group. This approach delivered fast dashboard performance but came with a major limitation. *"While this is great for quick value breakdown, I mentioned limitation leads to a lot of loss of analytical context,"* Amir noted. Customers couldn't perform complex customer journey analysis or ask questions like "how many sessions started with the search term 'research RSA token'" and then analyze what those users did next. The pre-aggregated structure destroyed the sequential context needed for multi-step analysis, and every new analytical dimension required engineering work to pre-aggregate and store.
+
+So when the limitations became clear, ServiceNow moved to ClickHouse and eliminated these pre-computation constraints entirely. Instead of calculating every variable upfront, they broke metadata into data points and inserted everything directly into ClickHouse. They used ClickHouse's async insert queue, which Amir called *"actually amazing,"* to handle data ingestion efficiently. The approach meant customers could now create their own segments, slice data freely across any dimensions, and perform complex customer journey analysis that wasn't possible before.
+
+**Key Results:**
+- Dynamic segmentation across any dimensions without pre-computation
+- Complex customer journey analysis became possible
+- Customers could create their own segments and slice data freely  
+- No more engineering bottlenecks for new analytical requirements
 
 ```sql runnable editable
--- Challenge: Try different rate limit thresholds (100, 50) or time windows (hour vs minute)
--- Experiment: Test with different user patterns by changing the HAVING clause
+-- Challenge: Try different customer journey analysis - track user flows across multiple touchpoints  
+-- Experiment: Test complex segmentation that wasn't possible with pre-aggregated tables
 SELECT 
+    'Dynamic Customer Journey Analysis' as feature,
     actor_login as user_id,
-    toStartOfHour(created_at) as hour,
-    count() as requests_per_hour,
-    CASE 
-        WHEN count() > 100 THEN 'RATE_LIMITED'
-        WHEN count() > 50 THEN 'WARNING' 
-        ELSE 'ALLOWED'
-    END as rate_limit_status
+    arrayStringConcat(groupArray(event_type), ' -> ') as user_journey,
+    count() as journey_frequency,
+    toStartOfDay(min(created_at)) as journey_start_date,
+    'Real-time multi-dimensional analysis' as capability
 FROM github.github_events 
 WHERE created_at >= '2024-01-15'
   AND created_at < '2024-01-16'
-GROUP BY actor_login, hour
-HAVING count() > 10
-ORDER BY requests_per_hour DESC
-LIMIT 20;
+  AND event_type IN ('WatchEvent', 'StarEvent', 'ForkEvent', 'IssuesEvent')
+GROUP BY user_id
+HAVING journey_frequency >= 3
+ORDER BY journey_frequency DESC
+LIMIT 15;
 ```
 
-**Results:** *"Running untouched for nearly a year without any alert"* - a dramatic improvement over Redis infrastructure.
+### The Pattern of Innovation {#pattern-of-innovation}
 
-**Why it works:**
-- Incredible write performance for access log data
-- Built-in TTL for automatic cleanup  
-- SQL flexibility for complex rate limiting rules
-- No Redis cluster maintenance headaches
+Both success stories follow a similar pattern: teams that succeeded by questioning database orthodoxy rather than accepting conventional limitations. The breakthrough came when engineering leaders asked themselves whether the "right" tool was actually serving their specific needs.
 
-## Mobile Analytics: The 7-Eleven Success Story {#mobile-analytics}
+Craigslist's moment came when Brad asked: *"What do you think of this idea? Maybe I can try this with ClickHouse?"* Instead of accepting Redis maintenance complexity, they found a path that leveraged existing infrastructure. ServiceNow's realization was similar—rather than accepting that analytics must be slow or pre-computed, they recognized that customers needed the ability to segment data and slice it dynamically without constraints.
 
-**Conventional wisdom:** Analytics databases aren't for mobile applications.
+Both teams succeeded because they designed around ClickHouse's unique strengths rather than trying to force it into traditional database patterns. They understood that sometimes the "analytical database" becomes the perfect operational solution when speed and SQL flexibility matter more than traditional OLTP guarantees. ClickHouse's combination of speed, SQL flexibility, and operational simplicity enables use cases that traditional database categories can't address—proving that the best tool is often the one that solves your specific problems, not the one that fits the textbook definition.
 
-**The reality:** *"People out in the factory floors... people out in health care facilities construction sites... they like to be able to look at reports... to sit at a computer at a desktop... is just not optimal"*
+---
 
-**7-Eleven's breakthrough:** Store managers using ClickHouse-powered analytics on mobile devices.
+## Video Sources {#video-sources}
 
-```sql runnable editable
--- Challenge: Modify this to show weekly or monthly patterns instead of daily
--- Experiment: Add different metrics like peak activity hours or user retention patterns
-SELECT 
-    'Daily Sales Summary' as report_type,
-    toDate(created_at) as date,
-    count() as total_transactions,
-    uniq(actor_login) as unique_customers,
-    round(count() / uniq(actor_login), 1) as avg_transactions_per_customer,
-    'Perfect for mobile dashboard' as mobile_optimized
-FROM github.github_events 
-WHERE created_at >= today() - 7
-GROUP BY date
-ORDER BY date DESC;
-```
+- **[Breaking the Rules - Building a Rate Limiter with ClickHouse](https://www.youtube.com/watch?v=wRwqrbUjRe4)** - Brad Lhotsky (Craigslist)
+- **[ClickHouse as an Analytical Solution in ServiceNow](https://www.youtube.com/watch?v=b4Pmpx3iRK4)** - Amir Vaza (ServiceNow)
 
-**The use case:** *"The person who runs a store they're going back and forth between the stock room out to the front into the register and then going between stores"*
-
-**Success metrics:**
-- Daily sales by store (corporate + franchise)
-- Out-of-stock alerts in real-time
-- *"Full feature capability between your phone and your desktop"*
-
-## Customer-Facing Real-Time Applications {#customer-facing-applications}
-
-**Conventional wisdom:** ClickHouse is for internal analytics, not customer-facing apps.
-
-**ServiceNow's reality:** *"We offer an analytic solution both for internal needs and for customers across web mobile and chatbots"*
-
-**The breakthrough insight:** *"It enables you to build applications that are highly responsive... customer facing applications... whether they're web apps or mobile apps"*
-
-```sql runnable editable
--- Challenge: Try different segmentation approaches like geographic or time-based grouping  
--- Experiment: Add percentage calculations or ranking functions for customer insights
-SELECT 
-    'Customer Segmentation' as feature,
-    event_type as segment,
-    count() as segment_size,
-    round(count() * 100.0 / sum(count()) OVER(), 1) as percentage,
-    'Real-time customer insights' as value_proposition
-FROM github.github_events 
-WHERE created_at >= '2024-01-01'
-  AND created_at < '2024-01-02'
-GROUP BY event_type
-ORDER BY segment_size DESC;
-```
-
-**Why this breaks conventional rules:**
-- **Real-time customer segmentation:** *"Give customers the ability to real-time segments the data and dynamically slicing"*
-- **User expectations:** *"In 2024 we have been very much trained to expect a certain degree of responsiveness"* 
-- **Retention impact:** *"If that repeats often enough you're either not going to come back"*
-
-**Success pattern:** ClickHouse's speed enables customer-facing applications with sub-second response times, challenging the notion that analytical databases are only for internal use.
-
-### The Rule-Breaking Philosophy {#rule-breaking-philosophy}
-
-**Common thread:** These successes came from questioning assumptions:
-- *"I asked my boss like what do you think of this idea maybe I can try this with ClickHouse"* - Craigslist
-- *"Mobile first actually became a big part of how we thought about this"* - Mobile analytics pioneers  
-- *"We wanted to give customers the ability to... slice and dice everything as much as they wanted"* - ServiceNow
-
-**The lesson:** Sometimes the "wrong" tool for the job becomes the right tool when you understand its strengths and design around them.
+*These stories demonstrate how questioning conventional database wisdom can lead to breakthrough solutions that redefine what's possible with analytical databases.*
