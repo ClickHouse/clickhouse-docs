@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 slug: /community-wisdom/cost-optimization
-sidebar_label: 'Performance Optimization'
+sidebar_label: 'Cost Optimization'
 doc_type: 'how-to-guide'
 keywords: [
   'cost optimization',
@@ -18,142 +18,83 @@ keywords: [
   'retention analysis'
 ]
 title: 'Lessons - Cost Optimization'
-description: 'Find solutions to the most common ClickHouse problems including slow queries, memory errors, connection issues, and configuration problems.'
+description: 'Battle-tested cost optimization strategies from ClickHouse community meetups with real production examples and verified techniques.'
 ---
 
 # Cost Optimization: Battle-Tested Strategies {#cost-optimization}
 *This guide is part of a collection of findings gained from community meetups. The findings on this page cover community wisdom related to optimizing cost while using ClickHouse. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
-*Want to learn about creative use cases for ClickHouse? Check out the [Creative Use Cases](./creative-usecases.md) community insights guide.*
 
-## The Partition Deletion vs TTL Discovery {#partition-vs-ttl}
+## The ContentSquare Migration: 11x Cost Reduction {#contentsquare-migration}
 
-**Hard-learned lesson from production:** TTL mutations are resource-intensive and slow down everything.
+ContentSquare's migration from Elasticsearch to ClickHouse shows the cost optimization potential when moving to ClickHouse for analytics workloads, involving over 1,000 enterprise customers and processing over one billion page views daily. Before migration, ContentSquare ran 14 Elasticsearch clusters, each with 30 nodes, and struggled to make them bigger while keeping them stable. They were unable to host very large clients with high traffic, and frequently had to move clients between clusters as their traffic grew beyond cluster capacity.
 
-*"Don't try to mutate data if there isn't a world where you absolutely need to... when you mutate data ClickHouse creates a new version of the data and then it merges it with the existing data... it's resource intensive... significantly significant performance impact"*
+ContentSquare took a phased approach to avoid disrupting business operations. They first tested ClickHouse on a new mobile analytics product, which took four months to ship to production. This success convinced them to migrate their main web analytics platform. The full web migration took ten months to port all endpoints, followed by careful client-by-client migration of 600 clients in batches to avoid performance issues. They built extensive automation for non-regression testing, allowing them to complete the migration with zero regressions.
 
-**Better strategy:** Delete entire partitions instead of TTL row-by-row deletion.
+After migration, the infrastructure became 11x cheaper while storing six times more data and delivering 10x faster performance on the 99th percentile queries. *"We are saving multiple millions per year using ClickHouse,"* the team noted. The performance improvements were particularly notable for their slowest queries—while fast queries (200ms on Elasticsearch) only improved to about 100ms on ClickHouse, their worst-performing queries went from over 15 seconds on Elasticsearch to under 2 seconds on ClickHouse.
 
-```sql runnable editable
--- Challenge: Adjust the month thresholds (3 months, 1 month) based on your retention needs
--- Experiment: Try different partition patterns like weekly or daily instead of monthly
-SELECT 
-    toYYYYMM(created_at) as year_month,
-    count() as events,
-    min(created_at) as oldest_event,
-    max(created_at) as newest_event,
-    formatReadableSize(count() * 200) as estimated_size_bytes,
-    CASE 
-        WHEN toYYYYMM(created_at) < toYYYYMM(now()) - 3 
-        THEN 'DELETE PARTITION - older than 3 months'
-        WHEN toYYYYMM(created_at) < toYYYYMM(now()) - 1 
-        THEN 'ARCHIVE CANDIDATE - 1-3 months old'
-        ELSE 'KEEP - recent data'
-    END as retention_strategy
-FROM github.github_events 
-WHERE created_at >= '2023-01-01'
-GROUP BY year_month
-ORDER BY year_month DESC
-LIMIT 12;
-```
+Their current ClickHouse setup includes 16 clusters across four regions on AWS and Azure, with over 100 nodes total. Each cluster typically has nine shards with two replicas per shard. They process approximately 100,000 analytics queries daily with an average response time of 200 milliseconds, while also increasing data retention from 3 months to 13 months.
 
-## Storage Hot Spots Analysis {#storage-hot-spots}
+**Key Results:**
+- 11x reduction in infrastructure costs
+- 6x increase in data storage capacity
+- 10x faster 99th percentile query performance
+- Multiple millions in annual savings
+- Increased data retention from 3 months to 13 months
+- Zero regressions during migration
 
-**Find your biggest storage consumers:** Identify which columns and patterns drive your storage costs.
+## Compression Strategy: LZ4 vs ZSTD in Production {#compression-strategy}
 
-```sql runnable editable
--- Challenge: Replace column names with your own table's columns to find storage hot spots
--- Experiment: Try different size thresholds (50MB) and repetition factors (10, 3, 5)
-SELECT 
-    column_name,
-    total_size_mb,
-    unique_values,
-    repetition_factor,
-    storage_efficiency,
-    optimization_priority
-FROM (
-    SELECT 
-        'repo_name' as column_name,
-        round(sum(length(repo_name)) / 1024 / 1024, 2) as total_size_mb,
-        count(DISTINCT repo_name) as unique_values,
-        round(count() / count(DISTINCT repo_name), 1) as repetition_factor,
-        CASE 
-            WHEN count() / count(DISTINCT repo_name) > 10 THEN 'HIGH compression potential'
-            WHEN count() / count(DISTINCT repo_name) > 3 THEN 'MEDIUM compression potential' 
-            ELSE 'LOW compression potential'
-        END as storage_efficiency,
-        CASE 
-            WHEN round(sum(length(repo_name)) / 1024 / 1024, 2) > 50 AND count() / count(DISTINCT repo_name) > 5 
-            THEN 'OPTIMIZE FIRST - large + repetitive'
-            WHEN round(sum(length(repo_name)) / 1024 / 1024, 2) > 50 
-            THEN 'SIZE CONCERN - consider retention'
-            ELSE 'LOW PRIORITY'
-        END as optimization_priority
-    FROM github.github_events 
-    WHERE created_at >= '2024-01-01' AND created_at < '2024-01-08'
+When Microsoft Clarity needed to handle hundreds of terabytes of data, they discovered that compression choices have dramatic cost implications. At their scale, every bit of storage savings matters, and they faced a classic trade-off: performance versus storage costs. Microsoft Clarity handles massive volumes—two petabytes of uncompressed data per month across all accounts, processing around 60,000 queries per hour across eight nodes and serving billions of page views from millions of websites. At this scale, compression strategy becomes a critical cost factor.
 
-    UNION ALL
+They initially used ClickHouse's default LZ4 compression but discovered significant cost savings were possible with ZSTD. While LZ4 is faster, ZSTD provides better compression at the cost of slightly slower performance. After testing both approaches, they made a strategic decision to prioritize storage savings. The results were significant: 50% storage savings on large tables with manageable performance impact on ingestion and queries.
 
-    SELECT 
-        'actor_login',
-        round(sum(length(actor_login)) / 1024 / 1024, 2),
-        count(DISTINCT actor_login),
-        round(count() / count(DISTINCT actor_login), 1),
-        CASE 
-            WHEN count() / count(DISTINCT actor_login) > 10 THEN 'HIGH compression potential'
-            WHEN count() / count(DISTINCT actor_login) > 3 THEN 'MEDIUM compression potential' 
-            ELSE 'LOW compression potential'
-        END,
-        CASE 
-            WHEN round(sum(length(actor_login)) / 1024 / 1024, 2) > 50 AND count() / count(DISTINCT actor_login) > 5 
-            THEN 'OPTIMIZE FIRST - large + repetitive'
-            WHEN round(sum(length(actor_login)) / 1024 / 1024, 2) > 50 
-            THEN 'SIZE CONCERN - consider retention'
-            ELSE 'LOW PRIORITY'
-        END
-    FROM github.github_events 
-    WHERE created_at >= '2024-01-01' AND created_at < '2024-01-08'
-) 
-ORDER BY total_size_mb DESC;
-```
+**Key Results:**
+- 50% storage savings on large tables through ZSTD compression
+- 2 petabytes monthly data processing capacity
+- Manageable performance impact on ingestion and queries
+- Significant cost reduction at hundreds of TB scale
 
-## Cost-Driven Retention Analysis {#cost-driven-retention}
+## Column-Based Retention Strategy {#column-retention}
 
-**Real production strategy:** *"Once we get this kind of deletion signal... we do the row based deletion... we know what needs to be deleted and keep on tracking"*
+One of the most powerful cost optimization techniques comes from analyzing which columns are actually being used. Microsoft Clarity implements sophisticated column-based retention strategies using ClickHouse's built-in telemetry capabilities. ClickHouse provides detailed metrics on storage usage by column as well as comprehensive query patterns—which columns are accessed, how frequently, query duration, and overall usage statistics.
 
-```sql runnable editable
--- Challenge: Modify the age thresholds (7, 30, 90 days) to match your business needs
--- Experiment: Try different retention strategies for each temperature tier
-SELECT 
-    data_temperature,
-    count() as event_count,
-    round(count() * 100.0 / sum(count()) OVER(), 2) as percentage_of_total,
-    formatReadableSize(count() * 200) as estimated_storage_size,
-    retention_strategy
-FROM (
-    SELECT 
-        CASE 
-            WHEN dateDiff('day', created_at, now()) <= 7 THEN 'Hot Data (0-7 days)'
-            WHEN dateDiff('day', created_at, now()) <= 30 THEN 'Warm Data (8-30 days)' 
-            WHEN dateDiff('day', created_at, now()) <= 90 THEN 'Cool Data (31-90 days)'
-            ELSE 'Cold Data (90+ days)'
-        END as data_temperature,
-        CASE 
-            WHEN dateDiff('day', created_at, now()) <= 7 THEN 'Keep all columns - high query value'
-            WHEN dateDiff('day', created_at, now()) <= 30 THEN 'Consider column-based TTL for large fields'
-            WHEN dateDiff('day', created_at, now()) <= 90 THEN 'Drop expensive columns, keep core data'
-            ELSE 'DELETE PARTITION - storage cost > query value'
-        END as retention_strategy,
-        CASE 
-            WHEN dateDiff('day', created_at, now()) <= 7 THEN 1
-            WHEN dateDiff('day', created_at, now()) <= 30 THEN 2 
-            WHEN dateDiff('day', created_at, now()) <= 90 THEN 3
-            ELSE 4
-        END as sort_order
-    FROM github.github_events 
-    WHERE created_at >= '2023-01-01'
-) 
-GROUP BY data_temperature, retention_strategy, sort_order
-ORDER BY sort_order;
-```
+This data-driven approach enables strategic decisions about retention policies and column lifecycle management. By analyzing this telemetry data, Microsoft can identify storage hot spots—columns that consume significant space but receive minimal queries. For these low-usage columns, they can implement aggressive retention policies, reducing storage time from 30 months to just one month, or delete the columns entirely if they're not queried at all. This selective retention strategy reduces storage costs without impacting user experience.
 
-**The key insight:** Instead of deleting entire rows, strategically drop the expensive columns first while preserving the essential data structure for longer periods. This can save "several terabytes" as Displayce discovered.
+**The Strategy:**
+- Analyze column usage patterns using ClickHouse telemetry
+- Identify high-storage, low-query columns
+- Implement selective retention policies
+- Monitor query patterns for data-driven decisions
+
+## Partition-Based Data Management {#partition-management}
+
+Microsoft Clarity discovered that partitioning strategy impacts both performance and operational simplicity. Their approach: partition by date, order by hour. This strategy delivers multiple benefits beyond just cleanup efficiency—it enables trivial data cleanup, simplifies billing calculations for their customer-facing service, and supports GDPR compliance requirements for row-based deletion.
+
+**Key Benefits:**
+- Trivial data cleanup (drop partition vs row-by-row deletion)
+- Simplified billing calculations
+- Better query performance through partition elimination
+- Easier operational management
+
+## String-to-Integer Conversion Strategy {#string-integer-conversion}
+
+Analytics platforms often face a storage challenge with categorical data that appears repeatedly across millions of rows. Microsoft's engineering team encountered this problem with their search analytics data and developed an effective solution that achieved 60% storage reduction on affected datasets.
+
+In Microsoft's web analytics system, search results trigger different types of answers—weather cards, sports information, news articles, and factual responses. Each query result was tagged with descriptive strings like "weather_answer," "sports_answer," or "factual_answer." With billions of search queries processed, these string values were being stored repeatedly in ClickHouse, consuming massive amounts of storage space and requiring expensive string comparisons during queries.
+
+Microsoft implemented a string-to-integer mapping system using a separate MySQL database. Instead of storing the actual strings in ClickHouse, they store only integer IDs. When users run queries through the UI and request data for "weather_answer," their query optimizer first consults the MySQL mapping table to get the corresponding integer ID, then converts the query to use that integer before sending it to ClickHouse.
+
+This architecture preserves the user experience—people still see meaningful labels like "weather_answer" in their dashboards—while the backend storage and queries operate on much more efficient integers. The mapping system handles all translation transparently, requiring no changes to the user interface or user workflows.
+
+**Key Benefits:**
+- 60% storage reduction on affected datasets
+- Faster query performance on integer comparisons
+- Reduced memory usage for joins and aggregations
+- Lower network transfer costs for large result sets
+
+## Video Sources {#video-sources}
+
+- **[Microsoft Clarity and ClickHouse](https://www.youtube.com/watch?v=rUVZlquVGw0)** - Microsoft Clarity Team
+- **[ClickHouse journey in Contentsquare](https://www.youtube.com/watch?v=zvuCBAl2T0Q)** - Doron Hoffman & Guram Sigua (ContentSquare)
+
+*These community cost optimization insights represent strategies from companies processing hundreds of terabytes to petabytes of data, showing real-world approaches to reducing ClickHouse operational costs.*
