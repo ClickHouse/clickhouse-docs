@@ -40,9 +40,9 @@ Yes! ClickPipes for Postgres offers two ways to connect to databases in private 
    - Works across all regions
 
 2. **AWS PrivateLink**
-   - Available in three AWS regions: 
+   - Available in three AWS regions:
      - us-east-1
-     - us-east-2 
+     - us-east-2
      - eu-central-1
    - For detailed setup instructions, see our [PrivateLink documentation](/knowledgebase/aws-privatelink-setup-for-clickpipes)
    - For regions where PrivateLink is not available, please use SSH tunneling
@@ -70,38 +70,38 @@ For detailed pricing information, please refer to the [ClickPipes for Postgres C
 
 If you're noticing that the size of your Postgres replication slot keeps increasing or isn't coming back down, it usually means that **WAL (Write-Ahead Log) records aren't being consumed (or "replayed") quickly enough** by your CDC pipeline or replication process. Below are the most common causes and how you can address them.
 
-1. **Sudden Spikes in Database Activity**  
-   - Large batch updates, bulk inserts, or significant schema changes can quickly generate a lot of WAL data.  
+1. **Sudden Spikes in Database Activity**
+   - Large batch updates, bulk inserts, or significant schema changes can quickly generate a lot of WAL data.
    - The replication slot will hold these WAL records until they are consumed, causing a temporary spike in size.
 
-2. **Long-Running Transactions**  
-   - An open transaction forces Postgres to keep all WAL segments generated since the transaction began, which can dramatically increase slot size.  
+2. **Long-Running Transactions**
+   - An open transaction forces Postgres to keep all WAL segments generated since the transaction began, which can dramatically increase slot size.
    - Set `statement_timeout` and `idle_in_transaction_session_timeout` to reasonable values to prevent transactions from staying open indefinitely:
      ```sql
-     SELECT 
+     SELECT
          pid,
          state,
          age(now(), xact_start) AS transaction_duration,
          query AS current_query
-     FROM 
+     FROM
          pg_stat_activity
-     WHERE 
+     WHERE
          xact_start IS NOT NULL
-     ORDER BY 
+     ORDER BY
          age(now(), xact_start) DESC;
      ```
      Use this query to identify unusually long-running transactions.
 
-3. **Maintenance or Utility Operations (e.g., `pg_repack`)**  
-   - Tools like `pg_repack` can rewrite entire tables, generating large amounts of WAL data in a short time.  
+3. **Maintenance or Utility Operations (e.g., `pg_repack`)**
+   - Tools like `pg_repack` can rewrite entire tables, generating large amounts of WAL data in a short time.
    - Schedule these operations during slower traffic periods or monitor your WAL usage closely while they run.
 
-4. **VACUUM and VACUUM ANALYZE**  
-   - Although necessary for database health, these operations can create extra WAL traffic—especially if they scan large tables.  
+4. **VACUUM and VACUUM ANALYZE**
+   - Although necessary for database health, these operations can create extra WAL traffic—especially if they scan large tables.
    - Consider using autovacuum tuning parameters or scheduling manual VACUUM operations during off-peak hours.
 
-5. **Replication Consumer Not Actively Reading the Slot**  
-   - If your CDC pipeline (e.g., ClickPipes) or another replication consumer stops, pauses, or crashes, WAL data will accumulate in the slot.  
+5. **Replication Consumer Not Actively Reading the Slot**
+   - If your CDC pipeline (e.g., ClickPipes) or another replication consumer stops, pauses, or crashes, WAL data will accumulate in the slot.
    - Ensure your pipeline is continuously running and check logs for connectivity or authentication errors.
 
 For an excellent deep dive into this topic, check out our blog post: [Overcoming Pitfalls of Postgres Logical Decoding](https://blog.peerdb.io/overcoming-pitfalls-of-postgres-logical-decoding#heading-beware-of-replication-slot-growth-how-to-monitor-it).
@@ -122,7 +122,7 @@ JSON and JSONB columns are replicated as String type in ClickHouse. Since ClickH
 
 When you pause the mirror, the messages are queued up in the replication slot on the source Postgres, ensuring they are buffered and not lost. However, pausing and resuming the mirror will re-establish the connection, which could take some time depending on the source.
 
-During this process, both the sync (pulling data from Postgres and streaming it into the ClickHouse raw table) and normalize (from raw table to target table) operations are aborted. However, they retain the state required to resume durably. 
+During this process, both the sync (pulling data from Postgres and streaming it into the ClickHouse raw table) and normalize (from raw table to target table) operations are aborted. However, they retain the state required to resume durably.
 
 - For sync, if it is canceled mid-way, the confirmed_flush_lsn in Postgres is not advanced, so the next sync will start from the same position as the aborted one, ensuring data consistency.
 - For normalize, the ReplacingMergeTree insert order handles deduplication.
@@ -183,7 +183,7 @@ You have two options when dealing with tables without primary keys:
 If you're creating a publication manually instead of letting ClickPipes manage it, we don't recommend creating a publication `FOR ALL TABLES`, this leads to more traffic from Postgres to ClickPipes (to sending changes for other tables not in the pipe) and reduces overall efficiency.
 
 For manually created publications, please add any tables you want to the publication before adding them to the pipe.
-::: 
+:::
 
 ## Recommended `max_slot_wal_keep_size` settings {#recommended-max_slot_wal_keep_size-settings}
 
@@ -220,6 +220,15 @@ If your database generates 100 GB of WAL per day, set:
 max_slot_wal_keep_size = 200GB
 ```
 
+### I'm seeing a ReceiveMessage EOF error in the logs. What does it mean? {#im-seeing-a-receivemessage-eof-error-in-the-logs-what-does-it-mean}
+
+`ReceiveMessage` is a function in the Postgres logical decoding protocol that reads messages from the replication stream. An EOF (End of File) error indicates that the connection to the Postgres server was unexpectedly closed while trying to read from the replication stream.
+
+It can happen for a few reasons:
+- **Low wal_sender_timeout:** Make sure `wal_sender_timeout` is 5 minutes or higher. This setting controls how long the server waits for a response from the client before closing the connection. If the timeout is too low, it can lead to premature disconnections.
+- **Network Issues:** Temporary network disruptions can cause the connection to drop.
+- **Postgres Server Restart:** If the Postgres server is restarted or crashes, the connection will be lost.
+
 ### My replication slot is invalidated. What should I do? {#my-replication-slot-is-invalidated-what-should-i-do}
 
 The only way to recover ClickPipe is by triggering a resync, which you can do in the Settings page.
@@ -242,7 +251,7 @@ Another reason we've observed is the presence of downstream Materialized Views w
 
 The `invalid snapshot identifier` error occurs when there is a connection drop between ClickPipes and your Postgres database. This can happen due to gateway timeouts, database restarts, or other transient issues.
 
-It is recommended that you do not carry out any disruptive operations like upgrades or restarts on your Postgres database while Initial Load is in progress and ensure that the network connection to your database is stable. 
+It is recommended that you do not carry out any disruptive operations like upgrades or restarts on your Postgres database while Initial Load is in progress and ensure that the network connection to your database is stable.
 
 To resolve this issue, you can trigger a resync from the ClickPipes UI. This will restart the initial load process from the beginning.
 
@@ -262,8 +271,8 @@ Alternatively, you can create an entirely new pipe if preferred.
 Note that if you're working with partitioned tables, make sure to create your publication with the appropriate settings:
 
 ```sql
-CREATE PUBLICATION clickpipes_publication 
-FOR TABLE <...>, <...>  
+CREATE PUBLICATION clickpipes_publication
+FOR TABLE <...>, <...>
 WITH (publish_via_partition_root = true);
 ```
 
