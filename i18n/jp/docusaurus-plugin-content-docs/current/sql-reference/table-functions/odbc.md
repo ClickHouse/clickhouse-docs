@@ -1,9 +1,9 @@
 ---
-'description': 'ODBC で接続されたテーブルを返します。'
-'sidebar_label': 'ODBC'
-'sidebar_position': 150
-'slug': '/sql-reference/table-functions/odbc'
-'title': 'odbc'
+description: 'ODBC で接続されたテーブルを返します。'
+sidebar_label: 'ODBC'
+sidebar_position: 150
+slug: '/sql-reference/table-functions/odbc'
+title: 'odbc'
 ---
 
 

@@ -1,8 +1,8 @@
 ---
-'slug': '/guides/sre/network-ports'
-'sidebar_label': 'ネットワークポート'
-'title': 'ネットワークポート'
-'description': '利用可能なネットワークポートの説明とそれらの用途について'
+slug: '/guides/sre/network-ports'
+sidebar_label: 'ネットワークポート'
+title: 'ネットワークポート'
+description: '利用可能なネットワークポートの説明とそれらの用途について'
 ---
 
 

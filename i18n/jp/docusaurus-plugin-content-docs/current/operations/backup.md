@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouse データベースとテーブルのバックアップおよび復元ガイド'
-'sidebar_label': 'バックアップと復元'
-'sidebar_position': 10
-'slug': '/operations/backup'
-'title': 'バックアップと復元'
+description: 'ClickHouse データベースとテーブルのバックアップおよび復元ガイド'
+sidebar_label: 'バックアップと復元'
+sidebar_position: 10
+slug: '/operations/backup'
+title: 'バックアップと復元'
 ---
 
 

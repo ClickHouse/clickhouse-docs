@@ -1,12 +1,12 @@
 ---
-'slug': '/guides/developer/time-series-filling-gaps'
-'sidebar_label': '時系列 - ギャップ埋め'
-'sidebar_position': 10
-'description': '時系列データのギャップを埋める'
-'keywords':
+slug: '/guides/developer/time-series-filling-gaps'
+sidebar_label: '時系列 - ギャップ埋め'
+sidebar_position: 10
+description: '時系列データのギャップを埋める'
+keywords:
 - 'time series'
 - 'gap fill'
-'title': '時系列データのギャップ埋め'
+title: '時系列データのギャップ埋め'
 ---
 
 

@@ -1,9 +1,9 @@
 ---
-'description': 'The `median*` functions are the aliases for the corresponding `quantile*`
+description: 'The `median*` functions are the aliases for the corresponding `quantile*`
   functions. They calculate median of a numeric data sample.'
-'sidebar_position': 167
-'slug': '/sql-reference/aggregate-functions/reference/median'
-'title': '中央値'
+sidebar_position: 167
+slug: '/sql-reference/aggregate-functions/reference/median'
+title: '中央値'
 ---
 
 

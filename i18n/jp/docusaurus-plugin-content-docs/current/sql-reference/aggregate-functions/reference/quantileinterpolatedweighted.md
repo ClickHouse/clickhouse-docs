@@ -1,9 +1,9 @@
 ---
-'description': 'Computes quantile of a numeric data sequence using linear interpolation,
+description: 'Computes quantile of a numeric data sequence using linear interpolation,
   taking into account the weight of each element.'
-'sidebar_position': 176
-'slug': '/sql-reference/aggregate-functions/reference/quantileInterpolatedWeighted'
-'title': 'quantileInterpolatedWeighted'
+sidebar_position: 176
+slug: '/sql-reference/aggregate-functions/reference/quantileInterpolatedWeighted'
+title: 'quantileInterpolatedWeighted'
 ---
 
 

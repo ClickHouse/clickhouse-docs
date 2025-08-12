@@ -1,8 +1,8 @@
 ---
-'description': 'FORMAT 句のドキュメント'
-'sidebar_label': 'FORMAT'
-'slug': '/sql-reference/statements/select/format'
-'title': 'FORMAT Clause'
+description: 'FORMAT 句のドキュメント'
+sidebar_label: 'FORMAT'
+slug: '/sql-reference/statements/select/format'
+title: 'FORMAT Clause'
 ---
 
 

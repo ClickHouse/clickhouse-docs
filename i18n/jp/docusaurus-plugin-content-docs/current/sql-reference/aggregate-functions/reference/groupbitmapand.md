@@ -1,8 +1,8 @@
 ---
-'description': 'ビットマップ列のANDを計算し、タイプUInt64の濃度を返します。サフィックス-Stateを追加すると、ビットマップオブジェクトが返されます。'
-'sidebar_position': 149
-'slug': '/sql-reference/aggregate-functions/reference/groupbitmapand'
-'title': 'groupBitmapAnd'
+description: 'ビットマップ列のANDを計算し、タイプUInt64の濃度を返します。サフィックス-Stateを追加すると、ビットマップオブジェクトが返されます。'
+sidebar_position: 149
+slug: '/sql-reference/aggregate-functions/reference/groupbitmapand'
+title: 'groupBitmapAnd'
 ---
 
 

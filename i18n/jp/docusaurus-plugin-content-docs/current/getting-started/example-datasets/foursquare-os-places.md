@@ -1,9 +1,9 @@
 ---
-'description': '地図上の店舗、レストラン、公園、遊び場、記念碑などの情報を含む1億件以上のレコードを持つデータセット。'
-'sidebar_label': 'Foursquare places'
-'slug': '/getting-started/example-datasets/foursquare-places'
-'title': 'Foursquare places'
-'keywords':
+description: '地図上の店舗、レストラン、公園、遊び場、記念碑などの情報を含む1億件以上のレコードを持つデータセット。'
+sidebar_label: 'Foursquare places'
+slug: '/getting-started/example-datasets/foursquare-places'
+title: 'Foursquare places'
+keywords:
 - 'visualizing'
 ---
 

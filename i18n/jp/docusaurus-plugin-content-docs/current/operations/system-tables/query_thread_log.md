@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing information about threads that execute queries,
+description: 'System table containing information about threads that execute queries,
   for example, thread name, thread start time, duration of query processing.'
-'keywords':
+keywords:
 - 'system table'
 - 'query_thread_log'
-'slug': '/operations/system-tables/query_thread_log'
-'title': 'system.query_thread_log'
+slug: '/operations/system-tables/query_thread_log'
+title: 'system.query_thread_log'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

@@ -31,10 +31,6 @@ We assume you are familiar with:
 
 ## The official Kafka connector from ClickHouse with Confluent Cloud {#the-official-kafka-connector-from-clickhouse-with-confluent-cloud}
 
-### Installing on Confluent Cloud {#installing-on-confluent-cloud}
-This is meant to be a quick guide to get you started with the ClickHouse Sink Connector on Confluent Cloud.
-For more details, please refer to the [official Confluent documentation](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-qs.html#uploading-and-launching-the-connector).
-
 #### Create a Topic {#create-a-topic}
 Creating a topic on Confluent Cloud is fairly simple, and there are detailed instructions [here](https://docs.confluent.io/cloud/current/client-apps/topics/manage.html).
 

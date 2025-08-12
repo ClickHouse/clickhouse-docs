@@ -1,10 +1,10 @@
 ---
-'description': 'Page detailing the ClickHouse query analyzer'
-'keywords':
+description: 'Page detailing the ClickHouse query analyzer'
+keywords:
 - 'analyzer'
-'sidebar_label': 'Analyzer'
-'slug': '/operations/analyzer'
-'title': 'Analyzer'
+sidebar_label: 'Analyzer'
+slug: '/operations/analyzer'
+title: 'Analyzer'
 ---
 
 

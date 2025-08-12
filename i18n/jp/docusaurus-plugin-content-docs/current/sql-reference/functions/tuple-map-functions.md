@@ -1,9 +1,9 @@
 ---
-'description': 'Tuple Map Functionsのドキュメント'
-'sidebar_label': 'マップ'
-'sidebar_position': 120
-'slug': '/sql-reference/functions/tuple-map-functions'
-'title': 'Map Functions'
+description: 'Tuple Map Functionsのドキュメント'
+sidebar_label: 'マップ'
+sidebar_position: 120
+slug: '/sql-reference/functions/tuple-map-functions'
+title: 'Map Functions'
 ---
 
 

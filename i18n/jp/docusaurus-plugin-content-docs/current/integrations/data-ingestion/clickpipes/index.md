@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'はじめに'
-'description': '外部データソースをClickHouse Cloudにシームレスに接続します。'
-'slug': '/integrations/clickpipes'
-'title': 'Integrating with ClickHouse Cloud'
+sidebar_label: 'はじめに'
+description: '外部データソースをClickHouse Cloudにシームレスに接続します。'
+slug: '/integrations/clickpipes'
+title: 'Integrating with ClickHouse Cloud'
 ---
 
 import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';

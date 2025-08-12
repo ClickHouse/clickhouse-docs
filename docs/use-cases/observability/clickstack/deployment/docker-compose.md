@@ -3,7 +3,7 @@ slug: /use-cases/observability/clickstack/deployment/docker-compose
 title: 'Docker Compose'
 pagination_prev: null
 pagination_next: null
-sidebar_position: 2
+sidebar_position: 3
 description: 'Deploying ClickStack with Docker Compose - The ClickHouse Observability Stack'
 ---
 
@@ -124,7 +124,7 @@ The OTel collector configuration can be modified if required - see ["Modifying c
 
 This distribution can be used with ClickHouse Cloud. Users should:
 
-- Remove the ClickHouse service from the [`docker-compose.yaml`](https://github.com/hyperdxio/hyperdx/blob/86465a20270b895320eb21dca13560b65be31e68/docker-compose.yml#L89) file. This is optional if testing, as the deployed ClickHouse instance will simply be ignored - although waste local resources. If removing the service, ensure [any references](https://github.com/hyperdxio/hyperdx/blob/86465a20270b895320eb21dca13560b65be31e68/docker-compose.yml#L65) to the service such as `depends_on` are removed.
+- Remove the ClickHouse service from the `docker-compose.yaml` file. This is optional if testing, as the deployed ClickHouse instance will simply be ignored - although waste local resources. If removing the service, ensure any references to the service such as `depends_on` are removed.
 - Modify the OTel collector to use a ClickHouse Cloud instance by setting the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_PASSWORD` in the compose file. Specifically, add the environment variables to the OTel collector service:
 
     ```shell
@@ -169,7 +169,7 @@ To set these, modify the relevant services in the `docker-compose.yaml`:
       HYPERDX_API_PORT: ${HYPERDX_API_PORT}
     # truncated for brevity
 
-    otel-collector:
+  otel-collector:
     image: ${HDX_IMAGE_REPO}/${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
     environment:
       OTEL_AGENT_FEATURE_GATE_ARG: '--feature-gates=clickhouse.json' # enable JSON

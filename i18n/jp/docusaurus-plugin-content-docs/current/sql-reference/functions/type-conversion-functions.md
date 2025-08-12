@@ -1,9 +1,9 @@
 ---
-'description': 'Type Conversion Functionsのドキュメンテーション'
-'sidebar_label': '型変換'
-'sidebar_position': 185
-'slug': '/sql-reference/functions/type-conversion-functions'
-'title': 'Type Conversion Functions'
+description: 'Type Conversion Functionsのドキュメンテーション'
+sidebar_label: '型変換'
+sidebar_position: 185
+slug: '/sql-reference/functions/type-conversion-functions'
+title: 'Type Conversion Functions'
 ---
 
 

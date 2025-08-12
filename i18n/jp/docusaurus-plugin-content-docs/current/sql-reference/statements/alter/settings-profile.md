@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for Settings Profile'
-'sidebar_label': 'SETTINGS PROFILE'
-'sidebar_position': 48
-'slug': '/sql-reference/statements/alter/settings-profile'
-'title': 'ALTER SETTINGS PROFILE'
+description: 'Documentation for Settings Profile'
+sidebar_label: 'SETTINGS PROFILE'
+sidebar_position: 48
+slug: '/sql-reference/statements/alter/settings-profile'
+title: 'ALTER SETTINGS PROFILE'
 ---
 
 

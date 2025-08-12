@@ -1,3 +1,4 @@
+personal_ws-1.1 en 3611
 AArch
 ACLs
 AICPA
@@ -26,12 +27,14 @@ Aggregatefunction
 AggregatingMergeTree
 AggregatorThreads
 AggregatorThreadsActive
+Agno
 Airbyte
 Akka
 AlertManager
 Alexey
 Anthropic
 AnyEvent
+AnythingLLM
 AppleClang
 Approximative
 ArrayJoin
@@ -47,14 +50,14 @@ AsynchronousInsertThreadsActive
 AsynchronousMetricsCalculationTimeSpent
 AsynchronousMetricsUpdateInterval
 AsynchronousReadWait
+AuroraMySQL
+AuroraPostgreSQL
 Authenticator
 Authenticators
 Authy
 AutoFDO
 AutoML
 Autocompletion
-AuroraMySQL
-AuroraPostgreSQL
 AvroConfluent
 AzureQueue
 Azurite
@@ -99,9 +102,9 @@ BestEffortUSOrZero
 BetaBadge
 Beyonce's
 Bigtable
-Blazingly
 BladePipe
 BladePipe's
+Blazingly
 BlockActiveTime
 BlockDiscardBytes
 BlockDiscardMerges
@@ -175,6 +178,7 @@ CentOS
 CertManager
 CertificateHandler
 Chadmin
+Chainlit
 ChannelID
 ChartDB
 Chartbrew
@@ -225,6 +229,8 @@ ConnectionDetails
 Const
 ContextLockWait
 Contrib
+CopilotKit
+Copilotkit
 CountMin
 Covid
 Cramer's
@@ -256,14 +262,17 @@ DESC
 DIEs
 DOGEFI
 DSAR
+DSPy
 DaemonSet
 Damerau
 DataFrame
 DataFrames
 DataGrip
+DataJob
 DataLakeCatalog
 DataLens
 DataPacket
+DataSource
 DataTime
 DataTypes
 DatabaseCatalog
@@ -278,8 +287,6 @@ Databricks
 Datadog
 Datasource
 Datasources
-DataSource
-DataJob
 DateTime
 DateTimeInputFormat
 DateTimeOutputFormat
@@ -521,6 +528,7 @@ IsPentagon
 IsResClassIII
 IsValid
 Istio
+JARs
 JBOD
 JOINed
 JOINs
@@ -614,12 +622,16 @@ LGPL
 LIMITs
 LINEITEM
 LLDB
+LLMs
 LLVM's
 LOCALTIME
 LOCALTIMESTAMP
 LONGLONG
 LOONGARCH
 LaGuardia
+LangChain
+LangGraph
+Langchain
 Lemire
 Levenshtein
 Liao
@@ -639,6 +651,7 @@ LinksDeployment
 Linq
 ListObject
 ListObjects
+LlamaIndex
 LoadAverage
 LoadBalancing
 LocalFSReadMethod
@@ -662,6 +675,7 @@ Lyft
 MACNumToString
 MACStringToNum
 MACStringToOUI
+MCPHost
 MEDIUMINT
 MEMTABLE
 MMapCacheCells
@@ -803,7 +817,7 @@ NumberOfDatabases
 NumberOfDetachedByUserParts
 NumberOfDetachedParts
 NumberOfTables
-OceanBase
+OAuth
 ODBCDriver
 OFNS
 OLAP
@@ -862,6 +876,7 @@ OUTFILE
 ObjectId
 Oblakov
 Observability
+OceanBase
 Octonica
 Ok
 Okta
@@ -876,6 +891,7 @@ OpenCelliD
 OpenFileForRead
 OpenFileForWrite
 OpenJDK
+OpenMetrics
 OpenSSL
 OpenSUSE
 OpenSky
@@ -897,7 +913,6 @@ PREWHERE
 PROCESSLIST
 PROXYv
 PRQL
-prql
 PSUN
 Packetbeat
 PagerDuty
@@ -984,6 +999,7 @@ PyCharm
 PyPI
 PyReader
 PySpark
+PydanticAI
 QATlib
 QEMU
 QStudio
@@ -1003,6 +1019,7 @@ QuoteMeta
 RBAC
 RClickHouse
 RDMS
+REPL
 RHEL
 RIPEMD
 ROLLUP
@@ -1128,8 +1145,8 @@ SetOperationMode
 SeverityText
 ShareAlike
 ShareSet
+SharedCatalog
 SharedJoin
-SharedMergeTree
 SharedMergeTree
 ShortCircuitFunctionEvaluation
 Shortkeys
@@ -1139,6 +1156,7 @@ Simhash
 SimpleAggregateFunction
 SimpleState
 SipHash
+SlackBot
 Smartbook
 Smirnov's
 Smirnov'test
@@ -1167,6 +1185,7 @@ StorageHiveThreads
 StorageHiveThreadsActive
 StorageODBC
 StorageS
+Streamlit
 StringToNum
 StringToNumOrDefault
 StringToNumOrNull
@@ -1288,6 +1307,7 @@ ULID
 ULIDStringToDateTime
 UMTS
 UNDROP
+UNIONs
 UPDATEs
 URIs
 URL
@@ -1308,6 +1328,7 @@ UUid
 Uber
 Uber's
 Uint
+Unbatched
 UncompressedCacheBytes
 UncompressedCacheCells
 UnidirectionalEdgeIsValid
@@ -1341,6 +1362,7 @@ Vose
 WALs
 WSFG
 WarpStream
+WebUI
 Websocket
 Welch's
 Werror
@@ -1409,6 +1431,7 @@ addressToLine
 addressToLineWithInlines
 addressToSymbol
 adviced
+agentic
 agg
 aggThrow
 aggregatefunction
@@ -1543,10 +1566,8 @@ autostart
 avgIf
 avgMap
 avgMerge
-avgMerge
 avgMergeState
 avgResample
-avgState
 avgState
 avgWeighted
 avgweighted
@@ -1621,6 +1642,7 @@ blockSize
 blockinfo
 blockreader
 blocksize
+blogpost
 bool
 boolean
 booleans
@@ -1715,6 +1737,7 @@ clickhouse
 clickhousedb
 clickhousex
 clickmate
+clickpipe
 clickstream
 clickvisual
 clockhour
@@ -1954,6 +1977,7 @@ ePHI
 ecto
 editDistance
 editDistanceUTF
+eleviate
 else's
 embeddings
 emptyArray
@@ -1982,6 +2006,7 @@ enum's
 enums
 erfc
 errorCodeToName
+errored
 etag
 evalMLMethod
 exFAT
@@ -2013,6 +2038,7 @@ facto
 failover
 farmFingerprint
 farmHash
+fastmcp
 fastops
 fcoverage
 fibonacci
@@ -2088,7 +2114,6 @@ generateULID
 generateUUIDv
 geoDistance
 geoToH
-geotoh
 geoToS
 geobase
 geobases
@@ -2100,6 +2125,7 @@ geohashes
 geohashesInBox
 geoip
 geospatial
+geotoh
 getClientHTTPHeader
 getMacro
 getMaxTableNameLengthForDatabase
@@ -2252,6 +2278,7 @@ injective
 inlined
 innogames
 inodes
+inprocess
 instantiation
 instantiations
 intDiv
@@ -2263,6 +2290,7 @@ integrations
 internode
 interserver
 intervalLengthSum
+intracycle
 invalidCertificateHandler
 invariants
 invertedindexes
@@ -2385,11 +2413,13 @@ libmetrohash
 libpq
 libpqxx
 librdkafka
+librechat
 libs
 libunwind
 libuv
 libvirt
 lifecycle
+lifecycles
 linearizability
 linearizable
 linearized
@@ -2486,7 +2516,6 @@ minMap
 minMappedArrays
 minSampleSizeContinuous
 minSampleSizeConversion
-minSimpleState
 minSimpleState
 mindsdb
 minimalistic
@@ -2649,6 +2678,7 @@ openldap
 opensky
 openssl
 opentelemetry
+oplog
 outfile
 overcommit
 overcommitted
@@ -2702,7 +2732,6 @@ permalink
 permalinked
 permalinks
 persistency
-personal_ws-1.1 en 3453 
 phpclickhouse
 picklist
 pipelined
@@ -2712,6 +2741,7 @@ plantuml
 poco
 pointInEllipses
 pointInPolygon
+poller
 polygonAreaCartesian
 polygonAreaSpherical
 polygonConvexHullCartesian
@@ -2798,6 +2828,7 @@ protobuflist
 protobufsingle
 protocol
 proxied
+prql
 pseudorandom
 pseudorandomize
 pseudoterminal
@@ -2849,6 +2880,8 @@ queryID
 queryString
 queryStringAndFragment
 queryable
+quickstart
+qwen
 rabbitmq
 raduis
 randBernoulli
@@ -2949,6 +2982,7 @@ restartable
 resultset
 resync
 resynchronization
+resyncing
 retentions
 rethrow
 retransmit
@@ -3110,6 +3144,7 @@ stochasticlinearregression
 stochasticlogisticregression
 storages
 storig
+streamable
 stringJaccardIndex
 stringJaccardIndexUTF
 stringToH
@@ -3183,7 +3218,6 @@ subtree
 subtrees
 subtype
 sudo
-sumArray
 sumArray
 sumCount
 sumForEach
@@ -3416,6 +3450,7 @@ ulid
 unacked
 unary
 unassign
+unbatched
 unbin
 uncomment
 undelete
@@ -3522,6 +3557,7 @@ visitParamExtractString
 visitParamExtractUInt
 visitParamHas
 vruntime
+waitlist
 walkthrough
 wchc
 wchs

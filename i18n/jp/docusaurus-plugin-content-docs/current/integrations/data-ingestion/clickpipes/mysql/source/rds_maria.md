@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'Amazon RDS MariaDB'
-'description': 'ClickPipes のソースとして Amazon RDS MariaDB を設定する手順ガイド'
-'slug': '/integrations/clickpipes/mysql/source/rds_maria'
-'title': 'RDS MariaDB ソースセットアップガイド'
+sidebar_label: 'Amazon RDS MariaDB'
+description: 'ClickPipes のソースとして Amazon RDS MariaDB を設定する手順ガイド'
+slug: '/integrations/clickpipes/mysql/source/rds_maria'
+title: 'RDS MariaDB ソースセットアップガイド'
 ---
 
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';

@@ -1,8 +1,8 @@
 ---
-'slug': '/integrations/qstudio'
-'sidebar_label': 'QStudio'
-'description': 'QStudio is a free SQL tool.'
-'title': 'Connect QStudio to ClickHouse'
+slug: '/integrations/qstudio'
+sidebar_label: 'QStudio'
+description: 'QStudio is a free SQL tool.'
+title: 'Connect QStudio to ClickHouse'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';

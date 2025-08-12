@@ -54,6 +54,15 @@ No, the ClickPipes for Kafka is designed for reading data from Kafka topics, not
 Yes, if the brokers are part of the same quorum they can be configured together delimited with `,`.
 </details>
 
+<details>
+
+<summary>Can ClickPipes replicas be scaled?</summary>
+
+Yes, ClickPipes for streaming can be scaled both horizontally and vertically.
+Horizontal scaling adds more replicas to increase throughput, while vertical scaling increases the resources (CPU and RAM) allocated to each replica to handle more intensive workloads.
+This can be configured during ClickPipe creation, or at any other point under **Settings** -> **Advanced Settings** -> **Scaling**.
+</details>
+
 ### Upstash {#upstash}
 
 <details>

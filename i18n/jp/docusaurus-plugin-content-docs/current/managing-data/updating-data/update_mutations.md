@@ -1,9 +1,9 @@
 ---
-'slug': '/managing-data/update_mutations'
-'sidebar_label': '更新ミューテーション'
-'title': '更新ミューテーション'
-'hide_title': false
-'description': 'テーブルデータを更新を通じて操作するALTERクエリに関するページ'
+slug: '/managing-data/update_mutations'
+sidebar_label: '更新ミューテーション'
+title: '更新ミューテーション'
+hide_title: false
+description: 'テーブルデータを更新を通じて操作するALTERクエリに関するページ'
 ---
 
 import UpdateMutations from '@site/i18n/jp/docusaurus-plugin-content-docs/current/sql-reference/statements/alter/update.md';

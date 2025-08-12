@@ -1,9 +1,9 @@
 ---
-'title': 'C および C++ 用の chDB のインストール'
-'sidebar_label': 'C および C++'
-'slug': '/chdb/install/c'
-'description': 'C および C++ 用の chDB のインストール方法'
-'keywords':
+title: 'C および C++ 用の chDB のインストール'
+sidebar_label: 'C および C++'
+slug: '/chdb/install/c'
+description: 'C および C++ 用の chDB のインストール方法'
+keywords:
 - 'chdb'
 - 'embedded'
 - 'clickhouse-lite'

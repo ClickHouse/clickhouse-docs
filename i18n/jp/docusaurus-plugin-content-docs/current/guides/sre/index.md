@@ -1,7 +1,7 @@
 ---
-'slug': '/security-and-authentication'
-'title': 'セキュリティと認証'
-'description': 'セキュリティと認証のためのランディングページ'
+slug: '/security-and-authentication'
+title: 'セキュリティと認証'
+description: 'セキュリティと認証のためのランディングページ'
 ---
 
 

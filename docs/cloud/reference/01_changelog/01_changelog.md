@@ -31,6 +31,34 @@ import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.pn
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/cloud/reference/cloud-compatibility.md) page.
 
+## August 8, 2025 {#august-08-2025}
+
+- **Notifications**: Users will now receive a UI notification when their service starts upgrading to a new ClickHouse version. Additional Email and Slack notifications can be added via the notification center. 
+- **ClickPipes**: Azure Blob Storage (ABS) ClickPipes support was added to the ClickHouse Terraform provider. See the provider documentation for an example of how to programmatically create an ABS ClickPipe.
+  - [Bug fix] Object storage ClickPipes writing to a destination table using the Null engine now report "Total records" and "Data ingested" metrics in the UI.
+  - [Bug fix] The “Time period” selector for metrics in the UI defaulted to “24 hours” regardless of the selected time period. This has now been fixed, and the UI correctly updates the charts for the selected time period.
+- **Cross-region private link (AWS)** is now Generally Available. Please refer to the [documentation](/manage/security/aws-privatelink) for the list of supported regions.
+
+## July 31, 2025 {#july-31-2025}
+
+**Vertical scaling for ClickPipes now available**
+
+[Vertical scaling is now available for streaming ClickPipes](https://clickhouse.com/blog/clickpipes-flexible-scaling-monitoring). 
+This feature allows you to control the size of each replica, in addition to the 
+number of replicas (horizontal scaling). The details page for each ClickPipe now
+also includes per-replica CPU and memory utilization, which helps you better 
+understand your workloads and plan re-sizing operations with confidence.
+
+## July 24, 2025 {#july-24-2025}
+
+**ClickPipes for MySQL CDC now in public beta**
+
+The MySQL CDC connector in ClickPipes is now widely available in public beta. With just a few clicks, 
+you can start replicating your MySQL (or MariaDB) data directly into ClickHouse Cloud in real-time,
+with no external dependencies. Read the [blogpost](https://clickhouse.com/blog/mysql-cdc-connector-clickpipes-beta)
+for an overview of the connector and follow the [quickstart](https://clickhouse.com/docs/integrations/clickpipes/mysql)
+to get up and running.
+
 ## July 11, 2025 {#june-11-2025}
 
 - New services now store database and table metadata in a central **SharedCatalog**,

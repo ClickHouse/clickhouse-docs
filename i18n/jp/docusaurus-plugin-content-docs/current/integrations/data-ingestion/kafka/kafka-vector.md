@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'Vector with Kafka'
-'sidebar_position': 3
-'slug': '/integrations/kafka/kafka-vector'
-'description': 'Using Vector with Kafka and ClickHouse'
-'title': 'Using Vector with Kafka and ClickHouse'
+sidebar_label: 'Vector with Kafka'
+sidebar_position: 3
+slug: '/integrations/kafka/kafka-vector'
+description: 'Using Vector with Kafka and ClickHouse'
+title: 'Using Vector with Kafka and ClickHouse'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';

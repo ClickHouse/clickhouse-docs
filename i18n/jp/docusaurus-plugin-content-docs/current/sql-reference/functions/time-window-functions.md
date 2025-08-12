@@ -1,9 +1,9 @@
 ---
-'description': 'Time Window Functionsのドキュメント'
-'sidebar_label': '時間ウィンドウ'
-'sidebar_position': 175
-'slug': '/sql-reference/functions/time-window-functions'
-'title': 'Time Window Functions'
+description: 'Time Window Functionsのドキュメント'
+sidebar_label: '時間ウィンドウ'
+sidebar_position: 175
+slug: '/sql-reference/functions/time-window-functions'
+title: 'Time Window Functions'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';

@@ -17,7 +17,6 @@ you through each step of the process as you explore ClickHouse Cloud.
 
 - Learn about what ClickHouse Cloud is, and how it differs from the open-source version
 - Discover the main use-cases of ClickHouse Cloud
-- Discover Cloud features
 - Learn about ClickHouse Cloud pricing
 
 ## Get set up with ClickHouse Cloud {#get-set-up-with-clickhouse-cloud}
@@ -29,7 +28,7 @@ and point you towards some general best practices you should know.
 Topics include: 
 
 - Migration guides from various platforms
-- Architecture
+- Cloud architecture
 
 ## Tune your ClickHouse Cloud deployment {#evaluate-clickhouse-cloud}
 

@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'Cloud SQL For MySQL'
-'description': 'ClickPipes のソースとして Cloud SQL for MySQL をセットアップする手順ガイド'
-'slug': '/integrations/clickpipes/mysql/source/gcp'
-'title': 'Cloud SQL for MySQL ソースセットアップガイド'
+sidebar_label: 'Cloud SQL For MySQL'
+description: 'ClickPipes のソースとして Cloud SQL for MySQL をセットアップする手順ガイド'
+slug: '/integrations/clickpipes/mysql/source/gcp'
+title: 'Cloud SQL for MySQL ソースセットアップガイド'
 ---
 
 import gcp_pitr from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/gcp/gcp-mysql-pitr.png';

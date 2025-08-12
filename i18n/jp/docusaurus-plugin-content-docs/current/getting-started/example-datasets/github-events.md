@@ -1,9 +1,9 @@
 ---
-'description': 'Dataset containing all events on GitHub from 2011 to Dec 6 2020, with
+description: 'Dataset containing all events on GitHub from 2011 to Dec 6 2020, with
   a size of 3.1 billion records.'
-'sidebar_label': 'GitHub Events'
-'slug': '/getting-started/example-datasets/github-events'
-'title': 'GitHub Events Dataset'
+sidebar_label: 'GitHub Events'
+slug: '/getting-started/example-datasets/github-events'
+title: 'GitHub Events Dataset'
 ---
 
 

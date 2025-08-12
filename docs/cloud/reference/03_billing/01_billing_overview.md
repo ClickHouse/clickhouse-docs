@@ -223,6 +223,10 @@ ClickHouse Cloud supports the following billing options:
 - Direct-sales annual / multi-year (through pre-paid "ClickHouse Credits", in USD, with additional payment options).
 - Through the AWS, GCP, and Azure marketplaces (either pay-as-you-go (PAYG) or commit to a contract with ClickHouse Cloud through the marketplace).
 
+:::note
+ClickHouse Cloud credits for PAYG are invoiced in \$0.01 units, allowing us to charge customers for partial ClickHouse credits based on their usage. This differs from committed spend ClickHouse credits, which are purchased in advance in whole \$1 units.
+:::
+
 ### How long is the billing cycle? {#how-long-is-the-billing-cycle}
 
 Billing follows a monthly billing cycle and the start date is tracked as the date when the ClickHouse Cloud organization was created.
@@ -454,12 +458,12 @@ This section outlines the pricing model of ClickPipes for streaming and object s
 
 #### What does the ClickPipes pricing structure look like? {#what-does-the-clickpipes-pricing-structure-look-like}
 
-It consists of two dimensions
+It consists of two dimensions:
 
-- **Compute**: Price per unit per hour
+- **Compute**: Price **per unit per hour**.
   Compute represents the cost of running the ClickPipes replica pods whether they actively ingest data or not.
   It applies to all ClickPipes types.
-- **Ingested data**: per GB pricing
+- **Ingested data**: Price **per GB**.
   The ingested data rate applies to all streaming ClickPipes
   (Kafka, Confluent, Amazon MSK, Amazon Kinesis, Redpanda, WarpStream, Azure Event Hubs)
   for the data transferred via the replica pods. The ingested data size (GB) is charged based on bytes received from the source (uncompressed or compressed).
@@ -472,17 +476,27 @@ For this reason, it uses dedicated compute replicas.
 
 #### What is the default number of replicas and their size? {#what-is-the-default-number-of-replicas-and-their-size}
 
-Each ClickPipe defaults to 1 replica that is provided with 2 GiB of RAM and 0.5 vCPU.
-This corresponds to **0.25** ClickHouse compute units (1 unit = 8 GiB RAM, 2 vCPUs).
+Each ClickPipe defaults to 1 replica that is provided with 512 MiB of RAM and 0.125 vCPU (XS).
+This corresponds to **0.0625** ClickHouse compute units (1 unit = 8 GiB RAM, 2 vCPUs).
 
 #### What are the ClickPipes public prices? {#what-are-the-clickpipes-public-prices}
 
-- Compute: \$0.20 per unit per hour (\$0.05 per replica per hour)
+- Compute: \$0.20 per unit per hour (\$0.0125 per replica per hour for the default replica size)
 - Ingested data: \$0.04 per GB
+
+The price for the Compute dimension depends on the **number** and **size** of replica(s) in a ClickPipe. The default replica size can be adjusted using vertical scaling, and each replica size is priced as follows:
+
+| Replica Size               | Compute Units | RAM     | vCPU   | Price per Hour |
+|----------------------------|---------------|---------|--------|----------------|
+| Extra Small (XS) (default) | 0.0625        | 512 MiB | 0.125. | $0.0125        |
+| Small (S)                  | 0.125         | 1 GiB   | 0.25   | $0.025         |
+| Medium (M)                 | 0.25          | 2 GiB   | 0.5    | $0.05          |
+| Large (L)                  | 0.5           | 4 GiB   | 1.0    | $0.10          |
+| Extra Large (XL)           | 1.0           | 8 GiB   | 2.0    | $0.20          |
 
 #### How does it look in an illustrative example? {#how-does-it-look-in-an-illustrative-example}
 
-The following examples assume a single replica unless explicitly mentioned.
+The following examples assume a single M-sized replica, unless explicitly mentioned.
 
 <table><thead>
   <tr>

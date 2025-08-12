@@ -3367,6 +3367,16 @@
       "permanent": true
     },
     {
+      "source": "/guides/developer/lightweight-update",
+      "destination": "/guides/developer/on-the-fly-mutations",
+      "permanent": true
+    },
+    {
+      "source": "/docs/manage/troubleshooting-billing-issues",
+      "destination": "/docs/manage/clickhouse-cloud-billing-compliance",
+      "permanent": true
+    },
+    {
       "source": "/docs/guides/developer/lightweight-update",
       "destination": "/docs/guides/developer/on-the-fly-mutations",
       "permanent": true

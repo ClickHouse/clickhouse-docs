@@ -1,9 +1,9 @@
 ---
-'sidebar_position': 1
-'sidebar_label': 'ベータ機能と実験的'
-'title': 'ベータおよび実験的機能'
-'description': 'ClickHouse にはベータおよび実験的機能があります。このドキュメントページでは定義について説明します。'
-'slug': '/beta-and-experimental-features'
+sidebar_position: 1
+sidebar_label: 'ベータ機能と実験的'
+title: 'ベータおよび実験的機能'
+description: 'ClickHouse にはベータおよび実験的機能があります。このドキュメントページでは定義について説明します。'
+slug: '/beta-and-experimental-features'
 ---
 
 Because ClickHouse is open-source, it receives many contributions not only from ClickHouse employees but also from the community. These contributions are often developed at different speeds; certain features may require a lengthy prototyping phase or more time for sufficient community feedback and iteration to be considered generally available (GA).

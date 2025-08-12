@@ -1,12 +1,12 @@
 ---
-'description': 'ClickHouse における AggregateFunction データ型のドキュメント。集約関数の中間状態を保存します。'
-'keywords':
+description: 'ClickHouse における AggregateFunction データ型のドキュメント。集約関数の中間状態を保存します。'
+keywords:
 - 'AggregateFunction'
 - 'Type'
-'sidebar_label': 'AggregateFunction'
-'sidebar_position': 46
-'slug': '/sql-reference/data-types/aggregatefunction'
-'title': 'AggregateFunction Type'
+sidebar_label: 'AggregateFunction'
+sidebar_position: 46
+slug: '/sql-reference/data-types/aggregatefunction'
+title: 'AggregateFunction Type'
 ---
 
 

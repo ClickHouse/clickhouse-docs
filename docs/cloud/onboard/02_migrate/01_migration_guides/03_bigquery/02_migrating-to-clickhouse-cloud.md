@@ -177,7 +177,7 @@ In ClickHouse, partitioning is specified on a table when it is initially defined
 
 <Image img={bigquery_6} size="md" alt="Partitions"/>
 
-The data parts are logically associated with each partition on disk and can be queried in isolation. For the example below, we partition the posts table by year using the expression [`toYear(CreationDate)`](/sql-reference/functions/date-time-functions#toyear). As rows are inserted into ClickHouse, this expression will be evaluated against each row – rows are then routed to the resulting partition in the form of new data parts belonging to that partition.
+The data parts are logically associated with each partition on disk and can be queried in isolation. For the example below, we partition the posts table by year using the expression [`toYear(CreationDate)`](/sql-reference/functions/date-time-functions#toYear). As rows are inserted into ClickHouse, this expression will be evaluated against each row – rows are then routed to the resulting partition in the form of new data parts belonging to that partition.
 
 ```sql
 CREATE TABLE posts

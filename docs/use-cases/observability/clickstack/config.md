@@ -211,6 +211,10 @@ For example, below is the Logs source configured with correlated sources:
 
 ### Application configuration settings {#application-configuration-settings}
 
+:::note HyperDX in ClickHouse Cloud
+These settings cannot be modified when HyperDX is managed in ClickHouse Cloud.
+:::
+
 - `HYPERDX_API_KEY`
   - **Default:** None (required)
   - **Description:** Authentication key for the HyperDX API.

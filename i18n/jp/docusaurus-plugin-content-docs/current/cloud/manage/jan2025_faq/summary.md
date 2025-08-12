@@ -1,12 +1,12 @@
 ---
-'title': '概要'
-'slug': '/cloud/manage/jan-2025-faq/summary'
-'keywords':
+title: '概要'
+slug: '/cloud/manage/jan-2025-faq/summary'
+keywords:
 - 'new tiers'
 - 'packaging'
 - 'pricing faq'
 - 'summary'
-'description': '新しいClickHouse Cloud Tierの概要'
+description: '新しいClickHouse Cloud Tierの概要'
 ---
 
 

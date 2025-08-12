@@ -1,14 +1,14 @@
 ---
-'slug': '/examples/aggregate-function-combinators/avgMerge'
-'title': 'avgMerge'
-'description': 'avgMerge combinatorの使用例'
-'keywords':
+slug: '/examples/aggregate-function-combinators/avgMerge'
+title: 'avgMerge'
+description: 'avgMerge combinatorの使用例'
+keywords:
 - 'avg'
 - 'merge'
 - 'combinator'
 - 'examples'
 - 'avgMerge'
-'sidebar_label': 'avgMerge'
+sidebar_label: 'avgMerge'
 ---
 
 

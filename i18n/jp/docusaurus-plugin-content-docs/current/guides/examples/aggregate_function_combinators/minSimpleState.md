@@ -1,15 +1,15 @@
 ---
-'slug': '/examples/aggregate-function-combinators/minSimpleState'
-'title': 'minSimpleState'
-'description': 'minSimpleState combinator の使用例'
-'keywords':
+slug: '/examples/aggregate-function-combinators/minSimpleState'
+title: 'minSimpleState'
+description: 'minSimpleState combinator の使用例'
+keywords:
 - 'min'
 - 'state'
 - 'simple'
 - 'combinator'
 - 'examples'
 - 'minSimpleState'
-'sidebar_label': 'minSimpleState'
+sidebar_label: 'minSimpleState'
 ---
 
 

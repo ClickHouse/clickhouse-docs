@@ -15,6 +15,11 @@
   border: 1px solid var(--click-color-stroke) !important;
   background: var(--click-color-field-background);
 }
+
+[data-theme="light"] .DocSearch-Button {
+  background-color: rgb(250, 250, 250);
+  color: black;
+}
 .DocSearch-Button-Placeholder {
   font-size: inherit;
 }

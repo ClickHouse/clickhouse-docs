@@ -1,8 +1,8 @@
 ---
-'slug': '/native-protocol/hash'
-'sidebar_position': 5
-'title': 'CityHash'
-'description': 'Native protocol hash'
+slug: '/native-protocol/hash'
+sidebar_position: 5
+title: 'CityHash'
+description: 'Native protocol hash'
 ---
 
 
