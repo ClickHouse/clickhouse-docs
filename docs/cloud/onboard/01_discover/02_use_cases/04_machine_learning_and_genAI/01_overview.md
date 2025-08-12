@@ -1,6 +1,7 @@
 ---
 slug: /cloud/get-started/cloud/use-cases/AI_ML
 title: 'Machine learning and generative AI'
+description: 'Learn how ClickHouse Cloud powers machine learning and generative AI applications with high-performance data processing and analytics'
 keywords: ['use cases', 'Machine Learning', 'Generative AI']
 sidebar_label: 'Overview'
 ---

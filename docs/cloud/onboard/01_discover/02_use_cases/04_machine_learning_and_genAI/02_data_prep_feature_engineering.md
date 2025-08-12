@@ -1,6 +1,7 @@
 ---
 slug: /cloud/get-started/cloud/use-cases/AI_ML/feature_engineering
 title: 'Data preparation and feature engineering'
+description: 'Use ClickHouse Cloud for efficient data preparation and feature engineering in machine learning and AI workflows'
 keywords: ['use cases', 'Machine Learning', 'Generative AI']
 sidebar_label: 'Data preparation and feature engineering'
 ---

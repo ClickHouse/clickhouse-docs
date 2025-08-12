@@ -1,6 +1,7 @@
 ---
 slug: /cloud/get-started/cloud/resource-tour
 title: 'Resource tour'
+description: 'Overview of ClickHouse Cloud documentation resources for query optimization, scaling strategies, monitoring, and best practices'
 keywords: ['clickhouse cloud']
 hide_title: true
 ---

@@ -1,6 +1,7 @@
 ---
 slug: /cloud/get-started/cloud/use-cases/observability
 title: 'Observability'
+description: 'Use ClickHouse Cloud for observability, monitoring, logging, and system performance analysis in distributed applications'
 keywords: ['use cases', 'observability']
 sidebar_label: 'Observability'
 ---

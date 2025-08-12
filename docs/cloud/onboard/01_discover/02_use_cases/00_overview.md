@@ -1,6 +1,7 @@
 ---
 slug: /cloud/get-started/cloud/use-cases/overview
 title: 'Building on ClickHouse Cloud'
+description: 'Explore ClickHouse Cloud use cases including real-time analytics, observability, data lake & warehouse, and machine learning applications'
 keywords: ['use cases', 'Cloud']
 sidebar_label: 'Overview'
 ---
