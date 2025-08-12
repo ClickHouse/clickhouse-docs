@@ -164,7 +164,7 @@ ORDER BY data_year DESC;
 
 | Problem | Detection Query | Solution |
 |---------|-----------------|----------|
-| **Memory OOM** | `SELECT * FROM system.processes WHERE memory_usage > 8GB` | *"Enable external aggregation so it will be a little bit slower like two or three times but it will use much less memory"* |
+| **Memory OOM** | `SELECT * FROM system.processes WHERE memory_usage > 8GB` | *"Enable external aggregation-it will be a little bit slower...but it will use much less memory"* |
 | **Disk Full** | `SELECT sum(bytes_on_disk) FROM system.parts` | Delete old partitions, expand disk |
 | **Replication Lag** | `SELECT * FROM system.replicas WHERE absolute_delay > 300` | Check network, restart lagging replica |
 | **Stuck Query** | `SELECT * FROM system.processes WHERE elapsed > 300` | `KILL QUERY WHERE query_id = '...'` |
