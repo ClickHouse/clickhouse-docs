@@ -97,5 +97,5 @@ model deployment and monitoring.
 
 | Area                                                                                               | Description                                                                                              |
 |----------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
-| [Data preparation and feature engineering](/get-started/cloud/use-cases/AI_ML/feature_engineering) | Learn how ClickHouse is used in the data preparation and feature engineering stages of the AI/ML pipeline |
+| [Data preparation and feature engineering](/cloud/get-started/cloud/use-cases/AI_ML/feature_engineering) | Learn how ClickHouse is used in the data preparation and feature engineering stages of the AI/ML pipeline |
 | [Agent-facing analytics](/cloud/get-started/cloud/use-cases/AI_ML/agent_facing_analytics)          | Learn how ClickHouse enables agentic facing analytics                                                    |

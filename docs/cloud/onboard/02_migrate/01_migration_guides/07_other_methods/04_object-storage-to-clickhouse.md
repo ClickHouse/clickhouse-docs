@@ -20,7 +20,7 @@ table functions for migrating data stored in Cloud Object Storage into a ClickHo
 - [gcs](/sql-reference/table-functions/gcs)
 - [azureBlobStorage](/sql-reference/table-functions/azureBlobStorage)
 
-If your current database system is not able to directly offload data into a Cloud Object Storage, you could use a [third-party ETL/ELT tool](./etl-tool-to-clickhouse.md) or [clickhouse-local](./clickhouse-local-etl.md) for moving data
+If your current database system is not able to directly offload data into a Cloud Object Storage, you could use a [third-party ETL/ELT tool](/cloud/migration/etl-tool-to-clickhouse) or [clickhouse-local](/cloud/migration/clickhouse-local) for moving data
 from you current database system to Cloud Object Storage, in order to migrate that data in a second step into a ClickHouse Cloud table.
 
 Although this is a two steps process (offload data into a Cloud Object Storage, then load into ClickHouse), the advantage is that this

@@ -270,4 +270,4 @@ LIMIT 5;
 Time: 116750.131 ms (01:56.750)
 ```
 
-[Click here for Part 3](./data-modeling-techniques.md)
+[Click here for Part 3](/migrations/postgresql/data-modeling-techniques)

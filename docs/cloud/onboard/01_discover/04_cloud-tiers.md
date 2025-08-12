@@ -172,9 +172,9 @@ Users can upgrade to the Scale or Enterprise tier to scale their services.
 Designed for workloads requiring enhanced SLAs (2+ replica deployments), scalability, and advanced security.
 
 - Offers support for features such as: 
-  - [Private networking support](../security/private-link-overview.md).
+  - [Private networking support](/cloud/security/private-link-overview).
   - [Compute-compute separation](../reference/warehouses#what-is-compute-compute-separation).
-  - [Flexible scaling](../manage/scaling.md) options (scale up/down, in/out).
+  - [Flexible scaling](/cloud/manage/jan-2025-faq/scaling) options (scale up/down, in/out).
 
 ## Enterprise {#enterprise}
 
@@ -187,7 +187,7 @@ Caters to large-scale, mission critical deployments that have stringent security
   - Single Sign On (SSO)
   - Enhanced Encryption: For AWS and GCP services. Services are encrypted by our key by default and can be rotated to their key to enable Customer Managed Encryption Keys (CMEK).
 - Allows Scheduled upgrades: Users can select the day of the week/time window for upgrades, both database and cloud releases.  
-- Offers [HIPAA](../security/compliance-overview.md/#hipaa-since-2024) Compliance.
+- Offers [HIPAA](/cloud/security/compliance-overview#hipaa-since-2024) Compliance.
 - Exports Backups to the user's account.
 
 :::note 

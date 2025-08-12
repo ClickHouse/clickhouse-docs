@@ -104,4 +104,4 @@ The model below generally addresses ClickHouse responsibilities and shows respon
   | HIPAA compliance                                                                                     | Available | AWS, GCP          | Enterprise              |
   | PCI compliance                                                                                       | Available | AWS               | Enterprise              |
 
-  For more information on supported compliance frameworks, please review our [Security and Compliance](/cloud/security/security-and-compliance) page.
+  For more information on supported compliance frameworks, please review our [Security and Compliance](/cloud/security/compliance-overview) page.

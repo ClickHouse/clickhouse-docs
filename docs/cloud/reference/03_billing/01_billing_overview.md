@@ -15,7 +15,7 @@ To understand what can affect your bill, and ways that you can manage your spend
 
 :::note
 - Prices reflect AWS us-east-1 pricing.
-- Explore applicable data transfer and ClickPipes charges [here](jan2025_faq/dimensions.md).
+- Explore applicable data transfer and ClickPipes charges [here](/cloud/manage/jan-2025-faq/pricing-dimensions).
 :::
 
 ### Basic: from $66.52 per month {#basic-from-6652-per-month}
@@ -191,7 +191,7 @@ Storage costs are the same across tiers and vary by region and cloud service pro
 
 Storage and backups are counted towards storage costs and billed separately. 
 All services will default to one backup, retained for a day. 
-Users who need additional backups can do so by configuring additional [backups](backups/overview.md) under the settings tab of the Cloud console.
+Users who need additional backups can do so by configuring additional [backups](/cloud/manage/backups/overview) under the settings tab of the Cloud console.
 
 ### How do I estimate compression? {#how-do-i-estimate-compression}
 
@@ -287,7 +287,7 @@ which are metered in the same way and billed accordingly.
 
 When creating a service in addition to an existing service, 
 you can choose if this new service should share the same data with the existing one. 
-If yes, these two services now form a [warehouse](../reference/warehouses.md). 
+If yes, these two services now form a [warehouse](/cloud/reference/warehouses). 
 A warehouse has the data stored in it with multiple compute services accessing this data.
 
 As the data is stored only once, you only pay for one copy of data, though multiple services are accessing it. 

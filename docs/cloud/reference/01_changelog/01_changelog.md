@@ -29,7 +29,7 @@ import share_queries from '@site/static/images/cloud/reference/may-30-share-quer
 import query_endpoints from '@site/static/images/cloud/reference/may-17-query-endpoints.png';
 import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.png';
 
-In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/cloud/reference/cloud-compatibility.md) page.
+In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/whats-new/cloud-compatibility) page.
 
 ## August 8, 2025 {#august-08-2025}
 
@@ -272,7 +272,7 @@ Safe managed upgrades deliver significant value to our users by allowing them to
 
 ### HIPAA support {#hipaa-support}
 
-We now support HIPAA in compliant regions, including AWS `us-east-1`, `us-west-2` and GCP `us-central1`, `us-east1`. Customers wishing to onboard must sign a Business Associate Agreement (BAA) and deploy to the compliant version of the region. For more information on HIPAA, please refer to the [documentation](/cloud/security/security-and-compliance).
+We now support HIPAA in compliant regions, including AWS `us-east-1`, `us-west-2` and GCP `us-central1`, `us-east1`. Customers wishing to onboard must sign a Business Associate Agreement (BAA) and deploy to the compliant version of the region. For more information on HIPAA, please refer to the [documentation](/cloud/security/compliance-overview).
 
 ### Scheduled upgrades {#scheduled-upgrades}
 
@@ -1420,7 +1420,7 @@ This release enables dictionaries from local ClickHouse table and HTTP sources, 
 ### General changes {#general-changes-5}
 
 - Added support for [dictionaries](/sql-reference/dictionaries/index.md) from local ClickHouse table and HTTP sources
-- Introduced support for the Mumbai [region](/cloud/reference/supported-regions.md)
+- Introduced support for the Mumbai [region](/cloud/reference/supported-regions)
 
 ### Console changes {#console-changes-30}
 
@@ -1488,4 +1488,4 @@ This release significantly lowers compute consumption for small workloads, lower
 
 ClickHouse Cloud began its public Beta on October 4th, 2022. Learn more in this [blog](https://clickhouse.com/blog/clickhouse-cloud-public-beta).
 
-The ClickHouse Cloud version is based on ClickHouse core v22.10. For a list of compatible features, refer to the [Cloud Compatibility](/cloud/reference/cloud-compatibility.md) guide.
+The ClickHouse Cloud version is based on ClickHouse core v22.10. For a list of compatible features, refer to the [Cloud Compatibility](/whats-new/cloud-compatibility) guide.

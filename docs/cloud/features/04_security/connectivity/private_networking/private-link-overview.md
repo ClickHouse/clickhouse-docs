@@ -9,6 +9,6 @@ description: 'Landing page for private link'
 
 ClickHouse Cloud provides the ability to connect your services to your cloud virtual network. Refer to the guides below for your provider:
 
-- [AWS private Link](/cloud/security/aws-privatelink.md)
-- [GCP private service connect](/cloud/security/gcp-private-service-connect.md)
-- [Azure private link](/cloud/security/azure-privatelink.md)
+- [AWS private Link](/manage/security/aws-privatelink)
+- [GCP private service connect](/manage/security/gcp-private-service-connect)
+- [Azure private link](/cloud/security/azure-privatelink)

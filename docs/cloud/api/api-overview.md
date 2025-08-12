@@ -15,7 +15,7 @@ organizations and services on ClickHouse Cloud. Using our Cloud API, you can
 create and manage services, provision API keys, add or remove members in your 
 organization, and more.
 
-[Learn how to create your first API key and start using the ClickHouse Cloud API.](/cloud/manage/openapi.md)
+[Learn how to create your first API key and start using the ClickHouse Cloud API.](/cloud/manage/openapi)
 
 ## Swagger (OpenAPI) Endpoint and UI {#swagger-openapi-endpoint-and-ui}
 
