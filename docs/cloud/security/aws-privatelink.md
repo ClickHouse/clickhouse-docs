@@ -337,7 +337,7 @@ In this example connection via value of `privateDnsHostname` host name will be r
 ### Multiple PrivateLinks in one region {#multiple-privatelinks-in-one-region}
 
 In most cases, you only need to create a single endpoint service for each VPC. This endpoint can route requests from the VPC to multiple ClickHouse Cloud services.
-Please refer [here](#attention)
+Please refer [here](#considerations)
 
 ### Connection to private endpoint timed out {#connection-to-private-endpoint-timed-out}
 
