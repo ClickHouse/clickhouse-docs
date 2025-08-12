@@ -157,7 +157,7 @@ place on object storage.
   data stores such as Postgres and MySQL. A completely parallelization query
   execution engine, combined with a column-oriented storage format, allows
   ClickHouse to perform aggregations over PBs of data in seconds - unlike
-  transformations on in memory dataframes, users are not memory-bound.
+  transformations on in memory data frames, users are not memory-bound.
   Furthermore, materialized views allow data to be transformed at insert time,
   thus overloading compute to data load time from query time. These views can
   exploit the same range of analytical and statistical functions ideal for

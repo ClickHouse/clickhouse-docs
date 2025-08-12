@@ -19,14 +19,14 @@ Snowflake offers the type Number for numerics. This requires the user to specify
 precision (total number of digits) and scale (digits to the right of the decimal place)
 up to a total of 38. Integer declarations are synonymous with Number, and simply 
 define a fixed precision and scale where the range is the same. This convenience 
-is possible as modifying the precision (scale is 0 for ints) does not impact the 
+is possible as modifying the precision (scale is 0 for integers) does not impact the 
 size of data on disk in Snowflake - the minimal required bytes are used for a 
 numeric range at write time at a micro partition level. The scale does, however,
 impact storage space and is offset with compression. A `Float64` type offers a 
 wider range of values with a loss of precision.
 
 Contrast this with ClickHouse, which offers multiple signed and unsigned 
-precisions for floats and ints. With these, ClickHouse users can be explicit about
+precision for floats and integers. With these, ClickHouse users can be explicit about
 the precision required for integers to optimize storage and memory overhead. A 
 Decimal type, equivalent to Snowflake’s Number type, also offers twice the 
 precision and scale at 76 digits. In addition to a similar `Float64` value, 
@@ -102,7 +102,7 @@ for these data types.
 | `FixedString`     | Allows a fixed length of bytes to be used, which is useful for hashes.                              |
 | `LowCardinality`  | Allows any type to be dictionary encoded. Useful for when the cardinality is expected to be < 100k. |
 | `Enum`            | Allows efficient encoding of named values in either 8 or 16-bit ranges.                             |
-| `UUID`            | For efficient storage of uuids.                                                                     |
+| `UUID`            | For efficient storage of UUIDs.                                                                     |
 | `Array(Float32)`  | Vectors can be represented as an Array of Float32 with supported distance functions.                |
 
 Finally, ClickHouse offers the unique ability to store the intermediate 

@@ -2,7 +2,7 @@
 |---------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
 | [Shared Responsibility Model](shared-responsibility-model.md) | Understand how security responsibilities are divided between ClickHouse Cloud and your organization for different service types.   |
 | [Cloud Access Management](cloud-access-management/index.md)   | Manage user access with authentication, single sign-on (SSO), role-based permissions, and team invitations.                        |
-| [Connectivity](connectivity-overview.md)                      | Configure secure network access including IP allowlists, private networking, S3 data access, and Cloud IP address management.      |
+| [Connectivity](connectivity-overview.md)                      | Configure secure network access including IP allow-lists, private networking, S3 data access, and Cloud IP address management.     |
 | [Enhanced Encryption](cmek.md)                                | Learn about default AES 256 encryption and how to enable Transparent Data Encryption (TDE) for additional data protection at rest. |
 | [Audit Logging](audit-logging.md)                             | Set up and use audit logging to track and monitor activities in your ClickHouse Cloud environment.                                 |
 | [Privacy and Compliance](privacy-compliance-overview.md)      | Review security certifications, compliance standards, and learn how to manage your personal information and data rights.           |

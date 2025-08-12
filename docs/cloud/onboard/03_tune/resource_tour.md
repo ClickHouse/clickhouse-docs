@@ -23,7 +23,7 @@ Explore resource organised by the following topics:
 - Troubleshooting common issues (coming soon)
 - Production readiness checklist (coming soon)
 
-Before diving into more specific tipics, we recommend you start with our general
+Before diving into more specific topics, we recommend you start with our general
 ClickHouse best practice guides which cover general best practices to follow when
 using ClickHouse:
 
