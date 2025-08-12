@@ -56,7 +56,8 @@ If your organization has been migrated to one of the [new pricing plans](https:/
 You will now also be able to specify the `num_replicas` field as a property of the service resource.
 :::
 
-## Terraform and OpenAPI New Pricing: Replica Settings Explained
+## Terraform and OpenAPI New Pricing: Replica Settings Explained {#terraform-and-openapi-new-pricing---replica-settings-explained}
+
 The number of replicas each service will be created with defaults to 3 for the Scale and Enterprise tiers, while it defaults to 1 for the Basic tier.
 For the Scale and the Enterprise tiers it is possible to adjust it by passing a `numReplicas` field in the service creation request. 
 The value of the `numReplicas` field must be between 2 and 20 for the first service in a warehouse. Services that are created in an existing warehouse can have a number of replicas as low as 1.

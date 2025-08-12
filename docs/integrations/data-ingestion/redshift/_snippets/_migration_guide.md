@@ -24,7 +24,6 @@ From the ClickHouse instance standpoint, you can either:
 We used Redshift as a data source in this tutorial. However, the migration approaches presented here are not exclusive to Redshift, and similar steps can be derived for any compatible data source.
 :::
 
-
 ## Push Data from Redshift to ClickHouse {#push-data-from-redshift-to-clickhouse}
 
 In the push scenario, the idea is to leverage a third-party tool or service (either custom code or an [ETL/ELT](https://en.wikipedia.org/wiki/Extract,_transform,_load#ETL_vs._ELT)) to send your data to your ClickHouse instance. For example, you can use a software like [Airbyte](https://www.airbyte.com/) to move data between your Redshift instance (as a source) and ClickHouse as a destination ([see our integration guide for Airbyte](/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse.md))
@@ -41,7 +40,6 @@ In the push scenario, the idea is to leverage a third-party tool or service (eit
 
 * Users need to set up and maintain an ETL/ELT infrastructure.
 * Introduces a third-party element in the architecture which can turn into a potential scalability bottleneck.
-
 
 ## Pull Data from Redshift to ClickHouse {#pull-data-from-redshift-to-clickhouse}
 

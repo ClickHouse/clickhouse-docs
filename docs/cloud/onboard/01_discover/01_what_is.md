@@ -5,7 +5,7 @@ keywords: ['clickhouse cloud', 'what is clickhouse cloud', 'clickhouse cloud ove
 hide_title: true
 ---
 
-## What is ClickHouse Cloud?
+## What is ClickHouse Cloud? {#what-is-clickhouse-cloud}
 
 ClickHouse Cloud is a fully managed cloud service created by the original creators
 of ClickHouse, the fastest and most popular open-source columnar online analytical
@@ -15,7 +15,7 @@ With Cloud, infrastructure, maintenance, scaling, and operations are taken care 
 for you, so that you can focus on what matters most to you, which is building value
 for your organization and your customers faster.
 
-## Benefits of ClickHouse Cloud
+## Benefits of ClickHouse Cloud {#benefits-of-clickhouse-cloud}
 
 ClickHouse Cloud offers several major benefits over the open-source version:
 

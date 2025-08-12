@@ -238,9 +238,3 @@ by ClickHouse: a streaming engine such as Kafka + Flink and a framework to
 provide compute for model training. A means of hosting models is also
 required. For simplicity, we assume the use of a cloud-hosted solution to
 these, such as Confluent and Amazon SageMaker.
-
-
-
-
-
-

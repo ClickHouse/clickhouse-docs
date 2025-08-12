@@ -63,10 +63,10 @@ to get up and running.
 
 - New services now store database and table metadata in a central **SharedCatalog**,
   a new model for coordination and object lifecycles which enables:
-    - **Cloud-scale DDL**, even under high concurrency
-    - **Resilient deletion and new DDL operations**
-    - **Fast spin-up and wake-ups** as stateless nodes now launch with no disk dependencies
-    - **Stateless compute across both native and open formats**, including Iceberg and Delta Lake
+  - **Cloud-scale DDL**, even under high concurrency
+  - **Resilient deletion and new DDL operations**
+  - **Fast spin-up and wake-ups** as stateless nodes now launch with no disk dependencies
+  - **Stateless compute across both native and open formats**, including Iceberg and Delta Lake
   
   Read more about SharedCatalog in our [blog](https://clickhouse.com/blog/clickhouse-cloud-stateless-compute)
 
@@ -767,12 +767,12 @@ This release upgrades the core database version, adds ability to set up private 
 
 ### Integrations changes {#integrations-changes-4}
 * Kafka Connect
-    * Support async_insert for exactly once (disabled by default)
+  * Support async_insert for exactly once (disabled by default)
 * Golang client
-    * Fixed DateTime binding
-    * Improved batch insert performance
+  * Fixed DateTime binding
+  * Improved batch insert performance
 * Java client
-    * Fixed request compression problem
+  * Fixed request compression problem
 
 ### Settings changes {#settings-changes}
 * `use_mysql_types_in_show_columns` is no longer required. It will be automatically enabled when you connect through the MySQL interface.

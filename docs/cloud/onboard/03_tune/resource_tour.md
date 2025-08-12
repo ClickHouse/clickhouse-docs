@@ -35,7 +35,6 @@ using ClickHouse:
 
 ## Scaling strategies and resource management {#scaling}
 
-
 ## Monitoring {#monitoring}
 
 | Page                                                            | Description                                                                   |

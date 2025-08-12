@@ -130,7 +130,6 @@ differ in a few subtle ways:
 Based on public [benchmark](https://benchmark.clickhouse.com/#system=+%E2%98%81w|%EF%B8%8Fr|C%20c|nfe&type=-&machine=-ca2|gl|6ax|6ale|3al&cluster_size=-&opensource=-&tuned=+n&metric=hot&queries=-) data,
 ClickHouse outperforms Snowflake for real-time analytics applications in the following areas:
 
-
 * **Query latency**: Snowflake queries have a higher query latency even 
   when clustering is applied to tables to optimize performance. In our 
   testing, Snowflake requires over twice the compute to achieve equivalent 
@@ -183,10 +182,3 @@ ClickHouse outperforms Snowflake for real-time analytics applications in the fol
   observed in our benchmark that these differences, along with lower query 
   latencies and higher compression, result in significantly lower costs with 
   ClickHouse.
-
-
-
-
-
-
-

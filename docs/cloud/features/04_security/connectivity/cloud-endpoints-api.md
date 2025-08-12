@@ -1,4 +1,4 @@
-w---
+---
 slug: /manage/security/cloud-endpoints-api
 sidebar_label: 'Cloud IP Addresses'
 title: 'Cloud IP Addresses'

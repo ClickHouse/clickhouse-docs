@@ -13,7 +13,7 @@ import rta_3 from '@site/static/images/cloud/onboard/discover/use_cases/3_rta.pn
 
 <iframe width="758" height="426" src="https://www.youtube.com/embed/SnFff0KYwuo?si=aNpGzSobzFhUlyX5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-## What is real-time analytics?
+## What is real-time analytics? {#what-is-real-time-analytics}
 
 Real-time analytics refers to data processing that delivers insights to end users
 and customers as soon as the data is generated. It differs from traditional or 
@@ -45,7 +45,7 @@ Organizations can discover insights about their customers by aggregating and
 analyzing events like this. This has traditionally been done using batch analytics,
 and in the next section, we’ll compare batch and real-time analytics.
 
-## Real-Time analytics vs batch analytics
+## Real-Time analytics vs batch analytics {#real-time-analytics-vs-batch-analytics}
 
 The diagram below shows what a typical batch analytics system would look like 
 from the perspective of an individual event:
@@ -157,15 +157,3 @@ quickly and with a large number of concurrent users.
 > to 400 milliseconds or more for the other databases. It ran latest-price queries in 8 milliseconds, outpacing the 
 > next-best performance (SingleStore) which came in at 45 milliseconds. Finally, it handled ASOF JOIN queries in 
 > 50 milliseconds, while Snowflake took 20 minutes and Rockset timed out.
-
-
-
-
-
-
-
-
-
-
-
-

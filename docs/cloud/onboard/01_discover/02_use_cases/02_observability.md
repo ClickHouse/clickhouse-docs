@@ -17,8 +17,7 @@ into a comprehensive approach to understanding system behavior. However,
 implementing effective observability isn't straightforward - it requires 
 understanding technical concepts and organizational challenges.
 
-
-## What is Observability?
+## What is Observability? {#what-is-observability}
 
 Observability is understanding a system's internal state by examining its outputs.
 In software systems, this means understanding what's happening inside your 
@@ -228,4 +227,3 @@ implementing observability. The standard observability pipeline has evolved to
 provide a framework for effectively collecting, processing, and analyzing 
 telemetry data. One of the earliest and most influential examples of this 
 evolution comes from Twitter's experience in 2013.
-

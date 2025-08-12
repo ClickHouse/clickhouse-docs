@@ -55,15 +55,3 @@ replace or augment Redshift with ClickHouse for the following reasons:
 | **Lower query latencies**          | ClickHouse achieves lower query latencies, including for varied query patterns, under high concurrency and while subjected to streaming inserts. Even when your query misses a cache, which is inevitable in interactive user-facing analytics, ClickHouse can still process it fast.                                                                                                                     |
 | **Higher concurrent query limits** | ClickHouse places much higher limits on concurrent queries, which is vital for real-time application experiences. In ClickHouse, self-managed as well as cloud, you can scale up your compute allocation to achieve the concurrency your application needs for each service. The level of permitted query concurrency is configurable in ClickHouse, with ClickHouse Cloud defaulting to a value of 1000. |
 | **Superior data compression**      | ClickHouse offers superior data compression, which allows users to reduce their total storage (and thus cost) or persist more data at the same cost and derive more real-time insights from their data. See "ClickHouse vs Redshift Storage Efficiency" below.                                                                                                                                            |
-
-
-
-
-
-
-
-
-
-
-
-
