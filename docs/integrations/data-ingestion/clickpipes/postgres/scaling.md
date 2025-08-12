@@ -19,7 +19,7 @@ Before attempting to scale up, consider:
 - First adjusting [initial load parallelism and partitioning](/integrations/data-ingestion/clickpipes/postgres/parallel_initial_load) when creating a ClickPipe
 - Checking for [long-running transactions](/integrations/clickpipes/postgres/sync_control#transactions-pg-sync) on the source that could be causing CDC delays
 
-Increasing the scale will proportionally increase your ClickPipes compute costs. If you're scaling up just for the initial loads, it's important to scale down after the snapshot is finished to avoid unexpected charges. For more details on pricing, see [Postgres CDC Pricing](/cloud/manage/billing/overview#clickpipes-for-postgres-cdc).
+**Increasing the scale will proportionally increase your ClickPipes compute costs.** If you're scaling up just for the initial loads, it's important to scale down after the snapshot is finished to avoid unexpected charges. For more details on pricing, see [Postgres CDC Pricing](/cloud/manage/billing/overview#clickpipes-for-postgres-cdc).
 
 ## Prerequisites for this process {#prerequisites}
 
