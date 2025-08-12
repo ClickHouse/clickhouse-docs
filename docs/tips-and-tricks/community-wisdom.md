@@ -31,12 +31,12 @@ Combine this collected knowledge with our [Best Practices](/best-practices) guid
 
 | Issue | Document | Description |
 |-------|---------|-------------|
-| **Production Issue**   | [Debugging-Toolkit](./debugging-toolkit.md) | Copy/Paste Queries, production debugging guidance |
-| **Slow Queries**       | [Performance Optimization](./performance-optimization.md) | Optimize Performance |
-| **Materialized Views** | [MV Double-Edged Sword](./materialized-views.md) | Avoid 10x storage instances |
-| **Too Many Parts**     | [Too Many Parts](./too-many-parts.md) | Addressing the 'Too Many Parts' error and performance slowdown |
-| **High Costs**         | [Cost Optimization](./cost-optimization.md) | Optimize Cost |
-| **Creative Use Cases**  | [Success Stories](./creative-usecases.md) | Examples of ClickHouse in 'Outside the Box' use cases |
+| **Production Issue**   | [Debugging-toolkit](./debugging-toolkit.md) | Copy/Paste Queries, production debugging guidance |
+| **Slow Queries**       | [Performance optimization](./performance-optimization.md) | Optimize Performance |
+| **Materialized Views** | [MV double-edged sword](./materialized-views.md) | Avoid 10x storage instances |
+| **Too Many Parts**     | [Too many parts](./too-many-parts.md) | Addressing the 'Too Many Parts' error and performance slowdown |
+| **High Costs**         | [Cost optimization](./cost-optimization.md) | Optimize Cost |
+| **Creative Use Cases**  | [Success stories](./creative-usecases.md) | Examples of ClickHouse in 'Outside the Box' use cases |
 
 ### Usage Instructions {#usage-instructions}
 
