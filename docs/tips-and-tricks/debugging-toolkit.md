@@ -174,21 +174,5 @@ ORDER BY data_year DESC;
 
 **The golden rule:** *"Problems very rarely just pop out of nowhere there are signs... investigate it before it goes from 15 milliseconds to 30 seconds"*
 
-## Community War Stories & Lessons {#war-stories}
-
-**Disk Space Issues:**
-- *"Default general purpose disks that AWS gives you they have a limit of 16 terabytes and you can imagine that we got to 16 terabytes really quickly"*
-- *"Other nodes are like why are you behind us take this and it's accepting only half of it and they just keep sending all of that data"*
-
-**Memory Exhaustion:**  
-- *"Out of memory typically appears when you have a big aggregation with a lot of keys"*
-- Solution: *"Enable external aggregation so it will be a little bit slower like two or three times but it will not use much less memory"*
-
-**Bad Data:**
-- *"We enable developers to put whatever timestamp they want on their logs... they tend to do really silly things like sending you data from 1998 or sending you data for 2050"*
-- Always validate timestamps before they hit production
-
-**The key insight:** Most 2AM incidents are preventable if you recognize the warning signs and have ready-to-use diagnostic queries.
-
 ## Video Sources {#video-sources}
 - [10 Lessons from Operating ClickHouse](https://www.youtube.com/watch?v=liTgGiTuhJE) - Source of the disk space, memory, and bad data lessons from production operations
