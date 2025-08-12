@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
-slug: /community-wisdom/debugging-toolkit
-sidebar_label: 'Debugging Toolkit'
+slug: /community-wisdom/debugging-insights
+sidebar_label: 'Debugging Insights'
 doc_type: 'how-to-guide'
 keywords: [
   'clickhouse troubleshooting',
@@ -15,7 +15,7 @@ keywords: [
   'debug',
   'solutions'
 ]
-title: 'Lessons - Debugging Toolkit'
+title: 'Lessons - Debugging Insights'
 description: 'Find solutions to the most common ClickHouse problems including slow queries, memory errors, connection issues, and configuration problems.'
 ---
 

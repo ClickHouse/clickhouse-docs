@@ -31,27 +31,12 @@ Combine this collected knowledge with our [Best Practices](/best-practices) guid
 
 | Issue | Document | Description |
 |-------|---------|-------------|
-| **Production Issue**   | [Debugging-toolkit](./debugging-toolkit.md) | Copy/Paste Queries, production debugging guidance |
+| **Production Issue**   | [Debugging insights](./debugging-insights.md) | Community production debugging tips |
 | **Slow Queries**       | [Performance optimization](./performance-optimization.md) | Optimize Performance |
 | **Materialized Views** | [MV double-edged sword](./materialized-views.md) | Avoid 10x storage instances |
 | **Too Many Parts**     | [Too many parts](./too-many-parts.md) | Addressing the 'Too Many Parts' error and performance slowdown |
 | **High Costs**         | [Cost optimization](./cost-optimization.md) | Optimize Cost |
 | **Creative Use Cases**  | [Success stories](./creative-usecases.md) | Examples of ClickHouse in 'Outside the Box' use cases |
-
-### Usage Instructions {#usage-instructions}
-
-1. **Run the examples** - Many SQL blocks executable
-2. **Experiment freely** - Modify queries to test different patterns
-3. **Adapt to your data** - Use templates with your own table names  
-4. **Monitor regularly** - Implement health check queries as ongoing monitoring
-5. **Learn progressively** - Start with basics, advance to optimization patterns
-
-### Interactive Features {#interactive-features}
-
-- **Real Data Examples**: Using actual GitHub events from ClickHouse playground
-- **Production-Ready Templates**: Adapt examples for your production systems
-- **Progressive Difficulty**: From basic concepts to advanced optimization
-- **Emergency Procedures**: Ready-to-use debugging and recovery queries
 
 **Last Updated:** Based on community meetup insights through 2024-2025  
 **Contributing:** Found a mistake or have a new lesson? Community contributions welcome

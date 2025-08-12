@@ -23,7 +23,7 @@ description: 'Find solutions to the most common ClickHouse problems including sl
 
 # Breaking the Rules: Success Stories {#breaking-the-rules}
 *This guide is part of a collection of findings gained from community meetups. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
-*Need tips on debugging an issue in prod? Check out the [Debugging Toolkit](./debugging-toolkit.md) community insights guide.*
+*Need tips on debugging an issue in prod? Check out the [Debugging Insights](./debugging-insights.md) community guide.*
 
 These stories showcase how companies found success by using ClickHouse for unconventional use cases, challenging traditional database categories and proving that sometimes the "wrong" tool becomes exactly the right solution.
 
