@@ -4,7 +4,6 @@ import os
 import re
 import sys
 from ruamel.yaml import YAML
-from slugify import slugify
 from algoliasearch.search.client import SearchClientSync
 import networkx as nx
 from urllib.parse import urlparse, urlunparse
@@ -17,44 +16,19 @@ SUB_DIRECTORIES = {
     "knowledgebase": "https://clickhouse.com/docs/knowledgebase",
 }
 
+# Load Algolia settings
 with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'settings.json'), 'r') as f:
     settings = json.load(f)
-HEADER_PATTERN = re.compile(r"^(.*?)(?:\s*\{#(.*?)\})$")
+
+# Global tracking
 object_ids = set()
-files_processed = set()
 link_data = []
 
 
 def is_changelog(file_path):
     """Check if a file is a changelog based on path or filename"""
-    changelog_patterns = [
-        'changelog',
-        'change-log', 
-        'release-notes',
-        'releases',
-        'history',
-        'news'
-    ]
-    file_path_lower = file_path.lower()
-    return any(pattern in file_path_lower for pattern in changelog_patterns)
-
-
-def split_url_and_anchor(url):
-    parsed_url = urlparse(url)
-    url_without_anchor = urlunparse(parsed_url._replace(fragment=""))
-    anchor = parsed_url.fragment
-    return url_without_anchor, anchor
-
-
-def read_metadata(text):
-    parts = text.split("\n")
-    metadata = {}
-    for part in parts:
-        parts = part.split(":")
-        if len(parts) == 2:
-            if parts[0] in ['title', 'description', 'slug', 'keyword', 'keywords', 'score', 'doc_type']:
-                metadata[parts[0]] = int(parts[1].strip()) if parts[0] == 'score' else parts[1].strip()
-    return metadata
+    changelog_patterns = ['changelog', 'change-log', 'release-notes', 'releases', 'history', 'news']
+    return any(pattern in file_path.lower() for pattern in changelog_patterns)
 
 
 def get_doc_type_score(doc_type):
@@ -66,445 +40,319 @@ def get_doc_type_score(doc_type):
         'overview': 700,
         'reference': 100
     }
-    return doc_type_scores.get(doc_type, 500)  # default score for unknown types
-
-
-def parse_metadata_and_content(directory, base_directory, md_file_path, log_snippet_failure=True):
-    """Parse multiple metadata blocks and content from a Markdown file."""
-    try:
-        with open(md_file_path, 'r', encoding='utf-8') as file:
-            content = file.read()
-    except:
-        if log_snippet_failure:
-            print(f"Warning: couldn't read metadata from {md_file_path}")
-        return {}, ''
-    content = clean_content(content)
-    # Inject any snippets
-    content = inject_snippets(base_directory, content)
-    # Pattern to capture multiple metadata blocks
-    metadata_pattern = r'---\n(.*?)\n---\n'
-    metadata_blocks = re.findall(metadata_pattern, content, re.DOTALL)
-    metadata = {}
-    yaml = YAML()
-    yaml.preserve_quotes = True
-    for block in metadata_blocks:
-        try:
-            # Use proper YAML parsing instead of basic read_metadata
-            block_data = yaml.load(block) or {}
-            metadata.update(block_data)
-        except Exception as e:
-            # Silently fall back to basic parsing for malformed YAML
-            # This handles cases with unescaped quotes or other YAML formatting issues
-            block_data = read_metadata(block)
-            metadata.update(block_data)
-    # Remove all metadata blocks from the content
-    content = re.sub(metadata_pattern, '', content, flags=re.DOTALL)
-    # Add file path to metadata
-    metadata['file_path'] = md_file_path
-    # Note: we assume last sub folder in directory is in url
-    slug = metadata.get('slug', metadata['file_path'].replace(directory, ''))
-    for p in ['.md', '.mdx', '"', "'"]:
-        slug = slug.removeprefix(p).removesuffix(p)
-    slug = slug.removesuffix('/')
-    content = re.sub(r'^import .+?from .+?$', '', content, flags=re.MULTILINE)  # remove import
-    content = re.sub(r'<[A-Za-z0-9_-]+\s*[^>]*\/>', '', content)  # report components
-    metadata['slug'] = slug
-    metadata['title'] = metadata.get('title', '').strip()
-    
-    # Handle keywords - normalize to string format for Algolia
-    keywords = metadata.get('keywords', metadata.get('keyword', ''))
-    if isinstance(keywords, list):
-        # Convert array to comma-separated string
-        metadata['keywords'] = ', '.join(str(k) for k in keywords)
-    elif keywords:
-        # Already a string, keep as-is
-        metadata['keywords'] = str(keywords)
-    else:
-        metadata['keywords'] = ''
-    
-    return metadata, content
-
-
-def get_object_id(id):
-    slug_id = custom_slugify(id)
-    if not slug_id in object_ids:
-        object_ids.add(slug_id)
-        return slug_id
-    else:
-        i = 1
-        while True:
-            if not f'{slug_id}-{i}' in object_ids:
-                object_ids.add(f'{slug_id}-{i}')
-                return f'{slug_id}-{i}'
-            i += 1
-
-
-def split_large_document(doc, max_size=10000):
-    max_size = max_size * 0.9  # buffer
-    """
-    Splits a document into smaller chunks if its content exceeds max_size bytes - 10000 is the max size for algolia.
-    Appends a number to the objectID for each chunk if splitting is necessary.
-    """
-    content = doc['content']
-    size = len(json.dumps(doc).encode('utf-8'))
-    if size <= max_size:
-        yield doc
-    else:
-        # Split content into smaller chunks
-        parts = []
-        current_chunk = []
-        # get current size without content
-        del doc['content']
-        initial_size = len(json.dumps(doc).encode('utf-8'))
-        current_size = initial_size
-
-        for line in content.splitlines(keepends=True):
-            line_size = len(line.encode('utf-8'))
-            if current_size + line_size > max_size:
-                parts.append(''.join(current_chunk))
-                current_chunk = []
-                current_size = initial_size
-            current_chunk.append(line)
-            current_size += line_size
-
-        if current_chunk:
-            parts.append(''.join(current_chunk))
-
-        objectID = doc['objectID']
-        # Yield each part as a separate document
-        for i, part in enumerate(parts, start=1):
-            chunked_doc = doc.copy()
-            chunked_doc['content'] = part
-            chunked_doc['objectID'] = f"{objectID}-{i}"
-            yield chunked_doc
+    return doc_type_scores.get(doc_type, 500)
 
 
 def clean_content(content):
-    content = re.sub(r'\\(\S)', r'\\\\\1', content)  # Replace `\` followed by a non-whitespace character
-    content = re.sub(r'```.*?```', '', content, flags=re.DOTALL)  # replace code blocks
-    content = re.sub(r'<iframe.*?</iframe>', '', content, flags=re.DOTALL) # remove iframe
-    content = re.sub(r'<div.*?</div>', '', content, flags=re.DOTALL)
+    """Clean markdown content for indexing"""
+    # Remove code blocks
+    content = re.sub(r'```.*?```', '', content, flags=re.DOTALL)
+    # Remove HTML tags
+    content = re.sub(r'<[^>]*>', '', content)
+    # Remove MDX imports
+    content = re.sub(r'^import .+?from .+?$', '', content, flags=re.MULTILINE)
+    # Remove image references
+    content = re.sub(r'!\[.*?\]\(.*?\)', '', content)
+    # Clean up whitespace
+    content = re.sub(r'\s+', ' ', content).strip()
     return content
 
 
-def inject_snippets(directory, content):
-    snippet_pattern = re.compile(
-        r"import\s+(\w+)\s+from\s+['\"]@site/(docs/(.*?))['\"];",
-        re.DOTALL
-    )
-    matches = snippet_pattern.findall(content)
-    snippet_map = {}
+def parse_frontmatter(content):
+    """Extract YAML frontmatter from markdown content"""
+    frontmatter_pattern = r'^---\n(.*?)\n---\n'
+    match = re.match(frontmatter_pattern, content, re.DOTALL)
+    
+    if not match:
+        return {}, content
+    
+    try:
+        yaml = YAML()
+        yaml.preserve_quotes = True
+        metadata = yaml.load(match.group(1)) or {}
+    except Exception:
+        # Fallback to basic parsing
+        metadata = {}
+        for line in match.group(1).split('\n'):
+            if ':' in line:
+                key, value = line.split(':', 1)
+                key = key.strip()
+                if key in ['title', 'description', 'slug', 'keywords', 'doc_type', 'score']:
+                    metadata[key] = value.strip().strip('"\'')
+    
+    # Remove frontmatter from content
+    content_without_frontmatter = re.sub(frontmatter_pattern, '', content, flags=re.DOTALL)
+    
+    return metadata, content_without_frontmatter
 
-    for snippet_name, snippet_full_path, _ in matches:
-        full_path = os.path.join(directory, snippet_full_path)
-        if full_path not in files_processed:  # we dont index snippets more than once
-            if os.path.exists(full_path):
-                with open(full_path, 'r', encoding='utf-8') as snippet_file:
-                    snippet_map[snippet_name] = clean_content(snippet_file.read())
-                    files_processed.add(full_path)
-            else:
-                print(f"FATAL: Unable to handle snippet: {full_path}")
-                sys.exit(1)
-    content = snippet_pattern.sub("", content)
-    for snippet_name, snippet_content in snippet_map.items():
-        tag_pattern = re.compile(fr"<{snippet_name}\s*/>")
-        content = tag_pattern.sub(snippet_content, content)
-    return content
+
+def extract_links(content):
+    """Extract markdown links for PageRank calculation"""
+    # Find markdown links: [text](url)
+    link_pattern = r'\[.*?\]\((.*?)\)'
+    links = re.findall(link_pattern, content)
+    
+    # Filter for internal links (start with / but not http)
+    internal_links = []
+    for link in links:
+        if link.startswith('/') and not link.startswith('//'):
+            # Clean the link
+            clean_link = link.split('#')[0].rstrip('/')
+            if clean_link:
+                internal_links.append(clean_link)
+    
+    return internal_links
 
 
-def custom_slugify(text):
-    # Preprocess the text to remove specific characters
-    text = text.replace("(", "").replace(")", "")  # Remove parentheses
-    text = text.replace(",", "")  # Remove commas
-    text = text.replace("[", "").replace("]", "")  # Remove [ and ]
-    text = text.replace("\\", "")  # Remove \
-    text = text.replace("...", "-")
-    text = text.replace(" ", '-')  # Replace any whitespace character with a dash.
-    text = re.sub(r'--{2,}', '--', text)  # more than 2 -- are replaced with a --
-    text = re.sub(r'--$', '-', text)
-    text = text.replace('--', 'TEMPDOUBLEHYPHEN')
-    slug = slugify(text, lowercase=True, separator='-', regex_pattern=r'[^a-zA-Z0-9_]+')
-    slug = slug.replace("tempdoublehyphen", "--")
-    if text.endswith("-"):
-        slug += '-'
+def generate_slug(file_path, base_directory):
+    """Generate URL slug from file path"""
+    # Get relative path from docs directory
+    rel_path = os.path.relpath(file_path, base_directory)
+    
+    # Remove file extension
+    slug = re.sub(r'\.(md|mdx)$', '', rel_path)
+    
+    # Convert to URL format
+    slug = slug.replace(os.sep, '/')
+    
+    # Clean up
+    slug = slug.strip('/')
+    
     return slug
 
 
-def extract_links_from_content(content):
-    """
-    Extract all Markdown links from the content.
-    """
-    # Markdown link pattern: [text](link)
-    link_pattern = r'\[.*?\]\((.*?)\)'
-    return re.findall(link_pattern, content)
+def get_unique_object_id(base_id):
+    """Generate unique object ID"""
+    if base_id not in object_ids:
+        object_ids.add(base_id)
+        return base_id
+    
+    counter = 1
+    while f"{base_id}-{counter}" in object_ids:
+        counter += 1
+    
+    unique_id = f"{base_id}-{counter}"
+    object_ids.add(unique_id)
+    return unique_id
 
 
-def remove_markdown_links(text):
-    # Remove inline Markdown links: [text](url)
-    text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)
-    # Remove autolinks: <http://example.com>
-    text = re.sub(r'<https?://[^>]+>', '', text)
-    return text
-
-
-# best effort at creating links between docs - handling both md and urls. Challenge here some files import others
-# e.g. /opt/clickhouse-docs/docs/en/sql-reference/formats.mdx - we don't recursively resolve here
-def update_page_links(directory, base_directory, page_path, url, content, base_url):
-    links = extract_links_from_content(content)
-    fail = False
-    for target in links:
-        if target.endswith('.md') and not target.startswith('https'):
-            if os.path.isabs(target):
-                c_page = os.path.abspath(directory + '/' + target)
-            else:
-                c_page = os.path.abspath(os.path.join(os.path.dirname(page_path), './' + target))
-            metadata, _ = parse_metadata_and_content(directory, base_directory, c_page, log_snippet_failure=False)
-            if 'slug' in metadata:
-                link_data.append((url, f'{base_url}{metadata.get('slug')}'))
-            else:
-                fail = True
-        elif target.startswith('/'):  # ignore external links
-            target = target.removesuffix('/')
-            link_data.append((url, f'{base_url}{target}'))
-    if fail:
-        print(f"Warning: couldn't resolve link for {page_path}")
-
-
-def parse_markdown_content(metadata, content, base_url):
-    """Parse the Markdown content and generate sub-documents for each ##, ###, and #### heading."""
-    slug = metadata['slug']
-    heading_slug = slug
-    lines = content.splitlines()
-    current_h1 = metadata.get('title', '')
-    current_h2 = None
-    current_h3 = None
+def process_file(file_path, base_directory, base_url):
+    """Process a single markdown file into an Algolia document"""
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+    except Exception as e:
+        print(f"Warning: couldn't read {file_path}: {e}")
+        return None
+    
+    # Parse frontmatter
+    metadata, content = parse_frontmatter(content)
+    
+    # Generate slug
+    slug = metadata.get('slug') or generate_slug(file_path, base_directory)
+    if slug.startswith('/'):
+        slug = slug[1:]  # Remove leading slash
+    
+    # Build full URL
+    url = f"{base_url.rstrip('/')}/{slug}"
+    
+    # Extract title
+    title = metadata.get('title', '').strip()
+    if not title:
+        # Fallback to first h1 in content
+        h1_match = re.search(r'^#\s+(.+)$', content, re.MULTILINE)
+        title = h1_match.group(1).strip() if h1_match else os.path.basename(file_path)
+    
+    # Clean content for indexing
+    clean_text = clean_content(content)
+    
+    # Truncate if too long (Algolia 10KB limit)
+    if len(clean_text) > 8000:  # Leave some buffer for metadata
+        clean_text = clean_text[:8000] + "..."
+    
+    # Extract internal links for PageRank
+    internal_links = extract_links(content)
+    for link in internal_links:
+        target_url = f"{base_url.rstrip('/')}{link}"
+        link_data.append((url, target_url))
+    
+    # Handle keywords
+    keywords = metadata.get('keywords', '')
+    if isinstance(keywords, list):
+        keywords = ', '.join(str(k) for k in keywords)
+    
+    # Get doc type and scoring
     doc_type = metadata.get('doc_type', 'reference')
     doc_type_score = get_doc_type_score(doc_type)
+    manual_score = metadata.get('score', 0)
+    if isinstance(manual_score, str):
+        try:
+            manual_score = int(manual_score)
+        except ValueError:
+            manual_score = 0
     
-    current_subdoc = {
-        'file_path': metadata.get('file_path', ''),
+    # Create Algolia document
+    doc = {
+        'objectID': get_unique_object_id(slug.replace('/', '-')),
+        'title': title,
+        'content': clean_text,
+        'url': url,
         'slug': slug,
-        'url': f'{base_url}{heading_slug}',
-        'h1': current_h1,
-        'h1_camel': current_h1,
-        'title': metadata.get('title', ''),
-        'content': metadata.get('description', ''),
-        'keywords': metadata.get('keywords', ''),
         'doc_type': doc_type,
         'doc_type_score': doc_type_score,
-        'objectID': get_object_id(heading_slug),
-        'type': 'lvl1',
+        'keywords': keywords,
+        'description': metadata.get('description', ''),
+        'score': manual_score,
+        'file_path': file_path,
+        # Hierarchy for compatibility with existing search
         'hierarchy': {
-            'lvl0': current_h1,
-            'lvl1': current_h1
+            'lvl0': title,
+            'lvl1': title
         },
-        'score': metadata.get('score', 0)
+        'type': 'content'  # Mark as page-level content
     }
-    for line in lines:
-        if line.startswith('# '):
-            if line[2:].strip():
-                current_h1 = line[2:].strip()
-            slug_match = re.match(HEADER_PATTERN, current_h1)
-            if slug_match:
-                current_h1 = slug_match.group(1)
-                heading_slug = f"{slug}"
-            current_subdoc['slug'] = heading_slug
-            current_subdoc['url'] = f'{base_url}{heading_slug}'
-            current_subdoc['h1'] = current_h1
-            current_subdoc['h1_camel'] = current_h1
-            current_subdoc['title'] = current_h1
-            current_subdoc['type'] = 'lvl1'
-            current_subdoc['object_id'] = custom_slugify(heading_slug)
-            current_subdoc['hierarchy']['lvl1'] = current_h1
-            current_subdoc['hierarchy']['lvl0'] = current_h1 if metadata.get('title', '') == '' else metadata.get(
-                'title', '')
-        elif line.startswith('## '):
-            if current_subdoc:
-                yield from split_large_document(current_subdoc)
-            current_h2 = line[3:].strip()
-            slug_match = re.match(HEADER_PATTERN, current_h2)
-            if slug_match:
-                current_h2 = slug_match.group(1)
-                heading_slug = f"{slug}#{slug_match.group(2)}"
-            else:
-                heading_slug = f"{slug}#{custom_slugify(current_h2)}"
-            current_subdoc = {
-                'file_path': metadata.get('file_path', ''),
-                'slug': f'{heading_slug}',
-                'url': f'{base_url}{heading_slug}',
-                'title': current_h2,
-                'h2': current_h2,
-                'h2_camel': current_h2,
-                'content': '',
-                'keywords': metadata.get('keywords', ''),
-                'doc_type': doc_type,
-                'doc_type_score': doc_type_score,
-                'objectID': get_object_id(f'{heading_slug}-{current_h2}'),
-                'type': 'lvl2',
-                'hierarchy': {
-                    'lvl0': current_h1 if metadata.get('title', '') == '' else metadata.get('title', ''),
-                    'lvl1': current_h1,
-                    'lvl2': current_h2,
-                }
-            }
-        elif line.startswith('### '):
-            # note we send users to the h2 or h1 even on ###
-            if current_subdoc:
-                yield from split_large_document(current_subdoc)
-            current_h3 = line[4:].strip()
-            slug_match = re.match(HEADER_PATTERN, current_h3)
-            if slug_match:
-                current_h3 = slug_match.group(1)
-                heading_slug = f"{slug}#{slug_match.group(2)}"
-            else:
-                heading_slug = f"{slug}#{custom_slugify(current_h3)}"
-            current_subdoc = {
-                'file_path': metadata.get('file_path', ''),
-                'slug': f'{heading_slug}',
-                'url': f'{base_url}{heading_slug}',
-                'title': current_h3,
-                'h3': current_h3,
-                'h3_camel': current_h3,
-                'content': '',
-                'keywords': metadata.get('keywords', ''),
-                'doc_type': doc_type,
-                'doc_type_score': doc_type_score,
-                'objectID': get_object_id(f'{heading_slug}-{current_h3}'),
-                'type': 'lvl3',
-                'hierarchy': {
-                    'lvl0': current_h1 if metadata.get('title', '') == '' else metadata.get('title', ''),
-                    'lvl1': current_h1,
-                    'lvl2': current_h2,
-                    'lvl3': current_h3,
-                }
-            }
-        elif line.startswith('#### '):
-            if current_subdoc:
-                yield from split_large_document(current_subdoc)
-            current_h4 = line[5:].strip()
-            slug_match = re.match(HEADER_PATTERN, current_h4)
-            if slug_match:
-                current_h4 = slug_match.group(1)
-            current_subdoc = {
-                'file_path': metadata.get('file_path', ''),
-                'slug': f'{heading_slug}',
-                'url': f'{base_url}{heading_slug}',
-                'title': current_h4,
-                'h4': current_h4,
-                'h4_camel': current_h4,
-                'content': '',
-                'keywords': metadata.get('keywords', ''),
-                'doc_type': doc_type,
-                'doc_type_score': doc_type_score,
-                'objectID': get_object_id(f'{heading_slug}-{current_h4}'),
-                'type': 'lvl4',
-                'hierarchy': {
-                    'lvl0': current_h1 if metadata.get('title', '') == '' else metadata.get('title', ''),
-                    'lvl1': current_h1,
-                    'lvl2': current_h2,
-                    'lvl3': current_h3,
-                    'lvl4': current_h4,
-                }
-            }
-        elif current_subdoc:
-            current_subdoc['content'] += line + '\n'
-
-    if current_subdoc:
-        yield from split_large_document(current_subdoc)
+    
+    return doc
 
 
-def process_markdown_directory(directory, base_directory, base_url):
-    """Recursively process Markdown files in a directory."""
+def process_directory(directory, base_directory, base_url):
+    """Process all markdown files in a directory"""
+    docs = []
+    
     for root, dirs, files in os.walk(directory):
-        # Skip `_snippets` and _placeholders subfolders
-        dirs[:] = [d for d in dirs if d != '_snippets' and d != '_placeholders' and d not in IGNORE_DIRS]
+        # Skip ignored directories
+        dirs[:] = [d for d in dirs if d not in IGNORE_DIRS and not d.startswith('_')]
+        
         for file in files:
-            relative_file_path = os.path.relpath(os.path.join(root, file), directory)
-            if (file.endswith('.md') or file.endswith('.mdx')) and relative_file_path not in IGNORE_FILES and not is_changelog(relative_file_path):
-                md_file_path = os.path.join(root, file)
-                if md_file_path not in files_processed:
-                    files_processed.add(md_file_path)
-                    metadata, content = parse_metadata_and_content(directory, base_directory, md_file_path)
-                    for sub_doc in parse_markdown_content(metadata, content, base_url):
-                        url_without_anchor, anchor = split_url_and_anchor(sub_doc['url'])
-                        sub_doc['url_without_anchor'] = url_without_anchor
-                        sub_doc['anchor'] = anchor
-                        update_page_links(directory, base_directory, metadata.get('file_path', ''), sub_doc['url'],
-                                          sub_doc['content'], base_url)
-                        sub_doc['content'] = remove_markdown_links(sub_doc['content'])
-                        yield sub_doc
+            if not (file.endswith('.md') or file.endswith('.mdx')):
+                continue
+            
+            if file in IGNORE_FILES or is_changelog(file):
+                continue
+            
+            file_path = os.path.join(root, file)
+            doc = process_file(file_path, base_directory, base_url)
+            
+            if doc:
+                docs.append(doc)
+    
+    return docs
+
+
+def compute_page_rank(link_data, damping_factor=0.85, max_iter=100, tol=1e-6):
+    """Compute PageRank scores for documents"""
+    if not link_data:
+        return {}
+    
+    # Create directed graph
+    graph = nx.DiGraph()
+    graph.add_edges_from(link_data)
+    
+    # Compute PageRank
+    try:
+        page_rank = nx.pagerank(graph, alpha=damping_factor, max_iter=max_iter, tol=tol)
+        return page_rank
+    except Exception as e:
+        print(f"Warning: PageRank calculation failed: {e}")
+        return {}
 
 
 def send_to_algolia(client, index_name, records):
-    """Send records to Algolia."""
-    if records:
+    """Send records to Algolia"""
+    if not records:
+        print("No records to send to Algolia.")
+        return
+    
+    try:
         client.batch(index_name=index_name, batch_write_params={
             "requests": [{"action": "addObject", "body": record} for record in records],
         })
         print(f"Successfully sent {len(records)} records to Algolia.")
-    else:
-        print("No records to send to Algolia.")
+    except Exception as e:
+        print(f"Error sending to Algolia: {e}")
+        raise
 
 
-def compute_page_rank(link_data, damping_factor=0.85, max_iter=100, tol=1e-6):
-    """
-    Compute PageRank for a set of pages.
-
-    :param link_data: List of tuples (source, target) representing links.
-    :param damping_factor: Damping factor for PageRank.
-    :param max_iter: Maximum number of iterations.
-    :param tol: Convergence tolerance.
-    :return: Dictionary of pages and their PageRank scores.
-    """
-    # Create a directed graph
-    graph = nx.DiGraph()
-    graph.add_edges_from(link_data)
-
-    # Compute PageRank
-    page_rank = nx.pagerank(graph, alpha=damping_factor, max_iter=max_iter, tol=tol)
-    return page_rank
-
-
-def create_new_index(client, index_name):
+def create_index(client, index_name):
+    """Create and configure Algolia index"""
     try:
         client.delete_index(index_name)
-        print(f'Temporary index \'{index_name}\' deleted successfully.')
+        print(f'Deleted existing index \'{index_name}\'')
     except:
-        print(f'Temporary index \'{index_name}\' does not exist or could not be deleted')
+        print(f'Index \'{index_name}\' does not exist (creating new)')
+    
     client.set_settings(index_name, settings['settings'])
     client.save_rules(index_name, settings['rules'])
-    print(f"Settings applied to temporary index '{index_name}'.")
+    print(f"Applied settings to index '{index_name}'")
 
 
-def main(base_directory, algolia_app_id, algolia_api_key, algolia_index_name,
-         batch_size=1000, dry_run=False):
-    temp_index_name = f"{algolia_index_name}_temp"
+def main(base_directory, algolia_app_id, algolia_api_key, algolia_index_name, batch_size=1000, dry_run=False):
+    """Main indexing function"""
+    print(f"🚀 Starting simplified page-level indexing...")
+    
+    # Initialize Algolia client
     client = SearchClientSync(algolia_app_id, algolia_api_key)
+    
+    # Create/update index
     if not dry_run:
-        create_new_index(client, temp_index_name)
-    docs = []
+        temp_index_name = f"{algolia_index_name}_temp"
+        create_index(client, temp_index_name)
+    
+    # Process all directories
+    all_docs = []
     for sub_directory, base_url in SUB_DIRECTORIES.items():
         directory = os.path.join(base_directory, sub_directory)
-        for doc in process_markdown_directory(directory, base_directory, base_url):
-            docs.append(doc)
+        if not os.path.exists(directory):
+            print(f"Warning: Directory {directory} does not exist")
+            continue
+        
+        print(f"📁 Processing {directory}...")
+        docs = process_directory(directory, base_directory, base_url)
+        all_docs.extend(docs)
+        print(f"   Found {len(docs)} documents")
+    
+    if not all_docs:
+        print("❌ No documents found!")
+        return
+    
+    print(f"📊 Total documents: {len(all_docs)}")
+    
+    # Calculate PageRank scores
+    print(f"🔗 Calculating PageRank from {len(link_data)} internal links...")
     page_rank_scores = compute_page_rank(link_data)
-    # Add PageRank scores to the documents
-    t = 0
-    for doc in docs:
-        rank = page_rank_scores.get(doc.get('url', ''), 0)
-        doc['page_rank'] = int(rank * 10000000)
-    for i in range(0, len(docs), batch_size):
-        batch = docs[i:i + batch_size]  # Get the current batch
-        if not dry_run:
-            send_to_algolia(client, temp_index_name, batch)
+    
+    # Apply PageRank scores to documents
+    for doc in all_docs:
+        rank = page_rank_scores.get(doc['url'], 0)
+        doc['page_rank'] = int(rank * 10000000)  # Scale for integer storage
+    
+    # Show statistics
+    doc_types = {}
+    for doc in all_docs:
+        doc_type = doc['doc_type']
+        doc_types[doc_type] = doc_types.get(doc_type, 0) + 1
+    
+    print(f"📈 Document types: {doc_types}")
+    
+    # Send to Algolia in batches
+    total_sent = 0
+    for i in range(0, len(all_docs), batch_size):
+        batch = all_docs[i:i + batch_size]
+        
+        if dry_run:
+            print(f"📄 Batch {i//batch_size + 1}: {len(batch)} documents")
+            for doc in batch[:3]:  # Show first 3 as examples
+                print(f"   - {doc['title']} ({doc['doc_type']}) -> {doc['url']}")
         else:
-            for d in batch:
-                print(f"{d['url']} - {d['page_rank']} - {d['doc_type']} ({d['doc_type_score']}) - keywords: {d.get('keywords', 'None')}")
-        print(f'{'processed' if dry_run else 'indexed'} {len(batch)} records')
-        t += len(batch)
-    print(f'total {'processed' if dry_run else 'indexed'} {t} records')
+            send_to_algolia(client, temp_index_name, batch)
+        
+        total_sent += len(batch)
+    
+    print(f"✅ {'Processed' if dry_run else 'Indexed'} {total_sent} documents")
+    
+    # Switch to production index
     if not dry_run:
-        print('switching temporary index...', end='')
+        print("🔄 Switching to production index...")
         client.operation_index(
             index_name=temp_index_name,
             operation_index_params={
@@ -512,27 +360,28 @@ def main(base_directory, algolia_app_id, algolia_api_key, algolia_index_name,
                 "destination": algolia_index_name
             },
         )
-    print('done')
+        print("🎉 Indexing complete!")
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Index search pages.')
-    parser.add_argument(
-        '-d',
-        '--base_directory',
-        help='Path to root directory of docs repo'
-    )
-    parser.add_argument(
-        '-x',
-        '--dry_run',
-        action='store_true',
-        help='Dry run, do not send results to Algolia.'
-    )
+    parser = argparse.ArgumentParser(description='Simple page-level Algolia indexing')
+    parser.add_argument('-d', '--base_directory', required=True, help='Path to docs directory')
+    parser.add_argument('-x', '--dry_run', action='store_true', help='Dry run (do not send to Algolia)')
     parser.add_argument('--algolia_app_id', required=True, help='Algolia Application ID')
     parser.add_argument('--algolia_api_key', required=True, help='Algolia Admin API Key')
     parser.add_argument('--algolia_index_name', default='clickhouse', help='Algolia Index Name')
+    parser.add_argument('--batch_size', type=int, default=1000, help='Batch size for Algolia uploads')
+    
     args = parser.parse_args()
+    
     if args.dry_run:
-        print('Dry running, not sending results to Algolia.')
-    main(args.base_directory, args.algolia_app_id, args.algolia_api_key, args.algolia_index_name,
-         dry_run=args.dry_run)
+        print('🧪 DRY RUN MODE - Not sending to Algolia')
+    
+    main(
+        args.base_directory,
+        args.algolia_app_id, 
+        args.algolia_api_key,
+        args.algolia_index_name,
+        args.batch_size,
+        args.dry_run
+    )
