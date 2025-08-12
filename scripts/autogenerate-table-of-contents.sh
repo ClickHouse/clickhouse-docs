@@ -41,7 +41,7 @@ COMMANDS=(
     '--single-toc --dir="docs/sql-reference/table-functions" --md="docs/sql-reference/table-functions/index.md"'
     '--single-toc --dir="docs/chdb/guides" --md="docs/chdb/guides/index.md" --ignore images'
     '--single-toc --dir="docs/cloud/reference/09_jan2025_faq" --md="docs/cloud/reference/09_jan2025_faq/index.md" --ignore images'
-    '--single-toc --dir="docs/cloud/reference/01_changelogs" --md="docs/cloud/reference/01_changelogs/02_release_notes/index.md"'
+    '--single-toc --dir="docs/cloud/reference/01_changelog" --md="docs/cloud/reference/01_changelog/02_release_notes/index.md"'
     '--single-toc --dir="docs/development" --md="docs/development/index.md" --ignore images'
     '--single-toc --dir="docs/getting-started/example-datasets" --md="docs/getting-started/index.md" --ignore images'
     '--single-toc --dir="docs/integrations/data-ingestion/clickpipes/kafka" --md="docs/integrations/data-ingestion/clickpipes/kafka/index.md" --ignore images'
