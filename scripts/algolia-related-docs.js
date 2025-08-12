@@ -1,6 +1,7 @@
 // generate-algolia-related.js
 // Enhanced with doc_type intelligence and improved semantic matching
 // Updated for modern Algolia API and better error handling
+// Modified to get all results and merge to page-level entries
 
 const { algoliasearch } = require('algoliasearch');
 const fs = require('fs').promises;
@@ -52,9 +53,92 @@ class RateLimiter {
 
 const rateLimiter = new RateLimiter(8); // 8 requests per second to be safe
 
+// Function to merge section-level docs into page-level docs
+function mergeToPageLevel(allDocs) {
+  console.log('🔄 Merging section-level entries into page-level documents...');
+  
+  const pageMap = new Map();
+  
+  allDocs.forEach(doc => {
+    if (!doc.url) return;
+    
+    // Get the base URL without hash fragment
+    const baseUrl = doc.url.split('#')[0];
+    
+    if (!pageMap.has(baseUrl)) {
+      // Create a new page entry
+      const pageDoc = {
+        objectID: doc.objectID,
+        title: doc.title || '',
+        content: doc.content || '',
+        url: baseUrl,
+        type: 'page', // Mark as merged page-level doc
+        lvl0: doc.lvl0 || '',
+        lvl1: doc.lvl1 || '',
+        doc_type: doc.doc_type || 'reference',
+        doc_type_score: doc.doc_type_score || DOC_TYPE_SCORES[doc.doc_type] || 100,
+        keywords: doc.keywords || '',
+        sections: [] // Track what sections were merged
+      };
+      
+      pageMap.set(baseUrl, pageDoc);
+    }
+    
+    const pageDoc = pageMap.get(baseUrl);
+    
+    // Merge content from sections
+    if (doc.content && !pageDoc.content.includes(doc.content)) {
+      pageDoc.content += ' ' + doc.content;
+    }
+    
+    // Merge keywords
+    if (doc.keywords && !pageDoc.keywords.includes(doc.keywords)) {
+      pageDoc.keywords += (pageDoc.keywords ? ', ' : '') + doc.keywords;
+    }
+    
+    // Track sections that were merged
+    if (doc.url.includes('#')) {
+      pageDoc.sections.push({
+        title: doc.title,
+        type: doc.type,
+        url: doc.url
+      });
+    }
+    
+    // Prefer page-level titles over section titles
+    if (!doc.url.includes('#') && doc.title) {
+      pageDoc.title = doc.title;
+      pageDoc.objectID = doc.objectID; // Use page-level objectID
+    }
+    
+    // Use the highest priority doc_type found
+    const currentScore = DOC_TYPE_SCORES[pageDoc.doc_type] || 100;
+    const newScore = DOC_TYPE_SCORES[doc.doc_type] || 100;
+    if (newScore > currentScore) {
+      pageDoc.doc_type = doc.doc_type;
+      pageDoc.doc_type_score = newScore;
+    }
+  });
+  
+  const mergedDocs = Array.from(pageMap.values());
+  
+  console.log(`  📄 Merged ${allDocs.length} entries into ${mergedDocs.length} page-level documents`);
+  
+  // Show merge statistics
+  const sectionStats = {};
+  mergedDocs.forEach(doc => {
+    const sectionCount = doc.sections.length;
+    sectionStats[sectionCount] = (sectionStats[sectionCount] || 0) + 1;
+  });
+  
+  console.log('  📊 Sections per page distribution:', sectionStats);
+  
+  return mergedDocs;
+}
+
 async function getAllDocsWithRetry(maxRetries = 3) {
   console.log('📚 Getting all docs using efficient multi-query approach...');
-  console.log('💰 Estimating ~10 API calls for discovery (vs hundreds for processing)');
+  console.log('💰 Estimating ~10 API calls for discovery');
   
   const allHits = [];
   const seenObjectIDs = new Set();
@@ -120,8 +204,12 @@ async function getAllDocsWithRetry(maxRetries = 3) {
     }
   }
   
-  console.log(`\n🎉 Final result: ${allHits.length} unique documents`);
-  return allHits;
+  console.log(`\n🎉 Raw result: ${allHits.length} unique documents`);
+  
+  // Now merge to page-level
+  const mergedDocs = mergeToPageLevel(allHits);
+  
+  return mergedDocs;
 }
 
 function calculateDocTypeCompatibility(sourceDoc, targetDoc) {
@@ -170,7 +258,7 @@ function parseKeywords(keywordString) {
 }
 
 function isDuplicateContent(sourceDoc, targetDoc) {
-  // Avoid showing sections from the same document
+  // Compare base URLs without fragments since we're dealing with page-level docs
   if (sourceDoc.url && targetDoc.url) {
     const sourceBase = sourceDoc.url.split('#')[0];
     const targetBase = targetDoc.url.split('#')[0];
@@ -240,12 +328,12 @@ async function findRelatedDocs(doc, allDocs, maxRetries = 3) {
         }
       }
       
-      // Use modern Algolia search API (v5+)
+      // Search against the original Algolia index (not our merged docs)
       const response = await client.searchSingleIndex({
         indexName: INDEX_NAME,
         searchParams: {
           query: searchText || doc.title?.substring(0, 100),
-          hitsPerPage: 15,
+          hitsPerPage: 20, // Get more results since we'll merge them
           filters: `NOT objectID:${doc.objectID}`,
           attributesToRetrieve: [
             'objectID', 'title', 'url', 'type', 'lvl0', 'lvl1', 
@@ -256,8 +344,11 @@ async function findRelatedDocs(doc, allDocs, maxRetries = 3) {
         }
       });
       
+      // Merge the search results to page-level before ranking
+      const mergedResults = mergeToPageLevel(response.hits);
+      
       // Enhanced filtering and ranking
-      const candidates = response.hits
+      const candidates = mergedResults
         .filter(hit => {
           if (hit.objectID === doc.objectID || hit.title === doc.title) return false;
           if (isDuplicateContent(doc, hit)) return false;
@@ -293,6 +384,7 @@ async function findRelatedDocs(doc, allDocs, maxRetries = 3) {
           doc_type: hit.doc_type || 'reference',
           reason: generateReason(hit, doc),
           similarity_score: hit.enhanced_score,
+          sections_merged: hit.sections?.length || 0,
           debug: {
             doc_type_bonus: hit.doc_type_bonus,
             keyword_similarity: hit.keyword_similarity,
@@ -339,6 +431,10 @@ function generateReason(relatedDoc, sourceDoc) {
     reasons.push('Compatible content');
   }
   
+  if (relatedDoc.sections_merged > 3) {
+    reasons.push('Comprehensive page');
+  }
+  
   return reasons.length > 0 ? reasons.join(', ') : `Related content (${relatedDoc.enhanced_score}% match)`;
 }
 
@@ -362,9 +458,9 @@ function isNavigationPage(doc) {
 
 async function generateRelatedDocs() {
   try {
-    console.log('🚀 Starting enhanced Algolia-powered related docs generation...\n');
+    console.log('🚀 Starting enhanced Algolia-powered related docs generation (PAGE-LEVEL MERGING)...\n');
     
-    // Get all docs with retry logic
+    // Get all docs and merge to page-level
     const allDocs = await getAllDocsWithRetry();
     
     if (allDocs.length === 0) {
@@ -378,7 +474,7 @@ async function generateRelatedDocs() {
       !isNavigationPage(doc)
     );
     
-    console.log(`📖 Processing ${contentDocs.length} docs (filtered from ${allDocs.length} total)`);
+    console.log(`📖 Processing ${contentDocs.length} page-level docs (filtered from ${allDocs.length} merged)`);
     
     // Show doc_type distribution
     const docTypeStats = {};
@@ -388,6 +484,16 @@ async function generateRelatedDocs() {
     });
     
     console.log(`📊 Doc type distribution:`, docTypeStats);
+    
+    // Show sections merged distribution
+    const sectionStats = {};
+    contentDocs.forEach(doc => {
+      const count = doc.sections?.length || 0;
+      const bucket = count === 0 ? '0' : count <= 3 ? '1-3' : count <= 10 ? '4-10' : '10+';
+      sectionStats[bucket] = (sectionStats[bucket] || 0) + 1;
+    });
+    
+    console.log(`📄 Sections merged per page:`, sectionStats);
     
     const relatedDocsMap = {};
     let processed = 0;
@@ -406,7 +512,7 @@ async function generateRelatedDocs() {
           
           processed++;
           if (processed % 25 === 0) {
-            console.log(`⏳ Processed ${processed}/${contentDocs.length} docs (${errors} errors)...`);
+            console.log(`⏳ Processed ${processed}/${contentDocs.length} page-level docs (${errors} errors)...`);
           }
         } catch (error) {
           errors++;
@@ -439,9 +545,9 @@ async function generateRelatedDocs() {
       ? docsWithRelated.reduce((sum, related) => sum + related.length, 0) / docsWithRelated.length 
       : 0;
     
-    console.log(`\n📊 Final Statistics:`);
-    console.log(`  - Total docs processed: ${processed}`);
-    console.log(`  - Docs with related content: ${docsWithRelated.length}`);
+    console.log(`\n📊 Final Statistics (PAGE-LEVEL MERGED):`);
+    console.log(`  - Total page-level docs processed: ${processed}`);
+    console.log(`  - Pages with related content: ${docsWithRelated.length}`);
     console.log(`  - Average related docs per page: ${avgRelated.toFixed(1)}`);
     console.log(`  - Errors encountered: ${errors}`);
     console.log(`  - Success rate: ${((processed - errors) / processed * 100).toFixed(1)}%`);
@@ -461,17 +567,17 @@ async function generateRelatedDocs() {
       .slice(0, 3);
       
     if (examples.length > 0) {
-      console.log(`\n🔍 Examples with enhanced scoring:`);
+      console.log(`\n🔍 Examples with enhanced scoring (PAGE-LEVEL MERGED):`);
       examples.forEach(([docId, related]) => {
         console.log(`\n  ${docId}:`);
         related.slice(0, 3).forEach(r => {
-          console.log(`    → ${r.title} (${r.similarity_score}% match, ${r.doc_type})`);
+          console.log(`    → ${r.title} (${r.similarity_score}% match, ${r.doc_type}, ${r.sections_merged} sections)`);
           console.log(`      Reason: ${r.reason}`);
         });
       });
     }
     
-    console.log(`\n🎉 Done! Your related docs now use intelligent doc_type matching!`);
+    console.log(`\n🎉 Done! Your related docs now use merged page-level entries with intelligent doc_type matching!`);
     
   } catch (error) {
     console.error('❌ Fatal error generating related docs:', error);
