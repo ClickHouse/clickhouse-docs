@@ -224,6 +224,8 @@ max_slot_wal_keep_size = 200GB
 
 `ReceiveMessage` is a function in the Postgres logical decoding protocol that reads messages from the replication stream. An EOF (End of File) error indicates that the connection to the Postgres server was unexpectedly closed while trying to read from the replication stream.
 
+It is a recoverable, completely non-fatal error. ClickPipes will automatically attempt to reconnect and resume the replication process.
+
 It can happen for a few reasons:
 - **Low wal_sender_timeout:** Make sure `wal_sender_timeout` is 5 minutes or higher. This setting controls how long the server waits for a response from the client before closing the connection. If the timeout is too low, it can lead to premature disconnections.
 - **Network Issues:** Temporary network disruptions can cause the connection to drop.
