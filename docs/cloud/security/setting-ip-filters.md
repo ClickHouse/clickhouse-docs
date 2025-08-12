@@ -26,7 +26,7 @@ Classless Inter-domain Routing (CIDR) notation, allows you to specify IP address
 
 :::note Applicable only to connections outside of PrivateLink
 IP access lists only apply to connections from the public internet, outside of [PrivateLink](/cloud/security/private-link-overview).
-If you only want traffic from PrivateLink, set `DenyAll` in IP Allowlist.
+If you only want traffic from PrivateLink, set `DenyAll` in IP Allow list.
 :::
 
 <details>
