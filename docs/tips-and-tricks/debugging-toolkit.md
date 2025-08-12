@@ -149,8 +149,6 @@ Community-recommended monitoring thresholds:
 | Bad Data | Validate partition dates | Implement timestamp validation |
 | Stuck Mutations | Check `system.mutations` status | Test on small data first |
 
-## Resources
-
 ### Video Sources
 - [10 Lessons from Operating ClickHouse](https://www.youtube.com/watch?v=liTgGiTuhJE)
 - [Fast, Concurrent, and Consistent Asynchronous INSERTS in ClickHouse](https://www.youtube.com/watch?v=AsMPEfN5QtM)
