@@ -19,158 +19,138 @@ title: 'Lessons - Debugging Toolkit'
 description: 'Find solutions to the most common ClickHouse problems including slow queries, memory errors, connection issues, and configuration problems.'
 ---
 
-# Operations: The 2AM Debugging Toolkit {#operations-debugging}
+# ClickHouse Operations: Community Debugging Insights
 *This guide is part of a collection of findings gained from community meetups. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
 *Suffering from high operational costs? Check out the [Cost Optimization](./cost-optimization.md) community insights guide.*
 
-## When Everything is Broken: Emergency Diagnostics {#emergency-diagnostics}
+## Essential System Tables
 
-**Community philosophy:** *"If something looks odd, even just slightly, something is wrong. Investigate before it gets worse."*
+These system tables are fundamental for production debugging:
 
-## EMERGENCY: Production Incident Queries (Copy-Paste Ready) {#emergency-queries}
-
-**When your ClickHouse is down at 2AM, run these in order:**
+### system.errors
+Shows all active errors in your ClickHouse instance.
 
 ```sql
--- Step 1: What's broken right now?
-SELECT name, value, 'CRITICAL ERROR' as urgency 
+SELECT name, value, changed 
 FROM system.errors 
 WHERE value > 0 
 ORDER BY value DESC;
 ```
 
-```sql
--- Step 2: Disk space check (most common killer)
-SELECT 
-    database, table,
-    formatReadableSize(sum(bytes_on_disk)) as size,
-    count() as parts,
-    CASE 
-        WHEN sum(bytes_on_disk) > 15*1024*1024*1024*1024 THEN 'CRITICAL: Near 16TB limit'
-        WHEN count() > 1000 THEN 'PARTS EXPLOSION'
-        ELSE 'OK'
-    END as status
-FROM system.parts 
-WHERE active=1 AND database NOT IN ('system')
-GROUP BY database, table 
-ORDER BY sum(bytes_on_disk) DESC;
-```
+### system.replicas  
+Contains replication lag and status information for monitoring cluster health.
 
 ```sql
--- Step 3: Replication problems
-SELECT 
-    database, table, absolute_delay, queue_size,
-    CASE 
-        WHEN absolute_delay > 300 THEN 'CRITICAL: 5+ min lag'
-        WHEN is_readonly = 1 THEN 'READ-ONLY ERROR'  
-        ELSE 'OK'
-    END as status
+SELECT database, table, replica_name, absolute_delay, queue_size, inserts_in_queue
 FROM system.replicas 
+WHERE absolute_delay > 60
 ORDER BY absolute_delay DESC;
 ```
 
-```sql
--- Step 4: Kill resource hogs
-SELECT query_id, user, elapsed, formatReadableSize(memory_usage) as memory,
-       substring(query, 1, 80) as query_preview
-FROM system.processes 
-WHERE elapsed > 60 OR memory_usage > 4*1024*1024*1024
-ORDER BY memory_usage DESC;
+### system.replication_queue
+Provides detailed information for diagnosing replication problems.
 
--- To kill: KILL QUERY WHERE query_id = 'paste_id_here';
+```sql
+SELECT database, table, replica_name, position, type, create_time, last_exception
+FROM system.replication_queue 
+WHERE last_exception != ''
+ORDER BY create_time DESC;
 ```
 
+### system.merges
+Shows current merge operations and can identify stuck processes.
+
 ```sql
--- Step 5: Stuck merges  
-SELECT database, table, elapsed, progress, 
-       CASE WHEN elapsed > 3600 AND progress < 0.1 THEN 'STUCK' ELSE 'OK' END
+SELECT database, table, elapsed, progress, is_mutation, total_size_bytes_compressed
 FROM system.merges 
 ORDER BY elapsed DESC;
 ```
 
-## Learning: Incident Pattern Recognition {#incident-patterns}
+### system.parts
+Essential for monitoring part counts and identifying fragmentation issues.
 
-**Understand the failure modes with working examples:**
-
-### Memory Exhaustion Detection {#memory-exhaustion}
-
-```sql runnable editable
--- Challenge: Try different cardinality combinations to see which ones are most dangerous
--- Experiment: Add SAMPLE 0.1 to this query if it's slow on large datasets
-SELECT 
-    'Memory Risk Analysis' as analysis_type,
-    count() as total_events,
-    uniq(actor_login, repo_name, event_type) as unique_combinations,
-    round(uniq(actor_login, repo_name, event_type) / count() * 100, 2) as cardinality_percent,
-    CASE 
-        WHEN uniq(actor_login, repo_name, event_type) / count() > 0.9 
-        THEN 'CRITICAL: Nearly every row unique - will exhaust memory!'
-        WHEN uniq(actor_login, repo_name, event_type) / count() > 0.5 
-        THEN 'HIGH RISK: Too many unique groups'
-        ELSE 'SAFE: Reasonable aggregation ratio'
-    END as memory_risk_level
-FROM github.github_events 
-WHERE created_at >= '2024-01-01' AND created_at < '2024-01-02'
-LIMIT 1;
+```sql
+SELECT database, table, count() as part_count
+FROM system.parts 
+WHERE active = 1
+GROUP BY database, table
+ORDER BY count() DESC;
 ```
 
-### Bad Data Detection {#bad-data-detection}
+## Common Production Issues
 
-```sql runnable editable
--- Challenge: Modify the year thresholds (2010, 2030) based on your expected data ranges
--- Experiment: Try different time ranges to see what suspicious data patterns emerge
-SELECT 
-    'Data Quality Check' as analysis,
-    data_year,
-    count() as events,
-    CASE 
-        WHEN data_year < 2010 THEN 'BAD: Suspiciously old timestamps'
-        WHEN data_year > 2030 THEN 'BAD: Far future timestamps'  
-        ELSE 'NORMAL'
-    END as data_quality
-FROM (
-    SELECT toYear(created_at) as data_year
-    FROM github.github_events 
-    WHERE created_at >= '2020-01-01'
-)
-GROUP BY data_year
-ORDER BY data_year DESC;
+### Disk Space Problems
+
+Disk space exhaustion in replicated setups creates cascading problems. When one node runs out of space, other nodes continue trying to sync with it, causing network traffic spikes and confusing symptoms. One community member spent 4 hours debugging what was simply low disk space.
+
+AWS users should be aware that default general purpose EBS volumes have a 16TB limit.
+
+### Too Many Parts Error
+
+Small frequent inserts create performance problems. The community has identified that insert rates above 10 per second often trigger "too many parts" errors because ClickHouse cannot merge parts fast enough.
+
+**Solutions:**
+- Batch data using 30-second or 200MB thresholds
+- Enable async_insert for automatic batching  
+- Use buffer tables for server-side batching
+- Configure Kafka for controlled batch sizes
+
+Official recommendation: minimum 1,000 rows per insert, ideally 10,000 to 100,000.
+
+### Data Quality Issues
+
+Applications that send data with arbitrary timestamps create partition problems. This leads to partitions with data from unrealistic dates (like 1998 or 2050), causing unexpected storage behavior.
+
+### ALTER Operation Risks
+
+Large ALTER operations on multi-terabyte tables can consume significant resources and potentially lock databases. One community example involved changing an INT to FLOAT on 14TB of data, which locked the entire database and required rebuilding from backups.
+
+**Prevention:**
+```sql
+SELECT database, table, mutation_id, command, parts_to_do, is_done
+FROM system.mutations 
+WHERE is_done = 0;
 ```
 
-## The 2AM Methodology {#the-2am-methodology}
+Test schema changes on smaller datasets first.
 
-**Follow this exact sequence when everything is broken:**
+## Memory and Performance
 
-### Phase 1: Immediate Triage (30 seconds) {#phase-1-immediate-triage}
+### External Aggregation
+Enable external aggregation for memory-intensive operations. It's slower but prevents out-of-memory crashes by spilling to disk.
 
-1. Run `system.errors` - any non-zero = active incident
-2. Check disk space - *"It was as simple as low disk it took us from 12 to 4 AM"*
-3. Look for replication lag > 5 minutes
+### Async Insert Details
+Async insert uses 16 threads by default to collect and batch data. You can configure it to return acknowledgment only after data is flushed to storage, though this impacts performance.
 
-### Phase 2: Resource Investigation (2 minutes) {#phase-2-resource-investigation}
+Since ClickHouse 2023, async insert supports deduplication using hash IDs.
 
-4. Find memory-hungry queries in `system.processes`
-5. Check for stuck merges running >1 hour
-6. Kill obviously problematic queries
+### Buffer Tables
+Buffer tables provide server-side batching but can lose data if not flushed before crashes.
 
-### Phase 3: Data Quality Check (5 minutes) {#phase-3-data-quality-check}
+### Distributed Table Configuration
+By default, distributed tables use single-threaded inserts. Enable `insert_distributed_sync` for parallel processing and immediate data sending to shards.
 
-7. Look for bad partitions (1998, 2050 dates)
-8. Check for parts explosion (>1000 parts per table)
+Monitor temporary data accumulation when using distributed tables.
 
-## Emergency Actions Reference {#emergency-actions}
+### Performance Monitoring Thresholds
 
-**Production-tested solutions:**
+Community-recommended monitoring thresholds:
+- Parts per partition: preferably less than 100
+- Delayed inserts: should stay at zero
+- Insert rate: limit to about 1 per second for optimal performance
 
-| Problem | Detection Query | Solution |
-|---------|-----------------|----------|
-| **Memory OOM** | `SELECT * FROM system.processes WHERE memory_usage > 8GB` | *"Enable external aggregation-it will be a little bit slower...but it will use much less memory"* |
-| **Disk Full** | `SELECT sum(bytes_on_disk) FROM system.parts` | Delete old partitions, expand disk |
-| **Replication Lag** | `SELECT * FROM system.replicas WHERE absolute_delay > 300` | Check network, restart lagging replica |
-| **Stuck Query** | `SELECT * FROM system.processes WHERE elapsed > 300` | `KILL QUERY WHERE query_id = '...'` |
-| **Parts Explosion** | `SELECT count() FROM system.parts WHERE active=1` | Enable async_insert, increase batch sizes |
+## Quick Reference
 
-**The golden rule:** *"Problems very rarely just pop out of nowhere there are signs... investigate it before it goes from 15 milliseconds to 30 seconds"*
+| Issue | Detection | Solution |
+|-------|-----------|----------|
+| Disk Space | Check `system.parts` total bytes | Monitor usage, plan scaling |
+| Too Many Parts | Count parts per table | Batch inserts, enable async_insert |
+| Replication Lag | Check `system.replicas` delay | Monitor network, restart replicas |
+| Bad Data | Validate partition dates | Implement timestamp validation |
+| Stuck Mutations | Check `system.mutations` status | Test on small data first |
 
-## Video Sources {#video-sources}
-- [10 Lessons from Operating ClickHouse](https://www.youtube.com/watch?v=liTgGiTuhJE) - Source of the disk space, memory, and bad data lessons from production operations
+## Resources
+
+### Video Sources
+- [10 Lessons from Operating ClickHouse](https://www.youtube.com/watch?v=liTgGiTuhJE)
+- [Fast, Concurrent, and Consistent Asynchronous INSERTS in ClickHouse](https://www.youtube.com/watch?v=AsMPEfN5QtM)
