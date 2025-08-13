@@ -27,7 +27,7 @@ description: 'Learn from the ClickHouse community with real world scenarios and 
 
 Combine this collected knowledge with our [Best Practices](/best-practices) guide for optimal ClickHouse Experience.
 
-## Problem-Specific Quick Jumps {#problem-specific-quick-jumps}
+## Problem-specific quick jumps {#problem-specific-quick-jumps}
 
 | Issue | Document | Description |
 |-------|---------|-------------|
