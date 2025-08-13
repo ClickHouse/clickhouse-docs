@@ -17,7 +17,7 @@ keywords: [
   'compression strategies',
   'retention analysis'
 ]
-title: 'Lessons - Cost Optimization'
+title: 'Lessons - cost optimization'
 description: 'Battle-tested cost optimization strategies from ClickHouse community meetups with real production examples and verified techniques.'
 ---
 
