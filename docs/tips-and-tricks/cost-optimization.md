@@ -21,7 +21,7 @@ title: 'Lessons - cost optimization'
 description: 'Battle-tested cost optimization strategies from ClickHouse community meetups with real production examples and verified techniques.'
 ---
 
-# Cost Optimization: Battle-Tested Strategies {#cost-optimization}
+# Cost optimization: battle-tested strategies {#cost-optimization}
 *This guide is part of a collection of findings gained from community meetups. The findings on this page cover community wisdom related to optimizing cost while using ClickHouse. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
 
 ## The ContentSquare Migration: 11x Cost Reduction {#contentsquare-migration}
