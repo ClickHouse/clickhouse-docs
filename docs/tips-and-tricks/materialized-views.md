@@ -17,22 +17,23 @@ keywords: [
   'materialized view troubleshooting',
   'view storage overhead'
 ]
-title: 'Lessons - Materialized Views'
+title: 'Lessons - materialized views'
 description: 'Real world examples of materialized views, problems and solutions'
 ---
 
-# Materialized Views: The Double-Edged Sword {#materialized-views-the-double-edged-sword}
+# Materialized views: the double-edged sword {#materialized-views-the-double-edged-sword}
+
 *This guide is part of a collection of findings gained from community meetups. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
 *Too many parts bogging your database down? Check out the [Too Many Parts](./too-many-parts.md) community insights guide.*
 *Learn more about [Materialized Views](/materialized-views).*
 
-## The 10x Storage Anti-Pattern {#storage-antipattern}
+## The 10x storage anti-pattern {#storage-antipattern}
 
-**Real production problem:** *"We had a materialized view... the raw log table was around 20 gig but the view from that log table got exploded to 190 gig so almost 10x the size of the raw table... this happened because... we were creating one row per attribute and each log can have 10 attributes"*
+**Real production problem:** *"We had a materialized view. The raw log table was around 20 gig but the view from that log table exploded to 190 gig, so almost 10x the size of the raw table. This happened because we were creating one row per attribute and each log can have 10 attributes."*
 
-**Rule:** If your GROUP BY creates more rows than it eliminates, you're building an expensive index, not a materialized view.
+**Rule:** If your `GROUP BY` creates more rows than it eliminates, you're building an expensive index, not a materialized view.
 
-## Production MV Health Validation {#mv-health-validation}
+## Production materialized view health validation {#mv-health-validation}
 
 ```sql runnable editable
 -- Challenge: Replace table name with your own data to check MV viability
@@ -57,7 +58,7 @@ WHERE pickup_datetime >= '2015-01-01'
 LIMIT 1;
 ```
 
-## The Successful MV Patterns {#successful-mv-patterns}
+## The successful materialized view patterns {#successful-mv-patterns}
 
 ```sql runnable editable
 -- Challenge: Try this pattern with different low-cardinality column combinations
@@ -81,7 +82,7 @@ WHERE created_at >= '2024-01-01'
 LIMIT 1;
 ```
 
-## When MVs Become a Problem {#mv-problems}
+## When materialized views become a problem {#mv-problems}
 
 **Common mistake:** Teams create too many materialized views and hurt insert performance.
 
@@ -89,5 +90,5 @@ LIMIT 1;
 
 **Which MVs to remove:** Start with redundant time windows (like 2-hour aggregations when you already have 1-hour) and low-frequency queries.
 
-## Video Sources {#video-sources}
+## Video sources {#video-sources}
 - [ClickHouse at CommonRoom - Kirill Sapchuk](https://www.youtube.com/watch?v=liTgGiTuhJE) - Source of the "over enthusiastic about materialized views" and "20GB→190GB explosion" case study
