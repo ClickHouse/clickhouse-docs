@@ -55,6 +55,7 @@ ClickHouse Cloud supports [cross-region PrivateLink](https://aws.amazon.com/abou
 - us-west-1
 - us-east-2
 - us-east-1
+Pricing considerations: AWS will charge users for cross region data transfer, see pricing [here](https://aws.amazon.com/privatelink/pricing/).
 :::
 
 **Please complete the following to enable AWS PrivateLink**:
@@ -65,7 +66,7 @@ ClickHouse Cloud supports [cross-region PrivateLink](https://aws.amazon.com/abou
 
 Find Terraform examples [here](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/).
 
-## Points of attention {#attention}
+## Important considerations {#considerations}
 ClickHouse attempts to group your services to reuse the same published [service endpoint](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html#endpoint-service-overview) within the AWS region. However, this grouping is not guaranteed, especially if you spread your services across multiple ClickHouse organizations.
 If you already have PrivateLink configured for other services in your ClickHouse organization, you can often skip most of the steps because of that grouping and proceed directly to the final step: Add ClickHouse "Endpoint ID" to ClickHouse service allow list.
 
@@ -336,7 +337,7 @@ In this example connection via value of `privateDnsHostname` host name will be r
 ### Multiple PrivateLinks in one region {#multiple-privatelinks-in-one-region}
 
 In most cases, you only need to create a single endpoint service for each VPC. This endpoint can route requests from the VPC to multiple ClickHouse Cloud services.
-Please refer [here](#attention)
+Please refer [here](#considerations)
 
 ### Connection to private endpoint timed out {#connection-to-private-endpoint-timed-out}
 
