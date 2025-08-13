@@ -164,7 +164,7 @@ This page discusses which tiers are right for your specific use case.
 
 :::note
 Services in the basic tier are meant to be fixed in size and do not allow scaling, both automatic and manual. 
-Users can upgrade to the Scale or Enterprise tier to scale their services.
+You can upgrade to the Scale or Enterprise tier to scale their services.
 :::
 
 ## Scale {#scale}
@@ -186,7 +186,7 @@ Caters to large-scale, mission critical deployments that have stringent security
 - Supports enterprise-grade security:
   - Single Sign On (SSO)
   - Enhanced Encryption: For AWS and GCP services. Services are encrypted by our key by default and can be rotated to their key to enable Customer Managed Encryption Keys (CMEK).
-- Allows Scheduled upgrades: Users can select the day of the week/time window for upgrades, both database and cloud releases.  
+- Allows Scheduled upgrades: you can select the day of the week/time window for upgrades, both database and cloud releases.  
 - Offers [HIPAA](/cloud/security/compliance-overview#hipaa-since-2024) Compliance.
 - Exports Backups to the user's account.
 
