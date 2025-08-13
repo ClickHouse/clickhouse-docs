@@ -21,13 +21,13 @@ title: 'Lessons - Too Many Parts Problem'
 description: 'Solutions and prevention of Too Many Parts'
 ---
 
-# The Too Many Parts Problem {#the-too-many-parts-problem}
+# The too many parts problem {#the-too-many-parts-problem}
 *This guide is part of a collection of findings gained from community meetups. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
 *Need more performance optimization tips? Check out the [Performance Optimization](./performance-optimization.md) community insights guide.*
 
 **Universal pain point:** Small frequent inserts create performance degradation through part explosion.
 
-## Recognize the Problem Early {#recognize-parts-problem}
+## Recognize the problem early {#recognize-parts-problem}
 
 ```sql runnable editable
 -- Challenge: Replace with your actual database and table names for production use
@@ -61,7 +61,7 @@ ORDER BY total_parts DESC
 LIMIT 20;
 ```
 
-## Proper Insert Batching {#proper-insert-batching}
+## Proper insert batching {#proper-insert-batching}
 
 **Community-proven batching strategy from production deployments:**
 
@@ -94,7 +94,7 @@ class ProductionBatchInserter:
             self.last_flush = time.time()
 ```
 
-**Alternative: Async Inserts (ClickHouse 21.11+)**
+**Alternative: async inserts (ClickHouse 21.11+)**
 
 *"We developed a function called async insert... this mechanism is straightforward similar to buffer table we insert to the server side and use some buffer to collect these inserts by default we have 16 threads to collect this buffer and if the buffer is large enough or reach timeout we will flush the buffer to the storage so a part will contain multiple inserts"* - ClickHouse team explaining built-in solution
 
@@ -106,6 +106,6 @@ SET async_insert_max_data_size = 10485760;  -- 10MB buffer size
 SET async_insert_busy_timeout_ms = 30000;   -- 30 second timeout
 ```
 
-## Video Sources {#video-sources}
+## Video sources {#video-sources}
 - [Fast, Concurrent, and Consistent Asynchronous INSERTS in ClickHouse](https://www.youtube.com/watch?v=AsMPEfN5QtM) - ClickHouse team member explains async inserts and the too many parts problem
 - [Production ClickHouse at Scale](https://www.youtube.com/watch?v=liTgGiTuhJE) - Real-world batching strategies from observability platforms
