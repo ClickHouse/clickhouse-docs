@@ -5,7 +5,11 @@ description: 'How to use Replica-aware routing to increase cache re-use'
 keywords: ['cloud', 'sticky endpoints', 'sticky', 'endpoints', 'sticky routing', 'routing', 'replica aware routing']
 ---
 
-# Replica-aware routing (private preview)
+import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+
+# Replica-aware routing
+
+<PrivatePreviewBadge/>
 
 Replica-aware routing (also known as sticky sessions, sticky routing, or session affinity) utilizes [Envoy proxy's ring hash load balancing](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/load_balancers#ring-hash). The main purpose of replica-aware routing is to increase the chance of cache reuse. It does not guarantee isolation.
 
