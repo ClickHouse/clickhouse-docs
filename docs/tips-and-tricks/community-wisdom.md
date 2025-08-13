@@ -17,7 +17,7 @@ keywords: [
   'interactive tutorials',
   'database solutions'
 ]
-title: 'ClickHouse Community Wisdom'
+title: 'ClickHouse community wisdom'
 description: 'Learn from the ClickHouse community with real world scenarios and lessons learned'
 ---
 
