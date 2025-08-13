@@ -21,17 +21,18 @@ title: 'Lessons - Creative Use Cases'
 description: 'Find solutions to the most common ClickHouse problems including slow queries, memory errors, connection issues, and configuration problems.'
 ---
 
-# Breaking the Rules: Success Stories {#breaking-the-rules}
+# Breaking the rules: success stories {#breaking-the-rules}
+
 *This guide is part of a collection of findings gained from community meetups. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
 *Need tips on debugging an issue in prod? Check out the [Debugging Insights](./debugging-insights.md) community guide.*
 
 These stories showcase how companies found success by using ClickHouse for unconventional use cases, challenging traditional database categories and proving that sometimes the "wrong" tool becomes exactly the right solution.
 
-## ClickHouse as Rate Limiter {#clickhouse-rate-limiter}
+## ClickHouse as rate limiter {#clickhouse-rate-limiter}
 
-When Craigslist needed to add tier-one rate limiting to protect their users, they faced the same decision every engineering team encounters: follow conventional wisdom and use Redis, or explore something different. Brad Lhotsky, working at Craigslist, knew Redis was the standard choice—virtually every rate limiting tutorial and example online uses Redis for good reason. It has rich primitives for rate limiting operations, well-established patterns, and proven track record. But Craigslist's experience with Redis wasn't matching the textbook examples. *"Our experience with Redis is not like what you've seen in the movies... there are a lot of weird maintenance issues that we've hit where we reboot a node in a Redis cluster and some latency spike hits the front end."* For a small team that values maintenance simplicity, these operational headaches were becoming a real problem.
+When Craigslist needed to add tier-one rate limiting to protect their users, they faced the same decision every engineering team encounters -  follow conventional wisdom and use Redis, or explore something different. Brad Lhotsky, working at Craigslist, knew Redis was the standard choice - virtually every rate limiting tutorial and example online uses Redis for good reason. It has rich primitives for rate limiting operations, well-established patterns, and proven track record. But Craigslist's experience with Redis wasn't matching the textbook examples. *"Our experience with Redis is not like what you've seen in the movies... there are a lot of weird maintenance issues that we've hit where we reboot a node in a Redis cluster and some latency spike hits the front end."* For a small team that values maintenance simplicity, these operational headaches were becoming a real problem.
 
-So when Brad was approached with the rate limiting requirements, he took a different approach: *"I asked my boss, 'What do you think of this idea? Maybe I can try this with ClickHouse?'"* The idea was unconventional—using an analytical database for what's typically a caching layer problem—but it addressed their core requirements: fail open, impose no latency penalties, and be maintenance-safe for a small team. The solution leveraged their existing infrastructure where access logs were already flowing into ClickHouse via Kafka. Instead of maintaining a separate Redis cluster, they could analyze request patterns directly from the access log data and inject rate limiting rules into their existing ACL API. The approach meant slightly higher latency than Redis, which *"is kind of cheating by instantiating that data set upfront"* rather than doing real-time aggregate queries, but the queries still completed in under 100 milliseconds.
+So when Brad was approached with the rate limiting requirements, he took a different approach: *"I asked my boss, 'What do you think of this idea? Maybe I can try this with ClickHouse?'"* The idea was unconventional - using an analytical database for what's typically a caching layer problem - but it addressed their core requirements: fail open, impose no latency penalties, and be maintenance-safe for a small team. The solution leveraged their existing infrastructure where access logs were already flowing into ClickHouse via Kafka. Instead of maintaining a separate Redis cluster, they could analyze request patterns directly from the access log data and inject rate limiting rules into their existing ACL API. The approach meant slightly higher latency than Redis, which *"is kind of cheating by instantiating that data set upfront"* rather than doing real-time aggregate queries, but the queries still completed in under 100 milliseconds.
 
 **Key Results:**
 - Dramatic improvement over Redis infrastructure
@@ -39,7 +40,7 @@ So when Brad was approached with the rate limiting requirements, he took a diffe
 - SQL flexibility enabled complex rate limiting rules beyond simple counters
 - Leveraged existing data pipeline instead of requiring separate infrastructure
 
-## ClickHouse for Customer Analytics {#customer-analytics}
+## ClickHouse for customer analytics {#customer-analytics}
 
 When ServiceNow needed to upgrade their mobile analytics platform, they faced a simple question: *"Why would we replace something that works?"* Amir Vaza from ServiceNow knew their existing system was reliable, but customer demands were outgrowing what it could handle. *"The motivation to replace an existing reliable model is actually from the product world,"* Amir explained. ServiceNow offered mobile analytics as part of their solution for web, mobile, and chatbots, but customers wanted analytical flexibility that went beyond pre-aggregated data.
 
@@ -79,9 +80,9 @@ Both success stories follow a similar pattern: teams that succeeded by questioni
 
 Craigslist's moment came when Brad asked: *"What do you think of this idea? Maybe I can try this with ClickHouse?"* Instead of accepting Redis maintenance complexity, they found a path that leveraged existing infrastructure. ServiceNow's realization was similar—rather than accepting that analytics must be slow or pre-computed, they recognized that customers needed the ability to segment data and slice it dynamically without constraints.
 
-Both teams succeeded because they designed around ClickHouse's unique strengths rather than trying to force it into traditional database patterns. They understood that sometimes the "analytical database" becomes the perfect operational solution when speed and SQL flexibility matter more than traditional OLTP guarantees. ClickHouse's combination of speed, SQL flexibility, and operational simplicity enables use cases that traditional database categories can't address—proving that the best tool is often the one that solves your specific problems, not the one that fits the textbook definition.
+Both teams succeeded because they designed around ClickHouse's unique strengths rather than trying to force it into traditional database patterns. They understood that sometimes the "analytical database" becomes the perfect operational solution when speed and SQL flexibility matter more than traditional OLTP guarantees. ClickHouse's combination of speed, SQL flexibility, and operational simplicity enables use cases that traditional database categories can't address - proving that the best tool is often the one that solves your specific problems, not the one that fits the textbook definition.
 
-## Video Sources {#video-sources}
+## Video sources {#video-sources}
 
 - **[Breaking the Rules - Building a Rate Limiter with ClickHouse](https://www.youtube.com/watch?v=wRwqrbUjRe4)** - Brad Lhotsky (Craigslist)
 - **[ClickHouse as an Analytical Solution in ServiceNow](https://www.youtube.com/watch?v=b4Pmpx3iRK4)** - Amir Vaza (ServiceNow)

@@ -106,6 +106,7 @@ SET async_insert_max_data_size = 10485760;  -- 10MB buffer size
 SET async_insert_busy_timeout_ms = 30000;   -- 30 second timeout
 ```
 
-## Video sources {#video-sources}
+## Video Sources {#video-sources}
+
 - [Fast, Concurrent, and Consistent Asynchronous INSERTS in ClickHouse](https://www.youtube.com/watch?v=AsMPEfN5QtM) - ClickHouse team member explains async inserts and the too many parts problem
 - [Production ClickHouse at Scale](https://www.youtube.com/watch?v=liTgGiTuhJE) - Real-world batching strategies from observability platforms

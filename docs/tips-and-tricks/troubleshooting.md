@@ -65,17 +65,20 @@ High memory usage, out-of-memory crashes, or need help sizing your ClickHouse de
 <summary><strong>Show memory solutions</strong></summary>
 
 ### Memory debugging and monitoring: {#memory-debugging-and-monitoring}
+
 - [Identify what's using memory](/docs/guides/developer/debugging-memory-issues)
 - [Check current memory usage](/docs/operations/system-tables/processes)
 - [Memory allocation profiling](/docs/operations/allocation-profiling)
 - [Analyze memory usage patterns](/docs/operations/system-tables/query_log)
 <br/>
 ### Memory configuration: {#memory-configuration}
+
 - [Configure memory limits](/docs/operations/settings/memory-overcommit)
 - [Server memory settings](/docs/operations/server-configuration-parameters/settings)
 - [Session memory settings](/docs/operations/settings/settings)
 <br/>
 ### Scaling and sizing: {#scaling-and-sizing}
+
 - [Right-size your service](/docs/operations/tips)
 - [Configure automatic scaling](/docs/manage/scaling)
 

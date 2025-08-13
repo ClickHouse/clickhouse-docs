@@ -17,16 +17,16 @@ keywords: [
   'query analysis',
   'performance troubleshooting'
 ]
-title: 'Lessons - Performance Optimization'
+title: 'Lessons - performance optimization'
 description: 'Real world examples of performance optimization strategies'
 ---
 
-# Performance Optimization: Production-Tested Strategies {#performance-optimization}
+# Performance optimization: production-tested strategies {#performance-optimization}
 *This guide is part of a collection of findings gained from community meetups. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
 *Having trouble with Materialized Views? Check out the [Materialized Views](./materialized-views.md) community insights guide.*
 *If you're experiencing slow queries and want more examples, we also have a [Query Optimization](/optimize/query-optimization) guide.*
 
-## Order by Cardinality (Lowest to Highest) {#rule-1-cardinality-ordering}
+## Order by cardinality (lowest to highest) {#rule-1-cardinality-ordering}
 
 ```sql runnable editable
 -- Challenge: Try filtering by different event types or time ranges
@@ -61,7 +61,7 @@ FROM (
 ORDER BY cardinality_percentage;
 ```
 
-## Time Granularity Matters {#rule-2-time-granularity}
+## Time granularity matters {#rule-2-time-granularity}
 
 ```sql runnable editable
 -- Challenge: Try different time functions like toStartOfMinute or toStartOfWeek
@@ -88,7 +88,7 @@ FROM github.github_events
 WHERE created_at >= '2024-01-01';
 ```
 
-## Focus on Individual Queries, Not Averages {#focus-on-individual-queries-not-averages}
+## Focus on individual queries, not averages {#focus-on-individual-queries-not-averages}
 
 *"The right way is to ask yourself why this particular query was processed in five seconds... I don't care if median and other queries process quickly. I only care about my query"*
 
@@ -158,7 +158,7 @@ FROM late_filter_simulation;
 
 **The key lesson from production teams:** When a query is slow, don't just look at averages. Ask "Why was THIS specific query slow?" and examine the actual resource usage patterns.
 
-## Memory vs Row Scanning Trade-offs {#memory-vs-row-scanning-trade-offs}
+## Memory vs row scanning trade-offs {#memory-vs-row-scanning-trade-offs}
 
 **Sentry's key insight:** *"The cardinality of the grouping key that's going to drive memory in this particular situation"* - High cardinality aggregations kill performance through memory exhaustion, not row scanning.
 
@@ -239,7 +239,7 @@ SELECT
 FROM sampled_data, full_data;
 ```
 
-## Sentry's Bit Mask Optimization: From Memory Explosion to 8 Bytes {#bit-mask-optimization}
+## Sentry's bit mask optimization: from memory explosion to 8 bytes {#bit-mask-optimization}
 
 **The Problem:** When aggregating by high-cardinality columns (like URLs), each unique value creates a separate aggregation state in memory, leading to memory exhaustion.
 
@@ -312,7 +312,8 @@ SELECT
 
 **Why This Works:** Instead of storing every unique string in memory, you're storing the *answer to questions about those strings* as integers. The aggregation state becomes bounded and tiny, regardless of data diversity.
 
-## Video Sources {#video-sources}
+## Video sources {#video-sources}
+
 - [Lost in the Haystack - Optimizing High Cardinality Aggregations](https://www.youtube.com/watch?v=paK84-EUJCA) - Sentry's production lessons on memory optimization
 - [ClickHouse Performance Analysis](https://www.youtube.com/watch?v=lxKbvmcLngo) - Alexey Milovidov on debugging methodology
 - [ClickHouse Meetup: Query Optimization Techniques](https://www.youtube.com/watch?v=JBomQk4Icjo) - Community optimization strategies
