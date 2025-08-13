@@ -32,22 +32,26 @@ Queries running slowly, timeouts, or getting specific error messages like "Memor
 <details>
 <summary><strong>Show performance and error solutions</strong></summary>
 
-### Query Performance {#query-performance}
+### Query performance {#query-performance}
+
 - [Find which queries are using the most resources](/knowledgebase/find-expensive-queries)
 - [Complete query optimization guide](/docs/optimize/query-optimization)
 - [Optimize JOIN operations](/docs/best-practices/minimize-optimize-joins)
 - [Run diagnostic queries to find bottlenecks](/docs/knowledgebase/useful-queries-for-troubleshooting)
 <br/>
-### Data Insertion Performance {#data-insertion-performance}
+### Data insertion performance {#data-insertion-performance}
+
 - [Speed up data insertion](/docs/optimize/bulk-inserts)
 - [Set up asynchronous inserts](/docs/optimize/asynchronous-inserts)
 <br/>
-### Advanced Analysis Tools {#advanced-analysis-tools}
+### Advanced analysis tools {#advanced-analysis-tools}
+
 <!-- - [Profile with LLVM XRay](/docs/knowledgebase/profiling-clickhouse-with-llvm-xray) -->
 - [Check what processes are running](/docs/knowledgebase/which-processes-are-currently-running)
 - [Monitor system performance](/docs/operations/system-tables/processes)
 <br/>
-### Error Messages {#error-messages}
+### Error messages {#error-messages}
+
 - **"Memory limit exceeded"** → [Debug memory limit errors](/docs/guides/developer/debugging-memory-issues)
 - **"Connection refused"** → [Fix connection problems](#connections-and-authentication)
 - **"Login failures"** → [Set up users, roles, and permissions](/docs/operations/access-rights)
@@ -57,7 +61,7 @@ Queries running slowly, timeouts, or getting specific error messages like "Memor
 - **Other issues** → [Track errors across your cluster](/docs/operations/system-tables/errors)
 </details>
 
-## Memory and Resources {#memory-and-resources}
+## Memory and resources {#memory-and-resources}
 
 High memory usage, out-of-memory crashes, or need help sizing your ClickHouse deployment.
 
@@ -65,17 +69,20 @@ High memory usage, out-of-memory crashes, or need help sizing your ClickHouse de
 <summary><strong>Show memory solutions</strong></summary>
 
 ### Memory debugging and monitoring: {#memory-debugging-and-monitoring}
+
 - [Identify what's using memory](/docs/guides/developer/debugging-memory-issues)
 - [Check current memory usage](/docs/operations/system-tables/processes)
 - [Memory allocation profiling](/docs/operations/allocation-profiling)
 - [Analyze memory usage patterns](/docs/operations/system-tables/query_log)
 <br/>
 ### Memory configuration: {#memory-configuration}
+
 - [Configure memory limits](/docs/operations/settings/memory-overcommit)
 - [Server memory settings](/docs/operations/server-configuration-parameters/settings)
 - [Session memory settings](/docs/operations/settings/settings)
 <br/>
 ### Scaling and sizing: {#scaling-and-sizing}
+
 - [Right-size your service](/docs/operations/tips)
 - [Configure automatic scaling](/docs/manage/scaling)
 
@@ -138,7 +145,7 @@ Initial installation, server configuration, database creation, data ingestion is
 
 </details>
 
-## Still Need Help? {#still-need-help}
+## Still need help? {#still-need-help}
 
 If you can't find a solution:
 

@@ -21,7 +21,8 @@ title: 'Lessons - Too Many Parts Problem'
 description: 'Solutions and prevention of Too Many Parts'
 ---
 
-# The Too Many Parts Problem {#the-too-many-parts-problem}
+# The too many parts problem {#the-too-many-parts-problem}
+
 *This guide is part of a collection of findings gained from community meetups. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
 *Need more performance optimization tips? Check out the [Performance Optimization](./performance-optimization.md) community insights guide.*
 
@@ -107,5 +108,6 @@ SET async_insert_busy_timeout_ms = 30000;   -- 30 second timeout
 ```
 
 ## Video Sources {#video-sources}
+
 - [Fast, Concurrent, and Consistent Asynchronous INSERTS in ClickHouse](https://www.youtube.com/watch?v=AsMPEfN5QtM) - ClickHouse team member explains async inserts and the too many parts problem
 - [Production ClickHouse at Scale](https://www.youtube.com/watch?v=liTgGiTuhJE) - Real-world batching strategies from observability platforms
