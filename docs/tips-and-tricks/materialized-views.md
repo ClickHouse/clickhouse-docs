@@ -69,7 +69,7 @@ You can compare insert performance before and after adding MVs using `system.que
 
 **Alternative approach:** For non-critical aggregations, consider regular tables populated by scheduled jobs instead of real-time materialized views. This gives you zero impact on insert performance and more control over processing timing, but data freshness depends on job frequency rather than real-time updates.
 
-This approach works well if you need aggregated data but can tolerate 15-60 minute delays, and your aggregated data is queried less frequently than source data is inserted. Use scheduling tools like cron, systemd timers, or a workflow orchestrator to run `INSERT INTO summary_table SELECT ... FROM source_table` periodically.
+This approach works well if you need aggregated data but can tolerate 15-60 minute delays, and your aggregated data is queried less frequently than source data is inserted. Use scheduling tools like cron or systemd timers to run `INSERT INTO summary_table SELECT ... FROM source_table` periodically.
 
 ## Video sources {#video-sources}
 - [ClickHouse at CommonRoom - Kirill Sapchuk](https://www.youtube.com/watch?v=liTgGiTuhJE) - Source of the "over enthusiastic about materialized views" and "20GB→190GB explosion" case study
