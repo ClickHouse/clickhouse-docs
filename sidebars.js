@@ -686,13 +686,13 @@ const sidebars = {
         "integrations/language-clients/python/index",
         "integrations/language-clients/rust",
         "integrations/language-clients/csharp",
+        "integrations/language-clients/moose-olap.md",
         {
           type: "category",
           label: "Third-party Clients",
           collapsed: true,
           collapsible: true,
           items: [
-            "interfaces/third-party/moose-olap",
             "interfaces/third-party/client-libraries"
           ],
         },
