@@ -194,7 +194,7 @@ ORDER BY (push_events + watch_events + microsoft_activity) DESC
 LIMIT 20
 ```
 
-The difference is dramatic. Before: each user stores arrays of ALL unique repo names (potentially MBs per user). After: each user stores exactly 6 integers (48 bytes), regardless of how many repos they interact with. Sentry achieved 100x memory reduction for certain query patterns with this approach.
+The difference is dramatic. Before: each user stores arrays of ALL unique repo names (potentially MBs per user). After: each user stores exactly 6 integers (48 bytes), regardless of how many repositories they interact with. Sentry achieved 100x memory reduction for certain query patterns with this approach.
 
 Instead of storing every unique string in memory, you're storing the *answer to questions about those strings* as integers. The aggregation state becomes bounded and tiny, regardless of data diversity.
 
