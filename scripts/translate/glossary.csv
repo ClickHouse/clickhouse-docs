@@ -1,7 +1,7 @@
 word,ru,jp,zh,es
 access control,контроль доступа,access control,access control,control de acceso
 access key,ключ доступа,access key,access key,clave de acceso
-adaptive join algorithms,Адаптивные алгоритмы JOIN,adaptive join algorithms,adaptive join algorithms,algoritmos de unión adaptativos
+adaptive join algorithms,Адаптивные алгоритмы JOIN,adaptive join algorithms,adaptive join algorithms,algoritmos de join adaptativos
 address sanitizer,санитайзер адресов,address sanitizer,address sanitizer,sanitizador de direcciones
 aggregate functions,агрегатные функции,aggregate functions,aggregate functions,funciones de agregación
 aggregation,агрегация,aggregation,aggregation,agregación
@@ -13,26 +13,26 @@ authentication,аутентификация,authentication,authentication,autent
 batch loading,пакетная загрузка,batch loading,batch loading,carga por lotes
 bit functions,битовые функции,bit functions,bit functions,funciones de bits
 block cluster,блок кластер,block cluster,block cluster,clúster de bloques
-bloom filter,фильтр Блума,bloom filter,bloom filter,filtro de Bloom
-bring your own cloud,bring your own cloud,bring your own cloud,bring your own cloud,bring your own cloud
-business intelligence,бизнес-аналитика,business intelligence,business intelligence,inteligencia empresarial
-bucket,корзина,bucket,bucket,cubeta
+bloom filter,фильтр Блума,bloom filter,bloom filter,filtro Bloom
+bring your own cloud,bring your own cloud,bring your own cloud,bring your own cloud,usa tu propia nube
+business intelligence,бизнес-аналитика,business intelligence,business intelligence,inteligencia de negocios
+bucket,корзина,bucket,bucket,bucket
 chunks,фрагменты,chunks,chunks,fragmentos
 clause,оператор,clause,clause,cláusula
 ClickHouse,ClickHouse,ClickHouse,ClickHouse,ClickHouse
 codecs,кодеки,codecs,codecs,códecs
 CollapsingMergeTree,CollapsingMergeTree,CollapsingMergeTree,CollapsingMergeTree,CollapsingMergeTree
 column,колонка,カラム,列,columna
-columnar database,столбцовая база данных,columnar database,columnar database,base de datos en columnas
+columnar database,столбцовая база данных,columnar database,columnar database,base de datos columnar
 columnar format,столбцовый формат,列指向,列式,formato en columnas
 common table expressions,общие табличные выражения,common table expressions,common table expressions,expresiones de tabla comunes
 configuration files,файлы конфигурации,configuration files,configuration files,archivos de configuración
 conversion functions,функции преобразования,conversion functions,conversion functions,funciones de conversión
-CPU performance,производительность CPU,CPU performance,CPU performance,rendimiento de la CPU
+CPU performance,производительность CPU,CPU performance,CPU performance,rendimiento de CPU
 CTE,CTE,CTE,CTE,CTE
 data compression,сжатие данных,data compression,data compression,compresión de datos
 data ingestion,прием данных,data ingestion,data ingestion,ingesta de datos
-data lake,ДатаЛэйк,データレイク,数据湖,lago de datos
+data lake,ДатаЛэйк,データレイク,数据湖,data lake
 data parts,части данных,パーツ,分区片段,partes de datos
 data pipeline,конвейер данных,data pipeline,data pipeline,pipeline de datos
 data skipping index,индекс пропуска данных,データスキッピングインデックス,数据跳过索引,índice de omisión de datos
@@ -43,7 +43,7 @@ denormalization,денормализация,denormalization,denormalization,des
 dictionary,словарь,Dictionary,字典,diccionario
 disk I/O,ввод-вывод диска,disk I/O,disk I/O,E/S de disco
 distributed DDL,распределенный DDL,distributed DDL,distributed DDL,DDL distribuido
-distributed joins,распределенные соединения,distributed joins,distributed joins,uniones distribuidas
+distributed joins,распределенные соединения,distributed joins,distributed joins,joins distribuidos
 distributed processing,распределенная обработка,distributed processing,distributed processing,procesamiento distribuido
 distributed queries,распределенные запросы,distributed queries,distributed queries,consultas distribuidas
 distributed table,распределенная таблица,分散テーブル,分布式表,tabla distribuida
@@ -60,7 +60,7 @@ incremental backups,инкрементные резервные копии,incre
 incremental materialized view,инкрементное материализованное представление,incremental materialized view,incremental materialized view,vista materializada incremental
 Input/Output,ввод-вывод,Input/Output,Input/Output,Entrada/Salida
 integration tests,интеграционные тесты,integration tests,integration tests,pruebas de integración
-joins,joins,joins,joins,uniones
+joins,joins,joins,joins,joins
 Kafka,Kafka,Kafka,Kafka,Kafka
 Keeper,Keeper,Keeper,Keeper,Keeper
 key-value pairs,пары ключ-значение,key-value pairs,key-value pairs,pares clave-valor
@@ -82,7 +82,7 @@ modifier,модификатор,modifier,modifier,modificador
 multi-region replication,мультирегиональная репликация,multi-region replication,multi-region replication,replicación multirregión
 mutation queries,запросы мутации,mutation queries,mutation queries,consultas de mutación
 mutations,мутации,mutations,mutations,mutaciones
-network bandwidth,пропускная способность сети,network bandwidth,network bandwidth,ancho de banda de la red
+network bandwidth,пропускная способность сети,network bandwidth,network bandwidth,ancho de banda de red
 normalization,нормализация,normalization,normalization,normalización
 object storage,объектное хранилище,object storage,object storage,almacenamiento de objetos
 observability,мониторинг,observability,observability,observabilidad
@@ -105,7 +105,7 @@ query planning,планирование запросов,query planning,查询�
 query profiler,профилировщик запросов,query profiler,查询剖析器,perfilador de consultas
 query routing,маршрутизация запросов,query routing,查询路由,enrutamiento de consultas
 query settings,настройки запросов,query settings,查询设置,configuración de consultas
-query string,строка запроса,query string,查询字符串,cadena de consulta
+query string,строка запроса,query string,查询字符串,texto de consulta
 RBAC,RBAC,RBAC,RBAC,RBAC
 reads,чтения,reads,reads,lecturas
 real-time analytics,аналитика в реальном времени,real-time analytics,实时分析,análisis en tiempo real
@@ -118,14 +118,14 @@ rollup tables,сводные таблицы,rollup tables,rollup tables,tablas d
 routine,процедура,routine,routine,rutina
 row,строка,行,行,fila
 row-level security,безопасность на уровне строк,row-level security,row-level security,seguridad a nivel de fila
-s3 bucket,s3 корзина,s3 bucket,s3 bucket,cubeta S3
+s3 bucket,s3 корзина,s3 bucket,s3 bucket,bucket de S3
 schema inference,вывод схемы,schema inference,schema inference,inferencia de esquema
 self-managed clickhouse,самоуправляемый ClickHouse,セルフマネージド,自管理,ClickHouse autogestionado
 server settings,настройки сервера,server settings,server settings,configuración del servidor
 session settings,настройки сессии,session settings,session settings,configuración de la sesión
-sharding key,ключ шардирования,sharding key,sharding key,clave de partición
+sharding key,ключ шардирования,sharding key,sharding key,clave de fragmentación
 SIMD instructions,инструкции SIMD,SIMD instructions,SIMD instructions,instrucciones SIMD
-sorting key,ключ сортировки,sorting key,sorting key,clave de ordenación
+sorting key,ключ сортировки,sorting key,sorting key,clave de ordenamiento
 sparse index,разреженный индекс,スパース,稀疏,índice disperso
 storage engines,движки хранения,storage engines,storage engines,motores de almacenamiento
 storage policies,политики хранения,storage policies,storage policies,políticas de almacenamiento
