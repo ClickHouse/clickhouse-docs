@@ -174,7 +174,7 @@ When aggregating by high-cardinality columns (like URLs), each unique value crea
 ```sql runnable editable
 -- Each condition becomes a single integer counter per user - bounded memory!
 -- Challenge: Add more conditions and see how memory stays constant per user
--- Memory per user: 6 integers (48 bytes) regardless of how many repos they touch
+-- Memory per user: 6 integers (48 bytes) regardless of how many repositories they touch
 SELECT 
     actor_login,
     -- Each sumIf creates exactly one integer, regardless of data diversity
