@@ -105,7 +105,7 @@ query planning,планирование запросов,query planning,查询�
 query profiler,профилировщик запросов,query profiler,查询剖析器,perfilador de consultas
 query routing,маршрутизация запросов,query routing,查询路由,enrutamiento de consultas
 query settings,настройки запросов,query settings,查询设置,configuración de consultas
-query string,строка запроса,query string,查询字符串,texto de consulta
+query string,строка запроса,query string,查询字符串,cadena de consulta
 RBAC,RBAC,RBAC,RBAC,RBAC
 reads,чтения,reads,reads,lecturas
 real-time analytics,аналитика в реальном времени,real-time analytics,实时分析,análisis en tiempo real
