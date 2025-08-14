@@ -94,7 +94,7 @@ class ProductionBatchInserter:
             self.last_flush = time.time()
 ```
 
-**Alternative: async inserts (ClickHouse 21.11+)**
+**Async inserts**
 
 *"We developed a function called async insert... this mechanism is straightforward similar to buffer table we insert to the server side and use some buffer to collect these inserts by default we have 16 threads to collect this buffer and if the buffer is large enough or reach timeout we will flush the buffer to the storage so a part will contain multiple inserts"* - ClickHouse team explaining built-in solution
 
