@@ -365,7 +365,7 @@ insert_src_files=(
   "conditional-functions.md"
   "distance-functions.md"
   "dates_and_times-functions.md"
-  "financial.md"
+  "financial-functions.md"
 )
 
 insert_dest_files=(
