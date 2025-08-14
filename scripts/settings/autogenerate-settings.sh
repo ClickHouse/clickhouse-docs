@@ -377,6 +377,7 @@ insert_dest_files=(
     "docs/sql-reference/functions/comparison-functions.md"
     "docs/sql-reference/functions/conditional-functions.md"
     "docs/sql-reference/functions/distance-functions.md"
+    "docs/sql-reference/functions/date-time-functions.md"
     "docs/sql-reference/functions/financial-functions.md"
 )
 
