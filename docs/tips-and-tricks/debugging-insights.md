@@ -100,7 +100,7 @@ Small frequent inserts create performance problems. The community has identified
 - Use buffer tables for server-side batching
 - Configure Kafka for controlled batch sizes
 
-Official recommendation: minimum 1,000 rows per insert, ideally 10,000 to 100,000.
+[Official recommendation](/best-practices/selecting-an-insert-strategy#batch-inserts-if-synchronous): minimum 1,000 rows per insert, ideally 10,000 to 100,000.
 
 ### Data quality issues {#data-quality-issues}
 
@@ -124,17 +124,25 @@ Test schema changes on smaller datasets first.
 
 ### External aggregation {#external-aggregation}
 
-Enable external aggregation for memory-intensive operations. It's slower but prevents out-of-memory crashes by spilling to disk.
+Enable external aggregation for memory-intensive operations. It's slower but prevents out-of-memory crashes by spilling to disk. You can do this by using `max_bytes_before_external_group_by` which will help prevent out of memory crashes on large `GROUP BY` operations. You can learn more about this setting [here](/operations/settings/settings#max_bytes_before_external_group_by).
+
+```sql
+SELECT 
+    column1,
+    column2,
+    COUNT(*) as count,
+    SUM(value) as total
+FROM large_table
+GROUP BY column1, column2
+SETTINGS max_bytes_before_external_group_by = 1000000000; -- 1GB threshold
+```
 
 ### Async insert details {#async-insert-details}
 
-Async insert uses 16 threads by default to collect and batch data. You can configure it to return acknowledgment only after data is flushed to storage, though this impacts performance.
+Async insert automatically batches small inserts server-side to improve performance. You can configure whether to wait for data to be written to disk before returning acknowledgment - immediate return is faster but less durable. Modern versions support deduplication to handle duplicate data within batches.
 
-Since ClickHouse 2023, async insert supports deduplication using hash IDs.
-
-### Buffer tables {#buffer-tables}
-
-Buffer tables provide server-side batching but can lose data if not flushed before crashes.
+**Related docs**
+- [Selecting an insert strategy](/best-practices/selecting-an-insert-strategy#asynchronous-inserts)
 
 ### Distributed table configuration {#distributed-table-configuration}
 
@@ -148,6 +156,9 @@ Community-recommended monitoring thresholds:
 - Parts per partition: preferably less than 100
 - Delayed inserts: should stay at zero
 - Insert rate: limit to about 1 per second for optimal performance
+
+**Related docs**
+- [Custom partitioning key](/engines/table-engines/mergetree-family/custom-partitioning-key)
 
 ## Quick reference {#quick-reference}
 

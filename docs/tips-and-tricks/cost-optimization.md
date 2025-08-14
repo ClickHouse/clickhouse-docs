@@ -24,6 +24,8 @@ description: 'Battle-tested cost optimization strategies from ClickHouse communi
 # Cost optimization: battle-tested strategies {#cost-optimization}
 *This guide is part of a collection of findings gained from community meetups. The findings on this page cover community wisdom related to optimizing cost while using ClickHouse. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
 
+*Learn about how [ClickHouse Cloud can help manage operational costs](/cloud/overview)*.
+
 ## The ContentSquare migration: 11x cost reduction {#contentsquare-migration}
 
 ContentSquare's migration from Elasticsearch to ClickHouse shows the cost optimization potential when moving to ClickHouse for analytics workloads, involving over 1,000 enterprise customers and processing over one billion page views daily. Before migration, ContentSquare ran 14 Elasticsearch clusters, each with 30 nodes, and struggled to make them bigger while keeping them stable. They were unable to host very large clients with high traffic, and frequently had to move clients between clusters as their traffic grew beyond cluster capacity.
@@ -34,7 +36,7 @@ After migration, the infrastructure became 11x cheaper while storing six times m
 
 Their current ClickHouse setup includes 16 clusters across four regions on AWS and Azure, with over 100 nodes total. Each cluster typically has nine shards with two replicas per shard. They process approximately 100,000 analytics queries daily with an average response time of 200 milliseconds, while also increasing data retention from 3 months to 13 months.
 
-**Key Results:**
+**Key results:**
 - 11x reduction in infrastructure costs
 - 6x increase in data storage capacity
 - 10x faster 99th percentile query performance
@@ -42,39 +44,45 @@ Their current ClickHouse setup includes 16 clusters across four regions on AWS a
 - Increased data retention from 3 months to 13 months
 - Zero regressions during migration
 
-## Compression Strategy: LZ4 vs ZSTD in Production {#compression-strategy}
+## Compression strategy: LZ4 vs ZSTD in production {#compression-strategy}
 
 When Microsoft Clarity needed to handle hundreds of terabytes of data, they discovered that compression choices have dramatic cost implications. At their scale, every bit of storage savings matters, and they faced a classic trade-off: performance versus storage costs. Microsoft Clarity handles massive volumes—two petabytes of uncompressed data per month across all accounts, processing around 60,000 queries per hour across eight nodes and serving billions of page views from millions of websites. At this scale, compression strategy becomes a critical cost factor.
 
 They initially used ClickHouse's default [LZ4](/sql-reference/statements/create/table#lz4) compression but discovered significant cost savings were possible with [ZSTD](/sql-reference/statements/create/table#zstd). While LZ4 is faster, ZSTD provides better compression at the cost of slightly slower performance. After testing both approaches, they made a strategic decision to prioritize storage savings. The results were significant: 50% storage savings on large tables with manageable performance impact on ingestion and queries.
 
-**Key Results:**
+**Key results:**
 - 50% storage savings on large tables through ZSTD compression
 - 2 petabytes monthly data processing capacity
 - Manageable performance impact on ingestion and queries
 - Significant cost reduction at hundreds of TB scale
 
-## Column-Based Retention Strategy {#column-retention}
+## Column-based retention strategy {#column-retention}
 
 One of the most powerful cost optimization techniques comes from analyzing which columns are actually being used. Microsoft Clarity implements sophisticated column-based retention strategies using ClickHouse's built-in telemetry capabilities. ClickHouse provides detailed metrics on storage usage by column as well as comprehensive query patterns: which columns are accessed, how frequently, query duration, and overall usage statistics.
 
 This data-driven approach enables strategic decisions about retention policies and column lifecycle management. By analyzing this telemetry data, Microsoft can identify storage hot spots - columns that consume significant space but receive minimal queries. For these low-usage columns, they can implement aggressive retention policies, reducing storage time from 30 months to just one month, or delete the columns entirely if they're not queried at all. This selective retention strategy reduces storage costs without impacting user experience.
 
-**The Strategy:**
+**The strategy:**
 - Analyze column usage patterns using ClickHouse telemetry
 - Identify high-storage, low-query columns
 - Implement selective retention policies
 - Monitor query patterns for data-driven decisions
 
+**Related docs**
+- [Managing Data - Column Level TTL](/observability/managing-data)
+
 ## Partition-based data management {#partition-management}
 
 Microsoft Clarity discovered that partitioning strategy impacts both performance and operational simplicity. Their approach: partition by date, order by hour. This strategy delivers multiple benefits beyond just cleanup efficiency—it enables trivial data cleanup, simplifies billing calculations for their customer-facing service, and supports GDPR compliance requirements for row-based deletion.
 
-**Key Benefits:**
+**Key benefits:**
 - Trivial data cleanup (drop partition vs row-by-row deletion)
 - Simplified billing calculations
 - Better query performance through partition elimination
 - Easier operational management
+
+**Related docs**
+- [Managing Data - Partitions](/observability/managing-data#partitions)
 
 ## String-to-integer conversion strategy {#string-integer-conversion}
 
@@ -86,7 +94,7 @@ Microsoft implemented a string-to-integer mapping system using a separate MySQL 
 
 This architecture preserves the user experience - people still see meaningful labels like `weather_answer` in their dashboards - while the backend storage and queries operate on much more efficient integers. The mapping system handles all translation transparently, requiring no changes to the user interface or user workflows.
 
-**Key Benefits:**
+**Key benefits:**
 - 60% storage reduction on affected datasets
 - Faster query performance on integer comparisons
 - Reduced memory usage for joins and aggregations

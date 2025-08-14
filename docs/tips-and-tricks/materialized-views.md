@@ -35,60 +35,41 @@ description: 'Real world examples of materialized views, problems and solutions'
 
 ## Production materialized view health validation {#mv-health-validation}
 
-```sql runnable editable
--- Challenge: Replace table name with your own data to check MV viability
--- Experiment: Try different GROUP BY combinations to see aggregation ratios
-SELECT 
-    'MV Pre-deployment Health Check' as analysis_type,
-    count() as source_rows,
-    uniq(pickup_datetime, dropoff_datetime, passenger_count) as mv_unique_combinations,
-    round(uniq(pickup_datetime, dropoff_datetime, passenger_count) / count() * 100, 2) as aggregation_ratio_percent,
-    formatReadableSize(count() * 100) as estimated_source_size,
-    formatReadableSize(uniq(pickup_datetime, dropoff_datetime, passenger_count) * 100) as estimated_mv_size,
-    round(uniq(pickup_datetime, dropoff_datetime, passenger_count) * 100 / (count() * 100), 1) as storage_multiplier,
-    CASE 
-        WHEN uniq(pickup_datetime, dropoff_datetime, passenger_count) / count() > 0.95 THEN 'PROBLEM: MV will be larger than source!'
-        WHEN uniq(pickup_datetime, dropoff_datetime, passenger_count) / count() > 0.7 THEN 'BAD: Massive storage waste (190GB scenario)'
-        WHEN uniq(pickup_datetime, dropoff_datetime, passenger_count) / count() > 0.3 THEN 'QUESTIONABLE: High storage overhead'
-        ELSE 'GOOD: Substantial aggregation benefit'
-    END as mv_assessment
-FROM nyc_taxi.trips
-WHERE pickup_datetime >= '2015-01-01' 
-  AND pickup_datetime < '2015-01-02'
-LIMIT 1;
-```
+This query helps you predict whether a materialized view will compress or explode your data before you create it. Run it against your actual table and columns to avoid the "190GB explosion" scenario.
 
-## The successful materialized view patterns {#successful-mv-patterns}
+**What it shows:**
+- **Low aggregation ratio** (\<10%) = Good MV, significant compression
+- **High aggregation ratio** (\>70%) = Bad MV, storage explosion risk
+- **Storage multiplier** = How much bigger/smaller your MV will be
 
-```sql runnable editable
--- Challenge: Try this pattern with different low-cardinality column combinations
--- Experiment: Change the time granularity to see how it affects compression
+```sql
+-- Replace with your actual table and columns
 SELECT 
-    'Production Success Pattern' as analysis_type,
-    count() as source_rows,
-    uniq(event_type, toStartOfHour(created_at)) as unique_combinations,
-    round(uniq(event_type, toStartOfHour(created_at)) / count() * 100, 4) as aggregation_ratio_percent,
-    formatReadableSize(count() * 50) as estimated_source_size,
-    formatReadableSize(uniq(event_type, toStartOfHour(created_at)) * 50) as estimated_mv_size,
-    CASE 
-        WHEN uniq(event_type, toStartOfHour(created_at)) / count() < 0.001 THEN 'OUTSTANDING: Like the 72GB→3GB compression example'
-        WHEN uniq(event_type, toStartOfHour(created_at)) / count() < 0.01 THEN 'EXCELLENT: Massive aggregation benefit'
-        WHEN uniq(event_type, toStartOfHour(created_at)) / count() < 0.1 THEN 'GOOD: Strong aggregation'
-        ELSE 'REVIEW: Limited benefit'
-    END as mv_assessment
-FROM github.github_events
-WHERE created_at >= '2024-01-01' 
-  AND created_at < '2024-01-08'
-LIMIT 1;
+    count() as total_rows,
+    uniq(your_group_by_columns) as unique_combinations,
+    round(uniq(your_group_by_columns) / count() * 100, 2) as aggregation_ratio
+FROM your_table
+WHERE your_filter_conditions;
+
+-- If aggregation_ratio > 70%, reconsider your MV design
+-- If aggregation_ratio < 10%, you'll get good compression
 ```
 
 ## When materialized views become a problem {#mv-problems}
 
-**Common mistake:** Teams create too many materialized views and hurt insert performance.
+Multiple materialized views on the same table slow down inserts, since each insert must process and write data to all MVs synchronously. The performance impact depends on your insert volume and MV complexity. A table receiving millions of inserts per hour will feel the impact sooner than low-traffic tables.
 
-**Simple fix:** Replace non-critical MVs with regular tables populated by cron jobs. You get the same query benefits without slowing down inserts.
+**Warning signs to monitor:**
+- Insert latency increases (queries that took 10ms now take 100ms+)
+- "Too many parts" errors appearing more frequently 
+- CPU spikes during insert operations
+- Insert timeouts that didn't happen before
 
-**Which MVs to remove:** Start with redundant time windows (like 2-hour aggregations when you already have 1-hour) and low-frequency queries.
+You can compare insert performance before and after adding MVs using `system.query_log` to track query duration trends.
+
+**Alternative approach:** For non-critical aggregations, consider regular tables populated by scheduled jobs instead of real-time materialized views. This gives you zero impact on insert performance and more control over processing timing, but data freshness depends on job frequency rather than real-time updates.
+
+This approach works well if you need aggregated data but can tolerate 15-60 minute delays, and your aggregated data is queried less frequently than source data is inserted. Use scheduling tools like cron, systemd timers, or workflow orchestrators to run `INSERT INTO summary_table SELECT ... FROM source_table` periodically.
 
 ## Video sources {#video-sources}
 - [ClickHouse at CommonRoom - Kirill Sapchuk](https://www.youtube.com/watch?v=liTgGiTuhJE) - Source of the "over enthusiastic about materialized views" and "20GB→190GB explosion" case study
