@@ -3375,6 +3375,16 @@
       "source": "/docs/manage/troubleshooting-billing-issues",
       "destination": "/docs/manage/clickhouse-cloud-billing-compliance",
       "permanent": true
+    },
+    {
+      "source": "/operations/system-tables/latency_log",
+      "destination": "/operations/system-tables/histogram_metrics",
+      "permanent": true
+    },
+    {
+      "source": "/operations/system-tables/latency_buckets",
+      "destination": "/operations/system-tables/histogram_metrics",
+      "permanent": true
     }
   ]
 }
