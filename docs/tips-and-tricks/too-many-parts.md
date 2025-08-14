@@ -25,9 +25,18 @@ description: 'Solutions and prevention of Too Many Parts'
 *This guide is part of a collection of findings gained from community meetups. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
 *Need more performance optimization tips? Check out the [Performance Optimization](./performance-optimization.md) community insights guide.*
 
-**Universal pain point:** Small frequent inserts create performance degradation through part explosion.
+## Understanding the problem {#understanding-the-problem}
+
+ClickHouse will throw a "Too many parts" error to prevent severe performance degradation. Small parts cause multiple issues: poor query performance from reading and merging more files during queries, increased memory usage since each part requires metadata in memory, reduced compression efficiency as smaller data blocks compress less effectively, higher I/O overhead from more file handles and seek operations, and slower background merges giving the merge scheduler more work.
+
+**Related Docs**
+- [MergeTree Engine](/engines/table-engines/mergetree-family/mergetree)
+- [Parts](/parts)
+- [Parts System Table](/operations/system-tables/parts)
 
 ## Recognize the problem early {#recognize-parts-problem}
+
+This query monitors table fragmentation by analyzing part counts and sizes across all active tables. It identifies tables with excessive or undersized parts that may need merge optimization. Use this regularly to catch fragmentation issues before they impact query performance.
 
 ```sql runnable editable
 -- Challenge: Replace with your actual database and table names for production use
@@ -65,6 +74,8 @@ LIMIT 20;
 
 **Community-proven batching strategy from production deployments:**
 
+This batching strategy prevents the "too many parts" problem by accumulating inserts before writing to ClickHouse. The dual threshold approach (size + time) ensures consistent part sizes while preventing data delays, based on patterns from high-volume production systems.
+
 ```python
 # Python example - battle-tested batching approach from production systems
 import clickhouse_driver
@@ -74,8 +85,8 @@ class ProductionBatchInserter:
     """Based on patterns from companies processing TB/day"""
     def __init__(self, client, batch_size=10000, batch_timeout=30):
         self.client = client
-        self.batch_size = batch_size  # Or 200MB as used in production
-        self.batch_timeout = batch_timeout  # 30 seconds proven threshold
+        self.batch_size = batch_size 
+        self.batch_timeout = batch_timeout
         self.buffer = []
         self.last_flush = time.time()
         
