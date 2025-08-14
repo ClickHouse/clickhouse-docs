@@ -93,7 +93,6 @@ You can configure the advanced settings if needed. A brief description of each s
 
 Once you've set up your ClickPipe to replicate data from MongoDB to ClickHouse Cloud, you can focus on how to query and model your data for optimal performance.
 
-
 ## Caveats {#caveats}
 
 Here are a few caveats to note when using this connector:
