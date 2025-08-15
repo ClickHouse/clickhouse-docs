@@ -128,7 +128,7 @@ Contact ClickHouse Support to enable Private Load Balancer.
 2. Select Peering Connections.
 3. Click Create Peering Connection
 4. Set the VPC Requester to the ClickHouse VPC ID.
-5. Set the VPC Acceptor to the target VPC ID. (Select another account if applicable)
+5. Set the VPC Accepter to the target VPC ID. (Select another account if applicable)
 6. Click Create Peering Connection.
 
 <br />

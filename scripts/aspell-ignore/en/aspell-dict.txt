@@ -57,6 +57,7 @@ Authenticators
 Authy
 AutoFDO
 AutoML
+Autoscaler
 Autocompletion
 AvroConfluent
 AzureQueue
@@ -1344,6 +1345,7 @@ VARCHAR
 VIEWs
 VLDB
 VNet
+VNets
 VPCs
 VPNs
 Vadim
