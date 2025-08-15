@@ -366,9 +366,10 @@ WHERE PostId IN (
 1 row in set. Elapsed: 0.012 sec. Processed 88.61 thousand rows, 771.37 KB (7.09 million rows/s., 61.73 MB/s.)
 ```
 
-### Chaining {#chaining}
+### Chaining / cascading materialized views {#chaining}
 
-Materialized views can be chained, allowing complex workflows to be established. For a practical example, we recommend reading this [blog post](https://clickhouse.com/blog/chaining-materialized-views).
+Materialized views can be chained (or cascaded), allowing complex workflows to be established.
+For more information see the guide ["Cascading materialized views"](https://clickhouse.com/docs/guides/developer/cascading-materialized-views).
 
 ## Materialized views and JOINs {#materialized-views-and-joins}
 

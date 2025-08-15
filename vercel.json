@@ -3367,16 +3367,6 @@
       "permanent": true
     },
     {
-      "source": "/guides/developer/lightweight-update",
-      "destination": "/guides/developer/on-the-fly-mutations",
-      "permanent": true
-    },
-    {
-      "source": "/docs/manage/troubleshooting-billing-issues",
-      "destination": "/docs/manage/clickhouse-cloud-billing-compliance",
-      "permanent": true
-    },
-    {
       "source": "/docs/guides/developer/lightweight-update",
       "destination": "/docs/guides/developer/on-the-fly-mutations",
       "permanent": true
@@ -3429,6 +3419,16 @@
     {
       "source": "/cloud/manage/jan-2025-faq/plan-migrations",
       "destination": "/cloud/manage/cloud-tiers",
+      "permanent": true
+    },
+    {
+      "source": "/operations/system-tables/latency_log",
+      "destination": "/operations/system-tables/histogram_metrics",
+      "permanent": true
+    },
+    {
+      "source": "/operations/system-tables/latency_buckets",
+      "destination": "/operations/system-tables/histogram_metrics",
       "permanent": true
     }
   ]

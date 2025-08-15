@@ -183,7 +183,11 @@ You have two options when dealing with tables without primary keys:
 If you're creating a publication manually instead of letting ClickPipes manage it, we don't recommend creating a publication `FOR ALL TABLES`, this leads to more traffic from Postgres to ClickPipes (to sending changes for other tables not in the pipe) and reduces overall efficiency.
 
 For manually created publications, please add any tables you want to the publication before adding them to the pipe.
-::: 
+:::
+
+:::warning
+If you're replicating from a Postgres read replica/hot standby, you will need to create your own publication on the primary instance, which will automatically propagate to the standby. The ClickPipe will not be able to manage the publication in this case as you're unable to create publications on a standby.
+:::
 
 ## Recommended `max_slot_wal_keep_size` settings {#recommended-max_slot_wal_keep_size-settings}
 
@@ -272,9 +276,13 @@ WITH (publish_via_partition_root = true);
 This error typically occurs when the source Postgres database has a datatype which cannot be mapped during ingestion.
 For more specific issue, refer to the possibilities below.
 
-### `Cannot parse type Decimal(XX, YY), expected non-empty binary data with size equal to or less than ...` {#cannot-parse-type-decimal-expected-non-empty-binary-data-with-size-equal-to-or-less-than}
+## `Cannot parse type Decimal(XX, YY), expected non-empty binary data with size equal to or less than ...` {#cannot-parse-type-decimal-expected-non-empty-binary-data-with-size-equal-to-or-less-than}
 
 Postgres `NUMERIC`s have really high precision (up to 131072 digits before the decimal point; up to 16383 digits after the decimal point) and ClickHouse Decimal type allows maximum of (76 digits, 39 scale).
 The system assumes that _usually_ the size would not get that high and does an optimistic cast for the same as source table can have large number of rows or the row can come in during the CDC phase.
 
 The current workaround would be to map the NUMERIC type to string on ClickHouse. To enable this please raise a ticket with the support team and this will be enabled for your ClickPipes.
+
+## I'm seeing errors like `invalid memory alloc request size <XXX>` during replication/slot creation {#postgres-invalid-memalloc-bug}
+
+There was a bug introduced in Postgres patch versions 17.5/16.9/15.13/14.18/13.21 due to which certain workloads can cause an exponential increase in memory usage, leading to a memory allocation request >1GB which Postgres considers invalid. This bug [has been fixed](https://github.com/postgres/postgres/commit/d87d07b7ad3b782cb74566cd771ecdb2823adf6a) and will be in the next Postgres patch series (17.6...). Please check with your Postgres provider when this patch version will be available for upgrade. If an upgrade isn't immediately possible, a resync of the pipe will be needed as it hits the error.
