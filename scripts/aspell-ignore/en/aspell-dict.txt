@@ -1,6 +1,7 @@
 personal_ws-1.1 en 3611
 AArch
 ACLs
+Accepter
 AICPA
 ALTERs
 AMPLab
@@ -57,6 +58,7 @@ Authenticators
 Authy
 AutoFDO
 AutoML
+Autoscaler
 Autocompletion
 AvroConfluent
 AzureQueue
@@ -1344,6 +1346,7 @@ VARCHAR
 VIEWs
 VLDB
 VNet
+VNets
 VPCs
 VPNs
 Vadim
@@ -2375,6 +2378,7 @@ kurtsamp
 lagInFrame
 laion
 lakehouse
+Lakehouses
 lang
 laravel
 largestTriangleThreeBuckets
@@ -3609,3 +3613,22 @@ znode
 znodes
 zookeeperSessionUptime
 zstd
+Coinhall
+Instacart
+SingleStore
+Fastly
+Fong
+MTTD
+MTTR
+O'Reilly
+transformative
+MLOps
+chatbots
+SageMaker
+GWLBs
+NLBs
+explorative
+pointwise
+summarization
+reusability
+lakehouses

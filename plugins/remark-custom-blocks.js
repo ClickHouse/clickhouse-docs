@@ -76,7 +76,7 @@ const plugin = (options) => {
                             if (child.type === 'heading' && child.depth === headerLevel) {
                                 finalizeStep(); // Finalize the previous step first
                                 currentStepLabel = extractText(child.children);
-                                currentAnchorId = child.data.hProperties.id;
+                                currentAnchorId = child.data?.hProperties?.id || null;
                                 currentStepId = `step-${total_steps}`; // Generate step-X ID
                                 currentStepContent.push(child); // We need the header otherwise onBrokenAnchors fails
                             } else if (currentStepLabel) {
