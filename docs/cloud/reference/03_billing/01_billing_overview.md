@@ -5,7 +5,7 @@ title: 'Pricing'
 description: 'Overview page for ClickHouse Cloud pricing'
 ---
 
-import ClickPipesFAQ from '../09_jan2025_faq/_snippets/_clickpipes_faq.md'
+import ClickPipesFAQ from '../../_snippets/_clickpipes_faq.md'
 
 For pricing information, see the [ClickHouse Cloud Pricing](https://clickhouse.com/pricing#pricing-calculator) page.
 ClickHouse Cloud bills based on the usage of compute, storage, [data transfer](/cloud/manage/network-data-transfer) (egress over the internet and cross-region), and [ClickPipes](/integrations/clickpipes). 

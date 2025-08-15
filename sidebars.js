@@ -208,7 +208,7 @@ const sidebars = {
       label: "Get started",
       collapsed: false,
       collapsible: true,
-      link: { type: "doc", id: "/cloud/get-started" },
+      link: { type: "doc", id: "cloud/onboard/index" },
       items: [
         {
           type: "category",

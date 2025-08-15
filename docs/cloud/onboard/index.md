@@ -16,9 +16,8 @@ you through each step of the process as you explore ClickHouse Cloud.
 
 ## Discover ClickHouse Cloud {#discover-clickhouse-cloud}
 
-- Learn about what ClickHouse Cloud is, and how it differs from the open-source version
-- Discover the main use-cases of ClickHouse Cloud
-- Learn about ClickHouse Cloud pricing
+- [Learn](/cloud/overview) about what ClickHouse Cloud is, and how it differs from the open-source version
+- [Discover](/cloud/get-started/cloud/use-cases/overview) the main use-cases of ClickHouse Cloud
 
 ## Get set up with ClickHouse Cloud {#get-set-up-with-clickhouse-cloud}
 
@@ -28,8 +27,7 @@ and point you towards some general best practices you should know.
 
 Topics include: 
 
-- Migration guides from various platforms
-- Cloud architecture
+- [Migration guides](/integrations/migration/overview) from various platforms
 
 ## Tune your ClickHouse Cloud deployment {#evaluate-clickhouse-cloud}
 
@@ -39,9 +37,9 @@ what the platform has to offer.
 
 Topics include:
 
-- Query performance
-- Monitoring
-- Security considerations
+- [Query performance and optimization](/cloud/get-started/cloud/resource-tour#query-optimization)
+- [Monitoring](/cloud/get-started/cloud/resource-tour#monitoring)
+- [Security considerations](/cloud/get-started/cloud/resource-tour#security)
 - Troubleshooting tips
 
 </VerticalStepper>
