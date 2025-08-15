@@ -63,7 +63,9 @@ GROUP BY name
 ```
 
 <details>
+   
 <summary>A note on compact versus wide parts</summary>
+
 If you are seeing `compressed_size` or `uncompressed_size` values equal to `0`, this could be because the type of the
 parts are `compact` and not `wide` (see description for `part_type` in [`system.parts`](/operations/system-tables/parts)).
 The part format is controlled by settings [`min_bytes_for_wide_part`](/operations/settings/merge-tree-settings#min_bytes_for_wide_part)
@@ -130,6 +132,7 @@ GROUP BY name;
 1. │ number │ 392.31 KiB      │ 390.63 KiB        │     1 │
    └────────┴─────────────────┴───────────────────┴───────┘
 ```
+
 </details>
 
 We show both a compressed and uncompressed size here. Both are important. The compressed size equates to what we will need to read off disk - something we want to minimize for query performance (and storage cost). This data will need to be decompressed prior to reading. The size of this uncompressed size will be dependent on the data type used in this case. Minimizing this size will reduce memory overhead of queries and the amount of data which has to be processed by the query, improving utilization of caches and ultimately query times.
