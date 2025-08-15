@@ -169,7 +169,7 @@ to get up and running.
 ## April 4, 2025 {#april-4-2025}
 
 - Slack notifications for ClickHouse Cloud: ClickHouse Cloud now supports Slack notifications for billing, scaling, and ClickPipes events, in addition to in-console and email notifications. These notifications are sent via the ClickHouse Cloud Slack application. Organization admins can configure these notifications via the notification center by specifying slack channels to which notifications should be sent.
-- Users running Production and Development services will now see ClickPipes and data transfer usage price on their bills. Please refer to the [announcement](/cloud/manage/jan-2025-faq/pricing-dimensions) from January 2025 for more details. 
+- Users running Production and Development services will now see ClickPipes and data transfer usage price on their bills.
   
 ## March 21, 2025 {#march-21-2025}
 
@@ -252,7 +252,7 @@ We are adding a **new Enterprise tier** to serve the needs of the most demanding
 
 To support these changes, we are restructuring our current **Development** and **Production** tiers to more closely match how our evolving customer base is using our offerings. We are introducing the **Basic** tier, oriented toward users that are testing out new ideas and projects, and the **Scale** tier, matching users working with production workloads and data at scale.
 
-You can read about these and other functional changes in this [blog](https://clickhouse.com/blog/evolution-of-clickhouse-cloud-new-features-superior-performance-tailored-offerings). Existing customers will need to take action to select a [new plan](https://clickhouse.com/pricing). Customer-facing communication was sent via email to organization administrators, and the following [FAQ](/cloud/manage/jan-2025-faq/summary) covers the key changes and timelines.
+You can read about these and other functional changes in this [blog](https://clickhouse.com/blog/evolution-of-clickhouse-cloud-new-features-superior-performance-tailored-offerings). Existing customers will need to take action to select a [new plan](https://clickhouse.com/pricing). Customer-facing communication was sent via email to organization administrators.
 
 ### Warehouses: Compute-compute separation (GA) {#warehouses-compute-compute-separation-ga}
 

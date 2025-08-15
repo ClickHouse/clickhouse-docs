@@ -174,7 +174,7 @@ Designed for workloads requiring enhanced SLAs (2+ replica deployments), scalabi
 - Offers support for features such as: 
   - [Private networking support](/cloud/security/private-link-overview).
   - [Compute-compute separation](../reference/warehouses#what-is-compute-compute-separation).
-  - [Flexible scaling](/cloud/manage/jan-2025-faq/scaling) options (scale up/down, in/out).
+  - [Flexible scaling](/manage/scaling) options (scale up/down, in/out).
 
 ## Enterprise {#enterprise}
 
