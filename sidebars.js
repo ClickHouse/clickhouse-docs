@@ -692,7 +692,8 @@ const sidebars = {
           collapsed: true,
           collapsible: true,
           items: [
-            "interfaces/third-party/client-libraries"
+            "integrations/language-clients/moose-olap",
+            "interfaces/third-party/client-libraries",
           ],
         },
       ],
