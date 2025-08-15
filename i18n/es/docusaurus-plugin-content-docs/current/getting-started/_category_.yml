@@ -1,0 +1,8 @@
+position: 1
+label: 'Primeros pasos'
+collapsible: true
+collapsed: true
+link:
+  type: generated-index
+  title: Primeros pasos
+  slug: /getting-started
