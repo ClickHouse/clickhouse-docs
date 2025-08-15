@@ -746,7 +746,8 @@ const sidebars = {
                 "integrations/data-ingestion/clickpipes/postgres/remove_table",
                 "integrations/data-ingestion/clickpipes/postgres/table_resync",
                 "integrations/data-ingestion/clickpipes/postgres/resync",
-                "integrations/data-ingestion/clickpipes/postgres/controlling_sync"
+                "integrations/data-ingestion/clickpipes/postgres/controlling_sync",
+                "integrations/data-ingestion/clickpipes/postgres/scaling",
               ],
             },
             {
@@ -781,9 +782,9 @@ const sidebars = {
               type: "category",
               label: "Operations",
               items: [
-                "integrations/data-ingestion/clickpipes/postgres/add_table",
-                "integrations/data-ingestion/clickpipes/postgres/pause_and_resume",
-                "integrations/data-ingestion/clickpipes/postgres/remove_table",
+                "integrations/data-ingestion/clickpipes/mysql/add_table",
+                "integrations/data-ingestion/clickpipes/mysql/pause_and_resume",
+                "integrations/data-ingestion/clickpipes/mysql/remove_table",
                 "integrations/data-ingestion/clickpipes/mysql/resync",
                 "integrations/data-ingestion/clickpipes/mysql/controlling_sync"
               ],

@@ -194,13 +194,11 @@ FROM pypi_downloads_v2
 После завершения загрузки данных мы можем переместить данные из наших дублирующих таблиц в основные таблицы, используя оператор [`ALTER TABLE MOVE PARTITION`](/sql-reference/statements/alter/partition#move-partition-to-table).
 
 ```sql
-ALTER TABLE pypi
- (MOVE PARTITION () FROM pypi_v2)
+ALTER TABLE pypi_v2 MOVE PARTITION () TO pypi
 
 0 rows in set. Elapsed: 1.401 sec.
 
-ALTER TABLE pypi_downloads
- (MOVE PARTITION () FROM pypi_downloads_v2)
+ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
 
 0 rows in set. Elapsed: 0.389 sec.
 ```
@@ -306,11 +304,9 @@ WHERE timestamp < '2024-12-17 09:00:00'
 После завершения этой вставки мы можем переместить соответствующие партиции.
 
 ```sql
-ALTER TABLE pypi
- (MOVE PARTITION () FROM pypi_v2)
+ALTER TABLE pypi_v2 MOVE PARTITION () TO pypi
 
-ALTER TABLE pypi_downloads
- (MOVE PARTITION () FROM pypi_downloads_v2)
+ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
 ```
 
 Если исторические данные находятся в изолированном облаке, фильтр по времени не требуется. Если временная или монотонная колонка недоступна, изолируйте свои исторические данные.

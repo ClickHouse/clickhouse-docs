@@ -31,6 +31,14 @@ import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.pn
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/cloud/reference/cloud-compatibility.md) page.
 
+## August 13, 2025 {#august-13-2025}
+
+- **ClickPipes for MongoDB CDC now in Private Preview**
+  You can now use ClickPipes to replicate data from MongoDB into ClickHouse Cloud in a few clicks, enabling
+  real-time analytics without the need for external ETL tools. The connector supports continuous
+  replication as well as one-time migrations, and is compatible with MongoDB Atlas and self-hosted MongoDB
+  deployments. Read the [blogpost](https://clickhouse.com/blog/mongodb-cdc-clickhouse-preview) for an overview of the MongoDB CDC connector and [sign up for early access here](https://clickhouse.com/cloud/clickpipes/mongodb-cdc-connector)! 
+ 
 ## August 8, 2025 {#august-08-2025}
 
 - **Notifications**: Users will now receive a UI notification when their service starts upgrading to a new ClickHouse version. Additional Email and Slack notifications can be added via the notification center. 
