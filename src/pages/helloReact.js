@@ -78,59 +78,88 @@ const SparkleIcon = ({ size = 20, color = 'currentColor' }) => (
     </svg>
 );
 
-// Migration Option Button Component
+// Migration Option Button Component with Gradient Overlay
 const MigrationOptionButton = ({ icon, link, children }) => {
     return (
         <Card 
             component={Link}
             to={link}
             sx={{
-                height: '60px',
+                width: '100%',
+                height: '100%',
+                aspectRatio: '1',
+                position: 'relative',
                 display: 'flex',
-                alignItems: 'center',
                 textDecoration: 'none',
                 color: 'inherit',
-                backgroundColor: 'background.paper',
-                border: '1px solid #ddd',
-                boxShadow: 1,
+                boxShadow: 2,
+                borderRadius: 1,
+                overflow: 'hidden',
                 '&:hover': {
-                    backgroundColor: 'rgba(245, 245, 245, 0.8)',
                     textDecoration: 'none',
                     color: 'inherit',
-                    boxShadow: 2,
+                    boxShadow: 4,
+                    transform: 'translateY(-1px)',
+                    transition: 'all 0.2s ease-in-out'
                 }
             }}
         >
+            {/* Background Image/Icon */}
+            <Box
+                sx={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: 'background.paper',
+                }}
+            >
+                <img 
+                    src={useBaseUrl(icon)} 
+                    alt={children}
+                    style={{ 
+                        width: '40px', 
+                        height: '40px', 
+                        objectFit: 'contain',
+                        opacity: 0.7 
+                    }}
+                />
+            </Box>
+            
+            {/* Gradient Overlay */}
+            <Box
+                sx={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'linear-gradient(to top, rgba(0,0,0,0.4), rgba(0,0,0,0) 40%)',
+                }}
+            />
+            
+            {/* Content */}
             <CardContent sx={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: 1,
+                position: 'relative',
+                zIndex: 2,
+                display: 'flex',
+                alignItems: 'flex-end',
+                justifyContent: 'center',
+                flex: 1,
                 padding: '8px !important',
                 minWidth: 0
             }}>
-                <Box
-                    sx={{
-                        width: '24px',
-                        height: '24px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexShrink: 0
-                    }}
-                >
-                    <img 
-                        src={useBaseUrl(icon)} 
-                        alt={children}
-                        style={{ width: '20px', height: '20px', objectFit: 'contain' }}
-                    />
-                </Box>
-                <Typography variant="caption" sx={{ 
-                    fontWeight: 500, 
-                    fontSize: '11px', 
-                    lineHeight: 1.2,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap'
+                <Typography variant="body2" sx={{ 
+                    fontWeight: 600, 
+                    fontSize: '12px', 
+                    lineHeight: 1.1,
+                    color: '#fff',
+                    textAlign: 'center',
+                    textShadow: '0 1px 2px rgba(0,0,0,0.7)'
                 }}>
                     {children}
                 </Typography>
@@ -160,31 +189,35 @@ const HeroSection = () => {
                     variant="contained"
                     onClick={handleAskAIClick}
                     sx={{
-                        backgroundColor: '#2d2d2d',
-                        color: '#ffffff',
-                        fontWeight: 'bold',
+                        height: '36px',
+                        minWidth: '80px',
                         borderRadius: '8px',
-                        height: '40px',
                         padding: '8px 16px',
-                        textTransform: 'none',
-                        fontSize: '14px',
                         display: 'flex',
-                        flexDirection: 'row',
                         alignItems: 'center',
                         justifyContent: 'center',
                         gap: '6px',
+                        textTransform: 'none',
+                        backgroundColor: '#faff69',
+                        color: '#000000',
+                        whiteSpace: 'nowrap',
+                        boxShadow: 'none',
                         '&:hover': {
-                            backgroundColor: '#404040',
+                            backgroundColor: '#f5f464',
+                            boxShadow: 'none',
                         },
-                        '& .MuiButton-startIcon': {
-                            marginLeft: 0,
-                            marginRight: 0,
-                            display: 'flex',
-                            alignItems: 'center',
-                        }
                     }}
                 >
-                    <SparkleIcon size={16} color="#ffffff" />
+                    <img 
+                        src={useBaseUrl('/images/homepage/ai.png')} 
+                        alt="Ask AI"
+                        style={{ 
+                            width: '16px', 
+                            height: '16px', 
+                            objectFit: 'contain',
+                            filter: 'brightness(0)'
+                        }}
+                    />
                     Ask AI
                 </Button>
             </div>
@@ -439,8 +472,22 @@ const ExploreDocs = () => {
                             boxShadow: 6,
                         },
                         display: 'flex',
-                        flexDirection: 'row'
+                        flexDirection: 'row',
+                        overflow: 'hidden'
                     }}>
+                        {/* Left side - Full height image outside padding */}
+                        <CardMedia
+                            component="img"
+                            sx={{ 
+                                width: 120,
+                                height: '100%',
+                                objectFit: 'cover',
+                                flexShrink: 0
+                            }}
+                            image={useBaseUrl('/images/homepage/migration_icon.png')}
+                            alt="Migration"
+                        />
+                        
                         <CardContent sx={{ 
                             backgroundColor: 'background.paper',
                             color: 'text.primary',
@@ -450,7 +497,7 @@ const ExploreDocs = () => {
                             padding: '16px',
                             gap: 3
                         }}>
-                            {/* Left side - Text content */}
+                            {/* Text content */}
                             <Box sx={{ 
                                 flex: '0 0 auto',
                                 display: 'flex',
@@ -465,73 +512,72 @@ const ExploreDocs = () => {
                                 </p>
                             </Box>
                             
-                            {/* Right side - 4x2 Grid of icons */}
-                            <Grid container spacing={0.5} sx={{ flex: 1 }}>
-                                <Grid item xs={3}>
+                            {/* Right side - 3x2 Grid of square gradient cards */}
+                            <Box sx={{ 
+                                flex: 1, 
+                                display: 'flex', 
+                                justifyContent: 'flex-end',
+                                alignItems: 'center'
+                            }}>
+                                <Box sx={{ 
+                                    display: 'grid', 
+                                    gridTemplateColumns: 'repeat(4, 1fr)',
+                                    gridTemplateRows: 'repeat(2, 1fr)',
+                                    gap: 1,
+                                    width: '100%',
+                                    maxWidth: '320px',
+                                    height: '100%'
+                                }}>
                                     <MigrationOptionButton
                                         icon="/docs/images/logo-postgres.svg"
-                                        link="/docs/integrations/postgresql"
+                                        link="/docs/integrations/clickpipes/postgres"
                                     >
                                         Postgres
                                     </MigrationOptionButton>
-                                </Grid>
-                                <Grid item xs={3}>
                                     <MigrationOptionButton 
                                         icon="/docs/images/logo-snowflake.svg"
                                         link="/docs/migrations/snowflake"
                                     >
                                         Snowflake
                                     </MigrationOptionButton>
-                                </Grid>
-                                <Grid item xs={3}>
                                     <MigrationOptionButton 
                                         icon="/docs/images/logo-bigquery.svg"
                                         link="/docs/migrations/bigquery"
                                     >
                                         BigQuery
                                     </MigrationOptionButton>
-                                </Grid>
-                                <Grid item xs={3}>
                                     <MigrationOptionButton 
                                         icon="/docs/images/logo-redshift.svg"
                                         link="/docs/integrations/redshift"
                                     >
                                         Redshift
                                     </MigrationOptionButton>
-                                </Grid>
-                                <Grid item xs={3}>
                                     <MigrationOptionButton 
                                         icon="/docs/images/logo-mysql.svg"
-                                        link="/docs/integrations/mysql"
+                                        link="/docs/integrations/clickpipes/mysql"
                                     >
                                         MySQL
                                     </MigrationOptionButton>
-                                </Grid>
-                                <Grid item xs={3}>
                                     <MigrationOptionButton 
-                                        icon="/docs/images/logo-s3.svg"
-                                        link="/docs/integrations/s3"
+                                        icon="/docs/images/logo-elastic.svg"
+                                        link="/docs/use-cases/observability/clickstack/migration/elastic"
                                     >
-                                        S3
+                                        Elastic
                                     </MigrationOptionButton>
-                                </Grid>
-                                <Grid item xs={3}>
                                     <MigrationOptionButton 
-                                        icon="/docs/images/logo-snowflake.svg"
-                                        link="/docs/migrations/snowflake"
+                                        icon="/docs/images/logo-mongo.svg"
+                                        link="/docs/integrations/clickpipes/mongodb"
                                     >
-                                        Snowflake
+                                        Mongo
                                     </MigrationOptionButton>
-                                </Grid>
-                                <Grid item xs={3}>
-                                    <MigrationOptionButton 
-                                        icon="/docs/images/logo-bigquery.svg"
-                                        link="/docs/migrations/bigquery"
+                                    <MigrationOptionButton
+                                        icon="/docs/images/logo-databricks.svg"
+                                        link="/docs/integrations/databricks"
                                     >
-                                        BigQuery
+                                        Databricks
                                     </MigrationOptionButton>
-                                </Grid>
-                            </Grid>
+                                </Box>
+                            </Box>
                         </CardContent>
                     </Card>
                 </Box>
