@@ -171,9 +171,13 @@ const MigrationOptionButton = ({ icon, link, children }) => {
 const HeroSection = () => {
     const { colorMode } = useColorMode();
     const handleAskAIClick = () => {
-        // Open Kapa widget
-        if (window.kapa && window.kapa.open) {
-            window.kapa.open();
+        // Open Kapa widget with the correct API
+        if (window.Kapa && window.Kapa.open) {
+            window.Kapa.open({
+                mode: "ai"
+            });
+        } else {
+            console.warn('Kapa widget not available. Make sure the widget script has loaded.');
         }
     };
 
