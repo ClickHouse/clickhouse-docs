@@ -15,6 +15,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  padding-bottom: 60px;
 }
 
 @media (min-width: breakpoints.$laptop-breakpoint) {
@@ -91,7 +92,7 @@
   }
 
   [data-theme='light'] .logo {
-    color: black;
+    color: black !important;
   }
 }
 
