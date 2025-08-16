@@ -575,10 +575,10 @@ const ExploreDocs = () => {
                                         Mongo
                                     </MigrationOptionButton>
                                     <MigrationOptionButton
-                                        icon="/docs/images/logo-databricks.svg"
-                                        link="/docs/integrations/databricks"
+                                        icon="/docs/images/logo-druid.png"
+                                        link="/docs"
                                     >
-                                        Databricks
+                                        Druid
                                     </MigrationOptionButton>
                                 </Box>
                             </Box>
