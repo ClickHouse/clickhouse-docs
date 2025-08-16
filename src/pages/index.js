@@ -622,9 +622,9 @@ const HelloContent = () => {
     );
 };
 
-export default function Hello() {
+export default function Home() {
     return (
-        <Layout title="Hello" description="Hello React Page">
+        <Layout title="ClickHouse Docs" description="ClickHouse Documentation - The fastest and most resource efficient real-time data warehouse">
             <HelloContent />
         </Layout>
     );
