@@ -4,7 +4,9 @@ import homepage_styles from './homepage_styles.module.scss'
 import {useColorMode} from "@docusaurus/theme-common";
 import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import ClickHouseLogo from '@site/static/img/ch_logo_docs_dark.svg';
+import { useVersions } from '@site/src/hooks/useVersions';
+import ClickHouseLogoDark from '@site/static/img/ch_logo_docs_dark.svg';
+import ClickHouseLogoLight from '@site/static/img/ch_logo_docs.svg';
 import SearchBar from '@theme/SearchBar';
 import clsx from 'clsx';
 import Card from '@mui/material/Card';
@@ -14,6 +16,7 @@ import CardActionArea from '@mui/material/CardActionArea';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
 import ColorModeToggle from "@theme-original/ColorModeToggle";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -78,53 +81,66 @@ const SparkleIcon = ({ size = 20, color = 'currentColor' }) => (
 // Migration Option Button Component
 const MigrationOptionButton = ({ icon, link, children }) => {
     return (
-        <Box
+        <Card 
             component={Link}
             to={link}
             sx={{
+                height: '60px',
                 display: 'flex',
-                flexDirection: 'column',
                 alignItems: 'center',
                 textDecoration: 'none',
                 color: 'inherit',
-                borderRadius: '6px',
-                padding: '8px',
-                flex: 1,
-                minWidth: '80px',
+                backgroundColor: 'background.paper',
+                border: '1px solid #ddd',
+                boxShadow: 1,
                 '&:hover': {
                     backgroundColor: 'rgba(245, 245, 245, 0.8)',
                     textDecoration: 'none',
                     color: 'inherit',
+                    boxShadow: 2,
                 }
             }}
         >
-            <Box
-                sx={{
-                    width: '48px',
-                    height: '48px',
-                    border: '1px solid #ddd',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: '6px',
-                    marginBottom: '6px',
-                    backgroundColor: 'background.paper',
-                }}
-            >
-                <img 
-                    src={useBaseUrl(icon)} 
-                    alt={children}
-                    style={{ width: '36px', height: '36px', objectFit: 'contain' }}
-                />
-            </Box>
-            <Typography variant="caption" sx={{ fontWeight: 500, fontSize: '11px', textAlign: 'center', lineHeight: 1.2 }}>
-                {children}
-            </Typography>
-        </Box>
+            <CardContent sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: 1,
+                padding: '8px !important',
+                minWidth: 0
+            }}>
+                <Box
+                    sx={{
+                        width: '24px',
+                        height: '24px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0
+                    }}
+                >
+                    <img 
+                        src={useBaseUrl(icon)} 
+                        alt={children}
+                        style={{ width: '20px', height: '20px', objectFit: 'contain' }}
+                    />
+                </Box>
+                <Typography variant="caption" sx={{ 
+                    fontWeight: 500, 
+                    fontSize: '11px', 
+                    lineHeight: 1.2,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
+                }}>
+                    {children}
+                </Typography>
+            </CardContent>
+        </Card>
     );
 };
 
 const HeroSection = () => {
+    const { colorMode } = useColorMode();
     const handleAskAIClick = () => {
         // Open Kapa widget
         if (window.kapa && window.kapa.open) {
@@ -132,9 +148,11 @@ const HeroSection = () => {
         }
     };
 
+    const LogoComponent = colorMode === 'dark' ? ClickHouseLogoDark : ClickHouseLogoLight;
+
     return (
         <div className={homepage_styles.heroSection}>
-            <ClickHouseLogo className={homepage_styles.logo}/>
+            <LogoComponent className={homepage_styles.logo}/>
             <h2>The fastest and most resource efficient real-time data warehouse and open-source database.</h2>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center', flexWrap: 'nowrap' }}>
                 <SearchBar/>
@@ -183,7 +201,8 @@ const NavatticDemoSection = () => {
 
 const ExploreDocs = () => {
     const { colorMode } = useColorMode();
-    const versionColor = colorMode === 'dark' ? '#FFE66D' : '#1976d2';
+    const versions = useVersions();
+    const versionColor = colorMode === 'dark' ? '#faff69' : '#1976d2';
     
     return (
         <div className={homepage_styles.exploreDocs}>
@@ -332,16 +351,22 @@ const ExploreDocs = () => {
                         flexDirection: 'column', 
                         gap: 2
                     }}>
-                        <Card sx={{ 
-                            height: '80px',
-                            display: 'flex',
-                            backgroundColor: 'background.paper',
-                            color: 'text.primary',
-                            boxShadow: 3,
-                            '&:hover': {
-                                boxShadow: 6,
-                            }
-                        }}>
+                        <Card 
+                            component={Link}
+                            to={versions.cloud.link}
+                            sx={{ 
+                                height: '80px',
+                                display: 'flex',
+                                backgroundColor: 'background.paper',
+                                color: 'text.primary',
+                                boxShadow: 3,
+                                textDecoration: 'none',
+                                '&:hover': {
+                                    boxShadow: 6,
+                                    textDecoration: 'none',
+                                    color: 'inherit',
+                                }
+                            }}>
                             <CardMedia
                                 component="img"
                                 sx={{ width: 80, height: 80, objectFit: 'contain' }}
@@ -358,22 +383,28 @@ const ExploreDocs = () => {
                                         component="div"
                                         sx={{ color: versionColor, fontWeight: 'bold' }}
                                     >
-                                        v24.12
+                                        {versions.cloud.version}
                                     </Typography>
                                 </CardContent>
                             </Box>
                         </Card>
                         
-                        <Card sx={{ 
-                            height: '80px',
-                            display: 'flex',
-                            backgroundColor: 'background.paper',
-                            color: 'text.primary',
-                            boxShadow: 3,
-                            '&:hover': {
-                                boxShadow: 6,
-                            }
-                        }}>
+                        <Card 
+                            component={Link}
+                            to={versions.oss.link}
+                            sx={{ 
+                                height: '80px',
+                                display: 'flex',
+                                backgroundColor: 'background.paper',
+                                color: 'text.primary',
+                                boxShadow: 3,
+                                textDecoration: 'none',
+                                '&:hover': {
+                                    boxShadow: 6,
+                                    textDecoration: 'none',
+                                    color: 'inherit',
+                                }
+                            }}>
                             <CardMedia
                                 component="img"
                                 sx={{ width: 80, height: 80, objectFit: 'contain' }}
@@ -390,7 +421,7 @@ const ExploreDocs = () => {
                                         component="div"
                                         sx={{ color: versionColor, fontWeight: 'bold' }}
                                     >
-                                        v24.12.1
+                                        {versions.oss.version}
                                     </Typography>
                                 </CardContent>
                             </Box>
@@ -428,60 +459,79 @@ const ExploreDocs = () => {
                                 minWidth: '160px',
                                 maxWidth: '180px'
                             }}>
-                                <h3 style={{ margin: '0 0 6px 0', fontSize: '18px' }}>Migrate</h3>
+                                <h3 style={{ margin: '0 0 3px 0', fontSize: '18px' }}>Migrate</h3>
                                 <p style={{ fontSize: '13px', margin: '0', color: 'text.secondary', lineHeight: 1.3 }}>
                                     Migrate from your existing data platform
                                 </p>
                             </Box>
                             
-                            {/* Right side - 3x2 Grid of icons */}
-                            <Box sx={{ 
-                                flex: 1,
-                                display: 'grid',
-                                gridTemplateColumns: 'repeat(3, 1fr)',
-                                gridTemplateRows: 'repeat(2, 1fr)',
-                                gap: 1,
-                                alignItems: 'center',
-                                justifyItems: 'center',
-                                minHeight: '120px'
-                            }}>
-                                <MigrationOptionButton 
-                                    icon="/docs/images/logo-snowflake.svg"
-                                    link="/docs/migrations/snowflake"
-                                >
-                                    Snowflake
-                                </MigrationOptionButton>
-                                <MigrationOptionButton 
-                                    icon="/docs/images/logo-bigquery.svg"
-                                    link="/docs/migrations/bigquery"
-                                >
-                                    BigQuery
-                                </MigrationOptionButton>
-                                <MigrationOptionButton 
-                                    icon="/docs/images/logo-redshift.svg"
-                                    link="/docs/integrations/redshift"
-                                >
-                                    Redshift
-                                </MigrationOptionButton>
-                                <MigrationOptionButton 
-                                    icon="/docs/images/logo-postgres.svg"
-                                    link="/docs/integrations/postgresql"
-                                >
-                                    Postgres
-                                </MigrationOptionButton>
-                                <MigrationOptionButton 
-                                    icon="/docs/images/logo-mysql.svg"
-                                    link="/docs/integrations/mysql"
-                                >
-                                    MySQL
-                                </MigrationOptionButton>
-                                <MigrationOptionButton 
-                                    icon="/docs/images/logo-s3.svg"
-                                    link="/docs/integrations/s3"
-                                >
-                                    S3
-                                </MigrationOptionButton>
-                            </Box>
+                            {/* Right side - 4x2 Grid of icons */}
+                            <Grid container spacing={0.5} sx={{ flex: 1 }}>
+                                <Grid item xs={3}>
+                                    <MigrationOptionButton
+                                        icon="/docs/images/logo-postgres.svg"
+                                        link="/docs/integrations/postgresql"
+                                    >
+                                        Postgres
+                                    </MigrationOptionButton>
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <MigrationOptionButton 
+                                        icon="/docs/images/logo-snowflake.svg"
+                                        link="/docs/migrations/snowflake"
+                                    >
+                                        Snowflake
+                                    </MigrationOptionButton>
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <MigrationOptionButton 
+                                        icon="/docs/images/logo-bigquery.svg"
+                                        link="/docs/migrations/bigquery"
+                                    >
+                                        BigQuery
+                                    </MigrationOptionButton>
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <MigrationOptionButton 
+                                        icon="/docs/images/logo-redshift.svg"
+                                        link="/docs/integrations/redshift"
+                                    >
+                                        Redshift
+                                    </MigrationOptionButton>
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <MigrationOptionButton 
+                                        icon="/docs/images/logo-mysql.svg"
+                                        link="/docs/integrations/mysql"
+                                    >
+                                        MySQL
+                                    </MigrationOptionButton>
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <MigrationOptionButton 
+                                        icon="/docs/images/logo-s3.svg"
+                                        link="/docs/integrations/s3"
+                                    >
+                                        S3
+                                    </MigrationOptionButton>
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <MigrationOptionButton 
+                                        icon="/docs/images/logo-snowflake.svg"
+                                        link="/docs/migrations/snowflake"
+                                    >
+                                        Snowflake
+                                    </MigrationOptionButton>
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <MigrationOptionButton 
+                                        icon="/docs/images/logo-bigquery.svg"
+                                        link="/docs/migrations/bigquery"
+                                    >
+                                        BigQuery
+                                    </MigrationOptionButton>
+                                </Grid>
+                            </Grid>
                         </CardContent>
                     </Card>
                 </Box>
@@ -497,7 +547,7 @@ const HelloContent = () => {
         palette: {
             mode: colorMode === 'dark' ? 'dark' : 'light',
             primary: {
-                main: '#FFE66D',
+                main: '#faff69',
                 contrastText: '#000000',
             },
             secondary: {
