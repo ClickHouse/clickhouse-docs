@@ -290,9 +290,9 @@ const ExploreDocs = () => {
                                 <div style={{ marginTop: 'auto', paddingTop: '12px' }}>
                                     <Link to="/getting-started/quick-start/cloud" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Quick start guide</Link>
                                     <Link to="/install" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Installation</Link>
-                                    <Link to="/install" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Tutorial</Link>
+                                    <Link to="/deployment-modes" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Deployment modes</Link>
                                     <Link to="/install" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>ClickHouse Cloud</Link>
-                                    <Link to="/install" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Playground</Link>
+                                    <Link to="/getting-started/example-datasets" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Example datasets</Link>
                                 </div>
                             </CardContent>
                         </CardActionArea>
@@ -330,11 +330,11 @@ const ExploreDocs = () => {
                                     <p>Explore concepts and best practices</p>
                                 </div>
                                 <div style={{ marginTop: 'auto', paddingTop: '12px' }}>
-                                    <Link to="/managing-data/core-concepts" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Guides & Tutorials</Link>
-                                    <Link to="/managing-data/core-concepts" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Best Practices</Link>
-                                    <Link to="/managing-data/core-concepts" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Use Cases</Link>
-                                    <Link to="/managing-data/core-concepts" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Developer Guide</Link>
-                                    <Link to="/managing-data/core-concepts" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Integrations</Link>
+                                    <Link to="/managing-data/core-concepts" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Core concepts</Link>
+                                    <Link to="/best-practices" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Best Practices</Link>
+                                    <Link to="/data-modeling/overview" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Data modelling</Link>
+                                    <Link to="/operations/overview" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Performance & Optimization</Link>
+                                    <Link to="/guides/developer/overview" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Advanced guides</Link>
                                 </div>
                             </CardContent>
                         </CardActionArea>
@@ -371,12 +371,14 @@ const ExploreDocs = () => {
                                     <h3>Reference</h3>
                                     <p>Reference docs for everyday use</p>
                                 </div>
-                                <div style={{ marginTop: 'auto', paddingTop: '12px' }}>
-                                    <Link to="/sql-reference" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>SQL Reference</Link>
+                                <div style={{ marginTop: 'auto', paddingTop: '12px', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
+                                    <Link to="/sql-reference/statements" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>SQL Reference</Link>
                                     <Link to="/sql-reference/functions" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Functions</Link>
-                                    <Link to="/sql-reference/functions" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Engines</Link>
-                                    <Link to="/sql-reference/functions" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Operations</Link>
-                                    <Link to="/sql-reference/functions" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Interfaces</Link>
+                                    <Link to="/engines" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Engines</Link>
+                                    <Link to="/sql-reference/data-types" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Data types</Link>
+                                    <Link to="/operations/settings/settings" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Settings</Link>
+                                    <Link to="/operations/server-configuration-parameters/settings" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Server settings</Link>
+                                    <Link to="/operations/system-tables" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>System tables</Link>
                                 </div>
                             </CardContent>
                         </CardActionArea>
