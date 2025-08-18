@@ -417,9 +417,9 @@ LIMIT 5
 
 ```sql title="Query"
 SELECT
-	by,
-	sum(score) AS total_score,
-	sum(length(kids)) AS total_sub_comments
+  by,
+  sum(score) AS total_score,
+  sum(length(kids)) AS total_sub_comments
 FROM hackernews
 WHERE (type IN ('story', 'comment')) AND ((title ILIKE '%ClickHouse%') OR (text ILIKE '%ClickHouse%'))
 GROUP BY by
@@ -650,12 +650,4 @@ WHERE hasToken(lower(comment), 'avx') AND hasToken(lower(comment), 'sve');
 ```
 
 </VerticalStepper>
-
-
-
-
-
-
-
-
 
