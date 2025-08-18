@@ -996,6 +996,7 @@ ProxySQL
 Punycode
 PyArrow
 PyCharm
+Pydantic
 PyPI
 PyReader
 PySpark
