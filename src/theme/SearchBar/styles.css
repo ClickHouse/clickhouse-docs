@@ -61,3 +61,7 @@
 .DocSearch-Logo {
   display: none !important;
 }
+
+.DocSearch-Dropdown { 
+  max-height: calc(min(90vh) - 180px) !important; 
+}

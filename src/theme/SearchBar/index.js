@@ -132,7 +132,7 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
     ...props.searchParameters,
     facetFilters,
     clickAnalytics: true,
-    hitsPerPage: 3,
+    hitsPerPage: 10,
   };
   const { isAskAIOpen, currentMode } = useAskAI();
   const history = useHistory();
