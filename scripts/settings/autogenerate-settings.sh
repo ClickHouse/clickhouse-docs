@@ -260,6 +260,7 @@ if [ -f "$FUNCTION_SQL_FILE" ]; then
       "Conditional"
       "Distance"
       "Dates and Times"
+      "Encoding"
       "Financial"
     )
 
