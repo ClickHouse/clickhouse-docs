@@ -5,7 +5,7 @@ description: 'Migrate from pay-as-you-go to committed spend contract.'
 keywords: ['marketplace', 'billing', 'PAYG', 'pay-as-you-go', 'committed spend contract']
 ---
 
-# Migrate your ClickHouse organization from billing via cloud marketplace pay-as-you-go (PAYG) to a cloud marketplace committed spend contract {#migrate-payg-to-committed}
+# Migrate billing from pay-as-you-go (PAYG) to a committed spend contract in a cloud marketplace {#migrate-payg-to-committed}
 
 If your ClickHouse organization is currently billed through an active cloud marketplace pay-as-you-go (PAYG) subscription (or order) and you wish to migrate to billing via a committed spend contract through the same cloud marketplace, please accept your new offer and then follow the steps below based on your cloud service provider.
 
@@ -41,7 +41,7 @@ If you want to use a different AWS Account ID for migrating your ClickHouse orga
 
 > **Note:** For help cancelling your subscription (e.g. if the cancel subscription button is not available) please contact [AWS support](https://support.console.aws.amazon.com/support/home#/).
 
-Next follow these steps to configure your ClickHouse organization to the new AWS committed spend contract you accepted.
+Next follow these [steps](/cloud/billing/marketplace/aws-marketplace-committed-contract) to configure your ClickHouse organization to the new AWS committed spend contract you accepted.
 
 ## GCP Marketplace {#gcp-marketplace}
 
