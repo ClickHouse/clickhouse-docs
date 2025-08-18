@@ -21,7 +21,7 @@ title: 'Lessons - materialized views'
 description: 'Real world examples of materialized views, problems and solutions'
 ---
 
-# Materialized views: the double-edged sword {#materialized-views-the-double-edged-sword}
+# Materialized views: how they can become a double edged sword {#materialized-views-the-double-edged-sword}
 
 *This guide is part of a collection of findings gained from community meetups. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
 *Too many parts bogging your database down? Check out the [Too Many Parts](./too-many-parts.md) community insights guide.*
@@ -57,8 +57,6 @@ WHERE your_filter_conditions;
 
 ## When materialized views become a problem {#mv-problems}
 
-Multiple materialized views on the same table slow down inserts, since each insert must process and write data to all MVs synchronously. The performance impact depends on your insert volume and MV complexity. A table receiving millions of inserts per hour will feel the impact sooner than low-traffic tables.
-
 **Warning signs to monitor:**
 - Insert latency increases (queries that took 10ms now take 100ms+)
 - "Too many parts" errors appearing more frequently 
@@ -66,10 +64,6 @@ Multiple materialized views on the same table slow down inserts, since each inse
 - Insert timeouts that didn't happen before
 
 You can compare insert performance before and after adding MVs using `system.query_log` to track query duration trends.
-
-**Alternative approach:** For non-critical aggregations, consider regular tables populated by scheduled jobs instead of real-time materialized views. This gives you zero impact on insert performance and more control over processing timing, but data freshness depends on job frequency rather than real-time updates.
-
-This approach works well if you need aggregated data but can tolerate 15-60 minute delays, and your aggregated data is queried less frequently than source data is inserted. Use scheduling tools like cron or systemd timers to run `INSERT INTO summary_table SELECT ... FROM source_table` periodically.
 
 ## Video sources {#video-sources}
 - [ClickHouse at CommonRoom - Kirill Sapchuk](https://www.youtube.com/watch?v=liTgGiTuhJE) - Source of the "over enthusiastic about materialized views" and "20GB→190GB explosion" case study

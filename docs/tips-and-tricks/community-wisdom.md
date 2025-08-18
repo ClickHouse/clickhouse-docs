@@ -36,7 +36,7 @@ Combine this collected knowledge with our [Best Practices](/best-practices) guid
 | **Materialized views** | [MV double-edged sword](./materialized-views.md) | Avoid 10x storage instances |
 | **Too many parts**     | [Too many parts](./too-many-parts.md) | Addressing the 'Too Many Parts' error and performance slowdown |
 | **High costs**         | [Cost optimization](./cost-optimization.md) | Optimize Cost |
-| **Creative use cases**  | [Success stories](./creative-usecases.md) | Examples of ClickHouse in 'Outside the Box' use cases |
+| **Success stories**    | [Success stories](./success-stories.md) | Examples of ClickHouse in successful use cases |
 
 **Last Updated:** Based on community meetup insights through 2024-2025  
 **Contributing:** Found a mistake or have a new lesson? Community contributions welcome

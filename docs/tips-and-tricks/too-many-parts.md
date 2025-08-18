@@ -70,53 +70,6 @@ ORDER BY total_parts DESC
 LIMIT 20;
 ```
 
-## Proper insert batching {#proper-insert-batching}
-
-**Community-proven batching strategy from production deployments:**
-
-This batching strategy prevents the "too many parts" problem by accumulating inserts before writing to ClickHouse. The dual threshold approach (size + time) ensures consistent part sizes while preventing data delays, based on patterns from high-volume production systems.
-
-```python
-# Python example - battle-tested batching approach from production systems
-import clickhouse_driver
-import time
-
-class ProductionBatchInserter:
-    """Based on patterns from companies processing TB/day"""
-    def __init__(self, client, batch_size=10000, batch_timeout=30):
-        self.client = client
-        self.batch_size = batch_size 
-        self.batch_timeout = batch_timeout
-        self.buffer = []
-        self.last_flush = time.time()
-        
-    def insert_event(self, event_data):
-        self.buffer.append(event_data)
-        
-        # Flush on size or time threshold - prevents "too many parts"
-        if (len(self.buffer) >= self.batch_size or 
-            time.time() - self.last_flush >= self.batch_timeout):
-            self.flush()
-            
-    def flush(self):
-        if self.buffer:
-            self.client.execute('INSERT INTO events VALUES', self.buffer)
-            self.buffer.clear()
-            self.last_flush = time.time()
-```
-
-**Async inserts**
-
-*"We developed a function called async insert... this mechanism is straightforward similar to buffer table we insert to the server side and use some buffer to collect these inserts by default we have 16 threads to collect this buffer and if the buffer is large enough or reach timeout we will flush the buffer to the storage so a part will contain multiple inserts"* - ClickHouse team explaining built-in solution
-
-```sql
--- Enable async inserts to automatically batch small inserts
-SET async_insert = 1;
-SET wait_for_async_insert = 1;  -- For consistency guarantees
-SET async_insert_max_data_size = 10485760;  -- 10MB buffer size
-SET async_insert_busy_timeout_ms = 30000;   -- 30 second timeout
-```
-
 ## Video Sources {#video-sources}
 
 - [Fast, Concurrent, and Consistent Asynchronous INSERTS in ClickHouse](https://www.youtube.com/watch?v=AsMPEfN5QtM) - ClickHouse team member explains async inserts and the too many parts problem

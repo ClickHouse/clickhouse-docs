@@ -88,6 +88,14 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Troubleshooting",
+      collapsed: false,
+      collapsible: false,
+      link: { type: "doc", id: "troubleshooting/index" },
+      items: []
+    },
+    {
+      type: "category",
       label: "Best Practices",
       collapsed: false,
       collapsible: false,
@@ -1796,6 +1804,12 @@ const sidebars = {
         },
         {
           type: "link",
+          label: "Troubleshooting",
+          description: "Troubleshooting ClickHouse",
+          href: "/troubleshooting"
+        },
+        {
+          type: "link",
           label: "Best Practices",
           description: "Follow best practices with ClickHouse",
           href: "/best-practices"
@@ -1815,7 +1829,7 @@ const sidebars = {
         {
           type: "link",
           label: "Tips and Community Wisdom",
-          description: "Community Lessons and Troubleshooting",
+          description: "Community Lessons",
           href: "/tips-and-tricks/community-wisdom"
         },
         {

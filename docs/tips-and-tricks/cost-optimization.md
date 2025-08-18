@@ -18,31 +18,13 @@ keywords: [
   'retention analysis'
 ]
 title: 'Lessons - cost optimization'
-description: 'Battle-tested cost optimization strategies from ClickHouse community meetups with real production examples and verified techniques.'
+description: 'Cost optimization strategies from ClickHouse community meetups with real production examples and verified techniques.'
 ---
 
-# Cost optimization: battle-tested strategies {#cost-optimization}
-*This guide is part of a collection of findings gained from community meetups. The findings on this page cover community wisdom related to optimizing cost while using ClickHouse. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
+# Cost optimization: strategies from the community {#cost-optimization}
+*This guide is part of a collection of findings gained from community meetups. The findings on this page cover community wisdom related to optimizing cost while using ClickHouse that worked well for their specific experience and setup. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
 
 *Learn about how [ClickHouse Cloud can help manage operational costs](/cloud/overview)*.
-
-## The ContentSquare migration: 11x cost reduction {#contentsquare-migration}
-
-ContentSquare's migration from Elasticsearch to ClickHouse shows the cost optimization potential when moving to ClickHouse for analytics workloads, involving over 1,000 enterprise customers and processing over one billion page views daily. Before migration, ContentSquare ran 14 Elasticsearch clusters, each with 30 nodes, and struggled to make them bigger while keeping them stable. They were unable to host very large clients with high traffic, and frequently had to move clients between clusters as their traffic grew beyond cluster capacity.
-
-ContentSquare took a phased approach to avoid disrupting business operations. They first tested ClickHouse on a new mobile analytics product, which took four months to ship to production. This success convinced them to migrate their main web analytics platform. The full web migration took ten months to port all endpoints, followed by careful client-by-client migration of 600 clients in batches to avoid performance issues. They built extensive automation for non-regression testing, allowing them to complete the migration with zero regressions.
-
-After migration, the infrastructure became 11x cheaper while storing six times more data and delivering 10x faster performance on the 99th percentile queries. *"We are saving multiple millions per year using ClickHouse,"* the team noted. The performance improvements were particularly notable for their slowest queries - while fast queries (200ms on Elasticsearch) only improved to about 100ms on ClickHouse, their worst-performing queries went from over 15 seconds on Elasticsearch to under 2 seconds on ClickHouse.
-
-Their current ClickHouse setup includes 16 clusters across four regions on AWS and Azure, with over 100 nodes total. Each cluster typically has nine shards with two replicas per shard. They process approximately 100,000 analytics queries daily with an average response time of 200 milliseconds, while also increasing data retention from 3 months to 13 months.
-
-**Key results:**
-- 11x reduction in infrastructure costs
-- 6x increase in data storage capacity
-- 10x faster 99th percentile query performance
-- Multiple millions in annual savings
-- Increased data retention from 3 months to 13 months
-- Zero regressions during migration
 
 ## Compression strategy: LZ4 vs ZSTD in production {#compression-strategy}
 
@@ -99,6 +81,10 @@ This architecture preserves the user experience - people still see meaningful la
 - Faster query performance on integer comparisons
 - Reduced memory usage for joins and aggregations
 - Lower network transfer costs for large result sets
+
+:::note
+This is a an example specifically used for Microsoft Clarity's data scenario. If you have all your data in ClickHouse or do not have constraints against moving data to ClickHouse, try using [dictionaries](/dictionary) instead.
+:::
 
 ## Video sources {#video-sources}
 

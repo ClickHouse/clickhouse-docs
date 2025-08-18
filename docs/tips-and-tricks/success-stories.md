@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 slug: /community-wisdom/creative-use-cases
-sidebar_label: 'Creative Use Cases'
+sidebar_label: 'Success Stories'
 doc_type: 'how-to-guide'
 keywords: [
   'clickhouse creative use cases',
@@ -21,12 +21,12 @@ title: 'Lessons - Creative Use Cases'
 description: 'Find solutions to the most common ClickHouse problems including slow queries, memory errors, connection issues, and configuration problems.'
 ---
 
-# Breaking the rules: success stories {#breaking-the-rules}
+# Success stories {#breaking-the-rules}
 
 *This guide is part of a collection of findings gained from community meetups. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
 *Need tips on debugging an issue in prod? Check out the [Debugging Insights](./debugging-insights.md) community guide.*
 
-These stories showcase how companies found success by using ClickHouse for unconventional use cases, challenging traditional database categories and proving that sometimes the "wrong" tool becomes exactly the right solution.
+These stories showcase how companies found success by using ClickHouse for their use cases, some even challenging traditional database categories and proving that sometimes the "wrong" tool becomes exactly the right solution.
 
 ## ClickHouse as rate limiter {#clickhouse-rate-limiter}
 
@@ -53,34 +53,6 @@ So when the limitations became clear, ServiceNow moved to ClickHouse and elimina
 - Complex customer journey analysis became possible
 - Customers could create their own segments and slice data freely  
 - No more engineering bottlenecks for new analytical requirements
-
-```sql runnable editable
--- Challenge: Try different customer journey analysis - track user flows across multiple touchpoints  
--- Experiment: Test complex segmentation that wasn't possible with pre-aggregated tables
-SELECT 
-    'Dynamic Customer Journey Analysis' as feature,
-    actor_login as user_id,
-    arrayStringConcat(groupArray(event_type), ' -> ') as user_journey,
-    count() as journey_frequency,
-    toStartOfDay(min(created_at)) as journey_start_date,
-    'Real-time multi-dimensional analysis' as capability
-FROM github.github_events 
-WHERE created_at >= '2024-01-15'
-  AND created_at < '2024-01-16'
-  AND event_type IN ('WatchEvent', 'StarEvent', 'ForkEvent', 'IssuesEvent')
-GROUP BY user_id
-HAVING journey_frequency >= 3
-ORDER BY journey_frequency DESC
-LIMIT 15;
-```
-
-### The Pattern of Innovation {#pattern-of-innovation}
-
-Both success stories follow a similar pattern: teams that succeeded by questioning database orthodoxy rather than accepting conventional limitations. The breakthrough came when engineering leaders asked themselves whether the "right" tool was actually serving their specific needs.
-
-Craigslist's moment came when Brad asked: *"What do you think of this idea? Maybe I can try this with ClickHouse?"* Instead of accepting Redis maintenance complexity, they found a path that leveraged existing infrastructure. ServiceNow's realization was similar—rather than accepting that analytics must be slow or pre-computed, they recognized that customers needed the ability to segment data and slice it dynamically without constraints.
-
-Both teams succeeded because they designed around ClickHouse's unique strengths rather than trying to force it into traditional database patterns. They understood that sometimes the "analytical database" becomes the perfect operational solution when speed and SQL flexibility matter more than traditional OLTP guarantees. ClickHouse's combination of speed, SQL flexibility, and operational simplicity enables use cases that traditional database categories can't address - proving that the best tool is often the one that solves your specific problems, not the one that fits the textbook definition.
 
 ## Video sources {#video-sources}
 
