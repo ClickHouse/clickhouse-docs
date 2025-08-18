@@ -433,7 +433,7 @@ LIMIT 5
 │ jetter   │        386  │              30    │
 │ hodgesrm │        312  │              50    │
 │ mechmind │        243  │              16    │
-│ tosh 	   │        198  │              12    │
+│ tosh     │        198  │              12    │
 └──────────┴─────────────┴────────────────────┘
 ```
 
@@ -650,4 +650,3 @@ WHERE hasToken(lower(comment), 'avx') AND hasToken(lower(comment), 'sve');
 ```
 
 </VerticalStepper>
-
