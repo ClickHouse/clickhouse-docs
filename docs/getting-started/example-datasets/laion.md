@@ -292,7 +292,8 @@ if __name__ == '__main__':
 
 Fetch an example image to search :
 
-```
+```shell
+# get a random image of a Lego set
 $ wget http://cdn.firstcry.com/brainbees/images/products/thumb/191325a.jpg
 ```
 
