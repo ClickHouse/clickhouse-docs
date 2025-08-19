@@ -291,7 +291,7 @@ const ExploreDocs = () => {
                                     <Link to="/getting-started/quick-start/cloud" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Quick start guide</Link>
                                     <Link to="/install" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Installation</Link>
                                     <Link to="/deployment-modes" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Deployment modes</Link>
-                                    <Link to="/install" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>ClickHouse Cloud</Link>
+                                    <Link to="/cloud/get-started" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>ClickHouse Cloud</Link>
                                     <Link to="/getting-started/example-datasets" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Example datasets</Link>
                                 </div>
                             </CardContent>
@@ -384,7 +384,138 @@ const ExploreDocs = () => {
                         </CardActionArea>
                     </Card>
 
-                    {/* Changelog Cards Container - Row 2, Column 1 */}
+                    {/* Migrate Card - Row 2, Columns 1-2 (spans 2 columns) */}
+                    <Card sx={{ 
+                        gridColumn: { xs: '1', sm: '1 / span 2', md: '1 / span 2' },
+                        height: '180px',
+                        backgroundColor: 'background.paper',
+                        color: 'text.primary',
+                        boxShadow: 3,
+                        '&:hover': {
+                            boxShadow: 6,
+                        },
+                        display: 'flex',
+                        flexDirection: 'row',
+                        overflow: 'hidden'
+                    }}>
+                        {/* Left side - Full height image outside padding */}
+                        <CardMedia
+                            component="img"
+                            sx={{ 
+                                width: 120,
+                                height: '100%',
+                                objectFit: 'cover',
+                                flexShrink: 0
+                            }}
+                            image={useBaseUrl('/images/homepage/migration_icon.png')}
+                            alt="Migration"
+                        />
+                        
+                        <CardContent sx={{ 
+                            backgroundColor: 'background.paper',
+                            color: 'text.primary',
+                            flex: 1,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            padding: '16px',
+                            gap: 3
+                        }}>
+                            {/* Text content */}
+                            <Box sx={{ 
+                                flex: '0 0 auto',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'flex-start',
+                                minWidth: '160px',
+                                maxWidth: '180px'
+                            }}>
+                                <h3 style={{ margin: '0 0 3px 0', fontSize: '18px' }}>Migrate</h3>
+                                <p style={{ fontSize: '13px', margin: '0 0 0 0', color: 'text.secondary', lineHeight: 1.3 }}>
+                                    Get your data into ClickHouse
+                                </p>
+                                <Link 
+                                    to="/docs/integrations" 
+                                    style={{ 
+                                        fontSize: '11px', 
+                                        textDecoration: 'none',
+                                        color: 'inherit',
+                                        opacity: 0.8
+                                    }}
+                                >
+                                    View all integrations →
+                                </Link>
+                            </Box>
+                            
+                            {/* Right side - 3x2 Grid of square gradient cards */}
+                            <Box sx={{ 
+                                flex: 1, 
+                                display: 'flex', 
+                                justifyContent: 'flex-end',
+                                alignItems: 'center'
+                            }}>
+                                <Box sx={{ 
+                                    display: 'grid', 
+                                    gridTemplateColumns: 'repeat(4, 1fr)',
+                                    gridTemplateRows: 'repeat(2, 1fr)',
+                                    gap: 1,
+                                    width: '100%',
+                                    maxWidth: '320px',
+                                    height: '100%'
+                                }}>
+                                    <MigrationOptionButton
+                                        icon="/docs/images/logo-postgres.svg"
+                                        link="/docs/integrations/clickpipes/postgres"
+                                    >
+                                        Postgres
+                                    </MigrationOptionButton>
+                                    <MigrationOptionButton 
+                                        icon="/docs/images/logo-snowflake.svg"
+                                        link="/docs/migrations/snowflake"
+                                    >
+                                        Snowflake
+                                    </MigrationOptionButton>
+                                    <MigrationOptionButton 
+                                        icon="/docs/images/logo-bigquery.svg"
+                                        link="/docs/migrations/bigquery"
+                                    >
+                                        BigQuery
+                                    </MigrationOptionButton>
+                                    <MigrationOptionButton 
+                                        icon="/docs/images/logo-redshift.svg"
+                                        link="/docs/integrations/redshift"
+                                    >
+                                        Redshift
+                                    </MigrationOptionButton>
+                                    <MigrationOptionButton 
+                                        icon="/docs/images/logo-mysql.svg"
+                                        link="/docs/integrations/clickpipes/mysql"
+                                    >
+                                        MySQL
+                                    </MigrationOptionButton>
+                                    <MigrationOptionButton 
+                                        icon="/docs/images/logo-elastic.svg"
+                                        link="/docs/use-cases/observability/clickstack/migration/elastic"
+                                    >
+                                        Elastic
+                                    </MigrationOptionButton>
+                                    <MigrationOptionButton 
+                                        icon="/docs/images/logo-mongo.svg"
+                                        link="/docs/integrations/clickpipes/mongodb"
+                                    >
+                                        Mongo
+                                    </MigrationOptionButton>
+                                    <MigrationOptionButton
+                                        icon="/docs/images/logo-druid.png"
+                                        link="/docs"
+                                    >
+                                        Druid
+                                    </MigrationOptionButton>
+                                </Box>
+                            </Box>
+                        </CardContent>
+                    </Card>
+                    
+                    {/* Changelog Cards Container - Row 2, Column 3 */}
                     <Box sx={{ 
                         display: 'flex', 
                         flexDirection: 'column', 
@@ -466,126 +597,6 @@ const ExploreDocs = () => {
                             </Box>
                         </Card>
                     </Box>
-                    
-                    {/* Migrate Card - Row 2, Columns 2-3 (spans 2 columns) */}
-                    <Card sx={{ 
-                        gridColumn: { xs: '1', sm: '1 / span 2', md: '2 / span 2' },
-                        height: '180px',
-                        backgroundColor: 'background.paper',
-                        color: 'text.primary',
-                        boxShadow: 3,
-                        '&:hover': {
-                            boxShadow: 6,
-                        },
-                        display: 'flex',
-                        flexDirection: 'row',
-                        overflow: 'hidden'
-                    }}>
-                        {/* Left side - Full height image outside padding */}
-                        <CardMedia
-                            component="img"
-                            sx={{ 
-                                width: 120,
-                                height: '100%',
-                                objectFit: 'cover',
-                                flexShrink: 0
-                            }}
-                            image={useBaseUrl('/images/homepage/migration_icon.png')}
-                            alt="Migration"
-                        />
-                        
-                        <CardContent sx={{ 
-                            backgroundColor: 'background.paper',
-                            color: 'text.primary',
-                            flex: 1,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            padding: '16px',
-                            gap: 3
-                        }}>
-                            {/* Text content */}
-                            <Box sx={{ 
-                                flex: '0 0 auto',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'flex-start',
-                                minWidth: '160px',
-                                maxWidth: '180px'
-                            }}>
-                                <h3 style={{ margin: '0 0 3px 0', fontSize: '18px' }}>Migrate</h3>
-                                <p style={{ fontSize: '13px', margin: '0', color: 'text.secondary', lineHeight: 1.3 }}>
-                                    Migrate from your existing data platform
-                                </p>
-                            </Box>
-                            
-                            {/* Right side - 3x2 Grid of square gradient cards */}
-                            <Box sx={{ 
-                                flex: 1, 
-                                display: 'flex', 
-                                justifyContent: 'flex-end',
-                                alignItems: 'center'
-                            }}>
-                                <Box sx={{ 
-                                    display: 'grid', 
-                                    gridTemplateColumns: 'repeat(4, 1fr)',
-                                    gridTemplateRows: 'repeat(2, 1fr)',
-                                    gap: 1,
-                                    width: '100%',
-                                    maxWidth: '320px',
-                                    height: '100%'
-                                }}>
-                                    <MigrationOptionButton
-                                        icon="/docs/images/logo-postgres.svg"
-                                        link="/docs/integrations/clickpipes/postgres"
-                                    >
-                                        Postgres
-                                    </MigrationOptionButton>
-                                    <MigrationOptionButton 
-                                        icon="/docs/images/logo-snowflake.svg"
-                                        link="/docs/migrations/snowflake"
-                                    >
-                                        Snowflake
-                                    </MigrationOptionButton>
-                                    <MigrationOptionButton 
-                                        icon="/docs/images/logo-bigquery.svg"
-                                        link="/docs/migrations/bigquery"
-                                    >
-                                        BigQuery
-                                    </MigrationOptionButton>
-                                    <MigrationOptionButton 
-                                        icon="/docs/images/logo-redshift.svg"
-                                        link="/docs/integrations/redshift"
-                                    >
-                                        Redshift
-                                    </MigrationOptionButton>
-                                    <MigrationOptionButton 
-                                        icon="/docs/images/logo-mysql.svg"
-                                        link="/docs/integrations/clickpipes/mysql"
-                                    >
-                                        MySQL
-                                    </MigrationOptionButton>
-                                    <MigrationOptionButton 
-                                        icon="/docs/images/logo-elastic.svg"
-                                        link="/docs/use-cases/observability/clickstack/migration/elastic"
-                                    >
-                                        Elastic
-                                    </MigrationOptionButton>
-                                    <MigrationOptionButton 
-                                        icon="/docs/images/logo-mongo.svg"
-                                        link="/docs/integrations/clickpipes/mongodb"
-                                    >
-                                        Mongo
-                                    </MigrationOptionButton>
-                                    <MigrationOptionButton
-                                        icon="/docs/images/logo-druid.png"
-                                        link="/docs"
-                                    >
-                                        Druid
-                                    </MigrationOptionButton>
-                                </Box>
-                            </Box>
-                        </CardContent>
-                    </Card>
                 </Box>
                 
             </Box>
