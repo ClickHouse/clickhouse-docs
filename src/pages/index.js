@@ -7,6 +7,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import { useVersions } from '@site/src/hooks/useVersions';
 import ClickHouseLogoDark from '@site/static/img/ch_logo_docs_dark.svg';
 import ClickHouseLogoLight from '@site/static/img/ch_logo_docs.svg';
+import ClickHouseLogo from '@site/src/icons/ClickHouseLogo';
 import SearchBar from '@theme/SearchBar';
 import clsx from 'clsx';
 import Card from '@mui/material/Card';
@@ -184,28 +185,81 @@ const HeroSection = () => {
     const LogoComponent = colorMode === 'dark' ? ClickHouseLogoDark : ClickHouseLogoLight;
 
     return (
-        <div className={homepage_styles.heroSection}>
-            <LogoComponent className={homepage_styles.logo}/>
-            <h2>The fastest and most resource efficient real-time data warehouse and open-source database.</h2>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center', flexWrap: 'nowrap' }}>
-                <SearchBar/>
+        <Box sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
+            alignItems: 'center',
+            minHeight: '300px',
+            padding: '80px 16px 0px 16px',
+            maxWidth: '1000px',
+            margin: '0 auto',
+            gap: 3,
+            '@media (max-width: 768px)': {
+                gridTemplateColumns: '1fr',
+                textAlign: 'center',
+                padding: '60px 24px 30px 24px',
+                gap: 3
+            }
+        }}>
+            {/* Left side - Logo and Text (matches Get Started column width) */}
+            <Box sx={{ 
+                '@media (max-width: 768px)': {
+                    gridColumn: '1'
+                }
+            }}>
+                <Box sx={{ marginBottom: 2 }}>
+                    <ClickHouseLogo />
+                </Box>
+                <Typography 
+                    variant="h5" 
+                    sx={{ 
+                        fontSize: { xs: '1rem', sm: '1.1rem', md: '1.2rem' },
+                        fontWeight: 400,
+                        color: 'text.secondary',
+                        lineHeight: 1.4
+                    }}
+                >
+                    The fastest and most resource efficient real-time data warehouse and open-source database.
+                </Typography>
+            </Box>
+            
+            {/* Right side - Search and Ask AI (spans Learn and Reference columns) */}
+            <Box sx={{ 
+                gridColumn: { xs: '1', sm: '1 / span 2', md: '2 / span 2' },
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2,
+                padding: '0 60px',
+                '@media (max-width: 768px)': {
+                    gridColumn: '1',
+                    flexDirection: 'column',
+                    alignItems: 'stretch',
+                    gap: 2,
+                    padding: '0'
+                }
+            }}>
+                <Box sx={{ flex: 1, maxWidth: '500px' }}>
+                    <SearchBar/>
+                </Box>
                 <Button
                     variant="contained"
                     onClick={handleAskAIClick}
                     sx={{
                         height: '36px',
-                        minWidth: '80px',
+                        minWidth: '100px',
                         borderRadius: '8px',
-                        padding: '8px 16px',
+                        padding: '8px 20px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        gap: '6px',
+                        gap: '8px',
                         textTransform: 'none',
                         backgroundColor: '#faff69',
                         color: '#000000',
                         whiteSpace: 'nowrap',
                         boxShadow: 'none',
+                        fontWeight: 600,
+                        flexShrink: 0,
                         '&:hover': {
                             backgroundColor: '#f5f464',
                             boxShadow: 'none',
@@ -224,8 +278,8 @@ const HeroSection = () => {
                     />
                     Ask AI
                 </Button>
-            </div>
-        </div>
+            </Box>
+        </Box>
     );
 }
 const NavatticDemoSection = () => {
@@ -246,7 +300,7 @@ const ExploreDocs = () => {
             <Box sx={{ 
                 padding: '0 16px',
                 minHeight: '400px',
-                maxWidth: '1400px',
+                maxWidth: '1000px',
                 margin: '0 auto'
             }}>
                 {/* Unified Grid Layout */}
