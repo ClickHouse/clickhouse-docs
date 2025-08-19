@@ -108,7 +108,7 @@ To run a brute-force approximate nearest neighbor search, run:
 SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:Array(Float32)}) LIMIT 10
 ```
 
-`target` is an array of 512 elements and a client parameter. A convenient way to obtain such arrays will be presented at the end of the article. For now, we can run the embedding of a random Lego set picture as `target`.
+`target` is an array of 512 elements and a client parameter. A convenient way to obtain such arrays will be presented at the end of the article. For now, we can run the embedding of a random LEGO set picture as `target`.
 
 **Result**
 
@@ -293,7 +293,7 @@ if __name__ == '__main__':
 Fetch an example image to search :
 
 ```shell
-# get a random image of a Lego set
+# get a random image of a LEGO set
 $ wget http://cdn.firstcry.com/brainbees/images/products/thumb/191325a.jpg
 ```
 
