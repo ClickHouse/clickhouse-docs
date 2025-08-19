@@ -100,15 +100,17 @@ INSERT INTO laion FROM INFILE '{path_to_csv_files}/*.csv'
 
 Note that the `id` column is just for illustration and is populated by the script with non-unique values.
 
-## Run a brute-force ANN search (without ANN index) {#run-a-brute-force-ann-search-without-ann-index}
+## Run a brute-force vector similarity search {#run-a-brute-force-vector-similarity-search}
 
-To run a brute-force approximate nearest neighbor search, run:
+To run a brute-force approximate vector search, run:
 
 ```sql
 SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:Array(Float32)}) LIMIT 10
 ```
 
-`target` is an array of 512 elements and a client parameter. A convenient way to obtain such arrays will be presented at the end of the article. For now, we can run the embedding of a random LEGO set picture as `target`.
+`target` is an array of 512 elements and a client parameter.
+A convenient way to obtain such arrays will be presented at the end of the article.
+For now, we can run the embedding of a random LEGO set picture as `target`.
 
 **Result**
 
@@ -129,33 +131,30 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
 10 rows in set. Elapsed: 4.605 sec. Processed 100.38 million rows, 309.98 GB (21.80 million rows/s., 67.31 GB/s.)
 ```
 
-## Run a ANN with an ANN index {#run-a-ann-with-an-ann-index}
+## Run an approximate vector similarity search with a vector simialrity index {#run-an-approximate-vector-similarity-search-with-a-vector-similarity-index}
 
-Let's now define ANN indexes on the tables.
+Let's now define two vector similarity indexes on the table.
 
 ```sql
-SET enable_vector_similarity_index = 1;
-
 ALTER TABLE laion ADD INDEX image_index image_embedding TYPE vector_similarity('hnsw', 'cosineDistance', 512, 'bf16', 64, 256)
-
 ALTER TABLE laion ADD INDEX text_index text_embedding TYPE vector_similarity('hnsw', 'cosineDistance', 512, 'bf16', 64, 256)
-
 ```
 
-Parameters and performance considerations for index creation and search are described in the [documentation](../../engines/table-engines/mergetree-family/annindexes.md). The above index definition specifies a `hnsw' index using the `cosine distance` as the distance metric with the `hnsw_max_connections_per_layer` parameter set to 64 and the `hnsw_candidate_list_size_for_construction` parameter set to 256. The index uses `bf16` as quantization to optimize memory usage.
+The parameters and performance considerations for index creation and search are described in the [documentation](../../engines/table-engines/mergetree-family/annindexes.md).
+The above index definition specifies a HNSW index using the "cosine distance" as distance metric with the parameter "hnsw_max_connections_per_layer" set to 64 and parameter "hnsw_candidate_list_size_for_construction" set to 256.
+The index uses half-precision brain floats (bfloat16) as quantization to optimize memory usage.
 
-To build and materialize the index, execute these statements :
+To build and materialize the index, run these statements :
 
 ```sql
 ALTER TABLE laion MATERIALIZE INDEX image_index;
-
 ALTER TABLE laion MATERIALIZE INDEX text_index;
-
 ```
 
-Building and saving the index could take a few minutes or even hours depending on the number of rows and HNSW index parameters.
+Building and saving the index could take a few minutes or even hours, depending on the number of rows and HNSW index parameters.
 
-To now perform an ANN search, just execute the same query again :
+To perform a vector search, just execute the same query again:
+
 ```sql
 SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:Array(Float32)}) LIMIT 10
 ```
@@ -179,7 +178,9 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
 10 rows in set. Elapsed: 0.019 sec. Processed 137.27 thousand rows, 24.42 MB (7.38 million rows/s., 1.31 GB/s.)
 ```
 
-The query latency decreased significantly because the nearest neighbours were retrieved using the vector index. ANN search using a vector index may return results that differ slightly from the exact KNN search results. HNSW index can potentially achieve a `recall` score close to `1` by careful selection of HNSW parameters and evaluating index quality.
+The query latency decreased significantly because the nearest neighbours were retrieved using the vector index.
+Vector similarity search using a vector similarity index may return results that differ slightly from the brute-force search results.
+An HNSW index can potentially achieve a recall close to 1 (same accuracy as brute force search) with a careful selection of the HNSW parameters and evaluating the index quality.
 
 ## Creating embeddings with UDFs {#creating-embeddings-with-udfs}
 
