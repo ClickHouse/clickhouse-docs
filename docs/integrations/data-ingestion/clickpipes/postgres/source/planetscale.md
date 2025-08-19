@@ -72,7 +72,6 @@ Make sure to replace `clickpipes_user` and `clickpipes_password` with your desir
 2. Do not use the `PSBouncer` port (currently `6432`) for CDC pipes connecting to Planetscale Postgres, the normal port `5432` must be used. Either port may be used for initial-load only pipes.
 3. Please ensure you're connecting only to the primary instance, [connecting to replica instances](https://planetscale.com/docs/postgres/scaling/replicas#how-to-query-postgres-replicas) is currently not supported. 
 
-
 ## What's next? {#whats-next}
 
 You can now [create your ClickPipe](../index.md) and start ingesting data from your Postgres instance into ClickHouse Cloud.
