@@ -761,6 +761,7 @@ const sidebars = {
                 "integrations/data-ingestion/clickpipes/postgres/source/crunchy-postgres",
                 "integrations/data-ingestion/clickpipes/postgres/source/generic",
                 "integrations/data-ingestion/clickpipes/postgres/source/timescale",
+                "integrations/data-ingestion/clickpipes/postgres/source/planetscale",
               ],
             },
           ],
