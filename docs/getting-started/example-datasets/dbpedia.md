@@ -148,7 +148,7 @@ ORDER BY cosineDistance(vector, (
     )) ASC
 LIMIT 20
 
-    ┌─id──────────────────────────────────────────────┬─title─────────────────────────────────┐
+```response title="Response"    ┌─id──────────────────────────────────────────────┬─title─────────────────────────────────┐
  1. │ <dbpedia:Glacier_Express>                       │ Glacier Express                       │
  2. │ <dbpedia:BVZ_Zermatt-Bahn>                      │ BVZ Zermatt-Bahn                      │
  3. │ <dbpedia:Gornergrat_railway>                    │ Gornergrat railway                    │
@@ -170,11 +170,8 @@ LIMIT 20
 19. │ <dbpedia:Regional-Express>                      │ Regional-Express                      │
 20. │ <dbpedia:Schynige_Platte_railway>               │ Schynige Platte railway               │
     └─────────────────────────────────────────────────┴───────────────────────────────────────┘
-
+#highlight-next-line
 20 rows in set. Elapsed: 0.025 sec. Processed 32.03 thousand rows, 2.10 MB (1.29 million rows/s., 84.80 MB/s.)
-```
-Compare the latency and I/O resource usage of the above query with the earlier query executed
-using brute force KNN.
 
 ## Generating embeddings for search query {#generating-embeddings-for-search-query}
 
@@ -224,11 +221,11 @@ while True:
         print("---------------")
 ```
 
-## Q & A Demo Application {#q-and-a-demo-application}
+## Q&A demo application {#q-and-a-demo-application}
 
-Above examples demonstrated semantic search and document retrieval using ClickHouse. A very simple but high potential Generative AI example application is presented now.
+The examples above demonstrated semantic search and document retrieval using ClickHouse. A very simple but high potential generative AI example application is presented next.
 
-The application performs the following steps :
+The application performs the following steps:
 
 1. Accepts a _topic_ as input from the user
 2. Generates an embedding vector for the _topic_ by invoking OpenAI API with model `text-embedding-3-large`
@@ -237,8 +234,8 @@ The application performs the following steps :
 5. Uses the OpenAI `gpt-3.5-turbo` Chat API to answer the question based on the knowledge in the documents retrieved in step #3.
    The documents retrieved in step #3 are passed as _context_ to the Chat API and are the key link in Generative AI.
 
-A couple of conversation examples by running the Q & A application are first listed below, followed by the code
-for the Q & A application. Running the application requires an OpenAI API key to be set in the environment
+A couple of conversation examples by running the Q&A application are first listed below, followed by the code
+for the Q&A application. Running the application requires an OpenAI API key to be set in the environment
 variable `OPENAI_API_KEY`. The OpenAI API key can be obtained after registering at https://platform.openai.com.
 
 ```shell
@@ -260,7 +257,7 @@ England and Wales have hosted the Cricket World Cup the most times, with the tou
 $
 ```
 
-Code :
+Code:
 
 ```Python
 import sys
