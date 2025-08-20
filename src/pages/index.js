@@ -342,7 +342,7 @@ const ExploreDocs = () => {
                                     <p>Learn the basics of ClickHouse</p>
                                 </div>
                                 <div style={{ marginTop: 'auto', paddingTop: '12px' }}>
-                                    <Link to="/getting-started/quick-start/cloud" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Quick start guide</Link>
+                                    <Link to="/getting-started/quick-start/cloud" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Quick start</Link>
                                     <Link to="/install" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Installation</Link>
                                     <Link to="/deployment-modes" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Deployment modes</Link>
                                     <Link to="/cloud/get-started" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>ClickHouse Cloud</Link>
@@ -385,9 +385,9 @@ const ExploreDocs = () => {
                                 </div>
                                 <div style={{ marginTop: 'auto', paddingTop: '12px' }}>
                                     <Link to="/managing-data/core-concepts" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Core concepts</Link>
-                                    <Link to="/best-practices" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Best Practices</Link>
                                     <Link to="/data-modeling/overview" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Data modelling</Link>
-                                    <Link to="/operations/overview" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Performance & Optimization</Link>
+                                    <Link to="/best-practices" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Best practices</Link>
+                                    <Link to="/operations/overview" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Performance & optimization</Link>
                                     <Link to="/guides/developer/overview" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Advanced guides</Link>
                                 </div>
                             </CardContent>
@@ -426,7 +426,7 @@ const ExploreDocs = () => {
                                     <p>Reference docs for everyday use</p>
                                 </div>
                                 <div style={{ marginTop: 'auto', paddingTop: '12px', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
-                                    <Link to="/sql-reference/statements" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>SQL Reference</Link>
+                                    <Link to="/sql-reference/statements" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>SQL reference</Link>
                                     <Link to="/sql-reference/functions" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Functions</Link>
                                     <Link to="/engines" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Engines</Link>
                                     <Link to="/sql-reference/data-types" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Data types</Link>
