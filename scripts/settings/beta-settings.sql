@@ -13,7 +13,7 @@ WITH
 FROM system.settings
 WHERE tier = 'Beta'
 AND alias_for=''
-AND NOT (name LIKE 'vector_search_with_rescoring' OR name LIKE 'vector_search_postfilter_multiplier' OR name LIKE 'vector_search_index_fetch_multiplier')),
+AND NOT (name LIKE 'vector_search_with_rescoring' OR name LIKE 'vector_search_postfilter_multiplier' OR name LIKE 'vector_search_index_fetch_multiplier' OR name LIKE 'allow_experimental_vector_similarity_index')),
     beta_mergetree_settings AS
     (
 SELECT
