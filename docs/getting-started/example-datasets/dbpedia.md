@@ -3,6 +3,7 @@ description: 'Dataset containing 1 million articles from Wikipedia and their vec
 sidebar_label: 'dbpedia dataset'
 slug: /getting-started/example-datasets/dbpedia-dataset
 title: 'dbpedia dataset'
+keywords: ['semantic search', 'vector similarity', 'approximate nearest neighbours', 'embeddings']
 ---
 
 The [dbpedia dataset](https://huggingface.co/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M) contains 1 million articles from Wikipedia and their vector embeddings generated using the `text-embedding-3-large` model from OpenAI.
@@ -84,8 +85,10 @@ SELECT id, title
 FROM dbpedia
 ORDER BY cosineDistance(vector, ( SELECT vector FROM dbpedia WHERE id = '<dbpedia:The_Remains_of_the_Day>') ) ASC
 LIMIT 20
+```
 
-```response title="Response"   ┌─id────────────────────────────────────────┬─title───────────────────────────┐
+```response title="Response"
+    ┌─id────────────────────────────────────────┬─title───────────────────────────┐
  1. │ <dbpedia:The_Remains_of_the_Day>          │ The Remains of the Day          │
  2. │ <dbpedia:The_Remains_of_the_Day_(film)>   │ The Remains of the Day (film)   │
  3. │ <dbpedia:Never_Let_Me_Go_(novel)>         │ Never Let Me Go (novel)         │
@@ -122,7 +125,6 @@ Run the following SQL to define and build a vector similarity index on the `vect
 ```sql
 ALTER TABLE dbpedia ADD INDEX vector_index vector TYPE vector_similarity('hnsw', 'cosineDistance', 1536, 'bf16', 64, 512);
 
-
 ALTER TABLE dbpedia MATERIALIZE INDEX vector_index;
 ```
 
@@ -136,7 +138,7 @@ _Approximate Nearest Neighbours_ or ANN refers to group of techniques (e.g., spe
 
 Once the vector similarity index has been built, vector search queries will automatically use the index:
 
-```sql
+```sql title="Query"
 SELECT
     id,
     title
@@ -147,8 +149,10 @@ ORDER BY cosineDistance(vector, (
         WHERE id = '<dbpedia:Glacier_Express>'
     )) ASC
 LIMIT 20
+```
 
-```response title="Response"    ┌─id──────────────────────────────────────────────┬─title─────────────────────────────────┐
+```response title="Response"
+    ┌─id──────────────────────────────────────────────┬─title─────────────────────────────────┐
  1. │ <dbpedia:Glacier_Express>                       │ Glacier Express                       │
  2. │ <dbpedia:BVZ_Zermatt-Bahn>                      │ BVZ Zermatt-Bahn                      │
  3. │ <dbpedia:Gornergrat_railway>                    │ Gornergrat railway                    │
@@ -172,6 +176,7 @@ LIMIT 20
     └─────────────────────────────────────────────────┴───────────────────────────────────────┘
 #highlight-next-line
 20 rows in set. Elapsed: 0.025 sec. Processed 32.03 thousand rows, 2.10 MB (1.29 million rows/s., 84.80 MB/s.)
+```
 
 ## Generating embeddings for search query {#generating-embeddings-for-search-query}
 
