@@ -36,6 +36,7 @@ jobs:
         id: build
         continue-on-error: true
         run: |
+          FORCE_HIDE_NON_PUBLIC_DOCS=true
           DOCUSAURUS_IGNORE_SSG_WARNINGS=true yarn build
           echo "exit_code=$?" >> $GITHUB_OUTPUT
 
