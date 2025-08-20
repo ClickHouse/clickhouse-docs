@@ -219,7 +219,7 @@ const HeroSection = () => {
                         lineHeight: 1.4
                     }}
                 >
-                    The fastest and most resource efficient real-time data warehouse and open-source database.
+                    Documentation for the fastest and most resource efficient real-time data warehouse and open-source database.
                 </Typography>
             </Box>
             
@@ -288,7 +288,7 @@ const NavatticDemoSection = () => {
             <NavatticDemo/>
         </div>
     )
-}
+};
 
 const ExploreDocs = () => {
     const { colorMode } = useColorMode();
@@ -307,7 +307,7 @@ const ExploreDocs = () => {
                 <Box sx={{ 
                     display: 'grid',
                     gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
-                    gridTemplateRows: 'auto auto',
+                    gridTemplateRows: 'auto auto auto auto auto',
                     gap: 3
                 }}>
                     {/* Get Started Card - Row 1, Column 1 */}
@@ -331,7 +331,6 @@ const ExploreDocs = () => {
                                 alt="Learn ClickHouse"
                             />
                             <CardContent sx={{ 
-                                backgroundColor: 'background.paper',
                                 color: 'text.primary',
                                 flex: 1,
                                 display: 'flex',
@@ -373,7 +372,6 @@ const ExploreDocs = () => {
                                 alt="Learn ClickHouse"
                             />
                             <CardContent sx={{ 
-                                backgroundColor: 'background.paper',
                                 color: 'text.primary',
                                 flex: 1,
                                 display: 'flex',
@@ -415,7 +413,6 @@ const ExploreDocs = () => {
                                 alt="ClickHouse Reference"
                             />
                             <CardContent sx={{ 
-                                backgroundColor: 'background.paper',
                                 color: 'text.primary',
                                 flex: 1,
                                 display: 'flex',
@@ -568,9 +565,224 @@ const ExploreDocs = () => {
                             </Box>
                         </CardContent>
                     </Card>
+
+                    {/* Featured Section Title - Row 3, spans all 3 columns */}
+                    <Box sx={{ 
+                        gridRow: 3,
+                        gridColumn: { xs: '1', sm: '1 / span 2', md: '1 / span 3' },
+                        marginBottom: 1,
+                        marginTop: 2
+                    }}>
+                        <Typography variant="h4" sx={{ fontWeight: 600, fontSize: '24px' }}>
+                            Featured
+                        </Typography>
+                    </Box>
+
+                    {/* Featured Card 1 - Row 4, Column 1 */}
+                    <Card sx={{ 
+                        gridRow: 4,
+                        gridColumn: 1,
+                        height: '300px',
+                        backgroundColor: 'background.paper',
+                        color: 'text.primary',
+                        boxShadow: 3,
+                        '&:hover': {
+                            boxShadow: 6,
+                        },
+                        display: 'flex',
+                        flexDirection: 'column'
+                    }}>
+                        <CardActionArea sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+                            <CardMedia
+                                component="img"
+                                height="100"
+                                sx={{ width: '100%' }}
+                                image={useBaseUrl('/images/homepage/mongodb_feature.png')}
+                                alt="Feature 1"
+                            />
+                            <CardContent sx={{ 
+                                color: 'text.primary',
+                                flex: 1,
+                                display: 'flex',
+                                flexDirection: 'column'
+                            }}>
+                                <div>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
+                                        <Typography
+                                            variant="caption"
+                                            sx={{
+                                                backgroundColor: '#e3f2fd',
+                                                color: '#1976d2',
+                                                padding: '1px 6px',
+                                                borderRadius: '8px',
+                                                fontSize: '9px',
+                                                fontWeight: 600,
+                                                textTransform: 'uppercase',
+                                                letterSpacing: '0.3px'
+                                            }}
+                                        >
+                                            Tutorial
+                                        </Typography>
+                                    </Box>
+                                    <h3>MongoDB CDC to ClickHouse with Native JSON Support</h3>
+                                    <p>We're excited to announce the private preview of the MongoDB Change Data Capture (CDC) connector in ClickPipes! Enabling customers to replicate their MongoDB collections to ClickHouse Cloud in just a few clicks. </p>
+                                </div>
+                                <Link
+                                    to="/integrations/clickpipes/mongodb"
+                                    style={{
+                                        color: '#faff69',
+                                        textDecoration: 'none',
+                                        fontSize: '14px',
+                                        fontWeight: 600,
+                                        marginTop: 'auto',
+                                        paddingTop: '8px',
+                                        display: 'block'
+                                    }}
+                                >
+                                    Read more →
+                                </Link>
+                            </CardContent>
+                        </CardActionArea>
+                    </Card>
+
+                    {/* Featured Card 2 - Row 4, Column 2 */}
+                    <Card sx={{ 
+                        gridRow: 4,
+                        gridColumn: 2,
+                        height: '300px',
+                        backgroundColor: 'background.paper',
+                        color: 'text.primary',
+                        boxShadow: 3,
+                        '&:hover': {
+                            boxShadow: 6,
+                        },
+                        display: 'flex',
+                        flexDirection: 'column'
+                    }}>
+                        <CardActionArea sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+                            <CardMedia
+                                component="img"
+                                height="100"
+                                sx={{ width: '100%' }}
+                                image={useBaseUrl('/images/homepage/remote_mcp_featured.png')}
+                                alt="Feature 2"
+                            />
+                            <CardContent sx={{ 
+                                color: 'text.primary',
+                                flex: 1,
+                                display: 'flex',
+                                flexDirection: 'column'
+                            }}>
+                                <div>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
+                                        <Typography
+                                            variant="caption"
+                                            sx={{
+                                                backgroundColor: '#fff3e0',
+                                                color: '#f57c00',
+                                                padding: '1px 6px',
+                                                borderRadius: '8px',
+                                                fontSize: '9px',
+                                                fontWeight: 600,
+                                                textTransform: 'uppercase',
+                                                letterSpacing: '0.3px'
+                                            }}
+                                        >
+                                            Guide
+                                        </Typography>
+                                    </Box>
+                                    <h3>Enabling the ClickHouse Cloud Remote MCP Server</h3>
+                                    <p>This guide explains how to enable and use the ClickHouse Cloud Remote MCP Server. We will use Claude Code as an MCP Client for this example.</p>
+                                </div>
+                                <Link
+                                    to="/use-cases/AI/MCP/remote_mcp"
+                                    style={{
+                                        color: '#faff69',
+                                        textDecoration: 'none',
+                                        fontSize: '14px',
+                                        fontWeight: 600,
+                                        marginTop: 'auto',
+                                        paddingTop: '8px',
+                                        display: 'block'
+                                    }}
+                                >
+                                    Read more →
+                                </Link>
+                            </CardContent>
+                        </CardActionArea>
+                    </Card>
+
+                    {/* Featured Card 3 - Row 4, Column 3 */}
+                    <Card sx={{ 
+                        gridRow: 4,
+                        gridColumn: 3,
+                        height: '300px',
+                        backgroundColor: 'background.paper',
+                        color: 'text.primary',
+                        boxShadow: 3,
+                        '&:hover': {
+                            boxShadow: 6,
+                        },
+                        display: 'flex',
+                        flexDirection: 'column'
+                    }}>
+                        <CardActionArea sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+                            <CardMedia
+                                component="img"
+                                height="100"
+                                sx={{ width: '100%' }}
+                                image={useBaseUrl('/images/homepage/json_featured.png')}
+                                alt="Feature 3"
+                            />
+                            <CardContent sx={{ 
+                                color: 'text.primary',
+                                flex: 1,
+                                display: 'flex',
+                                flexDirection: 'column'
+                            }}>
+                                <div>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
+                                        <Typography
+                                            variant="caption"
+                                            sx={{
+                                                backgroundColor: '#e8f5e8',
+                                                color: '#2e7d32',
+                                                padding: '1px 6px',
+                                                borderRadius: '8px',
+                                                fontSize: '9px',
+                                                fontWeight: 600,
+                                                textTransform: 'uppercase',
+                                                letterSpacing: '0.3px'
+                                            }}
+                                        >
+                                            Best Practice
+                                        </Typography>
+                                    </Box>
+                                    <h3>Use JSON where appropriate</h3>
+                                    <p>Wondering when to use the native JSON type over other types? In this guide we'll explain when you should and shouldn't make use of JSON.</p>
+                                </div>
+                                <Link
+                                    to="/best-practices/use-json-where-appropriate"
+                                    style={{
+                                        color: '#faff69',
+                                        textDecoration: 'none',
+                                        fontSize: '14px',
+                                        fontWeight: 600,
+                                        marginTop: 'auto',
+                                        paddingTop: '8px',
+                                        display: 'block'
+                                    }}
+                                >
+                                    Read more →
+                                </Link>
+                            </CardContent>
+                        </CardActionArea>
+                    </Card>
                     
                     {/* Changelog Cards Container - Row 2, Column 3 */}
                     <Box sx={{ 
+                        gridRow: 2,
+                        gridColumn: 3,
                         display: 'flex', 
                         flexDirection: 'column', 
                         gap: 2
