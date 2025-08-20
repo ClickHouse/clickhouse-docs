@@ -5,17 +5,17 @@ slug: /getting-started/example-datasets/dbpedia-dataset
 title: 'dbpedia dataset'
 ---
 
-The [dbpedia dataset](https://huggingface.co/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M) contains 1 million articles from Wikipedia and their vector embeddings generated using `text-embedding-3-large` model from OpenAI.
+The [dbpedia dataset](https://huggingface.co/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M) contains 1 million articles from Wikipedia and their vector embeddings generated using the `text-embedding-3-large` model from OpenAI.
 
-The dataset is an excellent starter dataset to understand vector embeddings, vector similarity search and Generative AI. We use this dataset to demonstrate [approximate nearest neighbor search](../../engines/table-engines/mergetree-family/annindexes.md) in ClickHouse and a simple but powerful Q & A application.
+The dataset is an excellent starter dataset to understand vector embeddings, vector similarity search and Generative AI. We use this dataset to demonstrate [approximate nearest neighbor search](../../engines/table-engines/mergetree-family/annindexes.md) in ClickHouse and a simple but powerful Q&A application.
 
 ## Dataset details {#dataset-details}
 
-The dataset contains 26 `Parquet` files located under https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/. The files are named `0.parquet`, `1.parquet`, ..., `25.parquet`. To view some example rows of the dataset, please visit https://huggingface.co/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M.
+The dataset contains 26 `Parquet` files located on [huggingface.co](https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/). The files are named `0.parquet`, `1.parquet`, ..., `25.parquet`. To view some example rows of the dataset, please visit this [Hugging Face page](https://huggingface.co/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M).
 
 ## Create table {#create-table}
 
-Create the `dbpedia` table to store the article id, title, text and embedding vector :
+Create the `dbpedia` table to store the article id, title, text and embedding vector:
 
 ```sql
 CREATE TABLE dbpedia
@@ -30,13 +30,13 @@ CREATE TABLE dbpedia
 
 ## Load table {#load-table}
 
-To load the dataset from all Parquet files, run the following shell command :
+To load the dataset from all Parquet files, run the following shell command:
 
 ```shell
 $ seq 0 25 | xargs -P1 -I{} clickhouse client -q "INSERT INTO dbpedia SELECT _id, title, text, \"text-embedding-3-large-1536-embedding\" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/{}.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;"
 ```
 
-Alternatively, individual SQL statements can be run as shown below to load each of the 25 Parquet files :
+Alternatively, individual SQL statements can be run as shown below to load each of the 25 Parquet files:
 
 ```sql
 INSERT INTO dbpedia SELECT _id, title, text, "text-embedding-3-large-1536-embedding" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/0.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;
@@ -46,7 +46,7 @@ INSERT INTO dbpedia SELECT _id, title, text, "text-embedding-3-large-1536-embedd
 
 ```
 
-Verify that 1 million rows are seen in the `dbpedia` table :
+Verify that 1 million rows are seen in the `dbpedia` table:
 
 ```sql
 SELECT count(*)
@@ -57,14 +57,15 @@ FROM dbpedia
    └─────────┘
 ```
 
-## Semantic Search {#semantic-search}
+## Semantic search {#semantic-search}
 
-Recommended reading : https://platform.openai.com/docs/guides/embeddings
+Recommended reading: ["Vector embeddings
+" OpenAPI guide](https://platform.openai.com/docs/guides/embeddings)
 
-Semantic search (or referred to as _similarity search_) using vector embeddings involves
-the following steps :
+Semantic search (also referred to as _similarity search_) using vector embeddings involves
+the following steps:
 
-- Accept a search query from user in natural language e.g _"Tell me some scenic rail journeys”_, _“Suspense novels set in Europe”_ etc
+- Accept a search query from a user in natural language e.g _"Tell me about some scenic rail journeys”_, _“Suspense novels set in Europe”_ etc
 - Generate embedding vector for the search query using the LLM model
 - Find nearest neighbours to the search embedding vector in the dataset
 
@@ -73,18 +74,18 @@ The retrieved results are the key input to Retrieval Augmented Generation (RAG) 
 
 ## Run a brute-force vector similarity search {#run-a-brute-force-vector-similarity-search}
 
-KNN (k - Nearest Neighbours) search or brute force search involves calculating distance of each vector in the dataset
+KNN (k - Nearest Neighbours) search or brute force search involves calculating the distance of each vector in the dataset
 to the search embedding vector and then ordering the distances to get the nearest neighbours.  With the `dbpedia` dataset,
 a quick technique to visually observe semantic search is to use embedding vectors from the dataset itself as search
-vectors. Example :
+vectors. For example:
 
-```sql
+```sql title="Query"
 SELECT id, title
 FROM dbpedia
 ORDER BY cosineDistance(vector, ( SELECT vector FROM dbpedia WHERE id = '<dbpedia:The_Remains_of_the_Day>') ) ASC
 LIMIT 20
 
-    ┌─id────────────────────────────────────────┬─title───────────────────────────┐
+```response title="Response"   ┌─id────────────────────────────────────────┬─title───────────────────────────┐
  1. │ <dbpedia:The_Remains_of_the_Day>          │ The Remains of the Day          │
  2. │ <dbpedia:The_Remains_of_the_Day_(film)>   │ The Remains of the Day (film)   │
  3. │ <dbpedia:Never_Let_Me_Go_(novel)>         │ Never Let Me Go (novel)         │
@@ -106,6 +107,7 @@ LIMIT 20
 19. │ <dbpedia:Human_Remains_(film)>            │ Human Remains (film)            │
 20. │ <dbpedia:Kazuo_Ishiguro>                  │ Kazuo Ishiguro                  │
     └───────────────────────────────────────────┴─────────────────────────────────┘
+#highlight-next-line
 20 rows in set. Elapsed: 0.261 sec. Processed 1.00 million rows, 6.22 GB (3.84 million rows/s., 23.81 GB/s.)
 ```
 
@@ -113,9 +115,9 @@ Note down the query latency so that we can compare it with the query latency of 
 Also record the query latency with cold OS file cache and with `max_theads=1` to recognize the real compute
 usage and storage bandwidth usage (extrapolate it to a production dataset with millions of vectors!)
 
-## Build Vector Similarity Index {#build-vector-similarity-index}
+## Build a vector similarity index {#build-vector-similarity-index}
 
-Run the following SQL to define and build a vector similarity index on the `vector` column :
+Run the following SQL to define and build a vector similarity index on the `vector` column:
 
 ```sql
 ALTER TABLE dbpedia ADD INDEX vector_index vector TYPE vector_similarity('hnsw', 'cosineDistance', 1536, 'bf16', 64, 512);
@@ -132,7 +134,7 @@ Building and saving the index could take a few minutes depending on number of CP
 
 _Approximate Nearest Neighbours_ or ANN refers to group of techniques (e.g., special data structures like graphs and random forests) which compute results much faster than exact vector search. The result accuracy is typically "good enough" for practical use. Many approximate techniques provide parameters to tune the trade-off between the result accuracy and the search time.
 
-Once the vector similarity index has been built, vector search queries will automatically use the index :
+Once the vector similarity index has been built, vector search queries will automatically use the index:
 
 ```sql
 SELECT
