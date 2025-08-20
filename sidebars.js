@@ -810,6 +810,7 @@ const sidebars = {
           items: [
             "integrations/data-ingestion/clickpipes/mongodb/index",
             "integrations/data-ingestion/clickpipes/mongodb/datatypes",
+            "integrations/data-ingestion/clickpipes/mongodb/quickstart",
             {
               type: "category",
               label: "Operations",
