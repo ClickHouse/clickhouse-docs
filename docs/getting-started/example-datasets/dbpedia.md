@@ -11,7 +11,7 @@ The dataset is an excellent starter dataset to understand vector embeddings, vec
 
 ## Dataset details {#dataset-details}
 
-The dataset consists of 26 `Parquet` files located under https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/. The files are named `0.parquet`, `1.parquet`, ..., `25.parquet`. To view some example rows of the dataset, please visit https://huggingface.co/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M.
+The dataset contains 26 `Parquet` files located under https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/. The files are named `0.parquet`, `1.parquet`, ..., `25.parquet`. To view some example rows of the dataset, please visit https://huggingface.co/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M.
 
 ## Create table {#create-table}
 
@@ -30,12 +30,13 @@ CREATE TABLE dbpedia
 
 ## Load table {#load-table}
 
-To load the dataset from the Parquet files, run the following shell command :
+To load the dataset from all Parquet files, run the following shell command :
 
 ```shell
+$ seq 0 25 | xargs -P1 -I{} clickhouse client -q "INSERT INTO dbpedia SELECT _id, title, text, \"text-embedding-3-large-1536-embedding\" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/{}.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;"
 ```
 
-Alternatively, individual SQL statements can be run as shown below for each of the 25 Parquet files :
+Alternatively, individual SQL statements can be run as shown below to load each of the 25 Parquet files :
 
 ```sql
 INSERT INTO dbpedia SELECT _id, title, text, "text-embedding-3-large-1536-embedding" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/0.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;
@@ -45,22 +46,35 @@ INSERT INTO dbpedia SELECT _id, title, text, "text-embedding-3-large-1536-embedd
 
 ```
 
-## Semantic Search
+Verify that 1 million rows are seen in the `dbpedia` table :
+
+```sql
+SELECT count(*)
+FROM dbpedia
+
+   ┌─count()─┐
+1. │ 1000000 │
+   └─────────┘
+```
+
+## Semantic Search {#semantic-search}
+
 Recommended reading : https://platform.openai.com/docs/guides/embeddings
 
-Semantic search (or referred to as _similarity search_) using vector embeddings involes
+Semantic search (or referred to as _similarity search_) using vector embeddings involves
 the following steps :
 
-- Accept a search query from user in natural language e.g ‘Tell me some scenic rail journeys”, “Suspense novels set in Europe” etc
+- Accept a search query from user in natural language e.g _"Tell me some scenic rail journeys”_, _“Suspense novels set in Europe”_ etc
 - Generate embedding vector for the search query using the LLM model
 - Find nearest neighbours to the search embedding vector in the dataset
 
 The _nearest neighbours_ are documents, images or content that are results relevant to the user query.
-The results are the key input to Retrieval Augmented Generation (RAG) in Generative AI applications.
+The retrieved results are the key input to Retrieval Augmented Generation (RAG) in Generative AI applications.
 
-## Experiment with KNN Search
+## Run a brute-force vector similarity search {#run-a-brute-force-vector-similarity-search}
+
 KNN (k - Nearest Neighbours) search or brute force search involves calculating distance of each vector in the dataset
-to the search embedding vector and then ordering the distances to get the nearest neighbours.  With the `dbpediai` dataset,
+to the search embedding vector and then ordering the distances to get the nearest neighbours.  With the `dbpedia` dataset,
 a quick technique to visually observe semantic search is to use embedding vectors from the dataset itself as search
 vectors. Example :
 
@@ -92,14 +106,121 @@ LIMIT 20
 19. │ <dbpedia:Human_Remains_(film)>            │ Human Remains (film)            │
 20. │ <dbpedia:Kazuo_Ishiguro>                  │ Kazuo Ishiguro                  │
     └───────────────────────────────────────────┴─────────────────────────────────┘
+20 rows in set. Elapsed: 0.261 sec. Processed 1.00 million rows, 6.22 GB (3.84 million rows/s., 23.81 GB/s.)
 ```
 
 Note down the query latency so that we can compare it with the query latency of ANN (using vector index).
 Also record the query latency with cold OS file cache and with `max_theads=1` to recognize the real compute
 usage and storage bandwidth usage (extrapolate it to a production dataset with millions of vectors!)
 
+## Build Vector Similarity Index {#build-vector-similarity-index}
+
+Run the following SQL to define and build a vector similarity index on the `vector` column :
+
+```sql
+ALTER TABLE dbpedia ADD INDEX vector_index vector TYPE vector_similarity('hnsw', 'cosineDistance', 1536, 'bf16', 64, 512);
 
 
+ALTER TABLE dbpedia MATERIALIZE INDEX vector_index;
+```
+
+The parameters and performance considerations for index creation and search are described in the [documentation](../../engines/table-engines/mergetree-family/annindexes.md).
+
+Building and saving the index could take a few minutes depending on number of CPU cores available and the storage bandwidth.
+
+## Perform ANN search {#perform-ann-search}
+
+_Approximate Nearest Neighbours_ or ANN refers to group of techniques (e.g., special data structures like graphs and random forests) which compute results much faster than exact vector search. The result accuracy is typically "good enough" for practical use. Many approximate techniques provide parameters to tune the trade-off between the result accuracy and the search time.
+
+Once the vector similarity index has been built, vector search queries will automatically use the index :
+
+```sql
+SELECT
+    id,
+    title
+FROM dbpedia
+ORDER BY cosineDistance(vector, (
+        SELECT vector
+        FROM dbpedia
+        WHERE id = '<dbpedia:Glacier_Express>'
+    )) ASC
+LIMIT 20
+
+    ┌─id──────────────────────────────────────────────┬─title─────────────────────────────────┐
+ 1. │ <dbpedia:Glacier_Express>                       │ Glacier Express                       │
+ 2. │ <dbpedia:BVZ_Zermatt-Bahn>                      │ BVZ Zermatt-Bahn                      │
+ 3. │ <dbpedia:Gornergrat_railway>                    │ Gornergrat railway                    │
+ 4. │ <dbpedia:RegioExpress>                          │ RegioExpress                          │
+ 5. │ <dbpedia:Matterhorn_Gotthard_Bahn>              │ Matterhorn Gotthard Bahn              │
+ 6. │ <dbpedia:Rhaetian_Railway>                      │ Rhaetian Railway                      │
+ 7. │ <dbpedia:Gotthard_railway>                      │ Gotthard railway                      │
+ 8. │ <dbpedia:Furka–Oberalp_railway>                 │ Furka–Oberalp railway                 │
+ 9. │ <dbpedia:Jungfrau_railway>                      │ Jungfrau railway                      │
+10. │ <dbpedia:Monte_Generoso_railway>                │ Monte Generoso railway                │
+11. │ <dbpedia:Montreux–Oberland_Bernois_railway>     │ Montreux–Oberland Bernois railway     │
+12. │ <dbpedia:Brienz–Rothorn_railway>                │ Brienz–Rothorn railway                │
+13. │ <dbpedia:Lauterbrunnen–Mürren_mountain_railway> │ Lauterbrunnen–Mürren mountain railway │
+14. │ <dbpedia:Luzern–Stans–Engelberg_railway_line>   │ Luzern–Stans–Engelberg railway line   │
+15. │ <dbpedia:Rigi_Railways>                         │ Rigi Railways                         │
+16. │ <dbpedia:Saint-Gervais–Vallorcine_railway>      │ Saint-Gervais–Vallorcine railway      │
+17. │ <dbpedia:Gatwick_Express>                       │ Gatwick Express                       │
+18. │ <dbpedia:Brünig_railway_line>                   │ Brünig railway line                   │
+19. │ <dbpedia:Regional-Express>                      │ Regional-Express                      │
+20. │ <dbpedia:Schynige_Platte_railway>               │ Schynige Platte railway               │
+    └─────────────────────────────────────────────────┴───────────────────────────────────────┘
+
+20 rows in set. Elapsed: 0.025 sec. Processed 32.03 thousand rows, 2.10 MB (1.29 million rows/s., 84.80 MB/s.)
+```
+Compare the latency and I/O resource usage of the above query with the earlier query executed
+using brute force KNN.
+
+## Generating embeddings for search query {#generating-embeddings-for-search-query}
+
+The similarity search queries seen until now use one of the existing vectors in the `dbpedia`
+table as the search vector. In real world applications, the search vector has to be
+generated for a user input query which could be in natural language. The search vector
+should be generated by using the same LLM model used to generate embedding vectors
+for the dataset.
+
+An example Python script is listed below to demonstrate how to programmatically call OpenAI API's to
+generate embedding vectors using the `text-embedding-3-large` model. The search embedding vector
+is then passed as an argument to the `cosineDistance()` function in the `SELECT` query.
+
+Running the script requires an OpenAI API key to be set in the environment variable `OPENAI_API_KEY`.
+The OpenAI API key can be obtained after registering at https://platform.openai.com.
+
+```python
+import sys
+from openai import OpenAI
+import clickhouse_connect
+
+ch_client = clickhouse_connect.get_client(compress=False) # Pass ClickHouse credentials
+openai_client = OpenAI() # Set OPENAI_API_KEY environment variable
+
+def get_embedding(text, model):
+  text = text.replace("\n", " ")
+  return openai_client.embeddings.create(input = [text], model=model, dimensions=1536).data[0].embedding
+
+
+while True:
+    # Accept the search query from user
+    print("Enter a search query :")
+    input_query = sys.stdin.readline();
+
+    # Call OpenAI API endpoint to get the embedding
+    print("Generating the embedding for ", input_query);
+    embedding = get_embedding(input_query,
+                              model='text-embedding-3-large')
+
+    # Execute vector search query in ClickHouse
+    print("Querying clickhouse...")
+    params = {'v1':embedding, 'v2':10}
+    result = ch_client.query("SELECT id,title,text FROM dbpedia ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
+
+    for row in result.result_rows:
+        print(row[0], row[1], row[2])
+        print("---------------")
+```
 
 ## Q & A Demo Application {#q-and-a-demo-application}
 
@@ -116,7 +237,7 @@ The application performs the following steps :
 
 A couple of conversation examples by running the Q & A application are first listed below, followed by the code
 for the Q & A application. Running the application requires an OpenAI API key to be set in the environment
-variable `OPENAI_API_KEY`. The OpenAI API key can be obtained after registering at https://platform.openapi.com.
+variable `OPENAI_API_KEY`. The OpenAI API key can be obtained after registering at https://platform.openai.com.
 
 ```shell
 $ python3 QandA.py
