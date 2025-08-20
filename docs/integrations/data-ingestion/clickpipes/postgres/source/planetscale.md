@@ -2,7 +2,7 @@
 sidebar_label: 'Planetscale for Postgres'
 description: 'Set up Planetscale for Postgres as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/planetscale
-title: 'Planetscale for Postgres Source Setup Guide'
+title: 'PlanetScale for Postgres Source Setup Guide'
 ---
 
 import planetscale_wal_level_logical from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/planetscale/planetscale_wal_level_logical.png';
@@ -48,7 +48,7 @@ Changing this in the PlanetScale console WILL trigger a restart.
 Let's create a new user for ClickPipes with the necessary permissions suitable for CDC,
 and also create a publication that we'll use for replication.
 
-For this, you can connect to your Planetscale Postgres instance using the default `postgres.<...>` user and run the following SQL commands:
+For this, you can connect to your PlanetScale Postgres instance using the default `postgres.<...>` user and run the following SQL commands:
 ```sql
   CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
   GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -68,8 +68,8 @@ Make sure to replace `clickpipes_user` and `clickpipes_password` with your desir
 :::
 
 ## Caveats {#caveats}
-1. To connect to Planetscale Postgres, the current branch needs to be appended to the username created above. For example, if the created user was named `clickpipes_user`, the actual user provided during the ClickPipe creation needs to be `clickpipes_user`.`branch` where `branch` refers to the "id" of the current Planetscale Postgres [branch](https://planetscale.com/docs/postgres/branching). To quickly determine this, you can refer to the username of the `postgres` user you used to create the user earlier, the part after the period would be the branch id.
-2. Do not use the `PSBouncer` port (currently `6432`) for CDC pipes connecting to Planetscale Postgres, the normal port `5432` must be used. Either port may be used for initial-load only pipes.
+1. To connect to PlanetScale Postgres, the current branch needs to be appended to the username created above. For example, if the created user was named `clickpipes_user`, the actual user provided during the ClickPipe creation needs to be `clickpipes_user`.`branch` where `branch` refers to the "id" of the current PlanetScale Postgres [branch](https://planetscale.com/docs/postgres/branching). To quickly determine this, you can refer to the username of the `postgres` user you used to create the user earlier, the part after the period would be the branch id.
+2. Do not use the `PSBouncer` port (currently `6432`) for CDC pipes connecting to PlanetScale Postgres, the normal port `5432` must be used. Either port may be used for initial-load only pipes.
 3. Please ensure you're connecting only to the primary instance, [connecting to replica instances](https://planetscale.com/docs/postgres/scaling/replicas#how-to-query-postgres-replicas) is currently not supported. 
 
 ## What's next? {#whats-next}
