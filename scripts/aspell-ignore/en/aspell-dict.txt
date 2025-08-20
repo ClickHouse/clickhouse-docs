@@ -947,6 +947,7 @@ Percona
 PerfEventInfo
 PhpStorm
 PlantUML
+PlanetScale
 Poess
 PointDistKm
 PointDistM
