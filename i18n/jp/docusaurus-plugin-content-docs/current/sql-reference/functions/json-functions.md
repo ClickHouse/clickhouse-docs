@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for Json Functions'
-'sidebar_label': 'JSON'
-'sidebar_position': 105
-'slug': '/sql-reference/functions/json-functions'
-'title': 'JSON Functions'
+description: 'Documentation for Json Functions'
+sidebar_label: 'JSON'
+sidebar_position: 105
+slug: '/sql-reference/functions/json-functions'
+title: 'JSON Functions'
 ---
 
 

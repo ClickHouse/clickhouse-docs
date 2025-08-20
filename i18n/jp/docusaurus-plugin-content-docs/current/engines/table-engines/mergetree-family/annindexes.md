@@ -1,6 +1,6 @@
 ---
-'description': 'Documentation for Exact and Approximate Nearest Neighbor Search'
-'keywords':
+description: 'Documentation for Exact and Approximate Nearest Neighbor Search'
+keywords:
 - 'vector similarity search'
 - 'ann'
 - 'knn'
@@ -8,9 +8,9 @@
 - 'indices'
 - 'index'
 - 'nearest neighbor'
-'sidebar_label': 'Exact and Approximate Nearest Neighbor Search'
-'slug': '/engines/table-engines/mergetree-family/annindexes'
-'title': 'Exact and Approximate Nearest Neighbor Search'
+sidebar_label: 'Exact and Approximate Nearest Neighbor Search'
+slug: '/engines/table-engines/mergetree-family/annindexes'
+title: 'Exact and Approximate Nearest Neighbor Search'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';

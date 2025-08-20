@@ -41,7 +41,7 @@ In your Glue job, select the `Job details` tab, and expend the `Advanced propert
 <Image img={notebook_connections_config} size='md' alt='Glue Notebook connections config' force='true' />
 
 :::note
-The JARs used in the Glue connector are built for `Spark 3.2`, `Scala 2`, and `Python 3`. Make sure to select these versions when configuring your Glue job.
+The JARs used in the Glue connector are built for `Spark 3.3`, `Scala 2`, and `Python 3`. Make sure to select these versions when configuring your Glue job.
 :::
 
 </TabItem>

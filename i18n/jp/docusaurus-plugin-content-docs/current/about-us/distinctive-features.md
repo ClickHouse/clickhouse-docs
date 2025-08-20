@@ -1,9 +1,9 @@
 ---
-'slug': '/about-us/distinctive-features'
-'sidebar_label': 'ClickHouseのユニークさ'
-'sidebar_position': 50
-'description': '他のデータベース管理システムとは一線を画すClickHouseの特徴を理解する'
-'title': 'ClickHouseの特長'
+slug: '/about-us/distinctive-features'
+sidebar_label: 'ClickHouseのユニークさ'
+sidebar_position: 50
+description: '他のデータベース管理システムとは一線を画すClickHouseの特徴を理解する'
+title: 'ClickHouseの特長'
 ---
 
 

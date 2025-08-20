@@ -1,5 +1,5 @@
 ---
-title: 'ClickPipes for MySQL: Supported data types'
+title: 'Supported data types'
 slug: /integrations/clickpipes/mysql/datatypes
 description: 'Page describing MySQL ClickPipe datatype mapping from MySQL to ClickHouse'
 ---

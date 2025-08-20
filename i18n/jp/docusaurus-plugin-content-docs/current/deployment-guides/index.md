@@ -1,7 +1,7 @@
 ---
-'slug': '/deployment-guides/index'
-'title': 'デプロイメントガイドの概要'
-'description': 'デプロイメントとスケーリングセクションのランディングページ'
+slug: '/deployment-guides/index'
+title: 'デプロイメントガイドの概要'
+description: 'デプロイメントとスケーリングセクションのランディングページ'
 ---
 
 

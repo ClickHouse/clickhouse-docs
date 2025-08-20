@@ -1,9 +1,9 @@
 ---
-'slug': 'migrations'
-'title': 'マイグレーション'
-'pagination_prev': null
-'pagination_next': null
-'description': 'マイグレーションセクションのランディングページ'
+slug: 'migrations'
+title: 'マイグレーション'
+pagination_prev: null
+pagination_next: null
+description: 'マイグレーションセクションのランディングページ'
 ---
 
 

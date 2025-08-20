@@ -13,6 +13,7 @@ const frontmatterValidator = require('./plugins/frontmatter-validation/frontmatt
 import pluginLlmsTxt from './plugins/llms-txt-plugin.ts'
 import prismLight from "./src/utils/prismLight";
 import prismDark from "./src/utils/prismDark";
+import glossaryTransformer from "./plugins/glossary-transformer.js";
 
 // Helper function to skip over index.md files.
 function skipIndex(items) {
@@ -151,7 +152,7 @@ const config = {
           showLastUpdateTime: false,
           sidebarCollapsed: true,
           routeBasePath: "/",
-          remarkPlugins: [math, remarkCustomBlocks],
+          remarkPlugins: [math, remarkCustomBlocks, glossaryTransformer],
           beforeDefaultRemarkPlugins: [fixLinks],
           rehypePlugins: [katex],
         },
@@ -282,7 +283,7 @@ const config = {
       prism: {
         theme: prismLight,
         darkTheme: prismDark,
-        additionalLanguages: ["java", "cpp", "rust", "python", "javascript", "yaml", "bash", "docker"],
+        additionalLanguages: ["java", "cpp", "rust", "python", "javascript", "yaml", "bash", "docker", "csharp"],
         magicComments: [
           // Remember to extend the default highlight class name as well!
           {
@@ -329,7 +330,7 @@ const config = {
     [
       '@docusaurus/plugin-ideal-image',
       {
-        quality: 85,
+        quality: 100,
         sizes: [48, 300, 600, 1024, 2048],
         disableInDev: false,
       },

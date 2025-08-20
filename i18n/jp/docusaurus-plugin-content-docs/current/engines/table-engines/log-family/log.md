@@ -1,9 +1,9 @@
 ---
-'description': 'Logのドキュメント'
-'slug': '/engines/table-engines/log-family/log'
-'toc_priority': 33
-'toc_title': 'Log'
-'title': 'Log'
+description: 'Logのドキュメント'
+slug: '/engines/table-engines/log-family/log'
+toc_priority: 33
+toc_title: 'Log'
+title: 'Log'
 ---
 
 

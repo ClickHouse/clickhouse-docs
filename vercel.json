@@ -3370,6 +3370,26 @@
       "source": "/docs/guides/developer/lightweight-update",
       "destination": "/docs/guides/developer/on-the-fly-mutations",
       "permanent": true
+    },
+    {
+      "source": "/docs/manage/troubleshooting-billing-issues",
+      "destination": "/docs/manage/clickhouse-cloud-billing-compliance",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/system-tables/latency_log",
+      "destination": "/docs/operations/system-tables/histogram_metrics",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/system-tables/latency_buckets",
+      "destination": "/docs/operations/system-tables/histogram_metrics",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/kafka/cloud/confluent/custom-connector-cloud",
+      "destination": "/docs/integrations/kafka/cloud/confluent/sink-connector",
+      "permanent": true
     }
   ]
 }

@@ -1,8 +1,8 @@
 ---
-'slug': '/guides/developer/alternative-query-languages'
-'sidebar_label': '代替クエリ言語'
-'title': '代替クエリ言語'
-'description': 'ClickHouseで代替クエリ言語を使用する'
+slug: '/guides/developer/alternative-query-languages'
+sidebar_label: '代替クエリ言語'
+title: '代替クエリ言語'
+description: 'ClickHouseで代替クエリ言語を使用する'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';

@@ -1,9 +1,9 @@
 ---
-'description': 'MergeTree テーブル内のプロジェクションの内容を表します。内省に使用できます。'
-'sidebar_label': 'MergeTree プロジェクション'
-'sidebar_position': 77
-'slug': '/sql-reference/table-functions/mergeTreeProjection'
-'title': 'mergeTreeProjection'
+description: 'MergeTree テーブル内のプロジェクションの内容を表します。内省に使用できます。'
+sidebar_label: 'MergeTree プロジェクション'
+sidebar_position: 77
+slug: '/sql-reference/table-functions/mergeTreeProjection'
+title: 'mergeTreeProjection'
 ---
 
 

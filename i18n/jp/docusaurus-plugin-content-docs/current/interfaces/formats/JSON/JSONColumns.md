@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'JSONColumns フォーマットのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'JSONColumns フォーマットのドキュメント'
+input_format: true
+keywords:
 - 'JSONColumns'
-'output_format': true
-'slug': '/interfaces/formats/JSONColumns'
-'title': 'JSONColumns'
+output_format: true
+slug: '/interfaces/formats/JSONColumns'
+title: 'JSONColumns'
 ---
 
 

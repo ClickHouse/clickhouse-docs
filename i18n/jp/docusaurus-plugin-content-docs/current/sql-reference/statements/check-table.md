@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for Check Table'
-'sidebar_label': 'CHECK TABLE'
-'sidebar_position': 41
-'slug': '/sql-reference/statements/check-table'
-'title': 'CHECK TABLE Statement'
+description: 'Documentation for Check Table'
+sidebar_label: 'CHECK TABLE'
+sidebar_position: 41
+slug: '/sql-reference/statements/check-table'
+title: 'CHECK TABLE Statement'
 ---
 
 

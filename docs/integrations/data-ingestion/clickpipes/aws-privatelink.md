@@ -109,11 +109,11 @@ The output will contain a Resource-Configuration ARN, which you will need for th
 
 Sharing your resource requires a Resource-Share. This is facilitated through the Resource Access Manager (RAM).
 
-You can put the Resource-Configuration into the Resource-Share through [AWS console](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html) or by running the following command with ClickPipes account ID `072088201116`:
+You can put the Resource-Configuration into the Resource-Share through [AWS console](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html) or by running the following command with ClickPipes account ID `072088201116` (arn:aws:iam::072088201116:root):
 
 ```bash
 aws ram create-resource-share \
-    --principals 072088201116 \
+    --principals arn:aws:iam::072088201116:root \
     --resource-arns <RESOURCE_CONFIGURATION_ARN> \
     --name <RESOURCE_SHARE_NAME>
 ```

@@ -1,8 +1,8 @@
 ---
-'sidebar_label': '概要'
-'slug': '/cloud/manage/billing/overview'
-'title': 'Pricing'
-'description': 'ClickHouse Cloud の価格に関する概要ページ'
+sidebar_label: '概要'
+slug: '/cloud/manage/billing/overview'
+title: 'Pricing'
+description: 'ClickHouse Cloud の価格に関する概要ページ'
 ---
 
 

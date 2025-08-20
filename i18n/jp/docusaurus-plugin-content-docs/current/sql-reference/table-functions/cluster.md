@@ -1,9 +1,9 @@
 ---
-'description': '`remote_servers` セクションで構成されたすべてのシャードにアクセスを可能にし、分散テーブルを作成しなくてもクラスターのすべてのレプリカにアクセスできます。'
-'sidebar_label': 'クラスター'
-'sidebar_position': 30
-'slug': '/sql-reference/table-functions/cluster'
-'title': 'clusterAllReplicas'
+description: '`remote_servers` セクションで構成されたすべてのシャードにアクセスを可能にし、分散テーブルを作成しなくてもクラスターのすべてのレプリカにアクセスできます。'
+sidebar_label: 'クラスター'
+sidebar_position: 30
+slug: '/sql-reference/table-functions/cluster'
+title: 'clusterAllReplicas'
 ---
 
 

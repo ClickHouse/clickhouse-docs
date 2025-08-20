@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouseのNullableデータ型修飾子のドキュメント'
-'sidebar_label': 'Nullable(T)'
-'sidebar_position': 44
-'slug': '/sql-reference/data-types/nullable'
-'title': 'Nullable(T)'
+description: 'ClickHouseのNullableデータ型修飾子のドキュメント'
+sidebar_label: 'Nullable(T)'
+sidebar_position: 44
+slug: '/sql-reference/data-types/nullable'
+title: 'Nullable(T)'
 ---
 
 

@@ -1,10 +1,10 @@
 ---
-'slug': '/use-cases/data-lake/glue-catalog'
-'sidebar_label': 'AWS Glue カタログ'
-'title': 'AWS Glue カタログ'
-'pagination_prev': null
-'pagination_next': null
-'description': 'In this guide, we will walk you through the steps to query your data
+slug: '/use-cases/data-lake/glue-catalog'
+sidebar_label: 'AWS Glue カタログ'
+title: 'AWS Glue カタログ'
+pagination_prev: null
+pagination_next: null
+description: 'In this guide, we will walk you through the steps to query your data
   in S3 buckets using ClickHouse and the AWS Glue Data Catalog.'
 ---
 

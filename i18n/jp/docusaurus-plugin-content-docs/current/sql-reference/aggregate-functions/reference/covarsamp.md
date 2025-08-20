@@ -1,8 +1,8 @@
 ---
-'description': "Calculates the value of `\bar{x})(y - \bar{y})) / (n - 1)`"
-'sidebar_position': 124
-'slug': '/sql-reference/aggregate-functions/reference/covarsamp'
-'title': 'covarSamp'
+description: "Calculates the value of `\bar{x})(y - \bar{y})) / (n - 1)`"
+sidebar_position: 124
+slug: '/sql-reference/aggregate-functions/reference/covarsamp'
+title: 'covarSamp'
 ---
 
 

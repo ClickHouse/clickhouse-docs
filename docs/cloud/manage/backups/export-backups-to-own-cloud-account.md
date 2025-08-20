@@ -15,7 +15,7 @@ For details of how ClickHouse Cloud backups work, including "full" vs. "incremen
 Here we show examples of how to take full and incremental backups to AWS, GCP, Azure object storage as well as how to restore from the backups.
 
 :::note
-Users should be aware that any usage where backups are being exported to a different region in the same cloud provider, or to another cloud provider (in the same or different region) will incur [data transfer](../network-data-transfer.mdx) charges.
+Users should be aware that any usage where backups are being exported to a different region in the same cloud provider, will incur [data transfer](../network-data-transfer.mdx) charges.  Currently we do not support cross cloud backups.
 :::
 
 ## Requirements {#requirements}
@@ -26,19 +26,23 @@ You will need the following details to export/restore backups to your own CSP st
 
 1. AWS S3 endpoint, in the format:
 
-    ```text
-    s3://<bucket_name>.s3.amazonaws.com/<directory>
-    ```
+  ```text
+  s3://<bucket_name>.s3.amazonaws.com/<directory>
+  ```
 
-    For example: 
-    ```text
-    s3://testchbackups.s3.amazonaws.com/backups/
-   ```
-    Where:
-   - `testchbackups` is the name of the S3 bucket to export backups to.
-   - `backups` is an optional subdirectory.
+  For example: 
+  ```text
+  s3://testchbackups.s3.amazonaws.com/backups/
+  ```
+  Where:
+    - `testchbackups` is the name of the S3 bucket to export backups to.
+    - `backups` is an optional subdirectory.
 
-2. AWS access key and secret.
+2. AWS access key and secret. AWS role based authentication is also supported and can be used in place of AWS access key and secret.
+
+:::note
+In order to use role based authentication, please follow the Secure s3 [setup](https://clickhouse.com/docs/cloud/security/secure-s3). In addition, you will need to add `s3:PutObject`, and `s3:DeleteObject` permissions to the IAM policy described [here.](https://clickhouse.com/docs/cloud/security/secure-s3#option-2-manually-create-iam-role)
+:::
 
 ### Azure {#azure}
 

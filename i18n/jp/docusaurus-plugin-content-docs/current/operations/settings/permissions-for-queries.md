@@ -1,9 +1,9 @@
 ---
-'description': 'クエリの権限設定。'
-'sidebar_label': 'クエリのアクセス権限'
-'sidebar_position': 58
-'slug': '/operations/settings/permissions-for-queries'
-'title': 'クエリの権限'
+description: 'クエリの権限設定。'
+sidebar_label: 'クエリのアクセス権限'
+sidebar_position: 58
+slug: '/operations/settings/permissions-for-queries'
+title: 'クエリの権限'
 ---
 
 

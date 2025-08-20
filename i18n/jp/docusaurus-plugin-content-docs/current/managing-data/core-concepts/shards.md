@@ -1,8 +1,8 @@
 ---
-'slug': '/shards'
-'title': 'テーブルシャードとレプリカ'
-'description': 'ClickHouseにおけるテーブルシャードとレプリカとは何ですか'
-'keywords':
+slug: '/shards'
+title: 'テーブルシャードとレプリカ'
+description: 'ClickHouseにおけるテーブルシャードとレプリカとは何ですか'
+keywords:
 - 'shard'
 - 'shards'
 - 'sharding'

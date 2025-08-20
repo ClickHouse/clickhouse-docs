@@ -1,14 +1,14 @@
 ---
-'slug': '/examples/aggregate-function-combinators/quantilesTimingIf'
-'title': 'quantilesTimingIf'
-'description': '使用quantilesTimingIf結合子的示例'
-'keywords':
+slug: '/examples/aggregate-function-combinators/quantilesTimingIf'
+title: 'quantilesTimingIf'
+description: '使用quantilesTimingIf結合子的示例'
+keywords:
 - 'quantilesTiming'
 - 'if'
 - 'combinator'
 - 'examples'
 - 'quantilesTimingIf'
-'sidebar_label': 'quantilesTimingIf'
+sidebar_label: 'quantilesTimingIf'
 ---
 
 

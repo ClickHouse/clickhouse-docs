@@ -8,7 +8,8 @@ The library provides its own API to send requests to a server. The library also 
 ## Setup {#setup}
 
 - Maven Central (project web page): https://mvnrepository.com/artifact/com.clickhouse/client-v2
-- Nightly builds (repository link): https://s01.oss.sonatype.org/content/repositories/snapshots/com/clickhouse/
+- Nightly builds (repository link): https://central.sonatype.com/repository/maven-snapshots/
+- Old Nightly builds artifactory (repository link): https://s01.oss.sonatype.org/content/repositories/snapshots/
 <br/>
 <Tabs groupId="client-setup">
 <TabItem value="maven" label="Maven" >
@@ -17,7 +18,7 @@ The library provides its own API to send requests to a server. The library also 
 <dependency>
     <groupId>com.clickhouse</groupId>
     <artifactId>client-v2</artifactId>
-    <version>0.9.0</version>
+    <version>0.9.1</version>
 </dependency>
 ```
 
@@ -26,14 +27,14 @@ The library provides its own API to send requests to a server. The library also 
 
 ```kotlin
 // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation("com.clickhouse:client-v2:0.9.0")
+implementation("com.clickhouse:client-v2:0.9.1")
 ```
 </TabItem>
 <TabItem value="gradle" label="Gradle">
 
 ```groovy
 // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation 'com.clickhouse:client-v2:0.9.0'
+implementation 'com.clickhouse:client-v2:0.9.1'
 ```
 
 </TabItem>
@@ -162,6 +163,10 @@ Configuration is defined during client creation. See `com.clickhouse.client.api.
 | `useHTTPBasicAuth(boolean useBasicAuth)` | - `useBasicAuth` - flag that indicates if the option should be enabled | Sets if basic HTTP authentication should be used for user-password authentication. Default is enabled. Using this type of authentication resolves issues with passwords containing special characters that cannot be transferred over HTTP headers. <br/> <br/> Default: `true` <br/> Enum: `ClientConfigProperties.HTTP_USE_BASIC_AUTH` <br/> Key: `http_use_basic_auth` |
 | `setClientName(String clientName)` | - `clientName` - a string representing application name | Sets additional information about calling application. This string will be passed to server as a client name. In case of HTTP protocol it will be passed as a `User-Agent` header. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.CLIENT_NAME` <br/> Key: `client_name`|
 | `useBearerTokenAuth(String bearerToken)` | - `bearerToken` - an encoded bearer token |  Specifies whether to use Bearer Authentication and what token to use. The token will be sent as is, so it should be encoded before passing to this method. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.BEARERTOKEN_AUTH` <br/> Key: `bearer_token` |
+| `registerClientMetrics(Object registry, String name)` | - `registry` - Micrometer registry instance<br /> - `name` - metrics group name | Registers sensors with Micrometer (https://micrometer.io/) registry instance. |
+| `setServerVersion(String version)` | - `version` - string value of a server version | Sets server version to avoid version detection. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.SERVER_VERSION` <br/> Key: `server_version` |
+| `typeHintMapping(Map typeHintMapping)` | - `typeHintMapping` - map of type hints | Sets type hint mapping for ClickHouse types. For example, to make multidimesional arrays be present as Java containers instead of own Array objects. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.TYPE_HINT_MAPPING` <br/> Key: `type_hint_mapping` |
+| `sslSocketSNI(String sni)` | - `sni` - string value of a server name | Sets server name to be used for SNI (Server Name Indication) in SSL/TLS connection. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.SSL_SOCKET_SNI` <br/> Key: `ssl_socket_sni` |
 </WideTableWrapper>
 
 ### Server Settings
@@ -486,7 +491,7 @@ Future of `QueryResponse` type - a result dataset and additional information lik
 Map<String, Object> queryParams = new HashMap<>();
 queryParams.put("param1", 2);
 
-try (QueryResponse queryResponse =
+try (QueryResponse response =
         client.query("SELECT * FROM " + table + " WHERE col1 >= {param1:UInt32}", queryParams, new QuerySettings()).get()) {
 
     // Create a reader to access the data in a convenient way

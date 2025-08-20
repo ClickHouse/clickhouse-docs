@@ -1,14 +1,14 @@
 ---
-'slug': '/examples/aggregate-function-combinators/groupArrayResample'
-'title': 'groupArrayResample'
-'description': 'groupArrayをResampleコンビネータと共に使用する例'
-'keywords':
+slug: '/examples/aggregate-function-combinators/groupArrayResample'
+title: 'groupArrayResample'
+description: 'groupArrayをResampleコンビネータと共に使用する例'
+keywords:
 - 'groupArray'
 - 'Resample'
 - 'combinator'
 - 'examples'
 - 'groupArrayResample'
-'sidebar_label': 'groupArrayResample'
+sidebar_label: 'groupArrayResample'
 ---
 
 

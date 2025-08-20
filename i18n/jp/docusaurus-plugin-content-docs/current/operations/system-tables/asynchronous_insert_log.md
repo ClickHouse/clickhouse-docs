@@ -1,10 +1,10 @@
 ---
-'description': '非同期挿入に関する情報を含むシステムテーブル。各エントリは非同期挿入クエリが非同期挿入クエリにバッファリングされたことを表します。'
-'keywords':
+description: '非同期挿入に関する情報を含むシステムテーブル。各エントリは非同期挿入クエリが非同期挿入クエリにバッファリングされたことを表します。'
+keywords:
 - 'system table'
 - 'asynchronous_insert_log'
-'slug': '/operations/system-tables/asynchronous_insert_log'
-'title': 'system.asynchronous_insert_log'
+slug: '/operations/system-tables/asynchronous_insert_log'
+title: 'system.asynchronous_insert_log'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

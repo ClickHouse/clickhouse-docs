@@ -1,9 +1,9 @@
 ---
-'title': 'Rust用のchDBのインストール'
-'sidebar_label': 'Rust'
-'slug': '/chdb/install/rust'
-'description': 'Rust用のchDBのインストール方法'
-'keywords':
+title: 'Rust用のchDBのインストール'
+sidebar_label: 'Rust'
+slug: '/chdb/install/rust'
+description: 'Rust用のchDBのインストール方法'
+keywords:
 - 'chdb'
 - 'embedded'
 - 'clickhouse-lite'

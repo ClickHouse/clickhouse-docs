@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for CREATE DATABASE'
-'sidebar_label': 'DATABASE'
-'sidebar_position': 35
-'slug': '/sql-reference/statements/create/database'
-'title': 'CREATE DATABASE'
+description: 'Documentation for CREATE DATABASE'
+sidebar_label: 'DATABASE'
+sidebar_position: 35
+slug: '/sql-reference/statements/create/database'
+title: 'CREATE DATABASE'
 ---
 
 

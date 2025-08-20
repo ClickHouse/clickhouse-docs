@@ -1,8 +1,8 @@
 ---
-'slug': '/parts'
-'title': 'テーブルのパーツ'
-'description': 'ClickHouseにおけるデータパーツとは何か'
-'keywords':
+slug: '/parts'
+title: 'テーブルのパーツ'
+description: 'ClickHouseにおけるデータパーツとは何か'
+keywords:
 - 'part'
 ---
 

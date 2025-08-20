@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouse で MySQL クライアントが接続できる MySQL プロトコルインターフェースのドキュメント'
-'sidebar_label': 'MySQL インターフェース'
-'sidebar_position': 25
-'slug': '/interfaces/mysql'
-'title': 'MySQL インターフェース'
+description: 'ClickHouse で MySQL クライアントが接続できる MySQL プロトコルインターフェースのドキュメント'
+sidebar_label: 'MySQL インターフェース'
+sidebar_position: 25
+slug: '/interfaces/mysql'
+title: 'MySQL インターフェース'
 ---
 
 import Image from '@theme/IdealImage';

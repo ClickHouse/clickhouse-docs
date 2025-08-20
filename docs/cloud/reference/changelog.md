@@ -31,6 +31,32 @@ import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.pn
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/cloud/reference/cloud-compatibility.md) page.
 
+## August 13, 2025 {#august-13-2025}
+
+- **ClickPipes for MongoDB CDC now in Private Preview**
+  You can now use ClickPipes to replicate data from MongoDB into ClickHouse Cloud in a few clicks, enabling
+  real-time analytics without the need for external ETL tools. The connector supports continuous
+  replication as well as one-time migrations, and is compatible with MongoDB Atlas and self-hosted MongoDB
+  deployments. Read the [blogpost](https://clickhouse.com/blog/mongodb-cdc-clickhouse-preview) for an overview of the MongoDB CDC connector and [sign up for early access here](https://clickhouse.com/cloud/clickpipes/mongodb-cdc-connector)! 
+ 
+## August 8, 2025 {#august-08-2025}
+
+- **Notifications**: Users will now receive a UI notification when their service starts upgrading to a new ClickHouse version. Additional Email and Slack notifications can be added via the notification center. 
+- **ClickPipes**: Azure Blob Storage (ABS) ClickPipes support was added to the ClickHouse Terraform provider. See the provider documentation for an example of how to programmatically create an ABS ClickPipe.
+  - [Bug fix] Object storage ClickPipes writing to a destination table using the Null engine now report "Total records" and "Data ingested" metrics in the UI.
+  - [Bug fix] The “Time period” selector for metrics in the UI defaulted to “24 hours” regardless of the selected time period. This has now been fixed, and the UI correctly updates the charts for the selected time period.
+- **Cross-region private link (AWS)** is now Generally Available. Please refer to the [documentation](/manage/security/aws-privatelink) for the list of supported regions.
+
+## July 31, 2025 {#july-31-2025}
+
+**Vertical scaling for ClickPipes now available**
+
+[Vertical scaling is now available for streaming ClickPipes](https://clickhouse.com/blog/clickpipes-flexible-scaling-monitoring). 
+This feature allows you to control the size of each replica, in addition to the 
+number of replicas (horizontal scaling). The details page for each ClickPipe now
+also includes per-replica CPU and memory utilization, which helps you better 
+understand your workloads and plan re-sizing operations with confidence.
+
 ## July 24, 2025 {#july-24-2025}
 
 **ClickPipes for MySQL CDC now in public beta**

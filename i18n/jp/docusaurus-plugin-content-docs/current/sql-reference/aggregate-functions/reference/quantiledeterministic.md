@@ -1,8 +1,8 @@
 ---
-'description': '数値データシーケンスの近似四分位数を計算します。'
-'sidebar_position': 172
-'slug': '/sql-reference/aggregate-functions/reference/quantiledeterministic'
-'title': 'quantileDeterministic'
+description: '数値データシーケンスの近似四分位数を計算します。'
+sidebar_position: 172
+slug: '/sql-reference/aggregate-functions/reference/quantiledeterministic'
+title: 'quantileDeterministic'
 ---
 
 

@@ -1,10 +1,10 @@
 ---
-'description': 'The Hive engine allows you to perform `SELECT` queries on HDFS Hive
+description: 'The Hive engine allows you to perform `SELECT` queries on HDFS Hive
   table.'
-'sidebar_label': 'Hive'
-'sidebar_position': 84
-'slug': '/engines/table-engines/integrations/hive'
-'title': 'Hive'
+sidebar_label: 'Hive'
+sidebar_position: 84
+slug: '/engines/table-engines/integrations/hive'
+title: 'Hive'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

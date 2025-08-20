@@ -1,13 +1,13 @@
 ---
-'sidebar_label': 'Splunk'
-'sidebar_position': 198
-'slug': '/integrations/splunk'
-'keywords':
+sidebar_label: 'Splunk'
+sidebar_position: 198
+slug: '/integrations/splunk'
+keywords:
 - 'Splunk'
 - 'integration'
 - 'data visualization'
-'description': 'Connect Splunk dashboards to ClickHouse'
-'title': 'Connecting Splunk to ClickHouse'
+description: 'Connect Splunk dashboards to ClickHouse'
+title: 'Connecting Splunk to ClickHouse'
 ---
 
 import Image from '@theme/IdealImage';

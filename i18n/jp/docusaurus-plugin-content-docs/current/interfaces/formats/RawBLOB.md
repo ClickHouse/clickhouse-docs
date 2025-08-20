@@ -1,9 +1,9 @@
 ---
-'description': 'RawBLOB形式のドキュメント'
-'keywords':
+description: 'RawBLOB形式のドキュメント'
+keywords:
 - 'RawBLOB'
-'slug': '/interfaces/formats/RawBLOB'
-'title': 'RawBLOB'
+slug: '/interfaces/formats/RawBLOB'
+title: 'RawBLOB'
 ---
 
 
