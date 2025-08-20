@@ -12,7 +12,9 @@ export function useAnchorFix() {
             if (hash) {
                 // Wait for content to load, then scroll
                 setTimeout(() => {
-                    const element = document.querySelector(hash);
+                    // CSS selectors that start with a digit are invalid, so we need to escape them
+                    const escapedHash = hash.replace(/^#(\d)/, '#\\3$1 ');
+                    const element = document.querySelector(escapedHash);
                     if (element) {
                         element.scrollIntoView({ behavior: 'smooth' });
                     }
