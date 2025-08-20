@@ -1,5 +1,5 @@
 ---
-description: 'Dataset containing 1 million articles from Wikipedia and their vector embeddings"
+description: 'Dataset containing 1 million articles from Wikipedia and their vector embeddings'
 sidebar_label: 'dbpedia dataset'
 slug: /getting-started/example-datasets/dbpedia-dataset
 title: 'dbpedia dataset'
@@ -319,4 +319,3 @@ Question: {question}"""
     print(response.choices[0].message.content)
     print("\n")
 ```
-
