@@ -19,7 +19,7 @@ export function SearchHit({ hit, children }) {
           color: '#888',
           display: 'block',
           lineHeight: '1',
-          marginTop: '2px'
+          marginBottom: '12px'
         }}>
           {breadcrumbs.join(' › ')}
         </span>
