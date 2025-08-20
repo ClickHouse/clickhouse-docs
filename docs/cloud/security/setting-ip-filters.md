@@ -24,6 +24,11 @@ Classless Inter-domain Routing (CIDR) notation, allows you to specify IP address
 
 ## Create or modify an IP access list {#create-or-modify-an-ip-access-list}
 
+:::note Applicable only to connections outside of PrivateLink
+IP access lists only apply to connections from the public internet, outside of [PrivateLink](/cloud/security/private-link-overview).
+If you only want traffic from PrivateLink, set `DenyAll` in IP Allow list.
+:::
+
 <details>
   <summary>IP access list for ClickHouse services</summary>
 
@@ -63,15 +68,15 @@ This screenshot shows an access list which allows traffic from a range of IP add
 
 <Image img={ip_filter_add_single_ip} size="md" alt="Adding a single IP to the access list in ClickHouse Cloud" border/>
 
-1. Delete an existing entry
+2. Delete an existing entry
 
   Clicking the cross (x) can deletes an entry
 
-1. Edit an existing entry
+3. Edit an existing entry
 
   Directly modifying the entry
 
-1. Switch to allow access from **Anywhere**
+4. Switch to allow access from **Anywhere**
 
   This is not recommended, but it is allowed.  We recommend that you expose an application built on top of ClickHouse to the public and restrict access to the back-end ClickHouse Cloud service.
 

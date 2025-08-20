@@ -146,6 +146,8 @@ SETTINGS distributed_ddl_task_timeout=0
 
 Compute prices are the same for all services in a warehouse (primary and secondary). Storage is billed only once - it is included in the first (original) service.
 
+Please refer to the pricing calculator on the [pricing](https://clickhouse.com/pricing) page, which will help estimate the cost based on your workload size and tier selection.
+
 ## Backups {#backups}
 
 - As all services in a single warehouse share the same storage, backups are made only on the primary (initial) service. By this, the data for all services in a warehouse is backed up.

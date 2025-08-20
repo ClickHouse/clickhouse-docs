@@ -200,13 +200,11 @@ FROM pypi_downloads_v2
 データのロードが完了したら、[`ALTER TABLE MOVE PARTITION`](/sql-reference/statements/alter/partition#move-partition-to-table)句を使用して、重複テーブルからメインテーブルにデータを移動できます。
 
 ```sql
-ALTER TABLE pypi
- (MOVE PARTITION () FROM pypi_v2)
+ALTER TABLE pypi_v2 MOVE PARTITION () TO pypi
 
 0行のセット。経過時間: 1.401秒。
 
-ALTER TABLE pypi_downloads
- (MOVE PARTITION () FROM pypi_downloads_v2)
+ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
 
 0行のセット。経過時間: 0.389秒。
 ```
@@ -312,11 +310,9 @@ WHERE timestamp < '2024-12-17 09:00:00'
 この挿入が完了したら、関連するパーティションを移動できます。
 
 ```sql
-ALTER TABLE pypi
- (MOVE PARTITION () FROM pypi_v2)
+ALTER TABLE pypi_v2 MOVE PARTITION () TO pypi
 
-ALTER TABLE pypi_downloads
- (MOVE PARTITION () FROM pypi_downloads_v2)
+ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
 ```
 
 もし歴史的データが孤立したバケットであれば、上記の時間フィルタは必要ありません。時間または単調増加列が利用できない場合は、歴史的データを分離します。

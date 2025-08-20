@@ -429,7 +429,7 @@ CompletableFuture<QueryResponse> query(String sqlQuery, Map<String, Object> quer
 Map<String, Object> queryParams = new HashMap<>();
 queryParams.put("param1", 2);
 
-try (QueryResponse queryResponse =
+try (QueryResponse response =
         client.query("SELECT * FROM " + table + " WHERE col1 >= {param1:UInt32}", queryParams, new QuerySettings()).get()) {
 
     // データに便利にアクセスするためのリーダーを作成します

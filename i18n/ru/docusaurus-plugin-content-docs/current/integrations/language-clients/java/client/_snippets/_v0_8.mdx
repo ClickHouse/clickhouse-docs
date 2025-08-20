@@ -431,7 +431,7 @@ Future типа `QueryResponse` - набор данных результатов
 Map<String, Object> queryParams = new HashMap<>();
 queryParams.put("param1", 2);
 
-try (QueryResponse queryResponse =
+try (QueryResponse response =
         client.query("SELECT * FROM " + table + " WHERE col1 >= {param1:UInt32}", queryParams, new QuerySettings()).get()) {
 
     // Создайте ридер для удобного доступа к данным

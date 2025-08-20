@@ -34,13 +34,17 @@ import step_21 from '@site/static/images/use-cases/observability/hyperdx-demo/st
 import step_22 from '@site/static/images/use-cases/observability/hyperdx-demo/step_22.png';
 import step_23 from '@site/static/images/use-cases/observability/hyperdx-demo/step_23.png';
 import step_24 from '@site/static/images/use-cases/observability/hyperdx-demo/step_24.png';
-import architecture from '@site/static/images/use-cases/observability/hyperdx-demo/architecture.png';
 import demo_sources from '@site/static/images/use-cases/observability/hyperdx-demo//demo_sources.png';
 import edit_connection from '@site/static/images/use-cases/observability/edit_connection.png';
+import DemoArchitecture from '@site/docs/use-cases/observability/clickstack/example-datasets/_snippets/_demo.md';
 
 **The following guide assumes you have deployed ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started), or [Local Mode Only](/use-cases/observability/clickstack/deployment/local-mode-only) and completed initial user creation. Alternatively, users can skip all local setup and simply connect to our ClickStack hosted demo [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) which uses this dataset.**
 
 This guide uses a sample dataset hosted on the public ClickHouse playground at [sql.clickhouse.com](https://sql.clickhpouse.com), which you can connect to from your local ClickStack deployment.
+
+:::warning Not supported with HyperDX in ClickHouse Cloud
+Remote databases are not supported when HyperDX is hosted in ClickHouse Cloud. This dataset is therefore not supported. 
+:::
 
 It contains approximately 40 hours of data captured from the ClickHouse version of the official OpenTelemetry (OTel) demo. The data is replayed nightly with timestamps adjusted to the current time window, allowing users to explore system behavior using HyperDX's integrated logs, traces, and metrics.
 
@@ -56,15 +60,11 @@ The customer support team has reported that users are experiencing issues comple
 
 Using HyperDX, the SRE team will analyze logs, traces, and metrics to diagnose and resolve the issue—then review session data to confirm whether their conclusions align with actual user behavior.
 
-## Demo architecture {#demo-architecture}
+## Open Telemetry Demo {#otel-demo}
 
-This demo reuses the official OpenTelemetry demo. This is composed of microservices written in different programming languages that talk to each other over gRPC and HTTP and a load generator that uses Locust to fake user traffic.
+This demo uses a [ClickStack maintained fork](https://github.com/ClickHouse/opentelemetry-demo) of the official OpenTelemetry demo.
 
-<Image img={architecture} alt="Architecture" size="lg"/>
-
-_Credit: https://opentelemetry.io/docs/demo/architecture/_
-
-Further details on the demo can be found in the [official OpenTelemetry documentation](https://opentelemetry.io/docs/demo/). 
+<DemoArchitecture/>
 
 ## Demo steps {#demo-steps}
 

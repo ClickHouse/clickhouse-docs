@@ -194,7 +194,7 @@ ORDER BY (ServiceName, SeverityText, toUnixTimestamp(Timestamp), TraceId)
 
 The equivalent schema for extracting using JSON functions from a String `Body` can be found [here](https://pastila.nl/?005cbb97/513b174a7d6114bf17ecc657428cf829#gqoOOiomEjIiG6zlWhE+Sg==).
 
-Our three materialized view columns extract the request page, request type, and referrer's domain. These access the map keys and apply functions to their values. Our subsequent query is significantly faster:
+Our three materialized columns extract the request page, request type, and referrer's domain. These access the map keys and apply functions to their values. Our subsequent query is significantly faster:
 
 ```sql
 SELECT RequestPage AS path, count() AS c

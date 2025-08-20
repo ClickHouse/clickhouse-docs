@@ -11,8 +11,9 @@ WITH
                 format('[{}](/operations/settings/settings#{})', name, name) AS Name,
                 format('`{}`', ifNull(default, ' ')) AS Default
 FROM system.settings
-WHERE tier = 'Beta' AND alias_for='' AND name NOT LIKE 'vector_search_with_rescoring'
-    ),
+WHERE tier = 'Beta'
+AND alias_for=''
+AND NOT (name LIKE 'vector_search_with_rescoring' OR name LIKE 'vector_search_postfilter_multiplier' OR name LIKE 'vector_search_index_fetch_multiplier')),
     beta_mergetree_settings AS
     (
 SELECT

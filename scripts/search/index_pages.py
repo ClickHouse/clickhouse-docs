@@ -38,7 +38,7 @@ def read_metadata(text):
     for part in parts:
         parts = part.split(":")
         if len(parts) == 2:
-            if parts[0] in ['title', 'description', 'slug', 'keyword', 'score']:
+            if parts[0] in ['title', 'description', 'slug', 'keywords', 'score']:
                 metadata[parts[0]] = int(parts[1].strip()) if parts[0] == 'score' else parts[1].strip()
     return metadata
 

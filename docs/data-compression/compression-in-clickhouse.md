@@ -62,6 +62,79 @@ GROUP BY name
 └───────────────────────┴─────────────────┴───────────────────┴────────────┘
 ```
 
+<details>
+   
+<summary>A note on compact versus wide parts</summary>
+
+If you are seeing `compressed_size` or `uncompressed_size` values equal to `0`, this could be because the type of the
+parts are `compact` and not `wide` (see description for `part_type` in [`system.parts`](/operations/system-tables/parts)).
+The part format is controlled by settings [`min_bytes_for_wide_part`](/operations/settings/merge-tree-settings#min_bytes_for_wide_part)
+and [`min_rows_for_wide_part`](/operations/settings/merge-tree-settings#min_rows_for_wide_part) meaning that if the inserted
+data results in a part which does not exceed the values of the aforementioned settings, the part will be compact rather
+than wide and you will not see the values for `compressed_size` or `uncompressed_size`.
+
+To demonstrate:
+
+```sql title="Query"
+-- Create a table with compact parts
+CREATE TABLE compact (
+  number UInt32
+)
+ENGINE = MergeTree()
+ORDER BY number 
+AS SELECT * FROM numbers(100000); -- Not big enough to exceed default of min_bytes_for_wide_part = 10485760
+
+-- Check the type of the parts
+SELECT table, name, part_type from system.parts where table = 'compact';
+
+-- Get the compressed and uncompressed column sizes for the compact table
+SELECT name,
+   formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+   formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+   round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
+FROM system.columns
+WHERE table = 'compact'
+GROUP BY name;
+
+-- Create a table with wide parts 
+CREATE TABLE wide (
+  number UInt32
+)
+ENGINE = MergeTree()
+ORDER BY number
+SETTINGS min_bytes_for_wide_part=0
+AS SELECT * FROM numbers(100000);
+
+-- Check the type of the parts
+SELECT table, name, part_type from system.parts where table = 'wide';
+
+-- Get the compressed and uncompressed sizes for the wide table
+SELECT name,
+   formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+   formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+   round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
+FROM system.columns
+WHERE table = 'wide'
+GROUP BY name;
+```
+
+```response title="Response"
+   ┌─table───┬─name──────┬─part_type─┐
+1. │ compact │ all_1_1_0 │ Compact   │
+   └─────────┴───────────┴───────────┘
+   ┌─name───┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
+1. │ number │ 0.00 B          │ 0.00 B            │   nan │
+   └────────┴─────────────────┴───────────────────┴───────┘
+   ┌─table─┬─name──────┬─part_type─┐
+1. │ wide  │ all_1_1_0 │ Wide      │
+   └───────┴───────────┴───────────┘
+   ┌─name───┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
+1. │ number │ 392.31 KiB      │ 390.63 KiB        │     1 │
+   └────────┴─────────────────┴───────────────────┴───────┘
+```
+
+</details>
+
 We show both a compressed and uncompressed size here. Both are important. The compressed size equates to what we will need to read off disk - something we want to minimize for query performance (and storage cost). This data will need to be decompressed prior to reading. The size of this uncompressed size will be dependent on the data type used in this case. Minimizing this size will reduce memory overhead of queries and the amount of data which has to be processed by the query, improving utilization of caches and ultimately query times.
 
 > The above query relies on the table `columns` in the system database. This database is managed by ClickHouse and is a treasure trove of useful information, from query performance metrics to background cluster logs. We recommend ["System Tables and a Window into the Internals of ClickHouse"](https://clickhouse.com/blog/clickhouse-debugging-issues-with-system-tables) and accompanying articles[[1]](https://clickhouse.com/blog/monitoring-troubleshooting-insert-queries-clickhouse)[[2]](https://clickhouse.com/blog/monitoring-troubleshooting-select-queries-clickhouse) for the curious reader. 

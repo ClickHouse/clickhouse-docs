@@ -34,7 +34,7 @@ On Day 1, a full backup is taken to start the backup chain. On Day 2, an increme
 
 ## Default backup policy {#default-backup-policy}
 
-In the Basic, Scale, and Enterprise tiers, backups are metered and billed separately from storage. All services will default to one backup with the ability to configure more, starting with the Scale tier, via the Settings tab of the Cloud console.
+In the Basic, Scale, and Enterprise tiers, backups are metered and billed separately from storage. All services will default to one daily backup with the ability to configure more, starting with the Scale tier, via the Settings tab of the Cloud console. Each backup will be retained for at least 24 hours.
 
 ## Backup status list {#backup-status-list}
 
@@ -167,6 +167,10 @@ Should you wish to drop tables greater than this threshold you can use setting `
 DROP TABLE IF EXISTS table_to_drop
 SYNC SETTINGS max_table_size_to_drop=2097152 -- increases the limit to 2TB
 ```
+:::
+
+:::note
+Legacy Plans: For customers on legacy plans, default daily backups retained for 24 hours, are included in the storage cost.
 :::
 
 ## Configurable backups {#configurable-backups}
