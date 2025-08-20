@@ -257,12 +257,12 @@ const HeroSection = () => {
                         backgroundColor: '#faff69',
                         color: '#000000',
                         whiteSpace: 'nowrap',
-                        boxShadow: 'none',
+                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
                         fontWeight: 600,
                         flexShrink: 0,
                         '&:hover': {
                             backgroundColor: '#f5f464',
-                            boxShadow: 'none',
+                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                         },
                     }}
                 >
@@ -342,9 +342,9 @@ const ExploreDocs = () => {
                                 </div>
                                 <div style={{ marginTop: 'auto', paddingTop: '12px' }}>
                                     <Link to="/getting-started/quick-start/cloud" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Quick start</Link>
+                                    <Link to="/cloud/get-started" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>ClickHouse Cloud</Link>
                                     <Link to="/install" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Installation</Link>
                                     <Link to="/deployment-modes" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Deployment modes</Link>
-                                    <Link to="/cloud/get-started" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>ClickHouse Cloud</Link>
                                     <Link to="/getting-started/example-datasets" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Example datasets</Link>
                                 </div>
                             </CardContent>
@@ -579,19 +579,25 @@ const ExploreDocs = () => {
                     </Box>
 
                     {/* Featured Card 1 - Row 4, Column 1 */}
-                    <Card sx={{ 
-                        gridRow: 4,
-                        gridColumn: 1,
-                        height: '300px',
-                        backgroundColor: 'background.paper',
-                        color: 'text.primary',
-                        boxShadow: 3,
-                        '&:hover': {
-                            boxShadow: 6,
-                        },
-                        display: 'flex',
-                        flexDirection: 'column'
-                    }}>
+                    <Card 
+                        component={Link}
+                        to="/integrations/clickpipes/mongodb"
+                        sx={{ 
+                            gridRow: 4,
+                            gridColumn: 1,
+                            height: '300px',
+                            backgroundColor: 'background.paper',
+                            color: 'text.primary',
+                            boxShadow: 3,
+                            textDecoration: 'none',
+                            '&:hover': {
+                                boxShadow: 6,
+                                textDecoration: 'none',
+                                color: 'inherit',
+                            },
+                            display: 'flex',
+                            flexDirection: 'column'
+                        }}>
                         <CardActionArea sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
                             <CardMedia
                                 component="img"
@@ -630,7 +636,7 @@ const ExploreDocs = () => {
                                 <Link
                                     to="/integrations/clickpipes/mongodb"
                                     style={{
-                                        color: '#faff69',
+                                        color: 'var(--click-color-link)',
                                         textDecoration: 'none',
                                         fontSize: '14px',
                                         fontWeight: 600,
@@ -646,19 +652,25 @@ const ExploreDocs = () => {
                     </Card>
 
                     {/* Featured Card 2 - Row 4, Column 2 */}
-                    <Card sx={{ 
-                        gridRow: 4,
-                        gridColumn: 2,
-                        height: '300px',
-                        backgroundColor: 'background.paper',
-                        color: 'text.primary',
-                        boxShadow: 3,
-                        '&:hover': {
-                            boxShadow: 6,
-                        },
-                        display: 'flex',
-                        flexDirection: 'column'
-                    }}>
+                    <Card 
+                        component={Link}
+                        to="/use-cases/AI/MCP/remote_mcp"
+                        sx={{ 
+                            gridRow: 4,
+                            gridColumn: 2,
+                            height: '300px',
+                            backgroundColor: 'background.paper',
+                            color: 'text.primary',
+                            boxShadow: 3,
+                            textDecoration: 'none',
+                            '&:hover': {
+                                boxShadow: 6,
+                                textDecoration: 'none',
+                                color: 'inherit',
+                            },
+                            display: 'flex',
+                            flexDirection: 'column'
+                        }}>
                         <CardActionArea sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
                             <CardMedia
                                 component="img"
@@ -697,7 +709,7 @@ const ExploreDocs = () => {
                                 <Link
                                     to="/use-cases/AI/MCP/remote_mcp"
                                     style={{
-                                        color: '#faff69',
+                                        color: 'var(--click-color-link)',
                                         textDecoration: 'none',
                                         fontSize: '14px',
                                         fontWeight: 600,
@@ -713,19 +725,25 @@ const ExploreDocs = () => {
                     </Card>
 
                     {/* Featured Card 3 - Row 4, Column 3 */}
-                    <Card sx={{ 
-                        gridRow: 4,
-                        gridColumn: 3,
-                        height: '300px',
-                        backgroundColor: 'background.paper',
-                        color: 'text.primary',
-                        boxShadow: 3,
-                        '&:hover': {
-                            boxShadow: 6,
-                        },
-                        display: 'flex',
-                        flexDirection: 'column'
-                    }}>
+                    <Card 
+                        component={Link}
+                        to="/best-practices/use-json-where-appropriate"
+                        sx={{ 
+                            gridRow: 4,
+                            gridColumn: 3,
+                            height: '300px',
+                            backgroundColor: 'background.paper',
+                            color: 'text.primary',
+                            boxShadow: 3,
+                            textDecoration: 'none',
+                            '&:hover': {
+                                boxShadow: 6,
+                                textDecoration: 'none',
+                                color: 'inherit',
+                            },
+                            display: 'flex',
+                            flexDirection: 'column'
+                        }}>
                         <CardActionArea sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
                             <CardMedia
                                 component="img"
@@ -764,7 +782,7 @@ const ExploreDocs = () => {
                                 <Link
                                     to="/best-practices/use-json-where-appropriate"
                                     style={{
-                                        color: '#faff69',
+                                        color: 'var(--click-color-link)',
                                         textDecoration: 'none',
                                         fontSize: '14px',
                                         fontWeight: 600,

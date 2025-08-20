@@ -69,21 +69,22 @@ function ResultsFooter({ state, onClose }) {
           justifyContent: 'center',
           width: '100%',
           padding: '12px 16px',
-          backgroundColor: '#5b4cfe',
+          backgroundColor: 'var(--click-color-link)',
           color: 'white',
-          border: 'none',
+          border: '1px solid var(--palette_info_500)',
           borderRadius: '6px',
           fontSize: '14px',
           cursor: 'pointer',
           fontWeight: 600,
-          transition: 'all 0.2s ease'
+          transition: 'all 0.2s ease',
+          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)'
         }}
         onMouseEnter={(e) => {
-          e.target.style.backgroundColor = '#4a3dcc';
+          e.target.style.backgroundColor = 'var(--palette_info_500)';
           e.target.style.transform = 'translateY(-1px)';
         }}
         onMouseLeave={(e) => {
-          e.target.style.backgroundColor = '#5b4cfe';
+          e.target.style.backgroundColor = 'var(--click-color-link)';
           e.target.style.transform = 'translateY(0)';
         }}
       >
