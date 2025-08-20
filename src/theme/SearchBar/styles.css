@@ -61,3 +61,25 @@
 .DocSearch-Logo {
   display: none !important;
 }
+
+.DocSearch-Dropdown { 
+  max-height: calc(min(90vh) - 180px) !important; 
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .DocSearch-Dropdown { 
+    max-height: calc(100vh - 120px) !important;
+    width: calc(100vw - 20px) !important;
+    left: 10px !important;
+    right: 10px !important;
+    position: fixed !important;
+    z-index: 9999 !important;
+  }
+  
+  .DocSearch-SearchBar {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 10000 !important;
+  }
+}
