@@ -7,21 +7,11 @@ title: 'dbpedia dataset'
 
 The [dbpedia dataset](https://huggingface.co/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M) contains 1 million articles from Wikipedia and their vector embeddings generated using `text-embedding-3-large` model from OpenAI.
 
-The dataset is an excellent starter dataset to understand semantic search, vector embeddings and Generative AI. We use this dataset to demonstrate [approximate nearest neighbor search](../../engines/table-engines/mergetree-family/annindexes.md) in ClickHouse and a simple Q & A application.
+The dataset is an excellent starter dataset to understand vector embeddings, vector similarity search and Generative AI. We use this dataset to demonstrate [approximate nearest neighbor search](../../engines/table-engines/mergetree-family/annindexes.md) in ClickHouse and a simple but powerful Q & A application.
 
-## Data preparation {#data-preparation}
+## Dataset details {#dataset-details}
 
-The dataset consists of 26 `Parquet` files located at 
-converts them to CSV and imports them into ClickHouse. You can use the following `download.sh` script for that:
-
-
-```bash
-seq 0 409 | xargs -P1 -I{} bash -c './download.sh {}'
-```
-
-The dataset is split into 410 files, each file contains ca. 1 million rows. If you like to work with a smaller subset of the data, simply adjust the limits, e.g. `seq 0 9 | ...`.
-
-(The python script above is very slow (~2-10 minutes per file), takes a lot of memory (41 GB per file), and the resulting csv files are big (10 GB each), so be careful. If you have enough RAM, increase the `-P1` number for more parallelism. If this is still too slow, consider coming up with a better ingestion procedure - maybe converting the .npy files to parquet, then doing all the other processing with clickhouse.)
+The dataset consists of 26 `Parquet` files located under https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/. The files are named `0.parquet`, `1.parquet`, ..., `25.parquet`. To view some example rows of the dataset, please visit https://huggingface.co/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M.
 
 ## Create table {#create-table}
 
@@ -38,87 +28,78 @@ CREATE TABLE dbpedia
 
 ```
 
-To load the dataset from the Parquet files, 
+## Load table {#load-table}
+
+To load the dataset from the Parquet files, run the following shell command :
+
+```shell
+```
+
+Alternatively, individual SQL statements can be run as shown below for each of the 25 Parquet files :
 
 ```sql
-INSERT INTO laion FROM INFILE '{path_to_csv_files}/*.csv'
+INSERT INTO dbpedia SELECT _id, title, text, "text-embedding-3-large-1536-embedding" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/0.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;
+INSERT INTO dbpedia SELECT _id, title, text, "text-embedding-3-large-1536-embedding" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/1.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;
+...
+INSERT INTO dbpedia SELECT _id, title, text, "text-embedding-3-large-1536-embedding" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/25.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;
+
 ```
 
-## Run a brute-force ANN search (without ANN index) {#run-a-brute-force-ann-search-without-ann-index}
+## Semantic Search
+Recommended reading : https://platform.openai.com/docs/guides/embeddings
 
-To run a brute-force approximate nearest neighbor search, run:
+Semantic search (or referred to as _similarity search_) using vector embeddings involes
+the following steps :
+
+- Accept a search query from user in natural language e.g ‘Tell me some scenic rail journeys”, “Suspense novels set in Europe” etc
+- Generate embedding vector for the search query using the LLM model
+- Find nearest neighbours to the search embedding vector in the dataset
+
+The _nearest neighbours_ are documents, images or content that are results relevant to the user query.
+The results are the key input to Retrieval Augmented Generation (RAG) in Generative AI applications.
+
+## Experiment with KNN Search
+KNN (k - Nearest Neighbours) search or brute force search involves calculating distance of each vector in the dataset
+to the search embedding vector and then ordering the distances to get the nearest neighbours.  With the `dbpediai` dataset,
+a quick technique to visually observe semantic search is to use embedding vectors from the dataset itself as search
+vectors. Example :
 
 ```sql
-SELECT url, caption FROM laion ORDER BY L2Distance(image_embedding, {target:Array(Float32)}) LIMIT 30
+SELECT id, title
+FROM dbpedia
+ORDER BY cosineDistance(vector, ( SELECT vector FROM dbpedia WHERE id = '<dbpedia:The_Remains_of_the_Day>') ) ASC
+LIMIT 20
+
+    ┌─id────────────────────────────────────────┬─title───────────────────────────┐
+ 1. │ <dbpedia:The_Remains_of_the_Day>          │ The Remains of the Day          │
+ 2. │ <dbpedia:The_Remains_of_the_Day_(film)>   │ The Remains of the Day (film)   │
+ 3. │ <dbpedia:Never_Let_Me_Go_(novel)>         │ Never Let Me Go (novel)         │
+ 4. │ <dbpedia:Last_Orders>                     │ Last Orders                     │
+ 5. │ <dbpedia:The_Unconsoled>                  │ The Unconsoled                  │
+ 6. │ <dbpedia:The_Hours_(novel)>               │ The Hours (novel)               │
+ 7. │ <dbpedia:An_Artist_of_the_Floating_World> │ An Artist of the Floating World │
+ 8. │ <dbpedia:Heat_and_Dust>                   │ Heat and Dust                   │
+ 9. │ <dbpedia:A_Pale_View_of_Hills>            │ A Pale View of Hills            │
+10. │ <dbpedia:Howards_End_(film)>              │ Howards End (film)              │
+11. │ <dbpedia:When_We_Were_Orphans>            │ When We Were Orphans            │
+12. │ <dbpedia:A_Passage_to_India_(film)>       │ A Passage to India (film)       │
+13. │ <dbpedia:Memoirs_of_a_Survivor>           │ Memoirs of a Survivor           │
+14. │ <dbpedia:The_Child_in_Time>               │ The Child in Time               │
+15. │ <dbpedia:The_Sea,_the_Sea>                │ The Sea, the Sea                │
+16. │ <dbpedia:The_Master_(novel)>              │ The Master (novel)              │
+17. │ <dbpedia:The_Memorial>                    │ The Memorial                    │
+18. │ <dbpedia:The_Hours_(film)>                │ The Hours (film)                │
+19. │ <dbpedia:Human_Remains_(film)>            │ Human Remains (film)            │
+20. │ <dbpedia:Kazuo_Ishiguro>                  │ Kazuo Ishiguro                  │
+    └───────────────────────────────────────────┴─────────────────────────────────┘
 ```
 
-`target` is an array of 512 elements and a client parameter. A convenient way to obtain such arrays will be presented at the end of the article. For now, we can run the embedding of a random cat picture as `target`.
+Note down the query latency so that we can compare it with the query latency of ANN (using vector index).
+Also record the query latency with cold OS file cache and with `max_theads=1` to recognize the real compute
+usage and storage bandwidth usage (extrapolate it to a production dataset with millions of vectors!)
 
-**Result**
 
-```markdown
-┌─url───────────────────────────────────────────────────────────────────────────────────────────────────────────┬─caption────────────────────────────────────────────────────────────────┐
-│ https://s3.amazonaws.com/filestore.rescuegroups.org/6685/pictures/animals/13884/13884995/63318230_463x463.jpg │ Adoptable Female Domestic Short Hair                                   │
-│ https://s3.amazonaws.com/pet-uploads.adoptapet.com/8/b/6/239905226.jpg                                        │ Adopt A Pet :: Marzipan - New York, NY                                 │
-│ http://d1n3ar4lqtlydb.cloudfront.net/9/2/4/248407625.jpg                                                      │ Adopt A Pet :: Butterscotch - New Castle, DE                           │
-│ https://s3.amazonaws.com/pet-uploads.adoptapet.com/e/e/c/245615237.jpg                                        │ Adopt A Pet :: Tiggy - Chicago, IL                                     │
-│ http://pawsofcoronado.org/wp-content/uploads/2012/12/rsz_pumpkin.jpg                                          │ Pumpkin an orange tabby  kitten for adoption                           │
-│ https://s3.amazonaws.com/pet-uploads.adoptapet.com/7/8/3/188700997.jpg                                        │ Adopt A Pet :: Brian the Brad Pitt of cats - Frankfort, IL             │
-│ https://s3.amazonaws.com/pet-uploads.adoptapet.com/8/b/d/191533561.jpg                                        │ Domestic Shorthair Cat for adoption in Mesa, Arizona - Charlie         │
-│ https://s3.amazonaws.com/pet-uploads.adoptapet.com/0/1/2/221698235.jpg                                        │ Domestic Shorthair Cat for adoption in Marietta, Ohio - Daisy (Spayed) │
-└───────────────────────────────────────────────────────────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────┘
 
-8 rows in set. Elapsed: 6.432 sec. Processed 19.65 million rows, 43.96 GB (3.06 million rows/s., 6.84 GB/s.)
-```
-
-## Run a ANN with an ANN index {#run-a-ann-with-an-ann-index}
-
-Create a new table with an ANN index and insert the data from the existing table:
-
-```sql
-CREATE TABLE laion_annoy
-(
-    `id` Int64,
-    `url` String,
-    `caption` String,
-    `NSFW` String,
-    `similarity` Float32,
-    `image_embedding` Array(Float32),
-    `text_embedding` Array(Float32),
-    INDEX annoy_image image_embedding TYPE annoy(),
-    INDEX annoy_text text_embedding TYPE annoy()
-)
-ENGINE = MergeTree
-ORDER BY id
-SETTINGS index_granularity = 8192;
-
-INSERT INTO laion_annoy SELECT * FROM laion;
-```
-
-By default, Annoy indexes use the L2 distance as metric. Further tuning knobs for index creation and search are described in the Annoy index [documentation](../../engines/table-engines/mergetree-family/annindexes.md). Let's check now again with the same query:
-
-```sql
-SELECT url, caption FROM laion_annoy ORDER BY l2Distance(image_embedding, {target:Array(Float32)}) LIMIT 8
-```
-
-**Result**
-
-```response
-┌─url──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─caption──────────────────────────────────────────────────────────────┐
-│ http://tse1.mm.bing.net/th?id=OIP.R1CUoYp_4hbeFSHBaaB5-gHaFj                                                                                                                         │ bed bugs and pets can cats carry bed bugs pets adviser               │
-│ http://pet-uploads.adoptapet.com/1/9/c/1963194.jpg?336w                                                                                                                              │ Domestic Longhair Cat for adoption in Quincy, Massachusetts - Ashley │
-│ https://thumbs.dreamstime.com/t/cat-bed-12591021.jpg                                                                                                                                 │ Cat on bed Stock Image                                               │
-│ https://us.123rf.com/450wm/penta/penta1105/penta110500004/9658511-portrait-of-british-short-hair-kitten-lieing-at-sofa-on-sun.jpg                                                    │ Portrait of british short hair kitten lieing at sofa on sun.         │
-│ https://www.easypetmd.com/sites/default/files/Wirehaired%20Vizsla%20(2).jpg                                                                                                          │ Vizsla (Wirehaired) image 3                                          │
-│ https://images.ctfassets.net/yixw23k2v6vo/0000000200009b8800000000/7950f4e1c1db335ef91bb2bc34428de9/dog-cat-flickr-Impatience_1.jpg?w=600&h=400&fm=jpg&fit=thumb&q=65&fl=progressive │ dog and cat image                                                    │
-│ https://i1.wallbox.ru/wallpapers/small/201523/eaa582ee76a31fd.jpg                                                                                                                    │ cats, kittens, faces, tonkinese                                      │
-│ https://www.baxterboo.com/images/breeds/medium/cairn-terrier.jpg                                                                                                                     │ Cairn Terrier Photo                                                  │
-└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────┘
-
-8 rows in set. Elapsed: 0.641 sec. Processed 22.06 thousand rows, 49.36 MB (91.53 thousand rows/s., 204.81 MB/s.)
-```
-
-The speed increased significantly at the cost of less accurate results. This is because the ANN index only provide approximate search results. Note the example searched for similar image embeddings, yet it is also possible to search for positive image caption embeddings.
 
 ## Q & A Demo Application {#q-and-a-demo-application}
 
@@ -133,9 +114,9 @@ The application performs the following steps :
 5. Uses the OpenAI `gpt-3.5-turbo` Chat API to answer the question based on the knowledge in the documents retrieved in step #3.
    The documents retrieved in step #3 are passed as _context_ to the Chat API and are the key link in Generative AI.
 
-First a couple of conversation examples by running the Q & A application are listed below, followed by the code
+A couple of conversation examples by running the Q & A application are first listed below, followed by the code
 for the Q & A application. Running the application requires an OpenAI API key to be set in the environment
-variable `OPENAI_API_KEY`.
+variable `OPENAI_API_KEY`. The OpenAI API key can be obtained after registering at https://platform.openapi.com.
 
 ```shell
 $ python3 QandA.py
