@@ -6,7 +6,7 @@ title: 'dbpedia dataset'
 keywords: ['semantic search', 'vector similarity', 'approximate nearest neighbours', 'embeddings']
 ---
 
-The [dbpedia dataset](https://huggingface.co/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M) contains 1 million articles from Wikipedia and their vector embeddings generated using the `text-embedding-3-large` model from OpenAI.
+The [dbpedia dataset](https://huggingface.co/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M) contains 1 million articles from Wikipedia and their vector embeddings generated using the [text-embedding-3-large](https://platform.openai.com/docs/models/text-embedding-3-large) model from OpenAI.
 
 The dataset is an excellent starter dataset to understand vector embeddings, vector similarity search and Generative AI. We use this dataset to demonstrate [approximate nearest neighbor search](../../engines/table-engines/mergetree-family/annindexes.md) in ClickHouse and a simple but powerful Q&A application.
 
@@ -125,7 +125,7 @@ Run the following SQL to define and build a vector similarity index on the `vect
 ```sql
 ALTER TABLE dbpedia ADD INDEX vector_index vector TYPE vector_similarity('hnsw', 'cosineDistance', 1536, 'bf16', 64, 512);
 
-ALTER TABLE dbpedia MATERIALIZE INDEX vector_index;
+ALTER TABLE dbpedia MATERIALIZE INDEX vector_index SETTINGS mutations_sync = 2;
 ```
 
 The parameters and performance considerations for index creation and search are described in the [documentation](../../engines/table-engines/mergetree-family/annindexes.md).
