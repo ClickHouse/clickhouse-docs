@@ -97,15 +97,14 @@ FOR SELECT USING _peerdb_is_deleted = 0;
 
 You can directly query JSON fields using dot syntax:
 
-```sql
+```sql title="Query"
 SELECT
     _full_document.order_id,
     _full_document.shipping.method
 FROM t1;
 ```
 
-Result:
-```shell
+```shell title="Result"
 ┌─_full_document.order_id─┬─_full_document.shipping.method─┐
 │ ORD-001234              │ express                        │
 └─────────────────────────┴────────────────────────────────┘
@@ -115,12 +114,11 @@ Result:
 
 In ClickHouse, each field in JSON has `Dynamic` type. Dynamic type allows ClickHouse to store values of any type without knowing the type in advance. You can verify this with the `toTypeName` function:
 
-```sql
+```sql title="Query"
 SELECT toTypeName(_full_document.customer_id) AS type FROM t1;
 ```
 
-Result:
-```shell
+```shell title="Result"
 ┌─type────┐
 │ Dynamic │
 └─────────┘
@@ -128,12 +126,11 @@ Result:
 
 To examine the underlying data type(s) for a field, you can check with the `dynamicType` function. Note that it's possible to have different data types for the same field name in different rows:
 
-```sql
+```sql title="Query"
 SELECT dynamicType(_full_document.customer_id) AS type FROM t1;
 ```
 
-Result:
-```shell
+```shell title="Result"
 ┌─type──┐
 │ Int64 │
 └───────┘
@@ -142,19 +139,20 @@ Result:
 [Regular functions](https://clickhouse.com/docs/sql-reference/functions/regular-functions) work for dynamic type just like they do for regular columns:
 
 **Example 1: Date parsing**
-```sql
+
+```sql title="Query"
 SELECT parseDateTimeBestEffortOrNull(_full_document.order_date) AS order_date FROM t1;
 ```
 
-Result:
-```shell
+```shell title="Result"
 ┌─order_date──────────┐
 │ 2025-08-19 20:32:11 │
 └─────────────────────┘
 ```
 
 **Example 2: Conditional logic**
-```sql
+
+```sql title="Query"
 SELECT multiIf(
     _full_document.total_amount < 100, 'less_than_100',
     _full_document.total_amount < 1000, 'less_than_1000',
@@ -162,20 +160,19 @@ SELECT multiIf(
 FROM t1;
 ```
 
-Result:
-```shell
+```shell title="Result"
 ┌─spendings──────┐
 │ less_than_1000 │
 └────────────────┘
 ```
 
 **Example 3: Array operations**
-```sql
+
+```sql title="Query"
 SELECT length(_full_document.items) AS item_count FROM t1;
 ```
 
-Result:
-```shell
+```shell title="Result"
 ┌─item_count─┐
 │          2 │
 └────────────┘
@@ -192,12 +189,11 @@ SELECT sum(_full_document.shipping.cost) AS shipping_cost FROM t1;
 
 To use aggregation functions, cast the field to the appropriate type with the `CAST` function or `::` syntax:
 
-```sql
+```sql title="Query"
 SELECT sum(_full_document.shipping.cost::Float32) AS shipping_cost FROM t1;
 ```
 
-Result:
-```shell
+```shell title="Result"
 ┌─shipping_cost─┐
 │         19.99 │
 └───────────────┘
