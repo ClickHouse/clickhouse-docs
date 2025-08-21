@@ -1,11 +1,11 @@
 ---
-sidebar_label: 'Lifecycle of a Database ClickPipe'
+sidebar_label: 'Lifecycle of a Postgres ClickPipe'
 description: 'Various pipe statuses and their meanings'
 slug: /integrations/clickpipes/postgres/lifecycle
-title: 'Lifecycle of a Database ClickPipe'
+title: 'Lifecycle of a Postgres ClickPipe'
 ---
 
-# Lifecycle of a Database ClickPipe {#lifecycle}
+# Lifecycle of a Postgres ClickPipe {#lifecycle}
 
 This is a document on the various phases of a Postgres ClickPipe, the different statuses it can have, and what they mean.
 
