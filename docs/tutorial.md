@@ -473,7 +473,7 @@ Write some queries that join the `taxi_zone_dictionary` with your `trips` table.
     ORDER BY total DESC
     ```
 
-    The response looks is identical to the `dictGet` query:
+    The response looks identical to the `dictGet` query:
     ```response
     ┌─total─┬─Borough───────┐
     │  7053 │ Manhattan     │
@@ -502,7 +502,7 @@ Write some queries that join the `taxi_zone_dictionary` with your `trips` table.
     LIMIT 1000
     ```
         :::note
-        Generally, we avoid using `SELECT *` often in ClickHouse. You should only retrieve the columns you actually need. However, this query is slower for the purposes of the example.
+        Generally, we avoid using `SELECT *` often in ClickHouse. You should only retrieve the columns you actually need.
         :::
 
 </VerticalStepper>
