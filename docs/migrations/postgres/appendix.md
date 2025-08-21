@@ -3,6 +3,7 @@ slug: /migrations/postgresql/appendix
 title: 'Appendix'
 keywords: ['postgres', 'postgresql', 'data types', 'types']
 description: 'Additional information relative to migrating from PostgreSQL'
+doc_type: reference
 ---
 
 import postgresReplicas from '@site/static/images/integrations/data-ingestion/dbms/postgres-replicas.png';

@@ -7,6 +7,7 @@ pagination_next: null
 description: 'Learn how to build a web-based AI Agent with Streamlit and the ClickHouse MCP Server'
 keywords: ['ClickHouse', 'MCP', 'Streamlit', 'Agno', 'AI Agent']
 show_related_blogs: true
+doc_type: how-to
 ---
 
 # How to build a ClickHouse-backed AI Agent with Streamlit

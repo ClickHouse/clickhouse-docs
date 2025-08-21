@@ -4,6 +4,7 @@ description: 'Describes the steps need to add specific tables to a ClickPipe.'
 sidebar_label: 'Add Table'
 slug: /integrations/clickpipes/postgres/add_table
 show_title: false
+doc_type: how-to
 ---
 
 import Image from '@theme/IdealImage';

@@ -5,6 +5,7 @@ description: 'ClickHouse offers four deployment options that all use the same po
 title: 'Deployment modes'
 keywords: ['Deployment Modes', 'chDB']
 show_related_blogs: true
+doc_type: how-to
 ---
 
 import chServer from '@site/static/images/deployment-modes/ch-server.png';

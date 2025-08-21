@@ -5,6 +5,7 @@ slug: /integrations/migration/overview
 keywords: ['clickhouse', 'migrate', 'migration', 'migrating', 'data']
 title: 'Migrating Data into ClickHouse'
 description: 'Page describing the options available for migrating data into ClickHouse'
+doc_type: how-to
 ---
 
 # Migrating data into ClickHouse

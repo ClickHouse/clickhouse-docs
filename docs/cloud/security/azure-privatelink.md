@@ -4,6 +4,7 @@ sidebar_label: 'Azure Private Link'
 slug: /cloud/security/azure-privatelink
 description: 'How to set up Azure Private Link'
 keywords: ['azure', 'private link', 'privatelink']
+doc_type: how-to
 ---
 
 import Image from '@theme/IdealImage';

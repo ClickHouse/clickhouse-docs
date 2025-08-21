@@ -3,6 +3,7 @@ sidebar_label: 'Generic MySQL'
 description: 'Set up any MySQL instance as a source for ClickPipes'
 slug: /integrations/clickpipes/mysql/source/generic
 title: 'Generic MySQL source setup guide'
+doc_type: how-to
 ---
 
 # Generic MySQL source setup guide

@@ -4,6 +4,7 @@ sidebar_label: 'Shared Catalog'
 title: 'Shared Catalog and Shared Database Engine'
 keywords: ['SharedCatalog', 'SharedDatabaseEngine']
 description: 'Describes the Shared Catalog component and the Shared database engine in ClickHouse Cloud'
+doc_type: reference
 ---
 
 # Shared catalog and shared database engine {#shared-catalog-and-shared-database-engine}

@@ -5,6 +5,7 @@ pagination_prev: null
 pagination_next: null
 sidebar_position: 4
 description: 'Deploying HyperDX only'
+doc_type: how-to
 ---
 
 import Image from '@theme/IdealImage';

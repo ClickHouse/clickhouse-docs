@@ -4,6 +4,7 @@ toc_hidden: true
 toc_priority: 10
 slug: /faq/general/dbms-naming
 description: 'Learn about What does "ClickHouse" mean?'
+doc_type: explanation
 ---
 
 # What does "ClickHouse" mean? {#what-does-clickhouse-mean}

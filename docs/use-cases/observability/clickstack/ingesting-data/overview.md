@@ -6,6 +6,7 @@ sidebar_position: 0
 pagination_prev: null
 pagination_next: use-cases/observability/clickstack/ingesting-data/opentelemetry
 description: 'Overview for ingesting data to ClickStack'
+doc_type: overview
 ---
 
 import Image from '@theme/IdealImage';

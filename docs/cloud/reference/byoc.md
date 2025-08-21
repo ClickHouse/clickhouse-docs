@@ -4,6 +4,7 @@ slug: /cloud/reference/byoc
 sidebar_label: 'BYOC (Bring Your Own Cloud)'
 keywords: ['BYOC', 'cloud', 'bring your own cloud']
 description: 'Deploy ClickHouse on your own cloud infrastructure'
+doc_type: reference
 ---
 
 import Image from '@theme/IdealImage';

@@ -5,6 +5,7 @@ slug: /integrations/deepnote
 keywords: ['clickhouse', 'Deepnote', 'connect', 'integrate', 'notebook']
 description: 'Efficiently query very large datasets, analyzing and modeling in the comfort of known notebook environment.'
 title: 'Connect ClickHouse to Deepnote'
+doc_type: how-to
 ---
 
 import deepnote_01 from '@site/static/images/integrations/data-visualization/deepnote_01.png';

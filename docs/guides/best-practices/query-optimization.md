@@ -3,6 +3,7 @@ slug: /optimize/query-optimization
 sidebar_label: 'Query optimization'
 title: 'Guide for Query optimization'
 description: 'A simple guide for query optimization that describe common path to improve query performance'
+doc_type: how-to
 ---
 
 import queryOptimizationDiagram1 from '@site/static/images/guides/best-practices/query_optimization_diagram_1.png';

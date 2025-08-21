@@ -3,6 +3,7 @@ title: 'Migrating to New Plans'
 slug: /cloud/manage/jan-2025-faq/plan-migrations
 keywords: ['migration', 'new tiers', 'pricing', 'cost', 'estimation']
 description: 'Migrating to new plans, tiers, pricing, how to decide and estimate costs'
+doc_type: reference
 ---
 
 ## Choosing new plans {#choosing-new-plans}

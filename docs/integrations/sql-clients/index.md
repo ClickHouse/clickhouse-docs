@@ -3,6 +3,7 @@ slug: /integrations/sql-clients/
 description: 'Overview page for ClickHouse SQL clients.'
 keywords: ['integrations', 'DataGrip', 'DBeaver', 'DbVisualizer', 'Jupyter Notebooks', 'QStudio', 'TABLUM.IO', 'marimo']
 title: 'SQL Client Integrations'
+doc_type: overview
 ---
 
 # SQL client integrations

@@ -5,6 +5,7 @@ toc_hidden: true
 toc_priority: 110
 description: 'This page explains why you would use ClickHouse over MapReduce'
 keywords: ['MapReduce']
+doc_type: explanation
 ---
 
 # Why not use something like MapReduce? {#why-not-use-something-like-mapreduce}

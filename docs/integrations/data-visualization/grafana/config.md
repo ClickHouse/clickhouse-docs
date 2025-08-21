@@ -4,6 +4,7 @@ sidebar_position: 3
 slug: /integrations/grafana/config
 description: 'Configuration options for the ClickHouse data source plugin in Grafana'
 title: 'Configuring ClickHouse data source in Grafana'
+doc_type: explanation
 ---
 
 import Image from '@theme/IdealImage';

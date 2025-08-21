@@ -4,6 +4,7 @@ sidebar_position: 4
 slug: /integrations/kafka/kafka-connect-jdbc
 description: 'Using JDBC Connector Sink with Kafka Connect and ClickHouse'
 title: 'JDBC Connector'
+doc_type: explanation
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

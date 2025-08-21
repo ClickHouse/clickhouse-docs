@@ -3,6 +3,7 @@ sidebar_label: 'MongoDB Atlas'
 description: 'Step-by-step guide on how to set up MongoDB Atlas as a source for ClickPipes'
 slug: /integrations/clickpipes/mongodb/source/atlas
 title: 'MongoDB Atlas source setup guide'
+doc_type: how-to
 ---
 
 import mongo_atlas_configuration from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/mongo-atlas-cluster-overview-configuration.png'

@@ -5,6 +5,7 @@ keywords: ['clickhouse', 'rs', 'rust', 'cargo', 'crate', 'http', 'client', 'conn
 slug: /integrations/rust
 description: 'The official Rust client for connecting to ClickHouse.'
 title: 'ClickHouse Rust Client'
+doc_type: explanation
 ---
 
 # ClickHouse Rust client

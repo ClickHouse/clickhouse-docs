@@ -5,6 +5,7 @@ keywords: ['ClickHouse', 'connect', 'Luzmo', 'Explo', 'Fabi.ai', 'Tableau', 'Gra
 title: 'Visualizing Data in ClickHouse'
 slug: /integrations/data-visualization
 description: 'Learn about Visualizing Data in ClickHouse'
+doc_type: overview
 ---
 
 # Visualizing data in ClickHouse

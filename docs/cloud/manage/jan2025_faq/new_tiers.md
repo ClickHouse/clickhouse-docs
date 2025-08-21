@@ -3,6 +3,7 @@ title: 'Description of New Tiers'
 slug: /cloud/manage/jan-2025-faq/new-tiers
 keywords: ['new tiers', 'features', 'pricing', 'description']
 description: 'Description of new tiers and features'
+doc_type: explanation
 ---
 
 ## Summary of key changes {#summary-of-key-changes}

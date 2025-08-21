@@ -6,6 +6,7 @@ keywords: ['Zing Data']
 description: 'Zing Data is simple social business intelligence for ClickHouse, made for iOS, Android and the web.'
 title: 'Connect Zing Data to ClickHouse'
 show_related_blogs: true
+doc_type: how-to
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

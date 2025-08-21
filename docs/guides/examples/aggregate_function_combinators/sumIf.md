@@ -4,6 +4,7 @@ title: 'sumIf'
 description: 'Example of using the sumIf combinator'
 keywords: ['sum', 'if', 'combinator', 'examples', 'sumIf']
 sidebar_label: 'sumIf'
+doc_type: how-to
 ---
 
 # sumIf {#sumif}

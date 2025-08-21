@@ -3,6 +3,7 @@ sidebar_label: 'AWS PrivateLink for ClickPipes'
 description: 'Establish a secure connection between ClickPipes and a data source using AWS PrivateLink.'
 slug: /integrations/clickpipes/aws-privatelink
 title: 'AWS PrivateLink for ClickPipes'
+doc_type: how-to
 ---
 
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';

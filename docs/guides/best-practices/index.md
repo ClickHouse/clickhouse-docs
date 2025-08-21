@@ -3,6 +3,7 @@ slug: /operations/overview
 sidebar_label: 'Performance and Optimizations Overview'
 description: 'Overview page of Performance and Optimizations'
 title: 'Performance and Optimizations'
+doc_type: how-to
 ---
 
 # Performance and optimizations

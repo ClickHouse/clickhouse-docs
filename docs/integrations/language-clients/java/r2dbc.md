@@ -5,6 +5,7 @@ keywords: ['clickhouse', 'java', 'driver', 'integrate', 'r2dbc']
 description: 'ClickHouse R2DBC Driver'
 slug: /integrations/java/r2dbc
 title: 'R2DBC driver'
+doc_type: explanation
 ---
 
 import Tabs from '@theme/Tabs';

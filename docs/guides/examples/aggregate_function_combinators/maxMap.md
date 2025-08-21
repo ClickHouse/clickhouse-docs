@@ -4,6 +4,7 @@ title: 'maxMap'
 description: 'Example of using the maxMap combinator'
 keywords: ['max', 'map', 'combinator', 'examples', 'maxMap']
 sidebar_label: 'maxMap'
+doc_type: how-to
 ---
 
 # maxMap {#maxmap}

@@ -5,6 +5,7 @@ slug: /integrations/apache-spark
 description: 'Introduction to Apache Spark with ClickHouse'
 keywords: ['clickhouse', 'Apache Spark', 'migrating', 'data']
 title: 'Integrating Apache Spark with ClickHouse'
+doc_type: overview
 ---
 
 import Tabs from '@theme/Tabs';

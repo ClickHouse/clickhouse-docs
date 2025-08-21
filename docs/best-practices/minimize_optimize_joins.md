@@ -6,6 +6,7 @@ title: 'Minimize and optimize JOINs'
 description: 'Page describing best practices for JOINs'
 keywords: ['JOIN', 'Parallel Hash JOIN']
 show_related_blogs: true
+doc_type: explanation
 ---
 
 import Image from '@theme/IdealImage';

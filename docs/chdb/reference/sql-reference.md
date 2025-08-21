@@ -4,6 +4,7 @@ sidebar_label: 'SQL Reference'
 slug: /chdb/reference/sql-reference
 description: 'SQL Reference for chDB'
 keywords: ['chdb', 'sql reference']
+doc_type: reference
 ---
 
 chdb supports the same SQL syntax, statements, engines and functions as ClickHouse:

@@ -3,6 +3,7 @@ sidebar_label: 'Introduction'
 description: 'Seamlessly connect your external data sources to ClickHouse Cloud.'
 slug: /integrations/clickpipes
 title: 'Integrating with ClickHouse Cloud'
+doc_type: overview
 ---
 
 import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';

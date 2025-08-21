@@ -3,6 +3,7 @@ slug: /integrations/data-ingestion-overview
 keywords: [ 'Airbyte', 'Apache Spark', 'Spark', 'Azure Synapse', 'Amazon Glue', 'Apache Beam', 'dbt', 'Fivetran', 'NiFi', 'dlt', 'Vector' ]
 title: 'Data Ingestion'
 description: 'Landing page for the data ingestion section'
+doc_type: overview
 ---
 
 # Data Ingestion

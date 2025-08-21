@@ -4,6 +4,7 @@ title: 'minMap'
 description: 'Example of using the minMap combinator'
 keywords: ['min', 'map', 'combinator', 'examples', 'minMap']
 sidebar_label: 'minMap'
+doc_type: how-to
 ---
 
 # minMap {#minmap}

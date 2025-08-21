@@ -4,6 +4,7 @@ sidebar_position: 3
 slug: /guides/sre/ssl-user-auth
 title: 'Configuring SSL User Certificate for Authentication'
 description: 'This guide provides simple and minimal settings to configure authentication with SSL user certificates.'
+doc_type: how-to
 ---
 
 # Configuring SSL user certificate for authentication

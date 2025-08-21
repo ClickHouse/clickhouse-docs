@@ -5,6 +5,7 @@ sidebar_position: 131
 slug: /integrations/chartbrew-and-clickhouse
 keywords: ['ClickHouse', 'Chartbrew', 'connect', 'integrate', 'visualization']
 description: 'Connect Chartbrew to ClickHouse to create real-time dashboards and client reports.'
+doc_type: how-to
 ---
 
 import chartbrew_01 from '@site/static/images/integrations/data-visualization/chartbrew_01.png';

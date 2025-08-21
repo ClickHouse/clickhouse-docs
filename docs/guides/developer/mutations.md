@@ -6,6 +6,7 @@ keywords: ['UPDATE', 'DELETE', 'mutations']
 title: 'Updating and deleting ClickHouse data'
 description: 'Describes how to perform update and delete operations in ClickHouse'
 show_related_blogs: false
+doc_type: how-to
 ---
 
 # Updating and deleting ClickHouse data with mutations

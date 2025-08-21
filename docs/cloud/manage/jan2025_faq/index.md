@@ -3,6 +3,7 @@ title: 'Jan 2025 Changes FAQ'
 slug: /cloud/manage/jan-2025-faq
 description: 'Index page for new pricing FAQ'
 keywords: ['new pricing', 'faq']
+doc_type: overview
 ---
 
 <!-- 

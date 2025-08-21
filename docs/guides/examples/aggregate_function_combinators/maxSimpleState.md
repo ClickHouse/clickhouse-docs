@@ -4,6 +4,7 @@ title: 'maxSimpleState'
 description: 'Example of using the minSimpleState combinator'
 keywords: ['min', 'state', 'simple', 'combinator', 'examples', 'minSimpleState']
 sidebar_label: 'minSimpleState'
+doc_type: how-to
 ---
 
 # minSimpleState {#minsimplestate}

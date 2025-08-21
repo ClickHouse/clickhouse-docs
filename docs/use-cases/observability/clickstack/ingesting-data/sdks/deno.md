@@ -5,6 +5,7 @@ pagination_next: null
 sidebar_position: 6
 description: 'Deno SDK for ClickStack - The ClickHouse Observability Stack'
 title: 'Deno'
+doc_type: explanation
 ---
 
 This guide Integrates the following:

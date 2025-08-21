@@ -3,6 +3,7 @@ sidebar_label: 'Google Cloud SQL'
 description: 'Set up Google Cloud SQL Postgres instance as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/google-cloudsql
 title: 'Google Cloud SQL Postgres Source Setup Guide'
+doc_type: how-to
 ---
 
 import edit_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/edit.png';

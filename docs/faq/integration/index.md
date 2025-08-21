@@ -5,6 +5,7 @@ sidebar_label: 'Integrating ClickHouse with other systems'
 keywords: ['clickhouse', 'faq', 'questions', 'integrations']
 title: 'Questions about integrating ClickHouse and other systems'
 description: 'Landing page listing questions related to integrating ClickHouse with other systems'
+doc_type: overview
 ---
 
 # Questions about integrating ClickHouse and other systems

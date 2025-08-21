@@ -5,6 +5,7 @@ toc_hidden: true
 toc_priority: 100
 description: 'An explainer on what Online Analytical Processing is'
 keywords: ['OLAP']
+doc_type: explanation
 ---
 
 # What Is OLAP? {#what-is-olap}

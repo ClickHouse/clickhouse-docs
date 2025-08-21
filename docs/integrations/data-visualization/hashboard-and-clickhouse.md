@@ -5,6 +5,7 @@ slug: /integrations/hashboard
 keywords: ['clickhouse', 'Hashboard', 'connect', 'integrate', 'ui', 'analytics']
 description: 'Hashboard is a robust analytics platform that can be easily integrated with ClickHouse for real-time data analysis.'
 title: 'Connecting ClickHouse to Hashboard'
+doc_type: overview
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';

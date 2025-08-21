@@ -5,6 +5,7 @@ description: 'Time-series data types in ClickHouse.'
 slug: /use-cases/time-series/date-time-data-types
 keywords: ['Time Series', 'DateTime']
 show_related_blogs: true
+doc_type: overview
 ---
 
 # Date and time data types

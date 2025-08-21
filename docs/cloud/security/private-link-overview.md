@@ -3,6 +3,7 @@ sidebar_label: 'Private link overview'
 slug: /cloud/security/private-link-overview
 title: 'Private link overview'
 description: 'Landing page for private link'
+doc_type: explanation
 ---
 
 # Private link overview

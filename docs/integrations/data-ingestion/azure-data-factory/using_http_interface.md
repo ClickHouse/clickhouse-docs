@@ -4,6 +4,7 @@ slug: /integrations/azure-data-factory/http-interface
 description: 'Using ClickHouse''s HTTP interface to bring data from Azure Data Factory into ClickHouse'
 keywords: ['azure data factory', 'azure', 'microsoft', 'data', 'http interface']
 title: 'Using ClickHouse HTTP Interface to bring Azure data into ClickHouse'
+doc_type: how-to
 ---
 
 import Image from '@theme/IdealImage';

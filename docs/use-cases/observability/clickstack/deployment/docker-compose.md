@@ -5,6 +5,7 @@ pagination_prev: null
 pagination_next: null
 sidebar_position: 3
 description: 'Deploying ClickStack with Docker Compose - The ClickHouse Observability Stack'
+doc_type: how-to
 ---
 
 import Image from '@theme/IdealImage';

@@ -4,6 +4,7 @@ title: 'uniqArray'
 description: 'Example of using the uniqArray combinator'
 keywords: ['uniq', 'array', 'combinator', 'examples', 'uniqArray']
 sidebar_label: 'uniqArray'
+doc_type: how-to
 ---
 
 # uniqArray {#uniqarray}

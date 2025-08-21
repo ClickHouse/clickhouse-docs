@@ -5,6 +5,7 @@ keywords: ['clickhouse', 'cs', 'c#', '.net', 'dotnet', 'csharp', 'client', 'driv
 slug: /integrations/csharp
 description: 'The official C# client for connecting to ClickHouse.'
 title: 'ClickHouse C# Driver'
+doc_type: explanation
 ---
 
 # ClickHouse C# Client

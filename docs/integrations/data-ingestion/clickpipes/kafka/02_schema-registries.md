@@ -4,6 +4,7 @@ description: 'Information on schema registries for Kafka ClickPipe'
 slug: /integrations/clickpipes/kafka/schema-registries
 sidebar_position: 1
 title: 'Schema registries for Kafka ClickPipe'
+doc_type: explanation
 ---
 
 # Schema registries {#schema-registries}
