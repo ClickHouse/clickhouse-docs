@@ -145,7 +145,7 @@ Initial installation, server configuration, database creation, data ingestion is
 If you can't find a solution:
 
 1. **Ask AI** - <KapaLink>Ask AI</KapaLink> for instant answers.
-1. **Check system tables** - Run `SELECT * FROM system.processes` and `SELECT * FROM system.query_log ORDER BY event_time DESC LIMIT 10`
+1. **Check system tables** - [Overview](/operations/system-tables/overview)
 2. **Review server logs** - Look for error messages in your ClickHouse logs
 3. **Ask the community** - [Join Our Community Slack](https://clickhouse.com/slack), [GitHub Discussions](https://github.com/ClickHouse/ClickHouse/discussions)
 4. **Get professional support** - [ClickHouse Cloud support](https://clickhouse.com/support)

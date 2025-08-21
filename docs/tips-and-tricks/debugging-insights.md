@@ -86,7 +86,7 @@ ORDER BY count() DESC;
 
 ### Disk space problems {#disk-space-problems}
 
-Disk space exhaustion in replicated setups creates cascading problems. When one node runs out of space, other nodes continue trying to sync with it, causing network traffic spikes and confusing symptoms. One community member spent 4 hours debugging what was simply low disk space.
+Disk space exhaustion in replicated setups creates cascading problems. When one node runs out of space, other nodes continue trying to sync with it, causing network traffic spikes and confusing symptoms. One community member spent 4 hours debugging what was simply low disk space. Check out this [query](/knowledgebase/useful-queries-for-troubleshooting#show-disk-storage-number-of-parts-number-of-rows-in-systemparts-and-marks-across-databases) to monitor your disk storage on a particular cluster.
 
 AWS users should be aware that default general purpose EBS volumes have a 16TB limit.
 
@@ -102,7 +102,7 @@ Small frequent inserts create performance problems. The community has identified
 
 [Official recommendation](/best-practices/selecting-an-insert-strategy#batch-inserts-if-synchronous): minimum 1,000 rows per insert, ideally 10,000 to 100,000.
 
-### Data quality issues {#data-quality-issues}
+### Invalid timestamps issues {#data-quality-issues}
 
 Applications that send data with arbitrary timestamps create partition problems. This leads to partitions with data from unrealistic dates (like 1998 or 2050), causing unexpected storage behavior.
 
@@ -110,7 +110,7 @@ Applications that send data with arbitrary timestamps create partition problems.
 
 Large `ALTER` operations on multi-terabyte tables can consume significant resources and potentially lock databases. One community example involved changing an Integer to a Float on 14TB of data, which locked the entire database and required rebuilding from backups.
 
-**Prevention:**
+**Monitor expensive mutations:**
 
 ```sql
 SELECT database, table, mutation_id, command, parts_to_do, is_done
