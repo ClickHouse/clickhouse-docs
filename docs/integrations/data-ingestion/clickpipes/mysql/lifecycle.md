@@ -19,7 +19,7 @@ After a pipe is provisioned, it enters the `Setup` state. This state is where we
 
 ## Snapshot {#snapshot}
 
-Once setup is complete, we enter the `Snapshot` state. `Snapshot`, `Initial Snapshot` and `Initial Load` (more common) are interchangeable terms. In this state, we take a snapshot of the source MySQL tables and load them into ClickHouse. This **does not use logical replication**. For more information on initial load, see the [parallel initial load documentation](./parallel_initial_load). The pipe will also enter the `Snapshot` state when a resync is triggered or when new tables are added to an existing pipe.
+Once setup is complete, we enter the `Snapshot` state. `Snapshot`, `Initial Snapshot` and `Initial Load` (more common) are interchangeable terms. In this state, we take a snapshot of the source MySQL tables and load them into ClickHouse. Retention setting for binary logs should account for initial load time. For more information on initial load, see the [parallel initial load documentation](./parallel_initial_load). The pipe will also enter the `Snapshot` state when a resync is triggered or when new tables are added to an existing pipe.
 
 ## Running {#running}
 
