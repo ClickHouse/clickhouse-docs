@@ -1,7 +1,7 @@
 ---
-title: 'Controlling the Syncing of a MySQL ClickPipe'
-description: 'Doc for controllling the sync a MySQL ClickPipe'
-slug: /integrations/clickpipes/mysql/sync_control
+title: 'Controlling the Syncing of a MongoDB ClickPipe'
+description: 'Doc for controllling the sync a MongoDB ClickPipe'
+slug: /integrations/clickpipes/mongodb/sync_control
 sidebar_label: 'Controlling syncs'
 ---
 
@@ -11,13 +11,13 @@ import edit_sync_settings from '@site/static/images/integrations/data-ingestion/
 import cdc_syncs from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/cdc_syncs.png'
 import Image from '@theme/IdealImage';
 
-This document describes how to control the sync of a MySQL ClickPipe when the ClickPipe is in **CDC (Running) mode**.
+This document describes how to control the sync of a MongoDB ClickPipe when the ClickPipe is in **CDC (Running) mode**.
 
 ## Overview {#overview}
 
 Database ClickPipes have an architecture that consists of two parallel processes - pulling from the source database and pushing to the target database. The pulling process is controlled by a sync configuration that defines how often the data should be pulled and how much data should be pulled at a time. By "at a time", we mean one batch - since the ClickPipe pulls and pushes data in batches.
 
-There are two main ways to control the sync of a MySQL ClickPipe. The ClickPipe will start pushing when one of the below settings kicks in.
+There are two main ways to control the sync of a MongoDB ClickPipe. The ClickPipe will start pushing when one of the below settings kicks in.
 
 ### Sync interval {#interval}
 
@@ -28,7 +28,7 @@ Sync interval can be set to any positive integer value, but it is recommended to
 
 ### Pull batch size {#batch-size}
 
-The pull batch size is the number of records that the ClickPipe will pull from the source database in one batch. Records mean inserts, updates and deletes done on the tables that are part of the pipe.
+The pull batch size is the number of records that the ClickPipe will pull from the source database in one batch. Records mean inserts, updates and deletes done on the collections that are part of the pipe.
 
 The default is **100,000** records.
 A safe maximum is 10 million.
