@@ -4,6 +4,7 @@ description: 'Various pipe statuses and their meanings'
 slug: /integrations/clickpipes/postgres/lifecycle
 title: 'Lifecycle of a Database ClickPipe'
 ---
+
 # Lifecycle of a Database ClickPipe {#lifecycle}
 
 This is a document on the various phases of a Postgres ClickPipe, the different statuses it can have, and what they mean.
@@ -18,7 +19,7 @@ After a pipe is provisioned, it enters the `Setup` state. This state is where we
 
 ## Snapshot {#snapshot}
 
-Once setup is complete, we enter the `Snapshot` state. `Snapshot`, `Initial Snapshot` and `Initial Load` (more common) are interchangeable terms. In this state, we take a snapshot of the source database tables and load them into ClickHouse. This **does not use logical replication**. For more information on initial load, see the [parallel initial load documentation](./parallel_initial_load).
+Once setup is complete, we enter the `Snapshot` state. `Snapshot`, `Initial Snapshot` and `Initial Load` (more common) are interchangeable terms. In this state, we take a snapshot of the source database tables and load them into ClickHouse. This **does not use logical replication**. For more information on initial load, see the [parallel initial load documentation](./parallel_initial_load). The pipe will also enter the `Snapshot` state when a resync is triggered or when new tables are added to an existing pipe.
 
 ## Running {#running}
 
