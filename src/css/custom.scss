@@ -141,6 +141,10 @@ body {
   color: white;
 }
 
+.footer {
+  z-index: 100;
+}
+
 [data-theme='dark'] .footer {
   background-color: var(--click-color-background);
 }
