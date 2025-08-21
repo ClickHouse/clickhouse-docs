@@ -33,10 +33,6 @@ The pull batch size is the number of records that the ClickPipe will pull from t
 The default is **100,000** records.
 A safe maximum is 10 million.
 
-### An exception: Long-running transactions on source {#transactions}
-
-When a transaction is run on the source database, the ClickPipe waits until it receives the COMMIT of the transaction before it moves forward. This with **overrides** both the sync interval and the pull batch size.
-
 ### Configuring sync settings {#configuring}
 
 You can set the sync interval and pull batch size when you create a ClickPipe or edit an existing one.
