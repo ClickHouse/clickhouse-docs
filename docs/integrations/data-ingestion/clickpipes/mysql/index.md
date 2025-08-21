@@ -20,7 +20,7 @@ import Image from '@theme/IdealImage';
 <BetaBadge/>
 
 :::info
-Currently, ingesting data from MySQL to ClickHouse Cloud via ClickPipes is in Private Preview.
+Currently, ingesting data from MySQL to ClickHouse Cloud via ClickPipes is in public beta.
 :::
 
 You can use ClickPipes to ingest data from your source MySQL database into ClickHouse Cloud. The source MySQL database can be hosted on-premises or in the cloud using services like Amazon RDS, Google Cloud SQL, and others.

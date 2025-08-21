@@ -202,13 +202,11 @@ Peak memory usage: 688.77 KiB.
 完成数据加载后，我们可以使用 [`ALTER TABLE MOVE PARTITION`](/sql-reference/statements/alter/partition#move-partition-to-table) 子句将数据从重复表移动到主要表。
 
 ```sql
-ALTER TABLE pypi
- (MOVE PARTITION () FROM pypi_v2)
+ALTER TABLE pypi_v2 MOVE PARTITION () TO pypi
 
 0 rows in set. Elapsed: 1.401 sec.
 
-ALTER TABLE pypi_downloads
- (MOVE PARTITION () FROM pypi_downloads_v2)
+ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
 
 0 rows in set. Elapsed: 0.389 sec.
 ```
@@ -315,11 +313,9 @@ WHERE timestamp < '2024-12-17 09:00:00'
 一旦此插入完成，我们可以移动相关的分区。
 
 ```sql
-ALTER TABLE pypi
- (MOVE PARTITION () FROM pypi_v2)
+ALTER TABLE pypi_v2 MOVE PARTITION () TO pypi
 
-ALTER TABLE pypi_downloads
- (MOVE PARTITION () FROM pypi_downloads_v2)
+ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
 ```
 
 如果历史数据在一个孤立的存储桶中，则不需要上述时间过滤。如果没有时间或单调列，请隔离您的历史数据。
