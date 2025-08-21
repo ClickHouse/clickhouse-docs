@@ -27,19 +27,6 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
   const { siteMetadata, i18n: { currentLocale } } = useDocusaurusContext();
   const processSearchResultUrl = useSearchResultUrlProcessor();
   const contextualSearchFacetFilters = useAlgoliaContextualFacetFilters();
-  const configFacetFilters = props.searchParameters?.facetFilters ?? [];
-  const facetFilters = contextualSearch
-      ? // Merge contextual search filters with config filters
-      mergeFacetFilters(contextualSearchFacetFilters, configFacetFilters)
-      : // ... or use config facetFilters
-      configFacetFilters;
-  // We add clickAnalyics here
-  const searchParameters = {
-    ...props.searchParameters,
-    facetFilters,
-    clickAnalytics: true,
-    hitsPerPage: 10,
-  };
   const { isAskAIOpen, currentMode } = useAskAI();
   const history = useHistory();
   const searchButtonRef = useRef(null);
