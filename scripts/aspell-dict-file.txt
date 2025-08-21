@@ -1093,3 +1093,7 @@ MCP's
 daemonset
 --docs/use-cases/observability/clickstack/ingesting-data/kubernetes.md--
 daemonset
+--docs/integrations/data-ingestion/clickpipes/postgres/faq.md--
+ReceiveMessage
+--docs/integrations/data-ingestion/clickpipes/postgres/postgres_generated_columns.md--
+RelationMessage
