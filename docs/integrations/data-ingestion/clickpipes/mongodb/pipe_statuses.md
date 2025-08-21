@@ -19,7 +19,7 @@ After a pipe is provisioned, it enters the `Setup` state. This state is where we
 
 ## Snapshot {#snapshot-phase-clickpipe-mongodb}
 
-Once setup is complete, we enter the `Snapshot` state. `Snapshot`, `Initial Snapshot` and `Initial Load` (more common) are interchangeable terms. In this state, we take a snapshot of the source MongoDB collections and load them into ClickHouse.
+Once setup is complete, we enter the `Snapshot` state. `Snapshot`, `Initial Snapshot` and `Initial Load` (more common) are interchangeable terms. In this state, we take a snapshot of the source MongoDB collections and load them into ClickHouse. The pipe will also enter the `Snapshot` state when a resync is triggered or when new tables are added to an existing pipe.
 
 ## Running {#running-phase-clickpipe-mongodb}
 
@@ -32,3 +32,9 @@ Once the pipe is in the `Running` state, you can pause it. This will stop the CD
 ## Failed {#failed-phase-clickpipe-mongodb}
 
 If there is an irrecoverable error in the pipe, it will enter the `Failed` state. You can reach out to support or [resync](./resync) your pipe to recover from this state.
+
+## Degraded {#degraded}
+
+:::note
+This state is coming soon. If you're using our [OpenAPI](https://clickhouse.com/docs/cloud/manage/openapi), consider adding support for it now to ensure your integration continues working when it's released.
+:::
