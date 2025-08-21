@@ -22,6 +22,45 @@ function fetchUrl(url) {
   });
 }
 
+// Helper function to extract snippet from content using comment markers
+function extractSnippet(content, snippetId = null) {
+  const lines = content.split('\n');
+  
+  // Define comment patterns for different languages
+  const commentPatterns = [
+    // Hash-style comments (Python, Ruby, Shell, YAML, etc.)
+    { start: `#docs-start${snippetId ? `-${snippetId}` : ''}`, end: `#docs-end${snippetId ? `-${snippetId}` : ''}` },
+    // Double-slash comments (JavaScript, Java, C++, etc.)
+    { start: `//docs-start${snippetId ? `-${snippetId}` : ''}`, end: `//docs-end${snippetId ? `-${snippetId}` : ''}` },
+    // Block comments (CSS, SQL, etc.)
+    { start: `/*docs-start${snippetId ? `-${snippetId}` : ''}*/`, end: `/*docs-end${snippetId ? `-${snippetId}` : ''}*/` },
+    // XML/HTML comments
+    { start: `<!--docs-start${snippetId ? `-${snippetId}` : ''}-->`, end: `<!--docs-end${snippetId ? `-${snippetId}` : ''}-->` }
+  ];
+  
+  for (const pattern of commentPatterns) {
+    let startIndex = -1;
+    let endIndex = -1;
+    
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (line.includes(pattern.start)) {
+        startIndex = i + 1; // Start from the line after the start marker
+      } else if (line.includes(pattern.end) && startIndex !== -1) {
+        endIndex = i; // End at the line before the end marker
+        break;
+      }
+    }
+    
+    if (startIndex !== -1 && endIndex !== -1 && startIndex < endIndex) {
+      return lines.slice(startIndex, endIndex).join('\n');
+    }
+  }
+  
+  // If no snippet markers found, return original content
+  return content;
+}
+
 function codeImportPlugin(context, options) {
   return {
     name: 'code-import-plugin',
@@ -49,6 +88,10 @@ function codeImportPlugin(context, options) {
           for (const match of matches) {
             const [fullMatch, lang, param, additionalMeta, existingContent] = match;
             
+            // Parse snippet parameter from additional metadata
+            const snippetMatch = additionalMeta.match(/snippet=(\w+)/);
+            const snippetId = snippetMatch ? snippetMatch[1] : null;
+            
             try {
               let importedContent;
               
@@ -56,12 +99,14 @@ function codeImportPlugin(context, options) {
                 // Handle file import
                 const importPath = param.replace('file=', '');
                 const absoluteImportPath = path.resolve(context.siteDir, importPath);
-                importedContent = fs.readFileSync(absoluteImportPath, 'utf8');
+                const rawContent = fs.readFileSync(absoluteImportPath, 'utf8');
+                importedContent = extractSnippet(rawContent, snippetId);
               } else if (param.startsWith('url=')) {
                 // Handle URL import
                 const url = param.replace('url=', '');
                 try {
-                  importedContent = await fetchUrl(url);
+                  const rawContent = await fetchUrl(url);
+                  importedContent = extractSnippet(rawContent, snippetId);
                 } catch (urlError) {
                   console.warn(`Could not fetch URL ${url} in ${filePath}: ${urlError.message}`);
                   continue; // Skip this replacement if URL fetch fails
@@ -71,7 +116,7 @@ function codeImportPlugin(context, options) {
               // Preserve the complete metadata
               const fullMeta = `${param}${additionalMeta}`;
               const metaStr = fullMeta ? ` ${fullMeta}` : '';
-              const replacement = `\`\`\`${lang || ''}${metaStr}\n${importedContent}\`\`\``;
+              const replacement = `\`\`\`${lang || ''}${metaStr}\n${importedContent}\n\`\`\``;
               
               content = content.replace(fullMatch, replacement);
               modified = true;
