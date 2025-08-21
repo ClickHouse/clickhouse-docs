@@ -5,7 +5,7 @@ sidebar_label: 'Debian/Ubuntu'
 slug: /install/debian_ubuntu
 title: 'Install ClickHouse on Debian/Ubuntu'
 hide_title: true
-doc_type: tutorial
+doc_type: 'tutorial'
 ---
 
 import DebianProd from './_snippets/_deb_install.md'

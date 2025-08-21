@@ -4,7 +4,7 @@ keywords: ['AWS', 'Cloud', 'serverless', 'management']
 title: 'Overview'
 hide_title: true
 description: 'Overview page for Managing Cloud'
-doc_type: overview
+doc_type: 'overview'
 ---
 
 # Managing Cloud 

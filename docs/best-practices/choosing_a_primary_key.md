@@ -6,7 +6,7 @@ title: 'Choosing a Primary Key'
 description: 'Page describing how to choose a primary key in ClickHouse'
 keywords: ['primary key']
 show_related_blogs: true
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 import Image from '@theme/IdealImage';

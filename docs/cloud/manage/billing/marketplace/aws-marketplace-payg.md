@@ -3,7 +3,7 @@ slug: /cloud/billing/marketplace/aws-marketplace-payg
 title: 'AWS Marketplace PAYG'
 description: 'Subscribe to ClickHouse Cloud through the AWS Marketplace (PAYG).'
 keywords: ['aws', 'marketplace', 'billing', 'PAYG']
-doc_type: how-to
+doc_type: 'how-to'
 ---
 
 import aws_marketplace_payg_1 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-1.png';

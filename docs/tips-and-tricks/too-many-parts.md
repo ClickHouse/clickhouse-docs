@@ -2,7 +2,7 @@
 sidebar_position: 1
 slug: /tips-and-tricks/too-many-parts
 sidebar_label: 'Too Many Parts'
-doc_type: 'how-to'
+doc_type: 'explanation'
 keywords: [
   'clickhouse too many parts',
   'too many parts error',

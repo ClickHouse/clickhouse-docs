@@ -4,7 +4,7 @@ slug: /integrations/data-formats/json/schema
 description: 'How to optimally design JSON schemas'
 keywords: ['json', 'clickhouse', 'inserting', 'loading', 'formats', 'schema', 'structured', 'semi-structured']
 score: 20
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 import Image from '@theme/IdealImage';

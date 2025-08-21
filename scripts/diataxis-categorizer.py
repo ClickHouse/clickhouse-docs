@@ -166,16 +166,16 @@ class DiataxisCategorizer:
             
             if re.search(r'^doc_type\s*:', yaml_content, re.MULTILINE):
                 # Replace existing doc_type
-                updated_yaml = re.sub(r'^(\s*)doc_type\s*:.*$', f'\\1doc_type: {doc_type}', 
+                updated_yaml = re.sub(r'^(\s*)doc_type\s*:.*$', f"\\1doc_type: '{doc_type}'", 
                                     yaml_content, flags=re.MULTILINE)
             else:
                 # Add doc_type
-                updated_yaml = yaml_content.rstrip() + f'\ndoc_type: {doc_type}'
+                updated_yaml = yaml_content.rstrip() + f"\ndoc_type: '{doc_type}'"
             
             return f"---\n{updated_yaml}\n---\n\n{body}"
         else:
             # Create new frontmatter
-            return f"---\ndoc_type: {doc_type}\n---\n\n{content}"
+            return f"---\ndoc_type: '{doc_type}'\n---\n\n{content}"
     
     def process_files(self, dry_run: bool = True, force: bool = False) -> List[CategoryResult]:
         """Process all markdown files and optionally update them"""

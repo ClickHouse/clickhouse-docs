@@ -5,7 +5,7 @@ toc_hidden: true
 toc_priority: 9
 description: 'Describes who is using ClickHouse'
 keywords: ['customer']
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 # Who is using ClickHouse? {#who-is-using-clickhouse}

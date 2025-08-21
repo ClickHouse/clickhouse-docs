@@ -4,7 +4,7 @@ sidebar_label: 'PostgreSQL'
 title: 'PostgreSQL'
 hide_title: false
 description: 'Page describing how to integrate Postgres with ClickHouse'
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 import PostgreSQL from '@site/docs/integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql.md';

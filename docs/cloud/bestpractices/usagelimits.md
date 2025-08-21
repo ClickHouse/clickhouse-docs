@@ -3,7 +3,7 @@ slug: /cloud/bestpractices/usage-limits
 sidebar_label: 'Usage Limits'
 title: 'Usage limits'
 description: 'Describes the recommended usage limits in ClickHouse Cloud'
-doc_type: reference
+doc_type: 'reference'
 ---
 
 While ClickHouse is known for its speed and reliability, optimal performance is achieved within certain operating parameters. For example, having too many tables, databases or parts could negatively impact performance. To avoid this, Clickhouse Cloud has guardrails set up for several types of items. You can find details of these guardrails below.

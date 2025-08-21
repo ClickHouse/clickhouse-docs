@@ -4,7 +4,7 @@ title: 'Configuration Options'
 pagination_prev: null
 pagination_next: null
 description: 'Configuration options for ClickStack - The ClickHouse Observability Stack'
-doc_type: reference
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';

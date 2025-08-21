@@ -4,7 +4,7 @@ slug: /manage/clickhouse-cloud-billing-compliance
 title: 'ClickHouse Cloud billing compliance'
 description: 'Page describing ClickHouse Cloud billing compliance'
 keywords: ['billing compliance', 'pay-as-you-go']
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 import billing_compliance from '@site/static/images/cloud/manage/billing_compliance.png';

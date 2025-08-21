@@ -3,7 +3,7 @@ title: 'Removing specific tables from a ClickPipe'
 description: 'Removing specific tables from a ClickPipe'
 sidebar_label: 'Remove Table'
 slug: /integrations/clickpipes/mysql/removing_tables
-doc_type: how-to
+doc_type: 'how-to'
 ---
 
 import Image from '@theme/IdealImage';

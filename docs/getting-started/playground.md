@@ -5,7 +5,7 @@ keywords: ['clickhouse', 'playground', 'getting', 'started', 'docs']
 sidebar_label: 'ClickHouse Playground'
 slug: /getting-started/playground
 title: 'ClickHouse Playground'
-doc_type: tutorial
+doc_type: 'tutorial'
 ---
 
 # ClickHouse playground

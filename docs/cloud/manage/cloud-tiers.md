@@ -3,7 +3,7 @@ sidebar_label: 'ClickHouse Cloud Tiers'
 slug: /cloud/manage/cloud-tiers
 title: 'ClickHouse Cloud Tiers'
 description: 'Cloud tiers available in ClickHouse Cloud'
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 # ClickHouse Cloud tiers

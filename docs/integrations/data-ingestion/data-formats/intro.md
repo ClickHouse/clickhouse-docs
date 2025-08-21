@@ -6,7 +6,7 @@ keywords: ['clickhouse', 'CSV', 'TSV', 'Parquet', 'clickhouse-client', 'clickhou
 title: 'Importing from various data formats to ClickHouse'
 description: 'Page describing how to import various data formats into ClickHouse'
 show_related_blogs: true
-doc_type: reference
+doc_type: 'reference'
 ---
 
 # Importing from various data formats to ClickHouse

@@ -2,7 +2,7 @@
 sidebar_position: 1
 slug: /community-wisdom/debugging-insights
 sidebar_label: 'Debugging Insights'
-doc_type: 'how-to-guide'
+doc_type: 'overview'
 keywords: [
   'clickhouse troubleshooting',
   'clickhouse errors',

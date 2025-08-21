@@ -4,7 +4,7 @@ sidebar_label: 'C and C++'
 slug: /chdb/install/c
 description: 'How to install chDB for C and C++'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'install']
-doc_type: how-to
+doc_type: 'how-to'
 ---
 
 <!-- vale ClickHouse.Headings = NO -->

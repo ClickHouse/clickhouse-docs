@@ -2,7 +2,7 @@
 sidebar_position: 1
 slug: /tips-and-tricks/community-wisdom
 sidebar_label: 'Community Wisdom'
-doc_type: 'overview'
+doc_type: 'reference'
 keywords: [
   'database tips',
   'community wisdom',

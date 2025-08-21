@@ -4,7 +4,7 @@ slug: /use-cases/time-series
 title: 'Time-Series'
 pagination_prev: null
 pagination_next: null
-doc_type: overview
+doc_type: 'overview'
 ---
 
 Welcome to our time-series use case guide. In this guide you'll learn how you can get setup and use ClickHouse for time-series.

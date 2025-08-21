@@ -1,7 +1,7 @@
 ---
 slug: /troubleshooting
 sidebar_label: 'Troubleshooting'
-doc_type: 'reference'
+doc_type: 'how-to'
 keywords: [
   'clickhouse troubleshooting',
   'clickhouse errors',

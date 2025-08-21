@@ -5,7 +5,7 @@ pagination_next: null
 sidebar_position: 0
 description: 'Browser SDK for ClickStack - The ClickHouse Observability Stack'
 title: 'Browser JS'
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 import Tabs from '@theme/Tabs';

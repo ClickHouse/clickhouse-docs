@@ -4,7 +4,7 @@ sidebar_position: 2
 sidebar_label: 'Optimizing for Performance'
 title: 'Optimizing for S3 Insert and Read Performance'
 description: 'Optimizing the performance of S3 read and insert'
-doc_type: reference
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';

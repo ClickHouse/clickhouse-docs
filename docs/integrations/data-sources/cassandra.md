@@ -3,7 +3,7 @@ slug: /integrations/cassandra
 sidebar_label: 'Cassandra'
 title: 'Cassandra'
 description: 'Page describing how users can integrate with Cassandra via a dictionary.'
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 # Cassandra integration

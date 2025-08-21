@@ -4,7 +4,7 @@ sidebar_label: 'Prometheus'
 title: 'Prometheus'
 description: 'Export ClickHouse metrics to Prometheus'
 keywords: ['prometheus', 'grafana', 'monitoring', 'metrics', 'exporter']
-doc_type: reference
+doc_type: 'reference'
 ---
 
 import prometheus_grafana_metrics_endpoint from '@site/static/images/integrations/prometheus-grafana-metrics-endpoint.png';

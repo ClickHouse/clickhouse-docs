@@ -5,7 +5,7 @@ pagination_next: null
 sidebar_position: 7
 description: 'Python for ClickStack - The ClickHouse Observability Stack'
 title: 'Python'
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 import Tabs from '@theme/Tabs';

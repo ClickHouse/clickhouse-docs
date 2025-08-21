@@ -3,7 +3,7 @@ sidebar_label: 'Overview'
 slug: /cloud/security/cloud-access-management/overview
 title: 'Cloud access management'
 description: 'Describes how access control in ClickHouse cloud works, including information on role types'
-doc_type: how-to
+doc_type: 'how-to'
 ---
 
 import Image from '@theme/IdealImage';

@@ -3,7 +3,7 @@ title: 'Working with JSON in ClickHouse'
 sidebar_label: 'Working with JSON'
 slug: /integrations/clickpipes/mongodb/quickstart
 description: 'Common patterns for working with JSON data replicated from MongoDB to ClickHouse via ClickPipes'
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 # Working with JSON in ClickHouse

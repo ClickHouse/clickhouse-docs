@@ -4,7 +4,7 @@ title: 'avgMergeState'
 description: 'Example of using the avgMergeState combinator'
 keywords: ['avg', 'MergeState', 'combinator', 'examples', 'avgMergeState']
 sidebar_label: 'avgMergeState'
-doc_type: how-to
+doc_type: 'how-to'
 ---
 
 import Tabs from '@theme/Tabs';

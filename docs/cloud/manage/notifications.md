@@ -3,7 +3,7 @@ title: 'Notifications'
 slug: /cloud/notifications
 description: 'Notifications for your ClickHouse Cloud service'
 keywords: ['cloud', 'notifications']
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 import Image from '@theme/IdealImage';

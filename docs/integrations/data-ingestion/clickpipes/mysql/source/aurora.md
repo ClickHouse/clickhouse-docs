@@ -3,7 +3,7 @@ sidebar_label: 'Amazon Aurora MySQL'
 description: 'Step-by-step guide on how to set up Amazon Aurora MySQL as a source for ClickPipes'
 slug: /integrations/clickpipes/mysql/source/aurora
 title: 'Aurora MySQL source setup guide'
-doc_type: overview
+doc_type: 'overview'
 ---
 
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';

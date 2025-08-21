@@ -3,7 +3,7 @@ title: 'Scaling DB ClickPipes via OpenAPI'
 description: 'Doc for scaling DB ClickPipes via OpenAPI'
 slug: /integrations/clickpipes/postgres/scaling
 sidebar_label: 'Scaling'
-doc_type: reference
+doc_type: 'reference'
 ---
 
 :::caution Most users won't need this API

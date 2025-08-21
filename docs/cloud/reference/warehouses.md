@@ -3,7 +3,7 @@ title: 'Warehouses'
 slug: /cloud/reference/warehouses
 keywords: ['compute separation', 'cloud', 'architecture', 'compute-compute', 'warehouse', 'warehouses', 'hydra']
 description: 'Compute-compute separation in ClickHouse Cloud'
-doc_type: reference
+doc_type: 'reference'
 ---
 
 import compute_1 from '@site/static/images/cloud/reference/compute-compute-1.png';

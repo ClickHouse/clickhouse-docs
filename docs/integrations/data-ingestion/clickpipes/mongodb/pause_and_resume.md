@@ -3,7 +3,7 @@ title: 'Pausing and Resuming a MongoDB ClickPipe'
 description: 'Pausing and Resuming a MongoDB ClickPipe'
 sidebar_label: 'Pause Table'
 slug: /integrations/clickpipes/mongodb/pause_and_resume
-doc_type: how-to
+doc_type: 'how-to'
 ---
 
 import Image from '@theme/IdealImage';

@@ -5,7 +5,7 @@ slug: /integrations/kafka/cloud/confluent/sink-connector
 description: 'Guide to using the fully managed ClickHouse Connector Sinkon Confluent Cloud'
 title: 'Integrating Confluent Cloud with ClickHouse'
 keywords: ['Kafka', 'Confluent Cloud']
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

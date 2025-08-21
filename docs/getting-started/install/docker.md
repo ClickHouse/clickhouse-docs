@@ -5,7 +5,7 @@ sidebar_label: 'Docker'
 slug: /install/docker
 title: 'Install ClickHouse using Docker'
 hide_title: true
-doc_type: tutorial
+doc_type: 'tutorial'
 ---
 
 import Docker from './_snippets/_docker.md'

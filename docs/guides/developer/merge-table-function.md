@@ -3,7 +3,7 @@ slug: /guides/developer/merge-table-function
 sidebar_label: 'Merge table function'
 title: 'Merge table function'
 description: 'Query multiple tables at the same time.'
-doc_type: how-to
+doc_type: 'how-to'
 ---
 
 The [merge table function](https://clickhouse.com/docs/sql-reference/table-functions/merge) lets us query multiple tables in parallel.

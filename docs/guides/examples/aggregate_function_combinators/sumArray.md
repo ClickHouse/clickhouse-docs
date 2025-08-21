@@ -4,7 +4,7 @@ title: 'sumArray'
 description: 'Example of using the sumArray combinator'
 keywords: ['sum', 'array', 'combinator', 'examples', 'sumArray']
 sidebar_label: 'sumArray'
-doc_type: how-to
+doc_type: 'how-to'
 ---
 
 # sumArray {#sumarray}

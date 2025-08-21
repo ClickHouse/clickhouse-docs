@@ -4,7 +4,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Kubernetes integration for ClickStack - The ClickHouse Observability Stack'
 title: 'Kubernetes'
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 ClickStack uses the OpenTelemetry (OTel) collector to collect logs, metrics, and Kubernetes events from Kubernetes clusters and forward them to ClickStack. We support the native OTel log format and require no additional vendor-specific configuration.

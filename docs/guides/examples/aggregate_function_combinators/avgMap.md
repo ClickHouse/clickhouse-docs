@@ -4,7 +4,7 @@ title: 'avgMap'
 description: 'Example of using the avgMap combinator'
 keywords: ['avg', 'map', 'combinator', 'examples', 'avgMap']
 sidebar_label: 'avgMap'
-doc_type: how-to
+doc_type: 'how-to'
 ---
 
 # avgMap {#avgmap}

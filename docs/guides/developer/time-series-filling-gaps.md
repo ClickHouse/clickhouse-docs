@@ -5,7 +5,7 @@ sidebar_position: 10
 description: 'Filling gaps in time-series data.'
 keywords: ['time series', 'gap fill']
 title: 'Filling gaps in time-series data'
-doc_type: how-to
+doc_type: 'how-to'
 ---
 
 # Filling gaps in time-series data

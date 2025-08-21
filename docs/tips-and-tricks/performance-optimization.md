@@ -2,7 +2,7 @@
 sidebar_position: 1
 slug: /community-wisdom/performance-optimization
 sidebar_label: 'Performance Optimization'
-doc_type: 'how-to-guide'
+doc_type: 'overview'
 keywords: [
   'performance optimization',
   'query performance',

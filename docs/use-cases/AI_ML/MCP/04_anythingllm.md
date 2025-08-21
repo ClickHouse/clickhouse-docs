@@ -7,7 +7,7 @@ pagination_next: null
 description: 'This guide explains how to set up AnythingLLM with a ClickHouse MCP server using Docker.'
 keywords: ['AI', 'AnythingLLM', 'MCP']
 show_related_blogs: true
-doc_type: how-to
+doc_type: 'how-to'
 ---
 
 import {CardHorizontal} from '@clickhouse/click-ui/bundled'

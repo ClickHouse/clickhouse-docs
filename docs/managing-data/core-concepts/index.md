@@ -3,7 +3,7 @@ slug: /managing-data/core-concepts
 title: 'Core Concepts'
 description: 'Learn Core Concepts of how ClickHouse works'
 keywords: ['concepts', 'part', 'partition', 'primary index']
-doc_type: overview
+doc_type: 'overview'
 ---
 
 In this section of the documentation,

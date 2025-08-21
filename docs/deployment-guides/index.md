@@ -2,7 +2,7 @@
 slug: /deployment-guides/index
 title: 'Deployment Guides Overview'
 description: 'Landing page for the deployment and scaling section'
-doc_type: overview
+doc_type: 'overview'
 ---
 
 # Deployment and scaling

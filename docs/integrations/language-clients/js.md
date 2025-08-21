@@ -5,7 +5,7 @@ keywords: ['clickhouse', 'js', 'JavaScript', 'NodeJS', 'web', 'browser', 'Cloudf
 slug: /integrations/javascript
 description: 'The official JS client for connecting to ClickHouse.'
 title: 'ClickHouse JS'
-doc_type: reference
+doc_type: 'reference'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

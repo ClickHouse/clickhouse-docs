@@ -3,7 +3,7 @@ sidebar_label: 'Amazon RDS MariaDB'
 description: 'Step-by-step guide on how to set up Amazon RDS MariaDB as a source for ClickPipes'
 slug: /integrations/clickpipes/mysql/source/rds_maria
 title: 'RDS MariaDB source setup guide'
-doc_type: how-to
+doc_type: 'how-to'
 ---
 
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';

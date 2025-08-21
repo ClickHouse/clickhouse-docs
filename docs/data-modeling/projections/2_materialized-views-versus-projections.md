@@ -4,7 +4,7 @@ sidebar_label: 'Materialized views vs projections'
 title: 'Materialized Views versus Projections'
 hide_title: false
 description: 'Article comparing materialized views and projections in ClickHouse, including their use cases, performance, and limitations.'
-doc_type: reference
+doc_type: 'reference'
 ---
 
 > A common question from users is when they should use materialized views versus 

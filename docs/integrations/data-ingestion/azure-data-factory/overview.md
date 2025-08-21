@@ -4,7 +4,7 @@ slug: /integrations/azure-data-factory/overview
 description: 'Bringing Azure Data into ClickHouse - Overview'
 keywords: ['azure data factory', 'azure', 'microsoft', 'data']
 title: 'Bringing Azure Data into ClickHouse'
-doc_type: overview
+doc_type: 'overview'
 ---
 
 # Bringing Azure Data into ClickHouse

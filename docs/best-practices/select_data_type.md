@@ -5,7 +5,7 @@ sidebar_label: 'Selecting data Types'
 title: 'Selecting data Types'
 description: 'Page describing how to choose data types in ClickHouse'
 keywords: ['data types']
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 import NullableColumns from '@site/docs/best-practices/_snippets/_avoid_nullable_columns.md';

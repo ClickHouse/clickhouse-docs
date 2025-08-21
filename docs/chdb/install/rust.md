@@ -4,7 +4,7 @@ sidebar_label: 'Rust'
 slug: /chdb/install/rust
 description: 'How to install chDB for Rust'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'bun', 'install']
-doc_type: how-to
+doc_type: 'how-to'
 ---
 
 ## Requirements {#requirements}

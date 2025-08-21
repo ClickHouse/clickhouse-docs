@@ -4,7 +4,7 @@ slug: /integrations/google-dataflow/java-runner
 sidebar_position: 2
 description: 'Users can ingest data into ClickHouse using Google Dataflow Java Runner'
 title: 'Dataflow Java Runner'
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';

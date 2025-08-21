@@ -5,7 +5,7 @@ description: 'OLAP stands for Online Analytical Processing. It is a broad term t
 title: 'What is OLAP?'
 slug: /concepts/olap
 keywords: ['OLAP']
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 # What is OLAP?

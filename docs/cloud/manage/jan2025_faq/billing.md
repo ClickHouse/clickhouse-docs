@@ -3,7 +3,7 @@ title: 'Billing'
 slug: /cloud/manage/jan-2025-faq/billing
 keywords: ['new pricing', 'billing']
 description: 'Billing details for new pricing tiers'
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 ## Billing {#billing}

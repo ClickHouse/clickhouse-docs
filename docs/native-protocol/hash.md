@@ -3,7 +3,7 @@ slug: /native-protocol/hash
 sidebar_position: 5
 title: 'CityHash'
 description: 'Native protocol hash'
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 # CityHash

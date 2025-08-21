@@ -7,7 +7,7 @@ pagination_next: null
 description: 'Learn how to build an agentic application using data stored in ClickHouse with ClickHouse MCP and CopilotKit'
 keywords: ['ClickHouse', 'MCP', 'copilotkit']
 show_related_blogs: true
-doc_type: how-to
+doc_type: 'how-to'
 ---
 
 # How to build an AI agent with CopilotKit and the ClickHouse MCP Server

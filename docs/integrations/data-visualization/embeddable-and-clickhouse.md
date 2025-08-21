@@ -4,7 +4,7 @@ slug: /integrations/embeddable
 keywords: ['clickhouse', 'Embeddable', 'connect', 'integrate', 'ui']
 description: 'Embeddable is a developer toolkit for building fast, interactive, fully-custom analytics experiences directly into your app.'
 title: 'Connecting Embeddable to ClickHouse'
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

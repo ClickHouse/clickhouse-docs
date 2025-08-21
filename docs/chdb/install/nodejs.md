@@ -4,7 +4,7 @@ sidebar_label: 'NodeJS'
 slug: /chdb/install/nodejs
 description: 'How to install chDB for NodeJS'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'NodeJS', 'install']
-doc_type: how-to
+doc_type: 'how-to'
 ---
 
 # Installing chDB for NodeJS

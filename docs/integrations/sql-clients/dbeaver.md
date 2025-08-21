@@ -3,7 +3,7 @@ slug: /integrations/dbeaver
 sidebar_label: 'DBeaver'
 description: 'DBeaver is a multi-platform database tool.'
 title: 'Connect DBeaver to ClickHouse'
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 import Image from '@theme/IdealImage';

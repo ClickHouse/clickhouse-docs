@@ -4,7 +4,7 @@ sidebar_label: 'MongoDB'
 title: 'MongoDB'
 hide_title: true
 description: 'Page describing integration using the MongoDB engine'
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 import MongoDBEngine from '@site/docs/engines/table-engines/integrations/mongodb.md';

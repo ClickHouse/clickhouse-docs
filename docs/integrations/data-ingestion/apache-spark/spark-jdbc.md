@@ -5,7 +5,7 @@ slug: /integrations/apache-spark/spark-jdbc
 description: 'Introduction to Apache Spark with ClickHouse'
 keywords: ['clickhouse', 'Apache Spark', 'jdbc', 'migrating', 'data']
 title: 'Spark JDBC'
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 import Tabs from '@theme/Tabs';

@@ -5,7 +5,7 @@ pagination_next: null
 sidebar_position: 4
 description: 'NestJS SDK for ClickStack - The ClickHouse Observability Stack'
 title: 'NestJS'
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 The ClickStack NestJS integration allows you to create a logger or use the default

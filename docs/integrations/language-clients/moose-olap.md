@@ -5,7 +5,7 @@ sidebar_position: 25
 slug: /interfaces/third-party/moose-olap
 title: 'Developing on ClickHouse with Moose OLAP'
 keywords: ['Moose']
-doc_type: overview
+doc_type: 'overview'
 ---
 
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';

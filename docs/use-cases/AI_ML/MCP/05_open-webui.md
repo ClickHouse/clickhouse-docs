@@ -7,7 +7,7 @@ pagination_next: null
 description: 'This guide explains how to set up Open WebUI with a ClickHouse MCP server using Docker.'
 keywords: ['AI', 'Open WebUI', 'MCP']
 show_related_blogs: true
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 import {CardHorizontal} from '@clickhouse/click-ui/bundled'

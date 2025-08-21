@@ -3,7 +3,7 @@ title: 'New Pricing Dimensions'
 slug: /cloud/manage/jan-2025-faq/pricing-dimensions
 keywords: ['new pricing', 'dimensions']
 description: 'Pricing dimensions for data transfer and ClickPipes'
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 import Image from '@theme/IdealImage';

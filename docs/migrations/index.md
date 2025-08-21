@@ -4,7 +4,7 @@ title: 'Migrations'
 pagination_prev: null
 pagination_next: null
 description: 'Landing page for the migrations section'
-doc_type: overview
+doc_type: 'overview'
 ---
 
 | Page                                                                   | Description                                     |

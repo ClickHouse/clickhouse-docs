@@ -5,7 +5,7 @@ description: 'Page describing what projections are, how they can be used to impr
 query performance, and how they differ from materialized views.'
 keywords: ['projection', 'projections', 'query optimization']
 sidebar_order: 1
-doc_type: how-to
+doc_type: 'how-to'
 ---
 
 import projections_1 from '@site/static/images/data-modeling/projections_1.png';

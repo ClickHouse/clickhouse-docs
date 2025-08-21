@@ -4,7 +4,7 @@ title: 'Can I use ClickHouse as a time-series database?'
 toc_hidden: true
 toc_priority: 101
 description: 'Page describing how to use ClickHouse as a time-series database'
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 # Can I use ClickHouse as a time-series database? {#can-i-use-clickhouse-as-a-time-series-database}

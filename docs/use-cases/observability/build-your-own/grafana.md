@@ -4,7 +4,7 @@ description: 'Using Grafana and ClickHouse for observability'
 slug: /observability/grafana
 keywords: ['Observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafana', 'OTel']
 show_related_blogs: true
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 import observability_15 from '@site/static/images/use-cases/observability/observability-15.png';

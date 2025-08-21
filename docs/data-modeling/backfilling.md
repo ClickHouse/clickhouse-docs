@@ -3,7 +3,7 @@ slug: /data-modeling/backfilling
 title: 'Backfilling Data'
 description: 'How to use backfill large datasets in ClickHouse'
 keywords: ['materialized views', 'backfilling', 'inserting data', 'resilient data load']
-doc_type: how-to
+doc_type: 'how-to'
 ---
 
 import nullTableMV from '@site/static/images/data-modeling/null_table_mv.png';

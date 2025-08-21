@@ -4,7 +4,7 @@ sidebar_position: 1
 slug: /integrations/kafka/cloud/confluent
 description: 'Kafka Connectivity with Confluent Cloud'
 title: 'Integrating Confluent Cloud with ClickHouse'
-doc_type: overview
+doc_type: 'overview'
 ---
 
 # Integrating Confluent Cloud with ClickHouse

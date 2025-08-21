@@ -8,7 +8,7 @@ sidebar_position: 1
 description: 'Equivalent concepts - ClickStack and Elastic'
 show_related_blogs: true
 keywords: ['Elasticsearch']
-doc_type: how-to
+doc_type: 'how-to'
 ---
 
 import Image from '@theme/IdealImage';

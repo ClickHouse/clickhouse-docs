@@ -8,7 +8,7 @@ sidebar_position: 5
 description: 'Migrating agents from Elastic'
 show_related_blogs: true
 keywords: ['ClickStack']
-doc_type: how-to
+doc_type: 'how-to'
 ---
 
 import Image from '@theme/IdealImage';

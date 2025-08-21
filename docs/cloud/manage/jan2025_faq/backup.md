@@ -3,7 +3,7 @@ title: 'Backup Policy'
 slug: /cloud/manage/jan-2025-faq/backup
 keywords: ['new tiers', 'plans', 'pricing', 'backups']
 description: 'Backup policy in new tiers'
-doc_type: reference
+doc_type: 'reference'
 ---
 
 ## What is the backup policy? {#what-is-the-backup-policy}

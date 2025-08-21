@@ -5,7 +5,7 @@ slug: /integrations/splunk
 keywords: ['Splunk', 'integration', 'data visualization']
 description: 'Connect Splunk dashboards to ClickHouse'
 title: 'Connecting Splunk to ClickHouse'
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 import Image from '@theme/IdealImage';

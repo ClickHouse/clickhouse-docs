@@ -4,7 +4,7 @@ slug: /cloud/billing/payment-thresholds
 title: 'Payment Thresholds'
 description: 'Payment thresholds and automatic invoicing for ClickHouse Cloud.'
 keywords: ['billing', 'payment thresholds', 'automatic invoicing', 'invoice']
-doc_type: explanation
+doc_type: 'explanation'
 ---
 
 # Payment thresholds
