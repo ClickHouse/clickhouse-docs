@@ -110,6 +110,18 @@ FROM t1;
 └─────────────────────────┴────────────────────────────────┘
 ```
 
+When querying _nested object fields_ using dot syntax, make sure to add the [`^`](https://clickhouse.com/docs/sql-reference/data-types/newjson#reading-json-sub-objects-as-sub-columns) operator:
+
+```sql title="Query"
+SELECT _full_document.^shipping as shipping_info FROM t1;
+```
+
+```shell title="Result"
+┌─shipping_info──────────────────────────────────────┐
+│ {"city":"Seattle","cost":19.99,"method":"express"} │
+└────────────────────────────────────────────────────┘
+```
+
 ### Dynamic type {#dynamic-type}
 
 In ClickHouse, each field in JSON has `Dynamic` type. Dynamic type allows ClickHouse to store values of any type without knowing the type in advance. You can verify this with the `toTypeName` function:
@@ -218,9 +230,7 @@ SELECT
     CAST(_full_document.status, 'String') AS status,
     CAST(_full_document.total_amount, 'Decimal64(2)') AS total_amount,
     CAST(parseDateTime64BestEffortOrNull(_full_document.order_date, 3), 'DATETIME(3)') AS order_date,
-    CAST(_full_document.shipping.method, 'String') AS shipping_method,
-    CAST(_full_document.shipping.city, 'String') AS shipping_city,
-    CAST(_full_document.shipping.cost, 'Decimal64(2)') AS shipping_cost,
+    _full_document.^shipping AS shipping_info,
     _full_document.items AS items
 FROM t1 FINAL
 WHERE _peerdb_is_deleted = 0;
@@ -236,9 +246,7 @@ This view will have the following schema:
 │ status          │ String         │
 │ total_amount    │ Decimal(18, 2) │
 │ order_date      │ DateTime64(3)  │
-│ shipping_method │ String         │
-│ shipping_city   │ String         │
-│ shipping_cost   │ Decimal(18, 2) │
+│ shipping_info   │ JSON           │
 │ items           │ Dynamic        │
 └─────────────────┴────────────────┘
 ```
@@ -250,7 +258,7 @@ SELECT
     customer_id,
     sum(total_amount)
 FROM v1
-WHERE shipping_city = 'Seattle'
+WHERE shipping_info.city = 'Seattle'
 GROUP BY customer_id
 ORDER BY customer_id DESC
 LIMIT 10;
@@ -272,9 +280,7 @@ CREATE TABLE flattened_t1 (
     `status` String,
     `total_amount` Decimal(18, 2),
     `order_date` DateTime64(3),
-    `shipping_method` String,
-    `shipping_city` String,
-    `shipping_cost` Decimal(18, 2),
+    `shipping_info` JSON,
     `items` Dynamic
 )
 ENGINE = ReplacingMergeTree()
@@ -289,9 +295,7 @@ SELECT
     CAST(_full_document.status, 'String') AS status,
     CAST(_full_document.total_amount, 'Decimal64(2)') AS total_amount,
     CAST(parseDateTime64BestEffortOrNull(_full_document.order_date, 3), 'DATETIME(3)') AS order_date,
-    CAST(_full_document.shipping.method, 'String') AS shipping_method,
-    CAST(_full_document.shipping.city, 'String') AS shipping_city,
-    CAST(_full_document.shipping.cost, 'Decimal64(2)') AS shipping_cost,
+    _full_document.^shipping AS shipping_info,
     _full_document.items AS items
 FROM t1 FINAL
 WHERE _peerdb_is_deleted = 0;
@@ -304,7 +308,7 @@ SELECT
     customer_id,
     sum(total_amount)
 FROM flattened_t1
-WHERE shipping_city = 'Seattle'
+WHERE shipping_info.city = 'Seattle'
 GROUP BY customer_id
 ORDER BY customer_id DESC
 LIMIT 10;
