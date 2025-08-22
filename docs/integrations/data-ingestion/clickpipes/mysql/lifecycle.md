@@ -42,7 +42,6 @@ This state is coming soon. If you're using our [OpenAPI](https://clickhouse.com/
 :::
 Currently, this indicates the pipe is in the process of removing tables.
 
-
 ## Resync {#resync}
 :::note
 This state is coming soon. If you're using our [OpenAPI](https://clickhouse.com/docs/cloud/manage/openapi), consider adding support for it now to ensure your integration continues working when it's released.
