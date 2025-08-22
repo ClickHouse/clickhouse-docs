@@ -43,3 +43,5 @@ since initial load with parallel threads is involved each time.
 5. Head over to the **Metrics** tab.
 6. In around 5 seconds (and also on page refresh), the status of the pipe should be **Setup** or **Snapshot**.
 7. The initial load of the resync can be monitored in the **Tables** tab - in the **Initial Load Stats** section.
+8. Once the initial load is complete, the pipe will atomically swap the `_resync` tables with the original tables. During the swap, the status will be **Resync**.
+9. Once the swap is complete, the pipe will enter the **Running** state and perform CDC if enabled.
