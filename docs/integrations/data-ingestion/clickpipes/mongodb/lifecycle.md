@@ -23,7 +23,7 @@ Once setup is complete, we enter the `Snapshot` state. `Snapshot`, `Initial Snap
 
 ## Running {#running}
 
-Once the initial load is complete, the pipe enters the `Running` state. This is where the pipe begins `Change-Data Capture`. In this state, we start streaming changes from the source MongoDB cluster to ClickHouse. For information on controlling CDC, see [the doc on controlling CDC](./controlling_sync).
+Once the initial load is complete, the pipe enters the `Running` state. This is where the pipe begins `Change-Data Capture`. In this state, we start streaming changes from the source MongoDB cluster to ClickHouse. For information on controlling CDC, see [the doc on controlling CDC](./sync_control).
 
 ## Paused {#paused}
 
