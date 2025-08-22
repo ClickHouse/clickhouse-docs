@@ -757,6 +757,7 @@ const sidebars = {
             "integrations/data-ingestion/clickpipes/postgres/schema-changes",
             "integrations/data-ingestion/clickpipes/postgres/faq",
             "integrations/data-ingestion/clickpipes/postgres/parallel_initial_load",
+            "integrations/data-ingestion/clickpipes/postgres/lifecycle",
             {
               type: "category",
               label: "Operations",
@@ -799,6 +800,7 @@ const sidebars = {
             "integrations/data-ingestion/clickpipes/mysql/datatypes",
             "integrations/data-ingestion/clickpipes/mysql/parallel_initial_load",
 	          "integrations/data-ingestion/clickpipes/mysql/schema-changes",
+            "integrations/data-ingestion/clickpipes/mysql/lifecycle",
             {
               type: "category",
               label: "Operations",
@@ -807,7 +809,7 @@ const sidebars = {
                 "integrations/data-ingestion/clickpipes/mysql/pause_and_resume",
                 "integrations/data-ingestion/clickpipes/mysql/remove_table",
                 "integrations/data-ingestion/clickpipes/mysql/resync",
-                "integrations/data-ingestion/clickpipes/mysql/controlling_sync"
+                "integrations/data-ingestion/clickpipes/mysql/controlling_sync",
               ],
             },
             {
@@ -834,6 +836,7 @@ const sidebars = {
             "integrations/data-ingestion/clickpipes/mongodb/index",
             "integrations/data-ingestion/clickpipes/mongodb/datatypes",
             "integrations/data-ingestion/clickpipes/mongodb/quickstart",
+            "integrations/data-ingestion/clickpipes/mongodb/lifecycle",
             {
               type: "category",
               label: "Operations",

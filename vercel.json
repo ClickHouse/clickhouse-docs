@@ -3390,6 +3390,16 @@
       "source": "/docs/integrations/kafka/cloud/confluent/custom-connector-cloud",
       "destination": "/docs/integrations/kafka/cloud/confluent/sink-connector",
       "permanent": true
+    },
+    {
+      "source": "/integrations/data-ingestion/clickpipes/mysql/parallel_initial_load",
+      "destination": "/docs/integrations/clickpipes/mysql/parallel_initial_load",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/data-ingestion/clickpipes/postgres/parallel_initial_load",
+      "destination": "/docs/integrations/clickpipes/postgres/parallel_initial_load",
+      "permanent": true
     }
   ]
 }
