@@ -70,17 +70,36 @@ export default function CodeBlockWrapper(props) {
     };
   }, [handleIntersection]); // Add handleIntersection to dependency array
 
+  const settings = parseMetaString(props.metastring);
+  settings['language'] = props.className ? props.className.replace('language-', ''): 'txt';
+
   if (!isLoaded) {
     return (
         <div ref={codeBlockRef} className={styles.wrapper} style={{ height: estimatedHeight + 'px' }}>
+            {/* Invisible content for crawlers/SEO */}
+            <div style={{ 
+              position: 'absolute', 
+              left: '-9999px', 
+              top: '-9999px',
+              opacity: 0,
+              pointerEvents: 'none',
+              width: '1px',
+              height: '1px',
+              overflow: 'hidden'
+            }}>
+              <pre className={`language-${settings.language}`}>
+                <code className={`language-${settings.language}`}>
+                  {typeof props.children === 'string' ? props.children : ''}
+                </code>
+              </pre>
+            </div>
+            
+            {/* Visible loading animation */}
             <div className={styles.activity}></div>
         </div>
     );
-  }
-
+  } 
   
-  const settings = parseMetaString(props.metastring); 
-  settings['language'] = props.className ? props.className.replace('language-', ''): 'txt';
   return (
     <>
         <CodeViewer {...settings}>
