@@ -824,7 +824,6 @@ const sidebars = {
                 "integrations/data-ingestion/clickpipes/mysql/source/generic_maria",
               ],
             },
-            "integrations/data-ingestion/clickpipes/mysql/datatypes"
           ],
         },
         {
