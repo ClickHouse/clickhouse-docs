@@ -39,7 +39,9 @@ For Enterprise tier services scaling works as follows:
 :::note
 Scaling in ClickHouse Cloud happens in what we call "Make Before Break" (MBB) approach. This adds one or more replicas of the new size before removing the old replicas, preventing any loss of capacity during scaling operations. By eliminating the gap between removing existing replicas and adding new ones, MBB creates a more seamless and less disruptive scaling process. It is especially beneficial in scale-up scenarios, where high resource utilization triggers the need for additional capacity, since removing replicas prematurely would only exacerbate the resource constraints. As part of this approach we wait up to an hour to let any existing queries complete on the older replicas before we will remove them. This balances the need for existing queries to complete, while at the same time ensuring that older replicas do not linger around for too long.
 
-Please note that as part of this change, historical system table data will be retained for up to a maximum of 30 days as part of scaling events. In addition, any system table data older than December 19, 2024, for services on AWS or GCP and older than January 14, 2025, for services on Azure will not be retained as part of the migration to the new organization tiers.
+Please note that as part of this change: 
+1. Historical system table data will be retained for up to a maximum of 30 days as part of scaling events. In addition, any system table data older than December 19, 2024, for services on AWS or GCP and older than January 14, 2025, for services on Azure will not be retained as part of the migration to the new organization tiers.
+2. For services utilizing TDE (Transparent Data Encryption) system table data is currently not maintained after MBB operations. We are working on removing this limitation.
 :::
 
 ### Vertical auto scaling {#vertical-auto-scaling}
