@@ -62,7 +62,7 @@ This should output something like:
 /opt/homebrew/bin/clickhouse
 ```
 
-Remove `clickhouse` from the quarantine bin by running `xattr -d com.apple.quarantine` following by the path from the previous command:
+Remove `clickhouse` from the quarantine bin by running `xattr -d com.apple.quarantine` followed by the path from the previous command:
 
 ```shell
 xattr -d com.apple.quarantine /opt/homebrew/bin/clickhouse
@@ -81,7 +81,7 @@ Use one of the following commands:
 clickhouse local [args]
 clickhouse client [args]
 clickhouse benchmark [args]
-...
+```
 
 ## Fix the issue by reinstalling ClickHouse {#fix-issue}
 

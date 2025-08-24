@@ -67,7 +67,7 @@ The combination of remote table functions and access to the local file system ma
 
 ## chDB {#chdb}
 
-[chDB](/chdb) is ClickHouse embedded as an in-process database engine,, with Python being the primary implementation, though it's also available for Go, Rust, NodeJS, and Bun. This deployment option brings ClickHouse's powerful OLAP capabilities directly into your application's process, eliminating the need for a separate database installation.
+[chDB](/chdb) is ClickHouse embedded as an in-process database engine, with Python being the primary implementation, though it's also available for Go, Rust, NodeJS, and Bun. This deployment option brings ClickHouse's powerful OLAP capabilities directly into your application's process, eliminating the need for a separate database installation.
 
 <Image img={chDB} alt="chDB - Embedded ClickHouse" size="sm"/>
 
