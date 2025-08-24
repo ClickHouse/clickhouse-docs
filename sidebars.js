@@ -799,7 +799,7 @@ const sidebars = {
             "integrations/data-ingestion/clickpipes/mysql/faq",
             "integrations/data-ingestion/clickpipes/mysql/datatypes",
             "integrations/data-ingestion/clickpipes/mysql/parallel_initial_load",
-	          "integrations/data-ingestion/clickpipes/mysql/schema-changes",
+            "integrations/data-ingestion/clickpipes/mysql/schema-changes",
             "integrations/data-ingestion/clickpipes/mysql/lifecycle",
             {
               type: "category",
@@ -824,7 +824,6 @@ const sidebars = {
                 "integrations/data-ingestion/clickpipes/mysql/source/generic_maria",
               ],
             },
-            "integrations/data-ingestion/clickpipes/mysql/datatypes"
           ],
         },
         {
