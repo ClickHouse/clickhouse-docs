@@ -137,7 +137,7 @@ If you want to avoid copying the JAR files to your Spark client node, you can us
 
 ```text
   --repositories https://{maven-central-mirror or private-nexus-repo} \
-  --packages com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }},com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}:all
+  --packages com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }},com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}
 ```
 
 Note: For SQL-only use cases, [Apache Kyuubi](https://github.com/apache/kyuubi) is recommended
