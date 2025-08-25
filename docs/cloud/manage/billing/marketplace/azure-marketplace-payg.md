@@ -114,9 +114,9 @@ You will receive an email like the one below with details on configuring your ac
 
 <br />
 
-12. You will be redirected to the ClickHouse Cloud sign up or sign in page. You can either sign up using a new account or sign in using an existing account. Once you are signed in, a new organization will be created that is ready to be used and billed via the Azure Marketplace.
+12. You will be redirected to the ClickHouse Cloud sign up or sign in page. Once you redirect to ClickHouse Cloud, you can either login with an existing account, or register with a new account. This step is very important so we can bind your ClickHouse Cloud organization to the Azure Marketplace billing.
 
-13. You will need to answer a few questions - address and company details - before you can proceed.
+13. Note that if you are a new user, you will also need to provide some basic information about your business. See the screenshots below.
 
 <br />
 
@@ -128,7 +128,7 @@ You will receive an email like the one below with details on configuring your ac
 
 <br />
 
-14. Once you hit **Complete sign up**, you will be taken to your organization within ClickHouse Cloud where you can view the billing screen to ensure you are being billed via the Azure Marketplace and can create services.
+Once you hit **Complete sign up**, you will be taken to your organization within ClickHouse Cloud where you can view the billing screen to ensure you are being billed via the Azure Marketplace and can create services.
 
 <br />
 
@@ -144,4 +144,4 @@ You will receive an email like the one below with details on configuring your ac
 
 <br />
 
-15. If you run into any issues, please do not hesitate to contact [our support team](https://clickhouse.com/support/program).
+14. If you run into any issues, please do not hesitate to contact [our support team](https://clickhouse.com/support/program).
