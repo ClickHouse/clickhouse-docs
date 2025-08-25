@@ -6,7 +6,7 @@ keywords: ['sum', 'array', 'combinator', 'examples', 'sumArray']
 sidebar_label: 'sumArray'
 ---
 
-# sumArray {#sumforeach}
+# sumForEach {#sumforeach}
 
 ## Description {#description}
 
