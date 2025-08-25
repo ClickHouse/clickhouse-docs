@@ -332,6 +332,7 @@ privatelink
 VNets
 guid
 vnet
+resourceGUID
 --docs/integrations/data-ingestion/clickpipes/postgres/toast.md--
 TOASTed
 TOASTing
