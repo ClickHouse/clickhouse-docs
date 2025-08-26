@@ -177,7 +177,7 @@ const sidebars = {
             "use-cases/data_lake/glue_catalog",
             "use-cases/data_lake/unity_catalog",
             "use-cases/data_lake/rest_catalog",
-            "use-cases/data_lake/lakekeeper_catalog"
+            "use-cases/data_lake/lakekeeper_catalog",
             "use-cases/data_lake/nessie_catalog"
           ]
         },
