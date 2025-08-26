@@ -12,7 +12,7 @@ import Image from '@theme/IdealImage';
 ## Introduction {#introduction}
 
 The [LAION 5b dataset](https://laion.ai/blog/laion-5b/) contains 5.85 billion image-text embeddings and
-associated image metadata. The embeddings were generated using `Open AI CLIP` model `ViT-L/14`. The
+associated image metadata. The embeddings were generated using `Open AI CLIP` model [ViT-L/14](https://huggingface.co/sentence-transformers/clip-ViT-L-14). The
 dimension of each embedding vector is `768`.
 
 This dataset can be used to model design, sizing and performance aspects for a large scale,
