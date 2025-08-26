@@ -15,3 +15,4 @@ ClickHouse supports integration with multiple catalogs (Unity, Glue, REST, Polar
 | [Querying data in S3 using ClickHouse and the Unity Data Catalog](/use-cases/data-lake/unity-catalog) | Query your using the Unity Catalog. |
 | [Querying data in S3 using ClickHouse and the REST Catalog](/use-cases/data-lake/rest-catalog) | Query your data using the REST Catalog (Tabular.io). |
 | [Querying data in S3 using ClickHouse and the Lakekeeper Catalog](/use-cases/data-lake/lakekeeper-catalog) | Query your data using the Lakekeeper Catalog. |
+| [Querying data in S3 using ClickHouse and the Nessie Catalog](/use-cases/data-lake/nessie-catalog) | Query your data using the Nessie Catalog with Git-like data version control. |

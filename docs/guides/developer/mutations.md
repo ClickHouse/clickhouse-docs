@@ -89,7 +89,7 @@ View the [`DELETE` statement](/sql-reference/statements/delete.md) docs page for
 
 ## Lightweight deletes {#lightweight-deletes}
 
-Another option for deleting rows it to use the `DELETE FROM` command, which is referred to as a **lightweight delete**. The deleted rows are marked as deleted immediately and will be automatically filtered out of all subsequent queries, so you do not have to wait for a merging of parts or use the `FINAL` keyword. Cleanup of data happens asynchronously in the background.
+Another option for deleting rows is to use the `DELETE FROM` command, which is referred to as a **lightweight delete**. The deleted rows are marked as deleted immediately and will be automatically filtered out of all subsequent queries, so you do not have to wait for a merging of parts or use the `FINAL` keyword. Cleanup of data happens asynchronously in the background.
 
 ``` sql
 DELETE FROM [db.]table [ON CLUSTER cluster] [WHERE expr]

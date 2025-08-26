@@ -5,7 +5,7 @@
 // Default search parameters
 export const DEFAULT_SEARCH_PARAMS = {
   clickAnalytics: true,
-  hitsPerPage: 3,
+  hitsPerPage: 10,
 };
 
 // Keyboard shortcuts
