@@ -344,6 +344,7 @@ Doron
 DoubleDelta
 Doxygen
 Draxlr
+Dremio
 Dresseler
 Durre
 ECMA
@@ -793,6 +794,7 @@ NDJSON
 NEKUDOTAYIM
 NEWDATE
 NEWDECIMAL
+Nessie
 NFKC
 NFKD
 NIST
@@ -1290,6 +1292,7 @@ ThreadPoolRemoteFSReaderThreads
 ThreadPoolRemoteFSReaderThreadsActive
 ThreadsActive
 ThreadsInOvercommitTracker
+Trino
 TiDB
 TimeSeries
 TimescaleDB
