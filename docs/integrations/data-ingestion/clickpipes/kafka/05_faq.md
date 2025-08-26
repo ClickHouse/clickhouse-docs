@@ -23,7 +23,7 @@ ClickPipes uses a dedicated architecture running the Kafka Consumer API to read 
 
 The Kafka Table engine is a ClickHouse core capability that implements a "pull model" where the ClickHouse server itself connects to Kafka, pulls events then writes them locally.
 
-ClickPipes is a separate cloud service that runs independently of the ClickHouse service. It connects to Kafka (or other data sources) and pushes events to an associated ClickHouse Cloud service. This decoupled architecture allows for superior operational flexibility, clear separation of concerns, scalable ingestion, graceful failure management, extensibility and more.
+ClickPipes is a separate cloud service that runs independently of the ClickHouse service. It connects to Kafka (or other data sources) and pushes events to an associated ClickHouse Cloud service. This decoupled architecture allows for superior operational flexibility, clear separation of concerns, scalable ingestion, graceful failure management, extensibility, and more.
 </details>
 
 <details>
@@ -76,7 +76,7 @@ No. ClickPipes requires the Event Hubs namespace to have the Kafka surface enabl
 
 <summary>Does Azure Schema Registry work with ClickPipes?</summary>
 
-No. ClickPipes currently only supports schema registries that are API-compatible with the Confluent Schema Registry, which is not the case for Azure Schema Registry. If you require support for this schema registry, [reach out to our team](https://clickhouse.com/company/contact?loc=clickpipes).
+No. ClickPipes only supports schema registries that are API-compatible with the Confluent Schema Registry, which is not the case for Azure Schema Registry. If you require support for this schema registry, [reach out to our team](https://clickhouse.com/company/contact?loc=clickpipes).
 </details>
 
 <details>

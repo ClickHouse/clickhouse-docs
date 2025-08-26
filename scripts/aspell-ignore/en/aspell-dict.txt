@@ -344,6 +344,7 @@ Doron
 DoubleDelta
 Doxygen
 Draxlr
+Dremio
 Dresseler
 Durre
 ECMA
@@ -2638,6 +2639,7 @@ nats
 navbar
 ndjson
 ness
+Nessie
 nestjs
 netloc
 newjson
@@ -3442,6 +3444,7 @@ trie
 trimBoth
 trimLeft
 trimRight
+Trino
 trunc
 tryBase
 tryDecrypt
