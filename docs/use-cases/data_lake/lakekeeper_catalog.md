@@ -364,4 +364,3 @@ Then load the data from your Lakekeeper catalog table via an `INSERT INTO SELECT
 INSERT INTO taxis 
 SELECT * FROM demo.`default.taxis`;
 ```
- 
