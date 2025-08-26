@@ -1,9 +1,9 @@
 ---
 slug: '/examples/aggregate-function-combinators/sumForEach'
 title: 'sumForEach'
-description: 'Example of using the sumArray combinator'
-keywords: ['sum', 'array', 'combinator', 'examples', 'sumArray']
-sidebar_label: 'sumArray'
+description: 'Example of using the sumForEach aggregate function'
+keywords: ['sum', 'ForEach', 'combinator', 'examples', 'sumForEach']
+sidebar_label: 'sumForEach'
 ---
 
 # sumForEach {#sumforeach}
@@ -45,4 +45,4 @@ ORDER BY hour_of_day;
 
 ## See also {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`ForEach combinator`](/sql-reference/aggregate-functions/combinators#-foreach)
+- [`ForEach` combinator](/sql-reference/aggregate-functions/combinators#-foreach)
