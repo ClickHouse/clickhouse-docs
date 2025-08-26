@@ -1,12 +1,13 @@
 ---
-description: 'Dataset containing 100 million vectors from the LAION 5b dataset'
-sidebar_label: 'LAION 5b dataset'
+description: 'Dataset containing 100 million vectors from the LAION 5B dataset'
+sidebar_label: 'LAION 5B dataset'
 slug: /getting-started/example-datasets/laion-5b-dataset
-title: 'LAION 5b dataset'
+title: 'LAION 5B dataset'
 keywords: ['semantic search', 'vector similarity', 'approximate nearest neighbours', 'embeddings']
 ---
 
 import search_results_image from '@site/static/images/getting-started/example-datasets/laion5b_visualization_1.png'
+import Image from '@theme/IdealImage';
 
 ## Introduction {#introduction}
 
@@ -14,22 +15,26 @@ The [LAION 5b dataset](https://laion.ai/blog/laion-5b/) contains 5.85 billion im
 associated image metadata. The embeddings were generated using `Open AI CLIP` model `ViT-L/14`. The
 dimension of each embedding vector is `768`.
 
-This dataset can be used to model the design, sizing and performance aspects for a large scale,
+This dataset can be used to model design, sizing and performance aspects for a large scale,
 real world vector search application. The dataset can be used for both text to image search and
 image to image search.
 
 ## Dataset details {#dataset-details}
 
-The complete dataset is available as a mixture of `npy` and `Parquet` files at https://the-eye.eu/public/AI/cah/laion5b/
+The complete dataset is available as a mixture of `npy` and `Parquet` files at [the-eye.eu](https://the-eye.eu/public/AI/cah/laion5b/)
 
-ClickHouse has made available a subset of 100 million vectors in a `S3` bucket. The `S3` bucket contains 10 `Parquet` files, each `Parquet` file
-is filled with 10 million rows.
+ClickHouse has made available a subset of 100 million vectors in a `S3` bucket.
+The `S3` bucket contains 10 `Parquet` files, each `Parquet` file is filled with 10 million rows.
 
-We recommend users to first run a sizing exercise to estimate the storage and memory requirements for this dataset by referring to the [documentation](../../engines/table-engines/mergetree-family/annindexes.md).
+We recommend users first run a sizing exercise to estimate the storage and memory requirements for this dataset by referring to the [documentation](../../engines/table-engines/mergetree-family/annindexes.md).
 
-## Create table {#create-table}
+## Steps {#steps}
 
-Create the `laion_5b_100m` table to store the embeddings and their associated attributes :
+<VerticalStepper headerLevel="h3">
+
+### Create table {#create-table}
+
+Create the `laion_5b_100m` table to store the embeddings and their associated attributes:
 
 ```sql
 CREATE TABLE laion_5b_100m
@@ -56,9 +61,9 @@ CREATE TABLE laion_5b_100m
 The `id` is just an incrementing integer. The additional attributes can be used in predicates to understand
 vector similarity search combined with post-filtering/pre-filtering as explained in the [documentation](../../engines/table-engines/mergetree-family/annindexes.md)
 
-## Load table {#load-table}
+### Load data {#load-table}
 
-To load the dataset from all `Parquet` files, run the following SQL statement :
+To load the dataset from all `Parquet` files, run the following SQL statement:
 
 ```sql
 INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/laion-5b/laion5b_100m_*.parquet');
@@ -71,11 +76,10 @@ Alternatively, individual SQL statements can be run to load a specific number of
 ```sql
 INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/laion-5b/laion5b_100m_part_1_of_10.parquet');
 INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/laion-5b/laion5b_100m_part_2_of_10.parquet');
-...
-
+⋮
 ```
 
-## Run a brute-force vector similarity search {#run-a-brute-force-vector-similarity-search}
+### Run a brute-force vector similarity search {#run-a-brute-force-vector-similarity-search}
 
 KNN (k - Nearest Neighbours) search or brute force search involves calculating the distance of each vector in the dataset
 to the search embedding vector and then ordering the distances to get the nearest neighbours. We can use one of the vectors
@@ -121,7 +125,7 @@ The vector in the row with id = 9999 is the embedding for an image of a Deli res
 Note down the query latency so that we can compare it with the query latency of ANN (using vector index).
 With 100 million rows, the above query without a vector index could take a few seconds/minutes to complete.
 
-## Build a vector similarity index {#build-vector-similarity-index}
+### Build a vector similarity index {#build-vector-similarity-index}
 
 Run the following SQL to define and build a vector similarity index on the `vector` column of the `laion_5b_100m` table :
 
@@ -132,13 +136,13 @@ ALTER TABLE laion_5b_100m MATERIALIZE INDEX vector_index SETTINGS mutations_sync
 ```
 
 The parameters and performance considerations for index creation and search are described in the [documentation](../../engines/table-engines/mergetree-family/annindexes.md).
-The above statement uses the values of 64 and 512 respectively for the HNSW hyperparameters `M` and `ef_construction`.
+The statement above uses values of 64 and 512 respectively for the HNSW hyperparameters `M` and `ef_construction`.
 Users need to carefully select optimal values for these parameters by evaluating index build time and search results quality
 corresponding to selected values.
 
-Building and saving the index could even take a few hours for the full l00 million dataset, depending on number of CPU cores available and the storage bandwidth. 
+Building and saving the index could even take a few hours for the full l00 million dataset, depending on the number of CPU cores available and the storage bandwidth. 
 
-## Perform ANN search {#perform-ann-search}
+### Perform ANN search {#perform-ann-search}
 
 Once the vector similarity index has been built, vector search queries will automatically use the index:
 
@@ -152,14 +156,15 @@ LIMIT 20
 
 The first time load of the vector index into memory could take a few seconds/minutes.
 
-## Generating embeddings for search query {#generating-embeddings-for-search-query}
+### Generate embeddings for search query {#generating-embeddings-for-search-query}
 
 The `LAION 5b` dataset embedding vectors were generated using `OpenAI CLIP` model `ViT-L/14`.
-An example Python script is listed below to demonstrate how to programmatically generate
-embedding vectors using the `CLIP` APIs. The search embedding vector
-is then passed as an argument to the `cosineDistance()` function in the `SELECT` query.
 
-To install the `clip` package, please refer to https://github.com/openai/clip.
+An example Python script is provided below to demonstrate how to programmatically generate
+embedding vectors using the `CLIP` APIs. The search embedding vector
+is then passed as an argument to the [`cosineDistance()`](/sql-reference/functions/distance-functions#cosineDistance) function in the `SELECT` query.
+
+To install the `clip` package, please refer to the [OpenAI GitHub repository](https://github.com/openai/clip).
 
 ```python
 import torch
@@ -192,6 +197,8 @@ with torch.no_grad():
     print("</html>")
 ```
 
-Result of above search : 
+The result of the above search is shown below: 
 
 <Image img={search_results_image} alt="Vector Similarity Search Results" size="md"/>
+
+</VerticalStepper>
