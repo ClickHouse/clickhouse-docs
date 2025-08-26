@@ -2642,6 +2642,7 @@ nats
 navbar
 ndjson
 ness
+Nessie
 nestjs
 netloc
 newjson
@@ -3446,6 +3447,7 @@ trie
 trimBoth
 trimLeft
 trimRight
+Trino
 trunc
 tryBase
 tryDecrypt

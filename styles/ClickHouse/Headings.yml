@@ -28,6 +28,7 @@ exceptions:
   - Amazon Web Services
   - Azure
   - Azure Blob Storage
+  - Azure Event Hubs
   - B2B
   - BigQuery
   - Bring Your Own Cloud
