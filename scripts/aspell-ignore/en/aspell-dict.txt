@@ -632,6 +632,7 @@ LaGuardia
 LangChain
 LangGraph
 Langchain
+Lakekeeper
 Lemire
 Levenshtein
 Liao
