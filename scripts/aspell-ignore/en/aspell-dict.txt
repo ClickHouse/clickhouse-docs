@@ -344,6 +344,7 @@ Doron
 DoubleDelta
 Doxygen
 Draxlr
+Dremio
 Dresseler
 Durre
 ECMA
@@ -648,6 +649,7 @@ LaGuardia
 LangChain
 LangGraph
 Langchain
+Lakekeeper
 Lemire
 Levenshtein
 Lhotsky
@@ -792,6 +794,7 @@ NDJSON
 NEKUDOTAYIM
 NEWDATE
 NEWDECIMAL
+Nessie
 NFKC
 NFKD
 NIST
@@ -1289,6 +1292,7 @@ ThreadPoolRemoteFSReaderThreads
 ThreadPoolRemoteFSReaderThreadsActive
 ThreadsActive
 ThreadsInOvercommitTracker
+Trino
 TiDB
 TimeSeries
 TimescaleDB
