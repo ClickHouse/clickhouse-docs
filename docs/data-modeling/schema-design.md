@@ -3,6 +3,7 @@ slug: /data-modeling/schema-design
 title: 'Schema Design'
 description: 'Optimizing ClickHouse schema for query performance'
 keywords: ['schema', 'schema design', 'query optimization']
+doc_type: 'tutorial'
 ---
 
 import stackOverflowSchema from '@site/static/images/data-modeling/stackoverflow-schema.png';

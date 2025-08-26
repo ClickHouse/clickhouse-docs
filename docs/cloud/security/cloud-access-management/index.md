@@ -2,6 +2,7 @@
 slug: /cloud/security/cloud-access-management
 title: 'Cloud access management'
 description: 'Cloud Access Management Table Of Contents'
+doc_type: 'reference'
 ---
 
 | Page                                                                                         | Description                                                                                                                                       |

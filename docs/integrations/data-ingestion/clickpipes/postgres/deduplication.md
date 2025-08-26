@@ -3,6 +3,7 @@ sidebar_label: 'Deduplication Strategies'
 description: 'Handle duplicates and deleted rows.'
 slug: /integrations/clickpipes/postgres/deduplication
 title: 'Deduplication strategies (using CDC)'
+doc_type: 'tutorial'
 ---
 
 import clickpipes_initial_load from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-cdc-initial-load.png';

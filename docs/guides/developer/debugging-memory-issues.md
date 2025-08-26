@@ -5,6 +5,7 @@ sidebar_position: 1
 description: 'Queries to help you debug memory issues.'
 keywords: ['memory issues']
 title: 'Debugging memory issues'
+doc_type: 'reference'
 ---
 
 # Debugging memory issues {#debugging-memory-issues}

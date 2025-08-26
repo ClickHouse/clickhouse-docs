@@ -4,6 +4,7 @@ sidebar_position: 2
 sidebar_label: 'Questions about ClickHouse use cases'
 title: 'Questions About ClickHouse Use Cases'
 description: 'Landing page listing common questions about ClickHouse use cases'
+doc_type: 'reference'
 ---
 
 # Questions about ClickHouse use cases

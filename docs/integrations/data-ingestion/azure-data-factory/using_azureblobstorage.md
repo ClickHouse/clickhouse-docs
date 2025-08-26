@@ -4,6 +4,7 @@ slug: /integrations/azure-data-factory/table-function
 description: 'Using ClickHouse''s azureBlobStorage table function'
 keywords: ['azure data factory', 'azure', 'microsoft', 'data', 'azureBlobStorage']
 title: 'Using ClickHouse''s azureBlobStorage table function to bring Azure data into ClickHouse'
+doc_type: 'how-to'
 ---
 
 import Image from '@theme/IdealImage';

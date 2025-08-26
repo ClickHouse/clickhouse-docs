@@ -5,5 +5,6 @@ slug: /whats-new/changelog/
 sidebar_position: 2
 sidebar_label: '2025'
 title: '2025 Changelog'
+doc_type: 'reference'
 ---
 

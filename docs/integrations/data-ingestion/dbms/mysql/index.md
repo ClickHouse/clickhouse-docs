@@ -6,6 +6,7 @@ description: 'The MySQL table engine allows you to connect ClickHouse to MySQL.'
 keywords: ['mysql']
 title: 'Integrating MySQL with ClickHouse'
 show_related_blogs: true
+doc_type: 'tutorial'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

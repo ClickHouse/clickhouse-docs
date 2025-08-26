@@ -4,6 +4,7 @@ title: 'groupArrayDistinct'
 description: 'Example of using the groupArrayDistinct combinator'
 keywords: ['groupArray', 'Distinct', 'combinator', 'examples', 'groupArrayDistinct']
 sidebar_label: 'groupArrayDistinct'
+doc_type: 'how-to'
 ---
 
 # groupArrayDistinct {#sumdistinct}

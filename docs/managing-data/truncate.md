@@ -4,6 +4,7 @@ sidebar_label: 'Truncate Table'
 title: 'Truncate Table'
 hide_title: false
 description: 'Truncate allows the data in a table or database to be removed, while preserving their existence.'
+doc_type: 'how-to'
 ---
 
 Truncate allows the data in a table or database to be removed, while preserving their existence. This is a lightweight operation which cannot be reversed.

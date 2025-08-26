@@ -3,6 +3,7 @@ title: 'Parallel Snapshot In The Postgres ClickPipe'
 description: 'Doc for explaining parallel snapshot in the Postgres ClickPipe'
 slug: /integrations/clickpipes/postgres/parallel_initial_load
 sidebar_label: 'How parallel snapshot works'
+doc_type: 'explanation'
 ---
 
 import snapshot_params from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/snapshot_params.png'

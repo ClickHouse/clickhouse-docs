@@ -6,6 +6,7 @@ slug: /getting-started/example-datasets/stackoverflow
 title: 'Analyzing Stack Overflow data with ClickHouse'
 keywords: ['StackOverflow']
 show_related_blogs: true
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';

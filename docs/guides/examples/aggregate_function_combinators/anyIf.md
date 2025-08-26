@@ -4,6 +4,7 @@ title: 'anyIf'
 description: 'Example of using the anyIf combinator'
 keywords: ['any', 'if', 'combinator', 'examples', 'anyIf']
 sidebar_label: 'anyIf'
+doc_type: 'how-to'
 ---
 
 # anyIf {#avgif}
