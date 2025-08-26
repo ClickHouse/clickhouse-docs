@@ -106,7 +106,7 @@ FROM s3Cluster(
 The `ACCESS_ID` and `SECRET` used in the above query is your [HMAC key](https://cloud.google.com/storage/docs/authentication/hmackeys) associated with your GCS bucket.
 
 :::note Use `ifNull` when exporting nullable columns
-In the above query, we use the [`ifNull` function](/sql-reference/functions/functions-for-nulls#ifnull) with the `some_text` column to insert data into our ClickHouse table with a default value. You can also make your columns in ClickHouse [`Nullable`](/sql-reference/data-types/nullable), but this is not recommended as it may affect negatively performance.
+In the above query, we use the [`ifNull` function](/sql-reference/functions/functions-for-nulls#ifNull) with the `some_text` column to insert data into our ClickHouse table with a default value. You can also make your columns in ClickHouse [`Nullable`](/sql-reference/data-types/nullable), but this is not recommended as it may affect negatively performance.
 
 Alternatively, you can `SET input_format_null_as_default=1` and any missing or NULL values will be replaced by default values for their respective columns, if those defaults are specified.
 :::
