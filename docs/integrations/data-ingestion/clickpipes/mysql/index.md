@@ -20,7 +20,7 @@ If you've spotted an error, please edit the YML frontmatter of the pages themsel
 | [Adding specific tables to a ClickPipe](/integrations/clickpipes/mysql/add_table) | Describes the steps need to add specific tables to a ClickPipe. |
 | [Aurora MySQL source setup guide](/integrations/clickpipes/mysql/source/aurora) | Step-by-step guide on how to set up Amazon Aurora MySQL as a source for ClickPipes |
 | [Cloud SQL for MySQL source setup guide](/integrations/clickpipes/mysql/source/gcp) | Step-by-step guide on how to set up Cloud SQL for MySQL as a source for ClickPipes |
-| [Controlling the Syncing of a MySQL ClickPipe](/integrations/clickpipes/mysql/sync_control) | Doc for controllling the sync a MySQL ClickPipe |
+| [Controlling the Syncing of a MySQL ClickPipe](/integrations/clickpipes/mysql/sync_control) | Doc for controlling the sync a MySQL ClickPipe |
 | [Generic MariaDB source setup guide](/integrations/clickpipes/mysql/source/generic_maria) | Set up any MariaDB instance as a source for ClickPipes |
 | [Generic MySQL source setup guide](/integrations/clickpipes/mysql/source/generic) | Set up any MySQL instance as a source for ClickPipes |
 | [Ingesting data from MySQL to ClickHouse (using CDC)](/integrations/clickpipes/mysql) | Describes how to seamlessly connect your MySQL to ClickHouse Cloud. |

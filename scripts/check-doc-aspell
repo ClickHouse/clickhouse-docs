@@ -141,6 +141,7 @@ IGNORE_LIST=(
     "${ROOT_PATH}/docs/zh/*"
     "${ROOT_PATH}/docs/cloud/manage/api/*" # api files
     "${ROOT_PATH}/docs/index.md"
+    "${ROOT_PATH}/docs/about-us/beta-and-experimental-features.md"
     # Add more files to ignore here, e.g.:
     # "${ROOT_PATH}/docs/some-other-file.md"
 )

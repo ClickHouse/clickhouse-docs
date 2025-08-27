@@ -17,7 +17,7 @@ If you've spotted an error, please edit the YML frontmatter of the pages themsel
 | Page | Description |
 |-----|-----|
 | [Adding specific tables to a ClickPipe](/integrations/clickpipes/mongodb/add_table) | Describes the steps needed to add specific tables to a ClickPipe. |
-| [Controlling the Syncing of a MongoDB ClickPipe](/integrations/clickpipes/mongodb/sync_control) | Doc for controllling the sync a MongoDB ClickPipe |
+| [Controlling the Syncing of a MongoDB ClickPipe](/integrations/clickpipes/mongodb/sync_control) | Doc for controlling the sync a MongoDB ClickPipe |
 | [Generic MongoDB source setup guide](/integrations/clickpipes/mongodb/source/generic) | Set up any MongoDB instance as a source for ClickPipes |
 | [Ingesting data from MongoDB to ClickHouse (using CDC)](/integrations/clickpipes/mongodb) | Describes how to seamlessly connect your MongoDB to ClickHouse Cloud. |
 | [Lifecycle of a MongoDB ClickPipe](/integrations/clickpipes/mongodb/lifecycle) | Various pipe statuses and their meanings |

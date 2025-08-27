@@ -749,8 +749,9 @@ const sidebars = {
           label: "ClickPipes for Postgres",
           collapsed: true,
           collapsible: true,
+          link: { type: "doc", id: "integrations/data-ingestion/clickpipes/postgres/index" },
           items: [
-            "integrations/data-ingestion/clickpipes/postgres/index",
+            "integrations/data-ingestion/clickpipes/postgres/ingesting_data",
             "integrations/data-ingestion/clickpipes/postgres/deduplication",
             "integrations/data-ingestion/clickpipes/postgres/ordering_keys",
             "integrations/data-ingestion/clickpipes/postgres/toast",
@@ -796,8 +797,9 @@ const sidebars = {
           label: "ClickPipes for MySQL",
           collapsed: true,
           collapsible: true,
+          link: { type: "doc", id: "integrations/data-ingestion/clickpipes/mysql/index" },
           items: [
-            "integrations/data-ingestion/clickpipes/mysql/index",
+            "integrations/data-ingestion/clickpipes/mysql/ingesting_data",
             "integrations/data-ingestion/clickpipes/mysql/faq",
             "integrations/data-ingestion/clickpipes/mysql/datatypes",
             "integrations/data-ingestion/clickpipes/mysql/parallel_initial_load",
@@ -833,8 +835,9 @@ const sidebars = {
           label: "ClickPipes for MongoDB",
           collapsed: true,
           collapsible: true,
+          link: { type: "doc", id: "integrations/data-ingestion/clickpipes/mongodb/index" },
           items: [
-            "integrations/data-ingestion/clickpipes/mongodb/index",
+            "integrations/data-ingestion/clickpipes/mongodb/ingesting_data",
             "integrations/data-ingestion/clickpipes/mongodb/datatypes",
             "integrations/data-ingestion/clickpipes/mongodb/quickstart",
             "integrations/data-ingestion/clickpipes/mongodb/lifecycle",

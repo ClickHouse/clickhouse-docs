@@ -9,7 +9,6 @@ Clicky
 Clicky's
 --docs/native-protocol/server.md--
 EndOfStream
-ErrorCodes
 ProfileInfo
 ReadTaskRequest
 TableColumns
@@ -317,7 +316,7 @@ SoHo
 Tribeca
 ntaname
 jupysql
---docs/integrations/data-ingestion/clickpipes/postgres/index.md--
+--docs/integrations/data-ingestion/clickpipes/postgres/ingesting_data.md--
 PgBouncer
 Pooler
 --docs/integrations/language-clients/js.md--
@@ -1098,3 +1097,5 @@ daemonset
 ReceiveMessage
 --docs/integrations/data-ingestion/clickpipes/postgres/postgres_generated_columns.md--
 RelationMessage
+--docs/native-protocol/server.md--
+ErrorCodes
