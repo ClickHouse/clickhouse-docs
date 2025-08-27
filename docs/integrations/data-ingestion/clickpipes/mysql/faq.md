@@ -39,3 +39,7 @@ You have several options to resolve these issues:
 ### Do you support schema changes? {#do-you-support-schema-changes}
 
 Please refer to the [ClickPipes for MySQL: Schema Changes Propagation Support](./schema-changes) page for more information.
+
+### Do you support replicating MySQL foreign key cascading deletes `ON DELETE CASCADE`? {#support-on-delete-cascade}
+
+Due to how MySQL [handles cascading deletes](https://dev.mysql.com/doc/refman/8.0/en/innodb-and-mysql-replication.html), they are not written to the binlog. Therefore it's not possible for ClickPipes (or any CDC tool) to replicate them. This can lead to inconsistent data. It's advised to use triggers instead for supporting cascading deletes.

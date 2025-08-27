@@ -40,6 +40,7 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
   started by following along with the announcement [blogpost](http://clickhouse.com/blog/clickhouse-connector-aws-glue) for how to create tables, write and read data between ClickHouse and Spark.
 - **Change to the minimum number of replicas in a service**  
   Services which have been scaled up can now be [scaled back down](/manage/scaling) to use a single replica (previously the minimum was 2 replicas). Note: single replica services have reduced availability and are not recommended for production usage.
+- ClickHouse Cloud will begin to send notifications related to service scaling and service version upgrades, by default for administrator roles. Users can adjust their notification preferences in their notification settings.
 
 ## August 13, 2025 {#august-13-2025}
 
