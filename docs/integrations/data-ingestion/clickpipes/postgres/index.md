@@ -33,7 +33,7 @@ If you've spotted an error, please edit the YML frontmatter of the pages themsel
 | [Ordering Keys](/integrations/clickpipes/postgres/ordering_keys) | How to define custom ordering keys. |
 | [Parallel Snapshot In The Postgres ClickPipe](/integrations/clickpipes/postgres/parallel_initial_load) | Doc for explaining parallel snapshot in the Postgres ClickPipe |
 | [Pausing and Resuming a Postgres ClickPipe](/integrations/clickpipes/postgres/pause_and_resume) | Pausing and Resuming a Postgres ClickPipe |
-| [PlanetScale for Postgres Source Setup Guide](/integrations/clickpipes/postgres/source/planetscale) | Set up Planetscale for Postgres as a source for ClickPipes |
+| [PlanetScale for Postgres Source Setup Guide](/integrations/clickpipes/postgres/source/planetscale) | Set up PlanetScale for Postgres as a source for ClickPipes |
 | [Postgres Generated Columns: Gotchas and Best Practices](/integrations/clickpipes/postgres/generated_columns) | Page describing important considerations to keep in mind when using PostgreSQL generated columns in tables that are being replicated |
 | [Postgres with TimescaleDB source setup guide](/integrations/clickpipes/postgres/source/timescale) | Set up Postgres with the TimescaleDB extension as a source for ClickPipes |
 | [RDS Postgres Source Setup Guide](/integrations/clickpipes/postgres/source/rds) | Set up Amazon RDS Postgres as a source for ClickPipes |
