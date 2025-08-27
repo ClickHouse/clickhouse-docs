@@ -797,6 +797,7 @@ fast_result = chdb.query("""
 
 # 3. Leverage streaming for large datasets
 from chdb import session
+
 sess = session.Session()
 
 # Setup large dataset
@@ -850,4 +851,3 @@ sess.close()
 
 - **Main Repository**: [chdb-io/chdb](https://github.com/chdb-io/chdb)
 - **Issues and Support**: Report issues on the [GitHub repository](https://github.com/chdb-io/chdb/issues)
-- **C API Documentation**: [Bindings Documentation](https://github.com/chdb-io/chdb/blob/main/bindings.md)
