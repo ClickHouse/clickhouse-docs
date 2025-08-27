@@ -34,16 +34,16 @@ Update mutations can be issued through a `ALTER TABLE ... UPDATE` command e.g.
 ALTER TABLE posts_temp
         (UPDATE AnswerCount = AnswerCount + 1 WHERE AnswerCount = 0)
 ```
-These are extremely IO-heavy, rewriting all the ^^parts^^ that match the `WHERE` expression. There is no ^^atomicity^^ to this process - ^^parts^^ are substituted for mutated ^^parts^^ as soon as they are ready, and a `SELECT` query that starts executing during a ^^mutation^^ will see data from ^^parts^^ that have already been mutated along with data from ^^parts^^ that have not been mutated yet. Users can track the state of the progress via the [systems.mutations](/operations/system-tables/mutations) table. These are I/O intense operations and should be used sparingly as they can impact ^^cluster^^ `SELECT` performance.
+These are extremely IO-heavy, rewriting all the parts that match the `WHERE` expression. There is no atomicity to this process - parts are substituted for mutated parts as soon as they are ready, and a `SELECT` query that starts executing during a mutation will see data from parts that have already been mutated along with data from parts that have not been mutated yet. Users can track the state of the progress via the [systems.mutations](/operations/system-tables/mutations) table. These are I/O intense operations and should be used sparingly as they can impact cluster `SELECT` performance.
 
 Read more about [update mutations](/sql-reference/statements/alter/update).
 
 ## Lightweight updates {#lightweight-updates}
 
-Lightweight updates are a ClickHouse feature that updates rows using "patch ^^parts^^" - special data ^^parts^^ containing only the updated columns and rows, rather than rewriting entire columns like traditional mutations. The ^^Lightweight UPDATE^^ 
+Lightweight updates are a ClickHouse feature that updates rows using "patch parts" - special data parts containing only the updated columns and rows, rather than rewriting entire columns like traditional mutations. The Lightweight UPDATE
 Key characteristics:
 
-- Uses the standard `UPDATE` syntax and creates patch ^^parts^^ immediately without waiting for merges
+- Uses the standard `UPDATE` syntax and creates patch parts immediately without waiting for merges
 - Updated values are immediately visible in `SELECT` queries through patch application, but physically materialized only during subsequent merges
 - Designed for small updates (up to ~10% of table) with predictable latency
 - Adds overhead to `SELECT` queries that need to apply patches, but avoids rewriting entire columns
@@ -52,7 +52,7 @@ For more details see ["The Lightweight UPDATE Statement"](/sql-reference/stateme
 
 ## On-the-fly Updates {#on-the-fly-updates}
 
-On-the-fly updates provide a mechanism to update rows such that they are updated immediately, and subsequent `SELECT` queries will automatically return with the changed values (this incurs an overhead and will slow queries). This effectively addresses the ^^atomicity^^ limitation of normal mutations. We show an example below:
+On-the-fly updates provide a mechanism to update rows such that they are updated immediately, and subsequent `SELECT` queries will automatically return with the changed values (this incurs an overhead and will slow queries). This effectively addresses the atomicity limitation of normal mutations. We show an example below:
 
 ```sql
 SET apply_mutations_on_fly = 1;
@@ -83,19 +83,19 @@ WHERE Id = 404346
 1 row in set. Elapsed: 0.149 sec. Processed 59.55 million rows, 259.91 MB (399.99 million rows/s., 1.75 GB/s.)
 ```
 
-Note that for on-the-fly updates, a ^^mutation^^ is still used to update the data; it is just not materialized immediately and applied during `SELECT` queries. It will still be applied in the background as an asynchronous process and incurs the same heavy overhead as a ^^mutation^^ and thus is an I/O intense operation that should be used sparingly. The expressions that can be used with this operation are also limited (see here for [details](/guides/developer/on-the-fly-mutations#support-for-subqueries-and-non-deterministic-functions)).
+Note that for on-the-fly updates, a mutation is still used to update the data; it is just not materialized immediately and applied during `SELECT` queries. It will still be applied in the background as an asynchronous process and incurs the same heavy overhead as a mutation and thus is an I/O intense operation that should be used sparingly. The expressions that can be used with this operation are also limited (see here for [details](/guides/developer/on-the-fly-mutations#support-for-subqueries-and-non-deterministic-functions)).
 
 Read more about [on-the-fly updates](/guides/developer/on-the-fly-mutations).
 
 ## `CollapsingMergeTree` {#collapsing-merge-tree}
 
 Stemming from the idea that updates are expensive but inserts can be leveraged to perform updates,
-the [`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree) ^^table engine^^
+the [`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree) table engine
 can be used together with a `sign` column as a way to tell ClickHouse to update a specific row by collapsing (deleting)
 a pair of rows with sign `1` and `-1`.
 If `-1` is inserted for the `sign` column, the whole row will be deleted.
 If `1` is inserted for the `sign` column, ClickHouse will keep the row.
-Rows to update are identified based on the ^^sorting key^^ used in the `ORDER BY ()` statement when creating the table.
+Rows to update are identified based on the sorting key used in the `ORDER BY ()` statement when creating the table.
 
 ```sql
 CREATE TABLE UAct
