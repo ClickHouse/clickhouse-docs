@@ -1,4 +1,4 @@
-personal_ws-1.1 en 3638
+personal_ws-1.1 en 3646
 AArch
 ACLs
 AICPA
@@ -646,10 +646,10 @@ LOCALTIMESTAMP
 LONGLONG
 LOONGARCH
 LaGuardia
+Lakekeeper
 LangChain
 LangGraph
 Langchain
-Lakekeeper
 Lemire
 Levenshtein
 Lhotsky
@@ -794,7 +794,6 @@ NDJSON
 NEKUDOTAYIM
 NEWDATE
 NEWDECIMAL
-Nessie
 NFKC
 NFKD
 NIST
@@ -809,6 +808,7 @@ Nambiar
 Namenode
 NamesAndTypesList
 Nano
+Nessie
 NestJS
 Nesterov
 NetFlow
@@ -968,8 +968,8 @@ PendingAsyncInsert
 Percona
 PerfEventInfo
 PhpStorm
-PlantUML
 PlanetScale
+PlantUML
 Poess
 PointDistKm
 PointDistM
@@ -1019,10 +1019,10 @@ ProxySQL
 Punycode
 PyArrow
 PyCharm
-Pydantic
 PyPI
 PyReader
 PySpark
+Pydantic
 PydanticAI
 QATlib
 QEMU
@@ -1292,7 +1292,6 @@ ThreadPoolRemoteFSReaderThreads
 ThreadPoolRemoteFSReaderThreadsActive
 ThreadsActive
 ThreadsInOvercommitTracker
-Trino
 TiDB
 TimeSeries
 TimescaleDB
@@ -1324,6 +1323,7 @@ TotalsMode
 Tradeoff
 Transactional
 TransactionsWaitCSNMode
+Trino
 Tsai
 Tukey
 TwoColumnList
@@ -2855,6 +2855,7 @@ profiler
 programmatically
 proleptic
 prometheus
+promql
 proportionsZTest
 proto
 protobuf
@@ -3634,6 +3635,7 @@ xz
 yaml
 yandex
 youtube
+ytsaurus
 zLib
 zLinux
 zabbix
