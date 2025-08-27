@@ -60,9 +60,11 @@ For more details, refer to:
 
 ### Can I update primary key columns in PostgreSQL? {#can-i-update-primary-key-columns-in-postgresql}
 
-**Important limitation:** Primary key updates in PostgreSQL cannot be properly replayed in ClickHouse by default.
+:::warning
+Primary key updates in PostgreSQL cannot be properly replayed in ClickHouse by default.
 
 This limitation exists because `ReplacingMergeTree` deduplication works based on the `ORDER BY` columns (which typically correspond to the primary key). When a primary key is updated in PostgreSQL, it appears as a new row with a different key in ClickHouse, rather than an update to the existing row. This can lead to both the old and new primary key values existing in your ClickHouse table.
+:::
 
 Note that updating primary key columns is not a common practice in PostgreSQL database design, as primary keys are intended to be immutable identifiers. Most applications avoid primary key updates by design, making this limitation rarely encountered in typical use cases.
 
