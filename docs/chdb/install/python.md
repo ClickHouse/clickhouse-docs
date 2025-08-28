@@ -17,9 +17,9 @@ keywords: ['chdb', 'embedded', 'clickhouse-lite', 'python', 'install']
 pip install chdb
 ```
 
-## Usage 
+## Usage {#usage} 
 
-### Command Line Interface
+### Command Line Interface {#command-line-interface}
 
 Run SQL queries directly from the command line:
 
@@ -31,7 +31,7 @@ python3 -m chdb "SELECT 1, 'abc'" Pretty
 python3 -m chdb "SELECT version()" JSON
 ```
 
-### Basic Python Usage
+### Basic Python Usage {#basic-python-usage}
 
 ```python
 import chdb
@@ -46,7 +46,7 @@ print(f"Bytes read: {result.bytes_read()}")
 print(f"Execution time: {result.elapsed()} seconds")
 ```
 
-### Connection-Based API (Recommended)
+### Connection-Based API (Recommended) {#connection-based-api}
 
 For better resource management and performance:
 
@@ -83,7 +83,7 @@ conn.close()
 
 ## Data Input Methods {#data-input}
 
-### File-Based Data Sources
+### File-Based Data Sources {#file-based-data-sources}
 
 chDB supports 70+ data formats for direct file querying:
 
@@ -112,7 +112,7 @@ result = chdb.query("""
 """, 'Pretty')
 ```
 
-### Output Format Examples
+### Output Format Examples {#output-format-examples}
 
 ```python
 # DataFrame for analysis
@@ -134,7 +134,7 @@ print(pretty_result)
 
 ### DataFrame Operations {#dataframe-operations}
 
-#### Legacy DataFrame API
+#### Legacy DataFrame API {#legacy-dataframe-api}
 
 ```python
 import chdb.dataframe as cdf
@@ -156,7 +156,7 @@ summary = result_df.query('SELECT b, sum(a) FROM __table__ GROUP BY b')
 print(summary)
 ```
 
-#### Python Table Engine (Recommended)
+#### Python Table Engine (Recommended) {#python-table-engine-recommended}
 
 ```python
 import chdb
@@ -257,7 +257,7 @@ print(result)
 sess.close()  # Optional - auto-closed when object is deleted
 ```
 
-### Advanced Session Features
+### Advanced Session Features {#advanced-session-features}
 
 ```python
 # Session with custom settings
@@ -333,7 +333,7 @@ cursor.executemany(
 
 Extend SQL with custom Python functions:
 
-#### Basic UDF Usage
+#### Basic UDF Usage {#basic-udf-usage}
 
 ```python
 from chdb.udf import chdb_udf
@@ -369,7 +369,7 @@ result = query("""
 print(result)
 ```
 
-#### Advanced UDF with Custom Return Types
+#### Advanced UDF with Custom Return Types {#advanced-udf-custom-return-types}
 
 ```python
 # UDF with specific return type
@@ -403,7 +403,7 @@ result = query("""
 print(result)
 ```
 
-#### UDF Best Practices
+#### UDF Best Practices {#udf-best-practices}
 
 1. **Stateless Functions**: UDFs should be pure functions without side effects
 2. **Import Inside Functions**: All required modules must be imported within the UDF
@@ -510,7 +510,7 @@ sess.close()
 
 ### Python Table Engine {#python-table-engine}
 
-#### Query Pandas DataFrames
+#### Query Pandas DataFrames {#query-pandas-dataframes}
 
 ```python
 import chdb
@@ -565,7 +565,7 @@ window_result = chdb.query("""
 print(window_result)
 ```
 
-#### Query Arrow Tables
+#### Query Arrow Tables {#query-arrow-tables}
 
 ```python
 import chdb
@@ -627,7 +627,7 @@ time_analysis = chdb.query("""
 print(time_analysis)
 ```
 
-#### Custom Data Sources with PyReader
+#### Custom Data Sources with PyReader {#custom-data-sources-pyreader}
 
 Implement custom data readers for specialized data sources:
 
@@ -717,7 +717,7 @@ aggregation = chdb.query("""
 print(aggregation)
 ```
 
-### JSON Type Inference and Handling
+### JSON Type Inference and Handling {#json-type-inference-handling}
 
 chDB automatically handles complex nested data structures:
 
@@ -767,14 +767,14 @@ print(complex_json)
 
 ## Performance and Optimization {#performance-optimization}
 
-### Benchmarks
+### Benchmarks {#benchmarks}
 
 chDB consistently outperforms other embedded engines:
 - **DataFrame operations**: 2-5x faster than Pandas for analytical queries
 - **Parquet processing**: Competitive with DuckDB, faster than Polars
 - **Memory efficiency**: Lower memory footprint than alternatives
 
-### Performance Tips
+### Performance Tips {#performance-tips}
 
 ```python
 import chdb
