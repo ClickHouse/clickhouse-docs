@@ -6,7 +6,7 @@ description: 'How to install and use chDB Rust bindingsd'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'rust', 'install', 'ffi', 'bindings']
 ---
 
-# chDB for Rust
+# chDB for Rust {#chdb-for-rust}
 
 chDB-rust provides experimental FFI (Foreign Function Interface) bindings for chDB, enabling you to run ClickHouse queries directly in your Rust applications with zero external dependencies.
 
@@ -24,7 +24,7 @@ curl -sL https://lib.chdb.io | bash
 
 chDB Rust provides both stateless and stateful query execution modes.
 
-### Stateless Usage
+### Stateless Usage {#stateless-usage}
 
 For simple queries without persistent state:
 
@@ -50,7 +50,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
-### Stateful Usage (Sessions)
+### Stateful Usage (Sessions) {#stateful-usage-sessions}
 
 For queries requiring persistent state like databases and tables:
 
@@ -110,19 +110,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 ## Building and Testing {#building-testing}
 
-### Build the Project
+### Build the Project {#build-the-project}
 
 ```bash
 cargo build
 ```
 
-### Run Tests
+### Run Tests {#run-tests}
 
 ```bash
 cargo test
 ```
 
-### Development Dependencies
+### Development Dependencies {#development-dependencies}
 
 The project includes these development dependencies:
 - `bindgen` (v0.70.1) - Generate FFI bindings from C headers
