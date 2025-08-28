@@ -382,9 +382,7 @@ def process_markdown_directory(directory, base_directory, base_url):
 def send_to_algolia(client, index_name, records):
     """Send records to Algolia."""
     if records:
-        client.batch(index_name=index_name, batch_write_params={
-            "requests": [{"action": "addObject", "body": record} for record in records],
-        })
+        client.save_objects(index_name, records)
         print(f"Successfully sent {len(records)} records to Algolia.")
     else:
         print("No records to send to Algolia.")
@@ -449,13 +447,7 @@ def main(base_directory, algolia_app_id, algolia_api_key, algolia_index_name,
     print(f'total {'processed' if dry_run else 'indexed'} {t} records')
     if not dry_run:
         print('switching temporary index...', end='')
-        client.operation_index(
-            index_name=temp_index_name,
-            operation_index_params={
-                "operation": "move",
-                "destination": algolia_index_name
-            },
-        )
+        client.operation_index(temp_index_name, {"operation": "move", "destination": algolia_index_name})
     print('done')
 
 
