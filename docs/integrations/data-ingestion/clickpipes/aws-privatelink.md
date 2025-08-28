@@ -121,7 +121,7 @@ You can put the Resource-Configuration into the Resource-Share through [AWS cons
 
 ```bash
 aws ram create-resource-share \
-    --principals arn:aws:iam::072088201116:root \
+    --principals 072088201116 \
     --resource-arns <RESOURCE_CONFIGURATION_ARN> \
     --name <RESOURCE_SHARE_NAME>
 ```
