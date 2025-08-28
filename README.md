@@ -134,9 +134,9 @@ Please assign any pull request (PR) against an issue; this helps the docs team t
 
 Check out the GitHub docs for a refresher on [how to create a pull request](https://docs.github.com/en/desktop/working-with-your-remote-repository-on-github-or-github-enterprise/creating-an-issue-or-pull-request-from-github-desktop).
 
-### Style guidelines
+### Style and contribution guidelines
 
-For documentation style guidelines, see ["Style guide"](/contribute/style-guide.md). 
+For documentation style guidelines, see ["Style guide"](/contribute/style-guide.md).
 
 To check spelling and markdown is correct locally run:
 

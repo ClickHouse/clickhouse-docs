@@ -112,11 +112,72 @@ SELECT * FROM system.contributors;
 \```
 ```
 
+Note: in the snippet above `\` is used only for formatting purposes in this guide.
+You should not include it when you write markdown.
+
 Code blocks:
 - Should always have a language defined immediately next to the opening 3
   backticks, without any space.
 - Have a title (optional) such as 'Query' or 'Response'
 - Use language `response` if it is for the result of a query.
+
+#### Importing code from files or URLs
+
+There are a few additional parameters you can include on a code block if you want
+to import code.
+
+To import from a file use `file=`:
+
+```text
+\```python file=code_snippets/integrations/example.py
+Code will be inserted here
+\```
+```
+
+When `yarn build` is run, the code from the file will be inserted as text into
+the code block.
+
+To import from a url use `url=`:
+
+```text
+\```python url=https://raw.githubusercontent.com/ClickHouse/clickhouse-connect/refs/heads/main/examples/pandas_examples.py
+Code will be inserted here
+\```
+```
+
+You should commit the code inserted to the snippet as we want people (or LLMs) 
+reading the markdown to be able to see the code. The advantage of importing code
+to snippets this way is that you can test your snippets externally or store them
+wherever you want.
+
+If you want to only import a section from a file, surround the section with `docs-start`
+and `docs-end` comments, for example:
+
+```python
+a = 200
+b = 33
+#docs-start
+if b > a:
+  print("b is greater than a")
+elif a == b:
+  print("a and b are equal")
+else:
+  print("a is greater than b")
+#docs-end
+```
+
+Only the code between those comments will be pulled.
+
+If you want to make multiple code snippets from one file then you can use the `snippet` parameter:
+
+```markdown
+
+\```python url=https://raw.githubusercontent.com/ClickHouse/clickhouse-connect/refs/heads/main/examples/pandas_examples.py snippet=1
+Code will be inserted here
+\```
+```
+
+You will then use `docs-start-1`, `docs-end-1` comments for the first snippet, `docs-start-2`, `docs-end-2` for the second snippet and so on.
 
 ### Highlighting
 
