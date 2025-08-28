@@ -108,7 +108,7 @@ You can't create a resource configuration for a publicly accessible cluster.
 If your cluster is publicly accessible, you must modify the cluster
 to make it private before creating the resource configuration 
 or use [IP allow list](/integrations/clickpipes#list-of-static-ips) instead. 
-More details in [AWS documentation](https://docs.aws.amazon.com/vpc/latest/privatelink/resource-configuration.html#resource-definition).
+For more information, see the [AWS documentation](https://docs.aws.amazon.com/vpc/latest/privatelink/resource-configuration.html#resource-definition).
 :::
 
 The output will contain a Resource-Configuration ARN, which you will need for the next step. It will also contain a Resource-Configuration ID, which you will need to set up a ClickPipe connection with VPC resource.
