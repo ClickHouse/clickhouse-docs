@@ -107,7 +107,7 @@ aws vpc-lattice create-resource-configuration \
 You can't create a resource configuration for a publicly accessible cluster.
 If your cluster is publicly accessible, you must modify the cluster
 to make it private before creating the resource configuration 
-or use [IP allowlist](/integrations/clickpipes#list-of-static-ips) instead. 
+or use [IP allow list](/integrations/clickpipes#list-of-static-ips) instead. 
 More details in [AWS documentation](https://docs.aws.amazon.com/vpc/latest/privatelink/resource-configuration.html#resource-definition).
 :::
 
