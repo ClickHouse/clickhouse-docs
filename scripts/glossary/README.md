@@ -5,11 +5,13 @@ A Python script that automatically finds and wraps glossary terms in MDX files w
 ## Usage
 
 ### Basic Usage
+
 ```bash
 python3 wrap_glossary_terms.py
 ```
 
 ### Options
+
 ```bash
 python3 wrap_glossary_terms.py [OPTIONS]
 
@@ -24,16 +26,16 @@ Options:
 
 ```bash
 # Dry run to see what would change
-python3 wrap_glossary_terms.py --dry-run
+python3 wrap-glossary-terms.py --dry-run
 
 # Process all files, even those with existing glossary terms
-python3 wrap_glossary_terms.py --force
+python3 wrap-glossary-terms.py --force
 
 # Use custom paths
-python3 wrap_glossary_terms.py --docs-dir ./my-docs --glossary ./my-glossary.json
+python3 wrap-glossary-terms.py --docs-dir ./my-docs --glossary ./my-glossary.json
 
 # Force process with dry run
-python3 wrap_glossary_terms.py --force --dry-run
+python3 wrap-glossary-terms.py --force --dry-run
 ```
 
 ## Glossary JSON Format
