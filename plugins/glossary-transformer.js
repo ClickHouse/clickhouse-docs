@@ -50,8 +50,23 @@ function createGlossaryTransformer(options = {}) {
   }
   
   function shouldProcess(filePath, fileContent) {
-    return filePath?.endsWith('.mdx') && 
+    const allowedPaths = [
+      'docs/concepts/*',
+      'docs/managing-data/core-concepts/*',
+      'docs/getting-started/*'
+    ];
+    
+    const isInAllowedPath = allowedPaths.some(allowedPath => {
+      if (allowedPath.endsWith('/*')) {
+        const basePath = allowedPath.slice(0, -2);
+        return filePath?.includes(basePath);
+      }
+      return filePath?.includes(allowedPath);
+    });
+    
+    return (filePath?.endsWith('.mdx') || filePath?.endsWith('.md')) && 
            fileContent?.includes('^^') &&
+           isInAllowedPath &&
            !config.skipPatterns.some(pattern => 
              pattern instanceof RegExp ? pattern.test(filePath) : filePath.includes(pattern)
            );
