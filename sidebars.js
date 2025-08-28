@@ -884,6 +884,7 @@ const sidebars = {
             "interfaces/prometheus",
             "interfaces/ssh",
             "interfaces/grpc",
+            "interfaces/arrowflight"
           ],
         },
         "integrations/sql-clients/sql-console",
