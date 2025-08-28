@@ -80,7 +80,6 @@ cur.close()
 conn.close()
 ```
 
-
 ## Data Input Methods {#data-input}
 
 ### File-Based Data Sources {#file-based-data-sources}
