@@ -165,7 +165,7 @@ Should you wish to drop tables greater than this threshold you can use setting `
 
 ```sql
 DROP TABLE IF EXISTS table_to_drop
-SYNC SETTINGS max_table_size_to_drop=2097152 -- increases the limit to 2TB
+SYNC SETTINGS max_table_size_to_drop=2000000000000 -- increases the limit to 2TB
 ```
 :::
 

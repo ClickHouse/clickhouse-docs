@@ -41,26 +41,12 @@ To create a free ClickHouse service in [ClickHouse Cloud](https://console.clickh
 <Image img={signup_page} size="md" alt='Select Plan' border/>
 <br/>
 
-Once you are logged in, ClickHouse Cloud starts the onboarding wizard which walks you through creating a new ClickHouse service. You will initially be requested to [select a plan](/cloud/manage/cloud-tiers):
-
-<Image img={select_plan} size="md" alt='Select Plan' border/>
-<br/>
-
-:::tip
-We recommend the Scale tier for most workloads.
-Further details on tiers can be found [here](/cloud/manage/cloud-tiers)
-:::
-
-Selecting a plan requires you to select the desired region in which to deploy your first service.
-The exact options available will depend on the tier selected.
-In the step below, we assume that the user has opted for the recommended Scale tier.
-
-Select your desired region for deploying the service, and give your new service a name:
+Once you are logged in, ClickHouse Cloud starts the onboarding wizard which walks you through creating a new ClickHouse service. Select your desired region for deploying the service, and give your new service a name:
 
 <Image img={createservice1} size="md" alt='New ClickHouse Service' border/>
 <br/>
 
-By default, the scale tier will create 3 ^^replica^^s each with 4 VCPUs and 16 GiB RAM. [Vertical autoscaling](/manage/scaling#vertical-auto-scaling) will be enabled by default in the Scale tier.
+By default, new organizations are put on the Scale tier and will create 3 ^^replica^^s each with 4 VCPUs and 16 GiB RAM. [Vertical autoscaling](/manage/scaling#vertical-auto-scaling) will be enabled by default in the Scale tier. Organization tiers can be changed once service is created on the 'Plans' page of your organization.
 
 Users can customize the service resources if required, specifying a minimum and maximum size for replicas to scale between. When ready, select `Create service`.
 

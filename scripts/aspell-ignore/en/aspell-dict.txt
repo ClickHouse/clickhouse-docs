@@ -1,4 +1,4 @@
-personal_ws-1.1 en 3611
+personal_ws-1.1 en 3638
 AArch
 ACLs
 AICPA
@@ -32,6 +32,7 @@ Airbyte
 Akka
 AlertManager
 Alexey
+Amir
 Anthropic
 AnyEvent
 AnythingLLM
@@ -192,9 +193,13 @@ ClickBench
 ClickCat
 ClickHouse
 ClickHouse's
+ClickHouseAccess
 ClickHouseClient
+ClickHouseIO
 ClickHouseMigrator
 ClickHouseNIO
+ClickHouseSettings
+ClickHouseType
 ClickHouseVapor
 ClickPipe
 ClickPipes
@@ -215,6 +220,7 @@ CodeLLDB
 Codecs
 CollapsingMergeTree
 Combinators
+CommonRoom
 Compat
 CompiledExpressionCacheBytes
 CompiledExpressionCacheCount
@@ -227,12 +233,17 @@ ConcurrencyControlSoftLimit
 Config
 ConnectionDetails
 Const
+ContentSquare
+ContentSquare's
+Contentsquare
 ContextLockWait
 Contrib
 CopilotKit
 Copilotkit
 CountMin
 Covid
+Craigslist
+Craigslist's
 Cramer's
 Criteo
 Crotty
@@ -321,6 +332,7 @@ DiskSpaceReservedForMerge
 DiskTotal
 DiskUnreserved
 DiskUsed
+Displayce
 DistributedCacheLogMode
 DistributedCachePoolBehaviourOnLimit
 DistributedDDLOutputMode
@@ -328,9 +340,11 @@ DistributedFilesToInsert
 DistributedProductMode
 DistributedSend
 DockerHub
+Doron
 DoubleDelta
 Doxygen
 Draxlr
+Dremio
 Dresseler
 Durre
 ECMA
@@ -437,6 +451,7 @@ GraphQL
 GraphiteMergeTree
 Greenwald
 Gunicorn
+Guram
 HANA
 HDDs
 HHMM
@@ -447,6 +462,7 @@ HSTS
 HTAP
 HTTPConnection
 HTTPThreads
+Hashboard's
 HashedDictionary
 HashedDictionaryThreads
 HashedDictionaryThreadsActive
@@ -609,6 +625,7 @@ Kerberos
 Khanna
 Kibana
 Kinesis
+Kirill
 KittenHouse
 Klickhouse
 Kolmogorov
@@ -632,8 +649,10 @@ LaGuardia
 LangChain
 LangGraph
 Langchain
+Lakekeeper
 Lemire
 Levenshtein
+Lhotsky
 Liao
 LibFuzzer
 LibreChat
@@ -707,6 +726,7 @@ MaxPartCountForPartition
 MaxPushedDDLEntryID
 MaxThreads
 Mbps
+McClickHouse
 McNeal
 Memcheck
 MemoryCode
@@ -744,6 +764,7 @@ MetroHash
 MiB
 Milli
 Milovidov
+Milovidov's
 MinHash
 MinIO
 MinMax
@@ -773,6 +794,7 @@ NDJSON
 NEKUDOTAYIM
 NEWDATE
 NEWDECIMAL
+Nessie
 NFKC
 NFKD
 NIST
@@ -947,6 +969,7 @@ Percona
 PerfEventInfo
 PhpStorm
 PlantUML
+PlanetScale
 Poess
 PointDistKm
 PointDistM
@@ -996,6 +1019,7 @@ ProxySQL
 Punycode
 PyArrow
 PyCharm
+Pydantic
 PyPI
 PyReader
 PySpark
@@ -1126,6 +1150,7 @@ SaaS
 Sackmann's
 Sanjeev
 Sankey
+Sapchuk
 Scalable
 Scatterplot
 Schaefer
@@ -1141,6 +1166,8 @@ SendExternalTables
 SendScalars
 SerDe
 Serverless
+ServiceNow
+ServiceNow's
 SetOperationMode
 SeverityText
 ShareAlike
@@ -1151,6 +1178,7 @@ SharedMergeTree
 ShortCircuitFunctionEvaluation
 Shortkeys
 Signup
+Sigua
 SimHash
 Simhash
 SimpleAggregateFunction
@@ -1264,6 +1292,7 @@ ThreadPoolRemoteFSReaderThreads
 ThreadPoolRemoteFSReaderThreadsActive
 ThreadsActive
 ThreadsInOvercommitTracker
+Trino
 TiDB
 TimeSeries
 TimescaleDB
@@ -1290,6 +1319,7 @@ TotalPrimaryKeyBytesInMemory
 TotalPrimaryKeyBytesInMemoryAllocated
 TotalRowsOfMergeTreeTables
 TotalTemporaryFiles
+Totalprices
 TotalsMode
 Tradeoff
 Transactional
@@ -1348,6 +1378,7 @@ VPCs
 VPNs
 Vadim
 Valgrind
+Vaza
 Vectorization
 Vectorized
 Vercel
@@ -1709,6 +1740,7 @@ changelogs
 charset
 charsets
 chartdb
+chatbots
 chconn
 chdb
 cheatsheet
@@ -2360,6 +2392,7 @@ kernal
 keyspace
 keytab
 kittenhouse
+knowledgebase
 kolmogorovSmirnovTest
 kolmogorovsmirnovtest
 kolya
@@ -2372,6 +2405,7 @@ kurtSamp
 kurtosis
 kurtpop
 kurtsamp
+kusto
 lagInFrame
 laion
 lakehouse
@@ -2608,6 +2642,7 @@ nats
 navbar
 ndjson
 ness
+Nessie
 nestjs
 netloc
 newjson
@@ -3412,6 +3447,7 @@ trie
 trimBoth
 trimLeft
 trimRight
+Trino
 trunc
 tryBase
 tryDecrypt
