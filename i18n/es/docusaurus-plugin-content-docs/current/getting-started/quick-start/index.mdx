@@ -1,0 +1,104 @@
+---
+description: 'Empieza a trabajar con ClickHouse en minutos, explora datos de ejemplo y desarrolla tu solución.'
+keywords: ['clickhouse', 'quick start']
+sidebar_label: 'Primeros pasos'
+sidebar_position: 0
+slug: /get-started/quick-start
+title: 'Primeros pasos'
+---
+
+import {CardSecondary, CardPromotion} from '@clickhouse/click-ui/bundled';
+import Link from '@docusaurus/Link';
+
+<div style={{
+    display: 'inline-flex',
+    flexDirection: 'column',
+    width: '100%',
+    maxWidth: 'calc(700px + 1rem)'
+}}>
+    <div style={{
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: '1rem',
+        marginBottom: '1rem',
+        width: '100%',
+        '@media (max-width: 996px)': {
+            flexDirection: 'column'
+        }
+    }}>
+        <div style={{
+            flex: '1 1 300px',
+            minWidth: '0',
+            maxWidth: '100%',
+            '@media (max-width: 996px)': {
+                width: '100%',
+                maxWidth: 'none',
+                flex: '1 1 auto'
+            }
+        }}>
+            <Link to="/getting-started/quick-start/cloud" style={{textDecoration: 'none', width: '100%'}}>
+            <CardSecondary
+                badgeState="success"
+                badgeText="Recomendado"
+                description="Aprenderás a crear un servicio de ClickHouse, conectarte 
+                y añadir datos mediante CDC, consola SQL, cliente local o carga de archivos."
+                icon="cloud"
+                infoText="Empezar"
+                infoUrl="clickhouse.com/docs/getting-started/quick-start/cloud"
+                title="Primeros pasos con ClickHouse Cloud"
+                style={{width: '100%', height: '100%'}}
+            />
+            </Link>
+        </div>
+        <div style={{
+            flex: '1 1 300px',
+            minWidth: '0',
+            maxWidth: '100%',
+            '@media (max-width: 996px)': {
+                width: '100%',
+                maxWidth: 'none',
+                flex: '1 1 auto'
+            }
+        }}>
+            <Link to="/getting-started/quick-start/oss" style={{textDecoration: 'none', width: '100%'}}>
+            <CardSecondary
+                badgeState="success"
+                description="Aprenderás a instalar el servidor y el cliente localmente, 
+                crear una tabla con datos de ejemplo y descubrir varias formas de 
+                cargar tus propios datos en ClickHouse.
+                "
+                icon="server"
+                infoText="Empezar"
+                infoUrl="clickhouse.com/docs/getting-started/quick-start/oss"
+                title="Primeros pasos con ClickHouse OSS"
+                style={{width: '100%', height: '100%'}}
+            />
+            </Link>
+        </div>
+    </div>
+    <div style={{
+        width: '100%',
+        '@media (max-width: 996px)': {
+            maxWidth: '100%',
+            margin: '0'
+        }
+    }}>
+        <Link to="/cloud/overview" style={{textDecoration: 'none', width: '100%'}}>
+          <CardPromotion
+              icon="question"
+              label="No estás seguro de cuál elegir? Haz clic aquí para conocer las diferencias entre ClickHouse Cloud y ClickHouse OSS."
+              style={{
+                  display: 'flex',
+                  flex: '1',
+                  width: '100%',
+                  minHeight: 'auto',
+                  alignItems: 'flex-start',
+                  padding: '1rem',
+                  boxSizing: 'border-box',
+                  cursor: 'pointer'
+              }}
+          />
+        </Link>
+    </div>
+</div>
