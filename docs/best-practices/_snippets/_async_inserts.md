@@ -27,7 +27,7 @@ The behavior of asynchronous inserts is further refined using the [`wait_for_asy
 
 When set to 1 (the default), ClickHouse only acknowledges the insert after the data is successfully flushed to disk. This ensures strong durability guarantees and makes error handling straightforward: if something goes wrong during the flush, the error is returned to the client. This mode is recommended for most production scenarios, especially when insert failures must be tracked reliably. 
 
-[Benchmarks](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse) show it scales well with concurrency—whether you're running 200 or 500 clients- thanks to adaptive inserts and stable part creation behavior.
+[Benchmarks](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse) show it scales well with concurrency—whether you're running 200 or 500 clients—thanks to adaptive inserts and stable part creation behavior.
 
 Setting `wait_for_async_insert = 0` enables "fire-and-forget" mode. Here, the server acknowledges the insert as soon as the data is buffered, without waiting for it to reach storage. 
 
