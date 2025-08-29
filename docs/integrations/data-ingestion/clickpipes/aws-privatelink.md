@@ -63,6 +63,7 @@ Your resource gateway attached subnets are recommended to have sufficient IP add
 It's recommended to have at least `/26` subnet mask for each subnet.
 
 For each VPC endpoint (each Reverse Private Endpoint), AWS requires a consecutive block of 16 IP addresses per subnet. (`/28` subnet mask)
+If this requirement is not met, Reverse Private Endpoint will transition to a failed state.
 :::
 
 You can create a resource gateway from the [AWS console](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource gateway.html) or with the following command:
