@@ -88,6 +88,8 @@ chDB supports 70+ data formats for direct file querying:
 
 ```python
 import chdb
+# Prepare your data
+# ...
 
 # Query Parquet files
 result = chdb.query("""
@@ -181,10 +183,10 @@ result = chdb.query("""
     SELECT 
         customer_id,
         sum(amount) as total_spent,
-        metadata.category as category
-    FROM Python(df) 
-    WHERE metadata.priority = 'high'
-    GROUP BY customer_id, metadata.category
+        toString(metadata.category) as category
+    FROM Python(df)
+    WHERE toString(metadata.priority) = 'high'
+    GROUP BY customer_id, toString(metadata.category)
     ORDER BY total_spent DESC
 """).show()
 
@@ -192,13 +194,13 @@ result = chdb.query("""
 arrow_table = pa.table({
     "id": [1, 2, 3, 4],
     "name": ["Alice", "Bob", "Charlie", "David"],
-    "scores": [[95, 87], [78, 92], [88, 95], [92, 89]]
+    "score": [98, 89, 86, 95]
 })
 
 chdb.query("""
-    SELECT name, arraySum(scores) as total_score 
-    FROM Python(arrow_table) 
-    ORDER BY total_score DESC
+    SELECT name, score
+    FROM Python(arrow_table)
+    ORDER BY score DESC
 """).show()
 ```
 
@@ -262,18 +264,7 @@ sess.close()  # Optional - auto-closed when object is deleted
 # Session with custom settings
 sess = session.Session(
     path="/tmp/analytics_db",
-    
 )
-
-# Batch operations
-sess.query("BEGIN TRANSACTION")
-try:
-    sess.query("INSERT INTO sales VALUES (4, 'Monitor', 299.99, '2024-01-18')")
-    sess.query("INSERT INTO sales VALUES (5, 'Speakers', 89.99, '2024-01-18')")
-    sess.query("COMMIT")
-except Exception as e:
-    sess.query("ROLLBACK")
-    print(f"Transaction failed: {e}")
 
 # Query performance optimization
 result = sess.query("""
@@ -322,6 +313,13 @@ for row in cursor.fetchall():
 
 # Batch operations
 data = [(1, 'Alice'), (2, 'Bob'), (3, 'Charlie')]
+cursor.execute("""
+    CREATE TABLE temp_users (
+        id UInt64,
+        name String
+    ) ENGINE = MergeTree()
+    ORDER BY (id)
+""")
 cursor.executemany(
     "INSERT INTO temp_users (id, name) VALUES (?, ?)", 
     data
@@ -448,7 +446,7 @@ sess = session.Session()
 
 # Setup large dataset
 sess.query("""
-    CREATE TABLE large_data AS 
+    CREATE TABLE large_data ENGINE = Memory() AS 
     SELECT number as id, toString(number) as data 
     FROM numbers(1000000)
 """)
@@ -534,7 +532,7 @@ result = chdb.query("""
     SELECT 
         customer_name,
         count() as order_count,
-        sum(orders.amount) as total_spent,
+        sum(toFloat64(orders.amount)) as total_spent,
         arrayStringConcat(
             arrayDistinct(
                 arrayFlatten(
@@ -553,77 +551,15 @@ result = chdb.query("""
 window_result = chdb.query("""
     SELECT 
         customer_name,
-        orders.amount,
-        sum(orders.amount) OVER (
+        toFloat64(orders.amount) as amount,
+        sum(toFloat64(orders.amount)) OVER (
             PARTITION BY customer_name 
-            ORDER BY orders.order_id
+            ORDER BY toInt32(orders.order_id)
         ) as running_total
     FROM Python(df)
-    ORDER BY customer_name, orders.order_id
+    ORDER BY customer_name, toInt32(orders.order_id)
 """, "Pretty")
 print(window_result)
-```
-
-#### Query Arrow Tables {#query-arrow-tables}
-
-```python
-import chdb
-import pyarrow as pa
-import numpy as np
-
-# Create Arrow table with complex data types
-arrow_data = {
-    "user_id": [1, 2, 3, 4, 5],
-    "username": ["alice", "bob", "charlie", "diana", "eve"],
-    "scores": [[95, 87, 92], [78, 85, 90], [88, 95, 87], [92, 89, 94], [85, 88, 91]],
-    "metadata": [
-        {"country": "US", "premium": True, "signup_date": "2023-01-15"},
-        {"country": "UK", "premium": False, "signup_date": "2023-02-10"},
-        {"country": "CA", "premium": True, "signup_date": "2023-01-20"},
-        {"country": "US", "premium": True, "signup_date": "2023-03-05"},
-        {"country": "DE", "premium": False, "signup_date": "2023-02-28"}
-    ],
-    "activity_timestamps": [
-        [1640995200, 1641081600, 1641168000],  # Unix timestamps
-        [1641254400, 1641340800],
-        [1641427200, 1641513600, 1641600000, 1641686400],
-        [1641772800],
-        [1641859200, 1641945600]
-    ]
-}
-
-arrow_table = pa.table(arrow_data)
-
-# Complex analytical queries
-analysis = chdb.query("""
-    SELECT 
-        metadata.country,
-        count() as users,
-        avg(arraySum(scores)) as avg_total_score,
-        countIf(metadata.premium) as premium_users,
-        avg(length(activity_timestamps)) as avg_activities
-    FROM Python(arrow_table)
-    GROUP BY metadata.country
-    ORDER BY avg_total_score DESC
-""", "Pretty")
-print(analysis)
-
-# Time series analysis
-time_analysis = chdb.query("""
-    SELECT 
-        username,
-        arrayMap(
-            x -> toDateTime(x), 
-            activity_timestamps
-        ) as activity_dates,
-        arrayMap(
-            x -> formatDateTime(toDateTime(x), '%Y-%m-%d'), 
-            activity_timestamps
-        ) as formatted_dates
-    FROM Python(arrow_table)
-    WHERE metadata.premium = true
-""", "JSONEachRow")
-print(time_analysis)
 ```
 
 #### Custom Data Sources with PyReader {#custom-data-sources-pyreader}
@@ -685,37 +621,6 @@ class DatabaseReader(chdb.PyReader):
         self.cursor = end_pos
         return result
 
-# Use custom reader
-reader = DatabaseReader("postgresql://127.0.0.1/mydb")
-
-# Query with complex operations
-result = chdb.query("""
-    SELECT 
-        name,
-        score,
-        JSONExtractString(metadata, 'level') as user_level,
-        JSONExtractBool(metadata, 'active') as is_active
-    FROM Python(reader)
-    WHERE score > 5000
-    ORDER BY score DESC
-    LIMIT 10
-""", "Pretty")
-print(result)
-
-# Aggregation queries
-aggregation = chdb.query("""
-    SELECT 
-        JSONExtractString(metadata, 'level') as level,
-        count() as user_count,
-        avg(score) as avg_score,
-        countIf(JSONExtractBool(metadata, 'active')) as active_users
-    FROM Python(reader)
-    GROUP BY level
-    ORDER BY level
-""", "JSONEachRow")
-print(aggregation)
-```
-
 ### JSON Type Inference and Handling {#json-type-inference-handling}
 
 chDB automatically handles complex nested data structures:
@@ -741,7 +646,7 @@ result = chdb.query("""
         user_id,
         profile.name as name,
         profile.age as age,
-        arrayLength(profile.preferences) as pref_count,
+        length(profile.preferences) as pref_count,
         profile.location.city as city
     FROM Python(df_with_json)
     SETTINGS pandas_analyze_sample = 1000  -- Analyze all rows for JSON detection
@@ -769,9 +674,11 @@ print(complex_json)
 ### Benchmarks {#benchmarks}
 
 chDB consistently outperforms other embedded engines:
-- **DataFrame operations**: 2-5x faster than Pandas for analytical queries
-- **Parquet processing**: Competitive with DuckDB, faster than Polars
+- **DataFrame operations**: 2-5x faster than traditional DataFrame libraries for analytical queries
+- **Parquet processing**: Competitive with leading columnar engines
 - **Memory efficiency**: Lower memory footprint than alternatives
+
+[More benchmark result details](https://github.com/chdb-io/chdb?tab=readme-ov-file#benchmark)
 
 ### Performance Tips {#performance-tips}
 
@@ -801,7 +708,7 @@ sess = session.Session()
 
 # Setup large dataset
 sess.query("""
-    CREATE TABLE large_sales AS 
+    CREATE TABLE large_sales ENGINE = Memory() AS 
     SELECT 
         number as sale_id,
         number % 1000 as customer_id,
