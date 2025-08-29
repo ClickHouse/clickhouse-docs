@@ -33,7 +33,7 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 
 ## August 29, 2025 {#august-29-2025}
 
-- [ClickHouse Cloud Azure Private Link](/cloud/security/azure-privatelink) has switched from using Resource GUID to Resource ID filters for resource identification. You can still use the legacy Resource GUID, which is backward-compatible, but we recommend switching to Resource ID filters. For migration details see the [docs](/cloud/security/azure-privatelink#obtaining-private-endpoint-resourceid) for Azure Private Link.
+- [ClickHouse Cloud Azure Private Link](/cloud/security/azure-privatelink) has switched from using Resource GUID to Resource ID filters for resource identification. You can still use the legacy Resource GUID, which is backward compatible, but we recommend switching to Resource ID filters. For migration details see the [docs](/cloud/security/azure-privatelink#obtaining-private-endpoint-resourceid) for Azure Private Link.
 
 ## August 22, 2025 {#august-22-2025}
 
