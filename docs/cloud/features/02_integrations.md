@@ -11,7 +11,7 @@ import Msksvg from '@site/static/images/integrations/logos/msk.svg';
 import Azureeventhubssvg from '@site/static/images/integrations/logos/azure_event_hubs.svg';
 import Warpstreamsvg from '@site/static/images/integrations/logos/warpstream.svg';
 import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
-import Amazonkinesis from '@site/static/images/integrations/logos/amazon_kinesis_logo.svg';
+import AmazonKinesis from '@site/static/images/integrations/logos/amazon_kinesis_logo.svg';
 import Gcssvg from '@site/static/images/integrations/logos/gcs.svg';
 import DOsvg from '@site/static/images/integrations/logos/digitalocean.svg';
 import ABSsvg from '@site/static/images/integrations/logos/azureblobstorage.svg';
@@ -41,9 +41,9 @@ ClickPipes can be used for long-term streaming needs or one-time data loading jo
 | WarpStream                                         | <Warpstreamsvg class="image" alt="WarpStream logo" style={{width: '3rem'}}/>                     |Streaming| Stable           | Configure ClickPipes and start ingesting streaming data from WarpStream into ClickHouse Cloud.       |
 | Amazon S3                                          | <S3svg class="image" alt="Amazon S3 logo" style={{width: '3rem', height: 'auto'}}/>              |Object Storage| Stable           | Configure ClickPipes to ingest large volumes of data from object storage.                            |
 | Google Cloud Storage                               | <Gcssvg class="image" alt="Google Cloud Storage logo" style={{width: '3rem', height: 'auto'}}/>  |Object Storage| Stable           | Configure ClickPipes to ingest large volumes of data from object storage.                            |
-| DigitalOcean Spaces                                | <DOsvg class="image" alt="Digital Ocean logo" style={{width: '3rem', height: 'auto'}}/> | Object Storage | Stable | Configure ClickPipes to ingest large volumes of data from object storage.
-| Azure Blob Storage                                 | <ABSsvg class="image" alt="Azure Blob Storage logo" style={{width: '3rem', height: 'auto'}}/> | Object Storage | Private Beta | Configure ClickPipes to ingest large volumes of data from object storage.
-| [Amazon Kinesis](/integrations/clickpipes/kinesis) | <Amazonkinesis class="image" alt="Amazon Kenesis logo" style={{width: '3rem', height: 'auto'}}/> |Streaming| Stable           | Configure ClickPipes and start ingesting streaming data from Amazon Kinesis into ClickHouse cloud.   |
+| DigitalOcean Spaces                                | <DOsvg class="image" alt="Digital Ocean logo" style={{width: '3rem', height: 'auto'}}/>          | Object Storage | Stable | Configure ClickPipes to ingest large volumes of data from object storage.
+| Azure Blob Storage                                 | <ABSsvg class="image" alt="Azure Blob Storage logo" style={{width: '3rem', height: 'auto'}}/>    | Object Storage | Private Beta | Configure ClickPipes to ingest large volumes of data from object storage.
+| [Amazon Kinesis](/integrations/clickpipes/kinesis) | <AmazonKinesis class="image" alt="Amazon Kinesis logo" style={{width: '3rem', height: 'auto'}}/> |Streaming| Stable           | Configure ClickPipes and start ingesting streaming data from Amazon Kinesis into ClickHouse cloud.   |
 | [Postgres](/integrations/clickpipes/postgres)      | <Postgressvg class="image" alt="Postgres logo" style={{width: '3rem', height: 'auto'}}/>         |DBMS| Stable      | Configure ClickPipes and start ingesting data from Postgres into ClickHouse Cloud.                   |
 | [MySQL](/integrations/clickpipes/mysql)            | <Mysqlsvg class="image" alt="MySQL logo" style={{width: '3rem', height: 'auto'}}/>               |DBMS| Private Beta | Configure ClickPipes and start ingesting data from MySQL into ClickHouse Cloud.                      |
 | [MongoDB](/integrations/clickpipes/mongodb)        | <Mongodbsvg class="image" alt="MongoDB logo" style={{width: '3rem', height: 'auto'}}/>           |DBMS| Private Preview | Configure ClickPipes and start ingesting data from MongoDB into ClickHouse Cloud.                   |

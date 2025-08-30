@@ -17,7 +17,7 @@ Regardless of whether this myth holds true or not, what does remain true is that
 Whether you’re building RAG pipelines, fine-tuning, training your own model, or evaluating model performance, data is the root of each problem.
 
 Managing data can be tricky, and as a byproduct, the space has experienced a proliferation of tools that are designed to boost productivity by solving a specific slice of a machine learning data problem.
-Oftentimes, this takes shape as a layer of abstraction around a more general-purpose solution with an opinionated interface that, on the surface, makes it easier to apply to the specific subproblem at hand.
+Oftentimes, this takes shape as a layer of abstraction around a more general-purpose solution with an opinionated interface that, on the surface, makes it easier to apply to the specific sub problem at hand.
 In effect, this reduces the flexibility that exists with a general-purpose solution in favor of ease-of-use and simplicity of a specific task.
 
 <Image img={machine_learning_data_layer} size="sm"/>
@@ -52,7 +52,7 @@ This process of evaluation and understanding is an iterative one, often resultin
 As companies store increasing amounts of data to leverage for machine learning purposes, the problem of examining the data you have becomes harder.
 
 This is because analytics and evaluation queries often become tediously or prohibitively slow at scale with traditional data systems.
-Some of the big players impose significantly increased costs to bring down query times, and disincentivize ad-hoc evaluation by way of charging per query or by number of bytes scanned.
+Some of the big players impose significantly increased costs to bring down query times, and discourage ad-hoc evaluation by way of charging per query or by number of bytes scanned.
 Engineers may resort to pulling subsets of data down to their local machines as a compromise for these limitations.
 
 ClickHouse, on the other hand, is a real-time data warehouse, so users benefit from industry-leading query speeds for analytical computations.
@@ -76,7 +76,7 @@ However, because they’re separate tools from the database they’re operating 
 
 In contrast, data transformations are easily accomplished directly in ClickHouse through [materialized views](/materialized-views).
 These are automatically triggered when new data is inserted into ClickHouse source tables and are used to easily extract, transform, and modify data as it arrives - eliminating the need to build and monitor bespoke pipelines yourself.
-When these transformations require aggregations over a complete dataset that may not fit into memory, leveraging ClickHouse ensures you don’t have to try and retrofit this step to work with dataframes on your local machine.
+When these transformations require aggregations over a complete dataset that may not fit into memory, leveraging ClickHouse ensures you don’t have to try and retrofit this step to work with data frames on your local machine.
 For those datasets that are more convenient to evaluate locally, [ClickHouse local](/operations/utilities/clickhouse-local) is a great alternative, along with [chDB](/chdb), that allow users to leverage ClickHouse with standard Python data libraries like Pandas.
 
 ### Training and evaluation {#training-and-evaluation}
@@ -98,7 +98,7 @@ Users can easily combine ClickHouse with data lakes, with built-in functions to 
 **Transformation engine** - SQL provides a natural means of declaring data transformations.
 When extended with ClickHouse’s analytical and statistical functions, these transformations become succinct and optimized.
 As well as applying to either ClickHouse tables, in cases where ClickHouse is used as a data store, table functions allow SQL queries to be written against data stored in formats such as Parquet, on-disk or object storage, or even other data stores such as Postgres and MySQL.
-A completely parallelization query execution engine, combined with a column-oriented storage format, allows ClickHouse to perform aggregations over PBs of data in seconds - unlike transformations on in memory dataframes, users are not memory-bound.
+A completely parallelization query execution engine, combined with a column-oriented storage format, allows ClickHouse to perform aggregations over PBs of data in seconds - unlike transformations on in memory data frames, users are not memory-bound.
 Furthermore, materialized views allow data to be transformed at insert time, thus overloading compute to data load time from query time.
 These views can exploit the same range of analytical and statistical functions ideal for data analysis and summarization.
 Should any of ClickHouse’s existing analytical functions be insufficient or custom libraries need to be integrated, users can also utilize User Defined Functions (UDFs).

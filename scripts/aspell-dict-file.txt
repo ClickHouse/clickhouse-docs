@@ -1091,7 +1091,7 @@ MCP's
 daemonset
 --docs/use-cases/observability/clickstack/ingesting-data/kubernetes.md--
 daemonset
---docs/cloud/onboard/01_discover/02_use_cases/04_machine_learning_and_genAI/03_agent_facing_analytics.md--
+--docs/cloud/onboard/01_discover/02_use_cases/04_machine_learning_and_genAI/02_agent_facing_analytics.md--
 AgentForce
 DeepSeek
 OpenAI's

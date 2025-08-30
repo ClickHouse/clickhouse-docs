@@ -5,6 +5,7 @@ Accepter
 AICPA
 ALTERs
 AMPLab
+AmazonKinesis
 AMQP
 ANNIndex
 ANNIndexes
@@ -326,6 +327,7 @@ DestroyAggregatesThreads
 DestroyAggregatesThreadsActive
 DictCacheRequests
 DigiCert
+DigitalOcean
 DiskAvailable
 DiskObjectStorage
 DiskObjectStorageAsyncThreads
@@ -1078,6 +1080,7 @@ Refactorings
 ReferenceKeyed
 Refreshable
 RegexpTree
+RelationMessage
 RemoteRead
 ReplacingMergeTree
 ReplacingReplicatedMergeTree
@@ -2269,8 +2272,10 @@ hiveHash
 hnsw
 holistics
 homebrew
+homebrew
 hopEnd
 hopStart
+Hopsworks
 horgh
 hostName
 hostname
@@ -3017,6 +3022,7 @@ resending
 resharding
 reshards
 resolvers
+resourceGUID
 restartable
 resultset
 resync
