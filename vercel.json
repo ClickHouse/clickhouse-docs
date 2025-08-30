@@ -3460,6 +3460,6 @@
       "source": "/docs/integrations/migration",
       "destination": "/integrations/migration/overview",
       "permanent": true
-    },
+    }
   ]
 }
