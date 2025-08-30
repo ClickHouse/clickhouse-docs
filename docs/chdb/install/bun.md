@@ -12,7 +12,7 @@ chDB-bun provides experimental FFI (Foreign Function Interface) bindings for chD
 
 ## Installation {#installation}
 
-### Step 1: Install System Dependencies {#install-system-dependencies}
+### Step 1: Install system dependencies {#install-system-dependencies}
 
 First, install the required system dependencies:
 
@@ -22,7 +22,7 @@ First, install the required system dependencies:
 curl -sL https://lib.chdb.io | bash
 ```
 
-#### Install Build Tools {#install-build-tools}
+#### Install build tools {#install-build-tools}
 
 You'll need either `gcc` or `clang` installed on your system:
 
@@ -43,7 +43,7 @@ bun run build
 
 chDB-bun supports two query modes: ephemeral queries for one-time operations and persistent sessions for maintaining database state.
 
-### Ephemeral Queries {#ephemeral-queries}
+### Ephemeral queries {#ephemeral-queries}
 
 For simple, one-off queries that don't require persistent state:
 
@@ -67,7 +67,7 @@ const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "CSV");
 console.log(systemInfo);
 ```
 
-### Persistent Sessions {#persistent-sessions}
+### Persistent sessions {#persistent-sessions}
 
 For complex operations that require maintaining state across queries:
 

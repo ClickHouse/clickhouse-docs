@@ -36,7 +36,7 @@ go get github.com/chdb-io/chdb-go
 
 ## Usage {#usage}
 
-### Command Line Interface {#cli}
+### Command line interface {#cli}
 
 chDB-go includes a CLI for quick queries:
 
@@ -51,9 +51,9 @@ chDB-go includes a CLI for quick queries:
 ./chdb-go --path /tmp/chdb
 ```
 
-### Go Library - Quick Start {#quick-start}
+### Go Library - quick start {#quick-start}
 
-#### Stateless Queries {#stateless-queries}
+#### Stateless queries {#stateless-queries}
 
 For simple, one-off queries:
 
@@ -75,7 +75,7 @@ func main() {
 }
 ```
 
-#### Stateful Queries with Session {#stateful-queries}
+#### Stateful queries with session {#stateful-queries}
 
 For complex queries with persistent state:
 
@@ -128,7 +128,7 @@ func main() {
 }
 ```
 
-#### SQL Driver Interface {#sql-driver}
+#### SQL driver interface {#sql-driver}
 
 chDB-go implements Go's `database/sql` interface:
 
@@ -167,7 +167,7 @@ func main() {
 }
 ```
 
-#### Query Streaming for Large Datasets {#query-streaming}
+#### Query streaming for large datasets {#query-streaming}
 
 For processing large datasets that don't fit in memory, use streaming queries:
 
@@ -228,20 +228,20 @@ func main() {
 }
 ```
 
-**Benefits of Query Streaming:**
+**Benefits of query streaming:**
 - **Memory efficient** - Process large datasets without loading everything into memory
 - **Real-time processing** - Start processing data as soon as first chunk arrives
 - **Cancellation support** - Can cancel long-running queries with `Cancel()`
 - **Error handling** - Check for errors during streaming with `Error()`
 
-## API Documentation {#api-documentation}
+## API documentation {#api-documentation}
 
 chDB-go provides both high-level and low-level APIs:
 
 - **[High-Level API Documentation](https://github.com/chdb-io/chdb-go/blob/main/chdb.md)** - Recommended for most use cases
 - **[Low-Level API Documentation](https://github.com/chdb-io/chdb-go/blob/main/lowApi.md)** - For advanced use cases requiring fine-grained control
 
-## System Requirements {#requirements}
+## System requirements {#requirements}
 
 - Go 1.21 or later
 - Compatible with Linux, macOS
