@@ -175,6 +175,7 @@ Designed for workloads requiring enhanced SLAs (2+ replica deployments), scalabi
   - [Private networking support](/cloud/security/private-link-overview).
   - [Compute-compute separation](../reference/warehouses#what-is-compute-compute-separation).
   - [Flexible scaling](/manage/scaling) options (scale up/down, in/out).
+  - [Configurable backups](/cloud/manage/backups/configurable-backups)
 
 ## Enterprise {#enterprise}
 
@@ -187,7 +188,7 @@ Caters to large-scale, mission critical deployments that have stringent security
   - Single Sign On (SSO)
   - Enhanced Encryption: For AWS and GCP services. Services are encrypted by our key by default and can be rotated to their key to enable Customer Managed Encryption Keys (CMEK).
 - Allows Scheduled upgrades: you can select the day of the week/time window for upgrades, both database and cloud releases.  
-- Offers [HIPAA](/cloud/security/compliance-overview#hipaa-since-2024) Compliance.
+- Offers [HIPAA](/cloud/security/compliance-overview#hipaa-since-2024) and PCI compliance.
 - Exports Backups to the user's account.
 
 :::note 
