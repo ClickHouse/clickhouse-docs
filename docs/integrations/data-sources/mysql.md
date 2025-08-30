@@ -148,4 +148,3 @@ You should see the new row:
 ### Summary {#summary}
 
 The `MySQL` table engine allows you to connect ClickHouse to MySQL to exchange data back and forth. For more details, be sure to check out the documentation page for the [MySQL table engine](/sql-reference/table-functions/mysql.md).
-
