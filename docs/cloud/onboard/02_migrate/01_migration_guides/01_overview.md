@@ -30,4 +30,4 @@ There are several options for migrating data into ClickHouse Cloud, depending on
 - [Anywhere!](/cloud/migration/etl-tool-to-clickhouse): use one of the many popular ETL/ELT tools that connect to all kinds of different data sources
 - [Object Storage](/integrations/migration/object-storage-to-clickhouse): easily insert data from S3 into ClickHouse
 
-In the example [Migrate from Redshift](/integrations/data-ingestion/redshift/index.md), we present three different ways to migrate data to ClickHouse.
+In the example [Migrate from Redshift](/migrations/redshift/migration-guide), we present three different ways to migrate data to ClickHouse.

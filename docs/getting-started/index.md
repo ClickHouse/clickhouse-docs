@@ -37,9 +37,12 @@ by https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/autogenerate-
 | [Anonymized Web Analytics](/getting-started/example-datasets/metrica) | Dataset consisting of two tables containing anonymized web analytics data with hits and visits |
 | [Brown University Benchmark](/getting-started/example-datasets/brown-benchmark) | A new analytical benchmark for machine-generated log data |
 | [COVID-19 Open-Data](/getting-started/example-datasets/covid19) | COVID-19 Open-Data is a large, open-source database of COVID-19 epidemiological data and related factors like demographics, economics, and government responses |
+| [dbpedia dataset](/getting-started/example-datasets/dbpedia-dataset) | Dataset containing 1 million articles from Wikipedia and their vector embeddings |
 | [Environmental Sensors Data](/getting-started/example-datasets/environmental-sensors) | Over 20 billion records of data from Sensor.Community, a contributors-driven global sensor network that creates Open Environmental Data. |
 | [Foursquare places](/getting-started/example-datasets/foursquare-places) | Dataset with over 100 million records containing information about places on a map, such as shops, restaurants, parks, playgrounds, and monuments. |
 | [GitHub Events Dataset](/getting-started/example-datasets/github-events) | Dataset containing all events on GitHub from 2011 to Dec 6 2020, with a size of 3.1 billion records. |
+| [Hacker News dataset](/getting-started/example-datasets/hacker-news) | Dataset containing 28 million rows of hacker news data. |
+| [LAION 5B dataset](/getting-started/example-datasets/laion-5b-dataset) | Dataset containing 100 million vectors from the LAION 5B dataset |
 | [Laion-400M dataset](/getting-started/example-datasets/laion-400m-dataset) | Dataset containing 400 million images with English image captions |
 | [New York Public Library "What's on the Menu?" Dataset](/getting-started/example-datasets/menus) | Dataset containing 1.3 million records of historical data on the menus of hotels, restaurants and cafes with the dishes along with their prices. |
 | [NYPD Complaint Data](/getting-started/example-datasets/nypd_complaint_data) | Ingest and query Tab Separated Value data in 5 steps |
