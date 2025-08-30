@@ -561,10 +561,12 @@ JSONCompactColumns
 JSONCompactEachRow
 JSONCompactEachRowWithNames
 JSONCompactEachRowWithNamesAndTypes
+JSONCompactEachRowWithProgress
 JSONCompactStrings
 JSONCompactStringsEachRow
 JSONCompactStringsEachRowWithNames
 JSONCompactStringsEachRowWithNamesAndTypes
+JSONCompactStringsEachRowWithProgress
 JSONCompactWithProgress
 JSONDynamicPaths
 JSONDynamicPathsWithTypes
@@ -1775,6 +1777,7 @@ clickvisual
 clockhour
 clusterAllReplicas
 cmake
+codapi
 codebase
 codec
 codecs
@@ -2531,6 +2534,7 @@ mdadm
 meanZTest
 meanztest
 mebibytes
+memoryview
 memtable
 memtables
 mergeTreeIndex
