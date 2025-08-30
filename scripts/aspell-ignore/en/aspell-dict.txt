@@ -1,9 +1,11 @@
 personal_ws-1.1 en 3638
 AArch
 ACLs
+Accepter
 AICPA
 ALTERs
 AMPLab
+AmazonKinesis
 AMQP
 ANNIndex
 ANNIndexes
@@ -58,6 +60,7 @@ Authenticators
 Authy
 AutoFDO
 AutoML
+Autoscaler
 Autocompletion
 AvroConfluent
 AzureQueue
@@ -324,6 +327,7 @@ DestroyAggregatesThreads
 DestroyAggregatesThreadsActive
 DictCacheRequests
 DigiCert
+DigitalOcean
 DiskAvailable
 DiskObjectStorage
 DiskObjectStorageAsyncThreads
@@ -1076,6 +1080,7 @@ Refactorings
 ReferenceKeyed
 Refreshable
 RegexpTree
+RelationMessage
 RemoteRead
 ReplacingMergeTree
 ReplacingReplicatedMergeTree
@@ -1374,6 +1379,7 @@ VARCHAR
 VIEWs
 VLDB
 VNet
+VNets
 VPCs
 VPNs
 Vadim
@@ -2266,8 +2272,10 @@ hiveHash
 hnsw
 holistics
 homebrew
+homebrew
 hopEnd
 hopStart
+Hopsworks
 horgh
 hostName
 hostname
@@ -2409,6 +2417,7 @@ kusto
 lagInFrame
 laion
 lakehouse
+Lakehouses
 lang
 laravel
 largestTriangleThreeBuckets
@@ -3013,6 +3022,7 @@ resending
 resharding
 reshards
 resolvers
+resourceGUID
 restartable
 resultset
 resync
@@ -3645,3 +3655,22 @@ znode
 znodes
 zookeeperSessionUptime
 zstd
+Coinhall
+Instacart
+SingleStore
+Fastly
+Fong
+MTTD
+MTTR
+O'Reilly
+transformative
+MLOps
+chatbots
+SageMaker
+GWLBs
+NLBs
+explorative
+pointwise
+summarization
+reusability
+lakehouses

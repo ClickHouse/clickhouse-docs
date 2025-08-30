@@ -1,0 +1,6 @@
+{
+  "label": "Change logs",
+  "collapsible": true,
+  "collapsed": true,
+  "link": { "type": "doc", "id": "cloud/reference/changelog/index" }
+}
