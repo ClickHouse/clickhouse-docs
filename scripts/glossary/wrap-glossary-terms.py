@@ -24,6 +24,10 @@ def should_skip_file(file_path):
         '_partials', 'partials', '_includes', 'includes'
     ]
     
+    # Skip the glossary file itself
+    if 'docs/concepts/glossary.md' in file_path:
+        return True
+    
     return any(pattern in file_path for pattern in skip_patterns)
 
 def extract_text_content(content, force_process=False):
@@ -84,6 +88,10 @@ def extract_protected_ranges(content):
     for match in re.finditer(r'<[A-Z][^>]*/?>', content):
         protected_ranges.append((match.start(), match.end()))
     
+    # Find markdown headers (# ## ### etc.)
+    for match in re.finditer(r'^#{1,6}\s+.*$', content, re.MULTILINE):
+        protected_ranges.append((match.start(), match.end()))
+    
     # Sort and merge overlapping ranges
     protected_ranges.sort()
     merged = []
@@ -142,7 +150,7 @@ def wrap_terms_in_content(original_content, terms):
     return content, changes
 
 def process_file(file_path, terms, dry_run=False, force_process=False):
-    """Process a single MDX file"""
+    """Process a single MD/MDX file"""
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
             original_content = f.read()
@@ -168,7 +176,7 @@ def process_file(file_path, terms, dry_run=False, force_process=False):
         return 'error', 0
 
 def main():
-    parser = argparse.ArgumentParser(description='Wrap glossary terms in MDX files')
+    parser = argparse.ArgumentParser(description='Wrap glossary terms in MD and MDX files')
     parser.add_argument('--docs-dir', default='./docs', help='Documentation directory')
     parser.add_argument('--glossary', default='./src/components/GlossaryTooltip/glossary.json', help='Glossary JSON file')
     parser.add_argument('--dry-run', action='store_true', help='Show changes without writing files')
@@ -187,15 +195,16 @@ def main():
     
     terms = load_glossary(args.glossary)
     
-    # Find MDX files
-    pattern = os.path.join(args.docs_dir, '**/*.mdx')
-    all_files = glob.glob(pattern, recursive=True)
+    # Find MDX and MD files
+    mdx_pattern = os.path.join(args.docs_dir, '**/*.mdx')
+    md_pattern = os.path.join(args.docs_dir, '**/*.md')
+    all_files = glob.glob(mdx_pattern, recursive=True) + glob.glob(md_pattern, recursive=True)
     
     # Filter out skip patterns
     files = [f for f in all_files if not should_skip_file(f)]
     
     if not args.check:
-        print(f"📁 Found {len(all_files)} MDX files, processing {len(files)} files")
+        print(f"📁 Found {len(all_files)} MD/MDX files, processing {len(files)} files")
         print(f"⏭️  Skipped {len(all_files) - len(files)} files based on skip patterns")
         
         if args.force:

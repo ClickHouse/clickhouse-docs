@@ -3422,13 +3422,28 @@
       "permanent": true
     },
     {
-      "source": "/operations/system-tables/latency_log",
-      "destination": "/operations/system-tables/histogram_metrics",
+      "source": "/docs/operations/system-tables/latency_log",
+      "destination": "/docs/operations/system-tables/histogram_metrics",
       "permanent": true
     },
     {
-      "source": "/operations/system-tables/latency_buckets",
-      "destination": "/operations/system-tables/histogram_metrics",
+      "source": "/docs/operations/system-tables/latency_buckets",
+      "destination": "/docs/operations/system-tables/histogram_metrics",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/kafka/cloud/confluent/custom-connector-cloud",
+      "destination": "/docs/integrations/kafka/cloud/confluent/sink-connector",
+      "permanent": true
+    },
+    {
+      "source": "/integrations/data-ingestion/clickpipes/mysql/parallel_initial_load",
+      "destination": "/docs/integrations/clickpipes/mysql/parallel_initial_load",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/data-ingestion/clickpipes/postgres/parallel_initial_load",
+      "destination": "/docs/integrations/clickpipes/postgres/parallel_initial_load",
       "permanent": true
     }
   ]

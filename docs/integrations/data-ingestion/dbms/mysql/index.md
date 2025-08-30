@@ -16,7 +16,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 This page covers using the `MySQL` table engine, for reading from a MySQL table.
 
 :::note
-For ClickHouse Cloud, you can also use the [MySQL ClickPipe](/integrations/clickpipes/mysql) (currently in Private Preview) to easily move data from your MySQL tables to ClickHouse.
+For ClickHouse Cloud, you can also use the [MySQL ClickPipe](/integrations/clickpipes/mysql) (currently in public beta) to easily move data from your MySQL tables to ClickHouse.
 :::
 
 ## Connecting ClickHouse to MySQL using the MySQL Table Engine {#connecting-clickhouse-to-mysql-using-the-mysql-table-engine}

@@ -15,7 +15,7 @@ jobs:
       - name: Generate Token
         id: generate-token
         continue-on-error: true
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@v2
         with:
           app-id: "${{ secrets.WORKFLOW_AUTH_PUBLIC_APP_ID }}"
           private-key: "${{ secrets.WORKFLOW_AUTH_PUBLIC_PRIVATE_KEY }}"

@@ -332,6 +332,7 @@ privatelink
 VNets
 guid
 vnet
+resourceGUID
 --docs/integrations/data-ingestion/clickpipes/postgres/toast.md--
 TOASTed
 TOASTing
@@ -359,9 +360,6 @@ eastus
 europe
 germanywestcentral
 westus
---docs/cloud/reference/09_jan2025_faq/dimensions.md--
-intra
-clickpipesPricingFaq
 --docs/cloud/manage/backups.md--
 slideout
 --docs/integrations/data-ingestion/clickpipes/postgres/table_resync.md--
@@ -1101,3 +1099,7 @@ PDFs
 ReAct
 ServiceNow
 explorative
+--docs/integrations/data-ingestion/clickpipes/postgres/faq.md--
+ReceiveMessage
+--docs/integrations/data-ingestion/clickpipes/postgres/postgres_generated_columns.md--
+RelationMessage

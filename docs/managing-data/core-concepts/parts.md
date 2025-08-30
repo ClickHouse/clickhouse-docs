@@ -9,7 +9,7 @@ import merges from '@site/static/images/managing-data/core-concepts/merges.png';
 import part from '@site/static/images/managing-data/core-concepts/part.png';
 import Image from '@theme/IdealImage';
 
-## What are table ^^parts^^ in ClickHouse? {#what-are-table-parts-in-clickhouse}
+## What are table parts in ClickHouse? {#what-are-table-parts-in-clickhouse}
 
 <br />
 
@@ -61,7 +61,7 @@ To manage the number of ^^parts^^ per table, a [background merge](/merges) job p
 
 To minimize the number of initial ^^parts^^ and the overhead of merges, database clients are [encouraged](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance) to either insert tuples in bulk, e.g. 20,000 rows at once, or to use the [asynchronous insert mode](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse), in which ClickHouse buffers rows from multiple incoming INSERTs into the same table and creates a new part only after the buffer size exceeds a configurable threshold, or a timeout expires.
 
-## Monitoring table ^^parts^^ {#monitoring-table-parts}
+## Monitoring table parts {#monitoring-table-parts}
 
 You can [query](https://sql.clickhouse.com/?query=U0VMRUNUIF9wYXJ0CkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGUKR1JPVVAgQlkgX3BhcnQKT1JERVIgQlkgX3BhcnQgQVNDOw&run_query=true&tab=results) the list of all currently existing active ^^parts^^ of our example table by using the [virtual column](/engines/table-engines#table_engines-virtual_columns) `_part`:
 

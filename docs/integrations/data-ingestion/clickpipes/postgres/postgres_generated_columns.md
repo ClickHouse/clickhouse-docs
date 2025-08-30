@@ -12,6 +12,8 @@ When using PostgreSQL's generated columns in tables that are being replicated, t
 
 2. **Issues with Primary Keys:** If a generated column is part of your primary key, it can cause deduplication problems on the destination. Since the generated column values are not replicated, the destination system won't have the necessary information to properly identify and deduplicate rows.
 
+3. **Issues with schema changes**: If you add a generated column to a table that is already being replicated, the new column will not be populated in the destination - as Postgres does not give us the RelationMessage for the new column. If you then add a new non-generated column to the same table, the ClickPipe, when trying to reconcile the schema, will not be able to find the generated column in the destination, leading to a failure in the replication process.
+
 ## Best practices {#best-practices}
 
 To work around these limitations, consider the following best practices:

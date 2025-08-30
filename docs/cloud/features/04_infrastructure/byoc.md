@@ -19,6 +19,7 @@ import byoc_security from '@site/static/images/cloud/reference/byoc-securitygrou
 import byoc_inbound from '@site/static/images/cloud/reference/byoc-inbound-rule.png';
 import byoc_subnet_1 from '@site/static/images/cloud/reference/byoc-subnet-1.png';
 import byoc_subnet_2 from '@site/static/images/cloud/reference/byoc-subnet-2.png';
+import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoint.png'
 
 ## Overview {#overview}
 
@@ -104,6 +105,15 @@ By default, ClickHouse Cloud will provision a dedicated VPC for better isolation
 <br />
 
 <Image img={byoc_subnet_2} size="lg" alt="BYOC VPC Subnet Tags" background='black'/>
+
+<br />
+
+4. Configure S3 Gateway Endpoint
+If your VPC doesn't already have an S3 Gateway Endpoint configured, you'll need to create one to enable secure, private communication between your VPC and Amazon S3. This endpoint allows your ClickHouse services to access S3 without going through the public internet. Please refer to the screenshot below for an example configuration.
+
+<br />
+
+<Image img={byoc_s3_endpoint} size="lg" alt="BYOC S3 Endpint" background='black'/>
 
 <br />
 

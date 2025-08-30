@@ -10,10 +10,3 @@
 integrations/language-clients/java/client-v1
 integrations/language-clients/java/jdbc-v1
 integrations/data-ingestion/clickpipes/postgres/maintenance.md
-interfaces/arrowflight.md
-integrations/data-ingestion/clickpipes/postgres/resync.md
-integrations/data-ingestion/clickpipes/postgres/scaling.md
-integrations/data-ingestion/dbms/dynamodb/index.md
-integrations/data-ingestion/dbms/mysql/index.md
-integrations/data-ingestion/redshift/index.md
-integrations/migration/index.md

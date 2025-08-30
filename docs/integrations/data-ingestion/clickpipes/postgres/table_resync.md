@@ -18,7 +18,7 @@ This can be followed by following the [table removal guide](./removing_tables).
 ### 2. Truncate or drop the table on ClickHouse {#truncate-drop-table}
 
 This step is to avoid data duplication when we add this table again in the next step. You can do this by heading over to the **SQL Console** tab in ClickHouse Cloud and running a query.
-Note that since PeerDB creates ReplacingMergeTree tables by default, if your table is small enough where temporary duplicates is harmless, this step can be skipped.
+Note that we have validation to block table addition if the table already exists in ClickHouse and is not empty.
 
 ### 3. Add the table to the ClickPipe again {#add-table-again}
 

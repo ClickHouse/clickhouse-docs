@@ -28,7 +28,7 @@ Databases store data either [row-oriented or column-oriented](https://clickhouse
 
 In a row-oriented database, consecutive table rows are sequentially stored one after the other. This layout allows to retrieve rows quickly as the column values of each row are stored together.
 
-ClickHouse is a column-oriented databases. In such systems, tables are stored as a collection of columns, i.e. the values of each column are stored sequentially one after the other. This layout makes it harder to restore single rows (as there are now gaps between the row values) but column operations such as filters or aggregation becomes much faster than in a row-oriented database.
+ClickHouse is a column-oriented database. In such systems, tables are stored as a collection of columns, i.e. the values of each column are stored sequentially one after the other. This layout makes it harder to restore single rows (as there are now gaps between the row values) but column operations such as filters or aggregation become much faster than in a row-oriented database.
 
 The difference is best explained with an example query running over 100 million rows of [real-world anonymized web analytics data](/getting-started/example-datasets/metrica):
 
@@ -83,7 +83,7 @@ ClickHouse provides ways to trade accuracy for performance. For example, some of
 
 ## Adaptive join algorithms {#adaptive-join-algorithms}
 
-ClickHouse chooses the join algorithm adaptively, it starts with fast hash joins and falls back to merge joins if there's more than one large table.
+ClickHouse chooses the join algorithm adaptively: it starts with fast hash joins and falls back to merge joins if there's more than one large table.
 
 ## Superior query performance {#superior-query-performance}
 

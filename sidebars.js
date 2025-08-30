@@ -88,6 +88,14 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Troubleshooting",
+      collapsed: false,
+      collapsible: false,
+      link: { type: "doc", id: "troubleshooting/index" },
+      items: []
+    },
+    {
+      type: "category",
       label: "Best Practices",
       collapsed: false,
       collapsible: false,
@@ -168,7 +176,9 @@ const sidebars = {
           items: [
             "use-cases/data_lake/glue_catalog",
             "use-cases/data_lake/unity_catalog",
-            "use-cases/data_lake/rest_catalog"
+            "use-cases/data_lake/rest_catalog",
+            "use-cases/data_lake/lakekeeper_catalog",
+            "use-cases/data_lake/nessie_catalog"
           ]
         },
         {
@@ -481,7 +491,8 @@ const sidebars = {
           collapsed: true,
           collapsible: true,
           items: [
-            "interfaces/third-party/client-libraries"
+            "integrations/language-clients/moose-olap",
+            "interfaces/third-party/client-libraries",
           ],
         },
       ],
@@ -521,10 +532,12 @@ const sidebars = {
             "integrations/data-ingestion/clickpipes/postgres/deduplication",
             "integrations/data-ingestion/clickpipes/postgres/ordering_keys",
             "integrations/data-ingestion/clickpipes/postgres/toast",
-            "integrations/data-ingestion/clickpipes/postgres/schema-changes",
-            "integrations/data-ingestion/clickpipes/postgres/faq",
             "integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql",
             "integrations/data-ingestion/dbms/postgresql/inserting-data",
+            "integrations/data-ingestion/clickpipes/postgres/schema-changes",
+            "integrations/data-ingestion/clickpipes/postgres/faq",
+            "integrations/data-ingestion/clickpipes/postgres/parallel_initial_load",
+            "integrations/data-ingestion/clickpipes/postgres/lifecycle",
             {
               type: "category",
               label: "Operations",
@@ -533,6 +546,9 @@ const sidebars = {
                 "integrations/data-ingestion/clickpipes/postgres/pause_and_resume",
                 "integrations/data-ingestion/clickpipes/postgres/remove_table",
                 "integrations/data-ingestion/clickpipes/postgres/table_resync",
+                "integrations/data-ingestion/clickpipes/postgres/resync",
+                "integrations/data-ingestion/clickpipes/postgres/controlling_sync",
+                "integrations/data-ingestion/clickpipes/postgres/scaling",
               ],
             },
             {
@@ -548,6 +564,7 @@ const sidebars = {
                 "integrations/data-ingestion/clickpipes/postgres/source/crunchy-postgres",
                 "integrations/data-ingestion/clickpipes/postgres/source/generic",
                 "integrations/data-ingestion/clickpipes/postgres/source/timescale",
+                "integrations/data-ingestion/clickpipes/postgres/source/planetscale",
               ],
             },
           ],
@@ -562,7 +579,8 @@ const sidebars = {
             "integrations/data-ingestion/clickpipes/mysql/faq",
             "integrations/data-ingestion/clickpipes/mysql/datatypes",
             "integrations/data-ingestion/clickpipes/mysql/parallel_initial_load",
-	          "integrations/data-ingestion/clickpipes/mysql/schema-changes",
+            "integrations/data-ingestion/clickpipes/mysql/schema-changes",
+            "integrations/data-ingestion/clickpipes/mysql/lifecycle",
             {
               type: "category",
               label: "Operations",
@@ -571,7 +589,7 @@ const sidebars = {
                 "integrations/data-ingestion/clickpipes/mysql/pause_and_resume",
                 "integrations/data-ingestion/clickpipes/mysql/remove_table",
                 "integrations/data-ingestion/clickpipes/mysql/resync",
-                "integrations/data-ingestion/clickpipes/mysql/controlling_sync"
+                "integrations/data-ingestion/clickpipes/mysql/controlling_sync",
               ],
             },
             {
@@ -586,7 +604,6 @@ const sidebars = {
                 "integrations/data-ingestion/clickpipes/mysql/source/generic_maria",
               ],
             },
-            "integrations/data-ingestion/clickpipes/mysql/datatypes"
           ],
         },
         {
@@ -597,6 +614,8 @@ const sidebars = {
           items: [
             "integrations/data-ingestion/clickpipes/mongodb/index",
             "integrations/data-ingestion/clickpipes/mongodb/datatypes",
+            "integrations/data-ingestion/clickpipes/mongodb/quickstart",
+            "integrations/data-ingestion/clickpipes/mongodb/lifecycle",
             {
               type: "category",
               label: "Operations",
@@ -643,6 +662,7 @@ const sidebars = {
             "interfaces/prometheus",
             "interfaces/ssh",
             "interfaces/grpc",
+            "interfaces/arrowflight"
           ],
         },
         "integrations/sql-clients/sql-console",
@@ -1583,6 +1603,12 @@ const sidebars = {
           label: "Use Case Guides",
           description: "Common use case guides for ClickHouse",
           href: "/use-cases"
+        },
+        {
+          type: "link",
+          label: "Tips and Community Wisdom",
+          description: "Community Lessons",
+          href: "/tips-and-tricks/community-wisdom"
         },
         {
           type: "link",

@@ -169,11 +169,11 @@ SELECT count() FROM uk.uk_price_paid_simple;
 
 ##  Key takeaways {#key-takeaways}
 
-* **Sparse primary indexes** help ClickHouse skip unnecessary data by identifying which granules might contain rows matching query conditions on ^^primary key^^ columns. 
+* **Sparse primary indexes** help ClickHouse skip unnecessary data by identifying which granules might contain rows matching query conditions on ^^primary key^^ columns.
 
-* Each index stores only the ^^primary key^^ values from the **first row of every ^^granule^^** (a ^^granule^^ has 8,192 rows by default), making it compact enough to fit in memory. 
+* Each index stores only the ^^primary key^^ values from the **first row of every ^^granule^^** (a ^^granule^^ has 8,192 rows by default), making it compact enough to fit in memory.
 
-* **Each data part** in a ^^MergeTree^^ table has its **own primary index**, which is used independently during query execution. 
+* **Each data part** in a ^^MergeTree^^ table has its **own primary index**, which is used independently during query execution.
 
 * During queries, the index allows ClickHouse to **skip granules**, reducing I/O and memory usage while accelerating performance. 
 
