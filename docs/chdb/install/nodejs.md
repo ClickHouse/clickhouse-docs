@@ -20,7 +20,7 @@ npm install chdb
 
 chDB-node supports two query modes: standalone queries for simple operations and session-based queries for maintaining database state.
 
-### Standalone Queries {#standalone-queries}
+### Standalone queries {#standalone-queries}
 
 For simple, one-off queries that don't require persistent state:
 
@@ -44,7 +44,7 @@ const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "Pretty");
 console.log("System functions:", systemInfo);
 ```
 
-### Session-Based Queries {#session-based-queries}
+### Session-Based queries {#session-based-queries}
 
 ```javascript
 const { Session } = require("chdb");
@@ -95,7 +95,7 @@ try {
 }
 ```
 
-### Processing External Data {#processing-external-data}
+### Processing external data {#processing-external-data}
 
 ```javascript
 const { Session } = require("chdb");
@@ -140,7 +140,7 @@ try {
 }
 ```
 
-## Error Handling {#error-handling}
+## Error handling {#error-handling}
 
 Always handle errors appropriately when working with chDB:
 
@@ -185,7 +185,7 @@ function safeSessionQuery() {
 safeSessionQuery();
 ```
 
-## GitHub Repository {#github-repository}
+## GitHub repository {#github-repository}
 
 - **GitHub Repository**: [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node)
 - **Issues and Support**: Report issues on the [GitHub repository](https://github.com/chdb-io/chdb-node/issues)

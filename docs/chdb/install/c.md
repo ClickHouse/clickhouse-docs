@@ -20,7 +20,7 @@ Install the chDB library on your system:
 curl -sL https://lib.chdb.io | bash
 ```
 
-### Step 2: Include Headers {#include-headers}
+### Step 2: Include headers {#include-headers}
 
 Include the chDB header in your project:
 
@@ -28,7 +28,7 @@ Include the chDB header in your project:
 #include <chdb.h>
 ```
 
-### Step 3: Link Library {#link-library}
+### Step 3: Link library {#link-library}
 
 Compile and link your application with chDB:
 
@@ -42,7 +42,7 @@ g++ -o myapp myapp.cpp -lchdb
 
 ## C Examples {#c-examples} 
 
-### Basic Connection and Queries {#basic-connection-queries}
+### Basic connection and queries {#basic-connection-queries}
 
 ```c
 #include <stdio.h>
@@ -91,7 +91,7 @@ int main() {
 }
 ```
 
-### Streaming Queries {#streaming-queries}
+### Streaming queries {#streaming-queries}
 
 ```c
 #include <stdio.h>
@@ -155,7 +155,7 @@ int main() {
 }
 ```
 
-### Working with Different Data Formats {#data-formats}
+### Working with different data formats {#data-formats}
 
 ```c
 #include <stdio.h>
@@ -193,7 +193,7 @@ int main() {
 }
 ```
 
-## C++ Example {#cpp-example}
+## C++ example {#cpp-example}
 
 ```cpp
 #include <iostream>
@@ -276,7 +276,7 @@ int main() {
 }
 ```
 
-## Error Handling Best Practices {#error-handling}
+## Error handling best practices {#error-handling}
 
 ```c
 #include <stdio.h>
@@ -323,7 +323,7 @@ cleanup:
 }
 ```
 
-## GitHub Repository {#github-repository}
+## GitHub repository {#github-repository}
 
 - **Main Repository**: [chdb-io/chdb](https://github.com/chdb-io/chdb)
 - **Issues and Support**: Report issues on the [GitHub repository](https://github.com/chdb-io/chdb/issues)

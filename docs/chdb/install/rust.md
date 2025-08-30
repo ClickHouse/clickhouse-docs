@@ -24,7 +24,7 @@ curl -sL https://lib.chdb.io | bash
 
 chDB Rust provides both stateless and stateful query execution modes.
 
-### Stateless Usage {#stateless-usage}
+### Stateless usage {#stateless-usage}
 
 For simple queries without persistent state:
 
@@ -50,7 +50,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
-### Stateful Usage (Sessions) {#stateful-usage-sessions}
+### Stateful usage (Sessions) {#stateful-usage-sessions}
 
 For queries requiring persistent state like databases and tables:
 
@@ -108,28 +108,28 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
-## Building and Testing {#building-testing}
+## Building and testing {#building-testing}
 
-### Build the Project {#build-the-project}
+### Build the project {#build-the-project}
 
 ```bash
 cargo build
 ```
 
-### Run Tests {#run-tests}
+### Run tests {#run-tests}
 
 ```bash
 cargo test
 ```
 
-### Development Dependencies {#development-dependencies}
+### Development dependencies {#development-dependencies}
 
 The project includes these development dependencies:
 - `bindgen` (v0.70.1) - Generate FFI bindings from C headers
 - `tempdir` (v0.3.7) - Temporary directory handling in tests
 - `thiserror` (v1) - Error handling utilities
 
-## Error Handling {#error-handling}
+## Error handling {#error-handling}
 
 chDB Rust provides comprehensive error handling through the `Error` enum:
 
@@ -155,6 +155,6 @@ match execute("SELECT 1", None) {
 }
 ```
 
-## GitHub Repository {#github-repository}
+## GitHub repository {#github-repository}
 
 You can find the GitHub repository for the project at [chdb-io/chdb-rust](https://github.com/chdb-io/chdb-rust).
