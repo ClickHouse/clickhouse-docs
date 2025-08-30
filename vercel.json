@@ -3445,6 +3445,21 @@
       "source": "/docs/integrations/data-ingestion/clickpipes/postgres/parallel_initial_load",
       "destination": "/docs/integrations/clickpipes/postgres/parallel_initial_load",
       "permanent": true
-    }
+    },
+    {
+      "source": "/docs/integrations/connecting-to-mysql",
+      "destination": "/docs/integrations/mysql",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/redshift",
+      "destination": "/docs/migrations/redshift/migration-guide",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/migration",
+      "destination": "/integrations/migration/overview",
+      "permanent": true
+    },
   ]
 }
