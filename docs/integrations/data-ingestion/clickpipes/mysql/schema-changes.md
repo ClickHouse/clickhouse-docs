@@ -2,6 +2,7 @@
 title: 'Schema Changes Propagation Support'
 slug: /integrations/clickpipes/mysql/schema-changes
 description: 'Page describing schema change types detectable by ClickPipes in the source tables'
+doc_type: 'reference'
 ---
 
 ClickPipes for MySQL can detect schema changes in the source tables and, in some cases, automatically propagate the changes to the destination tables. The way each DDL operation is handled is documented below:

@@ -1,5 +1,6 @@
 ---
 sidebar_label: Tabs Sample
+doc_type: 'how-to'
 ---
 
 import Tabs from '@theme/Tabs';

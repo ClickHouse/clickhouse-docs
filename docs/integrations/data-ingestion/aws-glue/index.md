@@ -5,6 +5,7 @@ slug: /integrations/glue
 description: 'Integrate ClickHouse and Amazon Glue'
 keywords: ['clickhouse', 'amazon', 'aws', 'glue', 'migrating', 'data', 'spark']
 title: 'Integrating Amazon Glue with ClickHouse and Spark'
+doc_type: 'how-to'
 ---
 
 import Image from '@theme/IdealImage';

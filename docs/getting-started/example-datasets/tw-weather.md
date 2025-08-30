@@ -4,6 +4,7 @@ sidebar_label: 'Taiwan Historical Weather Datasets'
 sidebar_position: 1
 slug: /getting-started/example-datasets/tw-weather
 title: 'Taiwan Historical Weather Datasets'
+doc_type: 'reference'
 ---
 
 This dataset contains historical meteorological observations measurements for the last 128 years. Each row is a measurement for a point in date time and weather station.

@@ -5,6 +5,7 @@ sidebar_position: 50
 description: 'Understand what makes ClickHouse stand apart from other database management systems'
 title: 'Distinctive Features of ClickHouse'
 keywords: ['compression', 'secondary-indexes','column-oriented']
+doc_type: 'reference'
 ---
 
 # Distinctive features of ClickHouse

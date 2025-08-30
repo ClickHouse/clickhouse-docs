@@ -5,6 +5,7 @@ sidebar_position: 1
 pagination_prev: null
 pagination_next: null
 description: 'Getting started with ClickStack and monitoring Kubernetes'
+doc_type: 'how-to'
 ---
 
 import Image from '@theme/IdealImage';

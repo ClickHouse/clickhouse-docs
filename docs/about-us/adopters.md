@@ -4,6 +4,7 @@ sidebar_label: 'Adopters'
 title: 'ClickHouse Adopters'
 sidebar_position: 60
 description: 'A list of companies using ClickHouse and their success stories'
+doc_type: 'reference'
 ---
 
 The following list of companies using ClickHouse and their success stories is assembled from public sources, thus might differ from current reality. We'd appreciate it if you share the story of adopting ClickHouse in your company and [add it to the list](https://github.com/ClickHouse/clickhouse-docs/blob/main/docs/about-us/adopters.md), but please make sure you won't have any NDA issues by doing so. Providing updates with publications from other companies is also useful.

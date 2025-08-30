@@ -4,6 +4,7 @@ pagination_prev: null
 pagination_next: null
 title: 'PostgreSQL'
 description: 'Landing page for the PostgreSQL migrations section'
+doc_type: 'reference'
 ---
 
 | Page                                                                                                                 | Description                                                                                                                                                             |

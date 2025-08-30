@@ -4,6 +4,7 @@ keywords: ['Cloud', 'Security']
 title: 'Overview'
 hide_title: true
 description: 'Landing page for ClickHouse Cloud Security'
+doc_type: 'reference'
 ---
 
 # ClickHouse Cloud security

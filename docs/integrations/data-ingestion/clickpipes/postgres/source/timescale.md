@@ -4,6 +4,7 @@ description: 'Set up Postgres with the TimescaleDB extension as a source for Cli
 slug: /integrations/clickpipes/postgres/source/timescale
 title: 'Postgres with TimescaleDB source setup guide'
 keywords: ['TimescaleDB']
+doc_type: 'how-to'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';

@@ -4,6 +4,7 @@ description: 'Details supported formats, sources, delivery semantics, authentica
 slug: /integrations/clickpipes/kafka/reference
 sidebar_position: 1
 title: 'Reference'
+doc_type: 'reference'
 ---
 
 import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';

@@ -3,6 +3,7 @@ sidebar_label: 'Lifecycle of a Postgres ClickPipe'
 description: 'Various pipe statuses and their meanings'
 slug: /integrations/clickpipes/postgres/lifecycle
 title: 'Lifecycle of a Postgres ClickPipe'
+doc_type: 'reference'
 ---
 
 # Lifecycle of a Postgres ClickPipe {#lifecycle}

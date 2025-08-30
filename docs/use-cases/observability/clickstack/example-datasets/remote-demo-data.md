@@ -5,6 +5,7 @@ sidebar_position: 2
 pagination_prev: null
 pagination_next: null
 description: 'Getting started with ClickStack and a remote demo dataset'
+doc_type: 'tutorial'
 ---
 
 import Image from '@theme/IdealImage';

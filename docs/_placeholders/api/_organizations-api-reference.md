@@ -1,6 +1,7 @@
 ---
 sidebar_label: Organizations
 title: Organizations
+doc_type: 'reference'
 ---
 
 ## Get organization details {#get-organization-details}

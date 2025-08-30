@@ -6,6 +6,7 @@ sidebar_position: 10
 keywords: ['Keeper', 'ZooKeeper', 'clickhouse-keeper']
 description: 'ClickHouse Keeper, or clickhouse-keeper, replaces ZooKeeper and provides replication and coordination.'
 title: 'ClickHouse Keeper'
+doc_type: 'reference'
 ---
 
 # ClickHouse Keeper (clickhouse-keeper)

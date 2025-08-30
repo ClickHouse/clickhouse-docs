@@ -2,6 +2,7 @@
 title: 'Cloud API'
 slug: /cloud/manage/cloud-api
 description: 'Landing page for the Cloud API section'
+doc_type: 'reference'
 ---
 
 This section contains reference documentation for Cloud API and contains the following pages:

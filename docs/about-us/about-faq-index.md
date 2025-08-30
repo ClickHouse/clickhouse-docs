@@ -2,6 +2,7 @@
 title: 'FAQ'
 slug: /about-us/faq
 description: 'Landing page'
+doc_type: 'reference'
 ---
 
 | FAQ                                                                                                                           |

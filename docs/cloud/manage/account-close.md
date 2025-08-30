@@ -3,6 +3,7 @@ sidebar_label: 'Delete Account'
 slug: /cloud/manage/close_account
 title: 'Account Close & Deletion'
 description: 'We know there are circumstances that sometimes necessitate account closure. This guide will help you through the process.'
+doc_type: 'how-to'
 ---
 
 ## Account closure and deletion {#account-close--deletion}

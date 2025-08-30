@@ -1,6 +1,7 @@
 ---
 sidebar_label: Services
 title: Services
+doc_type: 'reference'
 ---
 
 ## List of organization services {#list-of-organization-services}

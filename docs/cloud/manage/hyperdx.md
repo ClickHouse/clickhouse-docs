@@ -3,6 +3,7 @@ sidebar_label: 'HyperDX'
 slug: /cloud/manage/hyperdx
 title: 'HyperDX'
 description: 'Provides HyperDX, the UI for ClickStack - a  production-grade observability platform built on ClickHouse and OpenTelemetry (OTel), unifying logs, traces, metrics, and sessions in a single high-performance scalable solution.'
+doc_type: 'reference'
 ---
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';

@@ -6,6 +6,7 @@ pagination_next: null
 description: 'Landing page migrating to the ClickHouse Observability Stack from Elastic'
 show_related_blogs: true
 keywords: ['Elasticsearch']
+doc_type: 'reference'
 ---
 
 This guide provides a comprehensive approach to migrating from Elastic Stack to ClickStack. We focus on a parallel operation strategy that minimizes risk while leveraging ClickHouse's strengths in observability workloads. 

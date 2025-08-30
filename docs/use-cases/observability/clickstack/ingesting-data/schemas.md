@@ -5,6 +5,7 @@ pagination_next: null
 description: 'Tables and schemas used by ClickStack - The ClickHouse Observability Stack'
 sidebar_label: 'Tables and Schemas'
 title: 'Tables and schemas used by ClickStack'
+doc_type: 'reference'
 ---
 
 The ClickStack OpenTelemetry (OTel) collector uses the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) to create tables in ClickHouse and insert data.

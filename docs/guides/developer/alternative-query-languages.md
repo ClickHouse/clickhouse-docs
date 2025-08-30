@@ -3,6 +3,7 @@ slug: /guides/developer/alternative-query-languages
 sidebar_label: 'Alternative Query Languages'
 title: 'Alternative Query Languages'
 description: 'Use alternative query languages in ClickHouse'
+doc_type: 'reference'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';

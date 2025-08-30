@@ -3,6 +3,7 @@ title: 'Object Storage to ClickHouse Cloud'
 description: 'Moving data from object storage to ClickHouse Cloud'
 keywords: ['object storage', 's3', 'azure blob', 'gcs', 'migration']
 slug: /integrations/migration/object-storage-to-clickhouse
+doc_type: 'how-to'
 ---
 
 import Image from '@theme/IdealImage';

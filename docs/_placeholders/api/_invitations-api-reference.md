@@ -1,6 +1,7 @@
 ---
 sidebar_label: Invitations
 title: Invitations
+doc_type: 'reference'
 ---
 
 ## List all invitations {#list-all-invitations}

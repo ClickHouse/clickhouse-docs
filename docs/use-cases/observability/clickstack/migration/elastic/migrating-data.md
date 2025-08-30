@@ -8,6 +8,7 @@ sidebar_position: 4
 description: 'Migrating data to ClickHouse Observability Stack from Elastic'
 show_related_blogs: true
 keywords: ['ClickStack']
+doc_type: 'tutorial'
 ---
 
 ## Parallel operation strategy {#parallel-operation-strategy}

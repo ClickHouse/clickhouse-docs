@@ -4,6 +4,7 @@ sidebar_label: 'Overview'
 slug: /chdb
 description: 'chDB is an in-process SQL OLAP Engine powered by ClickHouse'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'in-process', 'in process']
+doc_type: 'reference'
 ---
 
 # chDB

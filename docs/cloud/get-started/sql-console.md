@@ -4,6 +4,7 @@ slug: /cloud/get-started/sql-console
 description: 'Run queries and create visualizations using the SQL Console.'
 keywords: ['sql console', 'sql client', 'cloud console', 'console']
 title: 'SQL Console'
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';

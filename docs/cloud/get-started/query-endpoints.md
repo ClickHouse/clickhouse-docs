@@ -4,6 +4,7 @@ slug: /cloud/get-started/query-endpoints
 description: 'Easily spin up REST API endpoints from your saved queries'
 keywords: ['api', 'query api endpoints', 'query endpoints', 'query rest api']
 title: 'Query API Endpoints'
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';

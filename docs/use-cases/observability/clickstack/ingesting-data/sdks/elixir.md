@@ -5,6 +5,7 @@ pagination_next: null
 sidebar_position: 1
 description: 'Elixir SDK for ClickStack - The ClickHouse Observability Stack'
 title: 'Elixir'
+doc_type: 'how-to'
 ---
 
 <table>

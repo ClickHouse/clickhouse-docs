@@ -4,6 +4,7 @@ slug: /cloud/manage/backups/configurable-backups
 description: 'Configurable Backups'
 title: 'Configurable Backups'
 keywords: ['backups', 'cloud backups', 'restore']
+doc_type: 'how-to'
 ---
 
 import backup_settings from '@site/static/images/cloud/manage/backup-settings.png';
