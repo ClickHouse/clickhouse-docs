@@ -260,6 +260,7 @@ if [ -f "$FUNCTION_SQL_FILE" ]; then
       "Conditional"
       "Distance"
       "Dates and Times"
+      "Encoding"
       "Financial"
       "Null"
     )
@@ -366,6 +367,7 @@ insert_src_files=(
   "conditional-functions.md"
   "distance-functions.md"
   "dates_and_times-functions.md"
+  "encoding-functions.md"
   "financial-functions.md"
   "null-functions.md"
 )
@@ -380,6 +382,7 @@ insert_dest_files=(
     "docs/sql-reference/functions/conditional-functions.md"
     "docs/sql-reference/functions/distance-functions.md"
     "docs/sql-reference/functions/date-time-functions.md"
+    "docs/sql-reference/functions/encoding-functions.md"
     "docs/sql-reference/functions/financial-functions.md"
     "docs/sql-reference/functions/functions-for-nulls.md"
 )
