@@ -1666,12 +1666,6 @@ const sidebars = {
           description: "Reference docs for ClickHouse Cloud",
           href: "/cloud/reference/"
         },
-        {
-          type: "link",
-          label: "Cloud API",
-          description: "Automate your ClickHouse Cloud services",
-          href: "/cloud/manage/cloud-api/"
-        },
       ]
     },
     {
