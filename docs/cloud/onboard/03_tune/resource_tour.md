@@ -17,12 +17,9 @@ to you in the docs to learn how to get the most out of your ClickHouse Cloud dep
 Explore resource organised by the following topics:
 
 - [Query optimization techniques and performance tuning](#query-optimization)
-- [Scaling strategies and resource management](#scaling)
 - [Monitoring](#monitoring)
 - [Security best practices and compliance features](#security)
 - [Cost optimization and billing](#cost-optimization)
-- Troubleshooting common issues (coming soon)
-- Production readiness checklist (coming soon)
 
 Before diving into more specific topics, we recommend you start with our general
 ClickHouse best practice guides which cover general best practices to follow when
@@ -33,8 +30,6 @@ using ClickHouse:
 ## Query optimization techniques and performance tuning {#query-optimization}
 
 <TableOfContentsOptimizationAndPerformance/>
-
-## Scaling strategies and resource management {#scaling}
 
 ## Monitoring {#monitoring}
 
