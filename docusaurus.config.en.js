@@ -187,6 +187,9 @@ const config = {
               blogPath
             );
           },
+          remarkPlugins: [math, remarkCustomBlocks, glossaryTransformer],
+          beforeDefaultRemarkPlugins: [fixLinks],
+          rehypePlugins: [katex],
         },
         pages: {
 
