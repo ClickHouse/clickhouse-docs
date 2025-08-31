@@ -135,7 +135,7 @@ print(pretty_result)
 
 ### DataFrame operations {#dataframe-operations}
 
-#### Legacy dataFrame API {#legacy-dataframe-api}
+#### Legacy DataFrame API {#legacy-dataframe-api}
 
 ```python
 import chdb.dataframe as cdf
@@ -507,7 +507,7 @@ sess.close()
 
 ### Python table engine {#python-table-engine}
 
-#### Query Pandas dataFrames {#query-pandas-dataframes}
+#### Query Pandas DataFrames {#query-pandas-dataframes}
 
 ```python
 import chdb
@@ -562,7 +562,7 @@ window_result = chdb.query("""
 print(window_result)
 ```
 
-#### Custom data sources with pyReader {#custom-data-sources-pyreader}
+#### Custom data sources with PyReader {#custom-data-sources-pyreader}
 
 Implement custom data readers for specialized data sources:
 
