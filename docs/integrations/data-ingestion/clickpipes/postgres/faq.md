@@ -78,7 +78,7 @@ Please refer to the [ClickPipes for Postgres: Schema Changes Propagation Support
 
 ### What are the costs for ClickPipes for Postgres CDC? {#what-are-the-costs-for-clickpipes-for-postgres-cdc}
 
-For detailed pricing information, please refer to the [ClickPipes for Postgres CDC pricing section on our main billing overview page](/cloud/manage/billing/overview#clickpipes-for-postgres-cdc).
+For detailed pricing information, please refer to the [ClickPipes for Postgres CDC pricing section on our main billing overview page](/cloud/reference/billing/clickpipes).
 
 ### My replication slot size is growing or not decreasing; what might be the issue? {#my-replication-slot-size-is-growing-or-not-decreasing-what-might-be-the-issue}
 
