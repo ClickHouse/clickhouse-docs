@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@algolia/client-search": "^5.35.0",
-    "@clickhouse/click-ui": "^0.0.213",
+    "@clickhouse/click-ui": "^0.0.230",
     "@clickhouse/client-web": "^1.11.1",
     "@docusaurus/core": "3.7.0",
     "@docusaurus/faster": "^3.7.0",
