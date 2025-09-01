@@ -137,7 +137,7 @@ Unlike many traditional databases, ClickHouse supports an HTTP interface.
 Users can use this for both inserting and querying data, using any of the above formats.
 This is often preferable to ClickHouse's native protocol as it allows traffic to be easily switched with load balancers.
 We expect small differences in insert performance with the native protocol, which incurs a little less overhead.
-Existing clients use either of these protocols ( in some cases both e.g. the Go client).
+Existing clients use either of these protocols (in some cases both e.g. the Go client).
 The native protocol does allow query progress to be easily tracked.
 
 See [HTTP Interface](/interfaces/http) for further details.
@@ -149,7 +149,7 @@ For loading data from Postgres, users can use:
 - `PeerDB by ClickHouse`, an ETL tool specifically designed for PostgreSQL database replication. This is available in both:
   - ClickHouse Cloud - available through our [new connector](/integrations/clickpipes/postgres) in ClickPipes, our managed ingestion service.
   - Self-managed - via the [open-source project](https://github.com/PeerDB-io/peerdb).
-- The [PostgreSQL table engine](/integrations/postgresql#using-the-postgresql-table-engine) to read data directly as shown in previous examples. Typically appropriate if batch replication based on a known watermark, e.g., timestamp, is sufficient or if it's a one-off migration. This approach can scale to 10's millions of rows. Users looking to migrate larger datasets should consider multiple requests, each dealing with a chunk of the data. Staging tables can be used for each chunk prior to its partitions being moved to a final table. This allows failed requests to be retried. For further details on this bulk-loading strategy, see here.
+- The [PostgreSQL table engine](/integrations/postgresql#using-the-postgresql-table-engine) to read data directly as shown in previous examples. Typically appropriate if batch replication based on a known watermark, e.g., timestamp, is sufficient or if it's a one-off migration. This approach can scale to 10's of millions of rows. Users looking to migrate larger datasets should consider multiple requests, each dealing with a chunk of the data. Staging tables can be used for each chunk prior to its partitions being moved to a final table. This allows failed requests to be retried. For further details on this bulk-loading strategy, see here.
 - Data can be exported from PostgreSQL in CSV format. This can then be inserted into ClickHouse from either local files or via object storage using table functions.
 
 :::note Need help inserting large datasets?

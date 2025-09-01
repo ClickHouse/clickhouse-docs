@@ -31,32 +31,32 @@ multiple replicas for its execution.
 ## Sharded architecture {#sharded-architecture}
 
 In a shared-nothing architecture, clusters are commonly split into
-multiple shards, with each ^^shard^^ containing a subset of the overall data. A
-^^distributed table^^ sits on top of these shards, providing a unified view of the
+multiple shards, with each shard containing a subset of the overall data. A
+distributed table sits on top of these shards, providing a unified view of the
 complete data.
 
 Reads can be sent to the local table. Query execution will occur only
-on the specified ^^shard^^, or it can be sent to the ^^distributed table^^, and in that
-case, each ^^shard^^ will execute the given queries. The server where the distributed
+on the specified shard, or it can be sent to the distributed table, and in that
+case, each shard will execute the given queries. The server where the distributed
 table was queried will aggregate the data and respond to the client:
 
 <Image img={image_1} size="md" alt="sharded archtiecture" />
 
-The figure above visualizes what happens when a client queries a ^^distributed table^^:
+The figure above visualizes what happens when a client queries a distributed table:
 
 <ol className="docs-ordered-list">
     <li>
-        The select query is sent to a ^^distributed table^^ on a node arbitrarily 
+        The select query is sent to a distributed table on a node arbitrarily
         (via a round-robin strategy or after being routed to a specific server 
         by a load balancer). This node is now going to act as a coordinator.
     </li>
     <li>
-        The node will locate each ^^shard^^ that needs to execute the query
-        via the information specified by the ^^distributed table^^, and the query is
-        sent to each ^^shard^^.
+        The node will locate each shard that needs to execute the query
+        via the information specified by the distributed table, and the query is
+        sent to each shard.
     </li>
     <li>
-        Each ^^shard^^ reads, filters, and aggregates the data locally and then
+        Each shard reads, filters, and aggregates the data locally and then
         sends back a mergeable state to the coordinator.
     </li>
     <li>
@@ -66,7 +66,7 @@ The figure above visualizes what happens when a client queries a ^^distributed t
 </ol>
 
 When we add replicas into the mix, the process is fairly similar, with the only
-difference being that only a single ^^replica^^ from each ^^shard^^ will execute the query.
+difference being that only a single replica from each shard will execute the query.
 This means that more queries can then be processed in parallel.
 
 ## Non-sharded architecture {#non-sharded-architecture}
@@ -81,14 +81,14 @@ The figure below shows the ClickHouse Cloud architecture:
 <Image img={image_2} size="md" alt="non sharded architecture" />
 
 This architecture allows us to be able to add and remove replicas nearly
-instantaneously, ensuring a very high ^^cluster^^ scalability. The ClickHouse
-Keeper ^^cluster^^ (shown right) ensures that we have a single source of truth
+instantaneously, ensuring a very high cluster scalability. The ClickHouse
+Keeper cluster (shown right) ensures that we have a single source of truth
 for the metadata. Replicas can fetch the metadata from the ClickHouse Keeper
-^^cluster^^ and all maintain the same data. The data themselves are stored in
+cluster and all maintain the same data. The data themselves are stored in
 object storage, and the SSD cache allows us to speed up queries.
 
 But how can we now distribute query execution across multiple servers? In a
-sharded architecture, it was fairly obvious given that each ^^shard^^ could actually
+sharded architecture, it was fairly obvious given that each shard could actually
 execute a query on a subset of the data. How does it work when there is no sharding?
 
 ## Introducing parallel replicas {#introducing-parallel-replicas}
@@ -99,7 +99,7 @@ that creates the list of tasks that need to be executed, ensures they are all
 executed, aggregated and that the result is returned to the client. Like
 in most distributed systems, this will be the role of the node that receives the
 initial query. We also need to define the unit of work. In a sharded architecture,
-the unit of work is the ^^shard^^, a subset of the data. With parallel replicas we
+the unit of work is the shard, a subset of the data. With parallel replicas we
 will use a small portion of the table, called [granules](/docs/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing),
 as the unit of work.
 
@@ -115,7 +115,7 @@ With parallel replicas:
         balancer. This node becomes the coordinator for this query.
     </li>
     <li>
-        The node analyzes the index of each part, and selects the right ^^parts^^ and
+        The node analyzes the index of each part, and selects the right parts and
         granules to process.
     </li>
     <li>
@@ -142,14 +142,14 @@ from working perfectly:
     </li>
     <li>
         Replication in ClickHouse is asynchronous, some replicas might not
-        have the same ^^parts^^ at some point in time.
+        have the same parts at some point in time.
     </li>
     <li>
         Tail latency between replicas needs to be handled somehow.
     </li>
     <li>
-        The filesystem cache varies from ^^replica^^ to ^^replica^^ based on the 
-        activity on each ^^replica^^, meaning that a random task assignment might 
+        The filesystem cache varies from replica to replica based on the
+        activity on each replica, meaning that a random task assignment might
         lead to less optimal performance given the cache locality.
     </li>
 </ol>
@@ -170,20 +170,20 @@ announcement. Let's visualize how it works using the figure below:
     </li>
     <li>
         The coordinating node sends a request to get announcements from
-        all the replicas in the ^^cluster^^. Replicas may have slightly different
-        views of the current set of ^^parts^^ for a table. As a result we need to
+        all the replicas in the cluster. Replicas may have slightly different
+        views of the current set of parts for a table. As a result we need to
         collect this information to avoid incorrect scheduling decisions.
     </li>
     <li>
         The coordinating node then uses the announcements to define a set of
         granules that can be assigned to the different replicas. Here for example,
-        we can see that no granules from part 3 have been assigned to ^^replica^^ 2
-        because this ^^replica^^ did not provide this part in its announcement.
-        Also note that no tasks were assigned to ^^replica^^ 3 because the
-        ^^replica^^ did not provide an announcement.
+        we can see that no granules from part 3 have been assigned to replica 2
+        because this replica did not provide this part in its announcement.
+        Also note that no tasks were assigned to replica 3 because the
+        replica did not provide an announcement.
     </li>
     <li>
-        After each ^^replica^^ has processed the query on their subset of granules
+        After each replica has processed the query on their subset of granules
         and the mergeable state has been sent back to the coordinator, the
         coordinator merges the results and the response is sent to the client.
     </li>
@@ -192,13 +192,13 @@ announcement. Let's visualize how it works using the figure below:
 ### Dynamic coordination {#dynamic-coordination}
 
 To address the issue of tail latency, we added dynamic coordination. This means
-that all the granules are not sent to a ^^replica^^ in one request, but each ^^replica^^
+that all the granules are not sent to a replica in one request, but each replica
 will be able to request a new task (a set of granules to be processed) to the
-coordinator. The coordinator will give the ^^replica^^ the set of granules based on
+coordinator. The coordinator will give the replica the set of granules based on
 the announcement received.
 
 Let's assume that we are at the stage in the process where all replicas have sent
-an announcement with all ^^parts^^.
+an announcement with all parts.
 
 The figure below visualizes how dynamic coordination works:
 
@@ -218,11 +218,11 @@ The figure below visualizes how dynamic coordination works:
 
 <ol className="docs-ordered-list">
     <li>
-        ^^Replica^^ 1 and 2 are able to finish their task very quickly. They
+        Replica 1 and 2 are able to finish their task very quickly. They
         will request another task from the coordinator node.
     </li>
     <li>
-        The coordinator assigns new tasks to ^^replica^^ 1 and 2.
+        The coordinator assigns new tasks to replica 1 and 2.
     </li>
 </ol>
 
@@ -247,15 +247,15 @@ The figure below visualizes how dynamic coordination works:
 
 The last remaining potential issue is how we handle cache locality. If the query
 is executed multiple times, how can we ensure the same task gets routed to the
-same ^^replica^^? In the previous example, we had the following tasks assigned:
+same replica? In the previous example, we had the following tasks assigned:
 
 <table>
     <thead>
         <tr>
             <th></th>
-            <th>^^Replica^^ 1</th>
-            <th>^^Replica^^ 2</th>
-            <th>^^Replica^^ 3</th>
+            <th>Replica 1</th>
+            <th>Replica 2</th>
+            <th>Replica 3</th>
         </tr>
     </thead>
     <tbody>
@@ -285,15 +285,15 @@ benefit from the cache, two things happen. A hash of the part + set of
 granules (a task) gets computed. A modulo of the number of replicas for the task
 assignment gets applied.
 
-On paper this sounds good, but in reality, a sudden load on one ^^replica^^, or a
-network degradation, can introduce tail latency if the same ^^replica^^ is
+On paper this sounds good, but in reality, a sudden load on one replica, or a
+network degradation, can introduce tail latency if the same replica is
 consistently used for executing certain tasks. If `max_parallel_replicas` is less
 than the number of replicas, then random replicas are picked for query execution.
 
 ### Task stealing {#task-stealing}
 
-if some ^^replica^^ processes tasks slower than others, other replicas will try to
-'steal' tasks that in principle belong to that ^^replica^^ by hash to reduce the
+if some replica processes tasks slower than others, other replicas will try to
+'steal' tasks that in principle belong to that replica by hash to reduce the
 tail latency.
 
 ### Limitations {#limitations}
@@ -303,7 +303,7 @@ this section.
 
 :::note
 If you find an issue which is not one of the limitations given below, and
-suspect parallel ^^replica^^ to be the cause, please open an issue on GitHub using
+suspect parallel replica to be the cause, please open an issue on GitHub using
 the label `comp-parallel-replicas`.
 :::
 
@@ -477,7 +477,7 @@ WHERE type='type3'
 GROUP BY toYear(timestamp) LIMIT 10
 ```
 
-Let's have a look at the query pipeline without parallel ^^replica^^:
+Let's have a look at the query pipeline without parallel replica:
 
 ```sql title="EXPLAIN PIPELINE (without parallel replica)"
 EXPLAIN PIPELINE graph = 1, compact = 0 
@@ -492,7 +492,7 @@ FORMAT TSV;
 
 <Image img={image_8} size="lg" alt="EXPLAIN without parallel_replica" />
 
-And now with parallel ^^replica^^:
+And now with parallel replica:
 
 ```sql title="EXPLAIN PIPELINE (with parallel replica)"
 EXPLAIN PIPELINE graph = 1, compact = 0 

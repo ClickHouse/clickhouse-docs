@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@algolia/client-search": "^5.35.0",
-    "@clickhouse/click-ui": "^0.0.213",
+    "@clickhouse/click-ui": "^0.0.230",
     "@clickhouse/client-web": "^1.11.1",
     "@docusaurus/core": "3.7.0",
     "@docusaurus/faster": "^3.7.0",
@@ -59,7 +59,7 @@
     "gray-matter": "^4.0.3",
     "hast-util-is-element": "1.1.0",
     "http-proxy-middleware": "3.0.5",
-    "katex": "^0.16.21",
+    "katex": "^0.16.22",
     "markdownlint-cli2": "^0.17.2",
     "node-fetch": "^3.3.2",
     "numeral": "^2.0.6",

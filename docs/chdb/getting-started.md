@@ -339,7 +339,7 @@ We could write the following code:
 df["likeDislikeRatio"] = df["likeCount"] / df["dislikeCount"]
 ```
 
-## Querying a Pandas DataFrame {#querying-a-pandas-dataframe}
+## Querying a Pandas dataframe {#querying-a-pandas-dataframe}
 
 We can then query that DataFrame from chDB:
 

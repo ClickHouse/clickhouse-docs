@@ -54,11 +54,19 @@ To set up PrivateLink with VPC resource:
 2. Create a resource configuration
 3. Create a resource share
 
-#### 1. Create a Resource-Gateway {#create-resource-gateway}
+#### 1. Create a resource gateway {#create-resource-gateway}
 
-Resource-Gateway is the point that receives traffic for specified resources in your VPC.
+Resource gateway is the point that receives traffic for specified resources in your VPC.
 
-You can create a Resource-Gateway from the [AWS console](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource-gateway.html) or with the following command:
+:::note
+Your resource gateway attached subnets are recommended to have sufficient IP addresses available.
+It's recommended to have at least `/26` subnet mask for each subnet.
+
+For each VPC endpoint (each Reverse Private Endpoint), AWS requires a consecutive block of 16 IP addresses per subnet. (`/28` subnet mask)
+If this requirement is not met, Reverse Private Endpoint will transition to a failed state.
+:::
+
+You can create a resource gateway from the [AWS console](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource-gateway.html) or with the following command:
 
 ```bash
 aws vpc-lattice create-resource-gateway \
@@ -68,9 +76,9 @@ aws vpc-lattice create-resource-gateway \
     --name <RESOURCE_GATEWAY_NAME>
 ```
 
-The output will contain a Resource-Gateway id, which you will need for the next step.
+The output will contain a resource gateway id, which you will need for the next step.
 
-Before you can proceed,  you'll need to wait for the Resource-Gateway to enter into an `Active` state. You can check the state by running the following command:
+Before you can proceed,  you'll need to wait for the resource gateway to enter into an `Active` state. You can check the state by running the following command:
 
 ```bash
 aws vpc-lattice get-resource-gateway \
@@ -79,7 +87,7 @@ aws vpc-lattice get-resource-gateway \
 
 #### 2. Create a VPC Resource-Configuration {#create-resource-configuration}
 
-Resource-Configuration is associated with Resource-Gateway to make your resource accessible.
+Resource-Configuration is associated with resource gateway to make your resource accessible.
 
 You can create a Resource-Configuration from the [AWS console](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource-configuration.html) or with the following command:
 
@@ -103,6 +111,14 @@ aws vpc-lattice create-resource-configuration \
     --resource-configuration-definition 'arnResource={arn=arn:aws:rds:us-east-1:123456789012:cluster:my-rds-cluster}'
 ```
 
+:::note
+You can't create a resource configuration for a publicly accessible cluster.
+If your cluster is publicly accessible, you must modify the cluster
+to make it private before creating the resource configuration 
+or use [IP allow list](/integrations/clickpipes#list-of-static-ips) instead. 
+For more information, see the [AWS documentation](https://docs.aws.amazon.com/vpc/latest/privatelink/resource-configuration.html#resource-definition).
+:::
+
 The output will contain a Resource-Configuration ARN, which you will need for the next step. It will also contain a Resource-Configuration ID, which you will need to set up a ClickPipe connection with VPC resource.
 
 #### 3. Create a Resource-Share {#create-resource-share}
@@ -113,7 +129,7 @@ You can put the Resource-Configuration into the Resource-Share through [AWS cons
 
 ```bash
 aws ram create-resource-share \
-    --principals arn:aws:iam::072088201116:root \
+    --principals 072088201116 \
     --resource-arns <RESOURCE_CONFIGURATION_ARN> \
     --name <RESOURCE_SHARE_NAME>
 ```

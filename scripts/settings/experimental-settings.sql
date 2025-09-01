@@ -11,7 +11,7 @@ WITH
                 format('[{}](/operations/settings/settings#{})', name, name) AS Name,
                 format('`{}`', default) AS Default
 FROM system.settings
-WHERE tier = 'Experimental' AND alias_for=''
+WHERE tier = 'Experimental' AND alias_for='' AND NOT name LIKE 'input_format_parquet_use_native_reader_v3'
     ),
     experimental_mergetree_settings AS
     (

@@ -1,9 +1,11 @@
 personal_ws-1.1 en 3638
 AArch
 ACLs
+Accepter
 AICPA
 ALTERs
 AMPLab
+AmazonKinesis
 AMQP
 ANNIndex
 ANNIndexes
@@ -58,6 +60,7 @@ Authenticators
 Authy
 AutoFDO
 AutoML
+Autoscaler
 Autocompletion
 AvroConfluent
 AzureQueue
@@ -324,6 +327,7 @@ DestroyAggregatesThreads
 DestroyAggregatesThreadsActive
 DictCacheRequests
 DigiCert
+DigitalOcean
 DiskAvailable
 DiskObjectStorage
 DiskObjectStorageAsyncThreads
@@ -344,6 +348,7 @@ Doron
 DoubleDelta
 Doxygen
 Draxlr
+Dremio
 Dresseler
 Durre
 ECMA
@@ -560,10 +565,12 @@ JSONCompactColumns
 JSONCompactEachRow
 JSONCompactEachRowWithNames
 JSONCompactEachRowWithNamesAndTypes
+JSONCompactEachRowWithProgress
 JSONCompactStrings
 JSONCompactStringsEachRow
 JSONCompactStringsEachRowWithNames
 JSONCompactStringsEachRowWithNamesAndTypes
+JSONCompactStringsEachRowWithProgress
 JSONCompactWithProgress
 JSONDynamicPaths
 JSONDynamicPathsWithTypes
@@ -648,6 +655,7 @@ LaGuardia
 LangChain
 LangGraph
 Langchain
+Lakekeeper
 Lemire
 Levenshtein
 Lhotsky
@@ -792,6 +800,7 @@ NDJSON
 NEKUDOTAYIM
 NEWDATE
 NEWDECIMAL
+Nessie
 NFKC
 NFKD
 NIST
@@ -1073,6 +1082,7 @@ Refactorings
 ReferenceKeyed
 Refreshable
 RegexpTree
+RelationMessage
 RemoteRead
 ReplacingMergeTree
 ReplacingReplicatedMergeTree
@@ -1289,6 +1299,7 @@ ThreadPoolRemoteFSReaderThreads
 ThreadPoolRemoteFSReaderThreadsActive
 ThreadsActive
 ThreadsInOvercommitTracker
+Trino
 TiDB
 TimeSeries
 TimescaleDB
@@ -1370,6 +1381,7 @@ VARCHAR
 VIEWs
 VLDB
 VNet
+VNets
 VPCs
 VPNs
 Vadim
@@ -1771,6 +1783,7 @@ clickvisual
 clockhour
 clusterAllReplicas
 cmake
+codapi
 codebase
 codec
 codecs
@@ -2262,8 +2275,10 @@ hiveHash
 hnsw
 holistics
 homebrew
+homebrew
 hopEnd
 hopStart
+Hopsworks
 horgh
 hostName
 hostname
@@ -2405,6 +2420,7 @@ kusto
 lagInFrame
 laion
 lakehouse
+Lakehouses
 lang
 laravel
 largestTriangleThreeBuckets
@@ -2527,6 +2543,7 @@ mdadm
 meanZTest
 meanztest
 mebibytes
+memoryview
 memtable
 memtables
 mergeTreeIndex
@@ -2638,6 +2655,7 @@ nats
 navbar
 ndjson
 ness
+Nessie
 nestjs
 netloc
 newjson
@@ -3008,6 +3026,7 @@ resending
 resharding
 reshards
 resolvers
+resourceGUID
 restartable
 resultset
 resync
@@ -3442,6 +3461,7 @@ trie
 trimBoth
 trimLeft
 trimRight
+Trino
 trunc
 tryBase
 tryDecrypt
@@ -3639,3 +3659,22 @@ znode
 znodes
 zookeeperSessionUptime
 zstd
+Coinhall
+Instacart
+SingleStore
+Fastly
+Fong
+MTTD
+MTTR
+O'Reilly
+transformative
+MLOps
+chatbots
+SageMaker
+GWLBs
+NLBs
+explorative
+pointwise
+summarization
+reusability
+lakehouses

@@ -13,7 +13,7 @@ keywords: ['compression', 'secondary-indexes','column-oriented']
 
 In a real column-oriented DBMS, no extra data is stored with the values. This means that constant-length values must be supported to avoid storing their length "number" next to the values. For example, a billion UInt8-type values should consume around 1 GB uncompressed, or this strongly affects the CPU use. It is essential to store data compactly (without any "garbage") even when uncompressed since the speed of decompression (CPU usage) depends mainly on the volume of uncompressed data.
 
-This is in contrast to systems that can store values of different columns separately, but that cannot effectively process analytical queries due to their optimization for other scenarios, such as HBase, Bigtable, Cassandra, and Hypertable. You would get throughput around a hundred thousand rows per second in these systems, but not hundreds of millions of rows per second.
+This is in contrast to systems that can store values of different columns separately, but that cannot effectively process analytical queries due to their optimization for other scenarios, such as HBase, Bigtable, Cassandra, and Hypertable. You would get throughput of around a hundred thousand rows per second in these systems, but not hundreds of millions of rows per second.
 
 Finally, ClickHouse is a database management system, not a single database. It allows creating tables and databases in runtime, loading data, and running queries without reconfiguring and restarting the server.
 
@@ -21,7 +21,7 @@ Finally, ClickHouse is a database management system, not a single database. It a
 
 Some column-oriented DBMSs do not use data compression. However, data compression plays a key role in achieving excellent performance.
 
-In addition to efficient general-purpose compression codecs with different trade-offs between disk space and CPU consumption, ClickHouse provides [specialized codecs](/sql-reference/statements/create/table.md#specialized-codecs) for specific kinds of data, which allow ClickHouse to compete with and outperform more niche databases, like time-series ones.
+In addition to efficient general-purpose compression codecs with different trade-offs between disk space and CPU consumption, ClickHouse provides [specialized codecs](/sql-reference/statements/create/table.md#specialized-codecs) for specific kinds of data, which allows ClickHouse to compete with and outperform more niche databases, like time-series ones.
 
 ## Disk storage of data {#disk-storage-of-data}
 
@@ -41,9 +41,9 @@ In ClickHouse, data can reside on different shards. Each shard can be a group of
 
 ## SQL support {#sql-support}
 
-ClickHouse supports [SQL language](/sql-reference/) that is mostly compatible with the ANSI SQL standard.
+ClickHouse supports [a declarative query language](/sql-reference/) based on SQL that is mostly compatible with the ANSI SQL standard.
 
-Supported queries include [GROUP BY](../sql-reference/statements/select/group-by.md), [ORDER BY](../sql-reference/statements/select/order-by.md), subqueries in [FROM](../sql-reference/statements/select/from.md), [JOIN](../sql-reference/statements/select/join.md) clause, [IN](../sql-reference/operators/in.md) operator, [window functions](../sql-reference/window-functions/index.md) and scalar subqueries.
+Supported queries include [GROUP BY](../sql-reference/statements/select/group-by.md), [ORDER BY](../sql-reference/statements/select/order-by.md), subqueries in [FROM](../sql-reference/statements/select/from.md), the [JOIN](../sql-reference/statements/select/join.md) clause, the [IN](../sql-reference/operators/in.md) operator, [window functions](../sql-reference/window-functions/index.md) and scalar subqueries.
 
 Correlated (dependent) subqueries are not supported at the time of writing but might become available in the future.
 
@@ -67,7 +67,7 @@ Unlike other database management systems, secondary indexes in ClickHouse do not
 
 Most OLAP database management systems do not aim for online queries with sub-second latencies. In alternative systems, report building time of tens of seconds or even minutes is often considered acceptable. Sometimes it takes even more time, which forces systems to prepare reports offline (in advance or by responding with "come back later").
 
-In ClickHouse "low latency" means that queries can be processed without delay and without trying to prepare an answer in advance, right at the same moment as the user interface page is loading. In other words, online.
+In ClickHouse, "low latency" means that queries can be processed without delay and without trying to prepare an answer in advance, right at the moment when the user interface page is loading — in other words, *online*.
 
 ## Support for approximated calculations {#support-for-approximated-calculations}
 
@@ -79,7 +79,7 @@ ClickHouse provides various ways to trade accuracy for performance:
 
 ## Adaptive join algorithm {#adaptive-join-algorithm}
 
-ClickHouse adaptively chooses how to [JOIN](../sql-reference/statements/select/join.md) multiple tables, by preferring hash-join algorithm and falling back to the merge-join algorithm if there's more than one large table.
+ClickHouse adaptively chooses how to [JOIN](../sql-reference/statements/select/join.md) multiple tables, by preferring hash join and falling back to merge join if there's more than one large table.
 
 ## Data replication and data integrity support {#data-replication-and-data-integrity-support}
 
@@ -89,7 +89,7 @@ For more information, see the section [Data replication](../engines/table-engine
 
 ## Role-Based Access Control {#role-based-access-control}
 
-ClickHouse implements user account management using SQL queries and allows for [role-based access control configuration](/guides/sre/user-management/index.md) similar to what can be found in ANSI SQL standard and popular relational database management systems.
+ClickHouse implements user account management using SQL queries and allows for [role-based access control configuration](/guides/sre/user-management/index.md) similar to what can be found in the ANSI SQL standard and popular relational database management systems.
 
 ## Features that can be considered disadvantages {#clickhouse-features-that-can-be-considered-disadvantages}
 
