@@ -205,6 +205,7 @@ service:
       receivers: [filelog]
       processors: [batch]
       exporters: [otlphttp/hdx]
+
 ```
 
 Note the need to include an [authorization header containing your ingestion API key](#securing-the-collector) in any OTLP communication.

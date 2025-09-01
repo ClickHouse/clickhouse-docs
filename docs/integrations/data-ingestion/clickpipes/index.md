@@ -101,7 +101,7 @@ If ClickPipes cannot connect to a data source after 15 min or to a destination a
 
 - **Does using ClickPipes incur an additional cost?**
 
-  ClickPipes is billed on two dimensions: Ingested Data and Compute. The full details of the pricing are available on [this page](/cloud/manage/billing/overview#clickpipes-for-streaming-object-storage). Running ClickPipes might also generate an indirect compute and storage cost on the destination ClickHouse Cloud service similar to any ingest workload.
+  ClickPipes is billed on two dimensions: Ingested Data and Compute. The full details of the pricing are available on [this page](/cloud/reference/billing/clickpipes). Running ClickPipes might also generate an indirect compute and storage cost on the destination ClickHouse Cloud service similar to any ingest workload.
 
 - **Is there a way to handle errors or failures when using ClickPipes for Kafka?**
 
