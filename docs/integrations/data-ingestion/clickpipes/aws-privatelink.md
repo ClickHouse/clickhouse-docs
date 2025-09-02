@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'AWS PrivateLink for ClickPipes'
+sidebar_label: 'ClickPipes for AWS PrivateLink'
 description: 'Establish a secure connection between ClickPipes and a data source using AWS PrivateLink.'
 slug: /integrations/clickpipes/aws-privatelink
-title: 'AWS PrivateLink for ClickPipes'
+title: 'ClickPipes for AWS PrivateLink'
 ---
 
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
@@ -16,7 +16,7 @@ import cp_rpe_settings0 from '@site/static/images/integrations/data-ingestion/cl
 import cp_rpe_settings1 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_rpe_settings1.png';
 import Image from '@theme/IdealImage';
 
-# AWS PrivateLink for ClickPipes
+# ClickPipes for AWS PrivateLink
 
 You can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to establish secure connectivity between VPCs,
 AWS services, your on-premises systems, and ClickHouse Cloud without exposing traffic to the public Internet.
