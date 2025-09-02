@@ -1652,7 +1652,7 @@ const sidebars = {
           type: "link",
           label: "Features",
           description: "Features offered by ClickHouse Cloud",
-          href: "/cloud/features/"
+          href: "/cloud/manage/cloud-tiers"
         },
         {
           type: "link",
