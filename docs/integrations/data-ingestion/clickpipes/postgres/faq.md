@@ -58,13 +58,27 @@ For more details, refer to:
 * [ReplacingMergeTree table engine best practices](https://docs.peerdb.io/bestpractices/clickhouse_datamodeling#replacingmergetree-table-engine)
 * [Postgres-to-ClickHouse CDC internals blog](https://clickhouse.com/blog/postgres-to-clickhouse-data-modeling-tips)
 
+### Can I update primary key columns in PostgreSQL? {#can-i-update-primary-key-columns-in-postgresql}
+
+:::warning
+Primary key updates in PostgreSQL cannot be properly replayed in ClickHouse by default.
+
+This limitation exists because `ReplacingMergeTree` deduplication works based on the `ORDER BY` columns (which typically correspond to the primary key). When a primary key is updated in PostgreSQL, it appears as a new row with a different key in ClickHouse, rather than an update to the existing row. This can lead to both the old and new primary key values existing in your ClickHouse table.
+:::
+
+Note that updating primary key columns is not a common practice in PostgreSQL database design, as primary keys are intended to be immutable identifiers. Most applications avoid primary key updates by design, making this limitation rarely encountered in typical use cases.
+
+There is an experimental setting available that can enable primary key update handling, but it comes with significant performance implications and is not recommended for production use without careful consideration.
+
+If your use case requires updating primary key columns in PostgreSQL and having those changes properly reflected in ClickHouse, please reach out to our support team at [db-integrations-support@clickhouse.com](mailto:db-integrations-support@clickhouse.com) to discuss your specific requirements and potential solutions.
+
 ### Do you support schema changes? {#do-you-support-schema-changes}
 
 Please refer to the [ClickPipes for Postgres: Schema Changes Propagation Support](./schema-changes) page for more information.
 
 ### What are the costs for ClickPipes for Postgres CDC? {#what-are-the-costs-for-clickpipes-for-postgres-cdc}
 
-For detailed pricing information, please refer to the [ClickPipes for Postgres CDC pricing section on our main billing overview page](/cloud/manage/billing/overview#clickpipes-for-postgres-cdc).
+For detailed pricing information, please refer to the [ClickPipes for Postgres CDC pricing section on our main billing overview page](/cloud/reference/billing/clickpipes).
 
 ### My replication slot size is growing or not decreasing; what might be the issue? {#my-replication-slot-size-is-growing-or-not-decreasing-what-might-be-the-issue}
 

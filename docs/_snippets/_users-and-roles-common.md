@@ -42,64 +42,73 @@ Create these tables and users to be used in the examples.
 
 #### Creating a sample database, table, and rows {#creating-a-sample-database-table-and-rows}
 
-1. Create a test database
+<VerticalStepper headerLevel="h5">
 
-   ```sql
-   CREATE DATABASE db1;
-   ```
+##### Create a test database {#create-a-test-database}
 
-2. Create a table
+```sql
+CREATE DATABASE db1;
+```
 
-   ```sql
-   CREATE TABLE db1.table1 (
-       id UInt64,
-       column1 String,
-       column2 String
-   )
-   ENGINE MergeTree
-   ORDER BY id;
-   ```
+##### Create a table {#create-a-table}
 
-3. Populate the table with sample rows
+```sql
+CREATE TABLE db1.table1 (
+   id UInt64,
+   column1 String,
+   column2 String
+)
+ENGINE MergeTree
+ORDER BY id;
+```
 
-   ```sql
-   INSERT INTO db1.table1
-       (id, column1, column2)
-   VALUES
-       (1, 'A', 'abc'),
-       (2, 'A', 'def'),
-       (3, 'B', 'abc'),
-       (4, 'B', 'def');
-   ```
+##### Populate the table with sample rows {#populate}
 
-4. Verify the table:
+```sql
+INSERT INTO db1.table1
+   (id, column1, column2)
+VALUES
+   (1, 'A', 'abc'),
+   (2, 'A', 'def'),
+   (3, 'B', 'abc'),
+   (4, 'B', 'def');
+```
 
-   ```sql
-   SELECT *
-   FROM db1.table1
-   ```
+##### Verify the table {#verify}
 
-   ```response
-   Query id: 475015cc-6f51-4b20-bda2-3c9c41404e49
+```sql title="Query"
+SELECT *
+FROM db1.table1
+```
 
-   ┌─id─┬─column1─┬─column2─┐
-   │  1 │ A       │ abc     │
-   │  2 │ A       │ def     │
-   │  3 │ B       │ abc     │
-   │  4 │ B       │ def     │
-   └────┴─────────┴─────────┘
-   ```
+```response title="Response"
+Query id: 475015cc-6f51-4b20-bda2-3c9c41404e49
 
-5. Create a regular user that will be used to demonstrate restrict access to certain columns:
+┌─id─┬─column1─┬─column2─┐
+│  1 │ A       │ abc     │
+│  2 │ A       │ def     │
+│  3 │ B       │ abc     │
+│  4 │ B       │ def     │
+└────┴─────────┴─────────┘
+```
 
-   ```sql
-   CREATE USER column_user IDENTIFIED BY 'password';
-   ```
+##### Create `column_user` {#create-a-user-with-restricted-access-to-columns}
 
-6. Create a regular user that will be used to demonstrate restricting access to rows with certain values:
-   ```sql
-   CREATE USER row_user IDENTIFIED BY 'password';
-   ```
+Create a regular user that will be used to demonstrate restrict access to certain columns:
+
+```sql
+CREATE USER column_user IDENTIFIED BY 'password';
+```
+
+##### Create `row_user` {#create-a-user-with-restricted-access-to-rows-with-certain-values}
+
+Create a regular user that will be used to demonstrate restricting access to rows with certain values:
+   
+```sql
+CREATE USER row_user IDENTIFIED BY 'password';
+```
+   
+</VerticalStepper>
 
 #### Creating roles {#creating-roles}
 
