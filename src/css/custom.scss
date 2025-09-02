@@ -1430,7 +1430,7 @@ input::-ms-input-placeholder { /* Microsoft Edge */
   display: flex;
 }
 
-@media (max-width: breakpoints.$mobile-breakpoint) {
+@media (max-width: breakpoints.$laptop-breakpoint) {
   .installContainer {
     flex-wrap: wrap;
   }
