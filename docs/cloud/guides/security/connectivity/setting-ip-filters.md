@@ -18,6 +18,7 @@ If you skip the creation of the IP access list for a ClickHouse Cloud service th
 :::
 
 ## Prepare {#prepare}
+
 Before you begin, collect the IP addresses or ranges that should be added to the access list.  Take into consideration remote workers, on-call locations, VPNs, etc. The IP access list user interface accepts individual addresses and CIDR notation.
 
 Classless Inter-domain Routing (CIDR) notation, allows you to specify IP address ranges smaller than the traditional Class A, B, or C (8, 6, or 24) subnet mask sizes. [ARIN](https://account.arin.net/public/cidrCalculator) and several other organizations provide CIDR calculators if you need one, and if you would like more information on CIDR notation, please see the [Classless Inter-domain Routing (CIDR)](https://www.rfc-editor.org/rfc/rfc4632.html) RFC.
