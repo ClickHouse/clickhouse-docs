@@ -16,7 +16,7 @@ real world vector search application built on top of user generated, textual dat
 
 ## Dataset details {#dataset-details}
 
-The complete dataset with vector embeddings is made available by ClickHouse as a single `Parquet` file in a `S3` bucket : https://clickhouse-datasets.s3.amazonaws.com/hackernews-miniLM/hackernews_part_1_of_1.parquet
+The complete dataset with vector embeddings is made available by ClickHouse as a single `Parquet` file in a [S3 bucket](https://clickhouse-datasets.s3.amazonaws.com/hackernews-miniLM/hackernews_part_1_of_1.parquet)
 
 We recommend users first run a sizing exercise to estimate the storage and memory requirements for this dataset by referring to the [documentation](../../engines/table-engines/mergetree-family/annindexes.md).
 
@@ -63,11 +63,11 @@ To load the dataset from the `Parquet` file, run the following SQL statement:
 INSERT INTO hackernews SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/hackernews-miniLM/hackernews_part_1_of_1.parquet');
 ```
 
-The loading of 28.74 million rows into the table will take a few minutes.
+Inserting 28.74 million rows into the table will take a few minutes.
 
 ### Build a vector similarity index {#build-vector-similarity-index}
 
-Run the following SQL to define and build a vector similarity index on the `vector` column of the `hackernews` table :
+Run the following SQL to define and build a vector similarity index on the `vector` column of the `hackernews` table:
 
 ```sql
 ALTER TABLE hackernews ADD INDEX vector_index vector TYPE vector_similarity('hnsw', 'cosineDistance', 384, 'bf16', 64, 512);
@@ -218,7 +218,7 @@ A very simple but high potential generative AI example application is presented 
 The application performs the following steps:
 
 1. Accepts a _topic_ as input from the user
-2. Generates an embedding vector for the _topic_ by using `SentenceTransformers` with model `all-MiniLM-L6-v2`
+2. Generates an embedding vector for the _topic_ by using the `SentenceTransformers` with model `all-MiniLM-L6-v2`
 3. Retrieves highly relevant posts/comments using vector similarity search on the `hackernews` table
 4. Uses `LangChain` and OpenAI `gpt-3.5-turbo` Chat API to **summarize** the content retrieved in step #3.
    The posts/comments retrieved in step #3 are passed as _context_ to the Chat API and are the key link in Generative AI.
@@ -256,7 +256,7 @@ as a powerful tool for real-time data processing, analytics, and handling large 
 efficiently, gaining popularity for its impressive performance and cost-effectiveness.
 ```
 
-Code for above application :
+Code for the above application :
 
 ```python
 print("Initializing...")
