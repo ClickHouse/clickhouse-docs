@@ -1,5 +1,5 @@
 ---
-description: 'Dataset containing 28+ million Hacker News postings & their vector embeddings
+description: 'Dataset containing 28+ million Hacker News postings & their vector embeddings'
 sidebar_label: 'Hacker News Vector Search dataset'
 slug: /getting-started/example-datasets/hackernews-vector-search-dataset
 title: 'Hacker News Vector Search dataset'
@@ -64,7 +64,6 @@ INSERT INTO hackernews SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaw
 ```
 
 The loading of 28.74 million rows into the table will take a few minutes.
-```
 
 ### Build a vector similarity index {#build-vector-similarity-index}
 
@@ -108,7 +107,6 @@ The dataset in this HackerNews dataset contains vector emebeddings generated fro
 An example Python script is provided below to demonstrate how to programmatically generate
 embedding vectors using `sentence_transformers1 Python package. The search embedding vector
 is then passed as an argument to the [`cosineDistance()`](/sql-reference/functions/distance-functions#cosineDistance) function in the `SELECT` query.
-
 
 ```python
 from sentence_transformers import SentenceTransformer
