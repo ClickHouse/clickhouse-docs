@@ -70,7 +70,7 @@ The loading of 28.74 million rows into the table will take a few minutes.
 Run the following SQL to define and build a vector similarity index on the `vector` column of the `hackernews` table :
 
 ```sql
-ALTER TABLE hackernews ADD INDEX vector_index vector TYPE vector_similarity('hnsw', 'cosineDistance', 768, 'bf16', 64, 512);
+ALTER TABLE hackernews ADD INDEX vector_index vector TYPE vector_similarity('hnsw', 'cosineDistance', 384, 'bf16', 64, 512);
 
 ALTER TABLE hackernews MATERIALIZE INDEX vector_index SETTINGS mutations_sync = 2;
 ```
