@@ -145,6 +145,8 @@ Code will be inserted here
 \```
 ```
 
+**File paths are relative to the root of the docs repository**
+
 You should commit the code inserted to the snippet as we want people (or LLMs) 
 reading the markdown to be able to see the code. The advantage of importing code
 to snippets this way is that you can test your snippets externally or store them

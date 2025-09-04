@@ -1103,3 +1103,6 @@ explorative
 ReceiveMessage
 --docs/integrations/data-ingestion/clickpipes/postgres/postgres_generated_columns.md--
 RelationMessage
+--docs/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud.md--
+clickstack
+otel
