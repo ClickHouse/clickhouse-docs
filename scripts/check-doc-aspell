@@ -120,7 +120,8 @@ preprocess_file() {
         | sed -E 's/\{#[^}]*\}//g' \
         | sed -E 's/<[A-Za-z0-9_]+svg[^>]*\/?>//g' \
         | sed -E 's/<Image[^>]*\/?>//g' \
-        | grep -Ev '(^[[:space:]]*(slug:|<img src=\{[^}]+\})|^import .* from .*)'
+        | grep -Ev '(^[[:space:]]*(slug:|<img src=\{[^}]+\})|^import .* from .*)' \
+        | grep -Ev '(^<details>|^<summary>)'
 }
 
 # List of files to ignore
