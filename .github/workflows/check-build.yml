@@ -19,7 +19,7 @@ jobs:
         check_type: [spellcheck, kbcheck, md-lint, glossary-check]
     steps:
       # Add setup steps per check here
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install Aspell
         if: matrix.check_type == 'spellcheck'
         run: sudo apt-get update && sudo apt-get install -y aspell aspell-en
