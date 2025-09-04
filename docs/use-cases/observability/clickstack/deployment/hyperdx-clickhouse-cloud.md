@@ -67,7 +67,7 @@ curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/
 
 <details>
 <summary>otel-cloud-collector.yaml</summary>
-```yaml file=use-cases/observability/clickstack/deployment/_snippets/otel-cloud-config.yaml
+```yaml file=docs/use-cases/observability/clickstack/deployment/_snippets/otel-cloud-config.yaml
 ```
 </details>
 
