@@ -1250,7 +1250,16 @@ const sidebars = {
         "operations/ssl-zookeeper",
         "operations/startup-scripts",
         "operations/storing-data",
-        "operations/allocation-profiling",
+        {
+          type: "category",
+          label: "Allocation profiling",
+          collapsed: true,
+          collapsible: true,
+          link: { type: "doc", id: "operations/allocation-profiling" },
+          items: [
+            "operations/allocation-profiling-old",
+          ]
+        },
         "operations/backup",
         "operations/caches",
         "operations/workload-scheduling",
