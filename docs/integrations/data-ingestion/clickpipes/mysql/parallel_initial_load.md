@@ -48,3 +48,4 @@ You can run **SHOW processlist** in MySQL to see the parallel snapshot in action
 ### Limitations {#limitations-parallel-mysql-snapshot}
 - The snapshot parameters cannot be edited after pipe creation. If you want to change them, you will have to create a new ClickPipe.
 - When adding tables to an existing ClickPipe, you cannot change the snapshot parameters. The ClickPipe will use the existing parameters for the new tables.
+- The partition key column should not contain `NULL`s, as they will be skipped by the partitioning logic.
