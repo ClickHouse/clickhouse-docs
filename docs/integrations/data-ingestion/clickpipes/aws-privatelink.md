@@ -54,7 +54,9 @@ To set up PrivateLink with VPC resource:
 2. Create a resource configuration
 3. Create a resource share
 
-#### 1. Create a resource gateway {#create-resource-gateway}
+<VerticalStepper headerLevel="h4">
+
+#### Create a resource gateway {#create-resource-gateway}
 
 Resource gateway is the point that receives traffic for specified resources in your VPC.
 
@@ -85,7 +87,7 @@ aws vpc-lattice get-resource-gateway \
     --resource-gateway-identifier <RESOURCE_GATEWAY_ID>
 ```
 
-#### 2. Create a VPC Resource-Configuration {#create-resource-configuration}
+#### Create a VPC Resource-Configuration {#create-resource-configuration}
 
 Resource-Configuration is associated with resource gateway to make your resource accessible.
 
@@ -121,7 +123,7 @@ For more information, see the [AWS documentation](https://docs.aws.amazon.com/vp
 
 The output will contain a Resource-Configuration ARN, which you will need for the next step. It will also contain a Resource-Configuration ID, which you will need to set up a ClickPipe connection with VPC resource.
 
-#### 3. Create a Resource-Share {#create-resource-share}
+#### Create a Resource-Share {#create-resource-share}
 
 Sharing your resource requires a Resource-Share. This is facilitated through the Resource Access Manager (RAM).
 
@@ -142,6 +144,8 @@ You are ready to [create a ClickPipe with Reverse private endpoint](#creating-cl
 - Set `Resource share ARN` to the ARN of the Resource-Share created in step 3.
 
 For more details on PrivateLink with VPC resource, see [AWS documentation](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html).
+
+</VerticalStepper>
 
 ### MSK multi-VPC connectivity {#msk-multi-vpc}
 
@@ -187,6 +191,8 @@ can be configured for ClickPipes. Add [your ClickPipe region](#aws-privatelink-r
 :::
 
 ## Creating a ClickPipe with reverse private endpoint {#creating-clickpipe}
+
+<VerticalStepper headerLevel="list">
 
 1. Access the SQL Console for your ClickHouse Cloud Service.
 
@@ -242,21 +248,27 @@ For same-region access, creating a VPC Resource is the recommended approach.
 
    To see a full list of DNS names, access it in the cloud service settings.
 
+</VerticalStepper>
+
 ## Managing existing reverse private endpoints {#managing-existing-endpoints}
 
 You can manage existing reverse private endpoints in the ClickHouse Cloud service settings:
 
+<VerticalStepper headerLevel="list">
+
 1. On a sidebar find the `Settings` button and click on it.
 
-<Image img={cp_rpe_settings0} alt="ClickHouse Cloud settings" size="lg" border/>
+    <Image img={cp_rpe_settings0} alt="ClickHouse Cloud settings" size="lg" border/>
 
 2. Click on `Reverse private endpoints` in a `ClickPipe reverse private endpoints` section.
 
-<Image img={cp_rpe_settings1} alt="ClickHouse Cloud settings" size="md" border/>
+    <Image img={cp_rpe_settings1} alt="ClickHouse Cloud settings" size="md" border/>
 
     Reverse private endpoint extended information is shown in the flyout.
 
     Endpoint can be removed from here. It will affect any ClickPipes using this endpoint.
+
+</VerticalStepper>
 
 ## Supported AWS regions {#aws-privatelink-regions}
 

@@ -29,16 +29,32 @@ const Step = ({
     // Let underlying component handle expansion based on status='active'
     const collapsed = true;
 
-    // Swap out the Click-UI Stepper label for the H2 header
+    // Swap out the Click-UI Stepper label for custom content
     React.useEffect(() => {
         try {
             const button = document.querySelectorAll(`button[id^=${id}]`)[0];
             const divChildren = Array.from(button.children).filter(el => el.tagName === 'DIV');
             const label = divChildren[1];
             const content = button.nextElementSibling;
-            const header = content.querySelectorAll(headerType)[0]
-            header.style.margin = '0';
-            button.append(header)
+            
+            if (headerType === 'list') {
+                // For list mode, find the first paragraph (which contains the formatted label)
+                const firstParagraph = content.querySelector('p');
+                if (firstParagraph) {
+                    const labelElement = firstParagraph.cloneNode(true);
+                    (labelElement as HTMLElement).style.margin = '0';
+                    button.append(labelElement);
+                    firstParagraph.remove(); // Remove from content to avoid duplication
+                }
+            } else {
+                // For heading mode, use the header element
+                const header = content.querySelectorAll(headerType)[0]
+                if (header) {
+                    (header as HTMLElement).style.margin = '0';
+                    button.append(header)
+                }
+            }
+            
             label.remove()
         } catch (e) {
             console.log(`Error occurred in Stepper.tsx while swapping ${headerType} for Click-UI label:`, e)
@@ -71,7 +87,7 @@ interface StepperProps {
     type?: 'numbered' | 'bulleted';
     className?: string;
     expanded?: string; // Corresponds to allExpanded in MDX
-    headerLevel?: number;
+    headerLevel?: number | string;
     [key: string]: any;
 }
 
@@ -89,7 +105,9 @@ const VStepper = ({
     const isExpandedMode = expanded === 'true';
 
     let hType = 'h2';
-    if (headerLevel > 2) {
+    if (headerLevel === 'list') {
+        hType = 'list';
+    } else if (headerLevel > 2) {
         hType = `h${headerLevel}`
     }
 
