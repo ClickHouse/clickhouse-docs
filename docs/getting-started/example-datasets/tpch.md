@@ -280,7 +280,7 @@ ORDER BY
 
 ::::note
 Until v25.5, the query did not work out-of-the box because scalar correlated subqueries were unsupported.
-Until v25.8, the query requires enabling allow_experimental_correlated_subqueries setting.
+Until v25.8, the query requires enabling the `allow_experimental_correlated_subqueries` setting.
 
 This alternative formulation works and was verified to return the reference results.
 
