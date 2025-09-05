@@ -1257,6 +1257,7 @@ const sidebars = {
           collapsible: true,
           link: { type: "doc", id: "operations/allocation-profiling" },
           items: [
+            "operations/allocation-profiling",
             "operations/allocation-profiling-old",
           ]
         },
