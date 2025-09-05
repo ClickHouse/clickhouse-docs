@@ -4,7 +4,7 @@ sidebar_label: 'Querying Parquet files'
 slug: /chdb/guides/querying-parquet
 description: 'Learn how to query Parquet files with chDB.'
 keywords: ['chdb', 'parquet']
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 A lot of the world's data lives in Amazon S3 buckets.

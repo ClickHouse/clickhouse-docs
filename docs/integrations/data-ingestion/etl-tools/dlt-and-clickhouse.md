@@ -4,7 +4,7 @@ keywords: ['clickhouse', 'dlt', 'connect', 'integrate', 'etl', 'data integration
 description: 'Load data into Clickhouse using dlt integration'
 title: 'Connect dlt to ClickHouse'
 slug: /integrations/data-ingestion/etl-tools/dlt-and-clickhouse
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';

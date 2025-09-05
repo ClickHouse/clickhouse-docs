@@ -4,7 +4,7 @@ sidebar_label: 'PREWHERE Optimization'
 sidebar_position: 21
 description: 'PREWHERE reduces I/O by avoiding reading unnecessary column data.'
 title: 'How does the PREWHERE optimization work?'
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 import visual01 from '@site/static/images/guides/best-practices/prewhere_01.gif';

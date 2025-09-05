@@ -2,7 +2,7 @@
 slug: /about
 title: 'About ClickHouse'
 description: 'Landing page for About ClickHouse'
-doc_type: 'reference'
+doc_type: 'landing-page'
 ---
 
 # About ClickHouse

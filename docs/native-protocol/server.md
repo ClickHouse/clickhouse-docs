@@ -3,7 +3,7 @@ slug: /native-protocol/server
 sidebar_position: 3
 title: 'Server packets'
 description: 'Native protocol server'
-doc_type: 'how-to'
+doc_type: 'reference'
 ---
 
 # Server packets

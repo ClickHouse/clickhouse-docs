@@ -5,7 +5,7 @@ slug: /integrations/explo
 keywords: ['clickhouse', 'Explo', 'connect', 'integrate', 'ui']
 description: 'Explo is an easy-to-use, open source UI tool for asking questions about your data.'
 title: 'Connecting Explo to ClickHouse'
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

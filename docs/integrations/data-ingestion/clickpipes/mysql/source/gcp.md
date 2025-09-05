@@ -3,7 +3,7 @@ sidebar_label: 'Cloud SQL For MySQL '
 description: 'Step-by-step guide on how to set up Cloud SQL for MySQL as a source for ClickPipes'
 slug: /integrations/clickpipes/mysql/source/gcp
 title: 'Cloud SQL for MySQL source setup guide'
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 import gcp_pitr from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/gcp/gcp-mysql-pitr.png';

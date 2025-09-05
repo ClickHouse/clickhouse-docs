@@ -4,7 +4,7 @@ slug: /integrations/mitzu
 keywords: ['clickhouse', 'Mitzu', 'connect', 'integrate', 'ui']
 description: 'Mitzu is a no-code warehouse-native product analytics application.'
 title: 'Connecting Mitzu to ClickHouse'
-doc_type: 'tutorial'
+doc_type: 'guide'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

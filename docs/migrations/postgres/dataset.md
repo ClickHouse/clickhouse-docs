@@ -4,7 +4,7 @@ title: 'Migrating data'
 description: 'Dataset example to migrate from PostgreSQL to ClickHouse'
 keywords: ['Postgres']
 show_related_blogs: true
-doc_type: 'reference'
+doc_type: 'guide'
 ---
 
 import postgres_stackoverflow_schema from '@site/static/images/migrations/postgres-stackoverflow-schema.png';

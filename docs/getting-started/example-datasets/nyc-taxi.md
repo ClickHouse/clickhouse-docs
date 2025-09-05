@@ -5,7 +5,7 @@ sidebar_label: 'New York Taxi Data'
 sidebar_position: 2
 slug: /getting-started/example-datasets/nyc-taxi
 title: 'New York Taxi Data'
-doc_type: 'how-to'
+doc_type: 'reference'
 ---
 
 import Tabs from '@theme/Tabs';

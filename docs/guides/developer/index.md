@@ -3,7 +3,7 @@ slug: /guides/developer/overview
 sidebar_label: 'Advanced Guides Overview'
 description: 'Overview of the advanced guides'
 title: 'Advanced Guides'
-doc_type: 'reference'
+doc_type: 'guide'
 ---
 
 # Advanced guides

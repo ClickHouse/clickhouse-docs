@@ -5,7 +5,7 @@ sidebar_label: 'Other Linux'
 slug: /install/linux_other
 title: 'Install ClickHouse using tgz archives'
 hide_title: true
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 import Tar from './_snippets/_linux_tar_install.md'

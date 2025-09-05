@@ -5,7 +5,7 @@ description: 'Improving time-series storage efficiency'
 slug: /use-cases/time-series/storage-efficiency
 keywords: ['time-series']
 show_related_blogs: true
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 # Time-series storage efficiency

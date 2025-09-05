@@ -5,7 +5,7 @@ sidebar_label: 'Search'
 pagination_prev: null
 pagination_next: null
 description: 'Search with ClickStack'
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

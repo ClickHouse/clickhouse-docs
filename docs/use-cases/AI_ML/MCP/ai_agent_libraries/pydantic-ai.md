@@ -7,7 +7,7 @@ pagination_next: null
 description: 'Learn how to build a PydanticAI agent that can interact with ClickHouse MCP Server.'
 keywords: ['ClickHouse', 'MCP', 'PydanticAI']
 show_related_blogs: true
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 # How to build a PydanticAI agent using ClickHouse MCP Server

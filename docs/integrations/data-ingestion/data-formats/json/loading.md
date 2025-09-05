@@ -6,7 +6,7 @@ slug: /integrations/data-formats/json/loading
 description: 'Loading JSON'
 keywords: ['json', 'clickhouse', 'inserting', 'loading', 'inserting']
 score: 15
-doc_type: 'tutorial'
+doc_type: 'guide'
 ---
 
 # Loading JSON {#loading-json}

@@ -4,7 +4,7 @@ sidebar_position: 2
 slug: /integrations/grafana/query-builder
 description: 'Using the Query Builder in the ClickHouse Grafana plugin'
 title: 'Query Builder'
-doc_type: 'tutorial'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

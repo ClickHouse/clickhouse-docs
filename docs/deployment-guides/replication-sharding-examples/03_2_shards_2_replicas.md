@@ -4,7 +4,7 @@ sidebar_label: 'Replication + Scaling'
 sidebar_position: 100
 title: 'Replication + Scaling'
 description: 'By going through this tutorial, you will learn how to set up a simple ClickHouse cluster.'
-doc_type: 'tutorial'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

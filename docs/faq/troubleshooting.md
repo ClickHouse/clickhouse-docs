@@ -2,7 +2,7 @@
 title: 'Troubleshooting'
 slug: /faq/troubleshooting
 description: 'How to troubleshoot common ClickHouse Cloud error messages.'
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 ## ClickHouse Cloud troubleshooting {#clickhouse-cloud-troubleshooting}

@@ -5,7 +5,7 @@ slug: /integrations/tableau/connection-tips
 keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', 'ui']
 description: 'Tableau connection tips when using ClickHouse official connector.'
 title: 'Connection tips'
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

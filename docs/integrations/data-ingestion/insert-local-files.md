@@ -5,7 +5,7 @@ title: 'Insert Local Files'
 slug: /integrations/data-ingestion/insert-local-files
 description: 'Learn about Insert Local Files'
 show_related_blogs: true
-doc_type: 'explanation'
+doc_type: 'guide'
 ---
 
 # Insert local files

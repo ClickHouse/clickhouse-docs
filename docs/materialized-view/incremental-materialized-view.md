@@ -4,7 +4,7 @@ title: 'Incremental materialized view'
 description: 'How to use incremental materialized views to speed up queries'
 keywords: ['incremental materialized views', 'speed up queries', 'query optimization']
 score: 10000
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 import materializedViewDiagram from '@site/static/images/materialized-view/materialized-view-diagram.png';

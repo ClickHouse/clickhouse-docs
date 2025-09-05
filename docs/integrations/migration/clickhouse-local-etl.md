@@ -5,7 +5,7 @@ keywords: ['clickhouse', 'migrate', 'migration', 'migrating', 'data', 'etl', 'el
 slug: /cloud/migration/clickhouse-local
 title: 'Migrating to ClickHouse using clickhouse-local'
 description: 'Guide showing how to migrate to ClickHouse using clickhouse-local'
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

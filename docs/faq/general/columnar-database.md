@@ -4,7 +4,7 @@ title: 'What is a columnar database?'
 toc_hidden: true
 toc_priority: 101
 description: 'This page describes what a columnar database is'
-doc_type: 'explanation'
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';

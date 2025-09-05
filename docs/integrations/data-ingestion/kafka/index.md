@@ -4,7 +4,7 @@ sidebar_position: 1
 slug: /integrations/kafka
 description: 'Introduction to Kafka with ClickHouse'
 title: 'Integrating Kafka with ClickHouse'
-doc_type: 'reference'
+doc_type: 'guide'
 ---
 
 # Integrating Kafka with ClickHouse

@@ -3,7 +3,7 @@ slug: /managing-data/deleting-data/overview
 title: 'Deleting Data'
 description: 'How to delete data in ClickHouse Table Of Contents'
 keywords: ['delete', 'truncate', 'drop', 'lightweight delete']
-doc_type: 'reference'
+doc_type: 'guide'
 ---
 
 In this section of the documentation,

@@ -5,7 +5,7 @@ pagination_next: null
 description: 'OpenTelemetry collector for ClickStack - The ClickHouse Observability Stack'
 sidebar_label: 'OpenTelemetry Collector'
 title: 'ClickStack OpenTelemetry Collector'
-doc_type: 'reference'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

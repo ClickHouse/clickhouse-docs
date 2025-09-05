@@ -5,7 +5,7 @@ keywords: ['clickhouse', 'jdbc', 'connect', 'integrate']
 slug: /integrations/jdbc/jdbc-with-clickhouse
 description: 'The ClickHouse JDBC Bridge allows ClickHouse to access data from any external data source for which a JDBC driver is available'
 title: 'Connecting ClickHouse to external data sources with JDBC'
-doc_type: 'tutorial'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

@@ -5,7 +5,7 @@ sidebar_label: 'MacOS'
 slug: /install/macOS
 title: 'Install ClickHouse using Homebrew'
 hide_title: true
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 import MacOSProd from './_snippets/_macos.md'

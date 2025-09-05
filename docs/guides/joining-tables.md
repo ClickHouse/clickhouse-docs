@@ -3,7 +3,7 @@ title: 'Using JOINs in ClickHouse'
 description: 'How to join tables in ClickHouse'
 keywords: ['joins', 'join tables']
 slug: /guides/joining-tables
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

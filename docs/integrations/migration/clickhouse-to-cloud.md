@@ -4,7 +4,7 @@ sidebar_label: 'ClickHouse to ClickHouse Cloud'
 slug: /cloud/migration/clickhouse-to-cloud
 title: 'Migrating between self-managed ClickHouse and ClickHouse Cloud'
 description: 'Page describing how to migrate between self-managed ClickHouse and ClickHouse Cloud'
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

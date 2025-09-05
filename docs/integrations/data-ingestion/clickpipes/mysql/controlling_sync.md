@@ -3,7 +3,7 @@ title: 'Controlling the Syncing of a MySQL ClickPipe'
 description: 'Doc for controllling the sync a MySQL ClickPipe'
 slug: /integrations/clickpipes/mysql/sync_control
 sidebar_label: 'Controlling syncs'
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 import edit_sync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/edit_sync_button.png'

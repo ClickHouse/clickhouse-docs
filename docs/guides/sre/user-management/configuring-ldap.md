@@ -4,7 +4,7 @@ sidebar_position: 2
 slug: /guides/sre/configuring-ldap
 title: 'Configuring ClickHouse to Use LDAP for Authentication and Role Mapping'
 description: 'Describes how to configure ClickHouse to use LDAP for authentication and role mapping'
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';

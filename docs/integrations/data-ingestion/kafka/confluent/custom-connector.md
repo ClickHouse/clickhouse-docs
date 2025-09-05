@@ -4,7 +4,7 @@ sidebar_position: 3
 slug: /integrations/kafka/cloud/confluent/custom-connector
 description: 'Using ClickHouse Connector Sink with Kafka Connect and ClickHouse'
 title: 'Integrating Confluent Cloud with ClickHouse'
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

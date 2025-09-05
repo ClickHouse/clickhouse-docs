@@ -5,7 +5,7 @@ sidebar_label: 'Redhat/CentOS'
 slug: /install/redhat
 title: 'Install ClickHouse on rpm-based Linux distributions'
 hide_title: true
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 import RPM from './_snippets/_rpm_install.md'

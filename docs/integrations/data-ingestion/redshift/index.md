@@ -5,7 +5,7 @@ description: 'Migrating Data from Redshift to ClickHouse'
 title: 'Migrating data from Redshift to ClickHouse'
 keywords: ['Redshift']
 show_related_blogs: true
-doc_type: 'tutorial'
+doc_type: 'guide'
 ---
 
 import redshiftToClickhouse from '@site/static/images/integrations/data-ingestion/redshift/redshift-to-clickhouse.png';

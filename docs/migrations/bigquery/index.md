@@ -5,7 +5,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Landing page for the BigQuery migrations section'
 keywords: ['BigQuery', 'migration']
-doc_type: 'reference'
+doc_type: 'landing-page'
 ---
 
 In this section of the docs, learn more about the similarities and differences between BigQuery and ClickHouse Cloud, as well as why you might want to migrate and how to do so.

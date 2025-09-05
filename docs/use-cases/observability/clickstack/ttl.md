@@ -5,7 +5,7 @@ sidebar_label: 'Managing TTL'
 pagination_prev: null
 pagination_next: null
 description: 'Managing TTL with ClickStack'
-doc_type: 'tutorial'
+doc_type: 'guide'
 ---
 
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';

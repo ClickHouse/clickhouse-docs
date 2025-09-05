@@ -4,7 +4,7 @@ keywords: ['Cloud', 'Best Practices', 'Bulk Inserts', 'Asynchronous Inserts', 'A
 title: 'Overview'
 hide_title: true
 description: 'Landing page for Best Practices section in ClickHouse Cloud'
-doc_type: 'reference'
+doc_type: 'landing-page'
 ---
 
 # Best Practices in ClickHouse Cloud {#best-practices-in-clickhouse-cloud}

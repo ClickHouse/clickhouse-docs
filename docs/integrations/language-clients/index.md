@@ -3,7 +3,7 @@ slug: /integrations/language-clients
 title: 'Language Clients'
 description: 'Table of contents page for Language Clients.'
 keywords: ['Language Clients', 'C++', 'Go', 'JavaScript', 'Java', 'Python', 'Rust']
-doc_type: 'reference'
+doc_type: 'landing-page'
 ---
 
 In this section of the documentation, you can learn more about the many language client integrations

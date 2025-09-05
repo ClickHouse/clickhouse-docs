@@ -4,7 +4,7 @@ title: 'uniqArrayIf'
 description: 'Example of using the uniqArrayIf combinator'
 keywords: ['uniq', 'array', 'if', 'combinator', 'examples', 'uniqArrayIf']
 sidebar_label: 'uniqArrayIf'
-doc_type: 'how-to'
+doc_type: 'reference'
 ---
 
 # uniqArrayIf {#uniqarrayif}

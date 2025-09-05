@@ -3,7 +3,7 @@ slug: /cloud/bestpractices/multi-tenancy
 sidebar_label: 'Implement multi tenancy'
 title: 'Multi tenancy'
 description: 'Best practices to implement multi tenancy'
-doc_type: 'reference'
+doc_type: 'guide'
 ---
 
 On a SaaS data analytics platform, it is common for multiple tenants, such as organizations, customers, or business units, to share the same database infrastructure while maintaining logical separation of their data. This allows different users to securely access their own data within the same platform.

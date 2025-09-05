@@ -3,7 +3,7 @@ title: 'Controlling the Syncing of a MongoDB ClickPipe'
 description: 'Doc for controllling the sync a MongoDB ClickPipe'
 slug: /integrations/clickpipes/mongodb/sync_control
 sidebar_label: 'Controlling syncs'
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 import edit_sync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/edit_sync_button.png'

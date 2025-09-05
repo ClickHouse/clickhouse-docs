@@ -4,7 +4,7 @@ title: 'sumSimpleState'
 description: 'Example of using the sumSimpleState combinator'
 keywords: ['sum', 'state', 'simple', 'combinator', 'examples', 'sumSimpleState']
 sidebar_label: 'sumSimpleState'
-doc_type: 'how-to'
+doc_type: 'reference'
 ---
 
 # sumSimpleState {#sumsimplestate}

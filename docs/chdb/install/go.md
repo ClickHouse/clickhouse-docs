@@ -4,7 +4,7 @@ sidebar_label: 'Go'
 slug: /chdb/install/go
 description: 'How to install chDB for Go'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'go', 'install']
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 # Installing chDB for Go

@@ -1,7 +1,7 @@
 ---
 sidebar_label: Services
 title: Services
-doc_type: 'reference'
+doc_type: 'landing-page'
 ---
 
 ## List of organization services {#list-of-organization-services}

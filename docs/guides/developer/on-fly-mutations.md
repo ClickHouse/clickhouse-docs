@@ -4,7 +4,7 @@ sidebar_label: 'On-the-fly mutation'
 title: 'On-the-fly Mutations'
 keywords: ['On-the-fly mutation']
 description: 'Provides a description of on-the-fly mutations'
-doc_type: 'explanation'
+doc_type: 'guide'
 ---
 
 ## On-the-fly mutations {#on-the-fly-mutations}

@@ -7,7 +7,7 @@ pagination_next: null
 description: 'Learn how to use Chainlit to build LLM-based chat apps together with the ClickHouse MCP Server'
 keywords: ['ClickHouse', 'MCP', 'Chainlit']
 show_related_blogs: true
-doc_type: 'tutorial'
+doc_type: 'guide'
 ---
 
 # How to build an AI agent with Chainlit and the ClickHouse MCP Server

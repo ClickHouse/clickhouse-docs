@@ -4,7 +4,7 @@ sidebar_label: 'Scaling'
 sidebar_position: 10
 title: 'Scaling'
 description: 'Page describing an example architecture designed to provide scalability'
-doc_type: 'tutorial'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

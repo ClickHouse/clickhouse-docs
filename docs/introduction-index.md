@@ -3,7 +3,7 @@ slug: /introduction-clickhouse
 title: 'Introduction'
 description: 'Landing page for Introduction'
 pagination_next: null
-doc_type: 'reference'
+doc_type: 'landing-page'
 ---
 
 Welcome to ClickHouse! Check out the pages below to learn how to get up and running with ClickHouse - the fastest and most resource efficient real-time data warehouse and open-source database.

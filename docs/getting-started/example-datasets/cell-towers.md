@@ -5,7 +5,7 @@ sidebar_label: 'Geo Data'
 sidebar_position: 3
 slug: /getting-started/example-datasets/cell-towers
 title: 'Geo Data using the Cell Tower Dataset'
-doc_type: 'tutorial'
+doc_type: 'reference'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

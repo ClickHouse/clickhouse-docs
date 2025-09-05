@@ -2,7 +2,7 @@
 slug: /cloud/security/connectivity
 title: 'connectivity overview'
 description: 'Landing page for Connectivity'
-doc_type: 'reference'
+doc_type: 'landing-page'
 ---
 
 # Connectivity

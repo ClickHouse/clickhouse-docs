@@ -3,7 +3,7 @@ title: 'Replica-aware Routing'
 slug: /manage/replica-aware-routing
 description: 'How to use Replica-aware routing to increase cache re-use'
 keywords: ['cloud', 'sticky endpoints', 'sticky', 'endpoints', 'sticky routing', 'routing', 'replica aware routing']
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 # Replica-aware routing (private preview)

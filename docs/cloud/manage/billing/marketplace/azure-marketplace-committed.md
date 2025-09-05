@@ -3,7 +3,7 @@ slug: /cloud/billing/marketplace/azure-marketplace-committed-contract
 title: 'Azure Marketplace Committed Contract'
 description: 'Subscribe to ClickHouse Cloud through the Azure Marketplace (Committed Contract)'
 keywords: ['Microsoft', 'Azure', 'marketplace', 'billing', 'committed', 'committed contract']
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

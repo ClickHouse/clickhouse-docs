@@ -3,7 +3,7 @@ slug: /native-protocol/client
 sidebar_position: 2
 title: 'Native client packets'
 description: 'Native protocol client'
-doc_type: 'how-to'
+doc_type: 'reference'
 ---
 
 # Client packets

@@ -5,7 +5,7 @@ toc_hidden: true
 toc_priority: 11
 description: 'This page explains what "Не тормозит" means'
 keywords: ['Yandex']
-doc_type: 'explanation'
+doc_type: 'reference'
 ---
 
 # What does "Не тормозит" mean? {#what-does-ne-tormozit-mean}

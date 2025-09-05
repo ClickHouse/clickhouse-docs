@@ -3,7 +3,7 @@ sidebar_label: 'CSV and TSV'
 slug: /integrations/data-formats/csv-tsv
 title: 'Working with CSV and TSV data in ClickHouse'
 description: 'Page describing how to work with CSV and TSV data in ClickHouse'
-doc_type: 'reference'
+doc_type: 'guide'
 ---
 
 # Working with CSV and TSV data in ClickHouse

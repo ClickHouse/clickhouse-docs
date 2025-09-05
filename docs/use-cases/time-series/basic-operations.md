@@ -5,7 +5,7 @@ description: 'Basic time-series operations in ClickHouse.'
 slug: /use-cases/time-series/basic-operations
 keywords: ['time-series']
 show_related_blogs: true
-doc_type: 'tutorial'
+doc_type: 'guide'
 ---
 
 # Basic time-series operations

@@ -4,7 +4,7 @@ sidebar_label: 'Getting started'
 slug: /chdb/getting-started
 description: 'chDB is an in-process SQL OLAP Engine powered by ClickHouse'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'in-process', 'in process']
-doc_type: 'tutorial'
+doc_type: 'guide'
 ---
 
 # Getting started with chDB

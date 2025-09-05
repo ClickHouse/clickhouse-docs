@@ -5,7 +5,7 @@ description: 'Landing page for concepts'
 pagination_next: null
 pagination_prev: null
 keywords: ['concepts', 'OLAP', 'fast']
-doc_type: 'reference'
+doc_type: 'landing-page'
 ---
 
 In this section of the docs we'll dive into the concepts around what makes ClickHouse so fast and efficient. 

@@ -5,7 +5,7 @@ slug: /chdb/guides/pandas
 description: 'Learn how to query Pandas DataFrames with chDB'
 keywords: ['chDB', 'Pandas']
 show_related_blogs: true
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 [Pandas](https://pandas.pydata.org/) is a popular library for data manipulation and analysis in Python.

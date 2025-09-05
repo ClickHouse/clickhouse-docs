@@ -5,7 +5,7 @@ pagination_next: null
 sidebar_position: 7
 description: 'React Native SDK for ClickStack - The ClickHouse Observability Stack'
 title: 'React Native'
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 The ClickStack React Native SDK allows you to instrument your React Native

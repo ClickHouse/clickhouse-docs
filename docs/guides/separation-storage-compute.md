@@ -4,7 +4,7 @@ sidebar_label: 'Separation of Storage and Compute'
 slug: /guides/separation-storage-compute
 title: 'Separation of Storage and Compute'
 description: 'This guide explores how you can use ClickHouse and S3 to implement an architecture with separated storage and compute.'
-doc_type: 'tutorial'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Document Categorizer using Diataxis Framework
+Document Categorizer using Custom Framework
 Automatically categorizes markdown documents and updates frontmatter with doc_type.
 """
 
@@ -21,23 +21,56 @@ API_URL = 'https://api.anthropic.com/v1/messages'
 MODEL = 'claude-3-haiku-20240307'
 MAX_CONTENT_LENGTH = 8000
 BATCH_SIZE = 5
-RATE_LIMIT_DELAY = 1
+RATE_LIMIT_DELAY = 2
 
 # Categorization prompt
 CATEGORIZATION_PROMPT = """
-Categorize this markdown document using the Diataxis framework. 
+Categorize this markdown document using the following framework. 
 
 Categories:
-- tutorial: Learning-oriented, step-by-step learning journey
-- how-to: Task-oriented, problem-solving guides with procedures 
-- reference: Information-oriented, systematic lookup material (APIs, tables, indexes)
-- explanation: Understanding-oriented, conceptual background and context
+- guide: Task-oriented content with actionable steps, procedures, or learning paths that users follow to accomplish something
+- reference: Information-oriented material that users look up for specific facts, including technical specifications and lookup data
+- landing-page: Navigation pages that primarily link to other documents (index pages, TOCs, directory listings with minimal content per item)
+- changelog: Version history, release notes, change logs, what's new pages
 
-Guidelines:
-- Index/TOC pages with tables of links → reference
-- Step-by-step guides with procedures → how-to  
-- Conceptual overviews and FAQs → explanation
-- Learning journeys for beginners → tutorial
+Key distinctions:
+
+GUIDE vs REFERENCE:
+- Guide: "How to do X" - Users follow steps to accomplish a task or learn a skill
+  * Installation instructions, tutorials, walkthroughs, setup procedures
+  * Configuration guides with specific steps and code examples
+  * Decision-making frameworks ("How to choose the right engine")
+  * Learning paths with exercises or examples to follow along
+  * Step-by-step processes, workflows, procedures
+  * Migration guides, troubleshooting procedures
+  * Case studies and success stories that demonstrate implementation approaches
+  * Documents that show "how to configure/implement/set up/use" something
+  * Examples: "Getting Started Tutorial", "How to Create Tables", "Setting Up Replication", "Migrating from PostgreSQL", "Defining Ordering Keys", "Creative Use Cases"
+
+- Reference: Pure lookup material users consult for technical information
+  * API documentation, function definitions, configuration parameter lists
+  * Engine specifications, data type references, SQL syntax documentation
+  * Pure technical specifications without implementation guidance
+  * Adopters lists, error code references, parameter tables
+  * Architecture overviews that explain concepts without showing implementation steps
+  * Function syntax, data type definitions, specification documents
+  * Examples: "SQL Functions Reference", "MergeTree Engine Specification", "Configuration Parameters List", "Data Types Documentation", "ClickHouse Adopters"
+
+REFERENCE vs LANDING-PAGE:
+- Reference: Contains substantial technical information that users look up
+- Landing-page: Primarily navigation with minimal content per item (lists of links, table of contents, directory pages)
+
+Decision framework:
+1. Does it document version changes, release notes, or what's new? → changelog
+2. Is it primarily navigation with minimal content per item? → landing-page
+3. Does it provide step-by-step instructions, procedures, or implementation guidance (including case studies)? → guide  
+4. Does it contain technical specifications or information users look up? → reference
+
+Examples by category:
+- Guide: "Installing ClickHouse", "Creating Your First Dashboard", "Migration from MySQL Tutorial", "Setting Up Authentication", "Creative Use Cases"
+- Reference: "SQL Functions", "MergeTree Engine Documentation", "Configuration Parameters", "Data Types", "ClickHouse Architecture", "Adopters List"
+- Landing-page: "Documentation Home", "Table of Contents", "Available Integrations", "Function Categories"
+- Changelog: "Release Notes v22.8", "What's New", "Version History", "Breaking Changes"
 
 Filename: {filename}
 Title: {title}
@@ -45,13 +78,14 @@ Description: {description}
 
 Content: {content}
 
-IMPORTANT: Respond with ONLY one word: tutorial, how-to, reference, or explanation
+IMPORTANT: Respond with ONLY one word: guide, reference, landing-page, or changelog
 """
 
 class DocumentCategorizer:
-    def __init__(self, api_key: str, dry_run: bool = False):
+    def __init__(self, api_key: str, dry_run: bool = False, force: bool = False):
         self.api_key = api_key
         self.dry_run = dry_run
+        self.force = force
         self.session = None
         self.results = []
         
@@ -121,25 +155,25 @@ class DocumentCategorizer:
             raw_response = result['content'][0]['text'].strip().lower()
             
             # Extract category from response
-            valid_categories = {'tutorial', 'how-to', 'reference', 'explanation'}
+            valid_categories = {'guide', 'reference', 'landing-page', 'changelog'}
             
             # Look for exact matches first
             for category in valid_categories:
                 if category in raw_response:
                     return category
             
-            # Fallback patterns
-            if 'tutorial' in raw_response or 'learning' in raw_response:
-                return 'tutorial'
-            elif 'how-to' in raw_response or 'how to' in raw_response or 'step-by-step' in raw_response:
-                return 'how-to'
-            elif 'reference' in raw_response or 'lookup' in raw_response or 'api' in raw_response:
-                return 'reference'
+            # Fallback patterns with updated logic
+            if any(term in raw_response for term in ['changelog', 'change log', 'release notes', 'version history', 'what\'s new']):
+                return 'changelog'
+            elif any(term in raw_response for term in ['tutorial', 'how-to', 'how to', 'step-by-step', 'learning', 'guide', 'installation', 'setup']):
+                return 'guide'
+            elif any(term in raw_response for term in ['index', 'toc', 'table of contents', 'navigation', 'directory', 'links to']):
+                return 'landing-page'
             else:
-                return 'explanation'
+                return 'reference'
     
     def add_doc_type_to_frontmatter(self, file_path: Path, category: str) -> bool:
-        """Add doc_type to existing frontmatter without reformatting."""
+        """Add or update doc_type to existing frontmatter without reformatting."""
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 content = f.read()
@@ -154,8 +188,23 @@ class DocumentCategorizer:
             frontmatter_end = match.group(3)  # "\n---\n" 
             body = match.group(4)  # Rest of document
             
-            # Add doc_type as the last line in frontmatter
-            new_frontmatter_content = frontmatter_content + f"\ndoc_type: '{category}'"
+            # Check if doc_type already exists and update it, otherwise add it
+            doc_type_pattern = r'^doc_type:\s*.*$'
+            lines = frontmatter_content.split('\n')
+            
+            doc_type_updated = False
+            for i, line in enumerate(lines):
+                if re.match(doc_type_pattern, line.strip()):
+                    lines[i] = f"doc_type: '{category}'"
+                    doc_type_updated = True
+                    break
+            
+            if not doc_type_updated:
+                # Add doc_type as the last line in frontmatter
+                new_frontmatter_content = frontmatter_content + f"\ndoc_type: '{category}'"
+            else:
+                new_frontmatter_content = '\n'.join(lines)
+            
             new_content = f"{frontmatter_start}{new_frontmatter_content}{frontmatter_end}{body}"
             
             if not self.dry_run:
@@ -183,8 +232,8 @@ class DocumentCategorizer:
                     'reason': 'no_frontmatter'
                 }
             
-            # Skip if already categorized
-            if has_doc_type:
+            # Skip if already categorized (unless force is enabled)
+            if has_doc_type and not self.force:
                 return {
                     'file': str(file_path),
                     'status': 'skipped',
@@ -229,6 +278,8 @@ class DocumentCategorizer:
         print(f"Found {total_files} markdown files")
         if self.dry_run:
             print("DRY RUN MODE - No files will be modified")
+        if self.force:
+            print("FORCE MODE - Re-categorizing documents that already have doc_type")
         
         processed = 0
         
@@ -286,9 +337,10 @@ class DocumentCategorizer:
                 print(f"  ... and {len(error_results) - 10} more")
 
 async def main():
-    parser = argparse.ArgumentParser(description='Categorize markdown documents using Diataxis framework')
+    parser = argparse.ArgumentParser(description='Categorize markdown documents using custom framework')
     parser.add_argument('directory', help='Directory containing markdown files')
     parser.add_argument('--pattern', default='*.md', help='File pattern to match (default: *.md)')
+    parser.add_argument('--force', action='store_true', help='Re-categorize documents that already have doc_type')
     parser.add_argument('--dry-run', action='store_true', help='Show what would be done without making changes')
     parser.add_argument('--output-log', help='Save results to JSON file')
     
@@ -304,7 +356,7 @@ async def main():
         print("Get your API key from: https://console.anthropic.com/")
         return 1
     
-    async with DocumentCategorizer(ANTHROPIC_API_KEY, args.dry_run) as categorizer:
+    async with DocumentCategorizer(ANTHROPIC_API_KEY, args.dry_run, args.force) as categorizer:
         try:
             await categorizer.process_directory(directory, args.pattern)
             categorizer.print_summary()
@@ -316,6 +368,7 @@ async def main():
                         'directory': str(directory),
                         'pattern': args.pattern,
                         'dry_run': args.dry_run,
+                        'force': args.force,
                         'results': categorizer.results
                     }, f, indent=2)
                 print(f"Results saved to {args.output_log}")

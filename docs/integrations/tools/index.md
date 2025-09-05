@@ -3,7 +3,7 @@ slug: /integrations/tools
 keywords: ['Retool', 'Easypanel', 'Splunk']
 title: 'Tools'
 description: 'Landing page for the tools section'
-doc_type: 'reference'
+doc_type: 'landing-page'
 ---
 
 # Tools

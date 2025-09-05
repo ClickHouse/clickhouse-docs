@@ -3,7 +3,7 @@ title: 'Parallel Snapshot In The MySQL ClickPipe'
 description: 'Doc for explaining parallel snapshot in the MySQL ClickPipe'
 slug: /integrations/clickpipes/mysql/parallel_initial_load
 sidebar_label: 'How parallel snapshot works'
-doc_type: 'explanation'
+doc_type: 'guide'
 ---
 
 import snapshot_params from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/snapshot_params.png'

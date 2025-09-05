@@ -3,7 +3,7 @@ slug: /cloud/get-started
 title: 'Get Started'
 description: 'Get Started Table Of Contents'
 keywords: ['Cloud Quick Start', 'SQL Console', 'Query Insights', 'Query API Endpoints', 'Dashboards', 'Cloud Support']
-doc_type: 'reference'
+doc_type: 'landing-page'
 ---
 
 Welcome to ClickHouse Cloud! Explore the pages below to learn more about what ClickHouse Cloud has to offer.

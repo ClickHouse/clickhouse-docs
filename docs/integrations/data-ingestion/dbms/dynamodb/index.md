@@ -6,7 +6,7 @@ description: 'ClickPipes allows you to connect ClickHouse to DynamoDB.'
 keywords: ['DynamoDB']
 title: 'CDC from DynamoDB to ClickHouse'
 show_related_blogs: true
-doc_type: 'tutorial'
+doc_type: 'guide'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

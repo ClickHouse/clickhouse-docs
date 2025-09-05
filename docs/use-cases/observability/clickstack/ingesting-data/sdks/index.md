@@ -4,7 +4,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Language SDKs for ClickStack - The ClickHouse Observability Stack'
 title: 'Language SDKs'
-doc_type: 'reference'
+doc_type: 'guide'
 ---
 
 Users typically send data to ClickStack via the **OpenTelemetry (OTel) collector**, either directly from language SDKs or through intermediate OpenTelemetry collector acting as agents e.g. collecting infrastructure metrics and logs.

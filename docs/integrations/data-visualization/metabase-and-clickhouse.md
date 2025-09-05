@@ -6,7 +6,7 @@ keywords: ['Metabase']
 description: 'Metabase is an easy-to-use, open source UI tool for asking questions about your data.'
 title: 'Connecting Metabase to ClickHouse'
 show_related_blogs: true
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

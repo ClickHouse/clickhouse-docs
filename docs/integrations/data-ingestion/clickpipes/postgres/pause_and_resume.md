@@ -3,7 +3,7 @@ title: 'Pausing and Resuming a Postgres ClickPipe'
 description: 'Pausing and Resuming a Postgres ClickPipe'
 sidebar_label: 'Pause Table'
 slug: /integrations/clickpipes/postgres/pause_and_resume
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

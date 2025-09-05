@@ -5,7 +5,7 @@ sidebar_label: 'Dashboards'
 pagination_prev: null
 pagination_next: null
 description: 'Visualizations and Dashboards with ClickStack'
-doc_type: 'tutorial'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

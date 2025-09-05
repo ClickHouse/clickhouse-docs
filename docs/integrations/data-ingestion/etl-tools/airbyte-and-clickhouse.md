@@ -5,7 +5,7 @@ keywords: ['clickhouse', 'Airbyte', 'connect', 'integrate', 'etl', 'data integra
 slug: /integrations/airbyte
 description: 'Stream data into ClickHouse using Airbyte data pipelines'
 title: 'Connect Airbyte to ClickHouse'
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

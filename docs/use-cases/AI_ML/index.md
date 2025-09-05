@@ -5,7 +5,7 @@ pagination_next: null
 slug: /use-cases/AI
 title: 'Machine learning and GenAI'
 keywords: ['machine learning', 'genAI', 'AI']
-doc_type: 'reference'
+doc_type: 'landing-page'
 ---
 
 # Machine Learning and GenAI

@@ -8,7 +8,7 @@ description: 'In this guide, we will walk you through the steps to query
  your data using ClickHouse and the Nessie Catalog.'
 keywords: ['Nessie', 'REST', 'Transactional', 'Data Lake', 'Iceberg', 'Git-like']
 show_related_blogs: true
-doc_type: 'tutorial'
+doc_type: 'guide'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';

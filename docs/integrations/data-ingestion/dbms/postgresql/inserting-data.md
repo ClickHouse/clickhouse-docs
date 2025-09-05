@@ -3,7 +3,7 @@ slug: /integrations/postgresql/inserting-data
 title: 'How to insert data from PostgreSQL'
 keywords: ['postgres', 'postgresql', 'inserts']
 description: 'Page describing how to insert data from PostgresSQL using ClickPipes, PeerDB or the Postgres table function'
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 We recommend reading [this guide](/guides/inserting-data) to learn best practices on inserting data to ClickHouse to optimize for insert performance.

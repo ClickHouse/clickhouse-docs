@@ -5,7 +5,7 @@ sidebar_label: 'General Questions about ClickHouse'
 keywords: ['faq', 'questions', 'what is']
 title: 'General Questions About ClickHouse'
 description: 'Index page listing general questions about ClickHouse'
-doc_type: 'reference'
+doc_type: 'landing-page'
 ---
 
 # General questions about ClickHouse

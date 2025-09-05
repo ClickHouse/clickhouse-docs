@@ -5,7 +5,7 @@ pagination_next: null
 sidebar_position: 5
 description: 'Node.js SDK for ClickStack - The ClickHouse Observability Stack'
 title: 'Node.js'
-doc_type: 'tutorial'
+doc_type: 'guide'
 ---
 
 import Tabs from '@theme/Tabs';

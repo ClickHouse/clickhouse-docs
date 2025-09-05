@@ -4,7 +4,7 @@ sidebar_position: 3
 slug: /integrations/kafka/kafka-vector
 description: 'Using Vector with Kafka and ClickHouse'
 title: 'Using Vector with Kafka and ClickHouse'
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

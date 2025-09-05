@@ -6,7 +6,7 @@ keywords: ['superset']
 description: 'Apache Superset is an open-source data exploration and visualization platform.'
 title: 'Connect Superset to ClickHouse'
 show_related_blogs: true
-doc_type: 'how-to'
+doc_type: 'guide'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
