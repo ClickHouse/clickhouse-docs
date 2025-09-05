@@ -145,6 +145,8 @@ Code will be inserted here
 \```
 ```
 
+**File paths are relative to the root of the docs repository**
+
 You should commit the code inserted to the snippet as we want people (or LLMs) 
 reading the markdown to be able to see the code. The advantage of importing code
 to snippets this way is that you can test your snippets externally or store them
@@ -473,3 +475,48 @@ vale --filter='.Name == "ClickHouse.Headings"' docs/integrations
 This will run only the rule named `Headings` on
 the `docs/integrations` directory. Specifying a specific markdown
 file is also possible.
+
+## Vertical numbered stepper
+
+It is possible to render numbered steppers, as seen [here](https://clickhouse.com/docs/getting-started/quick-start/cloud)
+for example, using the following syntax:
+
+`<VerticalStepper headerLevel="hN"></VerticalStepper>`
+
+For example:
+
+```markdown
+<VerticalStepper headerLevel="h2">
+## Header 1 {#explicit-anchor-1}
+
+Some content...
+
+## Header 2 {#explicit-anchor-2}
+
+Some more content...
+
+</VerticalStepper>
+```
+
+You should specify `N` as the header level you want the vertical stepper to render
+for. In the example above, it is `h2` as we are using `##`. Use `h3` for `###`,
+`h4` for `####` etc.
+
+The component also works with numbered lists using `headerLevel="list"`. For example:
+
+```markdown
+<VerticalStepper headerLevel="h2">
+
+1. First list item
+
+Some content...
+
+2. Second list item
+
+Some more content...
+
+</VerticalStepper>
+```
+
+In this case, the first paragraph will be taken to be the label (the text next
+to the numbered circles of the vertical stepper) of the stepper.

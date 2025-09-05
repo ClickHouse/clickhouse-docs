@@ -109,6 +109,7 @@ function codeImportPlugin(context, options) {
                   importedContent = extractSnippet(rawContent, snippetId);
                 } catch (urlError) {
                   console.warn(`Could not fetch URL ${url} in ${filePath}: ${urlError.message}`);
+                  process.exit(1);
                   continue; // Skip this replacement if URL fetch fails
                 }
               }
@@ -123,6 +124,7 @@ function codeImportPlugin(context, options) {
               
             } catch (error) {
               console.warn(`Could not process ${param} in ${filePath}: ${error.message}`);
+              process.exit(1);
             }
           }
           
@@ -135,6 +137,7 @@ function codeImportPlugin(context, options) {
           }
         } catch (error) {
           console.warn(`Error processing file ${filePath}: ${error.message}`);
+          process.exit(1);
         }
       }
       
@@ -151,6 +154,7 @@ function codeImportPlugin(context, options) {
           console.log(`Processed code imports in: ${path.relative(context.siteDir, file.path)}`);
         } catch (error) {
           console.error(`Error writing processed file ${file.path}: ${error.message}`);
+          process.exit(1);
         }
       }
     }

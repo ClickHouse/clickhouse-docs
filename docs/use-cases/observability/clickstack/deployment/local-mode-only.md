@@ -34,7 +34,7 @@ Similar to the [all-in-one image](/use-cases/observability/clickstack/deployment
 
 ### Deploy with Docker {#deploy-with-docker}
 
-Local mode deploys the HyperDX UI only, accessible on port 8080.
+Local mode deploys the HyperDX UI on port 8080.
 
 ```shell
 docker run -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx-local
