@@ -62,11 +62,11 @@ The following instructions use the standard distribution of the OTel collector, 
 Download the configuration for the OTel collector:
 
 ```bash
-curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/main/docs/use-cases/observability/clickstack/deployment/_snippets/otel-cloud-collector.yaml
+curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/main/docs/use-cases/observability/clickstack/deployment/_snippets/otel-cloud-config.yaml
 ```
 
 <details>
-<summary>otel-cloud-collector.yaml</summary>
+<summary>otel-cloud-config.yaml</summary>
 ```yaml file=docs/use-cases/observability/clickstack/deployment/_snippets/otel-cloud-config.yaml
 ```
 </details>
@@ -102,7 +102,7 @@ docker run --rm -it \
 #   -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
 #   -e CLICKHOUSE_DATABASE=${CLICKHOUSE_DATABASE} \
 #   --user 0:0 \
-#   -v "$(pwd)/otel-cloud-collector.yaml":/etc/otel/config.yaml \
+#   -v "$(pwd)/otel-cloud-config.yaml":/etc/otel/config.yaml \
 #   -v /var/log:/var/log:ro \
 #   -v /private/var/log:/private/var/log:ro \
 #   otel/opentelemetry-collector-contrib:latest \
