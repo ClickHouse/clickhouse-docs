@@ -2,7 +2,7 @@ word,ru,jp,zh,es
 access control,контроль доступа,access control,access control,control de acceso
 access key,ключ доступа,access key,access key,clave de acceso
 adaptive join algorithms,Адаптивные алгоритмы JOIN,adaptive join algorithms,adaptive join algorithms,algoritmos de join adaptativos
-address sanitizer,санитайзер адресов,address sanitizer,address sanitizer,sanitizador de direcciones
+address sanitizer,санитайзер адресов,address sanitizer,address sanitizer,verificador de direcciones
 aggregate functions,агрегатные функции,aggregate functions,aggregate functions,funciones de agregación
 aggregation,агрегация,aggregation,aggregation,agregación
 AggregatingMergeTree,AggregatingMergeTree,AggregatingMergeTree,AggregatingMergeTree,AggregatingMergeTree
@@ -34,9 +34,9 @@ data compression,сжатие данных,data compression,data compression,com
 data ingestion,прием данных,data ingestion,data ingestion,ingesta de datos
 data lake,ДатаЛэйк,データレイク,数据湖,data lake
 data parts,части данных,パーツ,分区片段,partes de datos
-data pipeline,конвейер данных,data pipeline,data pipeline,pipeline de datos
+data pipeline,конвейер данных,data pipeline,data pipeline,data pipeline
 data skipping index,индекс пропуска данных,データスキッピングインデックス,数据跳过索引,índice de omisión de datos
-data warehousing,хранилище данных,data warehousing,data warehousing,almacenamiento de datos
+data warehousing,хранилище данных,data warehousing,data warehousing,data warehousing
 deduplication,дедупликация,deduplication,deduplication,deduplicación
 delete mutations,мутации удаления,delete mutations,delete mutations,mutaciones de eliminación
 denormalization,денормализация,denormalization,denormalization,desnormalización
@@ -65,11 +65,11 @@ Kafka,Kafka,Kafka,Kafka,Kafka
 Keeper,Keeper,Keeper,Keeper,Keeper
 key-value pairs,пары ключ-значение,key-value pairs,key-value pairs,pares clave-valor
 lightweight delete,легковесное удаление,論理削除,轻量级删除,eliminación ligera
-live view,live-представление,live view,live view,vista en vivo
+live view,live-представление,live view,live view,vista en tiempo real
 logging,логирование,logging,logging,registro
 low cardinality,лоу кардиналити,low cardinality,low cardinality,baja cardinalidad
 map,map,map,map,mapa
-mark files,файлы меток,mark files,mark files,archivos de marca
+mark files,файлы меток,mark files,mark files,mark files
 marks,метки,marks,marks,marcas
 materializable,материализуемый,materializable,materializable,materializable
 materialized columns,материализованные столбцы,materialized columns,materialized columns,columnas materializadas
@@ -125,7 +125,7 @@ server settings,настройки сервера,server settings,server setting
 session settings,настройки сессии,session settings,session settings,configuración de la sesión
 sharding key,ключ шардирования,sharding key,sharding key,clave de fragmentación
 SIMD instructions,инструкции SIMD,SIMD instructions,SIMD instructions,instrucciones SIMD
-sorting key,ключ сортировки,sorting key,sorting key,clave de ordenamiento
+sorting key,ключ сортировки,sorting key,sorting key,clave de ordenación
 sparse index,разреженный индекс,スパース,稀疏,índice disperso
 storage engines,движки хранения,storage engines,storage engines,motores de almacenamiento
 storage policies,политики хранения,storage policies,storage policies,políticas de almacenamiento
