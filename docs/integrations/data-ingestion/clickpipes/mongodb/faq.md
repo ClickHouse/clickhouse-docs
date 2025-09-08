@@ -10,17 +10,19 @@ title: 'ClickPipes for MongoDB FAQ'
 
 ### Can I query for individual fields in the JSON datatype? {#can-i-query-for-individual-fields-in-the-json-datatype}
 
-Yes, ClickHouse provides powerful JSON querying capabilities.
-
-1. **Dot Notation**: Direct field access
+You can use **dot notation** for direct field access:
 ```sql
 SELECT doc.customer.name as name FROM your_table;
 ```
-
-2. **Nested Objects**: Use the `^` operator for sub-objects
+For nested object fields, use the `^` operator:
 ```sql
 SELECT doc.^address.city AS city FROM your_table;
 ```
+For aggregations, cast the field to the appropriate type with the `CAST` function or `::` syntax:
+```sql
+SELECT sum(doc.shipping.cost::Float32) AS total_shipping_cost FROM t1;
+```
+To learn more about working with JSON, see our [Working with JSON guide](./quickstart).
 
 ### How do I flatten the nested MongoDB documents in ClickHouse? {#how-do-i-flatten-the-nested-mongodb-documents-in-clickhouse}
 
