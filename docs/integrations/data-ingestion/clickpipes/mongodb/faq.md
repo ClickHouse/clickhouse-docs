@@ -27,7 +27,7 @@ SELECT doc.^address.city AS city FROM your_table;
 MongoDB documents are replicated as JSON type in ClickHouse by default, preserving the nested structure. You have several options to flatten this data. If you want to flatten the data to columns, you can use normal views, materialized views, or query-time access.
 
 1. **Normal Views**: Use normal views to encapsulate flattening logic.
-2. **Materialized Views**: For smaller datasets, you can use refreshable materialized with FINAL to periodically flatten and deduplicate data. For larger datasets, we recommend using materialized views without FINAL to flatten the data in real-time, and then deduplicate data at query time.
+2. **Materialized Views**: For smaller datasets, you can use refreshable materialized with FINAL to periodically flatten and deduplicate data. For larger datasets, we recommend using incremental materialized views without FINAL to flatten the data in real-time, and then deduplicate data at query time.
 3. **Query-time Access**: Instead of flattening, use dot notation to access nested fields directly in queries.
 
 For detailed examples, see our [Working with JSON guide](./quickstart).
