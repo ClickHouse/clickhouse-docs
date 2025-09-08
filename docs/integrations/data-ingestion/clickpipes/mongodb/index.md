@@ -19,7 +19,7 @@ import Image from '@theme/IdealImage';
 <BetaBadge/>
 
 :::info
-Currently, ingesting data from MongoDB to ClickHouse Cloud via ClickPipes is in Beta.
+Ingesting data from MongoDB to ClickHouse Cloud via ClickPipes is in public beta.
 :::
 
 :::note
