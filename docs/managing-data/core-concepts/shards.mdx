@@ -33,7 +33,7 @@ In such a case the data can be split over multiple ClickHouse servers in the for
 
 Each ^^shard^^ holds a subset of the data and functions as a regular ClickHouse table that can be queried independently. However, queries will only process that subset, which may be a valid use case depending on data distribution. Typically, a [distributed table](/docs/engines/table-engines/special/distributed) (often per server) provides a unified view of the full dataset. It doesn't store data itself but forwards **SELECT** queries to all shards, assembles the results, and routes **INSERTS** to distribute data evenly.
 
-## ^^Distributed table^^ creation {#distributed-table-creation}
+## Distributed table creation {#distributed-table-creation}
 
 To illustrate **SELECT** query forwarding and **INSERT** routing, we consider the [What are table parts](/parts) example table split across two shards on two ClickHouse servers. First, we show the DDL statement for creating a corresponding **^^Distributed table^^** for this setup:
 

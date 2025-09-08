@@ -9,6 +9,6 @@ doc_type: 'changelog'
 
 # Cloud Changelog
 
-import CloudChangelog from '@site/docs/cloud/reference/changelog.md';
+import CloudChangelog from '@site/docs/cloud/reference/01_changelog/01_changelog.md';
 
 <CloudChangelog />

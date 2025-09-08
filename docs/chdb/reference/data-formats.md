@@ -40,6 +40,7 @@ The supported data formats from ClickHouse are:
 | Vertical                        | ✗     | ✔      |
 | JSON                            | ✔     | ✔      |
 | JSONAsString                    | ✔     | ✗      |
+| JSONAsObject                    | ✔     | ✗      |
 | JSONStrings                     | ✔     | ✔      |
 | JSONColumns                     | ✔     | ✔      |
 | JSONColumnsWithMetadata         | ✔     | ✔      |
@@ -54,9 +55,11 @@ The supported data formats from ClickHouse are:
 | JSONCompactEachRow              | ✔     | ✔      |
 | JSONCompactEachRowWithNames     | ✔     | ✔      |
 | JSONCompactEachRowWithNamesAndTypes | ✔  | ✔      |
+| JSONCompactEachRowWithProgress  | ✗     | ✔      |
 | JSONCompactStringsEachRow       | ✔     | ✔      |
 | JSONCompactStringsEachRowWithNames | ✔  | ✔      |
 | JSONCompactStringsEachRowWithNamesAndTypes | ✔ | ✔ |
+| JSONCompactStringsEachRowWithProgress | ✗ | ✔      |
 | JSONObjectEachRow               | ✔     | ✔      |
 | BSONEachRow                     | ✔     | ✔      |
 | TSKV                            | ✔     | ✔      |
@@ -75,6 +78,7 @@ The supported data formats from ClickHouse are:
 | Prometheus                      | ✗     | ✔      |
 | Protobuf                        | ✔     | ✔      |
 | ProtobufSingle                  | ✔     | ✔      |
+| ProtobufList                    | ✔     | ✔      |
 | Avro                            | ✔     | ✔      |
 | AvroConfluent                   | ✔     | ✗      |
 | Parquet                         | ✔     | ✔      |
@@ -83,10 +87,11 @@ The supported data formats from ClickHouse are:
 | ArrowStream                     | ✔     | ✔      |
 | ORC                             | ✔     | ✔      |
 | One                             | ✔     | ✗      |
+| Npy                             | ✔     | ✔      |
 | RowBinary                       | ✔     | ✔      |
 | RowBinaryWithNames              | ✔     | ✔      |
 | RowBinaryWithNamesAndTypes      | ✔     | ✔      |
-| RowBinaryWithDefaults           | ✔     | ✔      |
+| RowBinaryWithDefaults           | ✔     | ✗      |
 | Native                          | ✔     | ✔      |
 | Null                            | ✗     | ✔      |
 | XML                             | ✗     | ✔      |
@@ -96,6 +101,8 @@ The supported data formats from ClickHouse are:
 | RawBLOB                         | ✔     | ✔      |
 | MsgPack                         | ✔     | ✔      |
 | MySQLDump                       | ✔     | ✗      |
+| DWARF                           | ✔     | ✗      |
 | Markdown                        | ✗     | ✔      |
+| Form                            | ✔     | ✗      |
 
 For further information and examples, see [ClickHouse formats for input and output data](/interfaces/formats).

@@ -20,11 +20,11 @@ After a pipe is provisioned, it enters the `Setup` state. This state is where we
 
 ## Snapshot {#snapshot}
 
-Once setup is complete, we enter the `Snapshot` state. `Snapshot`, `Initial Snapshot` and `Initial Load` (more common) are interchangeable terms. In this state, we take a snapshot of the source MongoDB collections and load them into ClickHouse. Retention setting for the oplog should account for initial load time. The pipe will also enter the `Snapshot` state when a resync is triggered or when new tables are added to an existing pipe.
+Once setup is complete, we enter the `Snapshot` state (unless it's a CDC-only pipe, which would transition to `Running`). `Snapshot`, `Initial Snapshot` and `Initial Load` (more common) are interchangeable terms. In this state, we take a snapshot of the source MongoDB collections and load them into ClickHouse. Retention setting for the oplog should account for initial load time. The pipe will also enter the `Snapshot` state when a resync is triggered or when new tables are added to an existing pipe.
 
 ## Running {#running}
 
-Once the initial load is complete, the pipe enters the `Running` state. This is where the pipe begins `Change-Data Capture`. In this state, we start streaming changes from the source MongoDB cluster to ClickHouse. For information on controlling CDC, see [the doc on controlling CDC](./sync_control).
+Once the initial load is complete, the pipe enters the `Running` state (unless it's a snapshot-only pipe, which would transition to `Completed`). This is where the pipe begins `Change-Data Capture`. In this state, we start streaming changes from the source MongoDB cluster to ClickHouse. For information on controlling CDC, see [the doc on controlling CDC](./sync_control).
 
 ## Paused {#paused}
 
@@ -48,6 +48,10 @@ Currently, this indicates the pipe is in the process of removing tables.
 This state is coming soon. If you're using our [OpenAPI](https://clickhouse.com/docs/cloud/manage/openapi), consider adding support for it now to ensure your integration continues working when it's released.
 :::
 This state indicates the pipe is in the phase of resync where it is performing an atomic swap of the _resync tables with the original tables. More information on resync can be found in the [resync documentation](./resync).
+
+## Completed {#completed}
+
+This state applies to snapshot-only pipes and indicates that the snapshot has been completed and there's no more work to do.
 
 ## Failed {#failed}
 

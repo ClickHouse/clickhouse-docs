@@ -1430,6 +1430,15 @@ input::-ms-input-placeholder { /* Microsoft Edge */
   display: flex;
 }
 
+@media (max-width: breakpoints.$laptop-breakpoint) {
+  .installContainer {
+    flex-wrap: wrap;
+  }
+  .install-card {
+    margin: 0;
+  }
+}
+
 .install-card {
   margin: 0em 0.5em;
 }
