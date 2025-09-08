@@ -56,7 +56,7 @@ Snowflake supports the `VARIANT`, `OBJECT` and `ARRAY` types for semi-structured
 data.
 
 ClickHouse offers the equivalent [`Variant`](/sql-reference/data-types/variant),
-[`Object`](/sql-reference/data-types/object-data-type) (deprecated) and [`Array`](/sql-reference/data-types/array)
+`Object` (now deprecated in favor of the native `JSON` type) and [`Array`](/sql-reference/data-types/array)
 types. Additionally, ClickHouse has the [`JSON`](/sql-reference/data-types/newjson) 
 type which replaces the now deprecated `Object('json')` type and is particularly
 performant and storage efficient in [comparison to other native JSON types](https://jsonbench.com/).
