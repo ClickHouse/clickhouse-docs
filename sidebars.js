@@ -630,6 +630,7 @@ const sidebars = {
             "integrations/data-ingestion/clickpipes/mongodb/datatypes",
             "integrations/data-ingestion/clickpipes/mongodb/quickstart",
             "integrations/data-ingestion/clickpipes/mongodb/lifecycle",
+            "integrations/data-ingestion/clickpipes/mongodb/faq",
             {
               type: "category",
               label: "Operations",
