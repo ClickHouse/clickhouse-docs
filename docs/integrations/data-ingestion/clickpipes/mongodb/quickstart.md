@@ -266,11 +266,11 @@ LIMIT 10;
 
 ### Refreshable materialized view {#refreshable-materialized-view}
 
-You can also create [Refreshable Materialized Views](https://clickhouse.com/docs/materialized-view/refreshable-materialized-view), which enable you to schedule query execution for deduplicating rows and storing the results in a flattened destination table. With each scheduled refresh, the destination table is replaced with the latest query results.
+If your table size is small, you can create [Refreshable Materialized Views](https://clickhouse.com/docs/materialized-view/refreshable-materialized-view), which enable you to schedule query execution for deduplicating rows and storing the results in a flattened destination table. With each scheduled refresh, the destination table is replaced with the latest query results.
 
 The key advantage of this method is that the query using the `FINAL` keyword runs only once during the refresh, eliminating the need for subsequent queries on the destination table to use `FINAL`.
 
-However, a drawback is that the data in the destination table is only as up-to-date as the most recent refresh. For many use cases, refresh intervals ranging from several minutes to a few hours provide a good balance between data freshness and query performance.
+A drawback is that the data in the destination table is only as up-to-date as the most recent refresh. For many use cases, refresh intervals ranging from several minutes to a few hours provide a good balance between data freshness and query performance.
 
 ```sql
 CREATE TABLE flattened_t1 (
@@ -287,7 +287,7 @@ ENGINE = ReplacingMergeTree()
 PRIMARY KEY _id
 ORDER BY _id;
 
-CREATE MATERIALIZED VIEW mv1 REFRESH EVERY 1 HOUR TO flattened_t1 AS
+CREATE MATERIALIZED VIEW rmv REFRESH EVERY 1 HOUR TO flattened_t1 AS
 SELECT 
     CAST(doc._id, 'String') AS _id,
     CAST(doc.order_id, 'String') AS order_id,
@@ -309,6 +309,60 @@ SELECT
     sum(total_amount)
 FROM flattened_t1
 WHERE shipping_info.city = 'Seattle'
+GROUP BY customer_id
+ORDER BY customer_id DESC
+LIMIT 10;
+```
+
+### Incremental materialized view {#incremental-materialized-view}
+
+If your table size is very large or if you want to flatten the data in real-time, you can create [Incremental Materialized Views](https://clickhouse.com/docs/materialized-view/incremental-materialized-view). If your table has frequent updates, it's not recommended to use FINAL modifier in your materialized view as every update will trigger a merge. Instead, you can deduplicate the data at query time by building a normal view on top of the materialized view.
+
+```sql
+CREATE TABLE flattened_t1 (
+    `_id` String,
+    `order_id` String,
+    `customer_id` Int64,
+    `status` String,
+    `total_amount` Decimal(18, 2),
+    `order_date` DateTime64(3),
+    `shipping_info` JSON,
+    `items` Dynamic,
+    `_peerdb_version` Int64,
+    `_peerdb_synced_at` DateTime64(9),
+    `_peerdb_is_deleted` Int8
+)
+ENGINE = ReplacingMergeTree()
+PRIMARY KEY _id
+ORDER BY _id;
+
+CREATE MATERIALIZED VIEW imv TO flattened_t1 AS
+SELECT 
+    CAST(doc._id, 'String') AS _id,
+    CAST(doc.order_id, 'String') AS order_id,
+    CAST(doc.customer_id, 'Int64') AS customer_id,
+    CAST(doc.status, 'String') AS status,
+    CAST(doc.total_amount, 'Decimal64(2)') AS total_amount,
+    CAST(parseDateTime64BestEffortOrNull(doc.order_date, 3), 'DATETIME(3)') AS order_date,
+    doc.^shipping AS shipping_info,
+    doc.items,
+    _peerdb_version,
+    _peerdb_synced_at,   
+    _peerdb_is_deleted
+FROM t1;
+
+CREATE VIEW flattened_t1_final AS
+SELECT * FROM flattened_t1 FINAL WHERE _peerdb_is_deleted = 0;
+```
+
+You can now query the view `flattened_t1_final` as follows:
+
+```sql
+SELECT
+    customer_id,
+    sum(total_amount)
+FROM flattened_t1_final
+AND shipping_info.city = 'Seattle'
 GROUP BY customer_id
 ORDER BY customer_id DESC
 LIMIT 10;
