@@ -10,11 +10,11 @@ title: 'ClickPipes for MongoDB FAQ'
 
 ### Can I query for individual fields in the JSON datatype? {#can-i-query-for-individual-fields-in-the-json-datatype}
 
-For direct field access, such as {"user_id": 123}, you can use **dot notation**:
+For direct field access, such as `{"user_id": 123}`, you can use **dot notation**:
 ```sql
 SELECT doc.user_id as user_id FROM your_table;
 ```
-For direct field access of nested object fields, such as {"address": { "city": "San Francisco", "state": "CA" }}, use the `^` operator:
+For direct field access of nested object fields, such as `{"address": { "city": "San Francisco", "state": "CA" }}`, use the `^` operator:
 ```sql
 SELECT doc.^address.city AS city FROM your_table;
 ```
