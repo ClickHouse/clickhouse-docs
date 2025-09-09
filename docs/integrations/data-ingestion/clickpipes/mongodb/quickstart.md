@@ -72,7 +72,7 @@ The replicated tables use this standard schema:
 
 ClickPipes maps MongoDB collections into ClickHouse using the `ReplacingMergeTree` table engine family. With this engine, updates are modeled as inserts with a newer version (`_peerdb_version`) of the document for a given primary key (`_id`), enabling efficient handling of updates, replaces, and deletes as versioned inserts. 
 
-`ReplacingMergeTree` clears out duplicates asynchronously in the background. To guarantee the absence of duplicates for the same row, use the [`FINAL` modifier](https://clickhouse.com/docs/sql-reference/statements/select/from#final-modifier). For example:
+`ReplacingMergeTree` clears out duplicates asynchronously in the background. To guarantee the absence of duplicates for the same row, use the [`FINAL` modifier](/sql-reference/statements/select/from#final-modifier). For example:
 
 ```sql
 SELECT * FROM t1 FINAL;
@@ -266,7 +266,7 @@ LIMIT 10;
 
 ### Refreshable materialized view {#refreshable-materialized-view}
 
-If your table size is small, you can create [Refreshable Materialized Views](https://clickhouse.com/docs/materialized-view/refreshable-materialized-view), which enable you to schedule query execution for deduplicating rows and storing the results in a flattened destination table. With each scheduled refresh, the destination table is replaced with the latest query results.
+You can create [Refreshable Materialized Views](https://clickhouse.com/docs/materialized-view/refreshable-materialized-view), which enable you to schedule query execution for deduplicating rows and storing the results in a flattened destination table. With each scheduled refresh, the destination table is replaced with the latest query results.
 
 The key advantage of this method is that the query using the `FINAL` keyword runs only once during the refresh, eliminating the need for subsequent queries on the destination table to use `FINAL`.
 
@@ -316,7 +316,7 @@ LIMIT 10;
 
 ### Incremental materialized view {#incremental-materialized-view}
 
-If your table size is very large or if you want to flatten the data in real-time, you can create [Incremental Materialized Views](https://clickhouse.com/docs/materialized-view/incremental-materialized-view). If your table has frequent updates, it's not recommended to use FINAL modifier in your materialized view as every update will trigger a merge. Instead, you can deduplicate the data at query time by building a normal view on top of the materialized view.
+If you want to access flattened columns in real-time, you can create [Incremental Materialized Views](https://clickhouse.com/docs/materialized-view/incremental-materialized-view). If your table has frequent updates, it's not recommended to use the `FINAL` modifier in your materialized view as every update will trigger a merge. Instead, you can deduplicate the data at query time by building a normal view on top of the materialized view.
 
 ```sql
 CREATE TABLE flattened_t1 (

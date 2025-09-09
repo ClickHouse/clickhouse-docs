@@ -10,11 +10,11 @@ title: 'ClickPipes for MongoDB FAQ'
 
 ### Can I query for individual fields in the JSON datatype? {#can-i-query-for-individual-fields-in-the-json-datatype}
 
-You can use **dot notation** for direct field access:
+For direct field access, such as {"user_id": 123}, you can use **dot notation**:
 ```sql
-SELECT doc.customer.name as name FROM your_table;
+SELECT doc.user_id as user_id FROM your_table;
 ```
-For nested object fields, use the `^` operator:
+For direct field access of nested object fields, such as {"address": { "city": "San Francisco", "state": "CA" }}, use the `^` operator:
 ```sql
 SELECT doc.^address.city AS city FROM your_table;
 ```
@@ -29,14 +29,14 @@ To learn more about working with JSON, see our [Working with JSON guide](./quick
 MongoDB documents are replicated as JSON type in ClickHouse by default, preserving the nested structure. You have several options to flatten this data. If you want to flatten the data to columns, you can use normal views, materialized views, or query-time access.
 
 1. **Normal Views**: Use normal views to encapsulate flattening logic.
-2. **Materialized Views**: For smaller datasets, you can use refreshable materialized with FINAL to periodically flatten and deduplicate data. For larger datasets, we recommend using incremental materialized views without FINAL to flatten the data in real-time, and then deduplicate data at query time.
+2. **Materialized Views**: For smaller datasets, you can use refreshable materialized with the [`FINAL` modifier](/sql-reference/statements/select/from#final-modifier) to periodically flatten and deduplicate data. For larger datasets, we recommend using incremental materialized views without `FINAL` to flatten the data in real-time, and then deduplicate data at query time.
 3. **Query-time Access**: Instead of flattening, use dot notation to access nested fields directly in queries.
 
 For detailed examples, see our [Working with JSON guide](./quickstart).
 
 ### Can I connect MongoDB databases that don't have a public IP or are in private networks? {#can-i-connect-mongodb-databases-that-dont-have-a-public-ip-or-are-in-private-networks}
 
-We support AWS PrivateLink for connecting to MongoDB databases that don't have a public IP or are in private networks.
+We support AWS PrivateLink for connecting to MongoDB databases that don't have a public IP or are in private networks. Azure Private Link and GCP Private Service Connect are currently not supported.
 
 ### What happens if I delete a database/table from my MongoDB database? {#what-happens-if-i-delete-a-database-table-from-my-mongodb-database}
 
