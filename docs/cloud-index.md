@@ -1,5 +1,5 @@
 ---
-slug: /cloud/overview
+slug: /cloud/about-us
 keywords: ['AWS', 'Cloud', 'serverless']
 title: 'Overview'
 hide_title: true

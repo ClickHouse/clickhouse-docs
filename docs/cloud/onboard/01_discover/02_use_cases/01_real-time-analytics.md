@@ -4,6 +4,7 @@ title: 'Real-time analytics'
 description: 'Learn how to build real-time analytics applications with ClickHouse Cloud for instant insights and data-driven decision making'
 keywords: ['use cases', 'real-time analytics']
 sidebar_label: 'Real-time analytics'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

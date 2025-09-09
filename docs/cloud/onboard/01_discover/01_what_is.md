@@ -4,6 +4,7 @@ title: 'Introduction'
 description: 'Learn what ClickHouse Cloud is, its benefits over open-source, and key features of the fully managed analytics platform'
 keywords: ['clickhouse cloud', 'what is clickhouse cloud', 'clickhouse cloud overview', 'clickhouse cloud features']
 hide_title: true
+doc_type: 'guide'
 ---
 
 ## What is ClickHouse Cloud? {#what-is-clickhouse-cloud}

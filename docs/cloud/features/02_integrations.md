@@ -3,6 +3,7 @@ sidebar_label: 'Integrations'
 slug: /manage/integrations
 title: 'Integrations'
 description: 'Integrations for ClickHouse'
+doc_type: 'landing-page'
 ---
 
 import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';
