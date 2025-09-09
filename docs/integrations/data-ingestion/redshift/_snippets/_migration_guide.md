@@ -1,13 +1,3 @@
----
-sidebar_label: 'Redshift'
-slug: /integrations/redshift
-description: 'Migrating Data from Redshift to ClickHouse'
-title: 'Migrating data from Redshift to ClickHouse'
-keywords: ['Redshift']
-show_related_blogs: true
-doc_type: 'guide'
----
-
 import redshiftToClickhouse from '@site/static/images/integrations/data-ingestion/redshift/redshift-to-clickhouse.png';
 import push from '@site/static/images/integrations/data-ingestion/redshift/push.png';
 import pull from '@site/static/images/integrations/data-ingestion/redshift/pull.png';
