@@ -9,10 +9,15 @@ import Image from '@theme/IdealImage';
 import user_grant_permissions_options from '@site/static/images/cloud/security/cloud-access-management/user_grant_permissions_options.png';
 
 # Access control in ClickHouse Cloud {#access-control-in-clickhouse-cloud}
-ClickHouse controls user access in two places, via the console and via the database. Console access is managed via the clickhouse.cloud user interface. Database access is managed via database user accounts and roles. Additionally, console users can be granted roles within the database that enable the console user to interact with the database via our SQL console.
+
+ClickHouse controls user access in two places, via the console and via the database.
+Console access is managed via the clickhouse.cloud user interface. Database access is managed via database user accounts and roles.
+Additionally, console users can be granted roles within the database that enable the console user to interact with the database via our SQL console.
 
 ## Console users and roles {#console-users-and-roles}
-Configure Organization and Service role assignments within the Console > Users and roles page. Configure SQL Console role assignments in the settings page for each service.
+
+[Configure Organization and Service role assignments](/cloud/guides/sql-console/configure-org-service-role-assignments) within the Console > Users and roles page.
+[Configure SQL Console role assignments](/cloud/guides/sql-console/config-sql-console-role-assignments) in the settings page for each service.
 
 Users must be assigned an organization level role and may optionally be assigned service roles for one or more services. Service roles may be optionally configured for users to access the SQL console in the service settings page.
 - Users assigned the Organization Admin role are granted Service Admin by default.
