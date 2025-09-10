@@ -4,6 +4,7 @@ sidebar_label: 'Support'
 title: 'ClickHouse Cloud support services'
 sidebar_position: 30
 description: 'Information on ClickHouse Cloud support services'
+doc_type: 'reference'
 ---
 
 # ClickHouse Cloud support services

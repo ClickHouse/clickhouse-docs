@@ -2,6 +2,7 @@
 title: 'Security and compliance reports'
 slug: /cloud/security/compliance-overview
 description: 'Overview of ClickHouse Cloud security and compliance certifications including SOC 2, ISO 27001, U.S. DPF, and HIPAA'
+doc_type: 'guide'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';

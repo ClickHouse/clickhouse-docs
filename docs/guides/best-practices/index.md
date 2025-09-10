@@ -3,6 +3,7 @@ slug: /operations/overview
 sidebar_label: 'Performance and Optimizations Overview'
 description: 'Overview page of Performance and Optimizations'
 title: 'Performance and Optimizations'
+doc_type: 'reference'
 ---
 
 import TableOfContents from '@site/docs/guides/best-practices/_snippets/_performance_optimizations_table_of_contents.md';

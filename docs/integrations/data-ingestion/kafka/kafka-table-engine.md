@@ -4,6 +4,7 @@ sidebar_position: 5
 slug: /integrations/kafka/kafka-table-engine
 description: 'Using the Kafka Table Engine'
 title: 'Using the Kafka table engine'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

@@ -3,6 +3,7 @@ sidebar_label: 'Managing API Keys'
 slug: /cloud/manage/openapi
 title: 'Managing API Keys'
 description: 'ClickHouse Cloud provides an API utilizing OpenAPI that allows you to programmatically manage your account and aspects of your services.'
+doc_type: 'guide'
 ---
 
 import image_01 from '@site/static/images/cloud/manage/openapi1.png';

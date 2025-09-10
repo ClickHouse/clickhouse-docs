@@ -4,6 +4,7 @@ title: 'Connecting to PostgreSQL'
 keywords: ['clickhouse', 'postgres', 'postgresql', 'connect', 'integrate', 'table', 'engine']
 description: 'Page describing the various ways to connect PostgreSQL to ClickHouse'
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

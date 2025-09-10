@@ -5,6 +5,7 @@ pagination_prev: null
 pagination_next: null
 sidebar_position: 2
 description: 'Deploying ClickStack with Helm - The ClickHouse Observability Stack'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

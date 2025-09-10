@@ -5,6 +5,7 @@ description: 'Migrating from Snowflake to ClickHouse'
 keywords: ['Snowflake']
 title: 'Migrate from Snowflake to ClickHouse'
 show_related_blogs: true
+doc_type: 'landing-page'
 ---
 
 # Elasticsearch to ClickHouse migration

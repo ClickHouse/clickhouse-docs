@@ -7,6 +7,7 @@ slug: /getting-started/example-datasets/github
 title: 'Writing Queries in ClickHouse using GitHub Data'
 keywords: ['Github']
 show_related_blogs: true
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';

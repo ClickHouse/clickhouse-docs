@@ -5,6 +5,7 @@ description: 'How to migrate your data from BigQuery to ClickHouse Cloud'
 keywords: ['BigQuery']
 show_related_blogs: true
 sidebar_label: 'Migration guide'
+doc_type: 'guide'
 ---
 
 import bigquery_2 from '@site/static/images/migrations/bigquery-2.png';

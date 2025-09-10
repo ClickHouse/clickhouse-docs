@@ -3,6 +3,7 @@ description: 'Dataset containing 28 million rows of hacker news data.'
 sidebar_label: 'Hacker News'
 slug: /getting-started/example-datasets/hacker-news
 title: 'Hacker News dataset'
+doc_type: 'reference'
 ---
 
 # Hacker News dataset

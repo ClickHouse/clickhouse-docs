@@ -8,6 +8,7 @@ description: 'In this guide, we will walk you through the steps to query
  your data using ClickHouse and the Lakekeeper Catalog.'
 keywords: ['Lakekeeper', 'REST', 'Tabular', 'Data Lake', 'Iceberg']
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';

@@ -5,6 +5,7 @@ pagination_next: null
 slug: /use-cases/data-lake
 title: 'Data Lake'
 keywords: ['data lake', 'glue', 'unity', 'rest']
+doc_type: 'landing-page'
 ---
 
 ClickHouse supports integration with multiple catalogs (Unity, Glue, REST, Polaris, etc.).

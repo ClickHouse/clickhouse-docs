@@ -3,6 +3,7 @@ slug: /integrations/clickpipes/secure-rds
 sidebar_label: 'AWS IAM DB Authentication (RDS/Aurora)'
 title: 'AWS IAM DB Authentication (RDS/Aurora)'
 description: 'This article demonstrates how ClickPipes customers can leverage role-based access to authenticate with Amazon RDS/Aurora and access their database securely.'
+doc_type: 'guide'
 ---
 
 import secures3_arn from '@site/static/images/cloud/security/secures3_arn.png';

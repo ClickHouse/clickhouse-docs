@@ -4,6 +4,7 @@ slug: /integrations/fabi.ai
 keywords: ['clickhouse', 'Fabi.ai', 'connect', 'integrate', 'notebook', 'ui', 'analytics']
 description: 'Fabi.ai is an all-in-one collaborate data analysis platform. You can leverage SQL, Python, AI, and no-code to build dashboard and data workflows faster than ever before'
 title: 'Connect ClickHouse to Fabi.ai'
+doc_type: 'guide'
 ---
 
 import fabi_01 from '@site/static/images/integrations/data-visualization/fabi_01.png';

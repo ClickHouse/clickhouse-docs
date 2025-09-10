@@ -7,6 +7,7 @@ pagination_next: null
 description: 'Learn how to build a LlamaIndex AI agent that can interact with ClickHouse MCP Server.'
 keywords: ['ClickHouse', 'MCP', 'LlamaIndex']
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 # How to build a LlamaIndex AI agent using ClickHouse MCP Server

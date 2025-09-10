@@ -4,6 +4,7 @@ title: 'Data Lakehouse'
 description: 'Build modern data warehousing architectures with ClickHouse Cloud combining the flexibility of data lakes with database performance'
 keywords: ['use cases', 'data lake and warehouse']
 sidebar_label: 'Data warehousing'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

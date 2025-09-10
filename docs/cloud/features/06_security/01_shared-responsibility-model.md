@@ -3,6 +3,7 @@ sidebar_label: 'Shared responsibility model'
 slug: /cloud/security/shared-responsibility-model
 title: 'Shared responsibility model'
 description: 'Learn more about the security model of ClickHouse Cloud'
+doc_type: 'reference'
 ---
 
 ## Service types {#service-types}

@@ -4,6 +4,7 @@ title: 'sumMap'
 description: 'Example of using the sumMap combinator'
 keywords: ['sum', 'map', 'combinator', 'examples', 'sumMap']
 sidebar_label: 'sumMap'
+doc_type: 'reference'
 ---
 
 # sumMap {#summap}

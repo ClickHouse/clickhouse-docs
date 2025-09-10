@@ -4,6 +4,7 @@ sidebar_position: 1
 title: 'SQL Console'
 slug: /integrations/sql-clients/sql-console
 description: 'Learn about SQL Console'
+doc_type: 'guide'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';

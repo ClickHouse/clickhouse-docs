@@ -4,6 +4,7 @@ sidebar_label: 'MySQL'
 title: 'MySQL'
 hide_title: true
 description: 'Page describing MySQL integration'
+doc_type: 'reference'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

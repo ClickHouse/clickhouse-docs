@@ -5,6 +5,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Learn how to build an AI agent with DSPy and the ClickHouse MCP Server'
 keywords: ['ClickHouse', 'Agno', 'Chainlit', 'MCP', 'DSPy', 'LangChain', 'LlamaIndex', 'OpenAI agents', 'PydanticAI', 'SlackBot', 'StreamLit']
+doc_type: 'guide'
 ---
 
 # Guides for integrating AI agent libraries with ClickHouse MCP Server

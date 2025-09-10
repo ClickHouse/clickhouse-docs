@@ -4,6 +4,7 @@ description: 'Frequently asked questions about ClickPipes for Postgres.'
 slug: /integrations/clickpipes/postgres/faq
 sidebar_position: 2
 title: 'ClickPipes for Postgres FAQ'
+doc_type: 'reference'
 ---
 
 # ClickPipes for Postgres FAQ

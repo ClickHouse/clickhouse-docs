@@ -4,6 +4,7 @@ title: 'avgIf'
 description: 'Example of using the avgIf combinator'
 keywords: ['avg', 'if', 'combinator', 'examples', 'avgIf']
 sidebar_label: 'avgIf'
+doc_type: 'reference'
 ---
 
 # avgIf {#avgif}

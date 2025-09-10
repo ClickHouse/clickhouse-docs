@@ -4,6 +4,7 @@ sidebar_position: 1
 title: 'ClickHouse Cloud API'
 slug: /cloud/manage/api/api-overview
 description: 'Learn about ClickHouse Cloud API'
+doc_type: 'reference'
 ---
 
 # ClickHouse Cloud API

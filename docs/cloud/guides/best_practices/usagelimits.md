@@ -3,6 +3,7 @@ slug: /cloud/bestpractices/usage-limits
 sidebar_label: 'Service limits'
 title: 'Usage limits'
 description: 'Describes the recommended usage limits in ClickHouse Cloud'
+doc_type: 'reference'
 ---
 
 While ClickHouse is known for its speed and reliability, optimal performance is 

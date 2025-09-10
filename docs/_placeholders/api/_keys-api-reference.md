@@ -1,6 +1,7 @@
 ---
 sidebar_label: Keys
 title: Keys
+doc_type: 'reference'
 ---
 
 ## Get list of all keys {#get-list-of-all-keys}

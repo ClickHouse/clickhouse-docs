@@ -4,6 +4,7 @@ keywords: ['clickhouse', 'migrate', 'migration', 'migrating', 'data', 'etl', 'el
 slug: /cloud/migration/etl-tool-to-clickhouse
 title: 'Using a 3rd-party ETL Tool'
 description: 'Page describing how to use a 3rd-party ETL tool with ClickHouse'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

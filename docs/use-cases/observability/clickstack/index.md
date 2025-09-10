@@ -4,6 +4,7 @@ title: 'ClickStack - The ClickHouse Observability Stack'
 pagination_prev: null
 pagination_next: null
 description: 'Landing page for the ClickHouse Observability Stack'
+doc_type: 'landing-page'
 ---
 
 **ClickStack** is a production-grade observability platform built on ClickHouse and OpenTelemetry (OTel), unifying logs, traces, metrics and session in a single high-performance solution. Designed for monitoring and debugging complex systems, ClickStack enables developers and SREs to trace issues end-to-end without switching between tools or manually stitching together data using timestamps or correlation IDs.

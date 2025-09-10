@@ -2,6 +2,7 @@
 slug: /cloud/reference/changelogs
 title: 'Changelogs'
 description: 'Landing page for Cloud changelogs'
+doc_type: 'landing-page'
 ---
 
 | Page                                                          | Description                                     |

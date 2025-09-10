@@ -3,6 +3,7 @@ sidebar_label: 'Personal data access'
 slug: /cloud/security/personal-data-access
 title: 'Personal data access'
 description: 'As a registered user, ClickHouse allows you to view and manage your personal account data, including contact information.'
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';

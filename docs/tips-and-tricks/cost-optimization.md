@@ -2,7 +2,7 @@
 sidebar_position: 1
 slug: /community-wisdom/cost-optimization
 sidebar_label: 'Cost Optimization'
-doc_type: 'how-to-guide'
+doc_type: 'guide'
 keywords: [
   'cost optimization',
   'storage costs', 

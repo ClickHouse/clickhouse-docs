@@ -6,6 +6,7 @@ title: 'Use Materialized Views'
 description: 'Page describing Materialized Views'
 keywords: ['materialized views', 'medallion architecture']
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

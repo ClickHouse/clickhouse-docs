@@ -5,6 +5,7 @@ sidebar_label: 'Foursquare places'
 slug: /getting-started/example-datasets/foursquare-places
 title: 'Foursquare places'
 keywords: ['visualizing']
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';

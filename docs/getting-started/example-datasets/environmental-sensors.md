@@ -4,6 +4,7 @@ description: 'Over 20 billion records of data from Sensor.Community, a contribut
 sidebar_label: 'Environmental Sensors Data'
 slug: /getting-started/example-datasets/environmental-sensors
 title: 'Environmental Sensors Data'
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';

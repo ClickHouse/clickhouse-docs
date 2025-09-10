@@ -4,6 +4,7 @@ keywords: ['Cloud', 'Best Practices', 'Bulk Inserts', 'Asynchronous Inserts', 'A
 title: 'Overview'
 hide_title: true
 description: 'Landing page for Best Practices section in ClickHouse Cloud'
+doc_type: 'landing-page'
 ---
 
 import TableOfContents from '@site/docs/best-practices/_snippets/_table_of_contents.md';
