@@ -3283,7 +3283,7 @@
     },
     {
       "source": "/docs/integrations/postgresql/data-type-mappings",
-      "destination": "/migrations/postgresql/appendix/#data-type-mappings",
+      "destination": "/docs/migrations/postgresql/appendix/#data-type-mappings",
       "permanent": true
     },
     {
@@ -3383,17 +3383,17 @@
     },
     {
       "source": "/docs/cloud/manage/jan-2025-faq/summary",
-      "destination": "/cloud/manage/cloud-tiers",
+      "destination": "/docs/cloud/manage/cloud-tiers",
       "permanent": true
     },
     {
       "source" : "/docs/cloud/manage/jan-2025-faq/new-tiers",
-      "destination" : "/cloud/manage/cloud-tiers",
+      "destination" : "/docs/cloud/manage/cloud-tiers",
       "permanent" : true
     },
     {
       "source": "/docs/cloud/manage/jan-2025-faq/scaling",
-      "destination": "/manage/scaling",
+      "destination": "/docs/manage/scaling",
       "permanent": true
     },
     {
@@ -3413,12 +3413,12 @@
     },
     {
       "source": "/docs/cloud/manage/jan-2025-faq",
-      "destination": "/cloud/manage/cloud-tiers",
+      "destination": "/docs/cloud/manage/cloud-tiers",
       "permanent": true
     },
     {
-      "source": "/cloud/manage/jan-2025-faq/plan-migrations",
-      "destination": "/cloud/manage/cloud-tiers",
+      "source": "/docs/cloud/manage/jan-2025-faq/plan-migrations",
+      "destination": "/docs/cloud/manage/cloud-tiers",
       "permanent": true
     },
     {
@@ -3437,7 +3437,7 @@
       "permanent": true
     },
     {
-      "source": "/integrations/data-ingestion/clickpipes/mysql/parallel_initial_load",
+      "source": "/docs/integrations/data-ingestion/clickpipes/mysql/parallel_initial_load",
       "destination": "/docs/integrations/clickpipes/mysql/parallel_initial_load",
       "permanent": true
     },
@@ -3458,7 +3458,7 @@
     },
     {
       "source": "/docs/integrations/migration",
-      "destination": "/integrations/migration/overview",
+      "destination": "/docs/integrations/migration/overview",
       "permanent": true
     }
   ]
