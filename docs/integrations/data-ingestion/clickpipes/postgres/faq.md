@@ -311,3 +311,7 @@ The current workaround would be to map the NUMERIC type to string on ClickHouse.
 ## I'm seeing errors like `invalid memory alloc request size <XXX>` during replication/slot creation {#postgres-invalid-memalloc-bug}
 
 There was a bug introduced in Postgres patch versions 17.5/16.9/15.13/14.18/13.21 due to which certain workloads can cause an exponential increase in memory usage, leading to a memory allocation request >1GB which Postgres considers invalid. This bug [has been fixed](https://github.com/postgres/postgres/commit/d87d07b7ad3b782cb74566cd771ecdb2823adf6a) and will be in the next Postgres patch series (17.6...). Please check with your Postgres provider when this patch version will be available for upgrade. If an upgrade isn't immediately possible, a resync of the pipe will be needed as it hits the error.
+
+### Why can I not replicate my table which has a dot in it? {#replicate-table-dot}
+PeerDB has a limitation currently where dots in source table identifiers - aka either schema name or table name - is not supported for replication as PeerDB cannot discern, in that case, what is the schema and what is the table as it splits on dot.
+Effort is being made to support input of schema and table separately to get around this limitation.
