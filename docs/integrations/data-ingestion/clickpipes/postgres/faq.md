@@ -203,7 +203,7 @@ For manually created publications, please add any tables you want to the publica
 If you're replicating from a Postgres read replica/hot standby, you will need to create your own publication on the primary instance, which will automatically propagate to the standby. The ClickPipe will not be able to manage the publication in this case as you're unable to create publications on a standby.
 :::
 
-### Recommended `max_slot_wal_keep_size` settings {#recommended-max_slot_wal_keep_size-settings}
+## Recommended `max_slot_wal_keep_size` settings {#recommended-max_slot_wal_keep_size-settings}
 
 - **At Minimum:** Set [`max_slot_wal_keep_size`](https://www.postgresql.org/docs/devel/runtime-config-replication.html#GUC-MAX-SLOT-WAL-KEEP-SIZE) to retain at least **two days' worth** of WAL data.
 - **For Large Databases (High Transaction Volume):** Retain at least **2-3 times** the peak WAL generation per day.
