@@ -203,23 +203,23 @@ For manually created publications, please add any tables you want to the publica
 If you're replicating from a Postgres read replica/hot standby, you will need to create your own publication on the primary instance, which will automatically propagate to the standby. The ClickPipe will not be able to manage the publication in this case as you're unable to create publications on a standby.
 :::
 
-## Recommended `max_slot_wal_keep_size` settings {#recommended-max_slot_wal_keep_size-settings}
+### Recommended `max_slot_wal_keep_size` settings {#recommended-max_slot_wal_keep_size-settings}
 
 - **At Minimum:** Set [`max_slot_wal_keep_size`](https://www.postgresql.org/docs/devel/runtime-config-replication.html#GUC-MAX-SLOT-WAL-KEEP-SIZE) to retain at least **two days' worth** of WAL data.
 - **For Large Databases (High Transaction Volume):** Retain at least **2-3 times** the peak WAL generation per day.
 - **For Storage-Constrained Environments:** Tune this conservatively to **avoid disk exhaustion** while ensuring replication stability.
 
-### How to calculate the right value {#how-to-calculate-the-right-value}
+#### How to calculate the right value {#how-to-calculate-the-right-value}
 
 To determine the right setting, measure the WAL generation rate:
 
-#### For PostgreSQL 10+ {#for-postgresql-10}
+##### For PostgreSQL 10+ {#for-postgresql-10}
 
 ```sql
 SELECT pg_wal_lsn_diff(pg_current_wal_insert_lsn(), '0/0') / 1024 / 1024 AS wal_generated_mb;
 ```
 
-#### For PostgreSQL 9.6 and below: {#for-postgresql-96-and-below}
+##### For PostgreSQL 9.6 and below: {#for-postgresql-96-and-below}
 
 ```sql
 SELECT pg_xlog_location_diff(pg_current_xlog_insert_location(), '0/0') / 1024 / 1024 AS wal_generated_mb;
@@ -230,7 +230,7 @@ SELECT pg_xlog_location_diff(pg_current_xlog_insert_location(), '0/0') / 1024 / 
 * Multiply that number by 2 or 3 to provide sufficient retention.
 * Set `max_slot_wal_keep_size` to the resulting value in MB or GB.
 
-#### Example {#example}
+##### Example {#example}
 
 If your database generates 100 GB of WAL per day, set:
 
