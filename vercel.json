@@ -3460,6 +3460,36 @@
       "source": "/docs/integrations/migration",
       "destination": "/integrations/migration/overview",
       "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/security-and-compliance",
+      "destination": "/docs/cloud/security/compliance-overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/sql-reference/statements/backup",
+      "destination": "/docs/operations/backup",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/manage",
+      "destination": "/docs/cloud/manage/cloud-api",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security",
+      "destination": "/docs/cloud/security/shared-responsibility-model",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/manage/jan-2025-faq/plan-migrations",
+      "destination": "/docs/cloud/manage/cloud-tiers",
+      "permanent": true
+    },
+    {
+      "source": "/docs/migrations/migrations",
+      "destination": "/docs/integrations/migration/overview",
+      "permanent": true
     }
   ]
 }
