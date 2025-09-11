@@ -318,7 +318,7 @@ Yes! Before creating your Postgres ClickPipe, create a publication without DELET
 ```sql
 CREATE PUBLICATION <pub_name> FOR TABLES IN SCHEMA <schema_name> WITH (publish = 'insert,update');
 ```
-Then when [setting up](https://clickhouse.com/docs/integrations/clickpipes/postgres#configuring-the-replication-settings) your Postgres ClickPipe, make sure this publication name selected.
+Then when [setting up](https://clickhouse.com/docs/integrations/clickpipes/postgres#configuring-the-replication-settings) your Postgres ClickPipe, make sure this publication name is selected.
 
 Note that TRUNCATE operations are ignored by ClickPipes and will not be replicated to ClickHouse.
 
