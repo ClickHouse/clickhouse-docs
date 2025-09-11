@@ -755,6 +755,7 @@ const sidebars = {
         "integrations/data-visualization/deepnote",
         "integrations/data-visualization/astrato-and-clickhouse",
         "integrations/data-visualization/chartbrew-and-clickhouse",
+        "integrations/data-visualization/dot-and-clickhouse",
         "integrations/data-visualization/draxlr-and-clickhouse",
         "integrations/data-visualization/embeddable-and-clickhouse",
         "integrations/data-visualization/explo-and-clickhouse",
