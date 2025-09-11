@@ -315,7 +315,7 @@ There was a bug introduced in Postgres patch versions 17.5/16.9/15.13/14.18/13.2
 ## I need to maintain a complete historical record in ClickHouse, even when the data is deleted from source Postgres database. Can I completely ignore DELETEs and TRUNCATEs operations from Postgres in ClickPipes? {#ignore-delete-truncate}
 
 Yes! Before creating your Postgres ClickPipe, create a publication without DELETEs. For example:
-```
+```sql
 CREATE PUBLICATION <pub_name> FOR TABLES IN SCHEMA <schema_name> WITH (publish = 'insert,update');
 ```
 Then when [setting up](https://clickhouse.com/docs/integrations/clickpipes/postgres#configuring-the-replication-settings) your Postgres ClickPipe, make sure this publication name selected.
