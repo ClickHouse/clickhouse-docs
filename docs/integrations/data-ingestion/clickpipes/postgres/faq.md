@@ -325,4 +325,3 @@ Note that TRUNCATE operations are ignored by ClickPipes and will not be replicat
 ### Why can I not replicate my table which has a dot in it? {#replicate-table-dot}
 PeerDB has a limitation currently where dots in source table identifiers - aka either schema name or table name - is not supported for replication as PeerDB cannot discern, in that case, what is the schema and what is the table as it splits on dot.
 Effort is being made to support input of schema and table separately to get around this limitation.
-
