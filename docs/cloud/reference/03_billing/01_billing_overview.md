@@ -175,6 +175,10 @@ Best for: large scale, mission critical deployments that have stringent security
 
 ## Frequently asked questions {#faqs}
 
+### What is a ClickHouse Credit (CHC)? {#what-is-chc}
+
+A ClickHouse Credit is a unit of credit toward Customer's usage of ClickHouse Cloud equal to one (1) US dollar, to be applied based on ClickHouse's then-current published price list.
+
 ### How is compute metered? {#how-is-compute-metered}
 
 ClickHouse Cloud meters compute on a per-minute basis, in 8G RAM increments. 
