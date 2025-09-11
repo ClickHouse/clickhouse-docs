@@ -253,7 +253,13 @@ we continue to draw down from the trial credits during the initial 30-day trial 
 
 The ClickHouse Cloud console provides a Usage display that details usage per service. This breakdown, organized by usage dimensions, helps you understand the cost associated with each metered unit.
 
-### How do I access my invoice for my marketplace subscription to the ClickHouse Cloud service? {#how-do-i-access-my-invoice-for-my-marketplace-subscription-to-the-clickhouse-cloud-service}
+### How do I access my invoices for my subscription to the ClickHouse Cloud service? {#how-do-i-access-my-invoice-for-my-subscription-to-the-clickhouse-cloud-service}
+
+For direct subscriptions using a credit card:
+
+To view your invoices, select your organization from the left-hand navigation bar in the ClickHouse Cloud UI, then go to Billing. All of your invoices will be listed under the Invoices section.
+
+For subscriptions through a cloud marketplace:
 
 All marketplace subscriptions are billed and invoiced by the marketplace. You can view your invoice through the respective cloud provider marketplace directly.
 
