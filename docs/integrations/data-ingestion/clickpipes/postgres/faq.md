@@ -312,7 +312,7 @@ The current workaround would be to map the NUMERIC type to string on ClickHouse.
 
 There was a bug introduced in Postgres patch versions 17.5/16.9/15.13/14.18/13.21 due to which certain workloads can cause an exponential increase in memory usage, leading to a memory allocation request >1GB which Postgres considers invalid. This bug [has been fixed](https://github.com/postgres/postgres/commit/d87d07b7ad3b782cb74566cd771ecdb2823adf6a) and will be in the next Postgres patch series (17.6...). Please check with your Postgres provider when this patch version will be available for upgrade. If an upgrade isn't immediately possible, a resync of the pipe will be needed as it hits the error.
 
-## I need to maintain a complete historical record in ClickHouse, even when the data is deleted from source Postgres database. Can I completely ignore DELETE and TRUNCATE operations from Postgres in ClickPipes? {#ignore-delete-truncate}
+## I need to maintain a complete historical record in ClickHouse, even when the data is deleted from the source Postgres database. Can I completely ignore DELETE and TRUNCATE operations from Postgres in ClickPipes? {#ignore-delete-truncate}
 
 Yes! Before creating your Postgres ClickPipe, create a publication without DELETE operations. For example:
 ```sql
