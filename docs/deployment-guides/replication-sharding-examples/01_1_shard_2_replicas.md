@@ -772,7 +772,7 @@ FROM url(
     county String,
     d String,
     e String'
-    ) SETTINGS max_http_get_redirects=10;
+    ) SETTINGS max_http_get_redirects=10
 LIMIT 10000;
 ```
 
