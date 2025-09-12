@@ -233,7 +233,7 @@ ClickHouse Cloud credits for PAYG are invoiced in \$0.01 units, allowing us to c
 
 Billing follows a monthly billing cycle and the start date is tracked as the date when the ClickHouse Cloud organization was created.
 
-### If I have an active PAYG marketplace subscription and then sign a committed contract, will my committed credits be consumed first?
+### If I have an active PAYG marketplace subscription and then sign a committed contract, will my committed credits be consumed first? {#committed-credits-consumed-first-with-active-payg-subscription}
 
 Yes. Usage is consumed with the following payment methods in this order:
 - Committed (prepaid) credits
