@@ -19,7 +19,6 @@ This makes it much easier to spot which errors or warnings are new, which are re
 
 Beyond incident response, this high-level view also helps you identify noisy log sources that can be trimmed to reduce cost, discover the different types of logs a service produces, and more quickly answer whether the system is already emitting the signals you care about.
 
-
 ## Accessing event patterns {#accessing-event-patterns}
 
 Event patterns are available directly through the **Search** panel in ClickStack.  
@@ -27,7 +26,6 @@ Event patterns are available directly through the **Search** panel in ClickStack
 From the top-left **Analysis Mode** selector, choose **Event Patterns** to switch from the standard results table to a clustered view of similar events.  
 
 <Image img={event_patterns_highlight} alt="Event patterns" size="lg"/>
-
 
 This provides an alternative to the default **Results Table** which allows users to scroll through every individual log or trace.
 
