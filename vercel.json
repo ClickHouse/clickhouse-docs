@@ -2827,6 +2827,16 @@
       "permanent": true
     },
     {
+      "source": "/docs/cloud/manage/billing/overview#clickpipes-for-postgres-cdc",
+      "destination": "/docs/cloud/reference/billing/clickpipes#clickpipes-for-postgresql-cdc",
+      "permanent": true
+    },
+     {
+      "source": "/docs/cloud/manage/billing/overview#clickpipes-for-streaming-object-storage",
+      "destination": "/docs/cloud/reference/billing/clickpipes#clickpipes-for-streaming-object-storage",
+      "permanent": true
+    },
+    {
       "source": "/docs/en/cloud/marketplace",
       "destination": "/docs/cloud/manage/marketplace/",
       "permanent": true
