@@ -31,7 +31,7 @@ From the top-left **Analysis Mode** selector, choose **Event Deltas** (with a `T
 
 <Image img={event_deltas_no_selected} alt="Event Deltas not selected" size="lg"/>
 
-This view renders the distribution of spans over time, showing how latency varies alongside volume. The vertical axis represents latency, while the coloring indicates the density of traces at a given point-darker yellow areas correspond to a higher concentration of traces. With this visualization, users can quickly see how spans are distributed across both latency and count, making it easier to identify shifts or anomalies in performance.
+This view renders the distribution of spans over time, showing how latency varies alongside volume. The vertical axis represents latency, while the coloring indicates the density of traces at a given point with darker yellow areas corresponding to a higher concentration of traces. With this visualization, users can quickly see how spans are distributed across both latency and count, making it easier to identify shifts or anomalies in performance.
 
 <Image img={event_deltas_highlighted} alt="Event Deltas highlighted" size="lg"/>
 
