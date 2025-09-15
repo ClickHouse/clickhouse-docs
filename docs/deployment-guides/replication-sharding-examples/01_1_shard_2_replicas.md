@@ -633,8 +633,8 @@ FROM url(
     county String,
     d String,
     e String'
-) SETTINGS max_http_get_redirects=10;
-LIMIT 10000;
+) LIMIT 10000
+SETTINGS max_http_get_redirects=10;
 ```
 
 Notice that the data is completely replicated on each host:
@@ -772,8 +772,7 @@ FROM url(
     county String,
     d String,
     e String'
-    ) SETTINGS max_http_get_redirects=10
-LIMIT 10000;
+    ) SETTINGS max_http_get_redirects=10;
 ```
 
 Query the table from `clickhouse-02` or `clickhouse-01`:
