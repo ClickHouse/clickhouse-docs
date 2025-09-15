@@ -339,3 +339,9 @@ Note that TRUNCATE operations are ignored by ClickPipes and will not be replicat
 ### Why can I not replicate my table which has a dot in it? {#replicate-table-dot}
 PeerDB has a limitation currently where dots in source table identifiers - aka either schema name or table name - is not supported for replication as PeerDB cannot discern, in that case, what is the schema and what is the table as it splits on dot.
 Effort is being made to support input of schema and table separately to get around this limitation.
+
+### Initial load completed but there is no/missing data on ClickHouse. What could be the issue? {#initial-load-issue}
+If your initial load has completed without error but your destination ClickHouse table is missing data, it might be that you have RLS (Row Level Security) policies enabled on your source Postgres tables.
+Also worth checking:
+- If the user has sufficient permissions to read the source tables.
+- If there are any row policies on ClickHouse side which might be filtering out rows.
