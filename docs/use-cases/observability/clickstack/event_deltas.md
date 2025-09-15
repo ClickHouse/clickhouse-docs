@@ -17,7 +17,7 @@ import event_deltas_outliers from '@site/static/images/use-cases/observability/e
 import event_deltas_separation from '@site/static/images/use-cases/observability/event_deltas_separation.png';
 import event_deltas_inappropriate from '@site/static/images/use-cases/observability/event_deltas_inappropriate.png';
 
-Event Deltas in ClickStack are a trace-focused feature that automatically analyzes the properties of traces to uncover what changed when performance regresses. By comparing the latency distributions of normal versus slow traces within a corpus, ClickStack highlights which attributes are most responsible for the difference - whether that's a new deployment version, a specific endpoint, or a particular user ID.
+Event Deltas in ClickStack are a trace-focused feature that automatically analyzes the properties of traces to uncover what changed when performance regresses. By comparing the latency distributions of normal versus slow traces within a corpus, ClickStack highlights which attributes are most correlated with the difference - whether that's a new deployment version, a specific endpoint, or a particular user ID.
 
 Instead of manually sifting through trace data, event deltas surface the key properties driving differences in latency between two subsets of data, making it far easier to diagnose regressions and pinpoint root causes. This feature allows you to visualize raw traces and immediately see the factors influencing performance shifts, accelerating incident response, and reducing mean time to resolution.
 
