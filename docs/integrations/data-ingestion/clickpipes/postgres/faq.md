@@ -24,7 +24,19 @@ Please refer to the [Postgres Generated Columns: Gotchas and Best Practices](./g
 
 ### Do tables need to have primary keys to be part of Postgres CDC? {#do-tables-need-to-have-primary-keys-to-be-part-of-postgres-cdc}
 
-Yes, for CDC, tables must have either a primary key or a [REPLICA IDENTITY](https://www.postgresql.org/docs/current/sql-altertable.html#SQL-ALTERTABLE-REPLICA-IDENTITY). The REPLICA IDENTITY can be set to FULL or configured to use a unique index.
+For a table to be replicated using ClickPipes for Postgres, it must have either a primary key or a [REPLICA IDENTITY](https://www.postgresql.org/docs/current/sql-altertable.html#SQL-ALTERTABLE-REPLICA-IDENTITY) defined.
+
+- **Primary Key**: The most straightforward approach is to define a primary key on the table. This provides a unique identifier for each row, which is crucial for tracking updates and deletions. You can have REPLICA IDENTITY set to `DEFAULT` (the default behavior) in this case.
+- **Replica Identity**: If a table does not have a primary key, you can set a replica identity. The replica identity can be set to `FULL`, which means that the entire row will be used to identify changes. Alternatively, you can set it to use a unique index if one exists on the table, and then set REPLICA IDENTITY to `USING INDEX index_name`.
+To set the replica identity to FULL, you can use the following SQL command:
+```sql
+ALTER TABLE your_table_name REPLICA IDENTITY FULL;
+```
+REPLICA IDENTITY FULL also enabled replication of unchanged TOAST columns. More on that [here](./toast).
+
+Note that using `REPLICA IDENTITY FULL` can have performance implications and also faster WAL growth, especially for tables without a primary key and with frequent updates or deletes, as it requires more data to be logged for each change. If you have any doubts or need assistance with setting up primary keys or replica identities for your tables, please reach out to our support team for guidance.
+
+It's important to note that if neither a primary key nor a replica identity is defined, ClickPipes will not be able to replicate changes for that table, and you may encounter errors during the replication process. Therefore, it's recommended to review your table schemas and ensure that they meet these requirements before setting up your ClickPipe.
 
 ### Do you support partitioned tables as part of Postgres CDC? {#do-you-support-partitioned-tables-as-part-of-postgres-cdc}
 
@@ -52,6 +64,8 @@ Yes! ClickPipes for Postgres offers two ways to connect to databases in private 
 ClickPipes for Postgres captures both INSERTs and UPDATEs from Postgres as new rows with different versions (using the `_peerdb_` version column) in ClickHouse. The ReplacingMergeTree table engine periodically performs deduplication in the background based on the ordering key (ORDER BY columns), retaining only the row with the latest `_peerdb_` version.
 
 DELETEs from Postgres are propagated as new rows marked as deleted (using the `_peerdb_is_deleted` column). Since the deduplication process is asynchronous, you might temporarily see duplicates. To address this, you need to handle deduplication at the query layer.
+
+Also note that by default, Postgres does not send column values of columns that are not part of the primary key or replica identity during DELETE operations. If you want to capture the full row data during DELETEs, you can set the [REPLICA IDENTITY](https://www.postgresql.org/docs/current/sql-altertable.html#SQL-ALTERTABLE-REPLICA-IDENTITY) to FULL.
 
 For more details, refer to:
 
