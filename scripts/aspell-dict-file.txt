@@ -1103,3 +1103,5 @@ explorative
 ReceiveMessage
 --docs/integrations/data-ingestion/clickpipes/postgres/postgres_generated_columns.md--
 RelationMessage
+--docs/integrations/data-ingestion/clickpipes/mongodb/faq.md--
+resumable

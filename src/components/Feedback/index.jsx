@@ -124,8 +124,8 @@ export default function Feedback({side}) {
   
   const ThumbsUp = ({ highlighted, colorMode }) => (
     <svg
-      width="16"
-      height="16"
+      width="12"
+      height="12"
       viewBox="0 0 16 16"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -158,8 +158,8 @@ export default function Feedback({side}) {
 
   const ThumbsDown = ({ highlighted, colorMode }) => (
     <svg
-      width="16"
-      height="16"
+      width="12"
+      height="12"
       viewBox="0 0 16 16"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -192,13 +192,13 @@ export default function Feedback({side}) {
   
   return (
     <div className={styles.displayFeedback}>
-    <Panel hasBorder alignItems='start'>
+    <Panel hasBorder alignItems='start' padding='xs'>
     <Popover open={open} >
         <Popover.Trigger>
             <div>
-                <Text size='lg' color='muted' weight='semibold'>Was this page helpful?</Text>
+                <Text size='sm' color='muted' weight='semibold'>Was this page helpful?</Text>
             </div>
-            <div className='mt-[8px] flex'>
+            <div className='mt-[6px] flex'>
                 <div className={clsx( styles.Button, colorMode === 'dark' ? styles.dark : styles.light, selected === 'pos' && styles.selected )} onClick={() => { handleClick(true); handleSubmit(true)}}>
                     <ThumbsUp highlighted={selected === 'pos'} colorMode={colorMode}/>
                 </div>
