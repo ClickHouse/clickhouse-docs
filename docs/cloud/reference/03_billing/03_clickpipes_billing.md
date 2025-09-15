@@ -81,8 +81,8 @@ effective data transfer is assumed by the underlying Clickhouse Service_
 
 ## ClickPipes for PostgreSQL CDC {#clickpipes-for-postgresql-cdc}
 
-This section outlines the pricing model for our Postgres Change Data Capture (CDC)
-connector in ClickPipes. In designing this model, our goal was to keep pricing
+This section outlines the pricing model for the Postgres Change Data Capture (CDC)
+connector in ClickPipes. In designing this model, the goal was to keep pricing
 highly competitive while staying true to our core vision:
 
 > Making it seamless and
@@ -93,11 +93,8 @@ The connector is over **5x more cost-effective** than external
 ETL tools and similar features in other database platforms.
 
 :::note
-Pricing will start being metered in monthly bills beginning **September 1st, 2025,**
-for all customers (both existing and new) using Postgres CDC ClickPipes. Until
-then, usage is free. Customers have a 3-month window starting May 29 (GA announcement)
-to review and optimize their costs if needed, although we expect most will not need
-to make any changes.
+Pricing started being metered in monthly bills on **September 1st, 2025**
+for all customers (both existing and new) using Postgres CDC ClickPipes.
 :::
 
 ### Pricing dimensions {#pricing-dimensions}
@@ -193,11 +190,8 @@ uncompressed bytes.
 
 <summary>When will Postgres CDC pricing start appearing on my bills?</summary>
 
-Postgres CDC ClickPipes pricing begins appearing on monthly bills starting
-**September 1st, 2025**, for all customers—both existing and new. Until then,
-usage is free. Customers have a **3-month window** starting from **May 29**
-(the GA announcement date) to review and optimize their usage if needed, although
-we expect most won't need to make any changes.
+Postgres CDC ClickPipes pricing began appearing on monthly bills starting
+**September 1st, 2025**, for all customers (both existing and new).
 
 </details>
 
