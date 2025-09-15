@@ -47,20 +47,20 @@ Consider the example above where the `SpanAttributes.app.payment.card_type` colu
 
 <Image img={event_deltas_issue} alt="Event Deltas issue" size="lg"/>
 
-Conversely, values exclusively associated with inliers can also be interesting. In the example above, the error `Visa Cash Full` appears exclusively in the inliers and is completely absent from the outlier spans, where this occurs are always less than approximately 50 milliseconds, suggesting this error is associated with low latencies.
+Conversely, values exclusively associated with inliers can also be interesting. In the example above, the error `Visa Cash Full` appears exclusively in the inliers and is completely absent from the outlier spans. Where this occurs, latency is always less than approximately 50 milliseconds, suggesting this error is associated with low latencies.
 
 ## How Event Deltas work {#how-event-deltas-work}
 
-Event Deltas work by issuing two queries, one for the selected outlier area and one for the inlier area - each query is limited to the appropriate duration and time window. A sample of events from both result sets is then inspected, and columns are identified where a high concentration of values appears predominantly in the outliers. Columns where 100% of a value occurs only in the outlier subset are shown first, highlighting the attributes most responsible for the observed differences.
+Event Deltas work by issuing two queries: one for the selected outlier area and one for the inlier area. Each query is limited to the appropriate duration and time window. A sample of events from both result sets is then inspected, and columns for which a high concentration of values appears predominantly in the outliers are identified. Columns for which 100% of a value occurs only in the outlier subset are shown first, highlighting the attributes most responsible for the observed differences.
 
 ## Recommendations {#recommendations}
 
-Event Deltas work best when the analysis is focused on a specific service. Latency across multiple services can vary widely, making it harder to identify the columns and values most responsible for outliers. Before enabling Event Deltas, filter spans to a set where the distribution of latencies is expected to be similar. Target analyzing sets where wide latency variation is unexpected for the most useful insights, avoiding cases where it's the norm (e.g. two different services). 
+Event Deltas work best when the analysis is focused on a specific service. Latency across multiple services can vary widely, making it harder to identify the columns and values most responsible for outliers. Before enabling Event Deltas, filter spans to a set where the distribution of latencies is expected to be similar. Target analyzing sets where wide latency variation is unexpected for the most useful insights, avoiding cases where it's the norm (e.g., two different services). 
 
 When selecting an area, users should aim for subsets where there is a clear distribution of slower versus faster durations, allowing the higher-latency spans to be cleanly isolated for analysis. For example, note the selected area below clearly captures a set of slower spans for analysis.
 
 <Image img={event_deltas_separation} alt="Event Deltas Separation" size="lg"/>
 
-Conversely, the following dataset is hard to analyze useful with Event Deltas.
+Conversely, the following dataset is hard to analyze in a useful way with Event Deltas.
 
 <Image img={event_deltas_inappropriate} alt="Event Deltas Poor seperation" size="lg"/>
