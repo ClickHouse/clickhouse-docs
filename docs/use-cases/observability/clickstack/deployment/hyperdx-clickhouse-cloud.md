@@ -67,6 +67,7 @@ curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/
 
 <details>
 <summary>otel-cloud-config.yaml</summary>
+
 ```yaml file=docs/use-cases/observability/clickstack/deployment/_snippets/otel-cloud-config.yaml
 receivers:
   otlp/hyperdx:
@@ -217,6 +218,7 @@ service:
       exporters: [clickhouse/rrweb]
 
 ```
+
 </details>
 
 Deploy the collector using the following Docker command, setting the respective environment variables to the connection settings recorded earlier and using the appropriate command below based on your operating system.
