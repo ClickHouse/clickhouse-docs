@@ -38,7 +38,6 @@ Note that using `REPLICA IDENTITY FULL` can have performance implications and al
 
 It's important to note that if neither a primary key nor a replica identity is defined, ClickPipes will not be able to replicate changes for that table, and you may encounter errors during the replication process. Therefore, it's recommended to review your table schemas and ensure that they meet these requirements before setting up your ClickPipe.
 
-
 ### Do you support partitioned tables as part of Postgres CDC? {#do-you-support-partitioned-tables-as-part-of-postgres-cdc}
 
 Yes, partitioned tables are supported out of the box, as long as they have a PRIMARY KEY or REPLICA IDENTITY defined. The PRIMARY KEY and REPLICA IDENTITY must be present on both the parent table and its partitions. You can read more about it [here](https://blog.peerdb.io/real-time-change-data-capture-for-postgres-partitioned-tables).
