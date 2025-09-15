@@ -8,9 +8,9 @@ doc_type: 'reference'
 
 While ClickHouse is known for its speed and reliability, optimal performance is 
 achieved within certain operating parameters. For example, having too many tables,
-databases or parts could negatively impact performance. To avoid this, Clickhouse
-Cloud has guardrails set up for several types of items. You can find details of 
-these guardrails below.
+databases, or parts can negatively impact performance. To prevent this, ClickHouse
+Cloud enforces per-replica limits across several operational dimensions. 
+The details of these guardrails are listed below.
 
 :::tip
 If you've run up against one of these guardrails, it's possible that you are 
@@ -19,7 +19,7 @@ we will gladly help you refine your use case to avoid exceeding the guardrails
 or look together at how we can increase them in a controlled manner. 
 :::
 
-| Dimension                     | Limit                                                      |
+| Dimension                     | Limit (Per Replica)                                        |
 |-------------------------------|------------------------------------------------------------|
 | **Databases**                 | 1000                                                       |
 | **Tables**                    | 5000                                                       |
