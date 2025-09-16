@@ -5,6 +5,8 @@ title: 'ClickPipes for streaming and object storage'
 description: 'Overview of billing for streaming and object storage ClickPipes'
 ---
 
+import ClickPipesFAQ from '../../_snippets/_clickpipes_faq.md'
+
 # ClickPipes for streaming and object storage {#clickpipes-for-streaming-object-storage}
 
 This section outlines the pricing model of ClickPipes for streaming and object storage.
@@ -76,3 +78,7 @@ The following examples assume a single M-sized replica, unless explicitly mentio
 
 $^1$ _Only ClickPipes compute for orchestration,
 effective data transfer is assumed by the underlying Clickhouse Service_
+
+## FAQ for streaming and object storage ClickPipes {#faq-streaming-and-object-storage}
+
+<ClickPipesFAQ/>
