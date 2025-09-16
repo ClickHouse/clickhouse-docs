@@ -77,6 +77,12 @@ The connection pooler is not supported for CDC based replication, hence it needs
 
 :::
 
+## Note on RLS {#note-on-rls}
+The ClickPipes Postgres user must not be restricted by RLS policies, as it can lead to missing data. You can disable RLS policies for the user by running the below command:
+```sql
+ALTER USER clickpipes_user BYPASSRLS;
+```
+
 ## What's next? {#whats-next}
 
 You can now [create your ClickPipe](../index.md) and start ingesting data from your Postgres instance into ClickHouse Cloud.

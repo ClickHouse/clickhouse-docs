@@ -1556,6 +1556,7 @@ const sidebars = {
         "use-cases/observability/clickstack/search",
         "use-cases/observability/clickstack/dashboards",
         "use-cases/observability/clickstack/event_patterns",
+        "use-cases/observability/clickstack/event_deltas",
         "use-cases/observability/clickstack/alerts",
         "use-cases/observability/clickstack/production",
         {

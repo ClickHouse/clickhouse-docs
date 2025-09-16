@@ -32,22 +32,21 @@
 }
 
 .docCloudCardHeader h6 {
-  margin-bottom: 16px;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 13px;
 }
 
 .docCloudCardContent {
   font-weight: 400;
-  font-size: 14px;
-  margin-bottom: 24px;
+  font-size: 12px;
 }
 
 
 .docCloudCardLink {
   width: fit-content;
-  padding: 0 16px;
+  padding: 0 12px;
   white-space: nowrap;
+  font-size: 12px;
 }
 .docCloudCardLink:hover {
   text-decoration: none;
@@ -74,5 +73,6 @@
     padding: 1rem;
     border-radius: 8px;
     margin-bottom: 24px;
+    height: 200px;
   }
 }

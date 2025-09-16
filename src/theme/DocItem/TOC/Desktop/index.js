@@ -14,7 +14,7 @@ export default function DocItemTOCDesktop() {
   const {toc, frontMatter} = useDoc();
   const [isClosed, setClosed] = useState(() => {
     if (typeof window !== 'undefined') {
-      return window.sessionStorage.getItem('doc-cloud-card-banner') === 'closed';
+      return window.localStorage.getItem('doc-cloud-card-banner') === 'closed';
     }
     return false;
   });
@@ -30,10 +30,10 @@ export default function DocItemTOCDesktop() {
         const cacheKey = 'doc-cloud-card-banner-attributes';
         let attributes = {};
 
-        // Get cached ad data from session
-        if (window.sessionStorage.getItem(cacheKey)) {
+        // Get cached ad data from local storage
+        if (window.localStorage.getItem(cacheKey)) {
           try {
-            attributes = JSON.parse(window.sessionStorage.getItem(cacheKey));
+            attributes = JSON.parse(window.localStorage.getItem(cacheKey));
           } catch (e) {
             console.log('Failed to parse cached ad attributes', e);
           }
@@ -54,7 +54,7 @@ export default function DocItemTOCDesktop() {
 
             if (data && typeof data === 'object' && data.hasOwnProperty('attributes')) {
               attributes = data.attributes;
-              window.sessionStorage.setItem(cacheKey, JSON.stringify(attributes));
+              window.localStorage.setItem(cacheKey, JSON.stringify(attributes));
             }
           } catch (e) {
             console.log('Failed to fetch ad content', e);
@@ -84,7 +84,7 @@ export default function DocItemTOCDesktop() {
         maxHeadingLevel={frontMatter.toc_max_heading_level}
         className={clsx(styles.docTOC, ThemeClassNames.docs.docTocDesktop)}
       />
-      <div style={{'marginTop': '32px'}}>
+      <div>
         <Feedback side ={toc.length >= 7 ? 'left' : 'bottom'}/>
       </div>
 
@@ -98,7 +98,7 @@ export default function DocItemTOCDesktop() {
                       onClick={() => {
                         setClosed(true);
                         galaxyOnClick('docs.sidebarCloudAdvert.advertDismissed');
-                        window.sessionStorage.setItem('doc-cloud-card-banner', 'closed');
+                        window.localStorage.setItem('doc-cloud-card-banner', 'closed');
                       }}>
                     <IconClose color="var(--ifm-color-emphasis-600)" width={10} height={10}/>
                   </button>

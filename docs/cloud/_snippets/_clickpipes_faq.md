@@ -5,19 +5,6 @@ import clickpipesPricingFaq3 from '@site/static/images/cloud/manage/jan2025_faq/
 
 <details>
 
-<summary>Why are we introducing a pricing model for ClickPipes now?</summary>
-
-We decided to initially launch ClickPipes for free with the idea to gather 
-feedback, refine features, and ensure it meets user needs.
-As the GA platform has grown, it has effectively stood the test of time by 
-moving trillions of rows. Introducing a pricing model allows us to continue 
-improving the service, maintaining the infrastructure, and providing dedicated
-support and new connectors.
-
-</details>
-
-<details>
-
 <summary>What are ClickPipes replicas?</summary>
 
 ClickPipes ingests data from remote data sources via a dedicated infrastructure
@@ -114,23 +101,6 @@ but only orchestrating the transfer which is operated by the underlying ClickHou
 $$
 0.25 \times 0,20 \times 24 = \$1.2
 $$
-
-</details>
-
-<details>
-
-<summary>When does the new pricing model take effect?</summary>
-
-The new pricing model takes effect for all organizations created after January 27th, 2025.
-
-</details>
-
-<details>
-
-<summary>What happens to current users?</summary>
-
-Existing users will have a **60-day grace period** where the ClickPipes service continues to be offered for free.
-Billing will automatically start for ClickPipes for existing users on **March 24th, 2025.**
 
 </details>
 
