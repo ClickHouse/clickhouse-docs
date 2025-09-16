@@ -9,7 +9,7 @@ While ClickHouse is known for its speed and reliability, optimal performance is
 achieved within certain operating parameters. For example, having too many tables,
 databases, or parts can negatively impact performance. To prevent this, ClickHouse
 Cloud enforces limits across several operational dimensions. 
-The details of these guardrails are listed below. Note that query concurrency limits are per replica.
+The details of these guardrails are listed below.
 
 :::tip
 If you've run up against one of these guardrails, it's possible that you are 
