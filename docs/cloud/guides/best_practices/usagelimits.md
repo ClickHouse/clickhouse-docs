@@ -8,7 +8,7 @@ description: 'Describes the recommended usage limits in ClickHouse Cloud'
 While ClickHouse is known for its speed and reliability, optimal performance is 
 achieved within certain operating parameters. For example, having too many tables,
 databases, or parts can negatively impact performance. To prevent this, ClickHouse
-Cloud enforces per-replica limits across several operational dimensions. 
+Cloud enforces limits across several operational dimensions. 
 The details of these guardrails are listed below.
 
 :::tip
@@ -18,7 +18,7 @@ we will gladly help you refine your use case to avoid exceeding the guardrails
 or look together at how we can increase them in a controlled manner. 
 :::
 
-| Dimension                     | Limit (Per Replica)                                        |
+| Dimension                     | Limit                                                      |
 |-------------------------------|------------------------------------------------------------|
 | **Databases**                 | 1000                                                       |
 | **Tables**                    | 5000                                                       |
@@ -30,7 +30,7 @@ or look together at how we can increase them in a controlled manner.
 | **Services per warehouse**    | 5 (soft)                                                   |
 | **Low cardinality**           | 10k or less                                                |
 | **Primary keys in a table**   | 4-5 that sufficiently filter down the data                 |
-| **Query concurrency**         | 1000                                                       |
+| **Query concurrency**         | 1000 (per replica)                                         |
 | **Batch ingest**              | anything > 1M will be split by the system in 1M row blocks |
 
 :::note
