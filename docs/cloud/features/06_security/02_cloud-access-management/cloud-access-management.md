@@ -10,9 +10,9 @@ import user_grant_permissions_options from '@site/static/images/cloud/security/c
 
 # Access control in ClickHouse Cloud {#access-control-in-clickhouse-cloud}
 
-ClickHouse controls user access in two places, via the console and via the database.
-Console access is managed via the clickhouse.cloud user interface. Database access is managed via database user accounts and roles.
-Additionally, console users can be granted roles within the database that enable the console user to interact with the database via our SQL console.
+ClickHouse Cloud controls access to the console itself and the features available within it.
+A **console user** is the foundation of this access with all permissions, roles, and access controls assigned to and managed through these users.
+When [database-level permissions are associated with console users](/cloud/security/common-access-management-queries#modifying-users-and-roles), those then govern their data access when querying via the SQL console.
 
 ## Console users and roles {#console-users-and-roles}
 

@@ -14,6 +14,12 @@ import step_5 from '@site/static/images/cloud/guides/sql_console/service_level_a
 import step_6 from '@site/static/images/cloud/guides/sql_console/service_level_access/6_service_settings.png'
 import step_7 from '@site/static/images/cloud/guides/sql_console/service_level_access/7_service_settings.png'
 
+# Configuring SQL console role assignments
+
+> This guide shows you how to configure SQL console role assignments, which
+determine console-wide access permissions and the features that a user can
+access within Cloud console.
+
 <VerticalStepper>
 
 ## Access service settings {#access-service-settings}

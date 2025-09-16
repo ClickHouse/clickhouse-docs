@@ -14,6 +14,10 @@ import step_5 from '@site/static/images/cloud/guides/sql_console/org_level_acces
 import step_6 from '@site/static/images/cloud/guides/sql_console/org_level_access/6_org_settings.png'
 import step_7 from '@site/static/images/cloud/guides/sql_console/org_level_access/7_org_settings.png'
 
+# Configuring organization and service role assignments within the console
+
+> This guide shows you how to configure role assignments at the organization and service level.
+
 <VerticalStepper>
 
 ## Access organization settings {#access-service-settings}
@@ -41,7 +45,7 @@ A tab will display on the right hand side of the page:
 
 <Image img={step_5} size="lg"/>
 
-Select the drop-down menu items to adjust the organization role of the selected user.
+Select the drop-down menu items to adjust console-wide access permissions and which features a user can access from within the ClickHouse console.
 This manages high-level access and administrative settings for an organization:
 
 | Role        | Description                                                                      |
