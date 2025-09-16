@@ -377,7 +377,7 @@ insert_src_files=(
   "encryption-functions.md"
   "hash-functions.md"
   "introspection-functions.md"
-  "ip-address-functions.md"
+  "ip_address-functions.md"
 )
 
 insert_dest_files=(
