@@ -80,6 +80,10 @@ You can run a copy of this website locally within a few steps. Some folks find t
     # [INFO] Use `npm run serve` command to test your build locally.
     # ✨  Done in 105.96s.
     ```
+   
+> [!TIP]
+> If the build command is failing due to broken anchors, 
+> it is possible to ignore these temporarily by running `ON_BROKEN_ANCHORS=ignore yarn build` instead.
 
 1. Start the local web-server:
 
