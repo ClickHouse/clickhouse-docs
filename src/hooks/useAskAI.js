@@ -7,7 +7,6 @@ function useAskAI() {
     const [isKapaLoaded, setIsKapaLoaded] = useState(false);
 
     useEffect(() => {
-        // Check if Kapa is available
         const checkKapaAvailability = () => {
             if (typeof window !== 'undefined' && window.Kapa) {
                 setIsKapaLoaded(true);
@@ -16,7 +15,6 @@ function useAskAI() {
             return false;
         };
 
-        // Set up event listeners for Kapa widget
         const setupKapaListeners = () => {
             if (!checkKapaAvailability()) {
                 // Retry checking for Kapa after a short delay
@@ -26,13 +24,11 @@ function useAskAI() {
                         setupKapaListeners();
                     }
                 }, 500);
-
                 // Clear retry after 10 seconds to avoid infinite checking
                 setTimeout(() => clearInterval(retryInterval), 10000);
                 return;
             }
 
-            // Define event handlers
             const handleModalOpen = ({ mode }) => {
                 setIsOpen(true);
                 setCurrentMode(mode);
@@ -43,11 +39,9 @@ function useAskAI() {
                 setCurrentMode(null);
             };
 
-            // Register event listeners using proper Kapa API
             window.Kapa("onModalOpen", handleModalOpen, "add");
             window.Kapa("onModalClose", handleModalClose, "add");
 
-            // Return cleanup function
             return () => {
                 window.Kapa("onModalOpen", handleModalOpen, "remove");
                 window.Kapa("onModalClose", handleModalClose, "remove");
@@ -55,12 +49,27 @@ function useAskAI() {
         };
 
         const cleanup = setupKapaListeners();
-
-        // Return cleanup function
         return cleanup;
-    }, []); // Remove isOpen dependency since we're not polling anymore
+    }, []);
 
-    // Utility functions
+    // Block Algolia search when Kapa is open
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (isOpen && event.key === '/') {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        };
+
+        if (isOpen) {
+            document.addEventListener('keydown', handleKeyDown, true);
+        }
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown, true);
+        };
+    }, [isOpen]);
+
     const openKapa = (mode = 'ask') => {
         if (window.Kapa) {
             window.Kapa("open", { mode });
@@ -82,8 +91,5 @@ function useAskAI() {
     };
 }
 
-// Export the hook
 export { useAskAI };
-
-// Also export as default for convenience
 export default useAskAI;
