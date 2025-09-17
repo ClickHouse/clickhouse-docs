@@ -1,12 +1,12 @@
 ---
 slug: /cloud/guides/data-masking
 sidebar_label: 'Data masking'
-title: 'Data masking in ClickHouse Cloud'
+title: 'Data masking in ClickHouse'
 description: 'A guide to data masking in ClickHouse Cloud'
 keywords: ['data masking']
 ---
 
-# Data masking in ClickHouse Cloud
+# Data masking in ClickHouse
 
 Data masking is a technique used for data protection, in which the original data
 is replaced with a version of the data which maintains its format and structure 
