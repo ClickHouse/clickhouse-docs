@@ -29,7 +29,7 @@ Topics include:
 
 - [Migration guides](/integrations/migration/overview) from various platforms
 
-## Tune your ClickHouse Cloud deployment {#evaluate-clickhouse-cloud}
+## Tune your ClickHouse Cloud service {#evaluate-clickhouse-cloud}
 
 Now that your data is in ClickHouse Cloud, we'll walk you through some more advanced
 topics to help you get the most out of your ClickHouse Cloud experience and explore
