@@ -72,7 +72,7 @@ In Agent mode you may see expandable intermediate “thinking” or planning ste
 
 Click the “New Chat” button to clear context and begin a fresh session.
 
-## Viewing chat history & starting new chats {#history}
+## Viewing chat history {#history}
 
 1. The lower section lists your recent chats.
 2. Select a previous chat to load its messages.
