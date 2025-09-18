@@ -7,7 +7,12 @@ import { SEARCH_SHORTCUTS, INPUT_FIELD_SELECTORS } from '../searchConstants';
  */
 function isInputField(activeElement) {
   if (!activeElement) return false;
-  
+
+  // Check for Kapa AI input by placeholder text (most reliable)
+  if (activeElement.placeholder === "Ask me a question about ClickHouse...") {
+    return true;
+  }
+
   return INPUT_FIELD_SELECTORS.some(selector => {
     if (selector.startsWith('#') || selector.startsWith('[')) {
       return activeElement.matches?.(selector) || activeElement.closest?.(selector);
@@ -48,13 +53,18 @@ function isSearchShortcut(event) {
 export function handleSearchKeyboardConflict(event, isAskAIOpen) {
   if (!isSearchShortcut(event)) return;
 
-  if (shouldPreventSearchAction(isAskAIOpen)) {
-    // Special case: allow "/" in input fields
-    if (event.key === SEARCH_SHORTCUTS.SLASH && !shouldPreventSearchAction(isAskAIOpen)) {
-      event.stopImmediatePropagation();
-    } else {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-    }
+  // If Ask AI is not open, don't interfere with normal search behavior
+  if (!isAskAIOpen) return;
+
+  const activeElement = document.activeElement;
+
+  // If we're typing in an input field when AI is open, allow "/" but prevent search modal
+  if (event.key === SEARCH_SHORTCUTS.SLASH && isInputField(activeElement)) {
+    event.stopImmediatePropagation();
+    return;
   }
+
+  // Otherwise, when AI is open and not in input field, prevent all search shortcuts
+  event.preventDefault();
+  event.stopImmediatePropagation();
 }
