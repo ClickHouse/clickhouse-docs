@@ -30,7 +30,7 @@ the [Tableau Exchange](https://exchange.tableau.com/products/1064).
 The connector is based on ClickHouse's advanced [JDBC driver](/integrations/language-clients/java/jdbc).
 
 With this connector, Tableau integrates ClickHouse databases and tables as data sources. To enable this functionality,
-follow the setup guide bellow.
+follow the setup guide below.
 
 <TOCInline toc={toc}/>
 
@@ -45,10 +45,10 @@ follow the setup guide bellow.
    of <a href="https://github.com/ClickHouse/clickhouse-java/releases/" target="_blank">ClickHouse JDBC driver</a>.
 
 :::note
-Make sure you download the **clickhouse-jdbc-x.x.x-shaded-all.jar** JAR file. Currently, we recommended using versions `0.8.X`.
+Make sure you download the [clickhouse-jdbc-X.X.X-all-dependencies.jar](https://github.com/ClickHouse/clickhouse-java/releases) JAR file. This artifact is available from version `0.9.2`.
 :::
 
-4. Store the JDBC driver in the following folder (based on your OS, if the folder doesn't exist you can create it):
+4. Store the JDBC driver in the following folder (based on your OS, if the folder doesn't exist, you can create it):
     - macOS: `~/Library/Tableau/Drivers`
     - Windows: `C:\Program Files\Tableau\Drivers`
 5. Configure a ClickHouse data source in Tableau and start building data visualizations!
@@ -76,7 +76,7 @@ To solve that, consider upgrading your Tableau Desktop application, or [install 
 <br/>
  
 4. Click **Install and Restart Tableau**. Restart the application.
-5. After restarting, the connector will have its full name: `ClickHouse JDBC by ClickHouse, Inc.`. When clicking it the following dialog will pop up:
+5. After restarting, the connector will have its full name: `ClickHouse JDBC by ClickHouse, Inc.`. When clicking it, the following dialog will pop up:
 
 <Image size="md" img={tableau_connector_dialog} alt="ClickHouse connection dialog in Tableau showing fields for server, port, database, username and password" border />
 <br/>
@@ -116,7 +116,7 @@ You are now ready to build some visualizations in Tableau!
 
 ## Building Visualizations in Tableau {#building-visualizations-in-tableau}
 
-Now that have a ClickHouse data source configured in Tableau, let's visualize the data...
+Now that we have a ClickHouse data source configured in Tableau, let's visualize the data...
 
 1. Drag the **CUSTOMER** table onto the workbook. Notice the columns appear, but the data table is empty:
 
