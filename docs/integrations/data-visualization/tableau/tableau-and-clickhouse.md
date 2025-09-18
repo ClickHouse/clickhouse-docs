@@ -45,7 +45,7 @@ follow the setup guide below.
    of <a href="https://github.com/ClickHouse/clickhouse-java/releases/" target="_blank">ClickHouse JDBC driver</a>.
 
 :::note
-Make sure you download the [clickhouse-jdbc-0.9.X-all-dependencies.jar](https://github.com/ClickHouse/clickhouse-java/releases) JAR file. Currently, we recommend using version `0.9.X`.
+Make sure you download the [clickhouse-jdbc-0.X.X-all-dependencies.jar](https://github.com/ClickHouse/clickhouse-java/releases) JAR file. This artifact is available from version `0.9.2`.
 :::
 
 4. Store the JDBC driver in the following folder (based on your OS, if the folder doesn't exist, you can create it):
