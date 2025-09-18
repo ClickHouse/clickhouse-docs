@@ -58,13 +58,11 @@ In the query below `\3` is used to substitute the third capture group into the r
 
 ## Create masked `VIEW`s {#masked-views}
 
-A [`VIEW`](/sql-reference/statements/create/view) can be used in conjunction with
-the aforementioned string functions to apply transformations to columns containing sensitive data, before they are presented to the user. 
+A [`VIEW`](/sql-reference/statements/create/view) can be used in conjunction with the aforementioned string functions to apply transformations to columns containing sensitive data, before they are presented to the user. 
 In this way, the original data remains unchanged, and users querying the view see only the masked data.
 
 To demonstrate, let's imagine that we have a table which stores records of customer orders.
-We want to make sure that a group of employees can view the information, but we don't want
-them to see the full information of the customers.
+We want to make sure that a group of employees can view the information, but we don't want them to see the full information of the customers.
 
 Run the query below to create an example table `orders` and insert some fictional customer order recordords into it:
 
@@ -104,8 +102,7 @@ SELECT
 FROM orders;
 ```
 
-In the `SELECT` clause of the view creation query above, we define transformations using the `replaceRegexpOne` on the `name`, `email`, `phone` and `shipping_address`
-fields, which are the fields containing sensitive information that we wish to partially mask.
+In the `SELECT` clause of the view creation query above, we define transformations using the `replaceRegexpOne` on the `name`, `email`, `phone` and `shipping_address` fields, which are the fields containing sensitive information that we wish to partially mask.
 
 Select the data from the view:
 
@@ -159,14 +156,13 @@ the masked data from the view and not the original unmasked data from the table.
 
 ## Use query masking rules for log data {#use-query-masking-rules}
 
-For users of ClickHouse OSS wishing to mask log data specifically, you can make use of [query masking rules](/operations/server-configuration-parameters/settings#query_masking_rules) (log masking)
-to mask data.
+For users of ClickHouse OSS wishing to mask log data specifically, you can make use of [query masking rules](/operations/server-configuration-parameters/settings#query_masking_rules) (log masking) to mask data.
 
 To do so, you can define regular expression-based masking rules in the server configuration.
-These rules are applied to queries and all log messages before they are stored in server logs or system tables 
-(such as `system.query_log`, `system.text_log`, and `system.processes`).
+These rules are applied to queries and all log messages before they are stored in server logs or system tables (such as `system.query_log`, `system.text_log`, and `system.processes`).
 
-This helps prevent sensitive data from leaking into **logs** only. Note that it does not mask data in query results.
+This helps prevent sensitive data from leaking into **logs** only.
+Note that it does not mask data in query results.
 
 For example, to mask a social security number, you could add the following rule to your server configuration:
 
