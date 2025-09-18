@@ -2,28 +2,25 @@
 slug: /cloud/guides/data-masking
 sidebar_label: 'Data masking'
 title: 'Data masking in ClickHouse'
-description: 'A guide to data masking in ClickHouse Cloud'
+description: 'A guide to data masking in ClickHouse'
 keywords: ['data masking']
 ---
 
 # Data masking in ClickHouse
 
-Data masking is a technique used for data protection, in which the original data
-is replaced with a version of the data which maintains its format and structure 
-while removing any personally identifiable information (PII) or sensitive information.
-
+Data masking is a technique used for data protection, in which the original data is replaced with a version of the data which maintains its format and structure while removing any personally identifiable information (PII) or sensitive information.
 This guide shows you how you can mask data in ClickHouse.
 
-## Use String functions {#using-string-functions}
+## Use string replacement functions {#using-string-functions}
 
-For basic data masking use cases, the `replace` family of functions can be used:
+For basic data masking use cases, the `replace` family of functions offers a convenient way to mask data:
 
-| Function                                                                                 | Description                                                                                                                                          |
-|------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [`replaceOne`](/sql-reference/functions/string-replace-functions#replaceone)             | Replaces the first occurrence of a pattern in a haystack string by the provided replacement string.                                                  |
-| [`replaceAll`](/sql-reference/functions/string-replace-functions#replaceall)             | Replaces all occurrences of a pattern in a haystack string by the provided replacement string.                                                       |
-| [`replaceRegexpOne`](/sql-reference/functions/string-replace-functions#replaceregexpone) | Replaces the first occurrence of a substring matching a regular expression pattern (in re2 syntax) in a haystack by the provided replacement string. |
-| [`replaceRegexpAll`](/sql-reference/functions/string-replace-functions#replaceregexpall) | Replaces all occurrences of a substring matching a regular expression pattern (in re2 syntax) in a haystack by the provided replacement string.      |
+| Function                                                                                 | Description                                                                                                                                            |
+|------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`replaceOne`](/sql-reference/functions/string-replace-functions#replaceone)             | Replaces the first occurrence of a pattern in a haystack string with the provided replacement string.                                                  |
+| [`replaceAll`](/sql-reference/functions/string-replace-functions#replaceall)             | Replaces all occurrences of a pattern in a haystack string with the provided replacement string.                                                       |
+| [`replaceRegexpOne`](/sql-reference/functions/string-replace-functions#replaceregexpone) | Replaces the first occurrence of a substring matching a regular expression pattern (in re2 syntax) in a haystack with the provided replacement string. |
+| [`replaceRegexpAll`](/sql-reference/functions/string-replace-functions#replaceregexpall) | Replaces all occurrences of a substring matching a regular expression pattern (in re2 syntax) in a haystack with the provided replacement string.      |
 
 For example, you can replace customer names with a placeholder `[CUSTOMER_NAME]` using the `replaceOne` function:
 
@@ -41,7 +38,7 @@ SELECT replaceOne(
 └───────────────────────────────────────────────────┘
 ```
 
-Or mask a social security number, leaving only the last 4 digits using the `replaceRegexpAll` function:
+Or mask a social security number, leaving only the last 4 digits using the `replaceRegexpAll` function.
 
 ```sql
 SELECT replaceRegexpAll(
@@ -50,6 +47,8 @@ SELECT replaceRegexpAll(
     'XXX-XX-\3'
 ) AS masked_ssn;
 ```
+
+In the query below `\3` is used to substitute the third capture group into the resulting string, which produces:
 
 ```response
 ┌─masked_ssn───────┐
@@ -60,14 +59,14 @@ SELECT replaceRegexpAll(
 ## Create masked `VIEW`s {#masked-views}
 
 A [`VIEW`](/sql-reference/statements/create/view) can be used in conjunction with
-the aforementioned functions to apply transformations to columns containing sensitive data, before they are presented to the user. 
-In this way, the original data remains unchanged, and users querying the view see the masked data.
+the aforementioned string functions to apply transformations to columns containing sensitive data, before they are presented to the user. 
+In this way, the original data remains unchanged, and users querying the view see only the masked data.
 
 To demonstrate, let's imagine that we have a table which stores records of customer orders.
-We want to make sure that certain employees can view the information without exposing
-personal data of the customers.
+We want to make sure that a group of employees can view the information, but we don't want
+them to see the full information of the customers.
 
-First, create the following table for the data, and insert some rows into it:
+Run the query below to create an example table `orders` and insert some fictional customer order recordords into it:
 
 ```sql
 CREATE TABLE orders (
@@ -97,7 +96,7 @@ CREATE VIEW masked_orders AS
 SELECT
     user_id,
     replaceRegexpOne(name, '^([A-Za-z]+)\\s+(.*)$', '\\1 ****') AS name,
-    replaceRegexpOne(email, '^(.{2})[^@]*(@.*)$', '\\1****\\2') AS email,
+    replaceRegexpOne(email, '^(.{0})[^@]*(@.*)$', '\\1****\\2') AS email,
     replaceRegexpOne(phone, '^(\\d{3})-(\\d{3})-(\\d{4})$', '\\1-***-\\3') AS phone,
     total_amount,
     order_date,
@@ -105,8 +104,8 @@ SELECT
 FROM orders;
 ```
 
-In the `SELECT` clause of the view, transformations on the `name`, `email`, `phone` and `shipping_address`
-fields are defined in order to partially mask the data.
+In the `SELECT` clause of the view creation query above, we define transformations using the `replaceRegexpOne` on the `name`, `email`, `phone` and `shipping_address`
+fields, which are the fields containing sensitive information that we wish to partially mask.
 
 Select the data from the view:
 
@@ -124,13 +123,10 @@ SELECT * FROM masked_orders
 └─────────┴──────────────┴────────────────────┴──────────────┴──────────────┴────────────┴───────────────────────────┘
 ```
 
-The data which is returned is masked, hiding sensitive information.
-You can also create multiple views, with differing levels of obfuscation depending 
-on the level of privilege of the viewer.
+Notice that the data returned from the view is partially masked, obfuscating the sensitive information.
+You can also create multiple views, with differing levels of obfuscation depending on the level of privileged access to information the viewer has.
 
-To ensure that users are only able to access the view returning the masked data,
-you can use ClickHouse's [Role Based Access Control](/cloud/security/cloud-access-management/overview)
-to ensure that the view is tied to a specific role.
+To ensure that users are only able to access the view returning the masked data, and not the table with the original unmasked data, you should use [Role Based Access Control](/cloud/security/cloud-access-management/overview) to ensure that specific roles only have grants to select from the view.
 
 First create the role:
 
@@ -138,13 +134,13 @@ First create the role:
 CREATE ROLE masked_orders_viewer;
 ```
 
-Grant `SELECT` privileges on the view to the role:
+Next grant `SELECT` privileges on the view to the role:
 
 ```sql
 GRANT SELECT ON masked_orders TO masked_orders_viewer;
 ```
 
-Because ClickHouse roles are additive, you must ensure that users who should only see the masked view do not have any SELECT privilege on the base table via any role.
+Because ClickHouse roles are additive, you must ensure that users who should only see the masked view do not have any `SELECT` privilege on the base table via any role.
 
 As such, you should explicitly revoke base-table access to be safe:
 
