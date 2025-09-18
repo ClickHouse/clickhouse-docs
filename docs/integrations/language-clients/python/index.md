@@ -262,7 +262,7 @@ binding Python expressions to a ClickHouse value expression. Two sorts of bindin
 ClickHouse supports [server side binding](/interfaces/cli.md#cli-queries-with-parameters)
 for most query values, where the bound value is sent separate from the query as an HTTP query parameter. ClickHouse
 Connect will add the appropriate query parameters if it detects a binding expression of the form 
-`{&lt;name&gt;:&lt;datatype&gt;}`. For server side binding, the `parameters` argument should be a Python dictionary.
+`{<name>:<datatype>}`. For server side binding, the `parameters` argument should be a Python dictionary.
 
 - Server Side Binding with Python Dictionary, DateTime value and string value
 
@@ -1046,7 +1046,7 @@ Ten global settings are currently defined:
 | autogenerate_session_id | True    | True, False             | Autogenerate a new UUID(1) session id (if not provided) for each client session.  If no session id is provided (either at the client or query level, ClickHouse will generate random internal id for each query                                               |
 | invalid_setting_action  | 'error' | 'drop', 'send', 'error' | Action to take when an invalid or readonly setting is provided (either for the client session or query).  If `drop`, the setting will be ignored, if `send`, the setting will be sent to ClickHouse, if `error` a client side ProgrammingError will be raised |
 | dict_parameter_format   | 'json'  | 'json', 'map'           | This controls whether parameterized queries convert a Python dictionary to JSON or ClickHouse Map syntax. `json` should be used for inserts into JSON columns, `map` for ClickHouse Map columns                                                               |
-| product_name            |         |                         | A string that is passed with the query to clickhouse for tracking the app using ClickHouse Connect.  Should be in the form &lt;product name;&gl/&lt;product version&gt;                                                                                       |
+| product_name            |         |                         | A string that is passed with the query to clickhouse for tracking the app using ClickHouse Connect.  Should be in the form `<product_name>/<product_version>`                                                                                       |
 | max_connection_age      | 600     |                         | Maximum seconds that an HTTP Keep Alive connection will be kept open/reused.  This prevents bunching of connections against a single ClickHouse node behind a load balancer/proxy.  Defaults to 10 minutes.                                                   |
 | readonly                | 0       | 0, 1                    | Implied "read_only" ClickHouse settings for versions prior to 19.17.  Can be set to match the ClickHouse "read_only" value for settings to allow operation with very old ClickHouse versions                                                                  |
 | use_protocol_version    | True    | True, False             | Use the client protocol version. This is needed for DateTime timezone columns but breaks with the current version of chproxy                                                                                                                                  |

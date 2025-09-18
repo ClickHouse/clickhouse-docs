@@ -8,9 +8,9 @@ doc_type: 'reference'
 
 While ClickHouse is known for its speed and reliability, optimal performance is 
 achieved within certain operating parameters. For example, having too many tables,
-databases or parts could negatively impact performance. To avoid this, Clickhouse
-Cloud has guardrails set up for several types of items. You can find details of 
-these guardrails below.
+databases, or parts can negatively impact performance. To prevent this, ClickHouse
+Cloud enforces limits across several operational dimensions. 
+The details of these guardrails are listed below.
 
 :::tip
 If you've run up against one of these guardrails, it's possible that you are 
@@ -31,7 +31,7 @@ or look together at how we can increase them in a controlled manner.
 | **Services per warehouse**    | 5 (soft)                                                   |
 | **Low cardinality**           | 10k or less                                                |
 | **Primary keys in a table**   | 4-5 that sufficiently filter down the data                 |
-| **Query concurrency**         | 1000                                                       |
+| **Query concurrency**         | 1000 (per replica)                                         |
 | **Batch ingest**              | anything > 1M will be split by the system in 1M row blocks |
 
 :::note

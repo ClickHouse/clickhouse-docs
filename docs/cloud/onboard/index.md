@@ -41,6 +41,6 @@ Topics include:
 - [Query performance and optimization](/cloud/get-started/cloud/resource-tour#query-optimization)
 - [Monitoring](/cloud/get-started/cloud/resource-tour#monitoring)
 - [Security considerations](/cloud/get-started/cloud/resource-tour#security)
-- Troubleshooting tips
+- [Troubleshooting tips](/troubleshooting)
 
 </VerticalStepper>
