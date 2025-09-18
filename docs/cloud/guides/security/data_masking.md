@@ -171,6 +171,94 @@ GRANT masked_orders_viewer TO your_user;
 This ensures that users with the `masked_orders_viewer` role are only able to see
 the masked data from the view and not the original unmasked data from the table.
 
+## Use `MATERIALIZED` columns and column-level access restrictions {#materialized-ephemeral-column-restrictions}
+
+In cases where you don't want to create a separate view, you can store masked versions of your data alongside the original data.
+To do so, you can use [materialized columns](/sql-reference/statements/create/table#materialized).
+Values of such columns are automatically calculated according to the specified materialized expression when rows are inserted,
+and we can use them to create new columns with masked versions of the data.
+
+Taking the example before, instead of creating a separate `VIEW` for the masked data, we'll now create masked columns using `MATERIALIZED`:
+
+```sql
+CREATE TABLE orders (
+    user_id UInt32,
+    name String,
+    name_masked String MATERIALIZED replaceRegexpOne(name, '^([A-Za-z]+)\\s+(.*)$', '\\1 ****'),
+    email String,
+    email_masked String MATERIALIZED replaceRegexpOne(email, '^(.{0})[^@]*(@.*)$', '\\1****\\2'),
+    phone String,
+    phone_masked String MATERIALIZED replaceRegexpOne(phone, '^(\\d{3})-(\\d{3})-(\\d{4})$', '\\1-***-\\3'),
+    total_amount Decimal(10,2),
+    order_date Date,
+    shipping_address String,
+    shipping_address_masked String MATERIALIZED replaceRegexpOne(shipping_address, '^[^,]+,\\s*(.*)$', '*** \\1')
+)
+ENGINE = MergeTree()
+ORDER BY user_id;
+
+INSERT INTO orders VALUES
+    (1001, 'John Smith', 'john.smith@gmail.com', '555-123-4567', 299.99, '2024-01-15', '123 Main St, New York, NY 10001'),
+    (1002, 'Sarah Johnson', 'sarah.johnson@outlook.com', '555-987-6543', 149.50, '2024-01-16', '456 Oak Ave, Los Angeles, CA 90210'),
+    (1003, 'Michael Brown', 'mbrown@company.com', '555-456-7890', 599.00, '2024-01-17', '789 Pine Rd, Chicago, IL 60601'),
+    (1004, 'Emily Rogers', 'emily.rogers@yahoo.com', '555-321-0987', 89.99, '2024-01-18', '321 Elm St, Houston, TX 77001'),
+    (1005, 'David Wilson', 'dwilson@email.net', '555-654-3210', 449.75, '2024-01-19', '654 Cedar Blvd, Phoenix, AZ 85001');
+```
+
+If you now run the following select query, you will see that the masked data is 'materialized' at insert time and stored alongside the original, unmasked data.
+It is necessary to explicitly select the masked columns as ClickHouse doesn't automatically include materialized columns in `SELECT *` queries by default.
+
+```sql
+SELECT
+    *,
+    name_masked,
+    email_masked,
+    phone_masked,
+    shipping_address_masked
+FROM orders
+ORDER BY user_id ASC
+```
+
+```response
+   ┌─user_id─┬─name──────────┬─email─────────────────────┬─phone────────┬─total_amount─┬─order_date─┬─shipping_address───────────────────┬─name_masked──┬─email_masked───────┬─phone_masked─┬─shipping_address_masked────┐
+1. │    1001 │ John Smith    │ john.smith@gmail.com      │ 555-123-4567 │       299.99 │ 2024-01-15 │ 123 Main St, New York, NY 10001    │ John ****    │ jo****@gmail.com   │ 555-***-4567 │ **** New York, NY 10001    │
+2. │    1002 │ Sarah Johnson │ sarah.johnson@outlook.com │ 555-987-6543 │        149.5 │ 2024-01-16 │ 456 Oak Ave, Los Angeles, CA 90210 │ Sarah ****   │ sa****@outlook.com │ 555-***-6543 │ **** Los Angeles, CA 90210 │
+3. │    1003 │ Michael Brown │ mbrown@company.com        │ 555-456-7890 │          599 │ 2024-01-17 │ 789 Pine Rd, Chicago, IL 60601     │ Michael **** │ mb****@company.com │ 555-***-7890 │ **** Chicago, IL 60601     │
+4. │    1004 │ Emily Rogers  │ emily.rogers@yahoo.com    │ 555-321-0987 │        89.99 │ 2024-01-18 │ 321 Elm St, Houston, TX 77001      │ Emily ****   │ em****@yahoo.com   │ 555-***-0987 │ **** Houston, TX 77001     │
+5. │    1005 │ David Wilson  │ dwilson@email.net         │ 555-654-3210 │       449.75 │ 2024-01-19 │ 654 Cedar Blvd, Phoenix, AZ 85001  │ David ****   │ dw****@email.net   │ 555-***-3210 │ **** Phoenix, AZ 85001     │
+   └─────────┴───────────────┴───────────────────────────┴──────────────┴──────────────┴────────────┴────────────────────────────────────┴──────────────┴────────────────────┴──────────────┴────────────────────────────┘
+```
+
+To ensure that users are only able to access columns containing the masked data, you can again use [Role Based Access Control](/cloud/security/cloud-access-management/overview) to ensure that specific roles only have grants to select on masked columns from `orders`.
+
+Recreate the role that we made previously:
+
+```sql
+DROP ROLE IF EXISTS masked_order_viewer;
+CREATE ROLE masked_order_viewer;
+```
+
+Next, grant `SELECT` permission to the `orders` table:
+
+```sql
+GRANT SELECT ON orders TO masked_data_reader;
+```
+
+Revoke access to any sensitive columns:
+
+```sql
+REVOKE SELECT(name) ON orders FROM masked_data_reader;
+REVOKE SELECT(email) ON orders FROM masked_data_reader;
+REVOKE SELECT(phone) ON orders FROM masked_data_reader;
+REVOKE SELECT(shipping_address) ON orders FROM masked_data_reader;
+```
+
+Finally, assign the role to the appropriate users:
+
+```sql
+GRANT masked_orders_viewer TO your_user;
+```
+
 ## Use query masking rules for log data {#use-query-masking-rules}
 
 For users of ClickHouse OSS wishing to mask log data specifically, you can make use of [query masking rules](/operations/server-configuration-parameters/settings#query_masking_rules) (log masking) to mask data.
