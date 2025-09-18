@@ -64,7 +64,7 @@ In this way, the original data remains unchanged, and users querying the view se
 To demonstrate, let's imagine that we have a table which stores records of customer orders.
 We want to make sure that a group of employees can view the information, but we don't want them to see the full information of the customers.
 
-Run the query below to create an example table `orders` and insert some fictional customer order recordords into it:
+Run the query below to create an example table `orders` and insert some fictional customer order records into it:
 
 ```sql
 CREATE TABLE orders (
