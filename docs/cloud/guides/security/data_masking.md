@@ -22,7 +22,7 @@ For basic data masking use cases, the `replace` family of functions offers a con
 | [`replaceRegexpOne`](/sql-reference/functions/string-replace-functions#replaceregexpone) | Replaces the first occurrence of a substring matching a regular expression pattern (in re2 syntax) in a haystack with the provided replacement string. |
 | [`replaceRegexpAll`](/sql-reference/functions/string-replace-functions#replaceregexpall) | Replaces all occurrences of a substring matching a regular expression pattern (in re2 syntax) in a haystack with the provided replacement string.      |
 
-For example, you can replace customer names with a placeholder `[CUSTOMER_NAME]` using the `replaceOne` function:
+For example, you can replace the name "John Smith" with a placeholder `[CUSTOMER_NAME]` using the `replaceOne` function:
 
 ```sql
 SELECT replaceOne(
@@ -38,7 +38,24 @@ SELECT replaceOne(
 └───────────────────────────────────────────────────┘
 ```
 
-Or mask a social security number, leaving only the last 4 digits using the `replaceRegexpAll` function.
+More generically, you can use the `replaceRegexpOne` to replace any customer name:
+
+```sql
+SELECT 
+    replaceRegexpAll(
+        'Customer John Smith called. Later, Mary Johnson and Bob Wilson also called.',
+        '\\b[A-Z][a-z]+ [A-Z][a-z]+\\b',
+        '[CUSTOMER_NAME]'
+    ) AS anonymized_text;
+```
+
+```response
+┌─anonymized_text───────────────────────────────────────────────────────────────────────┐
+│ [CUSTOMER_NAME] Smith called. Later, [CUSTOMER_NAME] and [CUSTOMER_NAME] also called. │
+└───────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+Or you could mask a social security number, leaving only the last 4 digits using the `replaceRegexpAll` function.
 
 ```sql
 SELECT replaceRegexpAll(
@@ -48,7 +65,7 @@ SELECT replaceRegexpAll(
 ) AS masked_ssn;
 ```
 
-In the query below `\3` is used to substitute the third capture group into the resulting string, which produces:
+In the query above `\3` is used to substitute the third capture group into the resulting string, which produces:
 
 ```response
 ┌─masked_ssn───────┐
@@ -164,9 +181,9 @@ These rules are applied to queries and all log messages before they are stored i
 This helps prevent sensitive data from leaking into **logs** only.
 Note that it does not mask data in query results.
 
-For example, to mask a social security number, you could add the following rule to your server configuration:
+For example, to mask a social security number, you could add the following rule to your [server configuration](/operations/configuration-files):
 
-```yaml
+```yaml title=""
 <query_masking_rules>
     <rule>
         <name>hide SSN</name>
