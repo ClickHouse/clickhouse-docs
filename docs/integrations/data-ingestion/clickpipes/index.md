@@ -83,10 +83,10 @@ Steps:
 <Image img={cp_custom_role} alt="Assign a custom role" size="lg" border/>
 
 ## Adjusting ClickPipes advanced settings {#clickpipes-advanced-settings}
-For advanced use cases, ClickPipes allows you to fine-tune internal settings to better fit your ingestion needs. Below is a non-exhaustive list of available options:
+ClickPipes provides sensible defaults that cover the requirements of most use cases. If your use case requires additional fine-tuning, you can adjust the following settings:
 
-- **Streaming max insert wait time**: Configures the maximum wait period before inserting data into the ClickHouse cluster. Applies to streaming ClickPipes (Kafka, Kinesis, etc.).  
-- **Object storage polling interval**: Configures how frequently ClickPipes checks object storage for new data. Applies to object storage ClickPipes (S3, GCS, etc.).  
+- **Streaming max insert wait time**: Configures the maximum wait period before inserting data into the ClickHouse cluster. Applies to streaming ClickPipes (e.g., Kafka, Kinesis).  
+- **Object storage polling interval**: Configures how frequently ClickPipes checks object storage for new data. Applies to object storage ClickPipes (e.g., S3, GCS).
 
 <Image img={cp_advanced_settings} alt="Advanced settings for ClickPipes" size="lg" border/>
 
