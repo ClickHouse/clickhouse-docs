@@ -32,7 +32,7 @@ To set the replica identity to FULL, you can use the following SQL command:
 ```sql
 ALTER TABLE your_table_name REPLICA IDENTITY FULL;
 ```
-REPLICA IDENTITY FULL also enabled replication of unchanged TOAST columns. More on that [here](./toast).
+REPLICA IDENTITY FULL also enables replication of unchanged TOAST columns. More on that [here](./toast).
 
 Note that using `REPLICA IDENTITY FULL` can have performance implications and also faster WAL growth, especially for tables without a primary key and with frequent updates or deletes, as it requires more data to be logged for each change. If you have any doubts or need assistance with setting up primary keys or replica identities for your tables, please reach out to our support team for guidance.
 
