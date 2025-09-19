@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'ClickPipes - PostgreSQL CDC'
+sidebar_label: 'PostgreSQL CDC'
 slug: /cloud/reference/billing/clickpipes/postgres-cdc
 title: 'ClickPipes for PostgreSQL CDC'
 description: 'Overview of billing for PostgreSQL CDC ClickPipes'

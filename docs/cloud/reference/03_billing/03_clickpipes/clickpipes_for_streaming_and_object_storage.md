@@ -1,11 +1,11 @@
 ---
-sidebar_label: 'ClickPipes - streaming and object storage'
+sidebar_label: 'Streaming and object storage'
 slug: /cloud/reference/billing/clickpipes/streaming-and-object-storage
 title: 'ClickPipes for streaming and object storage'
 description: 'Overview of billing for streaming and object storage ClickPipes'
 ---
 
-import ClickPipesFAQ from '../../_snippets/_clickpipes_faq.md'
+import ClickPipesFAQ from '../../../_snippets/_clickpipes_faq.md'
 
 # ClickPipes for streaming and object storage {#clickpipes-for-streaming-object-storage}
 
