@@ -4,6 +4,7 @@ description: 'Frequently asked questions about ClickPipes for Postgres.'
 slug: /integrations/clickpipes/postgres/faq
 sidebar_position: 2
 title: 'ClickPipes for Postgres FAQ'
+doc_type: 'reference'
 ---
 
 import failover_slot from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/failover_slot.png'

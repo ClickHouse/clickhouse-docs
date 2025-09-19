@@ -4,6 +4,7 @@ keywords: ['Cloud', 'Primary key', 'Ordering key', 'Materialized Views', 'Best P
 title: 'Overview'
 hide_title: true
 description: 'Landing page for Best Practices section in ClickHouse'
+doc_type: 'landing-page'
 ---
 
 import TableOfContents from '@site/docs/best-practices/_snippets/_table_of_contents.md';

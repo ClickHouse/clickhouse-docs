@@ -4,6 +4,7 @@ title: 'quantilesTimingIf'
 description: 'Example of using the quantilesTimingIf combinator'
 keywords: ['quantilesTiming', 'if', 'combinator', 'examples', 'quantilesTimingIf']
 sidebar_label: 'quantilesTimingIf'
+doc_type: 'reference'
 ---
 
 # quantilesTimingIf {#quantilestimingif}

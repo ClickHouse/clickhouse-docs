@@ -3,6 +3,7 @@ sidebar_label: 'SAML SSO Setup'
 slug: /cloud/security/saml-setup
 title: 'SAML SSO Setup'
 description: 'How to set up SAML SSO with ClickHouse Cloud'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

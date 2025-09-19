@@ -4,6 +4,7 @@ title: 'Loading data from BigQuery to ClickHouse'
 slug: /migrations/bigquery/loading-data
 description: 'How to load data from BigQuery to ClickHouse'
 keywords: ['migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'BigQuery']
+doc_type: 'guide'
 ---
 
 _This guide is compatible with ClickHouse Cloud and for self-hosted ClickHouse v23.5+._

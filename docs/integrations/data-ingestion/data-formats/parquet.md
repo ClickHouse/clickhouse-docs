@@ -4,6 +4,7 @@ sidebar_position: 3
 slug: /integrations/data-formats/parquet
 title: 'Working with Parquet in ClickHouse'
 description: 'Page describing how to work with Parquet in ClickHouse'
+doc_type: 'guide'
 ---
 
 # Working with Parquet in ClickHouse

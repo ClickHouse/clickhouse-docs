@@ -3,6 +3,7 @@ slug: /cloud/guides/sql-console/configure-org-service-role-assignments
 sidebar_label: 'Configuring organization and service role assignments'
 title: 'Configuring organization and service role assignments within the console'
 description: 'Guide showing how to configure org and service role assignments within the console'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

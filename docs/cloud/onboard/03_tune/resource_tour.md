@@ -4,6 +4,7 @@ title: 'Resource tour'
 description: 'Overview of ClickHouse Cloud documentation resources for query optimization, scaling strategies, monitoring, and best practices'
 keywords: ['clickhouse cloud']
 hide_title: true
+doc_type: 'guide'
 ---
 
 import TableOfContentsBestPractices from '@site/docs/best-practices/_snippets/_table_of_contents.md';

@@ -3,6 +3,7 @@ sidebar_label: 'ClickPipes'
 slug: /cloud/reference/billing/clickpipes
 title: 'ClickPipes billing'
 description: 'Overview of ClickPipes billing'
+doc_type: 'guide'
 ---
 
 import ClickPipesFAQ from '../../_snippets/_clickpipes_faq.md'

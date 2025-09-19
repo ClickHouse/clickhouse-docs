@@ -3,6 +3,7 @@ slug: /cloud/guides/sql-console/config-sql-console-role-assignments
 sidebar_label: 'Configuring SQL console role assignments'
 title: 'Configuring SQL console role assignments'
 description: 'Guide showing how to configure SQL console role assignments'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

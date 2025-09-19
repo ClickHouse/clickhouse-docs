@@ -2,7 +2,7 @@
 sidebar_position: 1
 slug: /community-wisdom/creative-use-cases
 sidebar_label: 'Success Stories'
-doc_type: 'how-to-guide'
+doc_type: 'guide'
 keywords: [
   'clickhouse creative use cases',
   'clickhouse success stories',

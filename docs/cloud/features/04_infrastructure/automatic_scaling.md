@@ -5,6 +5,7 @@ slug: /manage/scaling
 description: 'Configuring automatic scaling in ClickHouse Cloud'
 keywords: ['autoscaling', 'auto scaling', 'scaling', 'horizontal', 'vertical', 'bursts']
 title: 'Automatic Scaling'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

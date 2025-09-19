@@ -2,6 +2,7 @@
 title: 'Supported data types'
 slug: /integrations/clickpipes/mongodb/datatypes
 description: 'Page describing MongoDB ClickPipe datatype mapping from MongoDB to ClickHouse'
+doc_type: 'reference'
 ---
 
 MongoDB stores data records as BSON documents. In ClickPipes, you can configure to ingest BSON documents to ClickHouse as either JSON or JSON String. The following table shows the supported BSON to JSON field type mapping:

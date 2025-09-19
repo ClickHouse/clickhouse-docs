@@ -6,6 +6,7 @@ sidebar_label: 'Overview'
 sidebar_position: 0
 slug: /getting-started/example-datasets/
 title: 'Tutorials and Example Datasets'
+doc_type: 'landing-page'
 ---
 
 # Tutorials and example datasets

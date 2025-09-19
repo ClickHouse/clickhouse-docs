@@ -5,6 +5,7 @@ sidebar_label: 'Event Deltas'
 pagination_prev: null
 pagination_next: null
 description: 'Event Deltas with ClickStack'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

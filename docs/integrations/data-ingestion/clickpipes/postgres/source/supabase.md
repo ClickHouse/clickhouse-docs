@@ -3,6 +3,7 @@ sidebar_label: 'Supabase Postgres'
 description: 'Set up Supabase instance as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/supabase
 title: 'Supabase Source Setup Guide'
+doc_type: 'guide'
 ---
 
 import supabase_commands from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-commands.jpg'

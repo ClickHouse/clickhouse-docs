@@ -4,6 +4,7 @@ sidebar_label: 'Data masking'
 title: 'Data masking in ClickHouse'
 description: 'A guide to data masking in ClickHouse'
 keywords: ['data masking']
+doc_type: 'guide'
 ---
 
 # Data masking in ClickHouse
