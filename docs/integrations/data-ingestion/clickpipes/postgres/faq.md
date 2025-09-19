@@ -6,6 +6,9 @@ sidebar_position: 2
 title: 'ClickPipes for Postgres FAQ'
 ---
 
+import failover_slot from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/failover_slot.png'
+import Image from '@theme/IdealImage';
+
 # ClickPipes for Postgres FAQ
 
 ### How does idling affect my Postgres CDC ClickPipe? {#how-does-idling-affect-my-postgres-cdc-clickpipe}
@@ -345,3 +348,10 @@ If your initial load has completed without error but your destination ClickHouse
 Also worth checking:
 - If the user has sufficient permissions to read the source tables.
 - If there are any row policies on ClickHouse side which might be filtering out rows.
+
+### Can I have the ClickPipe create a replication slot with failover enabled? {#failover-slot}
+Yes, for a Postgres ClickPipe with replication mode as CDC or Snapshot + CDC, you can have ClickPipes create a replication slot with failover enabled, by toggling the below switch in the `Advanced Settings` section while creating the ClickPipe. Note that your Postgres version must be 17 or above to use this feature.
+
+<Image img={failover_slot} border size="md"/>
+
+If the source is configured accordingly, the slot is preserved after failovers to a Postgres read replica, ensuring continuous data replication. Learn more [here](https://www.postgresql.org/docs/current/logical-replication-failover.html).
