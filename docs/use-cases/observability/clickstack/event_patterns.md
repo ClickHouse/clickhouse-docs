@@ -5,6 +5,7 @@ sidebar_label: 'Event Patterns'
 pagination_prev: null
 pagination_next: null
 description: 'Event Patterns with ClickStack'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
