@@ -22,6 +22,7 @@ import Mongodbsvg from '@site/static/images/integrations/logos/mongodb.svg';
 import redpanda_logo from '@site/static/images/integrations/logos/logo_redpanda.png';
 import clickpipes_stack from '@site/static/images/integrations/data-ingestion/clickpipes/clickpipes_stack.png';
 import cp_custom_role from '@site/static/images/integrations/data-ingestion/clickpipes/cp_custom_role.png';
+import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import Image from '@theme/IdealImage';
 
 # Integrating with ClickHouse Cloud
@@ -81,6 +82,14 @@ Steps:
 2. add the custom role to ClickPipes user on step `Details and Settings` during the ClickPipes creation.
 
 <Image img={cp_custom_role} alt="Assign a custom role" size="lg" border/>
+
+## Adjusting ClickPipes advanced settings {#clickpipes-advanced-settings}
+ClickPipes provides sensible defaults that cover the requirements of most use cases. If your use case requires additional fine-tuning, you can adjust the following settings:
+
+- **Streaming max insert wait time**: Configures the maximum wait period before inserting data into the ClickHouse cluster. Applies to streaming ClickPipes (e.g., Kafka, Kinesis).  
+- **Object storage polling interval**: Configures how frequently ClickPipes checks object storage for new data. Applies to object storage ClickPipes (e.g., S3, GCS).
+
+<Image img={cp_advanced_settings} alt="Advanced settings for ClickPipes" size="lg" border/>
 
 ## Error reporting {#error-reporting}
 ClickPipes will store errors in two separate tables depending on the type of error encountered during the ingestion process.

@@ -271,6 +271,7 @@ autovacuum
 VACUUM
 resync
 Resync
+failovers
 --docs/integrations/data-ingestion/clickpipes/mysql/faq.md--
 PlanetScale
 Planetscale

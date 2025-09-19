@@ -11,6 +11,8 @@ ClickPipes for Postgres can detect schema changes in the source tables and, in s
 
 | Schema Change Type                                                                  | Behaviour                             |
 | ----------------------------------------------------------------------------------- | ------------------------------------- |
-| Adding a new column (`ALTER TABLE ADD COLUMN ...`)                                  | Propagated automatically. The new column(s) will be populated for all rows replicated after the schema change                                                   |
-| Adding a new column with a default value (`ALTER TABLE ADD COLUMN ... DEFAULT ...`) | Propagated automatically. The new column(s) will be populated for all rows replicated after the schema change, but existing rows will not show the default value without a full table refresh |
+| Adding a new column (`ALTER TABLE ADD COLUMN ...`)                                  | Propagated automatically once the table gets an insert/update/delete. The new column(s) will be populated for all rows replicated after the schema change                                                   |
+| Adding a new column with a default value (`ALTER TABLE ADD COLUMN ... DEFAULT ...`) | Propagated automatically once the table gets an insert/update/delete. The new column(s) will be populated for all rows replicated after the schema change, but existing rows will not show the default value without a full table refresh |
 | Dropping an existing column (`ALTER TABLE DROP COLUMN ...`)                         | Detected, but **not** propagated. The dropped column(s) will be populated with `NULL` for all rows replicated after the schema change                                                                |
+
+Note that column addition will be propagated at the end of a batch's sync, which could occur after the sync interval or pull batch size is reached. More information on controlling syncs [here](./controlling_sync.md)
