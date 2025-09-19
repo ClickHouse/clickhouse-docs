@@ -350,7 +350,7 @@ Also worth checking:
 - If there are any row policies on ClickHouse side which might be filtering out rows.
 
 ### Can I have the ClickPipe create a replication slot with failover enabled? {#failover-slot}
-Yes, for a Postgres ClickPipe with replication mode as CDC or Snapshot + CDC, you can have ClickPipes create a replication slot with failover enabled, by toggling the below switch in the `Advanced Settings` section while creating the ClickPipe.
+Yes, for a Postgres ClickPipe with replication mode as CDC or Snapshot + CDC, you can have ClickPipes create a replication slot with failover enabled, by toggling the below switch in the `Advanced Settings` section while creating the ClickPipe. Note that your Postgres version must be 17 or above to use this feature.
 
 <Image img={failover_slot} border size="md"/>
 
