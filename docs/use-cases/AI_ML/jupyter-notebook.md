@@ -271,7 +271,3 @@ Yikes!
 ## Summary {#summary}
 
 Whilst your average London-based data scientist may not be able to afford their own home any time soon, chdb allows you to easily work with data from multiple sources like ClickHouse Cloud and local CSV files easily in Jupyter notebook using the libraries you know and love like Pandas and matplot lib.
-
-
-
-
