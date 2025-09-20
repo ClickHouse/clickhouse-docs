@@ -408,7 +408,7 @@ CREATE TABLE store (
     s_zip                     LowCardinality(Nullable(String)),
     s_country                 LowCardinality(Nullable(String)),
     s_gmt_offset              Nullable(Decimal(7,2)),
-    s_tax_precentage          Nullable(Decimal(7,2)),
+    s_tax_percentage          Nullable(Decimal(7,2)),
     PRIMARY KEY (s_store_sk)
 );
 
