@@ -2533,6 +2533,8 @@ marimo's
 matcher
 materializations
 materializedview
+matplot
+matplotlib
 maxIntersections
 maxIntersectionsPosition
 maxMap
