@@ -3,7 +3,7 @@ slug: /use-cases/AI/jupyter-notebook
 sidebar_label: 'Exploring data in Jupyter notebooks with chdb'
 title: 'Exploring data in Jupyter notebooks with chdb'
 description: 'This guide explains how to setup and use chdb to explore data from ClickHouse Cloud or local files in Jupyer notebooks'
-keywords: ['ML', 'Jupyer', 'chdb']
+keywords: ['ML', 'Jupyer', 'chdb', 'pandas']
 doc_type: 'guide'
 ---
 
@@ -79,7 +79,7 @@ Click `File` > `New` > `Notebook` to create a new Notebook.
 <Image size="md" img={4} alt="Create a new notebook"/>
 
 You will be prompted to select a kernel.
-Select any python kernel available to you, in this example we will select the `ipykernel`:
+Select any Python kernel available to you, in this example we will select the `ipykernel`:
 
 <Image size="md" img={5} alt="Select kernel"/>
 
@@ -174,7 +174,7 @@ chdb automatically infers the most appropriate type when returning the DataFrame
 
 With the data now available to us in a familiar form, let's explore how prices of property in London have changed with time.
 
-In a new cell, run the following command to build a simple chart of time vs price for London using matplot lib:
+In a new cell, run the following command to build a simple chart of time vs price for London using matplotlib:
 
 ```python
 plt.figure(figsize=(12, 6))
