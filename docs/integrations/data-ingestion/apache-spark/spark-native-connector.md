@@ -426,7 +426,7 @@ object NativeSparkWrite extends App {
 from pyspark.sql import SparkSession
 from pyspark.sql import Row
 
-# Feel free to use any other packages combination satesfying the compatability martix provided above.
+# Feel free to use any other packages combination satesfying the compatibility matrix provided above.
 packages = [
     "com.clickhouse.spark:clickhouse-spark-runtime-3.4_2.12:0.8.0",
     "com.clickhouse:clickhouse-client:0.7.0",
@@ -461,7 +461,7 @@ df.writeTo("clickhouse.default.example_table").append()
 <TabItem value="SparkSQL" label="Spark SQL">
 
 ```sql
-    -- resultTalbe is the Spark intermediate df we want to insert into clickhouse.default.example_table
+    -- resultTable is the Spark intermediate df we want to insert into clickhouse.default.example_table
    INSERT INTO TABLE clickhouse.default.example_table
                 SELECT * FROM resultTable;
                 
