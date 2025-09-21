@@ -8,15 +8,15 @@ doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
-import 1 from '@site/static/images/use-cases/AI_ML/jupyter/1.png';
-import 2 from '@site/static/images/use-cases/AI_ML/jupyter/2.png';
-import 3 from '@site/static/images/use-cases/AI_ML/jupyter/3.png';
-import 4 from '@site/static/images/use-cases/AI_ML/jupyter/4.png';
-import 5 from '@site/static/images/use-cases/AI_ML/jupyter/5.png';
-import 6 from '@site/static/images/use-cases/AI_ML/jupyter/6.png';
-import 7 from '@site/static/images/use-cases/AI_ML/jupyter/7.png';
-import 8 from '@site/static/images/use-cases/AI_ML/jupyter/8.png';
-import 9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
+import image_1 from '@site/static/images/use-cases/AI_ML/jupyter/1.png';
+import image_2 from '@site/static/images/use-cases/AI_ML/jupyter/2.png';
+import image_3 from '@site/static/images/use-cases/AI_ML/jupyter/3.png';
+import image_4 from '@site/static/images/use-cases/AI_ML/jupyter/4.png';
+import image_5 from '@site/static/images/use-cases/AI_ML/jupyter/5.png';
+import image_6 from '@site/static/images/use-cases/AI_ML/jupyter/6.png';
+import image_7 from '@site/static/images/use-cases/AI_ML/jupyter/7.png';
+import image_8 from '@site/static/images/use-cases/AI_ML/jupyter/8.png';
+import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
 
 # Exploring data with Jupyter notebooks and chdb
 
@@ -35,15 +35,15 @@ To add this dataset to an existing ClickHouse Cloud service, login to [console.c
 
 In the left hand menu, click on `Data sources`. Then click `Predefined sample data`:
 
-<Image size="md" img={1} alt="Add example data set"/>
+<Image size="md" img={image_1} alt="Add example data set"/>
 
 Select `Get started` in the UK property price paid data (4GB) card: 
 
-<Image size="md" img={2} alt="Select UK price paid dataset"/>
+<Image size="md" img={image_2} alt="Select UK price paid dataset"/>
 
 Then click `Import dataset`:
 
-<Image size="md" img={3} alt="Import UK price paid dataset"/>
+<Image size="md" img={image_3} alt="Import UK price paid dataset"/>
 
 ClickHouse will automatically create the `pp_complete` table in the `default` database and fill the table with 28.92 million rows of price point data.
 
@@ -76,12 +76,12 @@ jupyter notebook
 A new browser window should open with the Jupyter interface on `localhost:8888`.
 Click `File` > `New` > `Notebook` to create a new Notebook.
 
-<Image size="md" img={4} alt="Create a new notebook"/>
+<Image size="md" img={image_4} alt="Create a new notebook"/>
 
 You will be prompted to select a kernel.
 Select any Python kernel available to you, in this example we will select the `ipykernel`:
 
-<Image size="md" img={5} alt="Select kernel"/>
+<Image size="md" img={image_5} alt="Select kernel"/>
 
 In a blank cell, you can type the following command to install chdb which we will be using connect to our remote ClickHouse Cloud instance:
 
@@ -155,7 +155,7 @@ The `remoteSecure` function connects to the remote ClickHouse Cloud service, run
 
 `df.head` displays only the first few rows of the returned data:
 
-<Image size="md" img={6} alt="dataframe preview"/>
+<Image size="md" img={image_6} alt="dataframe preview"/>
 
 Run the following command in a new cell to check the types of the columns:
 
@@ -192,7 +192,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-<Image size="md" img={7} alt="dataframe preview"/>
+<Image size="md" img={image_7} alt="dataframe preview"/>
 
 Perhaps unsurprisingly, property prices in London have massively increased over time.
 
@@ -217,7 +217,7 @@ df_2 = chdb.query(query, "DataFrame")
 df_2.head()
 ```
 
-<Image size="md" img={8} alt="dataframe preview"/>
+<Image size="md" img={image_8} alt="dataframe preview"/>
 
 Although we are missing data from 2020 onwards, we can plot the two datasets against each other for the years 1995 to 2019.
 In a new cell run the following command:
@@ -263,7 +263,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-<Image size="md" img={9} alt="Plot of remote data set and local data set"/>
+<Image size="md" img={image_9} alt="Plot of remote data set and local data set"/>
 
 It looks like housing prices in London have steadily risen over the years, while the number of houses sold has fluctuated greatly over time but generally trends downwards, at times even dropping below 1995 levels.
 Yikes!
