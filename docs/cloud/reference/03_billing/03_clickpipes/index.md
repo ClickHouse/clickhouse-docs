@@ -3,6 +3,7 @@ slug: /cloud/reference/billing/clickpipes
 title: 'ClickPipes'
 description: 'ClickPipes billing'
 keywords: ['ClickPipes Billing']
+doc_type: reference
 ---
 
 :::note
