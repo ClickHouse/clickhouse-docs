@@ -963,9 +963,9 @@ pecreate
 drilldown
 --docs/cloud/get-started/cloud-quick-start.md--
 createservice
---docs/use-cases/time-series/query-performance.md--
+--docs/use-cases/time-series/05_query-performance.md--
 subproject
---docs/use-cases/time-series/analysis-functions.md--
+--docs/use-cases/time-series/03_analysis-functions.md--
 Yankovic's
 --docs/migrations/bigquery/migrating-to-clickhouse-cloud.md--
 bigquery
