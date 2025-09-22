@@ -38,7 +38,7 @@ def read_metadata(text):
     for part in parts:
         parts = part.split(":")
         if len(parts) == 2:
-            if parts[0] in ['title', 'description', 'slug', 'keywords', 'score']:
+            if parts[0] in ['title', 'description', 'slug', 'keywords', 'score', 'doc_type']:
                 metadata[parts[0]] = int(parts[1].strip()) if parts[0] == 'score' else parts[1].strip()
     return metadata
 
@@ -215,12 +215,12 @@ def update_page_links(directory, base_directory, page_path, url, content, base_u
                 c_page = os.path.abspath(os.path.join(os.path.dirname(page_path), './' + target))
             metadata, _ = parse_metadata_and_content(directory, base_directory, c_page, log_snippet_failure=False)
             if 'slug' in metadata:
-                link_data.append((url, f'{base_url}{metadata.get('slug')}'))
+                link_data.append((url, f"{base_url}{metadata.get('slug')}"))
             else:
                 fail = True
         elif target.startswith('/'):  # ignore external links
             target = target.removesuffix('/')
-            link_data.append((url, f'{base_url}{target}'))
+            link_data.append((url, f"{base_url}{target}"))
     if fail:
         print(f"Warning: couldn't resolve link for {page_path}")
 
@@ -248,7 +248,8 @@ def parse_markdown_content(metadata, content, base_url):
             'lvl0': current_h1,
             'lvl1': current_h1
         },
-        'score': metadata.get('score', 0)
+        'score': metadata.get('score', 0),
+        'doc_type': metadata.get('doc_type', '')
     }
     for line in lines:
         if line.startswith('# '):
@@ -266,8 +267,7 @@ def parse_markdown_content(metadata, content, base_url):
             current_subdoc['type'] = 'lvl1'
             current_subdoc['object_id'] = custom_slugify(heading_slug)
             current_subdoc['hierarchy']['lvl1'] = current_h1
-            current_subdoc['hierarchy']['lvl0'] = current_h1 if metadata.get('title', '') == '' else metadata.get(
-                'title', '')
+            current_subdoc['hierarchy']['lvl0'] = current_h1 if metadata.get('title', '') == '' else metadata.get('title', '')
         elif line.startswith('## '):
             if current_subdoc:
                 yield from split_large_document(current_subdoc)
@@ -293,7 +293,8 @@ def parse_markdown_content(metadata, content, base_url):
                     'lvl0': current_h1 if metadata.get('title', '') == '' else metadata.get('title', ''),
                     'lvl1': current_h1,
                     'lvl2': current_h2,
-                }
+                },
+                'doc_type': metadata.get('doc_type', '')
             }
         elif line.startswith('### '):
             # note we send users to the h2 or h1 even on ###
@@ -322,7 +323,8 @@ def parse_markdown_content(metadata, content, base_url):
                     'lvl1': current_h1,
                     'lvl2': current_h2,
                     'lvl3': current_h3,
-                }
+                },
+                'doc_type': metadata.get('doc_type', '')
             }
         elif line.startswith('#### '):
             if current_subdoc:
@@ -348,7 +350,8 @@ def parse_markdown_content(metadata, content, base_url):
                     'lvl2': current_h2,
                     'lvl3': current_h3,
                     'lvl4': current_h4,
-                }
+                },
+                'doc_type': metadata.get('doc_type', '')
             }
         elif current_subdoc:
             current_subdoc['content'] += line + '\n'
@@ -410,9 +413,9 @@ def compute_page_rank(link_data, damping_factor=0.85, max_iter=100, tol=1e-6):
 def create_new_index(client, index_name):
     try:
         client.delete_index(index_name)
-        print(f'Temporary index \'{index_name}\' deleted successfully.')
+        print(f"Temporary index '{index_name}' deleted successfully.")
     except:
-        print(f'Temporary index \'{index_name}\' does not exist or could not be deleted')
+        print(f"Temporary index '{index_name}' does not exist or could not be deleted")
     client.set_settings(index_name, settings['settings'])
     client.save_rules(index_name, settings['rules'])
     print(f"Settings applied to temporary index '{index_name}'.")
@@ -442,9 +445,19 @@ def main(base_directory, algolia_app_id, algolia_api_key, algolia_index_name,
         else:
             for d in batch:
                 print(f"{d['url']} - {d['page_rank']}")
-        print(f'{'processed' if dry_run else 'indexed'} {len(batch)} records')
+            # Print a sample record to verify doc_type is included
+            if batch:
+                print("\n--- Sample record ---")
+                sample_record = batch[0]
+                print(f"Title: {sample_record.get('title', 'N/A')}")
+                print(f"URL: {sample_record.get('url', 'N/A')}")
+                print(f"Type: {sample_record.get('type', 'N/A')}")
+                print(f"Doc Type: {sample_record.get('doc_type', 'N/A')}")
+                print(f"Keywords: {sample_record.get('keywords', 'N/A')}")
+                print("--- End sample ---\n")
+        print(f"{'processed' if dry_run else 'indexed'} {len(batch)} records")
         t += len(batch)
-    print(f'total {'processed' if dry_run else 'indexed'} {t} records')
+    print(f"total {'processed' if dry_run else 'indexed'} {t} records")
     if not dry_run:
         print('switching temporary index...', end='')
         client.operation_index(temp_index_name, {"operation": "move", "destination": algolia_index_name})
