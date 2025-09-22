@@ -15,17 +15,14 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-[Dot](https://www.getdot.ai/) is your **AI Data Analyst**. It connects directly to ClickHouse so you can ask data questions in natural language, discover data, test hypotheses, and answer why questions — directly in Slack, Microsoft Teams, ChatGPT or the native Web UI.
-
----
+[Dot](https://www.getdot.ai/) is your **AI Data Analyst**.
+It connects directly to ClickHouse so you can ask data questions in natural language, discover data, test hypotheses, and answer why questions — directly in Slack, Microsoft Teams, ChatGPT or the native Web UI.
 
 ## Pre-requisites {#pre-requisites}
 
 - A ClickHouse database, either self-hosted or in [ClickHouse Cloud](https://clickhouse.com/cloud)  
 - A [Dot](https://www.getdot.ai/) account  
-- A [Hashboard](https://www.hashboard.com/) account and project.  
-
----
+- A [Hashboard](https://www.hashboard.com/) account and project.
 
 ## Connecting Dot to ClickHouse {#connecting-dot-to-clickhouse}
 
@@ -41,14 +38,9 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
    - **Database**: optionally set a default schema  
 4. Click **Connect**.
 
-<div style={{maxWidth: '500px', marginInline: 'auto'}}>
-   <Image img={dot_02} alt="Connecting ClickHouse" />
-</div>
-<br/>
+<Image img={dot_02} alt="Connecting ClickHouse" size="sm"/>
 
 Dot uses **query-pushdown**: ClickHouse handles the heavy number-crunching at scale, while Dot ensures correct and trusted answers.
-
----
 
 ## Highlights {#highlights}
 
@@ -58,11 +50,9 @@ Dot makes data accessible through conversation:
 - **Why analysis**: Ask follow-up questions to understand trends and anomalies.  
 - **Works where you work**: Slack, Microsoft Teams, ChatGPT, or the web app.  
 - **Trusted results**: Dot validates queries against your schemas and definitions to minimize errors.  
-- **Scalable**: Built on query-pushdown, pairing Dot’s intelligence with ClickHouse’s speed.  
+- **Scalable**: Built on query-pushdown, pairing Dot’s intelligence with ClickHouse’s speed.
 
----
-
-## Security and Governance {#security}
+## Security and governance {#security}
 
 Dot is enterprise-ready:
 
@@ -70,11 +60,9 @@ Dot is enterprise-ready:
 - **Row-level security**: Supported if configured in ClickHouse  
 - **TLS / SSL**: Enabled by default for ClickHouse Cloud; configure manually for self-hosted  
 - **Governance & validation**: Training/validation space helps prevent hallucinations  
-- **Compliance**: SOC 2 Type I certified  
+- **Compliance**: SOC 2 Type I certified
 
----
-
-## Additional Resources {#additional-resources}
+## Additional resources {#additional-resources}
 
 - Dot website: [https://www.getdot.ai/](https://www.getdot.ai/)  
 - Documentation: [https://docs.getdot.ai/](https://docs.getdot.ai/)  
