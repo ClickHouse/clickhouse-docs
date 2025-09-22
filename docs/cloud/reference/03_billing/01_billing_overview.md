@@ -376,4 +376,4 @@ However, combining two services in a warehouse and idling one of them helps you 
 
 ## ClickPipes pricing {#clickpipes-pricing}
 
-For information on ClickPipes billing, please see ["ClickPipes billing"](/cloud/reference/billing/clickpipes)
+For information on ClickPipes billing, please see the dedicated ["ClickPipes billing" section](/cloud/reference/billing/clickpipes).
