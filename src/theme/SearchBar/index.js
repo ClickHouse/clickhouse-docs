@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { DocSearchButton, useDocSearchKeyboardEvents } from '@docsearch/react';
 import Head from '@docusaurus/Head';
 import { useHistory } from '@docusaurus/router';
@@ -21,6 +21,7 @@ import {
 } from './utils/searchConfig';
 import { SearchHit } from './searchHit';
 import { SearchResultsFooter } from './searchResultsFooter';
+import { DocTypeSelector } from './docTypeSelector';
 
 function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
   const queryIDRef = useRef(null);
@@ -30,6 +31,9 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
   const { isAskAIOpen, currentMode } = useAskAI();
   const history = useHistory();
   const searchButtonRef = useRef(null);
+  
+  // Doc type filtering state
+  const [selectedDocTypes, setSelectedDocTypes] = useState(null);
   
   // Use the modal management hook
   const {
@@ -43,8 +47,13 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
     importDocSearchModalIfNeeded
   } = useDocSearchModal();
 
-  // Configure search parameters
-  const searchParameters = createSearchParameters(props, contextualSearch, contextualSearchFacetFilters);
+  // Configure search parameters with doc_type filter
+  const searchParameters = createSearchParameters(
+    props, 
+    contextualSearch, 
+    contextualSearchFacetFilters,
+    selectedDocTypes
+  );
 
   useEffect(() => {
     initializeSearchAnalytics(props.appId, props.apiKey);
@@ -65,6 +74,10 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
       queryIDRef
     });
   }, [props.transformItems, processSearchResultUrl, currentLocale]);
+
+  const handleDocTypeChange = useCallback((docTypes) => {
+    setSelectedDocTypes(docTypes);
+  }, []);
 
   const resultsFooterComponent = useMemo(
     () =>
@@ -130,23 +143,43 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
             DocSearchModal &&
             searchContainer &&
             createPortal(
-                <DocSearchModal
-                    onClose={onClose}
-                    initialScrollY={window.scrollY}
-                    initialQuery={initialQuery}
-                    navigator={navigator}
-                    transformItems={transformItems}
-                    hitComponent={SearchHit}
-                    transformSearchClient={transformSearchClient}
-                    {...(props.searchPagePath && {
-                      resultsFooterComponent,
-                    })}
-                    {...props}
-                    insights={true}
-                    searchParameters={searchParameters}
-                    placeholder={translations.placeholder}
-                    translations={translations.modal}
-                />,
+                <>               
+                  <DocSearchModal
+                      onClose={onClose}
+                      initialScrollY={window.scrollY}
+                      initialQuery={initialQuery}
+                      navigator={navigator}
+                      transformItems={transformItems}
+                      hitComponent={SearchHit}
+                      transformSearchClient={transformSearchClient}
+                      {...(props.searchPagePath && {
+                        resultsFooterComponent,
+                      })}
+                      {...props}
+                      insights={true}
+                      searchParameters={searchParameters}
+                      placeholder={translations.placeholder}
+                      translations={translations.modal}
+                  />
+                  
+                  {/* Selector positioned as overlay */}
+                  <div style={{
+                    position: 'fixed',
+                    top: '120px', // Much closer to search bar area
+                    right: 'calc(50% - 280px)', // Position relative to modal right edge
+                    zIndex: 10000,
+                    backgroundColor: 'var(--docsearch-modal-background)',
+                    padding: '6px 12px',
+                    borderRadius: '6px',
+                    border: '1px solid var(--docsearch-modal-shadow)',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                  }}>
+                    <DocTypeSelector 
+                      selectedDocTypes={selectedDocTypes}
+                      onSelectionChange={handleDocTypeChange}
+                    />
+                  </div>
+                </>,
                 searchContainer,
             )}
       </>
