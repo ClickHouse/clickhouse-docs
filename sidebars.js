@@ -1624,7 +1624,7 @@ const sidebars = {
           type: "link",
           label: "Migration Guides",
           description: "Migrate your database to ClickHouse",
-          href: "/migrations/migrations"
+          href: "/integrations/migration/overview"
         },
         {
           type: "link",
@@ -1829,7 +1829,7 @@ const sidebars = {
           type: "link",
           label: "Data Sources",
           description: "Load data into ClickHouse from your prefered source",
-          href: "/integrations/index"
+          href: "/integrations/data-sources/index"
         },
         {
           type: "link",
