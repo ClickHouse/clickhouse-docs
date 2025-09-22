@@ -16,6 +16,7 @@ sidebar_label: 'Using clickhouse-local database'
 slug: /chdb/guides/clickhouse-local
 description: 'Learn how to use a clickhouse-local database with chDB'
 keywords: ['chdb', 'clickhouse-local']
+doc_type: 'reference' (or 'guide' or 'changelog')
 ---
 ```
 
@@ -26,7 +27,7 @@ keywords: ['chdb', 'clickhouse-local']
 There is a custom Docusaurus plugin which runs on build that makes the following
 checks on front-matter:
 
-- title, description and slug are specified.
+- title, description, slug and doc_type (either `reference`, `guide`, `landingpage` or `changelog`) are specified.
 - keywords use flow style arrays with single quoted items e.g. 
   `keywords: ['integrations']`
 - single quotes are used for title, description, slug, sidebar_label
