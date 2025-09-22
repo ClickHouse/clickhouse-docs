@@ -165,13 +165,10 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
                   {/* Selector positioned as overlay */}
                   <div style={{
                     position: 'fixed',
-                    top: '120px', // Much closer to search bar area
-                    right: 'calc(50% - 280px)', // Position relative to modal right edge
+                    top: window.innerWidth < 768 ? '55px' : '120px',
+                    right: window.innerWidth < 768 ? 'calc(50% - 185px)' : 'calc(50% - 255px)',
                     zIndex: 10000,
                     backgroundColor: 'var(--docsearch-modal-background)',
-                    padding: '6px 12px',
-                    borderRadius: '6px',
-                    border: '1px solid var(--docsearch-modal-shadow)',
                     boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
                   }}>
                     <DocTypeSelector 
