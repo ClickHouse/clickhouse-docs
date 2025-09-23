@@ -1,0 +1,47 @@
+[
+  {
+    "slug": "/integrations/clickpipes/kinesis",
+    "integration_logo": "/images/integrations/logos/amazon_kinesis_logo.svg",
+    "integration_type": [
+      "core",
+      "data ingestion"
+    ],
+    "integration_title": "Amazon Kinesis"
+  },
+  {
+    "slug": "/integrations/s3",
+    "integration_logo": "/images/integrations/logos/amazon_s3_logo.svg",
+    "integration_type": [
+      "core",
+      "data ingestion"
+    ],
+    "integration_title": "Amazon S3"
+  },
+  {
+    "slug": "/integrations/apache-spark",
+    "integration_logo": "/images/integrations/logos/apache_spark_logo.svg",
+    "integration_type": [
+      "core",
+      "data ingestion"
+    ],
+    "integration_title": "Apache Spark"
+  },
+  {
+    "slug": "/integrations/fivetran",
+    "integration_logo": "/images/integrations/logos/fivetran.svg",
+    "integration_type": [
+      "core",
+      "data ingestion"
+    ],
+    "integration_title": "Fivetran"
+  },
+  {
+    "slug": "/integrations/kafka",
+    "integration_logo": "/images/integrations/logos/kafka.svg",
+    "integration_type": [
+      "core",
+      "data ingestion"
+    ],
+    "integration_title": "Kafka"
+  }
+]

@@ -1,0 +1,22 @@
+@use '../../css/breakpoints.scss' as breakpoints;
+
+.integrationGrid {
+
+  // Mobile first - single column
+  grid-template-columns: 1fr;
+
+  // Tablet - 2 columns
+  @media (min-width: breakpoints.$mobile-breakpoint) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  // Laptop - 3 columns
+  @media (min-width: breakpoints.$tablet-breakpoint) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  // Large desktop - 5 columns
+  @media (min-width: breakpoints.$laptop-breakpoint) {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
