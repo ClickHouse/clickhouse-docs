@@ -6,6 +6,7 @@ keywords: ['clickhouse', 'tableau', 'connect', 'integrate', 'ui']
 description: 'Tableau can use ClickHouse databases and tables as a data source.'
 title: 'Connecting Tableau to ClickHouse'
 doc_type: 'guide'
+integration_type: ['core', 'data visualization']
 ---
 
 import TOCInline from '@theme/TOCInline';

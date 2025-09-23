@@ -5,6 +5,7 @@ keywords: ['clickhouse', 'aws', 'amazon', 'QuickSight', 'mysql', 'connect', 'int
 description: 'Amazon QuickSight powers data-driven organizations with unified business intelligence (BI).'
 title: 'QuickSight'
 doc_type: 'guide'
+integration_type: ['core', 'data visualization']
 ---
 
 import MySQLOnPremiseSetup from '@site/docs/_snippets/_clickhouse_mysql_on_premise_setup.mdx';

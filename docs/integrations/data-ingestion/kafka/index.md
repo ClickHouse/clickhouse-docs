@@ -5,6 +5,9 @@ slug: /integrations/kafka
 description: 'Introduction to Kafka with ClickHouse'
 title: 'Integrating Kafka with ClickHouse'
 doc_type: 'guide'
+integration_type: ['core', 'data ingestion']
+integration_logo: '/static/images/integrations/logos/kafka.svg'
+integration_title: 'Kafka'
 ---
 
 # Integrating Kafka with ClickHouse

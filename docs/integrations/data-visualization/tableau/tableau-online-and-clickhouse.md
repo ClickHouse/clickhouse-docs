@@ -6,6 +6,7 @@ keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', '
 description: 'Tableau Online streamlines the power of data to make people faster and more confident decision makers from anywhere.'
 title: 'Tableau Online'
 doc_type: 'guide'
+integration_type: ['core', 'data visualization']
 ---
 
 import MySQLCloudSetup from '@site/docs/_snippets/_clickhouse_mysql_cloud_setup.mdx';
