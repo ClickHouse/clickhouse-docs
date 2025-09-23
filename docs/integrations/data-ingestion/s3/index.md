@@ -5,7 +5,7 @@ sidebar_label: 'Integrating S3 with ClickHouse'
 title: 'Integrating S3 with ClickHouse'
 description: 'Page describing how to integrate S3 with ClickHouse'
 doc_type: 'guide'
-integration_type: ['core', 'data ingestion']
+integration_type: ['data ingestion']
 integration_logo: '/static/images/integrations/logos/amazon_s3_logo.svg'
 integration_title: 'Amazon S3'
 ---

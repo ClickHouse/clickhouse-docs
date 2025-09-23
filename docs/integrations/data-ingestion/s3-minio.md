@@ -5,6 +5,9 @@ slug: /integrations/minio
 description: 'Page describing how to use MinIO with ClickHouse'
 title: 'Using MinIO'
 doc_type: 'guide'
+integration_type: ['data ingestion']
+integration_logo: '/static/images/integrations/logos/minio.png'
+integration_title: 'MinIO'
 ---
 
 # Using MinIO

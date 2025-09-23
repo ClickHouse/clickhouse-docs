@@ -4,6 +4,9 @@ slug: /integrations/datagrip
 description: 'DataGrip is a database IDE that supports ClickHouse out of the box.'
 title: 'Connecting DataGrip to ClickHouse'
 doc_type: 'guide'
+integration_title: 'DataGrip'
+integration_type: ['sql client']
+integration_logo: '/static/images/integrations/logos/data_grip.svg'
 ---
 
 import Image from '@theme/IdealImage';

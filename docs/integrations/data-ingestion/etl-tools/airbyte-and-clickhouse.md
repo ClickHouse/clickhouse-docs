@@ -6,6 +6,9 @@ slug: /integrations/airbyte
 description: 'Stream data into ClickHouse using Airbyte data pipelines'
 title: 'Connect Airbyte to ClickHouse'
 doc_type: 'guide'
+integration_title: 'Airbyte'
+integration_type: ['data ingestion']
+integration_logo: '/static/images/integrations/logos/airbyte-logo.png'
 ---
 
 import Image from '@theme/IdealImage';

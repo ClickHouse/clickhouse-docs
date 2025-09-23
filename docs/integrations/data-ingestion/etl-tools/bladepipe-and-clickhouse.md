@@ -6,6 +6,9 @@ slug: /integrations/bladepipe
 description: 'Stream data into ClickHouse using BladePipe data pipelines'
 title: 'Connect BladePipe to ClickHouse'
 doc_type: 'guide'
+integration_title: 'BladePipe'
+integration_type: ['data ingestion']
+integration_logo: '/static/images/integrations/logos/bladepipe.svg'
 ---
 
 import Image from '@theme/IdealImage';

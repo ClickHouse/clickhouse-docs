@@ -5,7 +5,9 @@ sidebar_position: 1
 description: 'Users can transform and model their data in ClickHouse using dbt'
 title: 'Integrating dbt and ClickHouse'
 doc_type: 'guide'
-integration_type: ['core', 'data integration']
+integration_type: ['data integration']
+integration_logo: '/static/images/integrations/logos/dbt.svg'
+integration_title: 'dbt'
 ---
 
 import TOCInline from '@theme/TOCInline';

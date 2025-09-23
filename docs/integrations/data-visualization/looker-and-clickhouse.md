@@ -5,7 +5,9 @@ keywords: ['clickhouse', 'looker', 'connect', 'integrate', 'ui']
 description: 'Looker is an enterprise platform for BI, data applications, and embedded analytics that helps you explore and share insights in real time.'
 title: 'Looker'
 doc_type: 'guide'
-integration_type: ['core', 'data visualization']
+integration_type: ['data visualization']
+integration_logo: '/static/images/integrations/logos/looker.svg'
+integration_title: 'Looker'
 ---
 
 import Image from '@theme/IdealImage';

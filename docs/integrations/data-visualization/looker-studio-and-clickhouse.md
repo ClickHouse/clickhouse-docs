@@ -5,7 +5,9 @@ keywords: ['clickhouse', 'looker', 'studio', 'connect', 'mysql', 'integrate', 'u
 description: 'Looker Studio, formerly Google Data Studio, is an online tool for converting data into customizable informative reports and dashboards.'
 title: 'Looker Studio'
 doc_type: 'guide'
-integration_type: ['core', 'data visualization']
+integration_type: ['data visualization']
+integration_logo: '/static/images/integrations/logos/looker_studio.svg'
+integration_title: 'Looker Studio'
 ---
 
 import Image from '@theme/IdealImage';

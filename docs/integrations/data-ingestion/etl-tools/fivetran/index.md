@@ -5,7 +5,7 @@ sidebar_position: 2
 description: 'Users can transform and model their data in ClickHouse using dbt'
 title: 'Fivetran and ClickHouse Cloud'
 doc_type: 'guide'
-integration_type: ['core', 'data ingestion']
+integration_type: ['data ingestion']
 integration_logo: '/static/images/integrations/logos/fivetran.svg'
 integration_title: 'Fivetran'
 ---

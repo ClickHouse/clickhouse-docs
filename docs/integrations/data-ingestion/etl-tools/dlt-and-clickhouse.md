@@ -5,6 +5,9 @@ description: 'Load data into Clickhouse using dlt integration'
 title: 'Connect dlt to ClickHouse'
 slug: /integrations/data-ingestion/etl-tools/dlt-and-clickhouse
 doc_type: 'guide'
+integration_title: 'DLT'
+integration_type: ['data integration']
+integration_logo: '/static/images/integrations/logos/dlthub_logo.svg'
 ---
 
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';

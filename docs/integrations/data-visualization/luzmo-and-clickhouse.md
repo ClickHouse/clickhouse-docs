@@ -6,6 +6,9 @@ description: 'Luzmo is an embedded analytics platform with a native ClickHouse i
 title: 'Integrating Luzmo with ClickHouse'
 sidebar: 'integrations'
 doc_type: 'guide'
+integration_title: 'Luzmo'
+integration_type: ['data visualization']
+integration_logo: '/static/images/integrations/logos/luzmo.png'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
