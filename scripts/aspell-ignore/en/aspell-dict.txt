@@ -1,11 +1,9 @@
-personal_ws-1.1 en 3646
+personal_ws-1.1 en 3682
 AArch
 ACLs
-Accepter
 AICPA
 ALTERs
 AMPLab
-AmazonKinesis
 AMQP
 ANNIndex
 ANNIndexes
@@ -19,6 +17,7 @@ ASOF
 ASan
 AWND
 AWST
+Accepter
 Actian
 ActionsMenu
 ActiveRecord
@@ -34,6 +33,7 @@ Airbyte
 Akka
 AlertManager
 Alexey
+AmazonKinesis
 Amir
 Anthropic
 AnyEvent
@@ -60,8 +60,8 @@ Authenticators
 Authy
 AutoFDO
 AutoML
-Autoscaler
 Autocompletion
+Autoscaler
 AvroConfluent
 AzureQueue
 Azurite
@@ -221,6 +221,7 @@ Cloudflare
 CodeBlock
 CodeLLDB
 Codecs
+Coinhall
 CollapsingMergeTree
 Combinators
 CommonRoom
@@ -389,6 +390,7 @@ FQDN
 Fabi
 Failover
 FarmHash
+Fastly
 FileCluster
 FileLog
 Filebeat
@@ -413,6 +415,7 @@ Fivetran
 FixedString
 FlameGraph
 Flink
+Fong
 ForEach
 FreeBSD
 Fuzzer
@@ -423,6 +426,7 @@ GTID
 GTIDs
 GTest
 GUID
+GWLBs
 Gb
 Gbit
 Gcc
@@ -480,6 +484,7 @@ HiveText
 Holistics
 Homebrew
 Homebrew's
+Hopsworks
 HorizontalDivide
 Hostname
 HouseOps
@@ -524,6 +529,7 @@ InJodaSyntaxOrZero
 Incrementing
 IndexesAreNeighbors
 InfluxDB
+Instacart
 Instana
 IntN
 Integrations
@@ -652,6 +658,7 @@ LOCALTIMESTAMP
 LONGLONG
 LOONGARCH
 LaGuardia
+Lakehouses
 Lakekeeper
 LangChain
 LangGraph
@@ -703,6 +710,7 @@ MACStringToOUI
 MCPHost
 MEDIUMINT
 MEMTABLE
+MLOps
 MMapCacheCells
 MMappedAllocBytes
 MMappedAllocs
@@ -712,6 +720,8 @@ MQTT
 MQTTX
 MSSQL
 MSan
+MTTD
+MTTR
 MVCC
 MacBook
 MacOS
@@ -803,6 +813,7 @@ NEWDECIMAL
 NFKC
 NFKD
 NIST
+NLBs
 NOAA
 NULLIF
 NVME
@@ -845,6 +856,7 @@ NumberOfDatabases
 NumberOfDetachedByUserParts
 NumberOfDetachedParts
 NumberOfTables
+O'Reilly
 OAuth
 ODBCDriver
 OFNS
@@ -1053,6 +1065,7 @@ REPL
 RHEL
 RIPEMD
 ROLLUP
+RPOs
 RWLock
 RWLockActiveReaders
 RWLockActiveWriters
@@ -1155,6 +1168,7 @@ SSRF
 SSSE
 SaaS
 Sackmann's
+SageMaker
 Sanjeev
 Sankey
 Sapchuk
@@ -1190,6 +1204,7 @@ SimHash
 Simhash
 SimpleAggregateFunction
 SimpleState
+SingleStore
 SipHash
 SlackBot
 Smartbook
@@ -2053,6 +2068,7 @@ evalMLMethod
 exFAT
 expiryMsec
 explainer
+explorative
 exponentialMovingAverage
 exponentialTimeDecayedAvg
 exponentialTimeDecayedCount
@@ -2077,6 +2093,7 @@ extractURLParameters
 extractable
 facto
 failover
+failovers
 farmFingerprint
 farmHash
 fastmcp
@@ -2275,10 +2292,8 @@ hiveHash
 hnsw
 holistics
 homebrew
-homebrew
 hopEnd
 hopStart
-Hopsworks
 horgh
 hostName
 hostname
@@ -2422,7 +2437,7 @@ kusto
 lagInFrame
 laion
 lakehouse
-Lakehouses
+lakehouses
 lang
 laravel
 largestTriangleThreeBuckets
@@ -2657,7 +2672,6 @@ nats
 navbar
 ndjson
 ness
-Nessie
 nestjs
 netloc
 newjson
@@ -2791,6 +2805,7 @@ plantuml
 poco
 pointInEllipses
 pointInPolygon
+pointwise
 poller
 polygonAreaCartesian
 polygonAreaSpherical
@@ -3031,16 +3046,17 @@ reshards
 resolvers
 resourceGUID
 restartable
+restorable
 resultset
 resync
 resynchronization
 resyncing
-failovers
 retentions
 rethrow
 retransmit
 retriable
 retryable
+reusability
 reverseUTF
 rewritable
 rightPad
@@ -3286,6 +3302,7 @@ sumcount
 sumkahan
 summap
 summapwithoverflow
+summarization
 summingmergetree
 sumwithoverflow
 superaggregates
@@ -3457,6 +3474,7 @@ transactionLatestSnapshot
 transactionOldestSnapshot
 transactional
 transactionally
+transformative
 translateUTF
 translocality
 transpilation
@@ -3465,7 +3483,6 @@ trie
 trimBoth
 trimLeft
 trimRight
-Trino
 trunc
 tryBase
 tryDecrypt
@@ -3664,22 +3681,3 @@ znode
 znodes
 zookeeperSessionUptime
 zstd
-Coinhall
-Instacart
-SingleStore
-Fastly
-Fong
-MTTD
-MTTR
-O'Reilly
-transformative
-MLOps
-chatbots
-SageMaker
-GWLBs
-NLBs
-explorative
-pointwise
-summarization
-reusability
-lakehouses
