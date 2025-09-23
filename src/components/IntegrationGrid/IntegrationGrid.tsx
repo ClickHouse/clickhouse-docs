@@ -37,17 +37,15 @@ export function IntegrationGrid() {
           style={{ textDecoration: 'none', color: 'inherit' }}
         >
           <CUICard>
-            <CUICard.Header className="p-6 text-center">
+            <CUICard.Header>
               <img
                 src={useBaseUrl(integration.integration_logo)}
                 alt={`${integration.integration_title || integration.slug} logo`}
                 style={{ width: '3rem', height: '3rem', margin: '0 auto' }}
               />
             </CUICard.Header>
-            <CUICard.Body className="p-6 pt-0 text-center">
-              <h3 className="text-lg font-semibold mb-2">
-                {integration.integration_title || integration.slug}
-              </h3>
+            <CUICard.Body>
+                {integration.integration_title}
             </CUICard.Body>
           </CUICard>
         </Link>

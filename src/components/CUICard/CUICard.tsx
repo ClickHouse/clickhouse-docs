@@ -24,7 +24,7 @@ const Header = ({
   className,
   ...props
 }: HTMLAttributes<HTMLDivElement>) => (
-  <div className={`cui-card-header w-full ${className}`} {...props}>
+  <div className={styles.cardHeader} {...props}>
     {children}
   </div>
 )
@@ -36,7 +36,7 @@ const Body = ({
   className,
   ...props
 }: HTMLAttributes<HTMLDivElement>) => (
-  <div className={`cui-card-body w-full ${className}`} {...props}>
+  <div className={styles.cardBody} {...props}>
     {children}
   </div>
 )
@@ -47,7 +47,7 @@ const Footer = ({
   className,
   ...props
 }: HTMLAttributes<HTMLDivElement>) => (
-  <div className={`cui-card-footer w-full ${className}`} {...props}>
+  <div className={styles.cardFooter} {...props}>
     {children}
   </div>
 )

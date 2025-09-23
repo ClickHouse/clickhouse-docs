@@ -8,4 +8,25 @@
   height: 100%;
   border-width: 1px;
   border-color: rgba(65, 65, 65, .8);
+  padding: 0.5rem;
+  aspect-ratio: 1 / 1;
+  justify-content: center;
+}
+
+[data-theme='light'] .cuiCard {
+  background: #f6f7fa;
+}
+
+.cardBody {
+  line-height: 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.cardHeader {
+  text-align: center;
+}
+
+.cardFooter {
 }
