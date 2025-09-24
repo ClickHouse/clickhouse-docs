@@ -218,3 +218,9 @@ data skipping index behavior is not easily predictable. Adding them to a table i
 that for any number of reasons don't benefit from the index. They should always be tested on real world type of data, and testing should
 include variations of the type, granularity size and other parameters. Testing will often reveal patterns and pitfalls that aren't obvious from
 thought experiments alone.
+
+## Related docs {#related-docs}
+- [Best practices guide](/best-practices/use-data-skipping-indices-where-appropriate)
+- [Data skipping index examples](/optimize/skipping-indexes/examples)
+- [Manipulating data skipping indices](/sql-reference/statements/alter/skipping-index)
+- [System table information](/operations/system-tables/data_skipping_indices)
