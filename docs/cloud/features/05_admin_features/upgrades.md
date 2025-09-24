@@ -30,7 +30,7 @@ When you create a service, the [`compatibility`](/operations/settings/settings#c
 
 The `compatibility` setting allows you to use default values of settings from previous versions. When your service is upgraded to a new version, the version specified for the `compatibility` setting does not change. This means that default values for settings that existed when you first created your service will not change (unless you have already overridden those default values, in which case they will persist after the upgrade).
 
-You cannot manage the service-level default `compatibility` setting for your service. You must contact support if you would like to change the version set for your service's default `compatibility` setting. However, you can override the `compatibility` setting at the user, role, profile, query, or session level using standard ClickHouse setting mechanisms such as `SET compatibility = '22.3'` in a session or `SETTINGS compatibility = '22.3'` in a query.
+You cannot manage the service-level default `compatibility` setting for your service. You must [contact support](https://clickhouse.com/support/program) if you would like to change the version set for your service's default `compatibility` setting. However, you can override the `compatibility` setting at the user, role, profile, query, or session level using standard ClickHouse setting mechanisms such as `SET compatibility = '22.3'` in a session or `SETTINGS compatibility = '22.3'` in a query.
 
 ## Maintenance mode {#maintenance-mode}
 
