@@ -91,7 +91,7 @@ pip install dbt-clickhouse
 ```
 
 ### Provide dbt with the connection details for our ClickHouse instance. {#provide-dbt-with-the-connection-details-for-our-clickhouse-instance}
-Configure `clickhouse` profile in ~/.dbt/profiles.yml file and provide user, password, schema host properties. The full list of connection configuration options is available in the [Features and configurations](/integrations/data-ingestion/etl-tools/dbt/features-and-configurations#index) page:
+Configure `clickhouse` profile in ~/.dbt/profiles.yml file and provide user, password, schema host properties. The full list of connection configuration options is available in the [Features and configurations](/integrations/dbt/features-and-configurations#index) page:
 ```yaml
 clickhouse:
   target: dev
@@ -129,13 +129,13 @@ dbt offers a number of options for CLI installation. Follow the instructions des
 pip install dbt-clickhouse
 ```
 
-Go to the [guides page](/integrations/data-ingestion/etl-tools/dbt/guides#index) to learn more about how to use dbt with ClickHouse.
+Go to the [guides page](/integrations/dbt/guides#index) to learn more about how to use dbt with ClickHouse.
 
 ## Troubleshooting Connections {#troubleshooting-connections}
 
 If you encounter issues connecting to ClickHouse from dbt, make sure the following criteria are met:
 
-- The engine must be one of the [supported engines](/integrations/data-ingestion/etl-tools/dbt/features-and-configurations#supported-table-engines).
+- The engine must be one of the [supported engines](/integrations/dbt/features-and-configurations#supported-table-engines).
 - You must have adequate permissions to access the database.
 - If you're not using the default table engine for the database, you must specify a table engine in your model
   configuration.

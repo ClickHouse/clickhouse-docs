@@ -40,7 +40,7 @@ These guides are designed to be used in conjunction with the rest of the [docume
 
 ## Setup {#setup}
 
-Follow the instructions in the [Setup of dbt and the ClickHouse plugin](/integrations/dbt/setup) section to prepare your environment.
+Follow the instructions in the [Setup of dbt and the ClickHouse plugin](/integrations/dbt#index) section to prepare your environment.
 
 **Important: The following is tested under python 3.9.**
 
