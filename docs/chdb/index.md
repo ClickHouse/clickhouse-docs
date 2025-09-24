@@ -37,7 +37,7 @@ chDB has the following language bindings:
 ## How do I get started? {#how-do-i-get-started}
 
 * If you're using [Go](install/go.md), [Rust](install/rust.md), [NodeJS](install/nodejs.md), [Bun](install/bun.md) or [C and C++](install/c.md), take a look at the corresponding language pages.
-* If you're using Python, see the [getting started developer guide](getting-started.md) or the [chDB on-demand course][https://learn.clickhouse.com/user_catalog_class/show/1901178]. There are also guides showing how to do common tasks like:
+* If you're using Python, see the [getting started developer guide](getting-started.md) or the [chDB on-demand course](https://learn.clickhouse.com/user_catalog_class/show/1901178). There are also guides showing how to do common tasks like:
   * [JupySQL](guides/jupysql.md)
   * [Querying Pandas](guides/querying-pandas.md)
   * [Querying Apache Arrow](guides/querying-apache-arrow.md)
@@ -69,7 +69,7 @@ chDB delivers exceptional performance across different scenarios:
 
 - Read the full story about the birth of the chDB project on [blog](https://clickhouse.com/blog/chdb-embedded-clickhouse-rocket-engine-on-a-bicycle)
 - Read about chDB and its use cases on the [Blog](https://clickhouse.com/blog/welcome-chdb-to-clickhouse)
-- Take the [chDB on-demand course][https://learn.clickhouse.com/user_catalog_class/show/1901178]
+- Take the [chDB on-demand course](https://learn.clickhouse.com/user_catalog_class/show/1901178)
 - Discover chDB in your browser using [codapi examples](https://antonz.org/trying-chdb/)
 - More examples see (https://github.com/chdb-io/chdb/tree/main/examples)
 
