@@ -45,7 +45,6 @@ chDB has the following language bindings:
   * [Querying Parquet files](guides/querying-parquet.md)
   * [Querying remote ClickHouse](guides/query-remote-clickhouse.md)
   * [Using clickhouse-local database](guides/clickhouse-local.md)
-  
 
 ## An introductory video {#an-introductory-video}
 
