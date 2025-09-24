@@ -9,6 +9,7 @@ doc_type: 'guide'
 integration_title: 'Vector'
 integration_type: ['data ingestion']
 integration_logo: '/static/images/integrations/logos/vector.png'
+integration_tier: partner
 ---
 
 import Image from '@theme/IdealImage';

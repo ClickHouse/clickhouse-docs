@@ -16,15 +16,6 @@
     "integration_title": "Amazon Glue"
   },
   {
-    "slug": "/integrations/clickpipes/kinesis",
-    "integration_logo": "/images/integrations/logos/amazon_kinesis_logo.svg",
-    "integration_type": [
-      "core",
-      "data ingestion"
-    ],
-    "integration_title": "Amazon Kinesis"
-  },
-  {
     "slug": "/integrations/s3",
     "integration_logo": "/images/integrations/logos/amazon_s3_logo.svg",
     "integration_type": [
@@ -36,7 +27,8 @@
     "slug": "/integrations/apache-beam",
     "integration_logo": "/images/integrations/logos/logo_beam.png",
     "integration_type": [
-      "data ingestion"
+      "data ingestion",
+      "community"
     ],
     "integration_title": "Apache Beam"
   },
@@ -44,7 +36,8 @@
     "slug": "/integrations/nifi",
     "integration_logo": "/images/integrations/logos/logo_nifi.png",
     "integration_type": [
-      "data ingestion"
+      "data ingestion",
+      "community"
     ],
     "integration_title": "Apache NiFi"
   },
@@ -97,6 +90,14 @@
     "integration_title": "C#"
   },
   {
+    "slug": "/sql-reference/dictionaries#cassandra",
+    "integration_logo": "/images/integrations/logos/cassandra.png",
+    "integration_type": [
+      "data ingestion"
+    ],
+    "integration_title": "Cassandra"
+  },
+  {
     "slug": "/integrations/chartbrew-and-clickhouse",
     "integration_logo": "/images/integrations/logos/logo_chartbrew.png",
     "integration_type": [
@@ -105,18 +106,115 @@
     "integration_title": "Chartbrew"
   },
   {
-    "slug": "/integrations/kafka/cloud/confluent/custom-connector",
-    "integration_logo": "/images/integrations/logos/confluent.svg",
+    "slug": "/chdb",
+    "integration_logo": "/images/integrations/logos/chdb.svg",
     "integration_type": [
       "data ingestion"
     ],
-    "integration_title": "Confluent"
+    "integration_title": "CHDB"
+  },
+  {
+    "slug": "/interfaces/cli",
+    "integration_logo": "/images/integrations/logos/clickhouse.svg",
+    "integration_type": [
+      "SQL client"
+    ],
+    "integration_title": "ClickHouse Client"
+  },
+  {
+    "slug": "/integrations/clickpipes/kinesis",
+    "integration_logo": "/images/integrations/logos/amazon_kinesis_logo.svg",
+    "integration_type": [
+      "clickpipes"
+    ],
+    "integration_title": "ClickPipes for Amazon Kinesis"
+  },
+  {
+    "slug": "/integrations/clickpipes/kafka",
+    "integration_logo": "/images/integrations/logos/amazon_msk.svg",
+    "integration_type": [
+      "clickpipes"
+    ],
+    "integration_title": "ClickPipes for Amazon MSK"
+  },
+  {
+    "slug": "/integrations/clickpipes/object-storage",
+    "integration_logo": "/images/integrations/logos/clickpipes_for_amazon_s3.svg",
+    "integration_type": [
+      "clickpipes"
+    ],
+    "integration_title": "ClickPipes for Amazon S3"
+  },
+  {
+    "slug": "/integrations/clickpipes/kafka",
+    "integration_logo": "/images/integrations/logos/azure_event_hubs.svg",
+    "integration_type": [
+      "clickpipes"
+    ],
+    "integration_title": "ClickPipes for Azure Event Hubs"
+  },
+  {
+    "slug": "/integrations/clickpipes/kafka",
+    "integration_logo": "/images/integrations/logos/confluent.svg",
+    "integration_type": [
+      "clickpipes"
+    ],
+    "integration_title": "ClickPipes for Confluent Cloud"
+  },
+  {
+    "slug": "/integrations/clickpipes/kafka",
+    "integration_logo": "/images/integrations/logos/GCS.svg",
+    "integration_type": [
+      "clickpipes"
+    ],
+    "integration_title": "ClickPipes for Google Cloud Storage"
+  },
+  {
+    "slug": "/integrations/clickpipes/kafka",
+    "integration_logo": "/images/integrations/logos/kafka.svg",
+    "integration_type": [
+      "clickpipes"
+    ],
+    "integration_title": "ClickPipes for Kafka"
+  },
+  {
+    "slug": "/integrations/clickpipes/mongodb",
+    "integration_logo": "/images/integrations/logos/mongodb.svg",
+    "integration_type": [
+      "clickpipes"
+    ],
+    "integration_title": "ClickPipes for MongoDB"
+  },
+  {
+    "slug": "/integrations/clickpipes/postgres",
+    "integration_logo": "/images/integrations/logos/postgresql.svg",
+    "integration_type": [
+      "clickpipes"
+    ],
+    "integration_title": "ClickPipes for PostgreSQL"
+  },
+  {
+    "slug": "/integrations/clickpipes/kafka",
+    "integration_logo": "/images/integrations/logos/logo_redpanda.png",
+    "integration_type": [
+      "clickpipes"
+    ],
+    "integration_title": "ClickPipes for Redpanda"
+  },
+  {
+    "slug": "/integrations/clickpipes/kafka",
+    "integration_logo": "/images/integrations/logos/warpstream.svg",
+    "integration_type": [
+      "clickpipes"
+    ],
+    "integration_title": "ClickPipes for Warpstream"
   },
   {
     "slug": "/integrations/google-dataflow/dataflow",
     "integration_logo": "/images/integrations/logos/dataflow_logo.png",
     "integration_type": [
-      "data ingestion"
+      "data ingestion",
+      "community"
     ],
     "integration_title": "Dataflow"
   },
@@ -161,6 +259,14 @@
     "integration_title": "Deepnote"
   },
   {
+    "slug": "/engines/table-engines/integrations/deltalake",
+    "integration_logo": "/images/integrations/logos/deltalake.svg",
+    "integration_type": [
+      "data ingestion"
+    ],
+    "integration_title": "DeltaLake"
+  },
+  {
     "slug": "/integrations/data-ingestion/etl-tools/dlt-and-clickhouse",
     "integration_logo": "/images/integrations/logos/dlthub_logo.svg",
     "integration_type": [
@@ -180,9 +286,18 @@
     "slug": "/integrations/easypanel",
     "integration_logo": "/images/integrations/logos/logo-easypanel.png",
     "integration_type": [
-      "deployment method"
+      "deployment method",
+      "community"
     ],
     "integration_title": "Easypanel"
+  },
+  {
+    "slug": "/engines/table-engines/integrations/embedded-rocksdb",
+    "integration_logo": "/images/integrations/logos/rocksdb.svg",
+    "integration_type": [
+      "data ingestion"
+    ],
+    "integration_title": "EmbeddedRocksDB"
   },
   {
     "slug": "/integrations/emqx",
@@ -225,12 +340,52 @@
     "integration_title": "Golang"
   },
   {
+    "slug": "/integrations/gcs",
+    "integration_logo": "/images/integrations/logos/gcs.svg",
+    "integration_type": [
+      "data ingestion"
+    ],
+    "integration_title": "Google Cloud Storage (GCS)"
+  },
+  {
     "slug": "/integrations/grafana",
     "integration_logo": "/images/integrations/logos/grafana.svg",
     "integration_type": [
       "data visualization"
     ],
     "integration_title": "Grafana"
+  },
+  {
+    "slug": "/engines/table-engines/integrations/hdfs",
+    "integration_logo": "/images/integrations/logos/hadoop.svg",
+    "integration_type": [
+      "data ingestion"
+    ],
+    "integration_title": "HDFS"
+  },
+  {
+    "slug": "/engines/table-engines/integrations/hive",
+    "integration_logo": "/images/integrations/logos/hive.svg",
+    "integration_type": [
+      "data ingestion"
+    ],
+    "integration_title": "Hive"
+  },
+  {
+    "slug": "/engines/table-engines/integrations/hudi",
+    "integration_logo": "/images/integrations/logos/hudi.png",
+    "integration_type": [
+      "data ingestion"
+    ],
+    "integration_title": "Hudi"
+  },
+  {
+    "slug": "/engines/table-engines/integrations/iceberg",
+    "integration_logo": "/images/integrations/logos/iceberg.png",
+    "integration_type": [
+      "data ingestion"
+    ],
+    "integration_title": "Iceberg"
   },
   {
     "slug": "/integrations/java",
@@ -244,7 +399,8 @@
     "slug": "/integrations/jupysql",
     "integration_logo": "/images/integrations/logos/jupyter.png",
     "integration_type": [
-      "sql client"
+      "sql client",
+      "community"
     ],
     "integration_title": "JupySQL"
   },
@@ -255,6 +411,14 @@
       "data ingestion"
     ],
     "integration_title": "Kafka"
+  },
+  {
+    "slug": "/integrations/kafka/cloud/confluent/custom-connector",
+    "integration_logo": "/images/integrations/logos/confluent.svg",
+    "integration_type": [
+      "data ingestion"
+    ],
+    "integration_title": "Kafka connector - Confluent"
   },
   {
     "slug": "/integrations/looker",
@@ -305,6 +469,14 @@
     "integration_title": "Mitzu"
   },
   {
+    "slug": "/engines/table-engines/integrations/mongodb",
+    "integration_logo": "/images/integrations/logos/mongodb.svg",
+    "integration_type": [
+      "data ingestion"
+    ],
+    "integration_title": "MongoDB"
+  },
+  {
     "slug": "/interfaces/third-party/moose-olap",
     "integration_logo": "/images/integrations/logos/moose_logo.svg",
     "integration_type": [
@@ -313,12 +485,36 @@
     "integration_title": "Moose OLAP"
   },
   {
+    "slug": "/engines/table-engines/integrations/mysql",
+    "integration_logo": "/images/integrations/logos/mysql.svg",
+    "integration_type": [
+      "data ingestion"
+    ],
+    "integration_title": "MySQL"
+  },
+  {
     "slug": "/integrations/javascript",
     "integration_logo": "/images/integrations/logos/node_js.svg",
     "integration_type": [
       "language client"
     ],
     "integration_title": "Node.JS"
+  },
+  {
+    "slug": "/engines/table-engines/integrations/odbc",
+    "integration_logo": "/images/integrations/logos/odbc.png",
+    "integration_type": [
+      "data integration"
+    ],
+    "integration_title": "ODBC"
+  },
+  {
+    "slug": "https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter",
+    "integration_logo": "/images/integrations/logos/logo_otel.png",
+    "integration_type": [
+      "data ingestion"
+    ],
+    "integration_title": "OpenTelemetry"
   },
   {
     "slug": "/integrations/powerbi",
@@ -356,7 +552,8 @@
     "slug": "/integrations/rocketbi",
     "integration_logo": "/images/integrations/logos/rocketbi-logo.svg",
     "integration_type": [
-      "data visualization"
+      "data visualization",
+      "community"
     ],
     "integration_title": "Rocket.BI"
   },

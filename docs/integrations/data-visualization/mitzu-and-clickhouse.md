@@ -8,6 +8,7 @@ doc_type: 'guide'
 integration_title: 'Mitzu'
 integration_type: ['data visualization']
 integration_logo: '/static/images/integrations/logos/logo_mitzu.png'
+integration_tier: partner
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

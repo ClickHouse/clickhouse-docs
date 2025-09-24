@@ -8,6 +8,7 @@ doc_type: 'guide'
 integration_title: 'Retool'
 integration_type: ['no code']
 integration_logo: '/static/images/integrations/logos/retool.svg'
+integration_tier: partner
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

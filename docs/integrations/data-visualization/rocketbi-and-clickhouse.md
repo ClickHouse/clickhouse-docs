@@ -7,8 +7,9 @@ description: 'RocketBI is a self-service business intelligence platform that hel
 title: 'GOAL: BUILD YOUR 1ST DASHBOARD'
 doc_type: 'guide'
 integration_title: 'Rocket.BI'
-integration_type: ['data visualization']
+integration_type: ['data visualization', 'community']
 integration_logo: '/static/images/integrations/logos/rocketbi-logo.svg'
+integration_tier: 'community'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
@@ -33,7 +34,7 @@ import rocketbi_17 from '@site/static/images/integrations/data-visualization/roc
 import rocketbi_18 from '@site/static/images/integrations/data-visualization/rocketbi_18.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Goal: build your first dashboard
+# Goal: build your first dashboard with Rocket.BI
 
 <CommunityMaintainedBadge/>
 

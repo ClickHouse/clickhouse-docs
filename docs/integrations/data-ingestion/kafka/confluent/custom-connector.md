@@ -7,7 +7,7 @@ title: 'Integrating Confluent Cloud with ClickHouse'
 doc_type: 'guide'
 integration_type: ['data ingestion']
 integration_logo: '/static/images/integrations/logos/confluent.svg'
-integration_title: 'Confluent'
+integration_title: 'Kafka connector - Confluent'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

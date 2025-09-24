@@ -7,6 +7,7 @@ doc_type: 'guide'
 integration_title: 'DbVisualizer'
 integration_type: ['sql client']
 integration_logo: '/static/images/integrations/logos/logo_dbvisualizer.png'
+integration_tier: partner
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

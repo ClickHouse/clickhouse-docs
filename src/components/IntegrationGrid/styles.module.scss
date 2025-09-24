@@ -1,7 +1,113 @@
 @use '../../css/breakpoints.scss' as breakpoints;
 
-.integrationGrid {
+.integrationsContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
 
+.searchContainer {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.searchInput {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 16px;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+
+  &:focus {
+    outline: none;
+    border-color: var(--ifm-color-primary);
+    box-shadow: 0 0 0 2px var(--ifm-color-primary-lightest);
+  }
+
+  &::placeholder {
+    color: var(--ifm-color-emphasis-600);
+  }
+}
+
+.filterContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin: 2rem 0;
+
+  @media (max-width: breakpoints.$mobile-breakpoint) {
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 4px;
+
+    &::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: var(--ifm-color-emphasis-200);
+      border-radius: 2px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--ifm-color-emphasis-400);
+      border-radius: 2px;
+    }
+  }
+}
+
+.filterButton {
+  padding: 8px 16px;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 20px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+
+  &:hover {
+    border-color: var(--ifm-color-primary);
+    background: var(--ifm-color-primary-lightest);
+  }
+
+  &.active {
+    background: var(--ifm-color-primary);
+    border-color: var(--ifm-color-primary);
+    color: white;
+  }
+}
+
+.integrationSection {
+  margin: 3rem 0;
+
+  &:first-child {
+    margin-top: 1rem;
+  }
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--ifm-font-color-base);
+}
+
+.sectionDescription {
+  font-size: 1rem;
+  color: var(--ifm-font-color-secondary);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.integrationGrid {
   // Mobile first - single column
   grid-template-columns: 1fr;
 
@@ -18,5 +124,16 @@
   // Large desktop - 5 columns
   @media (min-width: breakpoints.$laptop-breakpoint) {
     grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.noResults {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--ifm-font-color-secondary);
+
+  p {
+    font-size: 1.1rem;
+    margin: 0;
   }
 }

@@ -8,6 +8,7 @@ doc_type: 'guide'
 integration_title: 'Fabi.ai'
 integration_type: ['data visualization']
 integration_logo: '/static/images/integrations/logos/fabi.png'
+integration_tier: partner
 ---
 
 import fabi_01 from '@site/static/images/integrations/data-visualization/fabi_01.png';

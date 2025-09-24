@@ -6,8 +6,9 @@ description: 'Users can ingest data into ClickHouse using Google Dataflow'
 title: 'Integrating Google Dataflow with ClickHouse'
 doc_type: 'guide'
 integration_title: 'Dataflow'
-integration_type: ['data ingestion']
+integration_type: ['data ingestion', 'community']
 integration_logo: '/static/images/integrations/logos/dataflow_logo.png'
+integration_tier: 'community'
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
