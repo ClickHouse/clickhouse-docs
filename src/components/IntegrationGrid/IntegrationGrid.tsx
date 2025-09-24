@@ -4,6 +4,8 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import CUICard from '@site/src/components/CUICard';
 // @ts-ignore
 import integrationsData from '@site/static/integrations.json';
+// @ts-ignore
+import integrationsCustomData from '@site/static/integrations_custom.json';
 import styles from './styles.module.scss';
 
 type IntegrationData = {
@@ -11,6 +13,7 @@ type IntegrationData = {
   integration_logo: string;
   integration_type: string[];
   integration_title?: string;
+  integration_tier?: string;
 };
 
 function IntegrationCard({ integration }: { integration: IntegrationData }) {
@@ -50,9 +53,22 @@ function IntegrationCards({ integrations }: { integrations: IntegrationData[] })
 }
 
 export function IntegrationGrid() {
-  const integrations: IntegrationData[] = integrationsData;
+  // Combine integrations from both JSON files and normalize logo paths
+  const integrations: IntegrationData[] = useMemo(() => {
+    // Process custom integrations to fix logo paths
+    const processedCustomData = integrationsCustomData.map(integration => ({
+      ...integration,
+      integration_logo: integration.integration_logo.startsWith('/static/')
+        ? integration.integration_logo.replace('/static/', '/')
+        : integration.integration_logo
+    }));
+
+    return [...integrationsData, ...processedCustomData];
+  }, []);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('All');
+  const [selectedTier, setSelectedTier] = useState('All');
 
   // Get unique integration types for filter buttons
   const integrationTypes = useMemo(() => {
@@ -62,7 +78,47 @@ export function IntegrationGrid() {
         types.add(type);
       });
     });
-    return Array.from(types).sort();
+
+    // Custom sort order
+    const sortOrder = [
+      'ClickPipes',
+      'Language client',
+      'Data ingestion',
+      'Data visualization',
+      'AI/ML',
+      'Data integration',
+      'Data management',
+      'Security governance',
+      'SQL client'
+    ];
+
+    return Array.from(types).sort((a, b) => {
+      const indexA = sortOrder.indexOf(a);
+      const indexB = sortOrder.indexOf(b);
+
+      // If both items are in the sort order, sort by their position
+      if (indexA !== -1 && indexB !== -1) {
+        return indexA - indexB;
+      }
+
+      // If only one item is in the sort order, prioritize it
+      if (indexA !== -1) return -1;
+      if (indexB !== -1) return 1;
+
+      // If neither item is in the sort order, fall back to alphabetical
+      return a.localeCompare(b);
+    });
+  }, [integrations]);
+
+  // Get unique integration tiers for tier filter buttons
+  const integrationTiers = useMemo(() => {
+    const tiers = new Set<string>();
+    integrations.forEach(integration => {
+      if (integration.integration_tier) {
+        tiers.add(integration.integration_tier);
+      }
+    });
+    return Array.from(tiers).sort();
   }, [integrations]);
 
   // Filter and group integrations
@@ -74,9 +130,12 @@ export function IntegrationGrid() {
       const matchesFilter = selectedFilter === 'All' ||
                            integration.integration_type.some(type => type === selectedFilter);
 
-      return matchesSearch && matchesFilter;
+      const matchesTier = selectedTier === 'All' ||
+                         integration.integration_tier === selectedTier;
+
+      return matchesSearch && matchesFilter && matchesTier;
     });
-  }, [integrations, searchTerm, selectedFilter]);
+  }, [integrations, searchTerm, selectedFilter, selectedTier]);
 
   // Group integrations by type for sectioned view
   const groupedIntegrations = useMemo(() => {
@@ -124,22 +183,48 @@ export function IntegrationGrid() {
       </div>
 
       {/* Filter Buttons */}
-      <div className={styles.filterContainer}>
-        <button
-          className={`${styles.filterButton} ${selectedFilter === 'All' ? styles.active : ''}`}
-          onClick={() => setSelectedFilter('All')}
-        >
-          All
-        </button>
-        {integrationTypes.map(type => (
+      <div className={styles.filterContainer} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        {/* Integration Type Filters - First Row */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
           <button
-            key={type}
-            className={`${styles.filterButton} ${selectedFilter === type ? styles.active : ''}`}
-            onClick={() => setSelectedFilter(type)}
+            className={`${styles.filterButton} ${selectedFilter === 'All' ? styles.active : ''}`}
+            onClick={() => setSelectedFilter('All')}
+            style={{ padding: '6px 12px', fontSize: '0.875rem' }}
           >
-            {type.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+            All
           </button>
-        ))}
+          {integrationTypes.map(type => (
+            <button
+              key={type}
+              className={`${styles.filterButton} ${selectedFilter === type ? styles.active : ''}`}
+              onClick={() => setSelectedFilter(type)}
+              style={{ padding: '6px 12px', fontSize: '0.875rem' }}
+            >
+              {getProperCapitalization(type)}
+            </button>
+          ))}
+        </div>
+
+        {/* Integration Tier Filters - Second Row */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+          <button
+            className={`${styles.filterButton} ${selectedTier === 'All' ? styles.active : ''}`}
+            onClick={() => setSelectedTier('All')}
+            style={{ padding: '6px 12px', fontSize: '0.875rem' }}
+          >
+            All Tiers
+          </button>
+          {integrationTiers.map(tier => (
+            <button
+              key={tier}
+              className={`${styles.filterButton} ${selectedTier === tier ? styles.active : ''}`}
+              onClick={() => setSelectedTier(tier)}
+              style={{ padding: '6px 12px', fontSize: '0.875rem' }}
+            >
+              {tier.charAt(0).toUpperCase() + tier.slice(1)}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Integration Sections */}
@@ -150,7 +235,7 @@ export function IntegrationGrid() {
           .map(([type, typeIntegrations]) => (
             <section key={type} className={styles.integrationSection}>
               <h2 className={styles.sectionTitle}>
-                {type.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                {getProperCapitalization(type)}
               </h2>
               <p className={styles.sectionDescription}>
                 {getSectionDescription(type)}
@@ -162,7 +247,7 @@ export function IntegrationGrid() {
         // Show filtered results
         <section className={styles.integrationSection}>
           <h2 className={styles.sectionTitle}>
-            {selectedFilter.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+            {getProperCapitalization(selectedFilter)}
           </h2>
           <p className={styles.sectionDescription}>
             {getSectionDescription(selectedFilter)}
@@ -180,22 +265,41 @@ export function IntegrationGrid() {
   );
 }
 
+function getProperCapitalization(text: string): string {
+  // Handle special cases
+  const specialCases: { [key: string]: string } = {
+    'ai/ml': 'AI/ML',
+    'clickpipes': 'ClickPipes',
+    'data ingestion': 'Data ingestion',
+    'data integration': 'Data integration',
+    'data management': 'Data management',
+    'data visualization': 'Data visualization',
+    'deployment method': 'Deployment method',
+    'language client': 'Language client',
+    'security governance': 'Security governance',
+    'sql client': 'SQL client'
+  };
+
+  const lowerText = text.toLowerCase();
+  if (specialCases[lowerText]) {
+    return specialCases[lowerText];
+  }
+
+  // Default capitalization
+  return text.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+}
+
 function getSectionDescription(type: string): string {
   const descriptions: { [key: string]: string } = {
-    'core': 'Essential ClickHouse integrations for the most common data sources and destinations.',
-    'data ingestion': 'Streamline your data pipelines with ClickHouse! Seamless integrations ensure efficient ingestion, optimizing real-time analytics.',
-    'data visualization': 'Illuminate your data stories! ClickHouse integrations enhance visualization, making insights more vivid & actionable.',
-    'language client': 'Code in your comfort zone! ClickHouse\'s language client integrations make data access fluent across multiple programming languages.',
-    'data integration': 'Integrate ClickHouse with your existing data infrastructure and workflows.',
-    'sql client': 'Access and query ClickHouse databases using familiar SQL client tools and interfaces.',
-    'data management': 'Manage, monitor, and optimize your ClickHouse data with specialized management tools.',
-    'ai/ml': 'Leverage ClickHouse for machine learning and AI workloads with integrated ML tools and frameworks.',
-    'no code': 'Build applications and workflows with ClickHouse using visual, no-code development platforms.',
-    'deployment method': 'Deploy and manage ClickHouse instances using various deployment and orchestration tools.',
-    'security automation': 'Secure your ClickHouse infrastructure with automated security and compliance tools.',
-    'data quality': 'Ensure data quality and reliability in your ClickHouse pipelines.',
-    'data governance': 'Implement data governance and compliance frameworks for your ClickHouse environment.',
-    'clickpipes': 'ClickPipes is an integration engine that makes ingesting massive volumes of data from a diverse set of sources as simple as clicking a few buttons.'
+    'ClickPipes': 'ClickPipes is an integration engine that makes ingesting massive volumes of data from a diverse set of sources as simple as clicking a few buttons.',
+    'Data ingestion': 'Streamline your data pipelines with ClickHouse! Seamless integrations ensure efficient ingestion, optimizing real-time analytics.',
+    'Data visualization': 'Illuminate your data stories! ClickHouse integrations enhance visualization, making insights more vivid & actionable.',
+    'SQL client': 'Access and query ClickHouse databases using familiar SQL client tools and interfaces.',
+    'Language client': 'Code in your comfort zone! ClickHouse\'s language client integrations make data access fluent across multiple programming languages.',
+    'AI/ML': 'Leverage ClickHouse for machine learning and AI workloads with integrated ML tools and frameworks.',
+    'Data management': 'Manage, monitor, and optimize your ClickHouse data with specialized management tools.',
+    'Data integration': 'Integrate ClickHouse with your existing data infrastructure and workflows.',
+    'Security governance': 'Implement security and governance frameworks for your ClickHouse environment.'
   };
   return descriptions[type] || 'Integrate ClickHouse with specialized tools and services.';
 }

@@ -9,7 +9,7 @@ doc_type: 'guide'
 integration_title: 'Moose OLAP'
 integration_type: ['language client']
 integration_logo: '/static/images/integrations/logos/moose_logo.svg'
-integration_tier: partner
+integration_tier: 'partner'
 ---
 
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';

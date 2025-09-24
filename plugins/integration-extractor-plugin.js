@@ -63,52 +63,14 @@ function integrationExtractorPlugin(context, options) {
                             integration_type: Array.isArray(frontmatter.integration_type)
                                 ? frontmatter.integration_type
                                 : [frontmatter.integration_type],
-                            integration_title: frontmatter.integration_title
+                            integration_title: frontmatter.integration_title,
+                            integration_tier: frontmatter.integration_tier
                         });
                     }
                 } catch (err) {
                     console.warn(`Warning: Could not process file ${fullPath}:`, err.message);
                 }
             });
-
-            // Load custom integrations from integrations_custom.json
-            const customIntegrationsPath = path.join(context.siteDir, 'static/integrations_custom.json');
-            if (fs.existsSync(customIntegrationsPath)) {
-                try {
-                    const customIntegrationsContent = fs.readFileSync(customIntegrationsPath, 'utf8');
-                    const customIntegrations = JSON.parse(customIntegrationsContent);
-
-                    customIntegrations.forEach(customIntegration => {
-                        // Validate required fields
-                        if (customIntegration.slug &&
-                            customIntegration.integration_logo &&
-                            customIntegration.integration_type &&
-                            customIntegration.integration_title) {
-
-                            // Fix logo path for Docusaurus static serving
-                            let logoPath = customIntegration.integration_logo;
-                            if (logoPath.startsWith('/static/')) {
-                                logoPath = logoPath.replace('/static/', '/');
-                            }
-
-                            integrations.push({
-                                slug: customIntegration.slug,
-                                integration_logo: logoPath,
-                                integration_type: Array.isArray(customIntegration.integration_type)
-                                    ? customIntegration.integration_type
-                                    : [customIntegration.integration_type],
-                                integration_title: customIntegration.integration_title
-                            });
-                        } else {
-                            console.warn(`Warning: Custom integration missing required fields:`, customIntegration);
-                        }
-                    });
-
-                    console.log(`✅ Integration extractor: Added ${customIntegrations.length} custom integrations`);
-                } catch (err) {
-                    console.warn(`Warning: Could not process integrations_custom.json:`, err.message);
-                }
-            }
 
             // Sort integrations alphabetically by integration_title, fallback to slug
             integrations.sort((a, b) => {

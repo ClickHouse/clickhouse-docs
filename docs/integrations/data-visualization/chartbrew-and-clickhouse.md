@@ -9,7 +9,7 @@ doc_type: 'guide'
 integration_title: 'Chartbrew'
 integration_type: ['data visualization']
 integration_logo: '/static/images/integrations/logos/logo_chartbrew.png'
-integration_tier: partner
+integration_tier: 'partner'
 ---
 
 import chartbrew_01 from '@site/static/images/integrations/data-visualization/chartbrew_01.png';

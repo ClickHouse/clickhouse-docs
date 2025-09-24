@@ -8,7 +8,7 @@ doc_type: 'guide'
 integration_title: 'DLT'
 integration_type: ['data integration']
 integration_logo: '/static/images/integrations/logos/dlthub_logo.svg'
-integration_tier: partner
+integration_tier: 'partner'
 ---
 
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';

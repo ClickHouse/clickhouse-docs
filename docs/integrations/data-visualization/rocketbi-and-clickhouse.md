@@ -7,7 +7,7 @@ description: 'RocketBI is a self-service business intelligence platform that hel
 title: 'GOAL: BUILD YOUR 1ST DASHBOARD'
 doc_type: 'guide'
 integration_title: 'Rocket.BI'
-integration_type: ['data visualization', 'community']
+integration_type: ['data visualization']
 integration_logo: '/static/images/integrations/logos/rocketbi-logo.svg'
 integration_tier: 'community'
 ---

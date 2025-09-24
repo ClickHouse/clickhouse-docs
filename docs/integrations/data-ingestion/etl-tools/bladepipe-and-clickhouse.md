@@ -9,7 +9,7 @@ doc_type: 'guide'
 integration_title: 'BladePipe'
 integration_type: ['data ingestion']
 integration_logo: '/static/images/integrations/logos/bladepipe.svg'
-integration_tier: partner
+integration_tier: 'partner'
 ---
 
 import Image from '@theme/IdealImage';

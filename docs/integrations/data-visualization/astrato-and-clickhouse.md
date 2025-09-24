@@ -9,7 +9,7 @@ doc_type: 'guide'
 integration_title: 'Astrato'
 integration_type: ['data visualization']
 integration_logo: '/static/images/integrations/logos/astrato_logo.svg'
-integration_tier: partner
+integration_tier: 'partner'
 ---
 
 import astrato_1_dataconnection from '@site/static/images/integrations/data-visualization/astrato_1_dataconnection.png';

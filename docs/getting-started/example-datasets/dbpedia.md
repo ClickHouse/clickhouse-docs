@@ -116,7 +116,7 @@ LIMIT 20
 ```
 
 Note down the query latency so that we can compare it with the query latency of ANN (using vector index).
-Also record the query latency with cold OS file cache and with `max_theads=1` to recognize the real compute
+Also record the query latency with cold OS file cache and with `max_threads=1` to recognize the real compute
 usage and storage bandwidth usage (extrapolate it to a production dataset with millions of vectors!)
 
 ## Build a vector similarity index {#build-vector-similarity-index}

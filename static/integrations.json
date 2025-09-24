@@ -5,7 +5,8 @@
     "integration_type": [
       "data ingestion"
     ],
-    "integration_title": "Airbyte"
+    "integration_title": "Airbyte",
+    "integration_tier": "partner"
   },
   {
     "slug": "/integrations/glue",
@@ -27,19 +28,19 @@
     "slug": "/integrations/apache-beam",
     "integration_logo": "/images/integrations/logos/logo_beam.png",
     "integration_type": [
-      "data ingestion",
-      "community"
+      "data ingestion"
     ],
-    "integration_title": "Apache Beam"
+    "integration_title": "Apache Beam",
+    "integration_tier": "community"
   },
   {
     "slug": "/integrations/nifi",
     "integration_logo": "/images/integrations/logos/logo_nifi.png",
     "integration_type": [
-      "data ingestion",
-      "community"
+      "data ingestion"
     ],
-    "integration_title": "Apache NiFi"
+    "integration_title": "Apache NiFi",
+    "integration_tier": "community"
   },
   {
     "slug": "/integrations/apache-spark",
@@ -55,7 +56,8 @@
     "integration_type": [
       "data visualization"
     ],
-    "integration_title": "Astrato"
+    "integration_title": "Astrato",
+    "integration_tier": "partner"
   },
   {
     "slug": "/integrations/azure-data-factory",
@@ -79,7 +81,8 @@
     "integration_type": [
       "data ingestion"
     ],
-    "integration_title": "BladePipe"
+    "integration_title": "BladePipe",
+    "integration_tier": "partner"
   },
   {
     "slug": "/integrations/csharp",
@@ -90,36 +93,13 @@
     "integration_title": "C#"
   },
   {
-    "slug": "/sql-reference/dictionaries#cassandra",
-    "integration_logo": "/images/integrations/logos/cassandra.png",
-    "integration_type": [
-      "data ingestion"
-    ],
-    "integration_title": "Cassandra"
-  },
-  {
     "slug": "/integrations/chartbrew-and-clickhouse",
     "integration_logo": "/images/integrations/logos/logo_chartbrew.png",
     "integration_type": [
       "data visualization"
     ],
-    "integration_title": "Chartbrew"
-  },
-  {
-    "slug": "/chdb",
-    "integration_logo": "/images/integrations/logos/chdb.svg",
-    "integration_type": [
-      "data ingestion"
-    ],
-    "integration_title": "CHDB"
-  },
-  {
-    "slug": "/interfaces/cli",
-    "integration_logo": "/images/integrations/logos/clickhouse.svg",
-    "integration_type": [
-      "SQL client"
-    ],
-    "integration_title": "ClickHouse Client"
+    "integration_title": "Chartbrew",
+    "integration_tier": "partner"
   },
   {
     "slug": "/integrations/clickpipes/kinesis",
@@ -128,46 +108,6 @@
       "clickpipes"
     ],
     "integration_title": "ClickPipes for Amazon Kinesis"
-  },
-  {
-    "slug": "/integrations/clickpipes/kafka",
-    "integration_logo": "/images/integrations/logos/amazon_msk.svg",
-    "integration_type": [
-      "clickpipes"
-    ],
-    "integration_title": "ClickPipes for Amazon MSK"
-  },
-  {
-    "slug": "/integrations/clickpipes/object-storage",
-    "integration_logo": "/images/integrations/logos/clickpipes_for_amazon_s3.svg",
-    "integration_type": [
-      "clickpipes"
-    ],
-    "integration_title": "ClickPipes for Amazon S3"
-  },
-  {
-    "slug": "/integrations/clickpipes/kafka",
-    "integration_logo": "/images/integrations/logos/azure_event_hubs.svg",
-    "integration_type": [
-      "clickpipes"
-    ],
-    "integration_title": "ClickPipes for Azure Event Hubs"
-  },
-  {
-    "slug": "/integrations/clickpipes/kafka",
-    "integration_logo": "/images/integrations/logos/confluent.svg",
-    "integration_type": [
-      "clickpipes"
-    ],
-    "integration_title": "ClickPipes for Confluent Cloud"
-  },
-  {
-    "slug": "/integrations/clickpipes/kafka",
-    "integration_logo": "/images/integrations/logos/GCS.svg",
-    "integration_type": [
-      "clickpipes"
-    ],
-    "integration_title": "ClickPipes for Google Cloud Storage"
   },
   {
     "slug": "/integrations/clickpipes/kafka",
@@ -194,29 +134,13 @@
     "integration_title": "ClickPipes for PostgreSQL"
   },
   {
-    "slug": "/integrations/clickpipes/kafka",
-    "integration_logo": "/images/integrations/logos/logo_redpanda.png",
-    "integration_type": [
-      "clickpipes"
-    ],
-    "integration_title": "ClickPipes for Redpanda"
-  },
-  {
-    "slug": "/integrations/clickpipes/kafka",
-    "integration_logo": "/images/integrations/logos/warpstream.svg",
-    "integration_type": [
-      "clickpipes"
-    ],
-    "integration_title": "ClickPipes for Warpstream"
-  },
-  {
     "slug": "/integrations/google-dataflow/dataflow",
     "integration_logo": "/images/integrations/logos/dataflow_logo.png",
     "integration_type": [
-      "data ingestion",
-      "community"
+      "data ingestion"
     ],
-    "integration_title": "Dataflow"
+    "integration_title": "Dataflow",
+    "integration_tier": "community"
   },
   {
     "slug": "/integrations/datagrip",
@@ -224,7 +148,8 @@
     "integration_type": [
       "sql client"
     ],
-    "integration_title": "DataGrip"
+    "integration_title": "DataGrip",
+    "integration_tier": "partner"
   },
   {
     "slug": "/integrations/dbeaver",
@@ -232,7 +157,8 @@
     "integration_type": [
       "sql client"
     ],
-    "integration_title": "DBeaver"
+    "integration_title": "DBeaver",
+    "integration_tier": "partner"
   },
   {
     "slug": "/integrations/dbt",
@@ -248,7 +174,8 @@
     "integration_type": [
       "sql client"
     ],
-    "integration_title": "DbVisualizer"
+    "integration_title": "DbVisualizer",
+    "integration_tier": "partner"
   },
   {
     "slug": "/integrations/deepnote",
@@ -256,15 +183,8 @@
     "integration_type": [
       "data visualization"
     ],
-    "integration_title": "Deepnote"
-  },
-  {
-    "slug": "/engines/table-engines/integrations/deltalake",
-    "integration_logo": "/images/integrations/logos/deltalake.svg",
-    "integration_type": [
-      "data ingestion"
-    ],
-    "integration_title": "DeltaLake"
+    "integration_title": "Deepnote",
+    "integration_tier": "partner"
   },
   {
     "slug": "/integrations/data-ingestion/etl-tools/dlt-and-clickhouse",
@@ -272,7 +192,8 @@
     "integration_type": [
       "data integration"
     ],
-    "integration_title": "DLT"
+    "integration_title": "DLT",
+    "integration_tier": "partner"
   },
   {
     "slug": "/integrations/draxlr",
@@ -280,24 +201,17 @@
     "integration_type": [
       "data visualization"
     ],
-    "integration_title": "Draxlr"
+    "integration_title": "Draxlr",
+    "integration_tier": "partner"
   },
   {
     "slug": "/integrations/easypanel",
     "integration_logo": "/images/integrations/logos/logo-easypanel.png",
     "integration_type": [
-      "deployment method",
-      "community"
+      "data integration"
     ],
-    "integration_title": "Easypanel"
-  },
-  {
-    "slug": "/engines/table-engines/integrations/embedded-rocksdb",
-    "integration_logo": "/images/integrations/logos/rocksdb.svg",
-    "integration_type": [
-      "data ingestion"
-    ],
-    "integration_title": "EmbeddedRocksDB"
+    "integration_title": "Easypanel",
+    "integration_tier": "community"
   },
   {
     "slug": "/integrations/emqx",
@@ -305,7 +219,8 @@
     "integration_type": [
       "data ingestion"
     ],
-    "integration_title": "EMQX"
+    "integration_title": "EMQX",
+    "integration_tier": "partner"
   },
   {
     "slug": "/integrations/explo",
@@ -313,7 +228,8 @@
     "integration_type": [
       "data visualization"
     ],
-    "integration_title": "Explo"
+    "integration_title": "Explo",
+    "integration_tier": "partner"
   },
   {
     "slug": "/integrations/fabi.ai",
@@ -321,7 +237,8 @@
     "integration_type": [
       "data visualization"
     ],
-    "integration_title": "Fabi.ai"
+    "integration_title": "Fabi.ai",
+    "integration_tier": "partner"
   },
   {
     "slug": "/integrations/fivetran",
@@ -353,39 +270,8 @@
     "integration_type": [
       "data visualization"
     ],
-    "integration_title": "Grafana"
-  },
-  {
-    "slug": "/engines/table-engines/integrations/hdfs",
-    "integration_logo": "/images/integrations/logos/hadoop.svg",
-    "integration_type": [
-      "data ingestion"
-    ],
-    "integration_title": "HDFS"
-  },
-  {
-    "slug": "/engines/table-engines/integrations/hive",
-    "integration_logo": "/images/integrations/logos/hive.svg",
-    "integration_type": [
-      "data ingestion"
-    ],
-    "integration_title": "Hive"
-  },
-  {
-    "slug": "/engines/table-engines/integrations/hudi",
-    "integration_logo": "/images/integrations/logos/hudi.png",
-    "integration_type": [
-      "data ingestion"
-    ],
-    "integration_title": "Hudi"
-  },
-  {
-    "slug": "/engines/table-engines/integrations/iceberg",
-    "integration_logo": "/images/integrations/logos/iceberg.png",
-    "integration_type": [
-      "data ingestion"
-    ],
-    "integration_title": "Iceberg"
+    "integration_title": "Grafana",
+    "integration_tier": "partner"
   },
   {
     "slug": "/integrations/java",
@@ -399,10 +285,10 @@
     "slug": "/integrations/jupysql",
     "integration_logo": "/images/integrations/logos/jupyter.png",
     "integration_type": [
-      "sql client",
-      "community"
+      "sql client"
     ],
-    "integration_title": "JupySQL"
+    "integration_title": "JupySQL",
+    "integration_tier": "community"
   },
   {
     "slug": "/integrations/kafka",
@@ -442,7 +328,8 @@
     "integration_type": [
       "data visualization"
     ],
-    "integration_title": "Luzmo"
+    "integration_title": "Luzmo",
+    "integration_tier": "partner"
   },
   {
     "slug": "/integrations/metabase",
@@ -466,15 +353,8 @@
     "integration_type": [
       "data visualization"
     ],
-    "integration_title": "Mitzu"
-  },
-  {
-    "slug": "/engines/table-engines/integrations/mongodb",
-    "integration_logo": "/images/integrations/logos/mongodb.svg",
-    "integration_type": [
-      "data ingestion"
-    ],
-    "integration_title": "MongoDB"
+    "integration_title": "Mitzu",
+    "integration_tier": "partner"
   },
   {
     "slug": "/interfaces/third-party/moose-olap",
@@ -482,15 +362,8 @@
     "integration_type": [
       "language client"
     ],
-    "integration_title": "Moose OLAP"
-  },
-  {
-    "slug": "/engines/table-engines/integrations/mysql",
-    "integration_logo": "/images/integrations/logos/mysql.svg",
-    "integration_type": [
-      "data ingestion"
-    ],
-    "integration_title": "MySQL"
+    "integration_title": "Moose OLAP",
+    "integration_tier": "partner"
   },
   {
     "slug": "/integrations/javascript",
@@ -501,20 +374,12 @@
     "integration_title": "Node.JS"
   },
   {
-    "slug": "/engines/table-engines/integrations/odbc",
-    "integration_logo": "/images/integrations/logos/odbc.png",
-    "integration_type": [
-      "data integration"
-    ],
-    "integration_title": "ODBC"
-  },
-  {
-    "slug": "https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter",
-    "integration_logo": "/images/integrations/logos/logo_otel.png",
+    "slug": "/integrations/postgresql/connecting-to-postgresql",
+    "integration_logo": "/images/integrations/logos/postgresql.svg",
     "integration_type": [
       "data ingestion"
     ],
-    "integration_title": "OpenTelemetry"
+    "integration_title": "PostgreSQL"
   },
   {
     "slug": "/integrations/powerbi",
@@ -544,18 +409,19 @@
     "slug": "/integrations/retool",
     "integration_logo": "/images/integrations/logos/retool.svg",
     "integration_type": [
-      "no code"
+      "data integration"
     ],
-    "integration_title": "Retool"
+    "integration_title": "Retool",
+    "integration_tier": "partner"
   },
   {
     "slug": "/integrations/rocketbi",
     "integration_logo": "/images/integrations/logos/rocketbi-logo.svg",
     "integration_type": [
-      "data visualization",
-      "community"
+      "data visualization"
     ],
-    "integration_title": "Rocket.BI"
+    "integration_title": "Rocket.BI",
+    "integration_tier": "community"
   },
   {
     "slug": "/integrations/rust",
@@ -571,7 +437,8 @@
     "integration_type": [
       "data integration"
     ],
-    "integration_title": "Splunk"
+    "integration_title": "Splunk",
+    "integration_tier": "partner"
   },
   {
     "slug": "/integrations/superset",
@@ -603,7 +470,8 @@
     "integration_type": [
       "sql client"
     ],
-    "integration_title": "TABLUM.IO"
+    "integration_title": "TABLUM.IO",
+    "integration_tier": "partner"
   },
   {
     "slug": "/integrations/vector",
@@ -611,6 +479,7 @@
     "integration_type": [
       "data ingestion"
     ],
-    "integration_title": "Vector"
+    "integration_title": "Vector",
+    "integration_tier": "partner"
   }
 ]

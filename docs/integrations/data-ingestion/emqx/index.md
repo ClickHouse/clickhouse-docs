@@ -8,7 +8,7 @@ doc_type: 'guide'
 integration_title: 'EMQX'
 integration_type: ['data ingestion']
 integration_logo: '/static/images/integrations/logos/emqx.svg'
-integration_tier: partner
+integration_tier: 'partner'
 ---
 
 import emqx_cloud_artitecture from '@site/static/images/integrations/data-ingestion/emqx/emqx-cloud-artitecture.png';

@@ -6,9 +6,9 @@ description: 'Quickly build web and mobile apps with rich user interfaces, autom
 title: 'Connecting Retool to ClickHouse'
 doc_type: 'guide'
 integration_title: 'Retool'
-integration_type: ['no code']
+integration_type: ['data integration']
 integration_logo: '/static/images/integrations/logos/retool.svg'
-integration_tier: partner
+integration_tier: 'partner'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

@@ -9,7 +9,7 @@ doc_type: 'guide'
 integration_title: 'Deepnote'
 integration_type: ['data visualization']
 integration_logo: '/static/images/integrations/logos/deepnote.svg'
-integration_tier: partner
+integration_tier: 'partner'
 ---
 
 import deepnote_01 from '@site/static/images/integrations/data-visualization/deepnote_01.png';
