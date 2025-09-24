@@ -75,7 +75,7 @@ In many environments, using the SET statement to persist a ClickHouse setting ac
 and can cause unexpected failures. This is particularly true when using HTTP connections through a load balancer that
 distributes queries across multiple nodes (such as ClickHouse cloud), although in some circumstances this can also
 happen with native ClickHouse connections. Accordingly, we recommend configuring any required ClickHouse settings in the
-"custom_settings" property of the DBT profile as a best practice, instead of relying on a prehook "SET" statement as
+"custom_settings" property of the DBT profile as a best practice, instead of relying on a pre-hook "SET" statement as
 has been occasionally suggested.
 
 ### Setting `quote_columns` {#setting-quote_columns}
@@ -414,16 +414,13 @@ select a,b,c from {{ source('raw', 'table_2') }}
 > you will encounter the following warning:
 `Warning - Table <previous table name> was detected with the same pattern as model name <your model name> but was not found in this run. In case it is a renamed mv that was previously part of this model, drop it manually (!!!) `
 
-#### Data catchup {#data-catchup}
+#### Data catch-up {#data-catch-up}
 
-Currently, when creating a materialized view (MV), the target table is first populated with historical data before the
-MV itself is created.
+Currently, when creating a materialized view (MV), the target table is first populated with historical data before the MV itself is created.
 
-In other words, dbt-clickhouse initially creates the target table and preloads it with historical data based on the
-query defined for the MV. Only after this step is the MV created.
+In other words, dbt-clickhouse initially creates the target table and preloads it with historical data based on the query defined for the MV. Only after this step is the MV created.
 
-If you prefer not to preload historical data during MV creation, you can disable this behavior by setting the catchup
-config to False:
+If you prefer not to preload historical data during MV creation, you can disable this behavior by setting the catch-up config to False:
 
 ```python
 {{config(
