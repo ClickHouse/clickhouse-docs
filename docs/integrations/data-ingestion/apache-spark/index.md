@@ -9,6 +9,7 @@ doc_type: 'guide'
 integration_type: ['data ingestion']
 integration_logo: '/static/images/integrations/logos/apache_spark_logo.svg'
 integration_title: 'Apache Spark'
+integration_tier: 'core'
 ---
 
 import Tabs from '@theme/Tabs';

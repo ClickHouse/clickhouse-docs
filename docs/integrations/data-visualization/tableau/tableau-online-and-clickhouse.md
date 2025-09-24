@@ -9,6 +9,7 @@ doc_type: 'guide'
 integration_type: ['data visualization']
 integration_logo: '/static/images/integrations/logos/logo_tableau.png'
 integration_title: 'Tableau Online'
+integration_tier: 'core'
 ---
 
 import MySQLCloudSetup from '@site/docs/_snippets/_clickhouse_mysql_cloud_setup.mdx';

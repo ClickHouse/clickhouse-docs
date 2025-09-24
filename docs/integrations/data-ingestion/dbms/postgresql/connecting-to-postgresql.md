@@ -8,6 +8,7 @@ doc_type: 'guide'
 integration_type: ['data ingestion']
 integration_logo: '/static/images/integrations/logos/postgresql.svg'
 integration_title: 'PostgreSQL'
+integration_tier: 'core'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

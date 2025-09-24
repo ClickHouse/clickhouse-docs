@@ -8,6 +8,7 @@ doc_type: 'guide'
 integration_type: ['data ingestion']
 integration_logo: '/static/images/integrations/logos/fivetran.svg'
 integration_title: 'Fivetran'
+integration_tier: 'core'
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';

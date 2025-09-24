@@ -9,6 +9,7 @@ doc_type: 'guide'
 integration_type: ['data ingestion']
 integration_logo: '/static/images/integrations/logos/glue_logo.png'
 integration_title: 'Amazon Glue'
+integration_tier: 'core'
 ---
 
 import Image from '@theme/IdealImage';

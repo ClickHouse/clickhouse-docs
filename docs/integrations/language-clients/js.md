@@ -9,6 +9,7 @@ doc_type: 'reference'
 integration_type: ['language client']
 integration_logo: '/static/images/integrations/logos/node_js.svg'
 integration_title: 'Node.JS'
+integration_tier: 'core'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

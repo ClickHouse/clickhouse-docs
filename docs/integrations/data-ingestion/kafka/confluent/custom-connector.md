@@ -8,6 +8,7 @@ doc_type: 'guide'
 integration_type: ['data ingestion']
 integration_logo: '/static/images/integrations/logos/confluent.svg'
 integration_title: 'Kafka connector - Confluent'
+integration_tier: 'core'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

@@ -8,6 +8,7 @@ doc_type: 'guide'
 integration_type: ['data visualization']
 integration_logo: '/static/images/integrations/logos/quicksight.svg'
 integration_title: 'QuickSight'
+integration_tier: 'core'
 ---
 
 import MySQLOnPremiseSetup from '@site/docs/_snippets/_clickhouse_mysql_on_premise_setup.mdx';

@@ -8,6 +8,7 @@ doc_type: 'guide'
 integration_type: ['data visualization']
 integration_logo: '/static/images/integrations/logos/looker.svg'
 integration_title: 'Looker'
+integration_tier: 'core'
 ---
 
 import Image from '@theme/IdealImage';

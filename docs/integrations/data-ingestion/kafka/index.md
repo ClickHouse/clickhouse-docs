@@ -8,6 +8,7 @@ doc_type: 'guide'
 integration_type: ['data ingestion']
 integration_logo: '/static/images/integrations/logos/kafka.svg'
 integration_title: 'Kafka'
+integration_tier: 'core'
 ---
 
 # Integrating Kafka with ClickHouse

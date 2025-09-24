@@ -8,6 +8,7 @@ doc_type: 'guide'
 integration_type: ['data integration']
 integration_logo: '/static/images/integrations/logos/dbt.svg'
 integration_title: 'dbt'
+integration_tier: 'core'
 ---
 
 import TOCInline from '@theme/TOCInline';

@@ -22,7 +22,20 @@ function IntegrationCard({ integration }: { integration: IntegrationData }) {
       to={integration.slug}
       style={{ textDecoration: 'none', color: 'inherit' }}
     >
-      <CUICard>
+      <CUICard style={{ position: 'relative' }}>
+        {/* Tier Icon in top right corner */}
+        {integration.integration_tier && (
+          <div style={{
+            position: 'absolute',
+            top: '8px',
+            right: '8px',
+            zIndex: 1,
+            opacity: 0.7
+          }}>
+            {getTierIcon(integration.integration_tier)}
+          </div>
+        )}
+        <div style={{ padding: '5px' }}>
         <CUICard.Header>
           <img
             src={useBaseUrl(integration.integration_logo)}
@@ -33,6 +46,7 @@ function IntegrationCard({ integration }: { integration: IntegrationData }) {
         <CUICard.Body>
             {integration.integration_title}
         </CUICard.Body>
+        </div>
       </CUICard>
     </Link>
   );
@@ -246,7 +260,7 @@ export function IntegrationGrid() {
                 justifyContent: 'center'
               }}
             >
-              {getTierIcon(tier)}
+              {getTierIcon(tier, true)}
               {tier.charAt(0).toUpperCase() + tier.slice(1)}
             </button>
           ))}
@@ -291,11 +305,13 @@ export function IntegrationGrid() {
   );
 }
 
-function getTierIcon(tier: string): React.ReactNode {
+function getTierIcon(tier: string, withMargin = false): React.ReactNode {
+  const marginStyle = withMargin ? { marginRight: '6px' } : {};
+
   switch (tier) {
     case 'core':
       return (
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '6px' }}>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={marginStyle}>
           <path d="M1.30762 1.39073C1.30762 1.3103 1.37465 1.22986 1.46849 1.22986H2.64824C2.72868 1.22986 2.80912 1.29689 2.80912 1.39073V14.4886C2.80912 14.5691 2.74209 14.6495 2.64824 14.6495H1.46849C1.38805 14.6495 1.30762 14.5825 1.30762 14.4886V1.39073Z" fill="currentColor" />
           <path d="M4.2832 1.39073C4.2832 1.3103 4.35023 1.22986 4.44408 1.22986H5.62383C5.70427 1.22986 5.7847 1.29689 5.7847 1.39073V14.4886C5.7847 14.5691 5.71767 14.6495 5.62383 14.6495H4.44408C4.36364 14.6495 4.2832 14.5825 4.2832 14.4886V1.39073Z" fill="currentColor" />
           <path d="M7.25977 1.39073C7.25977 1.3103 7.3268 1.22986 7.42064 1.22986H8.60039C8.68083 1.22986 8.76127 1.29689 8.76127 1.39073V14.4886C8.76127 14.5691 8.69423 14.6495 8.60039 14.6495H7.42064C7.3402 14.6495 7.25977 14.5825 7.25977 14.4886V1.39073Z" fill="currentColor" />
@@ -305,7 +321,7 @@ function getTierIcon(tier: string): React.ReactNode {
       );
     case 'partner':
       return (
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '6px' }}>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={marginStyle}>
           <polyline points="12.5 9.5 10 12 6 11 2.5 8.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1"/>
           <polyline points="4.54 4.41 8 3.5 11.46 4.41" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1"/>
           <path d="M2.15,3.78 L0.55,6.95 A0.5,0.5 0,0,0 0.77,7.62 L2.5,8.5 L4.54,4.41 L2.82,3.55 A0.5,0.5 0,0,0 2.15,3.78 Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1"/>
@@ -316,7 +332,7 @@ function getTierIcon(tier: string): React.ReactNode {
       );
     case 'community':
       return (
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '6px' }}>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={marginStyle}>
           <path fillRule="evenodd" clipRule="evenodd" d="M6.22168 4.44463V4.44463C6.22168 3.46263 7.01768 2.66663 7.99968 2.66663V2.66663C8.98168 2.66663 9.77768 3.46263 9.77768 4.44463V4.44463C9.77768 5.42663 8.98168 6.22263 7.99968 6.22263V6.22263C7.01768 6.22196 6.22168 5.42596 6.22168 4.44463Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
           <path fillRule="evenodd" clipRule="evenodd" d="M1.91309 11.5553V11.5553C1.91309 10.5733 2.70909 9.77734 3.69109 9.77734V9.77734C4.67309 9.77734 5.46909 10.5733 5.46909 11.5553V11.5553C5.46842 12.5373 4.67309 13.3333 3.69109 13.3333V13.3333C2.70909 13.3333 1.91309 12.5373 1.91309 11.5553Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
           <path fillRule="evenodd" clipRule="evenodd" d="M10.5322 11.5553V11.5553C10.5322 10.5733 11.3282 9.77734 12.3102 9.77734V9.77734C13.2922 9.77734 14.0882 10.5733 14.0882 11.5553V11.5553C14.0882 12.5373 13.2922 13.3333 12.3102 13.3333V13.3333C11.3276 13.3333 10.5322 12.5373 10.5322 11.5553H10.5322Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />

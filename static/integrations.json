@@ -1,5 +1,21 @@
 [
   {
+    "slug": "/integrations/metabase",
+    "integration_logo": "/images/integrations/logos/logo_metabase.png",
+    "integration_type": [
+      "data visualization"
+    ],
+    "integration_tier": "partner"
+  },
+  {
+    "slug": "/integrations/mitzu",
+    "integration_logo": "/images/integrations/logos/logo_mitzu.png",
+    "integration_type": [
+      "data visualization"
+    ],
+    "integration_tier": "partner"
+  },
+  {
     "slug": "/integrations/airbyte",
     "integration_logo": "/images/integrations/logos/airbyte-logo.png",
     "integration_type": [
@@ -14,7 +30,8 @@
     "integration_type": [
       "data ingestion"
     ],
-    "integration_title": "Amazon Glue"
+    "integration_title": "Amazon Glue",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/s3",
@@ -22,7 +39,8 @@
     "integration_type": [
       "data ingestion"
     ],
-    "integration_title": "Amazon S3"
+    "integration_title": "Amazon S3",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/apache-beam",
@@ -65,7 +83,8 @@
     "integration_type": [
       "data ingestion"
     ],
-    "integration_title": "Azure Data Factory"
+    "integration_title": "Azure Data Factory",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/azure-synapse",
@@ -73,7 +92,8 @@
     "integration_type": [
       "data ingestion"
     ],
-    "integration_title": "Azure Synapse"
+    "integration_title": "Azure Synapse",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/bladepipe",
@@ -90,7 +110,8 @@
     "integration_type": [
       "language client"
     ],
-    "integration_title": "C#"
+    "integration_title": "C#",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/chartbrew-and-clickhouse",
@@ -107,7 +128,8 @@
     "integration_type": [
       "clickpipes"
     ],
-    "integration_title": "ClickPipes for Amazon Kinesis"
+    "integration_title": "ClickPipes for Amazon Kinesis",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/clickpipes/kafka",
@@ -115,7 +137,8 @@
     "integration_type": [
       "clickpipes"
     ],
-    "integration_title": "ClickPipes for Kafka"
+    "integration_title": "ClickPipes for Kafka",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/clickpipes/mongodb",
@@ -123,7 +146,8 @@
     "integration_type": [
       "clickpipes"
     ],
-    "integration_title": "ClickPipes for MongoDB"
+    "integration_title": "ClickPipes for MongoDB",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/clickpipes/postgres",
@@ -131,7 +155,8 @@
     "integration_type": [
       "clickpipes"
     ],
-    "integration_title": "ClickPipes for PostgreSQL"
+    "integration_title": "ClickPipes for PostgreSQL",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/google-dataflow/dataflow",
@@ -166,7 +191,8 @@
     "integration_type": [
       "data integration"
     ],
-    "integration_title": "dbt"
+    "integration_title": "dbt",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/dbvisualizer",
@@ -254,7 +280,8 @@
     "integration_type": [
       "language client"
     ],
-    "integration_title": "Golang"
+    "integration_title": "Golang",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/gcs",
@@ -279,7 +306,8 @@
     "integration_type": [
       "language client"
     ],
-    "integration_title": "Java, JDBC"
+    "integration_title": "Java, JDBC",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/jupysql",
@@ -296,7 +324,8 @@
     "integration_type": [
       "data ingestion"
     ],
-    "integration_title": "Kafka"
+    "integration_title": "Kafka",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/kafka/cloud/confluent/custom-connector",
@@ -304,7 +333,8 @@
     "integration_type": [
       "data ingestion"
     ],
-    "integration_title": "Kafka connector - Confluent"
+    "integration_title": "Kafka connector - Confluent",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/looker",
@@ -312,7 +342,8 @@
     "integration_type": [
       "data visualization"
     ],
-    "integration_title": "Looker"
+    "integration_title": "Looker",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/lookerstudio",
@@ -320,7 +351,8 @@
     "integration_type": [
       "data visualization"
     ],
-    "integration_title": "Looker Studio"
+    "integration_title": "Looker Studio",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/luzmo",
@@ -332,29 +364,13 @@
     "integration_tier": "partner"
   },
   {
-    "slug": "/integrations/metabase",
-    "integration_logo": "/images/integrations/logos/logo_metabase.png",
-    "integration_type": [
-      "data visualization"
-    ],
-    "integration_title": "Metabase"
-  },
-  {
     "slug": "/integrations/minio",
     "integration_logo": "/images/integrations/logos/minio.png",
     "integration_type": [
       "data ingestion"
     ],
-    "integration_title": "MinIO"
-  },
-  {
-    "slug": "/integrations/mitzu",
-    "integration_logo": "/images/integrations/logos/logo_mitzu.png",
-    "integration_type": [
-      "data visualization"
-    ],
-    "integration_title": "Mitzu",
-    "integration_tier": "partner"
+    "integration_title": "MinIO",
+    "integration_tier": "core"
   },
   {
     "slug": "/interfaces/third-party/moose-olap",
@@ -371,7 +387,8 @@
     "integration_type": [
       "language client"
     ],
-    "integration_title": "Node.JS"
+    "integration_title": "Node.JS",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/postgresql/connecting-to-postgresql",
@@ -387,7 +404,8 @@
     "integration_type": [
       "data visualization"
     ],
-    "integration_title": "PowerBI"
+    "integration_title": "PowerBI",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/python",
@@ -395,7 +413,8 @@
     "integration_type": [
       "language client"
     ],
-    "integration_title": "Python"
+    "integration_title": "Python",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/quicksight",
@@ -403,7 +422,8 @@
     "integration_type": [
       "data visualization"
     ],
-    "integration_title": "QuickSight"
+    "integration_title": "QuickSight",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/retool",
@@ -429,7 +449,8 @@
     "integration_type": [
       "language client"
     ],
-    "integration_title": "Rust"
+    "integration_title": "Rust",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/audit-splunk",
@@ -446,7 +467,8 @@
     "integration_type": [
       "data visualization"
     ],
-    "integration_title": "Superset"
+    "integration_title": "Superset",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/tableau",
@@ -454,7 +476,8 @@
     "integration_type": [
       "data visualization"
     ],
-    "integration_title": "Tableau"
+    "integration_title": "Tableau",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/tableau-online",
@@ -462,7 +485,8 @@
     "integration_type": [
       "data visualization"
     ],
-    "integration_title": "Tableau Online"
+    "integration_title": "Tableau Online",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/tablumio",

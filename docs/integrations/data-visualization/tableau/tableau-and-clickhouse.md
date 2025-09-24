@@ -9,6 +9,7 @@ doc_type: 'guide'
 integration_type: ['data visualization']
 integration_logo: '/static/images/integrations/logos/logo_tableau.png'
 integration_title: 'Tableau'
+integration_tier: 'core'
 ---
 
 import TOCInline from '@theme/TOCInline';

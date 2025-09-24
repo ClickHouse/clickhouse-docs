@@ -7,6 +7,7 @@ doc_type: 'guide'
 integration_type: ['clickpipes']
 integration_logo: '/static/images/integrations/logos/amazon_kinesis_logo.svg'
 integration_title: 'ClickPipes for Amazon Kinesis'
+integration_tier: 'core'
 ---
 
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';

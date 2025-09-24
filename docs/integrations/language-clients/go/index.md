@@ -9,6 +9,7 @@ doc_type: 'reference'
 integration_type: ['language client']
 integration_logo: '/static/images/integrations/logos/golang.svg'
 integration_title: 'Golang'
+integration_tier: 'core'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';

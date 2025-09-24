@@ -8,6 +8,7 @@ doc_type: 'guide'
 integration_type: ['data ingestion']
 integration_logo: '/static/images/integrations/logos/azure-synapse.png'
 integration_title: 'Azure Synapse'
+integration_tier: 'core'
 ---
 
 import TOCInline from '@theme/TOCInline';

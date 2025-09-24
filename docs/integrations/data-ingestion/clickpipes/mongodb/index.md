@@ -7,6 +7,7 @@ doc_type: 'guide'
 integration_type: ['clickpipes']
 integration_logo: '/static/images/integrations/logos/mongodb.svg'
 integration_title: 'ClickPipes for MongoDB'
+integration_tier: 'core'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';

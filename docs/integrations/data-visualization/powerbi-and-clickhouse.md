@@ -8,6 +8,7 @@ doc_type: 'guide'
 integration_type: ['data visualization']
 integration_logo: '/static/images/integrations/logos/powerbi.png'
 integration_title: 'PowerBI'
+integration_tier: 'core'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
