@@ -406,7 +406,7 @@ When using the view materialization, a model is rebuilt as a view on each run, v
 
 ## Creating a table materialization {#creating-a-table-materialization}
 
-In the previous example, our model was materialized as a view. While this might offer sufficient performance for some queries, more complex SELECTs or frequently executed queries may be better materialized as a table.  This materialization is useful for models that will be queried by BI tools to ensure users have a faster experience. This effectively causes the query results to be stored as a new table, with the associated storage overheads - effectively, an `INSERT TO SELECT` is executed. Note that this table will be reconstructed each time i.e., it is not incremental. Large result sets may therefore result in long execution times - see [dbt Limitations](#limitations).
+In the previous example, our model was materialized as a view. While this might offer sufficient performance for some queries, more complex SELECTs or frequently executed queries may be better materialized as a table.  This materialization is useful for models that will be queried by BI tools to ensure users have a faster experience. This effectively causes the query results to be stored as a new table, with the associated storage overheads - effectively, an `INSERT TO SELECT` is executed. Note that this table will be reconstructed each time i.e., it is not incremental. Large result sets may therefore result in long execution times - see [dbt Limitations](/integrations/dbt#limitations).
 
 1. Modify the file `actors_summary.sql` such that the `materialized` parameter is set to `table`. Notice how `ORDER BY` is defined, and notice we use the `MergeTree` table engine:
 
@@ -483,7 +483,7 @@ In the previous example, our model was materialized as a view. While this might 
 
 ## Creating an Incremental Materialization {#creating-an-incremental-materialization}
 
-The previous example created a table to materialize the model. This table will be reconstructed for each dbt execution. This may be infeasible and extremely costly for larger result sets or complex transformations. To address this challenge and reduce the build time, dbt offers Incremental materializations. This allows dbt to insert or update records into a table since the last execution, making it appropriate for event-style data. Under the hood a temporary table is created with all the updated records and then all the untouched records as well as the updated records are inserted into a new target table. This results in similar [limitations](#limitations) for large result sets as for the table model.
+The previous example created a table to materialize the model. This table will be reconstructed for each dbt execution. This may be infeasible and extremely costly for larger result sets or complex transformations. To address this challenge and reduce the build time, dbt offers Incremental materializations. This allows dbt to insert or update records into a table since the last execution, making it appropriate for event-style data. Under the hood a temporary table is created with all the updated records and then all the untouched records as well as the updated records are inserted into a new target table. This results in similar [limitations](/integrations/dbt#limitations) for large result sets as for the table model.
 
 To overcome these limitations for large sets, the plugin supports 'inserts_only' mode, where all the updates are inserted into the target table without creating a temporary table (more about it below).
 
@@ -677,7 +677,7 @@ This is visualized below:
 
 <Image img={dbt_05} size="lg" alt="incremental updates dbt" />
 
-This strategy may encounter challenges on very large models. For further details see [Limitations](#limitations).
+This strategy may encounter challenges on very large models. For further details see [Limitations](/integrations/dbt#limitations).
 
 ### Append Strategy (inserts-only mode) {#append-strategy-inserts-only-mode}
 
