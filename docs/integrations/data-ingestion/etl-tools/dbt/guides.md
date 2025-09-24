@@ -32,7 +32,7 @@ This section provides guides on setting up dbt and the ClickHouse plugin, as wel
 5. Creating a snapshot model.
 6. Using materialized views.
 
-These guides are designed to be used in conjunction with the rest of the [documentation](/integrations/dbt/index), like the [configuration](/integrations/dbt/configurations) and the [features](/integrations/dbt/features).
+These guides are designed to be used in conjunction with the rest of the [documentation](/integrations/dbt#index) and the [features and configurations](/integrations/dbt/features-and-configurations#index).
 
 ### Index {#index}
 

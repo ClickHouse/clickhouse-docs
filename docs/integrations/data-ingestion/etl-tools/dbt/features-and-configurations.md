@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'Features and Configurations'
-slug: /integrations/dbt/features
+slug: /integrations/dbt/features-and-configurations
 sidebar_position: 2
 description: 'Features for using dbt with ClickHouse'
 keywords: ['clickhouse', 'dbt', 'features']
@@ -80,7 +80,7 @@ has been occasionally suggested.
 
 ### Setting `quote_columns` {#setting-quote_columns}
 
-To prevent a warning, make sure to explicitly set a value for `quote_columns` in your `dbt_project.yml`. See the [doc on quote_columns](/reference/resource-configs/quote_columns) for more information.
+To prevent a warning, make sure to explicitly set a value for `quote_columns` in your `dbt_project.yml`. See the [doc on quote_columns](https://docs.getdbt.com/reference/resource-configs/quote_columns) for more information.
 
 ```yaml
 seeds:
@@ -279,9 +279,9 @@ Configurations that are specific for this materialization type are listed below:
 
 | Option                   | Description                                                                                                                                                                                                                                                       | Required?                                                                            |
 |--------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
-| `unique_key`             | A tuple of column names that uniquely identify rows. For more details on uniqueness constraints, see [here](/docs/build/incremental-models#defining-a-unique-key-optional).                                                                                       | Required. If not provided altered rows will be added twice to the incremental table. |
+| `unique_key`             | A tuple of column names that uniquely identify rows. For more details on uniqueness constraints, see [here](https://docs.getdbt.com/docs/build/incremental-models#defining-a-unique-key-optional).                                                                                       | Required. If not provided altered rows will be added twice to the incremental table. |
 | `inserts_only`           | It has been deprecated in favor of the `append` incremental `strategy`, which operates in the same way. If set to True for an incremental model, incremental updates will be inserted directly to the target table without creating intermediate table. . If `inserts_only` is set, `incremental_strategy` is ignored. | Optional (default: `False`)                                                          |
-| `incremental_strategy`   | The strategy to use for incremental materialization.  `delete+insert`, `append`, `insert_overwrite`, or `microbatch` are supported.  For additional details on strategies, see [here](/integrations/data-ingestion/etl-tools/dbt/features#incremental-model-strategies) | Optional (default: 'default')                                                        |
+| `incremental_strategy`   | The strategy to use for incremental materialization.  `delete+insert`, `append`, `insert_overwrite`, or `microbatch` are supported.  For additional details on strategies, see [here](/integrations/data-ingestion/etl-tools/dbt/features-and-configurations#incremental-model-strategies) | Optional (default: 'default')                                                        |
 | `incremental_predicates` | Additional conditions to be applied to the incremental materialization (only applied to `delete+insert` strategy                                                                                                                                                                                    | Optional                      
 
 #### Incremental Model Strategies {#incremental-model-strategies}
