@@ -23,7 +23,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-
 This section provides guides on setting up dbt and the ClickHouse plugin, as well as an example of using dbt with ClickHouse. The example covers the following:
 
 1. Creating a dbt project and setting up the ClickHouse plugin.
@@ -35,16 +34,13 @@ This section provides guides on setting up dbt and the ClickHouse plugin, as wel
 
 These guides are designed to be used in conjunction with the rest of the [documentation](/integrations/dbt/index), like the [configuration](/integrations/dbt/configurations) and the [features](/integrations/dbt/features).
 
-
-### Index
+### Index {#index}
 
 <TOCInline toc={toc}  maxHeadingLevel={2} />
 
-
-## Setup
+## Setup {#setup}
 
 Follow the instructions in the [Setup of dbt and the ClickHouse plugin](/integrations/dbt/setup) section to prepare your environment.
-
 
 **Important: The following is tested under python 3.9.**
 

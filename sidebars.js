@@ -912,8 +912,7 @@ const sidebars = {
           collapsible: true,
           items: [
             "integrations/data-ingestion/etl-tools/dbt/index",
-            "integrations/data-ingestion/etl-tools/dbt/configurations",
-            "integrations/data-ingestion/etl-tools/dbt/features",
+            "integrations/data-ingestion/etl-tools/dbt/features-and-configurations",
             "integrations/data-ingestion/etl-tools/dbt/guides",
           ],
         },
