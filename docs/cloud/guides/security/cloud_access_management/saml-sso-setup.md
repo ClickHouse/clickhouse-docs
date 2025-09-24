@@ -39,7 +39,7 @@ We recommend setting up a **direct link to your organization** in addition to yo
    
    1. Sign in to your [ClickHouse Cloud](https://console.clickhouse.cloud) organization.
    
-      <Image img={samlOrgId} size="md" alt="Organization ID" />
+      <Image img={samlOrgId} size="md" alt="Organization ID" force/>
       
    3. In the lower left corner, click on your organization name under **Organization**.
    
