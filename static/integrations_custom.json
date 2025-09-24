@@ -769,7 +769,7 @@
     "integration_type": [
       "security governance"
     ],
-    "integration_logo": "/static/images/integrations/logos/placeholder.png",
+    "integration_logo": "/static/images/integrations/logos/chproxy.svg",
     "integration_title": "CHProxy",
     "integration_tier": "community"
   },
@@ -825,15 +825,6 @@
     ],
     "integration_logo": "/static/images/integrations/logos/logo_datahub.png",
     "integration_title": "Datahub",
-    "integration_tier": "community"
-  },
-  {
-    "slug": "https://github.com/amacneil/dbmate#clickhouse",
-    "integration_type": [
-      "data management"
-    ],
-    "integration_logo": "/static/images/integrations/logos/placeholder.png",
-    "integration_title": "Dbmate",
     "integration_tier": "community"
   },
   {
@@ -909,30 +900,12 @@
     "integration_tier": "community"
   },
   {
-    "slug": "https://hub.meltano.com/extractors/tap-clickhouse",
-    "integration_type": [
-      "data ingestion"
-    ],
-    "integration_logo": "/static/images/integrations/logos/placeholder.png",
-    "integration_title": "Meltano",
-    "integration_tier": "community"
-  },
-  {
     "slug": "https://mprove.io/",
     "integration_type": [
       "data visualization"
     ],
     "integration_logo": "/static/images/integrations/logos/logo_mprove.png",
     "integration_title": "Mprove",
-    "integration_tier": "community"
-  },
-  {
-    "slug": "https://cloud.redhat.com/blog/deploying-network-observability-without-loki-an-example-with-clickhouse",
-    "integration_type": [
-      "data management"
-    ],
-    "integration_logo": "/static/images/integrations/logos/placeholder.png",
-    "integration_title": "Netobserv",
     "integration_tier": "community"
   },
   {
@@ -951,15 +924,6 @@
     ],
     "integration_logo": "/static/images/integrations/logos/logo_php.png",
     "integration_title": "PHP",
-    "integration_tier": "community"
-  },
-  {
-    "slug": "https://github.com/scottpersinger/pgwarehouse",
-    "integration_type": [
-      "data ingestion"
-    ],
-    "integration_logo": "/static/images/integrations/logos/placeholder.png",
-    "integration_title": "Pgwarehouse",
     "integration_tier": "community"
   },
   {
@@ -1023,15 +987,6 @@
     ],
     "integration_logo": "/static/images/integrations/logos/logo_r.png",
     "integration_title": "R",
-    "integration_tier": "community"
-  },
-  {
-    "slug": "https://getsqlpad.com/en/connections/#clickhouse",
-    "integration_type": [
-      "sql client"
-    ],
-    "integration_logo": "/static/images/integrations/logos/placeholder.png",
-    "integration_title": "SQLPad",
     "integration_tier": "community"
   },
   {
