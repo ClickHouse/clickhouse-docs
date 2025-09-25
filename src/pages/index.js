@@ -79,92 +79,72 @@ const SparkleIcon = ({ size = 20, color = 'currentColor' }) => (
     </svg>
 );
 
-// Migration Option Button Component with Gradient Overlay
+// Migration Option Button Component - Clean Design
 const MigrationOptionButton = ({ icon, link, children }) => {
     return (
-        <Card 
+        <Card
             component={Link}
             to={link}
             sx={{
                 width: '100%',
                 height: '100%',
                 aspectRatio: '1',
-                position: 'relative',
                 display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
                 textDecoration: 'none',
                 color: 'inherit',
-                boxShadow: 2,
-                borderRadius: 1,
-                overflow: 'hidden',
+                backgroundColor: 'background.paper',
+                border: '1px solid',
+                borderColor: 'divider',
+                borderRadius: 2,
+                boxShadow: 'none',
+                padding: 2,
+                gap: 1,
                 '&:hover': {
                     textDecoration: 'none',
                     color: 'inherit',
-                    boxShadow: 4,
-                    transform: 'translateY(-1px)',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                    borderColor: 'primary.main',
+                    transform: 'translateY(-2px)',
                     transition: 'all 0.2s ease-in-out'
                 }
             }}
         >
-            {/* Background Image/Icon */}
+            {/* Logo */}
             <Box
                 sx={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    backgroundColor: 'background.paper',
+                    flex: 1,
                 }}
             >
-                <img 
-                    src={useBaseUrl(icon)} 
+                <img
+                    src={useBaseUrl(icon)}
                     alt={children}
-                    style={{ 
-                        width: '40px', 
-                        height: '40px', 
-                        objectFit: 'contain',
-                        opacity: 0.7 
+                    style={{
+                        width: '32px',
+                        height: '32px',
+                        objectFit: 'contain'
                     }}
                 />
             </Box>
-            
-            {/* Gradient Overlay */}
-            <Box
+
+            {/* Label */}
+            <Typography
+                variant="body2"
                 sx={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    background: 'linear-gradient(to top, rgba(0,0,0,0.4), rgba(0,0,0,0) 40%)',
+                    fontWeight: 500,
+                    fontSize: '11px',
+                    lineHeight: 1.2,
+                    color: 'text.primary',
+                    textAlign: 'center'
                 }}
-            />
-            
-            {/* Content */}
-            <CardContent sx={{ 
-                position: 'relative',
-                zIndex: 2,
-                display: 'flex',
-                alignItems: 'flex-end',
-                justifyContent: 'center',
-                flex: 1,
-                padding: '8px !important',
-                minWidth: 0
-            }}>
-                <Typography variant="body2" sx={{ 
-                    fontWeight: 600, 
-                    fontSize: '12px', 
-                    lineHeight: 1.1,
-                    color: '#fff',
-                    textAlign: 'center',
-                    textShadow: '0 1px 2px rgba(0,0,0,0.7)'
-                }}>
-                    {children}
-                </Typography>
-            </CardContent>
+            >
+                {children}
+            </Typography>
         </Card>
     );
 };
@@ -241,6 +221,7 @@ const HeroSection = () => {
                 <Box sx={{ flex: 1, maxWidth: '500px' }}>
                     <SearchBar/>
                 </Box>
+                <p>or</p>
                 <Button
                     variant="contained"
                     onClick={handleAskAIClick}
@@ -254,14 +235,14 @@ const HeroSection = () => {
                         justifyContent: 'center',
                         gap: '8px',
                         textTransform: 'none',
-                        backgroundColor: '#faff69',
+                        backgroundColor: '#FAFF6A',
                         color: '#000000',
                         whiteSpace: 'nowrap',
                         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
                         fontWeight: 600,
                         flexShrink: 0,
                         '&:hover': {
-                            backgroundColor: '#f5f464',
+                            backgroundColor: '#FAFF6A',
                             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                         },
                     }}
@@ -293,7 +274,7 @@ const NavatticDemoSection = () => {
 const ExploreDocs = () => {
     const { colorMode } = useColorMode();
     const versions = useVersions();
-    const versionColor = colorMode === 'dark' ? '#faff69' : '#1976d2';
+    const versionColor = colorMode === 'dark' ? '#FAFF6A' : '#1976d2';
     
     return (
         <div className={homepage_styles.exploreDocs}>
@@ -311,11 +292,13 @@ const ExploreDocs = () => {
                     gap: 3
                 }}>
                     {/* Get Started Card - Row 1, Column 1 */}
-                    <Card sx={{ 
+                    <Card sx={{
                         height: '300px',
                         backgroundColor: 'background.paper',
                         color: 'text.primary',
                         boxShadow: 3,
+                        border: '1px solid',
+                        borderColor: 'divider',
                         '&:hover': {
                             boxShadow: 6,
                         },
@@ -352,11 +335,13 @@ const ExploreDocs = () => {
                     </Card>
 
                     {/* Learn Card - Row 1, Column 2 */}
-                    <Card sx={{ 
+                    <Card sx={{
                         height: '300px',
                         backgroundColor: 'background.paper',
                         color: 'text.primary',
                         boxShadow: 3,
+                        border: '1px solid',
+                        borderColor: 'divider',
                         '&:hover': {
                             boxShadow: 6,
                         },
@@ -393,11 +378,13 @@ const ExploreDocs = () => {
                     </Card>
 
                     {/* Reference Card - Row 1, Column 3 */}
-                    <Card sx={{ 
+                    <Card sx={{
                         height: '300px',
                         backgroundColor: 'background.paper',
                         color: 'text.primary',
                         boxShadow: 3,
+                        border: '1px solid',
+                        borderColor: 'divider',
                         '&:hover': {
                             boxShadow: 6,
                         },
@@ -435,13 +422,15 @@ const ExploreDocs = () => {
                         </CardActionArea>
                     </Card>
 
-                    {/* Migrate Card - Row 2, Columns 1-2 (spans 2 columns) */}
-                    <Card sx={{ 
-                        gridColumn: { xs: '1', sm: '1 / span 2', md: '1 / span 2' },
+                    {/* Migrate Card - Row 2, Full Width (spans all 3 columns) */}
+                    <Card sx={{
+                        gridColumn: { xs: '1', sm: '1 / span 2', md: '1 / span 3' },
                         height: '180px',
                         backgroundColor: 'background.paper',
                         color: 'text.primary',
                         boxShadow: 3,
+                        border: '1px solid',
+                        borderColor: 'divider',
                         '&:hover': {
                             boxShadow: 6,
                         },
@@ -504,13 +493,13 @@ const ExploreDocs = () => {
                                 justifyContent: 'flex-end',
                                 alignItems: 'center'
                             }}>
-                                <Box sx={{ 
-                                    display: 'grid', 
-                                    gridTemplateColumns: 'repeat(4, 1fr)',
-                                    gridTemplateRows: 'repeat(2, 1fr)',
+                                <Box sx={{
+                                    display: 'grid',
+                                    gridTemplateColumns: 'repeat(7, 1fr)',
+                                    gridTemplateRows: '1fr',
                                     gap: 1,
                                     width: '100%',
-                                    maxWidth: '320px',
+                                    maxWidth: '480px',
                                     height: '100%'
                                 }}>
                                     <MigrationOptionButton
@@ -556,10 +545,40 @@ const ExploreDocs = () => {
                                         Mongo
                                     </MigrationOptionButton>
                                     <MigrationOptionButton
-                                        icon="/docs/images/logo-druid.png"
-                                        link="/docs"
+                                        icon="/images/integrations/logos/deltalake.svg"
+                                        link="/docs/integrations/deltalake"
                                     >
-                                        Druid
+                                        Delta
+                                    </MigrationOptionButton>
+                                    <MigrationOptionButton
+                                        icon="/img/integrations/logo_kafka.svg"
+                                        link="/docs/integrations/kafka"
+                                    >
+                                        Kafka
+                                    </MigrationOptionButton>
+                                    <MigrationOptionButton
+                                        icon="/images/integrations/logos/logo_redpanda.png"
+                                        link="/docs/integrations/redpanda"
+                                    >
+                                        Redpanda
+                                    </MigrationOptionButton>
+                                    <MigrationOptionButton
+                                        icon="/images/integrations/logos/amazon_s3_logo.svg"
+                                        link="/docs/integrations/s3"
+                                    >
+                                        S3
+                                    </MigrationOptionButton>
+                                    <MigrationOptionButton
+                                        icon="/docs/images/logo-iceberg.svg"
+                                        link="/docs/integrations/iceberg"
+                                    >
+                                        Iceberg
+                                    </MigrationOptionButton>
+                                    <MigrationOptionButton
+                                        icon="/docs/images/logo-gcs.svg"
+                                        link="/docs/integrations/gcs"
+                                    >
+                                        GCS
                                     </MigrationOptionButton>
                                 </Box>
                             </Box>
@@ -579,16 +598,18 @@ const ExploreDocs = () => {
                     </Box>
 
                     {/* Featured Card 1 - Row 4, Column 1 */}
-                    <Card 
+                    <Card
                         component={Link}
                         to="/integrations/clickpipes/mongodb"
-                        sx={{ 
+                        sx={{
                             gridRow: 4,
                             gridColumn: 1,
                             height: '300px',
                             backgroundColor: 'background.paper',
                             color: 'text.primary',
                             boxShadow: 3,
+                            border: '1px solid',
+                            borderColor: 'divider',
                             textDecoration: 'none',
                             '&:hover': {
                                 boxShadow: 6,
@@ -623,7 +644,6 @@ const ExploreDocs = () => {
                                                 borderRadius: '8px',
                                                 fontSize: '9px',
                                                 fontWeight: 600,
-                                                textTransform: 'uppercase',
                                                 letterSpacing: '0.3px'
                                             }}
                                         >
@@ -652,16 +672,18 @@ const ExploreDocs = () => {
                     </Card>
 
                     {/* Featured Card 2 - Row 4, Column 2 */}
-                    <Card 
+                    <Card
                         component={Link}
                         to="/use-cases/AI/MCP/remote_mcp"
-                        sx={{ 
+                        sx={{
                             gridRow: 4,
                             gridColumn: 2,
                             height: '300px',
                             backgroundColor: 'background.paper',
                             color: 'text.primary',
                             boxShadow: 3,
+                            border: '1px solid',
+                            borderColor: 'divider',
                             textDecoration: 'none',
                             '&:hover': {
                                 boxShadow: 6,
@@ -690,13 +712,12 @@ const ExploreDocs = () => {
                                         <Typography
                                             variant="caption"
                                             sx={{
-                                                backgroundColor: '#fff3e0',
+                                                backgroundColor: '#FAFF6A',
                                                 color: '#f57c00',
                                                 padding: '1px 6px',
                                                 borderRadius: '8px',
                                                 fontSize: '9px',
                                                 fontWeight: 600,
-                                                textTransform: 'uppercase',
                                                 letterSpacing: '0.3px'
                                             }}
                                         >
@@ -725,16 +746,18 @@ const ExploreDocs = () => {
                     </Card>
 
                     {/* Featured Card 3 - Row 4, Column 3 */}
-                    <Card 
+                    <Card
                         component={Link}
                         to="/best-practices/use-json-where-appropriate"
-                        sx={{ 
+                        sx={{
                             gridRow: 4,
                             gridColumn: 3,
                             height: '300px',
                             backgroundColor: 'background.paper',
                             color: 'text.primary',
                             boxShadow: 3,
+                            border: '1px solid',
+                            borderColor: 'divider',
                             textDecoration: 'none',
                             '&:hover': {
                                 boxShadow: 6,
@@ -769,7 +792,6 @@ const ExploreDocs = () => {
                                                 borderRadius: '8px',
                                                 fontSize: '9px',
                                                 fontWeight: 600,
-                                                textTransform: 'uppercase',
                                                 letterSpacing: '0.3px'
                                             }}
                                         >
@@ -797,90 +819,6 @@ const ExploreDocs = () => {
                         </CardActionArea>
                     </Card>
                     
-                    {/* Changelog Cards Container - Row 2, Column 3 */}
-                    <Box sx={{ 
-                        gridRow: 2,
-                        gridColumn: 3,
-                        display: 'flex', 
-                        flexDirection: 'column', 
-                        gap: 2
-                    }}>
-                        <Card 
-                            component={Link}
-                            to={versions.cloud.link}
-                            sx={{ 
-                                height: '80px',
-                                display: 'flex',
-                                backgroundColor: 'background.paper',
-                                color: 'text.primary',
-                                boxShadow: 3,
-                                textDecoration: 'none',
-                                '&:hover': {
-                                    boxShadow: 6,
-                                    textDecoration: 'none',
-                                    color: 'inherit',
-                                }
-                            }}>
-                            <CardMedia
-                                component="img"
-                                sx={{ width: 80, height: 80, objectFit: 'contain' }}
-                                image={useBaseUrl('/images/homepage/cloud_icon.png')}
-                                alt="Cloud Changelog"
-                            />
-                            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1 }}>
-                                <CardContent sx={{ py: 1 }}>
-                                    <Typography component="div" variant="subtitle1" sx={{ fontSize: '0.9rem', mb: 0.5 }}>
-                                        Cloud Changelog
-                                    </Typography>
-                                    <Typography
-                                        variant="h6"
-                                        component="div"
-                                        sx={{ color: versionColor, fontWeight: 'bold' }}
-                                    >
-                                        {versions.cloud.version}
-                                    </Typography>
-                                </CardContent>
-                            </Box>
-                        </Card>
-                        
-                        <Card 
-                            component={Link}
-                            to={versions.oss.link}
-                            sx={{ 
-                                height: '80px',
-                                display: 'flex',
-                                backgroundColor: 'background.paper',
-                                color: 'text.primary',
-                                boxShadow: 3,
-                                textDecoration: 'none',
-                                '&:hover': {
-                                    boxShadow: 6,
-                                    textDecoration: 'none',
-                                    color: 'inherit',
-                                }
-                            }}>
-                            <CardMedia
-                                component="img"
-                                sx={{ width: 80, height: 80, objectFit: 'contain' }}
-                                image={useBaseUrl('/images/homepage/oss_icon.png')}
-                                alt="OSS Changelog"
-                            />
-                            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1 }}>
-                                <CardContent sx={{ py: 1 }}>
-                                    <Typography component="div" variant="subtitle1" sx={{ fontSize: '0.9rem', mb: 0.5 }}>
-                                        OSS Changelog
-                                    </Typography>
-                                    <Typography
-                                        variant="h6"
-                                        component="div"
-                                        sx={{ color: versionColor, fontWeight: 'bold' }}
-                                    >
-                                        {versions.oss.version}
-                                    </Typography>
-                                </CardContent>
-                            </Box>
-                        </Card>
-                    </Box>
                 </Box>
                 
             </Box>
@@ -894,7 +832,7 @@ const HelloContent = () => {
         palette: {
             mode: colorMode === 'dark' ? 'dark' : 'light',
             primary: {
-                main: '#faff69',
+                main: '#FAFF6A',
                 contrastText: '#000000',
             },
             secondary: {
