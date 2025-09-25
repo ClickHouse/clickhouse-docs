@@ -9,9 +9,9 @@ doc_type: 'reference'
 
 # Python API Reference
 
-## Core Query Functions
+## Core Query Functions {#core-query-functions}
 
-### chdb.query(sql, output_format='CSV', path='', udf_path='')
+### chdb.query(sql, output_format='CSV', path='', udf_path='') {#chdb-query}
 
 Execute SQL query using chDB engine.
 
@@ -20,30 +20,30 @@ ClickHouse engine. Supports various output formats and can work with in-memory
 or file-based databases.
 
 * **Parameters:**
-    * **sql** (*str*) – SQL query string to execute
-    * **output_format** (*str, optional*) – Output format for results. Defaults to “CSV”.
+  * **sql** (*str*) – SQL query string to execute
+  * **output_format** (*str, optional*) – Output format for results. Defaults to “CSV”.
       Supported formats include:
-        - “CSV” - Comma-separated values
-        - “JSON” - JSON format
-        - “Arrow” - Apache Arrow format
-        - “Parquet” - Parquet format
-        - “DataFrame” - Pandas DataFrame
-        - “ArrowTable” - PyArrow Table
-        - “Debug” - Enable verbose logging
-    * **path** (*str, optional*) – Database file path. Defaults to “” (in-memory database).
+  - “CSV” - Comma-separated values
+  - “JSON” - JSON format
+  - “Arrow” - Apache Arrow format
+  - “Parquet” - Parquet format
+  - “DataFrame” - Pandas DataFrame
+  - “ArrowTable” - PyArrow Table
+  - “Debug” - Enable verbose logging
+  * **path** (*str, optional*) – Database file path. Defaults to “” (in-memory database).
       Can be a file path or “:memory:” for in-memory database.
-    * **udf_path** (*str, optional*) – Path to User-Defined Functions directory. Defaults to “”.
+  * **udf_path** (*str, optional*) – Path to User-Defined Functions directory. Defaults to “”.
 * **Returns:**
   *Query result in the specified format* –
-    - str: For text formats like CSV, JSON
-    - pd.DataFrame: When output_format is “DataFrame” or “dataframe”
-    - pa.Table: When output_format is “ArrowTable” or “arrowtable”
-    - chdb result object: For other formats
+  - str: For text formats like CSV, JSON
+  - pd.DataFrame: When output_format is “DataFrame” or “dataframe”
+  - pa.Table: When output_format is “ArrowTable” or “arrowtable”
+  - chdb result object: For other formats
 * **Raises:**
-    * [**ChdbError**](#chdb.ChdbError) – If the SQL query execution fails
-    * **ImportError** – If required dependencies are missing for DataFrame/Arrow formats
+  * [**ChdbError**](#chdb.ChdbError) – If the SQL query execution fails
+  * **ImportError** – If required dependencies are missing for DataFrame/Arrow formats
 
-### Examples
+### Examples {#chdb-query-examples}
 
 ```pycon
 >>> # Basic CSV query
@@ -70,7 +70,7 @@ or file-based databases.
 >>> result = chdb.query("SELECT my_udf('test')", udf_path="/path/to/udfs")
 ```
 
-### chdb.sql(sql, output_format='CSV', path='', udf_path='')
+### chdb.sql(sql, output_format='CSV', path='', udf_path='') {#chdb-sql}
 
 Execute SQL query using chDB engine.
 
@@ -79,30 +79,30 @@ ClickHouse engine. Supports various output formats and can work with in-memory
 or file-based databases.
 
 * **Parameters:**
-    * **sql** (*str*) – SQL query string to execute
-    * **output_format** (*str, optional*) – Output format for results. Defaults to “CSV”.
+  * **sql** (*str*) – SQL query string to execute
+  * **output_format** (*str, optional*) – Output format for results. Defaults to “CSV”.
       Supported formats include:
-        - “CSV” - Comma-separated values
-        - “JSON” - JSON format
-        - “Arrow” - Apache Arrow format
-        - “Parquet” - Parquet format
-        - “DataFrame” - Pandas DataFrame
-        - “ArrowTable” - PyArrow Table
-        - “Debug” - Enable verbose logging
-    * **path** (*str, optional*) – Database file path. Defaults to “” (in-memory database).
+  - “CSV” - Comma-separated values
+  - “JSON” - JSON format
+  - “Arrow” - Apache Arrow format
+  - “Parquet” - Parquet format
+  - “DataFrame” - Pandas DataFrame
+  - “ArrowTable” - PyArrow Table
+  - “Debug” - Enable verbose logging
+  * **path** (*str, optional*) – Database file path. Defaults to “” (in-memory database).
       Can be a file path or “:memory:” for in-memory database.
-    * **udf_path** (*str, optional*) – Path to User-Defined Functions directory. Defaults to “”.
+  * **udf_path** (*str, optional*) – Path to User-Defined Functions directory. Defaults to “”.
 * **Returns:**
   *Query result in the specified format* –
-    - str: For text formats like CSV, JSON
-    - pd.DataFrame: When output_format is “DataFrame” or “dataframe”
-    - pa.Table: When output_format is “ArrowTable” or “arrowtable”
-    - chdb result object: For other formats
+  - str: For text formats like CSV, JSON
+  - pd.DataFrame: When output_format is “DataFrame” or “dataframe”
+  - pa.Table: When output_format is “ArrowTable” or “arrowtable”
+  - chdb result object: For other formats
 * **Raises:**
-    * [**ChdbError**](#chdb.ChdbError) – If the SQL query execution fails
-    * **ImportError** – If required dependencies are missing for DataFrame/Arrow formats
+  * [**ChdbError**](#chdb.ChdbError) – If the SQL query execution fails
+  * **ImportError** – If required dependencies are missing for DataFrame/Arrow formats
 
-### Examples
+### Examples {#chdb-sql-examples}
 
 ```pycon
 >>> # Basic CSV query
@@ -129,7 +129,7 @@ or file-based databases.
 >>> result = chdb.query("SELECT my_udf('test')", udf_path="/path/to/udfs")
 ```
 
-### chdb.to_arrowTable(res)
+### chdb.to_arrowTable(res) {#chdb-to-arrowtable}
 
 Convert query result to PyArrow Table.
 
@@ -143,7 +143,7 @@ Returns an empty table if the result is empty.
 * **Raises:**
   **ImportError** – If pyarrow or pandas are not installed
 
-### Example
+### Example {#chdb-to-arrowtable-example}
 
 ```pycon
 >>> result = chdb.query("SELECT 1 as id, 'hello' as msg", "Arrow")
@@ -153,7 +153,7 @@ Returns an empty table if the result is empty.
 0   1  hello
 ```
 
-### chdb.to_df(r)
+### chdb.to_df(r) {#chdb-to-df}
 
 Convert query result to pandas DataFrame.
 
@@ -167,7 +167,7 @@ PyArrow Table and then to pandas using multi-threading for better performance.
 * **Raises:**
   **ImportError** – If pyarrow or pandas are not installed
 
-### Example
+### Example {#chdb-to-df-example}
 
 ```pycon
 >>> result = chdb.query("SELECT 1 as id, 'hello' as msg", "Arrow")
@@ -177,11 +177,11 @@ PyArrow Table and then to pandas using multi-threading for better performance.
 0   1  hello
 ```
 
-## Connection and Session Management
+## Connection and Session Management {#connection-session-management}
 
 **Session Functions**
 
-### chdb.connect(connection_string: str = ':memory:') → [Connection](#chdb.state.sqlitelike.Connection)
+### chdb.connect(connection_string: str = ':memory:') → [Connection](#chdb.state.sqlitelike.Connection) {#chdb-connect}
 
 Create a connection to chDB background server.
 
@@ -194,40 +194,40 @@ connection string will return the same connection object.
   Supported connection string formats:
 
   **Basic formats:**
-    - “:memory:” - In-memory database (default)
-    - “test.db” - Relative path database file
-    - “[file:test.db](file:test.db)” - Same as relative path
-    - “/path/to/test.db” - Absolute path database file
-    - “[file:/path/to/test.db](file:/path/to/test.db)” - Same as absolute path
+  - “:memory:” - In-memory database (default)
+  - “test.db” - Relative path database file
+  - “[file:test.db](file:test.db)” - Same as relative path
+  - “/path/to/test.db” - Absolute path database file
+  - “[file:/path/to/test.db](file:/path/to/test.db)” - Same as absolute path
 
   **With query parameters:**
-    - “[file:test.db?param1=value1&param2=value2](file:test.db?param1=value1&param2=value2)” - Relative path with params
-    - “[file::memory](file::memory):?verbose&log-level=test” - In-memory with params
-    - “///path/to/test.db?param1=value1&param2=value2” - Absolute path with params
+  - “[file:test.db?param1=value1&param2=value2](file:test.db?param1=value1&param2=value2)” - Relative path with params
+  - “[file::memory](file::memory):?verbose&log-level=test” - In-memory with params
+  - “///path/to/test.db?param1=value1&param2=value2” - Absolute path with params
 
   **Query parameter handling:**
 
   Query parameters are passed to ClickHouse engine as startup arguments.
   Special parameter handling:
-    - “mode=ro” becomes “–readonly=1” (read-only mode)
-    - “verbose” enables verbose logging
-    - “log-level=test” sets logging level
+  - “mode=ro” becomes “–readonly=1” (read-only mode)
+  - “verbose” enables verbose logging
+  - “log-level=test” sets logging level
 
   For complete parameter list, see `clickhouse local --help --verbose`
 * **Returns:**
   *Connection* – Database connection object that supports:
-    - Creating cursors with `Connection.cursor()`
-    - Direct queries with `Connection.query()`
-    - Streaming queries with `Connection.send_query()`
-    - Context manager protocol for automatic cleanup
+  - Creating cursors with `Connection.cursor()`
+  - Direct queries with `Connection.query()`
+  - Streaming queries with `Connection.send_query()`
+  - Context manager protocol for automatic cleanup
 * **Raises:**
   **RuntimeError** – If connection to database fails
 
-#### WARNING
+#### WARNING {#warning}
 Only one connection per process is supported. Creating a new connection
 will close any existing connection.
 
-### Examples
+### Examples {#chdb-connect-examples}
 
 ```pycon
 >>> # In-memory database
@@ -249,13 +249,13 @@ will close any existing connection.
 >>> # Connection automatically closed
 ```
 
-#### SEE ALSO
+#### SEE ALSO {#see-also}
 - `Connection` - Database connection class
 - `Cursor` - Database cursor for DB-API 2.0 operations
 
 <a id="module-chdb.session"></a>
 
-### *class* chdb.session.Session(path=None)
+### *class* chdb.session.Session(path=None) {#session-class}
 
 Bases: `object`
 
@@ -284,11 +284,11 @@ For more details, see clickhouse local –help –verbose
 Some special args handling:
 - “mode=ro” would be “–readonly=1” for clickhouse (read-only mode)
 
-#### IMPORTANT
+#### IMPORTANT {#important}
 - There can be only one session at a time. If you want to create a new session, you need to close the existing one.
 - Creating a new session will close the existing one.
 
-#### cleanup()
+#### cleanup() {#cleanup}
 
 Cleanup session resources with exception handling.
 
@@ -297,14 +297,14 @@ that might occur during the cleanup process. It’s particularly useful in
 error handling scenarios or when you need to ensure cleanup happens regardless
 of the session state.
 
-#### NOTE
+#### NOTE {#note}
 This method will never raise an exception, making it safe to call in
 finally blocks or destructors.
 
-#### SEE ALSO
+#### SEE ALSO {#session-cleanup-see-also}
 - [`close()`](#chdb.session.Session.close) - For explicit session closing with error propagation
 
-### Examples
+### Examples {#session-cleanup-examples}
 
 ```pycon
 >>> session = Session("test.db")
@@ -314,7 +314,7 @@ finally blocks or destructors.
 ...     session.cleanup()  # Safe cleanup regardless of errors
 ```
 
-#### close()
+#### close() {#close}
 
 Close the session and cleanup resources.
 
@@ -322,14 +322,14 @@ This method closes the underlying connection and resets the global session state
 After calling this method, the session becomes invalid and cannot be used for
 further queries.
 
-#### NOTE
+#### NOTE {#session-close-note}
 This method is automatically called when the session is used as a context manager
 or when the session object is destroyed.
 
-#### WARNING
+#### WARNING {#session-close-warning}
 Any attempt to use the session after calling close() will result in an error.
 
-### Examples
+### Examples {#session-close-examples}
 
 ```pycon
 >>> session = Session("test.db")
@@ -337,7 +337,7 @@ Any attempt to use the session after calling close() will result in an error.
 >>> session.close()  # Explicitly close the session
 ```
 
-#### query(sql, fmt='CSV', udf_path='')
+#### query(sql, fmt='CSV', udf_path='') {#query}
 
 Execute a SQL query and return the results.
 
@@ -346,38 +346,38 @@ the results in the specified format. The method supports various output formats
 and maintains session state between queries.
 
 * **Parameters:**
-    * **sql** (*str*) – SQL query string to execute
-    * **fmt** (*str, optional*) – Output format for results. Defaults to “CSV”.
+  * **sql** (*str*) – SQL query string to execute
+  * **fmt** (*str, optional*) – Output format for results. Defaults to “CSV”.
       Available formats include:
-        - “CSV” - Comma-separated values
-        - “JSON” - JSON format
-        - “TabSeparated” - Tab-separated values
-        - “Pretty” - Pretty-printed table format
-        - “JSONCompact” - Compact JSON format
-        - “Arrow” - Apache Arrow format
-        - “Parquet” - Parquet format
-    * **udf_path** (*str, optional*) – Path to user-defined functions. Defaults to “”.
+  - “CSV” - Comma-separated values
+  - “JSON” - JSON format
+  - “TabSeparated” - Tab-separated values
+  - “Pretty” - Pretty-printed table format
+  - “JSONCompact” - Compact JSON format
+  - “Arrow” - Apache Arrow format
+  - “Parquet” - Parquet format
+  * **udf_path** (*str, optional*) – Path to user-defined functions. Defaults to “”.
       If not specified, uses the UDF path from session initialization.
 * **Returns:**
   Query results in the specified format. The exact return type depends on
   the format parameter:
-    - String formats (CSV, JSON, etc.) return str
-    - Binary formats (Arrow, Parquet) return bytes
+  - String formats (CSV, JSON, etc.) return str
+  - Binary formats (Arrow, Parquet) return bytes
 * **Raises:**
-    * **RuntimeError** – If the session is closed or invalid
-    * **ValueError** – If the SQL query is malformed
+  * **RuntimeError** – If the session is closed or invalid
+  * **ValueError** – If the SQL query is malformed
 
-#### NOTE
+#### NOTE {#session-query-note}
 The “Debug” format is not supported and will be automatically converted
 to “CSV” with a warning. For debugging, use connection string parameters
 instead.
 
-#### WARNING
+#### WARNING {#session-query-warning}
 This method executes the query synchronously and loads all results into
 memory. For large result sets, consider using [`send_query()`](#chdb.session.Session.send_query) for
 streaming results.
 
-### Examples
+### Examples {#session-query-examples}
 
 ```pycon
 >>> session = Session("test.db")
@@ -407,11 +407,11 @@ id,name
 2,Bob
 ```
 
-#### SEE ALSO
+#### SEE ALSO {#session-query-see-also}
 - [`send_query()`](#chdb.session.Session.send_query) - For streaming query execution
 - [`sql`](#chdb.session.Session.sql) - Alias for this method
 
-#### send_query(sql, fmt='CSV') → StreamingResult
+#### send_query(sql, fmt='CSV') → StreamingResult {#send-query}
 
 Execute a SQL query and return a streaming result iterator.
 
@@ -421,33 +421,33 @@ loading everything into memory at once. This is particularly useful for large
 result sets.
 
 * **Parameters:**
-    * **sql** (*str*) – SQL query string to execute
-    * **fmt** (*str, optional*) – Output format for results. Defaults to “CSV”.
+  * **sql** (*str*) – SQL query string to execute
+  * **fmt** (*str, optional*) – Output format for results. Defaults to “CSV”.
       Available formats include:
-        - “CSV” - Comma-separated values
-        - “JSON” - JSON format
-        - “TabSeparated” - Tab-separated values
-        - “JSONCompact” - Compact JSON format
-        - “Arrow” - Apache Arrow format
-        - “Parquet” - Parquet format
+  - “CSV” - Comma-separated values
+  - “JSON” - JSON format
+  - “TabSeparated” - Tab-separated values
+  - “JSONCompact” - Compact JSON format
+  - “Arrow” - Apache Arrow format
+  - “Parquet” - Parquet format
 * **Returns:**
   *StreamingResult* – A streaming result iterator that yields query results
   incrementally. The iterator can be used in for loops or converted to
   other data structures.
 * **Raises:**
-    * **RuntimeError** – If the session is closed or invalid
-    * **ValueError** – If the SQL query is malformed
+  * **RuntimeError** – If the session is closed or invalid
+  * **ValueError** – If the SQL query is malformed
 
-#### NOTE
+#### NOTE {#session-send-query-note}
 The “Debug” format is not supported and will be automatically converted
 to “CSV” with a warning. For debugging, use connection string parameters
 instead.
 
-#### WARNING
+#### WARNING {#session-send-query-warning}
 The returned StreamingResult object should be consumed promptly or stored
 appropriately, as it maintains a connection to the database.
 
-### Examples
+### Examples {#session-send-query-examples}
 
 ```pycon
 >>> session = Session("test.db")
@@ -471,11 +471,11 @@ appropriately, as it maintains a connection to the database.
 ...         print(f"Count result: {result}")
 ```
 
-#### SEE ALSO
+#### SEE ALSO {#session-send-query-see-also}
 - [`query()`](#chdb.session.Session.query) - For non-streaming query execution
 - `chdb.state.sqlitelike.StreamingResult` - Streaming result iterator
 
-#### sql(sql, fmt='CSV', udf_path='')
+#### sql(sql, fmt='CSV', udf_path='') {#sql}
 
 Execute a SQL query and return the results.
 
@@ -484,38 +484,38 @@ the results in the specified format. The method supports various output formats
 and maintains session state between queries.
 
 * **Parameters:**
-    * **sql** (*str*) – SQL query string to execute
-    * **fmt** (*str, optional*) – Output format for results. Defaults to “CSV”.
+  * **sql** (*str*) – SQL query string to execute
+  * **fmt** (*str, optional*) – Output format for results. Defaults to “CSV”.
       Available formats include:
-        - “CSV” - Comma-separated values
-        - “JSON” - JSON format
-        - “TabSeparated” - Tab-separated values
-        - “Pretty” - Pretty-printed table format
-        - “JSONCompact” - Compact JSON format
-        - “Arrow” - Apache Arrow format
-        - “Parquet” - Parquet format
-    * **udf_path** (*str, optional*) – Path to user-defined functions. Defaults to “”.
+  - “CSV” - Comma-separated values
+  - “JSON” - JSON format
+  - “TabSeparated” - Tab-separated values
+  - “Pretty” - Pretty-printed table format
+  - “JSONCompact” - Compact JSON format
+  - “Arrow” - Apache Arrow format
+  - “Parquet” - Parquet format
+  * **udf_path** (*str, optional*) – Path to user-defined functions. Defaults to “”.
       If not specified, uses the UDF path from session initialization.
 * **Returns:**
   Query results in the specified format. The exact return type depends on
   the format parameter:
-    - String formats (CSV, JSON, etc.) return str
-    - Binary formats (Arrow, Parquet) return bytes
+  - String formats (CSV, JSON, etc.) return str
+  - Binary formats (Arrow, Parquet) return bytes
 * **Raises:**
-    * **RuntimeError** – If the session is closed or invalid
-    * **ValueError** – If the SQL query is malformed
+  * **RuntimeError** – If the session is closed or invalid
+  * **ValueError** – If the SQL query is malformed
 
-#### NOTE
+#### NOTE {#session-sql-note}
 The “Debug” format is not supported and will be automatically converted
 to “CSV” with a warning. For debugging, use connection string parameters
 instead.
 
-#### WARNING
+#### WARNING {#session-sql-warning}
 This method executes the query synchronously and loads all results into
 memory. For large result sets, consider using [`send_query()`](#chdb.session.Session.send_query) for
 streaming results.
 
-### Examples
+### Examples {#session-sql-examples}
 
 ```pycon
 >>> session = Session("test.db")
@@ -545,7 +545,7 @@ id,name
 2,Bob
 ```
 
-#### SEE ALSO
+#### SEE ALSO {#session-sql-see-also}
 - [`send_query()`](#chdb.session.Session.send_query) - For streaming query execution
 - [`sql`](#chdb.session.Session.sql) - Alias for this method
 
@@ -553,7 +553,7 @@ id,name
 
 <a id="module-chdb.state"></a>
 
-### chdb.state.connect(connection_string: str = ':memory:') → [Connection](#chdb.state.sqlitelike.Connection)
+### chdb.state.connect(connection_string: str = ':memory:') → [Connection](#chdb.state.sqlitelike.Connection) {#state-connect}
 
 Create a connection to chDB background server.
 
@@ -566,40 +566,40 @@ connection string will return the same connection object.
   Supported connection string formats:
 
   **Basic formats:**
-    - “:memory:” - In-memory database (default)
-    - “test.db” - Relative path database file
-    - “[file:test.db](file:test.db)” - Same as relative path
-    - “/path/to/test.db” - Absolute path database file
-    - “[file:/path/to/test.db](file:/path/to/test.db)” - Same as absolute path
+  - “:memory:” - In-memory database (default)
+  - “test.db” - Relative path database file
+  - “[file:test.db](file:test.db)” - Same as relative path
+  - “/path/to/test.db” - Absolute path database file
+  - “[file:/path/to/test.db](file:/path/to/test.db)” - Same as absolute path
 
   **With query parameters:**
-    - “[file:test.db?param1=value1&param2=value2](file:test.db?param1=value1&param2=value2)” - Relative path with params
-    - “[file::memory](file::memory):?verbose&log-level=test” - In-memory with params
-    - “///path/to/test.db?param1=value1&param2=value2” - Absolute path with params
+  - “[file:test.db?param1=value1&param2=value2](file:test.db?param1=value1&param2=value2)” - Relative path with params
+  - “[file::memory](file::memory):?verbose&log-level=test” - In-memory with params
+  - “///path/to/test.db?param1=value1&param2=value2” - Absolute path with params
 
   **Query parameter handling:**
 
   Query parameters are passed to ClickHouse engine as startup arguments.
   Special parameter handling:
-    - “mode=ro” becomes “–readonly=1” (read-only mode)
-    - “verbose” enables verbose logging
-    - “log-level=test” sets logging level
+  - “mode=ro” becomes “–readonly=1” (read-only mode)
+  - “verbose” enables verbose logging
+  - “log-level=test” sets logging level
 
   For complete parameter list, see `clickhouse local --help --verbose`
 * **Returns:**
   *Connection* – Database connection object that supports:
-    - Creating cursors with `Connection.cursor()`
-    - Direct queries with `Connection.query()`
-    - Streaming queries with `Connection.send_query()`
-    - Context manager protocol for automatic cleanup
+  - Creating cursors with `Connection.cursor()`
+  - Direct queries with `Connection.query()`
+  - Streaming queries with `Connection.send_query()`
+  - Context manager protocol for automatic cleanup
 * **Raises:**
   **RuntimeError** – If connection to database fails
 
-#### WARNING
+#### WARNING {#state-connect-warning}
 Only one connection per process is supported. Creating a new connection
 will close any existing connection.
 
-### Examples
+### Examples {#state-connect-examples}
 
 ```pycon
 >>> # In-memory database
@@ -621,17 +621,17 @@ will close any existing connection.
 >>> # Connection automatically closed
 ```
 
-#### SEE ALSO
+#### SEE ALSO {#state-connect-see-also}
 - `Connection` - Database connection class
 - `Cursor` - Database cursor for DB-API 2.0 operations
 
 <a id="module-chdb.state.sqlitelike"></a>
 
-### *class* chdb.state.sqlitelike.Connection(connection_string: str)
+### *class* chdb.state.sqlitelike.Connection(connection_string: str) {#connection-class}
 
 Bases: `object`
 
-#### close() → None
+#### close() → None {#close-none}
 
 Close the connection and cleanup resources.
 
@@ -639,14 +639,14 @@ This method closes the database connection and cleans up any associated
 resources including active cursors. After calling this method, the
 connection becomes invalid and cannot be used for further operations.
 
-#### NOTE
+#### NOTE {#connection-close-note}
 This method is idempotent - calling it multiple times is safe.
 
-#### WARNING
+#### WARNING {#connection-close-warning}
 Any ongoing streaming queries will be cancelled when the connection
 is closed. Ensure all important data is processed before closing.
 
-### Examples
+### Examples {#connection-close-examples}
 
 ```pycon
 >>> conn = connect("test.db")
@@ -663,7 +663,7 @@ is closed. Ensure all important data is processed before closing.
 ...     # Connection automatically closed
 ```
 
-#### cursor() → [Cursor](#chdb.state.sqlitelike.Cursor)
+#### cursor() → [Cursor](#chdb.state.sqlitelike.Cursor) {#cursor}
 
 Create a cursor object for executing queries.
 
@@ -675,11 +675,11 @@ and result retrieval.
 * **Returns:**
   *Cursor* – A cursor object for database operations
 
-#### NOTE
+#### NOTE {#connection-cursor-note}
 Creating a new cursor will replace any existing cursor associated
 with this connection. Only one cursor per connection is supported.
 
-### Examples
+### Examples {#connection-cursor-examples}
 
 ```pycon
 >>> conn = connect(":memory:")
@@ -692,10 +692,10 @@ with this connection. Only one cursor per connection is supported.
 ((1, 'Alice'),)
 ```
 
-#### SEE ALSO
+#### SEE ALSO {#connection-cursor-see-also}
 - [`Cursor`](#chdb.state.sqlitelike.Cursor) - Database cursor implementation
 
-#### query(query: str, format: str = 'CSV') → Any
+#### query(query: str, format: str = 'CSV') → Any {#query-any}
 
 Execute a SQL query and return the complete results.
 
@@ -704,29 +704,29 @@ result set. It supports various output formats and automatically applies
 format-specific post-processing.
 
 * **Parameters:**
-    * **query** (*str*) – SQL query string to execute
-    * **format** (*str, optional*) – Output format for results. Defaults to “CSV”.
+  * **query** (*str*) – SQL query string to execute
+  * **format** (*str, optional*) – Output format for results. Defaults to “CSV”.
       Supported formats:
-        - “CSV” - Comma-separated values (string)
-        - “JSON” - JSON format (string)
-        - “Arrow” - Apache Arrow format (bytes)
-        - “Dataframe” - Pandas DataFrame (requires pandas)
-        - “Arrowtable” - PyArrow Table (requires pyarrow)
+  - “CSV” - Comma-separated values (string)
+  - “JSON” - JSON format (string)
+  - “Arrow” - Apache Arrow format (bytes)
+  - “Dataframe” - Pandas DataFrame (requires pandas)
+  - “Arrowtable” - PyArrow Table (requires pyarrow)
 * **Returns:**
   *Query results in the specified format. Type depends on format* –
-    - String formats return str
-    - Arrow format returns bytes
-    - dataframe format returns pandas.DataFrame
-    - arrowtable format returns pyarrow.Table
+  - String formats return str
+  - Arrow format returns bytes
+  - dataframe format returns pandas.DataFrame
+  - arrowtable format returns pyarrow.Table
 * **Raises:**
-    * **RuntimeError** – If query execution fails
-    * **ImportError** – If required packages for format are not installed
+  * **RuntimeError** – If query execution fails
+  * **ImportError** – If required packages for format are not installed
 
-#### WARNING
+#### WARNING {#connection-query-warning}
 This method loads the entire result set into memory. For large
 results, consider using [`send_query()`](#chdb.state.sqlitelike.Connection.send_query) for streaming.
 
-### Examples
+### Examples {#connection-query-examples}
 
 ```pycon
 >>> conn = connect(":memory:")
@@ -750,10 +750,10 @@ num,text
 4       4
 ```
 
-#### SEE ALSO
+#### SEE ALSO {#connection-query-see-also}
 - [`send_query()`](#chdb.state.sqlitelike.Connection.send_query) - For streaming query execution
 
-#### send_query(query: str, format: str = 'CSV') → StreamingResult
+#### send_query(query: str, format: str = 'CSV') → StreamingResult {#send-query-streaming}
 
 Execute a SQL query and return a streaming result iterator.
 
@@ -762,29 +762,29 @@ that allows you to iterate over the results without loading everything
 into memory at once. This is ideal for processing large result sets.
 
 * **Parameters:**
-    * **query** (*str*) – SQL query string to execute
-    * **format** (*str, optional*) – Output format for results. Defaults to “CSV”.
+  * **query** (*str*) – SQL query string to execute
+  * **format** (*str, optional*) – Output format for results. Defaults to “CSV”.
       Supported formats:
-        - “CSV” - Comma-separated values
-        - “JSON” - JSON format
-        - “Arrow” - Apache Arrow format (enables record_batch() method)
-        - “dataframe” - Pandas DataFrame chunks
-        - “arrowtable” - PyArrow Table chunks
+  - “CSV” - Comma-separated values
+  - “JSON” - JSON format
+  - “Arrow” - Apache Arrow format (enables record_batch() method)
+  - “dataframe” - Pandas DataFrame chunks
+  - “arrowtable” - PyArrow Table chunks
 * **Returns:**
   *StreamingResult* – A streaming iterator for query results that supports:
-    - Iterator protocol (for loops)
-    - Context manager protocol (with statements)
-    - Manual fetching with fetch() method
-    - PyArrow RecordBatch streaming (Arrow format only)
+  - Iterator protocol (for loops)
+  - Context manager protocol (with statements)
+  - Manual fetching with fetch() method
+  - PyArrow RecordBatch streaming (Arrow format only)
 * **Raises:**
-    * **RuntimeError** – If query execution fails
-    * **ImportError** – If required packages for format are not installed
+  * **RuntimeError** – If query execution fails
+  * **ImportError** – If required packages for format are not installed
 
-#### NOTE
+#### NOTE {#connection-send-query-note}
 Only the “Arrow” format supports the record_batch() method on the
 returned StreamingResult.
 
-### Examples
+### Examples {#connection-send-query-examples}
 
 ```pycon
 >>> conn = connect(":memory:")
@@ -812,16 +812,16 @@ returned StreamingResult.
 ...     print(f"Batch shape: {batch.num_rows} x {batch.num_columns}")
 ```
 
-#### SEE ALSO
+#### SEE ALSO {#connection-send-query-see-also}
 - [`query()`](#chdb.state.sqlitelike.Connection.query) - For non-streaming query execution
 
 `StreamingResult` - Streaming result iterator
 
-### *class* chdb.state.sqlitelike.Cursor(connection)
+### *class* chdb.state.sqlitelike.Cursor(connection) {#cursor-class}
 
 Bases: `object`
 
-#### close() → None
+#### close() → None {#cursor-close-none}
 
 Close the cursor and cleanup resources.
 
@@ -829,11 +829,11 @@ This method closes the cursor and cleans up any associated resources.
 After calling this method, the cursor becomes invalid and cannot be
 used for further operations.
 
-#### NOTE
+#### NOTE {#cursor-close-note}
 This method is idempotent - calling it multiple times is safe.
 The cursor is also automatically closed when the connection is closed.
 
-### Examples
+### Examples {#cursor-close-examples}
 
 ```pycon
 >>> cursor = conn.cursor()
@@ -842,7 +842,7 @@ The cursor is also automatically closed when the connection is closed.
 >>> cursor.close()  # Cleanup cursor resources
 ```
 
-#### column_names() → list
+#### column_names() → list {#column-names}
 
 Return a list of column names from the last executed query.
 
@@ -854,7 +854,7 @@ in the result set.
   *list* – List of column name strings, or empty list if no query
   has been executed or the query returned no columns
 
-### Examples
+### Examples {#cursor-column-names-examples}
 
 ```pycon
 >>> cursor = conn.cursor()
@@ -863,11 +863,11 @@ in the result set.
 ['id', 'name', 'email']
 ```
 
-#### SEE ALSO
+#### SEE ALSO {#cursor-column-names-see-also}
 - [`column_types()`](#chdb.state.sqlitelike.Cursor.column_types) - Get column type information
 - [`description`](#chdb.state.sqlitelike.Cursor.description) - DB-API 2.0 column description
 
-#### column_types() → list
+#### column_types() → list {#column-types}
 
 Return a list of column types from the last executed query.
 
@@ -879,7 +879,7 @@ order as they appear in the result set.
   *list* – List of ClickHouse type name strings, or empty list if no
   query has been executed or the query returned no columns
 
-### Examples
+### Examples {#cursor-column-types-examples}
 
 ```pycon
 >>> cursor = conn.cursor()
@@ -888,11 +888,11 @@ order as they appear in the result set.
 ['Int32', 'String']
 ```
 
-#### SEE ALSO
+#### SEE ALSO {#cursor-column-types-see-also}
 - [`column_names()`](#chdb.state.sqlitelike.Cursor.column_names) - Get column name information
 - [`description`](#chdb.state.sqlitelike.Cursor.description) - DB-API 2.0 column description
 
-#### commit() → None
+#### commit() → None {#commit}
 
 Commit any pending transaction.
 
@@ -900,12 +900,12 @@ This method commits any pending database transaction. In ClickHouse,
 most operations are auto-committed, but this method is provided for
 DB-API 2.0 compatibility.
 
-#### NOTE
+#### NOTE {#cursor-commit-note}
 ClickHouse typically auto-commits operations, so explicit commits
 are usually not necessary. This method is provided for compatibility
 with standard DB-API 2.0 workflow.
 
-### Examples
+### Examples {#cursor-commit-examples}
 
 ```pycon
 >>> cursor = conn.cursor()
@@ -913,7 +913,7 @@ with standard DB-API 2.0 workflow.
 >>> cursor.commit()
 ```
 
-#### *property* description *: list*
+#### *property* description *: list* {#description}
 
 Return column description as per DB-API 2.0 specification.
 
@@ -927,12 +927,12 @@ Currently, only name and type_code are provided, with other fields set to None.
   *list* – List of 7-tuples describing each column, or empty list if no
   SELECT query has been executed
 
-#### NOTE
+#### NOTE {#cursor-description-note}
 This follows the DB-API 2.0 specification for cursor.description.
 Only the first two elements (name and type_code) contain meaningful
 data in this implementation.
 
-### Examples
+### Examples {#cursor-description-examples}
 
 ```pycon
 >>> cursor = conn.cursor()
@@ -943,11 +943,11 @@ Column: id, Type: Int32
 Column: name, Type: String
 ```
 
-#### SEE ALSO
+#### SEE ALSO {#cursor-description-see-also}
 - [`column_names()`](#chdb.state.sqlitelike.Cursor.column_names) - Get just column names
 - [`column_types()`](#chdb.state.sqlitelike.Cursor.column_types) - Get just column types
 
-#### execute(query: str) → None
+#### execute(query: str) → None {#execute}
 
 Execute a SQL query and prepare results for fetching.
 
@@ -960,12 +960,12 @@ automatic type conversion for ClickHouse data types.
 * **Raises:**
   **Exception** – If query execution fails or result parsing fails
 
-#### NOTE
+#### NOTE {#cursor-execute-note}
 This method follows DB-API 2.0 specifications for cursor.execute().
 After execution, use fetchone(), fetchmany(), or fetchall() to
 retrieve results.
 
-#### NOTE
+#### NOTE {#cursor-execute-note2}
 The method automatically converts ClickHouse data types to appropriate
 Python types:
 
@@ -976,7 +976,7 @@ Python types:
 - Date → datetime.date
 - Bool → bool
 
-### Examples
+### Examples {#cursor-execute-examples}
 
 ```pycon
 >>> cursor = conn.cursor()
@@ -994,12 +994,12 @@ Python types:
 ((1, 'Alice'),)
 ```
 
-#### SEE ALSO
+#### SEE ALSO {#cursor-execute-see-also}
 - [`fetchone()`](#chdb.state.sqlitelike.Cursor.fetchone) - Fetch single row
 - [`fetchmany()`](#chdb.state.sqlitelike.Cursor.fetchmany) - Fetch multiple rows
 - [`fetchall()`](#chdb.state.sqlitelike.Cursor.fetchall) - Fetch all remaining rows
 
-#### fetchall() → tuple
+#### fetchall() → tuple {#fetchall}
 
 Fetch all remaining rows from the query result.
 
@@ -1011,12 +1011,12 @@ row tuples with appropriate Python type conversion applied.
   *tuple* – Tuple containing all remaining row tuples from the result set.
   Returns empty tuple if no rows are available.
 
-#### WARNING
+#### WARNING {#cursor-fetchall-warning}
 This method loads all remaining rows into memory at once. For large
 result sets, consider using [`fetchmany()`](#chdb.state.sqlitelike.Cursor.fetchmany) to process results
 in batches.
 
-### Examples
+### Examples {#cursor-fetchall-examples}
 
 ```pycon
 >>> cursor = conn.cursor()
@@ -1026,11 +1026,11 @@ in batches.
 ...     print(f"User {user_id}: {user_name}")
 ```
 
-#### SEE ALSO
+#### SEE ALSO {#cursor-fetchall-see-also}
 - [`fetchone()`](#chdb.state.sqlitelike.Cursor.fetchone) - Fetch single row
 - [`fetchmany()`](#chdb.state.sqlitelike.Cursor.fetchmany) - Fetch multiple rows in batches
 
-#### fetchmany(size: int = 1) → tuple
+#### fetchmany(size: int = 1) → tuple {#fetchmany}
 
 Fetch multiple rows from the query result.
 
@@ -1044,11 +1044,11 @@ values with appropriate Python type conversion.
   *tuple* – Tuple containing up to ‘size’ row tuples. May contain fewer
   rows if the result set is exhausted.
 
-#### NOTE
+#### NOTE {#cursor-fetchmany-note}
 This method follows DB-API 2.0 specifications. It will return fewer
 than ‘size’ rows if the result set is exhausted.
 
-### Examples
+### Examples {#cursor-fetchmany-examples}
 
 ```pycon
 >>> cursor = conn.cursor()
@@ -1062,11 +1062,11 @@ than ‘size’ rows if the result set is exhausted.
 ...     process_batch(batch)
 ```
 
-#### SEE ALSO
+#### SEE ALSO {#cursor-fetchmany-see-also}
 - [`fetchone()`](#chdb.state.sqlitelike.Cursor.fetchone) - Fetch single row
 - [`fetchall()`](#chdb.state.sqlitelike.Cursor.fetchall) - Fetch all remaining rows
 
-#### fetchone() → tuple | None
+#### fetchone() → tuple | None {#fetchone}
 
 Fetch the next row from the query result.
 
@@ -1078,12 +1078,12 @@ appropriate Python type conversion applied.
   *Optional[tuple]* – Next row as a tuple of column values, or None
   if no more rows are available
 
-#### NOTE
+#### NOTE {#cursor-fetchone-note}
 This method follows DB-API 2.0 specifications. Column values are
 automatically converted to appropriate Python types based on
 ClickHouse column types.
 
-### Examples
+### Examples {#cursor-fetchone-examples}
 
 ```pycon
 >>> cursor = conn.cursor()
@@ -1095,11 +1095,11 @@ ClickHouse column types.
 ...     row = cursor.fetchone()
 ```
 
-#### SEE ALSO
+#### SEE ALSO {#cursor-fetchone-see-also}
 - [`fetchmany()`](#chdb.state.sqlitelike.Cursor.fetchmany) - Fetch multiple rows
 - [`fetchall()`](#chdb.state.sqlitelike.Cursor.fetchall) - Fetch all remaining rows
 
-### chdb.state.sqlitelike.to_arrowTable(res)
+### chdb.state.sqlitelike.to_arrowTable(res) {#state-to-arrowtable}
 
 Convert query result to PyArrow Table.
 
@@ -1114,14 +1114,14 @@ with other data processing libraries.
 * **Raises:**
   **ImportError** – If pyarrow or pandas packages are not installed
 
-#### NOTE
+#### NOTE {#state-to-arrowtable-note}
 This function requires both pyarrow and pandas to be installed.
 Install them with: `pip install pyarrow pandas`
 
-#### WARNING
+#### WARNING {#state-to-arrowtable-warning}
 Empty results return an empty PyArrow Table with no schema.
 
-### Examples
+### Examples {#state-to-arrowtable-examples}
 
 ```pycon
 >>> import chdb
@@ -1135,7 +1135,7 @@ text: string
 0    1  hello
 ```
 
-### chdb.state.sqlitelike.to_df(r)
+### chdb.state.sqlitelike.to_df(r) {#state-to-df}
 
 Convert query result to Pandas DataFrame.
 
@@ -1151,14 +1151,14 @@ convenient data analysis capabilities with Pandas API.
 * **Raises:**
   **ImportError** – If pyarrow or pandas packages are not installed
 
-#### NOTE
+#### NOTE {#state-to-df-note}
 This function uses multi-threading for the Arrow to Pandas conversion
 to improve performance on large datasets.
 
-#### SEE ALSO
+#### SEE ALSO {#state-to-df-see-also}
 - [`to_arrowTable()`](#chdb.state.sqlitelike.to_arrowTable) - For PyArrow Table format conversion
 
-### Examples
+### Examples {#state-to-df-examples}
 
 ```pycon
 >>> import chdb
@@ -1173,13 +1173,13 @@ text    object
 dtype: object
 ```
 
-## DataFrame Integration
+## DataFrame Integration {#dataframe-integration}
 
-### *class* chdb.dataframe.Table(\*args: Any, \*\*kwargs: Any)
+### *class* chdb.dataframe.Table(*args: Any, **kwargs: Any) {#dataframe-table}
 
 Bases:
 
-## Database API (DBAPI) 2.0 Interface
+## Database API (DBAPI) 2.0 Interface {#database-api-interface}
 
 chDB provides a Python DB-API 2.0 compatible interface for database connectivity, allowing you to use chDB with tools and frameworks that expect standard database interfaces.
 
@@ -1193,7 +1193,7 @@ The chDB DB-API 2.0 interface includes:
 
 **Core Functions**
 
-### chdb.dbapi.connect(\*args, \*\*kwargs)
+### chdb.dbapi.connect(*args, **kwargs) {#dbapi-connect}
 
 Initialize a new database connection.
 
@@ -1202,7 +1202,7 @@ Initialize a new database connection.
 * **Raises:**
   [**err.Error**](#chdb.dbapi.err.Error) – If connection cannot be established
 
-### chdb.dbapi.get_client_info()
+### chdb.dbapi.get_client_info() {#dbapi-get-client-info}
 
 Get client version information.
 
@@ -1213,7 +1213,7 @@ Returns the chDB client version as a string for MySQLdb compatibility.
 
 **Type Constructors**
 
-### chdb.dbapi.Binary(x)
+### chdb.dbapi.Binary(x) {#dbapi-binary}
 
 Return x as a binary type.
 
@@ -1227,7 +1227,7 @@ database fields, following the DB-API 2.0 specification.
 
 **Connection Class**
 
-### *class* chdb.dbapi.connections.Connection(path=None)
+### *class* chdb.dbapi.connections.Connection(path=None) {#dbapi-connection}
 
 Bases: `object`
 
@@ -1243,10 +1243,10 @@ executing queries, managing transactions (no-op for ClickHouse), and creating cu
   **path** (*str, optional*) – Database file path. If None, uses in-memory database.
   Can be a file path like ‘database.db’ or None for ‘:memory:’
 * **Variables:**
-    * **encoding** (*str*) – Character encoding for queries, defaults to ‘utf8’
-    * **open** (*bool*) – True if connection is open, False if closed
+  * **encoding** (*str*) – Character encoding for queries, defaults to ‘utf8’
+  * **open** (*bool*) – True if connection is open, False if closed
 
-### Examples
+### Examples {#dbapi-connection-examples}
 
 ```pycon
 >>> # In-memory database
@@ -1273,11 +1273,11 @@ executing queries, managing transactions (no-op for ClickHouse), and creating cu
 ...     version = cur.fetchone()
 ```
 
-#### NOTE
+#### NOTE {#dbapi-connection-note}
 ClickHouse does not support traditional transactions, so commit() and rollback()
 operations are no-ops but provided for DB-API compliance.
 
-#### close()
+#### close() {#dbapi-connection-close}
 
 Close the database connection.
 
@@ -1287,15 +1287,15 @@ Subsequent operations on this connection will raise an Error.
 * **Raises:**
   [**err.Error**](#chdb.dbapi.err.Error) – If connection is already closed
 
-#### commit()
+#### commit() {#dbapi-commit}
 
 Commit the current transaction.
 
-#### NOTE
+#### NOTE {#dbapi-commit-note}
 This is a no-op for chDB/ClickHouse as it doesn’t support traditional
 transactions. Provided for DB-API 2.0 compliance.
 
-#### cursor(cursor=None)
+#### cursor(cursor=None) {#dbapi-cursor}
 
 Create a new cursor for executing queries.
 
@@ -1306,7 +1306,7 @@ Create a new cursor for executing queries.
 * **Raises:**
   [**err.Error**](#chdb.dbapi.err.Error) – If connection is closed
 
-### Example
+### Example {#dbapi-cursor-example}
 
 ```pycon
 >>> conn = Connection()
@@ -1315,17 +1315,17 @@ Create a new cursor for executing queries.
 >>> result = cur.fetchone()
 ```
 
-#### escape(obj, mapping=None)
+#### escape(obj, mapping=None) {#escape}
 
 Escape a value for safe inclusion in SQL queries.
 
 * **Parameters:**
-    * **obj** – Value to escape (string, bytes, number, etc.)
-    * **mapping** – Optional character mapping for escaping
+  * **obj** – Value to escape (string, bytes, number, etc.)
+  * **mapping** – Optional character mapping for escaping
 * **Returns:**
   Escaped version of the input suitable for SQL queries
 
-### Example
+### Example {#dbapi-escape-example}
 
 ```pycon
 >>> conn = Connection()
@@ -1333,7 +1333,7 @@ Escape a value for safe inclusion in SQL queries.
 >>> query = f"SELECT * FROM users WHERE name = {safe_value}"
 ```
 
-#### escape_string(s)
+#### escape_string(s) {#escape-string}
 
 Escape a string value for SQL queries.
 
@@ -1342,14 +1342,14 @@ Escape a string value for SQL queries.
 * **Returns:**
   *str* – Escaped string safe for SQL inclusion
 
-#### *property* open
+#### *property* open {#property-open}
 
 Check if the connection is open.
 
 * **Returns:**
   *bool* – True if connection is open, False if closed
 
-#### query(sql, fmt='CSV')
+#### query(sql, fmt='CSV') {#dbapi-query}
 
 Execute a SQL query directly and return raw results.
 
@@ -1357,15 +1357,15 @@ This method bypasses the cursor interface and executes queries directly.
 For standard DB-API usage, prefer using cursor() method.
 
 * **Parameters:**
-    * **sql** (*str or bytes*) – SQL query to execute
-    * **fmt** (*str, optional*) – Output format. Defaults to “CSV”.
+  * **sql** (*str or bytes*) – SQL query to execute
+  * **fmt** (*str, optional*) – Output format. Defaults to “CSV”.
       Supported formats include “CSV”, “JSON”, “Arrow”, “Parquet”, etc.
 * **Returns:**
   Query result in the specified format
 * **Raises:**
   [**err.InterfaceError**](#chdb.dbapi.err.InterfaceError) – If connection is closed or query fails
 
-### Example
+### Example {#dbapi-query-example}
 
 ```pycon
 >>> conn = Connection()
@@ -1374,28 +1374,28 @@ For standard DB-API usage, prefer using cursor() method.
 "1,hello\n"
 ```
 
-#### *property* resp
+#### *property* resp {#property-resp}
 
 Get the last query response.
 
 * **Returns:**
   The raw response from the last query() call
 
-#### NOTE
+#### NOTE {#dbapi-resp-note}
 This property is updated each time query() is called directly.
 It does not reflect queries executed through cursors.
 
-#### rollback()
+#### rollback() {#rollback}
 
 Roll back the current transaction.
 
-#### NOTE
+#### NOTE {#dbapi-rollback-note}
 This is a no-op for chDB/ClickHouse as it doesn’t support traditional
 transactions. Provided for DB-API 2.0 compliance.
 
 **Cursor Class**
 
-### *class* chdb.dbapi.cursors.Cursor(connection)
+### *class* chdb.dbapi.cursors.Cursor(connection) {#dbapi-cursor-class}
 
 Bases: `object`
 
@@ -1408,13 +1408,13 @@ and follows DB-API 2.0 specifications.
 Do not create Cursor instances directly. Use Connection.cursor() instead.
 
 * **Variables:**
-    * **description** (*tuple*) – Column metadata for the last query result
-    * **rowcount** (*int*) – Number of rows affected by the last query (-1 if unknown)
-    * **arraysize** (*int*) – Default number of rows to fetch at once (default: 1)
-    * **lastrowid** – ID of the last inserted row (if applicable)
-    * **max_stmt_length** (*int*) – Maximum statement size for executemany() (default: 1024000)
+  * **description** (*tuple*) – Column metadata for the last query result
+  * **rowcount** (*int*) – Number of rows affected by the last query (-1 if unknown)
+  * **arraysize** (*int*) – Default number of rows to fetch at once (default: 1)
+  * **lastrowid** – ID of the last inserted row (if applicable)
+  * **max_stmt_length** (*int*) – Maximum statement size for executemany() (default: 1024000)
 
-### Examples
+### Examples {#dbapi-cursor-class-examples}
 
 ```pycon
 >>> conn = Connection()
@@ -1425,21 +1425,21 @@ Do not create Cursor instances directly. Use Connection.cursor() instead.
 >>> cur.close()
 ```
 
-#### NOTE
+#### NOTE {#dbapi-cursor-class-note}
 See [DB-API 2.0 Cursor Objects](https://www.python.org/dev/peps/pep-0249/#cursor-objects)
 for complete specification details.
 
-#### callproc(procname, args=())
+#### callproc(procname, args=()) {#callproc}
 
 Execute a stored procedure (placeholder implementation).
 
 * **Parameters:**
-    * **procname** (*str*) – Name of stored procedure to execute
-    * **args** (*sequence*) – Parameters to pass to the procedure
+  * **procname** (*str*) – Name of stored procedure to execute
+  * **args** (*sequence*) – Parameters to pass to the procedure
 * **Returns:**
   *sequence* – The original args parameter (unmodified)
 
-#### NOTE
+#### NOTE {#dbapi-callproc-note}
 chDB/ClickHouse does not support stored procedures in the traditional sense.
 This method is provided for DB-API 2.0 compliance but does not perform
 any actual operation. Use execute() for all SQL operations.
@@ -1449,14 +1449,14 @@ Compatibility Warning:
 features like OUT/INOUT parameters, multiple result sets, and server
 variables are not supported by the underlying ClickHouse engine.
 
-#### close()
+#### close() {#dbapi-cursor-close}
 
 Close the cursor and free associated resources.
 
 After closing, the cursor becomes unusable and any operation will raise an exception.
 Closing a cursor exhausts all remaining data and releases the underlying cursor.
 
-#### execute(query, args=None)
+#### execute(query, args=None) {#dbapi-execute}
 
 Execute a SQL query with optional parameter binding.
 
@@ -1464,8 +1464,8 @@ This method executes a single SQL statement with optional parameter substitution
 It supports multiple parameter placeholder styles for flexibility.
 
 * **Parameters:**
-    * **query** (*str*) – SQL query to execute
-    * **args** (*tuple/list/dict, optional*) – Parameters to bind to placeholders
+  * **query** (*str*) – SQL query to execute
+  * **args** (*tuple/list/dict, optional*) – Parameters to bind to placeholders
 * **Returns:**
   *int* – Number of affected rows (-1 if unknown)
 
@@ -1474,7 +1474,7 @@ Parameter Styles:
 - Named style: “SELECT \* FROM users WHERE name = %(name)s”
 - Format style: “SELECT \* FROM users WHERE age = %s” (legacy)
 
-### Examples
+### Examples {#dbapi-execute-examples}
 
 ```pycon
 >>> # Question mark parameters
@@ -1488,10 +1488,10 @@ Parameter Styles:
 ```
 
 * **Raises:**
-    * [**ProgrammingError**](#chdb.dbapi.err.ProgrammingError) – If cursor is closed or query is malformed
-    * [**InterfaceError**](#chdb.dbapi.err.InterfaceError) – If database error occurs during execution
+  * [**ProgrammingError**](#chdb.dbapi.err.ProgrammingError) – If cursor is closed or query is malformed
+  * [**InterfaceError**](#chdb.dbapi.err.InterfaceError) – If database error occurs during execution
 
-#### executemany(query, args)
+#### executemany(query, args) {#executemany}
 
 Execute a query multiple times with different parameter sets.
 
@@ -1499,12 +1499,12 @@ This method efficiently executes the same SQL query multiple times with
 different parameter values. It’s particularly useful for bulk INSERT operations.
 
 * **Parameters:**
-    * **query** (*str*) – SQL query to execute multiple times
-    * **args** (*sequence*) – Sequence of parameter tuples/dicts/lists for each execution
+  * **query** (*str*) – SQL query to execute multiple times
+  * **args** (*sequence*) – Sequence of parameter tuples/dicts/lists for each execution
 * **Returns:**
   *int* – Total number of affected rows across all executions
 
-### Examples
+### Examples {#dbapi-executemany-examples}
 
 ```pycon
 >>> # Bulk insert with question mark parameters
@@ -1522,11 +1522,11 @@ different parameter values. It’s particularly useful for bulk INSERT operation
 ... )
 ```
 
-#### NOTE
+#### NOTE {#dbapi-executemany-note}
 This method improves performance for multiple-row INSERT and UPDATE operations
 by optimizing the query execution process.
 
-#### fetchall()
+#### fetchall() {#dbapi-fetchall}
 
 Fetch all remaining rows from the query result.
 
@@ -1535,11 +1535,11 @@ Fetch all remaining rows from the query result.
 * **Raises:**
   [**ProgrammingError**](#chdb.dbapi.err.ProgrammingError) – If execute() has not been called first
 
-#### WARNING
+#### WARNING {#dbapi-fetchall-warning}
 This method can consume large amounts of memory for big result sets.
 Consider using fetchmany() for large datasets.
 
-### Example
+### Example {#dbapi-fetchall-example}
 
 ```pycon
 >>> cursor.execute("SELECT id, name FROM users")
@@ -1547,7 +1547,7 @@ Consider using fetchmany() for large datasets.
 >>> print(len(all_rows))  # Number of total rows
 ```
 
-#### fetchmany(size=1)
+#### fetchmany(size=1) {#dbapi-fetchmany}
 
 Fetch multiple rows from the query result.
 
@@ -1559,7 +1559,7 @@ Fetch multiple rows from the query result.
 * **Raises:**
   [**ProgrammingError**](#chdb.dbapi.err.ProgrammingError) – If execute() has not been called first
 
-### Example
+### Example {#dbapi-fetchmany-example}
 
 ```pycon
 >>> cursor.execute("SELECT id, name FROM users")
@@ -1567,7 +1567,7 @@ Fetch multiple rows from the query result.
 >>> print(rows)  # [(1, 'Alice'), (2, 'Bob'), (3, 'Charlie')]
 ```
 
-#### fetchone()
+#### fetchone() {#dbapi-fetchone}
 
 Fetch the next row from the query result.
 
@@ -1576,7 +1576,7 @@ Fetch the next row from the query result.
 * **Raises:**
   [**ProgrammingError**](#chdb.dbapi.err.ProgrammingError) – If execute() has not been called first
 
-### Example
+### Example {#dbapi-fetchone-example}
 
 ```pycon
 >>> cursor.execute("SELECT id, name FROM users LIMIT 3")
@@ -1586,13 +1586,13 @@ Fetch the next row from the query result.
 >>> print(row)  # (2, 'Bob')
 ```
 
-#### max_stmt_length *= 1024000*
+#### max_stmt_length *= 1024000* {#max-stmt-length}
 
 Max statement size which [`executemany()`](#chdb.dbapi.cursors.Cursor.executemany) generates.
 
 Default value is 1024000.
 
-#### mogrify(query, args=None)
+#### mogrify(query, args=None) {#mogrify}
 
 Return the exact query string that would be sent to the database.
 
@@ -1600,51 +1600,51 @@ This method shows the final SQL query after parameter substitution,
 which is useful for debugging and logging purposes.
 
 * **Parameters:**
-    * **query** (*str*) – SQL query with parameter placeholders
-    * **args** (*tuple/list/dict, optional*) – Parameters to substitute
+  * **query** (*str*) – SQL query with parameter placeholders
+  * **args** (*tuple/list/dict, optional*) – Parameters to substitute
 * **Returns:**
   *str* – The final SQL query string with parameters substituted
 
-### Example
+### Example {#dbapi-mogrify-example}
 
 ```pycon
 >>> cur.mogrify("SELECT * FROM users WHERE id = ?", (123,))
 "SELECT * FROM users WHERE id = 123"
 ```
 
-#### NOTE
+#### NOTE {#dbapi-mogrify-note}
 This method follows the extension to DB-API 2.0 used by Psycopg.
 
-#### nextset()
+#### nextset() {#nextset}
 
 Move to the next result set (not supported).
 
 * **Returns:**
   *None* – Always returns None as multiple result sets are not supported
 
-#### NOTE
+#### NOTE {#dbapi-nextset-note}
 chDB/ClickHouse does not support multiple result sets from a single query.
 This method is provided for DB-API 2.0 compliance but always returns None.
 
-#### setinputsizes(\*args)
+#### setinputsizes(*args) {#setinputsizes}
 
 Set input sizes for parameters (no-op implementation).
 
 * **Parameters:**
   **\*args** – Parameter size specifications (ignored)
 
-#### NOTE
+#### NOTE {#dbapi-setinputsizes-note}
 This method does nothing but is required by DB-API 2.0 specification.
 chDB automatically handles parameter sizing internally.
 
-#### setoutputsizes(\*args)
+#### setoutputsizes(*args) {#setoutputsizes}
 
 Set output column sizes (no-op implementation).
 
 * **Parameters:**
   **\*args** – Column size specifications (ignored)
 
-#### NOTE
+#### NOTE {#dbapi-setoutputsizes-note}
 This method does nothing but is required by DB-API 2.0 specification.
 chDB automatically handles output sizing internally.
 
@@ -1685,16 +1685,16 @@ Each exception class represents a specific category of database errors:
 - **ProgrammingError**: SQL syntax errors and API misuse
 - **NotSupportedError**: Unsupported features or operations
 
-#### NOTE
+#### NOTE {#dbapi-err-note}
 These exception classes are compliant with Python DB API 2.0 specification
 and provide consistent error handling across different database operations.
 
-#### SEE ALSO
+#### SEE ALSO {#dbapi-err-see-also}
 - [Python Database API Specification v2.0](https://peps.python.org/pep-0249/)
 - `chdb.dbapi.connections` - Database connection management
 - `chdb.dbapi.cursors` - Database cursor operations
 
-### Examples
+### Examples {#dbapi-err-examples}
 
 ```pycon
 >>> try:
@@ -1714,7 +1714,7 @@ SQL Error: Table 'nonexistent_table' doesn't exist
 Constraint violation: Duplicate entry '1' for key 'PRIMARY'
 ```
 
-### *exception* chdb.dbapi.err.DataError
+### *exception* chdb.dbapi.err.DataError {#dataerror}
 
 Bases: [`DatabaseError`](#chdb.dbapi.err.DatabaseError)
 
@@ -1733,7 +1733,7 @@ the data being processed, such as:
 * **Raises:**
   [**DataError**](#chdb.dbapi.err.DataError) – When data validation or processing fails
 
-### Examples
+### Examples {#dataerror-examples}
 
 ```pycon
 >>> # Division by zero in SQL
@@ -1747,7 +1747,7 @@ DataError: Division by zero
 DataError: Invalid date format
 ```
 
-### *exception* chdb.dbapi.err.DatabaseError
+### *exception* chdb.dbapi.err.DatabaseError {#databaseerror}
 
 Bases: [`Error`](#chdb.dbapi.err.Error)
 
@@ -1764,11 +1764,11 @@ Common scenarios include:
 - Transaction-related problems
 - Database-specific constraints violations
 
-#### NOTE
+#### NOTE {#databaseerror-note}
 This serves as the parent class for more specific database error types
 such as [`DataError`](#chdb.dbapi.err.DataError), [`OperationalError`](#chdb.dbapi.err.OperationalError), etc.
 
-### *exception* chdb.dbapi.err.Error
+### *exception* chdb.dbapi.err.Error {#error}
 
 Bases: [`StandardError`](#chdb.dbapi.err.StandardError)
 
@@ -1778,13 +1778,13 @@ This is the base class for all error exceptions in chdb, excluding warnings.
 It serves as the parent class for all database error conditions that prevent
 successful completion of operations.
 
-#### NOTE
+#### NOTE {#error-note}
 This exception hierarchy follows the Python DB API 2.0 specification.
 
-#### SEE ALSO
+#### SEE ALSO {#error-see-also}
 - [`Warning`](#chdb.dbapi.err.Warning) - For non-fatal warnings that don’t prevent operation completion
 
-### *exception* chdb.dbapi.err.IntegrityError
+### *exception* chdb.dbapi.err.IntegrityError {#integrityerror}
 
 Bases: [`DatabaseError`](#chdb.dbapi.err.DatabaseError)
 
@@ -1802,7 +1802,7 @@ including:
 * **Raises:**
   [**IntegrityError**](#chdb.dbapi.err.IntegrityError) – When database integrity constraints are violated
 
-### Examples
+### Examples {#integrityerror-examples}
 
 ```pycon
 >>> # Duplicate primary key
@@ -1817,7 +1817,7 @@ IntegrityError: Duplicate entry '1' for key 'PRIMARY'
 IntegrityError: Cannot add or update a child row: foreign key constraint fails
 ```
 
-### *exception* chdb.dbapi.err.InterfaceError
+### *exception* chdb.dbapi.err.InterfaceError {#interfaceerror}
 
 Bases: [`Error`](#chdb.dbapi.err.Error)
 
@@ -1834,11 +1834,11 @@ implementation, such as:
 * **Raises:**
   [**InterfaceError**](#chdb.dbapi.err.InterfaceError) – When database interface encounters errors unrelated to database operations
 
-#### NOTE
+#### NOTE {#interfaceerror-note}
 These errors are typically programming errors or configuration issues
 that can be resolved by fixing the client code or configuration.
 
-### *exception* chdb.dbapi.err.InternalError
+### *exception* chdb.dbapi.err.InternalError {#internalerror}
 
 Bases: [`DatabaseError`](#chdb.dbapi.err.DatabaseError)
 
@@ -1856,16 +1856,16 @@ errors that are not caused by the application, such as:
 * **Raises:**
   [**InternalError**](#chdb.dbapi.err.InternalError) – When database encounters internal inconsistencies
 
-#### WARNING
+#### WARNING {#internalerror-warning}
 Internal errors may indicate serious database problems that require
 database administrator attention. These errors are typically not
 recoverable through application-level retry logic.
 
-#### NOTE
+#### NOTE {#internalerror-note}
 These errors are generally outside the control of the application
 and may require database restart or repair operations.
 
-### *exception* chdb.dbapi.err.NotSupportedError
+### *exception* chdb.dbapi.err.NotSupportedError {#notsupportederror}
 
 Bases: [`DatabaseError`](#chdb.dbapi.err.DatabaseError)
 
@@ -1883,7 +1883,7 @@ configuration or version, such as:
 * **Raises:**
   [**NotSupportedError**](#chdb.dbapi.err.NotSupportedError) – When unsupported database features are accessed
 
-### Examples
+### Examples {#notsupportederror-examples}
 
 ```pycon
 >>> # Transaction rollback on non-transactional connection
@@ -1897,11 +1897,11 @@ NotSupportedError: Transactions are not supported
 NotSupportedError: WITH clause not supported in this database version
 ```
 
-#### NOTE
+#### NOTE {#notsupportederror-note}
 Check database documentation and driver capabilities to avoid
 these errors. Consider graceful fallbacks where possible.
 
-### *exception* chdb.dbapi.err.OperationalError
+### *exception* chdb.dbapi.err.OperationalError {#operationalerror}
 
 Bases: [`DatabaseError`](#chdb.dbapi.err.DatabaseError)
 
@@ -1921,15 +1921,15 @@ and are not necessarily under the control of the programmer, including:
 * **Raises:**
   [**OperationalError**](#chdb.dbapi.err.OperationalError) – When database operations fail due to operational issues
 
-#### NOTE
+#### NOTE {#operationalerror-note}
 These errors are typically transient and may be resolved by retrying
 the operation or addressing system-level issues.
 
-#### WARNING
+#### WARNING {#operationalerror-warning}
 Some operational errors may indicate serious system problems that
 require administrative intervention.
 
-### *exception* chdb.dbapi.err.ProgrammingError
+### *exception* chdb.dbapi.err.ProgrammingError {#programmingerror}
 
 Bases: [`DatabaseError`](#chdb.dbapi.err.DatabaseError)
 
@@ -1948,7 +1948,7 @@ application’s database usage, including:
 * **Raises:**
   [**ProgrammingError**](#chdb.dbapi.err.ProgrammingError) – When SQL statements or API usage contains errors
 
-### Examples
+### Examples {#programmingerror-examples}
 
 ```pycon
 >>> # Table not found
@@ -1968,7 +1968,7 @@ ProgrammingError: You have an error in your SQL syntax
 ProgrammingError: Column count doesn't match value count
 ```
 
-### *exception* chdb.dbapi.err.StandardError
+### *exception* chdb.dbapi.err.StandardError {#standarderror}
 
 Bases: `Exception`
 
@@ -1978,11 +1978,11 @@ This is the base class for all chdb-related exceptions. It inherits from
 Python’s built-in Exception class and serves as the root of the exception
 hierarchy for database operations.
 
-#### NOTE
+#### NOTE {#standarderror-note}
 This exception class follows the Python DB API 2.0 specification
 for database exception handling.
 
-### *exception* chdb.dbapi.err.Warning
+### *exception* chdb.dbapi.err.Warning {#dbapi-warning}
 
 Bases: [`StandardError`](#chdb.dbapi.err.StandardError)
 
@@ -1996,12 +1996,12 @@ Common scenarios include:
 - Precision loss in numeric conversions
 - Character set conversion warnings
 
-#### NOTE
+#### NOTE {#dbapi-warning-note}
 This follows the Python DB API 2.0 specification for warning exceptions.
 
 **Module Constants**
 
-### chdb.dbapi.apilevel *= '2.0'*
+### chdb.dbapi.apilevel *= '2.0'* {#apilevel}
 
 str(object=’’) -> str
 str(bytes_or_buffer[, encoding[, errors]]) -> str
@@ -2014,7 +2014,7 @@ or repr(object).
 encoding defaults to ‘utf-8’.
 errors defaults to ‘strict’.
 
-### chdb.dbapi.threadsafety *= 1*
+### chdb.dbapi.threadsafety *= 1* {#threadsafety}
 
 int([x]) -> integer
 int(x, base=10) -> integer
@@ -2031,7 +2031,7 @@ Base 0 means to interpret the base from the string as an integer literal.
 >>> int(‘0b100’, base=0)
 4
 
-### chdb.dbapi.paramstyle *= 'format'*
+### chdb.dbapi.paramstyle *= 'format'* {#paramstyle}
 
 str(object=’’) -> str
 str(bytes_or_buffer[, encoding[, errors]]) -> str
@@ -2046,7 +2046,7 @@ errors defaults to ‘strict’.
 
 **Type Constants**
 
-### chdb.dbapi.STRING *= frozenset({247, 253, 254})*
+### chdb.dbapi.STRING *= frozenset({247, 253, 254})* {#string-type}
 
 Extended frozenset for DB-API 2.0 type comparison.
 
@@ -2057,7 +2057,7 @@ against the set using both equality and inequality operators.
 This is used for type constants like STRING, BINARY, NUMBER, etc. to enable
 comparisons like “field_type == STRING” where field_type is a single type value.
 
-### Examples
+### Examples {#string-type-examples}
 
 ```pycon
 >>> string_types = DBAPISet([FIELD_TYPE.STRING, FIELD_TYPE.VAR_STRING])
@@ -2066,7 +2066,7 @@ comparisons like “field_type == STRING” where field_type is a single type va
 >>> FIELD_TYPE.BLOB in string_types    # Returns False
 ```
 
-### chdb.dbapi.BINARY *= frozenset({249, 250, 251, 252})*
+### chdb.dbapi.BINARY *= frozenset({249, 250, 251, 252})* {#binary-type}
 
 Extended frozenset for DB-API 2.0 type comparison.
 
@@ -2077,7 +2077,7 @@ against the set using both equality and inequality operators.
 This is used for type constants like STRING, BINARY, NUMBER, etc. to enable
 comparisons like “field_type == STRING” where field_type is a single type value.
 
-### Examples
+### Examples {#binary-type-examples}
 
 ```pycon
 >>> string_types = DBAPISet([FIELD_TYPE.STRING, FIELD_TYPE.VAR_STRING])
@@ -2086,7 +2086,7 @@ comparisons like “field_type == STRING” where field_type is a single type va
 >>> FIELD_TYPE.BLOB in string_types    # Returns False
 ```
 
-### chdb.dbapi.NUMBER *= frozenset({0, 1, 3, 4, 5, 8, 9, 13})*
+### chdb.dbapi.NUMBER *= frozenset({0, 1, 3, 4, 5, 8, 9, 13})* {#number-type}
 
 Extended frozenset for DB-API 2.0 type comparison.
 
@@ -2097,7 +2097,7 @@ against the set using both equality and inequality operators.
 This is used for type constants like STRING, BINARY, NUMBER, etc. to enable
 comparisons like “field_type == STRING” where field_type is a single type value.
 
-### Examples
+### Examples {#number-type-examples}
 
 ```pycon
 >>> string_types = DBAPISet([FIELD_TYPE.STRING, FIELD_TYPE.VAR_STRING])
@@ -2106,7 +2106,7 @@ comparisons like “field_type == STRING” where field_type is a single type va
 >>> FIELD_TYPE.BLOB in string_types    # Returns False
 ```
 
-### chdb.dbapi.DATE *= frozenset({10, 14})*
+### chdb.dbapi.DATE *= frozenset({10, 14})* {#date-type}
 
 Extended frozenset for DB-API 2.0 type comparison.
 
@@ -2117,7 +2117,7 @@ against the set using both equality and inequality operators.
 This is used for type constants like STRING, BINARY, NUMBER, etc. to enable
 comparisons like “field_type == STRING” where field_type is a single type value.
 
-### Examples
+### Examples {#date-type-examples}
 
 ```pycon
 >>> string_types = DBAPISet([FIELD_TYPE.STRING, FIELD_TYPE.VAR_STRING])
@@ -2126,7 +2126,7 @@ comparisons like “field_type == STRING” where field_type is a single type va
 >>> FIELD_TYPE.BLOB in string_types    # Returns False
 ```
 
-### chdb.dbapi.TIME *= frozenset({11})*
+### chdb.dbapi.TIME *= frozenset({11})* {#time-type}
 
 Extended frozenset for DB-API 2.0 type comparison.
 
@@ -2137,7 +2137,7 @@ against the set using both equality and inequality operators.
 This is used for type constants like STRING, BINARY, NUMBER, etc. to enable
 comparisons like “field_type == STRING” where field_type is a single type value.
 
-### Examples
+### Examples {#time-type-examples}
 
 ```pycon
 >>> string_types = DBAPISet([FIELD_TYPE.STRING, FIELD_TYPE.VAR_STRING])
@@ -2146,7 +2146,7 @@ comparisons like “field_type == STRING” where field_type is a single type va
 >>> FIELD_TYPE.BLOB in string_types    # Returns False
 ```
 
-### chdb.dbapi.TIMESTAMP *= frozenset({7, 12})*
+### chdb.dbapi.TIMESTAMP *= frozenset({7, 12})* {#timestamp-type}
 
 Extended frozenset for DB-API 2.0 type comparison.
 
@@ -2157,7 +2157,7 @@ against the set using both equality and inequality operators.
 This is used for type constants like STRING, BINARY, NUMBER, etc. to enable
 comparisons like “field_type == STRING” where field_type is a single type value.
 
-### Examples
+### Examples {#timestamp-type-examples}
 
 ```pycon
 >>> string_types = DBAPISet([FIELD_TYPE.STRING, FIELD_TYPE.VAR_STRING])
@@ -2166,7 +2166,7 @@ comparisons like “field_type == STRING” where field_type is a single type va
 >>> FIELD_TYPE.BLOB in string_types    # Returns False
 ```
 
-### chdb.dbapi.DATETIME *= frozenset({7, 12})*
+### chdb.dbapi.DATETIME *= frozenset({7, 12})* {#datetime-type}
 
 Extended frozenset for DB-API 2.0 type comparison.
 
@@ -2177,7 +2177,7 @@ against the set using both equality and inequality operators.
 This is used for type constants like STRING, BINARY, NUMBER, etc. to enable
 comparisons like “field_type == STRING” where field_type is a single type value.
 
-### Examples
+### Examples {#datetime-type-examples}
 
 ```pycon
 >>> string_types = DBAPISet([FIELD_TYPE.STRING, FIELD_TYPE.VAR_STRING])
@@ -2186,7 +2186,7 @@ comparisons like “field_type == STRING” where field_type is a single type va
 >>> FIELD_TYPE.BLOB in string_types    # Returns False
 ```
 
-### chdb.dbapi.ROWID *= frozenset({})*
+### chdb.dbapi.ROWID *= frozenset({})* {#rowid-type}
 
 Extended frozenset for DB-API 2.0 type comparison.
 
@@ -2197,7 +2197,7 @@ against the set using both equality and inequality operators.
 This is used for type constants like STRING, BINARY, NUMBER, etc. to enable
 comparisons like “field_type == STRING” where field_type is a single type value.
 
-### Examples
+### Examples {#rowid-type-examples}
 
 ```pycon
 >>> string_types = DBAPISet([FIELD_TYPE.STRING, FIELD_TYPE.VAR_STRING])
@@ -2301,18 +2301,18 @@ with dbapi.connect("test.chdb") as conn:
 5. **Parameter Binding**: Use parameterized queries when possible
 6. **Memory Management**: Avoid `fetchall()` for very large datasets
 
-#### NOTE
+#### NOTE {#dbapi-best-practices-note}
 - chDB’s DB-API 2.0 interface is compatible with most Python database tools
 - The interface provides Level 1 thread safety (threads may share modules but not connections)
 - Connection strings support the same parameters as chDB sessions
 - All standard DB-API 2.0 exceptions are supported
 
-#### WARNING
+#### WARNING {#dbapi-best-practices-warning}
 - Always close cursors and connections to avoid resource leaks
 - Large result sets should be processed in batches
 - Parameter binding syntax follows format style: `%s`
 
-## User-Defined Functions (UDF)
+## User-Defined Functions (UDF) {#user-defined-functions}
 
 User-defined functions module for chDB.
 
@@ -2320,7 +2320,7 @@ This module provides functionality for creating and managing user-defined functi
 in chDB. It allows you to extend chDB’s capabilities by writing custom Python functions
 that can be called from SQL queries.
 
-### chdb.udf.chdb_udf(return_type='String')
+### chdb.udf.chdb_udf(return_type='String') {#chdb-udf}
 
 Decorator for chDB Python UDF(User Defined Function).
 
@@ -2328,7 +2328,7 @@ Decorator for chDB Python UDF(User Defined Function).
   **return_type** (*str*) – Return type of the function. Default is “String”.
   Should be one of the ClickHouse data types.
 
-### Notes
+### Notes {#notes}
 
 1. The function should be stateless. Only UDFs are supported, not UDAFs.
 2. Default return type is String. The return type should be one of the ClickHouse data types.
@@ -2337,7 +2337,7 @@ Decorator for chDB Python UDF(User Defined Function).
 5. The function should be pure python function. Import all modules used IN THE FUNCTION.
 6. Python interpreter used is the same as the one used to run the script.
 
-### Example
+### Example {#chdb-udf-example}
 
 ```python
 @chdb_udf()
@@ -2350,7 +2350,7 @@ def func_use_json(arg):
     # ... use json module
 ```
 
-### chdb.udf.generate_udf(func_name, args, return_type, udf_body)
+### chdb.udf.generate_udf(func_name, args, return_type, udf_body) {#generate-udf}
 
 Generate UDF configuration and executable script files.
 
@@ -2359,23 +2359,23 @@ This function creates the necessary files for a User Defined Function (UDF) in c
 2. An XML configuration file that registers the UDF with ClickHouse
 
 * **Parameters:**
-    * **func_name** (*str*) – Name of the UDF function
-    * **args** (*list*) – List of argument names for the function
-    * **return_type** (*str*) – ClickHouse return type for the function
-    * **udf_body** (*str*) – Python source code body of the UDF function
+  * **func_name** (*str*) – Name of the UDF function
+  * **args** (*list*) – List of argument names for the function
+  * **return_type** (*str*) – ClickHouse return type for the function
+  * **udf_body** (*str*) – Python source code body of the UDF function
 
-#### NOTE
+#### NOTE {#generate-udf-note}
 This function is typically called by the @chdb_udf decorator and should not
 be called directly by users.
 
-## Utilities
+## Utilities {#utilities}
 
 Utility functions and helpers for chDB.
 
 This module contains various utility functions for working with chDB, including
 data type inference, data conversion helpers, and debugging utilities.
 
-### chdb.utils.convert_to_columnar(items: List[Dict[str, Any]]) → Dict[str, List[Any]]
+### chdb.utils.convert_to_columnar(items: List[Dict[str, Any]]) → Dict[str, List[Any]] {#convert-to-columnar}
 
 Converts a list of dictionaries into a columnar format.
 
@@ -2391,7 +2391,7 @@ Missing values in the dictionaries are represented as None.
   A dictionary with keys as column names and values as lists
   : of column values.
 
-### Example
+### Example {#convert-to-columnar-example}
 
 ```pycon
 >>> items = [
@@ -2407,7 +2407,7 @@ Missing values in the dictionaries are represented as None.
 }
 ```
 
-### chdb.utils.flatten_dict(d: Dict[str, Any], parent_key: str = '', sep: str = '_') → Dict[str, Any]
+### chdb.utils.flatten_dict(d: Dict[str, Any], parent_key: str = '', sep: str = '_') → Dict[str, Any] {#flatten-dict}
 
 Flattens a nested dictionary.
 
@@ -2415,13 +2415,13 @@ This function takes a nested dictionary and flattens it, concatenating nested ke
 with a separator. Lists of dictionaries are serialized to JSON strings.
 
 * **Parameters:**
-    * **d** (*Dict[str, Any]*) – The dictionary to flatten.
-    * **parent_key** (*str, optional*) – The base key to prepend to each key. Defaults to “”.
-    * **sep** (*str, optional*) – The separator to use between concatenated keys. Defaults to “_”.
+  * **d** (*Dict[str, Any]*) – The dictionary to flatten.
+  * **parent_key** (*str, optional*) – The base key to prepend to each key. Defaults to “”.
+  * **sep** (*str, optional*) – The separator to use between concatenated keys. Defaults to “_”.
 * **Returns:**
   *Dict[str, Any]* – A flattened dictionary.
 
-### Example
+### Example {#flatten-dict-example}
 
 ```pycon
 >>> nested_dict = {
@@ -2447,7 +2447,7 @@ with a separator. Lists of dictionaries are serialized to JSON strings.
 }
 ```
 
-### chdb.utils.infer_data_type(values: List[Any]) → str
+### chdb.utils.infer_data_type(values: List[Any]) → str {#infer-data-type}
 
 Infers the most suitable data type for a list of values.
 
@@ -2466,14 +2466,14 @@ values cannot be represented by any numeric type or if all values are None.
   “uint32”, “uint64”, “uint128”, “uint256”, “decimal128”, “decimal256”,
   “float32”, “float64”, or “string”.
 
-### Notes
+### Notes {#infer-data-type-notes}
 
 - If all values in the list are None, the function returns “string”.
 - If any value in the list is a string, the function immediately returns “string”.
 - The function assumes that numeric values can be represented as integers,
   decimals, or floats based on their range and precision.
 
-### chdb.utils.infer_data_types(column_data: Dict[str, List[Any]], n_rows: int = 10000) → List[tuple]
+### chdb.utils.infer_data_types(column_data: Dict[str, List[Any]], n_rows: int = 10000) → List[tuple] {#infer-data-types}
 
 Infers data types for each column in a columnar data structure.
 
@@ -2481,9 +2481,9 @@ This function analyzes the values in each column and infers the most suitable
 data type for each column, based on a sample of the data.
 
 * **Parameters:**
-    * **column_data** (*Dict[str, List[Any]]*) – A dictionary where keys are column names
+  * **column_data** (*Dict[str, List[Any]]*) – A dictionary where keys are column names
       and values are lists of column values.
-    * **n_rows** (*int, optional*) – The number of rows to sample for type inference.
+  * **n_rows** (*int, optional*) – The number of rows to sample for type inference.
       Defaults to 10000.
 * **Returns:**
   *List[tuple]* –
@@ -2491,45 +2491,45 @@ data type for each column, based on a sample of the data.
   A list of tuples, each containing a column name and its
   : inferred data type.
 
-## Abstract Base Classes
+## Abstract Base Classes {#abstract-base-classes}
 
-### *class* chdb.rwabc.PyReader(data: Any)
+### *class* chdb.rwabc.PyReader(data: Any) {#pyreader}
 
 Bases: `ABC`
 
-#### *abstractmethod* read(col_names: List[str], count: int) → List[Any]
+#### *abstractmethod* read(col_names: List[str], count: int) → List[Any] {#read}
 
 Read a specified number of rows from the given columns and return a list of objects,
 where each object is a sequence of values for a column.
 
 * **Parameters:**
-    * **col_names** (*List[str]*) – List of column names to read.
-    * **count** (*int*) – Maximum number of rows to read.
+  * **col_names** (*List[str]*) – List of column names to read.
+  * **count** (*int*) – Maximum number of rows to read.
 * **Returns:**
   *List[Any]* – List of sequences, one for each column.
 
-### *class* chdb.rwabc.PyWriter(col_names: List[str], types: List[type], data: Any)
+### *class* chdb.rwabc.PyWriter(col_names: List[str], types: List[type], data: Any) {#pywriter}
 
 Bases: `ABC`
 
-#### *abstractmethod* finalize() → bytes
+#### *abstractmethod* finalize() → bytes {#finalize}
 
 Assemble and return the final data from blocks. Must be implemented by subclasses.
 
 * **Returns:**
   *bytes* – The final serialized data.
 
-#### *abstractmethod* write(col_names: List[str], columns: List[List[Any]]) → None
+#### *abstractmethod* write(col_names: List[str], columns: List[List[Any]]) → None {#write}
 
 Save columns of data to blocks. Must be implemented by subclasses.
 
 * **Parameters:**
-    * **col_names** (*List[str]*) – List of column names that are being written.
-    * **columns** (*List[List[Any]]*) – List of columns data, each column is represented by a list.
+  * **col_names** (*List[str]*) – List of column names that are being written.
+  * **columns** (*List[List[Any]]*) – List of columns data, each column is represented by a list.
 
-## Exception Handling
+## Exception Handling {#exception-handling}
 
-### *class* chdb.ChdbError
+### *class* chdb.ChdbError {#chdberror}
 
 Bases: `Exception`
 
@@ -2546,7 +2546,7 @@ tables/columns, and other query execution issues.
 * **Variables:**
   **args** – Tuple containing the error message and any additional arguments
 
-### Examples
+### Examples {#chdberror-examples}
 
 ```pycon
 >>> try:
@@ -2564,15 +2564,15 @@ Query failed: Table 'non_existent_table' doesn't exist
 Syntax error: Syntax error near 'FROM'
 ```
 
-#### NOTE
+#### NOTE {#chdberror-note}
 This exception is automatically raised by chdb.query() and related
 functions when the underlying ClickHouse engine reports an error.
 You should catch this exception when handling potentially failing
 queries to provide appropriate error handling in your application.
 
-## Version Information
+## Version Information {#version-information}
 
-### chdb.chdb_version *= ('3', '6', '0')*
+### chdb.chdb_version *= ('3', '6', '0')* {#chdb-version}
 
 Built-in immutable sequence.
 
@@ -2581,7 +2581,7 @@ If iterable is specified the tuple is initialized from iterable’s items.
 
 If the argument is a tuple, the return value is the same object.
 
-### chdb.engine_version *= '25.5.2.1'*
+### chdb.engine_version *= '25.5.2.1'* {#engine-version}
 
 str(object=’’) -> str
 str(bytes_or_buffer[, encoding[, errors]]) -> str
@@ -2594,7 +2594,7 @@ or repr(object).
 encoding defaults to ‘utf-8’.
 errors defaults to ‘strict’.
 
-### chdb.\_\_version_\_ *= '3.6.0'*
+### chdb.__version__ *= '3.6.0'* {#version}
 
 str(object=’’) -> str
 str(bytes_or_buffer[, encoding[, errors]]) -> str
