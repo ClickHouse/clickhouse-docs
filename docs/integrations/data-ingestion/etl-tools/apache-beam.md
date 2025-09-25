@@ -7,7 +7,7 @@ doc_type: 'guide'
 integration_title: 'Apache Beam'
 integration_type: ['data ingestion']
 integration_logo: '/static/images/integrations/logos/logo_beam.png'
-integration_tier: 'community'
+integration_tier: 'core'
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';

@@ -240,7 +240,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/acceldata_logo.png",
     "integration_title": "AccelData",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "https://atlasgo.io/guides/clickhouse?utm_source=clickhouse&utm_term=docs",
@@ -249,7 +249,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/atlas-logo.png",
     "integration_title": "Atlas",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "https://docs.blinkops.com/docs/integrations/clickhouse",
@@ -303,7 +303,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/logo_growthbook.png",
     "integration_title": "GrowthBook",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "https://learn.hex.tech/docs/connect-to-data/data-connections/overview",
@@ -312,7 +312,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/logo-hex.png",
     "integration_title": "HEX",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "https://docs.hashboard.com/docs/database-connections/clickhouse",
@@ -321,7 +321,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/hashboard.svg",
     "integration_title": "Hashboard",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "https://hightouch.com/docs/sources/clickhouse",
@@ -357,7 +357,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/logo_openBlocks.png",
     "integration_title": "Openblocks",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "https://docs.opsramp.com/integrations/database-no-sql/automonitor-clickhouse-monitoring/",
@@ -366,7 +366,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/ops_ramp_logo.png",
     "integration_title": "OpsRamp (HP)",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "https://docs.popsink.com/connectors/target/clickhouse/",
@@ -438,7 +438,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/sematext_logo.png",
     "integration_title": "Sematext",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "https://www.signoz.io/docs/architecture/",
@@ -447,7 +447,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/signoz-logo.png",
     "integration_title": "SigNoz",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "https://docs.snappyflow.io/docs/Integrations/clickhouse/instance",
@@ -456,7 +456,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/snappy_flow_logo.png",
     "integration_title": "Snappy Flow",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "https://docs.streamkap.com/docs/clickhouse",
@@ -483,7 +483,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/tooljet.png",
     "integration_title": "Tooljet",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "https://yepcode.io/docs/integrations/clickhouse/",
@@ -501,7 +501,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/zing-logo.png",
     "integration_title": "Zing Data",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "https://www.automq.com/",
@@ -528,7 +528,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/cubejs.svg",
     "integration_title": "Cube.js",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "https://www.clougence.com/",
@@ -564,7 +564,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/gigasheet.png",
     "integration_title": "Gigasheet",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "https://greatexpectations.io/",
@@ -573,7 +573,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/great-expectations.webp",
     "integration_title": "Great Expectations",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "https://www.holistics.io/integrations/clickhouse/",
@@ -582,7 +582,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/logo_holistics.png",
     "integration_title": "Holistics",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "https://github.com/PostHog/HouseWatch",
@@ -591,7 +591,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/housewatch.png",
     "integration_title": "HouseWatch",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "https://www.metaplane.dev/integrations",
@@ -600,7 +600,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/logo_metaplane.png",
     "integration_title": "Metaplane",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "https://mindsdb.com/clickhouse-machine-learning",
@@ -618,7 +618,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/logo_mode.png",
     "integration_title": "Mode Analytics",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "https://omni.co/",
@@ -627,7 +627,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/omni.svg",
     "integration_title": "Omni",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "https://quesma.com/quesma-for-elk",
@@ -645,7 +645,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/logo_redash.png",
     "integration_title": "Redash",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "https://runreveal.com",
@@ -663,7 +663,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/logo_sisense.png",
     "integration_title": "SiSense",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "https://www.soda.io/integrations/clickhouse",
@@ -717,7 +717,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/logo_airflow.png",
     "integration_title": "Apache Airflow",
-    "integration_tier": "community"
+    "integration_tier": "partner"
   },
   {
     "slug": "https://inlong.apache.org/docs/data_node/load_node/clickhouse",
@@ -726,7 +726,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/logo_inlong.png",
     "integration_title": "Apache InLong",
-    "integration_tier": "community"
+    "integration_tier": "partner"
   },
   {
     "slug": "https://seatunnel.apache.org/docs/2.3.0/connector-v2/sink/Clickhouse",
@@ -735,7 +735,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/logo_seatunnel.png",
     "integration_title": "Apache SeaTunnel",
-    "integration_tier": "community"
+    "integration_tier": "partner"
   },
   {
     "slug": "https://skywalking.apache.org/blog/2024-03-12-monitoring-clickhouse-through-skywalking/",
@@ -753,7 +753,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/apache-streampark.png",
     "integration_title": "Apache StreamPark",
-    "integration_tier": "community"
+    "integration_tier": "partner"
   },
   {
     "slug": "https://www.bytebase.com/docs/introduction/supported-databases",
@@ -834,7 +834,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/logo_deepflow.png",
     "integration_title": "DeepFlow",
-    "integration_tier": "community"
+    "integration_tier": "partner"
   },
   {
     "slug": "https://www.explo.co/integrations/clickhouse",
@@ -933,7 +933,7 @@
     ],
     "integration_logo": "/static/images/integrations/logos/pinax-logo.png",
     "integration_title": "Pinax",
-    "integration_tier": "community"
+    "integration_tier": "partner"
   },
   {
     "slug": "https://www.timestored.com/pulse/",

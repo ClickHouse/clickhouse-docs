@@ -60,7 +60,7 @@
       "data visualization"
     ],
     "integration_title": "Astrato",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "/integrations/azure-data-factory",
@@ -105,7 +105,7 @@
       "data visualization"
     ],
     "integration_title": "Chartbrew",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "/integrations/clickpipes/kinesis",
@@ -159,7 +159,7 @@
       "sql client"
     ],
     "integration_title": "DataGrip",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "/integrations/dbeaver",
@@ -168,7 +168,7 @@
       "sql client"
     ],
     "integration_title": "DBeaver",
-    "integration_tier": "partner"
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/dbt",
@@ -186,7 +186,7 @@
       "sql client"
     ],
     "integration_title": "DbVisualizer",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "/integrations/deepnote",
@@ -195,7 +195,7 @@
       "data visualization"
     ],
     "integration_title": "Deepnote",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "/integrations/data-ingestion/etl-tools/dlt-and-clickhouse",
@@ -213,7 +213,7 @@
       "data visualization"
     ],
     "integration_title": "Draxlr",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "/integrations/easypanel",
@@ -240,7 +240,7 @@
       "data visualization"
     ],
     "integration_title": "Explo",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "/integrations/fabi.ai",
@@ -249,7 +249,7 @@
       "data visualization"
     ],
     "integration_title": "Fabi.ai",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "/integrations/fivetran",
@@ -275,7 +275,8 @@
     "integration_type": [
       "data ingestion"
     ],
-    "integration_title": "Google Cloud Storage (GCS)"
+    "integration_title": "Google Cloud Storage (GCS)",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/grafana",
@@ -284,7 +285,7 @@
       "data visualization"
     ],
     "integration_title": "Grafana",
-    "integration_tier": "partner"
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/java",
@@ -347,7 +348,7 @@
       "data visualization"
     ],
     "integration_title": "Luzmo",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "/integrations/metabase",
@@ -356,7 +357,7 @@
       "data visualization"
     ],
     "integration_title": "Metabase",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "/integrations/minio",
@@ -374,7 +375,7 @@
       "data visualization"
     ],
     "integration_title": "Mitzu",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "/interfaces/third-party/moose-olap",
@@ -383,7 +384,7 @@
       "language client"
     ],
     "integration_title": "Moose OLAP",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "/integrations/javascript",
@@ -500,7 +501,7 @@
       "sql client"
     ],
     "integration_title": "TABLUM.IO",
-    "integration_tier": "partner"
+    "integration_tier": "community"
   },
   {
     "slug": "/integrations/vector",
