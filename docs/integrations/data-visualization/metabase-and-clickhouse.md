@@ -9,7 +9,7 @@ show_related_blogs: true
 doc_type: 'guide'
 integration_type: ['data visualization']
 integration_logo: '/static/images/integrations/logos/logo_metabase.png'
-integration_tier: 'partner'
+integration_tier: 'community'
 integration_title: 'Metabase'
 ---
 

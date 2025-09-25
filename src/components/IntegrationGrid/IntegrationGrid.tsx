@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import CUICard from '@site/src/components/CUICard';
@@ -79,9 +79,46 @@ export function IntegrationGrid() {
     return [...integrationsData, ...processedCustomData];
   }, []);
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedFilter, setSelectedFilter] = useState('All');
-  const [selectedTier, setSelectedTier] = useState('All');
+  // Initialize state from localStorage or default values
+  const [searchTerm, setSearchTerm] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('integrations-search') || '';
+    }
+    return '';
+  });
+
+  const [selectedFilter, setSelectedFilter] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('integrations-filter') || 'All';
+    }
+    return 'All';
+  });
+
+  const [selectedTier, setSelectedTier] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('integrations-tier') || 'All';
+    }
+    return 'All';
+  });
+
+  // Save to localStorage whenever state changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('integrations-search', searchTerm);
+    }
+  }, [searchTerm]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('integrations-filter', selectedFilter);
+    }
+  }, [selectedFilter]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('integrations-tier', selectedTier);
+    }
+  }, [selectedTier]);
 
   // Get unique integration types for filter buttons
   const integrationTypes = useMemo(() => {

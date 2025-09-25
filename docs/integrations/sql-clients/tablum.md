@@ -7,7 +7,7 @@ doc_type: 'guide'
 integration_title: 'TABLUM.IO'
 integration_type: ['sql client']
 integration_logo: '/static/images/integrations/logos/tablum.svg'
-integration_tier: 'partner'
+integration_tier: 'community'
 ---
 
 import Image from '@theme/IdealImage';

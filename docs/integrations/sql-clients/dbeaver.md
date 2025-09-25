@@ -7,7 +7,7 @@ doc_type: 'guide'
 integration_title: 'DBeaver'
 integration_type: ['sql client']
 integration_logo: '/static/images/integrations/logos/dbeaver_logo.svg'
-integration_tier: 'partner'
+integration_tier: 'core'
 ---
 
 import Image from '@theme/IdealImage';

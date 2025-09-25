@@ -11,11 +11,11 @@ integration_logo: '/static/images/integrations/logos/dlthub_logo.svg'
 integration_tier: 'partner'
 ---
 
-import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
+import PartnerBadge from '@theme/badges/PartnerBadge';
 
 # Connect dlt to ClickHouse
 
-<CommunityMaintainedBadge/>
+<PartnerBadge/>
 
 <a href="https://dlthub.com/docs/intro" target="_blank">dlt</a>  is an open-source library that you can add to your Python scripts to load data from various and often messy data sources into well-structured, live datasets.
 
