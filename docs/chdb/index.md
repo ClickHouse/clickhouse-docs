@@ -27,7 +27,7 @@ You can use it when you want to get the power of ClickHouse in a programming lan
 
 chDB has the following language bindings:
 
-* [Python](install/python.md)
+* [Python](install/python.md) - [API Reference](api/python.md)
 * [Go](install/go.md)
 * [Rust](install/rust.md)
 * [NodeJS](install/nodejs.md)
