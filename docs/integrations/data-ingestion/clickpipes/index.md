@@ -86,8 +86,17 @@ Steps:
 ## Adjusting ClickPipes advanced settings {#clickpipes-advanced-settings}
 ClickPipes provides sensible defaults that cover the requirements of most use cases. If your use case requires additional fine-tuning, you can adjust the following settings:
 
-- **Streaming max insert wait time**: Configures the maximum wait period before inserting data into the ClickHouse cluster. Applies to streaming ClickPipes (e.g., Kafka, Kinesis).  
+- **Streaming max insert wait time**: Configures the maximum wait period before inserting data into the ClickHouse cluster. Applies to streaming ClickPipes (e.g., Kafka, Kinesis).
 - **Object storage polling interval**: Configures how frequently ClickPipes checks object storage for new data. Applies to object storage ClickPipes (e.g., S3, GCS).
+- **Max insert bytes**: Number of bytes to process in a single insert batch. Applies to object storage ClickPipes (e.g., S3, GCS).
+- **Max file count**: Maximum number of files to process in a single insert batch. Applies to object storage ClickPipes (e.g., S3, GCS).
+- **Max threads**: [Maximum number of concurrent threads](https://clickhouse.com/docs/operations/settings/settings#parallel_distributed_insert_select) for file processing. Applies to object storage ClickPipes (e.g., S3, GCS).
+- **Max insert threads**: [Maximum number of concurrent insert threads](https://clickhouse.com/docs/operations/settings/settings#parallel_distributed_insert_select). Applies to object storage ClickPipes (e.g., S3, GCS).
+- **Min insert block size bytes**: [Minimum size of bytes in the block](https://clickhouse.com/docs/operations/settings/settings#parallel_distributed_insert_select) which can be inserted into a table. Applies to object storage ClickPipes (e.g., S3, GCS).
+- **Max download threads**: Maximum number of [concurrent download threads](https://clickhouse.com/docs/operations/settings/settings#parallel_distributed_insert_select). Applies to object storage ClickPipes (e.g., S3, GCS).
+- **Parallel distributed insert select**: [Parallel distributed insert select setting](https://clickhouse.com/docs/operations/settings/settings#parallel_distributed_insert_select). Applies to object storage ClickPipes (e.g., S3, GCS).
+- **Use cluster function**: Whether to use ClickHouse cluster function for distributed processing. Applies to object storage ClickPipes (e.g., S3, GCS).
+- **Parallel view processing**: Whether to enable pushing to attached views [concurrently instead of sequentially](https://clickhouse.com/docs/operations/settings/settings#parallel_distributed_insert_select). Applies to object storage ClickPipes (e.g., S3, GCS).
 
 <Image img={cp_advanced_settings} alt="Advanced settings for ClickPipes" size="lg" border/>
 
