@@ -47,8 +47,8 @@ Get started with ClickHouse Cloud on the [AWS Marketplace](https://aws.amazon.co
 
 3. On the next screen, configure the contract:
 - **Length of contract** - PAYG contracts run month to month.
-- **Renewal settings** - You can set the contract to auto renew or not. 
-Note that if you don't enable auto renewal, your organization is automatically put into a grace period at the end of the billing cycle and then decommissioned.
+- **Renewal settings** - You can set the contract to auto-renew or not.
+Note that we strongly recommend keeping your subscription set to auto-renew every month. However, if you don't enable auto renewal, your organization is automatically put into a grace period at the end of the billing cycle and then decommissioned.
 
 - **Contract options** - You can input any number (or just 1) into this text box. This will not affect the price you pay as the price for these units for the public offer is $0. These units are usually used when accepting a private offer from ClickHouse Cloud.
 
