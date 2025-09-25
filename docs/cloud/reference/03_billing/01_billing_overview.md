@@ -182,6 +182,7 @@ A ClickHouse Credit is a unit of credit toward Customer's usage of ClickHouse Cl
 
 :::note 
 If you are being billed through Stripe then you will see that 1 CHC is equal to $0.01 USD on your Stripe invoice. This is to allow accurate billing on Stripe due to their limitation on not being able to bill fractional quantities of our standard SKU of 1 CHC = $1 USD.
+:::
 
 ### How is compute metered? {#how-is-compute-metered}
 
