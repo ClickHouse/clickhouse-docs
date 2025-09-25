@@ -7,7 +7,7 @@
 }
 
 .searchContainer {
-  margin: 2rem 0 3rem 0;
+  margin: 2rem 0 12px 0;
   display: flex;
   justify-content: flex-start;
   position: relative;
@@ -145,27 +145,27 @@
 }
 
 .integrationGrid {
-  // Mobile first - single column
-  grid-template-columns: 1fr;
 
-  // Tablet - 2 columns
-  @media (min-width: breakpoints.$mobile-breakpoint) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 
-  // Desktop - 3 columns
+  // Small desktop - 3 columns
   @media (min-width: breakpoints.$tablet-breakpoint) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  // Large desktop - 4 columns (ideal for most desktop screens)
-  @media (min-width: breakpoints.$laptop-breakpoint) {
+  // Medium desktop - 4 columns
+  @media (min-width: 1260px) {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
-  // Extra large screens - 5 columns
-  @media (min-width: 1600px) {
+  // Large desktop - 5 columns
+  @media (min-width: breakpoints.$laptop-breakpoint) {
     grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  // Extra large screens - 6 columns
+  @media (min-width: 1600px) {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 }
 
