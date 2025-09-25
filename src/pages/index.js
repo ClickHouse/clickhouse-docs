@@ -79,6 +79,38 @@ const SparkleIcon = ({ size = 20, color = 'currentColor' }) => (
     </svg>
 );
 
+// ClickHouse Style Arrow Button Component
+const ClickHouseArrowButton = ({ to, children, sx = {} }) => {
+    return (
+        <Link
+            to={to}
+            style={{
+                color: 'var(--ifm-link-color)',
+                textDecoration: 'none',
+                fontSize: '14px',
+                fontWeight: 600,
+                fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                transition: 'all 0.2s ease',
+                ...sx
+            }}
+            onMouseEnter={(e) => {
+                e.target.style.transform = 'translateX(2px)';
+                e.target.style.color = 'var(--ifm-link-hover-color)';
+            }}
+            onMouseLeave={(e) => {
+                e.target.style.transform = 'translateX(0px)';
+                e.target.style.color = 'var(--ifm-link-color)';
+            }}
+        >
+            {children}
+            <span style={{ marginLeft: '2px' }}>→</span>
+        </Link>
+    );
+};
+
 // Migration Option Button Component - Clean Design
 const MigrationOptionButton = ({ icon, link, children }) => {
     return (
@@ -140,7 +172,8 @@ const MigrationOptionButton = ({ icon, link, children }) => {
                     fontSize: '11px',
                     lineHeight: 1.2,
                     color: 'text.primary',
-                    textAlign: 'center'
+                    textAlign: 'center',
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif'
                 }}
             >
                 {children}
@@ -196,7 +229,8 @@ const HeroSection = () => {
                         fontSize: { xs: '1rem', sm: '1.1rem', md: '1.2rem' },
                         fontWeight: 400,
                         color: 'text.secondary',
-                        lineHeight: 1.4
+                        lineHeight: 1.4,
+                        fontFamily: 'Inter, system-ui, -apple-system, sans-serif'
                     }}
                 >
                     Documentation for the fastest and most resource efficient real-time data warehouse and open-source database.
@@ -240,6 +274,7 @@ const HeroSection = () => {
                         whiteSpace: 'nowrap',
                         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
                         fontWeight: 600,
+                        fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                         flexShrink: 0,
                         '&:hover': {
                             backgroundColor: '#FAFF6A',
@@ -320,8 +355,8 @@ const ExploreDocs = () => {
                                 flexDirection: 'column'
                             }}>
                                 <div>
-                                    <h3>Get Started</h3>
-                                    <p>Learn the basics of ClickHouse</p>
+                                    <h3 style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Get Started</h3>
+                                    <p style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Learn the basics of ClickHouse</p>
                                 </div>
                                 <div style={{ marginTop: 'auto', paddingTop: '12px' }}>
                                     <Link to="/getting-started/quick-start/cloud" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Quick start</Link>
@@ -363,8 +398,8 @@ const ExploreDocs = () => {
                                 flexDirection: 'column'
                             }}>
                                 <div>
-                                    <h3>Learn</h3>
-                                    <p>Explore concepts and best practices</p>
+                                    <h3 style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Learn</h3>
+                                    <p style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Explore concepts and best practices</p>
                                 </div>
                                 <div style={{ marginTop: 'auto', paddingTop: '12px' }}>
                                     <Link to="/managing-data/core-concepts" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Core concepts</Link>
@@ -406,17 +441,23 @@ const ExploreDocs = () => {
                                 flexDirection: 'column'
                             }}>
                                 <div>
-                                    <h3>Reference</h3>
-                                    <p>Reference docs for everyday use</p>
+                                    <h3 style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Reference</h3>
+                                    <p style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Reference docs for everyday use</p>
                                 </div>
                                 <div style={{ marginTop: 'auto', paddingTop: '12px', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
-                                    <Link to="/sql-reference/statements" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>SQL reference</Link>
-                                    <Link to="/sql-reference/functions" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Functions</Link>
-                                    <Link to="/engines" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Engines</Link>
-                                    <Link to="/sql-reference/data-types" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Data types</Link>
-                                    <Link to="/operations/settings/settings" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Settings</Link>
-                                    <Link to="/operations/server-configuration-parameters/settings" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Server settings</Link>
-                                    <Link to="/operations/system-tables" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>System tables</Link>
+                                    <div>
+                                        <Link to="/sql-reference/statements" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>SQL reference</Link>
+                                        <Link to="/sql-reference/functions" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Functions</Link>
+                                        <Link to="/engines" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Engines</Link>
+                                        <Link to="/sql-reference/data-types" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Data types</Link>
+                                        <Link to="/operations/settings/settings" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Settings</Link>
+                                    </div>
+                                    <div>
+                                        <Link to="/operations/server-configuration-parameters/settings" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Server settings</Link>
+                                        <Link to="/operations/system-tables" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>System tables</Link>
+                                        <Link to="/changelog/cloud" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Cloud changelog</Link>
+                                        <Link to="/changelog/oss" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>OSS changelog</Link>
+                                    </div>
                                 </div>
                             </CardContent>
                         </CardActionArea>
@@ -469,21 +510,21 @@ const ExploreDocs = () => {
                                 minWidth: '160px',
                                 maxWidth: '180px'
                             }}>
-                                <h3 style={{ margin: '0 0 3px 0', fontSize: '18px' }}>Migrate</h3>
-                                <p style={{ fontSize: '13px', margin: '0 0 0 0', color: 'text.secondary', lineHeight: 1.3 }}>
+                                <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Migrate</h3>
+                                <p style={{ fontSize: '13px', margin: '0 0 0 0', color: 'text.secondary', lineHeight: 1.3, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
                                     Get your data into ClickHouse
                                 </p>
-                                <Link 
-                                    to="/docs/integrations" 
-                                    style={{ 
-                                        fontSize: '11px', 
-                                        textDecoration: 'none',
-                                        color: 'inherit',
-                                        opacity: 0.8
+                                <ClickHouseArrowButton
+                                    to="/docs/integrations"
+                                    sx={{
+                                        fontSize: '14px',
+                                        fontWeight: 600,
+                                        opacity: 0.8,
+                                        color: 'inherit'
                                     }}
                                 >
-                                    View all integrations →
-                                </Link>
+                                    View all integrations
+                                </ClickHouseArrowButton>
                             </Box>
                             
                             {/* Right side - 3x2 Grid of square gradient cards */}
@@ -545,12 +586,6 @@ const ExploreDocs = () => {
                                         Mongo
                                     </MigrationOptionButton>
                                     <MigrationOptionButton
-                                        icon="/images/integrations/logos/deltalake.svg"
-                                        link="/docs/integrations/deltalake"
-                                    >
-                                        Delta
-                                    </MigrationOptionButton>
-                                    <MigrationOptionButton
                                         icon="/img/integrations/logo_kafka.svg"
                                         link="/docs/integrations/kafka"
                                     >
@@ -558,27 +593,39 @@ const ExploreDocs = () => {
                                     </MigrationOptionButton>
                                     <MigrationOptionButton
                                         icon="/images/integrations/logos/logo_redpanda.png"
-                                        link="/docs/integrations/redpanda"
+                                        link="/docs/integrations/kafka/kafka-table-engine"
                                     >
                                         Redpanda
                                     </MigrationOptionButton>
                                     <MigrationOptionButton
                                         icon="/images/integrations/logos/amazon_s3_logo.svg"
-                                        link="/docs/integrations/s3"
+                                        link="/docs/sql-reference/table-functions/s3"
                                     >
                                         S3
                                     </MigrationOptionButton>
                                     <MigrationOptionButton
-                                        icon="/docs/images/logo-iceberg.svg"
-                                        link="/docs/integrations/iceberg"
+                                        icon="/images/integrations/logos/gcs.svg"
+                                        link="/docs/sql-reference/table-functions/gcs"
+                                    >
+                                        GCS
+                                    </MigrationOptionButton>
+                                    <MigrationOptionButton
+                                        icon="/images/integrations/logos/deltalake.svg"
+                                        link="/docs/sql-reference/table-functions/deltalake"
+                                    >
+                                        Delta
+                                    </MigrationOptionButton>
+                                    <MigrationOptionButton
+                                        icon="/images/integrations/logos/iceberg.png"
+                                        link="/docs/sql-reference/table-functions/iceberg"
                                     >
                                         Iceberg
                                     </MigrationOptionButton>
                                     <MigrationOptionButton
-                                        icon="/docs/images/logo-gcs.svg"
-                                        link="/docs/integrations/gcs"
+                                        icon="/images/integrations/logos/hudi.png"
+                                        link="/docs/sql-reference/table-functions/hudi"
                                     >
-                                        GCS
+                                        Hudi
                                     </MigrationOptionButton>
                                 </Box>
                             </Box>
@@ -592,7 +639,7 @@ const ExploreDocs = () => {
                         marginBottom: 1,
                         marginTop: 2
                     }}>
-                        <Typography variant="h4" sx={{ fontWeight: 600, fontSize: '24px' }}>
+                        <Typography variant="h4" sx={{ fontWeight: 600, fontSize: '24px', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
                             Featured
                         </Typography>
                     </Box>
@@ -604,7 +651,7 @@ const ExploreDocs = () => {
                         sx={{
                             gridRow: 4,
                             gridColumn: 1,
-                            height: '300px',
+                            height: '350px',
                             backgroundColor: 'background.paper',
                             color: 'text.primary',
                             boxShadow: 3,
@@ -622,8 +669,8 @@ const ExploreDocs = () => {
                         <CardActionArea sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
                             <CardMedia
                                 component="img"
-                                height="100"
-                                sx={{ width: '100%' }}
+                                height="120"
+                                sx={{ width: '100%', objectFit: 'cover' }}
                                 image={useBaseUrl('/images/homepage/mongodb_feature.png')}
                                 alt="Feature 1"
                             />
@@ -633,7 +680,7 @@ const ExploreDocs = () => {
                                 display: 'flex',
                                 flexDirection: 'column'
                             }}>
-                                <div>
+                                <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
                                         <Typography
                                             variant="caption"
@@ -644,29 +691,28 @@ const ExploreDocs = () => {
                                                 borderRadius: '8px',
                                                 fontSize: '9px',
                                                 fontWeight: 600,
-                                                letterSpacing: '0.3px'
+                                                letterSpacing: '0.3px',
+                                                fontFamily: 'Inter, system-ui, -apple-system, sans-serif'
                                             }}
                                         >
                                             Tutorial
                                         </Typography>
                                     </Box>
-                                    <h3>MongoDB CDC to ClickHouse with Native JSON Support</h3>
-                                    <p>We're excited to announce the private preview of the MongoDB Change Data Capture (CDC) connector in ClickPipes! Enabling customers to replicate their MongoDB collections to ClickHouse Cloud in just a few clicks. </p>
-                                </div>
-                                <Link
+                                    <h3 style={{ marginBottom: '8px', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>MongoDB CDC to ClickHouse with Native JSON Support</h3>
+                                    <Box sx={{ flex: 1, overflow: 'hidden' }}>
+                                        <p style={{ color: 'text.secondary', opacity: 0.8, margin: 0, lineHeight: 1.4, display: '-webkit-box', WebkitLineClamp: 5, WebkitBoxOrient: 'vertical', overflow: 'hidden', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>We're excited to announce the private preview of the MongoDB Change Data Capture (CDC) connector in ClickPipes! Enabling customers to replicate their MongoDB collections to ClickHouse Cloud in just a few clicks. </p>
+                                    </Box>
+                                </Box>
+                                <ClickHouseArrowButton
                                     to="/integrations/clickpipes/mongodb"
-                                    style={{
-                                        color: 'var(--click-color-link)',
-                                        textDecoration: 'none',
-                                        fontSize: '14px',
-                                        fontWeight: 600,
+                                    sx={{
                                         marginTop: 'auto',
                                         paddingTop: '8px',
                                         display: 'block'
                                     }}
                                 >
-                                    Read more →
-                                </Link>
+                                    Read more
+                                </ClickHouseArrowButton>
                             </CardContent>
                         </CardActionArea>
                     </Card>
@@ -678,7 +724,7 @@ const ExploreDocs = () => {
                         sx={{
                             gridRow: 4,
                             gridColumn: 2,
-                            height: '300px',
+                            height: '350px',
                             backgroundColor: 'background.paper',
                             color: 'text.primary',
                             boxShadow: 3,
@@ -696,8 +742,8 @@ const ExploreDocs = () => {
                         <CardActionArea sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
                             <CardMedia
                                 component="img"
-                                height="100"
-                                sx={{ width: '100%' }}
+                                height="120"
+                                sx={{ width: '100%', objectFit: 'cover' }}
                                 image={useBaseUrl('/images/homepage/remote_mcp_featured.png')}
                                 alt="Feature 2"
                             />
@@ -707,7 +753,7 @@ const ExploreDocs = () => {
                                 display: 'flex',
                                 flexDirection: 'column'
                             }}>
-                                <div>
+                                <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
                                         <Typography
                                             variant="caption"
@@ -718,29 +764,28 @@ const ExploreDocs = () => {
                                                 borderRadius: '8px',
                                                 fontSize: '9px',
                                                 fontWeight: 600,
-                                                letterSpacing: '0.3px'
+                                                letterSpacing: '0.3px',
+                                                fontFamily: 'Inter, system-ui, -apple-system, sans-serif'
                                             }}
                                         >
                                             Guide
                                         </Typography>
                                     </Box>
-                                    <h3>Enabling the ClickHouse Cloud Remote MCP Server</h3>
-                                    <p>This guide explains how to enable and use the ClickHouse Cloud Remote MCP Server. We will use Claude Code as an MCP Client for this example.</p>
-                                </div>
-                                <Link
+                                    <h3 style={{ marginBottom: '8px', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Enabling the ClickHouse Cloud Remote MCP Server</h3>
+                                    <Box sx={{ flex: 1, overflow: 'hidden' }}>
+                                        <p style={{ color: 'text.secondary', opacity: 0.8, margin: 0, lineHeight: 1.4, display: '-webkit-box', WebkitLineClamp: 5, WebkitBoxOrient: 'vertical', overflow: 'hidden', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>This guide explains how to enable and use the ClickHouse Cloud Remote MCP Server. We will use Claude Code as an MCP Client for this example.</p>
+                                    </Box>
+                                </Box>
+                                <ClickHouseArrowButton
                                     to="/use-cases/AI/MCP/remote_mcp"
-                                    style={{
-                                        color: 'var(--click-color-link)',
-                                        textDecoration: 'none',
-                                        fontSize: '14px',
-                                        fontWeight: 600,
+                                    sx={{
                                         marginTop: 'auto',
                                         paddingTop: '8px',
                                         display: 'block'
                                     }}
                                 >
-                                    Read more →
-                                </Link>
+                                    Read more
+                                </ClickHouseArrowButton>
                             </CardContent>
                         </CardActionArea>
                     </Card>
@@ -752,7 +797,7 @@ const ExploreDocs = () => {
                         sx={{
                             gridRow: 4,
                             gridColumn: 3,
-                            height: '300px',
+                            height: '350px',
                             backgroundColor: 'background.paper',
                             color: 'text.primary',
                             boxShadow: 3,
@@ -770,8 +815,8 @@ const ExploreDocs = () => {
                         <CardActionArea sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
                             <CardMedia
                                 component="img"
-                                height="100"
-                                sx={{ width: '100%' }}
+                                height="120"
+                                sx={{ width: '100%', objectFit: 'cover' }}
                                 image={useBaseUrl('/images/homepage/json_featured.png')}
                                 alt="Feature 3"
                             />
@@ -781,7 +826,7 @@ const ExploreDocs = () => {
                                 display: 'flex',
                                 flexDirection: 'column'
                             }}>
-                                <div>
+                                <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 1 }}>
                                         <Typography
                                             variant="caption"
@@ -792,29 +837,28 @@ const ExploreDocs = () => {
                                                 borderRadius: '8px',
                                                 fontSize: '9px',
                                                 fontWeight: 600,
-                                                letterSpacing: '0.3px'
+                                                letterSpacing: '0.3px',
+                                                fontFamily: 'Inter, system-ui, -apple-system, sans-serif'
                                             }}
                                         >
                                             Best Practice
                                         </Typography>
                                     </Box>
-                                    <h3>Use JSON where appropriate</h3>
-                                    <p>Wondering when to use the native JSON type over other types? In this guide we'll explain when you should and shouldn't make use of JSON.</p>
-                                </div>
-                                <Link
+                                    <h3 style={{ marginBottom: '8px', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Use JSON where appropriate</h3>
+                                    <Box sx={{ flex: 1, overflow: 'hidden' }}>
+                                        <p style={{ color: 'text.secondary', opacity: 0.8, margin: 0, lineHeight: 1.4, display: '-webkit-box', WebkitLineClamp: 5, WebkitBoxOrient: 'vertical', overflow: 'hidden', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Wondering when to use the native JSON type over other types? In this guide we'll explain when you should and shouldn't make use of JSON.</p>
+                                    </Box>
+                                </Box>
+                                <ClickHouseArrowButton
                                     to="/best-practices/use-json-where-appropriate"
-                                    style={{
-                                        color: 'var(--click-color-link)',
-                                        textDecoration: 'none',
-                                        fontSize: '14px',
-                                        fontWeight: 600,
+                                    sx={{
                                         marginTop: 'auto',
                                         paddingTop: '8px',
                                         display: 'block'
                                     }}
                                 >
-                                    Read more →
-                                </Link>
+                                    Read more
+                                </ClickHouseArrowButton>
                             </CardContent>
                         </CardActionArea>
                     </Card>
