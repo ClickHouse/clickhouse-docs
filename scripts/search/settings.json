@@ -21,7 +21,8 @@
       "url",
       "url_without_anchor",
       "type",
-      "title"
+      "title",
+      "doc_type"
     ],
     "camelCaseAttributes": [
       "h1",
@@ -51,7 +52,9 @@
       "a",
       "an"
     ],
-    "attributesForFaceting": null,
+    "attributesForFaceting": [
+      "doc_type"
+    ],
     "attributesToSnippet": [
       "content:15",
       "title:10"

@@ -1347,6 +1347,7 @@ Transactional
 TransactionsWaitCSNMode
 Trino
 Tsai
+Tunable
 Tukey
 TwoColumnList
 TypeScript
@@ -3494,6 +3495,7 @@ tui
 tukey
 tumbleEnd
 tumbleStart
+tunable
 tupleConcat
 tupleDivide
 tupleDivideByNumber
