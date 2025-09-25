@@ -7,30 +7,55 @@
 }
 
 .searchContainer {
-  margin: 2rem 0;
+  margin: 2rem 0 3rem 0;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  position: relative;
 }
 
 .searchInput {
   width: 100%;
-  max-width: 400px;
-  padding: 12px 16px;
-  border: 1px solid var(--ifm-color-emphasis-300);
-  border-radius: 8px;
-  font-size: 1rem;
-  background: var(--ifm-background-color);
+  max-width: 500px;
+  height: 38px;
+  padding: 0.5rem 0.75rem 0.5rem 2.5rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  background: #F6F7FA;
   color: var(--ifm-font-color-base);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  line-height: 1.4;
+  box-sizing: border-box;
 
   &:focus {
     outline: none;
-    border-color: var(--ifm-color-primary);
-    box-shadow: 0 0 0 2px var(--ifm-color-primary-lightest);
+  }
+
+  [data-theme='dark'] &:focus {
+    border-color: #FAFF69;
   }
 
   &::placeholder {
     color: var(--ifm-color-emphasis-600);
+    font-weight: 400;
   }
+
+  [data-theme='dark'] & {
+    --tw-bg-opacity: 1;
+    background: rgb(40 40 40 / var(--tw-bg-opacity));
+    border-color: var(--ifm-color-emphasis-300);
+  }
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  color: var(--ifm-color-emphasis-600);
+  pointer-events: none;
+  z-index: 1;
 }
 
 .filterContainer {
@@ -78,10 +103,22 @@
     background: var(--ifm-color-primary-lightest);
   }
 
+  [data-theme='dark'] &:hover {
+    background: #FAFF69;
+    border-color: #FAFF69;
+    color: #000;
+  }
+
   &.active {
     background: var(--ifm-color-primary);
     border-color: var(--ifm-color-primary);
     color: white;
+  }
+
+  [data-theme='dark'] &.active {
+    background: #FAFF69;
+    border-color: #FAFF69;
+    color: #000;
   }
 }
 
@@ -116,14 +153,19 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  // Laptop - 3 columns
+  // Desktop - 3 columns
   @media (min-width: breakpoints.$tablet-breakpoint) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  // Large desktop - 5 columns
+  // Large desktop - 4 columns (ideal for most desktop screens)
   @media (min-width: breakpoints.$laptop-breakpoint) {
-    grid-template-columns: repeat(4 , minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  // Extra large screens - 5 columns
+  @media (min-width: 1600px) {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
 

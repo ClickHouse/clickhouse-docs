@@ -1,21 +1,5 @@
 [
   {
-    "slug": "/integrations/metabase",
-    "integration_logo": "/images/integrations/logos/logo_metabase.png",
-    "integration_type": [
-      "data visualization"
-    ],
-    "integration_tier": "partner"
-  },
-  {
-    "slug": "/integrations/mitzu",
-    "integration_logo": "/images/integrations/logos/logo_mitzu.png",
-    "integration_type": [
-      "data visualization"
-    ],
-    "integration_tier": "partner"
-  },
-  {
     "slug": "/integrations/airbyte",
     "integration_logo": "/images/integrations/logos/airbyte-logo.png",
     "integration_type": [
@@ -66,7 +50,8 @@
     "integration_type": [
       "data ingestion"
     ],
-    "integration_title": "Apache Spark"
+    "integration_title": "Apache Spark",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/astrato",
@@ -272,7 +257,8 @@
     "integration_type": [
       "data ingestion"
     ],
-    "integration_title": "Fivetran"
+    "integration_title": "Fivetran",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/go",
@@ -364,6 +350,15 @@
     "integration_tier": "partner"
   },
   {
+    "slug": "/integrations/metabase",
+    "integration_logo": "/images/integrations/logos/logo_metabase.png",
+    "integration_type": [
+      "data visualization"
+    ],
+    "integration_title": "Metabase",
+    "integration_tier": "partner"
+  },
+  {
     "slug": "/integrations/minio",
     "integration_logo": "/images/integrations/logos/minio.png",
     "integration_type": [
@@ -371,6 +366,15 @@
     ],
     "integration_title": "MinIO",
     "integration_tier": "core"
+  },
+  {
+    "slug": "/integrations/mitzu",
+    "integration_logo": "/images/integrations/logos/logo_mitzu.png",
+    "integration_type": [
+      "data visualization"
+    ],
+    "integration_title": "Mitzu",
+    "integration_tier": "partner"
   },
   {
     "slug": "/interfaces/third-party/moose-olap",
@@ -396,7 +400,8 @@
     "integration_type": [
       "data ingestion"
     ],
-    "integration_title": "PostgreSQL"
+    "integration_title": "PostgreSQL",
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/powerbi",

@@ -8,6 +8,7 @@ doc_type: 'guide'
 integration_type: ['data ingestion']
 integration_logo: '/static/images/integrations/logos/gcs.svg'
 integration_title: 'Google Cloud Storage (GCS)'
+integration_tier: 'core'
 ---
 
 import BucketDetails from '@site/docs/_snippets/_GCS_authentication_and_bucket.md';

@@ -35,18 +35,17 @@ function IntegrationCard({ integration }: { integration: IntegrationData }) {
             {getTierIcon(integration.integration_tier)}
           </div>
         )}
-        <div style={{ padding: '5px' }}>
+        <CUICard.Body>
         <CUICard.Header>
           <img
             src={useBaseUrl(integration.integration_logo)}
             alt={`${integration.integration_title || integration.slug} logo`}
-            style={{ width: '3rem', height: '3rem', margin: '0 auto' }}
           />
         </CUICard.Header>
-        <CUICard.Body>
+        <CUICard.Footer>
             {integration.integration_title}
+        </CUICard.Footer>
         </CUICard.Body>
-        </div>
       </CUICard>
     </Link>
   );
@@ -206,9 +205,23 @@ export function IntegrationGrid() {
     <div className={styles.integrationsContainer}>
       {/* Search Bar */}
       <div className={styles.searchContainer}>
+        <svg
+          className={styles.searchIcon}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          />
+        </svg>
         <input
           type="text"
-          placeholder="Search by integration..."
+          placeholder="Search by integration"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className={styles.searchInput}
