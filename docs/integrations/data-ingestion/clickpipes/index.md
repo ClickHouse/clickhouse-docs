@@ -86,7 +86,7 @@ Steps:
 ## Adjusting ClickPipes advanced settings {#clickpipes-advanced-settings}
 ClickPipes provides sensible defaults that cover the requirements of most use cases. If your use case requires additional fine-tuning, you can adjust the following settings:
 
-### Object Storage ClickPipes
+### Object Storage ClickPipes {#clickpipes-advanced-settings-object-storage}
 
 | Setting                            | Default value |  Description                     |                    
 |------------------------------------|---------------|---------------------------------------------------------------------------------------|
@@ -103,7 +103,7 @@ ClickPipes provides sensible defaults that cover the requirements of most use ca
 
 <Image img={cp_advanced_settings} alt="Advanced settings for ClickPipes" size="lg" border/>
 
-### Streaming ClickPipes
+### Streaming ClickPipes {#clickpipes-advanced-settings-streaming}
 
 | Setting                            | Default value |  Description                     |                    
 |------------------------------------|---------------|---------------------------------------------------------------------------------------|
