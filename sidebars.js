@@ -1427,7 +1427,8 @@ const sidebars = {
       link: { type: "doc", id: "chdb/reference/index" },
       items: [
         "chdb/reference/data-formats",
-        "chdb/reference/sql-reference"
+        "chdb/reference/sql-reference",
+		"chdb/api/python"
       ],
     },
     {
