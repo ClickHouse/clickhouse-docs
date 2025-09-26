@@ -40,7 +40,7 @@ or file-based databases.
   - pa.Table: When output_format is “ArrowTable” or “arrowtable”
   - chdb result object: For other formats
 * **Raises:**
-  * [**ChdbError**](#chdb.ChdbError) – If the SQL query execution fails
+  * [**ChdbError**](#chdb-chdberror) – If the SQL query execution fails
   * **ImportError** – If required dependencies are missing for DataFrame/Arrow formats
 
 ### Examples {#chdb-query-examples}
@@ -99,7 +99,7 @@ or file-based databases.
   - pa.Table: When output_format is “ArrowTable” or “arrowtable”
   - chdb result object: For other formats
 * **Raises:**
-  * [**ChdbError**](#chdb.ChdbError) – If the SQL query execution fails
+  * [**ChdbError**](#chdb-chdberror) – If the SQL query execution fails
   * **ImportError** – If required dependencies are missing for DataFrame/Arrow formats
 
 ### Examples {#chdb-sql-examples}
@@ -181,7 +181,7 @@ PyArrow Table and then to pandas using multi-threading for better performance.
 
 **Session Functions**
 
-### chdb.connect(connection_string: str = ':memory:') → [Connection](#chdb.state.sqlitelike.Connection) {#chdb-connect}
+### chdb.connect(connection_string: str = ':memory:') → [Connection](#chdb-state-sqlitelike-connection) {#chdb-connect}
 
 Create a connection to chDB background server.
 
@@ -253,7 +253,17 @@ will close any existing connection.
 - `Connection` - Database connection class
 - `Cursor` - Database cursor for DB-API 2.0 operations
 
-<a id="module-chdb.session"></a>
+## Exception Handling {#chdb-exceptions}
+
+### *class* chdb.ChdbError {#chdb-chdberror}
+
+Bases: `Exception`
+
+Base exception class for chDB-related errors.
+
+This exception is raised when chDB query execution fails or encounters
+an error. It inherits from the standard Python Exception class and
+provides error information from the underlying ClickHouse engine.
 
 ### *class* chdb.session.Session(path=None) {#session-class}
 
@@ -302,7 +312,7 @@ This method will never raise an exception, making it safe to call in
 finally blocks or destructors.
 
 #### SEE ALSO {#session-cleanup-see-also}
-- [`close()`](#chdb.session.Session.close) - For explicit session closing with error propagation
+- [`close()`](#chdb-session-session-close) - For explicit session closing with error propagation
 
 ### Examples {#session-cleanup-examples}
 
@@ -337,7 +347,7 @@ Any attempt to use the session after calling close() will result in an error.
 >>> session.close()  # Explicitly close the session
 ```
 
-#### query(sql, fmt='CSV', udf_path='') {#query}
+#### query(sql, fmt='CSV', udf_path='') {#chdb-session-session-query}
 
 Execute a SQL query and return the results.
 
@@ -374,7 +384,7 @@ instead.
 
 #### WARNING {#session-query-warning}
 This method executes the query synchronously and loads all results into
-memory. For large result sets, consider using [`send_query()`](#chdb.session.Session.send_query) for
+memory. For large result sets, consider using [`send_query()`](#chdb-session-session-send_query) for
 streaming results.
 
 ### Examples {#session-query-examples}
@@ -408,10 +418,10 @@ id,name
 ```
 
 #### SEE ALSO {#session-query-see-also}
-- [`send_query()`](#chdb.session.Session.send_query) - For streaming query execution
-- [`sql`](#chdb.session.Session.sql) - Alias for this method
+- [`send_query()`](#chdb-session-session-send_query) - For streaming query execution
+- [`sql`](#chdb-session-session-sql) - Alias for this method
 
-#### send_query(sql, fmt='CSV') → StreamingResult {#send-query}
+#### send_query(sql, fmt='CSV') → StreamingResult {#chdb-session-session-send_query}
 
 Execute a SQL query and return a streaming result iterator.
 
@@ -472,10 +482,10 @@ appropriately, as it maintains a connection to the database.
 ```
 
 #### SEE ALSO {#session-send-query-see-also}
-- [`query()`](#chdb.session.Session.query) - For non-streaming query execution
+- [`query()`](#chdb-session-session-query) - For non-streaming query execution
 - `chdb.state.sqlitelike.StreamingResult` - Streaming result iterator
 
-#### sql(sql, fmt='CSV', udf_path='') {#sql}
+#### sql(sql, fmt='CSV', udf_path='') {#chdb-session-session-sql}
 
 Execute a SQL query and return the results.
 
@@ -512,7 +522,7 @@ instead.
 
 #### WARNING {#session-sql-warning}
 This method executes the query synchronously and loads all results into
-memory. For large result sets, consider using [`send_query()`](#chdb.session.Session.send_query) for
+memory. For large result sets, consider using [`send_query()`](#chdb-session-session-send_query) for
 streaming results.
 
 ### Examples {#session-sql-examples}
@@ -546,14 +556,12 @@ id,name
 ```
 
 #### SEE ALSO {#session-sql-see-also}
-- [`send_query()`](#chdb.session.Session.send_query) - For streaming query execution
-- [`sql`](#chdb.session.Session.sql) - Alias for this method
+- [`send_query()`](#chdb-session-session-send_query) - For streaming query execution
+- [`sql`](#chdb-session-session-sql) - Alias for this method
 
 **State Management**
 
-<a id="module-chdb.state"></a>
-
-### chdb.state.connect(connection_string: str = ':memory:') → [Connection](#chdb.state.sqlitelike.Connection) {#state-connect}
+### chdb.state.connect(connection_string: str = ':memory:') → [Connection](#chdb-state-sqlitelike-connection) {#state-connect}
 
 Create a connection to chDB background server.
 
@@ -625,13 +633,11 @@ will close any existing connection.
 - `Connection` - Database connection class
 - `Cursor` - Database cursor for DB-API 2.0 operations
 
-<a id="module-chdb.state.sqlitelike"></a>
-
-### *class* chdb.state.sqlitelike.Connection(connection_string: str) {#connection-class}
+### *class* chdb.state.sqlitelike.Connection(connection_string: str) {#chdb-state-sqlitelike-connection}
 
 Bases: `object`
 
-#### close() → None {#close-none}
+#### close() → None {#chdb-session-session-close}
 
 Close the connection and cleanup resources.
 
@@ -663,7 +669,7 @@ is closed. Ensure all important data is processed before closing.
 ...     # Connection automatically closed
 ```
 
-#### cursor() → [Cursor](#chdb.state.sqlitelike.Cursor) {#cursor}
+#### cursor() → [Cursor](#chdb-state-sqlitelike-cursor) {#cursor}
 
 Create a cursor object for executing queries.
 
@@ -693,9 +699,9 @@ with this connection. Only one cursor per connection is supported.
 ```
 
 #### SEE ALSO {#connection-cursor-see-also}
-- [`Cursor`](#chdb.state.sqlitelike.Cursor) - Database cursor implementation
+- [`Cursor`](#chdb-state-sqlitelike-cursor) - Database cursor implementation
 
-#### query(query: str, format: str = 'CSV') → Any {#query-any}
+#### query(query: str, format: str = 'CSV') → Any {#chdb-state-sqlitelike-connection-query}
 
 Execute a SQL query and return the complete results.
 
@@ -724,7 +730,7 @@ format-specific post-processing.
 
 #### WARNING {#connection-query-warning}
 This method loads the entire result set into memory. For large
-results, consider using [`send_query()`](#chdb.state.sqlitelike.Connection.send_query) for streaming.
+results, consider using [`send_query()`](#chdb-state-sqlitelike-connection-send_query) for streaming.
 
 ### Examples {#connection-query-examples}
 
@@ -751,9 +757,9 @@ num,text
 ```
 
 #### SEE ALSO {#connection-query-see-also}
-- [`send_query()`](#chdb.state.sqlitelike.Connection.send_query) - For streaming query execution
+- [`send_query()`](#chdb-state-sqlitelike-connection-send_query) - For streaming query execution
 
-#### send_query(query: str, format: str = 'CSV') → StreamingResult {#send-query-streaming}
+#### send_query(query: str, format: str = 'CSV') → StreamingResult {#chdb-state-sqlitelike-connection-send_query}
 
 Execute a SQL query and return a streaming result iterator.
 
@@ -813,11 +819,11 @@ returned StreamingResult.
 ```
 
 #### SEE ALSO {#connection-send-query-see-also}
-- [`query()`](#chdb.state.sqlitelike.Connection.query) - For non-streaming query execution
+- [`query()`](#chdb-state-sqlitelike-connection-query) - For non-streaming query execution
 
 `StreamingResult` - Streaming result iterator
 
-### *class* chdb.state.sqlitelike.Cursor(connection) {#cursor-class}
+### *class* chdb.state.sqlitelike.Cursor(connection) {#chdb-state-sqlitelike-cursor}
 
 Bases: `object`
 
@@ -842,7 +848,7 @@ The cursor is also automatically closed when the connection is closed.
 >>> cursor.close()  # Cleanup cursor resources
 ```
 
-#### column_names() → list {#column-names}
+#### column_names() → list {#chdb-state-sqlitelike-cursor-column_names}
 
 Return a list of column names from the last executed query.
 
@@ -864,10 +870,10 @@ in the result set.
 ```
 
 #### SEE ALSO {#cursor-column-names-see-also}
-- [`column_types()`](#chdb.state.sqlitelike.Cursor.column_types) - Get column type information
-- [`description`](#chdb.state.sqlitelike.Cursor.description) - DB-API 2.0 column description
+- [`column_types()`](#chdb-state-sqlitelike-cursor-column_types) - Get column type information
+- [`description`](#chdb-state-sqlitelike-cursor-description) - DB-API 2.0 column description
 
-#### column_types() → list {#column-types}
+#### column_types() → list {#chdb-state-sqlitelike-cursor-column_types}
 
 Return a list of column types from the last executed query.
 
@@ -889,8 +895,8 @@ order as they appear in the result set.
 ```
 
 #### SEE ALSO {#cursor-column-types-see-also}
-- [`column_names()`](#chdb.state.sqlitelike.Cursor.column_names) - Get column name information
-- [`description`](#chdb.state.sqlitelike.Cursor.description) - DB-API 2.0 column description
+- [`column_names()`](#chdb-state-sqlitelike-cursor-column_names) - Get column name information
+- [`description`](#chdb-state-sqlitelike-cursor-description) - DB-API 2.0 column description
 
 #### commit() → None {#commit}
 
@@ -913,7 +919,7 @@ with standard DB-API 2.0 workflow.
 >>> cursor.commit()
 ```
 
-#### *property* description *: list* {#description}
+#### *property* description *: list* {#chdb-state-sqlitelike-cursor-description}
 
 Return column description as per DB-API 2.0 specification.
 
@@ -944,8 +950,8 @@ Column: name, Type: String
 ```
 
 #### SEE ALSO {#cursor-description-see-also}
-- [`column_names()`](#chdb.state.sqlitelike.Cursor.column_names) - Get just column names
-- [`column_types()`](#chdb.state.sqlitelike.Cursor.column_types) - Get just column types
+- [`column_names()`](#chdb-state-sqlitelike-cursor-column_names) - Get just column names
+- [`column_types()`](#chdb-state-sqlitelike-cursor-column_types) - Get just column types
 
 #### execute(query: str) → None {#execute}
 
@@ -995,11 +1001,11 @@ Python types:
 ```
 
 #### SEE ALSO {#cursor-execute-see-also}
-- [`fetchone()`](#chdb.state.sqlitelike.Cursor.fetchone) - Fetch single row
-- [`fetchmany()`](#chdb.state.sqlitelike.Cursor.fetchmany) - Fetch multiple rows
-- [`fetchall()`](#chdb.state.sqlitelike.Cursor.fetchall) - Fetch all remaining rows
+- [`fetchone()`](#chdb-state-sqlitelike-cursor-fetchone) - Fetch single row
+- [`fetchmany()`](#chdb-state-sqlitelike-cursor-fetchmany) - Fetch multiple rows
+- [`fetchall()`](#chdb-state-sqlitelike-cursor-fetchall) - Fetch all remaining rows
 
-#### fetchall() → tuple {#fetchall}
+#### fetchall() → tuple {#chdb-state-sqlitelike-cursor-fetchall}
 
 Fetch all remaining rows from the query result.
 
@@ -1013,7 +1019,7 @@ row tuples with appropriate Python type conversion applied.
 
 #### WARNING {#cursor-fetchall-warning}
 This method loads all remaining rows into memory at once. For large
-result sets, consider using [`fetchmany()`](#chdb.state.sqlitelike.Cursor.fetchmany) to process results
+result sets, consider using [`fetchmany()`](#chdb-state-sqlitelike-cursor-fetchmany) to process results
 in batches.
 
 ### Examples {#cursor-fetchall-examples}
@@ -1027,10 +1033,10 @@ in batches.
 ```
 
 #### SEE ALSO {#cursor-fetchall-see-also}
-- [`fetchone()`](#chdb.state.sqlitelike.Cursor.fetchone) - Fetch single row
-- [`fetchmany()`](#chdb.state.sqlitelike.Cursor.fetchmany) - Fetch multiple rows in batches
+- [`fetchone()`](#chdb-state-sqlitelike-cursor-fetchone) - Fetch single row
+- [`fetchmany()`](#chdb-state-sqlitelike-cursor-fetchmany) - Fetch multiple rows in batches
 
-#### fetchmany(size: int = 1) → tuple {#fetchmany}
+#### fetchmany(size: int = 1) → tuple {#chdb-state-sqlitelike-cursor-fetchmany}
 
 Fetch multiple rows from the query result.
 
@@ -1063,10 +1069,10 @@ than ‘size’ rows if the result set is exhausted.
 ```
 
 #### SEE ALSO {#cursor-fetchmany-see-also}
-- [`fetchone()`](#chdb.state.sqlitelike.Cursor.fetchone) - Fetch single row
-- [`fetchall()`](#chdb.state.sqlitelike.Cursor.fetchall) - Fetch all remaining rows
+- [`fetchone()`](#chdb-state-sqlitelike-cursor-fetchone) - Fetch single row
+- [`fetchall()`](#chdb-state-sqlitelike-cursor-fetchall) - Fetch all remaining rows
 
-#### fetchone() → tuple | None {#fetchone}
+#### fetchone() → tuple | None {#chdb-state-sqlitelike-cursor-fetchone}
 
 Fetch the next row from the query result.
 
@@ -1096,10 +1102,10 @@ ClickHouse column types.
 ```
 
 #### SEE ALSO {#cursor-fetchone-see-also}
-- [`fetchmany()`](#chdb.state.sqlitelike.Cursor.fetchmany) - Fetch multiple rows
-- [`fetchall()`](#chdb.state.sqlitelike.Cursor.fetchall) - Fetch all remaining rows
+- [`fetchmany()`](#chdb-state-sqlitelike-cursor-fetchmany) - Fetch multiple rows
+- [`fetchall()`](#chdb-state-sqlitelike-cursor-fetchall) - Fetch all remaining rows
 
-### chdb.state.sqlitelike.to_arrowTable(res) {#state-to-arrowtable}
+### chdb.state.sqlitelike.to_arrowTable(res) {#chdb-state-sqlitelike-to_arrowtable}
 
 Convert query result to PyArrow Table.
 
@@ -1156,7 +1162,7 @@ This function uses multi-threading for the Arrow to Pandas conversion
 to improve performance on large datasets.
 
 #### SEE ALSO {#state-to-df-see-also}
-- [`to_arrowTable()`](#chdb.state.sqlitelike.to_arrowTable) - For PyArrow Table format conversion
+- [`to_arrowTable()`](#chdb-state-sqlitelike-to_arrowtable) - For PyArrow Table format conversion
 
 ### Examples {#state-to-df-examples}
 
@@ -1200,7 +1206,7 @@ Initialize a new database connection.
 * **Parameters:**
   **path** (*str, optional*) – Database file path. None for in-memory database.
 * **Raises:**
-  [**err.Error**](#chdb.dbapi.err.Error) – If connection cannot be established
+  [**err.Error**](#chdb-dbapi-err-error) – If connection cannot be established
 
 ### chdb.dbapi.get_client_info() {#dbapi-get-client-info}
 
@@ -1285,7 +1291,7 @@ Closes the underlying chDB connection and marks this connection as closed.
 Subsequent operations on this connection will raise an Error.
 
 * **Raises:**
-  [**err.Error**](#chdb.dbapi.err.Error) – If connection is already closed
+  [**err.Error**](#chdb-dbapi-err-error) – If connection is already closed
 
 #### commit() {#dbapi-commit}
 
@@ -1304,7 +1310,7 @@ Create a new cursor for executing queries.
 * **Returns:**
   *Cursor* – New cursor object for this connection
 * **Raises:**
-  [**err.Error**](#chdb.dbapi.err.Error) – If connection is closed
+  [**err.Error**](#chdb-dbapi-err-error) – If connection is closed
 
 ### Example {#dbapi-cursor-example}
 
@@ -1363,7 +1369,7 @@ For standard DB-API usage, prefer using cursor() method.
 * **Returns:**
   Query result in the specified format
 * **Raises:**
-  [**err.InterfaceError**](#chdb.dbapi.err.InterfaceError) – If connection is closed or query fails
+  [**err.InterfaceError**](#chdb-dbapi-err-interfaceerror) – If connection is closed or query fails
 
 ### Example {#dbapi-query-example}
 
@@ -1488,10 +1494,10 @@ Parameter Styles:
 ```
 
 * **Raises:**
-  * [**ProgrammingError**](#chdb.dbapi.err.ProgrammingError) – If cursor is closed or query is malformed
-  * [**InterfaceError**](#chdb.dbapi.err.InterfaceError) – If database error occurs during execution
+  * [**ProgrammingError**](#chdb-dbapi-err-programmingerror) – If cursor is closed or query is malformed
+  * [**InterfaceError**](#chdb-dbapi-err-interfaceerror) – If database error occurs during execution
 
-#### executemany(query, args) {#executemany}
+#### executemany(query, args) {#chdb-dbapi-cursors-cursor-executemany}
 
 Execute a query multiple times with different parameter sets.
 
@@ -1533,7 +1539,7 @@ Fetch all remaining rows from the query result.
 * **Returns:**
   *list* – List of tuples representing all remaining rows
 * **Raises:**
-  [**ProgrammingError**](#chdb.dbapi.err.ProgrammingError) – If execute() has not been called first
+  [**ProgrammingError**](#chdb-dbapi-err-programmingerror) – If execute() has not been called first
 
 #### WARNING {#dbapi-fetchall-warning}
 This method can consume large amounts of memory for big result sets.
@@ -1557,7 +1563,7 @@ Fetch multiple rows from the query result.
 * **Returns:**
   *list* – List of tuples representing the fetched rows
 * **Raises:**
-  [**ProgrammingError**](#chdb.dbapi.err.ProgrammingError) – If execute() has not been called first
+  [**ProgrammingError**](#chdb-dbapi-err-programmingerror) – If execute() has not been called first
 
 ### Example {#dbapi-fetchmany-example}
 
@@ -1574,7 +1580,7 @@ Fetch the next row from the query result.
 * **Returns:**
   *tuple or None* – Next row as a tuple, or None if no more rows available
 * **Raises:**
-  [**ProgrammingError**](#chdb.dbapi.err.ProgrammingError) – If execute() has not been called first
+  [**ProgrammingError**](#chdb-dbapi-err-programmingerror) – If execute() has not been called first
 
 ### Example {#dbapi-fetchone-example}
 
@@ -1588,7 +1594,7 @@ Fetch the next row from the query result.
 
 #### max_stmt_length *= 1024000* {#max-stmt-length}
 
-Max statement size which [`executemany()`](#chdb.dbapi.cursors.Cursor.executemany) generates.
+Max statement size which [`executemany()`](#chdb-dbapi-cursors-cursor-executemany) generates.
 
 Default value is 1024000.
 
@@ -1649,8 +1655,6 @@ This method does nothing but is required by DB-API 2.0 specification.
 chDB automatically handles output sizing internally.
 
 **Error Classes**
-
-<a id="module-chdb.dbapi.err"></a>
 
 Exception classes for chdb database operations.
 
@@ -1714,9 +1718,9 @@ SQL Error: Table 'nonexistent_table' doesn't exist
 Constraint violation: Duplicate entry '1' for key 'PRIMARY'
 ```
 
-### *exception* chdb.dbapi.err.DataError {#dataerror}
+### *exception* chdb.dbapi.err.DataError {#chdb-dbapi-err-dataerror}
 
-Bases: [`DatabaseError`](#chdb.dbapi.err.DatabaseError)
+Bases: [`DatabaseError`](#chdb-dbapi-err-databaseerror)
 
 Exception raised for errors that are due to problems with the processed data.
 
@@ -1731,7 +1735,7 @@ the data being processed, such as:
 - Invalid data format for column type
 
 * **Raises:**
-  [**DataError**](#chdb.dbapi.err.DataError) – When data validation or processing fails
+  [**DataError**](#chdb-dbapi-err-dataerror) – When data validation or processing fails
 
 ### Examples {#dataerror-examples}
 
@@ -1747,9 +1751,9 @@ DataError: Division by zero
 DataError: Invalid date format
 ```
 
-### *exception* chdb.dbapi.err.DatabaseError {#databaseerror}
+### *exception* chdb.dbapi.err.DatabaseError {#chdb-dbapi-err-databaseerror}
 
-Bases: [`Error`](#chdb.dbapi.err.Error)
+Bases: [`Error`](#chdb-dbapi-err-error)
 
 Exception raised for errors that are related to the database.
 
@@ -1766,11 +1770,11 @@ Common scenarios include:
 
 #### NOTE {#databaseerror-note}
 This serves as the parent class for more specific database error types
-such as [`DataError`](#chdb.dbapi.err.DataError), [`OperationalError`](#chdb.dbapi.err.OperationalError), etc.
+such as [`DataError`](#chdb-dbapi-err-dataerror), [`OperationalError`](#chdb-dbapi-err-operationalerror), etc.
 
-### *exception* chdb.dbapi.err.Error {#error}
+### *exception* chdb.dbapi.err.Error {#chdb-dbapi-err-error}
 
-Bases: [`StandardError`](#chdb.dbapi.err.StandardError)
+Bases: [`StandardError`](#chdb-dbapi-err-standarderror)
 
 Exception that is the base class of all other error exceptions (not Warning).
 
@@ -1782,11 +1786,11 @@ successful completion of operations.
 This exception hierarchy follows the Python DB API 2.0 specification.
 
 #### SEE ALSO {#error-see-also}
-- [`Warning`](#chdb.dbapi.err.Warning) - For non-fatal warnings that don’t prevent operation completion
+- [`Warning`](#chdb-dbapi-err-warning) - For non-fatal warnings that don’t prevent operation completion
 
-### *exception* chdb.dbapi.err.IntegrityError {#integrityerror}
+### *exception* chdb.dbapi.err.IntegrityError {#chdb-dbapi-err-integrityerror}
 
-Bases: [`DatabaseError`](#chdb.dbapi.err.DatabaseError)
+Bases: [`DatabaseError`](#chdb-dbapi-err-databaseerror)
 
 Exception raised when the relational integrity of the database is affected.
 
@@ -1800,7 +1804,7 @@ including:
 - Referential integrity violations
 
 * **Raises:**
-  [**IntegrityError**](#chdb.dbapi.err.IntegrityError) – When database integrity constraints are violated
+  [**IntegrityError**](#chdb-dbapi-err-integrityerror) – When database integrity constraints are violated
 
 ### Examples {#integrityerror-examples}
 
@@ -1817,9 +1821,9 @@ IntegrityError: Duplicate entry '1' for key 'PRIMARY'
 IntegrityError: Cannot add or update a child row: foreign key constraint fails
 ```
 
-### *exception* chdb.dbapi.err.InterfaceError {#interfaceerror}
+### *exception* chdb.dbapi.err.InterfaceError {#chdb-dbapi-err-interfaceerror}
 
-Bases: [`Error`](#chdb.dbapi.err.Error)
+Bases: [`Error`](#chdb-dbapi-err-error)
 
 Exception raised for errors that are related to the database interface rather than the database itself.
 
@@ -1832,15 +1836,15 @@ implementation, such as:
 - Module import or initialization failures
 
 * **Raises:**
-  [**InterfaceError**](#chdb.dbapi.err.InterfaceError) – When database interface encounters errors unrelated to database operations
+  [**InterfaceError**](#chdb-dbapi-err-interfaceerror) – When database interface encounters errors unrelated to database operations
 
 #### NOTE {#interfaceerror-note}
 These errors are typically programming errors or configuration issues
 that can be resolved by fixing the client code or configuration.
 
-### *exception* chdb.dbapi.err.InternalError {#internalerror}
+### *exception* chdb.dbapi.err.InternalError {#chdb-dbapi-err-internalerror}
 
-Bases: [`DatabaseError`](#chdb.dbapi.err.DatabaseError)
+Bases: [`DatabaseError`](#chdb-dbapi-err-databaseerror)
 
 Exception raised when the database encounters an internal error.
 
@@ -1854,7 +1858,7 @@ errors that are not caused by the application, such as:
 - System-level database errors
 
 * **Raises:**
-  [**InternalError**](#chdb.dbapi.err.InternalError) – When database encounters internal inconsistencies
+  [**InternalError**](#chdb-dbapi-err-internalerror) – When database encounters internal inconsistencies
 
 #### WARNING {#internalerror-warning}
 Internal errors may indicate serious database problems that require
@@ -1865,9 +1869,9 @@ recoverable through application-level retry logic.
 These errors are generally outside the control of the application
 and may require database restart or repair operations.
 
-### *exception* chdb.dbapi.err.NotSupportedError {#notsupportederror}
+### *exception* chdb.dbapi.err.NotSupportedError {#chdb-dbapi-err-notsupportederror}
 
-Bases: [`DatabaseError`](#chdb.dbapi.err.DatabaseError)
+Bases: [`DatabaseError`](#chdb-dbapi-err-databaseerror)
 
 Exception raised when a method or database API is not supported.
 
@@ -1881,7 +1885,7 @@ configuration or version, such as:
 - Attempting to use disabled database features
 
 * **Raises:**
-  [**NotSupportedError**](#chdb.dbapi.err.NotSupportedError) – When unsupported database features are accessed
+  [**NotSupportedError**](#chdb-dbapi-err-notsupportederror) – When unsupported database features are accessed
 
 ### Examples {#notsupportederror-examples}
 
@@ -1901,9 +1905,9 @@ NotSupportedError: WITH clause not supported in this database version
 Check database documentation and driver capabilities to avoid
 these errors. Consider graceful fallbacks where possible.
 
-### *exception* chdb.dbapi.err.OperationalError {#operationalerror}
+### *exception* chdb.dbapi.err.OperationalError {#chdb-dbapi-err-operationalerror}
 
-Bases: [`DatabaseError`](#chdb.dbapi.err.DatabaseError)
+Bases: [`DatabaseError`](#chdb-dbapi-err-databaseerror)
 
 Exception raised for errors that are related to the database’s operation.
 
@@ -1919,7 +1923,7 @@ and are not necessarily under the control of the programmer, including:
 - Authentication or authorization failures
 
 * **Raises:**
-  [**OperationalError**](#chdb.dbapi.err.OperationalError) – When database operations fail due to operational issues
+  [**OperationalError**](#chdb-dbapi-err-operationalerror) – When database operations fail due to operational issues
 
 #### NOTE {#operationalerror-note}
 These errors are typically transient and may be resolved by retrying
@@ -1929,9 +1933,9 @@ the operation or addressing system-level issues.
 Some operational errors may indicate serious system problems that
 require administrative intervention.
 
-### *exception* chdb.dbapi.err.ProgrammingError {#programmingerror}
+### *exception* chdb.dbapi.err.ProgrammingError {#chdb-dbapi-err-programmingerror}
 
-Bases: [`DatabaseError`](#chdb.dbapi.err.DatabaseError)
+Bases: [`DatabaseError`](#chdb-dbapi-err-databaseerror)
 
 Exception raised for programming errors in database operations.
 
@@ -1946,7 +1950,7 @@ application’s database usage, including:
 - Incorrect usage of database API methods
 
 * **Raises:**
-  [**ProgrammingError**](#chdb.dbapi.err.ProgrammingError) – When SQL statements or API usage contains errors
+  [**ProgrammingError**](#chdb-dbapi-err-programmingerror) – When SQL statements or API usage contains errors
 
 ### Examples {#programmingerror-examples}
 
@@ -1968,7 +1972,7 @@ ProgrammingError: You have an error in your SQL syntax
 ProgrammingError: Column count doesn't match value count
 ```
 
-### *exception* chdb.dbapi.err.StandardError {#standarderror}
+### *exception* chdb.dbapi.err.StandardError {#chdb-dbapi-err-standarderror}
 
 Bases: `Exception`
 
@@ -1982,9 +1986,9 @@ hierarchy for database operations.
 This exception class follows the Python DB API 2.0 specification
 for database exception handling.
 
-### *exception* chdb.dbapi.err.Warning {#dbapi-warning}
+### *exception* chdb.dbapi.err.Warning {#chdb-dbapi-err-warning}
 
-Bases: [`StandardError`](#chdb.dbapi.err.StandardError)
+Bases: [`StandardError`](#chdb-dbapi-err-standarderror)
 
 Exception raised for important warnings like data truncations while inserting, etc.
 
