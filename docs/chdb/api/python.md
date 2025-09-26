@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 ## Core Query Functions {#core-query-functions}
 
-### chdb.query(sql, output_format='CSV', path='', udf_path='') {#chdb-query}
+### chdb.query {#chdb-query}
 
 Execute SQL query using chDB engine.
 
@@ -19,31 +19,41 @@ This is the main query function that executes SQL statements using the embedded
 ClickHouse engine. Supports various output formats and can work with in-memory
 or file-based databases.
 
-* **Parameters:**
-  * **sql** (*str*) – SQL query string to execute
-  * **output_format** (*str, optional*) – Output format for results. Defaults to “CSV”.
-      Supported formats include:
-  - “CSV” - Comma-separated values
-  - “JSON” - JSON format
-  - “Arrow” - Apache Arrow format
-  - “Parquet” - Parquet format
-  - “DataFrame” - Pandas DataFrame
-  - “ArrowTable” - PyArrow Table
-  - “Debug” - Enable verbose logging
-  * **path** (*str, optional*) – Database file path. Defaults to “” (in-memory database).
-      Can be a file path or “:memory:” for in-memory database.
-  * **udf_path** (*str, optional*) – Path to User-Defined Functions directory. Defaults to “”.
-* **Returns:**
-  *Query result in the specified format* –
-  - str: For text formats like CSV, JSON
-  - pd.DataFrame: When output_format is “DataFrame” or “dataframe”
-  - pa.Table: When output_format is “ArrowTable” or “arrowtable”
-  - chdb result object: For other formats
-* **Raises:**
-  * [**ChdbError**](#chdb-chdberror) – If the SQL query execution fails
-  * **ImportError** – If required dependencies are missing for DataFrame/Arrow formats
+**Syntax**
 
-### Examples {#chdb-query-examples}
+```python
+chdb.query(sql, output_format='CSV', path='', udf_path='')
+```
+
+**Parameters**
+
+| Parameter       | Type  | Default    | Description                                                                                                                                                                                                                                                                                                     |
+|-----------------|-------|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `sql`           | str   | *required* | SQL query string to execute                                                                                                                                                                                                                                                                                     |
+| `output_format` | str   | `"CSV"`    | Output format for results. Supported formats:<br/>• `"CSV"` - Comma-separated values<br/>• `"JSON"` - JSON format<br/>• `"Arrow"` - Apache Arrow format<br/>• `"Parquet"` - Parquet format<br/>• `"DataFrame"` - Pandas DataFrame<br/>• `"ArrowTable"` - PyArrow Table<br/>• `"Debug"` - Enable verbose logging |
+| `path`          | str   | `""`       | Database file path. Defaults to in-memory database.<br/>Can be a file path or `":memory:"` for in-memory database                                                                                                                                                                                               |
+| `udf_path`      | str   | `""`       | Path to User-Defined Functions directory                                                                                                                                                                                                                                                                        |
+
+**Returns**
+
+Returns the query result in the specified format:
+
+| Return Type        | Condition                                                |
+|--------------------|----------------------------------------------------------|
+| `str`              | For text formats like CSV, JSON                          |
+| `pd.DataFrame`     | When `output_format` is `"DataFrame"` or `"dataframe"`   |
+| `pa.Table`         | When `output_format` is `"ArrowTable"` or `"arrowtable"` |
+| chdb result object | For other formats                                        |
+
+  
+**Raises**
+
+| Exception     | Condition                                                        |
+|---------------|------------------------------------------------------------------|
+| `ChdbError`   | If the SQL query execution fails                                 |
+| `ImportError` | If required dependencies are missing for DataFrame/Arrow formats |
+
+**Examples**
 
 ```pycon
 >>> # Basic CSV query
@@ -70,7 +80,7 @@ or file-based databases.
 >>> result = chdb.query("SELECT my_udf('test')", udf_path="/path/to/udfs")
 ```
 
-### chdb.sql(sql, output_format='CSV', path='', udf_path='') {#chdb-sql}
+### chdb.sql {#chdb-sql}
 
 Execute SQL query using chDB engine.
 
@@ -78,31 +88,40 @@ This is the main query function that executes SQL statements using the embedded
 ClickHouse engine. Supports various output formats and can work with in-memory
 or file-based databases.
 
-* **Parameters:**
-  * **sql** (*str*) – SQL query string to execute
-  * **output_format** (*str, optional*) – Output format for results. Defaults to “CSV”.
-      Supported formats include:
-  - “CSV” - Comma-separated values
-  - “JSON” - JSON format
-  - “Arrow” - Apache Arrow format
-  - “Parquet” - Parquet format
-  - “DataFrame” - Pandas DataFrame
-  - “ArrowTable” - PyArrow Table
-  - “Debug” - Enable verbose logging
-  * **path** (*str, optional*) – Database file path. Defaults to “” (in-memory database).
-      Can be a file path or “:memory:” for in-memory database.
-  * **udf_path** (*str, optional*) – Path to User-Defined Functions directory. Defaults to “”.
-* **Returns:**
-  *Query result in the specified format* –
-  - str: For text formats like CSV, JSON
-  - pd.DataFrame: When output_format is “DataFrame” or “dataframe”
-  - pa.Table: When output_format is “ArrowTable” or “arrowtable”
-  - chdb result object: For other formats
-* **Raises:**
-  * [**ChdbError**](#chdb-chdberror) – If the SQL query execution fails
-  * **ImportError** – If required dependencies are missing for DataFrame/Arrow formats
+**Syntax**
 
-### Examples {#chdb-sql-examples}
+```python
+chdb.sql(sql, output_format='CSV', path='', udf_path='')
+```
+
+**Parameters**
+
+| Parameter       | Type  | Default    | Description                                                                                                                                                                                                                                                                                              |
+|-----------------|-------|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `sql`           | str   | *required* | SQL query string to execute                                                                                                                                                                                                                                                                              |
+| `output_format` | str   | `"CSV"`    | Output format for results. Supported formats:<br/>• `"CSV"` - Comma-separated values<br/>• `"JSON"` - JSON format<br/>• `"Arrow"` - Apache Arrow format<br/>• `"Parquet"` - Parquet format<br/>• `"DataFrame"` - Pandas DataFrame<br/>• `"ArrowTable"` - PyArrow Table<br/>• `"Debug"` - Enable verbose logging |
+| `path`          | str   | `""`       | Database file path. Defaults to in-memory database.<br/>Can be a file path or `":memory:"` for in-memory database                                                                                                                                                                                         |
+| `udf_path`      | str   | `""`       | Path to User-Defined Functions directory                                                                                                                                                                                                                                                                 |
+
+**Returns**
+
+Returns the query result in the specified format:
+
+| Return Type        | Condition                                                |
+|--------------------|----------------------------------------------------------|
+| `str`              | For text formats like CSV, JSON                          |
+| `pd.DataFrame`     | When `output_format` is `"DataFrame"` or `"dataframe"`   |
+| `pa.Table`         | When `output_format` is `"ArrowTable"` or `"arrowtable"` |
+| chdb result object | For other formats                                        |
+
+**Raises**
+
+| Exception                 | Condition                                                        |
+|---------------------------|------------------------------------------------------------------|
+| [`ChdbError`](#chdberror) | If the SQL query execution fails                                 |
+| `ImportError`             | If required dependencies are missing for DataFrame/Arrow formats |
+
+**Examples**
 
 ```pycon
 >>> # Basic CSV query
@@ -129,21 +148,39 @@ or file-based databases.
 >>> result = chdb.query("SELECT my_udf('test')", udf_path="/path/to/udfs")
 ```
 
-### chdb.to_arrowTable(res) {#chdb-to-arrowtable}
+### chdb.to_arrowTable {#chdb-to-arrowtable}
 
 Convert query result to PyArrow Table.
 
 Converts a chDB query result to a PyArrow Table for efficient columnar data processing.
 Returns an empty table if the result is empty.
 
-* **Parameters:**
-  **res** – chDB query result object containing binary Arrow data
-* **Returns:**
-  *pa.Table* – PyArrow Table containing the query results
-* **Raises:**
-  **ImportError** – If pyarrow or pandas are not installed
+**Syntax**
 
-### Example {#chdb-to-arrowtable-example}
+```python
+chdb.to_arrowTable(res)
+```
+
+**Parameters**
+
+
+| Parameter    | Description                                           |
+|--------------|-------------------------------------------------------|
+| `res`        | chDB query result object containing binary Arrow data |
+
+**Returns**
+
+| Return type | Description                                |
+|-------------|--------------------------------------------|
+| `pa.Table`  | PyArrow Table containing the query results |
+
+**Raises**
+
+| Error type    | Description                            |
+|---------------|----------------------------------------|
+| `ImportError` | If pyarrow or pandas are not installed |
+
+**Example**
 
 ```pycon
 >>> result = chdb.query("SELECT 1 as id, 'hello' as msg", "Arrow")
@@ -153,21 +190,38 @@ Returns an empty table if the result is empty.
 0   1  hello
 ```
 
-### chdb.to_df(r) {#chdb-to-df}
+### chdb.to_df {#chdb-to-df}
 
 Convert query result to pandas DataFrame.
 
 Converts a chDB query result to a pandas DataFrame by first converting to
 PyArrow Table and then to pandas using multi-threading for better performance.
 
-* **Parameters:**
-  **r** – chDB query result object containing binary Arrow data
-* **Returns:**
-  *pd.DataFrame* – pandas DataFrame containing the query results
-* **Raises:**
-  **ImportError** – If pyarrow or pandas are not installed
+**Syntax**
 
-### Example {#chdb-to-df-example}
+```python
+chdb.to_df(r)
+```
+
+**Parameters**
+
+| Parameter  | Description                                           |
+|------------|-------------------------------------------------------|
+| `r`        | chDB query result object containing binary Arrow data |
+
+**Returns**
+
+| Return Type | Description |
+|-------------|-------------|
+| `pd.DataFrame` | pandas DataFrame containing the query results |
+
+**Raises**
+
+| Exception     | Condition                              |
+|---------------|----------------------------------------|
+| `ImportError` | If pyarrow or pandas are not installed |
+
+**Example**
 
 ```pycon
 >>> result = chdb.query("SELECT 1 as id, 'hello' as msg", "Arrow")
@@ -179,15 +233,19 @@ PyArrow Table and then to pandas using multi-threading for better performance.
 
 ## Connection and Session Management {#connection-session-management}
 
-**Session Functions**
+The following Session Functions are available:
 
-### chdb.connect(connection_string: str = ':memory:') → [Connection](#chdb-state-sqlitelike-connection) {#chdb-connect}
+### chdb.connect {#chdb-connect}
 
 Create a connection to chDB background server.
 
-This function establishes a connection to the chDB (ClickHouse) database engine.
-Only one open connection is allowed per process. Multiple calls with the same
-connection string will return the same connection object.
+This function establishes a [connection](#chdb-state-sqlitelike-connection) to the chDB (ClickHouse) database engine.
+Only one open connection is allowed per process.
+Multiple calls with the same connection string will return the same connection object.
+
+```python
+chdb.connect(connection_string: str = ':memory:') → Connection
+```
 
 * **Parameters:**
   **connection_string** (*str, optional*) – Database connection string. Defaults to “:memory:”.
@@ -223,11 +281,12 @@ connection string will return the same connection object.
 * **Raises:**
   **RuntimeError** – If connection to database fails
 
-#### WARNING {#warning}
-Only one connection per process is supported. Creating a new connection
-will close any existing connection.
+:::warning
+Only one connection per process is supported.
+Creating a new connection will close any existing connection.
+:::
 
-### Examples {#chdb-connect-examples}
+**Examples**
 
 ```pycon
 >>> # In-memory database
@@ -249,9 +308,9 @@ will close any existing connection.
 >>> # Connection automatically closed
 ```
 
-#### SEE ALSO {#see-also}
-- `Connection` - Database connection class
-- `Cursor` - Database cursor for DB-API 2.0 operations
+**See also**
+- [`Connection`](#chdb-state-sqlitelike-connection) - Database connection class
+- [`Cursor`](#chdb-state-sqlitelike-cursor) - Database cursor for DB-API 2.0 operations
 
 ## Exception Handling {#chdb-exceptions}
 
