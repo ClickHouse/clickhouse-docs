@@ -44,8 +44,7 @@ Returns the query result in the specified format:
 | `pd.DataFrame`     | When `output_format` is `"DataFrame"` or `"dataframe"`   |
 | `pa.Table`         | When `output_format` is `"ArrowTable"` or `"arrowtable"` |
 | chdb result object | For other formats                                        |
-
-  
+ 
 **Raises**
 
 | Exception     | Condition                                                        |
@@ -152,7 +151,7 @@ Returns the query result in the specified format:
 
 ---
 
-### `chdb.to_arrowTable`
+### `chdb.to_arrowTable` {#chdb-state-sqlitelike-to_arrowtable}
 
 Convert query result to PyArrow Table.
 
@@ -166,7 +165,6 @@ chdb.to_arrowTable(res)
 ```
 
 **Parameters**
-
 
 | Parameter    | Description                                           |
 |--------------|-------------------------------------------------------|
@@ -241,11 +239,11 @@ chdb.to_df(r)
 
 The following Session Functions are available:
 
-### `chdb.connect` {#chdb_connect}
+### `chdb.connect` {#chdb-connect}
 
 Create a connection to chDB background server.
 
-This function establishes a [connection](#chdb-state-sqlitelike-connection) to the chDB (ClickHouse) database engine.
+This function establishes a [Connection](#chdb-state-sqlitelike-connection) to the chDB (ClickHouse) database engine.
 Only one open connection is allowed per process.
 Multiple calls with the same connection string will return the same connection object.
 
@@ -798,7 +796,7 @@ Creating a new connection will close any existing connection.
 - `Connection` - Database connection class
 - `Cursor` - Database cursor for DB-API 2.0 operations
 
-### **class** `chdb.state.sqlitelike.Connection` {#chdb_state_sqlitelike_connection}
+### **class** `chdb.state.sqlitelike.Connection` {#chdb-state-sqlitelike-connection}
 
 Bases: `object`
 
@@ -1039,7 +1037,7 @@ Only the “Arrow” format supports the `record_batch()` method on the returned
 
 ---
 
-### **class** `chdb.state.sqlitelike.Cursor`
+### **class** `chdb.state.sqlitelike.Cursor` {#chdb-state-sqlitelike-cursor}
 
 Bases: `object`
 
@@ -2804,7 +2802,7 @@ Base 0 means to interpret the base from the string as an integer literal.
 
 #### `chdb.dbapi.paramstyle = 'format'` {#paramstyle}
 
-```
+```python
 str(object=’’) -> str
 str(bytes_or_buffer[, encoding[, errors]]) -> str
 ```
@@ -3109,8 +3107,6 @@ This module provides functionality for creating and managing user-defined functi
 in chDB. It allows you to extend chDB’s capabilities by writing custom Python functions
 that can be called from SQL queries.
 
----
-
 ### `chdb.udf.chdb_udf` {#chdb-udf}
 
 Decorator for chDB Python UDF(User Defined Function).
@@ -3316,7 +3312,6 @@ chdb.utils.infer_data_type(values: List[Any]) → str
 |-------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `str`       | A string representing the inferred data type. Possible return values are: ”int8”, “int16”, “int32”, “int64”, “int128”, “int256”, “uint8”, “uint16”,“uint32”, “uint64”, “uint128”, “uint256”, “decimal128”, “decimal256”, “float32”, “float64”, or “string”. | 
 
-
 :::note
 - If all values in the list are None, the function returns “string”.
 - If any value in the list is a string, the function immediately returns “string”.
@@ -3352,13 +3347,15 @@ chdb.utils.infer_data_types`(column_data: Dict[str, List[Any]], n_rows: int = 10
 |---------------|----------------------------------------------------------------------------|
 | `List[tuple]` | A list of tuples, each containing a column name and its inferred data type |
 
----
-
 ## Abstract Base Classes {#abstract-base-classes}
 
-### **class** `chdb.rwabc.PyReader(data: Any)` {#pyreader}
+### **class** `chdb.rwabc.PyReader`(data: Any)` {#pyreader}
 
 Bases: `ABC`
+
+```python
+class chdb.rwabc.PyReader(data: Any)
+```
 
 ---
 
@@ -3410,7 +3407,7 @@ abstractmethod finalize() → bytes
 
 ---
 
-#### **abstractmethod** `write`(col_names: List[str], columns: List[List[Any]]) → None {#write}
+#### **abstractmethod** `write` {#write}
 
 Save columns of data to blocks. Must be implemented by subclasses.
 
@@ -3427,7 +3424,7 @@ abstractmethod write(col_names: List[str], columns: List[List[Any]]) → None
 
 ## Exception Handling {#exception-handling}
 
-### **class** `chdb.ChdbError`
+### **class** `chdb.ChdbError` {#chdberror}
 
 Bases: `Exception`
 
