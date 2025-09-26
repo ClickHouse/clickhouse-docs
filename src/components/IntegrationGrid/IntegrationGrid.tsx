@@ -2,14 +2,36 @@ import React, { useState, useMemo, useEffect } from 'react';
 import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import CUICard from '@site/src/components/CUICard';
-// @ts-ignore
-import integrationsData from '@site/static/integrations.json';
-// @ts-ignore
-import integrationsCustomData from '@site/static/integrations_custom.json';
 import styles from './styles.module.scss';
+
+type CMSIntegrationData = {
+  id: number;
+  attributes: {
+    name: string;
+    slug: string;
+    category: string;
+    supportLevel: string;
+    docsLink?: string;
+    logo?: {
+      data?: {
+        attributes: {
+          url: string;
+        };
+      };
+    };
+    logo_dark?: {
+      data?: {
+        attributes: {
+          url: string;
+        };
+      };
+    };
+  };
+};
 
 type IntegrationData = {
   slug: string;
+  docsLink?: string;
   integration_logo: string;
   integration_type: string[];
   integration_title?: string;
@@ -17,9 +39,28 @@ type IntegrationData = {
 };
 
 function IntegrationCard({ integration }: { integration: IntegrationData }) {
+  // Convert ClickHouse docs URLs to relative links
+  const getNavigationLink = (docsLink: string | undefined, slug: string): string => {
+    if (!docsLink) {
+      return slug;
+    }
+
+    // Check if it's a ClickHouse docs URL
+    const clickhouseDocsMatch = docsLink.match(/https:\/\/clickhouse\.com\/docs\/(.+)/);
+    if (clickhouseDocsMatch) {
+      // Convert to relative link by removing the domain and keeping everything after /docs
+      return `/${clickhouseDocsMatch[1]}`;
+    }
+
+    // For external URLs, return as-is
+    return docsLink;
+  };
+
+  const linkTo = getNavigationLink(integration.docsLink, integration.slug);
+
   return (
     <Link
-      to={integration.slug}
+      to={linkTo}
       style={{ textDecoration: 'none', color: 'inherit' }}
     >
       <CUICard style={{ position: 'relative' }}>
@@ -38,7 +79,7 @@ function IntegrationCard({ integration }: { integration: IntegrationData }) {
         <CUICard.Body>
         <CUICard.Header>
           <img
-            src={useBaseUrl(integration.integration_logo)}
+            src={integration.integration_logo}
             alt={`${integration.integration_title || integration.slug} logo`}
           />
         </CUICard.Header>
@@ -65,19 +106,76 @@ function IntegrationCards({ integrations }: { integrations: IntegrationData[] })
   );
 }
 
-export function IntegrationGrid() {
-  // Combine integrations from both JSON files and normalize logo paths
-  const integrations: IntegrationData[] = useMemo(() => {
-    // Process custom integrations to fix logo paths
-    const processedCustomData = integrationsCustomData.map(integration => ({
-      ...integration,
-      integration_logo: integration.integration_logo.startsWith('/static/')
-        ? integration.integration_logo.replace('/static/', '/')
-        : integration.integration_logo
-    }));
+// Helper function to transform CMS data to the expected format
+function transformCMSData(cmsData: CMSIntegrationData[]): IntegrationData[] {
+  // Mapping from CMS category to display-friendly integration type
+  const categoryMapping: { [key: string]: string } = {
+    'AI_ML': 'AI/ML',
+    'CLICKPIPES': 'ClickPipes',
+    'DATA_INGESTION': 'Data ingestion',
+    'DATA_INTEGRATION': 'Data integration',
+    'DATA_MANAGEMENT': 'Data management',
+    'DATA_VISUALIZATION': 'Data visualization',
+    'LANGUAGE_CLIENT': 'Language client',
+    'SECURITY_GOVERNANCE': 'Security governance',
+    'SQL_CLIENT': 'SQL client'
+  };
 
-    return [...integrationsData, ...processedCustomData];
+  return cmsData.map(item => {
+    // Map category to integration_type array
+    const integrationTypes = item.attributes.category ? [categoryMapping[item.attributes.category] || item.attributes.category] : [];
+
+    // Map supportLevel to integration_tier
+    const integrationTier = item.attributes.supportLevel?.toLowerCase() || '';
+
+    return {
+      slug: item.attributes.slug.startsWith('/') ? item.attributes.slug : `/${item.attributes.slug}`,
+      docsLink: item.attributes.docsLink,
+      integration_logo: item.attributes.logo?.data?.attributes.url ? `https://cms.clickhouse-dev.com:1337${item.attributes.logo.data.attributes.url}` : '',
+      integration_type: integrationTypes,
+      integration_title: item.attributes.name,
+      integration_tier: integrationTier
+    };
+  });
+}
+
+// Custom hook for fetching CMS data
+function useCMSIntegrations() {
+  const [integrations, setIntegrations] = useState<IntegrationData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchIntegrations = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('https://cms.clickhouse-dev.com:1337/api/integrations?populate[]=logo&populate[]=logo_dark');
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const transformedData = transformCMSData(data.data || []);
+        setIntegrations(transformedData);
+        setError(null);
+      } catch (err) {
+        console.error('Failed to fetch integrations from CMS:', err);
+        setError(err instanceof Error ? err.message : 'Failed to fetch integrations');
+        setIntegrations([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchIntegrations();
   }, []);
+
+  return { integrations, loading, error };
+}
+
+export function IntegrationGrid() {
+  const { integrations, loading, error } = useCMSIntegrations();
 
   // Initialize state from localStorage or default values
   const [searchTerm, setSearchTerm] = useState(() => {
@@ -230,10 +328,30 @@ export function IntegrationGrid() {
     return grouped;
   }, [filteredIntegrations]);
 
+  // Handle loading state
+  if (loading) {
+    return (
+      <div style={{ textAlign: 'center', padding: '2rem' }}>
+        <p>Loading integrations...</p>
+      </div>
+    );
+  }
+
+  // Handle error state
+  if (error) {
+    return (
+      <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--ifm-color-danger)' }}>
+        <p>Failed to load integrations: {error}</p>
+        <p>Please try refreshing the page.</p>
+      </div>
+    );
+  }
+
+  // Handle empty state
   if (integrations.length === 0) {
     return (
       <div style={{ textAlign: 'center', padding: '2rem' }}>
-        <p>No integrations found with complete metadata.</p>
+        <p>No integrations found.</p>
       </div>
     );
   }
