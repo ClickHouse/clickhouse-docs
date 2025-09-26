@@ -23,24 +23,22 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-This section provides guides on setting up dbt and the ClickHouse plugin, as well as an example of using dbt with ClickHouse. The example covers the following:
+This section provides guides on setting up dbt and the ClickHouse adapter, as well as an example of using dbt with ClickHouse. The example covers the following:
 
-1. Creating a dbt project and setting up the ClickHouse plugin.
+1. Creating a dbt project and setting up the ClickHouse adapter.
 2. Defining a model.
 3. Updating a model.
 4. Creating an incremental model.
 5. Creating a snapshot model.
 6. Using materialized views.
 
-These guides are designed to be used in conjunction with the rest of the [documentation](/integrations/dbt#index) and the [features and configurations](/integrations/dbt/features-and-configurations#index).
-
-### Index {#index}
+These guides are designed to be used in conjunction with the rest of the [documentation](/integrations/dbt) and the [features and configurations](/integrations/dbt/features-and-configurations).
 
 <TOCInline toc={toc}  maxHeadingLevel={2} />
 
 ## Setup {#setup}
 
-Follow the instructions in the [Setup of dbt and the ClickHouse plugin](/integrations/dbt#index) section to prepare your environment.
+Follow the instructions in the [Setup of dbt and the ClickHouse adapter](/integrations/dbt) section to prepare your environment.
 
 **Important: The following is tested under python 3.9.**
 
@@ -485,13 +483,13 @@ In the previous example, our model was materialized as a view. While this might 
 
 The previous example created a table to materialize the model. This table will be reconstructed for each dbt execution. This may be infeasible and extremely costly for larger result sets or complex transformations. To address this challenge and reduce the build time, dbt offers Incremental materializations. This allows dbt to insert or update records into a table since the last execution, making it appropriate for event-style data. Under the hood a temporary table is created with all the updated records and then all the untouched records as well as the updated records are inserted into a new target table. This results in similar [limitations](/integrations/dbt#limitations) for large result sets as for the table model.
 
-To overcome these limitations for large sets, the plugin supports 'inserts_only' mode, where all the updates are inserted into the target table without creating a temporary table (more about it below).
+To overcome these limitations for large sets, the adapter supports 'inserts_only' mode, where all the updates are inserted into the target table without creating a temporary table (more about it below).
 
 To illustrate this example, we will add the actor "Clicky McClickHouse", who will appear in an incredible 910 movies - ensuring he has appeared in more films than even [Mel Blanc](https://en.wikipedia.org/wiki/Mel_Blanc).
 
 1. First, we modify our model to be of type incremental. This addition requires:
 
-    1. **unique_key** - To ensure the plugin can uniquely identify rows, we must provide a unique_key - in this case, the `id` field from our query will suffice. This ensures we will have no row duplicates in our materialized table. For more details on uniqueness constraints, see[ here](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/configuring-incremental-models#defining-a-uniqueness-constraint-optional).
+    1. **unique_key** - To ensure the adapter can uniquely identify rows, we must provide a unique_key - in this case, the `id` field from our query will suffice. This ensures we will have no row duplicates in our materialized table. For more details on uniqueness constraints, see[ here](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/configuring-incremental-models#defining-a-uniqueness-constraint-optional).
     2. **Incremental filter** - We also need to tell dbt how it should identify which rows have changed on an incremental run. This is achieved by providing a delta expression. Typically this involves a timestamp for event data; hence our updated_at timestamp field. This column, which defaults to the value of now() when rows are inserted, allows new roles to be identified. Additionally, we need to identify the alternative case where new actors are added. Using the `{{this}}` variable, to denote the existing materialized table, this gives us the expression `where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_at) from {{this}})`. We embed this inside the `{% if is_incremental() %}` condition, ensuring it is only used on incremental runs and not when the table is first constructed. For more details on filtering rows for incremental models, see [this discussion in the dbt docs](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/configuring-incremental-models#filtering-rows-on-an-incremental-run).
 
     Update the file `actor_summary.sql` as follows:
@@ -666,9 +664,9 @@ SELECT event_time, query  FROM system.query_log WHERE type='QueryStart' AND quer
 AND event_time > subtractMinutes(now(), 15) ORDER BY event_time LIMIT 100;
 ```
 
-Adjust the above query to the period of execution. We leave result inspection to the user but highlight the general strategy used by the plugin to perform incremental updates:
+Adjust the above query to the period of execution. We leave result inspection to the user but highlight the general strategy used by the adapter to perform incremental updates:
 
-1. The plugin creates a temporary table `actor_sumary__dbt_tmp`. Rows that have changed are streamed into this table.
+1. The adapter creates a temporary table `actor_sumary__dbt_tmp`. Rows that have changed are streamed into this table.
 2. A new table, `actor_summary_new,` is created. The rows from the old table are, in turn, streamed from the old to new, with a check to make sure row ids do not exist in the temporary table. This effectively handles updates and duplicates.
 3. The results from the temporary table are streamed into the new `actor_summary` table:
 4. Finally, the new table is exchanged atomically with the old version via an `EXCHANGE TABLES` statement. The old and temporary tables are in turn dropped.
@@ -681,7 +679,7 @@ This strategy may encounter challenges on very large models. For further details
 
 ### Append Strategy (inserts-only mode) {#append-strategy-inserts-only-mode}
 
-To overcome the limitations of large datasets in incremental models, the plugin uses the dbt configuration parameter `incremental_strategy`. This can be set to the value `append`. When set, updated rows are inserted directly into the target table (a.k.a `imdb_dbt.actor_summary`) and no temporary table is created.
+To overcome the limitations of large datasets in incremental models, the adapter uses the dbt configuration parameter `incremental_strategy`. This can be set to the value `append`. When set, updated rows are inserted directly into the target table (a.k.a `imdb_dbt.actor_summary`) and no temporary table is created.
 Note: Append only mode requires your data to be immutable or for duplicates to be acceptable. If you want an incremental table model that supports altered rows don't use this mode!
 
 To illustrate this mode, we will add another new actor and re-execute dbt run with `incremental_strategy='append'`.
@@ -796,7 +794,7 @@ This strategy operates directly on the target model's table, so if there is an i
 
 In summary, this approach:
 
-1. The plugin creates a temporary table `actor_sumary__dbt_tmp`. Rows that have changed are streamed into this table.
+1. The adapter creates a temporary table `actor_sumary__dbt_tmp`. Rows that have changed are streamed into this table.
 2. A `DELETE` is issued against the current `actor_summary` table. Rows are deleted by id from `actor_sumary__dbt_tmp`
 3. The rows from `actor_sumary__dbt_tmp` are inserted into `actor_summary` using an `INSERT INTO actor_summary SELECT * FROM actor_sumary__dbt_tmp`.
 
@@ -823,7 +821,7 @@ This approach has the following advantages:
 
 ## Creating a snapshot {#creating-a-snapshot}
 
-dbt snapshots allow a record to be made of changes to a mutable model over time. This in turn allows point-in-time queries on models, where analysts can "look back in time" at the previous state of a model. This is achieved using [type-2 Slowly Changing Dimensions](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row) where from and to date columns record when a row was valid. This functionality is supported by the ClickHouse plugin and is demonstrated below.
+dbt snapshots allow a record to be made of changes to a mutable model over time. This in turn allows point-in-time queries on models, where analysts can "look back in time" at the previous state of a model. This is achieved using [type-2 Slowly Changing Dimensions](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row) where from and to date columns record when a row was valid. This functionality is supported by the ClickHouse adapter and is demonstrated below.
 
 This example assumes you have completed [Creating an Incremental Table Model](#creating-an-incremental-materialization). Make sure your actor_summary.sql doesn't set inserts_only=True. Your models/actor_summary.sql should look like this:
 

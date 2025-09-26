@@ -17,8 +17,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 In this section, we provide documentation about some of the features available for dbt with ClickHouse.
 
-### Index {#index}
-
 <TOCInline toc={toc}  maxHeadingLevel={3} />
 
 ## Profile.yml configurations {#profile-yml-configurations}
