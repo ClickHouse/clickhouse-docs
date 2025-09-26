@@ -363,7 +363,7 @@ const ExploreDocs = () => {
                                     <Link to="/cloud/get-started" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>ClickHouse Cloud</Link>
                                     <Link to="/install" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Installation</Link>
                                     <Link to="/deployment-modes" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Deployment modes</Link>
-                                    <Link to="/getting-started/example-datasets" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Example datasets</Link>
+                                    <Link to="/getting-started/example-datasets" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Sample datasets</Link>
                                 </div>
                             </CardContent>
                         </CardActionArea>
