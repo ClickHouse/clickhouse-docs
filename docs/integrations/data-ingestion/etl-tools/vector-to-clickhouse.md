@@ -6,16 +6,20 @@ description: 'How to tail a log file into ClickHouse using Vector'
 title: 'Integrating Vector with ClickHouse'
 show_related_blogs: true
 doc_type: 'guide'
+integration_title: 'Vector'
+integration_type: ['data ingestion']
+integration_logo: '/static/images/integrations/logos/vector.png'
+integration_tier: 'partner'
 ---
 
 import Image from '@theme/IdealImage';
 import vector01 from '@site/static/images/integrations/data-ingestion/etl-tools/vector_01.png';
 import vector02 from '@site/static/images/integrations/data-ingestion/etl-tools/vector_02.png';
-import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
+import PartnerBadge from '@theme/badges/PartnerBadge';
 
 # Integrating Vector with ClickHouse
 
-<CommunityMaintainedBadge/>
+<PartnerBadge/>
 
 Being able to analyze your logs in real time is critical for production applications. Have you ever wondered if ClickHouse is good at storing and analyzing log data? Just checkout <a href="https://eng.uber.com/logging/" target="_blank">Uber's experience</a> with converting their logging infrastructure from ELK to ClickHouse.
 

@@ -6,6 +6,7 @@ description: 'The official Kafka connector from ClickHouse with Amazon MSK'
 keywords: ['integration', 'kafka', 'amazon msk', 'sink', 'connector']
 title: 'Integrating Amazon MSK with ClickHouse'
 doc_type: 'guide'
+integration_type: ['core', 'data ingestion']
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
