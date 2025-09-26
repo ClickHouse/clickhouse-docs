@@ -91,7 +91,7 @@ pip install dbt-clickhouse
 ```
 
 ### Provide dbt with the connection details for our ClickHouse instance. {#provide-dbt-with-the-connection-details-for-our-clickhouse-instance}
-Configure `clickhouse` profile in ~/.dbt/profiles.yml file and provide user, password, schema host properties. The full list of connection configuration options is available in the [Features and configurations](/integrations/dbt/features-and-configurations#index) page:
+Configure `clickhouse` profile in `~/.dbt/profiles.yml` file and provide user, password, schema host properties. The full list of connection configuration options is available in the [Features and configurations](/integrations/dbt/features-and-configurations#index) page:
 ```yaml
 clickhouse:
   target: dev
