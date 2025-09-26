@@ -776,7 +776,7 @@
   {
     "slug": "https://github.com/duyet/clickhouse-monitoring",
     "integration_type": [
-      "data visualization"
+      "security governance"
     ],
     "integration_logo": "/static/images/integrations/logos/clickhouse-monitoring-dashboard.svg",
     "integration_title": "ClickHouse Monitoring Dashboard",

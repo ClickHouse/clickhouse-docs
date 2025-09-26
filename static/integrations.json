@@ -33,7 +33,7 @@
       "data ingestion"
     ],
     "integration_title": "Apache Beam",
-    "integration_tier": "community"
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/nifi",
@@ -150,7 +150,7 @@
       "data ingestion"
     ],
     "integration_title": "Dataflow",
-    "integration_tier": "community"
+    "integration_tier": "core"
   },
   {
     "slug": "/integrations/datagrip",
