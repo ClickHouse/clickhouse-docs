@@ -60,7 +60,7 @@ Customers can initiate onboarding by reaching out to [us](https://clickhouse.com
 
 ## General requirements {#general-requirements}
 
-This section is intended to provide an overview of the resources required to deploy ClickHouse Government. Specific deployment guides are provided as part of onboarding. Instance/ server types and sizes depend on the use case.
+This section is intended to provide an overview of the resources required to deploy ClickHouse Government. Specific deployment guides are provided as part of onboarding. Instance/server types and sizes depend on the use case.
 
 ### ClickHouse Government on AWS {#clickhouse-government-aws}
 
