@@ -22,7 +22,11 @@ The steps below will easily work on a local install of ClickHouse too. The only 
 
 ## Step-by-step instructions {#step-by-step-instructions}
 
-1. Let's see what the data looks like. The `s3cluster` table function returns a table, so we can `DESCRIBE` the result:
+<VerticalStepper headerLevel="h3">
+
+### Data exploration {#data-exploration}
+
+Let's see what the data looks like. The `s3cluster` table function returns a table, so we can `DESCRIBE` the result:
 
 ```sql
 DESCRIBE s3(
@@ -59,7 +63,10 @@ ClickHouse infers the following schema from the JSON file:
 └─────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-2. Based on the inferred schema, we cleaned up the data types and added a primary key. Define the following table:
+### Create the table {#create-the-table}
+
+Based on the inferred schema, we cleaned up the data types and added a primary key.
+Define the following table:
 
 ```sql
 CREATE TABLE youtube
@@ -90,7 +97,9 @@ ENGINE = MergeTree
 ORDER BY (uploader, upload_date)
 ```
 
-3. The following command streams the records from the S3 files into the `youtube` table.
+### Insert data {#insert-data}
+
+The following command streams the records from the S3 files into the `youtube` table.
 
 :::important
 This inserts a lot of data - 4.65 billion rows. If you do not want the entire dataset, simply add a `LIMIT` clause with the desired number of rows.
@@ -133,7 +142,10 @@ Some comments about our `INSERT` command:
 - The `upload_date` column contains valid dates, but it also contains strings like "4 hours ago" - which is certainly not a valid date. We decided to store the original value in `upload_date_str` and attempt to parse it with `toDate(parseDateTimeBestEffortUSOrZero(upload_date::String))`. If the parsing fails we just get `0`
 - We used `ifNull` to avoid getting `NULL` values in our table. If an incoming value is `NULL`, the `ifNull` function is setting the value to an empty string
 
-4. Open a new tab in the SQL Console of ClickHouse Cloud (or a new `clickhouse-client` window) and watch the count increase. It will take a while to insert 4.56B rows, depending on your server resources. (Without any tweaking of settings, it takes about 4.5 hours.)
+### Count the number of rows {#count-row-numbers}
+
+Open a new tab in the SQL Console of ClickHouse Cloud (or a new `clickhouse-client` window) and watch the count increase.
+It will take a while to insert 4.56B rows, depending on your server resources. (Without any tweaking of settings, it takes about 4.5 hours.)
 
 ```sql
 SELECT formatReadableQuantity(count())
@@ -146,7 +158,9 @@ FROM youtube
 └─────────────────────────────────┘
 ```
 
-5. Once the data is inserted, go ahead and count the number of dislikes of your favorite videos or channels. Let's see how many videos were uploaded by ClickHouse:
+### Explore the data {#explore-the-data}
+
+Once the data is inserted, go ahead and count the number of dislikes of your favorite videos or channels. Let's see how many videos were uploaded by ClickHouse:
 
 ```sql
 SELECT count()
@@ -166,7 +180,7 @@ WHERE uploader = 'ClickHouse';
 The query above runs so quickly because we chose `uploader` as the first column of the primary key - so it only had to process 237k rows.
 :::
 
-6. Let's look and likes and dislikes of ClickHouse videos:
+Let's look and likes and dislikes of ClickHouse videos:
 
 ```sql
 SELECT
@@ -193,7 +207,7 @@ The response looks like:
 84 rows in set. Elapsed: 0.013 sec. Processed 155.65 thousand rows, 16.94 MB (11.96 million rows/s., 1.30 GB/s.)
 ```
 
-7. Here is a search for videos with **ClickHouse** in the `title` or `description` fields:
+Here is a search for videos with **ClickHouse** in the `title` or `description` fields:
 
 ```sql
 SELECT
@@ -223,6 +237,8 @@ The results look like:
 │       8710 │         62 │             4 │ https://youtu.be/PeV1mC2z--M │ What is JDBC DriverManager? | JDBC                                                                     │
 │       3534 │         62 │             1 │ https://youtu.be/8nWRhK9gw10 │ CLICKHOUSE - Arquitetura Modular                                                                       │
 ```
+
+</VerticalStepper>
 
 ## Questions {#questions}
 
