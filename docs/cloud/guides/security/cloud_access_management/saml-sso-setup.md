@@ -39,7 +39,7 @@ We recommend setting up a **direct link to your organization** in addition to yo
    
    1. Sign in to your [ClickHouse Cloud](https://console.clickhouse.cloud) organization.
    
-      <Image img={samlOrgId} size="md" alt="Organization ID" />
+      <Image img={samlOrgId} size="md" alt="Organization ID" force/>
       
    3. In the lower left corner, click on your organization name under **Organization**.
    
@@ -197,7 +197,7 @@ You will configure two App Integrations in Okta for each ClickHouse organization
    
    12. On the **Sign On** tab for your new app, click the **View SAML setup instructions** button. 
    
-         <Image img={samlOktaSetup} size="md" alt="Okta SAML Setup Instructions" />
+         <Image img={samlOktaSetup} size="md" alt="Okta SAML Setup Instructions" force/>
    
    13. Gather these three items and go to Submit a Support Case above to complete the process.
      - Identity Provider Single Sign-On URL
@@ -215,7 +215,7 @@ You will configure one SAML app in Google for each organization and must provide
    
    1. Go to your Google Admin console (admin.google.com).
 
-   <Image img={samlGoogleApp} size="md" alt="Google SAML App" />
+   <Image img={samlGoogleApp} size="md" alt="Google SAML App" force/>
 
    2. Click **Apps**, then **Web and mobile apps** on the left.
    
@@ -272,7 +272,7 @@ Azure (Microsoft) SAML may also be referred to as Azure Active Directory (AD) or
    
    5. Enter a name and select **Integrate any other application you don't find in the gallery (Non-gallery)**, then click **Create**.
    
-      <Image img={samlAzureApp} size="md" alt="Azure Non-Gallery App" />
+      <Image img={samlAzureApp} size="md" alt="Azure Non-Gallery App" force/>
    
    6. Click **Users and groups** on the left and assign users.
    
@@ -298,7 +298,7 @@ Azure (Microsoft) SAML may also be referred to as Azure Active Directory (AD) or
        | (A) email                            | Basic         | user.mail        |
        | (U) /identity/claims/name            | Omitted       | user.mail        |
    
-         <Image img={samlAzureClaims} size="md" alt="Attributes and Claims" />
+         <Image img={samlAzureClaims} size="md" alt="Attributes and Claims" force/>
    
    12. Gather these two items and go to Submit a Support Case above to complete the process:
      - Login URL
@@ -366,4 +366,3 @@ Security is our top priority when it comes to authentication. For this reason, w
 - **All users assigned to your app via your IdP must have the same email domain.** If you have vendors, contractors or consultants you would like to have access to your ClickHouse account, they must have an email address with the same domain (e.g. user@domain.com) as your employees.
 
 - **We do not automatically link SSO and non-SSO accounts.** You may see multiple accounts for your users in your ClickHouse user list even if they are using the same email address.
-      
