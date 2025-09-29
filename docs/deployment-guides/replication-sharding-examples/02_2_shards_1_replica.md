@@ -658,7 +658,7 @@ on it or inserting data to both shards when we run insert queries.
 In ClickHouse this interface is called a **distributed table**, which we create using
 the [`Distributed`](/engines/table-engines/special/distributed) table engine. Let's take a look at how it works.
 
-## Create a distributed table {#inserting-data}
+## Create a distributed table {#create-distributed-table}
 
 Create a distributed table with the following query:
 
@@ -694,7 +694,7 @@ ON CLUSTER cluster_2S_1R
 ENGINE = Distributed('cluster_2S_1R', 'uk', 'uk_price_paid_local', rand());
 ```
 
-## Insert data into a distributed table {#inserting-data}
+## Insert data into a distributed table {#inserting-data-into-distributed-table}
 
 Now connect to either of the hosts and insert the data:
 
