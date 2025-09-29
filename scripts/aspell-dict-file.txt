@@ -1106,3 +1106,8 @@ ReceiveMessage
 RelationMessage
 --docs/integrations/data-ingestion/clickpipes/mongodb/faq.md--
 resumable
+--docs/cloud/guides/security/01_cloud_access_management/04_manage-database-users.md--
+keygen
+keypair
+--docs/cloud/guides/security/05_audit_logging/03_byoc-security-playbook.md--
+detections

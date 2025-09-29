@@ -8,7 +8,7 @@ doc_type: 'guide'
 
 # BYOC security playbook {#byoc-security-playbook}
 
-ClickHouse operates Bring Your Own Cloud (BYOC) under a security shared responsibility model, which can be downloaded from our Trust Center at https://trust.clickhouse.com. The following information is provided for BYOC customers as examples of how to identify potential security events. Customers should consider this information in context of their security program to determine if additional detections and alerts may be helpful.
+ClickHouse operates Bring Your Own Cloud (BYOC) under a security shared responsibility model, which can be downloaded from our Trust Center at https://trust.clickhouse.com. The following information is provided for BYOC customers as examples of how to identify potential security events. Customers should consider this information in the context of their security program to determine if additional detections and alerts may be helpful.
 
 ## Potentially compromised ClickHouse credentials {#compromised-clickhouse-credentials}
 
@@ -27,7 +27,7 @@ FROM clusterAllReplicas('default',system.crash_log)
 
 ClickHouse utilizes pre-created roles to enable system functions. This section assumes the customer is using AWS with CloudTrail and has access to the CloudTrail logs.
 
-If an incident may be the result of a compromised role, review activies in CloudTrail and CloudWatch related to the ClickHouse IAM roles and actions. Refer to the [CloudFormation](/cloud/reference/byoc#cloudformation-iam-roles) stack or Terraform module provided as part of setup for a list of IAM roles.
+If an incident may be the result of a compromised role, review activities in CloudTrail and CloudWatch related to the ClickHouse IAM roles and actions. Refer to the [CloudFormation](/cloud/reference/byoc#cloudformation-iam-roles) stack or Terraform module provided as part of setup for a list of IAM roles.
 
 ## Unauthorized access to EKS cluster {#unauthorized-access-eks-cluster}
 

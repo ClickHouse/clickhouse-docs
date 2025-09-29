@@ -17,7 +17,7 @@ import cmek_performance from '@site/static/images/_snippets/cmek-performance.png
 ClickHouse Cloud is configured with encryption at rest by default utilizing cloud provider-managed AES 256 keys. For more information review:
 - [AWS server-side encryption for S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingServerSideEncryption.html)
 - [GCP default encryption at rest](https://cloud.google.com/docs/security/encryption/default-encryption)
-- [Azure storae encryption for data at rest](https://learn.microsoft.com/en-us/azure/storage/common/storage-service-encryption)
+- [Azure storage encryption for data at rest](https://learn.microsoft.com/en-us/azure/storage/common/storage-service-encryption)
 
 ## Database level encryption {#database-encryption}
 

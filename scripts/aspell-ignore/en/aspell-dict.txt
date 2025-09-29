@@ -218,6 +218,8 @@ CloudNotSupportedBadge
 CloudStorage
 Cloudera
 Cloudflare
+CloudTrail
+CloudWatch
 CodeBlock
 CodeLLDB
 Codecs
@@ -369,6 +371,7 @@ Encodings
 Encrypter
 Enum
 Enums
+Entra
 Eoan
 EphemeralNode
 EscapingRule
@@ -850,6 +853,7 @@ ODBCDriver
 OFNS
 OLAP
 OLTP
+OIDC
 OOMs
 ORCCompression
 OSContextSwitches
@@ -1083,6 +1087,7 @@ ReferenceKeyed
 Refreshable
 RegexpTree
 RelationMessage
+RelayState
 RemoteRead
 ReplacingMergeTree
 ReplacingReplicatedMergeTree

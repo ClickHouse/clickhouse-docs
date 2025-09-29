@@ -9,7 +9,7 @@ doc_type: 'reference'
 ## Organization roles {#organization-roles}
 Refer to [Manage cloud users](/cloud/security/manage-cloud-users) for instructions on assigning organization roles.
 
-ClickHouse has four organization level roles available for user management. Only the admin role has default access to services. All other roles must be combined with service level roles to interact with serevices.
+ClickHouse has four organization level roles available for user management. Only the admin role has default access to services. All other roles must be combined with service level roles to interact with services.
 
 | Role      | Description                                                                                                                                                                                                                 |
 |-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

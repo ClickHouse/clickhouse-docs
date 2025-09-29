@@ -48,7 +48,7 @@ WHERE user=’compromised_account’
 
 ## Retaining log data within services {#reatining-log-data-within-services}
 
-Customers needing longer retention or log durabilty can use materialized views to achieve these objectives. For more information on materialized views, what they are, benefits and how to implement review our [materialized views](/materialized-views) videos and documentation.
+Customers needing longer retention or log durability can use materialized views to achieve these objectives. For more information on materialized views, what they are, benefits and how to implement review our [materialized views](/materialized-views) videos and documentation.
 
 ## Exporting logs {#exporting-logs}
 

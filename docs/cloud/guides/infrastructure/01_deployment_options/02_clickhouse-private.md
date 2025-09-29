@@ -51,9 +51,9 @@ ClickHouse Private is fully self-contained within your deployment environment an
 
 <br />
 
-## Onbaording process {#onboarding-process}
+## Onboarding process {#onboarding-process}
 
-Customers can initiate onboarding by reacing out to [us](https://clickhouse.com/company/contact?loc=nav). For qualified customers, we will provide a detailed environment build guide and access to the images and Helm charts for deployment.
+Customers can initiate onboarding by reaching out to [us](https://clickhouse.com/company/contact?loc=nav). For qualified customers, we will provide a detailed environment build guide and access to the images and Helm charts for deployment.
 
 ## General requirements {#general-requirements}
 
@@ -74,7 +74,7 @@ Required resources:
 
 Required resources:
 - [Container Registry](https://cloud.ibm.com/docs/Registry?topic=Registry-getting-started) to receive the images and Helm charts
-- [Cloud Kubernetes Service](https://cloud.ibm.com/docs/containers?topic=containers-getting-started) with [CNI](https://www.ibm.com/docs/en/cloud-private/3.2.x?topic=networking-kubernetes-network-model), [Cloud Block Storage for VPC](https://cloud.ibm.com/docs/containers?topic=containers-vpc-block), [Cloud DNS](https://www.ibm.com/products/dns), and [cluster autoscaler](https://cloud.ibm.com/docs/containers?topic=containers-cluster-scaling-install-addon-enable)
+- [Cloud Kubernetes Service](https://cloud.ibm.com/docs/containers?topic=containers-getting-started) with [CNI](https://www.ibm.com/docs/en/cloud-private/3.2.x?topic=networking-kubernetes-network-model), [Cloud Block Storage for VPC](https://cloud.ibm.com/docs/containers?topic=containers-vpc-block), [Cloud DNS](https://www.ibm.com/products/dns), and [Cluster Autoscaler](https://cloud.ibm.com/docs/containers?topic=containers-cluster-scaling-install-addon-enable)
 - Server nodes run Ubuntu
 - Operator requires an x86 node group
 - [Cloud Object Storage](https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-getting-started-cloud-object-storage) in teh same region as the Cloud Kubernetes Service cluster
