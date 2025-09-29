@@ -3500,6 +3500,41 @@
       "source": "/docs/migrations/migrations",
       "destination": "/docs/integrations/migration/overview",
       "permanent": true
+    },
+    {
+      "source": "/docs/cloud/reference/10_account-close.md",
+      "destination": "/docs/cloud/reference/11_account-close.md",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/personal-data-access",
+      "destination": "/docs/cloud/manage/personal-data-access",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/audit-logging",
+      "destination": "/docs/cloud/security/audit-logging/console-audit-log",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/cloud-access-management/overview",
+      "destination": "/docs/cloud/security/manage-database-users",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/guides/sql-console/config-sql-console-role-assignments",
+      "destination": "/docs/cloud/guides/sql-console/manage-sql-console-role-assignments",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/secure-s3",
+      "destination": "/cloud/data-sources/secure-s3",
+      "permanent": true
+    },
+    {
+      "source": "/docs/manage/security/cloud-endpoints-api",
+      "destination": "/docs/manage/data-sources/cloud-endpoints-api",
+      "permanent": true
     }
   ]
 }
