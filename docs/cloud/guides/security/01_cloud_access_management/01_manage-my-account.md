@@ -20,7 +20,7 @@ Organizations using SAML have a unique login per ClickHouse organization. Use th
 
 ### Email and password {#email-and-password}
 
-ClickHouse Cloud allows you to authenticate with an email address and password. When using this method the best way to protect your ClickHouse account use a strong password. There are many online resources to help you devise a password you can remember. Alternatively, you can use a random password generator and store your password in a password manager for increased security.
+ClickHouse Cloud allows you to authenticate with an email address and password. When using this method the best way to protect your ClickHouse account is to use a strong password. There are many online resources to help you devise a password you can remember. Alternatively, you can use a random password generator and store your password in a password manager for increased security.
 
 Passwords must contain a minimum of 12 characters and meet 3 of 4 complexity requirements: upper case characters, lower case characters, numbers and/or special characters.
 
