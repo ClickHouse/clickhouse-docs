@@ -557,11 +557,7 @@ SHOW DATABASES;
 
 ## Create a table on the cluster {#creating-a-table}
 
-Now that the database has been created, you will create a distributed table.
-Distributed tables are tables which have access to shards located on different
-hosts and are defined using the `Distributed` table engine. The distributed table
-acts as the interface across all the shards in the cluster.
-
+Now that the database has been created, you will create a table.
 Run the following query from any of the host clients:
 
 ```sql
@@ -608,8 +604,6 @@ SHOW TABLES IN uk;
    └─────────────────────┘
 ```
 
-## Insert data into a distributed table {#inserting-data}
-
 Before we insert the UK price paid data, let's perform a quick experiment to see
 what happens when we insert data into an ordinary table from either host.
 
@@ -622,7 +616,7 @@ CREATE TABLE test.test_table ON CLUSTER cluster_2S_1R
     `id` UInt64,
     `name` String
 )
-ENGINE = ReplicatedMergeTree
+ENGINE = MergeTree()
 ORDER BY id;
 ```
 
@@ -654,15 +648,17 @@ SELECT * FROM test.test_table;
 --   └────┴────────────────────┘
 ```
 
-You will notice that only the row that was inserted into the table on that
+You will notice that unlike with a `ReplicatedMergeTree` table only the row that was inserted into the table on that
 particular host is returned and not both rows.
 
-To read the data from the two shards we need an interface which can handle queries
+To read the data across the two shards, we need an interface which can handle queries
 across all the shards, combining the data from both shards when we run select queries
-on it, and handling the insertion of data to the separate shards when we run insert queries.
+on it or inserting data to both shards when we run insert queries.
 
-In ClickHouse this interface is called a distributed table, which we create using
+In ClickHouse this interface is called a **distributed table**, which we create using
 the [`Distributed`](/engines/table-engines/special/distributed) table engine. Let's take a look at how it works.
+
+## Create a distributed table {#inserting-data}
 
 Create a distributed table with the following query:
 
@@ -674,8 +670,12 @@ ENGINE = Distributed('cluster_2S_1R', 'test', 'test_table', rand())
 In this example, the `rand()` function is chosen as the sharding key so that
 inserts are randomly distributed across the shards.
 
-Now query the distributed table from either host and you will get back
-both of the rows which were inserted on the two hosts:
+Now query the distributed table from either host, and you will get back
+both of the rows which were inserted on the two hosts, unlike in our previous example:
+
+```sql
+SELECT * FROM test.test_table_dist;
+```
 
 ```sql
    ┌─id─┬─name───────────────┐
@@ -693,6 +693,8 @@ CREATE TABLE IF NOT EXISTS uk.uk_price_paid_distributed
 ON CLUSTER cluster_2S_1R
 ENGINE = Distributed('cluster_2S_1R', 'uk', 'uk_price_paid_local', rand());
 ```
+
+## Insert data into a distributed table {#inserting-data}
 
 Now connect to either of the hosts and insert the data:
 
