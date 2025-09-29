@@ -475,7 +475,6 @@ const sidebars = {
       collapsible: false,
       link: { type: "doc", id: "integrations/language-clients/index" },
       items: [
-        "integrations/index_new",
         "interfaces/cpp",
         "integrations/language-clients/go/index",
         "integrations/language-clients/js",
