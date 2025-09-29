@@ -33,7 +33,7 @@ The following features differentiate ClickHouse Government from self-managed ope
 - Fully tested and validated in ClickHouse Cloud
 
 ### Compliance package {#compliance-package}
-- NIST Risk Management Framework (RMF) documentation to accelerate your Authorization to Operate (ATO)
+- [NIST Risk Management Framework (RMF)](https://csrc.nist.gov/projects/risk-management/about-rmf) documentation to accelerate your Authorization to Operate (ATO)
 
 ### Full featured roadmap with new features added regularly {#full-featured-roadmap}
 Additional features that are coming soon include:
