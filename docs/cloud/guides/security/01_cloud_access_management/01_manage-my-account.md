@@ -24,8 +24,6 @@ ClickHouse Cloud allows you to authenticate with an email address and password. 
 
 Passwords must contain a minimum of 12 characters and meet 3 of 4 complexity requirements: upper case characters, lower case characters, numbers and/or special characters.
 
-ClickHouse enforces:
-
 ### Social single sign-on (SSO) {#social-sso}
 
 Use `Continue with Google` or `Continue with Microsoft Account` to sign up for services or accept invitations.
