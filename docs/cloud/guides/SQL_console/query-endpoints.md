@@ -129,7 +129,7 @@ GET /query-endpoints/{queryEndpointId}/run
 POST /query-endpoints/{queryEndpointId}/run
 ```
 
-### HTTP Methods
+### HTTP methods {#http-methods}
 
 | Method | Use Case | Parameters |
 |---------|----------|------------|
@@ -146,21 +146,21 @@ POST /query-endpoints/{queryEndpointId}/run
 - When request body is preferred for security/privacy
 - Streaming file uploads or large data
 
-### Authentication
+### Authentication {#authentication}
 
 **Required:** Yes  
 **Method:** Basic Auth using OpenAPI Key/Secret  
 **Permissions:** Appropriate permissions for the query endpoint
 
-### Request Configuration
+### Request configuration {#request-configuration}
 
-#### URL Parameters
+#### URL parameters {#url-params}
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
 | `queryEndpointId` | **Yes** | The unique identifier of the query endpoint to run |
 
-#### Query Parameters
+#### Query parameters {#query-params}
 
 | Parameter | Required | Description | Example |
 |-----------|----------|-------------|---------|
@@ -168,7 +168,7 @@ POST /query-endpoints/{queryEndpointId}/run
 | `param_:name` | No | Query variables when request body is a stream. Replace `:name` with your variable name | `?param_year=2024` |
 | `:clickhouse_setting` | No | Any supported [ClickHouse setting](https://clickhouse.com/docs/operations/settings/settings) | `?max_threads=8` |
 
-#### Headers
+#### Headers {#headers}
 
 | Header | Required | Description | Values |
 |--------|----------|-------------|--------|
@@ -177,16 +177,16 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ---
 
-### Request Body
+### Request body {#request-body}
 
-#### Parameters
+#### Parameters {#params}
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `queryVariables` | object | No | Variables to be used in the query |
 | `format` | string | No | Response format |
 
-#### Supported Formats
+#### Supported formats {#supported-formats}
 
 | Version                 | Supported Formats                                                                                                                                            |
 |-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -195,14 +195,14 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ---
 
-### Responses
+### Responses {#responses}
 
-#### Success
+#### Success {#success}
 
 **Status:** `200 OK`  
 The query was successfully executed.
 
-#### Error Codes
+#### Error codes {#error-codes}
 
 | Status Code | Description |
 |-------------|-------------|
@@ -210,7 +210,7 @@ The query was successfully executed.
 | `401 Unauthorized` | Missing authentication or insufficient permissions |
 | `404 Not Found` | The specified query endpoint was not found |
 
-#### Error Handling Best Practices
+#### Error handling best practices {#error-handling-best-practices}
 
 - Ensure valid authentication credentials are included in the request
 - Validate the `queryEndpointId` and `queryVariables` before sending
@@ -218,7 +218,7 @@ The query was successfully executed.
 
 ---
 
-### Upgrading Endpoint Versions
+### Upgrading endpoint versions {#upgrading-endpoint-versions}
 
 To upgrade from version 1 to version 2:
 
