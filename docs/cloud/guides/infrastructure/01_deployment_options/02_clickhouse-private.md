@@ -77,6 +77,6 @@ Required resources:
 - [Cloud Kubernetes Service](https://cloud.ibm.com/docs/containers?topic=containers-getting-started) with [CNI](https://www.ibm.com/docs/en/cloud-private/3.2.x?topic=networking-kubernetes-network-model), [Cloud Block Storage for VPC](https://cloud.ibm.com/docs/containers?topic=containers-vpc-block), [Cloud DNS](https://www.ibm.com/products/dns), and [Cluster Autoscaler](https://cloud.ibm.com/docs/containers?topic=containers-cluster-scaling-install-addon-enable)
 - Server nodes run Ubuntu
 - Operator requires an x86 node group
-- [Cloud Object Storage](https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-getting-started-cloud-object-storage) in teh same region as the Cloud Kubernetes Service cluster
+- [Cloud Object Storage](https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-getting-started-cloud-object-storage) in the same region as the Cloud Kubernetes Service cluster
 - If ingress is required, also configure an NLB
 - One service account per ClickHouse cluster for clickhouse-server/keeper operations
