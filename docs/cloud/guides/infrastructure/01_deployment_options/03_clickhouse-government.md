@@ -56,7 +56,7 @@ ClickHouse Government is fully self-contained within your deployment environment
 
 ## Onboarding process {#onboarding-process}
 
-Customers can initiate onboarding by reacting out to [us](https://clickhouse.com/government). For qualified customers, we will provide a detailed environment build guide and access to the images and Helm charts for deployment.
+Customers can initiate onboarding by reaching out to [us](https://clickhouse.com/government). For qualified customers, we will provide a detailed environment build guide and access to the images and Helm charts for deployment.
 
 ## General requirements {#general-requirements}
 
