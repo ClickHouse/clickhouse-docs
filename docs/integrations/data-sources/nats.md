@@ -4,6 +4,7 @@ sidebar_label: 'NATS'
 title: 'NATS'
 hide_title: true
 description: 'Page describing integration with the NATS engine'
+doc_type: 'reference'
 ---
 
 import NatsEngine from '@site/docs/engines/table-engines/integrations/nats.md';

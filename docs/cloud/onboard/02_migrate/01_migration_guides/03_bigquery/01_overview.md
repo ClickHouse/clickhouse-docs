@@ -5,6 +5,7 @@ description: 'How BigQuery differs from ClickHouse Cloud'
 keywords: ['BigQuery']
 show_related_blogs: true
 sidebar_label: 'Overview'
+doc_type: 'guide'
 ---
 
 import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';

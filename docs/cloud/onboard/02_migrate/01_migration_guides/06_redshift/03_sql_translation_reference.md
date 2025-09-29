@@ -4,6 +4,7 @@ slug: /migrations/redshift/sql-translation-reference
 description: 'SQL translation reference for Amazon Redshift to ClickHouse'
 keywords: ['Redshift']
 title: 'Amazon Redshift SQL translation guide'
+doc_type: 'reference'
 ---
 
 # Amazon Redshift SQL translation guide

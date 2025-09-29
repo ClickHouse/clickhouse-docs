@@ -4,6 +4,7 @@ description: 'Details best practices to follow when working with Kafka ClickPipe
 slug: /integrations/clickpipes/kafka/best-practices
 sidebar_position: 1
 title: 'Best practices'
+doc_type: 'guide'
 ---
 
 # Best practices {#best-practices}
@@ -99,10 +100,8 @@ Role-based access only works for ClickHouse Cloud instances deployed to AWS.
 ```
 
 ### Custom Certificates {#custom-certificates}
-ClickPipes for Kafka supports the upload of custom certificates for Kafka brokers with SASL & public SSL/TLS certificate. You can upload your certificate in the SSL Certificate section of the ClickPipe setup.
-:::note
-Please note that while we support uploading a single SSL certificate along with SASL for Kafka, SSL with Mutual TLS (mTLS) is not supported at this time.
-:::
+ClickPipes for Kafka supports the upload of custom certificates for Kafka brokers which use non-public server certificates.
+Upload of client certificates and keys is also supported for mutual TLS (mTLS) based authentication.
 
 ## Performance {#performance}
 
@@ -110,7 +109,7 @@ Please note that while we support uploading a single SSL certificate along with 
 ClickPipes inserts data into ClickHouse in batches. This is to avoid creating too many parts in the database which can lead to performance issues in the cluster.
 
 Batches are inserted when one of the following criteria has been met:
-- The batch size has reached the maximum size (100,000 rows or 20MB)
+- The batch size has reached the maximum size (100,000 rows or 32MB per 1GB of pod memory)
 - The batch has been open for a maximum amount of time (5 seconds)
 
 ### Latency {#latency}

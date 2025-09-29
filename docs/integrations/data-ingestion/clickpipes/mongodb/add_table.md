@@ -4,6 +4,7 @@ description: 'Describes the steps needed to add specific tables to a ClickPipe.'
 sidebar_label: 'Add Table'
 slug: /integrations/clickpipes/mongodb/add_table
 show_title: false
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

@@ -4,6 +4,7 @@ description: 'Frequently asked questions about ClickPipes for MongoDB.'
 slug: /integrations/clickpipes/mongodb/faq
 sidebar_position: 2
 title: 'ClickPipes for MongoDB FAQ'
+doc_type: 'reference'
 ---
 
 # ClickPipes for MongoDB FAQ

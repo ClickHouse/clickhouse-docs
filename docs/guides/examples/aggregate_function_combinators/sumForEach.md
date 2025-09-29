@@ -4,6 +4,7 @@ title: 'sumForEach'
 description: 'Example of using the sumForEach aggregate function'
 keywords: ['sum', 'ForEach', 'combinator', 'examples', 'sumForEach']
 sidebar_label: 'sumForEach'
+doc_type: 'reference'
 ---
 
 # sumForEach {#sumforeach}

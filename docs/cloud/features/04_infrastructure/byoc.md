@@ -4,6 +4,7 @@ slug: /cloud/reference/byoc
 sidebar_label: 'BYOC (Bring Your Own Cloud)'
 keywords: ['BYOC', 'cloud', 'bring your own cloud']
 description: 'Deploy ClickHouse on your own cloud infrastructure'
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';
@@ -356,6 +357,7 @@ Contact support to schedule maintenance windows. Please expect a minimum of a we
 ## Observability {#observability}
 
 ### Built-in monitoring tools {#built-in-monitoring-tools}
+ClickHouse BYOC provides several approaches for various use cases.
 
 #### Observability dashboard {#observability-dashboard}
 
@@ -377,7 +379,19 @@ You can customize a dashboard using metrics from system tables like `system.metr
 
 <br />
 
+#### Access the BYOC Prometheus stack {#prometheus-access}
+ClickHouse BYOC deploys a Prometheus stack on your Kubernetes cluster. You may access and scrape the metrics from there and integrate them with your own monitoring stack.
+
+Contact ClickHouse support to enable the Private Load balancer and ask for the URL. Please note that this URL is only accessible via private network and does not support authentication
+
+**Sample URL**
+```bash
+https://prometheus-internal.<subdomain>.<region>.aws.clickhouse-byoc.com/query
+```
+
 #### Prometheus Integration {#prometheus-integration}
+
+**DEPRECATED: ** Please use the Prometheus stack integration in the above section instead. Besides the ClickHouse Server metrics, it provides more metrics including the K8S metrics and metrics from other services.
 
 ClickHouse Cloud provides a Prometheus endpoint that you can use to scrape metrics for monitoring. This allows for integration with tools like Grafana and Datadog for visualization.
 
@@ -418,8 +432,22 @@ ClickHouse_CustomMetric_TotalNumberOfErrors{hostname="c-jet-ax-16-server-43d5baj
 A ClickHouse username and password pair can be used for authentication. We recommend creating a dedicated user with minimal permissions for scraping metrics. At minimum, a `READ` permission is required on the `system.custom_metrics` table across replicas. For example:
 
 ```sql
-GRANT REMOTE ON *.* TO scraping_user
-GRANT SELECT ON system.custom_metrics TO scraping_user
+GRANT REMOTE ON *.* TO scrapping_user;
+GRANT SELECT ON system._custom_metrics_dictionary_custom_metrics_tables TO scrapping_user;
+GRANT SELECT ON system._custom_metrics_dictionary_database_replicated_recovery_time TO scrapping_user;
+GRANT SELECT ON system._custom_metrics_dictionary_failed_mutations TO scrapping_user;
+GRANT SELECT ON system._custom_metrics_dictionary_group TO scrapping_user;
+GRANT SELECT ON system._custom_metrics_dictionary_shared_catalog_recovery_time TO scrapping_user;
+GRANT SELECT ON system._custom_metrics_dictionary_table_read_only_duration_seconds TO scrapping_user;
+GRANT SELECT ON system._custom_metrics_view_error_metrics TO scrapping_user;
+GRANT SELECT ON system._custom_metrics_view_histograms TO scrapping_user;
+GRANT SELECT ON system._custom_metrics_view_metrics_and_events TO scrapping_user;
+GRANT SELECT(description, metric, value) ON system.asynchronous_metrics TO scrapping_user;
+GRANT SELECT ON system.custom_metrics TO scrapping_user;
+GRANT SELECT(name, value) ON system.errors TO scrapping_user;
+GRANT SELECT(description, event, value) ON system.events TO scrapping_user;
+GRANT SELECT(description, labels, metric, value) ON system.histogram_metrics TO scrapping_user;
+GRANT SELECT(description, metric, value) ON system.metrics TO scrapping_user;
 ```
 
 **Configuring Prometheus**

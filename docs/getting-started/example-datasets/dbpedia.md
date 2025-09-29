@@ -4,6 +4,7 @@ sidebar_label: 'dbpedia dataset'
 slug: /getting-started/example-datasets/dbpedia-dataset
 title: 'dbpedia dataset'
 keywords: ['semantic search', 'vector similarity', 'approximate nearest neighbours', 'embeddings']
+doc_type: 'reference'
 ---
 
 The [dbpedia dataset](https://huggingface.co/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M) contains 1 million articles from Wikipedia and their vector embeddings generated using the [text-embedding-3-large](https://platform.openai.com/docs/models/text-embedding-3-large) model from OpenAI.
@@ -115,7 +116,7 @@ LIMIT 20
 ```
 
 Note down the query latency so that we can compare it with the query latency of ANN (using vector index).
-Also record the query latency with cold OS file cache and with `max_theads=1` to recognize the real compute
+Also record the query latency with cold OS file cache and with `max_threads=1` to recognize the real compute
 usage and storage bandwidth usage (extrapolate it to a production dataset with millions of vectors!)
 
 ## Build a vector similarity index {#build-vector-similarity-index}

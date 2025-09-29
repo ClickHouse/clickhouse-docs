@@ -4,6 +4,7 @@ slug: /migrations/redshift-overview
 description: 'Migrating from Amazon Redshift to ClickHouse'
 keywords: ['Redshift']
 title: 'Comparing ClickHouse Cloud and Amazon Redshift'
+doc_type: 'guide'
 ---
 
 # Amazon Redshift to ClickHouse migration

@@ -1,4 +1,4 @@
-personal_ws-1.1 en 3638
+personal_ws-1.1 en 3734
 AArch
 ACLs
 Accepter
@@ -652,10 +652,10 @@ LOCALTIMESTAMP
 LONGLONG
 LOONGARCH
 LaGuardia
+Lakekeeper
 LangChain
 LangGraph
 Langchain
-Lakekeeper
 Lemire
 Levenshtein
 Lhotsky
@@ -800,7 +800,6 @@ NDJSON
 NEKUDOTAYIM
 NEWDATE
 NEWDECIMAL
-Nessie
 NFKC
 NFKD
 NIST
@@ -815,6 +814,7 @@ Nambiar
 Namenode
 NamesAndTypesList
 Nano
+Nessie
 NestJS
 Nesterov
 NetFlow
@@ -974,8 +974,8 @@ PendingAsyncInsert
 Percona
 PerfEventInfo
 PhpStorm
-PlantUML
 PlanetScale
+PlantUML
 Poess
 PointDistKm
 PointDistM
@@ -1025,10 +1025,10 @@ ProxySQL
 Punycode
 PyArrow
 PyCharm
-Pydantic
 PyPI
 PyReader
 PySpark
+Pydantic
 PydanticAI
 QATlib
 QEMU
@@ -1299,7 +1299,6 @@ ThreadPoolRemoteFSReaderThreads
 ThreadPoolRemoteFSReaderThreadsActive
 ThreadsActive
 ThreadsInOvercommitTracker
-Trino
 TiDB
 TimeSeries
 TimescaleDB
@@ -1331,7 +1330,9 @@ TotalsMode
 Tradeoff
 Transactional
 TransactionsWaitCSNMode
+Trino
 Tsai
+Tunable
 Tukey
 TwoColumnList
 TypeScript
@@ -2318,6 +2319,8 @@ initcapUTF
 initialQueryID
 initializeAggregation
 injective
+inlier
+inliers
 inlined
 innogames
 inodes
@@ -2869,6 +2872,7 @@ profiler
 programmatically
 proleptic
 prometheus
+promql
 proportionsZTest
 proto
 protobuf
@@ -3032,6 +3036,7 @@ resultset
 resync
 resynchronization
 resyncing
+failovers
 retentions
 rethrow
 retransmit
@@ -3473,6 +3478,7 @@ tui
 tukey
 tumbleEnd
 tumbleStart
+tunable
 tupleConcat
 tupleDivide
 tupleDivideByNumber
@@ -3650,6 +3656,7 @@ xz
 yaml
 yandex
 youtube
+ytsaurus
 zLib
 zLinux
 zabbix
@@ -3678,3 +3685,52 @@ pointwise
 summarization
 reusability
 lakehouses
+ArrowTable
+Arrowtable
+ChdbError
+DBAPI
+DataError
+DatabaseError
+INOUT
+ImportError
+IntegrityError
+InterfaceError
+InternalError
+MySQLdb
+NotSupportedError
+OperationalError
+ProgrammingError
+Psycopg
+RecordBatch
+RuntimeError
+StreamingResult
+ValueError
+abstractmethod
+args
+arraysize
+arrowTable
+arrowtable
+bytearray
+callproc
+chDB's
+dicts
+executemany
+fallbacks
+fetchall
+fetchmany
+fetchone
+frozenset
+iterable's
+kwargs
+lastrowid
+mogrify
+nextset
+procname
+pyarrow
+repr
+rowcount
+setinputsizes
+setoutputsizes
+stmt
+subclasses
+truncations

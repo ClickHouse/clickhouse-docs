@@ -4,6 +4,7 @@ title: 'Building on ClickHouse Cloud'
 description: 'Explore ClickHouse Cloud use cases including real-time analytics, observability, data lake & warehouse, and machine learning applications'
 keywords: ['use cases', 'Cloud']
 sidebar_label: 'Overview'
+doc_type: 'landing-page'
 ---
 
 ClickHouse Cloud is suitable for use as both a **primary data store** and as an **analytics 

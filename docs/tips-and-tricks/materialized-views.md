@@ -2,7 +2,7 @@
 sidebar_position: 1
 slug: /tips-and-tricks/materialized-views
 sidebar_label: 'Materialized Views'
-doc_type: 'how-to'
+doc_type: 'guide'
 keywords: [
   'clickhouse materialized views',
   'materialized view optimization',

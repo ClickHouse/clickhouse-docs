@@ -3,6 +3,7 @@ sidebar_label: 'Planetscale for Postgres'
 description: 'Set up Planetscale for Postgres as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/planetscale
 title: 'PlanetScale for Postgres Source Setup Guide'
+doc_type: 'guide'
 ---
 
 import planetscale_wal_level_logical from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/planetscale/planetscale_wal_level_logical.png';

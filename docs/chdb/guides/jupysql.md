@@ -4,6 +4,7 @@ sidebar_label: 'JupySQL'
 slug: /chdb/guides/jupysql
 description: 'How to install chDB for Bun'
 keywords: ['chdb', 'JupySQL']
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

@@ -3,6 +3,7 @@ sidebar_label: 'Overview'
 slug: /cloud/manage/billing/overview
 title: 'Pricing'
 description: 'Overview page for ClickHouse Cloud pricing'
+doc_type: 'reference'
 ---
 
 For pricing information, see the [ClickHouse Cloud Pricing](https://clickhouse.com/pricing#pricing-calculator) page.
@@ -175,6 +176,14 @@ Best for: large scale, mission critical deployments that have stringent security
 
 ## Frequently asked questions {#faqs}
 
+### What is a ClickHouse Credit (CHC)? {#what-is-chc}
+
+A ClickHouse Credit is a unit of credit toward Customer's usage of ClickHouse Cloud equal to one (1) US dollar, to be applied based on ClickHouse's then-current published price list.
+
+:::note 
+If you are being billed through Stripe then you will see that 1 CHC is equal to \$0.01 USD on your Stripe invoice. This is to allow accurate billing on Stripe due to their limitation on not being able to bill fractional quantities of our standard SKU of 1 CHC = \$1 USD.
+:::
+
 ### How is compute metered? {#how-is-compute-metered}
 
 ClickHouse Cloud meters compute on a per-minute basis, in 8G RAM increments. 
@@ -229,6 +238,13 @@ ClickHouse Cloud credits for PAYG are invoiced in \$0.01 units, allowing us to c
 
 Billing follows a monthly billing cycle and the start date is tracked as the date when the ClickHouse Cloud organization was created.
 
+### If I have an active PAYG marketplace subscription and then sign a committed contract, will my committed credits be consumed first? {#committed-credits-consumed-first-with-active-payg-subscription}
+
+Yes. Usage is consumed with the following payment methods in this order:
+- Committed (prepaid) credits
+- Marketplace subscription (PAYG)
+- Credit card
+
 ### What controls does ClickHouse Cloud offer to manage costs for Scale and Enterprise services? {#what-controls-does-clickhouse-cloud-offer-to-manage-costs-for-scale-and-enterprise-services}
 
 - Trial and Annual Commit customers are notified automatically by email when their consumption hits certain thresholds: `50%`, `75%`, and `90%`. This allows users to proactively manage their usage.
@@ -253,7 +269,13 @@ we continue to draw down from the trial credits during the initial 30-day trial 
 
 The ClickHouse Cloud console provides a Usage display that details usage per service. This breakdown, organized by usage dimensions, helps you understand the cost associated with each metered unit.
 
-### How do I access my invoice for my marketplace subscription to the ClickHouse Cloud service? {#how-do-i-access-my-invoice-for-my-marketplace-subscription-to-the-clickhouse-cloud-service}
+### How do I access my invoices for my subscription to the ClickHouse Cloud service? {#how-do-i-access-my-invoice-for-my-subscription-to-the-clickhouse-cloud-service}
+
+For direct subscriptions using a credit card:
+
+To view your invoices, select your organization from the left-hand navigation bar in the ClickHouse Cloud UI, then go to Billing. All of your invoices will be listed under the Invoices section.
+
+For subscriptions through a cloud marketplace:
 
 All marketplace subscriptions are billed and invoiced by the marketplace. You can view your invoice through the respective cloud provider marketplace directly.
 
@@ -358,4 +380,4 @@ However, combining two services in a warehouse and idling one of them helps you 
 
 ## ClickPipes pricing {#clickpipes-pricing}
 
-For information on ClickPipes billing, please see ["ClickPipes billing"](/cloud/reference/billing/clickpipes)
+For information on ClickPipes billing, please see the dedicated ["ClickPipes billing" section](/cloud/reference/billing/clickpipes).

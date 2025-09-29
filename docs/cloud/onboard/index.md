@@ -3,6 +3,7 @@ slug: /cloud/get-started
 title: 'Get started with ClickHouse Cloud'
 description: 'Complete guide to getting started with ClickHouse Cloud - from discovering features to deployment and optimization'
 hide_title: true
+doc_type: 'guide'
 ---
 
 # Get started with ClickHouse Cloud
@@ -40,6 +41,6 @@ Topics include:
 - [Query performance and optimization](/cloud/get-started/cloud/resource-tour#query-optimization)
 - [Monitoring](/cloud/get-started/cloud/resource-tour#monitoring)
 - [Security considerations](/cloud/get-started/cloud/resource-tour#security)
-- Troubleshooting tips
+- [Troubleshooting tips](/troubleshooting)
 
 </VerticalStepper>

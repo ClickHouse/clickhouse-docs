@@ -6,6 +6,7 @@ title: 'Use JSON where appropriate'
 description: 'Page describing when to use JSON'
 keywords: ['JSON']
 show_related_blogs: true
+doc_type: 'reference'
 ---
 
 ClickHouse now offers a native JSON column type designed for semi-structured and dynamic data. It's important to clarify that **this is a column type, not a data format**—you can insert JSON into ClickHouse as a string or via supported formats like [JSONEachRow](/docs/interfaces/formats/JSONEachRow), but that does not imply using the JSON column type. Users should only use the JSON type when the structure of their data is dynamic, not when they simply happen to store JSON.
@@ -224,7 +225,7 @@ ORDER BY doc.update_date
 We provide a type hint for the `update_date` column in the JSON definition, as we use it in the ordering/primary key. This helps ClickHouse to know that this column won't be null and ensures it knows which `update_date` sub-column to use (there may be multiple for each type, so this is ambiguous otherwise).
 :::
 
-We can insert into this table and view the subsequently inferred schema using the [`JSONAllPathsWithTypes`](/sql-reference/functions/json-functions#jsonallpathswithtypes) function and [`PrettyJSONEachRow`](/interfaces/formats/PrettyJSONEachRow) output format:
+We can insert into this table and view the subsequently inferred schema using the [`JSONAllPathsWithTypes`](/sql-reference/functions/json-functions#JSONAllPathsWithTypes) function and [`PrettyJSONEachRow`](/interfaces/formats/PrettyJSONEachRow) output format:
 
 ```sql
 INSERT INTO arxiv FORMAT JSONAsObject 

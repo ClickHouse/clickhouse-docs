@@ -1,6 +1,7 @@
 ---
 sidebar_label: Members
 title: Members
+doc_type: 'reference'
 ---
 
 ## List organization members {#list-organization-members}

@@ -5,6 +5,7 @@ slug: /integrations/tableau/analysis-tips
 keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', 'ui']
 description: 'Tableau analysis tips when using ClickHouse official connector.'
 title: 'Analysis tips'
+doc_type: 'guide'
 ---
 
 # Analysis tips

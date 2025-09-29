@@ -4,6 +4,7 @@ sidebar_label: 'Go'
 slug: /chdb/install/go
 description: 'How to install and use chDB with Go'
 keywords: ['chdb', 'go', 'golang', 'embedded', 'clickhouse', 'sql', 'olap']
+doc_type: 'guide'
 ---
 
 # chDB for Go

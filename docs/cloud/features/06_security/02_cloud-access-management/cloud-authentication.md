@@ -3,6 +3,7 @@ sidebar_label: 'Cloud Authentication'
 slug: /cloud/security/cloud-authentication
 title: 'Cloud Authentication'
 description: 'This guide explains some good practices for configuring your authentication.'
+doc_type: 'guide'
 ---
 
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
@@ -33,7 +34,7 @@ If your company uses Google Workspace or Microsoft 365, you can leverage your cu
 ## Multi-factor authentication {#multi-factor-authentication}
 
 Users with email + password or social authentication can further secure their account using multi-factor authentication (MFA). To set up MFA:
-1. Log into console.clickhouse.cloud
+1. Log into [console.clickhouse.cloud](https://console.clickhouse.cloud/)
 2. Click your initials in the upper left corner next to the ClickHouse logo
 3. Select Profile
 4. Select Security on the left

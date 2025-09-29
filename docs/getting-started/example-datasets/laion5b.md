@@ -4,6 +4,7 @@ sidebar_label: 'LAION 5B dataset'
 slug: /getting-started/example-datasets/laion-5b-dataset
 title: 'LAION 5B dataset'
 keywords: ['semantic search', 'vector similarity', 'approximate nearest neighbours', 'embeddings']
+doc_type: 'reference'
 ---
 
 import search_results_image from '@site/static/images/getting-started/example-datasets/laion5b_visualization_1.png'

@@ -3,6 +3,7 @@ sidebar_label: 'Amazon RDS MySQL'
 description: 'Step-by-step guide on how to set up Amazon RDS MySQL as a source for ClickPipes'
 slug: /integrations/clickpipes/mysql/source/rds
 title: 'RDS MySQL source setup guide'
+doc_type: 'guide'
 ---
 
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';
@@ -41,7 +42,7 @@ If ClickPipes tries to resume replication and the required binlog files have bee
 
 By default, Amazon RDS purges the binary log as soon as possible (i.e., _lazy purging_). We recommend increasing the binlog retention interval to at least **72 hours** to ensure availability of binary log files for replication under failure scenarios. To set an interval for binary log retention ([`binlog retention hours`](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/mysql-stored-proc-configuring.html#mysql_rds_set_configuration-usage-notes.binlog-retention-hours)), use the [`mysql.rds_set_configuration`](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/mysql-stored-proc-configuring.html#mysql_rds_set_configuration) procedure:
 
-[//]: # "NOTE Most CDC providers recommend the maximum retention period for RDS (7 days/168 hours). Since this has an impact on disk usage, we conservatively recommend a mininum of 3 days/72 hours."
+[//]: # "NOTE Most CDC providers recommend the maximum retention period for RDS (7 days/168 hours). Since this has an impact on disk usage, we conservatively recommend a minimum of 3 days/72 hours."
 
 ```text
 mysql=> call mysql.rds_set_configuration('binlog retention hours', 72);

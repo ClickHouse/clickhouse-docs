@@ -1,0 +1,39 @@
+.PartnerBadge {
+    background-color: #990073;
+    border-radius: 16px;
+    margin-top: 0px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    padding: 5px 12px;
+    color: #ffffff;
+    display: inline-flex;
+    margin-right: 5px;
+}
+
+.PartnerBadgeIcon svg path {
+    fill: #fbc9ef;
+    stroke: #990073;
+}
+
+.PartnerBadge a {
+    color: #990073;
+}
+
+.PartnerBadge svg path {
+    color: #990073;
+}
+
+[data-theme="dark"] .PartnerBadge {
+    background-color: #990073;
+    color: #fbeff8;
+}
+
+[data-theme="dark"] .PartnerBadge a {
+    color: #fbeff8;
+}
+
+[data-theme="dark"] .PartnerBadgeIcon svg path {
+    fill: #990073;
+    stroke: #fbeff8;
+}

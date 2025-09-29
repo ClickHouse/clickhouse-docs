@@ -5,6 +5,7 @@ slug: /integrations/vector
 description: 'How to tail a log file into ClickHouse using Vector'
 title: 'Integrating Vector with ClickHouse'
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

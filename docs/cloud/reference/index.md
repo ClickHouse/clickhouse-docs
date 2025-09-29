@@ -4,6 +4,7 @@ keywords: ['Cloud', 'reference', 'architecture', 'SharedMergeTree', 'Compute-com
 title: 'Overview'
 hide_title: true
 description: 'Landing page for the Cloud reference section'
+doc_type: 'landing-page'
 ---
 
 # Cloud reference

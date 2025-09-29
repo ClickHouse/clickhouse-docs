@@ -4,7 +4,11 @@ description: 'Frequently asked questions about ClickPipes for Postgres.'
 slug: /integrations/clickpipes/postgres/faq
 sidebar_position: 2
 title: 'ClickPipes for Postgres FAQ'
+doc_type: 'reference'
 ---
+
+import failover_slot from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/failover_slot.png'
+import Image from '@theme/IdealImage';
 
 # ClickPipes for Postgres FAQ
 
@@ -24,7 +28,19 @@ Please refer to the [Postgres Generated Columns: Gotchas and Best Practices](./g
 
 ### Do tables need to have primary keys to be part of Postgres CDC? {#do-tables-need-to-have-primary-keys-to-be-part-of-postgres-cdc}
 
-Yes, for CDC, tables must have either a primary key or a [REPLICA IDENTITY](https://www.postgresql.org/docs/current/sql-altertable.html#SQL-ALTERTABLE-REPLICA-IDENTITY). The REPLICA IDENTITY can be set to FULL or configured to use a unique index.
+For a table to be replicated using ClickPipes for Postgres, it must have either a primary key or a [REPLICA IDENTITY](https://www.postgresql.org/docs/current/sql-altertable.html#SQL-ALTERTABLE-REPLICA-IDENTITY) defined.
+
+- **Primary Key**: The most straightforward approach is to define a primary key on the table. This provides a unique identifier for each row, which is crucial for tracking updates and deletions. You can have REPLICA IDENTITY set to `DEFAULT` (the default behavior) in this case.
+- **Replica Identity**: If a table does not have a primary key, you can set a replica identity. The replica identity can be set to `FULL`, which means that the entire row will be used to identify changes. Alternatively, you can set it to use a unique index if one exists on the table, and then set REPLICA IDENTITY to `USING INDEX index_name`.
+To set the replica identity to FULL, you can use the following SQL command:
+```sql
+ALTER TABLE your_table_name REPLICA IDENTITY FULL;
+```
+REPLICA IDENTITY FULL also enables replication of unchanged TOAST columns. More on that [here](./toast).
+
+Note that using `REPLICA IDENTITY FULL` can have performance implications and also faster WAL growth, especially for tables without a primary key and with frequent updates or deletes, as it requires more data to be logged for each change. If you have any doubts or need assistance with setting up primary keys or replica identities for your tables, please reach out to our support team for guidance.
+
+It's important to note that if neither a primary key nor a replica identity is defined, ClickPipes will not be able to replicate changes for that table, and you may encounter errors during the replication process. Therefore, it's recommended to review your table schemas and ensure that they meet these requirements before setting up your ClickPipe.
 
 ### Do you support partitioned tables as part of Postgres CDC? {#do-you-support-partitioned-tables-as-part-of-postgres-cdc}
 
@@ -52,6 +68,8 @@ Yes! ClickPipes for Postgres offers two ways to connect to databases in private 
 ClickPipes for Postgres captures both INSERTs and UPDATEs from Postgres as new rows with different versions (using the `_peerdb_` version column) in ClickHouse. The ReplacingMergeTree table engine periodically performs deduplication in the background based on the ordering key (ORDER BY columns), retaining only the row with the latest `_peerdb_` version.
 
 DELETEs from Postgres are propagated as new rows marked as deleted (using the `_peerdb_is_deleted` column). Since the deduplication process is asynchronous, you might temporarily see duplicates. To address this, you need to handle deduplication at the query layer.
+
+Also note that by default, Postgres does not send column values of columns that are not part of the primary key or replica identity during DELETE operations. If you want to capture the full row data during DELETEs, you can set the [REPLICA IDENTITY](https://www.postgresql.org/docs/current/sql-altertable.html#SQL-ALTERTABLE-REPLICA-IDENTITY) to FULL.
 
 For more details, refer to:
 
@@ -203,23 +221,23 @@ For manually created publications, please add any tables you want to the publica
 If you're replicating from a Postgres read replica/hot standby, you will need to create your own publication on the primary instance, which will automatically propagate to the standby. The ClickPipe will not be able to manage the publication in this case as you're unable to create publications on a standby.
 :::
 
-## Recommended `max_slot_wal_keep_size` settings {#recommended-max_slot_wal_keep_size-settings}
+### Recommended `max_slot_wal_keep_size` settings {#recommended-max_slot_wal_keep_size-settings}
 
 - **At Minimum:** Set [`max_slot_wal_keep_size`](https://www.postgresql.org/docs/devel/runtime-config-replication.html#GUC-MAX-SLOT-WAL-KEEP-SIZE) to retain at least **two days' worth** of WAL data.
 - **For Large Databases (High Transaction Volume):** Retain at least **2-3 times** the peak WAL generation per day.
 - **For Storage-Constrained Environments:** Tune this conservatively to **avoid disk exhaustion** while ensuring replication stability.
 
-### How to calculate the right value {#how-to-calculate-the-right-value}
+#### How to calculate the right value {#how-to-calculate-the-right-value}
 
 To determine the right setting, measure the WAL generation rate:
 
-#### For PostgreSQL 10+ {#for-postgresql-10}
+##### For PostgreSQL 10+ {#for-postgresql-10}
 
 ```sql
 SELECT pg_wal_lsn_diff(pg_current_wal_insert_lsn(), '0/0') / 1024 / 1024 AS wal_generated_mb;
 ```
 
-#### For PostgreSQL 9.6 and below: {#for-postgresql-96-and-below}
+##### For PostgreSQL 9.6 and below: {#for-postgresql-96-and-below}
 
 ```sql
 SELECT pg_xlog_location_diff(pg_current_xlog_insert_location(), '0/0') / 1024 / 1024 AS wal_generated_mb;
@@ -230,7 +248,7 @@ SELECT pg_xlog_location_diff(pg_current_xlog_insert_location(), '0/0') / 1024 / 
 * Multiply that number by 2 or 3 to provide sufficient retention.
 * Set `max_slot_wal_keep_size` to the resulting value in MB or GB.
 
-#### Example {#example}
+##### Example {#example}
 
 If your database generates 100 GB of WAL per day, set:
 
@@ -257,7 +275,7 @@ The most common cause of replication slot invalidation is a low `max_slot_wal_ke
 
 In rare cases, we have seen this issue occur even when `max_slot_wal_keep_size` is not configured. This could be due to an intricate and rare bug in PostgreSQL, although the cause remains unclear.
 
-## I am seeing out of memory (OOMs) on ClickHouse while my ClickPipe is ingesting data. Can you help? {#i-am-seeing-out-of-memory-ooms-on-clickhouse-while-my-clickpipe-is-ingesting-data-can-you-help}
+### I am seeing out of memory (OOMs) on ClickHouse while my ClickPipe is ingesting data. Can you help? {#i-am-seeing-out-of-memory-ooms-on-clickhouse-while-my-clickpipe-is-ingesting-data-can-you-help}
 
 One common reason for OOMs on ClickHouse is that your service is undersized. This means that your current service configuration doesn't have enough resources (e.g., memory or CPU) to handle the ingestion load effectively. We strongly recommend scaling up the service to meet the demands of your ClickPipe data ingestion.
 
@@ -267,7 +285,7 @@ Another reason we've observed is the presence of downstream Materialized Views w
 
 - Another optimization for JOINs is to explicitly filter the tables through `subqueries` or `CTEs` and then perform the `JOIN` across these subqueries. This provides the planner with hints on how to efficiently filter rows and perform the `JOIN`.
 
-## I am seeing an `invalid snapshot identifier` during the initial load. What should I do? {#i-am-seeing-an-invalid-snapshot-identifier-during-the-initial-load-what-should-i-do}
+### I am seeing an `invalid snapshot identifier` during the initial load. What should I do? {#i-am-seeing-an-invalid-snapshot-identifier-during-the-initial-load-what-should-i-do}
 
 The `invalid snapshot identifier` error occurs when there is a connection drop between ClickPipes and your Postgres database. This can happen due to gateway timeouts, database restarts, or other transient issues.
 
@@ -275,7 +293,7 @@ It is recommended that you do not carry out any disruptive operations like upgra
 
 To resolve this issue, you can trigger a resync from the ClickPipes UI. This will restart the initial load process from the beginning.
 
-## What happens if I drop a publication in Postgres? {#what-happens-if-i-drop-a-publication-in-postgres}
+### What happens if I drop a publication in Postgres? {#what-happens-if-i-drop-a-publication-in-postgres}
 
 Dropping a publication in Postgres will break your ClickPipe connection since the publication is required for the ClickPipe to pull changes from the source. When this happens, you'll typically receive an error alert indicating that the publication no longer exists.
 
@@ -296,18 +314,45 @@ FOR TABLE <...>, <...>
 WITH (publish_via_partition_root = true);
 ```
 
-## What if I am seeing `Unexpected Datatype` errors or `Cannot parse type XX ...` {#what-if-i-am-seeing-unexpected-datatype-errors}
+### What if I am seeing `Unexpected Datatype` errors or `Cannot parse type XX ...` {#what-if-i-am-seeing-unexpected-datatype-errors}
 
 This error typically occurs when the source Postgres database has a datatype which cannot be mapped during ingestion.
 For more specific issue, refer to the possibilities below.
 
-## `Cannot parse type Decimal(XX, YY), expected non-empty binary data with size equal to or less than ...` {#cannot-parse-type-decimal-expected-non-empty-binary-data-with-size-equal-to-or-less-than}
+### `Cannot parse type Decimal(XX, YY), expected non-empty binary data with size equal to or less than ...` {#cannot-parse-type-decimal-expected-non-empty-binary-data-with-size-equal-to-or-less-than}
 
 Postgres `NUMERIC`s have really high precision (up to 131072 digits before the decimal point; up to 16383 digits after the decimal point) and ClickHouse Decimal type allows maximum of (76 digits, 39 scale).
 The system assumes that _usually_ the size would not get that high and does an optimistic cast for the same as source table can have large number of rows or the row can come in during the CDC phase.
 
 The current workaround would be to map the NUMERIC type to string on ClickHouse. To enable this please raise a ticket with the support team and this will be enabled for your ClickPipes.
 
-## I'm seeing errors like `invalid memory alloc request size <XXX>` during replication/slot creation {#postgres-invalid-memalloc-bug}
+### I'm seeing errors like `invalid memory alloc request size <XXX>` during replication/slot creation {#postgres-invalid-memalloc-bug}
 
 There was a bug introduced in Postgres patch versions 17.5/16.9/15.13/14.18/13.21 due to which certain workloads can cause an exponential increase in memory usage, leading to a memory allocation request >1GB which Postgres considers invalid. This bug [has been fixed](https://github.com/postgres/postgres/commit/d87d07b7ad3b782cb74566cd771ecdb2823adf6a) and will be in the next Postgres patch series (17.6...). Please check with your Postgres provider when this patch version will be available for upgrade. If an upgrade isn't immediately possible, a resync of the pipe will be needed as it hits the error.
+
+### I need to maintain a complete historical record in ClickHouse, even when the data is deleted from the source Postgres database. Can I completely ignore DELETE and TRUNCATE operations from Postgres in ClickPipes? {#ignore-delete-truncate}
+
+Yes! Before creating your Postgres ClickPipe, create a publication without DELETE operations. For example:
+```sql
+CREATE PUBLICATION <pub_name> FOR TABLES IN SCHEMA <schema_name> WITH (publish = 'insert,update');
+```
+Then when [setting up](https://clickhouse.com/docs/integrations/clickpipes/postgres#configuring-the-replication-settings) your Postgres ClickPipe, make sure this publication name is selected.
+
+Note that TRUNCATE operations are ignored by ClickPipes and will not be replicated to ClickHouse.
+
+### Why can I not replicate my table which has a dot in it? {#replicate-table-dot}
+PeerDB has a limitation currently where dots in source table identifiers - aka either schema name or table name - is not supported for replication as PeerDB cannot discern, in that case, what is the schema and what is the table as it splits on dot.
+Effort is being made to support input of schema and table separately to get around this limitation.
+
+### Initial load completed but there is no/missing data on ClickHouse. What could be the issue? {#initial-load-issue}
+If your initial load has completed without error but your destination ClickHouse table is missing data, it might be that you have RLS (Row Level Security) policies enabled on your source Postgres tables.
+Also worth checking:
+- If the user has sufficient permissions to read the source tables.
+- If there are any row policies on ClickHouse side which might be filtering out rows.
+
+### Can I have the ClickPipe create a replication slot with failover enabled? {#failover-slot}
+Yes, for a Postgres ClickPipe with replication mode as CDC or Snapshot + CDC, you can have ClickPipes create a replication slot with failover enabled, by toggling the below switch in the `Advanced Settings` section while creating the ClickPipe. Note that your Postgres version must be 17 or above to use this feature.
+
+<Image img={failover_slot} border size="md"/>
+
+If the source is configured accordingly, the slot is preserved after failovers to a Postgres read replica, ensuring continuous data replication. Learn more [here](https://www.postgresql.org/docs/current/logical-replication-failover.html).

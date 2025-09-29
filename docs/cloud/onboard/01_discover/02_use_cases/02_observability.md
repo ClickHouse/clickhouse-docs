@@ -4,6 +4,7 @@ title: 'Observability'
 description: 'Use ClickHouse Cloud for observability, monitoring, logging, and system performance analysis in distributed applications'
 keywords: ['use cases', 'observability']
 sidebar_label: 'Observability'
+doc_type: 'guide'
 ---
 
 <iframe width="758" height="426" src="https://www.youtube.com/embed/eKlZoT6hPwI?si=Wyrft2T04E1v8US6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

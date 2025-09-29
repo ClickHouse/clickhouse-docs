@@ -7,6 +7,7 @@ pagination_next: null
 description: 'This guide explains how to use AI to generate SQL queries in ClickHouse Client or clickhouse-local.'
 keywords: ['AI', 'SQL generation']
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 Starting from ClickHouse 25.7, [ClickHouse Client](https://clickhouse.com/docs/interfaces/cli) and [clickhouse-local](https://clickhouse.com/docs/operations/utilities/clickhouse-local) include [AI-powered functionality](https://clickhouse.com/docs/interfaces/cli#ai-sql-generation) that converts natural language descriptions into SQL queries. This feature allows users to describe their data requirements in plain text, which the system then translates into corresponding SQL statements.

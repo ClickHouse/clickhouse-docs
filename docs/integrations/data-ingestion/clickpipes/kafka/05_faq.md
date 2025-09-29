@@ -4,6 +4,7 @@ description: 'Frequently asked questions about ClickPipes for Kafka'
 slug: /integrations/clickpipes/kafka/faq
 sidebar_position: 1
 title: 'Kafka ClickPipes FAQ'
+doc_type: 'guide'
 ---
 
 ## Kafka ClickPipes FAQ {#faq}

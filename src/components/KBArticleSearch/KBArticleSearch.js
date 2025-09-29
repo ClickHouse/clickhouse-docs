@@ -55,7 +55,7 @@ const KBArticleSearch = ({kb_articles, kb_articles_and_tags, onUpdateResults}) =
                 }
             );
             kb_articles_and_tags.forEach((article)=>{
-                index.add({id: article.id, title: article.title});
+                index.add({id: article.id, title: article.title, description: article.description});
             })
             indexRef.current = index;
 
@@ -111,6 +111,7 @@ const KBArticleSearch = ({kb_articles, kb_articles_and_tags, onUpdateResults}) =
         } else if (results && searchTerm.length > 1 && results.length === 0) {
             setMatchedArticles([]);
         } else {
+            // Extract all indices from all search field results and deduplicate
             const indices = results.flatMap(search_field_results => search_field_results.result);
             const unique_indices = [...new Set(indices)];
             const filteredArticles = kb_articles_and_tags.filter((article) => {

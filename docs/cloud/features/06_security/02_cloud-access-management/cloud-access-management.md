@@ -3,16 +3,22 @@ sidebar_label: 'Overview'
 slug: /cloud/security/cloud-access-management/overview
 title: 'Cloud access management'
 description: 'Describes how access control in ClickHouse cloud works, including information on role types'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
 import user_grant_permissions_options from '@site/static/images/cloud/security/cloud-access-management/user_grant_permissions_options.png';
 
 # Access control in ClickHouse Cloud {#access-control-in-clickhouse-cloud}
-ClickHouse controls user access in two places, via the console and via the database. Console access is managed via the clickhouse.cloud user interface. Database access is managed via database user accounts and roles. Additionally, console users can be granted roles within the database that enable the console user to interact with the database via our SQL console.
+
+ClickHouse Cloud controls access to the console itself and the features available within it.
+A **console user** is the foundation of this access with all permissions, roles, and access controls assigned to and managed through these users.
+When [database-level permissions are associated with console users](/cloud/security/common-access-management-queries#modifying-users-and-roles), those then govern their data access when querying via the SQL console.
 
 ## Console users and roles {#console-users-and-roles}
-Configure Organization and Service role assignments within the Console > Users and roles page. Configure SQL Console role assignments in the settings page for each service.
+
+[Configure Organization and Service role assignments](/cloud/guides/sql-console/configure-org-service-role-assignments) within the Console > Users and roles page.
+[Configure SQL Console role assignments](/cloud/guides/sql-console/config-sql-console-role-assignments) in the settings page for each service.
 
 Users must be assigned an organization level role and may optionally be assigned service roles for one or more services. Service roles may be optionally configured for users to access the SQL console in the service settings page.
 - Users assigned the Organization Admin role are granted Service Admin by default.

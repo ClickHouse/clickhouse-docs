@@ -2,6 +2,7 @@
 title: 'Troubleshooting'
 description: 'Installation troubleshooting guide'
 slug: /guides/troubleshooting
+doc_type: 'guide'
 ---
 
 ## Installation {#installation}
