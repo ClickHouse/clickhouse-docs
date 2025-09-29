@@ -10,7 +10,6 @@ doc_type: 'reference'
 
 The different types of events captured for the organization are grouped in 3 categories: **Organization**, **Service** and **User**. For more information about the audit log and how to export or add an API integration, review the [console audit log](/cloud/security/audit-logging/console-audit-log) documentation in the Guides section above.
 
-
 The following events are recorded to the audit log.
 
 ### Organization {#organization}
@@ -37,4 +36,3 @@ The following events are recorded to the audit log.
 - User joined organization
 - User invitation deleted
 - User left organization
-

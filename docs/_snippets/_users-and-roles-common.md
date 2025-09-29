@@ -122,49 +122,49 @@ Roles are used to define groups of users for certain privileges instead of manag
 
 <VerticalStepper headerLevel="h5">
 
-##### Create a role to restrict users of this role to only see `column1` in database `db1` and `table1`:
+##### Create a role to restrict users of this role to only see `column1` in database `db1` and `table1`: {#create-column-role}
 
     ```sql
     CREATE ROLE column1_users;
     ```
 
-##### Set privileges to allow view on `column1`
+##### Set privileges to allow view on `column1` {#set-column-privileges}
 
     ```sql
     GRANT SELECT(id, column1) ON db1.table1 TO column1_users;
     ```
 
-##### Add the `column_user` user to the `column1_users` role
+##### Add the `column_user` user to the `column1_users` role {#add-column-user-to-role}
 
     ```sql
     GRANT column1_users TO column_user;
     ```
 
-##### Create a role to restrict users of this role to only see selected rows, in this case, only rows containing `A` in `column1`
+##### Create a role to restrict users of this role to only see selected rows, in this case, only rows containing `A` in `column1` {#create-row-role}
 
     ```sql
     CREATE ROLE A_rows_users;
     ```
 
-##### Add the `row_user` to the `A_rows_users` role
+##### Add the `row_user` to the `A_rows_users` role {#add-row-user-to-role}
 
     ```sql
     GRANT A_rows_users TO row_user;
     ```
 
-##### Create a policy to allow view on only where `column1` has the values of `A`
+##### Create a policy to allow view on only where `column1` has the values of `A` {#create-row-policy}
 
     ```sql
     CREATE ROW POLICY A_row_filter ON db1.table1 FOR SELECT USING column1 = 'A' TO A_rows_users;
     ```
 
-##### Set privileges to the database and table
+##### Set privileges to the database and table {#set-db-table-privileges}
 
     ```sql
     GRANT SELECT(id, column1, column2) ON db1.table1 TO A_rows_users;
     ```
 
-##### Grant explicit permissions for other roles to still have access to all rows
+##### Grant explicit permissions for other roles to still have access to all rows {#grant-other-roles-access}
 
     ```sql
     CREATE ROW POLICY allow_other_users_filter 
@@ -183,13 +183,13 @@ Roles are used to define groups of users for certain privileges instead of manag
 
 <VerticalStepper headerLevel="h5">
 
-##### Log into the clickhouse client using the `clickhouse_admin` user
+##### Log into the clickhouse client using the `clickhouse_admin` user {#login-admin-user}
 
    ```bash
    clickhouse-client --user clickhouse_admin --password password
    ```
 
-##### Verify access to database, table and all rows with the admin user.
+##### Verify access to database, table and all rows with the admin user. {#verify-admin-access}
 
    ```sql
    SELECT *
@@ -207,13 +207,13 @@ Roles are used to define groups of users for certain privileges instead of manag
    └────┴─────────┴─────────┘
    ```
 
-##### Log into the ClickHouse client using the `column_user` user
+##### Log into the ClickHouse client using the `column_user` user {#login-column-user}
 
    ```bash
    clickhouse-client --user column_user --password password
    ```
 
-##### Test `SELECT` using all columns
+##### Test `SELECT` using all columns {#test-select-all-columns}
 
    ```sql
    SELECT *
@@ -236,7 +236,7 @@ Roles are used to define groups of users for certain privileges instead of manag
    Access is denied since all columns were specified and the user only has access to `id` and `column1`
    :::
 
-##### Verify `SELECT` query with only columns specified and allowed:
+##### Verify `SELECT` query with only columns specified and allowed: {#verify-allowed-columns}
 
    ```sql
    SELECT
@@ -262,13 +262,13 @@ Roles are used to define groups of users for certain privileges instead of manag
 
 <VerticalStepper headerLevel="h5">
 
-##### Log into the ClickHouse client using `row_user`
+##### Log into the ClickHouse client using `row_user` {#login-row-user}
 
    ```bash
    clickhouse-client --user row_user --password password
    ```
 
-##### View rows available
+##### View rows available {#view-available-rows}
 
    ```sql
    SELECT *
@@ -298,31 +298,31 @@ For example, if one `role1` allows for only select on `column1` and `role2` allo
 
 <VerticalStepper headerLevel="h5">
 
-##### Using the admin account, create new user to restrict by both row and column with default roles
+##### Using the admin account, create new user to restrict by both row and column with default roles {#create-restricted-user}
 
    ```sql
    CREATE USER row_and_column_user IDENTIFIED BY 'password' DEFAULT ROLE A_rows_users;
    ```
 
-##### Remove prior privileges for `A_rows_users` role
+##### Remove prior privileges for `A_rows_users` role {#remove-prior-privileges}
 
    ```sql
    REVOKE SELECT(id, column1, column2) ON db1.table1 FROM A_rows_users;
    ```
 
-##### Allow `A_row_users` role to only select from `column1`
+##### Allow `A_row_users` role to only select from `column1` {#allow-column1-select}
 
    ```sql
    GRANT SELECT(id, column1) ON db1.table1 TO A_rows_users;
    ```
 
-##### Log into the ClickHouse client using `row_and_column_user`
+##### Log into the ClickHouse client using `row_and_column_user` {#login-restricted-user}
 
    ```bash
    clickhouse-client --user row_and_column_user --password password;
    ```
 
-##### Test with all columns:
+##### Test with all columns: {#test-all-columns-restricted}
 
    ```sql
    SELECT *
@@ -341,7 +341,7 @@ For example, if one `role1` allows for only select on `column1` and `role2` allo
    SELECT(id, column1, column2) ON db1.table1. (ACCESS_DENIED)
    ```
 
-##### Test with limited allowed columns:
+##### Test with limited allowed columns: {#test-limited-columns}
 
    ```sql
    SELECT

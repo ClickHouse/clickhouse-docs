@@ -39,10 +39,10 @@ The [Payment Card Industry Data Security Standard (PCI DSS)](https://www.pcisecu
 
 Refer to [PCI onboarding](//cloud/security/compliance/pci-onboarding) for steps to deploy PCI compliant services.
 
-## Privacy compliance
+## Privacy compliance {#privacy-compliance}
 
 In addition to the items above, ClickHouse maintains internal compliance programs addressing the General Data Protection Regulation (GDPR), California Consumer Privacy Act (CCPA) and other relevant privacy frameworks. 
 
-## Payment compliance
+## Payment compliance {#payment-compliance}
 
 ClickHouse provides a secure method to pay by credit card that is compliant with [PCI SAQ A v4.0](https://www.pcisecuritystandards.org/document_library/). 

@@ -14,7 +14,7 @@ ClickHouse provides database audit logs by default. This page focuses on securit
 Information is logged directly to the system tables and are retained for up to 30 days by default. This period can be longer or shorter and is affected by the frequency of merges in the system. Customers may take additional measures to store logs for longer or export logs to a security information and event management (SIEM) system for long term storage. Details below.
 :::
 
-## Security relevant logs
+## Security relevant logs {#security-relevant-logs}
 
 ClickHouse logs security relevant database events primarily to session and query logs. 
 
@@ -46,11 +46,11 @@ FROM clusterAllReplicas('default', system.query_log)
 WHERE user=’compromised_account’
 ```
 
-## Retaining log data within services
+## Retaining log data within services {#reatining-log-data-within-services}
 
 Customers needing longer retention or log durabilty can use materialized views to achieve these objectives. For more information on materialized views, what they are, benefits and how to implement review our [materialized views](/materialized-views) videos and documentation.
 
-## Exporting logs
+## Exporting logs {#exporting-logs}
 
 System logs may be written or exported to a storage location using various formats that are compatible with SIEM systems. For more information, review our [table functions](/sql-reference/table-functions) docs. The most common methods are:
 - [Write to S3](/sql-reference/table-functions/s3)

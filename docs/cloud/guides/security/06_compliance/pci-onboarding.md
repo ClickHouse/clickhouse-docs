@@ -14,7 +14,6 @@ import pci1 from '@site/static/images/cloud/security/compliance/pci_1.png';
 import pci2 from '@site/static/images/cloud/security/compliance/pci_2.png';
 import pci3 from '@site/static/images/cloud/security/compliance/pci_3.png';
 
-
 <EnterprisePlanFeatureBadge feature="PCI compliance"/>
 
 ClickHouse offers services that are compliant with the Payment Card Industry Data Security Standard (PCI-DSS) and is audited to Level 1 Service Provider requirements. Customers may process primary account numbers (PAN) within these services by enabling this feature and deploying services to a compliant region.
@@ -53,7 +52,7 @@ This page describes the process for enabling deployment of PCI compliant service
 
 <br />
 
-### Deploy services to PCI compliant regions
+### Deploy services to PCI compliant regions {#deploy-pci-regions}
 
 1. Select **New service** in the upper left corner of the home screen in the console
 2. Change the **Region type** to **HIPAA compliant**
@@ -86,4 +85,3 @@ If migration from standard to PCI compliant regions is required, follow these st
 :::info Restrictions
 Services must remain in the same cloud provider and geographic region. This process migrates the service to the compliant environment in the same cloud provider and region.
 :::
-

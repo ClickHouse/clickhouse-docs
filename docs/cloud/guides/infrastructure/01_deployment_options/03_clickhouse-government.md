@@ -9,7 +9,7 @@ doc_type: 'reference'
 import Image from '@theme/IdealImage';
 import private_gov_architecture from '@site/static/images/cloud/reference/private-gov-architecture.png';
 
-## Overview
+## Overview {#overview}
 
 ClickHouse Government is a self-deployed package consisting of the same proprietary version of ClickHouse that runs on ClickHouse Cloud and our ClickHouse Operator, configured for separation of compute and storage and hardened to meet the rigorous demands of government agencies and public sector organizations. It is deployed to Kubernetes environments with S3 compatible storage.
 
@@ -19,32 +19,32 @@ This package is currently available for AWS, with bare metal deployments coming 
 ClickHouse Government is designed for government agencies, public sector organizations, or cloud software companies selling to these agencies and organizations, providing full control and management over their dedicated infrastructure. This option is only available by [contacting us](https://clickhouse.com/government).
 :::
 
-## Benefits over open-source
+## Benefits over open-source {#benefits-over-os}
 
 The following features differentiate ClickHouse Government from self-managed open source deployments:
 
 <VerticalStepper headerLevel="h3">
 
-### Enhanced performance
+### Enhanced performance {#enhanced-performance}
 - Native separation of compute and storage
 - Proprietary cloud features such as [shared merge tree](/cloud/reference/shared-merge-tree) and [warehouse](/cloud/reference/warehouses) functionality
 
-### Tested and proven through a variety of use cases and conditions
+### Tested and proven through a variety of use cases and conditions {#tested-proven}
 - Fully tested and validated in ClickHouse Cloud
 
-### Compliance package
+### Compliance package {#compliance-package}
 - NIST Risk Management Framework (RMF) documentation to accelerate your Authorization to Operate (ATO)
 
-### Full featured roadmap with new features added regularly
+### Full featured roadmap with new features added regularly {#full-featured-roadmap}
 Additional features that are coming soon include:
 - API to programmatically manage resources
-   - Automated backups
-   - Automated vertical scaling operations
+  - Automated backups
+  - Automated vertical scaling operations
 - Identity provider integration
 
 </VerticalStepper>
 
-## Architecture
+## Architecture {#architecture}
 
 ClickHouse Government is fully self-contained within your deployment environment and consists of compute managed within Kubernetes and storage within an S3 compatible storage solution.
 
@@ -54,15 +54,15 @@ ClickHouse Government is fully self-contained within your deployment environment
 
 <br />
 
-## Onbaording process
+## Onbaording process {#onboarding-process}
 
 Customers can initiate onboarding by reacing out to [us](https://clickhouse.com/government). For qualified customers, we will provide a detailed environment build guide and access to the images and Helm charts for deployment.
 
-## General requirements
+## General requirements {#general-requirements}
 
 This section is intended to provide an overview of the resources required to deploy ClickHouse Government. Specific deployment guides are provided as part of onboarding. Instance/ server types and sizes depend on the use case.
 
-### ClickHouse Government on AWS
+### ClickHouse Government on AWS {#clickhouse-government-aws}
 
 Required resources:
 - [ECR](https://docs.aws.amazon.com/ecr/) to receive the images and Helm charts

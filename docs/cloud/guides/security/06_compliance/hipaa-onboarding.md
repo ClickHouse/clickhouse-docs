@@ -23,7 +23,7 @@ For more information about ClickHouse's compliance program and third party audit
 
 This page describes the process for enabling deployment of HIPAA compliant services in ClickHouse Cloud.
 
-## Enable and deploy HIPAA compliant services
+## Enable and deploy HIPAA compliant services {#enable-hipaa-compliant-services}
 
 <VerticalStepper headerLevel="h3">
 
@@ -46,7 +46,6 @@ This page describes the process for enabling deployment of HIPAA compliant servi
 <Image img={hipaa1} size="md" alt="Request HIPAA enablement" background='black'/>
 
 <br />
-
 
 4. Follow the instructions on the screen to submit a request to complete a BAA.
 

@@ -23,7 +23,7 @@ access within Cloud console.
 
 <VerticalStepper headerLevel="h3">
 
-### Access service settings
+### Access service settings {#access-service-settings}
 
 From the services page, click the menu in the top right corner of the service for which you want to adjust SQL console access settings.
 
@@ -33,13 +33,13 @@ Select `settings` from the popup menu.
 
 <Image img={step_2} size="lg"/>
 
-### Adjust SQL console access
+### Adjust SQL console access {#adjust-sql-console-access}
 
 Under the "Security" section, find the "SQL console access" area:
 
 <Image img={step_3} size="md"/>
 
-### Update the settings for Service Admin
+### Update the settings for Service Admin {#update-settings-for-service-admin}
 
 Select the drop-down menu for Service Admin to change the access control settings for Service Admin roles:
 
@@ -53,7 +53,7 @@ You can choose from the following roles:
 | `Read only`   |
 | `Full access` |
 
-### Update the settings for Service Read Only
+### Update the settings for Service Read Only {#update-settings-for-service-read-only}
 
 Select the drop-down menu for Service Read Only to change the access control settings for Service Read Only roles:
 
@@ -67,7 +67,7 @@ You can choose from the following roles:
 | `Read only`   |
 | `Full access` |
 
-### Review users with access
+### Review users with access {#review-users-with-access}
 
 An overview of users for the service can be viewed by selecting the user count:
 

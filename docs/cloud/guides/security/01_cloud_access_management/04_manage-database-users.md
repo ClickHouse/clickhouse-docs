@@ -22,7 +22,7 @@ To create a custom role for a SQL console user and grant it a general role, run 
 
 <VerticalStepper headerLevel="h4">
 
-#### Create `database_developer` and grant permissions 
+#### Create `database_developer` and grant permissions {#create-role-grant-permissions} 
 
 Create the `database_developer` role and grant `SHOW`, `CREATE`, `ALTER`, and `DELETE` permissions.
     
@@ -34,7 +34,7 @@ GRANT ALTER ON * TO database_developer;
 GRANT DELETE ON * TO database_developer;
 ```
 
-#### Create SQL console user role 
+#### Create SQL console user role {#create-sql-console-user-role} 
 
 Create a role for the SQL console user my.user@domain.com and assign it the database_developer role.
     
@@ -43,13 +43,13 @@ CREATE ROLE OR REPLACE `sql-console-role:my.user@domain.com`;
 GRANT database_developer TO `sql-console-role:my.user@domain.com`;
 ```
 
-#### The user is assigned the new role when they use SQL console
+#### The user is assigned the new role when they use SQL console {#use-assigned-new-role}
 
 The user will be assigned the role associated with their email address whenever they use SQL console. 
 
 </VerticalStepper>
 
-## Database authentication
+## Database authentication {#database-authentication}
 
 ### Database user ID and password {#database-user-id--password}
 
@@ -74,7 +74,6 @@ To set up SSH authentication for a ClickHouse Cloud database user.
 4. Use the private key to authenticate against the service.
 
 For a detailed walkthrough with examples, check out [How to connect to ClickHouse Cloud using SSH keys](/knowledgebase/how-to-connect-to-ch-cloud-using-ssh-keys) in our Knowledgebase.
-
 
 ## Database permissions {#database-permissions}
 Configure the following within the services and databases using the SQL [GRANT](/sql-reference/statements/grant) statement.
@@ -155,6 +154,6 @@ e. Click the link for the number of users with access to the database `There are
 
 </VerticalStepper>
 
-## Warehouse users
+## Warehouse users {#warehouse-users}
 
 Warehouse users are shared across services within the same warehouse. For more information, review [warehouse access controls](/cloud/reference/warehouses#access-controls).

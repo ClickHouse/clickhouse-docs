@@ -3535,6 +3535,36 @@
       "source": "/docs/manage/security/cloud-endpoints-api",
       "destination": "/docs/manage/data-sources/cloud-endpoints-api",
       "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/shared-responsibility-model",
+      "destination": "/docs/cloud/security/console-roles",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/cloud-authentication",
+      "destination": "/docs/cloud/security#cloud-console-auth",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/private-link-overview",
+      "destination": "/docs/cloud/security/connectivity/private-networking",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/connectivity",
+      "destination": "/docs/cloud/security/connectivity/private-networking",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/guides/sql-console/configure-org-service-role-assignments",
+      "destination": "/docs/cloud/security/cloud_access_management",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/secure-s3",
+      "destination": "/docs/cloud/data-sources/secure-s3",
+      "permanent": true
     }
   ]
 }

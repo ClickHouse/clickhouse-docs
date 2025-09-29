@@ -142,7 +142,7 @@ SELECT * FROM masked_orders
 Notice that the data returned from the view is partially masked, obfuscating the sensitive information.
 You can also create multiple views, with differing levels of obfuscation depending on the level of privileged access to information the viewer has.
 
-To ensure that users are only able to access the view returning the masked data, and not the table with the original unmasked data, you should use [Role Based Access Control](/cloud/security/cloud-access-management/overview) to ensure that specific roles only have grants to select from the view.
+To ensure that users are only able to access the view returning the masked data, and not the table with the original unmasked data, you should use [Role Based Access Control](/cloud/security/console-roles) to ensure that specific roles only have grants to select from the view.
 
 First create the role:
 
@@ -232,7 +232,7 @@ ORDER BY user_id ASC
    └─────────┴───────────────┴───────────────────────────┴──────────────┴──────────────┴────────────┴────────────────────────────────────┴──────────────┴────────────────────┴──────────────┴────────────────────────────┘
 ```
 
-To ensure that users are only able to access columns containing the masked data, you can again use [Role Based Access Control](/cloud/security/cloud-access-management/overview) to ensure that specific roles only have grants to select on masked columns from `orders`.
+To ensure that users are only able to access columns containing the masked data, you can again use [Role Based Access Control](/cloud/security/console-roles) to ensure that specific roles only have grants to select on masked columns from `orders`.
 
 Recreate the role that we made previously:
 

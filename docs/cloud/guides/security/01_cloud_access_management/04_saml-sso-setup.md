@@ -335,7 +335,7 @@ Azure (Microsoft) SAML may also be referred to as Azure Active Directory (AD) or
 
 ## How it works {#how-it-works}
 
-### User management with SAML SSO
+### User management with SAML SSO {#user-management-with-saml-sso}
 
 For more information on managing user permissions and restricting access to only SAML connections, refer to [Manage cloud users](/cloud/security/manage-cloud-users).
 
@@ -355,7 +355,7 @@ Security is our top priority when it comes to authentication. For this reason, w
 
 - **We do not automatically link SSO and non-SSO accounts.** You may see multiple accounts for your users in your ClickHouse user list even if they are using the same email address.
 
-## Troubleshooting Common Issues
+## Troubleshooting Common Issues {#troubleshooting-common-issues}
 
 | Error | Cause | Solution | 
 |:------|:------|:---------|

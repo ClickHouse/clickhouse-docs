@@ -16,7 +16,6 @@ import step_6 from '@site/static/images/cloud/guides/sql_console/org_level_acces
 import step_7 from '@site/static/images/cloud/guides/sql_console/org_level_access/7_org_settings.png'
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
-
 This guide is intended for users with the Organization Admin role in ClickHouse Cloud.
 
 ## Add users to your organization {#add-users}
@@ -35,7 +34,6 @@ To invite users:
 
 Users will receive an email from which they can join the organization. For more information on accepting invitations, see [Manage my account](/cloud/security/manage-my-account).
 
-
 ### Add users via SAML identity provider {#add-users-via-saml}
 
 <EnterprisePlanFeatureBadge feature="SAML SSO"/>
@@ -45,7 +43,6 @@ If your organization is configured for [SAML SSO](/cloud/security/saml-setup) fo
 1. Add users to your SAML application in your identity provider, the users will not appear in ClickHouse until they have logged in once
 2. When the user logs in to ClickHouse Cloud they will automatically be assigned the `Member` role which may only log in and has no other access
 3. Follow the instructions in the `Manage user role assignments` below to grant permissions
-
 
 ### Enforcing SAML-only authentication {#enforce-saml}
 
@@ -57,25 +54,25 @@ Users assigned the Organization Admin role may update permissions for other user
 
 <VerticalStepper headerLevel="h3">
 
-### Access organization settings
+### Access organization settings {#access-organization-settings}
 
 From the services page, select the name of your organization:
 
 <Image img={step_1} size="md"/>
 
-### Access users and roles
+### Access users and roles {#access-users-and-roles}
 
 Select the `Users and roles` menu item from the popup menu.
 
 <Image img={step_2} size="md"/>
 
-### Select the user to update
+### Select the user to update {#select-user-to-update}
 
 Select the menu item at the end of the row for the user that you which to modify access for:
 
 <Image img={step_3} size="lg"/>
 
-### Select `edit`:
+### Select `edit` {#select-edit}
 
 <Image img={step_4} size="lg"/>
 
@@ -83,7 +80,7 @@ A tab will display on the right hand side of the page:
 
 <Image img={step_5} size="lg"/>
 
-### Update permissions
+### Update permissions {#update-permissions}
 
 Select the drop-down menu items to adjust console-wide access permissions and which features a user can access from within the ClickHouse console. Refer to [Console roles and permissions](/cloud/security/console-roles) for a listing of roles and associated permissions.
 
@@ -91,7 +88,7 @@ Select the drop-down menu items to adjust the access scope of the service role o
 
 <Image img={step_6} size="md"/>
 
-### Save your changes
+### Save your changes {#save-changes}
 
 Save your changes with the `Save changes` button at the bottom of the tab:
 
