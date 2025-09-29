@@ -180,7 +180,7 @@ Best for: large scale, mission critical deployments that have stringent security
 
 A ClickHouse Credit is a unit of credit toward Customer's usage of ClickHouse Cloud equal to one (1) US dollar, to be applied based on ClickHouse's then-current published price list.
 
-### Where can I find legacy pricing?
+### Where can I find legacy pricing? {#find-legacy-pricing}
 
 Legacy pricing information can be found [here](https://clickhouse.com/pricing?legacy=true).
 
