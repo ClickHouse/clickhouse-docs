@@ -208,7 +208,7 @@ LIMIT 5
 FORMAT PrettyCompactMonoBlock
 
 ┌───────Id─┬─Title─────────────────────────────────────────────────────────┬─Location──────────────┐
-│ 52296928 │ Comparision between two Strings in ClickHouse                 │ Spain                 │
+│ 52296928 │ Comparison between two Strings in ClickHouse                  │ Spain                 │
 │ 52345137 │ How to use a file to migrate data from mysql to a clickhouse? │ 中国江苏省Nanjing Shi   │
 │ 61452077 │ How to change PARTITION in clickhouse                         │ Guangzhou, 广东省中国   │
 │ 55608325 │ Clickhouse select last record without max() on all table      │ Moscow, Russia        │
