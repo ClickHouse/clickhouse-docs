@@ -275,8 +275,8 @@ plt.show()
 
 <Image size="md" img={image_9} alt="Plot of remote data set and local data set"/>
 
-From the plotted data, we see that sales started around 160000 in the year 1995 and surged quickly, peaking at around 540000 in 19999.
-After that, volumes declined sharply through the mid-2000s, dropping severely during the 2007-2008 financial crisis and falling to around 140 000.
+From the plotted data, we see that sales started around 160,000 in the year 1995 and surged quickly, peaking at around 540,000 in 1999.
+After that, volumes declined sharply through the mid-2000s, dropping severely during the 2007-2008 financial crisis and falling to around 140,000.
 Prices on the other hand showed steady, consistent growth from about £150,000 in 1995 to around £300,000 by 2005.
 Growth accelerated significantly after 2012, rising steeply from roughly £400,000 to over £1,000,000 by 2019.
 Unlike sales volume, prices showed minimal impact from the 2008 crisis and maintained an upward trajectory. Yikes!
@@ -286,4 +286,5 @@ Unlike sales volume, prices showed minimal impact from the 2008 crisis and maint
 This guide demonstrated how chDB enables seamless data exploration in Jupyter notebooks by connecting ClickHouse Cloud with local data sources.
 Using the UK Property Price dataset, we showed how to query remote ClickHouse Cloud data with the `remoteSecure()` function, read local CSV files with the `file()` table engine, and convert results directly to Pandas DataFrames for analysis and visualization.
 Through chDB, data scientists can leverage ClickHouse's powerful SQL capabilities alongside familiar Python tools like Pandas and matplotlib, making it easy to combine multiple data sources for comprehensive analysis.
+
 While many a London-based data scientist may not be able to afford their own home or apartment any time soon, at least they can analyze the market that priced them out!
