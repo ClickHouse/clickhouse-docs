@@ -4,6 +4,7 @@ description: 'Dataset consisting of two tables containing anonymized web analyti
 sidebar_label: 'Web Analytics Data'
 slug: /getting-started/example-datasets/metrica
 title: 'Anonymized Web Analytics'
+doc_type: 'reference'
 ---
 
 # Anonymized web analytics data

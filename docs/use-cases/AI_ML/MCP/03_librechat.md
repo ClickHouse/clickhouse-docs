@@ -7,6 +7,7 @@ pagination_next: null
 description: 'This guide explains how to set up LibreChat with a ClickHouse MCP server using Docker.'
 keywords: ['AI', 'Librechat', 'MCP']
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import {CardHorizontal} from '@clickhouse/click-ui/bundled'

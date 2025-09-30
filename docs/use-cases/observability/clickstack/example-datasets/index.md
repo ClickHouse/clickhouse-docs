@@ -4,6 +4,7 @@ title: 'Sample Datasets'
 pagination_prev: null
 pagination_next: null
 description: 'Getting started with ClickStack and sample datasets'
+doc_type: 'landing-page'
 ---
 
 This section provides various sample datasets and examples to help you get started with ClickStack. These examples demonstrate different ways to work with observability data in ClickStack, from local development to production scenarios.

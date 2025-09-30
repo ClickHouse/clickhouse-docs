@@ -8,6 +8,7 @@ description: 'In this guide, we will walk you through the steps to query
  your data in S3 buckets using ClickHouse and the Unity Catalog.'
 keywords: ['Unity', 'Data Lake']
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';

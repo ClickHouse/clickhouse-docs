@@ -3,6 +3,7 @@ slug: /materialized-view/refreshable-materialized-view
 title: 'Refreshable materialized view'
 description: 'How to use materialized views to speed up queries'
 keywords: ['refreshable materialized view', 'refresh', 'materialized views', 'speed up queries', 'query optimization']
+doc_type: 'guide'
 ---
 
 import refreshableMaterializedViewDiagram from '@site/static/images/materialized-view/refreshable-materialized-view-diagram.png';
@@ -234,7 +235,7 @@ The syntax here is identical to an incremental materialized view, except we incl
 
 ### IMDb {#imdb}
 
-In the [dbt and ClickHouse integration guide](/integrations/dbt#dbt) we populated an IMDb dataset with the following tables: `actors`, `directors`, `genres`, `movie_directors`, `movies`, and `roles`.
+In the [dbt and ClickHouse integration guide](/integrations/dbt) we populated an IMDb dataset with the following tables: `actors`, `directors`, `genres`, `movie_directors`, `movies`, and `roles`.
 
 We can then write the following query can be used to compute a summary of each actor, ordered by the most movie appearances.
 

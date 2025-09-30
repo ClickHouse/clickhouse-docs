@@ -3,6 +3,7 @@ sidebar_label: 'Ingesting Data from MongoDB to ClickHouse'
 description: 'Describes how to seamlessly connect your MongoDB to ClickHouse Cloud.'
 slug: /integrations/clickpipes/mongodb
 title: 'Ingesting data from MongoDB to ClickHouse (using CDC)'
+doc_type: 'guide'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
@@ -19,7 +20,7 @@ import Image from '@theme/IdealImage';
 <BetaBadge/>
 
 :::info
-Currently, ingesting data from MongoDB to ClickHouse Cloud via ClickPipes is in Private Preview.
+Ingesting data from MongoDB to ClickHouse Cloud via ClickPipes is in public beta.
 :::
 
 :::note

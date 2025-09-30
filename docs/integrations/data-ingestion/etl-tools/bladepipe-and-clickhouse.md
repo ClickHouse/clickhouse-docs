@@ -5,6 +5,7 @@ keywords: ['clickhouse', 'BladePipe', 'connect', 'integrate', 'cdc', 'etl', 'dat
 slug: /integrations/bladepipe
 description: 'Stream data into ClickHouse using BladePipe data pipelines'
 title: 'Connect BladePipe to ClickHouse'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

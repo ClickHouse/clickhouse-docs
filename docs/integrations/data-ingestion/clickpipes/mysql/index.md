@@ -3,6 +3,7 @@ sidebar_label: 'Ingesting Data from MySQL to ClickHouse'
 description: 'Describes how to seamlessly connect your MySQL to ClickHouse Cloud.'
 slug: /integrations/clickpipes/mysql
 title: 'Ingesting data from MySQL to ClickHouse (using CDC)'
+doc_type: 'guide'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
@@ -20,7 +21,7 @@ import Image from '@theme/IdealImage';
 <BetaBadge/>
 
 :::info
-Currently, ingesting data from MySQL to ClickHouse Cloud via ClickPipes is in public beta.
+Ingesting data from MySQL to ClickHouse Cloud via ClickPipes is in public beta.
 :::
 
 You can use ClickPipes to ingest data from your source MySQL database into ClickHouse Cloud. The source MySQL database can be hosted on-premises or in the cloud using services like Amazon RDS, Google Cloud SQL, and others.

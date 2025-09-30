@@ -5,6 +5,7 @@ pagination_prev: null
 pagination_next: null
 sidebar_position: 1
 description: 'Deploying ClickStack with ClickHouse Cloud'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -59,9 +60,16 @@ This step ensures tables are created with an Open Telemetry (OTel) schema, which
 The following instructions use the standard distribution of the OTel collector, rather than the ClickStack distribution. The latter requires an OpAMP server for configuration. This is currently not supported in private preview. The configuration below replicates the version used by the ClickStack distribution of the collector, providing an OTLP endpoint to which events can be sent.
 :::
 
-Create a `otel-file-collector.yaml` file with the following content:
+Download the configuration for the OTel collector:
 
-```yaml
+```bash
+curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/main/docs/use-cases/observability/clickstack/deployment/_snippets/otel-cloud-config.yaml
+```
+
+<details>
+<summary>otel-cloud-config.yaml</summary>
+
+```yaml file=docs/use-cases/observability/clickstack/deployment/_snippets/otel-cloud-config.yaml
 receivers:
   otlp/hyperdx:
     protocols:
@@ -209,7 +217,10 @@ service:
       receivers: [routing/logs]
       processors: [memory_limiter, batch]
       exporters: [clickhouse/rrweb]
+
 ```
+
+</details>
 
 Deploy the collector using the following Docker command, setting the respective environment variables to the connection settings recorded earlier and using the appropriate command below based on your operating system.
 
@@ -228,7 +239,7 @@ docker run --rm -it \
   -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
   -e CLICKHOUSE_DATABASE=${CLICKHOUSE_DATABASE} \
   --user 0:0 \
-  -v "$(pwd)/otel-file-collector.yaml":/etc/otel/config.yaml \
+  -v "$(pwd)/otel-cloud-collector.yaml":/etc/otel/config.yaml \
   -v /var/log:/var/log:ro \
   -v /private/var/log:/private/var/log:ro \
   otel/opentelemetry-collector-contrib:latest \
@@ -242,7 +253,7 @@ docker run --rm -it \
 #   -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
 #   -e CLICKHOUSE_DATABASE=${CLICKHOUSE_DATABASE} \
 #   --user 0:0 \
-#   -v "$(pwd)/otel-file-collector.yaml":/etc/otel/config.yaml \
+#   -v "$(pwd)/otel-cloud-config.yaml":/etc/otel/config.yaml \
 #   -v /var/log:/var/log:ro \
 #   -v /private/var/log:/private/var/log:ro \
 #   otel/opentelemetry-collector-contrib:latest \

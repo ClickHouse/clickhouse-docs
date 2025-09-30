@@ -3,6 +3,7 @@ sidebar_label: 'Supabase Postgres'
 description: 'Set up Supabase instance as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/supabase
 title: 'Supabase Source Setup Guide'
+doc_type: 'guide'
 ---
 
 import supabase_commands from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-commands.jpg'
@@ -76,6 +77,12 @@ Head over to your Supabase Project's `Project Settings` -> `Database` (under `Co
 The connection pooler is not supported for CDC based replication, hence it needs to be disabled.
 
 :::
+
+## Note on RLS {#note-on-rls}
+The ClickPipes Postgres user must not be restricted by RLS policies, as it can lead to missing data. You can disable RLS policies for the user by running the below command:
+```sql
+ALTER USER clickpipes_user BYPASSRLS;
+```
 
 ## What's next? {#whats-next}
 

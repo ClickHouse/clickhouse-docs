@@ -4,6 +4,7 @@ sidebar_position: 1
 sidebar_label: 'Integrating S3 with ClickHouse'
 title: 'Integrating S3 with ClickHouse'
 description: 'Page describing how to integrate S3 with ClickHouse'
+doc_type: 'guide'
 ---
 
 import BucketDetails from '@site/docs/_snippets/_S3_authentication_and_bucket.md';
@@ -1026,7 +1027,7 @@ ClickHouse Keeper is responsible for coordinating the replication of data across
 
 See the [network ports](../../../guides/sre/network-ports.md) list when you configure the security settings in AWS so that your servers can communicate with each other, and you can communicate with them.
 
-All three servers must listen for network connections so that they can communicate between the servers and with S3.  By default, ClickHouse listens ony on the loopback address, so this must be changed.  This is configured in `/etc/clickhouse-server/config.d/`.  Here is a sample that configures ClickHouse and ClickHouse Keeper to listen on all IP v4 interfaces.  see the documentation or the default configuration file `/etc/clickhouse/config.xml` for more information.
+All three servers must listen for network connections so that they can communicate between the servers and with S3.  By default, ClickHouse listens only on the loopback address, so this must be changed.  This is configured in `/etc/clickhouse-server/config.d/`.  Here is a sample that configures ClickHouse and ClickHouse Keeper to listen on all IP v4 interfaces.  see the documentation or the default configuration file `/etc/clickhouse/config.xml` for more information.
 
 ```xml title="/etc/clickhouse-server/config.d/networking.xml"
 <clickhouse>

@@ -4,6 +4,7 @@ slug: /integrations/data-formats/json/other-formats
 description: 'Handling other JSON formats'
 sidebar_label: 'Handling other formats'
 keywords: ['json', 'formats', 'json formats']
+doc_type: 'guide'
 ---
 
 # Handling other JSON formats
@@ -348,7 +349,7 @@ Note that `JSONAsString` works perfectly fine in cases we have JSON object-per-l
 
 ## Schema for nested objects {#schema-for-nested-objects}
 
-In cases when we're dealing with [nested JSON objects](../assets/list-nested.json), we can additionally define an explicit schema and use complex types ([`Array`](/sql-reference/data-types/array.md), [`Object Data Type`](/sql-reference/data-types/object-data-type) or [`Tuple`](/sql-reference/data-types/tuple.md)) to load data:
+In cases when we're dealing with [nested JSON objects](../assets/list-nested.json), we can additionally define an explicit schema and use complex types ([`Array`](/sql-reference/data-types/array.md), [`JSON`](/integrations/data-formats/json/overview) or [`Tuple`](/sql-reference/data-types/tuple.md)) to load data:
 
 ```sql
 SELECT *

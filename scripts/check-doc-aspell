@@ -120,7 +120,8 @@ preprocess_file() {
         | sed -E 's/\{#[^}]*\}//g' \
         | sed -E 's/<[A-Za-z0-9_]+svg[^>]*\/?>//g' \
         | sed -E 's/<Image[^>]*\/?>//g' \
-        | grep -Ev '(^[[:space:]]*(slug:|<img src=\{[^}]+\})|^import .* from .*)'
+        | grep -Ev '(^[[:space:]]*(slug:|<img src=\{[^}]+\})|^import .* from .*)' \
+        | grep -Ev '(^<details>|^<summary>)'
 }
 
 # List of files to ignore
@@ -131,6 +132,7 @@ IGNORE_LIST=(
     "${ROOT_PATH}/docs/whats-new/security-changelog.md"
     "${ROOT_PATH}/docs/cloud/changelogs/*"
     "${ROOT_PATH}/docs/whats-new/changelog/*" # ignore all changelogs
+    "${ROOT_PATH}/docs/cloud/reference/01_changelog/*"
     "${ROOT_PATH}/docs/sql-reference/*" # we ignore all files from ClickHouse/ClickHouse
     "${ROOT_PATH}/docs/engines/*"
     "${ROOT_PATH}/docs/getting-started/*"
@@ -141,6 +143,7 @@ IGNORE_LIST=(
     "${ROOT_PATH}/docs/zh/*"
     "${ROOT_PATH}/docs/cloud/manage/api/*" # api files
     "${ROOT_PATH}/docs/index.md"
+    "${ROOT_PATH}/docs/about-us/beta-and-experimental-features.md"
     # Add more files to ignore here, e.g.:
     # "${ROOT_PATH}/docs/some-other-file.md"
 )

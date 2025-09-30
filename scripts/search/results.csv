@@ -82,7 +82,7 @@ sum,https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/sum,
 keeper,https://clickhouse.com/docs/guides/sre/keeper/clickhouse-keeper,https://clickhouse.com/docs/knowledgebase/why_recommend_clickhouse_keeper_over_zookeeper,
 type,https://clickhouse.com/docs/sql-reference/data-types,https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions,
 nullable,https://clickhouse.com/docs/sql-reference/data-types/nullable,https://clickhouse.com/docs/cloud/bestpractices/avoid-nullable-columns,https://clickhouse.com/docs/sql-reference/functions/functions-for-nulls
-projection,https://clickhouse.com/docs/sql-reference/statements/alter/projection,https://clickhouse.com/docs/engines/table-engines/mergetree-family/mergetree#projections,https://clickhouse.com/docs/knowledgebase/projection_example
+projection,https://clickhouse.com/docs/data-modeling/projections,https://clickhouse.com/docs/sql-reference/statements/alter/projection,https://clickhouse.com/docs/engines/table-engines/mergetree-family/mergetree#projections
 jdbc,https://clickhouse.com/docs/interfaces/jdbc,https://clickhouse.com/docs/integrations/language-clients/java/jdbc,https://clickhouse.com/docs/engines/table-engines/integrations/jdbc
 ifnull,https://clickhouse.com/docs/sql-reference/functions/functions-for-nulls#ifnull,https://clickhouse.com/docs/sql-reference/functions/conditional-functions,
 any,https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/any,https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/first_value,

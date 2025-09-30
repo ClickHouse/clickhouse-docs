@@ -3,6 +3,7 @@ sidebar_label: 'Apache Beam'
 slug: /integrations/apache-beam
 description: 'Users can ingest data into ClickHouse using Apache Beam'
 title: 'Integrating Apache Beam and ClickHouse'
+doc_type: 'guide'
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';

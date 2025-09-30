@@ -5,6 +5,7 @@ import chHeader from "./plugins/header.js";
 import fixLinks from "./src/hooks/fixLinks.js";
 const path = require('path');
 const remarkCustomBlocks = require('./plugins/remark-custom-blocks');
+const codeImportPlugin = require('./plugins/code-import-plugin');
 
 // Import custom plugins
 const { customParseFrontMatter } = require('./plugins/frontmatter-validation/customParseFrontMatter');
@@ -56,7 +57,7 @@ const config = {
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   onDuplicateRoutes: "throw",
-  onBrokenAnchors: "throw",
+  onBrokenAnchors: process.env.ON_BROKEN_ANCHORS ?? "throw",
   favicon: "img/docs_favicon.ico",
   organizationName: "ClickHouse",
   trailingSlash: false,
@@ -186,6 +187,9 @@ const config = {
               blogPath
             );
           },
+          remarkPlugins: [math, remarkCustomBlocks, glossaryTransformer],
+          beforeDefaultRemarkPlugins: [fixLinks],
+          rehypePlugins: [katex],
         },
         pages: {
 
@@ -354,6 +358,10 @@ const config = {
     ],
     [
         './plugins/tailwind-config.js',
+        {}
+    ],
+    [
+        codeImportPlugin,
         {}
     ]
   ],
