@@ -3500,6 +3500,11 @@
       "source": "/docs/migrations/migrations",
       "destination": "/docs/integrations/migration/overview",
       "permanent": true
+    },
+    {
+      "source": "/docs/:lang1(ru|zh|jp)/:lang2(ru|zh|jp|en)/:path*",
+      "destination": "/docs/:lang1/:path*",
+      "permanent": true
     }
   ]
 }
