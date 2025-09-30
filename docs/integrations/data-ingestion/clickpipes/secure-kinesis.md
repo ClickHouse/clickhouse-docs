@@ -95,4 +95,4 @@ For the IAM policy, please replace `{STREAM_NAME}` with your Kinesis stream name
 
 ```
 
- - 4. Copy the new **IAM Role Arn** after creation. This is what is needed to access your Kinesis stream.
+- 4. Copy the new **IAM Role Arn** after creation. This is what is needed to access your Kinesis stream.
