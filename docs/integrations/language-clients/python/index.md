@@ -228,307 +228,120 @@ Out[2]: 'github'
 
 ### Client Lifecycle and Best Practices {#client-lifecycle-and-best-practices}
 
-#### Understanding client creation cost {#understanding-client-creation-cost}
+Creating a ClickHouse Connect client is an expensive operation that involves establishing a connection, retrieving server metadata, and initializing settings. Follow these best practices for optimal performance:
 
-Creating a new ClickHouse Connect client is an **expensive operation**. During initialization, the client:
-1. Establishes an HTTP(S) connection to the ClickHouse server
-2. Retrieves server version and timezone (`SELECT version(), timezone()`)
-3. Executes a query to retrieve server settings and metadata (`SELECT name, value, readonly FROM system.settings`)
-4. Parses and caches server configuration for the session
-5. Sets up compression, connection pooling, and other infrastructure
+#### Core principles {#core-principles}
 
-This initialization overhead can add significant latency (typically 100ms-2000ms depending on network conditions) to each operation if clients are created and destroyed frequently.
+- **Reuse clients**: Create clients once at application startup and reuse them throughout the application lifetime
+- **Avoid frequent creation**: Don't create a new client for each query or request (this wastes hundreds of milliseconds per operation)
+- **Clean up properly**: Always close clients when shutting down to release connection pool resources
+- **Share when possible**: A single client can handle many concurrent queries through its connection pool (see threading notes below)
 
-#### Anti-pattern: Creating a client per request {#anti-pattern-creating-a-client-per-request}
+#### Basic patterns {#basic-patterns}
 
-**❌ DO NOT DO THIS:**
-
-```python
-# BAD: Creates a new client for every query
-def get_user_count():
-    client = clickhouse_connect.get_client(host='my-host', username='default', password='password')
-    result = client.query('SELECT count() FROM users')
-    client.close()
-    return result.result_rows[0][0]
-
-# This will create 1000 clients and waste significant time on initialization
-for i in range(1000):
-    count = get_user_count()
-```
-
-#### Recommended pattern: Reuse a single client {#recommended-pattern-reuse-a-single-client}
-
-**✅ DO THIS:**
+**✅ Good: Reuse a single client**
 
 ```python
 import clickhouse_connect
 
-# Create the client once at application startup
-client = clickhouse_connect.get_client(
-    host='my-host',
-    username='default',
-    password='password',
-    connect_timeout=10,
-    send_receive_timeout=300
-)
+# Create once at startup
+client = clickhouse_connect.get_client(host='my-host', username='default', password='password')
 
-# Reuse the same client for all operations
-def get_user_count():
-    result = client.query('SELECT count() FROM users')
-    return result.result_rows[0][0]
-
-def get_active_users():
-    result = client.query('SELECT count() FROM users WHERE active = 1')
-    return result.result_rows[0][0]
-
-# Use the same client many times
+# Reuse for all queries
 for i in range(1000):
-    count = get_user_count()
+    result = client.query('SELECT count() FROM users')
 
-# Close the client when the application shuts down
+# Close on shutdown
 client.close()
 ```
 
-#### Client lifecycle in different application types {#client-lifecycle-in-different-application-types}
-
-##### Web applications (Flask, FastAPI, Django) {#web-applications-flask-fastapi-django}
-
-Create a client at application startup and share it across requests:
+**❌ Bad: Creating clients repeatedly**
 
 ```python
-# FastAPI example (using lifespan)
-from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request
-import clickhouse_connect
-
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    # Create the client once, before serving requests
-    app.state.clickhouse_client = clickhouse_connect.get_client(
-        host='my-host',
-        username='default',
-        password='password',
-        autogenerate_session_id=False
-    )
-    yield
-    # Close the client when the application is shutting down
-    app.state.clickhouse_client.close()
-
-
-app = FastAPI(lifespan=lifespan)
-
-
-@app.get("/users/count")
-def get_user_count(request: Request):
-    client = request.app.state.clickhouse_client
+# BAD: Creates 1000 clients with expensive initialization overhead
+for i in range(1000):
+    client = clickhouse_connect.get_client(host='my-host', username='default', password='password')
     result = client.query('SELECT count() FROM users')
-    return {"count": result.result_rows[0][0]}
+    client.close()
 ```
 
-```python
-# Flask example
-from flask import Flask
-import clickhouse_connect
+#### Multi-threaded applications {#multi-threaded-applications}
 
-app = Flask(__name__)
+**Important:** Client instances are **NOT thread-safe** when using session IDs. By default, clients have an auto-generated session ID, and concurrent queries within the same session will raise a `ProgrammingError`.
 
-# Create client once when the module loads
-clickhouse_client = clickhouse_connect.get_client(
-    host='my-host',
-    username='default',
-    password='password',
-    autogenerate_session_id=False
-)
-
-@app.route('/users/count')
-def get_user_count():
-    result = clickhouse_client.query('SELECT count() FROM users')
-    return {"count": result.result_rows[0][0]}
-
-@app.teardown_appcontext
-def close_connection(exception):
-    # Global client is shared across requests; don't close per request
-    pass
-```
-
-##### Long-running applications and scripts {#long-running-applications-and-scripts}
-
-Create the client once at the start of execution:
-
-```python
-import clickhouse_connect
-
-def main():
-    # Create client at the start
-    client = clickhouse_connect.get_client(
-        host='my-host',
-        username='default',
-        password='password'
-    )
-
-    try:
-        # Use client throughout the application lifetime
-        process_data(client)
-        generate_reports(client)
-        cleanup_old_data(client)
-    finally:
-        # Always close the client when done
-        client.close()
-
-def process_data(client):
-    # Client is passed as a parameter, not created
-    data = client.query('SELECT * FROM events WHERE date = today()')
-    # Process data...
-
-if __name__ == '__main__':
-    main()
-```
-
-##### Multi-threaded applications {#multi-threaded-applications}
-
-The ClickHouse Connect client is thread-safe for most operations. You can share a single client across multiple threads:
+To share a client across threads safely:
 
 ```python
 import clickhouse_connect
 import threading
 
-# Create one client shared by all threads
+# Option 1: Disable sessions (recommended for shared clients)
 client = clickhouse_connect.get_client(
     host='my-host',
     username='default',
     password='password',
-    autogenerate_session_id=False
+    autogenerate_session_id=False  # Required for thread safety
 )
 
 def worker(thread_id):
-    # All threads use the same client
+    # All threads can now safely use the same client
     result = client.query(f'SELECT count() FROM table_{thread_id}')
     print(f"Thread {thread_id}: {result.result_rows[0][0]}")
 
-# Spawn multiple threads using the same client
-threads = []
-for i in range(10):
-    t = threading.Thread(target=worker, args=(i,))
-    threads.append(t)
+threads = [threading.Thread(target=worker, args=(i,)) for i in range(10)]
+for t in threads:
     t.start()
-
 for t in threads:
     t.join()
 
 client.close()
 ```
 
-**Note on session IDs in multi-threaded environments:** By default, each client has a unique session ID, and ClickHouse does not allow concurrent queries within the same session. The client does not queue concurrent queries within a session; it raises a `ProgrammingError`. To run concurrent queries safely, either:
-1. Disable sessions on the shared client by passing `autogenerate_session_id=False` to `get_client` (or set the common setting before creating clients), or
-2. Provide a unique `session_id` per query via the `settings` argument, or
-3. Use separate clients when you need session isolation (e.g., temporary tables).
-
-See [Managing ClickHouse Session IDs](#managing-clickhouse-session-ids) for more details.
-
-##### Worker pools and task queues {#worker-pools-and-task-queues}
-
-For Celery, RQ, and similar task-queue systems that run multiple worker processes, initialize exactly one ClickHouse client per worker process and reuse it for all tasks handled by that process. Do not share clients across processes. Prefer creating the client on worker-process start and closing it on shutdown; avoid per-task creation. Set sensible connection/read timeouts and, if you expect concurrent queries, either create multiple clients per process or configure the client’s HTTP connection pool accordingly. If the worker model also uses threads, don’t share a single session across concurrent queries.
+**Alternative for sessions:** If you need sessions (e.g., for temporary tables), create a separate client per thread:
 
 ```python
-# Celery example
-from celery import Celery
-import clickhouse_connect
-
-app = Celery('tasks')
-
-# Global client for this worker process
-clickhouse_client = None
-
-@app.task
-def process_event(event_id):
-    global clickhouse_client
-
-    # Lazy initialization: create client on first task
-    if clickhouse_client is None:
-        clickhouse_client = clickhouse_connect.get_client(
-            host='my-host',
-            username='default',
-            password='password'
-        )
-
-    # Reuse client for all tasks in this worker
-    clickhouse_client.insert('events', [[event_id, 'processed']], column_names=['id', 'status'])
-```
-
-#### Proper client cleanup {#proper-client-cleanup}
-
-Always close clients to release resources:
-
-```python
-import clickhouse_connect
-
-client = clickhouse_connect.get_client(host='my-host', username='default', password='password')
-
-try:
-    # Use the client
-    result = client.query('SELECT 1')
-finally:
-    # Always close, even if an exception occurs
+def worker(thread_id):
+    # Each thread gets its own client with isolated session
+    client = clickhouse_connect.get_client(host='my-host', username='default', password='password')
+    client.command('CREATE TEMPORARY TABLE temp (id UInt32) ENGINE = Memory')
+    # ... use temp table ...
     client.close()
 ```
 
-Or use a context manager for automatic cleanup:
+#### Proper cleanup {#proper-cleanup}
+
+Always close clients at shutdown. Note that `client.close()` disposes the client and closes pooled HTTP connections only when the client owns its pool manager (for example, when created with custom TLS/proxy options). For the default shared pool, use `client.close_connections()` to proactively clear sockets; otherwise, connections are reclaimed automatically via idle expiration and at process exit.
 
 ```python
-import clickhouse_connect
-
-def one_time_query():
-    with clickhouse_connect.get_client(host='my-host', username='default', password='password') as client:
-        return client.query('SELECT * FROM large_table LIMIT 10')
+client = clickhouse_connect.get_client(host='my-host', username='default', password='password')
+try:
+    result = client.query('SELECT 1')
+finally:
+    client.close()
 ```
 
-#### When multiple clients are appropriate {#when-multiple-clients-are-appropriate}
+To immediately drop HTTP connections (e.g., before forking or reconfiguring networking), call:
 
-There are legitimate cases where multiple clients make sense:
+```python
+client.close_connections()
+```
 
-1. **Different ClickHouse servers**: One client per server/cluster
-   ```python
-   prod_client = clickhouse_connect.get_client(host='prod-server')
-   staging_client = clickhouse_connect.get_client(host='staging-server')
-   ```
+Or use a context manager:
 
-2. **Different credentials or databases**: Separate clients for different access patterns
-   ```python
-   read_client = clickhouse_connect.get_client(host='my-host', username='reader', database='analytics')
-   write_client = clickhouse_connect.get_client(host='my-host', username='writer', database='logs')
-   ```
+```python
+with clickhouse_connect.get_client(host='my-host', username='default', password='password') as client:
+    result = client.query('SELECT 1')
+```
 
-3. **Isolated sessions with temporary tables**: Each session needs its own client
-   ```python
-   # Client 1 with its own session for temp tables
-   client1 = clickhouse_connect.get_client(host='my-host', settings={'session_id': 'session_1'})
-   client1.command('CREATE TEMPORARY TABLE temp1 (id UInt32) ENGINE = Memory')
+#### When to use multiple clients {#when-to-use-multiple-clients}
 
-   # Client 2 with different session
-   client2 = clickhouse_connect.get_client(host='my-host', settings={'session_id': 'session_2'})
-   client2.command('CREATE TEMPORARY TABLE temp2 (id UInt32) ENGINE = Memory')
-   ```
+Multiple clients are appropriate for:
 
-4. **Process pools with fork()**: Each forked process needs its own client (connections aren't fork-safe)
-
-#### Troubleshooting connection issues {#troubleshooting-connection-issues}
-
-If you experience connection timeout errors during client creation:
-
-1. **Check if you're creating clients too frequently**: Use the recommended patterns above
-2. **Verify network connectivity**: Test with `ping` or `curl` to the ClickHouse HTTP endpoint
-3. **Increase timeouts** if network latency is high:
-   ```python
-   client = clickhouse_connect.get_client(
-       host='my-host',
-       connect_timeout=30,  # Increase from default 10s
-       send_receive_timeout=600  # Increase from default 300s
-   )
-   ```
-4. **Check connection pool settings**: See [Customizing the HTTP connection pool](#customizing-the-http-connection-pool)
-5. **Monitor server load**: High server load can slow down the initialization query
-6. **Review firewall/NAT rules**: Long-lived connections may be terminated by network infrastructure
+- **Different servers**: One client per ClickHouse server or cluster
+- **Different credentials**: Separate clients for different users or access levels
+- **Different databases**: When you need to work with multiple databases
+- **Isolated sessions**: When you need separate sessions for temporary tables or session-specific settings
+- **Per-thread isolation**: When threads need independent sessions (as shown above)
 
 ### Common method arguments {#common-method-arguments}
 
