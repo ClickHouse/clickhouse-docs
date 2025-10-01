@@ -197,9 +197,11 @@ const config = {
         theme: {
           customCss: [require.resolve("./src/css/custom.scss")],
         },
-        googleTagManager: {
-          containerId: 'GTM-WTNTDT7W',
-        },
+        ...(process.env.VERCEL_PREVIEW !== '1' && {
+          googleTagManager: {
+            containerId: 'GTM-WTNTDT7W',
+          },
+        }),
       }),
     ],
   ],
