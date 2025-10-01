@@ -227,6 +227,37 @@ df_2 = chdb.query(query, "DataFrame")
 df_2.head()
 ```
 
+<details>
+<summary>Read from multiple sources in a single step</summary>
+It's also possible to read from multiple sources in a single step. You could use the query below using a `JOIN` to do so:
+
+```python
+query = f"""
+SELECT 
+    toYear(date) AS year,
+    avg(price) AS avg_price, housesSold
+FROM remoteSecure(
+'****.europe-west4.gcp.clickhouse.cloud',
+default.pp_complete,
+'{username}',
+'{password}'
+) AS remote
+JOIN (
+  SELECT 
+    toYear(date) AS year,
+    sum(houses_sold)*1000 AS housesSold
+    FROM file('/Users/datasci/Desktop/housing_in_london_monthly_variables.csv')
+  WHERE area = 'city of london' AND houses_sold IS NOT NULL
+  GROUP BY toYear(date)
+  ORDER BY year
+) AS local ON local.year = remote.year
+WHERE town = 'LONDON'
+GROUP BY toYear(date)
+ORDER BY year;
+"""
+```
+</details>
+
 <Image size="md" img={image_8} alt="dataframe preview"/>
 
 Although we are missing data from 2020 onwards, we can plot the two datasets against each other for the years 1995 to 2019.
