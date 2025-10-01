@@ -904,7 +904,18 @@ const sidebars = {
           ],
         },
         "integrations/data-ingestion/etl-tools/bladepipe-and-clickhouse",
-        "integrations/data-ingestion/etl-tools/dbt/index",
+        {
+          type: "category",
+          label: "dbt",
+          className: "top-nav-item",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "integrations/data-ingestion/etl-tools/dbt/index",
+            "integrations/data-ingestion/etl-tools/dbt/features-and-configurations",
+            "integrations/data-ingestion/etl-tools/dbt/guides",
+          ],
+        },
         "integrations/data-ingestion/etl-tools/dlt-and-clickhouse",
         "integrations/data-ingestion/etl-tools/fivetran/index",
         "integrations/data-ingestion/etl-tools/nifi-and-clickhouse",
@@ -1427,7 +1438,8 @@ const sidebars = {
       link: { type: "doc", id: "chdb/reference/index" },
       items: [
         "chdb/reference/data-formats",
-        "chdb/reference/sql-reference"
+        "chdb/reference/sql-reference",
+		"chdb/api/python"
       ],
     },
     {

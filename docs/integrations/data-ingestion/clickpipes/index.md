@@ -86,10 +86,28 @@ Steps:
 ## Adjusting ClickPipes advanced settings {#clickpipes-advanced-settings}
 ClickPipes provides sensible defaults that cover the requirements of most use cases. If your use case requires additional fine-tuning, you can adjust the following settings:
 
-- **Streaming max insert wait time**: Configures the maximum wait period before inserting data into the ClickHouse cluster. Applies to streaming ClickPipes (e.g., Kafka, Kinesis).  
-- **Object storage polling interval**: Configures how frequently ClickPipes checks object storage for new data. Applies to object storage ClickPipes (e.g., S3, GCS).
+### Object Storage ClickPipes {#clickpipes-advanced-settings-object-storage}
+
+| Setting                            | Default value |  Description                     |                    
+|------------------------------------|---------------|---------------------------------------------------------------------------------------|
+| `Max insert bytes`                 | 10GB          | Number of bytes to process in a single insert batch.                                  |
+| `Max file count`                   | 100           | Maximum number of files to process in a single insert batch.                          |
+| `Max threads`                      | auto(3)       | [Maximum number of concurrent threads](/operations/settings/settings#max_threads) for file processing. |
+| `Max insert threads`               | 1             | [Maximum number of concurrent insert threads](/operations/settings/settings#max_insert_threads) for file processing. |
+| `Min insert block size bytes`      | 1GB           | [Minimum size of bytes in the block](/operations/settings/settings#min_insert_block_size_bytes) which can be inserted into a table. |
+| `Max download threads`             | 4             | [Maximum number of concurrent download threads](/operations/settings/settings#max_download_threads). |
+| `Object storage polling interval`  | 30s           | Configures the maximum wait period before inserting data into the ClickHouse cluster. |
+| `Parallel distributed insert select` | 2           | [Parallel distributed insert select setting](/operations/settings/settings#parallel_distributed_insert_select). |
+| `Parallel view processing`         | false         | Whether to enable pushing to attached views [concurrently instead of sequentially](/operations/settings/settings#parallel_view_processing). |
+| `Use cluster function`             | true          | Whether to process files in parallel across multiple nodes. |
 
 <Image img={cp_advanced_settings} alt="Advanced settings for ClickPipes" size="lg" border/>
+
+### Streaming ClickPipes {#clickpipes-advanced-settings-streaming}
+
+| Setting                            | Default value |  Description                     |                    
+|------------------------------------|---------------|---------------------------------------------------------------------------------------|
+| `Streaming max insert wait time`   | 5s            | Configures the maximum wait period before inserting data into the ClickHouse cluster. |
 
 ## Error reporting {#error-reporting}
 ClickPipes will store errors in two separate tables depending on the type of error encountered during the ingestion process.

@@ -180,6 +180,14 @@ Best for: large scale, mission critical deployments that have stringent security
 
 A ClickHouse Credit is a unit of credit toward Customer's usage of ClickHouse Cloud equal to one (1) US dollar, to be applied based on ClickHouse's then-current published price list.
 
+### Where can I find legacy pricing? {#find-legacy-pricing}
+
+Legacy pricing information can be found [here](https://clickhouse.com/pricing?legacy=true).
+
+:::note 
+If you are being billed through Stripe then you will see that 1 CHC is equal to \$0.01 USD on your Stripe invoice. This is to allow accurate billing on Stripe due to their limitation on not being able to bill fractional quantities of our standard SKU of 1 CHC = \$1 USD.
+:::
+
 ### How is compute metered? {#how-is-compute-metered}
 
 ClickHouse Cloud meters compute on a per-minute basis, in 8G RAM increments. 
