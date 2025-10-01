@@ -428,7 +428,7 @@ See [Managing ClickHouse Session IDs](#managing-clickhouse-session-ids) for more
 
 ##### Worker pools and task queues {#worker-pools-and-task-queues}
 
-For Celery, RQ, or similar task queue systems, create one client per worker process:
+For Celery, RQ, and similar task-queue systems that run multiple worker processes, initialize exactly one ClickHouse client per worker process and reuse it for all tasks handled by that process. Do not share clients across processes. Prefer creating the client on worker-process start and closing it on shutdown; avoid per-task creation. Set sensible connection/read timeouts and, if you expect concurrent queries, either create multiple clients per process or configure the client’s HTTP connection pool accordingly. If the worker model also uses threads, don’t share a single session across concurrent queries.
 
 ```python
 # Celery example
