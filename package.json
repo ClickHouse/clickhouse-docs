@@ -77,7 +77,7 @@
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
-    "@argos-ci/cli": "^2.5.5",
+    "@argos-ci/cli": "^3.0.10",
     "@argos-ci/playwright": "^5.0.4",
     "@docusaurus/module-type-aliases": "3.8.1",
     "@playwright/test": "^1.52.0",
