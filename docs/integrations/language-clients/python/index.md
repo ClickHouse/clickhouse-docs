@@ -967,7 +967,7 @@ with its intended purpose of providing a reusable object for repeated inserts of
 
 ```python
 test_data = [[1, 'v1', 'v2'], [2, 'v3', 'v4']]
-ic = test_client.create_insert_context(table='test_table', data='test_data')
+ic = test_client.create_insert_context(table='test_table', data=test_data)
 client.insert(context=ic)
 assert client.command('SELECT count() FROM test_table') == 2
 new_data = [[3, 'v5', 'v6'], [4, 'v7', 'v8']]

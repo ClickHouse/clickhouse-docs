@@ -53,7 +53,7 @@ data = data[['url', 'caption', 'NSFW', 'similarity', "image_embedding", "text_em
 data['image_embedding'] = data['image_embedding'].apply(lambda x: x.tolist())
 data['text_embedding'] = data['text_embedding'].apply(lambda x: x.tolist())
 
-# this small hack is needed becase caption sometimes contains all kind of quotes
+# this small hack is needed because caption sometimes contains all kind of quotes
 data['caption'] = data['caption'].apply(lambda x: x.replace("'", " ").replace('"', " "))
 
 # export data as CSV file
@@ -132,7 +132,7 @@ For now, we can run the embedding of a random LEGO set picture as `target`.
 10 rows in set. Elapsed: 4.605 sec. Processed 100.38 million rows, 309.98 GB (21.80 million rows/s., 67.31 GB/s.)
 ```
 
-## Run an approximate vector similarity search with a vector simialrity index {#run-an-approximate-vector-similarity-search-with-a-vector-similarity-index}
+## Run an approximate vector similarity search with a vector similarity index {#run-an-approximate-vector-similarity-search-with-a-vector-similarity-index}
 
 Let's now define two vector similarity indexes on the table.
 
