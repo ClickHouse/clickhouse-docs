@@ -320,12 +320,6 @@ finally:
     client.close()
 ```
 
-To immediately drop HTTP connections (e.g., before forking or reconfiguring networking), call:
-
-```python
-client.close_connections()
-```
-
 Or use a context manager:
 
 ```python
