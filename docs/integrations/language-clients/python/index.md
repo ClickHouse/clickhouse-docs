@@ -1002,7 +1002,7 @@ The following global settings are currently defined:
 | use_protocol_version                | True    | True, False             | Use the client protocol version. This is needed for `DateTime` timezone columns but breaks with the current version of chproxy.                                                                                                                               |
 | max_error_size                      | 1024    |                         | Maximum number of characters that will be returned in a client error messages. Use 0 for this setting to get the full ClickHouse error message. Defaults to 1024 characters.                                                                                  |
 | http_buffer_size                    | 10MB    |                         | Size (in bytes) of the "in-memory" buffer used for HTTP streaming queries.                                                                                                                                                                                    |
-| preserve_pandas_datetime_resolution | False   | True, False             | When True and using pandas 2.x, preserves the datetime64/timedelta64 dtype resolution (e.g., 's', 'ms', 'us', 'ns'). If False (or on pandas <2.x), coerces to nanosecond ('ns') resolution for compatibility.                                                 |
+| preserve_pandas_datetime_resolution | False   | True, False             | When True and using pandas 2.x, preserves the datetime64/timedelta64 dtype resolution (e.g., 's', 'ms', 'us', 'ns'). If False (or on pandas &lt;2.x), coerces to nanosecond ('ns') resolution for compatibility.                                              |
 
 ### Compression {#compression}
 
