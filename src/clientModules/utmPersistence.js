@@ -115,15 +115,13 @@ function appendGalaxySessionIDToLink(url) {
     return urlObject.toString()
 }
 
+function updateLinks() {
 
-// After DOM renedered
-export function onRouteDidUpdate({location, previousLocation}) {
-    // Take UTMs from the URL and update local storage
-    putUTMsInStorage()
+    // First, gather data
+    putUTMsInStorage() // Take UTMs from the URL and update local storage
+    putPagePathsInStorage() // Save origPath
 
-    // Save origPath
-    putPagePathsInStorage()
-
+    // Next, append gathered data to cloud links
     Array.from(document.querySelectorAll('a[href*=".cloud"]')).forEach(el => {
         try {
             let href = el.href
@@ -134,4 +132,28 @@ export function onRouteDidUpdate({location, previousLocation}) {
             el.href = href
         } catch {}
     });
+}
+
+// Bedore DOM renders
+export function onRouteUpdate() {
+
+    const observer = new MutationObserver(() => {
+        updateLinks()
+    });
+
+    // Observe the entire body for DOM changes
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+        attributes: false // Set to false, allows us to update the href without causing an infinite loop
+    });
+
+    // Cleanup
+    return () => observer.disconnect()
+}
+
+
+// After DOM renedered
+export function onRouteDidUpdate() {
+    updateLinks()
 }
