@@ -9,9 +9,11 @@ title: 'ClickHouse Connect Driver API'
 
 # ClickHouse Connect driver API {#clickhouse-connect-driver-api}
 
-***Note:*** Passing keyword arguments is recommended for most api methods given the number of possible arguments, most of which are optional.
+:::note
+Passing keyword arguments is recommended for most api methods given the number of possible arguments, most of which are optional.
 
 *Methods not documented here are not considered part of the API, and may be removed or changed.*
+:::
 
 ## Client Initialization {#client-initialization}
 
@@ -332,7 +334,7 @@ Use the `Client.command` method to send SQL queries to the ClickHouse server tha
 | data          | str or bytes     | *None*     | Optional data to include with the command as the POST body.                                                                                                   |
 | settings      | dict             | *None*     | See [settings description](#settings-argument).                                                                                                               |
 | use_database  | bool             | True       | Use the client database (specified when creating the client). False means the command will use the default ClickHouse server database for the connected user. |
-| external_data | ExternalData     | *None*     | An ExternalData object containing file or binary data to use with the query. See [Advanced Queries (External Data)](#external-data)                           |
+| external_data | ExternalData     | *None*     | An ExternalData object containing file or binary data to use with the query. See [Advanced Queries (External Data)](advanced-querying.md#external-data)                           |
 
 - `command` can be used for DDL statements. If the SQL "command" does not return data, a "query summary" dictionary is returned instead. This dictionary encapsulates the ClickHouse X-ClickHouse-Summary and X-ClickHouse-Query-Id headers, including the key/value pairs `written_rows`,`written_bytes`, and `query_id`.
 
@@ -367,8 +369,8 @@ The `Client.query` method is the primary way to retrieve a single "batch" datase
 | query_tz            | str              | *None*     | A timezone name from the `zoneinfo` database. This timezone will be applied to all datetime or Pandas Timestamp objects returned by the query.                                     |
 | column_tzs          | dict             | *None*     | A dictionary of column name to timezone name. Like `query_tz`, but allows specifying different timezones for different columns.                                                    |
 | use_extended_dtypes | bool             | True       | Use Pandas extended dtypes (like StringArray), and pandas.NA and pandas.NaT for ClickHouse NULL values. Applies only to `query_df` and `query_df_stream` methods.                  |
-| external_data       | ExternalData     | *None*     | An ExternalData object containing file or binary data to use with the query. See [Advanced Queries (External Data)](#external-data)                                                |
-| context             | QueryContext     | *None*     | A reusable QueryContext object can be used to encapsulate the above method arguments. See [Advanced Queries (QueryContexts)](#querycontexts)                                       |
+| external_data       | ExternalData     | *None*     | An ExternalData object containing file or binary data to use with the query. See [Advanced Queries (External Data)](advanced-querying.md#external-data)                            |
+| context             | QueryContext     | *None*     | A reusable QueryContext object can be used to encapsulate the above method arguments. See [Advanced Queries (QueryContexts)](advanced-querying.md#querycontexts)                   |
 
 ### The `QueryResult` object {#the-queryresult-object}
 
@@ -389,7 +391,7 @@ The base `query` method returns a `QueryResult` object with the following public
 
 The `*_stream` properties return a Python Context that can be used as an iterator for the returned data. They should only be accessed indirectly using the Client `*_stream` methods. 
 
-The complete details of streaming query results (using StreamContext objects) are outlined in [Advanced Queries (Streaming Queries)](#streaming-queries).
+The complete details of streaming query results (using StreamContext objects) are outlined in [Advanced Queries (Streaming Queries)](advanced-querying.md#streaming-queries).
 
 ## Consuming query results with NumPy, Pandas or Arrow {#consuming-query-results-with-numpy-pandas-or-arrow}
 
@@ -412,7 +414,7 @@ The ClickHouse Connect Client provides multiple methods for retrieving data as a
 - `query_arrow_stream` -- Returns query data in PyArrow RecordBlocks
 - `query_df_arrow_stream` -- Returns each ClickHouse Block of query data as an arrow-backed Pandas DataFrame or a Polars DataFrame depending on the kwarg `dataframe_library` (default is "pandas").
 
-Each of these methods returns a `ContextStream` object that must be opened via a `with` statement to start consuming the stream. See [Advanced Queries (Streaming Queries)](#streaming-queries) for details and examples.
+Each of these methods returns a `ContextStream` object that must be opened via a `with` statement to start consuming the stream. See [Advanced Queries (Streaming Queries)](advanced-querying.md#streaming-queries) for details and examples.
 
 ## Pandas and Polars {#pandas-and-polars}
 
@@ -492,18 +494,20 @@ For the common use case of inserting multiple records into ClickHouse, there is 
 | column_type_names  | Sequence of ClickHouse type names | *None*     | A list of ClickHouse datatype names. If neither column_types or column_type_names is specified, ClickHouse Connect will execute a "pre-query" to retrieve all the column types for the table. |
 | column_oriented    | bool                              | False      | If True, the `data` argument is assumed to be a Sequence of columns (and no "pivot" will be necessary to insert the data). Otherwise `data` is interpreted as a Sequence of rows.             |
 | settings           | dict                              | *None*     | See [settings description](#settings-argument).                                                                                                                                               |
-| context            | InsertContext                     | *None*     | A reusable InsertContext object can be used to encapsulate the above method arguments. See [Advanced Inserts (InsertContexts)](#insertcontexts)                                               |
+| context            | InsertContext                     | *None*     | A reusable InsertContext object can be used to encapsulate the above method arguments. See [Advanced Inserts (InsertContexts)](advanced-inserting.md#insertcontexts)                          |
 | transport_settings | dict                              | *None*     | Optional dictionary of transport-level settings (HTTP headers, etc.)                                                                                                                          |
 
 This method returns a "query summary" dictionary as described under the "command" method. An exception will be raised if the insert fails for any reason.
 
-There are two specialized versions of the main `insert` method:
+There are three specialized versions of the main `insert` method:
 
 - `insert_df` -- Instead of Python Sequence of Sequences `data` argument, the second parameter of this method requires a `df` argument that must be a Pandas DataFrame instance. ClickHouse Connect automatically processes the DataFrame as a column oriented datasource, so the `column_oriented` parameter is not required or available.
 - `insert_arrow` -- Instead of a Python Sequence of Sequences `data` argument, this method requires an `arrow_table`. ClickHouse Connect passes the Arrow table unmodified to the ClickHouse server for processing, so only the `database` and `settings` arguments are available in addition to `table` and `arrow_table`.
 - `insert_df_arrow` -- Instead of a Python Sequence of Sequences `data` argument, the second parameter of this method requires a `df` that must be an arrow-backed Pandas DataFrame or a Polars DataFrame instance. ClickHouse Connect will automatically determine if the DataFrame is a Pandas or Polars type. If Pandas, validation will be performed to ensure that each column's dtype backend is Arrow-based and an error will be raised if any are not.
 
-*Note:* A NumPy array is a valid Sequence of Sequences and can be used as the `data` argument to the main `insert` method, so a specialized method is not required.
+:::note
+A NumPy array is a valid Sequence of Sequences and can be used as the `data` argument to the main `insert` method, so a specialized method is not required.
+:::
 
 ## File Inserts {#file-inserts}
 
@@ -570,14 +574,14 @@ For use cases which do not require transformation between ClickHouse data and na
 
 The `Client.raw_query` method allows direct usage of the ClickHouse HTTP query interface using the client connection. The return value is an unprocessed `bytes` object. It offers a convenient wrapper with parameter binding, error handling, retries, and settings management using a minimal interface:
 
-| Parameter     | Type             | Default    | Description                                                                                                                         |
-|---------------|------------------|------------|-------------------------------------------------------------------------------------------------------------------------------------|
-| query         | str              | *Required* | Any valid ClickHouse query                                                                                                          |
-| parameters    | dict or iterable | *None*     | See [parameters description](#parameters-argument).                                                                                 |
-| settings      | dict             | *None*     | See [settings description](#settings-argument).                                                                                     |
-| fmt           | str              | *None*     | ClickHouse Output Format for the resulting bytes. (ClickHouse uses TSV if not specified)                                            |
-| use_database  | bool             | True       | Use the ClickHouse Connect client-assigned database for the query context                                                           |
-| external_data | ExternalData     | *None*     | An ExternalData object containing file or binary data to use with the query. See [Advanced Queries (External Data)](#external-data) |
+| Parameter     | Type             | Default    | Description                                                                                                                                             |
+|---------------|------------------|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| query         | str              | *Required* | Any valid ClickHouse query                                                                                                                              |
+| parameters    | dict or iterable | *None*     | See [parameters description](#parameters-argument).                                                                                                     |
+| settings      | dict             | *None*     | See [settings description](#settings-argument).                                                                                                         |
+| fmt           | str              | *None*     | ClickHouse Output Format for the resulting bytes. (ClickHouse uses TSV if not specified)                                                                |
+| use_database  | bool             | True       | Use the ClickHouse Connect client-assigned database for the query context                                                                               |
+| external_data | ExternalData     | *None*     | An ExternalData object containing file or binary data to use with the query. See [Advanced Queries (External Data)](advanced-querying.md#external-data) |
 
 It is the caller's responsibility to handle the resulting `bytes` object. Note that the `Client.query_arrow` is just a thin wrapper around this method using the ClickHouse `Arrow` output format.
 
