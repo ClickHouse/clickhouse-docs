@@ -495,7 +495,24 @@ const sidebars = {
             "integrations/language-clients/java/r2dbc"
           ]
         },
-        "integrations/language-clients/python/index",
+        {
+          type: "category",
+          label: "Python",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            {
+              type: "doc",
+              label: "Introduction",
+              id: "integrations/language-clients/python/index"
+            },
+            "integrations/language-clients/python/driver-api",
+            "integrations/language-clients/python/additional-options",
+            "integrations/language-clients/python/advanced-querying",
+            "integrations/language-clients/python/advanced-inserting",
+            "integrations/language-clients/python/sqlalchemy",
+          ]
+        },
         "integrations/language-clients/rust",
         "integrations/language-clients/csharp",
         {
