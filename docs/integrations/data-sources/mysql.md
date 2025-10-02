@@ -5,6 +5,10 @@ title: 'MySQL'
 hide_title: true
 description: 'Page describing MySQL integration'
 doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
+  - website: 'https://github.com/ClickHouse/clickhouse'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

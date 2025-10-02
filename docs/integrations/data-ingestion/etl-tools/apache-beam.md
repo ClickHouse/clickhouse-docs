@@ -4,6 +4,9 @@ slug: /integrations/apache-beam
 description: 'Users can ingest data into ClickHouse using Apache Beam'
 title: 'Integrating Apache Beam and ClickHouse'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';

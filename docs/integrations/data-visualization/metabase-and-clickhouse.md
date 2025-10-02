@@ -7,6 +7,10 @@ description: 'Metabase is an easy-to-use, open source UI tool for asking questio
 title: 'Connecting Metabase to ClickHouse'
 show_related_blogs: true
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_visualization'
+  - website: 'https://github.com/clickhouse/metabase-clickhouse-driver'
 ---
 
 import Image from '@theme/IdealImage';

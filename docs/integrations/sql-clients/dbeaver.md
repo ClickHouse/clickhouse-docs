@@ -1,9 +1,15 @@
 ---
+
+
 slug: /integrations/dbeaver
 sidebar_label: 'DBeaver'
 description: 'DBeaver is a multi-platform database tool.'
 title: 'Connect DBeaver to ClickHouse'
 doc_type: 'guide'
+integration:
+  - support_level: 'partner'
+  - category: 'sql_client'
+  - website: 'https://github.com/dbeaver/dbeaver'
 ---
 
 import Image from '@theme/IdealImage';

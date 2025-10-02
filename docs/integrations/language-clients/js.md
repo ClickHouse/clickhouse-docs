@@ -6,6 +6,10 @@ slug: /integrations/javascript
 description: 'The official JS client for connecting to ClickHouse.'
 title: 'ClickHouse JS'
 doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'language_client'
+  - website: 'https://github.com/ClickHouse/clickhouse-js'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
