@@ -1,6 +1,4 @@
 ---
-
-
 sidebar_label: 'DataGrip'
 slug: /integrations/datagrip
 description: 'DataGrip is a database IDE that supports ClickHouse out of the box.'

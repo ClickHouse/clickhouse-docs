@@ -1,6 +1,4 @@
 ---
-
-
 slug: /integrations/dbeaver
 sidebar_label: 'DBeaver'
 description: 'DBeaver is a multi-platform database tool.'
