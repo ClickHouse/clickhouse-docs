@@ -3500,6 +3500,26 @@
       "source": "/docs/migrations/migrations",
       "destination": "/docs/integrations/migration/overview",
       "permanent": true
+    },
+    {
+      "source": "/docs/operations/system-tables/crash-log",
+      "destination": "/docs/operations/system-tables/crash_log",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/system-tables/current-roles",
+      "destination": "/docs/operations/system-tables/current_roles",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/system-tables/enabled-roles",
+      "destination": "/docs/operations/system-tables/enabled_roles",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/system-tables/role-grants",
+      "destination": "/docs/operations/system-tables/role_grants",
+      "permanent": true
     }
   ]
 }
