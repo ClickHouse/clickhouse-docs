@@ -1,3 +1,5 @@
+import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
+
 function putUTMsInStorage() {
     const expirationTime = new Date()
     expirationTime.setDate(expirationTime.getDate() + 14) // Set expiration to 14 days from now
@@ -134,9 +136,8 @@ function updateLinks() {
     });
 }
 
-// Bedore DOM renders
-export function onRouteUpdate() {
 
+if (ExecutionEnvironment.canUseDOM) {
     const observer = new MutationObserver(() => {
         updateLinks()
     });
@@ -147,13 +148,4 @@ export function onRouteUpdate() {
         subtree: true,
         attributes: false // Set to false, allows us to update the href without causing an infinite loop
     });
-
-    // Cleanup
-    return () => observer.disconnect()
-}
-
-
-// After DOM renedered
-export function onRouteDidUpdate() {
-    updateLinks()
 }
