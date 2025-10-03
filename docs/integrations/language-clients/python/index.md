@@ -75,7 +75,6 @@ There are two examples shown for connecting to ClickHouse:
 
 #### Use a ClickHouse Connect client instance to connect to a ClickHouse server on localhost: {#use-a-clickhouse-connect-client-instance-to-connect-to-a-clickhouse-server-on-localhost}
 
-
 ```python
 import clickhouse_connect
 
@@ -87,7 +86,6 @@ client = clickhouse_connect.get_client(host='localhost', username='default', pas
 :::tip
 Use the connection details gathered earlier. ClickHouse Cloud services require TLS, so use port 8443.
 :::
-
 
 ```python
 import clickhouse_connect

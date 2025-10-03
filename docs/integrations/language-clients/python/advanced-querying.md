@@ -409,7 +409,6 @@ client.query('SELECT device_id, dev_address, gw_address from devices', column_fo
 | Variant               | object                  | -                 | Returns the matching Python type for the ClickHouse datatype stored for the value                                 |
 | Dynamic               | object                  | -                 | Returns the matching Python type for the ClickHouse datatype stored for the value                                 |
 
-
 ## External data {#external-data}
 
 ClickHouse queries can accept external data in any ClickHouse format. This binary data is sent along with the query string to be used to process the data. Details of the External Data feature are [here](/engines/table-engines/special/external-data.md). The client `query*` methods accept an optional `external_data` parameter to take advantage of this feature. The value for the `external_data` parameter should be a `clickhouse_connect.driver.external.ExternalData` object. The constructor for that object accepts the following arguments:
