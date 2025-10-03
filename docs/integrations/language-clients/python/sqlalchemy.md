@@ -127,7 +127,7 @@ with Session(engine) as session:
     session.commit()
 ```
 
-## Scope and limitations
+## Scope and limitations {#scope-and-limitations}
 - Core focus: Enable SQLAlchemy Core features like `SELECT` with `JOIN`s (`INNER`, `LEFT OUTER`, `FULL OUTER`, `CROSS`), `WHERE`, `ORDER BY`, `LIMIT`/`OFFSET`, and `DISTINCT`.
 - `DELETE` with `WHERE` only: The dialect supports lightweight `DELETE` but requires an explicit `WHERE` clause to avoid accidental full-table deletes. To clear a table, use `TRUNCATE TABLE`.
 - No `UPDATE`: ClickHouse is append-optimized. The dialect does not implement `UPDATE`. If you need to change data, apply transformations upstream and re-insert, or use explicit text SQL (for example, `ALTER TABLE ... UPDATE`) at your own risk.

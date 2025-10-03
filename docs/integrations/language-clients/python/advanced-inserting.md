@@ -129,6 +129,101 @@ df = pd.DataFrame({
 client.insert_df_arrow("users", df)
 ```
 
+### Time zones {#time-zones}
+
+When inserting Python `datetime.datetime` objects into ClickHouse `DateTime` or `DateTime64` columns, ClickHouse Connect automatically handles timezone information. Since ClickHouse stores all DateTime values internally as timezone-naive Unix timestamps (seconds or fractional seconds since the epoch), timezone conversion happens automatically on the client side during insertion.
+
+#### Timezone-aware datetime objects {#timezone-aware-datetime-objects}
+
+If you insert a timezone-aware Python `datetime.datetime` object, ClickHouse Connect will automatically call `.timestamp()` to convert it to a Unix timestamp, which correctly accounts for the timezone offset. This means you can insert datetime objects from any timezone, and they will be correctly stored as their UTC equivalent timestamp.
+
+```python
+import clickhouse_connect
+from datetime import datetime
+import pytz
+
+client = clickhouse_connect.get_client()
+client.command("CREATE TABLE events (event_time DateTime) ENGINE Memory")
+
+# Insert timezone-aware datetime objects
+denver_tz = pytz.timezone('America/Denver')
+tokyo_tz = pytz.timezone('Asia/Tokyo')
+
+data = [
+    [datetime(2023, 6, 15, 10, 30, 0, tzinfo=pytz.UTC)],
+    [denver_tz.localize(datetime(2023, 6, 15, 10, 30, 0))],
+    [tokyo_tz.localize(datetime(2023, 6, 15, 10, 30, 0))]
+]
+
+client.insert('events', data, column_names=['event_time'])
+results = client.query("SELECT * from events")
+print(*results.result_rows, sep="\n")
+# Output:
+# (datetime.datetime(2023, 6, 15, 10, 30),)
+# (datetime.datetime(2023, 6, 15, 16, 30),)
+# (datetime.datetime(2023, 6, 15, 1, 30),)
+```
+
+In this example, all three datetime objects represent different points in time because they have different timezones. Each will be correctly converted to its corresponding Unix timestamp and stored in ClickHouse.
+
+:::note
+When using pytz, you must use the `localize()` method to attach timezone information to a naive datetime. Passing `tzinfo=` directly to the datetime constructor will use incorrect historical offsets. For UTC, `tzinfo=pytz.UTC` works correctly. See [pytz docs](https://pythonhosted.org/pytz/#localized-times-and-date-arithmetic) for more info.
+:::
+
+#### Timezone-naive datetime objects {#timezone-naive-datetime-objects}
+
+If you insert a timezone-naive Python `datetime.datetime` object (one without `tzinfo`), the `.timestamp()` method will interpret it as being in the system's local timezone. To avoid ambiguity, it's recommended to:
+
+1. Always use timezone-aware datetime objects when inserting, or
+2. Ensure your system timezone is set to UTC, or
+3. Manually convert to epoch timestamps before inserting
+
+```python
+import clickhouse_connect
+from datetime import datetime
+import pytz
+
+client = clickhouse_connect.get_client()
+
+# Recommended: Always use timezone-aware datetimes
+utc_time = datetime(2023, 6, 15, 10, 30, 0, tzinfo=pytz.UTC)
+client.insert('events', [[utc_time]], column_names=['event_time'])
+
+# Alternative: Convert to epoch timestamp manually
+naive_time = datetime(2023, 6, 15, 10, 30, 0)
+epoch_timestamp = int(naive_time.replace(tzinfo=pytz.UTC).timestamp())
+client.insert('events', [[epoch_timestamp]], column_names=['event_time'])
+```
+
+#### DateTime columns with timezone metadata {#datetime-columns-with-timezone-metadata}
+
+ClickHouse columns can be defined with timezone metadata (e.g., `DateTime('America/Denver')` or `DateTime64(3, 'Asia/Tokyo')`). This metadata doesn't affect how data is stored (still as UTC timestamps), but it controls the timezone used when querying data back from ClickHouse.
+
+When inserting into such columns, ClickHouse Connect converts your Python datetime to a Unix timestamp (accounting for its timezone if present). When you query the data back, ClickHouse Connect will return the datetime converted to the column's timezone, regardless of what timezone you used when inserting.
+
+```python
+import clickhouse_connect
+from datetime import datetime
+import pytz
+
+client = clickhouse_connect.get_client()
+
+# Create table with Los Angeles timezone metadata
+client.command("CREATE TABLE events (event_time DateTime('America/Los_Angeles')) ENGINE Memory")
+
+# Insert a New York time (10:30 AM EDT, which is 14:30 UTC)
+ny_tz = pytz.timezone("America/New_York")
+data = ny_tz.localize(datetime(2023, 6, 15, 10, 30, 0))
+client.insert("events", [[data]], column_names=["event_time"])
+
+# When queried back, the time is automatically converted to Los Angeles timezone
+# 10:30 AM New York (UTC-4) = 14:30 UTC = 7:30 AM Los Angeles (UTC-7)
+results = client.query("select * from events")
+print(*results.result_rows, sep="\n")
+# Output:
+# (datetime.datetime(2023, 6, 15, 7, 30, tzinfo=<DstTzInfo 'America/Los_Angeles' PDT-1 day, 17:00:00 DST>),)
+```
+
 ## File inserts {#file-inserts}
 
 The `clickhouse_connect.driver.tools` package includes the `insert_file` method that allows inserting data directly from the file system into an existing ClickHouse table. Parsing is delegated to the ClickHouse server. `insert_file` accepts the following parameters:
