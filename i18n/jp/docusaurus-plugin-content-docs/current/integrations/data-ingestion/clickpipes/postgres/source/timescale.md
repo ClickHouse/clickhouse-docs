@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'Timescale'
-'description': 'Set up Postgres with the TimescaleDB extension as a source for ClickPipes'
-'slug': '/integrations/clickpipes/postgres/source/timescale'
-'title': 'Postgres with TimescaleDB source setup guide'
-'keywords':
+sidebar_label: 'Timescale'
+description: 'Set up Postgres with the TimescaleDB extension as a source for ClickPipes'
+slug: '/integrations/clickpipes/postgres/source/timescale'
+title: 'Postgres with TimescaleDB source setup guide'
+keywords:
 - 'TimescaleDB'
 ---
 

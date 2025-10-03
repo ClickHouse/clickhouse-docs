@@ -5,6 +5,7 @@ slug: /integrations/hashboard
 keywords: ['clickhouse', 'Hashboard', 'connect', 'integrate', 'ui', 'analytics']
 description: 'Hashboard is a robust analytics platform that can be easily integrated with ClickHouse for real-time data analysis.'
 title: 'Connecting ClickHouse to Hashboard'
+doc_type: 'guide'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
@@ -18,13 +19,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 [Hashboard](https://hashboard.com) is an interactive data exploration tool that enables anyone in your organization to track metrics and discover actionable insights. Hashboard issues live SQL queries to your ClickHouse database and is particularly useful for self-serve, ad hoc data exploration use cases.
 
-
 <Image size="md" img={hashboard_01} alt="Hashboard data explorer interface showing interactive query builder and visualization" border />
 
 <br/>
 
 This guide will walk you through the steps to connect Hashboard with your ClickHouse instance. This information is also available on Hashboard's [ClickHouse integration documentation](https://docs.hashboard.com/docs/database-connections/clickhouse).
-
 
 ## Pre-requisites {#pre-requisites}
 

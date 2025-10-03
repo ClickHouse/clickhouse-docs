@@ -5,6 +5,7 @@ keywords: ['clickhouse', 'BladePipe', 'connect', 'integrate', 'cdc', 'etl', 'dat
 slug: /integrations/bladepipe
 description: 'Stream data into ClickHouse using BladePipe data pipelines'
 title: 'Connect BladePipe to ClickHouse'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -23,7 +24,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-
 <a href="https://www.bladepipe.com/" target="_blank">BladePipe</a> is a real-time end-to-end data integration tool with sub-second latency, boosting seamless data flow across platforms. 
 
 ClickHouse is one of BladePipe's pre-built connectors, allowing users to integrate data from various sources into ClickHouse automatically. This page will show how to load data into ClickHouse in real time step by step.
@@ -40,7 +40,6 @@ Currently BladePipe supports for data integration to ClickHouse from the followi
 - TiDB
 
 More sources are to be supported.
-
 
 <VerticalStepper headerLevel="h2">
 ## Download and run BladePipe {#1-run-bladepipe}
@@ -82,7 +81,6 @@ To use MySQL as a source, make sure that the user has the <a href="https://doc.b
 
 3. Click "Add DataSource" at the bottom, and a MySQL instance is added.
 
-
 ## Create a pipeline {#4-create-a-pipeline}
 
 1. In BladePipe, click "DataJob" > "Create DataJob".
@@ -93,17 +91,14 @@ To use MySQL as a source, make sure that the user has the <a href="https://doc.b
 3. Select "Incremental" for DataJob Type, together with the "Full Data" option.
    <Image img={bp_ck_4} size="lg" border alt="Select sync type" />
 
-
 4. Select the tables to be replicated.
    <Image img={bp_ck_5} size="lg" border alt="Select tables" />
 
 5. Select the columns to be replicated.
    <Image img={bp_ck_6} size="lg" border alt="Select columns" />
 
-
 6. Confirm the DataJob creation, and the DataJob runs automatically.
     <Image img={bp_ck_8} size="lg" border alt="DataJob is running" />
-
 
 ## Verify the data {#5-verify-the-data}
 1. Stop data write in MySQL instance and wait for ClickHouse to merge data.
@@ -117,4 +112,3 @@ Alternatively, you can run the `CREATE VIEW xxx_v AS SELECT * FROM xxx FINAL;` c
    <Image img={bp_ck_9} size="lg" border alt="Verify data" />
    
 </VerticalStepper>
-

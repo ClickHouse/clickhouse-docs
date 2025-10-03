@@ -4,6 +4,7 @@ sidebar_label: 'Querying Apache Arrow'
 slug: /chdb/guides/apache-arrow
 description: 'In this guide, we will learn how to query Apache Arrow tables with chDB'
 keywords: ['chdb', 'Apache Arrow']
+doc_type: 'guide'
 ---
 
 [Apache Arrow](https://arrow.apache.org/) is a standardized column-oriented memory format that's gained popularity in the data community.
@@ -52,8 +53,6 @@ aws s3 cp \
 :::note
 If you want to download more files, use `aws s3 ls` to get a list of all the files and then update the above command.
 :::
-
-
 
 Next, we'll import the Parquet module from the `pyarrow` package:
 
@@ -143,7 +142,6 @@ chdb.query("SELECT count() FROM Python(arrow_table)", "DataFrame")
 
 Now, let's do something a bit more interesting. 
 The following query excludes the `quadkey` and `tile.*` columns and then computes the average and max values for all remaining column:
-
 
 ```python
 chdb.query("""

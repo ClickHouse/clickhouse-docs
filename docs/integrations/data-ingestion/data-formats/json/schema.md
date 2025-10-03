@@ -4,13 +4,13 @@ slug: /integrations/data-formats/json/schema
 description: 'How to optimally design JSON schemas'
 keywords: ['json', 'clickhouse', 'inserting', 'loading', 'formats', 'schema', 'structured', 'semi-structured']
 score: 20
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
 import json_column_per_type from '@site/static/images/integrations/data-ingestion/data-formats/json_column_per_type.png';
 import json_offsets from '@site/static/images/integrations/data-ingestion/data-formats/json_offsets.png';
 import shared_json_column from '@site/static/images/integrations/data-ingestion/data-formats/json_shared_column.png';
-
 
 # Designing your schema
 
@@ -200,7 +200,6 @@ ENGINE = MergeTree
 ORDER BY company.name
 ```
 
-
 ### Handling default values {#handling-default-values}
 
 Even if JSON objects are structured, they are often sparse with only a subset of the known keys provided. Fortunately, the `Tuple` type does not require all columns in the JSON payload. If not provided, default values will be used.
@@ -371,7 +370,6 @@ Consider our [earlier person JSON](/integrations/data-formats/json/schema#static
 
 Let's suppose that `company.labels` contains arbitrary keys. Additionally, the type for any key in this structure may not be consistent between rows. For example:
 
-
 ```json
 {
   "id": 1,
@@ -526,7 +524,6 @@ INSERT INTO people FORMAT JSONAsObject
 1 row in set. Elapsed: 0.004 sec.
 ```
 
-
 ```sql
 SELECT *
 FROM people
@@ -637,7 +634,6 @@ FROM people
 
 In order to return nested sub-objects, the `^` is required. This is a design choice to avoid reading a high number of columns - unless explicitly requested. Objects accessed without `^` will return `NULL` as shown below:
 
-
 ```sql
 -- sub objects will not be returned by default
 SELECT json.company.labels
@@ -661,7 +657,6 @@ FROM people
 
 2 rows in set. Elapsed: 0.004 sec.
 ```
-
 
 ### Targeted JSON column {#targeted-json-column}
 
@@ -701,7 +696,6 @@ INSERT INTO people FORMAT JSONEachRow
 1 row in set. Elapsed: 0.440 sec.
 ```
 
-
 ```sql
 SELECT *
 FROM people
@@ -737,7 +731,6 @@ tags:          {"hobby":"Databases","holidays":[{"year":2024,"location":"Azores,
 ```
 
 [Introspection functions](/sql-reference/data-types/newjson#introspection-functions) can be used to determine the inferred paths and types for the `company.labels` column.
-
 
 ```sql
 SELECT JSONDynamicPathsWithTypes(company.labels) AS paths
@@ -919,7 +912,6 @@ FORMAT PrettyJSONEachRow
 
 2 rows in set. Elapsed: 0.004 sec.
 ```
-
 
 #### Optimizing performance with type hints {#optimizing-performance-with-type-hints}  
 

@@ -1,10 +1,10 @@
 ---
-'description': 'A data set that is always in RAM. It is intended for use on the right
+description: 'A data set that is always in RAM. It is intended for use on the right
   side of the `IN` operator.'
-'sidebar_label': 'Set'
-'sidebar_position': 60
-'slug': '/engines/table-engines/special/set'
-'title': 'Set Table Engine'
+sidebar_label: 'Set'
+sidebar_position: 60
+slug: '/engines/table-engines/special/set'
+title: 'Set Table Engine'
 ---
 
 

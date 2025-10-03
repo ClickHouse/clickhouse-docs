@@ -1,7 +1,7 @@
 ---
-'sidebar_label': 'Rust'
-'sidebar_position': 4
-'keywords':
+sidebar_label: 'Rust'
+sidebar_position: 4
+keywords:
 - 'clickhouse'
 - 'rs'
 - 'rust'
@@ -11,9 +11,9 @@
 - 'client'
 - 'connect'
 - 'integrate'
-'slug': '/integrations/rust'
-'description': 'The official Rust client for connecting to ClickHouse.'
-'title': 'ClickHouse Rust Client'
+slug: '/integrations/rust'
+description: 'The official Rust client for connecting to ClickHouse.'
+title: 'ClickHouse Rust Client'
 ---
 
 

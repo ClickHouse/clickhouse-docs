@@ -1,8 +1,8 @@
 ---
-'description': '数値データシーケンスの近似パーセンタイルを計算します。'
-'sidebar_position': 170
-'slug': '/sql-reference/aggregate-functions/reference/quantile'
-'title': 'quantile'
+description: '数値データシーケンスの近似パーセンタイルを計算します。'
+sidebar_position: 170
+slug: '/sql-reference/aggregate-functions/reference/quantile'
+title: 'quantile'
 ---
 
 

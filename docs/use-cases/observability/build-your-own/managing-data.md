@@ -4,11 +4,11 @@ description: 'Managing Data for Observability'
 slug: /observability/managing-data
 keywords: ['observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafana', 'OTel']
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';
 import Image from '@theme/IdealImage';
-
 
 # Managing data
 
@@ -142,7 +142,6 @@ ORDER BY c DESC
 :::note
 This feature is exploited by TTL when the setting [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) is used. See [Data management with TTL](#data-management-with-ttl-time-to-live) for further details.
 :::
-
 
 ### Applications {#applications}
 

@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'One formatのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'One formatのドキュメント'
+input_format: true
+keywords:
 - 'One'
-'output_format': false
-'slug': '/interfaces/formats/One'
-'title': 'One'
+output_format: false
+slug: '/interfaces/formats/One'
+title: 'One'
 ---
 
 

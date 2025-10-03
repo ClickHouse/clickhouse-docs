@@ -6,6 +6,7 @@ keywords: ['Metabase']
 description: 'Metabase is an easy-to-use, open source UI tool for asking questions about your data.'
 title: 'Connecting Metabase to ClickHouse'
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -50,7 +51,6 @@ If you do not have a dataset to work with you can add one of the examples.  This
 4. Start (or restart) Metabase so that the driver gets loaded properly.
 
 5. Access Metabase at <a href="http://localhost:3000/" target="_blank">http://hostname:3000</a>. On the initial startup, you will see a welcome screen and have to work your way through a list of questions. If prompted to select a database, select "**I'll add my data later**":
-
 
 ## 3.  Connect Metabase to ClickHouse {#3--connect-metabase-to-clickhouse}
 

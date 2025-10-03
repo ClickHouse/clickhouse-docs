@@ -4,6 +4,7 @@ keywords: ['clickhouse', 'dlt', 'connect', 'integrate', 'etl', 'data integration
 description: 'Load data into Clickhouse using dlt integration'
 title: 'Connect dlt to ClickHouse'
 slug: /integrations/data-ingestion/etl-tools/dlt-and-clickhouse
+doc_type: 'guide'
 ---
 
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
@@ -29,7 +30,6 @@ Start by initializing a new `dlt` project as follows:
 ```bash
 dlt init chess clickhouse
 ```
-
 
 :::note
 This command will initialize your pipeline with chess as the source and ClickHouse as the destination.
@@ -60,7 +60,6 @@ GRANT SELECT ON INFORMATION_SCHEMA.COLUMNS TO dlt;
 GRANT CREATE TEMPORARY TABLE, S3 ON *.* TO dlt;
 ```
 
-
 ### 3. Add credentials {#3-add-credentials}
 
 Next, set up the ClickHouse credentials in the `.dlt/secrets.toml` file as shown below:
@@ -79,7 +78,6 @@ secure = 1                               # Set to 1 if using HTTPS, else 0.
 dataset_table_separator = "___"          # Separator for dataset table names from dataset.
 ```
 
-
 :::note
 HTTP_PORT
 The `http_port` parameter specifies the port number to use when connecting to the ClickHouse server's HTTP interface. This is different from default port 9000, which is used for the native TCP protocol.
@@ -95,7 +93,6 @@ You can pass a database connection string similar to the one used by the `clickh
 # keep it at the top of your toml file, before any section starts.
 destination.clickhouse.credentials="clickhouse://dlt:Dlt*12345789234567@localhost:9000/dlt?secure=1"
 ```
-
 
 ## Write disposition {#write-disposition}
 
@@ -144,11 +141,9 @@ By default, tables are created using the `ReplicatedMergeTree` table engine in C
 ```bash
 from dlt.destinations.adapters import clickhouse_adapter
 
-
 @dlt.resource()
 def my_resource():
   ...
-
 
 clickhouse_adapter(my_resource, table_engine_type="merge_tree")
 ```

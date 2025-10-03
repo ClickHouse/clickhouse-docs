@@ -4,6 +4,7 @@ sidebar_position: 2
 sidebar_label: 'Optimizing for Performance'
 title: 'Optimizing for S3 Insert and Read Performance'
 description: 'Optimizing the performance of S3 read and insert'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -314,7 +315,6 @@ The server that initially receives the insert query first resolves the glob patt
 We repeat our earlier read query distributing the workload across 3 nodes, adjusting the query to use `s3Cluster`. This is performed automatically in ClickHouse Cloud, by referring to the `default` cluster.
 
 As noted in [Utilizing Clusters](/integrations/s3#utilizing-clusters) this work is distributed a file level. To benefit from this feature users will require a sufficient number of files i.e. at least > the number of nodes.
-
 
 ```sql
 SELECT

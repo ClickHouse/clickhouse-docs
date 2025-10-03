@@ -5,6 +5,7 @@ slug: /integrations/rocketbi
 keywords: ['clickhouse', 'RocketBI', 'connect', 'integrate', 'ui']
 description: 'RocketBI is a self-service business intelligence platform that helps you quickly analyze data, build drag-n-drop visualizations and collaborate with colleagues right on your web browser.'
 title: 'GOAL: BUILD YOUR 1ST DASHBOARD'
+doc_type: 'guide'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
@@ -81,7 +82,6 @@ In the Tab filter, select metric fields you want to use. Make sure to keep check
 Rename filters & Save Control to Dashboard
 
 <Image size="md" img={rocketbi_04} alt="Metrics control with renamed filters ready to save to dashboard" border />
-
 
 #### Create a date type control {#create-a-date-type-control}
 Choose a Date field as Main Date column:

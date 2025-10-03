@@ -4,6 +4,7 @@ sidebar_position: 1
 title: 'SQL Console'
 slug: /integrations/sql-clients/sql-console
 description: 'Learn about SQL Console'
+doc_type: 'guide'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
@@ -149,7 +150,7 @@ Running the command at the current cursor position can be achieved in two ways:
 
 <Image img={run_at_cursor_2} size="lg" border alt="Run at cursor option in the extended run options menu"/>
 
-  - Selecting 'Run at cursor' from the SQL Editor context menu
+- Selecting 'Run at cursor' from the SQL Editor context menu
 
 <Image img={run_at_cursor} size="lg" border alt="Run at cursor option in the SQL Editor context menu"/>
 
@@ -404,4 +405,3 @@ A dialog will open, allowing you to share the query with all members of a team. 
 In some scenarios, it may be necessary to adjust the axis scales for each field independently. This can also be accomplished in the 'Advanced' section of the chart configuration pane by specifying min and max values for an axis range. As an example, the above chart looks good, but in order to demonstrate the correlation between our `trip_total` and `fare_total` fields, the axis ranges need some adjustment:
 
 <Image img={sql_console_access_queries} size="lg" border alt="Shared with me section in the query list"/>
-

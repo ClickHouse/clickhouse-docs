@@ -1,9 +1,9 @@
 ---
-'sidebar_label': 'Kafka Connect JDBCコネクタ'
-'sidebar_position': 4
-'slug': '/integrations/kafka/kafka-connect-jdbc'
-'description': 'Kafka ConnectおよびClickHouseと組み合わせてJDBCコネクタシンクを使用する'
-'title': 'JDBC Connector'
+sidebar_label: 'Kafka Connect JDBCコネクタ'
+sidebar_position: 4
+slug: '/integrations/kafka/kafka-connect-jdbc'
+description: 'Kafka ConnectおよびClickHouseと組み合わせてJDBCコネクタシンクを使用する'
+title: 'JDBC Connector'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';

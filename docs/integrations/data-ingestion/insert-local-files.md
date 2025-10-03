@@ -5,6 +5,7 @@ title: 'Insert Local Files'
 slug: /integrations/data-ingestion/insert-local-files
 description: 'Learn about Insert Local Files'
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 # Insert local files
@@ -89,7 +90,6 @@ The result is:
 │ 5102 │ comment │ staunch      │ 2007-03-20 02:42:47 │ "Well this is exactly the kind of thing that isn't very obvious. It sounds like once you're wealthy there's a new set of rules you have to live by. It's a shame everyone has had to re-learn these things for themselves because a few bad apples can control their jealousy.<p>Very good to hear it's somewhere in your essay queue though. I'll try not to get rich before you write it, so I have some idea of what to expect :-)" │ []       │ ['Well','this','is','exactly','the','kind','of','thing','that','isn','t','very','obvious','It','sounds','like','once','you','re','wealthy','there','s','a','new','set','of','rules','you','have','to','live','by','It','s','a','shame','everyone','has','had','to','re','learn','these','things','for','themselves','because','a','few','bad','apples','can','control','their','jealousy','p','Very','good','to','hear','it','s','somewhere','in','your','essay','queue','though','I','ll','try','not','to','get','rich','before','you','write','it','so','I','have','some','idea','of','what','to','expect'] │
 
 ```
-
 
 5. Another option is to use a tool like `cat` to stream the file to `clickhouse-client`. For example, the following command has the same result as using the `<` operator:
 

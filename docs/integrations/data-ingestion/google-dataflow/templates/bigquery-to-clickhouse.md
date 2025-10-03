@@ -4,6 +4,7 @@ sidebar_position: 1
 slug: /integrations/google-dataflow/templates/bigquery-to-clickhouse
 description: 'Users can ingest data from BigQuery into ClickHouse using Google Dataflow Template'
 title: 'Dataflow BigQuery to ClickHouse template'
+doc_type: 'guide'
 ---
 
 import TOCInline from '@theme/TOCInline';
@@ -52,7 +53,6 @@ The template can read the entire table or filter specific records using a provid
 | `queryLocation`         | Needed when reading from an authorized view without the underlying table's permission. For example, `US`.                                                                                                                                                                                                                                          |          |                                                                                                                                                                                                                                                                  |
 | `queryTempDataset`      | Set an existing dataset to create the temporary table to store the results of the query. For example, `temp_dataset`.                                                                                                                                                                                                                              |          |                                                                                                                                                                                                                                                                  |
 | `KMSEncryptionKey`      | If reading from BigQuery using the query source, use this Cloud KMS key to encrypt any temporary tables created. For example, `projects/your-project/locations/global/keyRings/your-keyring/cryptoKeys/your-key`.                                                                                                                                  |          |                                                                                                                                                                                                                                                                  |
-
 
 :::note
 Default values for all `ClickHouseIO` parameters can be found in [`ClickHouseIO` Apache Beam Connector](/integrations/apache-beam#clickhouseiowrite-parameters)

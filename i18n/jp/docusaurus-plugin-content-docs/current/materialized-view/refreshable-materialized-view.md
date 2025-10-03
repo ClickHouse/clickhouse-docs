@@ -1,8 +1,8 @@
 ---
-'slug': '/materialized-view/refreshable-materialized-view'
-'title': 'リフレッシュ可能なMaterialized View'
-'description': 'Materialized Viewを使用してクエリの速度を向上させる方法'
-'keywords':
+slug: '/materialized-view/refreshable-materialized-view'
+title: 'リフレッシュ可能なMaterialized View'
+description: 'Materialized Viewを使用してクエリの速度を向上させる方法'
+keywords:
 - 'refreshable materialized view'
 - 'refresh'
 - 'materialized views'
@@ -39,12 +39,13 @@ ClickHouse のインクリメンタルマテリアライズドビューは非常
 ```sql
 CREATE MATERIALIZED VIEW table_name_mv
 REFRESH EVERY 1 MINUTE TO table_name AS
-...
+```
 
 マテリアライズドビューを強制的にリフレッシュしたい場合は、`SYSTEM REFRESH VIEW` 構文を使用できます：
 
 ```sql
 SYSTEM REFRESH VIEW table_name_mv;
+```
 
 ビューのキャンセル、停止、開始も可能です。
 詳細については、[refreshable materialized views の管理](/sql-reference/statements/system#refreshable-materialized-views) ドキュメントを参照してください。
@@ -58,11 +59,13 @@ SELECT database, view, status,
        last_success_time, last_refresh_time, next_refresh_time,
        read_rows, written_rows
 FROM system.view_refreshes;
+```
 
 ```text
 ┌─database─┬─view─────────────┬─status────┬───last_success_time─┬───last_refresh_time─┬───next_refresh_time─┬─read_rows─┬─written_rows─┐
 │ database │ table_name_mv    │ Scheduled │ 2024-11-11 12:10:00 │ 2024-11-11 12:10:00 │ 2024-11-11 12:11:00 │   5491132 │       817718 │
 └──────────┴──────────────────┴───────────┴─────────────────────┴─────────────────────┴─────────────────────┴───────────┴──────────────┘
+```
 
 ## リフレッシュレートを変更するにはどうすればよいですか？ {#how-can-i-change-the-refresh-rate}
 
@@ -71,6 +74,7 @@ FROM system.view_refreshes;
 ```sql
 ALTER TABLE table_name_mv
 MODIFY REFRESH EVERY 30 SECONDS;
+```
 
 これを行った後、[最後にリフレッシュされたのはいつか？](/materialized-view/refreshable-materialized-view#when-was-a-refreshable-materialized-view-last-refreshed) クエリを使用して、レートが更新されたことを確認できます：
 
@@ -78,6 +82,7 @@ MODIFY REFRESH EVERY 30 SECONDS;
 ┌─database─┬─view─────────────┬─status────┬───last_success_time─┬───last_refresh_time─┬───next_refresh_time─┬─read_rows─┬─written_rows─┐
 │ database │ table_name_mv    │ Scheduled │ 2024-11-11 12:22:30 │ 2024-11-11 12:22:30 │ 2024-11-11 12:23:00 │   5491132 │       817718 │
 └──────────┴──────────────────┴───────────┴─────────────────────┴─────────────────────┴─────────────────────┴───────────┴──────────────┘
+```
 
 ## `APPEND` を使用して新しい行を追加する {#using-append-to-add-new-rows}
 
@@ -104,6 +109,7 @@ Query id: 7662bc39-aaf9-42bd-b6c7-bc94f2881036
 │ 2008-08-06 17:07:19 │ 3a2  │   495 │
 │ 2008-08-06 17:07:19 │ 598  │   238 │
 └─────────────────────┴──────┴───────┘
+```
 
 このデータセットには `uuid` 列に `4096` の値があります。最も合計カウントが多い `uuid` を見つけるには、以下のクエリを書くことができます：
 
@@ -128,6 +134,7 @@ LIMIT 10
 │ f33  │ 5653783 │
 │ c5b  │ 5649936 │
 └──────┴─────────┘
+```
 
 たとえば、各 `uuid` のカウントを10秒ごとにキャプチャして、`events_snapshot` という新しいテーブルに保存したいとしましょう。`events_snapshot` のスキーマは次のようになります：
 
@@ -139,6 +146,7 @@ CREATE TABLE events_snapshot (
 )
 ENGINE = MergeTree
 ORDER BY uuid;
+```
 
 次に、このテーブルをポピュレートするためのリフレッシュ可能なマテリアライズドビューを作成できます：
 
@@ -151,6 +159,7 @@ AS SELECT
     sum(count) AS count
 FROM events
 GROUP BY ALL;
+```
 
 次に、特定の `uuid` に対する時間の経過に伴うカウントを取得するために `events_snapshot` をクエリすることができます：
 
@@ -171,6 +180,7 @@ FORMAT PrettyCompactMonoBlock
 │ 2024-10-01 16:13:50 │ fff  │ 6203361 │
 │ 2024-10-01 16:14:00 │ fff  │ 6501695 │
 └─────────────────────┴──────┴─────────┘
+```
 
 ## 例 {#examples}
 
@@ -195,6 +205,7 @@ LEFT JOIN (
     FROM postlinks
     GROUP BY PostId
 ) AS postlinks ON posts_types_codecs_ordered.Id = postlinks.PostId;
+```
 
 このデータを `posts_with_links` テーブルに一度の挿入で行う方法も示しましたが、実際のシステムではこの操作を定期的に実行することが望ましいです。
 
@@ -217,6 +228,7 @@ LEFT JOIN (
     FROM postlinks
     GROUP BY PostId
 ) AS postlinks ON posts_types_codecs_ordered.Id = postlinks.PostId;
+```
 
 このビューは、即座に、そしてその後も毎時実行され、ソーステーブルの更新が反映されることを確認します。重要なのは、クエリが再実行されたときに、結果セットが原子的かつ透明に更新されることです。
 
@@ -252,6 +264,7 @@ FROM (
 GROUP BY id
 ORDER BY movies DESC
 LIMIT 5;
+```
 
 ```text
 ┌─────id─┬─name─────────┬─num_movies─┬───────────avg_rank─┬─unique_genres─┬─uniq_directors─┬──────────updated_at─┐
@@ -264,6 +277,7 @@ LIMIT 5;
 
 5 rows in set. Elapsed: 0.393 sec. Processed 5.45 million rows, 86.82 MB (13.87 million rows/s., 221.01 MB/s.)
 Peak memory usage: 1.38 GiB.
+```
 
 結果が返されるのにそれほど時間はかかりませんが、さらに迅速で計算が少ないものにしたいとします。仮に、このデータセットが定常的に更新される場合 - 映画が常にリリースされ、新たな俳優や監督も登場するわけです。
 
@@ -282,6 +296,7 @@ CREATE TABLE imdb.actor_summary
 )
 ENGINE = MergeTree
 ORDER BY num_movies
+```
 
 そして、ビューを定義します：
 
@@ -315,6 +330,7 @@ FROM
 )
 GROUP BY id
 ORDER BY num_movies DESC;
+```
 
 このビューは即座に実行され、その後毎分実行され、ソーステーブルの更新が反映されることになります。俳優の概要を取得するための以前のクエリは、構文が簡素化され、かなり迅速になります！
 
@@ -323,6 +339,7 @@ SELECT *
 FROM imdb.actor_summary
 ORDER BY num_movies DESC
 LIMIT 5
+```
 
 ```text
 ┌─────id─┬─name─────────┬─num_movies─┬──avg_rank─┬─unique_genres─┬─uniq_directors─┬──────────updated_at─┐
@@ -334,6 +351,7 @@ LIMIT 5
 └────────┴──────────────┴────────────┴───────────┴───────────────┴────────────────┴─────────────────────┘
 
 5 rows in set. Elapsed: 0.007 sec.
+```
 
 仮に新たな俳優「Clicky McClickHouse」が多くの映画に出演したとしたら、ソースデータに追加します！
 
@@ -346,6 +364,7 @@ INSERT INTO imdb.roles SELECT
         now() AS created_at
 FROM imdb.movies
 LIMIT 10000, 910;
+```
 
 60秒も経たないうちに、ターゲットテーブルは Clicky の prolific な演技を反映するように更新されます。
 
@@ -354,6 +373,7 @@ SELECT *
 FROM imdb.actor_summary
 ORDER BY num_movies DESC
 LIMIT 5;
+```
 
 ```text
 ┌─────id─┬─name────────────────┬─num_movies─┬──avg_rank─┬─unique_genres─┬─uniq_directors─┬──────────updated_at─┐
@@ -365,3 +385,4 @@ LIMIT 5;
 └────────┴─────────────────────┴────────────┴───────────┴───────────────┴────────────────┴─────────────────────┘
 
 5 rows in set. Elapsed: 0.006 sec.
+```

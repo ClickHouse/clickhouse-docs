@@ -6,12 +6,12 @@ pagination_next: null
 sidebar_label: 'Search'
 sidebar_position: 3
 description: 'Searching in ClickStack and Elastic'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
 import hyperdx_search from '@site/static/images/use-cases/observability/hyperdx-search.png';
 import hyperdx_sql from '@site/static/images/use-cases/observability/hyperdx-sql.png';
-
 
 ## Search in ClickStack and Elastic {#search-in-clickstack-and-elastic}
 
@@ -54,7 +54,6 @@ Both HyperDX and Elasticsearch provide flexible query languages to enable intuit
 | Boosting                | `quick^2 fox` | `quick^2 fox` | Not supported in HyperDX at present. |
 | Field wildcard          | `service.*:error` | `service.*:error` | Not supported in HyperDX at present. |
 | Escaped special chars   | Escape reserved characters with `\` | Same      | Escaping required for reserved symbols. |
-
 
 ## Exists/missing differences {#empty-value-differences}
 

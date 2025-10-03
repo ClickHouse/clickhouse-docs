@@ -5,6 +5,7 @@ slug: /integrations/vector
 description: 'How to tail a log file into ClickHouse using Vector'
 title: 'Integrating Vector with ClickHouse'
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -41,11 +42,9 @@ Let's define a table to store the log events:
     There is not really a need for a primary key yet, so that is why **ORDER BY** is set to **tuple()**.
     :::
 
-
 ## 2.  Configure Nginx {#2--configure-nginx}
 
 We certainly do not want to spend too much time explaining Nginx, but we also do not want to hide all the details, so in this step we will provide you with enough details to get Nginx logging configured.
-
 
 1. The following `access_log` property sends logs to `/var/log/nginx/my_access.log` in the **combined** format. This value goes in the `http` section of your `nginx.conf` file:
     ```bash
@@ -72,7 +71,6 @@ We certainly do not want to spend too much time explaining Nginx, but we also do
 
 Vector collects, transforms and routes logs, metrics, and traces (referred to as **sources**) to lots of different vendors (referred to as **sinks**), including out-of-the-box compatibility with ClickHouse. Sources and sinks are defined in a configuration file named **vector.toml**.
 
-
 1. The following **vector.toml** defines a **source** of type **file** that tails the end of **my_access.log**, and it also defines a **sink** as the **access_logs** table defined above:
     ```bash
     [sources.nginx_logs]
@@ -97,11 +95,9 @@ Vector collects, transforms and routes logs, metrics, and traces (referred to as
     ```
     <Image img={vector01} size="lg" border alt="View ClickHouse logs in table format" />
 
-
 ## 4. Parse the Logs {#4-parse-the-logs}
 
 Having the logs in ClickHouse is great, but storing each event as a single string does not allow for much data analysis. Let's see how to parse the log events using a materialized view.
-
 
 1. A **materialized view** (MV, for short) is a new table based on an existing table, and when inserts are made to the existing table, the new data is also added to the materialized view. Let's see how to define a MV that contains a parsed representation of the log events in **access_logs**, in other words:
     ```bash
@@ -183,6 +179,5 @@ Having the logs in ClickHouse is great, but storing each event as a single strin
     :::note
     The lesson above stored the data in two tables, but you could change the initial `nginxdb.access_logs` table to use the **Null** table engine - the parsed data will still end up in the `nginxdb.access_logs_view` table, but the raw data will not be stored in a table.
     :::
-
 
 **Summary:** By using Vector, which only required a simple install and quick configuration, we can send logs from an Nginx server to a table in ClickHouse. By using a clever materialized view, we can parse those logs into columns for easier analytics.

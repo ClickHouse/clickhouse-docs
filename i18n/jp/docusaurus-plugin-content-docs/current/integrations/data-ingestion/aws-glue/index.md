@@ -1,16 +1,16 @@
 ---
-'sidebar_label': 'Amazon Glue'
-'sidebar_position': 1
-'slug': '/integrations/glue'
-'description': 'ClickHouse と Amazon Glue を 統合する'
-'keywords':
+sidebar_label: 'Amazon Glue'
+sidebar_position: 1
+slug: '/integrations/glue'
+description: 'ClickHouse と Amazon Glue を 統合する'
+keywords:
 - 'clickhouse'
 - 'amazon'
 - 'aws'
 - 'glue'
 - 'migrating'
 - 'data'
-'title': 'Amazon Glue と ClickHouse の 統合'
+title: 'Amazon Glue と ClickHouse の 統合'
 ---
 
 import Tabs from '@theme/Tabs';

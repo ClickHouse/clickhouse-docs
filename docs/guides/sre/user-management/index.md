@@ -5,6 +5,7 @@ sidebar_label: 'Users and Roles'
 title: 'Access Control and Account Management'
 keywords: ['ClickHouse Cloud', 'Access Control', 'User Management', 'RBAC', 'Security']
 description: 'Describes access control and account management in ClickHouse Cloud'
+doc_type: 'guide'
 ---
 
 # Creating users and roles in ClickHouse
@@ -159,7 +160,6 @@ Management queries:
 
     By default, SQL-driven access control and account management is disabled for all users. You need to configure at least one user in the `users.xml` configuration file and set the values of the [`access_management`](/operations/settings/settings-users.md#access_management-user-setting), `named_collection_control`, `show_named_collections`, and `show_named_collections_secrets` settings to 1.
 
-
 ## Defining SQL users and roles {#defining-sql-users-and-roles}
 
 :::tip
@@ -206,7 +206,6 @@ This article shows the basics of defining SQL users and roles and applying those
 This article is intended to provide you with a better understanding of how to define permissions, and how permissions work when using `ALTER` statements for privileged users.
 
 The `ALTER` statements are divided into several categories, some of which are hierarchical and some of which are not and must be explicitly defined.
-
 
 **Example DB, table and user configuration**
 1. With an admin user, create a sample user
@@ -491,7 +490,6 @@ ALTER TABLE my_db.my_table
 
 Query id: 50ad5f6b-f64b-4c96-8f5f-ace87cea6c47
 
-
 0 rows in set. Elapsed: 0.004 sec.
 
 Received exception from server (version 22.5.1):
@@ -530,7 +528,6 @@ GRANT ALTER UPDATE ON my_db.my_table TO my_user;
 GRANT ALTER UPDATE ON my_db.my_table TO my_user
 
 Query id: 191690dc-55a6-4625-8fee-abc3d14a5545
-
 
 0 rows in set. Elapsed: 0.004 sec.
 

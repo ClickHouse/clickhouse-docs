@@ -3,6 +3,7 @@ sidebar_label: 'Google Cloud SQL'
 description: 'Set up Google Cloud SQL Postgres instance as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/google-cloudsql
 title: 'Google Cloud SQL Postgres Source Setup Guide'
+doc_type: 'guide'
 ---
 
 import edit_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/edit.png';
@@ -23,7 +24,6 @@ If you use one of the supported providers (in the sidebar), please refer to the 
 
 :::
 
-
 ## Supported Postgres versions {#supported-postgres-versions}
 
 Anything on or after Postgres 12
@@ -41,7 +41,6 @@ Anything on or after Postgres 12
 <Image img={cloudsql_logical_decoding1} alt="Change cloudsql.logical_decoding to on" size="lg" border/>
 <Image img={cloudsql_logical_decoding2} alt="Changed cloudsql.logical_decoding and wal_sender_timeout" size="lg" border/>
 <Image img={cloudsql_logical_decoding3} alt="Restart Server" size="lg" border/>
-
 
 ## Creating ClickPipes user and granting permissions {#creating-clickpipes-user-and-granting-permissions}
 
@@ -75,7 +74,6 @@ Connect to your Cloud SQL Postgres through the admin user and run the below comm
 
 [//]: # (TODO Add SSH Tunneling)
 
-
 ## Add ClickPipes IPs to Firewall {#add-clickpipes-ips-to-firewall}
 
 Please follow the below steps to add ClickPipes IPs to your network.
@@ -98,7 +96,6 @@ If your are using SSH Tunneling, then you need to add the [ClickPipes IPs](../..
 
 <Image img={firewall1} alt="Add ClickPipes Networks to Firewall" size="lg" border/>
 <Image img={firewall2} alt="ClickPipes Networks Added to Firewall" size="lg" border/>
-
 
 ## What's next? {#whats-next}
 

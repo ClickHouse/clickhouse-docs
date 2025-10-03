@@ -1,9 +1,9 @@
 ---
-'slug': '/integrations/s3'
-'sidebar_position': 1
-'sidebar_label': 'ClickHouse との S3 統合'
-'title': 'ClickHouse との S3 統合'
-'description': 'ClickHouse と S3 を統合する方法について説明したページ'
+slug: '/integrations/s3'
+sidebar_position: 1
+sidebar_label: 'ClickHouse との S3 統合'
+title: 'ClickHouse との S3 統合'
+description: 'ClickHouse と S3 を統合する方法について説明したページ'
 ---
 
 import BucketDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_S3_authentication_and_bucket.md';

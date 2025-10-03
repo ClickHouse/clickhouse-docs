@@ -1,14 +1,14 @@
 ---
-'slug': '/examples/aggregate-function-combinators/groupArrayDistinct'
-'title': 'groupArrayDistinct'
-'description': 'groupArrayDistinct combinatorの使用例'
-'keywords':
+slug: '/examples/aggregate-function-combinators/groupArrayDistinct'
+title: 'groupArrayDistinct'
+description: 'groupArrayDistinct combinatorの使用例'
+keywords:
 - 'groupArray'
 - 'Distinct'
 - 'combinator'
 - 'examples'
 - 'groupArrayDistinct'
-'sidebar_label': 'groupArrayDistinct'
+sidebar_label: 'groupArrayDistinct'
 ---
 
 

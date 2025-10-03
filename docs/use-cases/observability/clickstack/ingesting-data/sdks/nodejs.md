@@ -5,6 +5,7 @@ pagination_next: null
 sidebar_position: 5
 description: 'Node.js SDK for ClickStack - The ClickHouse Observability Stack'
 title: 'Node.js'
+doc_type: 'guide'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -147,7 +148,6 @@ The ClickStack SDK can automatically capture uncaught exceptions and errors in y
 
 To enable this, you'll need to add the following code to the end of your application's error handling middleware, or manually capture exceptions using the `recordException` function.
 
-
 <Tabs groupId="setup">
 <TabItem value="Express" label="Express" default>
 
@@ -204,7 +204,6 @@ function myErrorHandler(error, req, res, next) {
 
 </TabItem>
 </Tabs>
-
 
 ## Troubleshooting {#troubleshooting}
 
@@ -311,7 +310,6 @@ The following libraries will be automatically instrumented (traced) by the SDK:
 
 Alternatively, you can auto-instrument your application without any code changes by using the `opentelemetry-instrument` CLI or using the
 Node.js `--require` flag. The CLI installation exposes a wider range of auto-instrumented libraries and frameworks.
-
 
 <Tabs groupId="cli">
 <TabItem value="npx" label="Using NPX" default>

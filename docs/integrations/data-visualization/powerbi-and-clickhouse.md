@@ -4,6 +4,7 @@ slug: /integrations/powerbi
 keywords: ['clickhouse', 'Power BI', 'connect', 'integrate', 'ui']
 description: 'Microsoft Power BI is an interactive data visualization software product developed by Microsoft with a primary focus on business intelligence.'
 title: 'Power BI'
+doc_type: 'guide'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
@@ -76,7 +77,6 @@ To get started with querying data in Power BI Desktop, you'll need to complete t
 Download the most recent [ClickHouse ODBC release](https://github.com/ClickHouse/clickhouse-odbc/releases).
 
 Execute the supplied `.msi` installer and follow the wizard.
-
 
 <Image size="md" img={powerbi_odbc_install} alt="ClickHouse ODBC driver installation wizard showing installation options" border />
 <br/>
@@ -181,7 +181,6 @@ Choose the Unicode version of the ODBC driver.
 
 Fill in the connection details.
 
-
 <Image size="sm" img={powerbi_connection_details} alt="ClickHouse ODBC Driver configuration dialog with connection parameters" border />
 <br/>
 
@@ -225,7 +224,6 @@ Finally, you should see the databases and tables in the Navigator view. Select t
 <br/>
 
 Once the import is complete, your ClickHouse Data should be accessible in Power BI as usual.
-
 
 ## Known limitations {#known-limitations}
 

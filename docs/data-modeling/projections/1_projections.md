@@ -5,6 +5,7 @@ description: 'Page describing what projections are, how they can be used to impr
 query performance, and how they differ from materialized views.'
 keywords: ['projection', 'projections', 'query optimization']
 sidebar_order: 1
+doc_type: 'guide'
 ---
 
 import projections_1 from '@site/static/images/data-modeling/projections_1.png';
@@ -465,7 +466,6 @@ ORDER BY year ASC
 ```
 The results should be the same, but the performance better on the latter example!
 
-
 #### Query 2. Average price per year in London {#average-price-london-projections}
 
 ```sql runnable
@@ -479,7 +479,6 @@ GROUP BY year
 ORDER BY year ASC
 SETTINGS optimize_use_projections=0
 ```
-
 
 ```sql runnable
 SELECT
@@ -568,7 +567,7 @@ CREATE TABLE page_views
     )
 )
 ENGINE = MergeTree
-ORDER BY (event_date, id);
+ORDER BY (event_date, id)
 SETTINGS
   index_granularity = 1, -- one row per granule
   max_bytes_to_merge_at_max_space_in_pool = 1; -- disable merge

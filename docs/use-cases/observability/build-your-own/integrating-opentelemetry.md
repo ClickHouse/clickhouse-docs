@@ -4,6 +4,7 @@ description: 'Integrating OpenTelemetry and ClickHouse for observability'
 slug: /observability/integrating-opentelemetry
 keywords: ['Observability', 'OpenTelemetry']
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import observability_3 from '@site/static/images/use-cases/observability/observability-3.png';
@@ -48,7 +49,6 @@ Building a [custom collector](https://opentelemetry.io/docs/collector/custom-col
 ### Collector deployment roles {#collector-deployment-roles}
 
 In order to collect logs and insert them into ClickHouse, we recommend using the OpenTelemetry Collector. The OpenTelemetry Collector can be deployed in two principal roles:
-
 
 - **Agent** - Agent instances collect data at the edge e.g. on servers or on Kubernetes nodes, or receive events directly from applications - instrumented with an OpenTelemetry SDK. In the latter case, the agent instance runs with the application or on the same host as the application (such as a sidecar or a DaemonSet). Agents can either send their data directly to ClickHouse or to a gateway instance. In the former case, this is referred to as [Agent deployment pattern](https://opentelemetry.io/docs/collector/deployment/agent/).
 - **Gateway**  - Gateway instances provide a standalone service (for example, a deployment in Kubernetes), typically per cluster, per data center, or per region. These receive events from applications (or other collectors as agents) via a single OTLP endpoint. Typically, a set of gateway instances are deployed, with an out-of-the-box load balancer used to distribute the load amongst them. If all agents and applications send their signals to this single endpoint, it is often referred to as a [Gateway deployment pattern](https://opentelemetry.io/docs/collector/deployment/gateway/).
@@ -280,11 +280,11 @@ As demonstrated in the earlier example of setting the timestamp for a log event,
 
 - **Processors** - Processors take the data collected by [receivers and modify or transform](https://opentelemetry.io/docs/collector/transforming-telemetry/) it before sending it to the exporters. Processors are applied in the order as configured in the `processors` section of the collector configuration. These are optional, but the minimal set is [typically recommended](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor#recommended-processors). When using an OTel collector with ClickHouse, we recommend limiting processors to:
 
-    - A [memory_limiter](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/memorylimiterprocessor/README.md) is used to prevent out of memory situations on the collector. See [Estimating Resources](#estimating-resources) for recommendations.
-    - Any processor that does enrichment based on context. For example, the [Kubernetes Attributes Processor](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/k8sattributesprocessor) allows the automatic setting of spans, metrics, and logs resource attributes with k8s metadata e.g. enriching events with their source pod id.
-    - [Tail or head sampling](https://opentelemetry.io/docs/concepts/sampling/) if required for traces.
-    - [Basic filtering](https://opentelemetry.io/docs/collector/transforming-telemetry/) - Dropping events that are not required if this cannot be done via operator (see below).
-    - [Batching](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor/batchprocessor) - essential when working with ClickHouse to ensure data is sent in batches. See ["Exporting to ClickHouse"](#exporting-to-clickhouse).
+  - A [memory_limiter](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/memorylimiterprocessor/README.md) is used to prevent out of memory situations on the collector. See [Estimating Resources](#estimating-resources) for recommendations.
+  - Any processor that does enrichment based on context. For example, the [Kubernetes Attributes Processor](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/k8sattributesprocessor) allows the automatic setting of spans, metrics, and logs resource attributes with k8s metadata e.g. enriching events with their source pod id.
+  - [Tail or head sampling](https://opentelemetry.io/docs/concepts/sampling/) if required for traces.
+  - [Basic filtering](https://opentelemetry.io/docs/collector/transforming-telemetry/) - Dropping events that are not required if this cannot be done via operator (see below).
+  - [Batching](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor/batchprocessor) - essential when working with ClickHouse to ensure data is sent in batches. See ["Exporting to ClickHouse"](#exporting-to-clickhouse).
 
 - **Operators** - [Operators](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md) provide the most basic unit of processing available at the receiver. Basic parsing is supported, allowing fields such as the Severity and Timestamp to be set. JSON and regex parsing are supported here along with event filtering and basic transformations. We recommend performing event filtering here.
 
@@ -382,7 +382,6 @@ exporters:
       max_interval: 30s
       max_elapsed_time: 300s
 
-
 service:
   pipelines:
     logs:
@@ -450,7 +449,6 @@ LogAttributes:          {'referer':'https://www.zanbil.ir/filter/p3%2Cb2','log.f
 
 1 row in set. Elapsed: 0.012 sec. Processed 5.04 thousand rows, 4.62 MB (414.14 thousand rows/s., 379.48 MB/s.)
 Peak memory usage: 5.41 MiB.
-
 
 Likewise, for trace events, users can check the `otel_traces` table:
 

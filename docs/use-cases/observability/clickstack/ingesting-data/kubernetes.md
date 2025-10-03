@@ -4,6 +4,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Kubernetes integration for ClickStack - The ClickHouse Observability Stack'
 title: 'Kubernetes'
+doc_type: 'guide'
 ---
 
 ClickStack uses the OpenTelemetry (OTel) collector to collect logs, metrics, and Kubernetes events from Kubernetes clusters and forward them to ClickStack. We support the native OTel log format and require no additional vendor-specific configuration.
@@ -17,15 +18,40 @@ This guide integrates the following:
 To send over application-level metrics or APM/traces, you'll need to add the corresponding language integration to your application as well.
 :::
 
+The following guide assumes you have deployed a [ClickStack OTel collector as a gateway](/use-cases/observability/clickstack/ingesting-data/otel-collector), secured with an ingestion API key.
+
 ## Creating the OTel Helm chart configuration files {#creating-the-otel-helm-chart-config-files}
 
 To collect logs and metrics from both each node and the cluster itself, we'll need to deploy two separate OpenTelemetry collectors. One will be deployed as a DaemonSet to collect logs and metrics from each node, and the other will be deployed as a deployment to collect logs and metrics from the cluster itself.
+
+### Creating a API key secret {#create-api-key-secret}
+
+Create a new Kubernetes secret with the [ingestion API Key](/use-cases/observability/clickstack/ingesting-data/opentelemetry#sending-otel-data) from HyperDX. This will be used by the components installed below to securely ingest into your ClickStack OTel collector:
+
+```shell
+kubectl create secret generic hyperdx-secret \
+--from-literal=HYPERDX_API_KEY=<ingestion_api_key> \
+```
+
+Additionally, create a config map with the location of your ClickStack OTel collector:
+
+```shell
+kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_COLLECTOR_ENDPOINT=<OTEL_COLLECTOR_ENDPOINT>
+# e.g. kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_COLLECTOR_ENDPOINT=http://my-hyperdx-hdx-oss-v2-otel-collector:4318
+```
 
 ### Creating the DaemonSet configuration {#creating-the-daemonset-configuration}
 
 The DaemonSet will collect logs and metrics from each node in the cluster but will not collect Kubernetes events or cluster-wide metrics.
 
-Create a file called `daemonset.yaml` with the following contents:
+Download the DaemonSet manifest:
+
+```shell
+curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/main/docs/use-cases/observability/clickstack/example-datasets/_snippets/k8s_daemonset.yaml
+```
+<details>
+
+<summary>`k8s_daemonset.yaml`</summary>
 
 ```yaml
 # daemonset.yaml
@@ -64,6 +90,19 @@ presets:
   kubeletMetrics:
     enabled: true
 
+extraEnvs:
+  - name: HYPERDX_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: hyperdx-secret
+        key: HYPERDX_API_KEY
+        optional: true
+  - name: YOUR_OTEL_COLLECTOR_ENDPOINT
+    valueFrom:
+      configMapKeyRef:
+        name: otel-config-vars
+        key: YOUR_OTEL_COLLECTOR_ENDPOINT
+
 config:
   receivers:
     # Configures additional kubelet metrics
@@ -98,9 +137,9 @@ config:
 
   exporters:
     otlphttp:
-      endpoint: 'https://in-otel.hyperdx.io'
+      endpoint: "${env:YOUR_OTEL_COLLECTOR_ENDPOINT}"
       headers:
-        authorization: '<YOUR_INGESTION_API_KEY>'
+        authorization: "${env:HYPERDX_API_KEY}"
       compression: gzip
 
   service:
@@ -113,19 +152,32 @@ config:
           - otlphttp
 ```
 
+</details>
+
 ### Creating the deployment configuration {#creating-the-deployment-configuration}
 
 To collect Kubernetes events and cluster-wide metrics, we'll need to deploy a separate OpenTelemetry collector as a deployment.
 
-Create a file called `deployment.yaml` with the following contents:
+Download the deployment manifest:
 
-```yaml copy
+```shell
+curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/main/docs/use-cases/observability/clickstack/example-datasets/_snippets/k8s_deployment.yaml
+```
+
+<details>
+<summary>k8s_deployment.yaml</summary>
+
+```yaml
 # deployment.yaml
 mode: deployment
 
-# We only want one of these collectors - any more, and we'd produce duplicate data
+image:
+  repository: otel/opentelemetry-collector-contrib
+  tag: 0.123.0
+ 
+# We only want one of these collectors - any more and we'd produce duplicate data
 replicaCount: 1
-
+ 
 presets:
   kubernetesAttributes:
     enabled: true
@@ -135,9 +187,9 @@ presets:
     # When enabled the processor will extra all annotations for an associated pod and add them as resource attributes.
     # The annotation's exact name will be the key.
     extractAllPodAnnotations: true
-  # Configures the collector to collect Kubernetes events.
-  # Adds the k8sobject receiver to the logs pipeline and collects Kubernetes events by default.
-  # More info: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-objects-receiver
+  # Configures the collector to collect kubernetes events.
+  # Adds the k8sobject receiver to the logs pipeline and collects kubernetes events by default.
+  # More Info: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-objects-receiver
   kubernetesEvents:
     enabled: true
   # Configures the Kubernetes Cluster Receiver to collect cluster-level metrics.
@@ -146,14 +198,26 @@ presets:
   clusterMetrics:
     enabled: true
 
+extraEnvs:
+  - name: HYPERDX_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: hyperdx-secret
+        key: HYPERDX_API_KEY
+        optional: true
+  - name: YOUR_OTEL_COLLECTOR_ENDPOINT
+    valueFrom:
+      configMapKeyRef:
+        name: otel-config-vars
+        key: YOUR_OTEL_COLLECTOR_ENDPOINT
+
 config:
   exporters:
     otlphttp:
-      endpoint: 'https://in-otel.hyperdx.io'
-      headers:
-        authorization: '<YOUR_INGESTION_API_KEY>'
+      endpoint: "${env:YOUR_OTEL_COLLECTOR_ENDPOINT}"
       compression: gzip
-
+      headers:
+        authorization: "${env:HYPERDX_API_KEY}"
   service:
     pipelines:
       logs:
@@ -164,6 +228,8 @@ config:
           - otlphttp
 ```
 
+</details>
+
 ## Deploying the OpenTelemetry collector {#deploying-the-otel-collector}
 
 The OpenTelemetry collector can now be deployed in your Kubernetes cluster using
@@ -171,15 +237,15 @@ the [OpenTelemetry Helm Chart](https://github.com/open-telemetry/opentelemetry-h
 
 Add the OpenTelemetry Helm repo:
 
-```shell copy
+```shell
 helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts # Add OTel Helm repo
 ```
 
 Install the chart with the above config:
 
 ```shell copy
-helm install my-opentelemetry-collector-deployment open-telemetry/opentelemetry-collector -f deployment.yaml
-helm install my-opentelemetry-collector-daemonset open-telemetry/opentelemetry-collector -f daemonset.yaml
+helm install my-opentelemetry-collector-deployment open-telemetry/opentelemetry-collector -f k8s_deployment.yaml
+helm install my-opentelemetry-collector-daemonset open-telemetry/opentelemetry-collector -f k8s_daemonset.yaml
 ```
 
 Now the metrics, logs and Kubernetes events from your Kubernetes cluster should

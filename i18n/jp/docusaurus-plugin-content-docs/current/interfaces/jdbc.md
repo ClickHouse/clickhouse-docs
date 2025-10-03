@@ -1,9 +1,9 @@
 ---
-'description': 'JavaアプリケーションからClickHouseに接続するためのJDBCドライバーの使用ガイド'
-'sidebar_label': 'JDBC ドライバー'
-'sidebar_position': 20
-'slug': '/interfaces/jdbc'
-'title': 'JDBC ドライバー'
+description: 'JavaアプリケーションからClickHouseに接続するためのJDBCドライバーの使用ガイド'
+sidebar_label: 'JDBC ドライバー'
+sidebar_position: 20
+slug: '/interfaces/jdbc'
+title: 'JDBC ドライバー'
 ---
 
 

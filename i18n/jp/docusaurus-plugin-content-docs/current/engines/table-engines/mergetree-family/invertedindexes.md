@@ -1,13 +1,13 @@
 ---
-'description': 'テキスト内の検索用語を迅速に見つけます。'
-'keywords':
+description: 'テキスト内の検索用語を迅速に見つけます。'
+keywords:
 - 'full-text search'
 - 'text search'
 - 'index'
 - 'indices'
-'sidebar_label': 'フルテキストインデックス'
-'slug': '/engines/table-engines/mergetree-family/invertedindexes'
-'title': 'フルテキスト検索を使用したフルテキストインデックス'
+sidebar_label: 'フルテキストインデックス'
+slug: '/engines/table-engines/mergetree-family/invertedindexes'
+title: 'フルテキスト検索を使用したフルテキストインデックス'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';

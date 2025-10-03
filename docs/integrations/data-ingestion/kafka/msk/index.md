@@ -5,6 +5,7 @@ slug: /integrations/kafka/cloud/amazon-msk/
 description: 'The official Kafka connector from ClickHouse with Amazon MSK'
 keywords: ['integration', 'kafka', 'amazon msk', 'sink', 'connector']
 title: 'Integrating Amazon MSK with ClickHouse'
+doc_type: 'guide'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
@@ -29,7 +30,6 @@ We assume:
 * The MSK broker is publicly accessible. See the [Public Access](https://docs.aws.amazon.com/msk/latest/developerguide/public-access.html) section of the Developer Guide.
 
 ## The official Kafka connector from ClickHouse with Amazon MSK {#the-official-kafka-connector-from-clickhouse-with-amazon-msk}
-
 
 ### Gather your connection details {#gather-your-connection-details}
 
@@ -89,4 +89,3 @@ In order for MSK Connect to connect to ClickHouse, we recommend your MSK cluster
    1. For ClickHouse Cloud, configure your security group to allow inbound traffic on ports 9440 and 8443. 
    1. For self-hosted ClickHouse, configure your security group to allow inbound traffic on the port in your config file (default is 8123).
 1. **Attach Security Group(s) to MSK:** Ensure that these new security groups routed to the NAT gateways are attached to your MSK cluster
-

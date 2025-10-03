@@ -5,6 +5,7 @@ sidebar_position: 1
 description: 'Queries to help you debug memory issues.'
 keywords: ['memory issues']
 title: 'Debugging memory issues'
+doc_type: 'guide'
 ---
 
 # Debugging memory issues {#debugging-memory-issues}
@@ -79,4 +80,3 @@ SELECT
     formatReadableSize(sum(index_granularity_bytes_in_memory_allocated)) AS index_granularity_bytes_in_memory_allocated
 FROM system.parts;
 ```
-

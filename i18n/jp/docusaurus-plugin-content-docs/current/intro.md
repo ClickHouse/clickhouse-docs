@@ -1,8 +1,8 @@
 ---
-'slug': '/intro'
-'sidebar_label': 'ClickHouseとは？'
-'description': 'ClickHouse®は、オンライン分析処理（OLAP）のための列指向SQLデータベース管理システム（DBMS）です。オープンソースソフトウェアとしても、クラウド提供としても利用可能です。'
-'title': 'ClickHouseとは？'
+slug: '/intro'
+sidebar_label: 'ClickHouseとは？'
+description: 'ClickHouse®は、オンライン分析処理（OLAP）のための列指向SQLデータベース管理システム（DBMS）です。オープンソースソフトウェアとしても、クラウド提供としても利用可能です。'
+title: 'ClickHouseとは？'
 ---
 
 import column_example from '@site/static/images/column-oriented-example-query.png';
@@ -44,6 +44,7 @@ WHERE
 GROUP BY MobilePhoneModel
 ORDER BY c DESC
 LIMIT 8;
+```
 
 あなたは、この[ClickHouse SQL Playground](https://sql.clickhouse.com?query=U0VMRUNUIE1vYmlsZVBob25lTW9kZWwsIENPVU5UKCkgQVMgYyAKRlJPTSBtZXRyaWNhLmhpdHMgCldIRVJFIAogICAgICBSZWdpb25JRCA9IDIyOSAKICBBTkQgRXZlbnREYXRlID49ICcyMDEzLTA3LTAxJyAKICBBTkQgRXZlbnREYXRlIDw9ICcyMDEzLTA3LTMxJyAKICBBTkQgTW9iaWxlUGhvbmUgIT0gMCAKICBBTkQgTW9iaWxlUGhvbmVNb2RlbCBub3QgaW4gWycnLCAnaVBhZCddIApHUk9VUCBCWSBNb2JpbGVQaG9uZU1vZGVsCk9SREVSIEJZIGMgREVTQyAKTElNSVQgODs&chart=eyJ0eXBlIjoicGllIiwiY29uZmlnIjp7InhheGlzIjoiTW9iaWxlUGhvbmVNb2RlbCIsInhleGlzIjoiYyJ9fQ&run_query=true) でこのクエリを実行することができ、[100以上の既存のカラムからわずか数個を選択してフィルタリングし](https://sql.clickhouse.com/?query=U0VMRUNUIG5hbWUKRlJPTSBzeXN0ZW0uY29sdW1ucwpXSEVSRSBkYXRhYmFzZSA9ICdtZXRyaWNhJyBBTkQgdGFibGUgPSAnaGl0cyc7&tab=results&run_query=true)、ミリ秒以内に結果を返します。
 

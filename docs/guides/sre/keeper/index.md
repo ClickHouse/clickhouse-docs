@@ -6,6 +6,7 @@ sidebar_position: 10
 keywords: ['Keeper', 'ZooKeeper', 'clickhouse-keeper']
 description: 'ClickHouse Keeper, or clickhouse-keeper, replaces ZooKeeper and provides replication and coordination.'
 title: 'ClickHouse Keeper'
+doc_type: 'guide'
 ---
 
 # ClickHouse Keeper (clickhouse-keeper)
@@ -109,7 +110,6 @@ If the host of a Keeper instance can change, we recommend to define and use a ho
 :::note
 `async_replication` is disabled by default to avoid breaking backwards compatibility. If you have all your Keeper instances in a cluster running a version supporting `async_replication` (v23.9+), we recommend enabling it because it can improve performance without any downsides.
 :::
-
 
 Examples of configuration for quorum with three nodes can be found in [integration tests](https://github.com/ClickHouse/ClickHouse/tree/master/tests/integration) with `test_keeper_` prefix. Example configuration for server #1:
 
@@ -301,7 +301,6 @@ user.dir=/Users/JackyWoo/project/jd/clickhouse/cmake-build-debug/programs/
 user.tmp=/var/folders/b4/smbq5mfj7578f2jzwn602tt40000gn/T/
 ```
 
-
 - `dirs`: Shows the total size of snapshot and log files in bytes
 
 ```response
@@ -490,7 +489,6 @@ clickhouse keeper-converter ...
 Otherwise, you can [download the binary](/getting-started/quick-start/oss#download-the-binary) and run the tool as described above without installing ClickHouse.
 :::
 
-
 ### Recovering after losing quorum {#recovering-after-losing-quorum}
 
 Because ClickHouse Keeper uses Raft it can tolerate certain amount of node crashes depending on the cluster size. \
@@ -640,7 +638,6 @@ You can use `pfev` command to check amount of logs read from each cache and from
 You can also use metrics from Prometheus endpoint to track the current size of both caches.
 :::
 
-
 ## Prometheus {#prometheus}
 
 Keeper can expose metrics data for scraping from [Prometheus](https://prometheus.io).
@@ -739,7 +736,6 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
     |hostname   |hostname, IP or FQDN of each server in the keeper cluster|`chnode1.domain.com`|
     |port|port to listen on for interserver keeper connections|9234|
 
-
 4.  Enable the Zookeeper component. It will use the ClickHouse Keeper engine:
     ```xml
         <zookeeper>
@@ -788,7 +784,6 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
     └────────────┴───────┴───────┴───────┴─────────────────────┴─────────────────────┴─────────┴──────────┴──────────┴────────────────┴────────────┴─────────────┴───────┴─────────────┘
     ```
 
-
 ### 2.  Configure a cluster in ClickHouse {#2--configure-a-cluster-in-clickhouse}
 
 1. Let's configure a simple cluster with 2 shards and only one replica on 2 of the nodes. The third node will be used to achieve a quorum for the requirement in ClickHouse Keeper. Update the configuration on `chnode1` and `chnode2`. The following cluster defines 1 shard on each node for a total of 2 shards with no replication. In this example, some of the data will be on node and some will be on the other node:
@@ -823,7 +818,6 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
     |port|port used to communicate using the native tcp protocol|9000|
     |user|username that will be used to authenticate to the cluster instances|default|
     |password|password for the user define to allow connections to cluster instances|`ClickHouse123!`|
-
 
 2. Restart ClickHouse and verify the cluster was created:
     ```bash
@@ -939,7 +933,6 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
 ### Summary {#summary}
 
 This guide demonstrated how to set up a cluster using ClickHouse Keeper. With ClickHouse Keeper, you can configure clusters and define distributed tables that can be replicated across shards.
-
 
 ## Configuring ClickHouse Keeper with unique paths {#configuring-clickhouse-keeper-with-unique-paths}
 

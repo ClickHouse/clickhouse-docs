@@ -1,8 +1,8 @@
 ---
-'sidebar_label': 'Analysis Tips'
-'sidebar_position': 4
-'slug': '/integrations/tableau/analysis-tips'
-'keywords':
+sidebar_label: 'Analysis Tips'
+sidebar_position: 4
+slug: '/integrations/tableau/analysis-tips'
+keywords:
 - 'clickhouse'
 - 'tableau'
 - 'online'
@@ -10,8 +10,8 @@
 - 'connect'
 - 'integrate'
 - 'ui'
-'description': 'ClickHouse 公式コネクタを使用する際のTableau解析のヒント。'
-'title': 'Analysis tips'
+description: 'ClickHouse 公式コネクタを使用する際のTableau解析のヒント。'
+title: 'Analysis tips'
 ---
 
 

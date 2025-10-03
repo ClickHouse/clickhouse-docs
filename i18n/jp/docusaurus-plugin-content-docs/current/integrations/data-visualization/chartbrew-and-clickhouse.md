@@ -1,15 +1,15 @@
 ---
-'title': 'Connecting Chartbrew to ClickHouse'
-'sidebar_label': 'Chartbrew'
-'sidebar_position': 131
-'slug': '/integrations/chartbrew-and-clickhouse'
-'keywords':
+title: 'Connecting Chartbrew to ClickHouse'
+sidebar_label: 'Chartbrew'
+sidebar_position: 131
+slug: '/integrations/chartbrew-and-clickhouse'
+keywords:
 - 'ClickHouse'
 - 'Chartbrew'
 - 'connect'
 - 'integrate'
 - 'visualization'
-'description': 'Connect Chartbrew to ClickHouse to create real-time dashboards and
+description: 'Connect Chartbrew to ClickHouse to create real-time dashboards and
   client reports.'
 ---
 

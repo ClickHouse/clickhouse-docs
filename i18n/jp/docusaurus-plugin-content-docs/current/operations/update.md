@@ -1,8 +1,8 @@
 ---
-'description': 'Updateのドキュメント'
-'sidebar_title': 'Self-managed Upgrade'
-'slug': '/operations/update'
-'title': 'セルフマネージドアップグレード'
+description: 'Updateのドキュメント'
+sidebar_title: 'Self-managed Upgrade'
+slug: '/operations/update'
+title: 'セルフマネージドアップグレード'
 ---
 
 

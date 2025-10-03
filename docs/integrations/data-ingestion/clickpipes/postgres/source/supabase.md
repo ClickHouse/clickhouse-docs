@@ -3,6 +3,7 @@ sidebar_label: 'Supabase Postgres'
 description: 'Set up Supabase instance as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/supabase
 title: 'Supabase Source Setup Guide'
+doc_type: 'guide'
 ---
 
 import supabase_commands from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-commands.jpg'
@@ -18,7 +19,6 @@ This is a guide on how to setup Supabase Postgres for usage in ClickPipes.
 ClickPipes supports Supabase via IPv6 natively for seamless replication.
 
 :::
-
 
 ## Creating a user with permissions and replication slot {#creating-a-user-with-permissions-and-replication-slot}
 
@@ -42,7 +42,6 @@ Here, we can run the following SQL commands:
 
 <Image img={supabase_commands} alt="User and publication commands" size="large" border/>
 
-
 Click on **Run** to have a publication and a user ready.
 
 :::note
@@ -53,9 +52,7 @@ Also, remember to use the same publication name when creating the mirror in Clic
 
 :::
 
-
 ## Increase `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
-
 
 :::warning
 
@@ -81,6 +78,11 @@ The connection pooler is not supported for CDC based replication, hence it needs
 
 :::
 
+## Note on RLS {#note-on-rls}
+The ClickPipes Postgres user must not be restricted by RLS policies, as it can lead to missing data. You can disable RLS policies for the user by running the below command:
+```sql
+ALTER USER clickpipes_user BYPASSRLS;
+```
 
 ## What's next? {#whats-next}
 

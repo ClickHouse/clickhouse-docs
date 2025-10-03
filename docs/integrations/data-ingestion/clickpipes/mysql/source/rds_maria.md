@@ -3,6 +3,7 @@ sidebar_label: 'Amazon RDS MariaDB'
 description: 'Step-by-step guide on how to set up Amazon RDS MariaDB as a source for ClickPipes'
 slug: /integrations/clickpipes/mysql/source/rds_maria
 title: 'RDS MariaDB source setup guide'
+doc_type: 'guide'
 ---
 
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';
@@ -112,4 +113,3 @@ If you want to restrict traffic to your RDS instance, please add the [documented
 ### Private access via AWS PrivateLink {#private-access-via-aws-privatelink}
 
 To connect to your RDS instance through a private network, you can use AWS PrivateLink. Follow our [AWS PrivateLink setup guide for ClickPipes](/knowledgebase/aws-privatelink-setup-for-clickpipes) to set up the connection.
-

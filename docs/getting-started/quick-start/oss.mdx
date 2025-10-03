@@ -1,11 +1,12 @@
 ---
 slug: /getting-started/quick-start/oss
 sidebar_label: 'OSS'
-sidebar_position: 1
+sidebar_position: 2
 keywords: ['getting started', 'quick start', 'beginner-friendly']
 title: 'ClickHouse OSS quick start'
 description: 'ClickHouse Quick Start guide'
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -15,7 +16,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
 # ClickHouse OSS quick start
 
-> In this quick start tutorial, we'll get you set up with OSS ClickHousein 8
+> In this quick start tutorial, we'll get you set up with OSS ClickHouse in 8
 easy steps. You'll download an appropriate binary for your OS,
 learn to run ClickHouse server, and use the ClickHouse client to create a table,
 then insert data into it and run a query to select that data.
@@ -55,7 +56,6 @@ At this stage, you can ignore the prompt to run the `install` command.
 For Mac users: If you are getting errors that the developer of the binary cannot
 be verified, please see ["Fix the Developer Verification Error in MacOS"](https://clickhouse.com/docs/knowledgebase/fix-developer-verification-error-in-macos).
 :::
-
 
 ## Start the server
 
@@ -108,7 +108,7 @@ PRIMARY KEY (user_id, timestamp)
 
 You can use the familiar `INSERT INTO TABLE` command with ClickHouse, but it is
 important to understand that each insert into a `MergeTree` table causes what we
-call a **part** in ClickHouse to be created in storage. These parts later get
+call a **part** in ClickHouse to be created in storage. These ^^parts^^ later get
 merged in the background by ClickHouse.
 
 In ClickHouse, we try to bulk insert lots of rows at a time
@@ -374,4 +374,3 @@ technologies that integrate with ClickHouse.
 - The user guide on [primary keys](/guides/best-practices/sparse-primary-indexes.md) is everything you need to know about primary keys and how to define them.
 
 </VerticalStepper>
-

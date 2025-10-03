@@ -3,6 +3,7 @@ sidebar_label: 'TABLUM.IO'
 slug: /integrations/tablumio
 description: 'TABLUM.IO is a data management SaaS that supports ClickHouse out of the box.'
 title: 'Connecting TABLUM.IO to ClickHouse'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -21,7 +22,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 :::note
   You can install a self-hosted version of TABLUM.IO on your Linux server in docker.
 :::
-
 
 ## 1. Sign up or sign in to the service {#1-sign-up-or-sign-in-to-the-service}
 

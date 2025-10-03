@@ -3,6 +3,7 @@ slug: /data-modeling/schema-design
 title: 'Schema Design'
 description: 'Optimizing ClickHouse schema for query performance'
 keywords: ['schema', 'schema design', 'query optimization']
+doc_type: 'guide'
 ---
 
 import stackOverflowSchema from '@site/static/images/data-modeling/stackoverflow-schema.png';
@@ -24,7 +25,6 @@ For the examples in this guide, we use a subset of the Stack Overflow dataset. T
 The Stack Overflow dataset contains a number of related tables. In any data modeling task, we recommend users focus on loading their primary table first. This may not necessarily be the largest table but rather the one on which you expect to receive most analytical queries. This will allow you to familiarize yourself with the main ClickHouse concepts and types, especially important if coming from a predominantly OLTP background. This table may require remodeling as additional tables are added to fully exploit ClickHouse features and obtain optimal performance.
 
 The above schema is intentionally not optimal for the purposes of this guide.
-
 
 ## Establish initial schema {#establish-initial-schema}
 
@@ -149,7 +149,6 @@ FixedString for special cases - Strings which have a fixed length can be encoded
 > Tip: To find the range of all columns, and the number of distinct values, users can use the simple query `SELECT * APPLY min, * APPLY  max, * APPLY uniq FROM table FORMAT Vertical`. We recommend performing this over a smaller subset of the data as this can be expensive. This query requires numerics to be at least defined as such for an accurate result i.e. not a String.
 
 By applying these simple rules to our posts table, we can identify an optimal type for each column:
-
 
 | Column                  | Is Numeric | Min, Max                                                              | Unique Values | Nulls | Comment                                                                                      | Optimized Type                           |
 |------------------------|------------|------------------------------------------------------------------------|----------------|--------|----------------------------------------------------------------------------------------------|------------------------------------------|
@@ -311,7 +310,6 @@ INSERT INTO posts_v3 SELECT * FROM posts_v2
 
 0 rows in set. Elapsed: 158.074 sec. Processed 59.82 million rows, 76.21 GB (378.42 thousand rows/s., 482.14 MB/s.)
 Peak memory usage: 6.41 GiB.
-
 
 Our previous query improves the query response time by over 3x:
 

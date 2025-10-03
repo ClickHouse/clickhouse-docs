@@ -8,10 +8,10 @@ sidebar_position: 2
 description: 'Mapping types in ClickHouse and Elasticsearch'
 show_related_blogs: true
 keywords: ['JSON', 'Codecs']
+doc_type: 'reference'
 ---
 
 Elasticsearch and ClickHouse support a wide variety of data types, but their underlying storage and query models are fundamentally different. This section maps commonly used Elasticsearch field types to their ClickHouse equivalents, where available, and provides context to help guide migrations. Where no equivalent exists, alternatives or notes are provided in the comments.
-
 
 | **Elasticsearch Type**        | **ClickHouse Equivalent**   | **Comments** |
 |-------------------------------|------------------------------|--------------|
@@ -57,16 +57,16 @@ Elasticsearch and ClickHouse support a wide variety of data types, but their und
 - **Multi-fields**: Elasticsearch allows indexing the [same field multiple ways](https://www.elastic.co/docs/reference/elasticsearch/mapping-reference/multi-fields#_multi_fields_with_multiple_analyzers) (e.g., both `text` and `keyword`). In ClickHouse, this pattern must be modeled using separate columns or views.
 - **Map and JSON Types** - In ClickHouse, the [`Map`](/sql-reference/data-types/map) type is commonly used to model dynamic key-value structures such as `resourceAttributes` and `logAttributes`. This type enables flexible schema-less ingestion by allowing arbitrary keys to be added at runtime — similar in spirit to JSON objects in Elasticsearch. However, there are important limitations to consider:
 
-    - **Uniform value types**: ClickHouse [`Map`](/sql-reference/data-types/map) columns must have a consistent value type (e.g., `Map(String, String)`). Mixed-type values are not supported without coercion.
-    - **Performance cost**: accessing any key in a [`Map`](/sql-reference/data-types/map) requires loading the entire map into memory, which can be suboptimal for performance.
-    - **No subcolumns**: unlike JSON, keys in a [`Map`](/sql-reference/data-types/map) are not represented as true subcolumns, which limits ClickHouse’s ability to index, compress, and query efficiently.
+  - **Uniform value types**: ClickHouse [`Map`](/sql-reference/data-types/map) columns must have a consistent value type (e.g., `Map(String, String)`). Mixed-type values are not supported without coercion.
+  - **Performance cost**: accessing any key in a [`Map`](/sql-reference/data-types/map) requires loading the entire map into memory, which can be suboptimal for performance.
+  - **No subcolumns**: unlike JSON, keys in a [`Map`](/sql-reference/data-types/map) are not represented as true subcolumns, which limits ClickHouse’s ability to index, compress, and query efficiently.
 
-    Because of these limitations, ClickStack is migrating away from [`Map`](/sql-reference/data-types/map) in favor of ClickHouse's enhanced [`JSON`](/sql-reference/data-types/newjson) type. The [`JSON`](/sql-reference/data-types/newjson) type addresses many of the shortcomings of `Map`:
+  Because of these limitations, ClickStack is migrating away from [`Map`](/sql-reference/data-types/map) in favor of ClickHouse's enhanced [`JSON`](/sql-reference/data-types/newjson) type. The [`JSON`](/sql-reference/data-types/newjson) type addresses many of the shortcomings of `Map`:
 
-    - **True columnar storage**: each JSON path is stored as a subcolumn, allowing efficient compression, filtering, and vectorized query execution.
-    - **Mixed-type support**: different data types (e.g., integers, strings, arrays) can coexist under the same path without coercion or type unification.
-    - **File system scalability**: internal limits on dynamic keys (`max_dynamic_paths`) and types (`max_dynamic_types`) prevent an explosion of column files on disk, even with high cardinality key sets.
-    - **Dense storage**: nulls and missing values are stored sparsely to avoid unnecessary overhead.
+  - **True columnar storage**: each JSON path is stored as a subcolumn, allowing efficient compression, filtering, and vectorized query execution.
+  - **Mixed-type support**: different data types (e.g., integers, strings, arrays) can coexist under the same path without coercion or type unification.
+  - **File system scalability**: internal limits on dynamic keys (`max_dynamic_paths`) and types (`max_dynamic_types`) prevent an explosion of column files on disk, even with high cardinality key sets.
+  - **Dense storage**: nulls and missing values are stored sparsely to avoid unnecessary overhead.
 
     The [`JSON`](/sql-reference/data-types/newjson) type is especially well-suited for observability workloads, offering the flexibility of schemaless ingestion with the performance and scalability of native ClickHouse types — making it an ideal replacement for [`Map`](/sql-reference/data-types/map) in dynamic attribute fields.
 

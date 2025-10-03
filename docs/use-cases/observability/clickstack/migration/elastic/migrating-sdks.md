@@ -8,6 +8,7 @@ sidebar_position: 6
 description: 'Migrating SDKs from Elastic'
 show_related_blogs: true
 keywords: ['ClickStack']
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

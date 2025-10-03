@@ -4,6 +4,7 @@ slug: /integrations/azure-data-factory/http-interface
 description: 'Using ClickHouse''s HTTP interface to bring data from Azure Data Factory into ClickHouse'
 keywords: ['azure data factory', 'azure', 'microsoft', 'data', 'http interface']
 title: 'Using ClickHouse HTTP Interface to bring Azure data into ClickHouse'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -312,7 +313,6 @@ Now that we've configured both the input and output datasets, we can set up a
    for more details.
    :::
    <Image img={adfCopyDataSinkSelectPost} size="lg" alt="Copy Data Sink Select Post" border/>
-
 
 5. Click **Debug** at the top of the canvas to run the pipeline. After a short
    wait, the activity will be queued and executed. If everything is configured

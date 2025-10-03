@@ -3,6 +3,7 @@ slug: /guides/developer/merge-table-function
 sidebar_label: 'Merge table function'
 title: 'Merge table function'
 description: 'Query multiple tables at the same time.'
+doc_type: 'reference'
 ---
 
 The [merge table function](https://clickhouse.com/docs/sql-reference/table-functions/merge) lets us query multiple tables in parallel.
@@ -169,7 +170,6 @@ AND multiIf(
 
 We could also use this virtual column as part of a query to count the values for the `walkover` column:
 
-
 ```sql
 SELECT _table, walkover, count()
 FROM merge('atp_matches*')
@@ -190,7 +190,6 @@ ORDER BY _table;
 We can see that the `walkover` column is `NULL` for everything except `atp_matches_1990s`.
 We'll need to update our query to check whether the `score` column contains the string `W/O` if the `walkover` column is `NULL`:
 
-
 ```sql
 SELECT _table,
    multiIf(
@@ -210,7 +209,6 @@ ORDER BY _table;
 ```
 
 If the underlying type of `score` is `Array(String)` we have to go over the array and look for `W/O`, whereas if it has a type of `String` we can just search for `W/O` in the string.
-
 
 ```text
 ┌─_table────────────┬─multiIf(isNo⋯, '%W/O%'))─┬─count()─┐

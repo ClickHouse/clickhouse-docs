@@ -3,6 +3,7 @@ slug: /intro
 sidebar_label: 'What is ClickHouse?'
 description: 'ClickHouse® is a column-oriented SQL database management system (DBMS) for online analytical processing (OLAP). It is available as both an open-source software and a cloud offering.'
 title: 'What is ClickHouse?'
+doc_type: 'guide'
 ---
 
 import column_example from '@site/static/images/column-oriented-example-query.png';
@@ -28,7 +29,7 @@ Databases store data either [row-oriented or column-oriented](https://clickhouse
 
 In a row-oriented database, consecutive table rows are sequentially stored one after the other. This layout allows to retrieve rows quickly as the column values of each row are stored together.
 
-ClickHouse is a column-oriented databases. In such systems, tables are stored as a collection of columns, i.e. the values of each column are stored sequentially one after the other. This layout makes it harder to restore single rows (as there are now gaps between the row values) but column operations such as filters or aggregation becomes much faster than in a row-oriented database.
+ClickHouse is a column-oriented database. In such systems, tables are stored as a collection of columns, i.e. the values of each column are stored sequentially one after the other. This layout makes it harder to restore single rows (as there are now gaps between the row values) but column operations such as filters or aggregation become much faster than in a row-oriented database.
 
 The difference is best explained with an example query running over 100 million rows of [real-world anonymized web analytics data](/getting-started/example-datasets/metrica):
 
@@ -50,7 +51,7 @@ You can [run this query on the ClickHouse SQL Playground](https://sql.clickhouse
 
 <Image img={column_example} alt="Example query in a column-oriented database" size="lg"/>
 
-As you can see in the stats section in the above diagram, the query processed 100 million rows in 92 milliseconds, a throughput of approximately 300 million rows or just under 7 GB per second.
+As you can see in the stats section in the above diagram, the query processed 100 million rows in 92 milliseconds, a throughput of approximately over 1 billion rows per second or just under 7 GB of data transferred per second.
 
 **Row-oriented DBMS**
 
@@ -83,14 +84,12 @@ ClickHouse provides ways to trade accuracy for performance. For example, some of
 
 ## Adaptive join algorithms {#adaptive-join-algorithms}
 
-ClickHouse chooses the join algorithm adaptively, it starts with fast hash joins and falls back to merge joins if there's more than one large table.
+ClickHouse chooses the join algorithm adaptively: it starts with fast hash joins and falls back to merge joins if there's more than one large table.
 
 ## Superior query performance {#superior-query-performance}
 
 ClickHouse is well known for having extremely fast query performance.
-To learn why ClickHouse is so fast, see the [Why is ClickHouse fast?](/concepts/why-clickhouse-is-so-fast.md) guide.
-
-
+To learn why ClickHouse is so fast, see the [Why is ClickHouse fast?](/concepts/why-clickhouse-is-so-fast.mdx) guide.
 
 <!--
 ## What is OLAP? {#what-is-olap}
@@ -108,7 +107,6 @@ In a column-oriented DBMS, data is stored in columns, with values from the same 
 ## Why column-oriented databases work better in the OLAP scenario {#why-column-oriented-databases-work-better-in-the-olap-scenario}
 
 Column-oriented databases are better suited to OLAP scenarios: they are at least 100 times faster in processing most queries. The reasons are explained in detail below, but the fact is easier to demonstrate visually:
-
 
 See the difference?
 
@@ -170,8 +168,6 @@ The higher the load on the system, the more important it is to customize the sys
 - Transactions are not necessary.
 
 It is easy to see that the OLAP scenario is very different from other popular scenarios (such as OLTP or Key-Value access). So it does not make sense to try to use OLTP or a Key-Value DB for processing analytical queries if you want to get decent performance. For example, if you try to use MongoDB or Redis for analytics, you will get very poor performance compared to OLAP databases.
-
-
 
 ### Input/output {#inputoutput}
 

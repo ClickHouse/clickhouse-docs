@@ -5,6 +5,7 @@ slug: /integrations/explo
 keywords: ['clickhouse', 'Explo', 'connect', 'integrate', 'ui']
 description: 'Explo is an easy-to-use, open source UI tool for asking questions about your data.'
 title: 'Connecting Explo to ClickHouse'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -46,7 +47,6 @@ If you do not have a dataset to work with you can add one of the examples.  This
 
 ## 1. Gather your connection details {#1-gather-your-connection-details}
 <ConnectionDetails />
-
 
 ## 2.  Connect Explo to ClickHouse {#2--connect-explo-to-clickhouse}
 

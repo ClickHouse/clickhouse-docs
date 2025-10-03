@@ -1,10 +1,10 @@
 ---
-'description': 'クラスター上で実行された分散ddlクエリ（ON CLUSTER句を使用するクエリ）に関する情報を含むシステムテーブル。'
-'keywords':
+description: 'クラスター上で実行された分散ddlクエリ（ON CLUSTER句を使用するクエリ）に関する情報を含むシステムテーブル。'
+keywords:
 - 'system table'
 - 'distributed_ddl_queue'
-'slug': '/operations/system-tables/distributed_ddl_queue'
-'title': 'system.distributed_ddl_queue'
+slug: '/operations/system-tables/distributed_ddl_queue'
+title: 'system.distributed_ddl_queue'
 ---
 
 

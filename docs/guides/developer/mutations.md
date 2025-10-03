@@ -6,6 +6,7 @@ keywords: ['UPDATE', 'DELETE', 'mutations']
 title: 'Updating and deleting ClickHouse data'
 description: 'Describes how to perform update and delete operations in ClickHouse'
 show_related_blogs: false
+doc_type: 'guide'
 ---
 
 # Updating and deleting ClickHouse data with mutations
@@ -15,7 +16,7 @@ delete existing data. These operations are labeled "mutations" and are executed 
 
 :::tip
 If you need to perform frequent updates, consider using [deduplication](../developer/deduplication.md) in ClickHouse, which allows you to update 
-and/or delete rows without generating a mutation event. Alternatively, use [lightweight updates](/guides/developer/lightweight-update)
+and/or delete rows without generating a mutation event. Alternatively, use [lightweight updates](/docs/sql-reference/statements/update)
 or [lightweight deletes](/guides/developer/lightweight-delete)
 :::
 
@@ -89,7 +90,7 @@ View the [`DELETE` statement](/sql-reference/statements/delete.md) docs page for
 
 ## Lightweight deletes {#lightweight-deletes}
 
-Another option for deleting rows it to use the `DELETE FROM` command, which is referred to as a **lightweight delete**. The deleted rows are marked as deleted immediately and will be automatically filtered out of all subsequent queries, so you do not have to wait for a merging of parts or use the `FINAL` keyword. Cleanup of data happens asynchronously in the background.
+Another option for deleting rows is to use the `DELETE FROM` command, which is referred to as a **lightweight delete**. The deleted rows are marked as deleted immediately and will be automatically filtered out of all subsequent queries, so you do not have to wait for a merging of parts or use the `FINAL` keyword. Cleanup of data happens asynchronously in the background.
 
 ``` sql
 DELETE FROM [db.]table [ON CLUSTER cluster] [WHERE expr]
@@ -104,4 +105,3 @@ DELETE FROM hits WHERE Title LIKE '%hello%';
 A few notes about lightweight deletes:
 - This feature is only available for the `MergeTree` table engine family.
 - Lightweight deletes are asynchronous by default. Set `mutations_sync` equal to 1 to wait for one replica to process the statement, and set `mutations_sync` to 2 to wait for all replicas.
-

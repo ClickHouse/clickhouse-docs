@@ -1,10 +1,10 @@
 ---
-'description': 'Provides a read-only table-like interface to Apache Iceberg tables
+description: 'Provides a read-only table-like interface to Apache Iceberg tables
   in Amazon S3, Azure, HDFS or locally stored.'
-'sidebar_label': 'iceberg'
-'sidebar_position': 90
-'slug': '/sql-reference/table-functions/iceberg'
-'title': 'Iceberg'
+sidebar_label: 'iceberg'
+sidebar_position: 90
+slug: '/sql-reference/table-functions/iceberg'
+title: 'Iceberg'
 ---
 
 

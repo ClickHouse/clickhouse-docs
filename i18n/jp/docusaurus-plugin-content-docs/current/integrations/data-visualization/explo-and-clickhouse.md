@@ -1,15 +1,15 @@
 ---
-'sidebar_label': 'Explo'
-'sidebar_position': 131
-'slug': '/integrations/explo'
-'keywords':
+sidebar_label: 'Explo'
+sidebar_position: 131
+slug: '/integrations/explo'
+keywords:
 - 'clickhouse'
 - 'Explo'
 - 'connect'
 - 'integrate'
 - 'ui'
-'description': 'Exploは、データに関する質問をするための使いやすいオープンソースUIツールです。'
-'title': 'Connecting Explo to ClickHouse'
+description: 'Exploは、データに関する質問をするための使いやすいオープンソースUIツールです。'
+title: 'Connecting Explo to ClickHouse'
 ---
 
 import Image from '@theme/IdealImage';

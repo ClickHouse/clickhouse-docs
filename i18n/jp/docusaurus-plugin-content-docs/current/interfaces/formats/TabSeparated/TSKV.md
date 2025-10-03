@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'TSKVフォーマットのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'TSKVフォーマットのドキュメント'
+input_format: true
+keywords:
 - 'TSKV'
-'output_format': true
-'slug': '/interfaces/formats/TSKV'
-'title': 'TSKV'
+output_format: true
+slug: '/interfaces/formats/TSKV'
+title: 'TSKV'
 ---
 
 

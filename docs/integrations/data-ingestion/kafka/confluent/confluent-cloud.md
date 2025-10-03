@@ -1,10 +1,11 @@
 ---
 sidebar_label: 'Kafka Connector Sink on Confluent Cloud'
 sidebar_position: 2
-slug: /integrations/kafka/cloud/confluent/custom-connector-cloud
+slug: /integrations/kafka/cloud/confluent/sink-connector
 description: 'Guide to using the fully managed ClickHouse Connector Sinkon Confluent Cloud'
 title: 'Integrating Confluent Cloud with ClickHouse'
 keywords: ['Kafka', 'Confluent Cloud']
+doc_type: 'guide'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
@@ -31,10 +32,6 @@ We assume you are familiar with:
 
 ## The official Kafka connector from ClickHouse with Confluent Cloud {#the-official-kafka-connector-from-clickhouse-with-confluent-cloud}
 
-### Installing on Confluent Cloud {#installing-on-confluent-cloud}
-This is meant to be a quick guide to get you started with the ClickHouse Sink Connector on Confluent Cloud.
-For more details, please refer to the [official Confluent documentation](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-qs.html#uploading-and-launching-the-connector).
-
 #### Create a Topic {#create-a-topic}
 Creating a topic on Confluent Cloud is fairly simple, and there are detailed instructions [here](https://docs.confluent.io/cloud/current/client-apps/topics/manage.html).
 
@@ -46,10 +43,8 @@ Creating a topic on Confluent Cloud is fairly simple, and there are detailed ins
 #### Gather your connection details {#gather-your-connection-details}
 <ConnectionDetails />
 
-
 #### Install Connector {#install-connector}
 Install the fully managed ClickHouse Sink Connector on Confluent Cloud following the [official documentation](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html).
-
 
 #### Configure the Connector {#configure-the-connector}
 During the configuration of the ClickHouse Sink Connector, you will need to provide the following details:

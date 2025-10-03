@@ -5,6 +5,7 @@ sidebar_label: 'Selecting data Types'
 title: 'Selecting data Types'
 description: 'Page describing how to choose data types in ClickHouse'
 keywords: ['data types']
+doc_type: 'reference'
 ---
 
 import NullableColumns from '@site/docs/best-practices/_snippets/_avoid_nullable_columns.md';
@@ -14,7 +15,6 @@ One of the core reasons for ClickHouse's query performance is its efficient data
 Compression efficiency in ClickHouse depends mainly on three factors: the ordering key, data types, and codecs, all defined through the table schema. Choosing optimal data types yields immediate improvements in both storage and query performance.
 
 Some straightforward guidelines can significantly enhance the schema:
-
 
 * **Use Strict Types:** Always select the correct data type for columns. Numeric and date fields should use appropriate numeric and date types rather than general-purpose String types. This ensures correct semantics for filtering and aggregations.
 
@@ -35,7 +35,6 @@ ClickHouse offers built-in tools to streamline type optimization. For example, s
 :::note
 By default, ClickHouse maps these to equivalent Nullable types. This is preferred as the schema is based on a sample of the rows only.
 :::
-
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')

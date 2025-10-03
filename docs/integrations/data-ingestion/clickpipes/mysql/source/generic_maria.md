@@ -3,6 +3,7 @@ sidebar_label: 'Generic MariaDB'
 description: 'Set up any MariaDB instance as a source for ClickPipes'
 slug: /integrations/clickpipes/mysql/source/generic_maria
 title: 'Generic MariaDB source setup guide'
+doc_type: 'guide'
 ---
 
 # Generic MariaDB source setup guide
@@ -48,6 +49,8 @@ binlog_row_image = FULL
 binlog_row_metadata = FULL  ; only in 10.5.0 and newer
 expire_logs_days = 1
 ```
+
+If the source database is a replica, make sure to also turn on `log_slave_updates`.
 
 You NEED to RESTART the MariaDB instance for the changes to take effect.
 

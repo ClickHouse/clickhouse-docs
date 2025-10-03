@@ -2,11 +2,12 @@
 
 ### Install
 
- - Requires python 3.11
+- Requires python 3.11
 
 ```bash
 pip install -r requirements.txt
 ```
+
 ### Running
 
 ```bash
@@ -33,13 +34,13 @@ options:
 
 []()## Search scripts
 
-We use these to evaluate search performance. `results.csv` contains a list of authoriative search results for 200 terms.
+We use these to evaluate search performance. `results.csv` contains a list of authoritative search results for 200 terms.
 
 We use this to compute an average nDCG.
 
 ### Install
 
- - Requires python 3.11
+- Requires python 3.11
 
 ```bash
 pip install -r requirements.txt
@@ -47,10 +48,22 @@ pip install -r requirements.txt
 
 ### Running
 
+You need to comment out either Dev or Prod depending on what you want to test.
+The API key is the public search key, don't worry.
+
+```python
+# dev details
+# ALGOLIA_APP_ID = "7AL1W7YVZK"
+# ALGOLIA_API_KEY = "43bd50d4617a97c9b60042a2e8a348f9"
+
+# Prod details
+ALGOLIA_APP_ID = "5H9UG7CX5W"
+ALGOLIA_API_KEY = "4a7bf25cf3edbef29d78d5e1eecfdca5"
+```
+
 ```bash
 python compute_ndcg.py -d
 ```
-
 
 ```bash
 usage: compute_ndcg.py [-h] [-d] [-v] [input_csv]
@@ -68,12 +81,13 @@ options:
 
 ### Results
 
-| **Date**   | **Average nDCG** | **Results**                                                                                            | **Changes**                                      |
-|------------|------------------|--------------------------------------------------------------------------------------------------------|--------------------------------------------------|
-| 20/01/2024 | 0.4700           | [View Results](https://pastila.nl/?008231f5/bc107912f8a5074d70201e27b1a66c6c#cB/yJOsZPOWi9h8xAkuTUQ==) | Baseline                                         |
-| 21/01/2024 | 0.5021           | [View Results](https://pastila.nl/?00bb2c2f/936a9a3af62a9bdda186af5f37f55782#m7Hg0i9F1YCesMW6ot25yA==) | Index `_` character and move language to English |
-| 24/01/2024 | 0.7072           | [View Results](https://pastila.nl/?065e3e67/e4ad889d0c166226118e6160b4ee53ff#x1NPd2R7hU90CZvvrE4nhg==) | Process markdown, and tune settings.             |
-| 24/01/2024 | 0.7412           | [View Results](https://pastila.nl/?0020013d/e69b33aaae82e49bc71c5ee2cea9ad46#pqq3VtRd4eP4JM5/izcBcA==) | Include manual promotions for ambigious terms.   |
+| **Date**   | **Average nDCG** | **Results**                                                                                             | **Changes**                                                                                 |
+|------------|------------------|---------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
+| 20/01/2025 | 0.4700           | [View Results](https://pastila.nl/?008231f5/bc107912f8a5074d70201e27b1a66c6c#cB/yJOsZPOWi9h8xAkuTUQ==)  | Baseline                                                                                    |
+| 21/01/2025 | 0.5021           | [View Results](https://pastila.nl/?00bb2c2f/936a9a3af62a9bdda186af5f37f55782#m7Hg0i9F1YCesMW6ot25yA==)  | Index `_` character and move language to English                                            |
+| 24/01/2025 | 0.7072           | [View Results](https://pastila.nl/?065e3e67/e4ad889d0c166226118e6160b4ee53ff#x1NPd2R7hU90CZvvrE4nhg==)  | Process markdown, and tune settings.                                                        |
+| 24/01/2025 | 0.7412           | [View Results](https://pastila.nl/?0020013d/e69b33aaae82e49bc71c5ee2cea9ad46#pqq3VtRd4eP4JM5/izcBcA==)  | Include manual promotions for ambigious terms.                                              |
+| 28/08/2025 | 0.5729           | [View Results](https://pastila.nl/?00ab66a7/9eb511690e3b2f53ac7ae95e3f42113c#tK6gf8G9W7mbAQd3aD5f4Q==)  | This was unfortunately not run or recorded for search improvements which were made recently |
 
 Note: exact scores may vary due to constant content changes.
 

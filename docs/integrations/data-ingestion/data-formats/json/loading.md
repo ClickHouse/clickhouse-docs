@@ -6,6 +6,7 @@ slug: /integrations/data-formats/json/loading
 description: 'Loading JSON'
 keywords: ['json', 'clickhouse', 'inserting', 'loading', 'inserting']
 score: 15
+doc_type: 'guide'
 ---
 
 # Loading JSON {#loading-json}
@@ -115,7 +116,6 @@ FORMAT JSONEachRow
 
 These examples assume the use of the `JSONEachRow` format. Other common JSON formats are supported, with examples of loading these provided [here](/integrations/data-formats/json/other-formats).
 
-
 ## Loading semi-structured JSON {#loading-semi-structured-json}
 
 Our previous example loaded JSON which was static with well known key names and types. This is often not the case - keys can be added or their types can change. This is common in use cases such as Observability data.
@@ -123,7 +123,6 @@ Our previous example loaded JSON which was static with well known key names and 
 ClickHouse handles this through a dedicated [`JSON`](/sql-reference/data-types/newjson) type.
 
 Consider the following example from an extended version of the above [Python PyPI dataset](https://clickpy.clickhouse.com/) dataset. Here we have added an arbitrary `tags` column with random key value pairs.
-
 
 ```json
 {

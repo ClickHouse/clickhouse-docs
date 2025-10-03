@@ -4,6 +4,7 @@ slug: /integrations/google-dataflow/templates
 sidebar_position: 3
 description: 'Users can ingest data into ClickHouse using Google Dataflow Templates'
 title: 'Google Dataflow Templates'
+doc_type: 'guide'
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
@@ -24,7 +25,6 @@ Google Dataflow templates provide a convenient way to execute prebuilt, ready-to
 
 As of today, the ClickHouse official template is available via the Google Cloud Console, CLI or Dataflow REST API.
 For detailed step-by-step instructions, refer to the [Google Dataflow Run Pipeline From a Template Guide](https://cloud.google.com/dataflow/docs/templates/provided-templates).
-
 
 ## List of ClickHouse Templates {#list-of-clickhouse-templates}
 * [BigQuery To ClickHouse](./templates/bigquery-to-clickhouse)

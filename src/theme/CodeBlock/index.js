@@ -2,19 +2,23 @@ import React, {useState, useRef, useCallback, useEffect} from 'react';
 import styles from './styles.module.css';
 import CodeViewer from "../../components/CodeViewer";
 
-
-function countLines(text) {
-  // Handle undefined or null input
-  if (!text) return 1; // Return 1 as default line count
-  // Split the string by newline characters
-  const lines = text.split('\n');
-  // Return the number of lines
-  return lines.length;
+function countLines(text = '') {
+  if (typeof text !== 'string') {
+    return 1; // Default to 1 line for non-string inputs
+  }
+  
+  const trimmedText = text.trim();
+  if (!trimmedText) {
+    return 1; // Return 1 for empty or whitespace-only strings
+  }
+  
+  const lines = trimmedText.split('\n');
+  return Math.max(1, lines.length); // Ensure at least 1 line is returned
 }
 
 function parseMetaString(meta = '') {
   const result = {}
-  const implicit_settings = ['runnable', 'run', 'show_statistics', 'click_ui']
+  const implicit_settings = ['runnable', 'run', 'show_statistics', 'click_ui', 'editable']
 
   meta.split(' ').forEach((part) => {
     if (!part) return
@@ -66,17 +70,36 @@ export default function CodeBlockWrapper(props) {
     };
   }, [handleIntersection]); // Add handleIntersection to dependency array
 
+  const settings = parseMetaString(props.metastring);
+  settings['language'] = props.className ? props.className.replace('language-', ''): 'txt';
+
   if (!isLoaded) {
     return (
         <div ref={codeBlockRef} className={styles.wrapper} style={{ height: estimatedHeight + 'px' }}>
+            {/* Invisible content for crawlers/SEO */}
+            <div style={{ 
+              position: 'absolute', 
+              left: '-9999px', 
+              top: '-9999px',
+              opacity: 0,
+              pointerEvents: 'none',
+              width: '1px',
+              height: '1px',
+              overflow: 'hidden'
+            }}>
+              <pre className={`language-${settings.language}`}>
+                <code className={`language-${settings.language}`}>
+                  {typeof props.children === 'string' ? props.children : ''}
+                </code>
+              </pre>
+            </div>
+            
+            {/* Visible loading animation */}
             <div className={styles.activity}></div>
         </div>
     );
-  }
-
+  } 
   
-  const settings = parseMetaString(props.metastring); 
-  settings['language'] = props.className ? props.className.replace('language-', ''): 'txt';
   return (
     <>
         <CodeViewer {...settings}>

@@ -1,12 +1,12 @@
 ---
-'sidebar_label': '請求トラブルシューティング'
-'slug': '/manage/troubleshooting-billing-issues'
-'title': '請求トラブルシューティング'
-'description': '一般的な請求の問題のトラブルシューティング記事'
+sidebar_label: '請求トラブルシューティング'
+slug: '/manage/troubleshooting-billing-issues'
+title: '請求トラブルシューティング'
+description: '一般的な請求の問題のトラブルシューティング記事'
 ---
 
-import trial_expired from '@site/static/images/cloud/manage/trial-expired.png';
 import Image from '@theme/IdealImage';
+import trial_expired from '@site/static/images/cloud/manage/trial-expired.png';
 
 
 # 請求に関する問題のトラブルシューティング

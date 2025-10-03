@@ -5,6 +5,7 @@ sidebar_label: 'Choosing a Partitioning Key'
 title: 'Choosing a Partitioning Key'
 description: 'Page describing how to choose a partitioning key'
 keywords: ['partitioning key']
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';
@@ -22,10 +23,10 @@ For example, consider the following UK price paid dataset table with a partition
 ```sql
 CREATE TABLE uk.uk_price_paid_simple_partitioned
 (
-    date Date,
- town LowCardinality(String),
- street LowCardinality(String),
- price UInt32
+  date Date,
+  town LowCardinality(String),
+  street LowCardinality(String),
+  price UInt32
 )
 ENGINE = MergeTree
 ORDER BY (town, street)
@@ -35,7 +36,6 @@ PARTITION BY toStartOfMonth(date)
 Whenever a set of rows is inserted into the table, instead of creating (at[ least](/operations/settings/settings#max_insert_block_size)) one single data part containing all the inserted rows (as described [here](/parts)), ClickHouse creates one new data part for each unique partition key value among the inserted rows:
 
 <Image img={partitions} size="lg" alt="Partitions" />
-
 
 The ClickHouse server first splits the rows from the example insert with 4 rows sketched in the diagram above by their partition key value `toStartOfMonth(date)`. Then, for each identified partition, the rows are processed as[ usual](/parts) by performing several sequential steps (① Sorting, ② Splitting into columns, ③ Compression, ④ Writing to Disk).
 

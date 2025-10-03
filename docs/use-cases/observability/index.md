@@ -5,6 +5,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Landing page for the Observability use case guide'
 keywords: ['observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafana', 'OTel']
+doc_type: 'guide'
 ---
 
 ClickHouse offers unmatched speed, scale, and cost-efficiency for observability. This guide provides two paths depending on your needs:
@@ -26,7 +27,6 @@ The ClickHouse Observability Stack is our **recommended approach** for most user
 | [Ingesting Data](/use-cases/observability/clickstack/ingesting-data) | Guidelines for ingesting data to ClickStack |
 | [Search](/use-cases/observability/clickstack/search) | How to search and query your observability data |
 | [Production](/use-cases/observability/clickstack/production) | Best practices for production deployment |
-
 
 ## Build-your-own stack {#build-your-own-stack}
 

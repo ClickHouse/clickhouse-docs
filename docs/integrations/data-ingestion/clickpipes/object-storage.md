@@ -3,6 +3,7 @@ sidebar_label: 'ClickPipes for Object Storage'
 description: 'Seamlessly connect your object storage to ClickHouse Cloud.'
 slug: /integrations/clickpipes/object-storage
 title: 'Integrating Object Storage with ClickHouse Cloud'
+doc_type: 'guide'
 ---
 
 import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
@@ -25,7 +26,6 @@ import Image from '@theme/IdealImage';
 
 # Integrating object storage with ClickHouse Cloud
 Object Storage ClickPipes provide a simple and resilient way to ingest data from Amazon S3, Google Cloud Storage, Azure Blob Storage, and DigitalOcean Spaces into ClickHouse Cloud. Both one-time and continuous ingestion are supported with exactly-once semantics.
-
 
 ## Prerequisite {#prerequisite}
 You have familiarized yourself with the [ClickPipes intro](./index.md).
@@ -96,7 +96,7 @@ Image
 | Amazon S3            |<S3svg class="image" alt="Amazon S3 logo" style={{width: '3rem', height: 'auto'}}/>|Object Storage| Stable          | Configure ClickPipes to ingest large volumes of data from object storage.                            |
 | Google Cloud Storage |<Gcssvg class="image" alt="Google Cloud Storage logo" style={{width: '3rem', height: 'auto'}}/>|Object Storage| Stable          | Configure ClickPipes to ingest large volumes of data from object storage.                            |
 | DigitalOcean Spaces | <DOsvg class="image" alt="Digital Ocean logo" style={{width: '3rem', height: 'auto'}}/> | Object Storage | Stable | Configure ClickPipes to ingest large volumes of data from object storage.
-| Azure Blob Storage | <ABSsvg class="image" alt="Azure Blob Storage logo" style={{width: '3rem', height: 'auto'}}/> | Object Storage | Private Beta | Configure ClickPipes to ingest large volumes of data from object storage.
+| Azure Blob Storage | <ABSsvg class="image" alt="Azure Blob Storage logo" style={{width: '3rem', height: 'auto'}}/> | Object Storage | Stable | Configure ClickPipes to ingest large volumes of data from object storage.
 
 More connectors will get added to ClickPipes, you can find out more by [contacting us](https://clickhouse.com/company/contact?loc=clickpipes).
 
@@ -129,7 +129,7 @@ To increase the throughput on large ingest jobs, we recommend scaling the ClickH
 - Role authentication is not available for S3 ClickPipes for ClickHouse Cloud instances deployed into GCP or Azure. It is only supported for AWS ClickHouse Cloud instances.
 - ClickPipes will only attempt to ingest objects at 10GB or smaller in size. If a file is greater than 10GB an error will be appended to the ClickPipes dedicated error table.
 - Azure Blob Storage pipes with continuous ingest on containers with over 100k files will have a latency of around 10–15 seconds in detecting new files. Latency increases with file count.
-- S3 / GCS ClickPipes **does not** share a listing syntax with the [S3 Table Function](/sql-reference/table-functions/s3), nor Azure with the [AzureBlobStorage Table function](/sql-reference/table-functions/azureBlobStorage).
+- Object Storage ClickPipes **does not** share a listing syntax with the [S3 Table Function](/sql-reference/table-functions/s3), nor Azure with the [AzureBlobStorage Table function](/sql-reference/table-functions/azureBlobStorage).
   - `?` — Substitutes any single character
   - `*` — Substitutes any number of any characters except / including empty string
   - `**` — Substitutes any number of any character include / including empty string
@@ -138,7 +138,6 @@ To increase the throughput on large ingest jobs, we recommend scaling the ClickH
 This is a valid path (for S3):
 
 https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/**.ndjson.gz
-
 
 This is not a valid path. `{N..M}` are not supported in ClickPipes.
 
@@ -158,7 +157,11 @@ These tables will not be visible using ClickHouse Cloud SQL Console, you will ne
 ## Authentication {#authentication}
 
 ### S3 {#s3}
-You can access public buckets with no configuration, and with protected buckets you can use [IAM credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) or an [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html).
+Both publicly accessible and protected S3 buckets are supported.
+
+Public buckets need to allow both the `s3:GetObject` and the `s3:ListBucket` actions in their Policy.
+
+Protected buckets can be accessed using either [IAM credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) or an [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html).
 To use an IAM Role, you will need to create the IAM Role as specified [in this guide](/cloud/security/secure-s3). Copy the new IAM Role Arn after creation and paste it into the ClickPipe configuration as the "IAM ARN role".
 
 ### GCS {#gcs}

@@ -8,6 +8,7 @@ description: 'In this guide, we will walk you through the steps to query
  your data in S3 buckets using ClickHouse and the Unity Catalog.'
 keywords: ['Unity', 'Data Lake']
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
@@ -39,7 +40,6 @@ Once your catalog is configured, you must generate credentials for ClickHouse. T
 * For Iceberg clients, use authentication as a [service principal](https://docs.databricks.com/aws/en/dev-tools/auth/oauth-m2m).
 
 * For Delta clients, use a Personal Access Token ([PAT](https://docs.databricks.com/aws/en/dev-tools/auth/pat)).
-
 
 ## Creating a connection between Unity Catalog and ClickHouse {#creating-a-connection-between-unity-catalog-and-clickhouse}
 

@@ -1,9 +1,9 @@
 ---
-'description': '2009年以降にニューヨーク市を発着する数十億のタクシーおよびフォーヒャイヤー車（Uber、Lyftなど）のトリップデータ'
-'sidebar_label': 'ニューヨークタクシーデータ'
-'sidebar_position': 2
-'slug': '/getting-started/example-datasets/nyc-taxi'
-'title': 'New York Taxi Data'
+description: '2009年以降にニューヨーク市を発着する数十億のタクシーおよびフォーヒャイヤー車（Uber、Lyftなど）のトリップデータ'
+sidebar_label: 'ニューヨークタクシーデータ'
+sidebar_position: 2
+slug: '/getting-started/example-datasets/nyc-taxi'
+title: 'New York Taxi Data'
 ---
 
 import Tabs from '@theme/Tabs';

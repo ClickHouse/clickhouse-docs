@@ -4,6 +4,7 @@ sidebar_position: 4
 slug: /integrations/gcs
 description: 'Google Cloud Storage (GCS) Backed MergeTree'
 title: 'Integrate Google Cloud Storage with ClickHouse'
+doc_type: 'guide'
 ---
 
 import BucketDetails from '@site/docs/_snippets/_GCS_authentication_and_bucket.md';
@@ -174,13 +175,11 @@ SELECT passenger_count, avg(tip_amount) AS avg_tip, avg(total_amount) AS avg_amo
 
 Replication with GCS disks can be accomplished by using the `ReplicatedMergeTree` table engine.  See the [replicating a single shard across two GCP regions using GCS](#gcs-multi-region) guide for details.
 
-
 ### Learn more {#learn-more}
 
 The [Cloud Storage XML API](https://cloud.google.com/storage/docs/xml-api/overview) is interoperable with some tools and libraries that work with services such as Amazon Simple Storage Service (Amazon S3).
 
 For further information on tuning threads, see [Optimizing for Performance](../s3/index.md#s3-optimizing-performance).
-
 
 ## Using Google Cloud Storage (GCS) {#gcs-multi-region}
 
@@ -316,7 +315,6 @@ Replication is coordinated by ClickHouse Keeper.  This configuration file identi
 
 - Edit the hostnames to match your Keeper hosts
 
-
 ```xml title=/etc/clickhouse-server/config.d/use-keeper.xml
 <clickhouse>
     <zookeeper>
@@ -335,7 +333,6 @@ Replication is coordinated by ClickHouse Keeper.  This configuration file identi
     </zookeeper>
 </clickhouse>
 ```
-
 
 #### Remote ClickHouse servers {#remote-clickhouse-servers}
 

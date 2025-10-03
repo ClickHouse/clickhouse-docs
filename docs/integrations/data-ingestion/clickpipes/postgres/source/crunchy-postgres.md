@@ -3,6 +3,7 @@ sidebar_label: 'Crunchy Bridge Postgres'
 description: 'Set up Crunchy Bridge Postgres as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/crunchy-postgres
 title: 'Crunchy Bridge Postgres Source Setup Guide'
+doc_type: 'guide'
 ---
 
 import firewall_rules_crunchy_bridge from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/crunchy-postgres/firewall_rules_crunchy_bridge.png'
@@ -10,7 +11,6 @@ import add_firewall_rules_crunchy_bridge from '@site/static/images/integrations/
 import Image from '@theme/IdealImage';
 
 # Crunchy Bridge Postgres source setup guide
-
 
 ClickPipes supports Postgres version 12 and later.
 
@@ -61,8 +61,6 @@ Safelist [ClickPipes IPs](../../index.md#list-of-static-ips) by adding the Firew
 <Image size="lg" img={firewall_rules_crunchy_bridge} alt="Where to find Firewall Rules in Crunchy Bridge?" border/>
 
 <Image size="lg" img={add_firewall_rules_crunchy_bridge} alt="Add the Firewall Rules for ClickPipes" border/>
-
-
 
 ## What's next? {#whats-next}
 

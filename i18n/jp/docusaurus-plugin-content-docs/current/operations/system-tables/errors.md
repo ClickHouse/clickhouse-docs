@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing error codes with the number of times they
+description: 'System table containing error codes with the number of times they
   have been triggered.'
-'keywords':
+keywords:
 - 'system table'
 - 'errors'
-'slug': '/operations/system-tables/errors'
-'title': 'system.errors'
+slug: '/operations/system-tables/errors'
+title: 'system.errors'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

@@ -4,6 +4,7 @@ sidebar_position: 1
 slug: /integrations/emqx
 description: 'Introduction to EMQX with ClickHouse'
 title: 'Integrating EMQX with ClickHouse'
+doc_type: 'guide'
 ---
 
 import emqx_cloud_artitecture from '@site/static/images/integrations/data-ingestion/emqx/emqx-cloud-artitecture.png';
@@ -52,7 +53,6 @@ With the infrastructure provided by cloud providers, EMQX Cloud serves dozens of
 * You are using EMQX or EMQX Cloud for real-time message processing engine, powering event streaming for IoT devices at massive scale.
 * You have prepared a Clickhouse Cloud instance to persist device data.
 * We are using [MQTT X](https://mqttx.app/)  as an MQTT client testing tool to connect the deployment of EMQX Cloud to publish MQTT data. Or other methods connecting to the MQTT broker will do the job as well.
-
 
 ## Get your ClickHouse Cloud service {#get-your-clickhouse-cloudservice}
 
@@ -140,7 +140,6 @@ Go back to the Overview page and scroll down to the bottom of the page where you
 <Image img={emqx_cloud_nat_gateway} size="lg" border alt="EMQX Cloud NAT Gateway Configuration panel" />
 
 Once it has been created, you will find the public IP address in the widget. Please note that if you select "Connect from a specific location" during ClickHouse Cloud setup, you will need to add this IP address to the whitelist.
-
 
 ## Integration EMQX Cloud with ClickHouse Cloud {#integration-emqx-cloud-with-clickhouse-cloud}
 

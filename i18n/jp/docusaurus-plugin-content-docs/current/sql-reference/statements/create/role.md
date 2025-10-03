@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for Role'
-'sidebar_label': 'ROLE'
-'sidebar_position': 40
-'slug': '/sql-reference/statements/create/role'
-'title': 'CREATE ROLE'
+description: 'Documentation for Role'
+sidebar_label: 'ROLE'
+sidebar_position: 40
+slug: '/sql-reference/statements/create/role'
+title: 'CREATE ROLE'
 ---
 
 

@@ -5,6 +5,7 @@ pagination_next: null
 description: 'OpenTelemetry collector for ClickStack - The ClickHouse Observability Stack'
 sidebar_label: 'OpenTelemetry Collector'
 title: 'ClickStack OpenTelemetry Collector'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -106,7 +107,6 @@ The default ClickStack configuration for the OpenTelemetry (OTel) collector can 
 
 For details on configuring OTel collectors, including [`receivers`](https://opentelemetry.io/docs/collector/transforming-telemetry/), [`operators`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md), and [`processors`](https://opentelemetry.io/docs/collector/configuration/#processors), we recommend the [official OpenTelemetry collector documentation](https://opentelemetry.io/docs/collector/configuration).
 
-
 ## Securing the collector {#securing-the-collector}
 
 The ClickStack distribution of the OpenTelemetry collector includes built-in support for OpAMP (Open Agent Management Protocol), which it uses to securely configure and manage the OTLP endpoint. On startup, users must provide an `OPAMP_SERVER_URL` environment variable — this should point to the HyperDX app, which hosts the OpAMP API at `/v1/opamp`.
@@ -162,9 +162,7 @@ The following configuration shows collection of this [unstructured log file](htt
 
 Note the use of operators to extract structure from the log lines (`regex_parser`) and filter events, along with a processor to batch events and limit memory usage.
 
-
-```yaml
-# config-unstructured-logs-with-processor.yaml
+```yaml file=code_snippets/ClickStack/config-unstructured-logs-with-processor.yaml
 receivers:
   filelog:
     include:
@@ -192,7 +190,7 @@ exporters:
     headers:
       authorization: <YOUR_INGESTION_API_KEY>
     compression: gzip
- 
+
   # gRPC setup (alternative)
   otlp/hdx:
     endpoint: 'localhost:4317'
@@ -208,6 +206,7 @@ service:
       receivers: [filelog]
       processors: [batch]
       exporters: [otlphttp/hdx]
+
 ```
 
 Note the need to include an [authorization header containing your ingestion API key](#securing-the-collector) in any OTLP communication.
@@ -330,11 +329,9 @@ docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e O
 The [JSON type](/interfaces/formats/JSON) type is not backwards compatible with existing map-based schemas. New tables will be created using the `JSON` type.
 :::
 
-
 To migrate from the Map-based schemas, follow these steps:
 
 <VerticalStepper headerLevel="h4">
-
 
 #### Stop the OTel collector {#stop-the-collector}
 

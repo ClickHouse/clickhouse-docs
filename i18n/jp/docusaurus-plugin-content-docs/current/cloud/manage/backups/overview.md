@@ -1,13 +1,13 @@
 ---
-'sidebar_label': '概要'
-'sidebar_position': 0
-'slug': '/cloud/manage/backups/overview'
-'title': '概要'
-'keywords':
+sidebar_label: '概要'
+sidebar_position: 0
+slug: '/cloud/manage/backups/overview'
+title: '概要'
+keywords:
 - 'backups'
 - 'cloud backups'
 - 'restore'
-'description': 'ClickHouse Cloud におけるバックアップの概要を提供します。'
+description: 'ClickHouse Cloud におけるバックアップの概要を提供します。'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

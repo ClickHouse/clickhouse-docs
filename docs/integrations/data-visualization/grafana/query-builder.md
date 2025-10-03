@@ -4,6 +4,7 @@ sidebar_position: 2
 slug: /integrations/grafana/query-builder
 description: 'Using the Query Builder in the ClickHouse Grafana plugin'
 title: 'Query Builder'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -89,16 +90,15 @@ This query type will render the data in the logs panel along with a logs histogr
 Extra columns that are selected in the query can be viewed in the expanded log row:
 <Image size="md" img={demo_logs_query_fields} alt="Example of extra fields on logs query" border />
 
-
 ### Time series {#time-series}
 
 The time series query type is similar to [table](#table), but with a focus on time series data.
 
 The two views are mostly the same, with these notable differences:
-  - A dedicated *Time* field.
-  - In Aggregate mode, a time interval macro is automatically applied along with a Group By for the Time field.
-  - In Aggregate mode, the "Columns" field is hidden.
-  - A time range filter and Order By are automatically added for the **Time** field.
+- A dedicated *Time* field.
+- In Aggregate mode, a time interval macro is automatically applied along with a Group By for the Time field.
+- In Aggregate mode, the "Columns" field is hidden.
+- A time range filter and Order By are automatically added for the **Time** field.
 
 :::important Is your visualization missing data?
 In some cases the time series panel will appear to be cut off because the limit defaults to `1000`.
@@ -210,14 +210,12 @@ Having defaults configured for both [logs](./config.md#logs) and [traces](./conf
   <Image size="md" img={demo_data_links} alt="Example of data links linking" border />
 </div>
 
-
 ## Macros {#macros}
 
 Macros are a simple way to add dynamic SQL to your query.
 Before a query gets sent to the ClickHouse server, the plugin will expand the macro and replace it will the full expression.
 
 Queries from both the SQL Editor and Query Builder can use macros.
-
 
 ### Using macros {#using-macros}
 

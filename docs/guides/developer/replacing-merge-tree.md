@@ -3,6 +3,7 @@ slug: /guides/replacing-merge-tree
 title: 'ReplacingMergeTree'
 description: 'Using the ReplacingMergeTree engine in ClickHouse'
 keywords: ['replacingmergetree', 'inserts', 'deduplication']
+doc_type: 'guide'
 ---
 
 import postgres_replacingmergetree from '@site/static/images/migrations/postgres-replacingmergetree.png';
@@ -220,7 +221,11 @@ Peak memory usage: 8.14 MiB.
 
 ## FINAL performance {#final-performance}
 
-The `FINAL` operator will have a performance overhead on queries despite ongoing improvements. This will be most appreciable when queries are not filtering on primary key columns, causing more data to be read and increasing the deduplication overhead. If users filter on key columns using a `WHERE` condition, the data loaded and passed for deduplication will be reduced.
+The `FINAL` operator does have a small performance overhead on queries.
+This will be most noticeable when queries are not filtering on primary key columns,
+causing more data to be read and increasing the deduplication overhead. If users
+filter on key columns using a `WHERE` condition, the data loaded and passed for
+deduplication will be reduced.
 
 If the `WHERE` condition does not use a key column, ClickHouse does not currently utilize the `PREWHERE` optimization when using `FINAL`. This optimization aims to reduce the rows read for non-filtered columns. Examples of emulating this `PREWHERE` and thus potentially improving performance can be found [here](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1#final-performance).
 

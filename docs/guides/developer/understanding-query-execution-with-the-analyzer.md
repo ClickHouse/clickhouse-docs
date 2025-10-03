@@ -3,6 +3,7 @@ slug: /guides/developer/understanding-query-execution-with-the-analyzer
 sidebar_label: 'Understanding Query Execution with the Analyzer'
 title: 'Understanding Query Execution with the Analyzer'
 description: 'Describes how you can use the analyzer to understand how ClickHouse executes your queries'
+doc_type: 'guide'
 ---
 
 import analyzer1 from '@site/static/images/guides/developer/analyzer1.png';
@@ -79,7 +80,6 @@ The new architecture should provide us with a better framework to improve ClickH
 
 The analyzer is an important step of the query execution. It takes an AST and transforms it into a query tree. The main benefit of a query tree over an AST is that a lot of the components will be resolved, like the storage for instance. We also know from which table to read, aliases are also resolved, and the tree knows the different data types used. With all these benefits, the analyzer can apply optimizations. The way these optimizations work is via "passes". Every pass is going to look for different optimizations. You can see all the passes [here](https://github.com/ClickHouse/ClickHouse/blob/76578ebf92af3be917cd2e0e17fea2965716d958/src/Analyzer/QueryTreePassManager.cpp#L249), let's see it in practice with our previous query:
 
-
 ```sql
 EXPLAIN QUERY TREE passes=0 SELECT min(timestamp) AS minimum_date, max(timestamp) AS maximum_date FROM session_events SETTINGS allow_experimental_analyzer=1;
 
@@ -126,7 +126,6 @@ EXPLAIN QUERY TREE passes=20 SELECT min(timestamp) AS minimum_date, max(timestam
 ```
 
 Between the two executions, you can see the resolution of aliases and projections.
-
 
 ## Planner {#planner}
 
@@ -199,7 +198,6 @@ SELECT
    (count(*) / total_rows) * 100 AS percentage
 FROM session_events
 GROUP BY type
-
 
 ┌─explain────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ Expression ((Projection + Before ORDER BY))                                                                                                │

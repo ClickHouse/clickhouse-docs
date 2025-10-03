@@ -1,9 +1,9 @@
 ---
-'description': 'Detach のドキュメント'
-'sidebar_label': 'DETACH'
-'sidebar_position': 43
-'slug': '/sql-reference/statements/detach'
-'title': 'DETACH ステートメント'
+description: 'Detach のドキュメント'
+sidebar_label: 'DETACH'
+sidebar_position: 43
+slug: '/sql-reference/statements/detach'
+title: 'DETACH ステートメント'
 ---
 
 

@@ -17,6 +17,29 @@ html[data-theme="dark"] {
   background-attachment: fixed;
 }
 
+/* This is a fix for the issue where paragraphs have 1rem margin bottom but
+look strange when there is a code block after the paragraph
+*/
+p {
+  margin-bottom: 0rem;
+}
+
+/* We only want to have a gap between successive paragraphs elements,
+not between paragraphs and other elements like code blocks
+*/
+p + * {
+  margin-top: 1rem;
+}
+
+/*
+Fix for the issue where there is no gap between a paragraph which follows
+a list
+ */
+ul + p,
+ol + p {
+  margin-top: 1rem;
+}
+
 body {
   font-size: var(--default-font);
   line-height: var(--default-line-height);
@@ -1023,7 +1046,7 @@ prism-code {
 
   details {
     h1, h2, h3 {
-    color: var(--click-color-text-inverse);
+    color: var(--ifm-font-color-base);
     }
   }
 
@@ -1407,6 +1430,15 @@ input::-ms-input-placeholder { /* Microsoft Edge */
   display: flex;
 }
 
+@media (max-width: breakpoints.$laptop-breakpoint) {
+  .installContainer {
+    flex-wrap: wrap;
+  }
+  .install-card {
+    margin: 0;
+  }
+}
+
 .install-card {
   margin: 0em 0.5em;
 }
@@ -1422,4 +1454,74 @@ input::-ms-input-placeholder { /* Microsoft Edge */
 
 .DocSearch-Cancel {
   color: var(--docsearch-text-color) !important;
+}
+
+.tooltip {
+  position: relative;
+  cursor: help;
+  border-bottom: 1px dotted #aaa;
+  outline: none; /* remove default outline, but keep focus styling if needed */
+}
+
+.tooltipText {
+  visibility: hidden;
+  width: max-content;
+  max-width: 280px;
+  background-color: #333;
+  color: #fff;
+  text-align: left;
+  padding: 8px 12px;
+  border-radius: 4px;
+
+  position: absolute;
+  z-index: 100;
+  top: 125%;       /* place tooltip below the term */
+  left: 50%;
+  transform: translateX(-50%);
+
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+
+  white-space: pre-wrap;
+  box-shadow: 0 0 8px rgba(0,0,0,0.3);
+  pointer-events: none; /* tooltip itself should not capture pointer */
+}
+
+.tooltipText.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tooltip-link {
+  text-decoration: underline dotted;
+  color: inherit; /* keep text color */
+}
+
+.tooltip-link:hover,
+.tooltip-link:focus {
+  text-decoration: underline solid;
+  outline: none;
+}
+
+.custom-ul,
+.custom-ol {
+  //padding-inline-start: 2rem; // if we want to indent the lists
+  margin-bottom: var(--ifm-paragraph-margin-bottom);
+}
+
+.custom-li {
+  padding-inline-start: 0.5rem;
+}
+
+.vertical-stepper .custom-ul
+.vertical-stepper .custom-ol {
+  padding-block-end: 1.5rem;
+}
+
+.vertical-stepper > *:last-child {
+  margin-bottom: 0;
+}
+
+.code-viewer {
+  margin-bottom: var(--ifm-paragraph-margin-bottom);
 }

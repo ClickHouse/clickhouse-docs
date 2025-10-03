@@ -60,8 +60,8 @@ Connected to ClickHouse server version 24.5.1.
 local-host :)
 ```
 
-Table data is stored in the current directory and still available after a restart
-of ClickHouse server. If necessary, you can pass
+Table data is stored in the current directory and will still be available after a restart
+of the ClickHouse server. If necessary, you can pass
 `-C config.xml` as an additional command line argument to `./clickhouse server` 
 and provide further configuration in a configuration
 file. All available configuration settings are documented [here](/operations/server-configuration-parameters/settings) and in the 
@@ -71,7 +71,7 @@ template](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/c
 You are now ready to start sending SQL commands to ClickHouse!
 
 :::tip
-The [Quick Start](/get-started/quick-start) walks through the steps for creating tables and inserting data.
+The [Quick Start](/get-started/quick-start) walks you through the steps for creating tables and inserting data.
 :::
 
 </VerticalStepper>

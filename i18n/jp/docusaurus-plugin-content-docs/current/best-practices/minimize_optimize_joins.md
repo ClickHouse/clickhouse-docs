@@ -1,9 +1,9 @@
 ---
-'slug': '/best-practices/minimize-optimize-joins'
-'sidebar_position': 10
-'sidebar_label': 'JOINの最小化と最適化'
-'title': 'JOINの最小化と最適化'
-'description': 'JOINに関するベストプラクティスを説明するページ'
+slug: '/best-practices/minimize-optimize-joins'
+sidebar_position: 10
+sidebar_label: 'JOINの最小化と最適化'
+title: 'JOINの最小化と最適化'
+description: 'JOINに関するベストプラクティスを説明するページ'
 ---
 
 import Image from '@theme/IdealImage';

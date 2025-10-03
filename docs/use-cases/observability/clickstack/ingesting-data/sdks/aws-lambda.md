@@ -5,11 +5,11 @@ pagination_next: null
 sidebar_position: 6
 description: 'AWS Lambda for ClickStack - The ClickHouse Observability Stack'
 title: 'AWS Lambda'
+doc_type: 'guide'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 **This guide Integrates:**
 
@@ -127,7 +127,6 @@ OTEL_TRACES_SAMPLER=always_on
 
 </Tabs>
 
-
 ### Installing the OpenTelemetry collector Lambda layer {#installing-the-otel-collector-layer}
 
 The collector Lambda layer allows you to forward logs, metrics, and traces from your Lambda function to ClickStack without impacting response times due 
@@ -137,7 +136,6 @@ to exporter latency.
 
 1. In the Layers section click "Add a layer"
 2. Select specify an ARN and choose the correct ARN based on architecture,  ensure you replace the `<region>` with your region (ex. `us-east-2`):
-
 
 <Tabs groupId="install-language-layer">
 
@@ -158,7 +156,6 @@ arn:aws:lambda:<region>:184161586896:layer:opentelemetry-collector-arm64-0_8_0:1
 </TabItem>
 
 </Tabs>
-
 
 3. Add the following `collector.yaml` file to your project to configure the collector to send to ClickStack:
 

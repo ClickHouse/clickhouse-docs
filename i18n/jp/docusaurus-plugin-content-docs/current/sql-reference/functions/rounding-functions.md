@@ -1,9 +1,9 @@
 ---
-'description': '丸め関数のドキュメント'
-'sidebar_label': '丸め関数'
-'sidebar_position': 155
-'slug': '/sql-reference/functions/rounding-functions'
-'title': 'Rounding Functions'
+description: '丸め関数のドキュメント'
+sidebar_label: '丸め関数'
+sidebar_position: 155
+slug: '/sql-reference/functions/rounding-functions'
+title: 'Rounding Functions'
 ---
 
 

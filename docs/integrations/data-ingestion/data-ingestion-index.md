@@ -3,6 +3,7 @@ slug: /integrations/data-ingestion-overview
 keywords: [ 'Airbyte', 'Apache Spark', 'Spark', 'Azure Synapse', 'Amazon Glue', 'Apache Beam', 'dbt', 'Fivetran', 'NiFi', 'dlt', 'Vector' ]
 title: 'Data Ingestion'
 description: 'Landing page for the data ingestion section'
+doc_type: 'landing-page'
 ---
 
 # Data Ingestion
@@ -24,4 +25,3 @@ For more information check out the pages below:
 | [Fivetran](/integrations/fivetran)                               | An automated data movement platform moving data out of, into and across your cloud data platforms.                                                                                                                                    |
 | [NiFi](/integrations/nifi)                                       | An open-source workflow management software designed to automate data flow between software systems.                                                                                                                                  |
 | [Vector](/integrations/vector)                                   | A high-performance observability data pipeline that puts organizations in control of their observability data.                                                                                                                        |
-

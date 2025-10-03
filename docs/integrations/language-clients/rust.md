@@ -1,10 +1,11 @@
 ---
 sidebar_label: 'Rust'
-sidebar_position: 4
+sidebar_position: 5
 keywords: ['clickhouse', 'rs', 'rust', 'cargo', 'crate', 'http', 'client', 'connect', 'integrate']
 slug: /integrations/rust
 description: 'The official Rust client for connecting to ClickHouse.'
 title: 'ClickHouse Rust Client'
+doc_type: 'reference'
 ---
 
 # ClickHouse Rust client
@@ -16,7 +17,7 @@ The official Rust client for connecting to ClickHouse, originally developed by [
 * Uses `serde` for encoding/decoding rows.
 * Supports `serde` attributes: `skip_serializing`, `skip_deserializing`, `rename`.
 * Uses [`RowBinary`](/interfaces/formats#rowbinary) format over the HTTP transport.
-    * There are plans to switch to [`Native`](/interfaces/formats#native) over TCP.
+  * There are plans to switch to [`Native`](/interfaces/formats#native) over TCP.
 * Supports TLS (via `native-tls` and `rustls-tls` features).
 * Supports compression and decompression (LZ4).
 * Provides APIs for selecting or inserting data, executing DDLs, and client-side batching.

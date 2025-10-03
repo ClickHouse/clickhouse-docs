@@ -1,12 +1,12 @@
 ---
-'alias': []
-'description': 'Avroフォーマットのドキュメント'
-'input_format': true
-'keywords':
+alias: []
+description: 'Avroフォーマットのドキュメント'
+input_format: true
+keywords:
 - 'Avro'
-'output_format': true
-'slug': '/interfaces/formats/Avro'
-'title': 'Avro'
+output_format: true
+slug: '/interfaces/formats/Avro'
+title: 'Avro'
 ---
 
 import DataTypesMatching from './_snippets/data-types-matching.md'

@@ -1,9 +1,9 @@
 ---
-'description': '過去128年間の天候観測データ131百万行'
-'sidebar_label': '台湾の歴史的天候データセット'
-'sidebar_position': 1
-'slug': '/getting-started/example-datasets/tw-weather'
-'title': '台湾の歴史的天候データセット'
+description: '過去128年間の天候観測データ131百万行'
+sidebar_label: '台湾の歴史的天候データセット'
+sidebar_position: 1
+slug: '/getting-started/example-datasets/tw-weather'
+title: '台湾の歴史的天候データセット'
 ---
 
 

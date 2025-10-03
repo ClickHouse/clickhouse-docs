@@ -5,6 +5,7 @@ slug: /integrations/tableau-online
 keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', 'ui']
 description: 'Tableau Online streamlines the power of data to make people faster and more confident decision makers from anywhere.'
 title: 'Tableau Online'
+doc_type: 'guide'
 ---
 
 import MySQLCloudSetup from '@site/docs/_snippets/_clickhouse_mysql_cloud_setup.mdx';
@@ -97,7 +98,6 @@ Additionally, choose "Update workbook to use the published data source".
 <br/>
 
 Finally, click "Publish", and your datasource with embedded credentials will be opened automatically in Tableau Online.
-
 
 ## Known limitations (ClickHouse 23.11) {#known-limitations-clickhouse-2311}
 

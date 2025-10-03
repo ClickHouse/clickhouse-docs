@@ -4,6 +4,7 @@ description: 'Step-by-step guide to creating your first Kafka ClickPipe.'
 slug: /integrations/clickpipes/kafka/create-your-first-kafka-clickpipe
 sidebar_position: 1
 title: 'Creating your first Kafka ClickPipe'
+doc_type: 'guide'
 ---
 
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
@@ -54,7 +55,6 @@ In the next step, you can select whether you want to ingest data into a new Clic
 You can also customize the advanced settings using the controls provided
 
 <Image img={cp_table_settings} alt="Set advanced controls" size="md"/>
-
 
 ## Configure permissions {#8-configure-permissions}
 ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user using a custom role or one of the predefined role:

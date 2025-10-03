@@ -1,5 +1,5 @@
 ---
-'sidebar_label': 'タブのサンプル'
+sidebar_label: 'タブのサンプル'
 ---
 
 import Tabs from '@theme/Tabs';

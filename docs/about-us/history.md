@@ -5,6 +5,7 @@ sidebar_position: 40
 description: 'History of ClickHouse development'
 keywords: ['history','development','Metrica']
 title: 'ClickHouse History'
+doc_type: 'reference'
 ---
 
 # ClickHouse history {#clickhouse-history}
@@ -54,4 +55,3 @@ Starting in 2009, Yandex.Metrica also used a specialized OLAP database for non-a
 OLAPServer worked well for non-aggregated data, but it had many restrictions that did not allow it to be used for all reports as desired. These included a lack of support for data types (numbers only), and the inability to incrementally update data in real-time (it could only be done by rewriting data daily). OLAPServer is not a DBMS, but a specialized DB.
 
 The initial goal for ClickHouse was to remove the limitations of OLAPServer and solve the problem of working with non-aggregated data for all reports, but over the years, it has grown into a general-purpose database management system suitable for a wide range of analytical tasks.
-

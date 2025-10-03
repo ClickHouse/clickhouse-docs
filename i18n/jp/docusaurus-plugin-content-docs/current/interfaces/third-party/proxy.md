@@ -1,9 +1,9 @@
 ---
-'description': 'ClickHouse用の利用可能なサードパーティプロキシソリューションについて説明します'
-'sidebar_label': 'プロキシ'
-'sidebar_position': 29
-'slug': '/interfaces/third-party/proxy'
-'title': 'サードパーティ開発者によるプロキシサーバー'
+description: 'ClickHouse用の利用可能なサードパーティプロキシソリューションについて説明します'
+sidebar_label: 'プロキシ'
+sidebar_position: 29
+slug: '/interfaces/third-party/proxy'
+title: 'サードパーティ開発者によるプロキシサーバー'
 ---
 
 

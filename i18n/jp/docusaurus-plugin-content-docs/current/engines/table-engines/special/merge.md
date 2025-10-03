@@ -1,10 +1,10 @@
 ---
-'description': 'The `Merge` engine (not to be confused with `MergeTree`) does not
+description: 'The `Merge` engine (not to be confused with `MergeTree`) does not
   store data itself, but allows reading from any number of other tables simultaneously.'
-'sidebar_label': 'Merge'
-'sidebar_position': 30
-'slug': '/engines/table-engines/special/merge'
-'title': 'Merge Table Engine'
+sidebar_label: 'Merge'
+sidebar_position: 30
+slug: '/engines/table-engines/special/merge'
+title: 'Merge Table Engine'
 ---
 
 

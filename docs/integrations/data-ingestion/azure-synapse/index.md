@@ -4,6 +4,7 @@ slug: /integrations/azure-synapse
 description: 'Introduction to Azure Synapse with ClickHouse'
 keywords: ['clickhouse', 'azure synapse', 'azure', 'synapse', 'microsoft', 'azure spark', 'data']
 title: 'Integrating Azure Synapse with ClickHouse'
+doc_type: 'guide'
 ---
 
 import TOCInline from '@theme/TOCInline';
@@ -18,7 +19,6 @@ Within Synapse, Spark pools provide on-demand, scalable [Apache Spark](https://s
 
 This article will show you how to integrate the [ClickHouse Spark connector](/integrations/apache-spark/spark-native-connector) when working with Apache Spark within Azure Synapse.
 
-
 <TOCInline toc={toc}></TOCInline>
 
 ## Add the connector's dependencies {#add-connector-dependencies}
@@ -30,8 +30,8 @@ Azure Synapse supports three levels of [packages maintenance](https://learn.micr
 <br/>
 
 Follow the [Manage libraries for Apache Spark pools guide](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-manage-pool-packages) and add the following required dependencies to your Spark application
-   - `clickhouse-spark-runtime-{spark_version}_{scala_version}-{connector_version}.jar` - [official maven](https://mvnrepository.com/artifact/com.clickhouse.spark)
-   - `clickhouse-jdbc-{java_client_version}-all.jar` - [official maven](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)
+- `clickhouse-spark-runtime-{spark_version}_{scala_version}-{connector_version}.jar` - [official maven](https://mvnrepository.com/artifact/com.clickhouse.spark)
+- `clickhouse-jdbc-{java_client_version}-all.jar` - [official maven](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)
 
 Please visit our [Spark Connector Compatibility Matrix](/integrations/apache-spark/spark-native-connector#compatibility-matrix) docs to understand which versions suit your needs.
 
@@ -78,7 +78,6 @@ To verify that the dependencies and configurations were set successfully, please
 There, look for your ClickHouse related settings:
 
 <Image img={sparkUICHSettings} size="xl" alt="Verifying ClickHouse settings using Spark UI" border/>
-
 
 ## Additional resources {#additional-resources}
 

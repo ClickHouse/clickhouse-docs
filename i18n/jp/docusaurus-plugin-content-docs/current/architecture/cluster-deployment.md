@@ -1,9 +1,9 @@
 ---
-'slug': '/architecture/cluster-deployment'
-'sidebar_label': 'クラスター展開'
-'sidebar_position': 100
-'title': 'クラスターの展開'
-'description': 'このチュートリアルを通じて、簡単なClickHouseクラスターの設定方法を学ぶことができます。'
+slug: '/architecture/cluster-deployment'
+sidebar_label: 'クラスター展開'
+sidebar_position: 100
+title: 'クラスターの展開'
+description: 'このチュートリアルを通じて、簡単なClickHouseクラスターの設定方法を学ぶことができます。'
 ---
 
 

@@ -5,6 +5,7 @@ pagination_next: null
 sidebar_position: 4
 description: 'Next.js SDK for ClickStack - The ClickHouse Observability Stack'
 title: 'Next.js'
+doc_type: 'guide'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -89,7 +90,6 @@ export async function register() {
 ```
 
 This will allow Next.js to import the OpenTelemetry instrumentation for any serverless function invocation.
-
 
 ### Configure environment variables {#configure-environment-variables}
 

@@ -1,10 +1,10 @@
 ---
-'description': 'Allows for quick writing of object states that are continually changing,
+description: 'Allows for quick writing of object states that are continually changing,
   and deleting old object states in the background.'
-'sidebar_label': 'VersionedCollapsingMergeTree'
-'sidebar_position': 80
-'slug': '/engines/table-engines/mergetree-family/versionedcollapsingmergetree'
-'title': 'VersionedCollapsingMergeTree'
+sidebar_label: 'VersionedCollapsingMergeTree'
+sidebar_position: 80
+slug: '/engines/table-engines/mergetree-family/versionedcollapsingmergetree'
+title: 'VersionedCollapsingMergeTree'
 ---
 
 

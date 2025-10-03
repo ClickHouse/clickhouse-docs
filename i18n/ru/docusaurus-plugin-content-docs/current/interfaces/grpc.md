@@ -7,7 +7,7 @@ title: 'Интерфейс gRPC'
 ---
 
 
-# Интеллект gRPC
+# Интерфейс gRPC
 
 ## Введение {#grpc-interface-introduction}
 

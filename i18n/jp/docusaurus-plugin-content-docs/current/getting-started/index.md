@@ -1,16 +1,16 @@
 ---
-'description': 'ClickHouseを使用して、チュートリアルとサンプルデータセットを利用して始めましょう'
-'keywords':
+description: 'ClickHouseを使用して、チュートリアルとサンプルデータセットを利用して始めましょう'
+keywords:
 - 'clickhouse'
 - 'install'
 - 'tutorial'
 - 'sample'
 - 'datasets'
-'pagination_next': 'tutorial'
-'sidebar_label': '概要'
-'sidebar_position': 0
-'slug': '/getting-started/example-datasets/'
-'title': 'チュートリアルとサンプルデータセット'
+pagination_next: 'tutorial'
+sidebar_label: '概要'
+sidebar_position: 0
+slug: '/getting-started/example-datasets/'
+title: 'チュートリアルとサンプルデータセット'
 ---
 
 

@@ -1,18 +1,18 @@
 ---
-'description': 'The `executable` table function creates a table based on the output
+description: 'The `executable` table function creates a table based on the output
   of a user-defined function (UDF) that you define in a script that outputs rows to
   **stdout**.'
-'keywords':
+keywords:
 - 'udf'
 - 'user defined function'
 - 'clickhouse'
 - 'executable'
 - 'table'
 - 'function'
-'sidebar_label': 'executable'
-'sidebar_position': 50
-'slug': '/engines/table-functions/executable'
-'title': 'executable'
+sidebar_label: 'executable'
+sidebar_position: 50
+slug: '/engines/table-functions/executable'
+title: 'executable'
 ---
 
 

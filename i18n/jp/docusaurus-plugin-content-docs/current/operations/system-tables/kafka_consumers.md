@@ -1,10 +1,10 @@
 ---
-'description': 'Kafkaコンシューマに関する情報を含むシステムテーブル。'
-'keywords':
+description: 'Kafkaコンシューマに関する情報を含むシステムテーブル。'
+keywords:
 - 'system table'
 - 'kafka_consumers'
-'slug': '/operations/system-tables/kafka_consumers'
-'title': 'system.kafka_consumers'
+slug: '/operations/system-tables/kafka_consumers'
+title: 'system.kafka_consumers'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

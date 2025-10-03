@@ -4,6 +4,7 @@ description: 'Details best practices to follow when working with Kafka ClickPipe
 slug: /integrations/clickpipes/kafka/best-practices
 sidebar_position: 1
 title: 'Best practices'
+doc_type: 'guide'
 ---
 
 # Best practices {#best-practices}
@@ -99,10 +100,8 @@ Role-based access only works for ClickHouse Cloud instances deployed to AWS.
 ```
 
 ### Custom Certificates {#custom-certificates}
-ClickPipes for Kafka supports the upload of custom certificates for Kafka brokers with SASL & public SSL/TLS certificate. You can upload your certificate in the SSL Certificate section of the ClickPipe setup.
-:::note
-Please note that while we support uploading a single SSL certificate along with SASL for Kafka, SSL with Mutual TLS (mTLS) is not supported at this time.
-:::
+ClickPipes for Kafka supports the upload of custom certificates for Kafka brokers which use non-public server certificates.
+Upload of client certificates and keys is also supported for mutual TLS (mTLS) based authentication.
 
 ## Performance {#performance}
 
@@ -110,7 +109,7 @@ Please note that while we support uploading a single SSL certificate along with 
 ClickPipes inserts data into ClickHouse in batches. This is to avoid creating too many parts in the database which can lead to performance issues in the cluster.
 
 Batches are inserted when one of the following criteria has been met:
-- The batch size has reached the maximum size (100,000 rows or 20MB)
+- The batch size has reached the maximum size (100,000 rows or 32MB per 1GB of pod memory)
 - The batch has been open for a maximum amount of time (5 seconds)
 
 ### Latency {#latency}
@@ -121,8 +120,7 @@ ClickPipes does not provide any guarantees concerning latency. If you have speci
 
 ### Scaling {#scaling}
 
-ClickPipes for Kafka is designed to scale horizontally. By default, we create a consumer group with one consumer.
-This can be changed with the scaling controls in the ClickPipe details view.
+ClickPipes for Kafka is designed to scale horizontally and vertically. By default, we create a consumer group with one consumer. This can be configured during ClickPipe creation, or at any other point under **Settings** -> **Advanced Settings** -> **Scaling**.
 
 ClickPipes provides a high-availability with an availability zone distributed architecture.
 This requires scaling to at least two consumers.
@@ -130,3 +128,20 @@ This requires scaling to at least two consumers.
 Regardless number of running consumers, fault tolerance is available by design.
 If a consumer or its underlying infrastructure fails,
 the ClickPipe will automatically restart the consumer and continue processing messages.
+
+### Benchmarks {#benchmarks}
+
+Below are some informal benchmarks for ClickPipes for Kafka that can be used to get a general idea of the baseline performance. It's important to know that many factors can impact performance, including message size, data types, and data format. Your mileage may vary, and what we show here is not a guarantee of actual performance.
+
+Benchmark details:
+
+- We used production ClickHouse Cloud services with enough resources to ensure that throughput was not bottlenecked by the insert processing on the ClickHouse side.
+- The ClickHouse Cloud service, the Kafka cluster (Confluent Cloud), and the ClickPipe were all running in the same region (`us-east-2`).
+- The ClickPipe was configured with a single L-sized replica (4 GiB of RAM and 1 vCPU).
+- The sample data included nested data with a mix of `UUID`, `String`, and `Int` datatypes. Other datatypes, such as `Float`, `Decimal`, and `DateTime`, may be less performant.
+- There was no appreciable difference in performance using compressed and uncompressed data.
+
+| Replica Size  | Message Size | Data Format | Throughput |
+|---------------|--------------|-------------|------------|
+| Large (L)     | 1.6kb        |   JSON      | 63mb/s     |
+| Large (L)     | 1.6kb        |   Avro      | 99mb/s     |

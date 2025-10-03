@@ -3,6 +3,7 @@ slug: /deployment-guides/parallel-replicas
 title: 'Parallel Replicas'
 keywords: ['parallel replica']
 description: 'In this guide, we will first discuss how ClickHouse distributes a query across multiple shards via distributed tables, and then how a query can leverage multiple replicas for its execution.'
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';
@@ -46,7 +47,7 @@ The figure above visualizes what happens when a client queries a distributed tab
 
 <ol className="docs-ordered-list">
     <li>
-        The select query is sent to a distributed table on a node arbitrarily 
+        The select query is sent to a distributed table on a node arbitrarily
         (via a round-robin strategy or after being routed to a specific server 
         by a load balancer). This node is now going to act as a coordinator.
     </li>
@@ -148,8 +149,8 @@ from working perfectly:
         Tail latency between replicas needs to be handled somehow.
     </li>
     <li>
-        The filesystem cache varies from replica to replica based on the 
-        activity on each replica, meaning that a random task assignment might 
+        The filesystem cache varies from replica to replica based on the
+        activity on each replica, meaning that a random task assignment might
         lead to less optimal performance given the cache locality.
     </li>
 </ol>

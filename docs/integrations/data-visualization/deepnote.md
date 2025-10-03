@@ -5,6 +5,7 @@ slug: /integrations/deepnote
 keywords: ['clickhouse', 'Deepnote', 'connect', 'integrate', 'notebook']
 description: 'Efficiently query very large datasets, analyzing and modeling in the comfort of known notebook environment.'
 title: 'Connect ClickHouse to Deepnote'
+doc_type: 'guide'
 ---
 
 import deepnote_01 from '@site/static/images/integrations/data-visualization/deepnote_01.png';
@@ -17,7 +18,6 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 # Connect ClickHouse to Deepnote
 
 <CommunityMaintainedBadge/>
-
 
 <a href="https://www.deepnote.com/" target="_blank">Deepnote</a> is a collaborative data notebook built for teams to discover and share insights. In addition to being Jupyter-compatible, it works in the cloud and provides you with one central place to collaborate and work on data science projects efficiently.
 

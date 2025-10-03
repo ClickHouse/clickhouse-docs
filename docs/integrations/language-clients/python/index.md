@@ -5,6 +5,7 @@ keywords: ['clickhouse', 'python', 'client', 'connect', 'integrate']
 slug: /integrations/python
 description: 'The ClickHouse Connect project suite for connecting Python to ClickHouse'
 title: 'Python Integration with ClickHouse Connect'
+doc_type: 'guide'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
@@ -32,7 +33,6 @@ more specialized tools and frameworks to manage the ClickHouse OLAP oriented dat
 to Apache Superset.  Use the `ClickHouse Connect` database connection, or `clickhousedb` SQLAlchemy dialect connection
 string.
 
-
 This documentation is current as of the beta release 0.8.2.
 
 :::note
@@ -53,7 +53,6 @@ For some use cases, you may consider using one of the [Community Python drivers]
 |    3.11.x | ✅ |         Windows | ✅ |     24.8.x | ✅  |             |   |           2.1.x | ✅ |
 |    3.12.x | ✅ |                 |   |     24.9.x | ✅  |             |   |           3.0.x | ✅ |
 
-
 ¹ClickHouse Connect has been explicitly tested against the listed platforms.  In addition, untested binary wheels
 (with C optimization) are built for all architectures supported by the excellent [`cibuildwheel``](https://cibuildwheel.readthedocs.io/en/stable/) project.
 Finally, because ClickHouse Connect can also run as pure Python, the source installation should work on any recent
@@ -64,7 +63,6 @@ Python installation.
 ³ClickHouse Connect has been tested against all currently supported ClickHouse versions. Because it uses the HTTP
 protocol, it should also work correctly for most other versions of ClickHouse, although there may be some
 incompatibilities with certain advanced data types.
-
 
 ### Installation {#installation}
 
@@ -98,7 +96,6 @@ There are two examples shown for connecting to ClickHouse:
 
 ##### Use a ClickHouse Connect client instance to connect to a ClickHouse server on localhost: {#use-a-clickhouse-connect-client-instance-to-connect-to-a-clickhouse-server-on-localhost}
 
-
 ```python
 import clickhouse_connect
 
@@ -110,7 +107,6 @@ client = clickhouse_connect.get_client(host='localhost', username='default', pas
 :::tip
 Use the connection details gathered earlier.  ClickHouse Cloud services require TLS, so use port 8443.
 :::
-
 
 ```python
 import clickhouse_connect
@@ -142,7 +138,6 @@ result = client.query('SELECT max(key), avg(metric) FROM new_table')
 result.result_rows
 Out[13]: [(2000, -50.9035)]
 ```
-
 
 ## ClickHouse Connect driver API {#clickhouse-connect-driver-api}
 
@@ -267,7 +262,7 @@ binding Python expressions to a ClickHouse value expression. Two sorts of bindin
 ClickHouse supports [server side binding](/interfaces/cli.md#cli-queries-with-parameters)
 for most query values, where the bound value is sent separate from the query as an HTTP query parameter. ClickHouse
 Connect will add the appropriate query parameters if it detects a binding expression of the form 
-`{&lt;name&gt;:&lt;datatype&gt;}`. For server side binding, the `parameters` argument should be a Python dictionary.
+`{<name>:<datatype>}`. For server side binding, the `parameters` argument should be a Python dictionary.
 
 - Server Side Binding with Python Dictionary, DateTime value and string value
 
@@ -361,7 +356,7 @@ settings = {'merge_tree_min_rows_for_concurrent_read': 65535,
 client.query("SELECT event_type, sum(timeout) FROM event_errors WHERE event_time > '2022-08-01'", settings=settings)
 ```
 
-### Client _command_ Method {#client-_command_-method}
+### Client `command` Method {#client-command-method}
 
 Use the `Client.command` method to send SQL queries to the ClickHouse Server that do not normally return data or returns
 a single primitive or array value rather than a full dataset. This method takes the following parameters:
@@ -393,7 +388,7 @@ result
 Out[7]: 110
 ```
 
-### Client _query_ Method {#client-_query_-method}
+### Client `query` Method {#client-query-method}
 
 The `Client.query` method is the primary way to retrieve a single "batch" dataset from the ClickHouse Server. It
 utilizes the Native ClickHouse format over HTTP to transmit large datasets (up to approximately one million rows)
@@ -471,7 +466,7 @@ generator):
 Each of these methods returns a `ContextStream` object that must be opened via a `with` statement to start consuming the
 stream. See [Advanced Queries (Streaming Queries)](#streaming-queries) for details and examples.
 
-### Client _insert_ Method {#client-_insert_-method}
+### Client `insert` method {#client-insert-method}
 
 For the common use case of inserting multiple records into ClickHouse, there is the `Client.insert` method. It takes the
 following parameters:
@@ -567,7 +562,7 @@ Similarly, you could save data in [TabSeparated](/interfaces/formats#tabseparate
 For use cases which do not require transformation between ClickHouse data and native or third party data types and
 structures, the ClickHouse Connect client provides two methods for direct usage of the ClickHouse connection.
 
-#### Client _raw_query_ Method {#client-_raw_query_-method}
+#### Client `raw_query` Method {#client_raw_query_method}
 
 The `Client.raw_query` method allows direct usage of the ClickHouse HTTP query interface using the client connection.
 The return value is an unprocessed `bytes` object. It offers a convenient wrapper with parameter binding,
@@ -585,11 +580,11 @@ error handling, retries, and settings management using a minimal interface:
 It is the caller's responsibility to handle the resulting `bytes` object. Note that the `Client.query_arrow` is just a
 thin wrapper around this method using the ClickHouse `Arrow` output format.
 
-#### Client _raw_stream_ Method {#client-_raw_stream_-method}
+#### Client `raw_stream` Method {#client_raw_stream_method}
 The `Client.raw_stream` method has the same API as the `raw_query` method, but returns an `io.IOBase` object which can be used
 as a generator/stream source of `bytes` objects.  It is currently utilized by the `query_arrow_stream` method.
 
-#### Client _raw_insert_ Method {#client-_raw_insert_-method}
+#### Client `raw_insert` Method {#client_raw_insert_method}
 
 The `Client.raw_insert` method allows direct inserts of `bytes` objects or `bytes` object generators using the client
 connection. Because it does no processing of the insert payload, it is highly performant. The method provides options
@@ -651,12 +646,10 @@ import asyncio
 
 import clickhouse_connect
 
-
 async def main():
     client = await clickhouse_connect.get_async_client()
     result = await client.query("SELECT name FROM system.databases LIMIT 1")
     print(result.result_rows)
-
 
 asyncio.run(main())
 ```
@@ -905,7 +898,6 @@ client.query('SELECT device_id, dev_address, gw_address from devices', column_fo
 | Variant               | object                | -            | Returns the matching Python type for the ClickHouse datatype stored for the value                                 |
 | Dynamic               | object                | -            | Returns the matching Python type for the ClickHouse datatype stored for the value                                 |
 
-
 ### External data {#external-data}
 
 ClickHouse queries can accept external data in any ClickHouse format.  This binary data is sent along with the query string to be used to process the data.  Details of
@@ -922,7 +914,6 @@ for that object accepts the follow arguments:
 | types     | str or seq of str | A list of column data types in the external data.  If a string, types should be separated by commas.  Either `types` or `structure` is required |
 | structure | str or seq of str | A list of column name + data type in the data (see examples).  Either `structure` or `types` is required                                        |
 | mime_type | str               | Optional MIME type of the file data.  Currently ClickHouse ignores this HTTP subheader                                                          |
-
 
 To send a query with an external CSV file containing "movie" data, and combine that data with an `directors` table already present on the ClickHouse server:
 
@@ -976,7 +967,7 @@ with its intended purpose of providing a reusable object for repeated inserts of
 
 ```python
 test_data = [[1, 'v1', 'v2'], [2, 'v3', 'v4']]
-ic = test_client.create_insert_context(table='test_table', data='test_data')
+ic = test_client.create_insert_context(table='test_table', data=test_data)
 client.insert(context=ic)
 assert client.command('SELECT count() FROM test_table') == 2
 new_data = [[3, 'v5', 'v6'], [4, 'v7', 'v8']]
@@ -988,7 +979,6 @@ assert qr[0][0] == 4
 ```
 
 InsertContexts include mutable state that is updated during the insert process, so they are not thread safe.
-
 
 ### Write formats {#write-formats}
 Write formats are currently implemented for limited number of types.  In most cases ClickHouse Connect will attempt to
@@ -1026,7 +1016,6 @@ In most cases, it is unnecessary to override the write format for a data type, b
 | Variant               | object                |               | At this time on all variants are inserted as Strings and parsed by the ClickHouse server                    |
 | Dynamic               | object                |               | Warning -- at this time any inserts into a Dynamic column are persisted as a ClickHouse String              |
 
-
 ## Additional options {#additional-options}
 
 ClickHouse Connect provides a number of additional options for advanced use cases
@@ -1057,7 +1046,7 @@ Ten global settings are currently defined:
 | autogenerate_session_id | True    | True, False             | Autogenerate a new UUID(1) session id (if not provided) for each client session.  If no session id is provided (either at the client or query level, ClickHouse will generate random internal id for each query                                               |
 | invalid_setting_action  | 'error' | 'drop', 'send', 'error' | Action to take when an invalid or readonly setting is provided (either for the client session or query).  If `drop`, the setting will be ignored, if `send`, the setting will be sent to ClickHouse, if `error` a client side ProgrammingError will be raised |
 | dict_parameter_format   | 'json'  | 'json', 'map'           | This controls whether parameterized queries convert a Python dictionary to JSON or ClickHouse Map syntax. `json` should be used for inserts into JSON columns, `map` for ClickHouse Map columns                                                               |
-| product_name            |         |                         | A string that is passed with the query to clickhouse for tracking the app using ClickHouse Connect.  Should be in the form &lt;product name;&gl/&lt;product version&gt;                                                                                       |
+| product_name            |         |                         | A string that is passed with the query to clickhouse for tracking the app using ClickHouse Connect.  Should be in the form `<product_name>/<product_version>`                                                                                       |
 | max_connection_age      | 600     |                         | Maximum seconds that an HTTP Keep Alive connection will be kept open/reused.  This prevents bunching of connections against a single ClickHouse node behind a load balancer/proxy.  Defaults to 10 minutes.                                                   |
 | readonly                | 0       | 0, 1                    | Implied "read_only" ClickHouse settings for versions prior to 19.17.  Can be set to match the ClickHouse "read_only" value for settings to allow operation with very old ClickHouse versions                                                                  |
 | use_protocol_version    | True    | True, False             | Use the client protocol version. This is needed for DateTime timezone columns but breaks with the current version of chproxy                                                                                                                                  |

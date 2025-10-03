@@ -3,6 +3,7 @@ description: 'Dataset containing 400 million images with English image captions'
 sidebar_label: 'Laion-400M dataset'
 slug: /getting-started/example-datasets/laion-400m-dataset
 title: 'Laion-400M dataset'
+doc_type: 'reference'
 ---
 
 The [Laion-400M dataset](https://laion.ai/blog/laion-400-open-dataset/) contains 400 million images with English image captions. Laion nowadays provides [an even larger dataset](https://laion.ai/blog/laion-5b/) but working with it will be similar.
@@ -49,10 +50,10 @@ data = pd.concat([data, pd.DataFrame({"image_embedding" : [*im_emb]}), pd.DataFr
 data = data[['url', 'caption', 'NSFW', 'similarity', "image_embedding", "text_embedding"]]
 
 # transform np.arrays to lists
-data['image_embedding'] = data['image_embedding'].apply(lambda x: list(x))
-data['text_embedding'] = data['text_embedding'].apply(lambda x: list(x))
+data['image_embedding'] = data['image_embedding'].apply(lambda x: x.tolist())
+data['text_embedding'] = data['text_embedding'].apply(lambda x: x.tolist())
 
-# this small hack is needed becase caption sometimes contains all kind of quotes
+# this small hack is needed because caption sometimes contains all kind of quotes
 data['caption'] = data['caption'].apply(lambda x: x.replace("'", " ").replace('"', " "))
 
 # export data as CSV file
@@ -74,7 +75,7 @@ The dataset is split into 410 files, each file contains ca. 1 million rows. If y
 
 ## Create table {#create-table}
 
-To create a table without indexes, run:
+To create a table initially without indexes, run:
 
 ```sql
 CREATE TABLE laion
@@ -98,81 +99,89 @@ To import the CSV files into ClickHouse:
 INSERT INTO laion FROM INFILE '{path_to_csv_files}/*.csv'
 ```
 
-## Run a brute-force ANN search (without ANN index) {#run-a-brute-force-ann-search-without-ann-index}
+Note that the `id` column is just for illustration and is populated by the script with non-unique values.
 
-To run a brute-force approximate nearest neighbor search, run:
+## Run a brute-force vector similarity search {#run-a-brute-force-vector-similarity-search}
+
+To run a brute-force approximate vector search, run:
 
 ```sql
-SELECT url, caption FROM laion ORDER BY L2Distance(image_embedding, {target:Array(Float32)}) LIMIT 30
+SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:Array(Float32)}) LIMIT 10
 ```
 
-`target` is an array of 512 elements and a client parameter. A convenient way to obtain such arrays will be presented at the end of the article. For now, we can run the embedding of a random cat picture as `target`.
+`target` is an array of 512 elements and a client parameter.
+A convenient way to obtain such arrays will be presented at the end of the article.
+For now, we can run the embedding of a random LEGO set picture as `target`.
 
 **Result**
 
 ```markdown
-┌─url───────────────────────────────────────────────────────────────────────────────────────────────────────────┬─caption────────────────────────────────────────────────────────────────┐
-│ https://s3.amazonaws.com/filestore.rescuegroups.org/6685/pictures/animals/13884/13884995/63318230_463x463.jpg │ Adoptable Female Domestic Short Hair                                   │
-│ https://s3.amazonaws.com/pet-uploads.adoptapet.com/8/b/6/239905226.jpg                                        │ Adopt A Pet :: Marzipan - New York, NY                                 │
-│ http://d1n3ar4lqtlydb.cloudfront.net/9/2/4/248407625.jpg                                                      │ Adopt A Pet :: Butterscotch - New Castle, DE                           │
-│ https://s3.amazonaws.com/pet-uploads.adoptapet.com/e/e/c/245615237.jpg                                        │ Adopt A Pet :: Tiggy - Chicago, IL                                     │
-│ http://pawsofcoronado.org/wp-content/uploads/2012/12/rsz_pumpkin.jpg                                          │ Pumpkin an orange tabby  kitten for adoption                           │
-│ https://s3.amazonaws.com/pet-uploads.adoptapet.com/7/8/3/188700997.jpg                                        │ Adopt A Pet :: Brian the Brad Pitt of cats - Frankfort, IL             │
-│ https://s3.amazonaws.com/pet-uploads.adoptapet.com/8/b/d/191533561.jpg                                        │ Domestic Shorthair Cat for adoption in Mesa, Arizona - Charlie         │
-│ https://s3.amazonaws.com/pet-uploads.adoptapet.com/0/1/2/221698235.jpg                                        │ Domestic Shorthair Cat for adoption in Marietta, Ohio - Daisy (Spayed) │
-└───────────────────────────────────────────────────────────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────┘
+    ┌─url───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─caption──────────────────────────────────────────────────────────────────────────┐
+ 1. │ https://s4.thcdn.com/productimg/600/600/11340490-9914447026352671.jpg                                                                                                                         │ LEGO Friends: Puppy Treats & Tricks (41304)                                      │
+ 2. │ https://www.avenuedelabrique.com/img/uploads/f20fd44bfa4bd49f2a3a5fad0f0dfed7d53c3d2f.jpg                                                                                                     │ Nouveau LEGO Friends 41334 Andrea s Park Performance 2018                        │
+ 3. │ http://images.esellerpro.com/2489/I/667/303/3938_box_in.jpg                                                                                                                                   │ 3938 LEGO Andreas Bunny House Girls Friends Heartlake Age 5-12 / 62 Pieces  New! │
+ 4. │ http://i.shopmania.org/180x180/7/7f/7f1e1a2ab33cde6af4573a9e0caea61293dfc58d.jpg?u=https%3A%2F%2Fs.s-bol.com%2Fimgbase0%2Fimagebase3%2Fextralarge%2FFC%2F4%2F0%2F9%2F9%2F9200000049789904.jpg │ LEGO Friends Avonturenkamp Boomhuis - 41122                                      │
+ 5. │ https://s.s-bol.com/imgbase0/imagebase/large/FC/5/5/9/4/1004004011684955.jpg                                                                                                                  │ LEGO Friends Andrea s Theatershow - 3932                                         │
+ 6. │ https://www.jucariicucubau.ro/30252-home_default/41445-lego-friends-ambulanta-clinicii-veterinare.jpg                                                                                         │ 41445 - LEGO Friends - Ambulanta clinicii veterinare                             │
+ 7. │ https://cdn.awsli.com.br/600x1000/91/91201/produto/24833262/234c032725.jpg                                                                                                                    │ LEGO FRIENDS 41336 EMMA S ART CAFÉ                                               │
+ 8. │ https://media.4rgos.it/s/Argos/6174930_R_SET?$Thumb150$&amp;$Web$                                                                                                                             │ more details on LEGO Friends Stephanie s Friendship Cake Set - 41308.            │
+ 9. │ https://thumbs4.ebaystatic.com/d/l225/m/mG4k6qAONd10voI8NUUMOjw.jpg                                                                                                                           │ Lego Friends Gymnast 30400 Polybag 26 pcs                                        │
+10. │ http://www.ibrickcity.com/wp-content/gallery/41057/thumbs/thumbs_lego-41057-heartlake-horse-show-friends-3.jpg                                                                                │ lego-41057-heartlake-horse-show-friends-3                                        │
+    └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────┘
 
-8 rows in set. Elapsed: 6.432 sec. Processed 19.65 million rows, 43.96 GB (3.06 million rows/s., 6.84 GB/s.)
+10 rows in set. Elapsed: 4.605 sec. Processed 100.38 million rows, 309.98 GB (21.80 million rows/s., 67.31 GB/s.)
 ```
 
-## Run a ANN with an ANN index {#run-a-ann-with-an-ann-index}
+## Run an approximate vector similarity search with a vector similarity index {#run-an-approximate-vector-similarity-search-with-a-vector-similarity-index}
 
-Create a new table with an ANN index and insert the data from the existing table:
+Let's now define two vector similarity indexes on the table.
 
 ```sql
-CREATE TABLE laion_annoy
-(
-    `id` Int64,
-    `url` String,
-    `caption` String,
-    `NSFW` String,
-    `similarity` Float32,
-    `image_embedding` Array(Float32),
-    `text_embedding` Array(Float32),
-    INDEX annoy_image image_embedding TYPE annoy(),
-    INDEX annoy_text text_embedding TYPE annoy()
-)
-ENGINE = MergeTree
-ORDER BY id
-SETTINGS index_granularity = 8192;
-
-INSERT INTO laion_annoy SELECT * FROM laion;
+ALTER TABLE laion ADD INDEX image_index image_embedding TYPE vector_similarity('hnsw', 'cosineDistance', 512, 'bf16', 64, 256)
+ALTER TABLE laion ADD INDEX text_index text_embedding TYPE vector_similarity('hnsw', 'cosineDistance', 512, 'bf16', 64, 256)
 ```
 
-By default, Annoy indexes use the L2 distance as metric. Further tuning knobs for index creation and search are described in the Annoy index [documentation](../../engines/table-engines/mergetree-family/annindexes.md). Let's check now again with the same query:
+The parameters and performance considerations for index creation and search are described in the [documentation](../../engines/table-engines/mergetree-family/annindexes.md).
+The above index definition specifies a HNSW index using the "cosine distance" as distance metric with the parameter "hnsw_max_connections_per_layer" set to 64 and parameter "hnsw_candidate_list_size_for_construction" set to 256.
+The index uses half-precision brain floats (bfloat16) as quantization to optimize memory usage.
+
+To build and materialize the index, run these statements :
 
 ```sql
-SELECT url, caption FROM laion_annoy ORDER BY l2Distance(image_embedding, {target:Array(Float32)}) LIMIT 8
+ALTER TABLE laion MATERIALIZE INDEX image_index;
+ALTER TABLE laion MATERIALIZE INDEX text_index;
+```
+
+Building and saving the index could take a few minutes or even hours, depending on the number of rows and HNSW index parameters.
+
+To perform a vector search, just execute the same query again:
+
+```sql
+SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:Array(Float32)}) LIMIT 10
 ```
 
 **Result**
 
 ```response
-┌─url──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─caption──────────────────────────────────────────────────────────────┐
-│ http://tse1.mm.bing.net/th?id=OIP.R1CUoYp_4hbeFSHBaaB5-gHaFj                                                                                                                         │ bed bugs and pets can cats carry bed bugs pets adviser               │
-│ http://pet-uploads.adoptapet.com/1/9/c/1963194.jpg?336w                                                                                                                              │ Domestic Longhair Cat for adoption in Quincy, Massachusetts - Ashley │
-│ https://thumbs.dreamstime.com/t/cat-bed-12591021.jpg                                                                                                                                 │ Cat on bed Stock Image                                               │
-│ https://us.123rf.com/450wm/penta/penta1105/penta110500004/9658511-portrait-of-british-short-hair-kitten-lieing-at-sofa-on-sun.jpg                                                    │ Portrait of british short hair kitten lieing at sofa on sun.         │
-│ https://www.easypetmd.com/sites/default/files/Wirehaired%20Vizsla%20(2).jpg                                                                                                          │ Vizsla (Wirehaired) image 3                                          │
-│ https://images.ctfassets.net/yixw23k2v6vo/0000000200009b8800000000/7950f4e1c1db335ef91bb2bc34428de9/dog-cat-flickr-Impatience_1.jpg?w=600&h=400&fm=jpg&fit=thumb&q=65&fl=progressive │ dog and cat image                                                    │
-│ https://i1.wallbox.ru/wallpapers/small/201523/eaa582ee76a31fd.jpg                                                                                                                    │ cats, kittens, faces, tonkinese                                      │
-│ https://www.baxterboo.com/images/breeds/medium/cairn-terrier.jpg                                                                                                                     │ Cairn Terrier Photo                                                  │
-└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────┘
+    ┌─url───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─caption──────────────────────────────────────────────────────────────────────────┐
+ 1. │ https://s4.thcdn.com/productimg/600/600/11340490-9914447026352671.jpg                                                                                                                         │ LEGO Friends: Puppy Treats & Tricks (41304)                                      │
+ 2. │ https://www.avenuedelabrique.com/img/uploads/f20fd44bfa4bd49f2a3a5fad0f0dfed7d53c3d2f.jpg                                                                                                     │ Nouveau LEGO Friends 41334 Andrea s Park Performance 2018                        │
+ 3. │ http://images.esellerpro.com/2489/I/667/303/3938_box_in.jpg                                                                                                                                   │ 3938 LEGO Andreas Bunny House Girls Friends Heartlake Age 5-12 / 62 Pieces  New! │
+ 4. │ http://i.shopmania.org/180x180/7/7f/7f1e1a2ab33cde6af4573a9e0caea61293dfc58d.jpg?u=https%3A%2F%2Fs.s-bol.com%2Fimgbase0%2Fimagebase3%2Fextralarge%2FFC%2F4%2F0%2F9%2F9%2F9200000049789904.jpg │ LEGO Friends Avonturenkamp Boomhuis - 41122                                      │
+ 5. │ https://s.s-bol.com/imgbase0/imagebase/large/FC/5/5/9/4/1004004011684955.jpg                                                                                                                  │ LEGO Friends Andrea s Theatershow - 3932                                         │
+ 6. │ https://www.jucariicucubau.ro/30252-home_default/41445-lego-friends-ambulanta-clinicii-veterinare.jpg                                                                                         │ 41445 - LEGO Friends - Ambulanta clinicii veterinare                             │
+ 7. │ https://cdn.awsli.com.br/600x1000/91/91201/produto/24833262/234c032725.jpg                                                                                                                    │ LEGO FRIENDS 41336 EMMA S ART CAFÉ                                               │
+ 8. │ https://media.4rgos.it/s/Argos/6174930_R_SET?$Thumb150$&amp;$Web$                                                                                                                             │ more details on LEGO Friends Stephanie s Friendship Cake Set - 41308.            │
+ 9. │ https://thumbs4.ebaystatic.com/d/l225/m/mG4k6qAONd10voI8NUUMOjw.jpg                                                                                                                           │ Lego Friends Gymnast 30400 Polybag 26 pcs                                        │
+10. │ http://www.ibrickcity.com/wp-content/gallery/41057/thumbs/thumbs_lego-41057-heartlake-horse-show-friends-3.jpg                                                                                │ lego-41057-heartlake-horse-show-friends-3                                        │
+    └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────┘
 
-8 rows in set. Elapsed: 0.641 sec. Processed 22.06 thousand rows, 49.36 MB (91.53 thousand rows/s., 204.81 MB/s.)
+10 rows in set. Elapsed: 0.019 sec. Processed 137.27 thousand rows, 24.42 MB (7.38 million rows/s., 1.31 GB/s.)
 ```
 
-The speed increased significantly at the cost of less accurate results. This is because the ANN index only provide approximate search results. Note the example searched for similar image embeddings, yet it is also possible to search for positive image caption embeddings.
+The query latency decreased significantly because the nearest neighbours were retrieved using the vector index.
+Vector similarity search using a vector similarity index may return results that differ slightly from the brute-force search results.
+An HNSW index can potentially achieve a recall close to 1 (same accuracy as brute force search) with a careful selection of the HNSW parameters and evaluating the index quality.
 
 ## Creating embeddings with UDFs {#creating-embeddings-with-udfs}
 
@@ -186,6 +195,7 @@ First, store the following Python script in the `user_scripts/` directory of you
 
 ```python
 #!/usr/bin/python3
+#!Note: Change the above python3 executable location if a virtual env is being used.
 import clip
 import torch
 import numpy as np
@@ -226,16 +236,26 @@ You can now simply use:
 ```sql
 SELECT encode_text('cat');
 ```
-The first run will be slow because it loads the model, but repeated runs will be fast. We can then copy the output to `SET param_target=...` and can easily write queries.
+The first run will be slow because it loads the model, but repeated runs will be fast. We can then copy the output to `SET param_target=...` and can easily write queries. Alternatively, the `encode_text()` function can directly be used as a argument to the `cosineDistance` function :
+
+```SQL
+SELECT url
+FROM laion
+ORDER BY cosineDistance(text_embedding, encode_text('a dog and a cat')) ASC
+LIMIT 10
+```
+
+Note that the `encode_text()` UDF itself could require a few seconds to compute and emit the embedding vector.
 
 ### Image embeddings {#image-embeddings}
 
-Image embeddings can be created similarly but we will provide the Python script the path to a local image instead of the image caption text.
+Image embeddings can be created similarly and we provide a Python script that can generate an embedding of an image stored locally as a file.
 
 `encode_image.py`
 
 ```python
 #!/usr/bin/python3
+#!Note: Change the above python3 executable location if a virtual env is being used.
 import clip
 import torch
 import numpy as np
@@ -272,8 +292,26 @@ if __name__ == '__main__':
 </functions>
 ```
 
-Then run this query:
+Fetch an example image to search :
+
+```shell
+# get a random image of a LEGO set
+$ wget http://cdn.firstcry.com/brainbees/images/products/thumb/191325a.jpg
+```
+
+Then run this query to generate the embedding for above image :
 
 ```sql
 SELECT encode_image('/path/to/your/image');
+```
+
+The complete search query is :
+
+```sql
+SELECT
+    url,
+    caption
+FROM laion
+ORDER BY cosineDistance(image_embedding, encode_image('/path/to/your/image')) ASC
+LIMIT 10
 ```

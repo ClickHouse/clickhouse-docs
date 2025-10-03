@@ -3,6 +3,7 @@ sidebar_label: 'SQL Dumps'
 slug: /integrations/data-formats/sql
 title: 'Inserting and dumping SQL data in ClickHouse'
 description: 'Page describing how to transfer data between other databases and ClickHouse using SQL dumps.'
+doc_type: 'guide'
 ---
 
 # Inserting and dumping SQL data in ClickHouse
@@ -50,7 +51,6 @@ SELECT * FROM some_data LIMIT 3 FORMAT Values
 ```response
 ('Bangor_City_Forest','2015-07-01',34),('Alireza_Afzal','2017-02-01',24),('Akhaura-Laksam-Chittagong_Line','2015-09-01',30)
 ```
-
 
 ## Inserting data from SQL dumps {#inserting-data-from-sql-dumps}
 
@@ -100,7 +100,6 @@ DESCRIBE TABLE table_from_mysql;
 │ hits  │ Nullable(UInt32) │              │                    │         │                  │                │
 └───────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
-
 
 ## Other formats {#other-formats}
 

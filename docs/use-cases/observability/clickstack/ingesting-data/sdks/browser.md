@@ -5,6 +5,7 @@ pagination_next: null
 sidebar_position: 0
 description: 'Browser SDK for ClickStack - The ClickHouse Observability Stack'
 title: 'Browser JS'
+doc_type: 'guide'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -80,7 +81,6 @@ This is recommended if your site is not currently built using a bundler.
 
 </TabItem>
 </Tabs>
-
 
 ### Options {#options}
 

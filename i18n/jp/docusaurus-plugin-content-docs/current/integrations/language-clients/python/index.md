@@ -1,15 +1,15 @@
 ---
-'sidebar_label': 'Python'
-'sidebar_position': 10
-'keywords':
+sidebar_label: 'Python'
+sidebar_position: 10
+keywords:
 - 'clickhouse'
 - 'python'
 - 'client'
 - 'connect'
 - 'integrate'
-'slug': '/integrations/python'
-'description': 'The ClickHouse Connect project suite for connecting Python to ClickHouse'
-'title': 'Python Integration with ClickHouse Connect'
+slug: '/integrations/python'
+description: 'The ClickHouse Connect project suite for connecting Python to ClickHouse'
+title: 'Python Integration with ClickHouse Connect'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';

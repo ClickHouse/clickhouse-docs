@@ -4,6 +4,7 @@ slug: /integrations/fabi.ai
 keywords: ['clickhouse', 'Fabi.ai', 'connect', 'integrate', 'notebook', 'ui', 'analytics']
 description: 'Fabi.ai is an all-in-one collaborate data analysis platform. You can leverage SQL, Python, AI, and no-code to build dashboard and data workflows faster than ever before'
 title: 'Connect ClickHouse to Fabi.ai'
+doc_type: 'guide'
 ---
 
 import fabi_01 from '@site/static/images/integrations/data-visualization/fabi_01.png';
@@ -17,7 +18,6 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 # Connecting ClickHouse to Fabi.ai
 
 <CommunityMaintainedBadge/>
-
 
 <a href="https://www.fabi.ai/" target="_blank">Fabi.ai</a> is an all-in-one collaborate data analysis platform. You can leverage SQL, Python, AI, and no-code to build dashboard and data workflows faster than ever before. Combined with the scale and power of ClickHouse, you can build and share your first highly performant dashboard on a massive dataset in minutes.
 
@@ -46,7 +46,6 @@ Log in or create your Fabi.ai account: https://app.fabi.ai/
 Once you’ve connected Fabi.ai to ClickHouse, go to any [Smartbook](https://docs.fabi.ai/analysis_and_reporting/smartbooks) and create a SQL cell. If you only have one data source connected to your Fabi.ai instance, the SQL cell will automatically default to ClickHouse, otherwise you can choose the source to query from the source dropdown.
 
    <Image size="lg" img={fabi_04} alt="Querying ClickHouse" border />
-
 
 ## Additional Resources {#additional-resources}
 

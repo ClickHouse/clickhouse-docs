@@ -4,6 +4,7 @@ title: 'Connecting to PostgreSQL'
 keywords: ['clickhouse', 'postgres', 'postgresql', 'connect', 'integrate', 'table', 'engine']
 description: 'Page describing the various ways to connect PostgreSQL to ClickHouse'
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -13,10 +14,13 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 This page covers following options for integrating PostgreSQL with ClickHouse:
 
-- using [ClickPipes](/integrations/clickpipes/postgres), the managed integration service for ClickHouse Cloud powered by PeerDB.
-- using [PeerDB](https://github.com/PeerDB-io/peerdb), an open-source CDC tool specifically designed for PostgreSQL database replication to both self-hosted ClickHouse and ClickHouse Cloud.
 - using the `PostgreSQL` table engine, for reading from a PostgreSQL table
 - using the experimental `MaterializedPostgreSQL` database engine, for syncing a database in PostgreSQL with a database in ClickHouse
+
+:::tip
+We recommend using [ClickPipes](/integrations/clickpipes/postgres), a managed integration service for ClickHouse Cloud powered by PeerDB.
+Alternatively, [PeerDB](https://github.com/PeerDB-io/peerdb) is available as an an open-source CDC tool specifically designed for PostgreSQL database replication to both self-hosted ClickHouse and ClickHouse Cloud.
+:::
 
 ## Using the PostgreSQL table engine {#using-the-postgresql-table-engine}
 
@@ -110,7 +114,6 @@ Check the ClickHouse [Cloud Endpoints API](/cloud/get-started/query-endpoints) f
   :::note
   View the [PostgreSQL table engine](/engines/table-engines/integrations/postgresql) doc page for a complete list of parameters.
   :::
-
 
 ### 3 Test the Integration {#3-test-the-integration}
 
@@ -207,7 +210,6 @@ _*ClickHouse needs minimum of `logical` wal level and minimum `2` replication sl
 CREATE ROLE clickhouse_user SUPERUSER LOGIN PASSWORD 'ClickHouse_123';
 ```
 _*for demonstration purposes, full superuser rights have been granted._
-
 
 3. create a new database:
 ```sql

@@ -5,6 +5,7 @@ sidebar_label: 'Production'
 pagination_prev: null
 pagination_next: null
 description: 'Going to production with ClickStack'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -85,7 +86,7 @@ Additionally, we recommend enabling TLS for OTLP endpoints and creating a [dedic
 
 ## ClickHouse {#clickhouse}
 
-For production deployments, we recommend using [ClickHouse Cloud](https://clickhouse.com/cloud), which applies industry-standard [security practices](/cloud/security) by default - including [enhanced encryption](/cloud/security/cmek), [authentication and connectivity](/cloud/security/connectivity), and [managed access controls](/cloud/security/cloud-access-management). See ["ClickHouse Cloud"](#clickhouse-cloud-production) for a step-by-step guide of using ClickHouse Cloud with best practices.
+For production deployments, we recommend using [ClickHouse Cloud](https://clickhouse.com/cloud), which applies industry-standard [security practices](/cloud/security/shared-responsibility-model) by default - including [enhanced encryption](/cloud/security/cmek), [authentication and connectivity](/cloud/security/connectivity), and [managed access controls](/cloud/security/cloud-access-management). See ["ClickHouse Cloud"](#clickhouse-cloud-production) for a step-by-step guide of using ClickHouse Cloud with best practices.
 
 ### User permissions {#user-permissions}
 

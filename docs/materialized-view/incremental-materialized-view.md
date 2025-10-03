@@ -4,6 +4,7 @@ title: 'Incremental materialized view'
 description: 'How to use incremental materialized views to speed up queries'
 keywords: ['incremental materialized views', 'speed up queries', 'query optimization']
 score: 10000
+doc_type: 'guide'
 ---
 
 import materializedViewDiagram from '@site/static/images/materialized-view/materialized-view-diagram.png';
@@ -45,7 +46,7 @@ INSERT INTO votes SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.
 0 rows in set. Elapsed: 29.359 sec. Processed 238.98 million rows, 2.13 GB (8.14 million rows/s., 72.45 MB/s.)
 ```
 
-This is a reasonably simple query in ClickHouse thanks to the [`toStartOfDay`](/sql-reference/functions/date-time-functions#tostartofday) function:
+This is a reasonably simple query in ClickHouse thanks to the [`toStartOfDay`](/sql-reference/functions/date-time-functions#toStartOfDay) function:
 
 ```sql
 SELECT toStartOfDay(CreationDate) AS day,
@@ -337,7 +338,6 @@ CREATE TABLE comments_posts_users (
   UserId Int32
 ) ENGINE = MergeTree ORDER BY UserId
 
-
 CREATE TABLE comments_null AS comments
 ENGINE = Null
 
@@ -367,9 +367,10 @@ WHERE PostId IN (
 1 row in set. Elapsed: 0.012 sec. Processed 88.61 thousand rows, 771.37 KB (7.09 million rows/s., 61.73 MB/s.)
 ```
 
-### Chaining {#chaining}
+### Chaining / cascading materialized views {#chaining}
 
-Materialized views can be chained, allowing complex workflows to be established. For a practical example, we recommend reading this [blog post](https://clickhouse.com/blog/chaining-materialized-views).
+Materialized views can be chained (or cascaded), allowing complex workflows to be established.
+For more information see the guide ["Cascading materialized views"](https://clickhouse.com/docs/guides/developer/cascading-materialized-views).
 
 ## Materialized views and JOINs {#materialized-views-and-joins}
 
@@ -593,7 +594,6 @@ AS SELECT count(*) AS c0
     FROM t0
     LEFT JOIN ( SELECT * FROM t0 ) AS x ON t0.c0 = x.c0;
 
-
 CREATE MATERIALIZED VIEW mvw2 TO mvw2_inner
 AS SELECT count(*) AS c0
     FROM t0
@@ -758,7 +758,6 @@ ORDER BY UserId
 
 These can be populated with the following `INSERT INTO` commands:
 
-
 ```sql
 INSERT INTO stackoverflow.badges SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/badges.parquet')
@@ -839,7 +838,6 @@ ORDER BY last_activity DESC
 ```
 
 While this is valid syntactically, it will produce unintended results - the view will only trigger inserts to the `comments` table. For example:
-
 
 ```sql
 INSERT INTO comments VALUES (99999999, 23121, 1, 'The answer is 42', now(), 2936484, 'gingerwizard');
@@ -1096,7 +1094,6 @@ Leave it disabled when:
 - Materialized Views have dependencies on one another
 - You require predictable, ordered execution
 - You're debugging or auditing insert behavior and want deterministic replay
-
 
 ## Materialized views and Common Table Expressions (CTE) {#materialized-views-common-table-expressions-ctes}
 

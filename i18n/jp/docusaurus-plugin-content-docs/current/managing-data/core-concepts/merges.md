@@ -1,8 +1,8 @@
 ---
-'slug': '/merges'
-'title': 'パーツのマージ'
-'description': 'ClickHouseにおけるパーツのマージとは何ですか'
-'keywords':
+slug: '/merges'
+title: 'パーツのマージ'
+description: 'ClickHouseにおけるパーツのマージとは何ですか'
+keywords:
 - 'merges'
 ---
 

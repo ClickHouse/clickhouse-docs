@@ -4,11 +4,11 @@ sidebar_label: 'Deduplication Strategies'
 sidebar_position: 3
 description: 'Use deduplication when you need to perform frequent upserts, updates and deletes.'
 title: 'Deduplication Strategies'
+doc_type: 'guide'
 ---
 
 import deduplication from '@site/static/images/guides/developer/de_duplication.png';
 import Image from '@theme/IdealImage';
-
 
 # Deduplication strategies
 
@@ -105,7 +105,9 @@ FINAL
 The result only has 2 rows, and the last row inserted is the row that gets returned.
 
 :::note
-Using `FINAL` works OK if you have a small amount of data. If you are dealing with a large amount of data, using `FINAL` is probably not the best option. Let's discuss a better option for finding the latest value of a column...
+Using `FINAL` works okay if you have a small amount of data. If you are dealing with a large amount of data, 
+using `FINAL` is probably not the best option. Let's discuss a better option for 
+finding the latest value of a column.
 :::
 
 ### Avoiding FINAL {#avoiding-final}
@@ -139,7 +141,6 @@ FROM hackernews_rmt
 │  1 │ ricardo │ This is post #1 │   150 │
 └────┴─────────┴─────────────────┴───────┘
 ```
-
 
 Instead of using `FINAL`, let's use some business logic - we know that the `views` column is always increasing, so we can select the row with the largest value using the `max` function after grouping by the desired columns:
 

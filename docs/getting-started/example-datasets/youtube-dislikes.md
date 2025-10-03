@@ -3,6 +3,7 @@ description: 'A collection is dislikes of YouTube videos.'
 sidebar_label: 'YouTube Dislikes'
 slug: /getting-started/example-datasets/youtube-dislikes
 title: 'YouTube dataset of dislikes'
+doc_type: 'reference'
 ---
 
 In November of 2021, YouTube removed the public ***dislike*** count from all of its videos. While creators can still see the number of dislikes, viewers can only see how many ***likes*** a video has received.
@@ -280,7 +281,6 @@ ORDER BY
 
 Enabling comments seems to be correlated with a higher rate of engagement.
 
-
 ### How does the number of videos change over time - notable events? {#how-does-the-number-of-videos-change-over-time---notable-events}
 
 ```sql
@@ -319,7 +319,6 @@ ORDER BY month ASC;
 
 A spike of uploaders [around covid is noticeable](https://www.theverge.com/2020/3/27/21197642/youtube-with-me-style-videos-views-coronavirus-cook-workout-study-home-beauty).
 
-
 ### More subtitles over time and when {#more-subtitles-over-time-and-when}
 
 With advances in speech recognition, it's easier than ever to create subtitles for video with youtube adding auto-captioning in late 2009 - was the jump then?
@@ -356,7 +355,6 @@ ORDER BY month ASC;
 
 The data results show a spike in 2009. Apparently at that, time YouTube was removing their community captions feature, which allowed you to upload captions for other people's video.
 This prompted a very successful campaign to have creators add captions to their videos for hard of hearing and deaf viewers.
-
 
 ### Top uploaders over time {#top-uploaders-over-time}
 

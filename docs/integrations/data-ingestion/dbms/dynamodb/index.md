@@ -6,6 +6,7 @@ description: 'ClickPipes allows you to connect ClickHouse to DynamoDB.'
 keywords: ['DynamoDB']
 title: 'CDC from DynamoDB to ClickHouse'
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -67,7 +68,6 @@ We will want to create three tables:
 1. A table to store the raw data from DynamoDB
 2. A table to store the final flattened data (destination table)
 3. A materialized view to flatten the data
-
 
 For the example DynamoDB data above, the ClickHouse tables would look like this:
 

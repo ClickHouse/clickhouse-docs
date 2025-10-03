@@ -1,0 +1,288 @@
+name: CLA Approval Handler
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions: write-all
+
+jobs:
+  process-cla-comment:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issue_comment' && github.actor != 'workflow-authentication-public[bot]'
+
+    steps:
+      - name: Generate Token
+        id: generate-token
+        continue-on-error: true
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: "${{ secrets.WORKFLOW_AUTH_PUBLIC_APP_ID }}"
+          private-key: "${{ secrets.WORKFLOW_AUTH_PUBLIC_PRIVATE_KEY }}"
+
+      - name: Process CLA Agreement Comment
+        id: process-comment
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}
+          script: |
+            // Only process comments on pull requests
+            if (!context.payload.issue.pull_request) {
+              console.log('Comment is not on a pull request, skipping...');
+              return;
+            }
+            
+            const prNumber = context.payload.issue.number;
+            const commentBody = context.payload.comment.body;
+            const commenter = context.payload.comment.user.login;
+            
+            console.log(`Processing comment on PR #${prNumber} from ${commenter}`);
+            
+            // Check if this is a CLA agreement comment
+            const isClaAgreement = commentBody.includes('I agree to the Trademark License Addendum') && 
+                                   commentBody.includes('CLA-SIGNATURE:');
+            
+            if (!isClaAgreement) {
+              console.log('Comment is not a CLA agreement, skipping...');
+              return;
+            }
+            
+            console.log('Found CLA agreement comment, validating...');
+            
+            // Extract the signature from the comment
+            const signatureMatch = commentBody.match(/CLA-SIGNATURE:\s*(\S+)/);
+            if (!signatureMatch) {
+              console.log('CLA signature format is invalid');
+              return;
+            }
+            
+            const signatureUser = signatureMatch[1];
+            
+            // Get PR details to verify the commenter is the PR author
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber
+            });
+            
+            const prAuthor = pr.user.login;
+            console.log(`PR author: ${prAuthor}, commenter: ${commenter}, signature: ${signatureUser}`);
+            
+            // If someone other than PR author is trying to sign, silently ignore
+            if (commenter !== prAuthor) {
+              console.log(`Comment with CLA text from ${commenter} (not PR author ${prAuthor}), ignoring silently`);
+              return;
+            }
+            
+            // If PR author is signing but signature doesn't match their username, silently ignore
+            if (signatureUser !== commenter) {
+              console.log(`PR author ${commenter} used incorrect signature '${signatureUser}', ignoring silently`);
+              return;
+            }
+            
+            // Check if PR has trademark-addendum-required label
+            const { data: labels } = await github.rest.issues.listLabelsOnIssue({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber
+            });
+            
+            const hasTrademarkRequired = labels.some(label => label.name === 'trademark-addendum-required');
+            const hasTrademarkSigned = labels.some(label => label.name === 'trademark-addendum-signed');
+            
+            if (!hasTrademarkRequired) {
+              console.log('PR does not have trademark-addendum-required label, skipping...');
+              return;
+            }
+            
+            if (hasTrademarkSigned) {
+              console.log('PR already has trademark-addendum-signed label, skipping...');
+              return;
+            }
+            
+            console.log('Valid CLA agreement from PR author, processing...');
+            
+            // Remove blocking labels
+            try {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                name: 'trademark-addendum-required'
+              });
+              console.log('Removed trademark-addendum-required label');
+            } catch (e) {
+              console.log('trademark-addendum-required label not found or already removed');
+            }
+            
+            try {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                name: 'integrations-with-image-change'
+              });
+              console.log('Removed integrations-with-image-change label');
+            } catch (e) {
+              console.log('integrations-with-image-change label not found or already removed');
+            }
+            
+            // Add trademark-addendum-signed label
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              labels: ['trademark-addendum-signed']
+            });
+            
+            console.log('Added trademark-addendum-signed label successfully');
+            
+            // Store signature details for the next step
+            core.setOutput('pr_number', prNumber);
+            core.setOutput('pr_author', prAuthor);
+            core.setOutput('approved_by', prAuthor);
+            core.setOutput('pr_head_sha', pr.head.sha);
+            core.setOutput('pr_head_ref', pr.head.ref);
+            core.setOutput('pr_head_repo_full_name', pr.head.repo.full_name);
+            core.setOutput('is_fork', pr.head.repo.full_name !== context.repo.owner + '/' + context.repo.repo);
+            
+            // Add confirmation comment
+            const confirmationBody = [
+              '## Trademark license agreement confirmed ✅',
+              '',
+              `The trademark license agreement has been confirmed for @${prAuthor}.`,
+              '',
+              '**Status:** Confirmed',
+              `**Date:** ${new Date().toISOString()}`,
+              '**Method:** Self-signed agreement via comment',
+              '',
+              'This PR is now unblocked and can proceed with normal review.'
+            ].join('\n');
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: confirmationBody
+            });
+            
+            console.log(`✅ CLA agreement processed successfully for ${prAuthor}`);
+
+      - name: Check out repository
+        if: success() && steps.process-comment.outputs.pr_number != ''
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # For forked PRs, we need to fetch from the fork and checkout the SHA
+          # For non-fork PRs, we can checkout the branch directly
+          ref: ${{ steps.process-comment.outputs.is_fork == 'true' && steps.process-comment.outputs.pr_head_sha || steps.process-comment.outputs.pr_head_ref }}
+          token: ${{ steps.generate-token.outputs.token || secrets.GITHUB_TOKEN }}
+
+      - name: Record signature to file
+        id: record-signature
+        if: success() && steps.process-comment.outputs.pr_number != ''
+        run: |
+          set -e
+          
+          echo "=== Recording signature immediately after label addition ==="
+          
+          # Debug: Check current working directory and branch
+          echo "=== Debug Info ==="
+          pwd
+          echo "Current branch: $(git branch --show-current)"
+          echo "Git remote: $(git remote -v)"
+          ls -la contribute/ 2>/dev/null || echo "contribute/ directory does not exist"
+          
+          # Get signature details
+          USERNAME="${{ steps.process-comment.outputs.pr_author }}"
+          DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          PR_NUMBER="${{ steps.process-comment.outputs.pr_number }}"
+          APPROVED_BY="${{ steps.process-comment.outputs.approved_by }}"
+          
+          echo "Recording signature for PR #$PR_NUMBER"
+          echo "  Username: $USERNAME"
+          echo "  Approved by: $APPROVED_BY"
+          echo "  Date: $DATE"
+          
+          # Ensure contribute directory exists
+          mkdir -p contribute
+          
+          # Signature file
+          SIGNATURES_FILE="contribute/trade-addendum-signatures.json"
+          
+          # Create or read existing signatures file
+          if [ ! -f "$SIGNATURES_FILE" ]; then
+            echo '{"signatures": []}' > "$SIGNATURES_FILE"
+            echo "Created new signatures file"
+          fi
+          
+          # Check if signature already exists
+          EXISTING=$(jq --arg user "$USERNAME" --arg pr "$PR_NUMBER" '.signatures[] | select(.username == $user and .pr_number == ($pr | tonumber))' "$SIGNATURES_FILE" 2>/dev/null || echo "")
+          
+          if [ -z "$EXISTING" ]; then
+            # Add new signature
+            echo "Adding signature to file..."
+            jq --arg user "$USERNAME" \
+               --arg date "$DATE" \
+               --arg pr "$PR_NUMBER" \
+               --arg approved_by "$APPROVED_BY" \
+               '.signatures += [{
+                 "username": $user,
+                 "date": $date,
+                 "pr_number": ($pr | tonumber),
+                 "approved_by": $approved_by
+               }]' "$SIGNATURES_FILE" > tmp.json && mv tmp.json "$SIGNATURES_FILE"
+            
+            echo "✅ Added signature for $USERNAME"
+            echo "File contents after update:"
+            cat "$SIGNATURES_FILE"
+          else
+            echo "ℹ️ Signature already exists for $USERNAME on PR #$PR_NUMBER"
+          fi
+          
+          # Configure git
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Debug: Check git status
+          echo "=== Git status ==="
+          git status
+          
+          echo "=== Git diff ==="
+          git diff "$SIGNATURES_FILE"
+          
+          # Add the file to git and commit
+          git add "$SIGNATURES_FILE"
+          
+          # Store signature in ClickHouse
+          echo "Storing signature in ClickHouse..."
+          
+          # Format date for ClickHouse DateTime (YYYY-MM-DD HH:MM:SS)
+          CH_DATE=$(date -u +"%Y-%m-%d %H:%M:%S")
+          
+          # Prepare SQL INSERT query
+          SQL_QUERY="INSERT INTO docs_trademark_agreements.signatures (date, user_name, pr_number) VALUES ('$CH_DATE', '$USERNAME', $PR_NUMBER)"
+          
+          echo "Executing SQL: $SQL_QUERY"
+          
+          # Send to ClickHouse
+          RESPONSE=$(curl -s -w "%{http_code}" -o /tmp/ch_response.txt \
+            -X POST \
+            -H "x-clickhouse-user: docs_feedback" \
+            -H "x-clickhouse-key: " \
+            -H "Content-Type: text/plain" \
+            -d "$SQL_QUERY" \
+            "https://sql-clickhouse.clickhouse.com")
+          
+          HTTP_CODE="${RESPONSE: -3}"
+          RESPONSE_BODY=$(cat /tmp/ch_response.txt)
+          
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "✅ Signature stored successfully in ClickHouse"
+          else
+            echo "❌ Failed to store signature in ClickHouse"
+            echo "HTTP Code: $HTTP_CODE"
+            echo "Response: $RESPONSE_BODY"
+            # Don't exit 1 here - we don't want to fail the workflow if ClickHouse is down
+            echo "⚠️ Continuing workflow despite ClickHouse error"
+          fi

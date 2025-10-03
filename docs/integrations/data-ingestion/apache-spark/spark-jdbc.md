@@ -5,6 +5,7 @@ slug: /integrations/apache-spark/spark-jdbc
 description: 'Introduction to Apache Spark with ClickHouse'
 keywords: ['clickhouse', 'Apache Spark', 'jdbc', 'migrating', 'data']
 title: 'Spark JDBC'
+doc_type: 'guide'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -31,7 +32,6 @@ public static void main(String[] args) {
         String jdbcURL = "jdbc:ch://localhost:8123/default";
         String query = "select * from example_table where id > 2";
 
-
         //---------------------------------------------------------------------------------------------------
         // Load the table from ClickHouse using jdbc method
         //---------------------------------------------------------------------------------------------------
@@ -54,9 +54,7 @@ public static void main(String[] args) {
                 .option("query", query)
                 .load();
 
-
         df2.show();
-
 
         // Stop the Spark session
         spark.stop();
@@ -73,7 +71,6 @@ object ReadData extends App {
 
   val jdbcURL = "jdbc:ch://localhost:8123/default"
   val query: String = "select * from example_table where id > 2"
-
 
   //---------------------------------------------------------------------------------------------------
   // Load the table from ClickHouse using jdbc method
@@ -98,8 +95,6 @@ object ReadData extends App {
     .load()
 
   df2.show()
-
-
 
   // Stop the Spark session// Stop the Spark session
   spark.stop()
@@ -188,7 +183,6 @@ df.show()
         rows.add(RowFactory.create(1, "John"));
         rows.add(RowFactory.create(2, "Doe"));
 
-
         Dataset<Row> df = spark.createDataFrame(rows, schema);
 
         //---------------------------------------------------------------------------------------------------
@@ -212,7 +206,6 @@ df.show()
                 .option("password", "123456")
                 .save();
 
-
         // Stop the Spark session
         spark.stop();
     }
@@ -233,7 +226,6 @@ object WriteData extends App {
   jdbcProperties.put("password", "123456")
 
   // Create a sample DataFrame
-
 
   val rows = Seq(Row(1, "John"), Row(2, "Doe"))
 
@@ -267,7 +259,6 @@ object WriteData extends App {
     .option("user", "default")
     .option("password", "123456")
     .save()
-
 
   // Stop the Spark session// Stop the Spark session
   spark.stop()
@@ -313,7 +304,6 @@ df.write \
     .mode("append") \
     .save()
 
-
 ```
 
 </TabItem>
@@ -337,7 +327,6 @@ df.write \
 
 </TabItem>
 </Tabs>
-
 
 ## Parallelism {#parallelism}
 

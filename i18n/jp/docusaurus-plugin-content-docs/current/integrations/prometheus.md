@@ -1,9 +1,9 @@
 ---
-'slug': '/integrations/prometheus'
-'sidebar_label': 'Prometheus'
-'title': 'Prometheus'
-'description': 'Export ClickHouse metrics to Prometheus'
-'keywords':
+slug: '/integrations/prometheus'
+sidebar_label: 'Prometheus'
+title: 'Prometheus'
+description: 'Export ClickHouse metrics to Prometheus'
+keywords:
 - 'prometheus'
 - 'grafana'
 - 'monitoring'

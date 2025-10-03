@@ -5,13 +5,13 @@
     "hitsPerPage": 20,
     "maxValuesPerFacet": 100,
     "searchableAttributes": [
+      "title",
       "h1",
-      "h2",
-      "unordered(keywords)",
+      "h2", 
       "h3",
+      "keywords",
       "content",
-      "h4",
-      "title"
+      "h4"
     ],
     "numericAttributesToIndex": null,
     "attributesToRetrieve": [
@@ -20,26 +20,56 @@
       "anchor",
       "url",
       "url_without_anchor",
-      "type"
+      "type",
+      "title",
+      "doc_type"
     ],
     "camelCaseAttributes": [
-      "h2"
+      "h1",
+      "h2",
+      "h3", 
+      "title"
     ],
     "attributeCriteriaComputedByMinProximity": false,
     "distinct": true,
     "unretrievableAttributes": null,
-    "optionalWords": null,
-    "attributesForFaceting": null,
+    "optionalWords": [
+      "clickhouse",
+      "database",
+      "function", 
+      "query",
+      "table",
+      "how",
+      "to",
+      "what",
+      "is",
+      "can",
+      "do",
+      "does",
+      "will",
+      "should",
+      "the",
+      "a",
+      "an"
+    ],
+    "attributesForFaceting": [
+      "doc_type"
+    ],
     "attributesToSnippet": [
-      "content:10"
+      "content:15",
+      "title:10"
     ],
     "attributesToHighlight": [
       "hierarchy",
-      "content"
+      "content",
+      "title",
+      "h1",
+      "h2",
+      "h3"
     ],
     "paginationLimitedTo": 1000,
     "attributeForDistinct": "url",
-    "exactOnSingleWordQuery": "attribute",
+    "exactOnSingleWordQuery": "word",
     "disableExactOnAttributes": [
       "content"
     ],
@@ -56,8 +86,8 @@
       "desc(score)",
       "desc(page_rank)"
     ],
-    "separatorsToIndex": "_",
-    "removeWordsIfNoResults": "none",
+    "separatorsToIndex": "_-",
+    "removeWordsIfNoResults": "allOptional",
     "queryType": "prefixLast",
     "highlightPreTag": "<em>",
     "highlightPostTag": "</span>",
@@ -72,129 +102,51 @@
   },
   "rules": [
     {
-      "_metadata": {
-        "lastUpdate": 1740676875
-      },
       "conditions": [
         {
-          "anchoring": "is",
-          "pattern": "if",
-          "alternatives": true
+          "anchoring": "contains",
+          "pattern": "how to scale"
         }
       ],
       "consequence": {
         "params": {
-          "query": "conditional functions"
-        },
-        "filterPromotes": true
+          "query": "scaling horizontal distributed"
+        }
       },
       "enabled": true,
-      "objectID": "qr-1738846919179"
+      "objectID": "how-to-scale-rule"
     },
     {
-      "_metadata": {
-        "lastUpdate": 1740676875
-      },
       "conditions": [
         {
-          "anchoring": "is",
-          "pattern": "engine",
-          "alternatives": true
+          "anchoring": "contains", 
+          "pattern": "how to optimize"
         }
       ],
       "consequence": {
         "params": {
-          "query": "table engine"
-        },
-        "filterPromotes": true
+          "query": "optimization performance tuning"
+        }
       },
       "enabled": true,
-      "objectID": "qr-1737830547773"
+      "objectID": "how-to-optimize-rule"
     },
     {
-      "_metadata": {
-        "lastUpdate": 1740676875
-      },
       "conditions": [
         {
-          "anchoring": "is",
-          "pattern": "log",
-          "alternatives": true
+          "anchoring": "contains",
+          "pattern": "what is"
         }
       ],
       "consequence": {
         "params": {
-          "query": "log logarithm"
-        },
-        "filterPromotes": true
-      },
-      "enabled": true,
-      "objectID": "qr-1737830510872"
-    },
-    {
-      "_metadata": {
-        "lastUpdate": 1740676875
-      },
-      "conditions": [
-        {
-          "anchoring": "is",
-          "pattern": "distinct",
-          "alternatives": true
+          "removeWordsIfNoResults": "allOptional"
         }
-      ],
-      "consequence": {
-        "params": {
-          "query": "distinct clause"
-        },
-        "filterPromotes": true
       },
       "enabled": true,
-      "objectID": "qr-1737830488435"
+      "objectID": "what-is-rule"
     },
     {
-      "_metadata": {
-        "lastUpdate": 1740676875
-      },
-      "conditions": [
-        {
-          "anchoring": "is",
-          "pattern": "case when",
-          "alternatives": true
-        }
-      ],
-      "consequence": {
-        "params": {
-          "query": "conditional functions"
-        },
-        "filterPromotes": true
-      },
-      "enabled": true,
-      "objectID": "qr-1737830405215"
-    },
-    {
-      "_metadata": {
-        "lastUpdate": 1740676875
-      },
-      "conditions": [
-        {
-          "anchoring": "is",
-          "pattern": "case",
-          "alternatives": true
-        }
-      ],
-      "consequence": {
-        "params": {
-          "query": "conditional function"
-        },
-        "filterPromotes": true
-      },
-      "enabled": true,
-      "objectID": "qr-1737828323150"
-    },
-    {
-      "_metadata": {
-        "lastUpdate": 1740676875
-      },
       "conditions": [
         {
           "anchoring": "is",
@@ -209,67 +161,7 @@
         "filterPromotes": true
       },
       "enabled": true,
-      "objectID": "qr-1737813426327"
-    },
-    {
-      "_metadata": {
-        "lastUpdate": 1740676875
-      },
-      "conditions": [
-        {
-          "anchoring": "is",
-          "pattern": "config.xml",
-          "alternatives": true
-        }
-      ],
-      "consequence": {
-        "params": {
-          "query": "Server Settings"
-        },
-        "filterPromotes": true
-      },
-      "enabled": true,
-      "objectID": "qr-1737813311997"
-    },
-    {
-      "_metadata": {
-        "lastUpdate": 1740676875
-      },
-      "conditions": [
-        {
-          "anchoring": "is",
-          "pattern": "client",
-          "alternatives": true
-        }
-      ],
-      "consequence": {
-        "params": {
-          "query": "clickhouse client"
-        },
-        "filterPromotes": true
-      },
-      "enabled": true,
-      "objectID": "qr-1737813247403"
-    },
-    {
-      "_metadata": {
-        "lastUpdate": 1740676875
-      },
-      "conditions": [
-        {
-          "anchoring": "is",
-          "pattern": "between",
-          "alternatives": true
-        }
-      ],
-      "consequence": {
-        "params": {
-          "query": "between function"
-        },
-        "filterPromotes": true
-      },
-      "enabled": true,
-      "objectID": "qr-1737813177623"
+      "objectID": "qr-clickhouse-main"
     }
   ]
 }

@@ -1,16 +1,16 @@
 ---
-'sidebar_position': 1
-'sidebar_label': '自動スケーリング'
-'slug': '/manage/scaling'
-'description': 'ClickHouse Cloud での自動スケーリングの設定'
-'keywords':
+sidebar_position: 1
+sidebar_label: '自動スケーリング'
+slug: '/manage/scaling'
+description: 'ClickHouse Cloud での自動スケーリングの設定'
+keywords:
 - 'autoscaling'
 - 'auto scaling'
 - 'scaling'
 - 'horizontal'
 - 'vertical'
 - 'bursts'
-'title': 'Automatic Scaling'
+title: 'Automatic Scaling'
 ---
 
 import Image from '@theme/IdealImage';

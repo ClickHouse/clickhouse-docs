@@ -1,10 +1,10 @@
 ---
-'description': 'グラファイトマージツリータイプのエンジンを持つテーブルに使用される `graphite_rollup` パラメータに関する情報を含むシステムテーブルです。'
-'keywords':
+description: 'グラファイトマージツリータイプのエンジンを持つテーブルに使用される `graphite_rollup` パラメータに関する情報を含むシステムテーブルです。'
+keywords:
 - 'system table'
 - 'graphite_retentions'
-'slug': '/operations/system-tables/graphite_retentions'
-'title': 'system.graphite_retentions'
+slug: '/operations/system-tables/graphite_retentions'
+title: 'system.graphite_retentions'
 ---
 
 

@@ -5,6 +5,7 @@ pagination_next: null
 sidebar_position: 2
 description: 'Golang SDK for ClickStack - The ClickHouse Observability Stack'
 title: 'Golang'
+doc_type: 'guide'
 ---
 
 ClickStack uses the OpenTelemetry standard for collecting telemetry data (logs and
@@ -144,7 +145,6 @@ func ExampleHandler(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-
 ### Gin application example {#gin-application-example}
 
 For this example, we will be using `gin-gonic/gin`.
@@ -228,7 +228,6 @@ func main() {
   router.Run(":7777")
 }
 ```
-
 
 ### Configure environment variables {#configure-environment-variables}
 

@@ -4,6 +4,7 @@ title: 'Which ClickHouse version to use in production?'
 toc_hidden: true
 toc_priority: 10
 description: 'This page provides guidance on which ClickHouse version to use in production'
+doc_type: 'guide'
 ---
 
 # Which ClickHouse version to use in production? {#which-clickhouse-version-to-use-in-production}
@@ -24,9 +25,9 @@ So how do you properly choose which ClickHouse version to upgrade to? Or how do 
 Here are some key points to get reasonable fidelity in a pre-production environment with not-so-high costs:
 
 - Pre-production environment needs to run an as close of a set of queries as you intend to run in production:
-    - Don't make it read-only with some frozen data.
-    - Don't make it write-only with just copying data without building some typical reports.
-    - Don't wipe it clean instead of applying schema migrations.
+  - Don't make it read-only with some frozen data.
+  - Don't make it write-only with just copying data without building some typical reports.
+  - Don't wipe it clean instead of applying schema migrations.
 - Use a sample of real production data and queries. Try to choose a sample that's still representative and makes `SELECT` queries return reasonable results. Use obfuscation if your data is sensitive and internal policies do not allow it to leave the production environment.
 - Make sure that pre-production is covered by your monitoring and alerting software the same way as your production environment does.
 - If your production spans across multiple datacenters or regions, make your pre-production do the same.
@@ -57,8 +58,8 @@ Here is some guidance on how to choose between them:
 
 - `stable` is the kind of package we recommend by default. They are released roughly monthly (and thus provide new features with reasonable delay) and three latest stable releases are supported in terms of diagnostics and backporting of bug fixes.
 - `lts` are released twice a year and are supported for a year after their initial release. You might prefer them over `stable` in the following cases:
-    - Your company has some internal policies that do not allow for frequent upgrades or using non-LTS software.
-    - You are using ClickHouse in some secondary products that either do not require any complex ClickHouse features or do not have enough resources to keep it updated.
+  - Your company has some internal policies that do not allow for frequent upgrades or using non-LTS software.
+  - You are using ClickHouse in some secondary products that either do not require any complex ClickHouse features or do not have enough resources to keep it updated.
 
 Many teams who initially think that `lts` is the way to go often switch to `stable` anyway because of some recent feature that's important for their product.
 
