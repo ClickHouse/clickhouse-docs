@@ -3505,6 +3505,26 @@
       "source": "/docs/:lang1(ru|zh|jp)/:lang2(ru|zh|jp|en)/:path*",
       "destination": "/docs/:lang1/:path*",
       "permanent": true
+    },
+    {
+      "source": "/docs/operations/system-tables/crash-log",
+      "destination": "/docs/operations/system-tables/crash_log",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/system-tables/current-roles",
+      "destination": "/docs/operations/system-tables/current_roles",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/system-tables/enabled-roles",
+      "destination": "/docs/operations/system-tables/enabled_roles",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/system-tables/role-grants",
+      "destination": "/docs/operations/system-tables/role_grants",
+      "permanent": true
     }
   ]
 }

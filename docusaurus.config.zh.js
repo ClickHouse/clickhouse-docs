@@ -28,6 +28,9 @@ const config = {
       defer: true, // execute after document parsing, but before firing DOMContentLoaded event
     }
   ],
+  clientModules: [
+    require.resolve('./src/clientModules/utmPersistence.js')
+  ],
   // Settings for Docusaurus Faster - build optimizations
   future: {
     experimental_faster: {

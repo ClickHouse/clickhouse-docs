@@ -15,6 +15,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     sed -i '' 's|(/sql-reference/statements/select#replace)|(/sql-reference/statements/select)|g' docs/guides/developer/dynamic-column-selection.md
     sed -i '' 's|(/sql-reference/statements/select#except)|(/sql-reference/statements/select)|g' docs/guides/developer/dynamic-column-selection.md
     sed -i '' 's|(/cloud/reference/cloud-compatibility.md)|(/whats-new/cloud-compatibility)|g' docs/sql-reference/dictionaries/_snippet_dictionary_in_cloud.md
+    sed -i '' 's|<auxiliary_zookeepers>|`<auxiliary_zookeepers>`|g' docs/operations/server-configuration-parameters/settings.md
 else
     # Linux
     sed -i 's|(../../quick-start\.mdx)|(/get-started/quick-start)|g' docs/operations/utilities/clickhouse-local.md
@@ -23,4 +24,5 @@ else
     sed -i 's|(/sql-reference/statements/select#replace)|(/sql-reference/statements/select)|g' docs/guides/developer/dynamic-column-selection.md
     sed -i 's|(/sql-reference/statements/select#except)|(/sql-reference/statements/select)|g' docs/guides/developer/dynamic-column-selection.md
     sed -i 's|(/cloud/reference/cloud-compatibility.md)|(/whats-new/cloud-compatibility)|g' docs/sql-reference/dictionaries/_snippet_dictionary_in_cloud.md
+    sed -i 's|<auxiliary_zookeepers>|`<auxiliary_zookeepers>`|g' docs/operations/server-configuration-parameters/settings.md
 fi
