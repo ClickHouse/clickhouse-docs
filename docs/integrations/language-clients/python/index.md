@@ -25,10 +25,10 @@ ClickHouse Connect is a core database driver providing interoperability with a w
 - The core driver and [ClickHouse Connect SQLAlchemy](sqlalchemy.md) implementation are the preferred method for connecting ClickHouse to Apache Superset. Use the `ClickHouse Connect` database connection, or `clickhousedb` SQLAlchemy dialect connection string.
 
 
-This documentation is current as of the clickhouse-connect beta release 0.9.2.
+This documentation is current as of the clickhouse-connect release 0.9.2.
 
 :::note
-The official ClickHouse Connect Python driver uses the HTTP protocol for communication with the ClickHouse server. It has some advantages (such as better flexibility, HTTP load balancer support, and improved compatibility with JDBC-based tools) and disadvantages (such as slightly lower compression and performance, and a lack of support for some complex features of the native TCP-based protocol). For some use cases, you may consider using one of the [Community Python drivers](/interfaces/third-party/client-libraries.md) that use the native TCP-based protocol.
+The official ClickHouse Connect Python driver uses the HTTP protocol for communication with the ClickHouse server. This enables HTTP load balancer support and works well in enterprise environments with firewalls and proxies, but has slightly lower compression and performance compared to the native TCP-based protocol, and lacks support for some advanced features like query cancellation. For some use cases, you may consider using one of the [Community Python drivers](/interfaces/third-party/client-libraries.md) that use the native TCP-based protocol.
 :::
 
 ## Requirements and compatibility {#requirements-and-compatibility}
@@ -63,7 +63,7 @@ ClickHouse Connect can also be installed from source:
 
 ## Support policy {#support-policy}
 
-ClickHouse Connect is currently in beta and only the current beta release is actively supported. Please update to the latest version before reporting any issues. Issues should be filed in the [GitHub project](https://github.com/ClickHouse/clickhouse-connect/issues). Future releases of ClickHouse Connect are guaranteed to be compatible with actively supported ClickHouse versions at the time of release. ClickHouse Connect officially supports the current stable release and the two most recent LTS releases of ClickHouse server, matching ClickHouse's own [support policy](https://clickhouse.com/docs/knowledgebase/production#how-to-choose-between-clickhouse-releases). Our CI test matrix validates against the latest two LTS releases and the last three stable versions. Due to the HTTP protocol and minimal breaking changes between ClickHouse releases, ClickHouse Connect generally works well with versions outside the officially supported range, though compatibility with certain advanced data types may vary.
+Please update to the latest version of ClickHouse Connect before reporting any issues. Issues should be filed in the [GitHub project](https://github.com/ClickHouse/clickhouse-connect/issues). Future releases of ClickHouse Connect are intended be compatible with actively supported ClickHouse versions at the time of release. Actively supported versions of ClickHouse server can be found [here](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md). If you're unsure what version of ClickHouse server to use, read this discussion [here](https://clickhouse.com/docs/knowledgebase/production#how-to-choose-between-clickhouse-releases). Our CI test matrix tests against the latest two LTS releases and the latest three stable releases. However, due to the HTTP protocol and minimal breaking changes between ClickHouse releases, ClickHouse Connect generally works well with server versions outside the officially supported range, though compatibility with certain advanced data types may vary.
 
 ## Basic usage {#basic-usage}
 
@@ -118,8 +118,8 @@ To retrieve data using ClickHouse SQL, use the client `query` method:
 
 ```python
 result = client.query('SELECT max(key), avg(metric) FROM new_table')
-result.result_rows
-Out[13]: [(2000, -50.9035)]
+print(result.result_rows)
+# Output: [(2000, -50.9035)]
 ```
 
 ## ClickHouse Connect driver API {#clickhouse-connect-driver-api}

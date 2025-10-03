@@ -65,4 +65,95 @@ In most cases, it is unnecessary to override the write format for a data type, b
 | Variant               | object                  |                   | At this time on all variants are inserted as Strings and parsed by the ClickHouse server                    |
 | Dynamic               | object                  |                   | Warning -- at this time any inserts into a Dynamic column are persisted as a ClickHouse String              |
 
+### Specialized insert methods {#specialized-insert-methods}
+
+ClickHouse Connect provides specialized insert methods for common data formats:
+
+- `insert_df` -- Insert a Pandas DataFrame. Instead of a Python Sequence of Sequences `data` argument, the second parameter of this method requires a `df` argument that must be a Pandas DataFrame instance. ClickHouse Connect automatically processes the DataFrame as a column oriented datasource, so the `column_oriented` parameter is not required or available.
+- `insert_arrow` -- Insert a PyArrow Table. ClickHouse Connect passes the Arrow table unmodified to the ClickHouse server for processing, so only the `database` and `settings` arguments are available in addition to `table` and `arrow_table`.
+- `insert_df_arrow` -- Insert an arrow-backed Pandas DataFrame or a Polars DataFrame. ClickHouse Connect will automatically determine if the DataFrame is a Pandas or Polars type. If Pandas, validation will be performed to ensure that each column's dtype backend is Arrow-based and an error will be raised if any are not.
+
+:::note
+A NumPy array is a valid Sequence of Sequences and can be used as the `data` argument to the main `insert` method, so a specialized method is not required.
+:::
+
+#### Pandas DataFrame insert {#pandas-dataframe-insert}
+
+```python
+import clickhouse_connect
+import pandas as pd
+
+client = clickhouse_connect.get_client()
+
+df = pd.DataFrame({
+    "id": [1, 2, 3],
+    "name": ["Alice", "Bob", "Joe"],
+    "age": [25, 30, 28],
+})
+
+client.insert_df("users", df)
+```
+
+#### PyArrow Table insert {#pyarrow-table-insert}
+
+```python
+import clickhouse_connect
+import pyarrow as pa
+
+client = clickhouse_connect.get_client()
+
+arrow_table = pa.table({
+    "id": [1, 2, 3],
+    "name": ["Alice", "Bob", "Joe"],
+    "age": [25, 30, 28],
+})
+
+client.insert_arrow("users", arrow_table)
+```
+
+#### Arrow-backed DataFrame insert (pandas 2.x) {#arrow-backed-dataframe-insert-pandas-2}
+
+```python
+import clickhouse_connect
+import pandas as pd
+
+client = clickhouse_connect.get_client()
+
+# Convert to Arrow-backed dtypes for better performance
+df = pd.DataFrame({
+    "id": [1, 2, 3],
+    "name": ["Alice", "Bob", "Joe"],
+    "age": [25, 30, 28],
+}).convert_dtypes(dtype_backend="pyarrow")
+
+client.insert_df_arrow("users", df)
+```
+
+## File inserts {#file-inserts}
+
+The `clickhouse_connect.driver.tools` package includes the `insert_file` method that allows inserting data directly from the file system into an existing ClickHouse table. Parsing is delegated to the ClickHouse server. `insert_file` accepts the following parameters:
+
+| Parameter    | Type            | Default           | Description                                                                                                               |
+|--------------|-----------------|-------------------|---------------------------------------------------------------------------------------------------------------------------|
+| client       | Client          | *Required*        | The `driver.Client` used to perform the insert                                                                            |
+| table        | str             | *Required*        | The ClickHouse table to insert into. The full table name (including database) is permitted.                               |
+| file_path    | str             | *Required*        | The native file system path to the data file                                                                              |
+| fmt          | str             | CSV, CSVWithNames | The ClickHouse Input Format of the file. CSVWithNames is assumed if `column_names` is not provided                        |
+| column_names | Sequence of str | *None*            | A list of column names in the data file. Not required for formats that include column names                               |
+| database     | str             | *None*            | Database of the table. Ignored if the table is fully qualified. If not specified, the insert will use the client database |
+| settings     | dict            | *None*            | See [settings description](driver-api.md#settings-argument).                                                              |
+| compression  | str             | *None*            | A recognized ClickHouse compression type (zstd, lz4, gzip) used for the Content-Encoding HTTP header                      |
+
+For files with inconsistent data or date/time values in an unusual format, settings that apply to data imports (such as `input_format_allow_errors_num` and `input_format_allow_errors_num`) are recognized for this method.
+
+```python
+import clickhouse_connect
+from clickhouse_connect.driver.tools import insert_file
+
+client = clickhouse_connect.get_client()
+insert_file(client, 'example_table', 'my_data.csv',
+            settings={'input_format_allow_errors_ratio': .2,
+                      'input_format_allow_errors_num': 5})
+```
+
 

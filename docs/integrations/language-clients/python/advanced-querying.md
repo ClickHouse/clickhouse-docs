@@ -32,6 +32,18 @@ Note that `QueryContext`s are not thread safe, but a copy can be obtained in a m
 
 ## Streaming queries {#streaming-queries}
 
+The ClickHouse Connect Client provides multiple methods for retrieving data as a stream (implemented as a Python generator):
+
+- `query_column_block_stream` -- Returns query data in blocks as a sequence of columns using native Python objects
+- `query_row_block_stream` -- Returns query data as a block of rows using native Python objects
+- `query_rows_stream` -- Returns query data as a sequence of rows using native Python objects
+- `query_np_stream` -- Returns each ClickHouse block of query data as a NumPy array
+- `query_df_stream` -- Returns each ClickHouse Block of query data as a Pandas DataFrame
+- `query_arrow_stream` -- Returns query data in PyArrow RecordBlocks
+- `query_df_arrow_stream` -- Returns each ClickHouse Block of query data as an arrow-backed Pandas DataFrame or a Polars DataFrame depending on the kwarg `dataframe_library` (default is "pandas").
+
+Each of these methods returns a `ContextStream` object that must be opened via a `with` statement to start consuming the stream.
+
 ### Data blocks {#data-blocks}
 ClickHouse Connect processes all data from the primary `query` method as a stream of blocks received from the ClickHouse server. These blocks are transmitted in the custom "Native" format to and from ClickHouse. A "block" is simply a sequence of columns of binary data, where each column contains an equal number of data values of the specified data type. (As a columnar database, ClickHouse stores this data in a similar form.) The size of a block returned from a query is governed by two user settings that can be set at several levels (user profile, user, session, or query). They are:
 
@@ -73,8 +85,6 @@ The `query_np_stream` method return each block as a two-dimensional NumPy Array.
 
 The `query_df_stream` method returns each ClickHouse Block as a two-dimensional Pandas DataFrame. Here's an example which shows that the `StreamContext` object can be used as a context in a deferred fashion (but only once).
 
-Finally, the `query_arrow_stream` method returns a ClickHouse `ArrowStream` formatted result as a `pyarrow.ipc.RecordBatchStreamReader` wrapped in `StreamContext`. Each iteration of the stream returns PyArrow RecordBlock.
-
 ```python
 df_stream = client.query_df_stream('SELECT * FROM hits')
 column_names = df_stream.source.column_names
@@ -82,6 +92,263 @@ with df_stream:
     for df in df_stream:
         <do something with the pandas DataFrame>
 ```
+
+The `query_df_arrow_stream` method returns each ClickHouse Block as a DataFrame with PyArrow dtype backend. This method supports both Pandas (2.x or later) and Polars DataFrames via the `dataframe_library` parameter (defaults to `"pandas"`). Each iteration yields a DataFrame converted from PyArrow record batches, providing better performance and memory efficiency for certain data types.
+
+Finally, the `query_arrow_stream` method returns a ClickHouse `ArrowStream` formatted result as a `pyarrow.ipc.RecordBatchStreamReader` wrapped in `StreamContext`. Each iteration of the stream returns PyArrow RecordBlock.
+
+### Streaming examples {#streaming-examples}
+
+#### Stream rows {#stream-rows}
+
+```python
+import clickhouse_connect
+
+client = clickhouse_connect.get_client()
+
+# Stream large result sets row by row
+with client.query_rows_stream("SELECT number, number * 2 as doubled FROM system.numbers LIMIT 100000") as stream:
+    for row in stream:
+        print(row)  # Process each row
+        # Output:
+        # (0, 0)
+        # (1, 2)
+        # (2, 4)
+        # ....
+```
+
+#### Stream row blocks {#stream-row-blocks}
+
+```python
+import clickhouse_connect
+
+client = clickhouse_connect.get_client()
+
+# Stream in blocks of rows (more efficient than row-by-row)
+with client.query_row_block_stream("SELECT number, number * 2 FROM system.numbers LIMIT 100000") as stream:
+    for block in stream:
+        print(f"Received block with {len(block)} rows")
+        # Output:
+        # Received block with 65409 rows
+        # Received block with 34591 rows
+```
+
+#### Stream Pandas DataFrames {#stream-pandas-dataframes}
+
+```python
+import clickhouse_connect
+
+client = clickhouse_connect.get_client()
+
+# Stream query results as Pandas DataFrames
+with client.query_df_stream("SELECT number, toString(number) AS str FROM system.numbers LIMIT 100000") as stream:
+    for df in stream:
+        # Process each DataFrame block
+        print(f"Received DataFrame with {len(df)} rows")
+        print(df.head(3))
+        # Output:
+        # Received DataFrame with 65409 rows
+        #    number str
+        # 0       0   0
+        # 1       1   1
+        # 2       2   2
+        # Received DataFrame with 34591 rows
+        #    number    str
+        # 0   65409  65409
+        # 1   65410  65410
+        # 2   65411  65411
+```
+
+#### Stream Arrow batches {#stream-arrow-batches}
+
+```python
+import clickhouse_connect
+
+client = clickhouse_connect.get_client()
+
+# Stream query results as Arrow record batches
+with client.query_arrow_stream("SELECT * FROM large_table") as stream:
+    for arrow_batch in stream:
+        # Process each Arrow batch
+        print(f"Received Arrow batch with {arrow_batch.num_rows} rows")
+        # Output:
+        # Received Arrow batch with 65409 rows
+        # Received Arrow batch with 34591 rows
+```
+
+## NumPy, Pandas, and Arrow queries {#numpy-pandas-and-arrow-queries}
+
+ClickHouse Connect provides specialized query methods for working with NumPy, Pandas, and Arrow data structures. These methods allow you to retrieve query results directly in these popular data formats without manual conversion.
+
+### NumPy queries {#numpy-queries}
+
+The `query_np` method returns query results as a NumPy array instead of a ClickHouse Connect `QueryResult`.
+
+```python
+import clickhouse_connect
+
+client = clickhouse_connect.get_client()
+
+# Query returns a NumPy array
+np_array = client.query_np("SELECT number, number * 2 AS doubled FROM system.numbers LIMIT 5")
+
+print(type(np_array))
+# Output:
+# <class "numpy.ndarray">
+
+print(np_array)
+# Output:
+# [[0 0]
+#  [1 2]
+#  [2 4]
+#  [3 6]
+#  [4 8]]
+```
+
+### Pandas queries {#pandas-queries}
+
+The `query_df` method returns query results as a Pandas DataFrame instead of a ClickHouse Connect `QueryResult`.
+
+```python
+import clickhouse_connect
+
+client = clickhouse_connect.get_client()
+
+# Query returns a Pandas DataFrame
+df = client.query_df("SELECT number, number * 2 AS doubled FROM system.numbers LIMIT 5")
+
+print(type(df))
+# Output: <class "pandas.core.frame.DataFrame">
+print(df)
+# Output:
+#    number  doubled
+# 0       0        0
+# 1       1        2
+# 2       2        4
+# 3       3        6
+# 4       4        8
+```
+
+### PyArrow queries {#pyarrow-queries}
+
+The `query_arrow` method returns query results as a PyArrow Table. It utilizes the ClickHouse `Arrow` format directly, so it only accepts three arguments in common with the main `query` method: `query`, `parameters`, and `settings`. In addition, there is an additional argument, `use_strings`, which determines whether the Arrow Table will render ClickHouse String types as strings (if True) or bytes (if False).
+
+```python
+import clickhouse_connect
+
+client = clickhouse_connect.get_client()
+
+# Query returns a PyArrow Table
+arrow_table = client.query_arrow("SELECT number, toString(number) AS str FROM system.numbers LIMIT 3")
+
+print(type(arrow_table))
+# Output:
+# <class "pyarrow.lib.Table">
+
+print(arrow_table)
+# Output:
+# pyarrow.Table
+# number: uint64 not null
+# str: string not null
+# ----
+# number: [[0,1,2]]
+# str: [["0","1","2"]]
+```
+
+### Arrow-backed DataFrames {#arrow-backed-dataframes}
+
+ClickHouse Connect supports fast, memory‑efficient DataFrame creation from Arrow results via the `query_df_arrow` and `query_df_arrow_stream` methods. These are thin wrappers around the Arrow query methods and perform zero‑copy conversions to DataFrames where possible:
+
+- `query_df_arrow`: Executes the query using the ClickHouse `Arrow` output format and returns a DataFrame.
+  - For `dataframe_library='pandas'`, returns a pandas 2.x DataFrame using Arrow‑backed dtypes (`pd.ArrowDtype`). This requires pandas 2.x and leverages zero‑copy buffers where possible for excellent performance and low memory overhead.
+  - For `dataframe_library='polars'`, returns a Polars DataFrame created from the Arrow table (`pl.from_arrow`), which is similarly efficient and can be zero‑copy depending on the data.
+- `query_df_arrow_stream`: Streams results as a sequence of DataFrames (pandas 2.x or Polars) converted from Arrow stream batches.
+
+#### Query to Arrow-backed DataFrame {#query-to-arrow-backed-dataframe}
+
+```python
+import clickhouse_connect
+
+client = clickhouse_connect.get_client()
+
+# Query returns a Pandas DataFrame with Arrow dtypes (requires pandas 2.x)
+df = client.query_df_arrow(
+    "SELECT number, toString(number) AS str FROM system.numbers LIMIT 3",
+    dataframe_library="pandas"
+)
+
+print(df.dtypes)
+# Output:
+# number    uint64[pyarrow]
+# str       string[pyarrow]
+# dtype: object
+
+# Or use Polars
+polars_df = client.query_df_arrow(
+    "SELECT number, toString(number) AS str FROM system.numbers LIMIT 3",
+    dataframe_library="polars"
+)
+print(df.dtypes)
+# Output:
+# [UInt64, String]
+
+
+# Streaming into batches of DataFrames (polars shown)
+with client.query_df_arrow_stream(
+    "SELECT number, toString(number) AS str FROM system.numbers LIMIT 100000", dataframe_library="polars"
+) as stream:
+    for df_batch in stream:
+        print(f"Received {type(df_batch)} batch with {len(df_batch)} rows and dtypes: {df_batch.dtypes}")
+        # Output:
+        # Received <class 'polars.dataframe.frame.DataFrame'> batch with 65409 rows and dtypes: [UInt64, String]
+        # Received <class 'polars.dataframe.frame.DataFrame'> batch with 34591 rows and dtypes: [UInt64, String]
+```
+
+#### Notes and caveats {#notes-and-caveats}
+- Arrow type mapping: When returning data in Arrow format, ClickHouse maps types to the closest supported Arrow types. Some ClickHouse types do not have a native Arrow equivalent and are returned as raw bytes in Arrow fields (usually `BINARY` or `FIXED_SIZE_BINARY`).
+  - Examples: `IPv4` is represented as Arrow `UINT32`; `IPv6` and large integers (`Int128/UInt128/Int256/UInt256`) are often represented as `FIXED_SIZE_BINARY`/`BINARY` with raw bytes.
+  - In these cases, the DataFrame column will contain byte values backed by the Arrow field; it is up to the client code to interpret/convert those bytes according to ClickHouse semantics.
+- Unsupported Arrow data types (e.g., UUID/ENUM as true Arrow types) are not emitted; values are represented using the closest supported Arrow type (often as binary bytes) for output.
+- Pandas requirement: Arrow‑backed dtypes require pandas 2.x. For older pandas versions, use `query_df` (non‑Arrow) instead.
+- Strings vs binary: The `use_strings` option (when supported by the server setting `output_format_arrow_string_as_string`) controls whether ClickHouse `String` columns are returned as Arrow strings or as binary.
+
+#### Mismatched ClickHouse/Arrow type conversion examples {#mismatched-clickhousearrow-type-conversion-examples}
+
+When ClickHouse returns columns as raw binary data (e.g., `FIXED_SIZE_BINARY` or `BINARY`), it is the responsibility of application code to convert these bytes to appropriate Python types. The examples below illustrate that some conversions are feasible using DataFrame library APIs, while others may require pure Python approaches like `struct.unpack` (which sacrifice performance but maintain flexibility).
+
+`Date` columns can arrive as `UINT16` (days since the Unix epoch, 1970‑01‑01). Converting inside the DataFrame is efficient and straightforward:
+```python
+# Polars
+df = df.with_columns(pl.col("event_date").cast(pl.Date))
+
+# Pandas
+df["event_date"] = pd.to_datetime(df["event_date"], unit="D")
+```
+
+Columns like `Int128` can arrive as `FIXED_SIZE_BINARY` with raw bytes. Polars provides native support for 128-bit integers:
+```python
+# Polars - native support
+df = df.with_columns(pl.col("data").bin.reinterpret(dtype=pl.Int128, endianness="little"))
+```
+
+As of NumPy 2.3 there is no public 128-bit integer dtype, so we must fall back to pure Python and can do something like:
+
+```python
+# Assuming we have a pandas dataframe with an Int128 column of dtype fixed_size_binary[16][pyarrow]
+
+print(df)
+# Output:
+#   str_col                                        int_128_col
+# 0    num1  b'\\x15}\\xda\\xeb\\x18ZU\\x0fn\\x05\\x01\\x00\\x00\\x00...
+# 1    num2  b'\\x08\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00...
+# 2    num3  b'\\x15\\xdfp\\x81r\\x9f\\x01\\x00\\x00\\x00\\x00\\x00\\x...
+
+print([int.from_bytes(n, byteorder="little") for n in df["int_128_col"].to_list()])
+# Output:
+# [1234567898765432123456789, 8, 456789123456789]
+```
+
+The key takeaway: application code must handle these conversions based on the capabilities of the chosen DataFrame library and the acceptable performance trade-offs. When DataFrame-native conversions aren't available, pure Python approaches remain an option.
 
 ## Read formats {#read-formats}
 

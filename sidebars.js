@@ -510,6 +510,7 @@ const sidebars = {
             "integrations/language-clients/python/additional-options",
             "integrations/language-clients/python/advanced-querying",
             "integrations/language-clients/python/advanced-inserting",
+            "integrations/language-clients/python/advanced-usage",
             "integrations/language-clients/python/sqlalchemy",
           ]
         },

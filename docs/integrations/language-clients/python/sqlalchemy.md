@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'SQLAlchemy'
-sidebar_position: 6
+sidebar_position: 7
 keywords: ['clickhouse', 'python', 'sqlalchemy', 'integrate']
 description: 'ClickHouse SQLAlchemy Support'
 slug: /integrations/language-clients/python/sqlalchemy
@@ -30,7 +30,7 @@ Notes on URL/query parameters:
 - Client options: `compression` (alias for `compress`), `query_limit`, timeouts, and more.
 - HTTP/TLS options: options for the HTTP pool and TLS (for example, `ch_http_max_field_name_size=99999`, `ca_cert=certifi`).
 
-See Connection arguments and Settings in the sections below for the full list of supported options; these can also be supplied via the SQLAlchemy DSN.
+See [Connection arguments and Settings](driver-api.md#connection-arguments) in the sections below for the full list of supported options. These can also be supplied via the SQLAlchemy DSN.
 
 ## Core queries {#sqlalchemy-core-queries}
 
@@ -130,8 +130,8 @@ with Session(engine) as session:
 ## Scope and limitations
 - Core focus: Enable SQLAlchemy Core features like `SELECT` with `JOIN`s (`INNER`, `LEFT OUTER`, `FULL OUTER`, `CROSS`), `WHERE`, `ORDER BY`, `LIMIT`/`OFFSET`, and `DISTINCT`.
 - `DELETE` with `WHERE` only: The dialect supports lightweight `DELETE` but requires an explicit `WHERE` clause to avoid accidental full-table deletes. To clear a table, use `TRUNCATE TABLE`.
-- No `UPDATE`: ClickHouse is append-optimized. The dialect does not implement `UPDATE`; if you need to change data, apply transformations upstream and re-insert, or use explicit text SQL (for example, `ALTER TABLE ... UPDATE`) at your own risk.
+- No `UPDATE`: ClickHouse is append-optimized. The dialect does not implement `UPDATE`. If you need to change data, apply transformations upstream and re-insert, or use explicit text SQL (for example, `ALTER TABLE ... UPDATE`) at your own risk.
 - DDL and reflection: Creating databases and tables is supported, and reflection returns column types and table engine metadata. Traditional PK/FK/index metadata is not present because ClickHouse does not enforce those constraints.
 - ORM scope: Declarative models and inserts via `Session.add(...)`/`bulk_save_objects(...)` work for convenience. Advanced ORM features (relationship management, unit-of-work updates, cascading, eager/lazy loading semantics) are not supported.
-- Primary key semantics: `Column(..., primary_key=True)` is used by SQLAlchemy for object identity only. It does not create a server-side constraint in ClickHouse; define `ORDER BY` (and optional `PRIMARY KEY`) via table engines (for example, `MergeTree(order_by=...)`).
+- Primary key semantics: `Column(..., primary_key=True)` is used by SQLAlchemy for object identity only. It does not create a server-side constraint in ClickHouse. Define `ORDER BY` (and optional `PRIMARY KEY`) via table engines (for example, `MergeTree(order_by=...)`).
 - Transactions and server features: Two-phase transactions, sequences, `RETURNING`, and advanced isolation levels are not supported. `engine.begin()` provides a Python context manager for grouping statements but performs no actual transaction control (commit/rollback are no-ops).
