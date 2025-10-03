@@ -424,7 +424,6 @@ ClickHouse queries can accept external data in any ClickHouse format. This binar
 | structure | str or seq of str | A list of column name + data type in the data (see examples). Either `structure` or `types` is required                                       |
 | mime_type | str               | Optional MIME type of the file data. Currently ClickHouse ignores this HTTP subheader                                                         |
 
-
 To send a query with an external CSV file containing "movie" data, and combine that data with an `directors` table already present on the ClickHouse server:
 
 ```python
@@ -453,4 +452,3 @@ When using time zone aware data types in queries - in particular the Python `dat
 5. Finally, if the client `apply_server_timezone` parameter has been set to True (the default), the ClickHouse server timezone is applied.
 
 Note that if the applied timezone based on these rules is UTC, `clickhouse-connect` will _always_ return a time zone naive Python `datetime.datetime` object. Additional timezone information can then be added to this timezone naive object by the application code if desired.
-

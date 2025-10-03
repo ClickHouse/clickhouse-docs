@@ -24,7 +24,6 @@ ClickHouse Connect is a core database driver providing interoperability with a w
 - There is a [SQLAlchemy](https://www.sqlalchemy.org/) dialect in the package `clickhouse_connect.cc_sqlalchemy` which is built off of the `datatypes` and `dbi` packages. This implementation supports SQLAlchemy Core functionality including `SELECT` queries with `JOIN`s (`INNER`, `LEFT OUTER`, `FULL OUTER`, `CROSS`), `WHERE` clauses, `ORDER BY`, `LIMIT`/`OFFSET`, `DISTINCT` operations, lightweight `DELETE` statements with `WHERE` conditions, table reflection, and basic DDL operations (`CREATE TABLE`, `CREATE`/`DROP DATABASE`). While it does not support advanced ORM features or advanced DDL features, it provides robust query capabilities suitable for most analytical workloads against ClickHouse's OLAP-oriented database.
 - The core driver and [ClickHouse Connect SQLAlchemy](sqlalchemy.md) implementation are the preferred method for connecting ClickHouse to Apache Superset. Use the `ClickHouse Connect` database connection, or `clickhousedb` SQLAlchemy dialect connection string.
 
-
 This documentation is current as of the clickhouse-connect release 0.9.2.
 
 :::note
@@ -42,7 +41,6 @@ The official ClickHouse Connect Python driver uses the HTTP protocol for communi
 |       3.12.x | ✅ |         Windows | ✅ | 25.6.x (Stable) | ✅  |             |   |           2.1.x | ✅ |         |   |        |   |
 |       3.13.x | ✅ |                 |   | 25.7.x (Stable) | ✅  |             |   |           3.0.x | ✅ |         |   |        |   |
 |              |   |                 |   |    25.8.x (LTS) | ✅  |             |   |                 |   |         |   |        |   |
-
 
 ¹ClickHouse Connect has been explicitly tested against the listed platforms. In addition, untested binary wheels (with C optimization) are built for all architectures supported by the excellent [`cibuildwheel`](https://cibuildwheel.readthedocs.io/en/stable/) project. Finally, because ClickHouse Connect can also run as pure Python, the source installation should work on any recent Python installation.
 
