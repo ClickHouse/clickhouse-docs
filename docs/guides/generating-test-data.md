@@ -4,15 +4,18 @@ title: 'Generating random test data in ClickHouse'
 slug: /guides/generating-test-data
 description: 'Learn about Generating Random Test Data in ClickHouse'
 show_related_blogs: true
+doc_type: 'guide'
+keywords: ['random data', 'test data']
 ---
 
-# Generating Random Test Data in ClickHouse
+# Generating random test data in ClickHouse
 
-Generating random data is useful when testing new use cases or benchmarking your implementation. ClickHouse has a [wide range of functions for generating random data](/sql-reference/functions/random-functions) that, in many cases, avoid the need for an external data generator.
+Generating random data is useful when testing new use cases or benchmarking your implementation.
+ClickHouse has a [wide range of functions for generating random data](/sql-reference/functions/random-functions) that, in many cases, avoid the need for an external data generator.
 
 This guide provides several examples of how to generate random datasets in ClickHouse with different randomness requirements.
 
-## Simple Uniform Dataset
+## Simple uniform dataset {#simple-uniform-dataset}
 
 **Use-case**: Generate a quick dataset of user events with random timestamps and event types.
 
@@ -40,7 +43,7 @@ FROM numbers(1000000);
 
 ---
 
-## Exponential Distribution
+## Exponential distribution {#exponential-distribution}
 
 **Use-case**: Simulate purchase amounts where most values are low, but a few are high.
 
@@ -65,7 +68,7 @@ FROM numbers(500000);
 
 ---
 
-## Time-Distributed Events (Poisson)
+## Time-distributed events (Poisson) {#poisson-distribution}
 
 **Use-case**: Simulate event arrivals that cluster around a specific period (e.g., peak hour).
 
@@ -88,7 +91,7 @@ FROM numbers(200000);
 
 ---
 
-## Time-Varying Normal Distribution
+## Time-varying normal distribution {#time-varying-normal-distribution}
 
 **Use-case**: Emulate system metrics (e.g., CPU usage) that vary over time.
 
@@ -115,7 +118,7 @@ FROM numbers(10000);
 
 ---
 
-## Categorical & Nested Data
+## Categorical and nested data {#categorical-and-nested-data}
 
 **Use-case**: Create user profiles with multi-valued interests.
 
