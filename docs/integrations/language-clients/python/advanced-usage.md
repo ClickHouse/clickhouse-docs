@@ -5,6 +5,7 @@ keywords: ['clickhouse', 'python', 'advanced', 'raw', 'async', 'threading']
 description: 'Advanced Usage with ClickHouse Connect'
 slug: /integrations/language-clients/python/advanced-usage
 title: 'Advanced Usage'
+doc_type: 'reference'
 ---
 
 # Advanced Usage {#advanced-usage}

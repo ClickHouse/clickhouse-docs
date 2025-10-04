@@ -5,6 +5,7 @@ keywords: ['clickhouse', 'python', 'driver', 'api', 'client']
 description: 'ClickHouse Connect Driver API'
 slug: /integrations/language-clients/python/driver-api
 title: 'ClickHouse Connect Driver API'
+doc_type: 'reference'
 ---
 
 # ClickHouse Connect driver API {#clickhouse-connect-driver-api}

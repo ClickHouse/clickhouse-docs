@@ -5,6 +5,7 @@ keywords: ['clickhouse', 'python', 'options', 'settings']
 description: 'Additional Options for ClickHouse Connect'
 slug: /integrations/language-clients/python/additional-options
 title: 'Additional Options'
+doc_type: 'reference'
 ---
 
 # Additional options {#additional-options}

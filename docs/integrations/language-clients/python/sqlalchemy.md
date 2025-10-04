@@ -5,6 +5,7 @@ keywords: ['clickhouse', 'python', 'sqlalchemy', 'integrate']
 description: 'ClickHouse SQLAlchemy Support'
 slug: /integrations/language-clients/python/sqlalchemy
 title: 'SQLAlchemy Support'
+doc_type: 'reference'
 ---
 
 ClickHouse Connect includes a SQLAlchemy dialect (`clickhousedb`) built on top of the core driver. It targets SQLAlchemy Core APIs and supports SQLAlchemy 1.4.40+ and 2.0.x.

@@ -5,6 +5,7 @@ keywords: ['clickhouse', 'python', 'query', 'advanced']
 description: 'Advanced Querying with ClickHouse Connect'
 slug: /integrations/language-clients/python/advanced-querying
 title: 'Advanced Querying'
+doc_type: 'reference'
 ---
 
 # Querying data with ClickHouse Connect: Advanced usage {#querying-data-with-clickhouse-connect--advanced-usage}

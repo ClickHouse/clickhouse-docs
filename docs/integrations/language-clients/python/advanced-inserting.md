@@ -5,6 +5,7 @@ keywords: ['clickhouse', 'python', 'insert', 'advanced']
 description: 'Advanced Inserting with ClickHouse Connect'
 slug: /integrations/language-clients/python/advanced-inserting
 title: 'Advanced Inserting'
+doc_type: 'reference'
 ---
 
 ## Inserting data with ClickHouse Connect: Advanced usage {#inserting-data-with-clickhouse-connect--advanced-usage}
