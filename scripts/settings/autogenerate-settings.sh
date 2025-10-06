@@ -272,6 +272,7 @@ if [ -f "$FUNCTION_SQL_FILE" ]; then
       "Mathematical"
       "Natural Language Processing"
       "Rounding"
+      "String Search"
       "Time Series"
     )
 
@@ -389,6 +390,7 @@ insert_src_files=(
   "mathematical-functions.md"
   "natural_language_processing-functions.md"
   "rounding-functions.md"
+  "string_search-functions.md"
   "time_series-functions.md"
 )
 
@@ -414,6 +416,7 @@ insert_dest_files=(
     "docs/sql-reference/functions/math-functions.md"
     "docs/sql-reference/functions/nlp-functions.md"
     "docs/sql-reference/functions/rounding-functions.md"
+    "docs/sql-reference/functions/string-search-functions.md"
     "docs/sql-reference/functions/time-series-functions.md"
 )
 
