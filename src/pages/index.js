@@ -200,70 +200,72 @@ const HeroSection = () => {
     return (
         <Box sx={{
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
+            gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' },
             alignItems: 'center',
             minHeight: '260px',
-            padding: '10px 16px 0px 16px',
+            padding: { xs: '60px 24px 30px 24px', md: '10px 16px 0px 16px' },
             maxWidth: '1000px',
             margin: '0 auto',
-            gap: 3,
-            '@media (max-width: 768px)': {
-                gridTemplateColumns: '1fr',
-                textAlign: 'center',
-                padding: '60px 24px 30px 24px',
-                gap: 3
-            }
+            gap: { xs: 2, md: 3 }
         }}>
             {/* Left side - Logo and Text (matches Get Started column width) */}
-            <Box sx={{ 
-                '@media (max-width: 768px)': {
-                    gridColumn: '1'
-                }
+            <Box sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: { xs: 'center', md: 'flex-start' }
             }}>
-                <Box sx={{ marginBottom: 2 }}>
+                <Box sx={{
+                    marginBottom: 2,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: { xs: 'center', md: 'flex-start' },
+                    width: '100%',
+                    '& svg': {
+                        width: { xs: '260px', md: 'auto' },
+                        height: 'auto'
+                    }
+                }}>
                     <ClickHouseLogo />
                 </Box>
-                <Typography 
-                    variant="h5" 
-                    sx={{ 
-                        fontSize: { xs: '1rem', sm: '1.1rem', md: '1.2rem' },
+                <Typography
+                    variant="h5"
+                    sx={{
+                        fontSize: { xs: '0.9rem', sm: '1.1rem', md: '1.2rem' },
                         fontWeight: 400,
                         color: 'text.secondary',
                         lineHeight: 1.4,
-                        fontFamily: 'Inter, system-ui, -apple-system, sans-serif'
+                        fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                        textAlign: { xs: 'center', md: 'left' }
                     }}
                 >
                     Documentation for the fastest and most resource efficient real-time data warehouse and open-source database.
                 </Typography>
             </Box>
-            
+
             {/* Right side - Search and Ask AI (spans Learn and Reference columns) */}
-            <Box sx={{ 
-                gridColumn: { xs: '1', sm: '1 / span 2', md: '2 / span 2' },
+            <Box sx={{
+                gridColumn: { md: '2 / span 2' },
                 display: 'flex',
                 alignItems: 'center',
-                gap: 2,
-                padding: '0 60px',
-                '@media (max-width: 768px)': {
-                    gridColumn: '1',
-                    flexDirection: 'column',
-                    alignItems: 'stretch',
-                    gap: 2,
-                    padding: '0'
-                }
+                gap: { xs: 1, md: 2 },
+                padding: { xs: '0', md: '0 60px' },
+                width: { xs: '100%', md: 'auto' }
             }}>
-                <Box sx={{ flex: 1, maxWidth: '500px' }}>
+                <Box sx={{
+                    flex: 1,
+                    maxWidth: { xs: 'none', md: '500px' }
+                }}>
                     <SearchBar/>
                 </Box>
-                <p>or</p>
+                <p style={{ margin: '0 4px', fontSize: '14px' }}>or</p>
                 <Button
                     variant="contained"
                     onClick={handleAskAIClick}
                     sx={{
                         height: '36px',
-                        minWidth: '100px',
+                        minWidth: { xs: '90px', md: '100px' },
                         borderRadius: '8px',
-                        padding: '8px 20px',
+                        padding: { xs: '8px 12px', md: '8px 20px' },
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -320,10 +322,10 @@ const ExploreDocs = () => {
                 margin: '0 auto'
             }}>
                 {/* Unified Grid Layout */}
-                <Box sx={{ 
+                <Box sx={{
                     display: 'grid',
-                    gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
-                    gridTemplateRows: 'auto auto auto auto auto',
+                    gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' },
+                    gridTemplateRows: 'auto',
                     gap: 3
                 }}>
                     {/* Get Started Card - Row 1, Column 1 */}
@@ -465,8 +467,8 @@ const ExploreDocs = () => {
 
                     {/* Migrate Card - Row 2, Full Width (spans all 3 columns) */}
                     <Card sx={{
-                        gridColumn: { xs: '1', sm: '1 / span 2', md: '1 / span 3' },
-                        height: '180px',
+                        gridColumn: { xs: '1', md: '1 / span 3' },
+                        height: { xs: 'auto', md: '180px' },
                         backgroundColor: 'background.paper',
                         color: 'text.primary',
                         boxShadow: 3,
@@ -476,15 +478,15 @@ const ExploreDocs = () => {
                             boxShadow: 6,
                         },
                         display: 'flex',
-                        flexDirection: 'row',
+                        flexDirection: { xs: 'column', md: 'row' },
                         overflow: 'hidden'
                     }}>
                         {/* Left side - Full height image outside padding */}
                         <CardMedia
                             component="img"
-                            sx={{ 
-                                width: 120,
-                                height: '100%',
+                            sx={{
+                                width: { xs: '100%', md: 120 },
+                                height: { xs: '100px', md: '100%' },
                                 objectFit: 'cover',
                                 flexShrink: 0
                             }}
@@ -492,23 +494,23 @@ const ExploreDocs = () => {
                             alt="Migration"
                         />
                         
-                        <CardContent sx={{ 
+                        <CardContent sx={{
                             backgroundColor: 'background.paper',
                             color: 'text.primary',
                             flex: 1,
                             display: 'flex',
-                            flexDirection: 'row',
+                            flexDirection: { xs: 'column', md: 'row' },
                             padding: '16px',
                             gap: 3
                         }}>
                             {/* Text content */}
-                            <Box sx={{ 
-                                flex: '0 0 auto',
+                            <Box sx={{
+                                flex: { xs: '1', md: '0 0 auto' },
                                 display: 'flex',
                                 flexDirection: 'column',
                                 justifyContent: 'flex-start',
-                                minWidth: '160px',
-                                maxWidth: '180px'
+                                minWidth: { xs: 'auto', md: '160px' },
+                                maxWidth: { xs: 'none', md: '180px' }
                             }}>
                                 <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>Migrate</h3>
                                 <p style={{ fontSize: '13px', margin: '0 0 0 0', color: 'text.secondary', lineHeight: 1.3, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
@@ -527,21 +529,21 @@ const ExploreDocs = () => {
                                 </ClickHouseArrowButton>
                             </Box>
                             
-                            {/* Right side - 3x2 Grid of square gradient cards */}
-                            <Box sx={{ 
-                                flex: 1, 
-                                display: 'flex', 
-                                justifyContent: 'flex-end',
+                            {/* Right side - Grid of migration options */}
+                            <Box sx={{
+                                flex: 1,
+                                display: 'flex',
+                                justifyContent: { xs: 'center', md: 'flex-end' },
                                 alignItems: 'center'
                             }}>
                                 <Box sx={{
                                     display: 'grid',
-                                    gridTemplateColumns: 'repeat(7, 1fr)',
-                                    gridTemplateRows: '1fr',
+                                    gridTemplateColumns: { xs: 'repeat(4, 1fr)', md: 'repeat(7, 1fr)' },
+                                    gridTemplateRows: { xs: 'repeat(4, 1fr)', md: '1fr' },
                                     gap: 1,
                                     width: '100%',
-                                    maxWidth: '480px',
-                                    height: '100%'
+                                    maxWidth: { xs: '320px', md: '480px' },
+                                    height: { xs: 'auto', md: '100%' }
                                 }}>
                                     <MigrationOptionButton
                                         icon="/docs/images/logo-postgres.svg"
@@ -632,10 +634,9 @@ const ExploreDocs = () => {
                         </CardContent>
                     </Card>
 
-                    {/* Featured Section Title - Row 3, spans all 3 columns */}
-                    <Box sx={{ 
-                        gridRow: 3,
-                        gridColumn: { xs: '1', sm: '1 / span 2', md: '1 / span 3' },
+                    {/* Featured Section Title - spans all columns */}
+                    <Box sx={{
+                        gridColumn: { xs: '1', md: '1 / span 3' },
                         marginBottom: 1,
                         marginTop: 2
                     }}>
@@ -644,13 +645,11 @@ const ExploreDocs = () => {
                         </Typography>
                     </Box>
 
-                    {/* Featured Card 1 - Row 4, Column 1 */}
+                    {/* Featured Card 1 */}
                     <Card
                         component={Link}
                         to="/integrations/clickpipes/mongodb"
                         sx={{
-                            gridRow: 4,
-                            gridColumn: 1,
                             height: '350px',
                             backgroundColor: 'background.paper',
                             color: 'text.primary',
@@ -717,13 +716,11 @@ const ExploreDocs = () => {
                         </CardActionArea>
                     </Card>
 
-                    {/* Featured Card 2 - Row 4, Column 2 */}
+                    {/* Featured Card 2 */}
                     <Card
                         component={Link}
                         to="/use-cases/AI/MCP/remote_mcp"
                         sx={{
-                            gridRow: 4,
-                            gridColumn: 2,
                             height: '350px',
                             backgroundColor: 'background.paper',
                             color: 'text.primary',
@@ -790,13 +787,11 @@ const ExploreDocs = () => {
                         </CardActionArea>
                     </Card>
 
-                    {/* Featured Card 3 - Row 4, Column 3 */}
+                    {/* Featured Card 3 */}
                     <Card
                         component={Link}
                         to="/best-practices/use-json-where-appropriate"
                         sx={{
-                            gridRow: 4,
-                            gridColumn: 3,
                             height: '350px',
                             backgroundColor: 'background.paper',
                             color: 'text.primary',
