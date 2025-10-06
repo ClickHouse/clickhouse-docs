@@ -271,7 +271,7 @@ if [ -f "$FUNCTION_SQL_FILE" ]; then
       "Logical"
       "Mathematical"
       "Natural Language Processing"
-      "RandomNumber"
+      "Random Number"
     )
 
     for CATEGORY in "${FUNCTION_CATEGORIES[@]}"; do
