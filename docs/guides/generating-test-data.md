@@ -144,3 +144,114 @@ FROM numbers(20000);
 :::tip
 Read the [Generating Random Data in ClickHouse](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse) blog for even more examples.
 :::
+
+## Generating random tables {#generating-random-tables}
+
+The [`generateRandomStructure`](/sql-reference/functions/other-functions#generaterandomstructure) function is particularly useful when combined with the [`generateRandom`](/sql-reference/table-functions/generate) table engine for testing, benchmarking, or creating mock data with arbitrary schemas.
+
+Let's start by just seeing what a random structure looks like using the `generateRandomStructure` function:
+
+```sql
+SELECT generateRandomStructure(5);
+```
+
+You might see something like:
+
+```response
+c1 UInt32, c2 Array(String), c3 DateTime, c4 Nullable(Float64), c5 Map(String, Int16)
+```
+
+You can also use a seed to get the same structure every time:
+
+```sql
+SELECT generateRandomStructure(3, 42);
+```
+
+```response
+c1 String, c2 Array(Nullable(Int32)), c3 Tuple(UInt8, Date)
+```
+
+Now let's create an actual table and fill it with random data:
+
+```sql
+CREATE TABLE my_test_table
+ENGINE = MergeTree
+ORDER BY tuple()
+AS SELECT * 
+FROM generateRandom(
+    'col1 UInt32, col2 String, col3 Float64, col4 DateTime',
+    1,  -- seed for data generation
+    10  -- number of different random values
+)
+LIMIT 100;  -- 100 rows
+
+-- Step 2: Query your new table
+SELECT * FROM my_test_table LIMIT 5;
+```
+
+```response
+┌───────col1─┬─col2──────┬─────────────────────col3─┬────────────────col4─┐
+│ 4107652264 │ &b!M-e;7  │  1.0013455832230728e-158 │ 2059-08-14 19:03:26 │
+│  652895061 │ Dj7peUH{T │   -1.032074207667996e112 │ 2079-10-06 04:18:16 │
+│ 2319105779 │ =D[       │    -2.066555415720528e88 │ 2015-04-26 11:44:13 │
+│ 1835960063 │ _@}a      │  -1.4998020545039013e110 │ 2063-03-03 20:36:55 │
+│  730412674 │ _}!       │ -1.3578492992094465e-275 │ 2098-08-23 18:23:37 │
+└────────────┴───────────┴──────────────────────────┴─────────────────────┘
+```
+
+Let's combine both functions for a completely random table.
+First, see what structure we'll get:
+
+```sql
+SELECT generateRandomStructure(7, 123) AS structure FORMAT vertical;
+```
+
+```response
+┌─structure──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ c1 Decimal64(7), c2 Enum16('c2V0' = -21744, 'c2V1' = 5380), c3 Int8, c4 UUID, c5 UUID, c6 FixedString(190), c7 Map(Enum16('c7V0' = -19581, 'c7V1' = -10024, 'c7V2' = 27615, 'c7V3' = -10177, 'c7V4' = -19644, 'c7V5' = 3554, 'c7V6' = 29073, 'c7V7' = 28800, 'c7V8' = -11512), Float64) │
+└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+Now create the table with that structure and use the `DESCRIBE` statement to see what we created:
+
+```sql
+CREATE TABLE fully_random_table
+ENGINE = MergeTree
+ORDER BY tuple()
+AS SELECT * 
+FROM generateRandom(generateRandomStructure(7, 123), 1, 10)
+LIMIT 1000;
+
+DESCRIBE TABLE fully_random_table;
+```
+
+```response
+   ┌─name─┬─type─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
+1. │ c1   │ Decimal(18, 7)                                                                                                                                                           │              │                    │         │                  │                │
+2. │ c2   │ Enum16('c2V0' = -21744, 'c2V1' = 5380)                                                                                                                                   │              │                    │         │                  │                │
+3. │ c3   │ Int8                                                                                                                                                                     │              │                    │         │                  │                │
+4. │ c4   │ UUID                                                                                                                                                                     │              │                    │         │                  │                │
+5. │ c5   │ UUID                                                                                                                                                                     │              │                    │         │                  │                │
+6. │ c6   │ FixedString(190)                                                                                                                                                         │              │                    │         │                  │                │
+7. │ c7   │ Map(Enum16('c7V4' = -19644, 'c7V0' = -19581, 'c7V8' = -11512, 'c7V3' = -10177, 'c7V1' = -10024, 'c7V5' = 3554, 'c7V2' = 27615, 'c7V7' = 28800, 'c7V6' = 29073), Float64) │              │                    │         │                  │                │
+   └──────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Inspect the first row for a sample of the generated data:
+
+```sql
+SELECT * FROM fully_random_table LIMIT 1 FORMAT vertical;
+```
+
+```response
+Row 1:
+──────
+c1: 80416293882.257732 -- 80.42 billion
+c2: c2V1
+c3: -84
+c4: 1a9429b3-fd8b-1d72-502f-c051aeb7018e
+c5: 7407421a-031f-eb3b-8571-44ff279ddd36
+c6: g̅b�&��rҵ���5C�\�|��H�>���l'V3��R�[��=3�G�LwVMR*s緾/2�J.�
+��6#	��(�h>�lە��L^�M�:�R�9	%d�ž�zv��W����Y�S��_no��BP+��u��.0��UZ!x�@7:�nj%3�Λd�S�k>���w��|�&��~
+c7: {'c7V8':-1.160941256852442}
+```
