@@ -272,6 +272,7 @@ if [ -f "$FUNCTION_SQL_FILE" ]; then
       "Mathematical"
       "Natural Language Processing"
       "Rounding"
+      "String Search"
     )
 
     for CATEGORY in "${FUNCTION_CATEGORIES[@]}"; do
