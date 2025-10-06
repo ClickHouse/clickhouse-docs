@@ -1,0 +1,409 @@
+---
+'slug': '/integrations'
+'title': '統合'
+'keywords':
+- 'integrations'
+- 'integrate'
+- 'integrate with'
+'description': 'ClickHouseとの統合'
+'hide_table_of_contents': true
+'doc_type': 'landing-page'
+---
+
+import acceldatapng from '@site/static/images/integrations/logos/acceldata_logo.png';
+import Amazonmsksvg from '@site/static/images/integrations/logos/amazon_msk.svg';
+import Astratosvg from '@site/static/images/integrations/logos/astrato_logo.svg';
+import apachestreamparkpng from '@site/static/images/integrations/logos/apache-streampark.png';
+import Azureeventhubssvg from '@site/static/images/integrations/logos/azure_event_hubs.svg';
+import BladePipesvg from '@site/static/images/integrations/logos/bladepipe.svg';
+import blinkopspng from '@site/static/images/integrations/logos/blinkops_logo.png';
+import CloudCanalsvg from '@site/static/images/integrations/logos/cloudcanal.svg';
+import Chdbsvg from '@site/static/images/integrations/logos/chdb.svg';
+import Clickhousesvg from '@site/static/images/integrations/logos/clickhouse.svg';
+import Clickhousemonitoringdashboardsvg from '@site/static/images/integrations/logos/clickhouse-monitoring-dashboard.svg';
+import Cloudquerysvg from '@site/static/images/integrations/logos/cloudquery_logo.svg';
+import Confluentsvg from '@site/static/images/integrations/logos/confluent.svg';
+import Csharpsvg from '@site/static/images/integrations/logos/csharp.svg';
+import Cubejssvg from '@site/static/images/integrations/logos/cubejs.svg';
+import Datagripsvg from '@site/static/images/integrations/logos/data_grip.svg';
+import Datalenssvg from '@site/static/images/integrations/logos/datalens.svg';
+import Dbeaversvg from '@site/static/images/integrations/logos/dbeaver_logo.svg';
+import Dbtsvg from '@site/static/images/integrations/logos/dbt.svg';
+import Deepnotesvg from '@site/static/images/integrations/logos/deepnote.svg';
+import Dlthubsvg from '@site/static/images/integrations/logos/dlthub_logo.svg';
+import Draxlrsvg from '@site/static/images/integrations/logos/draxlr.svg';
+import Emqxsvg from '@site/static/images/integrations/logos/emqx.svg';
+import Explosvg from '@site/static/images/integrations/logos/explo.svg';
+import Fivetransvg from '@site/static/images/integrations/logos/fivetran.svg';
+import Gcssvg from '@site/static/images/integrations/logos/gcs.svg';
+import Golangsvg from '@site/static/images/integrations/logos/golang.svg';
+import Grafanasvg from '@site/static/images/integrations/logos/grafana.svg';
+import Hdfssvg from '@site/static/images/integrations/logos/hadoop.svg';
+import Hivesvg from '@site/static/images/integrations/logos/hive.svg';
+import Javasvg from '@site/static/images/integrations/logos/java.svg';
+import Jitsusvg from '@site/static/images/integrations/logos/jitsu.svg';
+import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';
+import Kinesissvg from '@site/static/images/integrations/logos/amazon_kinesis_logo.svg';
+import Kestrasvg from '@site/static/images/integrations/logos/kestra.svg';
+import Lookersvg from '@site/static/images/integrations/logos/looker.svg';
+import Lookerstudiosvg from '@site/static/images/integrations/logos/looker_studio.svg';
+import Mongodbsvg from '@site/static/images/integrations/logos/mongodb.svg';
+import Mysqlsvg from '@site/static/images/integrations/logos/mysql.svg';
+import Natssvg from '@site/static/images/integrations/logos/nats.svg';
+import Nodesvg from '@site/static/images/integrations/logos/node_js.svg';
+import Omnisvg from '@site/static/images/integrations/logos/omni.svg';
+import Observablesvg from '@site/static/images/integrations/logos/observable.svg';
+import opsramppng from '@site/static/images/integrations/logos/ops_ramp_logo.png';
+import Popsinksvg from '@site/static/images/integrations/logos/popsink.svg';
+import Postgresqlsvg from '@site/static/images/integrations/logos/postgresql.svg';
+import Prequelsvg from '@site/static/images/integrations/logos/prequel.svg';
+import Pythonsvg from '@site/static/images/integrations/logos/notext-python.svg';
+import Qrynsvg from '@site/static/images/integrations/logos/qryn.svg';
+import Quesmasvg from '@site/static/images/integrations/logos/quesma.svg';
+import Quicksightsvg from '@site/static/images/integrations/logos/quicksight.svg';
+import Rabbitmqsvg from '@site/static/images/integrations/logos/rabbitmq.svg';
+import Redissvg from '@site/static/images/integrations/logos/redis.svg';
+import restackpng from '@site/static/images/integrations/logos/restack_logo.png';
+import Retoolsvg from '@site/static/images/integrations/logos/retool.svg';
+import Rillsvg from '@site/static/images/integrations/logos/rill.svg';
+import Risingwavesvg from '@site/static/images/integrations/logos/risingwave.svg';
+import RocketbiSVG from '@site/static/images/integrations/logos/rocketbi-logo.svg';
+import Rocksdbsvg from '@site/static/images/integrations/logos/rocksdb.svg';
+import Rudderstacksvg from '@site/static/images/integrations/logos/rudderstack.svg';
+import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
+import sematextpng from '@site/static/images/integrations/logos/sematext_logo.png';
+import skywalkingjpeg from '@site/static/images/integrations/logos/skywalking_logo.jpeg';
+import snappyflowpng from '@site/static/images/integrations/logos/snappy_flow_logo.png';
+import Sparksvg from '@site/static/images/integrations/logos/apache_spark_logo.svg';
+import sodapng from '@site/static/images/integrations/logos/soda_logo.png';
+import Sqlitesvg from '@site/static/images/integrations/logos/sqlite.svg';
+import Supersetsvg from '@site/static/images/integrations/logos/superset.svg';
+import Tablumsvg from '@site/static/images/integrations/logos/tablum.svg';
+import teleport from '@site/static/images/integrations/logos/teleport_logo.png';
+import Trickstercachesvg from '@site/static/images/integrations/logos/trickster-logo.svg';
+import Upstashsvg from '@site/static/images/integrations/logos/upstash.svg';
+import Yepcodesvg from '@site/static/images/integrations/logos/yepcode.svg';
+import Warpstreamsvg from '@site/static/images/integrations/logos/warpstream.svg';
+import Bytewaxsvg from '@site/static/images/integrations/logos/bytewax.svg';
+import glue_logo from '@site/static/images/integrations/logos/glue_logo.png';
+import azure_synapse_logo from '@site/static/images/integrations/logos/azure-synapse.png';
+import azure_data_factory_logo from '@site/static/images/integrations/logos/azure-data-factory.png';
+import logo_cpp from '@site/static/images/integrations/logos/logo_cpp.png';
+import cassandra from '@site/static/images/integrations/logos/cassandra.png';
+import deltalake from '@site/static/images/integrations/logos/deltalake.png';
+import hudi from '@site/static/images/integrations/logos/hudi.png';
+import iceberg from '@site/static/images/integrations/logos/iceberg.png';
+import metabase from '@site/static/images/integrations/logos/logo_metabase.png';
+import minio from '@site/static/images/integrations/logos/minio.png';
+import odbc from '@site/static/images/integrations/logos/odbc.png';
+import logo_otel from '@site/static/images/integrations/logos/logo_otel.png';
+import powerbi from '@site/static/images/integrations/logos/powerbi.png';
+import redpanda from '@site/static/images/integrations/logos/logo_redpanda.png';
+import rust from '@site/static/images/integrations/logos/logo_rust.png';
+import tableau from '@site/static/images/integrations/logos/logo_tableau.png';
+import airbyte_logo from '@site/static/images/integrations/logos/airbyte-logo.png';
+import acceldata_logo from '@site/static/images/integrations/logos/acceldata_logo.png';
+import atlas_logo from '@site/static/images/integrations/logos/atlas-logo.png';
+import automq_logo from '@site/static/images/integrations/logos/automq.png';
+import blinkops_logo from '@site/static/images/integrations/logos/blinkops_logo.png';
+import calyptia_logo from '@site/static/images/integrations/logos/logo_calyptia.png';
+import dataddo_logo from '@site/static/images/integrations/logos/logo_dataddo.png';
+import dbvisualizer_logo from '@site/static/images/integrations/logos/logo_dbvisualizer.png';
+import decodable_logo from '@site/static/images/integrations/logos/logo_decodable.png';
+import explo_logo from '@site/static/images/integrations/logos/explo.png';
+import fabi_logo from '@site/static/images/integrations/logos/fabi.png';
+import gigasheet_logo from '@site/static/images/integrations/logos/gigasheet.png';
+import glassflow_logo from '@site/static/images/integrations/logos/glassflow.png';
+import goldsky_logo from '@site/static/images/integrations/logos/goldsky.png';
+import growthbook_logo from '@site/static/images/integrations/logos/logo_growthbook.png';
+import hex_logo from '@site/static/images/integrations/logos/logo-hex.png';
+import hightouch_logo from '@site/static/images/integrations/logos/logo_hightouch.png';
+import holistics_logo from '@site/static/images/integrations/logos/logo_holistics.png';
+import housewatch_logo from '@site/static/images/integrations/logos/housewatch.png';
+import mindsdb_logo from '@site/static/images/integrations/logos/logo_mindsdb.png';
+import mitzu_logo from '@site/static/images/integrations/logos/logo_mitzu.png';
+import mode_logo from '@site/static/images/integrations/logos/logo_mode.png';
+import redash_logo from '@site/static/images/integrations/logos/logo_redash.png';
+import restack_logo from '@site/static/images/integrations/logos/restack_logo.png';
+import sematext_logo from '@site/static/images/integrations/logos/sematext_logo.png';
+import streamingfast_logo from '@site/static/images/integrations/logos/streamingfast.png';
+import supabase_logo from '@site/static/images/integrations/logos/logo_supabase.png';
+import teleport_logo from '@site/static/images/integrations/logos/teleport_logo.png';
+import tooljet_logo from '@site/static/images/integrations/logos/tooljet.png';
+import vector_logo from '@site/static/images/integrations/logos/vector.png';
+import zing_logo from '@site/static/images/integrations/logos/zing-logo.png';
+import mage_logo from '@site/static/images/integrations/logos/mage.jpg';
+import metaplane_logo from '@site/static/images/integrations/logos/logo_metaplane.png';
+import openBlocks_logo from '@site/static/images/integrations/logos/logo_openBlocks.png';
+import ramp_logo from '@site/static/images/integrations/logos/ops_ramp_logo.png';
+import runreveal_logo from '@site/static/images/integrations/logos/runreveal.png';
+import sisense_logo from '@site/static/images/integrations/logos/logo_sisense.png';
+import signoz_logo from '@site/static/images/integrations/logos/signoz-logo.png';
+import snappy_flow_logo from '@site/static/images/integrations/logos/snappy_flow_logo.png';
+import soda_logo from '@site/static/images/integrations/logos/soda_logo.png';
+import splunk_logo from '@site/static/images/integrations/logos/splunk_logo.png';
+import streamkap_logo from '@site/static/images/integrations/logos/streamkap-logo.png';
+import airflow_logo from '@site/static/images/integrations/logos/logo_airflow.png';
+import beam_logo from '@site/static/images/integrations/logos/logo_beam.png';
+import inlong_logo from '@site/static/images/integrations/logos/logo_inlong.png';
+import nifi_logo from '@site/static/images/integrations/logos/logo_nifi.png';
+import seatunnel_logo from '@site/static/images/integrations/logos/logo_seatunnel.png';
+import skywalking_logo from '@site/static/images/integrations/logos/skywalking_logo.jpeg';
+import streampark_logo from '@site/static/images/integrations/logos/apache-streampark.png';
+import bytebase_logo from '@site/static/images/integrations/logos/logo_bytebase.png';
+import clickhouse_cl_logo from '@site/static/images/integrations/logos/clickhouse-cl.png';
+import dataflow_logo from '@site/static/images/integrations/logos/dataflow_logo.png';
+import dbnet_logo from '@site/static/images/integrations/logos/dbnet_logo.png';
+import datalens_logo from '@site/static/images/integrations/logos/datalens.png';
+import dataease_logo from '@site/static/images/integrations/logos/dataease.png';
+import datahub_logo from '@site/static/images/integrations/logos/logo_datahub.png';
+import deepflow_logo from '@site/static/images/integrations/logos/logo_deepflow.png';
+import easypanel_logo from '@site/static/images/integrations/logos/logo-easypanel.png';
+import flink_logo from '@site/static/images/integrations/logos/logo_flink.png';
+import goose_logo from '@site/static/images/integrations/logos/goose_logo.png';
+import ibis_logo from '@site/static/images/integrations/logos/logo_ibis.png';
+import jaeger_logo from '@site/static/images/integrations/logos/logo_jaeger.png';
+import jupyter_logo from '@site/static/images/integrations/logos/jupyter.png';
+import adaptive_logo from '@site/static/images/integrations/logos/adaptive_logo.png';
+import mprove_logo from '@site/static/images/integrations/logos/logo_mprove.png';
+import php_logo from '@site/static/images/integrations/logos/logo_php.png';
+import pinax_logo from '@site/static/images/integrations/logos/pinax-logo.png';
+import pulse_logo from '@site/static/images/integrations/logos/pulse.png';
+import qstudio_logo from '@site/static/images/integrations/logos/qstudio.png';
+import qryn_logo from '@site/static/images/integrations/logos/logo_qryn.png';
+import rsyslog_logo from '@site/static/images/integrations/logos/rsyslog.png';
+import ruby_logo from '@site/static/images/integrations/logos/logo_ruby.png';
+import r_logo from '@site/static/images/integrations/logos/logo_r.png';
+import scala_logo from '@site/static/images/integrations/logos/logo_scala.png';
+import schemaspy_logo from '@site/static/images/integrations/logos/schemaspy_logo.png';
+import visual_studio_logo from '@site/static/images/integrations/logos/logo_vs.png';
+import vulcansql_logo from '@site/static/images/integrations/logos/logo-vulcansql.png';
+import great_expectations_logo from '@site/static/images/integrations/logos/great-expectations.webp';
+import Hashboardsvg from '@site/static/images/integrations/logos/hashboard.svg';
+import lightdash_logo from '@site/static/images/integrations/logos/lightdash.png';
+import luzmo_logo from '@site/static/images/integrations/logos/luzmo.png';
+import vs_logo from '@site/static/images/integrations/logos/logo_vs.png';
+import Moosesvg from '@site/static/images/integrations/logos/moose_logo.svg';
+import chartbrew_logo from '@site/static/images/integrations/logos/logo_chartbrew.png';
+import marimo_logo from '@site/static/images/integrations/logos/logo_marimo.png';
+import Image from '@theme/IdealImage';
+
+ClickHouse の統合はサポートレベルによって整理されています：
+
+- **コア統合**： ClickHouse によって構築または維持されており、ClickHouse によってサポートされ、ClickHouse GitHub 組織に存在します
+- **パートナー統合**：構築または維持され、サポートされている、サードパーティのソフトウェアベンダーによるもの
+- **コミュニティ統合**：コミュニティメンバーによって構築または維持され、サポートされています。公開 GitHub リポジトリやコミュニティ Slack チャンネルを除いて、直接サポートはありません
+
+各統合は **言語クライアント**、**データ取り込み**、**データ可視化**、および **SQL クライアント** カテゴリにさらに分類されています。
+
+:::note
+以下の ClickHouse 統合のリストを積極的に編纂していますので、網羅的ではありません。関連する ClickHouse 統合を自由に
+[貢献](https://github.com/ClickHouse/clickhouse-docs#contributing)してください。
+:::
+## コア統合
+
+<div className="adopters-table">
+
+|名前|ロゴ|カテゴリ|説明|リソース|
+|------|----|----------------|------------------|-------------|
+|Amazon Kinesis|<Kinesissvg style={{width: '3rem', height: '3rem'}} alt="Kenesis logo"/> |データ取り込み|Amazon Kinesis との統合。|[ドキュメント](/integrations/clickpipes/kinesis/)|
+|Amazon MSK|<Amazonmsksvg style={{width: '3rem'}} alt="Amazon MSK logo"/> |データ取り込み|Amazon Managed Streaming for Apache Kafka (MSK) との統合。|[ドキュメント](/integrations/kafka/cloud/amazon-msk/)|
+|Amazon S3|<S3svg style={{width: '3rem', height: '3rem'}} alt="Amazon S3 logo"/>|データ取り込み|ClickHouse の組み込み S3 機能を使って、S3 データを取り込んだりエクスポートしたり、変換します。|[ドキュメント](/integrations/data-ingestion/s3/index.md)|
+|Amazon Glue|<Image img={glue_logo} size="logo" alt="Amazon Glue logo"/>|データ取り込み|公式 Glue コネクタを使用して Spark 経由で ClickHouse をクエリします。|[ドキュメント](/integrations/glue)|
+|Apache Spark|<Sparksvg alt="Amazon Spark logo" style={{width: '3rem'}}/>|データ取り込み|Spark ClickHouse コネクタは Spark DataSource V2 の上に構築された高性能コネクタです。|[GitHub](https://github.com/housepower/spark-clickhouse-connector),<br/>[ドキュメント](/integrations/data-ingestion/apache-spark/index.md)|
+|Azure Event Hubs|<Azureeventhubssvg alt="Azure Events Hub logo" style={{width: '3rem'}}/>|データ取り込み|Apache Kafka のネイティブプロトコルをサポートするデータストリーミングプラットフォーム。|[ウェブサイト](https://azure.microsoft.com/en-gb/products/event-hubs)|
+|Azure Synapse|<Image img={azure_synapse_logo} size="logo" alt="Azure Synapse logo"/>|データ取り込み|ビッグデータおよびデータウェアハウジングのためのクラウドベースの分析サービス。|[ドキュメント](/integrations/azure-synapse)|
+|Azure Data Factory|<Image img={azure_data_factory_logo} size="logo" alt="Azure Data Factory logo"/>|データ取り込み|データワークフローを大規模にもつれるように作成、スケジュール、オーケストレーションを可能にするクラウドベースのデータ統合サービス。|[ドキュメント](/integrations/azure-data-factory)|
+|C++|<Image img={logo_cpp} alt="Cpp logo" size="logo"/>|言語クライアント|ClickHouse 用の C++ クライアント。|[GitHub](https://github.com/ClickHouse/clickhouse-cpp)|
+|C#|<Csharpsvg className="image" alt="Csharp logo" style={{width: '3rem'}}/>|言語クライアント|ClickHouse 用の ADO.NET クライアント実装。|[ドキュメント](/integrations/csharp)|
+|Cassandra|<Image img={cassandra} alt="Cassandra logo" size="logo"/>|データ取り込み|ClickHouse が [Cassandra](https://cassandra.apache.org/) を辞書ソースとして使用できるようにします。|[ドキュメント](/sql-reference/dictionaries/index.md#cassandra)|
+|CHDB|<Chdbsvg alt="CHDB logo" style={{width: '3rem' }}/>|AI/ML|埋め込み OLAP SQL エンジン。|[GitHub](https://github.com/chdb-io/chdb#/),<br/>[ドキュメント](https://doc.chdb.io/)|
+|ClickHouse Client|<Clickhousesvg alt="ClickHouse logo" style={{width: '3rem' }}/>|SQL クライアント|ClickHouse Client は ClickHouse 用のネイティブコマンドラインクライアントです。|[ドキュメント](/interfaces/cli.md)|
+|Confluent|<Confluentsvg alt="Confluent logo" style={{width: '3rem' }}/>|データ取り込み|Confluent プラットフォーム上の Apache Kafka との統合。|[ドキュメント](/integrations/kafka/cloud/confluent/custom-connector)|
+|dbt|<Dbtsvg alt="Dbt logo" style={{width: '3rem' }}/>|データ統合|dbt (data build tool) を使用して、単に選択文を書くことによって ClickHouse 内のデータを変換します。dbt は ELT の T です。|[ドキュメント](/integrations/data-ingestion/etl-tools/dbt/index.md)|
+|DeltaLake|<Image img={deltalake}  alt="Delta Lake logo" size="logo"/>|データ取り込み|既存の [Delta Lake](https://github.com/delta-io/delta) テーブルに対する読み取り専用の統合を提供します。|[ドキュメント](/engines/table-engines/integrations/deltalake)|
+|EmbeddedRocksDB|<Rocksdbsvg alt="RocksDB logo" style={{width: '3rem', 'height': '3rem'}}/>|データ統合|ClickHouse を [rocksdb](http://rocksdb.org/) と統合可能にします。|[ドキュメント](/engines/table-engines/integrations/embedded-rocksdb)|
+|Fivetran|<Fivetransvg alt="Five Trans logo" style={{width: '3rem', 'height': '3rem'}}/>|データ取り込み|[ClickHouse Cloud](https://clickhouse.com/cloud) の [Fivetran データ移動プラットフォーム](https://www.fivetran.com/) の宛先。|[ドキュメント](/integrations/data-ingestion/etl-tools/fivetran/index.md)|
+|Google Cloud Storage|<Gcssvg alt="GCS Logo" style={{width: '3rem', 'height': '3rem'}}/>|データ取り込み|ClickHouse の組み込み `S3` 機能を使って、GCS データを取り込んだりエクスポートしたり、変換します。|[ドキュメント](/integrations/data-ingestion/s3/index.md)|
+|Golang|<Golangsvg alt="Golang logo" style={{width: '3rem' }}/>|言語クライアント|Go クライアントは、ClickHouse への接続を効率的でオーバーヘッドの低い方法で行います。|[ドキュメント](/integrations/language-clients/go/index.md)|
+|HDFS|<Hdfssvg alt="HDFS logo" style={{width: '3rem'}}/>|データ取り込み|ClickHouse を通じて [HDFS](https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html) 上のデータを管理できるようにする、[Apache Hadoop](https://en.wikipedia.org/wiki/Apache_Hadoop) エコシステムとの統合。|[ドキュメント](/engines/table-engines/integrations/hdfs)|
+|Hive|<Hivesvg alt="Hive logo" style={{width: '3rem'}}/>|データ取り込み|Hive エンジンを使用して HDFS Hive テーブルに対して `SELECT` クエリを実行できます。|[ドキュメント](/engines/table-engines/integrations/hive)|
+|Hudi|<Image img={hudi} size="logo" alt="Apache Hudi logo"/>|データ取り込み|既存の Apache [Hudi](https://hudi.apache.org/) テーブルに対する読み取り専用の統合を提供します。|[ドキュメント](/engines/table-engines/integrations/hudi)|
+|Iceberg|<Image img={iceberg} size="logo" alt="Apache Iceberg logo"/>|データ取り込み|既存の Apache [Iceberg](https://iceberg.apache.org/) テーブルに対する読み取り専用の統合を提供します。|[ドキュメント](/engines/table-engines/integrations/iceberg)|
+|Java, JDBC|<Javasvg alt="Java logo" style={{width: '3rem'}}/>|言語クライアント|Java クライアントと JDBC ドライバー。|[ドキュメント](/integrations/language-clients/java/index.md)|
+|Kafka|<Kafkasvg alt="Kafka logo" style={{width: '3rem', 'height': '3rem'}}/>|データ取り込み|オープンソースの分散イベントストリーミングプラットフォームである Apache Kafka との統合。|[ドキュメント](/integrations/kafka)|
+|Looker Studio|<Lookerstudiosvg alt="Looker Studio logo" style={{width: '3rem', 'height': '3rem'}}/>|データ可視化|Looker Studio は、データを情報豊かな、読みやすく、共有しやすく、完全にカスタマイズ可能なダッシュボードとレポートに変える無料ツールです。|[ドキュメント](/integrations/lookerstudio)|
+|Looker|<Lookersvg alt="Looker logo" style={{width: '3rem', 'height': '3rem'}}/>|データ可視化|Looker は、リアルタイムで洞察を探求し、共有する手助けをする BI、データアプリケーション、組み込み分析のための企業プラットフォームです。|[ドキュメント](/integrations/looker)|
+|Metabase|<Image img={metabase} alt="Metabase logo" size="logo"/>|データ可視化|Metabase は、データに関する質問をするための使いやすいオープンソースの UI ツールです。|[ドキュメント](/integrations/metabase)|
+|MinIO|<Image img={minio} size="logo" alt="Metabase logo"/>|データ取り込み|MinIO は、GNU Affero General Public License v3.0 の下で公開されたハイパフォーマンスオブジェクトストレージです。Amazon S3 クラウドストレージサービスと API 互換です。|[ドキュメント](/integrations/minio)|
+|MongoDB|<Mongodbsvg alt="Mongo Logo" style={{width: '3rem', 'height': '3rem'}}/>|データ取り込み|MongoDB エンジンは、リモート MongoDB コレクションからデータを読み取る (`SELECT` クエリ)ことを可能にする読み取り専用のテーブルエンジンです。|[ドキュメント](/engines/table-engines/integrations/mongodb)|
+|MySQL|<Mysqlsvg alt="MySQL logo" style={{width: '3rem'}}/>|データ取り込み|MySQL エンジンは、リモート MySQL サーバーに保存されているデータに対して `SELECT` および `INSERT` クエリを実行できるようにします。|[ドキュメント](/engines/table-engines/integrations/mysql)|
+|NATS|<Natssvg alt="Nats Logo" style={{width: '3rem', 'height': '3rem'}}/>|データ取り込み|ClickHouse を [NATS](https://nats.io/) と統合することを可能にします。|[ドキュメント](/engines/table-engines/integrations/nats)|
+|Node.JS|<Nodesvg alt="Node logo" style={{width: '3rem', 'height': '3rem'}}/>|言語クライアント|ClickHouse に接続するための公式 JS クライアント。|[ドキュメント](/integrations/language-clients/js.md)|
+|ODBC|<Image img={odbc} alt="ODBC" alt="ODBC logo" size="logo"/>|データ統合|ClickHouse が [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity) テーブルエンジンを介して外部データベースに接続できるようにします。|[ドキュメント](/engines/table-engines/integrations/odbc)|
+|OpenTelemetry|<Image img={logo_otel} size="logo" alt="OTel logo"/>|データ取り込み|ログ、メトリック、トレース OpenTelemetry データを ClickHouse に送信することをサポートするエクスポーター。|[GitHub](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter)|
+|PostgreSQL|<Postgresqlsvg alt="Postgresql logo" style={{width: '3rem', 'height': '3rem'}}/>|データ取り込み|PostgreSQL データベースから ClickHouse Cloud へのスナップショットおよびリアルタイム CDC データレプリケーション。|[ドキュメント](/integrations/postgresql)|
+|PowerBI|<Image img={powerbi} size="logo" alt="PowerBI logo"/>|データ可視化|Microsoft Power BI は、主にビジネスインテリジェンスに焦点を当てたインタラクティブなデータ可視化ソフトウェア製品です。|[ドキュメント](/integrations/powerbi)|
+|Python|<Pythonsvg alt="Python logo" style={{width: '3rem', 'height': '3rem'}}/>|言語クライアント|Python を ClickHouse に接続するための Python パッケージのセット。|[ドキュメント](/integrations/language-clients/python/index.md)|
+|QuickSight|<Quicksightsvg alt="QuickSight logo" style={{width: '3rem', 'height': '3rem', fill: '#5ccfff'}}/>|データ可視化|Amazon QuickSight は、データ駆動型の組織に統合的なビジネスインテリジェンス (BI) を提供します。|[ドキュメント](/integrations/quicksight)|
+|RabbitMQ|<Rabbitmqsvg alt="RabbitMQ logo" style={{width: '3rem', 'height': '3rem'}}/>|データ取り込み|ClickHouse が [RabbitMQ](https://www.rabbitmq.com/) に接続できるようにします。|[ドキュメント](/engines/table-engines/integrations/rabbitmq)|
+|Redis|<Redissvg alt="Redis logo" style={{width: '3rem', 'height': '3rem'}}/>|データ取り込み|ClickHouse が [Redis](https://redis.io/) を辞書ソースとして使用できるようにします。|[ドキュメント](/sql-reference/dictionaries/index.md#redis)|
+|Redpanda|<Image img={redpanda} alt="Redpanda logo" size="logo"/>|データ取り込み|Redpanda は開発者のためのストリーミングデータプラットフォームです。これは Apache Kafka と API 互換ですが、10 倍速く、はるかに使いやすく、よりコスト効率が良いです。|[ブログ](https://redpanda.com/blog/real-time-olap-database-clickhouse-redpanda)|
+|REST カタログ||データ取り込み|Iceberg テーブル用の REST カタログ仕様との統合で、Tabular.io などの複数のカタログプロバイダーをサポートします。|[ドキュメント](/use-cases/data-lake/rest-catalog)|
+|Lakekeeper||データ取り込み|マルチテナントサポートを持つ Apache Iceberg 用のオープンソース REST カタログ実装である Lakekeeper との統合。|[ドキュメント](/use-cases/data-lake/lakekeeper-catalog)|
+|Nessie||データ取り込み|Git のようなデータバージョン管理を備えたデータレイク用のオープンソーストランザクショナルカタログである Nessie との統合。|[ドキュメント](/use-cases/data-lake/nessie-catalog)|
+|Rust|<Image img={rust} size="logo" alt="Rust logo"/>|言語クライアント|ClickHouse 用の型付きクライアント。|[ドキュメント](/integrations/language-clients/rust.md)|
+|SQLite|<Sqlitesvg alt="Sqlite logo" style={{width: '3rem', 'height': '3rem'}}/>|データ取り込み|SQLite へのデータのインポートおよびエクスポートを可能にし、ClickHouse から直接 SQLite テーブルへのクエリをサポートします。|[ドキュメント](/engines/table-engines/integrations/sqlite)|
+|Superset|<Supersetsvg alt="Superset logo" style={{width: '3rem'}}/>|データ可視化|Apache Superset で ClickHouse データを探索し、可視化します。|[ドキュメント](/integrations/data-visualization/superset-and-clickhouse.md)|
+|Tableau|<Image img={tableau} size="logo" alt="Tableau logo"/>|データ可視化|ビジネスインテリジェンスに焦点を当てたインタラクティブなデータ可視化ソフトウェア。|[ドキュメント](/integrations/tableau)|
+|Tableau Online|<Image img={tableau} size="logo" alt="Tableau Online logo"/>|データ可視化|Tableau Online は、データの力を利用して、どこからでも迅速かつ自信を持てる意思決定者を作り出します。|[ドキュメント](/integrations/tableau-online)|
+
+</div>
+<br/>
+## パートナー統合
+
+<div className="adopters-table">
+
+|名前|ロゴ|カテゴリ|説明|リソース|
+|------|----|----------------|------------------|-------------|
+|Airbyte|<Image img={airbyte_logo} size="logo" alt="Airbyte logo"/>|データ取り込み|Airbyteを使用して、140以上のコネクタを介してデータをClickHouseにロードし、同期するELTデータパイプラインを作成できます。|[ドキュメント](/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse.md)|
+|AccelData|<Image img={acceldata_logo} size="logo" alt="AccelData Logo"/>|データ管理|ADOCは、ユーザーが視覚化されたデータの可用性と整合性を監視し、保証できるようにし、リアルタイムデータ処理と分析を容易にします。|[ドキュメント](https://docs.acceldata.io/documentation/clickhouse) |
+|Atlas|<Image img={atlas_logo} size="logo" alt="Atlas logo"/>|スキーマ管理|ClickHouseのスキーマをコードとして管理します。 |[ドキュメント](https://atlasgo.io/guides/clickhouse?utm_source=clickhouse&utm_term=docs)|
+|Astrato|<Astratosvg alt="Astrato logo" style={{width: '3rem', height: '48px'}}/>|データ視覚化|Astratoは、すべてのユーザーがダッシュボード、レポート、データアプリをITなしで構築できるようにし、企業やデータビジネスに真のセルフサービスBIを提供します。|[ドキュメント](/integrations/astrato)|
+|AutoMQ|<Image img={automq_logo} size="logo" alt="AutoMQ logo"/>|データ取り込み|耐久性をS3およびEBSに分離したクラウドネイティブなKafkaおよびRocketMQの代替。|[ウェブサイト](https://www.automq.com/)|
+|BladePipe|<BladePipesvg alt="BladePipe logo" style={{width: '5rem'}}/>|データ取り込み|サブ秒のレイテンシを持つリアルタイムのエンドツーエンドデータ統合ツール。|[ドキュメント](/integrations/data-ingestion/etl-tools/bladepipe-and-clickhouse.md)|
+|BlinkOps|<Image img={blinkops_logo} size="logo" alt="BlinkOps Logo"/>|セキュリティ自動化|データとユーザー権限を管理する自動化を作成します。|[ドキュメント](https://docs.blinkops.com/docs/integrations/clickhouse)|
+|Bytewax|<Bytewaxsvg alt="ByteWax Logo" style={{width: '3rem'}}/>|データ取り込み|ClickHouseにデータを変換し取り込むためのオープンソースのPythonストリームプロセッサ。|[ドキュメント](https://bytewax.io/blog/building-a-click-house-sink-for-bytewax)|
+|Calyptia (Fluent Bit)|<Image img={calyptia_logo} size="logo" alt="Calyptia logo"/>|データ取り込み|CNCF卒業のオープンソースプロジェクトで、ログ、メトリクス、トレースの収集、処理、配信を行います。|[ブログ](https://clickhouse.com/blog/kubernetes-logs-to-clickhouse-fluent-bit)|
+|Chartbrew|<Image img={chartbrew_logo} size="logo" alt="Chartbrew logo" style={{width: '3rem', 'backgroundColor': 'transparent', 'boxShadow': 'none'}}/>|データ視覚化|Chartbrewは、ユーザーがダッシュボードを作成し、リアルタイムでデータを監視できるデータ視覚化プラットフォームです。|[ドキュメント](/integrations/chartbrew-and-clickhouse),<br />[ウェブサイト](https://chartbrew.com/integrations/clickhouse),<br />[ブログ](https://chartbrew.com/blog/visualizing-clickhouse-data-with-chartbrew-a-step-by-step-guide/)|
+|CloudQuery|<Cloudquerysvg className="image" alt="CloudQuery logo" style={{width: '3rem'}}/>|データ取り込み|オープンソースの高性能ELTフレームワーク。|[ドキュメント](https://www.cloudquery.io/docs/plugins/destinations/clickhouse/overview)|
+|Cube.js|<Cubejssvg  alt="Cubejs logo" style={{width: '3rem'}}/>|データ視覚化|Cubeはデータアプリを構築するためのセマンティックレイヤーです。|[ウェブサイト](https://cube.dev/for/clickhouse-dashboard)|
+|CloudCanal|<CloudCanalsvg alt="CloudCanal logo" style={{width: '5rem'}}/>|データ取り込み|シームレスで簡単なデータフローのためのリアルタイムデータ複製ツール。|[ウェブサイト](https://www.clougence.com/)|
+|DBeaver|<Dbeaversvg alt="Dbeaver logo" style={{width: '3rem'}}/>|SQLクライアント|無料のマルチプラットフォームデータベース管理ツール。JDBCドライバーを通じてClickhouseに接続します。|[ドキュメント](/integrations/sql-clients/dbeaver.md)|
+|DataGrip|<Datagripsvg alt="Datagrip logo" style={{width: '3rem'}}/>|SQLクライアント|DataGripはClickHouseに特化した強力なデータベースIDEです。|[ドキュメント](/integrations/sql-clients/datagrip.md)|
+|Dataddo|<Image img={dataddo_logo} size="logo" alt="Dataddo logo"/>|データ統合|データ統合プラットフォーム|[ウェブサイト](https://www.dataddo.com/storage/clickhouse)|
+|DbVisualizer|<Image img={dbvisualizer_logo} size="logo" alt="DbVisualizer logo"/>|SQLクライアント|DbVisualizerはClickHouseに拡張サポートを持つデータベースツールです。|[ドキュメント](/integrations/sql-clients/dbvisualizer.md)|
+|Decodable|<Image img={decodable_logo} size="logo" alt="Decodable logo"/>|データ取り込み|Apache Flinkに基づいた強力なストリーム処理|[ウェブサイト](https://www.decodable.co/connectors/clickhouse)|
+|Deepnote|<Deepnotesvg alt="Deepnote logo" style={{width: '3rem'}}/>|データ視覚化|Deepnoteは、チームが洞察を発見し共有できるように構築された、協力的なJupyter互換データノートブックです。|[ドキュメント](/integrations/data-visualization/deepnote.md)|
+|DLT|<Dlthubsvg alt="Dlthub logo" style={{width: '3rem'}}/>|データ統合|データのロードを簡単にするオープンソースPythonライブラリです。|[ドキュメント](/integrations/data-ingestion/etl-tools/dlt-and-clickhouse)|
+|Draxlr|<Draxlrsvg alt="Draxlr logo" style={{width: '3rem'}}/>|データ視覚化|Draxlrはデータ視覚化と分析を備えたビジネスインテリジェンスツールです。|[ドキュメント](/integrations/data-visualization/draxlr-and-clickhouse.md)|
+|EMQX|<Emqxsvg alt="Emqx logo" style={{width: '3rem'}}/>|データ取り込み|EMQXは高性能のリアルタイムメッセージ処理エンジンを持つオープンソースのMQTTブローカーで、IoTデバイスのイベントストリーミングを大規模で実現します。|[ドキュメント](/integrations/emqx)|
+|Explo| <Image img={explo_logo} size="logo" alt="Explo logo"/> | データ視覚化  | Exploはすべてのプラットフォーム向けの顧客向け分析ツールです。 | [ドキュメント](/integrations/explo) |
+|Fabi.ai| <Image img={fabi_logo} size="logo" alt="Fabi.ai logo"/> | データ視覚化  | Fabi.aiは、SQL、Python、AI、ノーコードを活用し、ダッシュボードやデータワークフローをこれまで以上に迅速に構築できるオールインワンの共同データ分析プラットフォームです。 | [ドキュメント](/integrations/data-visualization/fabi-and-clickhouse.md) |
+|Gigasheet| <Image img={gigasheet_logo} alt="Gigasheet logo" size="logo"/> | データ視覚化  | ビジネスユーザーがClickHouseデータを即座に分析し、探求できるクラウドビッグデータ分析スプレッドシートです。 | [ウェブサイト](https://gigasheet.com/enterprise) |
+|GlassFlow| <Image img={glassflow_logo} alt="GlassFlow logo" size="logo"/> | データ取り込み      | ClickHouse向けにPythonでリアルタイムのイベントストリーミングおよびデータ変換を行います。 | [ドキュメント](https://docs.glassflow.dev/integrations/managed-connectors/sinks/clickhouse) |
+|Goldsky| <Image img={goldsky_logo} size="logo" alt="Goldsky logo"/> | データ統合    | サブグラフを介した高性能Web3データインデクシングおよびリアルタイムデータ複製パイプライン。 | [ドキュメント](https://docs.goldsky.com/introduction) |
+|Grafana|<Grafanasvg alt="Grafana logo" style={{width: '3rem'}}/>|データ視覚化|Grafanaを使用して、すべてのデータをダッシュボードを通じて作成、探索、共有できます。|[ドキュメント](/integrations/data-visualization/grafana/index.md)|
+|Great Expectations| <Image img={great_expectations_logo} size="logo" alt="Great Expectations logo"/> | データ管理 | オープンソースのデータ管理ツールで、有料のクラウド提供もあります。 | [ウェブサイト](https://greatexpectations.io/) |
+|GrowthBook| <Image img={growthbook_logo} size="logo" alt="GrowthBook logo"/> | データ視覚化 | 特色フラグとA/Bテストのためのウェアハウスネイティブ実験プラットフォーム。 | [ドキュメント](https://docs.growthbook.io/warehouses/clickhouse) |
+|HEX| <Image img={hex_logo} size="logo" alt="HEX logo"/> | データ視覚化 | Hexは、ノートブック、データアプリ、SQL、Python、ノーコード、Rなどが利用可能な現代的な共同作業プラットフォームです。 | [ドキュメント](https://learn.hex.tech/docs/connect-to-data/data-connections/overview) |
+|Hashboard|<Hashboardsvg style={{ width: '3rem', height: '3rem' }} />|データ視覚化|[Hashboard](https://hashboard.com)は、セルフサービスのデータ探索とメトリック追跡を可能にするビジネスインテリジェンスプラットフォームです。|[ドキュメント](https://docs.hashboard.com/docs/database-connections/clickhouse)|
+|HighTouch|<Image img={hightouch_logo} size="logo" alt="HighTouch logo"/>|データ統合|データを直接倉庫から140以上の宛先に同期します。|[ウェブサイト](https://hightouch.com/docs/sources/clickhouse)|
+|Holistics|<Image img={holistics_logo} size="logo" alt="Holistics logo"/>|データ視覚化|ClickHouseデータベースのためのビジネスインテリジェンス|[ウェブサイト](https://www.holistics.io/integrations/clickhouse/)|
+|HouseWatch|<Image img={housewatch_logo} size="logo" alt="HouseWatch logo"/>|データ管理| ClickHouseクラスターを監視および管理するためのオープンソースツール。 |[GitHub](https://github.com/PostHog/HouseWatch)|
+|IBM Instana| |データ管理|InstanaはClickHouseサーバープロセスを自動発見して監視できます。|[ドキュメント](https://www.ibm.com/docs/en/instana-observability/current?topic=technologies-monitoring-clickhouse)|
+|Jitsu|<Jitsusvg alt="Jitsu logo" style={{width: '3rem'}}/>|データ分析|オープンソースのイベント収集プラットフォーム。|[ドキュメント](https://docs.jitsu.com/destinations/warehouse/clickhouse)|
+|LangChain|🦜️🔗|SDK|LangChainは言語モデルによって動かされるアプリケーションを開発するためのフレームワークです。|[ドキュメント](https://python.langchain.com/docs/integrations/vectorstores/clickhouse/)|
+|Lightdash|<Image img={lightdash_logo} size="logo" alt="Lightdash logo"/>|データ視覚化|Lightdashは、現代のデータチーム向けに構築されたオープンソースのビジネスインテリジェンスツールです。|[ウェブサイト](https://www.lightdash.com/),<br/>[ドキュメント](https://docs.lightdash.com/get-started/setup-lightdash/connect-project#clickhouse)|
+|Luzmo|<Image img={luzmo_logo} size="logo" alt="Luzmo logo"/>|データ視覚化|Luzmoは、ソフトウェアおよびSaaSアプリケーション向けに設計されたネイティブのClickHouse統合を持つ埋め込み分析プラットフォームです。|[ドキュメント](/integrations/data-visualization/luzmo-and-clickhouse.md)|
+|Mage|<Image img={mage_logo} size="logo" alt="Mage logo"/>|データ取り込み|データを変換し統合するためのオープンソースのデータパイプラインツール。|[ドキュメント](https://docs.mage.ai/integrations/databases/ClickHouse)|
+|Metaplane|<Image img={metaplane_logo} size="logo" alt="Metaplane logo"/>|データ管理|すべてのデータチームのためのデータの可視化|[ウェブサイト](https://www.metaplane.dev/integrations)|
+|MindsDB|<Image img={mindsdb_logo} size="logo" alt="MindsDB logo"/>|AI/ML|企業データからAIをカスタマイズするためのプラットフォーム。|[ウェブサイト](https://mindsdb.com/clickhouse-machine-learning )|
+|Mitzu|<Image img={mitzu_logo} size="logo" alt="Mitzu logo"/>|データ視覚化|Mitzuは、データをコピーせずにファネル、リテンション、ユーザーセグメンテーションの洞察を見つけるためのノーコードの倉庫ネイティブ製品分析アプリケーションです。|[ドキュメント](/integrations/mitzu)|
+|Mode Analytics|<Image img={mode_logo} size="logo" alt="Mode logo"/>|データ視覚化|データチームを中心に構築されたビジネスインテリジェンス。|[ウェブサイト](https://mode.com/)|
+|Moose OLAP|<Moosesvg className="image" alt="Moose logo" style={{width: '3rem'}}/>|言語クライアント|Moose OLAPはClickHouseにネイティブに構築されたTypeScriptおよびPythonの抽象化とORMのような機能を提供します。|[ドキュメント](interfaces/third-party/moose-olap),[ウェブサイト](https://www.fiveonefour.com/moose)|
+|Omni|<Omnisvg alt="Omni logo" style={{width: '3rem', 'backgroundColor': 'transparent'}}/>|データ視覚化|あなたの言語で話すビジネスインテリジェンス。Omniであなたの方法でデータを探索、視覚化、モデル化します。スプレッドシートからSQLまで、一つのプラットフォームで。| [ウェブサイト](https://omni.co/)|
+|Openblocks|<Image img={openBlocks_logo} size="logo" alt="Openblocks logo"/>|SQLクライアント|Openblocksは、UIを構築するためのローコードプラットフォームです。|[ドキュメント](https://blog.openblocks.dev/blog/openblocks-x-clickhouse)|
+|OpsRamp (HP)| <Image img={ramp_logo} size="logo" alt="OpsRamp Logo"/>|データ管理| ClickHouseのための可視性メトリクスを提供します。|[ドキュメント](https://docs.opsramp.com/integrations/database-no-sql/automonitor-clickhouse-monitoring/)|
+|Popsink|<Popsinksvg alt="Popsink Logo" style={{width: '3rem', 'height': '3rem'}}/>|データ統合|リアルタイムの変更データキャプチャ(CDC)パイプラインをClickHouseに構築します。|[ドキュメント](https://docs.popsink.com/connectors/target/clickhouse/)|
+|Prequel|<Prequelsvg alt="Prequel Logo" style={{width: '3rem', 'height': '3rem'}}/>|データ共有|ユーザーやパートナーからのデータを共有したり同期するために、ClickHouseインスタンスをPrequelに接続します。|[ドキュメント](https://docs.prequel.co/docs/sources-clickhouse-generic)|
+|Quesma|<Quesmasvg alt="Quesma Logo" style={{width: '3rem', 'height': '3rem'}}/>|データ統合|ClickHouseのデータでKibanaおよびOpenSearchダッシュボードを使用します。|[ウェブサイト](https://quesma.com/quesma-for-elk)|
+|Redash|<Image img={redash_logo} size="logo" alt="Redash logo"/>|データ視覚化|データソースに接続してクエリを実行し、データを可視化するダッシュボードを構築および共有します。|[ウェブサイト](https://redash.io/help/data-sources/querying/supported-data-sources)|
+|Restack Data Hub|<Image img={restack_logo} size="logo" alt="Restack logo"/>|データガバナンス|ユーザーはRestack Data Hubを使用して、より包括的なデータガバナンスおよび可視化フレームワークを実現できます。|[ドキュメント](https://www.restack.io/docs/datahub-knowledge-datahub-clickhouse-integration)|
+|Restack OpenMetadata|<Image img={restack_logo} size="logo" alt="Restack logo"/>|データ品質|Restack OpenMetadataはメタデータ抽出、クエリ使用の追跡、データプロファイリング、データ品質チェックをサポートします。|[ドキュメント](https://www.restack.io/docs/openmetadata-knowledge-openmetadata-clickhouse-integration)|
+|Retool|<Retoolsvg alt="Retool Logo" style={{width: '3rem'}}/>|ノーコード|ドラッグ＆ドロップインターフェイスでアプリケーションを作成します。 |[ドキュメント](/integrations/retool)|
+|Rill|<Rillsvg alt="Rill Logo" style={{width: '3rem', 'height': '2rem'}}/>|データ視覚化|RillはOLAPエンジンを使用してデータをスライス＆ダイスするために特別に作られた運用BIツールです。|[ドキュメント](https://docs.rilldata.com/reference/olap-engines/clickhouse)|
+|RisingWave|<Risingwavesvg alt="RisingWave Logo" style={{width: '3rem'}}/>|データ取り込み|Postgresのような体験でのSQLストリーム処理。Apache Flinkより10倍速く、コスト効率も良好です。|[ドキュメント](https://docs.risingwave.com/docs/current/sink-to-clickhouse/)|
+|RudderStack|<Rudderstacksvg alt="Rudderstack Logo" style={{width: '3rem'}}/>|データ取り込み|RudderStackは、顧客データを必要なツールやチームに収集して送信するのを簡単にします。|[ドキュメント](https://www.rudderstack.com/docs/destinations/warehouse-destinations/clickhouse/)|
+|RunReveal|<Image img={runreveal_logo} size="logo" alt="RunReveal logo"/>|データ取り込み|任意のSaaSアプリケーションからの監査ログをClickHouseに取り込み、正規化します。スケジュールされたクエリからアラートと検出を作成します。|[ウェブサイト](https://runreveal.com)|
+|Sematext|<Image img={sematext_logo} size="logo" alt="Sematext logo"/>|データ管理|ClickHouseデータベースのための可視性監視。|[ドキュメント](https://sematext.com/docs/integration/clickhouse/)|
+|SiSense|<Image img={sisense_logo} size="logo" alt="SiSense logo"/>|データ視覚化|任意のアプリケーションやワークフローに分析を埋め込みます。|[ウェブサイト](https://www.sisense.com/data-connectors/)|
+|SigNoz|<Image img={signoz_logo} size="logo" alt="SigNoz logo"/>|データ視覚化|オープンソースの可視性プラットフォーム。|[ドキュメント](https://www.signoz.io/docs/architecture/)|
+|Snappy Flow|<Image img={snappy_flow_logo} size="logo" alt="Snappy Flow logo"/>|データ管理|プラグインを介してClickHouseデータベースメトリクスを収集します。|[ドキュメント](https://docs.snappyflow.io/docs/Integrations/clickhouse/instance)|
+|Soda|<Image img={soda_logo} size="logo" alt="Soda logo"/>|データ品質|Soda統合により、組織はデータがデータベースにロードされる前にデータ品質チェックを実行することでデータ品質の問題を検出、解決、予防が容易になります。|[ウェブサイト](https://www.soda.io/integrations/clickhouse)|
+|Splunk|<Image img={splunk_logo} size="logo" alt="Splunk logo"/>|データ統合|ClickHouseクラウド監査ログをSplunkにインポートするためのSplunkモジュラー入力。|[ウェブサイト](https://splunkbase.splunk.com/app/7709),<br/>[ドキュメント](/integrations/tools/data-integration/splunk/index.md)|
+|StreamingFast|<Image img={streamingfast_logo} size="logo" alt="StreamingFast logo"/>|データ取り込み|ブロックチェーンに依存しない、並列化されたストリーミングファーストのデータエンジン。 |[ウェブサイト](https://www.streamingfast.io/)|
+|Streamkap|<Image img={streamkap_logo} size="logo" alt="Streamkap logo"/>|データ取り込み|数分で高スループットのリアルタイムCDC(変更データキャプチャ)ストリーミングをClickHouseに設定します。|[ドキュメント](https://docs.streamkap.com/docs/clickhouse)|
+|Supabase|<Image img={supabase_logo} size="logo" alt="Supabase logo"/>|データ取り込み|オープンソースのFirebase代替。|[GitHub](https://github.com/supabase/wrappers/tree/main/wrappers/src/fdw/clickhouse_fdw),[ブログ](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)|
+|Teleport|<Image img={teleport_logo} size="logo" alt="Teleport logo"/>|安全な接続|Teleportデータベースサービスは、ClickHouseのHTTPおよびネイティブ(TCP)インターフェースに利用できるx509証明書を使用してClickHouseに認証します。|[ドキュメント](https://goteleport.com/docs/enroll-resources/database-access/enroll-self-hosted-databases/clickhouse-self-hosted/)|
+|TABLUM.IO|<Tablumsvg className="image" alt="Teleport logo" style={{width: '3rem'}}/>|SQLクライアント|TABLUM.IOはさまざまなソースからデータを取り込み、不整合を正規化および清掃し、SQL経由でアクセスできるようにします。|[ドキュメント](/integrations/sql-clients/tablum.md)|
+|Tooljet|<Image img={tooljet_logo} size="logo" alt="Tooljet logo"/>|データ視覚化|ToolJetは、カスタム内部ツールを構築および展開するためのオープンソースのローコードフレームワークです。|[ドキュメント](https://docs.tooljet.com/docs/data-sources/clickhouse/)|
+|Upstash|<Upstashsvg alt="Tooljet logo" style={{width: '3rem'}}/>|データ取り込み|サーバーレスのKafkaやその他のソリューションを提供するデータプラットフォーム。|[ウェブサイト](https://upstash.com/)|
+|Vector|<Image img={vector_logo} size="logo" alt="Vector logo"/>|データ取り込み|ClickHouseとの組み込み互換性を備えた軽量で超高速な監視パイプライン構築ツール。|[ドキュメント](/integrations/vector/)|
+|WarpStream|<Warpstreamsvg className="image" alt="WarpStream logo" style={{width: '3rem'}}/>|データ取り込み|オブジェクトストレージの上に直接構築されたKafka互換のデータストリーミングプラットフォーム。|[ウェブサイト](https://www.warpstream.com/)|
+|YepCode|<Yepcodesvg alt="Yepcode logo" style={{width: '3rem'}}/>|データ統合|YepCodeはソースコードを愛する統合＆自動化ツールです。|[ドキュメント](https://yepcode.io/docs/integrations/clickhouse/)|
+|Zing Data|<Image img={zing_logo} size="logo" alt="Zing logo"/>|データ視覚化|iOS、Android、ウェブ向けに作られたClickHouse向けのシンプルなソーシャルビジネスインテリジェンス。|[ドキュメント](https://docs.getzingdata.com/docs/)|
+
+</div>
+
+<br/>
+## コミュニティ統合
+
+<div className="adopters-table">
+
+|名前|ロゴ|カテゴリ|説明|リソース|
+|------|----|----------------|------------------|-------------|
+|Apache Airflow|<Image img={airflow_logo} size="logo" alt="Airflow logo"/>|データ取り込み|データエンジニアリングパイプラインのためのオープンソースワークフローマネジメントプラットフォーム|[Github](https://github.com/bryzgaloff/airflow-clickhouse-plugin)|
+|Apache Beam|<Image img={beam_logo} size="logo" alt="Beam logo"/>|データ取り込み|データ処理ワークフローを定義・実行するためのオープンソースの統一モデルおよび言語特有のSDKのセット。Google Dataflowと互換性があります。|[Documentation](/integrations/apache-beam),<br/>[Examples](https://github.com/ClickHouse/clickhouse-beam-connector/)|
+|Apache InLong|<Image img={inlong_logo} size="logo" alt="InLong logo"/>|データ取り込み|大規模データのためのワンストップ統合フレームワーク|[Documentation](https://inlong.apache.org/docs/data_node/load_node/clickhouse)|
+|Apache NiFi|<Image img={nifi_logo} size="logo" alt="NiFi logo"/>|データ取り込み|ソフトウェアシステム間のデータフローを自動化します|[Documentation](/integrations/nifi)|
+|Apache SeaTunnel|<Image img={seatunnel_logo} size="logo" alt="SeaTunnel logo"/>|データ取り込み|SeaTunnelは非常に使いやすい超高性能分散データ統合プラットフォームです|[Website](https://seatunnel.apache.org/docs/2.3.0/connector-v2/sink/Clickhouse)|
+|Apache SkyWalking|<Image img={skywalking_logo} size="logo" alt="SkyWalking logo"/>|データ管理|分散システムの監視、トレース、診断機能を提供するオープンソースAPMシステムです。|[Blog](https://skywalking.apache.org/blog/2024-03-12-monitoring-clickhouse-through-skywalking/)|
+|Apache StreamPark|<Image img={streampark_logo} size="logo" alt="SeaTunnel logo"/>|データ取り込み|ストリーム処理アプリケーション開発フレームワークおよびストリーム処理運用プラットフォーム。|[Website](https://streampark.apache.org/docs/intro)|
+|Bytebase|<Image img={bytebase_logo} size="logo" alt="ByteBase logo"/>|データ管理|オープンソースのデータベースDevOpsツールで、アプリケーション開発ライフサイクルを通じてデータベースを管理するためのGitLabです|[Documentation](https://www.bytebase.com/docs/introduction/supported-databases)|
+|CHProxy| |データ管理|ChproxyはClickHouseデータベースのHTTPプロキシおよびロードバランサーです|[GitHub](https://github.com/ContentSquare/chproxy)|
+|Chat-DBT| |AI統合|Chat GPTを使ってClickHouseクエリを作成します。|[GitHub](https://github.com/plmercereau/chat-dbt)|
+|ClickHouse Monitoring Dashboard|<Clickhousemonitoringdashboardsvg alt="ClickHouse Monitoring logo" style={{width: '3rem'}}/>|ダッシュボード|ClickHouseのためのシンプルな監視ダッシュボード|[Github](https://github.com/duyet/clickhouse-monitoring)|
+|Common Lisp|<Image img={clickhouse_cl_logo} size="logo" alt="clickhouse-cl Logo"/>|言語クライアント|Common Lisp ClickHouseクライアントライブラリ|[GitHub](https://github.com/juliojimenez/clickhouse-cl)|
+| Dataflow|<Image img={dataflow_logo} size="logo" alt="Dataflow logo"/>|データ取り込み|Google Dataflowは、Apache Beamを使用してバッチおよびストリーミングデータパイプラインを実行するためのサーバーレスサービスです。|[Documentation](/integrations/google-dataflow/dataflow)|
+|DBNet|<Image img={dbnet_logo} size="logo" alt="Airflow logo"/>|ソフトウェアIDE|Goをバックエンドとして使用し、ブラウザをフロントエンドとしたWebベースのSQL IDEです。|[Github](https://github.com/dbnet-io/dbnet)|
+|DataLens|<Image img={datalens_logo} size="logo" alt="Datalens logo"/>|データ視覚化|オープンソースのデータ分析・視覚化ツールです。|[Website](https://datalens.tech/),<br/>[Documentation](https://datalens.tech/docs/en/)|
+|Dataease|<Image img={dataease_logo} size="logo" alt="Dataease logo"/>|データ視覚化|ユーザーがデータを分析し、ビジネストレンドを洞察するのを助けるオープンソースのデータ視覚化分析ツールです。|[Website](https://dataease.io/)|
+|Datahub|<Image img={datahub_logo} size="logo" alt="Datahub logo"/>|データ管理|データの発見、データの可視化、連邦ガバナンスを可能にするオープンソースのデータカタログ|[Documentation](https://datahubproject.io/docs/generated/ingestion/sources/clickhouse/)|
+|Dbmate| |データ管理|データベース移行ツールで、複数の開発者やサーバー間でデータベーススキーマを同期させます|[GitHub](https://github.com/amacneil/dbmate#clickhouse)|
+|DeepFlow|<Image img={deepflow_logo} size="logo" alt="Deepflow logo"/>|データ取り込み|eBPFを使用したアプリケーションの可観測性|[Website](https://deepflow.io)|
+|Easypanel|<Image img={easypanel_logo} size="logo" alt="Easypanel logo"/>|デプロイメント手法|最新のサーバーコントロールパネルです。これを使ってClickHouseを自分のサーバーにデプロイできます。|[Website](https://easypanel.io), <br/>[Documentation](/integrations/tools/data-integration/easypanel/index.md)|
+|Explo|<Explosvg alt="Explo logo" style={{width: '3rem'}} />|データ視覚化|Exploは企業がリアルタイム分析ダッシュボードを構築するのを助ける柔軟なコンポーネントを提供します。|[Website](https://www.explo.co/integrations/clickhouse)|
+|Flink|<Image img={flink_logo} size="logo" alt="Flink logo"/>|データ取り込み|Async Http Clientによって駆動されるClickHouseデータベースのFlinkシンク|[GitHub](https://github.com/itinycheng/flink-connector-clickhouse)|
+|Goose|<Image img={goose_logo} size="logo" alt="Goose logo"/>|データ移行|SQL移行とGo関数をサポートするデータベース移行ツールです。|[GitHub](https://github.com/pressly/goose),<br/>[Documentation](https://pressly.github.io/goose/)|
+|Ibis|<Image img={ibis_logo} size="logo" alt="Ibis logo"/>|言語クライアント|Python分析の柔軟性と現代のSQLのスケールとパフォーマンス|[Website](https://ibis-project.org/backends/ClickHouse/)|
+|Jaeger|<Image img={jaeger_logo} size="logo" alt="Jaeger logo"/>|データ取り込み|ClickHouseにトレースを保存するためのJaeger gRPCストレージプラグイン実装|[GitHub](https://github.com/jaegertracing/jaeger-clickhouse)|
+|JupySQL|<Image img={jupyter_logo} size="logo" alt="JupySQL logo"/>|SQLクライアント|Jupyterノートブック用のネイティブSQLクライアントです。|[Documentation](/integrations/jupysql)|
+|Kestra|<Kestrasvg className="image" alt="Kestra logo" style={{width: '48px'}}/>|データオーケストレーション|オープンソースのデータオーケストレーションおよびスケジューリングプラットフォーム|[Website](https://kestra.io/plugins/plugin-jdbc-clickhouse/)|
+|Logchain|<Image img={adaptive_logo} size="logo" alt="Adaptive Logchain logo"/>|セキュリティ|データセキュリティと特権アクセス管理|[Website](https://github.com/adaptive-scale/logchain)|
+|Meltano||データ取り込み|Meltanoはオープンソースのフルスタックデータ統合プラットフォームです|[Documentation](https://hub.meltano.com/extractors/tap-clickhouse)|
+|Mprove|<Image img={mprove_logo} size="logo" alt="mprove logo"/>|データ視覚化|バージョン管理付きセルフサービスビジネスインテリジェンス|[Website](https://mprove.io/)|
+|Netobserv||データ管理|ネットワーク可観測性のためのOpenShiftおよびKubernetesオペレーターです。|[Blog](https://cloud.redhat.com/blog/deploying-network-observability-without-loki-an-example-with-clickhouse)|
+|Observable|<Observablesvg alt="Observable logo" style={{width: '3rem'}}/>|データ視覚化|Observableは、データをウェブ上で共同で探索、分析、視覚化し、コミュニケーションするためのプラットフォームです。|[Website](https://observablehq.com/@stas-sl/clickhouse-playground)|
+|PHP|<Image img={php_logo} size="logo" alt="PHP logo"/>|言語クライアント|この拡張機能はYiiフレームワーク2.0のためのClickHouse統合を提供します|[GitHub](https://github.com/smi2/phpClickHouse)|
+|Pgwarehouse||データ取り込み|PostgresテーブルをClickHouseに迅速に複製するためのシンプルなツールです|[GitHub](https://github.com/scottpersinger/pgwarehouse)|
+|Pinax|<Image img={pinax_logo} size="logo" alt="Pinax logo"/>|ブロックチェーン分析|ブロックチェーンのインデックス、分析、検索ツールです。|[Blog](https://blog.pinax.network/substreams/simplify-real-time-blockchain-analytics-with-clickhouse/)|
+|Pulse|<Image img={pulse_logo} size="logo" alt="PulseUI logo"/>|データ管理|内部データUIのための開発者プラットフォームです。|[Website](https://www.timestored.com/pulse/)|
+|QStudio|<Image img={qstudio_logo} size="logo" alt="QStudio logo"/>|GUI|ClickHouseデータベースと対話するための使いやすいGUIです。|[Website](https://www.timestored.com/qstudio/database/clickhouse)|
+|Qryn|<Image img={qryn_logo} size="logo" alt="qryn logo"/>|データ取り込み、管理、視覚化|qrynはClickHouseの上に構築された多言語可観測スタックで、Loki、Prometheus、Tempo、Opentelemetryなどのさまざまな形式および標準APIと透過的に互換性があります。特別なクライアント、コード、プラグインは必要ありません。|[Documentation](https://qryn.dev), [Github](https://github.com/metrico), [Website](https://qryn.cloud)|
+|RSyslog|<Image img={rsyslog_logo} size="logo" alt="RSyslog logo"/>|データ取り込み|このモジュールはClickHouseへのログ記録をネイティブにサポートします。|[Documentation](https://www.rsyslog.com/doc/master/configuration/modules/omclickhouse.html)|
+|Rocket.BI|<RocketbiSVG style={{width: '3rem'}}/>|データ視覚化|RocketBIは、データを迅速に分析し、ドラッグアンドドロップの視覚化を構築し、同僚と共同作業を行うためのセルフサービスのビジネスインテリジェンスプラットフォームです。|[GitHub](https://github.com/datainsider-co/rocket-bi), <br/>[Documentation](/integrations/data-visualization/rocketbi-and-clickhouse.md)|
+|Ruby|<Image img={ruby_logo} size="logo" alt="Ruby logo"/>|言語クライアント|ClickHouse用のモダンなRubyデータベースドライバです|[GitHub](https://github.com/shlima/click_house)|
+|R|<Image img={r_logo} size="logo" alt="R logo"/>|言語クライアント|RパッケージはClickHouseデータベース用のDBIインターフェースです|[GitHub](https://github.com/IMSMWU/RClickHouse)|
+|SQLPad||SQLクライアント|SQLPadはSQLクエリを書いて実行し、結果を視覚化するためのWebアプリです|[Documentation](https://getsqlpad.com/en/connections/#clickhouse)|
+|Scala|<Image img={scala_logo} size="logo" alt="Scala logo" />|言語クライアント|Akka Httpを使用したClickHouse Scalaクライアント|[GitHub](https://github.com/crobox/clickhouse-scala-client)|
+|SchemaSpy|<Image img={schemaspy_logo} size="logo" alt="SchemaSpy logo"/>|データ視覚化|SchemaSpyはClickHouseのスキーマ視覚化をサポートします|[GitHub](https://github.com/schemaspy/schemaspy)|
+|TricksterCache|<Trickstercachesvg className="image" alt="TricksterCache logo" style={{width: '3rem'}}/>|データ視覚化|オープンソースのHTTPリバースプロキシキャッシュおよび時系列ダッシュボードアクセラレータ|[Website](https://trickstercache.org/)|
+|Visual Studio Client|<Image img={vs_logo} size="logo" alt="VS logo"/>|言語クライアント|Visual Studio用の軽量クライアント|[Marketplace](https://marketplace.visualstudio.com/items?itemName=fanruten.clickhouse-light)|
+|VulcanSQL|<Image img={vulcansql_logo} size="logo" alt="VulcanSQL logo"/>|データAPIフレームワーク|データアプリケーションのためのデータAPIフレームワークで、データAPIの作成と共有を迅速に行うのに役立ちます。SQLテンプレートをデータAPIに変換します。バックエンドスキルは必要ありません。|[Website](https://vulcansql.com/), <br/>[Documentation](https://vulcansql.com/docs/connect/clickhouse)|
+|marimo|<Image img={marimo_logo} size="logo" alt="marimo logo"/>|SQLクライアント|SQLが組み込まれたオープンソースのリアクティブノートブックです。データ視覚化、共有可能なアプリまたは実行可能なスクリプトを作成します。|[Website](https://marimo.io/), <br/>[Documentation](https://docs.marimo.io/guides/working_with_data/sql/?h=sql#clickhouse-support)|
+</div>
+
+:::info 注意
+サードパーティのロゴや商標はそれぞれの所有者に属し、利用可能な統合を示すためだけに表示されています。推奨は含まれていません。
+:::

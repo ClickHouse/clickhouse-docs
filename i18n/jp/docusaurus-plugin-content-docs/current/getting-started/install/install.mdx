@@ -1,0 +1,52 @@
+---
+'description': 'ClickHouseをインストール'
+'keywords':
+- 'clickhouse'
+- 'install'
+- 'getting started'
+- 'quick start'
+'sidebar_label': 'インストール'
+'slug': '/install'
+'title': 'ClickHouseのインストール'
+'doc_type': 'guide'
+---
+
+import InstallSelector from '@site/src/components/Install/Install'
+import Windows from './_snippets/_windows_install.md'
+import TarProd from './_snippets/_linux_tar_install.md'
+import QuickInstall from './_snippets/_quick_install.md'
+import DebianProd from './_snippets/_deb_install.md'
+import RPMProd from './_snippets/_rpm_install.md'
+import MacOSProd from './_snippets/_macos.md'
+import Docker from './_snippets/_docker.md'
+import {CardPrimary} from '@clickhouse/click-ui/bundled';
+import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
+
+
+# インストール手順
+
+<CardPrimary
+    alignContent="center"
+    description="クラスターのサイズ設定やスケーリングの必要なく、すぐに構築を開始できます。サイズ設定、スケーリング、セキュリティ、信頼性、アップグレードを私たちが担当します。"
+    icon="cloud"
+    infoText="無料で始める"
+    infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner"
+    isSelected
+    onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')}
+    size="md"
+    title="ClickHouse Cloud"
+    topBadgeText="推奨"
+/>
+<br/>
+
+代替として、オープンソースのClickHouseのインストール手順を表示するには、プラットフォーム、ディストリビューション、インストール方法を選択してください：
+
+<InstallSelector
+    windows={<Windows/>}
+    quickinstall={<QuickInstall/>}
+    debian_prod={<DebianProd/>}
+    rpm_prod={<RPMProd/>}
+    tar_prod={<TarProd/>}
+    macos_prod={<MacOSProd/>}
+    docker={<Docker/>}
+/>
