@@ -2,7 +2,7 @@
 description: 'Эта таблица содержит метрики гистограммы, которые могут быть рассчитаны мгновенно
   и экспортированы в формате Prometheus. Она всегда актуальна.'
 keywords: ['системная таблица', 'метрики_гистограммы']
-slug: /ru/operations/system-tables/histogram_metrics
+slug: /operations/system-tables/histogram_metrics
 title: 'system.histogram_metrics'
 ---
 

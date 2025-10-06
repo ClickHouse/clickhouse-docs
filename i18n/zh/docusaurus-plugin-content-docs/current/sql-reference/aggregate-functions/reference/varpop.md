@@ -1,7 +1,7 @@
 ---
 'description': '计算人口方差。'
 'sidebar_position': 210
-'slug': '/en/sql-reference/aggregate-functions/reference/varPop'
+'slug': '/sql-reference/aggregate-functions/reference/varPop'
 'title': 'varPop'
 ---
 

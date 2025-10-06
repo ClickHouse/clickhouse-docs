@@ -1,7 +1,7 @@
 ---
 description: 'Вычисляет дисперсию населения.'
 sidebar_position: 210
-slug: /ru/sql-reference/aggregate-functions/reference/varPop
+slug: /sql-reference/aggregate-functions/reference/varPop
 title: 'varPop'
 ---
 

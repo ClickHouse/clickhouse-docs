@@ -3,7 +3,7 @@
 'keywords':
 - 'system table'
 - 'histogram_metrics'
-'slug': '/en/operations/system-tables/histogram_metrics'
+'slug': '/operations/system-tables/histogram_metrics'
 'title': 'system.histogram_metrics'
 ---
 
