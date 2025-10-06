@@ -664,7 +664,7 @@ To insert data into the table, `ON CLUSTER` cannot be used as it does
 not apply to DML (Data Manipulation Language) queries such as `INSERT`, `UPDATE`,
 and `DELETE`. To insert data, it is necessary to make use of the 
 [`Distributed`](/engines/table-engines/special/distributed) table engine.
-As you learnt in the [guide](/architecture/horizontal-scaling) for setting up a cluster with 2 shards and 1 replica, distributed tables are tables which have access to shards located on different
+As you learned in the [guide](/architecture/horizontal-scaling) for setting up a cluster with 2 shards and 1 replica, distributed tables are tables which have access to shards located on different
 hosts and are defined using the `Distributed` table engine.
 The distributed table acts as the interface across all the shards in the cluster.
 
@@ -760,4 +760,4 @@ The main disadvantage of this cluster topology is the increased storage overhead
 Additionally, while the cluster can survive a single node failure, losing two nodes simultaneously may render the cluster inoperable, depending on which nodes fail and how shards are distributed.
 This topology strikes a balance between availability and cost, making it suitable for production environments where some level of fault tolerance is required without the expense of higher replication factors.
 
-To learn how ClickHouse Cloud process queries, offering both scalability and fault-tolerance, see the section ["Parallel Replicas"](/deployment-guides/parallel-replicas).
+To learn how ClickHouse Cloud processes queries, offering both scalability and fault-tolerance, see the section ["Parallel Replicas"](/deployment-guides/parallel-replicas).
