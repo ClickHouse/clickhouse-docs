@@ -387,7 +387,7 @@ insert_src_files=(
   "logical-functions.md"
   "mathematical-functions.md"
   "natural_language_processing-functions.md"
-  "random_number-functions.md"
+  "randomnumber-functions.md"
 )
 
 insert_dest_files=(
