@@ -1117,3 +1117,5 @@ ReceiveMessage
 RelationMessage
 --docs/integrations/data-ingestion/clickpipes/mongodb/faq.md--
 resumable
+--docs/integrations/data-visualization/dot-and-clickhouse.md--
+Hashboard
