@@ -66,7 +66,7 @@ for i in {01..02}; do
 done
 ```
 
-Add the following `docker-compose.yml` file to the `clickhouse-cluster` directory:
+Add the following `docker-compose.yml` file to the `cluster_1S_2R` directory:
 
 ```yaml title="docker-compose.yml"
 version: '3.8'

@@ -29,6 +29,7 @@ or look together at how we can increase them in a controlled manner.
 | **Part size**                 | 150gb                                                      |
 | **Services per organization** | 20 (soft)                                                  |
 | **Services per warehouse**    | 5 (soft)                                                   |
+| **Replicas per service**      | 20 (soft)                                                  |  
 | **Low cardinality**           | 10k or less                                                |
 | **Primary keys in a table**   | 4-5 that sufficiently filter down the data                 |
 | **Query concurrency**         | 1000 (per replica)                                         |
