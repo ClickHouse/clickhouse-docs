@@ -1,8 +1,9 @@
 ---
-'description': '计算序列的kurtosis。'
+'description': '计算一系列的峰度。'
 'sidebar_position': 157
 'slug': '/sql-reference/aggregate-functions/reference/kurtpop'
 'title': 'kurtPop'
+'doc_type': 'reference'
 ---
 
 
@@ -16,7 +17,7 @@ kurtPop(expr)
 
 **参数**
 
-`expr` — [表达式](/sql-reference/syntax#expressions)，返回一个数字。
+`expr` — 返回一个数字的[表达式](/sql-reference/syntax#expressions)。
 
 **返回值**
 

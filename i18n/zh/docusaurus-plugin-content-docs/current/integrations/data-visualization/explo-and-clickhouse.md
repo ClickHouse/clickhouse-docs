@@ -8,8 +8,9 @@
 - 'connect'
 - 'integrate'
 - 'ui'
-'description': 'Explo 是一个易于使用的开源 UI 工具，用于查询您的 数据。'
-'title': '连接 Explo 和 ClickHouse'
+'description': 'Explo 是一个易于使用的开源用户界面工具，用于查询您的数据。'
+'title': '连接 Explo 与 ClickHouse'
+'doc_type': 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -33,76 +34,76 @@ import explo_16 from '@site/static/images/integrations/data-visualization/explo_
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# 将Explo连接到ClickHouse
+# 连接 Explo 和 ClickHouse
 
 <CommunityMaintainedBadge/>
 
-用于任何平台的客户分析。旨在提供美观的可视化。工程设计简单易用。
+面向客户的任何平台分析。旨在提供美观的可视化。设计简单易用。
 
 ## 目标 {#goal}
 
-在本指南中，您将把ClickHouse中的数据连接到Explo并可视化结果。图表将如下所示：
+在本指南中，您将把 ClickHouse 的数据连接到 Explo，并可视化结果。图表看起来像这样：
 <Image img={explo_15} size="md" alt="Explo Dashboard" />
 
 <p/>
 
 :::tip 添加一些数据
-如果您没有数据集可以使用，可以添加一些示例。本指南使用[UK Price Paid](/getting-started/example-datasets/uk-price-paid.md)数据集，因此您可以选择该数据集。在同一文档类别中还有其他几个供您选择。
+如果您没有数据集可以使用，您可以添加一个示例。本指南使用的是 [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) 数据集，因此您可能选择这个。还有其他几个可以在同一文档类别中查看。
 :::
 
 ## 1. 收集连接详细信息 {#1-gather-your-connection-details}
 <ConnectionDetails />
 
-## 2. 将Explo连接到ClickHouse {#2--connect-explo-to-clickhouse}
+## 2. 将 Explo 连接到 ClickHouse {#2--connect-explo-to-clickhouse}
 
-1. 注册Explo账户。
+1. 注册一个 Explo 账户。
 
-2. 单击左侧边栏中的Explo **数据**选项卡。
+2. 点击左侧边栏上的 Explo **数据** 选项卡。
 
-<Image img={explo_01} size="sm" alt="数据选项卡" border />
+<Image img={explo_01} size="sm" alt="Data Tab" border />
 
-3. 在右上角单击 **连接数据源**。
+3. 在右上角点击 **连接数据源**。
 
-<Image img={explo_02} size="sm" alt="连接数据源" border />
+<Image img={explo_02} size="sm" alt="Connect Data Source" border />
 
-4. 填写 **入门** 页面的信息。
+4. 在 **入门** 页面填写信息。
 
-<Image img={explo_03} size="md" alt="入门" border />
+<Image img={explo_03} size="md" alt="Getting Started" border />
 
 5. 选择 **Clickhouse**。
 
 <Image img={explo_04} size="md" alt="Clickhouse" border />
 
-6. 输入您的 **Clickhouse凭据**。
+6. 输入您的 **Clickhouse 凭据**。
 
-<Image img={explo_05} size="md" alt="凭据" border />
+<Image img={explo_05} size="md" alt="Credentials" border />
 
 7. 配置 **安全性**。
 
-<Image img={explo_06} size="md" alt="安全性" border />
+<Image img={explo_06} size="md" alt="Security" border />
 
-8. 在Clickhouse中，**将Explo IP地址加入白名单**。
+8. 在 Clickhouse 中，**允许 Explo 的 IP 地址**。
 `
 54.211.43.19, 52.55.98.121, 3.214.169.94, 和 54.156.141.148
 `
 
 ## 3. 创建仪表板 {#3-create-a-dashboard}
 
-1. 导航到左侧导航栏中的 **仪表板** 选项卡。
+1. 在左侧导航栏中导航到 **仪表板** 选项卡。
 
-<Image img={explo_07} size="sm" alt="仪表板" border />
+<Image img={explo_07} size="sm" alt="Dashboard" border />
 
-2. 单击右上角的 **创建仪表板** 并为您的仪表板命名。您现在已创建一个仪表板！
+2. 在右上角点击 **创建仪表板** 并命名您的仪表板。您现在已经创建了一个仪表板！
 
-<Image img={explo_08} size="sm" alt="创建仪表板" border />
+<Image img={explo_08} size="sm" alt="Create Dashboard" border />
 
-3. 现在您应该会看到一个类似于以下内容的屏幕：
+3. 现在您应该看到一个类似于以下的屏幕：
 
 <Image img={explo_09} size="md" alt="Explo Dashboard" border />
 
-## 4. 运行SQL查询 {#4-run-a-sql-query}
+## 4. 运行 SQL 查询 {#4-run-a-sql-query}
 
-1. 从右侧边栏的您的架构标题下获取表名。然后将以下命令放入您的数据集编辑器中：
+1. 从右侧边栏的架构标题下获取您的表名。然后在您的数据集编辑器中输入以下命令：
 `
 SELECT * FROM YOUR_TABLE_NAME
 LIMIT 100
@@ -110,11 +111,11 @@ LIMIT 100
 
 <Image img={explo_10} size="md" alt="Explo Dashboard" border />
 
-2. 现在单击运行，并转到预览选项卡以查看您的数据。
+2. 现在点击运行并转到预览选项卡以查看您的数据。
 
 <Image img={explo_11} size="md" alt="Explo Dashboard" border />
 
-## 5. 创建图表 {#5-build-a-chart}
+## 5. 构建图表 {#5-build-a-chart}
 
 1. 从左侧拖动条形图图标到屏幕上。
 
@@ -124,7 +125,7 @@ LIMIT 100
 
 <Image img={explo_12} size="sm" alt="Explo Dashboard" border />
 
-3. 在X轴中填写 **county**，在Y轴部分中填写 **Price**，如下所示：
+3. 在 X 轴中填写 **county**，在 Y 轴部分中填写 **Price** 如下：
 
 <Image img={explo_13} size="sm" alt="Explo Dashboard" border />
 
@@ -132,10 +133,10 @@ LIMIT 100
 
 <Image img={explo_14} size="sm" alt="Explo Dashboard" border />
 
-5. 我们现在得到了按价格划分的房屋平均价格！
+5. 我们现在有按价格分解的房屋平均价格！
 
 <Image img={explo_15} size="md" alt="Explo Dashboard" />
 
 ## 了解更多 {#learn-more}
 
-通过 <a href="https://docs.explo.co/" target="_blank">访问Explo文档</a>，找到更多关于Explo和如何构建仪表板的信息。
+通过 <a href="https://docs.explo.co/" target="_blank">访问 Explo 文档</a> 找到关于 Explo 及如何构建仪表板的更多信息。

@@ -4,9 +4,10 @@
 'sidebar_position': 46
 'slug': '/sql-reference/statements/alter/role'
 'title': 'ALTER ROLE'
+'doc_type': 'reference'
 ---
 
-更改角色。
+Changes roles.
 
 语法：
 

@@ -1,17 +1,18 @@
 ---
-'description': '数据集包含 400 百万图像，带有英文图像说明'
+'description': '数据集包含 4 亿张图像，带有英文图像说明'
 'sidebar_label': 'Laion-400M 数据集'
 'slug': '/getting-started/example-datasets/laion-400m-dataset'
 'title': 'Laion-400M 数据集'
+'doc_type': 'reference'
 ---
 
-The [Laion-400M dataset](https://laion.ai/blog/laion-400-open-dataset/) 包含 4 亿张带有英文图像描述的图像。如今，Laion 提供了 [一个更大的数据集](https://laion.ai/blog/laion-5b/)，但与之合作的方式将是类似的。
+[Laion-400M 数据集](https://laion.ai/blog/laion-400-open-dataset/) 包含 4 亿张带有英文图片标题的图像。目前 Laion 提供了 [一个更大的数据集](https://laion.ai/blog/laion-5b/)，但使用方式类似。
 
-该数据集包含图像 URL、图像和图像描述的嵌入、图像与图像描述之间的相似性评分，以及元数据，如图像宽度/高度、许可证和 NSFW 标志。我们可以使用该数据集来演示 [近似最近邻搜索](../../engines/table-engines/mergetree-family/annindexes.md) 在 ClickHouse 中的用法。
+该数据集包含图像 URL、图像及其标题的嵌入、图像与标题之间的相似度评分，以及元数据，例如图像的宽度/高度、许可证和 NSFW 标志。我们可以使用该数据集来演示 [近似最近邻搜索](../../engines/table-engines/mergetree-family/annindexes.md) 在 ClickHouse 中的实现。
 
 ## 数据准备 {#data-preparation}
 
-嵌入和元数据存储在原始数据的不同文件中。数据准备步骤下载数据、合并文件，将其转换为 CSV 并导入到 ClickHouse 中。您可以使用以下 `download.sh` 脚本来实现：
+嵌入和元数据存储在原始数据中的不同文件中。数据准备步骤下载数据、合并文件，转换为 CSV 后导入 ClickHouse。您可以使用以下 `download.sh` 脚本进行操作：
 
 ```bash
 number=${1}
@@ -52,11 +53,11 @@ data = data[['url', 'caption', 'NSFW', 'similarity', "image_embedding", "text_em
 
 
 # transform np.arrays to lists
-data['image_embedding'] = data['image_embedding'].apply(lambda x: list(x))
-data['text_embedding'] = data['text_embedding'].apply(lambda x: list(x))
+data['image_embedding'] = data['image_embedding'].apply(lambda x: x.tolist())
+data['text_embedding'] = data['text_embedding'].apply(lambda x: x.tolist())
 
 
-# this small hack is needed becase caption sometimes contains all kind of quotes
+# this small hack is needed because caption sometimes contains all kind of quotes
 data['caption'] = data['caption'].apply(lambda x: x.replace("'", " ").replace('"', " "))
 
 
@@ -74,13 +75,13 @@ os.system(f"rm {npy_file} {metadata_file} {text_npy}")
 seq 0 409 | xargs -P1 -I{} bash -c './download.sh {}'
 ```
 
-数据集被分成 410 个文件，每个文件包含约 100 万行。如果您想使用较小的数据子集，只需调整限制，例如 `seq 0 9 | ...`。
+数据集被分成 410 个文件，每个文件大约包含 100 万行。如果您希望使用更小的子集，只需调整限制，例如 `seq 0 9 | ...`。
 
-（上述 Python 脚本速度非常慢（每个文件约 2-10 分钟），占用大量内存（每个文件 41 GB），并且生成的 CSV 文件较大（每个 10 GB），所以请小心。如果您的 RAM 足够，可以增加 `-P1` 数字以提高并行性。如果仍然太慢，请考虑制定更好的导入程序——也许将 .npy 文件转换为 parquet，然后用 ClickHouse 处理所有其他操作。）
+（上述 Python 脚本速度较慢（每个文件约 2-10 分钟），占用大量内存（每个文件 41 GB），并且生成的 CSV 文件较大（每个 10 GB），所以请小心。如果您的 RAM 足够，可以将 `-P1` 的数字增加以实现更高的并行性。如果仍然太慢，可以考虑提出更好的摄取过程 - 也许先将 .npy 文件转换为 parquet，然后用 ClickHouse 进行所有其他处理。）
 
 ## 创建表 {#create-table}
 
-要创建一个没有索引的表，请运行：
+要最初创建一个没有索引的表，请运行：
 
 ```sql
 CREATE TABLE laion
@@ -98,100 +99,103 @@ ORDER BY id
 SETTINGS index_granularity = 8192
 ```
 
-要将 CSV 文件导入到 ClickHouse 中：
+要将 CSV 文件导入 ClickHouse，请执行：
 
 ```sql
 INSERT INTO laion FROM INFILE '{path_to_csv_files}/*.csv'
 ```
 
-## 运行无 ANN 索引的暴力近似最近邻搜索 {#run-a-brute-force-ann-search-without-ann-index}
+请注意，`id` 列仅供说明，并由脚本填充非唯一值。
 
-要运行暴力的近似最近邻搜索，请运行：
+## 运行暴力向量相似度搜索 {#run-a-brute-force-vector-similarity-search}
+
+要运行暴力近似向量搜索，请执行：
 
 ```sql
-SELECT url, caption FROM laion ORDER BY L2Distance(image_embedding, {target:Array(Float32)}) LIMIT 30
+SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:Array(Float32)}) LIMIT 10
 ```
 
-`target` 是一个包含 512 个元素的数组和一个客户端参数。获取这样的数组的方便方法将在文章结束时呈现。现在，我们可以将随机猫图像的嵌入作为 `target` 进行运行。
+`target` 是一个包含 512 个元素的数组和一个客户端参数。最后，将在文章末尾介绍获取此类数组的方便方法。现在，我们可以将随机 LEGO 套装图片的嵌入作为 `target`。
 
 **结果**
 
 ```markdown
-┌─url───────────────────────────────────────────────────────────────────────────────────────────────────────────┬─caption────────────────────────────────────────────────────────────────┐
-│ https://s3.amazonaws.com/filestore.rescuegroups.org/6685/pictures/animals/13884/13884995/63318230_463x463.jpg │ Adoptable Female Domestic Short Hair                                   │
-│ https://s3.amazonaws.com/pet-uploads.adoptapet.com/8/b/6/239905226.jpg                                        │ Adopt A Pet :: Marzipan - New York, NY                                 │
-│ http://d1n3ar4lqtlydb.cloudfront.net/9/2/4/248407625.jpg                                                      │ Adopt A Pet :: Butterscotch - New Castle, DE                           │
-│ https://s3.amazonaws.com/pet-uploads.adoptapet.com/e/e/c/245615237.jpg                                        │ Adopt A Pet :: Tiggy - Chicago, IL                                     │
-│ http://pawsofcoronado.org/wp-content/uploads/2012/12/rsz_pumpkin.jpg                                          │ Pumpkin an orange tabby  kitten for adoption                           │
-│ https://s3.amazonaws.com/pet-uploads.adoptapet.com/7/8/3/188700997.jpg                                        │ Adopt A Pet :: Brian the Brad Pitt of cats - Frankfort, IL             │
-│ https://s3.amazonaws.com/pet-uploads.adoptapet.com/8/b/d/191533561.jpg                                        │ Domestic Shorthair Cat for adoption in Mesa, Arizona - Charlie         │
-│ https://s3.amazonaws.com/pet-uploads.adoptapet.com/0/1/2/221698235.jpg                                        │ Domestic Shorthair Cat for adoption in Marietta, Ohio - Daisy (Spayed) │
-└───────────────────────────────────────────────────────────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────┘
+    ┌─url───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─caption──────────────────────────────────────────────────────────────────────────┐
+ 1. │ https://s4.thcdn.com/productimg/600/600/11340490-9914447026352671.jpg                                                                                                                         │ LEGO Friends: Puppy Treats & Tricks (41304)                                      │
+ 2. │ https://www.avenuedelabrique.com/img/uploads/f20fd44bfa4bd49f2a3a5fad0f0dfed7d53c3d2f.jpg                                                                                                     │ Nouveau LEGO Friends 41334 Andrea s Park Performance 2018                        │
+ 3. │ http://images.esellerpro.com/2489/I/667/303/3938_box_in.jpg                                                                                                                                   │ 3938 LEGO Andreas Bunny House Girls Friends Heartlake Age 5-12 / 62 Pieces  New! │
+ 4. │ http://i.shopmania.org/180x180/7/7f/7f1e1a2ab33cde6af4573a9e0caea61293dfc58d.jpg?u=https%3A%2F%2Fs.s-bol.com%2Fimgbase0%2Fimagebase3%2Fextralarge%2FFC%2F4%2F0%2F9%2F9%2F9200000049789904.jpg │ LEGO Friends Avonturenkamp Boomhuis - 41122                                      │
+ 5. │ https://s.s-bol.com/imgbase0/imagebase/large/FC/5/5/9/4/1004004011684955.jpg                                                                                                                  │ LEGO Friends Andrea s Theatershow - 3932                                         │
+ 6. │ https://www.jucariicucubau.ro/30252-home_default/41445-lego-friends-ambulanta-clinicii-veterinare.jpg                                                                                         │ 41445 - LEGO Friends - Ambulanta clinicii veterinare                             │
+ 7. │ https://cdn.awsli.com.br/600x1000/91/91201/produto/24833262/234c032725.jpg                                                                                                                    │ LEGO FRIENDS 41336 EMMA S ART CAFÉ                                               │
+ 8. │ https://media.4rgos.it/s/Argos/6174930_R_SET?$Thumb150$&amp;$Web$                                                                                                                             │ more details on LEGO Friends Stephanie s Friendship Cake Set - 41308.            │
+ 9. │ https://thumbs4.ebaystatic.com/d/l225/m/mG4k6qAONd10voI8NUUMOjw.jpg                                                                                                                           │ Lego Friends Gymnast 30400 Polybag 26 pcs                                        │
+10. │ http://www.ibrickcity.com/wp-content/gallery/41057/thumbs/thumbs_lego-41057-heartlake-horse-show-friends-3.jpg                                                                                │ lego-41057-heartlake-horse-show-friends-3                                        │
+    └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────┘
 
-8 rows in set. Elapsed: 6.432 sec. Processed 19.65 million rows, 43.96 GB (3.06 million rows/s., 6.84 GB/s.)
+10 rows in set. Elapsed: 4.605 sec. Processed 100.38 million rows, 309.98 GB (21.80 million rows/s., 67.31 GB/s.)
 ```
 
-## 运行带 ANN 索引的 ANN {#run-a-ann-with-an-ann-index}
+## 使用向量相似度索引运行近似向量相似度搜索 {#run-an-approximate-vector-similarity-search-with-a-vector-similarity-index}
 
-创建一个带 ANN 索引的新表，并从现有表中插入数据：
+现在让我们在表上定义两个向量相似度索引。
 
 ```sql
-CREATE TABLE laion_annoy
-(
-    `id` Int64,
-    `url` String,
-    `caption` String,
-    `NSFW` String,
-    `similarity` Float32,
-    `image_embedding` Array(Float32),
-    `text_embedding` Array(Float32),
-    INDEX annoy_image image_embedding TYPE annoy(),
-    INDEX annoy_text text_embedding TYPE annoy()
-)
-ENGINE = MergeTree
-ORDER BY id
-SETTINGS index_granularity = 8192;
-
-INSERT INTO laion_annoy SELECT * FROM laion;
+ALTER TABLE laion ADD INDEX image_index image_embedding TYPE vector_similarity('hnsw', 'cosineDistance', 512, 'bf16', 64, 256)
+ALTER TABLE laion ADD INDEX text_index text_embedding TYPE vector_similarity('hnsw', 'cosineDistance', 512, 'bf16', 64, 256)
 ```
 
-默认情况下，Annoy 索引用 L2 距离作为度量。索引创建和搜索的进一步调优参数在 Annoy 索引 [文档](../../engines/table-engines/mergetree-family/annindexes.md) 中进行了描述。现在，我们再次用相同的查询进行检查：
+索引创建和搜索的参数及性能考虑在 [文档中](../../engines/table-engines/mergetree-family/annindexes.md) 进行了描述。上述索引定义指定了一个 HNSW 索引，使用“余弦距离”作为距离度量，参数“hnsw_max_connections_per_layer”设置为 64，参数“hnsw_candidate_list_size_for_construction”设置为 256。该索引使用半精度浮点数（bfloat16）作为量化，以优化内存使用。
+
+要构建和物化索引，请运行以下语句：
 
 ```sql
-SELECT url, caption FROM laion_annoy ORDER BY l2Distance(image_embedding, {target:Array(Float32)}) LIMIT 8
+ALTER TABLE laion MATERIALIZE INDEX image_index;
+ALTER TABLE laion MATERIALIZE INDEX text_index;
+```
+
+构建和保存索引可能需要几分钟甚至几个小时，具体取决于行数和 HNSW 索引参数。
+
+要执行向量搜索，只需再次执行相同的查询：
+
+```sql
+SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:Array(Float32)}) LIMIT 10
 ```
 
 **结果**
 
 ```response
-┌─url──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─caption──────────────────────────────────────────────────────────────┐
-│ http://tse1.mm.bing.net/th?id=OIP.R1CUoYp_4hbeFSHBaaB5-gHaFj                                                                                                                         │ bed bugs and pets can cats carry bed bugs pets adviser               │
-│ http://pet-uploads.adoptapet.com/1/9/c/1963194.jpg?336w                                                                                                                              │ Domestic Longhair Cat for adoption in Quincy, Massachusetts - Ashley │
-│ https://thumbs.dreamstime.com/t/cat-bed-12591021.jpg                                                                                                                                 │ Cat on bed Stock Image                                               │
-│ https://us.123rf.com/450wm/penta/penta1105/penta110500004/9658511-portrait-of-british-short-hair-kitten-lieing-at-sofa-on-sun.jpg                                                    │ Portrait of british short hair kitten lieing at sofa on sun.         │
-│ https://www.easypetmd.com/sites/default/files/Wirehaired%20Vizsla%20(2).jpg                                                                                                          │ Vizsla (Wirehaired) image 3                                          │
-│ https://images.ctfassets.net/yixw23k2v6vo/0000000200009b8800000000/7950f4e1c1db335ef91bb2bc34428de9/dog-cat-flickr-Impatience_1.jpg?w=600&h=400&fm=jpg&fit=thumb&q=65&fl=progressive │ dog and cat image                                                    │
-│ https://i1.wallbox.ru/wallpapers/small/201523/eaa582ee76a31fd.jpg                                                                                                                    │ cats, kittens, faces, tonkinese                                      │
-│ https://www.baxterboo.com/images/breeds/medium/cairn-terrier.jpg                                                                                                                     │ Cairn Terrier Photo                                                  │
-└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────┘
+    ┌─url───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─caption──────────────────────────────────────────────────────────────────────────┐
+ 1. │ https://s4.thcdn.com/productimg/600/600/11340490-9914447026352671.jpg                                                                                                                         │ LEGO Friends: Puppy Treats & Tricks (41304)                                      │
+ 2. │ https://www.avenuedelabrique.com/img/uploads/f20fd44bfa4bd49f2a3a5fad0f0dfed7d53c3d2f.jpg                                                                                                     │ Nouveau LEGO Friends 41334 Andrea s Park Performance 2018                        │
+ 3. │ http://images.esellerpro.com/2489/I/667/303/3938_box_in.jpg                                                                                                                                   │ 3938 LEGO Andreas Bunny House Girls Friends Heartlake Age 5-12 / 62 Pieces  New! │
+ 4. │ http://i.shopmania.org/180x180/7/7f/7f1e1a2ab33cde6af4573a9e0caea61293dfc58d.jpg?u=https%3A%2F%2Fs.s-bol.com%2Fimgbase0%2Fimagebase3%2Fextralarge%2FFC%2F4%2F0%2F9%2F9%2F9200000049789904.jpg │ LEGO Friends Avonturenkamp Boomhuis - 41122                                      │
+ 5. │ https://s.s-bol.com/imgbase0/imagebase/large/FC/5/5/9/4/1004004011684955.jpg                                                                                                                  │ LEGO Friends Andrea s Theatershow - 3932                                         │
+ 6. │ https://www.jucariicucubau.ro/30252-home_default/41445-lego-friends-ambulanta-clinicii-veterinare.jpg                                                                                         │ 41445 - LEGO Friends - Ambulanta clinicii veterinare                             │
+ 7. │ https://cdn.awsli.com.br/600x1000/91/91201/produto/24833262/234c032725.jpg                                                                                                                    │ LEGO FRIENDS 41336 EMMA S ART CAFÉ                                               │
+ 8. │ https://media.4rgos.it/s/Argos/6174930_R_SET?$Thumb150$&amp;$Web$                                                                                                                             │ more details on LEGO Friends Stephanie s Friendship Cake Set - 41308.            │
+ 9. │ https://thumbs4.ebaystatic.com/d/l225/m/mG4k6qAONd10voI8NUUMOjw.jpg                                                                                                                           │ Lego Friends Gymnast 30400 Polybag 26 pcs                                        │
+10. │ http://www.ibrickcity.com/wp-content/gallery/41057/thumbs/thumbs_lego-41057-heartlake-horse-show-friends-3.jpg                                                                                │ lego-41057-heartlake-horse-show-friends-3                                        │
+    └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────┘
 
-8 rows in set. Elapsed: 0.641 sec. Processed 22.06 thousand rows, 49.36 MB (91.53 thousand rows/s., 204.81 MB/s.)
+10 rows in set. Elapsed: 0.019 sec. Processed 137.27 thousand rows, 24.42 MB (7.38 million rows/s., 1.31 GB/s.)
 ```
 
-速度显著提高，但结果的准确性降低。这是因为 ANN 索引只能提供近似搜索结果。请注意该示例搜索了相似图像嵌入，但也可以搜索正向图像描述嵌入。
+查询延迟显著降低，因为最近的邻居是通过向量索引检索的。使用向量相似度索引的向量相似度搜索可能返回略有不同的结果，与暴力搜索结果有所不同。通过仔细选择 HNSW 参数并评估索引质量，HNSW 索引可能实现接近 1 的召回率（与暴力搜索相同的准确性）。
 
 ## 使用 UDF 创建嵌入 {#creating-embeddings-with-udfs}
 
-通常希望为新图像或新图像描述创建嵌入，并在数据中搜索相似的图像/图像描述对。我们可以使用 [UDF](/sql-reference/functions/udf) 来创建 `target` 向量，而无需离开客户端。重要的是使用相同的模型创建数据和新嵌入以进行搜索。以下脚本利用了同样支撑数据集的 `ViT-B/32` 模型。
+通常希望为新图像或新图像标题创建嵌入，并在数据中搜索相似的图像/图像标题对。我们可以使用 [UDF](/sql-reference/functions/udf) 在客户端内创建 `target` 向量，而无需离开客户端。重要的是使用相同的模型来创建数据和新嵌入以进行搜索。以下脚本利用了 `ViT-B/32` 模型，该模型也是数据集的基础。
 
 ### 文本嵌入 {#text-embeddings}
 
-首先，将以下 Python 脚本存储在 ClickHouse 数据路径的 `user_scripts/` 目录中并使其可执行（`chmod +x encode_text.py`）。
+首先，将以下 Python 脚本存储在 ClickHouse 数据路径的 `user_scripts/` 目录中，并使其可执行（`chmod +x encode_text.py`）。
 
-`encode_text.py`：
+`encode_text.py`:
 
 ```python
 #!/usr/bin/python3
+#!Note: Change the above python3 executable location if a virtual env is being used.
 import clip
 import torch
 import numpy as np
@@ -208,7 +212,7 @@ if __name__ == '__main__':
         sys.stdout.flush()
 ```
 
-然后在 ClickHouse 服务器配置文件中创建 `encode_text_function.xml`，此路径在 `<user_defined_executable_functions_config>/path/to/*_function.xml</user_defined_executable_functions_config>` 中引用。
+然后在 ClickHouse 服务器配置文件中 `<user_defined_executable_functions_config>/path/to/*_function.xml` 引用的位置创建 `encode_text_function.xml`。
 
 ```xml
 <functions>
@@ -227,21 +231,32 @@ if __name__ == '__main__':
 </functions>
 ```
 
-您现在可以简单使用：
+现在您可以简单地使用：
 
 ```sql
 SELECT encode_text('cat');
 ```
-第一次运行会很慢，因为它加载模型，但重复运行将会很快。然后我们可以将输出复制到 `SET param_target=...`，并可以轻松写查询。
+
+第一次运行会很慢，因为它加载模型，但后续运行会很快。然后我们可以将输出复制到 `SET param_target=...`，轻松编写查询。或者，`encode_text()` 函数可以直接作为 `cosineDistance` 函数的参数使用：
+
+```SQL
+SELECT url
+FROM laion
+ORDER BY cosineDistance(text_embedding, encode_text('a dog and a cat')) ASC
+LIMIT 10
+```
+
+注意，`encode_text()` UDF 本身可能需要几秒钟来计算和发出嵌入向量。
 
 ### 图像嵌入 {#image-embeddings}
 
-图像嵌入可以类似创建，但我们将向 Python 脚本提供本地图像的路径，而不是图像描述文本。
+图像嵌入可以类似地创建，我们提供一个 Python 脚本，可以生成本地作为文件存储的图像的嵌入。
 
 `encode_image.py`
 
 ```python
 #!/usr/bin/python3
+#!Note: Change the above python3 executable location if a virtual env is being used.
 import clip
 import torch
 import numpy as np
@@ -278,8 +293,27 @@ if __name__ == '__main__':
 </functions>
 ```
 
-然后运行以下查询：
+获取一个示例图像以进行搜索：
+
+```shell
+
+# get a random image of a LEGO set
+$ wget http://cdn.firstcry.com/brainbees/images/products/thumb/191325a.jpg
+```
+
+然后运行此查询以生成上述图像的嵌入：
 
 ```sql
 SELECT encode_image('/path/to/your/image');
+```
+
+完整的搜索查询为：
+
+```sql
+SELECT
+    url,
+    caption
+FROM laion
+ORDER BY cosineDistance(image_embedding, encode_image('/path/to/your/image')) ASC
+LIMIT 10
 ```

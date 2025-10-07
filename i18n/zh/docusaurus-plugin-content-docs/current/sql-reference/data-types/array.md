@@ -1,9 +1,10 @@
 ---
-'description': 'ClickHouse 中 Array 数据类型的文档'
+'description': '关于 ClickHouse 中 Array 数据类型的文档'
 'sidebar_label': 'Array(T)'
 'sidebar_position': 32
 'slug': '/sql-reference/data-types/array'
 'title': 'Array(T)'
+'doc_type': 'reference'
 ---
 
 
@@ -19,7 +20,7 @@
 array(T)
 ```
 
-您还可以使用方括号。
+您也可以使用方括号。
 
 ```sql
 []
@@ -47,11 +48,11 @@ SELECT [1, 2] AS x, toTypeName(x)
 └───────┴────────────────────┘
 ```
 
-## 处理数据类型 {#working-with-data-types}
+## 使用数据类型 {#working-with-data-types}
 
-在动态创建数组时，ClickHouse 会自动将参数类型定义为能够存储所有列出参数的最小数据类型。如果有任何 [Nullable](/sql-reference/data-types/nullable) 或字面量 [NULL](/operations/settings/formats#input_format_null_as_default) 值，数组元素的类型也会变为 [Nullable](../../sql-reference/data-types/nullable.md)。
+在动态创建数组时，ClickHouse 会自动将参数类型定义为能够存储所有列出参数的最窄数据类型。如果有任何 [Nullable](/sql-reference/data-types/nullable) 或字面量 [NULL](/operations/settings/formats#input_format_null_as_default) 值，数组元素的类型也会变为 [Nullable](../../sql-reference/data-types/nullable.md)。
 
-如果 ClickHouse 无法确定数据类型，则会产生异常。例如，这种情况发生在尝试同时创建包含字符串和数字的数组时（`SELECT array(1, 'a')`）。
+如果 ClickHouse 无法确定数据类型，它会生成一个异常。例如，当尝试同时创建包含字符串和数字的数组时（`SELECT array(1, 'a')`），会发生这种情况。
 
 自动数据类型检测的示例：
 
@@ -65,7 +66,7 @@ SELECT array(1, 2, NULL) AS x, toTypeName(x)
 └────────────┴───────────────────────────────┘
 ```
 
-如果您尝试创建不兼容数据类型的数组，ClickHouse 会抛出异常：
+如果您尝试创建不兼容的数据类型数组，ClickHouse 将抛出异常：
 
 ```sql
 SELECT array(1, 'a')
@@ -78,7 +79,7 @@ Code: 386. DB::Exception: Received from localhost:9000, 127.0.0.1. DB::Exception
 
 ## 数组大小 {#array-size}
 
-可以通过使用 `size0` 子列查找数组的大小，而不需读取整个列。对于多维数组，可以使用 `sizeN-1`，其中 `N` 是所需的维度。
+可以使用 `size0` 子列找到数组的大小，而不必读取整个列。对于多维数组，您可以使用 `sizeN-1`，其中 `N` 是所需的维度。
 
 **示例**
 
@@ -100,9 +101,9 @@ SELECT arr.size0, arr.size1, arr.size2 FROM t_arr;
 └───────────┴───────────┴───────────┘
 ```
 
-## 从数组读取嵌套子列 {#reading-nested-subcolumns-from-array}
+## 从数组中读取嵌套子列 {#reading-nested-subcolumns-from-array}
 
-如果 `Array` 中嵌套的类型 `T` 具有子列（例如，如果它是一个 [命名元组](./tuple.md)），您可以按相同的子列名称从 `Array(T)` 类型读取其子列。子列的类型将是原始子列类型的 `Array`。
+如果嵌套类型 `T` 在 `Array` 内部具有子列（例如，如果它是一个 [命名元组](./tuple.md)），您可以使用相同的子列名称从 `Array(T)` 类型中读取它的子列。子列的类型将是原始子列类型的 `Array`。
 
 **示例**
 

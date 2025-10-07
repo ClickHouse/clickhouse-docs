@@ -4,6 +4,7 @@
 'sidebar_position': 34
 'slug': '/sql-reference/statements/create/'
 'title': 'CREATE 查询'
+'doc_type': 'reference'
 ---
 
 

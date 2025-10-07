@@ -1,9 +1,10 @@
 ---
-'description': 'Documentation for 命名集合'
+'description': 'Documentation for Named collections'
 'sidebar_label': '命名集合'
 'sidebar_position': 69
 'slug': '/operations/named-collections'
 'title': '命名集合'
+'doc_type': 'reference'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -12,15 +13,14 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 命名集合提供了一种存储键值对集合的方法，用于配置与外部源的集成。您可以将命名集合与字典、表、表函数和对象存储一起使用。
 
-命名集合可以通过 DDL 或配置文件进行配置，并在 ClickHouse 启动时应用。它们简化了对象的创建以及隐藏不具备管理权限用户的凭据。
+命名集合可以通过 DDL 或配置文件进行配置，并在 ClickHouse 启动时应用。它们简化了对象的创建，并隐藏凭据对没有管理访问权限的用户。
 
-命名集合中的键必须与相应函数、表引擎、数据库等的参数名称匹配。在下面的示例中，参数列表与每种类型相关联。
+命名集合中的键必须与相应函数、表引擎、数据库等的参数名称匹配。在下面的示例中，参数列表链接到每种类型。
 
-在命名集合中设置的参数可以在 SQL 中被覆盖，下面的示例中显示了这一点。可以使用 `[NOT] OVERRIDABLE` 关键字和 XML 属性及/或配置选项 `allow_named_collection_override_by_default` 来限制此功能。
+在命名集合中设置的参数可以在 SQL 中被覆盖，这在下面的示例中有所展示。可以使用 `[NOT] OVERRIDABLE` 关键字和 XML 属性以及/或配置选项 `allow_named_collection_override_by_default` 来限制此能力。
 
 :::warning
-如果允许覆盖，则没有管理权限的用户可能能够找出您试图隐藏的凭据。
-如果您使用命名集合的目的就是为了这个，您应该禁用 `allow_named_collection_override_by_default`（默认启用）。
+如果允许覆盖，可能导致没有管理访问权限的用户推测您试图隐藏的凭据。如果您出于该目的使用命名集合，则应禁用 `allow_named_collection_override_by_default`（默认为启用）。
 :::
 
 ## 在系统数据库中存储命名集合 {#storing-named-collections-in-the-system-database}
@@ -36,13 +36,13 @@ url = 'https://connection.url/'
 
 在上面的示例中：
 
- * `key_1` 始终可以被覆盖。
- * `key_2` 永远不能被覆盖。
- * `url` 是否可以被覆盖取决于 `allow_named_collection_override_by_default` 的值。
+* `key_1` 总是可以被覆盖。
+* `key_2` 永远不可以被覆盖。
+* `url` 可以根据 `allow_named_collection_override_by_default` 的值选择是否可以被覆盖。
 
 ### 使用 DDL 创建命名集合的权限 {#permissions-to-create-named-collections-with-ddl}
 
-要使用 DDL 管理命名集合，用户必须具备 `named_collection_control` 权限。可以通过在 `/etc/clickhouse-server/users.d/` 中添加文件来分配该权限。示例中为用户 `default` 赋予了 `access_management` 和 `named_collection_control` 权限：
+要使用 DDL 管理命名集合，用户必须拥有 `named_collection_control` 特权。这可以通过将文件添加到 `/etc/clickhouse-server/users.d/` 来分配。示例中给用户 `default` 同时赋予了 `access_management` 和 `named_collection_control` 特权：
 
 ```xml title='/etc/clickhouse-server/users.d/user_default.xml'
 <clickhouse>
@@ -59,17 +59,16 @@ url = 'https://connection.url/'
 ```
 
 :::tip
-在上面的示例中，`password_sha256_hex` 值是密码 SHA256 哈希的十六进制表示。用户 `default` 的此配置具有属性 `replace=true`，因为默认配置中设置了明文 `password`，并且不能同时为用户设置明文和 sha256 hex 密码。
+在上面的示例中，`password_sha256_hex` 的值是密码的 SHA256 哈希值的十六进制表示。用户 `default` 的这个配置具有属性 `replace=true`，因为默认配置具有设置为明文的 `password`，并且不可能同时为用户设置明文和 SHA256 十六进制密码。
 :::
 
 ### 命名集合的存储 {#storage-for-named-collections}
 
-命名集合可以存储在本地磁盘或 ZooKeeper/Keeper 中。默认使用本地存储。
-它们还可以使用与 [磁盘加密](storing-data#encrypted-virtual-file-system) 相同的算法进行加密存储，其中默认使用 `aes_128_ctr`。
+命名集合可以存储在本地磁盘或 ZooKeeper/Keeper 中。默认情况下使用本地存储。它们也可以使用与 [磁盘加密](storing-data#encrypted-virtual-file-system) 中使用的相同算法进行加密存储，其中默认使用 `aes_128_ctr`。
 
-要配置命名集合存储，您需要指定一个 `type`。这可以是 `local` 或 `keeper`/`zookeeper`。对于加密存储，您可以使用 `local_encrypted` 或 `keeper_encrypted`/`zookeeper_encrypted`。
+要配置命名集合存储，您需要指定 `type`。这可以是 `local` 或 `keeper`/`zookeeper`。对于加密存储，可以使用 `local_encrypted` 或 `keeper_encrypted`/`zookeeper_encrypted`。
 
-要使用 ZooKeeper/Keeper，我们还需要在配置文件中为 `named_collections_storage` 部分设置一个 `path` （在 ZooKeeper/Keeper 中，命名集合将存储的位置）。以下示例使用加密和 ZooKeeper/Keeper：
+使用 ZooKeeper/Keeper 时，我们还需要在配置文件中为 `named_collections_storage` 部分设置一个 `path`（在 ZooKeeper/Keeper 中命名集合将存储的路径）。以下示例使用加密和 ZooKeeper/Keeper：
 ```xml
 <clickhouse>
   <named_collections_storage>
@@ -82,7 +81,7 @@ url = 'https://connection.url/'
 </clickhouse>
 ```
 
-可选配置参数 `update_timeout_ms` 默认等于 `5000`。
+可选的配置参数 `update_timeout_ms` 默认为 `5000`。
 
 ## 在配置文件中存储命名集合 {#storing-named-collections-in-configuration-files}
 
@@ -102,33 +101,33 @@ url = 'https://connection.url/'
 
 在上面的示例中：
 
- * `key_1` 始终可以被覆盖。
- * `key_2` 永远不能被覆盖。
- * `url` 是否可以被覆盖取决于 `allow_named_collection_override_by_default` 的值。
+* `key_1` 总是可以被覆盖。
+* `key_2` 永远不可以被覆盖。
+* `url` 可以根据 `allow_named_collection_override_by_default` 的值选择是否可以被覆盖。
 
 ## 修改命名集合 {#modifying-named-collections}
 
-使用 DDL 查询创建的命名集合可以用 DDL 修改或删除。使用 XML 文件创建的命名集合可以通过编辑或删除相应的 XML 文件进行管理。
+通过 DDL 查询创建的命名集合可以通过 DDL 被修改或删除。通过 XML 文件创建的命名集合可以通过编辑或删除相应的 XML 进行管理。
 
 ### 修改 DDL 命名集合 {#alter-a-ddl-named-collection}
 
-更改或添加集合 `collection2` 的 `key1` 和 `key3` 键
-（这不会更改这些键的 `overridable` 标志的值）：
+更改或添加集合 `collection2` 的 `key1` 和 `key3`：
+（这不会改变这些键的 `overridable` 标志的值）：
 ```sql
 ALTER NAMED COLLECTION collection2 SET key1=4, key3='value3'
 ```
 
-更改或添加 `key1` 并允许其始终被覆盖：
+更改或添加键 `key1` 并允许其始终被覆盖：
 ```sql
 ALTER NAMED COLLECTION collection2 SET key1=4 OVERRIDABLE
 ```
 
-从 `collection2` 中移除 `key2`：
+从 `collection2` 中删除键 `key2`：
 ```sql
 ALTER NAMED COLLECTION collection2 DELETE key2
 ```
 
-更改或添加 `key1` 并删除集合 `collection2` 的 `key3`：
+更改或添加键 `key1` 并删除集合 `collection2` 的键 `key3`：
 ```sql
 ALTER NAMED COLLECTION collection2 SET key1=4, DELETE key3
 ```
@@ -139,14 +138,14 @@ ALTER NAMED COLLECTION collection2 DELETE key1;
 ALTER NAMED COLLECTION collection2 SET key1=4;
 ```
 
-### 删除 DDL 命名集合 `collection2`: {#drop-the-ddl-named-collection-collection2}
+### 删除 DDL 命名集合 `collection2`： {#drop-the-ddl-named-collection-collection2}
 ```sql
 DROP NAMED COLLECTION collection2
 ```
 
 ## 访问 S3 的命名集合 {#named-collections-for-accessing-s3}
 
-参数描述请参见 [s3 表函数](../sql-reference/table-functions/s3.md)。
+参数描述见 [s3 表函数](../sql-reference/table-functions/s3.md)。
 
 ### DDL 示例 {#ddl-example-1}
 
@@ -175,7 +174,7 @@ url = 'https://s3.us-east-1.amazonaws.com/yourbucket/mydata/'
 
 ### s3() 函数和 S3 表命名集合示例 {#s3-function-and-s3-table-named-collection-examples}
 
-以下两个示例均使用相同的命名集合 `s3_mydata`：
+以下两个示例使用相同命名集合 `s3_mydata`：
 
 #### s3() 函数 {#s3-function}
 
@@ -186,7 +185,7 @@ SELECT * FROM numbers(10000);
 ```
 
 :::tip
-上述 `s3()` 函数的第一个参数是集合的名称 `s3_mydata`。如果没有命名集合，访问密钥 ID、秘密、格式和 URL 都将每次调用 `s3()` 函数时传递。
+上面 `s3()` 函数的第一个参数是集合的名称 `s3_mydata`。如果没有命名集合，则访问密钥 ID、密钥、格式和 URL 将在每次调用 `s3()` 函数时传递。
 :::
 
 #### S3 表 {#s3-table}
@@ -206,7 +205,7 @@ SELECT * FROM s3_engine_table LIMIT 3;
 
 ## 访问 MySQL 数据库的命名集合 {#named-collections-for-accessing-mysql-database}
 
-参数描述请参见 [mysql](../sql-reference/table-functions/mysql.md)。
+参数描述见 [mysql](../sql-reference/table-functions/mysql.md)。
 
 ### DDL 示例 {#ddl-example-2}
 
@@ -241,7 +240,7 @@ replace_query = 1
 
 ### mysql() 函数、MySQL 表、MySQL 数据库和字典命名集合示例 {#mysql-function-mysql-table-mysql-database-and-dictionary-named-collection-examples}
 
-以下四个示例使用相同的命名集合 `mymysql`：
+以下四个示例使用相同命名集合 `mymysql`：
 
 #### mysql() 函数 {#mysql-function}
 
@@ -253,7 +252,7 @@ SELECT count() FROM mysql(mymysql, table = 'test');
 └─────────┘
 ```
 :::note
-命名集合没有指定 `table` 参数，因此在函数调用中指定为 `table = 'test'`。
+命名集合未指定 `table` 参数，因此在函数调用中指定为 `table = 'test'`。
 :::
 
 #### MySQL 表 {#mysql-table}
@@ -302,12 +301,12 @@ SELECT dictGet('dict', 'B', 2);
 
 ## 访问 PostgreSQL 数据库的命名集合 {#named-collections-for-accessing-postgresql-database}
 
-参数描述请参见 [postgresql](../sql-reference/table-functions/postgresql.md)。此外，还有别名：
+参数描述见 [postgresql](../sql-reference/table-functions/postgresql.md)。此外，还有别名：
 
-- `username` 用于 `user`
-- `db` 用于 `database`。
+- `username` 对应 `user`
+- `db` 对应 `database`。
 
-参数 `addresses_expr` 在集合中用于替代 `host:port`。由于还有其他可选参数：`host`、`hostname`、`port`，该参数是可选的。以下伪代码解释优先级：
+参数 `addresses_expr` 在集合中用于替代 `host:port`。该参数是可选的，因为还有其他可选参数：`host`、`hostname`、`port`。以下伪代码解释了优先级：
 
 ```sql
 CASE
@@ -344,7 +343,7 @@ schema = 'test_schema'
 </clickhouse>
 ```
 
-### 使用 PostgreSQL 函数的命名集合示例 {#example-of-using-named-collections-with-the-postgresql-function}
+### 使用命名集合与 PostgreSQL 函数的示例 {#example-of-using-named-collections-with-the-postgresql-function}
 
 ```sql
 SELECT * FROM postgresql(mypg, table = 'test');
@@ -353,8 +352,6 @@ SELECT * FROM postgresql(mypg, table = 'test');
 │ 2 │ two │
 │ 1 │ one │
 └───┴─────┘
-
-
 SELECT * FROM postgresql(mypg, table = 'test', schema = 'public');
 
 ┌─a─┐
@@ -364,7 +361,7 @@ SELECT * FROM postgresql(mypg, table = 'test', schema = 'public');
 └───┘
 ```
 
-### 使用 PostgreSQL 引擎的数据库的命名集合示例 {#example-of-using-named-collections-with-database-with-engine-postgresql}
+### 使用命名集合与 PostgreSQL 引擎的数据库的示例 {#example-of-using-named-collections-with-database-with-engine-postgresql}
 
 ```sql
 CREATE TABLE mypgtable (a Int64) ENGINE = PostgreSQL(mypg, table = 'test', schema = 'public');
@@ -379,10 +376,10 @@ SELECT * FROM mypgtable;
 ```
 
 :::note
-PostgreSQL 在创建表时从命名集合中复制数据。对集合的更改不会影响现有表。
+PostgreSQL 在创建表时从命名集合复制数据。集合中的更改不会影响现有表。
 :::
 
-### 使用 PostgreSQL 引擎的数据库的命名集合示例 {#example-of-using-named-collections-with-database-with-engine-postgresql-1}
+### 使用命名集合与 PostgreSQL 引擎的数据库的示例 {#example-of-using-named-collections-with-database-with-engine-postgresql-1}
 
 ```sql
 CREATE DATABASE mydatabase ENGINE = PostgreSQL(mypg);
@@ -394,7 +391,7 @@ SHOW TABLES FROM mydatabase
 └──────┘
 ```
 
-### 使用源为 POSTGRESQL 的字典的命名集合示例 {#example-of-using-named-collections-with-a-dictionary-with-source-postgresql}
+### 使用命名集合与数据源为 POSTGRESQL 的字典的示例 {#example-of-using-named-collections-with-a-dictionary-with-source-postgresql}
 
 ```sql
 CREATE DICTIONARY dict (a Int64, b String)
@@ -412,7 +409,7 @@ SELECT dictGet('dict', 'b', 2);
 
 ## 访问远程 ClickHouse 数据库的命名集合 {#named-collections-for-accessing-a-remote-clickhouse-database}
 
-参数描述请参见 [remote](../sql-reference/table-functions/remote.md/#parameters)。
+参数描述见 [remote](../sql-reference/table-functions/remote.md/#parameters)。
 
 配置示例：
 
@@ -440,9 +437,9 @@ secure = 1
     </named_collections>
 </clickhouse>
 ```
-`secure` 在连接中不是必需的，因为使用 `remoteSecure`，但可以用于字典。
+`secure` 在连接中并不需要因为 `remoteSecure`，但它可以用于字典。
 
-### 使用 `remote`/`remoteSecure` 函数的命名集合示例 {#example-of-using-named-collections-with-the-remoteremotesecure-functions}
+### 使用命名集合与 `remote`/`remoteSecure` 函数的示例 {#example-of-using-named-collections-with-the-remoteremotesecure-functions}
 
 ```sql
 SELECT * FROM remote(remote1, table = one);
@@ -463,7 +460,7 @@ SELECT * FROM remote(remote1, database = default, table = test);
 └───┴───┘
 ```
 
-### 使用源为 ClickHouse 的字典的命名集合示例 {#example-of-using-named-collections-with-a-dictionary-with-source-clickhouse}
+### 使用命名集合与数据源为 ClickHouse 的字典的示例 {#example-of-using-named-collections-with-a-dictionary-with-source-clickhouse}
 
 ```sql
 CREATE DICTIONARY dict(a Int64, b String)
@@ -480,7 +477,7 @@ SELECT dictGet('dict', 'b', 1);
 
 ## 访问 Kafka 的命名集合 {#named-collections-for-accessing-kafka}
 
-参数描述请参见 [Kafka](../engines/table-engines/integrations/kafka.md)。
+参数描述见 [Kafka](../engines/table-engines/integrations/kafka.md)。
 
 ### DDL 示例 {#ddl-example-3}
 
@@ -509,9 +506,9 @@ kafka_max_block_size = '1048576';
 </clickhouse>
 ```
 
-### 使用 Kafka 表的命名集合示例 {#example-of-using-named-collections-with-a-kafka-table}
+### 使用命名集合与 Kafka 表的示例 {#example-of-using-named-collections-with-a-kafka-table}
 
-以下两个示例均使用相同的命名集合 `my_kafka_cluster`：
+以下两个示例使用相同命名集合 `my_kafka_cluster`：
 
 ```sql
 CREATE TABLE queue
@@ -535,7 +532,7 @@ SETTINGS kafka_num_consumers = 4,
 
 ## 备份的命名集合 {#named-collections-for-backups}
 
-参数描述请参见 [备份和恢复](./backup.md)。
+参数的描述见 [备份和恢复](./backup.md)。
 
 ### DDL 示例 {#ddl-example-4}
 
@@ -545,9 +542,21 @@ BACKUP TABLE default.test to S3(named_collection_s3_backups, 'directory')
 
 ### XML 示例 {#xml-example-4}
 
+```xml
+<clickhouse>
+    <named_collections>
+        <named_collection_s3_backups>
+            <url>https://my-s3-bucket.s3.amazonaws.com/backup-S3/</url>
+            <access_key_id>ABC123</access_key_id>
+            <secret_access_key>Abc+123</secret_access_key>
+        </named_collection_s3_backups>
+    </named_collections>
+</clickhouse>
+```
+
 ## 访问 MongoDB 表和字典的命名集合 {#named-collections-for-accessing-mongodb-table-and-dictionary}
 
-参数描述请参见 [mongodb](../sql-reference/table-functions/mongodb.md)。
+参数描述见 [mongodb](../sql-reference/table-functions/mongodb.md)。
 
 ### DDL 示例 {#ddl-example-5}
 
@@ -600,5 +609,5 @@ SELECT dictGet('dict', 'b', 2);
 ```
 
 :::note
-命名集合指定了 `my_collection` 作为集合名称。在函数调用中，它被 `collection = 'my_dict'` 覆盖以选择另一个集合。
+命名集合为集合名称指定了 `my_collection`。在函数调用中，它被 `collection = 'my_dict'` 覆盖，用于选择另一集合。
 :::

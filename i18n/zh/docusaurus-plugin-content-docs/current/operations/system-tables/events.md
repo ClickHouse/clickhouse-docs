@@ -1,22 +1,23 @@
 ---
-'description': '系统表，包含关于系统中发生的事件数量的信息。'
+'description': '系统表，包含有关系统中发生的事件数量的信息。'
 'keywords':
 - 'system table'
 - 'events'
 'slug': '/operations/system-tables/events'
 'title': 'system.events'
+'doc_type': 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
-包含系统中发生的事件数量的信息。例如，在该表中，您可以找到自 ClickHouse 服务器启动以来处理的 `SELECT` 查询的数量。
+包含系统中发生事件的数量的信息。例如，在该表中，您可以找出自 ClickHouse 服务器启动以来处理了多少个 `SELECT` 查询。
 
 列：
 
 - `event` ([String](../../sql-reference/data-types/string.md)) — 事件名称。
-- `value` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 发生的事件数量。
+- `value` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 发生事件的数量。
 - `description` ([String](../../sql-reference/data-types/string.md)) — 事件描述。
 - `name` ([String](../../sql-reference/data-types/string.md)) — `event` 的别名。
 
@@ -38,9 +39,9 @@ SELECT * FROM system.events LIMIT 5
 └───────────────────────────────────────┴───────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**另见**
+**另请参阅**
 
 - [system.asynchronous_metrics](/operations/system-tables/asynchronous_metrics) — 包含定期计算的指标。
 - [system.metrics](/operations/system-tables/metrics) — 包含即时计算的指标。
-- [system.metric_log](/operations/system-tables/metric_log) — 包含来自表 `system.metrics` 和 `system.events` 的指标值历史。
+- [system.metric_log](/operations/system-tables/metric_log) — 包含来自 `system.metrics` 和 `system.events` 表的指标值历史。
 - [监控](../../operations/monitoring.md) — ClickHouse 监控的基本概念。

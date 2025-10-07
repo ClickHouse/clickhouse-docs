@@ -9,6 +9,7 @@
 - 'examples'
 - 'minMap'
 'sidebar_label': 'minMap'
+'doc_type': 'reference'
 ---
 
 
@@ -16,11 +17,11 @@
 
 ## 描述 {#description}
 
-[`Map`](/sql-reference/aggregate-functions/combinators#-map) 组合器可以应用于 [`min`](/sql-reference/aggregate-functions/reference/min) 函数，以计算每个键在 Map 中的最小值，使用 `minMap` 聚合组合器函数。
+[`Map`](/sql-reference/aggregate-functions/combinators#-map) 组合器可以应用于 [`min`](/sql-reference/aggregate-functions/reference/min) 函数，以根据每个键在 Map 中计算最小值，使用 `minMap` 聚合组合器函数。
 
 ## 示例用法 {#example-usage}
 
-在这个示例中，我们将创建一个存储状态码及其在不同时间段计数的表，每行包含一个状态码到其对应计数的 Map。我们将使用 `minMap` 在每个时间段内查找每个状态码的最小计数。
+在这个示例中，我们将创建一个表，该表存储不同时间段的状态代码及其计数，其中每一行包含一个状态代码到其相应计数的 Map。我们将使用 `minMap` 来查找每个时间段内每个状态代码的最小计数。
 
 ```sql title="Query"
 CREATE TABLE metrics(
@@ -42,7 +43,7 @@ FROM metrics
 GROUP BY timeslot;
 ```
 
-`minMap` 函数将在每个时间段内查找每个状态码的最小计数。例如：
+`minMap` 函数将查找每个时间段内每个状态代码的最小计数。例如：
 - 在时间段 '2000-01-01 00:00:00'：
   - 状态 'a': 15
   - 状态 'b': 25
@@ -62,6 +63,6 @@ GROUP BY timeslot;
    └─────────────────────┴──────────────────────────────────────┘
 ```
 
-## 另见 {#see-also}
+## 另请参阅 {#see-also}
 - [`min`](/sql-reference/aggregate-functions/reference/min)
 - [`Map 组合器`](/sql-reference/aggregate-functions/combinators#-map)
