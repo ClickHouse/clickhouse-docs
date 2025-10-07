@@ -9,11 +9,11 @@ import ObservabilityIntegrations from '@site/docs/_snippets/_observability_integ
 import DirectIntegrations from '@site/docs/_snippets/_direct_observability_integration_options.md';
 import CommunityMonitoring from '@site/docs/_snippets/_community_monitoring.md';
 
-# Self-Managed Monitoring {#cloud-monitoring}
+# Self-managed monitoring {#cloud-monitoring}
 
 This guide provides enterprise teams evaluating ClickHouse open-source with comprehensive information on monitoring and observability capabilities for production deployments. Enterprise customers frequently ask about out-of-the-box monitoring features, integration with existing observability stacks including tools like Datadog and AWS CloudWatch, and how ClickHouse’ss monitoring compares to self-hosted deployments.
 
-### Prometheus-Based Integration Architecture {#prometheus}
+### Prometheus-based integration architecture {#prometheus}
 ClickHouse exposes Prometheus-compatible metrics through different endpoints depending on your deployment model, each with distinct operational characteristics:
 
 **Self-Managed/OSS ClickHouse**
@@ -28,7 +28,7 @@ Queries production system tables, which adds monitoring load and prevents cost-s
 
 <ObservabilityIntegrations/>
 
-### ClickStack Deployment Options {#clickstack-deployment}
+### ClickStack deployment options {#clickstack-deployment}
 
 - [Helm](/use-cases/observability/clickstack/deployment/helm): Recommended for Kubernetes-based debugging environments. Allows for environment-specific configuration, resource limits, and scaling via `values.yaml`.
 - [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose): Deploys each component (ClickHouse, HyperDX, OTel collector, MongoDB) individually.

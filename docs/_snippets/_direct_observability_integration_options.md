@@ -10,11 +10,13 @@ For plugin installation and configuration details, see the ClickHouse data sourc
 ### Direct Datadog Integration {#direct-datadog}
 
 Datadog offers a Clickhouse Monitoring plugin for its agent which queries system tables directly. This integration provides comprehensive database monitoring with cluster awareness through clusterAllReplicas functionality. 
-Note: This integration is not recommended for ClickHouse Cloud deployments due to incompatibility with cost-optimizing idle behavior and operational limitations of the cloud proxy layer.
+:::note
+This integration is not recommended for ClickHouse Cloud deployments due to incompatibility with cost-optimizing idle behavior and operational limitations of the cloud proxy layer.
+:::
 
 ### Using system tables directly {#system-tables}
 
-Users can perform deep query performance analysis by connecting to ClickHouse system tables, particularly system.query_log and querying directly. Using either the SQL console or clickhouse client, teams can identify slow queries, analyze resource usage, and track usage patterns across the organization.
+Users can perform deep query performance analysis by connecting to ClickHouse system tables, particularly `system.query_log` and querying directly. Using either the SQL console or clickhouse client, teams can identify slow queries, analyze resource usage, and track usage patterns across the organization.
 
 **Query Performance Analysis**
 

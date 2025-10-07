@@ -12,27 +12,25 @@ import ObservabilityIntegrations from '@site/docs/_snippets/_observability_integ
 import DirectIntegrations from '@site/docs/_snippets/_direct_observability_integration_options.md';
 import CommunityMonitoring from '@site/docs/_snippets/_community_monitoring.md';
 
-# ClickHouse Cloud Monitoring {#cloud-monitoring}
+# ClickHouse Cloud monitoring {#cloud-monitoring}
 
 This guide provides enterprise teams evaluating ClickHouse Cloud with comprehensive information on monitoring and observability capabilities for production deployments. Enterprise customers frequently ask about out-of-the-box monitoring features, integration with existing observability stacks including tools like Datadog and AWS CloudWatch, and how ClickHouse’s monitoring compares to self-hosted deployments.
 
-## Advanced Observability Dashboard {#advanced-observability}
+## Advanced observability dashboard {#advanced-observability}
 
 ClickHouse Cloud provides comprehensive monitoring through built-in dashboard interfaces accessible via the Monitoring section. These dashboards visualize system and performance metrics in real-time without requiring additional setup and serve as the primary tools for real-time production monitoring within ClickHouse Cloud.
 
 - **Advanced Dashboard**: The main dashboard interface accessible via Monitoring → Advanced dashboard provides real-time visibility into query rates, resource usage, system health, and storage performance. This dashboard doesn't require separate authentication, won't prevent instances from idling, and doesn't add query load to your production system. Each visualization is powered by customizable SQL queries, with out-of-the-box charts grouped into ClickHouse-specific, system health, and Cloud-specific metrics. Users can extend monitoring by creating custom queries directly in the SQL console.
 
 :::note
-
 Accessing these metrics does not issue a query to the underlying service and will not wake idle services. 
-
 :::
 
 <Image img={AdvancedDashboard} size="lg" alt="Advanced dashboard"/>
 
-Users looking to extend these visualizations can use the Dashboards feature in ClickHouse Cloud, querying system tables directly.
+Users looking to extend these visualizations can use the dashboards feature in ClickHouse Cloud, querying system tables directly.
 
-- **Native Advanced Dashboard**: An alternative dashboard interface accessible through "You can still access the native advanced dashboard" within the Monitoring section. This opens in a separate tab with authentication and provides an alternative UI for system and service health monitoring. This dashboard allows advanced analytics, where users can modify the underlying SQL queries.
+- **Native advanced dashboard**: An alternative dashboard interface accessible through "You can still access the native advanced dashboard" within the Monitoring section. This opens in a separate tab with authentication and provides an alternative UI for system and service health monitoring. This dashboard allows advanced analytics, where users can modify the underlying SQL queries.
 
 <Image img={NativeAdvancedDashboard} size="lg" alt="Advanced dashboard"/>
 
@@ -40,7 +38,7 @@ Both dashboards offer immediate visibility into service health and performance w
 
 For detailed dashboard features and available metrics, see the [advanced dashboard documentation](/cloud/manage/monitor/advanced-dashboard).
 
-## Query Insights and Resource Monitoring {#query-insights}
+## Query insights and resource monitoring {#query-insights}
 
 ClickHouse Cloud includes additional monitoring capabilities:
 
@@ -58,9 +56,7 @@ The organization-level endpoint federates metrics from all services, while per-s
 - Cached metric delivery: Uses materialized views refreshed every minute to minimize query load on production systems
 
 :::note
-
 This approach respects service idling behavior, allowing for cost optimization when services are not actively processing queries. This API endpoint relies on ClickHouse Cloud API credentials. For complete endpoint configuration details, see the cloud [Prometheus documentation](/integrations/prometheus).
-
 :::
 
 <ObservabilityIntegrations/>
@@ -75,7 +71,7 @@ This approach is ideal for debugging complex issues, performance analysis, and d
 Note that this approach will wake idle services as HyperDX queries the system tables directly.
 :::
 
-### ClickStack Deployment Options {#clickstack-deployment}
+### ClickStack deployment options {#clickstack-deployment}
 
 - **HyperDX in Clickhouse Cloud**  (private preview): HyperDX can be launched on any Clickhouse Cloud service.
 - [Helm](/use-cases/observability/clickstack/deployment/helm): Recommended for Kubernetes-based debugging environments. Supports integration with ClickHouse Cloud and allows for environment-specific configuration, resource limits, and scaling via `values.yaml`.
@@ -92,7 +88,7 @@ Users can also collect metrics from the ClickHouse Cloud Prometheus endpoint via
 
 <CommunityMonitoring/>
 
-## System Impact Considerations {#system-impact}
+## System impact considerations {#system-impact}
 
 All of the above approaches use a mixture of either relying on Prometheus endpoints, being managed by ClickHouse Cloud, or querying of system tables directly.
-The latter of these options relies on querying the production ClickHouse service. This adds query load to the system under observation and prevents ClickHouse Cloud instances from idling, impacting cost optimization. Additionally, if the production system fails, monitoring may also be affected since they are coupled. This approach works well for deep introspection and debugging but is less appropriate for real-time production monitoring. Consider these trade-offs between detailed system analysis capabilities and operational overhead when evaluating direct Grafana integration versus the external tool integration approaches discussed in the following section.
+The latter of these options relies on querying the production ClickHouse service. This adds query load to the system under observation and prevents ClickHouse Cloud instances from idling, impacting cost optimization. Additionally, if the production system fails, monitoring may also be affected, since the two are coupled. This approach works well for deep introspection and debugging but is less appropriate for real-time production monitoring. Consider these trade-offs between detailed system analysis capabilities and operational overhead when evaluating direct Grafana integration versus the external tool integration approaches discussed in the following section.

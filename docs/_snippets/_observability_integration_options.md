@@ -5,9 +5,9 @@ import NativeAdvancedDashboard from '@site/static/images/cloud/manage/monitoring
 ## Integration examples {#examples}
 
 External integration allows organizations to maintain established monitoring workflows, leverage existing team expertise with familiar tools, and integrate ClickHouse monitoring with broader infrastructure observability without disrupting current processes or requiring significant retraining investments.
-Teams can apply existing alerting rules and escalation procedures to ClickHouse metrics, while correlating database performance with application and infrastructure health within a unified observability platform. This approach maximizes ROI on current monitoring investments and enables faster troubleshooting through consolidated dashboards and familiar tooling interfaces.
+Teams can apply existing alerting rules and escalation procedures to ClickHouse metrics, while correlating database performance with application and infrastructure health within a unified observability platform. This approach maximizes ROI on current monitoring setups and enables faster troubleshooting through consolidated dashboards and familiar tooling interfaces.
 
-### Grafana Cloud Monitoring {#grafana}
+### Grafana Cloud monitoring {#grafana}
 
 Grafana provides ClickHouse monitoring through both direct plugin integration and Prometheus-based approaches. The Prometheus endpoint integration maintains operational separation between monitoring and production workloads while enabling visualization within existing Grafana Cloud infrastructure. See Grafana's ClickHouse documentation for configuration guidance.
 Datadog monitoring
