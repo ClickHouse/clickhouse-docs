@@ -9,9 +9,10 @@ Teams can apply existing alerting rules and escalation procedures to ClickHouse 
 
 ### Grafana Cloud monitoring {#grafana}
 
-Grafana provides ClickHouse monitoring through both direct plugin integration and Prometheus-based approaches. The Prometheus endpoint integration maintains operational separation between monitoring and production workloads while enabling visualization within existing Grafana Cloud infrastructure. See Grafana's ClickHouse documentation for configuration guidance.
-Datadog monitoring
-Datadog is developing a dedicated API integration that will provide proper cloud service monitoring while respecting service idling behavior. In the interim, teams can use the OpenMetrics integration approach via ClickHouse Prometheus endpoints for operational separation and cost-efficient monitoring. For configuration guidance, see Datadog's Prometheus and OpenMetrics integration documentation.
+Grafana provides ClickHouse monitoring through both direct plugin integration and Prometheus-based approaches. The Prometheus endpoint integration maintains operational separation between monitoring and production workloads while enabling visualization within existing Grafana Cloud infrastructure. See [Grafana's ClickHouse documentation](https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/integration-reference/integration-clickhouse/) for configuration guidance.
+
+### Datadog monitoring {#datadog}
+Datadog is developing a dedicated API integration that will provide proper cloud service monitoring while respecting service idling behavior. In the interim, teams can use the OpenMetrics integration approach via ClickHouse Prometheus endpoints for operational separation and cost-efficient monitoring. For configuration guidance, see [Datadog's Prometheus and OpenMetrics integration documentation](https://docs.datadoghq.com/integrations/openmetrics/).
 
 ### ClickStack {#clickstack}
 

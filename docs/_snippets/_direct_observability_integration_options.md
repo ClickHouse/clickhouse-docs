@@ -5,7 +5,7 @@ import NativeAdvancedDashboard from '@site/static/images/cloud/manage/monitoring
 ### Direct Grafana plugin integration {#direct-grafana}
 
 The ClickHouse data source plugin for Grafana enables visualization and exploration of data directly from ClickHouse using system tables. This approach works well for monitoring performance and creating custom dashboards for detailed system analysis.
-For plugin installation and configuration details, see the ClickHouse data source plugin. For a complete monitoring setup using the Prometheus-Grafana mix-in with pre-built dashboards and alerting rules, see Monitor ClickHouse with the new Prometheus-Grafana mix-in.
+For plugin installation and configuration details, see the ClickHouse [data source plugin](/integrations/grafana). For a complete monitoring setup using the Prometheus-Grafana mix-in with pre-built dashboards and alerting rules, see [Monitor ClickHouse with the new Prometheus-Grafana mix-in](https://clickhouse.com/blog/monitor-with-new-prometheus-grafana-mix-in).
 
 ### Direct Datadog Integration {#direct-datadog}
 
