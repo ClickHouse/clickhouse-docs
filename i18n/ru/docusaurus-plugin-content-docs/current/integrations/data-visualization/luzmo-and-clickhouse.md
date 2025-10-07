@@ -1,20 +1,12 @@
 ---
-'sidebar_label': 'Luzmo'
-'slug': '/integrations/luzmo'
-'keywords':
-- 'clickhouse'
-- 'Luzmo'
-- 'connect'
-- 'integrate'
-- 'ui'
-- 'embedded'
-'description': 'Luzmo - это встроенная платформа аналитики с нативной интеграцией
-  ClickHouse, специально созданная для программного обеспечения и SaaS-приложений.'
-'title': 'Интеграция Luzmo с ClickHouse'
-'sidebar': 'integrations'
-'doc_type': 'guide'
+slug: '/integrations/luzmo'
+sidebar_label: Luzmo
+description: 'Luzmo - это встроенная платформа аналитики с нативной интеграцией'
+title: 'Интеграция Luzmo с ClickHouse'
+keywords: ['clickhouse', 'Luzmo', 'connect', 'integrate', 'ui', 'embedded']
+doc_type: guide
+sidebar: integrations
 ---
-
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import luzmo_01 from '@site/static/images/integrations/data-visualization/luzmo_01.png';

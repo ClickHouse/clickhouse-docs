@@ -1,14 +1,12 @@
 ---
-'sidebar_label': '迁移指南'
-'slug': '/migrations/snowflake'
-'description': '迁移从 Snowflake 到 ClickHouse'
-'keywords':
-- 'Snowflake'
-'title': '迁移从 Snowflake 到 ClickHouse'
-'show_related_blogs': false
-'doc_type': 'guide'
+sidebar_label: 'Руководство по миграции'
+slug: '/migrations/snowflake'
+description: 'Перемещение из Snowflake в ClickHouse'
+keywords: ['Snowflake']
+title: 'Перемещение из Snowflake в ClickHouse'
+show_related_blogs: false
+doc_type: guide
 ---
-
 import migrate_snowflake_clickhouse from '@site/static/images/migrations/migrate_snowflake_clickhouse.png';
 import Image from '@theme/IdealImage';
 

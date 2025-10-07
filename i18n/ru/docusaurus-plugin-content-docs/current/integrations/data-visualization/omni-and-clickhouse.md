@@ -1,19 +1,11 @@
 ---
-'sidebar_label': 'Omni'
-'slug': '/integrations/omni'
-'keywords':
-- 'clickhouse'
-- 'Omni'
-- 'connect'
-- 'integrate'
-- 'ui'
-'description': 'Omni является корпоративной платформой для бизнес-аналитики, data
-  приложений и встроенной аналитики, которая помогает вам исследовать и делиться инсайтами
-  в реальном времени.'
-'title': 'Omni'
-'doc_type': 'guide'
+slug: '/integrations/omni'
+sidebar_label: Omni
+description: 'Omni является корпоративной платформой для бизнес-аналитики, data'
+title: Omni
+keywords: ['clickhouse', 'Omni', 'connect', 'integrate', 'ui']
+doc_type: guide
 ---
-
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import omni_01 from '@site/static/images/integrations/data-visualization/omni_01.png';

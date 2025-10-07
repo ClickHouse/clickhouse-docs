@@ -5,8 +5,6 @@
 'title': 'Жизненный цикл MySQL ClickPipe'
 'doc_type': 'guide'
 ---
-
-
 # Жизненный цикл MySQL ClickPipe {#lifecycle}
 
 Это документ о различных фазах MySQL ClickPipe, разных статусах, которые он может иметь, и их значении. Обратите внимание, что это также относится к MariaDB.

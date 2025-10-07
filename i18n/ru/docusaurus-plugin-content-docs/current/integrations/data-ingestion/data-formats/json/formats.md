@@ -1,16 +1,11 @@
 ---
-'title': 'Обработка других JSON форматов'
-'slug': '/integrations/data-formats/json/other-formats'
-'description': 'Обработка других JSON форматов'
-'sidebar_label': 'Обработка других форматов'
-'keywords':
-- 'json'
-- 'formats'
-- 'json formats'
-'doc_type': 'guide'
+slug: '/integrations/data-formats/json/other-formats'
+sidebar_label: 'Обработка других форматов'
+description: 'Обработка других JSON форматов'
+title: 'Обработка других форматов JSON'
+keywords: ['json', 'форматы', 'форматы json']
+doc_type: guide
 ---
-
-
 # Обработка других форматов JSON
 
 Предыдущие примеры загрузки данных JSON предполагают использование [`JSONEachRow`](/interfaces/formats/JSONEachRow) (`NDJSON`). Этот формат читает ключи в каждой строке JSON как колонки. Например:

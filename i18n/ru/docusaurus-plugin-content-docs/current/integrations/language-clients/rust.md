@@ -1,23 +1,12 @@
 ---
-'sidebar_label': 'Rust'
-'sidebar_position': 5
-'keywords':
-- 'clickhouse'
-- 'rs'
-- 'rust'
-- 'cargo'
-- 'crate'
-- 'http'
-- 'client'
-- 'connect'
-- 'integrate'
-'slug': '/integrations/rust'
-'description': 'Официальный Rust клиент для подключения к ClickHouse.'
-'title': 'ClickHouse Rust Client'
-'doc_type': 'reference'
+slug: '/integrations/rust'
+sidebar_label: Rust
+sidebar_position: 5
+description: 'Официальный Rust клиент для подключения к ClickHouse.'
+title: 'ClickHouse Rust Client'
+keywords: ['clickhouse', 'rs', 'rust', 'cargo', 'crate', 'http', 'client', 'connect', 'integrate']
+doc_type: reference
 ---
-
-
 # ClickHouse клиент на Rust
 
 Официальный клиент Rust для подключения к ClickHouse, первоначально разработанный [Paul Loyd](https://github.com/loyd). Исходный код клиента доступен в [репозитории GitHub](https://github.com/ClickHouse/clickhouse-rs).

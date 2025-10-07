@@ -14,7 +14,6 @@
 'title': 'Подключение BladePipe к ClickHouse'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import bp_ck_1 from '@site/static/images/integrations/data-ingestion/etl-tools/bp_ck_1.png';
 import bp_ck_2 from '@site/static/images/integrations/data-ingestion/etl-tools/bp_ck_2.png';

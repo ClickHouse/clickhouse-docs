@@ -1,19 +1,12 @@
 ---
-'slug': '/guides/developer/lightweight-delete'
-'title': 'Легковесное удаление'
-'keywords':
-- 'lightweight delete'
-'description': 'Предоставляет обзор легковесных удалений в ClickHouse'
-'doc_type': 'reference'
+slug: '/guides/developer/lightweight-delete'
+description: 'Предоставляет обзор легковесных удалений в ClickHouse'
+title: 'Легковесное удаление'
+keywords: ['легковесное удаление']
+doc_type: reference
 ---
 
 import Content from '@site/i18n/ru/docusaurus-plugin-content-docs/current/sql-reference/statements/delete.md';
-
-```yaml
-title: 'Введение в ClickHouse'
-sidebar_label: 'Введение'
-keywords: ['clickhouse', 'база данных', 'анализ данных']
-description: 'Это введение в ClickHouse — быструю колонковую базу данных для аналитики.'
 
 
 # Введение в ClickHouse

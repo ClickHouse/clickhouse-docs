@@ -1,16 +1,13 @@
 ---
-'sidebar_label': 'Metabase'
-'sidebar_position': 131
-'slug': '/integrations/metabase'
-'keywords':
-- 'Metabase'
-'description': 'Metabase является простым в использовании, открытым инструментом пользовательского
-  интерфейса для задавания вопросов о ваших данных.'
-'title': 'Соединение Metabase с ClickHouse'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: '/integrations/metabase'
+sidebar_label: Metabase
+sidebar_position: 131
+description: 'Metabase является простым в использовании, открытым инструментом пользовательского'
+title: 'С подключением Metabase к ClickHouse'
+keywords: ['ClickHouse', 'Metabase', 'connect', 'integrate', 'ui']
+doc_type: guide
+show_related_blogs: true
 ---
-
 import Image from '@theme/IdealImage';
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import metabase_01 from '@site/static/images/integrations/data-visualization/metabase_01.png';

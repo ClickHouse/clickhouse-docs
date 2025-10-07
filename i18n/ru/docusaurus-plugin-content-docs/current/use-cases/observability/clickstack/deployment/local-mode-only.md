@@ -8,7 +8,6 @@
   ClickHouse'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
 import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png';

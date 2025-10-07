@@ -1,19 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/sumSimpleState'
-'title': 'sumSimpleState'
-'description': 'Пример использования комбинатора sumSimpleState'
-'keywords':
-- 'sum'
-- 'state'
-- 'simple'
-- 'combinator'
-- 'examples'
-- 'sumSimpleState'
-'sidebar_label': 'sumSimpleState'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/sumSimpleState'
+sidebar_label: sumSimpleState
+description: 'Пример использования комбинатаора sumSimpleState'
+title: sumSimpleState
+keywords: ['sum', 'state', 'simple', 'combinator', 'examples', 'sumSimpleState']
+doc_type: reference
 ---
-
-
 # sumSimpleState {#sumsimplestate}
 
 ## Описание {#description}

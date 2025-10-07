@@ -1,19 +1,12 @@
 ---
-'sidebar_label': 'Airbyte'
-'sidebar_position': 11
-'keywords':
-- 'clickhouse'
-- 'Airbyte'
-- 'connect'
-- 'integrate'
-- 'etl'
-- 'data integration'
-'slug': '/integrations/airbyte'
-'description': 'Потоковые данные в ClickHouse с помощью Airbyte конвейеров данных'
-'title': 'Подключите Airbyte к ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/airbyte'
+sidebar_label: Airbyte
+sidebar_position: 11
+description: 'Потоковые данные в ClickHouse с помощью Airbyte конвейеров данных'
+title: 'Соедините Airbyte с ClickHouse'
+keywords: ['clickhouse', 'Airbyte', 'connect', 'integrate', 'etl', 'data integration']
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 import airbyte01 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_01.png';
 import airbyte02 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_02.png';

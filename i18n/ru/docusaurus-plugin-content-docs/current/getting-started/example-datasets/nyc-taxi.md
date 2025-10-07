@@ -1,13 +1,11 @@
 ---
-'description': 'Данные о миллиардах поездок на такси и арендуемых транспортных средствах
-  (Uber, Lyft и др.), начинающихся в Нью-Йорке с 2009 года'
-'sidebar_label': 'Данные такси Нью-Йорка'
-'sidebar_position': 2
-'slug': '/getting-started/example-datasets/nyc-taxi'
-'title': 'Данные такси Нью-Йорка'
-'doc_type': 'reference'
+slug: '/getting-started/example-datasets/nyc-taxi'
+sidebar_label: 'Данные такси Нью-Йорка'
+sidebar_position: 2
+description: 'Данные о миллиардах поездок на такси и арендуемых транспортных средствах'
+title: 'Данные такси Нью-Йорка'
+doc_type: reference
 ---
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 

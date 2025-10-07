@@ -1,12 +1,10 @@
 ---
-'slug': '/native-protocol/columns'
-'sidebar_position': 4
-'title': 'Типы колонок'
-'description': 'Типы колонок для нативного протокола'
-'doc_type': 'reference'
+slug: '/native-protocol/columns'
+sidebar_position: 4
+description: 'Типы колонок для нативного протокола'
+title: 'Типы колонок'
+doc_type: reference
 ---
-
-
 # Типы колонок
 
 Смотрите [Типы данных](/sql-reference/data-types/) для общего справочника.

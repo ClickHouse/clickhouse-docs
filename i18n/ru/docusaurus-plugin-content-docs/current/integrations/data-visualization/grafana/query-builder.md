@@ -1,12 +1,11 @@
 ---
-'sidebar_label': 'Конструктор запросов'
-'sidebar_position': 2
-'slug': '/integrations/grafana/query-builder'
-'description': 'Использование конструктора запросов в плагине ClickHouse для Grafana'
-'title': 'Конструктор запросов'
-'doc_type': 'guide'
+slug: '/integrations/grafana/query-builder'
+sidebar_label: 'Конструктор запросов'
+sidebar_position: 2
+description: 'Использование конструктора запросов в плагине ClickHouse для Grafana'
+title: 'Конструктор запросов'
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 import demo_table_query from '@site/static/images/integrations/data-visualization/grafana/demo_table_query.png';
 import demo_logs_query from '@site/static/images/integrations/data-visualization/grafana/demo_logs_query.png';

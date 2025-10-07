@@ -7,7 +7,6 @@
 'description': 'Управление TTL с ClickStack'
 'doc_type': 'guide'
 ---
-
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';
 import Image from '@theme/IdealImage';
 

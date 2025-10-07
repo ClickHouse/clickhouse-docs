@@ -1,16 +1,11 @@
 ---
-'slug': '/materialized-view/incremental-materialized-view'
-'title': 'инкрементное материализованное представление'
-'description': 'Как использовать инкрементные материализованные представления для
-  ускорения запросов'
-'keywords':
-- 'incremental materialized views'
-- 'speed up queries'
-- 'query optimization'
-'score': 10000
-'doc_type': 'guide'
+slug: '/materialized-view/incremental-materialized-view'
+description: 'Как использовать инкрементные материализованные представления для'
+title: 'Инкрементное Материализованное Представление'
+keywords: ['инкрементные материализованные представления', 'ускорение запросов', 'оптимизация запросов']
+doc_type: guide
+score: 10000
 ---
-
 import materializedViewDiagram from '@site/static/images/materialized-view/materialized-view-diagram.png';
 import Image from '@theme/IdealImage';
 

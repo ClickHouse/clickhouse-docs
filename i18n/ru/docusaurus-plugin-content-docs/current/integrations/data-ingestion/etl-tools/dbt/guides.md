@@ -10,7 +10,6 @@
 'title': 'Руководства'
 'doc_type': 'guide'
 ---
-
 import TOCInline from '@theme/TOCInline';
 import Image from '@theme/IdealImage';
 import dbt_01 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_01.png';

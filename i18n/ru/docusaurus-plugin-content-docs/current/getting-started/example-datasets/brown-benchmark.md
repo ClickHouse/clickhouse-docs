@@ -1,11 +1,10 @@
 ---
-'description': 'Новый аналитический Benchmark для машинно-генерируемых данных журналов'
-'sidebar_label': 'Бenchmark Университета Браун'
-'slug': '/getting-started/example-datasets/brown-benchmark'
-'title': 'Бenchmark Университета Браун'
-'doc_type': 'reference'
+slug: '/getting-started/example-datasets/brown-benchmark'
+sidebar_label: 'Бенчмарк Университета Брауна'
+description: 'Новый аналитический Benchmark для машинно-генерируемых данных журналов'
+title: 'Бенчмарк Университета Брауна'
+doc_type: reference
 ---
-
 `MgBench` — это новая аналитическая бенчмарка для данных логов, сгенерированных машинами, [Эндрю Кротти](http://cs.brown.edu/people/acrotty/).
 
 Скачайте данные:

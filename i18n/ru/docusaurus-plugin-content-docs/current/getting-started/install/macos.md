@@ -1,26 +1,13 @@
 ---
-'description': 'Установить ClickHouse на MacOS'
-'keywords':
-- 'ClickHouse'
-- 'install'
-- 'MacOS'
-'sidebar_label': 'MacOS'
-'slug': '/install/macOS'
-'title': 'Установить ClickHouse с помощью Homebrew'
-'hide_title': true
-'doc_type': 'guide'
+slug: '/install/macOS'
+sidebar_label: MacOS
+description: 'Установить ClickHouse на MacOS'
+title: 'Установка ClickHouse с использованием Homebrew'
+keywords: ['ClickHouse', 'установка', 'MacOS']
+doc_type: guide
+hide_title: true
 ---
-
 import MacOSProd from './_snippets/_macos.md'
-
-```yaml
-keywords:
-  - 'clickhouse'
-  - 'installation'
-  - 'MacOS'
-description: 'Инструкция по установке ClickHouse на macOS.'
-sidebar_label: 'Установка ClickHouse на macOS'
-
 
 # Установка ClickHouse на macOS
 

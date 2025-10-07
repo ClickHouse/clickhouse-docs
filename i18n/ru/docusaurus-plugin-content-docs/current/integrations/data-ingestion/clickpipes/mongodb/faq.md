@@ -6,8 +6,6 @@
 'title': 'ClickPipes для MongoDB FAQ'
 'doc_type': 'reference'
 ---
-
-
 # ClickPipes для MongoDB FAQ
 
 ### Могу ли я запросить отдельные поля в формате JSON? {#can-i-query-for-individual-fields-in-the-json-datatype}

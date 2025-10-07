@@ -6,7 +6,6 @@
   позволяет вам программно управлять вашей учетной записью и аспектами ваших услуг.'
 'doc_type': 'guide'
 ---
-
 import image_01 from '@site/static/images/cloud/manage/openapi1.png';
 import image_02 from '@site/static/images/cloud/manage/openapi2.png';
 import image_03 from '@site/static/images/cloud/manage/openapi3.png';

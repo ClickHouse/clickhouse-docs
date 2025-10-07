@@ -17,8 +17,6 @@
 'title': 'ClickHouse C# Драйвер'
 'doc_type': 'guide'
 ---
-
-
 # Клиент ClickHouse для C#
 
 Официальный C# клиент для подключения к ClickHouse. 

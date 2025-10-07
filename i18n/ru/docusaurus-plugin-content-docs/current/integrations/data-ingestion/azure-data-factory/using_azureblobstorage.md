@@ -1,21 +1,15 @@
 ---
-'sidebar_label': 'Использование функции таблицы azureBlobStorage'
-'slug': '/integrations/azure-data-factory/table-function'
-'description': 'Использование функции таблицы azureBlobStorage ClickHouse'
-'keywords':
-- 'azure data factory'
-- 'azure'
-- 'microsoft'
-- 'data'
-- 'azureBlobStorage'
-'title': 'Использование функции таблицы azureBlobStorage ClickHouse для переноса данных
-  из Azure в ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/azure-data-factory/table-function'
+sidebar_label: 'Использование табличной функции azureBlobStorage'
+description: 'Использование функции таблицы azureBlobStorage ClickHouse'
+title: 'Использование табличной функции azureBlobStorage в ClickHouse для загрузки данных из Azure'
+keywords: ['azure data factory', 'azure', 'microsoft', 'data', 'azureBlobStorage']
+doc_type: guide
 ---
 
 import Image from '@theme/IdealImage';
-import azureDataStoreSettings                   from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-settings.png';
-import azureDataStoreAccessKeys                 from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-access-keys.png';
+import azureDataStoreSettings from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-settings.png';
+import azureDataStoreAccessKeys from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-access-keys.png';
 
 
 # Использование функции таблицы azureBlobStorage в ClickHouse {#using-azureBlobStorage-function}

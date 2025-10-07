@@ -8,7 +8,6 @@
 'sidebar_label': 'Обзор'
 'doc_type': 'guide'
 ---
-
 import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';
 import Image from '@theme/IdealImage';
 

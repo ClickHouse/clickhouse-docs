@@ -1,14 +1,11 @@
 ---
-'description': 'Узнайте, как использовать projections для улучшения производительности
-  запросов, которые вы выполняете часто, используя набор данных о недвижимости в Великобритании,
-  который содержит данные о ценах, уплаченных за недвижимость в Англии и Уэльсе.'
-'sidebar_label': 'Цены на недвижимость в Великобритании'
-'sidebar_position': 1
-'slug': '/getting-started/example-datasets/uk-price-paid'
-'title': 'Набор данных о ценах на недвижимость в Великобритании'
-'doc_type': 'tutorial'
+slug: '/getting-started/example-datasets/uk-price-paid'
+sidebar_label: 'Цены на недвижимость в Великобритании'
+sidebar_position: 1
+description: 'Узнайте, как использовать projections для улучшения производительности'
+title: 'Набор данных о ценах на недвижимость в Великобритании'
+doc_type: tutorial
 ---
-
 Эти данные содержат цены, уплаченные за объекты недвижимости в Англии и Уэльсе. Данные доступны с 1995 года, а размер набора данных в несжатом виде составляет около 4 GiB (что займет всего около 278 MiB в ClickHouse).
 
 - Источник: https://www.gov.uk/government/statistical-data-sets/price-paid-data-downloads

@@ -1,13 +1,11 @@
 ---
-'sidebar_position': 1
-'sidebar_label': 'Хранение и вычисления отдельно'
-'slug': '/guides/separation-storage-compute'
-'title': 'Хранение и вычисления отдельно'
-'description': 'Этот гид исследует, как вы можете использовать ClickHouse и S3 для
-  реализации архитектуры с отделённым хранением и вычислениями.'
-'doc_type': 'guide'
+slug: '/guides/separation-storage-compute'
+sidebar_label: 'Разделение хранилища и вычислений'
+sidebar_position: 1
+description: 'Этот гид исследует, как вы можете использовать ClickHouse и S3 для'
+title: 'Разделение хранилища и вычислений'
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 import BucketDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_S3_authentication_and_bucket.md';
 import s3_bucket_example from '@site/static/images/guides/s3_bucket_example.png';

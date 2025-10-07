@@ -1,20 +1,12 @@
 ---
-'slug': '/operations/access-rights'
-'sidebar_position': 1
-'sidebar_label': 'Пользователи и роли'
-'title': 'Контроль доступа и управление учетными записями'
-'keywords':
-- 'ClickHouse Cloud'
-- 'Access Control'
-- 'User Management'
-- 'RBAC'
-- 'Security'
-'description': 'Описывает контроль доступа и управление учетными записями в ClickHouse
-  Cloud'
-'doc_type': 'guide'
+slug: '/operations/access-rights'
+sidebar_label: 'Пользователи и Роли'
+sidebar_position: 1
+description: 'Описаниевает контроль доступа и управление учетными записями в ClickHouse'
+title: 'Контроль Доступа и Управление Учетными Записями'
+keywords: ['ClickHouse Cloud', 'Контроль Доступа', 'Управление Пользователями', 'RBAC', 'Безопасность']
+doc_type: guide
 ---
-
-
 # Создание пользователей и ролей в ClickHouse
 
 ClickHouse поддерживает управление контролем доступа на основе подхода [RBAC](https://en.wikipedia.org/wiki/Role-based_access_control).

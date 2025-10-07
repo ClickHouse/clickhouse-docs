@@ -6,7 +6,6 @@
   и управлять данными вашего личного аккаунта, включая контактную информацию.'
 'doc_type': 'reference'
 ---
-
 import Image from '@theme/IdealImage';
 import support_case_form from '@site/static/images/cloud/security/support-case-form.png';
 

@@ -11,7 +11,6 @@
 - 'ClickStack'
 'doc_type': 'guide'
 ---
-
 ## Стратегия параллельной работы {#parallel-operation-strategy}
 
 При миграции с Elastic на ClickStack для случаев наблюдаемости мы рекомендуем подход **параллельной работы**, а не попытки мигрировать исторические данные. Эта стратегия предлагает несколько преимуществ:
@@ -123,7 +122,7 @@ ClickHouse использует [условия TTL](/use-cases/observability/cl
 <details>
 <summary>Сопоставление Elasticsearch</summary>
 
-```javascripton
+```javascript
 GET .ds-logs-system.syslog-default-2025.06.03-000001/_mapping
 {
   ".ds-logs-system.syslog-default-2025.06.03-000001": {
@@ -651,3 +650,5 @@ clickhouse-client --host ${CLICKHOUSE_HOST} --secure --password ${CLICKHOUSE_PAS
 ```
 
 Обратите внимание на необходимость экранирования имени поля `@timestamp` и использования формата ввода `JSONAsObject`.
+
+</VerticalStepper>

@@ -1,11 +1,10 @@
 ---
-'description': '超过 150M 客户评论的 Amazon 产品'
-'sidebar_label': 'Amazon 客户评论'
+'description': 'Более 150M отзывов клиентов о продуктах Amazon'
+'sidebar_label': 'Отзывы клиентов Amazon'
 'slug': '/getting-started/example-datasets/amazon-reviews'
-'title': 'Amazon 客户评论'
+'title': 'Отзывы клиентов Amazon'
 'doc_type': 'reference'
 ---
-
 Этот набор данных содержит более 150 миллионов отзывов клиентов о продуктах Amazon. Данные находятся в сжатых snappy файлах Parquet в AWS S3 общим объемом 49 ГБ (сжатый). Давайте рассмотрим шаги по их вставке в ClickHouse.
 
 :::note

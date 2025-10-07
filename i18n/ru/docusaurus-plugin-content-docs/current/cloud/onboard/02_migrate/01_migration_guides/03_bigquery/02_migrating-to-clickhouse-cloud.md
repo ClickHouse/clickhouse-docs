@@ -1,14 +1,13 @@
 ---
-'title': '从 BigQuery 迁移到 ClickHouse Cloud'
+'title': 'Перенос данных из BigQuery в ClickHouse Cloud'
 'slug': '/migrations/bigquery/migrating-to-clickhouse-cloud'
-'description': '如何将您的数据从 BigQuery 迁移到 ClickHouse Cloud'
+'description': 'Как перенести ваши данные из BigQuery в ClickHouse Cloud'
 'keywords':
 - 'BigQuery'
 'show_related_blogs': true
-'sidebar_label': '迁移指南'
+'sidebar_label': 'Перенос данных'
 'doc_type': 'guide'
 ---
-
 import bigquery_2 from '@site/static/images/migrations/bigquery-2.png';
 import bigquery_3 from '@site/static/images/migrations/bigquery-3.png';
 import bigquery_4 from '@site/static/images/migrations/bigquery-4.png';

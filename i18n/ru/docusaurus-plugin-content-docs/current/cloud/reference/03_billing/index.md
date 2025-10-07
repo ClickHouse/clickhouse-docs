@@ -1,7 +1,7 @@
 ---
 'slug': '/cloud/manage/billing'
 'title': 'Счет'
-'description': 'Страница содержания для биллинга.'
+'description': 'Страница содержании для билинга.'
 'keywords':
 - 'billing'
 - 'payment thresholds'
@@ -9,7 +9,6 @@
 - 'marketplace'
 'doc_type': 'landing-page'
 ---
-
 Этот раздел документации охватывает темы, связанные с выставлением счетов, и содержит следующие страницы:
 
 | Страница                              | Описание                                                             |

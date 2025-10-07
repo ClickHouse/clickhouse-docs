@@ -13,7 +13,6 @@
 'title': 'Автоматическое масштабирование'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import auto_scaling from '@site/static/images/cloud/manage/AutoScaling.png';
 import scaling_patch_request from '@site/static/images/cloud/manage/scaling-patch-request.png';

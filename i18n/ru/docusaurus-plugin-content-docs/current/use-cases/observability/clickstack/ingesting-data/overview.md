@@ -8,7 +8,6 @@
 'description': 'Обзор для загрузки данных в ClickStack'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import architecture_with_flow from '@site/static/images/use-cases/observability/simple-architecture-with-flow.png';
 

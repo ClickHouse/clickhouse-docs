@@ -1,12 +1,10 @@
 ---
-'slug': '/native-protocol/client'
-'sidebar_position': 2
-'title': 'Нативные клиентские пакеты'
-'description': 'Клиент нативного протокола'
-'doc_type': 'reference'
+slug: '/native-protocol/client'
+sidebar_position: 2
+description: 'Клиент нативного протокола'
+title: 'Пакеты клиентской части'
+doc_type: reference
 ---
-
-
 # Клиентские пакеты
 
 | значение | имя               | описание                  |

@@ -1,12 +1,10 @@
 ---
-'sidebar_label': 'Бинарный и Нативный'
-'slug': '/integrations/data-formats/binary-native'
-'title': 'Использование нативных и бинарных форматов в ClickHouse'
-'description': 'Страница, описывающая, как использовать нативные и бинарные форматы
-  в ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/data-formats/binary-native'
+sidebar_label: 'Бинарные и родные форматы'
+description: 'Страница, описывающая, как использовать НАТИВНЫЕ и БИНАРНЫЕ форматы'
+title: 'Использование родных и бинарных форматов в ClickHouse'
+doc_type: guide
 ---
-
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 

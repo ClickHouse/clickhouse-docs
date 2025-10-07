@@ -11,7 +11,6 @@
 - 'pandas'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import image_1 from '@site/static/images/use-cases/AI_ML/jupyter/1.png';
 import image_2 from '@site/static/images/use-cases/AI_ML/jupyter/2.png';

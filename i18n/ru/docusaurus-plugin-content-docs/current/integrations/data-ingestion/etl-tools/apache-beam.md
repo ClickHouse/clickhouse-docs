@@ -1,12 +1,10 @@
 ---
-'sidebar_label': 'Apache Beam'
-'slug': '/integrations/apache-beam'
-'description': 'Пользователи могут принимать данные в ClickHouse с помощью Apache
-  Beam'
-'title': 'Интеграция Apache Beam и ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/apache-beam'
+sidebar_label: 'Apache Beam'
+description: 'пользователи могут принимать данные в ClickHouse с помощью Apache'
+title: 'Интеграция Apache Beam и ClickHouse'
+doc_type: guide
 ---
-
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 

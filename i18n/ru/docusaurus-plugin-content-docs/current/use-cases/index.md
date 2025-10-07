@@ -1,12 +1,11 @@
 ---
-'slug': '/use-cases'
-'title': 'Управляющие Указания по Использованию'
-'pagination_prev': null
-'pagination_next': null
-'description': 'Страница приземления для управляющих указаний по использованию'
-'doc_type': 'landing-page'
+slug: '/use-cases'
+description: 'Страница приземления для управляющих указаний по использованию'
+title: 'Руководства по использованию'
+doc_type: landing-page
+pagination_prev: null
+pagination_next: null
 ---
-
 В этом разделе документации вы найдете наши руководства по использованию.
 
 | Страница                         | Описание                                                                        |

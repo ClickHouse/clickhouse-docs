@@ -1,18 +1,12 @@
 ---
-'sidebar_label': 'Python'
-'sidebar_position': 10
-'keywords':
-- 'clickhouse'
-- 'python'
-- 'client'
-- 'connect'
-- 'integrate'
-'slug': '/integrations/python'
-'description': 'ClickHouse Connect 项目套件用于将 Python 连接到 ClickHouse'
-'title': 'Python 集成与 ClickHouse Connect'
-'doc_type': 'guide'
+slug: '/integrations/python'
+sidebar_label: Python
+sidebar_position: 10
+description: 'ClickHouse Connect проект пакета используется для подключения Python'
+title: 'Интеграция Python с ClickHouse Connect'
+keywords: ['clickhouse', 'python', 'client', 'connect', 'integrate']
+doc_type: guide
 ---
-
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 

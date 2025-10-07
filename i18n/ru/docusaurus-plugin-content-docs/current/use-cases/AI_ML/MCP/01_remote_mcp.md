@@ -14,7 +14,6 @@
 'sidebar_position': 1
 'doc_type': 'guide'
 ---
-
 import {CardHorizontal} from '@clickhouse/click-ui/bundled'
 import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';

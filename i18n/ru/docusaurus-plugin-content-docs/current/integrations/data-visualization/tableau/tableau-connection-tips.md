@@ -1,21 +1,12 @@
 ---
-'sidebar_label': 'Советы по подключению'
-'sidebar_position': 3
-'slug': '/integrations/tableau/connection-tips'
-'keywords':
-- 'clickhouse'
-- 'tableau'
-- 'online'
-- 'mysql'
-- 'connect'
-- 'integrate'
-- 'ui'
-'description': 'Советы по подключению Tableau при использовании официального соединителя
-  ClickHouse.'
-'title': 'Советы по подключению'
-'doc_type': 'guide'
+slug: '/integrations/tableau/connection-tips'
+sidebar_label: 'Советы по подключению'
+sidebar_position: 3
+description: 'Советы по подключению Tableau при использовании официального соединителя'
+title: 'Советы по подключению'
+keywords: ['clickhouse', 'tableau', 'онлайн', 'mysql', 'подключиться', 'интегрировать', 'ui']
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 
 

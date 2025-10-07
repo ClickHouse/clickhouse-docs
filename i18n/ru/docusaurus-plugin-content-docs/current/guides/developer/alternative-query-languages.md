@@ -1,11 +1,10 @@
 ---
-'slug': '/guides/developer/alternative-query-languages'
-'sidebar_label': 'Альтернативные языки запросов'
-'title': 'Альтернативные языки запросов'
-'description': 'Используйте альтернативные языки запросов в ClickHouse'
-'doc_type': 'reference'
+slug: '/guides/developer/alternative-query-languages'
+sidebar_label: 'Альтернативные языки запросов'
+description: 'Используйте альтернативные языки запросов в ClickHouse'
+title: 'Альтернативные языки запросов'
+doc_type: reference
 ---
-
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 Кроме стандартного SQL, ClickHouse поддерживает различные альтернативные языки запросов для обращения к данным.

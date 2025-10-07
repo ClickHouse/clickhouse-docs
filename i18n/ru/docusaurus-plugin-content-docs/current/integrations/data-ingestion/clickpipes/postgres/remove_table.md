@@ -1,11 +1,10 @@
 ---
-'title': 'Удаление конкретных таблиц из ClickPipe'
-'description': 'Удаление конкретных таблиц из ClickPipe'
-'sidebar_label': 'Удалить таблицу'
-'slug': '/integrations/clickpipes/postgres/removing_tables'
-'doc_type': 'guide'
+slug: '/integrations/clickpipes/postgres/removing_tables'
+sidebar_label: 'Удалить таблицу'
+description: 'Удаление конкретных TABLE из ClickPipe'
+title: 'Удаление специфических таблиц из ClickPipe'
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 import remove_table from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/remove_table.png'
 

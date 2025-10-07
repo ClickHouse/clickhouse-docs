@@ -1,25 +1,13 @@
 ---
-'description': 'Установить ClickHouse на MacOS'
-'keywords':
-- 'ClickHouse'
-- 'install'
-- 'Linux'
-- 'tar'
-'sidebar_label': 'Другие Linux'
-'slug': '/install/linux_other'
-'title': 'Установить ClickHouse с использованием tgz архивов'
-'hide_title': true
-'doc_type': 'guide'
+slug: '/install/linux_other'
+sidebar_label: 'Другие Linux'
+description: 'Установить ClickHouse на MacOS'
+title: 'Установите ClickHouse с помощью архивов tgz'
+keywords: ['ClickHouse', 'установка', 'Linux', 'tar']
+doc_type: guide
+hide_title: true
 ---
-
 import Tar from './_snippets/_linux_tar_install.md'
-
-```yaml
-title: 'Архивация и работа с tar'
-sidebar_label: 'Архивация с tar'
-keywords: ['tar', 'архивация', 'упаковка']
-description: 'Справочное руководство по использованию tar для создания архивов и извлечения файлов.'
-
 
 # Архивация и работа с tar
 

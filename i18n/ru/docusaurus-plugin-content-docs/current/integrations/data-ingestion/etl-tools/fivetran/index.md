@@ -1,13 +1,11 @@
 ---
-'sidebar_label': 'Fivetran'
-'slug': '/integrations/fivetran'
-'sidebar_position': 2
-'description': 'Пользователи могут трансформировать и моделировать свои данные в ClickHouse
-  с использованием dbt'
-'title': 'Fivetran и ClickHouse Cloud'
-'doc_type': 'guide'
+slug: '/integrations/fivetran'
+sidebar_label: Fivetran
+sidebar_position: 2
+description: 'Пользователи могут трансформировать и моделировать свои данные в ClickHouse'
+title: 'Fivetran и ClickHouse Cloud'
+doc_type: guide
 ---
-
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 

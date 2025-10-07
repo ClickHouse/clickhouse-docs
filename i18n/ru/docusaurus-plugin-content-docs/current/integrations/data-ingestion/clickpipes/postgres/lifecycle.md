@@ -5,8 +5,6 @@
 'title': 'Жизненный цикл Postgres ClickPipe'
 'doc_type': 'guide'
 ---
-
-
 # Жизненный цикл Postgres ClickPipe {#lifecycle}
 
 Это документ о различных фазах Postgres ClickPipe, различных статусах, которые он может иметь, и их значении.

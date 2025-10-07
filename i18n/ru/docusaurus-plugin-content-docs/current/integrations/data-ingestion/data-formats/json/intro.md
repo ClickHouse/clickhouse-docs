@@ -1,17 +1,13 @@
 ---
-'sidebar_label': 'Обзор'
-'sidebar_position': 10
-'title': 'Работа с JSON'
-'slug': '/integrations/data-formats/json/overview'
-'description': 'Работа с JSON в ClickHouse'
-'keywords':
-- 'json'
-- 'clickhouse'
-'score': 10
-'doc_type': 'guide'
+slug: '/integrations/data-formats/json/overview'
+sidebar_label: Обзор
+sidebar_position: 10
+description: 'Работа с JSON в ClickHouse'
+title: 'Работа с JSON'
+keywords: ['json', 'clickhouse']
+doc_type: guide
+score: 10
 ---
-
-
 # Обзор JSON
 
 <div style={{width:'1024px', height: '576px'}}>

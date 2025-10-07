@@ -1,11 +1,10 @@
 ---
-'description': 'Набор данных и запросы звездной схемы бенчмарка (SSB)'
-'sidebar_label': 'Звездная схема бенчмарка'
-'slug': '/getting-started/example-datasets/star-schema'
-'title': 'Звездная схема бенчмарка (SSB, 2009)'
-'doc_type': 'reference'
+slug: '/getting-started/example-datasets/star-schema'
+sidebar_label: 'Star Schema Benchmark'
+description: 'Набор данных и запросы звездной схемы бенчмарка (SSB)'
+title: 'Star Schema Benchmark (SSB, 2009)'
+doc_type: reference
 ---
-
 Схема звезды Benchmark в значительной степени основана на таблицах и запросах [TPC-H](tpch.md), но, в отличие от TPC-H, она использует макет схемы звезды. Основная масса данных хранится в гигантской таблице фактов, окруженной несколькими маленькими таблицами измерений. Запросы объединяют таблицу фактов с одной или несколькими таблицами измерений, чтобы применить критерии фильтрации, например, `MONTH = 'JANUARY'`.
 
 Ссылки:

@@ -1,11 +1,10 @@
 ---
-'description': 'Прием и запрос данных с разделением на табуляцию за 5 шагов'
-'sidebar_label': 'Данные жалоб NYPD'
-'slug': '/getting-started/example-datasets/nypd_complaint_data'
-'title': 'Данные жалоб NYPD'
-'doc_type': 'reference'
+slug: '/getting-started/example-datasets/nypd_complaint_data'
+sidebar_label: 'Данные жалоб NYPD'
+description: 'Прием и запрос данных с разделением на таблицу за 5 шагов'
+title: 'Данные жалоб NYPD'
+doc_type: reference
 ---
-
 Tab-separated value, или TSV, файлы являются распространёнными и могут содержать заголовки полей в первой строке файла. ClickHouse может принимать TSV и также может выполнять запросы к TSV без загрузки файлов. Это руководство охватывает оба этих случая. Если вам нужно выполнять запросы или загружать CSV файлы, те же техники работают, просто замените `TSV` на `CSV` в ваших аргументах формата.
 
 При работе с этим руководством вы будете:

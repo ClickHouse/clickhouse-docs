@@ -11,7 +11,6 @@
 - 'ClickStack'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import ingestion_key from '@site/static/images/use-cases/observability/ingestion-keys.png';
 import add_logstash_output from '@site/static/images/use-cases/observability/add-logstash-output.png';

@@ -1,13 +1,10 @@
 ---
-'title': 'chDB Руководства'
-'slug': '/chdb/guides'
-'description': 'Индексная страница для руководств chDB'
-'keywords':
-- 'chdb'
-- 'guides'
-'doc_type': 'landing-page'
+slug: '/chdb/guides'
+description: 'Индекси́рованная страни́ца для руководств chDB'
+title: 'руководства chDB'
+keywords: ['chdb', 'руководства']
+doc_type: landing-page
 ---
-
 Посмотрите на наши руководства для разработчиков chDB ниже:
 
 <!-- 

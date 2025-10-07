@@ -1,18 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/sumIf'
-'title': 'sumIf'
-'description': 'Пример использования комбинации sumIf'
-'keywords':
-- 'sum'
-- 'if'
-- 'combinator'
-- 'examples'
-- 'sumIf'
-'sidebar_label': 'sumIf'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/sumIf'
+sidebar_label: sumIf
+description: 'Пример использования комбинации sumIf'
+title: sumIf
+keywords: ['sum', 'if', 'combinator', 'examples', 'sumIf']
+doc_type: reference
 ---
-
-
 # sumIf {#sumif}
 
 ## Описание {#description}

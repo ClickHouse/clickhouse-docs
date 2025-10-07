@@ -1,18 +1,13 @@
 ---
-'slug': '/guides/developer/mutations'
-'sidebar_label': 'Обновление и удаление данных'
-'sidebar_position': 1
-'keywords':
-- 'UPDATE'
-- 'DELETE'
-- 'mutations'
-'title': 'Обновление и удаление данных ClickHouse'
-'description': 'Описание того, как выполнять операции обновления и удаления в ClickHouse'
-'show_related_blogs': false
-'doc_type': 'guide'
+slug: '/guides/developer/mutations'
+sidebar_label: 'Обновление и удаление данных'
+sidebar_position: 1
+description: 'Описание того, как выполнять операции обновления и удаления в ClickHouse'
+title: 'Обновление и удаление данных ClickHouse'
+keywords: ['обновление', 'удаление', 'мутация']
+doc_type: guide
+show_related_blogs: false
 ---
-
-
 # Обновление и удаление данных ClickHouse с помощью мутаций
 
 Хотя ClickHouse предназначен для аналитических нагрузок с высоким объемом данных, в некоторых ситуациях возможно изменять или удалять существующие данные. Эти операции обозначаются как "мутации" и выполняются с помощью команды `ALTER TABLE`.

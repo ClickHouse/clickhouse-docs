@@ -10,7 +10,6 @@
 'sidebar_label': 'Машинное обучение'
 'doc_type': 'guide'
 ---
-
 import machine_learning_data_layer from '@site/static/images/cloud/onboard/discover/use_cases/ml_data_layer.png'
 import online_feature_store from '@site/static/images/cloud/onboard/discover/use_cases/ml_data_layer.png'
 import Image from '@theme/IdealImage';

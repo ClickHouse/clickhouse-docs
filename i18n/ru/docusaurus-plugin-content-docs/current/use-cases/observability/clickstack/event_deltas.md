@@ -1,13 +1,12 @@
 ---
 'slug': '/use-cases/observability/clickstack/event_deltas'
-'title': 'Событийные дельты с ClickStack'
-'sidebar_label': 'Событийные дельты'
+'title': 'Событийные делы с ClickStack'
+'sidebar_label': 'Событийные делы'
 'pagination_prev': null
 'pagination_next': null
-'description': 'Событийные дельты с ClickStack'
+'description': 'Событийные делы с ClickStack'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import event_deltas from '@site/static/images/use-cases/observability/hyperdx-demo/step_17.png';
 import event_deltas_no_selected from '@site/static/images/use-cases/observability/event_deltas_no_selected.png';

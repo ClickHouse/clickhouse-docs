@@ -1,11 +1,10 @@
 ---
-'sidebar_label': 'Amazon Aurora Postgres'
-'description': 'Настройте Amazon Aurora Postgres в качестве источника для ClickPipes'
-'slug': '/integrations/clickpipes/postgres/source/aurora'
-'title': 'Настройка источника Aurora Postgres'
-'doc_type': 'guide'
+slug: '/integrations/clickpipes/postgres/source/aurora'
+sidebar_label: 'Amazon Aurora Postgres'
+description: 'Настройте Amazon Aurora Postgres в качестве источника для ClickPipes'
+title: 'Руководство по настройке источника Aurora Postgres'
+doc_type: guide
 ---
-
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
 import change_rds_logical_replication from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/change_rds_logical_replication.png';
 import change_wal_sender_timeout from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/change_wal_sender_timeout.png';

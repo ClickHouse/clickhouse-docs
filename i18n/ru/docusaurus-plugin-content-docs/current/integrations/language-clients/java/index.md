@@ -1,17 +1,10 @@
 ---
-'title': 'Java'
-'keywords':
-- 'clickhouse'
-- 'java'
-- 'jdbc'
-- 'client'
-- 'integrate'
-- 'r2dbc'
-'description': 'Варианты подключения к ClickHouse из Java'
-'slug': '/integrations/java'
-'doc_type': 'reference'
+slug: '/integrations/java'
+description: 'Варианты подключения к ClickHouse из Java'
+title: Java
+keywords: ['clickhouse', 'java', 'jdbc', 'client', 'integrate', 'r2dbc']
+doc_type: reference
 ---
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';

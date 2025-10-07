@@ -1,18 +1,12 @@
 ---
-'sidebar_label': 'Spark JDBC'
-'sidebar_position': 3
-'slug': '/integrations/apache-spark/spark-jdbc'
-'description': 'Введение в Apache Spark с ClickHouse'
-'keywords':
-- 'clickhouse'
-- 'Apache Spark'
-- 'jdbc'
-- 'migrating'
-- 'data'
-'title': 'Spark JDBC'
-'doc_type': 'guide'
+slug: '/integrations/apache-spark/spark-jdbc'
+sidebar_label: 'Spark JDBC'
+sidebar_position: 3
+description: 'Введение в Apache Spark с ClickHouse'
+title: 'Spark JDBC'
+keywords: ['clickhouse', 'Apache Spark', 'jdbc', 'миграция', 'данные']
+doc_type: guide
 ---
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';

@@ -1,12 +1,11 @@
 ---
-'slug': '/starter-guides'
-'title': 'Стартовые руководства'
-'description': 'Страница входа для стартовых руководств'
-'pagination_prev': null
-'pagination_next': null
-'doc_type': 'landing-page'
+slug: '/starter-guides'
+description: 'Страница ввода для стартовых руководств'
+title: 'Руководства для начинающих'
+doc_type: landing-page
+pagination_prev: null
+pagination_next: null
 ---
-
 В этом разделе документации вы найдете стартовые руководства по распространенным SQL-запросам: `CREATE`, `INSERT`, `SELECT` и мутациям `UPDATE` и `DELETE`.
 
 | Страница                                                   | Описание                                                              |

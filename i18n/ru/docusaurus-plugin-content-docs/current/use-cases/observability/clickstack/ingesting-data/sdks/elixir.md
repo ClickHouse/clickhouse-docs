@@ -7,7 +7,6 @@
 'title': 'Elixir'
 'doc_type': 'guide'
 ---
-
 <table>
   <tbody>
     <tr>

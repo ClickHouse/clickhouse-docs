@@ -8,7 +8,6 @@
   используются для координации репликации данных.'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import ReplicationShardingTerminology from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_replication-sharding-terminology.md';
 import ReplicationArchitecture from '@site/static/images/deployment-guides/replication-sharding-examples/replication.png';

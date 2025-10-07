@@ -1,12 +1,11 @@
 ---
-'slug': '/optimize/prewhere'
-'sidebar_label': 'PREWHERE 优化'
-'sidebar_position': 21
-'description': 'PREWHERE 减少了 I/O，通过避免读取不必要的列数据。'
-'title': 'PREWHERE 优化是如何工作的？'
-'doc_type': 'guide'
+slug: '/optimize/prewhere'
+sidebar_label: 'Оптимизация PREWHERE'
+sidebar_position: 21
+description: 'PREWHERE уменьшает I/O, тем самым избегая чтения ненужных рядов данных.'
+title: 'Как работает оптимизация PREWHERE?'
+doc_type: guide
 ---
-
 import visual01 from '@site/static/images/guides/best-practices/prewhere_01.gif';
 import visual02 from '@site/static/images/guides/best-practices/prewhere_02.gif';
 import visual03 from '@site/static/images/guides/best-practices/prewhere_03.gif';

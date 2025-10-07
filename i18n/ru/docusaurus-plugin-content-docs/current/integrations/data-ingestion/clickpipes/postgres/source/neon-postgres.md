@@ -1,11 +1,10 @@
 ---
-'sidebar_label': 'Neon Postgres'
-'description': 'Настройка экземпляра Neon Postgres в качестве источника для ClickPipes'
-'slug': '/integrations/clickpipes/postgres/source/neon-postgres'
-'title': 'Настройка источника Neon Postgres'
-'doc_type': 'guide'
+slug: '/integrations/clickpipes/postgres/source/neon-postgres'
+sidebar_label: 'Neon Postgres'
+description: 'Настройка экземпляра Neon Postgres в качестве источника для ClickPipes'
+title: 'Руководство по настройке источника Neon Postgres'
+doc_type: guide
 ---
-
 import neon_commands from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/neon-postgres/neon-commands.png'
 import neon_enable_replication from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/neon-postgres/neon-enable-replication.png'
 import neon_enabled_replication from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/neon-postgres/neon-enabled-replication.png'

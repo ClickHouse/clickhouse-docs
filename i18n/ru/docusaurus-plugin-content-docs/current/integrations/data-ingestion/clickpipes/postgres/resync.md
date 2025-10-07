@@ -5,7 +5,6 @@
 'sidebar_label': 'Синхронизация ClickPipe'
 'doc_type': 'guide'
 ---
-
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'
 import Image from '@theme/IdealImage';
 

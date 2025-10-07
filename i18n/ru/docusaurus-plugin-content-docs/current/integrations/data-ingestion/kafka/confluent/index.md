@@ -1,13 +1,11 @@
 ---
-'sidebar_label': 'Confluent Platform'
-'sidebar_position': 1
-'slug': '/integrations/kafka/cloud/confluent'
-'description': 'Подключение Kafka с Confluent Cloud'
-'title': 'Интеграция Confluent Cloud с ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/kafka/cloud/confluent'
+sidebar_label: 'Платформа Confluent'
+sidebar_position: 1
+description: 'подключение Kafka с Confluent Cloud'
+title: 'Интеграция Confluent Cloud с ClickHouse'
+doc_type: guide
 ---
-
-
 # Интеграция Confluent Cloud с ClickHouse
 
 Платформа Confluent предоставляет два варианта интеграции с ClickHouse

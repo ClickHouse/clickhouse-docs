@@ -1,16 +1,12 @@
 ---
-'sidebar_position': 3
-'sidebar_label': '选择数据'
-'title': '选择 ClickHouse 数据'
-'slug': '/guides/writing-queries'
-'description': '了解 Selecting ClickHouse Data'
-'keywords':
-- 'SELECT'
-- 'data formats'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: '/guides/writing-queries'
+sidebar_label: 'Выбор данных'
+sidebar_position: 3
+description: 'Узнайте о выборке данных ClickHouse'
+title: 'Выбор данных ClickHouse'
+doc_type: guide
+show_related_blogs: true
 ---
-
 ClickHouse — это SQL база данных, и вы запрашиваете свои данные, написав те же типы запросов `SELECT`, с которыми вы уже знакомы. Например:
 
 ```sql

@@ -1,13 +1,11 @@
 ---
-'sidebar_position': 1
-'sidebar_label': 'Создание таблиц'
-'title': 'Создание таблиц в ClickHouse'
-'slug': '/guides/creating-tables'
-'description': 'Узнайте о Creating Tables в ClickHouse'
-'doc_type': 'guide'
+slug: '/guides/creating-tables'
+sidebar_label: 'Создание таблиц'
+sidebar_position: 1
+description: 'Узнайте о Creating Tables в ClickHouse'
+title: 'Создание таблиц в ClickHouse'
+doc_type: guide
 ---
-
-
 # Создание таблиц в ClickHouse
 
  Как и в большинстве баз данных, ClickHouse логически группирует таблицы в **базы данных**. Используйте команду `CREATE DATABASE`, чтобы создать новую базу данных в ClickHouse:

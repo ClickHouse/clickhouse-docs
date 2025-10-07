@@ -1,7 +1,7 @@
 ---
 'slug': '/use-cases/data-lake/nessie-catalog'
-'sidebar_label': 'Nessie Catalog'
-'title': 'Nessie Catalog'
+'sidebar_label': 'Каталог Nessie'
+'title': 'Каталог Nessie'
 'pagination_prev': null
 'pagination_next': null
 'description': 'В этом руководстве мы проведем вас через шаги для запроса ваших данных
@@ -16,7 +16,6 @@
 'show_related_blogs': true
 'doc_type': 'guide'
 ---
-
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 <ExperimentalBadge/>

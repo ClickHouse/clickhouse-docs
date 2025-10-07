@@ -5,7 +5,6 @@
 'description': 'Интеграции для ClickHouse'
 'doc_type': 'landing-page'
 ---
-
 import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';
 import Confluentsvg from '@site/static/images/integrations/logos/confluent.svg';
 import Msksvg from '@site/static/images/integrations/logos/msk.svg';

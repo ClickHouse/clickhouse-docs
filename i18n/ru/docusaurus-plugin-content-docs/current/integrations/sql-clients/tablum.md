@@ -1,12 +1,10 @@
 ---
-'sidebar_label': 'TABLUM.IO'
-'slug': '/integrations/tablumio'
-'description': 'TABLUM.IO — это SaaS для управления данными, который поддерживает
-  ClickHouse из коробки.'
-'title': 'Подключение TABLUM.IO к ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/tablumio'
+sidebar_label: TABLUM.IO
+description: 'TABLUM.IO — это SaaS для управления данными, который поддерживает'
+title: 'Подключение TABLUM.IO к ClickHouse'
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 import tablum_ch_0 from '@site/static/images/integrations/sql-clients/tablum-ch-0.png';
 import tablum_ch_1 from '@site/static/images/integrations/sql-clients/tablum-ch-1.png';

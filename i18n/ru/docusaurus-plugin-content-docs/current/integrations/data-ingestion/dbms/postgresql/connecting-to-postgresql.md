@@ -1,19 +1,11 @@
 ---
-'slug': '/integrations/postgresql/connecting-to-postgresql'
-'title': 'Подключение к PostgreSQL'
-'keywords':
-- 'clickhouse'
-- 'postgres'
-- 'postgresql'
-- 'connect'
-- 'integrate'
-- 'table'
-- 'engine'
-'description': 'Страница, описывающая различные способы подключения PostgreSQL к ClickHouse'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: '/integrations/postgresql/connecting-to-postgresql'
+description: 'Страница, описывающая различные способы подключения PostgreSQL к ClickHouse'
+title: 'Подключение к PostgreSQL'
+keywords: ['clickhouse', 'postgres', 'postgresql', 'connect', 'integrate', 'table', 'engine']
+doc_type: guide
+show_related_blogs: true
 ---
-
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 

@@ -1,14 +1,13 @@
 ---
-'sidebar_label': 'Соблюдение норм биллинга ClickHouse Cloud'
+'sidebar_label': 'Соблюдение норм бислингa ClickHouse Cloud'
 'slug': '/manage/clickhouse-cloud-billing-compliance'
-'title': 'Соблюдение норм биллинга ClickHouse Cloud'
-'description': 'Страница, описывающая соблюдение норм биллинга ClickHouse Cloud'
+'title': 'Соблюдение норм бислингa ClickHouse Cloud'
+'description': 'Страница, описывающая соблюдение норм бислингa ClickHouse Cloud'
 'keywords':
 - 'billing compliance'
 - 'pay-as-you-go'
 'doc_type': 'guide'
 ---
-
 import billing_compliance from '@site/static/images/cloud/manage/billing_compliance.png';
 import Image from '@theme/IdealImage';
 

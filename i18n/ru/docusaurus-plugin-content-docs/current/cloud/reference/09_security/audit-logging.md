@@ -1,13 +1,12 @@
 ---
-'sidebar_label': 'Аудит Логирование'
+'sidebar_label': 'Аудит Логирования'
 'slug': '/cloud/security/audit-logging'
-'title': 'Аудит Логирование'
-'description': 'Эта страница описывает Аудит Логирование в ClickHouse Cloud. Она объясняет,
+'title': 'Аудит Логирования'
+'description': 'Эта страница описывает Аудит Логирования в ClickHouse Cloud. Она объясняет,
   как получить доступ и интерпретировать журналы аудита, которые фиксируют изменения,
   внесенные в организацию ClickHouse Cloud.'
 'doc_type': 'reference'
 ---
-
 import Image from '@theme/IdealImage';
 import activity_log_1 from '@site/static/images/cloud/security/activity_log1.png';
 import activity_log_2 from '@site/static/images/cloud/security/activity_log2.png';

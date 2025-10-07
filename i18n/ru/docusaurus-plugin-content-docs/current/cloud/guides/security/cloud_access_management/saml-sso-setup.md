@@ -5,7 +5,6 @@
 'description': 'Как настроить SAML SSO с ClickHouse Cloud'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import samlOrgId from '@site/static/images/cloud/security/saml-org-id.png';
 import samlOktaSetup from '@site/static/images/cloud/security/saml-okta-setup.png';

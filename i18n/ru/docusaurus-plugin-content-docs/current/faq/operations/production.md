@@ -1,14 +1,11 @@
 ---
-'slug': '/faq/operations/production'
-'title': 'В какую версию ClickHouse использовать в производстве?'
-'toc_hidden': true
-'toc_priority': 10
-'description': 'Эта страница предоставляет рекомендации по выбору версии ClickHouse
-  для использования в производстве'
-'doc_type': 'guide'
+slug: '/faq/operations/production'
+description: 'Эта страница предоставляет рекомендации по выбору версии ClickHouse'
+title: 'Какую версию ClickHouse использовать в производственной среде?'
+doc_type: guide
+toc_hidden: true
+toc_priority: 10
 ---
-
-
 # Какую версию ClickHouse использовать в производстве? {#which-clickhouse-version-to-use-in-production}
 
 Прежде всего, давайте обсудим, почему люди задают этот вопрос в первую очередь. Существуют две ключевые причины:

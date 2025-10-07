@@ -1,13 +1,11 @@
 ---
-'slug': '/optimize/query-parallelism'
-'sidebar_label': 'Параллелизм запросов'
-'sidebar_position': 20
-'description': 'ClickHouse параллелизирует выполнение запроса, используя процессинговые
-  каналы и настройку max_threads.'
-'title': 'Как ClickHouse выполняет запрос в параллельном режиме'
-'doc_type': 'guide'
+slug: '/optimize/query-parallelism'
+sidebar_label: 'Параллелизм запросов'
+sidebar_position: 20
+description: 'ClickHouse параллелизирует выполнение запроса, используя процессные'
+title: 'Как ClickHouse выполняет запрос в параллельном режиме'
+doc_type: guide
 ---
-
 import visual01 from '@site/static/images/guides/best-practices/query-parallelism_01.gif';
 import visual02 from '@site/static/images/guides/best-practices/query-parallelism_02.gif';
 import visual03 from '@site/static/images/guides/best-practices/query-parallelism_03.gif';

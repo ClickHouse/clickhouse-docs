@@ -6,7 +6,6 @@
   пользователя или роли'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import cloud_settings_sidebar from '@site/static/images/cloud/manage/cloud-settings-sidebar.png';
 

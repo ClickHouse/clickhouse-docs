@@ -12,8 +12,6 @@
 - 'reference'
 'doc_type': 'reference'
 ---
-
-
 # Справочник по Python API
 ## Основные функции запросов {#core-query-functions}
 ### `chdb.query` {#chdb-query}

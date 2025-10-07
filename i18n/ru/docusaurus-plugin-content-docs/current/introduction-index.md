@@ -1,11 +1,10 @@
 ---
-'slug': '/introduction-clickhouse'
-'title': 'Введение'
-'description': 'Лендинг страница для Введения'
-'pagination_next': null
-'doc_type': 'landing-page'
+slug: '/introduction-clickhouse'
+description: 'Лендинг страница для Введения'
+title: Введение
+doc_type: landing-page
+pagination_next: null
 ---
-
 Добро пожаловать в ClickHouse! Ознакомьтесь со страницами ниже, чтобы узнать, как начать работать с ClickHouse — самой быстрой и ресурсосберегающей системой хранения данных в реальном времени и открытой базой данных.
 
 | Страница                                      | Описание                                                        |

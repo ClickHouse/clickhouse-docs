@@ -7,8 +7,6 @@
 'title': 'Лучшие практики'
 'doc_type': 'guide'
 ---
-
-
 # Лучшие практики {#best-practices}
 
 ## Сжатие сообщений {#compression}

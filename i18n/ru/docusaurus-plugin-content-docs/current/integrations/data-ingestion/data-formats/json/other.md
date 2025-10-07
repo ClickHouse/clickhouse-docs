@@ -1,14 +1,10 @@
 ---
-'title': 'Другие подходы к JSON'
-'slug': '/integrations/data-formats/json/other-approaches'
-'description': 'Другие подходы к моделированию JSON'
-'keywords':
-- 'json'
-- 'formats'
-'doc_type': 'reference'
+slug: '/integrations/data-formats/json/other-approaches'
+description: 'Другие подходы к моделированию JSON'
+title: 'Другие подходы к моделированию JSON'
+keywords: ['json', 'форматы']
+doc_type: reference
 ---
-
-
 # Другие подходы к моделированию JSON
 
 **Ниже представлены альтернативы моделированию JSON в ClickHouse. Эти методы документированы для полноты информации и были актуальны до разработки типа JSON, и поэтому, как правило, не рекомендуется использовать их в большинстве случаев.**

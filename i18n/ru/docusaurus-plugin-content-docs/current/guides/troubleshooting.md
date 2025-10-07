@@ -1,10 +1,9 @@
 ---
-'title': 'Устранение неполадок'
-'description': 'Руководство по устранению неполадок установки'
-'slug': '/guides/troubleshooting'
-'doc_type': 'guide'
+slug: '/guides/troubleshooting'
+description: 'Руководство по устранению неполадок установки'
+title: 'Устранение неполадок'
+doc_type: guide
 ---
-
 ## Установка {#installation}
 
 ### Невозможно импортировать GPG-ключи из keyserver.ubuntu.com с помощью apt-key {#cannot-import-gpg-keys-from-keyserverubuntucom-with-apt-key}

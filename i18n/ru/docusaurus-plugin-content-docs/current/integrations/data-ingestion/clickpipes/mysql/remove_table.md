@@ -5,7 +5,6 @@
 'slug': '/integrations/clickpipes/mysql/removing_tables'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import remove_table from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/remove_table.png'
 

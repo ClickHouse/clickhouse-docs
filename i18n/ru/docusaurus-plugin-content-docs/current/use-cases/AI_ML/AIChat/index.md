@@ -17,7 +17,6 @@
 'sidebar_position': 2
 'doc_type': 'guide'
 ---
-
 import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 import img_open from '@site/static/images/use-cases/AI_ML/AIChat/1_open_chat.png';

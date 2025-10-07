@@ -1,13 +1,10 @@
 ---
-'slug': '/updating-data'
-'title': 'Обновление данных'
-'description': 'Обновление данных Содержание'
-'keywords':
-- 'update'
-- 'updating data'
-'doc_type': 'landing-page'
+slug: '/updating-data'
+description: 'Обновление данных СОДЕРЖАНИЕ'
+title: 'Обновление данных'
+keywords: ['обновление', 'обновление данных']
+doc_type: landing-page
 ---
-
 В этом разделе документации вы узнаете, как вы можете обновить свои данные.
 
 | Страница                                                    | Описание                                                                                                                                                      |

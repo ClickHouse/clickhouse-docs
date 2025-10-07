@@ -5,7 +5,6 @@
 'title': 'Передача данных из MongoDB в ClickHouse (с использованием CDC)'
 'doc_type': 'guide'
 ---
-
 import BetaBadge from '@theme/badges/BetaBadge';
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';

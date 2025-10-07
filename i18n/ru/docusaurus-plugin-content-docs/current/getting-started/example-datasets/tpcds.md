@@ -1,11 +1,10 @@
 ---
-'description': 'Набор данных и запросы для бенчмарка TPC-DS.'
-'sidebar_label': 'TPC-DS'
-'slug': '/getting-started/example-datasets/tpcds'
-'title': 'TPC-DS (2012)'
-'doc_type': 'reference'
+slug: '/getting-started/example-datasets/tpcds'
+sidebar_label: TPC-DS
+description: 'Набор данных и запросы для бенчмарка TPC-DS.'
+title: 'TPC-DS (2012)'
+doc_type: reference
 ---
-
 Похожий на [Бенчмарк Звездной Схемы (SSB)](star-schema.md), TPC-DS основан на [TPC-H](tpch.md), но пошел противоположным путем, т.е. увеличил количество соединений, необходимых для хранения данных в сложной схеме снежинка (24 вместо 8 таблиц). Распределение данных смещено (например, нормальное и распределение Пуассона). Включает 99 отчетных и произвольных запросов с случайными подстановками.
 
 Ссылки

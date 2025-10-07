@@ -1,12 +1,11 @@
 ---
-'sidebar_label': 'ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ'
+'sidebar_label': 'Часто задаваемые вопросы'
 'description': 'Часто задаваемые вопросы о ClickPipes для Kafka'
 'slug': '/integrations/clickpipes/kafka/faq'
 'sidebar_position': 1
-'title': 'Kafka ClickPipes ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ'
+'title': 'Kafka ClickPipes Часто задаваемые вопросы'
 'doc_type': 'guide'
 ---
-
 ## Kafka ClickPipes FAQ {#faq}
 
 ### Общие вопросы {#general}

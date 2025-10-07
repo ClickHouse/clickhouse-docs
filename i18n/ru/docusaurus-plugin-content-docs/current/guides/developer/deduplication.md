@@ -1,13 +1,11 @@
 ---
-'slug': '/guides/developer/deduplication'
-'sidebar_label': 'Стратегии дедупликации'
-'sidebar_position': 3
-'description': 'Используйте дедупликацию, когда вам нужно выполнять частые upserts,
-  обновления и удаления.'
-'title': 'Стратегии дедупликации'
-'doc_type': 'guide'
+slug: '/guides/developer/deduplication'
+sidebar_label: 'Стратегии дедупликации'
+sidebar_position: 3
+description: 'Используйте дедупликацию, когда вам нужно выполнять частые upserts,'
+title: 'Стратегии дедупликации'
+doc_type: guide
 ---
-
 import deduplication from '@site/static/images/guides/developer/de_duplication.png';
 import Image from '@theme/IdealImage';
 

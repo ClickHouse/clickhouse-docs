@@ -1,17 +1,12 @@
 ---
-'slug': '/guides/sre/keeper/clickhouse-keeper'
-'sidebar_label': 'Настройка ClickHouse Keeper'
-'sidebar_position': 10
-'keywords':
-- 'Keeper'
-- 'ZooKeeper'
-- 'clickhouse-keeper'
-'description': 'ClickHouse Keeper, или clickhouse-keeper, заменяет ZooKeeper и обеспечивает
-  репликацию и координацию.'
-'title': 'ClickHouse Keeper'
-'doc_type': 'guide'
+slug: '/guides/sre/keeper/clickhouse-keeper'
+sidebar_label: 'Конфигурация ClickHouse Keeper'
+sidebar_position: 10
+description: 'ClickHouse Keeper, или clickhouse-keeper, заменяет ZooKeeper и обеспечивает'
+title: 'ClickHouse Keeper'
+keywords: ['Keeper', 'ZooKeeper', 'clickhouse-keeper']
+doc_type: guide
 ---
-
 import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 
 

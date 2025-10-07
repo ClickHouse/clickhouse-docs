@@ -1,20 +1,11 @@
 ---
-'title': 'chDB для Go'
-'sidebar_label': 'Go'
-'slug': '/chdb/install/go'
-'description': 'Как установить и использовать chDB с Go'
-'keywords':
-- 'chdb'
-- 'go'
-- 'golang'
-- 'embedded'
-- 'clickhouse'
-- 'sql'
-- 'olap'
-'doc_type': 'guide'
+slug: '/chdb/install/go'
+sidebar_label: Go
+description: 'Как установить и использовать chDB с Go'
+title: 'Установка chDB для Go'
+keywords: ['chdb', 'встраиваемый', 'clickhouse-lite', 'go', 'установка']
+doc_type: guide
 ---
-
-
 # chDB для Go
 
 chDB-go предоставляет привязки Go для chDB, позволяя вам выполнять запросы ClickHouse непосредственно в ваших приложениях на Go без внешних зависимостей.

@@ -11,7 +11,6 @@
 'title': 'SQL Консоль'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import table_list_and_schema from '@site/static/images/cloud/sqlconsole/table-list-and-schema.png';
 import view_columns from '@site/static/images/cloud/sqlconsole/view-columns.png';

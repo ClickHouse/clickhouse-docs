@@ -5,8 +5,6 @@
 'description': 'Обзор биллинга для ClickPipes PostgreSQL CDC'
 'doc_type': 'reference'
 ---
-
-
 # ClickPipes для PostgreSQL CDC {#clickpipes-for-postgresql-cdc}
 
 В этом разделе описывается модель ценообразования для коннектора захвата изменений данных (CDC) Postgres в ClickPipes. При разработке этой модели целью было сохранить цены высоко конкурентоспособными и при этом оставаться верными нашему основному видению:

@@ -16,7 +16,6 @@
 'description': 'Страница приветствия для раздела Лучшие Практики в ClickHouse Cloud'
 'doc_type': 'landing-page'
 ---
-
 import TableOfContents from '@site/i18n/ru/docusaurus-plugin-content-docs/current/best-practices/_snippets/_table_of_contents.md';
 
 

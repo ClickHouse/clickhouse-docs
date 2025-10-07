@@ -12,8 +12,6 @@
 'show_related_blogs': true
 'doc_type': 'guide'
 ---
-
-
 # Как создать AI-агента с помощью Agno и сервера ClickHouse MCP
 
 В этом руководстве вы узнаете, как создать AI-агента [Agno](https://github.com/agno-agi/agno), который может взаимодействовать с 

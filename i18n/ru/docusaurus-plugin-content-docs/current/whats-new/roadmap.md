@@ -1,11 +1,10 @@
 ---
-title: 'Roadmap'
-slug: /whats-new/roadmap
+slug: '/whats-new/roadmap'
 sidebar_position: 50
-description: 'Present and past ClickHouse road maps'
-doc_type: 'landing-page'
+description: 'Текущие и прошлые дорожные карты ClickHouse'
+title: Roadmap
+doc_type: landing-page
 ---
-
 ## Current roadmap {#current-roadmap}
 
 The current roadmap is published for open discussion:

@@ -7,7 +7,6 @@
 'description': 'Развертывание ClickStack с Все в одном - Стек мониторинга ClickHouse'
 'doc_type': 'guide'
 ---
-
 import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 import Image from '@theme/IdealImage';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';

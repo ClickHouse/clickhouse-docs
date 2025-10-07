@@ -1,13 +1,11 @@
 ---
-'description': 'Узнайте, как загрузить данные OpenCelliD в ClickHouse, подключить
-  Apache Superset к ClickHouse и создать панель инструментов на основе данных'
-'sidebar_label': 'Геоданные'
-'sidebar_position': 3
-'slug': '/getting-started/example-datasets/cell-towers'
-'title': 'Геоданные с использованием набора данных сотовых вышек'
-'doc_type': 'reference'
+slug: '/getting-started/example-datasets/cell-towers'
+sidebar_label: Геоданные
+sidebar_position: 3
+description: 'Узнайте, как загрузить данные OpenCelliD в ClickHouse, подключить'
+title: 'Геоданные с использованием набора данных о башнях сотовой связи'
+doc_type: reference
 ---
-
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';

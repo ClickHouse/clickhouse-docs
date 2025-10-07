@@ -1,23 +1,15 @@
 ---
-'slug': '/optimize/avoid-nullable-columns'
-'sidebar_label': 'Избегайте допустимых колонок'
-'title': 'Избегайте допустимых колонок'
-'description': 'Почему допустимые колонки следует избегать в ClickHouse'
-'doc_type': 'guide'
+slug: '/optimize/avoid-nullable-columns'
+sidebar_label: 'Избегайте Nullable Колонок'
+description: 'Почему допустимые колонки следует избегать в ClickHouse'
+title: 'Избегайте Nullable Колонок'
+doc_type: guide
 ---
-
 import Content from '@site/i18n/ru/docusaurus-plugin-content-docs/current/best-practices/_snippets/_avoid_nullable_columns.md';
-
-```yaml
-title: 'ClickHouse: Адаптивные алгоритмы JOIN'
-sidebar_label: 'Адаптивные алгоритмы JOIN'
-keywords: ['клиент', 'документация', 'настройка']
-description: 'Описание аутентификации и настройки образа ClickHouse.'
-
 
 # Адаптивные алгоритмы JOIN
 
-Адаптивные алгоритмы JOIN в ClickHouse предоставляют возможность выбора наилучшего метода соединения в зависимости от текущих условий и характеристик данных. Это может существенно улучшить производительность запросов.
+Адаптивные алгоритмы JOIN в ClickHouse предотавляют возможность выбора наилучшего метода соединения в зависимости от текущих условий и характеристик данных. Это может существенно улучшить производительность запросов.
 
 ## Параметры адаптивного JOIN
 

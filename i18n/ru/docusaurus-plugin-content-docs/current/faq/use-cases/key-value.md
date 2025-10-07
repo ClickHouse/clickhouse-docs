@@ -1,14 +1,11 @@
 ---
-'slug': '/faq/use-cases/key-value'
-'title': 'Можно ли использовать ClickHouse как хранилище ключ-значение?'
-'toc_hidden': true
-'toc_priority': 101
-'description': 'Отвечает на часто задаваемый вопрос, можно ли использовать ClickHouse
-  как хранилище ключ-значение?'
-'doc_type': 'reference'
+slug: '/faq/use-cases/key-value'
+description: 'Отвечает на часто задаваемый вопрос, можно ли использовать ClickHouse'
+title: 'Могу ли я использовать ClickHouse в качестве хранилища ключ-значение?'
+doc_type: reference
+toc_hidden: true
+toc_priority: 101
 ---
-
-
 # Могу ли я использовать ClickHouse в качестве хранилища ключ-значение? {#can-i-use-clickhouse-as-a-key-value-storage}
 
 Краткий ответ - **"нет"**. Задачи, связанные с хранилищем ключ-значение, занимают верхние позиции в списке случаев, когда <span class="text-danger">**НЕ**</span> стоит использовать ClickHouse. В конечном итоге это система [OLAP](../../faq/general/olap.md), в то время как существует множество отличных систем хранения ключ-значение.

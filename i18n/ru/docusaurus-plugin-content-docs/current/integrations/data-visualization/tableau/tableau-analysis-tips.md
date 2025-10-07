@@ -1,22 +1,12 @@
 ---
-'sidebar_label': 'Советы по анализу'
-'sidebar_position': 4
-'slug': '/integrations/tableau/analysis-tips'
-'keywords':
-- 'clickhouse'
-- 'tableau'
-- 'online'
-- 'mysql'
-- 'connect'
-- 'integrate'
-- 'ui'
-'description': 'Советы по анализу Tableau при использовании официального соединителя
-  ClickHouse.'
-'title': 'Советы по анализу'
-'doc_type': 'guide'
+slug: '/integrations/tableau/analysis-tips'
+sidebar_label: 'Советы по анализу'
+sidebar_position: 4
+description: 'Советы по анализу Tableau при использовании официального соединителя'
+title: 'Советы по анализу'
+keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', 'ui']
+doc_type: guide
 ---
-
-
 # Советы по анализу
 ## Функции MEDIAN() и PERCENTILE() {#median-and-percentile-functions}
 - В режиме Live функции MEDIAN() и PERCENTILE() (с релиза соединителя v0.1.3) используют [функцию ClickHouse quantile()()](https://clickhouse.com/sql-reference/aggregate-functions/reference/quantile/), что значительно ускоряет расчет, но использует выборку. Если вы хотите получить точные результаты расчетов, используйте функции `MEDIAN_EXACT()` и `PERCENTILE_EXACT()` (основанные на [quantileExact()()](https://clickhouse.com/sql-reference/aggregate-functions/reference/quantileexact/)).

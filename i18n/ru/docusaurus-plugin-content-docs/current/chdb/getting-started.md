@@ -1,18 +1,11 @@
 ---
-'title': 'Начало работы с chDB'
-'sidebar_label': 'Начало работы'
-'slug': '/chdb/getting-started'
-'description': 'chDB является встроенным SQL OLAP движком, основанным на ClickHouse'
-'keywords':
-- 'chdb'
-- 'embedded'
-- 'clickhouse-lite'
-- 'in-process'
-- 'in process'
-'doc_type': 'guide'
+slug: '/chdb/getting-started'
+sidebar_label: 'Начало работы'
+description: 'chDB является встроенным SQL OLAP движком, основанным на ClickHouse'
+title: 'Начало работы с chDB'
+keywords: ['chdb', 'встраиваемый', 'clickhouse-lite', 'в процессе', 'in process']
+doc_type: guide
 ---
-
-
 # Начало работы с chDB
 
 В этом руководстве мы научимся быстро настраивать Python-версию chDB. 

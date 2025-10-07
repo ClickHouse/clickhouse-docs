@@ -1,26 +1,13 @@
 ---
-'slug': '/tutorial'
-'sidebar_label': 'Расширенное руководство'
-'title': 'Расширенное руководство'
-'description': 'Узнайте, как осуществлять прием и запрос данных в ClickHouse, используя
-  датасет примера такси Нью-Йорка.'
-'sidebar_position': 0.5
-'keywords':
-- 'clickhouse'
-- 'install'
-- 'tutorial'
-- 'dictionary'
-- 'dictionaries'
-- 'example'
-- 'advanced'
-- 'taxi'
-- 'new york'
-- 'nyc'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: '/tutorial'
+sidebar_label: 'Расширенный учебник'
+sidebar_position: 0.5
+description: 'Узнайте, как осуществляется прием и запрос данных в ClickHouse, используя'
+title: 'Расширенный учебник'
+keywords: ['clickhouse', 'установка', 'учебник', 'словарь', 'словарей', 'пример', 'расширенный', 'такси', 'новый', 'йорк', 'нюйорк']
+doc_type: guide
+show_related_blogs: true
 ---
-
-
 # Продвинутое руководство
 
 ## Обзор {#overview}

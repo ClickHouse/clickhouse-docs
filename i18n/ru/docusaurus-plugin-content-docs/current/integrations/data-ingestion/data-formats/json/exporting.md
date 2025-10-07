@@ -1,16 +1,10 @@
 ---
-'title': 'Экспорт JSON'
-'slug': '/integrations/data-formats/json/exporting'
-'description': 'Как экспортировать JSON данные из ClickHouse'
-'keywords':
-- 'json'
-- 'clickhouse'
-- 'formats'
-- 'exporting'
-'doc_type': 'guide'
+slug: '/integrations/data-formats/json/exporting'
+description: 'Как экспортировать JSON данные из ClickHouse'
+title: 'Экспорт JSON'
+keywords: ['json', 'clickhouse', 'formats', 'exporting']
+doc_type: guide
 ---
-
-
 # Экспорт JSON
 
 Практически любой формат JSON, используемый для импорта, можно использовать и для экспорта. Наиболее популярным является [`JSONEachRow`](/interfaces/formats.md/#jsoneachrow):

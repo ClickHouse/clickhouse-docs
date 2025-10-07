@@ -1,11 +1,10 @@
 ---
-'sidebar_label': 'ClickPipes для OBJECT STORAGE'
-'description': 'Бесшовно подключите ваше OBJECT STORAGE к ClickHouse Cloud.'
-'slug': '/integrations/clickpipes/object-storage'
-'title': 'Интеграция OBJECT STORAGE с ClickHouse Cloud'
-'doc_type': 'guide'
+slug: '/integrations/clickpipes/object-storage'
+sidebar_label: 'ClickPipes для объектного хранилища'
+description: 'Бесшовно подключите ваше OBJECT STORAGE к ClickHouse Cloud.'
+title: 'Интеграция объектного хранилища с ClickHouse Cloud'
+doc_type: guide
 ---
-
 import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
 import Gcssvg from '@site/static/images/integrations/logos/gcs.svg';
 import DOsvg from '@site/static/images/integrations/logos/digitalocean.svg';

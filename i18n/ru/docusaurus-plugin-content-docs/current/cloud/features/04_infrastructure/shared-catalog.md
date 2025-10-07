@@ -9,8 +9,6 @@
   Cloud'
 'doc_type': 'reference'
 ---
-
-
 # Общий каталог и общий движок базы данных {#shared-catalog-and-shared-database-engine}
 
 **Доступно исключительно в ClickHouse Cloud (и в облачных сервисах первых лиц-партнеров)**

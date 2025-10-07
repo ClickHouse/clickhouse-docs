@@ -7,7 +7,6 @@
 'description': 'Начало работы с данными и метриками локальных и системных ClickStack'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import hyperdx from '@site/static/images/use-cases/observability/hyperdx-1.png';
 import hyperdx_20 from '@site/static/images/use-cases/observability/hyperdx-20.png';

@@ -1,11 +1,9 @@
 ---
-'slug': '/about'
-'title': 'О ClickHouse'
-'description': 'Страница приземления для О ClickHouse'
-'doc_type': 'landing-page'
+slug: '/about'
+description: 'Страница приземления для О ClickHouse'
+title: 'О ClickHouse'
+doc_type: landing-page
 ---
-
-
 # О ClickHouse
 
 В этом разделе документации вы найдете информацию о ClickHouse. Обратитесь к

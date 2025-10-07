@@ -10,7 +10,6 @@
 - 'Confluent Cloud'
 'doc_type': 'guide'
 ---
-
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 

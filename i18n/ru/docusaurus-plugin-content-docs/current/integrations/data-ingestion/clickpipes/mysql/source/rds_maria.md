@@ -1,12 +1,10 @@
 ---
-'sidebar_label': 'Amazon RDS MariaDB'
-'description': 'Пошаговое руководство о том, как настроить Amazon RDS MariaDB в качестве
-  источника для ClickPipes'
-'slug': '/integrations/clickpipes/mysql/source/rds_maria'
-'title': 'Настройка источника RDS MariaDB'
-'doc_type': 'guide'
+slug: '/integrations/clickpipes/mysql/source/rds_maria'
+sidebar_label: 'Amazon RDS MariaDB'
+description: 'Пошаговое руководство о том, как настроить Amazon RDS MariaDB в качестве'
+title: 'Руководство по настройке источника RDS MariaDB'
+doc_type: guide
 ---
-
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';
 import rds_config from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/parameter_group/rds_config.png';
 import edit_button from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/parameter_group/edit_button.png';

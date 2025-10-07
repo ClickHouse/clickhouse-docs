@@ -1,21 +1,11 @@
 ---
-'sidebar_label': 'QuickSight'
-'slug': '/integrations/quicksight'
-'keywords':
-- 'clickhouse'
-- 'aws'
-- 'amazon'
-- 'QuickSight'
-- 'mysql'
-- 'connect'
-- 'integrate'
-- 'ui'
-'description': 'Amazon QuickSight обеспечивает управление данными для организаций
-  с помощью единой бизнес-аналитики (BI).'
-'title': 'QuickSight'
-'doc_type': 'guide'
+slug: '/integrations/quicksight'
+sidebar_label: QuickSight
+description: 'Amazon QuickSight обеспечивает управление данными для организаций'
+title: QuickSight
+keywords: ['clickhouse', 'aws', 'amazon', 'QuickSight', 'mysql', 'connect', 'integrate', 'ui']
+doc_type: guide
 ---
-
 import MySQLOnPremiseSetup from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_clickhouse_mysql_on_premise_setup.mdx';
 import Image from '@theme/IdealImage';
 import quicksight_01 from '@site/static/images/integrations/data-visualization/quicksight_01.png';

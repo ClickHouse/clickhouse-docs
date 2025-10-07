@@ -6,7 +6,6 @@
 'show_title': false
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import add_table from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/add_table.png'
 

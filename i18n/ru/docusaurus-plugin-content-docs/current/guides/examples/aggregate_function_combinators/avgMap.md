@@ -1,18 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/avgMap'
-'title': 'avgMap'
-'description': 'Пример использования комбинирования avgMap'
-'keywords':
-- 'avg'
-- 'map'
-- 'combinator'
-- 'examples'
-- 'avgMap'
-'sidebar_label': 'avgMap'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/avgMap'
+sidebar_label: avgMap
+description: 'Пример использования комбинирования avgMap'
+title: avgMap
+keywords: ['avg', 'map', 'combinator', 'examples', 'avgMap']
+doc_type: reference
 ---
-
-
 # avgMap {#avgmap}
 
 ## Описание {#description}

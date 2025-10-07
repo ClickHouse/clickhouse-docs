@@ -6,8 +6,6 @@
   через ClickPipes'
 'doc_type': 'guide'
 ---
-
-
 # Работа с JSON в ClickHouse
 
 Этот руководств предоставляет общие методы работы с данными JSON, реплицированными из MongoDB в ClickHouse с помощью ClickPipes.

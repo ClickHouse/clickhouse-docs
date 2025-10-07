@@ -2,12 +2,11 @@
 'slug': '/manage/security/cloud-endpoints-api'
 'sidebar_label': 'Облачные IP-адреса'
 'title': 'Облачные IP-адреса'
-'description': 'Эта страница документирует функции безопасности API Облачных Конечных
+'description': 'Эта страница документирует функции безопасность API Облачных Конечных
   Точек в ClickHouse. Она подробно описывает, как обеспечить безопасность ваших развертываний
   ClickHouse, управляя доступом через механизмы аутентификации и авторизации.'
 'doc_type': 'reference'
 ---
-
 import Image from '@theme/IdealImage';
 import aws_rds_mysql from '@site/static/images/_snippets/aws-rds-mysql.png';
 import gcp_authorized_network from '@site/static/images/_snippets/gcp-authorized-network.png';

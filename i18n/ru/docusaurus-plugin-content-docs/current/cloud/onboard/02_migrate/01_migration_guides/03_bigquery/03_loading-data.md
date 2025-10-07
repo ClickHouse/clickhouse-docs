@@ -13,7 +13,6 @@
 - 'BigQuery'
 'doc_type': 'guide'
 ---
-
 _Этот гид совместим с ClickHouse Cloud и для самоуправляемого ClickHouse версии v23.5+._
 
 Этот гид показывает, как мигрировать данные из [BigQuery](https://cloud.google.com/bigquery) в ClickHouse.

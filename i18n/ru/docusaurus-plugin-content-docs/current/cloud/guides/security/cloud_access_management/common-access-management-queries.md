@@ -2,11 +2,10 @@
 'sidebar_label': 'Общие Запросы Управления Доступом'
 'title': 'Общие Запросы Управления Доступом'
 'slug': '/cloud/security/common-access-management-queries'
-'description': 'Эта статья описывает основы определения SQL пользователей и ролей,
+'description': 'Эта статья описывает основы определения SQL пользователя и ролей,
   а также применение этих привилегий и разрешений к DATABASE, TABLE, строкам и колонкам.'
 'doc_type': 'guide'
 ---
-
 import CommonUserRolesContent from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_users-and-roles-common.md';
 
 

@@ -1,16 +1,11 @@
 ---
-'sidebar_position': 2
-'sidebar_label': 'Что такое OLAP?'
-'description': 'OLAP обозначает Online Analytical Processing. Это широкий термин,
-  который можно рассматривать с двух сторон: технической и бизнес.'
-'title': 'Что такое OLAP?'
-'slug': '/concepts/olap'
-'keywords':
-- 'OLAP'
-'doc_type': 'reference'
+slug: '/concepts/olap'
+sidebar_label: 'Что такое OLAP?'
+sidebar_position: 2
+description: 'OLAP обозначает Online Analytical Processing. Это широкий термин,'
+title: 'Что такое OLAP?'
+doc_type: reference
 ---
-
-
 # Что такое OLAP?
 
 [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) расшифровывается как Online Analytical Processing (онлайн аналитическая обработка). Это широкий термин, который можно рассмотреть с двух точек зрения: технической и бизнес. На самом высоком уровне вы можете прочитать эти слова задом наперед:

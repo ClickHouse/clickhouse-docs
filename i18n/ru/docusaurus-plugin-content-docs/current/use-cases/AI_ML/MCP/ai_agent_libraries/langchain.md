@@ -1,11 +1,12 @@
 ---
 'slug': '/use-cases/AI/MCP/ai-agent-libraries/langchain'
-'sidebar_label': '集成 Langchain'
-'title': '如何使用 ClickHouse MCP 服务器构建 LangChain/LangGraph AI 代理。'
+'sidebar_label': 'Сборка Langchain'
+'title': 'Как использовать ClickHouse MCP сервер для создания LangChain/LangGraph
+  AI API.'
 'pagination_prev': null
 'pagination_next': null
-'description': '了解如何构建一个 LangChain/LangGraph AI 代理，该代理可以使用 ClickHouse 的 MCP 服务器与 ClickHouse
-  的 SQL playground 进行交互。'
+'description': 'Узнайте, как создать API LangChain/LangGraph AI, который может использовать
+  ClickHouse MCP сервер и проводить взаимодействие с SQL playground ClickHouse.'
 'keywords':
 - 'ClickHouse'
 - 'MCP'
@@ -14,8 +15,6 @@
 'show_related_blogs': true
 'doc_type': 'guide'
 ---
-
-
 # Как создать AI-агента LangChain/LangGraph с использованием ClickHouse MCP Server
 
 В этом руководстве вы узнаете, как создать AI-агента [LangChain/LangGraph](https://github.com/langchain-ai/langgraph), который может взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/) с помощью [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse).

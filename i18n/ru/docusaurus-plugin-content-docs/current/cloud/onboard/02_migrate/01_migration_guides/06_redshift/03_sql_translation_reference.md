@@ -7,8 +7,6 @@
 'title': 'Гид по переводам SQL для Amazon Redshift'
 'doc_type': 'reference'
 ---
-
-
 # Руководство по переводу SQL Amazon Redshift
 
 ## Типы данных {#data-types}

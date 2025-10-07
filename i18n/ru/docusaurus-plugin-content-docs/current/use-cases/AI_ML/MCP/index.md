@@ -4,7 +4,7 @@
 'title': 'MCP руководства'
 'pagination_prev': null
 'pagination_next': null
-'description': 'Эта страница предоставляет введение в Протокол Контекста Модели (MCP)
+'description': 'Эта страница представляет введение в Протокол Контекста Модели (MCP)
   и включает в себя оглавление для руководств по MCP.'
 'keywords':
 - 'ClickHouse'
@@ -12,7 +12,6 @@
 'show_related_blogs': true
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import overview from '@site/static/images/use-cases/AI_ML/MCP/mcp_overview.png';
 

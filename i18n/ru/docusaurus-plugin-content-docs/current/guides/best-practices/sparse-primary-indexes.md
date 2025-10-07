@@ -1,13 +1,12 @@
 ---
-'sidebar_label': 'Первичные индексы'
-'sidebar_position': 1
-'description': 'В этом руководстве мы собираемся углубиться в индексацию ClickHouse.'
-'title': 'Практическое введение в первичные индексы в ClickHouse'
-'slug': '/guides/best-practices/sparse-primary-indexes'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: '/guides/best-practices/sparse-primary-indexes'
+sidebar_label: 'Первичные индексы'
+sidebar_position: 1
+description: 'В этом руководстве мы собираемся углубиться в индексацию ClickHouse.'
+title: 'Практическое введение в первичные индексы ClickHouse'
+doc_type: guide
+show_related_blogs: true
 ---
-
 import sparsePrimaryIndexes01 from '@site/static/images/guides/best-practices/sparse-primary-indexes-01.png';
 import sparsePrimaryIndexes02 from '@site/static/images/guides/best-practices/sparse-primary-indexes-02.png';
 import sparsePrimaryIndexes03a from '@site/static/images/guides/best-practices/sparse-primary-indexes-03a.png';

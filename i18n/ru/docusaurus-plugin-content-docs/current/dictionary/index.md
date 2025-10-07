@@ -1,14 +1,10 @@
 ---
-'slug': '/dictionary'
-'title': 'Словарь'
-'keywords':
-- 'dictionary'
-- 'dictionaries'
-'description': 'Словарь предоставляет представление данных в виде пары ключ-значение
-  для быстрого поиска.'
-'doc_type': 'reference'
+slug: '/dictionary'
+description: 'Словарь представляет представление данных в виде пары ключ-значение'
+title: Словарь
+keywords: ['словарь', 'словари']
+doc_type: reference
 ---
-
 import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-cases.png';
 import dictionaryLeftAnyJoin from '@site/static/images/dictionary/dictionary-left-any-join.png';
 import Image from '@theme/IdealImage';

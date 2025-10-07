@@ -1,14 +1,11 @@
 ---
-'title': 'Как выполнять запросы к Parquet файлам'
-'sidebar_label': 'Выполнение запросов к Parquet файлам'
-'slug': '/chdb/guides/querying-parquet'
-'description': 'Узнайте, как выполнять запросы к Parquet файлам с chDB.'
-'keywords':
-- 'chdb'
-- 'parquet'
-'doc_type': 'guide'
+slug: '/chdb/guides/querying-parquet'
+sidebar_label: 'Запрос файлов Parquet'
+description: 'Узнайте, как выполнять запросы к Parquet файлам с chDB.'
+title: 'Как запрашивать файлы Parquet'
+keywords: ['chdb', 'parquet']
+doc_type: guide
 ---
-
 Много данных в мире хранится в корзинах Amazon S3.
 В этом руководстве мы узнаем, как запрашивать эти данные с помощью chDB.
 

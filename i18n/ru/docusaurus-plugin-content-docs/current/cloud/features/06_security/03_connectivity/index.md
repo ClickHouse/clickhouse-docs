@@ -1,11 +1,9 @@
 ---
 'slug': '/cloud/security/connectivity'
-'title': 'обзор подключения'
+'title': 'обзор подключений'
 'description': 'Страница входа для Connectivity'
 'doc_type': 'landing-page'
 ---
-
-
 # Подключение
 
 В этом разделе рассматривается подключение и содержатся следующие страницы:

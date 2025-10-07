@@ -1,11 +1,10 @@
 ---
-'description': '用于比较数据仓库解决方案性能的基准数据集。'
-'sidebar_label': 'AMPLab 大数据基准'
-'slug': '/getting-started/example-datasets/amplab-benchmark'
-'title': 'AMPLab 大数据基准'
-'doc_type': 'reference'
+slug: '/getting-started/example-datasets/amplab-benchmark'
+sidebar_label: 'Бенчмарк AMPLab Big Data'
+description: 'Набор данных для сравнения производительности решений хранилищ данных'
+title: 'Бенчмарк AMPLab Big Data'
+doc_type: reference
 ---
-
 См. https://amplab.cs.berkeley.edu/benchmark/
 
 Зарегистрируйтесь для получения бесплатной учетной записи на https://aws.amazon.com. Для этого требуется кредитная карта, электронная почта и номер телефона. Получите новый ключ доступа на https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential

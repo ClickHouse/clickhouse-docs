@@ -1,15 +1,10 @@
 ---
-'slug': '/managing-data/core-concepts'
-'title': 'Основные Концепции'
-'description': 'Изучите основные концепции того, как работает ClickHouse'
-'keywords':
-- 'concepts'
-- 'part'
-- 'partition'
-- 'primary index'
-'doc_type': 'guide'
+slug: '/managing-data/core-concepts'
+description: 'Изучите основные концепции того, как работает ClickHouse'
+title: 'Основные концепции'
+keywords: ['концепции', 'часть', 'партиция', 'первичный индекс']
+doc_type: guide
 ---
-
 В этом разделе документации вы познакомитесь с некоторыми основными концепциями работы ClickHouse.
 
 | Страница                                         | Описание                                                                                                                                                                                                           |

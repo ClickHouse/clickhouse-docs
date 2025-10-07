@@ -1,21 +1,13 @@
 ---
-'description': 'Начните работу с ClickHouse, используя наши учебные пособия и примеры
-  наборов данных'
-'keywords':
-- 'clickhouse'
-- 'install'
-- 'tutorial'
-- 'sample'
-- 'datasets'
-'pagination_next': 'tutorial'
-'sidebar_label': 'Обзор'
-'sidebar_position': 0
-'slug': '/getting-started/example-datasets/'
-'title': 'Учебные пособия и примеры наборов данных'
-'doc_type': 'landing-page'
+slug: '/getting-started/example-datasets/'
+sidebar_label: Обзор
+sidebar_position: 0
+description: 'Начните работу с ClickHouse, используя наши учебные пособия и примеры'
+title: 'Руководства и Примерные Наборы Данных'
+keywords: ['clickhouse', 'установка', 'руководство', 'пример', 'наборы данных']
+doc_type: landing-page
+pagination_next: tutorial
 ---
-
-
 # Учебные пособия и примерные наборы данных
 
 У нас есть множество ресурсов, которые помогут вам начать работу и изучить, как работает ClickHouse:

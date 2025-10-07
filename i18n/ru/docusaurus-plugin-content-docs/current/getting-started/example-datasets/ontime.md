@@ -1,12 +1,10 @@
 ---
-'description': 'Набор данных, содержащий информацию о том, насколько вовремя выполнялись
-  авиарейсы'
-'sidebar_label': 'Данные рейсов авиакомпании OnTime'
-'slug': '/getting-started/example-datasets/ontime'
-'title': 'OnTime'
-'doc_type': 'reference'
+slug: '/getting-started/example-datasets/ontime'
+sidebar_label: 'Данные о своевременности рейсов авиакомпаний'
+description: 'Набор данных, содержащий информацию о том, насколько вовремя выполнялись'
+title: Своевременность
+doc_type: reference
 ---
-
 Этот набор данных содержит информацию от Бюро статистики транспорта.
 
 ## Создание таблицы {#creating-a-table}

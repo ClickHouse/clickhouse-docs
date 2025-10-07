@@ -1,16 +1,12 @@
 ---
-'slug': '/best-practices/minimize-optimize-joins'
-'sidebar_position': 10
-'sidebar_label': 'Минимизация и оптимизация JOINs'
-'title': 'Минимизация и оптимизация JOINs'
-'description': 'Страница, описывающая лучшие практики для JOINs'
-'keywords':
-- 'JOIN'
-- 'Parallel Hash JOIN'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: '/best-practices/minimize-optimize-joins'
+sidebar_label: 'Минимизировать и оптимизировать JOIN'
+sidebar_position: 10
+description: 'Страница, описывающая лучшие практики для JOINs'
+title: 'Минимизировать и оптимизировать JOIN'
+doc_type: guide
+show_related_blogs: true
 ---
-
 import Image from '@theme/IdealImage';
 import joins from '@site/static/images/bestpractices/joins-speed-memory.png';
 

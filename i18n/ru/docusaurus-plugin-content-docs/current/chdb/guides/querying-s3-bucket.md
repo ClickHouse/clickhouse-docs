@@ -1,14 +1,11 @@
 ---
-'title': 'Как выполнять запросы к данным в s3 корзине'
-'sidebar_label': 'Запросы к данным в S3'
-'slug': '/chdb/guides/querying-s3'
-'description': 'Узнайте, как выполнять запросы к данным в s3 корзине с помощью chDB.'
-'keywords':
-- 'chdb'
-- 's3'
-'doc_type': 'guide'
+slug: '/chdb/guides/querying-s3'
+sidebar_label: 'Запрос данных в S3'
+description: 'Узнайте, как выполнять запросы к данным в s3 корзине с помощью chDB.'
+title: 'Как запрашивать данные в S3 бакете'
+keywords: ['chdb', 's3']
+doc_type: guide
 ---
-
 Много данных мира хранится в корзинах Amazon S3. В этом руководстве мы узнаем, как выполнять запросы к этим данным, используя chDB.
 
 ## Настройка {#setup}

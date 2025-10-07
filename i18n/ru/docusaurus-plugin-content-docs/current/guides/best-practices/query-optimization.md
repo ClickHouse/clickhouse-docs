@@ -1,12 +1,10 @@
 ---
-'slug': '/optimize/query-optimization'
-'sidebar_label': 'Оптимизация запросов'
-'title': 'Зап guida по оптимизации запросов'
-'description': 'Простое руководство по оптимизации запросов, которое описывает общий
-  подход к улучшению производительности запросов'
-'doc_type': 'guide'
+slug: '/optimize/query-optimization'
+sidebar_label: 'Оптимизация запросов'
+description: 'Простое руководство по оптимизации запросов, которое описывает общий'
+title: 'Руководство по оптимизации запросов'
+doc_type: guide
 ---
-
 import queryOptimizationDiagram1 from '@site/static/images/guides/best-practices/query_optimization_diagram_1.png';
 import Image from '@theme/IdealImage';
 

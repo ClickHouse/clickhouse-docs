@@ -1,12 +1,10 @@
 ---
-'sidebar_label': 'ClickHouse Cloud Тиеры'
+'sidebar_label': 'ClickHouse Cloud Уровни'
 'slug': '/cloud/manage/cloud-tiers'
-'title': 'ClickHouse Cloud Тиеры'
-'description': 'Доступные облачные тиеры в ClickHouse Cloud'
+'title': 'ClickHouse Cloud Уровни'
+'description': 'Доступные облачные уровни в ClickHouse Cloud'
 'doc_type': 'reference'
 ---
-
-
 # Уровни ClickHouse Cloud
 
 В ClickHouse Cloud доступны несколько уровней. 

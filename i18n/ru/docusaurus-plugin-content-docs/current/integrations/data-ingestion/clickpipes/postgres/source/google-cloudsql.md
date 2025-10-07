@@ -1,12 +1,10 @@
 ---
-'sidebar_label': 'Google Cloud SQL'
-'description': 'Настройте экземпляр Google Cloud SQL Postgres в качестве источника
-  для ClickPipes'
-'slug': '/integrations/clickpipes/postgres/source/google-cloudsql'
-'title': 'Настройка источника Google Cloud SQL Postgres'
-'doc_type': 'guide'
+slug: '/integrations/clickpipes/postgres/source/google-cloudsql'
+sidebar_label: 'Google Cloud SQL'
+description: 'Настройте экземпляр Google Cloud SQL Postgres в качестве источника'
+title: 'Руководство по настройке источника Google Cloud SQL Postgres'
+doc_type: guide
 ---
-
 import edit_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/edit.png';
 import cloudsql_logical_decoding1 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/cloudsql_logical_decoding1.png';
 import cloudsql_logical_decoding2 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/cloudsql_logical_decoding2.png';

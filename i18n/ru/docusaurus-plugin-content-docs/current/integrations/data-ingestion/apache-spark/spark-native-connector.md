@@ -1,17 +1,12 @@
 ---
-'sidebar_label': 'Spark Native Connector'
-'sidebar_position': 2
-'slug': '/integrations/apache-spark/spark-native-connector'
-'description': 'Введение в Apache Spark с ClickHouse'
-'keywords':
-- 'clickhouse'
-- 'Apache Spark'
-- 'migrating'
-- 'data'
-'title': 'Spark Connector'
-'doc_type': 'guide'
+slug: '/integrations/apache-spark/spark-native-connector'
+sidebar_label: 'Согласно соединитель Spark'
+sidebar_position: 2
+description: 'Введение в Apache Spark с ClickHouse'
+title: 'Соединитель Spark'
+keywords: ['clickhouse', 'Apache Spark', 'миграция', 'данные']
+doc_type: guide
 ---
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';

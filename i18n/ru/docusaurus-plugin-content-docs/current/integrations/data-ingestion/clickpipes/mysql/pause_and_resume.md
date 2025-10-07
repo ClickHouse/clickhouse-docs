@@ -1,11 +1,10 @@
 ---
-'title': 'Приостановка и возобновление MySQL ClickPipe'
-'description': 'Приостановка и возобновление MySQL ClickPipe'
-'sidebar_label': 'Приостановить таблицу'
+'title': 'Настройка и возобновление MySQL ClickPipe'
+'description': 'Настройка и возобновление MySQL ClickPipe'
+'sidebar_label': 'Настроить таблицу'
 'slug': '/integrations/clickpipes/mysql/pause_and_resume'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import pause_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/pause_button.png'
 import pause_dialog from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/pause_dialog.png'

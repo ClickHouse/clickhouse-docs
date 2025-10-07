@@ -1,10 +1,9 @@
 ---
-'title': 'Postgres 生成列：注意事项和最佳实践'
-'slug': '/integrations/clickpipes/postgres/generated_columns'
-'description': '页面描述在使用 PostgreSQL 生成列的表的复制时需要牢记的重要考虑因素'
-'doc_type': 'guide'
+slug: '/integrations/clickpipes/postgres/generated_columns'
+description: 'Страница описывает использование PostgreSQL для генерации рядов, а'
+title: 'Сгенерированные Столбцы PostgreSQL: Ошибки и Лучшие Практики'
+doc_type: guide
 ---
-
 Когда вы используете сгенерированные колонки в таблицах, которые реплицируются в PostgreSQL, есть несколько важных аспектов, о которых следует помнить. Эти нюансы могут повлиять на процесс репликации и целостность данных в ваших целевых системах.
 
 ## Проблема с сгенерированными колонками {#the-problem-with-generated-columns}

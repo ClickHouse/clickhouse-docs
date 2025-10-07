@@ -1,12 +1,10 @@
 ---
-'description': 'Набор данных, содержащий 400 миллионов изображений с английскими подписями
-  к изображениям'
-'sidebar_label': 'Laion-400M dataset'
-'slug': '/getting-started/example-datasets/laion-400m-dataset'
-'title': 'Laion-400M dataset'
-'doc_type': 'reference'
+slug: '/getting-started/example-datasets/laion-400m-dataset'
+sidebar_label: 'Набор данных Laion-400M'
+description: 'Набор данных, содержащий 400 миллионов изображений с английскими подписями'
+title: 'Набор данных Laion-400M'
+doc_type: reference
 ---
-
 [Laion-400M dataset](https://laion.ai/blog/laion-400-open-dataset/) содержит 400 миллионов изображений с английскими подписями к изображениям. На сегодняшний день Laion предоставляет [даже более крупный набор данных](https://laion.ai/blog/laion-5b/), но работа с ним будет аналогичной.
 
 Набор данных содержит URL изображения, векторы как для изображения, так и для подписи к изображению, коэффициент сходства между изображением и подписью к нему, а также метаданные, например, ширину/высоту изображения, лицензию и флаг NSFW. Мы можем использовать этот набор данных для демонстрации [поиска приблизительных ближайших соседей](../../engines/table-engines/mergetree-family/annindexes.md) в ClickHouse.

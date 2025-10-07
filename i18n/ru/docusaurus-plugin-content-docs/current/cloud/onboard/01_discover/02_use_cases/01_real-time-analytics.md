@@ -10,7 +10,6 @@
 'sidebar_label': 'аналитика в реальном времени'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import rta_0 from '@site/static/images/cloud/onboard/discover/use_cases/0_rta.png';
 import rta_1 from '@site/static/images/cloud/onboard/discover/use_cases/1_rta.png';

@@ -13,8 +13,6 @@
 'show_related_blogs': true
 'doc_type': 'guide'
 ---
-
-
 # Как создать AI-агента с помощью CopilotKit и ClickHouse MCP Server
 
 Это пример того, как создать агентное приложение, используя данные, хранящиеся в 

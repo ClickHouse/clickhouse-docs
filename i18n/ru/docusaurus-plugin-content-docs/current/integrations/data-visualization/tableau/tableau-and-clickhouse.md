@@ -1,19 +1,12 @@
 ---
-'sidebar_label': 'Tableau Desktop'
-'sidebar_position': 1
-'slug': '/integrations/tableau'
-'keywords':
-- 'clickhouse'
-- 'tableau'
-- 'connect'
-- 'integrate'
-- 'ui'
-'description': 'Tableau может использовать базы данных и таблицы ClickHouse в качестве
-  источника данных.'
-'title': 'Подключение Tableau к ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/tableau'
+sidebar_label: 'Tableau Desktop'
+sidebar_position: 1
+description: 'Tableau может использовать базу данных и таблицы ClickHouse в качестве'
+title: 'Подключение Tableau к ClickHouse'
+keywords: ['clickhouse', 'tableau', 'connect', 'integrate', 'ui']
+doc_type: guide
 ---
-
 import TOCInline from '@theme/TOCInline';
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';

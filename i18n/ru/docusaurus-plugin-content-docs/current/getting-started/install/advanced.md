@@ -1,19 +1,12 @@
 ---
-'description': 'Инструкция по компиляции ClickHouse из исходного кода или установке
-  двоичного файла, сгенерированного CI'
-'keywords':
-- 'ClickHouse'
-- 'install'
-- 'advanced'
-- 'compile from source'
-- 'CI generated binary'
-'sidebar_label': 'Расширенная установка'
-'slug': '/install/advanced'
-'title': 'Расширенные методы установки'
-'hide_title': false
-'doc_type': 'guide'
+slug: '/install/advanced'
+sidebar_label: 'Расширенная установка'
+description: 'Инструкция по компиляции ClickHouse из исходного кода или установке'
+title: 'Методы расширенной установки'
+keywords: ['ClickHouse', 'установка', 'дополнительно', 'компиляция из исходников', 'бинарный файл CI']
+doc_type: guide
+hide_title: false
 ---
-
 ## Сборка из исходников {#compile-from-source}
 
 Чтобы вручную собрать ClickHouse, следуйте инструкциям для [Linux](/development/build.md) или [macOS](/development/build-osx.md).

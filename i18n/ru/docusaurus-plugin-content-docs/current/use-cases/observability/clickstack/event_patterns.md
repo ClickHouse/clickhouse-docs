@@ -1,13 +1,12 @@
 ---
 'slug': '/use-cases/observability/clickstack/event_patterns'
-'title': 'Событийные шаблоны с ClickStack'
-'sidebar_label': 'Событийные шаблоны'
+'title': 'События шаблоны с ClickStack'
+'sidebar_label': 'События шаблоны'
 'pagination_prev': null
 'pagination_next': null
-'description': 'Событийные шаблоны с ClickStack'
+'description': 'События шаблоны с ClickStack'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import event_patterns from '@site/static/images/use-cases/observability/event_patterns.png';
 import event_patterns_highlight from '@site/static/images/use-cases/observability/event_patterns_highlight.png';

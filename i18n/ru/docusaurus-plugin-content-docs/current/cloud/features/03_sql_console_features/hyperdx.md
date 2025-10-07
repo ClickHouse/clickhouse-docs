@@ -2,12 +2,11 @@
 'sidebar_label': 'HyperDX'
 'slug': '/cloud/manage/hyperdx'
 'title': 'HyperDX'
-'description': 'Предоставляет HyperDX, UI для ClickStack - платформы мониторинга промышленного
+'description': 'Представляет HyperDX, UI для ClickStack - платформы мониторинга промышленного
   уровня, построенной на ClickHouse и OpenTelemetry (OTel), объединяющей логи, трассировки,
-  метрики и сессии в одном высокопроизводительном масштабируемом решении.'
+  метрики и сессии в одном высокопроизводительном решении.'
 'doc_type': 'guide'
 ---
-
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 import hyperdx_cloud from '@site/static/images/use-cases/observability/hyperdx_cloud.png';

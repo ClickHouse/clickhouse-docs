@@ -1,15 +1,11 @@
 ---
-'slug': '/faq/general/who-is-using-clickhouse'
-'title': 'Кто использует ClickHouse?'
-'toc_hidden': true
-'toc_priority': 9
-'description': 'Определяет, кто использует ClickHouse'
-'keywords':
-- 'customer'
-'doc_type': 'reference'
+slug: '/faq/general/who-is-using-clickhouse'
+description: 'Определяет, кто использует ClickHouse'
+title: 'Кто использует ClickHouse?'
+doc_type: reference
+toc_hidden: true
+toc_priority: 9
 ---
-
-
 # Кто использует ClickHouse? {#who-is-using-clickhouse}
 
 Будучи продуктом с открытым исходным кодом, на этот вопрос не так просто ответить. Вам не нужно никому сообщать, если вы хотите начать использовать ClickHouse, вы просто берете исходный код или предварительно скомпилированные пакеты. Нет необходимости подписывать контракт, и [лицензия Apache 2.0](https://github.com/ClickHouse/ClickHouse/blob/master/LICENSE) позволяет свободное распределение программного обеспечения.

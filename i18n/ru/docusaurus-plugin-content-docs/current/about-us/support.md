@@ -1,13 +1,11 @@
 ---
-'slug': '/about-us/support'
-'sidebar_label': 'Поддержка'
-'title': 'ClickHouse Cloud поддержка услуг'
-'sidebar_position': 30
-'description': 'Информация о поддержке услуг ClickHouse Cloud'
-'doc_type': 'reference'
+slug: '/about-us/support'
+sidebar_label: Поддержка
+sidebar_position: 30
+description: 'Информация о поддержке услуг ClickHouse Cloud'
+title: 'Услуги поддержки ClickHouse Cloud'
+doc_type: reference
 ---
-
-
 # Услуги поддержки ClickHouse Cloud
 
 ClickHouse предоставляет услуги поддержки для пользователей и клиентов ClickHouse Cloud. Наша цель – команда поддержки, которая представляет продукт ClickHouse – непревзойденная производительность, простота в использовании и исключительно быстрые, качественные результаты. Для подробной информации [посетите страницу нашей программы поддержки ClickHouse](https://clickhouse.com/support/program/).

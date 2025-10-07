@@ -1,7 +1,7 @@
 ---
 'slug': '/cloud/marketplace/marketplace-billing'
 'title': 'Маркетплейс Выписка'
-'description': 'Подпишитесь на ClickHouse Cloud через маркетплейс AWS, GCP и Azure.'
+'description': 'Подписывайтесь на ClickHouse Cloud через маркетплейс AWS, GCP и Azure.'
 'keywords':
 - 'aws'
 - 'azure'
@@ -11,7 +11,6 @@
 - 'billing'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import marketplace_signup_and_org_linking from '@site/static/images/cloud/manage/billing/marketplace/marketplace_signup_and_org_linking.png'
 

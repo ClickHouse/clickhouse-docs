@@ -1,22 +1,11 @@
 ---
-'slug': '/cloud/reference'
-'keywords':
-- 'Cloud'
-- 'reference'
-- 'architecture'
-- 'SharedMergeTree'
-- 'Compute-compute Separation'
-- 'Bring Your Own Cloud'
-- 'Changelogs'
-- 'Supported Cloud Regions'
-- 'Cloud Compatibility'
-'title': 'Обзор'
-'hide_title': true
-'description': 'Страница приземления для раздела справки по облаку'
-'doc_type': 'landing-page'
+slug: '/cloud/reference'
+description: 'Страница приземления для раздела справки по облаку'
+title: Обзор
+keywords: ['Облако', 'справочник', 'архитектура', 'SharedMergeTree', 'Разделение Вычислений', 'Принесите Свое Облако', 'Журналы Изменений', 'Поддерживаемые Облачные Региону', 'Совместимость с Облаком']
+doc_type: landing-page
+hide_title: true
 ---
-
-
 # Справочник по облаку
 
 Этот раздел служит справочным руководством по некоторым более техническим деталям ClickHouse Cloud и содержит следующие страницы:

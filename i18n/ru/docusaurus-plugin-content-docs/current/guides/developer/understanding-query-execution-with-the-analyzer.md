@@ -1,12 +1,10 @@
 ---
-'slug': '/guides/developer/understanding-query-execution-with-the-analyzer'
-'sidebar_label': 'Понимание выполнения запросов с помощью анализатора'
-'title': 'Понимание выполнения запросов с помощью анализатора'
-'description': 'Описание того, как вы можете использовать анализатор для понимания
-  того, как ClickHouse выполняет ваши запросы'
-'doc_type': 'guide'
+slug: '/guides/developer/understanding-query-execution-with-the-analyzer'
+sidebar_label: 'Понимание выполнения запросов с помощью анализатора'
+description: 'Описание того, как вы можете использовать анализатор для понимания'
+title: 'Понимание выполнения запросов с помощью анализатора'
+doc_type: guide
 ---
-
 import analyzer1 from '@site/static/images/guides/developer/analyzer1.png';
 import analyzer2 from '@site/static/images/guides/developer/analyzer2.png';
 import analyzer3 from '@site/static/images/guides/developer/analyzer3.png';

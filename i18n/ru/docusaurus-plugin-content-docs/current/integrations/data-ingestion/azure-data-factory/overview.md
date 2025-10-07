@@ -1,17 +1,11 @@
 ---
-'sidebar_label': 'Обзор'
-'slug': '/integrations/azure-data-factory/overview'
-'description': 'Привнесение Azure данных в ClickHouse - Обзор'
-'keywords':
-- 'azure data factory'
-- 'azure'
-- 'microsoft'
-- 'data'
-'title': 'Привнесение Azure данных в ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/azure-data-factory/overview'
+sidebar_label: Обзор
+description: 'Привнесение Azure данных в ClickHouse - Обзор'
+title: 'Импорт данных из Azure в ClickHouse'
+keywords: ['azure data factory', 'azure', 'microsoft', 'data']
+doc_type: guide
 ---
-
-
 # Импорт данных из Azure в ClickHouse
 
 Microsoft Azure предлагает широкий спектр инструментов для хранения, трансформации и анализа данных. Однако во многих сценариях ClickHouse может обеспечить значительно лучшую производительность для запросов с низкой задержкой и обработки огромных объемов данных. Кроме того, столбцовое хранилище и сжатие в ClickHouse могут значительно снизить стоимость запросов к большим объемам аналитических данных по сравнению с универсальными базами данных Azure.

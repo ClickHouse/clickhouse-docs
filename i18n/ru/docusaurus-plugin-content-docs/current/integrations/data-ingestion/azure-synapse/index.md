@@ -1,19 +1,11 @@
 ---
-'sidebar_label': 'Azure Synapse'
-'slug': '/integrations/azure-synapse'
-'description': 'Введение в Azure Synapse с ClickHouse'
-'keywords':
-- 'clickhouse'
-- 'azure synapse'
-- 'azure'
-- 'synapse'
-- 'microsoft'
-- 'azure spark'
-- 'data'
-'title': 'Интеграция Azure Synapse с ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/azure-synapse'
+sidebar_label: 'Azure Synapse'
+description: 'Введение в Azure Synapse с ClickHouse'
+title: 'Интеграция Azure Synapse с ClickHouse'
+keywords: ['clickhouse', 'azure synapse', 'azure', 'synapse', 'microsoft', 'azure spark', 'data']
+doc_type: guide
 ---
-
 import TOCInline from '@theme/TOCInline';
 import Image from '@theme/IdealImage';
 import sparkConfigViaNotebook from '@site/static/images/integrations/data-ingestion/azure-synapse/spark_notebook_conf.png';

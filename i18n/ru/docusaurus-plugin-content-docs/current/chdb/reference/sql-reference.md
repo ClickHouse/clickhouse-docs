@@ -1,14 +1,11 @@
 ---
-'title': 'SQL Справочник'
-'sidebar_label': 'SQL Справочник'
-'slug': '/chdb/reference/sql-reference'
-'description': 'SQL Справочник для chDB'
-'keywords':
-- 'chdb'
-- 'sql reference'
-'doc_type': 'reference'
+slug: '/chdb/reference/sql-reference'
+sidebar_label: 'SQL Справочник'
+description: 'SQL Справочник для chDB'
+title: 'SQL Справочник'
+keywords: ['chdb', 'sql справочник']
+doc_type: reference
 ---
-
 chdb поддерживает ту же SQL-синтаксис, инструкции, движки и функции, что и ClickHouse:
 
 | Тема                      |

@@ -1,14 +1,10 @@
 ---
-'slug': '/data-modeling/schema-design'
-'title': 'Проектирование схемы'
-'description': 'Оптимизация схемы ClickHouse для производительности запросов'
-'keywords':
-- 'schema'
-- 'schema design'
-- 'query optimization'
-'doc_type': 'guide'
+slug: '/data-modeling/schema-design'
+description: 'Оптимизация схемы ClickHouse для производительности запросов'
+title: 'Проектирование схемы'
+keywords: ['схема', 'проектирование схемы', 'оптимизация запросов']
+doc_type: guide
 ---
-
 import stackOverflowSchema from '@site/static/images/data-modeling/stackoverflow-schema.png';
 import schemaDesignIndices from '@site/static/images/data-modeling/schema-design-indices.png';
 import Image from '@theme/IdealImage';

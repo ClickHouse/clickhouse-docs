@@ -1,12 +1,11 @@
 ---
-slug: /whats-new/security-changelog
+slug: '/whats-new/security-changelog'
+sidebar_label: 'Security Changelog'
 sidebar_position: 20
-sidebar_label: 'Security changelog'
-title: 'Security changelog'
-description: 'Security changelog detailing security related updates and changes'
-doc_type: 'changelog'
+description: 'Журнал изменений безопасности, содержащий обновления и изменения,'
+title: 'Security Changelog'
+doc_type: changelog
 ---
-
 # Security changelog
 
 ## Fixed in ClickHouse v25.1.5.5, 2025-01-05 {#fixed-in-clickhouse-release-2025-01-05}
@@ -216,4 +215,3 @@ Credits: Andrey Krasichkov and Evgeny Sidorov of Yandex Information Security Tea
 Incorrect configuration in deb package could lead to the unauthorized use of the database.
 
 Credits: the UK's National Cyber Security Centre (NCSC)
-

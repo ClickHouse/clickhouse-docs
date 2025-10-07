@@ -1,18 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/avgMerge'
-'title': 'avgMerge'
-'description': 'Пример использования комбинирующего элемента avgMerge'
-'keywords':
-- 'avg'
-- 'merge'
-- 'combinator'
-- 'examples'
-- 'avgMerge'
-'sidebar_label': 'avgMerge'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/avgMerge'
+sidebar_label: avgMerge
+description: 'Пример использования комбинирующего элемента avgMerge'
+title: avgMerge
+keywords: ['avg', 'merge', 'combinator', 'examples', 'avgMerge']
+doc_type: reference
 ---
-
-
 # avgMerge {#avgMerge}
 
 ## Описание {#description}

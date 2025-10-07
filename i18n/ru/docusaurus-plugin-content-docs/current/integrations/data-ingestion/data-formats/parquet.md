@@ -1,13 +1,11 @@
 ---
-'sidebar_label': 'Parquet'
-'sidebar_position': 3
-'slug': '/integrations/data-formats/parquet'
-'title': 'Работа с Parquet в ClickHouse'
-'description': 'Страница, описывающая, как работать с Parquet в ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/data-formats/parquet'
+sidebar_label: Parquet
+sidebar_position: 3
+description: 'Страница, описывающая, как работать с Parquet в ClickHouse'
+title: 'Работа с Parquet в ClickHouse'
+doc_type: guide
 ---
-
-
 # Работа с Parquet в ClickHouse
 
 Parquet — это эффективный файловый формат для хранения данных в столбцовом виде. 

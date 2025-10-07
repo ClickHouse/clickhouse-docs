@@ -1,12 +1,11 @@
 ---
-'sidebar_label': 'EMQX'
-'sidebar_position': 1
-'slug': '/integrations/emqx'
-'description': 'Введение в EMQX с ClickHouse'
-'title': 'Интеграция EMQX с ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/emqx'
+sidebar_label: EMQX
+sidebar_position: 1
+description: 'Введение в EMQX с ClickHouse'
+title: 'Интеграция EMQX с ClickHouse'
+doc_type: guide
 ---
-
 import emqx_cloud_artitecture from '@site/static/images/integrations/data-ingestion/emqx/emqx-cloud-artitecture.png';
 import clickhouse_cloud_1 from '@site/static/images/integrations/data-ingestion/emqx/clickhouse_cloud_1.png';
 import clickhouse_cloud_2 from '@site/static/images/integrations/data-ingestion/emqx/clickhouse_cloud_2.png';

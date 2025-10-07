@@ -1,30 +1,12 @@
 ---
-'sidebar_label': 'Astrato'
-'sidebar_position': 131
-'slug': '/integrations/astrato'
-'keywords':
-- 'clickhouse'
-- 'Power BI'
-- 'connect'
-- 'integrate'
-- 'ui'
-- 'data apps'
-- 'data viz'
-- 'embedded analytics'
-- 'Astrato'
-'description': 'Astrato приносит истинную бизнес-аналитику (BI) для предприятий и
-  бизнесов данных, предоставляя аналитику в руки каждого пользователя, позволяя им
-  создавать свои собственные панели, отчеты и приложения для данных, что позволяет
-  отвечать на вопросы о данных без помощи ИТ. Astrato ускоряет принятие решений, ускоряет
-  процесс принятия решений и объединяет аналитику, встроенную аналитику, ввод данных
-  и приложения для данных в одной платформе. Astrato объединяет действия и аналитику
-  в одном, вводит live-представление, взаимодействует с ML моделями, ускоряет вашу
-  аналитику с помощью ИИ – выходите за рамки панелей благодаря поддержке pushdown
-  SQL в Astrato.'
-'title': 'Подключение Astrato к ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/astrato'
+sidebar_label: Astrato
+sidebar_position: 131
+description: 'Astrato приносит истинную бизнес-аналитику (BI) для предприятий и'
+title: 'Подключение Astrato к ClickHouse'
+keywords: ['clickhouse', 'Power BI', 'connect', 'integrate', 'ui', 'data apps', 'data viz', 'embedded analytics', 'Astrato']
+doc_type: guide
 ---
-
 import astrato_1_dataconnection from '@site/static/images/integrations/data-visualization/astrato_1_dataconnection.png';
 import astrato_2a_clickhouse_connection from '@site/static/images/integrations/data-visualization/astrato_2a_clickhouse_connection.png';
 import astrato_2b_clickhouse_connection from '@site/static/images/integrations/data-visualization/astrato_2b_clickhouse_connection.png';

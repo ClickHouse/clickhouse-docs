@@ -1,17 +1,11 @@
 ---
-'slug': '/deployment-modes'
-'sidebar_label': 'Режимы развертывания'
-'description': 'ClickHouse предлагает четыре варианта развертывания, которые используют
-  один и тот же мощный DATABASE, просто упакованные по-разному, чтобы соответствовать
-  вашим конкретным потребностям.'
-'title': 'Режимы развертывания'
-'keywords':
-- 'Deployment Modes'
-- 'chDB'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: '/deployment-modes'
+sidebar_label: 'Режимы развертывания'
+description: 'ClickHouse предлагает четыре варианта развертывания, которые используют'
+title: 'Режимы развертывания'
+doc_type: guide
+show_related_blogs: true
 ---
-
 import chServer from '@site/static/images/deployment-modes/ch-server.png';
 import chCloud from '@site/static/images/deployment-modes/ch-cloud.png';
 import chLocal from '@site/static/images/deployment-modes/ch-local.png';

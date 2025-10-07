@@ -1,19 +1,11 @@
 ---
-'sidebar_label': 'Использование HTTP интерфейса'
-'slug': '/integrations/azure-data-factory/http-interface'
-'description': 'Использование HTTP интерфейса ClickHouse для загрузки данных из Azure
-  Data Factory в ClickHouse'
-'keywords':
-- 'azure data factory'
-- 'azure'
-- 'microsoft'
-- 'data'
-- 'http interface'
-'title': 'Использование ClickHouse HTTP интерфейса для загрузки данных из Azure в
-  ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/azure-data-factory/http-interface'
+sidebar_label: 'Использование HTTP интерфейса'
+description: 'Использование HTTP интерфейса ClickHouse для загрузки данных из Azure'
+title: 'Использование HTTP интерфейса ClickHouse для загрузки данных Azure в ClickHouse'
+keywords: ['azure data factory', 'azure', 'microsoft', 'data', 'http interface']
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 import azureHomePage                            from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-home-page.png';
 import azureNewResourceAnalytics                from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-new-resource-analytics.png';

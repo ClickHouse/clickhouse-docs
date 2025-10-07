@@ -1,18 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/sumForEach'
-'title': 'sumForEach'
-'description': 'Пример использования агрегатной функции sumForEach'
-'keywords':
-- 'sum'
-- 'ForEach'
-- 'combinator'
-- 'examples'
-- 'sumForEach'
-'sidebar_label': 'sumForEach'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/sumForEach'
+sidebar_label: sumArray
+description: 'Пример использования агрегатной функции sumForEach'
+title: sumForEach
+keywords: ['sum', 'array', 'combinator', 'examples', 'sumArray']
+doc_type: reference
 ---
-
-
 # sumForEach {#sumforeach}
 
 ## Описание {#description}

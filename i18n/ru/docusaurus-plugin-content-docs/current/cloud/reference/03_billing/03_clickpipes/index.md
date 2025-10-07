@@ -1,12 +1,11 @@
 ---
 'slug': '/cloud/reference/billing/clickpipes'
 'title': 'ClickPipes'
-'description': 'биллинг ClickPipes'
+'description': 'билдинг ClickPipes'
 'keywords':
 - 'ClickPipes Billing'
 'doc_type': 'reference'
 ---
-
 :::note
 Использование MySQL и MongoDB CDC ClickPipes бесплатно до достижения общего доступного релиза (GA). Клиенты будут уведомлены заранее о запланированных релизах GA для пересмотра и оптимизации использования ClickPipes.
 :::

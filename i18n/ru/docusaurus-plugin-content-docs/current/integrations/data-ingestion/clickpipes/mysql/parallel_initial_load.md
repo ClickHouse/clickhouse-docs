@@ -5,7 +5,6 @@
 'sidebar_label': 'Как работает параллельный снимок'
 'doc_type': 'guide'
 ---
-
 import snapshot_params from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/snapshot_params.png'
 import partition_key from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/partition_key.png'
 import Image from '@theme/IdealImage';

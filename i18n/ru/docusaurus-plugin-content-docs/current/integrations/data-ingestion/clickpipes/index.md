@@ -1,11 +1,10 @@
 ---
-'sidebar_label': 'Введение'
-'description': 'Бесшовно подключите ваши внешние источники данных к ClickHouse Cloud.'
-'slug': '/integrations/clickpipes'
-'title': 'Интеграция с ClickHouse Cloud'
-'doc_type': 'guide'
+slug: '/integrations/clickpipes'
+sidebar_label: Введение
+description: 'Бесшовно подключите ваши внешние источники данных к ClickHouse Cloud.'
+title: 'Интеграция с ClickHouse Cloud'
+doc_type: guide
 ---
-
 import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';
 import Confluentsvg from '@site/static/images/integrations/logos/confluent.svg';
 import Msksvg from '@site/static/images/integrations/logos/msk.svg';

@@ -6,7 +6,6 @@
   аутентификации.'
 'doc_type': 'guide'
 ---
-
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 

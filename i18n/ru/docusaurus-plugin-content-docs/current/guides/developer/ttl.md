@@ -1,20 +1,13 @@
 ---
-'slug': '/guides/developer/ttl'
-'sidebar_label': 'TTL (время жизни)'
-'sidebar_position': 2
-'keywords':
-- 'ttl'
-- 'time to live'
-- 'clickhouse'
-- 'old'
-- 'data'
-'description': 'TTL (время жизни) относится к способности перемещать, удалять или
-  сворачивать строки или колонки после того, как пройдет определенный интервал времени.'
-'title': 'Управление данными с помощью TTL (времени жизни)'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: '/guides/developer/ttl'
+sidebar_label: 'TTL (Время жизни)'
+sidebar_position: 2
+description: 'TTL (время жизни) относится к способности перемещать, удалять или'
+title: 'Управление данными с помощью TTL (время жизни)'
+keywords: ['ttl', 'время жизни', 'clickhouse', 'старые', 'данные']
+doc_type: guide
+show_related_blogs: true
 ---
-
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 

@@ -1,18 +1,12 @@
 ---
-'sidebar_label': 'JDBC'
-'sidebar_position': 2
-'keywords':
-- 'clickhouse'
-- 'jdbc'
-- 'connect'
-- 'integrate'
-'slug': '/integrations/jdbc/jdbc-with-clickhouse'
-'description': 'JDBC мост ClickHouse позволяет ClickHouse получать доступ к данным
-  из любых внешних источников данных, для которых доступен JDBC драйвер'
-'title': 'Подключение ClickHouse к внешним источникам данных с помощью JDBC'
-'doc_type': 'guide'
+slug: '/integrations/jdbc/jdbc-with-clickhouse'
+sidebar_label: JDBC
+sidebar_position: 2
+description: 'JDBC мост ClickHouse позволяет ClickHouse получать доступ к данным'
+title: 'Подключение ClickHouse к внешним источникам данных с помощью JDBC'
+keywords: ['clickhouse', 'jdbc', 'connect', 'integrate']
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

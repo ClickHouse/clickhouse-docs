@@ -1,7 +1,7 @@
 ---
 'slug': '/cloud/billing/marketplace/aws-marketplace-payg'
 'title': 'AWS Marketplace PAYG'
-'description': 'Подпишитесь на ClickHouse Cloud через AWS Marketplace (PAYG).'
+'description': 'Подписывайтесь на ClickHouse Cloud через AWS Marketplace (PAYG).'
 'keywords':
 - 'aws'
 - 'marketplace'
@@ -9,7 +9,6 @@
 - 'PAYG'
 'doc_type': 'guide'
 ---
-
 import aws_marketplace_payg_1 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-1.png';
 import aws_marketplace_payg_2 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-2.png';
 import aws_marketplace_payg_3 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-3.png';

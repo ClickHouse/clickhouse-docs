@@ -1,12 +1,10 @@
 ---
-'sidebar_label': 'Cloud SQL Для MySQL'
-'description': 'Пошаговое руководство по настройке Cloud SQL для MySQL в качестве
-  источника для ClickPipes'
-'slug': '/integrations/clickpipes/mysql/source/gcp'
-'title': 'Руководство по настройке источника Cloud SQL для MySQL'
-'doc_type': 'guide'
+slug: '/integrations/clickpipes/mysql/source/gcp'
+sidebar_label: 'Контроль доступа Cloud SQL для MySQL'
+description: 'пошаговое руководство по настройке Cloud SQL для MySQL в качестве'
+title: 'Руководство по настройке источника Cloud SQL для MySQL'
+doc_type: guide
 ---
-
 import gcp_pitr from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/gcp/gcp-mysql-pitr.png';
 import gcp_mysql_flags from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/gcp/gcp-mysql-flags.png';
 import gcp_mysql_ip from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/gcp/gcp-mysql-ip.png';

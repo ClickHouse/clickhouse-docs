@@ -8,7 +8,6 @@
 'title': 'Таблицы и схемы, используемые ClickStack'
 'doc_type': 'reference'
 ---
-
 Коллектор OpenTelemetry (OTel) ClickStack использует [экспортер ClickHouse](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) для создания таблиц в ClickHouse и вставки данных.
 
 Следующие таблицы создаются для каждого типа данных в базе данных `default`. Пользователи могут изменить эту целевую базу данных, изменив переменную окружения `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` для образа, размещающего коллектор OTel.

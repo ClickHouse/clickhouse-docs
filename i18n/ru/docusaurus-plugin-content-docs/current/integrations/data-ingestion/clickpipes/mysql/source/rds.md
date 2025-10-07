@@ -1,11 +1,10 @@
 ---
-'sidebar_label': 'Amazon RDS MySQL'
-'description': '逐步指南，介绍如何将 Amazon RDS MySQL 设置为 ClickPipes 的源'
-'slug': '/integrations/clickpipes/mysql/source/rds'
-'title': 'RDS MySQL 源设置指南'
-'doc_type': 'guide'
+slug: '/integrations/clickpipes/mysql/source/rds'
+sidebar_label: 'Amazon RDS MySQL'
+description: 'Пошаговое руководство, объясняющее, как установить Amazon RDS MySQL'
+title: 'Руководство по настройке источника RDS MySQL'
+doc_type: guide
 ---
-
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
 import security_group_in_rds_mysql from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/security-group-in-rds-mysql.png';

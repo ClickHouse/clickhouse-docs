@@ -1,18 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/groupArrayDistinct'
-'title': 'groupArrayDistinct'
-'description': 'Пример использования комбинатора groupArrayDistinct'
-'keywords':
-- 'groupArray'
-- 'Distinct'
-- 'combinator'
-- 'examples'
-- 'groupArrayDistinct'
-'sidebar_label': 'groupArrayDistinct'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/groupArrayDistinct'
+sidebar_label: groupArrayDistinct
+description: 'Пример использования комбиниратора groupArrayDistinct'
+title: groupArrayDistinct
+keywords: ['groupArray', 'Distinct', 'комбинатор', 'примеры', 'groupArrayDistinct']
+doc_type: reference
 ---
-
-
 # groupArrayDistinct {#sumdistinct}
 
 ## Описание {#description}

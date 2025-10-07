@@ -11,7 +11,6 @@
 - 'exporter'
 'doc_type': 'reference'
 ---
-
 import prometheus_grafana_metrics_endpoint from '@site/static/images/integrations/prometheus-grafana-metrics-endpoint.png';
 import prometheus_grafana_dropdown from '@site/static/images/integrations/prometheus-grafana-dropdown.png';
 import prometheus_grafana_chart from '@site/static/images/integrations/prometheus-grafana-chart.png';

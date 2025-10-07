@@ -1,8 +1,9 @@
 ---
-'description': 'Датаセット, содержащий 1 миллион статей из Wikipedia и их векторные вложения'
-'sidebar_label': 'датасет dbpedia'
+'description': 'Дата-сет, содержащий 1 миллион статей из Wikipedia и их векторные
+  вложения'
+'sidebar_label': 'датасет DBpedia'
 'slug': '/getting-started/example-datasets/dbpedia-dataset'
-'title': 'датаセット dbpedia'
+'title': 'дата-сет DBpedia'
 'keywords':
 - 'semantic search'
 - 'vector similarity'
@@ -10,7 +11,6 @@
 - 'embeddings'
 'doc_type': 'reference'
 ---
-
 Данные из [набора данных dbpedia](https://huggingface.co/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M) содержат 1 миллион статей из Википедии и их векторные вложения, сгенерированные с использованием модели [text-embedding-3-large](https://platform.openai.com/docs/models/text-embedding-3-large) от OpenAI.
 
 Этот набор данных является отличным стартовым набором для понимания векторных вложений, поиска векторного схожести и генеративного ИИ. Мы используем этот набор данных для демонстрации [поиска приблизительных ближайших соседей](../../engines/table-engines/mergetree-family/annindexes.md) в ClickHouse и простого, но мощного приложения вопросов и ответов.

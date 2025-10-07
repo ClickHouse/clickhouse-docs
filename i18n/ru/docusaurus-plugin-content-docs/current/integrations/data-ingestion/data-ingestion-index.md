@@ -1,23 +1,10 @@
 ---
-'slug': '/integrations/data-ingestion-overview'
-'keywords':
-- 'Airbyte'
-- 'Apache Spark'
-- 'Spark'
-- 'Azure Synapse'
-- 'Amazon Glue'
-- 'Apache Beam'
-- 'dbt'
-- 'Fivetran'
-- 'NiFi'
-- 'dlt'
-- 'Vector'
-'title': 'Прием данных'
-'description': 'Страница для раздела приема данных'
-'doc_type': 'landing-page'
+slug: '/integrations/data-ingestion-overview'
+description: 'Страница для раздела приема данных'
+title: 'Прием данных'
+keywords: ['Airbyte', 'Apache Spark', 'Spark', 'Azure Synapse', 'Amazon Glue', 'Apache Beam', 'dbt', 'Fivetran', 'NiFi', 'dlt', 'Vector']
+doc_type: landing-page
 ---
-
-
 # Прием данных
 
 ClickHouse интегрируется с рядом решений для интеграции и преобразования данных.  

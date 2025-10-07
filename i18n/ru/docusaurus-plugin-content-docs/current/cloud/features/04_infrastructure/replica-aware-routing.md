@@ -13,7 +13,6 @@
 - 'replica aware routing'
 'doc_type': 'guide'
 ---
-
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
 

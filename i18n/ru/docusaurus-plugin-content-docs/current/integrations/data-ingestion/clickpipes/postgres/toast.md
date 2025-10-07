@@ -1,11 +1,9 @@
 ---
-'title': 'Обработка TOAST колонок'
-'description': 'Узнайте, как обрабатывать TOAST колонки при репликации данных из PostgreSQL
-  в ClickHouse.'
-'slug': '/integrations/clickpipes/postgres/toast'
-'doc_type': 'guide'
+slug: '/integrations/clickpipes/postgres/toast'
+description: 'Узнайте, как обрабатывать TOAST колонки при репликации данных из PostgreSQL'
+title: 'Обработка TOAST-колонок'
+doc_type: guide
 ---
-
 При репликации данных из PostgreSQL в ClickHouse важно понимать ограничения и специальные моменты, касающиеся колонок TOAST (The Oversized-Attribute Storage Technique). Это руководство поможет вам выявить и правильно обработать колонки TOAST в вашем процессе репликации.
 
 ## Что такое колонки TOAST в PostgreSQL? {#what-are-toast-columns-in-postgresql}

@@ -1,19 +1,12 @@
 ---
-'slug': '/faq/integration/'
-'sidebar_position': 1
-'sidebar_label': 'Интеграция ClickHouse с другими системами'
-'keywords':
-- 'clickhouse'
-- 'faq'
-- 'questions'
-- 'integrations'
-'title': 'Вопросы об интеграции ClickHouse и других систем'
-'description': 'Целевая страница, содержащая вопросы, связанные с интеграцией ClickHouse
-  с другими системами'
-'doc_type': 'landing-page'
+slug: '/faq/integration/'
+sidebar_label: 'Интеграция ClickHouse с другими системами'
+sidebar_position: 1
+description: 'Целевая страница, содержащая вопросы, связанные с интеграцией ClickHouse'
+title: 'Вопросы по интеграции ClickHouse и других систем'
+keywords: ['clickhouse', 'faq', 'вопросы', 'интеграции']
+doc_type: landing-page
 ---
-
-
 # Вопросы об интеграции ClickHouse и других систем
 
 - [Как экспортировать данные из ClickHouse в файл?](https://clickhouse.com/docs/knowledgebase/file-export)

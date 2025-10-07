@@ -1,15 +1,11 @@
 ---
-'title': 'Как выполнять запросы к удаленному ClickHouse серверу'
-'sidebar_label': 'Выполнение запросов к удаленному ClickHouse'
-'slug': '/chdb/guides/query-remote-clickhouse'
-'description': 'В этом руководстве мы узнаем, как выполнять запросы к удаленному ClickHouse
-  серверу из chDB.'
-'keywords':
-- 'chdb'
-- 'clickhouse'
-'doc_type': 'guide'
+slug: '/chdb/guides/query-remote-clickhouse'
+sidebar_label: 'Запросы к удаленному ClickHouse'
+description: 'В этом руководстве мы узнаем, как выполнять запросы к удаленному ClickHouse'
+title: 'Как выполнять запросы к удаленному серверу ClickHouse'
+keywords: ['chdb', 'clickhouse']
+doc_type: guide
 ---
-
 В этом руководстве мы научимся выполнять запросы к удаленному серверу ClickHouse из chDB.
 
 ## Настройка {#setup}

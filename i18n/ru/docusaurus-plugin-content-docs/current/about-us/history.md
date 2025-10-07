@@ -1,17 +1,12 @@
 ---
-'slug': '/about-us/history'
-'sidebar_label': 'История ClickHouse'
-'sidebar_position': 40
-'description': 'История разработки ClickHouse'
-'keywords':
-- 'history'
-- 'development'
-- 'Metrica'
-'title': 'История ClickHouse'
-'doc_type': 'reference'
+slug: '/about-us/history'
+sidebar_label: 'История ClickHouse'
+sidebar_position: 40
+description: 'История разработки ClickHouse'
+title: 'История ClickHouse'
+keywords: ['история', 'разработка', 'Metrica']
+doc_type: reference
 ---
-
-
 # История ClickHouse {#clickhouse-history}
 
 ClickHouse был изначально разработан для поддержки [Yandex.Metrica](https://metrica.yandex.com/), [второй по величине платформы веб-аналитики в мире](http://w3techs.com/technologies/overview/traffic_analysis/all), и продолжает быть ее основным компонентом. С более чем 13 триллионами записей в базе данных и более 20 миллиардами событий ежедневно, ClickHouse позволяет генерировать пользовательские отчеты на лету непосредственно из неагрегированных данных. В этой статье кратко рассматриваются цели ClickHouse на ранних этапах его разработки.

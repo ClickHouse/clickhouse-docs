@@ -10,7 +10,6 @@
 'title': 'Функции и Конфигурации'
 'doc_type': 'guide'
 ---
-
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 

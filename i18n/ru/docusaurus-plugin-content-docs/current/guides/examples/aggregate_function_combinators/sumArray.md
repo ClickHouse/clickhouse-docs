@@ -1,18 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/sumArray'
-'title': 'sumArray'
-'description': 'Пример использования комбинирования sumArray'
-'keywords':
-- 'sum'
-- 'array'
-- 'combinator'
-- 'examples'
-- 'sumArray'
-'sidebar_label': 'sumArray'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/sumArray'
+sidebar_label: sumArray
+description: 'Пример использования комбинирования sumArray'
+title: sumArray
+keywords: ['sum', 'array', 'combinator', 'examples', 'sumArray']
+doc_type: reference
 ---
-
-
 # sumArray {#sumarray}
 
 ## Описание {#description}

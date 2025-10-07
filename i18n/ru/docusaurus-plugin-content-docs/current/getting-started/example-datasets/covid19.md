@@ -1,13 +1,10 @@
 ---
-'description': 'COVID-19 Open-Data является большой, открытой базой данных эпидемиологических
-  данных COVID-19 и связанных факторов, таких как демография, экономика и правительственные
-  меры'
-'sidebar_label': 'COVID-19 Open-Data'
-'slug': '/getting-started/example-datasets/covid19'
-'title': 'COVID-19 Open-Data'
-'doc_type': 'reference'
+slug: '/getting-started/example-datasets/covid19'
+sidebar_label: 'COVID-19 Open-Data'
+description: 'COVID-19 Open-Data является большой, открытой базой данных эпидемиологических'
+title: 'COVID-19 Open-Data'
+doc_type: reference
 ---
-
 COVID-19 Open-Data пытается собрать крупнейшую эпидемиологическую базу данных по COVID-19, а также мощный набор расширенных ковариат. Она включает открытые, общедоступные, лицензированные данные, относящиеся к демографии, экономике, эпидемиологии, географии, здравоохранению, госпитализациям, мобильности, реакции правительства, погоде и многому другому.
 
 Подробности можно найти на GitHub [здесь](https://github.com/GoogleCloudPlatform/covid-19-open-data).

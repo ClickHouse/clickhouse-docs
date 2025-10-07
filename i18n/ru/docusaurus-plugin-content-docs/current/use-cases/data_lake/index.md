@@ -1,17 +1,11 @@
 ---
-'description': 'Целевая страница для руководства по использованию Data Lake'
-'pagination_prev': null
-'pagination_next': null
-'slug': '/use-cases/data-lake'
-'title': 'Data Lake'
-'keywords':
-- 'data lake'
-- 'glue'
-- 'unity'
-- 'rest'
-'doc_type': 'landing-page'
+slug: '/use-cases/data-lake'
+description: 'Целевая страница для руководства по использованию Data Lake'
+title: ДатаЛэйк
+doc_type: landing-page
+pagination_prev: null
+pagination_next: null
 ---
-
 ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, REST, Polaris и др.).
 
 | Страница | Описание |

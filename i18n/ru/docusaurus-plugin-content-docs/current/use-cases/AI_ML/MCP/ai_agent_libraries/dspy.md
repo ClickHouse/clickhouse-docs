@@ -1,10 +1,11 @@
 ---
 'slug': '/use-cases/AI/MCP/ai-agent-libraries/DSPy'
-'sidebar_label': '集成 DSPy'
-'title': '如何使用 DSPy 和 ClickHouse MCP 服务器构建 AI 代理'
+'sidebar_label': 'Создание DSPy'
+'title': 'Как использовать DSPy и ClickHouse MCP сервер для создания AI代理'
 'pagination_prev': null
 'pagination_next': null
-'description': '学习如何使用 DSPy 和 ClickHouse MCP 服务器构建 AI 代理'
+'description': 'Изучите, как использовать DSPy и ClickHouse MCP сервер для создания
+  AI代理'
 'keywords':
 - 'ClickHouse'
 - 'MCP'
@@ -12,8 +13,6 @@
 'show_related_blogs': true
 'doc_type': 'guide'
 ---
-
-
 # Как создать AI-агента с помощью DSPy и сервера ClickHouse MCP
 
 В этом руководстве вы узнаете, как создать AI-агента с помощью [DSPy](https://github.com/langchain-ai/langgraph), который может взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/) с использованием [сервера ClickHouse MCP](https://github.com/ClickHouse/mcp-clickhouse).

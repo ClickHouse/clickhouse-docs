@@ -9,7 +9,6 @@
 - 'privatelink'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
 import azure_pe from '@site/static/images/cloud/security/azure-pe.png';

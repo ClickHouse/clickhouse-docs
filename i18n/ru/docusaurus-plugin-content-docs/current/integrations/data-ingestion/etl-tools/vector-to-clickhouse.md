@@ -1,13 +1,12 @@
 ---
-'sidebar_label': 'Vector'
-'sidebar_position': 220
-'slug': '/integrations/vector'
-'description': 'Как дополнить файл журнала в ClickHouse, используя Vector'
-'title': 'Интеграция Vector с ClickHouse'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: '/integrations/vector'
+sidebar_label: Вектор
+sidebar_position: 220
+description: 'Как дополнять файл журнала в ClickHouse, используя Vector'
+title: 'Интеграция Vector с ClickHouse'
+doc_type: guide
+show_related_blogs: true
 ---
-
 import Image from '@theme/IdealImage';
 import vector01 from '@site/static/images/integrations/data-ingestion/etl-tools/vector_01.png';
 import vector02 from '@site/static/images/integrations/data-ingestion/etl-tools/vector_02.png';

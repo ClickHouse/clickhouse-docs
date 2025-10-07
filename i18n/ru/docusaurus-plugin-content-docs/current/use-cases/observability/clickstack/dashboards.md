@@ -7,7 +7,6 @@
 'description': 'Визуализации и панели мониторинга с ClickStack'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import visualization_1 from '@site/static/images/use-cases/observability/hyperdx-visualization-1.png';
 import visualization_2 from '@site/static/images/use-cases/observability/hyperdx-visualization-2.png';

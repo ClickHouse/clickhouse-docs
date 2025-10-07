@@ -1,19 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/quantilesTimingArrayIf'
-'title': 'quantilesTimingArrayIf'
-'description': 'Пример использования комбинатора quantilesTimingArrayIf'
-'keywords':
-- 'quantilesTiming'
-- 'array'
-- 'if'
-- 'combinator'
-- 'examples'
-- 'quantilesTimingArrayIf'
-'sidebar_label': 'quantilesTimingArrayIf'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/quantilesTimingArrayIf'
+sidebar_label: quantilesTimingArrayIf
+description: 'Пример использования комбиниатора quantilesTimingArrayIf'
+title: quantilesTimingArrayIf
+keywords: ['quantilesTiming', 'array', 'if', 'combinator', 'examples', 'quantilesTimingArrayIf']
+doc_type: reference
 ---
-
-
 # quantilesTimingArrayIf {#quantilestimingarrayif}
 
 ## Описание {#description}

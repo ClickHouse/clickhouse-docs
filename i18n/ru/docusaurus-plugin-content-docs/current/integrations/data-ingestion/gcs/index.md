@@ -1,12 +1,11 @@
 ---
-'sidebar_label': 'Google Cloud Storage (GCS)'
-'sidebar_position': 4
-'slug': '/integrations/gcs'
-'description': 'Google Cloud Storage (GCS) В основе MergeTree'
-'title': 'Интеграция Google Cloud Storage с ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/gcs'
+sidebar_label: 'Google Cloud Storage (GCS)'
+sidebar_position: 4
+description: 'Google Cloud Storage (GCS) В основе MergeTree'
+title: 'Интеграция Google Cloud Storage с ClickHouse'
+doc_type: guide
 ---
-
 import BucketDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_GCS_authentication_and_bucket.md';
 import Image from '@theme/IdealImage';
 import GCS_examine_bucket_1 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-1.png';

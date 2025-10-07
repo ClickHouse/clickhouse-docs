@@ -1,19 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/minSimpleState'
-'title': 'minSimpleState'
-'description': 'Пример использования комбинатора minSimpleState'
-'keywords':
-- 'min'
-- 'state'
-- 'simple'
-- 'combinator'
-- 'examples'
-- 'minSimpleState'
-'sidebar_label': 'minSimpleState'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/minSimpleState'
+sidebar_label: minSimpleState
+description: 'Пример использования комбинатора minSimpleState'
+title: minSimpleState
+keywords: ['min', 'state', 'simple', 'combinator', 'examples', 'minSimpleState']
+doc_type: reference
 ---
-
-
 # minSimpleState {#minsimplestate}
 
 ## Описание {#description}

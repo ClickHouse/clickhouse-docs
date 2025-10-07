@@ -9,7 +9,6 @@
 - 'restore'
 'doc_type': 'guide'
 ---
-
 import backup_settings from '@site/static/images/cloud/manage/backup-settings.png';
 import backup_configuration_form from '@site/static/images/cloud/manage/backup-configuration-form.png';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

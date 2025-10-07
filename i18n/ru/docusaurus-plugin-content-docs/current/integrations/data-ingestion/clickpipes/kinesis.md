@@ -1,12 +1,10 @@
 ---
-'sidebar_label': 'ClickPipes для Amazon Kinesis'
-'description': 'Бесшовно подключите ваши источники данных Amazon Kinesis к ClickHouse
-  Cloud.'
-'slug': '/integrations/clickpipes/kinesis'
-'title': 'Интеграция Amazon Kinesis с ClickHouse Cloud'
-'doc_type': 'guide'
+slug: '/integrations/clickpipes/kinesis'
+sidebar_label: 'ClickPipes для Amazon Kinesis'
+description: 'Бесшовно подключите ваши источники данных Amazon Kinesis к ClickHouse'
+title: 'Интеграция Amazon Kinesis с ClickHouse Cloud'
+doc_type: guide
 ---
-
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
 import cp_step1 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step1.png';

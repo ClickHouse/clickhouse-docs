@@ -1,22 +1,13 @@
 ---
-'slug': '/integrations/rocksdb'
-'sidebar_label': 'RocksDB'
-'title': 'RocksDB'
-'hide_title': true
-'description': 'Страница, описывающая RocksDBTableEngine'
-'doc_type': 'reference'
+slug: '/integrations/rocksdb'
+sidebar_label: RocksDB
+description: 'Страница, описывающая RocksDBTableEngine'
+title: RocksDB
+doc_type: reference
+hide_title: true
 ---
 
 import RocksDBTableEngine from '@site/i18n/ru/docusaurus-plugin-content-docs/current/engines/table-engines/integrations/embedded-rocksdb.md';
-
-```mdx
----
-title: 'RocksDBTableEngine'
-sidebar_label: 'RocksDBTableEngine'
-keywords: ['RocksDBTableEngine', 'ClickHouse', 'database', 'table engine']
-description: 'Документация по движку таблиц RocksDBTableEngine в ClickHouse.'
----
-
 
 # RocksDBTableEngine
 

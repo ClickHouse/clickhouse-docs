@@ -1,17 +1,12 @@
 ---
-'slug': '/faq/general/'
-'sidebar_position': 1
-'sidebar_label': 'Общие вопросы о ClickHouse'
-'keywords':
-- 'faq'
-- 'questions'
-- 'what is'
-'title': 'Общие вопросы о ClickHouse'
-'description': 'Страница индекса с общими вопросами о ClickHouse'
-'doc_type': 'landing-page'
+slug: '/faq/general/'
+sidebar_label: 'Общие вопросы о ClickHouse'
+sidebar_position: 1
+description: 'Страница индекса с общими вопросами о ClickHouse'
+title: 'Общие вопросы о ClickHouse'
+keywords: ['clickhouse', 'faq', 'вопросы', 'что такое']
+doc_type: landing-page
 ---
-
-
 # Общие вопросы о ClickHouse
 
 - [Что такое ClickHouse?](../../intro.md)

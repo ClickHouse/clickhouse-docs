@@ -1,13 +1,11 @@
 ---
-'slug': '/faq/integration/json-import'
-'title': '如何将 JSON 导入 ClickHouse？'
-'toc_hidden': true
-'toc_priority': 11
-'description': '本页向您展示如何将 JSON 导入 ClickHouse'
-'doc_type': 'guide'
+slug: '/faq/integration/json-import'
+description: 'Эта страница показывает вам, как импортировать JSON в ClickHouse'
+title: 'Как импортировать JSON в ClickHouse?'
+doc_type: guide
+toc_hidden: true
+toc_priority: 11
 ---
-
-
 # Как импортировать JSON в ClickHouse? {#how-to-import-json-into-clickhouse}
 
 ClickHouse поддерживает широкий спектр [форматов данных для ввода и вывода](../../interfaces/formats.md). Среди них есть множество вариантов JSON, но наиболее часто используемым для приема данных является [JSONEachRow](../../interfaces/formats.md#jsoneachrow). Он ожидает один JSON-объект на строку, каждый объект разделяется переводом строки.

@@ -1,14 +1,11 @@
 ---
-'title': 'JupySQL и chDB'
-'sidebar_label': 'JupySQL'
-'slug': '/chdb/guides/jupysql'
-'description': 'Как установить chDB для Bun'
-'keywords':
-- 'chdb'
-- 'JupySQL'
-'doc_type': 'guide'
+slug: '/chdb/guides/jupysql'
+sidebar_label: JupySQL
+description: 'Как установить chDB для Bun'
+title: 'JupySQL и chDB'
+keywords: ['chdb', 'JupySQL']
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 import PlayersPerRank from '@site/static/images/chdb/guides/players_per_rank.png';
 

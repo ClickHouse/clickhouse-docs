@@ -1,11 +1,10 @@
 ---
-'slug': '/native-protocol/basics'
-'sidebar_position': 1
-'title': 'Основы'
-'description': 'Основы нативного протокола'
-'doc_type': 'guide'
+slug: '/native-protocol/basics'
+sidebar_position: 1
+description: 'Основы нативного протокола'
+title: Основы
+doc_type: guide
 ---
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 

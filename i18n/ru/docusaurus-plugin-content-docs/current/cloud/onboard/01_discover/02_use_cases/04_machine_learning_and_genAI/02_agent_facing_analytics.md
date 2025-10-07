@@ -13,7 +13,6 @@
 'sidebar_label': 'Аналитика для агентов'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import ml_ai_05 from '@site/static/images/cloud/onboard/discover/use_cases/ml_ai_05.png';
 import ml_ai_06 from '@site/static/images/cloud/onboard/discover/use_cases/ml_ai_06.png';

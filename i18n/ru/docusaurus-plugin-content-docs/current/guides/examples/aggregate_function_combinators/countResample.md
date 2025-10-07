@@ -1,18 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/countResample'
-'title': 'countResample'
-'description': 'Пример использования комбинатора Resample с count'
-'keywords':
-- 'count'
-- 'Resample'
-- 'combinator'
-- 'examples'
-- 'countResample'
-'sidebar_label': 'countResample'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/countResample'
+sidebar_label: countResample
+description: 'Пример использования комбинированного агрегата Resample с count'
+title: countResample
+keywords: ['count', 'Resample', 'комбинирование', 'примеры', 'countResample']
+doc_type: reference
 ---
-
-
 # countResample {#countResample}
 
 ## Описание {#description}

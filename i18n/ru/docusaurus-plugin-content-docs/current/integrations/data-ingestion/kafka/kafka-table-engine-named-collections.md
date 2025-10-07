@@ -1,16 +1,10 @@
 ---
-'title': 'Интеграция ClickHouse с Kafka с использованием именованных коллекций'
-'description': 'Как использовать именованные коллекции для подключения ClickHouse
-  к Kafka'
-'keywords':
-- 'named collection'
-- 'how to'
-- 'kafka'
-'slug': '/integrations/data-ingestion/kafka/kafka-table-engine-named-collections'
-'doc_type': 'guide'
+slug: '/integrations/data-ingestion/kafka/kafka-table-engine-named-collections'
+description: 'Как использовать именованные коллекции для подключения ClickHouse'
+title: 'Интеграция ClickHouse с Kafka с использованием именованных коллекций'
+keywords: ['именованная коллекция', 'как сделать', 'kafka']
+doc_type: guide
 ---
-
-
 # Интеграция ClickHouse с Kafka с использованием именованных коллекций
 
 ## Введение {#introduction}

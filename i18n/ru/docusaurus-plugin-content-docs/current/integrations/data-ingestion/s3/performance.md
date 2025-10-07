@@ -1,12 +1,11 @@
 ---
-'slug': '/integrations/s3/performance'
-'sidebar_position': 2
-'sidebar_label': 'Оптимизация производительности'
-'title': 'Оптимизация производительности вставки и чтения S3'
-'description': 'Оптимизация производительности чтения и вставки S3'
-'doc_type': 'guide'
+slug: '/integrations/s3/performance'
+sidebar_label: 'Оптимизация производительности'
+sidebar_position: 2
+description: 'Оптимизация производительности чтения и вставки S3'
+title: 'Оптимизация производительности вставки и чтения в S3'
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 import InsertMechanics from '@site/static/images/integrations/data-ingestion/s3/insert_mechanics.png';
 import Pull from '@site/static/images/integrations/data-ingestion/s3/pull.png';

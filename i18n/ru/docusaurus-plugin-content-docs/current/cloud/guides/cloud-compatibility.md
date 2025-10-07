@@ -6,8 +6,6 @@
   зрения функциональности и операций в ClickHouse Cloud.'
 'doc_type': 'guide'
 ---
-
-
 # Справочник по совместимости ClickHouse Cloud
 
 Этот справочник предоставляет обзор функциональных и операционных аспектов ClickHouse Cloud. Хотя ClickHouse Cloud основан на открытом исходном коде ClickHouse, могут быть некоторые различия в архитектуре и реализации. Вы можете найти этот блог о [том, как мы создали ClickHouse Cloud](https://clickhouse.com/blog/building-clickhouse-cloud-from-scratch-in-a-year) интересным и актуальным для чтения в качестве фона.

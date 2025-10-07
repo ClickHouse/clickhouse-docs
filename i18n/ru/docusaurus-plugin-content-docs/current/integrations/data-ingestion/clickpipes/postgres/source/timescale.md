@@ -1,14 +1,11 @@
 ---
-'sidebar_label': 'Timescale'
-'description': 'Настройка Postgres с расширением TimescaleDB в качестве источника
-  для ClickPipes'
-'slug': '/integrations/clickpipes/postgres/source/timescale'
-'title': 'Postgres с настройкой источника TimescaleDB'
-'keywords':
-- 'TimescaleDB'
-'doc_type': 'guide'
+slug: '/integrations/clickpipes/postgres/source/timescale'
+sidebar_label: Timescale
+description: 'Настройка Postgres с расширенным TimescaleDB в качестве источника'
+title: 'Настройка источника Postgres с TimescaleDB'
+keywords: ['TimescaleDB']
+doc_type: guide
 ---
-
 import BetaBadge from '@theme/badges/BetaBadge';
 
 

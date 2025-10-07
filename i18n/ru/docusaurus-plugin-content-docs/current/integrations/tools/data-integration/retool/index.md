@@ -1,24 +1,11 @@
 ---
-'sidebar_label': 'Retool'
-'slug': '/integrations/retool'
-'keywords':
-- 'clickhouse'
-- 'retool'
-- 'connect'
-- 'integrate'
-- 'ui'
-- 'admin'
-- 'panel'
-- 'dashboard'
-- 'nocode'
-- 'no-code'
-'description': 'Быстро создавайте веб- и мобильные приложения с богатыми пользовательскими
-  интерфейсами, автоматизируйте сложные задачи и интегрируйте ИИ — все на основе ваших
-  данных.'
-'title': 'Подключение Retool к ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/retool'
+sidebar_label: Retool
+description: 'Быстро создавайте веб- и мобильные приложения с богатыми пользовательскими'
+title: 'Подключение Retool к ClickHouse'
+keywords: ['clickhouse', 'retool', 'connect', 'integrate', 'ui', 'admin', 'panel', 'dashboard', 'nocode', 'no-code']
+doc_type: guide
 ---
-
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import retool_01 from '@site/static/images/integrations/tools/data-integration/retool/retool_01.png';

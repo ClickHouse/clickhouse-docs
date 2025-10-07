@@ -1,18 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/sumMap'
-'title': 'sumMap'
-'description': 'Пример использования комбинатора sumMap'
-'keywords':
-- 'sum'
-- 'map'
-- 'combinator'
-- 'examples'
-- 'sumMap'
-'sidebar_label': 'sumMap'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/sumMap'
+sidebar_label: sumMap
+description: 'Пример использования комбинатора sumMap'
+title: sumMap
+keywords: ['sum', 'map', 'combinator', 'examples', 'sumMap']
+doc_type: reference
 ---
-
-
 # sumMap {#summap}
 
 ## Описание {#description}

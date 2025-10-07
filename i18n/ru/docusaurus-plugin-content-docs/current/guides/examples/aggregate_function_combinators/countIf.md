@@ -1,18 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/countIf'
-'title': 'countIf'
-'description': 'Пример использования комбинатора countIf'
-'keywords':
-- 'count'
-- 'if'
-- 'combinator'
-- 'examples'
-- 'countIf'
-'sidebar_label': 'countIf'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/countIf'
+sidebar_label: countIf
+description: 'Пример использования комбиниратора countIf'
+title: countIf
+keywords: ['count', 'if', 'combinator', 'examples', 'countIf']
+doc_type: reference
 ---
-
-
 # countIf {#countif}
 
 ## Описание {#description}

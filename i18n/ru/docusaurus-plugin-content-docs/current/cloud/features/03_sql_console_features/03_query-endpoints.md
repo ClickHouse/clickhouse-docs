@@ -10,7 +10,6 @@
 'title': 'Запрос API Эндпоинты'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import endpoints_testquery from '@site/static/images/cloud/sqlconsole/endpoints-testquery.png';
 import endpoints_savequery from '@site/static/images/cloud/sqlconsole/endpoints-savequery.png';

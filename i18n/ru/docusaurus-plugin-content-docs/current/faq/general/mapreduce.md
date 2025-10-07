@@ -1,15 +1,11 @@
 ---
-'slug': '/faq/general/mapreduce'
-'title': '为什么不使用类似于 MapReduce 的东西？'
-'toc_hidden': true
-'toc_priority': 110
-'description': '本页解释了为什么您会选择 ClickHouse 而不是 MapReduce'
-'keywords':
-- 'MapReduce'
-'doc_type': 'reference'
+slug: '/faq/general/mapreduce'
+description: 'Данная страница объяснила, почему вы можете выбрать ClickHouse, а'
+title: 'Почему не использовать что-то вроде MapReduce?'
+doc_type: reference
+toc_hidden: true
+toc_priority: 110
 ---
-
-
 # Почему не использовать что-то вроде MapReduce? {#why-not-use-something-like-mapreduce}
 
 Мы можем ссылаться на системы вроде MapReduce как на распределенные вычислительные системы, в которых операция reduce основана на распределенной сортировке. Наиболее распространенным решением с открытым исходным кодом в этом классе является [Apache Hadoop](http://hadoop.apache.org).

@@ -7,8 +7,6 @@
 'title': 'Сравнение ClickHouse Cloud и Amazon Redshift'
 'doc_type': 'guide'
 ---
-
-
 # Миграция данных из Amazon Redshift в ClickHouse
 
 > Этот документ предоставляет введение в миграцию данных из Amazon Redshift в ClickHouse.

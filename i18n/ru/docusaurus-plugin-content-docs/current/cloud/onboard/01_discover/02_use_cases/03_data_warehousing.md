@@ -2,14 +2,13 @@
 'slug': '/cloud/get-started/cloud/use-cases/data_lake_and_warehouse'
 'title': 'Дата Лэйкхаус'
 'description': 'Создавайте современные архитектуры хранилищ данных с ClickHouse Cloud,
-  сочетая гибкость дата-лейков с производительностью баз данных'
+  сочетающая гибкость дата-лейков с производительностью баз данных.'
 'keywords':
 - 'use cases'
 - 'data lake and warehouse'
 'sidebar_label': 'Хранилище данных'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import datalakehouse_01 from '@site/static/images/cloud/onboard/discover/use_cases/datalakehouse_01.png';
 

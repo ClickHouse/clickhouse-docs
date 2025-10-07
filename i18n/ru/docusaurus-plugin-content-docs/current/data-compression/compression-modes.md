@@ -1,16 +1,11 @@
 ---
-'slug': '/data-compression/compression-modes'
-'sidebar_position': 6
-'title': 'Режимы сжатия'
-'description': 'Режимы сжатия колонок ClickHouse'
-'keywords':
-- 'compression'
-- 'codec'
-- 'encoding'
-- 'modes'
-'doc_type': 'reference'
+slug: '/data-compression/compression-modes'
+sidebar_position: 6
+description: 'Режимы сжатия колонок ClickHouse'
+title: 'Режимы сжатия'
+keywords: ['сжатие', 'кодек', 'кодирование', 'режимы']
+doc_type: reference
 ---
-
 import CompressionBlock from '@site/static/images/data-compression/ch_compression_block.png';
 import Image from '@theme/IdealImage';
 

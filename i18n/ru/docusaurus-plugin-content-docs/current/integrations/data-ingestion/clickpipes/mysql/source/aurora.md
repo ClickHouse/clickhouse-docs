@@ -1,11 +1,10 @@
 ---
-'sidebar_label': 'Amazon Aurora MySQL'
-'description': '逐步指南，教您如何将 Amazon Aurora MySQL 设置为 ClickPipes 的数据源'
-'slug': '/integrations/clickpipes/mysql/source/aurora'
-'title': 'Aurora MySQL 源设置指南'
-'doc_type': 'guide'
+slug: '/integrations/clickpipes/mysql/source/aurora'
+sidebar_label: 'Amazon Aurora MySQL'
+description: 'Пошаговое руководство, научит вас, как установить Amazon Aurora MySQL'
+title: 'Руководство по настройке источника Aurora MySQL'
+doc_type: guide
 ---
-
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
 import security_group_in_rds_mysql from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/security-group-in-rds-mysql.png';

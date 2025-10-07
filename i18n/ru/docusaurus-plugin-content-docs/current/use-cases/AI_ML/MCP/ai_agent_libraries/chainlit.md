@@ -13,8 +13,6 @@
 'show_related_blogs': true
 'doc_type': 'guide'
 ---
-
-
 # Как создать AI-агента с Chainlit и ClickHouse MCP Server
 
 Этот гайд исследует, как совместить мощный фреймворк интерфейсов чата Chainlit с ClickHouse Model Context Protocol (MCP) Server для создания интерактивных приложений с данными. Chainlit позволяет вам создавать разговорные интерфейсы для AI-приложений с минимальным количеством кода, в то время как ClickHouse MCP Server обеспечивает бесшовную интеграцию с высокопроизводительной столбцовой базой данных ClickHouse.

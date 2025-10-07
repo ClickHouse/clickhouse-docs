@@ -1,13 +1,10 @@
 ---
-'description': 'Более 20 миллиардов записей данных от Sensor.Community, глобальной
-  сети датчиков, созданной на основе данных, предоставляемых участниками, которая
-  создает открытую экологическую информацию.'
-'sidebar_label': 'Данные экосенсоров'
-'slug': '/getting-started/example-datasets/environmental-sensors'
-'title': 'Данные экосенсоров'
-'doc_type': 'reference'
+slug: '/getting-started/example-datasets/environmental-sensors'
+sidebar_label: 'Данные экосенсоров'
+description: 'Более 20 миллиардов записей данных от Sensor.Community, глобальной'
+title: 'Данные экосенсоров'
+doc_type: reference
 ---
-
 import Image from '@theme/IdealImage';
 import no_events_per_day from '@site/static/images/getting-started/example-datasets/sensors_01.png';
 import sensors_02 from '@site/static/images/getting-started/example-datasets/sensors_02.png';

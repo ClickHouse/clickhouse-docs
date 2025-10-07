@@ -1,7 +1,7 @@
 ---
 'slug': '/cloud/billing/marketplace/aws-marketplace-committed-contract'
-'title': 'AWS Marketplace Коммитация Контракта'
-'description': 'Подпишитесь на ClickHouse Cloud через AWS Marketplace (Коммитация
+'title': 'AWS Marketplace Коммитaция Контракта'
+'description': 'Подпишитесь на ClickHouse Cloud через AWS Marketplace (Коммитaция
   Контракта)'
 'keywords':
 - 'aws'
@@ -12,7 +12,6 @@
 - 'committed contract'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import aws_marketplace_committed_1 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-committed-1.png';
 import aws_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-6.png';

@@ -1,14 +1,11 @@
 ---
-'description': 'Набор данных с более чем 100 миллионами записей, содержащими информацию
-  о местах на карте, таких как магазины, рестораны, парки, игровые площадки и памятники.'
-'sidebar_label': 'Foursquare места'
-'slug': '/getting-started/example-datasets/foursquare-places'
-'title': 'Foursquare места'
-'keywords':
-- 'visualizing'
-'doc_type': 'reference'
+slug: '/getting-started/example-datasets/foursquare-places'
+sidebar_label: 'Места Foursquare'
+description: 'Набор данных с более чем 100 миллионами записей, содержащими информацию'
+title: 'Места Foursquare'
+keywords: ['визуализация']
+doc_type: reference
 ---
-
 import Image from '@theme/IdealImage';
 import visualization_1 from '@site/static/images/getting-started/example-datasets/visualization_1.png';
 import visualization_2 from '@site/static/images/getting-started/example-datasets/visualization_2.png';

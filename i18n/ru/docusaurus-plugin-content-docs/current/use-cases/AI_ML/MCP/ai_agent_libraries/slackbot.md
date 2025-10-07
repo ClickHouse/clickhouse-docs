@@ -1,10 +1,11 @@
 ---
 'slug': '/use-cases/AI/MCP/ai-agent-libraries/slackbot'
-'sidebar_label': '集成 SlackBot'
-'title': '如何使用 ClickHouse MCP 服务器构建 SlackBot 代理。'
+'sidebar_label': 'Создание SlackBot'
+'title': 'Как использовать ClickHouse MCP сервер для создания SlackBot代理.'
 'pagination_prev': null
 'pagination_next': null
-'description': '了解如何构建能够与 ClickHouse MCP 服务器交互的 SlackBot 代理。'
+'description': 'Разберем, как создать возможность интеграции SlackBot代理 с ClickHouse
+  MCP сервером.'
 'keywords':
 - 'ClickHouse'
 - 'MCP'
@@ -14,8 +15,6 @@
 'show_related_blogs': true
 'doc_type': 'guide'
 ---
-
-
 # Как создать SlackBot агент с использованием ClickHouse MCP Server
 
 В этом руководстве вы узнаете, как создать [SlackBot](https://slack.com/intl/en-gb/help/articles/202026038-An-introduction-to-Slackbot) агент.

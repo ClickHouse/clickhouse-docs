@@ -1,15 +1,10 @@
 ---
-'slug': '/integrations/tools/data-integrations'
-'keywords':
-- 'Retool'
-- 'Easypanel'
-- 'Splunk'
-'title': 'Интеграции данных'
-'description': 'Страница назначения для раздела интеграций данных'
-'doc_type': 'landing-page'
+slug: '/integrations/tools/data-integrations'
+description: 'Страница назначений для раздела интеграций данных'
+title: 'Интеграции данных'
+keywords: ['Retool', 'Easypanel', 'Splunk']
+doc_type: landing-page
 ---
-
-
 # Интеграции данных
 
 | Страница   | Описание                                                                                                                     |

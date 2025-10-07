@@ -1,6 +1,6 @@
 ---
 'description': 'Набор данных, содержащий более 28 миллионов публикаций Hacker News
-  и их векторные встраивания'
+  и их векторные внедрения'
 'sidebar_label': 'Hacker News Векторный Поиск набор данных'
 'slug': '/getting-started/example-datasets/hackernews-vector-search-dataset'
 'title': 'Hacker News Векторный Поиск набор данных'
@@ -11,7 +11,6 @@
 - 'embeddings'
 'doc_type': 'guide'
 ---
-
 ## Введение {#introduction}
 
 Набор данных [Hacker News](https://news.ycombinator.com/) содержит 28.74 миллиона

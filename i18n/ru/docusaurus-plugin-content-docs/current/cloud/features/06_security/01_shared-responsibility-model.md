@@ -5,7 +5,6 @@
 'description': 'Узнайте больше о модели безопасности ClickHouse Cloud'
 'doc_type': 'reference'
 ---
-
 ## Типы услуг {#service-types}
 
 ClickHouse Cloud предлагает три типа услуг: Basic, Scale и Enterprise. Для получения дополнительной информации ознакомьтесь с нашей страницей [Типы услуг](/cloud/manage/cloud-tiers).

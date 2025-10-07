@@ -7,7 +7,6 @@
 - 'notifications'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import notifications_1 from '@site/static/images/cloud/manage/notifications-1.png';
 import notifications_2 from '@site/static/images/cloud/manage/notifications-2.png';

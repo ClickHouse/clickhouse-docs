@@ -8,7 +8,6 @@
 'sidebar_label': 'Часть 1'
 'doc_type': 'guide'
 ---
-
 import postgres_stackoverflow_schema from '@site/static/images/migrations/postgres-stackoverflow-schema.png';
 import Image from '@theme/IdealImage';
 

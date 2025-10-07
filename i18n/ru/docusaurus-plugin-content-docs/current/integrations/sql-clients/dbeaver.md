@@ -1,12 +1,10 @@
 ---
-'slug': '/integrations/dbeaver'
-'sidebar_label': 'DBeaver'
-'description': 'DBeaver является многоплатформенным инструментом для работы с базами
-  данных.'
-'title': 'Подключение DBeaver к ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/dbeaver'
+sidebar_label: DBeaver
+description: 'DBeaver является многоплатформенным инструментом для работы с базами'
+title: 'Подключение DBeaver к ClickHouse'
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 import dbeaver_add_database from '@site/static/images/integrations/sql-clients/dbeaver-add-database.png';
 import dbeaver_host_port from '@site/static/images/integrations/sql-clients/dbeaver-host-port.png';

@@ -1,17 +1,12 @@
 ---
-'sidebar_label': 'Интеграция Apache Spark с ClickHouse'
-'sidebar_position': 1
-'slug': '/integrations/apache-spark'
-'description': 'Введение в Apache Spark с ClickHouse'
-'keywords':
-- 'clickhouse'
-- 'Apache Spark'
-- 'migrating'
-- 'data'
-'title': 'Интеграция Apache Spark с ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/apache-spark'
+sidebar_label: 'Интеграция Apache Spark с ClickHouse'
+sidebar_position: 1
+description: 'Введение в Apache Spark с ClickHouse'
+title: 'Интеграция Apache Spark с ClickHouse'
+keywords: ['clickhouse', 'Apache Spark', 'миграция', 'данные']
+doc_type: guide
 ---
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';

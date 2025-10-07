@@ -1,15 +1,10 @@
 ---
-'slug': '/managing-data/deleting-data/overview'
-'title': 'Удаление данных'
-'description': 'Как удалять данные в ClickHouse Содержание'
-'keywords':
-- 'delete'
-- 'truncate'
-- 'drop'
-- 'lightweight delete'
-'doc_type': 'guide'
+slug: '/managing-data/deleting-data/overview'
+description: 'Как удалять данные в ClickHouse Содержимое'
+title: 'Удаление данных'
+keywords: ['удаление', 'усечения', 'удаление', 'легковесное удаление']
+doc_type: guide
 ---
-
 В этом разделе документации мы рассмотрим, как удалять данные в ClickHouse.
 
 | Страница                                                    | Описание                                                                                                                  |

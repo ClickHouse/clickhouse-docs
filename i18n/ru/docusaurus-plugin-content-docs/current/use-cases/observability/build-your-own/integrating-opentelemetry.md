@@ -8,7 +8,6 @@
 'show_related_blogs': true
 'doc_type': 'guide'
 ---
-
 import observability_3 from '@site/static/images/use-cases/observability/observability-3.png';
 import observability_4 from '@site/static/images/use-cases/observability/observability-4.png';
 import observability_5 from '@site/static/images/use-cases/observability/observability-5.png';

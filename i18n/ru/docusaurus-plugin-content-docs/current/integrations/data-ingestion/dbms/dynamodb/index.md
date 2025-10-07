@@ -1,15 +1,13 @@
 ---
-'sidebar_label': 'DynamoDB'
-'sidebar_position': 10
-'slug': '/integrations/dynamodb'
-'description': 'ClickPipes позволяет вам подключить ClickHouse к DynamoDB.'
-'keywords':
-- 'DynamoDB'
-'title': 'CDC из DynamoDB в ClickHouse'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: '/integrations/dynamodb'
+sidebar_label: DynamoDB
+sidebar_position: 10
+description: 'ClickPipes позволяет вам подключить ClickHouse к DynamoDB.'
+title: 'CDC из DynamoDB в ClickHouse'
+keywords: ['clickhouse', 'DynamoDB', 'подключить', 'интегрировать', 'таблица']
+doc_type: guide
+show_related_blogs: true
 ---
-
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import dynamodb_kinesis_stream from '@site/static/images/integrations/data-ingestion/dbms/dynamodb/dynamodb-kinesis-stream.png';

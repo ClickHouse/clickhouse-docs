@@ -1,18 +1,11 @@
 ---
-'sidebar_label': 'Easypanel'
-'slug': '/integrations/easypanel'
-'keywords':
-- 'clickhouse'
-- 'Easypanel'
-- 'deployment'
-- 'integrate'
-- 'install'
-'description': 'Вы можете использовать его для развертывания ClickHouse на вашем собственном
-  сервере.'
-'title': 'Развертывание ClickHouse на Easypanel'
-'doc_type': 'guide'
+slug: '/integrations/easypanel'
+sidebar_label: Easypanel
+description: 'Вы можете использовать его для развертывания ClickHouse на вашем собственном'
+title: 'Развертывание ClickHouse на Easypanel'
+keywords: ['clickhouse', 'Easypanel', 'deployment', 'integrate', 'install']
+doc_type: guide
 ---
-
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 

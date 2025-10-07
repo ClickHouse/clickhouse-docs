@@ -1,12 +1,10 @@
 ---
-'sidebar_label': 'Глоссарий'
-'description': 'Эта страница содержит список часто используемых слов и фраз, касающихся
-  ClickHouse, а также их определения.'
-'title': 'Глоссарий'
-'slug': '/concepts/glossary'
-'doc_type': 'reference'
+slug: '/concepts/glossary'
+sidebar_label: Глоссарий
+description: 'Эта страница содержит список часто используемых слов и фраз, касающихся'
+title: Глоссарий
+doc_type: reference
 ---
-
 <!-- no-glossary -->
 
 

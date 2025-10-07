@@ -1,13 +1,11 @@
 ---
-'sidebar_label': 'Avro, Arrow и ORC'
-'sidebar_position': 5
-'slug': '/integrations/data-formats/arrow-avro-orc'
-'title': 'Работа с Avro, Arrow и ORC данными в ClickHouse'
-'description': 'Страница, описывающая как работать с Avro, Arrow и ORC данными в ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/data-formats/arrow-avro-orc'
+sidebar_label: 'Avro, Arrow и ORC'
+sidebar_position: 5
+description: 'Страница, описывающая как работать с Avro, Arrow и ORC данными в ClickHouse'
+title: 'Работа с данными Avro, Arrow и ORC в ClickHouse'
+doc_type: guide
 ---
-
-
 # Работа с данными Avro, Arrow и ORC в ClickHouse
 
 Apache выпустил множество форматов данных, активно используемых в аналитических средах, включая популярные [Avro](https://avro.apache.org/), [Arrow](https://arrow.apache.org/) и [Orc](https://orc.apache.org/). ClickHouse поддерживает импорт и экспорт данных, используя любой из этих форматов.

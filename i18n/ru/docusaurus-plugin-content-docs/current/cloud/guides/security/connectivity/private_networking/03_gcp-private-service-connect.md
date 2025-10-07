@@ -8,7 +8,6 @@
 'slug': '/manage/security/gcp-private-service-connect'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
 import gcp_psc_overview from '@site/static/images/cloud/security/gcp-psc-overview.png';

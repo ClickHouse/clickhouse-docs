@@ -9,7 +9,6 @@
 'sidebar_label': 'Часть 3'
 'doc_type': 'guide'
 ---
-
 import postgres_b_tree from '@site/static/images/migrations/postgres-b-tree.png';
 import postgres_sparse_index from '@site/static/images/migrations/postgres-sparse-index.png';
 import postgres_partitions from '@site/static/images/migrations/postgres-partitions.png';

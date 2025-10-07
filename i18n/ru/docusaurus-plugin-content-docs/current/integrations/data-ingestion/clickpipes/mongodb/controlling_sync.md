@@ -2,10 +2,9 @@
 'title': 'Контроль синхронизации MongoDB ClickPipe'
 'description': 'Документация по контролю синхронизации MongoDB ClickPipe'
 'slug': '/integrations/clickpipes/mongodb/sync_control'
-'sidebar_label': 'Контроль синхронизаций'
+'sidebar_label': 'Контроль синхронизации'
 'doc_type': 'guide'
 ---
-
 import edit_sync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/edit_sync_button.png'
 import create_sync_settings from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/create_sync_settings.png'
 import edit_sync_settings from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/sync_settings_edit.png'

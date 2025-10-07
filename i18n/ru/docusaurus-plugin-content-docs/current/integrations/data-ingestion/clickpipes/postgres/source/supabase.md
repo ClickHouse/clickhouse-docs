@@ -1,11 +1,10 @@
 ---
-'sidebar_label': 'Supabase Postgres'
-'description': 'Настройка экземпляра Supabase в качестве источника для ClickPipes'
-'slug': '/integrations/clickpipes/postgres/source/supabase'
-'title': 'Руководство по настройке источника Supabase'
-'doc_type': 'guide'
+slug: '/integrations/clickpipes/postgres/source/supabase'
+sidebar_label: 'Supabase Postgres'
+description: 'Настройка экземпляра Supabase в качестве источника для ClickPipes'
+title: 'Руководство по настройке источника Supabase'
+doc_type: guide
 ---
-
 import supabase_commands from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-commands.jpg'
 import supabase_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-connection-details.jpg'
 import Image from '@theme/IdealImage';

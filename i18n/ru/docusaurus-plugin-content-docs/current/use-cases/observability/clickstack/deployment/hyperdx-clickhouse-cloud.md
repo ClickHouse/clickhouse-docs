@@ -7,7 +7,6 @@
 'description': 'Развертывание ClickStack с ClickHouse Cloud'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import BetaBadge from '@theme/badges/BetaBadge';

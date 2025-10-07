@@ -1,11 +1,9 @@
 ---
-'title': 'Управление и Развёртывание Обзор'
-'description': 'Страница обзора для Управления и Развёртывания'
-'slug': '/guides/manage-and-deploy-index'
-'doc_type': 'landing-page'
+slug: '/guides/manage-and-deploy-index'
+description: 'Страница обзора для Управления и Развёртывания'
+title: 'Обзор управления и развертывания'
+doc_type: landing-page
 ---
-
-
 # Управление и развертывание
 
 Этот раздел содержит следующие темы:

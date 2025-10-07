@@ -1,12 +1,11 @@
 ---
-'title': 'Добавление конкретных таблиц в ClickPipe'
-'description': 'Описывает шаги, необходимые для добавления конкретных таблиц в ClickPipe.'
-'sidebar_label': 'Добавить таблицу'
+'title': 'Добавление конкретных TABLE в ClickPipe'
+'description': 'Описывает шаги, необходимые для добавления конкретных TABLE в ClickPipe.'
+'sidebar_label': 'Добавить TABLE'
 'slug': '/integrations/clickpipes/mysql/add_table'
 'show_title': false
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import add_table from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/add_table.png'
 

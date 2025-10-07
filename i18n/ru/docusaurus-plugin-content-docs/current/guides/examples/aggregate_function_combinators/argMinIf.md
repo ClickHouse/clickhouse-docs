@@ -1,18 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/argMinIf'
-'title': 'argMinIf'
-'description': 'Пример использования комбинатора argMinIf'
-'keywords':
-- 'argMin'
-- 'if'
-- 'combinator'
-- 'examples'
-- 'argMinIf'
-'sidebar_label': 'argMinIf'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/argMinIf'
+sidebar_label: argMinIf
+description: 'Пример использования комбинатора argMinIf'
+title: argMinIf
+keywords: ['argMin', 'if', 'combinator', 'examples', 'argMinIf']
+doc_type: reference
 ---
-
-
 # argMinIf {#argminif}
 
 ## Описание {#description}

@@ -1,12 +1,10 @@
 ---
-'slug': '/native-protocol/hash'
-'sidebar_position': 5
-'title': 'CityHash'
-'description': 'Хеш протокола Native'
-'doc_type': 'reference'
+slug: '/native-protocol/hash'
+sidebar_position: 5
+description: 'Хеш протокола Native'
+title: CityHash
+doc_type: reference
 ---
-
-
 # CityHash
 
 ClickHouse использует **одну из предыдущих** версий [CityHash от Google](https://github.com/google/cityhash).

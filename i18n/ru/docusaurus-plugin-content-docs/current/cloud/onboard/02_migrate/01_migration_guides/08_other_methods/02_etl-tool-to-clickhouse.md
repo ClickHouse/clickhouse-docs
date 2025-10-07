@@ -16,7 +16,6 @@
   ClickHouse'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import third_party_01 from '@site/static/images/integrations/migration/third-party-01.png';
 

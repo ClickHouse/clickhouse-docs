@@ -1,13 +1,10 @@
 ---
-'sidebar_label': 'SQL выгрузки'
-'slug': '/integrations/data-formats/sql'
-'title': 'Вставка и выгрузка SQL данных в ClickHouse'
-'description': 'Страница, описывающая, как передавать данные между другими БАЗАМИ
-  ДАННЫХ и ClickHouse с использованием SQL выгрузок.'
-'doc_type': 'guide'
+slug: '/integrations/data-formats/sql'
+sidebar_label: 'SQL Dumps'
+description: 'Страница, описывающая, как передавать данные между другими БАЗАМИ'
+title: 'Вставка и выгрузка SQL данных в ClickHouse'
+doc_type: guide
 ---
-
-
 # Вставка и выгрузка SQL данных в ClickHouse
 
 ClickHouse может быть легко интегрирован в инфраструктуры баз данных OLTP различными способами. Один из способов - передать данные между другими базами данных и ClickHouse с помощью SQL дампов.

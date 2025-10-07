@@ -5,7 +5,6 @@
   от MongoDB к ClickHouse'
 'doc_type': 'reference'
 ---
-
 MongoDB хранит записи данных в виде BSON-документов. В ClickPipes вы можете настроить прием BSON-документов в ClickHouse как JSON или JSON String. В следующей таблице показано соответствие типов полей BSON и JSON:
 
 | Тип BSON MongoDB        | Тип JSON ClickHouse                   | Примечания               |

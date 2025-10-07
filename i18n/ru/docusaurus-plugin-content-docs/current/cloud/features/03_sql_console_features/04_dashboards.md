@@ -6,7 +6,6 @@
   визуализациями из сохраненных запросов.'
 'doc_type': 'guide'
 ---
-
 import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import dashboards_2 from '@site/static/images/cloud/dashboards/2_dashboards.png';

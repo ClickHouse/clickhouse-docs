@@ -1,11 +1,10 @@
 ---
 'title': 'Безопасность и соответствие отчетам'
 'slug': '/cloud/security/compliance-overview'
-'description': 'Обзор безопасности и соответствия ClickHouse Cloud, сертификаций включая
+'description': 'Обзор безопасности и соответствия ClickHouse Cloud, сертификций включая
   SOC 2, ISO 27001, U.S. DPF и HIPAA'
 'doc_type': 'guide'
 ---
-
 import BetaBadge from '@theme/badges/BetaBadge';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge';
 

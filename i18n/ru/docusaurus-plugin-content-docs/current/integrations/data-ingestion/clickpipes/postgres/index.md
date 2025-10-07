@@ -1,11 +1,10 @@
 ---
-'sidebar_label': 'Извлечение данных из Postgres в ClickHouse'
-'description': 'Бесперебійно подключите ваш Postgres к ClickHouse Cloud.'
-'slug': '/integrations/clickpipes/postgres'
-'title': 'Извлечение данных из Postgres в ClickHouse (с использованием CDC)'
-'doc_type': 'guide'
+slug: '/integrations/clickpipes/postgres'
+sidebar_label: 'Прием данных из Postgres в ClickHouse'
+description: 'Бесперебойно подключите ваш Postgres к ClickHouse Cloud.'
+title: 'Прием данных из Postgres в ClickHouse (с использованием CDC)'
+doc_type: guide
 ---
-
 import BetaBadge from '@theme/badges/BetaBadge';
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';

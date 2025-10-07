@@ -12,7 +12,6 @@
 'slug': '/cloud/reference/supported-regions'
 'doc_type': 'reference'
 ---
-
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
 

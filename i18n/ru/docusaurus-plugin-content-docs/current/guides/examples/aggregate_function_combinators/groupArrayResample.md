@@ -1,18 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/groupArrayResample'
-'title': 'groupArrayResample'
-'description': 'Пример использования комбинатора Resample с groupArray'
-'keywords':
-- 'groupArray'
-- 'Resample'
-- 'combinator'
-- 'examples'
-- 'groupArrayResample'
-'sidebar_label': 'groupArrayResample'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/groupArrayResample'
+sidebar_label: groupArrayResample
+description: 'Пример использования комбинатора Resample с groupArray'
+title: groupArrayResample
+keywords: ['groupArray', 'Resample', 'combinator', 'examples', 'groupArrayResample']
+doc_type: reference
 ---
-
-
 # groupArrayResample {#grouparrayresample}
 
 ## Описание {#description}

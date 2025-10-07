@@ -1,20 +1,11 @@
 ---
-'title': 'Установка chDB для Rust'
-'sidebar_label': 'Rust'
-'slug': '/chdb/install/rust'
-'description': 'Как установить и использовать привязки chDB для Rust'
-'keywords':
-- 'chdb'
-- 'embedded'
-- 'clickhouse-lite'
-- 'rust'
-- 'install'
-- 'ffi'
-- 'bindings'
-'doc_type': 'guide'
+slug: '/chdb/install/rust'
+sidebar_label: Rust
+description: 'Как установить и использовать привязки chDB для Rust'
+title: 'Установка chDB для Rust'
+keywords: ['chdb', 'встроенный', 'clickhouse-lite', 'bun', 'установка']
+doc_type: guide
 ---
-
-
 # chDB для Rust {#chdb-for-rust}
 
 chDB-rust предоставляет экспериментальные FFI (интерфейс внешней функции) связывания для chDB, позволяя вам выполнять запросы ClickHouse непосредственно в ваших приложениях на Rust без внешних зависимостей.

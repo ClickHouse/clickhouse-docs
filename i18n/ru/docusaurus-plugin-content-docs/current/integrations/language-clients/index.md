@@ -1,18 +1,10 @@
 ---
-'slug': '/integrations/language-clients'
-'title': 'Языковые клиенты'
-'description': 'Страница содержания для языковых клиентов.'
-'keywords':
-- 'Language Clients'
-- 'C++'
-- 'Go'
-- 'JavaScript'
-- 'Java'
-- 'Python'
-- 'Rust'
-'doc_type': 'landing-page'
+slug: '/integrations/language-clients'
+description: 'Страница содержания для языковых клиентов.'
+title: 'Клиенты языков'
+keywords: ['Клиенты языков', 'C++', 'Go', 'JavaScript', 'Java', 'Python', 'Rust']
+doc_type: landing-page
 ---
-
 В этом разделе документации вы можете узнать больше о множестве интеграций клиентских языков, которые предлагает ClickHouse.
 
 | Страница                                                                  | Описание                                                                          |

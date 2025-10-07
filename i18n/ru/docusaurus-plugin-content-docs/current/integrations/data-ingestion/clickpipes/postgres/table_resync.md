@@ -1,12 +1,10 @@
 ---
-'title': 'Синхронизация конкретных таблиц'
-'description': 'Синхронизация конкретных таблиц в Postgres ClickPipe'
-'slug': '/integrations/clickpipes/postgres/table_resync'
-'sidebar_label': 'Синхронизация таблицы'
-'doc_type': 'guide'
+slug: '/integrations/clickpipes/postgres/table_resync'
+sidebar_label: 'Синхронизация таблицы'
+description: 'Синхронизация конкретных таблиц в Postgres ClickPipe'
+title: 'Повторная синхронизация конкретных таблиц'
+doc_type: guide
 ---
-
-
 # Синхронизация конкретных таблиц {#resync-tables}
 
 Существуют сценарии, когда было бы полезно повторно синхронизировать конкретные таблицы в конвейере. Некоторые примеры случаев использования могут включать значительные изменения схемы в Postgres или, возможно, переработку данных в ClickHouse.

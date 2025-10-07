@@ -1,14 +1,11 @@
 ---
-'title': 'Форматы данных'
-'sidebar_label': 'Форматы данных'
-'slug': '/chdb/reference/data-formats'
-'description': 'Форматы данных для chDB'
-'keywords':
-- 'chdb'
-- 'data formats'
-'doc_type': 'reference'
+slug: '/chdb/reference/data-formats'
+sidebar_label: 'Форматы данных'
+description: 'Форматы данных для chDB'
+title: 'Форматы данных'
+keywords: ['chdb', 'форматы данных']
+doc_type: reference
 ---
-
 Когда дело доходит до форматов данных, chDB на 100% совместим по функциям с ClickHouse.
 
 Форматы ввода используются для разбора данных, предоставляемых для `INSERT` и `SELECT` из таблицы с файловой поддержкой, такой как `File`, `URL` или `S3`.

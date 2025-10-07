@@ -1,12 +1,11 @@
 ---
-'sidebar_label': 'FAQ'
-'description': 'Часто задаваемые вопросы о ClickPipes для Postgres.'
-'slug': '/integrations/clickpipes/postgres/faq'
-'sidebar_position': 2
-'title': 'ClickPipes для Postgres FAQ'
-'doc_type': 'reference'
+slug: '/integrations/clickpipes/postgres/faq'
+sidebar_label: FAQ
+sidebar_position: 2
+description: 'Часто задаваемые вопросы о ClickPipes для Postgres.'
+title: 'Часто задаваемые вопросы о ClickPipes для Postgres'
+doc_type: reference
 ---
-
 import failover_slot from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/failover_slot.png'
 import Image from '@theme/IdealImage';
 

@@ -13,7 +13,6 @@
 'show_related_blogs': true
 'doc_type': 'guide'
 ---
-
 import observability_1 from '@site/static/images/use-cases/observability/observability-1.png';
 import observability_2 from '@site/static/images/use-cases/observability/observability-2.png';
 import Image from '@theme/IdealImage';

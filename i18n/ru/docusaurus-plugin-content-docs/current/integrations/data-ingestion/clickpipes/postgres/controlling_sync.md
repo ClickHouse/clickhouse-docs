@@ -2,10 +2,9 @@
 'title': 'Контроль синхронизации Postgres ClickPipe'
 'description': 'Документация для контроля синхронизации Postgres ClickPipe'
 'slug': '/integrations/clickpipes/postgres/sync_control'
-'sidebar_label': 'Контроль синхронизаций'
+'sidebar_label': 'Контроль синхронизации'
 'doc_type': 'guide'
 ---
-
 import edit_sync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/edit_sync_button.png'
 import create_sync_settings from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/create_sync_settings.png'
 import edit_sync_settings from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/sync_settings_edit.png'

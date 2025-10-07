@@ -7,7 +7,6 @@
 'description': 'Начало работы с ClickStack - Стек мониторинга ClickHouse'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';

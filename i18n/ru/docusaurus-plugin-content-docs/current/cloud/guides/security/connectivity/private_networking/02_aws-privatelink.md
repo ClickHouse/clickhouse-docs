@@ -5,7 +5,6 @@
 'slug': '/manage/security/aws-privatelink'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
 import aws_private_link_pecreate from '@site/static/images/cloud/security/aws-privatelink-pe-create.png';

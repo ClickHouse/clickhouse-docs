@@ -12,8 +12,6 @@
 'description': 'Страница, описывающая доступные варианты переноса данных в ClickHouse'
 'doc_type': 'guide'
 ---
-
-
 # Миграция данных в ClickHouse
 
 <div class='vimeo-container'>

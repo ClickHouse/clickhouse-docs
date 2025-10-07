@@ -1,12 +1,10 @@
 ---
-'sidebar_label': 'CSV и TSV'
-'slug': '/integrations/data-formats/csv-tsv'
-'title': 'Работа с данными CSV и TSV в ClickHouse'
-'description': 'Страница, описывающая, как работать с данными CSV и TSV в ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/data-formats/csv-tsv'
+sidebar_label: 'CSV и TSV'
+description: 'Страница, описывающая, как работать с данными CSV и TSV в ClickHouse'
+title: 'Работа с данными CSV и TSV в ClickHouse'
+doc_type: guide
 ---
-
-
 # Работа с данными CSV и TSV в ClickHouse
 
 ClickHouse поддерживает импорт данных из файлов CSV и экспорт данных в формат CSV. Поскольку файлы CSV могут иметь различные особенности формата, включая строки заголовков, пользовательские разделители и символы экранирования, ClickHouse предоставляет форматы и настройки для эффективного решения каждой из этих задач.

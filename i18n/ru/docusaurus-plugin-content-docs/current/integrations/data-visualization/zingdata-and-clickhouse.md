@@ -1,16 +1,13 @@
 ---
-'sidebar_label': 'Zing Data'
-'sidebar_position': 206
-'slug': '/integrations/zingdata'
-'keywords':
-- 'Zing Data'
-'description': 'Zing Data является простой социальной бизнес-аналитикой для ClickHouse,
-  созданной для iOS, Android и веба.'
-'title': 'Подключение Zing Data к ClickHouse'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: '/integrations/zingdata'
+sidebar_label: 'Zing Data'
+sidebar_position: 206
+description: 'Zing Data является простой социальной бизнес-аналитикой для ClickHouse,'
+title: 'Подключите Zing Data к ClickHouse'
+keywords: ['clickhouse', 'Zing Data', 'connect', 'integrate', 'ui']
+doc_type: guide
+show_related_blogs: true
 ---
-
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import zing_01 from '@site/static/images/integrations/data-visualization/zing_01.png';

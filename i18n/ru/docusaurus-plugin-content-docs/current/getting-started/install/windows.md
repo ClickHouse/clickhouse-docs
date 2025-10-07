@@ -1,17 +1,12 @@
 ---
-'description': '在 Windows 上使用 WSL 安装 ClickHouse'
-'keywords':
-- 'ClickHouse'
-- 'install'
-- 'Redhat'
-- 'rpm'
-'sidebar_label': 'Windows'
-'slug': '/install/windows'
-'title': '在 Windows 上使用 WSL 安装 ClickHouse'
-'hide_title': true
-'doc_type': 'guide'
+slug: '/install/windows'
+sidebar_label: Windows
+description: 'Установите ClickHouse с использованием WSL на Windows'
+title: 'Установите ClickHouse на Windows с WSL'
+keywords: ['ClickHouse', 'установка', 'Redhat', 'rpm']
+doc_type: guide
+hide_title: true
 ---
-
 import Windows from './_snippets/_windows_install.md'
 
 <Windows/>

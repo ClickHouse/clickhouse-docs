@@ -1,22 +1,13 @@
 ---
-'slug': '/integrations/data-formats'
-'sidebar_label': 'Обзор'
-'sidebar_position': 1
-'keywords':
-- 'clickhouse'
-- 'CSV'
-- 'TSV'
-- 'Parquet'
-- 'clickhouse-client'
-- 'clickhouse-local'
-'title': 'Импорт различных форматов данных в ClickHouse'
-'description': 'Страница, описывающая, как импортировать различные форматы данных
-  в ClickHouse'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: '/integrations/data-formats'
+sidebar_label: Обзор
+sidebar_position: 1
+description: 'Страница, описывающая, как импортировать различные форматы данных'
+title: 'Импорт из различных форматов данных в ClickHouse'
+keywords: ['clickhouse', 'CSV', 'TSV', 'Parquet', 'clickhouse-client', 'clickhouse-local']
+doc_type: guide
+show_related_blogs: true
 ---
-
-
 # Импорт различных форматов данных в ClickHouse
 
 В этом разделе документации вы найдете примеры загрузки из различных типов файлов.

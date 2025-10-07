@@ -6,7 +6,6 @@
   пользователей в свою организацию и назначать им роли'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import users_and_roles from '@site/static/images/cloud/security/users_and_roles.png';
 import invite_user from '@site/static/images/cloud/security/invite-user.png';

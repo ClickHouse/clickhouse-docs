@@ -7,7 +7,6 @@
 'description': 'Развертывание ClickStack с помощью Helm - Стек наблюдаемости ClickHouse'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import hyperdx_24 from '@site/static/images/use-cases/observability/hyperdx-24.png';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';

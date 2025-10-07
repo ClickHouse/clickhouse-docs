@@ -1,14 +1,10 @@
 ---
-'slug': '/data-compression/compression-in-clickhouse'
-'title': 'Сжатие в ClickHouse'
-'description': 'Выбор алгоритмов сжатия ClickHouse'
-'keywords':
-- 'compression'
-- 'codec'
-- 'encoding'
-'doc_type': 'reference'
+slug: '/data-compression/compression-in-clickhouse'
+description: 'Выбор алгоритмов сжатия ClickHouse'
+title: 'Сжатие в ClickHouse'
+keywords: ['сжатие', 'кодек', 'кодирование']
+doc_type: reference
 ---
-
 Одним из секретов производительности запросов ClickHouse является сжатие.
 
 Меньше данных на диске означает меньше ввода-вывода и более быстрые запросы и вставки. Накладные расходы любого алгоритма сжатия в отношении CPU в большинстве случаев перекрываются сокращением ввода-вывода. Улучшение сжатия данных, следовательно, должно стать первой целью при работе над обеспечением быстрой работы запросов в ClickHouse.

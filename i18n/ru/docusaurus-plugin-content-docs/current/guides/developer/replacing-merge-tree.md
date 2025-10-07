@@ -1,14 +1,10 @@
 ---
-'slug': '/guides/replacing-merge-tree'
-'title': 'ReplacingMergeTree'
-'description': 'Использование движка ReplacingMergeTree в ClickHouse'
-'keywords':
-- 'replacingmergetree'
-- 'inserts'
-- 'deduplication'
-'doc_type': 'guide'
+slug: '/guides/replacing-merge-tree'
+description: 'Использование движка ReplacingMergeTree в ClickHouse'
+title: ReplacingMergeTree
+keywords: ['replacingmergetree', 'вставки', 'дедупликация']
+doc_type: guide
 ---
-
 import postgres_replacingmergetree from '@site/static/images/migrations/postgres-replacingmergetree.png';
 import Image from '@theme/IdealImage';
 

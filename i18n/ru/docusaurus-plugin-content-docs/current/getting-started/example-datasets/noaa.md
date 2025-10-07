@@ -1,12 +1,11 @@
 ---
-'description': '2,5 миллиарда строк климатических данных за последние 120 лет'
-'sidebar_label': 'NOAA Глобальная Историческая Климатологическая Сеть'
-'sidebar_position': 1
-'slug': '/getting-started/example-datasets/noaa'
-'title': 'NOAA Глобальная Историческая Климатологическая Сеть'
-'doc_type': 'reference'
+slug: '/getting-started/example-datasets/noaa'
+sidebar_label: 'Глобальная историческая климатологическая сеть NOAA'
+sidebar_position: 1
+description: '2,5 миллиарда строк климатических данных за последние 120 лет'
+title: 'Глобальная историческая климатологическая сеть NOAA'
+doc_type: reference
 ---
-
 Этот набор данных содержит метеорологические измерения за последние 120 лет. Каждая строка представляет собой измерение для определенного момента времени и станции.
 
 Более точно и согласно [источнику этих данных](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn):

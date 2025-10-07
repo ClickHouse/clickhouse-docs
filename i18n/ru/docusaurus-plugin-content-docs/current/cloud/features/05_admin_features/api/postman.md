@@ -6,7 +6,6 @@
   Postman'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import postman1 from '@site/static/images/cloud/manage/postman/postman1.png';
 import postman2 from '@site/static/images/cloud/manage/postman/postman2.png';

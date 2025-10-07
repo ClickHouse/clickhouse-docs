@@ -1,13 +1,11 @@
 ---
-'slug': '/architecture/introduction'
-'sidebar_label': 'Введение'
-'title': 'Введение'
-'sidebar_position': 1
-'description': 'Страница с примерами развертывания, основанными на рекомендациях,
-  предоставленных пользователям ClickHouse организацией поддержки и услуг ClickHouse'
-'doc_type': 'guide'
+slug: '/architecture/introduction'
+sidebar_label: Введение
+sidebar_position: 1
+description: 'Страница с примерами развертывания, основанными на рекомендациях,'
+title: Введение
+doc_type: guide
 ---
-
 import ReplicationShardingTerminology from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_replication-sharding-terminology.md';
 
 Раздел примеров развертывания основывается на рекомендациях, предоставленных пользователям ClickHouse организацией поддержки и услуг ClickHouse. Это рабочие примеры, и мы рекомендуем вам попробовать их, а затем адаптировать под свои нужды. Вы можете найти здесь пример, который точно соответствует вашим требованиям.

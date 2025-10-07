@@ -6,7 +6,6 @@
   ClickPipes'
 'doc_type': 'reference'
 ---
-
 import ClickPipesFAQ from '../../../_snippets/_clickpipes_faq.md'
 
 

@@ -7,7 +7,6 @@
 'title': 'NestJS'
 'doc_type': 'guide'
 ---
-
 Интеграция ClickStack с NestJS позволяет вам создать логгер или использовать стандартный логгер для отправки логов в ClickStack (на базе [nest-winston](https://www.npmjs.com/package/nest-winston?activeTab=readme)).
 
 **Это руководство интегрирует:**

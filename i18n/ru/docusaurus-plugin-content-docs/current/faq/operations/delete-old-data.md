@@ -1,14 +1,11 @@
 ---
-'slug': '/faq/operations/delete-old-data'
-'title': 'Можно ли удалить старые записи из таблицы ClickHouse?'
-'toc_hidden': true
-'toc_priority': 20
-'description': 'Эта страница отвечает на вопрос о том, возможно ли удалить старые
-  записи из таблицы ClickHouse.'
-'doc_type': 'reference'
+slug: '/faq/operations/delete-old-data'
+description: 'Эта страница отвечает на вопрос о том, возможно ли удалить старые'
+title: 'Возможно ли удалить старые записи из таблицы ClickHouse?'
+doc_type: reference
+toc_hidden: true
+toc_priority: 20
 ---
-
-
 # Можно ли удалить старые записи из таблицы ClickHouse? {#is-it-possible-to-delete-old-records-from-a-clickhouse-table}
 
 Краткий ответ - «да». ClickHouse имеет несколько механизмов, которые позволяют освобождать дисковое пространство, удаляя старые данные. Каждый механизм предназначен для различных сценариев.

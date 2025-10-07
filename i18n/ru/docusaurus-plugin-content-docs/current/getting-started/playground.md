@@ -1,19 +1,11 @@
 ---
-'description': 'ClickHouse Playground позволяет людям экспериментировать с ClickHouse,
-  выполняя запросы мгновенно, без настройки своего сервера или кластера.'
-'keywords':
-- 'clickhouse'
-- 'playground'
-- 'getting'
-- 'started'
-- 'docs'
-'sidebar_label': 'ClickHouse Playground'
-'slug': '/getting-started/playground'
-'title': 'ClickHouse Playground'
-'doc_type': 'guide'
+slug: '/getting-started/playground'
+sidebar_label: 'Playground ClickHouse'
+description: 'ClickHouse Playground позволяет людям экспериментировать с ClickHouse,'
+title: 'Playground ClickHouse'
+keywords: ['clickhouse', 'playground', 'getting', 'started', 'docs']
+doc_type: guide
 ---
-
-
 # Playground ClickHouse
 
 [ClickHouse Playground](https://sql.clickhouse.com) позволяет пользователям экспериментировать с ClickHouse, выполняя запросы мгновенно, без необходимости настройки собственного сервера или кластера. В Playground доступны несколько примеров наборов данных.

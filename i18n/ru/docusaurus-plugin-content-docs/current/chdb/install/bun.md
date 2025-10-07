@@ -1,21 +1,11 @@
 ---
-'title': 'chDB для Bun'
-'sidebar_label': 'Bun'
-'slug': '/chdb/install/bun'
-'description': 'Как установить и использовать chDB с средой выполнения Bun'
-'keywords':
-- 'chdb'
-- 'bun'
-- 'javascript'
-- 'typescript'
-- 'embedded'
-- 'clickhouse'
-- 'sql'
-- 'olap'
-'doc_type': 'guide'
+slug: '/chdb/install/bun'
+sidebar_label: Bun
+description: 'Как установить и использовать chDB с средой выполнения Bun'
+title: 'Установка chDB для Bun'
+keywords: ['chdb', 'встраиваемый', 'clickhouse-lite', 'bun', 'установка']
+doc_type: guide
 ---
-
-
 # chDB для Bun
 
 chDB-bun предоставляет экспериментальные привязки FFI (интерфейс внешних функций) для chDB, позволяя вам выполнять запросы ClickHouse непосредственно в ваших приложениях на Bun без внешних зависимостей.

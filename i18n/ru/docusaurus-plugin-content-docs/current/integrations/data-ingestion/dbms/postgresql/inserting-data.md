@@ -1,15 +1,10 @@
 ---
-'slug': '/integrations/postgresql/inserting-data'
-'title': 'Как вставить данные из PostgreSQL'
-'keywords':
-- 'postgres'
-- 'postgresql'
-- 'inserts'
-'description': 'Страница, описывающая как вставить данные из PostgreSQL с использованием
-  ClickPipes, PeerDB или функции таблицы PostgreSQL'
-'doc_type': 'guide'
+slug: '/integrations/postgresql/inserting-data'
+description: 'Страница, описывающая как вставить данные из PostgreSQL с использованием'
+title: 'Как вставить данные из PostgreSQL'
+keywords: ['postgres', 'postgresql', 'вставки']
+doc_type: guide
 ---
-
 Мы рекомендуем прочитать [это руководство](/guides/inserting-data), чтобы узнать о лучших практиках вставки данных в ClickHouse с оптимизацией для производительности вставки.
 
 Для пакетной загрузки данных из PostgreSQL пользователи могут использовать:

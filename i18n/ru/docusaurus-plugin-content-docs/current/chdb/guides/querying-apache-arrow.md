@@ -1,14 +1,11 @@
 ---
-'title': '如何使用 chDB 查询 Apache Arrow'
-'sidebar_label': '查询 Apache Arrow'
-'slug': '/chdb/guides/apache-arrow'
-'description': '在本指南中，我们将学习如何使用 chDB 查询 Apache Arrow 表'
-'keywords':
-- 'chdb'
-- 'Apache Arrow'
-'doc_type': 'guide'
+slug: '/chdb/guides/apache-arrow'
+sidebar_label: 'Запросы к Apache Arrow'
+description: 'В этом руководстве мы будем учиться, как использовать chDB для запроса'
+title: 'Как выполнять запросы к Apache Arrow с помощью chDB'
+keywords: ['chdb', 'Apache Arrow']
+doc_type: guide
 ---
-
 [Apache Arrow](https://arrow.apache.org/) — это стандартизированный колонкоориентированный формат памяти, который набирает популярность в сообществе данных.  
 В этом руководстве мы научимся запрашивать Apache Arrow с помощью табличной функции `Python`.
 

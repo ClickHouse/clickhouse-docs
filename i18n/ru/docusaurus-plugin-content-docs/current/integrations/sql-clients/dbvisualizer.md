@@ -1,12 +1,10 @@
 ---
-'sidebar_label': 'DbVisualizer'
-'slug': '/integrations/dbvisualizer'
-'description': 'DbVisualizer — это инструмент для работы с базами данных с расширенной
-  поддержкой ClickHouse.'
-'title': 'Подключение DbVisualizer к ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/dbvisualizer'
+sidebar_label: DbVisualizer
+description: 'DbVisualizer — это инструмент для работы с базами данных с расширенной'
+title: 'Подключение DbVisualizer к ClickHouse'
+doc_type: guide
 ---
-
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import dbvisualizer_driver_manager from '@site/static/images/integrations/sql-clients/dbvisualizer-driver-manager.png';

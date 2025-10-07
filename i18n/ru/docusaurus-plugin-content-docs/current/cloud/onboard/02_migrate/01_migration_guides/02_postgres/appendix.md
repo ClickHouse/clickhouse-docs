@@ -9,7 +9,6 @@
 'description': 'Дополнительная информация о миграции из PostgreSQL'
 'doc_type': 'reference'
 ---
-
 import postgresReplicas from '@site/static/images/integrations/data-ingestion/dbms/postgres-replicas.png';
 import Image from '@theme/IdealImage';
 

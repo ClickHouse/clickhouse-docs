@@ -1,12 +1,11 @@
 ---
-'sidebar_label': 'Конфигурация плагина'
-'sidebar_position': 3
-'slug': '/integrations/grafana/config'
-'description': 'Опции конфигурации для плагина источника данных ClickHouse в Grafana'
-'title': 'Настройка источника данных ClickHouse в Grafana'
-'doc_type': 'guide'
+slug: '/integrations/grafana/config'
+sidebar_label: 'Настройки плагина'
+sidebar_position: 3
+description: 'Опции конфигурации для плагина источника данных ClickHouse в Grafana'
+title: 'Настройка источника данных ClickHouse в Grafana'
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
 import config_common from '@site/static/images/integrations/data-visualization/grafana/config_common.png';

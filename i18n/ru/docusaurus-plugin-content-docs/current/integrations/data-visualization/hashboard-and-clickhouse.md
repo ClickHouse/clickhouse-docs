@@ -1,20 +1,12 @@
 ---
-'sidebar_label': 'Hashboard'
-'sidebar_position': 132
-'slug': '/integrations/hashboard'
-'keywords':
-- 'clickhouse'
-- 'Hashboard'
-- 'connect'
-- 'integrate'
-- 'ui'
-- 'analytics'
-'description': 'Hashboard — это надежная аналитическая платформа, которая может быть
-  легко интегрирована с ClickHouse для аналитики данных в реальном времени.'
-'title': 'Подключение ClickHouse к Hashboard'
-'doc_type': 'guide'
+slug: '/integrations/hashboard'
+sidebar_label: Hashboard
+sidebar_position: 132
+description: 'Hashboard — это надежная аналитическая платформа, которая может быть'
+title: 'Соединение ClickHouse с Hashboard'
+keywords: ['clickhouse', 'Hashboard', 'connect', 'integrate', 'ui', 'analytics']
+doc_type: guide
 ---
-
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
 import hashboard_01 from '@site/static/images/integrations/data-visualization/hashboard_01.png';
 import Image from '@theme/IdealImage';

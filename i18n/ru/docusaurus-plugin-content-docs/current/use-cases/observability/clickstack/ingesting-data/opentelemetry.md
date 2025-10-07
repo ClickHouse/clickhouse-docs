@@ -2,12 +2,11 @@
 'slug': '/use-cases/observability/clickstack/ingesting-data/opentelemetry'
 'pagination_prev': null
 'pagination_next': null
-'description': 'Прием данных с OpenTelemetry для ClickStack - Платформа мониторинга
+'description': 'Прием данных с OpenTelemetry для ClickStack - платформа мониторинга
   ClickHouse'
 'title': 'Сбор данных с OpenTelemetry'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import ingestion_key from '@site/static/images/use-cases/observability/ingestion-keys.png';
 

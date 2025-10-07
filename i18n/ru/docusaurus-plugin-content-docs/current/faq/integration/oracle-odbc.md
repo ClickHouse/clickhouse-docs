@@ -1,14 +1,11 @@
 ---
-'slug': '/faq/integration/oracle-odbc'
-'title': 'Что делать, если у меня возникла проблема с кодировками при использовании
-  Oracle через ODBC?'
-'toc_hidden': true
-'toc_priority': 20
-'description': 'Эта страница содержит рекомендации о том, что делать, если у вас возникла
-  проблема с кодировками при использовании Oracle через ODBC'
-'doc_type': 'guide'
+slug: '/faq/integration/oracle-odbc'
+description: 'Эта страница содержит рекомендации о том, что делать, если у вас возникла'
+title: 'Что делать, если у меня возникла проблема с кодировками при использовании Oracle через ODBC?'
+doc_type: guide
+toc_hidden: true
+toc_priority: 20
 ---
-
 
 # Что делать, если у меня есть проблема с кодировками при использовании Oracle через ODBC? {#oracle-odbc-encodings}
 

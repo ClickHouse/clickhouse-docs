@@ -1,19 +1,12 @@
 ---
-'sidebar_label': 'Go'
-'sidebar_position': 1
-'keywords':
-- 'clickhouse'
-- 'go'
-- 'client'
-- 'golang'
-'slug': '/integrations/go'
-'description': 'Клиенты Go для ClickHouse позволяют пользователям подключаться к ClickHouse,
-  используя либо стандартный интерфейс базы данных Go/sql, либо оптимизированный родной
-  интерфейс.'
-'title': 'ClickHouse Go'
-'doc_type': 'reference'
+slug: '/integrations/go'
+sidebar_label: Go
+sidebar_position: 1
+description: 'Клиенты Go для ClickHouse позволяют пользователям подключаться к ClickHouse,'
+title: 'ClickHouse Go'
+keywords: ['clickhouse', 'go', 'client', 'golang']
+doc_type: reference
 ---
-
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
 
 

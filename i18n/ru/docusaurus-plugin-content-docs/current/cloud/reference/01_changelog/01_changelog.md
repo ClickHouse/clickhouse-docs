@@ -1,11 +1,11 @@
 ---
-slug: /whats-new/cloud
-sidebar_label: 'Cloud Changelog'
-title: 'Cloud Changelog'
-description: 'ClickHouse Cloud changelog providing descriptions of what is new in each ClickHouse Cloud release'
-doc_type: 'changelog'
+'slug': '/whats-new/cloud'
+'sidebar_label': 'Журнал изменений облака'
+'title': 'Журнал изменений облака'
+'description': 'Журнал изменений ClickHouse Cloud, предоставляющий описания нововведений
+  в каждом релизе ClickHouse Cloud'
+'doc_type': 'changelog'
 ---
-
 import Image from '@theme/IdealImage';
 import add_marketplace from '@site/static/images/cloud/reference/add_marketplace.png';
 import beta_dashboards from '@site/static/images/cloud/reference/beta_dashboards.png';

@@ -1,19 +1,12 @@
 ---
-'sidebar_label': 'NiFi'
-'sidebar_position': 12
-'keywords':
-- 'clickhouse'
-- 'NiFi'
-- 'connect'
-- 'integrate'
-- 'etl'
-- 'data integration'
-'slug': '/integrations/nifi'
-'description': 'Передача данных в ClickHouse с помощью NiFi конвейеров данных'
-'title': 'Подключение Apache NiFi к ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/nifi'
+sidebar_label: NiFi
+sidebar_position: 12
+description: 'Передача данных в ClickHouse с помощью NiFi конвейеров данных'
+title: 'Соединение Apache NiFi с ClickHouse'
+keywords: ['clickhouse', 'NiFi', 'connect', 'integrate', 'etl', 'data integration']
+doc_type: guide
 ---
-
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import nifi01 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_01.png';

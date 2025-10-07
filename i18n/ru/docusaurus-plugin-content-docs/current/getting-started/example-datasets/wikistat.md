@@ -1,11 +1,10 @@
 ---
-'description': 'Изучите набор данных WikiStat, содержащий 0.5 триллиона записей.'
-'sidebar_label': 'WikiStat'
-'slug': '/getting-started/example-datasets/wikistat'
-'title': 'WikiStat'
-'doc_type': 'reference'
+slug: '/getting-started/example-datasets/wikistat'
+sidebar_label: WikiStat
+description: 'Изучите набор данных WikiStat, содержащий 0.5 триллиона записей.'
+title: WikiStat
+doc_type: reference
 ---
-
 Набор данных содержит 0.5 триллиона записей.
 
 Смотрите видео с FOSDEM 2023: https://www.youtube.com/watch?v=JlcI2Vfz_uk

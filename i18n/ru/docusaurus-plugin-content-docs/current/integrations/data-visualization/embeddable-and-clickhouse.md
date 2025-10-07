@@ -1,19 +1,11 @@
 ---
-'sidebar_label': 'Embeddable'
-'slug': '/integrations/embeddable'
-'keywords':
-- 'clickhouse'
-- 'Embeddable'
-- 'connect'
-- 'integrate'
-- 'ui'
-'description': 'Embeddable — это инструмент для разработчиков, который позволяет создавать
-  быстрые, интерактивные и полностью настраиваемые аналитические функции прямо в вашем
-  приложении.'
-'title': 'Подключение Embeddable к ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/embeddable'
+sidebar_label: Встраиваемый
+description: 'Embeddable — это инструмент для разработчиков, который позволяет создавать'
+title: 'Соединение Встраиваемого с ClickHouse'
+keywords: ['clickhouse', 'Встраиваемый', 'соединить', 'интегрировать', 'ui']
+doc_type: guide
 ---
-
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 

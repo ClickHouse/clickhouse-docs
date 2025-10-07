@@ -1,8 +1,9 @@
 ---
-'description': '数据集包含来自 LAION 5B 数据集的 1 亿个向量'
-'sidebar_label': 'LAION 5B 数据集'
+'description': 'Набор данных содержит 100 миллионов векторов из набора данных LAION
+  5B'
+'sidebar_label': 'Набор данных LAION 5B'
 'slug': '/getting-started/example-datasets/laion-5b-dataset'
-'title': 'LAION 5B 数据集'
+'title': 'Набор данных LAION 5B'
 'keywords':
 - 'semantic search'
 - 'vector similarity'
@@ -10,7 +11,6 @@
 - 'embeddings'
 'doc_type': 'reference'
 ---
-
 import search_results_image from '@site/static/images/getting-started/example-datasets/laion5b_visualization_1.png'
 import Image from '@theme/IdealImage';
 

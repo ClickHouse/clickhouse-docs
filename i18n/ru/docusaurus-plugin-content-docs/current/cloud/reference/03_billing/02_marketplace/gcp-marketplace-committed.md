@@ -1,7 +1,7 @@
 ---
 'slug': '/cloud/billing/marketplace/gcp-marketplace-committed-contract'
-'title': 'GCP Marketplace Коммитированный контракт'
-'description': 'Подпишитесь на ClickHouse Cloud через GCP Marketplace (Коммитированный
+'title': 'GCP Marketplace Комммитарированный контракт'
+'description': 'Подпишитесь на ClickHouse Cloud через GCP Marketplace (Комммитарированный
   контракт)'
 'keywords':
 - 'gcp'
@@ -12,7 +12,6 @@
 - 'committed contract'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import gcp_marketplace_committed_1 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-committed-1.png';
 import gcp_marketplace_committed_2 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-committed-2.png';

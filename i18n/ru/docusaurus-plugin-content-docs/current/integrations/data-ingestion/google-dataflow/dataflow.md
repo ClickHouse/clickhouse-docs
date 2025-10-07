@@ -1,13 +1,11 @@
 ---
-'sidebar_label': 'Интеграция Dataflow с ClickHouse'
-'slug': '/integrations/google-dataflow/dataflow'
-'sidebar_position': 1
-'description': 'Пользователи могут принимать данные в ClickHouse с помощью Google
-  Dataflow'
-'title': 'Интеграция Google Dataflow с ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/google-dataflow/dataflow'
+sidebar_label: 'Интеграция Dataflow с ClickHouse'
+sidebar_position: 1
+description: 'пользователи могут принимать данные в ClickHouse с помощью Google'
+title: 'Интеграция Google Dataflow с ClickHouse'
+doc_type: guide
 ---
-
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 

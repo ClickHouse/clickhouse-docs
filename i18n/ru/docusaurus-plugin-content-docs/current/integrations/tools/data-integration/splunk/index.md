@@ -1,16 +1,11 @@
 ---
-'sidebar_label': 'Splunk'
-'slug': '/integrations/audit-splunk'
-'keywords':
-- 'clickhouse'
-- 'Splunk'
-- 'audit'
-- 'cloud'
-'description': 'Сохранить журналы аудита ClickHouse Cloud в Splunk.'
-'title': 'Сохранение журналов аудита ClickHouse Cloud в Splunk'
-'doc_type': 'guide'
+slug: '/integrations/audit-splunk'
+sidebar_label: Splunk
+description: 'Сохранить журналы аудита ClickHouse Cloud в Splunk.'
+title: 'Сохранение журналов аудита ClickHouse Cloud в Splunk'
+keywords: ['clickhouse', 'Splunk', 'audit', 'cloud']
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 import splunk_001 from '@site/static/images/integrations/tools/data-integration/splunk/splunk_001.png';
 import splunk_002 from '@site/static/images/integrations/tools/data-integration/splunk/splunk_002.png';

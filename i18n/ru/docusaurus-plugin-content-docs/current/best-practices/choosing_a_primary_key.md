@@ -1,15 +1,12 @@
 ---
-'slug': '/best-practices/choosing-a-primary-key'
-'sidebar_position': 10
-'sidebar_label': 'Выбор первичного ключа'
-'title': 'Выбор первичного ключа'
-'description': 'Страница, описывающая, как выбрать первичный ключ в ClickHouse'
-'keywords':
-- 'primary key'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: '/best-practices/choosing-a-primary-key'
+sidebar_label: 'Выбор первичного ключа'
+sidebar_position: 10
+description: 'Страница, описывающая, как выбирать первичный ключ в ClickHouse'
+title: 'Выбор первичного ключа'
+doc_type: guide
+show_related_blogs: true
 ---
-
 import Image from '@theme/IdealImage';
 import create_primary_key from '@site/static/images/bestpractices/create_primary_key.gif';
 import primary_key from '@site/static/images/bestpractices/primary_key.gif';

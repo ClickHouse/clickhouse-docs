@@ -1,19 +1,12 @@
 ---
-'sidebar_label': 'Deepnote'
-'sidebar_position': 11
-'slug': '/integrations/deepnote'
-'keywords':
-- 'clickhouse'
-- 'Deepnote'
-- 'connect'
-- 'integrate'
-- 'notebook'
-'description': 'Эффективно выполняйте запросы к очень большим наборам данных, анализируя
-  и моделируя в удобной для вас среде ноутбука.'
-'title': 'Подключите ClickHouse к Deepnote'
-'doc_type': 'guide'
+slug: '/integrations/deepnote'
+sidebar_label: Deepnote
+sidebar_position: 11
+description: 'Эффективно выполните запросы к очень большим наборам данных, анализируя'
+title: 'Подключите ClickHouse к Deepnote'
+keywords: ['clickhouse', 'Deepnote', 'connect', 'integrate', 'notebook']
+doc_type: guide
 ---
-
 import deepnote_01 from '@site/static/images/integrations/data-visualization/deepnote_01.png';
 import deepnote_02 from '@site/static/images/integrations/data-visualization/deepnote_02.png';
 import deepnote_03 from '@site/static/images/integrations/data-visualization/deepnote_03.png';

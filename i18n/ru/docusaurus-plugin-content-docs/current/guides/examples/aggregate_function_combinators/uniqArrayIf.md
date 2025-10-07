@@ -1,19 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/uniqArrayIf'
-'title': 'uniqArrayIf'
-'description': 'Пример использования комбинатора uniqArrayIf'
-'keywords':
-- 'uniq'
-- 'array'
-- 'if'
-- 'combinator'
-- 'examples'
-- 'uniqArrayIf'
-'sidebar_label': 'uniqArrayIf'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/uniqArrayIf'
+sidebar_label: uniqArrayIf
+description: 'Пример использования комбиниратора uniqArrayIf'
+title: uniqArrayIf
+keywords: ['uniq', 'array', 'if', 'combinator', 'examples', 'uniqArrayIf']
+doc_type: reference
 ---
-
-
 # uniqArrayIf {#uniqarrayif}
 
 ## Описание {#description}

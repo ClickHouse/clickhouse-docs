@@ -1,19 +1,12 @@
 ---
-'sidebar_label': 'Explo'
-'sidebar_position': 131
-'slug': '/integrations/explo'
-'keywords':
-- 'clickhouse'
-- 'Explo'
-- 'connect'
-- 'integrate'
-- 'ui'
-'description': 'Explo — это простой в использовании инструмент пользовательского интерфейса
-  с открытым исходным кодом для задавания вопросов о ваших данных.'
-'title': 'Подключение Explo к ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/explo'
+sidebar_label: Explo
+sidebar_position: 131
+description: 'Explo — это простой в использовании инструмент пользовательского интерфейса'
+title: 'Подключение Explo к ClickHouse'
+keywords: ['clickhouse', 'Explo', 'connect', 'integrate', 'ui']
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import explo_01 from '@site/static/images/integrations/data-visualization/explo_01.png';

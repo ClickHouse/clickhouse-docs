@@ -1,13 +1,10 @@
 ---
-'slug': '/intro'
-'sidebar_label': 'Что такое ClickHouse?'
-'description': 'ClickHouse® — это столбцовая система управления базами данных (СУБД)
-  для онлайн-аналитической обработки (OLAP). Она доступна как в виде программного
-  обеспечения с открытым исходным кодом, так и в облачном предложении.'
-'title': 'Что такое ClickHouse?'
-'doc_type': 'guide'
+slug: '/intro'
+sidebar_label: 'Что такое ClickHouse?'
+description: 'ClickHouse® — это столбцовая система управления базами данных (СУБД)'
+title: 'Что такое ClickHouse?'
+doc_type: guide
 ---
-
 import column_example from '@site/static/images/column-oriented-example-query.png';
 import row_orientated from '@site/static/images/row-oriented.gif';
 import column_orientated from '@site/static/images/column-oriented.gif';

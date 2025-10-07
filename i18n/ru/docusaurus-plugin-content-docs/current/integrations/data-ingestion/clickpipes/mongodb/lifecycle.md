@@ -5,8 +5,6 @@
 'title': 'Жизненный цикл MongoDB ClickPipe'
 'doc_type': 'guide'
 ---
-
-
 # Жизненный цикл MongoDB ClickPipe {#lifecycle}
 
 Это документ о различных фазах MongoDB ClickPipe, различных состояниях, которые он может иметь, и их значении.

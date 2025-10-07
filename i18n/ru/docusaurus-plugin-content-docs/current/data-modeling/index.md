@@ -1,18 +1,10 @@
 ---
-'slug': '/data-modeling/overview'
-'title': 'Обзор моделирования данных'
-'description': 'Обзор моделирования данных'
-'keywords':
-- 'data modelling'
-- 'schema design'
-- 'dictionary'
-- 'materialized view'
-- 'data compression'
-- 'denormalizing data'
-'doc_type': 'landing-page'
+slug: '/data-modeling/overview'
+description: 'Обзор моделирования данных'
+title: 'Обзор Моделирования Данных'
+keywords: ['моделирование данных', 'дизайн схемы', 'словарь', 'материализованное представление', 'сжатие данных', 'денормализация данных']
+doc_type: landing-page
 ---
-
-
 # Моделирование Данных
 
 Этот раздел посвящен моделированию данных в ClickHouse и содержит следующие темы:

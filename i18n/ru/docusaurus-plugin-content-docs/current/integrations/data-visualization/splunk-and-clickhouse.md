@@ -1,16 +1,12 @@
 ---
-'sidebar_label': 'Splunk'
-'sidebar_position': 198
-'slug': '/integrations/splunk'
-'keywords':
-- 'Splunk'
-- 'integration'
-- 'data visualization'
-'description': 'Подключите панели управления Splunk к ClickHouse'
-'title': 'Подключение Splunk к ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/splunk'
+sidebar_label: Splunk
+sidebar_position: 198
+description: 'Подключите панели управления Splunk к ClickHouse'
+title: 'Подключение Splunk к ClickHouse'
+keywords: ['Splunk', 'интеграция', 'визуализация данных']
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 import splunk_1 from '@site/static/images/integrations/splunk/splunk-1.png';
 import splunk_2 from '@site/static/images/integrations/splunk/splunk-2.png';

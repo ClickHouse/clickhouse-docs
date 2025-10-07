@@ -1,16 +1,12 @@
 ---
-'slug': '/best-practices/use-data-skipping-indices-where-appropriate'
-'sidebar_position': 10
-'sidebar_label': 'Индексы пропуска данных'
-'title': 'Используйте индекс пропуска данных, где это уместно'
-'description': 'Страница, описывающая, как и когда использовать индекс пропуска данных'
-'keywords':
-- 'data skipping index'
-- 'skip index'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: '/best-practices/use-data-skipping-indices-where-appropriate'
+sidebar_label: 'Индексы пропуска данных'
+sidebar_position: 10
+description: 'Страница, описывающая, как и когда использовать индекс пропуска данных'
+title: 'Используйте индексы пропуска данных, где это уместно'
+doc_type: guide
+show_related_blogs: true
 ---
-
 import Image from '@theme/IdealImage';
 import building_skipping_indices from '@site/static/images/bestpractices/building_skipping_indices.gif';
 import using_skipping_indices from '@site/static/images/bestpractices/using_skipping_indices.gif';

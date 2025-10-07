@@ -7,7 +7,6 @@
   доступа к своей базе данных.'
 'doc_type': 'guide'
 ---
-
 import secures3_arn from '@site/static/images/cloud/security/secures3_arn.png';
 import Image from '@theme/IdealImage';
 

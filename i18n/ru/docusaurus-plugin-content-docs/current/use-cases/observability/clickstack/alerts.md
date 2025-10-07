@@ -1,13 +1,12 @@
 ---
 'slug': '/use-cases/observability/clickstack/alerts'
 'title': 'Поиск с ClickStack'
-'sidebar_label': 'Оповещения'
+'sidebar_label': 'Опровержения'
 'pagination_prev': null
 'pagination_next': null
-'description': 'Оповещения с ClickStack'
+'description': 'Опровержения с ClickStack'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import search_alert from '@site/static/images/use-cases/observability/search_alert.png';
 

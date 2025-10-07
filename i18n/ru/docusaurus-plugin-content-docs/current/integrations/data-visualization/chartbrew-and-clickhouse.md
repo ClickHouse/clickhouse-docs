@@ -1,19 +1,12 @@
 ---
-'title': 'Подключение Chartbrew к ClickHouse'
-'sidebar_label': 'Chartbrew'
-'sidebar_position': 131
-'slug': '/integrations/chartbrew-and-clickhouse'
-'keywords':
-- 'ClickHouse'
-- 'Chartbrew'
-- 'connect'
-- 'integrate'
-- 'visualization'
-'description': 'Подключите Chartbrew к ClickHouse для создания панелей управления
-  в реальном времени и отчетов для клиентов.'
-'doc_type': 'guide'
+slug: '/integrations/chartbrew-and-clickhouse'
+sidebar_label: Chartbrew
+sidebar_position: 131
+description: 'Подключите Chartbrew к ClickHouse для создания панелей управления'
+title: 'Подключение Chartbrew к ClickHouse'
+keywords: ['ClickHouse', 'Chartbrew', 'connect', 'integrate', 'visualization']
+doc_type: guide
 ---
-
 import chartbrew_01 from '@site/static/images/integrations/data-visualization/chartbrew_01.png';
 import chartbrew_02 from '@site/static/images/integrations/data-visualization/chartbrew_02.png';
 import chartbrew_03 from '@site/static/images/integrations/data-visualization/chartbrew_03.png';

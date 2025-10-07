@@ -1,15 +1,12 @@
 ---
-'title': 'Вставка данных ClickHouse'
-'description': 'Как вставить данные в ClickHouse'
-'keywords':
-- 'INSERT'
-- 'Batch Insert'
-'sidebar_label': 'Вставка данных ClickHouse'
-'slug': '/guides/inserting-data'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: '/guides/inserting-data'
+sidebar_label: 'Вставка данных в ClickHouse'
+description: 'Как вставить данные в ClickHouse'
+title: 'Вставка данных в ClickHouse'
+keywords: ['вставка', 'вставка данных', 'вставка в таблицу']
+doc_type: guide
+show_related_blogs: true
 ---
-
 import postgres_inserts from '@site/static/images/guides/postgres-inserts.png';
 import Image from '@theme/IdealImage';
 

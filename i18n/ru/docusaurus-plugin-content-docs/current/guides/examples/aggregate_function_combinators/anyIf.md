@@ -1,18 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/anyIf'
-'title': 'anyIf'
-'description': 'Пример использования комбинатора anyIf'
-'keywords':
-- 'any'
-- 'if'
-- 'combinator'
-- 'examples'
-- 'anyIf'
-'sidebar_label': 'anyIf'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/anyIf'
+sidebar_label: anyIf
+description: 'Пример использования комбинатора anyIf'
+title: anyIf
+keywords: ['any', 'if', 'combinator', 'examples', 'anyIf']
+doc_type: reference
 ---
-
-
 # anyIf {#avgif}
 
 ## Описание {#description}

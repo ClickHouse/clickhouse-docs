@@ -6,7 +6,6 @@
 'title': 'Архитектура'
 'doc_type': 'reference'
 ---
-
 import Image from '@theme/IdealImage';
 import architecture from '@site/static/images/use-cases/observability/clickstack-architecture.png';
 

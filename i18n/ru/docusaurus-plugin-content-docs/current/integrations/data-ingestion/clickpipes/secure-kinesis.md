@@ -1,15 +1,10 @@
 ---
-'slug': '/integrations/clickpipes/secure-kinesis'
-'sidebar_label': 'Kinesis контроль доступа на основе ролей'
-'title': 'Kinesis контроль доступа на основе ролей'
-'description': 'Эта статья демонстрирует, как клиенты ClickPipes могут использовать
-  контроль доступа на основе ролей для аутентификации с Amazon Kinesis и безопасного
-  доступа к своим потокам данных.'
-'doc_type': 'guide'
-'keywords':
-- 'Amazon Kinesis'
+slug: '/integrations/clickpipes/secure-kinesis'
+sidebar_label: 'Контроль доступа на основе ролей Kinesis'
+description: 'Эта статья демонстрирует, как клиенты ClickPipes могут использовать'
+title: 'Контроль доступа на основе ролей Kinesis'
+doc_type: guide
 ---
-
 import secure_kinesis from '@site/static/images/integrations/data-ingestion/clickpipes/securekinesis.jpg';
 import secures3_arn from '@site/static/images/cloud/security/secures3_arn.png';
 import Image from '@theme/IdealImage';

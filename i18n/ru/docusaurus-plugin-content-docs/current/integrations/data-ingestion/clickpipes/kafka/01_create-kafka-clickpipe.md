@@ -6,7 +6,6 @@
 'title': 'Создание вашего первого Kafka ClickPipe'
 'doc_type': 'guide'
 ---
-
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
 import cp_step1 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step1.png';
 import cp_step2 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step2.png';

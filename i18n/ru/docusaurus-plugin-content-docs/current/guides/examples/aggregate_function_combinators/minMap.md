@@ -1,18 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/minMap'
-'title': 'minMap'
-'description': 'Пример использования комбинатора minMap'
-'keywords':
-- 'min'
-- 'map'
-- 'combinator'
-- 'examples'
-- 'minMap'
-'sidebar_label': 'minMap'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/minMap'
+sidebar_label: minMap
+description: 'Пример использования комбиниратора minMap'
+title: minMap
+keywords: ['min', 'map', 'combinator', 'examples', 'minMap']
+doc_type: reference
 ---
-
-
 # minMap {#minmap}
 
 ## Описание {#description}

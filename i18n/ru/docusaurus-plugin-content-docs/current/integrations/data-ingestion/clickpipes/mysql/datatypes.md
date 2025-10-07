@@ -1,11 +1,9 @@
 ---
-'title': 'Поддерживаемые типы данных'
-'slug': '/integrations/clickpipes/mysql/datatypes'
-'description': 'Страница, описывающая отображение типов данных MySQL ClickPipe из
-  MySQL в ClickHouse'
-'doc_type': 'reference'
+slug: '/integrations/clickpipes/mysql/datatypes'
+description: 'Страница, описывающая отображение типов данных MySQL ClickPipe из'
+title: 'ClickPipes для MySQL: Поддерживаемые типы данных'
+doc_type: reference
 ---
-
 Вот поддерживаемое отображение типов данных для MySQL ClickPipe:
 
 | MySQL Type                | ClickHouse type        | Примечания                                                                              |

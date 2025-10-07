@@ -1,20 +1,12 @@
 ---
-'sidebar_label': 'Amazon Glue'
-'sidebar_position': 1
-'slug': '/integrations/glue'
-'description': 'Интеграция ClickHouse и Amazon Glue'
-'keywords':
-- 'clickhouse'
-- 'amazon'
-- 'aws'
-- 'glue'
-- 'migrating'
-- 'data'
-- 'spark'
-'title': 'Интеграция Amazon Glue с ClickHouse и Spark'
-'doc_type': 'guide'
+slug: '/integrations/glue'
+sidebar_label: 'Amazon Glue'
+sidebar_position: 1
+description: 'Интеграция ClickHouse и Amazon Glue'
+title: 'Интеграция Amazon Glue с ClickHouse'
+keywords: ['clickhouse', 'amazon', 'aws', 'glue', 'миграция', 'данные']
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

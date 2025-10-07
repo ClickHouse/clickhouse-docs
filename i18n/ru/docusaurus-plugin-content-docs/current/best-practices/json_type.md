@@ -1,15 +1,12 @@
 ---
-'slug': '/best-practices/use-json-where-appropriate'
-'sidebar_position': 10
-'sidebar_label': '使用 JSON'
-'title': '在适当的地方使用 JSON'
-'description': '页面描述何时使用 JSON'
-'keywords':
-- 'JSON'
-'show_related_blogs': true
-'doc_type': 'reference'
+slug: '/best-practices/use-json-where-appropriate'
+sidebar_label: 'Использование JSON'
+sidebar_position: 10
+description: 'Страница описывает когда использовать JSON'
+title: 'Используйте JSON, где это уместно'
+doc_type: reference
+show_related_blogs: true
 ---
-
 ClickHouse теперь предлагает родной тип колонки JSON, предназначенный для полуструктурированных и динамических данных. Важно уточнить, что **это тип колонки, а не формат данных** — вы можете вставлять JSON в ClickHouse как строку или через поддерживаемые форматы, такие как [JSONEachRow](/docs/interfaces/formats/JSONEachRow), но это не подразумевает использования типа колонки JSON. Пользователи должны использовать тип JSON только когда структура их данных динамична, а не когда они просто хранят JSON.
 
 ## Когда использовать тип JSON {#when-to-use-the-json-type}

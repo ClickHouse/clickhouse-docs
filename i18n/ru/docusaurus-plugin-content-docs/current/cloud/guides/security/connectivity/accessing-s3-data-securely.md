@@ -7,7 +7,6 @@
   Storage Service(S3) и безопасного доступа к своим данным.'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import secure_s3 from '@site/static/images/cloud/security/secures3.jpg';
 import s3_info from '@site/static/images/cloud/security/secures3_arn.png';

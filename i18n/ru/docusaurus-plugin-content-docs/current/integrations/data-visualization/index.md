@@ -1,31 +1,12 @@
 ---
-'sidebar_label': 'Обзор'
-'sidebar_position': 1
-'keywords':
-- 'ClickHouse'
-- 'connect'
-- 'Luzmo'
-- 'Explo'
-- 'Fabi.ai'
-- 'Tableau'
-- 'Grafana'
-- 'Metabase'
-- 'Mitzu'
-- 'superset'
-- 'Deepnote'
-- 'Draxlr'
-- 'RocketBI'
-- 'Omni'
-- 'bi'
-- 'visualization'
-- 'tool'
-'title': 'Визуализация данных в ClickHouse'
-'slug': '/integrations/data-visualization'
-'description': 'Узнайте о визуализации данных в ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/data-visualization'
+sidebar_label: Обзор
+sidebar_position: 1
+description: 'Узнайте о визуализации данных в ClickHouse'
+title: 'Визуализация данных в ClickHouse'
+keywords: ['ClickHouse', 'подключить', 'Luzmo', 'Explo', 'Tableau', 'Grafana', 'Metabase', 'Mitzu', 'superset', 'Deepnote', 'Draxlr', 'RocketBI', 'Omni', 'bi', 'визуализация', 'инструмент']
+doc_type: guide
 ---
-
-
 # Визуализация данных в ClickHouse
 
 <div class='vimeo-container'>

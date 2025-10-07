@@ -1,14 +1,11 @@
 ---
-'title': 'Использование базы данных clickhouse-local'
-'sidebar_label': 'Использование базы данных clickhouse-local'
-'slug': '/chdb/guides/clickhouse-local'
-'description': 'Узнайте, как использовать базу данных clickhouse-local с chDB'
-'keywords':
-- 'chdb'
-- 'clickhouse-local'
-'doc_type': 'guide'
+slug: '/chdb/guides/clickhouse-local'
+sidebar_label: 'Использование базы данных clickhouse-local'
+description: 'Узнайте, как использовать базу данных clickhouse-local с chDB'
+title: 'Использование базы данных clickhouse-local'
+keywords: ['chdb', 'clickhouse-local']
+doc_type: guide
 ---
-
 [clickhouse-local](/operations/utilities/clickhouse-local) — это CLI с встроенной версией ClickHouse. Он предоставляет пользователям мощь ClickHouse без необходимости установки сервера. В этом руководстве мы научимся использовать базу данных clickhouse-local из chDB.
 
 ## Настройка {#setup}

@@ -1,13 +1,11 @@
 ---
-'sidebar_label': 'Обзор'
-'slug': '/integrations/dbt'
-'sidebar_position': 1
-'description': 'Пользователи могут трансформировать и моделировать свои данные в ClickHouse
-  с помощью dbt'
-'title': 'Интеграция dbt и ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/dbt'
+sidebar_label: dbt
+sidebar_position: 1
+description: 'Пользователи могут трансформировать и моделировать свои данные в ClickHouse'
+title: 'Интеграция dbt и ClickHouse'
+doc_type: guide
 ---
-
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 

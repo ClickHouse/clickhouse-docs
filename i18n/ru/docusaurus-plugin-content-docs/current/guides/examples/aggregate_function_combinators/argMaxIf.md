@@ -1,18 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/argMaxIf'
-'title': 'argMaxIf'
-'description': 'Пример использования комбинатора argMaxIf'
-'keywords':
-- 'argMax'
-- 'if'
-- 'combinator'
-- 'examples'
-- 'argMaxIf'
-'sidebar_label': 'argMaxIf'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/argMaxIf'
+sidebar_label: argMaxIf
+description: 'Пример использования комбиниратора argMaxIf'
+title: argMaxIf
+keywords: ['argMax', 'if', 'combinator', 'examples', 'argMaxIf']
+doc_type: reference
 ---
-
-
 # argMaxIf {#argmaxif}
 
 ## Описание {#description}

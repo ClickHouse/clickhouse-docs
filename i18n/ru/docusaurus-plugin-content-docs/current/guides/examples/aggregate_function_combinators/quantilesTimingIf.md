@@ -1,18 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/quantilesTimingIf'
-'title': 'quantilesTimingIf'
-'description': 'Пример использования комбинирования quantilesTimingIf'
-'keywords':
-- 'quantilesTiming'
-- 'if'
-- 'combinator'
-- 'examples'
-- 'quantilesTimingIf'
-'sidebar_label': 'quantilesTimingIf'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/quantilesTimingIf'
+sidebar_label: quantilesTimingIf
+description: 'Пример использования комбинации quantilesTimingIf'
+title: quantilesTimingIf
+keywords: ['quantilesTiming', 'if', 'combinator', 'examples', 'quantilesTimingIf']
+doc_type: reference
 ---
-
-
 # quantilesTimingIf {#quantilestimingif}
 
 ## Описание {#description}

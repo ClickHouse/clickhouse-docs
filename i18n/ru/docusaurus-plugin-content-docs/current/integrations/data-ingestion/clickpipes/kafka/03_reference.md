@@ -7,7 +7,6 @@
 'title': 'Справочник'
 'doc_type': 'reference'
 ---
-
 import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';
 import Confluentsvg from '@site/static/images/integrations/logos/confluent.svg';
 import Msksvg from '@site/static/images/integrations/logos/msk.svg';

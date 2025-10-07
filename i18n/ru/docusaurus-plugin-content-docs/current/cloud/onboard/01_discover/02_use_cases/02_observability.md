@@ -9,7 +9,6 @@
 'sidebar_label': 'Мониторинг'
 'doc_type': 'guide'
 ---
-
 <iframe width="758" height="426" src="https://www.youtube.com/embed/eKlZoT6hPwI?si=Wyrft2T04E1v8US6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 Современные программные системы сложны. Микросервисы, облачная инфраструктура и распределенные системы сделали все более трудным понимание того, что происходит внутри наших приложений. Когда что-то идет не так, командам нужно быстро узнать, где и почему это произошло.

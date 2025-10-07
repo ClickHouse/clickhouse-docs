@@ -1,11 +1,10 @@
 ---
-'title': 'Приостановка и Возобновление MongoDB ClickPipe'
-'description': 'Приостановка и Возобновление MongoDB ClickPipe'
-'sidebar_label': 'Приостановить Таблицу'
+'title': 'Настройка и Восстановление MongoDB ClickPipe'
+'description': 'Настройка и Восстановление MongoDB ClickPipe'
+'sidebar_label': 'Настроить Таблицу'
 'slug': '/integrations/clickpipes/mongodb/pause_and_resume'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import pause_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/pause_button.png'
 import pause_dialog from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/pause_dialog.png'

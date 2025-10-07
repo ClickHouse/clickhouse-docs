@@ -1,12 +1,10 @@
 ---
-'sidebar_label': 'Общее Postgres'
-'description': 'Настройте любой экземпляр Postgres в качестве источника для ClickPipes'
-'slug': '/integrations/clickpipes/postgres/source/generic'
-'title': 'Общее руководство по настройке источника Postgres'
-'doc_type': 'guide'
+slug: '/integrations/clickpipes/postgres/source/generic'
+sidebar_label: 'Общий Postgres'
+description: 'Настройте любой экземпляр Postgres в качестве источника для ClickPipes'
+title: 'Руководство по настройке общего источника Postgres'
+doc_type: guide
 ---
-
-
 # Руководство по настройке источника Generic Postgres
 
 :::info

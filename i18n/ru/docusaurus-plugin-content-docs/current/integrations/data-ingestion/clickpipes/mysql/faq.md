@@ -1,13 +1,11 @@
 ---
-'sidebar_label': 'FAQ'
-'description': 'Часто задаваемые вопросы о ClickPipes для MySQL.'
-'slug': '/integrations/clickpipes/mysql/faq'
-'sidebar_position': 2
-'title': 'ClickPipes для MySQL FAQ'
-'doc_type': 'reference'
+slug: '/integrations/clickpipes/mysql/faq'
+sidebar_label: 'Часто задаваемые вопросы'
+sidebar_position: 2
+description: 'Часто задаваемые вопросы о ClickPipes для MySQL.'
+title: 'Часто задаваемые вопросы о ClickPipes для MySQL'
+doc_type: reference
 ---
-
-
 # ClickPipes для MySQL Часто задаваемые вопросы
 
 ### Поддерживает ли MySQL ClickPipe MariaDB? {#does-the-clickpipe-support-mariadb}

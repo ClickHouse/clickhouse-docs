@@ -9,7 +9,6 @@
 'description': 'Развертывание ClickHouse на вашей собственной облачной инфраструктуре'
 'doc_type': 'reference'
 ---
-
 import Image from '@theme/IdealImage';
 import byoc1 from '@site/static/images/cloud/reference/byoc-1.png';
 import byoc4 from '@site/static/images/cloud/reference/byoc-4.png';

@@ -1,15 +1,12 @@
 ---
-'description': '数据集包含 ClickHouse 仓库的所有提交和更改'
-'sidebar_label': 'Github 仓库'
-'sidebar_position': 1
-'slug': '/getting-started/example-datasets/github'
-'title': '使用 GitHub 数据在 ClickHouse 中编写查询'
-'keywords':
-- 'Github'
-'show_related_blogs': true
-'doc_type': 'reference'
+slug: '/getting-started/example-datasets/github'
+sidebar_label: 'Github Репозиторий'
+sidebar_position: 1
+description: 'Набор данных содержит все коммиты и изменения в репозитории ClickHouse'
+title: 'Запись Запросов в ClickHouse с использованием Данных GitHub'
+doc_type: reference
+show_related_blogs: true
 ---
-
 import Image from '@theme/IdealImage';
 import superset_github_lines_added_deleted from '@site/static/images/getting-started/example-datasets/superset-github-lines-added-deleted.png'
 import superset_commits_authors from '@site/static/images/getting-started/example-datasets/superset-commits-authors.png'

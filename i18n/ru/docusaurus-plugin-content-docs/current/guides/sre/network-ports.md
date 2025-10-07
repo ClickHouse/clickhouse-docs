@@ -1,12 +1,10 @@
 ---
-'slug': '/guides/sre/network-ports'
-'sidebar_label': 'Сетевые порты'
-'title': 'Сетевые порты'
-'description': 'Описание доступных сетевых портов и для чего они используются'
-'doc_type': 'reference'
+slug: '/guides/sre/network-ports'
+sidebar_label: 'Сетевые порты'
+description: 'Описание доступных сетевых портов и для чего они используются'
+title: 'Сетевые порты'
+doc_type: reference
 ---
-
-
 # Сетевые порты
 
 :::note

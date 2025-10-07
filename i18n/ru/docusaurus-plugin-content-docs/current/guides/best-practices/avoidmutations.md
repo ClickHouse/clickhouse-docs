@@ -1,19 +1,11 @@
 ---
-'slug': '/optimize/avoid-mutations'
-'sidebar_label': 'Избегайте мутаций'
-'title': 'Избегайте мутаций'
-'description': 'Мутации обозначают запросы ALTER, которые манипулируют данными таблиц'
-'doc_type': 'guide'
+slug: '/optimize/avoid-mutations'
+sidebar_label: 'Избегать мутаций'
+description: 'Мутации обозначают запросы ALTER, которые манипулируют данными в таблицах'
+title: 'Избегать мутаций'
+doc_type: guide
 ---
-
 import Content from '@site/i18n/ru/docusaurus-plugin-content-docs/current/best-practices/_snippets/_avoid_mutations.md';
-
-```yaml
-title: 'Введение в ClickHouse'
-sidebar_label: 'Введение'
-keywords: ['ClickHouse', 'база данных', 'OLAP', 'аналитика']
-description: 'Обзор ClickHouse, колонковой базы данных для онлайн аналитической обработки.'
-
 
 # Введение в ClickHouse
 

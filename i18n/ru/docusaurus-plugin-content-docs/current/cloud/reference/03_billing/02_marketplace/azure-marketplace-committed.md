@@ -12,7 +12,6 @@
 - 'committed contract'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import azure_marketplace_committed_1 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-committed-1.png';
 import azure_marketplace_committed_2 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-committed-2.png';

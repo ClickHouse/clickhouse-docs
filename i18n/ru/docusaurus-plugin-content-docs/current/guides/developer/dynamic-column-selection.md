@@ -5,7 +5,6 @@
 'description': 'Используйте альтернативные языки запросов в ClickHouse'
 'doc_type': 'guide'
 ---
-
 [Динамический выбор колонок](/docs/sql-reference/statements/select#dynamic-column-selection) является мощной, но недоиспользуемой функцией ClickHouse, которая позволяет выбирать колонки, используя регулярные выражения вместо того, чтобы называть каждую колонку по отдельности. Вы также можете применять функции к совпадающим колонкам с помощью модификатора `APPLY`, что делает его невероятно полезным для задач анализа и трансформации данных.
 
 Мы собираемся научиться использовать эту функцию с помощью [набора данных такси Нью-Йорка](/docs/getting-started/example-datasets/nyc-taxi), который вы также можете найти в [SQL playground ClickHouse](https://sql.clickhouse.com?query=LS0gRGF0YXNldCBjb250YWluaW5nIHRheGkgcmlkZSBkYXRhIGluIE5ZQyBmcm9tIDIwMDkuIE1vcmUgaW5mbyBoZXJlOiBodHRwczovL2NsaWNraG91c2UuY29tL2RvY3MvZW4vZ2V0dGluZy1zdGFydGVkL2V4YW1wbGUtZGF0YXNldHMvbnljLXRheGkKU0VMRUNUICogRlJPTSBueWNfdGF4aS50cmlwcyBMSU1JVCAxMDA).

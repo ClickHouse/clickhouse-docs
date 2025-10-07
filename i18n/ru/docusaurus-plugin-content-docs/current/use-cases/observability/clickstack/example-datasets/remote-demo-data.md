@@ -7,7 +7,6 @@
 'description': 'Начало работы с ClickStack и удаленным демонстрационным набором данных'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import demo_connection from '@site/static/images/use-cases/observability/hyperdx-demo/demo_connection.png';
 import edit_demo_connection from '@site/static/images/use-cases/observability/hyperdx-demo/edit_demo_connection.png';

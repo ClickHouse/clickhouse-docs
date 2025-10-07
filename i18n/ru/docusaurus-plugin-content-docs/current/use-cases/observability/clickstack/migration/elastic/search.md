@@ -8,7 +8,6 @@
 'description': 'Поиск в ClickStack и Elastic'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import hyperdx_search from '@site/static/images/use-cases/observability/hyperdx-search.png';
 import hyperdx_sql from '@site/static/images/use-cases/observability/hyperdx-sql.png';

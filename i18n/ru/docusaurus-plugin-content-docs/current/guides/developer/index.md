@@ -1,12 +1,10 @@
 ---
-'slug': '/guides/developer/overview'
-'sidebar_label': 'Обзор расширенных руководств'
-'description': 'Обзор расширенных руководств'
-'title': 'Расширенные руководства'
-'doc_type': 'guide'
+slug: '/guides/developer/overview'
+sidebar_label: 'Обзор продвинутых руководств'
+description: 'Обзор расширенных руководств'
+title: 'Продвинутые руководства'
+doc_type: guide
 ---
-
-
 # Расширенные руководства
 
 В этом разделе содержатся следующие расширенные руководства:

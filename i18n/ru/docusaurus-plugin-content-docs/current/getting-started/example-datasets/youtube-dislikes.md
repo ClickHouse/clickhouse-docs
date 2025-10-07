@@ -1,11 +1,10 @@
 ---
-'description': '一个包含 YouTube 视频 不喜欢 的集合。'
-'sidebar_label': 'YouTube Dislikes'
-'slug': '/getting-started/example-datasets/youtube-dislikes'
-'title': 'YouTube 数据集的 不喜欢'
-'doc_type': 'reference'
+slug: '/getting-started/example-datasets/youtube-dislikes'
+sidebar_label: 'Дизлайки YouTube'
+description: 'Собрание YouTube видео, которые не нравятся.'
+title: 'Датасет YouTube с дизлайками'
+doc_type: reference
 ---
-
 В ноябре 2021 года YouTube удалил публичное количество ***дизлайков*** со всех своих видео. В то время как создатели все еще могут видеть количество дизлайков, зрители могут видеть только количество ***лайков***, которые получило видео.
 
 :::important

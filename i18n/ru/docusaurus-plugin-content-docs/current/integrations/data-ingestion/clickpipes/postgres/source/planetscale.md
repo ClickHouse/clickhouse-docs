@@ -1,11 +1,10 @@
 ---
 'sidebar_label': 'Planetscale для Postgres'
-'description': 'Настройте Planetscale для Postgres в качестве источника для ClickPipes'
+'description': 'Настройте PlanetScale для Postgres в качестве источника для ClickPipes'
 'slug': '/integrations/clickpipes/postgres/source/planetscale'
 'title': 'PlanetScale для настройки источника Postgres'
 'doc_type': 'guide'
 ---
-
 import planetscale_wal_level_logical from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/planetscale/planetscale_wal_level_logical.png';
 import planetscale_max_slot_wal_keep_size from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/planetscale/planetscale_max_slot_wal_keep_size.png';
 import Image from '@theme/IdealImage';

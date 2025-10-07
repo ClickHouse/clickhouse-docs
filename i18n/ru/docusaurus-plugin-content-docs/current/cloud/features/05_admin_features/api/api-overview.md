@@ -6,8 +6,6 @@
 'description': 'Узнайте о ClickHouse Cloud API'
 'doc_type': 'reference'
 ---
-
-
 # ClickHouse Cloud API
 
 ## Обзор {#overview}

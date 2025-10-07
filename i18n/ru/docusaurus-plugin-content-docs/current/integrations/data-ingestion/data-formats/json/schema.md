@@ -1,20 +1,11 @@
 ---
-'title': 'Проектирование схемы JSON'
-'slug': '/integrations/data-formats/json/schema'
-'description': 'Как оптимально проектировать схемы JSON'
-'keywords':
-- 'json'
-- 'clickhouse'
-- 'inserting'
-- 'loading'
-- 'formats'
-- 'schema'
-- 'structured'
-- 'semi-structured'
-'score': 20
-'doc_type': 'guide'
+slug: '/integrations/data-formats/json/schema'
+description: 'Как оптимально проектировать схемы JSON'
+title: 'Проектирование схемы JSON'
+keywords: ['json', 'clickhouse', 'вставка', 'загрузка', 'форматы', 'схема', 'структурированные', 'полу-структурированные']
+doc_type: guide
+score: 20
 ---
-
 import Image from '@theme/IdealImage';
 import json_column_per_type from '@site/static/images/integrations/data-ingestion/data-formats/json_column_per_type.png';
 import json_offsets from '@site/static/images/integrations/data-ingestion/data-formats/json_offsets.png';

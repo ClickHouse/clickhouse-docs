@@ -6,7 +6,6 @@
   SQL'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import step_1 from '@site/static/images/cloud/guides/sql_console/service_level_access/1_service_settings.png'
 import step_2 from '@site/static/images/cloud/guides/sql_console/service_level_access/2_service_settings.png'

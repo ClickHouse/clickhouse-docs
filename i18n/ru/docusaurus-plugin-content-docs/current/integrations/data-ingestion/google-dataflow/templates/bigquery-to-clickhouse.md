@@ -1,12 +1,11 @@
 ---
-'sidebar_label': 'BigQuery 到 ClickHouse'
-'sidebar_position': 1
-'slug': '/integrations/google-dataflow/templates/bigquery-to-clickhouse'
-'description': '用户可以使用 Google Dataflow 模板将数据从 BigQuery 导入 ClickHouse'
-'title': 'Dataflow BigQuery 到 ClickHouse 模板'
-'doc_type': 'guide'
+slug: '/integrations/google-dataflow/templates/bigquery-to-clickhouse'
+sidebar_label: 'BigQuery в ClickHouse'
+sidebar_position: 1
+description: 'Пользователь может использовать Google Dataflow шаблон для передачи'
+title: 'Шаблон Dataflow BigQuery в ClickHouse'
+doc_type: guide
 ---
-
 import TOCInline from '@theme/TOCInline';
 import Image from '@theme/IdealImage';
 import dataflow_inqueue_job from '@site/static/images/integrations/data-ingestion/google-dataflow/dataflow-inqueue-job.png'

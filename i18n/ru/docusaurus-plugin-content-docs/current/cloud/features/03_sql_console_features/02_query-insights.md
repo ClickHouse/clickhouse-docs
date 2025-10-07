@@ -11,7 +11,6 @@
 'title': 'Запросы Инсайты'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import insights_overview from '@site/static/images/cloud/sqlconsole/insights_overview.png';
 import insights_latency from '@site/static/images/cloud/sqlconsole/insights_latency.png';

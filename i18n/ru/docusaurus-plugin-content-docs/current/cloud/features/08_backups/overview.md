@@ -7,10 +7,9 @@
 - 'backups'
 - 'cloud backups'
 - 'restore'
-'description': 'Предоставляет общий обзор резервных копий в ClickHouse Cloud'
+'description': 'Представляет общий обзор резервных копий в ClickHouse Cloud'
 'doc_type': 'guide'
 ---
-
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
 import Image from '@theme/IdealImage';

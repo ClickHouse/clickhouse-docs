@@ -1,18 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/uniqArray'
-'title': 'uniqArray'
-'description': 'Пример использования комбинатора uniqArray'
-'keywords':
-- 'uniq'
-- 'array'
-- 'combinator'
-- 'examples'
-- 'uniqArray'
-'sidebar_label': 'uniqArray'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/uniqArray'
+sidebar_label: uniqArray
+description: 'Пример использования комбинатора uniqArray'
+title: uniqArray
+keywords: ['uniq', 'array', 'combinator', 'examples', 'uniqArray']
+doc_type: reference
 ---
-
-
 # uniqArray {#uniqarray}
 
 ## Описание {#description}

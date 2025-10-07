@@ -1,13 +1,10 @@
 ---
-'title': 'Использование JOINs в ClickHouse'
-'description': 'Как объединять таблицы в ClickHouse'
-'keywords':
-- 'joins'
-- 'join tables'
-'slug': '/guides/joining-tables'
-'doc_type': 'guide'
+slug: '/guides/joining-tables'
+description: 'Как объединять таблицы в ClickHouse'
+title: 'Использование JOIN в ClickHouse'
+keywords: ['joins', 'join tables']
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 import joins_1 from '@site/static/images/guides/joins-1.png';
 import joins_2 from '@site/static/images/guides/joins-2.png';

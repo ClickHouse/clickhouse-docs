@@ -1,16 +1,11 @@
 ---
-'title': 'Концепции'
-'slug': '/concepts'
-'description': 'Страница запуска для концепций'
-'pagination_next': null
-'pagination_prev': null
-'keywords':
-- 'concepts'
-- 'OLAP'
-- 'fast'
-'doc_type': 'landing-page'
+slug: '/concepts'
+description: 'Страница запуска для концепций'
+title: Концепции
+doc_type: landing-page
+pagination_next: null
+pagination_prev: null
 ---
-
 В этом разделе документации мы погрузимся в концепции, которые делают ClickHouse таким быстрым и эффективным.
 
 | Страница                                                          | Описание                                                                               |

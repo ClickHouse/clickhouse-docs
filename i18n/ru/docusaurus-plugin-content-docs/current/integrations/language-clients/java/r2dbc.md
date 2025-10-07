@@ -1,18 +1,12 @@
 ---
-'sidebar_label': 'R2DBC Driver'
-'sidebar_position': 5
-'keywords':
-- 'clickhouse'
-- 'java'
-- 'driver'
-- 'integrate'
-- 'r2dbc'
-'description': 'ClickHouse R2DBC драйвер'
-'slug': '/integrations/java/r2dbc'
-'title': 'R2DBC драйвер'
-'doc_type': 'reference'
+slug: '/integrations/java/r2dbc'
+sidebar_label: 'R2DBC Драйвер'
+sidebar_position: 5
+description: 'ClickHouse R2DBC драйвер'
+title: 'R2DBC драйвер'
+keywords: ['clickhouse', 'java', 'драйвер', 'интеграция', 'r2dbc']
+doc_type: reference
 ---
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';

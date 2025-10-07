@@ -7,7 +7,6 @@
 'title': 'Next.js'
 'doc_type': 'guide'
 ---
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 

@@ -1,12 +1,11 @@
 ---
-'slug': '/faq/general/columnar-database'
-'title': 'Что такое столбцовая база данных?'
-'toc_hidden': true
-'toc_priority': 101
-'description': 'Эта страница описывает, что такое столбцовая база данных.'
-'doc_type': 'reference'
+slug: '/faq/general/columnar-database'
+description: 'Эта страница описывает, что такое столбцовая база данных.'
+title: 'Что такое столбцовая база данных?'
+doc_type: reference
+toc_hidden: true
+toc_priority: 101
 ---
-
 import Image from '@theme/IdealImage';
 import RowOriented from '@site/static/images/row-oriented.gif';
 import ColumnOriented from '@site/static/images/column-oriented.gif';

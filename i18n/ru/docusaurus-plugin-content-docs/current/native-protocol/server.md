@@ -1,12 +1,10 @@
 ---
-'slug': '/native-protocol/server'
-'sidebar_position': 3
-'title': 'Серверные пакеты'
-'description': 'Нативный протокол сервера'
-'doc_type': 'reference'
+slug: '/native-protocol/server'
+sidebar_position: 3
+description: 'Нативный протокол сервера'
+title: 'Пакеты сервера'
+doc_type: reference
 ---
-
-
 # Пакеты сервера
 
 | значение | название                         | описание                                                     |

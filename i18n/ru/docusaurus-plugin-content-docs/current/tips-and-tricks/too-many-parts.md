@@ -1,33 +1,19 @@
 ---
-'sidebar_position': 1
-'slug': '/tips-and-tricks/too-many-parts'
-'sidebar_label': 'Слишком много частей'
-'doc_type': 'guide'
-'keywords':
-- 'clickhouse too many parts'
-- 'too many parts error'
-- 'clickhouse insert batching'
-- 'part explosion problem'
-- 'clickhouse merge performance'
-- 'batch insert optimization'
-- 'clickhouse async inserts'
-- 'small insert problems'
-- 'clickhouse parts management'
-- 'insert performance optimization'
-- 'clickhouse batching strategy'
-- 'database insert patterns'
-'title': 'Уроки - Проблема слишком большого количества частей'
-'description': 'Решения и предотвращение проблемы слишком большого количества частей'
+sidebar_position: 1
+slug: '/tips-and-tricks/too-many-parts'
+sidebar_label: 'Проблема «too many parts»'
+doc_type: guide
+keywords: ['clickhouse too many parts', 'too many parts error', 'clickhouse insert batching', 'part explosion problem', 'clickhouse merge performance', 'batch insert optimization', 'clickhouse async inserts', 'small insert problems', 'clickhouse parts management', 'insert performance optimization', 'clickhouse batching strategy', 'database insert patterns']
+title: 'Уроки - Проблема Too Many Parts'
+description: 'Решения и предотвращение проблемы Too Many Parts'
 ---
-
-
-# Проблема слишком большого количества частей {#the-too-many-parts-problem}
+# Проблема «too many parts» {#the-too-many-parts-problem}
 *Этот гайд является частью собрания выводов, полученных в ходе встреч сообщества. Для получения более практических решений и инсайтов вы можете [просмотреть конкретные проблемы](./community-wisdom.md).*
 *Нужны дополнительные советы по оптимизации производительности? Ознакомьтесь с гайдом по [Оптимизации производительности](./performance-optimization.md) сообщества.*
 
 ## Понимание проблемы {#understanding-the-problem}
 
-ClickHouse выдает ошибку "Слишком много частей", чтобы предотвратить серьезное ухудшение производительности. Маленькие части вызывают несколько проблем: низкая производительность запросов из-за чтения и слияния большего количества файлов во время запросов, увеличение использования памяти, так как каждая часть требует метаданных в памяти, снижение эффективности сжатия, поскольку меньшие блоки данных сжимаются менее эффективно, более высокие накладные расходы на I/O из-за большего количества дескрипторов файлов и операций поиска, а также замедление фоновых слияний, что увеличивает нагрузку на планировщик слияний.
+ClickHouse выдает ошибку "Too many parts", чтобы предотвратить серьезное ухудшение производительности. Маленькие части вызывают несколько проблем: низкая производительность запросов из-за чтения и слияния большего количества файлов во время запросов, увеличение использования памяти, так как каждая часть требует метаданных в памяти, снижение эффективности сжатия, поскольку меньшие блоки данных сжимаются менее эффективно, более высокие накладные расходы на I/O из-за большего количества дескрипторов файлов и операций поиска, а также замедление фоновых слияний, что увеличивает нагрузку на планировщик слияний.
 
 **Связанные документы**
 - [Движок MergeTree](/engines/table-engines/mergetree-family/mergetree)

@@ -6,8 +6,6 @@
 'title': 'Схемы регистров для Kafka ClickPipe'
 'doc_type': 'guide'
 ---
-
-
 # Регистры схем {#schema-registries}
 
 ClickPipes поддерживает регистры схем для потоков данных Avro.

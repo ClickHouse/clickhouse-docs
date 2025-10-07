@@ -1,12 +1,11 @@
 ---
-'description': '131 миллион строк данных наблюдений за погодой за последние 128 лет'
-'sidebar_label': 'Тайваньские исторические метеоданные'
-'sidebar_position': 1
-'slug': '/getting-started/example-datasets/tw-weather'
-'title': 'Тайваньские исторические метеоданные'
-'doc_type': 'reference'
+slug: '/getting-started/example-datasets/tw-weather'
+sidebar_label: 'Исторические метеоданные Тайваня'
+sidebar_position: 1
+description: '131 миллион строк данных наблюдений за погодой за последние 128 лет'
+title: 'Исторические метеоданные Тайваня'
+doc_type: reference
 ---
-
 Этот набор данных содержит исторические метеорологические наблюдения за последние 128 лет. Каждая строка представляет собой измерение для определенного момента времени и метеорологической станции.
 
 Происхождение этого набора данных доступно [здесь](https://github.com/Raingel/historical_weather), а список номеров метеорологических станций можно найти [здесь](https://github.com/Raingel/weather_station_list).

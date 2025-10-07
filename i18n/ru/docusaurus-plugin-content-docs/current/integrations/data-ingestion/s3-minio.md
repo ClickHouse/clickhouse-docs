@@ -1,12 +1,11 @@
 ---
-'sidebar_label': 'MinIO'
-'sidebar_position': 6
-'slug': '/integrations/minio'
-'description': 'Страница, описывающая как использовать MinIO с ClickHouse'
-'title': 'Использование MinIO'
-'doc_type': 'guide'
+slug: '/integrations/minio'
+sidebar_label: MinIO
+sidebar_position: 6
+description: 'Страница, описывающая как использовать MinIO с ClickHouse'
+title: 'Использование MinIO'
+doc_type: guide
 ---
-
 import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 

@@ -1,14 +1,12 @@
 ---
-'sidebar_label': 'Вставить локальные файлы'
-'sidebar_position': 2
-'title': 'Вставить локальные файлы'
-'slug': '/integrations/data-ingestion/insert-local-files'
-'description': 'Узнайте о Вставить локальные файлы'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: '/integrations/data-ingestion/insert-local-files'
+sidebar_label: 'Вставка локальных файлов'
+sidebar_position: 2
+description: 'Узнайте о Вставить локальные файлы'
+title: 'Вставка локальных файлов'
+doc_type: guide
+show_related_blogs: true
 ---
-
-
 # Вставка локальных файлов
 
 Вы можете использовать `clickhouse-client` для потоковой передачи локальных файлов в ваш сервис ClickHouse. Это позволяет вам предварительно обрабатывать данные с помощью множества мощных и удобных функций ClickHouse. Давайте рассмотрим пример...

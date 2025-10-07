@@ -8,8 +8,6 @@
 'show_related_blogs': true
 'doc_type': 'guide'
 ---
-
-
 # Руководство по переводу SQL Snowflake
 
 ## Типы данных {#data-types}

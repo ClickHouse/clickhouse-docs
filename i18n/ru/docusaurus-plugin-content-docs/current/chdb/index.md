@@ -1,17 +1,11 @@
 ---
-'title': 'chDB'
-'sidebar_label': 'Обзор'
-'slug': '/chdb'
-'description': 'chDB является встроенным SQL OLAP движком, работающим на базе ClickHouse'
-'keywords':
-- 'chdb'
-- 'embedded'
-- 'clickhouse-lite'
-- 'in-process'
-- 'in process'
-'doc_type': 'guide'
+slug: '/chdb'
+sidebar_label: Обзор
+description: 'chDB является встроенным SQL OLAP движком, работающим на базе ClickHouse'
+title: chDB
+keywords: ['chdb', 'встраиваемый', 'clickhouse-lite', 'в процессе', 'in process']
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 import dfBench from '@site/static/images/chdb/df_bench.png';
 

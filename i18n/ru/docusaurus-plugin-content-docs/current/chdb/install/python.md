@@ -1,17 +1,11 @@
 ---
-'title': 'Установка chDB для Python'
-'sidebar_label': 'Python'
-'slug': '/chdb/install/python'
-'description': 'Как установить chDB для Python'
-'keywords':
-- 'chdb'
-- 'embedded'
-- 'clickhouse-lite'
-- 'python'
-- 'install'
-'doc_type': 'guide'
+slug: '/chdb/install/python'
+sidebar_label: Python
+description: 'Как установить chDB для Python'
+title: 'Установка chDB для Python'
+keywords: ['chdb', 'embedded', 'clickhouse-lite', 'python', 'install']
+doc_type: guide
 ---
-
 ## Требования {#requirements}
 
 - Python 3.8+ 

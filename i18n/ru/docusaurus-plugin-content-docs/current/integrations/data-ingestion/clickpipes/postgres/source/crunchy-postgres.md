@@ -1,11 +1,10 @@
 ---
-'sidebar_label': 'Crunchy Bridge Postgres'
-'description': 'Настройте Crunchy Bridge Postgres как источник для ClickPipes'
-'slug': '/integrations/clickpipes/postgres/source/crunchy-postgres'
-'title': 'Настройка источника Crunchy Bridge Postgres'
-'doc_type': 'guide'
+slug: '/integrations/clickpipes/postgres/source/crunchy-postgres'
+sidebar_label: 'Crunchy Bridge Postgres'
+description: 'Настройте Crunchy Bridge Postgres как источник для ClickPipes'
+title: 'Руководство по настройке источника Crunchy Bridge Postgres'
+doc_type: guide
 ---
-
 import firewall_rules_crunchy_bridge from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/crunchy-postgres/firewall_rules_crunchy_bridge.png'
 import add_firewall_rules_crunchy_bridge from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/crunchy-postgres/add_firewall_rules_crunchy_bridge.png'
 import Image from '@theme/IdealImage';

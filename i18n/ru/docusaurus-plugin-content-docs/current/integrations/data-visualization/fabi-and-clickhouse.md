@@ -15,7 +15,6 @@
 'title': 'Подключение ClickHouse к Fabi.ai'
 'doc_type': 'guide'
 ---
-
 import fabi_01 from '@site/static/images/integrations/data-visualization/fabi_01.png';
 import fabi_02 from '@site/static/images/integrations/data-visualization/fabi_02.png';
 import fabi_03 from '@site/static/images/integrations/data-visualization/fabi_03.png';

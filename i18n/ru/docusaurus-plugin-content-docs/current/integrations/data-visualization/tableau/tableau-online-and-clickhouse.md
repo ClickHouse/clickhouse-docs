@@ -1,21 +1,12 @@
 ---
-'sidebar_label': 'Tableau Online'
-'sidebar_position': 2
-'slug': '/integrations/tableau-online'
-'keywords':
-- 'clickhouse'
-- 'tableau'
-- 'online'
-- 'mysql'
-- 'connect'
-- 'integrate'
-- 'ui'
-'description': 'Tableau Online упрощает использование данных, чтобы люди могли быстрее
-  и более уверенно принимать решения из любого места.'
-'title': 'Tableau Online'
-'doc_type': 'guide'
+slug: '/integrations/tableau-online'
+sidebar_label: 'Tableau Online'
+sidebar_position: 2
+description: 'Tableau Online упрощает использование данных, чтобы люди могли быстрее'
+title: 'Tableau Online'
+keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', 'ui']
+doc_type: guide
 ---
-
 import MySQLCloudSetup from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_clickhouse_mysql_cloud_setup.mdx';
 import MySQLOnPremiseSetup from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_clickhouse_mysql_on_premise_setup.mdx';
 import Image from '@theme/IdealImage';

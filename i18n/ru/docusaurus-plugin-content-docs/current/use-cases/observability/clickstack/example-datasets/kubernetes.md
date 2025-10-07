@@ -7,7 +7,6 @@
 'description': 'Начало работы с ClickStack и мониторинг Kubernetes'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import DemoArchitecture from '@site/i18n/ru/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/example-datasets/_snippets/_demo.md';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';

@@ -1,12 +1,10 @@
 ---
-'slug': '/integrations/marimo'
-'sidebar_label': 'marimo'
-'description': 'marimo — это блокнот Python нового поколения для взаимодействия с
-  данными'
-'title': 'Использование marimo с ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/marimo'
+sidebar_label: marimo
+description: 'marimo — это блокнот Python нового поколения для взаимодействия с'
+title: 'Использование marimo с ClickHouse'
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 import marimo_connect from '@site/static/images/integrations/sql-clients/marimo/clickhouse-connect.gif';
 import add_db_panel from '@site/static/images/integrations/sql-clients/marimo/panel-arrow.png';

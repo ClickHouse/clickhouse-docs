@@ -1,20 +1,12 @@
 ---
-'sidebar_label': 'Rocket BI'
-'sidebar_position': 131
-'slug': '/integrations/rocketbi'
-'keywords':
-- 'clickhouse'
-- 'RocketBI'
-- 'connect'
-- 'integrate'
-- 'ui'
-'description': 'RocketBI это платформа бизнес-аналитики самообслуживания, которая
-  помогает вам быстро анализировать данные, создавать визуализации с перетаскиванием
-  и сотрудничать с коллегами прямо в вашем веб-браузере.'
-'title': 'ЦЕЛЬ: СОЗДАТЬ ВАШ ПЕРВЫЙ DASHBOARD'
-'doc_type': 'guide'
+slug: '/integrations/rocketbi'
+sidebar_label: 'Rocket BI'
+sidebar_position: 131
+description: 'RocketBI это платформа бизнес-аналитики самообслуживания, которая'
+title: 'ЦЕЛЬ: СОЗДАТЬ ВАШ ПЕРВЫЙ ПАНЕЛЬ УПРАВЛЕНИЯ'
+keywords: ['clickhouse', 'RocketBI', 'connect', 'integrate', 'ui']
+doc_type: guide
 ---
-
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import rocketbi_01 from '@site/static/images/integrations/data-visualization/rocketbi_01.gif';

@@ -1,18 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/avgResample'
-'title': 'avgResample'
-'description': 'Пример использования комбинатора Resample с avg'
-'keywords':
-- 'avg'
-- 'Resample'
-- 'combinator'
-- 'examples'
-- 'avgResample'
-'sidebar_label': 'avgResample'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/avgResample'
+sidebar_label: avgResample
+description: 'Пример использования комбиниатора Resample с avg'
+title: avgResample
+keywords: ['avg', 'Resample', 'комбинатор', 'примеры', 'avgResample']
+doc_type: reference
 ---
-
-
 # countResample {#countResample}
 
 ## Описание {#description}

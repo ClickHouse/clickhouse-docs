@@ -1,12 +1,10 @@
 ---
-'sidebar_label': 'Окна обслуживания'
-'description': 'Условия обслуживания ClickPipes для Postgres.'
-'slug': '/integrations/clickpipes/postgres/maintenance'
-'title': 'Техническое обслуживание ClickPipes для Postgres'
-'doc_type': 'reference'
+slug: '/integrations/clickpipes/postgres/maintenance'
+sidebar_label: 'Окна техобслуживания'
+description: 'Условия обслуживания ClickPipes для Postgres.'
+title: 'Окна техобслуживания для ClickPipes для Postgres'
+doc_type: reference
 ---
-
-
 # Окна обслуживания для ClickPipes для Postgres
 
 Планируется окно обслуживания для Postgres ClickPipes:

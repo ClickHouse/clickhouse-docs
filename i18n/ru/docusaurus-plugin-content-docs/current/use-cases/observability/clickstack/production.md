@@ -1,13 +1,12 @@
 ---
 'slug': '/use-cases/observability/clickstack/production'
 'title': 'В выходе на производство'
-'sidebar_label': 'Производство'
+'sidebar_label': 'производство'
 'pagination_prev': null
 'pagination_next': null
 'description': 'Выход на производство с ClickStack'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import connect_cloud from '@site/static/images/use-cases/observability/connect-cloud.png';
 import hyperdx_cloud from '@site/static/images/use-cases/observability/hyperdx-cloud.png';

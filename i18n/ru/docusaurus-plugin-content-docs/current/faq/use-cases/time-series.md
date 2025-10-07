@@ -1,14 +1,11 @@
 ---
-'slug': '/faq/use-cases/time-series'
-'title': 'Могу ли я использовать ClickHouse как базу данных временных рядов?'
-'toc_hidden': true
-'toc_priority': 101
-'description': 'Страница, описывающая, как использовать ClickHouse как базу данных
-  временных рядов'
-'doc_type': 'guide'
+slug: '/faq/use-cases/time-series'
+description: 'Страница, описывающая, как использовать ClickHouse как базу данных'
+title: 'Могу ли я использовать ClickHouse в качестве базы данных для временных рядов?'
+doc_type: guide
+toc_hidden: true
+toc_priority: 101
 ---
-
-
 # Могу ли я использовать ClickHouse в качестве базы данных временных рядов? {#can-i-use-clickhouse-as-a-time-series-database}
 
 _Примечание: Пожалуйста, посмотрите блог [Работа с данными временных рядов в ClickHouse](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse) для дополнительных примеров использования ClickHouse для анализа временных рядов._

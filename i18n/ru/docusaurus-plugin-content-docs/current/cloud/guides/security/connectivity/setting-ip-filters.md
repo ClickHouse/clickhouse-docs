@@ -6,7 +6,6 @@
   для контроля доступа к услугам ClickHouse.'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import ip_filtering_after_provisioning from '@site/static/images/cloud/security/ip-filtering-after-provisioning.png';
 import ip_filter_add_single_ip from '@site/static/images/cloud/security/ip-filter-add-single-ip.png';

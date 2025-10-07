@@ -1,11 +1,10 @@
 ---
-'title': 'Приостановка и Возобновление Postgres ClickPipe'
-'description': 'Приостановка и Возобновление Postgres ClickPipe'
-'sidebar_label': 'Приостановить Таблицу'
-'slug': '/integrations/clickpipes/postgres/pause_and_resume'
-'doc_type': 'guide'
+slug: '/integrations/clickpipes/postgres/pause_and_resume'
+sidebar_label: 'Приостановить таблицу'
+description: 'Настройка и Возобновление Postgres ClickPipe'
+title: 'Приостановка и возобновление Postgres ClickPipe'
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 import pause_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/pause_button.png'
 import pause_dialog from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/pause_dialog.png'

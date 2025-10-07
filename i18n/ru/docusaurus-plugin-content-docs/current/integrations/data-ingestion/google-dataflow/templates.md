@@ -1,13 +1,11 @@
 ---
-'sidebar_label': 'Шаблоны'
-'slug': '/integrations/google-dataflow/templates'
-'sidebar_position': 3
-'description': 'Пользователи могут принимать данные в ClickHouse с помощью Шаблонов
-  Google Dataflow'
-'title': 'Шаблоны Google Dataflow'
-'doc_type': 'guide'
+slug: '/integrations/google-dataflow/templates'
+sidebar_label: Шаблоны
+sidebar_position: 3
+description: 'пользователи могут принимать данные в ClickHouse с помощью Шаблонов'
+title: 'Шаблоны Google Dataflow'
+doc_type: guide
 ---
-
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 

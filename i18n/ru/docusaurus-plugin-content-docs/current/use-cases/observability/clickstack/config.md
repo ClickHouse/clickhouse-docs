@@ -6,7 +6,6 @@
 'description': 'Параметры конфигурации для ClickStack - Стек мониторинга ClickHouse'
 'doc_type': 'reference'
 ---
-
 import Image from '@theme/IdealImage';
 import hyperdx_25 from '@site/static/images/use-cases/observability/hyperdx-25.png';
 import hyperdx_26 from '@site/static/images/use-cases/observability/hyperdx-26.png';

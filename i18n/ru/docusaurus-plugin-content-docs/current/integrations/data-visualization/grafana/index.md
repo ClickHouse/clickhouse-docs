@@ -1,13 +1,12 @@
 ---
-'sidebar_label': 'Быстрый старт'
-'sidebar_position': 1
-'slug': '/integrations/grafana'
-'description': 'Введение в использование ClickHouse с Grafana'
-'title': 'Плагин источника данных ClickHouse для Grafana'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: '/integrations/grafana'
+sidebar_label: 'Быстрый старт'
+sidebar_position: 1
+description: 'Введение в использование ClickHouse с Grafana'
+title: 'Плагин источника данных ClickHouse для Grafana'
+doc_type: guide
+show_related_blogs: true
 ---
-
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
 import search from '@site/static/images/integrations/data-visualization/grafana/search.png';
 import install from '@site/static/images/integrations/data-visualization/grafana/install.png';

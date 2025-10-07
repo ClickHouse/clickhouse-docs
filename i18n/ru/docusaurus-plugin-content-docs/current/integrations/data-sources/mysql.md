@@ -1,12 +1,11 @@
 ---
-'slug': '/integrations/mysql'
-'sidebar_label': 'MySQL'
-'title': 'MySQL'
-'hide_title': true
-'description': 'Страница, описывающая интеграцию MySQL'
-'doc_type': 'reference'
+slug: '/integrations/mysql'
+sidebar_label: MySQL
+description: 'Страница, описывающая интеграцию MySQL'
+title: MySQL
+doc_type: reference
+hide_title: true
 ---
-
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 

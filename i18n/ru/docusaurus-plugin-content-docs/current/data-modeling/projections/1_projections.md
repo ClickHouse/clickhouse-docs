@@ -10,7 +10,6 @@
 'sidebar_order': 1
 'doc_type': 'guide'
 ---
-
 import projections_1 from '@site/static/images/data-modeling/projections_1.png';
 import projections_2 from '@site/static/images/data-modeling/projections_2.png';
 import Image from '@theme/IdealImage';

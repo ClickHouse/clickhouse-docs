@@ -7,7 +7,6 @@
 'description': 'Обзор для ClickStack - Стек мониторинга ClickHouse'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import architecture from '@site/static/images/use-cases/observability/clickstack-simple-architecture.png';
 import landing_image from '@site/static/images/use-cases/observability/hyperdx-landing.png';

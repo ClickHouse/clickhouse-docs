@@ -1,20 +1,11 @@
 ---
-'slug': '/use-cases/observability'
-'title': 'Наблюдаемость'
-'pagination_prev': null
-'pagination_next': null
-'description': 'Целевая страница для руководства по случаю использования Наблюдаемости'
-'keywords':
-- 'observability'
-- 'logs'
-- 'traces'
-- 'metrics'
-- 'OpenTelemetry'
-- 'Grafana'
-- 'OTel'
-'doc_type': 'guide'
+slug: '/use-cases/observability'
+description: 'Целевая страница для руководства по случаю использования Наблюдаемости'
+title: Мониторинг
+doc_type: guide
+pagination_prev: null
+pagination_next: null
 ---
-
 ClickHouse предлагает непревзойденную скорость, масштаб и экономическую эффективность для мониторинга. Этот гид предоставляет два пути в зависимости от ваших потребностей:
 
 ## ClickStack - стек наблюдаемости ClickHouse {#clickstack}

@@ -1,13 +1,11 @@
 ---
-'sidebar_label': 'Интеграция Kafka с ClickHouse'
-'sidebar_position': 1
-'slug': '/integrations/kafka'
-'description': 'Введение в Kafka с ClickHouse'
-'title': 'Интеграция Kafka с ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/kafka'
+sidebar_label: 'Интеграция Kafka с ClickHouse'
+sidebar_position: 1
+description: 'Введение в Kafka с ClickHouse'
+title: 'Интеграция Kafka с ClickHouse'
+doc_type: guide
 ---
-
-
 # Интеграция Kafka с ClickHouse
 
 [Apache Kafka](https://kafka.apache.org/) — это платформа потоковой передачи событий с распределенной архитектурой с открытым исходным кодом, используемая тысячами компаний для высокопроизводительных конвейеров данных, аналитики в реальном времени, интеграции данных и критически важных приложений. ClickHouse предоставляет несколько вариантов для **чтения из** и **записи в** Kafka и другие брокеры, совместимые с API Kafka (например, Redpanda, Amazon MSK).

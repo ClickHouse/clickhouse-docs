@@ -1,25 +1,13 @@
 ---
-'description': 'Установить ClickHouse на Debian/Ubuntu Linux'
-'keywords':
-- 'ClickHouse'
-- 'install'
-- 'Debian'
-- 'Ubuntu'
-- 'deb'
-'sidebar_label': 'Debian/Ubuntu'
-'slug': '/install/debian_ubuntu'
-'title': 'Установить ClickHouse на Debian/Ubuntu'
-'hide_title': true
-'doc_type': 'guide'
+slug: '/install/debian_ubuntu'
+sidebar_label: Debian/Ubuntu
+description: 'Установить ClickHouse на Debian/Ubuntu Linux'
+title: 'Установите ClickHouse на Debian/Ubuntu'
+keywords: ['ClickHouse', 'установка', 'Debian', 'Ubuntu', 'deb']
+doc_type: guide
+hide_title: true
 ---
-
 import DebianProd from './_snippets/_deb_install.md'
-
-```yaml
-title: 'Настройка ClickHouse на Debian в продакшн-режиме'
-sidebar_label: 'Debian Prod'
-keywords: ['система', 'продакшн', 'deb', 'debian', 'настройка', 'clickhouse']
-description: 'Инструкция по установке и настройке ClickHouse на Debian для продакшн-окружения.'
 
 ## Установка ClickHouse на Debian
 

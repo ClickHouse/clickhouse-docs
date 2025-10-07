@@ -2,12 +2,11 @@
 'slug': '/use-cases/observability/clickstack/ingesting-data/otel-collector'
 'pagination_prev': null
 'pagination_next': null
-'description': 'OpenTelemetry коллектор для ClickStack - Стек мониторинга ClickHouse'
+'description': 'OpenTelemetry коллекор для ClickStack - Стек мониторинга ClickHouse'
 'sidebar_label': 'OpenTelemetry Collector'
 'title': 'ClickStack OpenTelemetry Collector'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import BetaBadge from '@theme/badges/BetaBadge';
 import observability_6 from '@site/static/images/use-cases/observability/observability-6.png';

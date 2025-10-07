@@ -1,14 +1,11 @@
 ---
-'slug': '/best-practices/select-data-types'
-'sidebar_position': 10
-'sidebar_label': '选择数据类型'
-'title': '选择数据类型'
-'description': '页面描述如何在 ClickHouse 中选择数据类型'
-'keywords':
-- 'data types'
-'doc_type': 'reference'
+slug: '/best-practices/select-data-types'
+sidebar_label: 'Выбор типов данных'
+sidebar_position: 10
+description: 'Страница описывает как выбирать типы данных в ClickHouse'
+title: 'Выбор типов данных'
+doc_type: reference
 ---
-
 import NullableColumns from '@site/i18n/ru/docusaurus-plugin-content-docs/current/best-practices/_snippets/_avoid_nullable_columns.md';
 
 Одной из основных причин высокой производительности запросов в ClickHouse является его эффективное сжатие данных. Меньший объем данных на диске приводит к более быстрому выполнению запросов и вставкам за счет минимизации нагрузки на ввод/вывод. Столбцовая архитектура ClickHouse естественным образом располагает похожие данные рядом, что позволяет алгоритмам сжатия и кодекам значительно уменьшать размер данных. Чтобы максимизировать преимущества этого сжатия, важно тщательно выбирать подходящие типы данных.

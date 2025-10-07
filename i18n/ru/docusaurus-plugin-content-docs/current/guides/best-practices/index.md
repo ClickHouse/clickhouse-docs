@@ -1,11 +1,10 @@
 ---
-'slug': '/operations/overview'
-'sidebar_label': 'Обзор производительности и оптимизации'
-'description': 'Страница обзора Производительности и оптимизации'
-'title': 'Производительность и оптимизация'
-'doc_type': 'reference'
+slug: '/operations/overview'
+sidebar_label: 'Обзор производительности и оптимизаций'
+description: 'Страница обзора Производительности и оптимизации'
+title: 'Производительность и оптимизации'
+doc_type: reference
 ---
-
 import TableOfContents from '@site/i18n/ru/docusaurus-plugin-content-docs/current/guides/best-practices/_snippets/_performance_optimizations_table_of_contents.md';
 
 

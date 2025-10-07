@@ -6,7 +6,6 @@
   информацию о типах ролей'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import user_grant_permissions_options from '@site/static/images/cloud/security/cloud-access-management/user_grant_permissions_options.png';
 

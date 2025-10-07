@@ -12,7 +12,6 @@
 'title': 'Расширенная панель мониторинга в ClickHouse Cloud'
 'doc_type': 'guide'
 ---
-
 import AdvancedDashboard from '@site/static/images/cloud/manage/monitoring/advanced_dashboard.png';
 import NativeAdvancedDashboard from '@site/static/images/cloud/manage/monitoring/native_advanced_dashboard.png';
 import EditVisualization from '@site/static/images/cloud/manage/monitoring/edit_visualization.png';

@@ -1,12 +1,11 @@
 ---
-'slug': '/concepts/faq'
-'title': 'Часто задаваемые вопросы'
-'description': 'Главная страница для Часто задаваемых вопросов'
-'pagination_prev': null
-'pagination_next': null
-'doc_type': 'landing-page'
+slug: '/concepts/faq'
+description: 'Главная страница для Часто задаваемых вопросов'
+title: 'Часто задаваемые вопросы'
+doc_type: landing-page
+pagination_prev: null
+pagination_next: null
 ---
-
 | Page                                                          | Description                                                                            |
 |---------------------------------------------------------------|----------------------------------------------------------------------------------------|
 | [Общие вопросы о ClickHouse](general/index.md)                | Общие вопросы, которые мы получаем о ClickHouse.                                      |

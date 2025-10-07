@@ -5,7 +5,6 @@
 'description': 'Эта страница описывает архитектуру ClickHouse Cloud'
 'doc_type': 'reference'
 ---
-
 import Architecture from '@site/static/images/cloud/reference/architecture.svg';
 
 

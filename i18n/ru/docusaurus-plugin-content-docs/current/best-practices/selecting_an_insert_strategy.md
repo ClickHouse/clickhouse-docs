@@ -1,18 +1,12 @@
 ---
-'slug': '/best-practices/selecting-an-insert-strategy'
-'sidebar_position': 10
-'sidebar_label': 'Выбор стратегии вставки'
-'title': 'Выбор стратегии вставки'
-'description': 'Страница, описывающая, как выбрать стратегию вставки в ClickHouse'
-'keywords':
-- 'INSERT'
-- 'asynchronous inserts'
-- 'compression'
-- 'batch inserts'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: '/best-practices/selecting-an-insert-strategy'
+sidebar_label: 'Выбор стратегии вставки'
+sidebar_position: 10
+description: 'Страница, описывающая, как выбрать стратегию вставки в ClickHouse'
+title: 'Выбор стратегии вставки'
+doc_type: guide
+show_related_blogs: true
 ---
-
 import Image from '@theme/IdealImage';
 import insert_process from '@site/static/images/bestpractices/insert_process.png';
 import async_inserts from '@site/static/images/bestpractices/async_inserts.png';

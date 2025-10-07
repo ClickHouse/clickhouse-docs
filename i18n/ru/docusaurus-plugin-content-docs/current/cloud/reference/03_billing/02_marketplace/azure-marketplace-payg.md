@@ -9,7 +9,6 @@
 - 'PAYG'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import azure_marketplace_payg_1 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-1.png';
 import azure_marketplace_payg_2 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-2.png';

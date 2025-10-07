@@ -1,13 +1,11 @@
 ---
-'slug': '/faq/operations/'
-'sidebar_position': 3
-'sidebar_label': 'Вопрос о работе с серверами и кластерами ClickHouse'
-'title': 'Вопрос о работе с серверами и кластерами ClickHouse'
-'description': 'Страница входа для вопросов о работе с серверами и кластерами ClickHouse'
-'doc_type': 'landing-page'
+slug: '/faq/operations/'
+sidebar_label: 'Вопросы об эксплуатации серверов и кластеров ClickHouse'
+sidebar_position: 3
+description: 'Страница входа для вопросов о работе с серверами и кластерами ClickHouse'
+title: 'Вопросы об эксплуатации серверов и кластеров ClickHouse'
+doc_type: landing-page
 ---
-
-
 # Вопросы об управлении серверами и кластерами ClickHouse
 
 - [Какую версию ClickHouse мне использовать в производственной среде?](/faq/operations/production.md)

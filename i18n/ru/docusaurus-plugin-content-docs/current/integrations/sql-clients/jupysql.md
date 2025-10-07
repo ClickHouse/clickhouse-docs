@@ -1,11 +1,10 @@
 ---
-'slug': '/integrations/jupysql'
-'sidebar_label': 'Jupyter блокноты'
-'description': 'JupySQL — это многоплатформенный инструмент базы данных для Jupyter.'
-'title': 'Использование JupySQL с ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/jupysql'
+sidebar_label: 'Jupyter notebooks'
+description: 'JupySQL — это многоплатформенный инструмент базы данных для Jupyter.'
+title: 'Использование JupySQL с ClickHouse'
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 import jupysql_plot_1 from '@site/static/images/integrations/sql-clients/jupysql-plot-1.png';
 import jupysql_plot_2 from '@site/static/images/integrations/sql-clients/jupysql-plot-2.png';

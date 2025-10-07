@@ -1,14 +1,10 @@
 ---
-'slug': '/data-modeling/denormalization'
-'title': 'Денормализация данных'
-'description': 'Как использовать денормализацию для улучшения производительности запросов'
-'keywords':
-- 'data denormalization'
-- 'denormalize'
-- 'query optimization'
-'doc_type': 'guide'
+slug: '/data-modeling/denormalization'
+description: 'Как использовать денормализацию для улучшения производительности запросов'
+title: 'Денормализация данных'
+keywords: ['денормализация данных', 'денормализовать', 'оптимизация запросов']
+doc_type: guide
 ---
-
 import denormalizationDiagram from '@site/static/images/data-modeling/denormalization-diagram.png';
 import denormalizationSchema from '@site/static/images/data-modeling/denormalization-schema.png';
 import Image from '@theme/IdealImage';

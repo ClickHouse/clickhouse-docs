@@ -1,18 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/maxMap'
-'title': 'maxMap'
-'description': 'Пример использования комбинатора maxMap'
-'keywords':
-- 'max'
-- 'map'
-- 'combinator'
-- 'examples'
-- 'maxMap'
-'sidebar_label': 'maxMap'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/maxMap'
+sidebar_label: maxMap
+description: 'Пример использования комбинатора maxMap'
+title: maxMap
+keywords: ['max', 'map', 'combinator', 'examples', 'maxMap']
+doc_type: reference
 ---
-
-
 # maxMap {#maxmap}
 
 ## Описание {#description}

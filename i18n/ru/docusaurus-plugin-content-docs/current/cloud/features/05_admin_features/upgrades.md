@@ -7,7 +7,6 @@
   функции и улучшения производительности.'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'

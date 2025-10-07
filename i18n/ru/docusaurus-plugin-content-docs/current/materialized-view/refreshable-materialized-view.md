@@ -1,16 +1,10 @@
 ---
-'slug': '/materialized-view/refreshable-materialized-view'
-'title': 'обновляемое материализованное представление'
-'description': 'Как использовать материализованные представления для ускорения запросов'
-'keywords':
-- 'refreshable materialized view'
-- 'refresh'
-- 'materialized views'
-- 'speed up queries'
-- 'query optimization'
-'doc_type': 'guide'
+slug: '/materialized-view/refreshable-materialized-view'
+description: 'Как использовать материализованные представления для ускорения запросов'
+title: 'Обновляемое материализованное представление'
+keywords: ['обновляемое материализованное представление', 'обновление', 'материализованные представления', 'ускорение запросов', 'оптимизация запросов']
+doc_type: guide
 ---
-
 import refreshableMaterializedViewDiagram from '@site/static/images/materialized-view/refreshable-materialized-view-diagram.png';
 import Image from '@theme/IdealImage';
 

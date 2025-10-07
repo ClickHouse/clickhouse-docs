@@ -13,8 +13,6 @@
 'show_related_blogs': true
 'doc_type': 'guide'
 ---
-
-
 # Как создать агента ИИ LlamaIndex с использованием ClickHouse MCP Server
 
 В этом руководстве вы узнаете, как создать агента ИИ [LlamaIndex](https://docs.llamaindex.ai), который может взаимодействовать с [SQL-площадкой ClickHouse](https://sql.clickhouse.com/) с помощью [MCP Server ClickHouse](https://github.com/ClickHouse/mcp-clickhouse).

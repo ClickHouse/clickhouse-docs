@@ -1,21 +1,11 @@
 ---
-'title': 'chDB для C и C++'
-'sidebar_label': 'C и C++'
-'slug': '/chdb/install/c'
-'description': 'Как установить и использовать chDB с C и C++'
-'keywords':
-- 'chdb'
-- 'c'
-- 'cpp'
-- 'embedded'
-- 'clickhouse'
-- 'sql'
-- 'olap'
-- 'api'
-'doc_type': 'guide'
+slug: '/chdb/install/c'
+sidebar_label: 'C и C++'
+description: 'Как установить и использовать chDB с C и C++'
+title: 'Установка chDB для C и C++'
+keywords: ['chdb', 'встраиваемый', 'clickhouse-lite', 'установка']
+doc_type: guide
 ---
-
-
 # chDB для C и C++
 
 chDB предоставляет нативный C/C++ API для интеграции функциональности ClickHouse прямо в ваши приложения. API поддерживает как простые запросы, так и более сложные функции, такие как постоянные подключения и потоковую выдачу результатов запросов.

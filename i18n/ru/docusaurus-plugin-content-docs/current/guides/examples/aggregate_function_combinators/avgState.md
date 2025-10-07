@@ -1,18 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/avgState'
-'title': 'avgState'
-'description': 'Пример использования комбинирования avgState'
-'keywords':
-- 'avg'
-- 'state'
-- 'combinator'
-- 'examples'
-- 'avgState'
-'sidebar_label': 'avgState'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/avgState'
+sidebar_label: avgState
+description: 'Пример использования комбинирования avgState'
+title: avgState
+keywords: ['avg', 'state', 'combinator', 'examples', 'avgState']
+doc_type: reference
 ---
-
-
 # avgState {#avgState}
 
 ## Описание {#description}

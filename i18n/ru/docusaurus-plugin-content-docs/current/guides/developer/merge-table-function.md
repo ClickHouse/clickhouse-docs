@@ -5,7 +5,6 @@
 'description': 'Запрос нескольких таблиц одновременно.'
 'doc_type': 'reference'
 ---
-
 Функция [merge table](https://clickhouse.com/docs/sql-reference/table-functions/merge) позволяет нам выполнять запросы к нескольким таблицам параллельно. Она делает это, создавая временную таблицу [Merge](https://clickhouse.com/docs/engines/table-engines/special/merge) и выводя структуру этой таблицы, беря объединение их колонок и выводя общие типы.
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/b4YfRhD9SSI?si=MuoDwDWeikAV5ttk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

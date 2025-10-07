@@ -1,15 +1,12 @@
 ---
-'title': '如何使用 chDB 查询 Pandas DataFrames'
-'sidebar_label': '查询 Pandas'
-'slug': '/chdb/guides/pandas'
-'description': '学习如何使用 chDB 查询 Pandas DataFrames'
-'keywords':
-- 'chDB'
-- 'Pandas'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: '/chdb/guides/pandas'
+sidebar_label: 'Запросы к Pandas'
+description: 'Узнайте, как использовать chDB для запроса Pandas DataFrames'
+title: 'Как выполнять запросы к Pandas DataFrames с chDB'
+keywords: ['chdb', 'pandas']
+doc_type: guide
+show_related_blogs: true
 ---
-
 [Pandas](https://pandas.pydata.org/) — это популярная библиотека для манипуляции с данными и анализа в Python. В версии 2 chDB мы улучшили производительность запросов к Pandas DataFrames и представили табличную функцию `Python`. В этом руководстве мы научимся выполнять запросы к Pandas с помощью табличной функции `Python`.
 
 ## Установка {#setup}

@@ -1,15 +1,10 @@
 ---
-'slug': '/data-modeling/backfilling'
-'title': 'Заполнение данных'
-'description': 'Как использовать backfill для больших наборов данных в ClickHouse'
-'keywords':
-- 'materialized views'
-- 'backfilling'
-- 'inserting data'
-- 'resilient data load'
-'doc_type': 'guide'
+slug: '/data-modeling/backfilling'
+description: 'Как использовать backfill для больших наборов данных в ClickHouse'
+title: 'Заполнение данных'
+keywords: ['материализованные представления', 'заполнение', 'вставка данных', 'устойчивая загрузка данных']
+doc_type: guide
 ---
-
 import nullTableMV from '@site/static/images/data-modeling/null_table_mv.png';
 import Image from '@theme/IdealImage';
 

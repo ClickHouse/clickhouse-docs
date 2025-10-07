@@ -7,7 +7,6 @@
 'title': 'Руководство по миграции из Amazon Redshift в ClickHouse'
 'doc_type': 'guide'
 ---
-
 import MigrationGuide from '@site/i18n/ru/docusaurus-plugin-content-docs/current/integrations/data-ingestion/redshift/_snippets/_migration_guide.md'
 
 

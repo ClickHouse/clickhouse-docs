@@ -5,7 +5,6 @@
 'description': 'Узнайте больше о ключах шифрования, управляемых клиентом'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 import cmek_performance from '@site/static/images/_snippets/cmek-performance.png';

@@ -5,7 +5,6 @@
 'description': 'Страница обзора цен для ClickHouse Cloud'
 'doc_type': 'reference'
 ---
-
 Для получения информации о ценах, смотрите страницу [Цены на ClickHouse Cloud](https://clickhouse.com/pricing#pricing-calculator).  
 ClickHouse Cloud выставляет счета на основе использования вычислительных ресурсов, хранилища, [трафика данных](/cloud/manage/network-data-transfer) (выход в интернет и межрегиональный трафик) и [ClickPipes](/integrations/clickpipes).  
 Чтобы понять, что может повлиять на ваш счет и как вы можете управлять своими расходами, продолжайте читать.

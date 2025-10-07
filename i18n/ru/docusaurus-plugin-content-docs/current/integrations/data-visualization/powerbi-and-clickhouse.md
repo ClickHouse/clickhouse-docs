@@ -1,17 +1,11 @@
 ---
-'sidebar_label': 'Power BI'
-'slug': '/integrations/powerbi'
-'keywords':
-- 'clickhouse'
-- 'Power BI'
-- 'connect'
-- 'integrate'
-- 'ui'
-'description': 'Microsoft Power BI 是由 Microsoft 开发的互动数据可视化软件产品，主要专注于 бизнес-аналитика。'
-'title': 'Power BI'
-'doc_type': 'guide'
+slug: '/integrations/powerbi'
+sidebar_label: 'Power BI'
+description: 'Microsoft Power BI — это продукт программного обеспечения для визуализации'
+title: 'Power BI'
+keywords: ['clickhouse', 'Power BI', 'connect', 'integrate', 'ui']
+doc_type: guide
 ---
-
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import powerbi_odbc_install from '@site/static/images/integrations/data-visualization/powerbi_odbc_install.png';

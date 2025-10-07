@@ -7,7 +7,6 @@
 'description': 'Описание движка таблиц SharedMergeTree'
 'doc_type': 'reference'
 ---
-
 import shared_merge_tree from '@site/static/images/cloud/reference/shared-merge-tree-1.png';
 import shared_merge_tree_2 from '@site/static/images/cloud/reference/shared-merge-tree-2.png';
 import Image from '@theme/IdealImage';

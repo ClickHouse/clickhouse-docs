@@ -1,12 +1,10 @@
 ---
-'slug': '/parts'
-'title': 'Части таблиц'
-'description': 'Что такое части данных в ClickHouse'
-'keywords':
-- 'part'
-'doc_type': 'reference'
+slug: '/parts'
+description: 'Что такое части данных в ClickHouse'
+title: 'Части таблицы'
+keywords: ['part']
+doc_type: reference
 ---
-
 import merges from '@site/static/images/managing-data/core-concepts/merges.png';
 import part from '@site/static/images/managing-data/core-concepts/part.png';
 import Image from '@theme/IdealImage';

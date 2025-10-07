@@ -6,7 +6,6 @@
   в консоли'
 'doc_type': 'guide'
 ---
-
 import Image from '@theme/IdealImage';
 import step_1 from '@site/static/images/cloud/guides/sql_console/org_level_access/1_org_settings.png'
 import step_2 from '@site/static/images/cloud/guides/sql_console/org_level_access/2_org_settings.png'

@@ -1,20 +1,11 @@
 ---
-'title': 'chDB для Node.js'
-'sidebar_label': 'Node.js'
-'slug': '/chdb/install/nodejs'
-'description': 'Как установить и использовать chDB с Node.js'
-'keywords':
-- 'chdb'
-- 'nodejs'
-- 'javascript'
-- 'embedded'
-- 'clickhouse'
-- 'sql'
-- 'olap'
-'doc_type': 'guide'
+slug: '/chdb/install/nodejs'
+sidebar_label: NodeJS
+description: 'Как установить и использовать chDB с Node.js'
+title: 'Установка chDB для NodeJS'
+keywords: ['chdb', 'встроенный', 'clickhouse-lite', 'NodeJS', 'установка']
+doc_type: guide
 ---
-
-
 # chDB для Node.js
 
 chDB-node предоставляет привязки Node.js для chDB, позволяя выполнять запросы ClickHouse непосредственно в ваших приложениях Node.js без внешних зависимостей.

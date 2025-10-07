@@ -1,12 +1,11 @@
 ---
-'sidebar_label': 'HTTP Sink Коннектор для Confluent Platform'
-'sidebar_position': 4
-'slug': '/integrations/kafka/cloud/confluent/http'
-'description': 'Использование HTTP Connector Sink с Kafka Connect и ClickHouse'
-'title': 'Коннектор HTTP Sink Confluent'
-'doc_type': 'guide'
+slug: '/integrations/kafka/cloud/confluent/http'
+sidebar_label: 'HTTP Sink Connector для Confluent Platform'
+sidebar_position: 4
+description: 'Использование HTTP Connector Sink с Kafka Connect и ClickHouse'
+title: 'Confluent HTTP Sink Connector'
+doc_type: guide
 ---
-
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import createHttpSink from '@site/static/images/integrations/data-ingestion/kafka/confluent/create_http_sink.png';

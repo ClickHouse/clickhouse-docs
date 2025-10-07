@@ -1,11 +1,10 @@
 ---
-'sidebar_label': 'Стратегии дедупликации'
-'description': 'Обработка дубликатов и удаленных строк.'
-'slug': '/integrations/clickpipes/postgres/deduplication'
-'title': 'Стратегии дедупликации (используя CDC)'
-'doc_type': 'guide'
+slug: '/integrations/clickpipes/postgres/deduplication'
+sidebar_label: 'Стратегии дедупликации'
+description: 'Обработка дублей и удаленных строк.'
+title: 'Стратегии дедупликации (с использованием CDC)'
+doc_type: guide
 ---
-
 import clickpipes_initial_load from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-cdc-initial-load.png';
 import Image from '@theme/IdealImage';
 

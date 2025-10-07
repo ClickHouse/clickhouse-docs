@@ -1,12 +1,11 @@
 ---
-'sidebar_label': 'Kafka Table Engine'
-'sidebar_position': 5
-'slug': '/integrations/kafka/kafka-table-engine'
-'description': 'Использование движка таблиц Kafka'
-'title': 'Использование движка таблиц Kafka'
-'doc_type': 'guide'
+slug: '/integrations/kafka/kafka-table-engine'
+sidebar_label: 'Движок таблиц Kafka'
+sidebar_position: 5
+description: 'Использование движка таблиц Kafka'
+title: 'Использование движка таблиц Kafka'
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 import kafka_01 from '@site/static/images/integrations/data-ingestion/kafka/kafka_01.png';
 import kafka_02 from '@site/static/images/integrations/data-ingestion/kafka/kafka_02.png';

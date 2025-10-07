@@ -1,15 +1,11 @@
 ---
-'slug': '/faq/general/ne-tormozit'
-'title': '“не тормозит”是什么意思？'
-'toc_hidden': true
-'toc_priority': 11
-'description': '本页解释了"Не тормозит"的意思'
-'keywords':
-- 'Yandex'
-'doc_type': 'reference'
+slug: '/faq/general/ne-tormozit'
+description: '本页解释了"Не тормозит"的意义'
+title: 'Что значит “не тормозит”?'
+doc_type: reference
+toc_hidden: true
+toc_priority: 11
 ---
-
-
 # Что значит "Не тормозит"? {#what-does-ne-tormozit-mean}
 
 Мы часто слышим этот вопрос, когда люди видят винтажные (ограниченного тиража) футболки ClickHouse. На них большими буквами написано **"ClickHouse не тормозит"**.

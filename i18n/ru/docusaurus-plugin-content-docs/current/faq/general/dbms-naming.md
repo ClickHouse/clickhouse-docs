@@ -1,13 +1,11 @@
 ---
-'title': 'Что означает "ClickHouse"?'
-'toc_hidden': true
-'toc_priority': 10
-'slug': '/faq/general/dbms-naming'
-'description': 'Узнайте, что означает "ClickHouse"?'
-'doc_type': 'reference'
+slug: '/faq/general/dbms-naming'
+description: 'Узнайте, что означает "ClickHouse"?'
+title: 'Что означает "ClickHouse"?'
+doc_type: reference
+toc_hidden: true
+toc_priority: 10
 ---
-
-
 # Что означает "ClickHouse"? {#what-does-clickhouse-mean}
 
 Это комбинация "**Click**stream" и "Data ware**House**". Название происходит от первоначального случая использования в Yandex.Metrica, где ClickHouse был создан для хранения записей всех кликов пользователей со всего Интернета, и до сих пор выполняет эту задачу. Вы можете узнать больше об этом случае использования на странице [история ClickHouse](../../about-us/history.md).

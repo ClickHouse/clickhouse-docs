@@ -1,15 +1,10 @@
 ---
-'slug': '/integrations/azure-data-factory'
-'description': '将 Azure 数据导入 ClickHouse'
-'keywords':
-- 'azure data factory'
-- 'azure'
-- 'microsoft'
-- 'data'
-'title': '将 Azure 数据导入 ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/azure-data-factory'
+description: 'Импорт данных из Azure в ClickHouse'
+title: 'Импорт данных Azure в ClickHouse'
+keywords: ['azure data factory', 'azure', 'microsoft', 'data']
+doc_type: guide
 ---
-
 | Page                                                                              | Description                                                                                                                                                                 |
 |-----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [Обзор](./overview.md)                                                         | Обзор двух подходов, используемых для передачи данных из Azure в ClickHouse                                                                                                 |

@@ -1,14 +1,11 @@
 ---
-'sidebar_label': 'Настройка LDAP'
-'sidebar_position': 2
-'slug': '/guides/sre/configuring-ldap'
-'title': 'Настройка ClickHouse для использования LDAP для аутентификации и сопоставления
-  ролей'
-'description': 'Описание того, как настроить ClickHouse для использования LDAP для
-  аутентификации и сопоставления ролей'
-'doc_type': 'guide'
+slug: '/guides/sre/configuring-ldap'
+sidebar_label: 'Конфигурирование LDAP'
+sidebar_position: 2
+description: 'Описание того, как настроить ClickHouse для использования LDAP для'
+title: 'Конфигурирование ClickHouse для использования LDAP для аутентификации и сопоставления ролей'
+doc_type: guide
 ---
-
 import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 

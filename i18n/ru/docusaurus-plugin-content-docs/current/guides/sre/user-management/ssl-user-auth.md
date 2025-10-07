@@ -1,13 +1,11 @@
 ---
-'sidebar_label': 'SSL User Certificate Аутентификация'
-'sidebar_position': 3
-'slug': '/guides/sre/ssl-user-auth'
-'title': 'Настройка SSL User Certificate для аутентификации'
-'description': 'Этот гид предоставляет простые и минимальные настройки для конфигурации
-  аутентификации с SSL пользовательскими сертификатами.'
-'doc_type': 'guide'
+slug: '/guides/sre/ssl-user-auth'
+sidebar_label: 'Аутентификация пользователя с помощью сертификата SSL'
+sidebar_position: 3
+description: 'Этот гид предоставляет простые и минимальные настройки для конфигурации'
+title: 'Настройка сертификата пользователя SSL для аутентификации'
+doc_type: guide
 ---
-
 import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 

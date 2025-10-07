@@ -1,17 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/avgMergeState'
-'title': 'avgMergeState'
-'description': 'Пример использования комбинатора avgMergeState'
-'keywords':
-- 'avg'
-- 'MergeState'
-- 'combinator'
-- 'examples'
-- 'avgMergeState'
-'sidebar_label': 'avgMergeState'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/avgMergeState'
+sidebar_label: avgMergeState
+description: 'Пример использования комбиниатора avgMergeState'
+title: avgMergeState
+keywords: ['avg', 'MergeState', 'комбинатор', 'примеры', 'avgMergeState']
+doc_type: reference
 ---
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 

@@ -6,7 +6,6 @@
   облачную учетную запись'
 'doc_type': 'guide'
 ---
-
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
 <EnterprisePlanFeatureBadge/>

@@ -1,15 +1,10 @@
 ---
-'slug': '/integrations/tools'
-'keywords':
-- 'Retool'
-- 'Easypanel'
-- 'Splunk'
-'title': 'Инструменты'
-'description': 'Страница назначения для секции инструментов'
-'doc_type': 'landing-page'
+slug: '/integrations/tools'
+description: 'Страница назначения для секции инструментов'
+title: Инструменты
+keywords: ['Retool', 'Easypanel', 'Splunk']
+doc_type: landing-page
 ---
-
-
 # Инструменты
 
 | Страница   | Описание                                                                                                                      |

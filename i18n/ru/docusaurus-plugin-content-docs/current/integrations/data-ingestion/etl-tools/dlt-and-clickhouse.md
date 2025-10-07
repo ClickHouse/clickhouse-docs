@@ -1,18 +1,11 @@
 ---
-'sidebar_label': 'dlt'
-'keywords':
-- 'clickhouse'
-- 'dlt'
-- 'connect'
-- 'integrate'
-- 'etl'
-- 'data integration'
-'description': 'Загрузить данные в ClickHouse с использованием интеграции dlt'
-'title': 'Подключить dlt к ClickHouse'
-'slug': '/integrations/data-ingestion/etl-tools/dlt-and-clickhouse'
-'doc_type': 'guide'
+slug: '/integrations/data-ingestion/etl-tools/dlt-and-clickhouse'
+sidebar_label: dlt
+description: 'Загрузить данные в ClickHouse с использованием интеграции dlt'
+title: 'Подключение dlt к ClickHouse'
+keywords: ['clickhouse', 'dlt', 'connect', 'integrate', 'etl', 'data integration']
+doc_type: guide
 ---
-
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 

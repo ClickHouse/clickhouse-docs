@@ -1,18 +1,11 @@
 ---
-'slug': '/examples/aggregate-function-combinators/avgIf'
-'title': 'avgIf'
-'description': 'Пример использования комбинатора avgIf'
-'keywords':
-- 'avg'
-- 'if'
-- 'combinator'
-- 'examples'
-- 'avgIf'
-'sidebar_label': 'avgIf'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/avgIf'
+sidebar_label: avgIf
+description: 'Пример использования комбиниратора avgIf'
+title: avgIf
+keywords: ['avg', 'if', 'комбинатор', 'примеры', 'avgIf']
+doc_type: reference
 ---
-
-
 # avgIf {#avgif}
 
 ## Описание {#description}

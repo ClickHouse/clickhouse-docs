@@ -7,7 +7,6 @@
 'title': 'Ruby on Rails'
 'doc_type': 'guide'
 ---
-
 Этот гид интегрирует:
 
 <table>

@@ -1,10 +1,11 @@
 ---
 'slug': '/use-cases/AI/MCP/ai-agent-libraries/openai-agents'
-'sidebar_label': '集成 OpenAI'
-'title': '如何使用 ClickHouse MCP 服务器构建 OpenAI 代理。'
+'sidebar_label': 'Создание OpenAI'
+'title': 'Как использовать ClickHouse MCP сервер для создания OpenAI агента.'
 'pagination_prev': null
 'pagination_next': null
-'description': '了解如何构建一个可以与 ClickHouse MCP 服务器互动的 OpenAI 代理。'
+'description': 'Узнайте, как создать один из агентов OpenAI, который может взаимодействовать
+  с ClickHouse MCP сервером.'
 'keywords':
 - 'ClickHouse'
 - 'MCP'
@@ -12,8 +13,6 @@
 'show_related_blogs': true
 'doc_type': 'guide'
 ---
-
-
 # Как создать агента OpenAI с использованием ClickHouse MCP Server
 
 В этом руководстве вы научитесь создавать агента [OpenAI](https://github.com/openai/openai-agents-python), который

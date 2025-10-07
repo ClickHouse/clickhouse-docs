@@ -1,20 +1,13 @@
 ---
-'sidebar_label': 'Загрузка JSON'
-'sidebar_position': 20
-'title': 'Работа с JSON'
-'slug': '/integrations/data-formats/json/loading'
-'description': 'Загрузка JSON'
-'keywords':
-- 'json'
-- 'clickhouse'
-- 'inserting'
-- 'loading'
-- 'inserting'
-'score': 15
-'doc_type': 'guide'
+slug: '/integrations/data-formats/json/loading'
+sidebar_label: 'Загрузка JSON'
+sidebar_position: 20
+description: 'Загрузка JSON'
+title: 'Работа с JSON'
+keywords: ['json', 'clickhouse', 'вставка', 'загрузка', 'вставка']
+doc_type: guide
+score: 15
 ---
-
-
 # Загрузка JSON {#loading-json}
 
 Следующие примеры предоставляют очень простой пример загрузки структурированных и полуструктурированных данных JSON. Для более сложного JSON, включая вложенные структуры, смотрите руководство [**Проектирование схемы JSON**](/integrations/data-formats/json/schema).

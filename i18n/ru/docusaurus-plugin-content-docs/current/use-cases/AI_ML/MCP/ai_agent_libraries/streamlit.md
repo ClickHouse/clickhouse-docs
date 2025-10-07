@@ -1,10 +1,11 @@
 ---
 'slug': '/use-cases/AI/MCP/ai-agent-libraries/streamlit-agent'
-'sidebar_label': '集成 Streamlit'
-'title': '如何使用 Streamlit 构建 ClickHouse 支持的 AI 代理'
+'sidebar_label': 'Создание с помощью Streamlit'
+'title': 'Как использовать Streamlit для создания AI приложений, поддерживающих ClickHouse'
 'pagination_prev': null
 'pagination_next': null
-'description': '学习如何使用 Streamlit 和 ClickHouse MCP 服务器构建基于 Web 的 AI 代理'
+'description': 'Узнайте, как использовать Streamlit и ClickHouse MCP для создания
+  web-приложений AI'
 'keywords':
 - 'ClickHouse'
 - 'MCP'
@@ -14,8 +15,6 @@
 'show_related_blogs': true
 'doc_type': 'guide'
 ---
-
-
 # Как создать AI-агента на базе ClickHouse с помощью Streamlit
 
 В этом руководстве вы научитесь создавать веб-агента на базе ИИ, используя [Streamlit](https://streamlit.io/), который может взаимодействовать с [SQL-площадкой ClickHouse](https://sql.clickhouse.com/) с помощью [Сервера MCP ClickHouse](https://github.com/ClickHouse/mcp-clickhouse) и [Agno](https://github.com/agno-agi/agno).

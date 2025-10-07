@@ -1,16 +1,13 @@
 ---
-'sidebar_label': 'Superset'
-'sidebar_position': 198
-'slug': '/integrations/superset'
-'keywords':
-- 'superset'
-'description': 'Apache Superset является открытой платформой для исследования и визуализации
-  данных.'
-'title': 'Подключение Superset к ClickHouse'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: '/integrations/superset'
+sidebar_label: Superset
+sidebar_position: 198
+description: 'Apache Superset является открытой платформой для исследования и визуализации'
+title: 'Подключите Superset к ClickHouse'
+keywords: ['clickhouse', 'superset', 'connect', 'integrate', 'ui']
+doc_type: guide
+show_related_blogs: true
 ---
-
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import superset_01 from '@site/static/images/integrations/data-visualization/superset_01.png';

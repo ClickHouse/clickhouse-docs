@@ -1,15 +1,12 @@
 ---
-'description': 'Анализ данных Stack Overflow с помощью ClickHouse'
-'sidebar_label': 'Stack Overflow'
-'sidebar_position': 1
-'slug': '/getting-started/example-datasets/stackoverflow'
-'title': 'Анализ данных Stack Overflow с помощью ClickHouse'
-'keywords':
-- 'StackOverflow'
-'show_related_blogs': true
-'doc_type': 'reference'
+slug: '/getting-started/example-datasets/stackoverflow'
+sidebar_label: 'Stack Overflow'
+sidebar_position: 1
+description: 'Анализ данных Stack Overflow с помощью ClickHouse'
+title: 'Анализ данных Stack Overflow с помощью ClickHouse'
+doc_type: reference
+show_related_blogs: true
 ---
-
 import Image from '@theme/IdealImage';
 import stackoverflow from '@site/static/images/getting-started/example-datasets/stackoverflow.png'
 

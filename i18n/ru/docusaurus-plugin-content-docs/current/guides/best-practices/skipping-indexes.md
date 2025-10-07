@@ -1,13 +1,11 @@
 ---
-'slug': '/optimize/skipping-indexes'
-'sidebar_label': 'Индексы пропуска данных'
-'sidebar_position': 2
-'description': 'Индексы пропуска позволяют ClickHouse пропускать чтение значительных
-  фрагментов данных, которые гарантированно не содержат совпадающих значений.'
-'title': 'Понимание индексов пропуска данных ClickHouse'
-'doc_type': 'guide'
+slug: '/optimize/skipping-indexes'
+sidebar_label: 'Индексы Пропуска Данных'
+sidebar_position: 2
+description: 'Индексы пропуска позволяют ClickHouse пропускать чтение значительных'
+title: 'Понимание Индексов Пропуска Данных ClickHouse'
+doc_type: guide
 ---
-
 import simple_skip from '@site/static/images/guides/best-practices/simple_skip.png';
 import bad_skip from '@site/static/images/guides/best-practices/bad_skip.png';
 import Image from '@theme/IdealImage';

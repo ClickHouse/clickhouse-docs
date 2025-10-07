@@ -1,18 +1,11 @@
 ---
-'slug': '/about-us/distinctive-features'
-'sidebar_label': 'Почему ClickHouse уникален?'
-'sidebar_position': 50
-'description': 'Поймите, что делает ClickHouse отличительным среди других систем управления
-  БАЗАМИ ДАННЫХ.'
-'title': 'Уникальные особенности ClickHouse'
-'keywords':
-- 'compression'
-- 'secondary-indexes'
-- 'column-oriented'
-'doc_type': 'guide'
+slug: '/about-us/distinctive-features'
+sidebar_label: 'Почему ClickHouse уникален?'
+sidebar_position: 50
+description: 'Поймите, что делает ClickHouse отличительным среди других систем управления'
+title: 'Отличительные особенности ClickHouse'
+doc_type: guide
 ---
-
-
 # Отличительные особенности ClickHouse
 
 ## Истинная столбцовая система управления базами данных {#true-column-oriented-database-management-system}

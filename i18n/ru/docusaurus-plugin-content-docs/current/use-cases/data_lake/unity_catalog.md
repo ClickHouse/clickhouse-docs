@@ -1,18 +1,13 @@
 ---
-'slug': '/use-cases/data-lake/unity-catalog'
-'sidebar_label': 'Unity Catalog'
-'title': 'Unity Catalog'
-'pagination_prev': null
-'pagination_next': null
-'description': 'В этом руководстве мы проведем вас через шаги, чтобы выполнить запрос
-  к вашим данным в S3 корзинах с использованием ClickHouse и Unity Catalog.'
-'keywords':
-- 'Unity'
-- 'Data Lake'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: '/use-cases/data-lake/unity-catalog'
+sidebar_label: 'Unity Catalog'
+description: 'В этом руководстве мы проведем вас через шаги, чтобы выполнить запрос'
+title: 'Unity Catalog'
+doc_type: guide
+pagination_prev: null
+pagination_next: null
+show_related_blogs: true
 ---
-
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 <ExperimentalBadge/>

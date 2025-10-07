@@ -6,8 +6,6 @@
 'hide_title': true
 'doc_type': 'guide'
 ---
-
-
 # Начало работы с ClickHouse Cloud
 
 Вы новичок в ClickHouse Cloud и не знаете, с чего начать? В этом разделе документации

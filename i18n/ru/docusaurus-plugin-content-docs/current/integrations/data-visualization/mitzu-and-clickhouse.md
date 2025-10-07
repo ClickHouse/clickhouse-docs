@@ -1,18 +1,11 @@
 ---
-'sidebar_label': 'Mitzu'
-'slug': '/integrations/mitzu'
-'keywords':
-- 'clickhouse'
-- 'Mitzu'
-- 'connect'
-- 'integrate'
-- 'ui'
-'description': 'Mitzu является приложением для аналитики продуктов, родственным складам
-  без кода.'
-'title': 'Подключение Mitzu к ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/mitzu'
+sidebar_label: Mitzu
+description: 'Mitzu является приложением для аналитики продуктов, родственным складом'
+title: 'Подключение Mitzu к ClickHouse'
+keywords: ['clickhouse', 'Mitzu', 'connect', 'integrate', 'ui']
+doc_type: guide
 ---
-
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import mitzu_01 from '@site/static/images/integrations/data-visualization/mitzu_01.png';

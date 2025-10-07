@@ -1,19 +1,11 @@
 ---
-'sidebar_label': 'Looker'
-'slug': '/integrations/looker'
-'keywords':
-- 'clickhouse'
-- 'looker'
-- 'connect'
-- 'integrate'
-- 'ui'
-'description': 'Looker является корпоративной платформой для бизнес-аналитики, приложений
-  для работы с данными и встроенной аналитики, которая помогает вам исследовать и
-  делиться взглядами в реальном времени.'
-'title': 'Looker'
-'doc_type': 'guide'
+slug: '/integrations/looker'
+sidebar_label: Looker
+description: 'Looker является корпоративной платформой для бизнес-аналитики, приложением'
+title: Looker
+keywords: ['clickhouse', 'looker', 'connect', 'integrate', 'ui']
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import looker_01 from '@site/static/images/integrations/data-visualization/looker_01.png';

@@ -1,12 +1,10 @@
 ---
-'sidebar_label': 'DataGrip'
-'slug': '/integrations/datagrip'
-'description': 'DataGrip является IDE для баз данных, которая поддерживает ClickHouse
-  из коробки.'
-'title': 'Подключение DataGrip к ClickHouse'
-'doc_type': 'guide'
+slug: '/integrations/datagrip'
+sidebar_label: DataGrip
+description: 'DataGrip является IDE для баз данных, которая поддерживает ClickHouse'
+title: 'Подключение DataGrip к ClickHouse'
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import datagrip_1 from '@site/static/images/integrations/sql-clients/datagrip-1.png';

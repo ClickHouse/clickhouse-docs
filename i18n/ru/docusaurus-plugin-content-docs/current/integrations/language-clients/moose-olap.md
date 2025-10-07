@@ -9,7 +9,6 @@
 - 'Moose'
 'doc_type': 'guide'
 ---
-
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 

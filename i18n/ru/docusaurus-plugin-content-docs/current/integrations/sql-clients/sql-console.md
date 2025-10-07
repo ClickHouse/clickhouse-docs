@@ -1,12 +1,11 @@
 ---
-'sidebar_label': 'SQL Console'
-'sidebar_position': 1
-'title': 'SQL Console'
-'slug': '/integrations/sql-clients/sql-console'
-'description': 'Узнайте о SQL Console'
-'doc_type': 'guide'
+slug: '/integrations/sql-clients/sql-console'
+sidebar_label: 'SQL Консоль'
+sidebar_position: 1
+description: 'Узнайте о SQL Console'
+title: 'SQL Консоль'
+doc_type: guide
 ---
-
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import Image from '@theme/IdealImage';
 import table_list_and_schema from '@site/static/images/cloud/sqlconsole/table-list-and-schema.png';

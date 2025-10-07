@@ -1,16 +1,12 @@
 ---
-'slug': '/best-practices/use-materialized-views'
-'sidebar_position': 10
-'sidebar_label': 'Использование материализованных представлений'
-'title': 'Использование материализованных представлений'
-'description': 'Страница, описывающая материализованные представления'
-'keywords':
-- 'materialized views'
-- 'medallion architecture'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: '/best-practices/use-materialized-views'
+sidebar_label: 'Использование Материализованных Представлений'
+sidebar_position: 10
+description: 'Страница, описывающая материализованные представления'
+title: 'Использование Материализованных Представлений'
+doc_type: guide
+show_related_blogs: true
 ---
-
 import Image from '@theme/IdealImage';
 import incremental_materialized_view from '@site/static/images/bestpractices/incremental_materialized_view.gif';
 import refreshable_materialized_view from '@site/static/images/bestpractices/refreshable_materialized_view.gif';

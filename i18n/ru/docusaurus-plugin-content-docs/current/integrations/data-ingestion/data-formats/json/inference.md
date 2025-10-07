@@ -1,15 +1,10 @@
 ---
-'title': 'JSON схема вывода'
-'slug': '/integrations/data-formats/json/inference'
-'description': 'Как использовать JSON схема вывода'
-'keywords':
-- 'json'
-- 'schema'
-- 'inference'
-- 'schema inference'
-'doc_type': 'guide'
+slug: '/integrations/data-formats/json/inference'
+description: 'Как использовать JSON схема вывода'
+title: 'Вывод схемы JSON'
+keywords: ['json', 'schema', 'inference', 'schema inference']
+doc_type: guide
 ---
-
 ClickHouse может автоматически определить структуру JSON-данных. Это может быть использовано для непосредственного запроса JSON-данных, например, на диске с помощью `clickhouse-local` или в S3-корзинах, а также/или для автоматического создания схем перед загрузкой данных в ClickHouse.
 
 ## Когда использовать вывод типов {#when-to-use-type-inference}
