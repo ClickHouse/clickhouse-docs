@@ -4,15 +4,16 @@
 'sidebar_position': 33
 'slug': '/sql-reference/data-types/boolean'
 'title': 'Bool'
+'doc_type': 'reference'
 ---
 
 
 # Bool
 
-类型 `bool` 在内部存储为 UInt8。可能的值为 `true` (1)，`false` (0)。
+类型 `bool` 在内部存储为 UInt8。可能的值为 `true` (1) 和 `false` (0)。
 
 ```sql
-select true as col, toTypeName(col);
+SELECT true AS col, toTypeName(col);
 ┌─col──┬─toTypeName(true)─┐
 │ true │ Bool             │
 └──────┴──────────────────┘

@@ -3,16 +3,17 @@
 'sidebar_label': 'UNDROP'
 'slug': '/sql-reference/statements/undrop'
 'title': 'UNDROP TABLE'
+'doc_type': 'reference'
 ---
 
 
 # UNDROP TABLE
 
-取消对表的删除。
+取消删除表。
 
-从 ClickHouse 版本 23.3 开始，可以在发出 DROP TABLE 语句后的 `database_atomic_delay_before_drop_table_sec`（默认情况下为 8 分钟）内对 Atomic 数据库中的表进行 UNDROP。被删除的表会列在名为 `system.dropped_tables` 的系统表中。
+从 ClickHouse 版本 23.3 开始，可以在发出 DROP TABLE 语句后的 `database_atomic_delay_before_drop_table_sec`（默认情况下为 8 分钟）内在原子数据库中 UNDROP 表。被删除的表会在一个名为 `system.dropped_tables` 的系统表中列出。
 
-如果您有一个没有 `TO` 子句与被删除表关联的物化视图，那么您还需要 UNDROP 那个视图的内部表。
+如果您有一个与被删除表相关联且没有 `TO` 子句的物化视图，则您还必须 UNDROP 那个视图的内部表。
 
 :::tip
 另请参见 [DROP TABLE](/sql-reference/statements/drop.md)

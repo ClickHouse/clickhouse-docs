@@ -9,6 +9,7 @@
 - 'examples'
 - 'anyIf'
 'sidebar_label': 'anyIf'
+'doc_type': 'reference'
 ---
 
 
@@ -16,13 +17,13 @@
 
 ## 描述 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`any`](/sql-reference/aggregate-functions/reference/any) 聚合函数，以选择匹配给定条件的某个列中首次遇到的元素。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合子可以应用于 [`any`](/sql-reference/aggregate-functions/reference/any) 聚合函数，以选择给定列中第一个遇到的符合给定条件的元素。
 
 ## 示例用法 {#example-usage}
 
-在这个示例中，我们将创建一个存储销售数据及成功标志的表，并使用 `anyIf` 选取大于和小于 200 的 `transaction_id`。
+在这个例子中，我们将创建一个存储销售数据的表，其中包含成功标志，并且我们将使用 `anyIf` 选择交易金额超过和低于 200 的第一个 `transaction_id`。
 
-我们首先创建一个表并向其中插入数据：
+我们首先创建一个表并插入数据：
 
 ```sql title="Query"
 CREATE TABLE sales(
@@ -44,8 +45,8 @@ INSERT INTO sales VALUES
 
 ```sql
 SELECT
-    anyIf(transaction_id, amount < 200) as tid_lt_200,
-    anyIf(transaction_id, amount > 200) as tid_gt_200
+    anyIf(transaction_id, amount < 200) AS tid_lt_200,
+    anyIf(transaction_id, amount > 200) AS tid_gt_200
 FROM sales;
 ```
 

@@ -1,173 +1,116 @@
 ---
-'description': 'Documentation for 时间序列函数'
-'sidebar_label': '时间序列'
-'sidebar_position': 172
+'description': '处理时间序列的函数的文档'
+'sidebar_label': 'TimeSeries'
 'slug': '/sql-reference/functions/time-series-functions'
-'title': '时间序列函数'
+'title': '处理时间序列的函数'
+'doc_type': 'reference'
 ---
 
 
 # 时间序列函数
 
-以下函数用于序列数据分析。
+以下函数旨在与 `timeSeries*()` 聚合函数一起使用，例如
+[timeSeriesInstantRateToGrid](../aggregate-functions/reference/timeSeriesInstantRateToGrid.md),
+[timeSeriesLastToGrid](../aggregate-functions/reference/timeSeriesResampleToGridWithStaleness.md) 等。
 
-## seriesOutliersDetectTukey {#seriesoutliersdetecttukey}
+## timeSeriesRange {#timeSeriesRange}
 
-使用 [Tukey Fences](https://en.wikipedia.org/wiki/Outlier#Tukey%27s_fences) 检测序列数据中的异常值。
+生成时间戳范围。
 
 **语法**
 
 ```sql
-seriesOutliersDetectTukey(series);
-seriesOutliersDetectTukey(series, min_percentile, max_percentile, K);
+timeSeriesRange(start_timestamp, end_timestamp, step)
 ```
 
 **参数**
 
-- `series` - 数值数组。
-- `min_percentile` - 计算四分位间距所使用的最小百分位。该值必须在 [0.02,0.98] 范围内。默认值为 0.25。
-- `max_percentile` - 计算四分位间距所使用的最大百分位。该值必须在 [0.02,0.98] 范围内。默认值为 0.75。
-- `K` - 非负常数值，用于检测轻微或更强的异常值。默认值为 1.5。
-
-在 `series` 中至少需要四个数据点才能检测到异常值。
+- `start_timestamp` - 范围的开始。
+- `end_timestamp` - 范围的结束。
+- `step` - 范围的步长，以秒为单位。
 
 **返回值**
 
-- 返回一个与输入数组具有相同长度的数组，其中每个值表示对应元素在系列中的可能异常分数。非零分数表示可能的异常。 [Array](../data-types/array.md)。
+- 返回时间戳范围 `[start_timestamp, start_timestamp + step, start_timestamp + 2 * step, ..., end_timestamp]`。
 
 **示例**
 
 查询：
 
 ```sql
-SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4, 5, 12, 45, 12, 3, 3, 4, 5, 6]) AS print_0;
+SELECT timeSeriesRange('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:01:00'::DateTime64(3), 30) AS rng;
 ```
 
 结果：
 
 ```text
-┌───────────print_0─────────────────┐
-│[0,0,0,0,0,0,0,0,0,27,0,0,0,0,0,0] │
-└───────────────────────────────────┘
+┌────────────────────────────────────result─────────────────────────────────────────┐
+│ ['2025-06-01 00:00:00.000', '2025-06-01 00:00:30.000', '2025-06-01 00:01:00.000'] │
+└───────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-查询：
-
+**注意**
+- 如果函数 `timeSeriesRange()` 的 `start_timestamp` 等于 `end_timestamp`，则返回包含该时间戳的 1 元素数组：`[start_timestamp]`
+- 函数 `timeSeriesRange()` 与函数 [range](../functions/array-functions.md#range) 类似。
+例如，如果时间戳类型为 `DateTime64(3)` 且 `start_timestamp < end_timestamp`，那么 `timeSeriesRange(start_timestamp, end_timestamp, step)` 返回的结果与以下表达式相同：
 ```sql
-SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4.50, 5, 12, 45, 12, 3.40, 3, 4, 5, 6], 0.2, 0.8, 1.5) AS print_0;
+range(start_timestamp::Int64, end_timestamp::Int64 + 1, step::Int64)::Array(DateTime64(3))
 ```
 
-结果：
+## timeSeriesFromGrid {#timeSeriesFromGrid}
 
-```text
-┌─print_0──────────────────────────────┐
-│ [0,0,0,0,0,0,0,0,0,19.5,0,0,0,0,0,0] │
-└──────────────────────────────────────┘
-```
+将值数组 `[value1, value2, value3, ..., valueN]` 转换为元组数组
+`[(start_timestamp, value1), (start_timestamp + step, value2), (start_timestamp + 2 * step, value3), ..., (end_timestamp, valueN)]`。
 
-## seriesPeriodDetectFFT {#seriesperioddetectfft}
+如果某些值 `[value1, value2, value3, ...]` 为 `NULL`，则该函数不会将这些空值复制到结果数组中，
+但仍会增加当前时间戳，即例如对于 `[value1, NULL, value2]`，函数将返回
+`[(start_timestamp, value1), (start_timestamp + 2 * step, value2)]`。
 
-使用 FFT - [快速傅里叶变换](https://en.wikipedia.org/wiki/Fast_Fourier_transform) 找到给定序列数据的周期。
+当前时间戳会按步长增加，直到它大于 `end_timestamp`，每个时间戳将与指定值数组中的值结合。如果值的数量与时间戳的数量不匹配，函数将抛出异常。
 
 **语法**
 
 ```sql
-seriesPeriodDetectFFT(series);
+timeSeriesFromGrid(start_timestamp, end_timestamp, step, values);
 ```
 
 **参数**
 
-- `series` - 数值数组
+- `start_timestamp` - 网格的开始。
+- `end_timestamp` - 网格的结束。
+- `step` - 网格的步长，以秒为单位。
+- `values` - 值数组 `[value1, value2, ..., valueN]`。
 
 **返回值**
 
-- 返回与序列数据的周期相等的实值。当数据点数量少于四个时返回 NaN。 [Float64](../data-types/float.md)。
+- 返回源值数组中的值与由 `start_timestamp` 和 `step` 描述的规则时间网格相结合的时间戳。
 
 **示例**
 
 查询：
 
 ```sql
-SELECT seriesPeriodDetectFFT([1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6]) AS print_0;
+SELECT timeSeriesFromGrid('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:01:30.000'::DateTime64(3), 30, [10, 20, NULL, 30]) AS result;
 ```
 
 结果：
 
 ```text
-┌───────────print_0──────┐
-│                      3 │
-└────────────────────────┘
+┌─────────────────────────────────────────────result─────────────────────────────────────────────┐
+│ [('2025-06-01 00:00:00.000',10),('2025-06-01 00:00:30.000',20),('2025-06-01 00:01:30.000',30)] │
+└────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+**注意**
+函数 `timeSeriesFromGrid(start_timestamp, end_timestamp, step, values)` 返回的结果与以下表达式相同：
 ```sql
-SELECT seriesPeriodDetectFFT(arrayMap(x -> abs((x % 6) - 3), range(1000))) AS print_0;
-```
-
-结果：
-
-```text
-┌─print_0─┐
-│       6 │
-└─────────┘
-```
-
-## seriesDecomposeSTL {#seriesdecomposestl}
-
-使用 STL [(基于 Loess 的季节-趋势分解程序)](https://www.wessa.net/download/stl.pdf) 对序列数据进行分解，得到季节、趋势和残差成分。
-
-**语法**
-
-```sql
-seriesDecomposeSTL(series, period);
-```
-
-**参数**
-
-- `series` - 数值数组
-- `period` - 正整数
-
-`series` 中的数据点数量应至少是 `period` 的两倍。
-
-**返回值**
-
-- 返回一个包含四个数组的数组，第一个数组包含季节成分，第二个数组 - 趋势，第三个数组 - 残差成分，第四个数组 - 基线（季节 + 趋势）成分。 [Array](../data-types/array.md)。
-
-**示例**
-
-查询：
-
-```sql
-SELECT seriesDecomposeSTL([10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34], 3) AS print_0;
-```
-
-结果：
-
-```text
-┌───────────print_0──────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ [[
-        -13.529999, -3.1799996, 16.71,      -13.53,     -3.1799996, 16.71,      -13.53,     -3.1799996,
-        16.71,      -13.530001, -3.18,      16.710001,  -13.530001, -3.1800003, 16.710001,  -13.530001,
-        -3.1800003, 16.710001,  -13.530001, -3.1799994, 16.71,      -13.529999, -3.1799994, 16.709997
-    ],
-    [
-        23.63,     23.63,     23.630003, 23.630001, 23.630001, 23.630001, 23.630001, 23.630001,
-        23.630001, 23.630001, 23.630001, 23.63,     23.630001, 23.630001, 23.63,     23.630001,
-        23.630001, 23.63,     23.630001, 23.630001, 23.630001, 23.630001, 23.630001, 23.630003
-    ],
-    [
-        0, 0.0000019073486, -0.0000019073486, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.0000019073486, 0,
-        0
-    ],
-    [
-        10.1, 20.449999, 40.340004, 10.100001, 20.45, 40.34, 10.100001, 20.45, 40.34, 10.1, 20.45, 40.34,
-        10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.100002, 20.45, 40.34
-    ]]                                                                                                                   │
-└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+arrayFilter(x -> x.2 IS NOT NULL, arrayZip(timeSeriesRange(start_timestamp, end_timestamp, step), values))
 ```
 
 <!-- 
-以下标签的内部内容在文档框架构建时被系统生成的函数文档替换。请勿修改或删除这些标签。
-参考：https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+The inner content of the tags below are replaced at doc framework build time with 
+docs generated from system.functions. Please do not modify or remove the tags.
+See: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
 -->
 
 <!--AUTOGENERATED_START-->

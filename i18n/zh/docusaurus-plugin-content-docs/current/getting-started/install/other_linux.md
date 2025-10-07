@@ -7,8 +7,9 @@
 - 'tar'
 'sidebar_label': '其他 Linux'
 'slug': '/install/linux_other'
-'title': '使用 tgz 归档安装 ClickHouse'
+'title': '使用 tgz 压缩包安装 ClickHouse'
 'hide_title': true
+'doc_type': 'guide'
 ---
 
 import Tar from './_snippets/_linux_tar_install.md'

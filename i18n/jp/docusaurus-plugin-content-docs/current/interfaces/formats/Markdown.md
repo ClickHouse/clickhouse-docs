@@ -1,18 +1,17 @@
 ---
-description: 'Markdown formatの文書'
-keywords:
+'description': 'Markdown形式のドキュメント'
+'keywords':
 - 'Markdown'
-slug: '/interfaces/formats/Markdown'
-title: 'Markdown'
+'slug': '/interfaces/formats/Markdown'
+'title': 'Markdown'
+'doc_type': 'reference'
 ---
-
-
 
 ## 説明 {#description}
 
-[Markdown](https://en.wikipedia.org/wiki/Markdown) 形式を使用して結果をエクスポートすることで、`.md` ファイルに貼り付ける準備が整った出力を生成できます。
+結果を[Markdown](https://en.wikipedia.org/wiki/Markdown)形式でエクスポートして、`.md`ファイルに貼り付ける準備が整った出力を生成することができます。
 
-マークダウンテーブルは自動的に生成され、Github のようなマークダウン対応プラットフォームで使用できます。この形式は出力専用です。
+Markdownテーブルは自動的に生成され、GithubのようなMarkdown対応プラットフォームで使用することができます。この形式は出力にのみ使用されます。
 
 ## 使用例 {#example-usage}
 
@@ -33,4 +32,4 @@ FORMAT Markdown
 | 4 | 8 |
 ```
 
-## フォーマット設定 {#format-settings}
+## 形式設定 {#format-settings}

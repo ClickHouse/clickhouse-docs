@@ -1,31 +1,30 @@
 ---
-description: 'Documentation for the Tuple data type in ClickHouse'
-sidebar_label: 'Tuple(T1, T2, ...)'
-sidebar_position: 34
-slug: '/sql-reference/data-types/tuple'
-title: 'Tuple(T1, T2, ...)'
+'description': 'ClickHouseにおけるTupleデータ型のドキュメント'
+'sidebar_label': 'Tuple(T1, T2, ...)'
+'sidebar_position': 34
+'slug': '/sql-reference/data-types/tuple'
+'title': 'Tuple(T1, T2, ...)'
+'doc_type': 'reference'
 ---
-
-
 
 
 # Tuple(T1, T2, ...)
 
-各要素が個別の [type](/sql-reference/data-types) を持つタプル。タプルは少なくとも1つの要素を含む必要があります。
+要素のタプルで、それぞれが個別の [タイプ](/sql-reference/data-types) を持っています。タプルは少なくとも1つの要素を含む必要があります。
 
-タプルは、一時的なカラムのグルーピングに使用されます。クエリ内で IN 式が使用されるときや、ラムダ関数の特定の形式パラメータを指定するためにカラムをグループ化できます。詳細については、[IN 演算子](../../sql-reference/operators/in.md) および [高階関数](/sql-reference/functions/overview#higher-order-functions) のセクションを参照してください。
+タプルは一時的なカラムのグルーピングに使用されます。カラムはクエリで IN 式が使用されている場合にグループ化され、ラムダ関数の特定の形式的パラメータを指定するためにも使用されます。詳細については、[IN 演算子](../../sql-reference/operators/in.md) および [高階関数](/sql-reference/functions/overview#higher-order-functions) のセクションを参照してください。
 
-タプルはクエリの結果になることがあります。この場合、JSON 以外のテキスト形式では、値はカンマで区切られた括弧内に表示されます。JSON 形式では、タプルは配列 (角括弧内) として出力されます。
+タプルはクエリの結果となる場合があります。この場合、JSON 以外のテキスト形式では、値はカンマ区切りで括弧内に表示されます。JSON 形式では、タプルは配列として出力されます（角括弧内に表示）。
 
-## タプルの作成 {#creating-tuples}
+## Creating Tuples {#creating-tuples}
 
-関数を使用してタプルを作成できます：
+関数を使用してタプルを作成することができます：
 
 ```sql
 tuple(T1, T2, ...)
 ```
 
-タプルの作成例：
+タプルを作成する例：
 
 ```sql
 SELECT tuple(1, 'a') AS x, toTypeName(x)
@@ -51,7 +50,7 @@ SELECT tuple('a') AS x;
 └───────┘
 ```
 
-構文 `(tuple_element1, tuple_element2)` を使用して `tuple()` 関数を呼び出すことなく、複数の要素からなるタプルを作成できます。
+構文 `(tuple_element1, tuple_element2)` を使用して、`tuple()` 関数を呼び出すことなく、複数の要素のタプルを作成することができます。
 
 例：
 
@@ -65,9 +64,9 @@ SELECT (1, 'a') AS x, (today(), rand(), 'someString') AS y, ('a') AS not_a_tuple
 └─────────┴────────────────────────────────────────┴─────────────┘
 ```
 
-## データ型検出 {#data-type-detection}
+## Data Type Detection {#data-type-detection}
 
-タプルを即興で作成する際、ClickHouse はタプルの引数の型を提供された引数値を格納できる最小の型として推測します。値が [NULL](/operations/settings/formats#input_format_null_as_default) の場合、推測された型は [Nullable](../../sql-reference/data-types/nullable.md) です。
+タプルをその場で作成する際、ClickHouse は引数の最小型としてタプルの型を推測します。値が [NULL](/operations/settings/formats#input_format_null_as_default) の場合、推測された型は [Nullable](../../sql-reference/data-types/nullable.md) です。
 
 自動データ型検出の例：
 
@@ -81,16 +80,16 @@ SELECT tuple(1, NULL) AS x, toTypeName(x)
 └───────────┴─────────────────────────────────┘
 ```
 
-## タプル要素の参照 {#referring-to-tuple-elements}
+## Referring to Tuple Elements {#referring-to-tuple-elements}
 
-タプルの要素は名前またはインデックスで参照できます：
+タプルの要素には、名前またはインデックスでアクセスできます：
 
 ```sql
 CREATE TABLE named_tuples (`a` Tuple(s String, i Int64)) ENGINE = Memory;
 INSERT INTO named_tuples VALUES (('y', 10)), (('x',-10));
 
-SELECT a.s FROM named_tuples; -- 名前で
-SELECT a.2 FROM named_tuples; -- インデックスで
+SELECT a.s FROM named_tuples; -- by name
+SELECT a.2 FROM named_tuples; -- by index
 ```
 
 結果：
@@ -107,9 +106,9 @@ SELECT a.2 FROM named_tuples; -- インデックスで
 └────────────────────┘
 ```
 
-## タプルによる比較操作 {#comparison-operations-with-tuple}
+## Comparison operations with Tuple {#comparison-operations-with-tuple}
 
-2つのタプルは、左から右へと要素を順に比較することで比較されます。最初のタプルの要素が2番目のタプルの対応する要素よりも大きい（小さい）場合、最初のタプルは2番目のタプルよりも大きい（小さい）と見なされ、それ以外の場合（両方の要素が等しい場合）は、次の要素が比較されます。
+2つのタプルは、その要素を左から右へ順に比較することによって比較されます。最初のタプルの要素が2番目のタプルの対応する要素よりも大きい（小さい）場合、最初のタプルは2番目のタプルより大きい（小さい）と見なされます。それ以外の場合（両方の要素が等しい場合）、次の要素が比較されます。
 
 例：
 
@@ -123,7 +122,7 @@ SELECT (1, 'z') > (1, 'a') c1, (2022, 01, 02) > (2023, 04, 02) c2, (1,2,3) = (3,
 └────┴────┴────┘
 ```
 
-実世界の例：
+現実の例：
 
 ```sql
 CREATE TABLE test
@@ -150,8 +149,6 @@ WHERE (year, month, day) > (2010, 1, 1);
 ┌─year─┬─month─┬─day─┐
 │ 2022 │    12 │  31 │
 └──────┴───────┴─────┘
-
-
 CREATE TABLE test
 (
     `key` Int64,
@@ -171,7 +168,7 @@ SELECT * FROM test;
 │   2 │        2 │     0 │
 └─────┴──────────┴───────┘
 
--- 最大のdurationを持つ各keyの値を見つけ、durationが等しい場合は最大のvalueを選択します
+-- Let's find a value for each key with the biggest duration, if durations are equal, select the biggest value
 
 SELECT
     key,

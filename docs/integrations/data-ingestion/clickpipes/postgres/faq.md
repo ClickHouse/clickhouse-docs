@@ -356,3 +356,7 @@ Yes, for a Postgres ClickPipe with replication mode as CDC or Snapshot + CDC, yo
 <Image img={failover_slot} border size="md"/>
 
 If the source is configured accordingly, the slot is preserved after failovers to a Postgres read replica, ensuring continuous data replication. Learn more [here](https://www.postgresql.org/docs/current/logical-replication-failover.html).
+
+### I am seeing errors like `Internal error encountered during logical decoding of aborted sub-transaction` {#transient-logical-decoding-errors}
+
+This error suggests a transient issue with the logical decoding of aborted sub-transaction, and is specific to custom implementations of Aurora Postgres. Given the error is coming from `ReorderBufferPreserveLastSpilledSnapshot` routine, this suggests that logical decoding is not able to read the snapshot spilled to disk. It may be worth trying to increase [`logical_decoding_work_mem`](https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-LOGICAL-DECODING-WORK-MEM) to a higher value.

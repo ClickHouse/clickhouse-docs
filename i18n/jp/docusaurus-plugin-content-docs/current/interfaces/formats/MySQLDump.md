@@ -1,15 +1,14 @@
 ---
-alias: []
-description: 'MySQLDump形式のドキュメント'
-input_format: true
-keywords:
+'alias': []
+'description': 'MySQLDump フォーマットに関するドキュメント'
+'input_format': true
+'keywords':
 - 'MySQLDump'
-output_format: false
-slug: '/interfaces/formats/MySQLDump'
-title: 'MySQLDump'
+'output_format': false
+'slug': '/interfaces/formats/MySQLDump'
+'title': 'MySQLDump'
+'doc_type': 'reference'
 ---
-
-
 
 | Input | Output  | Alias |
 |-------|---------|-------|
@@ -17,18 +16,18 @@ title: 'MySQLDump'
 
 ## 説明 {#description}
 
-ClickHouse は MySQL の [ダンプ](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html) を読み込むことをサポートしています。
+ClickHouse は MySQL の [ダンプ](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html) を読み取ることをサポートしています。
 
-ダンプ内の単一テーブルに属する `INSERT` クエリからすべてのデータを読み込みます。 
-複数のテーブルが存在する場合、デフォルトでは最初のテーブルからデータを読み込みます。
+ダンプ内の単一のテーブルに属する `INSERT` クエリからすべてのデータを読み取ります。 
+テーブルが複数ある場合、デフォルトでは最初のテーブルからデータを読み取ります。
 
 :::note
-このフォーマットはスキーマ推論をサポートします：ダンプに指定されたテーブルに対する `CREATE` クエリが含まれている場合、その構造がそこから推論されます。それ以外の場合、`INSERT` クエリのデータからスキーマが推論されます。
+この形式はスキーマ推論をサポートしています：ダンプに指定されたテーブルの `CREATE` クエリが含まれている場合、その構造はそこから推論されます。そうでない場合は、`INSERT` クエリのデータからスキーマが推論されます。
 :::
 
 ## 使用例 {#example-usage}
 
-以下の SQL ダンプファイルが与えられた場合：
+次の SQL ダンプファイルが与えられた場合：
 
 ```sql title="dump.sql"
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -84,6 +83,6 @@ SETTINGS input_format_mysql_dump_table_name = 'test2'
 
 ## フォーマット設定 {#format-settings}
 
-データを読み込むテーブルの名前を [`input_format_mysql_dump_table_name`](/operations/settings/settings-formats.md/#input_format_mysql_dump_table_name) 設定を使用して指定できます。
-設定 `input_format_mysql_dump_map_columns` が `1` に設定されていて、ダンプに指定されたテーブルに対する `CREATE` クエリまたは `INSERT` クエリ内のカラム名が含まれている場合、入力データのカラムがテーブルのカラムに名前でマッピングされます。
+データを読み取るテーブルの名前を指定するには、[`input_format_mysql_dump_table_name`](/operations/settings/settings-formats.md/#input_format_mysql_dump_table_name) 設定を使用します。
+設定 `input_format_mysql_dump_map_columns` が `1` に設定されていて、ダンプに指定されたテーブルまたはカラム名の `CREATE` クエリが含まれている場合、入力データからのカラムは名前によってテーブルのカラムにマッピングされます。
 未知の名前のカラムは、設定 [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) が `1` に設定されている場合はスキップされます。

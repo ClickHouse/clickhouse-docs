@@ -1,29 +1,30 @@
 ---
-description: 'System table containing information about stack traces for fatal errors.'
-keywords:
+'description': 'システム テーブルが致命的なエラーのスタック トレースに関する情報を含んでいます。'
+'keywords':
 - 'system table'
 - 'crash_log'
-slug: '/operations/system-tables/crash-log'
-title: 'system.crash_log'
+'slug': '/operations/system-tables/crash-log'
+'title': 'system.crash_log'
+'doc_type': 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
-致命的なエラーのスタックトレースに関する情報を含みます。テーブルはデフォルトではデータベースに存在せず、致命的なエラーが発生したときにのみ作成されます。
+致命的なエラーに関するスタックトレースの情報を含みます。このテーブルはデフォルトではデータベースに存在せず、致命的なエラーが発生したときのみ作成されます。
 
 カラム:
 
 - `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — クエリを実行しているサーバーのホスト名。
 - `event_date` ([DateTime](../../sql-reference/data-types/datetime.md)) — イベントの日付。
-- `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — イベントの時間。
-- `timestamp_ns` ([UInt64](../../sql-reference/data-types/int-uint.md)) — イベントのタイムスタンプ（ナノ秒）。
+- `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — イベントの時刻。
+- `timestamp_ns` ([UInt64](../../sql-reference/data-types/int-uint.md)) — nanoseconds（ナノ秒）を含むイベントのタイムスタンプ。
 - `signal` ([Int32](../../sql-reference/data-types/int-uint.md)) — シグナル番号。
 - `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — スレッドID。
 - `query_id` ([String](../../sql-reference/data-types/string.md)) — クエリID。
 - `trace` ([Array](../../sql-reference/data-types/array.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — クラッシュ時のスタックトレース。各要素はClickHouseサーバープロセス内の仮想メモリアドレスです。
-- `trace_full` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — クラッシュ時のスタックトレース。各要素にはClickHouseサーバープロセス内の呼び出されたメソッドが含まれています。
+- `trace_full` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — クラッシュ時のスタックトレース。各要素はClickHouseサーバープロセス内で呼び出されたメソッドを含みます。
 - `version` ([String](../../sql-reference/data-types/string.md)) — ClickHouseサーバーのバージョン。
 - `revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — ClickHouseサーバーのリビジョン。
 - `build_id` ([String](../../sql-reference/data-types/string.md)) — コンパイラによって生成されるBuildID。
@@ -36,7 +37,7 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 SELECT * FROM system.crash_log ORDER BY event_time DESC LIMIT 1;
 ```
 
-結果（全体ではない）:
+結果（完全ではありません）:
 
 ```text
 Row 1:
@@ -55,5 +56,5 @@ revision:     54442
 build_id:
 ```
 
-**関連情報**
+**参照**
 - [trace_log](../../operations/system-tables/trace_log.md) システムテーブル

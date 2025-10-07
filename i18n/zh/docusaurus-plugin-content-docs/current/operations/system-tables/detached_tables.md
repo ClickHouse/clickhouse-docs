@@ -1,25 +1,26 @@
 ---
-'description': '系统表包含有关每个 detached 表的信息。'
+'description': '系统表包含关于每个 detached 表的信息。'
 'keywords':
 - 'system table'
 - 'detached_tables'
 'slug': '/operations/system-tables/detached_tables'
 'title': 'system.detached_tables'
+'doc_type': 'reference'
 ---
 
 包含每个已分离表的信息。
 
 列：
 
-- `database` ([String](../../sql-reference/data-types/string.md)) — 表所在数据库的名称。
+- `database` ([String](../../sql-reference/data-types/string.md)) — 表所在的数据库名称。
 
-- `table` ([String](../../sql-reference/data-types/string.md)) — 表名称。
+- `table` ([String](../../sql-reference/data-types/string.md)) — 表名。
 
-- `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — 表的 uuid（原子数据库）。
+- `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — 表的 UUID（原子数据库）。
 
 - `metadata_path` ([String](../../sql-reference/data-types/string.md)) - 文件系统中表元数据的路径。
 
-- `is_permanently` ([UInt8](../../sql-reference/data-types/int-uint.md)) - 标志指示该表已被永久性分离。
+- `is_permanently` ([UInt8](../../sql-reference/data-types/int-uint.md)) - 标志指示该表已被永久分离。
 
 **示例**
 

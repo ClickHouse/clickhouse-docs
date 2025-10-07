@@ -1,19 +1,20 @@
 ---
-'description': '系统表包含有关在集群上执行的分布式 ddl 查询（使用 ON CLUSTER 子句的查询）的信息。'
+'description': '系统表包含关于在集群上执行的分布式 ddl 查询（使用 ON CLUSTER 子句的查询）的信息。'
 'keywords':
 - 'system table'
 - 'distributed_ddl_queue'
 'slug': '/operations/system-tables/distributed_ddl_queue'
 'title': 'system.distributed_ddl_queue'
+'doc_type': 'reference'
 ---
 
-包含关于在集群中执行的 [分布式 DDL 查询 (ON CLUSTER 子句)](../../sql-reference/distributed-ddl.md) 的信息。
+包含关于在集群上执行的 [分布式 DDL 查询 (ON CLUSTER 子句)](../../sql-reference/distributed-ddl.md) 的信息。
 
 列：
 
-- `entry` ([String](../../sql-reference/data-types/string.md)) — 查询 ID。
+- `entry` ([String](../../sql-reference/data-types/string.md)) — 查询ID。
 - `entry_version` ([Nullable(UInt8)](../../sql-reference/data-types/int-uint.md)) - 条目的版本
-- `initiator_host` ([Nullable(String)](../../sql-reference/data-types/string.md)) - 发起 DDL 操作的主机
+- `initiator_host` ([Nullable(String)](../../sql-reference/data-types/string.md)) - 发起 DDL 操作的主机 
 - `initiator_port` ([Nullable(UInt16)](../../sql-reference/data-types/int-uint.md)) - 发起者使用的端口
 - `cluster` ([String](../../sql-reference/data-types/string.md)) — 集群名称。
 - `query` ([String](../../sql-reference/data-types/string.md)) — 执行的查询。
@@ -21,11 +22,11 @@
 - `query_create_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 查询创建时间。
 - `host` ([String](../../sql-reference/data-types/string.md)) — 主机名
 - `port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — 主机端口。
-- `status` ([Enum8](../../sql-reference/data-types/enum.md)) — 查询状态。
+- `status` ([Enum8](../../sql-reference/data-types/enum.md)) — 查询的状态。
 - `exception_code` ([Enum8](../../sql-reference/data-types/enum.md)) — 异常代码。
 - `exception_text` ([Nullable(String)](../../sql-reference/data-types/string.md)) - 异常消息
 - `query_finish_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 查询完成时间。
-- `query_duration_ms` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 查询执行持续时间（以毫秒为单位）。
+- `query_duration_ms` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 查询执行的持续时间（以毫秒为单位）。
 
 **示例**
 

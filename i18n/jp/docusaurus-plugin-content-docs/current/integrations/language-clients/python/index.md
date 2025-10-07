@@ -1,15 +1,16 @@
 ---
-sidebar_label: 'Python'
-sidebar_position: 10
-keywords:
+'sidebar_label': 'Python'
+'sidebar_position': 10
+'keywords':
 - 'clickhouse'
 - 'python'
 - 'client'
 - 'connect'
 - 'integrate'
-slug: '/integrations/python'
-description: 'The ClickHouse Connect project suite for connecting Python to ClickHouse'
-title: 'Python Integration with ClickHouse Connect'
+'slug': '/integrations/python'
+'description': 'PythonをClickHouseに接続するためのClickHouse Connectプロジェクトスイート'
+'title': 'PythonとClickHouse Connectの統合'
+'doc_type': 'guide'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
@@ -18,20 +19,20 @@ import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/curr
 # Python Integration with ClickHouse Connect
 ## Introduction {#introduction}
 
-ClickHouse Connectは、広範囲なPythonアプリケーションとの相互運用性を提供するコアデータベースドライバです。
+ClickHouse Connect は、さまざまな Python アプリケーションとの相互運用性を提供するコアデータベースドライバです。
 
-- 主なインターフェースは、パッケージ `clickhouse_connect.driver` にある `Client` オブジェクトです。このコアパッケージには、ClickHouseサーバと通信するためのさまざまなヘルパークラスやユーティリティ関数、そして挿入および選択クエリの高度な管理のための「context」実装が含まれています。
-- `clickhouse_connect.datatypes` パッケージは、すべての非実験的なClickHouseデータ型の基本実装とサブクラスを提供します。その主な機能は、ClickHouseのデータをClickHouseの「ネイティブ」バイナリ列形式にシリアル化および逆シリアル化することです。この形式は、ClickHouseとクライアントアプリケーション間での効率的なデータ転送を実現します。
-- `clickhouse_connect.cdriver` パッケージのCython/Cクラスは、最も一般的なシリアル化および逆シリアル化を最適化し、純粋なPythonよりも大幅にパフォーマンスを向上させます。
-- パッケージ `clickhouse_connect.cc_sqlalchemy` には、`datatypes` および `dbi` パッケージに基づいて構築された制限付きの [SQLAlchemy](https://www.sqlalchemy.org/) ダイアレクトがあります。この制限された実装は、クエリ/カーソル機能に焦点を当てており、一般的にはSQLAlchemy DDLおよびORM操作をサポートしません。（SQLAlchemyはOLTPデータベースを対象としており、ClickHouseのOLAP指向データベースを管理するためには、より専門的なツールとフレームワークを推奨します。）
-- コアドライバとClickHouse Connect SQLAlchemy実装は、ClickHouseをApache Supersetに接続するための推奨方法です。`ClickHouse Connect` データベース接続または `clickhousedb` SQLAlchemyダイアレクト接続文字列を使用してください。
+- 主なインターフェースは、パッケージ `clickhouse_connect.driver` にある `Client` オブジェクトです。このコアパッケージには、ClickHouse サーバーとの通信に使用される各種ヘルパークラスとユーティリティ関数、および挿入と選択クエリの高度な管理のための "context" 実装が含まれています。
+- `clickhouse_connect.datatypes` パッケージは、すべての非実験的 ClickHouse データ型のベース実装およびサブクラスを提供します。その主な機能は、ClickHouse データを ClickHouse "Native" バイナリ列指向フォーマットにシリアライズおよびデシリアライズすることで、ClickHouse とクライアントアプリケーション間での最も効率的な輸送を実現します。
+- `clickhouse_connect.cdriver` パッケージの Cython/C クラスは、いくつかの一般的なシリアル化およびデシリアライズを最適化し、純粋な Python よりも大幅にパフォーマンスを向上させます。
+- パッケージ `clickhouse_connect.cc_sqlalchemy` には、`datatypes` および `dbi` パッケージから構築された限定された [SQLAlchemy](https://www.sqlalchemy.org/) ダイアレクトがあります。この制限された実装は、クエリ/カーソル機能に焦点を当てており、一般的には SQLAlchemy の DDL および ORM 操作をサポートしていません。（SQLAlchemy は OLTP データベースを対象としており、ClickHouse の OLAP 指向データベースを管理するには、より専門的なツールやフレームワークを推奨します。）
+- コアドライバと ClickHouse Connect SQLAlchemy 実装は、ClickHouse を Apache Superset に接続するための推奨方法です。`ClickHouse Connect` データベース接続、または `clickhousedb` SQLAlchemy ダイアレクト接続文字列を使用してください。
 
-このドキュメントは、ベータリリース0.8.2の時点において最新のものです。
+このドキュメンテーションは、ベータリリース 0.8.2 の時点での最新情報です。
 
 :::note
-公式のClickHouse Connect Pythonドライバは、ClickHouseサーバーとの通信にHTTPプロトコルを使用しています。これには、柔軟性の向上、HTTPバランサのサポート、JDBCベースのツールとの互換性向上などの利点があり、一方で、圧縮やパフォーマンスがわずかに低下することや、ネイティブTCPプロトコルの一部の複雑な機能がサポートされていないなどの欠点があります。一部のユースケースでは、ネイティブTCPプロトコルを使用する[Community Python drivers](/interfaces/third-party/client-libraries.md)の使用を検討することができます。
+公式の ClickHouse Connect Python ドライバは、ClickHouse サーバーとの通信に HTTP プロトコルを使用します。これは、柔軟性が高く、HTTP バランサーのサポート、JDBC ベースのツールとの互換性が向上するなどの利点がありますが、圧縮およびパフォーマンスがわずかに低下するという欠点（およびネイティブの TCP ベースプロトコルの一部の複雑な機能のサポート不足）があります。特定のユースケースでは、ネイティブの TCP ベースのプロトコルを使用する [Community Python drivers](/interfaces/third-party/client-libraries.md) を使用することを検討してください。
 :::
-### Requirements and Compatibility {#requirements-and-compatibility}
+### Requirements and compatibility {#requirements-and-compatibility}
 
 |    Python |   |       Platform¹ |   | ClickHouse |    | SQLAlchemy² |   | Apache Superset |   |
 |----------:|:--|----------------:|:--|-----------:|:---|------------:|:--|----------------:|:--|
@@ -42,33 +43,33 @@ ClickHouse Connectは、広範囲なPythonアプリケーションとの相互�
 |    3.11.x | ✅ |         Windows | ✅ |     24.8.x | ✅  |             |   |           2.1.x | ✅ |
 |    3.12.x | ✅ |                 |   |     24.9.x | ✅  |             |   |           3.0.x | ✅ |
 
-¹ClickHouse Connectは、リストされたプラットフォームに対して明示的にテストされています。さらに、優れた [`cibuildwheel`](https://cibuildwheel.readthedocs.io/en/stable/) プロジェクトに対して、すべてのアーキテクチャに対する未テストのバイナリホイール（C最適化）も構築されています。最後に、ClickHouse Connectは純粋なPythonとしても動作できるため、ソースインストールは最近のPythonインストールでも機能するはずです。
+¹ClickHouse Connect は、リストされているプラットフォームに対して明示的にテストされています。さらに、優れた [`cibuildwheel`](https://cibuildwheel.readthedocs.io/en/stable/) プロジェクトのために、すべてのアーキテクチャに対して未テストのバイナリホイール（C 最適化付き）がビルドされています。最後に、ClickHouse Connect は純粋な Python としても動作できるため、ソースインストールは最近の Python インストールで動作するはずです。
 
-²SQLAlchemyのサポートは主にクエリ機能に限られています。完全なSQLAlchemy APIはサポートされていません。
+²再度、SQLAlchemy サポートは主にクエリ機能に制限されています。完全な SQLAlchemy API はサポートされていません。
 
-³ClickHouse Connectは、現在サポートされているすべてのClickHouseバージョンに対してテストされています。HTTPプロトコルを使用しているため、ほとんどのその他のClickHouseバージョンでも正常に動作するはずですが、特定の高度なデータ型に対していくつかの不整合があるかもしれません。
+³ClickHouse Connect は現在サポートされているすべての ClickHouse バージョンに対してテストされています。HTTP プロトコルを使用しているため、ClickHouse の他のバージョンでも正しく動作するはずですが、特定の高度なデータ型において一部の不整合があるかもしれません。
 ### Installation {#installation}
 
-PyPIからpipを使用してClickHouse Connectをインストールします：
+ClickHouse Connect を PyPI から pip 経由でインストールします：
 
 `pip install clickhouse-connect`
 
-ClickHouse Connectはソースからもインストールできます：
-* [GitHubリポジトリ](https://github.com/ClickHouse/clickhouse-connect)を`git clone`します。
-* （オプション）C/Cythonの最適化をビルドして有効にするために、`pip install cython`を実行します。
-* プロジェクトのルートディレクトリに`cd`し、`pip install .`を実行します。
-### Support Policy {#support-policy}
+ClickHouse Connect はソースからもインストールできます：
+* [GitHub リポジトリ](https://github.com/ClickHouse/clickhouse-connect) を `git clone` します。
+* （オプション）`pip install cython` を実行して、C/Cython 最適化をビルドおよび有効にします。
+* プロジェクトのルートディレクトリに `cd` し、`pip install .` を実行します。
+### Support policy {#support-policy}
 
-ClickHouse Connectは現在ベータ版であり、現在のベータリリースのみが積極的にサポートされています。問題を報告する前に、最新のバージョンに更新してください。問題は[GitHubプロジェクト](https://github.com/ClickHouse/clickhouse-connect/issues)に提出してください。ClickHouse Connectの将来のリリースは、リリース時点でアクティブにサポートされているClickHouseバージョンと互換性があることが保証されています（通常、最新の3つの `stable` と2つの最新の `lts` リリース）。
-### Basic Usage {#basic-usage}
+ClickHouse Connect は現在ベータ版であり、現在のベータリリースのみが積極的にサポートされています。問題を報告する前に最新バージョンにアップデートしてください。問題は [GitHub プロジェクト](https://github.com/ClickHouse/clickhouse-connect/issues) に提出してください。将来の ClickHouse Connect のリリースは、リリース時点で現在アクティブにサポートされている ClickHouse バージョンと互換性があることが保証されています（一般的に、最新の 3 つの `stable` と 2 つの最新の `lts` リリース）。
+### Basic usage {#basic-usage}
 ### Gather your connection details {#gather-your-connection-details}
 
 <ConnectionDetails />
 #### Establish a connection {#establish-a-connection}
 
-ClickHouseへの接続には2つの例が示されています：
-- localhostでのClickHouseサーバーへの接続。
-- ClickHouse Cloudサービスへの接続。
+ClickHouse への接続方法には二つの例があります：
+- ローカルホストの ClickHouse サーバーへの接続。
+- ClickHouse Cloud サービスへの接続。
 ##### Use a ClickHouse Connect client instance to connect to a ClickHouse server on localhost: {#use-a-clickhouse-connect-client-instance-to-connect-to-a-clickhouse-server-on-localhost}
 
 ```python
@@ -79,7 +80,7 @@ client = clickhouse_connect.get_client(host='localhost', username='default', pas
 ##### Use a ClickHouse Connect client instance to connect to a ClickHouse Cloud service: {#use-a-clickhouse-connect-client-instance-to-connect-to-a-clickhouse-cloud-service}
 
 :::tip
-前に収集した接続詳細を使用してください。ClickHouse CloudサービスではTLSが必要なため、ポート8443を使用します。
+前に集めた接続詳細を使用してください。 ClickHouse Cloud サービスには TLS が必要なので、ポート 8443 を使用してください。
 :::
 
 ```python
@@ -89,13 +90,13 @@ client = clickhouse_connect.get_client(host='HOSTNAME.clickhouse.cloud', port=84
 ```
 #### Interact with your database {#interact-with-your-database}
 
-ClickHouse SQLコマンドを実行するには、クライアントの`command` メソッドを使用します：
+ClickHouse SQL コマンドを実行するには、クライアントの `command` メソッドを使用します：
 
 ```python
 client.command('CREATE TABLE new_table (key UInt32, value String, metric Float64) ENGINE MergeTree ORDER BY key')
 ```
 
-バッチデータを挿入するには、クライアントの`insert` メソッドを使用して、行と値の二次元配列を指定します：
+バッチデータを挿入するには、行と値の二次元配列を使用してクライアントの `insert` メソッドを使用します：
 
 ```python
 row1 = [1000, 'String Value 1000', 5.233]
@@ -104,72 +105,72 @@ data = [row1, row2]
 client.insert('new_table', data, column_names=['key', 'value', 'metric'])
 ```
 
-ClickHouse SQLを使用してデータを取得するには、クライアントの`query` メソッドを使用します：
+ClickHouse SQL を使用してデータを取得するには、クライアントの `query` メソッドを使用します：
 
 ```python
 result = client.query('SELECT max(key), avg(metric) FROM new_table')
 result.result_rows
 Out[13]: [(2000, -50.9035)]
 ```
-## ClickHouse Connect Driver API {#clickhouse-connect-driver-api}
+## ClickHouse Connect driver API {#clickhouse-connect-driver-api}
 
-***Note:*** ほとんどのAPIメソッドはオプション引数が多くあるため、キーワード引数を渡すことを推奨します。
+***Note:*** 引数の数が多く（ほとんどはオプションです）大部分の API メソッドにはキーワード引数を渡すことを推奨します。
 
-*ここに文書化されていないメソッドはAPIの一部とは見なされず、削除または変更される可能性があります。*
+*ここにドキュメント化されていないメソッドは API の一部とは見なされず、削除または変更される可能性があります。*
 ### Client Initialization {#client-initialization}
 
-`clickhouse_connect.driver.client` クラスは、PythonアプリケーションとClickHouseデータベースサーバー間の主なインターフェースを提供します。`clickhouse_connect.get_client` 関数を使用してClientインスタンスを取得し、以下の引数を受け取ります：
-#### Connection Arguments {#connection-arguments}
+`clickhouse_connect.driver.client` クラスは、Python アプリケーションと ClickHouse データベースサーバーとの間の主要なインターフェースを提供します。 `clickhouse_connect.get_client` 関数を使用して Client インスタンスを取得します。このインスタンスは以下の引数を受け入れます：
+#### Connection arguments {#connection-arguments}
 
-| Parameter             | Type        | Default                       | Description                                                                                                                                                                                                                                            |
-|-----------------------|-------------|-------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| interface             | str         | http                          | httpまたはhttpsである必要があります。                                                                                                                                                                                                                                  |
-| host                  | str         | localhost                     | ClickHouseサーバーのホスト名またはIPアドレス。設定しない場合、`localhost` が使用されます。                                                                                                                                                                   |
-| port                  | int         | 8123または8443                | ClickHouseのHTTPまたはHTTPSポート。設定しない場合は8123にデフォルト設定され、*secure*=*True*または*interface*=*https*の場合は8443に設定されます。                                                                                                      |
-| username              | str         | default                       | ClickHouseユーザー名。設定しない場合、`default`のClickHouseユーザーが使用されます。                                                                                                                                                                       |
-| password              | str         | *&lt;空文字列&gt;*         | *username* のパスワード。                                                                                                                                                                                                                                  |
-| database              | str         | *None*                        | 接続のデフォルトデータベース。設定しない場合、ClickHouse Connectは*username* に対してデフォルトのデータベースを使用します。                                                                                                                               |
-| secure                | bool        | False                         | https/TLSを使用します。これにより、インターフェースまたはポート引数からの推測値が上書きされます。                                                                                                                                                         |
-| dsn                   | str         | *None*                        | 標準DSN（データソース名）形式の文字列。この文字列から他の接続値（ホストやユーザーなど）が抽出されます。                                                                                                                        |
-| compress              | bool or str | True                          | ClickHouseのHTTP挿入およびクエリ結果に対して圧縮を有効にします。[追加オプション（圧縮）](#compression)を参照してください。                                                                                                                               |
-| query_limit           | int         | 0（無制限）                   | 任意の`query`応答に対して返される最大行数。この値をゼロに設定すると無制限の行が返されます。大きなクエリ制限は、結果がストリームされない場合、すべての結果が一度にメモリに読み込まれるため、メモリエラーが発生する可能性があります。                      |
-| query_retries         | int         | 2                             | `query`リクエストの最大再試行回数。再試行可能なHTTP応答のみが再試行されます。`command`または`insert`リクエストは、意図しない重複リクエストを防ぐために自動的には再試行されません。                                                        |
-| connect_timeout       | int         | 10                            | HTTP接続のタイムアウト（秒）。                                                                                                                                                                                                                                |
-| send_receive_timeout  | int         | 300                           | HTTP接続の送受信タイムアウト（秒）。                                                                                                                                                                                                                          |
-| client_name           | str         | *None*                        | HTTPユーザーエージェントヘッダーに付加されるclient_name。この設定を使用してClickHouseのsystem.query_logでクライアントクエリを追跡します。                                                                                                                              |
-| pool_mgr              | obj         | *&lt;デフォルトのPoolManager&gt;* | 使用する`urllib3`ライブラリのPoolManager。異なるホストに対する複数の接続プールが必要な高度なユースケース向け。                                                                                                                                                 |
-| http_proxy            | str         | *None*                        | HTTPプロキシアドレス（HTTP_PROXY環境変数を設定するのと同等）。                                                                                                                                                                                            |
-| https_proxy           | str         | *None*                        | HTTPSプロキシアドレス（HTTPS_PROXY環境変数を設定するのと同等）。                                                                                                                                                                                         |
-| apply_server_timezone | bool        | True                          | タイムゾーンに対応したクエリ結果にサーバーのタイムゾーンを使用します。[タイムゾーンの優先順位](#time-zones)を参照してください。                                                                                                                |
-#### HTTPS/TLS Arguments {#httpstls-arguments}
+| パラメータ                     | タイプ        | デフォルト                       | 説明                                                                                                                                                                                                                                                                                        |
+|-------------------------------|-------------|-------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| interface                     | str         | http                          | http または https でなければなりません。                                                                                                                                                                                                                                                       |
+| host                          | str         | localhost                     | ClickHouse サーバーのホスト名または IP アドレス。設定しなければ、`localhost` が使用されます。                                                                                                                                                                                                |
+| port                          | int         | 8123 または 8443                  | ClickHouse HTTP または HTTPS ポート。設定しなければ、デフォルトで 8123 または、*secure*=*True* または *interface*=*https* であれば 8443 が使用されます。                                                                                                                                        |
+| username                      | str         | default                       | ClickHouse ユーザー名。設定しなければ、`default` の ClickHouse ユーザーが使用されます。                                                                                                                                                                                                         |
+| password                      | str         | *&lt;empty string&gt;*        | *username* のためのパスワード。                                                                                                                                                                                                                                                                      |
+| database                      | str         | *None*                        | 接続に対するデフォルトのデータベース。設定しなければ、ClickHouse Connect は *username* のためのデフォルトデータベースを使用します。                                                                                                                                                                   |
+| secure                        | bool        | False                         | https/TLS を使用します。この場合、インターフェースまたはポート引数から推測された値が上書きされます。                                                                                                                                                                                                        |
+| dsn                           | str         | *None*                        | 標準の DSN（データソース名）フォーマットの文字列。他の接続値（ホストやユーザーなど）は、設定されていない場合はこの文字列から抽出されます。                                                                                                                                               |
+| compress                      | bool or str | True                          | ClickHouse HTTP 挿入およびクエリ結果の圧縮を有効にします。 [追加オプション (圧縮)](#compression) を参照してください。                                                                                                                                                                               |
+| query_limit                   | int         | 0 (無制限)                     | 任意の `query` 応答に対して返される最大行数。この値をゼロに設定すると、無制限の行が返されます。大量のクエリ制限は、結果がストリーミングされない場合、メモリオーバーの例外の原因となることがあります。すべての結果が一度にメモリに読み込まれます。                       |
+| query_retries                 | int         | 2                             | `query` リクエストに対する最大リトライ数。リトライ可能な HTTP 応答のみが再試行されます。`command` または `insert` リクエストは、意図しない重複リクエストを防ぐために自動的にはリトライされません。                                                                                         |
+| connect_timeout               | int         | 10                            | 秒単位での HTTP 接続タイムアウト。                                                                                                                                                                                                                                                                         |
+| send_receive_timeout          | int         | 300                           | 秒単位の HTTP 接続の送受信タイムアウト。                                                                                                                                                                                                                                                                  |
+| client_name                   | str         | *None*                        | HTTP ユーザーエージェントヘッダーに追加される client_name。これを設定することで、ClickHouse の system.query_log でクライアントクエリを追跡できます。                                                                                                                                  |
+| pool_mgr                      | obj         | *&lt;default PoolManager&gt;* | 使用する `urllib3` ライブラリの PoolManager。異なるホストへの複数の接続プールを必要とする高度なユースケースに対するものです。                                                                                                                                                         |
+| http_proxy                    | str         | *None*                        | HTTP プロキシアドレス（HTTP_PROXY 環境変数を設定するのと同等）。                                                                                                                                                                                                                                          |
+| https_proxy                   | str         | *None*                        | HTTPS プロキシアドレス（HTTPS_PROXY 環境変数を設定するのと同等）。                                                                                                                                                                                                                                        |
+| apply_server_timezone         | bool        | True                          | タイムゾーンを認識したクエリ結果にサーバータイムゾーンを使用します。 [タイムゾーンの優先順位](#time-zones) を参照してください。                                                                                                                                                  |
+#### HTTPS/TLS arguments {#httpstls-arguments}
 
-| Parameter        | Type | Default | Description                                                                                                                                                                                                                                                                       |
-|------------------|------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| verify           | bool | True    | HTTPS/TLSを使用している場合にClickHouseサーバーTLS/SSL証明書を検証します（ホスト名、有効期限など）。                                                                                                                                                                               |
-| ca_cert          | str  | *None*  | *verify*=*True*の場合、ClickHouseサーバー証明書を検証するための認証局のルートを含むファイルパス（.pem形式）。verifyがFalseの場合は無視されます。これが不要なのはClickHouseサーバー証明書がオペレーティングシステムによって確認されたグローバルに信頼されたルートである場合です。 |
-| client_cert      | str  | *None*  | TLSクライアント証明書のファイルパス（.pem形式、相互TLS認証用）。ファイルには、中間証明書を含む完全な証明書チェーンが含まれている必要があります。                                                                                                  |
-| client_cert_key  | str  | *None*  | クライアント証明書のプライベートキーのファイルパス。プライベートキーがクライアント証明書のキー・ファイルに含まれていない場合は必要です。                                                                                                                                             |
-| server_host_name | str  | *None*  | TLS証明書のCNまたはSNIで識別されたClickHouseサーバーのホスト名。これを設定すると、異なるホスト名でプロキシやトンネルを介して接続する際のSSLエラーを回避できます。                                                                                          |
-| tls_mode         | str  | *None*  | 高度なTLS動作を制御します。`proxy`および `strict` はClickHouseの相互TLS接続を呼び出しませんが、クライアント証明書とキーを送信します。`mutual`はClickHouse相互TLS認証をクライアント証明書で前提とします。 *None* /デフォルト動作は`mutual`です。                               |
-#### Settings Argument {#settings-argument}
+| パラメータ                | タイプ | デフォルト | 説明                                                                                                                                                                                                                                                     |
+|--------------------------|------|---------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| verify                   | bool | True    | HTTPS/TLS を使用している場合、ClickHouse サーバー TLS/SSL 証明書（ホスト名、有効期限など）を検証します。                                                                                                                                                                                     |
+| ca_cert                  | str  | *None*  | *verify*=*True* の場合、ClickHouse サーバー証明書を検証するための証明書機関のルートのファイルパスを .pem 形式で指定します。verify が False であれば無視されます。これは、ClickHouse サーバー証明書がオペレーティングシステムによって検証されたグローバルに信頼されたルートの場合は必要ありません。 |
+| client_cert              | str  | *None*  | 相互 TLS 認証のための .pem 形式の TLS クライアント証明書のファイルパス。このファイルには、中間証明書を含むフルの証明書チェーンが含まれている必要があります。                                                                                                                                   |
+| client_cert_key          | str  | *None*  | クライアント証明書のプライベートキーのファイルパス。プライベートキーがクライアント証明書キーのファイルに含まれていない場合は必須です。                                                                                                                                                               |
+| server_host_name         | str  | *None*  | TLS 証明書の CN や SNI によって特定される ClickHouse サーバーのホスト名。異なるホスト名でプロキシやトンネルを通じて接続する際に SSL エラーを回避するためにこれを設定します。                                                                                                     |
+| tls_mode                 | str  | *None*  | 高度な TLS 動作を制御します。`proxy` と `strict` は ClickHouse の相互 TLS 接続を呼び出すことがなく、クライアント証明書と鍵を送信します。`mutual` は ClickHouse の相互 TLS 認証をクライアント証明書で想定します。 *None*/デフォルト動作は `mutual` です。                                               |
+#### Settings argument {#settings-argument}
 
-最後に、`get_client`への`settings`引数は、各クライアントリクエストのために追加のClickHouse設定をサーバーに渡すために使用されます。一般的に、*readonly*=*1* アクセスを持つユーザーはクエリと共に送信された設定を変更できないため、ClickHouse Connectはそのような設定を最終リクエストで削除し、警告をログに記録します。以下の設定は、ClickHouse Connectによって使用されるHTTPクエリ/セッションにのみ適用され、一般的なClickHouse設定として文書化されていません。
+最後に、`get_client` への `settings` 引数は、各クライアントリクエストのためにサーバーに追加の ClickHouse 設定を渡すために使用されます。通常の場合、*readonly*=*1* アクセスを持つユーザーは、クエリと共に送信された設定を変更できないため、ClickHouse Connect は最終リクエストでそのような設定を削除し、警告をログに記録します。次の設定は、ClickHouse Connect によって使用される HTTP クエリ/セッションにのみ適用され、一般的な ClickHouse 設定として文書化されていません。
 
-| Setting           | Description                                                                                                                                                      |
-|-------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| buffer_size       | HTTPチャネルに書き込む前にClickHouseサーバーによって使用されるバッファサイズ（バイト）。                                                                             |
-| session_id        | サーバー上で関連するクエリを関連付けるための一意のセッションID。一時テーブルには必須です。                                                                   |
-| compress          | ClickHouseサーバーがPOSTレスポンスデータを圧縮するかどうか。これは「生」クエリに対してのみ使用する必要があります。                                        |
-| decompress        | ClickHouseサーバーに送信されたデータが逆シリアル化されるべきかどうか。この設定は「生」挿入に対してのみ使用する必要があります。                                          |
-| quota_key         | このリクエストに関連付けられているクォータキー。クォータに関するClickHouseサーバーのドキュメントを参照してください。                                                                  |
-| session_check     | セッションの状態を確認するために使用されます。                                                                                                                                |
-| session_timeout   | セッションIDで識別されたセッションがタイムアウトし、もはや有効と見なされなくなるまでの非アクティブ状態の秒数。デフォルトは60秒です。                  |
-| wait_end_of_query | ClickHouseサーバー上の応答全体をバッファする。この設定はサマリー情報を返すために必要であり、非ストリーミングクエリに対して自動的に設定されます。 |
+| 設定               | 説明                                                                                                                                                                                            |
+|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| buffer_size         | HTTP チャネルに書き込む前に ClickHouse サーバーによって使用されるバッファサイズ（バイト単位）。                                                                                                                                                       |
+| session_id          | サーバー上で関連するクエリを関連付けるための一意のセッション ID。 一時テーブルには必須です。                                                                                                                                                       |
+| compress            | ClickHouse サーバーが POST 応答データを圧縮する必要があるかどうか。この設定は「生」をクエリに対してのみ使用する必要があります。                                                                                                                   |
+| decompress          | ClickHouse サーバーに送信するデータがデシリアライズされている必要があるかどうか。この設定は「生」の挿入のためにのみ使用されるべきです。                                                                                            |
+| quota_key           | このリクエストに関連するクォータキー。クォータに関する ClickHouse サーバーのドキュメントを参照してください。                                                                                                                   |
+| session_check       | セッションの状態をチェックするために使用されます。                                                                                                                                                                                                      |
+| session_timeout     | セッション ID によって特定されたセッションがタイムアウトし、有効ではなくなるまでの非アクティブな秒数。デフォルトは 60 秒です。                                                                                                                              |
+| wait_end_of_query   | ClickHouse サーバー上で全応答をバッファリングします。この設定は、要約情報を返すために必要であり、非ストリーミングクエリで自動的に設定されます。                                                                          |
 
-各クエリと共に送信される他のClickHouse設定については、[ClickHouseのドキュメント](/operations/settings/settings.md)を参照してください。
-#### Client Creation Examples {#client-creation-examples}
+各クエリに送信できる他の ClickHouse 設定については、 [ClickHouse ドキュメント](/operations/settings/settings.md) を参照してください。
+#### Client creation examples {#client-creation-examples}
 
-- 引数なしで、ClickHouse Connectクライアントは`localhost`のデフォルトHTTPポートにデフォルトユーザー（パスワードなし）で接続します：
+- パラメータなしで ClickHouse Connect クライアントが `localhost` でデフォルトの HTTP ポートに接続し、デフォルトユーザーおよびパスワードなしで接続します：
 
 ```python
 import clickhouse_connect
@@ -179,7 +180,7 @@ client.server_version
 Out[2]: '22.10.1.98'
 ```
 
-- セキュア（https）な外部ClickHouseサーバーへの接続
+- セキュア（https）の外部 ClickHouse サーバーへの接続
 
 ```python
 import clickhouse_connect
@@ -189,7 +190,7 @@ client.command('SELECT timezone()')
 Out[2]: 'Etc/UTC'
 ```
 
-- セッションIDやその他のカスタム接続パラメータ、ClickHouse設定を使用した接続。
+- セッション ID および他のカスタム接続パラメータと ClickHouse 設定を使用した接続。
 
 ```python
 import clickhouse_connect
@@ -205,17 +206,17 @@ client = clickhouse_connect.get_client(host='play.clickhouse.com',
 client.database
 Out[2]: 'github'
 ```
-### Common Method Arguments {#common-method-arguments}
+### Common method arguments {#common-method-arguments}
 
-いくつかのクライアントメソッドは、共通の`parameters`および`settings`引数のいずれかまたは両方を使用します。これらのキーワード引数は以下に説明します。
-#### Parameters Argument {#parameters-argument}
+いくつかのクライアントメソッドは、共通の `parameters` および `settings` 引数のいずれかまたは両方を使用します。これらのキーワード引数は以下に説明します。
+#### Parameters argument {#parameters-argument}
 
-ClickHouse Connect Clientの`query*`および`command`メソッドは、ClickHouseの値式にPython式をバインドするためにオプションの`parameters`キーワード引数を受け取ります。バインディングには2種類あります。
-##### Server Side Binding {#server-side-binding}
+ClickHouse Connect Client の `query*` および `command` メソッドは、ClickHouse 値式に Python 式をバインドするために使用されるオプションの `parameters` キーワード引数を受け入れます。二種類のバインディングが利用可能です。
+##### Server side binding {#server-side-binding}
 
-ClickHouseはほとんどのクエリ値に対して[サーバー側のバインディング](/interfaces/cli.md#cli-queries-with-parameters)をサポートしており、バインドされた値はクエリとは別にHTTPクエリパラメータとして送信されます。ClickHouse Connectは、`{&lt;name&gt;:&lt;datatype&gt;}`の形式のバインディング式を検出した場合、適切なクエリパラメータを追加します。サーバー側のバインディングでは、`parameters`引数はPythonの辞書である必要があります。
+ClickHouse は、バインドされた値がクエリとは別に HTTP クエリパラメータとして送信される、ほとんどのクエリ値に対して [サーバー側バインディング](/interfaces/cli.md#cli-queries-with-parameters) をサポートしています。ClickHouse Connect は、`{<name>:<datatype>}` 形式のバインディング式を検出すると、適切なクエリパラメータを追加します。サーバー側バインディングでは、`parameters` 引数は Python 辞書である必要があります。
 
-- Python辞書、DateTime値、文字列値を用いたサーバー側のバインディング
+- Python 辞書、DateTime 値および文字列値によるサーバーサイドバインディング
 
 ```python
 import datetime
@@ -226,19 +227,19 @@ parameters = {'table': 'my_table', 'v1': my_date, 'v2': "a string with a single 
 client.query('SELECT * FROM {table:Identifier} WHERE date >= {v1:DateTime} AND string ILIKE {v2:String}', parameters=parameters)
 
 
-# サーバー上で以下のクエリが生成されます
+# Generates the following query on the server
 
 # SELECT * FROM my_table WHERE date >= '2022-10-01 15:20:05' AND string ILIKE 'a string with a single quote\''
 ```
 
-**重要** -- サーバー側のバインディングはClickHouseサーバーによって`SELECT`クエリのみにサポートされています。`ALTER`、`DELETE`、`INSERT`、または他の種類のクエリには機能しません。将来的に変更される可能性がありますので、https://github.com/ClickHouse/ClickHouse/issues/42092を参照してください。
-##### Client Side Binding {#client-side-binding}
+**重要** -- サーバー側バインディングは `SELECT` クエリに対してのみ ClickHouse サーバーによってサポートされています。`ALTER`、`DELETE`、`INSERT`、または他の種類のクエリでは機能しません。将来的に変更される可能性があります。 https://github.com/ClickHouse/ClickHouse/issues/42092 を参照してください。
+##### Client side binding {#client-side-binding}
 
-ClickHouse Connectはまた、クライアント側のパラメータバインディングもサポートし、テンプレート化されたSQLクエリ生成での柔軟性を高めることができます。クライアント側のバインディングでは、`parameters`引数は辞書またはシーケンスである必要があります。クライアント側のバインディングは、パラメータの置き換えにPythonの["printf"スタイル](https://docs.python.org/3/library/stdtypes.html#old-string-formatting)の文字列整形を使用します。
+ClickHouse Connect は、テンプレート SQL クエリを生成する際により柔軟性を持つことを可能にするクライアント側パラメータバインディングもサポートしています。クライアント側バインディングでは、`parameters` 引数は辞書またはシーケンスである必要があります。クライアント側バインディングは、パラメータ置換に Python の ["printf" スタイル](https://docs.python.org/3/library/stdtypes.html#old-string-formatting) の文字列フォーマットを使用します。
 
-サーバー側のバインディングとは異なり、クライアント側のバインディングは、データベース識別子（データベース、テーブル、カラム名など）には機能しません。Python式整形は異なるタイプの文字列を区別できないため、これらは異なる形で整形する必要があります（データベース識別子にはバックティックまたは二重引用符、データ値には単一引用符を使用します）。
+サーバー側バインディングとは異なり、クライアント側バインディングはデータベース識別子（データベース、テーブル、カラム名など）には機能しません。 Python スタイルフォーマッティングは異なる種類の文字列を区別できないため、異なる形式（データベース識別子にはバックティックまたはダブルクォート、データ値にはシングルクォート）でフォーマットする必要があります。
 
-- Python辞書、DateTime値、および文字列エスケープの例
+- Python 辞書、DateTime 値および文字列エスケープの例
 
 ```python
 import datetime
@@ -249,12 +250,12 @@ parameters = {'v1': my_date, 'v2': "a string with a single quote'"}
 client.query('SELECT * FROM some_table WHERE date >= %(v1)s AND string ILIKE %(v2)s', parameters=parameters)
 
 
-# 以下のクエリが生成されます：
+# Generates the following query:
 
 # SELECT * FROM some_table WHERE date >= '2022-10-01 15:20:05' AND string ILIKE 'a string with a single quote\''
 ```
 
-- Pythonシーケンス（タプル）、Float64、およびIPv4アドレスの例
+- Python シーケンス（タプル）、Float64、および IPv4Address の例
 
 ```python
 import ipaddress
@@ -263,35 +264,35 @@ parameters = (35200.44, ipaddress.IPv4Address(0x443d04fe))
 client.query('SELECT * FROM some_table WHERE metric >= %s AND ip_address = %s', parameters=parameters)
 
 
-# 以下のクエリが生成されます：
+# Generates the following query:
 
 # SELECT * FROM some_table WHERE metric >= 35200.44 AND ip_address = '68.61.4.254''
 ```
 
 :::note
-DateTime64引数をバインドする（サブ秒精度を持つClickHouseタイプ）には、次の2つのカスタムアプローチのいずれかが必要です：
-- Pythonの`datetime.datetime`値を新しいDT64Paramクラスでラップする。
-  ```python
-    query = 'SELECT {p1:DateTime64(3)}'  # 辞書を使用したサーバー側のバインディング
-    parameters={'p1': DT64Param(dt_value)}
-  
-    query = 'SELECT %s as string, toDateTime64(%s,6) as dateTime' # リストを使用したクライアント側のバインディング 
-    parameters=['a string', DT64Param(datetime.now())]
-  ```
-  - パラメータ名の末尾に`_64`を付加して辞書のパラメータ値を使用する場合
-  ```python
-    query = 'SELECT {p1:DateTime64(3)}, {a1:Array(DateTime(3))}'  # 辞書を使用したサーバー側のバインディング
-  
-    parameters={'p1_64': dt_value, 'a1_64': [dt_value1, dt_value2]}
-  ```
+DateTime64 引数をバインドするには（サブ秒精度による ClickHouse 型）、以下の 2 つのカスタムアプローチのいずれかが必要です：
+- Python の `datetime.datetime` 値を新しい DT64Param クラスにラップします。例：
+```python
+query = 'SELECT {p1:DateTime64(3)}'  # Server side binding with dictionary
+parameters={'p1': DT64Param(dt_value)}
+
+query = 'SELECT %s as string, toDateTime64(%s,6) as dateTime' # Client side binding with list 
+parameters=['a string', DT64Param(datetime.now())]
+```
+  - パラメータ値の辞書を使用する場合、パラメータ名に `_64` の文字列を追加します。
+```python
+query = 'SELECT {p1:DateTime64(3)}, {a1:Array(DateTime(3))}'  # Server side binding with dictionary
+
+parameters={'p1_64': dt_value, 'a1_64': [dt_value1, dt_value2]}
+```
 :::
-#### Settings Argument {#settings-argument-1}
+#### Settings argument {#settings-argument-1}
 
-すべての主要なClickHouse Connect Clientの「insert」と「select」メソッドは、含まれるSQLステートメントに対してClickHouseサーバーの[ユーザー設定](/operations/settings/settings.md)を渡すためのオプションの`settings`キーワード引数を受け取ります。`settings`引数は辞書でなければなりません。各アイテムはClickHouse設定名とその関連値でなければなりません。値は、クエリパラメータとしてサーバーに送信される際に文字列に変換されます。
+すべての重要な ClickHouse Connect Client の "insert" および "select" メソッドは、含まれる SQL 文のために ClickHouse サーバー [ユーザー設定](/operations/settings/settings.md) を渡すためのオプションの `settings` キーワード引数を受け入れます。`settings` 引数は辞書である必要があります。各アイテムは ClickHouse 設定名とそれに関連する値である必要があります。値は、クエリパラメータとしてサーバーに送信されるときに文字列に変換されることに注意してください。
 
-クライアントレベルの設定と同様に、ClickHouse Connectはサーバーによって*readonly*=*1*とマークされた設定を削除し、関連するログメッセージを記録します。ClickHouse HTTPインターフェースを介ってのクエリにのみ適用される設定は常に有効です。これらの設定は、`get_client` [API](#settings-argument)の下で説明されています。
+クライアントレベルの設定と同様に、ClickHouse Connect はサーバーが *readonly*=*1* とマークした設定を削除し、関連するログメッセージを出力します。ClickHouse HTTP インターフェースを介してクエリにのみ適用される設定は常に有効です。これらの設定は、`get_client` [API](#settings-argument) の下で詳述されています。
 
-ClickHouse設定を使用する例：
+ClickHouse 設定を使用する例：
 
 ```python
 settings = {'merge_tree_min_rows_for_concurrent_read': 65535,
@@ -299,20 +300,20 @@ settings = {'merge_tree_min_rows_for_concurrent_read': 65535,
             'use_skip_indexes': False}
 client.query("SELECT event_type, sum(timeout) FROM event_errors WHERE event_time > '2022-08-01'", settings=settings)
 ```
-### Client _command_ Method {#client-_command_-method}
+### Client `command` Method {#client-command-method}
 
-`Client.command`メソッドを使用して、通常はデータを返さないか、単一のプリミティブまたは配列値を返すClickHouseサーバーにSQLクエリを送信します。このメソッドは以下のパラメータを取ります：
+`Client.command` メソッドを使用して、通常はデータを返さないか、フルデータセットではなく単一のプリミティブまたは配列値を返す SQL クエリを ClickHouse サーバーに送信します。このメソッドは以下のパラメータを受け取ります：
 
-| Parameter     | Type             | Default    | Description                                                                                                                                                   |
-|---------------|------------------|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| cmd           | str              | *必須*      | 単一の値または単一行の値を返すClickHouse SQLステートメント。                                                                                                      |                                                                                                                                                                                                                                                                              |
-| parameters    | dict or iterable | *None*     | [parametersの説明](#parameters-argument)を参照してください。                                                                                                   |
-| data          | str or bytes     | *None*     | POSTボディとしてコマンドに含めるオプションデータ。                                                                                                           |
-| settings      | dict             | *None*     | [settingsの説明](#settings-argument)を参照してください。                                                                                                       |
-| use_database  | bool             | True       | クライアントデータベースを使用します（クライアント作成時に指定）。Falseの場合、接続ユーザーのためにデフォルトのClickHouseサーバーデータベースが使用されます。 |
-| external_data | ExternalData     | *None*     | クエリで使用するファイルまたはバイナリデータを含むExternalDataオブジェクト。詳細は[高度なクエリ（外部データ）](#external-data)を参照してください。                          |
+| パラメータ       | タイプ             | デフォルト    | 説明                                                                                                                                                       |
+|------------------|------------------|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| cmd              | str              | *Required*    | 単一の値または単一の行の値を返す ClickHouse SQL ステートメント。                                                                                                                                                                     |
+| parameters       | dict or iterable | *None*        | [parameters description](#parameters-argument) を参照してください。                                                                                                                                            |
+| data             | str or bytes     | *None*        | コマンドと共に POST ボディとして含めるオプションのデータ。                                                                                                                                                   |
+| settings         | dict             | *None*        | [settings description](#settings-argument) を参照してください。                                                                                                                                   |
+| use_database     | bool             | True          | クライアントデータベースを使用します（クライアント作成時に指定）。falseは、コマンドが接続されたユーザーのデフォルト ClickHouse サーバーデータベースを使用することを意味します。                                      |
+| external_data    | ExternalData     | *None*        | クエリで使用するファイルまたはバイナリデータを含む ExternalData オブジェクト。 [高度なクエリ (外部データ)](#external-data) を参照してください。 |
 
-- `_command_`はDDL文にも使用できます。SQL "コマンド" がデータを返さない場合、"query summary" 辞書が代わりに返されます。この辞書は、ClickHouseのX-ClickHouse-SummaryおよびX-ClickHouse-Query-Idヘッダーをカプセル化しており、`written_rows`、`written_bytes`、`query_id`のキー/値ペアを含みます。
+- _command_ は DDL ステートメントに使用できます。 SQL "コマンド" がデータを返さない場合、"クエリサマリ" 辞書が代わりに返されます。この辞書は ClickHouse の X-ClickHouse-Summary および X-ClickHouse-Query-Id ヘッダーをカプセル化しており、`written_rows`,`written_bytes` および `query_id` の key/value ペアを含みます。
 
 ```python
 client.command('CREATE TABLE test_command (col_1 String, col_2 DateTime) Engine MergeTree ORDER BY tuple()')
@@ -320,116 +321,111 @@ client.command('SHOW CREATE TABLE test_command')
 Out[6]: 'CREATE TABLE default.test_command\\n(\\n    `col_1` String,\\n    `col_2` DateTime\\n)\\nENGINE = MergeTree\\nORDER BY tuple()\\nSETTINGS index_granularity = 8192'
 ```
 
-- `_command_`は、単一行のみを返す簡単なクエリにも使用できます。
+- _command_ は単一の行のみを返すシンプルなクエリにも使用できます。
 
 ```python
 result = client.command('SELECT count() FROM system.tables')
 result
 Out[7]: 110
 ```
-### Client _query_ メソッド {#client-_query_-method}
+### Client `query` Method {#client-query-method}
 
-`Client.query` メソッドは、ClickHouse Server から単一の「バッチ」データセットを取得する主な方法です。このメソッドは、HTTP 経由でネイティブ ClickHouse フォーマットを利用して大規模なデータセット（約 100 万行まで）を効率的に送信します。このメソッドは次のパラメータを受け取ります。
+`Client.query` メソッドは、ClickHouse サーバーから単一の "バッチ" データセットを取得するための主要な方法です。これは、HTTP 経由でネイティブな ClickHouse 形式を利用して、大規模なデータセット（約 100 万行まで）を効率的に転送します。このメソッドは以下のパラメータを受け取ります。
 
-| パラメータ           | 型               | デフォルト    | 説明                                                                                                                                                                 |
-|---------------------|------------------|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| query               | str              | *必須*       | ClickHouse SQL SELECT または DESCRIBE クエリ。                                                                                                                            |
-| parameters          | dict or iterable | *なし*       | [パラメータの説明](#parameters-argument)を参照してください。                                                                                                            |
-| settings            | dict             | *なし*       | [設定の説明](#settings-argument)を参照してください。                                                                                                                  |
-| query_formats       | dict             | *なし*       | 結果値のデータ型フォーマット仕様。詳細については、Advanced Usage (Read Formats) を参照してください。                                                                          |
-| column_formats      | dict             | *なし*       | カラムごとのデータ型フォーマット。詳細については、Advanced Usage (Read Formats) を参照してください。                                                                              |
-| encoding            | str              | *なし*       | ClickHouse String カラムを Python 文字列にエンコードするために使用されるエンコーディング。設定しない場合、Python は `UTF-8` をデフォルトで使用します。                                    |
-| use_none            | bool             | True          | ClickHouse の null に対して Python の *None* 型を使用します。False の場合、ClickHouse の null に対してデフォルトのデータ型（例えば 0）を使用します。NumPy/Pandas の場合、性能の理由からデフォルトは False に設定されています。 |
-| column_oriented     | bool             | False         | 結果を行のシーケンスではなく、カラムのシーケンスとして返します。Python データを他の列指向データ形式に変換するのに役立ちます。                                                    |
-| query_tz            | str              | *なし*       | `zoneinfo` データベースのタイムゾーン名。このタイムゾーンは、クエリによって返されるすべての datetime または Pandas Timestamp オブジェクトに適用されます。                                   |
-| column_tzs          | dict             | *なし*       | カラム名とタイムゾーン名の辞書。`query_tz` のように、異なるカラムに異なるタイムゾーンを指定することができます。                                                          |
-| use_extended_dtypes | bool             | True          | Pandas の拡張データ型（例えば StringArray）や ClickHouse の NULL 値に対して pandas.NA および pandas.NaT を使用します。これは `query_df` および `query_df_stream` メソッドにのみ適用されます。              |
-| external_data       | ExternalData     | *なし*       | クエリで使用するファイルまたはバイナリデータを含む ExternalData オブジェクト。詳細については、[Advanced Queries (External Data)](#external-data)を参照してください。                                   |
-| context             | QueryContext     | *なし*       | 上記のメソッド引数をカプセル化するために使用できる再利用可能な QueryContext オブジェクト。[Advanced Queries (QueryContexts)](#querycontexts)を参照してください。                                     |
+| パラメータ         | タイプ             | デフォルト    | 説明                                                                                                                                                                                          |
+|---------------------|------------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| query               | str              | *Required*    | ClickHouse SQL SELECT または DESCRIBE クエリ。                                                                                                                                                  |
+| parameters          | dict or iterable | *None*        | [parameters description](#parameters-argument) を参照してください。                                                                                                                              |
+| settings            | dict             | *None*        | [settings description](#settings-argument) を参照してください。                                                                                                                                   |
+| query_formats       | dict             | *None*        | 結果値のデータ型フォーマッティング仕様。高度な使い方 (Read Formats) を参照してください。                                                                                                                                                  |
+| column_formats      | dict             | *None*        | カラムごとのデータ型フォーマッティング。高度な使い方 (Read Formats) を参照してください。                                                                                                                                                            |
+| encoding            | str              | *None*        | ClickHouse 文字列カラムを Python 文字列にエンコードするために使用するエンコーディング。設定しなければ Python は `UTF-8` にデフォルトします。                                                                                                    |
+| use_none            | bool             | True          | ClickHouse null のために Python の *None* 型を使用します。false の場合、ClickHouse null のためにデータ型デフォルト（たとえば 0）を使用します。注意 - NumPy/Pandas のパフォーマンス上の理由から、デフォルトは false です。                    |
+| column_oriented     | bool             | False         | 結果を行の配列ではなく列の配列として返します。Python データを他の列指向データ形式に変換するのに役立ちます。                                                                                      |
+| query_tz            | str              | *None*        | `zoneinfo` データベースからのタイムゾーン名。このタイムゾーンは、クエリによって返されるすべての datetime または Pandas Timestamp オブジェクトに適用されます。                                                                                 |
+| column_tzs          | dict             | *None*        | カラム名からタイムゾーン名への辞書。`query_tz` と同様ですが、異なるカラムに異なるタイムゾーンを指定できます。                                                                                                                                         |
+| use_extended_dtypes  | bool             | True          | Pandas 拡張 dtypes（StringArray など）および ClickHouse NULL 値用の pandas.NA と pandas.NaT を使用します。これらは `query_df` と `query_df_stream` メソッドにのみ適用されます。                                                                                      |
+| external_data       | ExternalData     | *None*        | クエリで使用するファイルまたはバイナリデータを含む ExternalData オブジェクト。 [高度なクエリ (外部データ)](#external-data) を参照してください。                                                                                                                      |
+| context             | QueryContext     | *None*        | 上記のメソッド引数をカプセル化するために再利用可能な QueryContext オブジェクトを使用できます。 [高度なクエリ (QueryContexts)](#querycontexts) を参照してください。                                                             |
+#### The QueryResult object {#the-queryresult-object}
 
-#### QueryResult オブジェクト {#the-queryresult-object}
+基本的な `query` メソッドは、次の公開プロパティを持つ QueryResult オブジェクトを返します:
 
-基本の `query` メソッドは、次の公開プロパティを持つ QueryResult オブジェクトを返します。
-
-- `result_rows` -- 行のシーケンスの形式で返されたデータのマトリクス。各行要素はカラム値のシーケンスです。
-- `result_columns` -- カラムのシーケンスの形式で返されたデータのマトリクス。各カラム要素は、そのカラムの行値のシーケンスです。
+- `result_rows` -- 行のシーケンスの形で返されたデータのマトリックス。各行の要素はカラム値のシーケンスです。
+- `result_columns` -- カラムのシーケンスの形で返されたデータのマトリックス。各カラムの要素はそのカラムの行値のシーケンスです。
 - `column_names` -- `result_set` 内のカラム名を表す文字列のタプル。
-- `column_types` -- `result_columns` 内の各カラムに対する ClickHouse 型を表す ClickHouseType インスタンスのタプル。
-- `query_id` -- ClickHouseの query_id（`system.query_log` テーブルでクエリを調査するのに便利）。
+- `column_types` -- `result_columns` 内の各カラムに対する ClickHouse データ型を表す ClickHouseType インスタンスのタプル。
+- `query_id` -- ClickHouse の query_id（`system.query_log` テーブルでクエリを調べるのに便利です）。
 - `summary` -- `X-ClickHouse-Summary` HTTP レスポンスヘッダーによって返されたデータ。
 - `first_item` -- レスポンスの最初の行を辞書として取得するための便利なプロパティ（キーはカラム名です）。
-- `first_row` -- 結果の最初の行を返す便利なプロパティ。
-- `column_block_stream` -- カラム指向形式でのクエリ結果のジェネレーター。このプロパティは直接参照するべきではありません（下記参照）。
-- `row_block_stream` -- 行指向形式でのクエリ結果のジェネレーター。このプロパティは直接参照するべきではありません（下記参照）。
-- `rows_stream` -- 呼び出しごとに単一の行を生成するクエリ結果のジェネレーター。このプロパティは直接参照するべきではありません（下記参照）。
-- `summary` -- `command` メソッドの下で説明される ClickHouse によって返されたサマリー情報の辞書。
+- `first_row` -- 結果の最初の行を返すための便利なプロパティ。
+- `column_block_stream` -- カラム指向形式のクエリ結果のジェネレータ。このプロパティは直接参照すべきではありません（下記を参照）。
+- `row_block_stream` -- 行指向形式のクエリ結果のジェネレータ。このプロパティは直接参照すべきではありません（下記を参照）。
+- `rows_stream` -- 各呼び出しで一つの行を返すクエリ結果のジェネレータ。このプロパティは直接参照すべきではありません（下記を参照）。
+- `summary` -- `command` メソッドの下で説明されている、ClickHouse が返すサマリー情報の辞書。
 
-`*_stream` プロパティは、返されたデータのイテレータとして使用できる Python コンテキストを返します。これらは、Client の `*_stream` メソッドを通じて間接的にアクセスすべきです。
+`*_stream` プロパティは、返されたデータのイテレータとして使用できる Python コンテキストを返します。これらは Client `*_stream` メソッドを使用して間接的にアクセスする必要があります。
 
-クエリ結果のストリーミングの完全な詳細（StreamContext オブジェクトを使用）は、[Advanced Queries (Streaming Queries)](#streaming-queries) に詳述されています。
+クエリ結果をストリーミングする完全な詳細（StreamContext オブジェクトを使用）は、[Advanced Queries (Streaming Queries)](#streaming-queries) に記載されています。
+### Consuming query results with NumPy, Pandas or Arrow {#consuming-query-results-with-numpy-pandas-or-arrow}
 
-### NumPy、Pandas または Arrow でのクエリ結果の消費 {#consuming-query-results-with-numpy-pandas-or-arrow}
+主な `query` メソッドには、3つの特化したバージョンがあります:
 
-メインの `query` メソッドには、3つの特殊化バージョンがあります。
+- `query_np` -- このバージョンは、ClickHouse Connect QueryResult の代わりに NumPy 配列を返します。
+- `query_df` -- このバージョンは、ClickHouse Connect QueryResult の代わりに Pandas DataFrame を返します。
+- `query_arrow` -- このバージョンは、PyArrow テーブルを返します。ClickHouse `Arrow` 形式を直接使用するため、メインの `query` メソッドと共通の 3つの引数：`query`、`parameters`、および `settings` のみを受け付けます。さらに、Arrow テーブルが ClickHouse の文字列型を文字列（Trueの場合）またはバイト（Falseの場合）として表現するかどうかを決定する `use_strings` という追加の引数があります。
+### Client streaming query methods {#client-streaming-query-methods}
 
-- `query_np` -- このバージョンは、ClickHouse Connect QueryResult の代わりに NumPy Array を返します。
-- `query_df` -- このバージョンは、ClickHouse Connect QueryResult の代わりに Pandas Dataframe を返します。
-- `query_arrow` -- このバージョンは、PyArrow テーブルを返します。ClickHouse の `Arrow` フォーマットを直接利用しているため、メインの `query` メソッドと共通して受け付ける引数は `query`、`parameters`、`settings` の3つです。さらに、Arrow テーブルが ClickHouse の String 型を文字列（True の場合）またはバイト（False の場合）としてレンダリングするかどうかを決定する追加の引数 `use_strings` があります。
+ClickHouse Connect Client は、ストリームとしてデータを取得するための複数のメソッドを提供します（Python ジェネレータとして実装されています）：
 
-### Client ストリーミングクエリメソッド {#client-streaming-query-methods}
+- `query_column_block_stream` -- ネイティブ Python オブジェクトを使用してカラムのシーケンスとしてクエリデータをブロックで返します。
+- `query_row_block_stream` -- ネイティブ Python オブジェクトを使用して行のブロックのクエリデータを返します。
+- `query_rows_stream` -- ネイティブ Python オブジェクトを使用して行のシーケンスとしてクエリデータを返します。
+- `query_np_stream` -- 各 ClickHouse ブロックを NumPy 配列として返します。
+- `query_df_stream` -- 各 ClickHouse ブロックを Pandas DataFrame として返します。
+- `query_arrow_stream` -- PyArrow RecordBlocks 形式のクエリデータを返します。
 
-ClickHouse Connect Client は、データをストリームとして取得するための複数のメソッドを提供します（Python ジェネレーターとして実装されています）。
+これらの各メソッドは、ストリームを消費するために `with` ステートメントを通じて開かれなければならない `ContextStream` オブジェクトを返します。詳細と例については、[Advanced Queries (Streaming Queries)](#streaming-queries) を参照してください。
+### Client `insert` method {#client-insert-method}
 
-- `query_column_block_stream` -- ネイティブ Python オブジェクトを使用したカラムのシーケンスとしてクエリデータをブロックで返します。
-- `query_row_block_stream` -- ネイティブ Python オブジェクトを使用した行のブロックとしてクエリデータを返します。
-- `query_rows_stream` -- ネイティブ Python オブジェクトを使用した行のシーケンスとしてクエリデータを返します。
-- `query_np_stream` -- 各 ClickHouse ブロックのクエリデータを NumPy 配列として返します。
-- `query_df_stream` -- 各 ClickHouse ブロックのクエリデータを Pandas Dataframe として返します。
-- `query_arrow_stream` -- PyArrow RecordBlocks でクエリデータを返します。
+ClickHouse への複数レコードの挿入という一般的なユースケースのために、`Client.insert` メソッドがあります。以下のパラメータを受け取ります：
 
-これらの各メソッドは、ストリームの消費を開始するために `with` ステートメントを使用して開く必要のある `ContextStream` オブジェクトを返します。詳細と例については、[Advanced Queries (Streaming Queries)](#streaming-queries) を参照してください。
-
-### Client _insert_ メソッド {#client-_insert_-method}
-
-ClickHouse に複数のレコードを挿入する一般的なユースケースのために `Client.insert` メソッドがあります。このメソッドは次のパラメータを受け取ります。
-
-| パラメータ         | 型                              | デフォルト    | 説明                                                                                                                                                                      |
-|-------------------|-----------------------------------|---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| table             | str                               | *必須*       | 挿入先の ClickHouse テーブル。完全なテーブル名（データベースを含む）を指定できます。                                                                                      |
-| data              | Sequence of Sequences             | *必須*       | 挿入するデータのマトリクス。各行がカラム値のシーケンスである行のシーケンス、または各カラムが行値のシーケンスであるカラムのシーケンスのいずれかです。                                   |
-| column_names      | Sequence of str, or str           | '*'           | データマトリクスのカラム名のリスト。`'*'` を使用すると、ClickHouse Connect がテーブルのすべてのカラム名を取得する「プレクエリ」を実行します。                               |
-| database          | str                               | ''            | 挿入の対象データベース。指定しない場合、クライアントのデータベースが使用されます。                                                                                      |
-| column_types      | Sequence of ClickHouseType        | *なし*       | ClickHouseType インスタンスのリスト。`column_types` または `column_type_names` のいずれも指定しない場合、ClickHouse Connect がテーブルのすべてのカラム型を取得する「プレクエリ」を実行します。         |
-| column_type_names | Sequence of ClickHouse type names | *なし*       | ClickHouse データ型名のリスト。`column_types` または `column_type_names` のいずれも指定しない場合、ClickHouse Connect がテーブルのすべてのカラム型を取得する「プレクエリ」を実行します。    |
-| column_oriented   | bool                              | False         | True の場合、`data` 引数はカラムのシーケンスであると見なされ（データを挿入するために「ピボット」を行う必要はありません）、それ以外は `data` は行のシーケンスとして解釈されます。                      |
-| settings          | dict                              | *なし*       | [設定の説明](#settings-argument)を参照してください。                                                                                                                        |
-| insert_context    | InsertContext                     | *なし*       | 上記のメソッド引数をカプセル化するために使用できる再利用可能な InsertContext オブジェクト。[Advanced Inserts (InsertContexts)](#insertcontexts)を参照してください。                         |
+| パラメータ        | タイプ                           | デフォルト   | 説明                                                                                                                                                                                       |
+|-------------------|----------------------------------|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| table             | str                              | *必須*       | 挿入する ClickHouse テーブル。データベースを含むフルテーブル名が許可されています。                                                                                                     |
+| data              | Sequence of Sequences            | *必須*       | 挿入するデータのマトリックスで、行のシーケンス（各行がカラム値のシーケンス）またはカラムのシーケンス（各カラムが行値のシーケンス）です。                                              |
+| column_names      | Sequence of str, or str          | '*'          | データマトリックスのカラム名のリスト。`'*'` を使用した場合、ClickHouse Connect はテーブルのすべてのカラム名を取得するために「プレクエリ」を実行します。                                   |
+| database          | str                              | ''           | 挿入のターゲットデータベース。指定されていない場合、クライアントのデータベースが使用されます。                                                                                           |
+| column_types      | Sequence of ClickHouseType       | *なし*       | ClickHouseType インスタンスのリスト。`column_types` もしくは `column_type_names` のいずれも指定されない場合、ClickHouse Connect はテーブルのすべてのカラムタイプを取得するために「プレクエリ」を実行します。  |
+| column_type_names | Sequence of ClickHouse 型名      | *なし*       | ClickHouse データ型名のリスト。`column_types` もしくは `column_type_names` のいずれも指定されない場合、ClickHouse Connect はテーブルのすべてのカラムタイプを取得するために「プレクエリ」を実行します。|
+| column_oriented   | bool                             | False        | `True` の場合、`data` 引数はカラムのシーケンスであると仮定され（データを挿入するのに「ピボット」が必要ありません）。それ以外の場合、`data` は行のシーケンスとして解釈されます。                                      |
+| settings          | dict                             | *なし*       | [settings description](#settings-argument) を参照してください。                                                                                                                                  |
+| insert_context    | InsertContext                    | *なし*       | 上記のメソッド引数をカプセル化する再利用可能な InsertContext オブジェクトを使用できます。 [Advanced Inserts (InsertContexts)](#insertcontexts) を参照してください。                       |
 
 このメソッドは、「クエリサマリー」辞書を返します。挿入が何らかの理由で失敗した場合、例外が発生します。
 
-メインの `insert` メソッドの特殊化バージョンが2つあります。
+主な `insert` メソッドの2つの特化バージョンがあります：
 
-- `insert_df` -- Python の Sequences of Sequences `data` 引数の代わりに、このメソッドの2番目のパラメータは Pandas Dataframe インスタンスである必要がある `df` 引数を要求します。ClickHouse Connect は Dataframe をカラム指向のデータソースとして自動的に処理するため、`column_oriented` パラメータは必要ありませんし、利用可能でもありません。
-- `insert_arrow` -- Python の Sequences of Sequences `data` 引数の代わりに、このメソッドは `arrow_table` を要求します。ClickHouse Connect は Arrow テーブルを変更せずに ClickHouse サーバーに渡して処理するため、`database` と `settings` 引数は `table` と `arrow_table` に加えて利用可能です。
+- `insert_df` -- Python の Sequences of Sequences `data` 引数の代わりに、このメソッドの第2パラメータは Pandas DataFrame インスタンスでなければなりません。ClickHouse Connect は DataFrame をカラム指向のデータソースとして自動的に処理するため、`column_oriented` パラメータは必要ありませんし、利用できません。
+- `insert_arrow` -- Python の Sequences of Sequences `data` 引数の代わりに、このメソッドは `arrow_table` を必要とします。ClickHouse Connect は Arrow テーブルを変更せずに ClickHouse サーバーに渡します。そのため、`table` と `arrow_table` に加えて `database` と `settings` の引数のみが利用可能です。
 
-*注意:* NumPy 配列は有効な Sequences of Sequences であり、メインの `insert` メソッドの `data` 引数として使用できるため、特殊なメソッドは必要ありません。
+*注:* NumPy 配列は有効な Sequence of Sequences であり、主な `insert` メソッドの `data` 引数として使用することができますので、特化メソッドは必要ありません。
+### File Inserts {#file-inserts}
 
-### ファイル挿入 {#file-inserts}
+`clickhouse_connect.driver.tools` には、ファイルシステムから既存の ClickHouse テーブルに直接データを挿入する `insert_file` メソッドが含まれています。解析は ClickHouse サーバーに委任されています。`insert_file` は次のパラメータを受け入れます：
 
-`clickhouse_connect.driver.tools` には、ファイルシステムから既存の ClickHouse テーブルに直接データを挿入する `insert_file` メソッドが含まれています。解析は ClickHouse サーバーに委任されます。`insert_file` は次のパラメータを受け取ります。
+| パラメータ    | タイプ            | デフォルト           | 説明                                                                                                                     |
+|--------------|-----------------|-------------------|-------------------------------------------------------------------------------------------------------------------------|
+| client       | Client          | *必須*            | 挿入を実行するために使用する `driver.Client`                                                                              |
+| table        | str             | *必須*            | 挿入する ClickHouse テーブル。データベースを含むフルテーブル名が許可されています。                                               |
+| file_path    | str             | *必須*            | データファイルへのネイティブファイルシステムパス                                                                           |
+| fmt          | str             | CSV, CSVWithNames | ファイルの ClickHouse 入力形式。`column_names` が指定されていない場合は CSVWithNames が仮定されます。                         |
+| column_names | Sequence of str | *なし*             | データファイル内のカラム名のリスト。カラム名を含む形式には必要ありません。                                            |
+| database     | str             | *なし*             | テーブルのデータベース。完全修飾名の場合無視されます。指定されていない場合、挿入はクライアントデータベースを使用します。                      |
+| settings     | dict            | *なし*             | [settings description](#settings-argument) を参照してください。                                                            |
+| compression  | str             | *なし*             | Content-Encoding HTTP ヘッダーに使用された認識された ClickHouse 圧縮タイプ（zstd、lz4、gzip）。                               |
 
-| パラメータ    | 型            | デフォルト           | 説明                                                                                                                                      |
-|--------------|----------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| client       | Client         | *必須*             | 挿入を実行するために使用する `driver.Client`                                                                                              |
-| table        | str            | *必須*             | 挿入先の ClickHouse テーブル。完全なテーブル名（データベースを含む）も指定できます。                                                        |
-| file_path    | str            | *必須*             | データファイルへのネイティブファイルシステムパス                                                                                         |
-| fmt          | str            | CSV, CSVWithNames   | ファイルの ClickHouse 入力フォーマット。`column_names` が指定されていない場合は CSVWithNames が暗黙的に仮定されます。                               |
-| column_names | Sequence of str | *なし*             | データファイル内のカラム名のリスト。カラム名を含むフォーマットには必要ありません。                                                                |
-| database     | str            | *なし*             | テーブルのデータベース。テーブルが完全に指定されている場合は無視されます。指定されていない場合、挿入はクライアントデータベースを使用します。             |
-| settings     | dict           | *なし*             | [設定の説明](#settings-argument)を参照してください。                                                                                        |
-| compression  | str            | *なし*             | Content-Encoding HTTP ヘッダーに使用される認識された ClickHouse 圧縮タイプ（zstd、lz4、gzip）。                                                 |
-
-不一致なデータや異常なフォーマットの日付/時間の値を持つファイルの場合、データインポートに適用される設定（`input_format_allow_errors_num` や `input_format_allow_errors_num` など）がこのメソッドで認識されます。
+不正確なデータや特殊な形式の日付/時間値を含むファイルについては、データインポートに適用される設定（例えば `input_format_allow_errors_num` や `input_format_allow_errors_num`）がこのメソッドでも認識されます。
 
 ```python
 import clickhouse_connect
@@ -440,10 +436,9 @@ insert_file(client, 'example_table', 'my_data.csv',
             settings={'input_format_allow_errors_ratio': .2,
                       'input_format_allow_errors_num': 5})
 ```
+### Saving query results as files {#saving-query-results-as-files}
 
-### クエリ結果をファイルとして保存する {#saving-query-results-as-files}
-
-クエリの結果を CSV ファイルに保存したい場合、`raw_stream` メソッドを使用して ClickHouse からローカルファイルシステムにファイルをストリーミングすることができます。例えば、以下のコードスニペットを使用できます。
+ClickHouse からローカルファイルシステムにファイルをストリーム保存するには、`raw_stream` メソッドを使用します。たとえば、クエリの結果を CSV ファイルに保存したい場合、以下のコードスニペットを使用できます：
 
 ```python
 import clickhouse_connect
@@ -451,14 +446,14 @@ import clickhouse_connect
 if __name__ == '__main__':
     client = clickhouse_connect.get_client()
     query = 'SELECT number, toString(number) AS number_as_str FROM system.numbers LIMIT 5'
-    fmt = 'CSVWithNames'  # または CSV、CSVWithNamesAndTypes、TabSeparated など。
+    fmt = 'CSVWithNames'  # or CSV, or CSVWithNamesAndTypes, or TabSeparated, etc.
     stream = client.raw_stream(query=query, fmt=fmt)
     with open("output.csv", "wb") as f:
         for chunk in stream:
             f.write(chunk)
 ```
 
-上記のコードは、次の内容を持つ `output.csv` ファイルを生成します。
+上記のコードは、次の内容を持つ `output.csv` ファイルを生成します：
 
 ```csv
 "number","number_as_str"
@@ -469,120 +464,106 @@ if __name__ == '__main__':
 4,"4"
 ```
 
-同様に、[TabSeparated](/interfaces/formats#tabseparated) や他のフォーマットでデータを保存することもできます。利用可能なすべてのフォーマットオプションの概要については、[Input and Output Data のフォーマット](/interfaces/formats) を参照してください。
-
+同様に、[TabSeparated](/interfaces/formats#tabseparated) や他の形式でデータを保存できます。利用可能なすべての形式オプションの概要については、[Formats for Input and Output Data](/interfaces/formats) を参照してください。
 ### Raw API {#raw-api}
 
-ClickHouse データとネイティブまたはサードパーティデータ型および構造の間での変換を必要としないユースケース向けに、ClickHouse Connect クライアントは ClickHouse 接続の直接使用のための 2 つのメソッドを提供します。
+ClickHouse データとネイティブまたはサードパーティのデータタイプおよび構造の間の変換を必要としないユースケースのために、ClickHouse Connect クライアントは ClickHouse 接続の直接使用のための2つのメソッドを提供します。
+#### Client `raw_query` Method {#client_raw_query_method}
 
-#### Client _raw_query_ メソッド {#client-_raw_query_-method}
+`Client.raw_query` メソッドは、クライアント接続を使用して ClickHouse HTTP クエリインターフェースの直接利用を可能にします。返り値は未処理の `bytes` オブジェクトです。これは引数のバインディング、エラーハンドリング、リトライ、および設定管理を備えた便利なラッパーを提供します：
 
-`Client.raw_query` メソッドは、クライアント接続を使用して ClickHouse HTTP クエリインターフェイスを直接使用することを可能にします。返り値は未処理の `bytes` オブジェクトです。パラメータバインディング、エラーハンドリング、リトライ、および設定管理を最小限のインターフェースで行うための便利なラッパーを提供します。
+| パラメータ     | タイプ             | デフォルト     | 説明                                                                                                                                       |
+|---------------|-------------------|----------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| query         | str                | *必須*         | 有効な ClickHouse クエリ                                                                                                                 |
+| parameters    | dict または iterable | *なし*         | [parameters description](#parameters-argument) を参照してください。                                                                        |
+| settings      | dict               | *なし*         | [settings description](#settings-argument) を参照してください。                                                                            |                                                                                                                                                |
+| fmt           | str                | *なし*         | 返されたバイトの ClickHouse 出力形式。（指定されていない場合 ClickHouse は TSV を使用します）                                             |
+| use_database  | bool               | True           | クエリコンテキストのために clickhouse-connect クライアントが割り当てたデータベースを使用します                                                                 |
+| external_data | ExternalData       | *なし*         | クエリに使用するファイルまたはバイナリデータを含む ExternalData オブジェクト。 [Advanced Queries (External Data)](#external-data) を参照してください。  |
 
-| パラメータ     | 型             | デフォルト    | 説明                                                                                                                                            |
-|---------------|------------------|------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| query         | str              | *必須*       | 有効な ClickHouse クエリ                                                                                                                        |
-| parameters    | dict or iterable | *なし*       | [パラメータの説明](#parameters-argument)を参照してください。                                                                                      |
-| settings      | dict             | *なし*       | [設定の説明](#settings-argument)を参照してください。                                                                                           |                                                                                                                                                |
-| fmt           | str              | *なし*       | 結果のバイト用の ClickHouse 出力フォーマット。（指定しない場合、ClickHouse は TSV を使用します）                                                              |
-| use_database  | bool             | True         | クエリコンテキストのために clickhouse-connect クライアントで割り当てられたデータベースを使用します。                                                   |
-| external_data | ExternalData     | *なし*       | クエリで使用するファイルまたはバイナリデータを含む ExternalData オブジェクト。詳細については、[Advanced Queries (External Data)](#external-data)を参照してください。   |
+結果の `bytes` オブジェクトの処理は呼び出し側の責任です。注意点として、`Client.query_arrow` は ClickHouse の `Arrow` 出力形式を使ったこのメソッドの薄いラッパーであることを指摘しておきます。
+#### Client `raw_stream` Method {#client_raw_stream_method}
 
-結果の `bytes` オブジェクトの管理は呼び出し元の責任です。`Client.query_arrow` は、このメソッドをクリックハウスの `Arrow` 出力フォーマットを使用してラップしたものであることに注意してください。
+`Client.raw_stream` メソッドは `raw_query` メソッドと同じ API を持ちますが、`bytes` オブジェクトのジェネレータ/ストリームソースとして使用できる `io.IOBase` オブジェクトを返します。これは `query_arrow_stream` メソッドによって現在利用されています。
+#### Client `raw_insert` Method {#client_raw_insert_method}
 
-#### Client _raw_stream_ メソッド {#client-_raw_stream_-method}
+`Client.raw_insert` メソッドは、クライアント接続を使用して `bytes` オブジェクトまたは `bytes` オブジェクトのジェネレータの直接挿入を可能にします。挿入ペイロードに対する処理を行わないため、高速です。このメソッドは設定や挿入形式を指定するオプションを提供します：
 
-`Client.raw_stream` メソッドは `raw_query` メソッドと同じ API を持っていますが、`bytes` オブジェクトのジェネレーター/ストリームソースとして使用できる `io.IOBase` オブジェクトを返します。これは現在 `query_arrow_stream` メソッドによって利用されています。
+| パラメータ    | タイプ                                | デフォルト     | 説明                                                                                                                                                 |
+|--------------|---------------------------------------|----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| table        | str                                   | *必須*         | 簡単またはデータベース資格付きのテーブル名のいずれか                                                                                                             |
+| column_names | Sequence[str]                         | *なし*         | 挿入ブロックのためのカラム名。`fmt` パラメータに名前が含まれていない場合は必須                                                                                                   |
+| insert_block | str, bytes, Generator[bytes], BinaryIO | *必須*         | 挿入するデータ。文字列はクライアントエンコーディングでエンコードされます。                                                                                                    |
+| settings     | dict                                  | *なし*         | [settings description](#settings-argument) を参照してください。                                                                                                     |                                                                                                                                                |
+| fmt          | str                                   | *なし*         | `insert_block` バイトの ClickHouse 入力形式。指定されていない場合 ClickHouse は TSV を使用します。                                                                                 |
 
-#### Client _raw_insert_ メソッド {#client-_raw_insert_-method}
+呼び出し側は `insert_block` が指定された形式であり、指定された圧縮方法を使用していることを確認する責任があります。ClickHouse Connect はファイルアップロードや PyArrow テーブルのためにこれらの生挿入を使用し、解析を ClickHouse サーバーに委任します。
+### Utility classes and functions {#utility-classes-and-functions}
 
-`Client.raw_insert` メソッドは、クライアント接続を使用して `bytes` オブジェクトまたは `bytes` オブジェクトジェネレーターを直接挿入できるようにします。挿入ペイロードを処理しないため、非常に高いパフォーマンスを実現しています。このメソッドは、設定と挿入形式を指定するためのオプションを提供します。
+以下のクラスと関数も「公開された」`clickhouse-connect` API の一部と見なされ、上記の文書化されたクラスやメソッドと同様に、マイナーバージョン間で安定しています。これらのクラスや関数に対する破壊的な変更は、マイナー（パッチではなく）リリースでのみ発生し、少なくとも1つのマイナーバージョンで非推奨のステータスで利用可能です。
+#### Exceptions {#exceptions}
 
-| パラメータ    | 型                                   | デフォルト    | 説明                                                                                                                             |
-|--------------|----------------------------------------|------------|---------------------------------------------------------------------------------------------------------------------------------|
-| table        | str                                    | *必須*       | シンプルまたはデータベース修飾されたテーブル名                                                                                         |
-| column_names | Sequence[str]                          | *なし*       | 挿入ブロックのためのカラム名。`fmt` パラメータに名前が含まれていない場合、必須です                                                       |
-| insert_block | str, bytes, Generator[bytes], BinaryIO | *必須*       | 挿入するデータ。文字列はクライアントエンコーディングでエンコードされます。                                                         |
-| settings     | dict                                   | *なし*       | [設定の説明](#settings-argument)を参照してください。                                                                                     |                                                                                                                                                |
-| fmt          | str                                    | *なし*       | `insert_block` バイトの ClickHouse 入力フォーマット。（指定しない場合、ClickHouse は TSV を使用します）                        |
+すべてのカスタム例外（DB API 2.0 仕様で定義されているものを含む）は、`clickhouse_connect.driver.exceptions` モジュールで定義されています。ドライバーによって実際に検出された例外は、これらのタイプのいずれかを使用します。
+#### Clickhouse SQL utilities {#clickhouse-sql-utilities}
 
-`insert_block` が指定されたフォーマットと圧縮方式を使用していることは、呼び出し元の責任です。ClickHouse Connect はファイルアップロードや PyArrow テーブルのためにこれらの生挿入を使用し、解析は ClickHouse サーバーに委任しています。
+`clickhouse_connect.driver.binding` モジュール内の関数と DT64Param クラスは、ClickHouse SQL クエリを適切に構築しエスケープするために使用できます。同様に、`clickhouse_connect.driver.parser` モジュールの関数は ClickHouse データ型名を解析するために使用できます。
+### Multithreaded, multiprocess, and async/event driven use cases {#multithreaded-multiprocess-and-asyncevent-driven-use-cases}
 
-### ユーティリティクラスと関数 {#utility-classes-and-functions}
+ClickHouse Connect はマルチスレッド、マルチプロセス、およびイベントループ駆動/非同期アプリケーションでうまく機能します。すべてのクエリおよび挿入処理は、単一スレッド内で実行されるため、操作は一般にスレッドセーフです。（低レベルでの一部の操作の並行処理は、単一スレッドのパフォーマンスペナルティを克服するための将来の改良の可能性がありますが、その場合でもスレッドセーフは維持されます）。
 
-次のクラスと関数も「公開」`clickhouse-connect` APIの一部と見なされ、上記に文書化されたクラスとメソッドと同様にマイナーリリース間で安定しています。これらのクラスと関数への破壊的変更は、マイナーリリース（パッチリリースではない）でのみ発生し、少なくとも 1 回のマイナーリリースで非推奨の状態で利用可能です。
+各クエリまたは挿入は、それぞれ独自の QueryContext または InsertContext オブジェクト内で状態を維持するため、これらのヘルパーオブジェクトはスレッドセーフではなく、複数の処理ストリーム間で共有するべきではありません。コンテキストオブジェクトについての追加の議論は、次のセクションで行っています。
 
-#### 例外 {#exceptions}
+また、同時に 2 つ以上のクエリや挿入が「フライト」にあるアプリケーションでは、考慮すべき2つの要素があります。1つ目は、クエリ/挿入に関連付けられた ClickHouse「セッション」であり、2つ目は ClickHouse Connect クライアントインスタンスによって使用される HTTP 接続プールです。
+### Asyncclient wrapper {#asyncclient-wrapper}
 
-すべてのカスタム例外（DB API 2.0 仕様で定義されたものを含む）は、`clickhouse_connect.driver.exceptions` モジュールで定義されています。実際にドライバーによって検出された例外は、これらの型のいずれかを使用します。
+0.7.16 以降、ClickHouse Connect は通常の `Client` に対する非同期ラッパーを提供しており、`asyncio` 環境でクライアントを使用することが可能です。
 
-#### Clickhouse SQL ユーティリティ {#clickhouse-sql-utilities}
-
-`clickhouse_connect.driver.binding` モジュール内の関数および DT64Param クラスを使用して、ClickHouse SQL クエリを適切に構築しエスケープできます。同様に、`clickhouse_connect.driver.parser` モジュール内の関数を使用して ClickHouse データ型名を解析できます。
-
-### マルチスレッド、マルチプロセス、非同期/イベント駆動型ユースケース {#multithreaded-multiprocess-and-asyncevent-driven-use-cases}
-
-ClickHouse Connect はマルチスレッド、マルチプロセス、イベントループ駆動型/非同期アプリケーションでうまく機能します。すべてのクエリおよび挿入処理は単一のスレッド内で行われるため、オペレーションは一般的にスレッドセーフです。 （低レベルでの一部のオペレーションの並列処理は、単一スレッドのパフォーマンスペナルティを克服するための将来の改善の可能性がありますが、その場合でもスレッドの安全性は維持されます。）
-
-各クエリまたは挿入がそれぞれ独自の QueryContext または InsertContext オブジェクト内に状態を維持するため、これらのヘルパーオブジェクトはスレッドセーフではなく、複数の処理ストリーム間で共有するべきではありません。コンテキストオブジェクトに関する追加の議論は、次のセクションで行います。
-
-さらに、同時に「進行中」の2つ以上のクエリおよび/または挿入があるアプリケーションの場合、以下の2つの考慮事項があります。最初は、クエリ/挿入に関連付けられた ClickHouse「セッション」であり、2つ目は、ClickHouse Connect Client インスタンスによって使用される HTTP 接続プールです。
-
-### AsyncClient ラッパー {#asyncclient-wrapper}
-
-0.7.16 以降、ClickHouse Connect は通常の `Client` の非同期ラッパーを提供し、`asyncio` 環境でクライアントを使用できるようにしました。
-
-`AsyncClient` のインスタンスを取得するには、標準の `get_client` と同じパラメータを受け付ける `get_async_client` ファクトリ関数を使用できます。
+`AsyncClient` のインスタンスを取得するには、標準の `get_client` と同じパラメータを受け入れる `get_async_client` ファクトリ関数を使用します：
 
 ```python
 import asyncio
 
 import clickhouse_connect
 
-
 async def main():
     client = await clickhouse_connect.get_async_client()
     result = await client.query("SELECT name FROM system.databases LIMIT 1")
     print(result.result_rows)
 
-
 asyncio.run(main())
 ```
 
-`AsyncClient` は、標準の `Client` と同じメソッドとパラメータを持っていますが、適用可能な場合はコルーチンです。内部的には、I/O 操作を実行する `Client` のこれらのメソッドは、[run_in_executor](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.run_in_executor) 呼び出しでラップされています。
+`AsyncClient` は、標準の `Client` と同じメソッドおよびパラメータを持ちますが、それらは適用可能な場合コルーチンです。内部では、I/O 操作を実行する `Client` のこれらのメソッドは、[run_in_executor](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.run_in_executor) コール内でラップされています。
 
-I/O 操作が完了するのを待っている間に実行スレッドと GIL が解放されるため、`AsyncClient` ラッパーを使用することでマルチスレッドパフォーマンスが向上します。
+`AsyncClient` ラッパーを使用することでマルチスレッド性能が向上します。I/O 操作が完了するのを待つ間、実行スレッドと GIL が解放されます。
 
-注意: 通常の `Client` とは異なり、`AsyncClient` はデフォルトで `autogenerate_session_id` を `False` に設定します。
+注: 通常の `Client` とは異なり、`AsyncClient` はデフォルトで `autogenerate_session_id` を `False` に設定します。
 
-詳しくは: [run_async の例](https://github.com/ClickHouse/clickhouse-connect/blob/main/examples/run_async.py)を参照してください。
+参考: [run_async example](https://github.com/ClickHouse/clickhouse-connect/blob/main/examples/run_async.py)。
+### Managing ClickHouse Session Ids {#managing-clickhouse-session-ids}
 
-### ClickHouse セッション ID の管理 {#managing-clickhouse-session-ids}
+各 ClickHouse クエリは ClickHouse「セッション」のコンテキスト内で発生します。セッションは現在、2つの目的で使用されています：
+- 複数のクエリに特定の ClickHouse 設定を関連付けるため（[user settings](/operations/settings/settings.md) を参照してください）。ClickHouse の `SET` コマンドはユーザーセッションの範囲の設定を変更するために使用されます。
+- [temporary tables](/sql-reference/statements/create/table#temporary-tables) を追跡するため。
 
-各 ClickHouse クエリは ClickHouse の「セッション」のコンテキスト内で発生します。セッションは現在、2つの目的に使用されています。
+デフォルトでは、ClickHouse Connect クライアントインスタンスで実行される各クエリは、同じセッション ID を使用してこのセッション機能を有効にします。つまり、`SET` ステートメントと一時テーブルは、単一の ClickHouse クライアントを使用していると期待通りに動作します。しかし、設計上、ClickHouse サーバーは同じセッション内での同時クエリを許可しません。したがって、同時クエリを実行する ClickHouse Connect アプリケーションには2つのオプションがあります。
 
-- 複数のクエリに特定の ClickHouse 設定を関連付けるため（[ユーザー設定](/operations/settings/settings.md)を参照）。ClickHouse の `SET` コマンドを使用して、ユーザーセッションのスコープに設定を変更できます。
-- [一時テーブル](/sql-reference/statements/create/table#temporary-tables)を追跡します。
-
-デフォルトでは、ClickHouse Connect クライアントインスタンスで実行される各クエリは、セッション機能を有効にするために同じセッション ID を使用します。つまり、`SET` 文や一時テーブルは、単一の ClickHouse クライアントを使用している場合に予想どおりに機能します。ただし、設計上、ClickHouse サーバーは同じセッション内での同時クエリを許可していません。この結果、同時にクエリを実行する ClickHouse Connect アプリケーションには 2 つのオプションがあります。
-
-- 各実行スレッド（スレッド、プロセス、またはイベントハンドラー）ごとに別の `Client` インスタンスを作成し、それぞれが独自のセッション ID を持つようにします。これが一般に最良のアプローチであり、各クライアントのセッション状態を保持します。
-- 各クエリにユニークなセッション ID を使用します。これは、一時テーブルや共有セッション設定が必要ない状況で同時セッションの問題を回避します。（共有設定はクライアント作成時に提供することもできますが、これらは各リクエストと共に送信され、セッションに関連付けられません）。ユニークな session_id は、各リクエストの `settings` 辞書に追加できるか、`autogenerate_session_id` 共通設定を無効にすることができます。
+- 各実行スレッド（スレッド、プロセス、またはイベントハンドラー）に対して別の `Client` インスタンスを作成し、それぞれが独自のセッション ID を持つようにします。一般的にはこのアプローチが最良です。クライアントごとにセッション状態を維持します。
+- 各クエリにユニークなセッション ID を使用します。これにより、一時テーブルや共有セッション設定が不要な場合の同時セッションの問題を回避します。（共有設定はクライアント作成時にも提供できますが、リクエストごとに送信され、セッションとは関連付けられません）。ユニークな session_id は、各リクエストの `settings` 辞書に追加できます。また、`autogenerate_session_id` 一般設定を無効にすることもできます：
 
 ```python
 from clickhouse_connect import common
 
-common.set_setting('autogenerate_session_id', False)  # クライアントを作成する前に常に設定してください
+common.set_setting('autogenerate_session_id', False)  # This should always be set before creating a client
 client = clickhouse_connect.get_client(host='somehost.com', user='dbuser', password=1234)
 ```
 
-この場合、ClickHouse Connect はセッション ID を送信せず、ClickHouse サーバーによってランダムなセッション ID が生成されます。再度、一時テーブルとセッションレベル設定は利用できません。
+この場合、ClickHouse Connect はセッション ID を送信せず、ClickHouse サーバーによってランダムなセッション ID が生成されます。繰り返しますが、一時テーブルおよびセッションレベルの設定は利用できません。
+### Customizing the HTTP connection pool {#customizing-the-http-connection-pool}
 
-### HTTP 接続プールのカスタマイズ {#customizing-the-http-connection-pool}
+ClickHouse Connect は、サーバーへの基盤となる HTTP 接続を処理するために `urllib3` 接続プールを使用します。デフォルトでは、すべてのクライアントインスタンスは同じ接続プールを共有し、これは大多数のユースケースには十分です。このデフォルトプールは、アプリケーションで使用する各 ClickHouse サーバーへの最大 8 つの HTTP Keep Alive 接続を維持します。
 
-ClickHouse Connect は、サーバーへの基礎となる HTTP 接続を処理するために `urllib3` 接続プールを使用します。デフォルトでは、すべてのクライアントインスタンスは同じ接続プールを共有し、これはほとんどのユースケースに十分です。このデフォルトプールは、アプリケーションによって使用される各 ClickHouse サーバーに最大 8 の HTTP Keep Alive 接続を維持します。
-
-大規模なマルチスレッドアプリケーションには、別々の接続プールが適切な場合があります。カスタマイズされた接続プールは、メインの `clickhouse_connect.get_client` 関数の `pool_mgr` キーワード引数として提供できます。
+大規模なマルチスレッドアプリケーションの場合、別々の接続プールが適切な場合があります。カスタマイズされた接続プールは、主な `clickhouse_connect.get_client` 関数に `pool_mgr` キーワード引数として提供できます：
 
 ```python
 import clickhouse_connect
@@ -594,17 +575,15 @@ client1 = clickhouse_connect.get_client(pool_mgr=big_pool_mgr)
 client2 = clickhouse_connect.get_client(pool_mgr=big_pool_mgr)
 ```
 
-上記の例のように、クライアントはプールマネージャを共有することも、各クライアントのために別々のプールマネージャを作成することもできます。プールマネージャの作成時に利用可能なオプションの詳細については、[`urllib3` ドキュメント](https://urllib3.readthedocs.io/en/stable/advanced-usage.html#customizing-pool-behavior)を参照してください。
-
-## ClickHouse Connect でのデータクエリ: 高度な使用法 {#querying-data-with-clickhouse-connect--advanced-usage}
-
+上記の例が示すように、クライアントはプールマネージャを共有することができますし、各クライアントのために別個のプールマネージャを作成することもできます。プールマネージャを作成する際の利用可能なオプションの詳細については、[`urllib3` documentation](https://urllib3.readthedocs.io/en/stable/advanced-usage.html#customizing-pool-behavior) を参照してください。
+## Querying data with ClickHouse Connect: Advanced usage {#querying-data-with-clickhouse-connect--advanced-usage}
 ### QueryContexts {#querycontexts}
 
-ClickHouse Connect は標準クエリを QueryContext 内で実行します。QueryContext には、ClickHouse データベースに対してクエリを構築するために使用される主要な構造体と、クエリ結果を QueryResult またはその他の応答データ構造に変換するために使用される設定が含まれています。これには、クエリ自体、パラメータ、設定、読み取りフォーマット、およびその他の属性が含まれます。
+ClickHouse Connect は標準クエリを QueryContext 内で実行します。QueryContext には、ClickHouse データベースに対してクエリを構築するために使用される主要な構造と、結果を QueryResult やその他のレスポンスデータ構造に処理するための設定が含まれています。それには、クエリ自体、パラメータ、設定、読み取り形式、その他の属性が含まれます。
 
-QueryContext は、クライアントの `create_query_context` メソッドを使用して取得できます。このメソッドは、コアクエリメソッドと同じパラメータを受け取ります。このクエリコンテキストは、他のすべての引数の代わりに`context` キーワード引数として `query`、`query_df`、または `query_np` メソッドに渡すことができます。メソッド呼び出しに指定された追加の引数は、QueryContext のプロパティをオーバーライドします。
+QueryContext は、クライアントの `create_query_context` メソッドを使用して取得できます。このメソッドは、コアクエリメソッドと同じパラメータを受け取ります。このクエリコンテキストは、`query`、`query_df`、または `query_np` メソッドに `context` キーワード引数として渡すことができ、これによりこれらのメソッドへの他の引数を一切使用しなくても済みます。注意点として、メソッド呼び出しのために指定された追加の引数は QueryContext のプロパティを上書きします。
 
-QueryContext の明確なユースケースは、異なるバインディングパラメータ値で同じクエリを送信することです。すべてのパラメータ値は、辞書を持って `QueryContext.set_parameters` メソッドを呼び出すことで更新できます。または、`key` と `value` のペアで `QueryContext.set_parameter` を呼び出すことで、単一の値を更新できます。
+QueryContext の最も明確なユースケースは、異なるバインディングパラメータ値で同じクエリを送信することです。すべてのパラメータ値は、`QueryContext.set_parameters` メソッドを辞書で呼び出すことで更新できます。また、任意の単一値は `QueryContext.set_parameter` を desired `key`, `value` ペアで呼び出すことで更新できます。
 
 ```python
 client.create_query_context(query='SELECT value1, value2 FROM data_table WHERE key = {k:Int32}',
@@ -617,135 +596,129 @@ result = test_client.query(context=qc)
 assert result.result_set[1][0] == 'first_value2'
 ```
 
-QueryContexts はスレッドセーフではないことに注意してください。ただし、`QueryContext.updated_copy` メソッドを呼び出すことで、マルチスレッド環境でコピーを取得できます。
+QueryContexts はスレッドセーフではありませんが、マルチスレッド環境で `QueryContext.updated_copy` メソッドを呼び出すことでコピーを取得できます。
+### Streaming queries {#streaming-queries}
+#### Data blocks {#data-blocks}
 
-### ストリーミングクエリ {#streaming-queries}
-#### Data Blocks {#data-blocks}
-ClickHouse Connect は、すべてのデータを ClickHouse サーバーから受け取るブロックのストリームとして、主な `query` メソッドから処理します。これらのブロックは、ClickHouse との間でカスタム「ネイティブ」形式で送信されます。「ブロック」とは、バイナリデータのカラムのシーケンスに過ぎず、各カラムには指定されたデータ型のデータ値が同数含まれています。（列指向データベースである ClickHouse は、このデータを同様の形で保存します。）クエリから返されるブロックのサイズは、いくつかのレベル（ユーザープロファイル、ユーザー、セッション、またはクエリ）で設定できる 2 つのユーザー設定によって制御されます。それらは次のとおりです：
+ClickHouse Connect は、主な `query` メソッドからのすべてのデータを ClickHouse サーバーから受信するブロックのストリームとして処理します。これらのブロックは、ClickHouse との間でカスタム「ネイティブ」形式で送信されます。「ブロック」は、指定されたデータ型のデータ値の数が等しい各カラムを含むバイナリデータのカラムのシーケンスです。（カラム型データベースとして、ClickHouse は同様の形でこのデータを格納します。）クエリから返されるブロックのサイズは、複数のレベル（ユーザープロファイル、ユーザー、セッション、またはクエリ）で設定できる2つのユーザー設定によって制御されます。それは：
 
-- [max_block_size](/operations/settings/settings#max_block_size) -- 行数におけるブロックサイズの制限。デフォルトは 65536。
-- [preferred_block_size_bytes](/operations/settings/settings#preferred_block_size_bytes) -- バイト単位のソフトリミット。デフォルトは 1,000,0000。
+- [max_block_size](/operations/settings/settings#max_block_size) -- 行数のブロックのサイズの制限。デフォルトは 65536。
+- [preferred_block_size_bytes](/operations/settings/settings#preferred_block_size_bytes) -- バイトのブロックのサイズに対するソフトリミット。デフォルトは 1,000,0000。
 
-`preferred_block_size_setting` に関係なく、各ブロックは `max_block_size` 行を超えることはありません。クエリのタイプに応じて、実際に返されるブロックは任意のサイズになる可能性があります。例えば、多くのシャードをカバーする分散テーブルへのクエリは、各シャードから直接取得された小さなブロックを含む場合があります。
+`preferred_block_size_setting` に関係なく、各ブロックは `max_block_size` 行を超えることは決してありません。クエリのタイプに応じて、実際に返されるブロックは任意のサイズである場合があります。たとえば、多くのシャードをカバーする分散テーブルへのクエリは、各シャードから直接取得された小さなブロックを含む場合があります。
 
-Client `query_*_stream` メソッドのいずれかを使用するとき、結果はブロックごとに返されます。ClickHouse Connect は一度に1つのブロックだけを読み込みます。これにより、大きな結果セットのすべてをメモリに読み込むことなく、大量のデータを処理できます。アプリケーションは、任意の数のブロックを処理する準備が必要であり、各ブロックの正確なサイズを制御することはできません。
+Client `query_*_stream` メソッドの1つを使用する場合、結果はブロックごとに返されます。ClickHouse Connect は単一のブロックを一度にのみロードします。これにより、多くのデータを処理する際に大きな結果セットをすべてメモリにロードする必要がなくなります。アプリケーションは、任意の数のブロックを処理できるように準備する必要があります。各ブロックの正確なサイズを制御することはできません。
+#### HTTP data buffer for slow processing {#http-data-buffer-for-slow-processing}
 
-#### HTTP Data Buffer for Slow Processing {#http-data-buffer-for-slow-processing}
-
-HTTP プロトコルの制限により、ブロックが ClickHouse サーバーがデータをストリーミングしている速度よりもかなり遅い速度で処理されると、ClickHouse サーバーは接続を閉じ、結果として処理スレッドで例外がスローされます。これの一部は、一般的な `http_buffer_size` 設定を使用して、HTTP ストリーミングバッファのバッファサイズを増やすことで軽減できます（デフォルトは 10 メガバイト）。十分なメモリがアプリケーションに割り当てられている場合、大きな `http_buffer_size` 値は問題ありません。バッファ内のデータは、`lz4` または `zstd` 圧縮を使用して圧縮されているため、これらの圧縮形式を使用することで、全体のバッファが増加します。
-
+HTTP プロトコルの制限のため、ブロックが ClickHouse サーバーがデータをストリーミングする速度よりも著しく遅い速度で処理される場合、ClickHouse サーバーは接続を閉じ、処理スレッドで例外が発生します。これは、共通の `http_buffer_size` 設定を使用して HTTP ストリーミングバッファのサイズを増やすことで軽減できます（デフォルトは 10 メガバイト）。十分なメモリがアプリケーションに利用可能な場合、大きな `http_buffer_size` 値はこの状況で問題ありません。バッファ内のデータは、`lz4` または `zstd` 圧縮を使用して圧縮されるので、これらの圧縮タイプを使用することで全体のバッファが増加します。
 #### StreamContexts {#streamcontexts}
 
-各 `query_*_stream` メソッド（例えば `query_row_block_stream`）は、ClickHouse の `StreamContext` オブジェクトを返します。これは、Python のコンテキスト／ジェネレーターを組み合わせたものです。基本的な使用法は次の通りです：
+`query_*_stream` メソッドの各メソッド（`query_row_block_stream` のような）は、ClickHouse `StreamContext` オブジェクトを返します。これは、Python コンテキスト/ジェネレータの組み合わせです。基本的な使用法は次のとおりです：
 
 ```python
 with client.query_row_block_stream('SELECT pickup, dropoff, pickup_longitude, pickup_latitude FROM taxi_trips') as stream:
     for block in stream:
         for row in block:
-            <データに対して何かをする>
+            <do something with each row of Python trip data>
 ```
 
-`with` ステートメントなしで StreamContext を使用しようとするとエラーが発生することに注意してください。Python コンテキストの使用は、ストリーム（この場合、ストリーミング HTTP レスポンス）が完全に消費されない場合や処理中に例外が発生する場合でも、適切に閉じられることを保証します。また、StreamContexts は、ストリームを消費するために一度だけ使用することができます。Exit した後に StreamContext を使用しようとすると `StreamClosedError` が発生します。
+注意：`with` ステートメントなしで StreamContext を使用しようとするとエラーが発生します。Python コンテキストの使用により、ストリーム（この場合、ストリーミング HTTP レスポンス）がすべてのデータが消費されない場合や、処理中に例外が発生した場合でも適切に閉じられることが保証されます。また、StreamContexts はストリームを消費するためにのみ一度使用できます。StreamContext が終了した後に使用しようとすると、`StreamClosedError` が発生します。
 
-StreamContext の `source` プロパティを使用すると、カラム名と型を含む親 `QueryResult` オブジェクトにアクセスできます。
+StreamContext の `source` プロパティを使用して親の `QueryResult` オブジェクトにアクセスできます。これにはカラム名や型が含まれます。
+#### Stream types {#stream-types}
 
-#### Stream Types {#stream-types}
+`query_column_block_stream` メソッドは、ネイティブ Python データ型として保存されたカラムデータのシーケンスとしてブロックを返します。上記の `taxi_trips` クエリを使用すると、返されたデータはそれぞれのリストの要素が関連付けられたカラムのすべてのデータを含む別のリスト（またはタプル）になるリストとなります。したがって、`block[0]` は文字列のみを含むタプルです。カラム指向形式は、カラム内のすべての値に対して集約操作を行うためによく使用されます。
 
-`query_column_block_stream` メソッドは、ブロックをネイティブ Python データ型として保存されたカラムデータのシーケンスとして返します。上記の `taxi_trips` クエリを使用すると、返されるデータはリストで、それぞれのリストの要素は関連するカラムのすべてのデータを含む別のリスト（またはタプル）になります。したがって、`block[0]` は文字列のみを含むタプルになります。カラム指向の形式は、カラム内のすべての値に対して集計操作を行うために最もよく使用されます。
+`query_row_block_stream` メソッドは、従来の関係データベースのように行のシーケンスとしてブロックを返します。タクシートリップに対する返されたデータは、リストの各要素がデータの行を表す別のリストになります。したがって、`block[0]` は最初のタクシートリップのすべてのフィールド（順序付け）を含んでおり、`block[1]` は2番目のタクシートリップのすべてのフィールドの行を含みます。行指向結果は通常、表示または変換プロセスに使用されます。
 
-`query_row_block_stream` メソッドは、従来のリレーショナルデータベースのように、行のシーケンスとしてブロックを返します。タクシーの旅行の場合、返されるデータはリストであり、それぞれのリストの要素はデータの行を表す別のリストになります。したがって、`block[0]` には最初のタクシー旅行のすべてのフィールド（順番通り）が含まれ、`block[1]` には2番目のタクシー旅行のすべてのフィールドの行が含まれます。行指向の結果は通常、表示または変換プロセスに使用されます。
+`query_row_stream` は便利なメソッドで、ストリームを反復処理する際に自動的に次のブロックに移動します。それ以外は、`query_row_block_stream` と同一です。
 
-`query_row_stream` は、ストリームを反復処理する際に自動的に次のブロックに移動する便利なメソッドです。それ以外は、`query_row_block_stream` と同じです。
+`query_np_stream` メソッドは、各ブロックを 2 次元の NumPy 配列として返します。内部では NumPy 配列は（通常）カラムとして保存されるため、特に行またはカラムメソッドは必要ありません。NumPy 配列の「形状」は `(columns, rows)` として表現されます。NumPy ライブラリは、NumPy 配列を操作する多くのメソッドを提供します。すべてのカラムが同じ NumPy dtype を共有している場合、返される NumPy 配列も同じ dtype しか持たず、内部構造を変更せずに再成形/回転できます。
 
-`query_np_stream` メソッドは、各ブロックを二次元 NumPy 配列として返します。内部的に NumPy 配列は（通常）カラムとして保存されるため、明示的な行またはカラムメソッドは必要ありません。NumPy 配列の「形状」は (カラム, 行) として表現されます。NumPy ライブラリは、NumPy 配列を操作するための多くのメソッドを提供します。すべてのカラムが同じ NumPy dtype を共有している場合、返された NumPy 配列も単一の dtype となり、内部構造を変更することなく再形成／回転が可能です。
+`query_df_stream` メソッドは、各 ClickHouse ブロックを 2 次元の Pandas DataFrame として返します。次に示す例では、StreamContext オブジェクトが遅延的にコンテキストとして使用でき（ただし、1 回のみ）、示されています。
 
-`query_df_stream` メソッドは、各 ClickHouse ブロックを二次元 Pandas Dataframe として返します。次の例は、StreamContext オブジェクトが遅延的にコンテキストとして使用できることを示しています（ただし、一度だけ）。
-
-最後に、`query_arrow_stream` メソッドは、ClickHouse の `ArrowStream` 形式の結果を pyarrow.ipc.RecordBatchStreamReader として StreamContext にラップして返します。ストリームの各反復は、PyArrow RecordBlock を返します。
+最後に、`query_arrow_stream` メソッドは ClickHouse の `ArrowStream` 形式の結果を pyarrow.ipc.RecordBatchStreamReader として返します。ストリームの各反復は PyArrow RecordBlock を返します。
 
 ```python
 df_stream = client.query_df_stream('SELECT * FROM hits')
 column_names = df_stream.source.column_names
 with df_stream:
     for df in df_stream:
-        <pandas DataFrame に対して何かをする>
+        <do something with the pandas DataFrame>
 ```
+### Read formats {#read-formats}
 
-### Read Formats {#read-formats}
+読み取り形式は、クライアントの `query`、`query_np`、および `query_df` メソッドから返された値のデータ型を制御します。（`raw_query` と `query_arrow` は ClickHouse からの受信データを変更しないため、形式制御は適用されません。）たとえば、UUID の読み取り形式をデフォルトの `native` 形式から代替の `string` 形式に変更すると、ClickHouse の `UUID` カラムに対するクエリは Python UUID オブジェクトの代わりに文字列値（標準の 8-4-4-4-12 RFC 1422 形式）として返されます。
 
-読み取り形式は、クライアント `query`、`query_np`、および `query_df` メソッドから返される値のデータ型を制御します。（`raw_query` と `query_arrow` は、ClickHouse からの受信データを変更しないため、形式制御は適用されません。）例えば、UUID の読み取り形式がデフォルトの `native` 形式から代替の `string` 形式に変更されると、ClickHouse の `UUID` カラムのクエリが Python の UUID オブジェクトではなく、文字列値（標準の 8-4-4-4-12 RFC 1422 形式）として返されます。
-
-任意のフォーマット関数の「データ型」引数にはワイルドカードを含めることができます。形式は単一の小文字の文字列です。
+形式設定関数の「データ型」引数には、ワイルドカードを含めることができます。形式は単一の小文字の文字列です。
 
 読み取り形式は、いくつかのレベルで設定できます：
 
-- グローバルに、`clickhouse_connect.datatypes.format` パッケージに定義されたメソッドを使用して。これにより、すべてのクエリに対して構成されたデータ型の形式が制御されます。
+- `clickhouse_connect.datatypes.format` パッケージで定義されたメソッドを使用してグローバルに設定します。これにより、すべてのクエリに対して設定されたデータ型の形式が制御されます。
 ```python
 from clickhouse_connect.datatypes.format import set_read_format
 
 
-# IPv6 と IPv4 の値を文字列として返す
+# Return both IPv6 and IPv4 values as strings
 set_read_format('IPv*', 'string')
 
 
-# すべての Date 型を基礎となるエポック秒またはエポック日として返す
+# Return all Date types as the underlying epoch second or epoch day
 set_read_format('Date*', 'int')
 ```
-- 全体のクエリについて、オプションの `query_formats` 辞書引数を使用して。この場合、指定されたデータ型の任意のカラム（またはサブカラム）は、構成された形式を使用します。
+- クエリ全体に対して、オプションの `query_formats` 辞書引数を使用します。その場合、特定のデータ型のいずれかのカラム（またはサブカラム）は設定された形式を使用します。
 ```python
 
-# すべての UUID カラムを文字列として返す
+# Return any UUID column as a string
 client.query('SELECT user_id, user_uuid, device_uuid from users', query_formats={'UUID': 'string'})
 ```
-- 特定のカラムの値について、オプションの `column_formats` 辞書引数を使用することもできます。キーは ClickHouse によって返されるカラム名で、データカラムや ClickHouse の型名およびクエリ形式の値の二次元の「フォーマット」辞書の形式を指定します。この二次元辞書は、タプルやマップのようなネスト型にも使用できます。
+- 特定のカラムの値に対しては、オプションの `column_formats` 辞書引数を使用します。キーは ClickHouse によって返されたカラム名で、データカラムの形式や ClickHouse 型名の 2 番目のレベル「形式」辞書とその値を持ちます。この二次辞書は、タプルやマップなどのネストされたカラム型のためにも使用できます。
 ```python
 
-# `dev_address` カラムの IPv6 値を文字列として返す
+# Return IPv6 values in the `dev_address` column as strings
 client.query('SELECT device_id, dev_address, gw_address from devices', column_formats={'dev_address':'string'})
 ```
-
-#### Read Format Options (Python Types) {#read-format-options-python-types}
+#### Read format options (Python types) {#read-format-options-python-types}
 
 | ClickHouse Type       | Native Python Type    | Read Formats | Comments                                                                                                          |
 |-----------------------|-----------------------|--------------|-------------------------------------------------------------------------------------------------------------------|
 | Int[8-64], UInt[8-32] | int                   | -            |                                                                                                                   |
-| UInt64                | int                   | signed       | Superset は現在、大きな符号なし UInt64 値を処理していません                                                          |
-| [U]Int[128,256]       | int                   | string       | Pandas および NumPy の int 値は最大 64 ビットまでなので、これらは文字列として返される可能性があります                            |
-| Float32               | float                 | -            | すべての Python float は内部的に 64 ビットです                                                                          |
+| UInt64                | int                   | signed       | Supersetは現在、大きな符号なしUInt64値を処理できません                                                   |
+| [U]Int[128,256]       | int                   | string       | PandasおよびNumPyのint値は最大64ビットのため、これらは文字列として返されます                              |
+| Float32               | float                 | -            | すべてのPython浮動小数点数は内部的に64ビットです                                                                          |
 | Float64               | float                 | -            |                                                                                                                   |
 | Decimal               | decimal.Decimal       | -            |                                                                                                                   |
-| String                | string                | bytes        | ClickHouse の String カラムには固有のエンコーディングはないため、可変長のバイナリデータにも使用されます                     |
-| FixedString           | bytes                 | string       | FixedStrings は固定サイズのバイト配列ですが、時々 Python の文字列として扱われます                                    |
-| Enum[8,16]            | string                | string, int  | Python の enum は空文字列を受け付けないので、すべての enum は文字列または基になる int 値のいずれかとして表示されます。          |
-| Date                  | datetime.date         | int          | ClickHouse は、日付を 1970 年 01 月 01 日からの日数として保存します。この値は int として利用可能です                     |
-| Date32                | datetime.date         | int          | Date と同様ですが、より広範囲の日付用です                                                                               |
-| DateTime              | datetime.datetime     | int          | ClickHouse は DateTime をエポック秒で保存します。この値は int として利用可能です                                       |
-| DateTime64            | datetime.datetime     | int          | Python の datetime.datetime はマイクロ秒の精度に限定されています。生の 64 ビット int 値が利用可能です                   |
-| IPv4                  | `ipaddress.IPv4Address` | string       | IP アドレスは文字列として読み取り、適切にフォーマットされた文字列は IP アドレスとして挿入できます                      |
-| IPv6                  | `ipaddress.IPv6Address` | string       | IP アドレスは文字列として読み取り、適切にフォーマットされた文字列は IP アドレスとして挿入できます                      |
-| Tuple                 | dict or tuple         | tuple, json  | 指名付きタプルはデフォルトでは辞書として返されます。指名付きタプルは JSON 文字列として返すこともできます              |
+| String                | string                | bytes        | ClickHouseのStringカラムは固有のエンコーディングを持たず、可変長のバイナリデータにも使用されます        |
+| FixedString           | bytes                 | string       | FixedStringsは固定サイズのバイト配列ですが、時々Pythonの文字列として扱われることがあります                          |
+| Enum[8,16]            | string                | string, int  | Pythonの列挙型は空の文字列を受け入れないため、すべての列挙型は文字列または基になるint値のいずれかとして表示されます。 |
+| Date                  | datetime.date         | int          | ClickHouseは日付を1970年1月1日からの日数として保存します。この値はint型として利用可能                            |
+| Date32                | datetime.date         | int          | Dateと同じですが、より広い範囲の日付用です                                                                      |
+| DateTime              | datetime.datetime     | int          | ClickHouseはDateTimeをエポック秒として保存します。この値はint型として利用可能                                   |
+| DateTime64            | datetime.datetime     | int          | Pythonのdatetime.datetimeはマイクロ秒精度に制限されています。生の64ビットint値が利用可能です               |
+| IPv4                  | `ipaddress.IPv4Address` | string       | IPアドレスは文字列として読み取られ、正しくフォーマットされた文字列はIPアドレスとして挿入できます                |
+| IPv6                  | `ipaddress.IPv6Address` | string       | IPアドレスは文字列として読み取られ、正しくフォーマットされたものはIPアドレスとして挿入できます                |
+| Tuple                 | dict or tuple         | tuple, json  | 名前付きタプルはデフォルトで辞書として返されます。名前付きタプルはJSON文字列としても返されることがあります      |
 | Map                   | dict                  | -            |                                                                                                                   |
 | Nested                | Sequence[dict]        | -            |                                                                                                                   |
-| UUID                  | uuid.UUID             | string       | UUID は RFC 4122 に従ってフォーマットされた文字列として読み取ることができます。                                          |
-| JSON                  | dict                  | string       | デフォルトで Python 辞書が返されます。`string` 形式では JSON 文字列が返されます                                     |
-| Variant               | object                | -            | 値に格納されている ClickHouse データ型に対する一致する Python 型を返します                                             |
-| Dynamic               | object                | -            | 値に格納されている ClickHouse データ型に対する一致する Python 型を返します                                             |
+| UUID                  | uuid.UUID             | string       | UUIDはRFC 4122に従った形式の文字列として読み取ることができます<br/>                                                       |
+| JSON                  | dict                  | string       | デフォルトでPythonの辞書が返されます。`string`フォーマットはJSON文字列を返します                        |
+| Variant               | object                | -            | 値のために保存されたClickHouseデータ型に対して一致するPython型を返します                                 |
+| Dynamic               | object                | -            | 値のために保存されたClickHouseデータ型に対して一致するPython型を返します                                 |
+### External data {#external-data}
 
-### External Data {#external-data}
+ClickHouseのクエリは、任意のClickHouseフォーマットの外部データを受け入れることができます。このバイナリデータは、データを処理するためにクエリ文字列と共に送信されます。外部データ機能の詳細は[こちら](/engines/table-engines/special/external-data.md)で確認できます。クライアントの`query*`メソッドは、この機能を利用するためにオプショナルな`external_data`パラメータを受け入れます。`external_data`パラメータの値は、`clickhouse_connect.driver.external.ExternalData`オブジェクトである必要があります。そのオブジェクトのコンストラクタは次の引数を受け入れます：
 
-ClickHouse のクエリは、任意の ClickHouse 形式の外部データを受け入れることができます。このバイナリデータは、データの処理に使用されるクエリ文字列とともに送信されます。外部データ機能の詳細は [こちら](/engines/table-engines/special/external-data.md) です。クライアント `query*` メソッドは、これらの機能を利用するためのオプションの `external_data` パラメータを受け入れます。`external_data` パラメータの値は、`clickhouse_connect.driver.external.ExternalData` オブジェクトである必要があります。そのオブジェクトのコンストラクタは、次の引数を受け付けます：
+| Name      | Type              | Description                                                                                                                                     |
+|-----------|-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| file_path | str               | 外部データを読み取るためのローカルシステムパスにあるファイルのパス。`file_path`または`data`のいずれかが必要です                               | 
+| file_name | str               | 外部データの「ファイル」の名前。指定されない場合は、`file_path`（拡張子なし）から決定されます                            |
+| data      | bytes             | ファイルから読み取る代わりに、バイナリ形式の外部データ。`data`または`file_path`のいずれかが必要です                                 |
+| fmt       | str               | データのClickHouse [Input Format](/sql-reference/formats.mdx)。デフォルトは`TSV`                                                        |
+| types     | str or seq of str | 外部データ内のカラムデータ型のリスト。文字列の場合、型はカンマで区切る必要があります。`types`または`structure`のいずれかが必要です |
+| structure | str or seq of str | データ内のカラム名とデータ型のリスト（例を参照）。`structure`または`types`のいずれかが必要です                                     |
+| mime_type | str               | ファイルデータのオプションのMIMEタイプ。現在、ClickHouseはこのHTTPサブヘッダーを無視します                                                          |
 
-| 名前         | 型                   | 説明                                                                                                                                     |
-|--------------|----------------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| file_path    | str                  | 外部データを読むためのローカルシステムパスにあるファイルのパス。`file_path` か `data` のどちらかが必要です                             | 
-| file_name    | str                  | 外部データ「ファイル」の名前。提供されない場合は、`file_path` から決定されます（拡張子なし）                                            |
-| data         | bytes                | ファイルからではなく、バイナリ形式での外部データ。この場合は、`data` か `file_path` のどちらかが必要です                               |
-| fmt          | str                  | データの ClickHouse [Input Format](/sql-reference/formats.mdx)。デフォルトは `TSV`                                                       |
-| types        | str または seq of str| 外部データのカラムデータ型のリスト。文字列の場合はコンマで区切ります。`types` または `structure` のどちらかが必要です                   |
-| structure    | str または seq of str| データ内のカラム名 + データ型のリスト（例を参照）。 `structure` または `types` のどちらかが必要です                                     |
-| mime_type    | str                  | ファイルデータのオプション MIME タイプ。現在 ClickHouse はこの HTTP サブヘッダーを無視します                                        |
-
-外部 CSV ファイルに「映画」データを含め、ClickHouse サーバーに既に存在する `directors` テーブルとそのデータを結合してクエリを送信するには、次のようにします：
+"映画"データを含む外部CSVファイルを使ってクエリを送信し、そのデータをClickHouseサーバ上に既存の`directors`テーブルと結合する方法：
 
 ```python
 import clickhouse_connect
@@ -759,31 +732,29 @@ result = client.query('SELECT name, avg(rating) FROM directors INNER JOIN movies
                       external_data=ext_data).result_rows
 ```
 
-初期の ExternalData オブジェクトに追加の外部データファイルを追加するには、コンストラクタと同じパラメータを受け付ける `add_file` メソッドを使用します。HTTP の場合、すべての外部データは `multi-part/form-data` ファイルのアップロードの一部として送信されます。
+初期のExternalDataオブジェクトに追加の外部データファイルを追加するには、コンストラクタと同じパラメータを受け入れる`add_file`メソッドを使用します。HTTPの場合、すべての外部データは`multi-part/form-data`ファイルアップロードの一部として送信されます。
+### Time zones {#time-zones}
+ClickHouseのDateTimeおよびDateTime64値にタイムゾーンを適用するための複数のメカニズムがあります。内部的に、ClickHouseサーバは、すべてのDateTimeまたはDateTime64オブジェクトをエポック（1970-01-01 00:00:00 UTC時間）以降の秒数を表す、タイムゾーンに依存しない数値として保存します。DateTime64値の場合、表現は精度に応じてエポック以降のミリ秒、マイクロ秒、またはナノ秒となることがあります。そのため、タイムゾーン情報の適用は常にクライアント側で行われます。この計算は重要な追加計算を伴うため、パフォーマンスが重要なアプリケーションでは、ユーザー表示と変換（たとえば、PandasのTimestampsなど）を除いて、DateTime型をエポックタイムスタンプとして扱うことをお勧めします。
 
-### Time Zones {#time-zones}
-ClickHouse DateTime および DateTime64 値にタイムゾーンを適用するための複数のメカニズムがあります。内部的に、ClickHouse サーバーは、任意の DateTime または DateTime64 オブジェクトをエポック（1970 年 01 月 01 日 00:00:00 UTC 時間）以降の秒を表すタイムゾーンナイーブな数として常に保存します。DateTime64 値の場合、表現は精度に応じてエポック以降のミリ秒、マイクロ秒、またはナノ秒になります。そのため、任意のタイムゾーン情報の適用は常にクライアント側で発生します。これは意味のある追加の計算を伴うため、パフォーマンスが重要なアプリケーションでは、ユーザー表示または変換（例えば、Pandas Timestamps は、パフォーマンスを向上させるために常にエポックナノ秒を表す 64 ビット整数として扱われる際を除いて）を除き、DateTime 型をエポック タイムスタンプとして扱うことが推奨されます。
+タイムゾーンを意識したデータ型をクエリで使用する場合 - 特にPythonの`datetime.datetime`オブジェクトで -- `clickhouse-connect`は次の優先順位ルールに従ってクライアント側のタイムゾーンを適用します：
 
-クエリ中にタイムゾーンを意識したデータ型（特に Python `datetime.datetime` オブジェクト）を使用すると、`clickhouse-connect` は次の優先ルールを使用してクライアント側のタイムゾーンを適用します：
+1. クエリのメソッドパラメータ`client_tzs`が指定されている場合、特定のカラムタイムゾーンが適用されます。
+2. ClickHouseのカラムにタイムゾーンメタデータがある場合（すなわち、DateTime64(3, 'America/Denver')のような型の場合）、そのClickHouseのカラムタイムゾーンが適用されます。（このタイムゾーンメタデータは、ClickHouseバージョン23.2より前のDateTimeカラムに対してclickhouse-connectでは利用できません）
+3. クエリメソッドパラメータ`query_tz`が指定されている場合、「クエリタイムゾーン」が適用されます。
+4. クエリまたはセッションにタイムゾーン設定が適用された場合、そのタイムゾーンが適用されます。（この機能は現在のClickHouseサーバにはまだリリースされていません）
+5. 最後に、クライアントの`apply_server_timezone`パラメータがTrueに設定されている場合（デフォルト）、ClickHouseサーバのタイムゾーンが適用されます。
 
-1. クエリのために指定された `client_tzs` クエリメソッドパラメータが指定された場合は、特定のカラムのタイムゾーンが適用されます。
-2. ClickHouse カラムにタイムゾーンメタデータがある場合（つまり、`DateTime64(3, 'America/Denver')` のような型）、ClickHouse カラムのタイムゾーンが適用されます。（このクリックハウスのカラムのタイムゾーンメタデータは、ClickHouse バージョン 23.2 より前の DateTime カラムに対しては clickhouse-connect に対しては利用できません。）
-3. クエリメソッドパラメータ `query_tz` が指定されたクエリには、「クエリタイムゾーン」が適用されます。
-4. クエリまたはセッションに適用されるタイムゾーン設定がある場合には、そのタイムゾーンが適用されます。（この機能はまだ ClickHouse サーバーにリリースされていません。）
-5. 最後に、クライアントの `apply_server_timezone` パラメータが True に設定されている場合（デフォルトの場合）、ClickHouse サーバーのタイムゾーンが適用されます。
-
-これらのルールに基づいて適用されたタイムゾーンが UTC の場合、`clickhouse-connect` は常にタイムゾーンナイーブな Python `datetime.datetime` オブジェクトを返します。その後、このタイムゾーンナイーブなオブジェクトに任意で追加のタイムゾーン情報をアプリケーションコードによって追加することができます。
-
-## Inserting Data with ClickHouse Connect:  Advanced Usage {#inserting-data-with-clickhouse-connect--advanced-usage}
+これらのルールに基づいて適用されたタイムゾーンがUTCである場合、`clickhouse-connect`は常にタイムゾーンに依存しないPythonの`datetime.datetime`オブジェクトを返します。このタイムゾーンに依存しないオブジェクトには、必要に応じてアプリケーションコードで追加のタイムゾーン情報を加えることができます。
+## Inserting data with ClickHouse Connect:  Advanced usage {#inserting-data-with-clickhouse-connect--advanced-usage}
 ### InsertContexts {#insertcontexts}
 
-ClickHouse Connect は、すべての挿入を InsertContext 内で実行します。InsertContext には、クライアント `insert` メソッドに送信されたすべての値が引数として含まれます。さらに、InsertContext がもともと構築される際に、ClickHouse Connect はネイティブ形式の挿入を効率的に行うために必要な挿入カラムのデータ型を取得します。InsertContext を複数の挿入に再利用することで、この「事前クエリ」を回避し、より迅速かつ効率的に挿入が実行されます。
+ClickHouse Connectは、すべての挿入操作をInsertContext内で実行します。InsertContextには、クライアントの`insert`メソッドに引数として渡されるすべての値が含まれています。さらに、InsertContextが元々構築されるとき、ClickHouse Connectは効果的なネイティブフォーマットの挿入に必要な挿入カラムのデータ型を取得します。複数の挿入にInsertContextを再利用することで、この「前クエリ」を回避し、挿入をより迅速かつ効率的に実行できます。
 
-InsertContext は、クライアント `create_insert_context` メソッドを使用して取得できます。このメソッドは、`insert` 関数と同じ引数を取ります。再利用のために InsertContexts の `data` プロパティだけを変更することに注意してください。これは新しいデータの同じテーブルへの繰り返し挿入のために再利用可能なオブジェクトを提供する目的と一致しています。
+InsertContextは、クライアントの`create_insert_context`メソッドを使用して取得できます。このメソッドは、`insert`関数と同じ引数を受け取ります。InsertContextsは、再利用のためにデータプロパティが変更されるべきであることに注意してください。これは、同じテーブルに新しいデータを繰り返し挿入するための再利用可能なオブジェクトを提供するという意図した目的に一致しています。
 
 ```python
 test_data = [[1, 'v1', 'v2'], [2, 'v3', 'v4']]
-ic = test_client.create_insert_context(table='test_table', data='test_data')
+ic = test_client.create_insert_context(table='test_table', data=test_data)
 client.insert(context=ic)
 assert client.command('SELECT count() FROM test_table') == 2
 new_data = [[3, 'v5', 'v6'], [4, 'v7', 'v8']]
@@ -794,14 +765,12 @@ assert qr.row_count == 4
 assert qr[0][0] == 4
 ```
 
-InsertContexts には、挿入プロセス中に更新される可変状態が含まれているため、スレッドセーフではありません。
+InsertContextsは、挿入プロセス中に更新される可変状態を含むため、スレッドセーフではありません。
+### Write formats {#write-formats}
+書き込みフォーマットは、現在限られた数の型に対して実装されています。ほとんどの場合、ClickHouse Connectは最初の（非null）データ値の型を確認することによって各カラムの正しい書き込みフォーマットを自動的に判断しようとします。たとえば、DateTimeカラムに挿入する場合、そのカラムの最初の挿入値がPythonの整数であれば、ClickHouse Connectはそれが実際にはエポック秒であるという仮定の下、その整数値を直接挿入します。
 
-### Write Formats {#write-formats}
-書き込み形式は、現在限られた数の型に対して実装されています。ほとんどの場合、ClickHouse Connect は、最初の（非 null）データ値の型を確認することで列に対する適切な書き込み形式を自動的に決定しようとします。たとえば、DateTime カラムに挿入する際に、カラムの最初の挿入値が Python の整数である場合、ClickHouse Connect は、その整数値がエポック秒であると仮定して直接整数値を挿入します。
-
-ほとんどの場合、データ型の書き込み形式をオーバーライドする必要はありませんが、`clickhouse_connect.datatypes.format` パッケージの関連メソッドを使用してグローバルレベルで行うことができます。
-
-#### Write Format Options {#write-format-options}
+ほとんどの場合、データ型の書き込みフォーマットをオーバーライドする必要はありませんが、`clickhouse_connect.datatypes.format`パッケージ内の関連メソッドを使用してグローバルレベルで行うことができます。
+#### Write format options {#write-format-options}
 
 | ClickHouse Type       | Native Python Type    | Write Formats | Comments                                                                                                    |
 |-----------------------|-----------------------|---------------|-------------------------------------------------------------------------------------------------------------|
@@ -812,29 +781,27 @@ InsertContexts には、挿入プロセス中に更新される可変状態が�
 | Float64               | float                 |               |                                                                                                             |
 | Decimal               | decimal.Decimal       |               |                                                                                                             |
 | String                | string                |               |                                                                                                             |
-| FixedString           | bytes                 | string        | 文字列として挿入される場合、追加のバイトはゼロに設定されます                                                       |
+| FixedString           | bytes                 | string        | 文字列として挿入された場合、追加のバイトはゼロに設定されます                                              |
 | Enum[8,16]            | string                |               |                                                                                                             |
-| Date                  | datetime.date         | int           | ClickHouse は日付を 1970 年 01 月 01 日からの日数として保存します。int 型はこの「エポック日付」値であると見なされます|
-| Date32                | datetime.date         | int           | Date と同様ですが、より広範囲の日付用です                                                                |
-| DateTime              | datetime.datetime     | int           | ClickHouse は DateTime をエポック秒で保存します。int 型はこの「エポック秒」の値であると見なされます |
-| DateTime64            | datetime.datetime     | int           | Python の datetime.datetime はマイクロ秒の精度に限定されています。生の 64 ビット int 値が利用可能です         |
-| IPv4                  | `ipaddress.IPv4Address` | string        | 適切にフォーマットされた文字列は IPv4 アドレスとして挿入できます                                            |
-| IPv6                  | `ipaddress.IPv6Address` | string        | 適切にフォーマットされた文字列は IPv6 アドレスとして挿入できます                                            |
+| Date                  | datetime.date         | int           | ClickHouseは日付を1970年1月1日からの日数として保存します。int型の値はこの「エポック日付」値と見なされます  |
+| Date32                | datetime.date         | int           | Dateと同じですが、より広い範囲の日付用です                                                                |
+| DateTime              | datetime.datetime     | int           | ClickHouseはDateTimeをエポック秒として保存します。int型の値はこの「エポック秒」値と見なされます     |
+| DateTime64            | datetime.datetime     | int           | Pythonのdatetime.datetimeはマイクロ秒精度に制限されています。生の64ビットint値が利用可能です         |
+| IPv4                  | `ipaddress.IPv4Address` | string        | 正しくフォーマットされた文字列はIPv4アドレスとして挿入できます                                                |
+| IPv6                  | `ipaddress.IPv6Address` | string        | 正しくフォーマットされた文字列はIPv6アドレスとして挿入できます                                                |
 | Tuple                 | dict or tuple         |               |                                                                                                             |
 | Map                   | dict                  |               |                                                                                                             |
 | Nested                | Sequence[dict]        |               |                                                                                                             |
-| UUID                  | uuid.UUID             | string        | 適切にフォーマットされた文字列は ClickHouse UUID として挿入できます                                          |
-| JSON/Object('json')   | dict                  | string        | 辞書または JSON 文字列が JSON カラムに挿入できます（注意：`Object('json')` は非推奨）                        |
-| Variant               | object                |               | 現在すべてのバリアントは文字列として挿入され、ClickHouse サーバーによって解析されます                          |
-| Dynamic               | object                |               | 警告：現在 Dynamic カラムへの挿入は ClickHouse String として保存されます                                       |
+| UUID                  | uuid.UUID             | string        | 正しくフォーマットされた文字列はClickHouseのUUIDとして挿入できます                                              |
+| JSON/Object('json')   | dict                  | string        | 辞書またはJSON文字列はJSONカラムに挿入できます（`Object('json')`は非推奨です） |
+| Variant               | object                |               | 現在すべてのバリアントは文字列として挿入され、ClickHouseサーバによって解析されます                    |
+| Dynamic               | object                |               | 警告 -- 現在、Dynamicカラムへの挿入はClickHouseの文字列として保持されます              |
+## Additional options {#additional-options}
 
-## Additional Options {#additional-options}
+ClickHouse Connectは、高度な使用ケースのための追加のオプションを多数提供します。
+### Global settings {#global-settings}
 
-ClickHouse Connect は、高度なユースケースに対する追加のオプションを多数提供します。
-
-### Global Settings {#global-settings}
-
-ClickHouse Connect の動作をグローバルに制御する少しの設定があります。これらは、最上位 `common` パッケージからアクセスされます：
+ClickHouse Connectの動作をグローバルに制御する設定が少数あります。それらは最上位の`common`パッケージからアクセスされます：
 
 ```python
 from clickhouse_connect import common
@@ -845,60 +812,55 @@ common.get_setting('invalid_setting_action')
 ```
 
 :::note
-これらの共通設定 `autogenerate_session_id`、`product_name`、および `readonly` は、`clickhouse_connect.get_client` メソッドを使ってクライアントを作成する前に必ず変更されるべきです。クライアント作成後にこれらの設定を変更しても、既存のクライアントの動作には影響しません。
+これらの共通設定`autogenerate_session_id`、`product_name`、および`readonly`は、必ずクライアントを`clickhouse_connect.get_client`メソッドで作成する前に変更する必要があります。クライアント作成後にこれらの設定を変更しても、既存のクライアントの動作には影響しません。
 :::
 
-現在、10 のグローバル設定が定義されています：
+現在定義されているグローバル設定は10個です：
 
 | Setting Name            | Default | Options                 | Description                                                                                                                                                                                                                                                   |
 |-------------------------|---------|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| autogenerate_session_id | True    | True, False             | 各クライアントセッションのための新しい UUID(1) セッション ID を自動生成します（提供されていない場合）。セッション ID が提供されない場合（クライアントまたはクエリレベルのいずれかで）、ClickHouse は各クエリのためのランダムな内部 ID を生成します。                                               |
-| invalid_setting_action  | 'error' | 'drop', 'send', 'error' | 無効または読み取り専用の設定が提供された場合（クライアントセッションまたはクエリのいずれかに対して）、どのアクションを取るか。`drop` の場合、その設定は無視され、`send` の場合は設定が ClickHouse に送信され、`error` の場合はクライアント側で ProgrammingError がスローされます。|
-| dict_parameter_format   | 'json'  | 'json', 'map'           | これは、パラメータ化されたクエリが Python 辞書を JSON 形式または ClickHouse マップ構文に変換するかを制御します。`json` は JSON カラムへの挿入のために使用され、`map` は ClickHouse マップカラムのために使用されます。                                   |
-| product_name            |         |                         | ClickHouse にクエリを渡す際に、ClickHouse Connect を使用するアプリを追跡するために渡される文字列。形式は &lt;product name;&gl/&lt;product version&gt; にするべきです。                                                                    |
-| max_connection_age      | 600     |                         | HTTP Keep Alive 接続が開かれて再利用される最大秒数。この設定により、負荷分散装置/プロキシの背後にある単一の ClickHouse ノードへの接続の束を防ぎます。デフォルトは 10 分です。                                                             |
-| readonly                | 0       | 0, 1                    | 19.17 より前のバージョンに対する暗黙の「read_only」ClickHouse 設定。 ClickHouse の「read_only」値に一致させるために設定でき、非常に古い ClickHouse バージョンとの操作を許可します。                                                      |
-| use_protocol_version    | True    | True, False             | クライアントプロトコルバージョンを使用します。これは DateTime タイムゾーンカラムに必要ですが、現在の chproxy のバージョンでは壊れます。                                                                                                      |
-| max_error_size          | 1024    |                         | クライアントエラーメッセージで返される最大文字数。この設定を 0 にすると、完全な ClickHouse エラーメッセージが取得されます。デフォルトは 1024 文字です。                                                                                     |
-| send_os_user            | True    | True, False             | ClickHouse に送信されるクライアント情報に検出されたオペレーティングシステムユーザーを含めます（HTTP User-Agent 文字列）。                                                                                                                |
-| http_buffer_size        | 10MB    |                         | HTTP ストリーミングクエリ用の「メモリ内」バッファのサイズ（バイト単位）。                                                                                                                                                                                    |
-### 圧縮 {#compression}
+| autogenerate_session_id | True    | True, False             | 各クライアントセッションのために新しいUUID(1)セッションIDを自動生成します（提供されていない場合）。セッションIDが提供されない場合（クライアントまたはクエリレベルのいずれかで）、ClickHouseは各クエリのためにランダムな内部IDを生成します                                               |
+| invalid_setting_action  | 'error' | 'drop', 'send', 'error' | 無効または読み取り専用設定が提供された場合のアクション（クライアントセッションまたはクエリのいずれかに）。`drop`の場合、設定は無視され、`send`の場合、設定はClickHouseに送信され、`error`の場合、クライアント側のProgrammingErrorが発生します |
+| dict_parameter_format   | 'json'  | 'json', 'map'           | これは、パラメータ化されたクエリがPython辞書をJSONまたはClickHouseマップ構文に変換するかどうかを制御します。JSONカラムへの挿入には`json`を使用し、ClickHouseマップカラムには`map`を使用します                                                               |
+| product_name            |         |                         | ClickHouseに渡すクエリに追跡用のアプリケーション名が含まれた文字列です。形式は`<product_name>/<product_version>`であるべきです                                                                                       |
+| max_connection_age      | 600     |                         | HTTP Keep Alive接続がオープン/再利用される最大秒数。この設定は、負荷分散装置/プロキシの背後にある単一のClickHouseノードを対処するために、接続のバンチを防ぎます。デフォルトは10分です。                                                   |
+| readonly                | 0       | 0, 1                    | 19.17以前のバージョン用の暗黙的な"read_only" ClickHouse設定。非常に古いClickHouseバージョンと連携するために、ClickHouseの"read_only"値に合わせて設定できます                                                                  |
+| use_protocol_version    | True    | True, False             | クライアントプロトコルバージョンを使用します。これが必要なのはDateTimeタイムゾーンクラムですが、現在のchproxyのバージョンでは壊れます                                                                                                                                  |
+| max_error_size          | 1024    |                         | クライアントエラーメッセージに返される最大文字数。この設定のために0を設定することで、完全なClickHouseエラーメッセージを得ることができます。デフォルトは1024文字です。                                                                                  |
+| send_os_user            | True    | True, False             | ClickHouseに送信されるクライアント情報に検出されたオペレーティングシステムユーザーを含めます（HTTP User-Agent文字列）                                                                                                                                                  |
+| http_buffer_size        | 10MB    |                         | HTTPストリーミングクエリのために使用される「メモリ内」バッファのサイズ（バイト単位）                                                                                                                                                                                     |
+### Compression {#compression}
 
-ClickHouse Connect は、クエリ結果とインサートの両方に対して lz4、zstd、brotli、gzip 圧縮をサポートしています。圧縮を使用することは、ネットワーク帯域幅/転送速度と CPU 使用率（クライアントおよびサーバーの両方）との間で通常トレードオフがあることを常に念頭に置いてください。
+ClickHouse Connectは、クエリ結果と挿入の両方のためのlz4、zstd、brotli、gzip圧縮をサポートしています。圧縮を使用することは通常、ネットワーク帯域幅/転送速度とCPU使用率（クライアントとサーバの両方）とのトレードオフを伴うことを常に念頭に置いてください。
 
-圧縮されたデータを受け取るには、ClickHouse サーバーの `enable_http_compression` を 1 に設定する必要があるか、ユーザーがクエリごとに設定を変更する権限を持っている必要があります。
+圧縮されたデータを受け取るためには、ClickHouseサーバの`enable_http_compression`を1に設定する必要があります。または、ユーザーは「クエリごと」の基準で設定を変更する権限を持っている必要があります。
 
-圧縮は、`clickhouse_connect.get_client` ファクトリメソッドを呼び出す際の `compress` パラメータによって制御されます。デフォルトでは `compress` は `True` に設定されており、これによりデフォルトの圧縮設定がトリガーされます。`query`、`query_np`、`query_df` クライアントメソッドを使用して実行されたクエリに対して、ClickHouse Connect は `Accept-Encoding` ヘッダーに `lz4`、`zstd`、`br`（brotli、brotli ライブラリがインストールされている場合）、`gzip`、および `deflate` エンコーディングを追加します。 （ほとんどのリクエストに対して、ClickHouse サーバーは `zstd` 圧縮ペイロードで応答します。）インサートに関しては、デフォルトで ClickHouse Connect はインサートブロックを `lz4` 圧縮で圧縮し、`Content-Encoding: lz4` HTTP ヘッダーを送信します。
+圧縮は、`clickhouse_connect.get_client`ファクトリメソッドを呼び出す際の`compress`パラメータで制御されます。デフォルトでは、`compress`は`True`に設定されており、これがデフォルトの圧縮設定をトリガーします。`query`、`query_np`、および`query_df`クライアントメソッドで実行されたクエリに対して、ClickHouse Connectは`Accept-Encoding`ヘッダーを追加し、`lz4`、`zstd`、`br`（brotli、brotliライブラリがインストールされている場合）、`gzip`、および`deflate`エンコーディングを`query`クライアントメソッドで直接実行します（そして間接的に、`query_np`および`query_df`）。 （ほとんどのリクエストの場合、ClickHouseサーバは`zstd`で圧縮されたペイロードを返します。）挿入に関しては、デフォルトでClickHouse Connectは挿入ブロックを`lz4`圧縮で圧縮し、`Content-Encoding: lz4` HTTPヘッダーを送信します。
 
-`get_client` の `compress` パラメータは、`lz4`、`zstd`、`br`、または `gzip` の特定の圧縮方法に設定することもできます。その方法は、インサートとクエリ結果の両方に使用されます（ClickHouse サーバーがサポートしている場合）。必要な `zstd` および `lz4` 圧縮ライブラリは、ClickHouse Connect のデフォルトでインストールされています。`br`/brotli が指定されている場合、brotli ライブラリは別途インストールする必要があります。
+`get_client`の`compress`パラメータも、`lz4`、`zstd`、`br`、または`gzip`のいずれか特定の圧縮メソッドに設定できます。そのメソッドは、挿入とクエリ結果の両方に使用されます（ClickHouseサーバがサポートする場合）。 必要な`zstd`および`lz4`圧縮ライブラリは現在ClickHouse Connectにデフォルトでインストールされています。`br`/brotliが指定された場合、brotliライブラリは別途インストールする必要があります。
 
-`raw*` クライアントメソッドは、クライアント設定によって指定された圧縮を使用しないことに注意してください。
+`raw*`クライアントメソッドはクライアント設定で指定された圧縮を使用しないことに注意してください。
 
-また、データの圧縮と解凍の両方において、代替手段よりも大幅に遅くなるため、`gzip` 圧縮の使用は推奨されません。
+`gzip`圧縮の使用は推奨されません。なぜなら、データの圧縮と解凍の両方で代替手段に比べて著しく遅いためです。
+### HTTP proxy support {#http-proxy-support}
 
-### HTTP プロキシサポート {#http-proxy-support}
+ClickHouse Connectは、`urllib`3`ライブラリを使用して基本的なHTTPプロキシサポートを追加します。標準の`HTTP_PROXY`および`HTTPS_PROXY`環境変数を認識します。これらの環境変数を使用すると、`clickhouse_connect.get_client`メソッドで作成されたクライアントに適用されます。別の方法として、各クライアントに対して構成するには、`get_client`メソッドの`http_proxy`または`https_proxy`引数を使用できます。HTTPプロキシサポートの実装に関する詳細は、[urllib3](https://urllib3.readthedocs.io/en/stable/advanced-usage.html#http-and-https-proxies)のドキュメントを参照してください。
 
-ClickHouse Connect は、`urllib3` ライブラリを使用して基本的な HTTP プロキシサポートを追加します。標準の `HTTP_PROXY` および `HTTPS_PROXY` 環境変数を認識します。これらの環境変数を使用すると、`clickhouse_connect.get_client` メソッドで作成された任意のクライアントに適用されます。代わりに、クライアントごとに構成する場合は、get_client メソッドの `http_proxy` または `https_proxy` 引数を使用できます。HTTP プロキシサポートの実装の詳細については、[urllib3](https://urllib3.readthedocs.io/en/stable/advanced-usage.html#http-and-https-proxies) ドキュメントを参照してください。
+Socksプロキシを使用するには、`urllib3`のSOCKSProxyManagerを`get_client`の`pool_mgr`引数として送信できます。これは、PySocksライブラリを直接インストールするか、`urllib3`の依存関係に対して`[socks]`オプションを使用することを必要とします。
+### "Old" JSON data type {#old-json-data-type}
 
-Socks プロキシを使用する場合は、`urllib3` SOCKSProxyManager を `get_client` の `pool_mgr` 引数として送信できます。この場合、PySocks ライブラリを直接インストールするか、`urllib3` 依存関係の `[socks]` オプションを使用する必要があります。
+実験的な`Object`（または`Object('json')`）データ型は非推奨であり、本番環境での使用は避けるべきです。ClickHouse Connectは後方互換性のためにこのデータ型に対する制限されたサポートを提供し続けています。ただし、このサポートには、辞書や等価物として返される「トップレベル」または「親」JSON値を期待するクエリは含まれておらず、そのようなクエリは例外を引き起こします。
+### "New" Variant/Dynamic/JSON datatypes (experimental feature) {#new-variantdynamicjson-datatypes-experimental-feature}
 
-### "古い" JSON データ型 {#old-json-data-type}
-
-実験的な `Object`（または `Object('json')`）データ型は非推奨であり、生産環境では避けるべきです。ClickHouse Connect は後方互換性のためにこのデータ型の制限されたサポートを提供し続けます。注意すべきことは、このサポートには、辞書やそれに相当するものとして「トップレベル」または「親」JSON 値を返すことが期待されるクエリが含まれておらず、そのようなクエリは例外を引き起こすことです。
-
-### "新しい" Variant/Dynamic/JSON データ型（実験的機能） {#new-variantdynamicjson-datatypes-experimental-feature}
-
-0.8.0 リリースから、`clickhouse-connect` は新しい（非実験的でもある）ClickHouse 型の Variant、Dynamic、JSON に対する実験的なサポートを提供します。
-
-#### 使用上の注意 {#usage-notes}
-- JSON データは、Python 辞書または JSON オブジェクト `{}` を含む JSON 文字列として挿入できます。他の形式の JSON データはサポートされていません。
-- これらの型のサブカラム/パスを使用したクエリは、サブカラムの型を返します。
-- 他の使用上の注意については、主な ClickHouse ドキュメントを参照してください。
-
-#### 既知の制限事項: {#known-limitations}
-- これらの型のそれぞれは、使用する前に ClickHouse 設定で有効にする必要があります。
-- 「新しい」JSON 型は、ClickHouse 24.8 リリースから使用可能です。
-- 内部フォーマットの変更により、`clickhouse-connect` は ClickHouse 24.7 リリースから始まる Variant 型とのみ互換性があります。
-- 返された JSON オブジェクトは、`max_dynamic_paths` 数の要素のみを返します（デフォルトは 1024）。これは将来のリリースで修正されます。
-- `Dynamic` カラムへのインサートは、Python 値の文字列表現となります。これは将来のリリースで修正される予定で、https://github.com/ClickHouse/ClickHouse/issues/70395 が修正された後に行われます。
-- 新しい型の実装は C コードで最適化されていないため、従来のシンプルなデータ型よりも性能がわずかに遅くなる場合があります。
+0.8.0リリースから、`clickhouse-connect`は新しい（実験的な）ClickHouse型であるVariant、Dynamic、JSONのサポートを提供します。
+#### Usage notes {#usage-notes}
+- JSONデータは、Python辞書またはJSONオブジェクト`{}`を含むJSON文字列として挿入できます。他の形式のJSONデータはサポートされていません。
+- これらの型のためのサブカラム/パスを使用するクエリは、サブカラムの型を返します。
+- その他の使用ノートについては、主要なClickHouseドキュメントを参照してください。
+#### Known limitations {#known-limitations}
+- これらの型は使用する前にClickHouse設定で有効にする必要があります。
+- 「新しい」JSON型はClickHouse 24.8リリースから利用可能です。
+- 内部フォーマットの変更により、`clickhouse-connect`はClickHouse 24.7リリース以降のVariant型とのみ互換性があります。
+- 返されたJSONオブジェクトは、`max_dynamic_paths`数の要素のみを返します（デフォルトは1024）。これは将来のリリースで修正される予定です。
+- `Dynamic`カラムへの挿入は常にPython値の文字列表現となります。これは、https://github.com/ClickHouse/ClickHouse/issues/70395が修正されると、将来のリリースで修正される予定です。
+- 新しい型の実装はCコードで最適化されていないため、パフォーマンスは単純で確立されたデータ型よりもやや遅くなるかもしれません。

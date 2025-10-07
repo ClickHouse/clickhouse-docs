@@ -1,10 +1,11 @@
 ---
-description: 'System table containing logging entries.'
-keywords:
+'description': 'システムテーブルはログエントリを含みます。'
+'keywords':
 - 'system table'
 - 'text_log'
-slug: '/operations/system-tables/text_log'
-title: 'system.text_log'
+'slug': '/operations/system-tables/text_log'
+'title': 'system.text_log'
+'doc_type': 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
@@ -14,32 +15,32 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud/>
 
-ログエントリを含みます。このテーブルに送信されるログレベルは、`text_log.level`サーバー設定に制限できます。
+ログエントリを含みます。このテーブルに書き込まれるログレベルは `text_log.level` サーバー設定によって制限できます。
 
 カラム:
 
 - `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — クエリを実行しているサーバーのホスト名。
 - `event_date` (Date) — エントリの日付。
-- `event_time` (DateTime) — エントリの時間。
-- `event_time_microseconds` (DateTime64) — マイクロ秒精度のエントリの時間。
+- `event_time` (DateTime) — エントリの時刻。
+- `event_time_microseconds` (DateTime64) — マイクロ秒精度のエントリの時刻。
 - `microseconds` (UInt32) — エントリのマイクロ秒。
-- `thread_name` (String) — ロギングが行われたスレッドの名前。
+- `thread_name` (String) — ログ記録が行われたスレッドの名前。
 - `thread_id` (UInt64) — OSスレッドID。
-- `level` (`Enum8`) — エントリのレベル。可能な値:
-    - `1` または `'Fatal'`。
-    - `2` または `'Critical'`。
-    - `3` または `'Error'`。
-    - `4` または `'Warning'`。
-    - `5` または `'Notice'`。
-    - `6` または `'Information'`。
-    - `7` または `'Debug'`。
-    - `8` または `'Trace'`。
+- `level` (`Enum8`) — エントリレベル。可能な値:
+  - `1` または `'Fatal'`。
+  - `2` または `'Critical'`。
+  - `3` または `'Error'`。
+  - `4` または `'Warning'`。
+  - `5` または `'Notice'`。
+  - `6` または `'Information'`。
+  - `7` または `'Debug'`。
+  - `8` または `'Trace'`。
 - `query_id` (String) — クエリのID。
 - `logger_name` (LowCardinality(String)) — ロガーの名前 (例: `DDLWorker`)。
-- `message` (String) — メッセージ自体。
+- `message` (String) — メッセージそのもの。
 - `revision` (UInt32) — ClickHouseのリビジョン。
-- `source_file` (LowCardinality(String)) — ロギングが行われたソースファイル。
-- `source_line` (UInt64) — ロギングが行われたソース行。
+- `source_file` (LowCardinality(String)) — ログ記録が行われたソースファイル。
+- `source_line` (UInt64) — ログ記録が行われたソース行。
 - `message_format_string` (LowCardinality(String)) — メッセージをフォーマットするために使用されたフォーマット文字列。
 - `value1` (String) - メッセージをフォーマットするために使用された引数1。
 - `value2` (String) - メッセージをフォーマットするために使用された引数2。
