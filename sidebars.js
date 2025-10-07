@@ -84,6 +84,7 @@ const sidebars = {
         "guides/inserting-data",
         "guides/writing-queries",
         "guides/developer/mutations",
+		"guides/generating-test-data"  
       ],
     },
     {
