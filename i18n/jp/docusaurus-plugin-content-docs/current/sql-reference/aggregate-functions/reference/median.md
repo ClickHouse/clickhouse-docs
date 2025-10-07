@@ -1,17 +1,15 @@
 ---
-description: 'The `median*` functions are the aliases for the corresponding `quantile*`
-  functions. They calculate median of a numeric data sample.'
-sidebar_position: 167
-slug: '/sql-reference/aggregate-functions/reference/median'
-title: '中央値'
+'description': '`median*` 関数は、対応する `quantile*` 関数のエイリアスです。これらは数値データサンプルの中央値を計算します。'
+'sidebar_position': 167
+'slug': '/sql-reference/aggregate-functions/reference/median'
+'title': 'median'
+'doc_type': 'reference'
 ---
-
-
 
 
 # median
 
-`median*` 関数は、対応する `quantile*` 関数のエイリアスです。これらは数値データサンプルの中央値を計算します。
+`median*` 関数は、対応する `quantile*` 関数のエイリアスです。数値データサンプルの中央値を計算します。
 
 関数:
 

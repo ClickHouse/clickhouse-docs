@@ -1,14 +1,13 @@
 ---
-description: 'Documentation for Optimize'
-sidebar_label: 'OPTIMIZE'
-sidebar_position: 47
-slug: '/sql-reference/statements/optimize'
-title: 'OPTIMIZE Statement'
+'description': 'Optimizeに関するドキュメント'
+'sidebar_label': 'OPTIMIZE'
+'sidebar_position': 47
+'slug': '/sql-reference/statements/optimize'
+'title': 'OPTIMIZE ステートメント'
+'doc_type': 'reference'
 ---
 
-
-
-このクエリは、テーブルのデータパーツのスケジュールされていないマージを初期化しようとします。一般的には、`OPTIMIZE TABLE ... FINAL` の使用はお勧めしません（詳細は[こちらのドキュメント](/optimize/avoidoptimizefinal)を参照）; このコマンドの使用ケースは管理のためのものであり、日常の操作向けではありません。
+このクエリは、テーブルのデータパーツのスケジュールされていないマージを初期化しようとします。一般的には、管理目的での使用が推奨されているため、通常の操作には `OPTIMIZE TABLE ... FINAL` の使用を避けることをお勧めします（詳細は[こちらのドキュメント](/optimize/avoidoptimizefinal)を参照してください）。
 
 :::note
 `OPTIMIZE` は `Too many parts` エラーを修正できません。
@@ -20,36 +19,36 @@ title: 'OPTIMIZE Statement'
 OPTIMIZE TABLE [db.]name [ON CLUSTER cluster] [PARTITION partition | PARTITION ID 'partition_id'] [FINAL | FORCE] [DEDUPLICATE [BY expression]]
 ```
 
-`OPTIMIZE` クエリは [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) ファミリー（[マテリアライズドビュー](/sql-reference/statements/create/view#materialized-view)を含む）および [Buffer](../../engines/table-engines/special/buffer.md) エンジンでサポートされています。他のテーブルエンジンはサポートされていません。
+`OPTIMIZE` クエリは、[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) ファミリー（[マテリアライズドビュー](/sql-reference/statements/create/view#materialized-view)を含む）および [Buffer](../../engines/table-engines/special/buffer.md) エンジンでサポートされています。他のテーブルエンジンはサポートされていません。
 
-`OPTIMIZE` が [ReplicatedMergeTree](../../engines/table-engines/mergetree-family/replication.md) ファミリーのテーブルエンジンとともに使用される場合、ClickHouseはマージのタスクを作成し、すべてのレプリカでの実行を待機します（[alter_sync](/operations/settings/settings#alter_sync) の設定が `2` に設定されている場合）または現在のレプリカで（[alter_sync](/operations/settings/settings#alter_sync) の設定が `1` に設定されている場合）。
+`OPTIMIZE` が [ReplicatedMergeTree](../../engines/table-engines/mergetree-family/replication.md) ファミリーのテーブルエンジンと共に使用される場合、ClickHouse はマージのためのタスクを作成し、すべてのレプリカ（[alter_sync](/operations/settings/settings#alter_sync) 設定が `2` に設定されている場合）または現在のレプリカ（[alter_sync](/operations/settings/settings#alter_sync) 設定が `1` に設定されている場合）の実行を待ちます。
 
-- `OPTIMIZE` が何らかの理由でマージを実行しない場合、クライアントには通知されません。通知を有効にするには、[optimize_throw_if_noop](/operations/settings/settings#optimize_throw_if_noop) 設定を使用します。
-- `PARTITION` を指定した場合、指定したパーティションのみが最適化されます。[パーティション式の設定方法](alter/partition.md#how-to-set-partition-expression)を参照してください。
-- `FINAL` または `FORCE` を指定すると、すべてのデータがすでに1つのパーツに存在する場合でも最適化が実行されます。この動作は、[optimize_skip_merged_partitions](/operations/settings/settings#optimize_skip_merged_partitions) で制御できます。また、同時にマージが実行されている場合でも強制的にマージされます。
-- `DEDUPLICATE` を指定すると、完全に同一の行（by-clause が指定されていない限り）が重複削除されます（すべてのカラムが比較されます）。これは、MergeTreeエンジンに対してのみ意味があります。
+- `OPTIMIZE` が何らかの理由でマージを行わない場合、クライアントには通知されません。通知を有効にするには、[optimize_throw_if_noop](/operations/settings/settings#optimize_throw_if_noop) 設定を使用します。
+- `PARTITION` を指定した場合は、指定されたパーティションのみが最適化されます。[パーティションの式の設定方法](alter/partition.md#how-to-set-partition-expression)を参照してください。
+- `FINAL` または `FORCE` を指定した場合、すべてのデータがすでに1つのパートに存在する場合でも最適化が実行されます。この動作は [optimize_skip_merged_partitions](/operations/settings/settings#optimize_skip_merged_partitions) で制御できます。また、同時に他のマージが実行されている場合でもマージが強制されます。
+- `DEDUPLICATE` を指定した場合、完全に同一の行（by-clause が指定されていない場合）は重複排除されます（すべてのカラムが比較されます）。これは MergeTree エンジンにのみ意味があります。
 
-非アクティブなレプリカが `OPTIMIZE` クエリを実行するのを待つ秒数を、[replication_wait_for_inactive_replica_timeout](/operations/settings/settings#replication_wait_for_inactive_replica_timeout) 設定で指定できます。
+非アクティブなレプリカが `OPTIMIZE` クエリを実行するまでの待機時間（秒単位）を [replication_wait_for_inactive_replica_timeout](/operations/settings/settings#replication_wait_for_inactive_replica_timeout) 設定で指定できます。
 
 :::note    
-`alter_sync` が `2` に設定されている場合で、いくつかのレプリカが `replication_wait_for_inactive_replica_timeout` 設定で指定された時間よりも長く非アクティブのままだと、例外 `UNFINISHED` がスローされます。
+`alter_sync` が `2` に設定されている場合、いくつかのレプリカが `replication_wait_for_inactive_replica_timeout` 設定で指定された時間を超えてアクティブでない場合、例外 `UNFINISHED` がスローされます。
 :::
 
-## BY expression {#by-expression}
+## BY 式 {#by-expression}
 
-すべてのカラムではなく、カスタムで指定したカラムに対して重複削除を行いたい場合、カラムのリストを明示的に指定するか、[`*`](../../sql-reference/statements/select/index.md#asterisk)、[`COLUMNS`](/sql-reference/statements/select#select-clause)、または [`EXCEPT`](/sql-reference/statements/select#except) 式の任意の組み合わせを使用できます。明示的に記述されたリストまたは暗黙的に拡張されたカラムのリストは、行の順序付け式（主キーおよびソートキーの両方）とパーティション式（パーティションキー）で指定されたすべてのカラムを含む必要があります。
+重複排除をすべてのカラムではなくカスタムセットのカラムに対して実行したい場合、カラムのリストを明示的に指定するか、[`*`](../../sql-reference/statements/select/index.md#asterisk)、[`COLUMNS`](/sql-reference/statements/select#select-clause) または [`EXCEPT`](/sql-reference/statements/select/except-modifier) 式の任意の組み合わせを使用できます。明示的に書かれたか、暗黙的に展開されたカラムのリストには、行の順序付け式に指定されたすべてのカラム（主キーおよびソートキーの両方）とパーティション式（パーティションキー）が含まれている必要があります。
 
 :::note    
-`*` は `SELECT` と同じように動作することに注意してください: [MATERIALIZED](/sql-reference/statements/create/view#materialized-view) および [ALIAS](../../sql-reference/statements/create/table.md#alias) カラムは展開に使用されません。
+`*` は `SELECT` の場合と同様に動作します： [MATERIALIZED](/sql-reference/statements/create/view#materialized-view) および [ALIAS](../../sql-reference/statements/create/table.md#alias) カラムは展開に使用されません。
 
-また、空のカラムリストを指定したり、空のカラムリストを生成する式を書いたり、`ALIAS` カラムによって重複削除を行うことはエラーです。
+空のカラムリストを指定したり、空のカラムリストを生成する式を記述したり、`ALIAS` カラムで重複排除を行うことはエラーです。
 :::
 
 **構文**
 
 ```sql
-OPTIMIZE TABLE table DEDUPLICATE; -- すべてのカラム
-OPTIMIZE TABLE table DEDUPLICATE BY *; -- MATERIALIZED および ALIAS カラムを除外
+OPTIMIZE TABLE table DEDUPLICATE; -- all columns
+OPTIMIZE TABLE table DEDUPLICATE BY *; -- excludes MATERIALIZED and ALIAS columns
 OPTIMIZE TABLE table DEDUPLICATE BY colX,colY,colZ;
 OPTIMIZE TABLE table DEDUPLICATE BY * EXCEPT colX;
 OPTIMIZE TABLE table DEDUPLICATE BY * EXCEPT (colX, colY);
@@ -60,7 +59,7 @@ OPTIMIZE TABLE table DEDUPLICATE BY COLUMNS('column-matched-by-regex') EXCEPT (c
 
 **例**
 
-次のテーブルを考慮してください:
+テーブルを考えます：
 
 ```sql
 CREATE TABLE example (
@@ -84,7 +83,7 @@ VALUES (0, 0, 0, 0), (0, 0, 0, 0), (1, 1, 2, 2), (1, 1, 2, 3), (1, 1, 3, 3);
 ```sql
 SELECT * FROM example;
 ```
-結果:
+結果：
 
 ```sql
 
@@ -101,10 +100,10 @@ SELECT * FROM example;
 └─────────────┴───────────────┴───────┴───────────────┘
 ```
 
-以下のすべての例は、5行のこの状態に対して実行されます。
+すべての次の例は、5行の状態に対して実行されます。
 
 #### `DEDUPLICATE` {#deduplicate}
-重複削除するカラムが指定されていない場合は、すべてのカラムが考慮されます。行が削除されるのは、すべてのカラムの値が前の行の対応する値と等しい場合のみです:
+重複排除のためのカラムが指定されていない場合、すべてのカラムが考慮されます。行は、すべてのカラムの値が前の行の対応する値と等しい場合にのみ削除されます：
 
 ```sql
 OPTIMIZE TABLE example FINAL DEDUPLICATE;
@@ -114,7 +113,7 @@ OPTIMIZE TABLE example FINAL DEDUPLICATE;
 SELECT * FROM example;
 ```
 
-結果:
+結果：
 
 ```response
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
@@ -131,7 +130,7 @@ SELECT * FROM example;
 
 #### `DEDUPLICATE BY *` {#deduplicate-by-}
 
-カラムが暗黙的に指定された場合、テーブルは `ALIAS` または `MATERIALIZED` でないすべてのカラムで重複削除されます。上記のテーブルを考えると、これに該当するのは `primary_key`、`secondary_key`、`value`、および `partition_key` カラムです:
+カラムが暗黙に指定された場合、テーブルは `ALIAS` または `MATERIALIZED` でないすべてのカラムによって重複排除されます。上記のテーブルを考慮すると、これらは `primary_key`、`secondary_key`、`value`、および `partition_key` カラムです：
 
 ```sql
 OPTIMIZE TABLE example FINAL DEDUPLICATE BY *;
@@ -141,7 +140,7 @@ OPTIMIZE TABLE example FINAL DEDUPLICATE BY *;
 SELECT * FROM example;
 ```
 
-結果:
+結果：
 
 ```response
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
@@ -157,7 +156,7 @@ SELECT * FROM example;
 ```
 
 #### `DEDUPLICATE BY * EXCEPT` {#deduplicate-by--except}
-`ALIAS` または `MATERIALIZED` でないすべてのカラムを重複削除し、明示的に `value` を除外します: `primary_key`、`secondary_key`、および `partition_key` カラムです。
+`ALIAS` または `MATERIALIZED` でなく、明示的に `value` でないすべてのカラムによって重複排除を行います：`primary_key`、`secondary_key`、および `partition_key` カラム。
 
 ```sql
 OPTIMIZE TABLE example FINAL DEDUPLICATE BY * EXCEPT value;
@@ -167,7 +166,7 @@ OPTIMIZE TABLE example FINAL DEDUPLICATE BY * EXCEPT value;
 SELECT * FROM example;
 ```
 
-結果:
+結果：
 
 ```response
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
@@ -183,7 +182,7 @@ SELECT * FROM example;
 
 #### `DEDUPLICATE BY <list of columns>` {#deduplicate-by-list-of-columns}
 
-明示的に `primary_key`、`secondary_key`、および `partition_key` カラムで重複削除を行います:
+明示的に `primary_key`、`secondary_key`、および `partition_key` カラムによって重複排除を行います：
 
 ```sql
 OPTIMIZE TABLE example FINAL DEDUPLICATE BY primary_key, secondary_key, partition_key;
@@ -192,7 +191,7 @@ OPTIMIZE TABLE example FINAL DEDUPLICATE BY primary_key, secondary_key, partitio
 ```sql
 SELECT * FROM example;
 ```
-結果:
+結果：
 
 ```response
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
@@ -208,7 +207,7 @@ SELECT * FROM example;
 
 #### `DEDUPLICATE BY COLUMNS(<regex>)` {#deduplicate-by-columnsregex}
 
-正規表現に一致するすべてのカラムで重複削除を行います: `primary_key`、`secondary_key`、および `partition_key` カラムです:
+正規表現にマッチするすべてのカラムによって重複排除を行います：`primary_key`、`secondary_key`、および `partition_key` カラム：
 
 ```sql
 OPTIMIZE TABLE example FINAL DEDUPLICATE BY COLUMNS('.*_key');
@@ -218,7 +217,7 @@ OPTIMIZE TABLE example FINAL DEDUPLICATE BY COLUMNS('.*_key');
 SELECT * FROM example;
 ```
 
-結果:
+結果：
 
 ```response
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐

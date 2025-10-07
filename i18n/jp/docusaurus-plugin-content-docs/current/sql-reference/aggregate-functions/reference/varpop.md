@@ -1,11 +1,10 @@
 ---
-description: 'Calculates the population variance.'
-sidebar_position: 210
-slug: '/sql-reference/aggregate-functions/reference/varPop'
-title: 'varPop'
+'description': '人口分散を計算します。'
+'sidebar_position': 210
+'slug': '/sql-reference/aggregate-functions/reference/varPop'
+'title': 'varPop'
+'doc_type': 'reference'
 ---
-
-
 
 ## varPop {#varpop}
 
@@ -21,15 +20,15 @@ $$
 varPop(x)
 ```
 
-エイリアス: `VAR_POP`.
+エイリアス: `VAR_POP`。
 
-**パラメータ**
+**パラメーター**
 
-- `x`: 母集団分散を求める値の母集団。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
+- `x`: 母集団分散を求める値の集合。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
 
 **返される値**
 
-- `x`の母集団分散を返します。[`Float64`](../../data-types/float.md).
+- `x`の母集団分散を返します。[`Float64`](../../data-types/float.md)。
 
 **例**
 

@@ -2,7 +2,7 @@
 'sidebar_label': 'Spark JDBC'
 'sidebar_position': 3
 'slug': '/integrations/apache-spark/spark-jdbc'
-'description': 'Apache Spark与ClickHouse的介绍'
+'description': '有关 Apache Spark 和 ClickHouse 的介绍'
 'keywords':
 - 'clickhouse'
 - 'Apache Spark'
@@ -10,6 +10,7 @@
 - 'migrating'
 - 'data'
 'title': 'Spark JDBC'
+'doc_type': 'guide'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -18,8 +19,7 @@ import TOCInline from '@theme/TOCInline';
 
 
 # Spark JDBC
-JDBC 是 Spark 中最常用的数据源之一。
-在本节中，我们将提供有关如何在 Spark 中使用 [ClickHouse 官方 JDBC 连接器](/integrations/language-clients/java/jdbc) 的详细信息。
+JDBC 是 Spark 中最常用的数据源之一。在本节中，我们将提供有关如何使用 [ClickHouse 官方 JDBC 连接器](/integrations/language-clients/java/jdbc) 与 Spark 的详细信息。
 
 <TOCInline toc={toc}></TOCInline>
 
@@ -35,7 +35,6 @@ public static void main(String[] args) {
 
         String jdbcURL = "jdbc:ch://localhost:8123/default";
         String query = "select * from example_table where id > 2";
-
 
         //---------------------------------------------------------------------------------------------------
         // Load the table from ClickHouse using jdbc method
@@ -59,9 +58,7 @@ public static void main(String[] args) {
                 .option("query", query)
                 .load();
 
-
         df2.show();
-
 
         // Stop the Spark session
         spark.stop();
@@ -78,7 +75,6 @@ object ReadData extends App {
 
   val jdbcURL = "jdbc:ch://localhost:8123/default"
   val query: String = "select * from example_table where id > 2"
-
 
   //---------------------------------------------------------------------------------------------------
   // Load the table from ClickHouse using jdbc method
@@ -103,8 +99,6 @@ object ReadData extends App {
     .load()
 
   df2.show()
-
-
 
   // Stop the Spark session// Stop the Spark session
   spark.stop()
@@ -194,7 +188,6 @@ public static void main(String[] args) {
        rows.add(RowFactory.create(1, "John"));
        rows.add(RowFactory.create(2, "Doe"));
 
-
        Dataset<Row> df = spark.createDataFrame(rows, schema);
 
        //---------------------------------------------------------------------------------------------------
@@ -218,7 +211,6 @@ public static void main(String[] args) {
                .option("password", "123456")
                .save();
 
-
        // Stop the Spark session
        spark.stop();
    }
@@ -239,7 +231,6 @@ object WriteData extends App {
   jdbcProperties.put("password", "123456")
 
   // Create a sample DataFrame
-
 
   val rows = Seq(Row(1, "John"), Row(2, "Doe"))
 
@@ -273,7 +264,6 @@ object WriteData extends App {
     .option("user", "default")
     .option("password", "123456")
     .save()
-
 
   // Stop the Spark session// Stop the Spark session
   spark.stop()
@@ -322,7 +312,6 @@ df.write \
     .mode("append") \
     .save()
 
-
 ```
 
 </TabItem>
@@ -349,9 +338,8 @@ INSERT INTO TABLE jdbcTable
 
 ## 并行性 {#parallelism}
 
-使用 Spark JDBC 时，Spark 使用单个分区读取数据。要实现更高的并发性，您必须指定 `partitionColumn`、`lowerBound`、`upperBound` 和 `numPartitions`，这些选项描述了如何在从多个工作节点并行读取时对表进行分区。
-有关更多信息，请访问 Apache Spark 的官方文档，了解 [JDBC 配置](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option)。
+使用 Spark JDBC 时，Spark 使用单个分区读取数据。为了实现更高的并发性，您必须指定 `partitionColumn`、`lowerBound`、`upperBound` 和 `numPartitions`，这些参数描述了在从多个工作节点并行读取时如何对表进行分区。有关更多信息，请访问 Apache Spark 的官方文档，了解 [JDBC 配置](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option)。
 
 ## JDBC 限制 {#jdbc-limitations}
 
-* 截至目前，您只能通过 JDBC 向现有表中插入数据（目前没有方法在 DF 插入时自动创建表，正如 Spark 在使用其他连接器时所做的那样）。
+* 到目前为止，您只能通过 JDBC 将数据插入现有表中（目前没有办法在数据帧插入时自动创建表，正如 Spark 与其他连接器所做的那样）。

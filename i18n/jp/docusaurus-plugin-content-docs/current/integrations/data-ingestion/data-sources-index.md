@@ -1,6 +1,6 @@
 ---
-slug: '/integrations/index'
-keywords:
+'slug': '/integrations/data-sources/index'
+'keywords':
 - 'AWS S3'
 - 'Azure Data Factory'
 - 'PostgreSQL'
@@ -25,17 +25,16 @@ keywords:
 - 'local files'
 - 'JDBC'
 - 'ODBC'
-description: 'データソース概要ページ'
-title: 'データソース'
+'description': 'データソースの概要ページ'
+'title': 'データソース'
+'doc_type': 'landing-page'
 ---
-
-
 
 
 # データソース
 
-ClickHouseは、さまざまなソースからデータを簡単にデータベースに取り込むことを可能にします。
-詳細については、以下のページをご覧ください。
+ClickHouseを使用すると、さまざまなソースからデータを簡単にデータベースに取り込むことができます。
+詳細については、以下のページを参照してください：
 
 | データソース                                                                   |
 |-------------------------------------------------------------------------------|

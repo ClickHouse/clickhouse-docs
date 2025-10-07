@@ -1,5 +1,5 @@
 ---
-'description': '在 Windows 上通过 WSL 安装 ClickHouse'
+'description': '在WSL上安装ClickHouse的Windows'
 'keywords':
 - 'ClickHouse'
 - 'install'
@@ -7,8 +7,9 @@
 - 'rpm'
 'sidebar_label': 'Windows'
 'slug': '/install/windows'
-'title': '在 Windows 上通过 WSL 安装 ClickHouse'
+'title': '在WSL上安装ClickHouse的Windows'
 'hide_title': true
+'doc_type': 'guide'
 ---
 
 import Windows from './_snippets/_windows_install.md'

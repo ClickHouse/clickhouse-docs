@@ -1,5 +1,5 @@
 ---
-'description': '包含通过 HTTP 接口访问的 `/dashboard` 页面使用的查询，便于监控和故障排除。'
+'description': '包含通过 HTTP 接口访问的 `/dashboard` 页面使用的查询。用于监控和故障排除。'
 'keywords':
 - 'system table'
 - 'dashboards'
@@ -7,12 +7,13 @@
 - 'troubleshooting'
 'slug': '/operations/system-tables/dashboards'
 'title': 'system.dashboards'
+'doc_type': 'reference'
 ---
 
-包含通过 [HTTP 接口](/interfaces/http.md) 访问的 `/dashboard` 页面使用的查询。此表对于监控和故障排除非常有用。该表每个仪表板中的图表都有一行。
+包含通过 [HTTP 接口](/interfaces/http.md) 访问的 `/dashboard` 页面使用的查询。 该表对监控和故障排除很有用。 表中为仪表板中的每个图表包含一行。
 
 :::note
-`/dashboard` 页面不仅可以呈现来自 `system.dashboards` 的查询，还可以呈现来自任何具有相同模式的表的查询。这对创建自定义仪表板非常有用。
+`/dashboard` 页面不仅可以渲染来自 `system.dashboards` 的查询，还可以渲染任何具有相同模式的表中的查询。 这对于创建自定义仪表板非常有用。
 :::
 
 示例：
@@ -69,4 +70,4 @@ ORDER BY t WITH FILL STEP {rounding:UInt32}
 
 - `dashboard` (`String`) - 仪表板名称。
 - `title` (`String`) - 图表标题。
-- `query` (`String`) - 用于获取要显示数据的查询。
+- `query` (`String`) - 用于获取要显示的数据的查询。

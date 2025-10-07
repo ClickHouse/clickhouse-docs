@@ -1,26 +1,21 @@
----
-null
-...
----
-
 import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-button.png';
 import connection_details_https from '@site/static/images/_snippets/connection-details-https.png';
 import Image from '@theme/IdealImage';
 
 要通过 HTTP(S) 连接到 ClickHouse，您需要以下信息：
 
-- HOST 和 PORT：通常情况下，使用 TLS 时端口为 8443，不使用 TLS 时端口为 8123。
+- **主机**和**端口**：通常，当使用 TLS 时端口为 8443，当不使用 TLS 时端口为 8123。
 
-- 数据库名称：默认情况下，有一个名为 `default` 的数据库，请使用您要连接的数据库名称。
+- **数据库名称**：开箱即用时，有一个名为 `default` 的数据库，请使用您要连接的数据库名称。
 
-- 用户名和密码：默认情况下，用户名为 `default`。请使用适合您用例的用户名。
+- **用户名**和**密码**：开箱即用时，用户名为 `default`。请使用适合您用例的用户名。
 
-您的 ClickHouse Cloud 服务的详细信息可以在 ClickHouse Cloud 控制台中找到。选择您要连接的服务并点击 **Connect**：
+您的 ClickHouse Cloud 服务的详细信息可在 ClickHouse Cloud 控制台中获得。 选择您要连接的服务并点击 **连接**：
 
-<Image img={cloud_connect_button} size="md" alt="ClickHouse Cloud service connect button" border />
+<Image img={cloud_connect_button} size="md" alt="ClickHouse Cloud 服务连接按钮" border />
 
-选择 **HTTPS**，并且详细信息可以在一个示例 `curl` 命令中找到。
+选择 **HTTPS**，详细信息可在示例的 `curl` 命令中获得。
 
-<Image img={connection_details_https} size="md" alt="ClickHouse Cloud HTTPS connection details" border/>
+<Image img={connection_details_https} size="md" alt="ClickHouse Cloud HTTPS 连接详细信息" border/>
 
-如果您使用自管理的 ClickHouse，连接详细信息由您的 ClickHouse 管理员设置。
+如果您使用的是自管理的 ClickHouse，连接详细信息由您的 ClickHouse 管理员设置。

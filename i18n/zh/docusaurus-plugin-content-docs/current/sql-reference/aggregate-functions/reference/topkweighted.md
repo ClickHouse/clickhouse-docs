@@ -1,14 +1,15 @@
 ---
-'description': '返回指定列中大约最频繁值的数组。结果数组按值的近似频率降序排序（不是按值本身排序）。此外，值的权重也被考虑在内。'
+'description': '返回指定列中大约最频繁值的数组。结果数组按值的近似频率降序排列（而非按照值本身）。此外，还考虑了值的权重。'
 'sidebar_position': 203
 'slug': '/sql-reference/aggregate-functions/reference/topkweighted'
 'title': 'topKWeighted'
+'doc_type': 'reference'
 ---
 
 
 # topKWeighted
 
-返回指定列中大约最频繁值的数组。结果数组按值的近似频率降序排序（而不是按值本身排序）。此外，还考虑了值的权重。
+返回指定列中约最常见值的数组。结果数组按值的近似频率降序排列（而不是按值本身）。此外，还考虑了值的权重。
 
 **语法**
 
@@ -21,13 +22,13 @@ topKWeighted(N, load_factor, 'counts')(column, weight)
 **参数**
 
 - `N` — 要返回的元素数量。可选。默认值：10。
-- `load_factor` — 定义为值保留多少个单元格。如果 uniq(column) > N * load_factor，则 topK 函数的结果将是近似值。可选。默认值：3。
-- `counts` — 定义结果是否应包含近似计数和误差值。
+- `load_factor` — 定义为值保留的单元格数量。如果 uniq(column) > N * load_factor，则 topK 函数的结果将是近似值。可选。默认值：3。
+- `counts` — 定义结果是否应该包含近似计数和误差值。
 
-**参数**
+**参数说明**
 
 - `column` — 值。
-- `weight` — 权重。每个值在频率计算中记为 `weight` 次。[UInt64](../../../sql-reference/data-types/int-uint.md)。
+- `weight` — 权重。每个值在频率计算中计算 `weight` 次。[UInt64](../../../sql-reference/data-types/int-uint.md)。
 
 **返回值**
 

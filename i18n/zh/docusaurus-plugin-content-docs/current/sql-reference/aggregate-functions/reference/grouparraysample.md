@@ -1,14 +1,15 @@
 ---
-'description': '创建一个样本参数值的数组。生成数组的大小限制为 `max_size` 元素。参数值是随机选择并添加到数组中的。'
+'description': '创建一个样本参数值的数组。结果数组的大小限制为 `max_size` 个元素。参数值是随机选择并添加到数组中的。'
 'sidebar_position': 145
 'slug': '/sql-reference/aggregate-functions/reference/grouparraysample'
 'title': 'groupArraySample'
+'doc_type': 'reference'
 ---
 
 
 # groupArraySample
 
-创建一个样本参数值的数组。生成数组的大小限制为 `max_size` 元素。参数值被随机选择并添加到数组中。
+创建一个样本参数值的数组。结果数组的大小限制为 `max_size` 元素。参数值是随机选择并添加到数组中的。
 
 **语法**
 
@@ -18,9 +19,9 @@ groupArraySample(max_size[, seed])(x)
 
 **参数**
 
-- `max_size` — 生成数组的最大大小。 [UInt64](../../data-types/int-uint.md)。
-- `seed` — 随机数生成器的种子。可选。 [UInt64](../../data-types/int-uint.md)。默认值: `123456`。
-- `x` — 参数（列名称或表达式）。
+- `max_size` — 结果数组的最大大小。 [UInt64](../../data-types/int-uint.md)。
+- `seed` — 随机数生成器的种子。可选。 [UInt64](../../data-types/int-uint.md)。 默认值： `123456`。
+- `x` — 参数（列名或表达式）。
 
 **返回值**
 
@@ -42,7 +43,7 @@ groupArraySample(max_size[, seed])(x)
 └────┴────────┘
 ```
 
-以列名称作为参数的查询：
+以列名作为参数的查询：
 
 ```sql
 SELECT groupArraySample(3)(color) as newcolors FROM colors;
@@ -56,7 +57,7 @@ SELECT groupArraySample(3)(color) as newcolors FROM colors;
 └────────────────────────────┘
 ```
 
-以列名称和不同种子进行的查询：
+以列名和不同种子进行的查询：
 
 ```sql
 SELECT groupArraySample(3, 987654321)(color) as newcolors FROM colors;

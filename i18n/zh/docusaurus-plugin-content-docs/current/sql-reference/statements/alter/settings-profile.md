@@ -1,14 +1,15 @@
 ---
-'description': 'Settings Profile 的文档'
+'description': 'Settings Profile的文档'
 'sidebar_label': 'SETTINGS PROFILE'
 'sidebar_position': 48
 'slug': '/sql-reference/statements/alter/settings-profile'
 'title': 'ALTER SETTINGS PROFILE'
+'doc_type': 'reference'
 ---
 
-翻译如下：
+翻译：
 
-更改设置配置文件。
+修改设置配置文件。
 
 语法：
 

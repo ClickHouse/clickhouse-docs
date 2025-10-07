@@ -1,16 +1,17 @@
 ---
-'description': '系统表包含本地服务器上驻留的工作负载的信息。'
+'description': '系统表包含有关驻留在本地服务器上的工作负载的信息。'
 'keywords':
 - 'system table'
 - 'workloads'
 'slug': '/operations/system-tables/workloads'
 'title': 'system.workloads'
+'doc_type': 'reference'
 ---
 
 
 # system.workloads
 
-包含有关本地服务器上 [工作负载](/operations/workload-scheduling.md#workload_entity_storage) 的信息。该表为每个工作负载包含一行。
+包含本地服务器上[工作负载](/operations/workload-scheduling.md#workload_entity_storage)的信息。该表为每个工作负载包含一行。
 
 示例：
 
@@ -43,5 +44,5 @@ create_query: CREATE WORKLOAD `all`
 列：
 
 - `name` (`String`) - 工作负载名称。
-- `parent` (`String`) - 父工作负载名称。
+- `parent` (`String`) - 上级工作负载名称。
 - `create_query` (`String`) - 工作负载的定义。
