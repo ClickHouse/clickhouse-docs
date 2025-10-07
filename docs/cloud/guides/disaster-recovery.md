@@ -37,6 +37,7 @@ Having a backup of your primary service is an effective way to utilize the backu
 
 :::note
 There is currently **no** support for automatic failover between 2 ClickHouse Cloud instances whether in the same or different region.
+:::
 
 :::note
 There is currently **no** automatic syncing of data between different ClickHouse Cloud services in the same or different regions .i.e. Active-Active replication
