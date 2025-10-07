@@ -1,15 +1,16 @@
 ---
-description: 'Исследуйте набор данных WikiStat, содержащий 0.5 триллиона записей.'
-sidebar_label: 'WikiStat'
-slug: /getting-started/example-datasets/wikistat
-title: 'WikiStat'
+'description': 'Изучите набор данных WikiStat, содержащий 0.5 триллиона записей.'
+'sidebar_label': 'WikiStat'
+'slug': '/getting-started/example-datasets/wikistat'
+'title': 'WikiStat'
+'doc_type': 'reference'
 ---
 
 Набор данных содержит 0.5 триллиона записей.
 
 Смотрите видео с FOSDEM 2023: https://www.youtube.com/watch?v=JlcI2Vfz_uk
 
-А также презентацию: https://presentations.clickhouse.com/fosdem2023/
+И презентацию: https://presentations.clickhouse.com/fosdem2023/
 
 Источник данных: https://dumps.wikimedia.org/other/pageviews/
 
@@ -24,7 +25,7 @@ for i in {2015..2023}; do
 done | sort | uniq | tee links.txt
 ```
 
-Скачивание данных:
+Загрузка данных:
 ```shell
 sed -r 's!pageviews-([0-9]{4})([0-9]{2})[0-9]{2}-[0-9]+\.gz!https://dumps.wikimedia.org/other/pageviews/\1/\1-\2/\0!' \
   links.txt | xargs -P3 wget --continue

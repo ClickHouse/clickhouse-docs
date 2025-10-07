@@ -1,9 +1,16 @@
 ---
-slug: '/examples/aggregate-function-combinators/maxSimpleState'
-title: 'maxSimpleState'
-description: 'Пример использования комбинатора minSimpleState'
-keywords: ['min', 'state', 'simple', 'combinator', 'examples', 'minSimpleState']
-sidebar_label: 'minSimpleState'
+'slug': '/examples/aggregate-function-combinators/maxSimpleState'
+'title': 'maxSimpleState'
+'description': 'Пример использования комбинатора minSimpleState'
+'keywords':
+- 'min'
+- 'state'
+- 'simple'
+- 'combinator'
+- 'examples'
+- 'minSimpleState'
+'sidebar_label': 'minSimpleState'
+'doc_type': 'reference'
 ---
 
 
@@ -19,5 +26,5 @@ sidebar_label: 'minSimpleState'
 
 ## См. также {#see-also}
 - [`max`](/sql-reference/aggregate-functions/reference/max)
-- [`SimpleState комбинатор`](/sql-reference/aggregate-functions/combinators#-simplestate)
-- [`Тип SimpleAggregateFunction`](/sql-reference/data-types/simpleaggregatefunction)
+- [`SimpleState combinator`](/sql-reference/aggregate-functions/combinators#-simplestate)
+- [`SimpleAggregateFunction type`](/sql-reference/data-types/simpleaggregatefunction)

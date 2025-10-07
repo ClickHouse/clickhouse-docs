@@ -1,19 +1,21 @@
-description: 'Более 150 миллионов отзывов клиентов о продуктах Amazon'
-sidebar_label: 'Отзывы клиентов Amazon'
-slug: /getting-started/example-datasets/amazon-reviews
-title: 'Отзывы клиентов Amazon'
-```
+---
+'description': '超过 150M 客户评论的 Amazon 产品'
+'sidebar_label': 'Amazon 客户评论'
+'slug': '/getting-started/example-datasets/amazon-reviews'
+'title': 'Amazon 客户评论'
+'doc_type': 'reference'
+---
 
-Этот набор данных содержит более 150 миллионов отзывов клиентов о продуктах Amazon. Данные находятся в файлах формата Parquet сжатых с помощью snappy, расположенных в AWS S3, общий размер которых составляет 49 ГБ (сжатый). Давайте пройдем через шаги, чтобы вставить эти данные в ClickHouse.
+Этот набор данных содержит более 150 миллионов отзывов клиентов о продуктах Amazon. Данные находятся в сжатых snappy файлах Parquet в AWS S3 общим объемом 49 ГБ (сжатый). Давайте рассмотрим шаги по их вставке в ClickHouse.
 
 :::note
-Запросы ниже были выполнены на **Production** экземпляре ClickHouse Cloud. Для получения дополнительных сведений смотрите
-["Спецификации песочницы"](/getting-started/playground#specifications).
+Запросы ниже были выполнены на **Продакшн** экземпляре ClickHouse Cloud. Дополнительную информацию см. в
+["Спецификации площадки"](/getting-started/playground#specifications).
 :::
 
 ## Загрузка набора данных {#loading-the-dataset}
 
-1. Не вставляя данные в ClickHouse, мы можем выполнить запрос прямо на месте. Давайте извлечем несколько строк, чтобы увидеть, как они выглядят:
+1. Не вставляя данные в ClickHouse, мы можем запросить их на месте. Давайте выберем несколько строк, чтобы увидеть, как они выглядят:
 
 ```sql
 SELECT *
@@ -21,17 +23,17 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_review
 LIMIT 3
 ```
 
-Строки выглядят следующим образом:
+Строки выглядят так:
 
 ```response
 Row 1:
 ──────
 review_date:       16462
 marketplace:       US
-customer_id:       25444946 -- 25.44 миллионов
+customer_id:       25444946 -- 25.44 million
 review_id:         R146L9MMZYG0WA
 product_id:        B00NV85102
-product_parent:    908181913 -- 908.18 миллионов
+product_parent:    908181913 -- 908.18 million
 product_title:     XIKEZAN iPhone 6 Plus 5.5 inch Waterproof Case, Shockproof Dirtproof Snowproof Full Body Skin Case Protective Cover with Hand Strap & Headphone Adapter & Kickstand
 product_category:  Wireless
 star_rating:       4
@@ -46,10 +48,10 @@ Row 2:
 ──────
 review_date:       16462
 marketplace:       US
-customer_id:       1974568 -- 1.97 миллионов
+customer_id:       1974568 -- 1.97 million
 review_id:         R2LXDXT293LG1T
 product_id:        B00OTFZ23M
-product_parent:    951208259 -- 951.21 миллионов
+product_parent:    951208259 -- 951.21 million
 product_title:     Season.C Chicago Bulls Marilyn Monroe No.1 Hard Back Case Cover for Samsung Galaxy S5 i9600
 product_category:  Wireless
 star_rating:       1
@@ -64,10 +66,10 @@ Row 3:
 ──────
 review_date:       16462
 marketplace:       US
-customer_id:       24803564 -- 24.80 миллионов
+customer_id:       24803564 -- 24.80 million
 review_id:         R7K9U5OEIRJWR
 product_id:        B00LB8C4U4
-product_parent:    524588109 -- 524.59 миллионов
+product_parent:    524588109 -- 524.59 million
 product_title:     iPhone 5s Case, BUDDIBOX [Shield] Slim Dual Layer Protective Case with Kickstand for Apple iPhone 5 and 5s
 product_category:  Wireless
 star_rating:       4
@@ -79,7 +81,7 @@ review_headline:   but overall this case is pretty sturdy and provides good prot
 review_body:       The front piece was a little difficult to secure to the phone at first, but overall this case is pretty sturdy and provides good protection for the phone, which is what I need. I would buy this case again.
 ```
 
-2. Давайте определим новую таблицу `MergeTree` с именем `amazon_reviews`, чтобы сохранить эти данные в ClickHouse:
+2. Определим новую таблицу `MergeTree` с именем `amazon_reviews`, чтобы хранить эти данные в ClickHouse:
 
 ```sql
 CREATE DATABASE amazon
@@ -111,7 +113,7 @@ ENGINE = MergeTree
 ORDER BY (review_date, product_category)
 ```
 
-3. Следующая команда `INSERT` использует функцию таблицы `s3Cluster`, которая позволяет обрабатывать несколько файлов S3 параллельно, используя все узлы вашего кластера. Мы также используем шаблон, чтобы вставить любой файл, который начинается с имени `https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_*.snappy.parquet`:
+3. Следующая команда `INSERT` использует функцию таблицы `s3Cluster`, которая позволяет обрабатывать несколько файлов S3 параллельно, используя все узлы вашего кластера. Мы также используем подстановочный символ для вставки любого файла, который начинается с имени `https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_*.snappy.parquet`:
 
 ```sql
 INSERT INTO amazon.amazon_reviews SELECT *
@@ -120,17 +122,17 @@ FROM s3Cluster('default',
 ```
 
 :::tip
-В ClickHouse Cloud название кластера — `default`. Измените `default` на название вашего кластера...или используйте функцию таблицы `s3` (вместо `s3Cluster`), если у вас нет кластера.
+В ClickHouse Cloud название кластера - `default`. Замените `default` на имя вашего кластера... или используйте функцию таблицы `s3`, если у вас нет кластера.
 :::
 
-5. Этот запрос не занимает много времени — в среднем около 300,000 строк в секунду. В течение примерно 5 минут вы должны увидеть вставленные все строки:
+5. Этот запрос не занимает много времени - в среднем около 300,000 строк в секунду. В течение 5 минут вы должны увидеть, что все строки вставлены:
 
 ```sql runnable
 SELECT formatReadableQuantity(count())
 FROM amazon.amazon_reviews
 ```
 
-6. Давайте посмотрим, сколько места занимает наш набор данных:
+6. Давайте посмотрим, сколько места занимает наши данные:
 
 ```sql runnable
 SELECT
@@ -146,12 +148,11 @@ GROUP BY disk_name
 ORDER BY size DESC
 ```
 
-Исходные данные занимали около 70 ГБ, но в ClickHouse они занимают около 30 ГБ.
-
+Изначальные данные занимали около 70 ГБ, но сжатыми в ClickHouse они занимают около 30 ГБ.
 
 ## Примеры запросов {#example-queries}
 
-7. Давайте выполним несколько запросов. Вот 10 самых полезных отзывов в наборе данных:
+7. Давайте запустим несколько запросов. Вот 10 самых полезных отзывов в наборе данных:
 
 ```sql runnable
 SELECT
@@ -178,7 +179,7 @@ ORDER BY 2 DESC
 LIMIT 10;
 ```
 
-9. Вот средние рейтинги отзывов по месяцам для каждого продукта (это фактический [вопрос на собеседовании в Amazon](https://datalemur.com/questions/sql-avg-review-ratings)!):
+9. Вот средние оценки отзывов по месяцам для каждого продукта (настоящий [вопрос на собеседовании в Amazon](https://datalemur.com/questions/sql-avg-review-ratings)!):
 
 ```sql runnable
 SELECT
@@ -195,7 +196,7 @@ ORDER BY
 LIMIT 20;
 ```
 
-10. Вот общее количество голосов по категориям продуктов. Этот запрос выполняется быстро, потому что `product_category` находится в первичном ключе:
+10. Вот общее количество голосов по категориям продуктов. Этот запрос быстрый, потому что `product_category` находится в первичном ключе:
 
 ```sql runnable
 SELECT
@@ -206,7 +207,7 @@ GROUP BY product_category
 ORDER BY 1 DESC
 ```
 
-11. Давайте найдем продукты, в отзывах о которых чаще всего встречается слово **"ужасно"**. Это большая задача — необходимо разобрать более 151 миллиона строк, чтобы найти одно слово:
+11. Давайте найдем продукты, в отзыве о которых слово **"ужасно"** встречается чаще всего. Это большая задача - нужно проанализировать более 151 миллиона строк, чтобы найти одно слово:
 
 ```sql runnable settings={'enable_parallel_replicas':1}
 SELECT
@@ -221,9 +222,9 @@ ORDER BY count DESC
 LIMIT 50;
 ```
 
-Обратите внимание на время запроса для такого большого объема данных. Результаты также окажутся увлекательными!
+Обратите внимание на время выполнения запроса для такого объема данных. Результаты также интересно читать!
 
-12. Мы можем выполнить тот же запрос снова, но на этот раз будем искать **замечательно** в отзывах:
+12. Мы можем запустить тот же запрос снова, но на этот раз мы ищем **великолепно** в отзывах:
 
 ```sql runnable settings={'enable_parallel_replicas':1}
 SELECT 
@@ -236,3 +237,4 @@ WHERE position(review_body, 'awesome') > 0
 GROUP BY product_id
 ORDER BY count DESC
 LIMIT 50;
+```

@@ -1,16 +1,17 @@
 ---
-sidebar_label: 'Окна техобслуживания'
-description: 'Окна техобслуживания для ClickPipes для Postgres.'
-slug: /integrations/clickpipes/postgres/maintenance
-title: 'Окна техобслуживания для ClickPipes для Postgres'
+'sidebar_label': 'Окна обслуживания'
+'description': 'Условия обслуживания ClickPipes для Postgres.'
+'slug': '/integrations/clickpipes/postgres/maintenance'
+'title': 'Техническое обслуживание ClickPipes для Postgres'
+'doc_type': 'reference'
 ---
 
 
-# Окна техобслуживания для ClickPipes для Postgres
+# Окна обслуживания для ClickPipes для Postgres
 
-Запланировано предстоящее окно техобслуживания для Postgres ClickPipes на:
+Планируется окно обслуживания для Postgres ClickPipes:
 - **Дата:** 17 апреля 2025
 - **Время:** 07:00 - 08:00 UTC
 
-В этот период ваши Postgres Pipes будут временно недоступны.
-ClickPipes снова станут доступны после окна техобслуживания и возобновят нормальную работу.
+В это время ваши Postgres Pipes будут временно недоступны. 
+ClickPipes будут доступны снова после окна обслуживания и вернутся к нормальным операциям.

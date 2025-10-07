@@ -1,9 +1,15 @@
 ---
-slug: '/examples/aggregate-function-combinators/sumArray'
-title: 'sumArray'
-description: 'Пример использования комбинатора sumArray'
-keywords: ['sum', 'array', 'combinator', 'examples', 'sumArray']
-sidebar_label: 'sumArray'
+'slug': '/examples/aggregate-function-combinators/sumArray'
+'title': 'sumArray'
+'description': 'Пример использования комбинирования sumArray'
+'keywords':
+- 'sum'
+- 'array'
+- 'combinator'
+- 'examples'
+- 'sumArray'
+'sidebar_label': 'sumArray'
+'doc_type': 'reference'
 ---
 
 
@@ -13,18 +19,19 @@ sidebar_label: 'sumArray'
 
 Комбинатор [`Array`](/sql-reference/aggregate-functions/combinators#-array) 
 может быть применен к функции [`sum`](/sql-reference/aggregate-functions/reference/sum) 
-для вычисления суммы всех элементов в массиве с использованием агрегирующей функции `sumArray`.
+для вычисления суммы всех элементов в массиве с помощью агрегатной функции 
+`sumArray`.
 
-Функция `sumArray` полезна, когда необходимо вычислить общую сумму всех 
-элементов во множественных массивах в наборе данных.
+Функция `sumArray` полезна, когда вам нужно вычислить общую сумму всех элементов 
+в нескольких массивах в наборе данных.
 
 ## Пример использования {#example-usage}
 
 В этом примере мы используем выборку данных о ежедневных продажах по 
-различным категориям товаров, чтобы продемонстрировать, как работает 
-`sumArray`. Мы рассчитаем общие продажи по всем категориям для каждого дня.
+разным категориям продуктов, чтобы продемонстрировать, как работает `sumArray`. 
+Мы рассчитаем общие продажи по всем категориям для каждого дня.
 
-```sql title="Запрос"
+```sql title="Query"
 CREATE TABLE daily_category_sales
 (
     date Date,
@@ -39,18 +46,17 @@ INSERT INTO daily_category_sales VALUES
 SELECT 
     date,
     category_sales,
-    sumArray(category_sales) as total_sales_sumArray,
-    sum(arraySum(category_sales)) as total_sales_arraySum
+    sumArray(category_sales) AS total_sales_sumArray,
+    sum(arraySum(category_sales)) AS total_sales_arraySum
 FROM daily_category_sales
 GROUP BY date, category_sales;
 ```
 
-Функция `sumArray` суммирует все элементы в каждом массиве `category_sales`. 
-Например, `2024-01-01` она суммирует `100 + 200 + 150 = 450`. Это дает 
-такой же результат, как и `arraySum`.
+Функция `sumArray` будет складывать все элементы в каждом массиве `category_sales`. 
+Например, `2024-01-01` она суммирует `100 + 200 + 150 = 450`. Это дает тот же результат, что и `arraySum`.
 
-## Также смотрите {#see-also}
+## См. также {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`arraySum`](/sql-reference/functions/array-functions#arraysum)
+- [`arraySum`](/sql-reference/functions/array-functions#arraySum)
 - [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
 - [`sumMap`](/examples/aggregate-function-combinators/sumMap)

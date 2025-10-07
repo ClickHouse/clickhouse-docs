@@ -1,33 +1,39 @@
 ---
-slug: /use-cases/data-lake/glue-catalog
-sidebar_label: 'AWS Glue Catalog'
-title: 'AWS Glue Catalog'
-pagination_prev: null
-pagination_next: null
-description: 'В этом руководстве мы проведем вас через шаги, чтобы выполнить запрос к вашим данным в S3 корзинах, используя ClickHouse и AWS Glue Data Catalog.'
+'slug': '/use-cases/data-lake/glue-catalog'
+'sidebar_label': 'AWS Glue Catalog'
+'title': 'AWS Glue Catalog'
+'pagination_prev': null
+'pagination_next': null
+'description': 'В этом руководстве мы проведем вас через шаги, чтобы выполнить запрос
+  к вашим данным в S3 корзинах, используя ClickHouse и каталог данных AWS Glue.'
+'keywords':
+- 'Glue'
+- 'Data Lake'
+'show_related_blogs': true
+'doc_type': 'guide'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 <ExperimentalBadge/>
 
-ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, Polaris и т.д.). В этом руководстве мы проведем вас через шаги, чтобы выполнить запрос к вашим данным в S3 корзинах, используя ClickHouse и Glue Data Catalog.
+ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, Polaris и т.д.). В этом руководстве мы проведем вас через шаги для выполнения запросов к вашим данным в S3 корзинах с использованием ClickHouse и Glue Data Catalog.
 
 :::note
 Glue поддерживает множество различных форматов таблиц, но эта интеграция поддерживает только таблицы Iceberg.
 :::
 
-## Настройка Glue в AWS {#configuring}
+## Конфигурирование Glue в AWS {#configuring}
 
 Чтобы подключиться к каталогу Glue, вам необходимо определить регион вашего каталога и предоставить ключ доступа и секретный ключ.
 
 :::note
-В настоящее время каталог Glue поддерживает только ключи доступа и секретные ключи, но в будущем мы поддержим дополнительные методы аутентификации.
+В настоящее время каталог Glue поддерживает только ключи доступа и секретные ключи, но в будущем мы поддержим дополнительные подходы к аутентификации.
 :::
 
-## Создание соединения между каталогом Glue и ClickHouse {#connecting}
+## Создание соединения между каталогом данных Glue и ClickHouse {#connecting}
 
-После настройки вашего Unity Catalog и аутентификации, установите соединение между ClickHouse и Unity Catalog.
+С вашим каталогом Unity настроенным и аутентификацией на месте, установите соединение между ClickHouse и Unity Catalog.
 
 ```sql title="Query"
 CREATE DATABASE glue
@@ -39,7 +45,7 @@ SETTINGS
     aws_secret_access_key = '<secret-key>'
 ```
 
-## Выполнение запроса к каталогу данных Glue с использованием ClickHouse {#query-glue-catalog}
+## Запрос к каталогу данных Glue с использованием ClickHouse {#query-glue-catalog}
 
 Теперь, когда соединение установлено, вы можете начать выполнять запросы к Glue:
 
@@ -57,7 +63,7 @@ SHOW TABLES;
    └────────────────────────────────────────┘
 ```
 
-Вы можете видеть выше, что некоторые таблицы не являются таблицами Iceberg, например, `iceberg-benchmark.hitsparquet`. Вы не сможете выполнить запросы к ним, так как в настоящее время поддерживаются только таблицы Iceberg.
+Выше вы можете увидеть, что некоторые таблицы не являются таблицами Iceberg, например `iceberg-benchmark.hitsparquet`. Вы не сможете выполнить запросы к ним, так как в настоящее время поддерживается только Iceberg.
 
 Чтобы выполнить запрос к таблице:
 
@@ -66,7 +72,7 @@ SELECT count(*) FROM `iceberg-benchmark.hitsiceberg`;
 ```
 
 :::note
-Обратные кавычки обязательны, так как ClickHouse не поддерживает более одного пространства имен.
+Обратные кавычки необходимы, так как ClickHouse не поддерживает более одного пространства имен.
 :::
 
 Чтобы просмотреть DDL таблицы, выполните следующий запрос:
@@ -76,117 +82,117 @@ SHOW CREATE TABLE `iceberg-benchmark.hitsiceberg`;
 ```
 
 ```sql title="Response"
-  ┌─statement──────────────────────────────────────────────────────────────┐
-1.│ CREATE TABLE glue.`iceberg-benchmark.hitsiceberg`                    │
-  │ (                                                                    │
-  │     `watchid` Nullable(Int64),                                       │
-  │     `javaenable` Nullable(Int32),                                    │
-  │     `title` Nullable(String),                                        │
-  │     `goodevent` Nullable(Int32),                                     │
-  │     `eventtime` Nullable(DateTime64(6)),                             │
-  │     `eventdate` Nullable(Date),                                      │
-  │     `counterid` Nullable(Int32),                                     │
-  │     `clientip` Nullable(Int32),                                      │
-  │     `regionid` Nullable(Int32),                                      │
-  │     `userid` Nullable(Int64),                                        │
-  │     `counterclass` Nullable(Int32),                                  │
-  │     `os` Nullable(Int32),                                            │
-  │     `useragent` Nullable(Int32),                                     │
-  │     `url` Nullable(String),                                          │
-  │     `referer` Nullable(String),                                      │
-  │     `isrefresh` Nullable(Int32),                                     │
-  │     `referercategoryid` Nullable(Int32),                             │
-  │     `refererregionid` Nullable(Int32),                               │
-  │     `urlcategoryid` Nullable(Int32),                                 │
-  │     `urlregionid` Nullable(Int32),                                   │
-  │     `resolutionwidth` Nullable(Int32),                               │
-  │     `resolutionheight` Nullable(Int32),                              │
-  │     `resolutiondepth` Nullable(Int32),                               │
-  │     `flashmajor` Nullable(Int32),                                    │
-  │     `flashminor` Nullable(Int32),                                    │
-  │     `flashminor2` Nullable(String),                                  │
-  │     `netmajor` Nullable(Int32),                                      │
-  │     `netminor` Nullable(Int32),                                      │
-  │     `useragentmajor` Nullable(Int32),                                │
-  │     `useragentminor` Nullable(String),                               │
-  │     `cookieenable` Nullable(Int32),                                  │
-  │     `javascriptenable` Nullable(Int32),                              │
-  │     `ismobile` Nullable(Int32),                                      │
-  │     `mobilephone` Nullable(Int32),                                   │
-  │     `mobilephonemodel` Nullable(String),                             │
-  │     `params` Nullable(String),                                       │
-  │     `ipnetworkid` Nullable(Int32),                                   │
-  │     `traficsourceid` Nullable(Int32),                                │
-  │     `searchengineid` Nullable(Int32),                                │
-  │     `searchphrase` Nullable(String),                                 │
-  │     `advengineid` Nullable(Int32),                                   │
-  │     `isartifical` Nullable(Int32),                                   │
-  │     `windowclientwidth` Nullable(Int32),                             │
-  │     `windowclientheight` Nullable(Int32),                            │
-  │     `clienttimezone` Nullable(Int32),                                │
-  │     `clienteventtime` Nullable(DateTime64(6)),                       │
-  │     `silverlightversion1` Nullable(Int32),                           │
-  │     `silverlightversion2` Nullable(Int32),                           │
-  │     `silverlightversion3` Nullable(Int32),                           │
-  │     `silverlightversion4` Nullable(Int32),                           │
-  │     `pagecharset` Nullable(String),                                  │
-  │     `codeversion` Nullable(Int32),                                   │
-  │     `islink` Nullable(Int32),                                        │
-  │     `isdownload` Nullable(Int32),                                    │
-  │     `isnotbounce` Nullable(Int32),                                   │
-  │     `funiqid` Nullable(Int64),                                       │
-  │     `originalurl` Nullable(String),                                  │
-  │     `hid` Nullable(Int32),                                           │
-  │     `isoldcounter` Nullable(Int32),                                  │
-  │     `isevent` Nullable(Int32),                                       │
-  │     `isparameter` Nullable(Int32),                                   │
-  │     `dontcounthits` Nullable(Int32),                                 │
-  │     `withhash` Nullable(Int32),                                      │
-  │     `hitcolor` Nullable(String),                                     │
-  │     `localeventtime` Nullable(DateTime64(6)),                        │
-  │     `age` Nullable(Int32),                                           │
-  │     `sex` Nullable(Int32),                                           │
-  │     `income` Nullable(Int32),                                        │
-  │     `interests` Nullable(Int32),                                     │
-  │     `robotness` Nullable(Int32),                                     │
-  │     `remoteip` Nullable(Int32),                                      │
-  │     `windowname` Nullable(Int32),                                    │
-  │     `openername` Nullable(Int32),                                    │
-  │     `historylength` Nullable(Int32),                                 │
-  │     `browserlanguage` Nullable(String),                              │
-  │     `browsercountry` Nullable(String),                               │
-  │     `socialnetwork` Nullable(String),                                │
-  │     `socialaction` Nullable(String),                                 │
-  │     `httperror` Nullable(Int32),                                     │
-  │     `sendtiming` Nullable(Int32),                                    │
-  │     `dnstiming` Nullable(Int32),                                     │
-  │     `connecttiming` Nullable(Int32),                                 │
-  │     `responsestarttiming` Nullable(Int32),                           │
-  │     `responseendtiming` Nullable(Int32),                             │
-  │     `fetchtiming` Nullable(Int32),                                   │
-  │     `socialsourcenetworkid` Nullable(Int32),                         │
-  │     `socialsourcepage` Nullable(String),                             │
-  │     `paramprice` Nullable(Int32),                                    │
-  │     `paramorderid` Nullable(String),                                 │
-  │     `paramcurrency` Nullable(String),                                │
-  │     `paramcurrencyid` Nullable(Int32),                               │
-  │     `openstatservicename` Nullable(String),                          │
-  │     `openstatcampaignid` Nullable(String),                           │
-  │     `openstatadid` Nullable(String),                                 │
-  │     `openstatsourceid` Nullable(String),                             │
-  │     `utmsource` Nullable(String),                                    │
-  │     `utmmedium` Nullable(String),                                    │
-  │     `utmcampaign` Nullable(String),                                  │
-  │     `utmcontent` Nullable(String),                                   │
-  │     `utmterm` Nullable(String),                                      │
-  │     `fromtag` Nullable(String),                                      │
-  │     `hasgclid` Nullable(Int32),                                      │
-  │     `refererhash` Nullable(Int64),                                   │
-  │     `urlhash` Nullable(Int64),                                       │
-  │     `clid` Nullable(Int32)                                           │
-  │ )                                                                    │
-  │ENGINE = Iceberg('s3://<s3-path>')                                    │
-  └────────────────────────────────────────────────────────────────────────┘
+  ┌─statement───────────────────────────────────────────────┐
+1.│ CREATE TABLE glue.`iceberg-benchmark.hitsiceberg`       │
+  │ (                                                       │
+  │     `watchid` Nullable(Int64),                          │
+  │     `javaenable` Nullable(Int32),                       │
+  │     `title` Nullable(String),                           │
+  │     `goodevent` Nullable(Int32),                        │
+  │     `eventtime` Nullable(DateTime64(6)),                │
+  │     `eventdate` Nullable(Date),                         │
+  │     `counterid` Nullable(Int32),                        │
+  │     `clientip` Nullable(Int32),                         │
+  │     `regionid` Nullable(Int32),                         │
+  │     `userid` Nullable(Int64),                           │
+  │     `counterclass` Nullable(Int32),                     │
+  │     `os` Nullable(Int32),                               │
+  │     `useragent` Nullable(Int32),                        │
+  │     `url` Nullable(String),                             │
+  │     `referer` Nullable(String),                         │
+  │     `isrefresh` Nullable(Int32),                        │
+  │     `referercategoryid` Nullable(Int32),                │
+  │     `refererregionid` Nullable(Int32),                  │
+  │     `urlcategoryid` Nullable(Int32),                    │
+  │     `urlregionid` Nullable(Int32),                      │
+  │     `resolutionwidth` Nullable(Int32),                  │
+  │     `resolutionheight` Nullable(Int32),                 │
+  │     `resolutiondepth` Nullable(Int32),                  │
+  │     `flashmajor` Nullable(Int32),                       │
+  │     `flashminor` Nullable(Int32),                       │
+  │     `flashminor2` Nullable(String),                     │
+  │     `netmajor` Nullable(Int32),                         │
+  │     `netminor` Nullable(Int32),                         │
+  │     `useragentmajor` Nullable(Int32),                   │
+  │     `useragentminor` Nullable(String),                  │
+  │     `cookieenable` Nullable(Int32),                     │
+  │     `javascriptenable` Nullable(Int32),                 │
+  │     `ismobile` Nullable(Int32),                         │
+  │     `mobilephone` Nullable(Int32),                      │
+  │     `mobilephonemodel` Nullable(String),                │
+  │     `params` Nullable(String),                          │
+  │     `ipnetworkid` Nullable(Int32),                      │
+  │     `traficsourceid` Nullable(Int32),                   │
+  │     `searchengineid` Nullable(Int32),                   │
+  │     `searchphrase` Nullable(String),                    │
+  │     `advengineid` Nullable(Int32),                      │
+  │     `isartifical` Nullable(Int32),                      │
+  │     `windowclientwidth` Nullable(Int32),                │
+  │     `windowclientheight` Nullable(Int32),               │
+  │     `clienttimezone` Nullable(Int32),                   │
+  │     `clienteventtime` Nullable(DateTime64(6)),          │
+  │     `silverlightversion1` Nullable(Int32),              │
+  │     `silverlightversion2` Nullable(Int32),              │
+  │     `silverlightversion3` Nullable(Int32),              │
+  │     `silverlightversion4` Nullable(Int32),              │
+  │     `pagecharset` Nullable(String),                     │
+  │     `codeversion` Nullable(Int32),                      │
+  │     `islink` Nullable(Int32),                           │
+  │     `isdownload` Nullable(Int32),                       │
+  │     `isnotbounce` Nullable(Int32),                      │
+  │     `funiqid` Nullable(Int64),                          │
+  │     `originalurl` Nullable(String),                     │
+  │     `hid` Nullable(Int32),                              │
+  │     `isoldcounter` Nullable(Int32),                     │
+  │     `isevent` Nullable(Int32),                          │
+  │     `isparameter` Nullable(Int32),                      │
+  │     `dontcounthits` Nullable(Int32),                    │
+  │     `withhash` Nullable(Int32),                         │
+  │     `hitcolor` Nullable(String),                        │
+  │     `localeventtime` Nullable(DateTime64(6)),           │
+  │     `age` Nullable(Int32),                              │
+  │     `sex` Nullable(Int32),                              │
+  │     `income` Nullable(Int32),                           │
+  │     `interests` Nullable(Int32),                        │
+  │     `robotness` Nullable(Int32),                        │
+  │     `remoteip` Nullable(Int32),                         │
+  │     `windowname` Nullable(Int32),                       │
+  │     `openername` Nullable(Int32),                       │
+  │     `historylength` Nullable(Int32),                    │
+  │     `browserlanguage` Nullable(String),                 │
+  │     `browsercountry` Nullable(String),                  │
+  │     `socialnetwork` Nullable(String),                   │
+  │     `socialaction` Nullable(String),                    │
+  │     `httperror` Nullable(Int32),                        │
+  │     `sendtiming` Nullable(Int32),                       │
+  │     `dnstiming` Nullable(Int32),                        │
+  │     `connecttiming` Nullable(Int32),                    │
+  │     `responsestarttiming` Nullable(Int32),              │
+  │     `responseendtiming` Nullable(Int32),                │
+  │     `fetchtiming` Nullable(Int32),                      │
+  │     `socialsourcenetworkid` Nullable(Int32),            │
+  │     `socialsourcepage` Nullable(String),                │
+  │     `paramprice` Nullable(Int32),                       │
+  │     `paramorderid` Nullable(String),                    │
+  │     `paramcurrency` Nullable(String),                   │
+  │     `paramcurrencyid` Nullable(Int32),                  │
+  │     `openstatservicename` Nullable(String),             │
+  │     `openstatcampaignid` Nullable(String),              │
+  │     `openstatadid` Nullable(String),                    │
+  │     `openstatsourceid` Nullable(String),                │
+  │     `utmsource` Nullable(String),                       │
+  │     `utmmedium` Nullable(String),                       │
+  │     `utmcampaign` Nullable(String),                     │
+  │     `utmcontent` Nullable(String),                      │
+  │     `utmterm` Nullable(String),                         │
+  │     `fromtag` Nullable(String),                         │
+  │     `hasgclid` Nullable(Int32),                         │
+  │     `refererhash` Nullable(Int64),                      │
+  │     `urlhash` Nullable(Int64),                          │
+  │     `clid` Nullable(Int32)                              │
+  │ )                                                       │
+  │ENGINE = Iceberg('s3://<s3-path>')                       │
+  └─────────────────────────────────────────────────────────┘
 ```
 
 ## Загрузка данных из вашего Data Lake в ClickHouse {#loading-data-into-clickhouse}

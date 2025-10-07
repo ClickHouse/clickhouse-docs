@@ -1,25 +1,32 @@
 ---
-slug: '/examples/aggregate-function-combinators/quantilesTimingArrayIf'
-title: 'quantilesTimingArrayIf'
-description: 'Пример использования комбинатора quantilesTimingArrayIf'
-keywords: ['quantilesTiming', 'array', 'if', 'combinator', 'examples', 'quantilesTimingArrayIf']
-sidebar_label: 'quantilesTimingArrayIf'
+'slug': '/examples/aggregate-function-combinators/quantilesTimingArrayIf'
+'title': 'quantilesTimingArrayIf'
+'description': 'Пример использования комбинатора quantilesTimingArrayIf'
+'keywords':
+- 'quantilesTiming'
+- 'array'
+- 'if'
+- 'combinator'
+- 'examples'
+- 'quantilesTimingArrayIf'
+'sidebar_label': 'quantilesTimingArrayIf'
+'doc_type': 'reference'
 ---
 
 
 # quantilesTimingArrayIf {#quantilestimingarrayif}
 
-## Description {#description}
+## Описание {#description}
 
-Комбинатор [`Array`](/sql-reference/aggregate-functions/combinators#-array) и [`If`](/sql-reference/aggregate-functions/combinators#-if) 
-может быть применен к функции [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
-для вычисления квантилей временных значений в массивах для строк, где условие истинно,
-используя агрегатную функцию комбинатора `quantilesTimingArrayIf`.
+Комбинировщик [`Array`](/sql-reference/aggregate-functions/combinators#-array) и [`If`](/sql-reference/aggregate-functions/combinators#-if) 
+можно применять к функции [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
+для расчета квантилей временных значений в массивах для строк, где условие истинно,
+используя агрегатную комбинированную функцию `quantilesTimingArrayIf`.
 
-## Example Usage {#example-usage}
+## Пример использования {#example-usage}
 
-В этом примере мы создадим таблицу, которая хранит время отклика API для различных конечных точек,
-и мы будем использовать `quantilesTimingArrayIf` для вычисления квантилей времени отклика для успешных запросов.
+В этом примере мы создадим таблицу, которая хранит времена ответа API для разных конечных точек,
+и мы будем использовать `quantilesTimingArrayIf` для расчета квантилей времени ответа для успешных запросов.
 
 ```sql title="Query"
 CREATE TABLE api_responses(
@@ -40,7 +47,7 @@ FROM api_responses
 GROUP BY endpoint;
 ```
 
-Функция `quantilesTimingArrayIf` будет вычислять квантили только для конечных точек с коэффициентом успеха выше 95%.
+Функция `quantilesTimingArrayIf` будет рассчитывать квантиль только для конечных точек с уровнем успеха выше 95%.
 Возвращаемый массив содержит следующие квантили в порядке:
 - 0 (минимум)
 - 0.25 (первый квартиль)
@@ -58,6 +65,6 @@ GROUP BY endpoint;
    └──────────┴─────────────────────────────────────────────────────────────────────┘
 ```
 
-## See also {#see-also}
+## Смотрите также {#see-also}
 - [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

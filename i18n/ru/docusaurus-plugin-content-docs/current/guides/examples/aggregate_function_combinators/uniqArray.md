@@ -1,9 +1,15 @@
 ---
-slug: '/examples/aggregate-function-combinators/uniqArray'
-title: 'uniqArray'
-description: 'Пример использования комбинатора uniqArray'
-keywords: ['uniq', 'array', 'combinator', 'examples', 'uniqArray']
-sidebar_label: 'uniqArray'
+'slug': '/examples/aggregate-function-combinators/uniqArray'
+'title': 'uniqArray'
+'description': 'Пример использования комбинатора uniqArray'
+'keywords':
+- 'uniq'
+- 'array'
+- 'combinator'
+- 'examples'
+- 'uniqArray'
+'sidebar_label': 'uniqArray'
+'doc_type': 'reference'
 ---
 
 
@@ -13,20 +19,20 @@ sidebar_label: 'uniqArray'
 
 Комбинатор [`Array`](/sql-reference/aggregate-functions/combinators#-array) 
 может быть применен к функции [`uniq`](/sql-reference/aggregate-functions/reference/uniq) 
-для расчета приблизительного количества уникальных элементов во всех массивах, 
-используя агрегатную функцию `uniqArray`.
+для вычисления приблизительного количества уникальных элементов во всех массивах 
+с использованием агрегатной функции-комбинатора `uniqArray`.
 
-Функция `uniqArray` полезна, когда нужно посчитать уникальные элементы в нескольких 
-массивах в наборе данных. Она эквивалентна использованию `uniq(arrayJoin())`, где 
-`arrayJoin` сначала распрямляет массивы, а затем `uniq` считает уникальные элементы.
+Функция `uniqArray` полезна, когда вам нужно подсчитать уникальные элементы 
+в нескольких массивах в наборе данных. Она эквивалентна использованию `uniq(arrayJoin())`, 
+где `arrayJoin` сначала распрямляет массивы, а затем `uniq` подсчитывает уникальные элементы.
 
 ## Пример использования {#example-usage}
 
-В этом примере мы используем образец набора данных о интересах пользователей в разных 
-категориях, чтобы продемонстрировать, как работает `uniqArray`. Мы сравним его с 
+В этом примере мы будем использовать пример набора данных о интересах пользователей по различным 
+категориям, чтобы продемонстрировать, как работает `uniqArray`. Мы сравним его с 
 `uniq(arrayJoin())`, чтобы показать разницу в подсчете уникальных элементов.
 
-```sql title="Запрос"
+```sql title="Query"
 CREATE TABLE user_interests
 (
     user_id UInt32,
@@ -39,17 +45,17 @@ INSERT INTO user_interests VALUES
     (3, ['reading', 'cooking']);
 
 SELECT 
-    uniqArray(interests) as unique_interests_total,
-    uniq(arrayJoin(interests)) as unique_interests_arrayJoin
+    uniqArray(interests) AS unique_interests_total,
+    uniq(arrayJoin(interests)) AS unique_interests_arrayJoin
 FROM user_interests;
 ```
 
-Функция `uniqArray` считает уникальные элементы во всех массивах вместе, аналогично `uniq(arrayJoin())`. 
+Функция `uniqArray` подсчитывает уникальные элементы во всех объединенных массивах, аналогично `uniq(arrayJoin())`. 
 В этом примере:
-- `uniqArray` возвращает 5, поскольку существует 5 уникальных интересов среди всех пользователей: 'reading', 'gaming', 'music', 'sports', 'cooking'
-- `uniq(arrayJoin())` также возвращает 5, показывая, что обе функции считают уникальные элементы во всех массивах
+- `uniqArray` возвращает 5, потому что существует 5 уникальных интересов у всех пользователей: 'чтение', 'игры', 'музыка', 'спорт', 'кулинария'
+- `uniq(arrayJoin())` также возвращает 5, показывая, что обе функции подсчитывают уникальные элементы во всех массивах
 
-```response title="Ответ"
+```response title="Response"
    ┌─unique_interests_total─┬─unique_interests_arrayJoin─┐
 1. │                      5 │                          5 │
    └────────────────────────┴────────────────────────────┘

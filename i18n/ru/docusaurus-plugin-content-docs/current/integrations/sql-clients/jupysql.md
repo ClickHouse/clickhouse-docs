@@ -1,8 +1,9 @@
 ---
-slug: /integrations/jupysql
-sidebar_label: 'Jupyter notebooks'
-description: 'JupySQL - это многоплатформенный инструмент для работы с базами данных в Jupyter.'
-title: 'Использование JupySQL с ClickHouse'
+'slug': '/integrations/jupysql'
+'sidebar_label': 'Jupyter блокноты'
+'description': 'JupySQL — это многоплатформенный инструмент базы данных для Jupyter.'
+'title': 'Использование JupySQL с ClickHouse'
+'doc_type': 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -17,32 +18,31 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 В этом руководстве мы покажем интеграцию с ClickHouse.
 
-Мы будем использовать JupySQL для выполнения запросов к ClickHouse.
-После загрузки данных мы визуализируем их с помощью SQL-графиков.
+Мы будем использовать JupySQL для выполнения запросов к ClickHouse. После загрузки данных мы визуализируем их с помощью SQL-графиков.
 
-Интеграция между JupySQL и ClickHouse возможна благодаря использованию библиотеки clickhouse_sqlalchemy. Эта библиотека позволяет легко обмениваться данными между двумя системами и дает возможность пользователям подключаться к ClickHouse и передавать SQL-диалект. После подключения пользователи могут выполнять SQL-запросы прямо из родного интерфейса ClickHouse или непосредственно из Jupyter notebook.
+Интеграция между JupySQL и ClickHouse становится возможной благодаря использованию библиотеки clickhouse_sqlalchemy. Эта библиотека позволяет легко взаимодействовать между двумя системами и позволяет пользователям подключаться к ClickHouse и передавать диалект SQL. После подключения пользователи могут выполнять SQL-запросы непосредственно из нативного интерфейса ClickHouse или из самого Jupyter notebook.
 
 ```python
 
-# Установите необходимые пакеты
+# Install required packages
 %pip install --quiet jupysql clickhouse_sqlalchemy
 ```
 
-    Примечание: вам может потребоваться перезапустить ядро, чтобы использовать обновленные пакеты.
+    Примечание: возможно, вам потребуется перезапустить ядро, чтобы использовать обновленные пакеты.
 
 ```python
 import pandas as pd
 from sklearn_evaluation import plot
 
 
-# Импортируйте расширение jupysql для создания SQL ячеек
+# Import jupysql Jupyter extension to create SQL cells
 %load_ext sql
 %config SqlMagic.autocommit=False
 ```
 
-**Вам нужно убедиться, что ваш ClickHouse доступен для следующих этапов. Вы можете использовать как локальную, так и облачную версию.**
+**Убедитесь, что ваш ClickHouse доступен для следующих этапов. Вы можете использовать как локальную, так и облачную версию.**
 
-**Примечание:** вам нужно будет настроить строку подключения в зависимости от типа экземпляра, к которому вы пытаетесь подключиться (url, user, password). В приведенном ниже примере мы использовали локальный экземпляр. Чтобы узнать больше об этом, ознакомьтесь с [этим руководством](/getting-started/quick-start).
+**Примечание:** вам нужно будет настроить строку подключения в зависимости от типа экземпляра, к которому вы пытаетесь подключиться (url, user, password). В приведенном ниже примере мы использовали локальный экземпляр. Чтобы узнать больше об этом, ознакомьтесь с [этим руководством](/get-started/quick-start).
 
 ```python
 %sql clickhouse://default:@localhost:8123/default
@@ -365,15 +365,15 @@ WHERE trip_distance < 6.3
 ```
 
 ```response
-<AxesSubplot: title={'center': "'trip_distance' из 'short-trips'"}, xlabel='trip_distance', ylabel='Count'>
+<AxesSubplot: title={'center': "'trip_distance' from 'short-trips'"}, xlabel='trip_distance', ylabel='Count'>
 ```
-<Image img={jupysql_plot_1} size="md" alt="Гистограмма, показывающая распределение расстояний поездок с 10 корзинами из набора данных short-trips" border />
+<Image img={jupysql_plot_1} size="md" alt="Гистограмма, показывающая распределение расстояний поездок с 10 корзинами из набора данных коротких поездок" border />
 
 ```python
 ax = %sqlplot histogram --table short-trips --column trip_distance --bins 50 --with short-trips
 ax.grid()
-ax.set_title("Расстояние поездки из поездок < 6.3")
-_ = ax.set_xlabel("Расстояние поездки")
+ax.set_title("Trip distance from trips < 6.3")
+_ = ax.set_xlabel("Trip distance")
 ```
 
-<Image img={jupysql_plot_2} size="md" alt="Гистограмма, показывающая распределение расстояний поездок с 50 корзинами и сеткой, с заголовком 'Расстояние поездки из поездок < 6.3'" border />
+<Image img={jupysql_plot_2} size="md" alt="Гистограмма, показывающая распределение расстояний поездок с 50 корзинами и сеткой, с заголовком 'Расстояние поездок из поездок < 6.3'" border />

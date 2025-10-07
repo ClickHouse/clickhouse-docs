@@ -1,9 +1,15 @@
 ---
-slug: '/examples/aggregate-function-combinators/avgState'
-title: 'avgState'
-description: 'Пример использования комбинатора avgState'
-keywords: ['avg', 'state', 'combinator', 'examples', 'avgState']
-sidebar_label: 'avgState'
+'slug': '/examples/aggregate-function-combinators/avgState'
+'title': 'avgState'
+'description': 'Пример использования комбинирования avgState'
+'keywords':
+- 'avg'
+- 'state'
+- 'combinator'
+- 'examples'
+- 'avgState'
+'sidebar_label': 'avgState'
+'doc_type': 'reference'
 ---
 
 
@@ -12,46 +18,46 @@ sidebar_label: 'avgState'
 ## Описание {#description}
 
 Комбинатор [`State`](/sql-reference/aggregate-functions/combinators#-state) 
-можно применить к функции [`avg`](/sql-reference/aggregate-functions/reference/avg), 
-чтобы получить промежуточное состояние типа `AggregateFunction(avg, T)`, где
-`T` — это указанный тип для среднего.
+может быть применён к функции [`avg`](/sql-reference/aggregate-functions/reference/avg) 
+для получения промежуточного состояния типа `AggregateFunction(avg, T)`, где 
+`T` — это указанный тип для среднего значения.
 
 ## Пример использования {#example-usage}
 
 В этом примере мы рассмотрим, как можно использовать тип `AggregateFunction`, 
-вместе с функцией `avgState`, для агрегации данных о трафике сайта.
+вместе с функцией `avgState` для агрегации данных о трафике веб-сайта.
 
-Сначала создайте исходную таблицу для данных о трафике сайта:
+Сначала создайте исходную таблицу для данных о трафике веб-сайта:
 
 ```sql
 CREATE TABLE raw_page_views
 (
     page_id UInt32,
     page_name String,
-    response_time_ms UInt32,  -- Время отклика страницы в миллисекундах
+    response_time_ms UInt32,  -- Page response time in milliseconds
     viewed_at DateTime DEFAULT now()
 )
 ENGINE = MergeTree()
 ORDER BY (page_id, viewed_at);
 ```
 
-Создайте агрегатную таблицу, которая будет хранить средние времена отклика. Обратите внимание, что 
-`avg` не может использовать тип `SimpleAggregateFunction`, так как он требует сложного 
-состояния (сумму и количество). Поэтому мы используем тип `AggregateFunction`:
+Создайте агрегирующую таблицу, которая будет хранить средние времена ответа. Обратите внимание, что 
+`avg` не может использовать тип `SimpleAggregateFunction`, так как ему требуется сложное 
+состояние (сумма и количество). Поэтому мы используем тип `AggregateFunction`:
 
 ```sql
 CREATE TABLE page_performance
 (
     page_id UInt32,
     page_name String,
-    avg_response_time AggregateFunction(avg, UInt32)  -- Хранит состояние, необходимое для расчёта avg
+    avg_response_time AggregateFunction(avg, UInt32)  -- Stores the state needed for avg calculation
 )
 ENGINE = AggregatingMergeTree()
 ORDER BY page_id;
 ```
 
 Создайте инкрементное материализованное представление, которое будет действовать как триггер вставки для 
-новых данных и хранить промежуточные состояния в целевой таблице, определённой выше:
+новых данных и хранить промежуточные данные состояния в целевой таблице, определённой выше:
 
 ```sql
 CREATE MATERIALIZED VIEW page_performance_mv
@@ -59,7 +65,7 @@ TO page_performance
 AS SELECT
     page_id,
     page_name,
-    avgState(response_time_ms) AS avg_response_time  -- Использование комбинатора -State
+    avgState(response_time_ms) AS avg_response_time  -- Using -State combinator
 FROM raw_page_views
 GROUP BY page_id, page_name;
 ```
@@ -76,7 +82,7 @@ INSERT INTO raw_page_views (page_id, page_name, response_time_ms) VALUES
     (3, 'About', 90);
 ```
 
-Вставьте еще данных, чтобы создать вторую часть на диске:
+Вставьте ещё некоторые данные, чтобы создать вторую часть на диске:
 
 ```sql
 INSERT INTO raw_page_views (page_id, page_name, response_time_ms) VALUES
@@ -87,7 +93,7 @@ INSERT INTO raw_page_views (page_id, page_name, response_time_ms) VALUES
 (4, 'Contact', 65);
 ```
 
-Изучите целевую таблицу `page_performance`:
+Просмотрите целевую таблицу `page_performance`:
 
 ```sql
 SELECT 
@@ -110,14 +116,15 @@ FROM page_performance
 └─────────┴───────────┴───────────────────┴────────────────────────────────┘
 ```
 
-Обратите внимание, что колонка `avg_response_time` имеет тип `AggregateFunction(avg, UInt32)`
-и хранит промежуточную информацию о состоянии. Также обратите внимание, что данные строки для 
-`avg_response_time` нам не полезны, и мы видим странные текстовые символы, такие как `�, n, F, }`. Это попытка терминала отобразить двоичные данные в текстовом формате. 
-Причина этого в том, что типы `AggregateFunction` хранят своё состояние в двоичном формате, оптимизированном для эффективного хранения и вычислений, а не для 
-читаемости человеком. Это двоичное состояние содержит всю информацию, необходимую для 
-вычисления среднего.
+Обратите внимание, что колонка `avg_response_time` имеет тип `AggregateFunction(avg, UInt32)` 
+и хранит информацию о промежуточном состоянии. Также обратите внимание, что строки данных для 
+`avg_response_time` не полезны для нас, и мы видим странные текстовые символы, такие как `�, n, F, }`. Это попытка терминала отобразить двоичные данные как текст. 
+Причина этому заключается в том, что типы `AggregateFunction` хранят своё состояние в 
+двоичном формате, оптимизированном для эффективного хранения и вычисления, а не для 
+человеческой читаемости. Это двоичное состояние содержит всю информацию, необходимую для 
+подсчёта среднего.
 
-Чтобы использовать это, воспользуйтесь комбинатором `Merge`:
+Чтобы использовать его, воспользуйтесь комбинатором `Merge`:
 
 ```sql
 SELECT

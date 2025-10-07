@@ -1,11 +1,13 @@
 ---
-description: 'Набор данных, содержащий информацию о своевременности рейсов авиакомпаний'
-sidebar_label: 'Данные о своевременности рейсов авиакомпаний'
-slug: /getting-started/example-datasets/ontime
-title: 'Своевременность'
+'description': 'Набор данных, содержащий информацию о том, насколько вовремя выполнялись
+  авиарейсы'
+'sidebar_label': 'Данные рейсов авиакомпании OnTime'
+'slug': '/getting-started/example-datasets/ontime'
+'title': 'OnTime'
+'doc_type': 'reference'
 ---
 
-Этот набор данных содержит информацию из Бюро статистики транспортировки.
+Этот набор данных содержит информацию от Бюро статистики транспорта.
 
 ## Создание таблицы {#creating-a-table}
 
@@ -125,9 +127,9 @@ CREATE TABLE `ontime`
   ORDER BY (Year, Quarter, Month, DayofMonth, FlightDate, IATA_CODE_Reporting_Airline);
 ```
 
-## Импорт из сырых данных {#import-from-raw-data}
+## Импорт из необработанных данных {#import-from-raw-data}
 
-Скачивание данных:
+Загрузка данных:
 
 ```bash
 wget --no-check-certificate --continue https://transtats.bts.gov/PREZIP/On_Time_Reporting_Carrier_On_Time_Performance_1987_present_{1987..2022}_{1..12}.zip
@@ -139,11 +141,11 @@ wget --no-check-certificate --continue https://transtats.bts.gov/PREZIP/On_Time_
 ls -1 *.zip | xargs -I{} -P $(nproc) bash -c "echo {}; unzip -cq {} '*.csv' | sed 's/\.00//g' | clickhouse-client --input_format_csv_empty_as_default 1 --query='INSERT INTO ontime FORMAT CSVWithNames'"
 ```
 
-(если у вас возникнут нехватка памяти или другие проблемы на сервере, удалите часть `-P $(nproc)`)
+(если у вас будут проблемы с нехваткой памяти или другими вопросами на вашем сервере, удалите часть `-P $(nproc)`)
 
 ## Импорт из сохраненной копии {#import-from-a-saved-copy}
 
-Кроме того, вы можете импортировать данные из сохраненной копии с помощью следующего запроса:
+В качестве альтернативы вы можете импортировать данные из сохраненной копии по следующему запросу:
 
 ```sql
 INSERT INTO ontime SELECT * FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/ontime/csv_by_year/*.csv.gz', CSVWithNames) SETTINGS max_insert_threads = 40;
@@ -175,7 +177,7 @@ GROUP BY DayOfWeek
 ORDER BY c DESC;
 ```
 
-Q2. Количество рейсов, задержанных более чем на 10 минут, сгруппированных по дню недели, за 2000-2008 годы
+Q2. Количество рейсов, задержанных более чем на 10 минут, сгруппированных по дням недели, за 2000-2008 годы
 
 ```sql
 SELECT DayOfWeek, count(*) AS c
@@ -196,7 +198,7 @@ ORDER BY c DESC
 LIMIT 10;
 ```
 
-Q4. Количество задержек по авиакомпаниям за 2007 год
+Q4. Количество задержек по перевозчикам за 2007 год
 
 ```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, count(*)
@@ -206,10 +208,10 @@ GROUP BY Carrier
 ORDER BY count(*) DESC;
 ```
 
-Q5. Процент задержек по авиакомпаниям за 2007 год
+Q5. Процент задержек по перевозчикам за 2007 год
 
 ```sql
-SELECT Carrier, c, c2, c*100/c2 as c3
+SELECT Carrier, c, c2, c*100/c2 AS c3
 FROM
 (
     SELECT
@@ -245,7 +247,7 @@ ORDER BY c3 DESC
 Q6. Предыдущий запрос для более широкого диапазона лет, 2000-2008
 
 ```sql
-SELECT Carrier, c, c2, c*100/c2 as c3
+SELECT Carrier, c, c2, c*100/c2 AS c3
 FROM
 (
     SELECT
@@ -284,19 +286,19 @@ Q7. Процент рейсов, задержанных более чем на 1
 SELECT Year, c1/c2
 FROM
 (
-    select
+    SELECT
         Year,
-        count(*)*100 as c1
-    from ontime
+        count(*)*100 AS c1
+    FROM ontime
     WHERE DepDelay>10
     GROUP BY Year
 ) q
 JOIN
 (
-    select
+    SELECT
         Year,
-        count(*) as c2
-    from ontime
+        count(*) AS c2
+    FROM ontime
     GROUP BY Year
 ) qq USING (Year)
 ORDER BY Year;
@@ -311,12 +313,12 @@ GROUP BY Year
 ORDER BY Year;
 ```
 
-Q8. Самые популярные направления по количеству напрямую связанных городов для различных диапазонов лет
+Q8. Самые популярные направления по количеству напрямую связанных городов за различные диапазоны лет
 
 ```sql
 SELECT DestCityName, uniqExact(OriginCityName) AS u
 FROM ontime
-WHERE Year >= 2000 and Year <= 2010
+WHERE Year >= 2000 AND Year <= 2010
 GROUP BY DestCityName
 ORDER BY u DESC LIMIT 10;
 ```
@@ -341,9 +343,9 @@ WHERE
    DayOfWeek NOT IN (6,7) AND OriginState NOT IN ('AK', 'HI', 'PR', 'VI')
    AND DestState NOT IN ('AK', 'HI', 'PR', 'VI')
    AND FlightDate < '2010-01-01'
-GROUP by Carrier
-HAVING cnt>100000 and max(Year)>1990
-ORDER by rate DESC
+GROUP BY Carrier
+HAVING cnt>100000 AND max(Year)>1990
+ORDER BY rate DESC
 LIMIT 1000;
 ```
 

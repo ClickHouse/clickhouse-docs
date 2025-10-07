@@ -1,8 +1,10 @@
 ---
-slug: /integrations/cassandra
-sidebar_label: 'Cassandra'
-title: 'Cassandra'
-description: 'Страница, описывающая, как пользователи могут интегрироваться с Cassandra через словарь.'
+'slug': '/integrations/cassandra'
+'sidebar_label': 'Cassandra'
+'title': 'Cassandra'
+'description': 'Страница, описывающая, как пользователи могут интегрироваться с Cassandra
+  через словарь.'
+'doc_type': 'reference'
 ---
 
 

@@ -1,10 +1,16 @@
 ---
-description: 'Установка ClickHouse на Redhat/CentOS Linux'
-keywords: ['ClickHouse', 'установка', 'Redhat', 'CentOS', 'rpm']
-sidebar_label: 'Redhat/CentOS'
-slug: /install/redhat
-title: 'Установка ClickHouse на Linux-дистрибутивах на основе rpm'
-hide_title: true
+'description': 'Установка ClickHouse на Linux Redhat/CentOS'
+'keywords':
+- 'ClickHouse'
+- 'install'
+- 'Redhat'
+- 'CentOS'
+- 'rpm'
+'sidebar_label': 'Redhat/CentOS'
+'slug': '/install/redhat'
+'title': 'Установка ClickHouse на RPM-совместимых дистрибутивах Linux'
+'hide_title': true
+'doc_type': 'guide'
 ---
 
 import RPM from './_snippets/_rpm_install.md'

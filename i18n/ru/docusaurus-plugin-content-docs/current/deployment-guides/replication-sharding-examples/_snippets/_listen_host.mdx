@@ -1,0 +1,17 @@
+Внешняя связь с сетевым интерфейсом включается активацией настройки listen host. Это гарантирует, что хост сервера ClickHouse доступен для других хостов:
+
+```xml
+<listen_host>0.0.0.0</listen_host>
+```
+
+Порт для HTTP API установлен на `8123`:
+
+```xml
+<http_port>8123</http_port>
+```
+
+TCP-порт для взаимодействия по нативному протоколу ClickHouse между clickhouse-client и другими нативными инструментами ClickHouse, а также clickhouse-server и другими clickhouse-server установлен на `9000`:
+
+```xml
+<tcp_port>9000</tcp_port>
+```

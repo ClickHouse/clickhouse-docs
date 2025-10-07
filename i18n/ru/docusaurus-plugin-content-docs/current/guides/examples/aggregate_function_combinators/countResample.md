@@ -1,9 +1,15 @@
 ---
-slug: '/examples/aggregate-function-combinators/countResample'
-title: 'countResample'
-description: 'Пример использования комбинирования Resample с count'
-keywords: ['count', 'Resample', 'комбинирование', 'примеры', 'countResample']
-sidebar_label: 'countResample'
+'slug': '/examples/aggregate-function-combinators/countResample'
+'title': 'countResample'
+'description': 'Пример использования комбинатора Resample с count'
+'keywords':
+- 'count'
+- 'Resample'
+- 'combinator'
+- 'examples'
+- 'countResample'
+'sidebar_label': 'countResample'
+'doc_type': 'reference'
 ---
 
 
@@ -12,14 +18,14 @@ sidebar_label: 'countResample'
 ## Описание {#description}
 
 Комбинатор [`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
-можно применять к агрегатной функции [`count`](/sql-reference/aggregate-functions/reference/count) для подсчета значений заданной ключевой колонки в фиксированном числе интервалов (`N`).
+может быть применён к агрегатной функции [`count`](/sql-reference/aggregate-functions/reference/count) для подсчёта значений указанного ключевого столбца в фиксированном количестве интервалов (`N`).
 
 ## Пример использования {#example-usage}
 
-### Базовый пример {#basic-example}
+### Простой пример {#basic-example}
 
-Рассмотрим пример. Мы создадим таблицу, которая содержит `name`, `age` и
-`wage` сотрудников, и вставим в нее данные:
+Рассмотрим пример. Мы создадим таблицу, которая содержит `name`, `age` и 
+`wage` сотрудников, и вставим в неё некоторые данные:
 
 ```sql
 CREATE TABLE employee_data 
@@ -40,10 +46,10 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-Давайте посчитаем людей, чей возраст находится в интервалах `[30,60)` 
-и `[60,75)`. Поскольку мы используем целочисленное представление для возраста, мы получаем возрасты в
-интервалах `[30, 59]` и `[60,74]`. Для этого мы применяем комбинатор `Resample` 
-к `count`
+Посчитаем всех людей, чьи возраст попадает в интервалы `[30,60)` 
+и `[60,75)`. Поскольку мы используем целочисленное представление для возраста, мы получаем возраста в интервалах 
+`[30, 59]` и `[60,74]`. Для этого мы применяем комбинатор `Resample` 
+к `count`.
 
 ```sql
 SELECT countResample(30, 75, 30)(name, age) AS amount FROM employee_data

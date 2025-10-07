@@ -1,29 +1,28 @@
 ---
-description: 'Данные о миллиардах поездок на такси и других перевозках (Uber, Lyft и др.),
-  начавшихся в Нью-Йорке с 2009 года.'
-sidebar_label: 'Данные такси Нью-Йорка'
-sidebar_position: 2
-slug: /getting-started/example-datasets/nyc-taxi
-title: 'Данные такси Нью-Йорка'
+'description': 'Данные о миллиардах поездок на такси и арендуемых транспортных средствах
+  (Uber, Lyft и др.), начинающихся в Нью-Йорке с 2009 года'
+'sidebar_label': 'Данные такси Нью-Йорка'
+'sidebar_position': 2
+'slug': '/getting-started/example-datasets/nyc-taxi'
+'title': 'Данные такси Нью-Йорка'
+'doc_type': 'reference'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Выборка данных такси Нью-Йорка состоит из более чем 3 миллиардов поездок на такси и других перевозках (Uber, Lyft и др.), начавшихся в Нью-Йорке с 2009 года. Этот практический справочник использует выборку из 3 миллионов строк.
+Набор данных такси Нью-Йорка состоит из более чем 3 миллиардов поездок на такси и транспортных средствах с экипажем (Uber, Lyft и т.д.), начавшихся в Нью-Йорке с 2009 года. Это руководство по началу работы использует выборку из 3 миллионов строк.
 
 Полный набор данных можно получить несколькими способами:
 
-- вставить данные напрямую в ClickHouse Cloud из S3 или GCS
-- скачать подготовленные партиции
-- В альтернативном варианте пользователи могут выполнять запросы к полному набору данных в нашей демонстрационной среде на [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19).
-
+- вставить данные непосредственно в ClickHouse Cloud из S3 или GCS
+- загрузить подготовленные партиции
+- В качестве альтернативы пользователи могут запросить полный набор данных в нашей среде демонстрации на [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19).
 
 :::note
 Примерные запросы ниже были выполнены на **Production** экземпляре ClickHouse Cloud. Для получения дополнительной информации смотрите
-["Спецификации площадки"](/getting-started/playground#specifications).
+["Спецификации игрового поля"](/getting-started/playground#specifications).
 :::
-
 
 ## Создание таблицы trips {#create-the-table-trips}
 
@@ -56,17 +55,17 @@ ENGINE = MergeTree
 PRIMARY KEY (pickup_datetime, dropoff_datetime);
 ```
 
-## Загрузка данных напрямую из объектного хранилища {#load-the-data-directly-from-object-storage}
+## Загрузка данных непосредственно из объектного хранилища {#load-the-data-directly-from-object-storage}
 
-Пользователи могут захватить небольшой набор данных (3 миллиона строк), чтобы ознакомиться с ним. Данные находятся в TSV файлах в объектном хранилище, которые легко транслируются в
-ClickHouse Cloud с использованием функции таблицы `s3`. 
+Пользователи могут взять небольшую выборку данных (3 миллиона строк), чтобы ознакомиться с ними. Данные находятся в TSV файлах в объектном хранилище, которые легко загружаются в 
+ClickHouse Cloud с помощью функции таблицы `s3`.
 
-Те же данные хранятся как в S3, так и в GCS; выберите любой из вкладок.
+Одни и те же данные хранятся как в S3, так и в GCS; выберите любую вкладку.
 
 <Tabs groupId="storageVendor">
 <TabItem value="s3" label="S3">
 
-Следующая команда транслирует три файла из S3-ведра в таблицу `trips_small` (синтаксис `{0..2}` является подстановочным знаком для значений 0, 1 и 2):
+Следующая команда загружает три файла из корзины S3 в таблицу `trips_small` (синтаксис `{0..2}` является подстановочным знаком для значений 0, 1 и 2):
 
 ```sql
 INSERT INTO nyc_taxi.trips_small
@@ -96,7 +95,7 @@ FROM s3(
 </TabItem>
 <TabItem value="gcs" label="GCS" default>
 
-Следующая команда транслирует три файла из GCS-ведра в таблицу `trips` (синтаксис `{0..2}` является подстановочным знаком для значений 0, 1 и 2):
+Следующая команда загружает три файла из корзины GCS в таблицу `trips` (синтаксис `{0..2}` является подстановочным знаком для значений 0, 1 и 2):
 
 ```sql
 INSERT INTO nyc_taxi.trips_small
@@ -128,16 +127,16 @@ FROM gcs(
 
 ## Примерные запросы {#sample-queries}
 
-Следующие запросы выполняются на описанном выше примере. Пользователи могут выполнять примерные запросы к полному набору данных на [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19), изменяя запросы ниже для использования таблицы `nyc_taxi.trips`.
+Следующие запросы выполняются на описанном выше образце. Пользователи могут запускать примерные запросы на полном наборе данных в [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19), изменяя приведенные ниже запросы для использования таблицы `nyc_taxi.trips`.
 
-Посмотрим, сколько строк было вставлено:
+Давайте посмотрим, сколько строк было вставлено:
 
 ```sql runnable
 SELECT count()
 FROM nyc_taxi.trips_small;
 ```
 
-Каждый TSV файл имеет около 1 миллиона строк, а три файла содержат 3,000,317 строк. Посмотрим на некоторые строки:
+Каждый TSV файл содержит около 1 миллиона строк, и три файла имеют 3,000,317 строк. Давайте посмотрим на несколько строк:
 
 ```sql runnable
 SELECT *
@@ -145,10 +144,9 @@ FROM nyc_taxi.trips_small
 LIMIT 10;
 ```
 
-Обратите внимание, что есть колонки для дат подачи и высадки, геокоординат, деталей о тарифах, районов Нью-Йорка и многое другое.
+Обратите внимание, что имеются колонки для дат подачи и высадки, гео координат, деталей тарифа, районов Нью-Йорка и многого другого.
 
-
-Давайте выполним несколько запросов. Этот запрос показывает нам 10 районов с наиболее частыми подачами:
+Давайте запустим несколько запросов. Этот запрос показывает нам 10 районов с наибольшим числом подъемов:
 
 ```sql runnable
 SELECT
@@ -160,7 +158,7 @@ ORDER BY count DESC
 LIMIT 10;
 ```
 
-Этот запрос показывает среднюю плату в зависимости от количества пассажиров:
+Этот запрос показывает среднюю стоимость на основе количества пассажиров:
 
 ```sql runnable view='chart' chart_config='eyJ0eXBlIjoiYmFyIiwiY29uZmlnIjp7InhheGlzIjoicGFzc2VuZ2VyX2NvdW50IiwieWF4aXMiOiJhdmcodG90YWxfYW1vdW50KSIsInRpdGxlIjoiQXZlcmFnZSBmYXJlIGJ5IHBhc3NlbmdlciBjb3VudCJ9fQ'
 SELECT
@@ -183,32 +181,32 @@ GROUP BY passenger_count
 ORDER BY passenger_count ASC
 ```
 
-## Скачивание подготовленных партиций {#download-of-prepared-partitions}
+## Загрузка подготовленных партиций {#download-of-prepared-partitions}
 
 :::note
-Следующие шаги предоставляют информацию о исходном наборе данных и метод загрузки подготовленных партиций в среду сервера ClickHouse под управлением пользователя.
+Следующие шаги предоставляют информацию о оригинальном наборе данных и метод для загрузки подготовленных партиций в среду сервера ClickHouse, управляемого самостоятельно.
 :::
 
-Смотрите https://github.com/toddwschneider/nyc-taxi-data и http://tech.marksblogg.com/billion-nyc-taxi-rides-redshift.html для описания набора данных и инструкций по скачиванию.
+Смотрите https://github.com/toddwschneider/nyc-taxi-data и http://tech.marksblogg.com/billion-nyc-taxi-rides-redshift.html для описания набора данных и инструкций по загрузке.
 
-Скачивание приведет к получению около 227 ГБ несжатых данных в CSV файлах. Скачивание занимает около часа при соединении 1 Gbit (параллельное скачивание с s3.amazonaws.com восстанавливает как минимум половину канала в 1 Gbit).
-Некоторые файлы могут не полностью загрузиться. Проверьте размеры файлов и повторно скачайте любые, которые выглядят сомнительно.
+Скачивание приведет к получению около 227 ГБ несжатых данных в формате CSV. Загрузка занимает около часа при соединении 1 Гбит (параллельная загрузка из s3.amazonaws.com восстанавливает как минимум половину канала в 1 Гбит).
+Некоторые файлы могут не загрузиться полностью. Проверьте размеры файлов и повторно загрузите любые из них, которые выглядят подозрительно.
 
 ```bash
 $ curl -O https://datasets.clickhouse.com/trips_mergetree/partitions/trips_mergetree.tar
 
-# Проверить контрольную сумму
+# Validate the checksum
 $ md5sum trips_mergetree.tar
 
-# Контрольная сумма должна быть равна: f3b8d469b41d9a82da064ded7245d12c
-$ tar xvf trips_mergetree.tar -C /var/lib/clickhouse # путь к директории данных ClickHouse
-$ # проверьте права доступа к распакованным данным, исправьте при необходимости
+# Checksum should be equal to: f3b8d469b41d9a82da064ded7245d12c
+$ tar xvf trips_mergetree.tar -C /var/lib/clickhouse # path to ClickHouse data directory
+$ # check permissions of unpacked data, fix if required
 $ sudo service clickhouse-server restart
 $ clickhouse-client --query "select count(*) from datasets.trips_mergetree"
 ```
 
 :::info
-Если вы собираетесь выполнять описанные ниже запросы, вам необходимо использовать полное имя таблицы, `datasets.trips_mergetree`.
+Если вы будете запускать описанные ниже запросы, вам нужно использовать полное имя таблицы `datasets.trips_mergetree`.
 :::
 
 ## Результаты на одном сервере {#results-on-single-server}
@@ -250,9 +248,9 @@ ORDER BY year, count(*) DESC;
 
 Использовался следующий сервер:
 
-Два Intel(R) Xeon(R) CPU E5-2650 v2 @ 2.60GHz, всего 16 физических ядер, 128 GiB RAM, 8x6 TB HD на аппаратном RAID-5
+Два Intel(R) Xeon(R) CPU E5-2650 v2 @ 2.60GHz, всего 16 физических ядер, 128 ГБ ОЗУ, 8x6 ТБ HDD на RAID-5
 
-Время выполнения — лучшее из трех запусков. Но начиная со второго запуска, запросы читают данные из кэша файловой системы. Другой кэш не происходит: данные читаются и обрабатываются в каждом запуске.
+Время выполнения является наилучшим из трех запусков. Но начиная со второго запуска, запросы читают данные из кэша файловой системы. Дальнейшее кэширование не происходит: данные считываются и обрабатываются в каждом запуске.
 
 Создание таблицы на трех серверах:
 
@@ -283,17 +281,17 @@ Q2: 0.438 секунд.
 Q3: 0.733 секунд.
 Q4: 1.241 секунд.
 
-Неудивительно, так как запросы масштабируются линейно.
+Никаких сюрпризов здесь нет, поскольку запросы масштабируются линейно.
 
-У нас также есть результаты с кластера из 140 серверов:
+У нас также есть результаты из кластера из 140 серверов:
 
 Q1: 0.028 сек.
 Q2: 0.043 сек.
 Q3: 0.051 сек.
 Q4: 0.072 сек.
 
-В этом случае время обработки запросов определяет в первую очередь задержка сети.
-Мы выполняли запросы с клиента, расположенного в другом дата-центре, чем кластер, что добавляло около 20 мс задержки.
+В этом случае время обработки запроса определяется прежде всего сетевой задержкой.
+Мы выполняли запросы, используя клиент, находящийся в другом дата-центре, чем тот, где располагался кластер, что добавило около 20 мс задержки.
 
 ## Резюме {#summary}
 

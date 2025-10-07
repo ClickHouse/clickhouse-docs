@@ -1,0 +1,376 @@
+---
+'slug': '/getting-started/quick-start/oss'
+'sidebar_label': 'OSS'
+'sidebar_position': 2
+'keywords':
+- 'getting started'
+- 'quick start'
+- 'beginner-friendly'
+'title': 'ClickHouse OSS 快速入门'
+'description': 'ClickHouse 快速入门指南'
+'show_related_blogs': true
+'doc_type': 'guide'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+import {VerticalStepper} from '@clickhouse/click-ui/bundled';
+
+
+# Быстрый старт с ClickHouse OSS
+
+> В этом учебном пособии быстрого старта мы поможем вам установить OSS ClickHouse за 8 простых шагов. Вы загрузите подходящий двоичный файл для вашей операционной системы, научитесь запускать сервер ClickHouse и использовать клиент ClickHouse для создания таблицы, затем вставите данные в неё и выполните запрос для выбора этих данных.
+
+<VerticalStepper>
+
+## Загрузка ClickHouse {#download-the-binary}
+
+ClickHouse работает нативно на Linux, FreeBSD и macOS, и работает на Windows через
+[WSL](https://learn.microsoft.com/en-us/windows/wsl/about). Самый простой способ загрузить ClickHouse локально - запустить
+следующую команду `curl`. Она определяет, поддерживается ли ваша операционная система,
+после чего загружает соответствующий двоичный файл ClickHouse.
+
+:::note
+Рекомендуем запускать команду ниже из новой и пустой подкаталога, так как
+некоторые файлы конфигурации будут созданы в каталоге, где находится двоичный файл,
+при первом запуске сервера ClickHouse.
+:::
+
+```bash
+curl https://clickhouse.com/ | sh
+```
+
+Вы должны увидеть:
+
+```
+Successfully downloaded the ClickHouse binary, you can run it as:
+    ./clickhouse
+
+You can also install it:
+sudo ./clickhouse install
+```
+
+На этом этапе вы можете игнорировать подсказку о запуске команды `install`.
+
+:::note
+Для пользователей Mac: если вы получаете ошибки о том, что разработчик двоичного файла не может быть
+проверен, пожалуйста, смотрите ["Исправление ошибки проверки разработчика в MacOS"](https://clickhouse.com/docs/knowledgebase/fix-developer-verification-error-in-macos).
+:::
+
+## Запустите сервер
+
+Запустите следующую команду, чтобы стартовать сервер ClickHouse:
+
+```bash
+./clickhouse server
+```
+
+Вы должны увидеть, как терминал заполняется логами. Это нормально. В ClickHouse
+[уровень логирования по умолчанию](https://clickhouse.com/docs/knowledgebase/why_default_logging_verbose)
+установлен на `trace`, а не `warning`.
+
+## Запустите клиент
+
+Используйте `clickhouse-client`, чтобы подключиться к вашему сервису ClickHouse. Откройте новый
+терминал, перейдите в каталог, где сохранён ваш двоичный файл `clickhouse`, и
+выполните следующую команду:
+
+```bash
+./clickhouse client
+```
+
+Вы должны увидеть улыбающееся лицо, когда он подключается к вашему сервису, работающему на localhost:
+
+```response
+my-host :)
+```
+
+## Создайте таблицу
+
+Используйте `CREATE TABLE`, чтобы определить новую таблицу. Обычные SQL DDL команды работают в
+ClickHouse с одним дополнением - таблицы в ClickHouse требуют
+параметра `ENGINE`. Используйте [`MergeTree`](/engines/table-engines/mergetree-family/mergetree)
+для получения выигрыша в производительности от ClickHouse:
+
+```sql
+CREATE TABLE my_first_table
+(
+    user_id UInt32,
+    message String,
+    timestamp DateTime,
+    metric Float32
+)
+ENGINE = MergeTree
+PRIMARY KEY (user_id, timestamp)
+```
+
+## Вставьте данные
+
+Вы можете использовать знакомую команду `INSERT INTO TABLE` с ClickHouse, но важно понимать,
+что каждая вставка в таблицу `MergeTree` вызывает создание того, что мы
+называем **частью** в ClickHouse для хранения. Эти ^^части^^ позже объединяются
+в фоновом режиме ClickHouse.
+
+В ClickHouse мы стараемся вставлять много строк одновременно
+(десятки тысяч или даже миллионы за раз), чтобы минимизировать количество [**частей**](/parts),
+которые нужно объединить в фоновом процессе.
+
+В этом руководстве мы пока не будем об этом беспокоиться. Запустите следующую команду для
+вставки нескольких строк данных в вашу таблицу:
+
+```sql
+INSERT INTO my_first_table (user_id, message, timestamp, metric) VALUES
+    (101, 'Hello, ClickHouse!',                                 now(),       -1.0    ),
+    (102, 'Insert a lot of rows per batch',                     yesterday(), 1.41421 ),
+    (102, 'Sort your data based on your commonly-used queries', today(),     2.718   ),
+    (101, 'Granules are the smallest chunks of data read',      now() + 5,   3.14159 )
+```
+
+## Выполните запрос к вашей новой таблице
+
+Вы можете написать запрос `SELECT`, так же как и с любой SQL базой данных:
+
+```sql
+SELECT *
+FROM my_first_table
+ORDER BY timestamp
+```
+Обратите внимание, что ответ приходит в красивом табличном формате:
+
+```text
+┌─user_id─┬─message────────────────────────────────────────────┬───────────timestamp─┬──metric─┐
+│     102 │ Insert a lot of rows per batch                     │ 2022-03-21 00:00:00 │ 1.41421 │
+│     102 │ Sort your data based on your commonly-used queries │ 2022-03-22 00:00:00 │   2.718 │
+│     101 │ Hello, ClickHouse!                                 │ 2022-03-22 14:04:09 │      -1 │
+│     101 │ Granules are the smallest chunks of data read      │ 2022-03-22 14:04:14 │ 3.14159 │
+└─────────┴────────────────────────────────────────────────────┴─────────────────────┴─────────┘
+
+4 rows in set. Elapsed: 0.008 sec.
+```
+
+## Вставьте свои собственные данные
+
+Следующий шаг - импортировать ваши собственные данные в ClickHouse. У нас есть много [табличных функций](/sql-reference/table-functions/index.md)
+и [интеграций](/integrations) для загрузки данных. У нас есть примеры в закладках
+ниже или вы можете ознакомиться с нашей страницей [Интеграции](/integrations) для длинного списка
+технологий, которые интегрируются с ClickHouse.
+
+<Tabs groupId="read_data">
+    <TabItem value="S3" label="S3" default>
+
+        Используйте [`s3` таблицу функцию](/sql-reference/table-functions/s3.md), чтобы
+        читать файлы из S3. Это табличная функция - означает, что результатом является таблица,
+        которая может быть:
+
+        1. использована в качестве источника для запроса `SELECT` (что позволяет вам выполнять запросы
+        ad-hoc и сохранять ваши данные в S3), или...
+        2. вставить полученную таблицу в таблицу `MergeTree` (когда вы будете готовы
+        переместить ваши данные в ClickHouse)
+
+        Запрос ad-hoc выглядит так:
+
+```sql
+SELECT
+passenger_count,
+avg(toFloat32(total_amount))
+FROM s3(
+'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_0.gz',
+'TabSeparatedWithNames'
+)
+GROUP BY passenger_count
+ORDER BY passenger_count;
+```
+
+        Перемещение данных в таблицу ClickHouse выглядит следующим образом, где
+        `nyc_taxi` - это таблица `MergeTree`:
+
+```sql
+INSERT INTO nyc_taxi
+SELECT * FROM s3(
+'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_0.gz',
+'TabSeparatedWithNames'
+)
+SETTINGS input_format_allow_errors_num=25000;
+```
+
+        Посмотрите нашу [коллекцию страниц документации по AWS S3](/integrations/data-ingestion/s3/index.md) для получения множества деталей и примеров использования S3 с ClickHouse.
+        <br/>
+    </TabItem>
+    <TabItem value="GCS" label="GCS">
+
+        [`s3` таблица функция](/sql-reference/table-functions/s3.md), используемая для
+        чтения данных в AWS S3, также работает с файлами в Google Cloud Storage.
+
+        Например:
+
+```sql
+SELECT
+*
+FROM s3(
+'https://storage.googleapis.com/my-bucket/trips.parquet',
+'MY_GCS_HMAC_KEY',
+'MY_GCS_HMAC_SECRET_KEY',
+'Parquet'
+)
+LIMIT 1000
+```
+
+        Найдите больше деталей на странице [`s3` таблица функции](/sql-reference/table-functions/s3.md).
+        <br/>
+    </TabItem>
+    <TabItem value="URL" label="Web">
+
+        [`url` таблица функция](/sql-reference/table-functions/url) читает
+        файлы, доступные из интернета:
+
+```sql
+--By default, ClickHouse prevents redirects to protect from SSRF attacks.
+--The URL below requires a redirect, so we must set max_http_get_redirects > 0.
+SET max_http_get_redirects=10;
+
+SELECT *
+FROM url(
+'http://prod2.publicdata.landregistry.gov.uk.s3-website-eu-west-1.amazonaws.com/pp-complete.csv',
+'CSV'
+);
+```
+
+        Найдите больше деталей на странице [`url` таблица функции](/sql-reference/table-functions/url).
+        <br/>
+    </TabItem>
+    <TabItem value="local_file" label="Local">
+
+        Используйте [`file` таблицу двигатель](/sql-reference/table-functions/file), чтобы
+        читать локальный файл. Чтобы упростить задачу, скопируйте файл в каталог `user_files`
+        (который находится в директории, где вы загрузили двоичный файл ClickHouse).
+
+```sql
+DESCRIBE TABLE file('comments.tsv')
+
+Query id: 8ca9b2f9-65a2-4982-954a-890de710a336
+
+┌─name──────┬─type────────────────────┐
+│ id        │ Nullable(Int64)         │
+│ type      │ Nullable(String)        │
+│ author    │ Nullable(String)        │
+│ timestamp │ Nullable(DateTime64(9)) │
+│ comment   │ Nullable(String)        │
+│ children  │ Array(Nullable(Int64))  │
+└───────────┴─────────────────────────┘
+```
+
+        Обратите внимание, что ClickHouse выводит названия и типы данных ваших колонок, анализируя
+        большую партию строк. Если ClickHouse не может определить формат файла по
+        имени файла, вы можете указать его в качестве второго аргумента:
+
+```sql
+SELECT count()
+FROM file(
+'comments.tsv',
+'TabSeparatedWithNames'
+)
+```
+
+        Посмотрите на страницу документации [`file` таблица функции](/sql-reference/table-functions/file)
+        для получения более подробной информации.
+        <br/>
+    </TabItem>
+    <TabItem value="PostgreSQL" label="PostgreSQL">
+
+        Используйте [`postgresql` таблица функцию](/sql-reference/table-functions/postgresql)
+        для чтения данных из таблицы в PostgreSQL:
+
+```sql
+SELECT *
+FROM
+postgresql(
+'localhost:5432',
+'my_database',
+'my_table',
+'postgresql_user',
+'password')
+;
+```
+
+        Посмотрите на страницу документации [`postgresql` таблица функции](/sql-reference/table-functions/postgresql)
+        для получения более подробной информации.
+        <br/>
+    </TabItem>
+    <TabItem value="MySQL" label="MySQL">
+
+        Используйте [`mysql` таблица функцию](/sql-reference/table-functions/mysql)
+        для чтения данных из таблицы в MySQL:
+
+```sql
+SELECT *
+FROM
+mysql(
+'localhost:3306',
+'my_database',
+'my_table',
+'mysql_user',
+'password')
+;
+```
+
+        Посмотрите на страницу документации [`mysql` таблица функции](/sql-reference/table-functions/mysql)
+        для получения более подробной информации.
+        <br/>
+    </TabItem>
+    <TabItem value="Other DBMS" label="ODBC/JDBC">
+
+        ClickHouse может читать данные из любого ODBC или JDBC источника данных:
+
+```sql
+SELECT *
+FROM
+odbc(
+'DSN=mysqlconn',
+'my_database',
+'my_table'
+);
+```
+
+        Посмотрите на страницы документации [`odbc` таблица функции](/sql-reference/table-functions/odbc)
+        и [`jdbc` таблица функции](/sql-reference/table-functions/jdbc) для получения более подробной информации.
+        <br/>
+    </TabItem>
+    <TabItem value="messagequeue" label="Сообщения">
+
+        Очереди сообщений могут передавать данные в ClickHouse, используя соответствующий
+        табличный двигатель, включая:
+
+        - **Kafka**: интеграция с Kafka с помощью [`Kafka` табличный двигатель](/engines/table-engines/integrations/kafka)
+        - **Amazon MSK**: интеграция с [Amazon Managed Streaming for Apache Kafka (MSK)](/integrations/kafka/cloud/amazon-msk/)
+        - **RabbitMQ**: интеграция с RabbitMQ с помощью [`RabbitMQ` табличный двигатель](/engines/table-engines/integrations/rabbitmq)
+        <br/>
+    </TabItem>
+    <TabItem value="datalake" label="Дата-Озера">
+
+        ClickHouse имеет табличные функции для чтения данных из следующих источников:
+
+        - **Hadoop**: интеграция с Apache Hadoop с помощью [`hdfs` таблица функции](/sql-reference/table-functions/hdfs)
+        - **Hudi**: чтение из существующих таблиц Apache Hudi в S3 с помощью [`hudi` таблица функции](/sql-reference/table-functions/hudi)
+        - **Iceberg**: чтение из существующих таблиц Apache Iceberg в S3 с помощью [`iceberg` таблица функции](/sql-reference/table-functions/iceberg)
+        - **DeltaLake**: чтение из существующих таблиц Delta Lake в S3 с помощью [`deltaLake` таблица функции](/sql-reference/table-functions/deltalake)
+        <br/>
+    </TabItem>
+    <TabItem value="Other" label="Другое">
+
+        Ознакомьтесь с нашим [длинным списком интеграций ClickHouse](/integrations), чтобы узнать, как подключить ваши существующие фреймворки и источники данных к ClickHouse.
+        <br/>
+    </TabItem>
+</Tabs>
+
+## Исследуйте
+
+- Ознакомьтесь с нашим разделом [Основные Концепции](/managing-data/core-concepts), чтобы узнать некоторые основы работы ClickHouse.
+- Ознакомьтесь с [Расширенным Учебным Пособием](tutorial.md), которое глубже погружается в ключевые концепции и возможности ClickHouse.
+- Продолжите обучение, пройдя наши бесплатные курсы по обучению по запросу в [ClickHouse Academy](https://learn.clickhouse.com/visitor_class_catalog).
+- У нас есть список [примеров наборов данных](/getting-started/example-datasets/) с инструкциями по их вставке.
+- Если ваши данные поступают из внешнего источника, посмотрите нашу [коллекцию учебных пособий по интеграции](/integrations/) для подключения к очередям сообщений, базам данных, конвейерам и другим.
+- Если вы используете инструмент визуализации UI/BI, посмотрите [руководства пользователя для подключения UI к ClickHouse](/integrations/data-visualization/).
+- Руководство пользователя по [первичным ключам](/guides/best-practices/sparse-primary-indexes.md) - это всё, что вам нужно знать о первичных ключах и о том, как их определять.
+
+</VerticalStepper>
