@@ -131,6 +131,16 @@ const sidebars = {
           items: [
             {
               type: "category",
+              label: "Capabilities",
+              collapsed: true,
+              collapsible: true,
+              items: [ 
+                "use-cases/observability/cloud-monitoring",
+                "use-cases/observability/self-managed-monitoring"
+              ]
+            },
+            {
+              type: "category",
               label: "ClickStack",
               collapsed: true,
               collapsible: true,
