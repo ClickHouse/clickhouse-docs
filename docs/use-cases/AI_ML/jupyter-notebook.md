@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/AI/jupyter-notebook
-sidebar_label: 'Exploring data in Jupyter notebooks with chDB'
+sidebar_label: 'Exploring data with Jupyter notebooks and chDB'
 title: 'Exploring data in Jupyter notebooks with chDB'
 description: 'This guide explains how to setup and use chDB to explore data from ClickHouse Cloud or local files in Jupyer notebooks'
 keywords: ['ML', 'Jupyer', 'chDB', 'pandas']
