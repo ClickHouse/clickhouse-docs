@@ -1,19 +1,20 @@
 ---
-'description': '`Dictionary` 引擎将字典数据作为 ClickHouse 表显示。'
+'description': '`Dictionary` 引擎将字典数据呈现为 ClickHouse 表。'
 'sidebar_label': 'Dictionary'
 'sidebar_position': 20
 'slug': '/engines/table-engines/special/dictionary'
 'title': '字典表引擎'
+'doc_type': 'reference'
 ---
 
 
 # 字典表引擎
 
-`Dictionary` 引擎将 [字典](../../../sql-reference/dictionaries/index.md) 数据作为一个 ClickHouse 表显示。
+`Dictionary` 引擎将 [字典](../../../sql-reference/dictionaries/index.md) 数据显示为 ClickHouse 表。
 
 ## 示例 {#example}
 
-作为一个例子，考虑一个 `products` 的字典，其配置如下：
+作为一个示例，考虑一个 `products` 的字典，其配置如下：
 
 ```xml
 <dictionaries>
@@ -70,7 +71,7 @@ WHERE name = 'products'
 
 您可以使用 [dictGet\*](/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull) 函数以这种格式获取字典数据。
 
-当您需要获取原始数据或在执行 `JOIN` 操作时，这种视图并不有用。在这些情况下，您可以使用 `Dictionary` 引擎，它以表的形式显示字典数据。
+当您需要获取原始数据或在进行 `JOIN` 操作时，这种视图就不太有用了。在这些情况下，您可以使用 `Dictionary` 引擎，它以表格的形式显示字典数据。
 
 语法：
 
@@ -81,7 +82,7 @@ CREATE TABLE %table_name% (%fields%) engine = Dictionary(%dictionary_name%)`
 使用示例：
 
 ```sql
-create table products (product_id UInt64, title String) Engine = Dictionary(products);
+CREATE TABLE products (product_id UInt64, title String) ENGINE = Dictionary(products);
 ```
 
       Ok
@@ -89,7 +90,7 @@ create table products (product_id UInt64, title String) Engine = Dictionary(prod
 查看表中的内容。
 
 ```sql
-select * from products limit 1;
+SELECT * FROM products LIMIT 1;
 ```
 
 ```text

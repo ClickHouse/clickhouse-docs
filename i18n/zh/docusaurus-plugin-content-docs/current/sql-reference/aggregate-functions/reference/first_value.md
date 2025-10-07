@@ -1,19 +1,20 @@
 ---
-'description': '它是任何的别名，但它是为与窗口函数的兼容性而引入的，在这里有时需要处理 `NULL` 值（默认情况下，所有 ClickHouse 聚合函数会忽略
+'description': '它是任何的别名，但它是为了与窗口函数的兼容性而引入的，有时需要处理 `NULL` 值（默认情况下，所有 ClickHouse 聚合函数会忽略
   NULL 值）。'
 'sidebar_position': 137
 'slug': '/sql-reference/aggregate-functions/reference/first_value'
 'title': 'first_value'
+'doc_type': 'reference'
 ---
 
 
 # first_value
 
-它是 [`any`](../../../sql-reference/aggregate-functions/reference/any.md) 的别名，但它是为了与 [Window Functions](../../window-functions/index.md) 兼容而引入的，在某些情况下，必须处理 `NULL` 值（默认情况下，所有 ClickHouse 聚合函数会忽略 NULL 值）。
+它是 [`any`](../../../sql-reference/aggregate-functions/reference/any.md) 的别名，但它的引入是为了与 [Window Functions](../../window-functions/index.md) 兼容，有时需要处理 `NULL` 值（默认情况下，所有 ClickHouse 聚合函数会忽略 NULL 值）。
 
-它支持声明修饰符以尊重 NULL 值（`RESPECT NULLS`），可在 [Window Functions](../../window-functions/index.md) 和普通聚合中使用。
+它支持声明一个修饰符以尊重 NULL 值（`RESPECT NULLS`），在 [Window Functions](../../window-functions/index.md) 和普通聚合中均适用。
 
-与 `any` 一样，如果没有 Window Functions，结果将是随机的，如果源流未排序且返回类型与输入类型匹配（仅在输入为 Nullable 或添加了 -OrNull 组合器的情况下返回 Null）。
+与 `any` 一样，在没有 Window Functions 的情况下，如果源流未排序并且返回类型与输入类型匹配，结果将是随机的（仅在输入为 Nullable 或添加了 -OrNull 组合时返回 Null）。
 
 ## examples {#examples}
 
@@ -25,13 +26,13 @@ CREATE TABLE test_data
 )
 ENGINE = Memory;
 
-INSERT INTO test_data (a, b) Values (1,null), (2,3), (4, 5), (6,null);
+INSERT INTO test_data (a, b) VALUES (1,null), (2,3), (4, 5), (6,null);
 ```
 
-### example1 {#example1}
+### Example 1 {#example1}
 默认情况下，NULL 值被忽略。
 ```sql
-select first_value(b) from test_data;
+SELECT first_value(b) FROM test_data;
 ```
 
 ```text
@@ -40,10 +41,10 @@ select first_value(b) from test_data;
 └────────┘
 ```
 
-### example2 {#example2}
+### Example 2 {#example2}
 NULL 值被忽略。
 ```sql
-select first_value(b) ignore nulls from test_data
+SELECT first_value(b) ignore nulls FROM test_data
 ```
 
 ```text
@@ -52,10 +53,10 @@ select first_value(b) ignore nulls from test_data
 └──────────────────────┘
 ```
 
-### example3 {#example3}
-NULL 值被接受。
+### Example 3 {#example3}
+接受 NULL 值。
 ```sql
-select first_value(b) respect nulls from test_data
+SELECT first_value(b) respect nulls FROM test_data
 ```
 
 ```text
@@ -64,7 +65,7 @@ select first_value(b) respect nulls from test_data
 └───────────────────────┘
 ```
 
-### example4 {#example4}
+### Example 4 {#example4}
 使用 `ORDER BY` 的子查询稳定化结果。
 ```sql
 SELECT

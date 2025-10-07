@@ -1,12 +1,13 @@
 ---
-'description': '从一组字符串计算一个连接的字符串，可选地通过分隔符分隔，并可选地限制最大元素数量。'
+'description': '计算来自字符串组的连接字符串，选项上可以用分隔符分隔，并且可以限制最大元素的数量。'
 'sidebar_label': 'groupConcat'
 'sidebar_position': 363
 'slug': '/sql-reference/aggregate-functions/reference/groupconcat'
 'title': 'groupConcat'
+'doc_type': 'reference'
 ---
 
-计算从一组字符串中生成一个连接字符串，可以选择性地用分隔符分隔，和选择性地限制最多元素的数量。
+计算来自一组字符串的连接字符串，可以选择用分隔符分隔，并可选择限制最大元素数量。
 
 **语法**
 
@@ -14,25 +15,27 @@
 groupConcat[(delimiter [, limit])](expression);
 ```
 
+别名: `group_concat`
+
 **参数**
 
 - `expression` — 输出要连接的字符串的表达式或列名。
-- `delimiter` — 用于分隔连接值的 [字符串](../../../sql-reference/data-types/string.md)。此参数是可选的，如果未指定，将默认为空字符串或参数中的分隔符。
+- `delimiter` — 一个 [字符串](../../../sql-reference/data-types/string.md)，将用于分隔连接的值。该参数是可选的，默认为空字符串或未指定时从参数中提取的分隔符。
 
-**参数**
+**参数说明**
 
-- `delimiter` — 用于分隔连接值的 [字符串](../../../sql-reference/data-types/string.md)。此参数是可选的，如果未指定，将默认为空字符串。
-- `limit` — 一个正的 [整数](../../../sql-reference/data-types/int-uint.md)，指定要连接的最大元素数量。如果存在更多元素，将忽略多余的元素。此参数是可选的。
+- `delimiter` — 一个 [字符串](../../../sql-reference/data-types/string.md)，将用于分隔连接的值。该参数是可选的，默认为空字符串（如果未指定）。
+- `limit` — 一个正的 [整数](../../../sql-reference/data-types/int-uint.md)，指定要连接的最大元素数量。如果存在多个元素，则多余的元素将被忽略。该参数是可选的。
 
 :::note
-如果指定了分隔符而没有限制，则必须将其作为第一个参数。如果同时指定了分隔符和限制，则分隔符必须在限制之前。
+如果只指定了分隔符而没有限制，则分隔符必须是第一个参数。如果同时指定了分隔符和限制，则分隔符必须在限制之前。
 
-此外，如果将不同的分隔符指定为参数和参数，则只会使用参数中的分隔符。
+此外，如果作为参数和参数指定了不同的分隔符，则仅使用参数中的分隔符。
 :::
 
 **返回值**
 
-- 返回一个由列或表达式连接值构成的 [字符串](../../../sql-reference/data-types/string.md)。如果组没有元素或只有空元素，并且函数未指定对空值的处理，则结果是一个 Nullable 字符串，值为空。
+- 返回由列或表达式的连接值组成的 [字符串](../../../sql-reference/data-types/string.md)。如果组没有元素或只有 null 元素，并且函数未指定对仅 null 值的处理，则结果是一个带有 null 值的 Nullable 字符串。
 
 **示例**
 
@@ -46,7 +49,7 @@ groupConcat[(delimiter [, limit])](expression);
 └────┴──────┘
 ```
 
-1.    基本用法，无分隔符：
+1.    无分隔符的基本用法：
 
 查询：
 
@@ -60,7 +63,7 @@ SELECT groupConcat(Name) FROM Employees;
 JohnJaneBob
 ```
 
-这将所有名称连接成一个连续字符串，没有任何分隔符。
+这将所有名称连接成一个没有任何分隔符的连续字符串。
 
 2. 使用逗号作为分隔符：
 
@@ -70,7 +73,7 @@ JohnJaneBob
 SELECT groupConcat(', ')(Name)  FROM Employees;
 ```
 
-或者
+或
 
 ```sql
 SELECT groupConcat(Name, ', ')  FROM Employees;
@@ -82,9 +85,9 @@ SELECT groupConcat(Name, ', ')  FROM Employees;
 John, Jane, Bob
 ```
 
-此输出显示名称由逗号和空格分隔。
+此输出显示名称用逗号后跟一个空格分隔。
 
-3. 限制连接元素的数量
+3. 限制连接的元素数量
 
 查询：
 

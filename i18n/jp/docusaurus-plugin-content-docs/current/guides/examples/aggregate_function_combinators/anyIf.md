@@ -1,32 +1,31 @@
 ---
-slug: '/examples/aggregate-function-combinators/anyIf'
-title: 'anyIf'
-description: '使用例：anyIf コンビネーター'
-keywords:
+'slug': '/examples/aggregate-function-combinators/anyIf'
+'title': 'anyIf'
+'description': 'anyIf コミネーターを使用する例'
+'keywords':
 - 'any'
 - 'if'
 - 'combinator'
 - 'examples'
 - 'anyIf'
-sidebar_label: 'anyIf'
+'sidebar_label': 'anyIf'
+'doc_type': 'reference'
 ---
-
-
 
 
 # anyIf {#avgif}
 
 ## 説明 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネーターは、指定された条件に一致する特定のカラムから最初に遭遇した要素を選択するために、[`any`](/sql-reference/aggregate-functions/reference/any) 集約関数に適用できます。
+[`If`](/sql-reference/aggregate-functions/combinators#-if)コンビネータは、指定された条件に一致する、特定のカラムから最初に遭遇した要素を選択するために[`any`](/sql-reference/aggregate-functions/reference/any)集約関数に適用できます。
 
 ## 使用例 {#example-usage}
 
-この例では、成功フラグを持つ売上データを保存するテーブルを作成し、`anyIf` を使用して、金額 200 より上、および下の最初の `transaction_id` を選択します。
+この例では、成功フラグを持つ販売データを格納するテーブルを作成し、`anyIf`を使用して200を超えたおよび未満の最初の`transaction_id`を選択します。
 
 まず、テーブルを作成し、データを挿入します：
 
-```sql title="クエリ"
+```sql title="Query"
 CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
@@ -46,17 +45,17 @@ INSERT INTO sales VALUES
 
 ```sql
 SELECT
-    anyIf(transaction_id, amount < 200) as tid_lt_200,
-    anyIf(transaction_id, amount > 200) as tid_gt_200
+    anyIf(transaction_id, amount < 200) AS tid_lt_200,
+    anyIf(transaction_id, amount > 200) AS tid_gt_200
 FROM sales;
 ```
 
-```response title="応答"
+```response title="Response"
 ┌─tid_lt_200─┬─tid_gt_200─┐
 │          1 │          4 │
 └────────────┴────────────┘
 ```
 
-## 関連情報 {#see-also}
+## 関連項目 {#see-also}
 - [`any`](/sql-reference/aggregate-functions/reference/any)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [`Ifコンビネータ`](/sql-reference/aggregate-functions/combinators#-if)

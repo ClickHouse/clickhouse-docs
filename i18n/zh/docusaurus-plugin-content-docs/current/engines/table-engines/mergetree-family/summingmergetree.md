@@ -1,17 +1,18 @@
 ---
-'description': 'SummingMergeTree 继承自 MergeTree 引擎。它的关键特性是在分区片段合并时自动对数值数据进行求和。'
+'description': 'SummingMergeTree 继承自 MergeTree 引擎。它的主要特点是在分区合并期间自动对数值数据进行求和。'
 'sidebar_label': 'SummingMergeTree'
 'sidebar_position': 50
 'slug': '/engines/table-engines/mergetree-family/summingmergetree'
 'title': 'SummingMergeTree'
+'doc_type': 'reference'
 ---
 
 
 # SummingMergeTree
 
-该引擎继承自 [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree)。其区别在于，当合并 `SummingMergeTree` 表的数据部分时，ClickHouse 会用一行替换所有具有相同主键（更准确地说，是具有相同 [排序键](../../../engines/table-engines/mergetree-family/mergetree.md)）的行，该行包含具有数字数据类型的列的总和。如果排序键的构成方式使得单个键值对应于大量行，这将显著减少存储量并加快数据选择。
+该引擎继承自 [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree)。不同之处在于，在合并 `SummingMergeTree` 表的数据部分时，ClickHouse 会用一行包含数值列的汇总值替换所有具有相同主键（更准确地说，是相同的 [排序键](../../../engines/table-engines/mergetree-family/mergetree.md)）的行。如果排序键的构成方式使得单个键值对应大量行，这将显著减少存储量并加快数据选择速度。
 
-我们建议将该引擎与 `MergeTree` 一起使用。在 `MergeTree` 表中存储完整数据，并使用 `SummingMergeTree` 存储聚合数据，例如，在准备报告时。这种方法将防止由于主键构成不正确而丢失宝贵数据。
+我们建议将该引擎与 `MergeTree` 一起使用。在 `MergeTree` 表中存储完整数据，并使用 `SummingMergeTree` 存储聚合数据，例如，在准备报告时。这样的做法将防止由于主键构成不当而导致宝贵数据的丢失。
 
 ## 创建表 {#creating-a-table}
 
@@ -30,14 +31,14 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 有关请求参数的描述，请参见 [请求描述](../../../sql-reference/statements/create/table.md)。
 
-### SummingMergeTree 的参数 {#parameters-of-summingmergetree}
+### SummingMergeTree 参数 {#parameters-of-summingmergetree}
 
-#### columns {#columns}
+#### 列 {#columns}
 
-`columns` - 一个元组，其中包含将被求和的列的名称。可选参数。
-    这些列必须为数字类型，并且不能在分区或排序键中。
+`columns` - 一个元组，包含将被汇总的列名。可选参数。
+这些列必须是数值类型，且不得在分区或排序键中。
 
- 如果未指定 `columns`，ClickHouse 将总结所有不在排序键中的数字类型的列的值。
+如果未指定 `columns`，ClickHouse 会汇总所有不在排序键中的数值类型列的值。
 
 ### 查询子句 {#query-clauses}
 
@@ -45,10 +46,10 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 <details markdown="1">
 
-<summary>创建表的弃用方法</summary>
+<summary>创建表的过时方法</summary>
 
 :::note
-在新项目中请勿使用此方法，并且如果可能，请将旧项目切换到上述描述的方法。
+在新项目中请勿使用此方法，并尽可能将旧项目切换到上述描述的方法。
 :::
 
 ```sql
@@ -60,9 +61,9 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ) ENGINE [=] SummingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [columns])
 ```
 
-除 `columns` 外，所有参数的含义与 `MergeTree` 中相同。
+除 `columns` 之外的所有参数与 `MergeTree` 中的含义相同。
 
-- `columns` — 一个元组，包含将被求和的列的名称。可选参数。有关描述，请参见上述文本。
+- `columns` — 包含将被汇总的列名的元组。可选参数。有关描述，请参见上面的文本。
 
 </details>
 
@@ -83,10 +84,10 @@ ORDER BY key
 向其中插入数据：
 
 ```sql
-INSERT INTO summtt Values(1,1),(1,2),(2,1)
+INSERT INTO summtt VALUES(1,1),(1,2),(2,1)
 ```
 
-ClickHouse 可能不会完全汇总所有行（[见下文](#data-processing)），因此我们在查询中使用聚合函数 `sum` 和 `GROUP BY` 子句。
+ClickHouse 可能不会完全对所有行进行求和（[见下文](#data-processing)），因此在查询中我们使用聚合函数 `sum` 和 `GROUP BY` 子句。
 
 ```sql
 SELECT key, sum(value) FROM summtt GROUP BY key
@@ -101,34 +102,34 @@ SELECT key, sum(value) FROM summtt GROUP BY key
 
 ## 数据处理 {#data-processing}
 
-当数据插入表中时，它们被原样保存。ClickHouse 定期合并插入的数据部分，此时具有相同主键的行被求和并被替换为每个结果数据部分的一行。
+当数据插入到表中时，它们将按原样保存。ClickHouse 定期合并插入的数据部分，此时具有相同主键的行会被求和并用每个结果数据部分的一行替换。
 
-ClickHouse 可能合并数据部分，因此不同的结果数据部分可以包含具有相同主键的行，即汇总可能是不完整的。因此，在查询中应使用聚合函数 [sum()](/sql-reference/aggregate-functions/reference/sum) 和 `GROUP BY` 子句，如上面的示例所述。
+ClickHouse 可以合并数据部分，因此不同的结果数据部分可以包含相同主键的行，即求和会不完整。因此，在查询中应该使用聚合函数 [sum()](/sql-reference/aggregate-functions/reference/sum) 和 `GROUP BY` 子句，如上例所示。
 
-### 汇总的通用规则 {#common-rules-for-summation}
+### 求和的通用规则 {#common-rules-for-summation}
 
-具有数字数据类型的列中的值会被求和。列的集合由参数 `columns` 定义。
+具有数值数据类型的列中的值会被求和。列的集合由参数 `columns` 定义。
 
-如果所有列的汇总值为 0，则该行将被删除。
+如果在求和的所有列中的值均为 0，则行将被删除。
 
-如果列不在主键中且不被求和，则从现有值中选择任意一个值。
+如果某列不在主键中且未被求和，则从现有值中选择一个任意值。
 
-对于主键中的列，不会进行求和。
+主键中的列的值不进行求和。
 
-### 聚合函数列中的求和 {#the-summation-in-the-aggregatefunction-columns}
+### AggregateFunction 列中的求和 {#the-summation-in-the-aggregatefunction-columns}
 
-对于 [AggregateFunction 类型](../../../sql-reference/data-types/aggregatefunction.md) 的列，ClickHouse 的行为与 [AggregatingMergeTree](../../../engines/table-engines/mergetree-family/aggregatingmergetree.md) 引擎一致，依据函数执行聚合。
+对于 [AggregateFunction 类型](../../../sql-reference/data-types/aggregatefunction.md) 的列，ClickHouse 的行为类似于 [AggregatingMergeTree](../../../engines/table-engines/mergetree-family/aggregatingmergetree.md) 引擎，根据函数进行聚合。
 
 ### 嵌套结构 {#nested-structures}
 
-表可以具有以特殊方式处理的嵌套数据结构。
+表可以具有特殊处理的嵌套数据结构。
 
-如果嵌套表的名称以 `Map` 结尾，并且它至少包含两个符合以下标准的列：
+如果嵌套表的名称以 `Map` 结尾，并且它至少包含两列，且满足以下条件：
 
-- 第一列是数字 `(*Int*, Date, DateTime)` 或字符串 `(String, FixedString)`，称为 `key`，
-- 其他列为算术 `(*Int*, Float32/64)`，称为 `(values...)`，
+- 第一列为数值型 `(*Int*, Date, DateTime)` 或字符串类型 `(String, FixedString)`，我们称之为 `key`，
+- 其他列为算术型 `(*Int*, Float32/64)`，我们称之为 `(values...)`，
 
-那么该嵌套表被解释为 `key => (values...)` 的映射，当合并其行时，两个数据集的元素通过 `key` 合并，并对相应的 `(values...)` 进行求和。
+则该嵌套表被解释为 `key => (values...)` 的映射，在合并其行时，两个数据集的元素按 `key` 进行合并，并求和对应的 `(values...)`。
 
 示例：
 
@@ -186,9 +187,9 @@ ARRAY JOIN
 └──────┴─────────┴─────────────┴────────┘
 ```
 
-请求数据时，使用 [sumMap(key, value)](../../../sql-reference/aggregate-functions/reference/summap.md) 函数进行 `Map` 的聚合。
+请求数据时，使用 [sumMap(key, value)](../../../sql-reference/aggregate-functions/reference/summap.md) 函数对 `Map` 进行聚合。
 
-对于嵌套数据结构，您不需要在求和的列元组中指定其列。
+对于嵌套数据结构，您无需在汇总列的元组中指定其列。
 
 ## 相关内容 {#related-content}
 

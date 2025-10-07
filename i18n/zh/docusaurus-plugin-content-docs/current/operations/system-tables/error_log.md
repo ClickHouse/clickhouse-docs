@@ -1,10 +1,11 @@
 ---
-'description': '系统表包含 `system.errors` 表中错误值的历史记录，定期刷新到磁盘。'
+'description': '系统表，包含来自表 `system.errors` 的错误值历史记录，定期刷新到磁盘。'
 'keywords':
 - 'system table'
 - 'error_log'
 'slug': '/operations/system-tables/system-error-log'
 'title': 'system.error_log'
+'doc_type': 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
@@ -14,13 +15,13 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 包含来自表 `system.errors` 的错误值历史记录，定期刷新到磁盘。
 
 列：
-- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 执行查询的服务器的主机名。
+- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 执行查询的服务器主机名。
 - `event_date` ([Date](../../sql-reference/data-types/date.md)) — 事件日期。
 - `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 事件时间。
-- `code` ([Int32](../../sql-reference/data-types/int-uint.md)) — 错误代码编号。
-- `error` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) - 错误名称。
-- `value` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 该错误发生的次数。
-- `remote` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 远程异常（即在某个分布式查询期间收到的异常）。
+- `code` ([Int32](../../sql-reference/data-types/int-uint.md)) — 错误的代码编号。
+- `error` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) - 错误的名称。
+- `value` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 此错误发生的次数。
+- `remote` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 远程异常（即在分布式查询期间接收的异常）。
 
 **示例**
 
@@ -40,8 +41,8 @@ value:      2
 remote:     0
 ```
 
-**另见**
+**另请参阅**
 
-- [error_log 设置](../../operations/server-configuration-parameters/settings.md#error_log) — 启用和禁用该设置。
-- [system.errors](../../operations/system-tables/errors.md) — 包含错误代码以及它们被触发的次数。
-- [监控](../../operations/monitoring.md) — ClickHouse 监控的基本概念。
+- [error_log setting](../../operations/server-configuration-parameters/settings.md#error_log) — 启用和禁用此设置。
+- [system.errors](../../operations/system-tables/errors.md) — 包含错误代码及其触发次数。
+- [Monitoring](../../operations/monitoring.md) — ClickHouse 监控的基本概念。

@@ -4,6 +4,7 @@
 - 'PostgreSQLWire'
 'slug': '/interfaces/formats/PostgreSQLWire'
 'title': 'PostgreSQLWire'
+'doc_type': 'reference'
 ---
 
 ## 描述 {#description}

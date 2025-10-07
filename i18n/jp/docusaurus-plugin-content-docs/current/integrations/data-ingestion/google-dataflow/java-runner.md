@@ -1,26 +1,27 @@
 ---
-sidebar_label: 'Javaランナー'
-slug: '/integrations/google-dataflow/java-runner'
-sidebar_position: 2
-description: 'Users can ingest data into ClickHouse using Google Dataflow Java Runner'
-title: 'Dataflow Java Runner'
+'sidebar_label': 'Java Runner'
+'slug': '/integrations/google-dataflow/java-runner'
+'sidebar_position': 2
+'description': 'ユーザーは Google Dataflow Java Runner を使用して ClickHouse にデータを取り込むことができます'
+'title': 'Dataflow Java Runner'
+'doc_type': 'guide'
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Dataflow Java Runner
+# Dataflow Java runner
 
 <ClickHouseSupportedBadge/>
 
-Dataflow Java Runnerを使用すると、Google CloudのDataflowサービスでカスタムApache Beamパイプラインを実行できます。このアプローチは最大限の柔軟性を提供し、高度なETLワークフローに適しています。
+Dataflow Java Runner は、カスタム Apache Beam パイプラインを Google Cloud の Dataflow サービスで実行できるようにします。このアプローチは最大の柔軟性を提供し、高度な ETL ワークフローに適しています。
 
 ## 仕組み {#how-it-works}
 
-1. **パイプライン実装**
-   Java Runnerを使用するには、公式のApache Beamコネクタである`ClickHouseIO`を使用してBeamパイプラインを実装する必要があります。`ClickHouseIO`の使用方法に関するコード例や指示については、[ClickHouse Apache Beam](/integrations/apache-beam)を訪れてください。
+1. **パイプラインの実装**
+   Java Runner を使用するには、`ClickHouseIO` - 当社の公式 Apache Beam コネクタを使用して Beam パイプラインを実装する必要があります。`ClickHouseIO` の使用方法に関するコード例や指示については、[ClickHouse Apache Beam](/integrations/apache-beam) をご覧ください。
 
-2. **デプロイメント**
-   パイプラインが実装され、設定されたら、Google Cloudのデプロイメントツールを使用してDataflowにデプロイできます。包括的なデプロイメント手順は、[Google Cloud Dataflow documentation - Java Pipeline](https://cloud.google.com/dataflow/docs/quickstarts/create-pipeline-java)に記載されています。
+2. **デプロイ**
+   パイプラインが実装され、構成されたら、Google Cloud のデプロイツールを使用して Dataflow にデプロイできます。デプロイメントの包括的な手順については、[Google Cloud Dataflow ドキュメント - Java Pipeline](https://cloud.google.com/dataflow/docs/quickstarts/create-pipeline-java)をご参照ください。
 
-**注意**: このアプローチはBeamフレームワークへの理解とコーディングスキルを前提としています。ノーコードのソリューションを希望する場合は、[ClickHouseの事前定義されたテンプレート](./templates)の使用を検討してください。
+**注**: このアプローチは、Beam フレームワークに対する理解とコーディングの専門知識が必要です。ノーコードソリューションを好む場合は、[ClickHouse の定義済みテンプレート](./templates) の使用を検討してください。

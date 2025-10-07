@@ -1,15 +1,16 @@
 ---
-'description': '关于 row_number 窗口函数的文档'
+'description': 'row_number 视窗函数的文档'
 'sidebar_label': 'row_number'
 'sidebar_position': 2
 'slug': '/sql-reference/window-functions/row_number'
 'title': 'row_number'
+'doc_type': 'reference'
 ---
 
 
 # row_number
 
-对当前行在其分区内进行编号，从1开始。
+为当前行在其分区内编号，从1开始。
 
 **语法**
 
@@ -25,11 +26,11 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 **返回值**
 
-- 当前行在其分区内的编号。 [UInt64](../data-types/int-uint.md)。
+- 当前行在其分区内的编号。[UInt64](../data-types/int-uint.md)。
 
 **示例**
 
-以下示例基于视频教学中提供的示例，[ClickHouse中的排名窗口函数](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA)。
+以下示例基于视频教程中提供的示例：[ClickHouse中的排名窗口函数](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA)。
 
 查询：
 

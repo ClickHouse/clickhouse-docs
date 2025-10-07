@@ -46,6 +46,7 @@ COMMANDS=(
     '--single-toc --dir="docs/integrations/data-ingestion/clickpipes/kafka" --md="docs/integrations/data-ingestion/clickpipes/kafka/index.md" --ignore images'
     '--single-toc --dir="docs/use-cases/AI_ML/MCP" --md="docs/use-cases/AI_ML/MCP/index.md" --ignore images'
     '--single-toc --dir="docs/use-cases/AI_ML/MCP/ai_agent_libraries" --md="docs/use-cases/AI_ML/MCP/ai_agent_libraries/index.md"'
+    '--single-toc --dir="docs/cloud/guides" --md="docs/cloud/guides/index.md"'
 )
 
 # Execute each command

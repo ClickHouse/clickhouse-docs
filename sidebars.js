@@ -601,6 +601,7 @@ const sidebars = {
                 "integrations/data-ingestion/clickpipes/mysql/add_table",
                 "integrations/data-ingestion/clickpipes/mysql/pause_and_resume",
                 "integrations/data-ingestion/clickpipes/mysql/remove_table",
+                "integrations/data-ingestion/clickpipes/mysql/table_resync",
                 "integrations/data-ingestion/clickpipes/mysql/resync",
                 "integrations/data-ingestion/clickpipes/mysql/controlling_sync",
               ],
@@ -637,6 +638,7 @@ const sidebars = {
                 "integrations/data-ingestion/clickpipes/mongodb/add_table",
                 "integrations/data-ingestion/clickpipes/mongodb/remove_table",
                 "integrations/data-ingestion/clickpipes/mongodb/pause_and_resume",
+                "integrations/data-ingestion/clickpipes/mongodb/table_resync",
                 "integrations/data-ingestion/clickpipes/mongodb/resync",
               ],
             },
@@ -754,6 +756,7 @@ const sidebars = {
         "integrations/data-visualization/deepnote",
         "integrations/data-visualization/astrato-and-clickhouse",
         "integrations/data-visualization/chartbrew-and-clickhouse",
+        "integrations/data-visualization/dot-and-clickhouse",
         "integrations/data-visualization/draxlr-and-clickhouse",
         "integrations/data-visualization/embeddable-and-clickhouse",
         "integrations/data-visualization/explo-and-clickhouse",
@@ -904,7 +907,18 @@ const sidebars = {
           ],
         },
         "integrations/data-ingestion/etl-tools/bladepipe-and-clickhouse",
-        "integrations/data-ingestion/etl-tools/dbt/index",
+        {
+          type: "category",
+          label: "dbt",
+          className: "top-nav-item",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "integrations/data-ingestion/etl-tools/dbt/index",
+            "integrations/data-ingestion/etl-tools/dbt/features-and-configurations",
+            "integrations/data-ingestion/etl-tools/dbt/guides",
+          ],
+        },
         "integrations/data-ingestion/etl-tools/dlt-and-clickhouse",
         "integrations/data-ingestion/etl-tools/fivetran/index",
         "integrations/data-ingestion/etl-tools/nifi-and-clickhouse",
@@ -1427,7 +1441,8 @@ const sidebars = {
       link: { type: "doc", id: "chdb/reference/index" },
       items: [
         "chdb/reference/data-formats",
-        "chdb/reference/sql-reference"
+        "chdb/reference/sql-reference",
+		"chdb/api/python"
       ],
     },
     {

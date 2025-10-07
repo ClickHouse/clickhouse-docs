@@ -3564,6 +3564,23 @@
     {
       "source": "/docs/cloud/security/secure-s3",
       "destination": "/docs/cloud/data-sources/secure-s3",
+      "source": "/docs/operations/system-tables/crash-log",
+      "destination": "/docs/operations/system-tables/crash_log",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/system-tables/current-roles",
+      "destination": "/docs/operations/system-tables/current_roles",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/system-tables/enabled-roles",
+      "destination": "/docs/operations/system-tables/enabled_roles",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/system-tables/role-grants",
+      "destination": "/docs/operations/system-tables/role_grants",
       "permanent": true
     }
   ]

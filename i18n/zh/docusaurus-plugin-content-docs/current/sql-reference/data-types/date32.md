@@ -1,19 +1,20 @@
 ---
-'description': 'ClickHouse 中 Date32 数据类型的文档，它存储的日期范围比 Date 更大'
+'description': 'ClickHouse 中 Date32 数据类型的文档，它存储的日期范围比 Date 更广泛'
 'sidebar_label': 'Date32'
 'sidebar_position': 14
 'slug': '/sql-reference/data-types/date32'
 'title': 'Date32'
+'doc_type': 'reference'
 ---
 
 
 # Date32
 
-一种日期。支持与 [DateTime64](../../sql-reference/data-types/datetime64.md) 相同的日期范围。以原生字节顺序存储为有符号的32位整数，其值表示自1900-01-01以来的天数（0表示1900-01-01，负值表示1900年前的天数）。
+一种日期。支持与 [DateTime64](../../sql-reference/data-types/datetime64.md) 相同的日期范围。以原生字节顺序存储为有符号32位整数，值表示自 `1900-01-01` 起的天数。**重要！** 0 表示 `1970-01-01`，负值表示在 `1970-01-01` 之前的天数。
 
 **示例**
 
-创建一个具有 `Date32` 类型列的表并插入数据：
+创建一个包含 `Date32` 类型列的表并向其中插入数据：
 
 ```sql
 CREATE TABLE dt32

@@ -1,13 +1,14 @@
 ---
-'description': '返回时间序列在索引 `t` 处的累积指数衰减。'
+'description': '返回时间序列中索引 `t` 的累积指数衰减。'
 'sidebar_position': 134
 'slug': '/sql-reference/aggregate-functions/reference/exponentialTimeDecayedCount'
 'title': 'exponentialTimeDecayedCount'
+'doc_type': 'reference'
 ---
 
 ## exponentialTimeDecayedCount {#exponentialtimedecayedcount}
 
-返回时间序列在时间索引 `t` 上的累积指数衰减。
+返回时间序列在时间索引 `t` 处的累计指数衰减。
 
 **语法**
 
@@ -25,7 +26,7 @@ exponentialTimeDecayedCount(x)(t)
 
 **返回值**
 
-- 返回给定时间点上的累积指数衰减。 [Float64](../../data-types/float.md)。
+- 返回给定时间点的累计指数衰减。 [Float64](../../data-types/float.md)。
 
 **示例**
 
