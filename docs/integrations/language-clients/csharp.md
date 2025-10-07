@@ -6,6 +6,10 @@ slug: /integrations/csharp
 description: 'The official C# client for connecting to ClickHouse.'
 title: 'ClickHouse C# Driver'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'language_client'
+  - website: 'https://github.com/ClickHouse/clickhouse-cs'
 ---
 
 # ClickHouse C# Client

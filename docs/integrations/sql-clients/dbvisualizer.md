@@ -4,6 +4,9 @@ slug: /integrations/dbvisualizer
 description: 'DbVisualizer is a database tool with extended support for ClickHouse.'
 title: 'Connecting DbVisualizer to ClickHouse'
 doc_type: 'guide'
+integration:
+  - support_level: 'partner'
+  - category: 'sql_client'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

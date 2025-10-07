@@ -5,6 +5,9 @@ sidebar_label: 'Integrating S3 with ClickHouse'
 title: 'Integrating S3 with ClickHouse'
 description: 'Page describing how to integrate S3 with ClickHouse'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 import BucketDetails from '@site/docs/_snippets/_S3_authentication_and_bucket.md';
