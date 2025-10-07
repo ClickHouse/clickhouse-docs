@@ -1122,7 +1122,16 @@ const sidebars = {
         "guides/best-practices/sparse-primary-indexes",
         "guides/best-practices/query-parallelism",
         "guides/best-practices/partitioningkey",
-        "guides/best-practices/skipping-indexes",
+        {
+          type: "category",
+          label: "Data Skipping Indexes",
+          collapsed: true,
+          collapsible: true,
+          link: { type: "doc", id: "guides/best-practices/skipping-indexes" },
+          items: [
+            "guides/best-practices/skipping-indexes-examples"
+          ],
+        },
         "guides/best-practices/prewhere",
         "guides/best-practices/bulkinserts",
         "guides/best-practices/asyncinserts",
