@@ -6,7 +6,7 @@ description: 'This guide provides an overview of disaster recovery.'
 doc_type: 'guide'
 ---
 
-# ClickHouse Cloud Disaster Recovery {#clickhouse-cloud-disaster-recovery}
+# ClickHouse Cloud disaster recovery {#clickhouse-cloud-disaster-recovery}
 
 This page covers the disaster recovery recommendations for ClickHouse Cloud, and guidance for customers to recover from an outage. ClickHouse Cloud does not currently support automatic failover, or automatic syncing across multiple geographical regions.
 
@@ -20,7 +20,7 @@ It is helpful to cover some definitions first.
 
 **Database Backups and Snapshots**: Backups provide durable long-term storage with a separate copy of the data. Snapshots do not create an additional copy of the data, are usually faster, and provide better RPOs.
 
-## Database Backups {#database-backups}
+## Database backups {#database-backups}
 
 Having a backup of your primary service is an effective way to utilize the backup and restore from it in the event of primary service downtime. ClickHouse Cloud supports the following capabilities for backups.
 
@@ -35,19 +35,22 @@ Having a backup of your primary service is an effective way to utilize the backu
 - Default backups, in the ClickHouse Cloud bucket, can be restored to a new service in the same region.
 - External backups (in customer object storage) can be restored to a new service in the same or different region.
 
-> **NOTE**: There is currently NO support for automatic failover between 2 ClickHouse Cloud instances whether in the same or different region.
+:::note
+There is currently **no** support for automatic failover between 2 ClickHouse Cloud instances whether in the same or different region.
 
-> **NOTE**: There is currently NO automatic syncing of data between different ClickHouse Cloud services in the same or different regions .i.e. Active-Active replication
+:::note
+There is currently **no** automatic syncing of data between different ClickHouse Cloud services in the same or different regions .i.e. Active-Active replication
+:::
 
-## Recovery Process {#recovery-process}
+## Recovery process {#recovery-process}
 
 This section explains the various recovery options and the process that can be followed in each case.
 
-### Primary Service Data Corruption {#primary-service-data-corruption}
+### Primary service data corruption {#primary-service-data-corruption}
 
 In this case the data can be restored from the backup to another service in the same region. The backup could be up to 24 hours old if using the default backup policy, or up to 6 hours old (if using configurable backups with 6 hours frequency).
 
-### Primary Region Downtime {#primary-region-downtime}
+### Primary region downtime {#primary-region-downtime}
 
 Customers in the Enterprise Tier can export backups to their own cloud provider bucket. If you are concerned about regional failures, we recommend exporting backups to a different region. Keep in mind that cross-region data transfer charges will apply.
 
@@ -58,9 +61,11 @@ Once the backup has been restored to another service, you will need to ensure th
 - Updating environment variables or secrets
 - Restarting application services to establish new connections
 
-> **NOTE**: Backup / restore to an external bucket is currently not supported for services utilizing Transparent Data Encryption (TDE).
+:::note
+Backup / restore to an external bucket is currently not supported for services utilizing Transparent Data Encryption (TDE).
+:::
 
-## Additional Options {#additional-options}
+## Additional options {#additional-options}
 
 There are some additional options to consider.
 
