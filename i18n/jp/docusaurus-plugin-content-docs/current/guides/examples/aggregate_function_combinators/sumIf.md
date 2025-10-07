@@ -1,30 +1,29 @@
 ---
-slug: '/examples/aggregate-function-combinators/sumIf'
-title: 'sumIf'
-description: 'sumIfコンビネータの使用例'
-keywords:
+'slug': '/examples/aggregate-function-combinators/sumIf'
+'title': 'sumIf'
+'description': 'sumIfコムビネーターを使用する例'
+'keywords':
 - 'sum'
 - 'if'
 - 'combinator'
 - 'examples'
 - 'sumIf'
-sidebar_label: 'sumIf'
+'sidebar_label': 'sumIf'
+'doc_type': 'reference'
 ---
-
-
 
 
 # sumIf {#sumif}
 
-## 説明 {#description}
+## Description {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータは、条件が真である行の値の合計を計算するために、[`sum`](/sql-reference/aggregate-functions/reference/sum) 関数に適用できます。このために `sumIf` 集約コンビネータ関数を使用します。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータは、`sum`(/sql-reference/aggregate-functions/reference/sum) 関数に適用して、条件が真である行の値の合計を計算するために、`sumIf` 集約コンビネータ関数を使用します。
 
-## 使用例 {#example-usage}
+## Example usage {#example-usage}
 
-この例では、成功フラグを持つ売上データを保存するテーブルを作成し、`sumIf` を使用して成功したトランザクションの総売上額を計算します。
+この例では、成功フラグを持つ販売データを保存するテーブルを作成し、`sumIf`を使用して成功した取引の総販売額を計算します。
 
-```sql title="クエリ"
+```sql title="Query"
 CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
@@ -40,23 +39,23 @@ INSERT INTO sales VALUES
     (6, 175.25, 1);
 
 SELECT
-    sumIf(amount, is_successful = 1) as total_successful_sales
+    sumIf(amount, is_successful = 1) AS total_successful_sales
 FROM sales;
 ```
 
-`sumIf` 関数は `is_successful = 1` の場合の金額のみを合計します。この場合、合計するのは: 100.50 + 200.75 + 300.00 + 175.25 になります。
+`sumIf` 関数は、`is_successful = 1` の条件を満たす金額のみを合計します。この場合、合計するのは: 100.50 + 200.75 + 300.00 + 175.25 です。
 
-```response title="レスポンス"
+```response title="Response"
    ┌─total_successful_sales─┐
 1. │                  776.50 │
    └───────────────────────┘
 ```
 
-### 価格方向による取引量の計算 {#calculate-trading-vol-price-direction}
+### Calculate trading volume by price direction {#calculate-trading-vol-price-direction}
 
-この例では、[ClickHouse playground](https://sql.clickhouse.com/) で入手可能な `stock` テーブルを使用して、2002年の上半期の価格方向による取引量を計算します。
+この例では、[ClickHouse playground](https://sql.clickhouse.com/) で使用できる `stock` テーブルを利用して、2002年上半期の価格方向による取引量を計算します。
 
-```sql title="クエリ"
+```sql title="Query"
 SELECT 
     toStartOfMonth(date) AS month,
     formatReadableQuantity(sumIf(volume, price > open)) AS volume_on_up_days,
@@ -86,11 +85,11 @@ ORDER BY month;
     └────────────┴───────────────────┴─────────────────────┴────────────────────────┴───────────────┘
 ```
 
-### 銘柄別の取引量の計算 {#calculate-trading-volume}
+### Calculate trading volume by stock symbol {#calculate-trading-volume}
 
-この例では、[ClickHouse playground](https://sql.clickhouse.com/) で入手可能な `stock` テーブルを使用して、2006年の当時の3つの大手テクノロジー企業の銘柄別の取引量を計算します。
+この例では、[ClickHouse playground](https://sql.clickhouse.com/) で使用できる `stock` テーブルを利用して、2006年に当時の最大の3つのテクノロジー企業の株式シンボルによる取引量を計算します。
 
-```sql title="クエリ"
+```sql title="Query"
 SELECT 
     toStartOfMonth(date) AS month,
     formatReadableQuantity(sumIf(volume, symbol = 'AAPL')) AS apple_volume,
@@ -104,7 +103,7 @@ GROUP BY month
 ORDER BY month;
 ```
 
-```markdown title="レスポンス"
+```markdown title="Response"
     ┌──────month─┬─apple_volume───┬─microsoft_volume─┬─google_volume──┬─total_volume─┬─major_tech_percentage─┐
  1. │ 2006-01-01 │ 782.21 million │ 1.39 billion     │ 299.69 million │  84343937700 │                  2.93 │
  2. │ 2006-02-01 │ 670.38 million │ 1.05 billion     │ 297.65 million │  73524748600 │                  2.74 │
@@ -121,6 +120,6 @@ ORDER BY month;
     └────────────┴────────────────┴──────────────────┴────────────────┴──────────────┴───────────────────────┘
 ```
 
-## 参照 {#see-also}
+## See also {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`Ifコンビネータ`](/sql-reference/aggregate-functions/combinators#-if)
+- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

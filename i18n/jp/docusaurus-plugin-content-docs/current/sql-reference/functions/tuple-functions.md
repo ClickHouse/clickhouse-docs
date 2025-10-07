@@ -1,19 +1,16 @@
 ---
-description: 'Documentation for Tuple Functions'
-sidebar_label: 'Tuples'
-sidebar_position: 180
-slug: '/sql-reference/functions/tuple-functions'
-title: 'Tuple Functions'
+'description': 'Tuple Functionsのドキュメント'
+'sidebar_label': 'タプル'
+'slug': '/sql-reference/functions/tuple-functions'
+'title': 'タプル関数'
+'doc_type': 'reference'
 ---
-
-
-
 
 ## tuple {#tuple}
 
-複数のカラムをグループ化することを許可する関数です。
-カラム C1, C2, ... の型が T1, T2, ... であれば、名前がユニークで引用符なし識別子として扱える場合には、これらのカラムを含む名前付き Tuple(C1 T1, C2 T2, ...) 型のタプルを返します。そうでない場合は、Tuple(T1, T2, ...) が返されます。関数の実行にはコストがかかりません。
-タプルは通常、IN 演算子の引数としての中間値や、ラムダ関数の形式パラメータリストを作成するために使用されます。タプルはテーブルに書き込むことはできません。
+複数のカラムをグループ化することを可能にする関数です。
+カラム `C1, C2, ...` の型が `T1, T2, ...` の場合、`Tuple(T1, T2, ...)` を返します。設定 [`enable_named_columns_in_function_tuple`](/operations/settings/settings#enable_named_columns_in_function_tuple) が有効になっている場合、これらのカラムが一意の名前を持ち、引用符なしの識別子として扱える場合には、`Tuple(C1 T1, C2 T2, ...)` を返します。関数を実行するコストはありません。
+タプルは通常、IN 演算子の引数としての中間値や、ラムダ関数の形式パラメータのリストを作成するために使用されます。タプルはテーブルに書き込むことはできません。
 
 この関数は演算子 `(x, y, ...)` を実装しています。
 
@@ -25,11 +22,11 @@ tuple(x, y, ...)
 
 ## tupleElement {#tupleelement}
 
-タプルからカラムを取得することを許可する関数です。
+タプルからカラムを取得することを可能にする関数です。
 
-第二引数が数値 `index` の場合、カラムインデックスを表します（1から始まります）。第二引数が文字列 `name` の場合、それは要素の名前を表します。さらに、第三のオプション引数を提供することができ、インデックスが範囲外であるか、名前に対する要素が存在しない場合には、例外をスローする代わりにデフォルト値が返されます。第二および第三の引数は、定数である必要があります。関数の実行にはコストがかかりません。
+第二引数が数値 `index` の場合、それはカラムのインデックスで、1から始まります。第二引数が文字列 `name` の場合、それは要素の名前を表します。さらに、第三のオプション引数を提供することができ、インデックスが範囲外または名前に対して要素が存在しない場合は、例外をスローする代わりにデフォルト値を返します。第二および第三の引数は、指定された場合、定数でなければなりません。関数を実行するコストはありません。
 
-この関数はオペレーター `x.index` と `x.name` を実装します。
+この関数は演算子 `x.index` と `x.name` を実装しています。
 
 **構文**
 
@@ -40,9 +37,9 @@ tupleElement(tuple, name, [, default_value])
 
 ## untuple {#untuple}
 
-呼び出し位置での [tuple](/sql-reference/data-types/tuple) 要素の構文置換を実行します。
+呼び出し位置で [tuple](/sql-reference/data-types/tuple) 要素の構文的置換を行います。
 
-結果カラムの名前は実装に依存し、変更される可能性があります。`untuple` 後に特定のカラム名を仮定しないでください。
+結果カラムの名前は実装に依存し、変更される可能性があります。`untuple` の後に特定のカラム名を仮定しないでください。
 
 **構文**
 
@@ -50,11 +47,11 @@ tupleElement(tuple, name, [, default_value])
 untuple(x)
 ```
 
-クエリの結果としてカラムをスキップするには、`EXCEPT` 式を使用できます。
+`EXCEPT` 式を使用してクエリの結果としてカラムをスキップすることができます。
 
 **引数**
 
-- `x` — `tuple` 関数、カラム、または要素のタプル。 [Tuple](../data-types/tuple.md)。
+- `x` — `tuple` 関数、カラム、または要素のタプル。[Tuple](../data-types/tuple.md)。
 
 **返される値**
 
@@ -74,7 +71,7 @@ untuple(x)
 └─────┴────┴────┴────┴────┴────┴───────────┘
 ```
 
-`Tuple` 型のカラムを `untuple` 関数のパラメータとして使用する例:
+`Tuple` 型のカラムを `untuple` 関数パラメータとして使用する例:
 
 クエリ:
 
@@ -94,7 +91,7 @@ SELECT untuple(v6) FROM kv;
 └───────┴───────┘
 ```
 
-`EXCEPT` 式を使用する例:
+`EXCEPT` 表現を使用する例:
 
 クエリ:
 
@@ -120,7 +117,7 @@ SELECT untuple((* EXCEPT (v2, v3),)) FROM kv;
 
 ## tupleHammingDistance {#tuplehammingdistance}
 
-同じサイズの二つのタプル間の [ハミング距離](https://ja.wikipedia.org/wiki/ハミング距離) を返します。
+同じサイズの2つのタプル間の [ハミング距離](https://en.wikipedia.org/wiki/Hamming_distance) を返します。
 
 **構文**
 
@@ -130,17 +127,17 @@ tupleHammingDistance(tuple1, tuple2)
 
 **引数**
 
-- `tuple1` — 第一のタプル。 [Tuple](../data-types/tuple.md)。
-- `tuple2` — 第二のタプル。 [Tuple](../data-types/tuple.md)。
+- `tuple1` — 最初のタプル。[Tuple](../data-types/tuple.md)。
+- `tuple2` — 第二のタプル。[Tuple](../data-types/tuple.md)。
 
-タプルは同じ型の要素を持つ必要があります。
+タプルは同じ型の要素を持っている必要があります。
 
 **返される値**
 
 - ハミング距離。
 
 :::note
-結果の型は [算術関数](../../sql-reference/functions/arithmetic-functions.md) と同様に、入力タプル内の要素数に基づいて計算されます。
+結果の型は、入力タプルの要素数に基づいて [算術関数](../../sql-reference/functions/arithmetic-functions.md) の計算と同じ方法で計算されます。
 :::
 
 ```sql
@@ -174,7 +171,7 @@ SELECT tupleHammingDistance((1, 2, 3), (3, 2, 1)) AS HammingDistance;
 └─────────────────┘
 ```
 
-[MinHash](../../sql-reference/functions/hash-functions.md#ngramminhash) 関数と組み合わせて、部分重複する文字列を検出するために使用できます:
+[MinHash](../../sql-reference/functions/hash-functions.md#ngramMinHash) 関数と共に、半重複文字列を検出するために使用できます:
 
 ```sql
 SELECT tupleHammingDistance(wordShingleMinHash(string), wordShingleMinHashCaseInsensitive(string)) AS HammingDistance
@@ -191,7 +188,8 @@ FROM (SELECT 'ClickHouse is a column-oriented database management system for onl
 
 ## tupleToNameValuePairs {#tupletonamevaluepairs}
 
-名前付きタプルを (name, value) ペアの配列に変換します。`Tuple(a T, b T, ..., c T)` は `Array(Tuple(String, T), ...)` を返し、`Strings` はタプルの名前付きフィールドを表し、`T` はそれらの名前に関連付けられた値です。タプル内のすべての値は同じ型である必要があります。
+名前付きタプルを (name, value) ペアの配列に変換します。`Tuple(a T, b T, ..., c T)` の場合、`Array(Tuple(String, T), ...)` を返します。
+ここで、`Strings` はタプルの名前付きフィールドを表し、`T` はこれらの名前に関連する値です。タプル内のすべての値は同じ型である必要があります。
 
 **構文**
 
@@ -201,7 +199,7 @@ tupleToNameValuePairs(tuple)
 
 **引数**
 
-- `tuple` — 名前付きタプル。 [Tuple](../data-types/tuple.md) で、任意の型の値を持ちます。
+- `tuple` — 名前付きタプル。[Tuple](../data-types/tuple.md) で、任意の型の値を持つ。
 
 **返される値**
 
@@ -248,7 +246,7 @@ SELECT arrayJoin(tupleToNameValuePairs(col)) FROM tupletest;
 └───────────────────────────────────────┘
 ```
 
-単純なタプルを関数に渡すと、ClickHouse は値のインデックスをその名前として使用します:
+関数に単純なタプルを渡すと、ClickHouse は値のインデックスを名前として使用します:
 
 ```sql
 SELECT tupleToNameValuePairs(tuple(3, 2, 1));
@@ -264,7 +262,7 @@ SELECT tupleToNameValuePairs(tuple(3, 2, 1));
 
 ## tupleNames {#tuplenames}
 
-タプルをカラム名の配列に変換します。`Tuple(a T, b T, ...)` の形式のタプルに対して、タプルの名前付きカラムを表す文字列の配列を返します。タプルの要素に明示的な名前がない場合、それらのインデックスがカラム名として使用されます。
+タプルをカラム名の配列に変換します。`Tuple(a T, b T, ...)` 形式のタプルの場合、タプルの名前付きカラムを表す文字列の配列を返します。タプル要素に明示的な名前がない場合は、そのインデックスがカラム名として使用されます。
 
 **構文**
 
@@ -274,13 +272,13 @@ tupleNames(tuple)
 
 **引数**
 
-- `tuple` — 名前付きタプル。 [Tuple](../../sql-reference/data-types/tuple.md) で、任意の型の値を持ちます。
+- `tuple` — 名前付きタプル。[Tuple](../../sql-reference/data-types/tuple.md) で、任意の型の値を持つ。
 
 **返される値**
 
 - 文字列の配列。
 
-型: [Array](../../sql-reference/data-types/array.md)([Tuple](../../sql-reference/data-types/tuple.md)([String](../../sql-reference/data-types/string.md), ...))。
+タイプ: [Array](../../sql-reference/data-types/array.md)([Tuple](../../sql-reference/data-types/tuple.md)([String](../../sql-reference/data-types/string.md), ...))。
 
 **例**
 
@@ -302,7 +300,7 @@ SELECT tupleNames(col) FROM tupletest;
 └──────────────────────────┘
 ```
 
-単純なタプルを関数に渡すと、ClickHouse はカラムのインデックスをその名前として使用します:
+関数に単純なタプルを渡すと、ClickHouse はカラムのインデックスを名前として使用します:
 
 ```sql
 SELECT tupleNames(tuple(3, 2, 1));
@@ -318,7 +316,7 @@ SELECT tupleNames(tuple(3, 2, 1));
 
 ## tuplePlus {#tupleplus}
 
-同じサイズの二つのタプルの対応する値の合計を計算します。
+同じサイズの2つのタプルの対応する値の合計を計算します。
 
 **構文**
 
@@ -326,16 +324,16 @@ SELECT tupleNames(tuple(3, 2, 1));
 tuplePlus(tuple1, tuple2)
 ```
 
-エイリアス: `vectorSum`.
+エイリアス: `vectorSum`。
 
 **引数**
 
-- `tuple1` — 第一のタプル。 [Tuple](../data-types/tuple.md)。
-- `tuple2` — 第二のタプル。 [Tuple](../data-types/tuple.md)。
+- `tuple1` — 最初のタプル。[Tuple](../data-types/tuple.md)。
+- `tuple2` — 第二のタプル。[Tuple](../data-types/tuple.md)。
 
 **返される値**
 
-- 合計を持つタプル。 [Tuple](../data-types/tuple.md)。
+- 合計のタプル。[Tuple](../data-types/tuple.md)。
 
 **例**
 
@@ -355,7 +353,7 @@ SELECT tuplePlus((1, 2), (2, 3));
 
 ## tupleMinus {#tupleminus}
 
-同じサイズの二つのタプルの対応する値の引き算を計算します。
+同じサイズの2つのタプルの対応する値の減算を計算します。
 
 **構文**
 
@@ -363,16 +361,16 @@ SELECT tuplePlus((1, 2), (2, 3));
 tupleMinus(tuple1, tuple2)
 ```
 
-エイリアス: `vectorDifference`.
+エイリアス: `vectorDifference`。
 
 **引数**
 
-- `tuple1` — 第一のタプル。 [Tuple](../data-types/tuple.md)。
-- `tuple2` — 第二のタプル。 [Tuple](../data-types/tuple.md)。
+- `tuple1` — 最初のタプル。[Tuple](../data-types/tuple.md)。
+- `tuple2` — 第二のタプル。[Tuple](../data-types/tuple.md)。
 
 **返される値**
 
-- 引き算の結果を持つタプル。 [Tuple](../data-types/tuple.md)。
+- 減算結果のタプル。[Tuple](../data-types/tuple.md)。
 
 **例**
 
@@ -392,7 +390,7 @@ SELECT tupleMinus((1, 2), (2, 3));
 
 ## tupleMultiply {#tuplemultiply}
 
-同じサイズの二つのタプルの対応する値の掛け算を計算します。
+同じサイズの2つのタプルの対応する値の乗算を計算します。
 
 **構文**
 
@@ -402,12 +400,12 @@ tupleMultiply(tuple1, tuple2)
 
 **引数**
 
-- `tuple1` — 第一のタプル。 [Tuple](../data-types/tuple.md)。
-- `tuple2` — 第二のタプル。 [Tuple](../data-types/tuple.md)。
+- `tuple1` — 最初のタプル。[Tuple](../data-types/tuple.md)。
+- `tuple2` — 第二のタプル。[Tuple](../data-types/tuple.md)。
 
 **返される値**
 
-- 掛け算の結果を持つタプル。 [Tuple](../data-types/tuple.md)。
+- 乗算のタプル。[Tuple](../data-types/tuple.md)。
 
 **例**
 
@@ -427,7 +425,7 @@ SELECT tupleMultiply((1, 2), (2, 3));
 
 ## tupleDivide {#tupledivide}
 
-同じサイズの二つのタプルの対応する値の割り算を計算します。 ゼロでの割り算は `inf` を返します。
+同じサイズの2つのタプルの対応する値の除算を計算します。ゼロでの除算は `inf` を返します。
 
 **構文**
 
@@ -437,12 +435,12 @@ tupleDivide(tuple1, tuple2)
 
 **引数**
 
-- `tuple1` — 第一のタプル。 [Tuple](../data-types/tuple.md)。
-- `tuple2` — 第二のタプル。 [Tuple](../data-types/tuple.md)。
+- `tuple1` — 最初のタプル。[Tuple](../data-types/tuple.md)。
+- `tuple2` — 第二のタプル。[Tuple](../data-types/tuple.md)。
 
 **返される値**
 
-- 割り算の結果を持つタプル。 [Tuple](../data-types/tuple.md)。
+- 除算結果のタプル。[Tuple](../data-types/tuple.md)。
 
 **例**
 
@@ -476,7 +474,7 @@ tupleNegate(tuple)
 
 **返される値**
 
-- 否定の結果を持つタプル。 [Tuple](../data-types/tuple.md)。
+- 否定結果のタプル。[Tuple](../data-types/tuple.md)。
 
 **例**
 
@@ -496,7 +494,7 @@ SELECT tupleNegate((1,  2));
 
 ## tupleMultiplyByNumber {#tuplemultiplybynumber}
 
-すべての値を数値で掛け算したタプルを返します。
+すべての値を数値で乗算したタプルを返します。
 
 **構文**
 
@@ -507,11 +505,11 @@ tupleMultiplyByNumber(tuple, number)
 **引数**
 
 - `tuple` — [Tuple](../data-types/tuple.md)。
-- `number` — 乗数。 [Int/UInt](../data-types/int-uint.md)、[Float](../data-types/float.md) または [Decimal](../data-types/decimal.md)。
+- `number` — 乗算子。[Int/UInt](../data-types/int-uint.md)、[Float](../data-types/float.md) または [Decimal](../data-types/decimal.md)。
 
 **返される値**
 
-- 掛け算した値を持つタプル。 [Tuple](../data-types/tuple.md)。
+- 乗算された値のタプル。[Tuple](../data-types/tuple.md)。
 
 **例**
 
@@ -531,7 +529,7 @@ SELECT tupleMultiplyByNumber((1, 2), -2.1);
 
 ## tupleDivideByNumber {#tupledividebynumber}
 
-すべての値を数値で割ったタプルを返します。 ゼロでの割り算は `inf` を返します。
+すべての値を数値で除算したタプルを返します。ゼロでの除算は `inf` を返します。
 
 **構文**
 
@@ -542,11 +540,11 @@ tupleDivideByNumber(tuple, number)
 **引数**
 
 - `tuple` — [Tuple](../data-types/tuple.md)。
-- `number` — 割り算される数値。 [Int/UInt](../data-types/int-uint.md)、[Float](../data-types/float.md) または [Decimal](../data-types/decimal.md)。
+- `number` — 除算子。[Int/UInt](../data-types/int-uint.md)、[Float](../data-types/float.md) または [Decimal](../data-types/decimal.md)。
 
 **返される値**
 
-- 割り算した値を持つタプル。 [Tuple](../data-types/tuple.md)。
+- 除算された値のタプル。[Tuple](../data-types/tuple.md)。
 
 **例**
 
@@ -574,7 +572,7 @@ tupleConcat(tuples)
 
 **引数**
 
-- `tuples` – [Tuple](../data-types/tuple.md) 型の任意の数の引数。
+- `tuples` – 任意の数の [Tuple](../data-types/tuple.md) 型の引数。
 
 **例**
 
@@ -600,17 +598,17 @@ tupleIntDiv(tuple_num, tuple_div)
 
 **パラメータ**
 
-- `tuple_num`: 分子値のタプル。 [Tuple](../data-types/tuple) の数値型。
-- `tuple_div`: 除数値のタプル。 [Tuple](../data-types/tuple) の数値型。
+- `tuple_num`: 分子の値のタプル。[Tuple](../data-types/tuple) の数値型。
+- `tuple_div`: 除数の値のタプル。[Tuple](../data-types/tuple) の数値型。
 
 **返される値**
 
-- `tuple_num` と `tuple_div` の商のタプル。 [Tuple](../data-types/tuple) の整数値。
+- `tuple_num` と `tuple_div` の商のタプル。[Tuple](../data-types/tuple) の整数値。
 
 **実装の詳細**
 
-- `tuple_num` または `tuple_div` が非整数値を含む場合、各非整数分子または除数を最も近い整数に丸めて計算されます。
-- ゼロでの割り算にはエラーが発生します。
+- `tuple_num` または `tuple_div` のいずれかに非整数値が含まれている場合、各非整数分子または除数を最も近い整数に丸めて結果が計算されます。
+- ゼロでの除算の場合、エラーが発生します。
 
 **例**
 
@@ -644,7 +642,7 @@ SELECT tupleIntDiv((15, 10, 5), (5.5, 5.5, 5.5));
 
 ## tupleIntDivOrZero {#tupleintdivorzero}
 
-[tupleIntDiv](#tupleintdiv) のように、分子のタプルと分母のタプルの整数除算を行い、商のタプルを返します。ゼロの除数に対してエラーをスローするのではなく、商を 0 として返します。
+[tupleIntDiv](#tupleintdiv) と同様に、分子のタプルと分母のタプルの整数除算を行い、商のタプルを返します。0 の除数に対してはエラーをスローせず、商を 0 として返します。
 
 **構文**
 
@@ -652,17 +650,17 @@ SELECT tupleIntDiv((15, 10, 5), (5.5, 5.5, 5.5));
 tupleIntDivOrZero(tuple_num, tuple_div)
 ```
 
-- `tuple_num`: 分子値のタプル。 [Tuple](../data-types/tuple) の数値型。
-- `tuple_div`: 除数値のタプル。 [Tuple](../data-types/tuple) の数値型。
+- `tuple_num`: 分子の値のタプル。[Tuple](../data-types/tuple) の数値型。
+- `tuple_div`: 除数の値のタプル。[Tuple](../data-types/tuple) の数値型。
 
 **返される値**
 
-- `tuple_num` と `tuple_div` の商のタプル。 [Tuple](../data-types/tuple) の整数値。
+- `tuple_num` と `tuple_div` の商のタプル。[Tuple](../data-types/tuple) の整数値。
 - 除数が 0 の場合は商を 0 として返します。
 
 **実装の詳細**
 
-- `tuple_num` または `tuple_div` が非整数値を含む場合、`tupleIntDiv` と同様に各非整数分子または除数を最も近い整数に丸めて計算されます。
+- `tuple_num` または `tuple_div` のいずれかに非整数値が含まれている場合、[tupleIntDiv](#tupleintdiv) と同様に、各非整数分子または除数を最も近い整数に丸めて結果が計算されます。
 
 **例**
 
@@ -682,7 +680,7 @@ SELECT tupleIntDivOrZero((5, 10, 15), (0, 0, 0));
 
 ## tupleIntDivByNumber {#tupleintdivbynumber}
 
-分子のタプルを指定された除数で割り算を行い、商のタプルを返します。
+指定された除数で分子のタプルの整数除算を行い、商のタプルを返します。
 
 **構文**
 
@@ -692,17 +690,17 @@ tupleIntDivByNumber(tuple_num, div)
 
 **パラメータ**
 
-- `tuple_num`: 分子値のタプル。 [Tuple](../data-types/tuple) の数値型。
-- `div`: 除数値。 [Numeric](../data-types/int-uint.md) 型。
+- `tuple_num`: 分子の値のタプル。[Tuple](../data-types/tuple) の数値型。
+- `div`: 除数の値。[Numeric](../data-types/int-uint.md) 型。
 
 **返される値**
 
-- `tuple_num` と `div` の商のタプル。 [Tuple](../data-types/tuple) の整数値。
+- `tuple_num` と `div` の商のタプル。[Tuple](../data-types/tuple) の整数値。
 
 **実装の詳細**
 
-- `tuple_num` または `div` が非整数値を含む場合、各非整数分子または除数を最も近い整数に丸めて計算されます。
-- ゼロでの割り算にはエラーが発生します。
+- `tuple_num` または `div` に非整数値が含まれている場合、各非整数分子または除数を最も近い整数に丸めて結果を計算します。
+- ゼロでの除算の場合、エラーが発生します。
 
 **例**
 
@@ -736,7 +734,7 @@ SELECT tupleIntDivByNumber((15.2, 10.7, 5.5), 5.8);
 
 ## tupleIntDivOrZeroByNumber {#tupleintdivorzerobynumber}
 
-[tupleIntDivByNumber](#tupleintdivbynumber) のように、分子のタプルを指定された除数で割り算を行い、商のタプルを返します。ゼロの除数に対してエラーをスローするのではなく、商を 0 として返します。
+[tupleIntDivByNumber](#tupleintdivbynumber) と同様に、指定された除数で分子のタプルの整数除算を行い、商のタプルを返します。0 の除数に対してはエラーをスローせず、商を 0 として返します。
 
 **構文**
 
@@ -746,17 +744,17 @@ tupleIntDivOrZeroByNumber(tuple_num, div)
 
 **パラメータ**
 
-- `tuple_num`: 分子値のタプル。 [Tuple](../data-types/tuple) の数値型。
-- `div`: 除数値。 [Numeric](../data-types/int-uint.md) 型。
+- `tuple_num`: 分子の値のタプル。[Tuple](../data-types/tuple) の数値型。
+- `div`: 除数の値。[Numeric](../data-types/int-uint.md) 型。
 
 **返される値**
 
-- `tuple_num` と `div` の商のタプル。 [Tuple](../data-types/tuple) の整数値。
+- `tuple_num` と `div` の商のタプル。[Tuple](../data-types/tuple) の整数値。
 - 除数が 0 の場合は商を 0 として返します。
 
 **実装の詳細**
 
-- `tuple_num` または `div` が非整数値を含む場合、[tupleIntDivByNumber](#tupleintdivbynumber) と同様に各非整数分子または除数を最も近い整数に丸めて計算されます。
+- `tuple_num` または `div` に非整数値が含まれている場合、[tupleIntDivByNumber](#tupleintdivbynumber) と同様に、各非整数分子または除数を最も近い整数に丸めて結果を計算します。
 
 **例**
 
@@ -790,7 +788,7 @@ SELECT tupleIntDivOrZeroByNumber((15, 10, 5), 0)
 
 ## tupleModulo {#tuplemodulo}
 
-二つのタプルの剰余演算の結果のタプルを返します。
+2つのタプルの除算操作の剰余（余り）のタプルを返します。
 
 **構文**
 
@@ -800,13 +798,13 @@ tupleModulo(tuple_num, tuple_mod)
 
 **パラメータ**
 
-- `tuple_num`: 分子値のタプル。 [Tuple](../data-types/tuple) の数値型。
-- `tuple_mod`: 除数値のタプル。 [Tuple](../data-types/tuple) の数値型。
+- `tuple_num`: 分子の値のタプル。[Tuple](../data-types/tuple) の数値型。
+- `tuple_div`: 除数の値のタプル。[Tuple](../data-types/tuple) の数値型。
 
 **返される値**
 
-- `tuple_num` と `tuple_mod` の商の剰余のタプル。 [Tuple](../data-types/tuple) の非ゼロ整数値。
-- ゼロでの除算に対してエラーが発生します。
+- `tuple_num` と `tuple_div` の剰余のタプル。[Tuple](../data-types/tuple) の非ゼロ整数値。
+- ゼロでの除算に対してエラーがスローされます。
 
 **例**
 
@@ -826,7 +824,7 @@ SELECT tupleModulo((15, 10, 5), (5, 3, 2));
 
 ## tupleModuloByNumber {#tuplemodulobynumber}
 
-タプルの剰余演算の結果を指定された除数で返します。
+タプルと指定された除数の除算操作の剰余（余り）のタプルを返します。
 
 **構文**
 
@@ -836,13 +834,13 @@ tupleModuloByNumber(tuple_num, div)
 
 **パラメータ**
 
-- `tuple_num`: 分子値のタプル。 [Tuple](../data-types/tuple) の数値型。
-- `div`: 除数値。 [Numeric](../data-types/int-uint.md) 型。
+- `tuple_num`: 分子の値のタプル。[Tuple](../data-types/tuple) の数値型。
+- `div`: 除数の値。[Numeric](../data-types/int-uint.md) 型。
 
 **返される値**
 
-- `tuple_num` と `div` の剰余のタプル。 [Tuple](../data-types/tuple) の非ゼロ整数値。
-- ゼロでの除算に対してエラーが発生します。
+- `tuple_num` と `div` の剰余のタプル。[Tuple](../data-types/tuple) の非ゼロ整数値。
+- ゼロでの除算に対してエラーがスローされます。
 
 **例**
 
@@ -862,7 +860,7 @@ SELECT tupleModuloByNumber((15, 10, 5), 2);
 
 ## flattenTuple {#flattentuple}
 
-ネストされた名前付き `input` タプルからフラットな `output` タプルを返します。 `output` タプルの要素は元の `input` タプルからのパスです。 例えば: `Tuple(a Int, Tuple(b Int, c Int)) -> Tuple(a Int, b Int, c Int)`。 `flattenTuple` は、型 `Object` のすべてのパスを個別のカラムとして選択するために使用できます。
+ネストされた名付き `input` タプルから平坦な `output` タプルを返します。`output` タプルの要素は、元の `input` タプルからのパスです。例えば: `Tuple(a Int, Tuple(b Int, c Int)) -> Tuple(a Int, b Int, c Int)`。`flattenTuple` は、型 `Object` からのすべてのパスを個別のカラムとして選択するために使用できます。
 
 **構文**
 
@@ -872,11 +870,11 @@ flattenTuple(input)
 
 **パラメータ**
 
-- `input`: フラット化するネストされた名前付きタプル。 [Tuple](../data-types/tuple)。
+- `input`: 平坦化するネストされた名付きタプル。[Tuple](../data-types/tuple)。
 
 **返される値**
 
-- 元の `input` からのパスを持つ `output` タプル。 [Tuple](../data-types/tuple)。
+- 元の `input` からのパスを持つ `output` タプル。[Tuple](../data-types/tuple)。
 
 **例**
 
@@ -899,3 +897,12 @@ SELECT flattenTuple(t) FROM t_flatten_tuple;
 ## Distance functions {#distance-functions}
 
 すべてのサポートされている関数は [distance functions documentation](../../sql-reference/functions/distance-functions.md) に記載されています。
+
+<!-- 
+The inner content of the tags below are replaced at doc framework build time with 
+docs generated from system.functions. Please do not modify or remove the tags.
+See: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+-->
+
+<!--AUTOGENERATED_START-->
+<!--AUTOGENERATED_END-->

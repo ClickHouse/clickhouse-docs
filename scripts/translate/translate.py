@@ -20,7 +20,7 @@ import frontmatter
 import textwrap
 
 TRANSLATE_EXCLUDED_FILES = {"about-us/adopters.md", "index.md", "integrations/language-clients/java/jdbc-v1.md", "cloud/reference/changelog.md"}
-TRANSLATE_EXCLUDED_FOLDERS = {"whats-new", "changelogs", "cloud/changelogs"}
+TRANSLATE_EXCLUDED_FOLDERS = {"whats-new", "changelogs", "cloud/reference/01_changelog"}
 
 IGNORE_FOLDERS = {"ru", "zh"}
 
@@ -506,17 +506,19 @@ def translate_file(config, input_file_path, output_file_path, model):
         else:
             imports_text = ""
 
-        yaml_str = yaml.dump(
-            metadata,
-            Dumper=QuotedStringDumper,
-            default_flow_style=False,
-            sort_keys=False,
-            allow_unicode=True
-        )
+        # Only add frontmatter if metadata exists and is not empty/None
+        if metadata:
+            yaml_str = yaml.dump(
+                metadata,
+                Dumper=QuotedStringDumper,
+                default_flow_style=False,
+                sort_keys=False,
+                allow_unicode=True
+            )
 
-        if yaml_str != "":
-            formatted_frontmatter = f"---\n{yaml_str}---\n\n"
-            translated_text = formatted_frontmatter + translated_text
+            if yaml_str and yaml_str.strip() != "null":
+                formatted_frontmatter = f"---\n{yaml_str}---\n\n"
+                translated_text = formatted_frontmatter + translated_text
 
         with open(output_file_path, "w", encoding="utf-8") as output_file:
             lines = translated_text.splitlines()
@@ -716,6 +718,49 @@ def remove_old_files(files_translated, output_folder):
         except OSError as e:
             print(f"Error removing file {file_path}: {e}")
 
+def cleanup_orphaned_translations(input_folder, output_folder):
+    """Remove translation files and hash files when the source file no longer exists"""
+    for root, _, files in os.walk(output_folder):
+        for file in files:
+            # Check hash files
+            if file.endswith(".hash"):
+                hash_file_path = os.path.join(root, file)
+                # Get the corresponding source file path
+                relative_path = os.path.relpath(hash_file_path, output_folder)
+                # Remove .hash extension to get the translated file path
+                translated_file_path = hash_file_path[:-5]  # Remove ".hash"
+                # Get the source file path
+                source_file_path = os.path.join(input_folder, relative_path[:-5])  # Remove ".hash"
+
+                # Check if source file exists
+                if not os.path.exists(source_file_path):
+                    print(f"Source file missing for hash: {source_file_path}")
+
+                    # Remove hash file
+                    try:
+                        os.remove(hash_file_path)
+                        print(f"Removed orphaned hash file: {hash_file_path}")
+                    except OSError as e:
+                        print(f"Error removing hash file {hash_file_path}: {e}")
+
+                    # Remove translated file if it exists
+                    if os.path.exists(translated_file_path):
+                        try:
+                            os.remove(translated_file_path)
+                            print(f"Removed orphaned translation file: {translated_file_path}")
+                        except OSError as e:
+                            print(f"Error removing translation file {translated_file_path}: {e}")
+
+                    # Also check for .translate and .translated versions
+                    for suffix in [".translate", ".translated"]:
+                        temp_file_path = translated_file_path + suffix
+                        if os.path.exists(temp_file_path):
+                            try:
+                                os.remove(temp_file_path)
+                                print(f"Removed orphaned temp file: {temp_file_path}")
+                            except OSError as e:
+                                print(f"Error removing temp file {temp_file_path}: {e}")
+
 def main():
     parser = argparse.ArgumentParser(description="Translate Markdown files in a folder.")
     parser.add_argument(
@@ -736,12 +781,35 @@ def main():
     args = parser.parse_args()
 
     config = load_config(args.config)
+
+    # Validate that the output folder matches the language code in the config
+    lang_code = config.get("lang_code")
+    if not lang_code:
+        print("ERROR: lang_code not found in config file. Exiting...")
+        sys.exit(1)
+
+    # Normalize paths to handle trailing slashes consistently
+    normalized_output = os.path.normpath(args.output_folder)
+
+    # Check if the output folder path contains the language code
+    # Expected pattern: i18n/{lang_code}/
+    if f"/i18n/{lang_code}" not in normalized_output and f"\\i18n\\{lang_code}" not in normalized_output:
+        print(f"ERROR: Output folder path does not match the language code '{lang_code}' from config.")
+        print(f"  Config file: {args.config}")
+        print(f"  Output folder: {args.output_folder}")
+        print(f"  Expected output folder to contain: i18n/{lang_code}/")
+        sys.exit(1)
+
+    # Clean up orphaned translations before starting
+    output_docs_folder = os.path.join(args.output_folder, "docusaurus-plugin-content-docs/current")
+    cleanup_orphaned_translations(args.input_folder, output_docs_folder)
+
     translate_plugin_data(args.output_folder, config, model=args.model)
     files_translated = translate_docs_folder(config, args.input_folder,
-                                             os.path.join(args.output_folder, "docusaurus-plugin-content-docs/current"),
+                                             output_docs_folder,
                                              args.model, overwrite=args.force_overwrite)
     rename_translated_files(args.output_folder)
-    remove_old_files(files_translated, os.path.join(args.output_folder, "docusaurus-plugin-content-docs/current"))
+    remove_old_files(files_translated, output_docs_folder)
 
 
 if __name__ == "__main__":

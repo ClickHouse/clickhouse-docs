@@ -1,11 +1,5 @@
----
-{}
----
-
-
-
 :::important best practices
-ClickHouse Serverの設定を行う際、設定ファイルを追加または編集する場合は次の点に注意してください：
+ClickHouse Serverを設定する際には、構成ファイルを追加または編集することで次の点に留意してください:
 - `/etc/clickhouse-server/config.d/` ディレクトリにファイルを追加する
 - `/etc/clickhouse-server/users.d/` ディレクトリにファイルを追加する
 - `/etc/clickhouse-server/config.xml` ファイルはそのままにする

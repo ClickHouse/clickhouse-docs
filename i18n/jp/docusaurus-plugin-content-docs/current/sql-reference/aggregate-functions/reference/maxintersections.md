@@ -1,20 +1,17 @@
 ---
-description: 'Aggregate function that calculates the maximum number of times that
-  a group of intervals intersects each other (if all the intervals intersect at least
-  once).'
-sidebar_position: 163
-slug: '/sql-reference/aggregate-functions/reference/maxintersections'
-title: 'maxIntersections'
+'description': '集約関数で、期間のグループが互いに交差する最大回数を計算します（すべての期間が少なくとも一度交差する場合）。'
+'sidebar_position': 163
+'slug': '/sql-reference/aggregate-functions/reference/maxintersections'
+'title': 'maxIntersections'
+'doc_type': 'reference'
 ---
-
-
 
 
 # maxIntersections
 
-グループの時間間隔が互いに交差する最大回数を計算する集約関数（すべての時間間隔が少なくとも1回交差する場合）。
+集約関数で、インターバルのグループが互いに交差する回数の最大値を計算します（すべてのインターバルが少なくとも1回交差する場合）。
 
-構文は次のとおりです：
+構文は次の通りです：
 
 ```sql
 maxIntersections(start_column, end_column)
@@ -22,13 +19,13 @@ maxIntersections(start_column, end_column)
 
 **引数**
 
-- `start_column` – 各時間間隔の開始を表す数値カラム。`start_column` が `NULL` または 0 の場合、その間隔はスキップされます。
+- `start_column` – 各インターバルの開始を表す数値カラム。`start_column` が `NULL` または 0 の場合、そのインターバルはスキップされます。
 
-- `end_column` - 各時間間隔の終了を表す数値カラム。`end_column` が `NULL` または 0 の場合、その間隔はスキップされます。
+- `end_column` - 各インターバルの終了を表す数値カラム。`end_column` が `NULL` または 0 の場合、そのインターバルはスキップされます。
 
 **返される値**
 
-交差した時間間隔の最大数を返します。
+交差したインターバルの最大数を返します。
 
 **例**
 
@@ -37,7 +34,7 @@ CREATE TABLE my_events (
     start UInt32,
     end UInt32
 )
-Engine = MergeTree
+ENGINE = MergeTree
 ORDER BY tuple();
 
 INSERT INTO my_events VALUES
@@ -47,7 +44,7 @@ INSERT INTO my_events VALUES
    (3, 7);
 ```
 
-時間間隔は次のようになります：
+インターバルは次のようになります：
 
 ```response
 1 - 3
@@ -56,7 +53,7 @@ INSERT INTO my_events VALUES
     3 - - - 7
 ```
 
-これらの時間間隔のうち3つが共通の値を持っています（値は `4` ですが、共通の値は重要ではなく、交差の数を測定しています）。時間間隔 `(1,3)` と `(3,7)` は端点を共有していますが、`maxIntersections` 関数では交差しているとはみなされません。
+これらのインターバルのうち3つは共通の値を持っています（値は `4` ですが、重要なのは共通の値ではなく、交差の数を測定しています）。インターバル `(1,3)` と `(3,7)` はエンドポイントを共有していますが、`maxIntersections` 関数では交差しているとは見なされません。
 
 ```sql
 SELECT maxIntersections(start, end) FROM my_events;
@@ -67,4 +64,4 @@ SELECT maxIntersections(start, end) FROM my_events;
 3
 ```
 
-最大の時間間隔が複数回発生する場合、その発生の数と位置を見つけるために [`maxIntersectionsPosition` 関数](./maxintersectionsposition.md) を使用できます。
+最大インターバルの複数の発生がある場合、[`maxIntersectionsPosition` 関数](./maxintersectionsposition.md)を使用して、それらの発生の数と場所を特定できます。

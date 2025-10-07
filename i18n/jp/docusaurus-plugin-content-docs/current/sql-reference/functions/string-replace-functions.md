@@ -1,21 +1,19 @@
 ---
-description: 'Documentation for Functions for Replacing in Strings'
-sidebar_label: 'Replacing in Strings'
-sidebar_position: 150
-slug: '/sql-reference/functions/string-replace-functions'
-title: 'Functions for Replacing in Strings'
+'description': 'Functions for Replacing in Strings のドキュメント'
+'sidebar_label': '文字列置換'
+'slug': '/sql-reference/functions/string-replace-functions'
+'title': '文字列内の置換機能'
+'doc_type': 'reference'
 ---
 
 
+# 文字列の置換に関する関数
 
-
-# 文字列内の置換に関する関数
-
-[一般的な文字列関数](string-functions.md)と [文字列内を検索する関数](string-search-functions.md)は別々に説明されています。
+[一般的な文字列関数](string-functions.md)と[文字列内の検索関数](string-search-functions.md)は別々に説明されています。
 
 ## overlay {#overlay}
 
-文字列 `input` の一部を別の文字列 `replace` で置き換え、1から始まるインデックス `offset` から開始します。
+文字列 `input` の一部を別の文字列 `replace` で置換します。置換は1から始まるインデックス `offset` から行います。
 
 **構文**
 
@@ -23,16 +21,16 @@ title: 'Functions for Replacing in Strings'
 overlay(s, replace, offset[, length])
 ```
 
-**パラメーター**
+**パラメータ**
 
 - `s`: 文字列型 [String](../data-types/string.md)。
 - `replace`: 文字列型 [String](../data-types/string.md)。
-- `offset`: 整数型 [Int](../data-types/int-uint.md) (1から始まる)。`offset` が負の場合、文字列 `s` の末尾から数えます。
-- `length`: オプション。整数型 [Int](../data-types/int-uint.md)。`length` は入力文字列 `s` 内の置き換え対象の部分の長さを指定します。`length` が指定されていない場合、`s` から削除されるバイト数は `replace` の長さに等しくなります。それ以外の場合、`length` バイトが削除されます。
+- `offset`: 整数型 [Int](../data-types/int-uint.md) (1から始まる)。もし `offset` が負の場合、文字列 `s` の末尾から数えます。
+- `length`: 任意。整数型 [Int](../data-types/int-uint.md)。`length` は、入力文字列 `s` 内で置換されるスニペットの長さを指定します。`length` が指定されていない場合、`s` から削除されるバイト数は `replace` の長さに等しくなり、それ以外の場合は `length` バイトが削除されます。
 
-**戻り値**
+**返される値**
 
-- [String](../data-types/string.md) 型の値。
+- [String](../data-types/string.md) データ型の値。
 
 **例**
 
@@ -62,9 +60,9 @@ SELECT overlay('My father is from Mexico.', 'dad', 4, 6) AS res;
 
 ## overlayUTF8 {#overlayutf8}
 
-文字列 `input` の一部を別の文字列 `replace` で置き換え、1から始まるインデックス `offset` から開始します。
+文字列 `input` の一部を別の文字列 `replace` で置換します。置換は1から始まるインデックス `offset` から行います。
 
-文字列が有効なUTF-8エンコードされたテキストを含むと仮定しています。この仮定が破られた場合、例外はスローされず、結果は未定義です。
+文字列が有効なUTF-8エンコードされたテキストであると仮定します。この仮定が破られた場合、例外はスローされず、結果は未定義です。
 
 **構文**
 
@@ -72,16 +70,16 @@ SELECT overlay('My father is from Mexico.', 'dad', 4, 6) AS res;
 overlayUTF8(s, replace, offset[, length])
 ```
 
-**パラメーター**
+**パラメータ**
 
 - `s`: 文字列型 [String](../data-types/string.md)。
 - `replace`: 文字列型 [String](../data-types/string.md)。
-- `offset`: 整数型 [Int](../data-types/int-uint.md) (1から始まる)。`offset` が負の場合、入力文字列 `s` の末尾から数えます。
-- `length`: オプション。整数型 [Int](../data-types/int-uint.md)。`length` は入力文字列 `s` 内の置き換え対象の部分の長さを指定します。`length` が指定されていない場合、`s` から削除される文字数は `replace` の長さに等しくなります。それ以外の場合、`length` 文字が削除されます。
+- `offset`: 整数型 [Int](../data-types/int-uint.md) (1から始まる)。もし `offset` が負の場合、入力文字列 `s` の末尾から数えます。
+- `length`: 任意。整数型 [Int](../data-types/int-uint.md)。`length` は、入力文字列 `s` 内で置換されるスニペットの長さを指定します。`length` が指定されていない場合、`s` から削除される文字数は `replace` の長さに等しくなり、それ以外の場合は `length` 文字が削除されます。
 
-**戻り値**
+**返される値**
 
-- [String](../data-types/string.md) 型の値。
+- [String](../data-types/string.md) データ型の値。
 
 **例**
 
@@ -99,7 +97,7 @@ SELECT overlay('Mein Vater ist aus Österreich.', 'der Türkei', 20) AS res;
 
 ## replaceOne {#replaceone}
 
-`haystack` 中の部分文字列 `pattern` の最初の出現を `replacement` 文字列で置き換えます。
+文字列 `haystack` の中の部分文字列 `pattern` の最初の出現を `replacement` 文字列で置き換えます。
 
 **構文**
 
@@ -109,7 +107,7 @@ replaceOne(haystack, pattern, replacement)
 
 ## replaceAll {#replaceall}
 
-`haystack` 中の部分文字列 `pattern` のすべての出現を `replacement` 文字列で置き換えます。
+文字列 `haystack` の中の部分文字列 `pattern` のすべての出現を `replacement` 文字列で置き換えます。
 
 **構文**
 
@@ -121,12 +119,13 @@ replaceAll(haystack, pattern, replacement)
 
 ## replaceRegexpOne {#replaceregexpone}
 
-`haystack` 中の正規表現 `pattern` に一致する部分文字列の最初の出現を `replacement` 文字列で置き換えます。
+正規表現 `pattern` に一致する部分文字列の最初の出現を `replacement` 文字列で置き換えます（[re2構文](https://github.com/google/re2/wiki/Syntax)に従う）。
 
-`replacement` には置換 `\0-\9` を含めることができます。
+`replacement` には `\0-\9` の置換が含まれます。
 置換 `\1-\9` は1番目から9番目のキャプチャグループ（サブマッチ）に対応し、置換 `\0` は全体の一致に対応します。
 
-`pattern` または `replacement` 文字列内で文字 `\` をそのまま使用したい場合は、エスケープとして `\` を使用します。また、文字列リテラルは追加のエスケープが必要であることを覚えておいてください。
+`pattern` または `replacement` 文字列内でそのままの `\` 文字を使用するには、エスケープする必要があります。
+また、文字列リテラルでは追加のエスケープが必要であることに注意してください。
 
 **構文**
 
@@ -136,7 +135,7 @@ replaceRegexpOne(haystack, pattern, replacement)
 
 **例**
 
-ISO形式の日付を米国形式に変換する:
+ISO日付をアメリカ形式に変換：
 
 ```sql
 SELECT DISTINCT
@@ -159,7 +158,7 @@ FORMAT TabSeparated
 2014-03-23      03/23/2014
 ```
 
-文字列を10回コピーする:
+文字列を10回コピー：
 
 ```sql
 SELECT replaceRegexpOne('Hello, World!', '.*', '\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0') AS res
@@ -175,7 +174,7 @@ SELECT replaceRegexpOne('Hello, World!', '.*', '\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0')
 
 ## replaceRegexpAll {#replaceregexpall}
 
-`replaceRegexpOne`と同様ですが、パターンのすべての出現を置き換えます。
+`replaceRegexpOne` と同様ですが、パターンのすべての出現を置き換えます。
 
 エイリアス: `REGEXP_REPLACE`。
 
@@ -193,7 +192,7 @@ SELECT replaceRegexpAll('Hello, World!', '.', '\\0\\0') AS res
 └────────────────────────────┘
 ```
 
-例外として、正規表現が空の部分文字列で動作した場合、置き換えは一度だけ行われます。例えば:
+例外として、正規表現が空の部分文字列に作用した場合、置換は一度だけ行われます。例：
 
 ```sql
 SELECT replaceRegexpAll('Hello, World!', '^', 'here: ') AS res
@@ -209,9 +208,9 @@ SELECT replaceRegexpAll('Hello, World!', '^', 'here: ') AS res
 
 ## regexpQuoteMeta {#regexpquotemeta}
 
-正規表現で特別な意味を持つこれらの文字の前にバックスラッシュを追加します： `\0`, `\\`, `|`, `(`, `)`, `^`, `$`, `.`, `[`, `]`, `?`, `*`, `+`, `{`, `:`, `-`。
+正規表現で特別な意味を持つこれらの文字の前にバックスラッシュを追加します: `\0`, `\\`, `|`, `(`, `)`, `^`, `$`, `.`, `[`, `]`, `?`, `*`, `+`, `{`, `:`, `-`。
 
-この実装は re2::RE2::QuoteMeta とは多少異なります。ゼロバイトは `\0` としてエスケープされ、必要な文字のみがエスケープされます。
+この実装は re2::RE2::QuoteMeta とは若干異なります。ゼロバイトを `\0` としてエスケープし、必要な文字のみをエスケープします。
 詳細については、[RE2](https://github.com/google/re2/blob/master/re2/re2.cc#L473)を参照してください。
 
 **構文**
@@ -222,7 +221,7 @@ regexpQuoteMeta(s)
 
 ## format {#format}
 
-`pattern` 文字列を引数にリストされた値（文字列、整数など）でフォーマットします。これは Python でのフォーマットに似ています。パターン文字列には、中括弧 `{}` で囲まれた置換フィールドを含めることができます。中括弧内に含まれないものは、リテラルテキストとして扱われ、出力にそのままコピーされます。リテラルの中括弧文字は、二重中括弧でエスケープできます： `{{ '{{' }}` と `{{ '}}' }}`。フィールド名は数字（ゼロから始まる）または空であることができ（この場合、暗黙的に単調増加の数字が与えられます）。
+`pattern` 文字列を、引数にリストされている値（文字列、整数など）でフォーマットします。Pythonでのフォーマットに似ています。パターン文字列には、中括弧 `{}` に囲まれた置換フィールドを含めることができます。中括弧に含まれていないものはリテラルテキストと見なされ、そのまま出力にコピーされます。リテラルの中括弧文字は、二重中括弧でエスケープできます: `{{ '{{' }}` および `{{ '}}' }}`。フィールド名は数字（ゼロから始まる）または空であり（その場合、省略されると単調に増加する数字が与えられます）。
 
 **構文**
 
@@ -242,7 +241,7 @@ SELECT format('{1} {0} {1}', 'World', 'Hello')
 └─────────────────────────────────────────┘
 ```
 
-暗黙的な数字を用いた例:
+暗黙の数字の場合:
 
 ```sql
 SELECT format('{} {}', 'Hello', 'World')
@@ -256,10 +255,11 @@ SELECT format('{} {}', 'Hello', 'World')
 
 ## translate {#translate}
 
-文字列 `s` 中の文字を `from` と `to` 文字列によって定義された1対1の文字マッピングを使用して置き換えます。
-`from` と `to` は定数のASCII文字列でなければなりません。
-`from` と `to` のサイズが等しい場合、`s` 中の最初の `first` の1文字目の出現は `to` の1文字目で置き換えられ、`first` の2文字目の出現は `to` の2文字目で置き換えられます。  
-`from` に `to` に対応する文字がない場合、`from` の末尾にあるすべての出現は `s` から削除されます。非ASCII文字は関数によって変更されません。
+文字列 `s` 内の文字を、文字列 `from` と `to` で定義された1対1の文字マッピングを使用して置き換えます。
+`from` と `to` は定数ASCII文字列でなければなりません。
+`from` と `to` のサイズが等しい場合、`s` 内の `first` の1番目の文字の各出現は `to` の1番目の文字に置き換えられ、`s` 内の `first` の2番目の文字は `to` の2番目の文字に置き換えられます。
+`from` に `to` よりも多くの文字が含まれている場合、`to` に対応する文字がない `from` の末尾の文字のすべての出現が `s` から削除されます。
+`s` 内の非ASCII文字はこの関数で変更されません。
 
 **構文**
 
@@ -297,7 +297,7 @@ SELECT translate('clickhouse', 'clickhouse', 'CLICK') AS res
 
 ## translateUTF8 {#translateutf8}
 
-[translate](#translate) と同様ですが、`s`、`from`、`to` がUTF-8エンコードされた文字列であると仮定します。
+[translate](#translate) と同様ですが、`s`、`from` および `to` はUTF-8エンコードされた文字列であると仮定します。
 
 **構文**
 
@@ -305,15 +305,15 @@ SELECT translate('clickhouse', 'clickhouse', 'CLICK') AS res
 translateUTF8(s, from, to)
 ```
 
-**パラメーター**
+**パラメータ**
 
 - `s`: 文字列型 [String](../data-types/string.md)。
 - `from`: 文字列型 [String](../data-types/string.md)。
 - `to`: 文字列型 [String](../data-types/string.md)。
 
-**戻り値**
+**返される値**
 
-- [String](../data-types/string.md) 型の値。
+- [String](../data-types/string.md) データ型の値。
 
 **例**
 
@@ -331,7 +331,7 @@ SELECT translateUTF8('Münchener Straße', 'üß', 'us') AS res;
 
 ## printf {#printf}
 
-`printf` 関数は、引数にリストされた値（文字列、整数、浮動小数点数など）で指定された文字列をフォーマットします。これは C++ の printf 関数に似ています。フォーマット文字列には `%` 文字で始まるフォーマット指定子を含めることができます。`%` とその後のフォーマット指定子に含まれないものは、リテラルテキストとして扱われ、出力にそのままコピーされます。リテラルの `%` 文字は `%%` でエスケープできます。
+`printf` 関数は、C++のprintf関数に似た形で、引数にリストされている値（文字列、整数、浮動小数点数など）で指定された文字列をフォーマットします。フォーマット文字列は `%` 文字で始まるフォーマット指定子を含むことができます。 `%` とその後のフォーマット指定子に含まれないものはリテラルテキストと見なされ、そのまま出力にコピーされます。リテラルの `%` 文字は `%%` でエスケープできます。
 
 **構文**
 
@@ -344,11 +344,19 @@ printf(format, arg1, arg2, ...)
 クエリ:
 
 ```sql
-select printf('%%%s %s %d', 'Hello', 'World', 2024);
+SELECT printf('%%%s %s %d', 'Hello', 'World', 2024);
 ```
-
 ```response
 ┌─printf('%%%s %s %d', 'Hello', 'World', 2024)─┐
 │ %Hello World 2024                            │
 └──────────────────────────────────────────────┘
 ```
+
+<!-- 
+The inner content of the tags below are replaced at doc framework build time with 
+docs generated from system.functions. Please do not modify or remove the tags.
+See: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+-->
+
+<!--AUTOGENERATED_START-->
+<!--AUTOGENERATED_END-->

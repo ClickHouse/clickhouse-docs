@@ -1,51 +1,50 @@
 ---
-description: 'ParquetMetadata フォーマットのドキュメント'
-keywords:
+'description': 'ParquetMetadata フォーマットのドキュメント'
+'keywords':
 - 'ParquetMetadata'
-slug: '/interfaces/formats/ParquetMetadata'
-title: 'ParquetMetadata'
+'slug': '/interfaces/formats/ParquetMetadata'
+'title': 'ParquetMetadata'
+'doc_type': 'reference'
 ---
-
-
 
 ## 説明 {#description}
 
-Parquetファイルメタデータを読み取るための特別なフォーマットです (https://parquet.apache.org/docs/file-format/metadata/)。常に次の構造/内容で1行が出力されます：
+Parquetファイルメタデータを読み込むための特別なフォーマットです (https://parquet.apache.org/docs/file-format/metadata/)。次の構造/内容を持つ1行を常に出力します：
 - `num_columns` - カラムの数
 - `num_rows` - 行の総数
 - `num_row_groups` - 行グループの総数
-- `format_version` - parquetフォーマットバージョン、常に1.0または2.6
-- `total_uncompressed_size` - データの総未圧縮バイトサイズ、すべての行グループのtotal_byte_sizeの合計として計算されます
+- `format_version` - parquetフォーマットのバージョン、常に1.0または2.6
+- `total_uncompressed_size` - データの総非圧縮バイトサイズ、すべての行グループのtotal_byte_sizeの合計として計算されます
 - `total_compressed_size` - データの総圧縮バイトサイズ、すべての行グループのtotal_compressed_sizeの合計として計算されます
 - `columns` - 次の構造を持つカラムメタデータのリスト：
-    - `name` - カラム名
-    - `path` - カラムパス（ネストされたカラムの名前とは異なります）
-    - `max_definition_level` - 最大定義レベル
-    - `max_repetition_level` - 最大繰り返しレベル
-    - `physical_type` - カラムの物理タイプ
-    - `logical_type` - カラムの論理タイプ
-    - `compression` - このカラムに使用される圧縮
-    - `total_uncompressed_size` - カラムの総未圧縮バイトサイズ、すべての行グループのカラムのtotal_uncompressed_sizeの合計として計算されます
-    - `total_compressed_size` - カラムの総圧縮バイトサイズ、すべての行グループのカラムのtotal_compressed_sizeの合計として計算されます
-    - `space_saved` - 圧縮によって保存されたスペースのパーセント、(1 - total_compressed_size/total_uncompressed_size)として計算されます
-    - `encodings` - このカラムに使用されるエンコーディングのリスト
+  - `name` - カラム名
+  - `path` - カラムパス（ネストされたカラムの場合、名前とは異なる）
+  - `max_definition_level` - 最大定義レベル
+  - `max_repetition_level` - 最大繰り返しレベル
+  - `physical_type` - カラムの物理的タイプ
+  - `logical_type` - カラムの論理的タイプ
+  - `compression` - このカラムに対して使用された圧縮方式
+  - `total_uncompressed_size` - カラムの総非圧縮バイトサイズ、すべての行グループからのカラムのtotal_uncompressed_sizeの合計として計算されます
+  - `total_compressed_size` - カラムの総圧縮バイトサイズ、すべての行グループからのカラムのtotal_compressed_sizeの合計として計算されます
+  - `space_saved` - 圧縮によって節約されたスペースのパーセント、(1 - total_compressed_size/total_uncompressed_size)で計算されます
+  - `encodings` - このカラムに使用されたエンコーディングのリスト
 - `row_groups` - 次の構造を持つ行グループメタデータのリスト：
-    - `num_columns` - 行グループ内のカラム数
-    - `num_rows` - 行グループ内の行数
-    - `total_uncompressed_size` - 行グループの総未圧縮バイトサイズ
-    - `total_compressed_size` - 行グループの総圧縮バイトサイズ
-    - `columns` - 次の構造を持つカラムチャンクメタデータのリスト：
-        - `name` - カラム名
-        - `path` - カラムパス
-        - `total_compressed_size` - カラムの総圧縮バイトサイズ
-        - `total_uncompressed_size` - 行グループの総未圧縮バイトサイズ
-        - `have_statistics` - カラムチャンクメタデータがカラム統計を含むかどうかを示すブールフラグ
-        - `statistics` - カラムチャンクの統計（have_statistics = falseの場合、すべてのフィールドはNULL）次の構造：
-            - `num_values` - カラムチャンク内の非NULL値の数
-            - `null_count` - カラムチャンク内のNULL値の数
-            - `distinct_count` - カラムチャンク内の異なる値の数
-            - `min` - カラムチャンクの最小値
-            - `max` - カラムチャンクの最大値
+  - `num_columns` - 行グループ内のカラムの数
+  - `num_rows` - 行グループ内の行の数
+  - `total_uncompressed_size` - 行グループの総非圧縮バイトサイズ
+  - `total_compressed_size` - 行グループの総圧縮バイトサイズ
+  - `columns` - 次の構造を持つカラムチャンクメタデータのリスト：
+    - `name` - カラム名
+    - `path` - カラムパス
+    - `total_compressed_size` - カラムの総圧縮バイトサイズ
+    - `total_uncompressed_size` - 行グループの総非圧縮バイトサイズ
+    - `have_statistics` - カラムチャンクメタデータがカラム統計を含むかどうかを示すブールフラグ
+    - `statistics` - カラムチャンク統計（have_statistics = falseの場合、すべてのフィールドはNULL）で次の構造：
+      - `num_values` - カラムチャンク内のNULLでない値の数
+      - `null_count` - カラムチャンク内のNULL値の数
+      - `distinct_count` - カラムチャンク内の異なる値の数
+      - `min` - カラムチャンクの最小値
+      - `max` - カラムチャンクの最大値
 
 ## 使用例 {#example-usage}
 
