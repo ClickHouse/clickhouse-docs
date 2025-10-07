@@ -1,25 +1,34 @@
 ---
-description: 'Возвращает таблицу, подключенную через JDBC-драйвер.'
-sidebar_label: 'jdbc'
+slug: '/sql-reference/table-functions/jdbc'
+sidebar_label: jdbc
 sidebar_position: 100
-slug: /sql-reference/table-functions/jdbc
-title: 'jdbc'
+description: 'Возвращает таблицу, которая подключена через JDBC драйвер.'
+title: jdbc
+doc_type: reference
 ---
-
-
-# Функция таблицы jdbc
+# jdbc Табличная Функция
 
 :::note
-clickhouse-jdbc-bridge содержит экспериментальный код и больше не поддерживается. Он может содержать проблемы надежности и уязвимости безопасности. Используйте его на свой страх и риск. 
-ClickHouse рекомендует использовать встроенные функции таблиц в ClickHouse, которые предоставляют лучшую альтернативу для сценариев динамического выполнения запросов (Postgres, MySQL, MongoDB и т.д.).
+clickhouse-jdbc-bridge содержит экспериментальные коды и больше не поддерживается. Он может содержать проблемы надежности и уязвимости безопасности. Используйте его на свой страх и риск. 
+ClickHouse рекомендует использовать встроенные табличные функции в ClickHouse, которые предоставляют более хорошую альтернативу для сценариев ad-hoc запросов (Postgres, MySQL, MongoDB и т.д.).
 :::
 
-`jdbc(datasource, schema, table)` - возвращает таблицу, подключенную через JDBC-драйвер.
+Табличная функция JDBC возвращает таблицу, которая подключена через JDBC драйвер.
 
-Эта функция таблицы требует, чтобы программа [clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge) была запущена.
-Она поддерживает Nullable типы (основанные на DDL удаленной таблицы, к которой выполняется запрос).
+Эта табличная функция требует, чтобы отдельная программа [clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge) была запущена.
+Она поддерживает Nullable типы (на основе DDL удаленной таблицы, к которой осуществляется запрос).
 
-**Примеры**
+## Синтаксис {#syntax}
+
+```sql
+jdbc(datasource, external_database, external_table)
+jdbc(datasource, external_table)
+jdbc(named_collection)
+```
+
+## Примеры {#examples}
+
+Вместо имени внешней базы данных можно указать схему:
 
 ```sql
 SELECT * FROM jdbc('jdbc:mysql://localhost:3306/?user=root&password=root', 'schema', 'table')

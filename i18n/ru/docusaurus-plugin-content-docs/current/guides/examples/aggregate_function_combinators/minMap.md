@@ -1,23 +1,22 @@
 ---
 slug: '/examples/aggregate-function-combinators/minMap'
-title: 'minMap'
-description: 'Пример использования комбинатора minMap'
+sidebar_label: minMap
+description: 'Пример использования комбиниратора minMap'
+title: minMap
 keywords: ['min', 'map', 'combinator', 'examples', 'minMap']
-sidebar_label: 'minMap'
+doc_type: reference
 ---
-
-
 # minMap {#minmap}
 
 ## Описание {#description}
 
-Комбинатор [`Map`](/sql-reference/aggregate-functions/combinators#-map) может быть применён к функции [`min`](/sql-reference/aggregate-functions/reference/min) для вычисления минимального значения в Map по каждому ключу с использованием агрегатной функции `minMap`.
+Комбинатор [`Map`](/sql-reference/aggregate-functions/combinators#-map) может быть применён к функции [`min`](/sql-reference/aggregate-functions/reference/min) для вычисления минимального значения в Map для каждого ключа, используя агрегатную функцию-комбинатор `minMap`.
 
 ## Пример использования {#example-usage}
 
-В этом примере мы создадим таблицу, которая хранит коды статусов и их количество для разных временных интервалов, где каждая строка содержит Map кодов статусов и соответствующих им количеств. Мы будем использовать `minMap`, чтобы найти минимальное количество для каждого кода статуса в рамках каждого временного интервала.
+В этом примере мы создадим таблицу, которая хранит коды статусов и их количество для различных временных интервалов, где каждая строка содержит Map кодов статусов и соответствующих им количеств. Мы будем использовать `minMap` для нахождения минимального количества для каждого кода статуса в пределах каждого временного интервала.
 
-```sql title="Запрос"
+```sql title="Query"
 CREATE TABLE metrics(
     date Date,
     timeslot DateTime,
@@ -37,7 +36,7 @@ FROM metrics
 GROUP BY timeslot;
 ```
 
-Функция `minMap` найдёт минимальное количество для каждого кода статуса в рамках каждого временного интервала. Например:
+Функция `minMap` найдёт минимальное количество для каждого кода статуса в пределах каждого временного интервала. Например:
 - В временном интервале '2000-01-01 00:00:00':
   - Статус 'a': 15
   - Статус 'b': 25
@@ -50,13 +49,13 @@ GROUP BY timeslot;
   - Статус 'f': min(95, 105) = 95
   - Статус 'g': min(115, 125) = 115
 
-```response title="Ответ"
+```response title="Response"
    ┌────────────timeslot─┬─minMap(status)───────────────────────┐
 1. │ 2000-01-01 00:01:00 │ {'d':75,'e':85,'f':95,'g':115}       │
 2. │ 2000-01-01 00:00:00 │ {'a':15,'b':25,'c':35,'d':55,'e':65} │
    └─────────────────────┴──────────────────────────────────────┘
 ```
 
-## Смотрите также {#see-also}
+## См. также {#see-also}
 - [`min`](/sql-reference/aggregate-functions/reference/min)
-- [`Map комбинатор`](/sql-reference/aggregate-functions/combinators#-map)
+- [`Map combinator`](/sql-reference/aggregate-functions/combinators#-map)

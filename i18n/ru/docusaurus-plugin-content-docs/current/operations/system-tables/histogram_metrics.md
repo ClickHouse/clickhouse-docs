@@ -2,8 +2,9 @@
 description: 'Эта таблица содержит метрики гистограммы, которые могут быть рассчитаны мгновенно
   и экспортированы в формате Prometheus. Она всегда актуальна.'
 keywords: ['системная таблица', 'метрики_гистограммы']
-slug: /operations/system-tables/histogram_metrics
+slug: /ru/operations/system-tables/histogram_metrics
 title: 'system.histogram_metrics'
+doc_type: reference
 ---
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';

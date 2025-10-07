@@ -1,23 +1,23 @@
 ---
-description: 'Документация для типа данных AggregateFunction в ClickHouse, который хранит промежуточные состояния агрегатных функций'
-keywords: ['AggregateFunction', 'Тип']
+slug: '/sql-reference/data-types/aggregatefunction'
 sidebar_label: 'Тип AggregateFunction'
 sidebar_position: 46
-slug: /sql-reference/data-types/aggregatefunction
+description: 'Документация для типа данных AggregateFunction в ClickHouse, который'
 title: 'Тип AggregateFunction'
+keywords: ['AggregateFunction', 'Тип']
+doc_type: reference
 ---
-
-
 # Тип AggregateFunction
 
 ## Описание {#description}
 
-Все [агрегатные функции](/sql-reference/aggregate-functions) в ClickHouse имеют промежуточное состояние, зависящее от реализации, которое может быть сериализовано в тип данных `AggregateFunction` и храниться в таблице. Это обычно происходит с помощью [материализованного представления](../../sql-reference/statements/create/view.md).
+Все [Агрегатные функции](/sql-reference/aggregate-functions) в ClickHouse имеют
+между состоянием, специфичный для реализации, который может быть сериализован в тип данных `AggregateFunction` и сохранен в таблице. Обычно это делается с помощью [материализованного представления](../../sql-reference/statements/create/view.md).
 
-Существует два объединителя агрегатных функций [combinators](/sql-reference/aggregate-functions/combinators), которые обычно используются с типом `AggregateFunction`:
+Существует два агрегатных функции [комбинатора](/sql-reference/aggregate-functions/combinators), которые обычно используются с типом `AggregateFunction`:
 
-- Объединитель агрегатных функций [`-State`](/sql-reference/aggregate-functions/combinators#-state), который, будучи добавленным к имени агрегатной функции, производит промежуточные состояния `AggregateFunction`.
-- Объединитель агрегатных функций [`-Merge`](/sql-reference/aggregate-functions/combinators#-merge), который используется для получения окончательного результата агрегации из промежуточных состояний.
+- Комбинатор [`-State`](/sql-reference/aggregate-functions/combinators#-state) агрегационной функции, который, когда добавляется к имени агрегатной функции, производит промежуточные состояния `AggregateFunction`.
+- Комбинатор [`-Merge`](/sql-reference/aggregate-functions/combinators#-merge) агрегационной функции, который используется для получения окончательного результата агрегации из промежуточных состояний.
 
 ## Синтаксис {#syntax}
 
@@ -27,7 +27,8 @@ AggregateFunction(aggregate_function_name, types_of_arguments...)
 
 **Параметры**
 
-- `aggregate_function_name` - Имя агрегатной функции. Если функция параметризована, то её параметры также должны быть указаны.
+- `aggregate_function_name` - Имя агрегатной функции. Если функция
+   является параметрической, то ее параметры также должны быть указаны.
 - `types_of_arguments` - Типы аргументов агрегатной функции.
 
 например:
@@ -45,12 +46,12 @@ CREATE TABLE t
 
 ### Вставка данных {#data-insertion}
 
-Чтобы вставить данные в таблицу с колонками типа `AggregateFunction`, вы можете использовать `INSERT SELECT` с агрегатными функциями и 
-объединителем агрегатной функции [`-State`](/sql-reference/aggregate-functions/combinators#-state).
+Для вставки данных в таблицу с колонками типа `AggregateFunction` можно использовать `INSERT SELECT` с агрегатными функциями и
+комбинатором [`-State`](/sql-reference/aggregate-functions/combinators#-state) агрегатной функции.
 
-Например, чтобы вставить данные в колонки типа `AggregateFunction(uniq, UInt64)` и
-`AggregateFunction(quantiles(0.5, 0.9), UInt64)`, вы можете использовать следующие 
-агрегатные функции с объединителями.
+Например, для вставки в колонки типа `AggregateFunction(uniq, UInt64)` и
+`AggregateFunction(quantiles(0.5, 0.9), UInt64)` вы бы использовали следующие
+агрегатные функции с комбинаторами.
 
 ```sql
 uniqState(UserID)
@@ -58,24 +59,22 @@ quantilesState(0.5, 0.9)(SendTiming)
 ```
 
 В отличие от функций `uniq` и `quantiles`, `uniqState` и `quantilesState`
-(с добавленным объединителем `-State`) возвращают состояние, а не конечное значение.
-Иными словами, они возвращают значение типа `AggregateFunction`.
+(с добавленным комбинатором `-State`) возвращают состояние, а не окончательное значение.
+Другими словами, они возвращают значение типа `AggregateFunction`.
 
-В результатах запроса `SELECT` значения типа `AggregateFunction` имеют 
-представления в двоичном формате, специфичные для реализации, для всех форматов 
-вывода ClickHouse.
+В результатах запроса `SELECT` значения типа `AggregateFunction` имеют
+специфичные для реализации бинарные представления для всех форматов вывода ClickHouse.
 
-Если вы выгрузите данные, например, в формате `TabSeparated` с помощью запроса 
-`SELECT`, то этот дамп можно будет загрузить обратно с помощью запроса `INSERT`.
+Если вы сбрасываете данные, например, в формате `TabSeparated` с помощью запроса `SELECT`, то этот сброс может быть загружен обратно с помощью запроса `INSERT`.
 
 ### Выбор данных {#data-selection}
 
 При выборе данных из таблицы `AggregatingMergeTree` используйте оператор `GROUP BY`
-и те же агрегатные функции, что и при вставке данных, но используйте 
-объединитель [`-Merge`](/sql-reference/aggregate-functions/combinators#-merge).
+и те же агрегатные функции, что и при вставке данных, но используйте
+комбинатор [`-Merge`](/sql-reference/aggregate-functions/combinators#-merge).
 
-Агрегатная функция с добавленным объединителем `-Merge` принимает набор состояний,
-объединяет их и возвращает результат полной агрегации данных.
+Агрегатная функция с добавленным комбинатором `-Merge` берет набор
+состояний, комбинирует их и возвращает результат полной агрегации данных.
 
 Например, следующие два запроса возвращают одинаковый результат:
 
@@ -87,10 +86,10 @@ SELECT uniqMerge(state) FROM (SELECT uniqState(UserID) AS state FROM table GROUP
 
 ## Пример использования {#usage-example}
 
-Смотрите описание движка [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md).
+Смотрите описание двигателя [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md).
 
 ## Связанный контент {#related-content}
 
-- Блог: [Использование объединителей агрегатов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
-- Объединитель [MergeState](/sql-reference/aggregate-functions/combinators#-mergestate).
-- Объединитель [State](/sql-reference/aggregate-functions/combinators#-state).
+- Блог: [Использование агрегатных комбинаторов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
+- Комбинатор [MergeState](/sql-reference/aggregate-functions/combinators#-mergestate).
+- Комбинатор [State](/sql-reference/aggregate-functions/combinators#-state).

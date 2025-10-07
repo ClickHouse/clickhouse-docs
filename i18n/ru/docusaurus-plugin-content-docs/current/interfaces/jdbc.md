@@ -1,12 +1,11 @@
 ---
-description: 'Руководство по использованию JDBC-драйвера для подключения к ClickHouse из Java-приложений'
+slug: '/interfaces/jdbc'
 sidebar_label: 'JDBC Драйвер'
 sidebar_position: 20
-slug: /interfaces/jdbc
+description: 'Руководство по использованию JDBC драйвера для подключения к ClickHouse'
 title: 'JDBC Драйвер'
+doc_type: guide
 ---
+# JDBC драйвер
 
-
-# JDBC Драйвер
-
-Используйте [официальный JDBC-драйвер](/docs/integrations/language-clients/java/jdbc) (и Java клиент) для доступа к ClickHouse из ваших Java-приложений.
+Используйте [официальный JDBC драйвер](/docs/integrations/language-clients/java/jdbc) (и Java клиент) для доступа к ClickHouse из ваших Java приложений.

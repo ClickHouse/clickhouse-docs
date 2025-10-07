@@ -1,13 +1,14 @@
 ---
 description: 'Вычисляет дисперсию населения.'
 sidebar_position: 210
-slug: /sql-reference/aggregate-functions/reference/varPop
+slug: /ru/sql-reference/aggregate-functions/reference/varPop
 title: 'varPop'
+doc_type: reference
 ---
 
 ## varPop {#varpop}
 
-Вычисляет дисперсию населения:
+Вычисляет дисперсию по генеральной совокупности:
 
 $$
 \frac{\Sigma{(x - \bar{x})^2}}{n}

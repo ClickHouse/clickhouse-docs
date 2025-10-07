@@ -1,14 +1,13 @@
 ---
-description: 'Функции `median*` являются псевдонимами для соответствующих функций `quantile*`. Они вычисляют медиану числовой выборки данных.'
+slug: '/sql-reference/aggregate-functions/reference/median'
 sidebar_position: 167
-slug: /sql-reference/aggregate-functions/reference/median
-title: 'median'
+description: 'Функции `median*` являются псевдонимами для соответствующих функций'
+title: median
+doc_type: reference
 ---
+# медиана
 
-
-# median
-
-Функции `median*` являются псевдонимами для соответствующих функций `quantile*`. Они вычисляют медиану числовой выборки данных.
+Функции `median*` являются псевдонимами для соответствующих функций `quantile*`. Они вычисляют медиану выборки числовых данных.
 
 Функции:
 

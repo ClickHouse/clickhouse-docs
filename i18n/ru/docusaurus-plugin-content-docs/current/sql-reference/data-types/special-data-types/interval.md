@@ -1,19 +1,18 @@
 ---
-description: 'Документация по специальному типу данных Interval'
-sidebar_label: 'Interval'
+slug: '/sql-reference/data-types/special-data-types/interval'
+sidebar_label: Interval
 sidebar_position: 61
-slug: /sql-reference/data-types/special-data-types/interval
-title: 'Interval'
+description: 'Документация для специального типа данных Interval'
+title: Interval
+doc_type: reference
 ---
+# Интервал
 
-
-# Interval
-
-Семейство типов данных, представляющих временные и датные интервалы. Получаемые типы оператора [INTERVAL](/sql-reference/operators#interval).
+Семейство типов данных, представляющих интервалы времени и даты. Результирующие типы оператора [INTERVAL](/sql-reference/operators#interval).
 
 Структура:
 
-- Временной интервал как беззнаковое целочисленное значение.
+- Интервал времени в виде беззнакового целочисленного значения.
 - Тип интервала.
 
 Поддерживаемые типы интервалов:
@@ -47,7 +46,7 @@ SELECT toTypeName(INTERVAL 4 DAY)
 Вы можете использовать значения типа `Interval` в арифметических операциях с значениями типов [Date](../../../sql-reference/data-types/date.md) и [DateTime](../../../sql-reference/data-types/datetime.md). Например, вы можете добавить 4 дня к текущему времени:
 
 ```sql
-SELECT now() as current_date_time, current_date_time + INTERVAL 4 DAY
+SELECT now() AS current_date_time, current_date_time + INTERVAL 4 DAY
 ```
 
 ```text

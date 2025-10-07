@@ -1,22 +1,21 @@
 ---
-alias: []
+slug: '/interfaces/formats/PrettyCompact'
 description: 'Документация для формата PrettyCompact'
-input_format: false
+title: PrettyCompact
 keywords: ['PrettyCompact']
+doc_type: reference
+input_format: false
 output_format: true
-slug: /interfaces/formats/PrettyCompact
-title: 'PrettyCompact'
 ---
-
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| Вход | Выход  | Псевдоним |
+| Input | Output  | Alias |
 |-------|---------|-------|
 | ✗     | ✔       |       |
 
 ## Описание {#description}
 
-Отличается от формата [`Pretty`](./Pretty.md) тем, что таблица отображается с сеткой, проведённой между строками. 
+Отличается от формата [`Pretty`](./Pretty.md) тем, что таблица отображается с сеткой, проведенной между строками. 
 Из-за этого результат более компактный.
 
 :::note

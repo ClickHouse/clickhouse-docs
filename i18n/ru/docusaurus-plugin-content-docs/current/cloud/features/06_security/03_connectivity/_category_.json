@@ -1,0 +1,6 @@
+{
+  "label": "Connectivity",
+  "collapsible": true,
+  "collapsed": true,
+  "link": { "type": "doc", "id": "cloud/features/security/connectivity/index" }
+}
