@@ -77,7 +77,7 @@ Note that this approach will wake idle services as HyperDX queries the system ta
 
 ### ClickStack Deployment Options {#clickstack-deployment}
 
-- **HyperDX in Clickhouse Cloud**  (private preview): HyperDx can be launched on any Clickhouse Cloud service.
+- **HyperDX in Clickhouse Cloud**  (private preview): HyperDX can be launched on any Clickhouse Cloud service.
 - [Helm](/use-cases/observability/clickstack/deployment/helm): Recommended for Kubernetes-based debugging environments. Supports integration with ClickHouse Cloud and allows for environment-specific configuration, resource limits, and scaling via `values.yaml`.
 - [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose): Deploys each component (ClickHouse, HyperDX, OTel collector, MongoDB) individually. Users can modify the compose file to remove any unused components when integrating with ClickHouse Cloud, specifically ClickHouse and the Open Telemetry Collector.
 - [HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only): Standalone HyperDX container.
