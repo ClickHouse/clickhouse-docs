@@ -1,14 +1,13 @@
 ---
-description: 'Системная таблица, содержащая информацию о рабочих нагрузках, находящихся на локальном сервере.'
+slug: '/operations/system-tables/workloads'
+description: 'Системная таблица, содержащая информацию о нагрузках, находящихся'
+title: system.workloads
 keywords: ['системная таблица', 'рабочие нагрузки']
-slug: /operations/system-tables/workloads
-title: 'system.workloads'
+doc_type: reference
 ---
-
-
 # system.workloads
 
-Содержит информацию о [рабочих нагрузках](/operations/workload-scheduling.md#workload_entity_storage), находящихся на локальном сервере. Таблица содержит строку для каждой рабочей нагрузки.
+Содержит информацию о [нагрузках](/operations/workload-scheduling.md#workload_entity_storage), находящихся на локальном сервере. Таблица содержит строку для каждой нагрузки.
 
 Пример:
 
@@ -38,8 +37,8 @@ parent:
 create_query: CREATE WORKLOAD `all`
 ```
 
-Колонки:
+Столбцы:
 
-- `name` (`String`) - Имя рабочей нагрузки.
-- `parent` (`String`) - Имя родительской рабочей нагрузки.
-- `create_query` (`String`) - Определение рабочей нагрузки.
+- `name` (`String`) - Название нагрузки.
+- `parent` (`String`) - Название родительской нагрузки.
+- `create_query` (`String`) - Определение нагрузки.

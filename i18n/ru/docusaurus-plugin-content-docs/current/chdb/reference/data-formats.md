@@ -1,20 +1,20 @@
 ---
-title: 'Форматы данных'
+slug: '/chdb/reference/data-formats'
 sidebar_label: 'Форматы данных'
-slug: /chdb/reference/data-formats
 description: 'Форматы данных для chDB'
+title: 'Форматы данных'
 keywords: ['chdb', 'форматы данных']
+doc_type: reference
 ---
+Когда дело доходит до форматов данных, chDB на 100% совместим по функциям с ClickHouse.
 
-Когда речь заходит о форматах данных, chDB на 100% совместим с ClickHouse.
+Форматы ввода используются для разбора данных, предоставляемых для `INSERT` и `SELECT` из таблицы с файловой поддержкой, такой как `File`, `URL` или `S3`.
+Форматы вывода используются для организации результатов `SELECT` и для выполнения `INSERT` в таблицу с файловой поддержкой.
+Кроме форматов данных, поддерживаемых ClickHouse, chDB также поддерживает:
 
-Форматы ввода используются для разбора данных, предоставленных для `INSERT` и `SELECT` из таблицы с файловой поддержкой, такой как `File`, `URL` или `S3`.  
-Форматы вывода используются для упорядочивания результатов `SELECT` и для выполнения `INSERT` в таблицу с файловой поддержкой.  
-Помимо форматов данных, поддерживаемых ClickHouse, chDB также поддерживает:
-
-- `ArrowTable` в качестве формата вывода, тип - Python `pyarrow.Table`
-- `DataFrame` в качестве формата ввода и вывода, тип - Python `pandas.DataFrame`. Для примеров, смотрите [`test_joindf.py`](https://github.com/chdb-io/chdb/blob/main/tests/test_joindf.py)
-- `Debug` в качестве вывода (как алиас `CSV`), но с включенным подробным отладочным выводом от ClickHouse.
+- `ArrowTable` как формат вывода, тип - Python `pyarrow.Table`
+- `DataFrame` как форматы ввода и вывода, тип - Python `pandas.DataFrame`. Для примеров смотрите [`test_joindf.py`](https://github.com/chdb-io/chdb/blob/main/tests/test_joindf.py)
+- `Debug` как вывод (в качестве псевдонима для `CSV`), но с включенным детализированным выводом от ClickHouse.
 
 Поддерживаемые форматы данных от ClickHouse:
 
@@ -39,6 +39,7 @@ keywords: ['chdb', 'форматы данных']
 | Vertical                        | ✗     | ✔      |
 | JSON                            | ✔     | ✔      |
 | JSONAsString                    | ✔     | ✗      |
+| JSONAsObject                    | ✔     | ✗      |
 | JSONStrings                     | ✔     | ✔      |
 | JSONColumns                     | ✔     | ✔      |
 | JSONColumnsWithMetadata         | ✔     | ✔      |
@@ -53,9 +54,11 @@ keywords: ['chdb', 'форматы данных']
 | JSONCompactEachRow              | ✔     | ✔      |
 | JSONCompactEachRowWithNames     | ✔     | ✔      |
 | JSONCompactEachRowWithNamesAndTypes | ✔  | ✔      |
+| JSONCompactEachRowWithProgress  | ✗     | ✔      |
 | JSONCompactStringsEachRow       | ✔     | ✔      |
 | JSONCompactStringsEachRowWithNames | ✔  | ✔      |
 | JSONCompactStringsEachRowWithNamesAndTypes | ✔ | ✔ |
+| JSONCompactStringsEachRowWithProgress | ✗ | ✔      |
 | JSONObjectEachRow               | ✔     | ✔      |
 | BSONEachRow                     | ✔     | ✔      |
 | TSKV                            | ✔     | ✔      |
@@ -74,6 +77,7 @@ keywords: ['chdb', 'форматы данных']
 | Prometheus                      | ✗     | ✔      |
 | Protobuf                        | ✔     | ✔      |
 | ProtobufSingle                  | ✔     | ✔      |
+| ProtobufList                    | ✔     | ✔      |
 | Avro                            | ✔     | ✔      |
 | AvroConfluent                   | ✔     | ✗      |
 | Parquet                         | ✔     | ✔      |
@@ -82,10 +86,11 @@ keywords: ['chdb', 'форматы данных']
 | ArrowStream                     | ✔     | ✔      |
 | ORC                             | ✔     | ✔      |
 | One                             | ✔     | ✗      |
+| Npy                             | ✔     | ✔      |
 | RowBinary                       | ✔     | ✔      |
 | RowBinaryWithNames              | ✔     | ✔      |
 | RowBinaryWithNamesAndTypes      | ✔     | ✔      |
-| RowBinaryWithDefaults           | ✔     | ✔      |
+| RowBinaryWithDefaults           | ✔     | ✗      |
 | Native                          | ✔     | ✔      |
 | Null                            | ✗     | ✔      |
 | XML                             | ✗     | ✔      |
@@ -95,6 +100,8 @@ keywords: ['chdb', 'форматы данных']
 | RawBLOB                         | ✔     | ✔      |
 | MsgPack                         | ✔     | ✔      |
 | MySQLDump                       | ✔     | ✗      |
+| DWARF                           | ✔     | ✗      |
 | Markdown                        | ✗     | ✔      |
+| Form                            | ✔     | ✗      |
 
-Для получения дополнительной информации и примеров смотрите [форматы ClickHouse для ввода и вывода данных](/interfaces/formats).
+Для получения дополнительной информации и примеров смотрите [ClickHouse форматы для ввода и вывода данных](/interfaces/formats).

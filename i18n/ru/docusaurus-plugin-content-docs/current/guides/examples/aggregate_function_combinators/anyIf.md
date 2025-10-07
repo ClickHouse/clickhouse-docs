@@ -1,25 +1,24 @@
 ---
 slug: '/examples/aggregate-function-combinators/anyIf'
-title: 'anyIf'
+sidebar_label: anyIf
 description: 'Пример использования комбинатора anyIf'
+title: anyIf
 keywords: ['any', 'if', 'combinator', 'examples', 'anyIf']
-sidebar_label: 'anyIf'
+doc_type: reference
 ---
-
-
 # anyIf {#avgif}
 
 ## Описание {#description}
 
-Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к агрегатной функции [`any`](/sql-reference/aggregate-functions/reference/any), чтобы выбрать первый найденный элемент из заданной колонки, который соответствует заданному условию.
+Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применен к агрегатной функции [`any`](/sql-reference/aggregate-functions/reference/any) для выбора первого встречаемого элемента из данной колонки, который соответствует заданному условию.
 
 ## Пример использования {#example-usage}
 
-В этом примере мы создадим таблицу, которая хранит данные о продажах с флагами успеха, и мы будем использовать `anyIf`, чтобы выбрать первые `transaction_id`, которые выше и ниже суммы 200.
+В этом примере мы создадим таблицу, которая хранит данные о продажах с флагами успешности, и мы будем использовать `anyIf`, чтобы выбрать первые `transaction_id`, которые превышают и не достигают суммы 200.
 
-Сначала создадим таблицу и вставим в неё данные:
+Сначала мы создаем таблицу и вставляем данные в нее:
 
-```sql title="Запрос"
+```sql title="Query"
 CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
@@ -39,12 +38,12 @@ INSERT INTO sales VALUES
 
 ```sql
 SELECT
-    anyIf(transaction_id, amount < 200) as tid_lt_200,
-    anyIf(transaction_id, amount > 200) as tid_gt_200
+    anyIf(transaction_id, amount < 200) AS tid_lt_200,
+    anyIf(transaction_id, amount > 200) AS tid_gt_200
 FROM sales;
 ```
 
-```response title="Ответ"
+```response title="Response"
 ┌─tid_lt_200─┬─tid_gt_200─┐
 │          1 │          4 │
 └────────────┴────────────┘

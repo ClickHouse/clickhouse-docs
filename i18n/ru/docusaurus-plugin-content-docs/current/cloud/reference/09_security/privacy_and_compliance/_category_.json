@@ -1,0 +1,6 @@
+{
+  "label": "Privacy and compliance",
+  "collapsible": true,
+  "collapsed": true,
+  "link": { "type": "doc", "id": "cloud/reference/security/privacy_and_compliance/index" }
+}

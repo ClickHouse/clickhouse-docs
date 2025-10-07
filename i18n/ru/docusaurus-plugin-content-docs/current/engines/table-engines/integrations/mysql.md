@@ -1,15 +1,14 @@
 ---
-description: 'Документация для движка таблиц MySQL'
-sidebar_label: 'MySQL'
+slug: '/engines/table-engines/integrations/mysql'
+sidebar_label: MySQL
 sidebar_position: 138
-slug: /engines/table-engines/integrations/mysql
+description: 'Документация для MySQL Table Engine'
 title: 'Движок MySQL позволяет выполнять запросы `SELECT` и `INSERT` к данным, которые хранятся на удалённом сервере MySQL.'
+doc_type: reference
 ---
+# Движок таблиц MySQL
 
-
-# MySQL Table Engine
-
-Движок MySQL позволяет выполнять запросы `SELECT` и `INSERT` к данным, которые хранятся на удалённом сервере MySQL.
+Движок MySQL позволяет выполнять запросы `SELECT` и `INSERT` к данным, которые хранятся на удаленном сервере MySQL.
 
 ## Создание таблицы {#creating-a-table}
 
@@ -34,27 +33,27 @@ SETTINGS
 
 Структура таблицы может отличаться от оригинальной структуры таблицы MySQL:
 
-- Имена колонок должны быть такими же, как в оригинальной таблице MySQL, но вы можете использовать только некоторые из этих колонок и в любом порядке.
-- Типы колонок могут отличаться от тех, что в оригинальной таблице MySQL. ClickHouse пытается [привести](../../../engines/database-engines/mysql.md#data_types-support) значения к типам данных ClickHouse.
-- Настройка [external_table_functions_use_nulls](/operations/settings/settings#external_table_functions_use_nulls) определяет, как обрабатывать Nullable колонки. Значение по умолчанию: 1. Если 0, функция таблицы не создаёт Nullable колонки и вставляет значения по умолчанию вместо null. Это также применимо для значений NULL внутри массивов.
+- Имена колонок должны совпадать с именами в оригинальной таблице MySQL, но вы можете использовать только некоторые из этих колонок и в любом порядке.
+- Типы колонок могут отличаться от типов в оригинальной таблице MySQL. ClickHouse пытается [привести](../../../engines/database-engines/mysql.md#data_types-support) значения к типам данных ClickHouse.
+- Настройка [external_table_functions_use_nulls](/operations/settings/settings#external_table_functions_use_nulls) определяет, как обрабатывать Nullable колонки. Значение по умолчанию: 1. Если 0, функция таблицы не создает Nullable колонки и вставляет значения по умолчанию вместо null. Это также применимо к значениям NULL внутри массивов.
 
 **Параметры движка**
 
-- `host:port` — адрес сервера MySQL.
-- `database` — имя удалённой базы данных.
-- `table` — имя удалённой таблицы.
-- `user` — пользователь MySQL.
-- `password` — пароль пользователя.
-- `replace_query` — флаг, который преобразует запросы `INSERT INTO` в `REPLACE INTO`. Если `replace_query=1`, запрос заменяется.
-- `on_duplicate_clause` — выражение `ON DUPLICATE KEY on_duplicate_clause`, которое добавляется к запросу `INSERT`.
-    Пример: `INSERT INTO t (c1,c2) VALUES ('a', 2) ON DUPLICATE KEY UPDATE c2 = c2 + 1`, где `on_duplicate_clause` — это `UPDATE c2 = c2 + 1`. Смотрите [документацию MySQL](https://dev.mysql.com/doc/refman/8.0/en/insert-on-duplicate.html), чтобы узнать, какое `on_duplicate_clause` вы можете использовать с условием `ON DUPLICATE KEY`.
-    Чтобы указать `on_duplicate_clause`, нужно передать `0` параметру `replace_query`. Если одновременно передать `replace_query = 1` и `on_duplicate_clause`, ClickHouse сгенерирует исключение.
+- `host:port` — Адрес сервера MySQL.
+- `database` — Имя удаленной базы данных.
+- `table` — Имя удаленной таблицы.
+- `user` — Пользователь MySQL.
+- `password` — Пароль пользователя.
+- `replace_query` — Флаг, который преобразует запросы `INSERT INTO` в `REPLACE INTO`. Если `replace_query=1`, запрос заменяется.
+- `on_duplicate_clause` — Выражение `ON DUPLICATE KEY on_duplicate_clause`, которое добавляется к запросу `INSERT`.
+    Пример: `INSERT INTO t (c1,c2) VALUES ('a', 2) ON DUPLICATE KEY UPDATE c2 = c2 + 1`, где `on_duplicate_clause` это `UPDATE c2 = c2 + 1`. Смотрите [документацию MySQL](https://dev.mysql.com/doc/refman/8.0/en/insert-on-duplicate.html), чтобы узнать, какое `on_duplicate_clause` вы можете использовать с предложением `ON DUPLICATE KEY`.
+    Чтобы указать `on_duplicate_clause`, вам нужно передать `0` параметру `replace_query`. Если одновременно передать `replace_query = 1` и `on_duplicate_clause`, ClickHouse сгенерирует исключение.
 
-Аргументы также могут передаваться с использованием [именованных коллекций](/operations/named-collections.md). В этом случае `host` и `port` должны быть указаны отдельно. Этот подход рекомендуется для производственной среды.
+Аргументы также могут быть переданы с использованием [именованных коллекций](/operations/named-collections.md). В этом случае `host` и `port` должны быть указаны отдельно. Этот подход рекомендуется для производственной среды.
 
-Простые условия `WHERE`, такие как `=, !=, >, >=, <, <=`, выполняются на сервере MySQL.
+Простые операторы `WHERE`, такие как `=, !=, >, >=, <, <=`, выполняются на сервере MySQL.
 
-Остальные условия и ограничение выборки `LIMIT` выполняются в ClickHouse только после завершения запроса к MySQL.
+Остальные условия и ограничение `LIMIT` выполняются только в ClickHouse после завершения запроса к MySQL.
 
 Поддерживает несколько реплик, которые должны быть перечислены через `|`. Например:
 
@@ -64,7 +63,7 @@ CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) EN
 
 ## Пример использования {#usage-example}
 
-Создание таблицы в MySQL:
+Создайте таблицу в MySQL:
 
 ```text
 mysql> CREATE TABLE `test`.`test` (
@@ -87,7 +86,7 @@ mysql> select * from test;
 1 row in set (0,00 sec)
 ```
 
-Создание таблицы в ClickHouse с использованием обычных аргументов:
+Создайте таблицу в ClickHouse, используя простые аргументы:
 
 ```sql
 CREATE TABLE mysql_table
@@ -98,7 +97,7 @@ CREATE TABLE mysql_table
 ENGINE = MySQL('localhost:3306', 'test', 'test', 'bayonet', '123')
 ```
 
-Или с использованием [именованных коллекций](/operations/named-collections.md):
+Или, используя [именованные коллекции](/operations/named-collections.md):
 
 ```sql
 CREATE NAMED COLLECTION creds AS
@@ -129,33 +128,33 @@ SELECT * FROM mysql_table
 
 ## Настройки {#mysql-settings}
 
-Настройки по умолчанию не очень эффективны, так как они даже не используют повторное подключение. Эти настройки позволяют увеличить количество запросов, выполняемых сервером в секунду.
+Настройки по умолчанию не очень эффективны, так как они даже не повторно используют соединения. Эти настройки позволят вам увеличить количество запросов, выполняемых сервером в секунду.
 
-### connection_auto_close {#connection-auto-close}
+### `connection_auto_close` {#connection-auto-close}
 
-Позволяет автоматически закрывать соединение после выполнения запроса, т.е. отключает повторное использование соединения.
+Позволяет автоматически закрывать соединение после выполнения запроса, т.е. отключить повторное использование соединений.
 
 Возможные значения:
 
-- 1 — Автоматическое закрытие соединения разрешено, повторное использование соединения отключено
-- 0 — Автоматическое закрытие соединения запрещено, повторное использование соединения разрешено
+- 1 — Автоматическое закрытие соединения разрешено, т.е. повторное использование соединений отключено
+- 0 — Автоматическое закрытие соединения не разрешено, т.е. повторное использование соединений включено
 
 Значение по умолчанию: `1`.
 
-### connection_max_tries {#connection-max-tries}
+### `connection_max_tries` {#connection-max-tries}
 
 Устанавливает количество попыток для пула с резервированием.
 
 Возможные значения:
 
 - Положительное целое число.
-- 0 — Повторов для пула с резервированием нет.
+- 0 — Попыток для пула с резервированием нет.
 
 Значение по умолчанию: `3`.
 
-### connection_pool_size {#connection-pool-size}
+### `connection_pool_size` {#connection-pool-size}
 
-Размер пула соединений (если все соединения используются, запрос будет ждать, пока какое-то соединение не освобожится).
+Размер пула соединений (если все соединения используются, запрос будет ждать, пока какое-то соединение не освободится).
 
 Возможные значения:
 
@@ -163,9 +162,9 @@ SELECT * FROM mysql_table
 
 Значение по умолчанию: `16`.
 
-### connection_wait_timeout {#connection-wait-timeout}
+### `connection_wait_timeout` {#connection-wait-timeout}
 
-Таймаут (в секундах) ожидания свободного соединения (в случае, если уже активны connection_pool_size соединений), 0 - не ждать.
+Тайм-аут (в секундах) для ожидания свободного соединения (в случае, если уже есть connection_pool_size активных соединений), 0 - не ждать.
 
 Возможные значения:
 
@@ -173,9 +172,9 @@ SELECT * FROM mysql_table
 
 Значение по умолчанию: `5`.
 
-### connect_timeout {#connect-timeout}
+### `connect_timeout` {#connect-timeout}
 
-Таймаут подключения (в секундах).
+Тайм-аут соединения (в секундах).
 
 Возможные значения:
 
@@ -183,9 +182,9 @@ SELECT * FROM mysql_table
 
 Значение по умолчанию: `10`.
 
-### read_write_timeout {#read-write-timeout}
+### `read_write_timeout` {#read-write-timeout}
 
-Таймаут чтения/записи (в секундах).
+Тайм-аут чтения/записи (в секундах).
 
 Возможные значения:
 
@@ -193,7 +192,7 @@ SELECT * FROM mysql_table
 
 Значение по умолчанию: `300`.
 
-## Также смотрите {#see-also}
+## См. также {#see-also}
 
 - [Функция таблицы mysql](../../../sql-reference/table-functions/mysql.md)
 - [Использование MySQL в качестве источника словаря](/sql-reference/dictionaries#mysql)

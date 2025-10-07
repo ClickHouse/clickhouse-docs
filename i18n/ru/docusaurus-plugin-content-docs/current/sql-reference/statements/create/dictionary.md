@@ -1,12 +1,12 @@
 ---
-description: 'Документация по Словарю'
-sidebar_label: 'DICTIONARY'
+slug: '/sql-reference/statements/create/dictionary'
+sidebar_label: DICTIONARY
 sidebar_position: 38
-slug: /sql-reference/statements/create/dictionary
+description: 'Документация для Dictionary'
 title: 'CREATE DICTIONARY'
+doc_type: reference
 ---
-
-Создает новый [словарь](../../../sql-reference/dictionaries/index.md) с заданной [структурой](../../../sql-reference/dictionaries/index.md#dictionary-key-and-fields), [источником](../../../sql-reference/dictionaries/index.md#dictionary-sources), [расположением](/sql-reference/dictionaries#storing-dictionaries-in-memory) и [временной жизнью](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
+Создает новый [словарь](../../../sql-reference/dictionaries/index.md) с заданной [структурой](../../../sql-reference/dictionaries/index.md#dictionary-key-and-fields), [источником](../../../sql-reference/dictionaries/index.md#dictionary-sources), [расположением](/sql-reference/dictionaries#storing-dictionaries-in-memory) и [временем жизни](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
 
 ## Синтаксис {#syntax}
 
@@ -23,16 +23,16 @@ SOURCE(SOURCE_NAME([param1 value1 ... paramN valueN]))
 LAYOUT(LAYOUT_NAME([param_name param_value]))
 LIFETIME({MIN min_val MAX max_val | max_val})
 SETTINGS(setting_name = setting_value, setting_name = setting_value, ...)
-COMMENT 'Комментарий'
+COMMENT 'Comment'
 ```
 
-Структура словаря состоит из атрибутов. Атрибуты словаря задаются аналогично столбцам таблицы. Единственным обязательным свойством атрибута является его тип, все остальные свойства могут иметь значения по умолчанию.
+Структура словаря состоит из атрибутов. Атрибуты словаря определяются аналогично столбцам таблицы. Единственным обязательным свойством атрибута является его тип, все остальные свойства могут иметь значения по умолчанию.
 
-Клаузула `ON CLUSTER` позволяет создавать словарь в кластере, см. [Распределенный DDL](../../../sql-reference/distributed-ddl.md).
+Клауза `ON CLUSTER` позволяет создавать словарь на кластере, см. [Распределенный DDL](../../../sql-reference/distributed-ddl.md).
 
-В зависимости от [расположения](/sql-reference/dictionaries#storing-dictionaries-in-memory) словаря один или несколько атрибутов могут быть указаны в качестве ключей словаря.
+В зависимости от [расположения](/sql-reference/dictionaries#storing-dictionaries-in-memory) словаря можно указать один или несколько атрибутов в качестве ключей словаря.
 
-## SOURCE {#source}
+## ИСТОЧНИК {#source}
 
 Источник для словаря может быть:
 - таблица в текущем сервисе ClickHouse
@@ -155,9 +155,9 @@ LAYOUT(HASHED())
 
 ### Создание словаря из другой базы данных {#create-a-dictionary-from-another-database}
 
-Пожалуйста, смотрите детали в [Источники словаря](/sql-reference/dictionaries#dbms).
+Пожалуйста, смотрите детали в [Источники словарей](/sql-reference/dictionaries#dbms).
 
-**Смотрите также**
+**См. также**
 
 - Для получения дополнительной информации смотрите раздел [Словари](../../../sql-reference/dictionaries/index.md).
-- [system.dictionaries](../../../operations/system-tables/dictionaries.md) — Эта таблица содержит информацию о [Словарях](../../../sql-reference/dictionaries/index.md).
+- [system.dictionaries](../../../operations/system-tables/dictionaries.md) — Эта таблица содержит информацию о [словарях](../../../sql-reference/dictionaries/index.md).

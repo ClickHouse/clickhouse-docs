@@ -1,17 +1,17 @@
 ---
-description: 'Набор данных для бенчмаркинга, использующийся для сравнения производительности решений по хранению данных.'
+slug: '/getting-started/example-datasets/amplab-benchmark'
 sidebar_label: 'Бенчмарк AMPLab Big Data'
-slug: /getting-started/example-datasets/amplab-benchmark
+description: 'Набор данных для сравнения производительности решений хранилищ данных'
 title: 'Бенчмарк AMPLab Big Data'
+doc_type: reference
 ---
+См. https://amplab.cs.berkeley.edu/benchmark/
 
-Смотрите https://amplab.cs.berkeley.edu/benchmark/
+Зарегистрируйтесь для получения бесплатной учетной записи на https://aws.amazon.com. Для этого требуется кредитная карта, электронная почта и номер телефона. Получите новый ключ доступа на https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential
 
-Зарегистрируйтесь для получения бесплатной учетной записи на https://aws.amazon.com. Это требует кредитной карты, электронной почты и номера телефона. Получите новый ключ доступа на https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential
+Выполните следующее в консоли:
 
-Запустите следующее в консоли:
-
-```bash
+````bash
 $ sudo apt-get install s3cmd
 $ mkdir tiny; cd tiny;
 $ s3cmd sync s3://big-data-benchmark/pavlo/text-deflate/tiny/ .
@@ -22,11 +22,11 @@ $ cd ..
 $ mkdir 5nodes; cd 5nodes;
 $ s3cmd sync s3://big-data-benchmark/pavlo/text-deflate/5nodes/ .
 $ cd ..
-```
+````
 
-Запустите следующие запросы ClickHouse:
+Выполните следующие запросы ClickHouse:
 
-```sql
+````sql
 CREATE TABLE rankings_tiny
 (
     pageURL String,
@@ -86,22 +86,22 @@ CREATE TABLE uservisits_5nodes_on_single
     searchWord String,
     duration UInt32
 ) ENGINE = MergeTree(visitDate, visitDate, 8192);
-```
+````
 
 Вернитесь в консоль:
 
-```bash
+````bash
 $ for i in tiny/rankings/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO rankings_tiny FORMAT CSV"; done
 $ for i in tiny/uservisits/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO uservisits_tiny FORMAT CSV"; done
 $ for i in 1node/rankings/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO rankings_1node FORMAT CSV"; done
 $ for i in 1node/uservisits/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO uservisits_1node FORMAT CSV"; done
 $ for i in 5nodes/rankings/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO rankings_5nodes_on_single FORMAT CSV"; done
 $ for i in 5nodes/uservisits/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO uservisits_5nodes_on_single FORMAT CSV"; done
-```
+````
 
-Запросы для получения выборок данных:
+Запросы для получения образцов данных:
 
-```sql
+````sql
 SELECT pageURL, pageRank FROM rankings_1node WHERE pageRank > 1000
 
 SELECT substring(sourceIP, 1, 8), sum(adRevenue) FROM uservisits_1node GROUP BY substring(sourceIP, 1, 8)
@@ -122,4 +122,4 @@ FROM rankings_1node ALL INNER JOIN
 GROUP BY sourceIP
 ORDER BY totalRevenue DESC
 LIMIT 1
-```
+````
