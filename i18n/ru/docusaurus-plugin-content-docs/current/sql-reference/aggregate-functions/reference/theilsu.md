@@ -1,7 +1,7 @@
 ---
 slug: '/sql-reference/aggregate-functions/reference/theilsu'
 sidebar_position: 201
-description: 'Функция `theilsU` рассчитывает коэффициент неопределенности Theils''
+description: "Функция `theilsU` рассчитывает коэффициент неопределенности Theils'"
 title: theilsU
 doc_type: reference
 ---
