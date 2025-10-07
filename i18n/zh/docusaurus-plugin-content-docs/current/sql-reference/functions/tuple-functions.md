@@ -1,16 +1,14 @@
 ---
 'description': 'Tuple Functions 的文档'
 'sidebar_label': '元组'
-'sidebar_position': 180
 'slug': '/sql-reference/functions/tuple-functions'
 'title': '元组函数'
+'doc_type': 'reference'
 ---
 
 ## tuple {#tuple}
 
-一个允许将多个列分组的函数。
-对于类型为 T1, T2, ... 的列 C1, C2, ...，如果它们的名称是唯一的，并且可以视为未引用的标识符，则返回包含这些列的命名元组 Tuple(C1 T1, C2 T2, ...)，否则返回 Tuple(T1, T2, ...)。执行此函数没有成本。
-元组通常用作 IN 操作符参数的中间值，或用于创建 lambda 函数的形式参数列表。元组不能写入表中。
+一个允许将多个列分组的函数。对于类型为 `T1, T2, ...` 的列 `C1, C2, ...`，它返回 `Tuple(T1, T2, ...)`。如果设置 [`enable_named_columns_in_function_tuple`](/operations/settings/settings#enable_named_columns_in_function_tuple) 被启用，那么它返回 `Tuple(C1 T1, C2 T2, ...)`，包含这些列（如果它们的名称是唯一的并且可以被视为未引用的标识符）。执行该函数没有成本。元组通常用作 IN 操作符的参数的中间值，或者用于创建 lambda 函数的形式参数列表。元组不能被写入表中。
 
 该函数实现了操作符 `(x, y, ...)`。
 
@@ -24,7 +22,7 @@ tuple(x, y, ...)
 
 一个允许从元组中获取列的函数。
 
-如果第二个参数是一个数字 `index`，则表示列索引，从 1 开始。如果第二个参数是字符串 `name`，则表示元素的名称。此外，我们可以提供第三个可选参数，当索引越界或名称没有元素时，返回默认值，而不是抛出异常。第二和第三个参数如果提供，则必须是常量。执行此函数没有成本。
+如果第二个参数是数字 `index`，则它是从 1 开始的列索引。如果第二个参数是字符串 `name`，则表示元素的名称。此外，我们可以提供第三个可选参数，当索引越界或不存在该名称的元素时，返回默认值而不是抛出异常。如果提供，第二和第三个参数必须是常量。执行该函数没有成本。
 
 该函数实现了操作符 `x.index` 和 `x.name`。
 
@@ -39,7 +37,7 @@ tupleElement(tuple, name, [, default_value])
 
 在调用位置执行 [tuple](/sql-reference/data-types/tuple) 元素的语法替换。
 
-结果列的名称是实现特定的并且可能会变化。请勿假定在 `untuple` 之后的特定列名称。
+结果列的名称是特定于实现的，并且有可能变化。不要假设 `untuple` 后的具体列名称。
 
 **语法**
 
@@ -47,15 +45,15 @@ tupleElement(tuple, name, [, default_value])
 untuple(x)
 ```
 
-您可以使用 `EXCEPT` 表达式在查询结果中跳过列。
+可以使用 `EXCEPT` 表达式跳过查询结果中的列。
 
 **参数**
 
-- `x` — 一个 `tuple` 函数、列或元素元组。 [Tuple](../data-types/tuple.md)。
+- `x` — 一个 `tuple` 函数、列或元素的元组。 [Tuple](../data-types/tuple.md)。
 
 **返回值**
 
-- None.
+- 无。
 
 **示例**
 
@@ -111,7 +109,7 @@ SELECT untuple((* EXCEPT (v2, v3),)) FROM kv;
 └─────┴────┴────┴────┴───────────┘
 ```
 
-**参考**
+**另见**
 
 - [Tuple](../data-types/tuple.md)
 
@@ -130,14 +128,14 @@ tupleHammingDistance(tuple1, tuple2)
 - `tuple1` — 第一个元组。 [Tuple](../data-types/tuple.md)。
 - `tuple2` — 第二个元组。 [Tuple](../data-types/tuple.md)。
 
-元组的元素类型应该相同。
+元组应该具有相同类型的元素。
 
 **返回值**
 
 - 汉明距离。
 
 :::note
-结果类型的计算方式与 [算术函数](../../sql-reference/functions/arithmetic-functions.md) 的计算一致，基于输入元组中元素的数量。
+结果类型的计算方式与 [算术函数](../../sql-reference/functions/arithmetic-functions.md) 相同，基于输入元组中的元素数量。
 :::
 
 ```sql
@@ -171,7 +169,7 @@ SELECT tupleHammingDistance((1, 2, 3), (3, 2, 1)) AS HammingDistance;
 └─────────────────┘
 ```
 
-可以与 [MinHash](../../sql-reference/functions/hash-functions.md#ngramminhash) 函数一起使用，检测半重复字符串：
+可以与 [MinHash](../../sql-reference/functions/hash-functions.md#ngramMinHash) 函数结合使用，以检测半重复字符串：
 
 ```sql
 SELECT tupleHammingDistance(wordShingleMinHash(string), wordShingleMinHashCaseInsensitive(string)) AS HammingDistance
@@ -188,8 +186,7 @@ FROM (SELECT 'ClickHouse is a column-oriented database management system for onl
 
 ## tupleToNameValuePairs {#tupletonamevaluepairs}
 
-将命名元组转换为 (名称, 值) 对的数组。对于 `Tuple(a T, b T, ..., c T)` 返回 `Array(Tuple(String, T), ...)`
-其中 `Strings` 表示元组的命名字段，`T` 是与这些名称关联的值。元组中的所有值应该是同一类型。
+将命名元组转换为 (名称, 值) 对的数组。对于 `Tuple(a T, b T, ..., c T)` 返回 `Array(Tuple(String, T), ...)`，其中 `Strings` 表示元组的命名字段，`T` 是与这些名称关联的值。元组中的所有值应具有相同类型。
 
 **语法**
 
@@ -199,11 +196,11 @@ tupleToNameValuePairs(tuple)
 
 **参数**
 
-- `tuple` — 命名元组。 [Tuple](../data-types/tuple.md) 具有任何类型的值。
+- `tuple` — 命名元组。 [Tuple](../data-types/tuple.md)，具有任意类型的值。
 
 **返回值**
 
-- 一个包含 (名称, 值) 对的数组。 [Array](../data-types/array.md)([Tuple](../data-types/tuple.md)([String](../data-types/string.md), ...))。
+- 具有 (名称, 值) 对的数组。 [Array](../data-types/array.md)([Tuple](../data-types/tuple.md)([String](../data-types/string.md), ...))。
 
 **示例**
 
@@ -226,7 +223,7 @@ SELECT tupleToNameValuePairs(col) FROM tupletest;
 └───────────────────────────────────────┘
 ```
 
-可以使用此函数将列转换为行：
+可以使用该函数将列转换为行：
 
 ```sql
 CREATE TABLE tupletest (col Tuple(CPU Float64, Memory Float64, Disk Float64)) ENGINE = Memory;
@@ -246,7 +243,7 @@ SELECT arrayJoin(tupleToNameValuePairs(col)) FROM tupletest;
 └───────────────────────────────────────┘
 ```
 
-如果将简单元组传递给该函数，ClickHouse 将使用值的索引作为它们的名称：
+如果将简单元组传递给该函数，ClickHouse 会使用值的索引作为它们的名称：
 
 ```sql
 SELECT tupleToNameValuePairs(tuple(3, 2, 1));
@@ -262,7 +259,7 @@ SELECT tupleToNameValuePairs(tuple(3, 2, 1));
 
 ## tupleNames {#tuplenames}
 
-将元组转换为列名称的数组。对于 `Tuple(a T, b T, ...)` 形式的元组，它返回一个字符串数组，表示元组的命名列。如果元组元素没有显式名称，则将使用它们的索引作为列名称。
+将元组转换为列名称的数组。对于形式为 `Tuple(a T, b T, ...)` 的元组，它返回一个字符串数组，表示元组的命名列。如果元组元素没有显式名称，则将使用它们的索引作为列名称。
 
 **语法**
 
@@ -272,11 +269,11 @@ tupleNames(tuple)
 
 **参数**
 
-- `tuple` — 命名元组。 [Tuple](../../sql-reference/data-types/tuple.md) 具有任何类型的值。
+- `tuple` — 命名元组。 [Tuple](../../sql-reference/data-types/tuple.md)，具有任意类型的值。
 
 **返回值**
 
-- 一个包含字符串的数组。
+- 一个字符串数组。
 
 类型: [Array](../../sql-reference/data-types/array.md)([Tuple](../../sql-reference/data-types/tuple.md)([String](../../sql-reference/data-types/string.md), ...))。
 
@@ -300,7 +297,7 @@ SELECT tupleNames(col) FROM tupletest;
 └──────────────────────────┘
 ```
 
-如果将简单元组传递给该函数，ClickHouse 将使用列的索引作为它们的名称：
+如果将简单元组传递给该函数，ClickHouse 会使用列的索引作为它们的名称：
 
 ```sql
 SELECT tupleNames(tuple(3, 2, 1));
@@ -425,7 +422,7 @@ SELECT tupleMultiply((1, 2), (2, 3));
 
 ## tupleDivide {#tupledivide}
 
-计算两个相同大小的元组的对应值的除法。请注意，除以零将返回 `inf`。
+计算两个相同大小的元组的对应值的除法。注意，除以零将返回 `inf`。
 
 **语法**
 
@@ -460,7 +457,7 @@ SELECT tupleDivide((1, 2), (2, 3));
 
 ## tupleNegate {#tuplenegate}
 
-计算元组值的否定。
+计算元组值的取反。
 
 **语法**
 
@@ -474,7 +471,7 @@ tupleNegate(tuple)
 
 **返回值**
 
-- 否定结果的元组。 [Tuple](../data-types/tuple.md)。
+- 取反结果的元组。 [Tuple](../data-types/tuple.md)。
 
 **示例**
 
@@ -505,11 +502,11 @@ tupleMultiplyByNumber(tuple, number)
 **参数**
 
 - `tuple` — [Tuple](../data-types/tuple.md)。
-- `number` — 乘数。 [Int/UInt](../data-types/int-uint.md), [Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
+- `number` — 乘数。 [Int/UInt](../data-types/int-uint.md)、[Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
 
 **返回值**
 
-- 乘法结果的元组。 [Tuple](../data-types/tuple.md)。
+- 乘以值的元组。 [Tuple](../data-types/tuple.md)。
 
 **示例**
 
@@ -529,7 +526,7 @@ SELECT tupleMultiplyByNumber((1, 2), -2.1);
 
 ## tupleDivideByNumber {#tupledividebynumber}
 
-返回一个所有值都除以一个数字的元组。请注意，除以零将返回 `inf`。
+返回一个所有值都除以一个数字的元组。注意，除以零将返回 `inf`。
 
 **语法**
 
@@ -540,11 +537,11 @@ tupleDivideByNumber(tuple, number)
 **参数**
 
 - `tuple` — [Tuple](../data-types/tuple.md)。
-- `number` — 除数。 [Int/UInt](../data-types/int-uint.md), [Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
+- `number` — 除数。 [Int/UInt](../data-types/int-uint.md)、[Float](../data-types/float.md) 或 [Decimal](../data-types/decimal.md)。
 
 **返回值**
 
-- 除法结果的元组。 [Tuple](../data-types/tuple.md)。
+- 除以值的元组。 [Tuple](../data-types/tuple.md)。
 
 **示例**
 
@@ -564,7 +561,7 @@ SELECT tupleDivideByNumber((1, 2), 0.5);
 
 ## tupleConcat {#tupleconcat}
 
-合并作为参数传递的元组。
+组合作为参数传递的元组。
 
 ```sql
 tupleConcat(tuples)
@@ -572,7 +569,7 @@ tupleConcat(tuples)
 
 **参数**
 
-- `tuples` – 任意数量的 [Tuple](../data-types/tuple.md) 类型参数。
+- `tuples` – 任意数量的 [Tuple](../data-types/tuple.md) 类型的参数。
 
 **示例**
 
@@ -588,7 +585,7 @@ SELECT tupleConcat((1, 2), (3, 4), (true, false)) AS res
 
 ## tupleIntDiv {#tupleintdiv}
 
-执行一个分子元组和一个分母元组的整数除法，并返回一个商的元组。
+对一个数值元组和一个分母元组进行整数除法，并返回一个商元组。
 
 **语法**
 
@@ -598,16 +595,16 @@ tupleIntDiv(tuple_num, tuple_div)
 
 **参数**
 
-- `tuple_num`: 分子值的元组。 [Tuple](../data-types/tuple) 的数值类型。
-- `tuple_div`: 除数值的元组。 [Tuple](../data-types/tuple) 的数值类型。
+- `tuple_num`: 数值的元组。[Tuple](../data-types/tuple)。
+- `tuple_div`: 除数的元组。[Tuple](../data-types/tuple)。
 
 **返回值**
 
-- `tuple_num` 和 `tuple_div` 的商的元组。 [Tuple](../data-types/tuple) 的整数值。
+- `tuple_num` 和 `tuple_div` 的商元组。 [Tuple](../data-types/tuple) 的整数值。
 
 **实现细节**
 
-- 如果 `tuple_num` 或 `tuple_div` 包含非整数值，则对每个非整数分子或除数的结果通过四舍五入到最接近的整数来计算。
+- 如果 `tuple_num` 或 `tuple_div` 包含非整型值，则结果通过对每个非整型分子或除数进行四舍五入到最近的整数来计算。
 - 除以 0 时将抛出错误。
 
 **示例**
@@ -642,7 +639,7 @@ SELECT tupleIntDiv((15, 10, 5), (5.5, 5.5, 5.5));
 
 ## tupleIntDivOrZero {#tupleintdivorzero}
 
-类似于 [tupleIntDiv](#tupleintdiv)，它执行一个分子元组和一个分母元组的整数除法，并返回一个商的元组。它不会因除数为 0 而抛出错误，而是将商返回为 0。
+与 [tupleIntDiv](#tupleintdiv) 类似，执行一个数值元组和一个分母元组的整数除法，并返回一个商元组。它不会对 0 除数抛出错误，而是将商返回为 0。
 
 **语法**
 
@@ -650,17 +647,17 @@ SELECT tupleIntDiv((15, 10, 5), (5.5, 5.5, 5.5));
 tupleIntDivOrZero(tuple_num, tuple_div)
 ```
 
-- `tuple_num`: 分子值的元组。 [Tuple](../data-types/tuple) 的数值类型。
-- `tuple_div`: 除数值的元组。 [Tuple](../data-types/tuple) 的数值类型。
+- `tuple_num`: 数值的元组。[Tuple](../data-types/tuple)。
+- `tuple_div`: 除数的元组。[Tuple](../data-types/tuple)。
 
 **返回值**
 
-- `tuple_num` 和 `tuple_div` 的商的元组。 [Tuple](../data-types/tuple) 的整数值。
+- `tuple_num` 和 `tuple_div` 的商元组。 [Tuple](../data-types/tuple) 的整数值。
 - 对于除数为 0 的商返回 0。
 
 **实现细节**
 
-- 如果 `tuple_num` 或 `tuple_div` 包含非整数值，则对每个非整数分子或除数的结果通过四舍五入到最接近的整数来计算，类似于 [tupleIntDiv](#tupleintdiv)。
+- 如果 `tuple_num` 或 `tuple_div` 包含非整型值，则结果通过对每个非整型分子或除数进行四舍五入到最近的整数进行计算，如同 [tupleIntDiv](#tupleintdiv) 一样。
 
 **示例**
 
@@ -680,7 +677,7 @@ SELECT tupleIntDivOrZero((5, 10, 15), (0, 0, 0));
 
 ## tupleIntDivByNumber {#tupleintdivbynumber}
 
-对一个分子元组进行整数除法并以给定的除数返回一个商的元组。
+对一个数值元组和给定的除数执行整数除法，并返回一个商元组。
 
 **语法**
 
@@ -690,16 +687,16 @@ tupleIntDivByNumber(tuple_num, div)
 
 **参数**
 
-- `tuple_num`: 分子值的元组。 [Tuple](../data-types/tuple) 的数值类型。
-- `div`: 除数值。 [Numeric](../data-types/int-uint.md) 类型。
+- `tuple_num`: 数值的元组。[Tuple](../data-types/tuple)。
+- `div`: 除数值。[Numeric](../data-types/int-uint.md) 类型。
 
 **返回值**
 
-- `tuple_num` 和 `div` 的商的元组。 [Tuple](../data-types/tuple) 的整数值。
+- `tuple_num` 和 `div` 的商元组。 [Tuple](../data-types/tuple) 的整数值。
 
 **实现细节**
 
-- 如果 `tuple_num` 或 `div` 包含非整数值，则对每个非整数分子或除数的结果通过四舍五入到最接近的整数来计算。
+- 如果 `tuple_num` 或 `div` 包含非整型值，则结果通过对每个非整型分子或除数进行四舍五入到最近的整数进行计算。
 - 除以 0 时将抛出错误。
 
 **示例**
@@ -734,7 +731,7 @@ SELECT tupleIntDivByNumber((15.2, 10.7, 5.5), 5.8);
 
 ## tupleIntDivOrZeroByNumber {#tupleintdivorzerobynumber}
 
-类似于 [tupleIntDivByNumber](#tupleintdivbynumber)，它对一个分子元组进行整数除法并以给定的除数返回一个商的元组。它不会因除数为 0 而抛出错误，而是将商返回为 0。
+与 [tupleIntDivByNumber](#tupleintdivbynumber) 类似，执行一个数值元组和给定分母的整数除法，并返回一个商元组。它不会对 0 除数抛出错误，而是将商返回为 0。
 
 **语法**
 
@@ -744,17 +741,17 @@ tupleIntDivOrZeroByNumber(tuple_num, div)
 
 **参数**
 
-- `tuple_num`: 分子值的元组。 [Tuple](../data-types/tuple) 的数值类型。
-- `div`: 除数值。 [Numeric](../data-types/int-uint.md) 类型。
+- `tuple_num`: 数值的元组。[Tuple](../data-types/tuple)。
+- `div`: 除数值。[Numeric](../data-types/int-uint.md) 类型。
 
 **返回值**
 
-- `tuple_num` 和 `div` 的商的元组。 [Tuple](../data-types/tuple) 的整数值。
+- `tuple_num` 和 `div` 的商元组。 [Tuple](../data-types/tuple) 的整数值。
 - 对于除数为 0 的商返回 0。
 
 **实现细节**
 
-- 如果 `tuple_num` 或 `div` 包含非整数值，则对每个非整数分子或除数的结果通过四舍五入到最接近的整数来计算，类似于 [tupleIntDivByNumber](#tupleintdivbynumber)。
+- 如果 `tuple_num` 或 `div` 包含非整型值，则结果通过对每个非整型分子或除数进行四舍五入到最近的整数进行计算，如同 [tupleIntDivByNumber](#tupleintdivbynumber) 一样。
 
 **示例**
 
@@ -798,13 +795,13 @@ tupleModulo(tuple_num, tuple_mod)
 
 **参数**
 
-- `tuple_num`: 分子值的元组。 [Tuple](../data-types/tuple) 的数值类型。
-- `tuple_div`: 除数值的元组。 [Tuple](../data-types/tuple) 的数值类型。
+- `tuple_num`: 数值的元组。[Tuple](../data-types/tuple)。
+- `tuple_div`: 模值的元组。[Tuple](../data-types/tuple)。
 
 **返回值**
 
-- `tuple_num` 和 `tuple_div` 之间除法的余数元组。 [Tuple](../data-types/tuple) 的非零整数值。
-- 对于除以零将抛出错误。
+- `tuple_num` 和 `tuple_div` 的余数的元组。 [Tuple](../data-types/tuple) 的非零整数值。
+- 除以零时抛出错误。
 
 **示例**
 
@@ -824,7 +821,7 @@ SELECT tupleModulo((15, 10, 5), (5, 3, 2));
 
 ## tupleModuloByNumber {#tuplemodulobynumber}
 
-返回一个元组的模（余数）与给定除数的除法结果。
+返回一元组和给定除数的模（余数）的元组。
 
 **语法**
 
@@ -834,13 +831,13 @@ tupleModuloByNumber(tuple_num, div)
 
 **参数**
 
-- `tuple_num`: 分子值的元组。 [Tuple](../data-types/tuple) 的数值类型。
-- `div`: 除数值。 [Numeric](../data-types/int-uint.md) 类型。
+- `tuple_num`: 数值的元组。[Tuple](../data-types/tuple)。
+- `div`: 除数值。[Numeric](../data-types/int-uint.md) 类型。
 
 **返回值**
 
-- `tuple_num` 和 `div` 之间除法的余数元组。 [Tuple](../data-types/tuple) 的非零整数值。
-- 对于除以零将抛出错误。
+- `tuple_num` 和 `div` 的余数的元组。 [Tuple](../data-types/tuple) 的非零整数值。
+- 除以零时抛出错误。
 
 **示例**
 
@@ -860,7 +857,7 @@ SELECT tupleModuloByNumber((15, 10, 5), 2);
 
 ## flattenTuple {#flattentuple}
 
-从嵌套的命名 `input` 元组返回一个扁平化的 `output` 元组。`output` 元组的元素是来自原始 `input` 元组的路径。例如： `Tuple(a Int, Tuple(b Int, c Int)) -> Tuple(a Int, b Int, c Int)`。`flattenTuple` 可用于将 `Object` 类型的所有路径选择为单独的列。
+从嵌套的命名 `input` 元组合并返回一个扁平化的 `output` 元组。`output` 元组的元素是来自原始 `input` 元组的路径。例如: `Tuple(a Int, Tuple(b Int, c Int)) -> Tuple(a Int, b Int, c Int)`。 `flattenTuple` 可以用于将类型为 `Object` 的所有路径选择为单独的列。
 
 **语法**
 
@@ -870,11 +867,11 @@ flattenTuple(input)
 
 **参数**
 
-- `input`: 要扁平化的嵌套命名元组。 [Tuple](../data-types/tuple)。
+- `input`: 要扁平化的嵌套命名元组。[Tuple](../data-types/tuple)。
 
 **返回值**
 
-- 其元素是来自原始 `input` 的路径的 `output` 元组。 [Tuple](../data-types/tuple)。
+- 返回的 `output` 元组，其元素是原始 `input` 的路径。 [Tuple](../data-types/tuple)。
 
 **示例**
 
@@ -896,7 +893,7 @@ SELECT flattenTuple(t) FROM t_flatten_tuple;
 
 ## Distance functions {#distance-functions}
 
-所有支持的函数在 [距离函数文档](../../sql-reference/functions/distance-functions.md) 中进行了描述。
+所有支持的函数在 [distance functions documentation](../../sql-reference/functions/distance-functions.md) 中有描述。
 
 <!-- 
 The inner content of the tags below are replaced at doc framework build time with 

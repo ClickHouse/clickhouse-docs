@@ -1,18 +1,19 @@
 ---
-'description': '配置用户和角色的设置。'
+'description': '用于配置用户和角色的设置。'
 'sidebar_label': '用户设置'
 'sidebar_position': 63
 'slug': '/operations/settings/settings-users'
 'title': '用户和角色设置'
+'doc_type': 'reference'
 ---
 
 
-# 用户与角色设置
+# 用户和角色设置
 
-`users` 部分位于 `users.xml` 配置文件中，包含用户设置。
+`users.xml` 配置文件的 `users` 部分包含用户设置。
 
 :::note
-ClickHouse 还支持 [SQL 驱动工作流](/operations/access-rights#access-control-usage) 来管理用户。我们建议使用它。
+ClickHouse 还支持 [基于 SQL 的工作流](/operations/access-rights#access-control-usage) 来管理用户。我们推荐使用它。
 :::
 
 `users` 部分的结构：
@@ -69,48 +70,48 @@ ClickHouse 还支持 [SQL 驱动工作流](/operations/access-rights#access-cont
 
 密码可以以明文或 SHA256（十六进制格式）指定。
 
-- 要以明文指派密码（**不推荐**），请将其放入 `password` 元素中。
+- 要以明文分配密码（**不推荐**），请将其放在 `password` 元素中。
 
     例如，`<password>qwerty</password>`。密码可以留空。
 
 <a id="password_sha256_hex"></a>
 
-- 要使用其 SHA256 哈希指派密码，请将其放入 `password_sha256_hex` 元素中。
+- 要使用其 SHA256 哈希分配密码，请将其放在 `password_sha256_hex` 元素中。
 
     例如，`<password_sha256_hex>65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5</password_sha256_hex>`。
 
-    从 shell 生成密码的示例：
+    从 Shell 生成密码的示例：
 
 ```bash
 PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWORD" | sha256sum | tr -d '-'
 ```
 
-    结果的第一行是密码，第二行是相应的 SHA256 哈希。
+    结果的第一行是密码。第二行是相应的 SHA256 哈希。
 
 <a id="password_double_sha1_hex"></a>
 
-- 为了与 MySQL 客户端兼容，密码可以以双 SHA1 哈希指定。将其放入 `password_double_sha1_hex` 元素中。
+- 为了与 MySQL 客户端兼容，密码可以指定为双 SHA1 哈希。将其放在 `password_double_sha1_hex` 元素中。
 
     例如，`<password_double_sha1_hex>08b4a0f1de6ad37da17359e592c8d74788a83eb0</password_double_sha1_hex>`。
 
-    从 shell 生成密码的示例：
+    从 Shell 生成密码的示例：
 
 ```bash
 PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWORD" | sha1sum | tr -d '-' | xxd -r -p | sha1sum | tr -d '-'
 ```
 
-    结果的第一行是密码，第二行是相应的双 SHA1 哈希。
+    结果的第一行是密码。第二行是相应的双 SHA1 哈希。
 
 ### username/ssh-key {#user-sshkey}
 
 此设置允许使用 SSH 密钥进行身份验证。
 
-给定一把 SSH 密钥（由 `ssh-keygen` 生成），例如
+给定生成的 SSH 密钥（通过 `ssh-keygen` 生成）如下：
 
 ```text
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNf0r6vRl24Ix3tv2IgPmNPO2ATa2krvt80DdcTatLj john@example.com
 ```
-`ssh_key` 元素的期望格式是
+`ssh_key` 元素应为
 ```xml
 <ssh_key>
      <type>ssh-ed25519</type>
@@ -118,11 +119,11 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNf0r6vRl24Ix3tv2IgPmNPO2ATa2krvt80DdcTatLj
  </ssh_key>
 ```
 
-将 `ssh-ed25519` 替换为 `ssh-rsa` 或 `ecdsa-sha2-nistp256` 以支持其他算法。
+将 `ssh-ed25519` 替换为 `ssh-rsa` 或 `ecdsa-sha2-nistp256`，以使用其他支持的算法。
 
 ### access_management {#access_management-user-setting}
 
-此设置启用或禁用对用户使用 SQL 驱动的 [访问控制和帐户管理](/operations/access-rights#access-control-usage)。
+此设置启用或禁用用户的 SQL 驱动的 [访问控制和帐户管理](/operations/access-rights#access-control-usage)。
 
 可能的值：
 
@@ -133,8 +134,8 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNf0r6vRl24Ix3tv2IgPmNPO2ATa2krvt80DdcTatLj
 
 ### grants {#grants-user-setting}
 
-此设置允许授予某个用户任何权限。
-列表中的每个元素应为不指定任何受让人的 `GRANT` 查询。
+此设置允许授予所选用户任何权限。
+列表中的每个元素应为没有指定任何受赠人的 `GRANT` 查询。
 
 示例：
 
@@ -148,11 +149,11 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNf0r6vRl24Ix3tv2IgPmNPO2ATa2krvt80DdcTatLj
 </user1>
 ```
 
-此设置无法与 `dictionaries`、`access_management`、`named_collection_control`、`show_named_collections_secrets` 和 `allow_databases` 设置同时指定。
+此设置不能与 `dictionaries`、`access_management`、`named_collection_control`、`show_named_collections_secrets` 和 `allow_databases` 设置同时指定。
 
 ### user_name/networks {#user-namenetworks}
 
-允许连接到 ClickHouse 服务器的用户的网络列表。
+用户可以从中连接到 ClickHouse 服务器的网络列表。
 
 列表中的每个元素可以具有以下形式之一：
 
@@ -164,15 +165,15 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNf0r6vRl24Ix3tv2IgPmNPO2ATa2krvt80DdcTatLj
 
     示例：`example01.host.ru`。
 
-    为了检查访问，执行 DNS 查询，并将所有返回的 IP 地址与对等地址进行比较。
+    为检查访问，将执行 DNS 查询，所有返回的 IP 地址将与对等地址进行比较。
 
 - `<host_regexp>` — 主机名的正则表达式。
 
     示例：`^example\d\d-\d\d-\d\.host\.ru$`
 
-    为了检查访问，将对等地址执行 [DNS PTR 查询](https://en.wikipedia.org/wiki/Reverse_DNS_lookup)，然后应用指定的正则表达式。接下来，会对 PTR 查询的结果执行另一个 DNS 查询，将所有接收到的地址与对等地址进行比较。我们强烈建议正则表达式以 $ 结尾。
+    为检查访问，将对对等地址执行 [DNS PTR 查询](https://en.wikipedia.org/wiki/Reverse_DNS_lookup)，然后应用指定的正则表达式。接着，会对 PTR 查询的结果执行另一个 DNS 查询，所有接收到的地址将与对等地址进行比较。我们强烈建议正则表达式以 $ 结尾。
 
-所有 DNS 请求的结果在服务器重启之前会被缓存。
+所有 DNS 请求的结果会缓存，直到服务器重启。
 
 **示例**
 
@@ -183,7 +184,7 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNf0r6vRl24Ix3tv2IgPmNPO2ATa2krvt80DdcTatLj
 ```
 
 :::note
-除非您拥有正确配置的防火墙，否则从任何网络开放访问是不安全的，或者服务器没有直接连接到互联网。
+从任何网络开放访问是不安全的，除非您正确配置了防火墙或服务器不直接连接到互联网。
 :::
 
 要仅允许来自本地主机的访问，请指定：
@@ -199,17 +200,18 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNf0r6vRl24Ix3tv2IgPmNPO2ATa2krvt80DdcTatLj
 
 ### user_name/quota {#user-namequota}
 
-配额允许您在一段时间内跟踪或限制资源使用。配额在 `users.xml` 配置文件的 `quotas` 部分中配置。
+配额允许您跟踪或限制一段时间内的资源使用情况。配额在 `users.xml` 配置文件的 `quotas`
+部分中配置。
 
-您可以为用户分配一组配额。有关配额配置的详细描述，请参见 [配额](/operations/quotas)。
+您可以为用户分配一组配额。有关配额配置的详细说明，请参见 [配额](/operations/quotas)。
 
 ### user_name/databases {#user-namedatabases}
 
-在此部分中，您可以限制 ClickHouse 为当前用户的 `SELECT` 查询返回的行，从而实现基本的行级安全性。
+在此部分中，您可以限制 ClickHouse 返回给当前用户的 `SELECT` 查询的行，从而实现基本的行级安全。
 
 **示例**
 
-以下配置强制用户 `user1` 只能看到 `table1` 中 `id` 字段值为 1000 的行，作为 `SELECT` 查询结果。
+以下配置强制用户 `user1` 只能在 `SELECT` 查询中看到 `table1` 的 `id` 字段值为 1000 的行。
 
 ```xml
 <user1>
@@ -223,7 +225,7 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNf0r6vRl24Ix3tv2IgPmNPO2ATa2krvt80DdcTatLj
 </user1>
 ```
 
-`filter` 可以是任何结果为 [UInt8](../../sql-reference/data-types/int-uint.md) 类型值的表达式。它通常包含比较和逻辑运算符。对于此用户，`database_name.table1` 中 `filter` 结果为 0 的行不返回。过滤与 `PREWHERE` 操作不兼容，并禁用 `WHERE→PREWHERE` 优化。
+`filter` 可以是任何结果为 [UInt8](../../sql-reference/data-types/int-uint.md) 型值的表达式。它通常包含比较和逻辑运算符。对于此用户，来自 `database_name.table1` 的 `filter` 结果为 0 的行将不返回。过滤与 `PREWHERE` 操作不兼容，并禁用 `WHERE→PREWHERE` 优化。
 
 ## 角色 {#roles}
 
@@ -243,7 +245,7 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNf0r6vRl24Ix3tv2IgPmNPO2ATa2krvt80DdcTatLj
 </roles>
 ```
 
-这些角色也可以授予 `users` 部分中的用户：
+这些角色也可以授予 `users` 部分的用户：
 
 ```xml
 <users>

@@ -1,10 +1,11 @@
 ---
-'description': '系统表包含用户内存使用情况和ProfileEvents的概览信息。'
+'description': '系统表包含对用户的内存使用情况和ProfileEvents的概述信息。'
 'keywords':
 - 'system table'
 - 'user_processes'
 'slug': '/operations/system-tables/user_processes'
 'title': 'system.user_processes'
+'doc_type': 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
@@ -19,9 +20,9 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 列：
 
 - `user` ([String](../../sql-reference/data-types/string.md)) — 用户名。
-- `memory_usage` ([Int64](/sql-reference/data-types/int-uint#integer-ranges)) – 用户所有进程使用的内存（RAM）总和。它可能不包括某些类型的专用内存。请参见 [max_memory_usage](/operations/settings/settings#max_memory_usage) 设置。
-- `peak_memory_usage` ([Int64](/sql-reference/data-types/int-uint#integer-ranges)) — 用户的内存使用峰值。当用户没有运行查询时，它可以被重置。
-- `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/map)) – 测量用户不同指标的 ProfileEvents 汇总。它们的描述可以在表 [system.events](/operations/system-tables/events) 中找到。
+- `memory_usage` ([Int64](/sql-reference/data-types/int-uint#integer-ranges)) – 用户所有进程使用的 RAM 的总和。可能不包括某些类型的专用内存。有关详细信息，请参见 [max_memory_usage](/operations/settings/settings#max_memory_usage) 设置。
+- `peak_memory_usage` ([Int64](/sql-reference/data-types/int-uint#integer-ranges)) — 用户的内存使用峰值。当用户没有运行任何查询时，可以重置该值。
+- `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/map)) – 测量用户不同指标的 ProfileEvents 的摘要。有关它们的描述请参见表 [system.events](/operations/system-tables/events)
 
 ```sql
 SELECT * FROM system.user_processes LIMIT 10 FORMAT Vertical;

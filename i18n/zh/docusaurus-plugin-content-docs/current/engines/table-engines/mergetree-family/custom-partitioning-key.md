@@ -1,25 +1,26 @@
 ---
-'description': '了解如何将自定义分区键添加到 MergeTree 表。'
+'description': '学习如何为 MergeTree 表添加自定义分区键。'
 'sidebar_label': '自定义分区键'
 'sidebar_position': 30
 'slug': '/engines/table-engines/mergetree-family/custom-partitioning-key'
 'title': '自定义分区键'
+'doc_type': 'guide'
 ---
 
 
 # 自定义分区键
 
 :::note
-在大多数情况下，您无需分区键，而在其他大多数情况下，您不需要比按月更细粒度的分区键。
+在大多数情况下，您不需要分区键，在大多数其他情况下，您不需要比按月份更细粒度的分区键。
 
-您绝不应使用过于细粒度的分区。不要按客户标识符或名称对数据进行分区。相反，将客户标识符或名称放在 ORDER BY 表达式的第一列中。
+您永远不应该使用过于细粒度的分区。不要根据客户标识符或名称对数据进行分区。相反，请将客户标识符或名称作为 ORDER BY 表达式中的第一列。
 :::
 
-分区对于 [MergeTree 家族表](../../../engines/table-engines/mergetree-family/mergetree.md) 可用，包括 [复制表](../../../engines/table-engines/mergetree-family/replication.md) 和 [物化视图](/sql-reference/statements/create/view#materialized-view)。
+分区可用于 [MergeTree 系列表](../../../engines/table-engines/mergetree-family/mergetree.md)，包括 [复制表](../../../engines/table-engines/mergetree-family/replication.md) 和 [物化视图](/sql-reference/statements/create/view#materialized-view)。
 
-分区是按指定标准对表中记录的逻辑组合。您可以通过任意标准设置分区，例如按月、按天或按事件类型。每个分区单独存储，以简化对该数据的操作。在访问数据时，ClickHouse 使用尽可能小的分区子集。分区提高了包含分区键的查询性能，因为 ClickHouse 会在选择分区内的 parts 和 granules 之前过滤出该分区。
+分区是将表中的记录按指定标准进行逻辑组合。您可以根据任意标准设置分区，例如按月份、按天或按事件类型。每个分区单独存储，以简化对这些数据的操作。在访问数据时，ClickHouse 会使用尽可能小的分区子集。对于包含分区键的查询，分区可以提高性能，因为 ClickHouse 会在选择分区内的部分和颗粒之前对该分区进行过滤。
 
-在 [创建表](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-creating-a-table) 时，使用 `PARTITION BY expr` 子句指定分区。分区键可以是表列中的任何表达式。例如，要按月指定分区，可以使用表达式 `toYYYYMM(date_column)`：
+在 [创建表](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-creating-a-table) 时，可以在 `PARTITION BY expr` 子句中指定分区。分区键可以是表列中的任何表达式。例如，要按月份指定分区，可以使用表达式 `toYYYYMM(date_column)`：
 
 ```sql
 CREATE TABLE visits
@@ -41,17 +42,17 @@ PARTITION BY (toMonday(StartDate), EventType)
 ORDER BY (CounterID, StartDate, intHash32(UserID));
 ```
 
-在此示例中，我们设置按当前周发生的事件类型进行分区。
+在这个例子中，我们根据当前周发生的事件类型设置分区。
 
-默认情况下，不支持浮点分区键。要使用它，请启用设置 [allow_floating_point_partition_key](../../../operations/settings/merge-tree-settings.md#allow_floating_point_partition_key)。
+默认情况下，不支持浮点数分区键。要使用它，请启用设置 [allow_floating_point_partition_key](../../../operations/settings/merge-tree-settings.md#allow_floating_point_partition_key)。
 
-当向表中插入新数据时，这些数据作为按主键排序的单独部分（块）存储。在插入后的 10-15 分钟后，同一分区的部分会合并为整个部分。
+插入新数据到表时，这些数据作为按主键排序的独立部分（块）存储。在插入后的 10-15 分钟内，相同分区的部分将被合并为完整部分。
 
 :::info
-合并仅适用于在分区表达式上具有相同值的数据部分。这意味着 **您不应创建过于细粒度的分区**（大约超过一千个分区）。否则，`SELECT` 查询的性能会很差，因为文件系统中存在不合理数量的文件和打开的文件描述符。
+仅对具有相同分区表达式值的数据部分进行合并。这意味着 **您不应该创建过于细粒度的分区**（超过大约一千个分区）。否则，`SELECT` 查询的性能会受到影响，因为文件系统中的文件数量和打开的文件描述符过大。
 :::
 
-使用 [system.parts](../../../operations/system-tables/parts.md) 表查看表的部分和分区。例如，假设我们有一个按月分区的 `visits` 表。让我们对 `system.parts` 表执行 `SELECT` 查询：
+使用 [system.parts](../../../operations/system-tables/parts.md) 表查看表的部分和分区。例如，假设我们有一个以月份分区的 `visits` 表。让我们对 `system.parts` 表执行 `SELECT` 查询：
 
 ```sql
 SELECT
@@ -74,25 +75,25 @@ WHERE table = 'visits'
 └───────────┴───────────────────┴────────┘
 ```
 
-`partition` 列包含分区的名称。在此示例中有两个分区：`201901` 和 `201902`。您可以使用此列值在 [ALTER ... PARTITION](../../../sql-reference/statements/alter/partition.md) 查询中指定分区名称。
+`partition` 列包含分区的名称。在这个例子中有两个分区：`201901` 和 `201902`。您可以使用此列的值在 [ALTER ... PARTITION](../../../sql-reference/statements/alter/partition.md) 查询中指定分区名称。
 
 `name` 列包含分区数据部分的名称。您可以使用此列在 [ALTER ATTACH PART](/sql-reference/statements/alter/partition#attach-partitionpart) 查询中指定部分的名称。
 
-让我们分解部分名称：`201901_1_9_2_11`：
+我们来分解部分的名称：`201901_1_9_2_11`：
 
 - `201901` 是分区名称。
 - `1` 是数据块的最小编号。
 - `9` 是数据块的最大编号。
-- `2` 是块级别（它形成的合并树深度）。
-- `11` 是变更版本（如果部分已变更）
+- `2` 是块级别（它由合并树形成的深度）。
+- `11` 是变更版本（如果部分发生变更）
 
 :::info
 旧类型表的部分名称为：`20190117_20190123_2_2_0`（最小日期 - 最大日期 - 最小块编号 - 最大块编号 - 级别）。
 :::
 
-`active` 列显示部分的状态。`1` 为活动；`0` 为非活动。例如，合并到较大部分后的源部分会变为非活动。损坏的数据部分也标识为非活动。
+`active` 列显示部分的状态。`1` 表示活动；`0` 表示非活动。例如，合并到较大部分后，剩下的源部分就是非活动部分。损坏的数据部分也会标记为非活动。
 
-正如示例所示，同一分区存在几个独立的部分（例如，`201901_1_3_1` 和 `201901_1_9_2`）。这意味着这些部分尚未合并。ClickHouse 会定期合并已插入的数据部分，约 15 分钟后。在此基础上，您可以通过 [OPTIMIZE](../../../sql-reference/statements/optimize.md) 查询执行非计划的合并。示例：
+如您所见，在这个例子中，同一分区有几个独立的部分（例如，`201901_1_3_1` 和 `201901_1_9_2`）。这意味着这些部分尚未合并。ClickHouse 会定期合并插入的数据部分，约在插入后 15 分钟之后。此外，您可以使用 [OPTIMIZE](../../../sql-reference/statements/optimize.md) 查询执行非计划合并。例如：
 
 ```sql
 OPTIMIZE TABLE visits PARTITION 201902;
@@ -111,9 +112,9 @@ OPTIMIZE TABLE visits PARTITION 201902;
 └───────────┴──────────────────┴────────┘
 ```
 
-非活动部分将在合并后大约 10 分钟删除。
+非活动部分将在合并后约 10 分钟内被删除。
 
-查看一组部分和分区的另一种方法是进入表的目录：`/var/lib/clickhouse/data/<database>/<table>/`。例如：
+查看部分和分区的另一种方法是进入表的目录：`/var/lib/clickhouse/data/<database>/<table>/`。例如：
 
 ```bash
 /var/lib/clickhouse/data/default/visits$ ls -l
@@ -129,20 +130,21 @@ drwxr-xr-x 2 clickhouse clickhouse 4096 Feb  5 12:09 201902_4_6_1
 drwxr-xr-x 2 clickhouse clickhouse 4096 Feb  1 16:48 detached
 ```
 
-文件夹 '201901_1_1_0'、'201901_1_7_1' 等是部分的目录。每个部分属于相应的分区，并仅包含特定月份的数据（此示例中的表按月分区）。
+目录中的 '201901_1_1_0'、'201901_1_7_1' 等是部分的目录。每个部分与对应的分区相关，只包含某个月的数据（这个例子的表是按月份分区的）。
 
-`detached` 目录包含通过 [DETACH](/sql-reference/statements/detach) 查询从表中分离的部分。损坏的部分也移动到该目录，而不是被删除。服务器不使用 `detached` 目录中的部分。您可以在此目录中随时添加、删除或修改数据 – 直到您运行 [ATTACH](/sql-reference/statements/alter/partition#attach-partitionpart) 查询，服务器才会知道。
+`detached` 目录包含通过 [DETACH](/sql-reference/statements/detach) 查询从表中分离的部分。损坏的部分也会移到此目录，而不是被删除。服务器不会使用 `detached` 目录中的部分。您可以随时在此目录中添加、删除或修改数据 – 服务器在您运行 [ATTACH](/sql-reference/statements/alter/partition#attach-partitionpart) 查询之前不会知道这些。
 
-请注意，在运行的服务器上，您不能手动更改文件系统中部分或其数据的集合，因为服务器不会了解此情况。对于非复制表，您可以在服务器停止时执行此操作，但不推荐这样做。在任何情况下，对于复制表，则无法更改部分的集合。
+请注意，在运行服务器上，您不能手动更改文件系统上的部分集或其数据，因为服务器不会知道这一点。对于非复制表，您可以在服务器停止时执行此操作，但不建议这样做。对于复制表，部分集在任何情况下都不能更改。
 
-ClickHouse 允许您对分区执行操作：删除、从一个表复制到另一个表或创建备份。请参见 [对分区和部分的操作]( /sql-reference/statements/alter/partition) 部分中的所有操作列表。
+ClickHouse 允许您对分区执行操作：删除它们、从一个表复制到另一个表或创建备份。有关所有操作的列表，请参见 [对分区和部分的操作](/sql-reference/statements/alter/partition) 部分。
 
 ## 使用分区键的 Group By 优化 {#group-by-optimisation-using-partition-key}
 
-对于某些表的分区键和查询的分组键组合，可以独立地针对每个分区执行聚合。
-然后，我们不必在最后合并所有执行线程的部分聚合数据，因为我们提供了保证，确保每个分组键值不会出现在两个不同线程的工作集中的情况。
+对于某些表的分区键与查询的 group by 键组合，可能可以独立地为每个分区执行聚合。
+这样，我们在最后就不需要合并来自所有执行线程的部分聚合数据，
+因为我们有保证每个 group by 键值不能出现在两个不同线程的工作集中。
 
-一个典型的例子是：
+典型例子是：
 
 ```sql
 CREATE TABLE session_log
@@ -162,21 +164,21 @@ GROUP BY UserID;
 ```
 
 :::note
-此类查询的性能在很大程度上依赖于表的布局。因此，优化默认未启用。
+此类查询的性能在很大程度上取决于表的布局。因此，优化默认情况下未启用。
 :::
 
 良好性能的关键因素：
 
-- 查询中涉及的分区数量应足够大（大于 `max_threads / 2`），否则查询将无法充分利用该机器
-- 分区不应太小，以免批处理降级为逐行处理
-- 分区应在大小上可比，以便所有线程大致完成相同工作量
+- 查询中涉及的分区数量应足够大（超过 `max_threads / 2`），否则查询将未充分利用机器
+- 分区不应过小，以免批处理变成逐行处理
+- 分区应在大小上相当，因此所有线程大致执行相同数量的工作
 
 :::info
-建议对 `partition by` 子句中的列应用某些哈希函数，以便在分区之间均匀分配数据。
+建议对 `partition by` 子句中的列应用某种哈希函数，以便在分区之间均匀分布数据。
 :::
 
-相关设置为：
+相关设置包括：
 
-- `allow_aggregate_partitions_independently` - 控制优化的使用是否启用
-- `force_aggregate_partitions_independently` - 在从正确性的角度看适用时强制使用该优化，但出于评估其合理性的内部逻辑而被禁用
-- `max_number_of_partitions_for_independent_aggregation` - 表可以拥有的最大分区数的硬限制
+- `allow_aggregate_partitions_independently` - 控制优化使用是否启用
+- `force_aggregate_partitions_independently` - 在从正确性角度适用时强制使用，即使因内部逻辑评估其合理性而被禁用
+- `max_number_of_partitions_for_independent_aggregation` - 表可以拥有的最大分区数量的硬限制
