@@ -1,24 +1,22 @@
 ---
-description: 'Позволяет получать доступ ко всем шартам (настроенным в разделе `remote_servers`)
-  кластера без создания таблицы [Distributed](../../engines/table-engines/special/distributed.md).'
-sidebar_label: 'кластер'
+slug: '/sql-reference/table-functions/cluster'
+sidebar_label: кластер
 sidebar_position: 30
-slug: /sql-reference/table-functions/cluster
-title: 'clusterAllReplicas'
+description: 'Позволяет получать доступ ко всем шардовым узлам (настроенным в разделе'
+title: clusterAllReplicas
+doc_type: reference
 ---
+# Функция табличного мира clusterAllReplicas
 
+Позволяет получать доступ ко всем шардом (настроенным в разделе `remote_servers`) кластера без создания таблицы [Distributed](../../engines/table-engines/special/distributed.md). Запрашивается только одна реплика каждого шара.
 
-# Функция Таблицы clusterAllReplicas
-
-Позволяет получать доступ ко всем шартам (настроенным в разделе `remote_servers`) кластера без создания таблицы [Distributed](../../engines/table-engines/special/distributed.md). Запрашивается только одна реплика из каждого шарда.
-
-Функция `clusterAllReplicas` — то же самое, что и `cluster`, но запрашиваются все реплики. Каждая реплика в кластере используется как отдельный шард/соединение.
+Функция `clusterAllReplicas` аналогична `cluster`, но запрашивает все реплики. Каждая реплика в кластере используется как отдельный шард/соединение.
 
 :::note
 Все доступные кластеры перечислены в таблице [system.clusters](../../operations/system-tables/clusters.md).
 :::
 
-**Синтаксис**
+## Синтаксис {#syntax}
 
 ```sql
 cluster(['cluster_name', db.table, sharding_key])
@@ -26,19 +24,21 @@ cluster(['cluster_name', db, table, sharding_key])
 clusterAllReplicas(['cluster_name', db.table, sharding_key])
 clusterAllReplicas(['cluster_name', db, table, sharding_key])
 ```
-**Аргументы**
+## Аргументы {#arguments}
 
-- `cluster_name` – Название кластера, которое используется для построения набора адресов и параметров подключения к удалённым и локальным серверам, установите `default`, если не указано.
-- `db.table` или `db`, `table` - Название базы данных и таблицы.
-- `sharding_key` - Ключ шардирования. Необязательный. Необходимо указать, если кластер имеет более одного шарда.
+| Аргументы                  | Тип                                                                                                                                              |
+|----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| `cluster_name`             | Имя кластера, которое используется для формирования набора адресов и параметров соединения с удаленными и локальными серверами, установите `default`, если не указано. |
+| `db.table` или `db`, `table` | Имя базы данных и таблицы.                                                                                                                   |
+| `sharding_key`             | Ключ шардирования. Необязательный. Должен быть указан, если у кластера более одного шара.                                                           |
 
-**Возвращаемое значение**
+## Возвращаемое значение {#returned_value}
 
 Набор данных из кластеров.
 
-**Использование Макросов**
+## Использование макросов {#using_macros}
 
-`cluster_name` может содержать макросы — подстановки в фигурных скобках. Подставляемое значение берется из раздела [макросов](../../operations/server-configuration-parameters/settings.md#macros) файла конфигурации сервера.
+`cluster_name` может содержать макросы — замены в фигурных скобках. Заменяемое значение берется из секции [macros](../../operations/server-configuration-parameters/settings.md#macros) файла конфигурации сервера.
 
 Пример:
 
@@ -46,19 +46,19 @@ clusterAllReplicas(['cluster_name', db, table, sharding_key])
 SELECT * FROM cluster('{cluster}', default.example_table);
 ```
 
-**Использование и Рекомендации**
+## Использование и рекомендации {#usage_recommendations}
 
-Использование функций таблиц `cluster` и `clusterAllReplicas` менее эффективно, чем создание таблицы `Distributed`, поскольку в этом случае соединение с сервером восстанавливается для каждого запроса. При обработке большого количества запросов всегда создавайте таблицу `Distributed` заранее и не используйте функции таблиц `cluster` и `clusterAllReplicas`.
+Использование функций табличного мира `cluster` и `clusterAllReplicas` менее эффективно, чем создание таблицы `Distributed`, потому что в этом случае соединение с сервером восстанавливается для каждого запроса. При обработке большого количества запросов всегда создавайте таблицу `Distributed` заранее и не используйте функции табличного мира `cluster` и `clusterAllReplicas`.
 
-Функции таблиц `cluster` и `clusterAllReplicas` могут быть полезны в следующих случаях:
+Функции табличного мира `cluster` и `clusterAllReplicas` могут быть полезны в следующих случаях:
 
 - Доступ к конкретному кластеру для сравнения данных, отладки и тестирования.
-- Запросы к различным кластерам ClickHouse и репликам для исследовательских целей.
-- Редкие распределенные запросы, выполняемые вручную.
+- Запросы к различным кластерам и репликам ClickHouse в исследовательских целях.
+- Редкие распределенные запросы, которые выполняются вручную.
 
-Настройки соединения, такие как `host`, `port`, `user`, `password`, `compression`, `secure`, берутся из секции конфигурации `<remote_servers>`. См. детали в [Distributed engine](../../engines/table-engines/special/distributed.md).
+Настройки соединения, такие как `host`, `port`, `user`, `password`, `compression`, `secure`, берутся из конфигурационного раздела `<remote_servers>`. См. детали в [Distributed engine](../../engines/table-engines/special/distributed.md).
 
-**Смотрите также**
+## Связанные материалы {#related}
 
 - [skip_unavailable_shards](../../operations/settings/settings.md#skip_unavailable_shards)
 - [load_balancing](../../operations/settings/settings.md#load_balancing)

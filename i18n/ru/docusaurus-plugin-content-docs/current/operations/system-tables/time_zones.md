@@ -1,12 +1,10 @@
 ---
-description: 'Системная таблица, содержащая список часовых поясов, поддерживаемых 
-  сервером ClickHouse.'
+slug: '/operations/system-tables/time_zones'
+description: 'Системная таблица, содержащая список часовых поясов, поддерживаемых'
+title: system.time_zones
 keywords: ['системная таблица', 'часы_пояса']
-slug: /operations/system-tables/time_zones
-title: 'system.time_zones'
+doc_type: reference
 ---
-
-
 # system.time_zones
 
 Содержит список часовых поясов, поддерживаемых сервером ClickHouse. Этот список часовых поясов может варьироваться в зависимости от версии ClickHouse.

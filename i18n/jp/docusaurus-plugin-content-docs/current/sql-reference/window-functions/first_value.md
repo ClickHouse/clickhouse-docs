@@ -1,17 +1,16 @@
 ---
-description: 'Documentation for the first_value window function'
-sidebar_label: 'first_value'
-sidebar_position: 3
-slug: '/sql-reference/window-functions/first_value'
-title: 'first_value'
+'description': 'first_value ウィンドウ関数に関するドキュメント'
+'sidebar_label': 'first_value'
+'sidebar_position': 3
+'slug': '/sql-reference/window-functions/first_value'
+'title': 'first_value'
+'doc_type': 'reference'
 ---
-
-
 
 
 # first_value
 
-順序付けられたフレーム内で評価された最初の値を返します。デフォルトでは、NULL 引数はスキップされますが、`RESPECT NULLS` 修飾子を使用してこの動作を上書きすることができます。
+その順序付けられたフレーム内で評価された最初の値を返します。デフォルトでは、NULL 引数はスキップされますが、`RESPECT NULLS` 修飾子を使用するとこの動作をオーバーライドできます。
 
 **構文**
 
@@ -23,24 +22,24 @@ FROM table_name
 WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-エイリアス: `any`。
+エイリアス: `any`.
 
 :::note
-オプションの修飾子 `RESPECT NULLS` を `first_value(column_name)` の後に使用すると、`NULL` 引数がスキップされないことが保証されます。
-詳細については、[NULL 処理](../aggregate-functions/index.md/#null-processing)を参照してください。
+`first_value(column_name)` の後にオプションの修飾子 `RESPECT NULLS` を使用すると、`NULL` 引数がスキップされないようにします。
+詳細については、[NULL 処理](../aggregate-functions/index.md/#null-processing) を参照してください。
 
 エイリアス: `firstValueRespectNulls`
 :::
 
-ウィンドウ関数の構文の詳細については、[ウィンドウ関数 - 構文](./index.md/#syntax)を参照してください。
+ウィンドウ関数の構文の詳細については、次を参照してください: [ウィンドウ関数 - 構文](./index.md/#syntax).
 
 **返される値**
 
-- 順序付けられたフレーム内で評価された最初の値。
+- その順序付けられたフレーム内で評価された最初の値。
 
 **例**
 
-この例では、`first_value` 関数を使用して、プレミアリーグのサッカー選手の給与の架空のデータセットから最も高給のサッカー選手を見つけます。
+この例では、`first_value` 関数が使用され、架空のプレミアリーグのサッカー選手の給与データセットから最も高給を得ているサッカー選手を見つけます。
 
 クエリ:
 

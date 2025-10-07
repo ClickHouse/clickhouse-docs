@@ -4,12 +4,13 @@
 'sidebar_position': 44
 'slug': '/sql-reference/statements/drop'
 'title': 'DROP 语句'
+'doc_type': 'reference'
 ---
 
 
 # DROP 语句
 
-删除现有实体。如果指定了 `IF EXISTS` 子句，当实体不存在时这些查询不会返回错误。如果指定了 `SYNC` 修饰符，则实体会立即被删除。
+删除现有实体。如果指定了 `IF EXISTS` 子句，则这些查询在实体不存在时不会返回错误。如果指定了 `SYNC` 修饰符，则实体会立即被删除。
 
 ## DROP DATABASE {#drop-database}
 
@@ -26,7 +27,7 @@ DROP DATABASE [IF EXISTS] db [ON CLUSTER cluster] [SYNC]
 删除一个或多个表。
 
 :::tip
-要撤消表的删除，请参见 [UNDROP TABLE](/sql-reference/statements/undrop.md)
+要撤销表的删除，请参见 [UNDROP TABLE](/sql-reference/statements/undrop.md)
 :::
 
 语法：
@@ -36,8 +37,8 @@ DROP [TEMPORARY] TABLE [IF EXISTS] [IF EMPTY]  [db1.]name_1[, [db2.]name_2, ...]
 ```
 
 限制：
-- 如果指定了 `IF EMPTY` 子句，服务器仅在接收查询的副本上检查表是否为空。  
-- 同时删除多个表不是一个原子操作，即如果某个表的删除失败，后续的表将不会被删除。
+- 如果指定了 `IF EMPTY` 子句，则服务器仅在接收查询的副本上检查表是否为空。  
+- 同时删除多个表不是一个原子操作，即如果一个表的删除失败，则后续表不会被删除。
 
 ## DROP DICTIONARY {#drop-dictionary}
 
@@ -61,7 +62,7 @@ DROP USER [IF EXISTS] name [,...] [ON CLUSTER cluster_name] [FROM access_storage
 
 ## DROP ROLE {#drop-role}
 
-删除角色。被删除的角色将从所有分配该角色的实体中撤销。
+删除角色。已删除的角色从所有分配了该角色的实体中撤销。
 
 语法：
 
@@ -71,7 +72,7 @@ DROP ROLE [IF EXISTS] name [,...] [ON CLUSTER cluster_name] [FROM access_storage
 
 ## DROP ROW POLICY {#drop-row-policy}
 
-删除行策略。被删除的行策略将从所有分配该策略的实体中撤销。
+删除行策略。已删除的行策略从所有分配了该策略的实体中撤销。
 
 语法：
 
@@ -81,7 +82,7 @@ DROP [ROW] POLICY [IF EXISTS] name [,...] ON [database.]table [,...] [ON CLUSTER
 
 ## DROP QUOTA {#drop-quota}
 
-删除配额。被删除的配额将从所有分配该配额的实体中撤销。
+删除配额。已删除的配额从所有分配了该配额的实体中撤销。
 
 语法：
 
@@ -91,7 +92,7 @@ DROP QUOTA [IF EXISTS] name [,...] [ON CLUSTER cluster_name] [FROM access_storag
 
 ## DROP SETTINGS PROFILE {#drop-settings-profile}
 
-删除设置配置文件。被删除的设置配置文件将从所有分配该配置文件的实体中撤销。
+删除设置配置文件。已删除的设置配置文件从所有分配了该配置文件的实体中撤销。
 
 语法：
 
@@ -111,7 +112,8 @@ DROP VIEW [IF EXISTS] [db.]name [ON CLUSTER cluster] [SYNC]
 
 ## DROP FUNCTION {#drop-function}
 
-删除由 [CREATE FUNCTION](./create/function.md) 创建的用户定义函数。系统函数不能被删除。
+删除由 [CREATE FUNCTION](./create/function.md) 创建的用户定义函数。
+系统函数无法被删除。
 
 **语法**
 

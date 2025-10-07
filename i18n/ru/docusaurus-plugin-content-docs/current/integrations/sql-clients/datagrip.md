@@ -1,10 +1,10 @@
 ---
-sidebar_label: 'DataGrip'
-slug: /integrations/datagrip
-description: 'DataGrip — это IDE для баз данных, которая поддерживает ClickHouse из коробки.'
+slug: '/integrations/datagrip'
+sidebar_label: DataGrip
+description: 'DataGrip является IDE для баз данных, которая поддерживает ClickHouse'
 title: 'Подключение DataGrip к ClickHouse'
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import datagrip_1 from '@site/static/images/integrations/sql-clients/datagrip-1.png';
@@ -18,48 +18,48 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-## Запустите или загрузите DataGrip {#start-or-download-datagrip}
+## 1. Запустите или загрузите DataGrip {#start-or-download-datagrip}
 
 DataGrip доступен по адресу https://www.jetbrains.com/datagrip/
 
-## 1. Соберите сведения о подключении {#1-gather-your-connection-details}
+## 2. Соберите свои параметры подключения {#1-gather-your-connection-details}
 <ConnectionDetails />
 
-## 2. Загрузите драйвер ClickHouse {#2-load-the-clickhouse-driver}
+## 3. Загрузите драйвер ClickHouse {#2-load-the-clickhouse-driver}
 
-1. Запустите DataGrip, и на вкладке **Источники данных** в диалоговом окне **Источники данных и драйверы** нажмите на значок **+**
+1. Запустите DataGrip, и на вкладке **Data Sources** в диалоговом окне **Data Sources and Drivers** нажмите на значок **+**
 
-<Image img={datagrip_5} size="lg" border alt="Вкладка Источники данных DataGrip с выделенным значком +" />
+<Image img={datagrip_5} size="lg" border alt="Вкладка Data Sources в DataGrip с выделенным значком +" />
 
   Выберите **ClickHouse**
 
   :::tip
-  По мере установления соединений порядок изменяется, ClickHouse может еще не находиться на верхней позиции в вашем списке.
+  Порядок в списке изменяется по мере установления соединений, ClickHouse может быть не на первом месте в вашем списке.
   :::
 
-<Image img={datagrip_6} size="sm" border alt="DataGrip выбирает ClickHouse из списка источников данных" />
+<Image img={datagrip_6} size="sm" border alt="Выбор ClickHouse из списка источников данных в DataGrip" />
 
-- Переключитесь на вкладку **Драйверы** и загрузите драйвер ClickHouse
+- Переключитесь на вкладку **Drivers** и загрузите драйвер ClickHouse
 
-  DataGrip не поставляется с драйверами, чтобы минимизировать размер загрузки. На вкладке **Драйверы** 
-  выберите **ClickHouse** из списка **Полная поддержка** и разверните знак **+**. Выберите **Последний стабильный** драйвер из опции **Предоставленный драйвер**:
+  DataGrip не включает драйверы, чтобы минимизировать размер загрузки. На вкладке **Drivers**
+  выберите **ClickHouse** из списка **Complete Support** и разверните знак **+**. Выберите драйвер **Latest stable** из опции **Provided Driver**:
 
-<Image img={datagrip_1} size="lg" border alt="Вкладка Драйверы DataGrip, показывающая установку драйвера ClickHouse" />
+<Image img={datagrip_1} size="lg" border alt="Вкладка Drivers в DataGrip, показывающая установку драйвера ClickHouse" />
 
-## 3. Подключитесь к ClickHouse {#3-connect-to-clickhouse}
+## 4. Подключитесь к ClickHouse {#3-connect-to-clickhouse}
 
-- Укажите сведения о вашем подключении к базе данных и нажмите **Проверить подключение**:
+- Укажите свои параметры подключения к базе данных и нажмите **Test Connection**:
 
-  На первом этапе вы собрали сведения о подключении, заполните URL хоста, порт, имя пользователя, пароль и имя базы данных, затем проверьте подключение.
+  На первом шаге вы собрали данные подключения, заполните URL хоста, порт, имя пользователя, пароль и имя базы данных, затем протестируйте соединение.
 
   :::tip
-  Ввод **HOST** в диалоговом окне DataGrip на самом деле является URL, смотрите изображение ниже.
+  Пункт **HOST** в диалоговом окне DataGrip на самом деле является URL, смотрите изображение ниже.
 
-  Для получения дополнительной информации о настройках JDBC URL, пожалуйста, обратитесь к репозиторию [ClickHouse JDBC driver](https://github.com/ClickHouse/clickhouse-java).
+  Для получения дополнительной информации о настройках JDBC URL, пожалуйста, обратитесь к [репозиторию драйвера ClickHouse JDBC](https://github.com/ClickHouse/clickhouse-java).
   :::
 
-<Image img={datagrip_7} size="md" border alt="Форма сведений о подключении DataGrip с настройками ClickHouse" />
+<Image img={datagrip_7} size="md" border alt="Форма параметров подключения в DataGrip с настройками ClickHouse" />
 
-## Узнать больше {#learn-more}
+## Узнайте больше {#learn-more}
 
-Для получения более подробной информации о DataGrip посетите документацию DataGrip.
+Чтобы найти больше информации о DataGrip, посетите документацию DataGrip.

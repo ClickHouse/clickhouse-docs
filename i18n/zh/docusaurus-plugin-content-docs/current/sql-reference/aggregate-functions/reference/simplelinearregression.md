@@ -3,6 +3,7 @@
 'sidebar_position': 183
 'slug': '/sql-reference/aggregate-functions/reference/simplelinearregression'
 'title': 'simpleLinearRegression'
+'doc_type': 'reference'
 ---
 
 
@@ -16,12 +17,12 @@ simpleLinearRegression(x, y)
 
 参数：
 
-- `x` — 含有解释变量值的列。
-- `y` — 含有因变量值的列。
+- `x` — 包含解释变量值的列。
+- `y` — 包含因变量值的列。
 
 返回值：
 
-结果线的常数 `(k, b)`，即 `y = k*x + b`。
+结果线 `y = k*x + b` 的常数 `(k, b)`。
 
 **示例**
 

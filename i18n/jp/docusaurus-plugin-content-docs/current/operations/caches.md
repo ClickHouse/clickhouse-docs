@@ -1,37 +1,38 @@
 ---
-description: 'When performing queries, ClickHouse uses different caches.'
-sidebar_label: 'Caches'
-sidebar_position: 65
-slug: '/operations/caches'
-title: 'Cache Types'
+'description': 'クエリを実行する際、ClickHouseはさまざまなキャッシュを使用します。'
+'sidebar_label': 'キャッシュ'
+'sidebar_position': 65
+'slug': '/operations/caches'
+'title': 'キャッシュの種類'
+'keywords':
+- 'cache'
+'doc_type': 'reference'
 ---
 
 
+# キャッシュの種類
 
+クエリを実行する際、ClickHouseはさまざまなキャッシュを使用してクエリの速度を向上させ、ディスクへの読み書きの必要性を減らします。
 
-# キャッシュタイプ
+主なキャッシュの種類は次のとおりです：
 
-クエリを実行する際、ClickHouseは異なるキャッシュを使用します。
+- `mark_cache` — [`MergeTree`](../engines/table-engines/mergetree-family/mergetree.md) ファミリーのテーブルエンジンによって使用される [マーク](/development/architecture#merge-tree) のキャッシュ。
+- `uncompressed_cache` — [`MergeTree`](../engines/table-engines/mergetree-family/mergetree.md) ファミリーのテーブルエンジンによって使用される非圧縮データのキャッシュ。
+- オペレーティングシステムのページキャッシュ（実際のデータがあるファイルに対して間接的に使用されます）。
 
-主なキャッシュタイプ:
+さらに多数の追加キャッシュタイプがあります：
 
-- `mark_cache` — [MergeTree](../engines/table-engines/mergetree-family/mergetree.md) ファミリーのテーブルエンジンによって使用されるマークのキャッシュ。
-- `uncompressed_cache` — [MergeTree](../engines/table-engines/mergetree-family/mergetree.md) ファミリーのテーブルエンジンによって使用される非圧縮データのキャッシュ。
-- オペレーティングシステムのページキャッシュ（実際のデータを含むファイルに対して間接的に使用されます）。
-
-追加のキャッシュタイプ:
-
-- DNS キャッシュ。
+- DNSキャッシュ。
 - [Regexp](../interfaces/formats.md#data-format-regexp) キャッシュ。
 - コンパイル済み式キャッシュ。
-- [Vector Similarity Index](../engines/table-engines/mergetree-family/annindexes.md) キャッシュ。
-- [Avroフォーマット](../interfaces/formats.md#data-format-avro) スキーマキャッシュ。
-- [Dictionaries](../sql-reference/dictionaries/index.md) データキャッシュ。
+- [ベクトル類似性インデックス](../engines/table-engines/mergetree-family/annindexes.md) キャッシュ。
+- [Avro形式](../interfaces/formats.md#data-format-avro) スキーマのキャッシュ。
+- [辞書](../sql-reference/dictionaries/index.md) データキャッシュ。
 - スキーマ推論キャッシュ。
-- [Filesystem cache](storing-data.md) S3、Azure、ローカルおよびその他のディスク上。
-- [Userspace page cache](/operations/userspace-page-cache)
-- [Query cache](query-cache.md)。
-- [Query condition cache](query-condition-cache.md)。
-- フォーマットスキーマキャッシュ。
+- S3、Azure、ローカルおよびその他のディスクに対する [ファイルシステムキャッシュ](storing-data.md)。
+- [ユーザースペースページキャッシュ](/operations/userspace-page-cache)。
+- [クエリキャッシュ](query-cache.md)。
+- [クエリ条件キャッシュ](query-condition-cache.md)。
+- 形式スキーマキャッシュ。
 
-キャッシュのいずれかを削除するには、[SYSTEM DROP ... CACHE](../sql-reference/statements/system.md) ステートメントを使用します。
+パフォーマンスチューニング、トラブルシューティング、またはデータ整合性の理由からキャッシュの1つを削除したい場合は、[`SYSTEM DROP ... CACHE`](../sql-reference/statements/system.md) ステートメントを使用できます。

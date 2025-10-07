@@ -1,9 +1,10 @@
 ---
-'description': '允许 `SELECT` 和 `INSERT` 查询在存储在远程 PostgreSQL 服务器上的数据上执行。'
+'description': '允许执行 `SELECT` 和 `INSERT` 查询，以便对存储在远程 PostgreSQL 服务器上的数据进行操作。'
 'sidebar_label': 'postgresql'
 'sidebar_position': 160
 'slug': '/sql-reference/table-functions/postgresql'
 'title': 'postgresql'
+'doc_type': 'reference'
 ---
 
 
@@ -19,40 +20,40 @@ postgresql({host:port, database, table, user, password[, schema, [, on_conflict]
 
 ## 参数 {#arguments}
 
-| 参数         | 描述                                                                       |
-|--------------|---------------------------------------------------------------------------|
-| `host:port`  | PostgreSQL 服务器地址。                                                  |
-| `database`   | 远程数据库名称。                                                          |
-| `table`      | 远程表名称。                                                              |
-| `user`       | PostgreSQL 用户。                                                        |
-| `password`   | 用户密码。                                                                |
-| `schema`     | 非默认表模式。可选。                                                     |
-| `on_conflict`| 冲突解决策略。示例：`ON CONFLICT DO NOTHING`。可选。                     |
+| 参数          | 描述                                                                     |
+|---------------|----------------------------------------------------------------------------|
+| `host:port`   | PostgreSQL 服务器地址。                                                  |
+| `database`    | 远程数据库名称。                                                         |
+| `table`       | 远程表名称。                                                             |
+| `user`        | PostgreSQL 用户。                                                         |
+| `password`    | 用户密码。                                                               |
+| `schema`      | 非默认表架构。可选。                                                     |
+| `on_conflict` | 冲突解决策略。例如：`ON CONFLICT DO NOTHING`。可选。                    |
 
-参数也可以使用 [命名集合](operations/named-collections.md) 传递。在这种情况下，`host` 和 `port` 应该单独指定。这种方法推荐用于生产环境。
+参数也可以使用 [命名集合](operations/named-collections.md) 传递。在这种情况下，`host` 和 `port` 应该分开指定。建议在生产环境中采用这种方法。
 
 ## 返回值 {#returned_value}
 
-具有与原始 PostgreSQL 表相同列的表对象。
+一个表对象，其列与原始 PostgreSQL 表相同。
 
 :::note
-在 `INSERT` 查询中，为了区分表函数 `postgresql(...)` 和表名（带列名列表），必须使用关键字 `FUNCTION` 或 `TABLE FUNCTION`。请参见下面的示例。
+在 `INSERT` 查询中，为了区分表函数 `postgresql(...)` 和具有列名列表的表名称，必须使用关键字 `FUNCTION` 或 `TABLE FUNCTION`。请参阅下面的示例。
 :::
 
 ## 实现细节 {#implementation-details}
 
-PostgreSQL 端的 `SELECT` 查询作为 `COPY (SELECT ...) TO STDOUT` 在只读 PostgreSQL 事务中运行，每个 `SELECT` 查询后提交。
+在 PostgreSQL 端的 `SELECT` 查询作为 `COPY (SELECT ...) TO STDOUT` 在只读 PostgreSQL 事务中运行，每个 `SELECT` 查询后都提交。
 
-简单的 `WHERE` 子句，如 `=`、`!=`、`>`、`>=`、`<`、`<=` 和 `IN` 在 PostgreSQL 服务器上执行。
+简单的 `WHERE` 子句，如 `=`、`!=`、`>`、`>=`、`<`、`<=` 和 `IN`，在 PostgreSQL 服务器上执行。
 
-所有连接、聚合、排序、`IN [ array ]` 条件和 `LIMIT` 采样约束仅在查询到 PostgreSQL 完成后在 ClickHouse 中执行。
+所有连接、聚合、排序、`IN [ array ]` 条件和 `LIMIT` 采样约束仅在查询完成后在 ClickHouse 中执行。
 
-PostgreSQL 端的 `INSERT` 查询作为 `COPY "table_name" (field1, field2, ... fieldN) FROM STDIN` 在 PostgreSQL 事务中运行，每个 `INSERT` 语句后自动提交。
+在 PostgreSQL 端的 `INSERT` 查询作为 `COPY "table_name" (field1, field2, ... fieldN) FROM STDIN` 在 PostgreSQL 事务中运行，每个 `INSERT` 语句后自动提交。
 
 PostgreSQL 数组类型转换为 ClickHouse 数组。
 
 :::note
-请注意，在 PostgreSQL 中，像 Integer[] 这样的数组数据类型列可能在不同的行中包含不同维度的数组，但在 ClickHouse 中，所有行中仅允许具有相同维度的多维数组。
+请注意，在 PostgreSQL 中，像 Integer[] 这样的数组数据类型列可能在不同的行中包含不同维度的数组，但在 ClickHouse 中，仅允许所有行具有相同维度的多维数组。
 :::
 
 支持多个副本，必须用 `|` 列出。例如：
@@ -61,7 +62,7 @@ PostgreSQL 数组类型转换为 ClickHouse 数组。
 SELECT name FROM postgresql(`postgres{1|2|3}:5432`, 'postgres_database', 'postgres_table', 'user', 'password');
 ```
 
-或者
+或
 
 ```sql
 SELECT name FROM postgresql(`postgres1:5431|postgres2:5432`, 'postgres_database', 'postgres_table', 'user', 'password');
@@ -94,13 +95,13 @@ postgresql> SELECT * FROM test;
 (1 row)
 ```
 
-使用普通参数从 ClickHouse 中选择数据：
+使用普通参数从 ClickHouse 选择数据：
 
 ```sql
 SELECT * FROM postgresql('localhost:5432', 'test', 'test', 'postgresql_user', 'password') WHERE str IN ('test');
 ```
 
-或者使用 [命名集合](operations/named-collections.md)：
+或使用 [命名集合](operations/named-collections.md)：
 
 ```sql
 CREATE NAMED COLLECTION mypg AS
@@ -118,7 +119,7 @@ SELECT * FROM postgresql(mypg, table='test') WHERE str IN ('test');
 └────────┴──────────────┴───────┴──────┴────────────────┘
 ```
 
-插入：
+插入操作：
 
 ```sql
 INSERT INTO TABLE FUNCTION postgresql('localhost:5432', 'test', 'test', 'postgrsql_user', 'password') (int_id, float) VALUES (2, 3);
@@ -154,4 +155,4 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
 
 ### 使用 PeerDB 复制或迁移 Postgres 数据 {#replicating-or-migrating-postgres-data-with-with-peerdb}
 
-> 除了表函数，您还可以始终使用 [PeerDB](https://docs.peerdb.io/introduction) 来从 Postgres 到 ClickHouse 设置持续的数据管道。PeerDB 是一个专门设计用于通过变更数据捕获 (CDC) 将数据从 Postgres 复制到 ClickHouse 的工具。
+> 除了表函数外，您始终可以使用 [PeerDB](https://docs.peerdb.io/introduction) by ClickHouse 来设置从 Postgres 到 ClickHouse 的持续数据管道。PeerDB 是一种专门设计用于使用更改数据捕获 (CDC) 将数据从 Postgres 复制到 ClickHouse 的工具。

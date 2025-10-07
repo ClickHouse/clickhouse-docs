@@ -1,28 +1,27 @@
 ---
-description: 'MergeTree テーブルの進行中のデータパーツ移動に関する情報を含むシステムテーブルです。各データパーツの移動が単一の行で表されます。'
-keywords:
+'description': 'システムテーブルは、MergeTree テーブルの進行中のデータパーツ移動に関する情報を含みます。各データパーツの移動は単一の行によって表されます。'
+'keywords':
 - 'system table'
 - 'moves'
-slug: '/operations/system-tables/moves'
-title: 'system.moves'
+'slug': '/operations/system-tables/moves'
+'title': 'system.moves'
+'doc_type': 'reference'
 ---
-
-
 
 
 # system.moves
 
-このテーブルには、進行中の [data part moves](/sql-reference/statements/alter/partition#move-partitionpart) に関する情報が含まれています。これは [MergeTree](/engines/table-engines/mergetree-family/mergetree.md) テーブルのデータパーツの移動を表しており、各データパートの移動は1行で表現されます。
+このテーブルは、進行中の [data part moves](/sql-reference/statements/alter/partition#move-partitionpart) の情報を、[MergeTree](/engines/table-engines/mergetree-family/mergetree.md) テーブルに関して含んでいます。各データパートの移動は、単一の行で表されます。
 
-列:
+カラム:
 
 - `database` ([String](/sql-reference/data-types/string.md)) — データベースの名前。
 
 - `table` ([String](/sql-reference/data-types/string.md)) — 移動中のデータパートを含むテーブルの名前。
 
-- `elapsed` ([Float64](../../sql-reference/data-types/float.md)) — データパートの移動が開始してからの経過時間（秒）。
+- `elapsed` ([Float64](../../sql-reference/data-types/float.md)) — データパートの移動が開始してからの経過時間（秒単位）。
 
-- `target_disk_name` ([String](disks.md)) — データパートが移動する [disk](/operations/system-tables/disks/) の名前。
+- `target_disk_name` ([String](disks.md)) — データパートが移動している [disk](/operations/system-tables/disks/) の名前。
 
 - `target_disk_path` ([String](disks.md)) — ファイルシステム内の [disk](/operations/system-tables/disks/) のマウントポイントへのパス。
 
@@ -30,7 +29,7 @@ title: 'system.moves'
 
 - `part_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) — データパートのサイズ。
 
-- `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 移動を行っているスレッドの識別子。
+- `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 移動を実行しているスレッドの識別子。
 
 **例**
 
@@ -47,5 +46,5 @@ SELECT * FROM system.moves
 **関連情報**
 
 - [MergeTree](/engines/table-engines/mergetree-family/mergetree.md) テーブルエンジン
-- [データストレージのための複数のブロックデバイスの使用](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes)
+- [データストレージ用の複数のブロックデバイスの使用](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes)
 - [ALTER TABLE ... MOVE PART](/sql-reference/statements/alter/partition#move-partitionpart) コマンド

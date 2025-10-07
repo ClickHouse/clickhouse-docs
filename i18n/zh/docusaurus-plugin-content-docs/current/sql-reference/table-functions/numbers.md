@@ -3,17 +3,18 @@
 'sidebar_position': 145
 'sidebar_label': '数字'
 'title': '数字'
-'description': '返回包含可指定整数的单个 `number` 列的表。'
+'description': '返回具有单个 `number` 列的表，该列包含可指定的整数。'
+'doc_type': 'reference'
 ---
 
 
-# numbers Table Function
+# numbers 表函数
 
-`numbers(N)` – 返回一个包含单列 'number'（UInt64）的表，该列包含从 0 到 N-1 的整数。  
-`numbers(N, M)` - 返回一个包含单列 'number'（UInt64）的表，该列包含从 N 到 (N + M - 1) 的整数。  
-`numbers(N, M, S)` - 返回一个包含单列 'number'（UInt64）的表，该列包含从 N 到 (N + M - 1) 的整数，步长为 S。  
+`numbers(N)` – 返回一个单列 'number'（UInt64）的表，该列包含从 0 到 N-1 的整数。
+`numbers(N, M)` - 返回一个单列 'number'（UInt64）的表，该列包含从 N 到 (N + M - 1) 的整数。
+`numbers(N, M, S)` - 返回一个单列 'number'（UInt64）的表，该列包含从 N 到 (N + M - 1) 的整数，步长为 S。
 
-与 `system.numbers` 表类似，它可以用于测试和生成连续值，`numbers(N, M)` 比 `system.numbers` 更高效。  
+类似于 `system.numbers` 表，它可以用于测试和生成连续的值，`numbers(N, M)` 比 `system.numbers` 更高效。
 
 以下查询是等效的：
 
@@ -37,5 +38,5 @@ SELECT * FROM numbers(0, 20, 2);
 
 ```sql
 -- Generate a sequence of dates from 2010-01-01 to 2010-12-31
-select toDate('2010-01-01') + number as d FROM numbers(365);
+SELECT toDate('2010-01-01') + number AS d FROM numbers(365);
 ```

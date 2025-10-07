@@ -1,9 +1,8 @@
 ---
-sidebar_label: 'Организации'
-title: 'Организации'
+sidebar_label: Организации
+title: Организации
+doc_type: reference
 ---
+## Получить детали организации {#get-organization-details}
 
-## Получение информации об организации {#get-organization-details}
-
-Этот файл генерируется `clickhouseapi.js` в процессе сборки. Если 
-содержимое нужно изменить, пожалуйста, отредактируйте `clickhouseapi.js`.
+Этот файл генерируется `clickhouseapi.js` в процессе сборки. Если содержание необходимо изменить, пожалуйста, отредактируйте `clickhouseapi.js`.

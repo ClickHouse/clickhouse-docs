@@ -5,6 +5,7 @@
 - 'processes'
 'slug': '/operations/system-tables/processes'
 'title': 'system.processes'
+'doc_type': 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
@@ -18,17 +19,17 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
 列：
 
-- `user` (String) – 发起查询的用户。请注意，对于分布式处理，查询是以 `default` 用户的身份发送到远程服务器的。该字段包含特定查询的用户名，而不是该查询所启动的查询的用户名。
-- `address` (String) – 请求发起时的 IP 地址。分布式处理同样适用。要跟踪分布式查询最初是从哪里发起的，请查看查询请求者服务器上的 `system.processes` 。
-- `elapsed` (Float64) – 自请求执行开始以来经过的时间（以秒为单位）。
-- `read_rows` (UInt64) – 从表中读取的行数。对于分布式处理，在请求者服务器上，这是所有远程服务器的总和。
-- `read_bytes` (UInt64) – 从表中读取的未压缩字节数。对于分布式处理，在请求者服务器上，这是所有远程服务器的总和。
-- `total_rows_approx` (UInt64) – 应该读取的总行数的估算。对于分布式处理，在请求者服务器上，这是所有远程服务器的总和。在请求处理期间，当新源被确定需要处理时，这个值可能会被更新。
-- `memory_usage` (Int64) – 请求使用的 RAM 量。它可能不包括某些类型的专用内存。请参见 [max_memory_usage](/operations/settings/settings#max_memory_usage) 设置。
-- `query` (String) – 查询文本。对于 `INSERT`，它不包括待插入的数据。
+- `user` (String) – 执行查询的用户。请记住，对于分布式处理，查询是以 `default` 用户的身份发送到远程服务器的。该字段包含特定查询的用户名，而不是此查询发起的查询的用户名。
+- `address` (String) – 请求发起的 IP 地址。分布式处理时相同。要追踪分布式查询最初是从哪里发起的，请查看查询请求者服务器上的 `system.processes`。
+- `elapsed` (Float64) – 从请求执行开始到现在的时间（以秒为单位）。
+- `read_rows` (UInt64) – 从表中读取的行数。对于分布式处理，在请求者服务器上，这对应于所有远程服务器的总和。
+- `read_bytes` (UInt64) – 从表中读取的未压缩字节数。对于分布式处理，在请求者服务器上，这对应于所有远程服务器的总和。
+- `total_rows_approx` (UInt64) – 应该读取的总行数的近似值。对于分布式处理，在请求者服务器上，这对应于所有远程服务器的总和。在请求处理期间，当新的待处理源变得可知时，它可能会被更新。
+- `memory_usage` (Int64) – 请求使用的 RAM 量。可能不包括某些类型的专用内存。请参见 [max_memory_usage](/operations/settings/settings#max_memory_usage) 设置。
+- `query` (String) – 查询文本。对于 `INSERT`，它不包括要插入的数据。
 - `query_id` (String) – 查询 ID（如果已定义）。
 - `is_cancelled` (UInt8) – 查询是否被取消。
-- `is_all_data_sent` (UInt8) – 所有数据是否已发送到客户端（换句话说，查询在服务器上已完成）。
+- `is_all_data_sent` (UInt8) – 是否已将所有数据发送到客户端（换句话说，查询已在服务器上完成）。
 
 ```sql
 SELECT * FROM system.processes LIMIT 10 FORMAT Vertical;

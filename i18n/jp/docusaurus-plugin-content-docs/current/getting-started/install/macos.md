@@ -1,13 +1,14 @@
 ---
-description: 'Install ClickHouse on MacOS'
-keywords:
+'description': 'MacOSにClickHouseをインストール'
+'keywords':
 - 'ClickHouse'
 - 'install'
 - 'MacOS'
-sidebar_label: 'MacOS'
-slug: '/install/macOS'
-title: 'Install ClickHouse using Homebrew'
-hide_title: true
+'sidebar_label': 'MacOS'
+'slug': '/install/macOS'
+'title': 'Homebrewを使用してClickHouseをインストール'
+'hide_title': true
+'doc_type': 'guide'
 ---
 
 import MacOSProd from './_snippets/_macos.md'

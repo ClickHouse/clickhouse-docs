@@ -1,13 +1,13 @@
 ---
-description: 'Системная таблица, содержащая информацию о частях таблиц MergeTree, которые были удалены из `system.dropped_tables`'
+slug: '/operations/system-tables/dropped_tables_parts'
+description: 'Системная таблица, содержащая информацию о частях таблиц MergeTree,'
+title: system.dropped_tables_parts
 keywords: ['системная таблица', 'dropped_tables_parts']
-slug: /operations/system-tables/dropped_tables_parts
-title: 'system.dropped_tables_parts'
+doc_type: reference
 ---
+Содержит информацию о частях таблиц [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md), которые были удалены из [system.dropped_tables](./dropped_tables.md)
 
-Содержит информацию о частях удалённых таблиц [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) из [system.dropped_tables](./dropped_tables.md).
-
-Схема этой таблицы такая же, как у [system.parts](./parts.md).
+Схема этой таблицы такая же, как у [system.parts](./parts.md)
 
 **Смотрите также**
 

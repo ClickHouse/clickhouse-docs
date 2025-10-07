@@ -1,17 +1,18 @@
 ---
-'description': '该引擎基于Atomic引擎。它通过将DDL日志写入ZooKeeper并在给定DATABASE的所有副本上执行来支持元数据的复制。'
+'description': '该引擎基于 Atomic 引擎。它支持通过将 DDL 日志写入 ZooKeeper 并在给定的 DATABASE 的所有副本上执行来复制元数据。'
 'sidebar_label': '副本'
 'sidebar_position': 30
 'slug': '/engines/database-engines/replicated'
 'title': '副本'
+'doc_type': 'reference'
 ---
 
 
-# 复制的
+# 复制
 
-该引擎基于 [Atomic](../../engines/database-engines/atomic.md) 引擎。它支持通过将 DDL 日志写入 ZooKeeper 并在给定数据库的所有副本上执行来复制元数据。
+该引擎基于 [Atomic](../../engines/database-engines/atomic.md) 引擎。它通过将 DDL 日志写入 ZooKeeper，并在给定数据库的所有副本上执行，支持元数据的复制。
 
-一个 ClickHouse 服务器可以同时运行和更新多个复制的数据库，但同一个复制数据库不能有多个副本。
+一个 ClickHouse 服务器可以同时运行和更新多个复制数据库。但是，不能有同一个复制数据库的多个副本。
 
 ## 创建数据库 {#creating-a-database}
 ```sql
@@ -20,31 +21,31 @@ CREATE DATABASE testdb ENGINE = Replicated('zoo_path', 'shard_name', 'replica_na
 
 **引擎参数**
 
-- `zoo_path` — ZooKeeper 路径。相同的 ZooKeeper 路径对应于相同的数据库。
-- `shard_name` — 分片名称。数据库副本通过 `shard_name` 被分组为分片。
-- `replica_name` — 副本名称。相同分片的所有副本名称必须不同。
+- `zoo_path` — ZooKeeper 路径。同一个 ZooKeeper 路径对应同一个数据库。
+- `shard_name` — 分片名称。数据库副本通过 `shard_name` 分组为分片。
+- `replica_name` — 副本名称。对同一分片的所有副本，副本名称必须不同。
 
-对于 [ReplicatedMergeTree](/engines/table-engines/mergetree-family/replication) 表，如果未提供参数，则使用默认参数：`/clickhouse/tables/{uuid}/{shard}` 和 `{replica}`。这些参数可以在服务器设置 [default_replica_path](../../operations/server-configuration-parameters/settings.md#default_replica_path) 和 [default_replica_name](../../operations/server-configuration-parameters/settings.md#default_replica_name) 中更改。宏 `{uuid}` 被展开为表的 uuid，`{shard}` 和 `{replica}` 被展开为来自服务器配置的值，而不是来自数据库引擎参数。但将来，可以使用复制数据库的 `shard_name` 和 `replica_name`。
+对于 [ReplicatedMergeTree](/engines/table-engines/mergetree-family/replication) 表，如果未提供参数，则使用默认参数：`/clickhouse/tables/{uuid}/{shard}` 和 `{replica}`。这些可以在服务器设置中的 [default_replica_path](../../operations/server-configuration-parameters/settings.md#default_replica_path) 和 [default_replica_name](../../operations/server-configuration-parameters/settings.md#default_replica_name) 中更改。宏 `{uuid}` 被展开为表的 uuid，`{shard}` 和 `{replica}` 被展开为来自服务器配置的值，而不是来自数据库引擎参数。但是将来，将能够使用 Replicated 数据库的 `shard_name` 和 `replica_name`。
 
-## 具体事项和建议 {#specifics-and-recommendations}
+## 特性和建议 {#specifics-and-recommendations}
 
-带有 `Replicated` 数据库的 DDL 查询的工作方式与 [ON CLUSTER](../../sql-reference/distributed-ddl.md) 查询类似，但有一些细微差别。
+`Replicated` 数据库的 DDL 查询工作方式与 [ON CLUSTER](../../sql-reference/distributed-ddl.md) 查询类似，但有一些细微的差别。
 
-首先，DDL 请求尝试在发起者（最初从用户处接收请求的主机）上执行。如果请求无法满足，用户会立即收到错误，其他主机不会尝试执行该请求。如果请求在发起者上成功完成，则所有其他主机将自动重试，直到它们完成它。发起者将尝试等待查询在其他主机上完成（不超过 [distributed_ddl_task_timeout](../../operations/settings/settings.md#distributed_ddl_task_timeout)），并将返回一张显示每个主机上查询执行状态的表。
+首先，DDL 请求尝试在发起者（最初从用户接收请求的主机）上执行。如果请求未被满足，用户会立即收到错误，其他主机不会尝试满足该请求。如果请求在发起者上成功完成，则所有其他主机会自动重试，直到它们完成该请求。发起者会尝试等待查询在其他主机上完成（最长不超过 [distributed_ddl_task_timeout](../../operations/settings/settings.md#distributed_ddl_task_timeout)），并返回一个包含每个主机查询执行状态的表。
 
-在发生错误的情况下的行为由 [distributed_ddl_output_mode](../../operations/settings/settings.md#distributed_ddl_output_mode) 设置进行调节，对于 `Replicated` 数据库，最好将其设置为 `null_status_on_timeout` —— 即，如果某些主机未能在 [distributed_ddl_task_timeout](../../operations/settings/settings.md#distributed_ddl_task_timeout) 内执行请求，则不要抛出异常，而是显示该主机的 `NULL` 状态。
+发生错误时的行为由 [distributed_ddl_output_mode](../../operations/settings/settings.md#distributed_ddl_output_mode) 设置进行调节，对于 `Replicated` 数据库，最好将其设置为 `null_status_on_timeout` — 即如果某些主机未能在 [distributed_ddl_task_timeout](../../operations/settings/settings.md#distributed_ddl_task_timeout) 时间内执行请求，则不抛出异常，而是在表中显示它们的 `NULL` 状态。
 
-[system.clusters](../../operations/system-tables/clusters.md) 系统表包含一个与复制数据库同名的集群，包含该数据库的所有副本。该集群在创建/删除副本时会自动更新，可以用于 [Distributed](/engines/table-engines/special/distributed) 表。
+[system.clusters](../../operations/system-tables/clusters.md) 系统表包含一个名称与复制数据库相同的集群，该集群由数据库的所有副本组成。此集群在创建/删除副本时会自动更新，可以用于 [Distributed](/engines/table-engines/special/distributed) 表。
 
-创建数据库的新副本时，该副本会自行创建表。如果副本长时间不可用并且落后于复制日志——它会检查其本地元数据与 ZooKeeper 中的当前元数据，移动含有数据的额外表到一个单独的非复制数据库（以免意外删除多余的内容），创建缺少的表，更新表名（如果它们被重命名）。数据在 `ReplicatedMergeTree` 级别上复制，即如果表未被复制，则数据不会被复制（数据库仅负责元数据）。
+当创建数据库的新副本时，该副本会自行创建表。如果副本长时间不可用并且落后于复制日志——它会检查其本地元数据与 ZooKeeper 中的当前元数据， 将额外的包含数据的表移动到一个单独的非复制数据库（以免意外删除任何多余的内容），创建缺失的表，如果表名已被重命名，更新表名。数据是在 `ReplicatedMergeTree` 级别复制的，即如果表未被复制，则数据将不被复制（数据库仅对元数据负责）。
 
-[`ALTER TABLE FREEZE|ATTACH|FETCH|DROP|DROP DETACHED|DETACH PARTITION|PART`](../../sql-reference/statements/alter/partition.md) 查询是允许的，但不被复制。数据库引擎将仅添加/提取/移除当前副本的分区/部分。然而，如果表本身使用复制表引擎，则在使用 `ATTACH` 后数据将被复制。
+[`ALTER TABLE FREEZE|ATTACH|FETCH|DROP|DROP DETACHED|DETACH PARTITION|PART`](../../sql-reference/statements/alter/partition.md) 查询被允许但不被复制。数据库引擎仅将分区/部分添加/提取/移除到当前副本中。然而，如果表本身使用了复制表引擎，则在使用 `ATTACH` 后数据会被复制。
 
-如果您只需要配置集群而不维护表复制，请参考 [Cluster Discovery](../../operations/cluster-discovery.md) 特性。
+如果您只需要配置一个集群而不维护表的复制，请参考 [Cluster Discovery](../../operations/cluster-discovery.md) 功能。
 
 ## 使用示例 {#usage-example}
 
-创建一个有三个主机的集群：
+创建一个包含三个主机的集群：
 
 ```sql
 node1 :) CREATE DATABASE r ENGINE=Replicated('some/path/r','shard1','replica1');
@@ -81,7 +82,7 @@ FROM system.clusters WHERE cluster='r';
 └─────────┴───────────┴─────────────┴───────────┴──────────────┴──────┴──────────┘
 ```
 
-创建分布式表并插入数据：
+创建一个分布式表并插入数据：
 
 ```sql
 node2 :) CREATE TABLE r.d (n UInt64) ENGINE=Distributed('r','r','rmt', n % 2);
@@ -96,7 +97,7 @@ node1 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY
 └───────┴───────────────┘
 ```
 
-在一个主机上添加副本：
+在另一个主机上添加副本：
 
 ```sql
 node4 :) CREATE DATABASE r ENGINE=Replicated('some/path/r','other_shard','r2');
@@ -113,7 +114,7 @@ node4 :) CREATE DATABASE r ENGINE=Replicated('some/path/r','other_shard','r2');
 └─────────┴───────────┴─────────────┴───────────┴──────────────┴──────┴──────────┘
 ```
 
-分布式表也将从新主机获取数据：
+该分布式表也将从新主机接收数据：
 
 ```sql
 node2 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY host;

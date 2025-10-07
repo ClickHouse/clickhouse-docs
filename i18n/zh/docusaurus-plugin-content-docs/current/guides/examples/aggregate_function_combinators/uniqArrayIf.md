@@ -10,6 +10,7 @@
 - 'examples'
 - 'uniqArrayIf'
 'sidebar_label': 'uniqArrayIf'
+'doc_type': 'reference'
 ---
 
 
@@ -17,19 +18,19 @@
 
 ## 描述 {#description}
 
-[`Array`](/sql-reference/aggregate-functions/combinators#-array) 和 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`uniq`](/sql-reference/aggregate-functions/reference/uniq) 函数，以便在条件为真时，计算数组中唯一值的数量，通过使用 `uniqArrayIf` 聚合组合器函数。
+[`Array`](/sql-reference/aggregate-functions/combinators#-array) 和 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`uniq`](/sql-reference/aggregate-functions/reference/uniq) 函数，以使用 `uniqArrayIf` 聚合组合器函数计算在条件为真时数组中唯一值的数量。
 
 :::note
-- `If` 和 `Array` 可以组合使用。然而，`Array` 必须首先出现，然后是 `If`。
+- `If` 和 `Array` 可以结合使用。然而，`Array` 必须放在前面，然后是 `If`。
 :::
 
-当您希望根据特定条件计算数组中的唯一元素，而无需使用 `arrayJoin` 时，这非常有用。
+当您想要根据特定条件计算数组中的唯一元素而不必使用 `arrayJoin` 时，这非常有用。
 
 ## 示例用法 {#example-usage}
 
-### 按段类型和参与度级别计算查看的唯一产品 {#count-unique-products}
+### 按段类型和参与度级别计算唯一浏览产品数 {#count-unique-products}
 
-在此示例中，我们将使用一个包含用户购物会话数据的表，计算特定用户段的用户和会话中停留时间的参与度指标所查看的唯一产品数量。
+在此示例中，我们将使用一个包含用户购物会话数据的表来计算在特定用户段的用户和参与度指标为会话中花费的时间的情况下浏览的唯一产品数。
 
 ```sql title="Query"
 CREATE TABLE user_shopping_sessions

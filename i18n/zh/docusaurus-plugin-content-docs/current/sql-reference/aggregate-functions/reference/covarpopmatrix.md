@@ -3,6 +3,7 @@
 'sidebar_position': 122
 'slug': '/sql-reference/aggregate-functions/reference/covarpopmatrix'
 'title': 'covarPopMatrix'
+'doc_type': 'reference'
 ---
 
 
@@ -18,7 +19,7 @@ covarPopMatrix(x[, ...])
 
 **参数**
 
-- `x` — 可变数量的参数。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
+- `x` — 变量数量的参数。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md)。
 
 **返回值**
 

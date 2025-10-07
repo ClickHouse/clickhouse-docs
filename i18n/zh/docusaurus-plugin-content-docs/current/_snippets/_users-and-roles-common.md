@@ -1,13 +1,8 @@
----
-null
-...
----
-
 ## 测试管理员权限 {#test-admin-privileges}
 
-注销 `default` 用户并以 `clickhouse_admin` 用户身份登录。
+注销当前用户 `default`，并以用户 `clickhouse_admin` 重新登录。
 
-所有这些都应该成功：
+以下所有操作应成功：
 
 ```sql
 SHOW GRANTS FOR clickhouse_admin;
@@ -39,52 +34,54 @@ DROP DATABASE db1;
 
 ## 非管理员用户 {#non-admin-users}
 
-用户应具备必要的权限，而并非所有用户都是管理员。本文档的其余部分提供了示例场景和所需的角色。
+用户应具备必要的权限，而不必全是管理员用户。本文档的其余部分提供了示例场景和所需的角色。
 
 ### 准备工作 {#preparation}
 
-创建这些表和用户以供示例使用。
+创建以下表和用户以供示例使用。
 
 #### 创建示例数据库、表和行 {#creating-a-sample-database-table-and-rows}
 
-1. 创建一个测试数据库
+<VerticalStepper headerLevel="h5">
+
+##### 创建测试数据库 {#create-a-test-database}
 
 ```sql
 CREATE DATABASE db1;
 ```
 
-2. 创建一个表
+##### 创建表 {#create-a-table}
 
 ```sql
 CREATE TABLE db1.table1 (
-    id UInt64,
-    column1 String,
-    column2 String
+   id UInt64,
+   column1 String,
+   column2 String
 )
 ENGINE MergeTree
 ORDER BY id;
 ```
 
-3. 用示例行填充该表
+##### 用示例行填充表 {#populate}
 
 ```sql
 INSERT INTO db1.table1
-    (id, column1, column2)
+   (id, column1, column2)
 VALUES
-    (1, 'A', 'abc'),
-    (2, 'A', 'def'),
-    (3, 'B', 'abc'),
-    (4, 'B', 'def');
+   (1, 'A', 'abc'),
+   (2, 'A', 'def'),
+   (3, 'B', 'abc'),
+   (4, 'B', 'def');
 ```
 
-4. 验证该表：
+##### 验证表 {#verify}
 
-```sql
+```sql title="Query"
 SELECT *
 FROM db1.table1
 ```
 
-```response
+```response title="Response"
 Query id: 475015cc-6f51-4b20-bda2-3c9c41404e49
 
 ┌─id─┬─column1─┬─column2─┐
@@ -95,28 +92,35 @@ Query id: 475015cc-6f51-4b20-bda2-3c9c41404e49
 └────┴─────────┴─────────┘
 ```
 
-5. 创建一个普通用户，用于演示限制对某些列的访问：
+##### 创建 `column_user` {#create-a-user-with-restricted-access-to-columns}
+
+创建一个常规用户，用于演示如何限制对某些列的访问：
 
 ```sql
 CREATE USER column_user IDENTIFIED BY 'password';
 ```
 
-6. 创建一个普通用户，用于演示限制对某些值的行的访问：
+##### 创建 `row_user` {#create-a-user-with-restricted-access-to-rows-with-certain-values}
+
+创建一个常规用户，用于演示如何限制对具有特定值的行的访问：
+   
 ```sql
 CREATE USER row_user IDENTIFIED BY 'password';
 ```
+   
+</VerticalStepper>
 
 #### 创建角色 {#creating-roles}
 
 通过这一系列示例：
 
-- 将为不同的权限（如列和行）创建角色
+- 创建不同权限的角色，例如列和行
 - 将权限授予角色
-- 用户将被分配到各个角色
+- 将用户分配给每个角色
 
-角色用于定义特定权限的用户组，而不是单独管理每个用户。
+角色用于定义用户组，以获取特定权限，而不是分别管理每个用户。
 
-1. 创建一个角色，限制该角色的用户只能在 `db1` 数据库和 `table1` 表中查看 `column1`：
+1. 创建一个角色，以限制该角色的用户只能查看数据库 `db1` 中的 `table1` 的 `column1`：
 
 ```sql
 CREATE ROLE column1_users;
@@ -134,7 +138,7 @@ GRANT SELECT(id, column1) ON db1.table1 TO column1_users;
 GRANT column1_users TO column_user;
 ```
 
-4. 创建一个角色，限制该角色的用户只能查看选定的行，在本例中，仅包含 `column1` 中值为 `A` 的行
+4. 创建一个角色，以限制该角色的用户只能查看选定的行，在这种情况下，只能查看 `column1` 中包含 `A` 的行
 
 ```sql
 CREATE ROLE A_rows_users;
@@ -146,7 +150,7 @@ CREATE ROLE A_rows_users;
 GRANT A_rows_users TO row_user;
 ```
 
-6. 创建一个策略，仅允许查看 `column1` 的值为 `A` 的行
+6. 创建一项策略，以仅允许查看 `column1` 值为 `A` 的行
 
 ```sql
 CREATE ROW POLICY A_row_filter ON db1.table1 FOR SELECT USING column1 = 'A' TO A_rows_users;
@@ -158,7 +162,7 @@ CREATE ROW POLICY A_row_filter ON db1.table1 FOR SELECT USING column1 = 'A' TO A
 GRANT SELECT(id, column1, column2) ON db1.table1 TO A_rows_users;
 ```
 
-8. 明确授予其他角色仍然能够访问所有行的权限
+8. 授予其他角色的显式权限，以便仍然可以访问所有行
 
 ```sql
 CREATE ROW POLICY allow_other_users_filter 
@@ -166,12 +170,12 @@ ON db1.table1 FOR SELECT USING 1 TO clickhouse_admin, column1_users;
 ```
 
     :::note
-    附加策略到表时，系统将应用该策略，仅定义的用户和角色将能够对该表进行操作，所有其他用户将被拒绝任何操作。为了不对其他用户应用限制行策略，必须定义另一策略，以允许其他用户和角色具有常规或其他类型的访问权限。
+    当将策略附加到表时，系统将应用该策略，只有那些被定义的用户和角色才能对该表进行操作，所有其他用户将被拒绝任何操作。为了不对其他用户施加限制性行策略，必须定义另一项策略以允许其他用户和角色进行常规或其他类型的访问。
     :::
 
 ## 验证 {#verification}
 
-### 测试带列限制用户的角色权限 {#testing-role-privileges-with-column-restricted-user}
+### 使用列限制用户测试角色权限 {#testing-role-privileges-with-column-restricted-user}
 
 1. 使用 `clickhouse_admin` 用户登录 ClickHouse 客户端
 
@@ -203,7 +207,7 @@ Query id: f5e906ea-10c6-45b0-b649-36334902d31d
 clickhouse-client --user column_user --password password
 ```
 
-4. 测试使用所有列的 `SELECT`
+4. 使用所有列测试 `SELECT`
 
 ```sql
 SELECT *
@@ -223,10 +227,10 @@ SELECT(id, column1, column2) ON db1.table1. (ACCESS_DENIED)
 ```
 
    :::note
-   访问被拒绝，因为指定了所有列，而用户仅对 `id` 和 `column1` 有访问权限
+   访问被拒绝，因为指定了所有列，而用户仅对 `id` 和 `column1` 有访问权限。
    :::
 
-5. 验证仅指定和允许的列的 `SELECT` 查询：
+5. 验证只指定和允许的列的 `SELECT` 查询：
 
 ```sql
 SELECT
@@ -246,7 +250,7 @@ Query id: cef9a083-d5ce-42ff-9678-f08dc60d4bb9
 └────┴─────────┘
 ```
 
-### 测试带行限制用户的角色权限 {#testing-role-privileges-with-row-restricted-user}
+### 使用行限制用户测试角色权限 {#testing-role-privileges-with-row-restricted-user}
 
 1. 使用 `row_user` 登录 ClickHouse 客户端
 
@@ -271,16 +275,16 @@ Query id: a79a113c-1eca-4c3f-be6e-d034f9a220fb
 ```
 
    :::note
-   验证仅返回上述两行，`column1` 中值为 `B` 的行应被排除。
+   验证仅返回上述两个行，`column1` 中值为 `B` 的行应被排除。
    :::
 
 ## 修改用户和角色 {#modifying-users-and-roles}
 
-用户可以被分配多个角色，以获得所需的权限组合。当使用多个角色时，系统将组合这些角色以确定权限，最终效果将是角色权限的累积。
+用户可以被分配多个角色，以满足所需权限的组合。当使用多个角色时，系统将组合这些角色以确定权限，最终效果是角色权限将是累积的。
 
-例如，如果一个 `role1` 只允许在 `column1` 上进行选择，而 `role2` 允许在 `column1` 和 `column2` 上进行选择，则用户将同时访问这两列。
+例如，如果一个 `role1` 仅允许在 `column1` 上进行选择，而 `role2` 允许在 `column1` 和 `column2` 上进行选择，则用户将同时访问这两列。
 
-1. 使用管理员帐户，创建新用户以通过行和列的默认角色进行限制
+1. 使用管理员帐户创建新用户，以通过行和列的方式限制，并指定默认角色
 
 ```sql
 CREATE USER row_and_column_user IDENTIFIED BY 'password' DEFAULT ROLE A_rows_users;
@@ -304,7 +308,7 @@ GRANT SELECT(id, column1) ON db1.table1 TO A_rows_users;
 clickhouse-client --user row_and_column_user --password password;
 ```
 
-5. 测试所有列：
+5. 使用所有列测试：
 
 ```sql
 SELECT *
@@ -323,7 +327,7 @@ To execute this query it's necessary to have grant
 SELECT(id, column1, column2) ON db1.table1. (ACCESS_DENIED)
 ```
 
-6. 测试有限允许的列：
+6. 使用有限的允许列进行测试：
 
 ```sql
 SELECT
@@ -341,11 +345,11 @@ Query id: 5e30b490-507a-49e9-9778-8159799a6ed0
 └────┴─────────┘
 ```
 
-## 排错 {#troubleshooting}
+## 故障排除 {#troubleshooting}
 
-有时权限交叉或组合会产生意外结果，以下命令可用于使用管理员帐户缩小问题范围
+有时权限交错或组合会产生意想不到的结果，以下命令可以在使用管理员帐户时用于缩小问题范围
 
-### 列出用户的授权和角色 {#listing-the-grants-and-roles-for-a-user}
+### 列出用户的权限和角色 {#listing-the-grants-and-roles-for-a-user}
 
 ```sql
 SHOW GRANTS FOR row_and_column_user
@@ -389,7 +393,7 @@ Query id: f2c636e9-f955-4d79-8e80-af40ea227ebc
 └────────────────────────────────────────┘
 ```
 
-### 查看策略是如何定义的及当前权限 {#view-how-a-policy-was-defined-and-current-privileges}
+### 查看策略的定义和当前权限 {#view-how-a-policy-was-defined-and-current-privileges}
 
 ```sql
 SHOW CREATE ROW POLICY A_row_filter ON db1.table1
@@ -405,11 +409,11 @@ Query id: 0d3b5846-95c7-4e62-9cdd-91d82b14b80b
 
 ## 管理角色、策略和用户的示例命令 {#example-commands-to-manage-roles-policies-and-users}
 
-以下命令可用于：
+以下命令可以用于：
 
 - 删除权限
 - 删除策略
-- 取消用户与角色的关联
+- 将用户从角色中撤回
 - 删除用户和角色
   <br />
 
@@ -429,7 +433,7 @@ REVOKE SELECT(column1, id) ON db1.table1 FROM A_rows_users;
 DROP ROW POLICY A_row_filter ON db1.table1;
 ```
 
-### 取消用户与角色的关联 {#unassign-a-user-from-a-role}
+### 从角色中撤回用户 {#unassign-a-user-from-a-role}
 
 ```sql
 REVOKE A_rows_users FROM row_user;
@@ -447,6 +451,6 @@ DROP ROLE A_rows_users;
 DROP USER row_user;
 ```
 
-## 摘要 {#summary}
+## 总结 {#summary}
 
-本文展示了创建 SQL 用户和角色的基础知识，并提供了设置和修改用户和角色权限的步骤。有关每个内容的更详细信息，请参阅我们的用户指南和参考文档。
+本文介绍了创建 SQL 用户和角色的基础知识，并提供了设置和修改用户和角色权限的步骤。有关每个方面的更详细信息，请参阅我们的用户指南和参考文档。

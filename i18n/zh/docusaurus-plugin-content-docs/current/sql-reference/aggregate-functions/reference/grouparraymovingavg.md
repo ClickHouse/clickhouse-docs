@@ -3,6 +3,7 @@
 'sidebar_position': 144
 'slug': '/sql-reference/aggregate-functions/reference/grouparraymovingavg'
 'title': 'groupArrayMovingAvg'
+'doc_type': 'reference'
 ---
 
 
@@ -15,18 +16,18 @@ groupArrayMovingAvg(numbers_for_summing)
 groupArrayMovingAvg(window_size)(numbers_for_summing)
 ```
 
-该函数可以将窗口大小作为参数。如果未指定，则函数将窗口大小设置为列中的行数。
+该函数可以将窗口大小作为参数。如果未指定，则函数将窗口大小设为列中的行数。
 
 **参数**
 
-- `numbers_for_summing` — [表达式](/sql-reference/syntax#expressions)，结果为数值数据类型值。
+- `numbers_for_summing` — [表达式](/sql-reference/syntax#expressions)，结果为数值数据类型。
 - `window_size` — 计算窗口的大小。
 
 **返回值**
 
 - 与输入数据相同大小和类型的数组。
 
-该函数使用 [朝零舍入](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)。它会截断对于结果数据类型无意义的小数位。
+该函数使用 [向零取整](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)。它会截断与结果数据类型不相关的小数位。
 
 **示例**
 

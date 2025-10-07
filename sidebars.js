@@ -84,6 +84,7 @@ const sidebars = {
         "guides/inserting-data",
         "guides/writing-queries",
         "guides/developer/mutations",
+		"guides/generating-test-data"  
       ],
     },
     {
@@ -128,6 +129,16 @@ const sidebars = {
           collapsible: true,
           link: { type: "doc", id: "use-cases/observability/index" },
           items: [
+            {
+              type: "category",
+              label: "Capabilities",
+              collapsed: true,
+              collapsible: true,
+              items: [ 
+                "use-cases/observability/cloud-monitoring",
+                "use-cases/observability/self-managed-monitoring"
+              ]
+            },
             {
               type: "category",
               label: "ClickStack",
@@ -774,6 +785,7 @@ const sidebars = {
         "integrations/data-visualization/deepnote",
         "integrations/data-visualization/astrato-and-clickhouse",
         "integrations/data-visualization/chartbrew-and-clickhouse",
+        "integrations/data-visualization/dot-and-clickhouse",
         "integrations/data-visualization/draxlr-and-clickhouse",
         "integrations/data-visualization/embeddable-and-clickhouse",
         "integrations/data-visualization/explo-and-clickhouse",
@@ -1139,7 +1151,16 @@ const sidebars = {
         "guides/best-practices/sparse-primary-indexes",
         "guides/best-practices/query-parallelism",
         "guides/best-practices/partitioningkey",
-        "guides/best-practices/skipping-indexes",
+        {
+          type: "category",
+          label: "Data Skipping Indexes",
+          collapsed: true,
+          collapsible: true,
+          link: { type: "doc", id: "guides/best-practices/skipping-indexes" },
+          items: [
+            "guides/best-practices/skipping-indexes-examples"
+          ],
+        },
         "guides/best-practices/prewhere",
         "guides/best-practices/bulkinserts",
         "guides/best-practices/asyncinserts",

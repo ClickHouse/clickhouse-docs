@@ -1,11 +1,11 @@
 ---
-description: 'Документация для оператора PARALLEL WITH'
+slug: '/sql-reference/statements/parallel_with'
 sidebar_label: 'PARALLEL WITH'
 sidebar_position: 53
-slug: /sql-reference/statements/parallel_with
+description: 'Документация для PARALLEL WITH Оператора'
 title: 'Оператор PARALLEL WITH'
+doc_type: reference
 ---
-
 # Оператор PARALLEL WITH
 
 Позволяет выполнять несколько операторов параллельно.
@@ -16,9 +16,9 @@ title: 'Оператор PARALLEL WITH'
 statement1 PARALLEL WITH statement2 [PARALLEL WITH statement3 ...]
 ```
 
-Выполняет операторы `statement1`, `statement2`, `statement3` и т. д. параллельно друг с другом. Вывод этих операторов игнорируется.
+Выполняет операторы `statement1`, `statement2`, `statement3` и т.д. параллельно друг с другом. Результаты этих операторов отбрасываются.
 
-Выполнение операторов параллельно может быть быстрее, чем просто последовательность тех же операторов во многих случаях. Например, `statement1 PARALLEL WITH statement2 PARALLEL WITH statement3` будет скорее всего быстрее, чем `statement1; statement2; statement3`.
+Выполнение операторов параллельно может быть быстрее, чем просто последовательность тех же операторов во многих случаях. Например, `statement1 PARALLEL WITH statement2 PARALLEL WITH statement3` вероятно, будет быстрее, чем `statement1; statement2; statement3`.
 
 ## Примеры {#examples}
 
@@ -40,12 +40,11 @@ DROP TABLE table2;
 
 ## Настройки {#settings}
 
-Настройка [max_threads](../../operations/settings/settings.md#max_threads) контролирует, сколько потоков будет запущено.
+Параметр [max_threads](../../operations/settings/settings.md#max_threads) контролирует, сколько потоков будет запущено.
 
 ## Сравнение с UNION {#comparison-with-union}
 
-Оператор `PARALLEL WITH` несколько похож на [UNION](select/union.md), который также выполняет свои операнды параллельно. Однако есть некоторые отличия:
-- `PARALLEL WITH` не возвращает никаких результатов от выполнения своих операндов, он может только перехватить исключение от них, если таковое имеется;
+Оператор `PARALLEL WITH` немного напоминает [UNION](select/union.md), который также выполняет свои операнды параллельно. Однако есть некоторые различия:
+- `PARALLEL WITH` не возвращает никаких результатов от выполнения своих операнды, он может только выбросить исключение от них, если таковое имеется;
 - `PARALLEL WITH` не требует, чтобы его операнды имели одинаковый набор результирующих колонок;
 - `PARALLEL WITH` может выполнять любые операторы (не только `SELECT`).
-
