@@ -1,26 +1,23 @@
 ---
-alias: []
+slug: '/interfaces/formats/Form'
 description: 'Документация для формата Form'
-input_format: true
+title: Form
 keywords: ['Form']
+doc_type: reference
+input_format: true
 output_format: false
-slug: /interfaces/formats/Form
-title: 'Form'
 ---
-
-| Вход | Выход | Псевдоним |
+| Input | Output | Alias |
 |-------|--------|-------|
 | ✔     | ✗      |       |
 
-
 ## Описание {#description}
 
-Формат `Form` может быть использован для чтения одной записи в формате application/x-www-form-urlencoded, 
-в котором данные форматируются как `key1=value1&key2=value2`.
+Формат `Form` может быть использован для чтения одной записи в формате application/x-www-form-urlencoded, в котором данные формируются как `key1=value1&key2=value2`.
 
 ## Пример использования {#example-usage}
 
-Допустим, файл `data.tmp` размещен в пути `user_files` с закодированными данными URL:
+Дан файл `data.tmp`, размещённый в пути `user_files` с некоторыми URL-кодированными данными:
 
 ```text title="data.tmp"
 t_page=116&c.e=ls7xfkpm&c.tti.m=raf&rt.start=navigation&rt.bmr=390%2C11%2C10

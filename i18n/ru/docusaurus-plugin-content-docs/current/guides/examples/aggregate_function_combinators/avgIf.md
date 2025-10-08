@@ -1,23 +1,22 @@
 ---
 slug: '/examples/aggregate-function-combinators/avgIf'
-title: 'avgIf'
-description: 'Пример использования комбинатора avgIf'
+sidebar_label: avgIf
+description: 'Пример использования комбиниратора avgIf'
+title: avgIf
 keywords: ['avg', 'if', 'комбинатор', 'примеры', 'avgIf']
-sidebar_label: 'avgIf'
+doc_type: reference
 ---
-
-
 # avgIf {#avgif}
 
 ## Описание {#description}
 
-Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`avg`](/sql-reference/aggregate-functions/reference/avg) для расчёта арифметического среднего значений для строк, где условие истинно, с использованием агрегатной функции комбинатора `avgIf`.
+Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применен к функции [`avg`](/sql-reference/aggregate-functions/reference/avg) для вычисления арифметического среднего значений по строкам, где условие истинно, используя агрегатную функцию комбинатора `avgIf`.
 
 ## Пример использования {#example-usage}
 
-В этом примере мы создадим таблицу, которая хранит данные о продажах с флагами успешности, и будем использовать `avgIf` для расчёта средней суммы продаж для успешных транзакций.
+В этом примере мы создадим таблицу, которая хранит данные о продажах с флагами успешности, и мы будем использовать `avgIf` для вычисления средней суммы продажи для успешных транзакций.
 
-```sql title="Запрос"
+```sql title="Query"
 CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
@@ -33,13 +32,13 @@ INSERT INTO sales VALUES
     (6, 175.25, 1);
 
 SELECT
-    avgIf(amount, is_successful = 1) as avg_successful_sale
+    avgIf(amount, is_successful = 1) AS avg_successful_sale
 FROM sales;
 ```
 
-Функция `avgIf` будет рассчитывать среднюю сумму только для строк, где `is_successful = 1`. В данном случае она усреднит суммы: 100.50, 200.75, 300.00 и 175.25.
+Функция `avgIf` будет вычислять среднюю сумму только для строк, где `is_successful = 1`. В этом случае она будет усреднять суммы: 100.50, 200.75, 300.00 и 175.25.
 
-```response title="Ответ"
+```response title="Response"
    ┌─avg_successful_sale─┐
 1. │              193.88 │
    └─────────────────────┘
@@ -47,4 +46,4 @@ FROM sales;
 
 ## См. также {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
-- [`If комбинатор`](/sql-reference/aggregate-functions/combinators#-if)
+- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

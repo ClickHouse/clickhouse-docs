@@ -1,12 +1,11 @@
 ---
-description: 'Применяет t-тест Уэлча к выборкам из двух популяций.'
-sidebar_label: 'welchTTest'
+slug: '/sql-reference/aggregate-functions/reference/welchttest'
+sidebar_label: welchTTest
 sidebar_position: 214
-slug: /sql-reference/aggregate-functions/reference/welchttest
-title: 'welchTTest'
+description: 'Применяет t-тест Уэлча к выборкам из двух популяций.'
+title: welchTTest
+doc_type: reference
 ---
-
-
 # welchTTest
 
 Применяет t-тест Уэлча к выборкам из двух популяций.
@@ -21,7 +20,7 @@ welchTTest([confidence_level])(sample_data, sample_index)
 
 **Аргументы**
 
-- `sample_data` — Данные выборки. [Целое число](../../../sql-reference/data-types/int-uint.md), [С плавающей запятой](../../../sql-reference/data-types/float.md) или [Десятичное число](../../../sql-reference/data-types/decimal.md).
+- `sample_data` — Данные выборки. [Целое число](../../../sql-reference/data-types/int-uint.md), [Число с плавающей запятой](../../../sql-reference/data-types/float.md) или [Десятичное число](../../../sql-reference/data-types/decimal.md).
 - `sample_index` — Индекс выборки. [Целое число](../../../sql-reference/data-types/int-uint.md).
 
 **Параметры**
@@ -32,7 +31,7 @@ welchTTest([confidence_level])(sample_data, sample_index)
 
 [Кортеж](../../../sql-reference/data-types/tuple.md) с двумя или четырьмя элементами (если указан необязательный `confidence_level`)
 
-- рассчитанное t-значение. [Float64](../../../sql-reference/data-types/float.md).
+- рассчитанный t-статистик. [Float64](../../../sql-reference/data-types/float.md).
 - рассчитанное p-значение. [Float64](../../../sql-reference/data-types/float.md).
 - рассчитанный нижний предел доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).
 - рассчитанный верхний предел доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).
@@ -66,7 +65,7 @@ SELECT welchTTest(sample_data, sample_index) FROM welch_ttest;
 └───────────────────────────────────────────┘
 ```
 
-**Смотрите также**
+**См. также**
 
 - [t-тест Уэлча](https://en.wikipedia.org/wiki/Welch%27s_t-test)
 - [функция studentTTest](/sql-reference/aggregate-functions/reference/studentttest)

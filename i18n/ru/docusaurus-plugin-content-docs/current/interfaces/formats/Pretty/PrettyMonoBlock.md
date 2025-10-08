@@ -1,23 +1,22 @@
 ---
-alias: []
+slug: '/interfaces/formats/PrettyMonoBlock'
 description: 'Документация для формата PrettyMonoBlock'
-input_format: false
+title: PrettyMonoBlock
 keywords: ['PrettyMonoBlock']
+doc_type: reference
+input_format: false
 output_format: true
-slug: /interfaces/formats/PrettyMonoBlock
-title: 'PrettyMonoBlock'
 ---
-
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| Вход | Выход  | Псевдоним |
+| Input | Output  | Alias |
 |-------|---------|-------|
 | ✗     | ✔       |       |
 
 ## Описание {#description}
 
-Отличается от формата [`Pretty`](/interfaces/formats/Pretty) тем, что до `10,000` строк буферизуются,
-а затем выводятся в виде одной таблицы, а не по [блокам](/development/architecture#block).
+Отличается от формата [`Pretty`](/interfaces/formats/Pretty) тем, что до `10,000` строк буферизуется, 
+а затем выводится в виде одной таблицы, а не по [блокам](/development/architecture#block).
 
 ## Пример использования {#example-usage}
 

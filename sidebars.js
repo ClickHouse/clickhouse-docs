@@ -84,6 +84,7 @@ const sidebars = {
         "guides/inserting-data",
         "guides/writing-queries",
         "guides/developer/mutations",
+		"guides/generating-test-data"  
       ],
     },
     {
@@ -128,6 +129,16 @@ const sidebars = {
           collapsible: true,
           link: { type: "doc", id: "use-cases/observability/index" },
           items: [
+            {
+              type: "category",
+              label: "Capabilities",
+              collapsed: true,
+              collapsible: true,
+              items: [ 
+                "use-cases/observability/cloud-monitoring",
+                "use-cases/observability/self-managed-monitoring"
+              ]
+            },
             {
               type: "category",
               label: "ClickStack",
@@ -495,7 +506,25 @@ const sidebars = {
             "integrations/language-clients/java/r2dbc"
           ]
         },
-        "integrations/language-clients/python/index",
+        {
+          type: "category",
+          label: "Python",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            {
+              type: "doc",
+              label: "Introduction",
+              id: "integrations/language-clients/python/index"
+            },
+            "integrations/language-clients/python/driver-api",
+            "integrations/language-clients/python/additional-options",
+            "integrations/language-clients/python/advanced-querying",
+            "integrations/language-clients/python/advanced-inserting",
+            "integrations/language-clients/python/advanced-usage",
+            "integrations/language-clients/python/sqlalchemy",
+          ]
+        },
         "integrations/language-clients/rust",
         "integrations/language-clients/csharp",
         {
@@ -1122,7 +1151,16 @@ const sidebars = {
         "guides/best-practices/sparse-primary-indexes",
         "guides/best-practices/query-parallelism",
         "guides/best-practices/partitioningkey",
-        "guides/best-practices/skipping-indexes",
+        {
+          type: "category",
+          label: "Data Skipping Indexes",
+          collapsed: true,
+          collapsible: true,
+          link: { type: "doc", id: "guides/best-practices/skipping-indexes" },
+          items: [
+            "guides/best-practices/skipping-indexes-examples"
+          ],
+        },
         "guides/best-practices/prewhere",
         "guides/best-practices/bulkinserts",
         "guides/best-practices/asyncinserts",

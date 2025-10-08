@@ -1,28 +1,77 @@
 ---
-alias: []
+slug: '/interfaces/formats/CustomSeparatedWithNames'
 description: 'Документация для формата CustomSeparatedWithNames'
-input_format: true
+title: CustomSeparatedWithNames
 keywords: ['CustomSeparatedWithNames']
+doc_type: reference
+input_format: true
 output_format: true
-slug: /interfaces/formats/CustomSeparatedWithNames
-title: 'CustomSeparatedWithNames'
 ---
-
 | Input | Output | Alias |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## Description {#description}
+## Описание {#description}
 
-Также выводит строку заголовка с названиями колонок, аналогично [TabSeparatedWithNames](../TabSeparated/TabSeparatedWithNames.md).
+Также выводит строку заголовка с именами колонок, аналогично [TabSeparatedWithNames](../TabSeparated/TabSeparatedWithNames.md).
 
-## Example Usage {#example-usage}
+## Пример использования {#example-usage}
 
-## Format Settings {#format-settings}
+### Вставка данных {#inserting-data}
+
+Используя следующий текстовый файл, названный `football.txt`:
+
+```text
+row('date';'season';'home_team';'away_team';'home_team_goals';'away_team_goals'),row('2022-04-30';2021;'Sutton United';'Bradford City';1;4),row('2022-04-30';2021;'Swindon Town';'Barrow';2;1),row('2022-04-30';2021;'Tranmere Rovers';'Oldham Athletic';2;0),row('2022-05-02';2021;'Salford City';'Mansfield Town';2;2),row('2022-05-02';2021;'Port Vale';'Newport County';1;2),row('2022-05-07';2021;'Barrow';'Northampton Town';1;3),row('2022-05-07';2021;'Bradford City';'Carlisle United';2;0),row('2022-05-07';2021;'Bristol Rovers';'Scunthorpe United';7;0),row('2022-05-07';2021;'Exeter City';'Port Vale';0;1),row('2022-05-07';2021;'Harrogate Town A.F.C.';'Sutton United';0;2),row('2022-05-07';2021;'Hartlepool United';'Colchester United';0;2),row('2022-05-07';2021;'Leyton Orient';'Tranmere Rovers';0;1),row('2022-05-07';2021;'Mansfield Town';'Forest Green Rovers';2;2),row('2022-05-07';2021;'Newport County';'Rochdale';0;2),row('2022-05-07';2021;'Oldham Athletic';'Crawley Town';3;3),row('2022-05-07';2021;'Stevenage Borough';'Salford City';4;2),row('2022-05-07';2021;'Walsall';'Swindon Town';0;3)
+```
+
+Настройте параметры кастомного разделителя:
+
+```sql
+SET format_custom_row_before_delimiter = 'row(';
+SET format_custom_row_after_delimiter = ')';
+SET format_custom_field_delimiter = ';';
+SET format_custom_row_between_delimiter = ',';
+SET format_custom_escaping_rule = 'Quoted';
+```
+
+Вставьте данные:
+
+```sql
+INSERT INTO football FROM INFILE 'football.txt' FORMAT CustomSeparatedWithNames;
+```
+
+### Чтение данных {#reading-data}
+
+Настройте параметры кастомного разделителя:
+
+```sql
+SET format_custom_row_before_delimiter = 'row(';
+SET format_custom_row_after_delimiter = ')';
+SET format_custom_field_delimiter = ';';
+SET format_custom_row_between_delimiter = ',';
+SET format_custom_escaping_rule = 'Quoted';
+```
+
+Чтение данных с использованием формата `CustomSeparatedWithNames`:
+
+```sql
+SELECT *
+FROM football
+FORMAT CustomSeparatedWithNames
+```
+
+Вывод будет в настроенном пользовательском формате:
+
+```text
+row('date';'season';'home_team';'away_team';'home_team_goals';'away_team_goals'),row('2022-04-30';2021;'Sutton United';'Bradford City';1;4),row('2022-04-30';2021;'Swindon Town';'Barrow';2;1),row('2022-04-30';2021;'Tranmere Rovers';'Oldham Athletic';2;0),row('2022-05-02';2021;'Port Vale';'Newport County';1;2),row('2022-05-02';2021;'Salford City';'Mansfield Town';2;2),row('2022-05-07';2021;'Barrow';'Northampton Town';1;3),row('2022-05-07';2021;'Bradford City';'Carlisle United';2;0),row('2022-05-07';2021;'Bristol Rovers';'Scunthorpe United';7;0),row('2022-05-07';2021;'Exeter City';'Port Vale';0;1),row('2022-05-07';2021;'Harrogate Town A.F.C.';'Sutton United';0;2),row('2022-05-07';2021;'Hartlepool United';'Colchester United';0;2),row('2022-05-07';2021;'Leyton Orient';'Tranmere Rovers';0;1),row('2022-05-07';2021;'Mansfield Town';'Forest Green Rovers';2;2),row('2022-05-07';2021;'Newport County';'Rochdale';0;2),row('2022-05-07';2021;'Oldham Athletic';'Crawley Town';3;3),row('2022-05-07';2021;'Stevenage Borough';'Salford City';4;2),row('2022-05-07';2021;'Walsall';'Swindon Town';0;3)
+```
+
+## Настройки формата {#format-settings}
 
 :::note
-Если настройка [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) установлена в `1`,
-то колонки из входных данных будут сопоставлены с колонками из таблицы по их названиям. 
-Колонки с неизвестными названиями будут пропущены, если настройка [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в `1`.
+Если настройка [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) установлена на `1`, 
+колонки из входных данных будут сопоставлены с колонками из таблицы по их именам, 
+колонки с неизвестными именами будут пропущены, если настройка [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена на `1`.
 В противном случае первая строка будет пропущена.
 :::

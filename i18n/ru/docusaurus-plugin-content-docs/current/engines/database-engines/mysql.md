@@ -1,24 +1,23 @@
 ---
-description: 'Позволяет подключаться к базам данных на удалённом сервере MySQL и выполнять
-  запросы `INSERT` и `SELECT` для обмена данными между ClickHouse и MySQL.'
-sidebar_label: 'MySQL'
+slug: '/engines/database-engines/mysql'
+sidebar_label: MySQL
 sidebar_position: 50
-slug: /engines/database-engines/mysql
-title: 'MySQL'
+description: 'Позволяет подключаться к DATABASE на удаленном сервере MySQL и выполнять'
+title: MySQL
+doc_type: reference
 ---
-
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# Движок баз данных MySQL
+# Движок базы данных MySQL
 
 <CloudNotSupportedBadge />
 
-Позволяет подключаться к базам данных на удалённом сервере MySQL и выполнять запросы `INSERT` и `SELECT` для обмена данными между ClickHouse и MySQL.
+Позволяет подключаться к базам данных на удаленном сервере MySQL и выполнять `INSERT` и `SELECT` запросы для обмена данными между ClickHouse и MySQL.
 
-Движок базы данных `MySQL` переводит запросы на сервер MySQL, позволяя выполнять операции, такие как `SHOW TABLES` или `SHOW CREATE TABLE`.
+Движок базы данных `MySQL` переводит запросы на сервер MySQL, так что вы можете выполнять такие операции, как `SHOW TABLES` или `SHOW CREATE TABLE`.
 
-Вы не можете выполнить следующие запросы:
+Вы не можете выполнять следующие запросы:
 
 - `RENAME`
 - `CREATE TABLE`
@@ -34,7 +33,7 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 **Параметры движка**
 
 - `host:port` — адрес сервера MySQL.
-- `database` — имя удалённой базы данных.
+- `database` — имя удаленной базы данных.
 - `user` — пользователь MySQL.
 - `password` — пароль пользователя.
 
@@ -56,20 +55,20 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 | DATETIME, TIMESTAMP              | [DateTime](../../sql-reference/data-types/datetime.md)       |
 | BINARY                           | [FixedString](../../sql-reference/data-types/fixedstring.md) |
 
-Все остальные типы данных MySQL преобразуются в [String](../../sql-reference/data-types/string.md).
+Все другие типы данных MySQL преобразуются в [String](../../sql-reference/data-types/string.md).
 
-[Nullable](../../sql-reference/data-types/nullable.md) поддерживается.
+Поддерживается [Nullable](../../sql-reference/data-types/nullable.md).
 
 ## Поддержка глобальных переменных {#global-variables-support}
 
-Для лучшей совместимости вы можете адресовать глобальные переменные в стиле MySQL, используя `@@identifier`.
+Для лучшей совместимости вы можете адресовать глобальные переменные в стиле MySQL, как `@@identifier`.
 
-Эти переменные поддерживаются:
+Поддерживаются следующие переменные:
 - `version`
 - `max_allowed_packet`
 
 :::note
-На данный момент эти переменные являются заглушками и не соответствуют ничему.
+На данный момент эти переменные являются заглушками и не соответствуют ничего.
 :::
 
 Пример:

@@ -1,11 +1,10 @@
 ---
-description: 'Системная таблица, содержащая записи логирования с информацией о `BACKUP`
-  и `RESTORE` операциях.'
+slug: '/operations/system-tables/backup_log'
+description: 'Системная таблица, содержащая записи логирования с информацией о операциях'
+title: system.backup_log
 keywords: ['системная таблица', 'backup_log']
-slug: /operations/system-tables/backup_log
-title: 'system.backup_log'
+doc_type: reference
 ---
-
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
@@ -13,31 +12,31 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud/>
 
-Содержит записи логирования с информацией о `BACKUP` и `RESTORE` операциях.
+Содержит записи логирования с информацией о операциях `BACKUP` и `RESTORE`.
 
-Колонки:
+Столбцы:
 
 - `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, выполняющего запрос.
 - `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата записи.
 - `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Дата и время записи.
 - `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Время записи с точностью до микросекунд.
 - `id` ([String](../../sql-reference/data-types/string.md)) — Идентификатор операции резервного копирования или восстановления.
-- `name` ([String](../../sql-reference/data-types/string.md)) — Имя хранилища резервных копий (содержимое клаузулы `FROM` или `TO`).
+- `name` ([String](../../sql-reference/data-types/string.md)) — Имя хранилища резервной копии (содержимое оператора `FROM` или `TO`).
 - `status` ([Enum8](../../sql-reference/data-types/enum.md)) — Статус операции. Возможные значения:
-    - `'CREATING_BACKUP'`
-    - `'BACKUP_CREATED'`
-    - `'BACKUP_FAILED'`
-    - `'RESTORING'`
-    - `'RESTORED'`
-    - `'RESTORE_FAILED'`
+  - `'CREATING_BACKUP'`
+  - `'BACKUP_CREATED'`
+  - `'BACKUP_FAILED'`
+  - `'RESTORING'`
+  - `'RESTORED'`
+  - `'RESTORE_FAILED'`
 - `error` ([String](../../sql-reference/data-types/string.md)) — Сообщение об ошибке неудачной операции (пустая строка для успешных операций).
 - `start_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время начала операции.
 - `end_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время окончания операции.
-- `num_files` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Количество файлов, хранящихся в резервной копии.
-- `total_size` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Общий размер файлов, хранящихся в резервной копии.
-- `num_entries` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Количество записей в резервной копии, т.е. количество файлов внутри папки, если резервная копия хранится как папка, или количество файлов внутри архива, если резервная копия хранится как архив. Это не то же самое, что `num_files`, если это инкрементная резервная копия или если она содержит пустые файлы или дубликаты. Всегда верно: `num_entries <= num_files`.
-- `uncompressed_size` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Неразжатый размер резервной копии.
-- `compressed_size` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Сжатый размер резервной копии. Если резервная копия не хранится как архив, она равна `uncompressed_size`.
+- `num_files` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Количество файлов, сохраненных в резервной копии.
+- `total_size` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Общий размер файлов, сохраненных в резервной копии.
+- `num_entries` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Количество записей в резервной копии, т.е. количество файлов внутри папки, если резервная копия сохранена в виде папки, или количество файлов внутри архива, если резервная копия сохранена в виде архива. Это не то же самое, что `num_files`, если это инкрементная резервная копия или если она содержит пустые файлы или дубликаты. Следующее всегда верно: `num_entries <= num_files`.
+- `uncompressed_size` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Нерасжатый размер резервной копии.
+- `compressed_size` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Сжатый размер резервной копии. Если резервная копия не сохранена в виде архива, он равен `uncompressed_size`.
 - `files_read` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Количество файлов, прочитанных во время операции восстановления.
 - `bytes_read` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Общий размер файлов, прочитанных во время операции восстановления.
 
@@ -145,7 +144,7 @@ files_read:              57
 bytes_read:              4290364870
 ```
 
-Это по сути та же информация, что записана в системной таблице `system.backups`:
+Это по существу та же информация, которая записывается в системную таблицу `system.backups`:
 
 ```sql
 SELECT * FROM system.backups ORDER BY start_time
@@ -157,6 +156,6 @@ SELECT * FROM system.backups ORDER BY start_time
 └──────────────────────────────────────┴───────────────────────────────┴────────────────┴───────┴─────────────────────┴─────────────────────┴───────────┴────────────┴─────────────┴───────────────────┴─────────────────┴────────────┴────────────┘
 ```
 
-**Смотрите Также**
+**См. также**
 
 - [Резервное копирование и восстановление](../../operations/backup.md)

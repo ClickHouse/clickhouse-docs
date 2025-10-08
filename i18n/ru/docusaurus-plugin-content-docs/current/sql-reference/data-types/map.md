@@ -1,30 +1,29 @@
 ---
-description: 'Документация для типа данных Map в ClickHouse'
+slug: '/sql-reference/data-types/map'
 sidebar_label: 'Map(K, V)'
 sidebar_position: 36
-slug: /sql-reference/data-types/map
+description: 'Документация для типа данных Map в ClickHouse'
 title: 'Map(K, V)'
+doc_type: reference
 ---
-
-
 # Map(K, V)
 
 Тип данных `Map(K, V)` хранит пары ключ-значение.
 
-В отличие от других баз данных, карты не являются уникальными в ClickHouse, т.е. карта может содержать два элемента с одинаковым ключом. 
-(Причина этого в том, что карты внутренне реализованы как `Array(Tuple(K, V))`.)
+В отличие от других баз данных, в ClickHouse карты не уникальны, то есть карта может содержать два элемента с одинаковым ключом.
+(Причина этого заключается в том, что карты внутренне реализованы как `Array(Tuple(K, V))`.)
 
-Вы можете использовать синтаксис `m[k]`, чтобы получить значение для ключа `k` в карте `m`. 
-Также `m[k]` сканирует карту, т.е. время выполнения операции линейно относительно размера карты.
+Вы можете использовать синтаксис `m[k]`, чтобы получить значение для ключа `k` в карте `m`.
+Также `m[k]` сканирует карту, то есть время выполнения этой операции линейно зависимо от размера карты.
 
 **Параметры**
 
-- `K` — Тип ключей карты. Произвольный тип, кроме [Nullable](../../sql-reference/data-types/nullable.md) и [LowCardinality](../../sql-reference/data-types/lowcardinality.md), вложенных в типы [Nullable](../../sql-reference/data-types/nullable.md).
-- `V` — Тип значений карты. Произвольный тип.
+- `K` — Тип ключей Map. Произвольный тип, за исключением [Nullable](../../sql-reference/data-types/nullable.md) и [LowCardinality](../../sql-reference/data-types/lowcardinality.md), вложенных с [Nullable](../../sql-reference/data-types/nullable.md) типами.
+- `V` — Тип значений Map. Произвольный тип.
 
 **Примеры**
 
-Создать таблицу с колонкой типа map:
+Создайте таблицу со столбцом типа map:
 
 ```sql
 CREATE TABLE tab (m Map(String, UInt64)) ENGINE=Memory;
@@ -47,7 +46,7 @@ SELECT m['key2'] FROM tab;
 └─────────────────────────┘
 ```
 
-Если запрашиваемый ключ `k` не содержится в карте, `m[k]` возвращает значение по умолчанию для типа значения, например `0` для целочисленных типов и `''` для строковых типов. 
+Если запрашиваемый ключ `k` не содержится в карте, `m[k]` возвращает значение по умолчанию для данного типа, например `0` для целочисленных типов и `''` для строковых типов.
 Чтобы проверить, существует ли ключ в карте, вы можете использовать функцию [mapContains](../../sql-reference/functions/tuple-map-functions#mapcontains).
 
 ```sql
@@ -67,7 +66,7 @@ SELECT m['key1'] FROM tab;
 
 ## Преобразование Tuple в Map {#converting-tuple-to-map}
 
-Значения типа `Tuple()` могут быть приведены к значениям типа `Map()` с помощью функции [CAST](/sql-reference/functions/type-conversion-functions#cast):
+Значения типа `Tuple()` могут быть приведены к значениям типа `Map()` с использованием функции [CAST](/sql-reference/functions/type-conversion-functions#cast):
 
 **Пример**
 
@@ -97,8 +96,8 @@ SELECT CAST(([1, 2, 3], ['Ready', 'Steady', 'Go']), 'Map(UInt8, String)') AS map
 CREATE TABLE tab (m Map(String, UInt64)) ENGINE = Memory;
 INSERT INTO tab VALUES (map('key1', 1, 'key2', 2, 'key3', 3));
 
-SELECT m.keys FROM tab; --   то же самое, что и mapKeys(m)
-SELECT m.values FROM tab; -- то же самое, что и mapValues(m)
+SELECT m.keys FROM tab; --   same as mapKeys(m)
+SELECT m.values FROM tab; -- same as mapValues(m)
 ```
 
 Результат:
@@ -113,13 +112,12 @@ SELECT m.values FROM tab; -- то же самое, что и mapValues(m)
 └──────────┘
 ```
 
-**Смотрите также**
+**См. также**
 
-- [map()](/sql-reference/functions/tuple-map-functions#map) функция
-- [CAST()](/sql-reference/functions/type-conversion-functions#cast) функция
+- Функция [map()](/sql-reference/functions/tuple-map-functions#map)
+- Функция [CAST()](/sql-reference/functions/type-conversion-functions#cast)
 - [-Map комбинатор для типа данных Map](../aggregate-functions/combinators.md#-map)
-
 
 ## Связанное содержимое {#related-content}
 
-- Блог: [Создание решения для наблюдаемости с помощью ClickHouse - Часть 2 - Следы](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)
+- Блог: [Создание решения для мониторинга с ClickHouse - Часть 2 - Трассы](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)
