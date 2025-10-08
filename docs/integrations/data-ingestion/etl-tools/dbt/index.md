@@ -139,7 +139,7 @@ If you encounter issues connecting to ClickHouse from dbt, make sure the followi
 The current ClickHouse adapter for dbt has several limitations users should be aware of:
 
 - The plugin uses syntax that requires ClickHouse version 25.3 or newer. We do not test older versions of Clickhouse. We also do not currently test Replicated tables.
-- Different runs of the `dbt-adapter` may collide if they are run at the same time as internally they can use the same table names for the same operations. 
+- Different runs of the `dbt-adapter` may collide if they are run at the same time as internally they can use the same table names for the same operations. For more information, check the issue [#420](https://github.com/ClickHouse/dbt-clickhouse/issues/420).
 - The adapter currently materializes models as tables using an `INSERT TO SELECT`. This effectively means data duplication. Very large datasets (PB) can result in extremely long run times, making some models unviable. Aim to minimize the number of rows returned by any query, utilizing GROUP BY where possible. Prefer models which summarize data over those which simply perform a transform whilst maintaining row counts of the source.
 - To use Distributed tables to represent a model, users must create the underlying replicated tables on each node manually. The Distributed table can, in turn, be created on top of these. The adapter does not manage cluster creation.
 - When dbt creates a relation (table/view) in a database, it usually creates it as: `{{ database }}.{{ schema }}.{{ table/view id }}`. ClickHouse has no notion of schemas. The adapter therefore uses `{{schema}}.{{ table/view id }}`, where `schema` is the ClickHouse database.
