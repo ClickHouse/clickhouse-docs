@@ -311,6 +311,7 @@ const config = {
 
   plugins: [
     "docusaurus-plugin-sass",
+    "./plugins/version-extractor",
     function (context, options) {
       return {
         name: "docusaurus-plugin",
