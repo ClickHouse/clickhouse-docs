@@ -26,6 +26,11 @@ In this guide, you will learn how you can explore a dataset on ClickHouse Cloud 
 - a virtual environment
 - a working ClickHouse Cloud service and your [connection details](/cloud/guides/sql-console/gather-connection-details)
 
+:::tip
+If you don't yet have a ClickHouse Cloud account, you can [sign up](console.clickhouse.cloud/signUp?loc=docs-juypter-chdb) for
+a trial and get $300 in free-credits to begin.
+:::
+
 **What you'll learn:**
 - Connect to ClickHouse Cloud from Jupyter notebooks using chDB
 - Query remote datasets and convert results to Pandas DataFrames

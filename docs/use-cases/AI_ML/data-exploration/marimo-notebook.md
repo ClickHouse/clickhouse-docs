@@ -1,5 +1,5 @@
 ---
-slug: /use-cases/AI/jupyter-notebook
+slug: /use-cases/AI/marimo-notebook
 sidebar_label: 'Exploring data with Marimo notebooks and chDB'
 title: 'Exploring data with Marimo notebooks and chDB'
 description: 'This guide explains how to setup and use chDB to explore data from ClickHouse Cloud or local files in Marimo notebooks'
@@ -13,6 +13,9 @@ import image_2 from '@site/static/images/use-cases/AI_ML/jupyter/2.png';
 import image_3 from '@site/static/images/use-cases/AI_ML/jupyter/3.png';
 import image_4 from '@site/static/images/use-cases/AI_ML/Marimo/4.png';
 import image_5 from '@site/static/images/use-cases/AI_ML/Marimo/5.png';
+import image_6 from '@site/static/images/use-cases/AI_ML/Marimo/6.png';
+import image_7 from '@site/static/images/use-cases/AI_ML/Marimo/7.gif';
+import image_8 from '@site/static/images/use-cases/AI_ML/Marimo/8.gif';
 
 In this guide, you will learn how you can explore a dataset on ClickHouse Cloud data in Marimo notebook with the help of [chDB](/docs/chdb) - a fast in-process SQL OLAP Engine powered by ClickHouse.
 
@@ -21,11 +24,15 @@ In this guide, you will learn how you can explore a dataset on ClickHouse Cloud 
 - a virtual environment
 - a working ClickHouse Cloud service and your [connection details](/docs/cloud/guides/sql-console/gather-connection-details)
 
+:::tip
+If you don't yet have a ClickHouse Cloud account, you can [sign up](console.clickhouse.cloud/signUp?loc=docs-marimo-chdb) for
+a trial and get $300 in free-credits to begin.
+:::
+
 **What you'll learn:**
 - Connect to ClickHouse Cloud from Marimo notebooks using chDB
 - Query remote datasets and convert results to Pandas DataFrames
-- Combine cloud data with local CSV files for analysis
-- Visualize data using Plotly in Marimo's reactive environment
+- Visualize data using Plotly in Marimo
 - Leverage Marimo's reactive execution model for interactive data exploration
 
 We'll be using the UK Property Price dataset which is available on ClickHouse Cloud as one of the starter datasets.
@@ -58,8 +65,8 @@ From a terminal run the following command to add your username and password as e
 
 ```bash
 export CLICKHOUSE_CLOUD_HOSTNAME=<HOSTNAME>
-export CLICKHOUSE_USER=default
-export CLICKHOUSE_PASSWORD=your_actual_password
+export CLICKHOUSE_CLOUD_USER=default
+export CLICKHOUSE_CLOUD_PASSWORD=your_actual_password
 ```
 
 :::note
@@ -125,7 +132,7 @@ ClickHouse's [remoteSecure](/docs/sql-reference/table-functions/remote) function
 
 You can instruct chDB to return this data in process as a Pandas data frame - which is a convenient and familiar way of working with data.
 
-### Querying ClickHouse Cloud data
+### Querying ClickHouse Cloud data {#querying-clickhouse-cloud-data}
 
 Create a new cell with the following query to fetch the UK price paid data from your ClickHouse Cloud service and turn it into a `pandas.DataFrame`:
 
@@ -169,3 +176,172 @@ Depending on the size of your data, this could take a few seconds.
 In this case we return an average price point per year, and filter by `town='LONDON'`.
 
 The result is then stored as a DataFrame in a variable called `df`.
+
+### Visualizing the data {#visualizing-the-data}
+
+With the data now available to us in a familiar form, let's explore how prices of property in London have changed with time.
+
+Marimo works particularly well with interactive plotting libraries like Plotly.
+In a new cell, create an interactive chart:
+
+```python
+fig = px.line(
+    df, 
+    x='year', 
+    y='price',
+    title='Average Property Prices in London Over Time',
+    labels={'price': 'Average Price (£)', 'year': 'Year'}
+)
+
+fig.update_traces(mode='lines+markers')
+fig.update_layout(hovermode='x unified')
+fig
+```
+
+Perhaps unsurprisingly, property prices in London have increased substantially over time.
+
+<Image size="md" img={image_6} alt="Marimo data visualization"/>
+
+One of Marimo's strengths is its reactive execution model. Let's create an interactive widget to select different towns dynamically.
+
+### Interactive town selection {#interactive-town-selection}
+
+In a new cell, create a dropdown to select different towns:
+
+```python
+town_selector = mo.ui.dropdown(
+    options=['LONDON', 'MANCHESTER', 'BIRMINGHAM', 'LEEDS', 'LIVERPOOL'],
+    value='LONDON',
+    label='Select a town:'
+)
+town_selector
+```
+
+In another cell, create a query that reacts to the town selection. When you change the dropdown, this cell will automatically re-execute:
+
+```python
+query_reactive = f"""
+SELECT
+    toYear(date) AS year,
+    round(avg(price)) AS price
+FROM remoteSecure(
+    '{os.environ.get("CLICKHOUSE_CLOUD_HOSTNAME")}',
+    'default.pp_complete',
+    '{os.environ.get("CLICKHOUSE_CLOUD_USER")}',
+    '{os.environ.get("CLICKHOUSE_CLOUD_PASSWORD")}'
+)
+WHERE town = '{town_selector.value}'
+GROUP BY year
+ORDER BY year
+"""
+
+df_reactive = chdb.query(query_reactive, "DataFrame")
+df_reactive
+```
+
+Now create a chart that updates automatically when you change the town.
+You can move the chart above the dynamic dataframe so that it appears
+below the cell with the dropdown.
+
+```python
+fig_reactive = px.line(
+    df_reactive,
+    x='year',
+    y='price',
+    title=f'Average Property Prices in {town_selector.value} Over Time',
+    labels={'price': 'Average Price (£)', 'year': 'Year'}
+)
+
+fig_reactive.update_traces(mode='lines+markers')
+fig_reactive.update_layout(hovermode='x unified')
+fig_reactive
+```
+
+Now when you select a town from the drop-down the chart will update dynamically:
+
+<Image size="md" img={image_7} alt="Marimo dynamic chart"/>
+
+### Exploring price distributions with interactive box plots {#exploring-price-distributions}
+
+Let's dive deeper into the data by examining the distribution of property prices in London for different years.
+A box and whisker plot will show us the median, quartiles, and outliers, giving us a much better understanding than just the average price.
+First, let's create a year slider that will let us interactively explore different years:
+
+In a new cell, add the following:
+
+```python
+year_slider = mo.ui.slider(
+    start=1995,
+    stop=2024,
+    value=2020,
+    step=1,
+    label='Select Year:',
+    show_value=True
+)
+year_slider
+```
+
+Now, let's query the individual property prices for the selected year.
+Note that we're not aggregating here - we want all the individual transactions to build our distribution:
+
+```python
+query_distribution = f"""
+SELECT
+    price,
+    toYear(date) AS year
+FROM remoteSecure(
+    '{os.environ.get("CLICKHOUSE_CLOUD_HOSTNAME")}',
+    'default.pp_complete',
+    '{os.environ.get("CLICKHOUSE_CLOUD_USER")}',
+    '{os.environ.get("CLICKHOUSE_CLOUD_PASSWORD")}'
+)
+WHERE town = 'LONDON'
+  AND toYear(date) = {year_slider.value}
+  AND price > 0
+  AND price < 5000000
+"""
+
+df_distribution = chdb.query(query_distribution, "DataFrame")
+
+# create an interactive box plot.
+fig_box = go.Figure()
+
+fig_box.add_trace(
+    go.Box(
+        y=df_distribution['price'],
+        name=f'London {year_slider.value}',
+        boxmean='sd',  # Show mean and standard deviation
+        marker_color='lightblue',
+        boxpoints='outliers'  # Show outlier points
+    )
+)
+
+fig_box.update_layout(
+    title=f'Distribution of Property Prices in London ({year_slider.value})',
+    yaxis=dict(
+        title='Price (£)',
+        tickformat=',.0f'
+    ),
+    showlegend=False,
+    height=600
+)
+
+fig_box
+```
+If you select the options button in the top right hand of the cell, you can hide
+the code.
+As you move the slider, the plot will automatically update thanks to Marimo's reactive execution:
+
+<Image size="md" img={image_8} alt="Marimo dynamic chart"/>
+
+## Summary {#summary}
+
+This guide demonstrated how you can use chDB to explore your data in  ClickHouse Cloud using Marimo notebooks.
+Using the UK Property Price dataset, we showed how to query remote ClickHouse Cloud data with the `remoteSecure()` function, and convert results directly to Pandas DataFrames for analysis and visualization.
+Through chDB and Marimo's reactive execution model, data scientists can leverage ClickHouse's powerful SQL capabilities alongside familiar Python tools like Pandas and Plotly, with the added benefit of interactive widgets and automatic dependency tracking that make exploratory analysis more efficient and reproducible.
+
+
+
+
+
+
