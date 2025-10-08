@@ -55,6 +55,7 @@ your_profile_name:
       tcp_keepalive: [False] # Native client only, specify TCP keepalive configuration. Specify custom keepalive settings as [idle_time_sec, interval_sec, probes].
       custom_settings: [{}] # A dictionary/mapping of custom ClickHouse settings for the connection - default is empty.
       database_engine: '' # Database engine to use when creating new ClickHouse schemas (databases).  If not set (the default), new databases will use the default ClickHouse database engine (usually Atomic).
+      threads: [1] # Number of threads to use when running queries. Before setting it to a number higher than 1, make sure to read the [read-after-write consistency](#read-after-write-consistency) section.
       
       # Native (clickhouse-driver) connection settings
       sync_request_timeout: [5] # Timeout for server ping
@@ -87,6 +88,12 @@ seeds:
 
 ### About the ClickHouse Cluster {#about-the-clickhouse-cluster}
 
+When using a ClickHouse cluster, you need to consider two things:
+- Setting the `cluster` setting.
+- Ensuring read-after-write consistency, especially if you are using more than one `threads`.
+
+#### Cluster Setting {#cluster-setting}
+
 The `cluster` setting in profile enables dbt-clickhouse to run against a ClickHouse cluster. If `cluster` is set in the profile, **all models will be created with the `ON CLUSTER` clause** by default—except for those using a **Replicated** engine. This includes:
 
 - Database creation
@@ -111,10 +118,16 @@ To **opt out** of cluster-based creation for a specific model, add the `disable_
 table and incremental materializations with non-replicated engine will not be affected by `cluster` setting (model would
 be created on the connected node only).
 
-#### Compatibility {#compatibility}
+**Compatibility**
 
 If a model has been created without a `cluster` setting, dbt-clickhouse will detect the situation and run all DDL/DML
 without `on cluster` clause for this model.
+
+#### Read-after-write consistency {#read-after-write-consistency}
+
+dbt relies on a read-after-insert consistency model. This is not compatible with ClickHouse clusters that have more than one replica if you cannot guarantee that all operations will go to the same replica. You may not encounter problems in your day-to-day usage of dbt, but there are some strategies depending on your cluster to have this guarantee in place:
+- If you are using a ClickHouse Cloud cluster, you only need to set `select_sequential_consistency: 1` in your profile's `custom_settings` property. You can find more information about this setting [here](https://clickhouse.com/docs/operations/settings/settings#select_sequential_consistency).
+- If you are using a self-hosted cluster, make sure all dbt requests are sent to the same ClickHouse replica. If you have a load balancer on top of it, try using some `replica aware routing`/`sticky sessions` mechanism to be able to always reach the same replica. Adding the setting `select_sequential_consistency = 1` in clusters outside ClickHouse Cloud is [not recommended](https://clickhouse.com/docs/operations/settings/settings#select_sequential_consistency).
 
 ## General information about features {#general-information-about-features}
 
