@@ -15,6 +15,10 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     sed -i '' 's|(/sql-reference/statements/select#replace)|(/sql-reference/statements/select)|g' docs/guides/developer/dynamic-column-selection.md
     sed -i '' 's|(/sql-reference/statements/select#except)|(/sql-reference/statements/select)|g' docs/guides/developer/dynamic-column-selection.md
     sed -i '' 's|(/cloud/reference/cloud-compatibility.md)|(/whats-new/cloud-compatibility)|g' docs/sql-reference/dictionaries/_snippet_dictionary_in_cloud.md
+    sed -i '' 's|(/cloud/security/secure-s3)|(/cloud/data-sources/secure-s3)|g' docs/engines/table-engines/integrations/s3queue.md
+    sed -i '' 's|(/cloud/security/cloud-access-management/overview#initial-settings)|(/cloud/security/console-roles)|g' docs/sql-reference/statements/grant.md
+    sed -i '' 's|(/cloud/security/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|(/cloud/data-sources/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|g' docs/sql-reference/table-functions/s3.md
+    sed -i '' 's|(/cloud/security/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|(/cloud/data-sources/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|g' docs/sql-reference/table-functions/s3Cluster.md
     sed -i '' 's|<auxiliary_zookeepers>|`<auxiliary_zookeepers>`|g' docs/operations/server-configuration-parameters/settings.md
 else
     # Linux
@@ -24,5 +28,9 @@ else
     sed -i 's|(/sql-reference/statements/select#replace)|(/sql-reference/statements/select)|g' docs/guides/developer/dynamic-column-selection.md
     sed -i 's|(/sql-reference/statements/select#except)|(/sql-reference/statements/select)|g' docs/guides/developer/dynamic-column-selection.md
     sed -i 's|(/cloud/reference/cloud-compatibility.md)|(/whats-new/cloud-compatibility)|g' docs/sql-reference/dictionaries/_snippet_dictionary_in_cloud.md
+    sed -i 's|(/cloud/security/secure-s3)|(/cloud/data-sources/secure-s3)|g' docs/engines/table-engines/integrations/s3queue.md
+    sed -i 's|(/cloud/security/cloud-access-management/overview#initial-settings)|(/cloud/security/console-roles)|g' docs/sql-reference/statements/grant.md
+    sed -i 's|(/cloud/security/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|(/cloud/data-sources/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|g' docs/sql-reference/table-functions/s3.md
+    sed -i 's|(/cloud/security/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|(/cloud/data-sources/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|g' docs/sql-reference/table-functions/s3Cluster.md
     sed -i 's|<auxiliary_zookeepers>|`<auxiliary_zookeepers>`|g' docs/operations/server-configuration-parameters/settings.md
 fi
