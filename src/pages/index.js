@@ -81,11 +81,15 @@ const SparkleIcon = ({ size = 20, color = 'currentColor' }) => (
 
 // ClickHouse Style Arrow Button Component
 const ClickHouseArrowButton = ({ to, children, sx = {} }) => {
+    const [isHovered, setIsHovered] = React.useState(false);
+    const { colorMode } = useColorMode();
+    const linkColor = colorMode === 'dark' ? '#FAFF6A' : '#1976d2';
+
     return (
         <Link
             to={to}
             style={{
-                color: 'var(--ifm-link-color)',
+                color: linkColor,
                 textDecoration: 'none',
                 fontSize: '14px',
                 fontWeight: 600,
@@ -94,16 +98,12 @@ const ClickHouseArrowButton = ({ to, children, sx = {} }) => {
                 alignItems: 'center',
                 gap: '4px',
                 transition: 'all 0.2s ease',
+                transform: isHovered ? 'translateX(2px)' : 'translateX(0px)',
+                opacity: isHovered ? 1 : 0.8,
                 ...sx
             }}
-            onMouseEnter={(e) => {
-                e.target.style.transform = 'translateX(2px)';
-                e.target.style.color = 'var(--ifm-link-hover-color)';
-            }}
-            onMouseLeave={(e) => {
-                e.target.style.transform = 'translateX(0px)';
-                e.target.style.color = 'var(--ifm-link-color)';
-            }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
         >
             {children}
             <span style={{ marginLeft: '2px' }}>→</span>
@@ -153,12 +153,13 @@ const MigrationOptionButton = ({ icon, link, children }) => {
                     flex: 1,
                 }}
             >
-                <img
+                <Box
+                    component="img"
                     src={useBaseUrl(icon)}
                     alt={children}
-                    style={{
-                        width: '32px',
-                        height: '32px',
+                    sx={{
+                        width: { xs: '48px', md: '32px' },
+                        height: { xs: '48px', md: '32px' },
                         objectFit: 'contain'
                     }}
                 />
@@ -342,15 +343,58 @@ const ExploreDocs = () => {
                         display: 'flex',
                         flexDirection: 'column'
                     }}>
-                        <CardActionArea sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
-                            <CardMedia
-                                component="img"
-                                height="100"
-                                sx={{ width: '100%' }}
-                                image={useBaseUrl('/images/homepage/get_started.png')}
-                                alt="Learn ClickHouse"
-                            />
-                            <CardContent sx={{ 
+                        <CardActionArea disableRipple sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+                            <Box sx={{
+                                position: 'relative',
+                                width: '100%',
+                                height: '100px',
+                                backgroundColor: '#FAFF6A',
+                                overflow: 'hidden',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                padding: { xs: '0 20%', md: '0' },
+                                '&::before': {
+                                    content: '""',
+                                    position: 'absolute',
+                                    top: '-200%',
+                                    left: '-200%',
+                                    width: '500%',
+                                    height: '500%',
+                                    backgroundImage: 'radial-gradient(circle, rgba(0, 0, 0, 0.1) 0.5px, transparent 0.5px)',
+                                    backgroundSize: '4px 4px',
+                                    transform: 'rotate(45deg)',
+                                    zIndex: 0
+                                }
+                            }}>
+                                <Box
+                                    component="img"
+                                    src={useBaseUrl('/images/homepage/get_started.png')}
+                                    alt="Learn ClickHouse"
+                                    sx={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'contain',
+                                        display: { xs: 'none', md: 'block' },
+                                        position: 'relative',
+                                        zIndex: 1
+                                    }}
+                                />
+                                <Box
+                                    component="img"
+                                    src={useBaseUrl('/images/homepage/get_started_mobile.png')}
+                                    alt="Learn ClickHouse"
+                                    sx={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'contain',
+                                        display: { xs: 'block', md: 'none' },
+                                        position: 'relative',
+                                        zIndex: 1
+                                    }}
+                                />
+                            </Box>
+                            <CardContent sx={{
                                 color: 'text.primary',
                                 flex: 1,
                                 display: 'flex',
@@ -385,15 +429,60 @@ const ExploreDocs = () => {
                         display: 'flex',
                         flexDirection: 'column'
                     }}>
-                        <CardActionArea sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
-                            <CardMedia
-                                component="img"
-                                height="100"
-                                sx={{ width: '100%' }}
-                                image={useBaseUrl('/images/homepage/learn.png')}
-                                alt="Learn ClickHouse"
-                            />
-                            <CardContent sx={{ 
+                        <CardActionArea disableRipple sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+                            <Box sx={{
+                                position: 'relative',
+                                width: '100%',
+                                height: '100px',
+                                backgroundColor: '#FAFF6A',
+                                overflow: 'hidden',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                padding: { xs: '0 20%', md: '0' },
+                                '&::before': {
+                                    content: '""',
+                                    position: 'absolute',
+                                    top: '-200%',
+                                    left: '-200%',
+                                    width: '500%',
+                                    height: '500%',
+                                    backgroundImage: 'radial-gradient(circle, rgba(0, 0, 0, 0.1) 0.5px, transparent 0.5px)',
+                                    backgroundSize: '4px 4px',
+                                    transform: 'rotate(45deg)',
+                                    zIndex: 0
+                                }
+                            }}>
+                                <Box
+                                    component="img"
+                                    src={useBaseUrl('/images/homepage/learn.png')}
+                                    alt="Learn ClickHouse"
+                                    sx={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'contain',
+                                        maskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
+                                        WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
+                                        display: { xs: 'none', md: 'block' },
+                                        position: 'relative',
+                                        zIndex: 1
+                                    }}
+                                />
+                                <Box
+                                    component="img"
+                                    src={useBaseUrl('/images/homepage/learn_mobile.png')}
+                                    alt="Learn ClickHouse"
+                                    sx={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'contain',
+                                        display: { xs: 'block', md: 'none' },
+                                        position: 'relative',
+                                        zIndex: 1
+                                    }}
+                                />
+                            </Box>
+                            <CardContent sx={{
                                 color: 'text.primary',
                                 flex: 1,
                                 display: 'flex',
@@ -428,15 +517,60 @@ const ExploreDocs = () => {
                         display: 'flex',
                         flexDirection: 'column'
                     }}>
-                        <CardActionArea sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
-                            <CardMedia
-                                component="img"
-                                height="100"
-                                sx={{ width: '100%' }}
-                                image={useBaseUrl('/images/homepage/reference.png')}
-                                alt="ClickHouse Reference"
-                            />
-                            <CardContent sx={{ 
+                        <CardActionArea disableRipple sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+                            <Box sx={{
+                                position: 'relative',
+                                width: '100%',
+                                height: '100px',
+                                backgroundColor: '#FAFF6A',
+                                overflow: 'hidden',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                padding: { xs: '0 20%', md: '0' },
+                                '&::before': {
+                                    content: '""',
+                                    position: 'absolute',
+                                    top: '-200%',
+                                    left: '-200%',
+                                    width: '500%',
+                                    height: '500%',
+                                    backgroundImage: 'radial-gradient(circle, rgba(0, 0, 0, 0.1) 0.5px, transparent 0.5px)',
+                                    backgroundSize: '4px 4px',
+                                    transform: 'rotate(45deg)',
+                                    zIndex: 0
+                                }
+                            }}>
+                                <Box
+                                    component="img"
+                                    src={useBaseUrl('/images/homepage/reference.png')}
+                                    alt="ClickHouse Reference"
+                                    sx={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'contain',
+                                        maskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
+                                        WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
+                                        display: { xs: 'none', md: 'block' },
+                                        position: 'relative',
+                                        zIndex: 1
+                                    }}
+                                />
+                                <Box
+                                    component="img"
+                                    src={useBaseUrl('/images/homepage/reference_mobile.png')}
+                                    alt="ClickHouse Reference"
+                                    sx={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'contain',
+                                        display: { xs: 'block', md: 'none' },
+                                        position: 'relative',
+                                        zIndex: 1
+                                    }}
+                                />
+                            </Box>
+                            <CardContent sx={{
                                 color: 'text.primary',
                                 flex: 1,
                                 display: 'flex',
@@ -452,13 +586,13 @@ const ExploreDocs = () => {
                                         <Link to="/sql-reference/functions" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Functions</Link>
                                         <Link to="/engines" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Engines</Link>
                                         <Link to="/sql-reference/data-types" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Data types</Link>
-                                        <Link to="/operations/settings/settings" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Settings</Link>
+                                        <Link to="/operations/settings/settings" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Session settings</Link>
                                     </div>
                                     <div>
                                         <Link to="/operations/server-configuration-parameters/settings" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Server settings</Link>
                                         <Link to="/operations/system-tables" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>System tables</Link>
-                                        <Link to="/changelog/cloud" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Cloud changelog</Link>
-                                        <Link to="/changelog/oss" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>OSS changelog</Link>
+                                        <Link to="/cloud/reference/changelogs" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>Cloud changelog</Link>
+                                        <Link to="/whats-new/changelog" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>OSS changelog</Link>
                                     </div>
                                 </div>
                             </CardContent>
@@ -481,18 +615,57 @@ const ExploreDocs = () => {
                         flexDirection: { xs: 'column', md: 'row' },
                         overflow: 'hidden'
                     }}>
-                        {/* Left side - Full height image outside padding */}
-                        <CardMedia
-                            component="img"
-                            sx={{
-                                width: { xs: '100%', md: 120 },
-                                height: { xs: '100px', md: '100%' },
-                                objectFit: 'cover',
-                                flexShrink: 0
-                            }}
-                            image={useBaseUrl('/images/homepage/migration_icon.png')}
-                            alt="Migration"
-                        />
+                        {/* Top/Left side - Image with dotted background */}
+                        <Box sx={{
+                            position: 'relative',
+                            width: { xs: '100%', md: 120 },
+                            height: { xs: '100px', md: '100%' },
+                            backgroundColor: '#FAFF6A',
+                            overflow: 'hidden',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0,
+                            '&::before': {
+                                content: '""',
+                                position: 'absolute',
+                                top: '-200%',
+                                left: '-200%',
+                                width: '500%',
+                                height: '500%',
+                                backgroundImage: 'radial-gradient(circle, rgba(0, 0, 0, 0.1) 0.5px, transparent 0.5px)',
+                                backgroundSize: '4px 4px',
+                                transform: 'rotate(45deg)',
+                                zIndex: 0
+                            }
+                        }}>
+                            <Box
+                                component="img"
+                                src={useBaseUrl('/images/homepage/migration_icon.png')}
+                                alt="Migration"
+                                sx={{
+                                    width: { xs: '60%', md: '100%' },
+                                    height: { xs: 'auto', md: '100%' },
+                                    objectFit: 'contain',
+                                    display: { xs: 'none', md: 'block' },
+                                    position: 'relative',
+                                    zIndex: 1
+                                }}
+                            />
+                            <Box
+                                component="img"
+                                src={useBaseUrl('/images/homepage/migration_icon_mobile.png')}
+                                alt="Migration"
+                                sx={{
+                                    width: '100%',
+                                    height: '100%',
+                                    objectFit: 'contain',
+                                    display: { xs: 'block', md: 'none' },
+                                    position: 'relative',
+                                    zIndex: 1
+                                }}
+                            />
+                        </Box>
                         
                         <CardContent sx={{
                             backgroundColor: 'background.paper',
@@ -518,12 +691,6 @@ const ExploreDocs = () => {
                                 </p>
                                 <ClickHouseArrowButton
                                     to="/docs/integrations"
-                                    sx={{
-                                        fontSize: '14px',
-                                        fontWeight: 600,
-                                        opacity: 0.8,
-                                        color: 'inherit'
-                                    }}
                                 >
                                     View all integrations
                                 </ClickHouseArrowButton>
@@ -533,16 +700,16 @@ const ExploreDocs = () => {
                             <Box sx={{
                                 flex: 1,
                                 display: 'flex',
-                                justifyContent: { xs: 'center', md: 'flex-end' },
+                                justifyContent: { xs: 'flex-start', md: 'flex-end' },
                                 alignItems: 'center'
                             }}>
                                 <Box sx={{
                                     display: 'grid',
-                                    gridTemplateColumns: { xs: 'repeat(4, 1fr)', md: 'repeat(7, 1fr)' },
-                                    gridTemplateRows: { xs: 'repeat(4, 1fr)', md: '1fr' },
+                                    gridTemplateColumns: { xs: 'repeat(4, 1fr)', md: 'repeat(8, 1fr)' },
+                                    gridTemplateRows: { xs: 'repeat(4, 1fr)', md: 'repeat(2, 1fr)' },
                                     gap: 1,
                                     width: '100%',
-                                    maxWidth: { xs: '320px', md: '480px' },
+                                    maxWidth: { xs: 'none', md: '560px' },
                                     height: { xs: 'auto', md: '100%' }
                                 }}>
                                     <MigrationOptionButton
@@ -565,7 +732,7 @@ const ExploreDocs = () => {
                                     </MigrationOptionButton>
                                     <MigrationOptionButton 
                                         icon="/docs/images/logo-redshift.svg"
-                                        link="/docs/integrations/redshift"
+                                        link="/migrations/redshift-overview"
                                     >
                                         Redshift
                                     </MigrationOptionButton>
@@ -629,6 +796,18 @@ const ExploreDocs = () => {
                                     >
                                         Hudi
                                     </MigrationOptionButton>
+                                    <MigrationOptionButton
+                                        icon="/images/integrations/logos/apache-spark.png"
+                                        link="/docs/integrations/apache-spark"
+                                    >
+                                        Spark
+                                    </MigrationOptionButton>
+                                    <MigrationOptionButton
+                                        icon="/images/integrations/logos/dbt.svg"
+                                        link="/docs/integrations/dbt"
+                                    >
+                                        dbt
+                                    </MigrationOptionButton>
                                 </Box>
                             </Box>
                         </CardContent>
@@ -665,7 +844,7 @@ const ExploreDocs = () => {
                             display: 'flex',
                             flexDirection: 'column'
                         }}>
-                        <CardActionArea sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+                        <CardActionArea disableRipple sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
                             <CardMedia
                                 component="img"
                                 height="120"
@@ -736,7 +915,7 @@ const ExploreDocs = () => {
                             display: 'flex',
                             flexDirection: 'column'
                         }}>
-                        <CardActionArea sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+                        <CardActionArea disableRipple sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
                             <CardMedia
                                 component="img"
                                 height="120"
@@ -807,7 +986,7 @@ const ExploreDocs = () => {
                             display: 'flex',
                             flexDirection: 'column'
                         }}>
-                        <CardActionArea sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+                        <CardActionArea disableRipple sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
                             <CardMedia
                                 component="img"
                                 height="120"
