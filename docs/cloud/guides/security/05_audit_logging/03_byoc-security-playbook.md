@@ -16,7 +16,7 @@ Refer to the [database audit log](/cloud/security/audit-logging/database-audit-l
 
 ## Application layer denial of service attack {#application-layer-dos-attack}
 
-There are various methods to execute a Denial of Service (DoS) attack. If the attack is focused on crashing the ClickHouse instance through a specific payload, recover the system back to a running state, or reboot the system and restrict access to regain control. Use the following query to review the [system.crash_log](/operations/system-tables/crash-log) to get more information about the attack.
+There are various methods to execute a Denial of Service (DoS) attack. If the attack is focused on crashing the ClickHouse instance through a specific payload, recover the system back to a running state, or reboot the system and restrict access to regain control. Use the following query to review the [system.crash_log](/operations/system-tables/crash_log) to get more information about the attack.
 
 ```sql
 SELECT * 
