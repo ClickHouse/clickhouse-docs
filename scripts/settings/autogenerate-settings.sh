@@ -274,6 +274,7 @@ if [ -f "$FUNCTION_SQL_FILE" ]; then
       "String Splitting"
       "Rounding"
       "Time Series"
+      "Other"
       "Time Window"
     )
 
@@ -393,6 +394,7 @@ insert_src_files=(
   "string_splitting-functions.md"
   "rounding-functions.md"
   "time_series-functions.md"
+  "other-functions.md"
   "time_window-functions.md"
 )
 
@@ -420,6 +422,7 @@ insert_dest_files=(
     "docs/sql-reference/functions/splitting-merging-functions.md"
     "docs/sql-reference/functions/rounding-functions.md"
     "docs/sql-reference/functions/time-series-functions.md"
+    "docs/sql-reference/functions/other-functions.md"
     "docs/sql-reference/functions/time-window-functions.md"
 )
 
