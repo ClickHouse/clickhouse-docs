@@ -1,16 +1,15 @@
 ---
-alias: []
+slug: '/interfaces/formats/PrettySpaceNoEscapes'
 description: 'Документация для формата PrettySpaceNoEscapes'
-input_format: false
+title: PrettySpaceNoEscapes
 keywords: ['PrettySpaceNoEscapes']
+doc_type: reference
+input_format: false
 output_format: true
-slug: /interfaces/formats/PrettySpaceNoEscapes
-title: 'PrettySpaceNoEscapes'
 ---
-
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| Вход | Выход  | Alias |
+| Input | Output  | Alias |
 |-------|---------|-------|
 | ✗     | ✔       |       |
 

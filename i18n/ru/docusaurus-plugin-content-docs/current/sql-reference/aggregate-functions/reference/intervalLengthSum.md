@@ -1,11 +1,11 @@
 ---
-description: 'Вычисляет общую длину объединения всех диапазонов (сегментов на числовой оси).'
-sidebar_label: 'intervalLengthSum'
+slug: '/sql-reference/aggregate-functions/reference/intervalLengthSum'
+sidebar_label: intervalLengthSum
 sidebar_position: 155
-slug: /sql-reference/aggregate-functions/reference/intervalLengthSum
-title: 'intervalLengthSum'
+description: 'Вычисляет общую длину объединения всех диапазонов (сегментов на числовой'
+title: intervalLengthSum
+doc_type: reference
 ---
-
 Вычисляет общую длину объединения всех диапазонов (сегментов на числовой оси).
 
 **Синтаксис**
@@ -20,7 +20,7 @@ intervalLengthSum(start, end)
 - `end` — Конечное значение интервала. [Int32](/sql-reference/data-types/int-uint#integer-ranges), [Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt32](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges), [Float32](/sql-reference/data-types/float), [Float64](/sql-reference/data-types/float), [DateTime](/sql-reference/data-types/datetime) или [Date](/sql-reference/data-types/date).
 
 :::note
-Аргументы должны быть одного и того же типа данных. В противном случае будет выброшено исключение.
+Аргументы должны быть одного и того же типа данных. В противном случае будет вызвано исключение.
 :::
 
 **Возвращаемое значение**
@@ -41,7 +41,7 @@ intervalLengthSum(start, end)
 
 В этом примере используются аргументы типа Float32. Функция возвращает значение типа Float64.
 
-Результат — сумма длин интервалов `[1.1, 3.2]` (объединение `[1.1, 2.9]` и `[2.5, 3.2]`) и `[4, 5]`.
+Результат — сумма длин интервалов `[1.1, 3.2]` (объединение `[1.1, 2.9]` и `[2.5, 3.2]`) и `[4, 5]`
 
 Запрос:
 

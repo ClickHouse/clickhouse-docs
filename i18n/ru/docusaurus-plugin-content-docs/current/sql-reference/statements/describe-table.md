@@ -1,11 +1,11 @@
 ---
-description: 'Документация по команде DESCRIBE TABLE'
+slug: '/sql-reference/statements/describe-table'
 sidebar_label: 'DESCRIBE TABLE'
 sidebar_position: 42
-slug: /sql-reference/statements/describe-table
+description: 'Документация для Describe Table'
 title: 'DESCRIBE TABLE'
+doc_type: reference
 ---
-
 Возвращает информацию о колонках таблицы.
 
 **Синтаксис**
@@ -14,18 +14,18 @@ title: 'DESCRIBE TABLE'
 DESC|DESCRIBE TABLE [db.]table [INTO OUTFILE filename] [FORMAT format]
 ```
 
-Команда `DESCRIBE` возвращает строку для каждой колонки таблицы с следующими [строковыми](../../sql-reference/data-types/string.md) значениями:
+Оператор `DESCRIBE` возвращает строку для каждой колонки таблицы со следующими [String](../../sql-reference/data-types/string.md) значениями:
 
-- `name` — Название колонки.
+- `name` — Имя колонки.
 - `type` — Тип колонки.
-- `default_type` — Клаузула, которая используется в [выражении по умолчанию](/sql-reference/statements/create/table): `DEFAULT`, `MATERIALIZED` или `ALIAS`. Если выражение по умолчанию отсутствует, возвращается пустая строка.
-- `default_expression` — Выражение, указанное после клаузулы `DEFAULT`.
+- `default_type` — Оператор, который используется в [значении по умолчанию](/sql-reference/statements/create/table) колонки: `DEFAULT`, `MATERIALIZED` или `ALIAS`. Если значение по умолчанию отсутствует, возвращается пустая строка.
+- `default_expression` — Выражение, указанное после оператора `DEFAULT`.
 - `comment` — [Комментарий к колонке](/sql-reference/statements/alter/column#comment-column).
-- `codec_expression` — [Кодек](/sql-reference/statements/create/table#column_compression_codec), который применяется к колонке.
+- `codec_expression` — [кодек](/sql-reference/statements/create/table#column_compression_codec), применяемый к колонке.
 - `ttl_expression` — Выражение [TTL](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl).
-- `is_subcolumn` — Флаг, который равен `1` для внутренних подколонок. Он включается в результат только если описание подколонок включено с помощью настройки [describe_include_subcolumns](../../operations/settings/settings.md#describe_include_subcolumns).
+- `is_subcolumn` — Флаг, равный `1` для внутренних подколонок. Он включается в результат только если описание подколонок разрешено настройкой [describe_include_subcolumns](../../operations/settings/settings.md#describe_include_subcolumns).
 
-Все колонки в [Nested](../../sql-reference/data-types/nested-data-structures/index.md) структурах данных описываются отдельно. Название каждой колонки начинается с названия родительской колонки и точки.
+Все колонки в [Nested](../../sql-reference/data-types/nested-data-structures/index.md) структурах данных описываются отдельно. Имя каждой колонки предшествуется именем родительской колонки и точкой.
 
 Чтобы показать внутренние подколонки других типов данных, используйте настройку [describe_include_subcolumns](../../operations/settings/settings.md#describe_include_subcolumns).
 
@@ -53,7 +53,7 @@ DESCRIBE TABLE describe_example SETTINGS describe_include_subcolumns=1;
 └──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-Во втором запросе дополнительно показываются подколонки:
+Второй запрос дополнительно показывает подколонки:
 
 ```text
 ┌─name──────┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┬─is_subcolumn─┐
@@ -65,6 +65,6 @@ DESCRIBE TABLE describe_example SETTINGS describe_include_subcolumns=1;
 └───────────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┴──────────────┘
 ```
 
-**Смотрите Также**
+**Смотрите также**
 
 - Настройка [describe_include_subcolumns](../../operations/settings/settings.md#describe_include_subcolumns).

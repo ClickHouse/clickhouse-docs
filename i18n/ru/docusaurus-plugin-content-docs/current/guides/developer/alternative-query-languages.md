@@ -1,20 +1,20 @@
 ---
-slug: /guides/developer/alternative-query-languages
+slug: '/guides/developer/alternative-query-languages'
 sidebar_label: 'Альтернативные языки запросов'
-title: 'Альтернативные языки запросов'
 description: 'Используйте альтернативные языки запросов в ClickHouse'
+title: 'Альтернативные языки запросов'
+doc_type: reference
 ---
-
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-Кроме стандартного SQL, ClickHouse поддерживает различные альтернативные языки запросов для выполнения запросов к данным.
+Кроме стандартного SQL, ClickHouse поддерживает различные альтернативные языки запросов для обращения к данным.
 
 В настоящее время поддерживаемые диалекты:
-- `clickhouse`: Стандартный [SQL диалект](../../chdb/reference/sql-reference.md) ClickHouse
-- `prql`: [Язык Запросов Пайплайновых Реляционных Данных (PRQL)](https://prql-lang.org/)
-- `kusto`: [Язык Запросов Kusto (KQL)](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query)
+- `clickhouse`: Стандартный [SQL-диалект](../../chdb/reference/sql-reference.md) ClickHouse
+- `prql`: [Язык запросов с конвейером (PRQL)](https://prql-lang.org/)
+- `kusto`: [Язык запросов Kusto (KQL)](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query)
 
-Какой язык запросов используется, контролируется с помощью установки `dialect`.
+Какой язык запросов используется, контролируется с помощью настройки `dialect`.
 
 ## Стандартный SQL {#standard-sql}
 
@@ -24,14 +24,14 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 SET dialect = 'clickhouse'
 ```
 
-## Язык Запросов Пайплайновых Реляционных Данных (PRQL) {#pipelined-relational-query-language-prql}
+## Язык запросов с конвейером (PRQL) {#pipelined-relational-query-language-prql}
 
 <ExperimentalBadge/>
 
 Чтобы включить PRQL:
 
 ```sql
-SET allow_experimental_prql_dialect = 1; -- эта команда SET требуется только для версий ClickHouse >= v25.1
+SET allow_experimental_prql_dialect = 1; -- this SET statement is required only for ClickHouse versions >= v25.1
 SET dialect = 'prql'
 ```
 
@@ -45,24 +45,24 @@ aggregate {
 }
 ```
 
-Под капотом ClickHouse использует транспиляцию из PRQL в SQL для выполнения запросов PRQL.
+Внутри ClickHouse используется трансляция из PRQL в SQL для выполнения запросов PRQL.
 
-## Язык Запросов Kusto (KQL) {#kusto-query-language-kql}
+## Язык запросов Kusto (KQL) {#kusto-query-language-kql}
 
 <ExperimentalBadge/>
 
 Чтобы включить KQL:
 
 ```sql
-SET allow_experimental_kusto_dialect = 1; -- эта команда SET требуется только для версий ClickHouse >= 25.1
+SET allow_experimental_kusto_dialect = 1; -- this SET statement is required only for ClickHouse versions >= 25.1
 SET dialect = 'kusto'
 ```
 
-```kql title="Запрос"
+```kql title="Query"
 numbers(10) | project number
 ```
 
-```response title="Ответ"
+```response title="Response"
 ┌─number─┐
 │      0 │
 │      1 │

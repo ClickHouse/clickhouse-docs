@@ -1,26 +1,26 @@
 ---
 slug: '/examples/aggregate-function-combinators/avgResample'
-title: 'avgResample'
-description: 'Пример использования комбинатора Resample с avg'
+sidebar_label: avgResample
+description: 'Пример использования комбиниатора Resample с avg'
+title: avgResample
 keywords: ['avg', 'Resample', 'комбинатор', 'примеры', 'avgResample']
-sidebar_label: 'avgResample'
+doc_type: reference
 ---
-```
-
-
 # countResample {#countResample}
 
-## Description {#description}
+## Описание {#description}
 
 Комбинатор [`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
-может быть применен к агрегатной функции [`count`](/sql-reference/aggregate-functions/reference/count) для подсчета значений заданного ключевого столбца за фиксированное количество интервалов (`N`).
+может быть применен к агрегатной функции [`count`](/sql-reference/aggregate-functions/reference/count)
+для подсчета значений заданной ключевой колонки в фиксированном количестве
+интервалов (`N`).
 
-## Example Usage {#example-usage}
+## Пример использования {#example-usage}
 
-### Basic example {#basic-example}
+### Простой пример {#basic-example}
 
-Рассмотрим пример. Мы создадим таблицу, которая содержит `name`, `age` и
-`wage` сотрудников, и вставим в нее данные:
+Давайте рассмотрим пример. Мы создадим таблицу, которая содержит `name`, `age` и
+`wage` сотрудников и вставим в нее некоторые данные:
 
 ```sql
 CREATE TABLE employee_data 
@@ -41,9 +41,9 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-Теперь давайте определим среднюю зарплату людей, чей возраст находится в интервалах `[30,60)` 
+Теперь давайте получим среднюю заработную плату людей, чей возраст находится в интервалах `[30,60)` 
 и `[60,75)` (`[` исключает, а `)` включает). Поскольку мы используем целочисленное 
-представление для возраста, мы получаем возраста в интервалах `[30, 59]` и `[60,74]`. 
+представление возраста, мы получаем возраст в интервалах `[30, 59]` и `[60,74]`. 
 Для этого мы применяем комбинатор `Resample` к агрегатной функции `avg`.
 
 ```sql
@@ -63,7 +63,6 @@ FROM avg_wage;
 └──────────────────┘
 ```
 
-## See also {#see-also}
+## См. также {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)
 - [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)
-

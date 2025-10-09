@@ -9,6 +9,7 @@
 - 'examples'
 - 'maxMap'
 'sidebar_label': 'maxMap'
+'doc_type': 'reference'
 ---
 
 
@@ -16,11 +17,11 @@
 
 ## 描述 {#description}
 
-[`Map`](/sql-reference/aggregate-functions/combinators#-map) 组合器可以应用于 [`max`](/sql-reference/aggregate-functions/reference/max) 函数，以根据每个键来计算 Map 中的最大值，使用 `maxMap` 聚合组合器函数。
+[`Map`](/sql-reference/aggregate-functions/combinators#-map) 组合器可以应用于 [`max`](/sql-reference/aggregate-functions/reference/max) 函数，通过 `maxMap` 聚合组合器函数根据每个键计算 Map 中的最大值。
 
 ## 示例用法 {#example-usage}
 
-在这个例子中，我们将创建一个表，用于存储不同时间段的状态码及其计数，其中每一行包含一个状态码到其对应计数的 Map。我们将使用 `maxMap` 来找出每个时间段内每个状态码的最大计数。
+在这个示例中，我们将创建一个表，用于存储不同时间段的状态代码及其计数，其中每一行包含一个状态代码到其对应计数的 Map。我们将使用 `maxMap` 来查找每个时间段内每个状态代码的最大计数。
 
 ```sql title="Query"
 CREATE TABLE metrics(
@@ -42,14 +43,14 @@ FROM metrics
 GROUP BY timeslot;
 ```
 
-`maxMap` 函数将找到每个时间段内每个状态码的最大计数。例如：
-- 在时间段 '2000-01-01 00:00:00'：
+`maxMap` 函数将找到每个时间段内每个状态代码的最大计数。例如：
+- 在时间段 '2000-01-01 00:00:00':
   - 状态 'a': 15
   - 状态 'b': 25
   - 状态 'c': max(35, 45) = 45
   - 状态 'd': 55
   - 状态 'e': 65
-- 在时间段 '2000-01-01 00:01:00'：
+- 在时间段 '2000-01-01 00:01:00':
   - 状态 'd': 75
   - 状态 'e': 85
   - 状态 'f': max(95, 105) = 105
@@ -62,6 +63,6 @@ GROUP BY timeslot;
    └─────────────────────┴──────────────────────────────────────┘
 ```
 
-## 另见 {#see-also}
+## 另请参见 {#see-also}
 - [`max`](/sql-reference/aggregate-functions/reference/max)
 - [`Map 组合器`](/sql-reference/aggregate-functions/combinators#-map)

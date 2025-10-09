@@ -22,7 +22,8 @@
       "url_without_anchor",
       "type",
       "title",
-      "doc_type"
+      "doc_type",
+      "doc_type_rank"
     ],
     "camelCaseAttributes": [
       "h1",
@@ -53,7 +54,7 @@
       "an"
     ],
     "attributesForFaceting": [
-      "doc_type"
+      "filterOnly(doc_type)"
     ],
     "attributesToSnippet": [
       "content:15",
@@ -83,6 +84,7 @@
       "custom"
     ],
     "customRanking": [
+      "desc(doc_type_rank)",
       "desc(score)",
       "desc(page_rank)"
     ],

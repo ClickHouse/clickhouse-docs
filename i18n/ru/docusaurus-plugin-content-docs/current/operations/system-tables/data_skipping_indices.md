@@ -1,10 +1,10 @@
 ---
-description: 'Системная таблица, содержащая информацию о существующих индексах пропуска данных во всех таблицах.'
+slug: '/operations/system-tables/data_skipping_indices'
+description: 'Системная таблица, содержащая информацию о существующих INDEX пропуска'
+title: system.data_skipping_indices
 keywords: ['системная таблица', 'индексы_пропуска_данных']
-slug: /operations/system-tables/data_skipping_indices
-title: 'system.data_skipping_indices'
+doc_type: reference
 ---
-
 Содержит информацию о существующих индексах пропуска данных во всех таблицах.
 
 Колонки:
@@ -13,11 +13,11 @@ title: 'system.data_skipping_indices'
 - `table` ([String](../../sql-reference/data-types/string.md)) — Имя таблицы.
 - `name` ([String](../../sql-reference/data-types/string.md)) — Имя индекса.
 - `type` ([String](../../sql-reference/data-types/string.md)) — Тип индекса.
-- `type_full` ([String](../../sql-reference/data-types/string.md)) — Выражение типа индекса из оператора создания.
+- `type_full` ([String](../../sql-reference/data-types/string.md)) — Полное выражение типа индекса из оператора создания.
 - `expr` ([String](../../sql-reference/data-types/string.md)) — Выражение для вычисления индекса.
 - `granularity` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Количество гранул в блоке.
 - `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Размер сжатых данных в байтах.
-- `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Размер несжатых данных в байтах.
+- `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Размер декомпрессированных данных в байтах.
 - `marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Размер меток в байтах.
 
 **Пример**

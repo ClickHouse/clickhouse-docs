@@ -5,6 +5,7 @@
 - 'stack_trace'
 'slug': '/operations/system-tables/stack_trace'
 'title': 'system.stack_trace'
+'doc_type': 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
@@ -16,22 +17,22 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
 包含所有服务器线程的堆栈跟踪。允许开发人员检查服务器状态。
 
-要分析堆栈帧，请使用 `addressToLine`、`addressToLineWithInlines`、`addressToSymbol` 和 `demangle` [内部检查函数](../../sql-reference/functions/introspection.md)。
+要分析堆栈帧，请使用 `addressToLine`、`addressToLineWithInlines`、`addressToSymbol` 和 `demangle` [反思函数](../../sql-reference/functions/introspection.md)。
 
 列：
 
 - `thread_name` ([String](../../sql-reference/data-types/string.md)) — 线程名称。
 - `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 线程标识符。
-- `query_id` ([String](../../sql-reference/data-types/string.md)) — 可以用于获取来自 [query_log](../system-tables/query_log.md) 系统表中正在运行的查询详情的查询标识符。
-- `trace` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — 表示调用方法存储的物理地址列表的 [堆栈跟踪](https://en.wikipedia.org/wiki/Stack_trace)。
+- `query_id` ([String](../../sql-reference/data-types/string.md)) — 查询标识符，可用于获取有关从 [query_log](../system-tables/query_log.md) 系统表运行的查询的详细信息。
+- `trace` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — 一个 [堆栈跟踪](https://en.wikipedia.org/wiki/Stack_trace)，表示存储调用方法的物理地址列表。
 
 :::tip
-查看知识库中的一些实用查询，包括 [如何查看当前正在运行的线程](/knowledgebase/find-expensive-queries) 和 [故障排除的有用查询](/knowledgebase/useful-queries-for-troubleshooting)。
+查看知识库以获取一些实用查询，包括 [如何查看当前运行的线程](/knowledgebase/find-expensive-queries) 和 [用于故障排除的有用查询](/knowledgebase/useful-queries-for-troubleshooting)。
 :::
 
 **示例**
 
-启用内部检查函数：
+启用反思函数：
 
 ```sql
 SET allow_introspection_functions = 1;
@@ -99,9 +100,9 @@ res:       /lib/x86_64-linux-gnu/libc-2.27.so
 /lib/x86_64-linux-gnu/libc-2.27.so
 ```
 
-**参见**
+**另请参阅**
 
-- [内部检查函数](../../sql-reference/functions/introspection.md) — 可用的内部检查函数及其用法。
+- [反思函数](../../sql-reference/functions/introspection.md) — 可用的反思函数以及如何使用它们。
 - [system.trace_log](../system-tables/trace_log.md) — 包含由采样查询分析器收集的堆栈跟踪。
-- [arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) — `arrayMap` 函数的描述和使用示例。
-- [arrayFilter](/sql-reference/functions/array-functions#arrayfilterfunc-arr1-) — `arrayFilter` 函数的描述和使用示例。
+- [arrayMap](/sql-reference/functions/array-functions#arrayMap) — `arrayMap` 函数的描述和使用示例。
+- [arrayFilter](/sql-reference/functions/array-functions#arrayFilter) — `arrayFilter` 函数的描述和使用示例。

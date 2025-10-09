@@ -1,18 +1,17 @@
 ---
-description: 'Computes the sample kurtosis of a sequence.'
-sidebar_position: 158
-slug: '/sql-reference/aggregate-functions/reference/kurtsamp'
-title: 'kurtSamp'
+'description': 'シーケンスのサンプル尖度を計算します。'
+'sidebar_position': 158
+'slug': '/sql-reference/aggregate-functions/reference/kurtsamp'
+'title': 'kurtSamp'
+'doc_type': 'reference'
 ---
-
-
 
 
 # kurtSamp
 
-シーケンスの[標本尖度](https://en.wikipedia.org/wiki/Kurtosis)を計算します。
+シーケンスの[サンプル尖度](https://en.wikipedia.org/wiki/Kurtosis)を計算します。
 
-これは、渡された値がそのサンプルを形成する場合、ランダム変数の尖度のバイアスのない推定値を表します。
+渡された値がそのサンプルを形成する場合、これはランダム変数の尖度の無偏推定値を表します。
 
 ```sql
 kurtSamp(expr)
@@ -24,7 +23,7 @@ kurtSamp(expr)
 
 **返される値**
 
-与えられた分布の尖度。タイプ — [Float64](../../../sql-reference/data-types/float.md)。もし `n <= 1`（`n`はサンプルのサイズ）であれば、関数は `nan` を返します。
+与えられた分布の尖度。型 — [Float64](../../../sql-reference/data-types/float.md)。もし `n <= 1` （`n` はサンプルのサイズ）であれば、この関数は `nan` を返します。
 
 **例**
 

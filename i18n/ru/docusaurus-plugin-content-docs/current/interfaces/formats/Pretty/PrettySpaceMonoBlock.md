@@ -1,13 +1,12 @@
 ---
-alias: []
+slug: '/interfaces/formats/PrettySpaceMonoBlock'
 description: 'Документация для формата PrettySpaceMonoBlock'
-input_format: false
+title: PrettySpaceMonoBlock
 keywords: ['PrettySpaceMonoBlock']
+doc_type: reference
+input_format: false
 output_format: true
-slug: /interfaces/formats/PrettySpaceMonoBlock
-title: 'PrettySpaceMonoBlock'
 ---
-
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 | Input | Output  | Alias |
@@ -16,8 +15,8 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 ## Описание {#description}
 
-Отличается от формата [`PrettySpace`](./PrettySpace.md) тем, что буферизуется до `10,000` строк, 
-а затем выводится в виде одной таблицы, а не по [блокам](/development/architecture#block).
+Отличается от формата [`PrettySpace`](./PrettySpace.md) тем, что до `10,000` строк буферизуются, 
+а затем выводятся в виде одной таблицы, а не по [блокам](/development/architecture#block).
 
 ## Пример использования {#example-usage}
 

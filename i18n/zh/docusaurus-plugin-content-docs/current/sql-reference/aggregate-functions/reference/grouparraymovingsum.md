@@ -3,28 +3,29 @@
 'sidebar_position': 144
 'slug': '/sql-reference/aggregate-functions/reference/grouparraymovingsum'
 'title': 'groupArrayMovingSum'
+'doc_type': 'reference'
 ---
 
 
 # groupArrayMovingSum
 
-计算输入值的移动总和。
+计算输入值的移动和。
 
 ```sql
 groupArrayMovingSum(numbers_for_summing)
 groupArrayMovingSum(window_size)(numbers_for_summing)
 ```
 
-该函数可以将窗口大小作为参数。如果未指定，则该函数将窗口大小设置为列中的行数。
+该函数可以将窗口大小作为参数。如果未指定，则该函数使用等于列中行数的窗口大小。
 
 **参数**
 
-- `numbers_for_summing` — [表达式](/sql-reference/syntax#expressions)，结果为数值数据类型。
+- `numbers_for_summing` — [表达式](/sql-reference/syntax#expressions)，结果为数字数据类型的值。
 - `window_size` — 计算窗口的大小。
 
 **返回值**
 
-- 与输入数据相同大小和类型的数组。
+- 与输入数据大小和类型相同的数组。
 
 **示例**
 

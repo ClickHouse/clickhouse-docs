@@ -1,11 +1,10 @@
 ---
-description: 'Системная таблица, содержащая информацию о ресурсах, находящихся на локальном сервере, с одной строкой для каждого ресурса.'
+slug: '/operations/system-tables/resources'
+description: 'Системная таблица, содержащая информацию о РЕСУРСАХ, находящихся на'
+title: system.resources
 keywords: ['системная таблица', 'ресурсы']
-slug: /operations/system-tables/resources
-title: 'system.resources'
+doc_type: reference
 ---
-
-
 # system.resources
 
 Содержит информацию о [ресурсах](/operations/workload-scheduling.md#workload_entity_storage), находящихся на локальном сервере. Таблица содержит строку для каждого ресурса.
@@ -37,6 +36,6 @@ create_query: CREATE RESOURCE io_write (WRITE DISK s3)
 Колонки:
 
 - `name` (`String`) - Имя ресурса.
-- `read_disks` (`Array(String)`) - Массив названий дисков, которые используют этот ресурс для операций чтения.
-- `write_disks` (`Array(String)`) - Массив названий дисков, которые используют этот ресурс для операций записи.
+- `read_disks` (`Array(String)`) - Массив имен дисков, которые используют этот ресурс для операций чтения.
+- `write_disks` (`Array(String)`) - Массив имен дисков, которые используют этот ресурс для операций записи.
 - `create_query` (`String`) - Определение ресурса.

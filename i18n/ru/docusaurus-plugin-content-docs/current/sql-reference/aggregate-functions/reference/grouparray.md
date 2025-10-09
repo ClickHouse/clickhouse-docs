@@ -1,11 +1,10 @@
 ---
-description: 'Создает массив значений аргументов. Значения могут добавляться в массив в любом (неопределенном) порядке.'
+slug: '/sql-reference/aggregate-functions/reference/grouparray'
 sidebar_position: 139
-slug: /sql-reference/aggregate-functions/reference/grouparray
-title: 'groupArray'
+description: 'Создает массив значений аргументов. Значения могут быть добавлены'
+title: groupArray
+doc_type: reference
 ---
-
-
 # groupArray
 
 Синтаксис: `groupArray(x)` или `groupArray(max_size)(x)`
@@ -13,9 +12,9 @@ title: 'groupArray'
 Создает массив значений аргументов. 
 Значения могут добавляться в массив в любом (неопределенном) порядке.
 
-Вторая версия (с параметром `max_size`) ограничивает размер получаемого массива до `max_size` элементов. Например, `groupArray(1)(x)` эквивалентен `[any (x)]`.
+Вторая версия (с параметром `max_size`) ограничивает размер результирующего массива до `max_size` элементов. Например, `groupArray(1)(x)` эквивалентно `[any (x)]`.
 
-В некоторых случаях вы все еще можете полагаться на порядок выполнения. Это относится к случаям, когда `SELECT` исходит из подзапроса, который использует `ORDER BY`, если результат подзапроса достаточно мал.
+В некоторых случаях вы все еще можете полагаться на порядок выполнения. Это относится к случаям, когда `SELECT` поступает из подзапроса, который использует `ORDER BY`, если результат подзапроса достаточно мал.
 
 **Пример**
 
@@ -34,7 +33,7 @@ SELECT * FROM default.ck;
 Запрос:
 
 ```sql
-select id, groupArray(10)(name) from default.ck group by id;
+SELECT id, groupArray(10)(name) FROM default.ck GROUP BY id;
 ```
 
 Результат:

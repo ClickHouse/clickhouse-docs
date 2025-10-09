@@ -4,12 +4,13 @@
 'sidebar_position': 4
 'slug': '/sql-reference/window-functions/last_value'
 'title': 'last_value'
+'doc_type': 'reference'
 ---
 
 
 # last_value
 
-返回在其有序框架内计算的最后一个值。默认情况下，NULL 参数会被跳过，但可以使用 `RESPECT NULLS` 修饰符来覆盖此行为。
+返回在其排序框架内计算的最后一个值。默认情况下，NULL 参数会被跳过，但可以使用 `RESPECT NULLS` 修饰符来覆盖此行为。
 
 **语法**
 
@@ -21,24 +22,24 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-别名: `anyLast`.
+别名： `anyLast`。
 
 :::note
-在 `first_value(column_name)` 后使用可选修饰符 `RESPECT NULLS` 将确保 NULL 参数不会被跳过。
-有关更多信息，请参见 [NULL 处理](../aggregate-functions/index.md/#null-processing) 。
+在 `first_value(column_name)` 后使用可选修饰符 `RESPECT NULLS` 将确保 `NULL` 参数不被跳过。 
+有关更多信息，请参见 [NULL处理](../aggregate-functions/index.md/#null-processing)。
 
-别名: `lastValueRespectNulls`
+别名： `lastValueRespectNulls`
 :::
 
-有关窗口函数语法的更多细节，请参见: [窗口函数 - 语法](./index.md/#syntax)。
+有关窗口函数语法的更多详细信息，请参见：[窗口函数 - 语法](./index.md/#syntax)。
 
 **返回值**
 
-- 在其有序框架内计算的最后一个值。
+- 在其排序框架内计算的最后一个值。
 
 **示例**
 
-在这个示例中，`last_value` 函数用于从虚构的英超足球运动员薪资数据集中找出薪资最低的足球运动员。
+在此示例中，使用 `last_value` 函数从英超联赛足球运动员的虚构薪资数据集中找到薪水最低的足球运动员。
 
 查询：
 

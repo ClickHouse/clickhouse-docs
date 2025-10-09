@@ -1,23 +1,24 @@
 ---
-'description': '一组按相同名称分组的设置集合。'
+'description': '一组在同一名称下分组的设置。'
 'sidebar_label': '设置配置文件'
 'sidebar_position': 61
 'slug': '/operations/settings/settings-profiles'
 'title': '设置配置文件'
+'doc_type': 'reference'
 ---
 
 
 # 设置配置文件
 
-设置配置文件是以相同名称分组的设置集合。
+设置配置文件是一组按相同名称分组的设置集合。
 
 :::note
-ClickHouse 还支持 [SQL驱动的工作流](/operations/access-rights#access-control-usage) 来管理设置配置文件。我们推荐使用它。
+ClickHouse 还支持 [基于 SQL 的工作流](/operations/access-rights#access-control-usage) 来管理设置配置文件。我们建议使用它。
 :::
 
-该配置文件可以拥有任意名称。您可以为不同用户指定相同的配置文件。在设置配置文件中最重要的内容是 `readonly=1`，这确保了只读访问。
+配置文件可以有任何名称。您可以为不同的用户指定相同的配置文件。您在设置配置文件中最重要的内容是 `readonly=1`，这确保了只读访问。
 
-设置配置文件可以相互继承。要使用继承，请在配置文件中列出的其他设置之前指明一个或多个 `profile` 设置。当一个设置在不同的配置文件中被定义时，将使用最后定义的设置。
+设置配置文件可以相互继承。要使用继承，请在配置文件中列出的其他设置之前指明一个或多个 `profile` 设置。如果在不同的配置文件中定义了一个设置，则使用最后定义的设置。
 
 要应用配置文件中的所有设置，请设置 `profile` 设置。
 
@@ -79,6 +80,6 @@ SET profile = 'web'
 
 该示例指定了两个配置文件：`default` 和 `web`。
 
-`default` 配置文件具有特殊用途：它必须始终存在，并在服务器启动时应用。换句话说，`default` 配置文件包含默认设置。
+`default` 配置文件有一个特殊目的：它必须始终存在，并在启动服务器时应用。换句话说，`default` 配置文件包含默认设置。
 
-`web` 配置文件是一个普通配置文件，可以通过 `SET` 查询或在 HTTP 查询中使用 URL 参数来设置。
+`web` 配置文件是一个常规配置文件，可以通过 `SET` 查询或通过 HTTP 查询中的 URL 参数进行设置。

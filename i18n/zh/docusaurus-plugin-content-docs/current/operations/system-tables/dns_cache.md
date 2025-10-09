@@ -1,27 +1,26 @@
 ---
-'description': '系统表包含关于缓存的 DNS 记录的信息。'
+'description': '系统表包含有关缓存 DNS 记录的信息。'
 'keywords':
 - 'system table'
 - 'dns_cache'
 'slug': '/operations/system-tables/dns_cache'
 'title': 'system.dns_cache'
+'doc_type': 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
-包含有关缓存的 DNS 记录的信息。
+包含有关缓存 DNS 记录的信息。
 
 列：
 
 - `hostname` ([String](../../sql-reference/data-types/string.md)) — 缓存的主机名
-- `ip_address` ([String](../../sql-reference/data-types/string.md)) — 主机名的 IP 地址
+- `ip_address` ([String](../../sql-reference/data-types/string.md)) — 主机名对应的 IP 地址
 - `ip_family` ([Enum](../../sql-reference/data-types/enum.md)) — IP 地址的类型，可能的值：
-   - 'IPv4' 
-   - 'IPv6'
-   - 'UNIX_LOCAL'
-- `cached_at` ([DateTime](../../sql-reference/data-types/datetime.md)) - 记录被缓存的时间
+  - 'IPv4'   - 'IPv6'  - 'UNIX_LOCAL' 
+- `cached_at` ([DateTime](../../sql-reference/data-types/datetime.md)) — 记录被缓存的时间
 
 **示例**
 

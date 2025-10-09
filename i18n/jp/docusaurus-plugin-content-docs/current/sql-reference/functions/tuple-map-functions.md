@@ -1,13 +1,10 @@
 ---
-description: 'Tuple Map Functionsのドキュメント'
-sidebar_label: 'マップ'
-sidebar_position: 120
-slug: '/sql-reference/functions/tuple-map-functions'
-title: 'Map Functions'
+'description': 'Tuple マップ関数の Documentation'
+'sidebar_label': 'マップ'
+'slug': '/sql-reference/functions/tuple-map-functions'
+'title': 'マップ関数'
+'doc_type': 'reference'
 ---
-
-
-
 
 ## map {#map}
 
@@ -21,8 +18,8 @@ map(key1, value1[, key2, value2, ...])
 
 **引数**
 
-- `key_n` — マップエントリのキー。 [Map](../data-types/map.md) のキータイプとしてサポートされている任意の型です。
-- `value_n` — マップエントリの値。 [Map](../data-types/map.md) の値タイプとしてサポートされている任意の型です。
+- `key_n` — マップエントリのキー。 [Map](../data-types/map.md) のキータイプとしてサポートされている任意のタイプ。
+- `value_n` — マップエントリの値。 [Map](../data-types/map.md) の値タイプとしてサポートされている任意のタイプ。
 
 **返される値**
 
@@ -48,11 +45,11 @@ SELECT map('key1', number, 'key2', number * 2) FROM numbers(3);
 
 ## mapFromArrays {#mapfromarrays}
 
-キーの配列またはマップと値の配列またはマップからマップを作成します。
+キーの配列またはマップと、値の配列またはマップからマップを作成します。
 
-この関数は、構文 `CAST([...], 'Map(key_type, value_type)')` の便利な代替手段です。
-たとえば、次のように書く代わりに
-- `CAST((['aa', 'bb'], [4, 5]), 'Map(String, UInt32)')` または
+この関数は `CAST([...], 'Map(key_type, value_type)')` 構文の便利な代替手段です。
+たとえば、次のように記述する代わりに
+- `CAST((['aa', 'bb'], [4, 5]), 'Map(String, UInt32)')` もしくは
 - `CAST([('aa',4), ('bb',5)], 'Map(String, UInt32)')`
 
 `mapFromArrays(['aa', 'bb'], [4, 5])` と書くことができます。
@@ -67,19 +64,19 @@ mapFromArrays(keys, values)
 
 **引数**
 
-- `keys` — マップを作成するためのキーの配列またはマップ [Array](../data-types/array.md) または [Map](../data-types/map.md)。 `keys` が配列の場合、NULL 値を含まない限り、 `Array(Nullable(T))` または `Array(LowCardinality(Nullable(T)))` を型として受け入れます。
-- `values`  - マップを作成するための値の配列またはマップ [Array](../data-types/array.md) または [Map](../data-types/map.md)。
+- `keys` — マップを作成するためのキーの配列またはマップ。 [Array](../data-types/array.md) または [Map](../data-types/map.md)。`keys` が配列の場合、NULL値を含まない限り `Array(Nullable(T))` または `Array(LowCardinality(Nullable(T)))` としてそのタイプを受け入れます。
+- `values`  - マップを作成するための値の配列またはマップ。[Array](../data-types/array.md) または [Map](../data-types/map.md)。
 
 **返される値**
 
-- キー配列および値配列/マップから構成されたマップ。
+- キー配列と値配列/マップから構築されたキーと値を持つマップ。
 
 **例**
 
 クエリ:
 
 ```sql
-select mapFromArrays(['a', 'b', 'c'], [1, 2, 3])
+SELECT mapFromArrays(['a', 'b', 'c'], [1, 2, 3])
 ```
 
 結果:
@@ -90,7 +87,7 @@ select mapFromArrays(['a', 'b', 'c'], [1, 2, 3])
 └───────────────────────────────────────────┘
 ```
 
-`mapFromArrays` は [Map](../data-types/map.md) 型の引数も受け入れます。これらは実行時にタプルの配列にキャストされます。
+`mapFromArrays` は [Map](../data-types/map.md) 型の引数も受け入れます。これらは実行中にタプルの配列にキャストされます。
 
 ```sql
 SELECT mapFromArrays([1, 2, 3], map('a', 1, 'b', 2, 'c', 3))
@@ -119,15 +116,15 @@ SELECT mapFromArrays(map('a', 1, 'b', 2, 'c', 3), [1, 2, 3])
 ## extractKeyValuePairs {#extractkeyvaluepairs}
 
 キーと値のペアの文字列を [Map(String, String)](../data-types/map.md) に変換します。
-解析はノイズに対して耐性があります（例：ログファイル）。
-入力文字列のキーと値のペアは、キーに続いてキー-値の区切り文字、そして値があります。
-キー-値ペアはペアの区切り文字で区切られています。
-キーと値は引用されることがあります。
+パースはノイズに対して寛容です（例: ログファイル）。
+入力文字列のキーと値のペアは、キーの後にキーと値の区切り記号が続き、その後に値があります。
+キーと値のペアはペアの区切り記号で分けられます。
+キーと値は引用符で囲むことができます。
 
 **構文**
 
 ```sql
-extractKeyValuePairs(data[, key_value_delimiter[, pair_delimiter[, quoting_character]]])
+extractKeyValuePairs(data[, key_value_delimiter[, pair_delimiter[, quoting_character[, unexpected_quoting_character_strategy]]])
 ```
 
 エイリアス:
@@ -138,19 +135,20 @@ extractKeyValuePairs(data[, key_value_delimiter[, pair_delimiter[, quoting_chara
 
 - `data` - キーと値のペアを抽出するための文字列。[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
 - `key_value_delimiter` - キーと値を区切る単一文字。デフォルトは `:`。[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
-- `pair_delimiters` - ペアを区切る文字のセット。デフォルトは ` `, `,` および `;`。[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
-- `quoting_character` - 引用文字として使用される単一文字。デフォルトは `"`。[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- `pair_delimiters` - ペアを区切る文字のセット。デフォルトは ` `, `,` と `;`。[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- `quoting_character` - 引用符として使用する単一文字。デフォルトは `"`。[String](../data-types/string.md) または [FixedString](../data-types/fixedstring.md)。
+- `unexpected_quoting_character_strategy` - `read_key` と `read_value` フェーズ中に予期しない場所にある引用符を処理するための戦略。可能な値: "invalid", "accept" と "promote"。Invalidはキー/値を破棄し、`WAITING_KEY` 状態に戻ります。Acceptはそれを通常の文字として扱います。Promoteは `READ_QUOTED_{KEY/VALUE}` 状態に遷移し、次の文字から開始します。
 
 **返される値**
 
-- キー-値ペアの [Map(String, String)](../data-types/map.md) タイプ。
+- キーと値のペアのマップ。型: [Map(String, String)](../data-types/map.md) 
 
 **例**
 
 クエリ
 
 ```sql
-SELECT extractKeyValuePairs('name:neymar, age:31 team:psg,nationality:brazil') as kv
+SELECT extractKeyValuePairs('name:neymar, age:31 team:psg,nationality:brazil') AS kv
 ```
 
 結果:
@@ -161,10 +159,10 @@ SELECT extractKeyValuePairs('name:neymar, age:31 team:psg,nationality:brazil') a
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-引用文字 `'` を引用文字として使用する場合:
+単一引用符 `'` を引用符として使用する場合:
 
 ```sql
-SELECT extractKeyValuePairs('name:\'neymar\';\'age\':31;team:psg;nationality:brazil,last_key:last_value', ':', ';,', '\'') as kv
+SELECT extractKeyValuePairs('name:\'neymar\';\'age\':31;team:psg;nationality:brazil,last_key:last_value', ':', ';,', '\'') AS kv
 ```
 
 結果:
@@ -175,7 +173,75 @@ SELECT extractKeyValuePairs('name:\'neymar\';\'age\':31;team:psg;nationality:bra
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-エスケープシーケンスをサポートしないエスケープシーケンス:
+unexpected_quoting_character_strategy の例:
+
+unexpected_quoting_character_strategy=invalid
+
+```sql
+SELECT extractKeyValuePairs('name"abc:5', ':', ' ,;', '\"', 'INVALID') AS kv;
+```
+
+```text
+┌─kv────────────────┐
+│ {'abc':'5'}  │
+└───────────────────┘
+```
+
+```sql
+SELECT extractKeyValuePairs('name"abc":5', ':', ' ,;', '\"', 'INVALID') AS kv;
+```
+
+```text
+┌─kv──┐
+│ {}  │
+└─────┘
+```
+
+unexpected_quoting_character_strategy=accept
+
+```sql
+SELECT extractKeyValuePairs('name"abc:5', ':', ' ,;', '\"', 'ACCEPT') AS kv;
+```
+
+```text
+┌─kv────────────────┐
+│ {'name"abc':'5'}  │
+└───────────────────┘
+```
+
+```sql
+SELECT extractKeyValuePairs('name"abc":5', ':', ' ,;', '\"', 'ACCEPT') AS kv;
+```
+
+```text
+┌─kv─────────────────┐
+│ {'name"abc"':'5'}  │
+└────────────────────┘
+```
+
+unexpected_quoting_character_strategy=promote
+
+```sql
+SELECT extractKeyValuePairs('name"abc:5', ':', ' ,;', '\"', 'PROMOTE') AS kv;
+```
+
+```text
+┌─kv──┐
+│ {}  │
+└─────┘
+```
+
+```sql
+SELECT extractKeyValuePairs('name"abc":5', ':', ' ,;', '\"', 'PROMOTE') AS kv;
+```
+
+```text
+┌─kv───────────┐
+│ {'abc':'5'}  │
+└──────────────┘
+```
+
+エスケープシーケンスがエスケープシーケンスサポートなし:
 
 ```sql
 SELECT extractKeyValuePairs('age:a\\x0A\\n\\0') AS kv
@@ -189,12 +255,12 @@ SELECT extractKeyValuePairs('age:a\\x0A\\n\\0') AS kv
 └────────────────────────┘
 ```
 
-`toString` でシリアライズされたマップ文字列のキー-値ペアを復元するために:
+`toString` でシリアル化されたマップ文字列キーと値のペアを復元するには:
 
 ```sql
 SELECT
     map('John', '33', 'Paula', '31') AS m,
-    toString(m) as map_serialized,
+    toString(m) AS map_serialized,
     extractKeyValuePairs(map_serialized, ':', ',', '\'') AS map_restored
 FORMAT Vertical;
 ```
@@ -211,21 +277,21 @@ map_restored:   {'John':'33','Paula':'31'}
 
 ## extractKeyValuePairsWithEscaping {#extractkeyvaluepairswithescaping}
 
-`extractKeyValuePairs` と同様ですが、エスケープをサポートします。
+`extractKeyValuePairs` と同じですが、エスケープをサポートしています。
 
-サポートされるエスケープシーケンス: `\x`, `\N`, `\a`, `\b`, `\e`, `\f`, `\n`, `\r`, `\t`, `\v` および `\0`。
-非標準のエスケープシーケンスはそのまま（バックスラッシュを含む）返されますが、次のいずれかである場合を除きます:
-`\\`, `'`, `"`, `backtick`, `/`, `=` または ASCII 制御文字（c &lt;= 31）。
+サポートされているエスケープシーケンス: `\x`, `\N`, `\a`, `\b`, `\e`, `\f`, `\n`, `\r`, `\t`, `\v` および `\0`。
+非標準エスケープシーケンスはそのまま（バックスラッシュを含む）返されますが、以下のいずれかである場合を除きます:
+`\\`, `'`, `"`, ```バックティック```, `/`, `=` または ASCII 制御文字 (c &lt;= 31)。
 
-この関数は、プレエスケープとポストエスケープが適さないユースケースを満たします。次のような入力文字列を考えます: `a: "aaaa\"bbb"`. 期待される出力は: `a: aaaa\"bbbb` です。
-- プレエスケープ: プレエスケープすると出力は: `a: "aaaa"bbb"` となり、その後 `extractKeyValuePairs` は出力: `a: aaaa`
-- ポストエスケープ: `extractKeyValuePairs` は出力 `a: aaaa\` を返し、ポストエスケープはそのまま保持されます。
+この関数は、前エスケープおよび後エスケープが適していないユースケースを満たすことができます。たとえば、次の入力文字列を考えてみます: `a: "aaaa\"bbb"`。期待される出力は: `a: aaaa\"bbbb` です。
+- 前エスケープ: 前エスケープすると、出力は `a: "aaaa"bbb"` になり、`extractKeyValuePairs` はその後 `a: aaaa` を出力します。
+- 後エスケープ: `extractKeyValuePairs` は `a: aaaa\` を出力し、後エスケープはそれをそのまま保持します。
 
-キーに対する先頭のエスケープシーケンスはスキップされ、値に対して無効と見なされます。
+キーの先頭のエスケープシーケンスはスキップされ、値には無効と見なされます。
 
 **例**
 
-エスケープシーケンスのサポートが有効になっている場合のエスケープシーケンス:
+エスケープシーケンスがエスケープシーケンスサポートがオンの場合:
 
 ```sql
 SELECT extractKeyValuePairsWithEscaping('age:a\\x0A\\n\\0') AS kv
@@ -241,7 +307,7 @@ SELECT extractKeyValuePairsWithEscaping('age:a\\x0A\\n\\0') AS kv
 
 ## mapAdd {#mapadd}
 
-すべてのキーを集約し、対応する値を合計します。
+すべてのキーを収集し、対応する値を合計します。
 
 **構文**
 
@@ -251,15 +317,15 @@ mapAdd(arg1, arg2 [, ...])
 
 **引数**
 
-引数は [maps](../data-types/map.md) または 2 つの [arrays](/sql-reference/data-types/array) の [tuples](/sql-reference/data-types/tuple) であり、最初の配列のアイテムはキーを表し、2 番目の配列には各キーへの値が含まれます。すべてのキー配列は同じ型でなければならず、すべての値配列は一つの型に昇格されるアイテムを含む必要があります ([Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges) または [Float64](/sql-reference/data-types/float))。共通の昇格された型が結果配列の型として使用されます。
+引数は [maps](../data-types/map.md) または 2つの [arrays](/sql-reference/data-types/array) の [tuples](/sql-reference/data-types/tuple) であり、最初の配列内の項目がキーを表し、2番目の配列が各キーの値を含みます。すべてのキー配列は同じタイプである必要があり、すべての値配列は1つの型に昇格されるアイテムを含む必要があります ([Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges) または [Float64](/sql-reference/data-types/float))。共通の昇格型が結果の配列の型として使用されます。
 
 **返される値**
 
-- 引数に応じて、1 つの [map](../data-types/map.md) または [tuple](/sql-reference/data-types/tuple) を返し、最初の配列にはソートされたキーが含まれ、2 番目の配列には対応するキーへの値が含まれます。
+- 引数に応じて、キーがソートされた配列とそれに対応する値を含む1つの [map](../data-types/map.md) または [tuple](/sql-reference/data-types/tuple) を返します。
 
 **例**
 
-`Map` タイプのクエリ:
+`Map` 型のクエリ:
 
 ```sql
 SELECT mapAdd(map(1,1), map(1,1));
@@ -273,10 +339,10 @@ SELECT mapAdd(map(1,1), map(1,1));
 └──────────────────────────────┘
 ```
 
-タプルによるクエリ:
+タプルでのクエリ:
 
 ```sql
-SELECT mapAdd(([toUInt8(1), 2], [1, 1]), ([toUInt8(1), 2], [1, 1])) as res, toTypeName(res) as type;
+SELECT mapAdd(([toUInt8(1), 2], [1, 1]), ([toUInt8(1), 2], [1, 1])) AS res, toTypeName(res) AS type;
 ```
 
 結果:
@@ -289,7 +355,7 @@ SELECT mapAdd(([toUInt8(1), 2], [1, 1]), ([toUInt8(1), 2], [1, 1])) as res, toTy
 
 ## mapSubtract {#mapsubtract}
 
-すべてのキーを集約し、対応する値を引き算します。
+すべてのキーを収集し、対応する値を減算します。
 
 **構文**
 
@@ -299,15 +365,15 @@ mapSubtract(Tuple(Array, Array), Tuple(Array, Array) [, ...])
 
 **引数**
 
-引数は [maps](../data-types/map.md) または 2 つの [arrays](/sql-reference/data-types/array) の [tuples](/sql-reference/data-types/tuple) であり、最初の配列のアイテムはキーを表し、2 番目の配列には各キーへの値が含まれます。すべてのキー配列は同じ型でなければならず、すべての値配列は一つの型に昇格されるアイテムを含む必要があります ([Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges) または [Float64](/sql-reference/data-types/float))。共通の昇格された型が結果配列の型として使用されます。
+引数は [maps](../data-types/map.md) または 2つの [arrays](/sql-reference/data-types/array) の [tuples](/sql-reference/data-types/tuple) であり、最初の配列内の項目がキーを表し、2番目の配列が各キーの値を含みます。すべてのキー配列は同じタイプである必要があり、すべての値配列は1つの型に昇格されるアイテムを含む必要があります ([Int64](/sql-reference/data-types/int-uint#integer-ranges), [UInt64](/sql-reference/data-types/int-uint#integer-ranges) または [Float64](/sql-reference/data-types/float))。共通の昇格型が結果の配列の型として使用されます。
 
 **返される値**
 
-- 引数に応じて、1 つの [map](../data-types/map.md) または [tuple](/sql-reference/data-types/tuple) を返し、最初の配列にはソートされたキーが含まれ、2 番目の配列には対応するキーへの値が含まれます。
+- 引数に応じて、キーがソートされた配列とそれに対応する値を含む1つの [map](../data-types/map.md) または [tuple](/sql-reference/data-types/tuple) を返します。
 
 **例**
 
-`Map` タイプのクエリ:
+`Map` 型のクエリ:
 
 ```sql
 SELECT mapSubtract(map(1,1), map(1,1));
@@ -321,10 +387,10 @@ SELECT mapSubtract(map(1,1), map(1,1));
 └───────────────────────────────────┘
 ```
 
-タプルマップによるクエリ:
+タプルマップでのクエリ:
 
 ```sql
-SELECT mapSubtract(([toUInt8(1), 2], [toInt32(1), 1]), ([toUInt8(1), 2], [toInt32(2), 1])) as res, toTypeName(res) as type;
+SELECT mapSubtract(([toUInt8(1), 2], [toInt32(1), 1]), ([toUInt8(1), 2], [toInt32(2), 1])) AS res, toTypeName(res) AS type;
 ```
 
 結果:
@@ -337,11 +403,11 @@ SELECT mapSubtract(([toUInt8(1), 2], [toInt32(1), 1]), ([toUInt8(1), 2], [toInt3
 
 ## mapPopulateSeries {#mappopulateseries}
 
-整数キーを持つマップの欠損キー-値ペアを填補します。
-最大キーを指定することで、最大値を越えてキーを拡張することをサポートします。
-具体的には、この関数は、最小キーから最大キー（または指定されている `max` 引数）までのキーが形成され、ステップサイズが 1 で対応する値を持つマップを返します。
-特定のキーに対して値が指定されていない場合は、デフォルト値が値として使用されます。
-キーが繰り返される場合、最初の値（出現順）だけがキーに関連付けられます。
+整数キーを持つマップの欠けているキーと値のペアを埋めます。
+最大キーを指定することで、最大の値を超えるキーを拡張することもできます。
+具体的には、この関数は、キーが最小キーから最大キー（または指定された `max` 引数）まで1ステップずつ形成されるマップを返し、それに対応する値も返します。
+キーに対して値が指定されていない場合、デフォルト値が値として使用されます。
+キーが繰り返された場合、最初の値（出現順序の中での）だけがそのキーに関連付けられます。
 
 **構文**
 
@@ -350,13 +416,13 @@ mapPopulateSeries(map[, max])
 mapPopulateSeries(keys, values[, max])
 ```
 
-配列の引数については、各行に対して `keys` と `values` の要素数は同じでなければなりません。
+配列引数の場合、`keys` と `values` の要素数は各行で同じでなければなりません。
 
 **引数**
 
-引数は [Maps](../data-types/map.md) または 2 つの [Arrays](/sql-reference/data-types/array) であり、最初の配列と 2 番目の配列は各キーに対するキーと値を含みます。
+引数は、[Maps](../data-types/map.md) または2つの [Arrays](/sql-reference/data-types/array) であり、最初の配列と2番目の配列が各キーのキーと値を含んでいます。
 
-マップ配列:
+マップされた配列:
 
 - `map` — 整数キーを持つマップ。[Map](../data-types/map.md)。
 
@@ -368,11 +434,11 @@ mapPopulateSeries(keys, values[, max])
 
 **返される値**
 
-- 引数に応じて、[Map](../data-types/map.md) または 2 つの [Arrays](/sql-reference/data-types/array) の [Tuple](/sql-reference/data-types/tuple): ソートされた順序のキーと対応するキーへの値。
+- 引数に応じて、[Map](../data-types/map.md) または2つの [Arrays](/sql-reference/data-types/array) の [Tuple](/sql-reference/data-types/tuple): ソートされた順序でのキーとそれに対応するキーの値。
 
 **例**
 
-`Map` タイプのクエリ:
+`Map` 型のクエリ:
 
 ```sql
 SELECT mapPopulateSeries(map(1, 10, 5, 20), 6);
@@ -386,7 +452,7 @@ SELECT mapPopulateSeries(map(1, 10, 5, 20), 6);
 └─────────────────────────────────────────┘
 ```
 
-マップ配列によるクエリ:
+マップされた配列でのクエリ:
 
 ```sql
 SELECT mapPopulateSeries([1,2,4], [11,22,44], 5) AS res, toTypeName(res) AS type;
@@ -402,10 +468,10 @@ SELECT mapPopulateSeries([1,2,4], [11,22,44], 5) AS res, toTypeName(res) AS type
 
 ## mapKeys {#mapkeys}
 
-指定されたマップのキーを返します。
+与えられたマップのキーを返します。
 
 この関数は、設定 [optimize_functions_to_subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns) を有効にすることで最適化できます。
-設定が有効な場合、この関数はマップ全体ではなく、[keys](/sql-reference/data-types/map#reading-subcolumns-of-map) サブカラムのみを読み取ります。
+設定が有効な場合、関数はマップ全体の代わりに [keys](/sql-reference/data-types/map#reading-subcolumns-of-map) サブカラムのみを読み取ります。
 クエリ `SELECT mapKeys(m) FROM table` は `SELECT m.keys FROM table` に変換されます。
 
 **構文**
@@ -445,7 +511,7 @@ SELECT mapKeys(a) FROM tab;
 
 ## mapContains {#mapcontains}
 
-指定されたキーが指定されたマップに含まれているかどうかを返します。
+与えられたマップに特定のキーが含まれているかどうかを返します。
 
 **構文**
 
@@ -458,11 +524,11 @@ mapContains(map, key)
 **引数**
 
 - `map` — マップ。[Map](../data-types/map.md)。
-- `key` — キー。タイプは `map` のキーの型と一致しなければなりません。
+- `key` — キー。型は `map` のキー型と一致する必要があります。
 
 **返される値**
 
-- `map` が `key` を含む場合は `1`、含まない場合は `0`。[UInt8](../data-types/int-uint.md)。
+- `map` が `key` を含む場合は `1`、そうでない場合は `0`。[UInt8](../data-types/int-uint.md)。
 
 **例**
 
@@ -500,7 +566,7 @@ mapContainsKeyLike(map, pattern)
 
 **返される値**
 
-- `map` が指定されたパターンのようなキーを含む場合は `1`、含まない場合は `0`。
+- `map` が指定したパターンのような `key` を含む場合は `1`、そうでない場合は `0`。
 
 **例**
 
@@ -525,7 +591,7 @@ SELECT mapContainsKeyLike(a, 'a%') FROM tab;
 
 ## mapExtractKeyLike {#mapextractkeylike}
 
-文字列キーを持つマップと LIKE パターンを引数に与えると、この関数はパターンに一致するキーを持つ要素を含むマップを返します。
+文字列キーを持つマップと LIKE パターンを与えると、この関数はパターンに一致する要素を持つマップを返します。
 
 **構文**
 
@@ -540,7 +606,7 @@ mapExtractKeyLike(map, pattern)
 
 **返される値**
 
-- 指定されたパターンに一致する要素を含むマップ。要素がパターンに一致しない場合は、空のマップが返されます。
+- 指定されたパターンに一致する要素を含むマップを返します。要素がパターンに一致しない場合、空のマップが返されます。
 
 **例**
 
@@ -565,10 +631,10 @@ SELECT mapExtractKeyLike(a, 'a%') FROM tab;
 
 ## mapValues {#mapvalues}
 
-指定されたマップの値を返します。
+与えられたマップの値を返します。
 
 この関数は、設定 [optimize_functions_to_subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns) を有効にすることで最適化できます。
-設定が有効な場合、この関数はマップ全体ではなく、[values](/sql-reference/data-types/map#reading-subcolumns-of-map) サブカラムのみを読み取ります。
+設定が有効な場合、関数はマップ全体の代わりに [values](/sql-reference/data-types/map#reading-subcolumns-of-map) サブカラムのみを読み取ります。
 クエリ `SELECT mapValues(m) FROM table` は `SELECT m.values FROM table` に変換されます。
 
 **構文**
@@ -608,7 +674,7 @@ SELECT mapValues(a) FROM tab;
 
 ## mapContainsValue {#mapcontainsvalue}
 
-指定された値が指定されたマップに含まれているかどうかを返します。
+与えられたマップに特定の値が含まれているかどうかを返します。
 
 **構文**
 
@@ -621,11 +687,11 @@ mapContainsValue(map, value)
 **引数**
 
 - `map` — マップ。[Map](../data-types/map.md)。
-- `value` — 値。タイプは `map` の値の型と一致しなければなりません。
+- `value` — 値。型は `map` の値型と一致する必要があります。
 
 **返される値**
 
-- `map` が `value` を含む場合は `1`、含まない場合は `0`。[UInt8](../data-types/int-uint.md)。
+- `map` が `value` を含む場合は `1`、そうでない場合は `0`。[UInt8](../data-types/int-uint.md)。
 
 **例**
 
@@ -663,7 +729,7 @@ mapContainsValueLike(map, pattern)
 
 **返される値**
 
-- `map` が指定されたパターンのような値を含む場合は `1`、含まない場合は `0`。
+- `map` が指定したパターンのような `value` を含む場合は `1`、そうでない場合は `0`。
 
 **例**
 
@@ -688,7 +754,7 @@ SELECT mapContainsValueLike(a, 'a%') FROM tab;
 
 ## mapExtractValueLike {#mapextractvaluelike}
 
-文字列値を持つマップと LIKE パターンを引数に与えると、この関数は指定されたパターンに一致する値を持つ要素を含むマップを返します。
+文字列値を持つマップと LIKE パターンを与えると、この関数はパターンに一致する要素を持つマップを返します。
 
 **構文**
 
@@ -703,7 +769,7 @@ mapExtractValueLike(map, pattern)
 
 **返される値**
 
-- 指定されたパターンに一致する値を持つ要素を含むマップ。要素がパターンに一致しない場合は、空のマップが返されます。
+- 指定されたパターンに一致する要素を含むマップを返します。要素がパターンに一致しない場合、空のマップが返されます。
 
 **例**
 
@@ -743,7 +809,7 @@ mapApply(func, map)
 
 **返される値**
 
-- 元のマップから生成されたマップを返し、各要素に対して `func(map1[i], ..., mapN[i])` を適用します。
+- 各要素に対して `func(map1[i], ..., mapN[i])` を適用して得られた元のマップからのマップを返します。
 
 **例**
 
@@ -770,7 +836,7 @@ FROM
 
 ## mapFilter {#mapfilter}
 
-マップ要素に関数を適用してフィルタします。
+マップをフィルタリングして、各マップ要素に関数を適用します。
 
 **構文**
 
@@ -785,7 +851,7 @@ mapFilter(func, map)
 
 **返される値**
 
-- `func(map1[i], ..., mapN[i])` が 0 以外の何かを返すマップの要素のみを含むマップを返します。
+- `func(map1[i], ..., mapN[i])` が0以外の何かを返す `map` の要素のみを含むマップを返します。
 
 **例**
 
@@ -825,7 +891,7 @@ mapUpdate(map1, map2)
 
 **返される値**
 
-- map2の対応するキーに対する値が更新された map1 を返します。
+- `map2` の対応するキーの値で更新された `map1` を返します。
 
 **例**
 
@@ -845,8 +911,8 @@ SELECT mapUpdate(map('key1', 0, 'key3', 0), map('key1', 10, 'key2', 10)) AS map;
 
 ## mapConcat {#mapconcat}
 
-キーの等価性に基づいて複数のマップを連結します。
-同じキーを持つ要素が複数の入力マップに存在する場合、すべての要素が結果マップに追加されますが、`[]` 演算子を介してアクセス可能なのは最初の要素だけです。
+同じキーの等価性に基づいて複数のマップを連結します。
+同じキーを持つ要素が複数の入力マップに存在する場合、すべての要素が結果のマップに追加されますが、最初の要素のみが `[]` 演算子を介してアクセス可能です。
 
 **構文**
 
@@ -894,7 +960,7 @@ SELECT mapConcat(map('key1', 1, 'key2', 2), map('key1', 3)) AS map, map['key1'];
 
 ## mapExists(\[func,\], map) {#mapexistsfunc-map}
 
-`map` 内に少なくとも 1 つのキー-値ペアが存在し、`func(key, value)` が 0 以外の値を返す場合は 1 を返します。そうでない場合は 0 を返します。
+`map` に少なくとも1つのキーと値のペアが存在し、そのペアに対して `func(key, value)` が0以外の何かを返す場合は `1` を返します。そうでない場合は `0` を返します。
 
 :::note
 `mapExists` は [高階関数](/sql-reference/functions/overview#higher-order-functions)です。
@@ -919,7 +985,7 @@ SELECT mapExists((k, v) -> (v = 1), map('k1', 1, 'k2', 2)) AS res
 
 ## mapAll(\[func,\] map) {#mapallfunc-map}
 
-`func(key, value)` が `map` 内のすべてのキー-値ペアに対して 0 以外の何かを返す場合は 1 を返します。そうでない場合は 0 を返します。
+`func(key, value)` が `map` のすべてのキーと値のペアに対して0以外の何かを返す場合は `1` を返します。そうでない場合は `0` を返します。
 
 :::note
 `mapAll` は [高階関数](/sql-reference/functions/overview#higher-order-functions)です。
@@ -944,8 +1010,8 @@ SELECT mapAll((k, v) -> (v = 1), map('k1', 1, 'k2', 2)) AS res
 
 ## mapSort(\[func,\], map) {#mapsortfunc-map}
 
-マップの要素を昇順にソートします。
-`func` 関数が指定されている場合、ソート順序はマップのキーと値に対する `func` 関数の結果によって決まります。
+マップの要素を昇順でソートします。
+`func` 関数が指定された場合、ソート順はマップのキーと値に適用された `func` 関数の結果によって決まります。
 
 **例**
 
@@ -969,12 +1035,12 @@ SELECT mapSort((k, v) -> v, map('key2', 2, 'key3', 1, 'key1', 3)) AS map;
 └──────────────────────────────┘
 ```
 
-より詳しい情報については、 `arraySort` 関数の [リファレンス](/sql-reference/functions/array-functions#sort) を参照してください。
+詳細については、`arraySort` 関数の [リファレンス](/sql-reference/functions/array-functions#arraySort) を参照してください。
 
 ## mapPartialSort {#mappartialsort}
 
-マップの要素を昇順にソートし、追加の `limit` 引数によって部分的なソートを可能にします。
-`func` 関数が指定されている場合、ソート順序はマップのキーと値に対する `func` 関数の結果によって決まります。
+マップの要素を昇順でソートし、追加の `limit` 引数を使用して部分的なソートを許可します。
+`func` 関数が指定された場合、ソート順はマップのキーと値に適用された `func` 関数の結果によって決まります。
 
 **構文**
 
@@ -983,8 +1049,8 @@ mapPartialSort([func,] limit, map)
 ```
 **引数**
 
-- `func` – マップのキーと値に適用するオプションの関数。[ラムダ関数](/sql-reference/functions/overview#higher-order-functions)。
-- `limit` – [1..limit] の範囲の要素がソートされます。[(U)Int](../data-types/int-uint.md)。
+- `func` – マップのキーと値に適用されるオプションの関数。[ラムダ関数](/sql-reference/functions/overview#higher-order-functions)。
+- `limit` – 範囲 [1..limit] の要素がソートされます。[(U)Int](../data-types/int-uint.md)。
 - `map` – ソートするマップ。[Map](../data-types/map.md)。
 
 **返される値**
@@ -1005,8 +1071,8 @@ SELECT mapPartialSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2));
 
 ## mapReverseSort(\[func,\], map) {#mapreversesortfunc-map}
 
-マップの要素を降順にソートします。
-`func` 関数が指定されている場合、ソート順序はマップのキーと値に対する `func` 関数の結果によって決まります。
+マップの要素を降順でソートします。
+`func` 関数が指定された場合、ソート順はマップのキーと値に適用された `func` 関数の結果によって決まります。
 
 **例**
 
@@ -1030,12 +1096,12 @@ SELECT mapReverseSort((k, v) -> v, map('key2', 2, 'key3', 1, 'key1', 3)) AS map;
 └──────────────────────────────┘
 ```
 
-より詳しい情報については、 [arrayReverseSort](/sql-reference/functions/array-functions#arrayreversesort) 関数を参照してください。
+詳細については、関数 [arrayReverseSort](/sql-reference/functions/array-functions#arrayReverseSort) を参照してください。
 
 ## mapPartialReverseSort {#mappartialreversesort}
 
-マップの要素を降順にソートし、追加の `limit` 引数によって部分的なソートを可能にします。
-`func` 関数が指定されている場合、ソート順序はマップのキーと値に対する `func` 関数の結果によって決まります。
+マップの要素を降順でソートし、追加の `limit` 引数を使用して部分的なソートを許可します。
+`func` 関数が指定された場合、ソート順はマップのキーと値に適用された `func` 関数の結果によって決まります。
 
 **構文**
 
@@ -1044,8 +1110,8 @@ mapPartialReverseSort([func,] limit, map)
 ```
 **引数**
 
-- `func` – マップのキーと値に適用するオプションの関数。[ラムダ関数](/sql-reference/functions/overview#higher-order-functions)。
-- `limit` – [1..limit] の範囲の要素がソートされます。[(U)Int](../data-types/int-uint.md)。
+- `func` – マップのキーと値に適用されるオプションの関数。[ラムダ関数](/sql-reference/functions/overview#higher-order-functions)。
+- `limit` – 範囲 [1..limit] の要素がソートされます。[(U)Int](../data-types/int-uint.md)。
 - `map` – ソートするマップ。[Map](../data-types/map.md)。
 
 **返される値**
@@ -1063,3 +1129,12 @@ SELECT mapPartialReverseSort((k, v) -> v, 2, map('k1', 3, 'k2', 1, 'k3', 2));
 │ {'k1':3,'k3':2,'k2':1}                                                           │
 └──────────────────────────────────────────────────────────────────────────────────┘
 ```
+
+<!-- 
+The inner content of the tags below are replaced at doc framework build time with 
+docs generated from system.functions. Please do not modify or remove the tags.
+See: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+-->
+
+<!--AUTOGENERATED_START-->
+<!--AUTOGENERATED_END-->
