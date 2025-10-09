@@ -360,3 +360,7 @@ If the source is configured accordingly, the slot is preserved after failovers t
 ### I am seeing errors like `Internal error encountered during logical decoding of aborted sub-transaction` {#transient-logical-decoding-errors}
 
 This error suggests a transient issue with the logical decoding of aborted sub-transaction, and is specific to custom implementations of Aurora Postgres. Given the error is coming from `ReorderBufferPreserveLastSpilledSnapshot` routine, this suggests that logical decoding is not able to read the snapshot spilled to disk. It may be worth trying to increase [`logical_decoding_work_mem`](https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-LOGICAL-DECODING-WORK-MEM) to a higher value.
+
+### I am seeing errors like `error converting new tuple to map` or `error parsing logical message` during CDC replication {#logical-message-processing-errors}
+
+Postgres sends information about changes in the form of messages that have a fixed protocol. These errors arise when the ClickPipe receives a message that it is unable to parse, either due to corruption in transit or invalid messages being sent. While the exact issue tends to vary, we've seen several cases from Neon Postgres sources. In case you are seeing this issue with Neon as well, please raise a support ticket with them. In other cases, please reach out to our support team for guidance.
