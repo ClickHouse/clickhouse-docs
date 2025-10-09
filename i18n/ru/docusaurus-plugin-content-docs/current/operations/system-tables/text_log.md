@@ -1,10 +1,10 @@
 ---
-description: 'Системная таблица, содержащая записи логов.'
+slug: '/operations/system-tables/text_log'
+description: 'Системная таблица, содержащая записи логирования.'
+title: system.text_log
 keywords: ['системная таблица', 'text_log']
-slug: /operations/system-tables/text_log
-title: 'system.text_log'
+doc_type: reference
 ---
-
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
@@ -12,32 +12,32 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud/>
 
-Содержит записи логов. Уровень логирования, который поступает в эту таблицу, можно ограничить настройкой сервера `text_log.level`.
+Содержит записи журналирования. Уровень журналирования, который попадает в эту таблицу, можно ограничить настройкой сервера `text_log.level`.
 
 Столбцы:
 
-- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, исполняющего запрос.
+- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Хостнейм сервера, выполняющего запрос.
 - `event_date` (Date) — Дата записи.
 - `event_time` (DateTime) — Время записи.
 - `event_time_microseconds` (DateTime64) — Время записи с точностью до микросекунд.
 - `microseconds` (UInt32) — Микросекунды записи.
-- `thread_name` (String) — Имя потока, из которого выполнялось логирование.
+- `thread_name` (String) — Имя потока, из которого велось журналирование.
 - `thread_id` (UInt64) — ID потока ОС.
 - `level` (`Enum8`) — Уровень записи. Возможные значения:
-    - `1` или `'Fatal'`.
-    - `2` или `'Critical'`.
-    - `3` или `'Error'`.
-    - `4` или `'Warning'`.
-    - `5` или `'Notice'`.
-    - `6` или `'Information'`.
-    - `7` или `'Debug'`.
-    - `8` или `'Trace'`.
+  - `1` или `'Fatal'`.
+  - `2` или `'Critical'`.
+  - `3` или `'Error'`.
+  - `4` или `'Warning'`.
+  - `5` или `'Notice'`.
+  - `6` или `'Information'`.
+  - `7` или `'Debug'`.
+  - `8` или `'Trace'`.
 - `query_id` (String) — ID запроса.
-- `logger_name` (LowCardinality(String)) — Имя логгера (например, `DDLWorker`).
-- `message` (String) — Собственно сообщение.
+- `logger_name` (LowCardinality(String)) — Имя логгера (т.е. `DDLWorker`).
+- `message` (String) — Сообщение.
 - `revision` (UInt32) — Ревизия ClickHouse.
-- `source_file` (LowCardinality(String)) — Исходный файл, из которого производилось логирование.
-- `source_line` (UInt64) — Исходная строка, из которой производилось логирование.
+- `source_file` (LowCardinality(String)) — Исходный файл, из которого велось журналирование.
+- `source_line` (UInt64) — Исходная строка, из которой велось журналирование.
 - `message_format_string` (LowCardinality(String)) — Форматная строка, использованная для форматирования сообщения.
 - `value1` (String) - Аргумент 1, использованный для форматирования сообщения.
 - `value2` (String) - Аргумент 2, использованный для форматирования сообщения.

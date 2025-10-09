@@ -1,23 +1,19 @@
 ---
-description: 'Contains queries used by `/dashboard` page accessible though the HTTP
-  interface. useful for monitoring and troubleshooting.'
-keywords:
+'description': '`/dashboard` ページで使用されるクエリを含む。HTTP インターフェースを介してアクセス可能。監視およびトラブルシューティングに役立ちます。'
+'keywords':
 - 'system table'
 - 'dashboards'
 - 'monitoring'
 - 'troubleshooting'
-slug: '/operations/system-tables/dashboards'
-title: 'system.dashboards'
+'slug': '/operations/system-tables/dashboards'
+'title': 'system.dashboards'
+'doc_type': 'reference'
 ---
 
-
-
-Contains queries used by `/dashboard` page accessible though [HTTP interface](/interfaces/http.md).
-このテーブルは監視およびトラブルシューティングに役立つことがあります。テーブルは、ダッシュボード内の各チャートに対して行を含んでいます。
+含まれているクエリは、[HTTPインターフェース](/interfaces/http.md)を通じてアクセス可能な `/dashboard` ページによって使用されます。 このテーブルは、モニタリングとトラブルシューティングに役立ちます。 テーブルには、ダッシュボード内の各チャートの行が含まれています。
 
 :::note
-`/dashboard` ページは `system.dashboards` だけでなく、同じスキーマを持つ任意のテーブルからクエリをレンダリングできます。
-これはカスタムダッシュボードを作成するのに役立ちます。
+`/dashboard` ページは、`system.dashboards` だけでなく、同じスキーマを持つ任意のテーブルからクエリをレンダリングできます。 これはカスタムダッシュボードを作成するのに役立ちます。
 :::
 
 例:
@@ -32,7 +28,7 @@ WHERE title ILIKE '%CPU%'
 Row 1:
 ──────
 dashboard: overview
-title:     CPU 使用率 (コア)
+title:     CPU Usage (cores)
 query:     SELECT toStartOfInterval(event_time, INTERVAL {rounding:UInt32} SECOND)::INT AS t, avg(ProfileEvent_OSCPUVirtualTimeMicroseconds) / 1000000
 FROM system.metric_log
 WHERE event_date >= toDate(now() - {seconds:UInt32}) AND event_time >= now() - {seconds:UInt32}
@@ -42,7 +38,7 @@ ORDER BY t WITH FILL STEP {rounding:UInt32}
 Row 2:
 ──────
 dashboard: overview
-title:     CPU 待機
+title:     CPU Wait
 query:     SELECT toStartOfInterval(event_time, INTERVAL {rounding:UInt32} SECOND)::INT AS t, avg(ProfileEvent_OSCPUWaitMicroseconds) / 1000000
 FROM system.metric_log
 WHERE event_date >= toDate(now() - {seconds:UInt32}) AND event_time >= now() - {seconds:UInt32}
@@ -52,7 +48,7 @@ ORDER BY t WITH FILL STEP {rounding:UInt32}
 Row 3:
 ──────
 dashboard: overview
-title:     OS CPU 使用率 (ユーザ空間)
+title:     OS CPU Usage (Userspace)
 query:     SELECT toStartOfInterval(event_time, INTERVAL {rounding:UInt32} SECOND)::INT AS t, avg(value)
 FROM system.asynchronous_metric_log
 WHERE event_date >= toDate(now() - {seconds:UInt32}) AND event_time >= now() - {seconds:UInt32} AND metric = 'OSUserTimeNormalized'
@@ -62,7 +58,7 @@ ORDER BY t WITH FILL STEP {rounding:UInt32}
 Row 4:
 ──────
 dashboard: overview
-title:     OS CPU 使用率 (カーネル)
+title:     OS CPU Usage (Kernel)
 query:     SELECT toStartOfInterval(event_time, INTERVAL {rounding:UInt32} SECOND)::INT AS t, avg(value)
 FROM system.asynchronous_metric_log
 WHERE event_date >= toDate(now() - {seconds:UInt32}) AND event_time >= now() - {seconds:UInt32} AND metric = 'OSSystemTimeNormalized'
@@ -70,8 +66,8 @@ GROUP BY t
 ORDER BY t WITH FILL STEP {rounding:UInt32}
 ```
 
-列:
+カラム:
 
-- `dashboard` (`String`) - ダッシュボードの名前。
+- `dashboard` (`String`) - ダッシュボード名。
 - `title` (`String`) - チャートのタイトル。
 - `query` (`String`) - 表示するデータを取得するためのクエリ。

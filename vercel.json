@@ -2827,6 +2827,16 @@
       "permanent": true
     },
     {
+      "source": "/docs/cloud/manage/billing/overview#clickpipes-for-postgres-cdc",
+      "destination": "/docs/cloud/reference/billing/clickpipes/postgresql-cdc",
+      "permanent": true
+    },
+     {
+      "source": "/docs/cloud/manage/billing/overview#clickpipes-for-streaming-object-storage",
+      "destination": "/docs/cloud/reference/billing/clickpipes/streaming-and-object-storage",
+      "permanent": true
+    },
+    {
       "source": "/docs/en/cloud/marketplace",
       "destination": "/docs/cloud/manage/marketplace/",
       "permanent": true
@@ -3283,7 +3293,7 @@
     },
     {
       "source": "/docs/integrations/postgresql/data-type-mappings",
-      "destination": "/migrations/postgresql/appendix/#data-type-mappings",
+      "destination": "/docs/migrations/postgresql/appendix/#data-type-mappings",
       "permanent": true
     },
     {
@@ -3372,8 +3382,205 @@
       "permanent": true
     },
     {
-      "source": "/docs/manage/troubleshooting-billing-issues",
-      "destination": "/docs/manage/clickhouse-cloud-billing-compliance",
+      "source": "/docs/cloud/migrate/upload-a-csv-file",
+      "destination": "/docs/knowledge-base/upload-a-file",
+      "permanent": true
+    },
+    {
+      "source": "/docs/faq/troubleshooting",
+      "destination": "/docs/knowledge-base/unable-to-access-cloud-service",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/manage/jan-2025-faq/summary",
+      "destination": "/docs/cloud/manage/cloud-tiers",
+      "permanent": true
+    },
+    {
+      "source" : "/docs/cloud/manage/jan-2025-faq/new-tiers",
+      "destination" : "/docs/cloud/manage/cloud-tiers",
+      "permanent" : true
+    },
+    {
+      "source": "/docs/cloud/manage/jan-2025-faq/scaling",
+      "destination": "/docs/manage/scaling",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/manage/jan-2025-faq/backup",
+      "destination": "/docs/cloud/manage/backups/overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/manage/jan-2025-faq/pricing-dimensions",
+      "destination": "/docs/cloud/manage/cloud-tiers",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/manage/jan-2025-faq/billing",
+      "destination": "/docs/cloud/manage/billing",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/manage/jan-2025-faq",
+      "destination": "/docs/cloud/manage/cloud-tiers",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/manage/jan-2025-faq/plan-migrations",
+      "destination": "/docs/cloud/manage/cloud-tiers",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/system-tables/latency_log",
+      "destination": "/docs/operations/system-tables/histogram_metrics",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/system-tables/latency_buckets",
+      "destination": "/docs/operations/system-tables/histogram_metrics",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/kafka/cloud/confluent/custom-connector-cloud",
+      "destination": "/docs/integrations/kafka/cloud/confluent/sink-connector",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/data-ingestion/clickpipes/mysql/parallel_initial_load",
+      "destination": "/docs/integrations/clickpipes/mysql/parallel_initial_load",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/data-ingestion/clickpipes/postgres/parallel_initial_load",
+      "destination": "/docs/integrations/clickpipes/postgres/parallel_initial_load",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/connecting-to-mysql",
+      "destination": "/docs/integrations/mysql",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/redshift",
+      "destination": "/docs/migrations/redshift/migration-guide",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/migration",
+      "destination": "/docs/integrations/migration/overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/security-and-compliance",
+      "destination": "/docs/cloud/security/compliance-overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/sql-reference/statements/backup",
+      "destination": "/docs/operations/backup",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/manage",
+      "destination": "/docs/cloud/manage/cloud-api",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security",
+      "destination": "/docs/cloud/security/shared-responsibility-model",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/manage/jan-2025-faq/plan-migrations",
+      "destination": "/docs/cloud/manage/cloud-tiers",
+      "permanent": true
+    },
+    {
+      "source": "/docs/migrations/migrations",
+      "destination": "/docs/integrations/migration/overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/reference/10_account-close.md",
+      "destination": "/docs/cloud/reference/11_account-close.md",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/personal-data-access",
+      "destination": "/docs/cloud/manage/personal-data-access",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/audit-logging",
+      "destination": "/docs/cloud/security/audit-logging/console-audit-log",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/cloud-access-management/overview",
+      "destination": "/docs/cloud/security/manage-database-users",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/guides/sql-console/config-sql-console-role-assignments",
+      "destination": "/docs/cloud/guides/sql-console/manage-sql-console-role-assignments",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/secure-s3",
+      "destination": "/cloud/data-sources/secure-s3",
+      "permanent": true
+    },
+    {
+      "source": "/docs/manage/security/cloud-endpoints-api",
+      "destination": "/docs/manage/data-sources/cloud-endpoints-api",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/shared-responsibility-model",
+      "destination": "/docs/cloud/security/console-roles",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/cloud-authentication",
+      "destination": "/docs/cloud/security#cloud-console-auth",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/private-link-overview",
+      "destination": "/docs/cloud/security/connectivity/private-networking",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/connectivity",
+      "destination": "/docs/cloud/security/connectivity/private-networking",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/guides/sql-console/configure-org-service-role-assignments",
+      "destination": "/docs/cloud/security/cloud_access_management",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/secure-s3",
+      "destination": "/docs/cloud/data-sources/secure-s3",
+      "source": "/docs/operations/system-tables/crash-log",
+      "destination": "/docs/operations/system-tables/crash_log",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/system-tables/current-roles",
+      "destination": "/docs/operations/system-tables/current_roles",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/system-tables/enabled-roles",
+      "destination": "/docs/operations/system-tables/enabled_roles",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/system-tables/role-grants",
+      "destination": "/docs/operations/system-tables/role_grants",
       "permanent": true
     }
   ]

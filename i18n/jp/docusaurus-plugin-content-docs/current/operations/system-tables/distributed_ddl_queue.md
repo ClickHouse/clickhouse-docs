@@ -1,33 +1,32 @@
 ---
-description: 'クラスター上で実行された分散ddlクエリ（ON CLUSTER句を使用するクエリ）に関する情報を含むシステムテーブル。'
-keywords:
+'description': 'システムテーブルは、クラスターで実行された分散 ddl クエリ（ON CLUSTER 句を使用するクエリ）に関する情報を含みます。'
+'keywords':
 - 'system table'
 - 'distributed_ddl_queue'
-slug: '/operations/system-tables/distributed_ddl_queue'
-title: 'system.distributed_ddl_queue'
+'slug': '/operations/system-tables/distributed_ddl_queue'
+'title': 'system.distributed_ddl_queue'
+'doc_type': 'reference'
 ---
 
-
-
-クラスタで実行された [分散DDLクエリ (ON CLUSTER句)](../../sql-reference/distributed-ddl.md) に関する情報を含んでいます。
+クラスタで実行された [distributed ddl queries (ON CLUSTER clause)](../../sql-reference/distributed-ddl.md) に関する情報を含みます。
 
 カラム:
 
-- `entry` ([String](../../sql-reference/data-types/string.md)) — クエリID。
+- `entry` ([String](../../sql-reference/data-types/string.md)) — クエリ ID.
 - `entry_version` ([Nullable(UInt8)](../../sql-reference/data-types/int-uint.md)) - エントリのバージョン
-- `initiator_host` ([Nullable(String)](../../sql-reference/data-types/string.md)) - DDL操作を開始したホスト
-- `initiator_port` ([Nullable(UInt16)](../../sql-reference/data-types/int-uint.md)) - 始動側が使用したポート
-- `cluster` ([String](../../sql-reference/data-types/string.md)) — クラスタ名。
-- `query` ([String](../../sql-reference/data-types/string.md)) — 実行されたクエリ。
-- `settings` ([Map(String, String)](../../sql-reference/data-types/map.md)) - DDL操作で使用された設定
-- `query_create_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — クエリ作成時間。
+- `initiator_host` ([Nullable(String)](../../sql-reference/data-types/string.md)) - DDL 操作を開始したホスト
+- `initiator_port` ([Nullable(UInt16)](../../sql-reference/data-types/int-uint.md)) - イニシエータによって使用されるポート
+- `cluster` ([String](../../sql-reference/data-types/string.md)) — クラスタ名.
+- `query` ([String](../../sql-reference/data-types/string.md)) — 実行されたクエリ.
+- `settings` ([Map(String, String)](../../sql-reference/data-types/map.md)) - DDL 操作で使用された設定
+- `query_create_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — クエリ作成時間.
 - `host` ([String](../../sql-reference/data-types/string.md)) — ホスト名
-- `port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — ホストポート。
-- `status` ([Enum8](../../sql-reference/data-types/enum.md)) — クエリのステータス。
-- `exception_code` ([Enum8](../../sql-reference/data-types/enum.md)) — 例外コード。
+- `port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — ホストポート.
+- `status` ([Enum8](../../sql-reference/data-types/enum.md)) — クエリのステータス.
+- `exception_code` ([Enum8](../../sql-reference/data-types/enum.md)) — 例外コード.
 - `exception_text` ([Nullable(String)](../../sql-reference/data-types/string.md)) - 例外メッセージ
-- `query_finish_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — クエリ終了時間。
-- `query_duration_ms` ([UInt64](../../sql-reference/data-types/int-uint.md)) — クエリ実行の持続時間（ミリ秒単位）。
+- `query_finish_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — クエリ終了時間.
+- `query_duration_ms` ([UInt64](../../sql-reference/data-types/int-uint.md)) — クエリ実行時間 (ミリ秒単位).
 
 **例**
 
@@ -72,7 +71,7 @@ host:              clickhouse-01
 port:              9000
 status:            Finished
 exception_code:    630
-exception_text:    Code: 630. DB::Exception: test_db を削除または名前変更できません。いくつかのテーブルがそれに依存しています:
+exception_text:    Code: 630. DB::Exception: Cannot drop or rename test_db, because some tables depend on it:
 query_finish_time: 2023-09-01 16:15:14
 query_duration_ms: 154
 

@@ -33,8 +33,8 @@ function bytesToSize(bytes: number) {
 const MAX_SIZE_FILTERS = {
   logo: 48,
   sm: 300,
-  md: 600,
-  lg: 1024,
+  md: 1024,  // Increased from 600 to 1024 for better quality
+  lg: 2048,  // Increased from 1024 to 2048 for better quality
 } as const;
 
 // Utility function to filter `srcSet` based on the `size`
@@ -115,6 +115,14 @@ export default function IdealImage(
     const isGifInEarlyReturn = typeof img === "string" ? img.endsWith('.gif') :
         (typeof img === "object" && img !== null && typeof img.default === "string" && img.default.endsWith('.gif'));
 
+    // Use 600px display size for md, even for GIFs
+    const getGifDisplaySize = (size: keyof typeof MAX_SIZE_FILTERS) => {
+      if (size === "md") return 600;
+      return MAX_SIZE_FILTERS[size];
+    };
+
+    const gifDisplaySize = getGifDisplaySize(size);
+    
     const gifStyles = isGifInEarlyReturn ? (
         size === "lg"
             ? {
@@ -128,12 +136,12 @@ export default function IdealImage(
             }
             : size === "logo"
                 ? {
-                  width: `${MAX_SIZE_FILTERS[size]}px`,
+                  width: `${gifDisplaySize}px`,
                   height: "auto",
                   display: "block",
                 }
                 : {
-                  maxWidth: `${MAX_SIZE_FILTERS[size]}px`,
+                  maxWidth: `${gifDisplaySize}px`,
                   width: "auto",
                   height: "auto",
                   margin: "0 auto",
@@ -200,6 +208,15 @@ export default function IdealImage(
   const isGif = currentImage.path?.toLowerCase().endsWith('.gif') || false;
 
   // Apply conditional styles based on the `size`
+  // For md size, we want to display at 600px visual size but use 1024px source for quality
+  const getDisplaySize = (size: keyof typeof MAX_SIZE_FILTERS) => {
+    if (size === "md") return 600; // Display md at 600px visual size
+    if (size === "lg") return "100%"; // lg remains full width
+    return MAX_SIZE_FILTERS[size]; // logo and sm use their original sizes
+  };
+  
+  const displaySize = getDisplaySize(size);
+  
   const imageStyles: React.CSSProperties =
       size === "lg"
           ? {
@@ -213,11 +230,11 @@ export default function IdealImage(
           }
           : size == "logo"
               ? {
-                width: `${MAX_SIZE_FILTERS[size]}px`,
+                width: `${displaySize}px`,
                 display: "block",
               }
               : {
-                width: `${MAX_SIZE_FILTERS[size]}px`,
+                width: `${displaySize}px`,
                 margin: "0 auto",
                 display: "block",
                 boxShadow: border
@@ -225,7 +242,7 @@ export default function IdealImage(
                     : "none",
                 // For GIFs, add maxWidth and height auto to maintain aspect ratio
                 ...(isGif && {
-                  maxWidth: `${MAX_SIZE_FILTERS[size]}px`,
+                  maxWidth: `${displaySize}px`,
                   width: "auto",
                   height: "auto",
                 }),

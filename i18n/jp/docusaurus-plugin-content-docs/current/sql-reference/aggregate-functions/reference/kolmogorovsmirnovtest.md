@@ -1,17 +1,17 @@
 ---
-description: 'Applies Kolmogorov-Smirnov''s test to samples from two populations.'
-sidebar_label: 'kolmogorovSmirnovTest'
-sidebar_position: 156
-slug: '/sql-reference/aggregate-functions/reference/kolmogorovsmirnovtest'
-title: 'kolmogorovSmirnovTest'
+'description': '2つの母集団からのサンプルにKolmogorov-Smirnovのテストを適用します。'
+'sidebar_label': 'kolmogorovSmirnovTest'
+'sidebar_position': 156
+'slug': '/sql-reference/aggregate-functions/reference/kolmogorovsmirnovtest'
+'title': 'kolmogorovSmirnovTest'
+'doc_type': 'reference'
 ---
-
 
 
 
 # kolmogorovSmirnovTest
 
-二つの母集団からのサンプルに対して、コルモゴロフ-スミルノフ検定を適用します。
+二つの母集団からのサンプルに対してコルモゴロフ–スミルノフ検定を適用します。
 
 **構文**
 
@@ -19,8 +19,8 @@ title: 'kolmogorovSmirnovTest'
 kolmogorovSmirnovTest([alternative, computation_method])(sample_data, sample_index)
 ```
 
-両方のサンプルの値は `sample_data` カラムにあります。`sample_index` が 0 の場合、その行の値は最初の母集団からのサンプルに属します。それ以外の場合は、第二の母集団からのサンプルに属します。
-サンプルは連続的な一次元の確率分布に属する必要があります。
+両方のサンプルの値は `sample_data` 列にあります。 `sample_index` が 0 の場合、その行の値は最初の母集団からのサンプルに属します。そうでない場合、それは第二の母集団からのサンプルに属します。
+サンプルは連続的な一次元確率分布に属する必要があります。
 
 **引数**
 
@@ -30,30 +30,29 @@ kolmogorovSmirnovTest([alternative, computation_method])(sample_data, sample_ind
 **パラメータ**
 
 - `alternative` — 対立仮説。 (オプション、デフォルト: `'two-sided'`.) [文字列](../../../sql-reference/data-types/string.md)。
-    F(x) と G(x) をそれぞれ最初の分布と第二の分布のCDFとします。
-    - `'two-sided'`
-        帰無仮説はサンプルが同一の分布から来ているというもので、すなわち全ての x に対して `F(x) = G(x)` です。
-        対立仮説は分布が同一でないということです。
-    - `'greater'`
-        帰無仮説は最初のサンプルの値が第二のサンプルの値よりも*確率的に小さい*というもので、
-        すなわち最初の分布のCDFが第二の分布のCDFの上にあり、したがって左側に位置します。
-        これは実際には全ての x に対して `F(x) >= G(x)` という意味です。この場合の対立仮説は `F(x) < G(x)` で、少なくとも一つの x に対して成り立ちます。
-    - `'less'`。
-        帰無仮説は最初のサンプルの値が第二のサンプルの値よりも*確率的に大きい*というもので、
-        すなわち最初の分布のCDFが第二の分布のCDFの下にあり、したがって右側に位置します。
-        これは実際には全ての x に対して `F(x) <= G(x)` という意味です。この場合の対立仮説は `F(x) > G(x)` で、少なくとも一つの x に対して成り立ちます。
+    F(x) と G(x) をそれぞれ最初と第二の分布のCDFとします。
+  - `'two-sided'`
+        帰無仮説は、サンプルが同じ分布から来ているというもので、すなわち `F(x) = G(x)` が全ての x に対して成り立ちます。
+        対立仮説は、分布が同一でないというものです。
+  - `'greater'`
+        帰無仮説は、最初のサンプルの値が第二のサンプルの値よりも*確率的に小さい*というもので、
+        すなわち、最初の分布のCDFが第二の分布のそれよりも上にあり、そのため左にあるということです。
+        実際には、これは `F(x) >= G(x)` が全ての x に対して成り立つことを意味します。そして、この場合の対立仮説は `F(x) < G(x)` が少なくとも一つの x に対して成り立つということです。
+  - `'less'`
+        帰無仮説は、最初のサンプルの値が第二のサンプルの値よりも*確率的に大きい*というもので、
+        すなわち、最初の分布のCDFが第二の分布のそれよりも下にあり、そのため右にあるということです。
+        実際には、これは `F(x) <= G(x)` が全ての x に対して成り立つことを意味します。そして、この場合の対立仮説は `F(x) > G(x)` が少なくとも一つの x に対して成り立つということです。
 - `computation_method` — p値を計算するために使用される方法。 (オプション、デフォルト: `'auto'`.) [文字列](../../../sql-reference/data-types/string.md)。
-    - `'exact'` - 計算は検定統計量の正確な確率分布を使用して行います。小さなサンプル以外では計算負荷が高く無駄が多いです。
-    - `'asymp'` (`'asymptotic'`) - 計算は近似を使用して行います。大きなサンプルサイズの場合、正確なp値と漸近的p値は非常に似ています。
-    - `'auto'`  - サンプルの最大数が 10'000 未満の場合に、`'exact'` 方法が使用されます。
+  - `'exact'` - 計算はテスト統計量の正確な確率分布を使用して行われます。小さいサンプルの場合を除いて、計算集約的で無駄です。
+  - `'asymp'` (`'asymptotic'`) - 計算は近似を使用して行われます。大きなサンプルサイズの場合、正確な p 値と漸近的な p 値は非常に似ています。
+  - `'auto'`  - サンプルの最大数が 10'000 未満の場合、`'exact'` メソッドが使用されます。
 
+**戻り値**
 
-**返される値**
-
-[タプル](../../../sql-reference/data-types/tuple.md)で二つの要素を持ちます：
+[タプル](../../../sql-reference/data-types/tuple.md)で二つの要素を返します：
 
 - 計算された統計量。 [Float64](../../../sql-reference/data-types/float.md)。
-- 計算されたp値。 [Float64](../../../sql-reference/data-types/float.md)。
+- 計算された p 値。 [Float64](../../../sql-reference/data-types/float.md)。
 
 **例**
 
@@ -83,8 +82,8 @@ FROM
 └────────────────────────────────────────────────────┘
 ```
 
-注:
-p値は 0.05 より大きい（信頼水準95%の場合）ため、帰無仮説は棄却されません。
+注意：
+p値は 0.05 より大きい（信頼水準 95%）ため、帰無仮説は棄却されません。
 
 クエリ：
 
@@ -112,9 +111,9 @@ FROM
 └─────────────────────────────────────────────────────────┘
 ```
 
-注:
-p値は 0.05 より小さい（信頼水準95%の場合）ため、帰無仮説は棄却されます。
+注意：
+p値は 0.05 より小さい（信頼水準 95%）ため、帰無仮説は棄却されます。
 
 **関連情報**
 
-- [Kolmogorov-Smirnovの検定](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test)
+- [コルモゴロフ–スミルノフ検定](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test)

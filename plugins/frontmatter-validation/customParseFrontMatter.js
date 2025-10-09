@@ -141,7 +141,7 @@ async function customParseFrontMatter(params) {
         // Use Docusaurus's default parser to get the frontmatter data
         const parsedData = await defaultParseFrontMatter(params);
         // Check for required fields
-        const requiredFields = ['title', 'slug', 'description'];
+        const requiredFields = ['title', 'slug', 'description', 'doc_type'];
         for (const field of requiredFields) {
             if (!parsedData.frontMatter[field]) {
                 issues.push(`missing required field: ${field}`);

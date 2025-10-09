@@ -6,13 +6,14 @@ title: 'Use data skipping indices where appropriate'
 description: 'Page describing how and when to use data skipping indices'
 keywords: ['data skipping index', 'skip index']
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
 import building_skipping_indices from '@site/static/images/bestpractices/building_skipping_indices.gif';
 import using_skipping_indices from '@site/static/images/bestpractices/using_skipping_indices.gif';
 
-Data skipping indices should be considered when previous best practices have been followed i.e. types are optimized, a good primary key has been selected and materialized views have been exploited.
+Data skipping indices should be considered when previous best practices have been followed i.e. types are optimized, a good primary key has been selected and materialized views have been exploited. If you're new to skipping indices, [this guide](/optimize/skipping-indexes) is a good place to start.
 
 These types of indices can be used to accelerate query performance if used carefully with an understanding of how they work.
 
@@ -250,3 +251,9 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 We also show an animation how the minmax skipping index prunes all row blocks that cannot possibly contain matches for the `ViewCount` > 10,000,000 predicate in our example query:
 
 <Image img={using_skipping_indices} size="lg" alt="Using skipping indices"/>
+
+## Related docs {#related-docs}
+- [Data skipping indices guide](/optimize/skipping-indexes)
+- [Data skipping index examples](/optimize/skipping-indexes/examples)
+- [Manipulating data skipping indices](/sql-reference/statements/alter/skipping-index)
+- [System table information](/operations/system-tables/data_skipping_indices)

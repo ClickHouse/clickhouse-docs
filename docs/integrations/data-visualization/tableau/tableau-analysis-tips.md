@@ -5,6 +5,7 @@ slug: /integrations/tableau/analysis-tips
 keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', 'ui']
 description: 'Tableau analysis tips when using ClickHouse official connector.'
 title: 'Analysis tips'
+doc_type: 'guide'
 ---
 
 # Analysis tips
@@ -25,7 +26,7 @@ ClickHouse has a huge number of functions that can be used for data analysis —
     ███████████████  259.37 million
     ```
 - **`COUNTD_UNIQ([my_field])`** *(added in v0.2.0)* — Calculates the approximate number of different values of the argument. Equivalent of [uniq()](/sql-reference/aggregate-functions/reference/uniq/). Much faster than `COUNTD()`.
-- **`DATE_BIN('day', 10, [my_datetime_or_date])`** *(added in v0.2.1)* — equivalent of [`toStartOfInterval()`](/sql-reference/functions/date-time-functions#tostartofinterval) in ClickHouse. Rounds down a Date or Date & Time to the given interval, for example:
+- **`DATE_BIN('day', 10, [my_datetime_or_date])`** *(added in v0.2.1)* — equivalent of [`toStartOfInterval()`](/sql-reference/functions/date-time-functions#toStartOfInterval) in ClickHouse. Rounds down a Date or Date & Time to the given interval, for example:
     ```text
      == my_datetime_or_date == | == DATE_BIN('day', 10, [my_datetime_or_date]) ==
         28.07.2004 06:54:50    |              21.07.2004 00:00:00
@@ -52,7 +53,7 @@ ClickHouse has a huge number of functions that can be used for data analysis —
 - **`RANDOM()`** *(added in v0.2.1)* — unofficial [`RANDOM()`](https://kb.tableau.com/articles/issue/random-function-produces-inconsistent-results) Tableau function, which returns float between 0 and 1.
 - **`RAND_CONSTANT([optional_field])`** *(added in v0.2.1)* — Produces a constant column with a random value. Something like `{RAND()}` Fixed LOD, but faster. Equivalent of [`randConstant()`](/sql-reference/functions/random-functions/#randconstant).
 - **`REAL([my_number])`** — Casts field to float (Float64). Details [`here`](/sql-reference/data-types/decimal/#operations-and-result-type).
-- **`SHA256([my_string])`** *(added in v0.2.1)* — Calculates SHA-256 hash from a string and returns the resulting set of bytes as a string (FixedString). Convenient to use with the `HEX()` function, for example, `HEX(SHA256([my_string]))`. Equivalent of [`SHA256()`](/sql-reference/functions/hash-functions#sha1-sha224-sha256-sha512-sha512_256).
+- **`SHA256([my_string])`** *(added in v0.2.1)* — Calculates SHA-256 hash from a string and returns the resulting set of bytes as a string (FixedString). Convenient to use with the `HEX()` function, for example, `HEX(SHA256([my_string]))`. Equivalent of [`SHA256()`](/sql-reference/functions/hash-functions#SHA256).
 - **`SKEWNESS([my_number])`** — Computes the sample skewness of a sequence. Equivalent of [`skewSamp()`](/sql-reference/aggregate-functions/reference/skewsamp).
 - **`SKEWNESSP([my_number])`** — Computes the skewness of a sequence. Equivalent of [`skewPop()`](/sql-reference/aggregate-functions/reference/skewpop).
 - **`TO_TYPE_NAME([field])`** *(added in v0.2.1)* — Returns a string containing the ClickHouse type name of the passed argument. Equivalent of [`toTypeName()`](/sql-reference/functions/other-functions#totypename).

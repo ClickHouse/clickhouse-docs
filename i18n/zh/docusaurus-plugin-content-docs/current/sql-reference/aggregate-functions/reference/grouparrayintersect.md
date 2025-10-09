@@ -3,12 +3,13 @@
 'sidebar_position': 141
 'slug': '/sql-reference/aggregate-functions/reference/grouparrayintersect'
 'title': 'groupArrayIntersect'
+'doc_type': 'reference'
 ---
 
 
 # groupArrayIntersect
 
-返回给定数组的交集（返回所有在所有给定数组中的项目）。
+返回给定数组的交集（返回在所有给定数组中的所有项目）。
 
 **语法**
 
@@ -22,7 +23,7 @@ groupArrayIntersect(x)
 
 **返回值**
 
-- 包含所有数组中元素的数组。
+- 包含在所有数组中的元素的数组。
 
 类型: [Array](../../data-types/array.md)。
 
@@ -41,7 +42,7 @@ groupArrayIntersect(x)
 以列名作为参数的查询：
 
 ```sql
-SELECT groupArrayIntersect(a) as intersection FROM numbers;
+SELECT groupArrayIntersect(a) AS intersection FROM numbers;
 ```
 
 结果：

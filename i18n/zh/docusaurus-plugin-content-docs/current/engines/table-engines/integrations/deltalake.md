@@ -4,12 +4,13 @@
 'sidebar_position': 40
 'slug': '/engines/table-engines/integrations/deltalake'
 'title': 'DeltaLake 表引擎'
+'doc_type': 'reference'
 ---
 
 
 # DeltaLake 表引擎
 
-该引擎提供对 Amazon S3 中现有 [Delta Lake](https://github.com/delta-io/delta) 表的只读集成。
+此引擎提供与 Amazon S3 中现有的 [Delta Lake](https://github.com/delta-io/delta) 表的只读集成。
 
 ## 创建表 {#create-table}
 
@@ -22,10 +23,10 @@ CREATE TABLE deltalake
 
 **引擎参数**
 
-- `url` — 包含现有 Delta Lake 表路径的桶 URL。
-- `aws_access_key_id`，`aws_secret_access_key` - [AWS](https://aws.amazon.com/) 账户用户的长期凭证。您可以使用这些凭证来验证您的请求。该参数是可选的。如果未指定凭证，则将从配置文件中使用。
+- `url` — 指向现有 Delta Lake 表的存储桶 URL 及路径。
+- `aws_access_key_id`, `aws_secret_access_key` - 用于 [AWS](https://aws.amazon.com/) 账户用户的长期凭证。您可以使用这些凭证来验证您的请求。该参数是可选的。如果未指定凭证，则使用配置文件中的凭证。
 
-引擎参数可以使用 [命名集合](/operations/named-collections.md) 指定。
+引擎参数可以使用 [命名集合](/operations/named-collections.md) 进行指定。
 
 **示例**
 
@@ -55,6 +56,6 @@ CREATE TABLE deltalake ENGINE=DeltaLake(deltalake_conf, filename = 'test_table')
 
 `Iceberg` 表引擎和表函数支持与 `S3`、`AzureBlobStorage`、`HDFS` 存储相同的数据缓存。请参见 [这里](../../../engines/table-engines/integrations/s3.md#data-cache)。
 
-## 另请参阅 {#see-also}
+## 另请参见 {#see-also}
 
 - [deltaLake 表函数](../../../sql-reference/table-functions/deltalake.md)

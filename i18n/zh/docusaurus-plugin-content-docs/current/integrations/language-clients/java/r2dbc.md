@@ -1,5 +1,5 @@
 ---
-'sidebar_label': 'R2DBC Driver'
+'sidebar_label': 'R2DBC 驱动程序'
 'sidebar_position': 5
 'keywords':
 - 'clickhouse'
@@ -10,6 +10,7 @@
 'description': 'ClickHouse R2DBC 驱动程序'
 'slug': '/integrations/java/r2dbc'
 'title': 'R2DBC 驱动程序'
+'doc_type': 'reference'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -17,17 +18,17 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
 
-# R2DBC 驱动程序
+# R2DBC驱动
 
-## R2DBC 驱动程序 {#r2dbc-driver}
+## R2DBC驱动 {#r2dbc-driver}
 
-[R2DBC](https://r2dbc.io/) 的 ClickHouse 异步 Java 客户端包装器。
+[R2DBC](https://r2dbc.io/) 是 ClickHouse 的异步 Java 客户端的包装器。
 
 ### 环境要求 {#environment-requirements}
 
 - [OpenJDK](https://openjdk.java.net) 版本 >= 8
 
-### 安装 {#setup}
+### 设置 {#setup}
 
 ```xml
 <dependency>
@@ -46,7 +47,7 @@ import CodeBlock from '@theme/CodeBlock';
 </dependency>
 ```
 
-### 连接到 ClickHouse {#connect-to-clickhouse}
+### 连接到ClickHouse {#connect-to-clickhouse}
 
 ```java showLineNumbers
 ConnectionFactory connectionFactory = ConnectionFactories

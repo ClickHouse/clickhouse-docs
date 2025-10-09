@@ -7,6 +7,7 @@ pagination_next: null
 description: 'Learn how to build a SlackBot agent that can interact with ClickHouse MCP Server.'
 keywords: ['ClickHouse', 'MCP', 'Slack', 'SlackBot', 'PydanticAI']
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 # How to build a SlackBot agent using ClickHouse MCP Server

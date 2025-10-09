@@ -1,11 +1,10 @@
 ---
-description: 'Выполняет простую (одномерную) линейную регрессию.'
+slug: '/sql-reference/aggregate-functions/reference/simplelinearregression'
 sidebar_position: 183
-slug: /sql-reference/aggregate-functions/reference/simplelinearregression
-title: 'simpleLinearRegression'
+description: 'Выполняет простую (одномерную) линейную регрессию.'
+title: simpleLinearRegression
+doc_type: reference
 ---
-
-
 # simpleLinearRegression
 
 Выполняет простую (одномерную) линейную регрессию.

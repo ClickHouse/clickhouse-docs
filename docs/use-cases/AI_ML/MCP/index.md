@@ -7,6 +7,7 @@ pagination_next: null
 description: 'This page provides an intro to Model Context Protocol (MCP) and has a table of contents for MCP guides.'
 keywords: ['ClickHouse', 'MCP']
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -62,6 +63,7 @@ Below are some guides showing how to use the ClickHouse MCP Server.
 | [How to build an OpenAI agent using ClickHouse MCP Server.](/use-cases/AI/MCP/ai-agent-libraries/openai-agents) | Learn how to build an OpenAI agent that can interact with ClickHouse MCP Server. |
 | [Set Up ClickHouse MCP Server with AnythingLLM and ClickHouse Cloud](/use-cases/AI/MCP/anythingllm) | This guide explains how to set up AnythingLLM with a ClickHouse MCP server using Docker. |
 | [Set Up ClickHouse MCP Server with Claude Desktop](/use-cases/AI/MCP/claude-desktop) | This guide explains how to set up Claude Desktop with a ClickHouse MCP server. |
+| [Set Up ClickHouse MCP Server with Jan.ai](/use-cases/AI/MCP/janai) | This guide explains how to set up Jan.ai with a ClickHouse MCP server. |
 | [Set Up ClickHouse MCP Server with LibreChat and ClickHouse Cloud](/use-cases/AI/MCP/librechat) | This guide explains how to set up LibreChat with a ClickHouse MCP server using Docker. |
 | [Set Up ClickHouse MCP Server with Ollama](/use-cases/AI/MCP/ollama) | This guide explains how to set up Ollama with a ClickHouse MCP server. |
 | [Set Up ClickHouse MCP Server with Open WebUI and ClickHouse Cloud](/use-cases/AI/MCP/open-webui) | This guide explains how to set up Open WebUI with a ClickHouse MCP server using Docker. |

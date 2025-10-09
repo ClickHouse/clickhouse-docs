@@ -4,6 +4,7 @@ title: 'Integrations'
 keywords: ['integrations', 'integrate', 'integrate with']
 description: 'Integrations with ClickHouse'
 hide_table_of_contents: true
+doc_type: 'landing-page'
 ---
 
 import acceldatapng from '@site/static/images/integrations/logos/acceldata_logo.png';
@@ -176,11 +177,13 @@ import visual_studio_logo from '@site/static/images/integrations/logos/logo_vs.p
 import vulcansql_logo from '@site/static/images/integrations/logos/logo-vulcansql.png';
 import great_expectations_logo from '@site/static/images/integrations/logos/great-expectations.webp';
 import Hashboardsvg from '@site/static/images/integrations/logos/hashboard.svg';
+import lightdash_logo from '@site/static/images/integrations/logos/lightdash.png';
 import luzmo_logo from '@site/static/images/integrations/logos/luzmo.png';
 import vs_logo from '@site/static/images/integrations/logos/logo_vs.png';
 import Moosesvg from '@site/static/images/integrations/logos/moose_logo.svg';
 import chartbrew_logo from '@site/static/images/integrations/logos/logo_chartbrew.png';
 import marimo_logo from '@site/static/images/integrations/logos/logo_marimo.png';
+import dot_logo from '@site/static/images/integrations/logos/dot_logo.png';
 import Image from '@theme/IdealImage';
 
 ClickHouse integrations are organized by their support level:
@@ -223,7 +226,7 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |Google Cloud Storage|<Gcssvg alt="GCS Logo" style={{width: '3rem', 'height': '3rem'}}/>|Data ingestion|Import from, export to, and transform GCS data in flight with ClickHouse built-in `S3` functions.|[Documentation](/integrations/data-ingestion/s3/index.md)|
 |Golang|<Golangsvg alt="Golang logo" style={{width: '3rem' }}/>|Language client|The Go client uses the native interface for a performant, low-overhead means of connecting to ClickHouse.|[Documentation](/integrations/language-clients/go/index.md)|
 |HDFS|<Hdfssvg alt="HDFS logo" style={{width: '3rem'}}/>|Data ingestion|Provides integration with the [Apache Hadoop](https://en.wikipedia.org/wiki/Apache_Hadoop) ecosystem by allowing to manage data on [HDFS](https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html) via ClickHouse.|[Documentation](/engines/table-engines/integrations/hdfs)|
-|Hive|<Hivesvg alt="Hive logo" style={{width: '3rem'}}/>|Data ingestionn|The Hive engine allows you to perform `SELECT` quries on HDFS Hive table.|[Documentation](/engines/table-engines/integrations/hive)|
+|Hive|<Hivesvg alt="Hive logo" style={{width: '3rem'}}/>|Data ingestionn|The Hive engine allows you to perform `SELECT` queries on HDFS Hive table.|[Documentation](/engines/table-engines/integrations/hive)|
 |Hudi|<Image img={hudi} size="logo" alt="Apache Hudi logo"/>|Data ingestion| provides a read-only integration with existing Apache [Hudi](https://hudi.apache.org/) tables in Amazon S3.|[Documentation](/engines/table-engines/integrations/hudi)|
 |Iceberg|<Image img={iceberg} size="logo" alt="Apache Iceberg logo"/>|Data ingestion|Provides a read-only integration with existing Apache [Iceberg](https://iceberg.apache.org/) tables in Amazon S3.|[Documentation](/engines/table-engines/integrations/iceberg)|
 |Java, JDBC|<Javasvg alt="Java logo" style={{width: '3rem'}}/>|Language client|The Java client and JDBC driver.|[Documentation](/integrations/language-clients/java/index.md)|
@@ -236,7 +239,7 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |MySQL|<Mysqlsvg alt="MySQL logo" style={{width: '3rem'}}/>|Data ingestion|The MySQL engine allows you to perform `SELECT` and `INSERT` queries on data that is stored on a remote MySQL server.|[Documentation](/engines/table-engines/integrations/mysql)|
 |NATS|<Natssvg alt="Nats Logo" style={{width: '3rem', 'height': '3rem'}}/>|Data ingestion|Allows integrating ClickHouse with [NATS](https://nats.io/).|[Documentation](/engines/table-engines/integrations/nats)|
 |Node.JS|<Nodesvg alt="Node logo" style={{width: '3rem', 'height': '3rem'}}/>|Language client|The official JS client for connecting to ClickHouse.|[Documentation](/integrations/language-clients/js.md)|
-|ODBC|<Image img={odbc} alt="ODBC" alt="ODBC logo" size="logo"/>|Data integration|Allows ClickHouse to connect to external databases via [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity) table engine.|[Documentation](/engines/table-engines/integrations/odbc)|
+|ODBC|<Image img={odbc} alt="ODBC logo" size="logo"/>|Data integration|Allows ClickHouse to connect to external databases via [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity) table engine.|[Documentation](/engines/table-engines/integrations/odbc)|
 |OpenTelemetry|<Image img={logo_otel} size="logo" alt="OTel logo"/>|Data ingestion|Exporter that supports sending logs, metrics, trace OpenTelemetry data to ClickHouse|[GitHub](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter)|
 |PostgreSQL|<Postgresqlsvg alt="Postgresql logo" style={{width: '3rem', 'height': '3rem'}}/>|Data ingestion|Snapshot and real-time CDC data replication from PostgreSQL databases to ClickHouse Cloud.|[Documentation](/integrations/postgresql)|
 |PowerBI|<Image img={powerbi} size="logo" alt="PowerBI logo"/>|Data visualization|Microsoft Power BI is an interactive data visualization software product developed by Microsoft with a primary focus on business intelligence.|[Documentation](/integrations/powerbi)
@@ -246,6 +249,8 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |Redis|<Redissvg alt="Redis logo" style={{width: '3rem', 'height': '3rem'}}/>|Data ingestion|Allows ClickHouse to use [Redis](https://redis.io/) as a dictionary source.|[Documentation](/sql-reference/dictionaries/index.md#redis)|
 |Redpanda|<Image img={redpanda} alt="Redpanda logo" size="logo"/>|Data ingestion|Redpanda is the streaming data platform for developers. It's API-compatible with Apache Kafka, but 10x faster, much easier to use, and more cost effective|[Blog](https://redpanda.com/blog/real-time-olap-database-clickhouse-redpanda)|
 |REST Catalog||Data ingestion|Integration with REST Catalog specification for Iceberg tables, supporting multiple catalog providers including Tabular.io.|[Documentation](/use-cases/data-lake/rest-catalog)|
+|Lakekeeper||Data ingestion|Integration with Lakekeeper, an open-source REST catalog implementation for Apache Iceberg with multi-tenant support.|[Documentation](/use-cases/data-lake/lakekeeper-catalog)|
+|Nessie||Data ingestion|Integration with Nessie, an open-source transactional catalog for data lakes with Git-like data version control.|[Documentation](/use-cases/data-lake/nessie-catalog)|
 |Rust|<Image img={rust} size="logo" alt="Rust logo"/>|Language client|A typed client for ClickHouse|[Documentation](/integrations/language-clients/rust.md)|
 |SQLite|<Sqlitesvg alt="Sqlite logo" style={{width: '3rem', 'height': '3rem'}}/>|Data ingestion|Allows to import and export data to SQLite and supports queries to SQLite tables directly from ClickHouse.|[Documentation](/engines/table-engines/integrations/sqlite)|
 |Superset|<Supersetsvg alt="Superset logo" style={{width: '3rem'}}/>|Data visualization|Explore and visualize your ClickHouse data with Apache Superset.|[Documentation](/integrations/data-visualization/superset-and-clickhouse.md)|
@@ -299,13 +304,14 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |IBM Instana| |Data management|Instana can auto-discover and monitor ClickHouse server processes|[Documentation](https://www.ibm.com/docs/en/instana-observability/current?topic=technologies-monitoring-clickhouse)|
 |Jitsu|<Jitsusvg alt="Jitsu logo" style={{width: '3rem'}}/>|Data analytics|An open-source event collection platform.|[Documentation](https://docs.jitsu.com/destinations/warehouse/clickhouse)|
 |LangChain|🦜️🔗|SDK|LangChain is a framework for developing applications powered by language models|[Documentation](https://python.langchain.com/docs/integrations/vectorstores/clickhouse/)|
+|Lightdash|<Image img={lightdash_logo} size="logo" alt="Lightdash logo"/>|Data visualization|Lightdash is an open-source business intelligence tool built for modern data teams.|[Website](https://www.lightdash.com/),<br/>[Documentation](https://docs.lightdash.com/get-started/setup-lightdash/connect-project#clickhouse)|
 |Luzmo|<Image img={luzmo_logo} size="logo" alt="Luzmo logo"/>|Data visualization|Luzmo is an embedded analytics platform with a native ClickHouse integration, purpose-built for Software and SaaS applications.|[Documentation](/integrations/data-visualization/luzmo-and-clickhouse.md)|
 |Mage|<Image img={mage_logo} size="logo" alt="Mage logo"/>|Data Ingestion|Open-source data pipeline tool for transforming and integrating data|[Documentation](https://docs.mage.ai/integrations/databases/ClickHouse)
 |Metaplane|<Image img={metaplane_logo} size="logo" alt="Metaplane logo"/>|Data management|Data observability for every data team|[Website](https://www.metaplane.dev/integrations)|
 |MindsDB|<Image img={mindsdb_logo} size="logo" alt="MindsDB logo"/>|AI/ML|  The platform for customizing AI from enterprise data |[Website](https://mindsdb.com/clickhouse-machine-learning )|
 |Mitzu|<Image img={mitzu_logo} size="logo" alt="Mitzu logo"/>|Data visualization|Mitzu is a no-code warehouse-native product analytics application. Find funnel, retention, user segmentation insights without copying your data.|[Documentation](/integrations/mitzu)|
 |Mode Analytics|<Image img={mode_logo} size="logo" alt="Mode logo"/>|Data visualization|Business Intelligence built around data teams|[Website](https://mode.com/)|
-|Moose|<Moosesvg className="image" alt="Moose logo" style={{width: '3rem'}}/>|Data integration|Moose is an open source developer framework for building production applications on Clickhouse|[Website](https://www.fiveonefour.com/moose)|
+|Moose OLAP|<Moosesvg className="image" alt="Moose logo" style={{width: '3rem'}}/>|Language client|Moose OLAP offers TypeScript and Python abstractions and ORM-like functionality built natively for ClickHouse|[Documentation](interfaces/third-party/moose-olap),[Website](https://www.fiveonefour.com/moose)|
 |Omni|<Omnisvg alt="Omni logo" style={{width: '3rem', 'backgroundColor': 'transparent'}}/>|Data visualization|Business intelligence that speaks your language. Explore, visualize, and model data your way with Omni. From spreadsheets to SQL—in a single platform.| [Website](https://omni.co/)|
 |Openblocks|<Image img={openBlocks_logo} size="logo" alt="Openblocks logo"/>|SQL client|Openblocks is a low code platform for building UIs|[Documentation](https://blog.openblocks.dev/blog/openblocks-x-clickhouse)|
 |OpsRamp (HP)| <Image img={ramp_logo} size="logo" alt="OpsRamp Logo"/>|Data management| Provides observability metrics for ClickHouse|[Documentation](https://docs.opsramp.com/integrations/database-no-sql/automonitor-clickhouse-monitoring/)|
@@ -324,7 +330,7 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |SiSense|<Image img={sisense_logo} size="logo" alt="SiSense logo"/>|Data visualization|Embed analytics into any application or workflow|[Website](https://www.sisense.com/data-connectors/)|
 |SigNoz|<Image img={signoz_logo} size="logo" alt="SigNoz logo"/>|Data visualization|Open Source Observability Platform|[Documentation](https://www.signoz.io/docs/architecture/)|
 |Snappy Flow|<Image img={snappy_flow_logo} size="logo" alt="Snappy Flow logo"/>|Data management|Collects ClickHouse database metrics via plugin.|[Documentation](https://docs.snappyflow.io/docs/Integrations/clickhouse/instance)|
-|Soda|<Image img={soda_logo} size="logo" alt="Soda logo"/>|Data quality|Soda integration makes it easy for organziations to detect, resolve, and prevent data quality issues by running data quality checks on data before it is loaded into the database.|[Website](https://www.soda.io/integrations/clickhouse)|
+|Soda|<Image img={soda_logo} size="logo" alt="Soda logo"/>|Data quality|Soda integration makes it easy for organizations to detect, resolve, and prevent data quality issues by running data quality checks on data before it is loaded into the database.|[Website](https://www.soda.io/integrations/clickhouse)|
 |Splunk|<Image img={splunk_logo} size="logo" alt="Splunk logo"/>|Data integration|Splunk modular input to import to Splunk the ClickHouse Cloud Audit logs.|[Website](https://splunkbase.splunk.com/app/7709),<br/>[Documentation](/integrations/tools/data-integration/splunk/index.md)|
 |StreamingFast|<Image img={streamingfast_logo} size="logo" alt="StreamingFast logo"/>|Data ingestion| Blockchain-agnostic, parallelized and streaming-first data engine. |[Website](https://www.streamingfast.io/)|
 |Streamkap|<Image img={streamkap_logo} size="logo" alt="Streamkap logo"/>|Data ingestion|Setup real-time CDC (Change Data Capture) streaming to ClickHouse with high throughput in minutes.|[Documentation](https://docs.streamkap.com/docs/clickhouse)|
@@ -367,6 +373,7 @@ We are actively compiling this list of ClickHouse integrations below, so it's no
 |Datahub|<Image img={datahub_logo} size="logo" alt="Datahub logo"/>|Data management|Open Source Data Catalog that enables data discovery, data observability and federated governance|[Documentation](https://datahubproject.io/docs/generated/ingestion/sources/clickhouse/)|
 |Dbmate| |Data management|Database migration tool that will keep your database schema in sync across multiple developers and servers|[GitHub](https://github.com/amacneil/dbmate#clickhouse)|
 |DeepFlow|<Image img={deepflow_logo} size="logo" alt="Deepflow logo"/>|Data ingestion|Application Observability using eBPF|[Website](https://deepflow.io)|
+|Dot|<Image img={dot_logo} size="logo" alt="marimo logo"/>|AI Chatbot|Dot is an intelligent virtual data assistant that answers business data questions, retrieves definitions and relevant data assets, and can even assist with data modelling.|[Website](https://www.getdot.ai/), <br/>[Documentation](/integrations/data-visualization/dot-and-clickhouse.md)|
 |Easypanel|<Image img={easypanel_logo} size="logo" alt="Easypanel logo"/>|Deployment method|It's a modern server control panel. You can use it to deploy ClickHouse on your own server.|[Website](https://easypanel.io), <br/>[Documentation](/integrations/tools/data-integration/easypanel/index.md)|
 |Explo|<Explosvg alt="Explo logo" style={{width: '3rem'}} />|Data visualization|Explo helps companies build real-time analytics dashboard by providing flexible components.|[Website](https://www.explo.co/integrations/clickhouse)|
 |Flink|<Image img={flink_logo} size="logo" alt="Flink logo"/>|Data ingestion|Flink sink for ClickHouse database, powered by Async Http Client|[GitHub](https://github.com/itinycheng/flink-connector-clickhouse)|

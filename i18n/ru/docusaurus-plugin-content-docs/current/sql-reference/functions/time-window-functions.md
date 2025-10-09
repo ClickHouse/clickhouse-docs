@@ -1,17 +1,15 @@
 ---
-description: 'Документация по функциям временных окон'
+slug: '/sql-reference/functions/time-window-functions'
 sidebar_label: 'Временное окно'
-sidebar_position: 175
-slug: /sql-reference/functions/time-window-functions
+description: 'Документация по Time Window Functions'
 title: 'Функции временных окон'
+doc_type: reference
 ---
-
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-
-# Функции временных окон
+# Функции временных окон 
 
 <ExperimentalBadge/>
 <CloudNotSupportedBadge/>
@@ -20,7 +18,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ## tumble {#tumble}
 
-Функция тумблирующего временного окна присваивает записи неперекрывающимся, непрерывным окнам с фиксированной продолжительностью (`interval`).
+Временное окно с использованием метода "tumble" назначает записи на неперекрывающиеся, непрерывные окна с фиксированной продолжительностью (`interval`).
 
 **Синтаксис**
 
@@ -35,7 +33,7 @@ tumble(time_attr, interval [, timezone])
 
 **Возвращаемые значения**
 
-- Включительная нижняя и исключительная верхняя граница соответствующего тумблирующего окна. [Tuple](../data-types/tuple.md)([DateTime](../data-types/datetime.md), [DateTime](../data-types/datetime.md)).
+- Включительная нижняя и исключительная верхняя граница соответствующего окна "tumble". [Tuple](../data-types/tuple.md)([DateTime](../data-types/datetime.md), [DateTime](../data-types/datetime.md)).
 
 **Пример**
 
@@ -55,7 +53,7 @@ SELECT tumble(now(), toIntervalDay('1'));
 
 ## tumbleStart {#tumblestart}
 
-Возвращает включительную нижнюю границу соответствующего [тумблирующего окна](#tumble).
+Возвращает включительную нижнюю границу соответствующего [окна tumble](#tumble).
 
 **Синтаксис**
 
@@ -71,7 +69,7 @@ tumbleStart(time_attr, interval [, timezone]);
 
 **Возвращаемые значения**
 
-- Включительная нижняя граница соответствующего тумблирующего окна. [DateTime](../data-types/datetime.md), [Tuple](../data-types/tuple.md) или [UInt32](../data-types/int-uint.md).
+- Включительная нижняя граница соответствующего окна "tumble". [DateTime](../data-types/datetime.md), [Tuple](../data-types/tuple.md) или [UInt32](../data-types/int-uint.md).
 
 **Пример**
 
@@ -91,7 +89,7 @@ SELECT tumbleStart(now(), toIntervalDay('1'));
 
 ## tumbleEnd {#tumbleend}
 
-Возвращает исключительную верхнюю границу соответствующего [тумблирующего окна](#tumble).
+Возвращает исключительную верхнюю границу соответствующего [окна tumble](#tumble).
 
 **Синтаксис**
 
@@ -107,7 +105,7 @@ tumbleEnd(time_attr, interval [, timezone]);
 
 **Возвращаемые значения**
 
-- Исключительная верхняя граница соответствующего тумблирующего окна. [DateTime](../data-types/datetime.md), [Tuple](../data-types/tuple.md) или [UInt32](../data-types/int-uint.md).
+- Исключительная верхняя граница соответствующего окна "tumble". [DateTime](../data-types/datetime.md), [Tuple](../data-types/tuple.md) или [UInt32](../data-types/int-uint.md).
 
 **Пример**
 
@@ -127,7 +125,7 @@ SELECT tumbleEnd(now(), toIntervalDay('1'));
 
 ## hop {#hop}
 
-Функция скачущего временного окна имеет фиксированную продолжительность (`window_interval`) и скачет с заданным интервалом скачка (`hop_interval`). Если значение `hop_interval` меньше, чем `window_interval`, скачущие окна перекрываются. Таким образом, записи могут быть присвоены нескольким окнам.
+Временное окно с использованием метода "hop" имеет фиксированную продолжительность (`window_interval`) и перемещается на указанный интервал ("hop") (`hop_interval`). Если `hop_interval` меньше, чем `window_interval`, окна "hop" накладываются друг на друга. Таким образом, записи могут быть назначены нескольким окнам.
 
 ```sql
 hop(time_attr, hop_interval, window_interval [, timezone])
@@ -136,16 +134,16 @@ hop(time_attr, hop_interval, window_interval [, timezone])
 **Аргументы**
 
 - `time_attr` — Дата и время. [DateTime](../data-types/datetime.md).
-- `hop_interval` — Положительный интервал скачка. [Interval](../data-types/special-data-types/interval.md).
+- `hop_interval` — Положительный интервал "hop". [Interval](../data-types/special-data-types/interval.md).
 - `window_interval` — Положительный интервал окна. [Interval](../data-types/special-data-types/interval.md).
 - `timezone` — [Название часового пояса](../../operations/server-configuration-parameters/settings.md#timezone) (необязательно).
 
 **Возвращаемые значения**
 
-- Включительная нижняя и исключительная верхняя граница соответствующего скачущего окна. [Tuple](../data-types/tuple.md)([DateTime](../data-types/datetime.md), [DateTime](../data-types/datetime.md))`.
+- Включительная нижняя и исключительная верхняя граница соответствующего окна "hop". [Tuple](../data-types/tuple.md)([DateTime](../data-types/datetime.md), [DateTime](../data-types/datetime.md))`.
 
 :::note
-Поскольку одна запись может быть присвоена нескольким скачущим окнам, функция возвращает только границу **первого** окна, когда функция hop используется **без** `WINDOW VIEW`.
+Поскольку одна запись может быть назначена нескольким окнам "hop", функция возвращает только границу **первого** окна, когда функция hop используется **без** `WINDOW VIEW`.
 :::
 
 **Пример**
@@ -166,7 +164,7 @@ SELECT hop(now(), INTERVAL '1' DAY, INTERVAL '2' DAY);
 
 ## hopStart {#hopstart}
 
-Возвращает включительную нижнюю границу соответствующего [скачущего окна](#hop).
+Возвращает включительную нижнюю границу соответствующего [окна hop](#hop).
 
 **Синтаксис**
 
@@ -176,16 +174,16 @@ hopStart(time_attr, hop_interval, window_interval [, timezone]);
 **Аргументы**
 
 - `time_attr` — Дата и время. [DateTime](../data-types/datetime.md).
-- `hop_interval` — Положительный интервал скачка. [Interval](../data-types/special-data-types/interval.md).
+- `hop_interval` — Положительный интервал "hop". [Interval](../data-types/special-data-types/interval.md).
 - `window_interval` — Положительный интервал окна. [Interval](../data-types/special-data-types/interval.md).
 - `timezone` — [Название часового пояса](../../operations/server-configuration-parameters/settings.md#timezone) (необязательно).
 
 **Возвращаемые значения**
 
-- Включительная нижняя граница соответствующего скачущего окна. [DateTime](../data-types/datetime.md), [Tuple](../data-types/tuple.md) или [UInt32](../data-types/int-uint.md).
+- Включительная нижняя граница соответствующего окна "hop". [DateTime](../data-types/datetime.md), [Tuple](../data-types/tuple.md) или [UInt32](../data-types/int-uint.md).
 
 :::note
-Поскольку одна запись может быть присвоена нескольким скачущим окнам, функция возвращает только границу **первого** окна, когда функция hop используется **без** `WINDOW VIEW`.
+Поскольку одна запись может быть назначена нескольким окнам "hop", функция возвращает только границу **первого** окна, когда функция hop используется **без** `WINDOW VIEW`.
 :::
 
 **Пример**
@@ -206,7 +204,7 @@ SELECT hopStart(now(), INTERVAL '1' DAY, INTERVAL '2' DAY);
 
 ## hopEnd {#hopend}
 
-Возвращает исключительную верхнюю границу соответствующего [скачущего окна](#hop).
+Возвращает исключительную верхнюю границу соответствующего [окна hop](#hop).
 
 **Синтаксис**
 
@@ -216,16 +214,16 @@ hopEnd(time_attr, hop_interval, window_interval [, timezone]);
 **Аргументы**
 
 - `time_attr` — Дата и время. [DateTime](../data-types/datetime.md).
-- `hop_interval` — Положительный интервал скачка. [Interval](../data-types/special-data-types/interval.md).
+- `hop_interval` — Положительный интервал "hop". [Interval](../data-types/special-data-types/interval.md).
 - `window_interval` — Положительный интервал окна. [Interval](../data-types/special-data-types/interval.md).
 - `timezone` — [Название часового пояса](../../operations/server-configuration-parameters/settings.md#timezone) (необязательно).
 
 **Возвращаемые значения**
 
-- Исключительная верхняя граница соответствующего скачущего окна. [DateTime](../data-types/datetime.md), [Tuple](../data-types/tuple.md) или [UInt32](../data-types/int-uint.md).
+- Исключительная верхняя граница соответствующего окна "hop". [DateTime](../data-types/datetime.md), [Tuple](../data-types/tuple.md) или [UInt32](../data-types/int-uint.md).
 
 :::note
-Поскольку одна запись может быть присвоена нескольким скачущим окнам, функция возвращает только границу **первого** окна, когда функция hop используется **без** `WINDOW VIEW`.
+Поскольку одна запись может быть назначена нескольким окнам "hop", функция возвращает только границу **первого** окна, когда функция hop используется **без** `WINDOW VIEW`.
 :::
 
 **Пример**

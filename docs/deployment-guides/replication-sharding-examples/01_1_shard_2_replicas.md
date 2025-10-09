@@ -4,6 +4,7 @@ sidebar_label: 'Replication'
 sidebar_position: 10
 title: 'Replicating data'
 description: 'Page describing an example architecture with five servers configured. Two are used to host copies of the data and the rest are used to coordinate the replication of data'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -65,7 +66,7 @@ for i in {01..02}; do
 done
 ```
 
-Add the following `docker-compose.yml` file to the `clickhouse-cluster` directory:
+Add the following `docker-compose.yml` file to the `cluster_1S_2R` directory:
 
 ```yaml title="docker-compose.yml"
 version: '3.8'
@@ -633,8 +634,8 @@ FROM url(
     county String,
     d String,
     e String'
-) SETTINGS max_http_get_redirects=10;
-LIMIT 10000;
+) LIMIT 10000
+SETTINGS max_http_get_redirects=10;
 ```
 
 Notice that the data is completely replicated on each host:
@@ -773,7 +774,6 @@ FROM url(
     d String,
     e String'
     ) SETTINGS max_http_get_redirects=10;
-LIMIT 10000;
 ```
 
 Query the table from `clickhouse-02` or `clickhouse-01`:

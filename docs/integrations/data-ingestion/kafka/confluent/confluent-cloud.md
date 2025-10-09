@@ -1,10 +1,11 @@
 ---
 sidebar_label: 'Kafka Connector Sink on Confluent Cloud'
 sidebar_position: 2
-slug: /integrations/kafka/cloud/confluent/custom-connector-cloud
+slug: /integrations/kafka/cloud/confluent/sink-connector
 description: 'Guide to using the fully managed ClickHouse Connector Sinkon Confluent Cloud'
 title: 'Integrating Confluent Cloud with ClickHouse'
 keywords: ['Kafka', 'Confluent Cloud']
+doc_type: 'guide'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

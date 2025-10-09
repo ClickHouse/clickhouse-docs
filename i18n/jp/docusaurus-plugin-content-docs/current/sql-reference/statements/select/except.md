@@ -1,21 +1,23 @@
 ---
-description: 'EXCEPT 句のドキュメント'
-sidebar_label: 'EXCEPT'
-slug: '/sql-reference/statements/select/except'
-title: 'EXCEPT Clause'
+'description': 'EXCEPT 句に関するドキュメントで、最初のクエリからの結果を持ち、2 番目のクエリを除いた行のみを返します。'
+'sidebar_label': 'EXCEPT'
+'slug': '/sql-reference/statements/select/except'
+'title': 'EXCEPT 句'
+'keywords':
+- 'EXCEPT'
+- 'clause'
+'doc_type': 'reference'
 ---
 
 
+# EXCEPT 句
 
+> `EXCEPT` 句は、最初のクエリの結果から2番目のクエリを除いた行のみを返します。
 
-# EXCEPT句
-
-`EXCEPT`句は、最初のクエリの結果から2番目のクエリを除いた行のみを返します。
-
-- 両方のクエリは同じ数のカラムを同じ順序とデータ型で持つ必要があります。
-- `EXCEPT`の結果には重複行が含まれる可能性があります。重複が望ましくない場合は`EXCEPT DISTINCT`を使用してください。
-- 括弧が指定されていない場合、複数の`EXCEPT`文は左から右に実行されます。
-- `EXCEPT`演算子は、`UNION`句と同じ優先度を持ち、`INTERSECT`句よりも低い優先度です。
+- 両方のクエリは、同じ数のカラムを同じ順序とデータ型で持たなければなりません。
+- `EXCEPT` の結果には重複行が含まれる可能性があります。望ましくない場合は、`EXCEPT DISTINCT` を使用してください。
+- 複数の `EXCEPT` 文は、括弧が指定されていない場合、左から右へ実行されます。
+- `EXCEPT` 演算子は `UNION` 句と同じ優先順位を持ち、`INTERSECT` 句よりも低い優先順位を持っています。
 
 ## 構文 {#syntax}
 
@@ -30,9 +32,9 @@ SELECT column1 [, column2 ]
 FROM table2
 [WHERE condition]
 ```
-条件は、要件に基づく任意の式で設定できます。
+条件は、要求に基づいた任意の式である可能性があります。
 
-さらに、`EXCEPT()`を使用して同じテーブルの結果からカラムを除外することができます。これはBigQuery（Google Cloud）で可能な構文です：
+さらに、次の構文を使用して、BigQuery (Google Cloud) のように、同じテーブル内の結果からカラムを除外するために `EXCEPT()` を使用できます。
 
 ```sql
 SELECT column1 [, column2 ] EXCEPT (column3 [, column4]) 
@@ -42,25 +44,21 @@ FROM table1
 
 ## 例 {#examples}
 
-このセクションの例は、`EXCEPT`句の使用法を示しています。
+このセクションの例は、`EXCEPT` 句の使用法を示しています。
 
-### `EXCEPT`句を使用した数字のフィルタリング {#filtering-numbers-using-the-except-clause}
+### `EXCEPT` 句を使用した数値のフィルタリング {#filtering-numbers-using-the-except-clause}
 
-こちらは、数字3から8の数字が含まれない1から10の数字を返すシンプルな例です：
+次の例は、3 から 8 の数字に _含まれない_ 1 から 10 の数字を返します。
 
-クエリ：
-
-```sql
+```sql title="Query"
 SELECT number
 FROM numbers(1, 10)
 EXCEPT
 SELECT number
-FROM numbers(3, 8)
+FROM numbers(3, 6)
 ```
 
-結果：
-
-```response
+```response title="Response"
 ┌─number─┐
 │      1 │
 │      2 │
@@ -69,13 +67,11 @@ FROM numbers(3, 8)
 └────────┘
 ```
 
-### `EXCEPT()`を使用した特定のカラムの除外 {#excluding-specific-columns-using-except}
+### `EXCEPT()` を使用して特定のカラムを除外する {#excluding-specific-columns-using-except}
 
-`EXCEPT()`を使用して結果からカラムを迅速に除外することができます。たとえば、以下の例のように、いくつかのカラムを除外してテーブルからすべてのカラムを選択したいとします：
+`EXCEPT()` は、結果からカラムを迅速に除外するために使用できます。例えば、下記の例のように、いくつかの特定のカラムを除いてテーブルからすべてのカラムを選択したい場合に使用します。
 
-クエリ：
-
-```sql
+```sql title="Query"
 SHOW COLUMNS IN system.settings
 
 SELECT * EXCEPT (default, alias_for, readonly, description)
@@ -83,9 +79,7 @@ FROM system.settings
 LIMIT 5
 ```
 
-結果：
-
-```response
+```response title="Response"
     ┌─field───────┬─type─────────────────────────────────────────────────────────────────────┬─null─┬─key─┬─default─┬─extra─┐
  1. │ alias_for   │ String                                                                   │ NO   │     │ ᴺᵁᴸᴸ    │       │
  2. │ changed     │ UInt8                                                                    │ NO   │     │ ᴺᵁᴸᴸ    │       │
@@ -110,14 +104,12 @@ LIMIT 5
    └─────────────────────────┴────────────┴─────────┴──────┴──────┴─────────┴─────────────┴────────────┘
 ```
 
-### 暗号通貨データとともに`EXCEPT`および`INTERSECT`を使用する {#using-except-and-intersect-with-cryptocurrency-data}
+### 暗号通貨データを使用した `EXCEPT` と `INTERSECT` の利用 {#using-except-and-intersect-with-cryptocurrency-data}
 
-`EXCEPT`と`INTERSECT`は、異なるブール論理で相互に使用されることが多く、共通のカラム（またはカラム）のある2つのテーブルがある場合にどちらも役立ちます。
-たとえば、取引価格と取引量を含む歴史的な暗号通貨データが数百万行あるとしましょう：
+`EXCEPT` と `INTERSECT` は、異なるブール論理で互換的に使用されることが多く、共通のカラム (またはカラム) を持つ2つのテーブルがある場合にどちらも有用です。
+例えば、取引価格とボリュームを含む数百万行の過去の暗号通貨データがあるとします。
 
-クエリ：
-
-```sql
+```sql title="Query"
 CREATE TABLE crypto_prices
 (
     trade_date Date,
@@ -143,9 +135,7 @@ ORDER BY trade_date DESC
 LIMIT 10;
 ```
 
-結果：
-
-```response
+```response title="Response"
 ┌─trade_date─┬─crypto_name─┬──────volume─┬────price─┬───market_cap─┬──change_1_day─┐
 │ 2020-11-02 │ Bitcoin     │ 30771456000 │ 13550.49 │ 251119860000 │  -0.013585099 │
 │ 2020-11-01 │ Bitcoin     │ 24453857000 │ 13737.11 │ 254569760000 │ -0.0031840964 │
@@ -160,7 +150,7 @@ LIMIT 10;
 └────────────┴─────────────┴─────────────┴──────────┴──────────────┴───────────────┘
 ```
 
-次に、私たちが保有している暗号通貨のリストとそれぞれのコイン枚数を含む`holdings`という名前のテーブルがあるとしましょう：
+次に、私たちが保有している暗号通貨のリストとコインの数を含む `holdings` という名前のテーブルがあるとします。
 
 ```sql
 CREATE TABLE holdings
@@ -180,40 +170,36 @@ INSERT INTO holdings VALUES
    ('Bitcoin Diamond', 5000);
 ```
 
-`EXCEPT`を使用して「**私たちの所有するコインで$10未満で取引されたことがないのはどれか？**」という質問に答えることができます：
+私たちは `EXCEPT` を使用して**「私たちが所有するコインの中で、$10 未満で取引されたことがないのはどれですか？」**という質問に答えることができます：
 
-```sql
+```sql title="Query"
 SELECT crypto_name FROM holdings
 EXCEPT
 SELECT crypto_name FROM crypto_prices
 WHERE price < 10;
 ```
 
-結果：
-
-```response
+```response title="Response"
 ┌─crypto_name─┐
 │ Bitcoin     │
 │ Bitcoin     │
 └─────────────┘
 ```
 
-これは、私たちが所有する4つの暗号通貨のうち、Bitcoinだけが$10を下回ったことがないことを示しています（この例で示される限られたデータに基づいています）。
+このデータに基づくと、私たちが保有する4つの暗号通貨の中で、ビットコインだけが $10 未満に下がったことがないことを意味します（この例で持っている限られたデータに基づいて）。
 
-### `EXCEPT DISTINCT`を使用する {#using-except-distinct}
+### `EXCEPT DISTINCT` の利用 {#using-except-distinct}
 
-以前のクエリでは、結果に複数のBitcoinの保有がありました。`EXCEPT`に`DISTINCT`を追加して、結果から重複行を排除することができます：
+前のクエリでは、結果に複数のビットコインの保有がありました。結果から重複行を排除するために、`EXCEPT` に `DISTINCT` を追加できます：
 
-```sql
+```sql title="Query"
 SELECT crypto_name FROM holdings
 EXCEPT DISTINCT
 SELECT crypto_name FROM crypto_prices
 WHERE price < 10;
 ```
 
-結果：
-
-```response
+```response title="Response"
 ┌─crypto_name─┐
 │ Bitcoin     │
 └─────────────┘

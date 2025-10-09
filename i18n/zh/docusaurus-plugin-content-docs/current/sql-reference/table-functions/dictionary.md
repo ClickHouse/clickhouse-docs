@@ -1,15 +1,16 @@
 ---
-'description': '将字典数据以 ClickHouse 表的形式显示。与 Dictionary 引擎的工作方式相同。'
+'description': '以 ClickHouse 表格的形式显示字典数据。与 Dictionary 引擎的工作方式相同。'
 'sidebar_label': '字典'
 'sidebar_position': 47
 'slug': '/sql-reference/table-functions/dictionary'
 'title': '字典'
+'doc_type': 'reference'
 ---
 
 
 # dictionary 表函数
 
-显示 [dictionary](../../sql-reference/dictionaries/index.md) 数据作为 ClickHouse 表。与 [Dictionary](../../engines/table-engines/special/dictionary.md) 引擎的工作方式相同。
+将 [字典](../../sql-reference/dictionaries/index.md) 数据显示为 ClickHouse 表。其工作方式与 [Dictionary](../../engines/table-engines/special/dictionary.md) 引擎相同。
 
 ## 语法 {#syntax}
 

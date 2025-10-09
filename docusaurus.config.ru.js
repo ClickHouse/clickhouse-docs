@@ -5,6 +5,7 @@ import chHeader from "./plugins/header.js";
 import fixLinks from "./src/hooks/fixLinks.js";
 import prismLight from "./src/utils/prismLight";
 import prismDark from "./src/utils/prismDark";
+import glossaryTransformer from "./plugins/glossary-transformer.js";
 const remarkCustomBlocks = require('./plugins/remark-custom-blocks');
 
 // Helper function to skip over index.md files.
@@ -26,6 +27,9 @@ const config = {
       async: true,
       defer: true, // execute after document parsing, but before firing DOMContentLoaded event
     }
+  ],
+  clientModules: [
+    require.resolve('./src/clientModules/utmPersistence.js')
   ],
   // Settings for Docusaurus Faster - build optimizations
   future: {
@@ -155,13 +159,18 @@ const config = {
               blogPath
             );
           },
+          remarkPlugins: [math, remarkCustomBlocks, glossaryTransformer],
+          beforeDefaultRemarkPlugins: [fixLinks],
+          rehypePlugins: [katex],
         },
         theme: {
           customCss: [require.resolve("./src/css/custom.scss")],
         },
-        gtag: {
-          trackingID: "G-KF1LLRTQ5Q",
-        },
+        ...(process.env.VERCEL_PREVIEW !== '1' && {
+          googleTagManager: {
+            containerId: 'GTM-WTNTDT7W',
+          },
+        }),
       }),
     ],
   ],

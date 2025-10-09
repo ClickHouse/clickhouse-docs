@@ -1,9 +1,10 @@
 ---
-'description': '允许对存储在 SQLite DATABASE 中的数据执行查询。'
+'description': '允许在存储在 SQLite DATABASE中的数据上执行查询。'
 'sidebar_label': 'sqlite'
 'sidebar_position': 185
 'slug': '/sql-reference/table-functions/sqlite'
 'title': 'sqlite'
+'doc_type': 'reference'
 ---
 
 
@@ -24,7 +25,7 @@ sqlite('db_path', 'table_name')
 
 ## 返回值 {#returned_value}
 
-- 一个表对象，具有与原始 `SQLite` 表相同的列。
+- 一个与原始 `SQLite` 表具有相同列的表对象。
 
 ## 示例 {#example}
 

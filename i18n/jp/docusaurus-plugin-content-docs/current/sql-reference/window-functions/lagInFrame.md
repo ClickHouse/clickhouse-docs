@@ -1,21 +1,20 @@
 ---
-description: 'lagInFrameウィンドウ関数のドキュメント'
-sidebar_label: 'lagInFrame'
-sidebar_position: 9
-slug: '/sql-reference/window-functions/lagInFrame'
-title: 'lagInFrame'
+'description': 'lagInFrame ウィンドウ関数に関する Documentation'
+'sidebar_label': 'lagInFrame'
+'sidebar_position': 9
+'slug': '/sql-reference/window-functions/lagInFrame'
+'title': 'lagInFrame'
+'doc_type': 'reference'
 ---
-
-
 
 
 # lagInFrame
 
-指定された物理的オフセット行の前にある現在の行内の順序付けられたフレームの行で評価された値を返します。
+指定された物理オフセットを持つ行が、順序付けられたフレーム内の現在の行の前にある行で評価された値を返します。
 
 :::warning
 `lagInFrame` の動作は、標準SQLの `lag` ウィンドウ関数とは異なります。
-Clickhouse のウィンドウ関数 `lagInFrame` はウィンドウフレームを考慮します。
+Clickhouseのウィンドウ関数 `lagInFrame` はウィンドウフレームを尊重します。
 `lag` と同じ動作を得るには、`ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` を使用してください。
 :::
 
@@ -29,20 +28,20 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-ウィンドウ関数の構文の詳細については、次を参照してください: [ウィンドウ関数 - 構文](./index.md/#syntax)。
+ウィンドウ関数の構文の詳細については、[ウィンドウ関数 - 構文](./index.md/#syntax)を参照してください。
 
 **パラメータ**
 - `x` — カラム名。
-- `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。 (省略可能 - デフォルトは `1`)。
-- `default` — 計算された行がウィンドウフレームの境界を超えた場合に返す値。 (省略可能 - 省略時はカラムタイプのデフォルト値)。
+- `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。(省略時はデフォルトで `1`)。
+- `default` — 計算された行がウィンドウフレームの境界を超えた場合に返す値。(省略時はカラム型のデフォルト値)。
 
 **返される値**
 
-- 順序付けられたフレーム内の現在の行の前にある指定された物理的オフセットの行で評価された値。
+- 順序付けられたフレーム内で現在の行の前にある指定された物理オフセットを持つ行で評価された値。
 
 **例**
 
-この例では、特定の株の履歴データを見て、`lagInFrame` 関数を使用して株価の終値の毎日の変化とパーセンテージ変化を計算します。
+この例では、特定の株の履歴データを見て、`lagInFrame` 関数を使用して株の終値の前日比のデルタとパーセンテージ変化を計算します。
 
 クエリ:
 
@@ -50,11 +49,11 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 CREATE TABLE stock_prices
 (
     `date`   Date,
-    `open`   Float32, -- 開始価格
-    `high`   Float32, -- 日中高
-    `low`    Float32, -- 日中安
-    `close`  Float32, -- 終値
-    `volume` UInt32   -- 売買量
+    `open`   Float32, -- opening price
+    `high`   Float32, -- daily high
+    `low`    Float32, -- daily low
+    `close`  Float32, -- closing price
+    `volume` UInt32   -- trade volume
 )
 Engine = Memory;
 

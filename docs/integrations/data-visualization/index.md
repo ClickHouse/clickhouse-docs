@@ -5,6 +5,7 @@ keywords: ['ClickHouse', 'connect', 'Luzmo', 'Explo', 'Fabi.ai', 'Tableau', 'Gra
 title: 'Visualizing Data in ClickHouse'
 slug: /integrations/data-visualization
 description: 'Learn about Visualizing Data in ClickHouse'
+doc_type: 'guide'
 ---
 
 # Visualizing data in ClickHouse
@@ -28,6 +29,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 - [Astrato](./astrato-and-clickhouse.md)
 - [Chartbrew](./chartbrew-and-clickhouse.md)
 - [Deepnote](./deepnote.md)
+- [Dot](./dot-and-clickhouse.md)
 - [Draxlr](./draxlr-and-clickhouse.md)
 - [Embeddable](./embeddable-and-clickhouse.md)
 - [Explo](./explo-and-clickhouse.md)
@@ -52,6 +54,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 | [AWS QuickSight](./quicksight-and-clickhouse.md)     | MySQL interface               | ✅      | ✅          | Works with some limitations, see [the documentation](./quicksight-and-clickhouse.md) for more details                |
 | [Chartbrew](./chartbrew-and-clickhouse.md)           | ClickHouse official connector              | ✅      | ✅          |                                                                                                                                         |
 | [Deepnote](./deepnote.md)                            | Native connector              | ✅      | ✅          |                                                                                                                                         |
+| [Dot](./dot-and-clickhouse.md)                            | Native connector              | ✅      | ✅          |                                                                                                                                         |
 | [Explo](./explo-and-clickhouse.md)                   | Native connector              | ✅      | ✅          |                                                                                                                                         |
 | [Fabi.ai](./fabi-and-clickhouse.md)                  | Native connector              | ✅      | ✅          |                                                                                                                                         |
 | [Grafana](./grafana/index.md)                        | ClickHouse official connector | ✅      | ✅          |                                                                                                                                         |

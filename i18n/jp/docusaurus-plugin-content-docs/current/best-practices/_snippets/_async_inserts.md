@@ -1,67 +1,65 @@
----
-{}
----
+
 
 import Image from '@theme/IdealImage';
 import async_inserts from '@site/static/images/bestpractices/async_inserts.png';
 
-Asynchronous inserts in ClickHouse provide a powerful alternative when client-side batching isn't feasible. This is especially valuable in observability workloads, where hundreds or thousands of agents send data continuously - logs, metrics, traces - often in small, real-time payloads. Buffering data client-side in these environments increases complexity, requiring a centralized queue to ensure sufficiently large batches can be sent.
+Asynchronous inserts in ClickHouseは、クライアント側のバッチ処理が実行できない場合の強力な代替手段を提供します。これは、数百または数千のエージェントがデータ（ログ、メトリック、トレース）を持続的に、しばしば小さなリアルタイムのペイロードで送信する観測作業で特に価値があります。これらの環境でクライアント側にデータをバッファリングすると、十分に大きなバッチを送信できるようにするための中央集権的なキューが必要になるため、複雑さが増します。
 
 :::note
-多くの小さなバッチを同期モードで送信することは推奨されません。これは多くのパーツが作成されることにつながります。これにより、クエリのパフォーマンスが低下し、["too many part"](/knowledgebase/exception-too-many-parts) エラーが発生します。
+同期モードで多くの小さなバッチを送信することは推奨されておらず、多くのパーツが作成されることになります。これにより、クエリパフォーマンスが低下し、["too many part"](/knowledgebase/exception-too-many-parts)エラーが発生します。
 :::
 
-Asynchronous inserts shift batching responsibility from the client to the server by writing incoming data to an in-memory buffer, then flushing it to storage based on configurable thresholds. This approach significantly reduces part creation overhead, lowers CPU usage, and ensures ingestion remains efficient - even under high concurrency.
+非同期挿入は、クライアントからサーバーへのバッチ処理の責任を移し、受信したデータをメモリ内バッファに書き込んだ後、構成可能なしきい値に基づいてストレージにフラッシュします。このアプローチにより、パーツ作成のオーバーヘッドが大幅に削減され、CPU使用率が低下し、高い同時接続数の下でも取り込みが効率的に保たれます。
 
-The core behavior is controlled via the [`async_insert`](/operations/settings/settings#async_insert) setting.
+コアの動作は、[`async_insert`](/operations/settings/settings#async_insert)設定を介して制御されます。
 
 <Image img={async_inserts} size="lg" alt="Async inserts"/>
 
-When enabled (1), inserts are buffered and only written to disk once one of the flush conditions is met:
+有効化されると（1）、挿入はバッファリングされ、フラッシュ条件のいずれかが満たされるまでディスクに書き込まれません：
 
-(1) the buffer reaches a specified size (async_insert_max_data_size)  
-(2) a time threshold elapses (async_insert_busy_timeout_ms) or  
-(3) a maximum number of insert queries accumulate (async_insert_max_query_number).  
+(1) バッファが指定サイズに達する（async_insert_max_data_size）
+(2) 時間のしきい値が経過する（async_insert_busy_timeout_ms）または 
+(3) 最大挿入クエリ数が蓄積される（async_insert_max_query_number）。
 
-This batching process is invisible to clients and helps ClickHouse efficiently merge insert traffic from multiple sources. However, until a flush occurs, the data cannot be queried. Importantly, there are multiple buffers per insert shape and settings combination, and in clusters, buffers are maintained per node - enabling fine-grained control across multi-tenant environments. Insert mechanics are otherwise identical to those described for [synchronous inserts](/best-practices/selecting-an-insert-strategy#synchronous-inserts-by-default).
+このバッチ処理はクライアントには見えず、ClickHouseが複数のソースからの挿入トラフィックを効率的にマージするのを助けます。ただし、フラッシュが発生するまで、データはクエリできません。重要なことは、挿入の形状や設定の組み合わせごとに複数のバッファがあり、クラスター内ではノードごとにバッファが維持されるため、マルチテナント環境での詳細な制御が可能であることです。挿入のメカニズムは、[同期挿入](/best-practices/selecting-an-insert-strategy#synchronous-inserts-by-default)で説明されているものと実質的に同じです。
 
-### Choosing a Return Mode {#choosing-a-return-mode}
+### リターンモードの選択 {#choosing-a-return-mode}
 
-The behavior of asynchronous inserts is further refined using the [`wait_for_async_insert`](/operations/settings/settings#wait_for_async_insert) setting.
+非同期挿入の動作は、[`wait_for_async_insert`](/operations/settings/settings#wait_for_async_insert)設定を使用してさらに洗練されます。
 
-When set to 1 (the default), ClickHouse only acknowledges the insert after the data is successfully flushed to disk. This ensures strong durability guarantees and makes error handling straightforward: if something goes wrong during the flush, the error is returned to the client. This mode is recommended for most production scenarios, especially when insert failures must be tracked reliably.
+1（デフォルト）に設定されている場合、ClickHouseはデータがディスクに正常にフラッシュされた後のみ、挿入を認識します。これにより強力な耐久性保証が確保され、エラーハンドリングが単純になります：フラッシュ中に何か問題が発生した場合、エラーがクライアントに返されます。このモードは、挿入の失敗を確実に追跡する必要がある場合、特にほとんどのプロダクションシナリオに推奨されます。
 
-[Benchmarks](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse) show it scales well with concurrency - whether you're running 200 or 500 clients- thanks to adaptive inserts and stable part creation behavior.
+[ベンチマーク](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)は、200または500のクライアントを実行している場合でも、適応バッチ挿入と安定したパーツ作成動作のおかげで、同時実行性にうまくスケールすることを示します。
 
-Setting `wait_for_async_insert = 0` enables "fire-and-forget" mode. Here, the server acknowledges the insert as soon as the data is buffered, without waiting for it to reach storage.
+`wait_for_async_insert = 0`を設定すると、「ファイアアンドフォーゲット」モードが有効になります。ここでは、サーバーはデータがバッファリングされたときに直ちに挿入を認識し、ストレージに到達するのを待ちません。
 
-This offers ultra-low-latency inserts and maximal throughput, ideal for high-velocity, low-criticality data. However, this comes with trade-offs: there's no guarantee the data will be persisted, errors may only surface during flush, and it's difficult to trace failed inserts. Use this mode only if your workload can tolerate data loss.
+これにより、超低レイテンシの挿入と最大スループットが提供され、高速かつ重要度の低いデータに最適です。ただし、これにはトレードオフがあります：データが永続化される保証はなく、エラーはフラッシュ中のみ発生する可能性があり、挿入の失敗を追跡することが難しいです。このモードは、あなたのワークロードがデータ損失を許容できる場合にのみ使用してください。
 
-[Benchmarks also demonstrate](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse) substantial part reduction and lower CPU usage when buffer flushes are infrequent (e.g. every 30 seconds), but the risk of silent failure remains.
+[ベンチマークも示しています](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)が、バッファフラッシュが少ない場合（例えば、30秒ごと）にパーツの削減とCPU使用率の低下がある一方で、サイレント失敗のリスクも残ります。
 
-Our strong recommendation is to use `async_insert=1,wait_for_async_insert=1` if using asynchronous inserts. Using `wait_for_async_insert=0` is very risky because your INSERT client may not be aware if there are errors, and also can cause potential overload if your client continues to write quickly in a situation where the ClickHouse server needs to slow down the writes and create some backpressure in order to ensure reliability of the service.
+私たちの強い推奨は、非同期挿入を使用する場合は `async_insert=1,wait_for_async_insert=1` を使用することです。 `wait_for_async_insert=0` を使用するのは非常にリスキーであり、INSERTクライアントはエラーを認識していない可能性があり、ClickHouseサーバーが書き込みを遅くしてサービスの信頼性を確保するためにバックプレッシャを作成する必要がある状況で、クライアントが迅速に書き込みを続けると潜在的なオーバーロードを引き起こす可能性があります。
 
-### Deduplication and reliability {#deduplication-and-reliability}
+### デデュプリケーションと信頼性 {#deduplication-and-reliability}
 
-By default, ClickHouse performs automatic deduplication for synchronous inserts, which makes retries safe in failure scenarios. However, this is disabled for asynchronous inserts unless explicitly enabled (this should not be enabled if you have dependent materialized views - [see issue](https://github.com/ClickHouse/ClickHouse/issues/66003)).
+デフォルトでは、ClickHouseは同期挿入に対して自動デデュプリケーションを行い、失敗シナリオにおいて再試行が安全になります。しかし、これは非同期挿入では明示的に有効にしない限り無効です（依存するMaterialized Viewがある場合は有効にしないことを推奨します - [こちらを参照](https://github.com/ClickHouse/ClickHouse/issues/66003)）。
 
-In practice, if deduplication is turned on and the same insert is retried - due to, for instance, a timeout or network drop - ClickHouse can safely ignore the duplicate. This helps maintain idempotency and avoids double-writing data. Still, it's worth noting that insert validation and schema parsing happen only during buffer flush - so errors (like type mismatches) will only surface at that point.
+実際、デデュプリケーションがオンになっていて、同じ挿入が再試行される場合（たとえば、タイムアウトやネットワークドロップによる）、ClickHouseは重複を安全に無視できます。これにより、冪等性が維持され、データの二重書き込みを回避できます。それでも、挿入の検証とスキーマ解析はバッファフラッシュ時にのみ行われるため、エラー（タイプミスマッチなど）はその時点でのみ発生することに注意する価値があります。
 
-### Enabling asynchronous inserts {#enabling-asynchronous-inserts}
+### 非同期挿入の有効化 {#enabling-asynchronous-inserts}
 
-Asynchronous inserts can be enabled for a particular user, or for a specific query:
+非同期挿入は特定のユーザーまたは特定のクエリのために有効にできます：
 
-- Enabling asynchronous inserts at the user level.  This example uses the user `default`, if you create a different user then substitute that username:
-  ```sql
-  ALTER USER default SETTINGS async_insert = 1
-  ```
-- You can specify the asynchronous insert settings by using the SETTINGS clause of insert queries:
-  ```sql
-  INSERT INTO YourTable SETTINGS async_insert=1, wait_for_async_insert=1 VALUES (...)
-  ```
-- You can also specify asynchronous insert settings as connection parameters when using a ClickHouse programming language client.
+- ユーザーレベルで非同期挿入を有効にする。この例ではユーザー `default` を使用していますが、異なるユーザーを作成する場合はそのユーザー名に置き換えてください：
+```sql
+ALTER USER default SETTINGS async_insert = 1
+```
+- 挿入クエリのSETTINGS句を使用して非同期挿入の設定を指定できます：
+```sql
+INSERT INTO YourTable SETTINGS async_insert=1, wait_for_async_insert=1 VALUES (...)
+```
+- ClickHouseプログラミング言語クライアントを使用する際に、接続パラメータとして非同期挿入の設定を指定することもできます。
 
-  As an example, this is how you can do that within a JDBC connection string when you use the ClickHouse Java JDBC driver for connecting to ClickHouse Cloud:
-  ```bash
-  "jdbc:ch://HOST.clickhouse.cloud:8443/?user=default&password=PASSWORD&ssl=true&custom_http_params=async_insert=1,wait_for_async_insert=1"
-  ```
+  例として、ClickHouse Cloudに接続するためにClickHouse Java JDBCドライバーを使用する際のJDBC接続文字列内での設定方法は次のとおりです：
+```bash
+"jdbc:ch://HOST.clickhouse.cloud:8443/?user=default&password=PASSWORD&ssl=true&custom_http_params=async_insert=1,wait_for_async_insert=1"
+```

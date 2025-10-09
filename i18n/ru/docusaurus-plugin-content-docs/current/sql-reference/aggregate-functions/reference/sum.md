@@ -1,14 +1,13 @@
 ---
-description: 'Вычисляет сумму. Работает только с числами.'
+slug: '/sql-reference/aggregate-functions/reference/sum'
 sidebar_position: 195
-slug: /sql-reference/aggregate-functions/reference/sum
-title: 'sum'
+description: 'Вычисляет сумму. Работает только для чисел.'
+title: sum
+doc_type: reference
 ---
-
-
 # sum
 
-Вычисляет сумму. Работает только с числами.
+Вычисляет сумму. Работает только для чисел.
 
 **Синтаксис**
 
@@ -47,7 +46,7 @@ INSERT INTO employees VALUES
     (71245, 'Anastasia Ivanovna', 89210);
 ```
 
-Мы выполняем запрос для получения общей суммы зарплат сотрудников, используя функцию `sum`. 
+Мы запрашиваем общую сумму зарплат сотрудников, используя функцию `sum`.
 
 Запрос:
 

@@ -1,10 +1,10 @@
 ---
-description: 'Документация для CREATE NAMED COLLECTION'
+slug: '/sql-reference/statements/create/named-collection'
 sidebar_label: 'NAMED COLLECTION'
-slug: /sql-reference/statements/create/named-collection
+description: 'Документация для CREATE NAMED COLLECTION'
 title: 'CREATE NAMED COLLECTION'
+doc_type: reference
 ---
-
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge />

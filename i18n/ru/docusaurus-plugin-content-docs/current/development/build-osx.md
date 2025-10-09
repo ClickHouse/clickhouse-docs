@@ -1,25 +1,24 @@
 ---
-description: 'Руководство по сборке ClickHouse из源 на системах macOS'
+slug: '/development/build-osx'
 sidebar_label: 'Сборка на macOS для macOS'
 sidebar_position: 15
-slug: /development/build-osx
+description: 'В macOS системе из исходного кода построение ClickHouse с указаниями'
 title: 'Сборка на macOS для macOS'
+doc_type: guide
 ---
-
-
 # Как собрать ClickHouse на macOS для macOS
 
 :::info Вам не нужно собирать ClickHouse самостоятельно!
-Вы можете установить предустановленный ClickHouse, как описано в [Quick Start](https://clickhouse.com/#quick-start).
+Вы можете установить предсобранный ClickHouse, как описано в [Быстром старт](https://clickhouse.com/#quick-start).
 :::
 
-ClickHouse можно скомпилировать на macOS x86_64 (Intel) и arm64 (Apple Silicon) начиная с macOS 10.15 (Catalina) или выше.
+ClickHouse можно скомпилировать на macOS x86_64 (Intel) и arm64 (Apple Silicon), начиная с macOS 10.15 (Catalina) или выше.
 
 В качестве компилятора поддерживается только Clang из homebrew.
 
-## Установка необходимых компонентов {#install-prerequisites}
+## Установите предварительные требования {#install-prerequisites}
 
-Сначала ознакомьтесь с общей [документацией по требованиям](developer-instruction.md).
+Сначала ознакомьтесь с общей [документацией по предварительным требованиям](developer-instruction.md).
 
 Затем установите [Homebrew](https://brew.sh/) и выполните
 
@@ -27,17 +26,17 @@ ClickHouse можно скомпилировать на macOS x86_64 (Intel) и 
 
 ```bash
 brew update
-brew install ccache cmake ninja libtool gettext llvm binutils grep findutils nasm bash
+brew install ccache cmake ninja libtool gettext llvm lld binutils grep findutils nasm bash rust rustup
 ```
 
 :::note
-Apple использует файловую систему без учета регистра по умолчанию. Хотя это обычно не влияет на сборку (особенно работают командные сборки), это может вызвать путаницу в операциях с файлами, таких как `git mv`.
-Для серьезной разработки на macOS убедитесь, что исходный код хранится на диске с учетом регистра, например, смотрите [эти инструкции](https://brianboyko.medium.com/a-case-sensitive-src-folder-for-mac-programmers-176cc82a3830).
+Apple по умолчанию использует файловую систему без учета регистра. Хотя это обычно не влияет на компиляцию (особенно работают 'scratch makes'), это может запутать такие операции с файлами, как `git mv`.
+Для серьезной разработки на macOS убедитесь, что исходный код хранится на регистрозависимом дисковом объеме, например, смотрите [эти инструкции](https://brianboyko.medium.com/a-case-sensitive-src-folder-for-mac-programmers-176cc82a3830).
 :::
 
 ## Сборка ClickHouse {#build-clickhouse}
 
-Для сборки необходимо использовать компилятор Clang от Homebrew:
+Для сборки необходимо использовать компилятор Clang из Homebrew:
 
 ```bash
 cd ClickHouse
@@ -46,15 +45,20 @@ export PATH=$(brew --prefix llvm)/bin:$PATH
 cmake -S . -B build
 cmake --build build
 
-# Получившийся бинарный файл будет создан по адресу: build/programs/clickhouse
+# The resulting binary will be created at: build/programs/clickhouse
 ```
 
-## Замечания {#caveats}
+:::note
+Если вы сталкиваетесь с ошибками `ld: archive member '/' not a mach-o file in ...` во время линковки, возможно, вам нужно
+использовать llvm-ar, установив флаг `-DCMAKE_AR=/opt/homebrew/opt/llvm/bin/llvm-ar`.
+:::
 
-Если вы собираетесь запускать `clickhouse-server`, убедитесь, что вы увеличили переменную `maxfiles` в системе.
+## Предостережения {#caveats}
+
+Если вы намерены запускать `clickhouse-server`, убедитесь, что увеличили системную переменную `maxfiles`.
 
 :::note
-Вам понадобится использовать sudo.
+Вам потребуется использовать sudo.
 :::
 
 Для этого создайте файл `/Library/LaunchDaemons/limit.maxfiles.plist` со следующим содержимым:
@@ -83,13 +87,13 @@ cmake --build build
 </plist>
 ```
 
-Дайте файлу правильные права:
+Установите правильные права доступа к файлу:
 
 ```bash
 sudo chown root:wheel /Library/LaunchDaemons/limit.maxfiles.plist
 ```
 
-Проверьте корректность файла:
+Проверьте, что файл корректен:
 
 ```bash
 plutil /Library/LaunchDaemons/limit.maxfiles.plist

@@ -5,6 +5,7 @@ slug: /integrations/glue
 description: 'Integrate ClickHouse and Amazon Glue'
 keywords: ['clickhouse', 'amazon', 'aws', 'glue', 'migrating', 'data', 'spark']
 title: 'Integrating Amazon Glue with ClickHouse and Spark'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -33,7 +34,7 @@ To access the connector in your account, subscribe to the ClickHouse AWS Glue Co
 Ensure your Glue job’s IAM role has the necessary permissions, as described in the minimum privileges [guide](https://docs.aws.amazon.com/glue/latest/dg/getting-started-min-privs-job.html#getting-started-min-privs-connectors).
 
 3. <h3 id="activate-the-connector">Activate the Connector & Create a Connection</h3>
-You can activate the connector and create a connection directly by clicking [this link](https://console.aws.amazon.com/gluestudio/home#/connector/add-connection?connectorName="ClickHouse%20AWS%20Glue%20Connector"&connectorType="Spark"&connectorUrl=https://709825985650.dkr.ecr.us-east-1.amazonaws.com/clickhouse/clickhouse-glue:0.1&connectorClassName="com.clickhouse.spark.ClickHouseCatalog"), which opens the Glue connection creation page with key fields pre-filled. Give the connection a name, and press create (no need to provide the ClickHouse connection details at this stage).
+You can activate the connector and create a connection directly by clicking [this link](https://console.aws.amazon.com/gluestudio/home#/connector/add-connection?connectorName="ClickHouse%20AWS%20Glue%20Connector"&connectorType="Spark"&connectorUrl=https://709825985650.dkr.ecr.us-east-1.amazonaws.com/clickhouse/clickhouse-glue:1.0.0&connectorClassName="com.clickhouse.spark.ClickHouseCatalog"), which opens the Glue connection creation page with key fields pre-filled. Give the connection a name, and press create (no need to provide the ClickHouse connection details at this stage).
 
 4. <h3 id="use-in-glue-job">Use in Glue Job</h3>
 In your Glue job, select the `Job details` tab, and expend the `Advanced properties` window. Under the `Connections` section, select the connection you just created. The connector automatically injects the required JARs into the job runtime.

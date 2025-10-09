@@ -3,8 +3,9 @@ slug: /use-cases/observability/clickstack/deployment/docker-compose
 title: 'Docker Compose'
 pagination_prev: null
 pagination_next: null
-sidebar_position: 2
+sidebar_position: 3
 description: 'Deploying ClickStack with Docker Compose - The ClickHouse Observability Stack'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

@@ -1,25 +1,23 @@
----
-{}
----
+
 
 import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-button.png';
 import connection_details_native from '@site/static/images/_snippets/connection-details-native.png';
 import Image from '@theme/IdealImage';
 
-ClickHouse にネイティブ TCP で接続するには、次の情報が必要です：
+To connect to ClickHouse with native TCP you need this information:
 
-- HOST と PORT: 通常、TLS を使用する場合はポート 9440、TLS を使用しない場合は 9000 です。
+- The HOST and PORT: typically, the port is 9440 when using TLS, or 9000 when not using TLS.
 
-- DATABASE NAME: デフォルトでは `default` というデータベースがあり、接続したいデータベースの名前を使用します。
+- The DATABASE NAME: out of the box there is a database named `default`, use the name of the database that you want to connect to.
 
-- USERNAME と PASSWORD: デフォルトではユーザー名は `default` です。使用ケースに適したユーザー名を使用してください。
+- The USERNAME and PASSWORD: out of the box the username is `default`. Use the username appropriate for your use case.
 
-ClickHouse Cloud サービスの詳細は ClickHouse Cloud コンソールで確認できます。接続するサービスを選択し、**Connect** をクリックします：
+The details for your ClickHouse Cloud service are available in the ClickHouse Cloud console.  Select the service that you will connect to and click **Connect**:
 
 <Image img={cloud_connect_button} size="md" alt="ClickHouse Cloud service connect button" border/>
 
-**Native** を選択すると、例の `clickhouse-client` コマンドで詳細が表示されます。
+Choose **Native**, and the details are available in an example `clickhouse-client` command.
 
 <Image img={connection_details_native} size="md" alt="ClickHouse Cloud Native TCP connection details" border/>
 
-セルフマネージドの ClickHouse を使用している場合、接続の詳細は ClickHouse 管理者によって設定されます。
+If you are using self-managed ClickHouse, the connection details are set by your ClickHouse administrator.

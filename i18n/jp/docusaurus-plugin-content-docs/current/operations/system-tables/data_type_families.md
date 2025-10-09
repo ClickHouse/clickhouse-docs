@@ -1,21 +1,20 @@
 ---
-description: 'System table containing information about supported data types'
-keywords:
+'description': 'システム テーブルは、サポートされているデータ型に関する情報を含んでいます'
+'keywords':
 - 'system table'
 - 'data_type_families'
-slug: '/operations/system-tables/data_type_families'
-title: 'system.data_type_families'
+'slug': '/operations/system-tables/data_type_families'
+'title': 'system.data_type_families'
+'doc_type': 'reference'
 ---
 
+含まれている情報はサポートされている [データタイプ](../../sql-reference/data-types/index.md) についてです。
 
+カラム:
 
-[data types](../../sql-reference/data-types/index.md) に関する情報が含まれています。
-
-カラム：
-
-- `name`（[String](../../sql-reference/data-types/string.md)） — データ型名。
-- `case_insensitive`（[UInt8](../../sql-reference/data-types/int-uint.md)） — クエリでデータ型名を大文字小文字を区別せずに使用できるかどうかを示すプロパティです。たとえば、`Date` と `date` は両方とも有効です。
-- `alias_to`（[String](../../sql-reference/data-types/string.md)） — `name` のエイリアスとなるデータ型名。
+- `name` ([String](../../sql-reference/data-types/string.md)) — データタイプ名。
+- `case_insensitive` ([UInt8](../../sql-reference/data-types/int-uint.md)) — データタイプ名をクエリで大文字小文字を区別せずに使用できるかどうかを示すプロパティ。例えば、`Date` と `date` はどちらも有効です。
+- `alias_to` ([String](../../sql-reference/data-types/string.md)) — `name` がエイリアスであるデータタイプ名。
 
 **例**
 
@@ -40,4 +39,4 @@ SELECT * FROM system.data_type_families WHERE alias_to = 'String'
 
 **関連情報**
 
-- [Syntax](../../sql-reference/syntax.md) — サポートされている構文に関する情報。
+- [構文](../../sql-reference/syntax.md) — サポートされている構文に関する情報。

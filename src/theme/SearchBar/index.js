@@ -1,294 +1,183 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState, useEffect } from 'react';
 import { DocSearchButton, useDocSearchKeyboardEvents } from '@docsearch/react';
 import Head from '@docusaurus/Head';
-import Link from '@docusaurus/Link';
 import { useHistory } from '@docusaurus/router';
-import { isRegexpStringMatch, useSearchLinkCreator } from '@docusaurus/theme-common';
 import {
   useAlgoliaContextualFacetFilters,
   useSearchResultUrlProcessor,
 } from '@docusaurus/theme-search-algolia/client';
-import Translate from '@docusaurus/Translate';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import { createPortal } from 'react-dom';
 import translations from '@theme/SearchTranslations';
-import aa from 'search-insights';
-import { useEffect } from 'react';
-import { getGoogleAnalyticsUserIdFromBrowserCookie } from '../../lib/google/google'
 import {useAskAI} from '@site/src/hooks/useAskAI'
-
-let DocSearchModal = null;
-let searchContainer = null;
-
-function Hit({ hit, children }) {
-  const handleClick = () => {
-    if (hit.queryID) {
-      aa('clickedObjectIDsAfterSearch', {
-        eventName: 'Search Result Clicked',
-        index: hit.__autocomplete_indexName,
-        queryID: hit.queryID,
-        objectIDs: [hit.objectID],
-        positions: [hit.index + 1], // algolia indexes from 1
-      });
-    }
-  };
-  return <Link onClick={handleClick} to={hit.url}>{children}</Link>;
-}
-
-function ResultsFooter({ state, onClose }) {
-  const generateSearchPageLink = useSearchLinkCreator();
-
-  const handleKapaClick = useCallback(() => {
-    onClose(); // Close search modal first
-    
-    // Use Kapa's official API to open with query
-    if (typeof window !== 'undefined' && window.Kapa) {
-      window.Kapa('open', { 
-        query: state.query || '',
-        submit: !!state.query 
-      });
-    } else {
-      console.warn('Kapa widget not loaded');
-    }
-  }, [state.query, onClose]);
-
-  return (
-    <div style={{ 
-      padding: '12px 16px',
-      borderTop: '1px solid var(--docsearch-modal-shadow)',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '8px'
-    }}>
-      {/* Kapa AI Button */}
-      <button 
-        onClick={handleKapaClick}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: '100%',
-          padding: '12px 16px',
-          backgroundColor: '#5b4cfe',
-          color: 'white',
-          border: 'none',
-          borderRadius: '6px',
-          fontSize: '14px',
-          cursor: 'pointer',
-          fontWeight: 600,
-          transition: 'all 0.2s ease'
-        }}
-        onMouseEnter={(e) => {
-          e.target.style.backgroundColor = '#4a3dcc';
-          e.target.style.transform = 'translateY(-1px)';
-        }}
-        onMouseLeave={(e) => {
-          e.target.style.backgroundColor = '#5b4cfe';
-          e.target.style.transform = 'translateY(0)';
-        }}
-      >
-        🤖 Ask AI{state.query ? ` about "${state.query}"` : ''}
-      </button>
-      
-      {/* Original "See all results" link */}
-      <Link 
-        to={generateSearchPageLink(state.query)} 
-        onClick={onClose}
-        style={{
-          textAlign: 'center',
-          fontSize: '13px',
-          color: 'var(--docsearch-muted-color)',
-          textDecoration: 'none'
-        }}
-      >
-        <Translate
-            id="theme.SearchBar.seeAll"
-            values={{ count: state.context.nbHits }}>
-          {'See all {count} results'}
-        </Translate>
-      </Link>
-    </div>
-  );
-}
-
-function mergeFacetFilters(f1, f2) {
-  const normalize = (f) => (typeof f === 'string' ? [f] : f);
-  return [...normalize(f1), ...normalize(f2)];
-}
+import { shouldPreventSearchAction, handleSearchKeyboardConflict } from './utils/aiConflictHandler';
+import { initializeSearchAnalytics, createEnhancedSearchClient } from './utils/searchAnalytics';
+import { useDocSearchModal } from './utils/useDocSearchModal';
+import { 
+  createSearchParameters, 
+  createSearchNavigator, 
+  transformSearchItems 
+} from './utils/searchConfig';
+import { SearchHit } from './searchHit';
+import { SearchResultsFooter } from './searchResultsFooter';
+import { DocTypeSelector } from './docTypeSelector';
 
 function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
   const queryIDRef = useRef(null);
+  const lastQueryRef = useRef('');
   const { siteMetadata, i18n: { currentLocale } } = useDocusaurusContext();
   const processSearchResultUrl = useSearchResultUrlProcessor();
   const contextualSearchFacetFilters = useAlgoliaContextualFacetFilters();
-  const configFacetFilters = props.searchParameters?.facetFilters ?? [];
-  const facetFilters = contextualSearch
-      ? // Merge contextual search filters with config filters
-      mergeFacetFilters(contextualSearchFacetFilters, configFacetFilters)
-      : // ... or use config facetFilters
-      configFacetFilters;
-  // We add clickAnalyics here
-  const searchParameters = {
-    ...props.searchParameters,
-    facetFilters,
-    clickAnalytics: true,
-    hitsPerPage: 3,
-  };
-  const { isAskAIOpen, currentMode } = useAskAI();
+  const { isAskAIOpen } = useAskAI();
   const history = useHistory();
   const searchButtonRef = useRef(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const [initialQuery, setInitialQuery] = useState(undefined);
+  
+  const [selectedDocTypes, setSelectedDocTypes] = useState(null);
+  const searchParametersRef = useRef(null);
+  
+  const {
+    isOpen,
+    initialQuery,
+    DocSearchModal,
+    searchContainer,
+    onOpen,
+    onClose,
+    onInput,
+    importDocSearchModalIfNeeded
+  } = useDocSearchModal();
+
+  // Update searchParameters ref instead of creating new object
+  useEffect(() => {
+    const newParams = createSearchParameters(
+      props, 
+      contextualSearch, 
+      contextualSearchFacetFilters,
+      selectedDocTypes
+    );
+    
+    if (!searchParametersRef.current) {
+      searchParametersRef.current = newParams;
+    } else {
+      Object.keys(newParams).forEach(key => {
+        searchParametersRef.current[key] = newParams[key];
+      });
+    }
+  }, [props, contextualSearch, contextualSearchFacetFilters, selectedDocTypes]);
+
+  // Initialize on mount
+  if (!searchParametersRef.current) {
+    searchParametersRef.current = createSearchParameters(
+      props, 
+      contextualSearch, 
+      contextualSearchFacetFilters,
+      selectedDocTypes
+    );
+  }
+
+  // Track input changes to capture the query
+  useEffect(() => {
+    if (!isOpen) return;
+    
+    const handleInput = (e) => {
+      const input = e.target;
+      if (input.classList.contains('DocSearch-Input')) {
+        lastQueryRef.current = input.value;
+      }
+    };
+    
+    document.addEventListener('input', handleInput, true);
+    return () => document.removeEventListener('input', handleInput, true);
+  }, [isOpen]);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const userToken = getGoogleAnalyticsUserIdFromBrowserCookie('_ga');
-      aa('init', {
-        appId: props.appId,
-        apiKey: props.apiKey,
-      });
-      aa('setUserToken', userToken);
-    }
+    initializeSearchAnalytics(props.appId, props.apiKey);
   }, [props.appId, props.apiKey]);
 
-  const importDocSearchModalIfNeeded = useCallback(() => {
-    if (DocSearchModal) {
-      return Promise.resolve();
-    }
-    return Promise.all([
-      import('@docsearch/react/modal'),
-      import('@docsearch/react/style'),
-      import('./styles.css'),
-    ]).then(([{ DocSearchModal: Modal }]) => {
-      DocSearchModal = Modal;
-    });
-  }, []);
-
-  const onOpen = useCallback(() => {
-    importDocSearchModalIfNeeded().then(() => {
-      // searchContainer is not null here when the modal is already open
-      // this check is needed because ctrl + k shortcut was handled by another instance of SearchBar component
-      if (searchContainer) {
-        return;
-      }
-
-      searchContainer = document.createElement('div');
-      document.body.insertBefore(
-          searchContainer,
-          document.body.firstChild,
-      );
-
-      setIsOpen(true);
-    });
-  }, [importDocSearchModalIfNeeded, setIsOpen]);
-
-  const onClose = useCallback(() => {
-    setIsOpen(false);
-    searchContainer?.remove();
-    searchContainer = null;;
-  }, [setIsOpen]);
-
-  const onInput = useCallback(
-      (event) => {
-        importDocSearchModalIfNeeded().then(() => {
-          setIsOpen(true);
-          setInitialQuery(event.key);
-        });
-      },
-      [importDocSearchModalIfNeeded, setIsOpen, setInitialQuery],
+  const navigator = useMemo(
+    () => createSearchNavigator(history, externalUrlRegex),
+    [history, externalUrlRegex]
   );
 
-  const navigator = useRef({
-    navigate({ itemUrl }) {
-      // Algolia results could contain URL's from other domains which cannot
-      // be served through history and should navigate with window.location
-      if (isRegexpStringMatch(externalUrlRegex, itemUrl)) {
-        window.location.href = itemUrl;
-      } else {
-        history.push(itemUrl);
-      }
-    },
-  }).current;
+  const transformItems = useCallback((items, state) => {
+    if (state?.query) {
+      lastQueryRef.current = state.query;
+    }
+    
+    return transformSearchItems(items, {
+      transformItems: props.transformItems,
+      processSearchResultUrl,
+      currentLocale,
+      queryIDRef
+    });
+  }, [props.transformItems, processSearchResultUrl, currentLocale]);
 
-  const transformItems = useRef((items, state) => {
-    return props.transformItems
-        ? props.transformItems(items)
-        : items.map((item, index) => {
-          return {
-            ...item,
-            url: currentLocale == 'en' ? processSearchResultUrl(item.url) : item.url, //TODO: temporary - all search results to english for now
-            // url: processSearchResultUrl(item.url),
-            index, // Adding the index property - needed for click metrics
-            queryID: queryIDRef.current
-          };
-        });
-  }).current;
+const handleDocTypeChange = useCallback((docTypes) => {
+  setSelectedDocTypes(docTypes);
+  
+  // Re-trigger search with updated filters after state update completes
+  setTimeout(() => {
+    const input = document.querySelector('.DocSearch-Input');
+    const query = lastQueryRef.current;
+    
+    if (input && query) {
+      // Access React's internal value setter to bypass readonly property
+      const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+        window.HTMLInputElement.prototype,
+        'value'
+      ).set;
+      
+      // Clear input to trigger change detection
+      nativeInputValueSetter.call(input, '');
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      
+      // Restore original query to execute search with new filters
+      setTimeout(() => {
+        nativeInputValueSetter.call(input, query);
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.focus();
+      }, 0);
+    }
+  }, 100);
+}, []);
 
   const resultsFooterComponent = useMemo(
-      () =>
-          // eslint-disable-next-line react/no-unstable-nested-components
-          (footerProps) =>
-              <ResultsFooter {...footerProps} onClose={onClose} />,
-      [onClose],
+    () => (footerProps) => <SearchResultsFooter {...footerProps} onClose={onClose} />,
+    [onClose]
   );
 
   const transformSearchClient = useCallback((searchClient) => {
-    searchClient.addAlgoliaAgent('docusaurus', siteMetadata.docusaurusVersion);
-    // Wrap the search function to intercept responses
-    const originalSearch = searchClient.search;
-    searchClient.search = async (requests) => {
-      const response = await originalSearch(requests);
-      // Extract queryID from the response
-      if (response.results?.length > 0 && response.results[0].queryID) {
-        queryIDRef.current = response.results[0].queryID;
-      }
-      return response;
+    const enhancedClient = createEnhancedSearchClient(
+      searchClient, 
+      siteMetadata.docusaurusVersion, 
+      queryIDRef
+    );
+    
+    const originalSearch = enhancedClient.search.bind(enhancedClient);
+    
+    let debounceTimeout;
+    enhancedClient.search = (...args) => {
+      return new Promise((resolve, reject) => {
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(() => {
+          originalSearch(...args)
+            .then(resolve)
+            .catch(reject);
+        }, 200);
+      });
     };
-    return searchClient;
+    
+    return enhancedClient;
   }, [siteMetadata.docusaurusVersion]);
 
   const handleOnOpen = useCallback(() => {
-    console.log('handleOnOpen called', { isAskAIOpen });
-    // Only prevent opening if Kapa is open AND user is not in an input field
-    if (isAskAIOpen) {
-      const activeElement = document.activeElement;
-      const isInInputField = activeElement && (
-          activeElement.tagName === 'INPUT' ||
-          activeElement.tagName === 'TEXTAREA' ||
-          activeElement.id === 'kapa-widget-container' ||
-          activeElement.contentEditable === 'true' ||
-          activeElement.closest('[contenteditable="true"]') ||
-          activeElement.closest('#kapa-widget-container')
-      );
-
-      console.log('handleOnOpen - in input field:', isInInputField);
-      if (!isInInputField) {
-        console.log('handleOnOpen - preventing search modal');
-        return; // Prevent search from opening
-      }
+    if (shouldPreventSearchAction(isAskAIOpen)) {
+      return;
     }
     onOpen();
   }, [isAskAIOpen, onOpen]);
 
   const handleOnInput = useCallback((event) => {
-    // Only prevent input handling if Kapa is open AND user is not in an input field
-    if (isAskAIOpen) {
-      const activeElement = document.activeElement;
-
-      // Check for input fields, with specific check for Kapa's textarea
-      const isInInputField = activeElement && (
-          activeElement.tagName === 'INPUT' ||
-          activeElement.tagName === 'TEXTAREA' ||
-          activeElement.id === 'kapa-ask-ai-input' ||
-          activeElement.id === 'kapa-widget-container' ||
-          activeElement.closest('#kapa-widget-container')
-      );
-
-      if (!isInInputField) {
-        return; // Prevent search input handling
-      }
-
-      // If we're in an input field, allow normal typing but don't open search modal
+    if (shouldPreventSearchAction(isAskAIOpen)) {
       return;
     }
     onInput(event);
@@ -296,57 +185,71 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
 
   useDocSearchKeyboardEvents({
     isOpen,
-    onOpen: handleOnOpen,  // Use the new callback
+    onOpen: handleOnOpen,
     onClose,
-    onInput: handleOnInput, // Use the new callback
+    onInput: handleOnInput,
     searchButtonRef,
   });
+  
   return (
-      <>
-        <Head>
-          {/* This hints the browser that the website will load data from Algolia,
-        and allows it to preconnect to the DocSearch cluster. It makes the first
-        query faster, especially on mobile. */}
-          <link
-              rel="preconnect"
-              href={`https://${props.appId}-dsn.algolia.net`}
-              crossOrigin="anonymous"
-          />
-        </Head>
-
-        <DocSearchButton
-            onTouchStart={importDocSearchModalIfNeeded}
-            onFocus={importDocSearchModalIfNeeded}
-            onMouseOver={importDocSearchModalIfNeeded}
-            onClick={onOpen}
-            ref={searchButtonRef}
-            translations={translations.button}
+    <>
+      <Head>
+        <link
+          rel="preconnect"
+          href={`https://${props.appId}-dsn.algolia.net`}
+          crossOrigin="anonymous"
         />
+      </Head>
 
-        {isOpen &&
-            DocSearchModal &&
-            searchContainer &&
-            createPortal(
-                <DocSearchModal
-                    onClose={onClose}
-                    initialScrollY={window.scrollY}
-                    initialQuery={initialQuery}
-                    navigator={navigator}
-                    transformItems={transformItems}
-                    hitComponent={Hit}
-                    transformSearchClient={transformSearchClient}
-                    {...(props.searchPagePath && {
-                      resultsFooterComponent,
-                    })}
-                    {...props}
-                    insights={true}
-                    searchParameters={searchParameters}
-                    placeholder={translations.placeholder}
-                    translations={translations.modal}
-                />,
-                searchContainer,
-            )}
-      </>
+      <DocSearchButton
+        onTouchStart={importDocSearchModalIfNeeded}
+        onFocus={importDocSearchModalIfNeeded}
+        onMouseOver={importDocSearchModalIfNeeded}
+        onClick={onOpen}
+        ref={searchButtonRef}
+        translations={translations.button}
+      />
+
+      {isOpen &&
+        DocSearchModal &&
+        searchContainer &&
+        createPortal(
+          <>               
+            <DocSearchModal
+              onClose={onClose}
+              initialScrollY={window.scrollY}
+              initialQuery={initialQuery}
+              navigator={navigator}
+              transformItems={transformItems}
+              hitComponent={SearchHit}
+              transformSearchClient={transformSearchClient}
+              {...(props.searchPagePath && {
+                resultsFooterComponent,
+              })}
+              {...props}
+              insights={true}
+              searchParameters={searchParametersRef.current}
+              placeholder={translations.placeholder}
+              translations={translations.modal}
+            />
+            
+            <div style={{
+              position: 'fixed',
+              top: window.innerWidth < 768 ? '55px' : '120px',
+              right: window.innerWidth < 768 ? 'calc(50% - 185px)' : 'calc(50% - 255px)',
+              zIndex: 10000,
+              backgroundColor: 'var(--docsearch-modal-background)',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+            }}>
+              <DocTypeSelector 
+                selectedDocTypes={selectedDocTypes}
+                onSelectionChange={handleDocTypeChange}
+              />
+            </div>
+          </>,
+          searchContainer
+        )}
+    </>
   );
 }
 
@@ -356,42 +259,11 @@ export default function SearchBar() {
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      // Check for "/" key or Cmd/Ctrl+K
-      const isSearchShortcut = (
-          event.key === '/' ||
-          (event.key === 'k' && (event.metaKey || event.ctrlKey))
-      );
-
-      if (isSearchShortcut) {
-        if (isAskAIOpen) {
-          const activeElement = document.activeElement;
-
-          const isInInputField = activeElement && (
-              activeElement.tagName === 'INPUT' ||
-              activeElement.tagName === 'TEXTAREA' ||
-              activeElement.id === 'kapa-ask-ai-input' ||
-              activeElement.id === 'kapa-widget-container' ||
-              activeElement.contentEditable === 'true' ||
-              activeElement.closest('[contenteditable="true"]') ||
-              activeElement.closest('#kapa-widget-container')
-          );
-
-          if (isInInputField && event.key === '/') {
-            event.stopImmediatePropagation();
-          } else {
-            event.preventDefault();
-            event.stopImmediatePropagation();
-          }
-        }
-      }
+      handleSearchKeyboardConflict(event, isAskAIOpen);
     };
 
-    // Add listener with capture phase to intercept before DocSearch
     document.addEventListener('keydown', handleKeyDown, true);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown, true);
-    };
+    return () => document.removeEventListener('keydown', handleKeyDown, true);
   }, [isAskAIOpen]);
 
   return <DocSearch {...siteConfig.themeConfig.algolia} />;

@@ -1,17 +1,18 @@
 ---
-description: 'ClickHouseにおけるArrayデータ型の文書'
-sidebar_label: 'Array(T)'
-sidebar_position: 32
-slug: '/sql-reference/data-types/array'
-title: 'Array(T)'
+'description': 'ClickHouseにおけるArrayデータ型に関するドキュメント'
+'sidebar_label': 'Array(T)'
+'sidebar_position': 32
+'slug': '/sql-reference/data-types/array'
+'title': 'Array(T)'
+'doc_type': 'reference'
 ---
 
 
 # Array(T)
 
-`T`型のアイテムの配列で、開始インデックスは1です。`T`は任意のデータ型であり、配列も含まれます。
+`T`型アイテムの配列で、開始配列インデックスは1です。`T`は配列を含む任意のデータ型であることができます。
 
-## 配列の作成 {#creating-an-array}
+## Creating an Array {#creating-an-array}
 
 関数を使用して配列を作成できます：
 
@@ -47,11 +48,11 @@ SELECT [1, 2] AS x, toTypeName(x)
 └───────┴────────────────────┘
 ```
 
-## データ型の操作 {#working-with-data-types}
+## Working with Data Types {#working-with-data-types}
 
-配列を即興で作成する際、ClickHouseは引数のデータ型を、リストされたすべての引数を格納できる最も狭いデータ型として自動的に定義します。もし[Nullable](/sql-reference/data-types/nullable)やリテラル[NULL](/operations/settings/formats#input_format_null_as_default)の値がある場合、配列要素の型も[Nullable](../../sql-reference/data-types/nullable.md)になります。
+その場で配列を作成する際、ClickHouseは自動的に引数タイプを、リストされたすべての引数を格納できる最も狭いデータ型として定義します。もし[Nullable](/sql-reference/data-types/nullable)またはリテラル[NULL](/operations/settings/formats#input_format_null_as_default)の値がある場合、配列要素の型も[Nullable](../../sql-reference/data-types/nullable.md)になります。
 
-ClickHouseがデータ型を特定できなかった場合、例外が生成されます。例えば、文字列と数字を同時に含む配列を作成しようとする場合 (`SELECT array(1, 'a')`) にこの問題が発生します。
+ClickHouseがデータ型を特定できなかった場合、例外が発生します。例えば、文字列と数字を同時に含む配列を作成しようとすると、これが発生します（`SELECT array(1, 'a')`）。
 
 自動データ型検出の例：
 
@@ -76,11 +77,11 @@ Received exception from server (version 1.1.54388):
 Code: 386. DB::Exception: Received from localhost:9000, 127.0.0.1. DB::Exception: There is no supertype for types UInt8, String because some of them are String/FixedString and some of them are not.
 ```
 
-## 配列のサイズ {#array-size}
+## Array Size {#array-size}
 
-`size0`サブカラムを使用して配列のサイズを取得することができ、全体のカラムを読み込む必要はありません。多次元配列の場合は、`sizeN-1`を使います。ここで、`N`は求める次元です。
+`size0`サブカラムを使用して配列のサイズを求めることができ、すべてのカラムを読み込む必要はありません。多次元配列の場合、`sizeN-1`を使用できます。ここで、`N`は望ましい次元です。
 
-**例**
+**Example**
 
 クエリ：
 
@@ -100,11 +101,11 @@ SELECT arr.size0, arr.size1, arr.size2 FROM t_arr;
 └───────────┴───────────┴───────────┘
 ```
 
-## 配列からのネストされたサブカラムの読み取り {#reading-nested-subcolumns-from-array}
+## Reading nested subcolumns from Array {#reading-nested-subcolumns-from-array}
 
-配列内のネストされた型`T`がサブカラムを持っている場合（例えば、[名前付きタプル](./tuple.md)の場合）、`Array(T)`型から同じサブカラム名を持つサブカラムを読むことができます。サブカラムの型は、元のサブカラムの型の`Array`になります。
+もし`Array`内のネストされた型`T`がサブカラムを持っている場合（例えば、[名前付きタプル](./tuple.md)の場合）、同じサブカラム名を持つ`Array(T)`型からそのサブカラムを読み取ることができます。サブカラムの型は、元のサブカラムの型の`Array`になります。
 
-**例**
+**Example**
 
 ```sql
 CREATE TABLE t_arr (arr Array(Tuple(field1 UInt32, field2 String))) ENGINE = MergeTree ORDER BY tuple();
