@@ -4,6 +4,7 @@ slug: /cloud/manage/backups/backup-restore-via-ui
 title: 'Take a backup or restore a backup from the UI'
 description: 'Page describing how to take a backup or restore a backup from the UI with your own bucket'
 sidebar_position: 2
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage'

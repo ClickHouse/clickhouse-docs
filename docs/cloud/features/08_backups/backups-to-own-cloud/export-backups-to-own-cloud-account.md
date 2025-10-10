@@ -4,6 +4,7 @@ slug: /cloud/manage/backups/export-backups-to-own-cloud-account
 title: 'Export Backups to your Own Cloud Account'
 description: 'Describes how to export backups to your own Cloud account'
 sidebar_position: 1
+doc_type: 'guide'
 ---
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
@@ -16,7 +17,6 @@ ClickHouse Cloud allows exporting backups to your own cloud service provider (CS
 If you configure backups to your own bucket, ClickHouse Cloud will still take daily backups to its own bucket. 
 This is to ensure that we have at least one copy of the data to restore from in case the backups in your bucket get corrupted.
 For details of how ClickHouse Cloud backups work, see the [backups](/cloud/manage/backups/overview) docs.
-
 
 In this guide, we walk through how you can export backups to your AWS, GCP, Azure object storage, as well as how to restore these backups in your account to a new ClickHouse Cloud service.
 We also share backup / restore commands that allow you to export backups to your bucket and restore them.
