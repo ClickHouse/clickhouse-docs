@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/AI/jupyter-notebook
-sidebar_label: 'Exploring data in Jupyter notebooks with chDB'
+sidebar_label: 'Exploring data with Jupyter notebooks and chDB'
 title: 'Exploring data in Jupyter notebooks with chDB'
 description: 'This guide explains how to setup and use chDB to explore data from ClickHouse Cloud or local files in Jupyer notebooks'
 keywords: ['ML', 'Jupyer', 'chDB', 'pandas']
@@ -25,6 +25,11 @@ In this guide, you will learn how you can explore a dataset on ClickHouse Cloud 
 **Prerequisites**:
 - a virtual environment
 - a working ClickHouse Cloud service and your [connection details](/cloud/guides/sql-console/gather-connection-details)
+
+:::tip
+If you don't yet have a ClickHouse Cloud account, you can [sign up](console.clickhouse.cloud/signUp?loc=docs-juypter-chdb) for
+a trial and get $300 in free-credits to begin.
+:::
 
 **What you'll learn:**
 - Connect to ClickHouse Cloud from Jupyter notebooks using chDB
