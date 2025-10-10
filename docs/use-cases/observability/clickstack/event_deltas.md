@@ -1,11 +1,11 @@
 ---
 slug: /use-cases/observability/clickstack/event_deltas
-title: 'Event Deltas with ClickStack'
-sidebar_label: 'Event Deltas'
+title: "Event Deltas with ClickStack"
+sidebar_label: "Event Deltas"
 pagination_prev: null
 pagination_next: null
-description: 'Event Deltas with ClickStack'
-doc_type: 'guide'
+description: "Event Deltas with ClickStack"
+doc_type: "guide"
 ---
 
 import Image from '@theme/IdealImage';
@@ -55,7 +55,7 @@ Conversely, values exclusively associated with inliers can also be interesting. 
 
 Event Deltas work by issuing two queries: one for the selected outlier area and one for the inlier area. Each query is limited to the appropriate duration and time window. A sample of events from both result sets is then inspected, and columns for which a high concentration of values appears predominantly in the outliers are identified. Columns for which 100% of a value occurs only in the outlier subset are shown first, highlighting the attributes most responsible for the observed differences.
 
-## Customizing the Graph {#customizing-the-graph}
+## Customizing the graph {#customizing-the-graph}
 
 Above the graph, you'll find controls that let you customize how the heatmap is generated. As you adjust these fields, the heatmap updates in real time, allowing you to visualize and compare relationships between any measurable value and its frequency over time.
 
@@ -79,7 +79,7 @@ You can modify these parameters to explore different dimensions of your data:
 
 ## Recommendations {#recommendations}
 
-Event Deltas work best when the analysis is focused on a specific service. Latency across multiple services can vary widely, making it harder to identify the columns and values most responsible for outliers. Before enabling Event Deltas, filter spans to a set where the distribution of latencies is expected to be similar. Target analyzing sets where wide latency variation is unexpected for the most useful insights, avoiding cases where it's the norm (e.g., two different services). 
+Event Deltas work best when the analysis is focused on a specific service. Latency across multiple services can vary widely, making it harder to identify the columns and values most responsible for outliers. Before enabling Event Deltas, filter spans to a set where the distribution of latencies is expected to be similar. Target analyzing sets where wide latency variation is unexpected for the most useful insights, avoiding cases where it's the norm (e.g., two different services).
 
 When selecting an area, users should aim for subsets where there is a clear distribution of slower versus faster durations, allowing the higher-latency spans to be cleanly isolated for analysis. For example, note the selected area below clearly captures a set of slower spans for analysis.
 
