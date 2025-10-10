@@ -1,10 +1,12 @@
 ---
-slug: '/operations/system-tables/histogram_metrics'
-description: 'Эта таблица содержит гистограммы, которые могут быть рассчитаны мгновенно'
-title: system.histogram_metrics
+description: 'Эта таблица содержит метрики гистограммы, которые могут быть рассчитаны мгновенно
+  и экспортированы в формате Prometheus. Она всегда актуальна.'
 keywords: ['системная таблица', 'метрики_гистограммы']
+slug: /ru/operations/system-tables/histogram_metrics
+title: 'system.histogram_metrics'
 doc_type: reference
 ---
+
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
@@ -12,7 +14,7 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud/>
 
-Эта таблица содержит гистограммы метрик, которые могут быть рассчитаны мгновенно и экспортированы в формате Prometheus. Она всегда актуальна. Заменяет устаревший `system.latency_log`.
+Эта таблица содержит метрики гистограммы, которые могут быть рассчитаны мгновенно и экспортированы в формате Prometheus. Она всегда актуальна.
 
 Колонки:
 
@@ -24,7 +26,7 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 **Пример**
 
-Вы можете использовать запрос, подобный этому, чтобы экспортировать все гистограммы метрик в формате Prometheus.
+Вы можете использовать запрос, подобный этому, чтобы экспортировать все метрики гистограммы в формате Prometheus.
 ```sql
 SELECT
   metric AS name,
@@ -36,13 +38,13 @@ FROM system.histogram_metrics
 FORMAT Prometheus
 ```
 
-## Metric descriptions {#metric_descriptions}
+## Описания метрик {#metric_descriptions}
 
 ### keeper_response_time_ms_bucket {#keeper_response_time_ms_bucket}
 Время отклика Keeper в миллисекундах.
 
-**См. также**
+**Смотрите также**
 - [system.asynchronous_metrics](/operations/system-tables/asynchronous_metrics) — Содержит периодически рассчитываемые метрики.
-- [system.events](/operations/system-tables/events) — Содержит ряд событий, которые произошли.
+- [system.events](/operations/system-tables/events) — Содержит ряд произошедших событий.
 - [system.metric_log](/operations/system-tables/metric_log) — Содержит историю значений метрик из таблиц `system.metrics` и `system.events`.
-- [Monitoring](../../operations/monitoring.md) — Основные концепции мониторинга ClickHouse.
+- [Мониторинг](../../operations/monitoring.md) — Основные понятия мониторинга ClickHouse.
