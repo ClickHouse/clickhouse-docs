@@ -102,7 +102,6 @@ with MCPServerAdapter(server_params, connect_timeout=60) as mcp_tools:
     ])
 ```
 
-
 ```response title="Response"
 🤖 LiteAgent: MCP Tool User
 Status: In Progress
