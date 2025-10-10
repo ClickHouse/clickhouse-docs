@@ -70,6 +70,7 @@ and also initialize our agent and ask it a question:
 
 ```python
 from upsonic import Agent, Task
+from upsonic.models.openai import OpenAIResponsesModel
 ```
 
 ```python
@@ -94,7 +95,7 @@ database_agent = Agent(
     name="Data Analyst",
     role="ClickHouse specialist.",
     goal="Query ClickHouse database and tables and answer questions",
-    model="openai/o3-mini"
+    model=OpenAIResponsesModel(model_name="gpt-5-mini-2025-08-07")
 )
 
 
