@@ -30,7 +30,7 @@ You can run the following steps either from your Python REPL or via script.
 
 ## Install libraries {#install-libraries}
 
-Install the Claude Agent SDK library by running the following commands:
+Install the CrewAI library by running the following commands:
 
 ```python
 !pip install -q --upgrade pip
@@ -254,7 +254,6 @@ Status: Completed
 │                                                                                                                                          │
 │                                                                                                                                          │
 ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-
 ```
 
 </VerticalStepper>
