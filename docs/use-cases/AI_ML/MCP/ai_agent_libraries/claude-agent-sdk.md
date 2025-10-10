@@ -33,9 +33,9 @@ You can run the following steps either from your Python REPL or via script.
 Install the Claude Agent SDK library by running the following commands:
 
 ```python
-!pip install -q --upgrade pip
-!pip install -q claude-agent-sdk
-!pip install -q ipywidgets
+pip install -q --upgrade pip
+pip install -q claude-agent-sdk
+pip install -q ipywidgets
 ```
 
 ## Setup credentials {#setup-credentials}

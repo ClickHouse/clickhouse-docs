@@ -33,9 +33,9 @@ You can run the following steps either from your Python REPL or via script.
 Install the Microsoft Agent Framework library by running the following commands:
 
 ```python
-!pip install -q --upgrade pip
-!pip install -q agent-framework --pre
-!pip install -q ipywidgets
+pip install -q --upgrade pip
+pip install -q agent-framework --pre
+pip install -q ipywidgets
 ```
 
 ## Setup credentials {#setup-credentials}
