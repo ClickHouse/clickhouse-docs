@@ -255,6 +255,7 @@ Covid
 Craigslist
 Craigslist's
 Cramer's
+CrewAI
 Criteo
 Crotty
 Crowdsourced
@@ -3638,6 +3639,7 @@ uploaders
 upperUTF
 upsert
 upserts
+Upsonic
 uptime
 uptimes
 uptrace

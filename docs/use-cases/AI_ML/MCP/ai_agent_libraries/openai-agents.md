@@ -33,8 +33,8 @@ You can run the following steps either from your Python REPL or via script.
 Install the required library by running the following commands:
 
 ```python
-!pip install -q --upgrade pip
-!pip install -q openai-agents
+pip install -q --upgrade pip
+pip install -q openai-agents
 ```
 
 ## Setup credentials {#setup-credentials}
