@@ -3639,6 +3639,7 @@ uploaders
 upperUTF
 upsert
 upserts
+Upsonic
 uptime
 uptimes
 uptrace
