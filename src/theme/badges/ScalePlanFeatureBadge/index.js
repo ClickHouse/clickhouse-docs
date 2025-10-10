@@ -8,7 +8,7 @@ const ScalePlanFeatureBadge = ({feature='This feature', linking_verb_are = false
                 Scale plan feature
             </div>
             <div>
-                <p>{feature} {linking_verb_are ? 'are' : 'is'} available in the Scale and Enterprise plans. To upgrade, visit the Plans page in the cloud console.</p>
+                <p>{feature} {linking_verb_are ? 'are' : 'is'} available in the Scale and Enterprise plans. To upgrade, visit the plans page in the cloud console.</p>
             </div>
         </div>
     )

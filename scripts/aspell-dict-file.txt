@@ -1174,3 +1174,6 @@ pytz
 timedelta
 --docs/integrations/language-clients/python/index.md--
 Polars
+--docs/cloud/features/08_backups/backups-to-own-cloud/backup_restore_using_commands.md--
+CSPs
+testchbackups

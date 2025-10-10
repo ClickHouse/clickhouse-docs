@@ -33,6 +33,7 @@
   width: 1.6em;
   fill: white;
 }
+
 .admonitionContent {
   padding: 1rem;
   background: var(--click-color-note-background);
