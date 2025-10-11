@@ -489,6 +489,7 @@ HashedDictionaryThreads
 HashedDictionaryThreadsActive
 HashiCorp
 Haversine
+Heatmap
 Heredoc
 HexAreaKm
 HexAreaM
