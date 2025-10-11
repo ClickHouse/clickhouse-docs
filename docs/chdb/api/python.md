@@ -71,7 +71,7 @@ Returns the query result in the specified format:
 
 ```pycon
 >>> # Query with file-based database
->>> result = chdb.query("CREATE TABLE test (id INT)", path="mydb.chdb")
+>>> result = chdb.query("CREATE TABLE test (id INT) ENGINE = Memory", path="mydb.chdb")
 ```
 
 ```pycon
@@ -141,7 +141,7 @@ Returns the query result in the specified format:
 
 ```pycon
 >>> # Query with file-based database
->>> result = chdb.query("CREATE TABLE test (id INT)", path="mydb.chdb")
+>>> result = chdb.query("CREATE TABLE test (id INT) ENGINE = Memory", path="mydb.chdb")
 ```
 
 ```pycon
@@ -527,7 +527,7 @@ number
 
 ```pycon
 >>> # Complex query with table creation
->>> session.query("CREATE TABLE test (id INT, name String)")
+>>> session.query("CREATE TABLE test (id INT, name String) ENGINE = Memory")
 >>> session.query("INSERT INTO test VALUES (1, 'Alice'), (2, 'Bob')")
 >>> result = session.query("SELECT * FROM test ORDER BY id")
 >>> print(result)
@@ -590,7 +590,7 @@ The returned StreamingResult object should be consumed promptly or stored approp
 
 ```pycon
 >>> session = Session("test.db")
->>> session.query("CREATE TABLE big_table (id INT, data String)")
+>>> session.query("CREATE TABLE big_table (id INT, data String) ENGINE = MergeTree() order by id")
 >>>
 >>> # Insert large dataset
 >>> for i in range(1000):
@@ -685,7 +685,7 @@ number
 
 ```pycon
 >>> # Complex query with table creation
->>> session.query("CREATE TABLE test (id INT, name String)")
+>>> session.query("CREATE TABLE test (id INT, name String) ENGINE = MergeTree() order by id")
 >>> session.query("INSERT INTO test VALUES (1, 'Alice'), (2, 'Bob')")
 >>> result = session.query("SELECT * FROM test ORDER BY id")
 >>> print(result)
@@ -836,7 +836,7 @@ is closed. Ensure all important data is processed before closing.
 ```pycon
 >>> conn = connect("test.db")
 >>> # Use connection for queries
->>> conn.query("CREATE TABLE test (id INT)")
+>>> conn.query("CREATE TABLE test (id INT) ENGINE = Memory")
 >>> # Close when done
 >>> conn.close()
 ```
@@ -881,7 +881,7 @@ with this connection. Only one cursor per connection is supported.
 ```pycon
 >>> conn = connect(":memory:")
 >>> cursor = conn.cursor()
->>> cursor.execute("CREATE TABLE test (id INT, name String)")
+>>> cursor.execute("CREATE TABLE test (id INT, name String) ENGINE = Memory")
 >>> cursor.execute("INSERT INTO test VALUES (1, 'Alice')")
 >>> cursor.execute("SELECT * FROM test")
 >>> rows = cursor.fetchall()
@@ -1266,7 +1266,7 @@ Python types:
 >>> cursor = conn.cursor()
 >>>
 >>> # Execute DDL
->>> cursor.execute("CREATE TABLE test (id INT, name String)")
+>>> cursor.execute("CREATE TABLE test (id INT, name String) ENGINE = Memory")
 >>>
 >>> # Execute DML
 >>> cursor.execute("INSERT INTO test VALUES (1, 'Alice')")
@@ -1681,7 +1681,7 @@ class chdb.dbapi.connections.Connection(path=None)
 >>> # File-based database
 >>> conn = Connection('mydata.db')
 >>> with conn.cursor() as cur:
-...     cur.execute("CREATE TABLE users (id INT, name STRING)")
+...     cur.execute("CREATE TABLE users (id INT, name STRING) ENGINE = MergeTree() order by id")
 ...     cur.execute("INSERT INTO users VALUES (1, 'Alice')")
 >>> conn.close()
 ```
