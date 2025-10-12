@@ -151,7 +151,7 @@ dbt relies on a read-after-insert consistency model. This is not compatible with
 
 #### About Data Skipping Indexes {#data-skipping-indexes}
 
-These indexes are only available for `table` materialization. A list of these indexes can be added in the tablle setting as
+These indexes are only available for `table` materialization. A list of these indexes can be added in the table setting as
 
 ```sql
 {{ config(
@@ -242,7 +242,7 @@ models:
 
 #### Adding complex types {#adding-complex-types}
 
-dbt attempts to infer the types of each column based on the SQL used to create the model. However, some types may not be directly inferable by this process, which may lead to collisions with the types defined in the contract `data_type` property. To resolve this, we recommend using the `CAST()` function in the model SQL to force the type you need. For example:
+dbt automatically determines the data type of each column by analyzing the SQL used to create the model. However, in some cases this process may not accurately determine the data type, leading to conflicts with the types specified in the contract `data_type` property. To address this, we recommend using the `CAST()` function in the model SQL to explicitly define the desired type. For example:
 
 ```sql
 {{
