@@ -41,6 +41,8 @@ List of supported features:
 - [x] Distributed table materialization (experimental)
 - [x] Distributed incremental materialization (experimental)
 - [x] Contracts
+- [x] ClickHouse-specific column configurations (Codec, TTL...)
+- [x] ClickHouse-specific table settings (indexes, projections...)
 
 All features up to dbt-core 1.9 are supported. We will soon add the features added in dbt-core 1.10.
 
@@ -125,7 +127,36 @@ Execute `dbt debug` with the CLI tool to confirm whether dbt is able to connect 
 
 Go to the [guides page](/integrations/dbt/guides) to learn more about how to use dbt with ClickHouse.
 
-## Troubleshooting Connections {#troubleshooting-connections}
+### Testing and Deploying your models (CI/CD) {#testing-and-deploying-your-models-ci-cd}
+
+There are many ways to test and deploy your dbt project. dbt has some suggestions for [best practice workflows](https://docs.getdbt.com/best-practices/best-practice-workflows#pro-tips-for-workflows) and [CI jobs](https://docs.getdbt.com/docs/deploy/ci-jobs). We are going to discuss several strategies, but keep into account that these strategies may need to be deeply adjusted to fit your specific use case.
+
+#### CI/CD with simple data tests and unit tests {#ci-with-simple-data-tests-and-unit-tests}
+
+One simple way to kick-start your CI pipeline is to run a ClickHouse cluster inside your job and then run your models against it. You can insert demo data into this cluster before running your models. You can just use a [seed](https://docs.getdbt.com/reference/commands/seed) to populate the staging environment with a subset of your production data.
+
+Once the data is inserted, you can then run your [data tests](https://docs.getdbt.com/docs/build/data-tests) and your [unit tests](https://docs.getdbt.com/docs/build/unit-tests).
+
+Your CD step can be as simple as running `dbt build` against your production ClickHouse cluster.
+
+#### More complete CI/CD stage: Use recent data, only test affected models {#more-complete-ci-stage}
+
+One common strategy is to use [Slim CI](https://docs.getdbt.com/best-practices/best-practice-workflows#run-only-modified-models-to-test-changes-slim-ci) jobs, where only the refreshed models (and their downstream dependencies) are tested. You can use the artifacts from your production runs to keep your development environment(s) in sync
+
+To keep your development environments in sync and avoid running your models against stale deployments, you can use [clone](https://docs.getdbt.com/reference/commands/clone) or even [defer](https://docs.getdbt.com/reference/node-selection/defer).
+
+It's better to use a different ClickHouse cluster (an `staging` one) to handle the testing phase. That way you can avoid impacting the performance of your production environment and the data there. You can keep a small subset of your production data there so you can run your models against it. There are different ways of handling this:
+- If your data doesn't need to be really recent, you can load backups of your production data into the staging cluster.
+- If you need more recent data, you can also find different strategies to load your data into the staging cluster. For example, you could use a refreshable materialized view and `remoteSecure()` and insert the data daily. If the insert fails or if there is data loss, you should be able to quickly re-trigger it.
+- Another way could be to use a cron or refreshable materialized view to write the data to object storage and then set up a clickpipe on staging to pull any new files when they drop.
+
+Doing your CI testing in an accessible cluster can let you also do some manual testing of your results. For example, you may want to access to this environment using one of your BI tools.
+
+Your CD step can reuse the artifacts from your last production deployment to only update the models that have changed with something like `dbt build --select state:modified+ --state path/to/last/deploy/state.json`
+
+## Troubleshooting common issues {#troubleshooting-common-issues}
+
+### Connections {#troubleshooting-connections}
 
 If you encounter issues connecting to ClickHouse from dbt, make sure the following criteria are met:
 
@@ -133,6 +164,10 @@ If you encounter issues connecting to ClickHouse from dbt, make sure the followi
 - You must have adequate permissions to access the database.
 - If you're not using the default table engine for the database, you must specify a table engine in your model
   configuration.
+
+### Understanding long-running operations {#understanding-long-running-operations}
+
+Some operations may take longer than expected due to specific ClickHouse queries. To gain more insight into which queries are taking longer, you can increase the log level to `debug` as it will print the time used by each one. For example, this can be achieved by appending `---log-level debug` to the command.
 
 ## Limitations {#limitations}
 

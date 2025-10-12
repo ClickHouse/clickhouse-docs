@@ -144,9 +144,41 @@ dbt relies on a read-after-insert consistency model. This is not compatible with
 | settings               | A map/dictionary of "TABLE" settings to be used to DDL statements like 'CREATE TABLE' with this model                                                                                                                                                                                                                |                |
 | query_settings         | A map/dictionary of ClickHouse user level settings to be used with `INSERT` or `DELETE` statements in conjunction with this model                                                                                                                                                                                    |                |
 | ttl                    | A TTL expression to be used with the table.  The TTL expression is a string that can be used to specify the TTL for the table.                                                                                                                                                                                       |                |
-| indexes                | A list of indexes to create, available only for `table` materialization. For examples look at ([#397](https://github.com/ClickHouse/dbt-clickhouse/pull/397))                                                                                                                                                        |                |
-| sql_security           | Allow you to specify which ClickHouse user to use when executing the view's underlying query. [`SQL SECURITY`](https://clickhouse.com/docs/sql-reference/statements/create/view#sql_security) has two legal values: `definer` `invoker`.                                                                             |                |
+| indexes                | A list of [data skipping indexes to create](/optimize/skipping-indexes). Check below for more information.                                                                                                                                                        |                |
+| sql_security           | Allow you to specify which ClickHouse user to use when executing the view's underlying query. `SQL SECURITY` [has two legal values](/sql-reference/statements/create/view#sql_security): `definer` `invoker`.                                                                             |                |
 | definer                | If `sql_security` was set to `definer`, you have to specify any existing user or `CURRENT_USER` in the `definer` clause.                                                                                                                                                                                             |                |
+| projections            | A list of [projections](/data-modeling/projections) to be created. Check below for more information.                                                                                                                                                        |                |
+
+#### About Data Skipping Indexes {#data-skipping-indexes}
+
+These indexes are only available for `table` materialization. A list of these indexes can be added in the tablle setting as
+
+```sql
+{{ config(
+        materialized='table',
+        indexes=[{
+          'name': 'your_index_name',
+          'definition': 'your_column TYPE minmax GRANULARITY 2'
+        }]
+) }}
+```
+
+#### About Projections {#projections}
+
+Projections are added to the `table` and `distributed_table` materializations as a model setting. For distributed tables, the projection is applied to the `_local` tables, not to the distributed proxy table. For example
+
+```sql
+{{ config(
+       materialized='table',
+       projections=[
+           {
+               'name': 'your_projection_name',
+               'query': 'SELECT department, avg(age) AS avg_age GROUP BY department'
+           }
+       ]
+) }}
+```
+
 
 ### Supported table engines {#supported-table-engines}
 
@@ -191,7 +223,7 @@ should be carefully researched and tested.
 | codec  | A string consisting of arguments passed to `CODEC()` in the column's DDL. For example: `codec: "Delta, ZSTD"` will be compiled as `CODEC(Delta, ZSTD)`.    |    
 | ttl    | A string consisting of a [TTL (time-to-live) expression](https://clickhouse.com/docs/guides/developer/ttl) that defines a TTL rule in the column's DDL. For example: `ttl: ts + INTERVAL 1 DAY` will be compiled as `TTL ts + INTERVAL 1 DAY`. |
 
-#### Example {#example}
+#### Example of schema configuration {#example-of-schema-configuration}
 
 ```yaml
 models:
@@ -207,6 +239,30 @@ models:
       - name: x
         data_type: UInt8
         ttl: ts + INTERVAL 1 DAY
+```
+
+#### Adding complex types {#adding-complex-types}
+
+dbt attempts to infer the types of each column based on the SQL used to create the model. However, some types may not be directly inferable by this process, which may lead to collisions with the types defined in the contract `data_type` property. To resolve this, we recommend using the `CAST()` function in the model SQL to force the type you need. For example:
+
+```sql
+{{
+    config(
+        materialized="materialized_view",
+        engine="AggregatingMergeTree",
+        order_by=["event_type"],
+    )
+}}
+
+select
+  -- event_type may be infered as a String but we may prefer LowCardinality(String):
+  CAST(event_type, 'LowCardinality(String)') as event_type,
+  -- countState() may be infered as `AggregateFunction(count)` but we may prefer to change the type of the argument used:
+  CAST(countState(), 'AggregateFunction(count, UInt32)') as response_count, 
+  -- maxSimpleState() may be infered as `SimpleAggregateFunction(max, String)` but we may prefer to also change the type of the argument used:
+  CAST(maxSimpleState(event_type), 'SimpleAggregateFunction(max, LowCardinality(String))') as max_event_type
+from {{ ref('user_events') }}
+group by event_type
 ```
 
 ## Features {#features}
