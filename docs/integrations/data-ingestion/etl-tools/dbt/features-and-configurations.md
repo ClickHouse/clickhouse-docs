@@ -179,7 +179,6 @@ Projections are added to the `table` and `distributed_table` materializations as
 ) }}
 ```
 
-
 ### Supported table engines {#supported-table-engines}
 
 | Type                   | Details                                                                                   |
