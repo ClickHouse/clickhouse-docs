@@ -1,15 +1,14 @@
 ---
-description: 'Документация для типа данных Array в ClickHouse'
-sidebar_label: 'Array(T)'
+slug: '/sql-reference/data-types/array'
+sidebar_label: Array(T)
 sidebar_position: 32
-slug: /sql-reference/data-types/array
-title: 'Array(T)'
+description: 'Документация для типа данных Array в ClickHouse'
+title: Array(T)
+doc_type: reference
 ---
-
-
 # Array(T)
 
-Массив элементов типа `T`, начиная с индекса 1. `T` может быть любым типом данных, включая массив.
+Массив элементов типа `T`, с индексом массива, начиная с 1. `T` может быть любым типом данных, включая массив.
 
 ## Создание массива {#creating-an-array}
 
@@ -19,7 +18,7 @@ title: 'Array(T)'
 array(T)
 ```
 
-Вы также можете использовать квадратные скобки.
+Также можно использовать квадратные скобки.
 
 ```sql
 []
@@ -49,9 +48,9 @@ SELECT [1, 2] AS x, toTypeName(x)
 
 ## Работа с типами данных {#working-with-data-types}
 
-При создании массива на лету, ClickHouse автоматически определяет тип аргумента как самый узкий тип данных, который может хранить все перечисленные аргументы. Если имеются какие-либо значения [Nullable](/sql-reference/data-types/nullable) или литеральные [NULL](/operations/settings/formats#input_format_null_as_default), тип элемента массива также становится [Nullable](../../sql-reference/data-types/nullable.md).
+При создании массива на лету ClickHouse автоматически определяет тип аргумента как самый узкий тип данных, который может хранить все перечисленные аргументы. Если есть любые [Nullable](/sql-reference/data-types/nullable) или литеральные [NULL](/operations/settings/formats#input_format_null_as_default) значения, тип элемента массива также становится [Nullable](../../sql-reference/data-types/nullable.md).
 
-Если ClickHouse не смог определить тип данных, генерируется исключение. Это происходит, например, при попытке создать массив со строками и числами одновременно (`SELECT array(1, 'a')`).
+Если ClickHouse не может определить тип данных, он генерирует исключение. Например, это происходит, когда вы пытаетесь создать массив со строками и числами одновременно (`SELECT array(1, 'a')`).
 
 Примеры автоматического определения типа данных:
 
@@ -65,7 +64,7 @@ SELECT array(1, 2, NULL) AS x, toTypeName(x)
 └────────────┴───────────────────────────────┘
 ```
 
-Если вы попытаетесь создать массив с несовместимыми типами данных, ClickHouse выдаст исключение:
+Если вы попытаетесь создать массив несовместимых типов данных, ClickHouse выдает исключение:
 
 ```sql
 SELECT array(1, 'a')
@@ -78,7 +77,7 @@ Code: 386. DB::Exception: Received from localhost:9000, 127.0.0.1. DB::Exception
 
 ## Размер массива {#array-size}
 
-Можно определить размер массива, используя подколонку `size0`, не читая всю колонку. Для многомерных массивов можно воспользоваться `sizeN-1`, где `N` — это нужное измерение.
+Можно узнать размер массива, используя подпроекцию `size0`, не читая целую колонку. Для многомерных массивов вы можете использовать `sizeN-1`, где `N` - это нужная размерность.
 
 **Пример**
 
@@ -100,9 +99,9 @@ SELECT arr.size0, arr.size1, arr.size2 FROM t_arr;
 └───────────┴───────────┴───────────┘
 ```
 
-## Чтение вложенных подколонок из массива {#reading-nested-subcolumns-from-array}
+## Чтение вложенных подпроекций из массива {#reading-nested-subcolumns-from-array}
 
-Если вложенный тип `T` внутри `Array` имеет подколонки (например, если это [именованный кортеж](./tuple.md)), вы можете читать его подколонки из типа `Array(T)` с теми же именами подколонок. Тип подколонки будет `Array` типа оригинальной подколонки.
+Если вложенный тип `T` внутри `Array` имеет подпроекции (например, если это [именованный кортеж](./tuple.md)), вы можете читать его подпроекции из типа `Array(T)` с теми же именами подпроекций. Тип подпроекции будет `Array` типа оригинальной подпроекции.
 
 **Пример**
 
@@ -112,7 +111,7 @@ INSERT INTO t_arr VALUES ([(1, 'Hello'), (2, 'World')]), ([(3, 'This'), (4, 'is'
 SELECT arr.field1, toTypeName(arr.field1), arr.field2, toTypeName(arr.field2) from t_arr;
 ```
 
-```text
+```test
 ┌─arr.field1─┬─toTypeName(arr.field1)─┬─arr.field2────────────────┬─toTypeName(arr.field2)─┐
 │ [1,2]      │ Array(UInt32)          │ ['Hello','World']         │ Array(String)          │
 │ [3,4,5]    │ Array(UInt32)          │ ['This','is','subcolumn'] │ Array(String)          │

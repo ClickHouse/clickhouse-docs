@@ -1,16 +1,15 @@
 ---
-description: 'Вычесляет выборочную асимметрию последовательности.'
+slug: '/sql-reference/aggregate-functions/reference/skewsamp'
 sidebar_position: 186
-slug: /sql-reference/aggregate-functions/reference/skewsamp
-title: 'skewSamp'
+description: 'Вычисляет выборочную асимметрию последовательности.'
+title: skewSamp
+doc_type: reference
 ---
-
-
 # skewSamp
 
-Вычесляет [выборочную асимметрию](https://en.wikipedia.org/wiki/Skewness) последовательности.
+Вычисляет [дисперсию выборки](https://en.wikipedia.org/wiki/Skewness) последовательности.
 
-Она представляет собой несмещённую оценку асимметрии случайной величины, если переданные значения образуют её выборку.
+Это беспристрастная оценка асимметрии случайной величины, если переданные значения образуют её выборку.
 
 ```sql
 skewSamp(expr)

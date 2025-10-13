@@ -1,17 +1,17 @@
 ---
-description: 'Движок таблиц GenerateRandom генерирует случайные данные для заданной схемы таблицы.'
-sidebar_label: 'GenerateRandom'
+slug: '/engines/table-engines/special/generate'
+sidebar_label: GenerateRandom
 sidebar_position: 140
-slug: /engines/table-engines/special/generate
+description: 'Движок таблицы GenerateRandom генерирует случайные данные для заданной'
 title: 'Движок таблиц GenerateRandom'
+doc_type: reference
 ---
-
-Движок таблиц GenerateRandom генерирует случайные данные для заданной схемы таблицы.
+Движок таблиц GenerateRandom производит случайные данные для заданной схемы таблицы.
 
 Примеры использования:
 
-- Используйте в тестах для заполнения воспроизводимой большой таблицы.
-- Генерируйте случайный ввод для тестов на устойчивость.
+- Использовать в тестах для заполнения воспроизводимой большой таблицы.
+- Генерировать случайные входные данные для фуззинг-тестов.
 
 ## Использование в ClickHouse Server {#usage-in-clickhouse-server}
 
@@ -19,11 +19,12 @@ title: 'Движок таблиц GenerateRandom'
 ENGINE = GenerateRandom([random_seed [,max_string_length [,max_array_length]]])
 ```
 
-Параметры `max_array_length` и `max_string_length` задают максимальную длину всех массивов или колонок типа map и строк соответственно в сгенерированных данных.
+Параметры `max_array_length` и `max_string_length` задают максимальную длину всех 
+колонок массива или карты и строк соответственно в сгенерированных данных.
 
 Движок генерации таблиц поддерживает только запросы `SELECT`.
 
-Он поддерживает все [DataTypes](../../../sql-reference/data-types/index.md), которые могут храниться в таблице, кроме `AggregateFunction`.
+Он поддерживает все [DataTypes](../../../sql-reference/data-types/index.md), которые могут быть сохранены в таблице, кроме `AggregateFunction`.
 
 ## Пример {#example}
 
@@ -49,9 +50,9 @@ SELECT * FROM generate_engine_table LIMIT 3
 
 ## Подробности реализации {#details-of-implementation}
 
-- Не поддерживаются:
-    - `ALTER`
-    - `SELECT ... SAMPLE`
-    - `INSERT`
-    - Индексы
-    - Репликация
+- Не поддерживается:
+  - `ALTER`
+  - `SELECT ... SAMPLE`
+  - `INSERT`
+  - Индексы
+  - Репликация

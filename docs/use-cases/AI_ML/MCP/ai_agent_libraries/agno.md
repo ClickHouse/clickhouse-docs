@@ -33,9 +33,9 @@ You can run the following steps either from your Python REPL or via script.
 Install the Agno library by running the following commands:
 
 ```python
-!pip install -q --upgrade pip
-!pip install -q agno
-!pip install -q ipywidgets
+pip install -q --upgrade pip
+pip install -q agno
+pip install -q ipywidgets
 ```
 
 ## Setup credentials {#setup-credentials}
@@ -53,7 +53,7 @@ Enter Anthropic API Key: ········
 
 :::note Using another LLM provider
 If you don't have an Anthropic API key, and want to use another LLM provider,
-you can find the instructions for setting up your credentials in the [DSPy docs](https://dspy.ai/#__tabbed_1_1)
+you can find the instructions for setting up your credentials in the [Agno docs](https://docs.agno.com/concepts/models/introduction)
 :::
 
 Next, define the credentials needed to connect to the ClickHouse SQL playground:

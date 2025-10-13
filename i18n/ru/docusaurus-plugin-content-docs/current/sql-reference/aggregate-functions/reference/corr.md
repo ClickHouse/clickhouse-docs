@@ -1,11 +1,10 @@
 ---
-description: 'Вычисляет коэффициент корреляции Пирсона.'
+slug: '/sql-reference/aggregate-functions/reference/corr'
 sidebar_position: 117
-slug: /sql-reference/aggregate-functions/reference/corr
-title: 'corr'
+description: 'Вы calculates коэффициент корреляции Пирсона.'
+title: corr
+doc_type: reference
 ---
-
-
 # corr
 
 Вычисляет [коэффициент корреляции Пирсона](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient):
@@ -16,7 +15,7 @@ $$
 
 <br/>
 :::note
-Эта функция использует численно неустойчивый алгоритм. Если вам нужна [численная стабильность](https://en.wikipedia.org/wiki/Numerical_stability) в расчетах, используйте функцию [`corrStable`](../reference/corrstable.md). Она медленнее, но обеспечивает более точный результат.
+Эта функция использует численно нестабильный алгоритм. Если вам нужна [численная стабильность](https://en.wikipedia.org/wiki/Numerical_stability) в расчетах, используйте функцию [`corrStable`](../reference/corrstable.md). Она медленнее, но дает более точный результат.
 :::
 
 **Синтаксис**

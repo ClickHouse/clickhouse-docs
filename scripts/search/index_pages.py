@@ -25,6 +25,17 @@ files_processed = set()
 link_data = []
 
 
+def get_doc_type_rank(doc_type):
+    """Return numeric rank for doc_type to use in Algolia customRanking."""
+    ranks = {
+        'guide': 3,
+        'reference': 3,
+        'changelog': 1,
+        'landing_page': 1
+    }
+    return ranks.get(doc_type, 2)  # Default to 2 for unspecified types
+
+
 def split_url_and_anchor(url):
     parsed_url = urlparse(url)
     url_without_anchor = urlunparse(parsed_url._replace(fragment=""))
@@ -39,7 +50,11 @@ def read_metadata(text):
         parts = part.split(":")
         if len(parts) == 2:
             if parts[0] in ['title', 'description', 'slug', 'keywords', 'score', 'doc_type']:
-                metadata[parts[0]] = int(parts[1].strip()) if parts[0] == 'score' else parts[1].strip()
+                value = parts[1].strip()
+                # Strip quotes only from doc_type
+                if parts[0] == 'doc_type':
+                    value = value.strip("'\"")
+                metadata[parts[0]] = int(value) if parts[0] == 'score' else value
     return metadata
 
 
@@ -249,7 +264,8 @@ def parse_markdown_content(metadata, content, base_url):
             'lvl1': current_h1
         },
         'score': metadata.get('score', 0),
-        'doc_type': metadata.get('doc_type', '')
+        'doc_type': metadata.get('doc_type', ''),
+        'doc_type_rank': get_doc_type_rank(metadata.get('doc_type', ''))
     }
     for line in lines:
         if line.startswith('# '):
@@ -294,7 +310,8 @@ def parse_markdown_content(metadata, content, base_url):
                     'lvl1': current_h1,
                     'lvl2': current_h2,
                 },
-                'doc_type': metadata.get('doc_type', '')
+                'doc_type': metadata.get('doc_type', ''),
+                'doc_type_rank': get_doc_type_rank(metadata.get('doc_type', ''))
             }
         elif line.startswith('### '):
             # note we send users to the h2 or h1 even on ###
@@ -324,7 +341,8 @@ def parse_markdown_content(metadata, content, base_url):
                     'lvl2': current_h2,
                     'lvl3': current_h3,
                 },
-                'doc_type': metadata.get('doc_type', '')
+                'doc_type': metadata.get('doc_type', ''),
+                'doc_type_rank': get_doc_type_rank(metadata.get('doc_type', ''))
             }
         elif line.startswith('#### '):
             if current_subdoc:
@@ -351,7 +369,8 @@ def parse_markdown_content(metadata, content, base_url):
                     'lvl3': current_h3,
                     'lvl4': current_h4,
                 },
-                'doc_type': metadata.get('doc_type', '')
+                'doc_type': metadata.get('doc_type', ''),
+                'doc_type_rank': get_doc_type_rank(metadata.get('doc_type', ''))
             }
         elif current_subdoc:
             current_subdoc['content'] += line + '\n'
@@ -453,6 +472,7 @@ def main(base_directory, algolia_app_id, algolia_api_key, algolia_index_name,
                 print(f"URL: {sample_record.get('url', 'N/A')}")
                 print(f"Type: {sample_record.get('type', 'N/A')}")
                 print(f"Doc Type: {sample_record.get('doc_type', 'N/A')}")
+                print(f"Doc Type Rank: {sample_record.get('doc_type_rank', 'N/A')}")
                 print(f"Keywords: {sample_record.get('keywords', 'N/A')}")
                 print("--- End sample ---\n")
         print(f"{'processed' if dry_run else 'indexed'} {len(batch)} records")

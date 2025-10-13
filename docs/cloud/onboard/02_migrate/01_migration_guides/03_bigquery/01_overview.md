@@ -51,7 +51,7 @@ Lastly, I/O scheduling allows users to restrict local and remote disk accesses f
 
 ### Permissions {#permissions}
 
-ClickHouse Cloud [controls user access](/cloud/security/cloud-access-management) in two places, via the [cloud console](/cloud/get-started/sql-console) and via the database. Console access is managed via the [clickhouse.cloud](https://console.clickhouse.cloud) user interface. Database access is managed via database user accounts and roles. Additionally, console users can be granted roles within the database that enable the console user to interact with the database via our [SQL console](/integrations/sql-clients/sql-console).
+ClickHouse Cloud controls user access in two places, via the [cloud console](/cloud/guides/sql-console/manage-sql-console-role-assignments) and via the [database](/cloud/security/manage-database-users). Console access is managed via the [clickhouse.cloud](https://console.clickhouse.cloud) user interface. Database access is managed via database user accounts and roles. Additionally, console users can be granted roles within the database that enable the console user to interact with the database via our [SQL console](/integrations/sql-clients/sql-console).
 
 ## Data types {#data-types}
 

@@ -1,10 +1,10 @@
 ---
-description: 'Системная таблица, содержащая информацию о параметрах сборки сервера ClickHouse.'
-slug: /operations/system-tables/build_options
-title: 'system.build_options'
+slug: '/operations/system-tables/build_options'
+description: 'Системная таблица, содержащая информацию о параметрах сборки сервера'
+title: system.build_options
 keywords: ['системная таблица', 'build_options']
+doc_type: reference
 ---
-
 Содержит информацию о параметрах сборки сервера ClickHouse.
 
 Колонки:

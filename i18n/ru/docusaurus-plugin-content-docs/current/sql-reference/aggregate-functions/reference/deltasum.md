@@ -1,17 +1,16 @@
 ---
-description: 'Суммирует арифметическую разницу между последовательными строками.'
+slug: '/sql-reference/aggregate-functions/reference/deltasum'
 sidebar_position: 129
-slug: /sql-reference/aggregate-functions/reference/deltasum
-title: 'deltaSum'
+description: 'Суммирует арифметическую разницу между последовательноми строками.'
+title: deltaSum
+doc_type: reference
 ---
-
-
 # deltaSum
 
 Суммирует арифметическую разницу между последовательными строками. Если разница отрицательная, она игнорируется.
 
 :::note
-Исходные данные должны быть отсортированы для корректной работы этой функции. Если вы хотите использовать эту функцию в [материализованном представлении](/sql-reference/statements/create/view#materialized-view), вам, вероятно, стоит использовать метод [deltaSumTimestamp](/sql-reference/aggregate-functions/reference/deltasumtimestamp).
+Исходные данные должны быть отсортированы для правильной работы этой функции. Если вы хотите использовать эту функцию в [материализованном представлении](/sql-reference/statements/create/view#materialized-view), вам, скорее всего, следует использовать метод [deltaSumTimestamp](/sql-reference/aggregate-functions/reference/deltasumtimestamp).
 :::
 
 **Синтаксис**
@@ -72,6 +71,6 @@ SELECT deltaSum(arrayJoin([2.25, 3, 4.5]));
 └─────────────────────────────────────┘
 ```
 
-## See Also {#see-also}
+## См. также {#see-also}
 
 - [runningDifference](/sql-reference/functions/other-functions#runningDifference)

@@ -1,6 +1,6 @@
 ---
 'sidebar_title': 'Query API Endpoints'
-'slug': '/cloud/get-started/query-endpoints'
+'slug': '/cloud/features/query-api-endpoints'
 'description': '轻松从您保存的查询生成 REST API 端点'
 'keywords':
 - 'api'

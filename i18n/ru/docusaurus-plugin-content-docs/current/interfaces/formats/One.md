@@ -1,32 +1,30 @@
 ---
-alias: []
-description: 'Документация для формата One'
-input_format: true
+slug: '/interfaces/formats/One'
+description: 'Документация по формату One'
+title: One
 keywords: ['One']
+doc_type: reference
+input_format: true
 output_format: false
-slug: /interfaces/formats/One
-title: 'One'
 ---
-
-
-| Входные данные | Выходные данные | Псевдоним |
-|----------------|----------------|-----------|
-| ✔              | ✗              |           |
+| Вход | Выход | Псевдоним |
+|------|-------|-----------|
+| ✔    | ✗     |           |
 
 ## Описание {#description}
 
-Формат `One` является специальным форматом ввода, который не читает никаких данных из файла и возвращает только одну строку с колонкой типа [`UInt8`](../../sql-reference/data-types/int-uint.md), именем `dummy` и значением `0` (аналогично таблице `system.one`). 
-Может использоваться с виртуальными колонками `_file/_path` для перечисления всех файлов без чтения фактических данных.
+Формат `One` — это специальный формат ввода, который не считывает данные из файла и возвращает только одну строку с колонкой типа [`UInt8`](../../sql-reference/data-types/int-uint.md), с именем `dummy` и значением `0` (аналогично таблице `system.one`).
+Может быть использован с виртуальными колонками `_file/_path` для перечисления всех файлов без считывания фактических данных.
 
 ## Пример использования {#example-usage}
 
 Пример:
 
-```sql title="Запрос"
+```sql title="Query"
 SELECT _file FROM file('path/to/files/data*', One);
 ```
 
-```text title="Ответ"
+```text title="Response"
 ┌─_file────┐
 │ data.csv │
 └──────────┘

@@ -1,11 +1,11 @@
 ---
-description: 'Позволяет ClickHouse подключаться к внешним базам данных через JDBC.'
-sidebar_label: 'JDBC'
+slug: '/engines/table-engines/integrations/jdbc'
+sidebar_label: JDBC
 sidebar_position: 100
-slug: /engines/table-engines/integrations/jdbc
-title: 'JDBC'
+description: 'Позволяет ClickHouse подключаться к внешним базам данных через JDBC.'
+title: JDBC
+doc_type: reference
 ---
-
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
@@ -14,41 +14,42 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 <CloudNotSupportedBadge/>
 
 :::note
-clickhouse-jdbc-bridge содержит экспериментальные коды и больше не поддерживается. Он может содержать проблемы с надежностью и уязвимости безопасности. Используйте его на свой страх и риск.
-ClickHouse рекомендует использовать встроенные табличные функции в ClickHouse, которые предоставляют лучшую альтернативу для сценариев запросов по требованию (Postgres, MySQL, MongoDB и т.д.).
+clickhouse-jdbc-bridge содержит экспериментальный код и больше не поддерживается. Он может содержать проблемы с надежностью и уязвимости безопасности. Используйте его на свой страх и риск. 
+ClickHouse рекомендует использовать встроенные табличные функции в ClickHouse, которые предоставляют более качественную альтернативу для сценариев ад-хок запросов (Postgres, MySQL, MongoDB и т.д.).
 :::
 
 Позволяет ClickHouse подключаться к внешним базам данных через [JDBC](https://en.wikipedia.org/wiki/Java_Database_Connectivity).
 
-Для реализации подключения по JDBC ClickHouse использует отдельную программу [clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge), которая должна работать как демон.
+Для реализации подключения JDBC ClickHouse использует отдельную программу [clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge), которая должна работать как демон.
 
 Этот движок поддерживает тип данных [Nullable](../../../sql-reference/data-types/nullable.md).
 
-## Создание Таблицы {#creating-a-table}
+## Создание таблицы {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name
 (
     columns list...
 )
-ENGINE = JDBC(datasource_uri, external_database, external_table)
+ENGINE = JDBC(datasource, external_database, external_table)
 ```
 
-**Параметры Движка**
+**Параметры движка**
 
-
-- `datasource_uri` — URI или имя внешней СУБД.
+- `datasource` — URI или имя внешней СУБД.
 
     Формат URI: `jdbc:<driver_name>://<host_name>:<port>/?user=<username>&password=<password>`.
     Пример для MySQL: `jdbc:mysql://localhost:3306/?user=root&password=root`.
 
-- `external_database` — База данных во внешней СУБД.
+- `external_database` — Имя базы данных во внешней СУБД или, вместо этого, явно определенная схема таблицы (см. примеры).
 
-- `external_table` — Название таблицы в `external_database` или запрос select, например `select * from table1 where column1=1`.
+- `external_table` — Имя таблицы во внешней базе данных или запрос SELECT, например, `select * from table1 where column1=1`.
 
-## Пример Использования {#usage-example}
+- Эти параметры также могут быть переданы с помощью [именованных коллекций](operations/named-collections.md).
 
-Создание таблицы на сервере MySQL, подключаясь напрямую с консольного клиента:
+## Пример использования {#usage-example}
+
+Создание таблицы на сервере MySQL, подключаясь напрямую с помощью его клиентской консоли:
 
 ```text
 mysql> CREATE TABLE `test`.`test` (
@@ -71,7 +72,7 @@ mysql> select * from test;
 1 row in set (0,00 sec)
 ```
 
-Создание таблицы на сервере ClickHouse и выборка данных из нее:
+Создание таблицы на сервере ClickHouse и выбор данных из нее:
 
 ```sql
 CREATE TABLE jdbc_table
