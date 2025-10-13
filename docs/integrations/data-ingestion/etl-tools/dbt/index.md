@@ -141,7 +141,7 @@ Your CD step can be as simple as running `dbt build` against your production Cli
 
 #### More complete CI/CD stage: Use recent data, only test affected models {#more-complete-ci-stage}
 
-One common strategy is to use [Slim CI](https://docs.getdbt.com/best-practices/best-practice-workflows#run-only-modified-models-to-test-changes-slim-ci) jobs, where only the refreshed models (and their downstream dependencies) are tested. You can use the artifacts from your production runs to keep your development environment(s) in sync
+One common strategy is to use [Slim CI](https://docs.getdbt.com/best-practices/best-practice-workflows#run-only-modified-models-to-test-changes-slim-ci) jobs, where only the modified models (and their up- and downstream dependencies) are re-deployed. This approach uses artifacts from your production runs (i.e., the [dbt manifest](https://docs.getdbt.com/reference/artifacts/manifest-json)) to reduce the run time of your project and ensure there is no schema drift across environments.
 
 To keep your development environments in sync and avoid running your models against stale deployments, you can use [clone](https://docs.getdbt.com/reference/commands/clone) or even [defer](https://docs.getdbt.com/reference/node-selection/defer).
 
