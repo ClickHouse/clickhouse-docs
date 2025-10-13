@@ -178,6 +178,7 @@ You can add [projections](/data-modeling/projections) to `table` and `distribute
        ]
 ) }}
 ```
+**Note**: For distributed tables, the projection is applied to the `_local` tables, not to the distributed proxy table.
 
 ### Supported table engines {#supported-table-engines}
 
