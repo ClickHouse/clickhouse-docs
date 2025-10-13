@@ -151,7 +151,7 @@ dbt relies on a read-after-insert consistency model. This is not compatible with
 
 #### About data skipping indexes {#data-skipping-indexes}
 
-These indexes are only available for `table` materialization. A list of these indexes can be added in the table setting as
+Data skipping indexes are only available for the `table` materialization. To add a list of data skipping indexes to a table, use the `indexes` configuration:
 
 ```sql
 {{ config(
