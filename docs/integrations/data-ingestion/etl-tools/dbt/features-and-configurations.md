@@ -163,7 +163,7 @@ These indexes are only available for `table` materialization. A list of these in
 ) }}
 ```
 
-#### About Projections {#projections}
+#### About projections {#projections}
 
 Projections are added to the `table` and `distributed_table` materializations as a model setting. For distributed tables, the projection is applied to the `_local` tables, not to the distributed proxy table. For example
 
