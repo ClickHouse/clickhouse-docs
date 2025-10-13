@@ -145,14 +145,14 @@ One common strategy is to use [Slim CI](https://docs.getdbt.com/best-practices/b
 
 To keep your development environments in sync and avoid running your models against stale deployments, you can use [clone](https://docs.getdbt.com/reference/commands/clone) or even [defer](https://docs.getdbt.com/reference/node-selection/defer).
 
-It's better to use a different ClickHouse cluster (an `staging` one) to handle the testing phase. That way you can avoid impacting the performance of your production environment and the data there. You can keep a small subset of your production data there so you can run your models against it. There are different ways of handling this:
-- If your data doesn't need to be really recent, you can load backups of your production data into the staging cluster.
-- If you need more recent data, you can also find different strategies to load your data into the staging cluster. For example, you could use a refreshable materialized view and `remoteSecure()` and insert the data daily. If the insert fails or if there is data loss, you should be able to quickly re-trigger it.
-- Another way could be to use a cron or refreshable materialized view to write the data to object storage and then set up a clickpipe on staging to pull any new files when they drop.
+We recommend using a dedicated ClickHouse cluster or service for the testing environment (i.e., a staging environment) to avoid impacting the operation of your production environment. To ensure the testing environment is representative, it's important that you use a subset of your production data, as well as run dbt in a way that prevents schema drift between environments.
 
-Doing your CI testing in an accessible cluster can let you also do some manual testing of your results. For example, you may want to access to this environment using one of your BI tools.
+- If you don't need fresh data to test against, you can restore a backup of your production data into the staging environment.
+- If you need fresh data to test against, you can use a combination of the [`remoteSecure()` table function](/sql-reference/table-functions/remote) and refreshable materialized views to insert at the desired frequency. Another option is to use object storage as an intermediate and periodically write data from your production service, then import it into the staging environment using the object storage table functions or ClickPipes (for continuous ingestion).
 
-Your CD step can reuse the artifacts from your last production deployment to only update the models that have changed with something like `dbt build --select state:modified+ --state path/to/last/deploy/state.json`
+Using a dedicated environment for CI testing also allows you to perform manual testing without impacting your production environment. For example, you may want to point a BI tool to this environment for testing.
+
+For deployment (i.e., the CD step), we recommend using the artifacts from your production deployments to only update the models that have changed. This requires setting up object storage (e.g., S3) as intermediate storage for your dbt artifacts. Once that is set up, you can run a command like `dbt build --select state:modified+ --state path/to/last/deploy/state.json` to selectively rebuild the minimum amount of models needed based on what changed since the last run in production.
 
 ## Troubleshooting common issues {#troubleshooting-common-issues}
 
