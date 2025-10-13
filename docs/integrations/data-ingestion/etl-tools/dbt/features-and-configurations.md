@@ -149,7 +149,7 @@ dbt relies on a read-after-insert consistency model. This is not compatible with
 | definer                | If `sql_security` was set to `definer`, you have to specify any existing user or `CURRENT_USER` in the `definer` clause.                                                                                                                                                                                             |                |
 | projections            | A list of [projections](/data-modeling/projections) to be created. Check [About projections](#projections) for details.                                                                                                                                                        |                |
 
-#### About Data Skipping Indexes {#data-skipping-indexes}
+#### About data skipping indexes {#data-skipping-indexes}
 
 These indexes are only available for `table` materialization. A list of these indexes can be added in the table setting as
 
