@@ -1,39 +1,39 @@
 ---
-slug: /native-protocol/basics
+slug: '/native-protocol/basics'
 sidebar_position: 1
-title: 'Основы'
 description: 'Основы нативного протокола'
+title: Основы
+doc_type: guide
 ---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 
 # Основы
 
 :::note
-Справочник по клиентскому протоколу в процессе написания.
+Справка по клиентскому протоколу в процессе разработки.
 
 Большинство примеров только на Go.
 :::
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 
 Этот документ описывает бинарный протокол для TCP-клиентов ClickHouse.
 
 ## Varint {#varint}
 
-Для длин, кодов пакетов и других случаев используется *беззнаковое varint* кодирование.
+Для длин, кодов пакетов и других случаев используется *беззнаковая varint* кодировка.
 Используйте [binary.PutUvarint](https://pkg.go.dev/encoding/binary#PutUvarint) и [binary.ReadUvarint](https://pkg.go.dev/encoding/binary#ReadUvarint).
 
 :::note
-*Знаковое* varint не используется.
+*Знаковая* varint не используется.
 :::
 
-## String {#string}
+## Строка {#string}
 
-Строки переменной длины кодируются как *(длина, значение)*, где *длина* — это [varint](#varint), а *значение* — это строка в utf8.
+Строки переменной длины кодируются как *(длина, значение)*, где *длина* — это [varint](#varint), а *значение* — это строка в кодировке utf8.
 
 :::important
-Проверяйте длину, чтобы предотвратить OOM:
+Проверьте длину, чтобы предотвратить OOM:
 
 `0 ≤ len < MAX`
 :::
@@ -44,12 +44,12 @@ import TabItem from '@theme/TabItem';
 ```go
 s := "Hello, world!"
 
-// Запись длины строки как uvarint.
+// Writing string length as uvarint.
 buf := make([]byte, binary.MaxVarintLen64)
 n := binary.PutUvarint(buf, uint64(len(s)))
 buf = buf[:n]
 
-// Запись значения строки.
+// Writing string value.
 buf = append(buf, s...)
 ```
 
@@ -62,16 +62,16 @@ r := bytes.NewReader([]byte{
     0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21,
 })
 
-// Чтение длины.
+// Read length.
 n, err := binary.ReadUvarint(r)
 if err != nil {
         panic(err)
 }
 
-// Проверка n для предотвращения OOM или исключения времени выполнения в make().
-const maxSize = 1024 * 1024 * 10 // 10 МБ
+// Check n to prevent OOM or runtime exception in make().
+const maxSize = 1024 * 1024 * 10 // 10 MB
 if n > maxSize || n < 0 {
-    panic("недействительное n")
+    panic("invalid n")
 }
 
 buf := make([]byte, n)
@@ -113,21 +113,21 @@ data := []byte{
 </TabItem>
 </Tabs>
 
-## Integers {#integers}
+## Целые числа {#integers}
 
 :::tip
-ClickHouse использует **Little Endian** для целых чисел фиксированного размера.
+ClickHouse использует **Младший порядок** для целых чисел фиксированного размера.
 :::
 
 ### Int32 {#int32}
 ```go
 v := int32(1000)
 
-// Кодирование.
+// Encode.
 buf := make([]byte, 8)
 binary.LittleEndian.PutUint32(buf, uint32(v))
 
-// Декодирование.
+// Decode.
 d := int32(binary.LittleEndian.Uint32(buf))
 fmt.Println(d) // 1000
 ```
@@ -149,6 +149,6 @@ fmt.Println(d) // 1000
 </TabItem>
 </Tabs>
 
-## Boolean {#boolean}
+## Логическое значение {#boolean}
 
-Булевы значения представлены одним байтом, `1` — это `true`, а `0` — это `false`.
+Логические значения представлены одним байтом, `1` — это `true`, а `0` — это `false`.

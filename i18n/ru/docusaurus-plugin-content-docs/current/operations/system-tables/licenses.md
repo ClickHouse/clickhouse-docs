@@ -1,18 +1,17 @@
 ---
-description: 'Системная таблица, содержащая лицензии сторонних библиотек, находящихся в директории contrib исходного кода ClickHouse.'
+slug: '/operations/system-tables/licenses'
+description: 'Системная таблица, содержащая лицензии сторонних библиотек, расположенных'
+title: system.licenses
 keywords: ['системная таблица', 'лицензии']
-slug: /operations/system-tables/licenses
-title: 'system.licenses'
+doc_type: reference
 ---
-
-
 # system.licenses
 
-Содержит лицензии сторонних библиотек, которые расположены в директории [contrib](https://github.com/ClickHouse/ClickHouse/tree/master/contrib) исходных кодов ClickHouse.
+Содержит лицензии сторонних библиотек, которые находятся в директории [contrib](https://github.com/ClickHouse/ClickHouse/tree/master/contrib) исходников ClickHouse.
 
 Столбцы:
 
-- `library_name` ([String](../../sql-reference/data-types/string.md)) — Имя библиотеки, с которой связана лицензия.
+- `library_name` ([String](../../sql-reference/data-types/string.md)) — Название библиотеки, с которой связана лицензия.
 - `license_type` ([String](../../sql-reference/data-types/string.md)) — Тип лицензии — например, Apache, MIT.
 - `license_path` ([String](../../sql-reference/data-types/string.md)) — Путь к файлу с текстом лицензии.
 - `license_text` ([String](../../sql-reference/data-types/string.md)) — Текст лицензии.

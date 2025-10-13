@@ -1,12 +1,11 @@
 ---
-description: 'Вычисляет AND для битовой колонки, возвращает кардинальность типа
-  UInt64, если добавить суффикс -State, то возвращает [битовый объект](../../../sql-reference/functions/bitmap-functions.md).'
+slug: '/sql-reference/aggregate-functions/reference/groupbitmapand'
 sidebar_position: 149
-slug: /sql-reference/aggregate-functions/reference/groupbitmapand
-title: 'groupBitmapAnd'
+description: 'Вычисление AND для столбца битовой карты, возвращает кардинальность'
+title: groupBitmapAnd
+doc_type: reference
 ---
-
-Вычисляет AND для битовой колонки, возвращает кардинальность типа UInt64, если добавить суффикс -State, то возвращает [битовый объект](../../../sql-reference/functions/bitmap-functions.md).
+Вычисления AND для колонки битовой карты, возвращает кардинальность типа UInt64, если добавить суффикс -State, тогда возвращается [объект битовой карты](../../../sql-reference/functions/bitmap-functions.md).
 
 ```sql
 groupBitmapAnd(expr)
@@ -14,7 +13,7 @@ groupBitmapAnd(expr)
 
 **Аргументы**
 
-`expr` – Выражение, которое возвращает тип `AggregateFunction(groupBitmap, UInt*)`.
+`expr` – Выражение, результатом которого является тип `AggregateFunction(groupBitmap, UInt*)`.
 
 **Возвращаемое значение**
 
@@ -32,9 +31,9 @@ CREATE TABLE bitmap_column_expr_test2
 ENGINE = MergeTree
 ORDER BY tag_id;
 
-INSERT INTO bitmap_column_expr_test2 VALUES ('tag1', bitmapBuild(cast([1,2,3,4,5,6,7,8,9,10] as Array(UInt32))));
-INSERT INTO bitmap_column_expr_test2 VALUES ('tag2', bitmapBuild(cast([6,7,8,9,10,11,12,13,14,15] as Array(UInt32))));
-INSERT INTO bitmap_column_expr_test2 VALUES ('tag3', bitmapBuild(cast([2,4,6,8,10,12] as Array(UInt32))));
+INSERT INTO bitmap_column_expr_test2 VALUES ('tag1', bitmapBuild(cast([1,2,3,4,5,6,7,8,9,10] AS Array(UInt32))));
+INSERT INTO bitmap_column_expr_test2 VALUES ('tag2', bitmapBuild(cast([6,7,8,9,10,11,12,13,14,15] AS Array(UInt32))));
+INSERT INTO bitmap_column_expr_test2 VALUES ('tag3', bitmapBuild(cast([2,4,6,8,10,12] AS Array(UInt32))));
 
 SELECT groupBitmapAnd(z) FROM bitmap_column_expr_test2 WHERE like(tag_id, 'tag%');
 ┌─groupBitmapAnd(z)─┐

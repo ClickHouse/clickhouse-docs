@@ -1,11 +1,10 @@
 ---
-description: 'Возвращает массив с первыми N элементами в порядке возрастания.'
+slug: '/sql-reference/aggregate-functions/reference/grouparraysorted'
 sidebar_position: 146
-slug: /sql-reference/aggregate-functions/reference/grouparraysorted
-title: 'groupArraySorted'
+description: 'Возвращает массив с первыми N элементами в порядке возрастания.'
+title: groupArraySorted
+doc_type: reference
 ---
-
-
 # groupArraySorted
 
 Возвращает массив с первыми N элементами в порядке возрастания.
@@ -18,7 +17,7 @@ groupArraySorted(N)(column)
 
 - `N` – Количество элементов для возврата.
 
-- `column` – Значение (Integer, String, Float и другие общие типы).
+- `column` – Значение (Целое, Строка, Число с плавающей запятой и другие обобщенные типы).
 
 **Пример**
 
@@ -34,10 +33,10 @@ SELECT groupArraySorted(10)(number) FROM numbers(100)
 └──────────────────────────────┘
 ```
 
-Получает все строковые реализации всех чисел в колонке:
+Получает все строковые представления всех чисел в колонке:
 
 ```sql
-SELECT groupArraySorted(5)(str) FROM (SELECT toString(number) as str FROM numbers(5));
+SELECT groupArraySorted(5)(str) FROM (SELECT toString(number) AS str FROM numbers(5));
 ```
 
 ```text

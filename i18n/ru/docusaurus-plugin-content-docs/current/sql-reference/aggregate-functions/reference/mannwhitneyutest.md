@@ -1,15 +1,14 @@
 ---
-description: 'Применяет rank-тест Манна-Уитни к выборкам из двух популяций.'
-sidebar_label: 'mannWhitneyUTest'
+slug: '/sql-reference/aggregate-functions/reference/mannwhitneyutest'
+sidebar_label: mannWhitneyUTest
 sidebar_position: 161
-slug: /sql-reference/aggregate-functions/reference/mannwhitneyutest
-title: 'mannWhitneyUTest'
+description: 'Применяет тест рангов Манна-Уитни к образцам из двух популяций.'
+title: mannWhitneyUTest
+doc_type: reference
 ---
-
-
 # mannWhitneyUTest
 
-Применяет rank-тест Манна-Уитни к выборкам из двух популяций.
+Применяет ранговый тест Манна-Уитни к выборкам из двух популяций.
 
 **Синтаксис**
 
@@ -17,28 +16,27 @@ title: 'mannWhitneyUTest'
 mannWhitneyUTest[(alternative[, continuity_correction])](sample_data, sample_index)
 ```
 
-Значения обеих выборок находятся в колонке `sample_data`. Если `sample_index` равен 0, то значение в этой строке принадлежит выборке из первой популяции. В противном случае оно принадлежит выборке из второй популяции. Нулевая гипотеза заключается в том, что две популяции статистически равны. Также могут быть проверены односторонние гипотезы. Этот тест не предполагает, что данные имеют нормальное распределение.
+Значения обеих выборок находятся в колонке `sample_data`. Если `sample_index` равно 0, то значение в этой строке принадлежит выборке из первой популяции. В противном случае оно принадлежит выборке из второй популяции. Нулевая гипотеза состоит в том, что две популяции стохастически равны. Также могут тестироваться односторонние гипотезы. Этот тест не предполагает, что данные имеют нормальное распределение.
 
 **Аргументы**
 
-- `sample_data` — данные выборки. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
-- `sample_index` — индекс выборки. [Integer](../../../sql-reference/data-types/int-uint.md).
+- `sample_data` — выборочные данные. [Целое число](../../../sql-reference/data-types/int-uint.md), [число с плавающей запятой](../../../sql-reference/data-types/float.md) или [десятичное число](../../../sql-reference/data-types/decimal.md).
+- `sample_index` — индекс выборки. [Целое число](../../../sql-reference/data-types/int-uint.md).
 
 **Параметры**
 
-- `alternative` — альтернативная гипотеза. (Необязательный, по умолчанию: `'two-sided'`.) [String](../../../sql-reference/data-types/string.md).
-    - `'two-sided'`;
-    - `'greater'`;
-    - `'less'`.
-- `continuity_correction` — если не 0, то применяется корректировка непрерывности в нормальном приближении для p-значения. (Необязательный, по умолчанию: 1.) [UInt64](../../../sql-reference/data-types/int-uint.md).
+- `alternative` — альтернативная гипотеза. (Опционально, по умолчанию: `'two-sided'`.) [Строка](../../../sql-reference/data-types/string.md).
+  - `'two-sided'`;
+  - `'greater'`;
+  - `'less'`.
+- `continuity_correction` — если не 0, то применяется коррекция непрерывности в нормальном приближении для p-значения. (Опционально, по умолчанию: 1.) [UInt64](../../../sql-reference/data-types/int-uint.md).
 
 **Возвращаемые значения**
 
-[Tuple](../../../sql-reference/data-types/tuple.md) с двумя элементами:
+[Кортеж](../../../sql-reference/data-types/tuple.md) с двумя элементами:
 
-- вычисленный U-статистик. [Float64](../../../sql-reference/data-types/float.md).
-- вычисленное p-значение. [Float64](../../../sql-reference/data-types/float.md).
-
+- рассчитанный U-статистик. [Float64](../../../sql-reference/data-types/float.md).
+- рассчитанное p-значение. [Float64](../../../sql-reference/data-types/float.md).
 
 **Пример**
 
@@ -69,7 +67,7 @@ SELECT mannWhitneyUTest('greater')(sample_data, sample_index) FROM mww_ttest;
 └────────────────────────────────────────────────────────┘
 ```
 
-**См. также**
+**Смотрите также**
 
-- [Mann–Whitney U test](https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test)
-- [Stochastic ordering](https://en.wikipedia.org/wiki/Stochastic_ordering)
+- [Тест U Манна-Уитни](https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test)
+- [Стохастический порядок](https://en.wikipedia.org/wiki/Stochastic_ordering)

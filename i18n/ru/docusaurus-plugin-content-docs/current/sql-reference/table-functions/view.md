@@ -1,31 +1,30 @@
 ---
-description: 'Преобразует подзапрос в таблицу. Функция реализует представления.'
-sidebar_label: 'представление'
+slug: '/sql-reference/table-functions/view'
+sidebar_label: представление
 sidebar_position: 210
-slug: /sql-reference/table-functions/view
-title: 'представление'
+description: 'Преобразует подзапрос в таблицу. Функция реализует views.'
+title: представление
+doc_type: reference
 ---
+# view Table Function
 
+Преобразует подзапрос в таблицу. Функция реализует представления (см. [CREATE VIEW](/sql-reference/statements/create/view)). Результирующая таблица не хранит данные, а только сохраняет указанный `SELECT` запрос. При чтении из таблицы ClickHouse выполняет запрос и удаляет все ненужные столбцы из результата.
 
-# Функция Таблицы представление
-
-Преобразует подзапрос в таблицу. Функция реализует представления (см. [CREATE VIEW](/sql-reference/statements/create/view)). Результирующая таблица не хранит данные, а только хранит указанный `SELECT` запрос. При чтении из таблицы ClickHouse выполняет запрос и удаляет все ненужные столбцы из результата.
-
-**Синтаксис**
+## Syntax {#syntax}
 
 ```sql
 view(subquery)
 ```
 
-**Аргументы**
+## Arguments {#arguments}
 
 - `subquery` — `SELECT` запрос.
 
-**Возвращаемое значение**
+## Returned value {#returned_value}
 
 - Таблица.
 
-**Пример**
+## Examples {#examples}
 
 Входная таблица:
 
@@ -55,7 +54,7 @@ SELECT * FROM view(SELECT name FROM months);
 └──────────┘
 ```
 
-Вы можете использовать функцию `view` в качестве параметра для функций таблиц [remote](/sql-reference/table-functions/remote) и [cluster](/sql-reference/table-functions/cluster):
+Вы можете использовать функцию `view` в качестве параметра для [remote](/sql-reference/table-functions/remote) и [cluster](/sql-reference/table-functions/cluster) таблиц:
 
 ```sql
 SELECT * FROM remote(`127.0.0.1`, view(SELECT a, b, c FROM table_name));
@@ -65,6 +64,6 @@ SELECT * FROM remote(`127.0.0.1`, view(SELECT a, b, c FROM table_name));
 SELECT * FROM cluster(`cluster_name`, view(SELECT a, b, c FROM table_name));
 ```
 
-**См. также**
+## Related {#related}
 
 - [View Table Engine](/engines/table-engines/special/view/)

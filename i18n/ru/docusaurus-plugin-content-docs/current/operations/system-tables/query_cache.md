@@ -1,10 +1,10 @@
 ---
+slug: '/operations/system-tables/query_cache'
 description: 'Системная таблица, которая показывает содержимое кэша запросов.'
+title: system.query_cache
 keywords: ['системная таблица', 'кэш_запросов']
-slug: /operations/system-tables/query_cache
-title: 'system.query_cache'
+doc_type: reference
 ---
-
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
@@ -18,13 +18,13 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 - `query` ([String](../../sql-reference/data-types/string.md)) — Строка запроса.
 - `query_id` ([String](../../sql-reference/data-types/string.md)) — ID запроса.
-- `result_size` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Размер записи в кэше запросов.
-- `tag` ([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md)) — Тег записи в кэше запросов.
-- `stale` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Указывает, является ли запись в кэше запросов устаревшей.
-- `shared` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Указывает, разделяется ли запись в кэше запросов между несколькими пользователями.
-- `compressed` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Указывает, сжата ли запись в кэше запросов.
-- `expires_at` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время, когда запись в кэше запросов становится устаревшей.
-- `key_hash` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Хеш строки запроса, используемый в качестве ключа для поиска записей кэша запросов.
+- `result_size` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Размер записи кэша запроса.
+- `tag` ([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md)) — Тег записи кэша запроса.
+- `stale` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Указывает, устарела ли запись кэша запроса.
+- `shared` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Указывает, разделяется ли запись кэша запроса между несколькими пользователями.
+- `compressed` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Указывает, сжата ли запись кэша запроса.
+- `expires_at` ([DateTime](../../sql-reference/data-types/datetime.md)) — Когда запись кэша запроса становится устаревшей.
+- `key_hash` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Хеш строки запроса, используется в качестве ключа для поиска записей кэша запросов.
 
 **Пример**
 
