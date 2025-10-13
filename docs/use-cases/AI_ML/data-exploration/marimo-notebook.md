@@ -25,7 +25,7 @@ In this guide, you will learn how you can explore a dataset on ClickHouse Cloud 
 - a working ClickHouse Cloud service and your [connection details](/docs/cloud/guides/sql-console/gather-connection-details)
 
 :::tip
-If you don't yet have a ClickHouse Cloud account, you can [sign up](console.clickhouse.cloud/signUp?loc=docs-marimo-chdb) for
+If you don't yet have a ClickHouse Cloud account, you can [sign up](https://console.clickhouse.cloud/signUp?loc=docs-marimo-chdb) for
 a trial and get $300 in free-credits to begin.
 :::
 
