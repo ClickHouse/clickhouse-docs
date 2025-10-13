@@ -131,7 +131,7 @@ Use the smallest set of permissions required for your setup. Start with the base
 - Use the Secrets Manager block only if you fetch credentials/truststores from Secrets Manager. Scope the ARN.
 - Use the S3 block only if you load artifacts (e.g., truststore) from S3. Scope to bucket/prefix.
 
-See also: [Kafka best practices – IAM](../../clickpipes/kafka/best-practices.md#iam).
+See also: [Kafka best practices – IAM](../../clickpipes/kafka/04_best_practices.md#iam).
 
 ## Performance tuning {#performance-tuning}
 One way of increasing performance is to adjust the batch size and the number of records that are fetched from Kafka by adding the following to the **worker** configuration:
