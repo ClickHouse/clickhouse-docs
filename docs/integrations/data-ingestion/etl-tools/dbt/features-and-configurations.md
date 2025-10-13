@@ -165,7 +165,7 @@ Data skipping indexes are only available for the `table` materialization. To add
 
 #### About projections {#projections}
 
-Projections are added to the `table` and `distributed_table` materializations as a model setting. For distributed tables, the projection is applied to the `_local` tables, not to the distributed proxy table. For example
+You can add [projections](/data-modeling/projections) to `table` and `distributed_table` materializations using the `projections` configuration:
 
 ```sql
 {{ config(
