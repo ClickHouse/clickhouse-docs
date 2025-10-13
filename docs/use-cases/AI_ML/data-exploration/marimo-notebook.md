@@ -58,7 +58,7 @@ Then click `Import dataset`:
 
 ClickHouse will automatically create the `pp_complete` table in the `default` database and fill the table with 28.92 million rows of price point data.
 
-In order to reduce the likelihood of exposing your credentials, we recommend to add your Cloud username and password as environment variables on your local machine.
+In order to reduce the likelihood of exposing your credentials, we recommend you add your Cloud username and password as environment variables on your local machine.
 From a terminal run the following command to add your username and password as environment variables:
 
 ### Setting up credentials {#setting-up-credentials}
@@ -125,11 +125,8 @@ You should see the result shown underneath the cell you just ran:
 ## Exploring the data {#exploring-the-data}
 
 With the UK price paid data set up and chDB up and running in a Marimo notebook, we can now get started exploring our data.
-
 Let's imagine we are interested in checking how price has changed with time for a specific area in the UK such as the capital city, London.
-
-ClickHouse's [remoteSecure](/docs/sql-reference/table-functions/remote) function allows you to easily retrieve the data from ClickHouse Cloud.
-
+ClickHouse's [`remoteSecure`](/docs/sql-reference/table-functions/remote) function allows you to easily retrieve the data from ClickHouse Cloud.
 You can instruct chDB to return this data in process as a Pandas data frame - which is a convenient and familiar way of working with data.
 
 ### Querying ClickHouse Cloud data {#querying-clickhouse-cloud-data}
@@ -159,7 +156,7 @@ df.head()
 
 In the snippet above, `chdb.query(query, "DataFrame")` runs the specified query and outputs the result as a Pandas DataFrame.
 
-In the query we are using the `remoteSecure` function to connect to ClickHouse Cloud.
+In the query we are using the [`remoteSecure`](/sql-reference/table-functions/remote) function to connect to ClickHouse Cloud.
 
 The `remoteSecure` functions takes as parameters:
 - a connection string
@@ -170,11 +167,9 @@ The `remoteSecure` functions takes as parameters:
 As a security best practice, you should prefer using environment variables for the username and password parameters rather than specifying them directly in the function, although this is possible if you wish.
 
 The `remoteSecure` function connects to the remote ClickHouse Cloud service, runs the query and returns the result.
-
 Depending on the size of your data, this could take a few seconds.
 
 In this case we return an average price point per year, and filter by `town='LONDON'`.
-
 The result is then stored as a DataFrame in a variable called `df`.
 
 ### Visualizing the data {#visualizing-the-data}
