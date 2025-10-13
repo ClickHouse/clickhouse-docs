@@ -167,7 +167,7 @@ If you encounter issues connecting to ClickHouse from dbt, make sure the followi
 
 ### Understanding long-running operations {#understanding-long-running-operations}
 
-Some operations may take longer than expected due to specific ClickHouse queries. To gain more insight into which queries are taking longer, you can increase the log level to `debug` as it will print the time used by each one. For example, this can be achieved by appending `---log-level debug` to the command.
+Some operations may take longer than expected due to specific ClickHouse queries. To gain more insight into which queries are taking longer, increase the [log level](https://docs.getdbt.com/reference/global-configs/logs#log-level) to `debug` — this will print the time used by each query. For example, this can be achieved by appending `--log-level debug` to dbt commands.
 
 ## Limitations {#limitations}
 
