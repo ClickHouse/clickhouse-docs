@@ -339,9 +339,3 @@ As you move the slider, the plot will automatically update thanks to Marimo's re
 This guide demonstrated how you can use chDB to explore your data in  ClickHouse Cloud using Marimo notebooks.
 Using the UK Property Price dataset, we showed how to query remote ClickHouse Cloud data with the `remoteSecure()` function, and convert results directly to Pandas DataFrames for analysis and visualization.
 Through chDB and Marimo's reactive execution model, data scientists can leverage ClickHouse's powerful SQL capabilities alongside familiar Python tools like Pandas and Plotly, with the added benefit of interactive widgets and automatic dependency tracking that make exploratory analysis more efficient and reproducible.
-
-
-
-
-
-
