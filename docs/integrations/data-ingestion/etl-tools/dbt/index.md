@@ -129,7 +129,7 @@ Go to the [guides page](/integrations/dbt/guides) to learn more about how to use
 
 ### Testing and Deploying your models (CI/CD) {#testing-and-deploying-your-models-ci-cd}
 
-There are many ways to test and deploy your dbt project. dbt has some suggestions for [best practice workflows](https://docs.getdbt.com/best-practices/best-practice-workflows#pro-tips-for-workflows) and [CI jobs](https://docs.getdbt.com/docs/deploy/ci-jobs). We are going to discuss several strategies, but keep into account that these strategies may need to be deeply adjusted to fit your specific use case.
+There are many ways to test and deploy your dbt project. dbt has some suggestions for [best practice workflows](https://docs.getdbt.com/best-practices/best-practice-workflows#pro-tips-for-workflows) and [CI jobs](https://docs.getdbt.com/docs/deploy/ci-jobs). We are going to discuss several strategies, but keep in mind that these strategies may need to be deeply adjusted to fit your specific use case.
 
 #### CI/CD with simple data tests and unit tests {#ci-with-simple-data-tests-and-unit-tests}
 
