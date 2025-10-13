@@ -24,6 +24,8 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
   </iframe>
 </div>
 
+> Note: The policy shown in the video is permissive and intended for quick start only. See least‑privilege IAM guidance below.
+
 ## Prerequisites {#prerequisites}
 We assume:
 * you are familiar with [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md),Amazon MSK and MSK Connectors. We recommend the Amazon MSK [Getting Started guide](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html) and [MSK Connect guide](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html).
@@ -61,6 +63,76 @@ username=default
 schemas.enable=false
 ```
 
+## Recommended IAM permissions (least privilege) {#iam-least-privilege}
+
+Use the smallest set of permissions required for your setup. Start with the baseline below and add optional services only if you use them.
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "MSKClusterAccess",
+      "Effect": "Allow",
+      "Action": [
+        "kafka:DescribeCluster",
+        "kafka:GetBootstrapBrokers",
+        "kafka:DescribeClusterV2",
+        "kafka:ListClusters",
+        "kafka:ListClustersV2"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KafkaAuthorization",
+      "Effect": "Allow",
+      "Action": [
+        "kafka-cluster:Connect",
+        "kafka-cluster:DescribeCluster",
+        "kafka-cluster:DescribeGroup",
+        "kafka-cluster:DescribeTopic",
+        "kafka-cluster:ReadData"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OptionalGlueSchemaRegistry",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetSchema*",
+        "glue:ListSchemas",
+        "glue:ListSchemaVersions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OptionalSecretsManager",
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": [
+        "arn:aws:secretsmanager:<region>:<account-id>:secret:<your-secret-name>*"
+      ]
+    },
+    {
+      "Sid": "OptionalS3Read",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject"
+      ],
+      "Resource": "arn:aws:s3:::<your-bucket>/<optional-prefix>/*"
+    }
+  ]
+}
+```
+
+- Use the Glue block only if you use AWS Glue Schema Registry.
+- Use the Secrets Manager block only if you fetch credentials/truststores from Secrets Manager. Scope the ARN.
+- Use the S3 block only if you load artifacts (e.g., truststore) from S3. Scope to bucket/prefix.
+
+See also: [Kafka best practices – IAM](../../clickpipes/kafka/best-practices.md#iam).
+
 ## Performance tuning {#performance-tuning}
 One way of increasing performance is to adjust the batch size and the number of records that are fetched from Kafka by adding the following to the **worker** configuration:
 ```yml
@@ -85,7 +157,16 @@ In order for MSK Connect to connect to ClickHouse, we recommend your MSK cluster
 1. **Create a Private Subnet:** Create a new subnet within your VPC, designating it as a private subnet. This subnet should not have direct access to the internet.
 1. **Create a NAT Gateway:** Create a NAT gateway in a public subnet of your VPC. The NAT gateway enables instances in your private subnet to connect to the internet or other AWS services, but prevents the internet from initiating a connection with those instances.
 1. **Update the Route Table:** Add a route that directs internet-bound traffic to the NAT gateway
-1. **Ensure Security Group(s) and Network ACLs Configuration:** Configure your [security groups](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html) and [network ACLs (Access Control Lists)](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html) to allow relevant traffic to and from your ClickHouse instance. 
-   1. For ClickHouse Cloud, configure your security group to allow inbound traffic on ports 9440 and 8443. 
-   1. For self-hosted ClickHouse, configure your security group to allow inbound traffic on the port in your config file (default is 8123).
-1. **Attach Security Group(s) to MSK:** Ensure that these new security groups routed to the NAT gateways are attached to your MSK cluster
+1. **Ensure Security Group(s) and Network ACLs Configuration:** Configure your [security groups](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html) and [network ACLs (Access Control Lists)](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html) to allow relevant traffic.
+   1. From MSK Connect worker ENIs to MSK brokers on TLS port (commonly 9094).
+   1. From MSK Connect worker ENIs to ClickHouse endpoint: 9440 (native TLS) or 8443 (HTTPS).
+   1. Allow inbound on broker SG from the MSK Connect worker SG.
+   1. For self-hosted ClickHouse, open the port configured in your server (default 8123 for HTTP).
+1. **Attach Security Group(s) to MSK:** Ensure that these security groups are attached to your MSK cluster and MSK Connect workers.
+1. **Connectivity to ClickHouse Cloud:**
+   1. Public endpoint + IP allowlist: requires NAT egress from private subnets.
+   1. Private connectivity where available (e.g., VPC peering/PrivateLink/VPN). Ensure VPC DNS hostnames/resolution are enabled and DNS can resolve the private endpoint.
+1. **Validate connectivity (quick checklist):**
+   1. From the connector environment, resolve MSK bootstrap DNS and connect via TLS to broker port.
+   1. Establish TLS connection to ClickHouse on port 9440 (or 8443 for HTTPS).
+   1. If using AWS services (Glue/Secrets Manager), allow egress to those endpoints.
