@@ -147,7 +147,7 @@ dbt relies on a read-after-insert consistency model. This is not compatible with
 | indexes                | A list of [data skipping indexes to create](/optimize/skipping-indexes). Check below for more information.                                                                                                                                                        |                |
 | sql_security           | Allow you to specify which ClickHouse user to use when executing the view's underlying query. `SQL SECURITY` [has two legal values](/sql-reference/statements/create/view#sql_security): `definer` `invoker`.                                                                             |                |
 | definer                | If `sql_security` was set to `definer`, you have to specify any existing user or `CURRENT_USER` in the `definer` clause.                                                                                                                                                                                             |                |
-| projections            | A list of [projections](/data-modeling/projections) to be created. Check below for more information.                                                                                                                                                        |                |
+| projections            | A list of [projections](/data-modeling/projections) to be created. Check [About projections](#projections) for details.                                                                                                                                                        |                |
 
 #### About Data Skipping Indexes {#data-skipping-indexes}
 
