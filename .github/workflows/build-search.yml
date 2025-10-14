@@ -33,9 +33,6 @@ jobs:
       - name: Run Auto Generate Settings
         run: yarn autogenerate-settings
 
-      - name: Run Auto Generate System Tables
-        run: yarn autogenerate-system-tables
-
       - name: Run Indexer
         run: yarn run-indexer
         env:

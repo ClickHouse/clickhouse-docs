@@ -16,7 +16,6 @@
     "build-swagger": "yarn redocly build-docs https://api.clickhouse.cloud/v1 --output build/cloud/manage/api/swagger.html",
     "prep-from-local": "bash ./scripts/copy-clickhouse-repo-docs.sh -l $1",
     "autogenerate-settings": "bash ./scripts/settings/autogenerate-settings.sh",
-    "autogenerate-system-tables": "bash ./scripts/system-tables/autogenerate-system-tables.sh",
     "autogenerate-table-of-contents": "bash ./scripts/autogenerate-table-of-contents.sh",
     "generate-changelog": "bash ./scripts/generate-changelog.sh",
     "build-docs": "bash ./scripts/build.sh",
