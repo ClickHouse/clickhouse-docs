@@ -1,13 +1,8 @@
----
-null
-...
----
-
-| 区域          | VPC 服务名称                                              | 可用区 ID                     |
-|--------------|----------------------------------------------------------|------------------------------|
-| ap-south-1    | com.amazonaws.vpce.ap-south-1.vpce-svc-0a786406c7ddc3a1b | aps1-az1 aps1-az2 aps1-az3   |
-| ap-southeast-1| com.amazonaws.vpce.ap-southeast-1.vpce-svc-0a8b096ec9d2acb01 | apse1-az1 apse1-az2 apse1-az3 |
-| ap-southeast-2| com.amazonaws.vpce.ap-southeast-2.vpce-svc-0ca446409b23f0c01 | apse2-az1 apse2-az2 apse2-az3 |
+| 区域         | VPC 服务名称                                               | 可用区 IDs                   |
+|--------------|-------------------------------------------------------------|------------------------------|
+| ap-south-1   | com.amazonaws.vpce.ap-south-1.vpce-svc-0a786406c7ddc3a1b    | aps1-az1 aps1-az2 aps1-az3   |
+| ap-southeast-1| com.amazonaws.vpce.ap-southeast-1.vpce-svc-0a8b096ec9d2acb01| apse1-az1 apse1-az2 apse1-az3|
+| ap-southeast-2| com.amazonaws.vpce.ap-southeast-2.vpce-svc-0ca446409b23f0c01| apse2-az1 apse2-az2 apse2-az3|
 | eu-central-1  | com.amazonaws.vpce.eu-central-1.vpce-svc-0536fc4b80a82b8ed  | euc1-az2 euc1-az3 euc1-az1   |
 | eu-west-1     | com.amazonaws.vpce.eu-west-1.vpce-svc-066b03c9b5f61c6fc     | euw1-az2 euw1-az3 euw1-az1   |
 | us-east-1 c0  | com.amazonaws.vpce.us-east-1.vpce-svc-0a0218fa75c646d81     | use1-az6 use1-az1 use1-az2   |

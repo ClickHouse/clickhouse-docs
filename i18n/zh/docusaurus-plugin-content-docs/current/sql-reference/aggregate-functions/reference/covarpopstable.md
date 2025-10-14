@@ -1,20 +1,21 @@
 ---
-'description': '计算总体协方差的值'
+'description': '计算人口协方差的值'
 'sidebar_position': 123
 'slug': '/sql-reference/aggregate-functions/reference/covarpopstable'
 'title': 'covarPopStable'
+'doc_type': 'reference'
 ---
 
 
 # covarPopStable
 
-计算总体协方差的值：
+计算人口协方差的值：
 
 $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{n}
 $$
 
-它与[covarPop](../reference/covarpop.md)函数类似，但使用了数值稳定的算法。因此，`covarPopStable`比`covarPop`更慢，但产生更准确的结果。
+它与 [covarPop](../reference/covarpop.md) 函数相似，但使用数值稳定的算法。因此，`covarPopStable` 比 `covarPop` 更慢，但产生更准确的结果。
 
 **语法**
 
@@ -29,7 +30,7 @@ covarPop(x, y)
 
 **返回值**
 
-- `x`和`y`之间的总体协方差。[Float64](../../data-types/float.md)。
+- `x` 和 `y` 之间的人口协方差。 [Float64](../../data-types/float.md)。
 
 **示例**
 

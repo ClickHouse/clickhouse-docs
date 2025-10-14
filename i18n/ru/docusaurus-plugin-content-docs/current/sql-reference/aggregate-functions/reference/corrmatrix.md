@@ -1,14 +1,13 @@
 ---
-description: 'Вычисляет матрицу корреляции по N переменным.'
+slug: '/sql-reference/aggregate-functions/reference/corrmatrix'
 sidebar_position: 118
-slug: /sql-reference/aggregate-functions/reference/corrmatrix
-title: 'corrMatrix'
+description: 'Вычисляет матрицу корреляции для N переменных.'
+title: corrMatrix
+doc_type: reference
 ---
-
-
 # corrMatrix
 
-Вычисляет матрицу корреляции по N переменным.
+Вычисляет матрицу корреляции для N переменных.
 
 **Синтаксис**
 
@@ -18,11 +17,11 @@ corrMatrix(x[, ...])
 
 **Аргументы**
 
-- `x` — переменное количество параметров. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md).
+- `x` — переменное количество параметров. [`(U)Int8/16/32/64`](../../data-types/int-uint.md), [`Float*`](../../data-types/float.md).
 
 **Возвращаемое значение**
 
-- Матрица корреляции. [Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md))).
+- Матрица корреляции. [`Array`](../../data-types/array.md)([`Array`](../../data-types/array.md)([`Float64`](../../data-types/float.md))).
 
 **Пример**
 

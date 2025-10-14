@@ -7,30 +7,30 @@
 'output_format': false
 'slug': '/interfaces/formats/JSONAsString'
 'title': 'JSONAsString'
+'doc_type': 'reference'
 ---
 
-| Input | Output  | Alias |
+| 输入 | 输出  | 别名 |
 |-------|---------|-------|
 | ✔     | ✗       |       |
 
+## 描述 {#description}
 
-## Description {#description}
-
-在这种格式中，单个 JSON 对象被解释为单个值。 
-如果输入包含多个 JSON 对象（用逗号分隔），则它们被解释为独立的行。 
-如果输入数据被方括号括起来，则它被解释为 JSON 对象的数组。
+在此格式中，单个 JSON 对象被解释为单个值。
+如果输入包含多个 JSON 对象（用逗号分隔），它们被解释为单独的行。
+如果输入数据被方括号括起来，则被解释为 JSON 对象的数组。
 
 :::note
-此格式只能被解析为具有单个字段类型为 [String](/sql-reference/data-types/string.md) 的表。 
-其余列必须设置为 [`DEFAULT`](/sql-reference/statements/create/table.md/#default) 或 [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view)， 
-或省略。 
+此格式只能解析为具有单个字段类型为 [String](/sql-reference/data-types/string.md) 的表。
+其余列必须设置为 [`DEFAULT`](/sql-reference/statements/create/table.md/#default) 或 [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view)，
+或被省略。
 :::
 
-一旦你将整个 JSON 对象序列化为 String，你可以使用 [JSON functions](/sql-reference/functions/json-functions.md) 来处理它。
+一旦将整个 JSON 对象序列化为字符串，您可以使用 [JSON 函数](/sql-reference/functions/json-functions.md) 来处理它。
 
-## Example Usage {#example-usage}
+## 示例用法 {#example-usage}
 
-### Basic Example {#basic-example}
+### 基本示例 {#basic-example}
 
 ```sql title="Query"
 DROP TABLE IF EXISTS json_as_string;
@@ -47,7 +47,7 @@ SELECT * FROM json_as_string;
 └───────────────────────────────────┘
 ```
 
-### An array of JSON objects {#an-array-of-json-objects}
+### JSON 对象的数组 {#an-array-of-json-objects}
 
 ```sql title="Query"
 CREATE TABLE json_square_brackets (field String) ENGINE = Memory;
@@ -63,4 +63,4 @@ SELECT * FROM json_square_brackets;
 └────────────────────────────┘
 ```
 
-## Format Settings {#format-settings}
+## 格式设置 {#format-settings}

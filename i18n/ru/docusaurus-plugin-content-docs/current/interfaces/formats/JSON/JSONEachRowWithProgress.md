@@ -1,20 +1,19 @@
 ---
-alias: []
+slug: '/interfaces/formats/JSONEachRowWithProgress'
 description: 'Документация для формата JSONEachRowWithProgress'
-input_format: false
+title: JSONEachRowWithProgress
 keywords: ['JSONEachRowWithProgress']
+doc_type: reference
+input_format: false
 output_format: true
-slug: /interfaces/formats/JSONEachRowWithProgress
-title: 'JSONEachRowWithProgress'
 ---
-
-| Вход | Выход | Псевдоним |
+| Input | Output | Alias |
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
 ## Описание {#description}
 
-Отличается от [`JSONEachRow`](./JSONEachRow.md)/[`JSONStringsEachRow`](./JSONStringsEachRow.md) тем, что ClickHouse также будет выдавать информацию о прогрессе в виде JSON-значений.
+Отличается от [`JSONEachRow`](./JSONEachRow.md)/[`JSONStringsEachRow`](./JSONStringsEachRow.md) тем, что ClickHouse также будет выдавать информацию о прогрессе в виде JSON значений.
 
 ## Пример использования {#example-usage}
 

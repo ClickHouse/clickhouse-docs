@@ -180,6 +180,14 @@ Best for: large scale, mission critical deployments that have stringent security
 
 A ClickHouse Credit is a unit of credit toward Customer's usage of ClickHouse Cloud equal to one (1) US dollar, to be applied based on ClickHouse's then-current published price list.
 
+### Where can I find legacy pricing? {#find-legacy-pricing}
+
+Legacy pricing information can be found [here](https://clickhouse.com/pricing?legacy=true).
+
+:::note 
+If you are being billed through Stripe then you will see that 1 CHC is equal to \$0.01 USD on your Stripe invoice. This is to allow accurate billing on Stripe due to their limitation on not being able to bill fractional quantities of our standard SKU of 1 CHC = \$1 USD.
+:::
+
 ### How is compute metered? {#how-is-compute-metered}
 
 ClickHouse Cloud meters compute on a per-minute basis, in 8G RAM increments. 
@@ -229,6 +237,9 @@ ClickHouse Cloud supports the following billing options:
 :::note
 ClickHouse Cloud credits for PAYG are invoiced in \$0.01 units, allowing us to charge customers for partial ClickHouse credits based on their usage. This differs from committed spend ClickHouse credits, which are purchased in advance in whole \$1 units.
 :::
+
+### Can I delete my credit card? {#can-i-delete-my-credit-card}
+You can’t remove a credit card in the Billing UI, but you can update it anytime. This helps ensure your organization always has a valid payment method. If you need to remove your credit card, please contact [ClickHouse Cloud support](https://console.clickhouse.cloud/support) for help.
 
 ### How long is the billing cycle? {#how-long-is-the-billing-cycle}
 

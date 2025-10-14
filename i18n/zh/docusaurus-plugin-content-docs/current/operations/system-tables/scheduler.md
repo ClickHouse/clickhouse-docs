@@ -1,10 +1,11 @@
 ---
-'description': '系统表，包含有关本地服务器上调度节点的信息和状态。'
+'description': '系统表，包含关于本地服务器上调度节点的信息和状态。'
 'keywords':
 - 'system table'
 - 'scheduler'
 'slug': '/operations/system-tables/scheduler'
 'title': 'system.scheduler'
+'doc_type': 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
@@ -14,8 +15,8 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud/>
 
-包含有关本地服务器上[调度节点](/operations/workload-scheduling.md/#hierarchy)的信息和状态。  
-此表可用于监控。该表为每个调度节点包含一行。
+包含有关本地服务器上驻留的[scheduling nodes](/operations/workload-scheduling.md/#hierarchy)的信息和状态。
+该表可用于监控。表中为每个调度节点包含一行。
 
 示例：
 
@@ -63,25 +64,25 @@ tokens:            ᴺᵁᴸᴸ
 - `path` (`String`) - 在该资源调度层次结构中调度节点的路径
 - `type` (`String`) - 调度节点的类型。
 - `weight` (`Float64`) - 节点的权重，由`fair`类型的父节点使用。
-- `priority` (`Int64`) - 节点的优先级，由'priority'类型的父节点使用（值越低，优先级越高）。
-- `is_active` (`UInt8`) - 此节点当前是否处于活动状态 - 有资源请求待出队且约束条件满足。
+- `priority` (`Int64`) - 节点的优先级，由'priority'类型的父节点使用（较低的值意味着更高的优先级）。
+- `is_active` (`UInt8`) - 此节点当前是否处于活动状态 - 是否有待解除排队的资源请求，并且约束条件已满足。
 - `active_children` (`UInt64`) - 处于活动状态的子节点数量。
-- `dequeued_requests` (`UInt64`) - 从该节点出队的资源请求总数。
-- `canceled_requests` (`UInt64`) - 从该节点取消的资源请求总数。
-- `dequeued_cost` (`UInt64`) - 从该节点出队的所有请求的成本总和（例如，以字节为单位的大小）。
-- `canceled_cost` (`UInt64`) - 从该节点取消的所有请求的成本总和（例如，以字节为单位的大小）。
-- `busy_periods` (`UInt64`) - 此节点的总去激活次数。
-- `vruntime` (`Nullable(Float64)`) - 仅针对`fair`节点的子节点。用于SFQ算法以最大最小公平方式选择下一个要处理的子节点的虚拟运行时间。
-- `system_vruntime` (`Nullable(Float64)`) - 仅针对`fair`节点。显示上一个已处理资源请求的`vruntime`的虚拟运行时间。在子节点激活期间用作`vruntime`的新值。
-- `queue_length` (`Nullable(UInt64)`) - 仅针对`fifo`节点。当前队列中驻留的资源请求数量。
-- `queue_cost` (`Nullable(UInt64)`) - 仅针对`fifo`节点。队列中所有请求的成本总和（例如，以字节为单位的大小）。
-- `budget` (`Nullable(Int64)`) - 仅针对`fifo`节点。可用于新资源请求的“成本单位”数量。在资源请求的估计成本和实际成本不一致的情况下可能会出现（例如，在读/写失败后）。
-- `is_satisfied` (`Nullable(UInt8)`) - 仅针对约束节点（例如`inflight_limit`）。如果该节点的所有约束条件都满足，则等于`1`。
-- `inflight_requests` (`Nullable(Int64)`) - 仅针对`inflight_limit`节点。从该节点出队的资源请求数量，这些请求当前处于消费状态。
-- `inflight_cost` (`Nullable(Int64)`) - 仅针对`inflight_limit`节点。从该节点出队的所有资源请求的成本总和（例如，字节），这些请求当前处于消费状态。
-- `max_requests` (`Nullable(Int64)`) - 仅针对`inflight_limit`节点。导致约束违反的`inflight_requests`的上限。
-- `max_cost` (`Nullable(Int64)`) - 仅针对`inflight_limit`节点。导致约束违反的`inflight_cost`的上限。
-- `max_speed` (`Nullable(Float64)`) - 仅针对`bandwidth_limit`节点。每秒的带宽上限，以令牌计。
-- `max_burst` (`Nullable(Float64)`) - 仅针对`bandwidth_limit`节点。在令牌桶节流器中可用的`tokens`上限。
-- `throttling_us` (`Nullable(Int64)`) - 仅针对`bandwidth_limit`节点。此节点处于节流状态的微秒总数。
-- `tokens` (`Nullable(Float64)`) - 仅针对`bandwidth_limit`节点。在令牌桶节流器中当前可用的令牌数量。
+- `dequeued_requests` (`UInt64`) - 从此节点解除排队的资源请求总数。
+- `canceled_requests` (`UInt64`) - 从此节点取消的资源请求总数。
+- `dequeued_cost` (`UInt64`) - 从此节点解除排队的所有请求的成本之和（例如，字节大小）。
+- `canceled_cost` (`UInt64`) - 从此节点取消的所有请求的成本之和（例如，字节大小）。
+- `busy_periods` (`UInt64`) - 此节点的总停用次数。
+- `vruntime` (`Nullable(Float64)`) - 仅适用于`fair`节点的子节点。节点的虚拟运行时间，由SFQ算法在最大最小公平的方式中选择下一个要处理的子节点。
+- `system_vruntime` (`Nullable(Float64)`) - 仅适用于`fair`节点。显示最后处理的资源请求的`vruntime`的虚拟运行时间。在子节点激活过程中，作为`vruntime`的新值使用。
+- `queue_length` (`Nullable(UInt64)`) - 仅适用于`fifo`节点。当前队列中驻留的资源请求数量。
+- `queue_cost` (`Nullable(UInt64)`) - 仅适用于`fifo`节点。队列中所有请求的成本之和（例如，字节大小）。
+- `budget` (`Nullable(Int64)`) - 仅适用于`fifo`节点。新资源请求的可用“成本单位”数量。在估计的资源请求成本与实际成本不一致的情况下（例如，发生读/写失败时）可能会出现。
+- `is_satisfied` (`Nullable(UInt8)`) - 仅适用于约束节点（例如，`inflight_limit`）。如果此节点的所有约束都已满足，则等于`1`。
+- `inflight_requests` (`Nullable(Int64)`) - 仅适用于`inflight_limit`节点。从此节点解除排队的、当前处于消费状态的资源请求数量。
+- `inflight_cost` (`Nullable(Int64)`) - 仅适用于`inflight_limit`节点。从此节点解除排队的、当前处于消费状态的所有资源请求的成本之和（例如，字节）。
+- `max_requests` (`Nullable(Int64)`) - 仅适用于`inflight_limit`节点。导致约束违反的`inflight_requests`的上限。
+- `max_cost` (`Nullable(Int64)`) - 仅适用于`inflight_limit`节点。导致约束违反的`inflight_cost`的上限。
+- `max_speed` (`Nullable(Float64)`) - 仅适用于`bandwidth_limit`节点。每秒令牌的带宽上限。
+- `max_burst` (`Nullable(Float64)`) - 仅适用于`bandwidth_limit`节点。令牌桶限速器中可用的`tokens`的上限。
+- `throttling_us` (`Nullable(Int64)`) - 仅适用于`bandwidth_limit`节点。此节点处于限速状态的总微秒数。
+- `tokens` (`Nullable(Float64)`) - 仅适用于`bandwidth_limit`节点。令牌桶限速器中当前可用的令牌数量。

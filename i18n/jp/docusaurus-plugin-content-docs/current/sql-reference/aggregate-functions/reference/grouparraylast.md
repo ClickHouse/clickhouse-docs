@@ -1,27 +1,27 @@
 ---
-description: 'Creates an array of the last argument values.'
-sidebar_position: 142
-slug: '/sql-reference/aggregate-functions/reference/grouparraylast'
-title: 'groupArrayLast'
+'description': '最後の引数値の配列を作成します。'
+'sidebar_position': 142
+'slug': '/sql-reference/aggregate-functions/reference/grouparraylast'
+'title': 'groupArrayLast'
+'doc_type': 'reference'
 ---
-
-
 
 
 # groupArrayLast
 
 構文: `groupArrayLast(max_size)(x)`
 
-最後の引数の値の配列を作成します。例えば、`groupArrayLast(1)(x)` は `[anyLast (x)]` と等価です。
+最後の引数値の配列を作成します。  
+例えば、`groupArrayLast(1)(x)` は `[anyLast (x)]` と同等です。
 
-いくつかのケースでは、実行順序に依存することができます。これは、`SELECT` が小さすぎるサブクエリの結果を使用して `ORDER BY` を含む場合に該当します。
+いくつかのケースでは、実行順序に依存することができます。これは、`SELECT` が小さいサブクエリから `ORDER BY` を使用してくる場合に適用されます。
 
 **例**
 
 クエリ:
 
 ```sql
-select groupArrayLast(2)(number+1) numbers from numbers(10)
+SELECT groupArrayLast(2)(number+1) numbers FROM numbers(10)
 ```
 
 結果:
@@ -32,10 +32,10 @@ select groupArrayLast(2)(number+1) numbers from numbers(10)
 └─────────┘
 ```
 
-`groupArray` と比較すると:
+`groupArray` と比較して:
 
 ```sql
-select groupArray(2)(number+1) numbers from numbers(10)
+SELECT groupArray(2)(number+1) numbers FROM numbers(10)
 ```
 
 ```text

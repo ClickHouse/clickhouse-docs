@@ -4,12 +4,13 @@
 'sidebar_position': 3
 'slug': '/sql-reference/window-functions/first_value'
 'title': 'first_value'
+'doc_type': 'reference'
 ---
 
 
 # first_value
 
-返回在其有序范围内评估的第一个值。默认情况下，NULL 参数会被跳过，但可以使用 `RESPECT NULLS` 修饰符来覆盖此行为。
+返回在其有序框架内评估的第一个值。默认情况下，NULL 参数会被跳过，但可以使用 `RESPECT NULLS` 修饰符来覆盖此行为。
 
 **语法**
 
@@ -34,13 +35,13 @@ WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column])
 
 **返回值**
 
-- 在其有序范围内评估的第一个值。
+- 在其有序框架内评估的第一个值。
 
 **示例**
 
-在这个示例中，`first_value` 函数用于从虚构的英超足球运动员薪资数据集中找到工资最高的足球运动员。
+在此示例中，`first_value` 函数用于从虚构的英超联赛足球运动员薪资数据集中查找薪水最高的足球运动员。
 
-查询:
+查询：
 
 ```sql
 DROP TABLE IF EXISTS salaries;
@@ -69,7 +70,7 @@ SELECT player, salary,
 FROM salaries;
 ```
 
-结果:
+结果：
 
 ```response
    ┌─player──────────┬─salary─┬─highest_paid_player─┐

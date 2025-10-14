@@ -1,17 +1,16 @@
 ---
-description: 'MOVEアクセスエンティティステートメントのドキュメント'
-sidebar_label: 'MOVE'
-sidebar_position: 54
-slug: '/sql-reference/statements/move'
-title: 'MOVEアクセスエンティティステートメント'
+'description': 'MOVE アクセスエンティティ ステートメントのドキュメント'
+'sidebar_label': 'MOVE'
+'sidebar_position': 54
+'slug': '/sql-reference/statements/move'
+'title': 'MOVE アクセスエンティティ ステートメント'
+'doc_type': 'reference'
 ---
 
 
+# MOVE アクセスエンティティステートメント
 
-
-# MOVE アクセスエンティティ文
-
-この文は、アクセスエンティティを1つのアクセスストレージから別のアクセスストレージに移動することを許可します。
+このステートメントは、アクセスエンティティを1つのアクセスストレージから別のものに移動することを許可します。
 
 構文:
 
@@ -19,12 +18,12 @@ title: 'MOVEアクセスエンティティステートメント'
 MOVE {USER, ROLE, QUOTA, SETTINGS PROFILE, ROW POLICY} name1 [, name2, ...] TO access_storage_type
 ```
 
-現在、ClickHouseには5つのアクセスストレージがあります：
- - `local_directory`
- - `memory`
- - `replicated`
- - `users_xml` (ro)
- - `ldap` (ro)
+現在、ClickHouseには5つのアクセスストレージがあります:
+- `local_directory`
+- `memory`
+- `replicated`
+- `users_xml` (読み取り専用)
+- `ldap` (読み取り専用)
 
 例:
 

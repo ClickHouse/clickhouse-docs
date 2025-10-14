@@ -1,12 +1,11 @@
 ---
-description: 'Документация для специального типа данных Expression'
-sidebar_label: 'Expression'
+slug: '/sql-reference/data-types/special-data-types/expression'
+sidebar_label: Expression
 sidebar_position: 58
-slug: /sql-reference/data-types/special-data-types/expression
-title: 'Expression'
+description: 'Документация для специального типа данных Expression'
+title: Expression
+doc_type: reference
 ---
-
-
-# Expression
+# Выражение
 
 Выражения используются для представления лямбд в функциях высшего порядка.

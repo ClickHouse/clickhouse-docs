@@ -1,14 +1,13 @@
 ---
-description: 'Возвращает максимум вычисленного экспоненциально сглаженного скользящего среднего
-  по индексу `t` во времени по сравнению с `t-1`. '
+slug: '/sql-reference/aggregate-functions/reference/exponentialTimeDecayedMax'
 sidebar_position: 135
-slug: /sql-reference/aggregate-functions/reference/exponentialTimeDecayedMax
-title: 'exponentialTimeDecayedMax'
+description: 'Возвращает максимальное значение вычисленного экспоненциально сглаженного'
+title: exponentialTimeDecayedMax
+doc_type: reference
 ---
-
 ## exponentialTimeDecayedMax {#exponentialtimedecayedmax}
 
-Возвращает максимум вычисленного экспоненциально сглаженного скользящего среднего по индексу `t` во времени по сравнению с `t-1`. 
+Возвращает максимум вычисленного экспоненциально сглаженного скользящего среднего на индексе `t` во времени с тем, который был на `t-1`.
 
 **Синтаксис**
 
@@ -18,16 +17,16 @@ exponentialTimeDecayedMax(x)(value, timeunit)
 
 **Аргументы**
 
-- `value` — Значение. [Целое число](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
-- `timeunit` — Единица времени. [Целое число](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md), [DateTime](../../data-types/datetime.md), [DateTime64](../../data-types/datetime64.md).
+- `value` — Значение. [Целое](../../../sql-reference/data-types/int-uint.md), [Вещественное](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md).
+- `timeunit` — Единица времени. [Целое](../../../sql-reference/data-types/int-uint.md), [Вещественное](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md), [DateTime](../../data-types/datetime.md), [DateTime64](../../data-types/datetime64.md).
 
 **Параметры**
 
-- `x` — Период полураспада. [Целое число](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
+- `x` — Период полураспада. [Целое](../../../sql-reference/data-types/int-uint.md), [Вещественное](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md).
 
 **Возвращаемые значения**
 
-- Возвращает максимум экспоненциально сглаженного взвешенного скользящего среднего в `t` и `t-1`. [Float64](../../data-types/float.md).
+- Возвращает максимум экспоненциально сглаженного взвешенного скользящего среднего на `t` и `t-1`. [Float64](../../data-types/float.md).
 
 **Пример**
 

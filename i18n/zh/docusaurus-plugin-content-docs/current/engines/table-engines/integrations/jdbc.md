@@ -4,6 +4,7 @@
 'sidebar_position': 100
 'slug': '/engines/table-engines/integrations/jdbc'
 'title': 'JDBC'
+'doc_type': 'reference'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -14,13 +15,13 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 <CloudNotSupportedBadge/>
 
 :::note
-clickhouse-jdbc-bridge 包含实验性代码，并且不再支持。它可能含有可靠性问题和安全漏洞。使用它需自担风险。 
-ClickHouse 推荐使用内置的表函数，这些函数为临时查询场景（如 Postgres、MySQL、MongoDB 等）提供了更好的替代方案。
+clickhouse-jdbc-bridge 包含实验性代码，并且不再受支持。它可能包含可靠性问题和安全漏洞。使用风险自负。 
+ClickHouse 推荐使用 ClickHouse 内置的表函数，这为临时查询场景（如 Postgres、MySQL、MongoDB 等）提供了更好的替代方案。
 :::
 
-允许 ClickHouse 通过 [JDBC](https://en.wikipedia.org/wiki/Java_Database_Connectivity) 连接到外部数据库。
+允许 ClickHouse 通过 [JDBC](https://en.wikipedia.org/wiki/Java_Database_Connectivity) 连接外部数据库。
 
-为了实现 JDBC 连接，ClickHouse 使用独立程序 [clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge)，该程序应作为守护进程运行。
+为了实现 JDBC 连接，ClickHouse 使用单独的程序 [clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge)，该程序应作为守护进程运行。
 
 此引擎支持 [Nullable](../../../sql-reference/data-types/nullable.md) 数据类型。
 
@@ -31,23 +32,25 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name
 (
     columns list...
 )
-ENGINE = JDBC(datasource_uri, external_database, external_table)
+ENGINE = JDBC(datasource, external_database, external_table)
 ```
 
 **引擎参数**
 
-- `datasource_uri` — 外部 DBMS 的 URI 或名称。
+- `datasource` — 外部 DBMS 的 URI 或名称。
 
     URI 格式：`jdbc:<driver_name>://<host_name>:<port>/?user=<username>&password=<password>`。
     MySQL 示例：`jdbc:mysql://localhost:3306/?user=root&password=root`。
 
-- `external_database` — 外部 DBMS 中的数据库。
+- `external_database` — 外部 DBMS 中数据库的名称，或者显式定义的表模式（参见示例）。
 
-- `external_table` — `external_database` 中表的名称，或如 `select * from table1 where column1=1` 的选择查询。
+- `external_table` — 外部数据库中的表的名称或查询，如 `select * from table1 where column1=1`。
+
+- 这些参数也可以通过 [命名集合](operations/named-collections.md) 进行传递。
 
 ## 使用示例 {#usage-example}
 
-通过直接连接 MySQL 服务器和其控制台客户端来创建表：
+通过直接连接到 MySQL 服务器的控制台客户端来创建一个表：
 
 ```text
 mysql> CREATE TABLE `test`.`test` (
@@ -100,6 +103,6 @@ SELECT toInt32(number), toFloat32(number * 1.0)
 FROM system.numbers
 ```
 
-## 另请参阅 {#see-also}
+## 参见 {#see-also}
 
 - [JDBC 表函数](../../../sql-reference/table-functions/jdbc.md)。

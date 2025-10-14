@@ -7,6 +7,7 @@
 'output_format': true
 'slug': '/interfaces/formats/JSONEachRowWithProgress'
 'title': 'JSONEachRowWithProgress'
+'doc_type': 'reference'
 ---
 
 | Input | Output | Alias |
@@ -15,7 +16,7 @@
 
 ## 描述 {#description}
 
-与 [`JSONEachRow`](./JSONEachRow.md)/[`JSONStringsEachRow`](./JSONStringsEachRow.md) 的不同之处在于 ClickHouse 还会以 JSON 值的形式提供进度信息。
+与 [`JSONEachRow`](./JSONEachRow.md)/[`JSONStringsEachRow`](./JSONStringsEachRow.md) 的不同之处在于，ClickHouse 还将以 JSON 值的形式提供进度信息。
 
 ## 示例用法 {#example-usage}
 

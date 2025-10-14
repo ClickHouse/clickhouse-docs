@@ -1,23 +1,22 @@
 ---
-description: 'ClickHouse におけるクラスター検出のドキュメント'
-sidebar_label: 'クラスター検出'
-slug: '/operations/cluster-discovery'
-title: 'クラスター検出'
+'description': 'Documentation for クラスター発見 in ClickHouse'
+'sidebar_label': 'クラスター発見'
+'slug': '/operations/cluster-discovery'
+'title': 'クラスター発見'
+'doc_type': 'guide'
 ---
 
 
-
-
-# クラスター検出
+# クラスター発見
 
 ## 概要 {#overview}
 
-ClickHouseのクラスター検出機能は、ノードが自動的に自分自身を発見し登録できるようにすることで、クラスターの構成を簡素化します。これにより、構成ファイルに明示的に定義する必要がなくなり、各ノードの手動定義が煩雑になる場合に特に有益です。
+ClickHouseのクラスター発見機能は、ノードが明示的に構成ファイルに定義されることなく、自動的に発見して登録できるようにすることで、クラスターの構成を簡素化します。これは、各ノードを手動で定義することが煩雑になる場合に特に便利です。
 
 :::note
 
-クラスター検出は実験的な機能であり、将来のバージョンで変更または削除される可能性があります。
-これを有効にするには、構成ファイルに `allow_experimental_cluster_discovery` 設定を含めてください：
+クラスター発見は実験的な機能であり、将来のバージョンで変更または削除される可能性があります。
+この機能を有効にするには、構成ファイルに`allow_experimental_cluster_discovery`設定を含めます。
 
 ```xml
 <clickhouse>
@@ -32,7 +31,7 @@ ClickHouseのクラスター検出機能は、ノードが自動的に自分自�
 
 ### 従来の手動構成 {#traditional-manual-configuration}
 
-従来、ClickHouseでは、クラスター内の各シャードおよびレプリカを構成に手動で指定する必要がありました：
+従来、ClickHouseでは、クラスター内の各シャードとレプリカを構成に手動で指定する必要がありました。
 
 ```xml
 <remote_servers>
@@ -62,9 +61,9 @@ ClickHouseのクラスター検出機能は、ノードが自動的に自分自�
 
 ```
 
-### クラスター検出の使用 {#using-cluster-discovery}
+### クラスター発見を使用する {#using-cluster-discovery}
 
-クラスター検出を使用すると、各ノードを明示的に定義するのではなく、ZooKeeper内のパスを指定するだけで済みます。このパスの下に登録されているすべてのノードは、自動的に発見され、クラスターに追加されます。
+クラスター発見を使用すると、各ノードを明示的に定義する代わりに、ZooKeeper内のパスを指定するだけで済みます。このパスに登録されたすべてのノードは自動的に発見され、クラスターに追加されます。
 
 ```xml
 <remote_servers>
@@ -72,27 +71,27 @@ ClickHouseのクラスター検出機能は、ノードが自動的に自分自�
         <discovery>
             <path>/clickhouse/discovery/cluster_name</path>
 
-            <!-- # オプションの構成パラメーター: -->
+            <!-- # Optional configuration parameters: -->
 
-            <!-- ## クラスター内の他のすべてのノードにアクセスするための認証資格情報: -->
+            <!-- ## Authentication credentials to access all other nodes in cluster: -->
             <!-- <user>user1</user> -->
             <!-- <password>pass123</password> -->
-            <!-- ### パスワードの代わりにインタサーバーシークレットを使用することもできます: -->
+            <!-- ### Alternatively to password, interserver secret may be used: -->
             <!-- <secret>secret123</secret> -->
 
-            <!-- ## 現在のノードのシャード (下記参照): -->
+            <!-- ## Shard for current node (see below): -->
             <!-- <shard>1</shard> -->
 
-            <!-- ## 観察者モード (下記参照): -->
+            <!-- ## Observer mode (see below): -->
             <!-- <observer/> -->
         </discovery>
     </cluster_name>
 </remote_servers>
 ```
 
-特定のノードにシャード番号を指定したい場合は、`<discovery>` セクション内に `<shard>` タグを含めることができます：
+特定のノードにシャード番号を指定したい場合は、`<discovery>`セクション内に`<shard>`タグを含めることができます。
 
-`node1` および `node2` の場合：
+`node1`と`node2`の場合：
 
 ```xml
 <discovery>
@@ -101,7 +100,7 @@ ClickHouseのクラスター検出機能は、ノードが自動的に自分自�
 </discovery>
 ```
 
-`node3` および `node4` の場合：
+`node3`と`node4`の場合：
 
 ```xml
 <discovery>
@@ -110,12 +109,11 @@ ClickHouseのクラスター検出機能は、ノードが自動的に自分自�
 </discovery>
 ```
 
-### 観察者モード {#observer-mode}
+### オブザーバーモード {#observer-mode}
 
-
-観察者モードで構成されたノードは、自分自身をレプリカとして登録しません。
-彼らは、アクティブなレプリカを観察し発見するだけで、積極的に参加しません。
-観察者モードを有効にするには、`<discovery>` セクション内に `<observer/>` タグを含めます：
+オブザーバーモードで構成されたノードは、レプリカとして自分自身を登録しません。
+アクティブな他のレプリカを観察し発見するだけで、積極的に参加することはありません。
+オブザーバーモードを有効にするには、`<discovery>`セクション内に`<observer/>`タグを含めてください：
 
 ```xml
 <discovery>
@@ -124,10 +122,9 @@ ClickHouseのクラスター検出機能は、ノードが自動的に自分自�
 </discovery>
 ```
 
-
 ### クラスターの発見 {#discovery-of-clusters}
 
-時には、クラスター内のホストだけでなく、クラスター自体を追加および削除する必要がある場合があります。複数のクラスター用にルートパスを持つ `<multicluster_root_path>` ノードを使用できます：
+時には、クラスター内のホストだけでなく、クラスター自体を追加または削除する必要がある場合があります。複数のクラスターのルートパスを持つ`<multicluster_root_path>`ノードを使用できます。
 
 ```xml
 <remote_servers>
@@ -140,9 +137,9 @@ ClickHouseのクラスター検出機能は、ノードが自動的に自分自�
 </remote_servers>
 ```
 
-この場合、他のホストが `/clickhouse/discovery/some_new_cluster` で自分を登録すると、`some_new_cluster` という名前のクラスターが追加されます。
+この場合、別のホストが`/clickhouse/discovery/some_new_cluster`で自身を登録すると、`some_new_cluster`という名前のクラスターが追加されます。
 
-これらの機能を同時に使用することもでき、ホストはクラスター `my_cluster` に自分を登録し、他のクラスターを発見することができます：
+両方の機能を同時に使用することができ、ホストはクラスター`my_cluster`に自身を登録し、他のクラスターを発見することができます：
 
 ```xml
 <remote_servers>
@@ -161,19 +158,17 @@ ClickHouseのクラスター検出機能は、ノードが自動的に自分自�
 ```
 
 制限事項：
-- 同じ `remote_servers` サブツリー内で `<path>` と `<multicluster_root_path>` の両方を使用することはできません。
-- `<multicluster_root_path>` は `<observer/>` とだけ使用できます。
-- Keeperからのパスの最後の部分はクラスタ名として使用され、登録中はXMLタグから名前が取得されます。
-
-
+- 同じ`remote_servers`サブツリー内で`<path>`と`<multicluster_root_path>`を両方使用することはできません。
+- `<multicluster_root_path>`は`<observer/>`とのみ使用できます。
+- Keeperからのパスの最後の部分がクラスター名として使用され、登録時にはXMLタグから名前が取られます。
 
 ## 使用例と制限事項 {#use-cases-and-limitations}
 
-指定されたZooKeeperパスからノードが追加または削除されると、それらは自動的に発見されたり、クラスタから削除されたりします。構成の変更やサーバーの再起動は必要ありません。
+指定されたZooKeeperパスからノードが追加または削除されると、構成の変更やサーバーの再起動なしに自動的にクラスターから発見または削除されます。
 
-ただし、変更はクラスター構成のみに影響し、データや既存のデータベースおよびテーブルには影響しません。
+ただし、変更はクラスターの構成にのみ影響を及ぼし、データや既存のデータベースおよびテーブルには影響しません。
 
-次の例を考えてみましょう。3ノードのクラスターが組織されています：
+以下に、ノード3つのクラスターの例を示します：
 
 ```xml
 <remote_servers>
@@ -204,7 +199,7 @@ ORDER BY event_time PARTITION BY toYYYYMM(event_time);
 INSERT INTO event_table ...
 ```
 
-その後、クラスターに新しいノードを追加し、構成ファイルの `remote_servers` セクションに同じエントリを持つ新しいノードを起動します：
+次に、新しいノードをクラスターに追加し、構成ファイルの`remote_servers`セクションに同じエントリを持つ新しいノードを起動します：
 
 ```response
 ┌─cluster─┬─shard_num─┬─shard_weight─┬─replica_num─┬─host_name────┬─host_address─┬─port─┬─is_local─┬─user─┬─is_active─┐
@@ -215,7 +210,7 @@ INSERT INTO event_table ...
 └─────────┴───────────┴──────────────┴─────────────┴──────────────┴──────────────┴──────┴──────────┴──────┴───────────┘
 ```
 
-4番目のノードはクラスターに参加していますが、テーブル `event_table` は依然として最初の3つのノードにのみ存在します：
+4番目のノードはクラスターに参加していますが、`event_table`テーブルはまだ最初の3つのノードにしか存在しません：
 
 ```sql
 SELECT hostname(), database, table FROM clusterAllReplicas(default, system.tables) WHERE table = 'event_table' FORMAT PrettyCompactMonoBlock
@@ -227,4 +222,4 @@ SELECT hostname(), database, table FROM clusterAllReplicas(default, system.table
 └──────────────┴──────────┴─────────────┘
 ```
 
-すべてのノードにテーブルを複製する必要がある場合は、クラスター検出の代わりに [Replicated](../engines/database-engines/replicated.md) データベースエンジンを使用できます。
+すべてのノードにテーブルをレプリケートする必要がある場合は、クラスター発見の代わりに[Replicated](../engines/database-engines/replicated.md)データベースエンジンを使用することができます。
