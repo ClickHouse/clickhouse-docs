@@ -131,7 +131,9 @@ dbt relies on a read-after-insert consistency model. This is not compatible with
 
 ## General information about features {#general-information-about-features}
 
-### General table configurations {#general-table-configurations}
+### General model configurations {#general-model-configurations}
+
+The following table shows configurations shared by some of the available materializations. For in-depth information about each configuration, see the [dbt documentation](https://docs.getdbt.com/category/general-configs):
 
 | Option                 | Description                                                                                                                                                                                                                                                                                                          | Default if any |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
@@ -140,12 +142,11 @@ dbt relies on a read-after-insert consistency model. This is not compatible with
 | partition_by           | A partition is a logical combination of records in a table by a specified criterion. The partition key can be any expression from the table columns.                                                                                                                                                                 |                |
 | sharding_key           | Sharding key determines the destination server when inserting into distributed engine table.  The sharding key can be random or as an output of a hash function                                                                                                                                                      | `rand()`)      |
 | primary_key            | Like order_by, a ClickHouse primary key expression.  If not specified, ClickHouse will use the order by expression as the primary key                                                                                                                                                                                |                |
-| unique_key             | A tuple of column names that uniquely identify rows.  Used with incremental models for updates.                                                                                                                                                                                                                      |                |
 | settings               | A map/dictionary of "TABLE" settings to be used to DDL statements like 'CREATE TABLE' with this model                                                                                                                                                                                                                |                |
 | query_settings         | A map/dictionary of ClickHouse user level settings to be used with `INSERT` or `DELETE` statements in conjunction with this model                                                                                                                                                                                    |                |
 | ttl                    | A TTL expression to be used with the table.  The TTL expression is a string that can be used to specify the TTL for the table.                                                                                                                                                                                       |                |
-| indexes                | A list of [data skipping indexes to create](/optimize/skipping-indexes). Check below for more information.                                                                                                                                                        |                |
-| sql_security           | Allow you to specify which ClickHouse user to use when executing the view's underlying query. `SQL SECURITY` [has two legal values](/sql-reference/statements/create/view#sql_security): `definer` `invoker`.                                                                             |                |
+| indexes                |  A list of [data skipping indexes](/optimize/skipping-indexes) to create. See [About data skipping indexes](#data-skipping-indexes) for details.                                                                                                                                                        |                |
+| sql_security           | The ClickHouse user to use when executing the view's underlying query. [Accepted values]((/sql-reference/statements/create/view#sql_security)): `definer`, `invoker`.                                                                             |                |
 | definer                | If `sql_security` was set to `definer`, you have to specify any existing user or `CURRENT_USER` in the `definer` clause.                                                                                                                                                                                             |                |
 | projections            | A list of [projections](/data-modeling/projections) to be created. Check [About projections](#projections) for details.                                                                                                                                                        |                |
 
@@ -190,6 +191,8 @@ You can add [projections](/data-modeling/projections) to `table` and `distribute
 | S3                     | https://clickhouse.com/docs/en/engines/table-engines/integrations/s3                      |
 | EmbeddedRocksDB        | https://clickhouse.com/docs/en/engines/table-engines/integrations/embedded-rocksdb        |
 | Hive                   | https://clickhouse.com/docs/en/engines/table-engines/integrations/hive                    |
+
+**Note**: For materialized views, all *MergeTree engines are supported.
 
 ### Experimental supported table engines {#experimental-supported-table-engines}
 
