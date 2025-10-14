@@ -64,7 +64,7 @@ McClickHouse
 DeleteMutations
 --docs/managing-data/updating-data/update_mutations.md--
 UpdateMutations
---docs/integrations/data-visualization/deepnote.md--
+--docs/integrations/data-visualization/community_integrations/deepnote.md--
 Deepnote
 Deepnote's
 deepnote
@@ -127,7 +127,7 @@ clickpipes
 DigitalOcean
 --docs/integrations/tools/data-integration/retool/index.md--
 nocode
---docs/integrations/data-visualization/hashboard-and-clickhouse.md--
+--docs/integrations/data-visualization/community_integrations/hashboard-and-clickhouse.md--
 Hashboard
 --docs/integrations/data-visualization/index.md--
 Hashboard
@@ -240,8 +240,6 @@ TCPD
 TDVT
 TPCD
 Totalprice
---docs/integrations/data-visualization/explo-and-clickhouse.md--
-Explo
 --docs/integrations/data-visualization/powerbi-and-clickhouse.md--
 DirectQuery
 --docs/integrations/language-clients/go/index.md--
@@ -307,8 +305,10 @@ Varchar
 Poller
 --docs/integrations/data-ingestion/dbms/postgresql/postgres-vs-clickhouse.md--
 Citus
---docs/integrations/data-visualization/astrato-and-clickhouse.md--
+--docs/integrations/data-visualization/community_integrations/astrato-and-clickhouse.md--
 dataview
+astrato
+dataconnection
 --docs/integrations/data-ingestion/clickpipes/postgres/source/supabase.md--
 pooler
 supabase
@@ -317,7 +317,7 @@ IdP
 IdPs
 Entra
 RelayState
---docs/integrations/data-visualization/mitzu-and-clickhouse.md--
+--docs/integrations/data-visualization/community_integrations/mitzu-and-clickhouse.md--
 mitzu
 --docs/integrations/sql-clients/jupysql.md--
 Briarwood
@@ -354,7 +354,7 @@ newtypes
 inserter
 inserters
 Inserter
---docs/integrations/data-visualization/rocketbi-and-clickhouse.md--
+--docs/integrations/data-visualization/community_integrations/rocketbi-and-clickhouse.md--
 reportings
 rocketbi
 --docs/faq/general/dbms-naming.md--
@@ -884,9 +884,6 @@ metabase
 draxlr
 --docs/integrations/data-visualization/splunk-and-clickhouse.md--
 splunk
---docs/integrations/data-visualization/astrato-and-clickhouse.md--
-astrato
-dataconnection
 --docs/integrations/data-ingestion/clickpipes/object-storage.md--
 Gcssvg
 --docs/integrations/data-ingestion/etl-tools/nifi-and-clickhouse.md--
@@ -913,8 +910,9 @@ luzmo
 rocketbi
 --docs/integrations/data-visualization/omni-and-clickhouse.md--
 omni
---docs/integrations/data-visualization/explo-and-clickhouse.md--
+--docs/integrations/data-visualization/community_integrations/explo-and-clickhouse.md--
 explo
+Explo
 --docs/integrations/data-visualization/hashboard-and-clickhouse.md--
 hashboard
 --docs/integrations/data-visualization/quicksight-and-clickhouse.md--
@@ -1122,7 +1120,7 @@ keygen
 keypair
 --docs/cloud/guides/security/05_audit_logging/03_byoc-security-playbook.md--
 detections
---docs/integrations/data-visualization/dot-and-clickhouse.md--
+--docs/integrations/data-visualization/community_integrations/dot-and-clickhouse.md--
 Hashboard
 --docs/integrations/language-clients/python/advanced-usage.md--
 AsyncClient
