@@ -1,11 +1,11 @@
 ---
 slug: /use-cases/observability/clickstack/event_deltas
-title: "Event Deltas with ClickStack"
-sidebar_label: "Event Deltas"
+title: 'Event Deltas with ClickStack'
+sidebar_label: 'Event Deltas'
 pagination_prev: null
 pagination_next: null
-description: "Event Deltas with ClickStack"
-doc_type: "guide"
+description: 'Event Deltas with ClickStack'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
