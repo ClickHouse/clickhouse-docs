@@ -2331,6 +2331,7 @@ hdfs
 hdfsCluster
 heredoc
 heredocs
+heatmap
 hilbertDecode
 hilbertEncode
 hiveHash
