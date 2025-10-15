@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'ClickPipes for Object Storage'
+sidebar_label: 'ClickPipes for object storage'
 description: 'Seamlessly connect your object storage to ClickHouse Cloud.'
 slug: /integrations/clickpipes/object-storage
 title: 'Integrating Object Storage with ClickHouse Cloud'

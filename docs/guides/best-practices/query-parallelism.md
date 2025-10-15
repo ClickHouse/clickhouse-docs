@@ -1,6 +1,6 @@
 ---
 slug: /optimize/query-parallelism
-sidebar_label: 'Query Parallelism'
+sidebar_label: 'Query parallelism'
 sidebar_position: 20
 description: 'ClickHouse parallelizes query execution using processing lanes and the max_threads setting.'
 title: 'How ClickHouse executes a query in parallel'

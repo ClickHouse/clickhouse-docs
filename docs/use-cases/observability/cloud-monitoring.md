@@ -1,6 +1,7 @@
 ---
 slug: /use-cases/observability/cloud-monitoring
-title: 'ClickHouse Cloud Monitoring'
+title: 'ClickHouse Cloud monitoring'
+sidebar_label: 'ClickHouse Cloud monitoring'
 description: 'ClickHouse Cloud Monitoring Guide'
 doc_type: 'guide'
 ---
