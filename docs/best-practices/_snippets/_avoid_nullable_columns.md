@@ -25,4 +25,4 @@ ENGINE = MergeTree
 ORDER BY x
 ```
 
-Consider your use case, a default value may be inappropriate.
+Consider your use case; a default value may be inappropriate.

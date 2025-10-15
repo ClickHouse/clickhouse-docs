@@ -43,7 +43,7 @@ For detailed dashboard features and available metrics, see the [advanced dashboa
 ClickHouse Cloud includes additional monitoring capabilities:
 
 - Query Insights: Built-in interface for query performance analysis and troubleshooting
-- Resource Utilization Dashboard: Tracks memory, CPU allocation, and data transfer patterns
+- Resource Utilization Dashboard: Tracks memory, CPU allocation, and data transfer patterns. CPU usage and memory usage graphs show the maximum utilization metric in a particular time period. The CPU usage graph shows a system-level CPU utilization metric (NOT a ClickHouse CPU utilization metric). 
 
 See the [query insights](/cloud/get-started/query-insights) and [resource utilization](/operations/monitoring#resource-utilization) documentation for detailed features.
 

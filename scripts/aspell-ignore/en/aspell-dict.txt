@@ -489,6 +489,7 @@ HashedDictionaryThreads
 HashedDictionaryThreadsActive
 HashiCorp
 Haversine
+Heatmap
 Heredoc
 HexAreaKm
 HexAreaM
@@ -2332,6 +2333,7 @@ hdfs
 hdfsCluster
 heredoc
 heredocs
+heatmap
 hilbertDecode
 hilbertEncode
 hiveHash
