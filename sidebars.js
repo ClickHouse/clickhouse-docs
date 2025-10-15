@@ -348,7 +348,7 @@ const sidebars = {
         // },
         {
           type: "category",
-          label: "Data Types",
+          label: "Data types",
           link: { type: "doc", id: "sql-reference/data-types/index" },
           items: [
             {
@@ -403,7 +403,7 @@ const sidebars = {
       items: [
         {
           type: "category",
-          label: "Regular Functions",
+          label: "Regular functions",
           collapsed: true,
           collapsible: true,
           link: { type: "doc", id: "sql-reference/functions/regular-functions-index" },
@@ -416,7 +416,7 @@ const sidebars = {
         },
         {
           type: "category",
-          label: "Aggregate Functions",
+          label: "Aggregate functions",
           collapsed: true,
           collapsible: true,
           link: { type: "doc", id: "sql-reference/aggregate-functions/index" },
@@ -441,7 +441,7 @@ const sidebars = {
         },
         {
           type: "category",
-          label: "Table Functions",
+          label: "Table functions",
           collapsed: true,
           collapsible: true,
           link: { type: "doc", id: "sql-reference/table-functions/index" },
@@ -454,7 +454,7 @@ const sidebars = {
         },
         {
           type: "category",
-          label: "Window Functions",
+          label: "Window functions",
           collapsed: true,
           collapsible: true,
           link: { type: "doc", id: "sql-reference/window-functions/index" },
@@ -1269,7 +1269,7 @@ const sidebars = {
       items: [
         {
           type: "category",
-          label: "Deployment and Scaling",
+          label: "Deployment and scaling",
           collapsed: true,
           collapsible: true,
           link: { type: "doc", id: "deployment-guides/index" },
@@ -1372,7 +1372,7 @@ const sidebars = {
         "guides/sre/user-management/index",
         {
           type: "category",
-          label: "External Authenticators",
+          label: "External authenticators",
           collapsed: true,
           collapsible: true,
           link: { type: "doc", id: "operations/external-authenticators/index" },
