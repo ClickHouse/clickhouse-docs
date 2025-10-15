@@ -6,12 +6,12 @@
 'doc_type': 'reference'
 ---
 
-import Architecture from '@site/static/images/cloud/reference/architecture.svg';
-
+import Image from '@theme/IdealImage';
+import Architecture from '@site/static/images/cloud/reference/architecture.png';
 
 # ClickHouse Cloud 架构
 
-<Architecture alt='ClickHouse Cloud 架构' class='image' />
+<Image img={Architecture} size='lg' alt='Cloud architecture'/>
 
 ## 由对象存储支持的存储 {#storage-backed-by-object-store}
 - 几乎无限的存储
