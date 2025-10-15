@@ -1,6 +1,6 @@
 ---
 'sidebar_title': 'Query API Endpoints'
-'slug': '/cloud/guides/SQL_console/query-endpoints'
+'slug': '/cloud/features/query-api-endpoints'
 'description': 'Легко создавайте REST API эндпоинты из ваших сохраненных запросов'
 'keywords':
 - 'api'
@@ -10,6 +10,7 @@
 'title': 'Запрос API Эндпоинты'
 'doc_type': 'guide'
 ---
+
 import Image from '@theme/IdealImage';
 import endpoints_testquery from '@site/static/images/cloud/sqlconsole/endpoints-testquery.png';
 import endpoints_savequery from '@site/static/images/cloud/sqlconsole/endpoints-savequery.png';
