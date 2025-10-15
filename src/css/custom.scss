@@ -1525,3 +1525,14 @@ input::-ms-input-placeholder { /* Microsoft Edge */
 .code-viewer {
   margin-bottom: var(--ifm-paragraph-margin-bottom);
 }
+
+/* Make error codes sidebar items smaller */
+.error-codes-category .menu__list-item {
+  font-size: 0.7rem;
+
+  .menu__link {
+    padding-top: 1px;
+    padding-bottom: 1px;
+    line-height: 1.2;
+  }
+}
