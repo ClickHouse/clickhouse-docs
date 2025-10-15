@@ -1,6 +1,6 @@
 ---
 'sidebar_title': 'Query API Endpoints'
-'slug': '/cloud/get-started/query-endpoints'
+'slug': '/cloud/guides/SQL_console/query-endpoints'
 'description': 'Легко создавайте REST API эндпоинты из ваших сохраненных запросов'
 'keywords':
 - 'api'
