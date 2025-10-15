@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Using a third-party ETL Tool'
+sidebar_label: 'Using a third-party ETL tool'
 keywords: ['clickhouse', 'migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'clickhouse-local', 'clickhouse-client']
 slug: /cloud/migration/etl-tool-to-clickhouse
 title: 'Using a 3rd-party ETL Tool'

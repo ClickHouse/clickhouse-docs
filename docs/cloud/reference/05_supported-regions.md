@@ -1,5 +1,5 @@
 ---
-title: 'Supported Cloud regions'
+title: 'Supported cloud regions'
 sidebar_label: 'Supported Cloud regions'
 keywords: ['aws', 'gcp', 'google cloud', 'azure', 'cloud', 'regions']
 description: 'Supported regions for ClickHouse Cloud'
