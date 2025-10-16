@@ -1,27 +1,23 @@
----
-{}
----
-
 
 
 <details>
     <summary>DockerでApache Supersetを起動する</summary>
 
-Supersetは[Docker Composeを使用したSupersetのローカルインストール](https://superset.apache.org/docs/installation/installing-superset-using-docker-compose/)の手順を提供しています。 GitHubからApache Supersetリポジトリをチェックアウトした後、最新の開発コードまたは特定のタグを実行できます。 `pre-release`とマークされていない最新リリースであるバージョン2.0.0を推奨します。
+Supersetは、[Docker Composeを使用してSupersetをローカルにインストールする](https://superset.apache.org/docs/installation/installing-superset-using-docker-compose/)ための手順を提供しています。 GitHubからApache Supersetのリポジトリをチェックアウトした後、最新の開発コードまたは特定のタグを実行できます。 `pre-release`としてマークされていない最新のリリースであるリリース2.0.0を推奨します。
 
-`docker compose`を実行する前に、いくつかの作業を行う必要があります：
+`docker compose`を実行する前に、いくつかのタスクを行う必要があります:
 
-1. 公式のClickHouse Connectドライバーを追加する
-2. Mapbox APIキーを取得し、環境変数として追加する (オプション)
-3. 実行するSupersetのバージョンを指定する
+1. 公式のClickHouse Connectドライバーを追加
+2. Mapbox APIキーを取得し、環境変数として追加（オプション）
+3. 実行するSupersetのバージョンを指定
 
 :::tip
-以下のコマンドは、GitHubリポジトリのトップレベルである `superset` から実行する必要があります。
+以下のコマンドは、GitHubリポジトリのトップレベルである`superset`から実行する必要があります。
 :::
 
-## 公式のClickHouse Connectドライバー {#official-clickhouse-connect-driver}
+## 公式ClickHouse Connectドライバー {#official-clickhouse-connect-driver}
 
-SupersetのデプロイメントでClickHouse Connectドライバーを利用できるようにするために、ローカルのrequirementsファイルに追加します：
+ClickHouse ConnectドライバーをSupersetのデプロイメントで利用可能にするため、ローカルのrequirementsファイルに追加します：
 
 ```bash
 echo "clickhouse-connect" >> ./docker/requirements-local.txt
@@ -29,9 +25,9 @@ echo "clickhouse-connect" >> ./docker/requirements-local.txt
 
 ## Mapbox {#mapbox}
 
-これはオプションです。Mapbox APIキーなしでSupersetに地理データをプロットできますが、キーを追加するように指示するメッセージが表示され、マップの背景画像が欠落します（データポイントのみが表示され、マップの背景は表示されません）。使用したい場合は、Mapboxは無料のティアを提供しています。
+これはオプションですが、Mapbox APIキーなしでSupersetに位置データをプロットできますが、キーを追加する必要があるというメッセージが表示され、地図の背景画像が欠落します（データポイントのみが表示され、地図の背景は表示されません）。使用したい場合は、Mapboxは無料プランを提供しています。
 
-ガイドで作成するサンプルビジュアリゼーションのいくつかは、経度や緯度などの位置データを使用します。SupersetはMapboxマップをサポートしています。Mapboxビジュアリゼーションを使用するには、Mapbox APIキーが必要です。 [Mapboxの無料ティア](https://account.mapbox.com/auth/signup/)にサインアップし、APIキーを生成してください。
+ガイドで作成するいくつかのサンプルビジュアライゼーションでは、緯度や経度などの位置データを使用します。SupersetはMapboxマップをサポートしています。Mapboxのビジュアライゼーションを使用するには、Mapbox APIキーが必要です。 [Mapboxの無料プラン](https://account.mapbox.com/auth/signup/)にサインアップし、APIキーを生成します。
 
 APIキーをSupersetに利用可能にします：
 

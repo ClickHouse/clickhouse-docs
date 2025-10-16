@@ -33,9 +33,9 @@ You can run the following steps either from your Python REPL or via script.
 Install the required library by running the following commands:
 
 ```python
-!pip install -q --upgrade pip
-!pip install -q "pydantic-ai-slim[mcp]"
-!pip install -q "pydantic-ai-slim[anthropic]" # replace with the appropriate package if using a different LLM provider
+pip install -q --upgrade pip
+pip install -q "pydantic-ai-slim[mcp]"
+pip install -q "pydantic-ai-slim[anthropic]" # replace with the appropriate package if using a different LLM provider
 ```
 
 ## Setup credentials {#setup-credentials}

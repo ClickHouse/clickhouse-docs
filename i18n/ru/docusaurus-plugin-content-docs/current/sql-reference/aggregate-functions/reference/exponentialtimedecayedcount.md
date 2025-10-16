@@ -1,13 +1,13 @@
 ---
-description: 'Возвращает кумулятивное экспоненциальное затухание по временным рядам в моменте `t` во времени.'
+slug: '/sql-reference/aggregate-functions/reference/exponentialTimeDecayedCount'
 sidebar_position: 134
-slug: /sql-reference/aggregate-functions/reference/exponentialTimeDecayedCount
-title: 'exponentialTimeDecayedCount'
+description: 'Возвращает накопительное экспоненциальное затухание во временном ряде'
+title: exponentialTimeDecayedCount
+doc_type: reference
 ---
-
 ## exponentialTimeDecayedCount {#exponentialtimedecayedcount}
 
-Возвращает кумулятивное экспоненциальное затухание по временным рядам в моменте `t` во времени.
+Возвращает кумулятивное экспоненциальное затухание по временной серии в индексе `t` по времени.
 
 **Синтаксис**
 
@@ -17,15 +17,15 @@ exponentialTimeDecayedCount(x)(t)
 
 **Аргументы**
 
-- `t` — Время. [Целое](../../../sql-reference/data-types/int-uint.md), [Число с плавающей точкой](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md), [ДатаВремя](../../data-types/datetime.md), [ДатаВремя64](../../data-types/datetime64.md).
+- `t` — Время. [Целое число](../../../sql-reference/data-types/int-uint.md), [число с плавающей запятой](../../../sql-reference/data-types/float.md) или [десятичное число](../../../sql-reference/data-types/decimal.md), [ДатаВремя](../../data-types/datetime.md), [ДатаВремя64](../../data-types/datetime64.md).
 
 **Параметры**
 
-- `x` — Период полураспада. [Целое](../../../sql-reference/data-types/int-uint.md), [Число с плавающей точкой](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md).
+- `x` — Период полураспада. [Целое число](../../../sql-reference/data-types/int-uint.md), [число с плавающей запятой](../../../sql-reference/data-types/float.md) или [десятичное число](../../../sql-reference/data-types/decimal.md).
 
 **Возвращаемые значения**
 
-- Возвращает кумулятивное экспоненциальное затухание в данный момент времени. [Float64](../../data-types/float.md).
+- Возвращает кумулятивное экспоненциальное затухание в заданный момент времени. [Float64](../../data-types/float.md).
 
 **Пример**
 

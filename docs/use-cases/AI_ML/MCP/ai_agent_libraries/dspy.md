@@ -34,9 +34,9 @@ This example can be found as a notebook in the [examples repository](https://git
 Run the following commands using `pip` to install the required libraries:
 
 ```shell
-!pip install -q --upgrade pip
-!pip install -q dspy
-!pip install -q mcp
+pip install -q --upgrade pip
+pip install -q dspy
+pip install -q mcp
 ```
 
 ## Setup credentials {#setup-credentials}

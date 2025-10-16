@@ -1,14 +1,13 @@
 ---
-description: 'Вычисляет взвешенное среднее арифметическое.'
+slug: '/sql-reference/aggregate-functions/reference/avgweighted'
 sidebar_position: 113
-slug: /sql-reference/aggregate-functions/reference/avgweighted
-title: 'avgWeighted'
+description: 'Вычисляет взвешенное арифметическое среднее.'
+title: avgWeighted
+doc_type: reference
 ---
-
-
 # avgWeighted
 
-Вычисляет [взвешенное среднее арифметическое](https://en.wikipedia.org/wiki/Weighted_arithmetic_mean).
+Вычисляет [взвешенное арифметическое среднее](https://en.wikipedia.org/wiki/Weighted_arithmetic_mean).
 
 **Синтаксис**
 
@@ -21,8 +20,8 @@ avgWeighted(x, weight)
 - `x` — Значения.
 - `weight` — Веса значений.
 
-`x` и `weight` должны быть обоими
-[целиком](../../../sql-reference/data-types/int-uint.md) или [с плавающей запятой](../../../sql-reference/data-types/float.md),
+`x` и `weight` должны быть
+[Целыми](../../../sql-reference/data-types/int-uint.md) или [числами с плавающей запятой](../../../sql-reference/data-types/float.md),
 но могут иметь разные типы.
 
 **Возвращаемое значение**
@@ -38,7 +37,7 @@ avgWeighted(x, weight)
 
 ```sql
 SELECT avgWeighted(x, w)
-FROM values('x Int8, w Int8', (4, 1), (1, 0), (10, 2))
+FROM VALUES('x Int8, w Int8', (4, 1), (1, 0), (10, 2))
 ```
 
 Результат:
@@ -55,7 +54,7 @@ FROM values('x Int8, w Int8', (4, 1), (1, 0), (10, 2))
 
 ```sql
 SELECT avgWeighted(x, w)
-FROM values('x Int8, w Float64', (4, 1), (1, 0), (10, 2))
+FROM VALUES('x Int8, w Float64', (4, 1), (1, 0), (10, 2))
 ```
 
 Результат:
@@ -72,7 +71,7 @@ FROM values('x Int8, w Float64', (4, 1), (1, 0), (10, 2))
 
 ```sql
 SELECT avgWeighted(x, w)
-FROM values('x Int8, w Int8', (0, 0), (1, 0), (10, 0))
+FROM VALUES('x Int8, w Int8', (0, 0), (1, 0), (10, 0))
 ```
 
 Результат:
@@ -88,7 +87,7 @@ FROM values('x Int8, w Int8', (0, 0), (1, 0), (10, 0))
 Запрос:
 
 ```sql
-CREATE table test (t UInt8) ENGINE = Memory;
+CREATE TABLE test (t UInt8) ENGINE = Memory;
 SELECT avgWeighted(t) FROM test
 ```
 

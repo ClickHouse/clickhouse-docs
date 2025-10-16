@@ -3,6 +3,7 @@
 'sidebar_position': 185
 'slug': '/sql-reference/aggregate-functions/reference/skewpop'
 'title': 'skewPop'
+'doc_type': 'reference'
 ---
 
 
@@ -16,7 +17,7 @@ skewPop(expr)
 
 **参数**
 
-`expr` — [表达式](/sql-reference/syntax#expressions) 返回一个数字。
+`expr` — 返回数字的 [表达式](/sql-reference/syntax#expressions)。
 
 **返回值**
 

@@ -1,19 +1,16 @@
 ---
-description: 'The aggregate function `singleValueOrNull` is used to implement subquery
-  operators, such as `x = ALL (SELECT ...)`. It checks if there is only one unique
-  non-NULL value in the data.'
-sidebar_position: 184
-slug: '/sql-reference/aggregate-functions/reference/singlevalueornull'
-title: 'singleValueOrNull'
+'description': '集約関数 `singleValueOrNull` は、`x = ALL (SELECT ...)` のようなサブクエリ演算子を実装するために使用されます。それは、データに唯一の非NULL値が1つだけ存在するかどうかを確認します。'
+'sidebar_position': 184
+'slug': '/sql-reference/aggregate-functions/reference/singlevalueornull'
+'title': 'singleValueOrNull'
+'doc_type': 'reference'
 ---
-
-
 
 
 # singleValueOrNull
 
-集約関数 `singleValueOrNull` は、`x = ALL (SELECT …)` のようなサブクエリ演算子を実装するために使用されます。この関数は、データに唯一の非NULL値が1つだけ存在するかどうかをチェックします。
-唯一の値がある場合、それを返します。ゼロまたは2つ以上の異なる値がある場合は、NULLを返します。
+集約関数 `singleValueOrNull` は、`x = ALL (SELECT ...)` のようなサブクエリ演算子を実装するために使用されます。この関数は、データ内に一意の非NULL値が1つだけ存在するかどうかを確認します。
+一意の値が1つだけ存在する場合は、それを返します。ゼロまたは少なくとも2つの異なる値がある場合は、NULLを返します。
 
 **構文**
 
@@ -21,14 +18,14 @@ title: 'singleValueOrNull'
 singleValueOrNull(x)
 ```
 
-**パラメータ**
+**パラメーター**
 
-- `x` — 任意の [データ型](../../data-types/index.md) のカラム（[Map](../../data-types/map.md)、[Array](../../data-types/array.md)、または [Tuple](../../data-types/tuple) は [Nullable](../../data-types/nullable.md) 型ではないため、含まれません）。
+- `x` — 任意の [データ型](../../data-types/index.md) のカラム（[Map](../../data-types/map.md)、[Array](../../data-types/array.md) または [Tuple](../../data-types/tuple) のように [Nullable](../../data-types/nullable.md) 型は使用できません）。
 
 **返される値**
 
-- `x` に唯一の非NULL値が1つだけ存在する場合、その唯一の値。
-- ゼロまたは2つ以上の異なる値が存在する場合は `NULL`。
+- `x` に一意の非NULL値が1つだけ存在する場合、その一意の値。
+- ゼロまたは少なくとも2つの異なる値がある場合は、`NULL`。
 
 **例**
 

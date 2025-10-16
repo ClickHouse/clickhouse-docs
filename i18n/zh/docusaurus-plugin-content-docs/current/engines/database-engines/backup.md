@@ -1,17 +1,18 @@
 ---
-'description': '允许以只读模式立即从备份中附加表/数据库。'
+'description': '允许以只读模式即时从备份中附加表/数据库。'
 'sidebar_label': '备份'
 'sidebar_position': 60
 'slug': '/engines/database-engines/backup'
 'title': '备份'
+'doc_type': 'reference'
 ---
 
 
 # 备份
 
-数据库备份允许即时以只读模式附加来自 [备份](../../operations/backup) 的表/数据库。
+数据库备份允许立即以只读模式从 [备份](../../operations/backup) 附加表/数据库。
 
-数据库备份可以使用增量备份和非增量备份。
+数据库备份适用于增量备份和非增量备份。
 
 ## 创建数据库 {#creating-a-database}
 
@@ -20,7 +21,7 @@ CREATE DATABASE backup_database
 ENGINE = Backup('database_name_inside_backup', 'backup_destination')
 ```
 
-备份目标可以是任何有效的备份 [目标](../../operations/backup#configure-a-backup-destination)，如 `Disk`，`S3`，`File`。
+备份目标可以是任何有效的备份 [目标](../../operations/backup#configure-a-backup-destination)，例如 `Disk`、`S3`、`File`。
 
 使用 `Disk` 备份目标，从备份创建数据库的查询如下所示：
 
@@ -31,12 +32,12 @@ ENGINE = Backup('database_name_inside_backup', Disk('disk_name', 'backup_name'))
 
 **引擎参数**
 
-- `database_name_inside_backup` — 备份中的数据库名称。
+- `database_name_inside_backup` — 备份内数据库的名称。
 - `backup_destination` — 备份目标。
 
 ## 使用示例 {#usage-example}
 
-让我们用 `Disk` 备份目标做一个示例。首先，在 `storage.xml` 中设置备份磁盘：
+让我们用一个 `Disk` 备份目标来做一个示例。首先在 `storage.xml` 中设置备份磁盘：
 
 ```xml
 <storage_configuration>
@@ -53,7 +54,7 @@ ENGINE = Backup('database_name_inside_backup', Disk('disk_name', 'backup_name'))
 </backups>
 ```
 
-使用示例。让我们创建测试数据库、表，插入一些数据，然后创建一个备份：
+使用示例。我们先创建测试数据库、表，插入一些数据，然后创建一个备份：
 
 ```sql
 CREATE DATABASE test_database;
@@ -70,7 +71,7 @@ INSERT INTO test_database.test_table_3 VALUES (0, 'test_database.test_table_3');
 BACKUP DATABASE test_database TO Disk('backups', 'test_database_backup');
 ```
 
-所以现在我们有了 `test_database_backup` 备份，让我们创建数据库 Backup：
+现在我们有了 `test_database_backup` 备份，让我们创建数据库 Backup：
 
 ```sql
 CREATE DATABASE test_database_backup ENGINE = Backup('test_database', Disk('backups', 'test_database_backup'));
@@ -98,7 +99,7 @@ SELECT id, value FROM test_database_backup.test_table_3;
 └────┴────────────────────────────┘
 ```
 
-我们也可以像使用任何普通数据库一样处理这个数据库 Backup。例如查询其中的表：
+也可以将这个数据库 Backup 作为任何普通数据库进行操作。例如查询其中的表：
 
 ```sql
 SELECT database, name FROM system.tables WHERE database = 'test_database_backup':

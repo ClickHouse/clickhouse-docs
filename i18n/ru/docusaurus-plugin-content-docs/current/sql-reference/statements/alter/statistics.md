@@ -1,35 +1,35 @@
 ---
-description: 'Документация по манипулированию статистикой колонок'
-sidebar_label: 'STATISTICS'
+slug: '/sql-reference/statements/alter/statistics'
+sidebar_label: STATISTICS
 sidebar_position: 45
-slug: /sql-reference/statements/alter/statistics
+description: 'Документация по манипуляции статистической колонок'
 title: 'Манипулирование статистикой колонок'
+doc_type: reference
 ---
-
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# Манипулирование статистикой колонок
+# Манипуляция статистикой колонок
 
 <ExperimentalBadge/>
 <CloudNotSupportedBadge/>
 
-Доступны следующие операции:
+Следующие операции доступны:
 
 -   `ALTER TABLE [db].table ADD STATISTICS [IF NOT EXISTS] (column list) TYPE (type list)` - Добавляет описание статистики в метаданные таблиц.
 
--   `ALTER TABLE [db].table MODIFY STATISTICS (column list) TYPE (type list)` - Модифицирует описание статистики в метаданные таблиц.
+-   `ALTER TABLE [db].table MODIFY STATISTICS (column list) TYPE (type list)` - Изменяет описание статистики в метаданных таблиц.
 
 -   `ALTER TABLE [db].table DROP STATISTICS [IF EXISTS] (column list)` - Удаляет статистику из метаданных указанных колонок и удаляет все объекты статистики во всех частях для указанных колонок.
 
--   `ALTER TABLE [db].table CLEAR STATISTICS [IF EXISTS] (column list)` - Удаляет все объекты статистики во всех частях для указанных колонок. Объекты статистики можно восстановить с помощью `ALTER TABLE MATERIALIZE STATISTICS`.
+-   `ALTER TABLE [db].table CLEAR STATISTICS [IF EXISTS] (column list)` - Удаляет все объекты статистики во всех частях для указанных колонок. Объекты статистики могут быть восстановлены с помощью `ALTER TABLE MATERIALIZE STATISTICS`.
 
--   `ALTER TABLE [db.]table MATERIALIZE STATISTICS [IF EXISTS] (column list)` - Восстанавливает статистику для колонок. Реализовано как [мутация](../../../sql-reference/statements/alter/index.md#mutations). 
+-   `ALTER TABLE [db.]table MATERIALIZE STATISTICS (ALL | [IF EXISTS] (column list))` - Восстанавливает статистику для колонок. Реализовано как [мутация](../../../sql-reference/statements/alter/index.md#mutations). 
 
 Первые две команды легковесны в том смысле, что они только изменяют метаданные или удаляют файлы.
 
-Кроме того, они реплицируются, синхронизируя метаданные статистики через ZooKeeper.
+Также они реплицируемы, синхронизируя метаданные статистики через ZooKeeper.
 
 ## Пример: {#example}
 

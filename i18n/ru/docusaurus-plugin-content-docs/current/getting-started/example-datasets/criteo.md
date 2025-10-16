@@ -1,13 +1,13 @@
 ---
-description: 'Терабайт логов кликов от Criteo'
+slug: '/getting-started/example-datasets/criteo'
 sidebar_label: 'Терабайт логов кликов от Criteo'
-slug: /getting-started/example-datasets/criteo
+description: 'Терабайт журналов кликов от Criteo'
 title: 'Терабайт логов кликов от Criteo'
+doc_type: reference
 ---
-
 Скачайте данные с http://labs.criteo.com/downloads/download-terabyte-click-logs/
 
-Создайте таблицу для импорта логов:
+Создайте таблицу для импорта журнала:
 
 ```sql
 CREATE TABLE criteo_log (
@@ -112,7 +112,7 @@ PARTITION BY toYYYYMM(date)
 ORDER BY (date, icat1)
 ```
 
-Преобразуйте данные из сырых логов и вставьте их во вторую таблицу:
+Преобразуйте данные из исходного журнала и поместите их во вторую таблицу:
 
 ```sql
 INSERT INTO

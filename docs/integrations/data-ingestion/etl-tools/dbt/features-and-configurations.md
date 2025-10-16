@@ -55,6 +55,7 @@ your_profile_name:
       tcp_keepalive: [False] # Native client only, specify TCP keepalive configuration. Specify custom keepalive settings as [idle_time_sec, interval_sec, probes].
       custom_settings: [{}] # A dictionary/mapping of custom ClickHouse settings for the connection - default is empty.
       database_engine: '' # Database engine to use when creating new ClickHouse schemas (databases).  If not set (the default), new databases will use the default ClickHouse database engine (usually Atomic).
+      threads: [1] # Number of threads to use when running queries. Before setting it to a number higher than 1, make sure to read the [read-after-write consistency](#read-after-write-consistency) section.
       
       # Native (clickhouse-driver) connection settings
       sync_request_timeout: [5] # Timeout for server ping
@@ -87,6 +88,12 @@ seeds:
 
 ### About the ClickHouse Cluster {#about-the-clickhouse-cluster}
 
+When using a ClickHouse cluster, you need to consider two things:
+- Setting the `cluster` setting.
+- Ensuring read-after-write consistency, especially if you are using more than one `threads`.
+
+#### Cluster Setting {#cluster-setting}
+
 The `cluster` setting in profile enables dbt-clickhouse to run against a ClickHouse cluster. If `cluster` is set in the profile, **all models will be created with the `ON CLUSTER` clause** by default—except for those using a **Replicated** engine. This includes:
 
 - Database creation
@@ -111,10 +118,16 @@ To **opt out** of cluster-based creation for a specific model, add the `disable_
 table and incremental materializations with non-replicated engine will not be affected by `cluster` setting (model would
 be created on the connected node only).
 
-#### Compatibility {#compatibility}
+**Compatibility**
 
 If a model has been created without a `cluster` setting, dbt-clickhouse will detect the situation and run all DDL/DML
 without `on cluster` clause for this model.
+
+#### Read-after-write Consistency {#read-after-write-consistency}
+
+dbt relies on a read-after-insert consistency model. This is not compatible with ClickHouse clusters that have more than one replica if you cannot guarantee that all operations will go to the same replica. You may not encounter problems in your day-to-day usage of dbt, but there are some strategies depending on your cluster to have this guarantee in place:
+- If you are using a ClickHouse Cloud cluster, you only need to set `select_sequential_consistency: 1` in your profile's `custom_settings` property. You can find more information about this setting [here](https://clickhouse.com/docs/operations/settings/settings#select_sequential_consistency).
+- If you are using a self-hosted cluster, make sure all dbt requests are sent to the same ClickHouse replica. If you have a load balancer on top of it, try using some `replica aware routing`/`sticky sessions` mechanism to be able to always reach the same replica. Adding the setting `select_sequential_consistency = 1` in clusters outside ClickHouse Cloud is [not recommended](https://clickhouse.com/docs/operations/settings/settings#select_sequential_consistency).
 
 ## General information about features {#general-information-about-features}
 
@@ -131,9 +144,41 @@ without `on cluster` clause for this model.
 | settings               | A map/dictionary of "TABLE" settings to be used to DDL statements like 'CREATE TABLE' with this model                                                                                                                                                                                                                |                |
 | query_settings         | A map/dictionary of ClickHouse user level settings to be used with `INSERT` or `DELETE` statements in conjunction with this model                                                                                                                                                                                    |                |
 | ttl                    | A TTL expression to be used with the table.  The TTL expression is a string that can be used to specify the TTL for the table.                                                                                                                                                                                       |                |
-| indexes                | A list of indexes to create, available only for `table` materialization. For examples look at ([#397](https://github.com/ClickHouse/dbt-clickhouse/pull/397))                                                                                                                                                        |                |
-| sql_security           | Allow you to specify which ClickHouse user to use when executing the view's underlying query. [`SQL SECURITY`](https://clickhouse.com/docs/sql-reference/statements/create/view#sql_security) has two legal values: `definer` `invoker`.                                                                             |                |
+| indexes                | A list of [data skipping indexes to create](/optimize/skipping-indexes). Check below for more information.                                                                                                                                                        |                |
+| sql_security           | Allow you to specify which ClickHouse user to use when executing the view's underlying query. `SQL SECURITY` [has two legal values](/sql-reference/statements/create/view#sql_security): `definer` `invoker`.                                                                             |                |
 | definer                | If `sql_security` was set to `definer`, you have to specify any existing user or `CURRENT_USER` in the `definer` clause.                                                                                                                                                                                             |                |
+| projections            | A list of [projections](/data-modeling/projections) to be created. Check [About projections](#projections) for details.                                                                                                                                                        |                |
+
+#### About data skipping indexes {#data-skipping-indexes}
+
+Data skipping indexes are only available for the `table` materialization. To add a list of data skipping indexes to a table, use the `indexes` configuration:
+
+```sql
+{{ config(
+        materialized='table',
+        indexes=[{
+          'name': 'your_index_name',
+          'definition': 'your_column TYPE minmax GRANULARITY 2'
+        }]
+) }}
+```
+
+#### About projections {#projections}
+
+You can add [projections](/data-modeling/projections) to `table` and `distributed_table` materializations using the `projections` configuration:
+
+```sql
+{{ config(
+       materialized='table',
+       projections=[
+           {
+               'name': 'your_projection_name',
+               'query': 'SELECT department, avg(age) AS avg_age GROUP BY department'
+           }
+       ]
+) }}
+```
+**Note**: For distributed tables, the projection is applied to the `_local` tables, not to the distributed proxy table.
 
 ### Supported table engines {#supported-table-engines}
 
@@ -178,7 +223,7 @@ should be carefully researched and tested.
 | codec  | A string consisting of arguments passed to `CODEC()` in the column's DDL. For example: `codec: "Delta, ZSTD"` will be compiled as `CODEC(Delta, ZSTD)`.    |    
 | ttl    | A string consisting of a [TTL (time-to-live) expression](https://clickhouse.com/docs/guides/developer/ttl) that defines a TTL rule in the column's DDL. For example: `ttl: ts + INTERVAL 1 DAY` will be compiled as `TTL ts + INTERVAL 1 DAY`. |
 
-#### Example {#example}
+#### Example of schema configuration {#example-of-schema-configuration}
 
 ```yaml
 models:
@@ -194,6 +239,30 @@ models:
       - name: x
         data_type: UInt8
         ttl: ts + INTERVAL 1 DAY
+```
+
+#### Adding complex types {#adding-complex-types}
+
+dbt automatically determines the data type of each column by analyzing the SQL used to create the model. However, in some cases this process may not accurately determine the data type, leading to conflicts with the types specified in the contract `data_type` property. To address this, we recommend using the `CAST()` function in the model SQL to explicitly define the desired type. For example:
+
+```sql
+{{
+    config(
+        materialized="materialized_view",
+        engine="AggregatingMergeTree",
+        order_by=["event_type"],
+    )
+}}
+
+select
+  -- event_type may be infered as a String but we may prefer LowCardinality(String):
+  CAST(event_type, 'LowCardinality(String)') as event_type,
+  -- countState() may be infered as `AggregateFunction(count)` but we may prefer to change the type of the argument used:
+  CAST(countState(), 'AggregateFunction(count, UInt32)') as response_count, 
+  -- maxSimpleState() may be infered as `SimpleAggregateFunction(max, String)` but we may prefer to also change the type of the argument used:
+  CAST(maxSimpleState(event_type), 'SimpleAggregateFunction(max, LowCardinality(String))') as max_event_type
+from {{ ref('user_events') }}
+group by event_type
 ```
 
 ## Features {#features}

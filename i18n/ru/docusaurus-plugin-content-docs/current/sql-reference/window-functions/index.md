@@ -1,42 +1,45 @@
 ---
-description: 'Обзорная страница для оконных функций'
+slug: '/sql-reference/window-functions/'
 sidebar_label: 'Оконные функции'
 sidebar_position: 1
-slug: /sql-reference/window-functions/
+description: 'Обзорная страница для оконных функций'
 title: 'Оконные функции'
+doc_type: reference
 ---
-
 # Оконные функции
 
-Оконные функции позволяют выполнять вычисления по набору строк, связанным с текущей строкой. Некоторые из вычислений, которые вы можете выполнить, похожи на те, которые можно сделать с помощью агрегатной функции, но оконная функция не вызывает группировку строк в один вывод - отдельные строки все еще возвращаются.
+Оконные функции позволяют выполнять вычисления по набору строк, связанному с текущей строкой. Некоторые из вычислений, которые вы можете выполнять, аналогичны тем, которые могут быть выполнены с помощью агрегатных функций, но оконная функция не вызывает группировку строк в один вывод — отдельные строки все еще возвращаются.
+
 ## Стандартные оконные функции {#standard-window-functions}
 
-ClickHouse поддерживает стандартный синтаксис для определения окон и оконных функций. Таблица ниже показывает, поддерживается ли функция в данный момент.
+ClickHouse поддерживает стандартный синтаксис для определения окон и оконных функций. В таблице ниже указано, поддерживается ли функция в настоящий момент.
 
 | Функция                                                                  | Поддерживается?                                                                                                                                                                       |
 |--------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| спонтанная спецификация окна (`count(*) over (partition by id order by time desc)`) | ✅                                                                                                                                                                                  |
-| выражения с участием оконных функций, например, `(count(*) over ()) / 2)`             | ✅                                                                                                                                                                                   |
+| произвольная спецификация окна (`count(*) over (partition by id order by time desc)`) | ✅                                                                                                                                                                                  |
+| выражения, включающие оконные функции, например `(count(*) over ()) / 2)`             | ✅                                                                                                                                                                                   |
 | `WINDOW` клаузула (`select ... from table window w as (partition by id)`)            | ✅                                                                                                                                                                                   |
-| `ROWS` фрейм                                                                       | ✅                                                                                                                                                                                   |
-| `RANGE` фрейм                                                                      | ✅ (по умолчанию)                                                                                                                                                                      |
-| синтаксис `INTERVAL` для `DateTime` `RANGE OFFSET` фрейм                            | ❌ (укажите количество секунд вместо этого (`RANGE` работает с любым числовым типом).)                                                                                                                                 |
-| `GROUPS` фрейм                                                                     | ❌                                                                                                                                                                               |
-| Вычисление агрегатных функций по фрейму (`sum(value) over (order by time)`)   | ✅ (Поддерживаются все агрегатные функции)                                                                                                                                                       |
-| `rank()`, `dense_rank()`, `row_number()`                                           | ✅ <br/> Псевдоним: `denseRank()`                                                                                                                                                                                   |
-| `percent_rank()` | ✅  Эффективно вычисляет относительное положение значения внутри партиции в наборе данных. Эта функция эффективно заменяет более многословный и вычислительно затратный ручной SQL расчет, выраженный как `ifNull((rank() OVER(PARTITION BY x ORDER BY y) - 1) / nullif(count(1) OVER(PARTITION BY x) - 1, 0), 0)` <br/> Псевдоним: `percentRank()`| 
-| `lag/lead(value, offset)`                                                          | ❌ <br/> Вы можете использовать один из следующих обходных путей:<br/> 1) `any(value) over (.... rows between <offset> preceding and <offset> preceding)`, или `following` для `lead` <br/> 2) `lagInFrame/leadInFrame`, которые аналогичны, но учитывают оконный фрейм. Чтобы получить поведение, идентичное `lag/lead`, используйте `rows between unbounded preceding and unbounded following`                                                                 |
+| `ROWS` рамка                                                                       | ✅                                                                                                                                                                                   |
+| `RANGE` рамка                                                                      | ✅ (по умолчанию)                                                                                                                                                                      |
+| синтаксис `INTERVAL` для `DateTime` `RANGE OFFSET` рамки                              | ❌ (укажите вместо этого количество секунд (`RANGE` работает с любым числовым типом).)                                                                                                                                 |
+| `GROUPS` рамка                                                                     | ❌                                                                                                                                                                               |
+| Вычисление агрегатных функций по рамке (`sum(value) over (order by time)`)   | ✅ (Поддерживаются все агрегатные функции)                                                                                                                                                       |
+| `rank()`, `dense_rank()`, `row_number()`                                           | ✅ <br/>Псевдоним: `denseRank()`                                                                                                                                                                                   |
+| `percent_rank()` | ✅  Эффективно вычисляет относительное положение значения внутри партиции в наборе данных. Эта функция эффективно заменяет более многословное и трудоемкое ручное SQL вычисление, выраженное как `ifNull((rank() OVER(PARTITION BY x ORDER BY y) - 1) / nullif(count(1) OVER(PARTITION BY x) - 1, 0), 0)` <br/>Псевдоним: `percentRank()`| 
+| `lag/lead(value, offset)`                                                          | ✅ <br/> Вы также можете использовать один из следующих обходных путей:<br/> 1) `any(value) over (.... rows between <offset> preceding and <offset> preceding)`, или `following` для `lead` <br/> 2) `lagInFrame/leadInFrame`, которые аналогичны, но учитывают рамку окна. Чтобы получить поведение, аналогичное `lag/lead`, используйте `rows between unbounded preceding and unbounded following`                                                                 |
 | ntile(buckets) | ✅ <br/> Укажите окно, например, (partition by x order by y rows between unbounded preceding and unbounded following). |
-## Специфические для ClickHouse оконные функции {#clickhouse-specific-window-functions}
 
-Также существует следующая специфическая для ClickHouse оконная функция:
+## Оконные функции специфичные для ClickHouse {#clickhouse-specific-window-functions}
+
+Также существует следующая оконная функция, специфичная для ClickHouse:
+
 ### nonNegativeDerivative(metric_column, timestamp_column[, INTERVAL X UNITS]) {#nonnegativederivativemetric_column-timestamp_column-interval-x-units}
 
-Находит ненегативную производную для указанного `metric_column` по `timestamp_column`. 
-`INTERVAL` можно опустить, по умолчанию используется `INTERVAL 1 SECOND`.
-Вычисляемое значение следующее для каждой строки:
-- `0` для 1-й строки,
+Находит ненегативную производную для заданного `metric_column` по `timestamp_column`. 
+`INTERVAL` можно опустить, по умолчанию используется `INTERVAL 1 SECOND`. Вычисленное значение для каждой строки:
+- `0` для первой строки,
 - ${\text{metric}_i - \text{metric}_{i-1} \over \text{timestamp}_i - \text{timestamp}_{i-1}}  * \text{interval}$ для $i_{th}$ строки.
+
 ## Синтаксис {#syntax}
 
 ```text
@@ -47,42 +50,45 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]])
 ```
 
-- `PARTITION BY` - определяет, как разбить набор результатов на группы.
-- `ORDER BY` - определяет, как упорядочить строки внутри группы во время вычисления aggregate_function.
-- `ROWS or RANGE` - определяет границы фрейма, aggregate_function вычисляется внутри фрейма.
-- `WINDOW` - позволяет нескольким выражениям использовать одно и то же определение окна.
+- `PARTITION BY` - определяет, как разбить результирующий набор на группы.
+- `ORDER BY` - определяет, как упорядочивать строки внутри группы при вычислении функции aggregate_function.
+- `ROWS or RANGE` - определяет границы рамки, функция aggregate_function вычисляется в пределах рамки.
+- `WINDOW` - позволяет множеству выражений использовать одно и то же определение окна.
 
 ```text
       PARTITION
-┌─────────────────┐  <-- UNBOUNDED PRECEDING (НАЧАЛО ПАРТИЦИИ)
+┌─────────────────┐  <-- UNBOUNDED PRECEDING (BEGINNING of the PARTITION)
 │                 │
 │                 │
-│=================│  <-- N ПРЕДШЕСТВУЮЩИХ  <─┐
-│      N СТРОК    │                     │  F
-│  Перед ТЕКУЩЕЙ │                     │  R
-│~~~~~~~~~~~~~~~~~│  <-- ТЕКУЩАЯ СТРОКА    │  A
-│     M СТРОК     │                     │  M
-│   После ТЕКУЩЕЙ │                     │  E
-│=================│  <-- M СЛЕДУЮЩИХ  <─┘
+│=================│  <-- N PRECEDING  <─┐
+│      N ROWS     │                     │  F
+│  Before CURRENT │                     │  R
+│~~~~~~~~~~~~~~~~~│  <-- CURRENT ROW    │  A
+│     M ROWS      │                     │  M
+│   After CURRENT │                     │  E
+│=================│  <-- M FOLLOWING  <─┘
 │                 │
 │                 │
-└─────────────────┘  <--- UNBOUNDED FOLLOWING (КОНЕЦ ПАРТИЦИИ)
+└─────────────────┘  <--- UNBOUNDED FOLLOWING (END of the PARTITION)
 ```
+
 ### Функции {#functions}
 
 Эти функции могут использоваться только как оконные функции.
 
 - [`row_number()`](./row_number.md) - Нумерует текущую строку в ее партиции, начиная с 1.
-- [`first_value(x)`](./first_value.md) - Возвращает первое значение, оцененное в ее упорядоченном фрейме.
-- [`last_value(x)`](./last_value.md) - Возвращает последнее значение, оцененное в ее упорядоченном фрейме.
-- [`nth_value(x, offset)`](./nth_value.md) - Возвращает первое ненулевое значение, оцененное по nth строке (offset) в ее упорядоченном фрейме.
-- [`rank()`](./rank.md) - Ранжирует текущую строку в ее партиции с gaps.
-- [`dense_rank()`](./dense_rank.md) - Ранжирует текущую строку в ее партиции без gaps.
-- [`lagInFrame(x)`](./lagInFrame.md) - Возвращает значение, оцененное на строке, которая находится на заданном физическом смещении строк перед текущей строкой в упорядоченном фрейме.
-- [`leadInFrame(x)`](./leadInFrame.md) - Возвращает значение, оцененное на строке, которая находится на смещении строк после текущей строки в упорядоченном фрейме.
+- [`first_value(x)`](./first_value.md) - Возвращает первое значение, оцененное в рамках его упорядоченной рамки.
+- [`last_value(x)`](./last_value.md) - Возвращает последнее значение, оцененное в рамках его упорядоченной рамки.
+- [`nth_value(x, offset)`](./nth_value.md) - Возвращает первое не-NULL значение, оцененное по nth строке (offset) в его упорядоченной рамке.
+- [`rank()`](./rank.md) - Нумерует текущую строку в ее партиции с промежутками.
+- [`dense_rank()`](./dense_rank.md) - Нумерует текущую строку в ее партиции без промежутков.
+- [`lagInFrame(x)`](./lagInFrame.md) - Возвращает значение, оцененное в строке, которая находится на указанном физическом смещении строк до текущей строки в упорядоченной рамке.
+- [`leadInFrame(x)`](./leadInFrame.md) - Возвращает значение, оцененное в строке, которая находится на смещенных строках после текущей строки в упорядоченной рамке.
+
 ## Примеры {#examples}
 
-Давайте рассмотрим несколько примеров использования оконных функций.
+Давайте рассмотрим несколько примеров, как оконные функции могут быть использованы.
+
 ### Нумерация строк {#numbering-rows}
 
 ```sql
@@ -140,9 +146,10 @@ FROM salaries;
 │ Robert George   │ 195000 │   5 │    4 │         3 │
 └─────────────────┴────────┴─────┴──────┴───────────┘
 ```
+
 ### Агрегатные функции {#aggregation-functions}
 
-Сравните зарплату каждого игрока со средней зарплатой их команды.
+Сравните зарплату каждого игрока со средней зарплатой в команде.
 
 ```sql
 SELECT
@@ -164,7 +171,7 @@ FROM salaries;
 └─────────────────┴────────┴───────────────────────────┴─────────┴────────┘
 ```
 
-Сравните зарплату каждого игрока с максимальной зарплатой их команды.
+Сравните зарплату каждого игрока с максимальной зарплатой в команде.
 
 ```sql
 SELECT
@@ -185,6 +192,7 @@ FROM salaries;
 │ Robert George   │ 195000 │ Port Elizabeth Barbarians │  195000 │      0 │
 └─────────────────┴────────┴───────────────────────────┴─────────┴────────┘
 ```
+
 ### Партиционирование по колонке {#partitioning-by-column}
 
 ```sql
@@ -211,13 +219,14 @@ ORDER BY
 
 ┌─part_key─┬─value─┬─order─┬─frame_values─┐
 │        1 │     1 │     1 │ [1,2,3]      │   <┐   
-│        1 │     2 │     2 │ [1,2,3]      │    │  1-я группа
+│        1 │     2 │     2 │ [1,2,3]      │    │  1-st group
 │        1 │     3 │     3 │ [1,2,3]      │   <┘ 
-│        2 │     0 │     0 │ [0]          │   <- 2-я группа
-│        3 │     0 │     0 │ [0]          │   <- 3-я группа
+│        2 │     0 │     0 │ [0]          │   <- 2-nd group
+│        3 │     0 │     0 │ [0]          │   <- 3-d group
 └──────────┴───────┴───────┴──────────────┘
 ```
-### Границы фрейма {#frame-bounding}
+
+### Границы рамки {#frame-bounding}
 
 ```sql
 CREATE TABLE wf_frame
@@ -233,7 +242,7 @@ INSERT INTO wf_frame FORMAT Values
 ```
 
 ```sql
--- Фрейм ограничен границами партиции (BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
+-- Frame is bounded by bounds of a partition (BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
 SELECT
     part_key,
     value,
@@ -247,7 +256,7 @@ FROM wf_frame
 ORDER BY
     part_key ASC,
     value ASC;
-    
+
 ┌─part_key─┬─value─┬─order─┬─frame_values─┐
 │        1 │     1 │     1 │ [1,2,3,4,5]  │
 │        1 │     2 │     2 │ [1,2,3,4,5]  │
@@ -258,8 +267,8 @@ ORDER BY
 ```
 
 ```sql
--- короткая форма - нет ограничивающего выражения, нет порядка,
--- эквивалент `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`
+-- short form - no bound expression, no order by,
+-- an equalent of `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`
 SELECT
     part_key,
     value,
@@ -282,7 +291,7 @@ ORDER BY
 ```
 
 ```sql
--- фрейм ограничен началом партиции и текущей строкой
+-- frame is bounded by the beginning of a partition and the current row
 SELECT
     part_key,
     value,
@@ -307,8 +316,8 @@ ORDER BY
 ```
 
 ```sql
--- короткая форма (фрейм ограничен началом партиции и текущей строкой)
--- эквивалент `ORDER BY order ASC ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`
+-- short form (frame is bounded by the beginning of a partition and the current row)
+-- an equalent of `ORDER BY order ASC ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`
 SELECT
     part_key,
     value,
@@ -332,7 +341,7 @@ ORDER BY
 ```
 
 ```sql
--- фрейм ограничен началом партиции и текущей строкой, но порядок обратный
+-- frame is bounded by the beginning of a partition and the current row, but order is backward
 SELECT
     part_key,
     value,
@@ -353,7 +362,7 @@ ORDER BY
 ```
 
 ```sql
--- скользящий фрейм - 1 ПРЕДШЕСТВУЮЩАЯ СТРОКА И ТЕКУЩАЯ СТРОКА
+-- sliding frame - 1 PRECEDING ROW AND CURRENT ROW
 SELECT
     part_key,
     value,
@@ -378,7 +387,7 @@ ORDER BY
 ```
 
 ```sql
--- скользящий фрейм - ROWS BETWEEN 1 PRECEDING AND UNBOUNDED FOLLOWING 
+-- sliding frame - ROWS BETWEEN 1 PRECEDING AND UNBOUNDED FOLLOWING 
 SELECT
     part_key,
     value,
@@ -403,7 +412,7 @@ ORDER BY
 ```
 
 ```sql
--- row_number не учитывает фрейм, поэтому rn_1 = rn_2 = rn_3 != rn_4
+-- row_number does not respect the frame, so rn_1 = rn_2 = rn_3 != rn_4
 SELECT
     part_key,
     value,
@@ -435,7 +444,7 @@ ORDER BY
 ```
 
 ```sql
--- first_value и last_value учитывают фрейм
+-- first_value and last_value respect the frame
 SELECT
     groupArray(value) OVER w1 AS frame_values_1,
     first_value(value) OVER w1 AS first_value_1,
@@ -461,7 +470,7 @@ ORDER BY
 ```
 
 ```sql
--- второе значение в пределах фрейма
+-- second value within the frame
 SELECT
     groupArray(value) OVER w1 AS frame_values_1,
     nth_value(value, 2) OVER w1 AS second_value
@@ -481,7 +490,7 @@ ORDER BY
 ```
 
 ```sql
--- второе значение в пределах фрейма + Null для отсутствующих значений
+-- second value within the frame + Null for missing values
 SELECT
     groupArray(value) OVER w1 AS frame_values_1,
     nth_value(toNullable(value), 2) OVER w1 AS second_value
@@ -499,10 +508,12 @@ ORDER BY
 │ [2,3,4,5]      │            3 │
 └────────────────┴──────────────┘
 ```
+
 ## Примеры из реальной жизни {#real-world-examples}
 
-Следующие примеры решают общие проблемы из реальной жизни.
-### Максимальная/общая зарплата по департаментам {#maximumtotal-salary-per-department}
+Следующие примеры решают распространенные проблемы из реальной жизни.
+
+### Максимальная/общая зарплата по отделам {#maximumtotal-salary-per-department}
 
 ```sql
 CREATE TABLE employees
@@ -541,7 +552,7 @@ FROM
     FROM employees
     WINDOW wndw AS (
         PARTITION BY department
-        rows BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+        ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
     )
     ORDER BY
         department ASC,
@@ -557,6 +568,7 @@ FROM
 │ IT         │ Tim  │    200 │                500 │                 1000 │               20 │
 └────────────┴──────┴────────┴────────────────────┴──────────────────────┴──────────────────┘
 ```
+
 ### Кумулятивная сумма {#cumulative-sum}
 
 ```sql
@@ -575,7 +587,7 @@ INSERT INTO warehouse VALUES
     ('sku1', '2020-01-01', 1),
     ('sku1', '2020-02-01', 1),
     ('sku1', '2020-03-01', 1);
-```    
+```
 
 ```sql
 SELECT
@@ -597,7 +609,8 @@ ORDER BY
 │ sku38 │ 2020-03-01 00:00:00 │    -4 │             6 │
 └───────┴─────────────────────┴───────┴───────────────┘
 ```
-### Скользящее / колеблющееся среднее (по 3 строкам) {#moving--sliding-average-per-3-rows}
+
+### Скользящее/передвижное среднее (по 3 строки) {#moving--sliding-average-per-3-rows}
 
 ```sql
 CREATE TABLE sensors
@@ -644,7 +657,8 @@ ORDER BY
 │ cpu_temp │ 2020-01-01 00:00:07 │    87 │                87 │
 └──────────┴─────────────────────┴───────┴───────────────────┘
 ```
-### Скользящее / колеблющееся среднее (по 10 секундам) {#moving--sliding-average-per-10-seconds}
+
+### Скользящее/передвижное среднее (по 10 секунд) {#moving--sliding-average-per-10-seconds}
 
 ```sql
 SELECT
@@ -652,12 +666,12 @@ SELECT
     ts,
     value,
     avg(value) OVER (PARTITION BY metric ORDER BY ts
-      Range BETWEEN 10 PRECEDING AND CURRENT ROW) AS moving_avg_10_seconds_temp
+      RANGE BETWEEN 10 PRECEDING AND CURRENT ROW) AS moving_avg_10_seconds_temp
 FROM sensors
 ORDER BY
     metric ASC,
     ts ASC;
-    
+
 ┌─metric───┬──────────────────ts─┬─value─┬─moving_avg_10_seconds_temp─┐
 │ cpu_temp │ 2020-01-01 00:00:00 │    87 │                         87 │
 │ cpu_temp │ 2020-01-01 00:01:10 │    77 │                         77 │
@@ -669,9 +683,10 @@ ORDER BY
 │ cpu_temp │ 2020-01-01 00:07:10 │    87 │                         87 │
 └──────────┴─────────────────────┴───────┴────────────────────────────┘
 ```
-### Скользящее / колеблющееся среднее (по 10 дням) {#moving--sliding-average-per-10-days}
 
-Температура хранится с секундной точностью, но используя `Range` и `ORDER BY toDate(ts)`, мы формируем фрейм размером 10 единиц, и из-за `toDate(ts)` единицей является день.
+### Скользящее/передвижное среднее (по 10 дней) {#moving--sliding-average-per-10-days}
+
+Температура хранится с точностью до секунд, но используя `Range` и `ORDER BY toDate(ts)`, мы формируем рамку размером 10 единиц, и из-за `toDate(ts)` единицей является день.
 
 ```sql
 CREATE TABLE sensors
@@ -702,7 +717,7 @@ SELECT
     ts,
     value,
     round(avg(value) OVER (PARTITION BY metric ORDER BY toDate(ts) 
-       Range BETWEEN 10 PRECEDING AND CURRENT ROW),2) AS moving_avg_10_days_temp
+       RANGE BETWEEN 10 PRECEDING AND CURRENT ROW),2) AS moving_avg_10_days_temp
 FROM sensors
 ORDER BY
     metric ASC,
@@ -723,19 +738,23 @@ ORDER BY
 │ ambient_temp │ 2020-03-01 12:00:00 │    16 │                      16 │
 └──────────────┴─────────────────────┴───────┴─────────────────────────┘
 ```
-## Ссылки {#references}
-### GitHub Issues {#github-issues}
 
-Дорожная карта для начальной поддержки оконных функций [в этой задаче](https://github.com/ClickHouse/ClickHouse/issues/18097).
+## Ссылки {#references}
+
+### Проблемы GitHub {#github-issues}
+
+Дорожная карта для первоначальной поддержки оконных функций [находится в этой проблеме](https://github.com/ClickHouse/ClickHouse/issues/18097).
 
 Все проблемы GitHub, связанные с оконными функциями, имеют тег [comp-window-functions](https://github.com/ClickHouse/ClickHouse/labels/comp-window-functions).
+
 ### Тесты {#tests}
 
-Эти тесты содержат примеры текущего поддерживаемого синтаксиса:
+Эти тесты содержат примеры поддерживаемого синтаксиса:
 
 https://github.com/ClickHouse/ClickHouse/blob/master/tests/performance/window_functions.xml
 
 https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/01591_window_functions.sql
+
 ### Документация Postgres {#postgres-docs}
 
 https://www.postgresql.org/docs/current/sql-select.html#SQL-WINDOW
@@ -745,6 +764,7 @@ https://www.postgresql.org/docs/devel/sql-expressions.html#SYNTAX-WINDOW-FUNCTIO
 https://www.postgresql.org/docs/devel/functions-window.html
 
 https://www.postgresql.org/docs/devel/tutorial-window.html
+
 ### Документация MySQL {#mysql-docs}
 
 https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html
@@ -752,8 +772,9 @@ https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html
 https://dev.mysql.com/doc/refman/8.0/en/window-functions-usage.html
 
 https://dev.mysql.com/doc/refman/8.0/en/window-functions-frames.html
+
 ## Связанный контент {#related-content}
 
 - Блог: [Работа с данными временных рядов в ClickHouse](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
 - Блог: [Оконные и массивные функции для последовательностей коммитов Git](https://clickhouse.com/blog/clickhouse-window-array-functions-git-commits)
-- Блог: [Загрузка данных в ClickHouse - Часть 3 - Использование S3](https://clickhouse.com/blog/getting-data-into-clickhouse-part-3-s3)
+- Блог: [Получение данных в ClickHouse - Часть 3 - Использование S3](https://clickhouse.com/blog/getting-data-into-clickhouse-part-3-s3)

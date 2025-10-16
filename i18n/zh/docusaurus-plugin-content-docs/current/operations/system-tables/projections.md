@@ -1,10 +1,11 @@
 ---
-'description': '系统表包含有关所有表中现有投影的信息。'
+'description': '系统表，包含有关所有表中现有投影的信息。'
 'keywords':
 - 'system table'
 - 'projections'
 'slug': '/operations/system-tables/projections'
 'title': 'system.projections'
+'doc_type': 'reference'
 ---
 
 

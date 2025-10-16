@@ -10,6 +10,7 @@
 - 'examples'
 - 'minSimpleState'
 'sidebar_label': 'minSimpleState'
+'doc_type': 'reference'
 ---
 
 
@@ -21,9 +22,9 @@
 
 ## 示例用法 {#example-usage}
 
-让我们看一个使用跟踪每日温度读数的表的实际例子。对于每个位置，我们希望保持记录的最低温度。使用 `SimpleAggregateFunction` 类型和 `min`，当遇到更低的温度时，存储的值会自动更新。
+让我们看一个实际的例子，使用一个跟踪每日温度读取的表格。对于每个地点，我们希望保持记录的最低温度。使用 `SimpleAggregateFunction` 类型与 `min` 时，当遇到较低的温度时，存储的值会自动更新。
 
-创建原始温度读数的源表：
+创建原始温度读取的源表：
 
 ```sql
 CREATE TABLE raw_temperature_readings
@@ -51,7 +52,7 @@ ENGINE = AggregatingMergeTree()
 ORDER BY location_id;
 ```
 
-创建一个增量物化视图，它将作为插入数据的触发器，并维护每个位置的最低和最高温度。
+创建一个增量物化视图，该视图将作为插入数据的触发器，并维护每个地点的最低和最高温度。
 
 ```sql
 CREATE MATERIALIZED VIEW temperature_extremes_mv
@@ -65,7 +66,7 @@ FROM raw_temperature_readings
 GROUP BY location_id, location_name;
 ```
 
-插入一些初始温度读数：
+插入一些初始温度读取：
 
 ```sql
 INSERT INTO raw_temperature_readings (location_id, location_name, temperature) VALUES
@@ -75,7 +76,7 @@ INSERT INTO raw_temperature_readings (location_id, location_name, temperature) V
 (4, 'East', 8);
 ```
 
-这些读数会被物化视图自动处理。让我们检查当前状态：
+这些读取会被物化视图自动处理。让我们检查当前状态：
 
 ```sql
 SELECT
@@ -96,7 +97,7 @@ ORDER BY location_id;
 └─────────────┴───────────────┴──────────┴──────────┘
 ```
 
-插入一些更多的数据：
+插入更多数据：
 
 ```sql
 INSERT INTO raw_temperature_readings (location_id, location_name, temperature) VALUES
@@ -132,7 +133,7 @@ ORDER BY location_id;
 └─────────────┴───────────────┴──────────┴──────────┘
 ```
 
-注意，上面我们为每个位置插入了两个值。这是因为分区片段尚未合并（并由 `AggregatingMergeTree` 聚合）。要从部分状态中获得最终结果，我们需要添加 `GROUP BY`：
+请注意，上面每个位置都有两个插入值。这是因为部分还没有合并（并由 `AggregatingMergeTree` 聚合）。为了从部分状态中获取最终结果，我们需要添加 `GROUP BY`：
 
 ```sql
 SELECT
@@ -157,10 +158,10 @@ ORDER BY location_id;
 ```
 
 :::note
-使用 `SimpleState`，您无需使用 `Merge` 组合器来合并部分聚合状态。
+使用 `SimpleState`，您无需使用 `Merge` 组合器来组合部分聚合状态。
 :::
 
-## 另见 {#see-also}
+## 参见 {#see-also}
 - [`min`](/sql-reference/aggregate-functions/reference/min)
 - [`SimpleState 组合器`](/sql-reference/aggregate-functions/combinators#-simplestate)
 - [`SimpleAggregateFunction 类型`](/sql-reference/data-types/simpleaggregatefunction)

@@ -1,10 +1,11 @@
 ---
-'description': '系统表包含有关 Kafka 消费者的信息。'
+'description': '系统表包含关于 Kafka 消费者的信息。'
 'keywords':
 - 'system table'
 - 'kafka_consumers'
 'slug': '/operations/system-tables/kafka_consumers'
 'title': 'system.kafka_consumers'
+'doc_type': 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
@@ -16,24 +17,24 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
 列：
 
-- `database` (字符串) - Kafka 引擎表的数据库。
-- `table` (字符串) - Kafka 引擎表的名称。
-- `consumer_id` (字符串) - Kafka 消费者标识符。注意，一个表可以有多个消费者。由 `kafka_num_consumers` 参数指定。
-- `assignments.topic` (数组(字符串)) - Kafka 主题。
-- `assignments.partition_id` (数组(整型)) - Kafka 分区 ID。注意，每个分区只能分配给一个消费者。
-- `assignments.current_offset` (数组(64 位整型)) - 当前偏移量。
-- `exceptions.time` (数组(日期时间)) - 生成最近 10 个异常的时间戳。
-- `exceptions.text` (数组(字符串)) - 最近 10 个异常的文本。
-- `last_poll_time` (日期时间) - 最近一次轮询的时间戳。
-- `num_messages_read` (无符号 64 位整型) - 消费者读取的消息数量。
-- `last_commit_time` (日期时间) - 最近一次提交的时间戳。
-- `num_commits` (无符号 64 位整型) - 消费者的总提交次数。
-- `last_rebalance_time` (日期时间) - 最近一次 Kafka 重新平衡的时间戳。
-- `num_rebalance_revocations` (无符号 64 位整型) - 消费者被撤销分区的次数。
-- `num_rebalance_assignments` (无符号 64 位整型) - 消费者被分配到 Kafka 集群的次数。
-- `is_currently_used` (无符号 8 位整型) - 消费者是否在使用中。
-- `last_used` (无符号 64 位整型) - 此消费者最后一次使用的时间，单位为微秒的 unix 时间。
-- `rdkafka_stat` (字符串) - 库的内部统计信息。请参见 https://github.com/ClickHouse/librdkafka/blob/master/STATISTICS.md。将 `statistics_interval_ms` 设置为 0 以禁用，默认值为 3000（每三秒一次）。
+- `database` (String) - 带有 Kafka 引擎的表的数据库。
+- `table` (String) - 带有 Kafka 引擎的表的名称。
+- `consumer_id` (String) - Kafka 消费者标识符。请注意，一个表可以有多个消费者。由 `kafka_num_consumers` 参数指定。
+- `assignments.topic` (Array(String)) - Kafka 主题。
+- `assignments.partition_id` (Array(Int32)) - Kafka 分区 ID。请注意，一个分区只能分配给一个消费者。
+- `assignments.current_offset` (Array(Int64)) - 当前偏移量。
+- `exceptions.time` (Array(DateTime)) - 生成最近 10 个异常的时间戳。
+- `exceptions.text` (Array(String)) - 最近 10 个异常的文本。
+- `last_poll_time` (DateTime) - 最近一次投票的时间戳。
+- `num_messages_read` (UInt64) - 消费者读取的消息数量。
+- `last_commit_time` (DateTime) - 最近一次提交的时间戳。
+- `num_commits` (UInt64) - 消费者的总提交次数。
+- `last_rebalance_time` (DateTime) - 最近一次 Kafka 重新平衡的时间戳。
+- `num_rebalance_revocations` (UInt64) - 消费者被撤销其分区的次数。
+- `num_rebalance_assignments` (UInt64) - 消费者被分配到 Kafka 集群的次数。
+- `is_currently_used` (UInt8) - 消费者是否在使用中。
+- `last_used` (UInt64) - 此消费者最后一次使用的时间，单位为微秒的 Unix 时间。
+- `rdkafka_stat` (String) - 库的内部统计信息。请参见 https://github.com/ClickHouse/librdkafka/blob/master/STATISTICS.md。将 `statistics_interval_ms` 设置为 0 可禁用，默认值为 3000（每三秒一次）。
 
 示例：
 

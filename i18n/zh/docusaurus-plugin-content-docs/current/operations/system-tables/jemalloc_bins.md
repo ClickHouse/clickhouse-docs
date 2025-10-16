@@ -1,30 +1,31 @@
 ---
-'description': '系统表包含通过 jemalloc 分配器在不同大小类（bins）中进行的内存分配的信息，这些信息是从所有竞技场汇总而来的。'
+'description': '系统表包含通过 jemalloc 分配器在不同大小类别（bins）中进行的内存分配信息，该信息来自所有领域的汇总.'
 'keywords':
 - 'system table'
 - 'jemalloc_bins'
 'slug': '/operations/system-tables/jemalloc_bins'
 'title': 'system.jemalloc_bins'
+'doc_type': 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
-包含通过 jemalloc 分配器在不同大小类别（箱）中进行的内存分配信息，这些信息是从所有领域中聚合而来的。
-由于 jemalloc 中的线程本地缓存，这些统计信息可能并不绝对准确。
+包含通过 jemalloc 分配器在不同大小类别（bins）中进行的内存分配的信息，这些信息是从所有领域中聚合而来的。
+由于 jemalloc 中的线程本地缓存，这些统计数据可能并不完全准确。
 
 列：
 
-- `index` (UInt64) — 按大小排序的箱的索引
-- `large` (Bool) — 对于大规模分配为真，对于小规模分配为假
-- `size` (UInt64) — 此箱中分配的大小
+- `index` (UInt64) — 按大小排序的 bin 索引
+- `large` (Bool) — 对于大分配为 True，对于小分配为 False
+- `size` (UInt64) — 该 bin 中分配的大小
 - `allocations` (UInt64) — 分配的数量
-- `deallocations` (UInt64) — 释放的数量
+- `deallocations` (UInt64) — 取消分配的数量
 
 **示例**
 
-查找对当前整体内存使用贡献最大分配的大小。
+查找对当前整体内存使用最有贡献的分配大小。
 
 ```sql
 SELECT

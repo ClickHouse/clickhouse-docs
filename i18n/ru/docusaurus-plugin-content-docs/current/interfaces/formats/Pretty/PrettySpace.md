@@ -1,23 +1,21 @@
 ---
-alias: []
+slug: '/interfaces/formats/PrettySpace'
 description: 'Документация для формата PrettySpace'
-input_format: false
+title: PrettySpace
 keywords: ['PrettySpace']
+doc_type: reference
+input_format: false
 output_format: true
-slug: /interfaces/formats/PrettySpace
-title: 'PrettySpace'
 ---
-
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| Вход | Выход  | Псевдоним |
+| Input | Output  | Alias |
 |-------|---------|-------|
 | ✗     | ✔       |       |
 
 ## Описание {#description}
 
-Отличается от формата [`PrettyCompact`](./PrettyCompact.md) тем, что пробелы 
-(символы пробела) используются для отображения таблицы вместо сетки.
+Отличается от формата [`PrettyCompact`](./PrettyCompact.md) тем, что для отображения таблицы используется пробельное пространство (символы пробелов) вместо сетки.
 
 ## Пример использования {#example-usage}
 

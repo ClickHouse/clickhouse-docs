@@ -1,12 +1,11 @@
 ---
-slug: '/security-and-authentication'
-title: 'セキュリティと認証'
-description: 'セキュリティと認証のためのランディングページ'
+'slug': '/security-and-authentication'
+'title': 'セキュリティと認証'
+'description': 'セキュリティと認証のランディングページ'
+'doc_type': 'landing-page'
 ---
-
-
 
 | Page                                                                   | Description                                                                                             |
 |------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
-| [ユーザーとロール](/operations/access-rights)                   | ClickHouseがRBACアプローチに基づくアクセス制御管理をどのようにサポートしているかについて学びます。              |
-| [外部認証機関](/operations/external-authenticators) | OSS ClickHouseが外部サービスを使用してユーザーの認証と管理をどのようにサポートしているかについて学びます。 |
+| [ユーザーとロール](/operations/access-rights)                   | ClickHouseがRBACアプローチに基づくアクセス制御管理をどのようにサポートしているかについて、詳しく学びます。              |
+| [外部認証プロバイダー](/operations/external-authenticators) | OSS ClickHouseが外部サービスを使用してユーザーの認証と管理をどのようにサポートしているかについて、詳しく学びます。 |

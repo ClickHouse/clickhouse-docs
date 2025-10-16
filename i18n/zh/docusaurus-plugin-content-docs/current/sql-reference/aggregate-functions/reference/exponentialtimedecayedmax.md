@@ -1,13 +1,14 @@
 ---
-'description': '返回在时间 `t` 计算出的指数平滑移动平均值与 `t-1` 处的最大值。'
+'description': '返回时间上在索引 `t` 处计算的指数平滑移动平均值与 `t-1` 的最大值。'
 'sidebar_position': 135
 'slug': '/sql-reference/aggregate-functions/reference/exponentialTimeDecayedMax'
 'title': 'exponentialTimeDecayedMax'
+'doc_type': 'reference'
 ---
 
 ## exponentialTimeDecayedMax {#exponentialtimedecayedmax}
 
-返回在时间索引 `t` 处计算的指数平滑移动平均值与 `t-1` 处的最大值。
+返回指数平滑移动平均在时间索引 `t` 处的最大值与在 `t-1` 处的最大值。
 
 **语法**
 
@@ -18,7 +19,7 @@ exponentialTimeDecayedMax(x)(value, timeunit)
 **参数**
 
 - `value` — 值。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)。
-- `timeunit` — 时间单位。[整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)，[日期时间](../../data-types/datetime.md)、[日期时间64](../../data-types/datetime64.md)。
+- `timeunit` — 时间单位。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)， [日期时间](../../data-types/datetime.md)、[日期时间64](../../data-types/datetime64.md)。
 
 **参数**
 
@@ -26,7 +27,7 @@ exponentialTimeDecayedMax(x)(value, timeunit)
 
 **返回值**
 
-- 返回在 `t` 和 `t-1` 处的指数平滑加权移动平均值的最大值。 [Float64](../../data-types/float.md)。
+- 返回在 `t` 和 `t-1` 处指数平滑加权移动平均的最大值。 [Float64](../../data-types/float.md)。
 
 **示例**
 

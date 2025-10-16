@@ -7,6 +7,7 @@
 'output_format': true
 'slug': '/interfaces/formats/PrettyCompactNoEscapes'
 'title': 'PrettyCompactNoEscapes'
+'doc_type': 'reference'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
@@ -15,13 +16,12 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 |-------|---------|-------|
 | ✗     | ✔       |       |
 
-## 描述 {#description}
+## Description {#description}
 
-与 [`PrettyCompact`](./PrettyCompact.md) 格式不同的是，不使用 [ANSI 转义序列](http://en.wikipedia.org/wiki/ANSI_escape_code)。 
-这是在浏览器中显示格式以及使用 'watch' 命令行工具所必需的。
+不同于 [`PrettyCompact`](./PrettyCompact.md) 格式，因为不使用 [ANSI-escape sequences](http://en.wikipedia.org/wiki/ANSI_escape_code)。这是在浏览器中显示格式以及使用 'watch' 命令行工具所必需的。
 
-## 示例用法 {#example-usage}
+## Example usage {#example-usage}
 
-## 格式设置 {#format-settings}
+## Format settings {#format-settings}
 
 <PrettyFormatSettings/>

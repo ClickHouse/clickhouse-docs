@@ -1,29 +1,28 @@
 ---
-description: '同じ名前の下にグループ化された設定のコレクション。'
-sidebar_label: '設定プロファイル'
-sidebar_position: 61
-slug: '/operations/settings/settings-profiles'
-title: 'Settings Profiles'
+'description': '同じ名前の下にグループ化された設定のコレクション。'
+'sidebar_label': '設定プロファイル'
+'sidebar_position': 61
+'slug': '/operations/settings/settings-profiles'
+'title': '設定プロファイル'
+'doc_type': 'reference'
 ---
-
-
 
 
 # 設定プロファイル
 
-設定プロファイルは、同じ名前の下にグループ化された設定のコレクションです。
+設定プロファイルは、同じ名前のもとにグループ化された設定のコレクションです。
 
 :::note
-ClickHouse は、設定プロファイルを管理するための [SQL駆動型ワークフロー](/operations/access-rights#access-control-usage) もサポートしています。これを使用することをお勧めします。
+ClickHouse は、設定プロファイルの管理のために [SQL駆動型ワークフロー](/operations/access-rights#access-control-usage) をサポートしています。使用をお勧めします。
 :::
 
-プロファイルには任意の名前を付けることができます。異なるユーザーに同じプロファイルを指定することも可能です。設定プロファイルで最も重要なことは、`readonly=1` を記述することです。これにより、読み取り専用アクセスが保証されます。
+プロファイルには任意の名前を付けることができます。同じプロファイルを異なるユーザーに指定することも可能です。設定プロファイルで最も重要なことは `readonly=1` を記述することで、これにより読み取り専用アクセスが保証されます。
 
-設定プロファイルは互いに継承することができます。継承を使用するには、プロファイルにリストされている他の設定の前に、一つまたは複数の `profile` 設定を示します。異なるプロファイルで同じ設定が定義されている場合は、最新に定義されたものが使用されます。
+設定プロファイルは互いに継承できます。継承を使用するには、プロファイルにリストされている他の設定の前に1つまたは複数の `profile` 設定を指定します。異なるプロファイルで同じ設定が定義されている場合は、最後に定義されたものが使用されます。
 
 プロファイル内のすべての設定を適用するには、`profile` 設定を設定します。
 
-例:
+例：
 
 `web` プロファイルをインストールします。
 
@@ -31,20 +30,20 @@ ClickHouse は、設定プロファイルを管理するための [SQL駆動型�
 SET profile = 'web'
 ```
 
-設定プロファイルはユーザー設定ファイルで宣言されます。これは通常 `users.xml` です。
+設定プロファイルは、ユーザー構成ファイルで宣言されます。通常は `users.xml` です。
 
-例:
+例：
 
 ```xml
-<!-- 設定プロファイル -->
+<!-- Settings profiles -->
 <profiles>
-    <!-- デフォルト設定 -->
+    <!-- Default settings -->
     <default>
-        <!-- 単一のクエリを実行する際の最大スレッド数。 -->
+        <!-- The maximum number of threads when running a single query. -->
         <max_threads>8</max_threads>
     </default>
 
-    <!-- ユーザーインターフェースからのクエリの設定 -->
+    <!-- Settings for queries from the user interface -->
     <web>
         <max_rows_to_read>1000000000</max_rows_to_read>
         <max_bytes_to_read>100000000000</max_bytes_to_read>
@@ -79,8 +78,8 @@ SET profile = 'web'
 </profiles>
 ```
 
-この例では、`default` と `web` の2つのプロファイルが指定されています。
+この例では、`default` と `web` の2つのプロファイルを指定しています。
 
-`default` プロファイルは特別な目的を持っています: 常に存在しなければならず、サーバーを起動する際に適用されます。言い換えれば、`default` プロファイルにはデフォルト設定が含まれています。
+`default` プロファイルには特別な目的があり、常に存在し、サーバー起動時に適用されます。言い換えれば、`default` プロファイルには既定の設定が含まれています。
 
-`web` プロファイルは通常のプロファイルであり、`SET` クエリを使用するか、HTTP クエリの URL パラメータを使用して設定できます。
+`web` プロファイルは通常のプロファイルで、`SET` クエリを使用するか、HTTPクエリのURLパラメータを使用して設定できます。

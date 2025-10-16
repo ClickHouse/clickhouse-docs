@@ -1,6 +1,6 @@
 ---
 'slug': '/integrations/data-formats'
-'sidebar_label': '概览'
+'sidebar_label': '概述'
 'sidebar_position': 1
 'keywords':
 - 'clickhouse'
@@ -12,20 +12,21 @@
 'title': '从各种数据格式导入到 ClickHouse'
 'description': '页面描述如何将各种数据格式导入到 ClickHouse'
 'show_related_blogs': true
+'doc_type': 'guide'
 ---
 
 
 # 从各种数据格式导入到 ClickHouse
 
-在本节文档中，您可以找到加载各种文件类型的示例。
+在本节文档中，您可以找到从各种文件类型加载的示例。
 
 ### [**二进制**](/integrations/data-ingestion/data-formats/binary.md) {#binary}
 
-导出和加载二进制格式，如 ClickHouse Native、MessagePack、Protocol Buffers 和 Cap'n Proto。
+导出和加载二进制格式，例如 ClickHouse 原生格式、MessagePack、协议缓冲区和 Cap'n Proto。
 
 ### [**CSV 和 TSV**](/integrations/data-ingestion/data-formats/csv-tsv.md) {#csv-and-tsv}
 
-导入和导出 CSV 系列，包括 TSV，支持自定义标题和分隔符。
+导入和导出 CSV 系列，包括 TSV，并支持自定义头部和分隔符。
 
 ### [**JSON**](/integrations/data-ingestion/data-formats/json/intro.md) {#json}
 
@@ -37,6 +38,6 @@
 
 ### [**SQL 数据**](/integrations/data-ingestion/data-formats/sql.md) {#sql-data}
 
-需要导入到 MySQL 或 Postgresql 的 SQL 转储吗？别再寻找了。
+需要将 SQL 转储导入到 MySQL 或 PostgreSQL 吗？请不要再找其他地方了。
 
-如果您希望连接像 Grafana、Tableau 等 BI 工具，请查看文档的 [可视化类别](../../data-visualization/index.md)。
+如果您正在寻找连接 BI 工具，如 Grafana、Tableau 等，请查看文档的 [可视化类别](../../data-visualization/index.md)。

@@ -1,13 +1,13 @@
 ---
-description: 'Системная таблица, содержащая информацию о локальных файлах, которые находятся в очереди для отправки на шард.'
+slug: '/operations/system-tables/distribution_queue'
+description: 'Системная таблица, содержащая информацию о локальных файлах, которые'
+title: system.distribution_queue
 keywords: ['системная таблица', 'distribution_queue']
-slug: /operations/system-tables/distribution_queue
-title: 'system.distribution_queue'
+doc_type: reference
 ---
+Содержит информацию о локальных файлах, которые находятся в очереди на отправку на шард. Эти локальные файлы содержат новые части, созданные путем вставки новых данных в распределенную таблицу в асинхронном режиме.
 
-Содержит информацию о локальных файлах, которые находятся в очереди для отправки на шард. Эти локальные файлы содержат новые части, которые создаются при вставке новых данных в распределенную таблицу в асинхронном режиме.
-
-Столбцы:
+Колонки:
 
 - `database` ([String](../../sql-reference/data-types/string.md)) — Название базы данных.
 
@@ -27,7 +27,7 @@ title: 'system.distribution_queue'
 
 - `broken_data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Размер сжатых данных в поврежденных файлах, в байтах.
 
-- `last_exception` ([String](../../sql-reference/data-types/string.md)) — Текстовое сообщение о последней произошедшей ошибке (если таковая имеется).
+- `last_exception` ([String](../../sql-reference/data-types/string.md)) — Текстовое сообщение о последней произошедшей ошибке (если такая имеется).
 
 **Пример**
 
@@ -48,6 +48,6 @@ data_compressed_bytes: 499
 last_exception:
 ```
 
-**Смотрите также**
+**См. также**
 
-- [Distributed table engine](../../engines/table-engines/special/distributed.md)
+- [Движок распределенной таблицы](../../engines/table-engines/special/distributed.md)

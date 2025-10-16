@@ -1,11 +1,11 @@
 ---
-description: 'System table containing metrics which can be calculated instantly,
-  or have a current value.'
-keywords:
+'description': 'システムテーブル。即座に計算できるメトリックや現在の値を持つメトリックを含みます。'
+'keywords':
 - 'system table'
 - 'metrics'
-slug: '/operations/system-tables/metrics'
-title: 'system.metrics'
+'slug': '/operations/system-tables/metrics'
+'title': 'system.metrics'
+'doc_type': 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
@@ -16,18 +16,18 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud/>
 
-即時に計算できるか、現在の値を持つメトリクスを含みます。例えば、同時に処理されているクエリの数や現在のレプリカ遅延などです。このテーブルは常に最新の状態です。
+瞬時に計算できる、または現在の値を持つメトリックが含まれています。たとえば、同時に処理されるクエリの数や現在のレプリカの遅延などです。このテーブルは常に最新の状態です。
 
-カラム:
+Columns:
 
-- `metric` ([String](../../sql-reference/data-types/string.md)) — メトリクス名。
-- `value` ([Int64](../../sql-reference/data-types/int-uint.md)) — メトリクス値。
-- `description` ([String](../../sql-reference/data-types/string.md)) — メトリクスの説明。
-- `name` ([String](../../sql-reference/data-types/string.md)) — `metric` のエイリアス。
+- `metric` ([String](../../sql-reference/data-types/string.md)) — メトリック名。
+- `value` ([Int64](../../sql-reference/data-types/int-uint.md)) — メトリックの値。
+- `description` ([String](../../sql-reference/data-types/string.md)) — メトリックの説明。
+- `name` ([String](../../sql-reference/data-types/string.md)) — `metric`の別名。
 
-すべてのサポートされているメトリクスはソースファイル [src/Common/CurrentMetrics.cpp](https://github.com/ClickHouse/ClickHouse/blob/master/src/Common/CurrentMetrics.cpp) で確認できます。
+サポートされているすべてのメトリックの詳細は、ソースファイル [src/Common/CurrentMetrics.cpp](https://github.com/ClickHouse/ClickHouse/blob/master/src/Common/CurrentMetrics.cpp) で確認できます。
 
-**例**
+**Example**
 
 ```sql
 SELECT * FROM system.metrics LIMIT 10
@@ -35,44 +35,44 @@ SELECT * FROM system.metrics LIMIT 10
 
 ```text
 ┌─metric───────────────────────────────┬─value─┬─description────────────────────────────────────────────────────────────┐
-│ Query                                │     1 │ 実行中のクエリの数                                                │
-│ Merge                                │     0 │ 実行中のバックグラウンドマージの数                                  │
-│ PartMutation                         │     0 │ ミューテーション (ALTER DELETE/UPDATE) の数                         │
-│ ReplicatedFetch                      │     0 │ レプリカから取得中のデータパーツの数                               │
-│ ReplicatedSend                       │     0 │ レプリカに送信されているデータパーツの数                           │
-│ ReplicatedChecks                     │     0 │ 一貫性を確認しているデータパーツの数                                 │
-│ BackgroundMergesAndMutationsPoolTask │     0 │ 関連するバックグラウンドプール内のアクティブなマージとミューテーションの数 │
-│ BackgroundFetchesPoolTask            │     0 │ 関連するバックグラウンドプール内のアクティブなフェッチの数        │
-│ BackgroundCommonPoolTask             │     0 │ 関連するバックグラウンドプール内のアクティブなタスクの数          │
-│ BackgroundMovePoolTask               │     0 │ 移動のための BackgroundProcessingPool 内のアクティブなタスクの数    │
+│ Query                                │     1 │ Number of executing queries                                            │
+│ Merge                                │     0 │ Number of executing background merges                                  │
+│ PartMutation                         │     0 │ Number of mutations (ALTER DELETE/UPDATE)                              │
+│ ReplicatedFetch                      │     0 │ Number of data parts being fetched from replicas                       │
+│ ReplicatedSend                       │     0 │ Number of data parts being sent to replicas                            │
+│ ReplicatedChecks                     │     0 │ Number of data parts checking for consistency                          │
+│ BackgroundMergesAndMutationsPoolTask │     0 │ Number of active merges and mutations in an associated background pool │
+│ BackgroundFetchesPoolTask            │     0 │ Number of active fetches in an associated background pool              │
+│ BackgroundCommonPoolTask             │     0 │ Number of active tasks in an associated background pool                │
+│ BackgroundMovePoolTask               │     0 │ Number of active tasks in BackgroundProcessingPool for moves           │
 └──────────────────────────────────────┴───────┴────────────────────────────────────────────────────────────────────────┘
 ```
 
-## メトリクスの説明 {#metric-descriptions}
+## Metric descriptions {#metric-descriptions}
 
 ### AggregatorThreads {#aggregatorthreads}
 
-Aggregator スレッドプール内のスレッド数。
+Aggregatorスレッドプール内のスレッド数。
 
 ### AggregatorThreadsActive {#aggregatorthreadsactive}
 
-タスクを実行中の Aggregator スレッドプール内のスレッド数。
+タスクを実行中のAggregatorスレッドプール内のスレッド数。
 
 ### TablesLoaderForegroundThreads {#tablesloaderforegroundthreads}
 
-非同期ローダーのフォアグラウンドスレッドプール内のスレッド数。
+非同期ローダー前景スレッドプール内のスレッド数。
 
 ### TablesLoaderForegroundThreadsActive {#tablesloaderforegroundthreadsactive}
 
-タスクを実行中の非同期ローダーのフォアグラウンドスレッドプール内のスレッド数。
+タスクを実行中の非同期ローダー前景スレッドプール内のスレッド数。
 
 ### TablesLoaderBackgroundThreads {#tablesloaderbackgroundthreads}
 
-非同期ローダーのバックグラウンドスレッドプール内のスレッド数。
+非同期ローダー背景スレッドプール内のスレッド数。
 
 ### TablesLoaderBackgroundThreadsActive {#tablesloaderbackgroundthreadsactive}
 
-タスクを実行中の非同期ローダーのバックグラウンドスレッドプール内のスレッド数。
+タスクを実行中の非同期ローダー背景スレッドプール内のスレッド数。
 
 ### AsyncInsertCacheSize {#asyncinsertcachesize}
 
@@ -88,91 +88,91 @@ Aggregator スレッドプール内のスレッド数。
 
 ### AsynchronousReadWait {#asynchronousreadwait}
 
-非同期読み取りを待機しているスレッドの数。
+非同期読み取りを待っているスレッド数。
 
 ### BackgroundBufferFlushSchedulePoolSize {#backgroundbufferflushschedulepoolsize}
 
-BackgroundBufferFlushSchedulePool 内のタスクの制限数。
+BackgroundBufferFlushSchedulePool内のタスク数の制限。
 
 ### BackgroundBufferFlushSchedulePoolTask {#backgroundbufferflushschedulepooltask}
 
-BackgroundBufferFlushSchedulePool 内のアクティブなタスクの数。このプールは定期的なバッファフラッシュに使用されます。
+BackgroundBufferFlushSchedulePool内のアクティブタスク数。このプールは定期的なバッファフラッシュに使用されます。
 
 ### BackgroundCommonPoolSize {#backgroundcommonpoolsize}
 
-関連するバックグラウンドプール内のタスクの制限数。
+関連するバックグラウンドプール内のタスク数の制限。
 
 ### BackgroundCommonPoolTask {#backgroundcommonpooltask}
 
-関連するバックグラウンドプール内のアクティブなタスクの数。
+関連するバックグラウンドプール内のアクティブタスク数。
 
 ### BackgroundDistributedSchedulePoolSize {#backgrounddistributedschedulepoolsize}
 
-BackgroundDistributedSchedulePool 内のタスクの制限数。
+BackgroundDistributedSchedulePool内のタスク数の制限。
 
 ### BackgroundDistributedSchedulePoolTask {#backgrounddistributedschedulepooltask}
 
-バックグラウンドで行われる分散送信のために使用される BackgroundDistributedSchedulePool 内のアクティブなタスクの数。
+BackgroundDistributedSchedulePool内のアクティブタスク数。このプールはバックグラウンドで実行される分散送信に使用されます。
 
 ### BackgroundFetchesPoolSize {#backgroundfetchespoolsize}
 
-関連するバックグラウンドプール内の同時フェッチの制限数。
+関連するバックグラウンドプール内の同時フェッチ数の制限。
 
 ### BackgroundFetchesPoolTask {#backgroundfetchespooltask}
 
-関連するバックグラウンドプール内のアクティブなフェッチの数。
+関連するバックグラウンドプール内のアクティブフェッチ数。
 
 ### BackgroundMergesAndMutationsPoolSize {#backgroundmergesandmutationspoolsize}
 
-関連するバックグラウンドプール内のアクティブなマージとミューテーションの制限数。
+関連するバックグラウンドプール内のアクティブマージおよびミューテーションの数の制限。
 
 ### BackgroundMergesAndMutationsPoolTask {#backgroundmergesandmutationspooltask}
 
-関連するバックグラウンドプール内のアクティブなマージとミューテーションの数。
+関連するバックグラウンドプール内のアクティブマージおよびミューテーションの数。
 
 ### BackgroundMessageBrokerSchedulePoolSize {#backgroundmessagebrokerschedulepoolsize}
 
-メッセージストリーミングのための BackgroundProcessingPool 内のタスクの制限数。
+メッセージストリーミングのためのBackgroundProcessingPool内のタスク数の制限。
 
 ### BackgroundMessageBrokerSchedulePoolTask {#backgroundmessagebrokerschedulepooltask}
 
-メッセージストリーミングのための BackgroundProcessingPool 内のアクティブなタスクの数。
+メッセージストリーミングのためのBackgroundProcessingPool内のアクティブタスク数。
 
 ### BackgroundMovePoolSize {#backgroundmovepoolsize}
 
-移動のための BackgroundProcessingPool 内のタスクの制限数。
+移動のためのBackgroundProcessingPool内のタスク数の制限。
 
 ### BackgroundMovePoolTask {#backgroundmovepooltask}
 
-移動のための BackgroundProcessingPool 内のアクティブなタスクの数。
+移動のためのBackgroundProcessingPool内のアクティブタスク数。
 
 ### BackgroundSchedulePoolSize {#backgroundschedulepoolsize}
 
-定期的な ReplicatedMergeTree タスク （古いデータパーツのクリーンアップ、データパーツの変更、レプリカの再初期化など）のために使用される BackgroundSchedulePool 内のタスクの制限数。
+BackgroundSchedulePool内のタスク数の制限。このプールは、古いデータパートのクリーンアップ、データパートの変更、レプリカの再初期化などの定期的なReplicatedMergeTreeタスクに使用されます。
 
 ### BackgroundSchedulePoolTask {#backgroundschedulepooltask}
 
-背景スケジュールプール内のアクティブなタスクの数。このプールは定期的な ReplicatedMergeTreeタスク、古いデータパーツのクリーンアップ、データパーツの変更、レプリカの再初期化などに使用されます。
+BackgroundSchedulePool内のアクティブタスク数。このプールは、古いデータパートのクリーンアップ、データパートの変更、レプリカの再初期化などの定期的なReplicatedMergeTreeタスクに使用されます。
 
 ### BackupsIOThreads {#backupsiothreads}
 
-BackupsIO スレッドプール内のスレッド数。
+BackupsIOスレッドプール内のスレッド数。
 
 ### BackupsIOThreadsActive {#backupsiothreadsactive}
 
-タスクを実行中の BackupsIO スレッドプール内のスレッド数。
+タスクを実行中のBackupsIOスレッドプール内のスレッド数。
 
 ### BackupsThreads {#backupsthreads}
 
-BACKUP用のスレッドプール内のスレッド数。
+バックアップ用のスレッドプール内のスレッド数。
 
 ### BackupsThreadsActive {#backupsthreadsactive}
 
-タスクを実行中の BACKUP用のスレッドプール内のスレッド数。
+タスクを実行中のバックアップスレッドプール内のスレッド数。
 
 ### BrokenDistributedFilesToInsert {#brokendistributedfilestoinsert}
 
-壊れたとしてマークされた分散テーブルへの非同期挿入用のファイルの数。このメトリクスは開始時に0から始まります。各シャードのファイルの数が合算されます。
+破損としてマークされたDistributedテーブルへの非同期挿入用のファイル数。このメトリックは起動時に0から始まります。各シャードごとのファイル数が合算されます。
 
 ### CacheDetachedFileSegments {#cachedetachedfilesegments}
 
@@ -180,19 +180,19 @@ BACKUP用のスレッドプール内のスレッド数。
 
 ### CacheDictionaryThreads {#cachedictionarythreads}
 
-CacheDictionary スレッドプール内のスレッド数。
+CacheDictionaryスレッドプール内のスレッド数。
 
 ### CacheDictionaryThreadsActive {#cachedictionarythreadsactive}
 
-タスクを実行中の CacheDictionary スレッドプール内のスレッド数。
+タスクを実行中のCacheDictionaryスレッドプール内のスレッド数。
 
 ### CacheDictionaryUpdateQueueBatches {#cachedictionaryupdatequeuebatches}
 
-CacheDictionaries 内の更新キューにある 'バッチ'（キーのセット）の数。
+CacheDictionariesのアップデートキュー内の'バッチ'（キーのセット）の数。
 
 ### CacheDictionaryUpdateQueueKeys {#cachedictionaryupdatequeuekeys}
 
-CacheDictionaries 内の更新キューにあるキーの正確な数。
+CacheDictionariesのアップデートキュー内の正確なキー数。
 
 ### CacheFileSegments {#cachefilesegments}
 
@@ -200,75 +200,75 @@ CacheDictionaries 内の更新キューにあるキーの正確な数。
 
 ### ContextLockWait {#contextlockwait}
 
-コンテキスト内でロックを待機しているスレッドの数。このロックはグローバルロックです。
+コンテキスト内のロックを待っているスレッド数。これは全体的なロックです。
 
 ### DDLWorkerThreads {#ddlworkerthreads}
 
-ON CLUSTER クエリ用の DDLWorker スレッドプール内のスレッド数。
+ON CLUSTERクエリ用のDDLWorkerスレッドプール内のスレッド数。
 
 ### DDLWorkerThreadsActive {#ddlworkerthreadsactive}
 
-タスクを実行中の ON CLUSTER クエリ用の DDLWORKER スレッドプール内のスレッド数。
+タスクを実行中のDDLWorkerスレッドプール内のスレッド数。
 
 ### DatabaseCatalogThreads {#databasecatalogthreads}
 
-DatabaseCatalog スレッドプール内のスレッド数。
+DatabaseCatalogスレッドプール内のスレッド数。
 
 ### DatabaseCatalogThreadsActive {#databasecatalogthreadsactive}
 
-タスクを実行中の DatabaseCatalog スレッドプール内のスレッド数。
+タスクを実行中のDatabaseCatalogスレッドプール内のスレッド数。
 
 ### DatabaseOnDiskThreads {#databaseondiskthreads}
 
-DatabaseOnDisk スレッドプール内のスレッド数。
+DatabaseOnDiskスレッドプール内のスレッド数。
 
 ### DatabaseOnDiskThreadsActive {#databaseondiskthreadsactive}
 
-タスクを実行中の DatabaseOnDisk スレッドプール内のスレッド数。
+タスクを実行中のDatabaseOnDiskスレッドプール内のスレッド数。
 
 ### DelayedInserts {#delayedinserts}
 
-MergeTree テーブル内のパーティションに対するアクティブなデータパーツの数が多いため、スロットルされている INSERT クエリの数。
+MergeTreeテーブルのパーティションに対してアクティブなデータパーツの数が多いために制限されたINSERTクエリの数。
 
 ### DestroyAggregatesThreads {#destroyaggregatesthreads}
 
-アグリゲート状態を破棄するためのスレッドプール内のスレッド数。
+集約状態を破棄するためのスレッドプール内のスレッド数。
 
 ### DestroyAggregatesThreadsActive {#destroyaggregatesthreadsactive}
 
-タスクを実行中のアグリゲート状態を破棄するためのスレッドプール内のスレッド数。
+タスクを実行中の集約状態を破棄するためのスレッドプール内のスレッド数。
 
 ### DictCacheRequests {#dictcacherequests}
 
-キャッシュタイプの辞書のデータソースに対するフライ中のリクエストの数。
+キャッシュタイプの辞書のデータソースへのフライ中のリクエスト数。
 
 ### DiskObjectStorageAsyncThreads {#diskobjectstorageasyncthreads}
 
-DiskObjectStorage 用の非同期スレッドプール内のスレッド数。
+DiskObjectStorageの非同期スレッドプール内のスレッド数。
 
 ### DiskObjectStorageAsyncThreadsActive {#diskobjectstorageasyncthreadsactive}
 
-タスクを実行中の DiskObjectStorage 用の非同期スレッドプール内のスレッド数。
+タスクを実行中のDiskObjectStorage非同期スレッドプール内のスレッド数。
 
 ### DiskSpaceReservedForMerge {#diskspacereservedformerge}
 
-現在実行中のバックグラウンドマージのために予約されたディスクスペース。これは現在マージ中のパーツの総サイズよりも少し大きいです。
+現在実行中のバックグラウンドマージのために予約されたディスクスペース。このサイズは、現在マージ中のパーツの総サイズよりわずかに大きくなります。
 
 ### DistributedFilesToInsert {#distributedfilestoinsert}
 
-分散テーブルへの非同期挿入のために処理待ちのファイルの数。各シャードのファイルの数が合算されます。
+Distributedテーブルへの非同期挿入用に処理待ちのファイル数。各シャードごとのファイル数が合算されます。
 
 ### DistributedSend {#distributedsend}
 
-分散テーブルに挿入されたデータを送信するリモートサーバーへの接続数。同期モードと非同期モードの両方を含みます。
+DistributedテーブルにINSERTされたデータを送信するためのリモートサーバーへの接続数。同期および非同期モードの両方。
 
 ### EphemeralNode {#ephemeralnode}
 
-ZooKeeper 内に保持されたエフェメラルノードの数。
+ZooKeeper内で保持されているエフェメラルノードの数。
 
 ### FilesystemCacheElements {#filesystemcacheelements}
 
-ファイルシステムキャッシュ要素（ファイルセグメント）。
+ファイルセグメントのファイルシステムキャッシュ要素。
 
 ### FilesystemCacheReadBuffers {#filesystemcachereadbuffers}
 
@@ -276,7 +276,41 @@ ZooKeeper 内に保持されたエフェメラルノードの数。
 
 ### FilesystemCacheSize {#filesystemcachesize}
 
-バイト単位でのファイルシステムキャッシュサイズ。
+バイト単位のファイルシステムキャッシュサイズ。
+
+### QueryCacheBytes {#querycachebytes}
+
+クエリキャッシュの合計サイズ（バイト）。
+
+### QueryCacheEntries {#querycacheentries}
+
+クエリキャッシュ内のエントリの合計数。
+
+### UncompressedCacheBytes {#uncompressedcachebytes}
+
+解凍されたキャッシュの合計サイズ（バイト）。解凍されたキャッシュは通常パフォーマンスを向上させず、主に避けるべきです。
+
+### UncompressedCacheCells {#uncompressedcachecells}
+
+### CompiledExpressionCacheBytes {#compiledexpressioncachebytes}
+
+JITコンパイルされたコードのキャッシュに使用されるバイトの合計。
+
+### CompiledExpressionCacheCount {#compiledexpressioncachecount}
+
+JITコンパイルされたコードのキャッシュ内のエントリの合計数。
+
+### MMapCacheCells {#mmapcachecells}
+
+`mmap`（メモリにマップ）の状態のファイルの数。これは設定 `local_filesystem_read_method` が `mmap` に設定されているクエリに使用されます。`mmap` でオープンされたファイルは、高価なTLBフラッシュを避けるためにキャッシュに保持されます。
+
+### MarkCacheBytes {#markcachebytes}
+
+マークキャッシュの合計サイズ（バイト）。
+
+### MarkCacheFiles {#markcachefiles}
+
+マークキャッシュ内でキャッシュされているマークファイルの総数。
 
 ### GlobalThread {#globalthread}
 
@@ -292,91 +326,91 @@ HTTPサーバーへの接続数。
 
 ### HashedDictionaryThreads {#hasheddictionarythreads}
 
-HashedDictionary スレッドプール内のスレッド数。
+HashedDictionaryスレッドプール内のスレッド数。
 
 ### HashedDictionaryThreadsActive {#hasheddictionarythreadsactive}
 
-タスクを実行中の HashedDictionary スレッドプール内のスレッド数。
+タスクを実行中のHashedDictionaryスレッドプール内のスレッド数。
 
 ### IOPrefetchThreads {#ioprefetchthreads}
 
-IO プリフェッチ スレッドプール内のスレッド数。
+IOプリフェッチスレッドプール内のスレッド数。
 
 ### IOPrefetchThreadsActive {#ioprefetchthreadsactive}
 
-タスクを実行中の IO プリフェッチ スレッドプール内のスレッド数。
+タスクを実行中のIOプリフェッチスレッドプール内のスレッド数。
 
 ### IOThreads {#iothreads}
 
-IO スレッドプール内のスレッド数。
+IOスレッドプール内のスレッド数。
 
 ### IOThreadsActive {#iothreadsactive}
 
-タスクを実行中の IO スレッドプール内のスレッド数。
+タスクを実行中のIOスレッドプール内のスレッド数。
 
 ### IOUringInFlightEvents {#iouringinflightevents}
 
-フライト中の io_uring SQE の数。
+フライト中のio_uring SQEの数。
 
 ### IOUringPendingEvents {#iouringpendingevents}
 
-送信待ちの io_uring SQE の数。
+送信待ちのio_uring SQEの数。
 
 ### IOWriterThreads {#iowriterthreads}
 
-IO ライタースレッドプール内のスレッド数。
+IOライタースレッドプール内のスレッド数。
 
 ### IOWriterThreadsActive {#iowriterthreadsactive}
 
-タスクを実行中の IO ライタースレッドプール内のスレッド数。
+タスクを実行中のIOライタースレッドプール内のスレッド数。
 
 ### InterserverConnection {#interserverconnection}
 
-パーツを取得するために他のレプリカからの接続数。
+パーツを取得するための他のレプリカからの接続数。
 
 ### KafkaAssignedPartitions {#kafkaassignedpartitions}
 
-現在割り当てられている Kafka テーブルのパーティション数。
+現在Kafkaテーブルに割り当てられているパーティションの数。
 
 ### KafkaBackgroundReads {#kafkabackgroundreads}
 
-現在動作しているバックグラウンド読み取りの数（Kafka からのマテリアライズドビューのポピュレート）。
+現在作業中のバックグラウンド読み取りの数（KafkaからMaterialized Viewsのポピュレート）。
 
 ### KafkaConsumers {#kafkaconsumers}
 
-アクティブな Kafka 消費者の数。
+アクティブなKafkaコンシューマーの数。
 
 ### KafkaConsumersInUse {#kafkaconsumersinuse}
 
-直接またはバックグラウンドの読み取りによって現在使用されている消費者の数。
+直接またはバックグラウンド読み取りで現在使用されているコンシューマーの数。
 
 ### KafkaConsumersWithAssignment {#kafkaconsumerswithassignment}
 
-一部のパーティションが割り当てられているアクティブな Kafka 消費者の数。
+いくつかのパーティションが割り当てられているアクティブなKafkaコンシューマーの数。
 
 ### KafkaLibrdkafkaThreads {#kafkalibrdkafkathreads}
 
-アクティブな librdkafka スレッドの数。
+アクティブなlibrdkafkaスレッドの数。
 
 ### KafkaProducers {#kafkaproducers}
 
-作成されたアクティブな Kafka プロデューサーの数。
+作成されたアクティブなKafkaプロデューサーの数。
 
 ### KafkaWrites {#kafkawrites}
 
-現在実行中の Kafka への挿入の数。
+現在Kafkaへの挿入を実行している数。
 
 ### KeeperAliveConnections {#keeperaliveconnections}
 
-アライブな接続数。
+アライブ接続数。
 
 ### KeeperOutstandingRequests {#keeperoutstandingrequests}
 
-未処理リクエストの数。
+未処理のリクエスト数。
 
 ### LocalThread {#localthread}
 
-ローカルスレッドプール内のスレッド数。ローカルスレッドプールのスレッドは、グローバルスレッドプールから取得されます。
+ローカルスレッドプール内のスレッド数。ローカルスレッドプール内のスレッドはグローバルスレッドプールから取得されます。
 
 ### LocalThreadActive {#localthreadactive}
 
@@ -384,39 +418,39 @@ IO ライタースレッドプール内のスレッド数。
 
 ### MMappedAllocBytes {#mmappedallocbytes}
 
-mmapped アロケーションの合計バイト数。
+mmappedアロケーションの合計バイト数。
 
 ### MMappedAllocs {#mmappedallocs}
 
-mmapped アロケーションの総数。
+mmappedアロケーションの合計数。
 
 ### MMappedFileBytes {#mmappedfilebytes}
 
-mmapped ファイル領域の合計サイズ。
+mmappedファイル領域の合計サイズ。
 
 ### MMappedFiles {#mmappedfiles}
 
-mmapped ファイルの総数。
+mmappedファイルの総数。
 
 ### MarksLoaderThreads {#marksloaderthreads}
 
-マークをロードするためのスレッドプール内のスレッド数。
+マークを読み込むためのスレッドプール内のスレッド数。
 
 ### MarksLoaderThreadsActive {#marksloaderthreadsactive}
 
-タスクを実行中のマークをロードするためのスレッドプール内のスレッド数。
+タスクを実行中のマークを読み込むためのスレッドプール内のスレッド数。
 
 ### MaxDDLEntryID {#maxddlentryid}
 
-DDLWorker が処理した最大 DDL エントリ ID。
+DDLWorkerの最大処理済みDDLエントリ。
 
 ### MaxPushedDDLEntryID {#maxpushedddlentryid}
 
-ZooKeeper にプッシュされた DDLWorker の最大 DDL エントリ ID。
+ZooKeeperにプッシュされたDDLWorkerの最大DDLエントリ。
 
 ### MemoryTracking {#memorytracking}
 
-サーバーによって確保された総メモリ量（バイト）。
+サーバーによって割り当てられたメモリの総量（バイト）。
 
 ### Merge {#merge}
 
@@ -424,43 +458,43 @@ ZooKeeper にプッシュされた DDLWorker の最大 DDL エントリ ID。
 
 ### MergeTreeAllRangesAnnouncementsSent {#mergetreeallrangesannouncementssent}
 
-リモートサーバーからイニシエーターサーバーに送信中のデータパーツのセットに関するアナウンスメントの現在の数（MergeTree テーブル用）。リモートサーバー側で測定されています。
+リモートサーバーからイニシエーターサーバーにデータパーツのセットについて送信中のアナウンスの現在の数（MergeTreeテーブル用）。リモートサーバー側で測定されます。
 
 ### MergeTreeBackgroundExecutorThreads {#mergetreebackgroundexecutorthreads}
 
-MergeTreeBackgroundExecutor スレッドプール内のスレッド数。
+MergeTreeBackgroundExecutorスレッドプール内のスレッド数。
 
 ### MergeTreeBackgroundExecutorThreadsActive {#mergetreebackgroundexecutorthreadsactive}
 
-タスクを実行中の MergeTreeBackgroundExecutor スレッドプール内のスレッド数。
+タスクを実行中のMergeTreeBackgroundExecutorスレッドプール内のスレッド数。
 
 ### MergeTreeDataSelectExecutorThreads {#mergetreedataselectexecutorthreads}
 
-MergeTreeDataSelectExecutor スレッドプール内のスレッド数。
+MergeTreeDataSelectExecutorスレッドプール内のスレッド数。
 
 ### MergeTreeDataSelectExecutorThreadsActive {#mergetreedataselectexecutorthreadsactive}
 
-タスクを実行中の MergeTreeDataSelectExecutor スレッドプール内のスレッド数。
+タスクを実行中のMergeTreeDataSelectExecutorスレッドプール内のスレッド数。
 
 ### MergeTreePartsCleanerThreads {#mergetreepartscleanerthreads}
 
-MergeTree パーツクリーナーのスレッドプール内のスレッド数。
+MergeTreeパーツクリーナー用のスレッドプール内のスレッド数。
 
 ### MergeTreePartsCleanerThreadsActive {#mergetreepartscleanerthreadsactive}
 
-タスクを実行中の MergeTree パーツクリーナーのスレッドプール内のスレッド数。
+タスクを実行中のMergeTreeパーツクリーナー用のスレッドプール内のスレッド数。
 
 ### MergeTreePartsLoaderThreads {#mergetreepartsloaderthreads}
 
-MergeTree パーツローダーのスレッドプール内のスレッド数。
+MergeTreeパーツローダー用のスレッドプール内のスレッド数。
 
 ### MergeTreePartsLoaderThreadsActive {#mergetreepartsloaderthreadsactive}
 
-タスクを実行中の MergeTree パーツローダーのスレッドプール内のスレッド数。
+タスクを実行中のMergeTreeパーツローダー用のスレッドプール内のスレッド数。
 
 ### MergeTreeReadTaskRequestsSent {#mergetreereadtaskrequestssent}
 
-リモートサーバーからイニシエーターサーバーに戻るために送信されるコールバックリクエストの現在の数（MergeTree テーブル用）。リモートサーバー側で測定されています。
+リモートサーバーからイニシエーターサーバーに読み取りタスクを選択するために送信中のコールバックリクエストの現在の数（MergeTreeテーブル用）。リモートサーバー側で測定されます。
 
 ### Move {#move}
 
@@ -468,83 +502,75 @@ MergeTree パーツローダーのスレッドプール内のスレッド数。
 
 ### MySQLConnection {#mysqlconnection}
 
-MySQL プロトコルを使用しているクライアント接続の数。
+MySQLプロトコルを使用しているクライアント接続の数。
 
 ### NetworkReceive {#networkreceive}
 
-ネットワークからデータを受信しているスレッドの数。ClickHouse に関連するネットワークインタラクションのみが含まれ、第三者ライブラリによるものは含まれません。
+ネットワークからデータを受信するスレッドの数。ClickHouse関連のネットワーク相互作用のみが含まれ、サードパーティのライブラリによる相互作用は含まれません。
 
 ### NetworkSend {#networksend}
 
-ネットワークにデータを送信しているスレッドの数。ClickHouse に関連するネットワークインタラクションのみが含まれ、第三者ライブラリによるものは含まれません。
+ネットワークにデータを送信するスレッドの数。ClickHouse関連のネットワーク相互作用のみが含まれ、サードパーティのライブラリによる相互作用は含まれません。
 
 ### OpenFileForRead {#openfileforread}
 
-読み取りのために開いているファイルの数。
+読み取り用にオープンされているファイルの数。
 
 ### OpenFileForWrite {#openfileforwrite}
 
-書き込みのために開いているファイルの数。
+書き込み用にオープンされているファイルの数。
 
 ### ParallelFormattingOutputFormatThreads {#parallelformattingoutputformatthreads}
 
-ParallelFormattingOutputFormatThreads スレッドプール内のスレッド数。
+ParallelFormattingOutputFormatThreadsスレッドプール内のスレッド数。
 
 ### ParallelFormattingOutputFormatThreadsActive {#parallelformattingoutputformatthreadsactive}
 
-タスクを実行中の ParallelFormattingOutputFormatThreads スレッドプール内のスレッド数。
-
-### ParallelParsingInputFormatThreads {#parallelparsinginputformatthreads}
-
-ParallelParsingInputFormat スレッドプール内のスレッド数。
-
-### ParallelParsingInputFormatThreadsActive {#parallelparsinginputformatthreadsactive}
-
-タスクを実行中の ParallelParsingInputFormat スレッドプール内のスレッド数。
+タスクを実行中のParallelFormattingOutputFormatThreadsスレッドプール内のスレッド数。
 
 ### PartMutation {#partmutation}
 
-ミューテーション (ALTER DELETE/UPDATE) の数。
+ミューテーションの数（ALTER DELETE/UPDATE）。
 
 ### PartsActive {#partsactive}
 
-現在および今後の SELECT に使用されるアクティブなデータパート。
+現在および今後のSELECTで使用されるアクティブなデータパーツ。
 
 ### PartsCommitted {#partscommitted}
 
-非推奨。PartsActive を参照。
+非推奨。同 PartsActive を参照してください。
 
 ### PartsCompact {#partscompact}
 
-コンパクトパーツ。
+コンパクトなパーツ。
 
 ### PartsDeleteOnDestroy {#partsdeleteondestroy}
 
-パーツは別のディスクに移動され、独自のデストラクタで削除されるべきです。
+パーツが別のディスクに移動され、独自のデストラクタで削除されるべきです。
 
 ### PartsDeleting {#partsdeleting}
 
-アイデンティティ参照カウンタを持つ非アクティブデータパートで、現在クリーナーによって削除されているものです。
+現在クリーンアップによって削除されている非アクティブなデータパーツ（アイデンティティ参照カウンタ付き）。
 
 ### PartsOutdated {#partsoutdated}
 
-非アクティブなデータパートですが、現在の SELECT のみで使用される可能性があり、SELECT の終了後に削除される可能性があります。
+アクティブではないデータパーツですが、現在のSELECTのみに使用され、SELECTが完了した後に削除される可能性があります。
 
 ### PartsPreActive {#partspreactive}
 
-パーツは data_parts にありますが、SELECT には使用されていません。
+パーツはdata_partsにありますが、SELECTでは使用されていません。
 
 ### PartsPreCommitted {#partsprecommitted}
 
-非推奨。PartsPreActive を参照。
+非推奨。同 PartsPreActive を参照してください。
 
 ### PartsTemporary {#partstemporary}
 
-パーツは現在生成中で、data_parts リストには含まれていません。
+パーツは現在生成中であり、data_partsリストにはありません。
 
 ### PartsWide {#partswide}
 
-ワイドパーツ。
+ワイドなパーツ。
 
 ### PendingAsyncInsert {#pendingasyncinsert}
 
@@ -552,7 +578,7 @@ ParallelParsingInputFormat スレッドプール内のスレッド数。
 
 ### PostgreSQLConnection {#postgresqlconnection}
 
-PostgreSQL プロトコルを使用しているクライアント接続の数。
+PostgreSQLプロトコルを使用しているクライアント接続の数。
 
 ### Query {#query}
 
@@ -560,7 +586,7 @@ PostgreSQL プロトコルを使用しているクライアント接続の数。
 
 ### QueryPreempted {#querypreempted}
 
-'priority' 設定によって停止して待機しているクエリの数。
+'priority'設定のために停止されて待機しているクエリの数。
 
 ### QueryThread {#querythread}
 
@@ -568,39 +594,39 @@ PostgreSQL プロトコルを使用しているクライアント接続の数。
 
 ### RWLockActiveReaders {#rwlockactivereaders}
 
-テーブル RWLock で読み取りロックを保持しているスレッドの数。
+テーブルRWLock内で読み取りロックを保持しているスレッドの数。
 
 ### RWLockActiveWriters {#rwlockactivewriters}
 
-テーブル RWLock で書き込みロックを保持しているスレッドの数。
+テーブルRWLock内で書き込みロックを保持しているスレッドの数。
 
 ### RWLockWaitingReaders {#rwlockwaitingreaders}
 
-テーブル RWLock で読み取りを待機しているスレッドの数。
+テーブルRWLockでの読み取りを待機しているスレッドの数。
 
 ### RWLockWaitingWriters {#rwlockwaitingwriters}
 
-テーブル RWLock で書き込みを待機しているスレッドの数。
+テーブルRWLockでの書き込みを待機しているスレッドの数。
 
 ### Read {#read}
 
-フライト中の読み取り (read, pread, io_getevents など) システムコールの数。
+フライト中の読み取り（read, pread, io_getevents など）syscallの数。
 
 ### ReadTaskRequestsSent {#readtaskrequestssent}
 
-s3Cluster テーブル関数と同様のために、リモートサーバーからイニシエーターサーバーに戻るために送信されるコールバックリクエストの現在の数。リモートサーバー側で測定されています。
+リモートサーバーからイニシエーターサーバーに読み取りタスクを選択するために送信中のコールバックリクエストの現在の数（s3Clusterテーブル関数および類似のため）。リモートサーバー側で測定されます。
 
 ### ReadonlyReplica {#readonlyreplica}
 
-ZooKeeper セッションの喪失後の再初期化や、ZooKeeper の設定なしの起動のために現在 Readonly 状態にある Replicated テーブルの数。
+ZooKeeperセッションの喪失後に再初期化されているため、現在読み取り専用状態にあるReplicatedテーブルの数。
 
 ### RemoteRead {#remoteread}
 
-フライト中にリモートリーダーを使用した読み取りの数。
+フライト中のリモートリーダーでの読み取りの数。
 
 ### ReplicatedChecks {#replicatedchecks}
 
-一貫性を確認しているデータパーツの数。
+整合性をチェックしているデータパーツの数。
 
 ### ReplicatedFetch {#replicatedfetch}
 
@@ -608,87 +634,87 @@ ZooKeeper セッションの喪失後の再初期化や、ZooKeeper の設定な
 
 ### ReplicatedSend {#replicatedsend}
 
-レプリカに送信されているデータパーツの数。
+レプリカに送信中のデータパーツの数。
 
 ### RestartReplicaThreads {#restartreplicathreads}
 
-RESTART REPLICA スレッドプール内のスレッド数。
+RESTART REPLICAスレッドプール内のスレッド数。
 
 ### RestartReplicaThreadsActive {#restartreplicathreadsactive}
 
-タスクを実行中の RESTART REPLICA スレッドプール内のスレッド数。
+タスクを実行中のRESTART REPLICAスレッドプール内のスレッド数。
 
 ### RestoreThreads {#restorethreads}
 
-RESTORE 用のスレッドプール内のスレッド数。
+RESTORE用のスレッドプール内のスレッド数。
 
 ### RestoreThreadsActive {#restorethreadsactive}
 
-タスクを実行中の RESTORE 用のスレッドプール内のスレッド数。
+タスクを実行中のRESTORE用のスレッドプール内のスレッド数。
 
 ### Revision {#revision}
 
-サーバーのリビジョン。これは、リリースやリリース候補ごとにインクリメントされる番号で、パッチリリースは除外されます。
+サーバーのリビジョン。これは、リリースやリリース候補ごとに増加する数字で、パッチリリースを除きます。
 
 ### S3Requests {#s3requests}
 
-S3 リクエストの数。
+S3リクエスト。
 
 ### SendExternalTables {#sendexternaltables}
 
-リモートサーバーへの外部テーブルへのデータを送信している接続の数。外部テーブルは、分散サブクエリを持つ GLOBAL IN および GLOBAL JOIN 演算子を実装するために使用されます。
+外部テーブルにデータを送信するためのリモートサーバーへの接続数。外部テーブルは、分散サブクエリを使用したGLOBAL INやGLOBAL JOIN演算子を実装するために使用されます。
 
 ### SendScalars {#sendscalars}
 
-リモートサーバーへのスカラーのデータを送信している接続の数。
+スカラーにデータを送信するためのリモートサーバーへの接続数。
 
 ### StorageBufferBytes {#storagebufferbytes}
 
-バッファータブルのバッファ内のバイト数。
+Bufferテーブルのバッファ内のバイト数。
 
 ### StorageBufferRows {#storagebufferrows}
 
-バッファータブルのバッファ内の行数。
+Bufferテーブルのバッファ内の行数。
 
 ### StorageDistributedThreads {#storagedistributedthreads}
 
-StorageDistributed スレッドプール内のスレッド数。
+StorageDistributedスレッドプール内のスレッド数。
 
 ### StorageDistributedThreadsActive {#storagedistributedthreadsactive}
 
-タスクを実行中の StorageDistributed スレッドプール内のスレッド数。
+タスクを実行中のStorageDistributedスレッドプール内のスレッド数。
 
 ### StorageHiveThreads {#storagehivethreads}
 
-StorageHive スレッドプール内のスレッド数。
+StorageHiveスレッドプール内のスレッド数。
 
 ### StorageHiveThreadsActive {#storagehivethreadsactive}
 
-タスクを実行中の StorageHive スレッドプール内のスレッド数。
+タスクを実行中のStorageHiveスレッドプール内のスレッド数。
 
 ### StorageS3Threads {#storages3threads}
 
-StorageS3 スレッドプール内のスレッド数。
+StorageS3スレッドプール内のスレッド数。
 
 ### StorageS3ThreadsActive {#storages3threadsactive}
 
-タスクを実行中の StorageS3 スレッドプール内のスレッド数。
+タスクを実行中のStorageS3スレッドプール内のスレッド数。
 
 ### SystemReplicasThreads {#systemreplicasthreads}
 
-system.replicas スレッドプール内のスレッド数。
+system.replicasスレッドプール内のスレッド数。
 
 ### SystemReplicasThreadsActive {#systemreplicasthreadsactive}
 
-タスクを実行中の system.replicas スレッドプール内のスレッド数。
+タスクを実行中のsystem.replicasスレッドプール内のスレッド数。
 
 ### TCPConnection {#tcpconnection}
 
-TCP サーバーへの接続数 (ネイティブインターフェイスを持つクライアント)、サーバー間の分散クエリ接続も含まれます。
+TCPサーバーへの接続数（ネイティブインターフェースを持つクライアント）、サーバー間の分散クエリ接続も含まれます。
 
 ### TablesToDropQueueSize {#tablestodropqueuesize}
 
-バックグラウンドデータ削除を待機しているドロップされたテーブルの数。
+バックグラウンドデータ削除を待機しているドロップ対象のテーブル数。
 
 ### TemporaryFilesForAggregation {#temporaryfilesforaggregation}
 
@@ -696,7 +722,7 @@ TCP サーバーへの接続数 (ネイティブインターフェイスを持�
 
 ### TemporaryFilesForJoin {#temporaryfilesforjoin}
 
-JOIN のために作成された一時ファイルの数。
+JOINのために作成された一時ファイルの数。
 
 ### TemporaryFilesForSort {#temporaryfilesforsort}
 
@@ -704,63 +730,63 @@ JOIN のために作成された一時ファイルの数。
 
 ### TemporaryFilesUnknown {#temporaryfilesunknown}
 
-目的が知られていない一時ファイルの数。
+知られていない目的で作成された一時ファイルの数。
 
 ### ThreadPoolFSReaderThreads {#threadpoolfsreaderthreads}
 
-local_filesystem_read_method=threadpool のスレッドプール内のスレッド数。
+local_filesystem_read_method=threadpoolのためのスレッドプール内のスレッド数。
 
 ### ThreadPoolFSReaderThreadsActive {#threadpoolfsreaderthreadsactive}
 
-タスクを実行中の local_filesystem_read_method=threadpool のスレッドプール内のスレッド数。
+タスクを実行中のlocal_filesystem_read_method=threadpoolのためのスレッドプール内のスレッド数。
 
 ### ThreadPoolRemoteFSReaderThreads {#threadpoolremotefsreaderthreads}
 
-remote_filesystem_read_method=threadpool のスレッドプール内のスレッド数。
+remote_filesystem_read_method=threadpoolのためのスレッドプール内のスレッド数。
 
 ### ThreadPoolRemoteFSReaderThreadsActive {#threadpoolremotefsreaderthreadsactive}
 
-タスクを実行中の remote_filesystem_read_method=threadpool のスレッドプール内のスレッド数。
+タスクを実行中のremote_filesystem_read_method=threadpoolのためのスレッドプール内のスレッド数。
 
 ### ThreadsInOvercommitTracker {#threadsinovercommittracker}
 
-OvercommitTracker 内で待機しているスレッドの数。
+OvercommitTracker内で待機しているスレッドの数。
 
 ### TotalTemporaryFiles {#totaltemporaryfiles}
 
-作成された一時ファイルの総数。
+作成された一時ファイルの数。
 
 ### VersionInteger {#versioninteger}
 
-サーバーのバージョンを単一の整数番号で示したもの（基数1000）。例えば、バージョン 11.22.33 は 11022033 に変換されます。
+サーバーのバージョンを1000ベースの単一整数として表したもの。たとえば、バージョン11.22.33は11022033に変換されます。
 
 ### Write {#write}
 
-フライト中の書き込み (write, pwrite, io_getevents など) システムコールの数。
+フライト中の書き込み（write, pwrite, io_geteventsなど）syscallの数。
 
 ### ZooKeeperRequest {#zookeeperrequest}
 
-フライト中の ZooKeeper へのリクエストの数。
+フライト中のZooKeeperへのリクエスト数。
 
 ### ZooKeeperSession {#zookeepersession}
 
-ZooKeeper へのセッション（接続）の数。1つ以上であるべきではなく、複数の接続を ZooKeeper に使用することは、ZooKeeper の一貫性モデルが許可する線形性の欠如（古い読み取りによるバグ）につながる可能性があります。
+ZooKeeperへのセッション（接続）の数。線形性の欠如によるバグを避けるため、1つより多くのZooKeeper接続を使用するべきではありません（古い読み取り）。
 
 ### ZooKeeperWatch {#zookeeperwatch}
 
-ZooKeeper 内のウォッチ（イベントサブスクリプション）の数。
+ZooKeeper内のウォッチ（イベント登録）の数。
 
 ### ConcurrencyControlAcquired {#concurrencycontrolacquired}
 
-取得された CPU スロットの合計数。
+取得されたCPUスロットの合計数。
 
 ### ConcurrencyControlSoftLimit {#concurrencycontrolsoftlimit}
 
-CPU スロットの数に関するソフトリミットの値。
+CPUスロットの数のソフトリミットの値。
 
-**参照**
+**See Also**
 
-- [system.asynchronous_metrics](/operations/system-tables/asynchronous_metrics) — 定期的に計算されるメトリクスを含む。
-- [system.events](/operations/system-tables/events) — 発生した多数のイベントを含む。
-- [system.metric_log](/operations/system-tables/metric_log) — `system.metrics` と `system.events` テーブルからのメトリクス値の履歴を含む。
-- [Monitoring](../../operations/monitoring.md) — ClickHouse 監視の基本概念。
+- [system.asynchronous_metrics](/operations/system-tables/asynchronous_metrics) — 定期的に計算されるメトリックが含まれています。
+- [system.events](/operations/system-tables/events) — 発生したイベントの数が含まれています。
+- [system.metric_log](/operations/system-tables/metric_log) — テーブル `system.metrics` と `system.events` からのメトリックの値の履歴が含まれています。
+- [Monitoring](../../operations/monitoring.md) — ClickHouseモニタリングの基本概念。
