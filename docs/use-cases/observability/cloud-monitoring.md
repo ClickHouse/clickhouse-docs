@@ -62,16 +62,6 @@ This approach respects service idling behavior, allowing for cost optimization w
 
 <ObservabilityIntegrations/>
 
-### ClickStack {#clickstack}
-
-ClickStack is ClickHouse's recommended observability solution for deep system analysis and debugging, providing a unified platform for logs, metrics, and traces using ClickHouse as the storage engine. This approach relies on HyperDX, the ClickStack UI, connecting directly to the system tables inside your ClickHouse instance.
-HyperDX ships with a ClickHouse focused dashboard with tabs for Selects, Inserts, and Infrastructure. Teams can also use Lucene or SQL syntax to search system tables and logs, as well as create custom visualizations via Chart Explorer for detailed system analysis. 
-This approach is ideal for debugging complex issues, performance analysis, and deep system introspection rather than real-time production alerting.
-
-:::note
-Note that this approach will wake idle services as HyperDX queries the system tables directly.
-:::
-
 ### ClickStack deployment options {#clickstack-deployment}
 
 - **HyperDX in Clickhouse Cloud**  (private preview): HyperDX can be launched on any Clickhouse Cloud service.
