@@ -1,23 +1,22 @@
-
 ---
-description: 'Документация по Функциям для Поиска в Строках'
-sidebar_label: 'Поиск в Строках'
-sidebar_position: 160
-slug: /sql-reference/functions/string-search-functions
-title: 'Функции для Поиска в Строках'
+'description': 'Документация по функциям поиска по строками'
+'sidebar_label': 'Поиск по строкам'
+'slug': '/sql-reference/functions/string-search-functions'
+'title': 'Функции поиска по строкам'
+'doc_type': 'reference'
 ---
+# Функции для поиска в строках
 
-# Функции для Поиска в Строках
-
-Все функции в этом разделе ищут с учетом регистра по умолчанию. Поиск без учета регистра обычно предоставляется отдельными вариантами функций.
+Все функции в этом разделе по умолчанию осуществляют регистронезависимый поиск. Регистронезависимый поиск обычно предоставляется отдельными вариантами функций.
 
 :::note
-Поиск без учета регистра следует правилам преобразования строчных и заглавных букв английского языка. Например, заглавная буква `I` в английском языке - это `I`, в то время как в турецком языке это `İ` - результаты для языков, отличных от английского, могут быть неожиданными.
+Регистронезависимый поиск следует правилам нижнего и верхнего регистра английского языка. Например, верхний регистр `i` в английском языке это `I`, в то время как в турецком языке это `İ` — результаты для языков, отличных от английского, могут быть непредсказуемыми.
 :::
 
-Функции в этом разделе также предполагают, что искомая строка (в данном разделе называемая `haystack`) и строка поиска (в данном разделе называемая `needle`) закодированы с использованием одного байта. Если это предположение нарушено, исключение не выбрасывается, и результаты не определены. Поиск с использованием строк, закодированных в UTF-8, обычно предоставляется отдельными вариантами функций. Аналогично, если используется вариант функции UTF-8, а входные строки не закодированы в UTF-8, исключение не выбрасывается, и результаты не определены. Обратите внимание, что автоматическая нормализация Unicode не выполняется. Тем не менее, вы можете использовать функции [normalizeUTF8*()](https://clickhouse.com../functions/string-functions/) для этого.
+Функции в этом разделе также предполагают, что искомая строка (в этом разделе обозначаемая как `haystack`) и строка поиска (в этом разделе обозначаемая как `needle`) являются текстом с кодировкой в один байт. Если это предположение нарушается, исключение не генерируется, а результаты будут неопределёнными. Поиск с использованием строк, закодированных в UTF-8, обычно предоставляется отдельными вариантами функций. Аналогично, если используется вариант функции UTF-8 и входные строки не являются текстом в кодировке UTF-8, исключение не генерируется и результаты также неопределённые. Обратите внимание, что автоматическая нормализация Unicode не выполняется, однако вы можете использовать функции 
+[normalizeUTF8*()](https://clickhouse.com../functions/string-functions/) для этого.
 
-[Общие функции строк](string-functions.md) и [функции замены в строках](string-replace-functions.md) описаны отдельно.
+[Общие функции строк](string-functions.md) и [функции для замены в строках](string-replace-functions.md) описаны отдельно.
 ## position {#position}
 
 Возвращает позицию (в байтах, начиная с 1) подстроки `needle` в строке `haystack`.
@@ -33,22 +32,22 @@ position(haystack, needle[, start_pos])
 
 **Аргументы**
 
-- `haystack` — Строка, в которой выполняется поиск. [Строка](../data-types/string.md) или [Enum](../data-types/string.md).
-- `needle` — Искомая подстрока. [Строка](../data-types/string.md).
-- `start_pos` – Позиция (с 1) в `haystack`, с которой начинается поиск. [UInt](../data-types/int-uint.md). Необязательно.
+- `haystack` — Строка, в которой выполняется поиск. [String](../data-types/string.md) или [Enum](../data-types/string.md).
+- `needle` — Искомая подстрока. [String](../data-types/string.md).
+- `start_pos` – Позиция (начиная с 1) в `haystack`, с которой начинается поиск. [UInt](../data-types/int-uint.md). Необязательный.
 
 **Возвращаемое значение**
 
-- Начальная позиция в байтах, начиная с 1, если подстрока найдена. [UInt64](../data-types/int-uint.md).
+- Начальная позиция в байтах и счёт с 1, если подстрока была найдена. [UInt64](../data-types/int-uint.md).
 - 0, если подстрока не найдена. [UInt64](../data-types/int-uint.md).
 
-Если подстрока `needle` пустая, применяются следующие правила:
+Если подстрока `needle` пустая, действуют следующие правила:
 - если `start_pos` не был указан: вернуть `1`
 - если `start_pos = 0`: вернуть `1`
 - если `start_pos >= 1` и `start_pos <= length(haystack) + 1`: вернуть `start_pos`
 - в противном случае: вернуть `0`
 
-Эти же правила применяются и к функциям `locate`, `positionCaseInsensitive`, `positionUTF8` и `positionCaseInsensitiveUTF8`.
+Те же правила также применимы к функциям `locate`, `positionCaseInsensitive`, `positionUTF8` и `positionCaseInsensitiveUTF8`.
 
 **Примеры**
 
@@ -124,7 +123,7 @@ SELECT
 ```
 ## locate {#locate}
 
-Как [position](#position), но с аргументами `haystack` и `locate`, поменянными местами.
+Как [position](#position), но аргументы `haystack` и `locate` поменяны местами.
 
 Поведение этой функции зависит от версии ClickHouse:
 - в версиях < v24.3, `locate` был псевдонимом функции `position` и принимал аргументы `(haystack, needle[, start_pos])`.
@@ -137,7 +136,7 @@ locate(needle, haystack[, start_pos])
 ```
 ## positionCaseInsensitive {#positioncaseinsensitive}
 
-Не учитывающая регистр версия [position](#position).
+Регистронезависимый вариант [position](#position).
 
 **Пример**
 
@@ -156,11 +155,11 @@ SELECT positionCaseInsensitive('Hello, world!', 'hello');
 ```
 ## positionUTF8 {#positionutf8}
 
-Как [position](#position), но предполагает, что `haystack` и `needle` являются строками, закодированными в UTF-8.
+Как [position](#position), но предполагает, что `haystack` и `needle` являются строками с кодировкой UTF-8.
 
 **Примеры**
 
-Функция `positionUTF8` правильно считает символ `ö` (представленный двумя точками) как один кодовый пункт Unicode:
+Функция `positionUTF8` правильно считает символ `ö` (представленный двумя точками) как единую кодовую точку Unicode:
 
 Запрос:
 
@@ -177,13 +176,13 @@ SELECT positionUTF8('Motörhead', 'r');
 ```
 ## positionCaseInsensitiveUTF8 {#positioncaseinsensitiveutf8}
 
-Как [positionUTF8](#positionutf8), но выполняет поиск без учета регистра.
+Как [positionUTF8](#positionutf8), но осуществляет регистронезависимый поиск.
 ## multiSearchAllPositions {#multisearchallpositions}
 
 Как [position](#position), но возвращает массив позиций (в байтах, начиная с 1) для нескольких подстрок `needle` в строке `haystack`.
 
 :::note
-Все функции `multiSearch*()` поддерживают только до 2<sup>8</sup> needles.
+Все функции `multiSearch*()` поддерживают не более 2<sup>8</sup> needles.
 :::
 
 **Синтаксис**
@@ -194,12 +193,12 @@ multiSearchAllPositions(haystack, [needle1, needle2, ..., needleN])
 
 **Аргументы**
 
-- `haystack` — Строка, в которой выполняется поиск. [Строка](../data-types/string.md).
-- `needle` — Подстроки для поиска. [Массив](../data-types/array.md).
+- `haystack` — Строка, в которой выполняется поиск. [String](../data-types/string.md).
+- `needle` — Искомые подстроки. [Array](../data-types/array.md).
 
 **Возвращаемое значение**
 
-- Массив начальных позиций в байтах, начиная с 1, если подстрока найдена.
+- Массив начальной позиции в байтах и счёт с 1, если подстрока была найдена.
 - 0, если подстрока не найдена.
 
 **Пример**
@@ -227,14 +226,14 @@ SELECT multiSearchAllPositions('Hello, World!', ['hello', '!', 'world']);
 multiSearchAllPositionsCaseInsensitive(haystack, [needle1, needle2, ..., needleN])
 ```
 
-**Аргументы**
+**Параметры**
 
-- `haystack` — Строка, в которой выполняется поиск. [Строка](../data-types/string.md).
-- `needle` — Подстроки для поиска. [Массив](../data-types/array.md).
+- `haystack` — Строка, в которой выполняется поиск. [String](../data-types/string.md).
+- `needle` — Искомые подстроки. [Array](../data-types/array.md).
 
 **Возвращаемое значение**
 
-- Массив начальных позиций в байтах, начиная с 1 (если подстрока была найдена).
+- Массив начальной позиции в байтах и счёт с 1 (если подстрока была найдена).
 - 0, если подстрока не найдена.
 
 **Пример**
@@ -252,7 +251,7 @@ SELECT multiSearchAllPositionsCaseInsensitive('ClickHouse',['c','h']);
 ```
 ## multiSearchAllPositionsUTF8 {#multisearchallpositionsutf8}
 
-Как [multiSearchAllPositions](#multisearchallpositions), но предполагает, что `haystack` и подстроки `needle` закодированы в UTF-8.
+Как [multiSearchAllPositions](#multisearchallpositions), но предполагает, что `haystack` и подстроки `needle` имеют кодировку UTF-8.
 
 **Синтаксис**
 
@@ -260,19 +259,19 @@ SELECT multiSearchAllPositionsCaseInsensitive('ClickHouse',['c','h']);
 multiSearchAllPositionsUTF8(haystack, [needle1, needle2, ..., needleN])
 ```
 
-**Аргументы**
+**Параметры**
 
-- `haystack` — Строка, закодированная в UTF-8, в которой выполняется поиск. [Строка](../data-types/string.md).
-- `needle` — Подстроки, закодированные в UTF-8, для поиска. [Массив](../data-types/array.md).
+- `haystack` — Строка с кодировкой UTF-8, в которой выполняется поиск. [String](../data-types/string.md).
+- `needle` — Подстроки с кодировкой UTF-8 для поиска. [Array](../data-types/array.md).
 
 **Возвращаемое значение**
 
-- Массив начальных позиций в байтах, начиная с 1 (если подстрока была найдена).
+- Массив начальной позиции в байтах и счёт с 1 (если подстрока была найдена).
 - 0, если подстрока не найдена.
 
 **Пример**
 
-Дана строка `ClickHouse` в кодировке UTF-8, найдите позиции `C` (`\x43`) и `H` (`\x48`).
+При задании `ClickHouse` как строки в кодировке UTF-8, найдите позиции `C` (`\x43`) и `H` (`\x48`).
 
 Запрос:
 
@@ -295,19 +294,19 @@ SELECT multiSearchAllPositionsUTF8('\x43\x6c\x69\x63\x6b\x48\x6f\x75\x73\x65',['
 multiSearchAllPositionsCaseInsensitiveUTF8(haystack, [needle1, needle2, ..., needleN])
 ```
 
-**Аргументы**
+**Параметры**
 
-- `haystack` — Строка в кодировке UTF-8, в которой выполняется поиск. [Строка](../data-types/string.md).
-- `needle` — Подстроки, закодированные в UTF-8, для поиска. [Массив](../data-types/array.md).
+- `haystack` — Строка с кодировкой UTF-8, в которой выполняется поиск. [String](../data-types/string.md).
+- `needle` — Подстроки с кодировкой UTF-8 для поиска. [Array](../data-types/array.md).
 
 **Возвращаемое значение**
 
-- Массив начальных позиций в байтах, начиная с 1 (если подстрока была найдена).
+- Массив начальной позиции в байтах и счёт с 1 (если подстрока была найдена).
 - 0, если подстрока не найдена.
 
 **Пример**
 
-Дана строка `ClickHouse` в кодировке UTF-8, найдите позиции `c` (`\x63`) и `h` (`\x68`).
+При задании `ClickHouse` как строки в кодировке UTF-8, найдите позиции `c` (`\x63`) и `h` (`\x68`).
 
 Запрос:
 
@@ -322,9 +321,9 @@ SELECT multiSearchAllPositionsCaseInsensitiveUTF8('\x43\x6c\x69\x63\x6b\x48\x6f\
 ```
 ## multiSearchFirstPosition {#multisearchfirstposition}
 
-Как [`position`](#position), но возвращает левый смещенный индекс в строке `haystack`, который совпадает с любым из нескольких `needle` строк.
+Как [`position`](#position), но возвращает левый смещение в строке `haystack`, которое соответствует любой из нескольких строк `needle`.
 
-Функции [`multiSearchFirstPositionCaseInsensitive`](#multisearchfirstpositioncaseinsensitive), [`multiSearchFirstPositionUTF8`](#multisearchfirstpositionutf8) и [`multiSearchFirstPositionCaseInsensitiveUTF8`](#multisearchfirstpositioncaseinsensitiveutf8) предоставляют версии этой функции без учета регистра и/или UTF-8.
+Функции [`multiSearchFirstPositionCaseInsensitive`](#multisearchfirstpositioncaseinsensitive), [`multiSearchFirstPositionUTF8`](#multisearchfirstpositionutf8) и [`multiSearchFirstPositionCaseInsensitiveUTF8`](#multisearchfirstpositioncaseinsensitiveutf8) предоставляют регистронезависимые и/или UTF-8 варианты этой функции.
 
 **Синтаксис**
 
@@ -332,15 +331,15 @@ SELECT multiSearchAllPositionsCaseInsensitiveUTF8('\x43\x6c\x69\x63\x6b\x48\x6f\
 multiSearchFirstPosition(haystack, [needle1, needle2, ..., needleN])
 ```
 
-**Аргументы**
+**Параметры**
 
-- `haystack` — Строка, в которой выполняется поиск. [Строка](../data-types/string.md).
-- `needle` — Подстроки для поиска. [Массив](../data-types/array.md).
+- `haystack` — Строка, в которой выполняется поиск. [String](../data-types/string.md).
+- `needle` — Искомые подстроки. [Array](../data-types/array.md).
 
 **Возвращаемое значение**
 
-- Левое смещение в строке `haystack`, которое совпадает с любой из нескольких строк `needle`.
-- 0, если совпадений не было.
+- Левый смещение в строке `haystack`, которое соответствует любой из нескольких строк `needle`.
+- 0, если совпадений нет.
 
 **Пример**
 
@@ -365,15 +364,15 @@ SELECT multiSearchFirstPosition('Hello World',['llo', 'Wor', 'ld']);
 multiSearchFirstPositionCaseInsensitive(haystack, [needle1, needle2, ..., needleN])
 ```
 
-**Аргументы**
+**Параметры**
 
-- `haystack` — Строка, в которой выполняется поиск. [Строка](../data-types/string.md).
-- `needle` — Массив подстрок для поиска. [Массив](../data-types/array.md).
+- `haystack` — Строка, в которой выполняется поиск. [String](../data-types/string.md).
+- `needle` — Массив подстрок для поиска. [Array](../data-types/array.md).
 
 **Возвращаемое значение**
 
-- Левое смещение в строке `haystack`, которое совпадает с любой из нескольких строк `needle`.
-- 0, если совпадений не было.
+- Левый смещение в строке `haystack`, которое соответствует любой из нескольких строк `needle`.
+- 0, если совпадений нет.
 
 **Пример**
 
@@ -390,7 +389,7 @@ SELECT multiSearchFirstPositionCaseInsensitive('HELLO WORLD',['wor', 'ld', 'ello
 ```
 ## multiSearchFirstPositionUTF8 {#multisearchfirstpositionutf8}
 
-Как [`multiSearchFirstPosition`](#multisearchfirstposition), но предполагает, что `haystack` и `needle` являются строками UTF-8.
+Как [`multiSearchFirstPosition`](#multisearchfirstposition), но предполагает, что строки `haystack` и `needle` являются строками в кодировке UTF-8.
 
 **Синтаксис**
 
@@ -398,19 +397,19 @@ SELECT multiSearchFirstPositionCaseInsensitive('HELLO WORLD',['wor', 'ld', 'ello
 multiSearchFirstPositionUTF8(haystack, [needle1, needle2, ..., needleN])
 ```
 
-**Аргументы**
+**Параметры**
 
-- `haystack` — Строка в кодировке UTF-8, в которой выполняется поиск. [Строка](../data-types/string.md).
-- `needle` — Массив подстрок UTF-8 для поиска. [Массив](../data-types/array.md).
+- `haystack` — Строка в кодировке UTF-8, в которой выполняется поиск. [String](../data-types/string.md).
+- `needle` — Массив подстрок в кодировке UTF-8 для поиска. [Array](../data-types/array.md).
 
 **Возвращаемое значение**
 
-- Левое смещение в строке `haystack`, которое совпадает с любой из нескольких строк `needle`.
-- 0, если совпадений не было.
+- Левый смещение в строке `haystack`, которое соответствует любой из нескольких строк `needle`.
+- 0, если совпадений нет.
 
 **Пример**
 
-Найдите левое смещение в строке UTF-8 `hello world`, которое совпадает с любой из данных подстрок.
+Найдите левый смещение в строке UTF-8 `hello world`, которое соответствует любой из данных подстрок.
 
 Запрос:
 
@@ -425,7 +424,7 @@ SELECT multiSearchFirstPositionUTF8('\x68\x65\x6c\x6c\x6f\x20\x77\x6f\x72\x6c\x6
 ```
 ## multiSearchFirstPositionCaseInsensitiveUTF8 {#multisearchfirstpositioncaseinsensitiveutf8}
 
-Как [`multiSearchFirstPosition`](#multisearchfirstposition), но предполагает, что `haystack` и `needle` являются строками UTF-8 и игнорирует регистр.
+Как [`multiSearchFirstPosition`](#multisearchfirstposition), но предполагает, что строки `haystack` и `needle` являются строками в кодировке UTF-8 и игнорирует регистр.
 
 **Синтаксис**
 
@@ -433,19 +432,19 @@ SELECT multiSearchFirstPositionUTF8('\x68\x65\x6c\x6c\x6f\x20\x77\x6f\x72\x6c\x6
 multiSearchFirstPositionCaseInsensitiveUTF8(haystack, [needle1, needle2, ..., needleN])
 ```
 
-**Аргументы**
+**Параметры**
 
-- `haystack` — Строка в кодировке UTF-8, в которой выполняется поиск. [Строка](../data-types/string.md).
-- `needle` — Массив подстрок UTF-8 для поиска. [Массив](../data-types/array.md).
+- `haystack` — Строка в кодировке UTF-8, в которой выполняется поиск. [String](../data-types/string.md).
+- `needle` — Массив подстрок в кодировке UTF-8 для поиска. [Array](../data-types/array.md).
 
 **Возвращаемое значение**
 
-- Левое смещение в строке `haystack`, которое совпадает с любой из нескольких строк `needle`, игнорируя регистр.
-- 0, если совпадений не было.
+- Левый смещение в строке `haystack`, которое соответствует любой из нескольких строк `needle`, игнорируя регистр.
+- 0, если совпадений нет.
 
 **Пример**
 
-Найдите левое смещение в строке UTF-8 `HELLO WORLD`, которое совпадает с любой из данных подстрок.
+Найдите левый смещение в строке UTF-8 `HELLO WORLD`, которое соответствует любой из данных подстрок.
 
 Запрос:
 
@@ -460,23 +459,23 @@ SELECT multiSearchFirstPositionCaseInsensitiveUTF8('\x48\x45\x4c\x4c\x4f\x20\x57
 ```
 ## multiSearchFirstIndex {#multisearchfirstindex}
 
-Возвращает индекс `i` (начиная с 1) первой найденной подстроки `needle<sub>i</sub>` в строке `haystack` и 0 в противном случае.
+Возвращает индекс `i` (начиная с 1) самой левой найденной подстроки `needle<sub>i</sub>` в строке `haystack` и 0 в противном случае.
 
-Функции [`multiSearchFirstIndexCaseInsensitive`](#multisearchfirstindexcaseinsensitive), [`multiSearchFirstIndexUTF8`](#multisearchfirstindexutf8) и [`multiSearchFirstIndexCaseInsensitiveUTF8`](#multisearchfirstindexcaseinsensitiveutf8) предоставляют версии этой функции без учета регистра и/или UTF-8.
+Функции [`multiSearchFirstIndexCaseInsensitive`](#multisearchfirstindexcaseinsensitive), [`multiSearchFirstIndexUTF8`](#multisearchfirstindexutf8) и [`multiSearchFirstIndexCaseInsensitiveUTF8`](#multisearchfirstindexcaseinsensitiveutf8) предоставляют регистронезависимые и/или UTF-8 варианты этой функции.
 
 **Синтаксис**
 
 ```sql
 multiSearchFirstIndex(haystack, [needle1, needle2, ..., needleN])
 ```
-**Аргументы**
+**Параметры**
 
-- `haystack` — Строка, в которой выполняется поиск. [Строка](../data-types/string.md).
-- `needle` — Подстроки для поиска. [Массив](../data-types/array.md).
+- `haystack` — Строка, в которой выполняется поиск. [String](../data-types/string.md).
+- `needle` — Искомые подстроки. [Array](../data-types/array.md).
 
 **Возвращаемое значение**
 
-- индекс (начиная с 1) первой найденной подстроки. В противном случае 0, если совпадений не было. [UInt8](../data-types/int-uint.md).
+- индекс (начиная с 1) самой левой найденной подстроки. В противном случае 0, если совпадений нет. [UInt8](../data-types/int-uint.md).
 
 **Пример**
 
@@ -493,7 +492,7 @@ SELECT multiSearchFirstIndex('Hello World',['World','Hello']);
 ```
 ## multiSearchFirstIndexCaseInsensitive {#multisearchfirstindexcaseinsensitive}
 
-Возвращает индекс `i` (начиная с 1) первой найденной подстроки `needle<sub>i</sub>` в строке `haystack` и 0 в противном случае. Игнорирует регистр.
+Возвращает индекс `i` (начиная с 1) самой левой найденной подстроки `needle<sub>i</sub>` в строке `haystack` и 0 в противном случае. Игнорирует регистр.
 
 **Синтаксис**
 
@@ -501,14 +500,14 @@ SELECT multiSearchFirstIndex('Hello World',['World','Hello']);
 multiSearchFirstIndexCaseInsensitive(haystack, [needle1, needle2, ..., needleN])
 ```
 
-**Аргументы**
+**Параметры**
 
-- `haystack` — Строка, в которой выполняется поиск. [Строка](../data-types/string.md).
-- `needle` — Подстроки для поиска. [Массив](../data-types/array.md).
+- `haystack` — Строка, в которой выполняется поиск. [String](../data-types/string.md).
+- `needle` — Искомые подстроки. [Array](../data-types/array.md).
 
 **Возвращаемое значение**
 
-- индекс (начиная с 1) первой найденной подстроки. В противном случае 0, если совпадений не было. [UInt8](../data-types/int-uint.md).
+- индекс (начиная с 1) самой левой найденной подстроки. В противном случае 0, если совпадений нет. [UInt8](../data-types/int-uint.md).
 
 **Пример**
 
@@ -525,7 +524,7 @@ SELECT multiSearchFirstIndexCaseInsensitive('hElLo WoRlD',['World','Hello']);
 ```
 ## multiSearchFirstIndexUTF8 {#multisearchfirstindexutf8}
 
-Возвращает индекс `i` (начиная с 1) первой найденной подстроки `needle<sub>i</sub>` в строке `haystack` и 0 в противном случае. Предполагает, что `haystack` и `needle` являются строками, закодированными в UTF-8.
+Возвращает индекс `i` (начиная с 1) самой левой найденной подстроки `needle<sub>i</sub>` в строке `haystack` и 0 в противном случае. Предполагает, что строки `haystack` и `needle` являются строками в кодировке UTF-8.
 
 **Синтаксис**
 
@@ -533,18 +532,18 @@ SELECT multiSearchFirstIndexCaseInsensitive('hElLo WoRlD',['World','Hello']);
 multiSearchFirstIndexUTF8(haystack, [needle1, needle2, ..., needleN])
 ```
 
-**Аргументы**
+**Параметры**
 
-- `haystack` — Строка в кодировке UTF-8, в которой выполняется поиск. [Строка](../data-types/string.md).
-- `needle` — Массив подстрок UTF-8 для поиска. [Массив](../data-types/array.md).
+- `haystack` — Строка в кодировке UTF-8, в которой выполняется поиск. [String](../data-types/string.md).
+- `needle` — Массив подстрок в кодировке UTF-8 для поиска. [Array](../data-types/array.md).
 
 **Возвращаемое значение**
 
-- индекс (начиная с 1) первой найденной подстроки. В противном случае 0, если совпадений не было. [UInt8](../data-types/int-uint.md).
+- индекс (начиная с 1) самой левой найденной подстроки. В противном случае 0, если совпадений нет. [UInt8](../data-types/int-uint.md).
 
 **Пример**
 
-Дана строка `Hello World` в кодировке UTF-8, найдите первый индекс строк UTF-8 `Hello` и `World`.
+При задании `Hello World` как строки в кодировке UTF-8, найдите первый индекс строк UTF-8 `Hello` и `World`.
 
 Запрос:
 
@@ -559,7 +558,7 @@ SELECT multiSearchFirstIndexUTF8('\x48\x65\x6c\x6c\x6f\x20\x57\x6f\x72\x6c\x64',
 ```
 ## multiSearchFirstIndexCaseInsensitiveUTF8 {#multisearchfirstindexcaseinsensitiveutf8}
 
-Возвращает индекс `i` (начиная с 1) первой найденной подстроки `needle<sub>i</sub>` в строке `haystack` и 0 в противном случае. Предполагает, что `haystack` и `needle` являются строками UTF-8. Игнорирует регистр.
+Возвращает индекс `i` (начиная с 1) самой левой найденной подстроки `needle<sub>i</sub>` в строке `haystack` и 0 в противном случае. Предполагает, что строки `haystack` и `needle` являются строками в кодировке UTF-8. Игнорирует регистр.
 
 **Синтаксис**
 
@@ -567,18 +566,18 @@ SELECT multiSearchFirstIndexUTF8('\x48\x65\x6c\x6c\x6f\x20\x57\x6f\x72\x6c\x64',
 multiSearchFirstIndexCaseInsensitiveUTF8(haystack, [needle1, needle2, ..., needleN])
 ```
 
-**Аргументы**
+**Параметры**
 
-- `haystack` — Строка в кодировке UTF-8, в которой выполняется поиск. [Строка](../data-types/string.md).
-- `needle` — Массив подстрок UTF-8 для поиска. [Массив](../data-types/array.md).
+- `haystack` — Строка в кодировке UTF-8, в которой выполняется поиск. [String](../data-types/string.md).
+- `needle` — Массив подстрок в кодировке UTF-8 для поиска. [Array](../data-types/array.md).
 
 **Возвращаемое значение**
 
-- индекс (начиная с 1) первой найденной подстроки. В противном случае 0, если совпадений не было. [UInt8](../data-types/int-uint.md).
+- индекс (начиная с 1) самой левой найденной подстроки. В противном случае 0, если совпадений нет. [UInt8](../data-types/int-uint.md).
 
 **Пример**
 
-Дана строка `HELLO WORLD` в кодировке UTF-8, найдите первый индекс строк UTF-8 `hello` и `world`.
+При задании `HELLO WORLD` как строки в кодировке UTF-8, найдите первый индекс строк UTF-8 `hello` и `world`.
 
 Запрос:
 
@@ -593,9 +592,9 @@ SELECT multiSearchFirstIndexCaseInsensitiveUTF8('\x48\x45\x4c\x4c\x4f\x20\x57\x4
 ```
 ## multiSearchAny {#multisearchany}
 
-Возвращает 1, если хотя бы одна подстрока `needle<sub>i</sub>` совпадает со строкой `haystack`, и 0 в противном случае.
+Возвращает 1, если хотя бы одна строка `needle<sub>i</sub>` соответствует строке `haystack`, и 0 в противном случае.
 
-Функции [`multiSearchAnyCaseInsensitive`](#multisearchanycaseinsensitive), [`multiSearchAnyUTF8`](#multisearchanyutf8) и [`multiSearchAnyCaseInsensitiveUTF8`](#multisearchanycaseinsensitiveutf8) предоставляют версии этой функции без учета регистра и/или UTF-8.
+Функции [`multiSearchAnyCaseInsensitive`](#multisearchanycaseinsensitive), [`multiSearchAnyUTF8`](#multisearchanyutf8) и [`multiSearchAnyCaseInsensitiveUTF8`](#multisearchanycaseinsensitiveutf8) предоставляют регистронезависимые и/или UTF-8 варианты этой функции.
 
 **Синтаксис**
 
@@ -603,10 +602,10 @@ SELECT multiSearchFirstIndexCaseInsensitiveUTF8('\x48\x45\x4c\x4c\x4f\x20\x57\x4
 multiSearchAny(haystack, [needle1, needle2, ..., needleN])
 ```
 
-**Аргументы**
+**Параметры**
 
-- `haystack` — Строка, в которой выполняется поиск. [Строка](../data-types/string.md).
-- `needle` — Подстроки для поиска. [Массив](../data-types/array.md).
+- `haystack` — Строка, в которой выполняется поиск. [String](../data-types/string.md).
+- `needle` — Искомые подстроки. [Array](../data-types/array.md).
 
 **Возвращаемое значение**
 
@@ -636,15 +635,15 @@ SELECT multiSearchAny('ClickHouse',['C','H']);
 multiSearchAnyCaseInsensitive(haystack, [needle1, needle2, ..., needleN])
 ```
 
-**Аргументы**
+**Параметры**
 
-- `haystack` — Строка, в которой выполняется поиск. [Строка](../data-types/string.md).
-- `needle` — Подстроки для поиска. [Массив](../data-types/array.md)
+- `haystack` — Строка, в которой выполняется поиск. [String](../data-types/string.md).
+- `needle` — Искомые подстроки. [Array](../data-types/array.md)
 
 **Возвращаемое значение**
 
-- 1, если было хотя бы одно совпадение без учета регистра.
-- 0, если не было совпадений без учета регистра.
+- 1, если было хотя бы одно совпадение, игнорируя регистр.
+- 0, если совпадений не было.
 
 **Пример**
 
@@ -661,7 +660,7 @@ SELECT multiSearchAnyCaseInsensitive('ClickHouse',['c','h']);
 ```
 ## multiSearchAnyUTF8 {#multisearchanyutf8}
 
-Как [multiSearchAny](#multisearchany), но предполагает, что `haystack` и подстроки `needle` закодированы в UTF-8.
+Как [multiSearchAny](#multisearchany), но предполагает, что строки `haystack` и подстроки `needle` находятся в кодировке UTF-8.
 
 **Синтаксис**
 
@@ -669,19 +668,19 @@ SELECT multiSearchAnyCaseInsensitive('ClickHouse',['c','h']);
 multiSearchAnyUTF8(haystack, [needle1, needle2, ..., needleN])
 ```
 
-**Аргументы**
+**Параметры**
 
-- `haystack` — Строка в кодировке UTF-8, в которой выполняется поиск. [Строка](../data-types/string.md).
-- `needle` — Подстроки UTF-8 для поиска. [Массив](../data-types/array.md).
+- `haystack` — Строка в кодировке UTF-8, в которой выполняется поиск. [String](../data-types/string.md).
+- `needle` — Подстроки в кодировке UTF-8 для поиска. [Array](../data-types/array.md).
 
 **Возвращаемое значение**
 
 - 1, если было хотя бы одно совпадение.
-- 0, если не было совпадений.
+- 0, если совпадений не было.
 
 **Пример**
 
-Дана строка `ClickHouse` в кодировке UTF-8, проверьте, есть ли буквы `C` (`\x43`) или `H` (`\x48`) в слове.
+При задании `ClickHouse` как строки в кодировке UTF-8, проверьте, присутствуют ли буквы `C` (`\x43`) или `H` (`\x48`) в слове.
 
 Запрос:
 
@@ -704,19 +703,19 @@ SELECT multiSearchAnyUTF8('\x43\x6c\x69\x63\x6b\x48\x6f\x75\x73\x65',['\x43','\x
 multiSearchAnyCaseInsensitiveUTF8(haystack, [needle1, needle2, ..., needleN])
 ```
 
-**Аргументы**
+**Параметры**
 
-- `haystack` — Строка в кодировке UTF-8, в которой выполняется поиск. [Строка](../data-types/string.md).
-- `needle` — Подстроки UTF-8 для поиска. [Массив](../data-types/array.md)
+- `haystack` — Строка в кодировке UTF-8, в которой выполняется поиск. [String](../data-types/string.md).
+- `needle` — Подстроки в кодировке UTF-8 для поиска. [Array](../data-types/array.md).
 
 **Возвращаемое значение**
 
-- 1, если было хотя бы одно совпадение без учета регистра.
-- 0, если не было совпадений без учета регистра.
+- 1, если было хотя бы одно совпадение, игнорируя регистр.
+- 0, если совпадений не было.
 
 **Пример**
 
-Дана строка `ClickHouse` в кодировке UTF-8, проверьте, есть ли буква `h` (`\x68`) в слове, игнорируя регистр.
+При задании `ClickHouse` как строки в кодировке UTF-8, проверьте, присутствует ли буква `h` (`\x68`) в слове, игнорируя регистр.
 
 Запрос:
 
@@ -729,15 +728,160 @@ SELECT multiSearchAnyCaseInsensitiveUTF8('\x43\x6c\x69\x63\x6b\x48\x6f\x75\x73\x
 ```response
 1
 ```
+## hasAnyTokens {#hasanytokens}
+
+:::note
+Эту функцию можно использовать только при включенной настройке [allow_experimental_full_text_index](/operations/settings/settings#allow_experimental_full_text_index).
+:::
+
+Возвращает 1, если хотя бы одна строка `needle<sub>i</sub>` соответствует колонке `input`, и 0 в противном случае.
+
+**Синтаксис**
+
+```sql
+hasAnyTokens(input, ['needle1', 'needle2', ..., 'needleN'])
+```
+
+**Параметры**
+
+- `input` — Входная колонка. [String](../data-types/string.md) или [FixedString](../data-types/fixedstring.md).
+- `needles` — Токены для поиска. Поддерживает не более 64 токенов. [Array](../data-types/array.md)([String](../data-types/string.md)).
+
+:::note
+Колонка `input` должна иметь [текстовый индекс][../../engines/table-engines/mergetree-family/invertedindexes.md].
+:::
+
+Строка `input` токенизируется с помощью токенизатора из определения индекса.
+
+Каждый элемент массива `needle` токен<sub>i</sub> считается единичным токеном, т.е. не подлежит дальнейшей токенизации.
+Например, если вы хотите выполнить поиск `ClickHouse` с индексом `tokenizer = ngrams(5)`, при этом предоставив токены: `['Click', 'lickH', 'ickHo', 'ckHou', 'kHous', 'House']`.
+Чтобы сгенерировать токены, вы можете использовать функцию [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens).
+Дубликаты токенов игнорируются, например, `['ClickHouse', 'ClickHouse']` — это то же самое, что и `['ClickHouse']`.
+
+**Возвращаемое значение**
+
+- 1, если было хотя бы одно совпадение.
+- 0 в противном случае.
+
+**Пример**
+
+Запрос:
+
+```sql
+CREATE TABLE table (
+    id UInt32,
+    msg String,
+    INDEX idx(msg) TYPE text(tokenizer = splitByString(['()', '\\'])
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+INSERT INTO table VALUES (1, '()a,\\bc()d'), (2, '()\\a()bc\\d'), (3, ',()a\\,bc,(),d,');
+
+SELECT count() FROM table WHERE hasAnyTokens(msg, ['a', 'd']);
+```
+
+Результат:
+
+```response
+3
+```
+
+**Сгенерировать токены с помощью функции `tokens`**
+
+Запрос:
+
+```sql
+SELECT count() FROM table WHERE hasAnyTokens(msg, tokens('a()d', 'splitByString', ['()', '\\']));
+```
+
+Результат:
+
+```response
+3
+```
+## hasAllTokens {#hasalltokens}
+
+:::note
+Эту функцию можно использовать только при включенной настройке [allow_experimental_full_text_index](/operations/settings/settings#allow_experimental_full_text_index).
+:::
+
+Как [hasAnyTokens](#hasanytokens), но возвращает 1 только если все строки `needle<sub>i</sub>` соответствуют колонке `input`, и 0 в противном случае.
+
+**Синтаксис**
+
+```sql
+hasAllTokens(input, ['needle1', 'needle2', ..., 'needleN'])
+```
+
+**Параметры**
+
+- `input` — Входная колонка. [String](../data-types/string.md) или [FixedString](../data-types/fixedstring.md).
+- `needles` — Токены для поиска. Поддерживает не более 64 токенов. [Array](../data-types/array.md)([String](../data-types/string.md)).
+
+:::note
+Колонка `input` должна иметь [текстовый индекс][../../engines/table-engines/mergetree-family/invertedindexes.md].
+:::
+
+Строка `input` токенизируется с помощью токенизатора из определения индекса.
+
+Каждый элемент массива `needle` токен<sub>i</sub> считается единичным токеном, т.е. не подлежит дальнейшей токенизации.
+Например, если вы хотите выполнить поиск `ClickHouse` с индексом `tokenizer = ngrams(5)`, при этом предоставив токены: `['Click', 'lickH', 'ickHo', 'ckHou', 'kHous', 'House']`.
+Чтобы сгенерировать токены, вы можете использовать функцию [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens).
+Дубликаты токенов игнорируются, например, `['ClickHouse', 'ClickHouse']` — это то же самое, что и `['ClickHouse']`.
+
+**Возвращаемое значение**
+
+- 1, если все токены совпадают.
+- 0 в противном случае.
+
+**Пример**
+
+Запрос:
+
+```sql
+CREATE TABLE table (
+    id UInt32,
+    msg String,
+    INDEX idx(msg) TYPE text(tokenizer = splitByString(['()', '\\'])
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+INSERT INTO table VALUES (1, '()a,\\bc()d'), (2, '()\\a()bc\\d'), (3, ',()a\\,bc,(),d,');
+
+SELECT count() FROM table WHERE hasAllTokens(msg, ['a', 'd']);
+```
+
+Результат:
+
+```response
+1
+```
+
+**Сгенерировать токены с помощью функции `tokens`**
+
+Запрос:
+
+```sql
+SELECT count() FROM table WHERE hasAllTokens(msg, tokens('a()d', 'splitByString', ['()', '\\']));
+```
+
+Результат:
+
+```response
+1
+```
 ## match {#match}
 
-Возвращает, соответствует ли строка `haystack` регулярному выражению `pattern` в [синтаксисе регулярных выражений re2](https://github.com/google/re2/wiki/Syntax).
+Возвращает, соответствует ли строка `haystack` регулярному выражению `pattern` в [синтаксисе регулярного выражения re2](https://github.com/google/re2/wiki/Syntax).
 
-Сопоставление происходит на основе UTF-8, например, `.` соответствует кодовой точке Unicode `¥`, которая представлена в UTF-8 с использованием двух байтов. Регулярное выражение не должно содержать нулевых байтов. Если `haystack` или `pattern` не являются допустимыми строками UTF-8, поведение не определено.
+Совпадение основывается на UTF-8, например, `.` соответствует кодовой точке Unicode `¥`, которая в UTF-8 представляется с помощью двух байт. Регулярное
+выражение не должно содержать нулевых байтов. Если строка haystack или шаблон не являются допустимым UTF-8, поведение будет неопределенным.
 
-В отличие от поведения re2 по умолчанию, `.` соответствует переносам строк. Чтобы отключить это, добавьте в начало шаблона `(?-s)`.
+В отличие от стандартного поведения re2, `.` соответствует разрывам строк. Чтобы отключить это, предварите шаблон с помощью `(?-s)`.
 
-Если вы хотите только искать подстроки в строке, вы можете использовать функции [like](#like) или [position](#position) вместо этого - они работают намного быстрее, чем эта функция.
+Если вы хотите просто искать подстроки в строке, вы можете использовать функции [like](#like) или [position](#position) вместо этого — они работают гораздо быстрее, чем эта функция.
 
 **Синтаксис**
 
@@ -751,76 +895,79 @@ match(haystack, pattern)
 Как `match`, но возвращает 1, если хотя бы один из шаблонов совпадает, и 0 в противном случае.
 
 :::note
-Функции из семейства `multi[Fuzzy]Match*()` используют библиотеку (Vectorscan)[https://github.com/VectorCamp/vectorscan]. Поэтому они могут быть включены только в случае, если ClickHouse скомпилирован с поддержкой vectorscan.
+Функции из семейства `multi[Fuzzy]Match*()` используют библиотеку (Vectorscan)[https://github.com/VectorCamp/vectorscan]. Таким образом, они включены только если ClickHouse скомпилирован с поддержкой vectorscan.
 
 Чтобы отключить все функции, использующие hyperscan, используйте настройку `SET allow_hyperscan = 0;`.
 
-Из-за ограничений vectorscan, длина строки `haystack` должна быть меньше 2<sup>32</sup> байт.
+Из-за ограничений vectorscan длина строки `haystack` должна быть меньше 2<sup>32</sup> байт.
 
-Hyperscan, как правило, уязвим для атак на отказ в обслуживании (ReDoS) с использованием регулярных выражений (например, см. (здесь)[https://www.usenix.org/conference/usenixsecurity22/presentation/turonova], (здесь)[https://doi.org/10.1007/s10664-021-10033-1] и (здесь)[https://doi.org/10.1145/3236024.3236027]). Пользователям рекомендуется внимательно проверять предоставленные шаблоны.
+Hyperscan в целом уязвим для атак отказа в обслуживании с использованием регулярных выражений (ReDoS) (например, см. 
+(здесь)[https://www.usenix.org/conference/usenixsecurity22/presentation/turonova], (здесь)[https://doi.org/10.1007/s10664-021-10033-1] и
+(здесь)[https://doi.org/10.1145/3236024.3236027]. Пользователи должны тщательно проверять предоставленные шаблоны.
 :::
 
-Если вы хотите только искать несколько подстрок в строке, вы можете использовать функцию [multiSearchAny](#multisearchany) вместо этого - она работает намного быстрее, чем эта функция.
+Если вы хотите просто искать несколько подстрок в строке, вы можете использовать функцию [multiSearchAny](#multisearchany) вместо этого — она работает гораздо быстрее, чем эта функция.
 
 **Синтаксис**
 
 ```sql
-multiMatchAny(haystack, [pattern<sub>1</sub>, pattern<sub>2</sub>, ..., pattern<sub>n</sub>])
+multiMatchAny(haystack, \[pattern<sub>1</sub>, pattern<sub>2</sub>, ..., pattern<sub>n</sub>\])
 ```
 ## multiMatchAnyIndex {#multimatchanyindex}
 
-Как `multiMatchAny`, но возвращает любой индекс, который соответствует строке `haystack`.
+Как `multiMatchAny`, но возвращает любой индекс, который соответствует haystack.
 
 **Синтаксис**
 
 ```sql
-multiMatchAnyIndex(haystack, [pattern<sub>1</sub>, pattern<sub>2</sub>, ..., pattern<sub>n</sub>])
+multiMatchAnyIndex(haystack, \[pattern<sub>1</sub>, pattern<sub>2</sub>, ..., pattern<sub>n</sub>\])
 ```
 ## multiMatchAllIndices {#multimatchallindices}
 
-Как `multiMatchAny`, но возвращает массив всех индексов, которые соответствуют строке `haystack` в произвольном порядке.
+Как `multiMatchAny`, но возвращает массив всех индексов, которые соответствуют haystack в любом порядке.
 
 **Синтаксис**
 
 ```sql
-multiMatchAllIndices(haystack, [pattern<sub>1</sub>, pattern<sub>2</sub>, ..., pattern<sub>n</sub>])
+multiMatchAllIndices(haystack, \[pattern<sub>1</sub>, pattern<sub>2</sub>, ..., pattern<sub>n</sub>\])
 ```
 ## multiFuzzyMatchAny {#multifuzzymatchany}
 
-Как `multiMatchAny`, но возвращает 1, если любой шаблон соответствует строке `haystack` в пределах постоянного [расстояния редактирования](https://en.wikipedia.org/wiki/Edit_distance). Эта функция зависит от экспериментальной функции библиотеки [hyperscan](https://intel.github.io/hyperscan/dev-reference/compilation.html#approximate-matching) и может быть медленной для некоторых предельных случаев. Производительность зависит от значения расстояния редактирования и используемых шаблонов, но всегда будет более затратной по сравнению с вариантами без размытости.
+Как `multiMatchAny`, но возвращает 1, если любой шаблон соответствует haystack в пределах постоянной [редакционной дистанции](https://en.wikipedia.org/wiki/Edit_distance). Эта функция полагается на экспериментальную функцию библиотеки [hyperscan](https://intel.github.io/hyperscan/dev-reference/compilation.html#approximate-matching) и может быть медленной для некоторых крайних случаев. Производительность зависит от значения расстояния редактирования и используемых шаблонов, но она всегда более затратна по сравнению с не-нечеткими вариантами.
 
 :::note
-Семейство функций `multiFuzzyMatch*()` не поддерживает регулярные выражения UTF-8 (они обрабатываются как последовательность байтов) из-за ограничений hyperscan.
+Функции `multiFuzzyMatch*()` не поддерживают регулярные выражения UTF-8 (они обрабатываются как последовательность байтов) из-за ограничений hyperscan.
 :::
 
 **Синтаксис**
 
 ```sql
-multiFuzzyMatchAny(haystack, distance, [pattern<sub>1</sub>, pattern<sub>2</sub>, ..., pattern<sub>n</sub>])
+multiFuzzyMatchAny(haystack, distance, \[pattern<sub>1</sub>, pattern<sub>2</sub>, ..., pattern<sub>n</sub>\])
 ```
 ## multiFuzzyMatchAnyIndex {#multifuzzymatchanyindex}
 
-Как `multiFuzzyMatchAny`, но возвращает любой индекс, который соответствует строке `haystack` в пределах постоянного расстояния редактирования.
+Как `multiFuzzyMatchAny`, но возвращает любой индекс, который соответствует haystack в пределах постоянной редакционной дистанции.
 
 **Синтаксис**
 
 ```sql
-multiFuzzyMatchAnyIndex(haystack, distance, [pattern<sub>1</sub>, pattern<sub>2</sub>, ..., pattern<sub>n</sub>])
+multiFuzzyMatchAnyIndex(haystack, distance, \[pattern<sub>1</sub>, pattern<sub>2</sub>, ..., pattern<sub>n</sub>\])
 ```
 ## multiFuzzyMatchAllIndices {#multifuzzymatchallindices}
 
-Как `multiFuzzyMatchAny`, но возвращает массив всех индексов в любом порядке, которые соответствуют строке `haystack` в пределах постоянного расстояния редактирования.
+Как `multiFuzzyMatchAny`, но возвращает массив всех индексов в любом порядке, которые соответствуют haystack в пределах постоянной редакционной дистанции.
 
 **Синтаксис**
 
 ```sql
-multiFuzzyMatchAllIndices(haystack, distance, [pattern<sub>1</sub>, pattern<sub>2</sub>, ..., pattern<sub>n</sub>])
+multiFuzzyMatchAllIndices(haystack, distance, \[pattern<sub>1</sub>, pattern<sub>2</sub>, ..., pattern<sub>n</sub>\])
 ```
 ## extract {#extract}
 
-Возвращает первое совпадение регулярного выражения в строке. Если `haystack` не соответствует регулярному выражению `pattern`, возвращается пустая строка.
+Возвращает первое совпадение регулярного выражения в строке.
+Если `haystack` не соответствует `pattern`, возвращается пустая строка. 
 
-Если регулярное выражение имеет группы захвата, функция сопоставляет входную строку с первой группой захвата.
+Если регулярное выражение имеет захватывающие группы, функция сопоставляет входную строку с первой захватывающей группой.
 
 **Синтаксис**
 
@@ -828,14 +975,14 @@ multiFuzzyMatchAllIndices(haystack, distance, [pattern<sub>1</sub>, pattern<sub>
 extract(haystack, pattern)
 ```
 
-**Аргументы**
+*Аргументы**
 
-- `haystack` — Входная строка. [Строка](../data-types/string.md).
-- `pattern` — Регулярное выражение с [синтаксисом регулярных выражений re2](https://github.com/google/re2/wiki/Syntax).
+- `haystack` — Входная строка. [String](../data-types/string.md).
+- `pattern` — Регулярное выражение с [синтаксисом регулярного выражения re2](https://github.com/google/re2/wiki/Syntax).
 
 **Возвращаемое значение**
 
-- Первое совпадение регулярного выражения в строке haystack. [Строка](../data-types/string.md).
+- Первое совпадение регулярного выражения в строке haystack. [String](../data-types/string.md).
 
 **Пример**
 
@@ -854,9 +1001,9 @@ SELECT extract('number: 1, number: 2, number: 3', '\\d+') AS result;
 ```
 ## extractAll {#extractall}
 
-Возвращает массив всех совпадений регулярного выражения в строке. Если `haystack` не соответствует регулярному выражению `pattern`, возвращается пустая строка.
+Возвращает массив всех совпадений регулярного выражения в строке. Если `haystack` не соответствует `pattern`, возвращается пустая строка.
 
-Поведение относительно подшаблонов такое же, как в функции [`extract`](#extract).
+Поведение по отношению к подшаблонам такое же, как и в функции [`extract`](#extract).
 
 **Синтаксис**
 
@@ -864,14 +1011,14 @@ SELECT extract('number: 1, number: 2, number: 3', '\\d+') AS result;
 extractAll(haystack, pattern)
 ```
 
-**Аргументы**
+*Аргументы**
 
-- `haystack` — Входная строка. [Строка](../data-types/string.md).
-- `pattern` — Регулярное выражение с [синтаксисом регулярных выражений re2](https://github.com/google/re2/wiki/Syntax).
+- `haystack` — Входная строка. [String](../data-types/string.md).
+- `pattern` — Регулярное выражение с [синтаксисом регулярного выражения re2](https://github.com/google/re2/wiki/Syntax).
 
 **Возвращаемое значение**
 
-- Массив совпадений регулярного выражения в строке haystack. [Массив](../data-types/array.md)([Строка](../data-types/string.md)).
+- Массив совпадений регулярного выражения в строке haystack. [Array](../data-types/array.md)([String](../data-types/string.md)).
 
 **Пример**
 
@@ -890,7 +1037,7 @@ SELECT extractAll('number: 1, number: 2, number: 3', '\\d+') AS result;
 ```
 ## extractAllGroupsHorizontal {#extractallgroupshorizontal}
 
-Сопоставляет все группы строки `haystack` с использованием регулярного выражения `pattern`. Возвращает массив массивов, где первый массив включает все фрагменты, соответствующие первой группе, второй массив — соответствующие второй группе и т.д.
+Сопоставляет все группы строки `haystack` с помощью регулярного выражения `pattern`. Возвращает массив массивов, где первый массив включает все фрагменты, соответствующие первой группе, второй массив — соответствующие второй группе и т.д.
 
 Эта функция медленнее, чем [extractAllGroupsVertical](#extractallgroupsvertical).
 
@@ -902,15 +1049,15 @@ extractAllGroupsHorizontal(haystack, pattern)
 
 **Аргументы**
 
-- `haystack` — Входная строка. [Строка](../data-types/string.md).
-- `pattern` — Регулярное выражение с [синтаксисом регулярных выражений re2](https://github.com/google/re2/wiki/Syntax). Должен содержать группы, каждая группа заключена в круглые скобки. Если `pattern` не содержит групп, будет выброшено исключение. [Строка](../data-types/string.md).
+- `haystack` — Входная строка. [String](../data-types/string.md).
+- `pattern` — Регулярное выражение с [синтаксисом регулярного выражения re2](https://github.com/google/re2/wiki/Syntax). Должно содержать группы, каждая группа заключена в скобки. Если `pattern` не содержит групп, будет выброшено исключение. [String](../data-types/string.md).
 
 **Возвращаемое значение**
 
-- Массив массивов совпадений. [Массив](../data-types/array.md).
+- Массив массивов совпадений. [Array](../data-types/array.md).
 
 :::note
-Если `haystack` не соответствует регулярному выражению `pattern`, возвращается массив пустых массивов.
+Если `haystack` не соответствует `pattern`, возвращается массив пустых массивов.
 :::
 
 **Пример**
@@ -938,12 +1085,12 @@ extractGroups(haystack, pattern)
 
 **Аргументы**
 
-- `haystack` — Входная строка. [Строка](../data-types/string.md).
-- `pattern` — Регулярное выражение с [синтаксисом регулярных выражений re2](https://github.com/google/re2/wiki/Syntax). Должен содержать группы, каждая группа заключена в круглые скобки. Если `pattern` не содержит групп, будет выброшено исключение. [Строка](../data-types/string.md).
+- `haystack` — Входная строка. [String](../data-types/string.md).
+- `pattern` — Регулярное выражение с [синтаксисом регулярного выражения re2](https://github.com/google/re2/wiki/Syntax). Должно содержать группы, каждая группа заключена в скобки. Если `pattern` не содержит групп, будет выброшено исключение. [String](../data-types/string.md).
 
 **Возвращаемое значение**
 
-- Массив массивов совпадений. [Массив](../data-types/array.md).
+- Массив массивов совпадений. [Array](../data-types/array.md).
 
 **Пример**
 
@@ -960,7 +1107,7 @@ SELECT extractGroups('hello abc=111 world', '("[^"]+"|\\w+)=("[^"]+"|\\w+)') AS 
 ```
 ## extractAllGroupsVertical {#extractallgroupsvertical}
 
-Сопоставляет все группы строки `haystack` с использованием регулярного выражения `pattern`. Возвращает массив массивов, где каждый массив включает соответствующие фрагменты из каждой группы. Фрагменты группируются в порядке появления в `haystack`.
+Сопоставляет все группы строки `haystack` с помощью регулярного выражения `pattern`. Возвращает массив массивов, где каждый массив включает соответствующие фрагменты из каждой группы. Фрагменты сгруппированы в порядке появления в `haystack`.
 
 **Синтаксис**
 
@@ -970,15 +1117,15 @@ extractAllGroupsVertical(haystack, pattern)
 
 **Аргументы**
 
-- `haystack` — Входная строка. [Строка](../data-types/string.md).
-- `pattern` — Регулярное выражение с [синтаксисом регулярных выражений re2](https://github.com/google/re2/wiki/Syntax). Должен содержать группы, каждая группа заключена в круглые скобки. Если `pattern` не содержит групп, будет выброшено исключение. [Строка](../data-types/string.md).
+- `haystack` — Входная строка. [String](../data-types/string.md).
+- `pattern` — Регулярное выражение с [синтаксисом регулярного выражения re2](https://github.com/google/re2/wiki/Syntax). Должно содержать группы, каждая группа заключена в скобки. Если `pattern` не содержит групп, будет выброшено исключение. [String](../data-types/string.md).
 
 **Возвращаемое значение**
 
-- Массив массивов совпадений. [Массив](../data-types/array.md).
+- Массив массивов совпадений. [Array](../data-types/array.md).
 
 :::note
-Если `haystack` не соответствует регулярному выражению `pattern`, возвращается пустой массив.
+Если `haystack` не соответствует `pattern`, возвращается пустой массив.
 :::
 
 **Пример**
@@ -1002,20 +1149,20 @@ SELECT extractAllGroupsVertical('abc=111, def=222, ghi=333', '("[^"]+"|\\w+)=("[
 
 - `%` указывает на произвольное количество произвольных символов (включая ноль символов).
 - `_` указывает на один произвольный символ.
-- `\` используется для экранирования литералов `%`, `_` и `\`.
+- `\` предназначен для экранирования литералов `%`, `_` и `\`.
 
-Сопоставление основано на UTF-8, например, `_` соответствует символу Unicode `¥`, который в UTF-8 представлен двумя байтами.
+Совпадение основывается на UTF-8, например, `_` соответствует кодовой точке Unicode `¥`, которая в UTF-8 представляется с помощью двух байт.
 
-Если haystack или выражение LIKE не являются допустимыми UTF-8, поведение неопределено.
+Если строка haystack или выражение LIKE не являются допустимым UTF-8, поведение будет неопределённым.
 
 Автоматическая нормализация Unicode не выполняется, вы можете использовать функции [normalizeUTF8*()](https://clickhouse.com../functions/string-functions/) для этого.
 
-Чтобы сопоставить с литералом `%`, `_` и `\` (которые являются метасимволами LIKE), предшествуйте им обратной косой чертой: `\%`, `\_` и `\\`.
-Обратная косая черта теряет свое специальное значение (т.е. интерпретируется буквально), если она предшествует символу, отличному от `%`, `_` или `\`.
-Обратите внимание, что ClickHouse требует, чтобы обратные косые черты в строках [также были экранированы](../syntax.md#string), поэтому вам фактически нужно будет писать `\\%`, `\\_` и `\\\\`.
+Чтобы сопоставить с литератом `%`, `_` и `\` (которые являются мета-символами LIKE), предваряйте их обратной косой чертой: `\%`, `\_` и `\\`.
+Обратная косая черта теряет своё специальное значение (т.е. интерпретируется буквально), если она предшествует символу, отличному от `%`, `_` или `\`.
+Обратите внимание, что ClickHouse требует, чтобы обратные косые черты в строках также [были экранированы](../syntax.md#string), поэтому на самом деле вам нужно записывать `\\%`, `\\_` и `\\\\`.
 
-Для выражений LIKE вида `%needle%`, функция работает так же быстро, как функция `position`.
-Все другие выражения LIKE внутренне преобразуются в регулярное выражение и выполняются с производительностью, аналогичной функции `match`.
+Для выражений LIKE вида `%needle%` функция работает так же быстро, как функция `position`.
+Все остальные выражения LIKE внутренне конвертируются в регулярное выражение и выполняются с производительностью, аналогичной функции `match`.
 
 **Синтаксис**
 
@@ -1024,30 +1171,26 @@ like(haystack, pattern)
 ```
 
 Псевдоним: `haystack LIKE pattern` (оператор)
-
 ## notLike {#notlike}
 
-Похоже на `like`, но инвертирует результат.
+Как `like`, но отрицает результат.
 
 Псевдоним: `haystack NOT LIKE pattern` (оператор)
-
 ## ilike {#ilike}
 
-Похоже на `like`, но осуществляет поиск без учета регистра.
+Как `like`, но осуществляет регистронезависимый поиск.
 
 Псевдоним: `haystack ILIKE pattern` (оператор)
-
 ## notILike {#notilike}
 
-Похоже на `ilike`, но инвертирует результат.
+Как `ilike`, но отрицает результат.
 
 Псевдоним: `haystack NOT ILIKE pattern` (оператор)
-
 ## ngramDistance {#ngramdistance}
 
-Вычисляет расстояние 4-грамм между строкой `haystack` и строкой `needle`. Для этого он считает симметричную разность между двумя мультимсетами 4-грамм и нормализует ее по сумме их кардинальностей. Возвращает значение [Float32](/sql-reference/data-types/float) в пределах от 0 до 1. Чем меньше результат, тем более схожи строки между собой.
+Вычисляет расстояние 4-грамм между строкой `haystack` и строкой `needle`. Для этого он подсчитывает симметричную разницу между двумя многоместами 4-грамм и нормализует её по сумму их кардинальностей. Возвращает значение [Float32](/sql-reference/data-types/float) от 0 до 1. Чем меньше результат, тем более похожи строки друг на друга.
 
-Функции [`ngramDistanceCaseInsensitive`](#ngramdistancecaseinsensitive), [`ngramDistanceUTF8`](#ngramdistanceutf8), [`ngramDistanceCaseInsensitiveUTF8`](#ngramdistancecaseinsensitiveutf8) предоставляют нечувствительные к регистру и/или UTF-8 варианты этой функции.
+Функции [`ngramDistanceCaseInsensitive`](#ngramdistancecaseinsensitive), [`ngramDistanceUTF8`](#ngramdistanceutf8), [`ngramDistanceCaseInsensitiveUTF8`](#ngramdistancecaseinsensitiveutf8) предоставляют регистронезависимый и/или UTF-8 варианты этой функции.
 
 **Синтаксис**
 
@@ -1057,20 +1200,20 @@ ngramDistance(haystack, needle)
 
 **Параметры**
 
-- `haystack`: Первая сравниваемая строка. [Строковый литерал](/sql-reference/syntax#string)
-- `needle`: Вторая сравниваемая строка. [Строковый литерал](/sql-reference/syntax#string)
+- `haystack`: Первая сравниваемая строка. [String literal](/sql-reference/syntax#string)
+- `needle`: Вторая сравниваемая строка. [String literal](/sql-reference/syntax#string)
 
 **Возвращаемое значение**
 
-- Значение от 0 до 1, представляющее схожесть между двумя строками. [Float32](/sql-reference/data-types/float)
+- Значение от 0 до 1, представляющее степень схожести между двумя строками. [Float32](/sql-reference/data-types/float)
 
-**Детали реализации**
+**Технические детали реализации**
 
-Эта функция выбросит исключение, если постоянные аргументы `needle` или `haystack` превышают 32 Кб по размеру. Если какие-либо непостоянные аргументы `haystack` или `needle` превышают 32 Кб по размеру, то расстояние всегда равно 1.
+Эта функция выбросит исключение, если постоянные аргументы `needle` или `haystack` превышают 32 Кб по размеру. Если любые непостоянные аргументы `haystack` или `needle` превышают 32 Кб по размеру, то расстояние всегда будет равным 1.
 
 **Примеры**
 
-Чем более схожи две строки между собой, тем ближе результат к 0 (идентично).
+Чем более похожи две строки друг на друга, тем ближе результат будет к 0 (идентичны).
 
 Запрос:
 
@@ -1084,8 +1227,7 @@ SELECT ngramDistance('ClickHouse','ClickHouse!');
 0.06666667
 ```
 
-Чем менее схожи две строки, тем больше результат.
-
+Чем менее похожи две строки, тем больше результат.
 Запрос:
 
 ```sql
@@ -1097,10 +1239,9 @@ SELECT ngramDistance('ClickHouse','House');
 ```response
 0.5555556
 ```
-
 ## ngramDistanceCaseInsensitive {#ngramdistancecaseinsensitive}
 
-Предоставляет нечувствительный к регистру вариант [ngramDistance](#ngramdistance).
+Предоставляет регистронезависимый вариант [ngramDistance](#ngramdistance).
 
 **Синтаксис**
 
@@ -1110,16 +1251,16 @@ ngramDistanceCaseInsensitive(haystack, needle)
 
 **Параметры**
 
-- `haystack`: Первая сравниваемая строка. [Строковый литерал](/sql-reference/syntax#string)
-- `needle`: Вторая сравниваемая строка. [Строковый литерал](/sql-reference/syntax#string)
+- `haystack`: Первая сравниваемая строка. [String literal](/sql-reference/syntax#string)
+- `needle`: Вторая сравниваемая строка. [String literal](/sql-reference/syntax#string)
 
 **Возвращаемое значение**
 
-- Значение от 0 до 1, представляющее схожесть между двумя строками. [Float32](/sql-reference/data-types/float)
+- Значение от 0 до 1, представляющее степень схожести между двумя строками. [Float32](/sql-reference/data-types/float)
 
 **Примеры**
 
-С функцией [ngramDistance](#ngramdistance) различия в регистре повлияют на значение схожести:
+С помощью [ngramDistance](#ngramdistance) различия в регистре повлияют на значение схожести:
 
 Запрос:
 
@@ -1133,7 +1274,7 @@ SELECT ngramDistance('ClickHouse','clickhouse');
 0.71428573
 ```
 
-С функцией [ngramDistanceCaseInsensitive](#ngramdistancecaseinsensitive) регистр игнорируется, поэтому две идентичные строки, различающиеся только регистром, теперь будут возвращать низкое значение схожести:
+С помощью [ngramDistanceCaseInsensitive](#ngramdistancecaseinsensitive) регистр игнорируется, поэтому две идентичные строки, различающиеся только регистром, теперь будут возвращать низкое значение схожести:
 
 Запрос:
 
@@ -1146,10 +1287,9 @@ SELECT ngramDistanceCaseInsensitive('ClickHouse','clickhouse');
 ```response
 0
 ```
-
 ## ngramDistanceUTF8 {#ngramdistanceutf8}
 
-Предоставляет UTF-8 вариант [ngramDistance](#ngramdistance). Предполагается, что строки `needle` и `haystack` закодированы в UTF-8.
+Предоставляет вариант на UTF-8 для [ngramDistance](#ngramdistance). Предполагает, что строки `needle` и `haystack` закодированы в UTF-8.
 
 **Синтаксис**
 
@@ -1159,8 +1299,8 @@ ngramDistanceUTF8(haystack, needle)
 
 **Параметры**
 
-- `haystack`: Первая строка сравнения, закодированная в UTF-8. [Строковый литерал](/sql-reference/syntax#string)
-- `needle`: Вторая строка сравнения, закодированная в UTF-8. [Строковый литерал](/sql-reference/syntax#string)
+- `haystack`: Первая строка для сравнения, закодированная в UTF-8. [Строковый литерал](/sql-reference/syntax#string)
+- `needle`: Вторая строка для сравнения, закодированная в UTF-8. [Строковый литерал](/sql-reference/syntax#string)
 
 **Возвращаемое значение**
 
@@ -1182,7 +1322,7 @@ SELECT ngramDistanceUTF8('abcde','cde');
 
 ## ngramDistanceCaseInsensitiveUTF8 {#ngramdistancecaseinsensitiveutf8}
 
-Предоставляет нечувствительный к регистру вариант [ngramDistanceUTF8](#ngramdistanceutf8).
+Предоставляет вариант без учета регистра для [ngramDistanceUTF8](#ngramdistanceutf8).
 
 **Синтаксис**
 
@@ -1192,8 +1332,8 @@ ngramDistanceCaseInsensitiveUTF8(haystack, needle)
 
 **Параметры**
 
-- `haystack`: Первая строка сравнения, закодированная в UTF-8. [Строковый литерал](/sql-reference/syntax#string)
-- `needle`: Вторая строка сравнения, закодированная в UTF-8. [Строковый литерал](/sql-reference/syntax#string)
+- `haystack`: Первая строка для сравнения, закодированная в UTF-8. [Строковый литерал](/sql-reference/syntax#string)
+- `needle`: Вторая строка для сравнения, закодированная в UTF-8. [Строковый литерал](/sql-reference/syntax#string)
 
 **Возвращаемое значение**
 
@@ -1215,9 +1355,9 @@ SELECT ngramDistanceCaseInsensitiveUTF8('abcde','CDE');
 
 ## ngramSearch {#ngramsearch}
 
-Похоже на `ngramDistance`, но вычисляет нессимметричную разность между строкой `needle` и строкой `haystack`, т.е. количество n-грамм из needle минус общее количество n-грамм, нормализованное по количеству n-грамм `needle`. Возвращает значение [Float32](/sql-reference/data-types/float) от 0 до 1. Чем больше результат, тем более вероятно, что `needle` находится в `haystack`. Эта функция полезна для нечеткого поиска строк. Также смотрите функцию [`soundex`](../../sql-reference/functions/string-functions#soundex).
+Как `ngramDistance`, но вычисляет нессимметричную разницу между строкой `needle` и строкой `haystack`, т.е. количество n-грамм из needle минус общее количество n-грамм, нормализованное по количеству n-грамм `needle`. Возвращает [Float32](/sql-reference/data-types/float) от 0 до 1. Чем больше результат, тем вероятнее, что `needle` содержится в `haystack`. Эта функция полезна для нечеткого поиска строк. Также смотрите функцию [`soundex`](../../sql-reference/functions/string-functions#soundex).
 
-Функции [`ngramSearchCaseInsensitive`](#ngramsearchcaseinsensitive), [`ngramSearchUTF8`](#ngramsearchutf8), [`ngramSearchCaseInsensitiveUTF8`](#ngramsearchcaseinsensitiveutf8) предоставляют нечувствительные к регистру и/или UTF-8 варианты этой функции.
+Функции [`ngramSearchCaseInsensitive`](#ngramsearchcaseinsensitive), [`ngramSearchUTF8`](#ngramsearchutf8), [`ngramSearchCaseInsensitiveUTF8`](#ngramsearchcaseinsensitiveutf8) предоставляют варианты без учета регистра и/или UTF-8 этой функции.
 
 **Синтаксис**
 
@@ -1237,7 +1377,7 @@ ngramSearch(haystack, needle)
 **Детали реализации**
 
 :::note
-UTF-8 варианты используют расстояние 3-грамм. Эти параметры не являются идеальными справедливыми расстояниями n-грамм. Мы используем 2-байтовые хеши для хеширования n-грамм, а затем вычисляем (не)симметрическую разность между этими хеш-таблицами — могут происходить коллизии. В случае нечувствительного к регистру формата UTF-8 мы не используем справедливую функцию `tolower` — мы обнуляем 5-й бит (начиная с нуля) каждого байта кодовой точки и первый бит нулевого байта, если байтов больше одного — это работает для латиницы и в основном для всех кириллических букв.
+UTF-8 варианты используют 3-граммное расстояние. Эти расстояния n-грамм не идеально справедливы. Мы используем 2-байтовые хэши для хэширования n-грамм, а затем вычисляем (не-)симметрическую разницу между этими хэш-таблицами — возможны совпадения. В формате UTF-8 без учета регистра мы не используем справедливую функцию `tolower` — мы обнуляем 5-й бит (с начала) каждого байта кода и первый бит нулевого байта, если байтов больше одного — это работает для латиницы и в основном для всех кириллических букв.
 :::
 
 **Пример**
@@ -1256,7 +1396,7 @@ SELECT ngramSearch('Hello World','World Hello');
 
 ## ngramSearchCaseInsensitive {#ngramsearchcaseinsensitive}
 
-Предоставляет нечувствительный к регистру вариант [ngramSearch](#ngramsearch).
+Предоставляет вариант без учета регистра для [ngramSearch](#ngramsearch).
 
 **Синтаксис**
 
@@ -1273,7 +1413,7 @@ ngramSearchCaseInsensitive(haystack, needle)
 
 - Значение от 0 до 1, представляющее вероятность того, что `needle` находится в `haystack`. [Float32](/sql-reference/data-types/float)
 
-Чем больше результат, тем более вероятно, что `needle` находится в `haystack`.
+Чем больше результат, тем вероятнее, что `needle` содержится в `haystack`.
 
 **Пример**
 
@@ -1291,7 +1431,7 @@ SELECT ngramSearchCaseInsensitive('Hello World','hello');
 
 ## ngramSearchUTF8 {#ngramsearchutf8}
 
-Предоставляет UTF-8 вариант [ngramSearch](#ngramsearch), в котором `needle` и `haystack` предполагается закодированы в UTF-8.
+Предоставляет вариант на UTF-8 для [ngramSearch](#ngramsearch), в котором предполагается, что `needle` и `haystack` закодированы в UTF-8.
 
 **Синтаксис**
 
@@ -1308,7 +1448,7 @@ ngramSearchUTF8(haystack, needle)
 
 - Значение от 0 до 1, представляющее вероятность того, что `needle` находится в `haystack`. [Float32](/sql-reference/data-types/float)
 
-Чем больше результат, тем более вероятно, что `needle` находится в `haystack`.
+Чем больше результат, тем вероятнее, что `needle` содержится в `haystack`.
 
 **Пример**
 
@@ -1326,7 +1466,7 @@ SELECT ngramSearchUTF8('абвгдеёжз', 'гдеёзд');
 
 ## ngramSearchCaseInsensitiveUTF8 {#ngramsearchcaseinsensitiveutf8}
 
-Предоставляет нечувствительный к регистру вариант [ngramSearchUTF8](#ngramsearchutf8), в котором `needle` и `haystack`.
+Предоставляет вариант без учета регистра для [ngramSearchUTF8](#ngramsearchutf8), в котором `needle` и `haystack`.
 
 **Синтаксис**
 
@@ -1343,7 +1483,7 @@ ngramSearchCaseInsensitiveUTF8(haystack, needle)
 
 - Значение от 0 до 1, представляющее вероятность того, что `needle` находится в `haystack`. [Float32](/sql-reference/data-types/float)
 
-Чем больше результат, тем более вероятно, что `needle` находится в `haystack`.
+Чем больше результат, тем вероятнее, что `needle` содержится в `haystack`.
 
 **Пример**
 
@@ -1363,7 +1503,7 @@ SELECT ngramSearchCaseInsensitiveUTF8('абвГДЕёжз', 'АбвгдЕЁжз'
 
 Возвращает, как часто подстрока `needle` встречается в строке `haystack`.
 
-Функции [`countSubstringsCaseInsensitive`](#countsubstringscaseinsensitive) и [`countSubstringsCaseInsensitiveUTF8`](#countsubstringscaseinsensitiveutf8) предоставляют нечувствительные к регистру и нечувствительные к регистру + UTF-8 варианты этой функции соответственно.
+Функции [`countSubstringsCaseInsensitive`](#countsubstringscaseinsensitive) и [`countSubstringsCaseInsensitiveUTF8`](#countsubstringscaseinsensitiveutf8) предоставляют варианты без учета регистра и без учета регистра + UTF-8 этой функции соответственно.
 
 **Синтаксис**
 
@@ -1374,8 +1514,8 @@ countSubstrings(haystack, needle[, start_pos])
 **Аргументы**
 
 - `haystack` — Строка, в которой выполняется поиск. [Строка](../data-types/string.md) или [Enum](../data-types/enum.md).
-- `needle` — Подстрока, которую ищем. [Строка](../data-types/string.md).
-- `start_pos` – Позиция (с 1) в `haystack`, с которой начинается поиск. [UInt](../data-types/int-uint.md). Необязательный.
+- `needle` — Подстрока для поиска. [Строка](../data-types/string.md).
+- `start_pos` – Позиция (1-индексированная) в `haystack`, с которой начинается поиск. [UInt](../data-types/int-uint.md). Необязательный.
 
 **Возвращаемое значение**
 
@@ -1422,8 +1562,8 @@ countSubstringsCaseInsensitive(haystack, needle[, start_pos])
 **Аргументы**
 
 - `haystack` — Строка, в которой выполняется поиск. [Строка](../data-types/string.md) или [Enum](../data-types/enum.md).
-- `needle` — Подстрока, которую ищем. [Строка](../data-types/string.md).
-- `start_pos` – Позиция (с 1) в `haystack`, с которой начинается поиск. [UInt](../data-types/int-uint.md). Необязательный.
+- `needle` — Подстрока для поиска. [Строка](../data-types/string.md).
+- `start_pos` – Позиция (1-индексированная) в `haystack`, с которой начинается поиск. [UInt](../data-types/int-uint.md). Необязательный.
 
 **Возвращаемое значение**
 
@@ -1463,7 +1603,7 @@ SELECT countSubstringsCaseInsensitive('abc___ABC___abc', 'abc', 4);
 
 ## countSubstringsCaseInsensitiveUTF8 {#countsubstringscaseinsensitiveutf8}
 
-Возвращает, как часто подстрока `needle` встречается в строке `haystack`. Игнорирует регистр и предполагает, что `haystack` является строкой в UTF-8.
+Возвращает, как часто подстрока `needle` встречается в строке `haystack`. Игнорирует регистр и предполагает, что `haystack` является строкой UTF-8.
 
 **Синтаксис**
 
@@ -1474,8 +1614,8 @@ countSubstringsCaseInsensitiveUTF8(haystack, needle[, start_pos])
 **Аргументы**
 
 - `haystack` — Строка UTF-8, в которой выполняется поиск. [Строка](../data-types/string.md) или [Enum](../data-types/enum.md).
-- `needle` — Подстрока, которую ищем. [Строка](../data-types/string.md).
-- `start_pos` – Позиция (с 1) в `haystack`, с которой начинается поиск. [UInt](../data-types/int-uint.md). Необязательный.
+- `needle` — Подстрока для поиска. [Строка](../data-types/string.md).
+- `start_pos` – Позиция (1-индексированная) в `haystack`, с которой начинается поиск. [UInt](../data-types/int-uint.md). Необязательный.
 
 **Возвращаемое значение**
 
@@ -1517,6 +1657,11 @@ SELECT countSubstringsCaseInsensitiveUTF8('ложка, кошка, картош�
 
 Возвращает количество совпадений регулярного выражения для `pattern` в `haystack`.
 
+Поведение этой функции зависит от версии ClickHouse:
+- в версиях < v25.6 `countMatches` прекратит подсчет при первом пустом совпадении, даже если шаблон принимает.
+- в версиях >= 25.6 `countMatches` продолжит выполнение при возникновении пустого совпадения.
+  Унаследованное поведение можно восстановить, используя настройку [count_matches_stop_at_empty_match = true](/operations/settings/settings#count_matches_stop_at_empty_match);
+
 **Синтаксис**
 
 ```sql
@@ -1525,8 +1670,8 @@ countMatches(haystack, pattern)
 
 **Аргументы**
 
-- `haystack` — Строка для поиска. [Строка](../data-types/string.md).
-- `pattern` — Регулярное выражение с [синтаксисом регулярного выражения re2](https://github.com/google/re2/wiki/Syntax). [Строка](../data-types/string.md).
+- `haystack` — Строка, в которой ведется поиск. [Строка](../data-types/string.md).
+- `pattern` — Регулярное выражение с [синтаксисом регулярных выражений re2](https://github.com/google/re2/wiki/Syntax). [Строка](../data-types/string.md).
 
 **Возвращаемое значение**
 
@@ -1560,7 +1705,7 @@ SELECT countMatches('aaaa', 'aa');
 
 ## countMatchesCaseInsensitive {#countmatchescaseinsensitive}
 
-Возвращает количество совпадений регулярного выражения для `pattern` в `haystack`, подобно [`countMatches`](#countmatches), но совпадения игнорируют регистр.
+Возвращает количество совпадений регулярного выражения для шаблона в haystack, похожий на [`countMatches`](#countmatches), но с игнорированием регистра.
 
 **Синтаксис**
 
@@ -1570,8 +1715,8 @@ countMatchesCaseInsensitive(haystack, pattern)
 
 **Аргументы**
 
-- `haystack` — Строка для поиска. [Строка](../data-types/string.md).
-- `pattern` — Регулярное выражение с [синтаксисом регулярного выражения re2](https://github.com/google/re2/wiki/Syntax). [Строка](../data-types/string.md).
+- `haystack` — Строка, в которой ведется поиск. [Строка](../data-types/string.md).
+- `pattern` — Регулярное выражение с [синтаксисом регулярных выражений re2](https://github.com/google/re2/wiki/Syntax). [Строка](../data-types/string.md).
 
 **Возвращаемое значение**
 
@@ -1607,13 +1752,13 @@ regexpExtract(haystack, pattern[, index])
 
 **Аргументы**
 
-- `haystack` — Строка, в которой будет соответствовать шаблон регулярного выражения. [Строка](../data-types/string.md).
-- `pattern` — Строка, регулярное выражение, должно быть постоянным. [Строка](../data-types/string.md).
-- `index` – Целое число, большее или равное 0, по умолчанию 1. Это указывает, какую группу регулярного выражения извлечь. [UInt или Int](../data-types/int-uint.md). Необязательный.
+- `haystack` — Строка, в которой будет соответствовать регулярному выражению. [Строка](../data-types/string.md).
+- `pattern` — Строка, регулярное выражение, должно быть константой. [Строка](../data-types/string.md).
+- `index` – Целое число больше или равное 0, по умолчанию 1. Оно представляет, какую группу регулярного выражения нужно извлечь. [UInt или Int](../data-types/int-uint.md). Необязательный.
 
 **Возвращаемое значение**
 
-`pattern` может содержать несколько групп регулярных выражений, `index` указывает, какую группу регулярного выражения извлечь. Индекс 0 означает совпадение с полным регулярным выражением. [Строка](../data-types/string.md).
+`pattern` может содержать несколько групп регулярных выражений, `index` указывает, какую группу регулярного выражения нужно извлечь. Индекс 0 означает совпадение с целым регулярным выражением. [Строка](../data-types/string.md).
 
 **Примеры**
 
@@ -1636,8 +1781,7 @@ SELECT
 ## hasSubsequence {#hassubsequence}
 
 Возвращает 1, если `needle` является подпоследовательностью `haystack`, или 0 в противном случае.
-Подпоследовательность строки — это последовательность, которую можно получить из данной строки, удаляя ноль или более элементов, не меняя порядок оставшихся элементов.
-
+Подпоследовательность строки - это последовательность, которая может быть получена из данной строки, удаляя ноль или более элементов, не меняя порядок оставшихся элементов.
 **Синтаксис**
 
 ```sql
@@ -1646,12 +1790,12 @@ hasSubsequence(haystack, needle)
 
 **Аргументы**
 
-- `haystack` — Строка, в которой выполняется поиск. [Строка](../data-types/string.md).
-- `needle` — Подпоследовательность, которую ищем. [Строка](../data-types/string.md).
+- `haystack` — Строка, в которой ведется поиск. [Строка](../data-types/string.md).
+- `needle` — Подпоследовательность для поиска. [Строка](../data-types/string.md).
 
 **Возвращаемое значение**
 
-- 1, если needle является подпоследовательностью haystack, 0 в противном случае. [UInt8](../data-types/int-uint.md).
+- 1, если needle является подпоследовательностью haystack, и 0 в противном случае. [UInt8](../data-types/int-uint.md).
 
 **Примеры**
 
@@ -1681,12 +1825,12 @@ hasSubsequenceCaseInsensitive(haystack, needle)
 
 **Аргументы**
 
-- `haystack` — Строка, в которой выполняется поиск. [Строка](../data-types/string.md).
-- `needle` — Подпоследовательность, которую ищем. [Строка](../data-types/string.md).
+- `haystack` — Строка, в которой ведется поиск. [Строка](../data-types/string.md).
+- `needle` — Подпоследовательность для поиска. [Строка](../data-types/string.md).
 
 **Возвращаемое значение**
 
-- 1, если needle является подпоследовательностью haystack, 0 в противном случае. [UInt8](../data-types/int-uint.md).
+- 1, если needle является подпоследовательностью haystack, и 0 в противном случае. [UInt8](../data-types/int-uint.md).
 
 **Примеры**
 
@@ -1716,19 +1860,19 @@ hasSubsequenceUTF8(haystack, needle)
 
 **Аргументы**
 
-- `haystack` — Строка, в которой выполняется поиск. Закодированная в UTF-8 [строка](../data-types/string.md).
-- `needle` — Подпоследовательность, которую ищем. Закодированная в UTF-8 [строка](../data-types/string.md).
+- `haystack` — Строка, в которой ведется поиск. Закодированная в UTF-8 [Строка](../data-types/string.md).
+- `needle` — Подпоследовательность для поиска. Закодированная в UTF-8 [Строка](../data-types/string.md).
 
 **Возвращаемое значение**
 
-- 1, если needle является подпоследовательностью haystack, 0, в противном случае. [UInt8](../data-types/int-uint.md).
-
-**Примеры**
+- 1, если needle является подпоследовательностью haystack, и 0 в противном случае. [UInt8](../data-types/int-uint.md).
 
 Запрос:
 
+**Примеры**
+
 ```sql
-select hasSubsequenceUTF8('ClickHouse - столбцовая система управления базами данных', 'система');
+SELECT hasSubsequenceUTF8('ClickHouse - столбцовая система управления базами данных', 'система');
 ```
 
 Результат:
@@ -1751,19 +1895,19 @@ hasSubsequenceCaseInsensitiveUTF8(haystack, needle)
 
 **Аргументы**
 
-- `haystack` — Строка, в которой выполняется поиск. Закодированная в UTF-8 [строка](../data-types/string.md).
-- `needle` — Подпоследовательность, которую ищем. Закодированная в UTF-8 [строка](../data-types/string.md).
+- `haystack` — Строка, в которой ведется поиск. Закодированная в UTF-8 [Строка](../data-types/string.md).
+- `needle` — Подпоследовательность для поиска. Закодированная в UTF-8 [Строка](../data-types/string.md).
 
 **Возвращаемое значение**
 
-- 1, если needle является подпоследовательностью haystack, 0 в противном случае. [UInt8](../data-types/int-uint.md).
+- 1, если needle является подпоследовательностью haystack, и 0 в противном случае. [UInt8](../data-types/int-uint.md).
 
 **Примеры**
 
 Запрос:
 
 ```sql
-select hasSubsequenceCaseInsensitiveUTF8('ClickHouse - столбцовая система управления базами данных', 'СИСТЕМА');
+SELECT hasSubsequenceCaseInsensitiveUTF8('ClickHouse - столбцовая система управления базами данных', 'СИСТЕМА');
 ```
 
 Результат:
@@ -1786,16 +1930,16 @@ hasToken(haystack, token)
 
 **Параметры**
 
-- `haystack`: Строка, в которой выполняется поиск. [Строка](../data-types/string.md) или [Enum](../data-types/enum.md).
+- `haystack`: Строка, в которой ведется поиск. [Строка](../data-types/string.md) или [Enum](../data-types/enum.md).
 - `token`: Подстрока максимальной длины между двумя не алфавитными ASCII-символами (или границами haystack).
 
 **Возвращаемое значение**
 
-- 1, если токен присутствует в haystack, 0 в противном случае. [UInt8](../data-types/int-uint.md).
+- 1, если токен присутствует в haystack, и 0 в противном случае. [UInt8](../data-types/int-uint.md).
 
 **Детали реализации**
 
-Токен должен быть постоянной строкой. Поддерживается специальной индексацией tokenbf_v1.
+Токен должен быть константной строкой. Поддерживается специализированным индексом tokenbf_v1.
 
 **Пример**
 
@@ -1811,7 +1955,7 @@ SELECT hasToken('Hello World','Hello');
 
 ## hasTokenOrNull {#hastokenornull}
 
-Возвращает 1, если данный токен присутствует, 0 если отсутствует, и null, если токен имеет неправильную форму.
+Возвращает 1, если данный токен присутствует, 0 если отсутствует и null, если токен некорректный.
 
 **Синтаксис**
 
@@ -1821,20 +1965,20 @@ hasTokenOrNull(haystack, token)
 
 **Параметры**
 
-- `haystack`: Строка, в которой выполняется поиск. [Строка](../data-types/string.md) или [Enum](../data-types/enum.md).
+- `haystack`: Строка, в которой ведется поиск. [Строка](../data-types/string.md) или [Enum](../data-types/enum.md).
 - `token`: Подстрока максимальной длины между двумя не алфавитными ASCII-символами (или границами haystack).
 
 **Возвращаемое значение**
 
-- 1, если токен присутствует в haystack, 0 если он отсутствует, и null, если токен имеет неправильную форму.
+- 1, если токен присутствует в haystack, 0 если он отсутствует и null, если токен некорректный.
 
 **Детали реализации**
 
-Токен должен быть постоянной строкой. Поддерживается специальной индексацией tokenbf_v1.
+Токен должен быть константной строкой. Поддерживается специализированным индексом tokenbf_v1.
 
 **Пример**
 
-Где `hasToken` вызывала бы ошибку для токена с неправильной формой, `hasTokenOrNull` возвращает `null` для токена с неправильной формой.
+Где `hasToken` вызовет ошибку для некорректного токена, `hasTokenOrNull` вернет `null` для некорректного токена.
 
 Запрос:
 
@@ -1858,7 +2002,7 @@ hasTokenCaseInsensitive(haystack, token)
 
 **Параметры**
 
-- `haystack`: Строка, в которой выполняется поиск. [Строка](../data-types/string.md) или [Enum](../data-types/enum.md).
+- `haystack`: Строка, в которой ведется поиск. [Строка](../data-types/string.md) или [Enum](../data-types/enum.md).
 - `token`: Подстрока максимальной длины между двумя не алфавитными ASCII-символами (или границами haystack).
 
 **Возвращаемое значение**
@@ -1867,7 +2011,7 @@ hasTokenCaseInsensitive(haystack, token)
 
 **Детали реализации**
 
-Токен должен быть постоянной строкой. Поддерживается специальной индексацией tokenbf_v1.
+Токен должен быть константной строкой. Поддерживается специализированным индексом tokenbf_v1.
 
 **Пример**
 
@@ -1883,7 +2027,7 @@ SELECT hasTokenCaseInsensitive('Hello World','hello');
 
 ## hasTokenCaseInsensitiveOrNull {#hastokencaseinsensitiveornull}
 
-Возвращает 1, если данный токен присутствует в haystack, 0 в противном случае. Игнорирует регистр и возвращает null, если токен имеет неправильную форму.
+Возвращает 1, если данный токен присутствует в haystack, 0 в противном случае. Игнорирует регистр и возвращает null, если токен некорректный.
 
 **Синтаксис**
 
@@ -1893,20 +2037,19 @@ hasTokenCaseInsensitiveOrNull(haystack, token)
 
 **Параметры**
 
-- `haystack`: Строка, в которой выполняется поиск. [Строка](../data-types/string.md) или [Enum](../data-types/enum.md).
+- `haystack`: Строка, в которой ведется поиск. [Строка](../data-types/string.md) или [Enum](../data-types/enum.md).
 - `token`: Подстрока максимальной длины между двумя не алфавитными ASCII-символами (или границами haystack).
 
 **Возвращаемое значение**
 
-- 1, если токен присутствует в haystack, 0 если токен отсутствует, иначе [`null`](../data-types/nullable.md), если токен имеет неправильную форму. [UInt8](../data-types/int-uint.md).
+- 1, если токен присутствует в haystack, 0 если токен отсутствует, иначе [`null`](../data-types/nullable.md), если токен некорректный. [UInt8](../data-types/int-uint.md).
 
 **Детали реализации**
 
-Токен должен быть постоянной строкой. Поддерживается специальной индексацией tokenbf_v1.
+Токен должен быть константной строкой. Поддерживается специализированным индексом tokenbf_v1.
 
 **Пример**
-
-Где `hasTokenCaseInsensitive` вызывала бы ошибку для токена с неправильной формой, `hasTokenCaseInsensitiveOrNull` возвращает `null` для токена с неправильной формой.
+Где `hasTokenCaseInsensitive` вызовет ошибку для некорректного токена, `hasTokenCaseInsensitiveOrNull` вернет `null` для некорректного токена.
 
 Запрос:
 
@@ -1917,3 +2060,12 @@ SELECT hasTokenCaseInsensitiveOrNull('Hello World','hello,world');
 ```response
 null
 ```
+
+<!-- 
+Содержимое тегов ниже заменяется при сборке документации 
+документами, сгенерированными из system.functions. Пожалуйста, не изменяйте и не удаляйте эти теги.
+См.: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+-->
+
+<!--AUTOGENERATED_START-->
+<!--AUTOGENERATED_END-->

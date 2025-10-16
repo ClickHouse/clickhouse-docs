@@ -1,11 +1,9 @@
-personal_ws-1.1 en 3646
+personal_ws-1.1 en 3746
 AArch
 ACLs
-Accepter
 AICPA
 ALTERs
 AMPLab
-AmazonKinesis
 AMQP
 ANNIndex
 ANNIndexes
@@ -19,6 +17,7 @@ ASOF
 ASan
 AWND
 AWST
+Accepter
 Actian
 ActionsMenu
 ActiveRecord
@@ -34,6 +33,7 @@ Airbyte
 Akka
 AlertManager
 Alexey
+AmazonKinesis
 Amir
 Anthropic
 AnyEvent
@@ -43,6 +43,8 @@ Approximative
 ArrayJoin
 ArrowCompression
 ArrowStream
+ArrowTable
+Arrowtable
 Astrato
 AsyncInsertCacheSize
 AsynchronousHeavyMetricsCalculationTimeSpent
@@ -60,8 +62,8 @@ Authenticators
 Authy
 AutoFDO
 AutoML
-Autoscaler
 Autocompletion
+Autoscaler
 AvroConfluent
 AzureQueue
 Azurite
@@ -188,6 +190,7 @@ ChartDB
 Chartbrew
 Chartbrew's
 ChatGPT
+ChdbError
 Cidr
 Ciphertext
 CityHash
@@ -216,11 +219,14 @@ CloudDetails
 CloudFormation
 CloudNotSupportedBadge
 CloudStorage
+CloudTrail
+CloudWatch
 Cloudera
 Cloudflare
 CodeBlock
 CodeLLDB
 Codecs
+Coinhall
 CollapsingMergeTree
 Combinators
 CommonRoom
@@ -248,6 +254,7 @@ Covid
 Craigslist
 Craigslist's
 Cramer's
+CrewAI
 Criteo
 Crotty
 Crowdsourced
@@ -261,6 +268,7 @@ CustomSeparatedIgnoreSpacesWithNamesAndTypes
 CustomSeparatedWithNames
 CustomSeparatedWithNamesAndTypes
 Cython
+DBAPI
 DBAs
 DBMSs
 DBeaver
@@ -279,6 +287,7 @@ DSAR
 DSPy
 DaemonSet
 Damerau
+DataError
 DataFrame
 DataFrames
 DataGrip
@@ -292,6 +301,7 @@ DataTypes
 DatabaseCatalog
 DatabaseCatalogThreads
 DatabaseCatalogThreadsActive
+DatabaseError
 DatabaseOnDisk
 DatabaseOnDiskThreads
 DatabaseOnDiskThreadsActive
@@ -299,6 +309,7 @@ DatabaseOrdinaryThreads
 DatabaseOrdinaryThreadsActive
 Databricks
 Datadog
+Datadog's
 Datasource
 Datasources
 DateTime
@@ -354,6 +365,7 @@ Durre
 ECMA
 EDOT
 EMQX
+ENIs
 ETag
 EachRow
 Easypanel
@@ -367,6 +379,7 @@ EmbeddedRocksDB
 Embeddings
 Encodings
 Encrypter
+Entra
 Enum
 Enums
 Eoan
@@ -389,6 +402,7 @@ FQDN
 Fabi
 Failover
 FarmHash
+Fastly
 FileCluster
 FileLog
 Filebeat
@@ -413,6 +427,7 @@ Fivetran
 FixedString
 FlameGraph
 Flink
+Fong
 ForEach
 FreeBSD
 Fuzzer
@@ -423,6 +438,7 @@ GTID
 GTIDs
 GTest
 GUID
+GWLBs
 Gb
 Gbit
 Gcc
@@ -451,6 +467,7 @@ GlobalThreadActive
 GoLand
 GoogleTest
 Grafana
+Grafana's
 GraphQL
 GraphiteMergeTree
 Greenwald
@@ -472,6 +489,7 @@ HashedDictionaryThreads
 HashedDictionaryThreadsActive
 HashiCorp
 Haversine
+Heatmap
 Heredoc
 HexAreaKm
 HexAreaM
@@ -480,6 +498,7 @@ HiveText
 Holistics
 Homebrew
 Homebrew's
+Hopsworks
 HorizontalDivide
 Hostname
 HouseOps
@@ -497,6 +516,7 @@ IDNA
 IMDS
 IMDb
 INFILE
+INOUT
 INSERTed
 INSERTs
 INVOKER
@@ -518,17 +538,22 @@ IcebergCluster
 Identifiant
 IdentifierQuotingRule
 IdentifierQuotingStyle
+ImportError
 InJodaSyntax
 InJodaSyntaxOrNull
 InJodaSyntaxOrZero
 Incrementing
 IndexesAreNeighbors
 InfluxDB
+Instacart
 Instana
 IntN
 Integrations
+IntegrityError
 IntelliJ
 IntelliSense
+InterfaceError
+InternalError
 InterserverConnection
 InterserverThreads
 IntervalDay
@@ -652,6 +677,7 @@ LOCALTIMESTAMP
 LONGLONG
 LOONGARCH
 LaGuardia
+Lakehouses
 Lakekeeper
 LangChain
 LangGraph
@@ -703,6 +729,7 @@ MACStringToOUI
 MCPHost
 MEDIUMINT
 MEMTABLE
+MLOps
 MMapCacheCells
 MMappedAllocBytes
 MMappedAllocs
@@ -712,6 +739,8 @@ MQTT
 MQTTX
 MSSQL
 MSan
+MTTD
+MTTR
 MVCC
 MacBook
 MacOS
@@ -794,6 +823,7 @@ MySQLDataTypesSupport
 MySQLDump
 MySQLThreads
 MySQLWire
+MySQLdb
 NATS
 NCHAR
 NDJSON
@@ -803,6 +833,7 @@ NEWDECIMAL
 NFKC
 NFKD
 NIST
+NLBs
 NOAA
 NULLIF
 NVME
@@ -836,6 +867,7 @@ NodeJS
 NodeJs
 NonMonotonic
 NonZeroUInt
+NotSupportedError
 NuRaft
 NumHexagons
 NumPy
@@ -845,9 +877,11 @@ NumberOfDatabases
 NumberOfDetachedByUserParts
 NumberOfDetachedParts
 NumberOfTables
+O'Reilly
 OAuth
 ODBCDriver
 OFNS
+OIDC
 OLAP
 OLTP
 OOMs
@@ -925,6 +959,7 @@ OpenSUSE
 OpenSky
 OpenStack
 OpenTelemetry
+OperationalError
 OrDefault
 OrNull
 OrZero
@@ -1013,6 +1048,7 @@ PrivateLinks
 PrivatePreviewBadge
 ProfileEvents
 Profiler
+ProgrammingError
 Proleptic
 PromHouse
 PromQL
@@ -1022,6 +1058,7 @@ Protobuf
 ProtobufList
 ProtobufSingle
 ProxySQL
+Psycopg
 Punycode
 PyArrow
 PyCharm
@@ -1070,6 +1107,7 @@ ReadonlyReplica
 RecipeNLG
 Recompressing
 Recompression
+RecordBatch
 RectAdd
 RectContains
 RectIntersection
@@ -1083,6 +1121,7 @@ ReferenceKeyed
 Refreshable
 RegexpTree
 RelationMessage
+RelayState
 RemoteRead
 ReplacingMergeTree
 ReplacingReplicatedMergeTree
@@ -1125,6 +1164,7 @@ RowBinaryWithDefaults
 RowBinaryWithNames
 RowBinaryWithNamesAndTypes
 Runtime
+RuntimeError
 SAML
 SATA
 SCIM
@@ -1155,6 +1195,7 @@ SSRF
 SSSE
 SaaS
 Sackmann's
+SageMaker
 Sanjeev
 Sankey
 Sapchuk
@@ -1190,6 +1231,7 @@ SimHash
 Simhash
 SimpleAggregateFunction
 SimpleState
+SingleStore
 SipHash
 SlackBot
 Smartbook
@@ -1220,6 +1262,7 @@ StorageHiveThreads
 StorageHiveThreadsActive
 StorageODBC
 StorageS
+StreamingResult
 Streamlit
 StringToNum
 StringToNumOrDefault
@@ -1333,6 +1376,7 @@ TransactionsWaitCSNMode
 Trino
 Tsai
 Tukey
+Tunable
 TwoColumnList
 TypeScript
 UBSan
@@ -1372,6 +1416,7 @@ UnidirectionalEdgeIsValid
 UniqThetaSketch
 Updatable
 Uppercased
+Upsonic
 Upstash
 Uptime
 Uptrace
@@ -1386,6 +1431,7 @@ VPCs
 VPNs
 Vadim
 Valgrind
+ValueError
 Vaza
 Vectorization
 Vectorized
@@ -1442,6 +1488,7 @@ ZooKeeperWatch
 ZooKeepers
 Zstandard
 aarch
+abstractmethod
 accurateCast
 accurateCastOrDefault
 accurateCastOrNull
@@ -1481,6 +1528,7 @@ aggthrow
 aiochclient
 alloc
 allocator
+allowlist
 allowlisted
 allowlisting
 alphaTokens
@@ -1508,6 +1556,7 @@ argMin
 argMinIf
 argmax
 argmin
+args
 arrayAUC
 arrayAUCPR
 arrayAll
@@ -1578,6 +1627,9 @@ arrayUniq
 arrayWithConstant
 arrayZip
 arrayZipUnaligned
+arraysize
+arrowTable
+arrowtable
 ascii
 asin
 asinh
@@ -1705,6 +1757,7 @@ byteHammingDistance
 byteSize
 byteSlice
 byteSwap
+bytearray
 bytebase
 bytesToCutForIPv
 cLoki
@@ -1712,6 +1765,7 @@ cURL
 caConfig
 cacheSessions
 cachesize
+callproc
 camelCase
 capn
 capnproto
@@ -1736,6 +1790,7 @@ cfg
 cgroup
 cgroups
 chDB
+chDB's
 chadmin
 changeDay
 changeHour
@@ -1985,6 +2040,7 @@ dictGetOrNull
 dictGetUUID
 dictHas
 dictIsIn
+dicts
 disableProtocols
 disjunction
 disjunctions
@@ -2051,8 +2107,10 @@ errored
 etag
 evalMLMethod
 exFAT
+executemany
 expiryMsec
 explainer
+explorative
 exponentialMovingAverage
 exponentialTimeDecayedAvg
 exponentialTimeDecayedCount
@@ -2077,11 +2135,16 @@ extractURLParameters
 extractable
 facto
 failover
+failovers
+fallbacks
 farmFingerprint
 farmHash
 fastmcp
 fastops
 fcoverage
+fetchall
+fetchmany
+fetchone
 fibonacci
 fifo
 fileCluster
@@ -2136,6 +2199,7 @@ fromUTCTimestamp
 fromUnixTimestamp
 fromUnixTimestampInJodaSyntax
 frontend
+frozenset
 fsync
 func
 fuzzBits
@@ -2269,16 +2333,15 @@ hdfs
 hdfsCluster
 heredoc
 heredocs
+heatmap
 hilbertDecode
 hilbertEncode
 hiveHash
 hnsw
 holistics
 homebrew
-homebrew
 hopEnd
 hopStart
-Hopsworks
 horgh
 hostName
 hostname
@@ -2356,6 +2419,7 @@ isValidJSON
 isValidUTF
 isZeroOrNull
 iterable
+iterable's
 iteratively
 jaccard
 jaccardIndex
@@ -2419,13 +2483,15 @@ kurtosis
 kurtpop
 kurtsamp
 kusto
+kwargs
 lagInFrame
 laion
 lakehouse
-Lakehouses
+lakehouses
 lang
 laravel
 largestTriangleThreeBuckets
+lastrowid
 latencies
 ldap
 leadInFrame
@@ -2533,6 +2599,8 @@ marimo's
 matcher
 materializations
 materializedview
+matplot
+matplotlib
 maxIntersections
 maxIntersectionsPosition
 maxMap
@@ -2585,6 +2653,7 @@ modularity
 modularization
 moduli
 moduloOrZero
+mogrify
 mongoc
 mongocxx
 mongodb
@@ -2657,10 +2726,10 @@ nats
 navbar
 ndjson
 ness
-Nessie
 nestjs
 netloc
 newjson
+nextset
 ngram
 ngramDistance
 ngramDistanceCaseInsensitive
@@ -2791,6 +2860,7 @@ plantuml
 poco
 pointInEllipses
 pointInPolygon
+pointwise
 poller
 polygonAreaCartesian
 polygonAreaSpherical
@@ -2867,6 +2937,7 @@ privateKeyFile
 privateKeyPassphraseHandler
 prlimit
 procfs
+procname
 profiler
 programmatically
 proleptic
@@ -2890,6 +2961,7 @@ punycodeEncode
 pushdown
 pwrite
 py
+pyarrow
 qryn
 quantile
 quantileBFloat
@@ -3020,6 +3092,7 @@ replicatable
 replicatedmergetree
 replxx
 repo
+repr
 representable
 reproducibility
 requestor
@@ -3035,12 +3108,12 @@ resultset
 resync
 resynchronization
 resyncing
-failovers
 retentions
 rethrow
 retransmit
 retriable
 retryable
+reusability
 reverseUTF
 rewritable
 rightPad
@@ -3066,6 +3139,7 @@ rowbinary
 rowbinarywithdefaults
 rowbinarywithnames
 rowbinarywithnamesandtypes
+rowcount
 rowlist
 rsync
 rsyslog
@@ -3104,6 +3178,8 @@ serverless
 sessionCacheSize
 sessionIdContext
 sessionTimeout
+setinputsizes
+setoutputsizes
 seva
 shardCount
 shardNum
@@ -3190,6 +3266,7 @@ stddevsampstable
 stderr
 stdin
 stdout
+stmt
 stochasticLinearRegression
 stochasticLogisticRegression
 stochastically
@@ -3215,6 +3292,7 @@ subBitmap
 subDate
 subarray
 subarrays
+subclasses
 subcolumn
 subcolumns
 subdirectories
@@ -3286,6 +3364,7 @@ sumcount
 sumkahan
 summap
 summapwithoverflow
+summarization
 summingmergetree
 sumwithoverflow
 superaggregates
@@ -3457,6 +3536,7 @@ transactionLatestSnapshot
 transactionOldestSnapshot
 transactional
 transactionally
+transformative
 translateUTF
 translocality
 transpilation
@@ -3465,8 +3545,10 @@ trie
 trimBoth
 trimLeft
 trimRight
-Trino
 trunc
+truncations
+truststore
+truststores
 tryBase
 tryDecrypt
 tryIdnaEncode
@@ -3477,6 +3559,7 @@ tui
 tukey
 tumbleEnd
 tumbleStart
+tunable
 tupleConcat
 tupleDivide
 tupleDivideByNumber
@@ -3664,22 +3747,3 @@ znode
 znodes
 zookeeperSessionUptime
 zstd
-Coinhall
-Instacart
-SingleStore
-Fastly
-Fong
-MTTD
-MTTR
-O'Reilly
-transformative
-MLOps
-chatbots
-SageMaker
-GWLBs
-NLBs
-explorative
-pointwise
-summarization
-reusability
-lakehouses

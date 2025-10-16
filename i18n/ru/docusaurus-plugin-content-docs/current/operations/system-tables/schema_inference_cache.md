@@ -1,10 +1,10 @@
 ---
-description: 'Системная таблица, содержащая информацию о всех кэшированных схемах файлов.'
+slug: '/operations/system-tables/schema_inference_cache'
+description: 'Системная таблица, содержащая информацию о всех кэшированных схемах'
+title: system.schema_inference_cache
 keywords: ['системная таблица', 'schema_inference_cache']
-slug: /operations/system-tables/schema_inference_cache
-title: 'system.schema_inference_cache'
+doc_type: reference
 ---
-
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
@@ -12,15 +12,15 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud/>
 
-Содержит информацию о всех кэшированных схемах файлов.
+Содержит информацию обо всех закэшированных схемах файлов.
 
-Колонки:
-- `storage` ([String](/sql-reference/data-types/string.md)) — Название хранилища: File, URL, S3 или HDFS.
+Столбцы:
+- `storage` ([String](/sql-reference/data-types/string.md)) — Имя хранилища: File, URL, S3 или HDFS.
 - `source` ([String](/sql-reference/data-types/string.md)) — Источник файла.
-- `format` ([String](/sql-reference/data-types/string.md)) — Название формата.
-- `additional_format_info` ([String](/sql-reference/data-types/string.md)) - Дополнительная информация, необходимая для идентификации схемы. Например, специфические настройки формата.
-- `registration_time` ([DateTime](/sql-reference/data-types/datetime.md)) — Время регистрации схемы в кэше.
-- `schema` ([String](/sql-reference/data-types/string.md)) - Кэшированная схема.
+- `format` ([String](/sql-reference/data-types/string.md)) — Имя формата.
+- `additional_format_info` ([String](/sql-reference/data-types/string.md)) - Дополнительная информация, необходимая для идентификации схемы. Например, специфические для формата настройки.
+- `registration_time` ([DateTime](/sql-reference/data-types/datetime.md)) — Временная метка, когда схема была добавлена в кэш.
+- `schema` ([String](/sql-reference/data-types/string.md)) - Закэштированная схема.
 
 **Пример**
 
@@ -33,7 +33,7 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 ```
 
 :::tip
-Поместите `data.jsonl` в директорию `user_files_path`. Вы можете найти её, проверив
+Поместите `data.jsonl` в каталог `user_files_path`. Вы можете найти его, проверив
 ваши файлы конфигурации ClickHouse. По умолчанию это:
 ```sql
 <user_files_path>/var/lib/clickhouse/user_files/</user_files_path>
@@ -55,7 +55,7 @@ DESCRIBE file('data.jsonl') SETTINGS input_format_try_infer_integers=0;
 └─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-Давайте посмотрим содержимое таблицы `system.schema_inference_cache`:
+Давайте посмотрим на содержимое таблицы `system.schema_inference_cache`:
 
 ```sql
 SELECT *
@@ -74,4 +74,4 @@ schema:                 id Nullable(Float64), age Nullable(Float64), name Nullab
 ```
 
 **Смотрите также**
-- [Автоматическое выведение схемы из входных данных](/interfaces/schema-inference.md)
+- [Автоматическое определение схемы из входных данных](/interfaces/schema-inference.md)

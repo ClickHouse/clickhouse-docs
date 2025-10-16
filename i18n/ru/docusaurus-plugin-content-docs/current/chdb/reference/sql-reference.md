@@ -1,22 +1,22 @@
 ---
-title: 'SQL Справочник'
+slug: '/chdb/reference/sql-reference'
 sidebar_label: 'SQL Справочник'
-slug: /chdb/reference/sql-reference
 description: 'SQL Справочник для chDB'
+title: 'SQL Справочник'
 keywords: ['chdb', 'sql справочник']
+doc_type: reference
 ---
+chdb поддерживает ту же SQL-синтаксис, инструкции, движки и функции, что и ClickHouse:
 
-chdb поддерживает тот же синтаксис SQL, те же операторы, движки и функции, что и ClickHouse:
-
-| Тема                        |
-|-----------------------------|
+| Тема                      |
+|----------------------------|
 | [SQL Синтаксис](/sql-reference/syntax)          |
-| [Операторы](/sql-reference/statements)          |
-| [Движки Таблиц](/engines/table-engines)       |
-| [Движки Баз Данных](/engines/database-engines)    |
-| [Регулярные Функции](/sql-reference/functions)   |
-| [Агрегатные Функции](/sql-reference/aggregate-functions) |
-| [Табличные Функции](/sql-reference/table-functions)     | 
-| [Оконные Функции](/sql-reference/window-functions)    |
+| [Инструкции](/sql-reference/statements)          |
+| [Движки таблиц](/engines/table-engines)       |
+| [Движки баз данных](/engines/database-engines)    |
+| [Обычные функции](/sql-reference/functions)   |
+| [Агрегатные функции](/sql-reference/aggregate-functions) |
+| [Табличные функции](/sql-reference/table-functions)     | 
+| [Оконные функции](/sql-reference/window-functions)    |
 
-Для получения дополнительной информации и примеров смотрите [SQL Справочник ClickHouse](/sql-reference).
+Для получения дополнительной информации и примеров смотрите [Справочник по SQL ClickHouse](/sql-reference).

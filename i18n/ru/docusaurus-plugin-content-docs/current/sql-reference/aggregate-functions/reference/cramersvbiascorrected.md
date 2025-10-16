@@ -1,14 +1,13 @@
 ---
-description: 'Вычисляет V Крамера с коррекцией смещения.'
+slug: '/sql-reference/aggregate-functions/reference/cramersvbiascorrected'
 sidebar_position: 128
-slug: /sql-reference/aggregate-functions/reference/cramersvbiascorrected
-title: 'cramersVBiasCorrected'
+description: 'Вычисляет Cramer''s V, но использует коррекцию смещения.'
+title: cramersVBiasCorrected
+doc_type: reference
 ---
-
-
 # cramersVBiasCorrected
 
-V Крамера — это мера ассоциации между двумя колонками в таблице. Результат функции [`cramersV` function](./cramersv.md) варьируется от 0 (соответствующего отсутствию ассоциации между переменными) до 1 и может достигать 1 только в том случае, если каждое значение полностью определяется другим. Функция может быть сильно искаженной, поэтому эта версия V Крамера использует [коррекцию смещения](https://en.wikipedia.org/wiki/Cram%C3%A9r%27s_V#Bias_correction).
+Cramér's V — это мера ассоциации между двумя колонками в таблице. Результат функции [`cramersV`](./cramersv.md) варьируется от 0 (соответствующий отсутствию ассоциации между переменными) до 1 и может достигать 1 только тогда, когда каждое значение полностью определяется другим. Функция может быть подвержена сильному смещению, поэтому эта версия Cramér's V использует [коррекцию смещения](https://en.wikipedia.org/wiki/Cram%C3%A9r%27s_V#Bias_correction).
 
 **Синтаксис**
 
@@ -29,7 +28,7 @@ cramersVBiasCorrected(column1, column2)
 
 **Пример**
 
-Следующие две сравниваемые колонки имеют небольшую ассоциацию между собой. Обратите внимание, что результат `cramersVBiasCorrected` меньше результата `cramersV`:
+Следующие две колонки, сравниваемые ниже, имеют небольшую ассоциацию между собой. Обратите внимание, что результат `cramersVBiasCorrected` меньше результата `cramersV`:
 
 Запрос:
 

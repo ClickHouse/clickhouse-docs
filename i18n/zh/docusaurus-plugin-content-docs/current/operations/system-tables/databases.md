@@ -5,9 +5,10 @@
 - 'databases'
 'slug': '/operations/system-tables/databases'
 'title': 'system.databases'
+'doc_type': 'reference'
 ---
 
-包含有关当前用户可用的数据库的信息。
+包含当前用户可用的数据库的信息。
 
 列：
 
@@ -16,11 +17,11 @@
 - `data_path` ([String](../../sql-reference/data-types/string.md)) — 数据路径。
 - `metadata_path` ([String](../../sql-reference/data-types/enum.md)) — 元数据路径。
 - `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — 数据库 UUID。
-- `comment` ([String](../../sql-reference/data-types/enum.md)) — 数据库备注。
+- `comment` ([String](../../sql-reference/data-types/enum.md)) — 数据库注释。
 - `engine_full` ([String](../../sql-reference/data-types/enum.md)) — 数据库引擎的参数。
 - `database` ([String](../../sql-reference/data-types/string.md)) – `name` 的别名。
 
-此系统表中的 `name` 列用于实现 `SHOW DATABASES` 查询。
+该系统表的 `name` 列用于实现 `SHOW DATABASES` 查询。
 
 **示例**
 
@@ -30,7 +31,7 @@
 CREATE DATABASE test;
 ```
 
-检查用户所有可用的数据库。
+检查用户可用的所有数据库。
 
 ```sql
 SELECT * FROM system.databases;

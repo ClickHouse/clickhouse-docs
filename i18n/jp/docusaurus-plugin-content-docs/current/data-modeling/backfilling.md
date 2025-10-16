@@ -1,12 +1,13 @@
 ---
-slug: '/data-modeling/backfilling'
-title: 'バックフィーリングデータ'
-description: 'ClickHouse で大規模なデータセットをバックフィルする方法'
-keywords:
+'slug': '/data-modeling/backfilling'
+'title': 'データのバックフィル'
+'description': 'ClickHouseで大規模データセットをバックフィルする方法'
+'keywords':
 - 'materialized views'
 - 'backfilling'
 - 'inserting data'
 - 'resilient data load'
+'doc_type': 'guide'
 ---
 
 import nullTableMV from '@site/static/images/data-modeling/null_table_mv.png';
@@ -14,34 +15,35 @@ import Image from '@theme/IdealImage';
 
 
 
-# データのバックフィル
+# データのバックフィリング
 
-ClickHouseに新しく触れているユーザーや、既存のデプロイメントを担当しているユーザーは、必然的に歴史的データでテーブルをバックフィルする必要があります。場合によっては、比較的シンプルですが、物理的なビューをポピュレートする必要がある場合は、より複雑になることがあります。このガイドでは、ユーザーが自分のユースケースに適用できるこのタスクのためのいくつかのプロセスをドキュメントしています。
+ClickHouseに新しく関わっている場合でも、既存のデプロイを担当している場合でも、ユーザーは必然的にテーブルに履歴データをバックフィルする必要があります。場合によっては、これは比較的簡単ですが、マテリアライズドビューをポピュレートする必要がある場合は、より複雑になることがあります。このガイドでは、このタスクをユーザーが自身のユースケースに適用できるプロセスをドキュメント化しています。
 
 :::note
-このガイドは、ユーザーが[増分物理ビュー](/materialized-view/incremental-materialized-view)や、s3やgcsなどのテーブル関数を使用した[データのロード](/integrations/s3)の概念に既に慣れていることを前提としています。また、ユーザーが[オブジェクトストレージからの挿入パフォーマンスの最適化](/integrations/s3/performance)に関するガイドを読むことをお勧めしており、そのアドバイスはこのガイド全体の挿入に適用できます。
+このガイドでは、ユーザーが[インクリメンタルマテリアライズドビュー](/materialized-view/incremental-materialized-view)および[s3やgcsなどのテーブル関数を用いたデータロード](/integrations/s3)の概念について既に理解していることを前提としています。また、ユーザーに対して、[オブジェクトストレージからの挿入パフォーマンスの最適化](/integrations/s3/performance)に関するガイドを読むことをお勧めします。このアドバイスは、本ガイド全体の挿入に適用できます。
 :::
+
 ## 例データセット {#example-dataset}
 
-このガイドでは、PyPIデータセットを使用します。このデータセットの各行は、`pip`などのツールを使用したPythonパッケージのダウンロードを表します。
+このガイド全体で、PyPIデータセットを使用します。このデータセットの各行は、`pip`のようなツールを使用したPythonパッケージのダウンロードを表しています。
 
-例えば、サブセットは単一の日 - `2024-12-17`をカバーしており、このデータは`https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/`で公開されています。ユーザーは以下のようにクエリを実行できます：
+例えば、サブセットは1日分、すなわち`2024-12-17`をカバーし、`https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/`で公開されています。ユーザーは次のようにクエリできます。
 
 ```sql
 SELECT count()
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/*.parquet')
 
 ┌────count()─┐
-│ 2039988137 │ -- 20.4億
+│ 2039988137 │ -- 2.04 billion
 └────────────┘
 
-1行のセット。経過時間: 32.726秒。処理された行数: 20.4億行、170.05 KB (6200万行/s., 5.20 KB/s.)
-ピークメモリ使用量: 239.50 MiB.
+1 row in set. Elapsed: 32.726 sec. Processed 2.04 billion rows, 170.05 KB (62.34 million rows/s., 5.20 KB/s.)
+Peak memory usage: 239.50 MiB.
 ```
 
-このバケットのフルデータセットには、320 GBを超えるパーケットファイルが含まれています。以下の例では、意図的にグロブパターンを使用してサブセットをターゲットにします。
+このバケットの完全なデータセットは、320 GBを超えるparquetファイルを含んでいます。以下の例では、意図的にグロブパターンを使用してサブセットをターゲットにしています。
 
-ユーザーは、例えばKafkaやオブジェクトストレージからこのデータのストリームを消費していると仮定します。この日以降のデータに対して。データのスキーマは以下に示されています：
+ユーザーは、この日以降のデータをKafkaやオブジェクトストレージからのストリームとして消費すると仮定します。このデータのスキーマは以下に示されています。
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/*.parquet')
@@ -69,23 +71,25 @@ SETTINGS describe_compact_output = 1
 ```
 
 :::note
-フルPyPIデータセットには、1兆行を超えるデータが含まれており、我々のパブリックデモ環境[clickpy.clickhouse.com](https://clickpy.clickhouse.com)で入手可能です。このデータセットの詳細や、デモで物理ビューを利用してパフォーマンスを向上させる方法、データが毎日ポピュレートされる方法については、[こちら](https://github.com/ClickHouse/clickpy)をご覧ください。
+1兆行を超える完全なPyPIデータセットは、私たちの公開デモ環境[clickpy.clickhouse.com](https://clickpy.clickhouse.com)で利用可能です。このデータセットの詳細、デモがマテリアライズドビューをどのように活用してパフォーマンスを向上させているか、またデータがどのように毎日ポピュレートされるかについては、[こちら](https://github.com/ClickHouse/clickpy)を参照してください。
 :::
-## バックフィリングシナリオ {#backfilling-scenarios}
 
-バックフィリングは、特定の時点からデータストリームが消費されるときに一般的に必要です。このデータは、[増分物理ビュー](/materialized-view/incremental-materialized-view)でClickHouseテーブルに挿入され、挿入されたブロックにトリガされます。これらのビューは、挿入の前にデータを変換したり、集計を計算してターゲットテーブルに結果を送信したりします。
+## バックフィルのシナリオ {#backfilling-scenarios}
 
-我々は以下のシナリオをカバーすることを試みます：
+バックフィリングは、通常、特定の時点からデータストリームが消費されるときに必要です。このデータは、[インクリメンタルマテリアライズドビュー](/materialized-view/incremental-materialized-view)とともにClickHouseテーブルに挿入され、挿入されるブロックに対してトリガーされます。これらのビューは、挿入前にデータを変換したり、集約を計算し、下流アプリケーションで使用するためにターゲットテーブルに結果を送信したりする場合があります。
 
-1. **既存のデータ取り込みによるバックフィリング** - 新しいデータがロードされており、歴史的データがバックフィルされる必要があります。この歴史的データは特定されています。
-2. **既存のテーブルに物理ビジュアルを追加** - 歴史的データがポピュレートされ、データが既にストリーミングされている設定に新しい物理ビューを追加する必要があります。
+以下のシナリオをカバーすることを試みます。
 
-データはオブジェクトストレージからバックフィルされると仮定します。すべての場合で、データの挿入を中断しないようにすることを目指しています。
+1. **既存のデータ取り込みによるデータのバックフィル** - 新しいデータが読み込まれ、履歴データをバックフィルする必要があります。この履歴データは特定されています。
+2. **既存テーブルへのマテリアライズドビューの追加** - 履歴データがポピュレートされ、データが既にストリーミングされているセットアップに新しいマテリアライズドビューを追加する必要があります。
 
-オブジェクトストレージから歴史的データをバックフィルすることをお勧めします。データは可能な限りパーケットにエクスポートされ、最適な読み取り性能と圧縮（ネットワーク転送の削減）のために。通常、約150MBのファイルサイズが好まれますが、ClickHouseは[70以上のファイルフォーマット](/interfaces/formats)をサポートしており、すべてのサイズのファイルを処理できます。
+データはオブジェクトストレージからバックフィルされると仮定します。すべてのケースで、データ挿入の一時停止を避けることを目指します。
+
+オブジェクトストレージからの履歴データのバックフィルを推奨します。データは、最適な読み取りパフォーマンスと圧縮（ネットワーク転送の減少）のために可能であればParquetにエクスポートする必要があります。ファイルサイズは約150MBが一般的に好まれますが、ClickHouseは[70以上のファイル形式](/interfaces/formats)をサポートしており、あらゆるサイズのファイルを処理できます。
+
 ## 重複テーブルとビューの使用 {#using-duplicate-tables-and-views}
 
-すべてのシナリオにおいて、我々は「重複テーブルとビュー」の概念に依存しています。これらのテーブルとビューは、ライブストリーミングデータに使用されるもののコピーを表し、バックフィルを孤立して実行できるようにし、失敗が発生した場合に復旧のための簡単な手段を提供します。例えば、以下のようなメインの`pypi` テーブルと、Pythonプロジェクトごとのダウンロード数を計算する物理ビューがあります：
+すべてのシナリオで、「重複テーブルとビュー」の概念に依存します。これらのテーブルとビューは、ライブストリーミングデータに使用されるもののコピーを表し、バックフィルを隔離して実行することができ、障害が発生した場合に簡単に回復できる手段を提供します。たとえば、次の主な`pypi`テーブルとマテリアライズドビューがあり、Pythonプロジェクトごとのダウンロード数を計算します。
 
 ```sql
 CREATE TABLE pypi
@@ -118,40 +122,39 @@ FROM pypi
 GROUP BY project
 ```
 
-メインテーブルと関連するビューをデータのサブセットを使用してポピュレートします：
+主テーブルと関連ビューをデータのサブセットでポピュレートします。
 
 ```sql
 INSERT INTO pypi SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-000000000{000..100}.parquet')
 
-0行のセット。経過時間: 15.702秒。処理された行数: 4123万行、3.94 GB (263万行/s., 251.01 MB/s.)
-ピークメモリ使用量: 977.49 MiB.
+0 rows in set. Elapsed: 15.702 sec. Processed 41.23 million rows, 3.94 GB (2.63 million rows/s., 251.01 MB/s.)
+Peak memory usage: 977.49 MiB.
 
 SELECT count() FROM pypi
 
 ┌──count()─┐
-│ 20612750 │ -- 2061万
+│ 20612750 │ -- 20.61 million
 └──────────┘
 
-1行のセット。経過時間: 0.004秒。
+1 row in set. Elapsed: 0.004 sec.
 
 SELECT sum(count)
 FROM pypi_downloads
 
-
 ┌─sum(count)─┐
-│   20612750 │ -- 2061万
+│   20612750 │ -- 20.61 million
 └────────────┘
 
-1行のセット。経過時間: 0.006秒。処理された行数: 96150行、769.23 KB (1653万行/s., 132.26 MB/s.)
-ピークメモリ使用量: 682.38 KiB.
+1 row in set. Elapsed: 0.006 sec. Processed 96.15 thousand rows, 769.23 KB (16.53 million rows/s., 132.26 MB/s.)
+Peak memory usage: 682.38 KiB.
 ```
 
-他のサブセット `{101..200}` をロードしたいと仮定します。`pypi` に直接挿入できるかもしれませんが、重複テーブルを作成することでこのバックフィルを孤立して実行できます。
+別のサブセット`{101..200}`を読み込みたいとします。`pypi`に直接挿入することもできますが、重複テーブルを作成することでこのバックフィルを隔離して行うことができます。
 
-バックフィルが失敗した場合、メインテーブルには影響を与えず、単純に[truncate](/managing-data/truncate)して重複テーブルを再実行できます。
+バックフィルが失敗した場合、主テーブルには影響を与えず、単に[トランケート](/managing-data/truncate)重複テーブルを実行し、繰り返すことができます。
 
-これらのビューの新しいコピーを作成するには、`CREATE TABLE AS`句を使ってサフィックス`_v2`を用います：
+これらのビューの新しいコピーを作成するには、`CREATE TABLE AS`句を使用し、サフィックス`_v2`を付けます。
 
 ```sql
 CREATE TABLE pypi_v2 AS pypi
@@ -166,85 +169,85 @@ FROM pypi_v2
 GROUP BY project
 ```
 
-おおよそ同じサイズの2番目のサブセットでこれをポピュレートし、成功裏にロードされたことを確認します。
+これを約同じサイズの2番目のサブセットでポピュレートし、成功したロードを確認します。
 
 ```sql
 INSERT INTO pypi_v2 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-000000000{101..200}.parquet')
 
-0行のセット。経過時間: 17.545秒。処理された行数: 4080万行、3.90 GB (233万行/s., 222.29 MB/s.)
-ピークメモリ使用量: 991.50 MiB.
+0 rows in set. Elapsed: 17.545 sec. Processed 40.80 million rows, 3.90 GB (2.33 million rows/s., 222.29 MB/s.)
+Peak memory usage: 991.50 MiB.
 
 SELECT count()
 FROM pypi_v2
 
 ┌──count()─┐
-│ 20400020 │ -- 2040万
+│ 20400020 │ -- 20.40 million
 └──────────┘
 
-1行のセット。経過時間: 0.004秒。
+1 row in set. Elapsed: 0.004 sec.
 
 SELECT sum(count)
 FROM pypi_downloads_v2
 
 ┌─sum(count)─┐
-│   20400020 │ -- 2040万
+│   20400020 │ -- 20.40 million
 └────────────┘
 
-1行のセット。経過時間: 0.006秒。処理された行数: 95490行、763.90 KB (1481万行/s., 118.45 MB/s.)
-ピークメモリ使用量: 688.77 KiB.
+1 row in set. Elapsed: 0.006 sec. Processed 95.49 thousand rows, 763.90 KB (14.81 million rows/s., 118.45 MB/s.)
+Peak memory usage: 688.77 KiB.
 ```
 
-2度目のロード中に失敗が発生した場合、単純に[truncate](/managing-data/truncate)して`pypi_v2`と`pypi_downloads_v2`を再度ロードすることができます。
+もしこの2回目のロード中に何らかの失敗があった場合は、単に[トランケート](/managing-data/truncate)を実行し、`pypi_v2`と`pypi_downloads_v2`を繰り返しデータをロードすることができます。
 
-データのロードが完了したら、[`ALTER TABLE MOVE PARTITION`](/sql-reference/statements/alter/partition#move-partition-to-table)句を使用して、重複テーブルからメインテーブルにデータを移動できます。
+データのロードが完了したので、[`ALTER TABLE MOVE PARTITION`](/sql-reference/statements/alter/partition#move-partition-to-table)句を使用して、重複テーブルから主テーブルにデータを移動できます。
 
 ```sql
 ALTER TABLE pypi_v2 MOVE PARTITION () TO pypi
 
-0行のセット。経過時間: 1.401秒。
+0 rows in set. Elapsed: 1.401 sec.
 
 ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
 
-0行のセット。経過時間: 0.389秒。
+0 rows in set. Elapsed: 0.389 sec.
 ```
 
 :::note パーティション名
-上記の`MOVE PARTITION`呼び出しは、パーティション名`()`を使用しています。これは、このテーブルの単一パーティションを表します（パーティションはありません）。パーティションされたテーブルの場合、ユーザーは各パーティションごとに複数の`MOVE PARTITION`呼び出しを行う必要があります。現在のパーティション名は、[`system.parts`](/operations/system-tables/parts)テーブルから調べることができます。例：`SELECT DISTINCT partition FROM system.parts WHERE (table = 'pypi_v2')`.
+上記の`MOVE PARTITION`呼び出しは、パーティション名`()`を使用しています。これはこのテーブル（パーティション化されていないテーブル）の単一のパーティションを表しています。パーティション化されたテーブルの場合、ユーザーは複数の`MOVE PARTITION`呼び出しを行う必要があります。現在のパーティション名は、[`system.parts`](/operations/system-tables/parts)テーブルから確認できます。例：`SELECT DISTINCT partition FROM system.parts WHERE (table = 'pypi_v2')`。
 :::
 
-これで`pypi` と `pypi_downloads`が完全なデータを含んでいることを確認できます。`pypi_downloads_v2` と `pypi_v2`は安全に削除できます。
+これで、`pypi`および`pypi_downloads`に完全なデータが含まれていることを確認できます。`pypi_downloads_v2`と`pypi_v2`は安全に削除できます。
 
 ```sql
 SELECT count()
 FROM pypi
 
 ┌──count()─┐
-│ 41012770 │ -- 4101万
+│ 41012770 │ -- 41.01 million
 └──────────┘
 
-1行のセット。経過時間: 0.003秒。
+1 row in set. Elapsed: 0.003 sec.
 
 SELECT sum(count)
 FROM pypi_downloads
 
 ┌─sum(count)─┐
-│   41012770 │ -- 4101万
+│   41012770 │ -- 41.01 million
 └────────────┘
 
-1行のセット。経過時間: 0.007秒。処理された行数: 191.64千行、1.53 MB (2734万行/s., 218.74 MB/s.)
+1 row in set. Elapsed: 0.007 sec. Processed 191.64 thousand rows, 1.53 MB (27.34 million rows/s., 218.74 MB/s.)
 
 SELECT count()
 FROM pypi_v2
 ```
 
-重要なのは、`MOVE PARTITION`操作は軽量で（ハードリンクを利用）、原子的であり、すなわち中間状態なしに失敗するか成功するかのいずれかです。
+重要なのは、`MOVE PARTITION`操作が軽量で（ハードリンクを利用）原子的であり、すなわち失敗するか成功するかのどちらかであり、間の状態が存在しないことです。
 
-このプロセスは、以下のバックフィリングシナリオで広く利用されます。
+以下のバックフィリングシナリオでは、このプロセスを大いに利用します。
 
-このプロセスでは、ユーザーが各挿入操作のサイズを選択する必要があることに注意してください。
+このプロセスがユーザーに挿入操作のサイズを選択させることに注意してください。
 
-より大きな挿入、すなわちより多くの行は、必要な`MOVE PARTITION`操作を減らすことを意味します。しかし、これはネットワークの中断による挿入失敗時のコストとバランスを取る必要があります。ユーザーは、リスクを低減するためにファイルをバッチ処理することを補完できます。これは、リストされる範囲のクエリ（例：`WHERE timestamp BETWEEN 2024-12-17 09:00:00 AND 2024-12-17 10:00:00`）やグロブパターンを使用して行うことができます。例えば、
+より大きな挿入、すなわちより多くの行は、より少ない`MOVE PARTITION`操作を必要とします。しかし、これは、ネットワーク障害などによる挿入失敗のリスクに対してバランスを取る必要があります。ユーザーは、このプロセスを補完するために、ファイルをバッチ処理してリスクを減らすことができます。これは、例えば、範囲クエリ`WHERE timestamp BETWEEN 2024-12-17 09:00:00 AND 2024-12-17 10:00:00`やグロブパターンで実行できます。例えば、
 
 ```sql
 INSERT INTO pypi_v2 SELECT *
@@ -253,25 +256,26 @@ INSERT INTO pypi_v2 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-000000000{201..300}.parquet')
 INSERT INTO pypi_v2 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-000000000{301..400}.parquet')
---すべてのファイルがロードされるまで続く OR MOVE PARTITION 呼び出しが実行される
+--continued to all files loaded OR MOVE PARTITION call is performed
 ```
 
 :::note
-ClickPipesは、オブジェクトストレージからデータをロードする際にこのアプローチを使用し、ターゲットテーブルとその物理ビューの重複を自動的に作成し、ユーザーに上記のステップを実行する必要を避けます。異なるサブセットを処理する複数のワーカースレッドを使用することで、データを迅速にロードし、正確に一度だけのセマンティクスを実現します。興味のある方は、[このブログ](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part3)で詳細をご覧ください。
+ClickPipesはオブジェクトストレージからデータをロードする際にこのアプローチを使用し、ターゲットテーブルとそのマテリアライズドビューの複製を自動的に作成し、ユーザーが上記の手順を実行する必要を避けています。また、複数のワーカースレッドを使用して、異なるサブセットを処理し（グロブパターンを介して）、それぞれに重複テーブルを持つことで、データを迅速に、正確に1回だけのセマンティクスでロードできます。関心のある方は、[このブログ](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part3)でさらに詳細をご覧いただけます。
 :::
-## シナリオ 1: 既存のデータ取り込みによるバックフィリング {#scenario-1-backfilling-data-with-existing-data-ingestion}
 
-このシナリオでは、バックフィルするデータが孤立したバケットに存在せず、フィルタリングが必要であると仮定します。データは既に挿入されており、タイムスタンプや単調増加列を特定でき、そこから歴史的データをバックフィルする必要があります。
+## シナリオ1: 既存のデータ取り込みによるデータのバックフィル {#scenario-1-backfilling-data-with-existing-data-ingestion}
 
-このプロセスは以下のステップに従います：
+このシナリオでは、バックフィルに必要なデータが孤立したバケットにないと仮定し、フィルタリングが必要です。データはすでに挿入されており、履歴データをバックフィルするために特定できるタイムスタンプまたは単調増加カラムがあります。
 
-1. チェックポイントを特定する - タイムスタンプまたは歴史的データを復元する必要がある列の値。
-2. メインテーブルと物理ビューのターゲットテーブルの重複を作成する。
-3. ステップ（2）で作成したターゲットテーブルを指す物理ビューのコピーを作成する。
-4. ステップ（2）で作成した重複メインテーブルに挿入する。
-5. 重複テーブルから元のバージョンにすべてのパーティションを移動し、重複テーブルを削除する。
+このプロセスは以下の手順に従います。
 
-例えば、PyPIデータで必要なデータがロードされていると仮定します。最小タイムスタンプを特定できるため、我々の「チェックポイント」がわかります。
+1. チェックポイントを特定します - 履歴データを復元する必要があるタイムスタンプまたはカラムの値。
+2. 主テーブルとマテリアライズドビューのターゲットテーブルの重複を作成します。
+3. ステップ（2）で作成したターゲットテーブルを指すマテリアライズドビューのコピーを作成します。
+4. ステップ（2）で作成した重複の主テーブルに挿入します。
+5. 重複テーブルから元のバージョンにすべてのパーティションを移動します。重複テーブルをドロップします。
+
+例えば、PyPIデータでデータが読み込まれているとします。最小のタイムスタンプを特定でき、そのため「チェックポイント」が特定されます。
 
 ```sql
 SELECT min(timestamp)
@@ -281,11 +285,11 @@ FROM pypi
 │ 2024-12-17 09:00:00 │
 └─────────────────────┘
 
-1行のセット。経過時間: 0.163秒。処理された行数: 13.4億行、5.37 GB (8.24億行/s., 32.96 GB/s.)
-ピークメモリ使用量: 227.84 MiB.
+1 row in set. Elapsed: 0.163 sec. Processed 1.34 billion rows, 5.37 GB (8.24 billion rows/s., 32.96 GB/s.)
+Peak memory usage: 227.84 MiB.
 ```
 
-上記から、`2024-12-17 09:00:00`より前のデータをロードする必要があることがわかります。先ほどのプロセスを用いて、重複テーブルとビューを作成し、タイムスタンプにフィルタをかけたサブセットをロードします。
+上記から、`2024-12-17 09:00:00`より前のデータを読み込む必要があることがわかります。前述のプロセスを使用して、重複テーブルとビューを作成し、タイムスタンプに基づいてサブセットを読み込みます。
 
 ```sql
 CREATE TABLE pypi_v2 AS pypi
@@ -301,10 +305,10 @@ INSERT INTO pypi_v2 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-*.parquet')
 WHERE timestamp < '2024-12-17 09:00:00'
 
-0行のセット。経過時間: 500.152秒。処理された行数: 27.4億行、364.40 GB (5.47万行/s., 728.59 MB/s.)
+0 rows in set. Elapsed: 500.152 sec. Processed 2.74 billion rows, 364.40 GB (5.47 million rows/s., 728.59 MB/s.)
 ```
 :::note
-パーケットのタイムスタンプ列をフィルタリングすることは非常に効率的です。ClickHouseは、ロードするフルデータ範囲を特定するためにタイムスタンプ列だけを読み取ります。パーケットインデックス（例えばmin-max）もClickHouseクエリエンジンによって利用できます。
+Parquetのタイムスタンプカラムでのフィルタリングは非常に効率的である可能性があります。ClickHouseは、読み込むべき完全なデータ範囲を特定するためにタイムスタンプカラムのみを読み込み、ネットワークトラフィックを最小限に抑えます。Parquetインデックス（最小-最大など）もClickHouseクエリエンジンによって活用されることがあります。
 :::
 
 この挿入が完了したら、関連するパーティションを移動できます。
@@ -315,30 +319,32 @@ ALTER TABLE pypi_v2 MOVE PARTITION () TO pypi
 ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
 ```
 
-もし歴史的データが孤立したバケットであれば、上記の時間フィルタは必要ありません。時間または単調増加列が利用できない場合は、歴史的データを分離します。
+もし履歴データが孤立したバケットの場合、上記の時間フィルタは必要ありません。時間または単調増加カラムが利用できない場合は、履歴データを分離してください。
 
-:::note ClickHouse CloudでClickPipesを使うだけ
-ClickHouse Cloudのユーザーは、データが自分のバケットに孤立させられる場合、歴史的バックアップを復元するためにClickPipesを使用するべきです（この場合フィルタは必要ありません）。複数のワーカーを用いたロードを並列化し、これによってロード時間を短縮し、ClickPipesは上記のプロセスを自動化します - メインテーブルと物理ビューの両方の重複テーブルを作成します。
+:::note ClickHouse CloudでのClickPipesの利用
+ClickHouse Cloudユーザーは、データが自分のバケットに隔離できる場合（フィルタリングが不要）、履歴バックアップの復元にはClickPipesを使用する必要があります。これにより、複数のワーカーでロードを並列化し、ロード時間を短縮し、ClickPipesは上記のプロセスを自動化します - 主テーブルとマテリアライズドビューのための重複テーブルを作成します。
 :::
-## シナリオ 2: 既存のテーブルに物理ビューを追加 {#scenario-2-adding-materialized-views-to-existing-tables}
 
-新しい物理ビューを追加する必要がある設定には、かなりのデータがポピュレートされ、データが挿入されることは珍しくありません。時刻または単調増加列が利用できると、ストリーム内のポイントを特定するのに役立ち、データ取り込みの中断を避けることができます。以下の例では、両方のケースが想定されており、データ取り込みを中断を避けるアプローチを優先します。
+## シナリオ2: 既存テーブルへのマテリアライズドビューの追加 {#scenario-2-adding-materialized-views-to-existing-tables}
+
+既に大きなデータがポピュレートされていて、データが挿入されているセットアップに新しいマテリアライズドビューを追加する必要があることは珍しくありません。ここでは、ストリーム内のポイントを特定するために使用できるタイムスタンプまたは単調増加カラムが役立ち、データ取り込みの一時停止を回避します。以下の例では、両方のケースを仮定し、取り込みを一時停止しないアプローチを優先します。
 
 :::note POPULATEを避ける
-小さなデータセットで取り込みが一時停止されている場合を除いて、物理ビューのバックフィルに[`POPULATE`](/sql-reference/statements/create/view#materialized-view)コマンドの使用は推奨されません。このオペレーターは、ポピュレートハッシュが完了した後にソーステーブルに挿入された行を見逃す可能性があります。さらに、このポピュレートはすべてのデータに対して実行され、大規模なデータセットでの中断やメモリの制限に対して脆弱です。
+小さいデータセットで挿入が一時停止される場合を除き、マテリアライズドビューのバックフィルに[`POPULATE`](/sql-reference/statements/create/view#materialized-view)コマンドの使用は推奨しません。このオペレーターは、ポピュレートハッシュが完了した後にそのソーステーブルに挿入された行を見逃す可能性があります。さらに、このポピュレートはすべてのデータに対して実行され、大規模データセットでの中断やメモリ制限に脆弱です。
 :::
-### タイムスタンプまたは単調増加列が利用できる場合 {#timestamp-or-monotonically-increasing-column-available}
 
-この場合、我々は新しい物理ビューに、未来の任意のデータよりも大きい行のみに制限するフィルタを含めることをお勧めします。この物理ビューは、その後、メインテーブルの歴史的データを使用してこの日からバックフィルされることになります。バックフィルのアプローチは、データサイズと関連クエリの複雑さに依存します。
+### タイムスタンプまたは単調増加カラムが利用可能 {#timestamp-or-monotonically-increasing-column-available}
 
-最も単純なアプローチは、次のステップを含みます：
+この場合、新しいマテリアライズドビューには、今後の任意のデータより大きい行のみに制限するフィルターが含まれていることをお勧めします。マテリアライズドビューは、その後、主テーブルの履歴データを使用してこの日からバックフィルできます。バックフィリングアプローチは、データサイズおよび関連するクエリの複雑性に依存します。
 
-1. 任意の時間の近い未来よりも大きい行のみを考慮するフィルタを用いて物理ビューを作成します。
-2. `INSERT INTO SELECT`クエリを実行し、物理ビューのターゲットテーブルに挿入し、集約クエリでソーステーブルから読み取ります。
+最も単純なアプローチは、次の手順を含みます。
 
-これは追加のサブデータにターゲットを定めるためにステップ（2）で強化することができ、または失敗後の復旧を容易にするために物理ビューのための重複したターゲットテーブルを使用することができます（挿入が完了した後に元のテーブルにパーティションをアタッチ）。
+1. 任意の近い将来の時間より大きい行のみを考慮するフィルターを持つマテリアライズドビューを作成します。
+2. マテリアライズドビューのターゲットテーブルに挿入する`INSERT INTO SELECT`クエリを実行し、ビューの集約クエリでソーステーブルから読み込みます。
 
-以下は、毎時最も人気のあるプロジェクトを計算する物理ビューです。
+これは、ステップ（2）でデータのサブセットをターゲットにしたり、マテリアライズドビューのための重複ターゲットテーブルを使用することでさらに強化できます（挿入が完了したら元のにパーティションを添付）。
+
+たとえば、以下のマテリアライズドビューは、時間ごとの最も人気のあるプロジェクトを計算します。
 
 ```sql
 CREATE TABLE pypi_downloads_per_day
@@ -349,7 +355,6 @@ CREATE TABLE pypi_downloads_per_day
 )
 ENGINE = SummingMergeTree
 ORDER BY (project, hour)
-
 
 CREATE MATERIALIZED VIEW pypi_downloads_per_day_mv TO pypi_downloads_per_day
 AS SELECT
@@ -362,20 +367,20 @@ GROUP BY
  project
 ```
 
-ターゲットテーブルを追加できますが、物理ビューを追加する前に、その`SELECT`節を変更して、任意の近い未来の時間よりも大きい行のみを考慮するようにします。この場合、`2024-12-17 09:00:00`を近くの時間と仮定します。
+ターゲットテーブルを追加できますが、マテリアライズドビューを追加する前に、その`SELECT`句を変更し、近い将来の任意の時間より大きい行のみを考慮するフィルターを含めます - この場合、`2024-12-17 09:00:00`が将来の数分であると仮定します。
 
 ```sql
 CREATE MATERIALIZED VIEW pypi_downloads_per_day_mv TO pypi_downloads_per_day
 AS SELECT
- toStartOfHour(timestamp) as hour,
+ toStartOfHour(timestamp) AS hour,
  project, count() AS count
 FROM pypi WHERE timestamp >= '2024-12-17 09:00:00'
 GROUP BY hour, project
 ```
 
-このビューが追加されたら、上述の日付より前のこのビューのすべてのデータをバックフィルすることができます。
+このビューが追加されると、このデータ以前のすべてのデータをマテリアライズドビューのためにバックフィルすることができます。
 
-最も簡単な方法は、フィルタを追加したメインテーブルから物理ビューのクエリを実行し、`INSERT INTO SELECT`を介してビューのターゲットテーブルに結果を挿入することです。例えば、上記のビューにおいて：
+これを行う最も簡単な方法は、最近追加されたデータを無視するフィルターを用いた主テーブルからのマテリアライズドビューのクエリを実行し、結果をマテリアライズドビューのターゲットテーブルに`INSERT INTO SELECT`で挿入することです。たとえば、上記のビューの場合：
 
 ```sql
 INSERT INTO pypi_downloads_per_day SELECT
@@ -390,37 +395,38 @@ GROUP BY
 
 Ok.
 
-0行のセット。経過時間: 2.830秒。処理された行数: 798.89百万行、17.40 GB (282.28万行/s., 6.15 GB/s.)
-ピークメモリ使用量: 543.71 MiB.
+0 rows in set. Elapsed: 2.830 sec. Processed 798.89 million rows, 17.40 GB (282.28 million rows/s., 6.15 GB/s.)
+Peak memory usage: 543.71 MiB.
 ```
 
 :::note
-上記の例では、ターゲットテーブルは[SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree)です。この場合、元の集約クエリを単純に使用できます。より複雑なユースケースでは、[AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree)を利用し、集計には`-State`関数を使用します。これについての例は[こちら](/integrations/s3/performance#be-aware-of-merges)で見ることができます。
+上記の例では、ターゲットテーブルは[SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree)です。この場合、元の集約クエリを単純に使用できます。 [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree)のようなより複雑なユースケースでは、集約のために`-State`関数を使用することになります。この例は[こちら](/integrations/s3/performance#be-aware-of-merges)で見られます。
 :::
 
-我々の場合、これは比較的軽量な集約で、3秒以内で完了し、600MiB未満のメモリを使用します。より複雑または長時間実行される集約の場合、ユーザーは、このプロセスをより堅牢にするために従来の重複テーブルアプローチを使用し、シャドウターゲットテーブル（例：`pypi_downloads_per_day_v2`）を作成し、このテーブルに挿入し、その結果のパーティションを`pypi_downloads_per_day`にアタッチすることができます。
+この場合、比較的軽量な集約が3秒未満で完了し、600MiB未満のメモリを使用しました。より複雑なまたは長時間実行される集約の場合、ユーザーは、前述の重複テーブルアプローチを使用することで、このプロセスをより耐障害性のあるものにできます。例えば、シャドウターゲットテーブル、すなわち`pypi_downloads_per_day_v2`を作成し、ここに挿入し、結果のパーティションを`pypi_downloads_per_day`に添付することです。
 
-物理ビューのクエリは、より複雑であることが多く（さもなければユーザーはビューを使用しないでしょう！）、リソースを消費することがあります。まれなケースでは、クエリのリソースがサーバーの限界を超えることもあります。これがClickHouseの物理ビューの利点の一つを示しています。それは、インクリメンタルであり、全データセットを一度に処理しないということです！
+しばしば、マテリアライズドビューのクエリはより複雑で（そうでなければユーザーはビューを使用しないでしょう！）、リソースを消費します。よりまれなケースでは、クエリに必要なリソースがサーバーのそれを超えることがあります。これは、ClickHouseのマテリアライズドビューの利点の1つを強調します - それらはインクリメンタルであり、全データセットを一度に処理しません！
 
-この場合、ユーザーは以下の選択肢があります：
+この場合、ユーザーにはいくつかのオプションがあります。
 
-1. クエリを変更してレンジをバックフィルします。例：`WHERE timestamp BETWEEN 2024-12-17 08:00:00 AND 2024-12-17 09:00:00`、`WHERE timestamp BETWEEN 2024-12-17 07:00:00 AND 2024-12-17 08:00:00`など。
-2. [Nullテーブルエンジン](/engines/table-engines/special/null)を使用して物理ビューを埋めます。これは、物理ビューの通常のインクリメンタルな生成を再現し、データブロック（設定可能なサイズ）を繰り返しクエリ実行します。
+1. クエリを修正して、バックフィル範囲を指定します。例：`WHERE timestamp BETWEEN 2024-12-17 08:00:00 AND 2024-12-17 09:00:00`、`WHERE timestamp BETWEEN 2024-12-17 07:00:00 AND 2024-12-17 08:00:00`など。
+2. [Nullテーブルエンジン](/engines/table-engines/special/null)を使用してマテリアライズドビューを充填します。これにより、マテリアライズドビューの典型的なインクリメンタルポピュレーションを複製し、設定可能なサイズのデータブロックでクエリを実行します。
 
-（1）は、最も簡単なアプローチであり、しばしば十分です。簡潔さのために例を含めません。
+（1）は、最も単純なアプローチで、しばしば十分です。簡略化のために例を含めていません。
 
-以下で（2）をさらに探ります。
-#### Nullテーブルエンジンを使用して物理ビューを埋める {#using-a-null-table-engine-for-filling-materialized-views}
+以下で（2）をさらに探求します。
 
-[Nullテーブルエンジン](/engines/table-engines/special/null)は、データを永続化しないストレージエンジンを提供します（テーブルエンジンの世界での`/dev/null`だと思ってください）。これは矛盾しているように思えますが、物理ビューはこのテーブルエンジンに挿入されたデータに対しても実行されます。これにより、元のデータを永続化せずに物理ビューを構築でき、I/Oや関連するストレージを回避できます。
+#### マテリアライズドビューを充填するためのNullテーブルエンジンの使用 {#using-a-null-table-engine-for-filling-materialized-views}
 
-重要なのは、テーブルエンジンに接続された物理ビューは、挿入時にデータのブロックに対しても実行され、それらの結果をターゲットテーブルに送信します。これらのブロックは設定可能なサイズです。より大きなブロックは、より効率的（そして迅速に処理される）ですが、リソース（主にメモリ）をより消費します。このテーブルエンジンの使用により、物理ビューをインクリメンタルに構築、すなわち1ブロックずつ処理できます。全集計をメモリ内に保持する必要がありません。
+[Nullテーブルエンジン](/engines/table-engines/special/null)は、データを永続化しないストレージエンジンを提供します（テーブルエンジンの世界では`/dev/null`と考えてください）。これは矛盾しているように思えるかもしれませんが、マテリアライズドビューはこのテーブルエンジンに挿入されたデータで実行されます。これにより、元のデータを永続化いせずにマテリアライズドビューを構築でき、I/Oや関連するストレージを回避します。
+
+重要な点は、このテーブルエンジンに付随するマテリアライズドビューは、挿入されるデータのブロックで実行され、結果をターゲットテーブルに送信します。これらのブロックは設定可能なサイズです。より大きなブロックは、効率的に処理できる可能性が高く（処理が速い）、より多くのリソース（主にメモリ）を消費します。このテーブルエンジンを使用することで、マテリアライズドビューをインクリメンタルに構築できるすなわち、一度に1ブロックずつ、メモリに全体の集約を保持する必要を回避できます。
 
 <Image img={nullTableMV} size="md" alt="ClickHouseにおける非正規化"/>
 
 <br />
 
-以下の例を考えてみましょう：
+次の例を考えてみましょう。
 
 ```sql
 CREATE TABLE pypi_v2
@@ -441,36 +447,37 @@ GROUP BY
  project
 ```
 
-ここでは、物理ビューを構築するために、行を受け取るためのNullテーブル`pypi_v2`を作成します。必要なカラムだけをスキーマに制限していることに注意してください。我々の物理ビューは、このテーブルに挿入された行に対して集約を実行し（1ブロックずつ）、結果をターゲットテーブル`pypi_downloads_per_day`に送信します。
+ここでは、マテリアライズドビューを構築するために使用される行を受信するためにNullテーブル`pypi_v2`を作成します。必要なカラムのみをスキーマに制限していることに注意してください。私たちのマテリアライズドビューは、このテーブルに挿入された行に対して集約を行い（1ブロックずつ）、結果をターゲットテーブル`pypi_downloads_per_day`に送信します。
 
 :::note
-ここでターゲットテーブルとして`pypi_downloads_per_day`を使用しました。追加の堅牢性のために、ユーザーは重複テーブル`pypi_downloads_per_day_v2`を作成し、物理ビューのターゲットテーブルとしてこのテーブルを使用することができます。挿入が完了した後に、`pypi_downloads_per_day_v2`のパーティションを`pypi_downloads_per_day`に移動できます。これにより、挿入がメモリの問題やサーバーの中断によって失敗した場合の復旧が可能になります。つまり、`pypi_downloads_per_day_v2`をトランケートし、設定を調整して再試行すればいいのです。
+ここでターゲットテーブルとして`pypi_downloads_per_day`を使用しています。追加の耐障害性のために、ユーザーは重複テーブル`pypi_downloads_per_day_v2`を作成し、ビューのターゲットテーブルとしてこれを使用できます。挿入が完了すると、`pypi_downloads_per_day_v2`のパーティションを`pypi_downloads_per_day`に移動することができます。これにより、メモリの問題やサーバーの中断により挿入が失敗した場合の回復が可能になります。すなわち、`pypi_downloads_per_day_v2`をトランケートし、設定を調整し、再試行するだけです。
 :::
 
-この物理ビューを埋めるために、次のように`pypi`から`pypi_v2`にバックフィルする関連データを挿入します。
+このマテリアライズドビューをポピュレートするために、単に`pypi`から`pypi_v2`にバックフィルする関連データを挿入します。
 
 ```sql
 INSERT INTO pypi_v2 SELECT timestamp, project FROM pypi WHERE timestamp < '2024-12-17 09:00:00'
 
-0行のセット。経過時間: 27.325秒。処理された行数: 15億行、33.48 GB (54.73万行/s., 1.23 GB/s.)
-ピークメモリ使用量: 639.47 MiB.
+0 rows in set. Elapsed: 27.325 sec. Processed 1.50 billion rows, 33.48 GB (54.73 million rows/s., 1.23 GB/s.)
+Peak memory usage: 639.47 MiB.
 ```
 
 ここでのメモリ使用量は`639.47 MiB`です。
+
 ##### パフォーマンスとリソースの調整 {#tuning-performance--resources}
 
-上記のシナリオでのパフォーマンスとリソースの使用は、いくつかの要因によって決まります。調整を試みる前に、読者には[読むためのスレッドの使用](/integrations/s3/performance#using-threads-for-reads)セクションで詳細にドキュメントされた挿入メカニクスを理解することをお勧めします。まとめると：
+上記のシナリオでのパフォーマンスとリソース使用量は、いくつかの要因によって決まります。調整を試みる前に、読者が[最適化のためのS3挿入および読み取りパフォーマンスガイド](/integrations/s3/performance)の[使用スレッドのリファレンス](/integrations/s3/performance#using-threads-for-reads)セクションで詳細に記載されている挿入メカニズムを理解することをお勧めします。要約すると：
 
-- **読み取りの並列性** - 読み取るために使用されるスレッドの数。[`max_threads`](/operations/settings/settings#max_threads)を通じて制御されます。ClickHouse Cloudでは、これはインスタンスサイズによって決定され、デフォルトでvCPUの数になります。この値を増やすことで、メモリ使用量は増加しますが、読み取りパフォーマンスが向上する可能性があります。
-- **挿入の並列性** - 挿入するために使用される挿入スレッドの数。これは[`max_insert_threads`](/operations/settings/settings#max_insert_threads)を通じて制御されます。ClickHouse Cloudでは、これはインスタンスサイズ（2〜4の間）によって決定され、OSSでは1に設定されます。この値を増やすことで、メモリ使用量は増加しますが、パフォーマンスが向上する可能性があります。
-- **挿入ブロックサイズ** - データはループで処理され、データが取得され、解析され、メモリ内の挿入ブロックに作成されます。これらのブロックは、[パーティショニングキー](/engines/table-engines/mergetree-family/custom-partitioning-key)に基づいています。これらのブロックはソートされ、最適化され、圧縮され、新しい[data parts](/parts)としてストレージに書き込まれます。挿入ブロックのサイズは、[`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows)と[`min_insert_block_size_bytes`](/operations/settings/settings#min_insert_block_size_bytes)（非圧縮）によって制御され、メモリ使用量とディスクI/Oに影響を与えます。大きなブロックはメモリをより多く使用しますが、部品を減らし、I/Oやバックグラウンドのマージを削減します。これらの設定は最小スレッショルドを表し（どちらかが最初に到達するとフラッシュがトリガされます）。
-- **物理ビューのブロックサイズ** - メイン挿入の上記のメカニクスに加えて、物理ビューに挿入される前に、ブロックもより効率的に処理されるように圧縮されます。これらのブロックのサイズは、[`min_insert_block_size_bytes_for_materialized_views`](/operations/settings/settings#min_insert_block_size_bytes_for_materialized_views)と[`min_insert_block_size_rows_for_materialized_views`](/operations/settings/settings#min_insert_block_size_rows_for_materialized_views)によって決定されます。大きなブロックは、より大きなメモリ使用量の犠牲に、効率的な処理を可能にします。デフォルトでは、これらの設定はソーステーブル設定[`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows)および[`min_insert_block_size_bytes`](/operations/settings/settings#min_insert_block_size_bytes)の値に戻ります。
+- **読み取りの並列性** - 読み取りに使用されるスレッドの数。[`max_threads`](/operations/settings/settings#max_threads)を通じて制御されます。ClickHouse Cloudでは、インスタンスのサイズによって決定され、デフォルトではvCPUの数になっています。この値を増やすと、メモリ使用量は多くなりますが、読み取りパフォーマンスが向上する可能性があります。
+- **挿入の並列性** - 挿入に使用されるスレッドの数。[`max_insert_threads`](/operations/settings/settings#max_insert_threads)を通じて制御されます。ClickHouse Cloudでは、インスタンスのサイズ（2〜4の範囲）が決定し、OSSでは1に設定されています。この値を増やすと、メモリ使用量を増やしながらパフォーマンスが向上する可能性があります。
+- **挿入ブロックサイズ** - データはループで処理され、プルされ、解析され、[パーティショニングキー](/engines/table-engines/mergetree-family/custom-partitioning-key)に基づいてメモリ内の挿入ブロックに形成されます。これらのブロックは、ソート、最適化、圧縮され、新しい[data parts](/parts)としてストレージに書き込まれます。挿入ブロックのサイズは、設定[`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows)および[`min_insert_block_size_bytes`](/operations/settings/settings#min_insert_block_size_bytes)（非圧縮）を通じて制御され、メモリ使用量およびディスクI/Oに影響を与えます。より大きなブロックは、より多くのメモリを使用しますが、部品の数が減り、I/Oおよびバックグラウンドマージが減少します。これらの設定は最小しきい値を表し（最初に到達したほうがフラッシュをトリガーします）。
+- **マテリアライズドビューのブロックサイズ** - 主な挿入に関する上記メカニズムに加え、マテリアライズドビューへの挿入前に、より効率的な処理のためにブロックが圧縮されます。これらのブロックのサイズは、設定[`min_insert_block_size_bytes_for_materialized_views`](/operations/settings/settings#min_insert_block_size_bytes_for_materialized_views)および[`min_insert_block_size_rows_for_materialized_views`](/operations/settings/settings#min_insert_block_size_rows_for_materialized_views)によって決定されます。より大きなブロックは、より効率的な処理を可能にしますが、メモリ使用量が増加します。デフォルトでは、これらの設定は、ソーステーブル設定[`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows)および[`min_insert_block_size_bytes`](/operations/settings/settings#min_insert_block_size_bytes)の値に戻ります。
 
-パフォーマンスを向上させるために、ユーザーは[挿入のためのスレッドとブロックサイズの調整](/integrations/s3/performance#tuning-threads-and-block-size-for-inserts)セクションで示されたガイドラインに従うことができます。ほとんどの場合、パフォーマンスを改善するために`min_insert_block_size_bytes_for_materialized_views`や`min_insert_block_size_rows_for_materialized_views`を変更する必要はありません。これらを変更する場合は、`min_insert_block_size_rows`や`min_insert_block_size_bytes`と同様のベストプラクティスを使用してください。
+パフォーマンスを向上させるために、ユーザーは[挿入のためのスレッドとブロックサイズの調整](/integrations/s3/performance#tuning-threads-and-block-size-for-inserts)セクションで概説されたガイドラインに従うことができます。通常、パフォーマンス向上のために`min_insert_block_size_bytes_for_materialized_views`および`min_insert_block_size_rows_for_materialized_views`を変更する必要はありません。これらを変更する場合は、`min_insert_block_size_rows`および`min_insert_block_size_bytes`に関して考えたとおりのベストプラクティスを使用してください。
 
-メモリを最小限に抑えるために、ユーザーはこれらの設定で実験することを望むかもしれません。これにより、間違いなくパフォーマンスが低下します。先ほどのクエリを使用して、以下の例を示します。
+メモリを最小限に抑えるために、ユーザーはこれらの設定を実験することを検討する場合があります。これは、パフォーマンスを低下させることになります。前述のクエリを使用して、以下に例を示します。
 
-`max_insert_threads`を1に下げることで、メモリオーバーヘッドを削減します。
+`max_insert_threads`を1に設定すると、メモリオーバーヘッドが減少します。
 
 ```sql
 INSERT INTO pypi_v2
@@ -481,11 +488,11 @@ FROM pypi
 WHERE timestamp < '2024-12-17 09:00:00'
 SETTINGS max_insert_threads = 1
 
-0行のセット。経過時間: 27.752秒。処理された行数: 15億行、33.48 GB (53.89万行/s., 1.21 GB/s.)
-ピークメモリ使用量: 506.78 MiB.
+0 rows in set. Elapsed: 27.752 sec. Processed 1.50 billion rows, 33.48 GB (53.89 million rows/s., 1.21 GB/s.)
+Peak memory usage: 506.78 MiB.
 ```
 
-さらに、`max_threads`設定を1に下げることでメモリをさらに減らすことができます。
+`max_threads`設定を1に減少させることで、さらにメモリを減少させることができます。
 
 ```sql
 INSERT INTO pypi_v2
@@ -496,11 +503,11 @@ SETTINGS max_insert_threads = 1, max_threads = 1
 
 Ok.
 
-0行のセット。経過時間: 43.907秒。処理された行数: 15億行、33.48 GB (34.06万行/s., 762.54 MB/s.)
-ピークメモリ使用量: 272.53 MiB.
+0 rows in set. Elapsed: 43.907 sec. Processed 1.50 billion rows, 33.48 GB (34.06 million rows/s., 762.54 MB/s.)
+Peak memory usage: 272.53 MiB.
 ```
 
-最後に、`min_insert_block_size_rows`を0に設定してブロックサイズの判断要因として無効にし、`min_insert_block_size_bytes`を10485760（10MiB）に設定することで、メモリをさらに減らすことができます。
+最後に、`min_insert_block_size_rows`を0に設定して（ブロックサイズの決定要因として無効にする）、`min_insert_block_size_bytes`を10485760（10MiB）に設定することでさらにメモリを減少できます。
 
 ```sql
 INSERT INTO pypi_v2
@@ -511,53 +518,53 @@ FROM pypi
 WHERE timestamp < '2024-12-17 09:00:00'
 SETTINGS max_insert_threads = 1, max_threads = 1, min_insert_block_size_rows = 0, min_insert_block_size_bytes = 10485760
 
-0行のセット。経過時間: 43.293秒。処理された行数: 15億行、33.48 GB (34.54万行/s., 773.36 MB/s.)
-ピークメモリ使用量: 218.64 MiB.
+0 rows in set. Elapsed: 43.293 sec. Processed 1.50 billion rows, 33.48 GB (34.54 million rows/s., 773.36 MB/s.)
+Peak memory usage: 218.64 MiB.
 ```
 
-最後に、ブロックサイズを低くすると部品が増え、マージ圧力が増加することに注意してください。これらの設定は慎重に変更する必要があります[こちら](/integrations/s3/performance#be-aware-of-merges)で議論されています。
-```
-### タイムスタンプまたは単調増加カラムなし {#no-timestamp-or-monotonically-increasing-column}
+最後に、ブロックサイズを小さくすると部品の数が増え、マージ圧力が高まることに注意してください。これらの設定は慎重に変更する必要があります。[こちらで詳しく説明しています](/integrations/s3/performance#be-aware-of-merges)。
 
-上記のプロセスは、ユーザーがタイムスタンプまたは単調増加カラムを持っていることに依存しています。場合によっては、これが単純に利用できないことがあります。この場合、ユーザーに取り込みを一時停止する必要がありますが、以前に説明したステップの多くを利用する以下のプロセスをお勧めします。
+### タイムスタンプまたは単調増加カラムがない場合 {#no-timestamp-or-monotonically-increasing-column}
 
-1. メインテーブルへの挿入を一時停止します。
-2. `CREATE AS`構文を使用して、メインターゲットテーブルの複製を作成します。
-3. [`ALTER TABLE ATTACH`](/sql-reference/statements/alter/partition#attach-partitionpart)を使用して、元のターゲットテーブルから複製にパーティションを添付します。 **注:** この添付操作は以前の移動とは異なります。ハードリンクを利用するため、元のテーブルのデータは保持されます。
+上記のプロセスは、ユーザーがタイムスタンプまたは単調増加カラムを持っていることを前提としています。場合によってはこれは単に利用できないことがあります。この場合、以下のプロセスを推奨します。これは、以前に概説された多くの手順を活用しますが、ユーザーは取り込みを一時停止する必要があります。
+
+1. 主テーブルへの挿入を一時停止します。
+2. `CREATE AS`文を使用して主ターゲットテーブルの複製を作成します。
+3. [`ALTER TABLE ATTACH`](/sql-reference/statements/alter/partition#attach-partitionpart)を使用して、元のターゲットテーブルから重複テーブルにパーティションを添付します。 **注意:** このアタッチ操作は、以前に使用した移動とは異なります。ハードリンクに依存してはいますが、元のテーブル内のデータは保存されます。
 4. 新しいマテリアライズドビューを作成します。
-5. 挿入を再開します。 **注:** 挿入はターゲットテーブルのみを更新し、複製は元のデータのみを参照します。
-6. マテリアライズドビューをバックフィルします。タイムスタンプのあるデータに対して上記で使用したのと同じプロセスを適用し、ソースとして複製テーブルを使用します。
+5. 挿入を再開します。 **注意:** 挿入はターゲットテーブルのみを更新し、重複テーブルは元のデータのみを参照します。
+6. マテリアライズドビューをバックフィルし、上記のタイムスタンプでデータに対して使用したプロセスを適用します。重複テーブルをソースとして使用します。
 
-以下の例では、PyPIと以前の新しいマテリアライズドビュー `pypi_downloads_per_day` を使用します（タイムスタンプが使用できないと仮定します）：
+次の例では、PyPIと以前の新しいマテリアライズドビュー`pypi_downloads_per_day`を使用し（タイムスタンプを使用できないと仮定）、考えてみましょう。
 
 ```sql
 SELECT count() FROM pypi
 
 ┌────count()─┐
-│ 2039988137 │ -- 20.4 億
+│ 2039988137 │ -- 2.04 billion
 └────────────┘
 
-1 行がセットに含まれています。経過時間: 0.003 秒。
+1 row in set. Elapsed: 0.003 sec.
 
--- (1) 挿入を一時停止
--- (2) 目標テーブルの複製を作成
+-- (1) Pause inserts
+-- (2) Create a duplicate of our target table
 
 CREATE TABLE pypi_v2 AS pypi
 
 SELECT count() FROM pypi_v2
 
 ┌────count()─┐
-│ 2039988137 │ -- 20.4 億
+│ 2039988137 │ -- 2.04 billion
 └────────────┘
 
-1 行がセットに含まれています。経過時間: 0.004 秒。
+1 row in set. Elapsed: 0.004 sec.
 
--- (3) 元のターゲットテーブルから複製にパーティションを添付します。
+-- (3) Attach partitions from the original target table to the duplicate.
 
 ALTER TABLE pypi_v2
  (ATTACH PARTITION tuple() FROM pypi)
 
--- (4) 新しいマテリアライズドビューを作成します。
+-- (4) Create our new materialized views
 
 CREATE TABLE pypi_downloads_per_day
 (
@@ -567,7 +574,6 @@ CREATE TABLE pypi_downloads_per_day
 )
 ENGINE = SummingMergeTree
 ORDER BY (project, hour)
-
 
 CREATE MATERIALIZED VIEW pypi_downloads_per_day_mv TO pypi_downloads_per_day
 AS SELECT
@@ -579,7 +585,7 @@ GROUP BY
     hour,
  project
 
--- (4) 挿入を再開します。ここで、単一の行を挿入してレプリケートします。
+-- (4) Restart inserts. We replicate here by inserting a single row.
 
 INSERT INTO pypi SELECT *
 FROM pypi
@@ -588,19 +594,19 @@ LIMIT 1
 SELECT count() FROM pypi
 
 ┌────count()─┐
-│ 2039988138 │ -- 20.4 億
+│ 2039988138 │ -- 2.04 billion
 └────────────┘
 
-1 行がセットに含まれています。経過時間: 0.003 秒。
+1 row in set. Elapsed: 0.003 sec.
 
--- pypi_v2が以前と同じ行数を含んでいることに注意してください。
+-- notice how pypi_v2 contains same number of rows as before
 
 SELECT count() FROM pypi_v2
 ┌────count()─┐
-│ 2039988137 │ -- 20.4 億
+│ 2039988137 │ -- 2.04 billion
 └────────────┘
 
--- (5) バックフィルをバックアップ pypi_v2 を使用して行います。
+-- (5) Backfill the view using the backup pypi_v2
 
 INSERT INTO pypi_downloads_per_day SELECT
  toStartOfHour(timestamp) as hour,
@@ -611,11 +617,11 @@ GROUP BY
     hour,
  project
 
-0 行がセットに含まれています。経過時間: 3.719 秒。処理された行数: 20.4 億、データサイズ: 47.15 GB (548.57 百万行/秒、12.68 GB/秒)。
+0 rows in set. Elapsed: 3.719 sec. Processed 2.04 billion rows, 47.15 GB (548.57 million rows/s., 12.68 GB/s.)
 
 DROP TABLE pypi_v2;
 ```
 
-次の最後から2番目のステップでは、前年に説明されたシンプルな `INSERT INTO SELECT` アプローチを使用して `pypi_downloads_per_day` にバックフィルを行います。これは、前述のNullテーブルアプローチを使用して強化することもでき、より強靭性のために複製テーブルをオプションで使用できます。
+最後から2番目のステップでは、先に説明したシンプルな`INSERT INTO SELECT`アプローチを利用して`pypi_downloads_per_day`をバックフィルします。このプロセスは、[上で示した](#using-a-null-table-engine-for-filling-materialized-views)Nullテーブルアプローチを使用して強化することもでき、重複テーブルを使用して耐障害性を高めます。
 
-この操作には挿入を一時停止する必要がありますが、中間操作は通常迅速に完了でき、データの中断を最小限に抑えます。
+この操作は挿入を一時停止する必要がありますが、中間操作は通常迅速に完了することができ、データの中断を最小限に抑えることができます。

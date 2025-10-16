@@ -1,24 +1,31 @@
 ---
-description: 'Документация для оператора SET'
-sidebar_label: 'SET'
+slug: '/sql-reference/statements/set'
+sidebar_label: SET
 sidebar_position: 50
-slug: /sql-reference/statements/set
+description: 'Документация для SET \x10\x015\x014'
 title: 'Оператор SET'
+doc_type: reference
 ---
-
-
 # Оператор SET
 
 ```sql
 SET param = value
 ```
 
-Присваивает `value` параметру [`setting`](/operations/settings/overview) для текущей сессии. Вы не можете изменять [серверные настройки](../../operations/server-configuration-parameters/settings.md) таким образом.
+Присваивает `value` параметру `param` [настройки](/operations/settings/overview) для текущей сессии. Вы не можете изменить [настройки сервера](../../operations/server-configuration-parameters/settings.md) таким образом.
 
-Вы также можете установить все значения из указанного профиля настроек в одном запросе.
+Также можно установить все значения из указанного профиля настроек в одном запросе.
 
 ```sql
 SET profile = 'profile-name-from-the-settings-file'
 ```
 
-Для получения дополнительной информации смотрите [Настройки](../../operations/settings/settings.md).
+Для булевых настроек, установленных в true, можно использовать сокращенный синтаксис, опуская присвоение значения. Когда указано только имя настройки, оно автоматически устанавливается в `1` (true).
+
+```sql
+-- These are equivalent:
+SET force_index_by_date = 1
+SET force_index_by_date
+```
+
+Для получения дополнительной информации см. [Настройки](../../operations/settings/settings.md).

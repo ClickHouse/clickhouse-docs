@@ -130,7 +130,7 @@ In the first row, we inserted all values using the `America/New_York` timezone.
 * `dt_2` and `dt64_2` didn't have a time zone specified, so they use the server's local time zone, which in this case is `Europe/London`.
 
 In the second row, we inserted all the values without a timezone, so the server's local time zone was used.
-As in the first row, `dt_1` and `dt_3` are converted to `Europe/Berlin`, while `dt_2` and `dt64_2` use the server's local time zone.
+As in the first row, `dt_1` and `dt64_1` are converted to `Europe/Berlin`, while `dt_2` and `dt64_2` use the server's local time zone.
 
 ## Date and time functions {#time-series-date-time-functions}
 

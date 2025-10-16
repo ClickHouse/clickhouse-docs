@@ -1,14 +1,14 @@
 ---
-sidebar_label: 'Explo'
+slug: '/integrations/explo'
+sidebar_label: Explo
 sidebar_position: 131
-slug: /integrations/explo
-keywords: ['clickhouse', 'Explo', 'connect', 'integrate', 'ui']
-description: 'Explo — это простой в использовании инструмент UI с открытым исходным кодом для задавания вопросов о ваших данных.'
+description: 'Explo — это простой в использовании инструмент пользовательского интерфейса'
 title: 'Подключение Explo к ClickHouse'
+keywords: ['clickhouse', 'Explo', 'connect', 'integrate', 'ui']
+doc_type: guide
 ---
-
 import Image from '@theme/IdealImage';
-import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import explo_01 from '@site/static/images/integrations/data-visualization/explo_01.png';
 import explo_02 from '@site/static/images/integrations/data-visualization/explo_02.png';
 import explo_03 from '@site/static/images/integrations/data-visualization/explo_03.png';
@@ -32,35 +32,35 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-Аналитика, ориентированная на клиента, для любой платформы. Создана для красивой визуализации. Разработана для простоты использования.
+Аналитика для клиентов на любой платформе. Создана для красивой визуализации. Разработана для простоты.
 
 ## Цель {#goal}
 
 В этом руководстве вы подключите свои данные из ClickHouse к Explo и визуализируете результаты. График будет выглядеть следующим образом:
-<Image img={explo_15} size="md" alt="Панель инструментов Explo" />
+<Image img={explo_15} size="md" alt="Панель мониторинга Explo" />
 
 <p/>
 
 :::tip Добавьте данные
-Если у вас нет набора данных для работы, вы можете добавить один из примеров. В этом руководстве используется набор данных [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md), поэтому вы можете выбрать его. Также есть несколько других наборов данных в той же категории документации.
+Если у вас нет набора данных для работы, вы можете добавить один из примеров. Это руководство использует набор данных [Цены в Великобритании](/getting-started/example-datasets/uk-price-paid.md), поэтому вы можете выбрать его. В той же категории документации есть несколько других наборов данных для изучения.
 :::
 
-## 1. Соберите свои данные для подключения {#1-gather-your-connection-details}
+## 1. Соберите детали подключения {#1-gather-your-connection-details}
 <ConnectionDetails />
 
-## 2.  Подключите Explo к ClickHouse {#2--connect-explo-to-clickhouse}
+## 2. Подключите Explo к ClickHouse {#2--connect-explo-to-clickhouse}
 
 1. Зарегистрируйтесь для получения учетной записи Explo.
 
-2. Нажмите на вкладку **data** в левой боковой панели.
+2. Нажмите на вкладку Explo **данные** в левом боковом меню.
 
-<Image img={explo_01} size="sm" alt="Вкладка Data" border />
+<Image img={explo_01} size="sm" alt="Вкладка Данные" border />
 
-3. Нажмите **Connect Data Source** в верхнем правом углу.
+3. Нажмите **Подключить источник данных** в правом верхнем углу.
 
 <Image img={explo_02} size="sm" alt="Подключить источник данных" border />
 
-4. Заполните информацию на странице **Getting Started**.
+4. Заполните информацию на странице **Начало работы**.
 
 <Image img={explo_03} size="md" alt="Начало работы" border />
 
@@ -68,11 +68,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <Image img={explo_04} size="md" alt="Clickhouse" border />
 
-6. Введите свои **Clickhouse Credentials**.
+6. Введите свои **учетные данные Clickhouse**.
 
 <Image img={explo_05} size="md" alt="Учетные данные" border />
 
-7. Настройте **Security**.
+7. Настройте **Безопасность**.
 
 <Image img={explo_06} size="md" alt="Безопасность" border />
 
@@ -81,56 +81,56 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 54.211.43.19, 52.55.98.121, 3.214.169.94, и 54.156.141.148
 `
 
-## 3. Создайте панель инструментов {#3-create-a-dashboard}
+## 3. Создайте панель мониторинга {#3-create-a-dashboard}
 
-1. Перейдите на вкладку **Dashboard** в левой навигационной панели.
+1. Перейдите на вкладку **Панель мониторинга** в левом боковом меню.
 
-<Image img={explo_07} size="sm" alt="Панель инструментов" border />
+<Image img={explo_07} size="sm" alt="Панель мониторинга" border />
 
-2. Нажмите **Create Dashboard** в верхнем правом углу и назовите свою панель инструментов. Вы создали панель инструментов!
+2. Нажмите **Создать панель мониторинга** в правом верхнем углу и назовите свою панель. Вы только что создали панель мониторинга!
 
-<Image img={explo_08} size="sm" alt="Создать панель инструментов" border />
+<Image img={explo_08} size="sm" alt="Создать панель мониторинга" border />
 
-3. Теперь вы должны увидеть экран, аналогичный этому:
+3. Теперь вы должны увидеть экран, похожий на следующий:
 
-<Image img={explo_09} size="md" alt="Панель инструментов Explo" border />
+<Image img={explo_09} size="md" alt="Панель мониторинга Explo" border />
 
 ## 4. Выполните SQL-запрос {#4-run-a-sql-query}
 
-1. Получите имя своей таблицы из правой боковой панели под названием вашей схемы. Затем введите следующую команду в редакторе вашего набора данных:
+1. Получите имя вашей таблицы в правом боковом меню под заголовком вашей схемы. Затем введите следующую команду в редакторе вашего набора данных:
 `
 SELECT * FROM YOUR_TABLE_NAME
 LIMIT 100
 `
 
-<Image img={explo_10} size="md" alt="Панель инструментов Explo" border />
+<Image img={explo_10} size="md" alt="Панель мониторинга Explo" border />
 
-2. Теперь нажмите выполнить и перейдите на вкладку предварительного просмотра, чтобы увидеть свои данные.
+2. Теперь нажмите "Запустить" и перейдите на вкладку "Предварительный просмотр", чтобы увидеть ваши данные.
 
-<Image img={explo_11} size="md" alt="Панель инструментов Explo" border />
+<Image img={explo_11} size="md" alt="Панель мониторинга Explo" border />
 
 ## 5. Постройте график {#5-build-a-chart}
 
-1. С левой стороны перетащите иконку графика на экран.
+1. С левой стороны перетащите значок столбчатой диаграммы на экран.
 
-<Image img={explo_16} size="sm" alt="Панель инструментов Explo" border />
+<Image img={explo_16} size="sm" alt="Панель мониторинга Explo" border />
 
-2. Выберите набор данных. Теперь вы должны увидеть экран, подобный следующему:
+2. Выберите набор данных. Теперь вы должны увидеть экран, похожий на следующий:
 
-<Image img={explo_12} size="sm" alt="Панель инструментов Explo" border />
+<Image img={explo_12} size="sm" alt="Панель мониторинга Explo" border />
 
 3. Заполните **county** по оси X и **Price** в разделе оси Y следующим образом:
 
-<Image img={explo_13} size="sm" alt="Панель инструментов Explo" border />
+<Image img={explo_13} size="sm" alt="Панель мониторинга Explo" border />
 
-4. Теперь измените агрегацию на **AVG**.
+4. Теперь измените агрегирование на **AVG**.
 
-<Image img={explo_14} size="sm" alt="Панель инструментов Explo" border />
+<Image img={explo_14} size="sm" alt="Панель мониторинга Explo" border />
 
-5. Теперь у нас есть средняя цена домов, распределенная по ценам!
+5. Теперь у нас есть средняя цена домов, разбитая по ценам!
 
-<Image img={explo_15} size="md" alt="Панель инструментов Explo" />
+<Image img={explo_15} size="md" alt="Панель мониторинга Explo" />
 
-## Узнайте больше {#learn-more}
+## Узнать больше {#learn-more}
 
-Найдите больше информации о Explo и о том, как строить панели инструментов, посетив <a href="https://docs.explo.co/" target="_blank">документацию Explo</a>.
+Найдите дополнительную информацию о Explo и о том, как создавать панели мониторинга, <a href="https://docs.explo.co/" target="_blank">посетив документацию Explo</a>.

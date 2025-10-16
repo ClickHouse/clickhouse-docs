@@ -1,28 +1,26 @@
 ---
 slug: '/examples/aggregate-function-combinators/sumSimpleState'
-title: 'sumSimpleState'
-description: 'Пример использования комбинатора sumSimpleState'
+sidebar_label: sumSimpleState
+description: 'Пример использования комбинатаора sumSimpleState'
+title: sumSimpleState
 keywords: ['sum', 'state', 'simple', 'combinator', 'examples', 'sumSimpleState']
-sidebar_label: 'sumSimpleState'
+doc_type: reference
 ---
-
-
 # sumSimpleState {#sumsimplestate}
 
 ## Описание {#description}
 
-Комбинатор [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) может быть применен к функции [`sum`](/sql-reference/aggregate-functions/reference/sum) для возвращения суммы по всем входным значениям. Он возвращает результат с типом [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction).
+Комбинатор [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) может быть применен к функции [`sum`](/sql-reference/aggregate-functions/reference/sum), чтобы вернуть сумму всех входных значений. Он возвращает результат с типом [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction).
 
 ## Пример использования {#example-usage}
 
-### Отслеживание голосов за и против {#tracking-post-votes}
+### Учет голосов "за" и "против" {#tracking-post-votes}
 
-Рассмотрим практический пример, использующий таблицу, которая отслеживает голоса по публикациям. 
-Для каждой публикации нам нужно поддерживать текущие итоги голосов за, голосов против и общий балл. Использование типа `SimpleAggregateFunction` с функцией sum подходит для этого случая, так как нам нужно хранить только текущие итоги, а не все состояние агрегации. В результате это будет быстрее и не потребует слияния частичных состояний агрегации.
+Рассмотрим практический пример на основе таблицы, которая отслеживает голоса за посты. Для каждого поста мы хотим поддерживать текущие итоги голосов "за", "против" и общий счет. Использование типа `SimpleAggregateFunction` с суммой подходит для этой задачи, так как нам нужно хранить только текущие итоги, а не все состояние агрегации. В результате это будет быстрее и не потребует слияния частичных состояний агрегации.
 
 Сначала мы создаем таблицу для сырых данных:
 
-```sql title="Запрос"
+```sql title="Query"
 CREATE TABLE raw_votes
 (
     post_id UInt32,
@@ -46,24 +44,24 @@ ENGINE = AggregatingMergeTree()
 ORDER BY post_id;
 ```
 
-Затем мы создаем материализованное представление с колонками типа `SimpleAggregateFunction`:
-       
+Далее мы создаем материализованное представление с колонками типа `SimpleAggregateFunction`:
+
 ```sql
 CREATE MATERIALIZED VIEW mv_vote_processor TO vote_aggregates
 AS
 SELECT
   post_id,
-  -- Начальное значение для состояния суммы (1 если голос за, 0 в противном случае)
+  -- Initial value for sum state (1 if upvote, 0 otherwise)
   toUInt64(vote_type = 'upvote') AS upvotes,
-  -- Начальное значение для состояния суммы (1 если голос против, 0 в противном случае)
+  -- Initial value for sum state (1 if downvote, 0 otherwise)
   toUInt64(vote_type = 'downvote') AS downvotes,
-  -- Начальное значение для состояния суммы (1 за голос, -1 против голоса)
+  -- Initial value for sum state (1 for upvote, -1 for downvote)
   toInt64(vote_type) AS score
 FROM raw_votes;
 ```
 
-Вставить тестовые данные:
-       
+Вставим тестовые данные:
+
 ```sql
 INSERT INTO raw_votes VALUES
     (1, 'upvote'),
@@ -74,7 +72,7 @@ INSERT INTO raw_votes VALUES
     (3, 'downvote');
 ```
 
-Запрос к материализованному представлению, используя комбинатор `SimpleState`:
+Запросим материализованное представление, используя комбинатор `SimpleState`:
 
 ```sql
 SELECT
@@ -82,7 +80,7 @@ SELECT
   sum(upvotes) AS total_upvotes,
   sum(downvotes) AS total_downvotes,
   sum(score) AS total_score
-FROM vote_aggregates -- Запрос к целевой таблице
+FROM vote_aggregates -- Query the target table
 GROUP BY post_id
 ORDER BY post_id ASC;
 ```

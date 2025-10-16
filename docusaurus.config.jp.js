@@ -28,6 +28,9 @@ const config = {
       defer: true, // execute after document parsing, but before firing DOMContentLoaded event
     }
   ],
+  clientModules: [
+    require.resolve('./src/clientModules/utmPersistence.js')
+  ],
   // Settings for Docusaurus Faster - build optimizations
   future: {
     experimental_faster: {
@@ -162,9 +165,11 @@ const config = {
         theme: {
           customCss: [require.resolve("./src/css/custom.scss")],
         },
-        googleTagManager: {
-          containerId: 'GTM-WTNTDT7W',
-        },
+        ...(process.env.VERCEL_ENV !== 'preview' && {
+          googleTagManager: {
+            containerId: 'GTM-WTNTDT7W',
+          },
+        }),
       }),
     ],
   ],

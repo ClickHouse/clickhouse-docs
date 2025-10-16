@@ -1,15 +1,16 @@
 ---
-alias: []
-description: 'Avroフォーマットのドキュメント'
-input_format: true
-keywords:
+'alias': []
+'description': 'Avro フォーマットのドキュメント'
+'input_format': true
+'keywords':
 - 'Avro'
-output_format: true
-slug: '/interfaces/formats/Avro'
-title: 'Avro'
+'output_format': true
+'slug': '/interfaces/formats/Avro'
+'title': 'Avro'
+'doc_type': 'reference'
 ---
 
-import DataTypesMatching from './_snippets/data-types-matching.md'
+import DataTypeMapping from './_snippets/data-types-matching.md'
 
 | Input | Output | Alias |
 |-------|--------|-------|
@@ -17,56 +18,65 @@ import DataTypesMatching from './_snippets/data-types-matching.md'
 
 ## 説明 {#description}
 
-[Apache Avro](https://avro.apache.org/) は、Apache の Hadoop プロジェクト内で開発された行指向のデータシリアル化フレームワークです。
-ClickHouse の `Avro` フォーマットは、[Avro データファイル](https://avro.apache.org/docs/current/spec.html#Object+Container+Files)の読み書きをサポートしています。
+[Apache Avro](https://avro.apache.org/) は、効率的なデータ処理のためにバイナリエンコーディングを使用する行指向のシリアル化フォーマットです。`Avro` フォーマットは、[Avro データファイル](https://avro.apache.org/docs/++version++/specification/#object-container-files)の読み書きをサポートしています。このフォーマットは、埋め込まれたスキーマを持つ自己記述メッセージを期待します。スキーマレジストリと共に Avro を使用している場合は、[`AvroConfluent`](./AvroConfluent.md) フォーマットを参照してください。
 
-## データ型の対応 {#data-types-matching}
+## データ型のマッピング {#data-type-mapping}
 
-<DataTypesMatching/>
+<DataTypeMapping/>
 
-## 使用例 {#example-usage}
+## フォーマット設定 {#format-settings}
 
-### データの挿入 {#inserting-data}
+| 設定                                             | 説明                                                                                                         | デフォルト |
+|--------------------------------------------------|--------------------------------------------------------------------------------------------------------------|-----------|
+| `input_format_avro_allow_missing_fields`         | スキーマにフィールドが見つからなかった場合、エラーを投げる代わりにデフォルト値を使用するかどうか。                         | `0`       |
+| `input_format_avro_null_as_default`              | 非 Nullable カラムに `null` 値を挿入する場合、エラーを投げる代わりにデフォルト値を使用するかどうか。                      | `0`       |
+| `output_format_avro_codec`                        | Avro 出力ファイルに対する圧縮アルゴリズム。可能な値：`null`、`deflate`、`snappy`、`zstd`。                     |           |
+| `output_format_avro_sync_interval`               | Avro ファイル内の同期マーカーの頻度（バイト数単位）。                                                           | `16384`   |
+| `output_format_avro_string_column_pattern`       | Avro 文字列型マッピングのための `String` カラムを識別する正規表現。デフォルトでは、ClickHouse の `String` カラムは Avro `bytes` 型として書き込まれます。 |           |
+| `output_format_avro_rows_in_file`                | Avro 出力ファイルあたりの最大行数。この制限に達すると、新しいファイルが作成されます（ストレージシステムがファイル分割をサポートしている場合）。       | `1`       |
 
-Avro ファイルから ClickHouse テーブルにデータを挿入するには：
+## 例 {#examples}
+
+### Avro データの読み込み {#reading-avro-data}
+
+Avro ファイルから ClickHouse テーブルにデータを読み込むには：
 
 ```bash
 $ cat file.avro | clickhouse-client --query="INSERT INTO {some_table} FORMAT Avro"
 ```
 
-取り込む Avro ファイルのルートスキーマは `record` タイプでなければなりません。
+取り込まれた Avro ファイルのルートスキーマは `record` 型である必要があります。
 
 テーブルのカラムと Avro スキーマのフィールドの対応を見つけるために、ClickHouse はそれらの名前を比較します。
 この比較は大文字小文字を区別し、未使用のフィールドはスキップされます。
 
-ClickHouse テーブルカラムのデータ型は、挿入される Avro データの対応するフィールドと異なる場合があります。データを挿入する際、ClickHouse は上記のテーブルに従ってデータ型を解釈し、その後に[キャスト](/sql-reference/functions/type-conversion-functions#cast)して対応するカラムタイプに変換します。
+ClickHouse テーブルのカラムのデータ型は、挿入された Avro データの対応するフィールドと異なる場合があります。データを挿入する際、ClickHouse は上のテーブルに基づいてデータ型を解釈し、その後に [キャスト](/sql-reference/functions/type-conversion-functions#cast) して対応するカラム型に変換します。
 
-データをインポートする際に、スキーマにフィールドが見つからず、設定 [`input_format_avro_allow_missing_fields`](/operations/settings/settings-formats.md/#input_format_avro_allow_missing_fields) が有効になっている場合、エラーをスローするのではなく、デフォルト値が使用されます。
+データをインポートする際、スキーマ内にフィールドが見つからず、設定 [`input_format_avro_allow_missing_fields`](/operations/settings/settings-formats.md/#input_format_avro_allow_missing_fields) が有効になっている場合、エラーを投げる代わりにデフォルト値が使用されます。
 
-### データの選択 {#selecting-data}
+### Avro データの書き込み {#writing-avro-data}
 
-ClickHouse テーブルから Avro ファイルにデータを選択するには：
+ClickHouse テーブルから Avro ファイルにデータを書き込むには：
 
 ```bash
 $ clickhouse-client --query="SELECT * FROM {some_table} FORMAT Avro" > file.avro
 ```
 
-カラム名は以下の条件を満たさなければなりません：
+カラム名は以下を満たす必要があります：
 
 - `[A-Za-z_]` で始まる
-- 続けて `[A-Za-z0-9_]` のみが使用される
+- その後は `[A-Za-z0-9_]` のみ
 
-出力 Avro ファイルの圧縮と同期間隔は、設定 [`output_format_avro_codec`](/operations/settings/settings-formats.md/#output_format_avro_codec) および [`output_format_avro_sync_interval`](/operations/settings/settings-formats.md/#output_format_avro_sync_interval) によってそれぞれ構成できます。
+Avro ファイルの出力圧縮と同期間隔はそれぞれ、[`output_format_avro_codec`](/operations/settings/settings-formats.md/#output_format_avro_codec) および [`output_format_avro_sync_interval`](/operations/settings/settings-formats.md/#output_format_avro_sync_interval) 設定を使用して構成できます。
 
-### 例データ {#example-data}
+### Avro スキーマの推測 {#inferring-the-avro-schema}
 
-ClickHouse の [`DESCRIBE`](/sql-reference/statements/describe-table) 関数を使用することで、次の例のように Avro ファイルの推測フォーマットを迅速に表示できます。
-この例には、ClickHouse S3 パブリックバケットにある公開アクセス可能な Avro ファイルの URL が含まれています：
+ClickHouse の [`DESCRIBE`](/sql-reference/statements/describe-table) 関数を使用すると、次の例のように Avro ファイルの推測された形式を迅速に表示できます。
+この例には、ClickHouse S3 パブリックバケット内の公にアクセス可能な Avro ファイルの URL が含まれています：
 
-```sql title="クエリ"
+```sql
 DESCRIBE url('https://clickhouse-public-datasets.s3.eu-central-1.amazonaws.com/hits.avro','Avro);
-```
-```response title="レスポンス"
+
 ┌─name───────────────────────┬─type────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ WatchID                    │ Int64           │              │                    │         │                  │                │
 │ JavaEnable                 │ Int32           │              │                    │         │                  │                │
@@ -84,15 +94,3 @@ DESCRIBE url('https://clickhouse-public-datasets.s3.eu-central-1.amazonaws.com/h
 │ RequestTry                 │ Int32           │              │                    │         │                  │                │
 └────────────────────────────┴─────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
-
-## フォーマット設定 {#format-settings}
-
-| 設定                                     | 説明                                                                                         | デフォルト |
-|------------------------------------------|----------------------------------------------------------------------------------------------|-----------|
-| `input_format_avro_allow_missing_fields` | Avro/AvroConfluent フォーマット用：スキーマにフィールドが見つからない場合、エラーの代わりにデフォルト値を使用 | `0`       |
-| `input_format_avro_null_as_default`      | Avro/AvroConfluent フォーマット用：null と非 Nullable カラムの場合にデフォルトを挿入する                |   `0`     |
-| `format_avro_schema_registry_url`        | AvroConfluent フォーマット用：Confluent スキーマレジストリ URL。                                        |           |
-| `output_format_avro_codec`               | 出力に使用される圧縮コーデック。可能な値：'null', 'deflate', 'snappy', 'zstd'。                          |           |
-| `output_format_avro_sync_interval`       | バイト単位の同期間隔。                                                                           | `16384`   |
-| `output_format_avro_string_column_pattern`| Avro フォーマット用：AVRO 文字列として選択する String カラムの正規表現。                             |           |
-| `output_format_avro_rows_in_file`        | ファイル内の最大行数（ストレージが許可する場合）                                                    | `1`       |

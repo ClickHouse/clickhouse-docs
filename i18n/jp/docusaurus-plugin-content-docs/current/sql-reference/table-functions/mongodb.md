@@ -1,13 +1,11 @@
 ---
-description: 'Allows `SELECT` queries to be performed on data that is stored on
-  a remote MongoDB server.'
-sidebar_label: 'mongodb'
-sidebar_position: 135
-slug: '/sql-reference/table-functions/mongodb'
-title: 'mongodb'
+'description': 'リモートMongoDBサーバーに保存されたデータに対して`SELECT`クエリを実行できるようにします。'
+'sidebar_label': 'mongodb'
+'sidebar_position': 135
+'slug': '/sql-reference/table-functions/mongodb'
+'title': 'mongodb'
+'doc_type': 'reference'
 ---
-
-
 
 
 # mongodb テーブル関数
@@ -22,37 +20,37 @@ mongodb(host:port, database, collection, user, password, structure[, options[, o
 
 ## 引数 {#arguments}
 
-| 引数          | 説明                                                                                                   |
-|---------------|--------------------------------------------------------------------------------------------------------|
-| `host:port`   | MongoDB サーバーのアドレス。                                                                           |
-| `database`    | リモートデータベースの名前。                                                                           |
-| `collection`  | リモートコレクションの名前。                                                                           |
-| `user`        | MongoDB ユーザー。                                                                                     |
-| `password`    | ユーザーパスワード。                                                                                   |
-| `structure`   | この関数から返される ClickHouse テーブルのスキーマ。                                                  |
-| `options`     | MongoDB 接続文字列オプション（任意のパラメータ）。                                                    |
-| `oid_columns` | WHERE 句で `oid` として扱うべきカラムのカンマ区切りリスト。デフォルトでは `_id`。                     |
+| 引数            | 説明                                                                                                |
+|----------------|-----------------------------------------------------------------------------------------------------|
+| `host:port`    | MongoDB サーバーのアドレス。                                                                       |
+| `database`     | リモートデータベース名。                                                                           |
+| `collection`   | リモートコレクション名。                                                                           |
+| `user`         | MongoDB ユーザー。                                                                                 |
+| `password`     | ユーザーのパスワード。                                                                              |
+| `structure`    | この関数から返される ClickHouse テーブルのスキーマ。                                                |
+| `options`      | MongoDB 接続文字列のオプション（任意のパラメータ）。                                                  |
+| `oid_columns`  | WHERE 句で `oid` として扱うべきカラムのカンマ区切りリスト。デフォルトは `_id`。                       |
 
 :::tip
-MongoDB Atlas クラウドオファリングを使用している場合は、次のオプションを追加してください：
+MongoDB Atlas クラウドサービスを使用している場合は、これらのオプションを追加してください：
 
 ```ini
 'connectTimeoutMS=10000&ssl=true&authSource=admin'
 ```
 :::
 
-URI による接続も可能です：
+URI で接続することも可能です：
 
 ```sql
 mongodb(uri, collection, structure[, oid_columns])
 ```
 
-| 引数          | 説明                                                                                                   |
-|---------------|--------------------------------------------------------------------------------------------------------|
-| `uri`         | 接続文字列。                                                                                          |
-| `collection`  | リモートコレクションの名前。                                                                           |
-| `structure`   | この関数から返される ClickHouse テーブルのスキーマ。                                                  |
-| `oid_columns` | WHERE 句で `oid` として扱うべきカラムのカンマ区切りリスト。デフォルトでは `_id`。                     |
+| 引数            | 説明                                                                                                |
+|----------------|-----------------------------------------------------------------------------------------------------|
+| `uri`          | 接続文字列。                                                                                       |
+| `collection`   | リモートコレクション名。                                                                           |
+| `structure`    | この関数から返される ClickHouse テーブルのスキーマ。                                                |
+| `oid_columns`  | WHERE 句で `oid` として扱うべきカラムのカンマ区切りリスト。デフォルトは `_id`。                       |
 
 ## 戻り値 {#returned_value}
 
@@ -60,7 +58,7 @@ mongodb(uri, collection, structure[, oid_columns])
 
 ## 例 {#examples}
 
-`test` という MongoDB データベースに `my_collection` というコレクションが定義されているとしましょう。いくつかのドキュメントを挿入します：
+MongoDB データベース `test` に定義されたコレクション `my_collection` があり、いくつかのドキュメントを挿入したとします：
 
 ```sql
 db.createUser({user:"test_user",pwd:"password",roles:[{role:"readWrite",db:"test"}]})

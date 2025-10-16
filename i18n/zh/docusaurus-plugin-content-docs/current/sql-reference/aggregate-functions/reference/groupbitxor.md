@@ -1,14 +1,15 @@
 ---
-'description': '对一系列数字应用位运算 `XOR`。'
+'description': '对一系列数字应用按位 `XOR` 。'
 'sidebar_position': 153
 'slug': '/sql-reference/aggregate-functions/reference/groupbitxor'
 'title': 'groupBitXor'
+'doc_type': 'reference'
 ---
 
 
 # groupBitXor
 
-对一系列数字执行按位 `XOR` 操作。
+对一系列数字应用按位 `XOR` 运算。
 
 ```sql
 groupBitXor(expr)

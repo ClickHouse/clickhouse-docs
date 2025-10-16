@@ -1,23 +1,22 @@
 ---
-alias: []
+slug: '/interfaces/formats/PrettyCompactNoEscapesMonoBlock'
 description: 'Документация для формата PrettyCompactNoEscapesMonoBlock'
-input_format: false
+title: PrettyCompactNoEscapesMonoBlock
 keywords: ['PrettyCompactNoEscapesMonoBlock']
+doc_type: reference
+input_format: false
 output_format: true
-slug: /interfaces/formats/PrettyCompactNoEscapesMonoBlock
-title: 'PrettyCompactNoEscapesMonoBlock'
 ---
-
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| Вход | Выход  | Псевдоним |
+| Input | Output  | Alias |
 |-------|---------|-------|
 | ✗     | ✔       |       |
 
 ## Описание {#description}
 
-Отличается от формата [`PrettyCompactNoEscapes`](./PrettyCompactNoEscapes.md) тем, что до `10,000` строк буферизуются, 
-а затем выводятся как одна таблица, а не по [блокам](/development/architecture#block).
+Отличается от формата [`PrettyCompactNoEscapes`](./PrettyCompactNoEscapes.md) тем, что буферизуются до `10,000` строк, 
+после чего выводится в виде одной таблицы, а не по [блокам](/development/architecture#block).
 
 ## Пример использования {#example-usage}
 

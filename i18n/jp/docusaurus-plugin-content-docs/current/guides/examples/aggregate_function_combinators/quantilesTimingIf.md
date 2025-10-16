@@ -1,28 +1,27 @@
 ---
-slug: '/examples/aggregate-function-combinators/quantilesTimingIf'
-title: 'quantilesTimingIf'
-description: '使用quantilesTimingIf結合子的示例'
-keywords:
+'slug': '/examples/aggregate-function-combinators/quantilesTimingIf'
+'title': 'quantilesTimingIf'
+'description': 'quantilesTimingIf コンビネータを使用した例'
+'keywords':
 - 'quantilesTiming'
 - 'if'
 - 'combinator'
 - 'examples'
 - 'quantilesTimingIf'
-sidebar_label: 'quantilesTimingIf'
+'sidebar_label': 'quantilesTimingIf'
+'doc_type': 'reference'
 ---
-
-
 
 
 # quantilesTimingIf {#quantilestimingif}
 
-## Description {#description}
+## 説明 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if)コンビネータは、`quantilesTiming`関数に適用でき、条件が真である行のタイミング値の分位数を計算するために、`quantilesTimingIf`集計コンビネータ関数を使用します。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータは、行が条件を満たす場合のタイミング値の分位数を計算するために [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming) 関数に適用できます。これを使用して、`quantilesTimingIf` 集約コンビネータ関数を利用します。
 
-## Example Usage {#example-usage}
+## 使用例 {#example-usage}
 
-この例では、異なるエンドポイントのAPI応答時間を格納するテーブルを作成し、成功したリクエストの応答時間の分位数を計算するために`quantilesTimingIf`を使用します。
+この例では、異なるエンドポイントのAPI応答時間を保存するテーブルを作成し、成功したリクエストの応答時間の分位数を計算するために `quantilesTimingIf` を使用します。
 
 ```sql title="Query"
 CREATE TABLE api_responses(
@@ -64,14 +63,14 @@ FROM api_responses
 GROUP BY endpoint;
 ```
 
-`quantilesTimingIf`関数は、成功したリクエスト（is_successful = 1）のみに対して分位数を計算します。返される配列には、次の順序で分位数が含まれます：
-- 0 （最小値）
-- 0.25 （第一四分位数）
-- 0.5 （中央値）
-- 0.75 （第三四分位数）
-- 0.95 （95パーセンタイル）
-- 0.99 （99パーセンタイル）
-- 1.0 （最大値）
+`quantilesTimingIf` 関数は、成功したリクエスト（is_successful = 1）のみ分位数を計算します。返される配列には、以下の分位数が順番に含まれています：
+- 0 (最小値)
+- 0.25 (第1四分位数)
+- 0.5 (中央値)
+- 0.75 (第3四分位数)
+- 0.95 (95パーセンタイル)
+- 0.99 (99パーセンタイル)
+- 1.0 (最大値)
 
 ```response title="Response"
    ┌─endpoint─┬─response_time_quantiles─────────────────────────────────────────────┐
@@ -81,6 +80,6 @@ GROUP BY endpoint;
    └──────────┴─────────────────────────────────────────────────────────────────────┘
 ```
 
-## See also {#see-also}
+## 参照 {#see-also}
 - [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

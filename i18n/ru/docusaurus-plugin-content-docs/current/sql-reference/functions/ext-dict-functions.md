@@ -1,19 +1,17 @@
 ---
-description: 'Документация для Функций работы со Словарями'
-sidebar_label: 'Словари'
-sidebar_position: 50
-slug: /sql-reference/functions/ext-dict-functions
+slug: '/sql-reference/functions/ext-dict-functions'
+sidebar_label: Словари
+description: 'Документация для функций для работы со словарями'
 title: 'Функции для работы со Словарями'
+doc_type: reference
 ---
-
-
-# Функции для работы со Словарями
+# Функции для работы со словарями
 
 :::note
-Для словарей, созданных с помощью [DDL-запросов](../../sql-reference/statements/create/dictionary.md), параметр `dict_name` должен быть полностью указан, например, `<database>.<dict_name>`. В противном случае используется текущая база данных.
+Для словарей, созданных с помощью [DDL-запросов](../../sql-reference/statements/create/dictionary.md), параметр `dict_name` должен быть полностью указан, например, `<database>.<dict_name>`. В противном случае будет использована текущая база данных.
 :::
 
-Для получения информации о подключении и конфигурации словарей смотрите [Словари](../../sql-reference/dictionaries/index.md).
+Для получения информации о подключении и настройке словарей смотрите [Словари](../../sql-reference/dictionaries/index.md).
 
 ## dictGet, dictGetOrDefault, dictGetOrNull {#dictget-dictgetordefault-dictgetornull}
 
@@ -28,21 +26,21 @@ dictGetOrNull('dict_name', attr_name, id_expr)
 **Аргументы**
 
 - `dict_name` — Название словаря. [Строковый литерал](/sql-reference/syntax#string).
-- `attr_names` — Название колонки словаря, [Строковый литерал](/sql-reference/syntax#string), или кортеж названий колонок, [Кортеж](/sql-reference/data-types/tuple)([Строковый литерал](/sql-reference/syntax#string)).
-- `id_expr` — Значение ключа. [Выражение](/sql-reference/syntax#expressions), возвращающее значение типа ключа словаря или [Кортеж](../data-types/tuple.md)-типа в зависимости от конфигурации словаря.
-- `default_value_expr` — Значение, возвращаемое, если словарь не содержит строки с ключом `id_expr`. [Выражение](/sql-reference/syntax#expressions) или [Кортеж](../data-types/tuple.md)([Выражение](/sql-reference/syntax#expressions)), возвращающее значение (или значения) в типах данных, настроенных для атрибута `attr_names`.
+- `attr_names` — Название колонки словаря, [Строковый литерал](/sql-reference/syntax#string) или кортеж названий колонок, [Кортеж](/sql-reference/data-types/tuple)([Строковый литерал](/sql-reference/syntax#string).
+- `id_expr` — Значение ключа. [Выражение](/sql-reference/syntax#expressions), возвращающее значение типа ключа словаря или значение типа [Кортеж](../data-types/tuple.md) в зависимости от конфигурации словаря.
+- `default_value_expr` — Значения, возвращаемые если словарь не содержит строки с ключом `id_expr`. [Выражение](/sql-reference/syntax#expressions) или [Кортеж](../data-types/tuple.md)([Выражение](/sql-reference/syntax#expressions)), возвращающее значение (или значения) в типах данных, настроенных для атрибута `attr_names`.
 
 **Возвращаемое значение**
 
-- Если ClickHouse успешно разбирает атрибут в [типе данных атрибута](/sql-reference/dictionaries#dictionary-key-and-fields), функции возвращают значение атрибута словаря, соответствующее `id_expr`.
+- Если ClickHouse успешно анализирует атрибут в [типе данных атрибута](/sql-reference/dictionaries#dictionary-key-and-fields), функции возвращают значение атрибута словаря, соответствующее `id_expr`.
 
-- Если ключа, соответствующего `id_expr`, нет в словаре, то:
+- Если в словаре нет ключа, соответствующего `id_expr`, тогда:
 
         - `dictGet` возвращает содержимое элемента `<null_value>`, указанного для атрибута в конфигурации словаря.
-        - `dictGetOrDefault` возвращает значение, переданное в качестве параметра `default_value_expr`.
+        - `dictGetOrDefault` возвращает значение, переданное как параметр `default_value_expr`.
         - `dictGetOrNull` возвращает `NULL`, если ключ не найден в словаре.
 
-ClickHouse вызывает исключение, если он не может разобрать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse выбрасывает исключение, если он не может разобрать значение атрибута или если значение не соответствует типу данных атрибута.
 
 **Пример для словаря с простым ключом**
 
@@ -53,7 +51,7 @@ ClickHouse вызывает исключение, если он не может 
 2,2
 ```
 
-Первая колонка — `id`, вторая колонка — `c1`.
+Первый столбец — `id`, второй столбец — `c1`.
 
 Настройте словарь:
 
@@ -103,7 +101,7 @@ LIMIT 3;
 └─────┴────────┘
 ```
 
-**Пример для словаря с комплексным ключом**
+**Пример для словаря со сложным ключом**
 
 Создайте текстовый файл `ext-dict-mult.csv`, содержащий следующее:
 
@@ -113,7 +111,7 @@ LIMIT 3;
 3,3,'3'
 ```
 
-Первая колонка — `id`, вторая колонка — `c1`, третья колонка — `c2`.
+Первый столбец — `id`, второй — `c1`, третий — `c2`.
 
 Настройте словарь:
 
@@ -170,7 +168,7 @@ LIMIT 3;
 
 **Пример для словаря с диапазоном ключей**
 
-Исходная таблица:
+Входная таблица:
 
 ```sql
 CREATE TABLE range_key_dictionary_source_table
@@ -242,7 +240,7 @@ dictHas('dict_name', id_expr)
 **Аргументы**
 
 - `dict_name` — Название словаря. [Строковый литерал](/sql-reference/syntax#string).
-- `id_expr` — Значение ключа. [Выражение](/sql-reference/syntax#expressions), возвращающее значение типа ключа словаря или [Кортеж](../data-types/tuple.md)-типа в зависимости от конфигурации словаря.
+- `id_expr` — Значение ключа. [Выражение](/sql-reference/syntax#expressions), возвращающее значение типа ключа словаря или значение типа [Кортеж](../data-types/tuple.md) в зависимости от конфигурации словаря.
 
 **Возвращаемое значение**
 
@@ -266,11 +264,11 @@ dictGetHierarchy('dict_name', key)
 
 **Возвращаемое значение**
 
-- Родители для ключа. [Array(UInt64)](../data-types/array.md).
+- Родители для ключа. [Массив(UInt64)](../data-types/array.md).
 
 ## dictIsIn {#dictisin}
 
-Проверяет предка ключа через всю иерархическую цепочку в словаре.
+Проверяет предка ключа на протяжении всей иерархической цепочки в словаре.
 
 ```sql
 dictIsIn('dict_name', child_id_expr, ancestor_id_expr)
@@ -279,13 +277,13 @@ dictIsIn('dict_name', child_id_expr, ancestor_id_expr)
 **Аргументы**
 
 - `dict_name` — Название словаря. [Строковый литерал](/sql-reference/syntax#string).
-- `child_id_expr` — Ключ, который необходимо проверить. [Выражение](/sql-reference/syntax#expressions), возвращающее значение типа [UInt64](../data-types/int-uint.md).
+- `child_id_expr` — Ключ, который нужно проверить. [Выражение](/sql-reference/syntax#expressions), возвращающее значение типа [UInt64](../data-types/int-uint.md).
 - `ancestor_id_expr` — Предполагаемый предок ключа `child_id_expr`. [Выражение](/sql-reference/syntax#expressions), возвращающее значение типа [UInt64](../data-types/int-uint.md).
 
 **Возвращаемое значение**
 
 - 0, если `child_id_expr` не является потомком `ancestor_id_expr`. [UInt8](../data-types/int-uint.md).
-- 1, если `child_id_expr` является потомком `ancestor_id_expr` или `child_id_expr` является `ancestor_id_expr`. [UInt8](../data-types/int-uint.md).
+- 1, если `child_id_expr` является потомком `ancestor_id_expr` или если `child_id_expr` является `ancestor_id_expr`. [UInt8](../data-types/int-uint.md).
 
 ## dictGetChildren {#dictgetchildren}
 
@@ -304,7 +302,7 @@ dictGetChildren(dict_name, key)
 
 **Возвращаемые значения**
 
-- Потомки первого уровня для ключа. [Array](../data-types/array.md)([UInt64](../data-types/int-uint.md)).
+- Потомки первого уровня для ключа. [Массив](../data-types/array.md)([UInt64](../data-types/int-uint.md)).
 
 **Пример**
 
@@ -336,7 +334,7 @@ SELECT dictGetChildren('hierarchy_flat_dictionary', number) FROM system.numbers 
 
 ## dictGetDescendant {#dictgetdescendant}
 
-Возвращает всех потомков, как если бы функция [dictGetChildren](#dictgetchildren) была применена `level` раз рекурсивно.
+Возвращает всех потомков, как если бы функция [dictGetChildren](#dictgetchildren) применялась `level` раз рекурсивно.
 
 **Синтаксис**
 
@@ -352,7 +350,7 @@ dictGetDescendants(dict_name, key, level)
 
 **Возвращаемые значения**
 
-- Потомки для ключа. [Array](../data-types/array.md)([UInt64](../data-types/int-uint.md)).
+- Потомки для ключа. [Массив](../data-types/array.md)([UInt64](../data-types/int-uint.md)).
 
 **Пример**
 
@@ -398,9 +396,9 @@ SELECT dictGetDescendants('hierarchy_flat_dictionary', number, 1) FROM system.nu
 
 ## dictGetAll {#dictgetall}
 
-Извлекает значения атрибутов всех узлов, которые соответствуют каждому ключу в [словаре дерева регулярных выражений](../../sql-reference/dictionaries/index.md#regexp-tree-dictionary).
+Извлекает значения атрибутов всех узлов, которые соответствуют каждому ключу в [словаре деревьев регулярных выражений](../../sql-reference/dictionaries/index.md#regexp-tree-dictionary).
 
-Помимо возвращения значений типа `Array(T)` вместо `T`, эта функция ведет себя аналогично [`dictGet`](#dictget-dictgetordefault-dictgetornull).
+Кроме возврата значений типа `Array(T)` вместо `T`, эта функция ведет себя подобно [`dictGet`](#dictget-dictgetordefault-dictgetornull).
 
 **Синтаксис**
 
@@ -411,21 +409,21 @@ dictGetAll('dict_name', attr_names, id_expr[, limit])
 **Аргументы**
 
 - `dict_name` — Название словаря. [Строковый литерал](/sql-reference/syntax#string).
-- `attr_names` — Название колонки словаря, [Строковый литерал](/sql-reference/syntax#string), или кортеж названий колонок, [Кортеж](/sql-reference/data-types/tuple)([Строковый литерал](/sql-reference/syntax#string)).
-- `id_expr` — Значение ключа. [Выражение](/sql-reference/syntax#expressions), возвращающее массив значений типа ключа словаря или [Кортеж](../data-types/tuple)-типа в зависимости от конфигурации словаря.
-- `limit` - Максимальная длина для каждого возвращаемого массива значений. При усечении дочерние узлы имеют приоритет перед родительскими узлами, и в противном случае соблюдается установленный порядок списка для словаря дерева регулярных выражений. Если не указано, длина массива не ограничена.
+- `attr_names` — Название колонки словаря, [Строковый литерал](/sql-reference/syntax#string) или кортеж названий колонок, [Кортеж](/sql-reference/data-types/tuple)([Строковый литерал](/sql-reference/syntax#string)).
+- `id_expr` — Значение ключа. [Выражение](/sql-reference/syntax#expressions), возвращающее массив значений типа ключа словаря или значение типа [Кортеж](../data-types/tuple) в зависимости от конфигурации словаря.
+- `limit` - Максимальная длина для каждого возвращаемого массива значений. При усечении дочерние узлы имеют преимущество перед родительскими узлами, и в противном случае соблюдается определенный порядок для словаря деревьев регулярных выражений. Если не указано, длина массива неограничена.
 
 **Возвращаемое значение**
 
-- Если ClickHouse успешно разбирает атрибут в типе данных атрибута, как определено в словаре, возвращает массив значений атрибутов словаря, которые соответствуют `id_expr` для каждого атрибута, указанного `attr_names`.
+- Если ClickHouse успешно анализирует атрибут в типе данных атрибута, как определено в словаре, возвращает массив значений атрибутов словаря, которые соответствуют `id_expr` для каждого атрибута, указанного в `attr_names`.
 
-- Если в словаре нет ключа, соответствующего `id_expr`, возвращается пустой массив.
+- Если в словаре нет ключа, соответствующего `id_expr`, то возвращается пустой массив.
 
-ClickHouse вызывает исключение, если он не может разобрать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse выбрасывает исключение, если он не может разобрать значение атрибута или если значение не соответствует типу данных атрибута.
 
 **Пример**
 
-Рассмотрим следующий словарь дерева регулярных выражений:
+Рассмотрим следующий словарь деревьев регулярных выражений:
 
 ```sql
 CREATE DICTIONARY regexp_dict
@@ -450,7 +448,7 @@ LAYOUT(regexp_tree)
   tag: 'baz_attr'
 ```
 
-Получите все соответствующие значения:
+Получите все совпадающие значения:
 
 ```sql
 SELECT dictGetAll('regexp_dict', 'tag', 'foobarbaz');
@@ -462,7 +460,7 @@ SELECT dictGetAll('regexp_dict', 'tag', 'foobarbaz');
 └───────────────────────────────────────────────┘
 ```
 
-Получите до 2 соответствующих значений:
+Получите до 2 совпадающих значений:
 
 ```sql
 SELECT dictGetAll('regexp_dict', 'tag', 'foobarbaz', 2);
@@ -476,7 +474,7 @@ SELECT dictGetAll('regexp_dict', 'tag', 'foobarbaz', 2);
 
 ## Другие функции {#other-functions}
 
-ClickHouse поддерживает специализированные функции, которые преобразуют значения атрибутов словаря в определенный тип данных независимо от конфигурации словаря.
+ClickHouse поддерживает специализированные функции, которые преобразуют значения атрибутов словаря в определенный тип данных, независимо от конфигурации словаря.
 
 Функции:
 
@@ -502,16 +500,16 @@ dictGet[Type]OrDefault('dict_name', 'attr_name', id_expr, default_value_expr)
 
 - `dict_name` — Название словаря. [Строковый литерал](/sql-reference/syntax#string).
 - `attr_name` — Название колонки словаря. [Строковый литерал](/sql-reference/syntax#string).
-- `id_expr` — Значение ключа. [Выражение](/sql-reference/syntax#expressions), возвращающее значение типа [UInt64](../data-types/int-uint.md) или [Кортеж](../data-types/tuple.md)-типа в зависимости от конфигурации словаря.
-- `default_value_expr` — Значение, возвращаемое, если словарь не содержит строки с ключом `id_expr`. [Выражение](/sql-reference/syntax#expressions), возвращающее значение в типе данных, настроенном для атрибута `attr_name`.
+- `id_expr` — Значение ключа. [Выражение](/sql-reference/syntax#expressions), возвращающее значение [UInt64](../data-types/int-uint.md) или значение типа [Кортеж](../data-types/tuple.md) в зависимости от конфигурации словаря.
+- `default_value_expr` — Значение, возвращаемое если словарь не содержит строки с ключом `id_expr`. [Выражение](/sql-reference/syntax#expressions), возвращающее значение в типе данных, настроенном для атрибута `attr_name`.
 
 **Возвращаемое значение**
 
-- Если ClickHouse успешно разбирает атрибут в [типе данных атрибута](/sql-reference/dictionaries#dictionary-key-and-fields), функции возвращают значение атрибута словаря, которое соответствует `id_expr`.
+- Если ClickHouse успешно анализирует атрибут в [типе данных атрибута](/sql-reference/dictionaries#dictionary-key-and-fields), функции возвращают значение атрибута словаря, соответствующее `id_expr`.
 
-- Если в словаре нет запрашиваемого `id_expr`, то:
+- Если запрашиваемый `id_expr` отсутствует в словаре, тогда:
 
         - `dictGet[Type]` возвращает содержимое элемента `<null_value>`, указанного для атрибута в конфигурации словаря.
-        - `dictGet[Type]OrDefault` возвращает значение, переданное в качестве параметра `default_value_expr`.
+        - `dictGet[Type]OrDefault` возвращает значение, переданное как параметр `default_value_expr`.
 
-ClickHouse вызывает исключение, если он не может разобрать значение атрибута или если значение не соответствует типу данных атрибута.
+ClickHouse выбрасывает исключение, если он не может разобрать значение атрибута или если значение не соответствует типу данных атрибута.

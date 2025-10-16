@@ -6,8 +6,9 @@
 - 'Docker'
 'sidebar_label': 'Docker'
 'slug': '/install/docker'
-'title': '使用 Docker 安装 ClickHouse'
+'title': '通过 Docker 安装 ClickHouse'
 'hide_title': true
+'doc_type': 'guide'
 ---
 
 import Docker from './_snippets/_docker.md'

@@ -1,24 +1,23 @@
 ---
-alias: []
+slug: '/interfaces/formats/LineAsStringWithNames'
 description: 'Документация для формата LineAsStringWithNames'
-input_format: true
+title: LineAsStringWithNames
 keywords: ['LineAsStringWithNames']
+doc_type: reference
+input_format: true
 output_format: true
-slug: /interfaces/formats/LineAsStringWithNames
-title: 'LineAsStringWithNames'
 ---
-
-| Вход | Выход | Псевдоним |
-|-------|--------|-----------|
-| ✗     | ✔      |           |
+| Input | Output | Alias |
+|-------|--------|-------|
+| ✗     | ✔      |       |
 
 ## Описание {#description}
 
-Формат `LineAsStringWithNames` схож с форматом [`LineAsString`](./LineAsString.md), но выводит строку заголовка с именами колонок.
+Формат `LineAsStringWithNames` похож на формат [`LineAsString`](./LineAsString.md), но выводит строку заголовка с именами колонок.
 
 ## Пример использования {#example-usage}
 
-```sql title="Запрос"
+```sql title="Query"
 CREATE TABLE example (
     name String,
     value Int32
@@ -30,7 +29,7 @@ INSERT INTO example VALUES ('John', 30), ('Jane', 25), ('Peter', 35);
 SELECT * FROM example FORMAT LineAsStringWithNames;
 ```
 
-```response title="Ответ"
+```response title="Response"
 name    value
 John    30
 Jane    25

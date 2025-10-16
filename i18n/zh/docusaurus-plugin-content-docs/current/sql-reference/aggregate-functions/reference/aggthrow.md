@@ -1,14 +1,15 @@
 ---
-'description': '这个函数可以用于测试异常安全性。它将在创建时根据指定概率抛出异常。'
+'description': '该函数可用于测试异常安全性。它将在创建时以指定的概率抛出异常。'
 'sidebar_position': 101
 'slug': '/sql-reference/aggregate-functions/reference/aggthrow'
 'title': 'aggThrow'
+'doc_type': 'reference'
 ---
 
 
 # aggThrow
 
-此函数可用于测试异常安全性。它将在创建时以指定的概率抛出异常。
+该函数可用于测试异常安全性。它将在创建时以指定的概率抛出异常。
 
 **语法**
 
@@ -18,11 +19,11 @@ aggThrow(throw_prob)
 
 **参数**
 
-- `throw_prob` — 创建时抛出的概率。 [Float64](../../data-types/float.md)。
+- `throw_prob` — 创建时抛出异常的概率。[Float64](../../data-types/float.md)。
 
 **返回值**
 
-- 一个异常： `Code: 503. DB::Exception: Aggregate function aggThrow has thrown exception successfully`。
+- 一个异常: `Code: 503. DB::Exception: Aggregate function aggThrow has thrown exception successfully`。
 
 **示例**
 

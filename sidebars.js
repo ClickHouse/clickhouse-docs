@@ -84,6 +84,7 @@ const sidebars = {
         "guides/inserting-data",
         "guides/writing-queries",
         "guides/developer/mutations",
+		"guides/generating-test-data"  
       ],
     },
     {
@@ -128,6 +129,16 @@ const sidebars = {
           collapsible: true,
           link: { type: "doc", id: "use-cases/observability/index" },
           items: [
+            {
+              type: "category",
+              label: "Capabilities",
+              collapsed: true,
+              collapsible: true,
+              items: [ 
+                "use-cases/observability/cloud-monitoring",
+                "use-cases/observability/self-managed-monitoring"
+              ]
+            },
             {
               type: "category",
               label: "ClickStack",
@@ -495,7 +506,25 @@ const sidebars = {
             "integrations/language-clients/java/r2dbc"
           ]
         },
-        "integrations/language-clients/python/index",
+        {
+          type: "category",
+          label: "Python",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            {
+              type: "doc",
+              label: "Introduction",
+              id: "integrations/language-clients/python/index"
+            },
+            "integrations/language-clients/python/driver-api",
+            "integrations/language-clients/python/additional-options",
+            "integrations/language-clients/python/advanced-querying",
+            "integrations/language-clients/python/advanced-inserting",
+            "integrations/language-clients/python/advanced-usage",
+            "integrations/language-clients/python/sqlalchemy",
+          ]
+        },
         "integrations/language-clients/rust",
         "integrations/language-clients/csharp",
         {
@@ -601,6 +630,7 @@ const sidebars = {
                 "integrations/data-ingestion/clickpipes/mysql/add_table",
                 "integrations/data-ingestion/clickpipes/mysql/pause_and_resume",
                 "integrations/data-ingestion/clickpipes/mysql/remove_table",
+                "integrations/data-ingestion/clickpipes/mysql/table_resync",
                 "integrations/data-ingestion/clickpipes/mysql/resync",
                 "integrations/data-ingestion/clickpipes/mysql/controlling_sync",
               ],
@@ -637,6 +667,7 @@ const sidebars = {
                 "integrations/data-ingestion/clickpipes/mongodb/add_table",
                 "integrations/data-ingestion/clickpipes/mongodb/remove_table",
                 "integrations/data-ingestion/clickpipes/mongodb/pause_and_resume",
+                "integrations/data-ingestion/clickpipes/mongodb/table_resync",
                 "integrations/data-ingestion/clickpipes/mongodb/resync",
               ],
             },
@@ -754,6 +785,7 @@ const sidebars = {
         "integrations/data-visualization/deepnote",
         "integrations/data-visualization/astrato-and-clickhouse",
         "integrations/data-visualization/chartbrew-and-clickhouse",
+        "integrations/data-visualization/dot-and-clickhouse",
         "integrations/data-visualization/draxlr-and-clickhouse",
         "integrations/data-visualization/embeddable-and-clickhouse",
         "integrations/data-visualization/explo-and-clickhouse",
@@ -904,7 +936,18 @@ const sidebars = {
           ],
         },
         "integrations/data-ingestion/etl-tools/bladepipe-and-clickhouse",
-        "integrations/data-ingestion/etl-tools/dbt/index",
+        {
+          type: "category",
+          label: "dbt",
+          className: "top-nav-item",
+          collapsed: true,
+          collapsible: true,
+          items: [
+            "integrations/data-ingestion/etl-tools/dbt/index",
+            "integrations/data-ingestion/etl-tools/dbt/features-and-configurations",
+            "integrations/data-ingestion/etl-tools/dbt/guides",
+          ],
+        },
         "integrations/data-ingestion/etl-tools/dlt-and-clickhouse",
         "integrations/data-ingestion/etl-tools/fivetran/index",
         "integrations/data-ingestion/etl-tools/nifi-and-clickhouse",
@@ -1108,7 +1151,16 @@ const sidebars = {
         "guides/best-practices/sparse-primary-indexes",
         "guides/best-practices/query-parallelism",
         "guides/best-practices/partitioningkey",
-        "guides/best-practices/skipping-indexes",
+        {
+          type: "category",
+          label: "Data Skipping Indexes",
+          collapsed: true,
+          collapsible: true,
+          link: { type: "doc", id: "guides/best-practices/skipping-indexes" },
+          items: [
+            "guides/best-practices/skipping-indexes-examples"
+          ],
+        },
         "guides/best-practices/prewhere",
         "guides/best-practices/bulkinserts",
         "guides/best-practices/asyncinserts",
@@ -1427,7 +1479,8 @@ const sidebars = {
       link: { type: "doc", id: "chdb/reference/index" },
       items: [
         "chdb/reference/data-formats",
-        "chdb/reference/sql-reference"
+        "chdb/reference/sql-reference",
+		"chdb/api/python"
       ],
     },
     {
