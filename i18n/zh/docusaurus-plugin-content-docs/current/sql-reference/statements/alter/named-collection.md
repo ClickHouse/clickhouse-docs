@@ -3,6 +3,7 @@
 'sidebar_label': 'NAMED COLLECTION'
 'slug': '/sql-reference/statements/alter/named-collection'
 'title': 'ALTER NAMED COLLECTION'
+'doc_type': 'reference'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -10,7 +11,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 <CloudNotSupportedBadge />
 
 
-# ALTER NAMED COLLECTION
+# 修改命名集合
 
 此查询旨在修改已经存在的命名集合。
 

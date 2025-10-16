@@ -1,32 +1,31 @@
 ---
-description: 'Позволяет выполнять запросы к данным, хранящимся в базе данных SQLite.'
-sidebar_label: 'sqlite'
+slug: '/sql-reference/table-functions/sqlite'
+sidebar_label: sqlite
 sidebar_position: 185
-slug: /sql-reference/table-functions/sqlite
-title: 'sqlite'
+description: 'Позволяет выполнять запросы к данным, хранящимся в базе данных SQLite.'
+title: sqlite
+doc_type: reference
 ---
-
-
-# Функция Таблицы sqlite
+# таблица функции sqlite
 
 Позволяет выполнять запросы к данным, хранящимся в базе данных [SQLite](../../engines/database-engines/sqlite.md).
 
-**Синтаксис**
+## Синтаксис {#syntax}
 
 ```sql
 sqlite('db_path', 'table_name')
 ```
 
-**Аргументы**
+## Аргументы {#arguments}
 
 - `db_path` — Путь к файлу с базой данных SQLite. [String](../../sql-reference/data-types/string.md).
 - `table_name` — Имя таблицы в базе данных SQLite. [String](../../sql-reference/data-types/string.md).
 
-**Возвращаемое значение**
+## Возвращаемое значение {#returned_value}
 
-- Объект таблицы с теми же колонками, что и в оригинальной таблице `SQLite`.
+- Объект таблицы с такими же столбцами, как в оригинальной таблице `SQLite`.
 
-**Пример**
+## Пример {#example}
 
 Запрос:
 
@@ -44,6 +43,6 @@ SELECT * FROM sqlite('sqlite.db', 'table1') ORDER BY col2;
 └───────┴──────┘
 ```
 
-**Смотрите Также**
+## Связано {#related}
 
-- Движок таблиц [SQLite](../../engines/table-engines/integrations/sqlite.md)
+- [SQLite](../../engines/table-engines/integrations/sqlite.md) движок таблиц

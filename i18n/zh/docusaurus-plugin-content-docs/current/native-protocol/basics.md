@@ -3,6 +3,7 @@
 'sidebar_position': 1
 'title': '基础'
 'description': '原生协议基础'
+'doc_type': 'guide'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -14,26 +15,26 @@ import TabItem from '@theme/TabItem';
 :::note
 客户端协议参考正在进行中。
 
-大多数示例仅为 Go 语言。
+大多数示例仅在 Go 中提供。
 :::
 
 本文档描述了 ClickHouse TCP 客户端的二进制协议。
 
 ## Varint {#varint}
 
-对于长度、数据包代码和其他情况，使用 *无符号 varint* 编码。
+对于长度、数据包代码和其他情况使用 *无符号 varint* 编码。
 使用 [binary.PutUvarint](https://pkg.go.dev/encoding/binary#PutUvarint) 和 [binary.ReadUvarint](https://pkg.go.dev/encoding/binary#ReadUvarint)。
 
 :::note
-*有符号* varint 未被使用。
+*有符号* varint 不被使用。
 :::
 
 ## 字符串 {#string}
 
-可变长度字符串编码为 *(长度, 值)*，其中 *长度* 是 [varint](#varint)，*值* 是 utf8 字符串。
+可变长度的字符串编码为 *(长度, 值)*，其中 *长度* 为 [varint](#varint)，*值* 为 utf8 字符串。
 
 :::important
-验证长度以防止内存溢出：
+验证长度以防止 OOM：
 
 `0 ≤ len < MAX`
 :::
@@ -116,7 +117,7 @@ data := []byte{
 ## 整数 {#integers}
 
 :::tip
-ClickHouse 使用 **小端** 存储固定大小的整数。
+ClickHouse 使用 **小端** 方式表示固定大小的整数。
 :::
 
 ### Int32 {#int32}
@@ -151,4 +152,4 @@ fmt.Println(d) // 1000
 
 ## 布尔值 {#boolean}
 
-布尔值由单个字节表示，`1` 是 `true`，`0` 是 `false`。
+布尔值由单个字节表示，`1` 为 `true`，`0` 为 `false`。

@@ -1,16 +1,14 @@
 ---
-description: 'Этот движок предоставляет интеграцию с экосистемой Azure Blob Storage,
-  позволяя импорт потоковых данных.'
-sidebar_label: 'AzureQueue'
+slug: '/engines/table-engines/integrations/azure-queue'
+sidebar_label: AzureQueue
 sidebar_position: 181
-slug: /engines/table-engines/integrations/azure-queue
+description: 'Этот движок предоставляет интеграцию с экосистемой Azure Blob Storage,'
 title: 'Движок таблиц AzureQueue'
+doc_type: reference
 ---
+# AzureQueue движок таблиц
 
-
-# Движок таблиц AzureQueue
-
-Этот движок предоставляет интеграцию с [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs), позволяя импорт потоковых данных.
+Этот движок обеспечивает интеграцию с экосистемой [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs), позволяя импортировать потоковые данные.
 
 ## Создание таблицы {#creating-a-table}
 
@@ -26,9 +24,9 @@ CREATE TABLE test (name String, value UInt32)
 
 **Параметры движка**
 
-Параметры `AzureQueue` такие же, как и для движка таблиц `AzureBlobStorage`. См. раздел параметров [здесь](../../../engines/table-engines/integrations/azureBlobStorage.md).
+Параметры `AzureQueue` такие же, как и поддерживаемые движком таблиц `AzureBlobStorage`. См. раздел параметров [здесь](../../../engines/table-engines/integrations/azureBlobStorage.md).
 
-Аналогично движку таблиц [AzureBlobStorage](/engines/table-engines/integrations/azureBlobStorage), пользователи могут использовать эмулятор Azurite для локальной разработки Azure Storage. Подробности [здесь](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage).
+Подобно движку таблиц [AzureBlobStorage](/engines/table-engines/integrations/azureBlobStorage), пользователи могут использовать эмулятор Azurite для локальной разработки Azure Storage. Дополнительные детали [здесь](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage).
 
 **Пример**
 
@@ -45,17 +43,17 @@ SETTINGS mode = 'unordered'
 ## Настройки {#settings}
 
 Набор поддерживаемых настроек такой же, как для движка таблиц `S3Queue`, но без префикса `s3queue_`. См. [полный список настроек](../../../engines/table-engines/integrations/s3queue.md#settings).
-Чтобы получить список настроек, конфигурируемых для таблицы, используйте таблицу `system.azure_queue_settings`. Доступно с `24.10`.
+Чтобы получить список настроек, настроенных для таблицы, используйте таблицу `system.azure_queue_settings`. Доступно с `24.10`.
 
 ## Описание {#description}
 
-`SELECT` особенно полезен для потокового импорта (за исключением отладки), поскольку каждый файл может быть импортирован только один раз. Более практично создавать потоки в реальном времени, используя [материализованные представления](../../../sql-reference/statements/create/view.md). Для этого:
+`SELECT` не очень полезен для потокового импорта (за исключением отладки), потому что каждый файл может быть импортирован только один раз. Практичнее создать потоки в реальном времени, используя [материализованные представления](../../../sql-reference/statements/create/view.md). Для этого:
 
-1.  Используйте движок для создания таблицы для потребления данных по указанному пути в S3 и рассматривайте это как поток данных.
+1.  Используйте движок для создания таблицы для потребления из указанного пути в S3 и рассматривайте её как поток данных.
 2.  Создайте таблицу с желаемой структурой.
-3.  Создайте материализованное представление, которое конвертирует данные из движка и помещает их в ранее созданную таблицу.
+3.  Создайте материализованное представление, которое преобразует данные из движка и помещает их в ранее созданную таблицу.
 
-Когда `MATERIALIZED VIEW` соединяется с движком, он начинает собирать данные в фоновом режиме.
+Когда `MATERIALIZED VIEW` подключается к движку, он начинает собирать данные в фоновом режиме.
 
 Пример:
 
@@ -77,25 +75,25 @@ SELECT * FROM stats ORDER BY key;
 ## Виртуальные колонки {#virtual-columns}
 
 - `_path` — Путь к файлу.
-- `_file` — Имя файла.
+- `_file` — Название файла.
 
-Дополнительную информацию о виртуальных колонках смотрите [здесь](../../../engines/table-engines/index.md#table_engines-virtual_columns).
+Дополнительную информацию о виртуальных колонках см. [здесь](../../../engines/table-engines/index.md#table_engines-virtual_columns).
 
 ## Интроспекция {#introspection}
 
 Включите логирование для таблицы через настройку таблицы `enable_logging_to_queue_log=1`.
 
-Возможности интроспекции такие же, как и у [S3Queue table engine](/engines/table-engines/integrations/s3queue#introspection) с несколькими отличиями:
+Возможности интроспекции такие же, как у [движка таблиц S3Queue](/engines/table-engines/integrations/s3queue#introspection) с несколькими отличиями:
 
-1. Используйте `system.azure_queue` для состояния очереди в памяти для серверных версий >= 25.1. Для более старых версий используйте `system.s3queue` (он будет содержать информацию и для таблиц `azure`).
+1. Используйте `system.azure_queue` для состояния очереди в памяти для серверных версий >= 25.1. Для более старых версий используйте `system.s3queue` (это также будет содержать информацию для таблиц `azure`).
 2. Включите `system.azure_queue_log` через основную конфигурацию ClickHouse, например:
 
-  ```xml
-  <azure_queue_log>
-    <database>system</database>
-    <table>azure_queue_log</table>
-  </azure_queue_log>
-  ```
+```xml
+<azure_queue_log>
+  <database>system</database>
+  <table>azure_queue_log</table>
+</azure_queue_log>
+```
 
 Эта постоянная таблица содержит ту же информацию, что и `system.s3queue`, но для обработанных и неудачных файлов.
 
@@ -105,24 +103,24 @@ SELECT * FROM stats ORDER BY key;
 
 CREATE TABLE system.azure_queue_log
 (
-    `hostname` LowCardinality(String) COMMENT 'Имя хоста',
-    `event_date` Date COMMENT 'Дата события записи этой строки лога',
-    `event_time` DateTime COMMENT 'Время события записи этой строки лога',
-    `database` String COMMENT 'Имя базы данных, где находится текущая таблица S3Queue.',
-    `table` String COMMENT 'Имя таблицы S3Queue.',
-    `uuid` String COMMENT 'UUID таблицы S3Queue',
-    `file_name` String COMMENT 'Имя файла обрабатываемого файла',
-    `rows_processed` UInt64 COMMENT 'Количество обработанных строк',
-    `status` Enum8('Processed' = 0, 'Failed' = 1) COMMENT 'Статус обрабатываемого файла',
-    `processing_start_time` Nullable(DateTime) COMMENT 'Время начала обработки файла',
-    `processing_end_time` Nullable(DateTime) COMMENT 'Время окончания обработки файла',
-    `exception` String COMMENT 'Сообщение об исключении, если произошло'
+    `hostname` LowCardinality(String) COMMENT 'Hostname',
+    `event_date` Date COMMENT 'Event date of writing this log row',
+    `event_time` DateTime COMMENT 'Event time of writing this log row',
+    `database` String COMMENT 'The name of a database where current S3Queue table lives.',
+    `table` String COMMENT 'The name of S3Queue table.',
+    `uuid` String COMMENT 'The UUID of S3Queue table',
+    `file_name` String COMMENT 'File name of the processing file',
+    `rows_processed` UInt64 COMMENT 'Number of processed rows',
+    `status` Enum8('Processed' = 0, 'Failed' = 1) COMMENT 'Status of the processing file',
+    `processing_start_time` Nullable(DateTime) COMMENT 'Time of the start of processing the file',
+    `processing_end_time` Nullable(DateTime) COMMENT 'Time of the end of processing the file',
+    `exception` String COMMENT 'Exception message if happened'
 )
 ENGINE = MergeTree
 PARTITION BY toYYYYMM(event_date)
 ORDER BY (event_date, event_time)
 SETTINGS index_granularity = 8192
-COMMENT 'Содержит записи логирования с информацией о файлах, обработанных движком S3Queue.'
+COMMENT 'Contains logging entries with the information files processes by S3Queue engine.'
 
 ```
 

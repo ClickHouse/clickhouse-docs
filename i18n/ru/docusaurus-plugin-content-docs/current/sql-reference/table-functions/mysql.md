@@ -1,43 +1,40 @@
 ---
-description: 'Позволяет выполнять запросы `SELECT` и `INSERT` на данных, хранящихся на удалённом сервере MySQL.'
-sidebar_label: 'mysql'
+slug: '/sql-reference/table-functions/mysql'
+sidebar_label: mysql
 sidebar_position: 137
-slug: /sql-reference/table-functions/mysql
-title: 'mysql'
+description: 'Позволяет выполнять `SELECT` и `INSERT` запросы на данные, которые'
+title: mysql
+doc_type: reference
 ---
-
-
 # mysql Табличная Функция
 
-Позволяет выполнять запросы `SELECT` и `INSERT` на данных, хранящихся на удалённом сервере MySQL.
+Позволяет выполнять `SELECT` и `INSERT` запросы к данным, которые хранятся на удалённом сервере MySQL.
 
-**Синтаксис**
+## Синтаксис {#syntax}
 
 ```sql
 mysql({host:port, database, table, user, password[, replace_query, on_duplicate_clause] | named_collection[, option=value [,..]]})
 ```
 
-**Параметры**
+## Аргументы {#arguments}
 
-- `host:port` — Адрес сервера MySQL.
-- `database` — Имя удалённой базы данных.
-- `table` — Имя удалённой таблицы.
-- `user` — Пользователь MySQL.
-- `password` — Пароль пользователя.
-- `replace_query` — Флаг, который преобразует запросы `INSERT INTO` в `REPLACE INTO`. Возможные значения:
-    - `0` - Запрос выполняется как `INSERT INTO`.
-    - `1` - Запрос выполняется как `REPLACE INTO`.
-- `on_duplicate_clause` — Выражение `ON DUPLICATE KEY on_duplicate_clause`, которое добавляется к запросу `INSERT`. Может быть указано только с `replace_query = 0` (если одновременно передать `replace_query = 1` и `on_duplicate_clause`, ClickHouse сгенерирует исключение).
-    Пример: `INSERT INTO t (c1,c2) VALUES ('a', 2) ON DUPLICATE KEY UPDATE c2 = c2 + 1;`
-    Здесь `on_duplicate_clause` - это `UPDATE c2 = c2 + 1`. См. документацию MySQL, чтобы узнать, какой `on_duplicate_clause` вы можете использовать с предложением `ON DUPLICATE KEY`.
+| Аргумент            | Описание                                                                                                                                                                                                                                                           |
+|---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `host:port`         | Адрес сервера MySQL.                                                                                                                                                                                                                                                 |
+| `database`          | Имя удалённой базы данных.                                                                                                                                                                                                                                                 |
+| `table`             | Имя удалённой таблицы.                                                                                                                                                                                                                                                    |
+| `user`              | Пользователь MySQL.                                                                                                                                                                                                                                                           |
+| `password`          | Пароль пользователя.                                                                                                                                                                                                                                                        |
+| `replace_query`     | Флаг, который преобразует запросы `INSERT INTO` в `REPLACE INTO`. Возможные значения:<br/>    - `0` - Запрос выполняется как `INSERT INTO`.<br/>    - `1` - Запрос выполняется как `REPLACE INTO`.                                                                          |
+| `on_duplicate_clause` | Выражение `ON DUPLICATE KEY on_duplicate_clause`, которое добавляется к запросу `INSERT`. Может быть указано только с `replace_query = 0` (если одновременно передать и `replace_query = 1`, и `on_duplicate_clause`, ClickHouse сгенерирует исключение).<br/>    Пример: `INSERT INTO t (c1,c2) VALUES ('a', 2) ON DUPLICATE KEY UPDATE c2 = c2 + 1;`<br/>    Здесь `on_duplicate_clause` - это `UPDATE c2 = c2 + 1`. См. документацию MySQL, чтобы узнать, какой `on_duplicate_clause` вы можете использовать с оператором `ON DUPLICATE KEY`. |
 
-Аргументы также могут передаваться с помощью [именованных коллекций](operations/named-collections.md). В этом случае `host` и `port` должны указываться отдельно. Этот подход рекомендуется для производственной среды.
+Аргументы также могут быть переданы с использованием [именованных коллекций](operations/named-collections.md). В этом случае `host` и `port` должны быть указаны отдельно. Этот подход рекомендуется для производственной среды.
 
-Простые условия `WHERE`, такие как `=, !=, >, >=, <, <=`, в настоящее время выполняются на сервере MySQL.
+Простые `WHERE` условия, такие как `=, !=, >, >=, <, <=`, в настоящее время выполняются на сервере MySQL.
 
-Остальные условия и ограничение выборки `LIMIT` выполняются в ClickHouse только после того, как запрос к MySQL завершится.
+Остальные условия и ограничение `LIMIT` выполняются в ClickHouse только после завершения запроса к MySQL.
 
-Поддерживает несколько реплик, которые должны быть перечислены через `|`. Например:
+Поддерживает несколько реплик, которые должны быть перечислены с помощью `|`. Например:
 
 ```sql
 SELECT name FROM mysql(`mysql{1|2|3}:3306`, 'mysql_database', 'mysql_table', 'user', 'password');
@@ -49,19 +46,19 @@ SELECT name FROM mysql(`mysql{1|2|3}:3306`, 'mysql_database', 'mysql_table', 'us
 SELECT name FROM mysql(`mysql1:3306|mysql2:3306|mysql3:3306`, 'mysql_database', 'mysql_table', 'user', 'password');
 ```
 
-**Возвращаемое значение**
+## Возвращаемое значение {#returned_value}
 
-Объект таблицы с такими же колонками, как и в оригинальной таблице MySQL.
+Объект таблицы с теми же колонками, что и у оригинальной таблицы MySQL.
 
 :::note
-Некоторые типы данных MySQL могут быть сопоставлены с другими типами ClickHouse - это регулируется настройкой уровня поддержки типов данных на уровне запроса [mysql_datatypes_support_level](operations/settings/settings.md#mysql_datatypes_support_level)
+Некоторые типы данных MySQL могут быть сопоставлены с различными типами ClickHouse - это решается с помощью настройки на уровне запроса [mysql_datatypes_support_level](operations/settings/settings.md#mysql_datatypes_support_level)
 :::
 
 :::note
-В запросе `INSERT`, чтобы отличить табличную функцию `mysql(...)` от имени таблицы со списком имен колонок, вы должны использовать ключевые слова `FUNCTION` или `TABLE FUNCTION`. См. примеры ниже.
+В запросе `INSERT`, чтобы отличить табличную функцию `mysql(...)` от имени таблицы с перечислением имён колонок, вы должны использовать ключевые слова `FUNCTION` или `TABLE FUNCTION`. См. примеры ниже.
 :::
 
-**Примеры**
+## Примеры {#examples}
 
 Таблица в MySQL:
 
@@ -81,7 +78,7 @@ mysql> SELECT * FROM test;
 +--------+-------+
 ```
 
-Выбор данных из ClickHouse:
+Выборка данных из ClickHouse:
 
 ```sql
 SELECT * FROM mysql('localhost:3306', 'test', 'test', 'bayonet', '123');
@@ -136,15 +133,15 @@ INSERT INTO mysql_copy
 SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');
 ```
 
-Или если копирование только инкрементальной партии из MySQL на основе максимального текущего id:
+Или если копировать только инкрементальную партию из MySQL на основе максимального текущего id:
 
 ```sql
 INSERT INTO mysql_copy
 SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password')
-WHERE id > (SELECT max(id) from mysql_copy);
+WHERE id > (SELECT max(id) FROM mysql_copy);
 ```
 
-**См. также**
+## Связанные {#related}
 
 - [Движок таблицы 'MySQL'](../../engines/table-engines/integrations/mysql.md)
 - [Использование MySQL в качестве источника словаря](/sql-reference/dictionaries#mysql)

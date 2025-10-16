@@ -6,8 +6,9 @@
 - 'MacOS'
 'sidebar_label': 'MacOS'
 'slug': '/install/macOS'
-'title': '通过 Homebrew 安装 ClickHouse'
+'title': '使用 Homebrew 安装 ClickHouse'
 'hide_title': true
+'doc_type': 'guide'
 ---
 
 import MacOSProd from './_snippets/_macos.md'

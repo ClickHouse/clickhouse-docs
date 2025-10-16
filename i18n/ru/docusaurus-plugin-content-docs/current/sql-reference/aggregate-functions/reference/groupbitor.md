@@ -1,11 +1,10 @@
 ---
-description: 'Применяет побитовый `OR` к серии чисел.'
+slug: '/sql-reference/aggregate-functions/reference/groupbitor'
 sidebar_position: 152
-slug: /sql-reference/aggregate-functions/reference/groupbitor
-title: 'groupBitOr'
+description: 'Применяет побитовый `OR` к серии чисел.'
+title: groupBitOr
+doc_type: reference
 ---
-
-
 # groupBitOr
 
 Применяет побитовый `OR` к серии чисел.
@@ -40,7 +39,7 @@ binary     decimal
 SELECT groupBitOr(num) FROM t
 ```
 
-Где `num` — это колонка с тестовыми данными.
+Где `num` - это колонка с тестовыми данными.
 
 Результат:
 

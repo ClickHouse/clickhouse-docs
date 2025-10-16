@@ -1,17 +1,16 @@
 ---
-sidebar_label: 'Rocket BI'
-sidebar_position: 131
-slug: '/integrations/rocketbi'
-keywords:
+'sidebar_label': 'Rocket BI'
+'sidebar_position': 131
+'slug': '/integrations/rocketbi'
+'keywords':
 - 'clickhouse'
 - 'RocketBI'
 - 'connect'
 - 'integrate'
 - 'ui'
-description: 'RocketBI is a self-service business intelligence platform that helps
-  you quickly analyze data, build drag-n-drop visualizations and collaborate with
-  colleagues right on your web browser.'
-title: 'GOAL: BUILD YOUR 1ST DASHBOARD'
+'description': 'RocketBI は、データを迅速に分析し、ドラッグアンドドロップの視覚化を構築し、同僚とブラウザ上で共同作業を行うためのセルフサービスビジネスインテリジェンスプラットフォームです。'
+'title': '目標: あなたの最初の DASHBOARD を構築する'
+'doc_type': 'guide'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
@@ -37,132 +36,132 @@ import rocketbi_18 from '@site/static/images/integrations/data-visualization/roc
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# ゴール: 最初のダッシュボードを構築する
+# 目標: 最初のダッシュボードを作成する
 
 <CommunityMaintainedBadge/>
 
-このガイドでは、Rocket.BIを使用してシンプルなダッシュボードをインストールして構築します。
+このガイドでは、Rocket.BIを使用してシンプルなダッシュボードをインストールし、構築します。
 これがダッシュボードです：
 
-<Image size="md" img={rocketbi_01} alt="Sales metrics with charts and KPIsを示すRocket BIダッシュボード" border />
+<Image size="md" img={rocketbi_01} alt="Rocket BI ダッシュボード 販売指標のチャートとKPIを示す" border />
 <br/>
 
-[このリンクからダッシュボードをチェックできます。](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
+[こちらのリンクからダッシュボードを確認できます。](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
 
 ## インストール {#install}
 
-あらかじめ用意されたDockerイメージを使用してRocket.BIを起動します。
+予め構築されたDockerイメージを使用してRocketBIを起動します。
 
-docker-compose.ymlと設定ファイルを取得します：
+docker-compose.ymlと設定ファイルを取得します:
 
 ```bash
 wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/docker-compose.yml
 wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.clickhouse.env
 ```
-.clickhouse.envを編集し、ClickHouseサーバー情報を追加します。
+.clickhouse.envを編集し、clickhouseサーバーの情報を追加します。
 
-次のコマンドを実行してRocket.BIを起動します: ``` docker-compose up -d . ```
+次のコマンドを実行してRocketBIを起動します: ``` docker-compose up -d . ```
 
-ブラウザを開き、```localhost:5050```にアクセスし、このアカウントでログインします: ```hello@gmail.com/123456```
+ブラウザを開き、```localhost:5050```に移動し、このアカウントでログインします: ```hello@gmail.com/123456```
 
-ソースからビルドしたり、詳細な設定を行ったりする場合は、こちらを確認できます: [Rocket.BI Readme](https://github.com/datainsider-co/rocket-bi/blob/main/README.md)
+ソースから構築する場合や高度な設定については、[Rocket.BIのREADME](https://github.com/datainsider-co/rocket-bi/blob/main/README.md)で確認してください。
 
-## ダッシュボードの構築を始めましょう {#lets-build-the-dashboard}
+## ダッシュボードを作成しましょう {#lets-build-the-dashboard}
 
-ダッシュボードでは、レポートを見つけ、**+新規**をクリックして視覚化を開始します。
+ダッシュボードにはレポートが表示されます。**+新規**をクリックして視覚化を開始します。
 
-**無限のダッシュボード**を構築し、ダッシュボードに**無限のチャート**を描くことができます。
+**無制限のダッシュボード**を作成でき、ダッシュボードに**無制限のチャート**を描くことができます。
 
 <Image size="md" img={rocketbi_02} alt="Rocket BIで新しいチャートを作成するプロセスを示すアニメーション" border />
 <br/>
 
-Youtubeでの高解像度チュートリアルを参照してください: [https://www.youtube.com/watch?v=TMkdMHHfvqY](https://www.youtube.com/watch?v=TMkdMHHfvqY)
+高解像度のチュートリアルはYouTubeでご覧ください: [https://www.youtube.com/watch?v=TMkdMHHfvqY](https://www.youtube.com/watch?v=TMkdMHHfvqY)
 
 ### チャートコントロールを構築する {#build-the-chart-controls}
 
-#### メトリックコントロールを作成する {#create-a-metrics-control}
-タブフィルターで使用したいメトリックフィールドを選択します。集計設定を確認することを忘れないでください。
+#### メトリクスコントロールを作成する {#create-a-metrics-control}
+タブフィルターで、使用するメトリクスフィールドを選択します。集計設定に注意を払い続けてください。
 
-<Image size="md" img={rocketbi_03} alt="選択されたフィールドと集計設定を示すRocket BIメトリックコントロール設定パネル" border />
+<Image size="md" img={rocketbi_03} alt="選択されたフィールドと集計設定を示すRocket BIのメトリクスコントロール設定パネル" border />
 <br/>
 
-フィルターの名前を変更し、ダッシュボードにコントロールを保存します。
+フィルターに名前を付け、ダッシュボードにコントロールを保存します。
 
-<Image size="md" img={rocketbi_04} alt="ダッシュボードに保存する準備が整った名前変更済みフィルターを持つメトリックコントロール" border />
+<Image size="md" img={rocketbi_04} alt="名前を変更したフィルターがダッシュボードに保存する準備が整ったメトリクスコントロール" border />
 
-#### 日付タイプのコントロールを作成する {#create-a-date-type-control}
-メイン日付カラムとして日付フィールドを選択します：
+#### 日付タイプコントロールを作成する {#create-a-date-type-control}
+主日付カラムとして日付フィールドを選択します。
 
-<Image size="md" img={rocketbi_05} alt="利用可能な日付カラムを示すRocket BIの日付フィールド選択インターフェイス" border />
+<Image size="md" img={rocketbi_05} alt="利用可能な日付カラムを示すRocket BIの日付フィールド選択インターフェース" border />
 <br/>
 
-異なるルックアップ範囲を持つ重複バリアントを追加します。例えば、年、月次、日次の日付や曜日。
+異なる検索範囲での重複バリエーションを追加します。例えば、年、月別、日別、または曜日などです。
 
-<Image size="md" img={rocketbi_06} alt="年、月、日などの異なる期間オプションを示す日時範囲設定" border />
+<Image size="md" img={rocketbi_06} alt="年、月、日などの異なる期間オプションを示す日付範囲設定" border />
 <br/>
 
-フィルターの名前を変更し、ダッシュボードにコントロールを保存します。
+フィルターに名前を付け、ダッシュボードにコントロールを保存します。
 
-<Image size="md" img={rocketbi_07} alt="ダッシュボードに保存する準備が整った名前変更済みフィルターを持つ日付範囲コントロール" border />
+<Image size="md" img={rocketbi_07} alt="名前を変更したフィルターがダッシュボードに保存する準備が整った日付範囲コントロール" border />
 
-### さあ、チャートを構築しましょう {#now-let-build-the-charts}
+### では、チャートを作成しましょう {#now-let-build-the-charts}
 
-#### 円グラフ: 地域別売上メトリックス {#pie-chart-sales-metrics-by-regions}
-新しいチャートを追加して、円グラフを選択します。
+#### 円グラフ: 地域別の販売指標 {#pie-chart-sales-metrics-by-regions}
+新しいチャートを追加を選択し、円グラフを選択します。
 
-<Image size="md" img={rocketbi_08} alt="円グラフオプションが強調表示されたチャートタイプ選択パネル" border />
+<Image size="md" img={rocketbi_08} alt="円グラフオプションがハイライトされたチャートタイプ選択パネル" border />
 <br/>
 
-まず、データセットから"Region"カラムをドラッグ＆ドロップしてレジェンドフィールドに追加します。
+まず、データセットから「地域」カラムをレジェンドフィールドにドラッグ＆ドロップします。
 
-<Image size="md" img={rocketbi_09} alt="レジェンドフィールドにRegionカラムが追加されるドラッグ＆ドロップインターフェイス" border />
+<Image size="md" img={rocketbi_09} alt="レジェンドフィールドに地域カラムを追加しているドラッグ＆ドロップインターフェース" border />
 <br/>
 
-次に、チャートコントロールタブに移動します。
+次に、チャートコントロールタブに切り替えます。
 
-<Image size="md" img={rocketbi_10} alt="視覚化設定オプションを示すチャートコントロールタブインターフェイス" border />
+<Image size="md" img={rocketbi_10} alt="視覚化設定オプションを示すチャートコントロールタブインターフェース" border />
 <br/>
 
-メトリックコントロールを値フィールドにドラッグ＆ドロップします。
+メトリクスコントロールを値フィールドにドラッグ＆ドロップします。
 
-<Image size="md" img={rocketbi_11} alt="円グラフの値フィールドに追加されたメトリックコントロール" border />
+<Image size="md" img={rocketbi_11} alt="円グラフの値フィールドにメトリクスコントロールを追加している様子" border />
 <br/>
 
-(メトリックコントロールをソートとして使用することもできます)
+(メトリクスコントロールをソートとしても使用できます)
 
-チャート設定に移動してさらなるカスタマイズを行います。
+さらにカスタマイズのためにチャート設定に移動します。
 
 <Image size="md" img={rocketbi_12} alt="円グラフのカスタマイズオプションを示すチャート設定パネル" border />
 <br/>
 
 例えば、データラベルをパーセンテージに変更します。
 
-<Image size="md" img={rocketbi_13} alt="円グラフにパーセンテージを表示するために変更されたデータラベル設定" border />
+<Image size="md" img={rocketbi_13} alt="円グラフにパーセンテージを表示するようにデータラベル設定が変更されている" border />
 <br/>
 
-チャートを保存してダッシュボードに追加します。
+チャートを保存し、ダッシュボードに追加します。
 
-<Image size="md" img={rocketbi_14} alt="他のコントロールと共に新しく追加された円グラフを表示するダッシュボードビュー" border />
+<Image size="md" img={rocketbi_14} alt="新しく追加された円グラフと他のコントロールを含むダッシュボードビュー" border />
 
 #### 時系列チャートで日付コントロールを使用する {#use-date-control-in-a-time-series-chart}
-スタックカラムチャートを使用します。
+積み上げ棒グラフを使用します。
 
-<Image size="md" img={rocketbi_15} alt="時系列データを用いたスタックカラムチャート作成インターフェイス" border />
+<Image size="md" img={rocketbi_15} alt="時系列データのある積み上げ棒グラフ作成インターフェース" border />
 <br/>
 
-チャートコントロールで、Y軸にメトリックコントロールを、X軸に日付範囲を使用します。
+チャートコントロールで、Y軸にメトリクスコントロール、X軸に日付範囲を使用します。
 
-<Image size="md" img={rocketbi_16} alt="Y軸にメトリック、X軸に日付範囲を示すチャートコントロール設定" border />
+<Image size="md" img={rocketbi_16} alt="Y軸にメトリクス、X軸に日付範囲を示すチャートコントロール設定" border />
 <br/>
 
-地域カラムをブレイクダウンに追加します。
+地域カラムをブレークダウンに追加します。
 
-<Image size="md" img={rocketbi_17} alt="スタックカラムチャートのブレイクダウン次元として地域カラムが追加される" border />
+<Image size="md" img={rocketbi_17} alt="積み上げ棒グラフのブレークダウン次元として地域カラムを追加している様子" border />
 <br/>
 
-KPIとして数字チャートを追加し、ダッシュボードをグレードアップします。
+KPIとして数値チャートを追加し、ダッシュボードを輝かせます。
 
-<Image size="md" img={rocketbi_18} alt="KPI数字チャート、円グラフ、時系列視覚化を含む完成されたダッシュボード" border />
+<Image size="md" img={rocketbi_18} alt="KPI数値チャート、円グラフ、時系列視覚化を持つ完成したダッシュボード" border />
 <br/>
 
 これで、あなたはRocket.BIで最初のダッシュボードを成功裏に構築しました。

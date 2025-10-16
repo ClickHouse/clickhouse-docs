@@ -1,168 +1,114 @@
 ---
-description: 'Documentation for Time Series Functions'
-sidebar_label: 'Time Series'
-sidebar_position: 172
-slug: '/sql-reference/functions/time-series-functions'
-title: 'Time Series Functions'
+'description': '時系列操作のための関数に関するDocumentation'
+'sidebar_label': 'TimeSeries'
+'slug': '/sql-reference/functions/time-series-functions'
+'title': '時系列操作のための関数'
+'doc_type': 'reference'
 ---
-
-
 
 
 # 時系列関数
 
-以下の関数は系列データの分析に使用されます。
+以下の関数は、`timeSeries*()` 集計関数と一緒に使用するために設計されています。例えば
+[timeSeriesInstantRateToGrid](../aggregate-functions/reference/timeSeriesInstantRateToGrid.md)、
+[timeSeriesLastToGrid](../aggregate-functions/reference/timeSeriesResampleToGridWithStaleness.md) などです。
 
-## seriesOutliersDetectTukey {#seriesoutliersdetecttukey}
+## timeSeriesRange {#timeSeriesRange}
 
-[Tukey Fences](https://en.wikipedia.org/wiki/Outlier#Tukey%27s_fences)を使用して系列データの外れ値を検出します。
+タイムスタンプの範囲を生成します。
 
 **構文**
 
 ```sql
-seriesOutliersDetectTukey(series);
-seriesOutliersDetectTukey(series, min_percentile, max_percentile, K);
+timeSeriesRange(start_timestamp, end_timestamp, step)
 ```
 
 **引数**
 
-- `series` - 数値の配列。
-- `min_percentile` - 四分位範囲 [(IQR)](https://en.wikipedia.org/wiki/Interquartile_range) を計算するために使用する最小パーセンタイル。値は [0.02,0.98] の範囲内でなければなりません。デフォルトは 0.25 です。
-- `max_percentile` - 四分位範囲 (IQR) を計算するために使用する最大パーセンタイル。値は [0.02,0.98] の範囲内でなければなりません。デフォルトは 0.75 です。
-- `K` - 軽度または強い外れ値を検出するための非負の定数値。デフォルト値は 1.5 です。
-
-`series` 内で外れ値を検出するには、少なくとも 4 つのデータポイントが必要です。
+- `start_timestamp` - 範囲の開始。
+- `end_timestamp` - 範囲の終了。
+- `step` - 範囲のステップ（秒単位）。
 
 **返される値**
 
-- 入力配列と同じ長さの配列を返します。各値は、系列内の対応する要素の可能性のある異常のスコアを表します。ゼロでないスコアは、可能性のある異常を示します。 [配列](../data-types/array.md)。
+- タイムスタンプの範囲 `[start_timestamp, start_timestamp + step, start_timestamp + 2 * step, ..., end_timestamp]` を返します。
 
 **例**
 
 クエリ:
 
 ```sql
-SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4, 5, 12, 45, 12, 3, 3, 4, 5, 6]) AS print_0;
+SELECT timeSeriesRange('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:01:00'::DateTime64(3), 30) AS rng;
 ```
 
 結果:
 
 ```text
-┌───────────print_0─────────────────┐
-│[0,0,0,0,0,0,0,0,0,27,0,0,0,0,0,0] │
-└───────────────────────────────────┘
+┌────────────────────────────────────result─────────────────────────────────────────┐
+│ ['2025-06-01 00:00:00.000', '2025-06-01 00:00:30.000', '2025-06-01 00:01:00.000'] │
+└───────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-クエリ:
-
+**注意事項**
+- `start_timestamp` が `end_timestamp` に等しい場合、関数 `timeSeriesRange()` はそのタイムスタンプを含む1要素の配列を返します: `[start_timestamp]`
+- 関数 `timeSeriesRange()` は、関数 [range](../functions/array-functions.md#range) に似ています。
+例えば、タイムスタンプの型が `DateTime64(3)` で `start_timestamp < end_timestamp` の場合、`timeSeriesRange(start_timestamp, end_timestamp, step)` は次の式と同じ結果を返します:
 ```sql
-SELECT seriesOutliersDetectTukey([-3, 2, 15, 3, 5, 6, 4.50, 5, 12, 45, 12, 3.40, 3, 4, 5, 6], 0.2, 0.8, 1.5) AS print_0;
+range(start_timestamp::Int64, end_timestamp::Int64 + 1, step::Int64)::Array(DateTime64(3))
 ```
 
-結果:
+## timeSeriesFromGrid {#timeSeriesFromGrid}
 
-```text
-┌─print_0──────────────────────────────┐
-│ [0,0,0,0,0,0,0,0,0,19.5,0,0,0,0,0,0] │
-└──────────────────────────────────────┘
-```
+値の配列 `[value1, value2, value3, ..., valueN]` をタプルの配列 `[(start_timestamp, value1), (start_timestamp + step, value2), (start_timestamp + 2 * step, value3), ..., (end_timestamp, valueN)]` に変換します。
 
-## seriesPeriodDetectFFT {#seriesperioddetectfft}
+もし値のいくつか `[value1, value2, value3, ...]` が `NULL` の場合、関数はそのNULL値を結果の配列にコピーしませんが、現在のタイムスタンプは増加し続けます。例えば `[value1, NULL, value2]` の場合、関数は `[(start_timestamp, value1), (start_timestamp + 2 * step, value2)]` を返します。
 
-FFT - [高速フーリエ変換](https://en.wikipedia.org/wiki/Fast_Fourier_transform)を使用して、与えられた系列データの周期を見つけます。
+現在のタイムスタンプは、`end_timestamp` より大きくなるまで `step` だけ増加し、各タイムスタンプは指定された値の配列からの値と組み合わされます。もし値の数がタイムスタンプの数と一致しない場合、関数は例外をスローします。
 
 **構文**
 
 ```sql
-seriesPeriodDetectFFT(series);
+timeSeriesFromGrid(start_timestamp, end_timestamp, step, values);
 ```
 
 **引数**
 
-- `series` - 数値の配列
+- `start_timestamp` - グリッドの開始。
+- `end_timestamp` - グリッドの終了。
+- `step` - グリッドのステップ（秒単位）。
+- `values` - 値の配列 `[value1, value2, ..., valueN]`。
 
 **返される値**
 
-- 系列データの周期に等しい実数値。データポイントの数が 4 未満の場合は NaN。 [Float64](../data-types/float.md)。
+- `start_timestamp` と `step` によって定義された定期的な時間グリッド上のタイムスタンプと結合されたソースの値の配列を返します。
 
 **例**
 
 クエリ:
 
 ```sql
-SELECT seriesPeriodDetectFFT([1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6, 1, 4, 6]) AS print_0;
+SELECT timeSeriesFromGrid('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:01:30.000'::DateTime64(3), 30, [10, 20, NULL, 30]) AS result;
 ```
 
 結果:
 
 ```text
-┌───────────print_0──────┐
-│                      3 │
-└────────────────────────┘
+┌─────────────────────────────────────────────result─────────────────────────────────────────────┐
+│ [('2025-06-01 00:00:00.000',10),('2025-06-01 00:00:30.000',20),('2025-06-01 00:01:30.000',30)] │
+└────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+**注意**
+関数 `timeSeriesFromGrid(start_timestamp, end_timestamp, step, values)` は次の式と同じ結果を返します:
 ```sql
-SELECT seriesPeriodDetectFFT(arrayMap(x -> abs((x % 6) - 3), range(1000))) AS print_0;
+arrayFilter(x -> x.2 IS NOT NULL, arrayZip(timeSeriesRange(start_timestamp, end_timestamp, step), values))
 ```
 
-結果:
+<!-- 
+The inner content of the tags below are replaced at doc framework build time with 
+docs generated from system.functions. Please do not modify or remove the tags.
+See: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+-->
 
-```text
-┌─print_0─┐
-│       6 │
-└─────────┘
-```
-
-## seriesDecomposeSTL {#seriesdecomposestl}
-
-STL [(Loessに基づく季節的トレンド分解手法)](https://www.wessa.net/download/stl.pdf)を使用して、系列データを季節、トレンド、残差成分に分解します。
-
-**構文**
-
-```sql
-seriesDecomposeSTL(series, period);
-```
-
-**引数**
-
-- `series` - 数値の配列
-- `period` - 正の整数
-
-`series` 内のデータポイントの数は、`period` の値の 2 倍以上である必要があります。
-
-**返される値**
-
-- 季節成分を含む最初の配列、トレンドを含む2番目の配列、残差成分を含む3番目の配列、基準（季節 + トレンド）成分を含む4番目の配列からなる4つの配列の配列を返します。 [配列](../data-types/array.md)。
-
-**例**
-
-クエリ:
-
-```sql
-SELECT seriesDecomposeSTL([10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34], 3) AS print_0;
-```
-
-結果:
-
-```text
-┌───────────print_0──────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ [[
-        -13.529999, -3.1799996, 16.71,      -13.53,     -3.1799996, 16.71,      -13.53,     -3.1799996,
-        16.71,      -13.530001, -3.18,      16.710001,  -13.530001, -3.1800003, 16.710001,  -13.530001,
-        -3.1800003, 16.710001,  -13.530001, -3.1799994, 16.71,      -13.529999, -3.1799994, 16.709997
-    ],
-    [
-        23.63,     23.63,     23.630003, 23.630001, 23.630001, 23.630001, 23.630001, 23.630001,
-        23.630001, 23.630001, 23.630001, 23.63,     23.630001, 23.630001, 23.63,     23.630001,
-        23.630001, 23.63,     23.630001, 23.630001, 23.630001, 23.630001, 23.630001, 23.630003
-    ],
-    [
-        0, 0.0000019073486, -0.0000019073486, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.0000019073486, 0,
-        0
-    ],
-    [
-        10.1, 20.449999, 40.340004, 10.100001, 20.45, 40.34, 10.100001, 20.45, 40.34, 10.1, 20.45, 40.34,
-        10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.1, 20.45, 40.34, 10.100002, 20.45, 40.34
-    ]]                                                                                                                   │
-└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-```
+<!--AUTOGENERATED_START-->
+<!--AUTOGENERATED_END-->

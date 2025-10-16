@@ -1,23 +1,22 @@
 ---
 slug: '/examples/aggregate-function-combinators/quantilesTimingIf'
-title: 'quantilesTimingIf'
-description: 'Пример использования комбинатора quantilesTimingIf'
+sidebar_label: quantilesTimingIf
+description: 'Пример использования комбинации quantilesTimingIf'
+title: quantilesTimingIf
 keywords: ['quantilesTiming', 'if', 'combinator', 'examples', 'quantilesTimingIf']
-sidebar_label: 'quantilesTimingIf'
+doc_type: reference
 ---
-
-
 # quantilesTimingIf {#quantilestimingif}
 
 ## Описание {#description}
 
-Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может применяться к функции [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming) для расчета квантилей значений времени для строк, где условие истинно, с использованием агрегирующей функции `quantilesTimingIf`.
+Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming) для вычисления квантилей временных значений для строк, где условие истинно, с использованием агрегатной функции комбинатора `quantilesTimingIf`.
 
 ## Пример использования {#example-usage}
 
-В этом примере мы создадим таблицу, которая хранит время отклика API для различных конечных точек, и мы используем `quantilesTimingIf` для расчета квантилей времени отклика для успешных запросов.
+В этом примере мы создадим таблицу, которая хранит время ответа API для различных конечных точек, и мы используем `quantilesTimingIf` для вычисления квантилей времени ответа для успешных запросов.
 
-```sql title="Запрос"
+```sql title="Query"
 CREATE TABLE api_responses(
     endpoint String,
     response_time_ms UInt32,
@@ -57,7 +56,7 @@ FROM api_responses
 GROUP BY endpoint;
 ```
 
-Функция `quantilesTimingIf` будет рассчитывать квартили только для успешных запросов (is_successful = 1). Возвращаемый массив содержит следующие квартили в порядке:
+Функция `quantilesTimingIf` будет вычислять квантили только для успешных запросов (is_successful = 1). Возвращаемый массив содержит следующие квантиле в порядке:
 - 0 (минимум)
 - 0.25 (первый квартиль)
 - 0.5 (медиана)
@@ -66,7 +65,7 @@ GROUP BY endpoint;
 - 0.99 (99-й процентиль)
 - 1.0 (максимум)
 
-```response title="Ответ"
+```response title="Response"
    ┌─endpoint─┬─response_time_quantiles─────────────────────────────────────────────┐
 1. │ orders   │ [82, 87, 92, 98, 103, 104, 105]                                     │
 2. │ products │ [45, 47, 49, 51, 52, 52, 53]                                        │

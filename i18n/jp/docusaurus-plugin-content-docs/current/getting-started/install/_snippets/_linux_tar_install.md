@@ -1,32 +1,28 @@
----
-{}
----
 
 
 
+# ClickHouseをtgzアーカイブを使用してインストールする
 
-# ClickHouseのtgzアーカイブを使用したインストール
-
-> `deb` または `rpm` パッケージのインストールが不可能なすべてのLinuxディストリビューションに対して、公式の事前コンパイルされた `tgz` アーカイブを使用することをお勧めします。
+> `deb` または `rpm` パッケージのインストールが不可能な全てのLinuxディストリビューションには、公式のコンパイル済み `tgz` アーカイブを使用することをお勧めします。
 
 <VerticalStepper>
 
-## 最新の安定版をダウンロードしてインストールする {#install-latest-stable}
+## 最新の安定バージョンをダウンロードしてインストールする {#install-latest-stable}
 
-必要なバージョンは、https://packages.clickhouse.com/tgz/ から `curl` または `wget` を使用してダウンロードできます。
-その後、ダウンロードしたアーカイブを解凍し、インストールスクリプトを使用してインストールする必要があります。
+必要なバージョンは、リポジトリ https://packages.clickhouse.com/tgz/ から `curl` または `wget` を使用してダウンロードできます。
+その後、ダウンロードしたアーカイブを展開し、インストールスクリプトでインストールする必要があります。
 
-以下は、最新の安定版をインストールする方法の例です。
+以下は、最新の安定バージョンをインストールする方法の例です。
 
 :::note
 本番環境では、最新の `stable` バージョンを使用することをお勧めします。
-リリース番号は、この [GitHubページ](https://github.com/ClickHouse/ClickHouse/tags) で
-`-stable` の接尾辞を持つものを見つけることができます。
+リリース番号はこの [GitHubページ](https://github.com/ClickHouse/ClickHouse/tags) で 
+`-stable` の接尾辞を持っているものを見つけることができます。
 :::
 
 ## 最新のClickHouseバージョンを取得する {#get-latest-version}
 
-GitHubから最新のClickHouseバージョンを取得し、`LATEST_VERSION` 変数に格納します。
+GitHubから最新のClickHouseバージョンを取得し、`LATEST_VERSION` 変数に保存します。
 
 ```bash
 LATEST_VERSION=$(curl -s https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/utils/list-versions/version_date.tsv | \
@@ -34,22 +30,22 @@ LATEST_VERSION=$(curl -s https://raw.githubusercontent.com/ClickHouse/ClickHouse
 export LATEST_VERSION
 ```
 
-## システムアーキテクチャの検出 {#detect-system-architecture}
+## システムアーキテクチャを検出する {#detect-system-architecture}
 
-システムアーキテクチャを検出し、ARCH変数をそれに応じて設定します。
+システムアーキテクチャを検出し、それに応じてARCH変数を設定します：
 
 ```bash
 case $(uname -m) in
-  x86_64) ARCH=amd64 ;;         # Intel/AMD 64ビットプロセッサ用
-  aarch64) ARCH=arm64 ;;        # ARM 64ビットプロセッサ用
-  *) echo "Unknown architecture $(uname -m)"; exit 1 ;; # サポートされていないアーキテクチャの場合は終了
+  x86_64) ARCH=amd64 ;;         # For Intel/AMD 64-bit processors
+  aarch64) ARCH=arm64 ;;        # For ARM 64-bit processors
+  *) echo "Unknown architecture $(uname -m)"; exit 1 ;; # Exit if architecture isn't supported
 esac
 ```
 
-## 各ClickHouseコンポーネントのtarボールをダウンロード {#download-tarballs}
+## 各ClickHouseコンポーネントのtarballをダウンロードする {#download-tarballs}
 
-各ClickHouseコンポーネントのtarボールをダウンロードします。ループは先にアーキテクチャ固有の 
-パッケージを試し、それが失敗した場合は一般的なものにフォールバックします。
+各ClickHouseコンポーネントのtarballをダウンロードします。ループはまずアーキテクチャ固有の 
+パッケージを試し、次に汎用のものにフォールバックします。
 
 ```bash
 for PKG in clickhouse-common-static clickhouse-common-static-dbg clickhouse-server clickhouse-client clickhouse-keeper
@@ -59,25 +55,24 @@ do
 done
 ```
 
-## パッケージの抽出とインストール {#extract-and-install}
+## パッケージを抽出してインストールする {#extract-and-install}
 
-以下のコマンドを実行して、次のパッケージを抽出してインストールします：
+以下のコマンドを実行して、次のパッケージを抽出およびインストールします：
 - `clickhouse-common-static`
 
 ```bash
 
-# clickhouse-common-staticパッケージを抽出してインストール
+# Extract and install clickhouse-common-static package
 tar -xzvf "clickhouse-common-static-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-$LATEST_VERSION/install/doinst.sh"
 ```
 
-
 - `clickhouse-common-static-dbg`
 
 ```bash
 
-# デバッグシンボルパッケージを抽出してインストール
+# Extract and install debug symbols package
 tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
@@ -87,18 +82,18 @@ sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
 
 ```bash
 
-# 設定付きのサーバーパッケージを抽出してインストール
+# Extract and install server package with configuration
 tar -xzvf "clickhouse-server-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-server-$LATEST_VERSION.tgz"
 sudo "clickhouse-server-$LATEST_VERSION/install/doinst.sh" configure
-sudo /etc/init.d/clickhouse-server start  # サーバーを起動
+sudo /etc/init.d/clickhouse-server start  # Start the server
 ```
 
 - `clickhouse-client`
 
 ```bash
 
-# クライアントパッケージを抽出してインストール
+# Extract and install client package
 tar -xzvf "clickhouse-client-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-client-$LATEST_VERSION.tgz"
 sudo "clickhouse-client-$LATEST_VERSION/install/doinst.sh"

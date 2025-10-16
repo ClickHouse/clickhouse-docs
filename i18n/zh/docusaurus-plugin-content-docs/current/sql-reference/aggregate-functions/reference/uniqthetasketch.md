@@ -1,8 +1,9 @@
 ---
-'description': '使用Theta Sketch框架计算不同参数值的近似数量。'
+'description': '使用 Theta Sketch Framework 计算不同参数值的近似数量。'
 'sidebar_position': 209
 'slug': '/sql-reference/aggregate-functions/reference/uniqthetasketch'
 'title': 'uniqTheta'
+'doc_type': 'reference'
 ---
 
 计算不同参数值的近似数量，使用 [Theta Sketch Framework](https://datasketches.apache.org/docs/Theta/ThetaSketches.html#theta-sketch-framework)。
@@ -17,21 +18,21 @@ uniqTheta(x[, ...])
 
 **返回值**
 
-- 一个 [UInt64](../../../sql-reference/data-types/int-uint.md) 类型的数字。
+- 一个 [UInt64](../../../sql-reference/data-types/int-uint.md)-类型的数字。
 
 **实现细节**
 
 函数：
 
-- 计算所有参数的哈希值，然后在计算中使用它。
+- 为聚合中的所有参数计算哈希值，然后在计算中使用它。
 
 - 使用 [KMV](https://datasketches.apache.org/docs/Theta/InverseEstimate.html) 算法来近似不同参数值的数量。
 
-        使用 4096(2^12) 64-bit sketch。状态的大小约为 41 KB。
+        使用 4096(2^12) 64 位 sketch。状态的大小约为 41 KB。
 
-- 相对误差为 3.125% (95% 置信水平)，详见 [相对误差表](https://datasketches.apache.org/docs/Theta/ThetaErrorTable.html)。
+- 相对误差为 3.125%（95% 置信度），详细信息见 [相对误差表](https://datasketches.apache.org/docs/Theta/ThetaErrorTable.html)。
 
-**另见**
+**另请参见**
 
 - [uniq](/sql-reference/aggregate-functions/reference/uniq)
 - [uniqCombined](/sql-reference/aggregate-functions/reference/uniqcombined)

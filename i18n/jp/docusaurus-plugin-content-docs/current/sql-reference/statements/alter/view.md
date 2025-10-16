@@ -1,19 +1,18 @@
 ---
-description: 'ALTER TABLE ... MODIFY QUERY ステートメントのドキュメント'
-sidebar_label: 'ビュー'
-sidebar_position: 50
-slug: '/sql-reference/statements/alter/view'
-title: 'ALTER TABLE ... MODIFY QUERY ステートメント'
+'description': 'ALTER TABLE ... MODIFY QUERY ステートメントのドキュメント'
+'sidebar_label': 'VIEW'
+'sidebar_position': 50
+'slug': '/sql-reference/statements/alter/view'
+'title': 'ALTER TABLE ... MODIFY QUERY ステートメント'
+'doc_type': 'reference'
 ---
-
-
 
 
 # ALTER TABLE ... MODIFY QUERY ステートメント
 
-`ALTER TABLE ... MODIFY QUERY` ステートメントを使用すると、[マテリアライズド ビュー](/sql-reference/statements/create/view#materialized-view)を作成する際に指定された `SELECT` クエリを中断することなく変更できます。
+`ALTER TABLE ... MODIFY QUERY` ステートメントを使用すると、[マテリアライズドビュー](/sql-reference/statements/create/view#materialized-view)を作成時に指定した `SELECT` クエリを、取り込みプロセスを中断することなく変更できます。
 
-このコマンドは、`TO [db.]name` 句を使用して作成されたマテリアライズド ビューを変更するために作られています。基盤となるストレージ テーブルの構造を変更せず、マテリアライズド ビューのカラムの定義も変更しないため、`TO [db.]name` 句を使用せずに作成されたマテリアライズド ビューに対してはこのコマンドの適用が非常に制限されます。
+このコマンドは `TO [db.]name` 句を使用して作成されたマテリアライズドビューを変更するために作成されました。基盤となるストレージテーブルの構造は変更せず、マテリアライズドビューのカラム定義も変更しないため、このコマンドの適用は `TO [db.]name` 句なしで作成されたマテリアライズドビューには非常に限定的です。
 
 **TO テーブルの例**
 
@@ -30,7 +29,7 @@ FROM events
 GROUP BY ts, event_type;
 
 INSERT INTO events
-SELECT Date '2020-01-01' + interval number * 900 second,
+SELECT DATE '2020-01-01' + interval number * 900 second,
        ['imp', 'click'][number%2+1]
 FROM numbers(100);
 
@@ -46,14 +45,15 @@ ORDER BY ts, event_type;
 │ 2020-01-02 00:00:00 │ imp        │               2 │
 └─────────────────────┴────────────┴─────────────────┘
 
--- 新しい測定基準 `cost` と新しい次元 `browser` を追加します。
+-- Let's add the new measurement `cost`
+-- and the new dimension `browser`.
 
 ALTER TABLE events
   ADD COLUMN browser String,
   ADD COLUMN cost Float64;
 
--- マテリアライズド ビューと TO (宛先テーブル) のカラムは一致する必要がないため、
--- 次の ALTER は挿入を中断しません。
+-- Column do not have to match in a materialized view and TO
+-- (destination table), so the next alter does not break insertion.
 
 ALTER TABLE events_by_day
     ADD COLUMN cost Float64,
@@ -67,7 +67,7 @@ SELECT Date '2020-01-02' + interval number * 900 second,
        10/(number+1)%33
 FROM numbers(100);
 
--- 新しいカラム `browser` と `cost` は、マテリアライズド ビューを変更していないため、空です。
+-- New columns `browser` and `cost` are empty because we did not change Materialized View yet.
 
 SELECT ts, event_type, browser, sum(events_cnt) events_cnt, round(sum(cost),2) cost
 FROM events_by_day
@@ -121,7 +121,7 @@ ORDER BY ts, event_type;
 │ 2020-01-04 00:00:00 │ imp        │ chrome  │          1 │   0.1 │
 └─────────────────────┴────────────┴─────────┴────────────┴───────┘
 
--- !!! `MODIFY ORDER BY` の間に主キーが暗黙的に導入されました。
+-- !!! During `MODIFY ORDER BY` PRIMARY KEY was implicitly introduced.
 
 SHOW CREATE TABLE events_by_day FORMAT TSVRaw
 
@@ -138,9 +138,9 @@ PRIMARY KEY (event_type, ts)
 ORDER BY (event_type, ts, browser)
 SETTINGS index_granularity = 8192
 
--- !!! カラムの定義は変更されていませんが、問題にはなりません。
--- マテリアライズド ビューをクエリしているのではなく、TO (ストレージ) テーブルをクエリしています。
--- SELECT セクションが更新されました。
+-- !!! The columns' definition is unchanged but it does not matter, we are not querying
+-- MATERIALIZED VIEW, we are querying TO (storage) table.
+-- SELECT section is updated.
 
 SHOW CREATE TABLE mv FORMAT TSVRaw;
 
@@ -165,7 +165,7 @@ GROUP BY
 
 **TO テーブルなしの例**
 
-適用が非常に限られているのは、新しいカラムを追加することなく `SELECT` セクションだけを変更できるためです。
+適用は非常に限定的であり、新しいカラムを追加することなく `SELECT` セクションのみを変更できます。
 
 ```sql
 CREATE TABLE src_table (`a` UInt32) ENGINE = MergeTree ORDER BY a;
@@ -197,8 +197,8 @@ SELECT * FROM mv;
 
 ## ALTER LIVE VIEW ステートメント {#alter-live-view-statement}
 
-`ALTER LIVE VIEW ... REFRESH` ステートメントは、[ライブ ビュー](/sql-reference/statements/create/view#live-view)を更新します。詳細は [Force Live View Refresh](/sql-reference/statements/create/view#live-view) を参照してください。
+`ALTER LIVE VIEW ... REFRESH` ステートメントは [ライブビュー](/sql-reference/statements/create/view#live-view)を更新します。 [ライブビューの強制更新](/sql-reference/statements/create/view#live-view)を参照してください。
 
 ## ALTER TABLE ... MODIFY REFRESH ステートメント {#alter-table--modify-refresh-statement}
 
-`ALTER TABLE ... MODIFY REFRESH` ステートメントは、[リフレッシュ可能なマテリアライズド ビュー](../create/view.md#refreshable-materialized-view) のリフレッシュパラメータを変更します。詳細は [リフレッシュパラメータの変更](../create/view.md#changing-refresh-parameters) を参照してください。
+`ALTER TABLE ... MODIFY REFRESH` ステートメントは、[リフレッシュ可能なマテリアライズドビュー](../create/view.md#refreshable-materialized-view)のリフレッシュパラメータを変更します。 [リフレッシュパラメータの変更](../create/view.md#changing-refresh-parameters)を参照してください。

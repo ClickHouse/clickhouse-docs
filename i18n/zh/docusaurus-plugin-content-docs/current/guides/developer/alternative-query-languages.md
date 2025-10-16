@@ -3,15 +3,16 @@
 'sidebar_label': '替代查询语言'
 'title': '替代查询语言'
 'description': '在 ClickHouse 中使用替代查询语言'
+'doc_type': 'reference'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-除了标准 SQL，ClickHouse 还支持各种替代查询语言来查询数据。
+除了标准 SQL，ClickHouse 还支持多种替代查询语言来查询数据。
 
 当前支持的方言有：
 - `clickhouse`：ClickHouse 的默认 [SQL 方言](../../chdb/reference/sql-reference.md)
-- `prql`：[管道关系查询语言 (PRQL)](https://prql-lang.org/)
+- `prql`：[管道化关系查询语言 (PRQL)](https://prql-lang.org/)
 - `kusto`：[Kusto 查询语言 (KQL)](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query)
 
 使用哪种查询语言由设置 `dialect` 控制。
@@ -24,7 +25,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 SET dialect = 'clickhouse'
 ```
 
-## 管道关系查询语言 (PRQL) {#pipelined-relational-query-language-prql}
+## 管道化关系查询语言 (PRQL) {#pipelined-relational-query-language-prql}
 
 <ExperimentalBadge/>
 
@@ -45,7 +46,7 @@ aggregate {
 }
 ```
 
-在底层，ClickHouse 使用从 PRQL 到 SQL 的转译来运行 PRQL 查询。
+实际上，ClickHouse 使用从 PRQL 到 SQL 的转译来运行 PRQL 查询。
 
 ## Kusto 查询语言 (KQL) {#kusto-query-language-kql}
 

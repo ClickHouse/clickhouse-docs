@@ -9,6 +9,7 @@
 - 'examples'
 - 'sumMap'
 'sidebar_label': 'sumMap'
+'doc_type': 'reference'
 ---
 
 
@@ -20,7 +21,7 @@
 
 ## 示例用法 {#example-usage}
 
-在这个例子中，我们将创建一个表，用于存储状态码及其在不同时间段内的计数，每行包含一个状态码到其对应计数的 Map。我们将使用 `sumMap` 计算每个时间段内每个状态码的总计数。
+在这个示例中，我们将创建一个表，存储不同时间段的状态码及其计数，其中每一行包含一个状态码到其相应计数的 Map。我们将使用 `sumMap` 来计算每个时间段内每个状态码的总计数。
 
 ```sql title="Query"
 CREATE TABLE metrics(
@@ -62,6 +63,6 @@ GROUP BY timeslot;
    └─────────────────────┴──────────────────────────────────────┘
 ```
 
-## 另见 {#see-also}
+## 另请参阅 {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
 - [`Map 组合器`](/sql-reference/aggregate-functions/combinators#-map)

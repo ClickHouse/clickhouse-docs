@@ -1,23 +1,20 @@
 ---
-alias: []
+slug: '/interfaces/formats/ArrowStream'
 description: 'Документация для формата ArrowStream'
-input_format: true
+title: ArrowStream
 keywords: ['ArrowStream']
+doc_type: reference
+input_format: true
 output_format: true
-slug: /interfaces/formats/ArrowStream
-title: 'ArrowStream'
 ---
-
-| Вход | Выход | Псевдоним |
+| Input | Output | Alias |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## Описание {#description}
 
-`ArrowStream` — это формат "потокового режима" Apache Arrow. Он предназначен для обработки потоковых данных в памяти.
+`ArrowStream` — это формат "потокового режима" Apache Arrow. Он предназначен для обработки потоков данных в памяти.
 
 ## Пример использования {#example-usage}
 
 ## Настройки формата {#format-settings}
-
-

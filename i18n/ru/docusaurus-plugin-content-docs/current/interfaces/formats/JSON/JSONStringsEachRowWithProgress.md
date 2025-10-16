@@ -1,13 +1,13 @@
 ---
+slug: '/interfaces/formats/JSONStringsEachRowWithProgress'
 description: 'Документация для формата JSONStringsEachRowWithProgress'
+title: JSONStringsEachRowWithProgress
 keywords: ['JSONStringsEachRowWithProgress']
-slug: /interfaces/formats/JSONStringsEachRowWithProgress
-title: 'JSONStringsEachRowWithProgress'
+doc_type: reference
 ---
-
 ## Описание {#description}
 
-Отличается от `JSONEachRow`/`JSONStringsEachRow` тем, что ClickHouse также будет предоставлять информацию о прогрессе в виде JSON значений.
+Отличается от `JSONEachRow`/`JSONStringsEachRow` тем, что ClickHouse также будет возвращать информацию о ходе выполнения в виде JSON-значений.
 
 ## Пример использования {#example-usage}
 

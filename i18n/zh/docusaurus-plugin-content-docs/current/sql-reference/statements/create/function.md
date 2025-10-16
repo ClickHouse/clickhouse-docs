@@ -1,27 +1,28 @@
 ---
-'description': 'Function 的文档'
+'description': '函数的文档'
 'sidebar_label': 'FUNCTION'
 'sidebar_position': 38
 'slug': '/sql-reference/statements/create/function'
 'title': 'CREATE FUNCTION - 用户定义函数 (UDF)'
+'doc_type': 'reference'
 ---
 
-创建一个从 lambda 表达式生成的用户定义函数 (UDF)。该表达式必须由函数参数、常量、运算符或其他函数调用组成。
+创建一个用户定义的函数（UDF），该函数由一个 lambda 表达式构成。表达式必须包含函数参数、常量、运算符或其他函数调用。
 
 **语法**
 
 ```sql
 CREATE FUNCTION name [ON CLUSTER cluster] AS (parameter0, ...) -> expression
 ```
-一个函数可以有任意数量的参数。
+函数可以有任意数量的参数。
 
-有一些限制：
+有几个限制：
 
-- 函数的名称在用户定义的和系统函数中必须是唯一的。
+- 函数的名称在用户定义和系统函数中必须是唯一的。
 - 不允许递归函数。
 - 函数使用的所有变量必须在其参数列表中指定。
 
-如果违反任何限制，将引发异常。
+如果违反了任何限制，则会引发异常。
 
 **示例**
 
@@ -42,7 +43,7 @@ SELECT number, linear_equation(number, 2, 1) FROM numbers(3);
 └────────┴──────────────────────────────┘
 ```
 
-在以下查询中，用户定义的函数中调用了[条件函数](../../../sql-reference/functions/conditional-functions.md)：
+在以下查询中，用户定义的函数中调用了一个 [条件函数](../../../sql-reference/functions/conditional-functions.md)：
 
 ```sql
 CREATE FUNCTION parity_str AS (n) -> if(n % 2, 'odd', 'even');
@@ -61,6 +62,6 @@ SELECT number, parity_str(number) FROM numbers(3);
 
 ## 相关内容 {#related-content}
 
-### [可执行的 UDFs](/sql-reference/functions/udf.md). {#executable-udfs}
+### [可执行的 UDFs](/sql-reference/functions/udf.md)。 {#executable-udfs}
 
 ### [ClickHouse Cloud 中的用户定义函数](https://clickhouse.com/blog/user-defined-functions-clickhouse-udfs) {#user-defined-functions-in-clickhouse-cloud}

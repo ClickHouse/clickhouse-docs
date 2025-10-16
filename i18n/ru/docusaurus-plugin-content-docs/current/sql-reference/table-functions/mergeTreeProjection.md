@@ -1,32 +1,34 @@
 ---
-description: 'Представляет содержимое некоторой проекции в таблицах MergeTree.
-  Это может быть использовано для анализа.'
-sidebar_label: 'mergeTreeProjection'
+slug: '/sql-reference/table-functions/mergeTreeProjection'
+sidebar_label: mergeTreeProjection
 sidebar_position: 77
-slug: /sql-reference/table-functions/mergeTreeProjection
-title: 'mergeTreeProjection'
+description: 'Представляет содержание некоторой проекции в таблицах MergeTree. Она'
+title: mergeTreeProjection
+doc_type: reference
 ---
+# mergeTreeProjection Табличная Функция
 
+Представляет содержимое некоторой проекции в таблицах MergeTree. Она может быть использована для инспекции.
 
-# Функция Таблицы mergeTreeProjection
-
-Представляет содержимое некоторой проекции в таблицах MergeTree. Это может быть использовано для анализа.
+## Синтаксис {#syntax}
 
 ```sql
 mergeTreeProjection(database, table, projection)
 ```
 
-**Аргументы**
+## Аргументы {#arguments}
 
-- `database` - Имя базы данных для чтения проекции.
-- `table` - Имя таблицы для чтения проекции.
-- `projection` - Проекция для чтения.
+| Аргумент     | Описание                                    |
+|--------------|---------------------------------------------|
+| `database`   | Имя базы данных, из которой нужно читать проекцию. |
+| `table`      | Имя таблицы, из которой нужно читать проекцию.    |
+| `projection` | Проекция, из которой нужно читать.         |
 
-**Возвращаемое Значение**
+## Возвращаемое значение {#returned_value}
 
 Объект таблицы с колонками, предоставляемыми данной проекцией.
 
-## Пример Использования {#usage-example}
+## Пример использования {#usage-example}
 
 ```sql
 CREATE TABLE test

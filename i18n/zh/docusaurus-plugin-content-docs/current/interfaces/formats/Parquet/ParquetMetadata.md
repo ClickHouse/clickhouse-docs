@@ -4,46 +4,47 @@
 - 'ParquetMetadata'
 'slug': '/interfaces/formats/ParquetMetadata'
 'title': 'ParquetMetadata'
+'doc_type': 'reference'
 ---
 
 ## 描述 {#description}
 
-读取 Parquet 文件元数据的特殊格式（https://parquet.apache.org/docs/file-format/metadata/）。它始终输出一行，具有以下结构/内容：
+读取 Parquet 文件元数据的特殊格式 (https://parquet.apache.org/docs/file-format/metadata/)。它始终输出一行，结构/内容如下：
 - `num_columns` - 列的数量
-- `num_rows` - 行的总数量
-- `num_row_groups` - 行组的总数量
-- `format_version` - parquet 格式版本，始终为 1.0 或 2.6
-- `total_uncompressed_size` - 数据的总未压缩字节大小，计算方法为所有行组的 total_byte_size 之和
-- `total_compressed_size` - 数据的总压缩字节大小，计算方法为所有行组的 total_compressed_size 之和
-- `columns` - 列元数据的列表，具有以下结构：
+- `num_rows` - 总行数
+- `num_row_groups` - 总行组数
+- `format_version` - parquet 格式版本，总是 1.0 或 2.6
+- `total_uncompressed_size` - 数据的总未压缩字节大小，计算为所有行组的 total_byte_size 之和
+- `total_compressed_size` - 数据的总压缩字节大小，计算为所有行组的 total_compressed_size 之和
+- `columns` - 列元数据列表，结构如下：
+  - `name` - 列名
+  - `path` - 列路径（嵌套列的名称有所不同）
+  - `max_definition_level` - 最大定义级别
+  - `max_repetition_level` - 最大重复级别
+  - `physical_type` - 列的物理类型
+  - `logical_type` - 列的逻辑类型
+  - `compression` - 此列使用的压缩方式
+  - `total_uncompressed_size` - 列的总未压缩字节大小，计算为所有行组中列的 total_uncompressed_size 之和
+  - `total_compressed_size` - 列的总压缩字节大小，计算为所有行组中列的 total_compressed_size 之和
+  - `space_saved` - 通过压缩节省的空间百分比，计算为 (1 - total_compressed_size/total_uncompressed_size)。
+  - `encodings` - 此列使用的编码列表
+- `row_groups` - 行组元数据的列表，结构如下：
+  - `num_columns` - 行组中的列数
+  - `num_rows` - 行组中的行数
+  - `total_uncompressed_size` - 行组的总未压缩字节大小
+  - `total_compressed_size` - 行组的总压缩字节大小
+  - `columns` - 列块元数据的列表，结构如下：
     - `name` - 列名
-    - `path` - 列路径（对于嵌套列，与列名不同）
-    - `max_definition_level` - 最大定义级别
-    - `max_repetition_level` - 最大重复级别
-    - `physical_type` - 列的物理类型
-    - `logical_type` - 列的逻辑类型
-    - `compression` - 此列使用的压缩
-    - `total_uncompressed_size` - 列的总未压缩字节大小，计算方法为所有行组中该列的 total_uncompressed_size 之和
-    - `total_compressed_size` - 列的总压缩字节大小，计算方法为所有行组中该列的 total_compressed_size 之和
-    - `space_saved` - 通过压缩节省的空间百分比，计算方法为 (1 - total_compressed_size/total_uncompressed_size)。
-    - `encodings` - 此列使用的编码列表
-- `row_groups` - 行组元数据的列表，具有以下结构：
-    - `num_columns` - 行组中的列数
-    - `num_rows` - 行组中的行数
+    - `path` - 列路径
+    - `total_compressed_size` - 列的总压缩字节大小
     - `total_uncompressed_size` - 行组的总未压缩字节大小
-    - `total_compressed_size` - 行组的总压缩字节大小
-    - `columns` - 列块元数据的列表，具有以下结构：
-        - `name` - 列名
-        - `path` - 列路径
-        - `total_compressed_size` - 列的总压缩字节大小
-        - `total_uncompressed_size` - 行组的总未压缩字节大小
-        - `have_statistics` - 布尔标志，指示列块元数据是否包含列统计信息
-        - `statistics` - 列块统计信息（如果 have_statistics = false，则所有字段均为 NULL），具有以下结构：
-            - `num_values` - 列块中非空值的数量
-            - `null_count` - 列块中的 NULL 值数量
-            - `distinct_count` - 列块中不同值的数量
-            - `min` - 列块的最小值
-            - `max` - 列块的最大值
+    - `have_statistics` - 布尔标志，指示列块元数据是否包含列统计信息
+    - `statistics` - 列块统计信息（如果 have_statistics = false，所有字段为 NULL），结构如下：
+      - `num_values` - 列块中的非空值数量
+      - `null_count` - 列块中的 NULL 值数量
+      - `distinct_count` - 列块中的不同值数量
+      - `min` - 列块的最小值
+      - `max` - 列块的最大值
 
 ## 示例用法 {#example-usage}
 

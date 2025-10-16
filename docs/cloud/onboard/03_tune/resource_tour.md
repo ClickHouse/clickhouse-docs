@@ -34,10 +34,11 @@ using ClickHouse:
 
 ## Monitoring {#monitoring}
 
-| Page                                                            | Description                                                                   |
-|-----------------------------------------------------------------|-------------------------------------------------------------------------------|
-| [Advanced dashboard](/cloud/manage/monitor/advanced-dashboard)  | Use the built in advanced dashboard to monitor service health and performance |
-| [Prometheus integration](/integrations/prometheus)              | Use Prometheus to monitor Cloud services                                      |
+| Page                                                                       | Description                                                                   |
+|----------------------------------------------------------------------------|-------------------------------------------------------------------------------|
+| [Advanced dashboard](/cloud/manage/monitor/advanced-dashboard)             | Use the built in advanced dashboard to monitor service health and performance |
+| [Prometheus integration](/integrations/prometheus)                         | Use Prometheus to monitor Cloud services                                      |
+| [Cloud Monitoring Capabilities](/use-cases/observability/cloud-monitoring) | Get an overview of built in monitoring capabilities and integration options   |
 
 ## Security {#security}
 

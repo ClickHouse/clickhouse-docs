@@ -1,10 +1,10 @@
 ---
+slug: '/interfaces/formats/HiveText'
 description: 'Документация для формата HiveText'
+title: HiveText
 keywords: ['HiveText']
-slug: /interfaces/formats/HiveText
-title: 'HiveText'
+doc_type: reference
 ---
-
 ## Описание {#description}
 
 ## Пример использования {#example-usage}

@@ -1,22 +1,21 @@
 ---
-description: 'Документация для оконной функции nth_value'
-sidebar_label: 'nth_value'
+slug: '/sql-reference/window-functions/nth_value'
+sidebar_label: nth_value
 sidebar_position: 5
-slug: /sql-reference/window-functions/nth_value
-title: 'nth_value'
+description: 'Документация для функции оконных nth_value'
+title: nth_value
+doc_type: reference
 ---
-
-
 # nth_value
 
-Возвращает первое ненулевое значение, оцененное относительно n-й строки (смещение) в своем упорядоченном окне.
+Возвращает первое ненулевое значение, оцененное относительно n-й строки (смещение) в его упорядоченном фрейме.
 
 **Синтаксис**
 
 ```sql
 nth_value (x, offset)
   OVER ([[PARTITION BY grouping_column] [ORDER BY sorting_column] 
-        [ROWS или RANGE expression_to_bound_rows_withing_the_group]] | [window_name])
+        [ROWS or RANGE expression_to_bound_rows_withing_the_group]] | [window_name])
 FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
@@ -30,7 +29,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 **Возвращаемое значение**
 
-- Первое ненулевое значение, оцененное относительно n-й строки (смещения) в его упорядоченном окне.
+- Первое ненулевое значение, оцененное относительно n-й строки (смещение) в его упорядоченном фрейме.
 
 **Пример**
 

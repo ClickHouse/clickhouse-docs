@@ -83,4 +83,3 @@ sudo systemctl status clickhouse-keeper
 ```
 
 </VerticalStepper>
-
