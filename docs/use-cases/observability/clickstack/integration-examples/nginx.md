@@ -259,12 +259,6 @@ Open ClickStack at http://localhost:8080 and explore:
 
 <Image img={trace} border/>
 
-:::tip[Try filtering:]
-- http.status_code:404 - See all 404 errors
-- nginx.request.time:>200 - Slow requests (>200ms)
-- http.route:/products/1 - Specific endpoint
-:::
-
 </VerticalStepper>
 
 ## Creating Your First Dashboard {#creating-dashboard}
