@@ -1,11 +1,10 @@
 ---
-description: 'Системная таблица, содержащая трассировки стека, собранные с помощью
-  профайлера запросов с выборкой.'
+slug: '/operations/system-tables/trace_log'
+description: 'Системная таблица, содержащая трассировки стека, собранные с помощью'
+title: system.trace_log
 keywords: ['системная таблица', 'trace_log']
-slug: /operations/system-tables/trace_log
-title: 'system.trace_log'
+doc_type: reference
 ---
-
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
@@ -13,41 +12,43 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud/>
 
-Содержит трассировки стека, собранные с помощью [профайлера запросов с выборкой](../../operations/optimizing-performance/sampling-query-profiler.md).
+Содержит стековые трейсы, собранные [профайлером запросов выборки](../../operations/optimizing-performance/sampling-query-profiler.md).
 
-ClickHouse создает эту таблицу, когда раздел конфигурации сервера [trace_log](../../operations/server-configuration-parameters/settings.md#trace_log) установлен. Также см. настройки: [query_profiler_real_time_period_ns](../../operations/settings/settings.md#query_profiler_real_time_period_ns), [query_profiler_cpu_time_period_ns](../../operations/settings/settings.md#query_profiler_cpu_time_period_ns), [memory_profiler_step](../../operations/settings/settings.md#memory_profiler_step),
+ClickHouse создает эту таблицу, когда раздел конфигурации сервера [trace_log](../../operations/server-configuration-parameters/settings.md#trace_log) установлен. Также смотрите параметры: [query_profiler_real_time_period_ns](../../operations/settings/settings.md#query_profiler_real_time_period_ns), [query_profiler_cpu_time_period_ns](../../operations/settings/settings.md#query_profiler_cpu_time_period_ns), [memory_profiler_step](../../operations/settings/settings.md#memory_profiler_step),
 [memory_profiler_sample_probability](../../operations/settings/settings.md#memory_profiler_sample_probability), [trace_profile_events](../../operations/settings/settings.md#trace_profile_events).
 
-Для анализа журналов используйте функции интроспекции `addressToLine`, `addressToLineWithInlines`, `addressToSymbol` и `demangle`.
+Чтобы проанализировать логи, используйте функции интроспекции `addressToLine`, `addressToLineWithInlines`, `addressToSymbol` и `demangle`.
 
-Столбцы:
+Колонки:
 
 - `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, выполняющего запрос.
 - `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата момента выборки.
-- `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Метка времени момента выборки.
-- `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Метка времени момента выборки с точностью до микросекунд.
-- `timestamp_ns` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Метка времени момента выборки в наносекундах.
+- `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Временная метка момента выборки.
+- `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Временная метка момента выборки с точностью до микросекунд.
+- `timestamp_ns` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Временная метка момента выборки в наносекундах.
 - `revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Ревизия сборки сервера ClickHouse.
 
-    При подключении к серверу через `clickhouse-client`, вы видите строку, похожую на `Connected to ClickHouse server version 19.18.1.`. Это поле содержит `revision`, но не `version` сервера.
+    При подключении к серверу через `clickhouse-client`, вы видите строку, подобную `Connected to ClickHouse server version 19.18.1.`. Это поле содержит `revision`, но не `version` сервера.
 
 - `trace_type` ([Enum8](../../sql-reference/data-types/enum.md)) — Тип трассировки:
-    - `Real` представляет сбор трассировок стека по времени реального часа.
-    - `CPU` представляет сбор трассировок стека по времени CPU.
-    - `Memory` представляет сбор выделений и освобождений памяти, когда выделение памяти превышает последующий порог.
-    - `MemorySample` представляет сбор случайных выделений и освобождений.
-    - `MemoryPeak` представляет сбор обновлений пика использования памяти.
-    - `ProfileEvent` представляет сбор инкрементов профилированных событий.
+  - `Real` представляет собой сбор стековых трейсов по реальному времени.
+  - `CPU` представляет собой сбор стековых трейсов по времени CPU.
+  - `Memory` представляет собой сбор аллокаций и деаллокаций, когда аллокация памяти превышает последующую верхнюю границу.
+  - `MemorySample` представляет собой сбор случайных аллокаций и деаллокаций.
+  - `MemoryPeak` представляет собой сбор обновлений пикового использования памяти.
+  - `ProfileEvent` представляет собой сбор инкрементов событий профилирования.
+  - `JemallocSample` представляет собой сбор образцов jemalloc.
+  - `MemoryAllocatedWithoutCheck` представляет собой сбор значительных аллокаций (>16MiB), выполненных с игнорированием любых ограничений на память (только для разработчиков ClickHouse).
 - `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Идентификатор потока.
-- `query_id` ([String](../../sql-reference/data-types/string.md)) — Идентификатор запроса, который можно использовать, чтобы получить детали о запросе, выполнявшемся в системной таблице [query_log](/operations/system-tables/query_log).
-- `trace` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — Трассировка стека в момент выборки. Каждый элемент — это виртуальный адрес памяти внутри процесса сервера ClickHouse.
-- `size` ([Int64](../../sql-reference/data-types/int-uint.md)) - Для типов трассировок `Memory`, `MemorySample` или `MemoryPeak` — это объем выделенной памяти, для других типов трассировок — 0.
-- `event` ([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md)) - Для типа трассировки `ProfileEvent` — это имя обновленного профилированного события, для других типов трассировок — пустая строка.
-- `increment` ([UInt64](../../sql-reference/data-types/int-uint.md)) - Для типа трассировки `ProfileEvent` — это сумма инкремента профилированного события, для других типов трассировок — 0.
-- `symbols`, ([Array(LowCardinality(String))](../../sql-reference/data-types/array.md)), Если символизация включена, содержит деманглированные имена символов, соответствующие `trace`.
-- `lines`, ([Array(LowCardinality(String))](../../sql-reference/data-types/array.md)), Если символизация включена, содержит строки с именами файлов и номерами строк, соответствующие `trace`.
+- `query_id` ([String](../../sql-reference/data-types/string.md)) — Идентификатор запроса, который можно использовать для получения информации о запросе, который выполнялся из системной таблицы [query_log](/operations/system-tables/query_log).
+- `trace` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — Стековый трейса в момент выборки. Каждый элемент — это виртуальный адрес памяти внутри процесса сервера ClickHouse.
+- `size` ([Int64](../../sql-reference/data-types/int-uint.md)) - Для типов трассировки `Memory`, `MemorySample` или `MemoryPeak` это количество выделенной памяти, для других типов трассировки — 0.
+- `event` ([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md)) - Для типа трассировки `ProfileEvent` это имя обновленного события профилирования, для других типов трассировки — пустая строка.
+- `increment` ([UInt64](../../sql-reference/data-types/int-uint.md)) - Для типа трассировки `ProfileEvent` это количество инкремента события профилирования, для других типов трассировки — 0.
+- `symbols` ([Array(LowCardinality(String))](../../sql-reference/data-types/array.md)), Если символизация включена, содержит деманглированные имена символов, соответствующие `trace`.
+- `lines` ([Array(LowCardinality(String))](../../sql-reference/data-types/array.md)), Если символизация включена, содержит строки с именами файлов с номерами строк, соответствующие `trace`.
 
-Символизация может быть включена или отключена в параметре `symbolize` под `trace_log` в файле конфигурации сервера.
+Символизация может быть включена или выключена в параметре `symbolize` в разделе `trace_log` в файле конфигурации сервера.
 
 **Пример**
 

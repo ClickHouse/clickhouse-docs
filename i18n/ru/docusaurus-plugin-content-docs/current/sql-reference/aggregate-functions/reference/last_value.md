@@ -1,14 +1,15 @@
 ---
-description: 'Выбирает последнее встреченное значение, аналогично `anyLast`, но может принимать NULL.'
+slug: '/sql-reference/aggregate-functions/reference/last_value'
 sidebar_position: 160
-slug: /sql-reference/aggregate-functions/reference/last_value
-title: 'last_value'
+description: 'Выбирает последнее встреченное значение, аналогично `anyLast`, но'
+title: last_value
+doc_type: reference
 ---
-
-
 # last_value
 
-Выбирает последнее встреченное значение, аналогично `anyLast`, но может принимать NULL. В основном его следует использовать с [Оконными Функциями](../../window-functions/index.md). Без Оконных Функций результат будет случайным, если исходный поток не упорядочен.
+Выбирает последнее встреченное значение, аналогично `anyLast`, но может принимать NULL. 
+В основном его следует использовать с [Window Functions](../../window-functions/index.md). 
+Без Window Functions результат будет случайным, если исходный поток не отсортирован.
 
 ## examples {#examples}
 
@@ -20,13 +21,13 @@ CREATE TABLE test_data
 )
 ENGINE = Memory;
 
-INSERT INTO test_data (a, b) Values (1,null), (2,3), (4, 5), (6,null)
+INSERT INTO test_data (a, b) VALUES (1,null), (2,3), (4, 5), (6,null)
 ```
 
-### example1 {#example1}
+### Example 1 {#example1}
 Значение NULL игнорируется по умолчанию.
 ```sql
-select last_value(b) from test_data
+SELECT last_value(b) FROM test_data
 ```
 
 ```text
@@ -35,10 +36,10 @@ select last_value(b) from test_data
 └────────────────────────────┘
 ```
 
-### example2 {#example2}
+### Example 2 {#example2}
 Значение NULL игнорируется.
 ```sql
-select last_value(b) ignore nulls from test_data
+SELECT last_value(b) ignore nulls FROM test_data
 ```
 
 ```text
@@ -47,10 +48,10 @@ select last_value(b) ignore nulls from test_data
 └────────────────────────────┘
 ```
 
-### example3 {#example3}
+### Example 3 {#example3}
 Значение NULL принимается.
 ```sql
-select last_value(b) respect nulls from test_data
+SELECT last_value(b) respect nulls FROM test_data
 ```
 
 ```text
@@ -59,7 +60,7 @@ select last_value(b) respect nulls from test_data
 └─────────────────────────────┘
 ```
 
-### example4 {#example4}
+### Example 4 {#example4}
 Стабилизированный результат с использованием подзапроса с `ORDER BY`.
 ```sql
 SELECT

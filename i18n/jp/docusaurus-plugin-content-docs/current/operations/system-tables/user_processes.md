@@ -1,10 +1,11 @@
 ---
-description: 'システムテーブルには、メモリ使用状況の概要およびユーザーのProfileEventsに役立つ情報が含まれています。'
-keywords:
+'description': 'システム テーブルは、メモリ使用量とユーザーの ProfileEvents の概要に役立つ情報を含んでいます。'
+'keywords':
 - 'system table'
 - 'user_processes'
-slug: '/operations/system-tables/user_processes'
-title: 'system.user_processes'
+'slug': '/operations/system-tables/user_processes'
+'title': 'system.user_processes'
+'doc_type': 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
@@ -14,14 +15,14 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud/>
 
-このシステムテーブルは、ユーザーのメモリ使用量とProfileEventsの概要を取得するために使用できます。
+このシステムテーブルは、ユーザーのメモリ使用量と ProfileEvents の概要を取得するために使用できます。
 
 カラム:
 
 - `user` ([String](../../sql-reference/data-types/string.md)) — ユーザー名。
-- `memory_usage` ([Int64](/sql-reference/data-types/int-uint#integer-ranges)) – ユーザーのすべてのプロセスによって使用されたRAMの合計。特定の種類の専用メモリは含まれない場合があります。詳細は、[max_memory_usage](/operations/settings/settings#max_memory_usage) 設定を参照してください。
-- `peak_memory_usage` ([Int64](/sql-reference/data-types/int-uint#integer-ranges)) — ユーザーのメモリ使用量のピーク。ユーザーがクエリを実行していない場合、リセットされることがあります。
-- `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/map)) – ユーザーのさまざまなメトリックを測定するProfileEventsの概要。これらの説明は、[system.events](/operations/system-tables/events) テーブルで見つけることができます。
+- `memory_usage` ([Int64](/sql-reference/data-types/int-uint#integer-ranges)) – ユーザーの全プロセスによって使用される RAM の合計。専用メモリの一部の種類は含まれない場合があります。[max_memory_usage](/operations/settings/settings#max_memory_usage) 設定を参照してください。
+- `peak_memory_usage` ([Int64](/sql-reference/data-types/int-uint#integer-ranges)) — ユーザーのメモリ使用量のピーク。ユーザーに対してクエリが実行されていない場合にリセットされることがあります。
+- `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/map)) – ユーザーのさまざまなメトリクスを測定する ProfileEvents の概要。これらの説明は、テーブル [system.events](/operations/system-tables/events) にあります。
 
 ```sql
 SELECT * FROM system.user_processes LIMIT 10 FORMAT Vertical;

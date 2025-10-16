@@ -1,42 +1,43 @@
 ---
-'description': '系统表包含有关致命错误的堆栈跟踪信息。'
+'description': '系统表包含关于严重错误的堆栈跟踪信息。'
 'keywords':
 - 'system table'
 - 'crash_log'
 'slug': '/operations/system-tables/crash-log'
 'title': 'system.crash_log'
+'doc_type': 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
-包含有关致命错误的堆栈跟踪的信息。该表在数据库中默认不存在，仅在发生致命错误时创建。
+包含关于致命错误的堆栈跟踪的信息。该表默认情况下在数据库中不存在，仅在发生致命错误时创建。
 
-列:
+列：
 
 - `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 执行查询的服务器的主机名。
-- `event_date` ([DateTime](../../sql-reference/data-types/datetime.md)) — 事件日期。
-- `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 事件时间。
-- `timestamp_ns` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 事件的时间戳，以纳秒为单位。
+- `event_date` ([DateTime](../../sql-reference/data-types/datetime.md)) — 事件的日期。
+- `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 事件的时间。
+- `timestamp_ns` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 事件的时间戳（以纳秒为单位）。
 - `signal` ([Int32](../../sql-reference/data-types/int-uint.md)) — 信号编号。
-- `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 线程ID。
-- `query_id` ([String](../../sql-reference/data-types/string.md)) — 查询ID。
+- `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 线程 ID。
+- `query_id` ([String](../../sql-reference/data-types/string.md)) — 查询 ID。
 - `trace` ([Array](../../sql-reference/data-types/array.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — 崩溃时的堆栈跟踪。每个元素是 ClickHouse 服务器进程内部的虚拟内存地址。
-- `trace_full` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — 崩溃时的堆栈跟踪。每个元素包含 ClickHouse 服务器进程内部调用的方法。
+- `trace_full` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — 崩溃时的堆栈跟踪。每个元素包含 ClickHouse 服务器进程内部的一个被调用方法。
 - `version` ([String](../../sql-reference/data-types/string.md)) — ClickHouse 服务器版本。
 - `revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — ClickHouse 服务器修订版本。
 - `build_id` ([String](../../sql-reference/data-types/string.md)) — 编译器生成的 BuildID。
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 SELECT * FROM system.crash_log ORDER BY event_time DESC LIMIT 1;
 ```
 
-结果（不完整）:
+结果（不完整）：
 
 ```text
 Row 1:

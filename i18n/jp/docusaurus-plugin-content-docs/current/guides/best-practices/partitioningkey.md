@@ -1,8 +1,9 @@
 ---
-slug: '/optimize/partitioning-key'
-sidebar_label: 'パーティションキー'
-title: '低基数のパーティションキーを選択する'
-description: 'テーブルには低基数のパーティションキーを使用するか、パーティションキーを使用しないようにします。'
+'slug': '/optimize/partitioning-key'
+'sidebar_label': 'Partitioning Key'
+'title': '低カーディナリティのパーティションキーを選択する'
+'description': '低カーディナリティのパーティションキーを使用するか、テーブルにパーティションキーを使用しないことをお勧めします。'
+'doc_type': 'guide'
 ---
 
 import Content from '@site/i18n/jp/docusaurus-plugin-content-docs/current/best-practices/partitioning_keys.mdx';

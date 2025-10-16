@@ -3,6 +3,7 @@
 'sidebar_position': 195
 'slug': '/sql-reference/aggregate-functions/reference/sum'
 'title': 'sum'
+'doc_type': 'reference'
 ---
 
 
@@ -25,7 +26,7 @@ sum(num)
 
 **示例**
 
-首先，我们创建一个表 `employees` 并向其中插入一些虚构的员工数据。
+首先，我们创建一个表 `employees` 并插入一些虚构的员工数据。
 
 查询：
 
@@ -47,7 +48,7 @@ INSERT INTO employees VALUES
     (71245, 'Anastasia Ivanovna', 89210);
 ```
 
-我们使用 `sum` 函数查询员工薪资的总额。
+我们使用 `sum` 函数查询员工工资的总额。
 
 查询：
 

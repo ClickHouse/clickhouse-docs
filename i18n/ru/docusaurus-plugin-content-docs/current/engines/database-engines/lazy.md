@@ -1,19 +1,18 @@
 ---
-description: 'Сохраняет таблицы в ОЗУ только `expiration_time_in_seconds` секунд после
-  последнего доступа. Можно использовать только с таблицами типа Log.'
-sidebar_label: 'Lazy'
+slug: '/engines/database-engines/lazy'
+sidebar_label: Lazy
 sidebar_position: 20
-slug: /engines/database-engines/lazy
-title: 'Lazy'
+description: 'Держит таблицы в ОЗУ только `expiration_time_in_seconds` секунд после'
+title: Lazy
+doc_type: reference
 ---
-
 # Lazy
 
-Сохраняет таблицы в ОЗУ только `expiration_time_in_seconds` секунд после последнего доступа. Можно использовать только с *Log таблицами.
+Хранит таблицы в ОЗУ только `expiration_time_in_seconds` секунд после последнего доступа. Может использоваться только с \*Log таблицами.
 
-Этот движок оптимизирован для хранения многих небольших *Log таблиц, для которых существует длительный временной интервал между доступами.
+Оптимизирован для хранения множества небольших \*Log таблиц, для которых существует длительный интервал времени между обращениями.
 
-## Creating a Database {#creating-a-database}
+## Создание базы данных {#creating-a-database}
 
 ```sql
 CREATE DATABASE testlazy 

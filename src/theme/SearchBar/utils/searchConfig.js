@@ -8,7 +8,7 @@ export const createDocTypeFilters = (docTypes) => {
   if (!docTypes) return [];
   
   const types = Array.isArray(docTypes) ? docTypes : [docTypes];
-  return types.map(type => `doc_type:'${type}'`);
+  return types.map(type => `doc_type:${type}`);
 };
 
 /**

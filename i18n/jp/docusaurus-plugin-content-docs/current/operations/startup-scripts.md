@@ -1,21 +1,20 @@
 ---
-description: 'Guide to configuring and using SQL startup scripts in ClickHouse for
-  automatic schema creation and migrations'
-sidebar_label: 'Startup Scripts'
-slug: '/operations/startup-scripts'
-title: 'Startup Scripts'
+'description': 'SQL 起動スクリプト を ClickHouse で自動スキーマ作成とマイグレーションのために設定および使用するためのガイド'
+'sidebar_label': '起動スクリプト'
+'slug': '/operations/startup-scripts'
+'title': '起動スクリプト'
+'doc_type': 'guide'
 ---
-
-
 
 
 # スタートアップスクリプト
 
-ClickHouseは、スタートアップ時にサーバー構成から任意のSQLクエリを実行できます。これは、マイグレーションや自動スキーマ作成に役立ちます。
+ClickHouseは、サーバーの設定から任意のSQLクエリを起動時に実行できます。これは、マイグレーションや自動スキーマの作成に便利です。
 
 ```xml
 <clickhouse>
     <startup_scripts>
+        <throw_on_error>false</throw_on_error>
         <scripts>
             <query>CREATE ROLE OR REPLACE test_role</query>
         </scripts>
@@ -31,10 +30,10 @@ ClickHouseは、スタートアップ時にサーバー構成から任意のSQL�
 </clickhouse>
 ```
 
-ClickHouseは、指定された順序で`startup_scripts`からすべてのクエリを順次実行します。クエリのいずれかが失敗した場合でも、その後のクエリの実行は中断されません。
+ClickHouseは、`startup_scripts`からすべてのクエリを指定された順序で順次実行します。もしクエリのいずれかが失敗しても、次のクエリの実行は中断されません。ただし、`throw_on_error`がtrueに設定されている場合、スクリプト実行中にエラーが発生するとサーバーは起動しません。
 
-設定ファイルに条件付きクエリを指定できます。この場合、条件クエリが値 `1` または `true` を返すときのみ、対応するクエリが実行されます。
+設定ファイルに条件付きクエリを指定できます。その場合、条件クエリが値 `1` または `true` を返したときのみ、対応するクエリが実行されます。
 
 :::note
-条件クエリが `1` または `true` 以外の値を返すと、その結果は `false` として解釈され、対応するクエリは実行されません。
+条件クエリが `1` または `true` 以外の値を返すと、その結果は `false` と解釈され、対応するクエリは実行されません。
 :::

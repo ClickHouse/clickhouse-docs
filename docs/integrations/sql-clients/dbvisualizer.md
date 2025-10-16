@@ -54,8 +54,8 @@ To connect a database with DbVisualizer, you must first create and setup a Datab
 8. If the result from Ping Server shows that the server can be reached, click **Connect** to connect to the database server.
 
 :::tip
-See [Fixing Connection Issues](https://confluence.dbvis.com/display/UG231/Fixing+Connection+Issues) for some tips if you have problems connecting to the database.
+See [Fixing Connection Issues](https://www.dbvis.com/docs/ug/troubleshooting/fixing-connection-issues/) for some tips if you have problems connecting to the database.
 
 ## Learn more {#learn-more}
 
-Find more information about DbVisualizer visit the [DbVisualizer documentation](https://confluence.dbvis.com/display/UG231/Users+Guide).
+Find more information about DbVisualizer visit the [DbVisualizer documentation](https://www.dbvis.com/docs/ug/).

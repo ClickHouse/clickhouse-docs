@@ -1,13 +1,13 @@
 ---
-description: 'Расчитывает экспоненциальное скользящее среднее значений за определенное время.'
+slug: '/sql-reference/aggregate-functions/reference/exponentialMovingAverage'
 sidebar_position: 132
-slug: /sql-reference/aggregate-functions/reference/exponentialMovingAverage
-title: 'exponentialMovingAverage'
+description: 'Вычисляет экспоненциальное скользящее среднее значений за установленный'
+title: exponentialMovingAverage
+doc_type: reference
 ---
-
 ## exponentialMovingAverage {#exponentialmovingaverage}
 
-Расчитывает экспоненциальное скользящее среднее значений за определенное время.
+Вычисляет экспоненциальную скользящую среднюю значений за заданный период времени.
 
 **Синтаксис**
 
@@ -15,20 +15,20 @@ title: 'exponentialMovingAverage'
 exponentialMovingAverage(x)(value, timeunit)
 ```
 
-Каждое `value` соответствует определённому `timeunit`. Период полураспада `x` — это временной лаг, при котором экспоненциальные веса уменьшаются на половину. Функция возвращает взвешенное среднее: чем старше временная точка, тем меньше вес соответсвующего значения.
+Каждое `value` соответствует определённому `timeunit`. Период полураспада `x` — это временная задержка, за которую экспоненциальные веса уменьшаются вдвое. Функция возвращает взвешенную среднюю: чем старше временная точка, тем меньший вес имеет соответствующее значение.
 
 **Аргументы**
 
-- `value` — Значение. [Целое число](../../../sql-reference/data-types/int-uint.md), [Число с плавающей точкой](../../../sql-reference/data-types/float.md) или [Десятичное число](../../../sql-reference/data-types/decimal.md).
-- `timeunit` — Временной интервал. [Целое число](../../../sql-reference/data-types/int-uint.md), [Число с плавающей точкой](../../../sql-reference/data-types/float.md) или [Десятичное число](../../../sql-reference/data-types/decimal.md). Временной интервал — это не временная метка (секунды), это — индекс временного интервала. Может быть рассчитан с использованием [intDiv](/sql-reference/functions/arithmetic-functions#intdiv).
+- `value` — Значение. [Целое](../../../sql-reference/data-types/int-uint.md), [Вещественное](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md).
+- `timeunit` — Временной интервал. [Целое](../../../sql-reference/data-types/int-uint.md), [Вещественное](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md). Временной интервал не является временной меткой (секунды), это — индекс временного интервала. Может быть вычислен с помощью [intDiv](/sql-reference/functions/arithmetic-functions#intDiv).
 
 **Параметры**
 
-- `x` — Период полураспада. [Целое число](../../../sql-reference/data-types/int-uint.md), [Число с плавающей точкой](../../../sql-reference/data-types/float.md) или [Десятичное число](../../../sql-reference/data-types/decimal.md).
+- `x` — Период полураспада. [Целое](../../../sql-reference/data-types/int-uint.md), [Вещественное](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md).
 
 **Возвращаемые значения**
 
-- Возвращает [экспоненциально сглаженное скользящее среднее](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average) значений за последние `x` времени на последней временной точке.
+- Возвращает [экспоненциально сглаженную скользящую среднюю](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average) значений за последние `x` временных интервалов на последней временной точке.
 
 Тип: [Float64](/sql-reference/data-types/float).
 
@@ -37,7 +37,7 @@ exponentialMovingAverage(x)(value, timeunit)
 Входная таблица:
 
 ```text
-┌──температура─┬─временная_метка──┐
+┌──temperature─┬─timestamp──┐
 │          95  │         1  │
 │          95  │         2  │
 │          95  │         3  │
@@ -64,13 +64,13 @@ exponentialMovingAverage(x)(value, timeunit)
 Запрос:
 
 ```sql
-SELECT exponentialMovingAverage(5)(температура, временная_метка);
+SELECT exponentialMovingAverage(5)(temperature, timestamp);
 ```
 
 Результат:
 
 ```text
-┌──exponentialMovingAverage(5)(температура, временная_метка)──┐
+┌──exponentialMovingAverage(5)(temperature, timestamp)──┐
 │                                    92.25779635374204  │
 └───────────────────────────────────────────────────────┘
 ```
@@ -157,9 +157,7 @@ SELECT
     10 AS value,
     toDateTime('2020-01-01') + (3600 * number) AS time
 FROM numbers_mt(10);
-
-
--- Рассчитать временной интервал с использованием intDiv
+-- Calculate timeunit using intDiv
 SELECT
     value,
     time,
@@ -180,9 +178,7 @@ ORDER BY time ASC;
 │    10 │ 2020-01-01 08:00:00 │  9.98046875 │   438296 │
 │    10 │ 2020-01-01 09:00:00 │ 9.990234375 │   438297 │
 └───────┴─────────────────────┴─────────────┴──────────┘
-
-
--- Рассчитать временной интервал с использованием toRelativeHourNum
+-- Calculate timeunit using toRelativeHourNum
 SELECT
     value,
     time,

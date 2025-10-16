@@ -3,116 +3,117 @@
 'title': 'Helm'
 'pagination_prev': null
 'pagination_next': null
-'sidebar_position': 1
-'description': '使用 Helm 部署 ClickStack - ClickHouse 监控堆栈'
+'sidebar_position': 2
+'description': '使用 Helm 部署 ClickStack - ClickHouse 观察堆栈'
+'doc_type': 'guide'
 ---
 
 import Image from '@theme/IdealImage';
 import hyperdx_24 from '@site/static/images/use-cases/observability/hyperdx-24.png';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
+import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
-The helm chart for HyperDX can be found [here](https://github.com/hyperdxio/helm-charts) and is the **recommended** method for production deployments.
+可以在 [这里](https://github.com/hyperdxio/helm-charts) 找到 HyperDX 的 Helm chart，这是用于生产部署的**推荐**方法。
 
-By default, the Helm chart provisions all core components, including:
+默认情况下，Helm chart 将配置所有核心组件，包括：
 
-***ClickHouse**
-***HyperDX**
-***OpenTelemetry (OTel) collector**
-***MongoDB** (for persistent application state)
+* **ClickHouse**
+* **HyperDX**
+* **OpenTelemetry (OTel) 收集器**
+* **MongoDB**（用于持久化应用状态）
 
-However, it can be easily customized to integrate with an existing ClickHouse deployment - for example, one hosted in **ClickHouse Cloud**.
+然而，它可以轻松自定义以与现有的 ClickHouse 部署集成，例如，托管在 **ClickHouse Cloud** 中的实例。
 
-The chart supports standard Kubernetes best practices, including:
+该 chart 支持标准的 Kubernetes 最佳实践，包括：
 
-- Environment-specific configuration via `values.yaml`
-- Resource limits and pod-level scaling
-- TLS and ingress configuration
-- Secrets management and authentication setup
+- 通过 `values.yaml` 进行特定环境的配置
+- 资源限制和 pod 级别扩展
+- TLS 和入口配置
+- 秘密管理和身份验证设置
 
-### Suitable for {#suitable-for}
+### 适合 {#suitable-for}
 
-* Proof of concepts
-* Production
+* 概念验证
+* 生产
 
-## Deployment steps {#deployment-steps}
+## 部署步骤 {#deployment-steps}
 <br/>
 
 <VerticalStepper headerLevel="h3">
 
-### Prerequisites {#prerequisites}
+### 先决条件 {#prerequisites}
 
 - [Helm](https://helm.sh/) v3+
-- Kubernetes 集群 (推荐 v1.20+)
-- `kubectl` 配置以与您的集群进行交互
+- Kubernetes 集群（建议 v1.20+）
+- 配置好的 `kubectl` 用于与您的集群互动
 
-### Add the HyperDX Helm Repository {#add-the-hyperdx-helm-repository}
+### 添加 HyperDX Helm 仓库 {#add-the-hyperdx-helm-repository}
 
-Add the HyperDX Helm repository:
+添加 HyperDX Helm 仓库：
 
-```sh
+```shell
 helm repo add hyperdx https://hyperdxio.github.io/helm-charts
 helm repo update
 ```
 
-### Installing HyperDX {#installing-hyperdx}
+### 安装 HyperDX {#installing-hyperdx}
 
-To install the HyperDX chart with default values:
+要使用默认值安装 HyperDX chart，请执行：
 
-```sh
+```shell
 helm install my-hyperdx hyperdx/hdx-oss-v2
 ```
 
-### Verify the installation {#verify-the-installation}
+### 验证安装 {#verify-the-installation}
 
-Verify the installation:
+验证安装：
 
-```bash
+```shell
 kubectl get pods -l "app.kubernetes.io/name=hdx-oss-v2"
 ```
 
-When all pods are ready, proceed.
+当所有 pods 就绪后，继续。
 
-### Forward ports {#forward-ports}
+### 转发端口 {#forward-ports}
 
-Port forwarding allows us to access and set up HyperDX. Users deploying to production should instead expose the service via an ingress or load balancer to ensure proper network access, TLS termination, and scalability. Port forwarding is best suited for local development or one-off administrative tasks, not long-term or high-availability environments.
+端口转发允许我们访问和设置 HyperDX。部署到生产的用户应该通过入口或负载均衡器公开服务，以确保适当的网络访问、TLS 终止和可扩展性。端口转发最适合本地开发或一次性管理任务，而不适合长期或高可用性环境。
 
-```bash
+```shell
 kubectl port-forward \
   pod/$(kubectl get pod -l app.kubernetes.io/name=hdx-oss-v2 -o jsonpath='{.items[0].metadata.name}') \
   8080:3000
 ```
 
-### Navigate to the UI {#navigate-to-the-ui}
+### 导航到 UI {#navigate-to-the-ui}
 
-Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
+访问 [http://localhost:8080](http://localhost:8080) 以访问 HyperDX UI。
 
-Create a user, providing a username and password which meets the requirements. 
+创建一个用户，提供符合要求的用户名和密码。
 
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
 
+点击 `Create` 时，将为通过 Helm chart 部署的 ClickHouse 实例创建数据源。
 
-On clicking `Create`, data sources will be created for the ClickHouse instance deployed with the Helm chart.
-
-:::note Overriding default connection
-You can override the default connection to the integrated ClickHouse instance. For details, see ["Using ClickHouse Cloud"](#using-clickhouse-cloud).
+:::note 覆盖默认连接
+您可以覆盖与集成的 ClickHouse 实例的默认连接。详细信息请参阅 ["使用 ClickHouse Cloud"](#using-clickhouse-cloud)。
 :::
 
-For an example of using an alternative ClickHouse instance, see ["Create a ClickHouse Cloud connection"](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
+有关使用替代 ClickHouse 实例的示例，请参见 ["创建 ClickHouse Cloud 连接"](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)。
 
-### Customizing values (Optional) {#customizing-values}
+### 自定义值（可选） {#customizing-values}
 
-You can customize settings by using `--set` flags. For example:
+您可以使用 `--set` 标志自定义设置。例如：
 
-```bash
+```shell
 helm install my-hyperdx hyperdx/hdx-oss-v2 --set key=value
 
 Alternatively, edit the `values.yaml`. To retrieve the default values:
 
-```sh
+```shell
 helm show values hyperdx/hdx-oss-v2 > values.yaml
 ```
 
-Example config:
+示例配置：
 
 ```yaml
 replicaCount: 2
@@ -134,20 +135,19 @@ ingress:
           pathType: ImplementationSpecific
 ```
 
-```bash
+```shell
 helm install my-hyperdx hyperdx/hdx-oss-v2 -f values.yaml
 ```
 
-### Using Secrets (Optional) {#using-secrets}
+### 使用秘密（可选） {#using-secrets}
 
-For handling sensitive data such as API keys or database credentials, use Kubernetes secrets. The HyperDX Helm charts provide default secret files that you can modify and apply to your cluster.
+对于处理敏感数据（例如 API 密钥或数据库凭据），请使用 Kubernetes secrets。HyperDX Helm charts 提供默认的秘密文件，您可以修改并应用到您的集群。
 
-#### Using Pre-Configured Secrets {#using-pre-configured-secrets}
+#### 使用预配置的秘密 {#using-pre-configured-secrets}
 
-The Helm chart includes a default secret template located at [`charts/hdx-oss-v2/templates/secrets.yaml`](https://github.com/hyperdxio/helm-charts/blob/main/charts/hdx-oss-v2/templates/secrets.yaml). This file provides a base structure for managing secrets.
+Helm chart 包含一个位于 [`charts/hdx-oss-v2/templates/secrets.yaml`](https://github.com/hyperdxio/helm-charts/blob/main/charts/hdx-oss-v2/templates/secrets.yaml) 的默认秘密模板。该文件提供管理秘密的基本结构。
 
-
-If you need to manually apply a secret, modify and apply the provided `secrets.yaml` template:
+如果您需要手动应用一个秘密，请修改并应用提供的 `secrets.yaml` 模板：
 
 ```yaml
 apiVersion: v1
@@ -161,24 +161,24 @@ data:
   API_KEY: <base64-encoded-api-key>
 ```
 
-Apply the secret to your cluster:
+将秘密应用到您的集群：
 
-```sh
+```shell
 kubectl apply -f secrets.yaml
 ```
 
-#### Creating a Custom Secret {#creating-a-custom-secret}
+#### 创建自定义秘密 {#creating-a-custom-secret}
 
-If you prefer, you can create a custom Kubernetes secret manually:
+如果更喜欢，您可以手动创建一个自定义的 Kubernetes 秘密：
 
-```sh
+```shell
 kubectl create secret generic hyperdx-secret \
   --from-literal=API_KEY=my-secret-api-key
 ```
 
-#### Referencing a Secret {#referencing-a-secret}
+#### 引用秘密 {#referencing-a-secret}
 
-To reference a secret in `values.yaml`:
+要在 `values.yaml` 中引用一个秘密：
 
 ```yaml
 hyperdx:
@@ -191,11 +191,11 @@ hyperdx:
 
 </VerticalStepper>
 
-## Using ClickHouse Cloud {#using-clickhouse-cloud}
+## 使用 ClickHouse Cloud {#using-clickhouse-cloud}
 
-If using ClickHouse Cloud, users disable the ClickHouse instance deployed by the Helm chart and specify the Cloud 凭据:
+如果使用 ClickHouse Cloud 用户禁用通过 Helm chart 部署的 ClickHouse 实例并指定 Cloud 凭据：
 
-```bash
+```shell
 
 # specify ClickHouse Cloud credentials
 export CLICKHOUSE_URL=<CLICKHOUSE_CLOUD_URL> # full https url
@@ -207,7 +207,7 @@ export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 helm install myrelease hyperdx-helm --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false --set otel.clickhouseEndpoint=${CLICKHOUSE_URL} --set clickhouse.config.users.otelUser=${CLICKHOUSE_USER} --set clickhouse.config.users.otelUserPassword=${CLICKHOUSE_PASSWORD}
 ```
 
-Alternatively, use a `values.yaml` file:
+或者，使用 `values.yaml` 文件：
 
 ```yaml
 clickhouse:
@@ -221,9 +221,21 @@ clickhouse:
 
 otel:
   clickhouseEndpoint: ${CLICKHOUSE_URL}
+
+hyperdx:
+  defaultConnections: |
+    [
+      {
+        "name": "External ClickHouse",
+        "host": "http://your-clickhouse-server:8123",
+        "port": 8123,
+        "username": "your-username",
+        "password": "your-password"
+      }
+    ]
 ```
 
-```bash
+```shell
 helm install my-hyperdx hyperdx/hdx-oss-v2 -f values.yaml
 
 # or if installed...
@@ -231,67 +243,95 @@ helm install my-hyperdx hyperdx/hdx-oss-v2 -f values.yaml
 # helm upgrade my-hyperdx hyperdx/hdx-oss-v2 -f values.yaml
 ```
 
+## 生产注意事项 {#production-notes}
 
-## Production notes {#production-notes}
+默认情况下，该 chart 还会安装 ClickHouse 和 OTel 收集器。然而，对于生产而言，建议您单独管理 ClickHouse 和 OTel 收集器。
 
-By default, this chart also installs ClickHouse and the OTel collector. However, for production, it is recommended that you manage ClickHouse and the OTel collector separately.
+要禁用 ClickHouse 和 OTel 收集器，请设置以下值：
 
-To disable ClickHouse and the OTel collector, set the following values:
-
-```bash
+```shell
 helm install myrelease hyperdx-helm --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false --set otel.enabled=false
 ```
 
-## Task Configuration {#task-configuration}
+## 任务配置 {#task-configuration}
 
-By default, there is one task in the chart setup as a cronjob, responsible for checking whether alerts should fire. Here are its configuration options:
+默认情况下，chart 设置中有一个作为 cronjob 的任务，负责检查是否应该触发警报。以下是其配置选项：
 
-| Parameter | Description | Default |
+| 参数 | 描述 | 默认值 |
 |-----------|-------------|---------|
-| `tasks.enabled` | Enable/Disable cron tasks in the cluster. By default, the HyperDX image will run cron tasks in the process. Change to true if you'd rather use a separate cron task in the cluster. | `false` |
-| `tasks.checkAlerts.schedule` | Cron schedule for the check-alerts task | `*/1 * * * *` |
-| `tasks.checkAlerts.resources` | Resource requests and limits for the check-alerts task | See `values.yaml` |
+| `tasks.enabled` | 启用/禁用集群中的 cron 任务。默认情况下，HyperDX 镜像将在进程中运行 cron 任务。如果您更愿意在集群中使用单独的 cron 任务，请更改为 true。 | `false` |
+| `tasks.checkAlerts.schedule` | check-alerts 任务的 cron 调度 | `*/1 * * * *` |
+| `tasks.checkAlerts.resources` | check-alerts 任务的资源请求和限制 | 见 `values.yaml` |
 
-## Upgrading the Chart {#upgrading-the-chart}
+## 升级 chart {#upgrading-the-chart}
 
-To upgrade to a newer version:
+要升级到较新版本：
 
-```sh
+```shell
 helm upgrade my-hyperdx hyperdx/hdx-oss-v2 -f values.yaml
 ```
 
-To check available chart versions:
+要检查可用的 chart 版本：
 
-```sh
+```shell
 helm search repo hyperdx
 ```
 
-## Uninstalling HyperDX {#uninstalling-hyperdx}
+## 卸载 HyperDX {#uninstalling-hyperdx}
 
-To remove the deployment:
+要删除部署：
 
-```sh
+```shell
 helm uninstall my-hyperdx
 ```
 
-This will remove all resources associated with the release, but persistent data (if any) may remain.
+这将删除与发布相关的所有资源，但持久数据（如果有）可能会保留。
 
-## Troubleshooting {#troubleshooting}
+## 故障排除 {#troubleshooting}
 
-### Checking Logs {#checking-logs}
+### 检查日志 {#checking-logs}
 
-```sh
+```shell
 kubectl logs -l app.kubernetes.io/name=hdx-oss-v2
 ```
 
-### Debugging a Failed Install {#debugging-a-failed-instance}
+### 调试失败的安装 {#debugging-a-failed-instance}
 
-```sh
+```shell
 helm install my-hyperdx hyperdx/hdx-oss-v2 --debug --dry-run
 ```
 
-### Verifying Deployment {#verifying-deployment}
+### 验证部署 {#verifying-deployment}
 
-```sh
+```shell
 kubectl get pods -l app.kubernetes.io/name=hdx-oss-v2
+```
+
+<JSONSupport/>
+
+用户可以通过参数或 `values.yaml` 设置这些环境变量，例如：
+
+*values.yaml*
+
+```yaml
+hyperdx:
+  ...
+  env:
+    - name: BETA_CH_OTEL_JSON_SCHEMA_ENABLED
+      value: "true"
+
+otel:
+  ...
+  env:
+    - name: OTEL_AGENT_FEATURE_GATE_ARG
+      value: "--feature-gates=clickhouse.json"
+```
+
+或通过 `--set`：
+
+```shell
+helm install myrelease hyperdx-helm --set "hyperdx.env[0].name=BETA_CH_OTEL_JSON_SCHEMA_ENABLED" \
+  --set "hyperdx.env[0].value=true" \
+  --set "otel.env[0].name=OTEL_AGENT_FEATURE_GATE_ARG" \
+  --set "otel.env[0].value=--feature-gates=clickhouse.json"
 ```

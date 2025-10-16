@@ -1,13 +1,13 @@
 ---
-description: 'Системная таблица, содержащая информацию о каждой отсоединенной таблице.'
+slug: '/operations/system-tables/detached_tables'
+description: 'Системная таблица содержащая информацию о каждой отсоединенной таблице.'
+title: system.detached_tables
 keywords: ['системная таблица', 'отсоединенные таблицы']
-slug: /operations/system-tables/detached_tables
-title: 'system.detached_tables'
+doc_type: reference
 ---
-
 Содержит информацию о каждой отсоединенной таблице.
 
-Колонки:
+Столбцы:
 
 - `database` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных, в которой находится таблица.
 
@@ -17,8 +17,7 @@ title: 'system.detached_tables'
 
 - `metadata_path` ([String](../../sql-reference/data-types/string.md)) - Путь к метаданным таблицы в файловой системе.
 
-- `is_permanently` ([UInt8](../../sql-reference/data-types/int-uint.md)) - Флаг, указывающий, что таблица была отсоединена НАВСЕГДА.
-
+- `is_permanently` ([UInt8](../../sql-reference/data-types/int-uint.md)) - Флаг, указывающий, что таблица была отсоединена ПОДОЛГУ.
 
 **Пример**
 

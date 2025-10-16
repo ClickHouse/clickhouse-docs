@@ -1,11 +1,10 @@
 ---
-description: 'Вычисляет асимметрию последовательности.'
+slug: '/sql-reference/aggregate-functions/reference/skewpop'
 sidebar_position: 185
-slug: /sql-reference/aggregate-functions/reference/skewpop
-title: 'skewPop'
+description: 'Вычисляет асимметрию последовательности.'
+title: skewPop
+doc_type: reference
 ---
-
-
 # skewPop
 
 Вычисляет [асимметрию](https://en.wikipedia.org/wiki/Skewness) последовательности.

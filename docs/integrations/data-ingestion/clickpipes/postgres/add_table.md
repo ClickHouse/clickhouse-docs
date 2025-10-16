@@ -26,3 +26,7 @@ This can be done by the following steps:
 
 5. Click update.
 6. Upon successful update, the pipe will have statuses `Setup`, `Snapshot` and `Running` in that order. The table's initial load can be tracked in the **Tables** tab.
+
+:::info
+CDC for existing tables resumes automatically after the new table’s snapshot completes.
+:::

@@ -1,28 +1,27 @@
 ---
-description: 'System table containing metrics that are calculated periodically in
-  the background. For example, the amount of RAM in use.'
-keywords:
+'description': 'システムテーブルは、バックグラウンドで定期的に計算されるメトリクスを含んでいます。例えば、使用中のRAMの量です。'
+'keywords':
 - 'system table'
 - 'asynchronous_metrics'
-slug: '/operations/system-tables/asynchronous_metrics'
-title: 'system.asynchronous_metrics'
+'slug': '/operations/system-tables/asynchronous_metrics'
+'title': 'system.asynchronous_metrics'
+'doc_type': 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
-
 
 
 # system.asynchronous_metrics
 
 <SystemTableCloud/>
 
-バックグラウンドで定期的に計算されるメトリックを含みます。例えば、使用中のRAMの量です。
+背景で定期的に計算されるメトリクスを含みます。例えば、使用中のRAMの量などです。
 
-カラム：
+カラム:
 
-- `metric` ([String](../../sql-reference/data-types/string.md)) — メトリック名。
-- `value` ([Float64](../../sql-reference/data-types/float.md)) — メトリックの値。
-- `description` ([String](../../sql-reference/data-types/string.md) - メトリックの説明)
+- `metric` ([String](../../sql-reference/data-types/string.md)) — メトリクス名。
+- `value` ([Float64](../../sql-reference/data-types/float.md)) — メトリクス値。
+- `description` ([String](../../sql-reference/data-types/string.md) - メトリクスの説明)
 
 **例**
 
@@ -32,481 +31,458 @@ SELECT * FROM system.asynchronous_metrics LIMIT 10
 
 ```text
 ┌─metric──────────────────────────────────┬──────value─┬─description────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ AsynchronousMetricsCalculationTimeSpent │ 0.00179053 │ 非同期メトリックの計算に費やされた時間（秒単位）（これは非同期メトリックのオーバーヘッドです）。                                                                                                                                              │
-│ NumberOfDetachedByUserParts             │          0 │ ユーザーが `ALTER TABLE DETACH` クエリを使用してMergeTreeテーブルから切り離したパーツの合計数（予期しない、壊れた、または無視されたパーツを除く）。サーバーは切り離されたパーツを気にせず、削除できます。                          │
-│ NumberOfDetachedParts                   │          0 │ MergeTreeテーブルから切り離されたパーツの合計数。パーツはユーザーによって `ALTER TABLE DETACH` クエリで切り離されるか、壊れている、予期しない、または不要な場合はサーバー自体によって切り離されることがあります。サーバーは切り離されたパーツを気にせず、削除できます。 │
-│ TotalRowsOfMergeTreeTables              │    2781309 │ MergeTreeファミリーのすべてのテーブルに保存された行（レコード）の合計数。                                                                                                                                                                                   │
-│ TotalBytesOfMergeTreeTables             │    7741926 │ MergeTreeファミリーのすべてのテーブルに保存されたバイト（圧縮されたデータとインデックスを含む）の合計数。                                                                                                                                                   │
-│ NumberOfTables                          │         93 │ サーバー上のデータベースに跨るテーブルの合計数。MergeTreeテーブルを含めることができないデータベースは除外されます。除外されるデータベースエンジンには、`Lazy`, `MySQL`, `PostgreSQL`, `SQlite` のように、即座にテーブルを生成するものがあります。 │
-│ NumberOfDatabases                       │          6 │ サーバー上のデータベースの合計数。                                                                                                                                                                                                                   │
-│ MaxPartCountForPartition                │          6 │ MergeTreeファミリーのすべてのテーブルにおけるパーティションあたりのパーツの最大数。300を超える値は、設定ミス、過負荷、または大量のデータ読み込みを示します。                                                                       │
-│ ReplicasSumMergesInQueue                │          0 │ レプリケーテーブルに跨るキュー内のマージ操作の合計（まだ適用されていない）。                                                                                                                                                                       │
-│ ReplicasSumInsertsInQueue               │          0 │ レプリケーテーブルに跨るキュー内のINSERT操作の合計（まだレプリケートされていない）。                                                                                                                                                                   │
+│ AsynchronousMetricsCalculationTimeSpent │ 0.00179053 │ Time in seconds spent for calculation of asynchronous metrics (this is the overhead of asynchronous metrics).                                                                                                                                              │
+│ NumberOfDetachedByUserParts             │          0 │ The total number of parts detached from MergeTree tables by users with the `ALTER TABLE DETACH` query (as opposed to unexpected, broken or ignored parts). The server does not care about detached parts and they can be removed.                          │
+│ NumberOfDetachedParts                   │          0 │ The total number of parts detached from MergeTree tables. A part can be detached by a user with the `ALTER TABLE DETACH` query or by the server itself it the part is broken, unexpected or unneeded. The server does not care about detached parts and they can be removed. │
+│ TotalRowsOfMergeTreeTables              │    2781309 │ Total amount of rows (records) stored in all tables of MergeTree family.                                                                                                                                                                                   │
+│ TotalBytesOfMergeTreeTables             │    7741926 │ Total amount of bytes (compressed, including data and indices) stored in all tables of MergeTree family.                                                                                                                                                   │
+│ NumberOfTables                          │         93 │ Total number of tables summed across the databases on the server, excluding the databases that cannot contain MergeTree tables. The excluded database engines are those who generate the set of tables on the fly, like `Lazy`, `MySQL`, `PostgreSQL`, `SQlite`. │
+│ NumberOfDatabases                       │          6 │ Total number of databases on the server.                                                                                                                                                                                                                   │
+│ MaxPartCountForPartition                │          6 │ Maximum number of parts per partition across all partitions of all tables of MergeTree family. Values larger than 300 indicates misconfiguration, overload, or massive data loading.                                                                       │
+│ ReplicasSumMergesInQueue                │          0 │ Sum of merge operations in the queue (still to be applied) across Replicated tables.                                                                                                                                                                       │
+│ ReplicasSumInsertsInQueue               │          0 │ Sum of INSERT operations in the queue (still to be replicated) across Replicated tables.                                                                                                                                                                   │
 └─────────────────────────────────────────┴────────────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-<!--- Unlike with system.events and system.metrics, the asynchronous metrics are not gathered in a simple list in a source code file - they
-      are mixed with logic in src/Interpreters/ServerAsynchronousMetrics.cpp.
-      Listing them here explicitly for reader convenience. --->
-## メトリックの説明 {#metric-descriptions}
+<!--- system.eventsやsystem.metricsとは異なり、非同期のメトリクスはソースコードファイル内に単純なリストとして収集されるわけではなく、src/Interpreters/ServerAsynchronousMetrics.cpp内のロジックと混在しています。
+      読者の便宜のためにここに明示的にリスト化しています。 --->
+## メトリクスの説明 {#metric-descriptions}
 ### AsynchronousHeavyMetricsCalculationTimeSpent {#asynchronousheavymetricscalculationtimespent}
 
-非同期の重い（テーブル関連の）メトリックの計算に費やされた時間（秒単位）（これは非同期メトリックのオーバーヘッドです）。
+非同期の重い（テーブル関連の）メトリクスの計算に要した時間（この時間は非同期メトリクスのオーバーヘッドです）。
 ### AsynchronousHeavyMetricsUpdateInterval {#asynchronousheavymetricsupdateinterval}
 
-重い（テーブル関連の）メトリック更新の間隔
+重い（テーブル関連の）メトリクスの更新間隔
 ### AsynchronousMetricsCalculationTimeSpent {#asynchronousmetricscalculationtimespent}
 
-非同期メトリックの計算に費やされた時間（秒単位）（これは非同期メトリックのオーバーヘッドです）。
+非同期メトリクスの計算に要した時間（この時間は非同期メトリクスのオーバーヘッドです）。
 ### AsynchronousMetricsUpdateInterval {#asynchronousmetricsupdateinterval}
 
-メトリック更新の間隔
+メトリクスの更新間隔
 ### BlockActiveTime_*name* {#blockactivetime_name}
 
-ブロックデバイスがIOリクエストをキューに保持していた時間（秒単位）。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけでなくなります。ソース： `/sys/block`。参照: https://www.kernel.org/doc/Documentation/block/stat.txt
+ブロックデバイスがIOリクエストを待機していた時間（秒単位）。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。ソース: `/sys/block`。詳細は https://www.kernel.org/doc/Documentation/block/stat.txt を参照してください。
 ### BlockDiscardBytes_*name* {#blockdiscardbytes_name}
 
-ブロックデバイスで破棄されたバイト数。これらの操作はSSDに関連しています。破棄操作はClickHouseでは使用されませんが、システム上の他のプロセスによって使用されることがあります。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。ソース： `/sys/block`。参照: https://www.kernel.org/doc/Documentation/block/stat.txt
+ブロックデバイスで破棄されたバイト数。これらの操作はSSDに関連します。ClickHouseでは破棄操作は使用されませんが、システム上の他のプロセスで使用される可能性があります。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。ソース: `/sys/block`。詳細は https://www.kernel.org/doc/Documentation/block/stat.txt を参照してください。
 ### BlockDiscardMerges_*name* {#blockdiscardmerges_name}
 
-ブロックデバイスからリクエストされた破棄操作の数と、OSのIOスケジューラによって統合された数。これらの操作はSSDに関連しています。破棄操作はClickHouseでは使用されませんが、システム上の他のプロセスによって使用されることがあります。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。ソース： `/sys/block`。参照: https://www.kernel.org/doc/Documentation/block/stat.txt
+ブロックデバイスから要求され、OSのIOスケジューラによってまとめられた破棄操作の数。これらの操作はSSDに関連します。ClickHouseでは破棄操作は使用されませんが、システム上の他のプロセスで使用される可能性があります。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。ソース: `/sys/block`。詳細は https://www.kernel.org/doc/Documentation/block/stat.txt を参照してください。
 ### BlockDiscardOps_*name* {#blockdiscardops_name}
 
-ブロックデバイスからリクエストされた破棄操作の数。これらの操作はSSDに関連しています。破棄操作はClickHouseでは使用されませんが、システム上の他のプロセスによって使用されることがあります。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。ソース： `/sys/block`。参照: https://www.kernel.org/doc/Documentation/block/stat.txt
+ブロックデバイスから要求された破棄操作の数。これらの操作はSSDに関連します。ClickHouseでは破棄操作は使用されませんが、システム上の他のプロセスで使用される可能性があります。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。ソース: `/sys/block`。詳細は https://www.kernel.org/doc/Documentation/block/stat.txt を参照してください。
 ### BlockDiscardTime_*name* {#blockdiscardtime_name}
 
-ブロックデバイスからリクエストされた破棄操作に費やされた時間（秒単位）、すべての操作で合計されています。これらの操作はSSDに関連しています。破棄操作はClickHouseでは使用されませんが、システム上の他のプロセスによって使用されることがあります。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。ソース： `/sys/block`。参照: https://www.kernel.org/doc/Documentation/block/stat.txt
+ブロックデバイスから要求された破棄操作に費やされた時間（秒単位）、すべての操作を合計したもの。これらの操作はSSDに関連します。ClickHouseでは破棄操作は使用されませんが、システム上の他のプロセスで使用される可能性があります。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。ソース: `/sys/block`。詳細は https://www.kernel.org/doc/Documentation/block/stat.txt を参照してください。
 ### BlockInFlightOps_*name* {#blockinflightops_name}
 
-この値は、デバイスドライバに発行されたがまだ完了していないI/Oリクエストの数をカウントします。キューに入っているがまだデバイスドライバに発行されていないIOリクエストは含まれません。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。ソース： `/sys/block`。参照: https://www.kernel.org/doc/Documentation/block/stat.txt
+この値は、デバイスドライバに発行されたがまだ完了していないI/Oリクエストの数をカウントします。これは、キューにあるがデバイスドライバに対してまだ発行されていないIOリクエストを含みません。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。ソース: `/sys/block`。詳細は https://www.kernel.org/doc/Documentation/block/stat.txt を参照してください。
 ### BlockQueueTime_*name* {#blockqueuetime_name}
 
-この値は、IOリクエストがこのブロックデバイスで待機していたミリ秒数を数えます。待機しているIOリクエストが複数ある場合、この値は待機しているリクエストの数×待機していたミリ秒数の積として増加します。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。ソース： `/sys/block`。参照: https://www.kernel.org/doc/Documentation/block/stat.txt
+この値は、このブロックデバイス上でIOリクエストが待機していた時間（ミリ秒単位）をカウントします。複数のIOリクエストが待機している場合、この値は、待機しているリクエストの数×待機していたミリ秒の積として増加します。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。ソース: `/sys/block`。詳細は https://www.kernel.org/doc/Documentation/block/stat.txt を参照してください。
 ### BlockReadBytes_*name* {#blockreadbytes_name}
 
-ブロックデバイスから読み取られたバイト数。OSページキャッシュの使用により、ファイルシステムから読み取られたバイト数よりも少なくなる可能性があります。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。ソース： `/sys/block`。参照: https://www.kernel.org/doc/Documentation/block/stat.txt
+ブロックデバイスから読み取られたバイト数。OSページキャッシュの使用により、ファイルシステムから読み取られたバイト数よりも少ない場合があります。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。ソース: `/sys/block`。詳細は https://www.kernel.org/doc/Documentation/block/stat.txt を参照してください。
 ### BlockReadMerges_*name* {#blockreadmerges_name}
 
-ブロックデバイスからリクエストされた読み取り操作の数と、OSのIOスケジューラによって統合された数。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。ソース： `/sys/block`。参照: https://www.kernel.org/doc/Documentation/block/stat.txt
+ブロックデバイスから要求され、OSのIOスケジューラによってまとめられた読み取り操作の数。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。ソース: `/sys/block`。詳細は https://www.kernel.org/doc/Documentation/block/stat.txt を参照してください。
 ### BlockReadOps_*name* {#blockreadops_name}
 
-ブロックデバイスからリクエストされた読み取り操作の数。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。ソース： `/sys/block`。参照: https://www.kernel.org/doc/Documentation/block/stat.txt
+ブロックデバイスから要求された読み取り操作の数。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。ソース: `/sys/block`。詳細は https://www.kernel.org/doc/Documentation/block/stat.txt を参照してください。
 ### BlockReadTime_*name* {#blockreadtime_name}
 
-ブロックデバイスからリクエストされた読み取り操作に費やされた時間（秒単位）、すべての操作で合計されています。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。ソース： `/sys/block`。参照: https://www.kernel.org/doc/Documentation/block/stat.txt
+ブロックデバイスから要求された読み取り操作に費やされた時間（秒単位）、すべての操作を合計したもの。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。ソース: `/sys/block`。詳細は https://www.kernel.org/doc/Documentation/block/stat.txt を参照してください。
 ### BlockWriteBytes_*name* {#blockwritebytes_name}
 
-ブロックデバイスに書き込まれたバイト数。OSページキャッシュの使用により、ファイルシステムに書き込まれたバイト数よりも少なくなることがあります。ブロックデバイスへの書き込みは、対応するファイルシステムへの書き込みより遅れることがあります。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。ソース： `/sys/block`。参照: https://www.kernel.org/doc/Documentation/block/stat.txt
+ブロックデバイスに書き込まれたバイト数。OSページキャッシュの使用により、ファイルシステムに書き込まれたバイト数よりも少ない場合があります。ブロックデバイスに書き込むには、ファイルシステムへの対応する書き込みよりも後になる場合があります。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。ソース: `/sys/block`。詳細は https://www.kernel.org/doc/Documentation/block/stat.txt を参照してください。
 ### BlockWriteMerges_*name* {#blockwritemerges_name}
 
-ブロックデバイスからリクエストされた書き込み操作の数と、OSのIOスケジューラによって統合された数。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。ソース： `/sys/block`。参照: https://www.kernel.org/doc/Documentation/block/stat.txt
+ブロックデバイスから要求され、OSのIOスケジューラによってまとめられた書き込み操作の数。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。ソース: `/sys/block`。詳細は https://www.kernel.org/doc/Documentation/block/stat.txt を参照してください。
 ### BlockWriteOps_*name* {#blockwriteops_name}
 
-ブロックデバイスからリクエストされた書き込み操作の数。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。ソース： `/sys/block`。参照: https://www.kernel.org/doc/Documentation/block/stat.txt
+ブロックデバイスから要求された書き込み操作の数。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。ソース: `/sys/block`。詳細は https://www.kernel.org/doc/Documentation/block/stat.txt を参照してください。
 ### BlockWriteTime_*name* {#blockwritetime_name}
 
-ブロックデバイスからリクエストされた書き込み操作に費やされた時間（秒単位）、すべての操作で合計されています。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。ソース： `/sys/block`。参照: https://www.kernel.org/doc/Documentation/block/stat.txt
+ブロックデバイスから要求された書き込み操作に費やされた時間（秒単位）、すべての操作を合計したもの。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。ソース: `/sys/block`。詳細は https://www.kernel.org/doc/Documentation/block/stat.txt を参照してください。
 ### CPUFrequencyMHz_*name* {#cpufrequencymhz_name}
 
-CPUの現在の周波数（MHz）。ほとんどの最新のCPUは、電力保存およびターボブーストのために周波数を動的に調整します。
-### CompiledExpressionCacheBytes {#compiledexpressioncachebytes}
+CPUの現在の周波数（MHz単位）。ほとんどの最新のCPUは、電力を節約し、Turbo Boostを利用するために、周波数を動的に調整します。
+### DictionaryMaxUpdateDelay {#dictionarymaxlastsuccessfulupdatetime}
 
-JITコンパイルされたコードのキャッシュに使用される合計バイト数。
-### CompiledExpressionCacheCount {#compiledexpressioncachecount}
+辞書の更新の最大遅延（秒単位）。
+### DictionaryTotalFailedUpdates {#dictionaryloadfailed}
 
-JITコンパイルされたコードのキャッシュ内のエントリの合計数。
+すべての辞書で最後の成功した読み込み以降のエラーの数。
 ### DiskAvailable_*name* {#diskavailable_name}
 
-ディスク（仮想ファイルシステム）上の利用可能なバイト数。リモートファイルシステムは、16 EiBのような大きな値を示すことがあります。
+ディスク（仮想ファイルシステム）の空きバイト数。リモートファイルシステムは16EiBのような大きな値を示すことがあります。
 ### DiskTotal_*name* {#disktotal_name}
 
-ディスクの合計サイズ（バイト単位、仮想ファイルシステム上）。リモートファイルシステムは、16 EiBのような大きな値を示すことがあります。
+ディスク（仮想ファイルシステム）の総サイズ（バイト単位）。リモートファイルシステムは16EiBのような大きな値を示すことがあります。
 ### DiskUnreserved_*name* {#diskunreserved_name}
 
-マージ、フェッチ、移動のために予約されていないディスク（仮想ファイルシステム）上の利用可能なバイト数。リモートファイルシステムは、16 EiBのような大きな値を示すことがあります。
+マージ、フェッチ、および移動のための予約なしで、ディスク（仮想ファイルシステム）の空きバイト数。リモートファイルシステムは16EiBのような大きな値を示すことがあります。
 ### DiskUsed_*name* {#diskused_name}
 
-ディスク（仮想ファイルシステム）上の使用済みバイト数。リモートファイルシステムは、常にこの情報を提供しないことがあります。
+ディスク（仮想ファイルシステム）の使用バイト数。リモートファイルシステムは、この情報を提供しないことがあります。
 ### FilesystemCacheBytes {#filesystemcachebytes}
 
-`cache` 仮想ファイルシステム内の合計バイト数。このキャッシュはディスク上に保持されます。
+`cache`仮想ファイルシステムの合計バイト数。このキャッシュはディスクに保持されます。
 ### FilesystemCacheFiles {#filesystemcachefiles}
 
-`cache` 仮想ファイルシステム内のキャッシュされたファイルセグメントの合計数。このキャッシュはディスク上に保持されます。
+`cache`仮想ファイルシステムにおけるキャッシュされたファイルセグメントの合計数。このキャッシュはディスクに保持されます。
 ### FilesystemLogsPathAvailableBytes {#filesystemlogspathavailablebytes}
 
-ClickHouseログパスがマウントされているボリューム上の利用可能なバイト数。この値が0に近づくと、設定ファイルでのログローテーションを調整する必要があります。
+ClickHouseのログパスがマウントされているボリュームの使用可能なバイト数。この値がゼロに近づくと、設定ファイルでログのローテーションを調整する必要があります。
 ### FilesystemLogsPathAvailableINodes {#filesystemlogspathavailableinodes}
 
-ClickHouseログパスがマウントされているボリューム上の利用可能なinodeの数。
+ClickHouseのログパスがマウントされているボリュームの使用可能なinodeの数。
 ### FilesystemLogsPathTotalBytes {#filesystemlogspathtotalbytes}
 
-ClickHouseログパスがマウントされているボリュームのサイズ（バイト単位）。ログのために少なくとも10GBを持つことを推奨します。
+ClickHouseのログパスがマウントされているボリュームのサイズ（バイト単位）。ログには少なくとも10GBが推奨されます。
 ### FilesystemLogsPathTotalINodes {#filesystemlogspathtotalinodes}
 
-ClickHouseログパスがマウントされているボリューム上のinodeの総数。
+ClickHouseのログパスがマウントされているボリュームのinodeの総数。
 ### FilesystemLogsPathUsedBytes {#filesystemlogspathusedbytes}
 
-ClickHouseログパスがマウントされているボリューム上の使用済みバイト数。
+ClickHouseのログパスがマウントされているボリュームの使用バイト数。
 ### FilesystemLogsPathUsedINodes {#filesystemlogspathusedinodes}
 
-ClickHouseログパスがマウントされているボリューム上の使用中のinodeの数。
+ClickHouseのログパスがマウントされているボリュームの使用中のinodeの数。
 ### FilesystemMainPathAvailableBytes {#filesystemmainpathavailablebytes}
 
-ClickHouseのメインパスがマウントされているボリューム上の利用可能なバイト数。
+主なClickHouseパスがマウントされているボリュームの使用可能なバイト数。
 ### FilesystemMainPathAvailableINodes {#filesystemmainpathavailableinodes}
 
-ClickHouseのメインパスがマウントされているボリューム上の利用可能なinodeの数。この数が0に近い場合、設定ミスを示し、ディスクがいっぱいでなくても「デバイスに空きがありません」と表示されます。
+主なClickHouseパスがマウントされているボリュームの使用可能なinodeの数。この数がゼロに近づくと、設定ミスを示し、ディスクが満杯でなくても「デバイスに空き容量がありません」と表示されます。
 ### FilesystemMainPathTotalBytes {#filesystemmainpathtotalbytes}
 
-ClickHouseのメインパスがマウントされているボリュームのサイズ（バイト単位）。
+主なClickHouseパスがマウントされているボリュームのサイズ（バイト単位）。
 ### FilesystemMainPathTotalINodes {#filesystemmainpathtotalinodes}
 
-ClickHouseのメインパスがマウントされているボリューム上のinodeの総数。この数が2500万未満の場合、設定ミスを示します。
+主なClickHouseパスがマウントされているボリュームのinodeの総数。この数が2500万未満の場合、設定ミスを示します。
 ### FilesystemMainPathUsedBytes {#filesystemmainpathusedbytes}
 
-ClickHouseのメインパスがマウントされているボリューム上の使用済みバイト数。
+主なClickHouseパスがマウントされているボリュームの使用バイト数。
 ### FilesystemMainPathUsedINodes {#filesystemmainpathusedinodes}
 
-ClickHouseのメインパスがマウントされているボリューム上の使用中のinodeの数。この値は、主にファイルの数に相当します。
+主なClickHouseパスがマウントされているボリュームの使用中のinodeの数。この値は主にファイル数に対応します。
 ### HTTPThreads {#httpthreads}
 
-HTTPインターフェース（TLSなし）サーバーのスレッド数。
+HTTPインターフェースのサーバーでのスレッド数（TLSなし）。
 ### InterserverThreads {#interserverthreads}
 
-レプリカコミュニケーションプロトコル（TLSなし）サーバーのスレッド数。
+レプリカ通信プロトコルのサーバーでのスレッド数（TLSなし）。
 ### Jitter {#jitter}
 
-非同期メトリック計算のためにスケジュールされたスレッドの起床時間と実際に起きた時間の差。全体的なシステムレイテンシーと応答性の代理指標です。
+非同期メトリクスの計算のためにスレッドが予定された起動時間と実際に起動した時間の違い。全体的なシステムのレイテンシと応答性の代理指標です。
 ### LoadAverage*N* {#loadaveragen}
 
-全システムの負荷で、1分間で指数平滑化された平均。負荷は、CPUによって現在実行中、IOを待機中、または実行準備が完了しているがこの時点ではスケジュールされていないプロセス（OSカーネルのスケジューリングエンティティ）のスレッド数を表します。この数は、clickhouse-serverだけでなく、すべてのプロセスを含みます。システムが過負荷になっている場合、多くのプロセスがCPUの待機中またはIO待機中であり、この数はCPUコア数を超えることがあります。
-### MMapCacheCells {#mmapcachecells}
-
-`mmap`（メモリにマッピングされた）で開かれているファイルの数。この設定が `local_filesystem_read_method` に設定されているクエリで使用されます。`mmap`で開かれたファイルは、高価なTLBフラッシュを避けるためにキャッシュ内に保持されます。
-### MarkCacheBytes {#markcachebytes}
-
-マークキャッシュのサイズ（バイト単位）
-### MarkCacheFiles {#markcachefiles}
-
-マークキャッシュにキャッシュされたマークファイルの合計数
+1分間の指数移動平均を用いたシステムの全体的な負荷。この負荷は、現在CPUで実行中またはIOを待機中、もしくはスケジュールされていない状態の全てのプロセス（OSカーネルのスケジューリングエンティティ）のスレッド数を表します。この数はclickhouse-serverだけでなく、すべてのプロセスを含みます。この数は、システムが過負荷の場合、CPUコアの数よりも大きくなることがあります。
 ### MaxPartCountForPartition {#maxpartcountforpartition}
 
-MergeTreeファミリーのすべてのテーブルにおけるパーティションあたりのパーツの最大数。300を超える値は、設定ミス、過負荷、または大量のデータ読み込みを示します。
+MergeTreeファミリーのすべてのテーブルのすべてのパーティションにおけるパーツの最大数。300を超える値は設定ミス、過負荷、または大量データの読み込みを示します。
 ### MemoryCode {#memorycode}
 
-サーバープロセスの機械コードページにマッピングされたバーチャルメモリの量（バイト単位）。
+サーバープロセスのマシンコードページにマッピングされた仮想メモリの量（バイト単位）。
 ### MemoryDataAndStack {#memorydataandstack}
 
-スタック使用と割り当てられたメモリのためにマッピングされたバーチャルメモリの量（バイト単位）。スレッドごとのスタックや、大半の割り当てられたメモリが `mmap` システムコールで割り当てられているかどうかは不明です。このメトリックは完全性の理由だけで存在します。監視される場合は `MemoryResident` メトリックを使用することをお勧めします。
+スタックおよび確保されたメモリの使用のためにマッピングされた仮想メモリの量（バイト単位）。これには、スレッドごとのスタックや「mmap」システムコールで確保されたほとんどのメモリが含まれるかどうかは不明です。このメトリクスは完全性の理由でのみ存在します。監視には `MemoryResident` メトリクスの使用をお勧めします。
 ### MemoryResidentMax {#memoryresidentmax}
 
-サーバープロセスによって使用される最大物理メモリ（バイト単位）。
+サーバープロセスによって使用される最大の物理メモリの量（バイト単位）。
 ### MemoryResident {#memoryresident}
 
-サーバープロセスによって使用される物理メモリ（バイト単位）。
+サーバープロセスによって使用される物理メモリの量（バイト単位）。
 ### MemoryShared {#memoryshared}
 
-サーバープロセスによって使用され、他のプロセスでも共有されているメモリ（バイト単位）。ClickHouseは共有メモリを使用しませんが、いくつかのメモリはOSによって独自の理由で共有されるとマークされることがあります。このメトリックは監視するのにあまり意味をなさず、完全性の理由だけで存在します。
+サーバープロセスによって使用されている、他のプロセスと共有されているメモリの量（バイト単位）。ClickHouseは共有メモリを使用しませんが、OSによって他の理由で共有としてラベル付けされたメモリがあるかもしれません。このメトリクスは、監視する意味があまりなく、完全性の理由でのみ存在します。
 ### MemoryVirtual {#memoryvirtual}
 
-サーバープロセスによって割り当てられたバーチャルアドレス空間のサイズ（バイト単位）。バーチャルアドレス空間のサイズは通常物理メモリ使用量よりも大きく、メモリ使用量の推定には使用しない方が良いです。このメトリックの大きな値は完全に正常であり、技術的な意味しかありません。
+サーバープロセスによって割り当てられた仮想アドレス空間のサイズ（バイト単位）。仮想アドレス空間のサイズは通常、物理メモリの消費よりもはるかに大きく、メモリ消費の推定としては使用されるべきではありません。このメトリクスの大きな値は完全に正常で、技術的な意味のみを持ちます。
 ### MySQLThreads {#mysqlthreads}
 
 MySQL互換プロトコルのサーバー内のスレッド数。
 ### NetworkReceiveBytes_*name* {#networkreceivebytes_name}
 
-ネットワークインターフェースを介して受信したバイト数。この数はシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。
+ネットワークインターフェース経由で受信したバイト数。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。
 ### NetworkReceiveDrop_*name* {#networkreceivedrop_name}
 
-ネットワークインターフェースを介して受信中にパケットが破棄された回数。この数はシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。
+ネットワークインターフェースを介して受信中にパケットがドロップされたバイト数。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。
 ### NetworkReceiveErrors_*name* {#networkreceiveerrors_name}
 
-ネットワークインターフェースを介して受信中にエラーが発生した回数。この数はシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。
+ネットワークインターフェースを介して受信中にエラーが発生した回数。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。
 ### NetworkReceivePackets_*name* {#networkreceivepackets_name}
 
-ネットワークインターフェースを介して受信したネットワークパケットの数。この数はシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。
+ネットワークインターフェースを介して受信したネットワークパケットの数。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。
 ### NetworkSendBytes_*name* {#networksendbytes_name}
 
-ネットワークインターフェースを介して送信したバイト数。この数はシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。
+ネットワークインターフェースを介して送信されたバイト数。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。
 ### NetworkSendDrop_*name* {#networksenddrop_name}
 
-ネットワークインターフェースを介して送信中にパケットが破棄された回数。この数はシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。
+ネットワークインターフェースを介して送信中にパケットがドロップされた回数。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。
 ### NetworkSendErrors_*name* {#networksenderrors_name}
 
-ネットワークインターフェースを介して送信中にエラー（例：TCP再送）が発生した回数。この数はシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。
+ネットワークインターフェースを介して送信中に発生したエラー（例：TCP再送信）の回数。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。
 ### NetworkSendPackets_*name* {#networksendpackets_name}
 
-ネットワークインターフェースを介して送信されたネットワークパケットの数。この数はシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。
+ネットワークインターフェースを介して送信されたネットワークパケットの数。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。
 ### NumberOfDatabases {#numberofdatabases}
 
-サーバー上のデータベースの合計数。
+サーバー上のデータベースの総数。
 ### NumberOfDetachedByUserParts {#numberofdetachedbyuserparts}
 
-ユーザーが `ALTER TABLE DETACH` クエリを使用してMergeTreeテーブルから切り離したパーツの合計数（予期しない、壊れた、または無視されたパーツを除く）。サーバーは切り離されたパーツを気にせず、削除できます。
+`ALTER TABLE DETACH`クエリによってユーザーによって切り離されたMergeTreeテーブルからのパーツの総数（予期しない、破損した、または無視されたパーツは除く）。サーバーは切り離されたパーツを気にせず、それらは削除可能です。
 ### NumberOfDetachedParts {#numberofdetachedparts}
 
-MergeTreeテーブルから切り離されたパーツの合計数。パーツはユーザーによって `ALTER TABLE DETACH` クエリで切り離されるか、壊れている、予期しない、または不要な場合はサーバー自体によって切り離されることがあります。サーバーは切り離されたパーツを気にせず、削除できます。
+MergeTreeテーブルから切り離されたパーツの総数。パーツはユーザーによって `ALTER TABLE DETACH` クエリで切り離されたり、サーバー自身によってパーツが破損していたり、予期しない場合や不要な場合に切り離されることがあります。サーバーは切り離されたパーツを気にせず、それらは削除可能です。
 ### NumberOfTables {#numberoftables}
 
-サーバー上のデータベースに跨るテーブルの合計数。MergeTreeテーブルを含めることができないデータベースを除外します。除外されるデータベースエンジンには、`Lazy`, `MySQL`, `PostgreSQL`, `SQlite` のように、即座にテーブルを生成するものがあります。
+サーバー上のデータベースにわたる合計テーブル数で、MergeTreeテーブルを含むことができないデータベースは除外します。除外されるデータベースエンジンには、`Lazy`、`MySQL`、`PostgreSQL`、`SQlite` などがあります。
 ### OSContextSwitches {#oscontextswitches}
 
-ホストマシンでシステムが経たコンテキストスイッチの数。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。
+ホストマシンでのシステムのコンテキストスイッチの回数。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。
 ### OSGuestNiceTime {#osguestnicetime}
 
-Linuxカーネルの制御下にあるゲストオペレーティングシステム用の仮想CPUを実行するのに費やされた時間の比率で、ゲストが優先度を高く設定されているとき（`man procfs`を参照）。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。このメトリックはClickHouseには関係しませんが、完全性のために存在します。単一CPUコアの値は[0..1]の範囲で、すべてのCPUコアの値は[0..コア数]の合計として計算されます。
+Linuxカーネルの制御下にあるゲストオペレーティングシステム用の仮想CPUを実行するために費やされた時間の比率。ゲストが優先度を高く設定された場合（`man procfs`を参照）。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。このメトリクスはClickHouseには無関係ですが、完全性のために存在します。単一CPUコアの値は[0..1]の範囲になります。すべてのCPUコアの値は[0..コア数]の総和として計算されます。
 ### OSGuestNiceTimeCPU_*N* {#osguestnicetimecpu_n}
 
-Linuxカーネルの制御下にあるゲストオペレーティングシステム用の仮想CPUを実行するのに費やされた時間の比率で、ゲストが優先度を高く設定されているとき（`man procfs`を参照）。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。このメトリックはClickHouseには関係しませんが、完全性のために存在します。単一CPUコアの値は[0..1]の範囲で、すべてのCPUコアの値は[0..コア数]の合計として計算されます。
+Linuxカーネルの制御下にあるゲストオペレーティングシステム用の仮想CPUを実行するために費やされた時間の比率。ゲストが優先度を高く設定された場合（`man procfs` を参照）。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。このメトリクスはClickHouseには無関係ですが、完全性のために存在します。単一CPUコアの値は[0..1]の範囲になります。すべてのCPUコアの値は[0..コア数]の総和として計算されます。
 ### OSGuestNiceTimeNormalized {#osguestnicetimenormalized}
 
-この値は `OSGuestNiceTime` に似ていますが、CPUコア数で割ったもので、コア数に関係なく[0..1]の範囲で測定されます。これにより、クラスター内の複数のサーバーにわたるこのメトリックの値を平均化でき、コア数が不均一であっても、平均リソース使用メトリックを取得できます。
+この値は `OSGuestNiceTime` に似ていますが、CPUコアの番号で割った値で、[0..1]の範囲で測定されます。これにより、クラスター内の複数のサーバーにわたってこのメトリクスの値を平均化でき、コアの数が不均一でも、平均的なリソース利用メトリクスを取得できます。
 ### OSGuestTime {#osguesttime}
 
-Linuxカーネルの制御下にあるゲストオペレーティングシステム用の仮想CPUを実行するのに費やされた時間の比率（`man procfs`を参照）。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。このメトリックはClickHouseには関係しませんが、完全性のために存在します。単一CPUコアの値は[0..1]の範囲で、すべてのCPUコアの値は[0..コア数]の合計として計算されます。
+Linuxカーネルの制御下にあるゲストオペレーティングシステム用の仮想CPUを実行するために費やされた時間の比率（`man procfs` を参照）。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。このメトリクスはClickHouseには無関係ですが、完全性のために存在します。単一CPUコアの値は[0..1]の範囲になります。すべてのCPUコアの値は[0..コア数]の総和として計算されます。
 ### OSGuestTimeCPU_*N* {#osguesttimecpu_n}
 
-Linuxカーネルの制御下にあるゲストオペレーティングシステム用の仮想CPUを実行するのに費やされた時間の比率（`man procfs`を参照）。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。このメトリックはClickHouseには関係しませんが、完全性のために存在します。単一CPUコアの値は[0..1]の範囲で、すべてのCPUコアの値は[0..コア数]の合計として計算されます。
+Linuxカーネルの制御下にあるゲストオペレーティングシステム用の仮想CPUを実行するために費やされた時間の比率（`man procfs` を参照）。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。このメトリクスはClickHouseには無関係ですが、完全性のために存在します。単一CPUコアの値は[0..1]の範囲になります。すべてのCPUコアの値は[0..コア数]の総和として計算されます。
 ### OSGuestTimeNormalized {#osguesttimenormalized}
 
-この値は `OSGuestTime` に似ていますが、CPUコア数で割ったもので、コア数に関係なく[0..1]の範囲で測定されます。これにより、クラスター内の複数のサーバーにわたるこのメトリックの値を平均化でき、コア数が不均一であっても、平均リソース使用メトリックを取得できます。
+この値は `OSGuestTime` に似ていますが、CPUコアの番号で割った値で、[0..1]の範囲で測定されます。これにより、クラスター内の複数のサーバーにわたってこのメトリクスの値を平均化でき、コアの数が不均一でも、平均的なリソース利用メトリクスを取得できます。
 ### OSIOWaitTime {#osiowaittime}
 
-CPUコアがコードを実行していなかった時間の比率です。ただし、OSカーネルがこのCPUで他のプロセスを実行していなかったため、プロセスがIOを待機していたとき。この数はシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。単一CPUコアの値は[0..1]の範囲で、すべてのCPUコアの値は[0..コア数]の合計として計算されます。
+CPUコアがコードを実行していないが、OSカーネルがこのCPUで他のプロセスを実行していない時間の比率で、プロセスがIOを待っていたためです。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。単一CPUコアの値は[0..1]の範囲になります。すべてのCPUコアの値は[0..コア数]の総和として計算されます。
 ### OSIOWaitTimeCPU_*N* {#osiowaittimecpu_n}
 
-CPUコアがコードを実行していなかった時間の比率です。ただし、OSカーネルがこのCPUで他のプロセスを実行していなかったため、プロセスがIOを待機していたとき。この数はシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。単一CPUコアの値は[0..1]の範囲で、すべてのCPUコアの値は[0..コア数]の合計として計算されます。
+CPUコアがコードを実行していないが、OSカーネルがこのCPUで他のプロセスを実行していない時間の比率で、プロセスがIOを待っていたためです。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。単一CPUコアの値は[0..1]の範囲になります。すべてのCPUコアの値は[0..コア数]の総和として計算されます。
 ### OSIOWaitTimeNormalized {#osiowaittimenormalized}
 
-この値は `OSIOWaitTime` に似ていますが、CPUコア数で割ったもので、コア数に関係なく[0..1]の範囲で測定されます。これにより、クラスター内の複数のサーバーにわたるこのメトリックの値を平均化でき、コア数が不均一であっても、平均リソース使用メトリックを取得できます。
+この値は `OSIOWaitTime` に似ていますが、CPUコアの数で割った値で、[0..1]の範囲で測定されます。これにより、クラスター内の複数のサーバーにわたってこのメトリクスの値を平均化でき、コアの数が不均一でも、平均的なリソース利用メトリクスを取得できます。
 ### OSIdleTime {#osidletime}
 
-CPUコアがアイドル状態（IOを待機しているプロセスを実行する準備でさえない）であった時間の比率。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。これは、CPU内部の理由による過小利用の時間は含まれません（メモリローディング、パイプラインのスタンバイ、ブランチのミス予測、別のSMTコアを実行中）。単一CPUコアの値は[0..1]の範囲で、すべてのCPUコアの値は[0..コア数]の合計として計算されます。
+OSカーネルの観点から、CPUコアがアイドル状態だった時間の比率（IOを待っているプロセスも準備ができていない状態）。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。CPUが内部的な理由（メモリ負荷、パイプラインの停止、分岐のミス予測、別のSMTコアの実行）により過小利用されていた時間は含まれません。単一CPUコアの値は[0..1]の範囲になります。すべてのCPUコアの値は[0..コア数]の総和として計算されます。
 ### OSIdleTimeCPU_*N* {#osidletimecpu_n}
 
-CPUコアがアイドル状態（IOを待機しているプロセスを実行する準備でさえない）であった時間の比率。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。これは、CPU内部の理由による過小利用の時間は含まれません（メモリローディング、パイプラインのスタンバイ、ブランチのミス予測、別のSMTコアを実行中）。単一CPUコアの値は[0..1]の範囲で、すべてのCPUコアの値は[0..コア数]の合計として計算されます。
+OSカーネルの観点から、CPUコアがアイドル状態だった時間の比率（IOを待っているプロセスも準備ができていない状態）。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。CPUが内部的な理由（メモリ負荷、パイプラインの停止、分岐のミス予測、別のSMTコアの実行）により過小利用されていた時間は含まれません。単一CPUコアの値は[0..1]の範囲になります。すべてのCPUコアの値は[0..コア数]の総和として計算されます。
 ### OSIdleTimeNormalized {#osidletimenormalized}
 
-この値は `OSIdleTime` に似ていますが、CPUコア数で割ったもので、コア数に関係なく[0..1]の範囲で測定されます。これにより、クラスター内の複数のサーバーにわたるこのメトリックの値を平均化でき、コア数が不均一であっても、平均リソース使用メトリックを取得できます。
+この値は `OSIdleTime` に似ていますが、CPUコアの数で割った値で、[0..1]の範囲で測定されます。これにより、クラスター内の複数のサーバーにわたってこのメトリクスの値を平均化でき、コアの数が不均一でも、平均的なリソース利用メトリクスを取得できます。
 ### OSInterrupts {#osinterrupts}
 
-ホストマシンでの割り込みの数。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。
+ホストマシンでの割り込みの数。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。
 ### OSIrqTime {#osirqtime}
 
-CPUでハードウェア割り込み要求を実行するのに費やされた時間の比率。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。このメトリックの高い数値は、ハードウェア設定ミスまたは非常に高いネットワーク負荷を示すことがあります。単一CPUコアの値は[0..1]の範囲で、すべてのCPUコアの値は[0..コア数]の合計として計算されます。
+CPU上でハードウェア割り込み要求を処理するために費やされた時間の比率。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。このメトリクスの高い値は、ハードウェアの設定ミスや非常に高いネットワーク負荷を示す可能性があります。単一CPUコアの値は[0..1]の範囲になります。すべてのCPUコアの値は[0..コア数]の総和として計算されます。
 ### OSIrqTimeCPU_*N* {#osirqtimecpu_n}
 
-CPUでハードウェア割り込み要求を実行するのに費やされた時間の比率。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。このメトリックの高い数値は、ハードウェア設定ミスまたは非常に高いネットワーク負荷を示すことがあります。単一CPUコアの値は[0..1]の範囲で、すべてのCPUコアの値は[0..コア数]の合計として計算されます。
+CPU上でハードウェア割り込み要求を処理するために費やされた時間の比率。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。このメトリクスの高い値は、ハードウェアの設定ミスや非常に高いネットワーク負荷を示す可能性があります。単一CPUコアの値は[0..1]の範囲になります。すべてのCPUコアの値は[0..コア数]の総和として計算されます。
 ### OSIrqTimeNormalized {#osirqtimenormalized}
 
-この値は `OSIrqTime` に似ていますが、CPUコア数で割ったもので、コア数に関係なく[0..1]の範囲で測定されます。これにより、クラスター内の複数のサーバーにわたるこのメトリックの値を平均化でき、コア数が不均一であっても、平均リソース使用メトリックを取得できます。
+この値は `OSIrqTime` に似ていますが、CPUコアの数で割った値で、[0..1]の範囲で測定されます。これにより、クラスター内の複数のサーバーにわたってこのメトリクスの値を平均化でき、コアの数が不均一でも、平均的なリソース利用メトリクスを取得できます。
 ### OSMemoryAvailable {#osmemoryavailable}
 
-プログラムによって使用可能なメモリの量（バイト単位）。これは、`OSMemoryFreePlusCached` メトリックに非常に似ています。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。
+プログラムで使用可能なメモリの量（バイト単位）。これは `OSMemoryFreePlusCached` メトリクスに非常に似ています。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。
 ### OSMemoryBuffers {#osmemorybuffers}
 
-OSカーネルバッファによって使用されるメモリの量（バイト単位）。これは通常小さく、大きな値はOSの設定ミスを示す可能性があります。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。
+OSカーネルバッファで使用されるメモリの量（バイト単位）。通常は小さいはずで、大きな値はOSの設定ミスを示すかもしれません。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。
 ### OSMemoryCached {#osmemorycached}
 
-OSページキャッシュによって使用されるメモリの量（バイト単位）。通常、使用可能なメモリのほとんどはOSページキャッシュによって使用されます。このメトリックの高い値は正常で期待されます。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。
+OSページキャッシュで使用されるメモリの量（バイト単位）。通常、ほとんどの空きメモリはOSページキャッシュで使用されるため、このメトリクスの高い値は正常で予期されます。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。
 ### OSMemoryFreePlusCached {#osmemoryfreepluscached}
 
-ホストシステム上の自由メモリとOSページキャッシュメモリの合計（バイト単位）。このメモリはプログラムによって使用可能です。この値は、`OSMemoryAvailable` に非常に似ています。これはシステム全体のメトリックで、ホストマシン上のすべてのプロセスを含み、clickhouse-serverだけではありません。
-```
+ホストシステム上の空きメモリとOSページキャッシュメモリの合計量（バイト単位）。このメモリはプログラムが使用可能です。値は `OSMemoryAvailable` に非常に近いはずです。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。
 ### OSMemoryFreeWithoutCached {#osmemoryfreewithoutcached}
 
-ホストシステム上の空きメモリ量（バイト）。これは、OSのページキャッシュメモリによって使用されるメモリは含まれません。ページキャッシュメモリはプログラムによっても使用可能であるため、このメトリックの値は混乱を招くことがあります。代わりに `OSMemoryAvailable` メトリックを参照してください。便利のために、 `OSMemoryFreePlusCached` メトリックも提供しており、これはおおよそ OSMemoryAvailable に類似しています。また、https://www.linuxatemyram.com/も参照してください。これはシステム全体のメトリックで、clickhouse-serverだけでなくホストマシン上のすべてのプロセスを含みます。
+ホストシステム上の空きメモリの量（バイト単位）。これはOSページキャッシュメモリによって使用されるメモリは含まれません。このメモリはプログラムによっても利用可能なため、このメトリクスの値は混乱を招く可能性があります。代わりに `OSMemoryAvailable` メトリクスを参照してください。便利さのために、 `OSMemoryFreePlusCached` メトリクスも提供しており、これはOSMemoryAvailableにかなり類似しているはずです。さらに詳細は https://www.linuxatemyram.com/ を参照してください。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。
 ### OSMemoryTotal {#osmemorytotal}
 
-ホストシステム上のメモリの総量（バイト）。
+ホストシステム上のメモリの総量（バイト単位）。
 ### OSNiceTime {#osnicetime}
 
-CPUコアが優先度の高いユーザースペースコードを実行していた時間の比率。これはシステム全体のメトリックで、clickhouse-serverだけでなくホストマシン上のすべてのプロセスを含みます。単一のCPUコアの値は [0..1] の間になります。すべてのCPUコアの値は、それらを合計したもの [0..num cores] として計算されます。
+CPUコアが優先度の高いユーザースペースコードを実行した時間の比率。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。単一CPUコアの値は[0..1]の範囲になります。すべてのCPUコアの値は[0..コア数]の総和として計算されます。
 ### OSNiceTimeCPU_*N* {#osnicetimecpu_n}
 
-CPUコアが優先度の高いユーザースペースコードを実行していた時間の比率。これはシステム全体のメトリックで、clickhouse-serverだけでなくホストマシン上のすべてのプロセスを含みます。単一のCPUコアの値は [0..1] の間になります。すべてのCPUコアの値は、それらを合計したもの [0..num cores] として計算されます。
+CPUコアが優先度の高いユーザースペースコードを実行した時間の比率。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。単一CPUコアの値は[0..1]の範囲になります。すべてのCPUコアの値は[0..コア数]の総和として計算されます。
 ### OSNiceTimeNormalized {#osnicetimenormalized}
 
-この値は `OSNiceTime` に類似していますが、測定するCPUコアの数で割って [0..1] の間で測定されるようになります。これにより、コア数が不均一である場合でもクラスター内の複数のサーバーでこのメトリックの値を平均化でき、平均的なリソース使用率メトリックを得ることができます。
+この値は `OSNiceTime` に似ていますが、CPUコアの数で割った値で、[0..1]の範囲で測定されます。これにより、クラスター内の複数のサーバーにわたってこのメトリクスの値を平均化でき、コアの数が不均一でも、平均的なリソース利用メトリクスを取得できます。
 ### OSOpenFiles {#osopenfiles}
 
-ホストマシン上のオープンファイルの総数。これはシステム全体のメトリックで、clickhouse-serverだけでなくホストマシン上のすべてのプロセスを含みます。
+ホストマシン上で開いているファイルの総数。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。
 ### OSProcessesBlocked {#osprocessesblocked}
 
-I/Oの完了を待ってブロックされたスレッドの数（`man procfs`）。これはシステム全体のメトリックで、clickhouse-serverだけでなくホストマシン上のすべてのプロセスを含みます。
+I/Oの完了を待っている間にブロックされているスレッドの数（`man procfs`を参照）。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。
 ### OSProcessesCreated {#osprocessescreated}
 
-作成されたプロセスの数。これはシステム全体のメトリックで、clickhouse-serverだけでなくホストマシン上のすべてのプロセスを含みます。
+作成されたプロセスの数。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。
 ### OSProcessesRunning {#osprocessesrunning}
 
-オペレーティングシステムによって実行可能（実行中または実行可能）のスレッドの数。これはシステム全体のメトリックで、clickhouse-serverだけでなくホストマシン上のすべてのプロセスを含みます。
+オペレーティングシステムによって実行可能（実行中または実行準備中）なスレッドの数。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。
 ### OSSoftIrqTime {#ossoftirqtime}
 
-CPU上でソフトウェア割り込み要求を実行するために費やされた時間の比率。これはシステム全体のメトリックで、clickhouse-serverだけでなくホストマシン上のすべてのプロセスを含みます。このメトリックが高い場合、システム上で非効率的なソフトウェアが実行されている可能性があります。単一のCPUコアの値は [0..1] の間になります。すべてのCPUコアの値は、それらを合計したもの [0..num cores] として計算されます。
+CPU上でソフトウェア割り込み要求を実行するために費やされた時間の比率。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。このメトリクスの高い値は、システム上の非効率的なソフトウェアを示す可能性があります。単一CPUコアの値は[0..1]の範囲になります。すべてのCPUコアの値は[0..コア数]の総和として計算されます。
 ### OSSoftIrqTimeCPU_*N* {#ossoftirqtimecpu_n}
 
-CPU上でソフトウェア割り込み要求を実行するために費やされた時間の比率。これはシステム全体のメトリックで、clickhouse-serverだけでなくホストマシン上のすべてのプロセスを含みます。このメトリックが高い場合、システム上で非効率的なソフトウェアが実行されている可能性があります。単一のCPUコアの値は [0..1] の間になります。すべてのCPUコアの値は、それらを合計したもの [0..num cores] として計算されます。
+CPU上でソフトウェア割り込み要求を実行するために費やされた時間の比率。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。このメトリクスの高い値は、システム上の非効率的なソフトウェアを示す可能性があります。単一CPUコアの値は[0..1]の範囲になります。すべてのCPUコアの値は[0..コア数]の総和として計算されます。
 ### OSSoftIrqTimeNormalized {#ossoftirqtimenormalized}
 
-この値は `OSSoftIrqTime` に類似していますが、測定するCPUコアの数で割って [0..1] の間で測定されるようになります。これにより、コア数が不均一である場合でもクラスター内の複数のサーバーでこのメトリックの値を平均化でき、平均的なリソース使用率メトリックを得ることができます。
+この値は `OSSoftIrqTime` に似ていますが、CPUコアの数で割った値で、[0..1]の範囲で測定されます。これにより、クラスター内の複数のサーバーにわたってこのメトリクスの値を平均化でき、コアの数が不均一でも、平均的なリソース利用メトリクスを取得できます。
 ### OSStealTime {#osstealtime}
 
-仮想化環境で実行されている際に、CPUが他のオペレーティングシステムに費やした時間の比率。これはシステム全体のメトリックで、clickhouse-serverだけでなくホストマシン上のすべてのプロセスを含みます。すべての仮想化環境がこのメトリックを提供するわけではなく、そのほとんどは提供していません。単一のCPUコアの値は [0..1] の間になります。すべてのCPUコアの値は、それらを合計したもの [0..num cores] として計算されます。
+仮想化環境でのCPUが他のオペレーティングシステムで費やした時間の比率。これはシステム全体のメトリクスで、ホストマシン上のすべてのプロセスを含みます。clickhouse-serverのみではありません。このメトリクスはすべての仮想化環境で表示されるものではなく、ほとんどのものはこの値を示しません。単一CPUコアの値は[0..1]の範囲になります。すべてのCPUコアの値は[0..コア数]の総和として計算されます。
 ### OSStealTimeCPU_*N* {#osstealtimecpu_n}
 
-仮想化環境で実行されている際に、CPUが他のオペレーティングシステムに費やした時間の比率。これはシステム全体のメトリックで、clickhouse-serverだけでなくホストマシン上のすべてのプロセスを含みます。すべての仮想化環境がこのメトリックを提供するわけではなく、そのほとんどは提供していません。単一のCPUコアの値は [0..1] の間になります。すべてのCPUコアの値は、それらを合計したもの [0..num cores] として計算されます。
+仮想環境で実行中の CPU が他のオペレーティングシステムで費やした時間の比率です。これはシステム全体のメトリックであり、ホストマシン上のすべてのプロセスが含まれており、clickhouse-server のみではありません。すべての仮想環境がこのメトリックを提供するわけではなく、ほとんどはそうではありません。単一の CPU コアの値は [0..1] の範囲になります。すべての CPU コアの値は、それらの合計として計算されます [0..num cores]。
 ### OSStealTimeNormalized {#osstealtimenormalized}
 
-この値は `OSStealTime` に類似していますが、測定するCPUコアの数で割って [0..1] の間で測定されるようになります。これにより、コア数が不均一である場合でもクラスター内の複数のサーバーでこのメトリックの値を平均化でき、平均的なリソース使用率メトリックを得ることができます。
+この値は `OSStealTime` と類似していますが、CPU コアの数で割って [0..1] の範囲で測定されます。これにより、コアの数が非均一であっても、クラスター内の複数のサーバー間でこのメトリックの値を平均化し、平均的なリソース使用率メトリックを得ることができます。
 ### OSSystemTime {#ossystemtime}
 
-CPUコアがOSカーネル（システム）コードを実行していた時間の比率。これはシステム全体のメトリックで、clickhouse-serverだけでなくホストマシン上のすべてのプロセスを含みます。単一のCPUコアの値は [0..1] の間になります。すべてのCPUコアの値は、それらを合計したもの [0..num cores] として計算されます。
+CPU コアが OS カーネル (システム) コードを実行していた時間の比率です。これはシステム全体のメトリックであり、ホストマシン上のすべてのプロセスが含まれており、clickhouse-server のみではありません。単一の CPU コアの値は [0..1] の範囲になります。すべての CPU コアの値は、それらの合計として計算されます [0..num cores]。
 ### OSSystemTimeCPU_*N* {#ossystemtimecpu_n}
 
-CPUコアがOSカーネル（システム）コードを実行していた時間の比率。これはシステム全体のメトリックで、clickhouse-serverだけでなくホストマシン上のすべてのプロセスを含みます。単一のCPUコアの値は [0..1] の間になります。すべてのCPUコアの値は、それらを合計したもの [0..num cores] として計算されます。
+CPU コアが OS カーネル (システム) コードを実行していた時間の比率です。これはシステム全体のメトリックであり、ホストマシン上のすべてのプロセスが含まれており、clickhouse-server のみではありません。単一の CPU コアの値は [0..1] の範囲になります。すべての CPU コアの値は、それらの合計として計算されます [0..num cores]。
 ### OSSystemTimeNormalized {#ossystemtimenormalized}
 
-この値は `OSSystemTime` に類似していますが、測定するCPUコアの数で割って [0..1] の間で測定されるようになります。これにより、コア数が不均一である場合でもクラスター内の複数のサーバーでこのメトリックの値を平均化でき、平均的なリソース使用率メトリックを得ることができます。
+この値は `OSSystemTime` と類似していますが、CPU コアの数で割って [0..1] の範囲で測定されます。これにより、コアの数が非均一であっても、クラスター内の複数のサーバー間でこのメトリックの値を平均化し、平均的なリソース使用率メトリックを得ることができます。
 ### OSThreadsRunnable {#osthreadsrunnable}
 
-OSカーネルスケジューラが見ている「実行可能」スレッドの総数。
+OS カーネルスケジューラが見ている 'runnable' スレッドの総数。
 ### OSThreadsTotal {#osthreadstotal}
 
-OSカーネルスケジューラが見ているスレッドの総数。
+OS カーネルスケジューラが見ているスレッドの総数。
 ### OSUptime {#osuptime}
 
-ホストサーバー（ClickHouseが実行されているマシン）の稼働時間（秒）。
+ホストサーバー (ClickHouse が実行されているマシン) の稼働時間（秒単位）。
 ### OSUserTime {#osusertime}
 
-CPUコアがユーザースペースコードを実行していた時間の比率。これはシステム全体のメトリックで、clickhouse-serverだけでなくホストマシン上のすべてのプロセスを含みます。これには、CPUが内部理由（メモリ負荷、パイプラインスタール、分岐ミス予測、別のSMTコア実行）により過少利用されていた時間も含まれます。単一のCPUコアの値は [0..1] の間になります。すべてのCPUコアの値は、それらを合計したもの [0..num cores] として計算されます。
+CPU コアがユーザ空間コードを実行していた時間の比率です。これはシステム全体のメトリックであり、ホストマシン上のすべてのプロセスが含まれており、clickhouse-server のみではありません。この値には、CPU がメモリ読み込み、パイプラインスタール、分岐ミス予測、別の SMT コアを実行しているために低下していた時間も含まれます。単一の CPU コアの値は [0..1] の範囲になります。すべての CPU コアの値は、それらの合計として計算されます [0..num cores]。
 ### OSUserTimeCPU_*N* {#osusertimecpu_n}
 
-CPUコアがユーザースペースコードを実行していた時間の比率。これはシステム全体のメトリックで、clickhouse-serverだけでなくホストマシン上のすべてのプロセスを含みます。これには、CPUが内部理由（メモリ負荷、パイプラインスタール、分岐ミス予測、別のSMTコア実行）により過少利用されていた時間も含まれます。単一のCPUコアの値は [0..1] の間になります。すべてのCPUコアの値は、それらを合計したもの [0..num cores] として計算されます。
+CPU コアがユーザ空間コードを実行していた時間の比率です。これはシステム全体のメトリックであり、ホストマシン上のすべてのプロセスが含まれており、clickhouse-server のみではありません。この値には、CPU がメモリ読み込み、パイプラインスタール、分岐ミス予測、別の SMT コアを実行しているために低下していた時間も含まれます。単一の CPU コアの値は [0..1] の範囲になります。すべての CPU コアの値は、それらの合計として計算されます [0..num cores]。
 ### OSUserTimeNormalized {#osusertimenormalized}
 
-この値は `OSUserTime` に類似していますが、測定するCPUコアの数で割って [0..1] の間で測定されるようになります。これにより、コア数が不均一である場合でもクラスター内の複数のサーバーでこのメトリックの値を平均化でき、平均的なリソース使用率メトリックを得ることができます。
+この値は `OSUserTime` と類似していますが、CPU コアの数で割って [0..1] の範囲で測定されます。これにより、コアの数が非均一であっても、クラスター内の複数のサーバー間でこのメトリックの値を平均化し、平均的なリソース使用率メトリックを得ることができます。
 ### PostgreSQLThreads {#postgresqlthreads}
 
-PostgreSQL互換プロトコルのサーバー内のスレッド数。
-### QueryCacheBytes {#querycachebytes}
-
-クエリキャッシュの合計サイズ（バイト）。
-### QueryCacheEntries {#querycacheentries}
-
-クエリキャッシュ内のエントリの総数。
+PostgreSQL 互換プロトコルのサーバー内のスレッド数。
 ### ReplicasMaxAbsoluteDelay {#replicasmaxabsolutedelay}
 
-最も新しいレプリケートパートとまだレプリケートされていない最も新しいデータパートの間の最大の差（秒数）、レプリケートテーブル全体で。非常に高い値は、データのないレプリカを示しています。
+Replicated テーブル間で、最も新しい複製されたパーツと、まだ複製されていない最も新しいデータパーツとの最大秒数差。非常に高い値は、データのないレプリカを示します。
 ### ReplicasMaxInsertsInQueue {#replicasmaxinsertsinqueue}
 
-レプリケートテーブル全体のキュー内の最大INSERT操作数（まだレプリケートされていない）。
+Replicated テーブル間で、キュー内の最大 INSERT 操作数（まだ複製されていない）。
 ### ReplicasMaxMergesInQueue {#replicasmaxmergesinqueue}
 
-レプリケートテーブル全体のキュー内の最大マージ操作数（まだ適用されていない）。
+Replicated テーブル間で、キュー内の最大マージ操作数（まだ適用されていない）。
 ### ReplicasMaxQueueSize {#replicasmaxqueuesize}
 
-レプリケートテーブル全体の最大キューサイズ（取得やマージなどの操作の数）。
+Replicated テーブル間での最大キューサイズ（取得、マージなどの操作数）。
 ### ReplicasMaxRelativeDelay {#replicasmaxrelativedelay}
 
-レプリカの遅延と同じテーブルの最も最新のレプリカの遅延の間の最大の差、レプリケートテーブル全体で。
+Replicated テーブル間で、レプリカの遅延と同じテーブルの最も最新のレプリカの遅延との最大差。
 ### ReplicasSumInsertsInQueue {#replicassuminsertsinqueue}
 
-レプリケートテーブル全体のキュー内のINSERT操作の合計数（まだレプリケートされていない）。
+Replicated テーブル間でのキュー内の INSERT 操作の合計（まだ複製されていない）。
 ### ReplicasSumMergesInQueue {#replicassummergesinqueue}
 
-レプリケートテーブル全体のキュー内のマージ操作の合計数（まだ適用されていない）。
+Replicated テーブル間でのキュー内のマージ操作の合計（まだ適用されていない）。
 ### ReplicasSumQueueSize {#replicassumqueuesize}
 
-レプリケートテーブル全体の合計キューサイズ（取得やマージなどの操作の数）。
+Replicated テーブル間での合計キューサイズ（取得、マージなどの操作数）。
 ### TCPThreads {#tcpthreads}
 
-TCPプロトコルのサーバー内のスレッド数（TLSなし）。
+TCP プロトコル（TLSなし）のサーバー内のスレッド数。
 ### Temperature_*N* {#temperature_n}
 
-対応するデバイスの温度（℃）。センサーは現実的でない値を返す可能性があります。ソース: `/sys/class/thermal`
+対応するデバイスの温度（℃）。センサーは非現実的な値を返すことがあります。ソース: `/sys/class/thermal`
 ### Temperature_*name* {#temperature_name}
 
-対応するハードウェアモニターおよび対応するセンサーが報告する温度（℃）。センサーは現実的でない値を返す可能性があります。ソース: `/sys/class/hwmon`
+対応するハードウェアモニターおよび対応するセンサーが報告する温度（℃）。センサーは非現実的な値を返すことがあります。ソース: `/sys/class/hwmon`
 ### TotalBytesOfMergeTreeTables {#totalbytesofmergetreetables}
 
-MergeTreeファミリのすべてのテーブルに保存されているバイトの総量（圧縮済み、データとインデックスを含む）。
+MergeTree ファミリーのすべてのテーブルに保存されているバイト数（圧縮済み、データおよびインデックスを含む）の合計。
 ### TotalPartsOfMergeTreeTables {#totalpartsofmergetreetables}
 
-MergeTreeファミリのすべてのテーブルにおけるデータパーツの総数。10,000を超える数字は、サーバーの起動時間に悪影響を及ぼし、分割キーの不合理な選択を示す可能性があります。
+MergeTree ファミリーのすべてのテーブルにおけるデータパーツの合計。10,000 より大きい数字は、サーバーの起動時間に悪影響を及ぼし、パーティションキーの不合理な選択を示す可能性があります。
 ### TotalPrimaryKeyBytesInMemory {#totalprimarykeybytesinmemory}
 
-プライマリーキーの値（アクティブなパーツのみ考慮）のために使用されているメモリの総量（バイト）。
+主キー値に使用されるメモリの総量（バイト単位）（アクティブパーツのみを考慮）。
 ### TotalPrimaryKeyBytesInMemoryAllocated {#totalprimarykeybytesinmemoryallocated}
 
-プライマリーキーの値（アクティブなパーツのみ考慮）のために予約されたメモリの総量（バイト）。
+主キー値に予約されたメモリの総量（バイト単位）（アクティブパーツのみを考慮）。
 ### TotalRowsOfMergeTreeTables {#totalrowsofmergetreetables}
 
-MergeTreeファミリのすべてのテーブルに保存されている行（レコード）の総数。
-### UncompressedCacheBytes {#uncompressedcachebytes}
-
-未圧縮キャッシュの合計サイズ（バイト）。未圧縮キャッシュは通常、パフォーマンスを向上させず、主に避けるべきです。
-### UncompressedCacheCells {#uncompressedcachecells}
-
-未圧縮キャッシュ内のエントリの総数。各エントリはデコンプレッションされたデータブロックを表します。未圧縮キャッシュは通常、パフォーマンスを向上させず、主に避けるべきです。
+MergeTree ファミリーのすべてのテーブルに保存されている行（レコード）の総数。
 ### Uptime {#uptime}
 
-サーバーの稼働時間（秒）。接続を受け入れる前のサーバー初期化に費やされた時間も含まれます。
+サーバーの稼働時間（秒単位）。接続を受け入れる前のサーバー初期化に費やされた時間が含まれています。
 ### jemalloc.active {#jemallocactive}
 
-低レベルメモリアロケーター（jemalloc）の内部メトリック。 https://jemalloc.net/jemalloc.3.htmlを参照してください。
+低レベルメモリアロケータ (jemalloc) の内部メトリック。詳しくは [https://jemalloc.net/jemalloc.3.html](https://jemalloc.net/jemalloc.3.html) を参照してください。
 ### jemalloc.allocated {#jemallocallocated}
 
-低レベルメモリアロケーター（jemalloc）の内部メトリック。 https://jemalloc.net/jemalloc.3.htmlを参照してください。
+低レベルメモリアロケータ (jemalloc) の内部メトリック。詳しくは [https://jemalloc.net/jemalloc.3.html](https://jemalloc.net/jemalloc.3.html) を参照してください。
 ### jemalloc.arenas.all.dirty_purged {#jemallocarenasalldirty_purged}
 
-低レベルメモリアロケーター（jemalloc）の内部メトリック。 https://jemalloc.net/jemalloc.3.htmlを参照してください。
+低レベルメモリアロケータ (jemalloc) の内部メトリック。詳しくは [https://jemalloc.net/jemalloc.3.html](https://jemalloc.net/jemalloc.3.html) を参照してください。
 ### jemalloc.arenas.all.muzzy_purged {#jemallocarenasallmuzzy_purged}
 
-低レベルメモリアロケーター（jemalloc）の内部メトリック。 https://jemalloc.net/jemalloc.3.htmlを参照してください。
+低レベルメモリアロケータ (jemalloc) の内部メトリック。詳しくは [https://jemalloc.net/jemalloc.3.html](https://jemalloc.net/jemalloc.3.html) を参照してください。
 ### jemalloc.arenas.all.pactive {#jemallocarenasallpactive}
 
-低レベルメモリアロケーター（jemalloc）の内部メトリック。 https://jemalloc.net/jemalloc.3.htmlを参照してください。
+低レベルメモリアロケータ (jemalloc) の内部メトリック。詳しくは [https://jemalloc.net/jemalloc.3.html](https://jemalloc.net/jemalloc.3.html) を参照してください。
 ### jemalloc.arenas.all.pdirty {#jemallocarenasallpdirty}
 
-低レベルメモリアロケーター（jemalloc）の内部メトリック。 https://jemalloc.net/jemalloc.3.htmlを参照してください。
+低レベルメモリアロケータ (jemalloc) の内部メトリック。詳しくは [https://jemalloc.net/jemalloc.3.html](https://jemalloc.net/jemalloc.3.html) を参照してください。
 ### jemalloc.arenas.all.pmuzzy {#jemallocarenasallpmuzzy}
 
-低レベルメモリアロケーター（jemalloc）の内部メトリック。 https://jemalloc.net/jemalloc.3.htmlを参照してください。
+低レベルメモリアロケータ (jemalloc) の内部メトリック。詳しくは [https://jemalloc.net/jemalloc.3.html](https://jemalloc.net/jemalloc.3.html) を参照してください。
 ### jemalloc.background_thread.num_runs {#jemallocbackground_threadnum_runs}
 
-低レベルメモリアロケーター（jemalloc）の内部メトリック。 https://jemalloc.net/jemalloc.3.htmlを参照してください。
+低レベルメモリアロケータ (jemalloc) の内部メトリック。詳しくは [https://jemalloc.net/jemalloc.3.html](https://jemalloc.net/jemalloc.3.html) を参照してください。
 ### jemalloc.background_thread.num_threads {#jemallocbackground_threadnum_threads}
 
-低レベルメモリアロケーター（jemalloc）の内部メトリック。 https://jemalloc.net/jemalloc.3.htmlを参照してください。
+低レベルメモリアロケータ (jemalloc) の内部メトリック。詳しくは [https://jemalloc.net/jemalloc.3.html](https://jemalloc.net/jemalloc.3.html) を参照してください。
 ### jemalloc.background_thread.run_intervals {#jemallocbackground_threadrun_intervals}
 
-低レベルメモリアロケーター（jemalloc）の内部メトリック。 https://jemalloc.net/jemalloc.3.htmlを参照してください。
+低レベルメモリアロケータ (jemalloc) の内部メトリック。詳しくは [https://jemalloc.net/jemalloc.3.html](https://jemalloc.net/jemalloc.3.html) を参照してください。
 ### jemalloc.epoch {#jemallocepoch}
 
-jemallocの統計の内部インクリメンタルアップデート番号（Jason Evansのメモリアロケーター）、すべての他の `jemalloc` メトリックで使用されます。
+jemalloc (Jason Evans のメモリアロケータ) の統計の内部インクリメンタル更新番号であり、他のすべての `jemalloc` メトリックで使用されます。
 ### jemalloc.mapped {#jemallocmapped}
 
-低レベルメモリアロケーター（jemalloc）の内部メトリック。 https://jemalloc.net/jemalloc.3.htmlを参照してください。
+低レベルメモリアロケータ (jemalloc) の内部メトリック。詳しくは [https://jemalloc.net/jemalloc.3.html](https://jemalloc.net/jemalloc.3.html) を参照してください。
 ### jemalloc.metadata {#jemallocmetadata}
 
-低レベルメモリアロケーター（jemalloc）の内部メトリック。 https://jemalloc.net/jemalloc.3.htmlを参照してください。
+低レベルメモリアロケータ (jemalloc) の内部メトリック。詳しくは [https://jemalloc.net/jemalloc.3.html](https://jemalloc.net/jemalloc.3.html) を参照してください。
 ### jemalloc.metadata_thp {#jemallocmetadata_thp}
 
-低レベルメモリアロケーター（jemalloc）の内部メトリック。 https://jemalloc.net/jemalloc.3.htmlを参照してください。
+低レベルメモリアロケータ (jemalloc) の内部メトリック。詳しくは [https://jemalloc.net/jemalloc.3.html](https://jemalloc.net/jemalloc.3.html) を参照してください。
 ### jemalloc.resident {#jemallocresident}
 
-低レベルメモリアロケーター（jemalloc）の内部メトリック。 https://jemalloc.net/jemalloc.3.htmlを参照してください。
+低レベルメモリアロケータ (jemalloc) の内部メトリック。詳しくは [https://jemalloc.net/jemalloc.3.html](https://jemalloc.net/jemalloc.3.html) を参照してください。
 ### jemalloc.retained {#jemallocretained}
 
-低レベルメモリアロケーター（jemalloc）の内部メトリック。 https://jemalloc.net/jemalloc.3.htmlを参照してください。
+低レベルメモリアロケータ (jemalloc) の内部メトリック。詳しくは [https://jemalloc.net/jemalloc.3.html](https://jemalloc.net/jemalloc.3.html) を参照してください。
 ### jemalloc.prof.active {#jemallocprofactive}
 
-低レベルメモリアロケーター（jemalloc）の内部メトリック。 https://jemalloc.net/jemalloc.3.htmlを参照してください。
+低レベルメモリアロケータ (jemalloc) の内部メトリック。詳しくは [https://jemalloc.net/jemalloc.3.html](https://jemalloc.net/jemalloc.3.html) を参照してください。
 
-**関連情報**
+**参照**
 
-- [Monitoring](../../operations/monitoring.md) — ClickHouseモニタリングの基本概念。
-- [system.metrics](/operations/system-tables/metrics) — 即座に計算されたメトリックを含む。
-- [system.events](/operations/system-tables/events) — 発生したイベントの数を含む。
-- [system.metric_log](/operations/system-tables/metric_log) — `system.metrics` と `system.events` テーブルからのメトリック値の履歴を含む。
+- [Monitoring](../../operations/monitoring.md) — ClickHouse モニタリングの基本概念。
+- [system.metrics](/operations/system-tables/metrics) — 即座に計算されたメトリックを含みます。
+- [system.events](/operations/system-tables/events) — 発生したイベントの数を含みます。
+- [system.metric_log](/operations/system-tables/metric_log) — `system.metrics` および `system.events` テーブルからのメトリック値の履歴を含みます。

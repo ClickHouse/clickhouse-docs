@@ -1,0 +1,67 @@
+---
+'sidebar_label': 'SQL 翻訳リファレンス'
+'slug': '/migrations/redshift/sql-translation-reference'
+'description': 'Amazon Redshift から ClickHouse への SQL 翻訳リファレンス'
+'keywords':
+- 'Redshift'
+'title': 'Amazon Redshift SQL 翻訳ガイド'
+'doc_type': 'reference'
+---
+
+
+# Amazon Redshift SQL 翻訳ガイド
+
+## データ型 {#data-types}
+
+ClickHouse と Redshift の間でデータを移動させるユーザーは、ClickHouse が提供するより広範なタイプの範囲にすぐに気づくでしょう。それはまた、制約が少ないです。Redshiftはユーザーに可変長の場合でも可能な文字列の長さを指定するよう要求しますが、ClickHouseはこの制限と負担をユーザーから取り除き、バイトとして文字列をエンコードせずに保存します。したがって、ClickHouse の String 型は制限や長さの指定要件がありません。
+
+さらに、ユーザーは Arrays、Tuples、および Enums を利用できますが、これらは Redshift にはファーストクラスの市民としては存在せず (Arrays/Structs は `SUPER` で模倣可能)、ユーザーの一般的な不満の一つです。ClickHouse は、クエリ時またはテーブル内での集約状態の保持も可能にします。これにより、データを通常はマテリアライズドビューを使用して事前に集約し、共通のクエリのクエリパフォーマンスを劇的に改善できます。
+
+以下に、各 Redshift タイプに対する対応する ClickHouse タイプを示します。
+
+| Redshift                                                                                                                           | ClickHouse                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+|------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`SMALLINT`](https://docs.aws.amazon.com/redshift/latest/dg/r_Numeric_types201.html#r_Numeric_types201-integer-types)                | [`Int8`](/sql-reference/data-types/int-uint) *                                                                                                                                                                                                                                                                                                                                                                       |
+| [`INTEGER`](https://docs.aws.amazon.com/redshift/latest/dg/r_Numeric_types201.html#r_Numeric_types201-integer-types)                 | [`Int32`](/sql-reference/data-types/int-uint) *                                                                                                                                                                                                                                                                                                                                                                      |
+| [`BIGINT`](https://docs.aws.amazon.com/redshift/latest/dg/r_Numeric_types201.html#r_Numeric_types201-integer-types)                  | [`Int64`](/sql-reference/data-types/int-uint) *                                                                                                                                                                                                                                                                                                                                                                      |
+| [`DECIMAL`](https://docs.aws.amazon.com/redshift/latest/dg/r_Numeric_types201.html#r_Numeric_types201-decimal-or-numeric-type)       | [`UInt128`, `UInt256`, `Int128`, `Int256`](/sql-reference/data-types/int-uint), [`Decimal(P, S)`, `Decimal32(S)`, `Decimal64(S)`, `Decimal128(S)`, `Decimal256(S)`](/sql-reference/data-types/decimal) - (高精度および可能な範囲)                                                                                                                                                          |
+| [`REAL`](https://docs.aws.amazon.com/redshift/latest/dg/r_Numeric_types201.html#r_Numeric_types201-floating-point-types)             | [`Float32`](/sql-reference/data-types/float)                                                                                                                                                                                                                                                                                                                                                                         |
+| [`DOUBLE PRECISION`](https://docs.aws.amazon.com/redshift/latest/dg/r_Numeric_types201.html#r_Numeric_types201-floating-point-types) | [`Float64`](/sql-reference/data-types/float)                                                                                                                                                                                                                                                                                                                                                                         |
+| [`BOOLEAN`](https://docs.aws.amazon.com/redshift/latest/dg/r_Boolean_type.html)                                                      | [`Bool`](/sql-reference/data-types/boolean)                                                                                                                                                                                                                                                                                                                                                                          |
+| [`CHAR`](https://docs.aws.amazon.com/redshift/latest/dg/r_Character_types.html#r_Character_types-char-or-character)                  | [`String`](/sql-reference/data-types/string), [`FixedString`](/sql-reference/data-types/fixedstring)                                                                                                                                                                                                                                                                                     |
+| [`VARCHAR`](https://docs.aws.amazon.com/redshift/latest/dg/r_Character_types.html#r_Character_types-varchar-or-character-varying) ** | [`String`](/sql-reference/data-types/string)                                                                                                                                                                                                                                                                                                                                                                         |
+| [`DATE`](https://docs.aws.amazon.com/redshift/latest/dg/r_Datetime_types.html#r_Datetime_types-date)                                 | [`Date32`](/sql-reference/data-types/date32)                                                                                                                                                                                                                                                                                                                                                                         |
+| [`TIMESTAMP`](https://docs.aws.amazon.com/redshift/latest/dg/r_Datetime_types.html#r_Datetime_types-timestamp)                       | [`DateTime`](/sql-reference/data-types/datetime), [`DateTime64`](/sql-reference/data-types/datetime64)                                                                                                                                                                                                                                                                                   |
+| [`TIMESTAMPTZ`](https://docs.aws.amazon.com/redshift/latest/dg/r_Datetime_types.html#r_Datetime_types-timestamptz)                   | [`DateTime`](/sql-reference/data-types/datetime), [`DateTime64`](/sql-reference/data-types/datetime64)                                                                                                                                                                                                                                                                                   |
+| [`GEOMETRY`](https://docs.aws.amazon.com/redshift/latest/dg/geospatial-overview.html)                                                | [Geo Data Types](/sql-reference/data-types/geo)                                                                                                                                                                                                                                                                                                                                                                    |
+| [`GEOGRAPHY`](https://docs.aws.amazon.com/redshift/latest/dg/geospatial-overview.html)                                               | [Geo Data Types](/sql-reference/data-types/geo) (未発展の部分あり e.g. 座標系なし - [関数で](/sql-reference/functions/geo/)エミュレーション可能)                                                                                                                                                                                                                        |
+| [`HLLSKETCH`](https://docs.aws.amazon.com/redshift/latest/dg/r_HLLSKTECH_type.html)                                                  | [`AggregateFunction(uniqHLL12, X)`](/sql-reference/data-types/aggregatefunction)                                                                                                                                                                                                                                                                                                                                     |
+| [`SUPER`](https://docs.aws.amazon.com/redshift/latest/dg/r_SUPER_type.html)                                                          | [`Tuple`](/sql-reference/data-types/tuple), [`Nested`](/sql-reference/data-types/nested-data-structures/nested), [`Array`](/sql-reference/data-types/array), [`JSON`](/sql-reference/data-types/newjson), [`Map`](/sql-reference/data-types/map) |
+| [`TIME`](https://docs.aws.amazon.com/redshift/latest/dg/r_Datetime_types.html#r_Datetime_types-time)                                 | [`DateTime`](/sql-reference/data-types/datetime), [`DateTime64`](/sql-reference/data-types/datetime64)                                                                                                                                                                                                                                                                                   |
+| [`TIMETZ`](https://docs.aws.amazon.com/redshift/latest/dg/r_Datetime_types.html#r_Datetime_types-timetz)                             | [`DateTime`](/sql-reference/data-types/datetime), [`DateTime64`](/sql-reference/data-types/datetime64)                                                                                                                                                                                                                                                                                   |
+| [`VARBYTE`](https://docs.aws.amazon.com/redshift/latest/dg/r_VARBYTE_type.html) **                                                   | [`String`](/sql-reference/data-types/string) と [`Bit`](/sql-reference/functions/bit-functions) および [Encoding](/sql-reference/functions/encoding-functions/#hex) 関数を組み合わせたもの                                                                                                                                                                      |
+
+<sub><span>*</span> ClickHouseは、範囲の拡張された符号なし整数 i.e. <a href='http://clickhouse.com/docs/sql-reference/data-types/int-uint'>`UInt8`, `UInt32`, `UInt32` および `UInt64`</a>を追加でサポートしています。</sub><br />
+<sub><span>**</span>ClickHouseのString型はデフォルトでは無制限ですが、特定の長さに制約するには <a href='http://clickhouse.com/docs/sql-reference/statements/create/table#constraints'>制約</a> を使用できます。</sub>
+
+## DDL構文 {#compression}
+
+### ソートキー {#sorting-keys}
+
+ClickHouse と Redshift の両方には「ソートキー」の概念があり、データが保存されるときの順序を定義します。Redshift は `SORTKEY` 句を使用してソートキーを定義します：
+
+```sql
+CREATE TABLE some_table(...) SORTKEY (column1, column2)
+```
+
+比較すると、ClickHouse は `ORDER BY` 句を使用してソート順を指定します：
+
+```sql
+CREATE TABLE some_table(...) ENGINE = MergeTree ORDER BY (column1, column2)
+```
+
+ほとんどの場合、ClickHouse では Redshift と同じソートキーのカラムと順序を使用できます。デフォルトの `COMPOUND` タイプを使用している場合は特にそうです。Redshift にデータが追加されると、新しく追加されたデータを再ソートし、クエリプランナーのための統計を更新するために `VACUUM` と `ANALYZE` コマンドを実行する必要があります。そうでない場合、未ソートの空間が増えます。ClickHouse ではそのようなプロセスは必要ありません。
+
+Redshift はソートキーのためのいくつかの便利な機能をサポートしています。最初のものは自動ソートキー (`SORTKEY AUTO` を使用)。これにより、開始するのには適切かもしれませんが、明示的なソートキーは最適な場合に最良のパフォーマンスとストレージ効率を保証します。2つ目は `INTERLEAVED` ソートキーで、これはソートキー内のカラムのサブセットに等しい重みを付与し、クエリが1つ以上のセカンダリソートカラムを使用する場合にパフォーマンスを向上させます。ClickHouse は、[プロジェクション](/data-modeling/projections)を明示的にサポートしており、わずかに異なる設定で同じ結果を達成できます。
+
+ユーザーは「主キー」という概念が ClickHouse と Redshift で異なることに注意すべきです。Redshift では、主キーは制約を強制することを目的とした伝統的な RDMS の概念に似ています。しかし、Redshift ではそれらは厳密には強制されず、代わりにクエリプランナーとノード間のデータ配布のためのヒントとして機能します。ClickHouse では、主キーはスパース主インデックスを構築するために使用されるカラムを示し、ディスク上でデータが順序付けられ、圧縮を最大限にし、主インデックスの汚染を避けつつメモリーを無駄にしないようにします。

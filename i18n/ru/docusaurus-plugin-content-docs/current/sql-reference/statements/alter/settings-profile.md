@@ -1,11 +1,11 @@
 ---
-description: 'Документация для профиля настроек'
+slug: '/sql-reference/statements/alter/settings-profile'
 sidebar_label: 'SETTINGS PROFILE'
 sidebar_position: 48
-slug: /sql-reference/statements/alter/settings-profile
+description: 'Документация для Settings Profile'
 title: 'ALTER SETTINGS PROFILE'
+doc_type: reference
 ---
-
 Изменяет профили настроек.
 
 Синтаксис:

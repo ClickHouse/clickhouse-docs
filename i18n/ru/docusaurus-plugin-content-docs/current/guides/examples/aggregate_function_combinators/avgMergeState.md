@@ -1,11 +1,11 @@
 ---
 slug: '/examples/aggregate-function-combinators/avgMergeState'
-title: 'avgMergeState'
-description: 'Пример использования комбинатора avgMergeState'
+sidebar_label: avgMergeState
+description: 'Пример использования комбиниатора avgMergeState'
+title: avgMergeState
 keywords: ['avg', 'MergeState', 'комбинатор', 'примеры', 'avgMergeState']
-sidebar_label: 'avgMergeState'
+doc_type: reference
 ---
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -14,22 +14,13 @@ import TabItem from '@theme/TabItem';
 
 ## Описание {#description}
 
-Комбинатор [`MergeState`](/sql-reference/aggregate-functions/combinators#-state)
-можно применять к функции [`avg`](/sql-reference/aggregate-functions/reference/avg),
-чтобы объединить частичные состояния агрегатов типа `AverageFunction(avg, T)` и
-вернуть новое промежуточное состояние агрегации.
+Комбинатор [`MergeState`](/sql-reference/aggregate-functions/combinators#-state) может быть применён к функции [`avg`](/sql-reference/aggregate-functions/reference/avg) для объединения частичных агрегатных состояний типа `AverageFunction(avg, T)` и возврата нового промежуточного состояния агрегации.
 
 ## Пример использования {#example-usage}
 
-Комбинатор `MergeState` особенно полезен для сценариев агрегации многоуровневой 
-структуры, когда вы хотите объединить предварительно агрегированные состояния и 
-сохранить их в виде состояний (а не финализировать) для дальнейшей обработки. 
-Чтобы проиллюстрировать, мы рассмотрим пример, в котором мы преобразуем 
-индивидуальные метрики производительности серверов в иерархические 
-агрегации на нескольких уровнях: уровень сервера → уровень региона 
-→ уровень датацентра.
+Комбинатор `MergeState` особенно полезен в сценариях агрегации с несколькими уровнями, где вы хотите объединить предагрегированные состояния и сохранить их как состояния (вместо их финализации) для дальнейшей обработки. Чтобы проиллюстрировать это, рассмотрим пример, в котором мы преобразуем показания производительности отдельных серверов в иерархические агрегации на нескольких уровнях: уровень сервера → уровень региона → уровень дата-центра.
 
-Сначала создадим таблицу для хранения сырых данных:
+Сначала создадим таблицу для хранения необработанных данных:
 
 ```sql
 CREATE TABLE raw_server_metrics
@@ -44,8 +35,7 @@ ENGINE = MergeTree()
 ORDER BY (region, server_id, timestamp);
 ```
 
-Создадим целевую таблицу агрегации на уровне сервера и определим инкрементное
-материализованное представление, действующее как триггер вставки:
+Создадим целевую таблицу агрегации на уровне сервера и определим инкрементное материализованное представление, которое будет действовать как триггер вставки для неё:
 
 ```sql
 CREATE TABLE server_performance
@@ -69,7 +59,7 @@ FROM raw_server_metrics
 GROUP BY server_id, region, datacenter;
 ```
 
-То же самое мы сделаем для уровней региона и датацентра:
+То же самое мы сделаем для уровня региона и уровня дата-центра:
 
 ```sql
 CREATE TABLE region_performance
@@ -90,7 +80,7 @@ AS SELECT
 FROM server_performance
 GROUP BY region, datacenter;
 
--- таблица уровня датацентра и Материализованное представление
+-- datacenter level table and materialized view
 
 CREATE TABLE datacenter_performance
 (
@@ -109,7 +99,7 @@ FROM region_performance
 GROUP BY datacenter;
 ```
 
-Затем мы вставим образцы сырых данных в исходную таблицу:
+Затем вставим образцы необработанных данных в исходную таблицу:
 
 ```sql
 INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, response_time_ms) VALUES
@@ -164,7 +154,7 @@ ORDER BY datacenter, region;
 └────────────┴────────────┴────────────────────┘
 ```
   </TabItem>
-  <TabItem value="Уровень датацентра" label="Уровень датацентра">
+  <TabItem value="Уровень дата-центра" label="Уровень дата-центра">
 ```sql
 SELECT
     datacenter,
@@ -191,8 +181,7 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
     (now(), 301, 'eu-central', 'dc2', 135);
 ```
 
-Давайте еще раз проверим производительность на уровне датацентра. Обратите внимание, как 
-вся цепочка агрегации обновилась автоматически:
+Давайте проверим производительность на уровне дата-центра снова. Обратите внимание, как вся цепочка агрегации обновилась автоматически:
 
 ```sql
 SELECT
