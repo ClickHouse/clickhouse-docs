@@ -3502,6 +3502,11 @@
       "permanent": true
     },
     {
+      "source": "/docs/:lang1(ru|zh|jp)/:lang2(ru|zh|jp|en)/:path*",
+      "destination": "/docs/:lang1/:path*",
+      "permanent": true
+    },
+    {
       "source": "/docs/cloud/reference/10_account-close.md",
       "destination": "/docs/cloud/reference/11_account-close.md",
       "permanent": true
