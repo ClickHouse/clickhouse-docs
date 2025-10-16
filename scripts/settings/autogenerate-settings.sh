@@ -393,7 +393,7 @@ insert_src_files=(
   "logical-functions.md"
   "mathematical-functions.md"
   "natural_language_processing-functions.md"
-  "randomnumber-functions.md"
+  "random_number-functions.md"
   "numericindexedvector-functions.md"
   "string_splitting-functions.md"
   "rounding-functions.md"
