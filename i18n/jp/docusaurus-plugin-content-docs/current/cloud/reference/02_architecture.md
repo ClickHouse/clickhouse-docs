@@ -6,12 +6,12 @@
 'doc_type': 'reference'
 ---
 
-import Architecture from '@site/static/images/cloud/reference/architecture.svg';
-
+import Image from '@theme/IdealImage';
+import Architecture from '@site/static/images/cloud/reference/architecture.png';
 
 # ClickHouse Cloud アーキテクチャ
 
-<Architecture alt='ClickHouse Cloud アーキテクチャ' class='image' />
+<Image img={Architecture} size='lg' alt='Cloud architecture'/>
 
 ## オブジェクトストアにバックアップされたストレージ {#storage-backed-by-object-store}
 - 実質的に無限のストレージ

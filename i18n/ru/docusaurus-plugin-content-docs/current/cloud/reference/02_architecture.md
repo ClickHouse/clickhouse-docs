@@ -5,12 +5,13 @@
 'description': 'Эта страница описывает архитектуру ClickHouse Cloud'
 'doc_type': 'reference'
 ---
-import Architecture from '@site/static/images/cloud/reference/architecture.svg';
 
+import Image from '@theme/IdealImage';
+import Architecture from '@site/static/images/cloud/reference/architecture.png';
 
 # Архитектура ClickHouse Cloud
 
-<Architecture alt='Архитектура ClickHouse Cloud' class='image' />
+<Image img={Architecture} size='lg' alt='Cloud architecture'/>
 
 ## Хранилище, основанное на объектном хранилище {#storage-backed-by-object-store}
 - Практически неограниченное хранилище

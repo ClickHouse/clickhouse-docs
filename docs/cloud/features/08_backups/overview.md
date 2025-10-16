@@ -178,4 +178,4 @@ If you want to set up a backups schedule different from the default backup sched
 
 ## Export backups to your own cloud account {#export-backups-to-your-own-cloud-account}
 
-For users wanting to export backups to their own cloud account, see [here](./export-backups-to-own-cloud-account.md).
+For users wanting to export backups to their own cloud account, see [here](./backups-to-own-cloud/export-backups-to-own-cloud-account.md).
