@@ -1,10 +1,11 @@
 ---
-'description': '允许连接到远程 MySQL 服务器上的数据库，并执行 `INSERT` 和 `SELECT` 查询，以在 ClickHouse 和
-  MySQL 之间交换数据。'
+'description': '允许连接到远程 MySQL 服务器上的数据库，并执行 `INSERT` 和 `SELECT` 查询以在 ClickHouse 和 MySQL
+  之间交换数据。'
 'sidebar_label': 'MySQL'
 'sidebar_position': 50
 'slug': '/engines/database-engines/mysql'
 'title': 'MySQL'
+'doc_type': 'reference'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -14,9 +15,9 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge />
 
-允许连接到远程 MySQL 服务器上的数据库，并执行 `INSERT` 和 `SELECT` 查询，以在 ClickHouse 和 MySQL 之间交换数据。
+允许连接到远程 MySQL 服务器上的数据库，并执行 `INSERT` 和 `SELECT` 查询以在 ClickHouse 和 MySQL 之间交换数据。
 
-`MySQL` 数据库引擎将查询转化为 MySQL 服务器的格式，因此您可以执行 `SHOW TABLES` 或 `SHOW CREATE TABLE` 等操作。
+`MySQL` 数据库引擎将查询翻译为 MySQL 服务器，因此您可以执行如 `SHOW TABLES` 或 `SHOW CREATE TABLE` 的操作。
 
 您不能执行以下查询：
 
@@ -56,20 +57,20 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 | DATETIME, TIMESTAMP              | [DateTime](../../sql-reference/data-types/datetime.md)       |
 | BINARY                           | [FixedString](../../sql-reference/data-types/fixedstring.md) |
 
-所有其他 MySQL 数据类型都会转换为 [String](../../sql-reference/data-types/string.md)。
+其他所有 MySQL 数据类型都将转换为 [String](../../sql-reference/data-types/string.md)。
 
 支持 [Nullable](../../sql-reference/data-types/nullable.md)。
 
 ## 全局变量支持 {#global-variables-support}
 
-为了更好的兼容性，您可以使用 MySQL 风格来引用全局变量，如 `@@identifier`。
+为了更好的兼容性，您可以使用 MySQL 风格来处理全局变量，格式为 `@@identifier`。
 
-支持以下变量：
+支持的变量有：
 - `version`
 - `max_allowed_packet`
 
 :::note
-目前这些变量是占位符，并不对应任何内容。
+到目前为止，这些变量是存根，不对应任何内容。
 :::
 
 示例：
@@ -104,7 +105,7 @@ mysql> select * from mysql_table;
 1 row in set (0,00 sec)
 ```
 
-在 ClickHouse 中的数据库，与 MySQL 服务器交换数据：
+ClickHouse 中的数据库，与 MySQL 服务器交换数据：
 
 ```sql
 CREATE DATABASE mysql_db ENGINE = MySQL('localhost:3306', 'test', 'my_user', 'user_password') SETTINGS read_write_timeout=10000, connect_timeout=100;

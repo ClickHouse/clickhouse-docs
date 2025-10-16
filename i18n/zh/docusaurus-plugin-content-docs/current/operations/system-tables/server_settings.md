@@ -1,10 +1,11 @@
 ---
-'description': '系统表包含关于服务器的全局设置的信息，这些设置在 `config.xml` 中指定。'
+'description': '系统表包含有关服务器的全局设置的信息，这些设置在 `config.xml` 中指定。'
 'keywords':
 - 'system table'
 - 'server_settings'
 'slug': '/operations/system-tables/server_settings'
 'title': 'system.server_settings'
+'doc_type': 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
@@ -14,22 +15,22 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud/>
 
-包含关于服务器的全局设置的信息，这些设置在 `config.xml` 中指定。目前，该表仅显示 `config.xml` 第一个层级的设置，并不支持嵌套配置（例如 [logger](../../operations/server-configuration-parameters/settings.md#logger)）。
+包含关于服务器全局设置的信息，这些设置在 `config.xml` 中指定。目前，此表仅显示 `config.xml` 中第一层的设置，并不支持嵌套配置（例如 [logger](../../operations/server-configuration-parameters/settings.md#logger)）。
 
 列：
 
 - `name` ([String](../../sql-reference/data-types/string.md)) — 服务器设置名称。
 - `value` ([String](../../sql-reference/data-types/string.md)) — 服务器设置值。
 - `default` ([String](../../sql-reference/data-types/string.md)) — 服务器设置默认值。
-- `changed` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 显示某个设置是否在 `config.xml` 中指定。
+- `changed` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 显示设置是否在 `config.xml` 中指定。
 - `description` ([String](../../sql-reference/data-types/string.md)) — 短的服务器设置描述。
-- `type` ([String](../../sql-reference/data-types/string.md)) — 服务器设置值的类型。
-- `changeable_without_restart` ([Enum8](../../sql-reference/data-types/enum.md)) — 是否可以在服务器运行时更改该设置。值：
-    - `'No' `
-    - `'IncreaseOnly'`
-    - `'DecreaseOnly'`
-    - `'Yes'`
-- `is_obsolete` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) - 显示某个设置是否已过时。
+- `type` ([String](../../sql-reference/data-types/string.md)) — 服务器设置值类型。
+- `changeable_without_restart` ([Enum8](../../sql-reference/data-types/enum.md)) — 设置在服务器运行时是否可以更改。值：
+  - `'No' `
+  - `'IncreaseOnly'`
+  - `'DecreaseOnly'`
+  - `'Yes'`
+- `is_obsolete` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) - 显示设置是否已过时。
 
 **示例**
 
@@ -60,7 +61,7 @@ WHERE name LIKE '%thread_pool%'
 
 ```
 
-使用 `WHERE changed` 可能很有用，例如当您想检查配置文件中的设置是否正确加载并且正在使用时。
+使用 `WHERE changed` 可以很有用，例如，当你想检查配置文件中的设置是否正确加载并正在使用时。
 
 <!-- -->
 
@@ -68,8 +69,8 @@ WHERE name LIKE '%thread_pool%'
 SELECT * FROM system.server_settings WHERE changed AND name='max_thread_pool_size'
 ```
 
-**另见**
+**另请参见**
 
-- [Settings](../../operations/system-tables/settings.md)
-- [Configuration Files](../../operations/configuration-files.md)
-- [Server Settings](../../operations/server-configuration-parameters/settings.md)
+- [设置](../../operations/system-tables/settings.md)
+- [配置文件](../../operations/configuration-files.md)
+- [服务器设置](../../operations/server-configuration-parameters/settings.md)

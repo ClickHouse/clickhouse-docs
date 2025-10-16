@@ -5,6 +5,7 @@
 - 'time_zones'
 'slug': '/operations/system-tables/time_zones'
 'title': 'system.time_zones'
+'doc_type': 'reference'
 ---
 
 

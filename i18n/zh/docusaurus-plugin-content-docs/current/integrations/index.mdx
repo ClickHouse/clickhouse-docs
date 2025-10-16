@@ -7,6 +7,7 @@
 - 'integrate with'
 'description': '与 ClickHouse 的集成'
 'hide_table_of_contents': true
+'doc_type': 'landing-page'
 ---
 
 import acceldatapng from '@site/static/images/integrations/logos/acceldata_logo.png';
@@ -14,11 +15,12 @@ import Amazonmsksvg from '@site/static/images/integrations/logos/amazon_msk.svg'
 import Astratosvg from '@site/static/images/integrations/logos/astrato_logo.svg';
 import apachestreamparkpng from '@site/static/images/integrations/logos/apache-streampark.png';
 import Azureeventhubssvg from '@site/static/images/integrations/logos/azure_event_hubs.svg';
+import BladePipesvg from '@site/static/images/integrations/logos/bladepipe.svg';
 import blinkopspng from '@site/static/images/integrations/logos/blinkops_logo.png';
+import CloudCanalsvg from '@site/static/images/integrations/logos/cloudcanal.svg';
 import Chdbsvg from '@site/static/images/integrations/logos/chdb.svg';
 import Clickhousesvg from '@site/static/images/integrations/logos/clickhouse.svg';
 import Clickhousemonitoringdashboardsvg from '@site/static/images/integrations/logos/clickhouse-monitoring-dashboard.svg';
-import Cloudcanalsvg from '@site/static/images/integrations/logos/clougence.svg';
 import Cloudquerysvg from '@site/static/images/integrations/logos/cloudquery_logo.svg';
 import Confluentsvg from '@site/static/images/integrations/logos/confluent.svg';
 import Csharpsvg from '@site/static/images/integrations/logos/csharp.svg';
@@ -109,6 +111,7 @@ import dataddo_logo from '@site/static/images/integrations/logos/logo_dataddo.pn
 import dbvisualizer_logo from '@site/static/images/integrations/logos/logo_dbvisualizer.png';
 import decodable_logo from '@site/static/images/integrations/logos/logo_decodable.png';
 import explo_logo from '@site/static/images/integrations/logos/explo.png';
+import fabi_logo from '@site/static/images/integrations/logos/fabi.png';
 import gigasheet_logo from '@site/static/images/integrations/logos/gigasheet.png';
 import glassflow_logo from '@site/static/images/integrations/logos/glassflow.png';
 import goldsky_logo from '@site/static/images/integrations/logos/goldsky.png';
@@ -177,6 +180,7 @@ import visual_studio_logo from '@site/static/images/integrations/logos/logo_vs.p
 import vulcansql_logo from '@site/static/images/integrations/logos/logo-vulcansql.png';
 import great_expectations_logo from '@site/static/images/integrations/logos/great-expectations.webp';
 import Hashboardsvg from '@site/static/images/integrations/logos/hashboard.svg';
+import lightdash_logo from '@site/static/images/integrations/logos/lightdash.png';
 import luzmo_logo from '@site/static/images/integrations/logos/luzmo.png';
 import vs_logo from '@site/static/images/integrations/logos/logo_vs.png';
 import Moosesvg from '@site/static/images/integrations/logos/moose_logo.svg';
@@ -184,17 +188,17 @@ import chartbrew_logo from '@site/static/images/integrations/logos/logo_chartbre
 import marimo_logo from '@site/static/images/integrations/logos/logo_marimo.png';
 import Image from '@theme/IdealImage';
 
-ClickHouse 集成按其支持级别进行分类：
+ClickHouse 集成按照其支持水平组织：
 
-- **核心集成：** 由 ClickHouse 构建或维护，由 ClickHouse 支持，并位于 ClickHouse GitHub 组织中
-- **合作伙伴集成：** 由第三方软件供应商构建或维护，并提供支持
-- **社区集成：** 由社区成员构建或维护并提供支持。除了公共 GitHub 存储库和社区 Slack 频道外，没有直接支持可用
+- **核心集成：** 由 ClickHouse 构建或维护，受到 ClickHouse 的支持，并位于 ClickHouse GitHub 组织中
+- **合作伙伴集成：** 由第三方软件供应商构建或维护，并得到支持
+- **社区集成：** 由社区成员构建或维护并提供支持。除了公共 GitHub 存储库和社区 Slack 渠道外，没有直接支持可用
 
-每个集成进一步分为 **语言客户端**、**数据摄取**、**数据可视化** 和 **SQL 客户端** 类别。
+每个集成进一步分类为 **语言客户端**、**数据摄取**、**数据可视化** 和 **SQL 客户端** 类别。
 
 :::note
-我们正在积极编制以下 ClickHouse 集成的列表，因此它并不详尽。欢迎您
-[贡献](https://github.com/ClickHouse/clickhouse-docs#contributing) 任何与 ClickHouse 集成相关的内容。
+我们正在积极编纂下面这个 ClickHouse 集成列表，因此它并不是详尽无遗的。请随时
+[贡献](https://github.com/ClickHouse/clickhouse-docs#contributing) 任何相关的 ClickHouse 集成到该列表中。
 :::
 ## 核心集成
 
@@ -204,51 +208,55 @@ ClickHouse 集成按其支持级别进行分类：
 |------|----|----------------|------------------|-------------|
 |Amazon Kinesis|<Kinesissvg style={{width: '3rem', height: '3rem'}} alt="Kenesis logo"/> |数据摄取|与 Amazon Kinesis 的集成。|[文档](/integrations/clickpipes/kinesis/)|
 |Amazon MSK|<Amazonmsksvg style={{width: '3rem'}} alt="Amazon MSK logo"/> |数据摄取|与 Amazon Managed Streaming for Apache Kafka (MSK) 的集成。|[文档](/integrations/kafka/cloud/amazon-msk/)|
-|Amazon S3|<S3svg style={{width: '3rem', height: '3rem'}} alt="Amazon S3 logo"/>|数据摄取|使用 ClickHouse 内置的 S3 函数导入、导出和转换 S3 数据。|[文档](/integrations/data-ingestion/s3/index.md)|
-|Amazon Glue|<Image img={glue_logo} size="logo" alt="Amazon Glue logo"/>|数据摄取|通过 JDBC 查询 ClickHouse|[文档](/integrations/glue)|
-|Apache Spark|<Sparksvg alt="Amazon Spark logo" style={{width: '3rem'}}/>|数据摄取|Spark ClickHouse 连接器是一个基于 Spark DataSource V2 构建的高性能连接器。|[GitHub](https://github.com/housepower/spark-clickhouse-connector),<br/>[文档](/integrations/data-ingestion/apache-spark/index.md)|
+|Amazon S3|<S3svg style={{width: '3rem', height: '3rem'}} alt="Amazon S3 logo"/>|数据摄取|使用 ClickHouse 内置 S3 函数从 S3 导入、导出和转换数据。|[文档](/integrations/data-ingestion/s3/index.md)|
+|Amazon Glue|<Image img={glue_logo} size="logo" alt="Amazon Glue logo"/>|数据摄取|使用我们的官方 Glue 连接器通过 Spark 查询 ClickHouse|[文档](/integrations/glue)|
+|Apache Spark|<Sparksvg alt="Amazon Spark logo" style={{width: '3rem'}}/>|数据摄取|Spark ClickHouse Connector 是构建在 Spark DataSource V2 之上的高性能连接器。|[GitHub](https://github.com/housepower/spark-clickhouse-connector),<br/>[文档](/integrations/data-ingestion/apache-spark/index.md)|
 |Azure Event Hubs|<Azureeventhubssvg alt="Azure Events Hub logo" style={{width: '3rem'}}/>|数据摄取|支持 Apache Kafka 原生协议的数据流平台|[网站](https://azure.microsoft.com/en-gb/products/event-hubs)|
-|Azure Synapse|<Image img={azure_synapse_logo} size="logo" alt="Azure Synapse logo"/>|数据摄取|基于云的大数据和数据仓库分析服务。|[文档](/integrations/azure-synapse)|
-|Azure Data Factory|<Image img={azure_data_factory_logo} size="logo" alt="Azure Data Factory logo"/>|数据摄取|基于云的数据集成服务，使您能够创建、安排和编排大规模数据工作流。|[文档](/integrations/azure-data-factory)|
+|Azure Synapse|<Image img={azure_synapse_logo} size="logo" alt="Azure Synapse logo"/>|数据摄取|用于大数据和数据仓库的基于云的分析服务。|[文档](/integrations/azure-synapse)|
+|Azure Data Factory|<Image img={azure_data_factory_logo} size="logo" alt="Azure Data Factory logo"/>|数据摄取|一种基于云的数据集成服务，使您能够创建、调度和协调大规模的数据工作流。|[文档](/integrations/azure-data-factory)|
 |C++|<Image img={logo_cpp} alt="Cpp logo" size="logo"/>|语言客户端|ClickHouse 的 C++ 客户端|[GitHub](https://github.com/ClickHouse/clickhouse-cpp)|
-|Cassandra|<Image img={cassandra} alt="Cassandra logo" size="logo"/>|数据摄取|允许 ClickHouse 使用 [Cassandra](https://cassandra.apache.org/) 作为字典源。|[文档](/sql-reference/dictionaries/index.md#cassandra)|
-|CHDB|<Chdbsvg alt="CHDB logo" style={{width: '3rem' }}/>|AI/ML|内嵌的 OLAP SQL 引擎|[GitHub](https://github.com/chdb-io/chdb#/),<br/>[文档](https://doc.chdb.io/)|
-|ClickHouse 客户端|<Clickhousesvg alt="ClickHouse logo" style={{width: '3rem' }}/>|SQL 客户端|ClickHouse 客户端是 ClickHouse 的原生命令行客户端。|[文档](/interfaces/cli.md)|
+|C#|<Csharpsvg className="image" alt="Csharp logo" style={{width: '3rem'}}/>|语言客户端|ClickHouse 的 ADO.NET 客户端实现|[文档](/integrations/csharp)|
+|Cassandra|<Image img={cassandra} alt="Cassandra logo" size="logo"/>|数据摄取|允许 ClickHouse 使用 [Cassandra](https://cassandra.apache.org/) 作为字典来源。|[文档](/sql-reference/dictionaries/index.md#cassandra)|
+|CHDB|<Chdbsvg alt="CHDB logo" style={{width: '3rem' }}/>|AI/ML|嵌入式 OLAP SQL 引擎|[GitHub](https://github.com/chdb-io/chdb#/),<br/>[文档](https://doc.chdb.io/)|
+|ClickHouse Client|<Clickhousesvg alt="ClickHouse logo" style={{width: '3rem' }}/>|SQL 客户端|ClickHouse 客户端是 ClickHouse 的原生命令行客户端。|[文档](/interfaces/cli.md)|
 |Confluent|<Confluentsvg alt="Confluent logo" style={{width: '3rem' }}/>|数据摄取|与 Confluent 平台上的 Apache Kafka 的集成。|[文档](/integrations/kafka/cloud/confluent/custom-connector)|
-|dbt|<Dbtsvg alt="Dbt logo" style={{width: '3rem' }}/>|数据集成|使用 dbt（数据构建工具）通过简单编写 SELECT 语句在 ClickHouse 中转换数据。dbt 为 ELT 提供了 T。|[文档](/integrations/data-ingestion/etl-tools/dbt/index.md)|
-|DeltaLake|<Image img={deltalake}  alt="Delta Lake logo" size="logo"/>|数据摄取|提供与现有 [Delta Lake](https://github.com/delta-io/delta) 表的只读集成，位于 Amazon S3 上。|[文档](/engines/table-engines/integrations/deltalake)|
-|EmbeddedRocksDB|<Rocksdbsvg alt="RocksDB logo" style={{width: '3rem', 'height': '3rem'}}/>|数据集成|允许 ClickHouse 与 [rocksdb](http://rocksdb.org/) 集成。|[文档](/engines/table-engines/integrations/embedded-rocksdb)|
-|Fivetran|<Fivetransvg alt="Five Trans logo" style={{width: '3rem', 'height': '3rem'}}/>|数据摄取|[ClickHouse Cloud](https://clickhouse.com/cloud) 目标用于 [Fivetran 数据移动平台](https://www.fivetran.com/)。|[文档](/integrations/data-ingestion/etl-tools/fivetran/index.md)|
-|Google Cloud Storage|<Gcssvg alt="GCS Logo" style={{width: '3rem', 'height': '3rem'}}/>|数据摄取|使用 ClickHouse 内置的 `S3` 函数导入、导出和转换 GCS 数据。|[文档](/integrations/data-ingestion/s3/index.md)|
-|Golang|<Golangsvg alt="Golang logo" style={{width: '3rem' }}/>|语言客户端|Go 客户端利用本机接口以高效、低开销的方式连接到 ClickHouse。|[文档](/integrations/language-clients/go/index.md)|
-|HDFS|<Hdfssvg alt="HDFS logo" style={{width: '3rem'}}/>|数据摄取|通过允许在 ClickHouse 上管理 [HDFS](https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html) 上的数据，提供与 [Apache Hadoop](https://en.wikipedia.org/wiki/Apache_Hadoop) 生态系统的集成。|[文档](/engines/table-engines/integrations/hdfs)|
-|Hive|<Hivesvg alt="Hive logo" style={{width: '3rem'}}/>|数据摄取|Hive 引擎允许您在 HDFS Hive 表上执行 `SELECT` 查询。|[文档](/engines/table-engines/integrations/hive)|
-|Hudi|<Image img={hudi} size="logo" alt="Apache Hudi logo"/>|数据摄取|提供与现有 Apache [Hudi](https://hudi.apache.org/) 表的只读集成，位于 Amazon S3 上。|[文档](/engines/table-engines/integrations/hudi)|
-|Iceberg|<Image img={iceberg} size="logo" alt="Apache Iceberg logo"/>|数据摄取|提供与现有 Apache [Iceberg](https://iceberg.apache.org/) 表的只读集成，位于 Amazon S3 上。|[文档](/engines/table-engines/integrations/iceberg)|
+|dbt|<Dbtsvg alt="Dbt logo" style={{width: '3rem' }}/>|数据集成|使用 dbt（数据构建工具）通过简单编写选择语句在 ClickHouse 中转换数据。 dbt 将 T 放在 ELT 中。|[文档](/integrations/data-ingestion/etl-tools/dbt/index.md)|
+|DeltaLake|<Image img={deltalake}  alt="Delta Lake logo" size="logo"/>|数据摄取|提供与 Amazon S3 中现有 [Delta Lake](https://github.com/delta-io/delta) 表的只读集成。|[文档](/engines/table-engines/integrations/deltalake)|
+|EmbeddedRocksDB|<Rocksdbsvg alt="RocksDB logo" style={{width: '3rem', 'height': '3rem'}}/>|数据集成|允许将 ClickHouse 与 [rocksdb](http://rocksdb.org/) 集成。|[文档](/engines/table-engines/integrations/embedded-rocksdb)|
+|Fivetran|<Fivetransvg alt="Five Trans logo" style={{width: '3rem', 'height': '3rem'}}/>|数据摄取|[ClickHouse Cloud](https://clickhouse.com/cloud) 作为 [Fivetran 数据移动平台](https://www.fivetran.com/) 的目标。|[文档](/integrations/data-ingestion/etl-tools/fivetran/index.md)|
+|Google Cloud Storage|<Gcssvg alt="GCS Logo" style={{width: '3rem', 'height': '3rem'}}/>|数据摄取|使用 ClickHouse 内置的 `S3` 函数从 GCS 导入、导出和转换数据。|[文档](/integrations/data-ingestion/s3/index.md)|
+|Golang|<Golangsvg alt="Golang logo" style={{width: '3rem' }}/>|语言客户端|Go 客户端使用原生接口以高效、低开销的方式连接到 ClickHouse。|[文档](/integrations/language-clients/go/index.md)|
+|HDFS|<Hdfssvg alt="HDFS logo" style={{width: '3rem'}}/>|数据摄取|通过 ClickHouse 管理 [HDFS](https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html) 上的数据，提供与 [Apache Hadoop](https://en.wikipedia.org/wiki/Apache_Hadoop) 生态系统的集成。|[文档](/engines/table-engines/integrations/hdfs)|
+|Hive|<Hivesvg alt="Hive logo" style={{width: '3rem'}}/>|数据摄取|Hive 引擎允许您对 HDFS Hive 表执行 `SELECT` 查询。|[文档](/engines/table-engines/integrations/hive)|
+|Hudi|<Image img={hudi} size="logo" alt="Apache Hudi logo"/>|数据摄取|提供与 Amazon S3 中现有 Apache [Hudi](https://hudi.apache.org/) 表的只读集成。|[文档](/engines/table-engines/integrations/hudi)|
+|Iceberg|<Image img={iceberg} size="logo" alt="Apache Iceberg logo"/>|数据摄取|提供与 Amazon S3 中现有 Apache [Iceberg](https://iceberg.apache.org/) 表的只读集成。|[文档](/engines/table-engines/integrations/iceberg)|
 |Java, JDBC|<Javasvg alt="Java logo" style={{width: '3rem'}}/>|语言客户端|Java 客户端和 JDBC 驱动程序。|[文档](/integrations/language-clients/java/index.md)|
-|Kafka|<Kafkasvg alt="Kafka logo" style={{width: '3rem', 'height': '3rem'}}/>|数据摄取|与 Apache Kafka 的集成，后者是一个开源的分布式事件流平台。|[文档](/integrations/kafka)|
-|Looker Studio|<Lookerstudiosvg alt="Looker Studio logo" style={{width: '3rem', 'height': '3rem'}}/>|数据可视化|Looker Studio 是一款免费的工具，可以将您的数据转化为信息丰富、易于阅读、易于分享并且完全可定制的仪表板和报告。|[文档](/integrations/lookerstudio)|
-|Looker|<Lookersvg alt="Looker logo" style={{width: '3rem', 'height': '3rem'}}/>|数据可视化|Looker 是一款企业平台，专用于 BI、数据应用和嵌入式分析，帮助您实时探索和分享见解。|[文档](/integrations/looker)|
-|Metabase|<Image img={metabase} alt="Metabase logo" size="logo"/>|数据可视化|Metabase 是一款易于使用的开源 UI 工具，用于查询您的数据。|[文档](/integrations/metabase)|
-|MinIO|<Image img={minio} size="logo" alt="Metabase logo"/>|数据摄取|MinIO 是一款在 GNU Affero 通用公共许可证 v3.0 下发布的高性能对象存储。它与 Amazon S3 云存储服务 API 兼容|[文档](/integrations/minio)|
+|Kafka|<Kafkasvg alt="Kafka logo" style={{width: '3rem', 'height': '3rem'}}/>|数据摄取|与 Apache Kafka 的集成，开放源代码的分布式事件流平台。|[文档](/integrations/kafka)|
+|Looker Studio|<Lookerstudiosvg alt="Looker Studio logo" style={{width: '3rem', 'height': '3rem'}}/>|数据可视化|Looker Studio 是一个免费的工具，将您的数据转化为信息丰富、易于阅读、易于共享且完全可定制的仪表板和报告。|[文档](/integrations/lookerstudio)|
+|Looker|<Lookersvg alt="Looker logo" style={{width: '3rem', 'height': '3rem'}}/>|数据可视化|Looker 是一个企业级平台，用于 BI、数据应用程序和嵌入式分析，帮助您实时探索和分享见解。|[文档](/integrations/looker)|
+|Metabase|<Image img={metabase} alt="Metabase logo" size="logo"/>|数据可视化|Metabase 是一个易于使用的开源 UI 工具，用于提出有关您的数据的问题。|[文档](/integrations/metabase)|
+|MinIO|<Image img={minio} size="logo" alt="Metabase logo"/>|数据摄取|MinIO 是高性能对象存储，在 GNU Affero General Public License v3.0 下发布。它与 Amazon S3 云存储服务的 API 兼容|[文档](/integrations/minio)|
 |MongoDB|<Mongodbsvg alt="Mongo Logo" style={{width: '3rem', 'height': '3rem'}}/>|数据摄取|MongoDB 引擎是只读表引擎，允许从远程 MongoDB 集合中读取数据（`SELECT` 查询）。|[文档](/engines/table-engines/integrations/mongodb)|
 |MySQL|<Mysqlsvg alt="MySQL logo" style={{width: '3rem'}}/>|数据摄取|MySQL 引擎允许您对存储在远程 MySQL 服务器上的数据执行 `SELECT` 和 `INSERT` 查询。|[文档](/engines/table-engines/integrations/mysql)|
-|NATS|<Natssvg alt="Nats Logo" style={{width: '3rem', 'height': '3rem'}}/>|数据摄取|允许 ClickHouse 与 [NATS](https://nats.io/) 集成。|[文档](/engines/table-engines/integrations/nats)|
-|Node.JS|<Nodesvg alt="Node logo" style={{width: '3rem', 'height': '3rem'}}/>|语言客户端|官方 JS 客户端，用于连接到 ClickHouse。|[文档](/integrations/language-clients/js.md)|
-|ODBC|<Image img={odbc} alt="ODBC" alt="ODBC logo" size="logo"/>|数据集成|允许 ClickHouse 通过 [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity) 表引擎连接外部数据库。|[文档](/engines/table-engines/integrations/odbc)|
-|OpenTelemetry|<Image img={logo_otel} size="logo" alt="OTel logo"/>|数据摄取|导出器，支持将日志、指标、跟踪 OpenTelemetry 数据发送到 ClickHouse|[GitHub](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter)|
-|PostgreSQL|<Postgresqlsvg alt="Postgresql logo" style={{width: '3rem', 'height': '3rem'}}/>|数据摄取|将快照和实时 CDC 数据从 PostgreSQL 数据库复制到 ClickHouse Cloud。|[文档](/integrations/postgresql)|
-|PowerBI|<Image img={powerbi} size="logo" alt="PowerBI logo"/>|数据可视化|Microsoft Power BI 是一款互动的数据可视化软件产品，由 Microsoft 开发，主要集中于业务智能。|[文档](/integrations/powerbi)
-|Python|<Pythonsvg alt="Python logo" style={{width: '3rem', 'height': '3rem'}}/>|语言客户端|一系列 Python 包，用于将 Python 连接到 ClickHouse。|[文档](/integrations/language-clients/python/index.md)|
-|QuickSight|<Quicksightsvg alt="QuickSight logo" style={{width: '3rem', 'height': '3rem', fill: '#5ccfff'}}/>|数据可视化|Amazon QuickSight 为数据驱动的组织提供统一的商业智能 (BI)。|[文档](/integrations/quicksight)|
-|RabbitMQ|<Rabbitmqsvg alt="RabbitMQ logo" style={{width: '3rem', 'height': '3rem'}}/>|数据摄取|允许 ClickHouse 连接 [RabbitMQ](https://www.rabbitmq.com/)。|[文档](/engines/table-engines/integrations/rabbitmq)|
-|Redis|<Redissvg alt="Redis logo" style={{width: '3rem', 'height': '3rem'}}/>|数据摄取|允许 ClickHouse 使用 [Redis](https://redis.io/) 作为字典源。|[文档](/sql-reference/dictionaries/index.md#redis)|
-|Redpanda|<Image img={redpanda} alt="Redpanda logo" size="logo"/>|数据摄取|Redpanda 是开发人员的数据流平台。它的 API 兼容 Apache Kafka，但速度快 10 倍，更易用且更具成本效益|[博客](https://redpanda.com/blog/real-time-olap-database-clickhouse-redpanda)|
-|Rust|<Image img={rust} size="logo" alt="Rust logo"/>|语言客户端|类 typed 客户端，用于 ClickHouse|[文档](/integrations/language-clients/rust.md)|
-|SQLite|<Sqlitesvg alt="Sqlite logo" style={{width: '3rem', 'height': '3rem'}}/>|数据摄取|允许导入和导出数据到 SQLite，并支持直接从 ClickHouse 查询 SQLite 表。|[文档](/engines/table-engines/integrations/sqlite)|
+|NATS|<Natssvg alt="Nats Logo" style={{width: '3rem', 'height': '3rem'}}/>|数据摄取|允许将 ClickHouse 与 [NATS](https://nats.io/) 集成。|[文档](/engines/table-engines/integrations/nats)|
+|Node.JS|<Nodesvg alt="Node logo" style={{width: '3rem', 'height': '3rem'}}/>|语言客户端|连接 ClickHouse 的官方 JS 客户端。|[文档](/integrations/language-clients/js.md)|
+|ODBC|<Image img={odbc} alt="ODBC" alt="ODBC logo" size="logo"/>|数据集成|允许 ClickHouse 通过 [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity) 表引擎连接到外部数据库。|[文档](/engines/table-engines/integrations/odbc)|
+|OpenTelemetry|<Image img={logo_otel} size="logo" alt="OTel logo"/>|数据摄取|支持将日志、指标、跟踪 OpenTelemetry 数据发送到 ClickHouse 的导出程序|[GitHub](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter)|
+|PostgreSQL|<Postgresqlsvg alt="Postgresql logo" style={{width: '3rem', 'height': '3rem'}}/>|数据摄取|从 PostgreSQL 数据库到 ClickHouse Cloud 的快照和实时 CDC 数据复制。|[文档](/integrations/postgresql)|
+|PowerBI|<Image img={powerbi} size="logo" alt="PowerBI logo"/>|数据可视化|Microsoft Power BI 是 Microsoft 开发的交互式数据可视化软件产品，主要专注于商业智能。|[文档](/integrations/powerbi)|
+|Python|<Pythonsvg alt="Python logo" style={{width: '3rem', 'height': '3rem'}}/>|语言客户端|一套用于连接 Python 和 ClickHouse 的 Python 包。|[文档](/integrations/language-clients/python/index.md)|
+|QuickSight|<Quicksightsvg alt="QuickSight logo" style={{width: '3rem', 'height': '3rem', fill: '#5ccfff'}}/>|数据可视化|Amazon QuickSight 使数据驱动的组织能够统一商业智能 (BI)。|[文档](/integrations/quicksight)|
+|RabbitMQ|<Rabbitmqsvg alt="RabbitMQ logo" style={{width: '3rem', 'height': '3rem'}}/>|数据摄取|允许 ClickHouse 连接到 [RabbitMQ](https://www.rabbitmq.com/)。|[文档](/engines/table-engines/integrations/rabbitmq)|
+|Redis|<Redissvg alt="Redis logo" style={{width: '3rem', 'height': '3rem'}}/>|数据摄取|允许 ClickHouse 使用 [Redis](https://redis.io/) 作为字典来源。|[文档](/sql-reference/dictionaries/index.md#redis)|
+|Redpanda|<Image img={redpanda} alt="Redpanda logo" size="logo"/>|数据摄取|Redpanda 是开发人员的数据流平台。它与 Apache Kafka 兼容，但速度更快、更易于使用且更具成本效益|[博客](https://redpanda.com/blog/real-time-olap-database-clickhouse-redpanda)|
+|REST Catalog||数据摄取|与 Iceberg 表的 REST Catalog 规范的集成，支持多种目录提供者，包括 Tabular.io。|[文档](/use-cases/data-lake/rest-catalog)|
+|Lakekeeper||数据摄取|与 Lakekeeper 的集成，Lakekeeper 是一个支持多租户的 Apache Iceberg 开源 REST 目录实现。|[文档](/use-cases/data-lake/lakekeeper-catalog)|
+|Nessie||数据摄取|与 Nessie 的集成，Nessie 是一个开源事务目录，支持类似 Git 的数据版本控制，适用于数据湖。|[文档](/use-cases/data-lake/nessie-catalog)|
+|Rust|<Image img={rust} size="logo" alt="Rust logo"/>|语言客户端|ClickHouse 的一个类型化客户端|[文档](/integrations/language-clients/rust.md)|
+|SQLite|<Sqlitesvg alt="Sqlite logo" style={{width: '3rem', 'height': '3rem'}}/>|数据摄取|允许将数据导入和导出到 SQLite，并支持从 ClickHouse 直接查询 SQLite 表。|[文档](/engines/table-engines/integrations/sqlite)|
 |Superset|<Supersetsvg alt="Superset logo" style={{width: '3rem'}}/>|数据可视化|使用 Apache Superset 探索和可视化您的 ClickHouse 数据。|[文档](/integrations/data-visualization/superset-and-clickhouse.md)|
-|Tableau|<Image img={tableau} size="logo" alt="Tableau logo"/>|数据可视化|专注于业务智能的互动数据可视化软件|[文档](/integrations/tableau)|
-|Tableau Online|<Image img={tableau} size="logo" alt="Tableau Online logo"/>|数据可视化|Tableau Online 简化数据的力量，使人们能够在任何地方更快速、更自信地做出决策|[文档](/integrations/tableau-online)|
+|Tableau|<Image img={tableau} size="logo" alt="Tableau logo"/>|数据可视化|专注于商业智能的交互式数据可视化软件|[文档](/integrations/tableau)|
+|Tableau Online|<Image img={tableau} size="logo" alt="Tableau Online logo"/>|数据可视化|Tableau Online 在任何地方简化了数据的力量，使人们能够更快、更自信地做出决策|[文档](/integrations/tableau-online)|
 
 </div>
 <br/>
@@ -256,82 +264,85 @@ ClickHouse 集成按其支持级别进行分类：
 
 <div className="adopters-table">
 
-|名称|Logo|类别|描述|资源|
+|名称|标志|类别|描述|资源|
 |------|----|----------------|------------------|-------------|
-|Airbyte|<Image img={airbyte_logo} size="logo" alt="Airbyte logo"/>|数据摄取|使用 Airbyte 创建具有 140 多个连接器的 ELT 数据管道，将数据加载和同步到 ClickHouse 中。|[文档](/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse.md)|
+|Airbyte|<Image img={airbyte_logo} size="logo" alt="Airbyte logo"/>|数据摄取|使用 Airbyte 创建 ELT 数据管道，使用超过 140 个连接器将数据加载并同步到 ClickHouse。|[文档](/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse.md)|
 |AccelData|<Image img={acceldata_logo} size="logo" alt="AccelData Logo"/>|数据管理|ADOC 允许用户监控并确保其可视化数据的可靠性和完整性，促进实时数据处理和分析。|[文档](https://docs.acceldata.io/documentation/clickhouse) |
-|Atlas|<Image img={atlas_logo} size="logo" alt="Atlas logo"/>|模式管理|将您的 ClickHouse 模式作为代码进行管理。 |[文档](https://atlasgo.io/guides/clickhouse?utm_source=clickhouse&utm_term=docs)|
-|Astrato|<Astratosvg alt="Astrato logo" style={{width: '3rem', height: '48px'}}/>|数据可视化|Astrato 将真正的自助 BI 引入企业与数据业务，让每位用户都能掌握分析能力，能够构建仪表板、报告和数据应用，无需 IT 支持。|[文档](/integrations/astrato)|
-|AutoMQ|<Image img={automq_logo} size="logo" alt="AutoMQ logo"/>|数据摄取|云原生 Kafka 和 RocketMQ 替代品，将持久性解耦到 S3 和 EBS|[网站](https://www.automq.com/)|
-|BlinkOps|<Image img={blinkops_logo} size="logo" alt="BlinkOps Logo"/>|安全自动化|创建自动化程序以管理数据和用户权限。|[文档](https://docs.blinkops.com/docs/integrations/clickhouse)|
-|Bytewax|<Bytewaxsvg alt="ByteWax Logo" style={{width: '3rem'}}/>|数据摄取|用于转换和输入数据到 ClickHouse 的开源 Python 流处理器|[文档](https://bytewax.io/blog/building-a-click-house-sink-for-bytewax)|
-|Calyptia (Fluent Bit)|<Image img={calyptia_logo} size="logo" alt="Calyptia logo"/>|数据摄取|CNCF 毕业的开源项目，用于收集、处理和传递日志、指标和跟踪|[博客](https://clickhouse.com/blog/kubernetes-logs-to-clickhouse-fluent-bit)|
-|Chartbrew|<Image img={chartbrew_logo} size="logo" alt="Chartbrew logo" style={{width: '3rem', 'backgroundColor': 'transparent', 'boxShadow': 'none'}}/>|数据可视化|Chartbrew 是一个数据可视化平台，可让用户创建仪表板并实时监控数据。|[文档](/integrations/chartbrew-and-clickhouse),<br />[网站](https://chartbrew.com/integrations/clickhouse),<br />[博客](https://chartbrew.com/blog/visualizing-clickhouse-data-with-chartbrew-a-step-by-step-guide/)|
-|CloudCanal|<Cloudcanalsvg className="image" alt="CloudCanal logo" style={{width: '3rem'}}/>|数据集成|一个数据同步和迁移工具。|[网站](https://www.cloudcanalx.com/us/)|
-|CloudQuery|<Cloudquerysvg className="image" alt="CloudQuery logo" style={{width: '3rem'}}/>|数据摄取|开源高性能 ELT 框架。|[文档](https://www.cloudquery.io/docs/plugins/destinations/clickhouse/overview)|
+|Atlas|<Image img={atlas_logo} size="logo" alt="Atlas logo"/>|模式管理|将您的 ClickHouse 模式视为代码进行管理。 |[文档](https://atlasgo.io/guides/clickhouse?utm_source=clickhouse&utm_term=docs)|
+|Astrato|<Astratosvg alt="Astrato logo" style={{width: '3rem', height: '48px'}}/>|数据可视化|Astrato 通过将分析置于每个用户的手中，为企业和数据业务带来了真正的自助式 BI，使其能够在没有 IT 的情况下构建仪表板、报告和数据应用。|[文档](/integrations/astrato)|
+|AutoMQ|<Image img={automq_logo} size="logo" alt="AutoMQ logo"/>|数据摄取|原生云 Kafka 和 RocketMQ 替代方案，将持久性解耦到 S3 和 EBS|[网站](https://www.automq.com/)|
+|BladePipe|<BladePipesvg alt="BladePipe logo" style={{width: '5rem'}}/>|数据摄取|一种实时端到端数据集成工具，具有亚秒延迟。|[文档](/integrations/data-ingestion/etl-tools/bladepipe-and-clickhouse.md)|
+|BlinkOps|<Image img={blinkops_logo} size="logo" alt="BlinkOps Logo"/>|安全自动化|创建自动化，以管理数据和用户权限。|[文档](https://docs.blinkops.com/docs/integrations/clickhouse)|
+|Bytewax|<Bytewaxsvg alt="ByteWax Logo" style={{width: '3rem'}}/>|数据摄取|用于将数据转换和摄取到 ClickHouse 的开源 Python 流处理器。|[文档](https://bytewax.io/blog/building-a-click-house-sink-for-bytewax)|
+|Calyptia (Fluent Bit)|<Image img={calyptia_logo} size="logo" alt="Calyptia logo"/>|数据摄取|CNCF 毕业的开源项目，用于日志、指标和跟踪的收集、处理和交付。|[博客](https://clickhouse.com/blog/kubernetes-logs-to-clickhouse-fluent-bit)|
+|Chartbrew|<Image img={chartbrew_logo} size="logo" alt="Chartbrew logo" style={{width: '3rem', 'backgroundColor': 'transparent', 'boxShadow': 'none'}}/>|数据可视化|Chartbrew 是一个数据可视化平台，允许用户创建仪表板并实时监控数据。|[文档](/integrations/chartbrew-and-clickhouse),<br />[网站](https://chartbrew.com/integrations/clickhouse),<br />[博客](https://chartbrew.com/blog/visualizing-clickhouse-data-with-chartbrew-a-step-by-step-guide/)|
+|CloudQuery|<Cloudquerysvg className="image" alt="CloudQuery logo" style={{width: '3rem'}}/>|数据摄取|高性能的开源 ELT 框架。|[文档](https://www.cloudquery.io/docs/plugins/destinations/clickhouse/overview)|
 |Cube.js|<Cubejssvg  alt="Cubejs logo" style={{width: '3rem'}}/>|数据可视化|Cube 是构建数据应用的语义层。|[网站](https://cube.dev/for/clickhouse-dashboard)|
-|DBeaver|<Dbeaversvg alt="Dbeaver logo" style={{width: '3rem'}}/>|SQL 客户端|免费的多平台数据库管理工具。通过 JDBC 驱动连接到 Clickhouse。|[文档](/integrations/sql-clients/dbeaver.md)|
+|CloudCanal|<CloudCanalsvg alt="CloudCanal logo" style={{width: '5rem'}}/>|数据摄取|一个实时数据复制工具，实现无缝和轻松的数据流。|[网站](https://www.clougence.com/)|
+|DBeaver|<Dbeaversvg alt="Dbeaver logo" style={{width: '3rem'}}/>|SQL 客户端|免费的多平台数据库管理工具。通过 JDBC 驱动程序连接到 Clickhouse。|[文档](/integrations/sql-clients/dbeaver.md)|
 |DataGrip|<Datagripsvg alt="Datagrip logo" style={{width: '3rem'}}/>|SQL 客户端|DataGrip 是一个强大的数据库 IDE，专门支持 ClickHouse。|[文档](/integrations/sql-clients/datagrip.md)|
 |Dataddo|<Image img={dataddo_logo} size="logo" alt="Dataddo logo"/>|数据集成|数据集成平台|[网站](https://www.dataddo.com/storage/clickhouse)|
-|DbVisualizer|<Image img={dbvisualizer_logo} size="logo" alt="DbVisualizer logo"/>|SQL 客户端|DbVisualizer 是一款对 ClickHouse 支持扩展的数据库工具。|[文档](/integrations/sql-clients/dbvisualizer.md)|
+|DbVisualizer|<Image img={dbvisualizer_logo} size="logo" alt="DbVisualizer logo"/>|SQL 客户端|DbVisualizer 是一个扩展支持 ClickHouse 的数据库工具。|[文档](/integrations/sql-clients/dbvisualizer.md)|
 |Decodable|<Image img={decodable_logo} size="logo" alt="Decodable logo"/>|数据摄取|基于 Apache Flink 的强大流处理|[网站](https://www.decodable.co/connectors/clickhouse)|
-|Deepnote|<Deepnotesvg alt="Deepnote logo" style={{width: '3rem'}}/>|数据可视化|Deepnote 是一个协作的 Jupyter 兼容数据笔记本，帮助团队发现和分享见解。|[文档](/integrations/data-visualization/deepnote.md)|
+|Deepnote|<Deepnotesvg alt="Deepnote logo" style={{width: '3rem'}}/>|数据可视化|Deepnote 是一个协作的 Jupyter 兼容数据笔记本，为团队发现和分享见解而构建。|[文档](/integrations/data-visualization/deepnote.md)|
 |DLT|<Dlthubsvg alt="Dlthub logo" style={{width: '3rem'}}/>|数据集成|一个开源 Python 库，使数据加载变得简单。|[文档](/integrations/data-ingestion/etl-tools/dlt-and-clickhouse)|
-|Draxlr|<Draxlrsvg alt="Draxlr logo" style={{width: '3rem'}}/>|数据可视化|Draxlr 是一款具有数据可视化和分析功能的商业智能工具。|[文档](/integrations/data-visualization/draxlr-and-clickhouse.md)|
-|EMQX|<Emqxsvg alt="Emqx logo" style={{width: '3rem'}}/>|数据摄取|EMQX 是一个开源的 MQTT 代理，具有高性能的实时消息处理引擎，为 IoT 设备提供大规模事件流。|[文档](/integrations/emqx)|
-|Explo| <Image img={explo_logo} size="logo" alt="Explo logo"/> | 数据可视化  | Explo 是一个面向客户的分析工具，适用于任何平台。 | [文档](/integrations/explo) |
-|Gigasheet| <Image img={gigasheet_logo} alt="Gigasheet logo" size="logo"/> | 数据可视化  | 一个云大数据分析表，使业务用户能够即时分析和探索 ClickHouse 数据。 | [网站](https://gigasheet.com/enterprise) |
-|GlassFlow| <Image img={glassflow_logo} alt="GlassFlow logo" size="logo"/> | 数据摄取      | 在 Python 中针对 ClickHouse 的实时事件流和数据转换。 | [文档](https://docs.glassflow.dev/integrations/managed-connectors/sinks/clickhouse) |
-|Goldsky| <Image img={goldsky_logo} size="logo" alt="Goldsky logo"/> | 数据集成    | 通过子图和实时数据复制管道实现高性能的 Web3 数据索引。 | [文档](https://docs.goldsky.com/introduction) |
-|Grafana|<Grafanasvg alt="Grafana logo" style={{width: '3rem'}}/>|数据可视化|通过 Grafana，您可以创建、探索和共享所有数据的仪表板。|[文档](/integrations/data-visualization/grafana/index.md)|
-|Great Expectations| <Image img={great_expectations_logo} size="logo" alt="Great Expectations logo"/> | 数据管理 | 一个开源数据管理工具，带有付费的云服务。 | [网站](https://greatexpectations.io/) |
-|GrowthBook| <Image img={growthbook_logo} size="logo" alt="GrowthBook logo"/> | 数据可视化 | 原生实验平台（特征标记和 A/B 测试）。 | [文档](https://docs.growthbook.io/warehouses/clickhouse) |
-|HEX| <Image img={hex_logo} size="logo" alt="HEX logo"/> | 数据可视化 | Hex 是一个现代的协作平台，提供笔记本、数据应用、SQL、Python、无代码、R 等功能。 | [文档](https://learn.hex.tech/docs/connect-to-data/data-connections/overview) |
-|Hashboard|<Hashboardsvg style={{ width: '3rem', height: '3rem' }} />|数据可视化|[Hashboard](https://hashboard.com) 是一个商业智能平台，使自助式数据探索和指标跟踪成为可能。|[文档](https://docs.hashboard.com/docs/database-connections/clickhouse)|
-|HighTouch|<Image img={hightouch_logo} size="logo" alt="HighTouch logo"/>|数据集成|将您的数据直接从数据仓库同步到 140 多个目标|[网站](https://hightouch.com/docs/sources/clickhouse)|
-|Holistics|<Image img={holistics_logo} size="logo" alt="Holistics logo"/>|数据可视化|ClickHouse 数据库的商业智能|[网站](https://www.holistics.io/integrations/clickhouse/)|
-|HouseWatch|<Image img={housewatch_logo} size="logo" alt="HouseWatch logo"/>|数据管理|一个开源工具，用于监控和管理 ClickHouse 集群。 |[GitHub](https://github.com/PostHog/HouseWatch)|
-|IBM Instana| |数据管理|Instana 可以自动发现和监控 ClickHouse 服务器进程|[文档](https://www.ibm.com/docs/en/instana-observability/current?topic=technologies-monitoring-clickhouse)|
+|Draxlr|<Draxlrsvg alt="Draxlr logo" style={{width: '3rem'}}/>|数据可视化|Draxlr 是一个具有数据可视化和分析的商业智能工具。|[文档](/integrations/data-visualization/draxlr-and-clickhouse.md)|
+|EMQX|<Emqxsvg alt="Emqx logo" style={{width: '3rem'}}/>|数据摄取|EMQX 是一个开源 MQTT Broker，具有高性能实时消息处理引擎，为大规模 IoT 设备提供事件流。|[文档](/integrations/emqx)|
+|Explo| <Image img={explo_logo} size="logo" alt="Explo logo"/> | 数据可视化  | Explo 是一种面向客户的分析工具，适用于任何平台。 | [文档](/integrations/explo) |
+|Fabi.ai| <Image img={fabi_logo} size="logo" alt="Fabi.ai logo"/> | 数据可视化  | Fabi.ai 是一个全合一的协作数据分析平台。您可以利用 SQL、Python、AI 和无代码来更快地构建仪表板和数据工作流。 | [文档](/integrations/data-visualization/fabi-and-clickhouse.md) |
+|Gigasheet| <Image img={gigasheet_logo} alt="Gigasheet logo" size="logo"/> | 数据可视化  | 一个云大数据分析电子表格，使商业用户能够即时分析和探索 ClickHouse 数据。 | [网站](https://gigasheet.com/enterprise) |
+|GlassFlow| <Image img={glassflow_logo} alt="GlassFlow logo" size="logo"/> | 数据摄取      | 在 ClickHouse 中实时事件流和数据转换，使用 Python。 | [文档](https://docs.glassflow.dev/integrations/managed-connectors/sinks/clickhouse) |
+|Goldsky| <Image img={goldsky_logo} size="logo" alt="Goldsky logo"/> | 数据集成    | 通过子图和实时数据复制管道进行高性能的 Web3 数据索引。 | [文档](https://docs.goldsky.com/introduction) |
+|Grafana|<Grafanasvg alt="Grafana logo" style={{width: '3rem'}}/>|数据可视化|借助 Grafana，您可以通过仪表板创建、探索和共享您的所有数据。|[文档](/integrations/data-visualization/grafana/index.md)|
+|Great Expectations| <Image img={great_expectations_logo} size="logo" alt="Great Expectations logo"/> | 数据管理 | 一个开源的数据管理工具，提供付费云解决方案。 | [网站](https://greatexpectations.io/) |
+|GrowthBook| <Image img={growthbook_logo} size="logo" alt="GrowthBook logo"/> | 数据可视化 | 针对数据仓库的本地实验平台（功能标记和 A/B 测试）。 | [文档](https://docs.growthbook.io/warehouses/clickhouse) |
+|HEX| <Image img={hex_logo} size="logo" alt="HEX logo"/> | 数据可视化 | Hex 是一个现代的协作平台，具有笔记本、数据应用、SQL、Python、无代码、R 等诸多功能。 | [文档](https://learn.hex.tech/docs/connect-to-data/data-connections/overview) |
+|Hashboard|<Hashboardsvg style={{ width: '3rem', height: '3rem' }} />|数据可视化|[Hashboard](https://hashboard.com) 是一个商业智能平台，使自助服务数据探索和指标跟踪成为可能。|[文档](https://docs.hashboard.com/docs/database-connections/clickhouse)|
+|HighTouch|<Image img={hightouch_logo} size="logo" alt="HighTouch logo"/>|数据集成|直接将数据从仓库同步到 140 多个目的地。|[网站](https://hightouch.com/docs/sources/clickhouse)|
+|Holistics|<Image img={holistics_logo} size="logo" alt="Holistics logo"/>|数据可视化|ClickHouse 数据库的商业智能。|[网站](https://www.holistics.io/integrations/clickhouse/)|
+|HouseWatch|<Image img={housewatch_logo} size="logo" alt="HouseWatch logo"/>|数据管理|开源工具，用于监控和管理 ClickHouse 集群。|[GitHub](https://github.com/PostHog/HouseWatch)|
+|IBM Instana| |数据管理|Instana 可以自动发现和监控 ClickHouse 服务器进程。|[文档](https://www.ibm.com/docs/en/instana-observability/current?topic=technologies-monitoring-clickhouse)|
 |Jitsu|<Jitsusvg alt="Jitsu logo" style={{width: '3rem'}}/>|数据分析|一个开源事件收集平台。|[文档](https://docs.jitsu.com/destinations/warehouse/clickhouse)|
-|LangChain|🦜️🔗|SDK|LangChain 是一个用于开发由语言模型驱动的应用程序的框架|[文档](https://python.langchain.com/docs/integrations/vectorstores/clickhouse/)|
-|Luzmo|<Image img={luzmo_logo} size="logo" alt="Luzmo logo"/>|数据可视化|Luzmo 是一个嵌入式分析平台，具有原生 ClickHouse 集成，专为软件和 SaaS 应用构建。|[文档](/integrations/data-visualization/luzmo-and-clickhouse.md)|
-|Mage|<Image img={mage_logo} size="logo" alt="Mage logo"/>|数据摄取|开源数据管道工具，用于转换和集成数据|[文档](https://docs.mage.ai/integrations/databases/ClickHouse)
-|Metaplane|<Image img={metaplane_logo} size="logo" alt="Metaplane logo"/>|数据管理|适用于每个数据团队的数据可观察性|[网站](https://www.metaplane.dev/integrations)|
-|MindsDB|<Image img={mindsdb_logo} size="logo" alt="MindsDB logo"/>|AI/ML|从企业数据定制化 AI 的平台 |[网站](https://mindsdb.com/clickhouse-machine-learning )|
-|Mitzu|<Image img={mitzu_logo} size="logo" alt="Mitzu logo"/>|数据可视化|Mitzu 是一款无需编码的仓库原生产品分析应用。找到漏斗、保留、用户细分见解，而无需复制数据。|[文档](/integrations/mitzu)|
-|Mode Analytics|<Image img={mode_logo} size="logo" alt="Mode logo"/>|数据可视化|围绕数据团队构建的商业智能|[网站](https://mode.com/)|
-|Moose|<Moosesvg className="image" alt="Moose logo" style={{width: '3rem'}}/>|数据集成|Moose 是一个开源开发者框架，用于在 Clickhouse 上构建生产应用|[网站](https://www.fiveonefour.com/moose)|
-|Omni|<Omnisvg alt="Omni logo" style={{width: '3rem', 'backgroundColor': 'transparent'}}/>|数据可视化|商业智能能够让您以自己的方式探索、可视化和建模数据。跨平台使用不同的工具和语言，从电子表格到 SQL。| [网站](https://omni.co/)|
-|Openblocks|<Image img={openBlocks_logo} size="logo" alt="Openblocks logo"/>|SQL 客户端|Openblocks 是一个低代码平台，用于构建用户界面|[文档](https://blog.openblocks.dev/blog/openblocks-x-clickhouse)|
-|OpsRamp (HP)| <Image img={ramp_logo} size="logo" alt="OpsRamp Logo"/>|数据管理| 为 ClickHouse 提供可观察性指标|[文档](https://docs.opsramp.com/integrations/database-no-sql/automonitor-clickhouse-monitoring/)|
-|Popsink|<Popsinksvg alt="Popsink Logo" style={{width: '3rem', 'height': '3rem'}}/>|数据集成|构建实时的变更数据捕获 (CDC) 管道到 ClickHouse。|[文档](https://docs.popsink.com/connectors/target/clickhouse/)|
-|Prequel|<Prequelsvg alt="Prequel Logo" style={{width: '3rem', 'height': '3rem'}}/>|数据共享|将您的 ClickHouse 实例连接到 Prequel 以与用户和合作伙伴共享或同步数据。|[文档](https://docs.prequel.co/docs/sources-clickhouse-generic)|
-|Quesma|<Quesmasvg alt="Quesma Logo" style={{width: '3rem', 'height': '3rem'}}/>|数据集成|使用 Kibana 和 OpenSearch Dashboards 来处理 ClickHouse 中的数据。|[网站](https://quesma.com/quesma-for-elk)|
-|Redash|<Image img={redash_logo} size="logo" alt="Redash logo"/>|数据可视化|连接并查询您的数据源，构建仪表板以可视化数据并分享|[网站](https://redash.io/help/data-sources/querying/supported-data-sources)|
-|Restack Data Hub|<Image img={restack_logo} size="logo" alt="Restack logo"/>|数据治理|用户可以借助 Restack Data Hub 实现更全面的数据治理和可观察性框架。|[文档](https://www.restack.io/docs/datahub-knowledge-datahub-clickhouse-integration)|
-|Restack OpenMetadata|<Image img={restack_logo} size="logo" alt="Restack logo"/>|数据质量|Restack OpenMetadata 支持元数据提取、查询使用跟踪、数据分析和数据质量检查。|[文档](https://www.restack.io/docs/openmetadata-knowledge-openmetadata-clickhouse-integration)|
-|Retool|<Retoolsvg alt="Retool Logo" style={{width: '3rem'}}/>|无编码|使用拖放界面创建您的应用。 |[文档](/integrations/retool)|
-|Rill|<Rillsvg alt="Rill Logo" style={{width: '3rem', 'height': '2rem'}}/>|数据可视化|Rill 是一款针对 OLAP 引擎专门构建的运营 BI 工具，用于切分和处理数据。|[文档](https://docs.rilldata.com/reference/olap-engines/clickhouse)|
-|RisingWave|<Risingwavesvg alt="RisingWave Logo" style={{width: '3rem'}}/>|数据摄取| SQL 流处理工具，提供类似 Postgres 的体验。速度比 Apache Flink 快 10 倍，且更具成本效益。 |[文档](https://docs.risingwave.com/docs/current/sink-to-clickhouse/)|
-|RudderStack|<Rudderstacksvg alt="Rudderstack Logo" style={{width: '3rem'}}/>|数据摄取|RudderStack 简化了收集和发送客户数据到需要的工具和团队的过程|[文档](https://www.rudderstack.com/docs/destinations/warehouse-destinations/clickhouse/)|
-|RunReveal|<Image img={runreveal_logo} size="logo" alt="RunReveal logo"/>|数据摄取|从任何 SaaS 应用中摄取并标准化审计日志到 ClickHouse。创建基于定时查询的警报和检测。|[网站](https://runreveal.com)|
-|Sematext|<Image img={sematext_logo} size="logo" alt="Sematext logo"/>|数据管理|ClickHouse 数据库的可观察性监控。|[文档](https://sematext.com/docs/integration/clickhouse/)|
-|SiSense|<Image img={sisense_logo} size="logo" alt="SiSense logo"/>|数据可视化|将分析嵌入到任何应用程序或工作流程中|[网站](https://www.sisense.com/data-connectors/)|
-|SigNoz|<Image img={signoz_logo} size="logo" alt="SigNoz logo"/>|数据可视化|开源可观察性平台|[文档](https://www.signoz.io/docs/architecture/)|
+|LangChain|🦜️🔗|SDK|LangChain 是一个开发由语言模型驱动的应用程序的框架。|[文档](https://python.langchain.com/docs/integrations/vectorstores/clickhouse/)|
+|Lightdash|<Image img={lightdash_logo} size="logo" alt="Lightdash logo"/>|数据可视化|Lightdash 是为现代数据团队构建的开源商业智能工具。|[网站](https://www.lightdash.com/),<br/>[文档](https://docs.lightdash.com/get-started/setup-lightdash/connect-project#clickhouse)|
+|Luzmo|<Image img={luzmo_logo} size="logo" alt="Luzmo logo"/>|数据可视化|Luzmo 是一个嵌入式分析平台，具有原生 ClickHouse 集成，专为软件和 SaaS 应用而构建。|[文档](/integrations/data-visualization/luzmo-and-clickhouse.md)|
+|Mage|<Image img={mage_logo} size="logo" alt="Mage logo"/>|数据摄取|开源数据管道工具，用于转换和集成数据。|[文档](https://docs.mage.ai/integrations/databases/ClickHouse)|
+|Metaplane|<Image img={metaplane_logo} size="logo" alt="Metaplane logo"/>|数据管理|为每个数据团队提供数据可观察性。|[网站](https://www.metaplane.dev/integrations)|
+|MindsDB|<Image img={mindsdb_logo} size="logo" alt="MindsDB logo"/>|AI/ML|定制企业数据人工智能的平台。|[网站](https://mindsdb.com/clickhouse-machine-learning)|
+|Mitzu|<Image img={mitzu_logo} size="logo" alt="Mitzu logo"/>|数据可视化|Mitzu 是一个无代码的仓库原生产品分析应用。无需复制您的数据，即可找到漏斗、保留、用户细分洞察。|[文档](/integrations/mitzu)|
+|Mode Analytics|<Image img={mode_logo} size="logo" alt="Mode logo"/>|数据可视化|围绕数据团队构建的商业智能。|[网站](https://mode.com/)|
+|Moose OLAP|<Moosesvg className="image" alt="Moose logo" style={{width: '3rem'}}/>|语言客户端|Moose OLAP 提供 TypeScript 和 Python 抽象以及为 ClickHouse 原生构建的 ORM 类功能。|[文档](interfaces/third-party/moose-olap),[网站](https://www.fiveonefour.com/moose)|
+|Omni|<Omnisvg alt="Omni logo" style={{width: '3rem', 'backgroundColor': 'transparent'}}/>|数据可视化|商业智能能够用您的语言进行交互。通过 Omni 以您的方式探索、可视化和建模数据。从电子表格到 SQL——在一个平台上。| [网站](https://omni.co/)|
+|Openblocks|<Image img={openBlocks_logo} size="logo" alt="Openblocks logo"/>|SQL 客户端|Openblocks 是一个低代码平台，用于构建用户界面。|[文档](https://blog.openblocks.dev/blog/openblocks-x-clickhouse)|
+|OpsRamp (HP)| <Image img={ramp_logo} size="logo" alt="OpsRamp Logo"/>|数据管理|为 ClickHouse 提供可观察性指标。|[文档](https://docs.opsramp.com/integrations/database-no-sql/automonitor-clickhouse-monitoring/)|
+|Popsink|<Popsinksvg alt="Popsink Logo" style={{width: '3rem', 'height': '3rem'}}/>|数据集成|构建实时变更数据捕获 (CDC) 管道到 ClickHouse。|[文档](https://docs.popsink.com/connectors/target/clickhouse/)|
+|Prequel|<Prequelsvg alt="Prequel Logo" style={{width: '3rem', 'height': '3rem'}}/>|数据共享|将您的 ClickHouse 实例连接到 Prequel，以便与您的用户和合作伙伴共享数据或同步数据。|[文档](https://docs.prequel.co/docs/sources-clickhouse-generic)|
+|Quesma|<Quesmasvg alt="Quesma Logo" style={{width: '3rem', 'height': '3rem'}}/>|数据集成|使用 Kibana 和 OpenSearch 控制面板访问 ClickHouse 中的数据。|[网站](https://quesma.com/quesma-for-elk)|
+|Redash|<Image img={redash_logo} size="logo" alt="Redash logo"/>|数据可视化|连接并查询您的数据源，构建仪表板可视化数据并共享。|[网站](https://redash.io/help/data-sources/querying/supported-data-sources)|
+|Restack Data Hub|<Image img={restack_logo} size="logo" alt="Restack logo"/>|数据治理|用户可以通过 Restack Data Hub 实现更全面的数据治理和可观察性框架。|[文档](https://www.restack.io/docs/datahub-knowledge-datahub-clickhouse-integration)|
+|Restack OpenMetadata|<Image img={restack_logo} size="logo" alt="Restack logo"/>|数据质量|Restack OpenMetadata 支持元数据提取、查询使用追踪、数据分析和数据质量检查。|[文档](https://www.restack.io/docs/openmetadata-knowledge-openmetadata-clickhouse-integration)|
+|Retool|<Retoolsvg alt="Retool Logo" style={{width: '3rem'}}/>|无代码|通过拖放界面创建您的应用程序。 |[文档](/integrations/retool)|
+|Rill|<Rillsvg alt="Rill Logo" style={{width: '3rem', 'height': '2rem'}}/>|数据可视化|Rill 是一个专门为切片和切块数据而构建的操作 BI 工具，使用 OLAP 引擎。|[文档](https://docs.rilldata.com/reference/olap-engines/clickhouse)|
+|RisingWave|<Risingwavesvg alt="RisingWave Logo" style={{width: '3rem'}}/>|数据摄取|具有类似 Postgres 的体验的 SQL 流处理。比 Apache Flink 快 10 倍，且成本更高效。 |[文档](https://docs.risingwave.com/docs/current/sink-to-clickhouse/)|
+|RudderStack|<Rudderstacksvg alt="Rudderstack Logo" style={{width: '3rem'}}/>|数据摄取|RudderStack 使收集和发送客户数据到需要的工具和团队变得容易。|[文档](https://www.rudderstack.com/docs/destinations/warehouse-destinations/clickhouse/)|
+|RunReveal|<Image img={runreveal_logo} size="logo" alt="RunReveal logo"/>|数据摄取|从任何 SaaS 应用摄取和标准化审计日志到 ClickHouse。根据定期查询创建警报和检测。|[网站](https://runreveal.com)|
+|Sematext|<Image img={sematext_logo} size="logo" alt="Sematext logo"/>|数据管理|用于 ClickHouse 数据库的可观察性监控。|[文档](https://sematext.com/docs/integration/clickhouse/)|
+|SiSense|<Image img={sisense_logo} size="logo" alt="SiSense logo"/>|数据可视化|将分析嵌入到任何应用程序或工作流中。|[网站](https://www.sisense.com/data-connectors/)|
+|SigNoz|<Image img={signoz_logo} size="logo" alt="SigNoz logo"/>|数据可视化|开源可观察性平台。|[文档](https://www.signoz.io/docs/architecture/)|
 |Snappy Flow|<Image img={snappy_flow_logo} size="logo" alt="Snappy Flow logo"/>|数据管理|通过插件收集 ClickHouse 数据库指标。|[文档](https://docs.snappyflow.io/docs/Integrations/clickhouse/instance)|
-|Soda|<Image img={soda_logo} size="logo" alt="Soda logo"/>|数据质量|Soda 集成使组织能够通过在数据加载到数据库之前运行数据质量检查，轻松发现、解决和防止数据质量问题。|[网站](https://www.soda.io/integrations/clickhouse)|
-|Splunk|<Image img={splunk_logo} size="logo" alt="Splunk logo"/>|数据集成|Splunk 模块输入，以将 ClickHouse 云审计日志导入到 Splunk 中。|[网站](https://splunkbase.splunk.com/app/7709),<br/>[文档](/integrations/tools/data-integration/splunk/index.md)|
-|StreamingFast|<Image img={streamingfast_logo} size="logo" alt="StreamingFast logo"/>|数据摄取| 区块链无关、并行化和以流为先的数据引擎。 |[网站](https://www.streamingfast.io/)|
-|Streamkap|<Image img={streamkap_logo} size="logo" alt="Streamkap logo"/>|数据摄取|设置实时的 CDC（变更数据捕获）流式传输到 ClickHouse，几分钟内即可实现高吞吐量。|[文档](https://docs.streamkap.com/docs/clickhouse)|
-|Supabase|<Image img={supabase_logo} size="logo" alt="Supabase logo"/>|数据摄取|开源的 Firebase 替代品|[GitHub](https://github.com/supabase/wrappers/tree/main/wrappers/src/fdw/clickhouse_fdw),[博客](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)|
-|Teleport|<Image img={teleport_logo} size="logo" alt="Teleport logo"/>|安全连接|Teleport 数据库服务使用 x509 证书进行身份验证，以与 ClickHouse 的 HTTP 和原生（TCP）接口连接.|[文档](https://goteleport.com/docs/enroll-resources/database-access/enroll-self-hosted-databases/clickhouse-self-hosted/)|
-|TABLUM.IO|<Tablumsvg className="image" alt="Teleport logo" style={{width: '3rem'}}/>|SQL 客户端|TABLUM.IO 从各种源获取数据，规范化并清理不一致，并通过 SQL 访问它。|[文档](/integrations/sql-clients/tablum.md)|
-|Tooljet|<Image img={tooljet_logo} size="logo" alt="Tooljet logo"/>|数据可视化|ToolJet 是一个开源低代码框架，用于构建和部署自定义内部工具。|[文档](https://docs.tooljet.com/docs/data-sources/clickhouse/)|
-|Upstash|<Upstashsvg alt="Tooljet logo" style={{width: '3rem'}}/>|数据摄取|一个提供无服务器 Kafka 和其他解决方案的数据平台|[网站](https://upstash.com/)|
-|Vector|<Image img={vector_logo} size="logo" alt="Vector logo"/>|数据摄取|一种轻量级、超快速的工具，用于构建具有 ClickHouse 内置兼容性的可观察性管道。|[文档](/integrations/vector/)|
-|WarpStream|<Warpstreamsvg className="image" alt="WarpStream logo" style={{width: '3rem'}}/>|数据摄取|基于对象存储的 Kafka 兼容数据流平台|[网站](https://www.warpstream.com/)|
-|YepCode|<Yepcodesvg alt="Yepcode logo" style={{width: '3rem'}}/>|数据集成|YepCode 是一个集成和自动化工具，热爱源代码。|[文档](https://yepcode.io/docs/integrations/clickhouse/)|
-|Zing Data|<Image img={zing_logo} size="logo" alt="Zing logo"/>|数据可视化|为 ClickHouse 提供简单的社交商业智能，适用于 iOS、Android 和网页。|[文档](https://docs.getzingdata.com/docs/)|
+|Soda|<Image img={soda_logo} size="logo" alt="Soda logo"/>|数据质量|Soda 集成使组织能够通过在数据加载到数据库之前对数据进行质量检查，轻松发现、解决和预防数据质量问题。|[网站](https://www.soda.io/integrations/clickhouse)|
+|Splunk|<Image img={splunk_logo} size="logo" alt="Splunk logo"/>|数据集成|Splunk 模块输入，用于将 ClickHouse 云审计日志导入到 Splunk。|[网站](https://splunkbase.splunk.com/app/7709),<br/>[文档](/integrations/tools/data-integration/splunk/index.md)|
+|StreamingFast|<Image img={streamingfast_logo} size="logo" alt="StreamingFast logo"/>|数据摄取|区块链无关的、并行化的、首选流数据引擎。 |[网站](https://www.streamingfast.io/)|
+|Streamkap|<Image img={streamkap_logo} size="logo" alt="Streamkap logo"/>|数据摄取|在几分钟内设置实时 CDC（变更数据捕获）流到 ClickHouse，具有高吞吐量。|[文档](https://docs.streamkap.com/docs/clickhouse)|
+|Supabase|<Image img={supabase_logo} size="logo" alt="Supabase logo"/>|数据摄取|开源 Firebase 替代品。|[GitHub](https://github.com/supabase/wrappers/tree/main/wrappers/src/fdw/clickhouse_fdw),[博客](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)|
+|Teleport|<Image img={teleport_logo} size="logo" alt="Teleport logo"/>|安全连接|Teleport 数据库服务使用 x509 证书对 ClickHouse 进行身份验证，这些证书可用于 ClickHouse 的 HTTP 和原生 (TCP) 接口。|[文档](https://goteleport.com/docs/enroll-resources/database-access/enroll-self-hosted-databases/clickhouse-self-hosted/)|
+|TABLUM.IO|<Tablumsvg className="image" alt="Teleport logo" style={{width: '3rem'}}/>|SQL 客户端|TABLUM.IO 从多种来源摄取数据，规范化并清理不一致性，并通过 SQL 访问这些数据。|[文档](/integrations/sql-clients/tablum.md)|
+|Tooljet|<Image img={tooljet_logo} size="logo" alt="Tooljet logo"/>|数据可视化|ToolJet 是一个开源的低代码框架，用于构建和部署自定义内部工具。|[文档](https://docs.tooljet.com/docs/data-sources/clickhouse/)|
+|Upstash|<Upstashsvg alt="Tooljet logo" style={{width: '3rem'}}/>|数据摄取|一个提供无服务器 Kafka 和其他解决方案的数据平台。|[网站](https://upstash.com/)|
+|Vector|<Image img={vector_logo} size="logo" alt="Vector logo"/>|数据摄取|一种轻量、超快速的工具，用于构建具有 ClickHouse 内置兼容性的可观察性管道。|[文档](/integrations/vector/)|
+|WarpStream|<Warpstreamsvg className="image" alt="WarpStream logo" style={{width: '3rem'}}/>|数据摄取|直接建立在对象存储之上的兼容 Kafka 的数据流平台。|[网站](https://www.warpstream.com/)|
+|YepCode|<Yepcodesvg alt="Yepcode logo" style={{width: '3rem'}}/>|数据集成|YepCode 是一个喜爱源代码的集成和自动化工具。|[文档](https://yepcode.io/docs/integrations/clickhouse/)|
+|Zing Data|<Image img={zing_logo} size="logo" alt="Zing logo"/>|数据可视化|适用于 ClickHouse 的简单社交商业智能，适用于 iOS、Android 和网页。|[文档](https://docs.getzingdata.com/docs/)|
 
 </div>
 
@@ -340,56 +351,59 @@ ClickHouse 集成按其支持级别进行分类：
 
 <div className="adopters-table">
 
-|名称|Logo|类别|描述|资源|
+|名称|徽标|类别|描述|资源|
 |------|----|----------------|------------------|-------------|
-|Apache Airflow|<Image img={airflow_logo} size="logo" alt="Airflow logo"/>|数据摄取|开源工作流管理平台，用于数据工程管道|[GitHub](https://github.com/bryzgaloff/airflow-clickhouse-plugin)|
-|Apache Beam|<Image img={beam_logo} size="logo" alt="Beam logo"/>|数据摄取|开源、统一模型和一组语言特定 SDK，用于定义和执行数据处理工作流。与 Google Dataflow 兼容。|[文档](/integrations/apache-beam),<br/>[示例](https://github.com/ClickHouse/clickhouse-beam-connector/)|
-|Apache InLong|<Image img={inlong_logo} size="logo" alt="InLong logo"/>|数据摄取|针对海量数据的一站式集成框架|[文档](https://inlong.apache.org/docs/data_node/load_node/clickhouse)|
-|Apache NiFi|<Image img={nifi_logo} size="logo" alt="NiFi logo"/>|数据摄取|自动化软件系统之间的数据流|[文档](/integrations/nifi)|
-|Apache SeaTunnel|<Image img={seatunnel_logo} size="logo" alt="SeaTunnel logo"/>|数据摄取|SeaTunnel 是一个非常易于使用的超高性能分布式数据集成平台|[网站](https://seatunnel.apache.org/docs/2.3.0/connector-v2/sink/Clickhouse)|
-|Apache SkyWalking|<Image img={skywalking_logo} size="logo" alt="SkyWalking logo"/>|数据管理|开源的 APM 系统，提供对云原生架构中分布式系统的监控、跟踪和诊断能力。|[博客](https://skywalking.apache.org/blog/2024-03-12-monitoring-clickhouse-through-skywalking/)|
-|Apache StreamPark|<Image img={streampark_logo} size="logo" alt="SeaTunnel logo"/>|数据摄取|流处理应用开发框架和流处理操作平台。 |[网站](https://streampark.apache.org/docs/intro)|
-|Bytebase|<Image img={bytebase_logo} size="logo" alt="ByteBase logo"/>|数据管理|开源数据库 DevOps 工具，是一个管理整个应用程序开发生命周期中的数据库的 GitLab|[文档](https://www.bytebase.com/docs/introduction/supported-databases)|
-|C#|<Csharpsvg className="image" alt="Csharp logo" style={{width: '3rem'}}/>|语言客户端|ClickHouse.Client 是 ClickHouse 的特性丰富的 ADO.NET 客户端实现|[文档](https://github.com/DarkWanderer/ClickHouse.Client/wiki/Quick-start)|
-|CHProxy| |数据管理|Chproxy 是 ClickHouse 数据库的 HTTP 代理和负载均衡器|[GitHub](https://github.com/ContentSquare/chproxy)|
-|Chat-DBT| |AI集成|使用 Chat GPT 创建 ClickHouse 查询。|[GitHub](https://github.com/plmercereau/chat-dbt)|
-|ClickHouse 监控仪表板|<Clickhousemonitoringdashboardsvg alt="ClickHouse Monitoring logo" style={{width: '3rem'}}/>|仪表板|一个简单的 ClickHouse 监控仪表板|[GitHub](https://github.com/duyet/clickhouse-monitoring)|
+|Apache Airflow|<Image img={airflow_logo} size="logo" alt="Airflow logo"/>|数据摄取|开源工作流管理平台，用于数据工程管道|[Github](https://github.com/bryzgaloff/airflow-clickhouse-plugin)|
+|Apache Beam|<Image img={beam_logo} size="logo" alt="Beam logo"/>|数据摄取|开源的统一模型和一组特定语言的SDK，用于定义和执行数据处理工作流。与Google Dataflow兼容。|[Documentation](/integrations/apache-beam),<br/>[Examples](https://github.com/ClickHouse/clickhouse-beam-connector/)|
+|Apache InLong|<Image img={inlong_logo} size="logo" alt="InLong logo"/>|数据摄取|一个面向海量数据的一站式集成框架|[Documentation](https://inlong.apache.org/docs/data_node/load_node/clickhouse)|
+|Apache NiFi|<Image img={nifi_logo} size="logo" alt="NiFi logo"/>|数据摄取|自动化软件系统之间的数据流|[Documentation](/integrations/nifi)|
+|Apache SeaTunnel|<Image img={seatunnel_logo} size="logo" alt="SeaTunnel logo"/>|数据摄取|SeaTunnel是一个易于使用的超高性能分布式数据集成平台|[Website](https://seatunnel.apache.org/docs/2.3.0/connector-v2/sink/Clickhouse)|
+|Apache SkyWalking|<Image img={skywalking_logo} size="logo" alt="SkyWalking logo"/>|数据管理|开源APM系统，为云原生架构中的分布式系统提供监控、跟踪和诊断能力。|[Blog](https://skywalking.apache.org/blog/2024-03-12-monitoring-clickhouse-through-skywalking/)|
+|Apache StreamPark|<Image img={streampark_logo} size="logo" alt="SeaTunnel logo"/>|数据摄取|一个流处理应用开发框架和流处理操作平台。|[Website](https://streampark.apache.org/docs/intro)|
+|Bytebase|<Image img={bytebase_logo} size="logo" alt="ByteBase logo"/>|数据管理|开源数据库DevOps工具，它是管理整个应用开发生命周期中的数据库的GitLab|[Documentation](https://www.bytebase.com/docs/introduction/supported-databases)|
+|CHProxy| |数据管理|Chproxy是ClickHouse数据库的HTTP代理和负载均衡器|[GitHub](https://github.com/ContentSquare/chproxy)|
+|Chat-DBT| |AI集成|使用Chat GPT创建ClickHouse查询。|[GitHub](https://github.com/plmercereau/chat-dbt)|
+|ClickHouse Monitoring Dashboard|<Clickhousemonitoringdashboardsvg alt="ClickHouse Monitoring logo" style={{width: '3rem'}}/>|仪表板|一个简单的ClickHouse监控仪表板|[Github](https://github.com/duyet/clickhouse-monitoring)|
 |Common Lisp|<Image img={clickhouse_cl_logo} size="logo" alt="clickhouse-cl Logo"/>|语言客户端|Common Lisp ClickHouse客户端库|[GitHub](https://github.com/juliojimenez/clickhouse-cl)|
-|数据流|<Image img={dataflow_logo} size="logo" alt="Dataflow logo"/>|数据摄取|Google Dataflow 是一个用于使用 Apache Beam 运行批处理和流处理数据管道的无服务器服务。|[文档](/integrations/google-dataflow/dataflow)|
-|DBNet|<Image img={dbnet_logo} size="logo" alt="Airflow logo"/>|软件 IDE|基于网络的 SQL IDE，后端使用 Go，前端使用浏览器。|[GitHub](https://github.com/dbnet-io/dbnet)|
-|DataLens|<Image img={datalens_logo} size="logo" alt="Datalens logo"/>|数据可视化|开源数据分析和可视化工具。|[网站](https://datalens.tech/),<br/>[文档](https://datalens.tech/docs/en/)|
-|Dataease|<Image img={dataease_logo} size="logo" alt="Dataease logo"/>|数据可视化|开源数据可视化分析工具，帮助用户分析数据并洞察商业趋势。|[网站](https://dataease.io/)|
-|Datahub|<Image img={datahub_logo} size="logo" alt="Datahub logo"/>|数据管理|开源数据目录，支持数据发现、数据可观察性和联合治理|[文档](https://datahubproject.io/docs/generated/ingestion/sources/clickhouse/)|
-|Dbmate| |数据管理|数据库迁移工具，可保证多位开发人员和服务器之间数据库模式的同步|[GitHub](https://github.com/amacneil/dbmate#clickhouse)|
-|DeepFlow|<Image img={deepflow_logo} size="logo" alt="Deepflow logo"/>|数据摄取|使用 eBPF 的应用可观察性|[网站](https://deepflow.io)|
-|Easypanel|<Image img={easypanel_logo} size="logo" alt="Easypanel logo"/>|部署方法|现代服务器控制面板。您可以用它在自己的服务器上部署 ClickHouse。|[网站](https://easypanel.io), <br/>[文档](/integrations/tools/data-integration/easypanel/index.md)|
-|Explo|<Explosvg alt="Explo logo" style={{width: '3rem'}} />|数据可视化|Explo 帮助公司通过提供灵活组件来构建实时分析仪表板。|[网站](https://www.explo.co/integrations/clickhouse)|
-|Flink|<Image img={flink_logo} size="logo" alt="Flink logo"/>|数据摄取|Flink 连接器，连接到 ClickHouse 数据库，基于异步 HTTP 客户端|[GitHub](https://github.com/itinycheng/flink-connector-clickhouse)|
-|Goose|<Image img={goose_logo} size="logo" alt="Goose logo"/>|数据迁移|支持 SQL 迁移和 Go 函数的数据库迁移工具。|[GitHub](https://github.com/pressly/goose),<br/>[文档](https://pressly.github.io/goose/)|
-|Ibis|<Image img={ibis_logo} size="logo" alt="Ibis logo"/>|语言客户端|将 Python 分析的灵活性与现代 SQL 的规模和性能结合。|[网站](https://ibis-project.org/backends/ClickHouse/)|
-|Jaeger|<Image img={jaeger_logo} size="logo" alt="Jaeger logo"/>|数据摄取|Jaeger gRPC 存储插件实现，用于将跟踪存储在 ClickHouse 中|[GitHub](https://github.com/jaegertracing/jaeger-clickhouse)|
-|JupySQL|<Image img={jupyter_logo} size="logo" alt="JupySQL logo"/>|SQL 客户端|Jupyter 笔记本的原生 SQL 客户端。|[文档](/integrations/jupysql)|
-|Kestra|<Kestrasvg className="image" alt="Kestra logo" style={{width: '48px'}}/>|数据编排|开源数据编排和调度平台|[网站](https://kestra.io/plugins/plugin-jdbc-clickhouse/)|
-|Logchain|<Image img={adaptive_logo} size="logo" alt="Adaptive Logchain logo"/>|安全|数据安全和特权访问管理|[网站](https://github.com/adaptive-scale/logchain)|
-|Meltano||数据摄取|Meltano 是一款开源的全栈数据集成平台|[文档](https://hub.meltano.com/extractors/tap-clickhouse)
-|Mprove|<Image img={mprove_logo} size="logo" alt="mprove logo"/>|数据可视化|带有版本控制的自服务商业智能|[网站](https://mprove.io/)|
-|Netobserv||数据管理|一个用于网络可观察性的 OpenShift 和 Kubernetes 操作工具。|[博客](https://cloud.redhat.com/blog/deploying-network-observability-without-loki-an-example-with-clickhouse)
-|Observable|<Observablesvg alt="Observable logo" style={{width: '3rem'}}/>|数据可视化|Observable 是一个平台，您可以在网页上协作探索、分析、可视化和交流数据。|[网站](https://observablehq.com/@stas-sl/clickhouse-playground)|
-|PHP|<Image img={php_logo} size="logo" alt="PHP logo"/>|语言客户端|此扩展为 Yii 框架 2.0 提供了 ClickHouse 集成|[GitHub](https://github.com/smi2/phpClickHouse)|
-|Pgwarehouse||数据摄取|一种快速将 Postgres 表复制到 ClickHouse 的简单工具|[GitHub](https://github.com/scottpersinger/pgwarehouse)|
-|Pinax|<Image img={pinax_logo} size="logo" alt="Pinax logo"/>|区块链分析|区块链的索引、分析和搜索工具。|[博客](https://blog.pinax.network/substreams/simplify-real-time-blockchain-analytics-with-clickhouse/)|
-|Pulse|<Image img={pulse_logo} size="logo" alt="PulseUI logo"/>|数据管理|一个用于内部数据用户界面的开发者平台。|[网站](https://www.timestored.com/pulse/)|
-|QStudio|<Image img={qstudio_logo} size="logo" alt="QStudio logo"/>|GUI|一个简单易用的 GUI，可用于与 ClickHouse 数据库交互。|[网站](https://www.timestored.com/qstudio/database/clickhouse)|
-|Qryn|<Image img={qryn_logo} size="logo" alt="qryn logo"/>|数据摄取、管理、可视化 | qryn 是一个构建于 ClickHouse 之上的多语言可观察性栈，与 Loki、Prometheus、Tempo、Opentelemetry 和许多其他格式和标准 API 透明兼容，而无需自定义客户端、代码或插件|[文档](https://qryn.dev), [GitHub](https://github.com/metrico), [网站](https://qryn.cloud)|
-|RSyslog|<Image img={rsyslog_logo} size="logo" alt="RSyslog logo"/>|数据摄取|此模块提供对 ClickHouse 记录的原生支持。|[文档](https://www.rsyslog.com/doc/master/configuration/modules/omclickhouse.html)|
-|Rocket.BI|<RocketbiSVG style={{width: '3rem'}}/>|数据可视化|RocketBI 是一个自助式商业智能平台，帮助您快速分析数据，构建拖放可视化，并与同事实现协作。|[GitHub](https://github.com/datainsider-co/rocket-bi), <br/>[文档](/integrations/data-visualization/rocketbi-and-clickhouse.md)|
-|Ruby|<Image img={ruby_logo} size="logo" alt="Ruby logo"/>|语言客户端|一个现代的 Ruby 数据库驱动，用于 ClickHouse|[GitHub](https://github.com/shlima/click_house)|
-|R|<Image img={r_logo} size="logo" alt="R logo"/>|语言客户端|R 包是 ClickHouse 数据库的 DBI 接口|[GitHub](https://github.com/IMSMWU/RClickHouse)|
-|SQLPad||SQL 客户端|SQLPad 是一个用于编写和运行 SQL 查询以及可视化结果的网页应用|[文档](https://getsqlpad.com/en/connections/#clickhouse)|
-|Scala|<Image img={scala_logo} size="logo" alt="Scala logo" />|语言客户端|使用 Akka Http 的 ClickHouse Scala 客户端|[GitHub](https://github.com/crobox/clickhouse-scala-client)|
-|SchemaSpy|<Image img={schemaspy_logo} size="logo" alt="SchemaSpy logo"/>|数据可视化|SchemaSpy 支持 ClickHouse 模式可视化|[GitHub](https://github.com/schemaspy/schemaspy)|
-|TricksterCache|<Trickstercachesvg className="image" alt="TricksterCache logo" style={{width: '3rem'}}/>|数据可视化| 开源 HTTP 反向代理缓存和时间序列仪表板加速器 |[网站](https://trickstercache.org/)|
-|Visual Studio 客户端|<Image img={vs_logo} size="logo" alt="VS logo"/>|语言客户端|Visual Studio 轻量级客户端|[市场](https://marketplace.visualstudio.com/items?itemName=fanruten.clickhouse-light)|
-|VulcanSQL|<Image img={vulcansql_logo} size="logo" alt="VulcanSQL logo"/>|数据 API 框架|这是一个针对数据应用程序的数据 API 框架，帮助数据人员更快地创建和分享数据 API。它将您的 SQL 模板转换为数据 API。无需后端技能。|[网站](https://vulcansql.com/), <br/>[文档](https://vulcansql.com/docs/connect/clickhouse)|
-|marimo|<Image img={marimo_logo} size="logo" alt="marimo logo"/>|SQL 客户端|一个开源的用于 Python 的响应式笔记本，内置 SQL。创建数据可视化、可分享的应用程序或可执行的脚本。|[网站](https://marimo.io/), <br/>[文档](https://docs.marimo.io/guides/working_with_data/sql/?h=sql#clickhouse-support)|
+| Dataflow|<Image img={dataflow_logo} size="logo" alt="Dataflow logo"/>|数据摄取|Google Dataflow是一个无服务器的服务，用于运行使用Apache Beam的批处理和流处理数据管道。|[Documentation](/integrations/google-dataflow/dataflow)|
+|DBNet|<Image img={dbnet_logo} size="logo" alt="Airflow logo"/>|软件IDE|基于Web的SQL IDE，使用Go作为后端，浏览器作为前端。|[Github](https://github.com/dbnet-io/dbnet)|
+|DataLens|<Image img={datalens_logo} size="logo" alt="Datalens logo"/>|数据可视化|开源数据分析和可视化工具。|[Website](https://datalens.tech/),<br/>[Documentation](https://datalens.tech/docs/en/)|
+|Dataease|<Image img={dataease_logo} size="logo" alt="Dataease logo"/>|数据可视化|开源数据可视化分析工具，帮助用户分析数据，洞悉商业趋势。|[Website](https://dataease.io/)|
+|Datahub|<Image img={datahub_logo} size="logo" alt="Datahub logo"/>|数据管理|开源数据目录，使数据发现、数据可观测性和联邦治理成为可能|[Documentation](https://datahubproject.io/docs/generated/ingestion/sources/clickhouse/)|
+|Dbmate| |数据管理|数据库迁移工具，可以保持您的数据库架构在多个开发者和服务器之间同步|[GitHub](https://github.com/amacneil/dbmate#clickhouse)|
+|DeepFlow|<Image img={deepflow_logo} size="logo" alt="Deepflow logo"/>|数据摄取|使用eBPF的应用可观测性|[Website](https://deepflow.io)|
+|Easypanel|<Image img={easypanel_logo} size="logo" alt="Easypanel logo"/>|部署方法|这是一个现代的服务器控制面板。您可以使用它在自己的服务器上部署ClickHouse。|[Website](https://easypanel.io), <br/>[Documentation](/integrations/tools/data-integration/easypanel/index.md)|
+|Explo|<Explosvg alt="Explo logo" style={{width: '3rem'}} />|数据可视化|Explo帮助公司通过提供灵活的组件构建实时分析仪表板。|[Website](https://www.explo.co/integrations/clickhouse)|
+|Flink|<Image img={flink_logo} size="logo" alt="Flink logo"/>|数据摄取|ClickHouse数据库的Flink接收器，由异步Http客户端提供支持|[GitHub](https://github.com/itinycheng/flink-connector-clickhouse)|
+|Goose|<Image img={goose_logo} size="logo" alt="Goose logo"/>|数据迁移|支持SQL迁移和Go函数的数据库迁移工具。|[GitHub](https://github.com/pressly/goose),<br/>[Documentation](https://pressly.github.io/goose/)|
+|Ibis|<Image img={ibis_logo} size="logo" alt="Ibis logo"/>|语言客户端|Python分析的灵活性与现代SQL的规模和性能|[Website](https://ibis-project.org/backends/ClickHouse/)|
+|Jaeger|<Image img={jaeger_logo} size="logo" alt="Jaeger logo"/>|数据摄取|Jaeger gRPC存储插件实现，用于在ClickHouse中存储跟踪|[GitHub](https://github.com/jaegertracing/jaeger-clickhouse)|
+|JupySQL|<Image img={jupyter_logo} size="logo" alt="JupySQL logo"/>|SQL客户端|Jupyter笔记本的原生SQL客户端。|[Documentation](/integrations/jupysql)|
+|Kestra|<Kestrasvg className="image" alt="Kestra logo" style={{width: '48px'}}/>|数据编排|开源数据编排和调度平台|[Website](https://kestra.io/plugins/plugin-jdbc-clickhouse/)|
+|Logchain|<Image img={adaptive_logo} size="logo" alt="Adaptive Logchain logo"/>|安全性|数据安全及特权访问管理|[Website](https://github.com/adaptive-scale/logchain)|
+|Meltano||数据摄取|Meltano是一个开源的全栈数据集成平台|[Documentation](https://hub.meltano.com/extractors/tap-clickhouse)|
+|Mprove|<Image img={mprove_logo} size="logo" alt="mprove logo"/>|数据可视化|自助式商业智能与版本控制|[Website](https://mprove.io/)|
+|Netobserv||数据管理|一个用于网络可观测性的OpenShift和Kubernetes操作员。|[Blog](https://cloud.redhat.com/blog/deploying-network-observability-without-loki-an-example-with-clickhouse)|
+|Observable|<Observablesvg alt="Observable logo" style={{width: '3rem'}}/>|数据可视化|Observable是一个平台，您可以在其上协作探索、分析、可视化和沟通数据。|[Website](https://observablehq.com/@stas-sl/clickhouse-playground)|
+|PHP|<Image img={php_logo} size="logo" alt="PHP logo"/>|语言客户端|此扩展提供Yii框架2.0的ClickHouse集成|[GitHub](https://github.com/smi2/phpClickHouse)|
+|Pgwarehouse||数据摄取|快速将Postgres表复制到ClickHouse的简单工具|[GitHub](https://github.com/scottpersinger/pgwarehouse)|
+|Pinax|<Image img={pinax_logo} size="logo" alt="Pinax logo"/>|区块链分析|区块链的索引、分析和搜索工具。|[Blog](https://blog.pinax.network/substreams/simplify-real-time-blockchain-analytics-with-clickhouse/)|
+|Pulse|<Image img={pulse_logo} size="logo" alt="PulseUI logo"/>|数据管理|一个用于内部数据UI的开发者平台。|[Website](https://www.timestored.com/pulse/)|
+|QStudio|<Image img={qstudio_logo} size="logo" alt="QStudio logo"/>|图形用户界面|一个简单易用的图形用户界面，用于与ClickHouse数据库交互。|[Website](https://www.timestored.com/qstudio/database/clickhouse)|
+|Qryn|<Image img={qryn_logo} size="logo" alt="qryn logo"/>|数据摄取、管理、可视化|qryn是一个多语言可观测性堆栈，建立在ClickHouse之上，与Loki、Prometheus、Tempo、Opentelemetry及许多其他格式和标准API透明兼容，无需自定义客户端、代码或插件|[Documentation](https://qryn.dev), [Github](https://github.com/metrico), [Website](https://qryn.cloud)|
+|RSyslog|<Image img={rsyslog_logo} size="logo" alt="RSyslog logo"/>|数据摄取|此模块提供原生支持，将日志记录到ClickHouse。|[Documentation](https://www.rsyslog.com/doc/master/configuration/modules/omclickhouse.html)|
+|Rocket.BI|<RocketbiSVG style={{width: '3rem'}}/>|数据可视化|RocketBI是一个自助式商业智能平台，帮助您快速分析数据，构建拖放可视化，并与同事在网络浏览器中协作。|[GitHub](https://github.com/datainsider-co/rocket-bi), <br/>[Documentation](/integrations/data-visualization/rocketbi-and-clickhouse.md)|
+|Ruby|<Image img={ruby_logo} size="logo" alt="Ruby logo"/>|语言客户端|一个现代的ClickHouse Ruby数据库驱动|[GitHub](https://github.com/shlima/click_house)|
+|R|<Image img={r_logo} size="logo" alt="R logo"/>|语言客户端|R包是ClickHouse数据库的DBI接口|[GitHub](https://github.com/IMSMWU/RClickHouse)|
+|SQLPad||SQL客户端|SQLPad是一个用于编写和运行SQL查询并可视化结果的Web应用程式|[Documentation](https://getsqlpad.com/en/connections/#clickhouse)|
+|Scala|<Image img={scala_logo} size="logo" alt="Scala logo" />|语言客户端|使用Akka Http的ClickHouse Scala客户端|[GitHub](https://github.com/crobox/clickhouse-scala-client)|
+|SchemaSpy|<Image img={schemaspy_logo} size="logo" alt="SchemaSpy logo"/>|数据可视化|SchemaSpy支持ClickHouse架构可视化|[GitHub](https://github.com/schemaspy/schemaspy)|
+|TricksterCache|<Trickstercachesvg className="image" alt="TricksterCache logo" style={{width: '3rem'}}/>|数据可视化|开源HTTP反向代理缓存和时间序列仪表板加速器|[Website](https://trickstercache.org/)|
+|Visual Studio Client|<Image img={vs_logo} size="logo" alt="VS logo"/>|语言客户端|Visual Studio轻量级客户端|[Marketplace](https://marketplace.visualstudio.com/items?itemName=fanruten.clickhouse-light)|
+|VulcanSQL|<Image img={vulcansql_logo} size="logo" alt="VulcanSQL logo"/>|数据API框架|这是一个数据API框架，帮助数据人员更快地创建和分享数据API。它将您的SQL模板转换为数据API，无需后端技能。|[Website](https://vulcansql.com/), <br/>[Documentation](https://vulcansql.com/docs/connect/clickhouse)|
+|marimo|<Image img={marimo_logo} size="logo" alt="marimo logo"/>|SQL客户端|一个开源的反应式笔记本，内置SQL。创建数据可视化、可分享的应用或可执行脚本。|[Website](https://marimo.io/), <br/>[Documentation](https://docs.marimo.io/guides/working_with_data/sql/?h=sql#clickhouse-support)|
 </div>
+
+:::info 注意
+第三方徽标和商标属于各自的所有者，仅用于指示可用的集成。不表示任何认可。
+:::

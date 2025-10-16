@@ -1,17 +1,16 @@
 ---
-description: 'サーバーでサポートされているデータベースエンジンのリストを含むシステムテーブル。'
-keywords:
+'description': 'システムテーブルは、サーバーによってサポートされているデータベースエンジンのリストを含んでいます。'
+'keywords':
 - 'system table'
 - 'database_engines'
-slug: '/operations/system-tables/database_engines'
-title: 'system.database_engines'
+'slug': '/operations/system-tables/database_engines'
+'title': 'system.database_engines'
+'doc_type': 'reference'
 ---
 
+Contains the list of database engines supported by the server.
 
-
-データベースエンジンのリストがサーバーによってサポートされています。
-
-この表には以下のカラムが含まれています（カラムのタイプは括弧内に示されています）：
+このテーブルには以下のカラムが含まれています（カラムの型はカッコ内に示されています）：
 
 - `name` (String) — データベースエンジンの名前。
 
@@ -20,7 +19,7 @@ title: 'system.database_engines'
 ```sql
 SELECT *
 FROM system.database_engines
-WHERE name in ('Atomic', 'Lazy', 'Ordinary')
+WHERE name IN ('Atomic', 'Lazy', 'Ordinary')
 ```
 
 ```text

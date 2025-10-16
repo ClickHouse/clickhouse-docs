@@ -1,25 +1,24 @@
 ---
-description: 'Запросы данных из/в удаленный HTTP/HTTPS сервер. Этот движок аналогичен движку File.'
-sidebar_label: 'URL'
+slug: '/engines/table-engines/special/url'
+sidebar_label: URL
 sidebar_position: 80
-slug: /engines/table-engines/special/url
+description: 'Запросы данных к удалённого HTTP/HTTPS сервера. Этот движок похож'
 title: 'Движок таблиц URL'
+doc_type: reference
 ---
+# `URL` движок таблиц
 
-
-# Движок таблиц URL
-
-Запросы данных из/в удаленный HTTP/HTTPS сервер. Этот движок аналогичен [движку File](../../../engines/table-engines/special/file.md).
+Запросы данных к/от удаленного HTTP/HTTPS сервера. Этот движок похож на движок [File](../../../engines/table-engines/special/file.md).
 
 Синтаксис: `URL(URL [,Format] [,CompressionMethod])`
 
-- Параметр `URL` должен соответствовать структуре Уникального Ресурсного Локатора. Указанный URL должен указывать на сервер, использующий HTTP или HTTPS. Для получения ответа от сервера никаких дополнительных заголовков не требуется.
+- Параметр `URL` должен соответствовать структуре Унииформного Ресурса Локатора. Указанный URL должен указывать на сервер, использующий HTTP или HTTPS. Это не требует никаких дополнительных заголовков для получения ответа от сервера.
 
-- `Format` должен быть одним из тех, которые ClickHouse может использовать в запросах `SELECT`, а при необходимости и в `INSERT`. Для полного списка поддерживаемых форматов смотрите [Форматы](/interfaces/formats#formats-overview).
+- `Format` должен быть одним из форматов, которые ClickHouse может использовать в запросах `SELECT` и, если необходимо, в `INSERT`. Для полного списка поддерживаемых форматов смотрите [Форматы](/interfaces/formats#formats-overview).
 
     Если этот аргумент не указан, ClickHouse автоматически определяет формат по суффиксу параметра `URL`. Если суффикс параметра `URL` не соответствует ни одному из поддерживаемых форматов, создание таблицы завершается неудачей. Например, для выражения движка `URL('http://localhost/test.json')` применяется формат `JSON`.
 
-- Параметр `CompressionMethod` указывает, нужно ли сжимать HTTP-тело. Если сжатие включено, HTTP-пакеты, отправляемые движком URL, содержат заголовок 'Content-Encoding', чтобы указать, какой метод сжатия используется.
+- `CompressionMethod` указывает, нужно ли сжимать тело HTTP. Если сжатие включено, HTTP-пакеты, отправляемые движком URL, содержат заголовок 'Content-Encoding', чтобы указать, какой метод сжатия используется.
 
 Чтобы включить сжатие, сначала убедитесь, что удаленная HTTP-точка, указанная параметром `URL`, поддерживает соответствующий алгоритм сжатия.
 
@@ -35,13 +34,14 @@ title: 'Движок таблиц URL'
 - none
 - auto
 
-Если `CompressionMethod` не указан, по умолчанию используется `auto`. Это означает, что ClickHouse автоматически определяет метод сжатия по суффиксу параметра `URL`. Если суффикс соответствует любому из перечисленных методов сжатия, применяется соответствующее сжатие или сжатие не будет включено.
+Если `CompressionMethod` не указан, по умолчанию используется `auto`. Это означает, что ClickHouse автоматически определяет метод сжатия по суффиксу параметра `URL`. Если суффикс соответствует любому из перечисленных выше методов сжатия, применяется соответствующее сжатие, или сжатие не будет включено.
 
-Например, для выражения движка `URL('http://localhost/test.gzip')` применяется метод сжатия `gzip`, но для `URL('http://localhost/test.fr')` сжатие не включается, так как суффикс `fr` не соответствует ни одному из вышеперечисленных методов сжатия.
+Например, для выражения движка `URL('http://localhost/test.gzip')` применяется метод сжатия `gzip`, но для `URL('http://localhost/test.fr')` сжатие не включено, потому что суффикс `fr` не соответствует ни одному из методов сжатия выше.
 
 ## Использование {#using-the-engine-in-the-clickhouse-server}
 
-Запросы `INSERT` и `SELECT` преобразуются в запросы `POST` и `GET`, соответственно. Для обработки запросов `POST` удаленный сервер должен поддерживать [Chunked transfer encoding](https://en.wikipedia.org/wiki/Chunked_transfer_encoding).
+Запросы `INSERT` и `SELECT` преобразуются в `POST` и `GET` запросы соответственно. Для обработки `POST` запросов удаленный сервер должен поддерживать
+[Chunked transfer encoding](https://en.wikipedia.org/wiki/Chunked_transfer_encoding).
 
 Вы можете ограничить максимальное количество перенаправлений HTTP GET, используя настройку [max_http_get_redirects](/operations/settings/settings#max_http_get_redirects).
 
@@ -54,7 +54,7 @@ CREATE TABLE url_engine_table (word String, value UInt64)
 ENGINE=URL('http://127.0.0.1:12345/', CSV)
 ```
 
-**2.** Создайте простой HTTP сервер, используя стандартные инструменты Python 3, и запустите его:
+**2.** Создайте базовый HTTP сервер с использованием стандартных инструментов Python 3 и запустите его:
 
 ```python3
 from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -89,23 +89,23 @@ SELECT * FROM url_engine_table
 └───────┴───────┘
 ```
 
-## Детали реализации {#details-of-implementation}
+## Подробности реализации {#details-of-implementation}
 
 - Чтения и записи могут выполняться параллельно.
 - Не поддерживается:
-    - Операции `ALTER` и `SELECT...SAMPLE`.
-    - Индексы.
-    - Репликация.
+  - Операции `ALTER` и `SELECT...SAMPLE`.
+  - Индексы.
+  - Репликация.
 
 ## Виртуальные колонки {#virtual-columns}
 
 - `_path` — Путь к `URL`. Тип: `LowCardinality(String)`.
 - `_file` — Имя ресурса `URL`. Тип: `LowCardinality(String)`.
-- `_size` — Размер ресурса в байтах. Тип: `Nullable(UInt64)`. Если размер неизвестен, значение равно `NULL`.
-- `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение равно `NULL`.
+- `_size` — Размер ресурса в байтах. Тип: `Nullable(UInt64)`. Если размер неизвестен, значение `NULL`.
+- `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение `NULL`.
 - `_headers` - Заголовки HTTP-ответа. Тип: `Map(LowCardinality(String), LowCardinality(String))`.
 
 ## Настройки хранения {#storage-settings}
 
-- [engine_url_skip_empty_files](/operations/settings/settings.md#engine_url_skip_empty_files) - позволяет пропускать пустые файлы при чтении. Отключено по умолчанию.
-- [enable_url_encoding](/operations/settings/settings.md#enable_url_encoding) - позволяет включать/выключать декодирование/кодирование пути в uri. Включено по умолчанию.
+- [engine_url_skip_empty_files](/operations/settings/settings.md#engine_url_skip_empty_files) - позволяет пропускать пустые файлы при чтении. По умолчанию отключен.
+- [enable_url_encoding](/operations/settings/settings.md#enable_url_encoding) - позволяет включать/выключать декодирование/кодирование пути в uri. По умолчанию включен.

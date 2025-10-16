@@ -1,14 +1,15 @@
 ---
-'description': '对一系列数字应用位wise `AND`。'
+'description': '对一系列数字应用位与 `AND`。'
 'sidebar_position': 147
 'slug': '/sql-reference/aggregate-functions/reference/groupbitand'
 'title': 'groupBitAnd'
+'doc_type': 'reference'
 ---
 
 
 # groupBitAnd
 
-对一系列数字应用位与 `AND` 操作。
+对一系列数值应用按位 `AND` 操作。
 
 ```sql
 groupBitAnd(expr)
@@ -16,7 +17,7 @@ groupBitAnd(expr)
 
 **参数**
 
-`expr` – 产生 `UInt*` 或 `Int*` 类型的表达式。
+`expr` – 结果为 `UInt*` 或 `Int*` 类型的表达式。
 
 **返回值**
 

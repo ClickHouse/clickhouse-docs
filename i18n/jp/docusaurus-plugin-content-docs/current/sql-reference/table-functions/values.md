@@ -1,34 +1,33 @@
 ---
-description: '列に値を入れて一時的なストレージを作成します。'
-keywords:
+'description': '一時的なストレージを作成し、カラムを値で埋めます。'
+'keywords':
 - 'values'
 - 'table function'
-sidebar_label: '値'
-sidebar_position: 210
-slug: '/sql-reference/table-functions/values'
-title: 'values'
+'sidebar_label': '値'
+'sidebar_position': 210
+'slug': '/sql-reference/table-functions/values'
+'title': '値'
+'doc_type': 'reference'
 ---
-
-
 
 
 # Values Table Function {#values-table-function}
 
-`Values` テーブル関数を使用すると、値でカラムを埋める一時ストレージを作成できます。これは、迅速なテストやサンプルデータの生成に役立ちます。
+`Values` テーブル関数は、カラムに値を満たす一時ストレージを作成することを可能にします。これは迅速なテストやサンプルデータの生成に便利です。
 
 :::note
-Values は大文字と小文字を区別しない関数です。つまり、`VALUES` または `values` の両方が有効です。
+Values は大文字小文字を区別しない関数です。つまり、`VALUES` または `values` の両方が有効です。
 :::
 
 ## Syntax {#syntax}
 
-`VALUES` テーブル関数の基本構文は次のとおりです：
+`VALUES` テーブル関数の基本的な構文は次のとおりです：
 
 ```sql
 VALUES([structure,] values...)
 ```
 
-一般的に次のように使用されます：
+一般的には次のように使用されます：
 
 ```sql
 VALUES(
@@ -41,13 +40,13 @@ VALUES(
 
 ## Arguments {#arguments}
 
-- `column1_name Type1, ...`（オプション）。 [String](/sql-reference/data-types/string) 
-  カラム名とタイプを指定します。この引数が省略されると、カラムは `c1`、`c2` などと名付けられます。
-- `(value1_row1, value2_row1)`。 [Tuples](/sql-reference/data-types/tuple) 
-   任意の型の値を含むタプル。
+- `column1_name Type1, ...`（省略可能）。[String](/sql-reference/data-types/string) 
+  はカラム名とタイプを指定します。この引数を省略すると、カラムは `c1`、`c2` などとして命名されます。
+- `(value1_row1, value2_row1)`。[Tuples](/sql-reference/data-types/tuple) 
+   は任意のタイプの値を含むタプルです。
 
 :::note
-カンマ区切りのタプルは単一の値に置き換えることもできます。この場合、各値は新しい行と見なされます。詳細については [examples](#examples) セクションを参照してください。
+カンマ区切りのタプルは単一の値に置き換えることも可能です。この場合、各値は新しい行と見なされます。詳細については [examples](#examples) セクションを参照してください。
 :::
 
 ## Returned value {#returned-value}
@@ -122,7 +121,8 @@ FROM VALUES(
     └──────────┘
 ```
 
-また、行の仕様を提供せずに（[syntax](#syntax) の `'column1_name Type1, column2_name Type2, ...'`）、その場合はカラムが自動的に名前付けされます。
+また、行の指定（`'column1_name Type1, column2_name Type2, ...'` 
+を [syntax](#syntax) で参照）を提供しなくても使用でき、この場合カラムは自動的に命名されます。
 
 例えば：
 
@@ -156,7 +156,7 @@ FROM VALUES(
  9. │ Mason    │ Venice    │
 10. │ Isabella │ Prague    │
     └──────────┴───────────┘
-```   
+```
 
 ```sql
 -- single values

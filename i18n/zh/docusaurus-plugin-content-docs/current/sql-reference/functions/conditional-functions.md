@@ -1,111 +1,19 @@
 ---
-'description': 'Conditional Functions的文档'
-'sidebar_label': 'Conditional'
-'sidebar_position': 40
+'description': '关于 Conditional Functions 的文档'
+'sidebar_label': '条件'
 'slug': '/sql-reference/functions/conditional-functions'
 'title': '条件函数'
+'doc_type': 'reference'
 ---
 
 
 # 条件函数
 
-## if {#if}
+## 概述 {#overview}
 
-执行条件分支。
+### 直接使用条件结果 {#using-conditional-results-directly}
 
-如果条件 `cond` 的结果为非零值，函数返回表达式 `then` 的结果。如果 `cond` 的结果为零或 `NULL`，则返回 `else` 表达式的结果。
-
-设置 [short_circuit_function_evaluation](/operations/settings/settings#short_circuit_function_evaluation) 控制是否使用短路求值。如果启用，`then` 表达式仅在 `cond` 为 `true` 的行上进行评估，而 `else` 表达式在 `cond` 为 `false` 的行上进行评估。例如，在短路求值的情况下，执行查询 `SELECT if(number = 0, 0, intDiv(42, number)) FROM numbers(10)` 时不会抛出除以零的异常。
-
-`then` 和 `else` 必须是相似的类型。
-
-**语法**
-
-```sql
-if(cond, then, else)
-```
-别名: `cond ? then : else`（三元运算符）
-
-**参数**
-
-- `cond` – 被评估的条件。UInt8、Nullable(UInt8) 或 NULL。
-- `then` – 如果 `condition` 为 true，则返回的表达式。
-- `else` – 如果 `condition` 为 false 或 NULL，则返回的表达式。
-
-**返回值**
-
-依赖于条件 `cond` 的 `then` 和 `else` 表达式的结果。
-
-**示例**
-
-```sql
-SELECT if(1, plus(2, 2), plus(2, 6));
-```
-
-结果：
-
-```text
-┌─plus(2, 2)─┐
-│          4 │
-└────────────┘
-```
-
-## multiIf {#multiif}
-
-允许以更紧凑的格式在查询中编写 [CASE](../../sql-reference/operators/index.md#conditional-expression) 操作符。
-
-**语法**
-
-```sql
-multiIf(cond_1, then_1, cond_2, then_2, ..., else)
-```
-
-设置 [short_circuit_function_evaluation](/operations/settings/settings#short_circuit_function_evaluation) 控制是否使用短路求值。如果启用，`then_i` 表达式仅在 `((NOT cond_1) AND (NOT cond_2) AND ... AND (NOT cond_{i-1}) AND cond_i)` 为 `true` 的行上进行评估，`cond_i` 仅在 `((NOT cond_1) AND (NOT cond_2) AND ... AND (NOT cond_{i-1}))` 为 `true` 的行上进行评估。例如，在短路求值的情况下，执行查询 `SELECT multiIf(number = 2, intDiv(1, number), number = 5) FROM numbers(10)` 时不会抛出除以零的异常。
-
-**参数**
-
-这个函数接受 `2N+1` 个参数：
-- `cond_N` — 第 N 个被评估的条件，控制是否返回 `then_N`。
-- `then_N` — 当 `cond_N` 为 true 时函数的结果。
-- `else` — 如果没有条件为 true 的函数结果。
-
-**返回值**
-
-依赖于条件 `cond_N` 的 `then_N` 或 `else` 表达式的结果。
-
-**示例**
-
-假设这个表：
-
-```text
-┌─left─┬─right─┐
-│ ᴺᵁᴸᴸ │     4 │
-│    1 │     3 │
-│    2 │     2 │
-│    3 │     1 │
-│    4 │  ᴺᵁᴸᴸ │
-└──────┴───────┘
-```
-
-```sql
-SELECT
-    left,
-    right,
-    multiIf(left < right, 'left is smaller', left > right, 'left is greater', left = right, 'Both equal', 'Null value') AS result
-FROM LEFT_RIGHT
-
-┌─left─┬─right─┬─result──────────┐
-│ ᴺᵁᴸᴸ │     4 │ Null value      │
-│    1 │     3 │ left is smaller │
-│    2 │     2 │ Both equal      │
-│    3 │     1 │ left is greater │
-│    4 │  ᴺᵁᴸᴸ │ Null value      │
-└──────┴───────┴─────────────────┘
-```
-
-## 直接使用条件结果 {#using-conditional-results-directly}
-
-条件总是结果为 `0`、`1` 或 `NULL`。因此，你可以像这样直接使用条件结果：
+条件总是返回 `0`，`1` 或 `NULL`。因此，您可以直接像这样使用条件结果：
 
 ```sql
 SELECT left < right AS is_small
@@ -120,9 +28,9 @@ FROM LEFT_RIGHT
 └──────────┘
 ```
 
-## 条件中的 NULL 值 {#null-values-in-conditionals}
+### 条件中的 NULL 值 {#null-values-in-conditionals}
 
-当 `NULL` 值涉及到条件时，结果也将是 `NULL`。
+当条件中涉及 `NULL` 值时，结果也将是 `NULL`。
 
 ```sql
 SELECT
@@ -136,9 +44,9 @@ SELECT
 └───────────────┴───────────────┴──────────────────┴────────────────────┘
 ```
 
-因此，如果类型为 `Nullable`，你应该小心构造查询。
+因此，如果类型是 `Nullable`，您应该仔细构建查询。
 
-以下示例演示了在 `multiIf` 中未能添加等于条件的情况。
+以下示例通过未能将等于条件添加到 `multiIf` 中来演示这一点。
 
 ```sql
 SELECT
@@ -156,128 +64,15 @@ FROM LEFT_RIGHT
 └──────┴───────┴──────────────────┘
 ```
 
-## greatest {#greatest}
+### CASE 语句 {#case-statement}
 
-返回一组值中的最大值。所有列表成员必须是可比较的类型。
-
-示例：
-
-```sql
-SELECT greatest(1, 2, toUInt8(3), 3.) result,  toTypeName(result) type;
-```
-```response
-┌─result─┬─type────┐
-│      3 │ Float64 │
-└────────┴─────────┘
-```
-
-:::note
-返回的类型是 Float64，因为 UInt8 必须被提升到 64 位以进行比较。
-:::
-
-```sql
-SELECT greatest(['hello'], ['there'], ['world'])
-```
-```response
-┌─greatest(['hello'], ['there'], ['world'])─┐
-│ ['world']                                 │
-└───────────────────────────────────────────┘
-```
-
-```sql
-SELECT greatest(toDateTime32(now() + toIntervalDay(1)), toDateTime64(now(), 3))
-```
-```response
-┌─greatest(toDateTime32(plus(now(), toIntervalDay(1))), toDateTime64(now(), 3))─┐
-│                                                       2023-05-12 01:16:59.000 │
-└──---──────────────────────────────────────────────────────────────────────────┘
-```
-
-:::note
-返回的类型是 DateTime64，因为 DateTime32 必须被提升到 64 位以进行比较。
-:::
-
-## least {#least}
-
-返回一组值中的最小值。所有列表成员必须是可比较的类型。
-
-示例：
-
-```sql
-SELECT least(1, 2, toUInt8(3), 3.) result,  toTypeName(result) type;
-```
-```response
-┌─result─┬─type────┐
-│      1 │ Float64 │
-└────────┴─────────┘
-```
-
-:::note
-返回的类型是 Float64，因为 UInt8 必须被提升到 64 位以进行比较。
-:::
-
-```sql
-SELECT least(['hello'], ['there'], ['world'])
-```
-```response
-┌─least(['hello'], ['there'], ['world'])─┐
-│ ['hello']                              │
-└────────────────────────────────────────┘
-```
-
-```sql
-SELECT least(toDateTime32(now() + toIntervalDay(1)), toDateTime64(now(), 3))
-```
-```response
-┌─least(toDateTime32(plus(now(), toIntervalDay(1))), toDateTime64(now(), 3))─┐
-│                                                    2023-05-12 01:16:59.000 │
-└────────────────────────────────────────────────────────────────────────────┘
-```
-
-:::note
-返回的类型是 DateTime64，因为 DateTime32 必须被提升到 64 位以进行比较。
-:::
-
-## clamp {#clamp}
-
-将返回值限制在 A 和 B 之间。
-
-**语法**
-
-```sql
-clamp(value, min, max)
-```
-
-**参数**
-
-- `value` – 输入值。
-- `min` – 限制下界。
-- `max` – 限制上界。
-
-**返回值**
-
-如果值小于最小值，返回最小值；如果大于最大值，返回最大值；否则返回当前值。
-
-示例：
-
-```sql
-SELECT clamp(1, 2, 3) result,  toTypeName(result) type;
-```
-```response
-┌─result─┬─type────┐
-│      2 │ Float64 │
-└────────┴─────────┘
-```
-
-## CASE 语句 {#case-statement}
-
-ClickHouse 中的 CASE 表达式提供了类似于 SQL CASE 操作符的条件逻辑。它评估条件，并根据第一个匹配的条件返回值。
+ClickHouse 中的 CASE 表达式提供类似于 SQL CASE 操作符的条件逻辑。它评估条件并根据第一个匹配的条件返回值。
 
 ClickHouse 支持两种形式的 CASE：
 
 1. `CASE WHEN ... THEN ... ELSE ... END`
-<br/>
-这种形式允许完全灵活性，并通过 [multiIf](/sql-reference/functions/conditional-functions#multiif) 函数内部实现。每个条件独立评估，表达式可以包括非常量值。
+   <br/>
+   这种形式允许完全的灵活性，并且使用 [multiIf](/sql-reference/functions/conditional-functions#multiIf) 函数在内部实现。每个条件都是独立评估的，表达式可以包含非常量值。
 
 ```sql
 SELECT
@@ -309,8 +104,8 @@ WHERE number < 5
 ```
 
 2. `CASE <expr> WHEN <val1> THEN ... WHEN <val2> THEN ... ELSE ... END`
-<br/>
-这种更紧凑的形式优化了常量值匹配，并在内部使用 `caseWithExpression()`。
+   <br/>
+   这种更紧凑的形式针对常量值匹配进行了优化，并在内部使用 `caseWithExpression()`。
 
 例如，以下是有效的：
 
@@ -372,15 +167,15 @@ WHERE number < 3
 3 rows in set. Elapsed: 0.001 sec.
 ```
 
-### 注意事项 {#caveats}
+#### 注意事项 {#caveats}
 
-ClickHouse 在评估任何条件之前确定 CASE 表达式（或其内部等效物，如 `multiIf`）的结果类型。当返回表达式的类型不同时，例如不同时区或数字类型时，这一点非常重要。
+ClickHouse 在评估任何条件之前确定 CASE 表达式（或其内部等效项，如 `multiIf`）的结果类型。这在返回表达式类型不同的情况下非常重要，例如不同的时区或数字类型。
 
-- 结果类型基于所有分支中最大的兼容类型进行选择。
-- 一旦选择了这一类型，所有其他分支将被隐式转换为此类型——即使它们的逻辑在运行时永远不会被执行。
-- 对于如 DateTime64 这样的类型，其中时区是类型签名的一部分，这可能导致意外行为：第一个遇到的时区可能会用于所有分支，即使其他分支指定了不同的时区。
+- 结果类型是根据所有分支中最大的兼容类型来选择的。
+- 一旦选择了此类型，所有其他分支都隐式转换为此类型，即使其逻辑在运行时永远不会被执行。
+- 对于像 DateTime64 这样，时区是类型签名的一部分，这可能导致意想不到的行为：第一次遇到的时区可能会被用于所有分支，即使其他分支指定了不同的时区。
 
-例如，下面所有行返回在第一个匹配分支的时区中的时间戳，即 `Asia/Kolkata`
+例如，下面所有行返回的时间戳都位于第一个匹配分支的时区，即 `Asia/Kolkata`
 
 ```sql
 SELECT
@@ -410,9 +205,9 @@ WHERE number < 3
 3 rows in set. Elapsed: 0.011 sec.
 ```
 
-在这里，ClickHouse 看到多个 `DateTime64(3, <timezone>)` 返回类型。它推断出共同类型为 `DateTime64(3, 'Asia/Kolkata'` 作为它第一次看到的类型，隐式地将其他分支转换为此类型。
+在这里，ClickHouse 看到多个 `DateTime64(3, <timezone>)` 返回类型。它推断出公共类型为 `DateTime64(3, 'Asia/Kolkata'`，因为这是它看到的第一个类型，隐式地将其他分支转换为此类型。
 
-可以通过转换为字符串来保留预期的时区格式：
+这可以通过转换为字符串以保留预期的时区格式来解决：
 
 ```sql
 SELECT
@@ -443,10 +238,340 @@ WHERE number < 3
 ```
 
 <!-- 
-The inner content of the tags below are replaced at doc framework build time with 
-docs generated from system.functions. Please do not modify or remove the tags.
-See: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+下面标签的内部内容将在文档框架构建时替换为 
+从 system.functions 生成的文档。请勿修改或删除这些标签。
+见：https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
 -->
 
 <!--AUTOGENERATED_START-->
+## clamp {#clamp}
+
+引入于：v24.5
+
+
+限制一个值在指定的最小和最大范围内。
+
+如果值小于最小值，则返回最小值。如果值大于最大值，则返回最大值。否则，返回值本身。
+
+所有参数必须是可比较类型。结果类型是所有参数中的最大兼容类型。
+    
+
+**语法**
+
+```sql
+clamp(value, min, max)
+```
+
+**参数**
+
+- `value` — 要限制的值。 - `min` — 最小范围。 - `max` — 最大范围。 
+
+**返回值**
+
+返回限制在 [min, max] 范围内的值。
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT clamp(5, 1, 10) AS result;
+```
+
+```response title=Response
+┌─result─┐
+│      5 │
+└────────┘
+```
+
+**低于最小值**
+
+```sql title=Query
+SELECT clamp(-3, 0, 7) AS result;
+```
+
+```response title=Response
+┌─result─┐
+│      0 │
+└────────┘
+```
+
+**高于最大值**
+
+```sql title=Query
+SELECT clamp(15, 0, 7) AS result;
+```
+
+```response title=Response
+┌─result─┐
+│      7 │
+└────────┘
+```
+
+
+
+## greatest {#greatest}
+
+引入于：v1.1
+
+
+返回参数中最大的值。
+`NULL` 参数将被忽略。
+
+- 对于数组，返回字典序最大的数组。
+- 对于 `DateTime` 类型，结果类型会提升到最大类型（例如，混合 `DateTime32` 时返回 `DateTime64`）。
+
+:::note 使用设置 `least_greatest_legacy_null_behavior` 更改 `NULL` 的行为
+版本 [24.12](/whats-new/changelog/2024#a-id2412a-clickhouse-release-2412-2024-12-19) 引入了一个向后不兼容的更改，使得 `NULL` 值被忽略，而之前如果其中一个参数为 `NULL` 则返回 `NULL`。
+要保持先前的行为，请将设置 `least_greatest_legacy_null_behavior`（默认值：`false`）设为 `true`。
+:::
+    
+
+**语法**
+
+```sql
+greatest(x1[, x2, ...])
+```
+
+**参数**
+
+- `x1[, x2, ...]` — 一个或多个要比较的值。所有参数必须是可比较类型。[`Any`](/sql-reference/data-types)
+
+
+**返回值**
+
+返回参数中的最大值，并提升为最大兼容类型。[`Any`](/sql-reference/data-types)
+
+**示例**
+
+**数字类型**
+
+```sql title=Query
+SELECT greatest(1, 2, toUInt8(3), 3.) AS result, toTypeName(result) AS type;
+-- The type returned is a Float64 as the UInt8 must be promoted to 64 bit for the comparison.
+```
+
+```response title=Response
+┌─result─┬─type────┐
+│      3 │ Float64 │
+└────────┴─────────┘
+```
+
+**数组**
+
+```sql title=Query
+SELECT greatest(['hello'], ['there'], ['world']);
+```
+
+```response title=Response
+┌─greatest(['hello'], ['there'], ['world'])─┐
+│ ['world']                                 │
+└───────────────────────────────────────────┘
+```
+
+**DateTime 类型**
+
+```sql title=Query
+SELECT greatest(toDateTime32(now() + toIntervalDay(1)), toDateTime64(now(), 3));
+-- The type returned is a DateTime64 as the DateTime32 must be promoted to 64 bit for the comparison.
+```
+
+```response title=Response
+┌─greatest(toD⋯(now(), 3))─┐
+│  2025-05-28 15:50:53.000 │
+└──────────────────────────┘
+```
+
+
+
+## if {#if}
+
+引入于：v1.1
+
+
+执行条件分支。
+
+- 如果条件 `cond` 评估为非零值，则该函数返回表达式 `then` 的结果。
+- 如果 `cond` 评估为零或 NULL，则返回 `else` 表达式的结果。
+
+设置 [`short_circuit_function_evaluation`](/operations/settings/settings#short_circuit_function_evaluation) 控制是否使用短路求值。
+
+如果启用，`then` 表达式只会在 `cond` 为真时在行上进行评估，而 `else` 表达式只会在 `cond` 为假时进行评估。
+
+例如，使用短路求值时，执行以下查询时不会引发除零异常：
+
+```sql
+SELECT if(number = 0, 0, intDiv(42, number)) FROM numbers(10)
+```
+
+`then` 和 `else` 必须是相似的类型。
+
+
+**语法**
+
+```sql
+if(cond, then, else)
+```
+
+**参数**
+
+- `cond` — 被评估的条件。[`UInt8`](/sql-reference/data-types/int-uint) 或 [`Nullable(UInt8)`](/sql-reference/data-types/nullable) 或 [`NULL`](/sql-reference/syntax#null)
+- `then` — 如果 `cond` 为真则返回的表达式。 - `else` — 如果 `cond` 为假或为 `NULL` 则返回的表达式。 
+
+**返回值**
+
+根据条件 `cond` 返回 `then` 或 `else` 表达式的结果。
+
+**示例**
+
+**示例用法**
+
+```sql title=Query
+SELECT if(1, 2 + 2, 2 + 6) AS res;
+```
+
+```response title=Response
+┌─res─┐
+│   4 │
+└─────┘
+```
+
+
+
+## least {#least}
+
+引入于：v1.1
+
+
+返回参数中最小的值。
+`NULL` 参数将被忽略。
+
+- 对于数组，返回字典序最小的数组。
+- 对于 DateTime 类型，结果类型会提升到最大类型（例如，混合 DateTime32 时返回 DateTime64）。
+
+:::note 使用设置 `least_greatest_legacy_null_behavior` 更改 `NULL` 的行为
+版本 [24.12](/whats-new/changelog/2024#a-id2412a-clickhouse-release-2412-2024-12-19) 引入了一个向后不兼容的更改，使得 `NULL` 值被忽略，而之前如果其中一个参数为 `NULL` 则返回 `NULL`。
+要保持先前的行为，请将设置 `least_greatest_legacy_null_behavior`（默认值：`false`）设为 `true`。
+:::
+    
+
+**语法**
+
+```sql
+least(x1[, x2, ...])
+```
+
+**参数**
+
+- `x1[, x2, ...]` — 一个单独的值或多个值进行比较。所有参数必须是可比较类型。[`Any`](/sql-reference/data-types)
+
+
+**返回值**
+
+返回参数中的最小值，并提升为最大兼容类型。[`Any`](/sql-reference/data-types)
+
+**示例**
+
+**数字类型**
+
+```sql title=Query
+SELECT least(1, 2, toUInt8(3), 3.) AS result, toTypeName(result) AS type;
+-- The type returned is a Float64 as the UInt8 must be promoted to 64 bit for the comparison.
+```
+
+```response title=Response
+┌─result─┬─type────┐
+│      1 │ Float64 │
+└────────┴─────────┘
+```
+
+**数组**
+
+```sql title=Query
+SELECT least(['hello'], ['there'], ['world']);
+```
+
+```response title=Response
+┌─least(['hell⋯ ['world'])─┐
+│ ['hello']                │
+└──────────────────────────┘
+```
+
+**DateTime 类型**
+
+```sql title=Query
+SELECT least(toDateTime32(now() + toIntervalDay(1)), toDateTime64(now(), 3));
+-- The type returned is a DateTime64 as the DateTime32 must be promoted to 64 bit for the comparison.
+```
+
+```response title=Response
+┌─least(toDate⋯(now(), 3))─┐
+│  2025-05-27 15:55:20.000 │
+└──────────────────────────┘
+```
+
+
+
+## multiIf {#multiIf}
+
+引入于：v1.1
+
+
+允许在查询中以更紧凑的方式编写 [`CASE`](/sql-reference/operators#conditional-expression) 操作符。
+按顺序评估每个条件。对于第一个为真（非零且不为 `NULL`）的条件，返回相应的分支值。
+如果没有条件为真，则返回 `else` 值。
+
+设置 [`short_circuit_function_evaluation`](/operations/settings/settings#short_circuit_function_evaluation) 控制是否使用短路求值。如果启用，`then_i` 表达式仅在 `((NOT cond_1) AND ... AND (NOT cond_{i-1}) AND cond_i)` 为真时在行上进行评估。
+
+例如，使用短路求值时，执行以下查询时不会引发除零异常：
+
+```sql
+SELECT multiIf(number = 2, intDiv(1, number), number = 5) FROM numbers(10)
+```
+
+所有分支和 else 表达式必须具有共同的超类型。 `NULL` 条件被视为假。
+    
+
+**语法**
+
+```sql
+multiIf(cond_1, then_1, cond_2, then_2, ..., else)
+```
+
+**参数**
+
+- `cond_N` — 第 N 个被评估的条件，控制是否返回 `then_N`。[`UInt8`](/sql-reference/data-types/int-uint) 或 [`Nullable(UInt8)`](/sql-reference/data-types/nullable) 或 [`NULL`](/sql-reference/syntax#null)
+- `then_N` — 当 `cond_N` 为真时函数的结果。 - `else` — 如果没有条件为真，则函数的结果。 
+
+**返回值**
+
+返回匹配 `cond_N` 的 `then_N` 的结果，否则返回 `else` 条件。
+
+**示例**
+
+**示例用法**
+
+```sql title=Query
+CREATE TABLE LEFT_RIGHT (left Nullable(UInt8), right Nullable(UInt8)) ENGINE = Memory;
+INSERT INTO LEFT_RIGHT VALUES (NULL, 4), (1, 3), (2, 2), (3, 1), (4, NULL);
+
+SELECT
+    left,
+    right,
+    multiIf(left < right, 'left is smaller', left > right, 'left is greater', left = right, 'Both equal', 'Null value') AS result
+FROM LEFT_RIGHT;
+```
+
+```response title=Response
+┌─left─┬─right─┬─result──────────┐
+│ ᴺᵁᴸᴸ │     4 │ Null value      │
+│    1 │     3 │ left is smaller │
+│    2 │     2 │ Both equal      │
+│    3 │     1 │ left is greater │
+│    4 │  ᴺᵁᴸᴸ │ Null value      │
+└──────┴───────┴─────────────────┘
+```
+
+
+
 <!--AUTOGENERATED_END-->

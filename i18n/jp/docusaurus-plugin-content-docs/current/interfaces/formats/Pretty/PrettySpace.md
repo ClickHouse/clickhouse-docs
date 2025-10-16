@@ -1,12 +1,13 @@
 ---
-alias: []
-description: 'PrettySpace フォーマットのドキュメント'
-input_format: false
-keywords:
+'alias': []
+'description': 'PrettySpaceフォーマットのDocumentation'
+'input_format': false
+'keywords':
 - 'PrettySpace'
-output_format: true
-slug: '/interfaces/formats/PrettySpace'
-title: 'PrettySpace'
+'output_format': true
+'slug': '/interfaces/formats/PrettySpace'
+'title': 'PrettySpace'
+'doc_type': 'reference'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
@@ -17,7 +18,8 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 ## 説明 {#description}
 
-[`PrettyCompact`](./PrettyCompact.md) フォーマットとは異なり、スペース文字を使用してテーブルを表示し、グリッドではなくなっています。
+[`PrettyCompact`](./PrettyCompact.md) フォーマットとは異なり、テーブルを表示するために 
+グリッドの代わりにホワイトスペース（空白文字）が使用されます。
 
 ## 使用例 {#example-usage}
 

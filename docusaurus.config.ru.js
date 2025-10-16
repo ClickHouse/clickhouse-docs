@@ -166,9 +166,11 @@ const config = {
         theme: {
           customCss: [require.resolve("./src/css/custom.scss")],
         },
-        gtag: {
-          trackingID: "G-KF1LLRTQ5Q",
-        },
+        ...(process.env.VERCEL_ENV !== 'preview' && {
+          googleTagManager: {
+            containerId: 'GTM-WTNTDT7W',
+          },
+        }),
       }),
     ],
   ],

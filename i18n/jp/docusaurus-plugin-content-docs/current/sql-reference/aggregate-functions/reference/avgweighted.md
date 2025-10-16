@@ -1,16 +1,15 @@
 ---
-description: 'Calculates the weighted arithmetic mean.'
-sidebar_position: 113
-slug: '/sql-reference/aggregate-functions/reference/avgweighted'
-title: 'avgWeighted'
+'description': '重み付き算術平均を計算します。'
+'sidebar_position': 113
+'slug': '/sql-reference/aggregate-functions/reference/avgweighted'
+'title': 'avgWeighted'
+'doc_type': 'reference'
 ---
-
-
 
 
 # avgWeighted
 
-[加重算術平均](https://en.wikipedia.org/wiki/Weighted_arithmetic_mean)を計算します。
+[加重算術平均](https://en.wikipedia.org/wiki/Weighted_arithmetic_mean) を計算します。
 
 **構文**
 
@@ -24,14 +23,14 @@ avgWeighted(x, weight)
 - `weight` — 値の重み。
 
 `x` と `weight` はどちらも
-[整数](../../../sql-reference/data-types/int-uint.md)または[浮動小数点](../../../sql-reference/data-types/float.md)でなければなりませんが、異なる型であっても構いません。
+[整数](../../../sql-reference/data-types/int-uint.md) または [浮動小数点](../../../sql-reference/data-types/float.md) でなければなりませんが、異なる型であることも可能です。
 
 **返される値**
 
-- すべての重みが 0 に等しいか、指定された重みパラメータが空の場合は `NaN` を返します。
+- すべての重みが 0 に等しい場合、または提供された重みパラメータが空の場合は `NaN` を返します。
 - それ以外の場合は加重平均を返します。
 
-**戻り値の型**は常に [Float64](../../../sql-reference/data-types/float.md) です。
+**戻り値の型** は常に [Float64](../../../sql-reference/data-types/float.md) です。
 
 **例**
 
@@ -39,7 +38,7 @@ avgWeighted(x, weight)
 
 ```sql
 SELECT avgWeighted(x, w)
-FROM values('x Int8, w Int8', (4, 1), (1, 0), (10, 2))
+FROM VALUES('x Int8, w Int8', (4, 1), (1, 0), (10, 2))
 ```
 
 結果:
@@ -56,7 +55,7 @@ FROM values('x Int8, w Int8', (4, 1), (1, 0), (10, 2))
 
 ```sql
 SELECT avgWeighted(x, w)
-FROM values('x Int8, w Float64', (4, 1), (1, 0), (10, 2))
+FROM VALUES('x Int8, w Float64', (4, 1), (1, 0), (10, 2))
 ```
 
 結果:
@@ -73,7 +72,7 @@ FROM values('x Int8, w Float64', (4, 1), (1, 0), (10, 2))
 
 ```sql
 SELECT avgWeighted(x, w)
-FROM values('x Int8, w Int8', (0, 0), (1, 0), (10, 0))
+FROM VALUES('x Int8, w Int8', (0, 0), (1, 0), (10, 0))
 ```
 
 結果:
@@ -89,7 +88,7 @@ FROM values('x Int8, w Int8', (0, 0), (1, 0), (10, 0))
 クエリ:
 
 ```sql
-CREATE table test (t UInt8) ENGINE = Memory;
+CREATE TABLE test (t UInt8) ENGINE = Memory;
 SELECT avgWeighted(t) FROM test
 ```
 

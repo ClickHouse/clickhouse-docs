@@ -1,20 +1,19 @@
 ---
-alias: []
+slug: '/interfaces/formats/Protobuf'
 description: 'Документация для формата Protobuf'
-input_format: true
+title: Protobuf
 keywords: ['Protobuf']
+doc_type: guide
+input_format: true
 output_format: true
-slug: /interfaces/formats/Protobuf
-title: 'Protobuf'
 ---
-
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge/>
 
-| Вход | Выход | Псевдоним |
-|------|-------|-----------|
-| ✔    | ✔     |           |
+| Входные данные | Выходные данные | Псевдоним |
+|----------------|-----------------|-----------|
+| ✔              | ✔               |           |
 
 ## Описание {#description}
 
@@ -40,7 +39,7 @@ SELECT * FROM test.table FORMAT Protobuf SETTINGS format_schema = 'schemafile:Me
 cat protobuf_messages.bin | clickhouse-client --query "INSERT INTO test.table SETTINGS format_schema='schemafile:MessageType' FORMAT Protobuf"
 ```
 
-Файл `schemafile.proto` выглядит следующим образом:
+Где файл `schemafile.proto` выглядит следующим образом:
 
 ```capnp
 syntax = "proto3";
@@ -53,9 +52,9 @@ message MessageType {
 };
 ```
 
-Для нахождения соответствия между колонками таблицы и полями типа сообщения Protocol Buffers ClickHouse сравнивает их имена.
-Это сравнение регистронезависимое, и символы `_` (подчеркивание) и `.` (точка) считаются равными.
-Если типы колонки и поля сообщения Protocol Buffers различны, применяется необходимое преобразование.
+Чтобы найти соответствие между колонками таблицы и полями типа сообщения Protocol Buffers, ClickHouse сравнивает их имена.
+Это сравнение нечувствительно к регистру, символы `_` (подчеркивание) и `.` (точка) считаются равными.
+Если типы колонки и поля сообщения Protocol Buffers различаются, применяется необходимое преобразование.
 
 Поддерживаются вложенные сообщения. Например, для поля `z` в следующем типе сообщения:
 
@@ -71,11 +70,11 @@ message MessageType {
 };
 ```
 
-ClickHouse пытается найти колонку с именем `x.y.z` (или `x_y_z`, или `X.y_Z` и так далее).
+ClickHouse пытается найти колонку с именем `x.y.z` (или `x_y_z` или `X.y_Z` и так далее).
 
 Вложенные сообщения подходят для ввода или вывода [вложенных структур данных](/sql-reference/data-types/nested-data-structures/index.md).
 
-Значения по умолчанию, определенные в схеме protobuf, такие как приведенная ниже, не применяются, вместо них используются [умолчания таблицы](/sql-reference/statements/create/table#default_values):
+Значения по умолчанию, определенные в схеме protobuf, как тот, что следует, не применяются; вместо них используются [значения по умолчанию таблицы](/sql-reference/statements/create/table#default_values):
 
 ```capnp
 syntax = "proto2";
@@ -85,14 +84,49 @@ message MessageType {
 }
 ```
 
-ClickHouse вводит и выводит сообщения protobuf в формате `length-delimited`.
+Если сообщение содержит [oneof](https://protobuf.dev/programming-guides/proto3/#oneof) и `input_format_protobuf_oneof_presence` установлен, ClickHouse заполняет колонку, которая указывает, какое поле oneof было найдено.
+
+```capnp
+syntax = "proto3";
+
+message StringOrString {
+  oneof string_oneof {
+    string string1 = 1;
+    string string2 = 42;
+  }
+}
+```
+
+```sql
+CREATE TABLE string_or_string ( string1 String, string2 String, string_oneof Enum('no'=0, 'hello' = 1, 'world' = 42))  Engine=MergeTree ORDER BY tuple();
+INSERT INTO string_or_string from INFILE '$CURDIR/data_protobuf/String1' SETTINGS format_schema='$SCHEMADIR/string_or_string.proto:StringOrString' FORMAT ProtobufSingle;
+SELECT * FROM string_or_string
+```
+
+```text
+   ┌─────────┬─────────┬──────────────┐
+   │ string1 │ string2 │ string_oneof │
+   ├─────────┼─────────┼──────────────┤
+1. │         │ string2 │ world        │
+   ├─────────┼─────────┼──────────────┤
+2. │ string1 │         │ hello        │
+   └─────────┴─────────┴──────────────┘
+
+```
+Имя колонки, указывающей наличие, должно совпадать с именем oneof. Поддерживаются вложенные сообщения (см. [basic-examples](#basic-examples)).
+Допустимые типы: Int8, UInt8, Int16, UInt16, Int32, UInt32, Int64, UInt64, Enum, Enum8 или Enum16.
+Enum (как и Enum8 или Enum16) должен содержать все возможные теги oneof плюс 0, чтобы указать на отсутствие, строковые представления не имеют значения.
+
+Настройка [`input_format_protobuf_oneof_presence`](/operations/settings/settings-formats.md#input_format_protobuf_oneof_presence) по умолчанию отключена.
+
+ClickHouse принимает и отправляет сообщения protobuf в формате `length-delimited`.
 Это означает, что перед каждым сообщением его длина должна быть записана как [целое число переменной длины (varint)](https://developers.google.com/protocol-buffers/docs/encoding#varints).
 
-Смотрите также: [как читать/писать сообщения protobuf с длиной, отделенной от других, на популярных языках](https://cwiki.apache.org/confluence/display/GEODE/Delimiting+Protobuf+Messages).
+См. также: [как читать/писать сообщения protobuf с длиной-разделителем на популярных языках](https://cwiki.apache.org/confluence/display/GEODE/Delimiting+Protobuf+Messages).
 
-### Использование автогенерируемой схемы {#using-autogenerated-protobuf-schema}
+### Использование сгенерированной схемы {#using-autogenerated-protobuf-schema}
 
-Если у вас нет внешней схемы Protobuf для ваших данных, вы все равно можете вводить/выводить данные в формате Protobuf с использованием автогенерируемой схемы.
+Если у вас нет внешней схемы Protobuf для ваших данных, вы все равно можете вводить/выводить данные в формате Protobuf, используя сгенерированную схему.
 
 Например:
 
@@ -100,25 +134,25 @@ ClickHouse вводит и выводит сообщения protobuf в фор�
 SELECT * FROM test.hits format Protobuf SETTINGS format_protobuf_use_autogenerated_schema=1
 ```
 
-В этом случае ClickHouse автогенерирует схему Protobuf в соответствии со структурой таблицы, используя функцию [`structureToProtobufSchema`](/sql-reference/functions/other-functions.md#structure_to_protobuf_schema).
+В этом случае ClickHouse будет автоматически генерировать схему Protobuf в соответствии с структурой таблицы с помощью функции [`structureToProtobufSchema`](/sql-reference/functions/other-functions.md#structure_to_protobuf_schema).
 Затем он будет использовать эту схему для сериализации данных в формате Protobuf.
 
-Вы также можете читать файл Protobuf с автогенерируемой схемой. В этом случае файл должен быть создан с использованием той же схемы:
+Вы также можете прочитать файл Protobuf с autogenerated схемой. В этом случае необходимо, чтобы файл был создан с использованием той же схемы:
 
 ```bash
 $ cat hits.bin | clickhouse-client --query "INSERT INTO test.hits SETTINGS format_protobuf_use_autogenerated_schema=1 FORMAT Protobuf"
 ```
 
-Параметр [`format_protobuf_use_autogenerated_schema`](/operations/settings/settings-formats.md#format_protobuf_use_autogenerated_schema) по умолчанию включен и применяется, если [`format_schema`](/operations/settings/formats#format_schema) не установлен.
+Настройка [`format_protobuf_use_autogenerated_schema`](/operations/settings/settings-formats.md#format_protobuf_use_autogenerated_schema) включена по умолчанию и применяется, если [`format_schema`](/operations/settings/formats#format_schema) не установлен.
 
-Вы также можете сохранить автогенерируемую схему в файл во время ввода/вывода, используя параметр [`output_format_schema`](/operations/settings/formats#output_format_schema). Например:
+Вы также можете сохранить сгенерированную схему в файл во время ввода/вывода, используя настройку [`output_format_schema`](/operations/settings/formats#output_format_schema). Например:
 
 ```sql
 SELECT * FROM test.hits format Protobuf SETTINGS format_protobuf_use_autogenerated_schema=1, output_format_schema='path/to/schema/schema.proto'
 ```
-В этом случае автогенерируемая схема Protobuf будет сохранена в файле `path/to/schema/schema.capnp`.
+В этом случае автоматически сгенерированная схема Protobuf будет сохранена в файл `path/to/schema/schema.capnp`.
 
-### Сброс кеша Protobuf {#drop-protobuf-cache}
+### Сброс кеша protobuf {#drop-protobuf-cache}
 
 Чтобы перезагрузить схему Protobuf, загруженную из [`format_schema_path`](/operations/server-configuration-parameters/settings.md/#format_schema_path), используйте оператор [`SYSTEM DROP ... FORMAT CACHE`](/sql-reference/statements/system.md/#system-drop-schema-format).
 

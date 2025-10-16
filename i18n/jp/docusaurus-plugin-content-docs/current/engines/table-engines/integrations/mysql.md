@@ -1,18 +1,16 @@
 ---
-description: 'Documentation for MySQL Table Engine'
-sidebar_label: 'MySQL'
-sidebar_position: 138
-slug: '/engines/table-engines/integrations/mysql'
-title: 'The MySQL engine allows you to perform `SELECT` and `INSERT` queries on
-  data that is stored on a remote MySQL server.'
+'description': 'MySQL テーブルエンジンのドキュメント'
+'sidebar_label': 'MySQL'
+'sidebar_position': 138
+'slug': '/engines/table-engines/integrations/mysql'
+'title': 'MySQLエンジンはリモートMySQLサーバーに保存されているデータに対して`SELECT`および`INSERT`クエリを実行できるようにします。'
+'doc_type': 'reference'
 ---
-
-
 
 
 # MySQL テーブルエンジン
 
-MySQL エンジンでは、リモート MySQL サーバーに保存されているデータに対して `SELECT` および `INSERT` クエリを実行できます。
+MySQL エンジンを使用すると、リモートの MySQL サーバーに保存されたデータに対して `SELECT` および `INSERT` クエリを実行できます。
 
 ## テーブルの作成 {#creating-a-table}
 
@@ -35,11 +33,11 @@ SETTINGS
 
 [CREATE TABLE](/sql-reference/statements/create/table) クエリの詳細な説明を参照してください。
 
-テーブル構造は元の MySQL テーブルの構造と異なる場合があります。
+テーブル構造は、元の MySQL テーブル構造と異なる場合があります。
 
-- カラム名は元の MySQL テーブルと同じである必要がありますが、これらのカラムの一部のみを使用しても、順番は自由です。
-- カラムタイプは元の MySQL テーブルのものと異なる場合があります。ClickHouse は値を ClickHouse データ型に[キャスト](../../../engines/database-engines/mysql.md#data_types-support)しようとします。
-- [external_table_functions_use_nulls](/operations/settings/settings#external_table_functions_use_nulls) 設定は、Nullable カラムの処理方法を定義します。デフォルト値: 1。0 の場合、テーブル関数は Nullable カラムを作成せず、null の代わりにデフォルト値を挿入します。これは配列内の NULL 値にも適用されます。
+- カラム名は元の MySQL テーブルと同じである必要がありますが、これらのカラムの一部のみを使用し、任意の順序で配置できます。
+- カラムの型は、元の MySQL テーブルの型と異なる場合があります。ClickHouse は、値を ClickHouse のデータ型に[キャスト](../../../engines/database-engines/mysql.md#data_types-support)しようとします。
+- [external_table_functions_use_nulls](/operations/settings/settings#external_table_functions_use_nulls) 設定は Nullable カラムの扱いを定義します。デフォルト値: 1。0 の場合、テーブル関数は Nullable カラムを作成せず、null の代わりにデフォルト値を挿入します。これは、配列内の NULL 値にも適用されます。
 
 **エンジンパラメータ**
 
@@ -47,17 +45,17 @@ SETTINGS
 - `database` — リモートデータベース名。
 - `table` — リモートテーブル名。
 - `user` — MySQL ユーザー。
-- `password` — ユーザーパスワード。
-- `replace_query` — `INSERT INTO` クエリを `REPLACE INTO` に変換するフラグ。`replace_query=1` の場合、クエリが代入されます。
+- `password` — ユーザーのパスワード。
+- `replace_query` — `INSERT INTO` クエリを `REPLACE INTO` に変換するフラグ。`replace_query=1` の場合、クエリが置き換えられます。
 - `on_duplicate_clause` — `INSERT` クエリに追加される `ON DUPLICATE KEY on_duplicate_clause` 式。
-    例: `INSERT INTO t (c1,c2) VALUES ('a', 2) ON DUPLICATE KEY UPDATE c2 = c2 + 1` では、`on_duplicate_clause` は `UPDATE c2 = c2 + 1` です。[MySQL ドキュメント](https://dev.mysql.com/doc/refman/8.0/en/insert-on-duplicate.html)を参照して、`ON DUPLICATE KEY` 句と共に使用できる `on_duplicate_clause` を確認してください。
+    例: `INSERT INTO t (c1,c2) VALUES ('a', 2) ON DUPLICATE KEY UPDATE c2 = c2 + 1` で、`on_duplicate_clause` は `UPDATE c2 = c2 + 1` です。`ON DUPLICATE KEY` 句で使用できる `on_duplicate_clause` を見つけるには、[MySQL のドキュメント](https://dev.mysql.com/doc/refman/8.0/en/insert-on-duplicate.html)を参照してください。
     `on_duplicate_clause` を指定するには、`replace_query` パラメータに `0` を渡す必要があります。`replace_query = 1` と `on_duplicate_clause` を同時に渡すと、ClickHouse は例外を生成します。
 
-引数は[名前付きコレクション](/operations/named-collections.md)を使用して渡すこともできます。この場合、`host` と `port` は別々に指定する必要があります。このアプローチは本番環境での使用が推奨されます。
+引数は [named collections](/operations/named-collections.md) を使用して渡すこともできます。この場合、`host` と `port` を別々に指定する必要があります。このアプローチは、運用環境で推奨されます。
 
-`=, !=, >, >=, <, <=` のような単純な `WHERE` 句は、MySQL サーバーで実行されます。
+`=, !=, >, >=, <, <=` のような簡単な `WHERE` 条件は、MySQL サーバーで実行されます。
 
-クエリが MySQL に終了してから、残りの条件と `LIMIT` サンプリング制約は ClickHouse でのみ実行されます。
+残りの条件と `LIMIT` サンプリング制約は、MySQL へのクエリが完了した後、ClickHouse でのみ実行されます。
 
 複数のレプリカをサポートしており、`|` でリストする必要があります。例えば：
 
@@ -67,7 +65,7 @@ CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) EN
 
 ## 使用例 {#usage-example}
 
-MySQL にテーブルを作成：
+MySQL でテーブルを作成します。
 
 ```text
 mysql> CREATE TABLE `test`.`test` (
@@ -90,7 +88,7 @@ mysql> select * from test;
 1 row in set (0,00 sec)
 ```
 
-ClickHouse でプレーン引数を使用してテーブルを作成：
+プレーン引数を使用して ClickHouse でテーブルを作成します。
 
 ```sql
 CREATE TABLE mysql_table
@@ -101,7 +99,7 @@ CREATE TABLE mysql_table
 ENGINE = MySQL('localhost:3306', 'test', 'test', 'bayonet', '123')
 ```
 
-または[名前付きコレクション](/operations/named-collections.md)を使用：
+または [named collections](/operations/named-collections.md) を使用します。
 
 ```sql
 CREATE NAMED COLLECTION creds AS
@@ -118,7 +116,7 @@ CREATE TABLE mysql_table
 ENGINE = MySQL(creds, table='test')
 ```
 
-MySQL テーブルからデータを取得：
+MySQL テーブルからデータを取得します。
 
 ```sql
 SELECT * FROM mysql_table
@@ -132,33 +130,33 @@ SELECT * FROM mysql_table
 
 ## 設定 {#mysql-settings}
 
-デフォルトの設定はあまり効率的ではなく、接続を再利用すらしません。これらの設定を使用すると、サーバーで実行されるクエリの数を増加させることができます。
+デフォルト設定は非常に効率的ではなく、接続の再利用すら行わないため、これらの設定を使用して、サーバーが毎秒実行するクエリの数を増やすことができます。
 
-### connection_auto_close {#connection-auto-close}
+### `connection_auto_close` {#connection-auto-close}
 
-クエリ実行後に接続を自動的に閉じることを許可し、すなわち接続の再利用を無効にします。
+クエリの実行後に接続を自動的に閉じることを許可します。つまり、接続の再利用を無効にします。
 
 可能な値：
 
-- 1 — 自動的に接続を閉じることが許可され、接続の再利用が無効
-- 0 — 自動的に接続を閉じることが許可されず、接続の再利用が有効
+- 1 — 自動的に接続を閉じることが許可されているため、接続の再利用が無効です。
+- 0 — 自動的に接続を閉じることは許可されず、接続の再利用が有効です。
 
 デフォルト値: `1`。
 
-### connection_max_tries {#connection-max-tries}
+### `connection_max_tries` {#connection-max-tries}
 
-フェイルオーバーのプールのリトライ回数を設定します。
+フェイルオーバーのプールに対するリトライ回数を設定します。
 
 可能な値：
 
 - 正の整数。
-- 0 — フェイルオーバーのプールにリトライはありません。
+- 0 — フェイルオーバーのプールに対するリトライはありません。
 
 デフォルト値: `3`。
 
-### connection_pool_size {#connection-pool-size}
+### `connection_pool_size` {#connection-pool-size}
 
-接続プールのサイズ（すべての接続が使用中の場合、クエリは自由になるまで待機します）。
+接続プールのサイズ（すべての接続が使用中の場合、クエリは接続が解放されるまで待ちます）。
 
 可能な値：
 
@@ -166,9 +164,9 @@ SELECT * FROM mysql_table
 
 デフォルト値: `16`。
 
-### connection_wait_timeout {#connection-wait-timeout}
+### `connection_wait_timeout` {#connection-wait-timeout}
 
-自由な接続を待機するタイムアウト（秒単位）（接続プールサイズでアクティブな接続がすでにある場合）、0 - 待機しない。
+接続がフリーになるのを待つためのタイムアウト（秒単位）（既に connection_pool_size のアクティブ接続がある場合）、0 - 待たない。
 
 可能な値：
 
@@ -176,7 +174,7 @@ SELECT * FROM mysql_table
 
 デフォルト値: `5`。
 
-### connect_timeout {#connect-timeout}
+### `connect_timeout` {#connect-timeout}
 
 接続タイムアウト（秒単位）。
 
@@ -186,7 +184,7 @@ SELECT * FROM mysql_table
 
 デフォルト値: `10`。
 
-### read_write_timeout {#read-write-timeout}
+### `read_write_timeout` {#read-write-timeout}
 
 読み取り/書き込みタイムアウト（秒単位）。
 
@@ -198,5 +196,5 @@ SELECT * FROM mysql_table
 
 ## 参照 {#see-also}
 
-- [MySQL テーブル関数](../../../sql-reference/table-functions/mysql.md)
+- [mysql テーブル関数](../../../sql-reference/table-functions/mysql.md)
 - [MySQL を辞書ソースとして使用する](/sql-reference/dictionaries#mysql)

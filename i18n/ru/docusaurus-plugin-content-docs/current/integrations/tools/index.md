@@ -1,15 +1,14 @@
 ---
-slug: /integrations/tools
+slug: '/integrations/tools'
+description: 'Страница назначения для секции инструментов'
+title: Инструменты
 keywords: ['Retool', 'Easypanel', 'Splunk']
-title: 'Инструменты'
-description: 'Посадочная страница для раздела инструментов'
+doc_type: landing-page
 ---
-
-
 # Инструменты
 
-| Страница   | Описание                                                                                                                     |
-|-----------|-----------------------------------------------------------------------------------------------------------------------------|
-| [SQL Client](/integrations/sql-clients) | Как интегрировать ClickHouse с различными популярными инструментами управления, анализа и визуализации баз данных                                                                   |
-| [Data Integrations](/integrations/tools/data-integrations)    | Интеграции данных для ClickHouse |
-| [Misc](/integrations/audit-splunk)     | Разное оборудование для ClickHouse                                                                               |
+| Страница   | Описание                                                                                                                      |
+|------------|-------------------------------------------------------------------------------------------------------------------------------|
+| [SQL Client](/integrations/sql-clients) | Как интегрировать ClickHouse с различными общими инструментами управления, анализа и визуализации баз данных                                                             |
+| [Data Integrations](/integrations/tools/data-integrations)    | Интеграция данных для ClickHouse |
+| [Misc](/integrations/audit-splunk)     | Разные инструменты для ClickHouse                                                                           |

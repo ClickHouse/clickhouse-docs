@@ -1,22 +1,22 @@
 ---
-description: 'Набор данных TPC-H и запросы.'
-sidebar_label: 'TPC-H'
-slug: /getting-started/example-datasets/tpch
+slug: '/getting-started/example-datasets/tpch'
+sidebar_label: TPC-H
+description: 'Набор данных и запросов бенчмарка TPC-H.'
 title: 'TPC-H (1999)'
+doc_type: reference
 ---
-
-Популярный бенчмарк, который моделирует внутреннее хранилище данных оптового поставщика. Данные хранятся в представлении 3-й нормальной формы, что требует множества joins во время выполнения запросов. Несмотря на его возраст и нереалистичное предположение о том, что данные распределены равномерно и независимо, TPC-H остается самым популярным бенчмарком OLAP на сегодняшний день.
+Популярный бенчмарк, который моделирует внутреннее хранилище данных оптового поставщика. Данные хранятся в представлении третьей нормальной формы, что требует множества соединений во время выполнения запросов. Несмотря на свой возраст и нереалистичное предположение о равномерном и независимом распределении данных, TPC-H остается самым популярным OLAP бенчмарком на сегодняшний день.
 
 **Ссылки**
 
 - [TPC-H](https://www.tpc.org/tpc_documents_current_versions/current_specifications5.asp)
-- [Новые бенчмарки TPC для поддержки принятия решений и веб-коммерции](https://doi.org/10.1145/369275.369291) (Poess и др., 2000)
-- [TPC-H проанализирован: скрытые сообщения и уроки, извлеченные из влиятельного бенчмарка](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz и др.), 2013
-- [Квантование choke points TPC-H и их оптимизаций](https://doi.org/10.14778/3389133.3389138) (Dresseler и др.), 2020
+- [New TPC Benchmarks for Decision Support and Web Commerce](https://doi.org/10.1145/369275.369291) (Poess et. al., 2000)
+- [TPC-H Analyzed: Hidden Messages and Lessons Learned from an Influential Benchmark](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz et. al.), 2013
+- [Quantifying TPC-H Choke Points and Their Optimizations](https://doi.org/10.14778/3389133.3389138) (Dresseler et. al.), 2020
 
-## Генерация данных и импорт {#data-generation-and-import}
+## Генерация и импорт данных {#data-generation-and-import}
 
-Сначала клонируйте репозиторий TPC-H и скомпилируйте генератор данных:
+Сначала клонируйте репозиторий TPC-H и соберите генератор данных:
 
 ```bash
 git clone https://github.com/gregrahn/tpch-kit.git
@@ -24,13 +24,13 @@ cd tpch-kit/dbgen
 make
 ```
 
-Затем сгенерируйте данные. Параметр `-s` указывает коэффициент масштаба. Например, с `-s 100` для таблицы 'lineitem' будет сгенерировано 600 миллионов строк.
+Затем сгенерируйте данные. Параметр `-s` указывает фактор масштабирования. Например, с `-s 100` генерируется 600 миллионов строк для таблицы 'lineitem'.
 
 ```bash
 ./dbgen -s 100
 ```
 
-Подробные размеры таблиц с коэффициентом масштаба 100:
+Подробные размеры таблиц при факторе масштабирования 100:
 
 | Таблица  | размер (в строках) | размер (сжатый в ClickHouse) |
 |----------|--------------------|-------------------------------|
@@ -41,18 +41,18 @@ make
 | partsupp | 80.000.000         | 4.37 ГБ                       |
 | customer | 15.000.000         | 1.19 ГБ                       |
 | orders   | 150.000.000        | 6.15 ГБ                       |
-| lineitem | 600.00.00          | 26.69 ГБ                      |
+| lineitem | 600.000.000        | 26.69 ГБ                      |
 
-(Сжатые размеры в ClickHouse взяты из `system.tables.total_bytes` и основаны на определениях таблиц ниже.)
+(Сжатые размеры в ClickHouse взяты из `system.tables.total_bytes` и основаны на приведенных ниже определениях таблиц.)
 
 Теперь создайте таблицы в ClickHouse.
 
-Мы придерживаемся правил спецификации TPC-H:
-- Первичные ключи создаются только для столбцов, упомянутых в разделе 1.4.2.2 спецификации.
-- Параметры замены были заменены значениями для проверки запросов в разделах 2.1.x.4 спецификации.
-- В соответствии с разделом 1.4.2.1, определения таблиц не используют необязательные ограничения `NOT NULL`, даже если `dbgen` генерирует их по умолчанию. 
-  Производительность запросов `SELECT` в ClickHouse не зависит от наличия или отсутствия ограничений `NOT NULL`.
-- В соответствии с разделом 1.3.1 мы используем родные типы данных ClickHouse (например, `Int32`, `String`) для реализации абстрактных типов данных, упомянутых в спецификации (например, `Identifier`, `Variable text, size N`). Единственный эффект этого — лучшая читабельность, типы данных SQL-92, генерируемые `dbgen` (например, `INTEGER`, `VARCHAR(40)`), также будут работать в ClickHouse.
+Мы придерживаемся правил спецификации TPC-H как можно ближе:
+- Первичные ключи создаются только для колонок, упомянутых в разделе 1.4.2.2 спецификации.
+- Заместительные параметры были заменены значениями для валидации запросов в разделах 2.1.x.4 спецификации.
+- В соответствии с разделом 1.4.2.1 определения таблиц не используют необязательные ограничения `NOT NULL`, даже если `dbgen` генерирует их по умолчанию. 
+  Производительность `SELECT` запросов в ClickHouse не зависит от наличия или отсутствия ограничений `NOT NULL`.
+- В соответствии с разделом 1.3.1, мы используем нативные типы данных ClickHouse (например, `Int32`, `String`) для реализации абстрактных типов данных, упомянутых в спецификации (например, `Identifier`, `Variable text, size N`). Единственным эффектом этого является лучшая читаемость, SQL-92 типы данных, генерируемые `dbgen` (например, `INTEGER`, `VARCHAR(40)`), также будут работать в ClickHouse.
 
 ```sql
 CREATE TABLE nation (
@@ -120,8 +120,8 @@ CREATE TABLE orders  (
     o_shippriority   Int32,
     o_comment        String)
 ORDER BY (o_orderkey);
--- Следующий порядок ключа является альтернативным и не соответствует официальным правилам TPC-H, но рекомендован в секции 4.5 в
--- "Квантовании choke points TPC-H и их оптимизаций":
+-- The following is an alternative order key which is not compliant with the official TPC-H rules but recommended by sec. 4.5 in
+-- "Quantifying TPC-H Choke Points and Their Optimizations":
 -- ORDER BY (o_orderdate, o_orderkey);
 
 CREATE TABLE lineitem (
@@ -142,8 +142,8 @@ CREATE TABLE lineitem (
     l_shipmode       String,
     l_comment        String)
 ORDER BY (l_orderkey, l_linenumber);
--- Следующий порядок ключа является альтернативным и не соответствует официальным правилам TPC-H, но рекомендован в секции 4.5 в
--- "Квантовании choke points TPC-H и их оптимизаций":
+-- The following is an alternative order key which is not compliant with the official TPC-H rules but recommended by sec. 4.5 in
+-- "Quantifying TPC-H Choke Points and Their Optimizations":
 -- ORDER BY (l_shipdate, l_orderkey, l_linenumber);
 ```
 
@@ -161,11 +161,11 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO lineitem FORMA
 ```
 
 :::note
-Вместо использования tpch-kit и генерации таблиц самостоятельно, вы также можете импортировать данные из публичного S3-бакета. Не забудьте 
-сначала создать пустые таблицы с помощью приведенных выше команд `CREATE`.
+Вместо использования tpch-kit и самостоятельной генерации таблиц, вы можете импортировать данные из публичной корзины S3. Убедитесь,
+что предварительно создали пустые таблицы с помощью вышеуказанных операторов `CREATE`.
 
 ```sql
--- Коэффициент масштаба 1
+-- Scaling factor 1
 INSERT INTO nation SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/nation.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO region SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/region.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO part SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/part.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
@@ -175,7 +175,7 @@ INSERT INTO customer SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 INSERT INTO orders SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/orders.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/lineitem.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 
--- Коэффициент масштаба 100
+-- Scaling factor 100
 INSERT INTO nation SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/nation.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO region SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/region.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO part SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/part.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
@@ -187,17 +187,28 @@ INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 ````
 :::
 
-## Запросы {#queries}
+## Queries {#queries}
 
 :::note
-Настройка [`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls) должна быть включена для получения правильных результатов в соответствии с SQL стандартом.
+Setting [`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls) should be enabled to produce correct results according to SQL standard.
 :::
 
-Запросы генерируются с помощью `./qgen -s <scaling_factor>`. Примеры запросов для `s = 100`:
+:::note
+Some TPC-H queries query use correlated subqueries which are available since v25.8.
+Please use at least this ClickHouse version to run the queries.
+
+In ClickHouse versions 25.5, 25.6, 25.7, it is necessary to set additionally:
+
+```sql
+SET allow_experimental_correlated_subqueries = 1;
+```
+:::
+
+Запросы генерируются с помощью `./qgen -s <scaling_factor>`. Примеры запросов для `s = 100` приведены ниже:
 
 **Корректность**
 
-Результаты запросов совпадают с официальными результатами, если не указано иное. Чтобы проверить, создайте базу данных TPC-H с коэффициентом масштаба = 1 (`dbgen`, см. выше) и сравните с [ожидаемыми результатами в tpch-kit](https://github.com/gregrahn/tpch-kit/tree/master/dbgen/answers).
+Результаты запросов согласуются с официальными результатами, если не указано иное. Для проверки создайте базу данных TPC-H с фактором масштабирования = 1 (`dbgen`, см. выше) и сравните с [ожидаемыми результатами в tpch-kit](https://github.com/gregrahn/tpch-kit/tree/master/dbgen/answers).
 
 **Q1**
 
@@ -228,8 +239,6 @@ ORDER BY
 **Q2**
 
 ```sql
-SET allow_experimental_correlated_subqueries = 1; -- с версии v25.5
-
 SELECT
     s_acctbal,
     s_name,
@@ -275,62 +284,6 @@ ORDER BY
     p_partkey;
 ```
 
-::::note
-До v25.5 запрос не работал "из коробки" из-за коррелированных подзапросов. Соответствующая проблема: https://github.com/ClickHouse/ClickHouse/issues/6697
-
-Эта альтернативная формулировка работает и была подтверждена для возврата справочных результатов.
-
-```sql
-WITH MinSupplyCost AS (
-    SELECT
-        ps_partkey,
-        MIN(ps_supplycost) AS min_supplycost
-    FROM
-        partsupp ps
-    JOIN
-        supplier s ON ps.ps_suppkey = s.s_suppkey
-    JOIN
-        nation n ON s.s_nationkey = n.n_nationkey
-    JOIN
-        region r ON n.n_regionkey = r.r_regionkey
-    WHERE
-        r.r_name = 'EUROPE'
-    GROUP BY
-        ps_partkey
-)
-SELECT
-    s.s_acctbal,
-    s.s_name,
-    n.n_name,
-    p.p_partkey,
-    p.p_mfgr,
-    s.s_address,
-    s.s_phone,
-    s.s_comment
-FROM
-    part p
-JOIN
-    partsupp ps ON p.p_partkey = ps.ps_partkey
-JOIN
-    supplier s ON s.s_suppkey = ps.ps_suppkey
-JOIN
-    nation n ON s.s_nationkey = n.n_nationkey
-JOIN
-    region r ON n.n_regionkey = r.r_regionkey
-JOIN
-    MinSupplyCost msc ON ps.ps_partkey = msc.ps_partkey AND ps.ps_supplycost = msc.min_supplycost
-WHERE
-    p.p_size = 15
-    AND p.p_type LIKE '%BRASS'
-    AND r.r_name = 'EUROPE'
-ORDER BY
-    s.s_acctbal DESC,
-    n.n_name,
-    s.s_name,
-    p.p_partkey;
-```
-::::
-
 **Q3**
 
 ```sql
@@ -361,8 +314,6 @@ ORDER BY
 **Q4**
 
 ```sql
-SET allow_experimental_correlated_subqueries = 1; -- с версии v25.5
-
 SELECT
     o_orderpriority,
     count(*) AS order_count
@@ -385,39 +336,6 @@ GROUP BY
 ORDER BY
     o_orderpriority;
 ```
-
-::::note
-До v25.5 запрос не работал "из коробки" из-за коррелированных подзапросов. Соответствующая проблема: https://github.com/ClickHouse/ClickHouse/issues/6697
-
-Эта альтернативная формулировка работает и была подтверждена для возврата справочных результатов.
-
-```sql
-WITH ValidLineItems AS (
-    SELECT
-        l_orderkey
-    FROM
-        lineitem
-    WHERE
-        l_commitdate < l_receiptdate
-    GROUP BY
-        l_orderkey
-)
-SELECT
-    o.o_orderpriority,
-    COUNT(*) AS order_count
-FROM
-    orders o
-JOIN
-    ValidLineItems vli ON o.o_orderkey = vli.l_orderkey
-WHERE
-    o.o_orderdate >= DATE '1993-07-01'
-    AND o.o_orderdate < DATE '1993-07-01' + INTERVAL '3' MONTH
-GROUP BY
-    o.o_orderpriority
-ORDER BY
-    o.o_orderpriority;
-```
-::::
 
 **Q5**
 
@@ -463,9 +381,9 @@ WHERE
 ```
 
 ::::note
-На февраль 2025 года запрос не работает "из коробки" из-за ошибки с добавлением Decimal. Соответствующая проблема: https://github.com/ClickHouse/ClickHouse/issues/70136
+С февраля 2025 года запрос не работает из коробки из-за бага с добавлением Decimal. Соответствующая проблема: https://github.com/ClickHouse/ClickHouse/issues/70136
 
-Эта альтернативная формулировка работает и была подтверждена для возврата справочных результатов.
+Эта альтернативная формулировка работает и была проверена на соответствие эталонным результатам.
 
 ```sql
 SELECT
@@ -692,7 +610,7 @@ FROM
     lineitem
 WHERE
     o_orderkey = l_orderkey
-    AND l_shipmode in ('MAIL', 'SHIP')
+    AND l_shipmode IN ('MAIL', 'SHIP')
     AND l_commitdate < l_receiptdate
     AND l_shipdate < l_commitdate
     AND l_receiptdate >= DATE '1994-01-01'
@@ -712,7 +630,7 @@ SELECT
 FROM (
     SELECT
         c_custkey,
-        count(o_orderkey) as c_count
+        count(o_orderkey) AS c_count
     FROM
         customer LEFT OUTER JOIN orders ON
             c_custkey = o_custkey
@@ -790,7 +708,7 @@ SELECT
     p_brand,
     p_type,
     p_size,
-    count(distinct ps_suppkey) AS supplier_cnt
+    count(DISTINCT ps_suppkey) AS supplier_cnt
 FROM
     partsupp,
     part
@@ -798,8 +716,8 @@ WHERE
     p_partkey = ps_partkey
     AND p_brand <> 'Brand#45'
     AND p_type NOT LIKE 'MEDIUM POLISHED%'
-    AND p_size in (49, 14, 23,  45, 19, 3, 36, 9)
-    AND ps_suppkey NOT in (
+    AND p_size IN (49, 14, 23,  45, 19, 3, 36, 9)
+    AND ps_suppkey NOT IN (
         SELECT
             s_suppkey
         FROM
@@ -821,8 +739,6 @@ ORDER BY
 **Q17**
 
 ```sql
-SET allow_experimental_correlated_subqueries = 1; -- с версии v25.5
-
 SELECT
     sum(l_extendedprice) / 7.0 AS avg_yearly
 FROM
@@ -842,37 +758,6 @@ WHERE
     );
 ```
 
-::::note
-До v25.5 запрос не работал "из коробки" из-за коррелированных подзапросов. Соответствующая проблема: https://github.com/ClickHouse/ClickHouse/issues/6697
-
-Эта альтернативная формулировка работает и была подтверждена для возврата справочных результатов.
-
-```sql
-WITH AvgQuantity AS (
-    SELECT
-        l_partkey,
-        AVG(l_quantity) * 0.2 AS avg_quantity
-    FROM
-        lineitem
-    GROUP BY
-        l_partkey
-)
-SELECT
-    SUM(l.l_extendedprice) / 7.0 AS avg_yearly
-FROM
-    lineitem l
-JOIN
-    part p ON p.p_partkey = l.l_partkey
-JOIN
-    AvgQuantity aq ON l.l_partkey = aq.l_partkey
-WHERE
-    p.p_brand = 'Brand#23'
-    AND p.p_container = 'MED BOX'
-    AND l.l_quantity < aq.avg_quantity;
-
-```
-::::
-
 **Q18**
 
 ```sql
@@ -888,7 +773,7 @@ FROM
     orders,
     lineitem
 WHERE
-    o_orderkey in (
+    o_orderkey IN (
         SELECT
             l_orderkey
         FROM
@@ -923,30 +808,30 @@ WHERE
     (
         p_partkey = l_partkey
         AND p_brand = 'Brand#12'
-        AND p_container in ('SM CASE', 'SM BOX', 'SM PACK', 'SM PKG')
+        AND p_container IN ('SM CASE', 'SM BOX', 'SM PACK', 'SM PKG')
         AND l_quantity >= 1 AND l_quantity <= 1 + 10
         AND p_size BETWEEN 1 AND 5
-        AND l_shipmode in ('AIR', 'AIR REG')
+        AND l_shipmode IN ('AIR', 'AIR REG')
         AND l_shipinstruct = 'DELIVER IN PERSON'
     )
     OR
     (
         p_partkey = l_partkey
         AND p_brand = 'Brand#23'
-        AND p_container in ('MED BAG', 'MED BOX', 'MED PKG', 'MED PACK')
+        AND p_container IN ('MED BAG', 'MED BOX', 'MED PKG', 'MED PACK')
         AND l_quantity >= 10 AND l_quantity <= 10 + 10
         AND p_size BETWEEN 1 AND 10
-        AND l_shipmode in ('AIR', 'AIR REG')
+        AND l_shipmode IN ('AIR', 'AIR REG')
         AND l_shipinstruct = 'DELIVER IN PERSON'
     )
     OR
     (
         p_partkey = l_partkey
         AND p_brand = 'Brand#34'
-        AND p_container in ('LG CASE', 'LG BOX', 'LG PACK', 'LG PKG')
+        AND p_container IN ('LG CASE', 'LG BOX', 'LG PACK', 'LG PKG')
         AND l_quantity >= 20 AND l_quantity <= 20 + 10
         AND p_size BETWEEN 1 AND 15
-        AND l_shipmode in ('AIR', 'AIR REG')
+        AND l_shipmode IN ('AIR', 'AIR REG')
         AND l_shipinstruct = 'DELIVER IN PERSON'
     );
 ```
@@ -954,8 +839,6 @@ WHERE
 **Q20**
 
 ```sql
-SET allow_experimental_correlated_subqueries = 1; -- с версии v25.5
-
 SELECT
     s_name,
     s_address
@@ -995,15 +878,9 @@ ORDER BY
     s_name;
 ```
 
-::::note
-До v25.5 запрос не работал "из коробки" из-за коррелированных подзапросов. Соответствующая проблема: https://github.com/ClickHouse/ClickHouse/issues/6697
-::::
-
 **Q21**
 
 ```sql
-SET allow_experimental_correlated_subqueries = 1; -- с версии v25.5
-
 SELECT
     s_name,
     count(*) AS numwait
@@ -1044,15 +921,10 @@ ORDER BY
     numwait DESC,
     s_name;
 ```
-::::note
-До v25.5 запрос не работал "из коробки" из-за коррелированных подзапросов. Соответствующая проблема: https://github.com/ClickHouse/ClickHouse/issues/6697
-::::
 
 **Q22**
 
 ```sql
-SET allow_experimental_correlated_subqueries = 1; -- с версии v25.5
-
 SELECT
     cntrycode,
     count(*) AS numcust,
@@ -1090,7 +962,3 @@ GROUP BY
 ORDER BY
     cntrycode;
 ```
-
-::::note
-До v25.5 запрос не работал "из коробки" из-за коррелированных подзапросов. Соответствующая проблема: https://github.com/ClickHouse/ClickHouse/issues/6697
-::::

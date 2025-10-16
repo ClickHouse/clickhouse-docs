@@ -1,22 +1,18 @@
 ---
-description: 'The result of the `cramersV` function ranges from 0 (corresponding
-  to no association between the variables) to 1 and can reach 1 only when each value
-  is completely determined by the other. It may be viewed as the association between
-  two variables as a percentage of their maximum possible variation.'
-sidebar_position: 127
-slug: '/sql-reference/aggregate-functions/reference/cramersv'
-title: 'cramersV'
+'description': '`cramersV` 関数の結果は、0（変数間の関連性がないことに対応）から1までの範囲で、各値が完全に他の値によって決定される場合のみ1に達することができます。これは、2つの変数間の関連性をそれらの最大可能な変動のパーセンテージとして見ることができます。'
+'sidebar_position': 127
+'slug': '/sql-reference/aggregate-functions/reference/cramersv'
+'title': 'cramersV'
+'doc_type': 'reference'
 ---
-
-
 
 
 # cramersV
 
-[Cramer's V](https://en.wikipedia.org/wiki/Cram%C3%A9r%27s_V)（時々Cramer's phiと呼ばれる）は、テーブル内の二つのカラム間の関連性を測定する指標です。`cramersV`関数の結果は、変数間に関連がない場合に相当する0から1までの範囲で、各値が互いに完全に決定される場合にのみ1に達することができます。この指標は、二つの変数間の関連性をその最大可能変動の割合として見ることができます。
+[Cramer's V](https://en.wikipedia.org/wiki/Cram%C3%A9r%27s_V)（場合によってはCramer's phiとも呼ばれる）は、テーブル内の2つのカラム間の関連性を測定する指標です。 `cramersV`関数の結果は、0（変数間に関連性がないことに対応）から1までの範囲で、各値が他の値によって完全に決定される場合にのみ1に到達します。これは、2つの変数間の関連性をその最大の可能な変動の割合として見ることができます。
 
 :::note
-バイアス修正されたCramer's Vのバージョンについては、[cramersVBiasCorrected](./cramersvbiascorrected.md)を参照してください。
+Cramer's Vのバイアス補正バージョンについては、以下を参照してください: [cramersVBiasCorrected](./cramersvbiascorrected.md)
 :::
 
 **構文**
@@ -27,18 +23,18 @@ cramersV(column1, column2)
 
 **パラメータ**
 
-- `column1`: 比較する最初のカラム。
-- `column2`: 比較する二番目のカラム。
+- `column1`: 比較される最初のカラム。
+- `column2`: 比較される2番目のカラム。
 
 **返される値**
 
-- カラムの値間に関連がない場合に相当する0から（完全な関連）1までの値。
+- カラムの値間に関連性がないことに対応する0から（完全な関連性に対応する）1までの値。
 
 タイプ: いつも [Float64](../../../sql-reference/data-types/float.md)。
 
 **例**
 
-以下の二つのカラムは互いに関連がないため、`cramersV`の結果は0です：
+以下で比較されている2つのカラムは互いに関連性がないため、`cramersV`の結果は0です：
 
 クエリ:
 
@@ -63,7 +59,7 @@ FROM
 └────────────────┘
 ```
 
-以下の二つのカラムはかなり密接に関連しているため、`cramersV`の結果は高い値になります：
+以下の2つのカラムは比較的近い関連性を持っているため、`cramersV`の結果は高い値になります：
 
 ```sql
 SELECT

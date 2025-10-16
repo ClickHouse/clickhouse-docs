@@ -5,9 +5,10 @@
 'keywords':
 - 'chdb'
 - 'data formats'
+'doc_type': 'reference'
 ---
 
-| 参考页面           |
+| 参考页面       |
 |----------------------|
 | [数据格式](/chdb/reference/data-formats)  |
-| [SQL 参考](/chdb/reference/sql-reference) |
+| [SQL参考](/chdb/reference/sql-reference) |

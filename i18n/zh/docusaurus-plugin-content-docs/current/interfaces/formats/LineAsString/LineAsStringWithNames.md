@@ -7,15 +7,16 @@
 'output_format': true
 'slug': '/interfaces/formats/LineAsStringWithNames'
 'title': 'LineAsStringWithNames'
+'doc_type': 'reference'
 ---
 
 | 输入 | 输出 | 别名 |
-|-------|--------|-------|
-| ✗     | ✔      |       |
+|------|------|------|
+| ✗    | ✔    |      |
 
 ## 描述 {#description}
 
-`LineAsStringWithNames` 格式类似于 [`LineAsString`](./LineAsString.md) 格式，但会打印带有列名的标题行。
+`LineAsStringWithNames` 格式类似于 [`LineAsString`](./LineAsString.md) 格式，但打印带有列名称的标题行。
 
 ## 示例用法 {#example-usage}
 

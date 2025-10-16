@@ -1,40 +1,41 @@
 ---
-'title': '使用 clickhouse-local 数据库'
-'sidebar_label': '使用 clickhouse-local 数据库'
+'title': '使用 clickhouse-local DATABASE'
+'sidebar_label': '使用 clickhouse-local DATABASE'
 'slug': '/chdb/guides/clickhouse-local'
-'description': '学习如何与 chDB 一起使用 clickhouse-local 数据库'
+'description': '学习如何使用 clickhouse-local DATABASE 与 chDB'
 'keywords':
 - 'chdb'
 - 'clickhouse-local'
+'doc_type': 'guide'
 ---
 
-[clickhouse-local](/operations/utilities/clickhouse-local) 是一个带有嵌入版本 ClickHouse 的 CLI。  
-它赋予用户使用 ClickHouse 的能力，而无需安装服务器。  
+[clickhouse-local](/operations/utilities/clickhouse-local) 是一个嵌入了 ClickHouse 的命令行工具。
+它使用户能够使用 ClickHouse 而无需安装服务器。
 在本指南中，我们将学习如何从 chDB 使用 clickhouse-local 数据库。
 
 ## Setup {#setup}
 
-让我们首先创建一个虚拟环境：
+首先创建一个虚拟环境：
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-现在我们将安装 chDB。  
-确保您拥有 2.0.2 或更高版本：
+现在我们将安装 chDB。
+确保你安装的版本是 2.0.2 或更高版本：
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-现在我们要安装 [ipython](https://ipython.org/)：
+现在我们将安装 [ipython](https://ipython.org/)：
 
 ```bash
 pip install ipython
 ```
 
-我们将使用 `ipython` 来运行本指南中的其余命令，您可以通过运行以下命令启动它：
+我们将使用 `ipython` 来运行本指南中的命令，你可以通过运行以下命令启动它：
 
 ```bash
 ipython
@@ -42,14 +43,14 @@ ipython
 
 ## Installing clickhouse-local {#installing-clickhouse-local}
 
-下载和安装 clickhouse-local 的过程与 [下载和安装 ClickHouse](/install) 相同。  
-我们可以通过运行以下命令来完成这一步：
+下载和安装 clickhouse-local 的过程与 [下载和安装 ClickHouse](/install) 相同。
+我们可以通过运行以下命令来实现：
 
 ```bash
 curl https://clickhouse.com/ | sh
 ```
 
-为了通过将数据持久化到目录中来启动 clickhouse-local，我们需要传入 `--path`：
+要启动 clickhouse-local 并将数据持久化到某个目录中，我们需要传递一个 `--path` 参数：
 
 ```bash
 ./clickhouse -m --path demo.chdb
@@ -57,7 +58,7 @@ curl https://clickhouse.com/ | sh
 
 ## Ingesting data into clickhouse-local {#ingesting-data-into-clickhouse-local}
 
-默认数据库仅在内存中存储数据，因此我们需要创建一个命名数据库，以确保我们所摄取的任何数据都持久保存在磁盘上。
+默认数据库仅存储内存中的数据，因此我们需要创建一个命名数据库，以确保我们输入的任何数据都持久化到磁盘。
 
 ```sql
 CREATE DATABASE foo;
@@ -72,7 +73,7 @@ SELECT rand() AS number
 FROM numbers(10_000_000);
 ```
 
-让我们写一个查询来查看我们得到了哪些数据：
+让我们写一个查询来查看我们有哪些数据：
 
 ```sql
 SELECT quantilesExact(0, 0.5, 0.75, 0.99)(number) AS quants
@@ -83,8 +84,8 @@ FROM foo.randomNumbers
 └───────────────────────────────────────┘
 ```
 
-完成后，确保您从 CLI 中 `exit;`，因为只有一个进程可以在这个目录上保持锁定。  
-如果不这样做，当我们尝试从 chDB 连接到数据库时，将会出现以下错误：
+完成后，请确保从 CLI 中 `exit;`，因为只有一个进程可以锁定该目录。
+如果我们不这样做，当尝试从 chDB 连接到数据库时会出现以下错误：
 
 ```text
 ChdbError: Code: 76. DB::Exception: Cannot lock file demo.chdb/status. Another server instance in same directory is already running. (CANNOT_OPEN_FILE)
@@ -117,7 +118,7 @@ Row 1:
 quants: [0,9976599,2147776478,4209286886]
 ```
 
-我们还可以从 chDB 向这个数据库插入数据：
+我们也可以从 chDB 向这个数据库插入数据：
 
 ```python
 sess.query("""

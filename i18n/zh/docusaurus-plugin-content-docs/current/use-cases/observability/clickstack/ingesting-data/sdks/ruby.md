@@ -3,39 +3,40 @@
 'pagination_prev': null
 'pagination_next': null
 'sidebar_position': 7
-'description': 'Ruby on Rails SDK 用于 ClickStack - ClickHouse 观察性堆栈'
+'description': 'Ruby on Rails SDK 用于 ClickStack - ClickHouse 可观察性堆栈'
 'title': 'Ruby on Rails'
+'doc_type': 'guide'
 ---
 
-此指南整合了：
+以下指南整合了：
 
 <table>
   <tbody>
     <tr>
       <td className="pe-2">✖️ 日志</td>
       <td className="pe-2">✖️ ️️指标</td>
-      <td className="pe-2">✅ 跟踪</td>
+      <td className="pe-2">✅ 追踪</td>
     </tr>
   </tbody>
 </table>
 
-_要将日志发送到 ClickStack，请通过 [OpenTelemetry 收集器](/use-cases/observability/clickstack/ingesting-data/otel-collector) 发送日志。_
+_要将日志发送到 ClickStack，请通过 [OpenTelemetry collector](/use-cases/observability/clickstack/ingesting-data/otel-collector) 发送日志。_
 
-## 入门 {#getting-started}
+## 开始使用 {#getting-started}
 
 ### 安装 OpenTelemetry 包 {#install-otel-packages}
 
 使用以下命令安装 OpenTelemetry 包。
 
-```bash
+```shell
 bundle add opentelemetry-sdk opentelemetry-instrumentation-all opentelemetry-exporter-otlp
 ```
 
-### 配置 OpenTelemetry + 日志格式化器 {#configure-otel-logger-formatter}
+### 配置 OpenTelemetry + 日志格式器 {#configure-otel-logger-formatter}
 
-接下来，您需要初始化 OpenTelemetry 跟踪仪器并配置 Rails 日志记录器的日志消息格式化器，以便日志可以自动与跟踪关联在一起。没有自定义格式化器，日志将不会在 ClickStack 中自动关联在一起。
+接下来，您需要初始化 OpenTelemetry 跟踪仪器，并为 Rails 日志记录器配置日志消息格式器，以便日志可以自动与追踪关联。如果没有自定义格式器，日志将无法在 ClickStack 中自动关联在一起。
 
-在 `config/initializers` 文件夹中，创建一个名为 `hyperdx.rb` 的文件，并添加以下内容：
+在 `config/initializers` 文件夹中，创建一个名为 `hyperdx.rb` 的文件，并将以下内容添加到其中：
 
 ```ruby
 
@@ -71,9 +72,9 @@ end
 
 ### 配置环境变量 {#configure-environment-variables}
 
-之后，您需要在终端配置以下环境变量，以将遥测数据发送到 ClickStack：
+然后您需要在您的 shell 中配置以下环境变量，以将遥测数据发送到 ClickStack：
 
-```bash
+```shell
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
 OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
@@ -82,4 +83,4 @@ OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 
 _`OTEL_SERVICE_NAME` 环境变量用于在 HyperDX 应用中识别您的服务，可以是您想要的任何名称。_
 
-`OTEL_EXPORTER_OTLP_HEADERS` 环境变量包含通过 HyperDX 应用在 `团队设置 → API 密钥` 中可用的 API 密钥。
+`OTEL_EXPORTER_OTLP_HEADERS` 环境变量包含可通过 HyperDX 应用在 `团队设置 → API 密钥` 中找到的 API 密钥。

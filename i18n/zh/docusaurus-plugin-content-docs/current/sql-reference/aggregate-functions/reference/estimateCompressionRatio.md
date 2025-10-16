@@ -3,11 +3,12 @@
 'sidebar_position': 132
 'slug': '/sql-reference/aggregate-functions/reference/estimateCompressionRatio'
 'title': 'estimateCompressionRatio'
+'doc_type': 'reference'
 ---
 
 ## estimateCompressionRatio {#estimatecompressionration}
 
-估算给定列的压缩比，而无需实际压缩。
+估计给定列的压缩比，而不进行实际压缩。
 
 **语法**
 
@@ -17,18 +18,18 @@ estimateCompressionRatio(codec, block_size_bytes)(column)
 
 **参数**
 
-- `column` - 任何类型的列
+- `column` - 任意类型的列
 
 **参数**
 
-- `codec` - 包含 [压缩编解码器](/sql-reference/statements/create/table#column_compression_codec) 的 [字符串](../../../sql-reference/data-types/string.md) 或多个以逗号分隔的编解码器的单个字符串。
+- `codec` - 包含一个 [压缩编解码器](/sql-reference/statements/create/table#column_compression_codec) 的 [String](../../../sql-reference/data-types/string.md) 或多个用逗号分隔的编解码器的字符串。
 - `block_size_bytes` - 压缩数据的块大小。这类似于同时设置 [`max_compress_block_size`](../../../operations/settings/merge-tree-settings.md#max_compress_block_size) 和 [`min_compress_block_size`](../../../operations/settings/merge-tree-settings.md#min_compress_block_size)。默认值为 1 MiB (1048576 字节)。
 
-这两个参数都是可选的。
+两个参数都是可选的。
 
 **返回值**
 
-- 返回给定列的估算压缩比。
+- 返回给定列的估计压缩比。
 
 类型: [Float64](/sql-reference/data-types/float)。
 

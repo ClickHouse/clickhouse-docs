@@ -1,17 +1,16 @@
 ---
-description: 'Документация для оператора ALTER TABLE ... MODIFY QUERY'
-sidebar_label: 'VIEW'
+slug: '/sql-reference/statements/alter/view'
+sidebar_label: VIEW
 sidebar_position: 50
-slug: /sql-reference/statements/alter/view
+description: 'Документация для ALTER TABLE ... MODIFY QUERY Statement'
 title: 'Оператор ALTER TABLE ... MODIFY QUERY'
+doc_type: reference
 ---
-
-
 # ALTER TABLE ... MODIFY QUERY Statement
 
-Вы можете изменить `SELECT` запрос, который был указан при создании [материализованного представления](/sql-reference/statements/create/view#materialized-view) с помощью оператора `ALTER TABLE ... MODIFY QUERY` без прерывания процесса приема данных.
+Вы можете изменить `SELECT` запрос, который был указан при создании [материализованного представления](/sql-reference/statements/create/view#materialized-view), с помощью оператора `ALTER TABLE ... MODIFY QUERY` без прерывания процесса загрузки данных.
 
-Эта команда создана для изменения материализованного представления, созданного с помощью `TO [db.]name`. Она не изменяет структуру лежащей в основе таблицы и не изменяет определение столбцов материализованного представления, поэтому применение этой команды очень ограничено для материализованных представлений, созданных без `TO [db.]name`.
+Эта команда создана для изменения материализованного представления, созданного с помощью оператора `TO [db.]name`. Она не изменяет структуру базовой таблицы хранения и не изменяет определение колонок материализованного представления, поэтому применение этой команды очень ограничено для материализованных представлений, созданных без оператора `TO [db.]name`.
 
 **Пример с TO таблицей**
 
@@ -28,7 +27,7 @@ FROM events
 GROUP BY ts, event_type;
 
 INSERT INTO events
-SELECT Date '2020-01-01' + interval number * 900 second,
+SELECT DATE '2020-01-01' + interval number * 900 second,
        ['imp', 'click'][number%2+1]
 FROM numbers(100);
 
@@ -44,15 +43,15 @@ ORDER BY ts, event_type;
 │ 2020-01-02 00:00:00 │ imp        │               2 │
 └─────────────────────┴────────────┴─────────────────┘
 
--- Добавим новое измерение `cost`
--- и новое измерение `browser`.
+-- Let's add the new measurement `cost`
+-- and the new dimension `browser`.
 
 ALTER TABLE events
   ADD COLUMN browser String,
   ADD COLUMN cost Float64;
 
--- Столбцы не обязаны соответствовать в материализованном представлении и TO
--- (целевой таблице), поэтому следующий оператор alter не нарушает вставку.
+-- Column do not have to match in a materialized view and TO
+-- (destination table), so the next alter does not break insertion.
 
 ALTER TABLE events_by_day
     ADD COLUMN cost Float64,
@@ -66,7 +65,7 @@ SELECT Date '2020-01-02' + interval number * 900 second,
        10/(number+1)%33
 FROM numbers(100);
 
--- Новые столбцы `browser` и `cost` пусты, потому что мы пока не изменили материализованное представление.
+-- New columns `browser` and `cost` are empty because we did not change Materialized View yet.
 
 SELECT ts, event_type, browser, sum(events_cnt) events_cnt, round(sum(cost),2) cost
 FROM events_by_day
@@ -120,7 +119,7 @@ ORDER BY ts, event_type;
 │ 2020-01-04 00:00:00 │ imp        │ chrome  │          1 │   0.1 │
 └─────────────────────┴────────────┴─────────┴────────────┴───────┘
 
--- !!! Во время `MODIFY ORDER BY` первичный ключ был неявно введен.
+-- !!! During `MODIFY ORDER BY` PRIMARY KEY was implicitly introduced.
 
 SHOW CREATE TABLE events_by_day FORMAT TSVRaw
 
@@ -137,9 +136,9 @@ PRIMARY KEY (event_type, ts)
 ORDER BY (event_type, ts, browser)
 SETTINGS index_granularity = 8192
 
--- !!! Определение столбцов остается без изменений, но это не важно, мы не запрашиваем
--- МАТЕРИАЛИЗОВАННОЕ ПРЕДСТАВЛЕНИЕ, мы запрашиваем TO (хранилище) таблицы.
--- Раздел SELECT обновлен.
+-- !!! The columns' definition is unchanged but it does not matter, we are not querying
+-- MATERIALIZED VIEW, we are querying TO (storage) table.
+-- SELECT section is updated.
 
 SHOW CREATE TABLE mv FORMAT TSVRaw;
 
@@ -164,7 +163,7 @@ GROUP BY
 
 **Пример без TO таблицы**
 
-Применение очень ограничено, поскольку вы можете изменять только `SELECT` раздел без добавления новых столбцов.
+Применение очень ограничено, потому что вы можете изменить только секцию `SELECT`, не добавляя новые колонки.
 
 ```sql
 CREATE TABLE src_table (`a` UInt32) ENGINE = MergeTree ORDER BY a;
@@ -196,8 +195,8 @@ SELECT * FROM mv;
 
 ## ALTER LIVE VIEW Statement {#alter-live-view-statement}
 
-`ALTER LIVE VIEW ... REFRESH` оператор обновляет [Live view](/sql-reference/statements/create/view#live-view). Смотрите [Принудительное обновление Live View](/sql-reference/statements/create/view#live-view).
+Оператор `ALTER LIVE VIEW ... REFRESH` обновляет [Live представление](/sql-reference/statements/create/view#live-view). Смотрите [Force Live View Refresh](/sql-reference/statements/create/view#live-view).
 
 ## ALTER TABLE ... MODIFY REFRESH Statement {#alter-table--modify-refresh-statement}
 
-`ALTER TABLE ... MODIFY REFRESH` оператор изменяет параметры обновления [Обновляемого материализованного представления](../create/view.md#refreshable-materialized-view). Смотрите [Изменение параметров обновления](../create/view.md#changing-refresh-parameters).
+Оператор `ALTER TABLE ... MODIFY REFRESH` изменяет параметры обновления [обновляемого материализованного представления](../create/view.md#refreshable-materialized-view). Смотрите [Changing Refresh Parameters](../create/view.md#changing-refresh-parameters).
