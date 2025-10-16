@@ -129,7 +129,7 @@ AND multiIf(
 );
 ```
 
-We use the [`variantType`](/docs/sql-reference/functions/other-functions#varianttype) function to check the type of `winner_seed` for each row and then [`variantElement`](/docs/sql-reference/functions/other-functions#variantelement) to extract the underlying value.
+We use the [`variantType`](/docs/sql-reference/functions/other-functions#variantType) function to check the type of `winner_seed` for each row and then [`variantElement`](/docs/sql-reference/functions/other-functions#variantElement) to extract the underlying value.
 When the type is `String`, we cast to a number and then do the comparison.
 The result of running the query is shown below:
 

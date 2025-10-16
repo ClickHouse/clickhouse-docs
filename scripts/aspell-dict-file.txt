@@ -1124,6 +1124,9 @@ keypair
 detections
 --docs/integrations/data-visualization/dot-and-clickhouse.md--
 Hashboard
+--docs/use-cases/AI_ML/data-exploration/marimo-notebook.md--
+Plotly
+quartiles
 --docs/integrations/language-clients/python/advanced-usage.md--
 AsyncClient
 BinaryIO
