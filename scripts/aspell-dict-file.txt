@@ -1124,6 +1124,9 @@ keypair
 detections
 --docs/integrations/data-visualization/dot-and-clickhouse.md--
 Hashboard
+--docs/use-cases/AI_ML/data-exploration/marimo-notebook.md--
+Plotly
+quartiles
 --docs/integrations/language-clients/python/advanced-usage.md--
 AsyncClient
 BinaryIO
@@ -1174,3 +1177,6 @@ pytz
 timedelta
 --docs/integrations/language-clients/python/index.md--
 Polars
+--docs/integrations/data-ingestion/data-ingestion-index.md--
+DataStream
+Flink's

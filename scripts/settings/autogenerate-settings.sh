@@ -272,9 +272,11 @@ if [ -f "$FUNCTION_SQL_FILE" ]; then
       "Mathematical"
       "Natural Language Processing"
       "Random Number"
+      "NumericIndexedVector"
       "String Splitting"
       "Rounding"
       "Time Series"
+      "Other"
       "Time Window"
     )
 
@@ -392,9 +394,11 @@ insert_src_files=(
   "mathematical-functions.md"
   "natural_language_processing-functions.md"
   "randomnumber-functions.md"
+  "numericindexedvector-functions.md"
   "string_splitting-functions.md"
   "rounding-functions.md"
   "time_series-functions.md"
+  "other-functions.md"
   "time_window-functions.md"
 )
 
@@ -420,9 +424,11 @@ insert_dest_files=(
     "docs/sql-reference/functions/math-functions.md"
     "docs/sql-reference/functions/nlp-functions.md"
     "docs/sql-reference/functions/random-functions.md"
+    "docs/sql-reference/functions/numeric-indexed-vector-functions.md"
     "docs/sql-reference/functions/splitting-merging-functions.md"
     "docs/sql-reference/functions/rounding-functions.md"
     "docs/sql-reference/functions/time-series-functions.md"
+    "docs/sql-reference/functions/other-functions.md"
     "docs/sql-reference/functions/time-window-functions.md"
 )
 

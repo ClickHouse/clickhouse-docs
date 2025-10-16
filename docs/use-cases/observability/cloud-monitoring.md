@@ -43,7 +43,7 @@ For detailed dashboard features and available metrics, see the [advanced dashboa
 ClickHouse Cloud includes additional monitoring capabilities:
 
 - Query Insights: Built-in interface for query performance analysis and troubleshooting
-- Resource Utilization Dashboard: Tracks memory, CPU allocation, and data transfer patterns
+- Resource Utilization Dashboard: Tracks memory, CPU allocation, and data transfer patterns. CPU usage and memory usage graphs show the maximum utilization metric in a particular time period. The CPU usage graph shows a system-level CPU utilization metric (NOT a ClickHouse CPU utilization metric). 
 
 See the [query insights](/cloud/get-started/query-insights) and [resource utilization](/operations/monitoring#resource-utilization) documentation for detailed features.
 
@@ -60,16 +60,6 @@ This approach respects service idling behavior, allowing for cost optimization w
 :::
 
 <ObservabilityIntegrations/>
-
-### ClickStack {#clickstack}
-
-ClickStack is ClickHouse's recommended observability solution for deep system analysis and debugging, providing a unified platform for logs, metrics, and traces using ClickHouse as the storage engine. This approach relies on HyperDX, the ClickStack UI, connecting directly to the system tables inside your ClickHouse instance.
-HyperDX ships with a ClickHouse focused dashboard with tabs for Selects, Inserts, and Infrastructure. Teams can also use Lucene or SQL syntax to search system tables and logs, as well as create custom visualizations via Chart Explorer for detailed system analysis. 
-This approach is ideal for debugging complex issues, performance analysis, and deep system introspection rather than real-time production alerting.
-
-:::note
-Note that this approach will wake idle services as HyperDX queries the system tables directly.
-:::
 
 ### ClickStack deployment options {#clickstack-deployment}
 
