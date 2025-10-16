@@ -1142,14 +1142,28 @@ button.DocSearch {
   display: block;
 }
 
+.theme-admonition-warning {
+  .alert-icon {
+    background: var(--click-color-warning-text) !important;
+  }
+
+  .alert-content {
+    background: var(--click-color-warning-background) !important;
+  }
+}
+
+[data-theme='dark'] .theme-admonition-warning {
+    color: black !important;
+}
+
 .theme-admonition-tip {
   &.alert--warning {
     .alert-icon {
-      background: var(--click-color-warning-text);
+      background: var(--click-color-warning-text) !important;
     }
 
     .alert-content {
-      background: var(--click-color-warning-background);
+      background: var(--click-color-warning-background) !important;
     }
   }
 
