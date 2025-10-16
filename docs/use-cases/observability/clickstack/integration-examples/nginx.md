@@ -16,13 +16,13 @@ import status_codes from '@site/static/images/clickstack/status-codes.png';
 import trace from '@site/static/images/clickstack/trace.png';
 import Image from '@theme/IdealImage';
 
-# Monitoring nginx with ClickStack {#nginx-clickstack}
+# Monitoring Nginx with ClickStack {#nginx-clickstack}
 
 :::info[Quick Overview]
-This guide shows you how to capture distrbuted traces from nginx and visualize them in ClickStack using copy/paste shell snippets.
+This guide shows you how to capture distributed traces from Nginx and visualize them in ClickStack using copy/paste shell snippets.
 
-What you'll see:
-- Real-time nginx request traces with timing breakdowns
+In this simple example you'll see:
+- Real-time Nginx request traces with timing breakdowns
 - HTTP status codes, response times, and error rates
 - Interactive dashboards showing performance metrics
 
@@ -131,7 +131,7 @@ EOF
 ```
 
 ### Create generate_traffic.sh {#generate-traffic}
-This will create a shell script to generate realstic traffic at intervals of time to a fake store api. This will be the traffic we're monitoring.
+This will create a shell script to generate realistic traffic at intervals of time to a fake store api. This will be the traffic we're monitoring.
 
 ```shell
 
@@ -228,7 +228,7 @@ docker-compose ps
 
 You should see both clickstack and nginx with status "Up".
 
-## Generate realistic traffic {#generate-traffic}
+## Generate realistic traffic {#run-traffic}
 
 Run the traffic generator to create traces.
 
@@ -267,7 +267,7 @@ Open ClickStack at http://localhost:8080 and explore:
 
 </VerticalStepper>
 
-## Creating Your First Dashboard
+## Creating Your First Dashboard {#creating-dashboard}
 
 Let's create a dashboard to monitor nginx performance:
 

@@ -1,4 +1,4 @@
-personal_ws-1.1 en 3746
+personal_ws-1.1 en 3749
 AArch
 ACLs
 AICPA
@@ -1215,6 +1215,7 @@ SendScalars
 SerDe
 Serverless
 ServiceNow
+ServiceName
 ServiceNow's
 SetOperationMode
 SeverityText
@@ -1239,6 +1240,7 @@ Smirnov's
 Smirnov'test
 Sonatype
 Soundex
+SpanAttributes
 SpanKind
 Spearman's
 Splunk
@@ -1833,6 +1835,7 @@ clickhousedb
 clickhousex
 clickmate
 clickpipe
+clickstack
 clickstream
 clickvisual
 clockhour
