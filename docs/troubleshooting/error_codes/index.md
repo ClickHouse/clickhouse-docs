@@ -11,7 +11,7 @@ description: 'Lists all of the error codes in ClickHouse along with their names.
 
 :::note
 Only the most commonly encountered error codes below are linked to individual pages with common causes
-and potential solutions. We will expand this list with time.
+and potential solutions.
 :::
 
 | Code  | Name                                                                                    |
