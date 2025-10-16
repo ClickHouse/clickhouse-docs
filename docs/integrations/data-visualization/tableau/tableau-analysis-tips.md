@@ -57,5 +57,5 @@ ClickHouse has a huge number of functions that can be used for data analysis —
 - **`SKEWNESS([my_number])`** — Computes the sample skewness of a sequence. Equivalent of [`skewSamp()`](/sql-reference/aggregate-functions/reference/skewsamp).
 - **`SKEWNESSP([my_number])`** — Computes the skewness of a sequence. Equivalent of [`skewPop()`](/sql-reference/aggregate-functions/reference/skewpop).
 - **`TO_TYPE_NAME([field])`** *(added in v0.2.1)* — Returns a string containing the ClickHouse type name of the passed argument. Equivalent of [`toTypeName()`](/sql-reference/functions/other-functions#toTypeName).
-- **`TRUNC([my_float])`** — It is the same as the `FLOOR([my_float])` function. Equivalent of [`trunc()`](/sql-reference/functions/rounding-functions#truncate).
+- **`TRUNC([my_float])`** — It is the same as the `FLOOR([my_float])` function. Equivalent of [`trunc()`](/sql-reference/functions/rounding-functions#trunc).
 - **`UNHEX([my_string])`** *(added in v0.2.1)* — Performs the opposite operation of `HEX()`. Equivalent of [`unhex()`](/sql-reference/functions/encoding-functions#unhex).
