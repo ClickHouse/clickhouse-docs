@@ -5,10 +5,6 @@ keywords: ['clickhouse', 'retool', 'connect', 'integrate', 'ui', 'admin', 'panel
 description: 'Quickly build web and mobile apps with rich user interfaces, automate complex tasks, and integrate AI—all powered by your data.'
 title: 'Connecting Retool to ClickHouse'
 doc_type: 'guide'
-integration_title: 'Retool'
-integration_type: ['data integration']
-integration_logo: '/static/images/integrations/logos/retool.svg'
-integration_tier: 'partner'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

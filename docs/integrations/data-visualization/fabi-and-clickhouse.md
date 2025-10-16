@@ -5,10 +5,6 @@ keywords: ['clickhouse', 'Fabi.ai', 'connect', 'integrate', 'notebook', 'ui', 'a
 description: 'Fabi.ai is an all-in-one collaborate data analysis platform. You can leverage SQL, Python, AI, and no-code to build dashboard and data workflows faster than ever before'
 title: 'Connect ClickHouse to Fabi.ai'
 doc_type: 'guide'
-integration_title: 'Fabi.ai'
-integration_type: ['data visualization']
-integration_logo: '/static/images/integrations/logos/fabi.png'
-integration_tier: 'community'
 ---
 
 import fabi_01 from '@site/static/images/integrations/data-visualization/fabi_01.png';

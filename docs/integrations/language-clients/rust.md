@@ -6,10 +6,6 @@ slug: /integrations/rust
 description: 'The official Rust client for connecting to ClickHouse.'
 title: 'ClickHouse Rust Client'
 doc_type: 'reference'
-integration_type: ['language client']
-integration_logo: '/static/images/integrations/logos/logo_rust.png'
-integration_title: 'Rust'
-integration_tier: 'core'
 ---
 
 # ClickHouse Rust client

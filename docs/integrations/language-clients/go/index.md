@@ -6,10 +6,6 @@ slug: /integrations/go
 description: 'The Go clients for ClickHouse allows users to connect to ClickHouse using either the Go standard database/sql interface or an optimized native interface.'
 title: 'ClickHouse Go'
 doc_type: 'reference'
-integration_type: ['language client']
-integration_logo: '/static/images/integrations/logos/golang.svg'
-integration_title: 'Golang'
-integration_tier: 'core'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';

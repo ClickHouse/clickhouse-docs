@@ -5,10 +5,6 @@ keywords: ['clickhouse', 'Easypanel', 'deployment', 'integrate', 'install']
 description: 'You can use it to deploy ClickHouse on your own server.'
 title: 'Deploying ClickHouse on Easypanel'
 doc_type: 'guide'
-integration_title: 'Easypanel'
-integration_type: ['data integration']
-integration_logo: '/static/images/integrations/logos/logo-easypanel.png'
-integration_tier: 'community'
 ---
 
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';

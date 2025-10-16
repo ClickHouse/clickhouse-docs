@@ -6,10 +6,6 @@ slug: /interfaces/third-party/moose-olap
 title: 'Developing on ClickHouse with Moose OLAP'
 keywords: ['Moose']
 doc_type: 'guide'
-integration_title: 'Moose OLAP'
-integration_type: ['language client']
-integration_logo: '/static/images/integrations/logos/moose_logo.svg'
-integration_tier: 'community'
 ---
 
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';

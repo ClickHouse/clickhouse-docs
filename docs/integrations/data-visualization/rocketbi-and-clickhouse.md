@@ -6,10 +6,6 @@ keywords: ['clickhouse', 'RocketBI', 'connect', 'integrate', 'ui']
 description: 'RocketBI is a self-service business intelligence platform that helps you quickly analyze data, build drag-n-drop visualizations and collaborate with colleagues right on your web browser.'
 title: 'GOAL: BUILD YOUR 1ST DASHBOARD'
 doc_type: 'guide'
-integration_title: 'Rocket.BI'
-integration_type: ['data visualization']
-integration_logo: '/static/images/integrations/logos/rocketbi-logo.svg'
-integration_tier: 'community'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

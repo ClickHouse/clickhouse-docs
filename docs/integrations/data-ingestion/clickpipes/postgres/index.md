@@ -4,10 +4,6 @@ description: 'Seamlessly connect your Postgres to ClickHouse Cloud.'
 slug: /integrations/clickpipes/postgres
 title: 'Ingesting Data from Postgres to ClickHouse (using CDC)'
 doc_type: 'guide'
-integration_type: ['clickpipes']
-integration_logo: '/static/images/integrations/logos/postgresql.svg'
-integration_title: 'ClickPipes for PostgreSQL'
-integration_tier: 'core'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';

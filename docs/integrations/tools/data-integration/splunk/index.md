@@ -5,10 +5,6 @@ keywords: ['clickhouse', 'Splunk', 'audit', 'cloud']
 description: 'Store ClickHouse Cloud audit logs into Splunk.'
 title: 'Storing ClickHouse Cloud Audit logs into Splunk'
 doc_type: 'guide'
-integration_title: 'Splunk'
-integration_type: ['data integration']
-integration_logo: '/static/images/integrations/logos/splunk_logo.png'
-integration_tier: 'partner'
 ---
 
 import Image from '@theme/IdealImage';

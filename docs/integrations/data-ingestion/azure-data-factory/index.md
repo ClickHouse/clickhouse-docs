@@ -4,10 +4,6 @@ description: 'Bringing Azure Data into ClickHouse'
 keywords: ['azure data factory', 'azure', 'microsoft', 'data']
 title: 'Bringing Azure Data into ClickHouse'
 doc_type: 'guide'
-integration_type: ['data ingestion']
-integration_logo: '/static/images/integrations/logos/azure-data-factory.png'
-integration_title: 'Azure Data Factory'
-integration_tier: 'core'
 ---
 
 | Page                                                                              | Description                                                                                                                                                                 |

@@ -4,10 +4,6 @@ slug: /integrations/tablumio
 description: 'TABLUM.IO is a data management SaaS that supports ClickHouse out of the box.'
 title: 'Connecting TABLUM.IO to ClickHouse'
 doc_type: 'guide'
-integration_title: 'TABLUM.IO'
-integration_type: ['sql client']
-integration_logo: '/static/images/integrations/logos/tablum.svg'
-integration_tier: 'community'
 ---
 
 import Image from '@theme/IdealImage';

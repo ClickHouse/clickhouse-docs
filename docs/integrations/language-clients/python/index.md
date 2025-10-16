@@ -6,10 +6,6 @@ slug: /integrations/python
 description: 'The ClickHouse Connect project suite for connecting Python to ClickHouse'
 title: 'Python Integration with ClickHouse Connect'
 doc_type: 'guide'
-integration_type: ['language client']
-integration_logo: '/static/images/integrations/logos/notext-python.svg'
-integration_title: 'Python'
-integration_tier: 'core'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

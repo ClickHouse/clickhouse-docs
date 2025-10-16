@@ -6,10 +6,6 @@ description: 'Introduction to Apache Spark with ClickHouse'
 keywords: ['clickhouse', 'Apache Spark', 'migrating', 'data']
 title: 'Integrating Apache Spark with ClickHouse'
 doc_type: 'guide'
-integration_type: ['data ingestion']
-integration_logo: '/static/images/integrations/logos/apache_spark_logo.svg'
-integration_title: 'Apache Spark'
-integration_tier: 'core'
 ---
 
 import Tabs from '@theme/Tabs';

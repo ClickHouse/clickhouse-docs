@@ -6,10 +6,6 @@ keywords: ['clickhouse', 'Explo', 'connect', 'integrate', 'ui']
 description: 'Explo is an easy-to-use, open source UI tool for asking questions about your data.'
 title: 'Connecting Explo to ClickHouse'
 doc_type: 'guide'
-integration_title: 'Explo'
-integration_type: ['data visualization']
-integration_logo: '/static/images/integrations/logos/explo.png'
-integration_tier: 'community'
 ---
 
 import Image from '@theme/IdealImage';

@@ -4,10 +4,6 @@ sidebar_label: 'Jupyter notebooks'
 description: 'JupySQL is a multi-platform database tool for Jupyter.'
 title: 'Using JupySQL with ClickHouse'
 doc_type: 'guide'
-integration_title: 'JupySQL'
-integration_type: ['sql client']
-integration_logo: '/static/images/integrations/logos/jupyter.png'
-integration_tier: 'community'
 ---
 
 import Image from '@theme/IdealImage';

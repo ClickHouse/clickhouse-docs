@@ -4,10 +4,6 @@ description: 'Describes how to seamlessly connect your MongoDB to ClickHouse Clo
 slug: /integrations/clickpipes/mongodb
 title: 'Ingesting data from MongoDB to ClickHouse (using CDC)'
 doc_type: 'guide'
-integration_type: ['clickpipes']
-integration_logo: '/static/images/integrations/logos/mongodb.svg'
-integration_title: 'ClickPipes for MongoDB'
-integration_tier: 'core'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';

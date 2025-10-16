@@ -6,10 +6,6 @@ slug: /integrations/nifi
 description: 'Stream data into ClickHouse using NiFi data pipelines'
 title: 'Connect Apache NiFi to ClickHouse'
 doc_type: 'guide'
-integration_title: 'Apache NiFi'
-integration_type: ['data ingestion']
-integration_logo: '/static/images/integrations/logos/logo_nifi.png'
-integration_tier: 'community'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

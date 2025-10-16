@@ -6,10 +6,6 @@ keywords: ['clickhouse', 'Draxlr', 'connect', 'integrate', 'ui']
 description: 'Draxlr is a Business intelligence tool with data visualization and analytics.'
 title: 'Connecting Draxlr to ClickHouse'
 doc_type: 'guide'
-integration_title: 'Draxlr'
-integration_type: ['data visualization']
-integration_logo: '/static/images/integrations/logos/draxlr.svg'
-integration_tier: 'community'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
