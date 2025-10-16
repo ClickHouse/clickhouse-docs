@@ -11,7 +11,6 @@ const codeImportPlugin = require('./plugins/code-import-plugin');
 const { customParseFrontMatter } = require('./plugins/frontmatter-validation/customParseFrontMatter');
 const checkFloatingPages = require('./plugins/checkFloatingPages');
 const frontmatterValidator = require('./plugins/frontmatter-validation/frontmatterValidatorPlugin');
-const integrationExtractor = require('./plugins/integration-extractor-plugin');
 import pluginLlmsTxt from './plugins/llms-txt-plugin.ts'
 import prismLight from "./src/utils/prismLight";
 import prismDark from "./src/utils/prismDark";
@@ -360,10 +359,6 @@ const config = {
     ],
     [
       pluginLlmsTxt,
-      {}
-    ],
-    [
-      integrationExtractor,
       {}
     ],
     [
