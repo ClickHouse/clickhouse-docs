@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Features and Configurations'
+sidebar_label: 'Features and configurations'
 slug: /integrations/dbt/features-and-configurations
 sidebar_position: 2
 description: 'Features for using dbt with ClickHouse'

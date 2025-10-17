@@ -1,7 +1,7 @@
 ---
 title: 'Adding specific tables to a ClickPipe'
 description: 'Describes the steps need to add specific tables to a ClickPipe.'
-sidebar_label: 'Add Table'
+sidebar_label: 'Add table'
 slug: /integrations/clickpipes/postgres/add_table
 show_title: false
 doc_type: 'guide'

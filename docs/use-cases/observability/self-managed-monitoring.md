@@ -1,6 +1,7 @@
 ---
 slug: /use-cases/observability/oss-monitoring
-title: 'Self-Managed Monitoring'
+title: 'Self-managed monitoring'
+sidebar_label: 'Self-managed monitoring'
 description: 'Self-Managed Monitoring Guide'
 doc_type: 'guide'
 ---

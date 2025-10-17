@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/getting-started
 title: 'Getting Started with ClickStack'
-sidebar_label: 'Getting Started'
+sidebar_label: 'Getting started'
 pagination_prev: null
 pagination_next: use-cases/observability/clickstack/example-datasets/index
 description: 'Getting started with ClickStack - The ClickHouse Observability Stack'
