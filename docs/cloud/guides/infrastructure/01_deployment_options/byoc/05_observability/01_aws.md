@@ -10,6 +10,7 @@ doc_type: 'reference'
 import Image from '@theme/IdealImage';
 import byoc4 from '@site/static/images/cloud/reference/byoc-4.png';
 import byoc3 from '@site/static/images/cloud/reference/byoc-3.png';
+import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
 ## Observability {#observability}
 
@@ -48,7 +49,9 @@ https://prometheus-internal.<subdomain>.<region>.aws.clickhouse-byoc.com/query
 
 #### Prometheus Integration {#prometheus-integration}
 
-**DEPRECATED: ** Please use the Prometheus stack integration in the above section instead. Besides the ClickHouse Server metrics, it provides more metrics including the K8S metrics and metrics from other services.
+<DeprecatedBadge/>
+
+Please use the Prometheus stack integration in the above section instead. Besides the ClickHouse Server metrics, it provides more metrics including the K8S metrics and metrics from other services.
 
 ClickHouse Cloud provides a Prometheus endpoint that you can use to scrape metrics for monitoring. This allows for integration with tools like Grafana and Datadog for visualization.
 
