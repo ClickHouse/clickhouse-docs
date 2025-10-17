@@ -1,4 +1,4 @@
-personal_ws-1.1 en 3746
+personal_ws-1.1 en 3749
 AArch
 ACLs
 AICPA
@@ -963,6 +963,7 @@ OperationalError
 OrDefault
 OrNull
 OrZero
+OutOfMemory
 OvercommitTracker
 OverflowMode
 OverflowModeGroupBy
@@ -2331,9 +2332,9 @@ haversine
 hdbc
 hdfs
 hdfsCluster
+heatmap
 heredoc
 heredocs
-heatmap
 hilbertDecode
 hilbertEncode
 hiveHash
