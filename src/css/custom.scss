@@ -136,9 +136,6 @@ body {
 [data-theme='dark'] .theme-admonition-tip.alert--success .alert-content  {
   background-color: rgba(255,255,255,0.1);
 
-  code {
-    background: #bfbfbf !important;
-  }
 }
 
 [data-theme='dark'] .DocSearch-Hit-source {
@@ -1153,6 +1150,10 @@ button.DocSearch {
 
   .alert-content {
     background: var(--click-color-warning-background) !important;
+
+    code {
+      background: #bfbfbf !important;
+    }
   }
 }
 
