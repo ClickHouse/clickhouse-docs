@@ -268,6 +268,7 @@ if [ -f "$FUNCTION_SQL_FILE" ]; then
       "Other"
       "Time Window"
       "Tuple"
+      "ULID"
       "URL"
       "UUID"
     )
@@ -384,6 +385,7 @@ insert_src_files=(
   "other-functions.md"
   "time_window-functions.md"
   "tuple-functions.md"
+  "ulid-functions.md"
   "url-functions.md"
   "uuid-functions.md"
 )
@@ -416,6 +418,7 @@ insert_dest_files=(
     "docs/sql-reference/functions/other-functions.md"
     "docs/sql-reference/functions/time-window-functions.md"
     "docs/sql-reference/functions/tuple-functions.md"
+    "docs/sql-reference/functions/ulid-functions.md"
     "docs/sql-reference/functions/url-functions.md"
     "docs/sql-reference/functions/uuid-functions.md"
 )
