@@ -1,10 +1,11 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/varPop'
+description: 'Вычисляет дисперсию населения.'
 sidebar_position: 210
-description: 'Вычисляет дисперсию по всему объему.'
-title: varPop
+slug: /ru/sql-reference/aggregate-functions/reference/varPop
+title: 'varPop'
 doc_type: reference
 ---
+
 ## varPop {#varpop}
 
 Вычисляет дисперсию по генеральной совокупности:
@@ -23,11 +24,11 @@ varPop(x)
 
 **Параметры**
 
-- `x`: Генеральная совокупность значений, для которых необходимо найти дисперсию. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
+- `x`: Популяция значений, для которой нужно найти дисперсию населения. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
 
 **Возвращаемое значение**
 
-- Возвращает дисперсию по генеральной совокупности `x`. [`Float64`](../../data-types/float.md).
+- Возвращает дисперсию населения для `x`. [`Float64`](../../data-types/float.md).
 
 **Пример**
 
