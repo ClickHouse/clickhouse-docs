@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'ClickHouse Cloud Tiers'
+sidebar_label: 'ClickHouse Cloud tiers'
 slug: /cloud/manage/cloud-tiers
 title: 'ClickHouse Cloud Tiers'
 description: 'Cloud tiers available in ClickHouse Cloud'

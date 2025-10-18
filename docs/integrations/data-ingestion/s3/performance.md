@@ -1,7 +1,7 @@
 ---
 slug: /integrations/s3/performance
 sidebar_position: 2
-sidebar_label: 'Optimizing for Performance'
+sidebar_label: 'Optimizing for performance'
 title: 'Optimizing for S3 Insert and Read Performance'
 description: 'Optimizing the performance of S3 read and insert'
 doc_type: 'guide'

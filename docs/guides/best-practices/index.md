@@ -1,6 +1,6 @@
 ---
 slug: /operations/overview
-sidebar_label: 'Performance and Optimizations Overview'
+sidebar_label: 'Performance and optimizations overview'
 description: 'Overview page of Performance and Optimizations'
 title: 'Performance and Optimizations'
 doc_type: 'reference'

@@ -1,9 +1,9 @@
 ---
-description: 'A collection is dislikes of YouTube videos.'
-sidebar_label: 'YouTube Dislikes'
+description: 'A collection of dislikes of YouTube videos.'
+sidebar_label: 'YouTube dislikes'
 slug: /getting-started/example-datasets/youtube-dislikes
 title: 'YouTube dataset of dislikes'
-doc_type: 'reference'
+doc_type: 'guide'
 ---
 
 In November of 2021, YouTube removed the public ***dislike*** count from all of its videos. While creators can still see the number of dislikes, viewers can only see how many ***likes*** a video has received.

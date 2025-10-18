@@ -1122,6 +1122,9 @@ keypair
 detections
 --docs/integrations/data-visualization/community_integrations/dot-and-clickhouse.md--
 Hashboard
+--docs/use-cases/AI_ML/data-exploration/marimo-notebook.md--
+Plotly
+quartiles
 --docs/integrations/language-clients/python/advanced-usage.md--
 AsyncClient
 BinaryIO
@@ -1172,6 +1175,9 @@ pytz
 timedelta
 --docs/integrations/language-clients/python/index.md--
 Polars
+--docs/cloud/features/08_backups/backups-to-own-cloud/backup_restore_using_commands.md--
+CSPs
+testchbackups
 --docs/integrations/data-ingestion/data-ingestion-index.md--
 DataStream
 Flink's

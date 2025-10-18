@@ -7,7 +7,7 @@ pagination_next: null
 doc_type: 'guide'
 ---
 
-Welcome to our time-series use case guide. In this guide you'll learn how you can get setup and use ClickHouse for time-series.
+Welcome to our time-series use case guide. In this guide you'll learn how you can set up and use ClickHouse for time-series data.
 
 Time-series data is everywhere in modern analytics. From system metrics and application logs to business events and sensor readings, data points collected over time help us understand trends, patterns, and anomalies in our systems and processes.
 

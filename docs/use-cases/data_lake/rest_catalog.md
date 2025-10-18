@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/data-lake/rest-catalog
-sidebar_label: 'REST Catalog'
-title: 'REST Catalog'
+sidebar_label: 'REST catalog'
+title: 'REST catalog'
 pagination_prev: null
 pagination_next: null
 description: 'In this guide, we will walk you through the steps to query

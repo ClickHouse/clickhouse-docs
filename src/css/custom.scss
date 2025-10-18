@@ -135,6 +135,7 @@ body {
 
 [data-theme='dark'] .theme-admonition-tip.alert--success .alert-content  {
   background-color: rgba(255,255,255,0.1);
+
 }
 
 [data-theme='dark'] .DocSearch-Hit-source {
@@ -278,15 +279,20 @@ html[data-theme='dark'] pre,
 html[data-theme='dark'] pre code,
 html[data-theme='dark'] code {
   background: none !important;
-  background-color: #282828 !important;
+  background-color: #323131 !important;
   box-shadow: none !important;
   filter: none !important;
   border: none !important;
+  font-weight: normal;
+  border-radius: 3px !important;
 }
 
 html[data-theme='light'] code {
-  background-color: #f5f5f5 !important;
+  font-weight: normal;
+  background-color: #f6f5f5 !important;
   color: #000 !important;
+  border: none !important;
+  border-radius: 3px !important;
 }
 
 /* === Block code (pre) === */
@@ -1137,14 +1143,32 @@ button.DocSearch {
   display: block;
 }
 
+.theme-admonition-warning {
+  .alert-icon {
+    background: var(--click-color-warning-text) !important;
+  }
+
+  .alert-content {
+    background: var(--click-color-warning-background) !important;
+
+    code {
+      background: #bfbfbf !important;
+    }
+  }
+}
+
+[data-theme='dark'] .theme-admonition-warning {
+    color: black !important;
+}
+
 .theme-admonition-tip {
   &.alert--warning {
     .alert-icon {
-      background: var(--click-color-warning-text);
+      background: var(--click-color-warning-text) !important;
     }
 
     .alert-content {
-      background: var(--click-color-warning-background);
+      background: var(--click-color-warning-background) !important;
     }
   }
 

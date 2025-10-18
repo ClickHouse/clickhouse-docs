@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/data-lake/glue-catalog
-sidebar_label: 'AWS Glue Catalog'
-title: 'AWS Glue Catalog'
+sidebar_label: 'AWS Glue catalog'
+title: 'AWS Glue catalog'
 pagination_prev: null
 pagination_next: null
 description: 'In this guide, we will walk you through the steps to query
