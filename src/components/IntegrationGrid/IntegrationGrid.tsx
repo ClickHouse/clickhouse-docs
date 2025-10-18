@@ -175,9 +175,25 @@ function useCMSIntegrations() {
         setIntegrations(transformedData);
         setError(null);
       } catch (err) {
-        console.error('Failed to fetch integrations from CMS:', err);
-        setError(err instanceof Error ? err.message : 'Failed to fetch integrations');
-        setIntegrations([]);
+        console.error('Error loading integrations data from endpoint. Falling back to static JSON file.');
+
+        // Fallback to static JSON file
+        try {
+          const fallbackResponse = await fetch('/integrations-fallback.json');
+
+          if (!fallbackResponse.ok) {
+            throw new Error(`Failed to load fallback data: ${fallbackResponse.status}`);
+          }
+
+          const fallbackData = await fallbackResponse.json();
+          const transformedData = transformCMSData(fallbackData.data || []);
+          setIntegrations(transformedData);
+          setError(null);
+        } catch (fallbackErr) {
+          console.error('Failed to load fallback integrations data:', fallbackErr);
+          setError(fallbackErr instanceof Error ? fallbackErr.message : 'Failed to fetch integrations');
+          setIntegrations([]);
+        }
       } finally {
         setLoading(false);
       }
