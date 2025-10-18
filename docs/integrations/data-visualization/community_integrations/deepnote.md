@@ -24,7 +24,7 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 This guide assumes you already have a Deepnote account and that you have a running ClickHouse instance.
 
 ## Interactive example {#interactive-example}
-If you would like to explore an interactive example of querying ClickHouse from Deepnote data notebooks, click the button below to  launch a template project connected to the [ClickHouse playground](../../getting-started/playground.md).
+If you would like to explore an interactive example of querying ClickHouse from Deepnote data notebooks, click the button below to  launch a template project connected to the [ClickHouse playground](../../../getting-started/playground.md).
 
 [<Image size="logo" img="https://deepnote.com/buttons/launch-in-deepnote.svg" alt="Launch in Deepnote" />](https://deepnote.com/launch?template=ClickHouse%20and%20Deepnote)
 

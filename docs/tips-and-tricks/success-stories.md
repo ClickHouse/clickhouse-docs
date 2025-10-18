@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 slug: /community-wisdom/creative-use-cases
-sidebar_label: 'Success Stories'
+sidebar_label: 'Success stories'
 doc_type: 'guide'
 keywords: [
   'clickhouse creative use cases',
