@@ -8,7 +8,6 @@ doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
-
 import azureDataStoreSettings                   from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-settings.png';
 import azureDataStoreAccessKeys                 from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-access-keys.png';
 
