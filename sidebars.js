@@ -1188,7 +1188,6 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       items: [
-        "about-us/intro",
         "about-us/adopters",
         "about-us/support",
         "about-us/beta-and-experimental-features",
