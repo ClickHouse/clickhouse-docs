@@ -3587,6 +3587,11 @@
       "source": "/docs/cloud/reference/byoc",
       "destination": "/docs/cloud/reference/byoc/overview",
       "permanent": true
+    },
+    {
+      "source": "/docs/about-clickhouse",
+      "destination": "/docs/intro",
+      "permanent": true
     }
   ]
 }
