@@ -3002,6 +3002,11 @@
       "permanent": true
     },
     {
+      "source": "/docs/integrations/sql-server-clickhouse",
+      "destination": "/docs/integrations/data-ingestion/etl-tools/sql-server-clickhouse",
+      "permanent": true
+    },
+    {
       "source": "/docs/introduction/adopters",
       "destination": "/docs/about-us/adopters",
       "permanent": true
