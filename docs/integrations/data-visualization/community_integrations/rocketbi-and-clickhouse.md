@@ -30,7 +30,7 @@ import rocketbi_17 from '@site/static/images/integrations/data-visualization/roc
 import rocketbi_18 from '@site/static/images/integrations/data-visualization/rocketbi_18.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Goal: build your first dashboard
+# Goal: build your first dashboard with Rocket.BI
 
 <CommunityMaintainedBadge/>
 

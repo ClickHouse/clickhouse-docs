@@ -93,7 +93,7 @@ export default function NavbarContent() {
           })}
           <DocsCategoryDropdownLinkOnly title={translate({
             id: 'theme.blog.title',
-            message: 'Knowledge Base',
+            message: 'Knowledge base',
           })} link='/knowledgebase' />
         </div>
         <div

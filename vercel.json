@@ -3582,6 +3582,16 @@
       "source": "/docs/operations/system-tables/role-grants",
       "destination": "/docs/operations/system-tables/role_grants",
       "permanent": true
+    },
+    {
+      "source": "/docs/cloud/reference/byoc",
+      "destination": "/docs/cloud/reference/byoc/overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/about-clickhouse",
+      "destination": "/docs/intro",
+      "permanent": true
     }
   ]
 }

@@ -963,6 +963,7 @@ OperationalError
 OrDefault
 OrNull
 OrZero
+OutOfMemory
 OvercommitTracker
 OverflowMode
 OverflowModeGroupBy
@@ -2334,9 +2335,9 @@ haversine
 hdbc
 hdfs
 hdfsCluster
+heatmap
 heredoc
 heredocs
-heatmap
 hilbertDecode
 hilbertEncode
 hiveHash
