@@ -159,6 +159,7 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [allow_experimental_ytsaurus_dictionary_source](/operations/settings/settings#allow_experimental_ytsaurus_dictionary_source) | `0` |
 | [distributed_plan_force_shuffle_aggregation](/operations/settings/settings#distributed_plan_force_shuffle_aggregation) | `0` |
 | [enable_join_runtime_filters](/operations/settings/settings#enable_join_runtime_filters) | `0` |
+| [join_runtime_filter_exact_values_limit](/operations/settings/settings#join_runtime_filter_exact_values_limit) | `10000` |
 | [join_runtime_bloom_filter_bytes](/operations/settings/settings#join_runtime_bloom_filter_bytes) | `524288` |
 | [join_runtime_bloom_filter_hash_functions](/operations/settings/settings#join_runtime_bloom_filter_hash_functions) | `3` |
 | [rewrite_in_to_join](/operations/settings/settings#rewrite_in_to_join) | `0` |
