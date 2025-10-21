@@ -171,7 +171,7 @@ For users who want to test the nginx integration before configuring their produc
 
 <VerticalStepper>
 
-## Using the Sample Dataset
+## Using the Sample Dataset {#using-data}
 
 1. [Download](../../../../../static/examples/nginx-sample-logs.json) and place the sample file in `/tmp/nginx-demo/access.log` 
 
@@ -246,12 +246,12 @@ The demo dataset uses dynamic timestamps (last 24 hours from generation). The tr
 ::::
 </VerticalStepper>
 
-## Dashboards and visualization
+## Dashboards and visualization {#dashboards}
 
 To help you get started monitoring nginx with ClickStack, we provide a pre-built dashboard with essential nginx metrics and visualizations.
 
-### Import Pre-built Dashboard
-Download the dashboard configuration: [download](../../../../../static/examples/example-dashboard.json)
+### Import Pre-built Dashboard {#import-dashboard}
+[Download](../../../../../static/examples/example-dashboard.json) the dashboard configuration.
 
 1. Open HyperDX and navigate to the Dashboards section.
 2. Click "Import Dashboard" in the upper right corner under the elipses.
@@ -266,18 +266,18 @@ Download the dashboard configuration: [download](../../../../../static/examples/
 
 <Image img={example_dashboard} alt="Example Dashboard"/>
 
-### Customizing the Dashboard
+### Customizing the Dashboard {#customizing}
 
 The dashboard can be customized to fit your specific needs:
 - Filter by specific endpoints, methods, or other log attributes
 - Change time buckets for different zoom levels
 - Create additional charts for metrics like:
-    - Top requested endpoints
-    - Geographic distribution (if using IP geolocation)
-    - User agent analysis
-    - Bytes sent/received trends
+  - Top requested endpoints
+  - Geographic distribution (if using IP geolocation)
+  - User agent analysis
+  - Bytes sent/received trends
 
-## Next Steps
+## Next Steps {#next-steps}
 If you want to explore further, here are some next steps to experiment with your dashboard
 
 - Set up alerts for critical metrics (error rates, latency thresholds)
