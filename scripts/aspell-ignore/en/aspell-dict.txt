@@ -1,4 +1,4 @@
-personal_ws-1.1 en 3750
+personal_ws-1.1 en 3756
 AArch
 ACLs
 AICPA
@@ -3752,3 +3752,9 @@ znode
 znodes
 zookeeperSessionUptime
 zstd
+OTELCOL
+elipses
+geolocation
+nginx's
+otel
+otelcol
