@@ -14,7 +14,19 @@ import finish_import from '@site/static/images/clickstack/finish-import.png';
 import example_dashboard from '@site/static/images/clickstack/example-dashboard.png';
 
 # Monitoring Nginx with ClickStack {#nginx-clickstack}
-This guide walks you through integrating your existing nginx deployment with ClickStack for log observability. You'll configure nginx to send logs to ClickStack's OpenTelemetry collector.
+
+::::note[TLDR]
+This guide shows you how to monitor nginx with ClickStack by configuring the OpenTelemetry collector to ingest nginx access logs. You'll learn how to:
+
+- Configure nginx to output JSON-formatted logs
+- Create a custom OTel collector configuration for log ingestion
+- Deploy ClickStack with your custom configuration
+- Use a pre-built dashboard to visualize nginx metrics (requests, errors, latency)
+
+A demo dataset with 10,000 sample logs is provided to test the integration before connecting your production nginx instances.
+
+Time Required: 5-10 minutes.
+::::
 
 ## Prerequisites {#prerequisites}
 - ClickStack instance running
@@ -159,17 +171,9 @@ For users who want to test the nginx integration before configuring their produc
 
 <VerticalStepper>
 
-## Download Sample Logs {#download}
-nginx-sample-logs.json (~10,000 log entries)
-
 ## Using the Sample Dataset
 
-1. Download and place the sample file:
-
-```shell
-mkdir -p /tmp/nginx-demo
-mv ~/Downloads/nginx-sample-logs.json /tmp/nginx-demo/access.log
-```
+1. [Download](../../../../../static/examples/nginx-sample-logs.json) and place the sample file in `/tmp/nginx-demo/access.log` 
 
 2. **Create a test collector config** (`nginx-demo.yaml`):
 
@@ -247,9 +251,7 @@ The demo dataset uses dynamic timestamps (last 24 hours from generation). The tr
 To help you get started monitoring nginx with ClickStack, we provide a pre-built dashboard with essential nginx metrics and visualizations.
 
 ### Import Pre-built Dashboard
-Download the dashboard configuration: (link here)
-
-To import the dashboard:
+Download the dashboard configuration: [download](../../../../../static/examples/example-dashboard.json)
 
 1. Open HyperDX and navigate to the Dashboards section.
 2. Click "Import Dashboard" in the upper right corner under the elipses.
@@ -274,3 +276,10 @@ The dashboard can be customized to fit your specific needs:
     - Geographic distribution (if using IP geolocation)
     - User agent analysis
     - Bytes sent/received trends
+
+## Next Steps
+If you want to explore further, here are some next steps to experiment with your dashboard
+
+- Set up alerts for critical metrics (error rates, latency thresholds)
+- Create additional dashboards for specific use cases (API monitoring, security events)
+- Correlate with other data sources by adding traces and metrics to the same dashboard
