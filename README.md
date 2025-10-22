@@ -10,7 +10,7 @@
     <img alt="The ClickHouse company logo." src="https://github.com/ClickHouse/clickhouse-docs/assets/9611008/b001dc7b-5a45-4dcd-9275-e03beb7f9177">
 </picture>
 
-<h4>ClickHouse® is an open-source column-oriented database management system that allows generating analytical data reports in real-time.</h4>
+<h4> ClickHouse® is an open-source column-oriented database management system that allows generating analytical data reports in real-time.</h4>
 
 </div>
 
