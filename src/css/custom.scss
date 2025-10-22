@@ -1161,6 +1161,10 @@ button.DocSearch {
     color: black !important;
 }
 
+[data-theme='light'] .theme-admonition-warning {
+    color: black !important;
+}
+
 .theme-admonition-tip {
   &.alert--warning {
     .alert-icon {
