@@ -159,12 +159,13 @@ function useCMSIntegrations() {
   const [integrations, setIntegrations] = useState<IntegrationData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const fallbackPath = useBaseUrl('/integrations-fallback.json');
 
   useEffect(() => {
     const fetchIntegrations = async () => {
       // Step 1: Load fallback data first for immediate display
       try {
-        const fallbackResponse = await fetch('/integrations-fallback.json', {
+        const fallbackResponse = await fetch(fallbackPath, {
           cache: 'force-cache' // Use cached version if available
         });
 
@@ -235,7 +236,7 @@ function useCMSIntegrations() {
     };
 
     fetchIntegrations();
-  }, []);
+  }, [fallbackPath]);
 
   return { integrations, loading, error };
 }
