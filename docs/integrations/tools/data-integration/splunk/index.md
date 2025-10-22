@@ -20,11 +20,11 @@ import splunk_009 from '@site/static/images/integrations/tools/data-integration/
 import splunk_010 from '@site/static/images/integrations/tools/data-integration/splunk/splunk_010.png';
 import splunk_011 from '@site/static/images/integrations/tools/data-integration/splunk/splunk_011.png';
 import splunk_012 from '@site/static/images/integrations/tools/data-integration/splunk/splunk_012.png';
-import PartnerBadge from '@theme/badges/PartnerBadge';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Storing ClickHouse Cloud Audit logs into Splunk
 
-<PartnerBadge/>
+<ClickHouseSupportedBadge/>
 
 [Splunk](https://www.splunk.com/) is a data analytics and monitoring platform.
 

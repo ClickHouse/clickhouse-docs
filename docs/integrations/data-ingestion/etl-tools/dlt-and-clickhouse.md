@@ -7,11 +7,11 @@ slug: /integrations/data-ingestion/etl-tools/dlt-and-clickhouse
 doc_type: 'guide'
 ---
 
-import PartnerBadge from '@theme/badges/PartnerBadge';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 # Connect dlt to ClickHouse
 
-<PartnerBadge/>
+<CommunityMaintainedBadge/>
 
 <a href="https://dlthub.com/docs/intro" target="_blank">dlt</a>  is an open-source library that you can add to your Python scripts to load data from various and often messy data sources into well-structured, live datasets.
 

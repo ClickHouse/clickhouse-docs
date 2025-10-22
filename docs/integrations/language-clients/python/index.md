@@ -1,9 +1,9 @@
 ---
+title: 'Python'
 keywords: ['clickhouse', 'python', 'client', 'connect', 'integrate']
+description: 'Options for connecting to ClickHouse from Python'
 slug: /integrations/python
-description: 'The ClickHouse Connect project suite for connecting Python to ClickHouse'
-title: 'Python Integration with ClickHouse Connect'
-doc_type: 'guide'
+doc_type: 'reference'
 ---
 
 import Tabs from '@theme/Tabs';
