@@ -55,7 +55,7 @@ export default function NavigationSubNavResources() {
               onClick={galaxyOnClick('topNav.resourcesMenu.learnSelect')}>
               {translate({
                   id: 'topNav.navItems.resources.Learn',
-                  message: 'Learning and Certification',
+                  message: 'Learning and certification',
               })}
           </NavigationLink>
       </li>
