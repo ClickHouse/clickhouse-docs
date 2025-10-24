@@ -147,7 +147,7 @@ Databrain offers several advanced features when working with ClickHouse:
 
 ## Troubleshooting {#troubleshooting}
 
-### Connection fails
+### Connection fails {#connection-fails}
 
 If you're unable to connect to ClickHouse:
 
@@ -157,7 +157,7 @@ If you're unable to connect to ClickHouse:
 4. **SSL/TLS**: Ensure SSL/TLS is properly configured if you're using HTTPS
 5. **User permissions**: Verify the user has SELECT permissions on `information_schema` and your target databases
 
-### Slow query performance
+### Slow query performance {#slow-query-performance}
 
 If queries are running slowly:
 
@@ -174,7 +174,3 @@ For more information about Databrain features and how to build powerful analytic
 - [ClickHouse Integration Guide](https://docs.usedatabrain.com/guides/datasources/connecting-data-sources-to-databrain/clickhouse)
 - [Creating Dashboards](https://docs.usedatabrain.com/guides/dashboards/create-a-dashboard)
 - [Building Metrics](https://docs.usedatabrain.com/guides/metrics/create-metrics)
-
-
-
-
