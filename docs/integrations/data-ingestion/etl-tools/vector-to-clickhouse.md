@@ -17,46 +17,56 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <PartnerBadge/>
 
-Being able to analyze your logs in real time is critical for production applications. Have you ever wondered if ClickHouse is good at storing and analyzing log data? Just checkout <a href="https://eng.uber.com/logging/" target="_blank">Uber's experience</a> with converting their logging infrastructure from ELK to ClickHouse.
+Being able to analyze your logs in real time is critical for production applications.
+Have you ever wondered if ClickHouse is good at storing and analyzing log data?
+Just checkout [Uber's experience](https://eng.uber.com/logging/) with converting their logging infrastructure from ELK to ClickHouse.
 
-This guide shows how to use the popular data pipeline <a href="https://vector.dev/docs/about/what-is-vector/" target="_blank">Vector</a> to tail an Nginx log file and send it to ClickHouse. The steps below would be similar for tailing any type of log file. We will assume you already have ClickHouse up and running and Vector installed (no need to start it yet though).
+This guide shows you how to use the popular data pipeline [Vector](https://vector.dev/docs/about/what-is-vector/) to tail an Nginx log file and send it to ClickHouse.
+The steps below would be similar for tailing any type of log file.
+We will assume you already have ClickHouse up and running and Vector installed (no need to start it yet though).
 
-## 1. Create a database and table {#1-create-a-database-and-table}
+<VerticalStepper headerLevel="h2">
 
-Let's define a table to store the log events:
+## Create a database and table {#1-create-a-database-and-table}
 
-1. We will start with a new database named `nginxdb`:
-    ```sql
-    CREATE DATABASE IF NOT EXISTS nginxdb
-    ```
+Define a table to store the log events:
 
-2. For starters, we are just going to insert the entire log event as a single string. Obviously this is not a great format for performing analytics on the log data, but we will figure that part out below using ***materialized views***.
-    ```sql
-    CREATE TABLE IF NOT EXISTS  nginxdb.access_logs (
-        message String
-    )
-    ENGINE = MergeTree()
-    ORDER BY tuple()
-    ```
-    :::note
-    There is not really a need for a primary key yet, so that is why **ORDER BY** is set to **tuple()**.
-    :::
+1. Begin with a new database named `nginxdb`:
 
-## 2.  Configure Nginx {#2--configure-nginx}
+```sql
+CREATE DATABASE IF NOT EXISTS nginxdb
+```
+
+2. Insert the entire log event as a single string. Obviously this is not a great format for performing analytics on the log data, but we will figure that part out below using ***materialized views***.
+
+```sql
+CREATE TABLE IF NOT EXISTS  nginxdb.access_logs (
+  message String
+)
+ENGINE = MergeTree()
+ORDER BY tuple()
+```
+
+ :::note
+ **ORDER BY** is set to **tuple()** (an empty tuple) as there is no need for a primary key yet.
+ :::
+
+## Configure Nginx {#2--configure-nginx}
 
 We certainly do not want to spend too much time explaining Nginx, but we also do not want to hide all the details, so in this step we will provide you with enough details to get Nginx logging configured.
 
 1. The following `access_log` property sends logs to `/var/log/nginx/my_access.log` in the **combined** format. This value goes in the `http` section of your `nginx.conf` file:
-    ```bash
-    http {
-        include       /etc/nginx/mime.types;
-        default_type  application/octet-stream;
-        access_log  /var/log/nginx/my_access.log combined;
-        sendfile        on;
-        keepalive_timeout  65;
-        include /etc/nginx/conf.d/*.conf;
-    }
-    ```
+    
+```bash
+http {
+  include       /etc/nginx/mime.types;
+  default_type  application/octet-stream;
+  access_log  /var/log/nginx/my_access.log combined;
+  sendfile        on;
+  keepalive_timeout  65;
+  include /etc/nginx/conf.d/*.conf;
+}
+```
 
 2. Be sure to restart Nginx if you had to modify `nginx.conf`.
 
@@ -67,7 +77,7 @@ We certainly do not want to spend too much time explaining Nginx, but we also do
     192.168.208.1 - - [12/Oct/2021:03:31:49 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
     ```
 
-## 3. Configure Vector {#3-configure-vector}
+## Configure Vector {#3-configure-vector}
 
 Vector collects, transforms and routes logs, metrics, and traces (referred to as **sources**) to lots of different vendors (referred to as **sinks**), including out-of-the-box compatibility with ClickHouse. Sources and sinks are defined in a configuration file named **vector.toml**.
 
@@ -95,7 +105,7 @@ Vector collects, transforms and routes logs, metrics, and traces (referred to as
     ```
     <Image img={vector01} size="lg" border alt="View ClickHouse logs in table format" />
 
-## 4. Parse the Logs {#4-parse-the-logs}
+## Parse the Logs {#4-parse-the-logs}
 
 Having the logs in ClickHouse is great, but storing each event as a single string does not allow for much data analysis. Let's see how to parse the log events using a materialized view.
 
@@ -180,4 +190,6 @@ Having the logs in ClickHouse is great, but storing each event as a single strin
     The lesson above stored the data in two tables, but you could change the initial `nginxdb.access_logs` table to use the **Null** table engine - the parsed data will still end up in the `nginxdb.access_logs_view` table, but the raw data will not be stored in a table.
     :::
 
-**Summary:** By using Vector, which only required a simple install and quick configuration, we can send logs from an Nginx server to a table in ClickHouse. By using a clever materialized view, we can parse those logs into columns for easier analytics.
+</VerticalStepper>
+
+> By using Vector, which only requires a simple install and quick configuration, you can send logs from an Nginx server to a table in ClickHouse. By using a materialized view, you can parse those logs into columns for easier analytics.
