@@ -5,7 +5,7 @@ title: 'ODBC'
 slug: /integrations/data-ingestion/dbms/odbc-with-clickhouse
 description: 'Page describing the ODBC integration'
 doc_type: 'reference'
-show_title: false
+hide_title: true
 ---
 
 import Content from '@site/docs/engines/table-engines/integrations/odbc.md';
