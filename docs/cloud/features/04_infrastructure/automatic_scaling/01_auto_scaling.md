@@ -58,7 +58,7 @@ Scale and Enterprise services support autoscaling based on CPU and memory usage.
 
 For non-MBB services, CPU-based autoscaling kicks in when CPU usage crosses an upper threshold in the range of 50-75% (actual threshold depends on the size of the cluster). At this point, CPU allocation to the cluster is doubled. If CPU usage falls below half of the upper threshold (for instance, to 25% in case of a 50% upper threshold), CPU allocation is halved. 
 
-For services already utlizing the MBB scaling approach, scaling up happens at a CPU threshold of 75%, and scale down happens at half of that threshold, or 37.5%.
+For services already utilizing the MBB scaling approach, scaling up happens at a CPU threshold of 75%, and scale down happens at half of that threshold, or 37.5%.
 
 Memory-based auto-scaling scales the cluster to 125% of the maximum memory usage, or up to 150% if OOM (out of memory) errors are encountered.
 
