@@ -3592,6 +3592,11 @@
       "source": "/docs/about-clickhouse",
       "destination": "/docs/intro",
       "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/inviting-new-users",
+      "destination": "/docs/cloud/security/manage-cloud-users#invite-users",
+      "permanent": true
     }
   ]
 }

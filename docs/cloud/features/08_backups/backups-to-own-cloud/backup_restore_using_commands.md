@@ -56,9 +56,9 @@ See the [backup command summary](/operations/backup#command-summary) for full ba
 ```sql
 BACKUP DATABASE test_backups 
 TO S3(
-'https://testchbackups.s3.amazonaws.com/<uuid>',
-'<key id>',
-'<key secret>'
+  'https://testchbackups.s3.amazonaws.com/<uuid>',
+  '<key id>',
+  '<key secret>'
 )
 ```
 
@@ -74,9 +74,9 @@ For example, if you are taking daily backups, you will need to use a new uuid ea
 ```sql
 RESTORE DATABASE test_backups
 FROM S3(
-'https://testchbackups.s3.amazonaws.com/<uuid>',
-'<key id>',
-'<key secret>'
+  'https://testchbackups.s3.amazonaws.com/<uuid>',
+  '<key id>',
+  '<key secret>'
 )
 ```
   </TabItem>
@@ -89,9 +89,9 @@ FROM S3(
 ```sql
 BACKUP DATABASE test_backups 
 TO S3(
-'https://storage.googleapis.com/<bucket>/<uuid>',
-'<hmac-key>',
-'<hmac-secret>'
+  'https://storage.googleapis.com/<bucket>/<uuid>',
+  '<hmac-key>',
+  '<hmac-secret>'
 )
 ```
 
@@ -107,9 +107,9 @@ For example, if you are taking daily backups, you will need to use a new uuid ea
 ```sql
 RESTORE DATABASE test_backups
 FROM S3(
-'https://storage.googleapis.com/<bucket>/<uuid>',
-'<hmac-key>',
-'<hmac-secret>'
+  'https://storage.googleapis.com/<bucket>/<uuid>',
+  '<hmac-key>',
+  '<hmac-secret>'
 )
 ```
   </TabItem>
@@ -122,10 +122,9 @@ FROM S3(
 ```sql
 BACKUP DATABASE test_backups 
 TO AzureBlobStorage(
-'<AzureBlobStorage endpoint connection string>',
-'<container>',
-'<blob>/<>'
-);
+  '<AzureBlobStorage endpoint connection string>',
+  '<container>',
+  '<blob>/<>'
 )
 ```
 
@@ -140,9 +139,9 @@ For example, if you are taking daily backups, you will need to use a new uuid ea
 ```sql
 RESTORE DATABASE test_backups
 FROM AzureBlobStorage(
-'<AzureBlobStorage endpoint connection string>',
-'<container>',
-'<blob>/<uuid>'
+  '<AzureBlobStorage endpoint connection string>',
+  '<container>',
+  '<blob>/<uuid>'
 )
 ```
   </TabItem>

@@ -162,9 +162,47 @@ function useCMSIntegrations() {
 
   useEffect(() => {
     const fetchIntegrations = async () => {
+      // Step 1: Load fallback data first for immediate display
       try {
-        setLoading(true);
-        const response = await fetch('https://cms.clickhouse-dev.com:1337/api/integrations?populate[]=logo&populate[]=logo_dark');
+        const fallbackResponse = await fetch('/integrations-fallback.json', {
+          cache: 'force-cache' // Use cached version if available
+        });
+
+        if (fallbackResponse.ok) {
+          const fallbackData = await fallbackResponse.json();
+          const transformedData = transformCMSData(fallbackData.data || []);
+          setIntegrations(transformedData);
+          setError(null);
+          setLoading(false); // Show content immediately with fallback data
+          console.log('Loaded fallback integrations data');
+        } else {
+          console.warn('Fallback file not available, will try CMS only');
+        }
+      } catch (fallbackErr) {
+        console.error('Failed to load fallback integrations data:', fallbackErr);
+        // Continue to try CMS even if fallback fails
+      }
+
+      // Step 2: Try to fetch fresh data from CMS with timeout
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => {
+          controller.abort();
+          console.log('CMS request timed out after 8 seconds');
+        }, 8000); // 8 second timeout
+
+        const response = await fetch(
+          'https://cms.clickhouse-dev.com:1337/api/integrations?populate[]=logo&populate[]=logo_dark',
+          {
+            signal: controller.signal,
+            // Add headers to help with CORS and caching
+            headers: {
+              'Accept': 'application/json',
+            }
+          }
+        );
+
+        clearTimeout(timeoutId);
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -172,27 +210,24 @@ function useCMSIntegrations() {
 
         const data = await response.json();
         const transformedData = transformCMSData(data.data || []);
+
+        // Update with fresh CMS data
         setIntegrations(transformedData);
         setError(null);
-      } catch (err) {
-        console.error('Error loading integrations data from endpoint. Falling back to static JSON file.');
-
-        // Fallback to static JSON file
-        try {
-          const fallbackResponse = await fetch('/integrations-fallback.json');
-
-          if (!fallbackResponse.ok) {
-            throw new Error(`Failed to load fallback data: ${fallbackResponse.status}`);
+        console.log('Successfully updated with fresh CMS data');
+      } catch (cmsErr) {
+        // CMS fetch failed, but that's okay - we already have fallback data
+        if (cmsErr instanceof Error) {
+          if (cmsErr.name === 'AbortError') {
+            console.log('CMS request was aborted due to timeout, using fallback data');
+          } else {
+            console.error('Error loading integrations from CMS:', cmsErr.message);
           }
+        }
 
-          const fallbackData = await fallbackResponse.json();
-          const transformedData = transformCMSData(fallbackData.data || []);
-          setIntegrations(transformedData);
-          setError(null);
-        } catch (fallbackErr) {
-          console.error('Failed to load fallback integrations data:', fallbackErr);
-          setError(fallbackErr instanceof Error ? fallbackErr.message : 'Failed to fetch integrations');
-          setIntegrations([]);
+        // Only set error if we don't have any integrations data at all
+        if (integrations.length === 0) {
+          setError('Unable to load integrations. Please try refreshing the page.');
         }
       } finally {
         setLoading(false);
