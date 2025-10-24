@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Configurable Backups'
+sidebar_label: 'Configurable backups'
 slug: /cloud/manage/backups/configurable-backups
 description: 'Configurable Backups'
 title: 'Configurable Backups'

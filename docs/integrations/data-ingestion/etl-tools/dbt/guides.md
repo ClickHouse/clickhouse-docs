@@ -23,7 +23,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-This section provides guides on setting up dbt and the ClickHouse adapter, as well as an example of using dbt with ClickHouse. The example covers the following:
+This section provides guides on setting up dbt and the ClickHouse adapter, as well as an example of using dbt with ClickHouse using a publicly available IMDB dataset. The example covers the following steps:
 
 1. Creating a dbt project and setting up the ClickHouse adapter.
 2. Defining a model.
@@ -1047,3 +1047,7 @@ dbt provides the ability to load data from CSV files. This capability is not sui
     |War    |WAR |
     +-------+----+=
     ```
+
+## Further Information {#further-information}
+
+The previous guides only touch the surface of dbt functionality. Users are recommended to read the excellent [dbt documentation](https://docs.getdbt.com/docs/introduction).

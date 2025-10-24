@@ -11,10 +11,11 @@ doc_type: 'guide'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Integrating Apache Spark with ClickHouse
 
-<br/>
+<ClickHouseSupportedBadge/>
 
 [Apache Spark](https://spark.apache.org/) is a multi-language engine for executing data engineering, data
 science, and machine learning on single-node machines or clusters.

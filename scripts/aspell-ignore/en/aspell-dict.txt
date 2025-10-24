@@ -1,4 +1,4 @@
-personal_ws-1.1 en 3736
+personal_ws-1.1 en 3749
 AArch
 ACLs
 AICPA
@@ -219,6 +219,7 @@ CloudDetails
 CloudFormation
 CloudNotSupportedBadge
 CloudStorage
+CloudTrail
 CloudWatch
 Cloudera
 Cloudflare
@@ -253,6 +254,7 @@ Covid
 Craigslist
 Craigslist's
 Cramer's
+CrewAI
 Criteo
 Crotty
 Crowdsourced
@@ -363,6 +365,7 @@ Durre
 ECMA
 EDOT
 EMQX
+ENIs
 ETag
 EachRow
 Easypanel
@@ -376,6 +379,7 @@ EmbeddedRocksDB
 Embeddings
 Encodings
 Encrypter
+Entra
 Enum
 Enums
 Eoan
@@ -485,6 +489,7 @@ HashedDictionaryThreads
 HashedDictionaryThreadsActive
 HashiCorp
 Haversine
+Heatmap
 Heredoc
 HexAreaKm
 HexAreaM
@@ -876,6 +881,7 @@ O'Reilly
 OAuth
 ODBCDriver
 OFNS
+OIDC
 OLAP
 OLTP
 OOMs
@@ -957,6 +963,7 @@ OperationalError
 OrDefault
 OrNull
 OrZero
+OutOfMemory
 OvercommitTracker
 OverflowMode
 OverflowModeGroupBy
@@ -1115,6 +1122,7 @@ ReferenceKeyed
 Refreshable
 RegexpTree
 RelationMessage
+RelayState
 RemoteRead
 ReplacingMergeTree
 ReplacingReplicatedMergeTree
@@ -1409,6 +1417,7 @@ UnidirectionalEdgeIsValid
 UniqThetaSketch
 Updatable
 Uppercased
+Upsonic
 Upstash
 Uptime
 Uptrace
@@ -1520,6 +1529,7 @@ aggthrow
 aiochclient
 alloc
 allocator
+allowlist
 allowlisted
 allowlisting
 alphaTokens
@@ -2322,6 +2332,7 @@ haversine
 hdbc
 hdfs
 hdfsCluster
+heatmap
 heredoc
 heredocs
 hilbertDecode
@@ -3537,6 +3548,8 @@ trimLeft
 trimRight
 trunc
 truncations
+truststore
+truststores
 tryBase
 tryDecrypt
 tryIdnaEncode
