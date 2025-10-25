@@ -13,7 +13,7 @@ function useAskAI() {
                 setIsKapaLoaded(true);
                 return true;
             }
-            return false;
+        return false;
         };
 
         // Set up event listeners for Kapa widget
