@@ -277,7 +277,7 @@ Please note: if you encounter issues with missing classes, not every environment
 
 ##### String support {#string-support}
 
-The connector supports the String Converter in different ClickHouse formats: [JSON](/interfaces/formats#jsoneachrow), [CSV](/interfaces/formats#csv), and [TSV](/interfaces/formats#tabseparated).
+The connector supports the String Converter in different ClickHouse formats: [JSON](/interfaces/formats/JSONEachRow), [CSV](/interfaces/formats/CSV), and [TSV](/interfaces/formats/TabSeparated).
 
 ```json
 {

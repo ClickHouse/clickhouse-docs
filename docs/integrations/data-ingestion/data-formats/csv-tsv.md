@@ -31,7 +31,7 @@ To import data from the [CSV file](assets/data_small.csv) to the `sometable` tab
 clickhouse-client -q "INSERT INTO sometable FORMAT CSV" < data_small.csv
 ```
 
-Note that we use [FORMAT CSV](/interfaces/formats.md/#csv) to let ClickHouse know we're ingesting CSV formatted data. Alternatively, we can load data from a local file using the [FROM INFILE](/sql-reference/statements/insert-into.md/#inserting-data-from-a-file) clause:
+Note that we use [FORMAT CSV](/interfaces/formats/CSV) to let ClickHouse know we're ingesting CSV formatted data. Alternatively, we can load data from a local file using the [FROM INFILE](/sql-reference/statements/insert-into.md/#inserting-data-from-a-file) clause:
 
 ```sql
 INSERT INTO sometable
@@ -59,7 +59,7 @@ head data-small-headers.csv
 "Aegithina_tiphia","2018-02-01",34
 ```
 
-To import data from this file, we can use [CSVWithNames](/interfaces/formats.md/#csvwithnames) format:
+To import data from this file, we can use [CSVWithNames](/interfaces/formats/CSVWithNames) format:
 
 ```bash
 clickhouse-client -q "INSERT INTO sometable FORMAT CSVWithNames" < data_small_headers.csv
@@ -153,17 +153,17 @@ SELECT * FROM file('nulls.csv')
 
 ## TSV (tab-separated) files {#tsv-tab-separated-files}
 
-Tab-separated data format is widely used as a data interchange format. To load data from a [TSV file](assets/data_small.tsv) to ClickHouse, the [TabSeparated](/interfaces/formats.md/#tabseparated) format is used:
+Tab-separated data format is widely used as a data interchange format. To load data from a [TSV file](assets/data_small.tsv) to ClickHouse, the [TabSeparated](/interfaces/formats/TabSeparated) format is used:
 
 ```bash
 clickhouse-client -q "INSERT INTO sometable FORMAT TabSeparated" < data_small.tsv
 ```
 
-There's also a [TabSeparatedWithNames](/interfaces/formats.md/#tabseparatedwithnames) format to allow working with TSV files that have headers. And, like for CSV, we can skip the first X lines using the [input_format_tsv_skip_first_lines](/operations/settings/settings-formats.md/#input_format_tsv_skip_first_lines) option.
+There's also a [TabSeparatedWithNames](/interfaces/formats/TabSeparatedWithNames) format to allow working with TSV files that have headers. And, like for CSV, we can skip the first X lines using the [input_format_tsv_skip_first_lines](/operations/settings/settings-formats.md/#input_format_tsv_skip_first_lines) option.
 
 ### Raw TSV {#raw-tsv}
 
-Sometimes, TSV files are saved without escaping tabs and line breaks. We should use [TabSeparatedRaw](/interfaces/formats.md/#tabseparatedraw) to handle such files.
+Sometimes, TSV files are saved without escaping tabs and line breaks. We should use [TabSeparatedRaw](/interfaces/formats/TabSeparatedRaw) to handle such files.
 
 ## Exporting to CSV {#exporting-to-csv}
 
@@ -183,7 +183,7 @@ FORMAT CSV
 "2016_Greater_Western_Sydney_Giants_season","2017-05-01",86
 ```
 
-To add a header to the CSV file, we use the [CSVWithNames](/interfaces/formats.md/#csvwithnames) format:
+To add a header to the CSV file, we use the [CSVWithNames](/interfaces/formats/CSVWithNames) format:
 
 ```sql
 SELECT *
@@ -273,7 +273,7 @@ All column types will be treated as a `String` in this case.
 
 ### Exporting and importing CSV with explicit column types {#exporting-and-importing-csv-with-explicit-column-types}
 
-ClickHouse also allows explicitly setting column types when exporting data using [CSVWithNamesAndTypes](/interfaces/formats.md/#csvwithnamesandtypes) (and other *WithNames formats family):
+ClickHouse also allows explicitly setting column types when exporting data using [CSVWithNamesAndTypes](/interfaces/formats/CSVWithNamesAndTypes) (and other *WithNames formats family):
 
 ```sql
 SELECT *
@@ -308,7 +308,7 @@ Now ClickHouse identifies column types based on a (second) header row instead of
 
 ## Custom delimiters, separators, and escaping rules {#custom-delimiters-separators-and-escaping-rules}
 
-In sophisticated cases, text data can be formatted in a highly custom manner but still have a structure. ClickHouse has a special [CustomSeparated](/interfaces/formats.md/#format-customseparated) format for such cases, which allows setting custom escaping rules, delimiters, line separators, and starting/ending symbols.
+In sophisticated cases, text data can be formatted in a highly custom manner but still have a structure. ClickHouse has a special [CustomSeparated](/interfaces/formats/CustomSeparated) format for such cases, which allows setting custom escaping rules, delimiters, line separators, and starting/ending symbols.
 
 Suppose we have the following data in the file:
 
@@ -341,7 +341,7 @@ LIMIT 3
 └───────────────────────────┴────────────┴─────┘
 ```
 
-We can also use [CustomSeparatedWithNames](/interfaces/formats.md/#customseparatedwithnames) to get headers exported and imported correctly. Explore [regex and template](templates-regex.md) formats to deal with even more complex cases.
+We can also use [CustomSeparatedWithNames](/interfaces/formats/CustomSeparatedWithNames) to get headers exported and imported correctly. Explore [regex and template](templates-regex.md) formats to deal with even more complex cases.
 
 ## Working with large CSV files {#working-with-large-csv-files}
 

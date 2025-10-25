@@ -27,7 +27,7 @@ Before loading data, we can use [file()](/sql-reference/functions/files.md/#file
 DESCRIBE TABLE file('data.parquet', Parquet);
 ```
 
-We've used [Parquet](/interfaces/formats.md/#data-format-parquet) as a second argument, so ClickHouse knows the file format. This will print columns with the types:
+We've used [Parquet](/interfaces/formats/Parquet) as a second argument, so ClickHouse knows the file format. This will print columns with the types:
 
 ```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐

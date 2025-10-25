@@ -9,7 +9,7 @@ show_related_blogs: true
 doc_type: 'reference'
 ---
 
-ClickHouse now offers a native JSON column type designed for semi-structured and dynamic data. It's important to clarify that **this is a column type, not a data format**—you can insert JSON into ClickHouse as a string or via supported formats like [JSONEachRow](/docs/interfaces/formats/JSONEachRow), but that does not imply using the JSON column type. Users should only use the JSON type when the structure of their data is dynamic, not when they simply happen to store JSON.
+ClickHouse now offers a native JSON column type designed for semi-structured and dynamic data. It's important to clarify that **this is a column type, not a data format**—you can insert JSON into ClickHouse as a string or via supported formats like [JSONEachRow](/interfaces/formats/JSONEachRow), but that does not imply using the JSON column type. Users should only use the JSON type when the structure of their data is dynamic, not when they simply happen to store JSON.
 
 ## When to use the JSON type {#when-to-use-the-json-type}
 

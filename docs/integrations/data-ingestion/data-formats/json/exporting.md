@@ -8,7 +8,7 @@ doc_type: 'guide'
 
 # Exporting JSON
 
-Almost any JSON format used for import can be used for export as well. The most popular is [`JSONEachRow`](/interfaces/formats.md/#jsoneachrow):
+Almost any JSON format used for import can be used for export as well. The most popular is [`JSONEachRow`](/interfaces/formats/JSONEachRow):
 
 ```sql
 SELECT * FROM sometable FORMAT JSONEachRow
@@ -19,7 +19,7 @@ SELECT * FROM sometable FORMAT JSONEachRow
 {"path":"Ahmadabad-e_Kalij-e_Sofla","month":"2017-01-01","hits":3}
 ```
 
-Or we can use [`JSONCompactEachRow`](/interfaces/formats#jsoncompacteachrow) to save disk space by skipping column names:
+Or we can use [`JSONCompactEachRow`](/interfaces/formats/JSONCompactEachRow) to save disk space by skipping column names:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompactEachRow
@@ -32,7 +32,7 @@ SELECT * FROM sometable FORMAT JSONCompactEachRow
 
 ## Overriding data types as strings {#overriding-data-types-as-strings}
 
-ClickHouse respects data types and will export JSON accordingly to standards. But in cases where we need to have all values encoded as strings, we can use the [JSONStringsEachRow](/interfaces/formats.md/#jsonstringseachrow) format:
+ClickHouse respects data types and will export JSON accordingly to standards. But in cases where we need to have all values encoded as strings, we can use the [JSONStringsEachRow](/interfaces/formats/JSONStringsEachRow) format:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONStringsEachRow
@@ -56,7 +56,7 @@ SELECT * FROM sometable FORMAT JSONCompactStringsEachRow
 
 ## Exporting metadata together with data {#exporting-metadata-together-with-data}
 
-General [JSON](/interfaces/formats.md/#json) format, which is popular in apps, will export not only resulting data but column types and query stats:
+General [JSON](/interfaces/formats/JSON) format, which is popular in apps, will export not only resulting data but column types and query stats:
 
 ```sql
 SELECT * FROM sometable FORMAT JSON
@@ -93,7 +93,7 @@ SELECT * FROM sometable FORMAT JSON
 }
 ```
 
-The [JSONCompact](/interfaces/formats.md/#jsoncompact) format will print the same metadata but use a compacted form for the data itself:
+The [JSONCompact](/interfaces/formats/JSONCompact) format will print the same metadata but use a compacted form for the data itself:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompact
@@ -127,11 +127,11 @@ SELECT * FROM sometable FORMAT JSONCompact
 }
 ```
 
-Consider [`JSONStrings`](/interfaces/formats.md/#jsonstrings) or [`JSONCompactStrings`](/interfaces/formats.md/#jsoncompactstrings) variants to encode all values as strings.
+Consider [`JSONStrings`](/interfaces/formats/JSONStrings) or [`JSONCompactStrings`](/interfaces/formats/JSONCompactStrings) variants to encode all values as strings.
 
 ## Compact way to export JSON data and structure {#compact-way-to-export-json-data-and-structure}
 
-A more efficient way to have data, as well as it's structure, is to use [`JSONCompactEachRowWithNamesAndTypes`](/interfaces/formats.md/#jsoncompacteachrowwithnamesandtypes) format:
+A more efficient way to have data, as well as it's structure, is to use [`JSONCompactEachRowWithNamesAndTypes`](/interfaces/formats/JSONCompactEachRowWithNamesAndTypes) format:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompactEachRowWithNamesAndTypes
