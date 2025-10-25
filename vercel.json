@@ -3597,6 +3597,11 @@
       "source": "/docs/cloud/security/inviting-new-users",
       "destination": "/docs/cloud/security/manage-cloud-users#invite-users",
       "permanent": true
+    },
+    {
+      "source": "/docs/sql-reference/functions/time-series-analysis-functions",
+      "destination": "/docs/sql-reference/functions/time-series-functions",
+      "permanent": true
     }
   ]
 }
