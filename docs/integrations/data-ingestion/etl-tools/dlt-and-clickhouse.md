@@ -24,7 +24,9 @@ pip install "dlt[clickhouse]"
 
 ## Setup guide {#setup-guide}
 
-### 1. Initialize the dlt Project {#1-initialize-the-dlt-project}
+<VerticalStepper headerLevel="h3">
+
+### Initialize the dlt Project {#1-initialize-the-dlt-project}
 
 Start by initializing a new `dlt` project as follows:
 ```bash
@@ -42,7 +44,7 @@ pip install -r requirements.txt
 
 or with `pip install dlt[clickhouse]`, which installs the `dlt` library and the necessary dependencies for working with ClickHouse as a destination.
 
-### 2. Setup ClickHouse Database {#2-setup-clickhouse-database}
+### Setup ClickHouse Database {#2-setup-clickhouse-database}
 
 To load data into ClickHouse, you need to create a ClickHouse database. Here's a rough outline of what should you do:
 
@@ -60,7 +62,7 @@ GRANT SELECT ON INFORMATION_SCHEMA.COLUMNS TO dlt;
 GRANT CREATE TEMPORARY TABLE, S3 ON *.* TO dlt;
 ```
 
-### 3. Add credentials {#3-add-credentials}
+### Add credentials {#3-add-credentials}
 
 Next, set up the ClickHouse credentials in the `.dlt/secrets.toml` file as shown below:
 
@@ -78,8 +80,7 @@ secure = 1                               # Set to 1 if using HTTPS, else 0.
 dataset_table_separator = "___"          # Separator for dataset table names from dataset.
 ```
 
-:::note
-HTTP_PORT
+:::note HTTP_PORT
 The `http_port` parameter specifies the port number to use when connecting to the ClickHouse server's HTTP interface. This is different from default port 9000, which is used for the native TCP protocol.
 
 You must set `http_port` if you are not using external staging (i.e. you don't set the staging parameter in your pipeline). This is because the built-in ClickHouse local storage staging uses the <a href="https://github.com/ClickHouse/clickhouse-connect">clickhouse content</a> library, which communicates with ClickHouse over HTTP.
@@ -93,6 +94,8 @@ You can pass a database connection string similar to the one used by the `clickh
 # keep it at the top of your toml file, before any section starts.
 destination.clickhouse.credentials="clickhouse://dlt:Dlt*12345789234567@localhost:9000/dlt?secure=1"
 ```
+
+</VerticalStepper>
 
 ## Write disposition {#write-disposition}
 
