@@ -1,4 +1,4 @@
-personal_ws-1.1 en 3749
+personal_ws-1.1 en 3756
 AArch
 ACLs
 AICPA
@@ -1216,6 +1216,7 @@ SendScalars
 SerDe
 Serverless
 ServiceNow
+ServiceName
 ServiceNow's
 SetOperationMode
 SeverityText
@@ -1240,6 +1241,7 @@ Smirnov's
 Smirnov'test
 Sonatype
 Soundex
+SpanAttributes
 SpanKind
 Spearman's
 Splunk
@@ -1834,6 +1836,7 @@ clickhousedb
 clickhousex
 clickmate
 clickpipe
+clickstack
 clickstream
 clickvisual
 clockhour
@@ -2731,6 +2734,7 @@ nestjs
 netloc
 newjson
 nextset
+nginx
 ngram
 ngramDistance
 ngramDistanceCaseInsensitive
@@ -3748,3 +3752,9 @@ znode
 znodes
 zookeeperSessionUptime
 zstd
+OTELCOL
+elipses
+geolocation
+nginx's
+otel
+otelcol
