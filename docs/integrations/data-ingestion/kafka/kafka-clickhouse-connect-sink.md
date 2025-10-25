@@ -162,7 +162,7 @@ Sink, use [Kafka Connect Transformations](https://docs.confluent.io/platform/cur
 
 **Without a schema declared:**
 
-A record is converted into JSON and sent to ClickHouse as a value in [JSONEachRow](../../../sql-reference/formats.mdx#jsoneachrow) format.
+A record is converted into JSON and sent to ClickHouse as a value in [JSONEachRow](/interfaces/formats/JSONEachRow) format.
 
 ### Configuration recipes {#configuration-recipes}
 
