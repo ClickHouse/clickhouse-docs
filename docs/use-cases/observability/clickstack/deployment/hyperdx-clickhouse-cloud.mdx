@@ -17,10 +17,15 @@ import hyperdx_cloud_landing from '@site/static/images/use-cases/observability/h
 import hyperdx_cloud_datasource from '@site/static/images/use-cases/observability/hyperdx_cloud_datasource.png';
 import hyperdx_create_new_source from '@site/static/images/use-cases/observability/hyperdx_create_new_source.png';
 import hyperdx_create_trace_datasource from '@site/static/images/use-cases/observability/hyperdx_create_trace_datasource.png';
+import {TrackedLink} from '@site/src/components/TrackedLink/TrackedLink.tsx'
 
 <PrivatePreviewBadge/>
 
 This option is designed for users who are using ClickHouse Cloud. In this deployment pattern, both ClickHouse and HyperDX are hosted in ClickHouse Cloud, minimizing the number of components the user needs to self-host.
+
+:::note[New to ClickHouse Cloud?]
+<TrackedLink href="/docs/cloud/overview" eventName="clickstack.deployment.cloud_learn_more.cta">Learn more about ClickHouse Cloud</TrackedLink> or <TrackedLink href="https://clickhouse.cloud/signUp" eventName="clickstack.deployment.cloud_signup.cta" target="_blank" rel="noopener noreferrer">sign up for a free trial</TrackedLink> to get started.
+:::
 
 As well as reducing infrastructure management, this deployment pattern ensures authentication is integrated with ClickHouse Cloud SSO/SAML. Unlike self-hosted deployments, there is also no need to provision a MongoDB instance to store application state — such as dashboards, saved searches, user settings, and alerts.
 
