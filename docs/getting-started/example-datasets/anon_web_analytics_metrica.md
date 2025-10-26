@@ -3,7 +3,6 @@ description: 'Dataset consisting of two tables containing anonymized web analyti
   data with hits and visits'
 sidebar_label: 'Anonymized web analytics'
 slug: /getting-started/example-datasets/metrica
-title: 'Anonymized Web Analytics'
 keywords: ['web analytics data', 'anonymized data', 'website traffic data', 'example dataset', 'getting started']
 title: 'Anonymized web analytics'
 doc_type: 'guide'

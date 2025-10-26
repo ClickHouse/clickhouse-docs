@@ -4,7 +4,7 @@ slug: /cloud/migration/clickhouse-to-cloud
 title: 'Migrating between self-managed ClickHouse and ClickHouse Cloud'
 description: 'Page describing how to migrate between self-managed ClickHouse and ClickHouse Cloud'
 doc_type: 'guide'
-keywords: [migration, clickhouse cloud, self-managed, remote secure, data migration, table migration, user management, ip access list]
+keywords: ['migration', 'ClickHouse Cloud', 'OSS', 'Migrate self-managed to Cloud']
 ---
 
 import Image from '@theme/IdealImage';
