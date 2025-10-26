@@ -1,14 +1,15 @@
 ---
-'description': 'ClickHouse 中 IPv6 数据类型的文档，用于将 IPv6 地址存储为 16 字节值'
+'description': 'ClickHouse 中 IPv6 数据类型的文档，存储 IPv6 地址为 16 字节值'
 'sidebar_label': 'IPv6'
 'sidebar_position': 30
 'slug': '/sql-reference/data-types/ipv6'
 'title': 'IPv6'
+'doc_type': 'reference'
 ---
 
 ## IPv6 {#ipv6}
 
-IPv6 地址。以 UInt128 大端格式存储，占用 16 字节。
+IPv6 地址。以 UInt128 大端格式存储在 16 字节中。
 
 ### 基本用法 {#basic-usage}
 
@@ -59,7 +60,7 @@ SELECT toTypeName(from), hex(from) FROM hits LIMIT 1;
 └──────────────────┴──────────────────────────────────┘
 ```
 
-IPv6 地址可以直接与 IPv4 地址进行比较：
+IPv6 地址可以直接与 IPv4 地址比较：
 
 ```sql
 SELECT toIPv4('127.0.0.1') = toIPv6('::ffff:127.0.0.1');

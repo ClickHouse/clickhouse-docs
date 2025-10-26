@@ -14,6 +14,20 @@ const extractText = (nodes) => {
     return text.trim();
 };
 
+const extractRawContent = (nodes) => {
+    if (!nodes || !Array.isArray(nodes)) return '';
+    return nodes.map(node => {
+        if (node.type === 'text') {
+            return node.value;
+        } else if (node.type === 'inlineCode') {
+            return `\`${node.value}\``;
+        } else if (node.children) {
+            return extractRawContent(node.children);
+        }
+        return '';
+    }).join('');
+};
+
 // --- Main Plugin Function ---
 const plugin = (options) => {
     const transformer = (tree, file) => {
@@ -38,13 +52,17 @@ const plugin = (options) => {
                                 type = attr.value;
                             } else if (attr.name === 'headerLevel' && typeof attr.value === 'string') {
                                 let set_level = attr.value
-                                const regex = /h([2-5])/;
-                                const match = set_level.match(regex);
-                                // If there's a match, convert the captured group to a number
-                                if (match) {
-                                    headerLevel = Number(match[1]);
+                                if (set_level === 'list') {
+                                    headerLevel = 'list';
                                 } else {
-                                    throw new Error("VerticalStepper supported only for h2-5");
+                                    const regex = /h([2-5])/;
+                                    const match = set_level.match(regex);
+                                    // If there's a match, convert the captured group to a number
+                                    if (match) {
+                                        headerLevel = Number(match[1]);
+                                    } else {
+                                        throw new Error("VerticalStepper supported only for h2-5 or 'list'");
+                                    }
                                 }
                             }
                         }
@@ -72,18 +90,47 @@ const plugin = (options) => {
                     };
 
                     if (node.children && node.children.length > 0) {
-                        node.children.forEach((child) => {
-                            if (child.type === 'heading' && child.depth === headerLevel) {
-                                finalizeStep(); // Finalize the previous step first
-                                currentStepLabel = extractText(child.children);
-                                currentAnchorId = child.data.hProperties.id;
-                                currentStepId = `step-${total_steps}`; // Generate step-X ID
-                                currentStepContent.push(child); // We need the header otherwise onBrokenAnchors fails
-                            } else if (currentStepLabel) {
-                                // Only collect content nodes *after* a heading has defined a step
-                                currentStepContent.push(child);
-                            }
-                        });
+                        if (headerLevel === 'list') {
+                            // Handle ordered list mode
+                            node.children.forEach((child) => {
+                                if (child.type === 'list' && child.ordered === true) {
+                                    // Process each list item as a step
+                                    child.children.forEach((listItem) => {
+                                        if (listItem.type === 'listItem' && listItem.children && listItem.children.length > 0) {
+                                            finalizeStep(); // Finalize the previous step first
+                                            // Extract the first paragraph as the step label
+                                            const firstChild = listItem.children[0];
+                                            if (firstChild && firstChild.type === 'paragraph') {
+                                                currentStepLabel = firstChild.children;
+                                                currentStepId = `step-${total_steps}`;
+                                                currentAnchorId = null;
+                                                // Include all list item content except the first paragraph (which becomes the label)
+                                                currentStepContent.push(...listItem.children.slice(1));
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    // Include other content (like paragraphs, images, etc.) in the current step
+                                    if (currentStepLabel) {
+                                        currentStepContent.push(child);
+                                    }
+                                }
+                            });
+                        } else {
+                            // Handle heading mode (original logic)
+                            node.children.forEach((child) => {
+                                if (child.type === 'heading' && child.depth === headerLevel) {
+                                    finalizeStep(); // Finalize the previous step first
+                                    currentStepLabel = extractText(child.children);
+                                    currentAnchorId = child.data?.hProperties?.id || null;
+                                    currentStepId = `step-${total_steps}`; // Generate step-X ID
+                                    currentStepContent.push(child); // We need the header otherwise onBrokenAnchors fails
+                                } else if (currentStepLabel) {
+                                    // Only collect content nodes *after* a heading has defined a step
+                                    currentStepContent.push(child);
+                                }
+                            });
+                        }
                     }
                     finalizeStep(); // Finalize the last step found
 
@@ -110,8 +157,30 @@ const plugin = (options) => {
                         // Basic attributes for Step
                         const stepAttributes = [
                             { type: 'mdxJsxAttribute', name: 'id', value: step.id }, // step-X
-                            { type: 'mdxJsxAttribute', name: 'label', value: step.label }, // Plain text
                         ];
+
+                        // Add the label - for list mode, we'll create a special label element
+                        if (headerLevel === 'list' && Array.isArray(step.label)) {
+                            // For list mode, create a paragraph element with the label content and add it to the step children
+                            const labelParagraph = {
+                                type: 'paragraph',
+                                children: [...step.label]
+                            };
+                            step.content.unshift(labelParagraph);
+                            
+                            // Use plain text for the label attribute
+                            stepAttributes.push({
+                                type: 'mdxJsxAttribute',
+                                name: 'label',
+                                value: extractRawContent(step.label)
+                            });
+                        } else {
+                            stepAttributes.push({
+                                type: 'mdxJsxAttribute',
+                                name: 'label',
+                                value: step.label
+                            });
+                        }
 
                         // Add forceExpanded attribute if parent was expanded
                         // (Matches React prop name used before anchor logic)

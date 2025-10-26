@@ -1,25 +1,23 @@
 ---
-'description': 'System table containing licenses of third-party libraries that are
-  located in the contrib directory of ClickHouse sources.'
+'description': 'システムテーブルは、ClickHouseソースのcontribディレクトリにあるサードパーティのライブラリのライセンスを含みます。'
 'keywords':
 - 'system table'
 - 'licenses'
 'slug': '/operations/system-tables/licenses'
 'title': 'system.licenses'
+'doc_type': 'reference'
 ---
-
-
 
 
 # system.licenses
 
-ClickHouseソースの[contrib](https://github.com/ClickHouse/ClickHouse/tree/master/contrib)ディレクトリにあるサードパーティライブラリのライセンスを含みます。
+ClickHouseソースの [contrib](https://github.com/ClickHouse/ClickHouse/tree/master/contrib) ディレクトリにあるサードパーティライブラリのライセンスを含みます。
 
 カラム:
 
-- `library_name` ([String](../../sql-reference/data-types/string.md)) — ライセンスが関連付けられているライブラリの名前。
-- `license_type` ([String](../../sql-reference/data-types/string.md)) — ライセンスの種類 — 例: Apache, MIT。
-- `license_path` ([String](../../sql-reference/data-types/string.md)) — ライセンステキストが含まれるファイルへのパス。
+- `library_name` ([String](../../sql-reference/data-types/string.md)) — ライセンスに関連するライブラリの名前。
+- `license_type` ([String](../../sql-reference/data-types/string.md)) — ライセンスタイプ — 例: Apache, MIT。
+- `license_path` ([String](../../sql-reference/data-types/string.md)) — ライセンステキストが記載されたファイルへのパス。
 - `license_text` ([String](../../sql-reference/data-types/string.md)) — ライセンステキスト。
 
 **例**

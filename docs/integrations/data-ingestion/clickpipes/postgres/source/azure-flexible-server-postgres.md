@@ -4,6 +4,7 @@ description: 'Set up Azure Flexible Server for Postgres as a source for ClickPip
 slug: /integrations/clickpipes/postgres/source/azure-flexible-server-postgres
 title: 'Azure Flexible Server for Postgres Source Setup Guide'
 keywords: ['azure', 'flexible server', 'postgres', 'clickpipes', 'wal level']
+doc_type: 'guide'
 ---
 
 import server_parameters from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/server_parameters.png';

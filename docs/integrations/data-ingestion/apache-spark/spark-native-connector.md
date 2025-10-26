@@ -5,6 +5,7 @@ slug: /integrations/apache-spark/spark-native-connector
 description: 'Introduction to Apache Spark with ClickHouse'
 keywords: ['clickhouse', 'Apache Spark', 'migrating', 'data']
 title: 'Spark Connector'
+doc_type: 'guide'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -137,7 +138,7 @@ If you want to avoid copying the JAR files to your Spark client node, you can us
 
 ```text
   --repositories https://{maven-central-mirror or private-nexus-repo} \
-  --packages com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }},com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}:all
+  --packages com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }},com.clickhouse:clickhouse-jdbc:{{ clickhouse_jdbc_version }}
 ```
 
 Note: For SQL-only use cases, [Apache Kyuubi](https://github.com/apache/kyuubi) is recommended
@@ -425,7 +426,7 @@ object NativeSparkWrite extends App {
 from pyspark.sql import SparkSession
 from pyspark.sql import Row
 
-# Feel free to use any other packages combination satesfying the compatability martix provided above.
+# Feel free to use any other packages combination satesfying the compatibility matrix provided above.
 packages = [
     "com.clickhouse.spark:clickhouse-spark-runtime-3.4_2.12:0.8.0",
     "com.clickhouse:clickhouse-client:0.7.0",
@@ -460,7 +461,7 @@ df.writeTo("clickhouse.default.example_table").append()
 <TabItem value="SparkSQL" label="Spark SQL">
 
 ```sql
-    -- resultTalbe is the Spark intermediate df we want to insert into clickhouse.default.example_table
+    -- resultTable is the Spark intermediate df we want to insert into clickhouse.default.example_table
    INSERT INTO TABLE clickhouse.default.example_table
                 SELECT * FROM resultTable;
                 
@@ -476,9 +477,15 @@ ClickHouse.
 Spark SQL allows you to write queries exactly as you would in ClickHouse,
 so you can directly execute commands such as CREATE TABLE, TRUNCATE, and more - without modification, for instance:
 
-```sql
+:::note
+When using Spark SQL, only one statement can be executed at a time.
+:::
 
+```sql
 USE clickhouse; 
+```
+
+```sql
 
 CREATE TABLE test_db.tbl_sql (
   create_time TIMESTAMP NOT NULL,

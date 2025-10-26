@@ -6,6 +6,7 @@ slug: /integrations/data-formats/json/loading
 description: 'Loading JSON'
 keywords: ['json', 'clickhouse', 'inserting', 'loading', 'inserting']
 score: 15
+doc_type: 'guide'
 ---
 
 # Loading JSON {#loading-json}
@@ -14,7 +15,7 @@ The following examples provide a very simple example of loading structured and s
 
 ## Loading structured JSON {#loading-structured-json}
 
-In this section, we assume the JSON data is in [`NDJSON`](https://github.com/ndjson/ndjson-spec) (Newline delimited JSON) format, known as [`JSONEachRow`](/interfaces/formats#jsoneachrow) in ClickHouse, and well structured i.e. the column names and types are fixed. `NDJSON` is the preferred format for loading JSON due to its brevity and efficient use of space, but others are supported for both [input and output](/interfaces/formats#json).
+In this section, we assume the JSON data is in [`NDJSON`](https://github.com/ndjson/ndjson-spec) (Newline delimited JSON) format, known as [`JSONEachRow`](/interfaces/formats/JSONEachRow) in ClickHouse, and well structured i.e. the column names and types are fixed. `NDJSON` is the preferred format for loading JSON due to its brevity and efficient use of space, but others are supported for both [input and output](/interfaces/formats/JSON).
 
 Consider the following JSON sample, representing a row from the [Python PyPI dataset](https://clickpy.clickhouse.com/):
 

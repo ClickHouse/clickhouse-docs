@@ -3,7 +3,8 @@ slug: /guides/sre/network-ports
 sidebar_label: 'Network ports'
 title: 'Network ports'
 description: 'Description of available network ports and what they are used for'
-keywords: ['network ports', 'port configuration', 'networking guide', 'firewall settings', 'SRE guide']
+doc_type: 'reference'
+keywords: ['network', 'ports', 'configuration', 'security', 'firewall']
 ---
 
 # Network ports

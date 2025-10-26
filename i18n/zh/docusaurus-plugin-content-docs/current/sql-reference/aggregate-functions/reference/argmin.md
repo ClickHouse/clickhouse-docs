@@ -1,15 +1,16 @@
 ---
-'description': '计算最小 `val` 值的 `arg` 值。如果有多行具有相同的 `val` 最大值，那么返回的相关 `arg` 不是确定性的。'
+'description': '计算具有最小 `val` 值的 `arg` 值。如果存在多个行的 `val` 值相同且为最大值，则返回的相关 `arg` 是不确定的。'
 'sidebar_position': 110
 'slug': '/sql-reference/aggregate-functions/reference/argmin'
 'title': 'argMin'
+'doc_type': 'reference'
 ---
 
 
 # argMin
 
-计算最小 `val` 值的 `arg` 值。如果有多行具有相同的最大 `val`，返回的相关 `arg` 是不确定的。
-`arg` 和 `min` 两个部分都作为 [聚合函数](/sql-reference/aggregate-functions/index.md) 行为，它们在处理过程中都 [跳过 `Null`](/sql-reference/aggregate-functions/index.md#null-processing)，如果有非 `Null` 值可用，则返回非 `Null` 值。
+计算最小 `val` 值的 `arg` 值。如果有多行的 `val` 值相等且为最大，则返回的关联 `arg` 是不确定的。
+这两个部分 `arg` 和 `min` 的行为都像 [聚合函数](/sql-reference/aggregate-functions/index.md)，在处理过程中都 [跳过 `Null`](/sql-reference/aggregate-functions/index.md#null-processing)，如果有可用的非 `Null` 值，将返回非 `Null` 值。
 
 **语法**
 
@@ -26,7 +27,7 @@ argMin(arg, val)
 
 - 与最小 `val` 值对应的 `arg` 值。
 
-类型: 与 `arg` 类型匹配。
+类型：与 `arg` 类型匹配。
 
 **示例**
 
@@ -66,7 +67,7 @@ ENGINE = Memory AS
 SELECT *
 FROM VALUES((NULL, 0), ('a', 1), ('b', 2), ('c', 2), (NULL, NULL), ('d', NULL));
 
-select * from test;
+SELECT * FROM test;
 ┌─a────┬────b─┐
 │ ᴺᵁᴸᴸ │    0 │
 │ a    │    1 │

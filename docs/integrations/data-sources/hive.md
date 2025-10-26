@@ -4,6 +4,7 @@ sidebar_label: 'Hive'
 title: 'Hive'
 hide_title: true
 description: 'Page describing the Hive table engine'
+doc_type: 'reference'
 keywords: ['hive', 'table engine', 'integration']
 ---
 

@@ -6,6 +6,7 @@ title: 'Selecting an insert strategy'
 description: 'Page describing how to choose an insert strategy in ClickHouse'
 keywords: ['INSERT', 'asynchronous inserts', 'compression', 'batch inserts']
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -36,7 +37,7 @@ If not, see [Asynchronous inserts](#asynchronous-inserts) below.
 
 For optimal performance, data must be ①[ batched](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance), making batch size the **first decision**.
 
-ClickHouse stores inserted data on disk,[ ordered](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) by the table's primary key column(s). The **second decision** is whether to ② pre-sort the data before transmission to the server. If a batch arrives pre-sorted by primary key column(s), ClickHouse can [skip](https://github.com/ClickHouse/ClickHouse/blob/94ce8e95404e991521a5608cd9d636ff7269743d/src/Storages/MergeTree/MergeTreeDataWriter.cpp#L595) the ⑨ sorting step, speeding up ingestion.
+ClickHouse stores inserted data on disk,[ ordered](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) by the table's primary key column(s). The **second decision** is whether to ② pre-sort the data before transmission to the server. If a batch arrives pre-sorted by primary key column(s), ClickHouse can [skip](https://github.com/ClickHouse/ClickHouse/blob/94ce8e95404e991521a5608cd9d636ff7269743d/src/Storages/MergeTree/MergeTreeDataWriter.cpp#L595) the ⑩ sorting step, speeding up ingestion.
 
 If the data to be ingested has no predefined format, the **key decision** is choosing a format. ClickHouse supports inserting data in [over 70 formats](/interfaces/formats). However, when using the ClickHouse command-line client or programming language clients, this choice is often handled automatically. If needed, this automatic selection can also be overridden explicitly.
 
@@ -61,7 +62,7 @@ Synchronous inserts are also **idempotent**. When using MergeTree engines, Click
 * The insert succeeded but the client never received an acknowledgment due to a network interruption.
 * The insert failed server-side and timed out.
 
-In both cases, it's safe to **retry the insert** - as long as the batch contents and order remain identical. For this reason, it's critical that clients retry consistently, without modifying or reordering data.
+In both cases, it's safe to **retry the insert** — as long as the batch contents and order remain identical. For this reason, it's critical that clients retry consistently, without modifying or reordering data.
 
 ### Choose the right insert target {#choose-the-right-insert-target}
 
@@ -97,7 +98,7 @@ ClickHouse supports several compression codecs during data transmission. Two com
 * **LZ4**: Fast and lightweight. It reduces data size significantly with minimal CPU overhead, making it ideal for high-throughput inserts and default in most ClickHouse clients.
 * **ZSTD**: Higher compression ratio but more CPU-intensive. It's useful when network transfer costs are high—such as in cross-region or cloud provider scenarios—though it increases client-side compute and server-side decompression time slightly.
 
-Best practice: Use LZ4 unless you have constrained bandwidth or incur data egress costs - then consider ZSTD.
+Best practice: Use LZ4 unless you have constrained bandwidth or incur data egress costs — then consider ZSTD.
 
 :::note
 In tests from the [FastFormats benchmark](https://clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient), LZ4-compressed Native inserts reduced data size by more than 50%, cutting ingestion time from 150s to 131s for a 5.6 GiB dataset. Switching to ZSTD compressed the same dataset down to 1.69 GiB, but increased server-side processing time slightly.
@@ -119,7 +120,7 @@ With the [HTTP interface](/interfaces/http), use the Content-Encoding header to 
 
 Pre-sorting data by primary key before insertion can improve ingestion efficiency in ClickHouse, particularly for large batches. 
 
-When data arrives pre-sorted, ClickHouse can skip or simplify the internal sorting step during part creation, reducing CPU usage and accelerating the insert process. Pre-sorting also improves compression efficiency, since similar values are grouped together - enabling codecs like LZ4 or ZSTD to achieve a better compression ratio. This is especially beneficial when combined with large batch inserts and compression, as it reduces both the processing overhead and the amount of data transferred.
+When data arrives pre-sorted, ClickHouse can skip or simplify the internal sorting step during part creation, reducing CPU usage and accelerating the insert process. Pre-sorting also improves compression efficiency, since similar values are grouped together—enabling codecs like LZ4 or ZSTD to achieve a better compression ratio. This is especially beneficial when combined with large batch inserts and compression, as it reduces both the processing overhead and the amount of data transferred.
 
 **That said, pre-sorting is an optional optimization—not a requirement.** ClickHouse sorts data highly efficiently using parallel processing, and in many cases, server-side sorting is faster or more convenient than pre-sorting client-side. 
 
@@ -129,17 +130,17 @@ When data arrives pre-sorted, ClickHouse can skip or simplify the internal sorti
 
 <AsyncInserts />
 
-## Choose an interface - HTTP or native {#choose-an-interface}
+## Choose an interface—HTTP or native {#choose-an-interface}
 
 ### Native {#choose-an-interface-native}
 
-ClickHouse offers two main interfaces for data ingestion: the **native interface** and the **HTTP interface** - each with trade-offs between performance and flexibility. The native interface, used by [clickhouse-client](/interfaces/cli) and select language clients like Go and C++, is purpose-built for performance. It always transmits data in ClickHouse's highly efficient Native format, supports block-wise compression with LZ4 or ZSTD, and minimizes server-side processing by offloading work such as parsing and format conversion to the client. 
+ClickHouse offers two main interfaces for data ingestion: the **native interface** and the **HTTP interface**—each with trade-offs between performance and flexibility. The native interface, used by [clickhouse-client](/interfaces/cli) and select language clients like Go and C++, is purpose-built for performance. It always transmits data in ClickHouse's highly efficient Native format, supports block-wise compression with LZ4 or ZSTD, and minimizes server-side processing by offloading work such as parsing and format conversion to the client. 
 
 It even enables client-side computation of MATERIALIZED and DEFAULT column values, allowing the server to skip these steps entirely. This makes the native interface ideal for high-throughput ingestion scenarios where efficiency is critical.
 
 ### HTTP {#choose-an-interface-http}
 
-Unlike many traditional databases, ClickHouse also supports an HTTP interface. **This, by contrast, prioritizes compatibility and flexibility.** It allows data to be sent in [any supported format](/integrations/data-formats) - including JSON, CSV, Parquet, and others - and is widely supported across most ClickHouse clients, including Python, Java, JavaScript, and Rust. 
+Unlike many traditional databases, ClickHouse also supports an HTTP interface. **This, by contrast, prioritizes compatibility and flexibility.** It allows data to be sent in [any supported format](/integrations/data-formats)—including JSON, CSV, Parquet, and others—and is widely supported across most ClickHouse clients, including Python, Java, JavaScript, and Rust. 
 
 This is often preferable to ClickHouse's native protocol as it allows traffic to be easily switched with load balancers. We expect small differences in insert performance with the native protocol, which incurs a little less overhead.
 

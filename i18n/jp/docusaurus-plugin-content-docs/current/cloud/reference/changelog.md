@@ -1,8 +1,8 @@
 ---
-'slug': '/whats-new/cloud'
-'sidebar_label': 'クラウド変更履歴'
-'title': 'クラウド変更履歴'
-'description': '各ClickHouse Cloudリリースの新機能に関する説明を提供するClickHouse Cloud変更履歴'
+slug: '/whats-new/cloud'
+sidebar_label: 'クラウド変更履歴'
+title: 'クラウド変更履歴'
+description: '各ClickHouse Cloudリリースの新機能に関する説明を提供するClickHouse Cloud変更履歴'
 ---
 
 import Image from '@theme/IdealImage';
@@ -1003,7 +1003,7 @@ ClickHouse 23.1 の機能のサブセットを追加します。たとえば:
 - [Metabase](/integrations/data-visualization/metabase-and-clickhouse.md)プラグイン: ClickHouseによって維持される公式ソリューションになりました
 - [dbt](/integrations/data-ingestion/etl-tools/dbt/index.md)プラグイン: [複数スレッド](https://github.com/ClickHouse/dbt-clickhouse/blob/main/CHANGELOG.md)のサポートを追加
 - [Grafana](/integrations/data-visualization/grafana/index.md)プラグイン: 接続エラーの処理が改善されました
-- [Python](/integrations/language-clients/python/index.md)クライアント: 挿入操作のための[ストリーミングサポート](/integrations/language-clients/python/index.md#streaming-queries)
+- [Python](/integrations/language-clients/python/index.md)クライアント: 挿入操作のための[ストリーミングサポート](/integrations/language-clients/python/advanced-querying.md#streaming-queries)
 - [Go](/integrations/language-clients/go/index.md)クライアント: [バグ修正](https://github.com/ClickHouse/clickhouse-go/blob/main/CHANGELOG.md): キャンセルされた接続を閉じ、接続エラーの処理を改善
 - [JS](/integrations/language-clients/js.md)クライアント: [exec/insertの破壊的変更](https://github.com/ClickHouse/clickhouse-js/releases/tag/0.0.12); 戻り値の型でquery_idを公開
 - [Java](https://github.com/ClickHouse/clickhouse-java#readme)クライアント/JDBCドライバーのメジャーリリース

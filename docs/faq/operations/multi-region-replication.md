@@ -4,6 +4,8 @@ title: 'Does ClickHouse support multi-region replication?'
 toc_hidden: true
 toc_priority: 30
 description: 'This page answers whether ClickHouse supports multi-region replication'
+doc_type: 'reference'
+keywords: ['multi-region', 'replication', 'geo-distributed', 'distributed systems', 'data synchronization']
 ---
 
 # Does ClickHouse support multi-region replication? {#does-clickhouse-support-multi-region-replication}

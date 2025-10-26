@@ -1,12 +1,13 @@
 ---
 'alias': []
-'description': 'PrettySpaceNoEscapesMonoBlock形式のドキュメント'
+'description': 'PrettySpaceNoEscapesMonoBlock フォーマットの Documentation'
 'input_format': false
 'keywords':
 - 'PrettySpaceNoEscapesMonoBlock'
 'output_format': true
 'slug': '/interfaces/formats/PrettySpaceNoEscapesMonoBlock'
 'title': 'PrettySpaceNoEscapesMonoBlock'
+'doc_type': 'reference'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
@@ -17,8 +18,7 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 ## 説明 {#description}
 
-[`PrettySpaceNoEscapes`](./PrettySpaceNoEscapes.md) フォーマットとは異なり、最大 `10,000` 行がバッファリングされ、 
-単一のテーブルとして出力されます。これは [ブロック](/development/architecture#block) によるものではありません。
+[`PrettySpaceNoEscapes`](./PrettySpaceNoEscapes.md) フォーマットとは異なり、最大 `10,000` 行をバッファリングし、単一のテーブルとして出力され、[ブロック](/development/architecture#block) では出力されません。
 
 ## 使用例 {#example-usage}
 

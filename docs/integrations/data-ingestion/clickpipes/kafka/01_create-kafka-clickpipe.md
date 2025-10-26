@@ -4,6 +4,7 @@ description: 'Step-by-step guide to creating your first Kafka ClickPipe.'
 slug: /integrations/clickpipes/kafka/create-your-first-kafka-clickpipe
 sidebar_position: 1
 title: 'Creating your first Kafka ClickPipe'
+doc_type: 'guide'
 keywords: ['create kafka clickpipe', 'kafka', 'clickpipes', 'data sources', 'setup guide']
 ---
 

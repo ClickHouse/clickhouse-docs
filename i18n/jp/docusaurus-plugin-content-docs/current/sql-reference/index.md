@@ -1,5 +1,5 @@
 ---
-'description': 'ClickHouse SQLリファレンスのドキュメント'
+'description': 'ClickHouse SQL リファレンスのドキュメンテーション'
 'keywords':
 - 'clickhouse'
 - 'docs'
@@ -8,7 +8,8 @@
 - 'sql'
 - 'syntax'
 'slug': '/sql-reference'
-'title': 'SQLリファレンス'
+'title': 'SQL リファレンス'
+'doc_type': 'reference'
 ---
 
 import { TwoColumnList } from '/src/components/two_column_list'
@@ -21,7 +22,7 @@ import LinksDeployment from './sql-reference-links.json'
 
 # ClickHouse SQL リファレンス
 
-ClickHouse は、多くの場合において ANSI SQL 標準と同一の SQL ベースの宣言的クエリ言語をサポートしています。
+ClickHouse は、多くのケースで ANSI SQL 標準と同一の SQL に基づく宣言型クエリ言語をサポートしています。
 
 サポートされているクエリには、GROUP BY、ORDER BY、FROM 内のサブクエリ、JOIN 句、IN 演算子、ウィンドウ関数、およびスカラサブクエリが含まれます。
 

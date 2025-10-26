@@ -1,19 +1,18 @@
 ---
-'sidebar_label': 'Overview'
+'sidebar_label': '概要'
 'sidebar_position': 10
-'title': 'Working with JSON'
+'title': 'JSONを扱う'
 'slug': '/integrations/data-formats/json/overview'
-'description': 'Working with JSON in ClickHouse'
+'description': 'ClickHouseでのJSONの取り扱い'
 'keywords':
 - 'json'
 - 'clickhouse'
 'score': 10
+'doc_type': 'guide'
 ---
 
 
-
-
-# JSON の概要
+# JSONの概要
 
 <div style={{width:'1024px', height: '576px'}}>
   <iframe src="//www.youtube.com/embed/gCg5ISOujtc"
@@ -28,11 +27,11 @@
 </div>
 
 <br/>
-ClickHouse は、JSON を扱うためのいくつかのアプローチを提供しており、それぞれの利点と欠点、および使用法があります。このガイドでは、JSON をロードし、スキーマを最適に設計する方法を説明します。このガイドは、以下のセクションで構成されています。
+ClickHouseは、JSONを扱うためのいくつかのアプローチを提供しており、それぞれに長所と短所、使用方法があります。このガイドでは、JSONをロードし、スキーマを最適に設計する方法について説明します。このガイドは以下のセクションで構成されています：
 
-- [JSON のロード](/integrations/data-formats/json/loading) - シンプルなスキーマを使用して、ClickHouse で構造化されたおよび半構造化された JSON をロードおよびクエリする方法。
-- [JSON スキーマの推論](/integrations/data-formats/json/inference) - JSON スキーマの推論を使用して JSON をクエリし、テーブルスキーマを作成する方法。
-- [JSON スキーマの設計](/integrations/data-formats/json/schema) - JSON スキーマを設計および最適化するための手順。
-- [JSON のエクスポート](/integrations/data-formats/json/exporting) - JSON をエクスポートする方法。
-- [他の JSON フォーマットの扱い](/integrations/data-formats/json/other-formats) - ニューライン区切り (NDJSON) 以外の JSON フォーマットを扱うためのヒント。
-- [JSON モデリングの他のアプローチ](/integrations/data-formats/json/other-approaches) - JSON モデリングの古いアプローチ。**推奨されません。**
+- [JSONのロード](/integrations/data-formats/json/loading) - シンプルなスキーマでClickHouseに構造化されたおよび半構造化されたJSONをロードおよびクエリする方法。
+- [JSONスキーマ推論](/integrations/data-formats/json/inference) - JSONスキーマ推論を使用してJSONをクエリし、テーブルスキーマを作成する方法。
+- [JSONスキーマの設計](/integrations/data-formats/json/schema) - JSONスキーマを設計し、最適化するためのステップ。
+- [JSONのエクスポート](/integrations/data-formats/json/exporting) - JSONをエクスポートする方法。
+- [その他のJSONフォーマットの取り扱い](/integrations/data-formats/json/other-formats) - 行区切り（NDJSON）以外のJSONフォーマットを扱うためのいくつかのヒント。
+- [JSONのモデリングに関する他のアプローチ](/integrations/data-formats/json/other-approaches) - JSONをモデリングするための従来のアプローチ。**推奨されません。**

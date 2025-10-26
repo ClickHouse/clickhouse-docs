@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/AI/MCP/remote_mcp
-sidebar_label: 'ClickHouse Cloud Remote MCP'
+sidebar_label: 'ClickHouse Cloud remote MCP'
 title: 'Enabling the ClickHouse Cloud Remote MCP Server'
 pagination_prev: null
 pagination_next: null
@@ -8,6 +8,7 @@ description: 'This guide explains how to enable and use the ClickHouse Cloud Rem
 keywords: ['AI', 'ClickHouse Cloud', 'MCP']
 show_related_blogs: true
 sidebar_position: 1
+doc_type: 'guide'
 ---
 
 import {CardHorizontal} from '@clickhouse/click-ui/bundled'
@@ -23,12 +24,7 @@ import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
 # Enabling the ClickHouse Cloud Remote MCP Server
 
-> This guide explains how to enable and use the ClickHouse Cloud Remote MCP Server. We will use Claude Code as an MCP Client for this example.
-
-:::note 
-The remote server capability is currently available in private preview only.
-Join the waitlist by filling out the form at [clickhouse.ai](https://www.clickhouse.ai)
-:::
+> This guide explains how to enable and use the ClickHouse Cloud Remote MCP Server. We will use Claude Code as an MCP Client for this example, but any LLM client that supports MCP can be used.
 
 <VerticalStepper headerLevel="h2">
 
@@ -43,7 +39,7 @@ Join the waitlist by filling out the form at [clickhouse.ai](https://www.clickho
 2. Copy the URL of the ClickHouse Cloud MCP Server from the `Connect` view or below
 
 ```bash 
-https://mcp.clickhouse.com/mcp
+https://mcp.clickhouse.cloud/mcp
 ```
 
 ## Add the ClickHouse MCP Server in Claude Code {#add-clickhouse-mcp-server-claude-code}
@@ -51,7 +47,7 @@ https://mcp.clickhouse.com/mcp
 1. In your working directory, run the following command to add the ClickHouse Cloud MCP Server configuration to Claude Code. In this example, we named the MCP server in the Claude Code config `clickhouse_cloud`
 
 ```bash
-claude mcp add --transport http clickhouse_cloud https://mcp.clickhouse.com/mcp
+claude mcp add --transport http clickhouse_cloud https://mcp.clickhouse.cloud/mcp
 ```
 
 1b. Depending on the MCP Client used, you can also edit the JSON config directly
@@ -60,7 +56,7 @@ claude mcp add --transport http clickhouse_cloud https://mcp.clickhouse.com/mcp
 {
   "mcpServers": {
     "clickhouse-remote": {
-      "url": "https://mcp.clickhouse.com/mcp"
+      "url": "https://mcp.clickhouse.cloud/mcp"
     }
   }
 }
@@ -74,7 +70,7 @@ claude mcp add --transport http clickhouse_cloud https://mcp.clickhouse.com/mcp
 
 ## Authenticate to ClickHouse Cloud via OAuth {#authenticate-via-oauth}
 
-1. Claude Code will open a browser window on the firgst session. Otherwise, you can also trigger a connection by running the `/mcp` command in Claude Code and selecting the `clickhouse_cloud` MCP server
+1. Claude Code will open a browser window on the first session. Otherwise, you can also trigger a connection by running the `/mcp` command in Claude Code and selecting the `clickhouse_cloud` MCP server
 
 2. Authenticate using your ClickHouse Cloud credentials
 
@@ -93,5 +89,7 @@ claude mcp add --transport http clickhouse_cloud https://mcp.clickhouse.com/mcp
 2. Congratulations! You can now use the ClickHouse Cloud Remote MCP Server from Claude Code
 
 <Image img={img7} alt="Claude Code MCP Usage" size="md"/>
+
+Although this example used Claude code, you can use any LLM client that supports MCP by following similar steps.
 
 </VerticalStepper>

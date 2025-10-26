@@ -1,11 +1,11 @@
 ---
-'description': 'System table containing information about and status of scheduling
-  nodes residing on the local server.'
+'description': 'ローカルサーバーに存在するスケジューリングノードに関する情報とステータスを含むシステムテーブル。'
 'keywords':
 - 'system table'
 - 'scheduler'
 'slug': '/operations/system-tables/scheduler'
 'title': 'system.scheduler'
+'doc_type': 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
@@ -15,7 +15,8 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud/>
 
-ローカルサーバー上に存在する [スケジューリングノード](/operations/workload-scheduling.md/#hierarchy) に関する情報とステータスが含まれています。このテーブルは監視に使用できます。このテーブルには、各スケジューリングノードの行があります。
+ローカルサーバー上に存在する [スケジューリングノード](/operations/workload-scheduling.md/#hierarchy) に関する情報とステータスを含みます。  
+このテーブルは監視に使用できます。テーブルには、各スケジューリングノードの行が含まれています。
 
 例:
 
@@ -61,27 +62,27 @@ tokens:            ᴺᵁᴸᴸ
 
 - `resource` (`String`) - リソース名
 - `path` (`String`) - このリソーススケジューリング階層内のスケジューリングノードへのパス
-- `type` (`String`) - スケジューリングノードのタイプ。
+- `type` (`String`) - スケジューリングノードの種類。
 - `weight` (`Float64`) - ノードの重み。`fair` タイプの親ノードによって使用されます。
-- `priority` (`Int64`) - ノードの優先度。'priority' タイプの親ノードによって使用されます（値が低いほど優先度が高い）。
-- `is_active` (`UInt8`) - このノードが現在アクティブであるかどうか - デキューされるリソースリクエストがあり、制約が満たされているかどうか。
-- `active_children` (`UInt64`) - アクティブな状態の子ノードの数。
-- `dequeued_requests` (`UInt64`) - このノードからデキューされたリソースリクエストの合計数。
-- `canceled_requests` (`UInt64`) - このノードからキャンセルされたリソースリクエストの合計数。
-- `dequeued_cost` (`UInt64`) - このノードからデキューされたすべてのリクエストのコスト（バイト数など）の合計。
-- `canceled_cost` (`UInt64`) - このノードからキャンセルされたすべてのリクエストのコスト（バイト数など）の合計。
-- `busy_periods` (`UInt64`) - このノードの非アクティブ化の合計回数。
-- `vruntime` (`Nullable(Float64)`) - `fair` ノードの子ノードのみ。ノードの仮想実行時間。SFQアルゴリズムを使用して処理する次の子を選択するために使用されます。
-- `system_vruntime` (`Nullable(Float64)`) - `fair` ノードのみ。最後に処理されたリソースリクエストの `vruntime` を示す仮想実行時間。子ノードのアクティブ化時に新しい `vruntime` の値として使用されます。
-- `queue_length` (`Nullable(UInt64)`) - `fifo` ノードのみ。キュー内に存在するリソースリクエストの現在の数。
-- `queue_cost` (`Nullable(UInt64)`) - `fifo` ノードのみ。キュー内に存在するすべてのリクエストのコスト（バイト数など）の合計。
-- `budget` (`Nullable(Int64)`) - `fifo` ノードのみ。新しいリソースリクエストのための利用可能な「コスト単位」の数。リソースリクエストの推定コストと実際のコストが不一致の場合に発生することがあります（例：読み取り/書き込みエラー後）。
-- `is_satisfied` (`Nullable(UInt8)`) - 制約ノードのみ（例：`inflight_limit`）。このノードのすべての制約が満たされている場合は `1`。
-- `inflight_requests` (`Nullable(Int64)`) - `inflight_limit` ノードのみ。このノードからデキューされ、現在消費中のリソースリクエストの数。
-- `inflight_cost` (`Nullable(Int64)`) - `inflight_limit` ノードのみ。このノードからデキューされ、現在消費中のリソースリクエストのコスト（バイト数など）の合計。
-- `max_requests` (`Nullable(Int64)`) - `inflight_limit` ノードのみ。制約違反を引き起こす `inflight_requests` の上限。
-- `max_cost` (`Nullable(Int64)`) - `inflight_limit` ノードのみ。制約違反を引き起こす `inflight_cost` の上限。
-- `max_speed` (`Nullable(Float64)`) - `bandwidth_limit` ノードのみ。トークン毎秒の帯域幅の上限。
-- `max_burst` (`Nullable(Float64)`) - `bandwidth_limit` ノードのみ。トークンバケットスロットル内で利用可能な `tokens` の上限。
-- `throttling_us` (`Nullable(Int64)`) - `bandwidth_limit` ノードのみ。このノードがサーボ状態だったマイクロ秒の合計。
-- `tokens` (`Nullable(Float64)`) - `bandwidth_limit` ノードのみ。トークンバケットスロットルで現在利用可能なトークンの数。
+- `priority` (`Int64`) - ノードの優先度。'priority' タイプの親ノードによって使用されます（値が低いほど優先度が高くなります）。
+- `is_active` (`UInt8`) - このノードが現在アクティブかどうか - リソース要求が待機中で、制約が満たされているか。
+- `active_children` (`UInt64`) - アクティブ状態の子ノードの数。
+- `dequeued_requests` (`UInt64`) - このノードからデキューされたリソース要求の総数。
+- `canceled_requests` (`UInt64`) - このノードからキャンセルされたリソース要求の総数。
+- `dequeued_cost` (`UInt64`) - このノードからデキューされたすべての要求のコストの合計（例: バイト数）。
+- `canceled_cost` (`UInt64`) - このノードからキャンセルされたすべての要求のコストの合計（例: バイト数）。
+- `busy_periods` (`UInt64`) - このノードの非アクティブ化の総数。
+- `vruntime` (`Nullable(Float64)`) - `fair` ノードの子ノードのみ。最大最小公平な方法で次に処理すべき子を選択するために SFQ アルゴリズムで使用されるノードの仮想実行時間。
+- `system_vruntime` (`Nullable(Float64)`) - `fair` ノードのみに該当。最後に処理されたリソース要求の `vruntime` を示す仮想実行時間。子ノードのアクティベーション時に新しい `vruntime` の値として使用されます。
+- `queue_length` (`Nullable(UInt64)`) - `fifo` ノードのみに該当。キュー内に存在するリソース要求の現在の数。
+- `queue_cost` (`Nullable(UInt64)`) - `fifo` ノードのみに該当。キュー内に存在するすべての要求のコストの合計（例: バイト数）。
+- `budget` (`Nullable(Int64)`) - `fifo` ノードのみに該当。新しいリソース要求のための利用可能な「コスト単位」の数。リソース要求の見積もりコストと実際のコストの不一致がある場合に出現することがあります（例: 読み込み/書き込みの失敗後）。
+- `is_satisfied` (`Nullable(UInt8)`) - 制約ノードのみに該当（例: `inflight_limit`）。このノードのすべての制約が満たされている場合は `1` に等しい。
+- `inflight_requests` (`Nullable(Int64)`) - `inflight_limit` ノードのみに該当。このノードからデキューされたリソース要求で、現在消費状態にあるものの数。
+- `inflight_cost` (`Nullable(Int64)`) - `inflight_limit` ノードのみに該当。このノードからデキューされたリソース要求のコストの合計（例: バイト数）で、現在消費状態にあるもの。
+- `max_requests` (`Nullable(Int64)`) - `inflight_limit` ノードのみに該当。制約違反を引き起こす `inflight_requests` の上限。
+- `max_cost` (`Nullable(Int64)`) - `inflight_limit` ノードのみに該当。制約違反を引き起こす `inflight_cost` の上限。
+- `max_speed` (`Nullable(Float64)`) - `bandwidth_limit` ノードのみに該当。トークン毎秒の帯域幅の上限。
+- `max_burst` (`Nullable(Float64)`) - `bandwidth_limit` ノードのみに該当。トークンバケットスロットル内で利用可能な `tokens` の上限。
+- `throttling_us` (`Nullable(Int64)`) - `bandwidth_limit` ノードのみに該当。このノードがスロットリング状態にあった合計マイクロ秒数。
+- `tokens` (`Nullable(Float64)`) - `bandwidth_limit` ノードのみに該当。トークンバケットスロットル内で現在利用可能なトークンの数。

@@ -3,6 +3,7 @@ sidebar_label: 'Amazon Aurora MySQL'
 description: 'Step-by-step guide on how to set up Amazon Aurora MySQL as a source for ClickPipes'
 slug: /integrations/clickpipes/mysql/source/aurora
 title: 'Aurora MySQL source setup guide'
+doc_type: 'guide'
 keywords: ['aurora mysql', 'clickpipes', 'binlog retention', 'gtid mode', 'aws']
 ---
 

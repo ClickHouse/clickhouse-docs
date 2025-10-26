@@ -1,5 +1,5 @@
 ---
-'description': 'Debian/Ubuntu Linux に ClickHouse をインストールします'
+'description': 'Debian/Ubuntu LinuxにClickHouseをインストールする'
 'keywords':
 - 'ClickHouse'
 - 'install'
@@ -8,8 +8,9 @@
 - 'deb'
 'sidebar_label': 'Debian/Ubuntu'
 'slug': '/install/debian_ubuntu'
-'title': 'Debian/Ubuntu で ClickHouse をインストール'
+'title': 'Debian/UbuntuにClickHouseをインストールする'
 'hide_title': true
+'doc_type': 'guide'
 ---
 
 import DebianProd from './_snippets/_deb_install.md'

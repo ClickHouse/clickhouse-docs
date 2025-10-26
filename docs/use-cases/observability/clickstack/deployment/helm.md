@@ -3,9 +3,10 @@ slug: /use-cases/observability/clickstack/deployment/helm
 title: 'Helm'
 pagination_prev: null
 pagination_next: null
-sidebar_position: 1
+sidebar_position: 2
 description: 'Deploying ClickStack with Helm - The ClickHouse Observability Stack'
-keywords: [clickstack, observability, helm, kubernetes, k8s, hyperdx, clickhouse, opentelemetry, otel, mongodb, deployment, monitoring, traces, logs, metrics, production, charts]
+doc_type: 'guide'
+keywords: ['ClickStack Helm chart', 'Helm ClickHouse deployment', 'HyperDX Helm installation', 'Kubernetes observability stack', 'ClickStack Kubernetes deployment']
 ---
 
 import Image from '@theme/IdealImage';

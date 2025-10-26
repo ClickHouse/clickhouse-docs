@@ -4,6 +4,7 @@ sidebar_position: 4
 title: 'Column types'
 description: 'Column types for the native protocol'
 keywords: ['native protocol columns', 'column types', 'data types', 'protocol data types', 'binary encoding']
+doc_type: 'reference'
 ---
 
 # Column types

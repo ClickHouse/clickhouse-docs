@@ -1,16 +1,14 @@
 ---
-'description': 'Returns the cumulative exponential decay over a time series at the
-  index `t` in time.'
+'description': '時間系列におけるインデックス `t` での累積指数減衰を返します。'
 'sidebar_position': 134
 'slug': '/sql-reference/aggregate-functions/reference/exponentialTimeDecayedCount'
 'title': 'exponentialTimeDecayedCount'
+'doc_type': 'reference'
 ---
-
-
 
 ## exponentialTimeDecayedCount {#exponentialtimedecayedcount}
 
-指定された時刻 `t` の時系列における累積指数減衰を返します。
+時間系列における時点`t`での累積指数減衰を返します。
 
 **構文**
 
@@ -20,19 +18,19 @@ exponentialTimeDecayedCount(x)(t)
 
 **引数**
 
-- `t` — 時間。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点数](../../../sql-reference/data-types/float.md) または [Decimal](../../../sql-reference/data-types/decimal.md)、[DateTime](../../data-types/datetime.md)、[DateTime64](../../data-types/datetime64.md)。
+- `t` — 時間。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点](../../../sql-reference/data-types/float.md)、または[小数](../../../sql-reference/data-types/decimal.md)、[DateTime](../../data-types/datetime.md)、[DateTime64](../../data-types/datetime64.md)。
 
 **パラメータ**
 
-- `x` — 半減期。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点数](../../../sql-reference/data-types/float.md) または [Decimal](../../../sql-reference/data-types/decimal.md)。
+- `x` — 半減期。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点](../../../sql-reference/data-types/float.md)、または[小数](../../../sql-reference/data-types/decimal.md)。
 
 **返される値**
 
-- 指定された時点における累積指数減衰を返します。 [Float64](../../data-types/float.md)。
+- 指定された時間点での累積指数減衰を返します。 [Float64](../../data-types/float.md)。
 
 **例**
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT
@@ -50,7 +48,7 @@ FROM
 );
 ```
 
-結果:
+結果：
 
 ```response
     ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────────────────────┐

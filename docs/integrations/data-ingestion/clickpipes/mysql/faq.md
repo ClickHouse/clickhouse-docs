@@ -4,7 +4,8 @@ description: 'Frequently asked questions about ClickPipes for MySQL.'
 slug: /integrations/clickpipes/mysql/faq
 sidebar_position: 2
 title: 'ClickPipes for MySQL FAQ'
-keywords: [clickpipes, mysql, faq, mariadb, planetscale, vitess, tidb, replication, gtid, binlog, tls, certificate, schema changes]
+doc_type: 'reference'
+keywords: ['MySQL ClickPipes FAQ', 'ClickPipes MySQL troubleshooting', 'MySQL ClickHouse replication', 'ClickPipes MySQL support', 'MySQL CDC ClickHouse']
 ---
 
 # ClickPipes for MySQL FAQ

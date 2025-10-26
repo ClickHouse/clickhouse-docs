@@ -1,10 +1,11 @@
 ---
-sidebar_label: 'Schema registries for Avro data streams'
-description: 'Information on schema registries for Kafka ClickPipe'
+sidebar_label: 'Integrate with a schema registry'
+description: 'How to integrate for ClickPipes with a schema registry for schema management'
 slug: /integrations/clickpipes/kafka/schema-registries
 sidebar_position: 1
 title: 'Schema registries for Kafka ClickPipe'
-keywords: ['schema registry', 'schema registries', 'kafka', 'clickpipes', 'avro', 'confluent']
+doc_type: 'guide'
+keywords: ['schema registries', 'kafka', 'clickpipes', 'avro', 'confluent']
 ---
 
 # Schema registries {#schema-registries}
@@ -13,13 +14,12 @@ ClickPipes supports schema registries for Avro data streams.
 
 ## Supported registries for Kafka ClickPipes {#supported-schema-registries}
 
-Schema registries that use the Confluent Schema Registry API are supported. This includes:
-- Confluent Kafka and Cloud
-- Redpanda
-- AWS MSK
-- Upstash
+Schema registries that are API-compatible with the Confluent Schema Registry are supported. This includes:
 
-ClickPipes is not currently compatible with the AWS Glue Schema registry or the Azure Schema Registry.
+- Confluent Schema Registry
+- Redpanda Schema Registry
+
+ClickPipes does not support AWS Glue Schema Registry or Azure Schema Registry yet. If you require support for these schema registries, [reach out to our team](https://clickhouse.com/company/contact?loc=clickpipes).
 
 ## Configuration {#schema-registry-configuration}
 
@@ -32,7 +32,7 @@ ClickPipes with Avro data require a schema registry. This can be configured in o
 
 ## How it works {#how-schema-registries-work}
 
-ClickPipes dynamically retrieves and applies the Avro schema from the configured Schema Registry.
+ClickPipes dynamically retrieves and applies the Avro schema from the configured schema registry.
 - If there's a schema id embedded in the message, it will use that to retrieve the schema.
 - If there's no schema id embedded in the message, it will use the schema id or subject name specified in the ClickPipe configuration to retrieve the schema.
 - If the message is written without an embedded schema id, and no schema id or subject name is specified in the ClickPipe configuration, then the schema will not be retrieved and the message will be skipped with a `SOURCE_SCHEMA_ERROR` logged in the ClickPipes errors table.

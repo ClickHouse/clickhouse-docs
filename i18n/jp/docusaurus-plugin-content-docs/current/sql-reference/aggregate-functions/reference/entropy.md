@@ -1,16 +1,15 @@
 ---
-'description': 'Calculates Shannon entropy of for a column of values.'
+'description': 'カラムの値のためのShannonエントロピーを計算します。'
 'sidebar_position': 131
 'slug': '/sql-reference/aggregate-functions/reference/entropy'
 'title': 'entropy'
+'doc_type': 'reference'
 ---
-
-
 
 
 # entropy
 
-列の値の [Shannon entropy](https://en.wikipedia.org/wiki/Entropy_(information_theory)) を計算します。
+指定したカラムの値に対する [シャノンエントロピー](https://en.wikipedia.org/wiki/Entropy_(information_theory)) を計算します。
 
 **構文**
 
@@ -20,13 +19,13 @@ entropy(val)
 
 **引数**
 
-- `val` — 任意の型の値のカラム。
+- `val` — 任意の型の値を持つカラム。
 
 **返される値**
 
-- Shannon entropy。
+- シャノンエントロピー。
 
-型: [Float64](../../../sql-reference/data-types/float.md)。
+タイプ: [Float64](../../../sql-reference/data-types/float.md)。
 
 **例**
 

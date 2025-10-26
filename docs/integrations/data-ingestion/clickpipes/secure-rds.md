@@ -3,7 +3,8 @@ slug: /integrations/clickpipes/secure-rds
 sidebar_label: 'AWS IAM DB Authentication (RDS/Aurora)'
 title: 'AWS IAM DB Authentication (RDS/Aurora)'
 description: 'This article demonstrates how ClickPipes customers can leverage role-based access to authenticate with Amazon RDS/Aurora and access their database securely.'
-keywords: ['aws iam', 'rds aurora', 'clickpipes', 'db authentication', 'role based access']
+doc_type: 'guide'
+keywords: ['clickpipes', 'rds', 'security', 'aws', 'private connection']
 ---
 
 import secures3_arn from '@site/static/images/cloud/security/secures3_arn.png';
@@ -47,9 +48,9 @@ Let's call this value `{ClickHouse_IAM_ARN}`. This is the IAM role that will be 
 
 #### Obtaining the RDS/Aurora Resource ID {#obtaining-the-rds-resource-id}
 
-1. Login to your AWS Account and navigate to the RDS/Aurora instance you want to configure.
+1. Login to your AWS Account and navigate to the RDS instance/Aurora Cluster you want to configure.
 2. Click on the **Configuration** tab.
-3. Note the **Resource ID** value. It should look like `db-xxxxxxxxxxxxxx`. Let's call this value `{RDS_RESOURCE_ID}`. This is the resource ID that will be used in the IAM policy to allow access to the RDS instance.
+3. Note the **Resource ID** value. It should look like `db-xxxxxxxxxxxxxx` for RDS or `cluster-xxxxxxxxxxxxxx` for Aurora cluster. Let's call this value `{RDS_RESOURCE_ID}`. This is the resource ID that will be used in the IAM policy to allow access to the RDS instance.
 
 #### Setting up the Database User {#setting-up-the-database-user}
 

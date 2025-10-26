@@ -1,25 +1,24 @@
 ---
-description: 'Документация для типа данных SimpleAggregateFunction'
-sidebar_label: 'SimpleAggregateFunction'
+slug: '/sql-reference/data-types/simpleaggregatefunction'
+sidebar_label: SimpleAggregateFunction
 sidebar_position: 48
-slug: /sql-reference/data-types/simpleaggregatefunction
+description: 'Документация для типа данных SimpleAggregateFunction'
 title: 'Тип SimpleAggregateFunction'
+doc_type: reference
 ---
-
-
 # Тип SimpleAggregateFunction
 
 ## Описание {#description}
 
 Тип данных `SimpleAggregateFunction` хранит промежуточное состояние агрегатной функции, но не её полное состояние, как это делает тип [`AggregateFunction`](../../sql-reference/data-types/aggregatefunction.md).
 
-Эта оптимизация может быть применена к функциям, для которых выполняется следующее свойство: 
+Эта оптимизация может быть применена к функциям, для которых выполняется следующее свойство:
 
-> результат применения функции `f` к множеству строк `S1 UNION ALL S2` можно получить, применив `f` к частям множества строк отдельно, а затем снова применив `f` к результатам: `f(S1 UNION ALL S2) = f(f(S1) UNION ALL f(S2))`.
+> Результат применения функции `f` к множеству строк `S1 UNION ALL S2` можно получить, применив `f` к частям множества строк отдельно, а затем снова применив `f` к результатам: `f(S1 UNION ALL S2) = f(f(S1) UNION ALL f(S2))`.
 
-Это свойство гарантирует, что частичных результатов агрегации достаточно для вычисления комбинированного результата, поэтому нам не нужно хранить и обрабатывать какие-либо дополнительные данные. Например, результат функций `min` или `max` не требует дополнительных шагов для вычисления окончательного результата из промежуточных шагов, тогда как функция `avg` требует отслеживания суммы и количества, которые будут разделены для получения среднего значения на окончательном этапе `Merge`, который объединяет промежуточные состояния.
+Это свойство гарантирует, что частичные результаты агрегации достаточно для вычисления объединенного результата, таким образом, нам не нужно хранить и обрабатывать какие-либо дополнительные данные. Например, результат функций `min` или `max` не требует дополнительных шагов для вычисления окончательного результата из промежуточных шагов, тогда как функция `avg` требует отслеживания суммы и количества, которые будут делиться, чтобы получить среднее значение на финальном этапе `Merge`, который объединяет промежуточные состояния.
 
-Значения агрегатной функции обычно создаются путем вызова агрегатной функции с комбинирующим оператором [`-SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate), добавленным к имени функции.
+Значения агрегатных функций обычно получаются путём вызова агрегатной функции с добавлением комбинирующего оператора [`-SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) к имени функции.
 
 ## Синтаксис {#syntax}
 
@@ -29,7 +28,7 @@ SimpleAggregateFunction(aggregate_function_name, types_of_arguments...)
 
 **Параметры**
 
-- `aggregate_function_name` - Название агрегатной функции.
+- `aggregate_function_name` - Имя агрегатной функции.
 - `Type` - Типы аргументов агрегатной функции.
 
 ## Поддерживаемые функции {#supported-functions}
@@ -56,11 +55,11 @@ SimpleAggregateFunction(aggregate_function_name, types_of_arguments...)
 
 :::note
 Значения `SimpleAggregateFunction(func, Type)` имеют тот же `Type`, 
-поэтому в отличие от типа `AggregateFunction` нет необходимости применять 
-комбинаторы `-Merge`/`-State`.
+так что в отличие от типа `AggregateFunction` нет необходимости применять 
+комбинирующие операторы `-Merge`/`-State`.
 
 Тип `SimpleAggregateFunction` имеет лучшую производительность, чем `AggregateFunction`
-для одних и тех же агрегатных функций.
+для тех же агрегатных функций.
 :::
 
 ## Пример {#example}
@@ -71,4 +70,4 @@ CREATE TABLE simple (id UInt64, val SimpleAggregateFunction(sum, Double)) ENGINE
 ## Связанный контент {#related-content}
 
 - Блог: [Использование агрегатных комбинаторов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)    - Блог: [Использование агрегатных комбинаторов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
-- Тип [AggregateFunction](/sql-reference/data-types/aggregatefunction).
+- Тип [`AggregateFunction`](/sql-reference/data-types/aggregatefunction).

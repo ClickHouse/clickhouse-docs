@@ -5,6 +5,7 @@ slug: /integrations/grafana
 description: 'Introduction to using ClickHouse with Grafana'
 title: 'ClickHouse data source plugin for Grafana'
 show_related_blogs: true
+doc_type: 'guide'
 keywords: ['Grafana', 'data visualization', 'dashboard', 'plugin', 'data source']
 ---
 

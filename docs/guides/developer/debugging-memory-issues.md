@@ -1,10 +1,11 @@
 ---
 slug: /guides/developer/debugging-memory-issues
-sidebar_label: 'Debugging Memory Issues'
+sidebar_label: 'Debugging memory issues'
 sidebar_position: 1
 description: 'Queries to help you debug memory issues.'
 keywords: ['memory issues']
 title: 'Debugging memory issues'
+doc_type: 'guide'
 ---
 
 # Debugging memory issues {#debugging-memory-issues}

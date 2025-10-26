@@ -1,11 +1,11 @@
 ---
 description: 'Data for billions of taxi and for-hire vehicle (Uber, Lyft, etc.) trips
   originating in New York City since 2009'
-sidebar_label: 'New York Taxi Data'
-sidebar_position: 2
+sidebar_label: 'New York taxi data'
 slug: /getting-started/example-datasets/nyc-taxi
 title: 'New York Taxi Data'
-keywords: ['NYC taxi data', 'example dataset', 'transportation data', 'getting started', 'sample data']
+doc_type: 'guide'
+keywords: ['example dataset', 'nyc taxi', 'tutorial', 'sample data', 'getting started']
 ---
 
 import Tabs from '@theme/Tabs';

@@ -1,14 +1,13 @@
 ---
-description: 'Эта функция может быть использована для тестирования безопасности исключений. Она будет выбрасывать исключение при создании с указанной вероятностью.'
+slug: '/sql-reference/aggregate-functions/reference/aggthrow'
 sidebar_position: 101
-slug: /sql-reference/aggregate-functions/reference/aggthrow
-title: 'aggThrow'
+description: 'Эта функция может быть использована для тестирования безопастности'
+title: aggThrow
+doc_type: reference
 ---
-
-
 # aggThrow
 
-Эта функция может быть использована для тестирования безопасности исключений. Она будет выбрасывать исключение при создании с указанной вероятностью.
+Эта функция может быть использована для проверки отказоустойчивости при возникновении исключений. Она создаст исключение с заданной вероятностью.
 
 **Синтаксис**
 
@@ -18,7 +17,7 @@ aggThrow(throw_prob)
 
 **Аргументы**
 
-- `throw_prob` — Вероятность выброса исключения при создании. [Float64](../../data-types/float.md).
+- `throw_prob` — Вероятность возникновения исключения при создании. [Float64](../../data-types/float.md).
 
 **Возвращаемое значение**
 
@@ -35,6 +34,6 @@ SELECT number % 2 AS even, aggThrow(number) FROM numbers(10) GROUP BY even;
 Результат:
 
 ```response
-Получено исключение:
+Received exception:
 Code: 503. DB::Exception: Aggregate function aggThrow has thrown exception successfully: While executing AggregatingTransform. (AGGREGATE_FUNCTION_THROW)
 ```

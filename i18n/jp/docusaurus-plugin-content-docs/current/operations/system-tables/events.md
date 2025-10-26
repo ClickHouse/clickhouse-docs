@@ -1,18 +1,18 @@
 ---
-'description': 'System table containing information about the number of events that
-  have occurred in the system.'
+'description': 'システムの中で発生したイベントの数に関する情報を含むシステムテーブル。'
 'keywords':
 - 'system table'
 - 'events'
 'slug': '/operations/system-tables/events'
 'title': 'system.events'
+'doc_type': 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
-システムで発生したイベントの数に関する情報を含んでいます。たとえば、このテーブルでは、ClickHouseサーバーが起動してから処理された `SELECT` クエリの数を確認できます。
+システムで発生したイベントの数に関する情報を含みます。例えば、このテーブルでは、ClickHouseサーバーが起動してから処理された `SELECT` クエリの数を確認できます。
 
 カラム:
 
@@ -21,7 +21,7 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 - `description` ([String](../../sql-reference/data-types/string.md)) — イベントの説明。
 - `name` ([String](../../sql-reference/data-types/string.md)) — `event` のエイリアス。
 
-すべてのサポートされているイベントは、ソースファイル [src/Common/ProfileEvents.cpp](https://github.com/ClickHouse/ClickHouse/blob/master/src/Common/ProfileEvents.cpp) で確認できます。
+サポートされているすべてのイベントは、ソースファイル [src/Common/ProfileEvents.cpp](https://github.com/ClickHouse/ClickHouse/blob/master/src/Common/ProfileEvents.cpp) で確認できます。
 
 **例**
 
@@ -31,17 +31,17 @@ SELECT * FROM system.events LIMIT 5
 
 ```text
 ┌─event─────────────────────────────────┬─value─┬─description────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ Query                                 │    12 │ 解釈され、潜在的に実行されるクエリの数。解析に失敗したクエリや、ASTサイズ制限、クォータ制限、または同時実行クエリ数の制限により拒否されたクエリは含まれません。ClickHouse自身によって発行された内部クエリを含む場合があります。サブクエリはカウントされません。                  │
-│ SelectQuery                           │     8 │ Queryと同様ですが、SELECTクエリのみ対象です。                                                                                                                                                                                                                │
-│ FileOpen                              │    73 │ 開かれたファイルの数。                                                                                                                                                                                                                                    │
-│ ReadBufferFromFileDescriptorRead      │   155 │ ファイルディスクリプタからの読み取り (read/pread) の数。ソケットは含まれません。                                                                                                                                                                             │
-│ ReadBufferFromFileDescriptorReadBytes │  9931 │ ファイルディスクリプタから読み取られたバイト数。ファイルが圧縮されている場合、これは圧縮データサイズを示します。                                                                                                                                              │
+│ Query                                 │    12 │ Number of queries to be interpreted and potentially executed. Does not include queries that failed to parse or were rejected due to AST size limits, quota limits or limits on the number of simultaneously running queries. May include internal queries initiated by ClickHouse itself. Does not count subqueries.                  │
+│ SelectQuery                           │     8 │ Same as Query, but only for SELECT queries.                                                                                                                                                                                                                │
+│ FileOpen                              │    73 │ Number of files opened.                                                                                                                                                                                                                                    │
+│ ReadBufferFromFileDescriptorRead      │   155 │ Number of reads (read/pread) from a file descriptor. Does not include sockets.                                                                                                                                                                             │
+│ ReadBufferFromFileDescriptorReadBytes │  9931 │ Number of bytes read from file descriptors. If the file is compressed, this will show the compressed data size.                                                                                                                                              │
 └───────────────────────────────────────┴───────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**関連情報**
+**関連項目**
 
-- [system.asynchronous_metrics](/operations/system-tables/asynchronous_metrics) — 定期的に計算されるメトリックを含む。
-- [system.metrics](/operations/system-tables/metrics) — 即座に計算されたメトリックを含む。
-- [system.metric_log](/operations/system-tables/metric_log) — テーブル `system.metrics` と `system.events` からのメトリック値の履歴を含む。
+- [system.asynchronous_metrics](/operations/system-tables/asynchronous_metrics) — 定期的に計算されたメトリックを含みます。
+- [system.metrics](/operations/system-tables/metrics) — 即座に計算されたメトリックを含みます。
+- [system.metric_log](/operations/system-tables/metric_log) — テーブル `system.metrics` と `system.events` のメトリック値の履歴を含みます。
 - [Monitoring](../../operations/monitoring.md) — ClickHouseモニタリングの基本概念。

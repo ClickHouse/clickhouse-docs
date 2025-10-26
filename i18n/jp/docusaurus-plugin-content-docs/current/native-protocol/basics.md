@@ -3,6 +3,7 @@
 'sidebar_position': 1
 'title': '基本'
 'description': 'ネイティブプロトコルの基本'
+'doc_type': 'guide'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -14,23 +15,23 @@ import TabItem from '@theme/TabItem';
 :::note
 クライアントプロトコルのリファレンスは進行中です。
 
-ほとんどの例はGoのみです。
+ほとんどの例はGoのみで提供されています。
 :::
 
-このドキュメントは、ClickHouse TCPクライアントのバイナリプロトコルを説明します。
+この文書はClickHouse TCPクライアントのバイナリプロトコルについて説明します。
 
 ## Varint {#varint}
 
-長さ、パケットコード、および他のケースでは *unsigned varint* エンコーディングが使用されます。
-使用するには、[binary.PutUvarint](https://pkg.go.dev/encoding/binary#PutUvarint) および [binary.ReadUvarint](https://pkg.go.dev/encoding/binary#ReadUvarint)。
+長さ、パケットコードおよびその他のケースには、*unsigned varint* エンコーディングが使用されます。
+[ binary.PutUvarint](https://pkg.go.dev/encoding/binary#PutUvarint) および [binary.ReadUvarint](https://pkg.go.dev/encoding/binary#ReadUvarint) を使用してください。
 
 :::note
 *Signed* varintは使用されません。
 :::
 
-## 文字列 {#string}
+## String {#string}
 
-可変長の文字列は *(長さ、値)* としてエンコードされます。ここで、*長さ* は [varint](#varint) で、*値* はutf8文字列です。
+可変長の文字列は *(length, value)* としてエンコードされ、*length* は [varint](#varint)、*value* はutf8文字列です。
 
 :::important
 OOMを防ぐために長さを検証してください：
@@ -44,12 +45,12 @@ OOMを防ぐために長さを検証してください：
 ```go
 s := "Hello, world!"
 
-// 文字列の長さをuvarintとして書き込みます。
+// Writing string length as uvarint.
 buf := make([]byte, binary.MaxVarintLen64)
 n := binary.PutUvarint(buf, uint64(len(s)))
 buf = buf[:n]
 
-// 文字列の値を書き込みます。
+// Writing string value.
 buf = append(buf, s...)
 ```
 
@@ -62,16 +63,16 @@ r := bytes.NewReader([]byte{
     0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21,
 })
 
-// 長さを読み取ります。
+// Read length.
 n, err := binary.ReadUvarint(r)
 if err != nil {
         panic(err)
 }
 
-// OOMやmake()の実行時例外を防ぐためにnをチェックします。
+// Check n to prevent OOM or runtime exception in make().
 const maxSize = 1024 * 1024 * 10 // 10 MB
 if n > maxSize || n < 0 {
-    panic("無効なn")
+    panic("invalid n")
 }
 
 buf := make([]byte, n)
@@ -87,7 +88,7 @@ fmt.Println(string(buf))
 </Tabs>
 
 <Tabs>
-<TabItem value="hexdump" label="16進ダンプ">
+<TabItem value="hexdump" label="16進数ダンプ">
 
 ```hexdump
 00000000  0d 48 65 6c 6c 6f 2c 20  77 6f 72 6c 64 21        |.Hello, world!|
@@ -116,24 +117,24 @@ data := []byte{
 ## 整数 {#integers}
 
 :::tip
-ClickHouseは固定サイズ整数に **リトルエンディアン** を使用します。
+ClickHouseは固定サイズの整数に**リトルエンディアン**を使用します。
 :::
 
 ### Int32 {#int32}
 ```go
 v := int32(1000)
 
-// エンコード。
+// Encode.
 buf := make([]byte, 8)
 binary.LittleEndian.PutUint32(buf, uint32(v))
 
-// デコード。
+// Decode.
 d := int32(binary.LittleEndian.Uint32(buf))
 fmt.Println(d) // 1000
 ```
 
 <Tabs>
-<TabItem value="hexdump" label="16進ダンプ">
+<TabItem value="hexdump" label="16進数ダンプ">
 
 ```hexdump
 00000000  e8 03 00 00 00 00 00 00                           |........|
@@ -149,6 +150,6 @@ fmt.Println(d) // 1000
 </TabItem>
 </Tabs>
 
-## ブーリアン {#boolean}
+## ブール値 {#boolean}
 
-ブーリアン値は1バイトで表現され、`1` は `true`、`0` は `false` です。
+ブール値は1バイトで表され、`1` は `true`、`0` は `false`です。

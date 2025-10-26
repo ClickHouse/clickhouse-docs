@@ -1,20 +1,17 @@
 ---
-'description': 'Returns an array of the approximately most frequent values in the
-  specified column. The resulting array is sorted in descending order of approximate
-  frequency of values (not by the values themselves).'
+'description': '指定されたカラムにおけるおおよそ最も頻繁な値の配列を返します。結果の配列は、値自体によるのではなく、値のおおよその頻度の降順でソートされています。'
 'sidebar_position': 202
 'slug': '/sql-reference/aggregate-functions/reference/topk'
 'title': 'topK'
+'doc_type': 'reference'
 ---
-
-
 
 
 # topK
 
-指定したカラムの最も頻繁に出現する値の配列を返します。結果の配列は、値自体ではなく、近似頻度の降順でソートされています。
+指定されたカラムにおける最も頻繁に出現する値の近似を含む配列を返します。結果の配列は、値そのものではなく、値の近似頻度の降順にソートされます。
 
-これは、[Filtered Space-Saving](https://doi.org/10.1016/j.ins.2010.08.024)アルゴリズムを使用してTopKを分析しており、[Parallel Space Saving](https://doi.org/10.1016/j.ins.2015.09.003)からのreduce-and-combineアルゴリズムに基づいています。
+[Filtered Space-Saving](https://doi.org/10.1016/j.ins.2010.08.024) アルゴリズムを実装しており、このアルゴリズムは、[Parallel Space Saving](https://doi.org/10.1016/j.ins.2015.09.003) からの reduce-and-combine アルゴリズムに基づいて TopK を分析します。
 
 ```sql
 topK(N)(column)
@@ -22,23 +19,23 @@ topK(N, load_factor)(column)
 topK(N, load_factor, 'counts')(column)
 ```
 
-この関数は、保証された結果を提供しません。特定の状況では、エラーが発生し、最も頻繁な値でない頻出値を返すことがあります。
+この関数は、保証された結果を提供しません。特定の状況では、エラーが発生する可能性があり、最も頻繁な値ではない頻繁な値を返すことがあります。
 
-`N < 10`の値を使用することをお勧めします。大きな`N`値ではパフォーマンスが低下します。最大値の`N = 65536`です。
+N の値は 10 未満を推奨します。大きな N 値ではパフォーマンスが低下します。最大の N の値は 65536 です。
 
 **パラメータ**
 
-- `N` — 返す要素の数。オプション。デフォルト値：10。
-- `load_factor` — 値のために予約されたセルの数を定義します。uniq(column) > N * load_factorの場合、topK関数の結果は近似になります。オプション。デフォルト値：3。
-- `counts` — 結果に近似カウントとエラー値が含まれるべきかを定義します。
+- `N` — 返す要素の数。オプション。デフォルト値: 10。
+- `load_factor` — 値用に予約されたセルの数を定義します。uniq(column) > N * load_factor の場合、topK 関数の結果は近似値になります。オプション。デフォルト値: 3。
+- `counts` — 結果に近似カウントとエラー値を含めるかどうかを定義します。
 
 **引数**
 
-- `column` — 頻度を計算するための値。
+- `column` — 頻度を計算する値。
 
 **例**
 
-[OnTime](../../../getting-started/example-datasets/ontime.md)データセットを取得し、`AirlineID`カラムで最も頻繁に発生する3つの値を選択します。
+[OnTime](../../../getting-started/example-datasets/ontime.md) データセットを取り、`AirlineID` カラムにおける最も頻繁に出現する値を三つ選択します。
 
 ```sql
 SELECT topK(3)(AirlineID) AS res
@@ -51,7 +48,7 @@ FROM ontime
 └─────────────────────┘
 ```
 
-**関連情報**
+**参照**
 
 - [topKWeighted](../../../sql-reference/aggregate-functions/reference/topkweighted.md)
 - [approx_top_k](../../../sql-reference/aggregate-functions/reference/approxtopk.md)

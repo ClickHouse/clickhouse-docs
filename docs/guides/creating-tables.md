@@ -5,6 +5,7 @@ title: 'Creating tables in ClickHouse'
 slug: /guides/creating-tables
 description: 'Learn about Creating Tables in ClickHouse'
 keywords: ['creating tables', 'CREATE TABLE', 'table creation', 'database guide', 'MergeTree engine']
+doc_type: 'guide'
 ---
 
 # Creating tables in ClickHouse

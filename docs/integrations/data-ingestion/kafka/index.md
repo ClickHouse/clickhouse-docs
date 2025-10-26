@@ -5,6 +5,7 @@ slug: /integrations/kafka
 description: 'Introduction to Kafka with ClickHouse'
 title: 'Integrating Kafka with ClickHouse'
 keywords: ['Apache Kafka', 'event streaming', 'data pipeline', 'message broker', 'real-time data']
+doc_type: 'guide'
 ---
 
 # Integrating Kafka with ClickHouse
@@ -38,7 +39,7 @@ This is the recommended option if you're a ClickHouse Cloud user. ClickPipes is 
 * Optimized for ClickHouse Cloud, delivering blazing-fast performance
 * Horizontal and vertical scalability for high-throughput workloads
 * Built-in fault tolerance with configurable replicas and automatic retries
-* Deployment and management via ClickHouse Cloud UI, [Open API](../../../cloud/manage/api/api-overview.md), or [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.3.3-alpha2/docs/resources/clickpipe)
+* Deployment and management via ClickHouse Cloud UI, [Open API](/cloud/manage/api/api-overview), or [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.3.3-alpha2/docs/resources/clickpipe)
 * Enterprise-grade security with support for cloud-native authorization (IAM) and private connectivity (PrivateLink)
 * Supports a wide range of [data sources](/integrations/clickpipes/kafka/reference/), including Confluent Cloud, Amazon MSK, Redpanda Cloud, and Azure Event Hubs
 * Supports most common serialization formats (JSON, Avro, Protobuf coming soon!)
@@ -101,6 +102,6 @@ To get started using the Kafka table engine, see the [reference documentation](.
 
 * **Custom code** - Custom code using Kafka and ClickHouse [client libraries](../../language-clients/index.md) may be appropriate in cases where custom processing of events is required.
 
-[BYOC]: ../../../cloud/reference/byoc.md
-[Cloud]: ../../../cloud-index.md
+[BYOC]: /cloud/reference/byoc/overview
+[Cloud]: /cloud/get-started
 [Self-hosted]: ../../../intro.md

@@ -5,14 +5,15 @@
 'slug': '/integrations/data-ingestion/insert-local-files'
 'description': '了解插入本地文件'
 'show_related_blogs': true
+'doc_type': 'guide'
 ---
 
 
 # 插入本地文件
 
-您可以使用 `clickhouse-client` 将本地文件流式传输到您的 ClickHouse 服务中。这使您能够使用许多强大而便捷的 ClickHouse 函数对数据进行预处理。让我们来看一个示例...
+您可以使用 `clickhouse-client` 将本地文件流式传输到您的 ClickHouse 服务。这使您能够使用众多强大且便捷的 ClickHouse 函数对数据进行预处理。让我们来看一个例子...
 
-1. 假设我们有一个名为 `comments.tsv` 的 TSV 文件，包含一些 Hacker News 的评论，且标题行包含列名。您需要在插入数据时指定一个 [输入格式](/interfaces/formats)，在我们的例子中是 `TabSeparatedWithNames`：
+1. 假设我们有一个名为 `comments.tsv` 的 TSV 文件，包含了一些 Hacker News 评论，且标题行包含列名称。您在插入数据时需要指定一个 [输入格式](/interfaces/formats)，在我们这个例子中是 `TabSeparatedWithNames`：
 
 ```text
 id      type    author  timestamp       comment children
@@ -25,7 +26,7 @@ id      type    author  timestamp       comment children
 19467048        comment karambahh       2019-03-22 21:15:41     "I think you&#x27;re comparing apples to oranges here.<p>If you reclaim a parking space for another use (such as building accommodation for families or an animal shelter), you&#x27;re not depriving the car of anything, it&#x27;s an expensive, large piece of metal and is not sentient.<p>Next, you&#x27;ll say that you&#x27;re depriving car owners from the practicality of parking their vehicles anywhere they like. I&#x27;m perfectly fine with depriving car owners from this convenience to allow a human being to have a roof over their head. (speaking from direct experience as I&#x27;ve just minutes ago had to park my car 1km away from home because the city is currently building housing and has restricted parking space nearby)<p>Then, some might argue that one should be ashamed of helping animals while humans are suffering. That&#x27;s the exact same train of thought with «we can&#x27;t allow more migrants in, we have to take care of our &quot;own&quot; homeless people».<p>This is a false dichotomy. Western societies inequalities are growing larger and larger. Me trying to do my part is insignificant. Me donating to human or animal causes is a small dent into the mountains of inequalities we live on top of. Us collectively, we do make a difference, by donating, voting and generally keeping our eyes open about the world we live in...<p>Finally, an entirely anecdotal pov: I&#x27;ve witnessed several times extremely poor people going out of their ways to show solidarity to animals or humans. I&#x27;ve also witnessed an awful lot of extremely wealthy individuals complaining about the poor inconveniencing them by just being there, whose wealth was a direct consequences of their ancestors exploiting whose very same poor people."      [19467512]
 ```
 
-2. 我们为 Hacker News 数据创建表：
+2. 让我们为我们的 Hacker News 数据创建一个表：
 
 ```sql
 CREATE TABLE hackernews (
@@ -41,7 +42,7 @@ ENGINE = MergeTree
 ORDER BY toYYYYMMDD(timestamp)
 ```
 
-3. 我们想将 `author` 列转换为小写，这可以通过 [`lower` function](/sql-reference/functions/string-functions#lower) 很容易实现。我们还想将 `comment` 字符串拆分成标记，并将结果存储在 `tokens` 列中，这可以使用 [`extractAll` function](/sql-reference/functions/string-search-functions#extractall) 实现。您可以在一个 `clickhouse-client` 命令中完成所有这些操作 - 请注意，`comments.tsv` 文件是通过 `<` 运算符传入 `clickhouse-client` 的：
+3. 我们想将 `author` 列转换为小写，这可以很容易地通过 [`lower` 函数](/sql-reference/functions/string-functions#lower) 实现。我们还想将 `comment` 字符串拆分为标记，并将结果存储在 `tokens` 列中，这可以通过 [`extractAll` 函数](/sql-reference/functions/string-search-functions#extractall) 来完成。您可以通过一个 `clickhouse-client` 命令完成所有这些 - 注意 `comments.tsv` 文件是如何通过 `<` 操作符被管道传输到 `clickhouse-client` 的：
 
 ```bash
 clickhouse-client \
@@ -65,10 +66,10 @@ clickhouse-client \
 ```
 
 :::note
-`input` 函数在这里非常有用，因为它允许我们在数据插入 `hackernews` 表时对其进行转换。`input` 的参数是传入原始数据的格式，您将在许多其他表函数中看到这一点（在这些函数中，您为传入数据指定架构）。
+`input` 函数在这里非常有用，因为它允许我们在将数据插入到 `hackernews` 表时进行转换。`input` 的参数是传入原始数据的格式，您将在许多其他表函数中看到这一点（在这些函数中您会为传入数据指定一个模式）。
 :::
 
-4. 就这样！数据已上传到 ClickHouse：
+4. 就这样！数据已经上传到 ClickHouse：
 
 ```sql
 SELECT *
@@ -90,7 +91,7 @@ LIMIT 7
 
 ```
 
-5. 另一种选择是使用像 `cat` 这样的工具将文件流式传输到 `clickhouse-client`。例如，以下命令与使用 `<` 运算符具有相同的效果：
+5. 另一个选择是使用 `cat` 等工具将文件流式传输到 `clickhouse-client`。例如，以下命令与使用 `<` 操作符的效果相同：
 
 ```bash
 cat comments.tsv | clickhouse-client \
@@ -113,4 +114,4 @@ cat comments.tsv | clickhouse-client \
 "
 ```
 
-访问 [关于 `clickhouse-client` 的文档页面](/interfaces/cli)，获取有关如何在您的本地操作系统上安装 `clickhouse-client` 的详细信息。
+访问 [关于 `clickhouse-client` 的文档页面](/interfaces/cli) 以获取有关如何在您的本地操作系统上安装 `clickhouse-client` 的详细信息。

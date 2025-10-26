@@ -1,31 +1,30 @@
 ---
-'description': 'Allows to connect to SQLite databases and perform `INSERT` and `SELECT`
-  queries to exchange data between ClickHouse and SQLite.'
+'description': 'SQLite データベースに接続し、データを ClickHouse と SQLite の間で交換するために `INSERT` と `SELECT`
+  クエリを実行することを可能にします。'
 'sidebar_label': 'SQLite'
 'sidebar_position': 55
 'slug': '/engines/database-engines/sqlite'
 'title': 'SQLite'
+'doc_type': 'reference'
 ---
-
-
 
 
 # SQLite
 
-SQLite データベースに接続し、データを ClickHouse と SQLite の間で交換するために `INSERT` および `SELECT` クエリを実行できます。
+ClickHouse と SQLite データベース間でデータを交換するために、`INSERT` および `SELECT` クエリを実行できる [SQLite](https://www.sqlite.org/index.html) データベースへの接続を許可します。
 
 ## データベースの作成 {#creating-a-database}
 
 ```sql
-    CREATE DATABASE sqlite_database
-    ENGINE = SQLite('db_path')
+CREATE DATABASE sqlite_database
+ENGINE = SQLite('db_path')
 ```
 
 **エンジンパラメータ**
 
 - `db_path` — SQLite データベースのファイルへのパス。
 
-## データ型サポート {#data_types-support}
+## データ型のサポート {#data_types-support}
 
 |  SQLite   | ClickHouse                                              |
 |---------------|---------------------------------------------------------|
@@ -34,14 +33,14 @@ SQLite データベースに接続し、データを ClickHouse と SQLite の�
 | TEXT          | [String](../../sql-reference/data-types/string.md)      |
 | BLOB          | [String](../../sql-reference/data-types/string.md)      |
 
-## 特徴と推奨事項 {#specifics-and-recommendations}
+## 特殊性と推奨事項 {#specifics-and-recommendations}
 
-SQLite は、データベース全体（定義、テーブル、インデックス、およびデータ自体）をホストマシン上の単一のクロスプラットフォームファイルとして保存します。書き込み中、SQLite はデータベース全体のファイルをロックします。したがって、書き込み操作は順次実行されます。一方、読み取り操作はマルチタスクで実行できます。  
-SQLite はサービス管理（起動スクリプトなど）や `GRANT` およびパスワードに基づくアクセス制御を必要としません。アクセス制御は、データベースファイル自体に与えられたファイルシステムの権限によって処理されます。
+SQLite は、ホストマシン上の単一のクロスプラットフォームファイルとして、データベース全体（定義、テーブル、インデックス、およびデータ自体）を保存します。書き込み中は、SQLite がデータベースファイル全体をロックするため、書き込み操作は順次実行されます。読み取り操作はマルチタスクで行うことができます。  
+SQLite は、サービス管理（スタートアップスクリプトなど）や `GRANT` とパスワードに基づくアクセス制御を必要としません。アクセス制御は、データベースファイル自体に与えられたファイルシステムの権限によって処理されます。
 
 ## 使用例 {#usage-example}
 
-ClickHouse に接続された SQLite のデータベース：
+ClickHouse で SQLite に接続されたデータベース：
 
 ```sql
 CREATE DATABASE sqlite_db ENGINE = SQLite('sqlite.db');
@@ -67,8 +66,7 @@ SELECT * FROM sqlite_db.table1;
 │ line2 │    2 │
 │ line3 │    3 │
 └───────┴──────┘
-```
-
+```  
 ClickHouse テーブルから SQLite テーブルにデータを挿入：
 
 ```sql

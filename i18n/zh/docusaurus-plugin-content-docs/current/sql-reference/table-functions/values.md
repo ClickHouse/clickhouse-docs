@@ -1,5 +1,5 @@
 ---
-'description': '创建临时存储，用于填充列的值。'
+'description': '创建一个临时存储，用于填充列的值。'
 'keywords':
 - 'values'
 - 'table function'
@@ -7,18 +7,19 @@
 'sidebar_position': 210
 'slug': '/sql-reference/table-functions/values'
 'title': '值'
+'doc_type': 'reference'
 ---
 
 
-# Values Table Function {#values-table-function}
+# Values 表函数 {#values-table-function}
 
-`Values` 表函数允许您创建临时存储，以填充包含值的列。这对于快速测试或生成示例数据非常有用。
+`Values` 表函数允许您创建临时存储，以填充列的值。它对于快速测试或生成示例数据非常有用。
 
 :::note
-Values 是一个不区分大小写的函数。即，`VALUES` 或 `values` 都是有效的。
+Values 是一个不区分大小写的函数。即 `VALUES` 或 `values` 都是有效的。
 :::
 
-## Syntax {#syntax}
+## 语法 {#syntax}
 
 `VALUES` 表函数的基本语法为：
 
@@ -37,23 +38,20 @@ VALUES(
 )
 ```
 
-## Arguments {#arguments}
+## 参数 {#arguments}
 
-- `column1_name Type1, ...`（可选）。 [String](/sql-reference/data-types/string) 
-  指定列名和类型。如果此参数被省略，列将命名为 `c1`、`c2` 等。
-- `(value1_row1, value2_row1)`。[Tuples](/sql-reference/data-types/tuple) 
-   包含任何类型的值的元组。
+- `column1_name Type1, ...`（可选）。[String](/sql-reference/data-types/string) 指定列的名称和类型。如果省略此参数，列将被命名为 `c1`，`c2` 等。
+- `(value1_row1, value2_row1)`。[Tuples](/sql-reference/data-types/tuple) 包含任何类型的值。
 
 :::note
-用逗号分隔的元组也可以被单个值替代。在这种情况下，
-每个值被视为新的一行。有关详细信息，请参见 [examples](#examples) 部分。
+用逗号分隔的元组也可以被单个值替代。在这种情况下，每个值被视作一行。有关详情，请参见 [示例](#examples) 部分。
 :::
 
-## Returned value {#returned-value}
+## 返回值 {#returned-value}
 
-- 返回一个包含提供值的临时表。
+- 返回一个包含所提供值的临时表。
 
-## Examples {#examples}
+## 示例 {#examples}
 
 ```sql title="Query"
 SELECT *
@@ -121,8 +119,7 @@ FROM VALUES(
     └──────────┘
 ```
 
-或者在不提供行规范的情况下（`'column1_name Type1, column2_name Type2, ...'`
-在 [syntax](#syntax) 中），在这种情况下，列会被自动命名。
+或在不提供行规范的情况下（`'column1_name Type1, column2_name Type2, ...'` 在 [语法](#syntax) 中），在这种情况下，列会被自动命名。
 
 例如：
 
@@ -190,6 +187,6 @@ FROM VALUES(
     └──────────┘
 ```
 
-## See also {#see-also}
+## 另请参见 {#see-also}
 
-- [Values format](/interfaces/formats/Values)
+- [Values 格式](/interfaces/formats/Values)

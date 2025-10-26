@@ -1,15 +1,14 @@
 ---
-'description': 'システムテーブルには各デタッチテーブルの情報が含まれています。'
+'description': 'システムテーブルは、各 detached table に関する情報を含んでいます。'
 'keywords':
 - 'system table'
 - 'detached_tables'
 'slug': '/operations/system-tables/detached_tables'
 'title': 'system.detached_tables'
+'doc_type': 'reference'
 ---
 
-
-
-各切り離されたテーブルの情報を含みます。
+各デタッチテーブルの情報を含みます。
 
 カラム:
 
@@ -17,12 +16,11 @@
 
 - `table` ([String](../../sql-reference/data-types/string.md)) — テーブル名。
 
-- `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — テーブルのuuid (原子データベース)。
+- `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — テーブルのUUID（Atomic database）。
 
 - `metadata_path` ([String](../../sql-reference/data-types/string.md)) - ファイルシステム内のテーブルメタデータへのパス。
 
-- `is_permanently` ([UInt8](../../sql-reference/data-types/int-uint.md)) - テーブルが永続的に切り離されたことを示すフラグ。
-
+- `is_permanently` ([UInt8](../../sql-reference/data-types/int-uint.md)) - テーブルが永久にデタッチされたことを示すフラグです。
 
 **例**
 

@@ -5,7 +5,8 @@ sidebar_label: 'Search'
 pagination_prev: null
 pagination_next: null
 description: 'Search with ClickStack'
-keywords: ['ClickStack search', 'full-text search', 'log search', 'trace search', 'Lucene syntax', 'observability search']
+doc_type: 'guide'
+keywords: ['clickstack', 'search', 'logs', 'observability', 'full-text search']
 ---
 
 import Image from '@theme/IdealImage';

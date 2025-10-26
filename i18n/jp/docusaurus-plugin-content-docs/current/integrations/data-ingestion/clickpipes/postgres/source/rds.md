@@ -1,8 +1,9 @@
 ---
 'sidebar_label': 'Amazon RDS Postgres'
-'description': 'ClickPipes 用の Amazon RDS Postgres ソースの設定'
+'description': 'ClickPipes のソースとして Amazon RDS Postgres を設定します'
 'slug': '/integrations/clickpipes/postgres/source/rds'
-'title': 'RDS Postgres Source Setup Guide'
+'title': 'RDS Postgres ソース設定ガイド'
+'doc_type': 'guide'
 ---
 
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
@@ -15,19 +16,19 @@ import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/
 import Image from '@theme/IdealImage';
 
 
-# RDS Postgres ソースセットアップガイド
+# RDS Postgres ソース設定ガイド
 
-## サポートされているPostgresバージョン {#supported-postgres-versions}
+## サポートされている Postgres バージョン {#supported-postgres-versions}
 
-ClickPipesはPostgresバージョン12以降をサポートしています。
+ClickPipes は Postgres バージョン 12 以降をサポートしています。
 
 ## 論理レプリケーションの有効化 {#enable-logical-replication}
 
-以下の設定がすでに構成されている場合は、このセクションをスキップできます：
+以下の設定がすでに RDS インスタンスに構成されている場合は、このセクションをスキップできます：
 - `rds.logical_replication = 1`
 - `wal_sender_timeout = 0`
 
-これらの設定は、以前に別のデータレプリケーションツールを使用していた場合、通常は事前に構成されています。
+これらの設定は、以前に別のデータレプリケーションツールを使用していた場合に事前に構成されていることが一般的です。
 
 ```text
 postgres=> SHOW rds.logical_replication ;
@@ -43,79 +44,79 @@ postgres=> SHOW wal_sender_timeout ;
 (1 row)
 ```
 
-構成されていない場合は、以下の手順に従ってください：
+まだ構成されていない場合は、以下の手順に従ってください：
 
-1. 必要な設定を持つPostgresバージョンの新しいパラメータグループを作成します：
-    - `rds.logical_replication`を1に設定
-    - `wal_sender_timeout`を0に設定
+1. 必要な設定を持つ Postgres バージョンの新しいパラメータグループを作成します：
+    - `rds.logical_replication` を 1 に設定
+    - `wal_sender_timeout` を 0 に設定
 
-<Image img={parameter_group_in_blade} alt="RDSでパラメータグループを見つける場所" size="lg" border/>
+<Image img={parameter_group_in_blade} alt="RDS のパラメータグループの見つけ方" size="lg" border/>
 
-<Image img={change_rds_logical_replication} alt="rds.logical_replicationの変更" size="lg" border/>
+<Image img={change_rds_logical_replication} alt="rds.logical_replication を変更" size="lg" border/>
 
-<Image img={change_wal_sender_timeout} alt="wal_sender_timeoutの変更" size="lg" border/>
+<Image img={change_wal_sender_timeout} alt="wal_sender_timeout を変更" size="lg" border/>
 
-2. 新しいパラメータグループをRDS Postgresデータベースに適用します。
+2. 新しいパラメータグループを RDS Postgres データベースに適用します
 
-<Image img={modify_parameter_group} alt="新しいパラメータグループでRDS Postgresを変更する" size="lg" border/>
+<Image img={modify_parameter_group} alt="新しいパラメータグループを使って RDS Postgres を変更" size="lg" border/>
 
-3. 変更を適用するためにRDSインスタンスを再起動します。
+3. 変更を適用するために RDS インスタンスを再起動します
 
-<Image img={reboot_rds} alt="RDS Postgresを再起動する" size="lg" border/>
+<Image img={reboot_rds} alt="RDS Postgres を再起動" size="lg" border/>
 
 ## データベースユーザーの設定 {#configure-database-user}
 
-管理者ユーザーとしてRDS Postgresインスタンスに接続し、以下のコマンドを実行します：
+管理者ユーザーとして RDS Postgres インスタンスに接続し、以下のコマンドを実行します：
 
-1. ClickPipes用の専用ユーザーを作成します：
+1. ClickPipes 用の専用ユーザーを作成します：
 
-    ```sql
-    CREATE USER clickpipes_user PASSWORD 'some-password';
-    ```
+```sql
+CREATE USER clickpipes_user PASSWORD 'some-password';
+```
 
-2. スキーマの権限を付与します。以下の例は`public`スキーマの権限を示しています。レプリケートしたい各スキーマに対してこれらのコマンドを繰り返します：
+2. スキーマの権限を付与します。以下の例は `public` スキーマに対する権限を示しています。レプリケートしたい各スキーマに対してこれらのコマンドを繰り返します：
 
-    ```sql
-    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-    GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-    ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
-    ```
+```sql
+GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+```
 
 3. レプリケーション権限を付与します：
 
-    ```sql
-    GRANT rds_replication TO clickpipes_user;
-    ```
+```sql
+GRANT rds_replication TO clickpipes_user;
+```
 
-4. レプリケーション用の公開物を作成します：
+4. レプリケーション用のパブリケーションを作成します：
 
-    ```sql
-    CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-    ```
+```sql
+CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
+```
 
 ## ネットワークアクセスの設定 {#configure-network-access}
 
-### IPベースのアクセス制御 {#ip-based-access-control}
+### IP ベースのアクセス制御 {#ip-based-access-control}
 
-RDSインスタンスへのトラフィックを制限したい場合は、[文書化された静的NAT IP](../../index.md#list-of-static-ips)をRDSセキュリティグループの`Inbound rules`に追加してください。
+RDS インスタンスへのトラフィックを制限したい場合は、[ドキュメント化された静的 NAT IPs](../../index.md#list-of-static-ips)を RDS セキュリティグループの `Inbound rules` に追加してください。
 
-<Image img={security_group_in_rds_postgres} alt="RDS Postgresでセキュリティグループを見つける場所" size="lg" border/>
+<Image img={security_group_in_rds_postgres} alt="RDS Postgres でのセキュリティグループの見つけ方" size="lg" border/>
 
-<Image img={edit_inbound_rules} alt="上記のセキュリティグループのインバウンドルールを編集する" size="lg" border/>
+<Image img={edit_inbound_rules} alt="上記セキュリティグループのインバウンドルールを編集" size="lg" border/>
 
-### AWS PrivateLinkによるプライベートアクセス {#private-access-via-aws-privatelink}
+### AWS PrivateLink を介したプライベートアクセス {#private-access-via-aws-privatelink}
 
-プライベートネットワークを通じてRDSインスタンスに接続するには、AWS PrivateLinkを使用できます。接続の設定については、[ClickPipes用のAWS PrivateLinkセットアップガイド](/knowledgebase/aws-privatelink-setup-for-clickpipes)を参照してください。
+プライベートネットワークを通じて RDS インスタンスに接続するには、AWS PrivateLink を使用できます。接続の設定方法については、[ClickPipes 用の AWS PrivateLink 設定ガイド](/knowledgebase/aws-privatelink-setup-for-clickpipes)を参照してください。
 
-### RDS Proxyの回避策 {#workarounds-for-rds-proxy}
-RDS Proxyは論理レプリケーション接続をサポートしていません。RDSで動的IPアドレスを使用していて、DNS名やラムダを使用できない場合、いくつかの代替手段があります：
+### RDS プロキシ用の回避策 {#workarounds-for-rds-proxy}
+RDS プロキシは論理レプリケーション接続をサポートしていません。RDS に動的 IP アドレスがあり、DNS 名またはラムダを使用できない場合、以下の代替案があります：
 
-1. cronジョブを使用して定期的にRDSエンドポイントのIPを解決し、変更があればNLBを更新します。
-2. RDSイベント通知をEventBridge/SNSとともに使用：AWS RDSイベント通知を使用して自動的に更新をトリガーします。
-3. 安定したEC2：ポーリングサービスまたはIPベースのプロキシとして機能するEC2インスタンスをデプロイします。
-4. TerraformやCloudFormationなどのツールを使用してIPアドレス管理を自動化します。
+1. cron ジョブを使用して RDS エンドポイントの IP を定期的に解決し、変更されている場合は NLB を更新します。
+2. EventBridge/SNS とRDS イベント通知を使用：AWS RDS イベント通知を使用して自動的に更新をトリガーします。
+3. 安定した EC2：ポーリングサービスまたは IP ベースのプロキシとして機能する EC2 インスタンスをデプロイします。
+4. Terraform や CloudFormation のようなツールを使用して IP アドレス管理を自動化します。
 
-## 次は何ですか？ {#whats-next}
+## 次は何をするか？ {#whats-next}
 
-これで、[ClickPipeを作成](../index.md)し、PostgresインスタンスからClickHouse Cloudにデータを取り込む準備が整いました。
-Postgresインスタンスの設定時に使用した接続詳細をメモしておくことを忘れないでください。ClickPipeの作成プロセス中に必要になります。
+これで [ClickPipe を作成](../index.md)し、Postgres インスタンスから ClickHouse Cloud にデータを取り込むことができます。
+Postgres インスタンスを設定する際に使用した接続の詳細をメモしておくことを忘れないでください。ClickPipe の作成プロセス中に必要になります。

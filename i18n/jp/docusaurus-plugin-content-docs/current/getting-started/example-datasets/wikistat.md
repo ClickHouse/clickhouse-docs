@@ -1,17 +1,16 @@
 ---
-'description': 'Explore the WikiStat dataset containing 0.5 trillion records.'
+'description': 'WikiStat データセットを探索してください。0.5兆レコードが含まれています。'
 'sidebar_label': 'WikiStat'
 'slug': '/getting-started/example-datasets/wikistat'
 'title': 'WikiStat'
+'doc_type': 'reference'
 ---
-
-
 
 データセットには0.5兆レコードが含まれています。
 
-FOSDEM 2023からのビデオをご覧ください: https://www.youtube.com/watch?v=JlcI2Vfz_uk
+FOSDEM 2023のビデオをご覧ください: https://www.youtube.com/watch?v=JlcI2Vfz_uk
 
-およびプレゼンテーション: https://presentations.clickhouse.com/fosdem2023/
+そしてプレゼンテーション: https://presentations.clickhouse.com/fosdem2023/
 
 データソース: https://dumps.wikimedia.org/other/pageviews/
 
@@ -66,7 +65,7 @@ clickhouse-local --query "
 " | clickhouse-client --query "INSERT INTO wikistat FORMAT Native"
 ```
 
-または、クリーンデータをロードする:
+またはクリーンなデータをロードする:
 
 ```sql
 INSERT INTO wikistat WITH

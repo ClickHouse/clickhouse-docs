@@ -1,16 +1,14 @@
 ---
-'description': 'Returns the maximum of the computed exponentially smoothed moving
-  average at index `t` in time with that at `t-1`. '
+'description': '指数的に平滑化された移動平均の最大値を返します `t` インデックスで、時間で `t-1` との比較。'
 'sidebar_position': 135
 'slug': '/sql-reference/aggregate-functions/reference/exponentialTimeDecayedMax'
-'title': '指数時間経過最大値'
+'title': 'exponentialTimeDecayedMax'
+'doc_type': 'reference'
 ---
-
-
 
 ## exponentialTimeDecayedMax {#exponentialtimedecayedmax}
 
-インデックス `t` で計算される指数平滑移動平均の最大値を、`t-1` と比較して返します。
+指定された時点 `t` における指数平滑移動平均の最大値を、`t-1` の値と比較して返します。
 
 **構文**
 
@@ -20,12 +18,12 @@ exponentialTimeDecayedMax(x)(value, timeunit)
 
 **引数**
 
-- `value` — 値。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点数](../../../sql-reference/data-types/float.md) または [小数](../../../sql-reference/data-types/decimal.md)。
-- `timeunit` — 時間単位。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点数](../../../sql-reference/data-types/float.md) または [小数](../../../sql-reference/data-types/decimal.md)、[日時](../../data-types/datetime.md)、[日時64](../../data-types/datetime64.md)。
+- `value` — 値。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点数](../../../sql-reference/data-types/float.md)、または [小数](../../../sql-reference/data-types/decimal.md)。
+- `timeunit` — 時間単位。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点数](../../../sql-reference/data-types/float.md)、または [小数](../../../sql-reference/data-types/decimal.md)、[DateTime](../../data-types/datetime.md)、[DateTime64](../../data-types/datetime64.md)。
 
 **パラメータ**
 
-- `x` — 半減期。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点数](../../../sql-reference/data-types/float.md) または [小数](../../../sql-reference/data-types/decimal.md)。
+- `x` — 半減期。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点数](../../../sql-reference/data-types/float.md)、または [小数](../../../sql-reference/data-types/decimal.md)。
 
 **返される値**
 

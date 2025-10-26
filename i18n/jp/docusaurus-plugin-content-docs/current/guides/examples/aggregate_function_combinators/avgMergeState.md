@@ -1,7 +1,7 @@
 ---
 'slug': '/examples/aggregate-function-combinators/avgMergeState'
 'title': 'avgMergeState'
-'description': 'avgMergeState combinator の使用例'
+'description': 'avgMergeState 組み合わせ子の使用例'
 'keywords':
 - 'avg'
 - 'MergeState'
@@ -9,25 +9,24 @@
 - 'examples'
 - 'avgMergeState'
 'sidebar_label': 'avgMergeState'
+'doc_type': 'reference'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-
 # avgMergeState {#avgMergeState}
 
 ## 説明 {#description}
 
-[`MergeState`](/sql-reference/aggregate-functions/combinators#-state) コンビネータは
-[`avg`](/sql-reference/aggregate-functions/reference/avg) 関数に適用され、`AverageFunction(avg, T)` 型の部分集約状態を結合し、新しい中間集約状態を返します。
+[`MergeState`](/sql-reference/aggregate-functions/combinators#-state) コンビネーターは、[`avg`](/sql-reference/aggregate-functions/reference/avg) 関数に適用することができ、`AverageFunction(avg, T)` 型の部分集約状態をマージして新しい中間集約状態を返します。
 
 ## 使用例 {#example-usage}
 
-`MergeState` コンビネータは、事前に集約された状態を結合し、それをさらなる処理のために状態として保持したいマルチレベルの集約シナリオに特に役立ちます。ここでは、個々のサーバーのパフォーマンス指標を複数のレベルにわたる階層的集約に変換する例を見てみましょう：サーバーレベル → リージョンレベル → データセンターレベル。
+`MergeState` コンビネーターは、事前に集約した状態を組み合わせて、それらを状態として維持し（最終化せずに）、さらなる処理のために使用するマルチレベル集約シナリオに特に便利です。ここでは、個々のサーバーのパフォーマンスメトリックを、複数のレベルの階層的集約に変換する例を見てみましょう: サーバーレベル → リージョンレベル → データセンターレベル。
 
-まず、原データを格納するテーブルを作成します。
+まず、元データを保存するテーブルを作成します:
 
 ```sql
 CREATE TABLE raw_server_metrics
@@ -42,7 +41,7 @@ ENGINE = MergeTree()
 ORDER BY (region, server_id, timestamp);
 ```
 
-サーバーレベルの集約ターゲットテーブルを作成し、そこに挿入トリガーとして機能するインクリメンタル Materialized View を定義します。
+次に、サーバーレベルの集約対象テーブルを作成し、そこに挿入トリガーとして機能するインクリメンタル マテリアライズド ビューを定義します:
 
 ```sql
 CREATE TABLE server_performance
@@ -66,7 +65,7 @@ FROM raw_server_metrics
 GROUP BY server_id, region, datacenter;
 ```
 
-地域およびデータセンターレベルについても同様に行います。
+地域およびデータセンターレベルについても同様に行います:
 
 ```sql
 CREATE TABLE region_performance
@@ -87,7 +86,7 @@ AS SELECT
 FROM server_performance
 GROUP BY region, datacenter;
 
--- データセンターレベルのテーブルと Materialized View
+-- datacenter level table and materialized view
 
 CREATE TABLE datacenter_performance
 (
@@ -106,7 +105,7 @@ FROM region_performance
 GROUP BY datacenter;
 ```
 
-次に、ソーステーブルにサンプルの生データを挿入します。
+次に、ソーステーブルにサンプルの生データを挿入します:
 
 ```sql
 INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, response_time_ms) VALUES
@@ -119,7 +118,7 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
     (now(), 302, 'eu-central', 'dc2', 155);
 ```
 
-各レベルに対して3つのクエリを書きます。
+各レベルについて3つのクエリを書きます:
 
 <Tabs>
   <TabItem value="Service level" label="Service level" default>
@@ -179,7 +178,7 @@ ORDER BY datacenter;
   </TabItem>
 </Tabs>
 
-さらにデータを挿入します。
+さらにデータを挿入することができます:
 
 ```sql
 INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, response_time_ms) VALUES
@@ -188,7 +187,7 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
     (now(), 301, 'eu-central', 'dc2', 135);
 ```
 
-データセンターレベルのパフォーマンスを再度確認します。集約チェーン全体が自動的に更新される様子に注意してください。
+データセンターレベルのパフォーマンスを再度確認してみましょう。集約チェーン全体が自動的に更新されたことに注意してください:
 
 ```sql
 SELECT
@@ -206,7 +205,7 @@ ORDER BY datacenter;
 └────────────┴────────────────────┘
 ```
 
-## 参考 {#see-also}
+## 関連項目 {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
 - [`Merge`](/sql-reference/aggregate-functions/combinators#-merge)

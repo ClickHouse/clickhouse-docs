@@ -1,5 +1,5 @@
 ---
-'description': 'curl を使用して任意のプラットフォームに ClickHouse をインストールします'
+'description': 'curlを使用して任意のプラットフォームにClickHouseをインストール'
 'keywords':
 - 'ClickHouse'
 - 'install'
@@ -7,8 +7,9 @@
 - 'curl'
 'sidebar_label': 'クイックインストール'
 'slug': '/install/quick-install-curl'
-'title': 'Install ClickHouse via script using curl'
+'title': 'curlを使用してスクリプト経由でClickHouseをインストール'
 'hide_title': true
+'doc_type': 'guide'
 ---
 
 import QuickInstall from './_snippets/_quick_install.md'

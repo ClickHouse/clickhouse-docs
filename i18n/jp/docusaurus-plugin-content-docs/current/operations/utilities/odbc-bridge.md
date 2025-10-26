@@ -1,28 +1,23 @@
 ---
-'description': 'Documentation for Odbc Bridge'
+'description': 'Odbc Bridge に関するドキュメント'
 'slug': '/operations/utilities/odbc-bridge'
 'title': 'clickhouse-odbc-bridge'
+'doc_type': 'reference'
 ---
 
+シンプルなHTTPサーバーで、ODBCドライバーのプロキシとして機能します。主な動機は、ODBCの実装内での可能なセグメンテーションフォルトやその他のエラーにあり、これが全体のclickhouse-serverプロセスをクラッシュさせる可能性があるからです。
 
-
-シンプルなHTTPサーバーは、ODBCドライバのプロキシとして機能します。主な動機は、ODBC実装におけるセグメンテーションフォルトやその他のエラーが、全体のclickhouse-serverプロセスをクラッシュさせる可能性があるためです。
-
-このツールはHTTPを介して動作し、パイプ、共有メモリ、またはTCPを介してではありません。理由は以下の通りです：
-- 実装が簡単であること
-- デバッグが簡単であること
-- jdbc-bridgeを同様に実装できること
+このツールはHTTP経由で動作し、パイプ、共有メモリ、またはTCP経由ではありません。理由は以下の通りです：
+- 実装が簡単です
+- デバッグが簡単です
+- jdbc-bridgeも同様の方法で実装できます
 
 ## 使用法 {#usage}
 
-`clickhouse-server`は、ODBCテーブル関数およびStorageODBC内部でこのツールを使用します。
-ただし、次のパラメータを持つPOSTリクエストURLからコマンドラインでスタンドアロンツールとして使用することもできます：
+`clickhouse-server`は、このツールをodbcテーブル関数とStorageODBC内で使用します。しかし、コマンドラインからスタンドアロンツールとしても、以下のパラメータを含むPOSTリクエストURLで使用できます：
 - `connection_string` -- ODBC接続文字列。
-- `sample_block` -- ClickHouse NamesAndTypesList形式でのカラムの説明、名前はバックティックで囲み、
-  タイプは文字列として指定します。名前とタイプは空白で区切られ、行は
-  改行で区切られます。
-- `max_block_size` -- オプションのパラメータで、単一ブロックの最大サイズを設定します。
-クエリはPOSTボディに送信されます。レスポンスはRowBinary形式で返されます。
+- `sample_block` -- ClickHouseのNamesAndTypesList形式によるカラムの説明。名前はバックティックで囲み、タイプは文字列として記述します。名前とタイプはスペースで区切られ、行は改行で区切られます。
+- `max_block_size` -- オプションのパラメータで、単一のブロックの最大サイズを設定します。クエリはポストボディに送信され、レスポンスはRowBinary形式で返されます。
 
 ## 例: {#example}
 

@@ -5,11 +5,12 @@ toc_hidden: true
 toc_priority: 11
 description: 'This page shows you how to import JSON into ClickHouse'
 keywords: ['JSON import', 'JSONEachRow format', 'data import', 'JSON ingestion', 'data formats']
+doc_type: 'guide'
 ---
 
 # How to Import JSON Into ClickHouse? {#how-to-import-json-into-clickhouse}
 
-ClickHouse supports a wide range of [data formats for input and output](../../interfaces/formats.md). There are multiple JSON variations among them, but the most commonly used for data ingestion is [JSONEachRow](../../interfaces/formats.md#jsoneachrow). It expects one JSON object per row, each object separated by a newline.
+ClickHouse supports a wide range of [data formats for input and output](/interfaces/formats). There are multiple JSON variations among them, but the most commonly used for data ingestion is [JSONEachRow](/interfaces/formats/JSONEachRow). It expects one JSON object per row, each object separated by a newline.
 
 ## Examples {#examples}
 

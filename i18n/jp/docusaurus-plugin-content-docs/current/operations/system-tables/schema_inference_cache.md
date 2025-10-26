@@ -1,10 +1,11 @@
 ---
-'description': 'System table containing information about all cached file schemas.'
+'description': 'システムテーブルは、すべてのキャッシュされたファイルスキーマに関する情報を含んでいます。'
 'keywords':
 - 'system table'
 - 'schema_inference_cache'
 'slug': '/operations/system-tables/schema_inference_cache'
 'title': 'system.schema_inference_cache'
+'doc_type': 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
@@ -14,19 +15,19 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud/>
 
-キャッシュされたファイルスキーマについての情報を含みます。
+キャッシュされたファイルスキーマに関する情報を含みます。
 
 カラム:
 - `storage` ([String](/sql-reference/data-types/string.md)) — ストレージ名: File, URL, S3 または HDFS。
-- `source` ([String](/sql-reference/data-types/string.md)) — ファイルのソース。
+- `source` ([String](/sql-reference/data-types/string.md)) — ファイルソース。
 - `format` ([String](/sql-reference/data-types/string.md)) — フォーマット名。
-- `additional_format_info` ([String](/sql-reference/data-types/string.md)) - スキーマを特定するために必要な追加情報。例えば、フォーマット特有の設定。
+- `additional_format_info` ([String](/sql-reference/data-types/string.md)) - スキーマを特定するために必要な追加情報。例えば、フォーマット固有の設定。
 - `registration_time` ([DateTime](/sql-reference/data-types/datetime.md)) — スキーマがキャッシュに追加されたタイムスタンプ。
 - `schema` ([String](/sql-reference/data-types/string.md)) - キャッシュされたスキーマ。
 
 **例**
 
-`data.jsonl` というファイルがあり、以下の内容が含まれているとします:
+`data.jsonl`というファイルがこの内容を持っているとしましょう:
 ```json
 {"id" :  1, "age" :  25, "name" :  "Josh", "hobbies" :  ["football", "cooking", "music"]}
 {"id" :  2, "age" :  19, "name" :  "Alan", "hobbies" :  ["tennis", "art"]}
@@ -35,7 +36,7 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 ```
 
 :::tip
-`data.jsonl`を`user_files_path`ディレクトリに置いてください。これを見つけるには、ClickHouseの設定ファイルを調べてください。デフォルトは:
+`data.jsonl`を`user_files_path`ディレクトリに配置します。これを見つけるには、ClickHouseの設定ファイルを確認してください。デフォルトは:
 ```sql
 <user_files_path>/var/lib/clickhouse/user_files/</user_files_path>
 ```

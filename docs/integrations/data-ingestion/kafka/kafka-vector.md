@@ -4,7 +4,8 @@ sidebar_position: 3
 slug: /integrations/kafka/kafka-vector
 description: 'Using Vector with Kafka and ClickHouse'
 title: 'Using Vector with Kafka and ClickHouse'
-keywords: [vector, kafka, data pipeline, log processing, http interface, json format, confluent cloud, streaming data]
+doc_type: 'guide'
+keywords: ['kafka', 'vector', 'log collection', 'observability', 'integration']
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

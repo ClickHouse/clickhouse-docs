@@ -1,76 +1,82 @@
 ---
-'description': 'ClickHouse での外部辞書機能の概要'
+'description': 'ClickHouseにおける外部辞書機能の概要'
 'sidebar_label': '辞書の定義'
 'sidebar_position': 35
 'slug': '/sql-reference/dictionaries'
-'title': 'Dictionaries'
+'title': '辞書'
+'doc_type': 'Reference'
 ---
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 import CloudDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/sql-reference/dictionaries/_snippet_dictionary_in_cloud.md';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+
+
 # 辞書
 
-辞書は、さまざまなタイプの参照リストに便利なマッピング (`key -> attributes`) です。
+辞書は、さまざまな種類の参照リストに便利なマッピング（`key -> attributes`）です。
 
-ClickHouse は、クエリで使用できる辞書の操作のための特別な関数をサポートしています。参照テーブルとの `JOIN` よりも、関数を用いた辞書の使用が簡単で効率的です。
+ClickHouseは、クエリで使用できる辞書を操作するための特別な関数をサポートしています。参照テーブルとの`JOIN`を使用するより、関数を使用して辞書を使用する方が簡単で効率的です。
 
-ClickHouse では以下をサポートしています。
+ClickHouseは以下をサポートします：
 
 - [関数のセット](../../sql-reference/functions/ext-dict-functions.md)を持つ辞書。
-- 特定の[関数のセット](../../sql-reference/functions/ym-dict-functions.md)を持つ[埋め込まれた辞書](#embedded-dictionaries)。
+- 特定の[関数のセット](../../sql-reference/functions/embedded-dict-functions.md)を持つ[埋め込み辞書](#embedded-dictionaries)。
 
 :::tip チュートリアル
-ClickHouse の辞書を始めたばかりの方は、このトピックに関するチュートリアルがあります。[こちら](tutorial.md)をご覧ください。
+ClickHouseの辞書を始めるためのチュートリアルがあります。詳細は[こちら](tutorial.md)をご覧ください。
 :::
 
-さまざまなデータソースから独自の辞書を追加できます。辞書のソースは、ClickHouse テーブル、ローカルのテキストまたは実行ファイル、HTTP(S) リソース、または別の DBMS である可能性があります。詳細については、「[辞書のソース](#dictionary-sources)」をご覧ください。
+さまざまなデータソースから独自の辞書を追加できます。辞書のソースは、ClickHouseのテーブル、ローカルのテキストまたは実行可能ファイル、HTTP(s)リソース、または別のDBMSである可能性があります。詳細については、 "[辞書ソース](#dictionary-sources)"を参照してください。
 
-ClickHouse は次のことを行います。
+ClickHouseは：
 
-- 辞書を RAM に完全または部分的に保存します。
-- 辞書を定期的に更新し、欠落している値を動的にロードします。言い換えれば、辞書は動的にロードされる可能性があります。
-- xml ファイルまたは[DDL クエリ](../../sql-reference/statements/create/dictionary.md)を使用して辞書を作成できます。
+- 辞書をRAMに完全または部分的に格納します。
+- 定期的に辞書を更新し、欠落した値を動的にロードします。言い換えれば、辞書は動的にロード可能です。
+- xmlファイルや[DDLクエリ](../../sql-reference/statements/create/dictionary.md)を使用して辞書を作成できます。
 
-辞書の設定は、1つまたは複数の xml ファイルに配置できます。設定へのパスは、[dictionaries_config](../../operations/server-configuration-parameters/settings.md#dictionaries_config) パラメータで指定されます。
+辞書の設定は1つまたは複数のxmlファイルに配置できます。設定のパスは[dictionaries_config](../../operations/server-configuration-parameters/settings.md#dictionaries_config)パラメータで指定されます。
 
-辞書は、サーバーの起動時または初回の使用時にロードされます。これは、[dictionaries_lazy_load](../../operations/server-configuration-parameters/settings.md#dictionaries_lazy_load) 設定に依存します。
+辞書は、[dictionaries_lazy_load](../../operations/server-configuration-parameters/settings.md#dictionaries_lazy_load)設定に応じて、サーバー起動時または最初の使用時にロードできます。
 
-[dictionaries](/operations/system-tables/dictionaries) システムテーブルには、サーバーで設定された辞書に関する情報が含まれています。各辞書に対して以下が見つかります。
+[dictionaries](/operations/system-tables/dictionaries)システムテーブルには、サーバーに設定された辞書に関する情報が含まれています。各辞書について、そこで次の情報を見つけることができます：
 
 - 辞書のステータス。
-- 設定パラメータ。
-- 辞書に割り当てられた RAM の量や、辞書が正常にロードされてからのクエリ数などのメトリクス。
+- 構成パラメータ。
+- 辞書に割り当てられたRAMの量や、辞書が正常にロードされてからのクエリの数などのメトリクス。
 
 <CloudDetails />
-## DDL クエリで辞書を作成する {#creating-a-dictionary-with-a-ddl-query}
+## DDLクエリを使用して辞書を作成する {#creating-a-dictionary-with-a-ddl-query}
 
-辞書は[DDL クエリ](../../sql-reference/statements/create/dictionary.md)を使用して作成でき、これは推奨される方法です。なぜなら、DDL で作成された辞書は、
-- サーバー設定ファイルに追加レコードが追加されない
-- 辞書はテーブルやビューと同様にファーストクラスのエンティティとして扱える
-- データを辞書テーブル関数ではなく、親しみのある SELECT を用いて直接読み取ることができる
-- 辞書を容易にリネームできるからです。
-## 設定ファイルで辞書を作成する {#creating-a-dictionary-with-a-configuration-file}
+辞書は[DDLクエリ](../../sql-reference/statements/create/dictionary.md)を使用して作成でき、これは推奨される方法です。なぜならDDLで作成された辞書の場合：
+
+- サーバー設定ファイルに追加のレコードが追加されません。
+- 辞書はテーブルやビューのようにファーストクラスのエンティティとして操作できます。
+- データは辞書テーブル関数を使用するのではなく、お馴染みのSELECTを使用して直接読み取ることができます。SELECT文を介して直接辞書にアクセスする場合、キャッシュされた辞書はキャッシュデータのみを返し、非キャッシュ辞書はそれが保持するすべてのデータを返します。
+- 辞書は簡単に名前を変更できます。
+
+## 設定ファイルを使用して辞書を作成する {#creating-a-dictionary-with-a-configuration-file}
 
 <CloudNotSupportedBadge/>
 
 :::note
-設定ファイルを使用して辞書を作成することは ClickHouse Cloud に該当しません。上記のように DDL を使用し、ユーザー `default` として辞書を作成してください。
+設定ファイルを使用して辞書を作成することはClickHouse Cloudには適用できません。上記のDDLを使用して、ユーザー`default`として辞書を作成してください。
 :::
 
-辞書の設定ファイルは次の形式です。
+辞書の設定ファイルは、次の形式を持っています：
 
 ```xml
 <clickhouse>
-    <comment>任意の内容を含むオプションの要素。ClickHouse サーバーによって無視されます。</comment>
+    <comment>An optional element with any content. Ignored by the ClickHouse server.</comment>
 
-    <!--オプション要素。置き換え可能なファイル名-->
+    <!--Optional element. File name with substitutions-->
     <include_from>/etc/metrika.xml</include_from>
 
+
     <dictionary>
-        <!-- 辞書の設定。 -->
-        <!-- 設定ファイル内に辞書セクションが任意の数存在することができます。 -->
+        <!-- Dictionary configuration. -->
+        <!-- There can be any number of dictionary sections in a configuration file. -->
     </dictionary>
 
 </clickhouse>
@@ -79,71 +85,71 @@ ClickHouse は次のことを行います。
 同じファイル内で任意の数の辞書を[構成](#configuring-a-dictionary)できます。
 
 :::note
-小規模な辞書の値を変換するには、`SELECT` クエリで説明することができます (見てみる [transform](../../sql-reference/functions/other-functions.md) 関数)。この機能は辞書には関連しません。
+`SELECT`クエリで辞書を説明することにより、小さな辞書の値を変換できます（[transform](../../sql-reference/functions/other-functions.md)関数を参照）。この機能は辞書に関連していません。
 :::
-## 辞書の設定 {#configuring-a-dictionary}
+## 辞書を構成する {#configuring-a-dictionary}
 
 <CloudDetails />
 
-辞書が xml ファイルを使用して設定された場合、辞書の設定は以下の構造を持っています。
+辞書がxmlファイルを使用して構成される場合、辞書の構成は次の構造を持っています：
 
 ```xml
 <dictionary>
     <name>dict_name</name>
 
     <structure>
-      <!-- 複雑なキーの設定 -->
+      <!-- Complex key configuration -->
     </structure>
 
     <source>
-      <!-- ソースの設定 -->
+      <!-- Source configuration -->
     </source>
 
     <layout>
-      <!-- メモリレイアウトの設定 -->
+      <!-- Memory layout configuration -->
     </layout>
 
     <lifetime>
-      <!-- メモリ内の辞書の寿命 -->
+      <!-- Lifetime of dictionary in memory -->
     </lifetime>
 </dictionary>
 ```
 
-対応する[DDLクエリ](../../sql-reference/statements/create/dictionary.md)は以下の構造を持っています。
+対応する[DDLクエリ](../../sql-reference/statements/create/dictionary.md)の構造は次のとおりです：
 
 ```sql
 CREATE DICTIONARY dict_name
 (
-    ... -- 属性
+    ... -- attributes
 )
-PRIMARY KEY ... -- 複雑または単一のキー設定
-SOURCE(...) -- ソース設定
-LAYOUT(...) -- メモリレイアウト設定
-LIFETIME(...) -- メモリ内の辞書の寿命
+PRIMARY KEY ... -- complex or single key configuration
+SOURCE(...) -- Source configuration
+LAYOUT(...) -- Memory layout configuration
+LIFETIME(...) -- Lifetime of dictionary in memory
 ```
-## メモリに辞書を保存する {#storing-dictionaries-in-memory}
+## メモリに辞書を格納する {#storing-dictionaries-in-memory}
 
-辞書をメモリに保存するためのさまざまな方法があります。
+メモリに辞書を格納するさまざまな方法があります。
 
-最適な処理速度を提供する[flat](#flat)、[hashed](#hashed)、および[complex_key_hashed](#complex_key_hashed)を推奨します。
+[flat](#flat)、[hashed](#hashed)、および[complex_key_hashed](#complex_key_hashed)を推奨します。これらは最適な処理速度を提供します。
 
-キャッシングは、パフォーマンスが悪くなる可能性や最適なパラメータの選択の難しさから推奨されません。詳細は[cache](#cache)セクションで説明しています。
+パフォーマンスが悪い可能性があるため、キャッシングは推奨されません。また、最適なパラメータを選択するのが難しくなります。詳細は[キャッシュ](#cache)セクションを参照してください。
 
-辞書のパフォーマンスを向上させる方法はいくつかあります。
+辞書のパフォーマンスを向上させる方法はいくつかあります：
 
-- `GROUP BY` の後に辞書を操作するための関数を呼び出します。
-- 抽出する属性を単射としてマークします。異なるキーに対して異なる属性値が対応する場合、属性は単射と呼ばれます。したがって、`GROUP BY` がキーによって属性値を取得する関数を使用する際、この関数は自動的に `GROUP BY` から除外されます。
+- `GROUP BY`の後に辞書を操作する関数を呼び出します。
+- 抽出する属性を注入的にマークします。異なるキーが異なる属性値に対応する場合、属性は注入的と呼ばれます。したがって、`GROUP BY`がキーによって属性値を取得する関数を使用する場合、この関数は自動的に`GROUP BY`から取り除かれます。
 
-ClickHouse は辞書のエラーに対して例外を生成します。エラーの例：
+ClickHouseは、辞書に関するエラーに対して例外を生成します。エラーの例：
 
-- アクセスされている辞書をロードできませんでした。
-- `cached` 辞書のクエリエラー。
+- アクセスされた辞書がロードできませんでした。
+- `cached`辞書のクエリ中にエラーが発生しました。
 
-辞書とそのステータスのリストは、[system.dictionaries](../../operations/system-tables/dictionaries.md) テーブルで確認できます。
+[dictionary](../../operations/system-tables/dictionaries.md)システムテーブルで辞書とそのステータスのリストを表示できます。
 
 <CloudDetails />
 
-設定は次のようになります。
+構成はこのようになります：
 
 ```xml
 <clickhouse>
@@ -151,7 +157,7 @@ ClickHouse は辞書のエラーに対して例外を生成します。エラー
         ...
         <layout>
             <layout_type>
-                <!-- レイアウト設定 -->
+                <!-- layout settings -->
             </layout_type>
         </layout>
         ...
@@ -159,20 +165,20 @@ ClickHouse は辞書のエラーに対して例外を生成します。エラー
 </clickhouse>
 ```
 
-対応する[DDLクエリ](../../sql-reference/statements/create/dictionary.md):
+対応する[DDLクエリ](../../sql-reference/statements/create/dictionary.md)：
 
 ```sql
 CREATE DICTIONARY (...)
 ...
-LAYOUT(LAYOUT_TYPE(param value)) -- レイアウト設定
+LAYOUT(LAYOUT_TYPE(param value)) -- layout settings
 ...
 ```
 
-`complex-key*`という単語がレイアウトに含まれていない辞書は、[UInt64](../../sql-reference/data-types/int-uint.md)型のキーを持ち、`complex-key*` 辞書は合成キー（複雑で、任意の型を持つ）を持っています。
+レイアウトに`complex-key*`の単語が含まれていない辞書は、[UInt64](../../sql-reference/data-types/int-uint.md)型のキーを持ち、`complex-key*`辞書は複合キー（複雑、任意の型）を持ちます。
 
-[UInt64](../../sql-reference/data-types/int-uint.md) 型のキーは、XML 辞書で `<id>` タグで定義されます。
+XML辞書の[UInt64](../../sql-reference/data-types/int-uint.md)キーは`<id>`タグで定義されます。
 
-設定例（列 key_column は UInt64 型）:
+構成例（カラムkey_columnはUInt64型を持つ）：
 ```xml
 ...
 <structure>
@@ -182,9 +188,9 @@ LAYOUT(LAYOUT_TYPE(param value)) -- レイアウト設定
 ...
 ```
 
-合成 `complex` キーの XML 辞書は `<key>` タグで定義されます。
+複合`complex`キーXML辞書は`<key>`タグで定義されています。
 
-合成キーの設定例（キーが [String](../../sql-reference/data-types/string.md) 型の要素を1つ持つ場合）:
+複合キーの構成例（キーは[String](../../sql-reference/data-types/string.md)型の要素を1つ持ちます）：
 ```xml
 ...
 <structure>
@@ -196,7 +202,9 @@ LAYOUT(LAYOUT_TYPE(param value)) -- レイアウト設定
     </key>
 ...
 ```
-## メモリに辞書を保存する方法 {#ways-to-store-dictionaries-in-memory}
+## メモリに辞書を格納する方法 {#ways-to-store-dictionaries-in-memory}
+
+メモリ内の辞書データを格納するさまざまな方法は、CPUとRAM使用のトレードオフに関連しています。辞書関連の[ブログ記事](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)の「レイアウトの選択」段落に掲載されている決定木は、どのレイアウトを使用するかを決定するための良い出発点です。
 
 - [flat](#flat)
 - [hashed](#hashed)
@@ -214,18 +222,17 @@ LAYOUT(LAYOUT_TYPE(param value)) -- レイアウト設定
 - [direct](#direct)
 - [complex_key_direct](#complex_key_direct)
 - [ip_trie](#ip_trie)
-
 ### flat {#flat}
 
-辞書はメモリにフラットな配列の形で完全に保存されます。辞書はどれくらいのメモリを使用しますか？その量は、使用された空間内の最も大きなキーのサイズに比例します。
+辞書は、フラット配列の形式で完全にメモリに格納されます。辞書はどれだけのメモリを使用しますか？その量は、最大キーのサイズ（使用されるスペースに比例）に従います。
 
-辞書のキーは[UInt64](../../sql-reference/data-types/int-uint.md)型であり、値は `max_array_size` に制限されています（デフォルトは 500,000）。辞書を作成する際により大きなキーが発見された場合、ClickHouse は例外を発生させ、辞書を作成しません。辞書のフラット配列の初期サイズは `initial_array_size` 設定によって制御されます（デフォルトは 1024）。
+辞書キーは[UInt64](../../sql-reference/data-types/int-uint.md)型を持ち、値は`max_array_size`（デフォルトは500,000）に制限されます。辞書を作成中により大きなキーが発見された場合、ClickHouseは例外をスローし、辞書を作成しません。辞書のフラット配列の初期サイズは`initial_array_size`設定で制御されます（デフォルトは1024）。
 
-すべてのタイプのソースがサポートされています。更新時には、データ（ファイルまたはテーブルから）のすべてが読み込まれます。
+すべてのタイプのソースがサポートされています。更新時には、データ（ファイルまたはテーブルから）が完全に読み込まれます。
 
-この方法は、辞書を保存するためのすべての利用可能な方法の中で、最高のパフォーマンスを提供します。
+この方法は辞書の格納方式の中で最も優れたパフォーマンスを提供します。
 
-設定例：
+構成例：
 
 ```xml
 <layout>
@@ -243,13 +250,13 @@ LAYOUT(FLAT(INITIAL_ARRAY_SIZE 50000 MAX_ARRAY_SIZE 5000000))
 ```
 ### hashed {#hashed}
 
-辞書は、メモリにハッシュテーブルの形で完全に保存されます。辞書は、任意の数の要素を含むことができます。実際には、キーの数は数千万に達することがあります。
+辞書は完全にメモリに格納され、ハッシュテーブルの形式になります。辞書は、識別子の異なる任意の数の要素を含むことができます。実際には、キーの数は数千万件に達することがあります。
 
-辞書のキーは[UInt64](../../sql-reference/data-types/int-uint.md)型です。
+辞書キーは[UInt64](../../sql-reference/data-types/int-uint.md)型です。
 
-すべてのタイプのソースがサポートされています。更新時には、データ（ファイルまたはテーブルから）のすべてが読み込まれます。
+すべてのタイプのソースがサポートされています。更新時には、データ（ファイルまたはテーブルから）が完全に読み込まれます。
 
-設定例：
+構成例：
 
 ```xml
 <layout>
@@ -263,26 +270,32 @@ LAYOUT(FLAT(INITIAL_ARRAY_SIZE 50000 MAX_ARRAY_SIZE 5000000))
 LAYOUT(HASHED())
 ```
 
-設定例：
+構成例：
 
 ```xml
 <layout>
   <hashed>
-    <!-- シャードが 1 より大きい場合（デフォルトは `1`）、辞書はデータを並行処理でロードします。巨大な要素数がある辞書に便利です。 -->
+    <!-- If shards greater then 1 (default is `1`) the dictionary will load
+         data in parallel, useful if you have huge amount of elements in one
+         dictionary. -->
     <shards>10</shards>
 
-    <!-- 並行キュー内のブロックの待機サイズ。
+    <!-- Size of the backlog for blocks in parallel queue.
 
-         並行読み込みのボトルネックは再ハッシュであり、スレッドが再ハッシュを行っているためにプロセスが進行しないように、ある程度のバックログを保持する必要があります。
+         Since the bottleneck in parallel loading is rehash, and so to avoid
+         stalling because of thread is doing rehash, you need to have some
+         backlog.
 
-         10000はメモリと速度のバランスが良いです。
-         10e10 要素の場合でも、すべての負荷を飽和することなく処理できます。 -->
+         10000 is good balance between memory and speed.
+         Even for 10e10 elements and can handle all the load without starvation. -->
     <shard_load_queue_backlog>10000</shard_load_queue_backlog>
 
-    <!-- ハッシュテーブルの最大負荷係数。大きな値ではメモリがより効率的に使用されます（メモリの無駄が少なくなる）が、読み込み性能が低下する可能性があります。
+    <!-- Maximum load factor of the hash table, with greater values, the memory
+         is utilized more efficiently (less memory is wasted) but read/performance
+         may deteriorate.
 
-         有効な値: [0.5, 0.99]
-         デフォルト: 0.5 -->
+         Valid values: [0.5, 0.99]
+         Default: 0.5 -->
     <max_load_factor>0.5</max_load_factor>
   </hashed>
 </layout>
@@ -295,11 +308,11 @@ LAYOUT(HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTOR 0.5])
 ```
 ### sparse_hashed {#sparse_hashed}
 
-`hashed` に似ていますが、メモリを少なくし、CPU 使用量を増やします。
+`hashed`と似ていますが、より少ないメモリを使用し、CPU使用量が増えます。
 
-辞書のキーは[UInt64](../../sql-reference/data-types/int-uint.md)型です。
+辞書キーは[UInt64](../../sql-reference/data-types/int-uint.md)型です。
 
-設定例：
+構成例：
 
 ```xml
 <layout>
@@ -317,13 +330,12 @@ LAYOUT(HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTOR 0.5])
 LAYOUT(SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTOR 0.5]))
 ```
 
-この辞書タイプでも `shards` を使用でき、`sparse_hashed` では `hashed` より重要です。なぜなら `sparse_hashed` の方が遅いためです。
-
+このタイプの辞書には`shards`を使用することもできますが、再度`sparse_hashed`は`hashed`よりも重要です。なぜなら`sparse_hashed`は遅いためです。
 ### complex_key_hashed {#complex_key_hashed}
 
-このストレージタイプは合成[キー](#dictionary-key-and-fields)での使用に適しています。`hashed` に似ています。
+このタイプのストレージは、複合[キー](#dictionary-key-and-fields)と一緒に使用するためのものです。`hashed`に似ています。
 
-設定例：
+構成例：
 
 ```xml
 <layout>
@@ -342,9 +354,9 @@ LAYOUT(COMPLEX_KEY_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_
 ```
 ### complex_key_sparse_hashed {#complex_key_sparse_hashed}
 
-このストレージタイプは合成[キー](#dictionary-key-and-fields)での使用に適しています。[sparse_hashed](#sparse_hashed) に似ています。
+このタイプのストレージは、複合[キー](#dictionary-key-and-fields)と一緒に使用するためのものです。[sparse_hashed](#sparse_hashed)に似ています。
 
-設定例：
+構成例：
 
 ```xml
 <layout>
@@ -363,13 +375,13 @@ LAYOUT(COMPLEX_KEY_SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MA
 ```
 ### hashed_array {#hashed_array}
 
-辞書はメモリに完全に保存されます。各属性は配列に保存されます。キー属性はハッシュテーブルの形で保存され、値は属性の配列内のインデックスです。辞書は任意の数の要素を含むことができ、実際にはキーの数は数千万に達することがあります。
+辞書は完全にメモリに格納されます。各属性は配列に格納されます。キー属性は、属性配列内のインデックスとして値を持つハッシュテーブルの形式で格納されます。辞書は、識別子の異なる任意の数の要素を含むことができます。実際には、キーの数は数千万件に達することがあります。
 
-辞書のキーは[UInt64](../../sql-reference/data-types/int-uint.md)型です。
+辞書キーは[UInt64](../../sql-reference/data-types/int-uint.md)型です。
 
-すべてのタイプのソースがサポートされています。更新時には、データ（ファイルまたはテーブルから）のすべてが読み込まれます。
+すべてのタイプのソースがサポートされています。更新時には、データ（ファイルまたはテーブルから）が完全に読み込まれます。
 
-設定例：
+構成例：
 
 ```xml
 <layout>
@@ -385,9 +397,9 @@ LAYOUT(HASHED_ARRAY([SHARDS 1]))
 ```
 ### complex_key_hashed_array {#complex_key_hashed_array}
 
-このストレージタイプは合成[キー](#dictionary-key-and-fields)での使用に適しています。[hashed_array](#hashed_array) に似ています。
+このタイプのストレージは、複合[キー](#dictionary-key-and-fields)と一緒に使用するためのものです。[hashed_array](#hashed_array)に似ています。
 
-設定例：
+構成例：
 
 ```xml
 <layout>
@@ -402,12 +414,11 @@ LAYOUT(COMPLEX_KEY_HASHED_ARRAY([SHARDS 1]))
 ```
 ### range_hashed {#range_hashed}
 
-辞書は、範囲の順序付き配列とその対応する値の形でメモリに保存されるハッシュテーブルとして保存されます。
+辞書は、範囲とそれに対応する値の順序付き配列の形式のハッシュテーブルに格納されます。
 
-辞書のキーは[UInt64](../../sql-reference/data-types/int-uint.md)型です。
-このストレージ方法はハッシュと同様に機能し、キーに加えて日付/時間（任意の数値型）の範囲を使うことができます。
+辞書キーは[UInt64](../../sql-reference/data-types/int-uint.md)型を持っています。このストレージ方法は、hashedと同様に機能し、キーに加えて日付/時間（任意の数値型）の範囲を使用することができます。
 
-例：テーブルには、各広告主に対する割引が次の形式で格納されています。
+例：テーブルは、各広告主の割引を次のフォーマットで含みます：
 
 ```text
 ┌─advertiser_id─┬─discount_start_date─┬─discount_end_date─┬─amount─┐
@@ -417,10 +428,10 @@ LAYOUT(COMPLEX_KEY_HASHED_ARRAY([SHARDS 1]))
 └───────────────┴─────────────────────┴───────────────────┴────────┘
 ```
 
-日付範囲のサンプルを使用するには、[structure](#dictionary-key-and-fields) 内で `range_min` および `range_max` 要素を定義します。これらの要素には、`name` と `type` の要素を含める必要があります（`type` が指定されていない場合、デフォルトの型が使用されます - Date）。`type` は任意の数値型（Date / DateTime / UInt64 / Int32 / その他）を指定できます。
+日付範囲のサンプルを使用するためには、[structure](#dictionary-key-and-fields)内に`range_min`および`range_max`要素を定義します。これらの要素は、`name`および`type`を含む必要があります（`type`が指定されていない場合は、デフォルトタイプが使用されます - Date）。`type`は任意の数値型（Date / DateTime / UInt64 / Int32 / その他）を使用できます。
 
 :::note
-`range_min` および `range_max` の値は `Int64` 型に収まる必要があります。
+`range_min`と`range_max`の値は`Int64`型に収まる必要があります。
 :::
 
 例：
@@ -428,7 +439,7 @@ LAYOUT(COMPLEX_KEY_HASHED_ARRAY([SHARDS 1]))
 ```xml
 <layout>
     <range_hashed>
-        <!-- オーバーラップ範囲の戦略（min/max）。デフォルト: min（min(range_min -> range_max) 値を持つ一致する範囲を返す） -->
+        <!-- Strategy for overlapping ranges (min/max). Default: min (return a matching range with the min(range_min -> range_max) value) -->
         <range_lookup_strategy>min</range_lookup_strategy>
     </range_hashed>
 </layout>
@@ -463,7 +474,7 @@ LAYOUT(RANGE_HASHED(range_lookup_strategy 'max'))
 RANGE(MIN discount_start_date MAX discount_end_date)
 ```
 
-このような辞書で操作を行うには、`dictGet` 関数に範囲を選択するための追加の引数を渡す必要があります。
+これらの辞書を操作するには、`dictGet`関数に追加の引数を渡す必要があり、範囲が選択されます：
 
 ```sql
 dictGet('dict_name', 'attr_name', id, date)
@@ -474,16 +485,16 @@ dictGet('dict_name', 'attr_name', id, date)
 SELECT dictGet('discounts_dict', 'amount', 1, '2022-10-20'::Date);
 ```
 
-この関数は、指定された `id` と渡された日付を含む日付範囲の値を返します。
+この関数は、指定された`id`と渡された日付を含む日付範囲の値を返します。
 
 アルゴリズムの詳細：
 
-- `id` が見つからない場合や、`id` に対する範囲が見つからない場合、属性の型のデフォルト値が返されます。
-- オーバーラップする範囲があり、`range_lookup_strategy=min` の場合、一致する範囲の最小 `range_min` が返されます。同じ範囲も見つかれば、最小の `range_max` を持つ範囲が返されます。また、再度同じ範囲が見つかっても（複数の範囲が同じ `range_min` と `range_max` を持つ場合は、その中のランダムな範囲が返されます。
-- オーバーラップする範囲があり、`range_lookup_strategy=max` の場合、一致する範囲の最大 `range_min` が返され、同様の条件で最小の `range_max` も返されます。
-- `range_max` が `NULL` の場合、その範囲はオープンです。`NULL` は最大の可能値として扱われます。`range_min` には、`1970-01-01` または `0` (-MAX_INT) をオープン値として使用できます。
+- `id`が見つからないか、`id`に対する範囲が見つからない場合、属性の型のデフォルト値を返します。
+- 範囲が重複していて`range_lookup_strategy=min`の場合、最小の`range_min`を持つ一致する範囲を返します。複数の範囲が見つかった場合は、最小の`range_max`を持つ範囲を返します。また再度複数の範囲が見つかった場合（複数の範囲が同じ`range_min`および`range_max`を持っている場合、その中からランダムな範囲を返します。
+- 範囲が重複していて`range_lookup_strategy=max`の場合、最大の`range_min`を持つ一致する範囲を返します。複数の範囲が見つかった場合は、最大の`range_max`を持つ範囲を返します。また再度複数の範囲が見つかった場合（複数の範囲が同じ`range_min`および`range_max`を持っている場合、その中からランダムな範囲を返します。
+- `range_max`が`NULL`の場合、その範囲はオープンです。`NULL`は最大の可能な値として扱われます。`range_min`については、`1970-01-01`または`0`（-MAX_INT）がオープン値として使用できます。
 
-設定例：
+構成例：
 
 ```xml
 <clickhouse>
@@ -530,7 +541,7 @@ PRIMARY KEY Abcdef
 RANGE(MIN StartTimeStamp MAX EndTimeStamp)
 ```
 
-オーバーラップ範囲やオープン範囲の設定例：
+重複範囲およびオープン範囲の構成例：
 
 ```sql
 CREATE TABLE discounts
@@ -576,22 +587,22 @@ RANGE(MIN discount_start_date MAX discount_end_date);
 
 select dictGet('discounts_dict', 'amount', 1, toDate('2015-01-14')) res;
 ┌─res─┐
-│ 0.1 │ -- 一致する範囲は唯一: 2015-01-01 - Null
+│ 0.1 │ -- the only one range is matching: 2015-01-01 - Null
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 1, toDate('2015-01-16')) res;
 ┌─res─┐
-│ 0.2 │ -- 一致する範囲が2つあり、範囲最小値2015-01-15 (0.2) は2015-01-01 (0.1) より大きい
+│ 0.2 │ -- two ranges are matching, range_min 2015-01-15 (0.2) is bigger than 2015-01-01 (0.1)
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 2, toDate('2015-01-06')) res;
 ┌─res─┐
-│ 0.4 │ -- 一致する範囲が2つあり、範囲最小値2015-01-04 (0.4) は2015-01-01 (0.3) より大きい
+│ 0.4 │ -- two ranges are matching, range_min 2015-01-04 (0.4) is bigger than 2015-01-01 (0.3)
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 3, toDate('2015-01-01')) res;
 ┌─res─┐
-│ 0.5 │ -- 一致する範囲が2つあり、範囲最小値が等しい場合、2015-01-15 (0.5) は2015-01-10 (0.6) より大きい
+│ 0.5 │ -- two ranges are matching, range_min are equal, 2015-01-15 (0.5) is bigger than 2015-01-10 (0.6)
 └─────┘
 
 DROP DICTIONARY discounts_dict;
@@ -613,29 +624,29 @@ RANGE(MIN discount_start_date MAX discount_end_date);
 
 select dictGet('discounts_dict', 'amount', 1, toDate('2015-01-14')) res;
 ┌─res─┐
-│ 0.1 │ -- 一致する範囲は唯一: 2015-01-01 - Null
+│ 0.1 │ -- the only one range is matching: 2015-01-01 - Null
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 1, toDate('2015-01-16')) res;
 ┌─res─┐
-│ 0.1 │ -- 一致する範囲が2つあり、範囲最小値2015-01-01 (0.1) は2015-01-15 (0.2) より小さい
+│ 0.1 │ -- two ranges are matching, range_min 2015-01-01 (0.1) is less than 2015-01-15 (0.2)
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 2, toDate('2015-01-06')) res;
 ┌─res─┐
-│ 0.3 │ -- 一致する範囲が2つあり、範囲最小値2015-01-01 (0.3) は2015-01-04 (0.4) より小さい
+│ 0.3 │ -- two ranges are matching, range_min 2015-01-01 (0.3) is less than 2015-01-04 (0.4)
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 3, toDate('2015-01-01')) res;
 ┌─res─┐
-│ 0.6 │ -- 一致する範囲が2つあり、範囲最小値が等しい場合、2015-01-10 (0.6) は2015-01-15 (0.5) より小さい
+│ 0.6 │ -- two ranges are matching, range_min are equal, 2015-01-10 (0.6) is less than 2015-01-15 (0.5)
 └─────┘
 ```
 ### complex_key_range_hashed {#complex_key_range_hashed}
 
-辞書は、順序付きの範囲配列とその対応する値の形でメモリにハッシュテーブルとして保存されます（[range_hashed](#range_hashed)を参照）。このストレージタイプは合成[キー](#dictionary-key-and-fields)での使用に適しています。
+辞書は、範囲とそれに対応する値の順序付き配列の形式のハッシュテーブルに格納され、複合[キー](#dictionary-key-and-fields)と一緒に使用されます。
 
-設定例：
+構成例：
 
 ```sql
 CREATE DICTIONARY range_dictionary
@@ -654,21 +665,21 @@ RANGE(MIN StartDate MAX EndDate);
 ```
 ### cache {#cache}
 
-辞書は、固定数のセルを持つキャッシュに保存されます。これらのセルには、頻繁に使用される要素が含まれます。
+辞書は固定数のセルを持つキャッシュに格納されています。これらのセルには、頻繁に使用される要素が含まれています。
 
-辞書のキーは[UInt64](../../sql-reference/data-types/int-uint.md)型です。
+辞書キーは[UInt64](../../sql-reference/data-types/int-uint.md)型です。
 
-辞書を検索する際には、最初にキャッシュが検索されます。各データのブロックに対して、キャッシュに見つからないか、または古くなったすべてのキーが、`SELECT attrs... FROM db.table WHERE id IN (k1, k2, ...)` を使用してソースからリクエストされます。その後、受信したデータはキャッシュに書き込まれます。
+辞書を検索する際は、最初にキャッシュが検索されます。データの各ブロックについて、キャッシュに見つからないか、古いすべてのキーが、`SELECT attrs... FROM db.table WHERE id IN (k1, k2, ...)`を使用してソースからリクエストされます。取得したデータはキャッシュに書き込まれます。
 
-辞書にキーが見つからない場合、更新キャッシュタスクが作成され、更新キューに追加されます。更新キューのプロパティは、`max_update_queue_size`、`update_queue_push_timeout_milliseconds`、`query_wait_timeout_milliseconds`、`max_threads_for_updates` 設定で制御できます。
+辞書にキーが見つからない場合、キャッシュの更新タスクが作成され、更新キューに追加されます。更新キューのプロパティは、`max_update_queue_size`、`update_queue_push_timeout_milliseconds`、`query_wait_timeout_milliseconds`、`max_threads_for_updates`設定を使用して制御できます。
 
-キャッシュ辞書の場合、データの有効期限[寿命](#refreshing-dictionary-data-using-lifetime)を設定できます。キャッシュ内のセルにデータが読み込まれてから `lifetime` より時間が経過している場合、そのセルの値は使用されず、そのキーが期限切れとなります。次回使用する際にキーが再リクエストされます。この動作は、`allow_read_expired_keys` 設定で構成可能です。
+キャッシュ辞書の場合、キャッシュ内のデータの有効期限[lifetime](#refreshing-dictionary-data-using-lifetime)を設定できます。セル内のデータがロードされてから`lifetime`よりも時間が経過すると、セルの値は使用されず、キーが期限切れになります。次回そのキーを使用する必要があるときに再リクエストされます。この動作は、`allow_read_expired_keys`設定を使用して構成できます。
 
-これは、辞書を保存するためのすべての方法の中で最も効果的ではありません。キャッシュの速度は、正しい設定と使用シナリオに大きく依存します。キャッシュタイプの辞書は、ヒット率が十分に高い場合（推奨は 99％ 以上）にのみ良好に機能します。平均ヒット率は、[system.dictionaries](../../operations/system-tables/dictionaries.md) テーブルで確認できます。
+これは、辞書を格納する方法の中で最も効果的でありません。キャッシュの速度は、正しい設定と使用シナリオに大きく依存します。キャッシュタイプの辞書は、ヒット率が十分に高い場合にのみ良好なパフォーマンスを発揮します（推奨99％以上）。[system.dictionaries](../../operations/system-tables/dictionaries.md)テーブルで平均ヒット率を確認できます。
 
-設定 `allow_read_expired_keys` が 1 に設定されている場合（デフォルトは 0）、辞書は非同期更新をサポートします。クライアントがキーをリクエストし、すべてのキーがキャッシュ内にあるが、一部が期限切れの場合、辞書はクライアントに期限切れのキーを返し、それらを非同期でソースからリクエストします。
+設定`allow_read_expired_keys`が1に設定されている場合、デフォルト値は0です。そうすると、辞書は非同期更新をサポートします。クライアントがキーを要求し、キャッシュ内にすべてのキーがあるが一部が期限切れの場合、辞書は期限切れのキーをクライアントに返し、それらを非同期でソースからリクエストします。
 
-キャッシュのパフォーマンスを改善するには、`LIMIT` のあるサブクエリを使用し、外部で辞書を使用する関数を呼び出します。
+キャッシュのパフォーマンスを向上させるには、`LIMIT`のあるサブクエリを使用し、辞書を外部で呼び出します。
 
 すべてのタイプのソースがサポートされています。
 
@@ -677,17 +688,17 @@ RANGE(MIN StartDate MAX EndDate);
 ```xml
 <layout>
     <cache>
-        <!-- キャッシュのサイズ（セルの数）。2 のべき乗に切り上げられます。 -->
+        <!-- The size of the cache, in number of cells. Rounded up to a power of two. -->
         <size_in_cells>1000000000</size_in_cells>
-        <!-- 期限切れのキーの読み取りを許可します。 -->
+        <!-- Allows to read expired keys. -->
         <allow_read_expired_keys>0</allow_read_expired_keys>
-        <!-- 更新キューの最大サイズ。 -->
+        <!-- Max size of update queue. -->
         <max_update_queue_size>100000</max_update_queue_size>
-        <!-- キューに更新タスクをプッシュする際の最大タイムアウト（ミリ秒）。 -->
+        <!-- Max timeout in milliseconds for push update task into queue. -->
         <update_queue_push_timeout_milliseconds>10</update_queue_push_timeout_milliseconds>
-        <!-- 更新タスクが完了するまでの最大待機タイムアウト（ミリ秒）。 -->
+        <!-- Max wait timeout in milliseconds for update task to complete. -->
         <query_wait_timeout_milliseconds>60000</query_wait_timeout_milliseconds>
-        <!-- キャッシュ辞書の更新用スレッドの最大数。 -->
+        <!-- Max threads for cache dictionary update. -->
         <max_threads_for_updates>4</max_threads_for_updates>
     </cache>
 </layout>
@@ -699,38 +710,37 @@ RANGE(MIN StartDate MAX EndDate);
 LAYOUT(CACHE(SIZE_IN_CELLS 1000000000))
 ```
 
-十分なサイズのキャッシュを設定します。セルの数を選択するには実験が必要です：
+十分に大きなキャッシュサイズを設定してください。セルの数を選択するために実験が必要です：
 
-1.  いくつかの値を設定します。
-2.  クエリを実行してキャッシュが完全に満杯になるまで実行します。
-3.  `system.dictionaries` テーブルを使用してメモリ消費を評価します。
-4.  必要なメモリ消費量が達成されるまで、セルの数を増減します。
+1.  値を設定します。
+2.  キャッシュが完全にいっぱいになるまでクエリを実行します。
+3.  `system.dictionaries`テーブルを使用してメモリ消費を評価します。
+4.  要求されるメモリ消費に達するまでセルの数を増減します。
 
 :::note
-ClickHouse をソースとして使用しないでください。ランダム読み取りを伴うクエリの処理が遅くなります。
+ClickHouseをソースとして使用しないでください。なぜなら、ランダムリードでクエリを処理するのが遅いためです。
 :::
 ### complex_key_cache {#complex_key_cache}
 
-このストレージタイプは合成[キー](#dictionary-key-and-fields)での使用に適しています。`cache` に似ています。
-
+このタイプのストレージは、複合[キー](#dictionary-key-and-fields)と一緒に使用されます。`cache`に似ています。
 ### ssd_cache {#ssd_cache}
 
-`cache` に似ていますが、データを SSD に保存し、インデックスを RAM に保存します。更新キューに関連するすべてのキャッシュ辞書設定も SSD キャッシュ辞書に適用できます。
+`cache`に似ていますが、データをSSDに格納し、インデックスはRAMに保存します。更新キューに関連するキャッシュ辞書のすべての設定もSSDキャッシュ辞書に適用できます。
 
-辞書のキーは[UInt64](../../sql-reference/data-types/int-uint.md)型です。
+辞書キーは[UInt64](../../sql-reference/data-types/int-uint.md)型です。
 
 ```xml
 <layout>
     <ssd_cache>
-        <!-- バイト単位の基本的な読み取りブロックのサイズ。SSD のページサイズと等しいことが推奨されます。 -->
+        <!-- Size of elementary read block in bytes. Recommended to be equal to SSD's page size. -->
         <block_size>4096</block_size>
-        <!-- 最大キャッシュファイルサイズ（バイト）。 -->
+        <!-- Max cache file size in bytes. -->
         <file_size>16777216</file_size>
-        <!-- SSD から要素を読み込むための RAM バッファサイズ（バイト）。 -->
+        <!-- Size of RAM buffer in bytes for reading elements from SSD. -->
         <read_buffer_size>131072</read_buffer_size>
-        <!-- SSD にフラッシュする前に要素を集計するための RAM バッファサイズ（バイト）。 -->
+        <!-- Size of RAM buffer in bytes for aggregating elements before flushing to SSD. -->
         <write_buffer_size>1048576</write_buffer_size>
-        <!-- キャッシュファイルを保存するパス。 -->
+        <!-- Path where cache file will be stored. -->
         <path>/var/lib/clickhouse/user_files/test_dict</path>
     </ssd_cache>
 </layout>
@@ -744,17 +754,16 @@ LAYOUT(SSD_CACHE(BLOCK_SIZE 4096 FILE_SIZE 16777216 READ_BUFFER_SIZE 1048576
 ```
 ### complex_key_ssd_cache {#complex_key_ssd_cache}
 
-このストレージタイプは合成[キー](#dictionary-key-and-fields)での使用に適しています。`ssd_cache` に似ています。
-
+このタイプのストレージは、複合[キー](#dictionary-key-and-fields)と一緒に使用されます。`ssd_cache`に似ています。
 ### direct {#direct}
 
-辞書はメモリに保存されず、リクエストの処理中に直接ソースに移動します。
+辞書はメモリに格納されず、リクエスト処理中にソースに直接アクセスします。
 
-辞書のキーは[UInt64](../../sql-reference/data-types/int-uint.md)型です。
+辞書キーは[UInt64](../../sql-reference/data-types/int-uint.md)型です。
 
-すべてのタイプの[ソース](#dictionary-sources)、ローカルファイルを除きますがサポートされます。
+すべての[ソース](#dictionary-sources)タイプがサポートされており、ローカルファイルは除外されます。
 
-設定例：
+構成例：
 
 ```xml
 <layout>
@@ -769,15 +778,16 @@ LAYOUT(DIRECT())
 ```
 ### complex_key_direct {#complex_key_direct}
 
-このストレージタイプは合成[キー](#dictionary-key-and-fields)での使用に適しています。`direct` に似ています。
-
+このタイプのストレージは、複合[キー](#dictionary-key-and-fields)と一緒に使用されます。`direct`に似ています。
 ### ip_trie {#ip_trie}
 
-このストレージタイプは、ネットワークプレフィックス（IP アドレス）を ASN などのメタデータにマッピングします。
+この辞書は、ネットワークプレフィックスによるIPアドレスの検索に対応しています。CIDR表記でIP範囲を保持し、特定のプレフィックス（例：サブネットまたはASN範囲）を持つIPがどれに属するかを迅速に判断できるため、ジオロケーションやネットワーク分類などのIPベースの検索に最適です。
+
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/4dxMAqltygk?si=rrQrneBReK6lLfza" title="ip_trie辞書によるIPベースの検索" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 **例**
 
-ClickHouse に次の IP プレフィックスとマッピングを含むテーブルがあると仮定します。
+ClickHouseに含まれるIPプレフィックスとマッピングを持つテーブルがあるとします：
 
 ```sql
 CREATE TABLE my_ip_addresses (
@@ -798,7 +808,7 @@ INSERT INTO my_ip_addresses VALUES
 ;
 ```
 
-このテーブル用の `ip_trie` 辞書を定義します。`ip_trie` レイアウトは合成キーを必要データを持ちます。
+このテーブルに対して`ip_trie`辞書を定義しましょう。`ip_trie`レイアウトは複合キーを要求します。
 
 ```xml
 <structure>
@@ -822,8 +832,8 @@ INSERT INTO my_ip_addresses VALUES
 </structure>
 <layout>
     <ip_trie>
-        <!-- キー属性 `prefix` は dictGetString により取得できます。 -->
-        <!-- このオプションはメモリ使用量を増加させます。 -->
+        <!-- Key attribute `prefix` can be retrieved via dictGetString. -->
+        <!-- This option increases memory usage. -->
         <access_to_key_from_attributes>true</access_to_key_from_attributes>
     </ip_trie>
 </layout>
@@ -843,15 +853,15 @@ LAYOUT(IP_TRIE)
 LIFETIME(3600);
 ```
 
-キーは、許可された IP プレフィックスを含む単一の `String` 型属性のみである必要があります。他の型はまだサポートされていません。
+キーは、許可されたIPプレフィックスを含む`String`型属性を1つだけ持つ必要があります。他の型はまだサポートされていません。
 
-構文は次の通りです。
+構文は次のとおりです：
 
 ```sql
 dictGetT('dict_name', 'attr_name', ip)
 ```
 
-関数は IPv4 の `UInt32` または IPv6 の `FixedString(16)` を受け取ります。例えば：
+この関数は、IPv4の場合は`UInt32`、IPv6の場合は`FixedString(16)`を取ります。例えば：
 
 ```sql
 SELECT dictGet('my_ip_trie_dictionary', 'cca2', toIPv4('202.79.32.10')) AS result;
@@ -875,17 +885,16 @@ SELECT dictGet('my_ip_trie_dictionary', ('asn', 'cca2'), IPv6StringToNum('2001:d
 └──────────────┘
 ```
 
-他の型はまだサポートされていません。この関数は、この IP アドレスに対応するプレフィックスの属性を返します。オーバーラップするプレフィックスがある場合、最も特異なものが返されます。
+他の型はまだサポートされていません。この関数は、このIPアドレスに対応するプレフィックスの属性を返します。重複するプレフィックスがある場合は、最も特定のものが返されます。
 
-データは完全に RAM に収まる必要があります。
-```
-## LIFETIMEを使用して辞書データを更新する {#refreshing-dictionary-data-using-lifetime}
+データは完全にRAMに収まる必要があります。
+## 有効期限を使用した辞書データの更新 {#refreshing-dictionary-data-using-lifetime}
 
-ClickHouseは、`LIFETIME`タグ（秒数で定義）に基づいて定期的に辞書を更新します。`LIFETIME`は、完全にダウンロードされた辞書の更新間隔と、キャッシュされた辞書の無効化間隔です。
+ClickHouseは、`LIFETIME`タグ（秒単位で定義）に基づいて、定期的に辞書を更新します。`LIFETIME`は、完全にダウンロードされた辞書の更新間隔とキャッシュされた辞書の無効化間隔です。
 
-更新中は、古いバージョンの辞書に対してクエリを実行することができます。辞書の更新（辞書を初めて使用するために読み込む場合を除く）は、クエリをブロックしません。更新中にエラーが発生した場合、そのエラーはサーバーログに記録され、クエリは古いバージョンの辞書を使用し続けることができます。辞書の更新が成功した場合、古いバージョンの辞書は原子的に置き換えられます。
+更新中は、旧バージョンの辞書もクエリを実行できます。辞書の更新（辞書の最初の使用のためにロードする場合を除く）は、クエリをブロックしません。更新中にエラーが発生した場合、エラーはサーバーログに書き込まれ、クエリは旧バージョンの辞書を使用し続けます。辞書の更新が成功すると、古い辞書のバージョンは原子的に置き換えられます。
 
-設定の例：
+設定例：
 
 <CloudDetails />
 
@@ -906,11 +915,11 @@ LIFETIME(300)
 ...
 ```
 
-`<lifetime>0</lifetime>`（`LIFETIME(0)`）を設定すると、辞書は更新されません。
+設定`<lifetime>0</lifetime>`（`LIFETIME(0)`）は、辞書の更新を防ぎます。
 
-更新のための時間間隔を設定することができ、ClickHouseはこの範囲内で均等にランダムな時間を選択します。これは、多数のサーバーで更新する際に辞書のソースへの負荷を分散するために必要です。
+更新のための時間間隔を設定でき、ClickHouseはこの範囲内で均等にランダムな時間を選択します。これは、多数のサーバーでの更新時に辞書ソースの負荷を分散するために必要です。
 
-設定の例：
+設定例：
 
 ```xml
 <dictionary>
@@ -929,17 +938,17 @@ LIFETIME(300)
 LIFETIME(MIN 300 MAX 360)
 ```
 
-`<min>0</min>`および`<max>0</max>`の場合、ClickHouseはタイムアウトによる辞書の再読み込みを行いません。この場合、辞書の設定ファイルが変更された場合や、`SYSTEM RELOAD DICTIONARY`コマンドが実行された場合、ClickHouseは辞書を早期に再読み込みすることができます。
+`<min>0</min>`および`<max>0</max>`の場合、ClickHouseはタイムアウトによって辞書の再読み込みを行いません。この場合、ClickHouseは辞書設定ファイルが変更された場合や、`SYSTEM RELOAD DICTIONARY`コマンドが実行された場合に辞書を早期に再読み込みできます。
 
-辞書を更新する際、ClickHouseサーバーは[ソースの種類](#dictionary-sources)に応じて異なるロジックを適用します：
+辞書の更新時、ClickHouseサーバーは[ソース](#dictionary-sources)のタイプによって異なるロジックを適用します：
 
-- テキストファイルの場合、最終更新時刻を確認します。時刻が以前に記録された時刻と異なる場合、辞書が更新されます。
+- テキストファイルの場合、変更時間をチェックします。変更された時間が以前に記録された時間と異なる場合、辞書は更新されます。
 - その他のソースからの辞書は、デフォルトで毎回更新されます。
 
-他のソース（ODBC、PostgreSQL、ClickHouseなど）については、辞書が実際に変更された場合にのみ辞書を更新するクエリを設定できます。その手順は次のとおりです：
+その他のソース（ODBC、PostgreSQL、ClickHouseなど）については、辞書が実際に変更された場合のみ更新するクエリを設定できます。これを実現するには、次の手順を踏んでください：
 
-- 辞書テーブルには、ソースデータが更新されるたびに常に変更されるフィールドが必要です。
-- ソースの設定には、変更フィールドを取得するクエリを指定します。ClickHouseサーバーは、クエリ結果を行として解釈し、この行が以前の状態と比較して変更されていれば辞書が更新されます。ソースの設定`<invalidate_query>`フィールドにクエリを指定します。
+- 辞書テーブルには、ソースデータが更新されるたびに必ず変更されるフィールドが必要です。
+- ソースの設定には、変更フィールドを取得するクエリを指定する必要があります。ClickHouseサーバーは、クエリ結果を行として解釈し、この行が以前の状態と比較して変更されている場合、辞書が更新されます。`<invalidate_query>`フィールドにクエリを指定します。
 
 設定の例：
 
@@ -962,30 +971,30 @@ SOURCE(ODBC(... invalidate_query 'SELECT update_time FROM dictionary_source wher
 ...
 ```
 
-`Cache`、`ComplexKeyCache`、`SSDCache`、および`SSDComplexKeyCache`辞書では、同期的更新と非同期的更新の両方がサポートされています。
+`Cache`、`ComplexKeyCache`、`SSDCache`、および`SSDComplexKeyCache`の辞書では、同期および非同期更新の両方がサポートされています。
 
-`Flat`、`Hashed`、`ComplexKeyHashed`辞書では、前回の更新後に変更されたデータのみを要求することも可能です。辞書ソース設定の一部として`update_field`が指定されている場合、更新データのリクエストに前回の更新時刻の値（秒単位）が追加されます。ソースの種類に応じて（Executable、HTTP、MySQL、PostgreSQL、ClickHouse、ODBC）、データを外部ソースからリクエストする前に`update_field`に異なるロジックが適用されます。
+`Flat`、`Hashed`、`HashedArray`、`ComplexKeyHashed`の辞書も、前回の更新後に変更されたデータのみを要求できます。辞書ソースの設定の一部として`update_field`が指定されている場合、前回の更新時間の値が要求データに追加されます。ソースのタイプ（Executable、HTTP、MySQL、PostgreSQL、ClickHouse、またはODBC）によって、`update_field`の異なるロジックが適用されます。
 
-- ソースがHTTPの場合、`update_field`は最終更新時刻をパラメータ値として持つクエリパラメータとして追加されます。
-- ソースがExecutableの場合、`update_field`は最終更新時刻を引数値として持つ実行可能スクリプトの引数として追加されます。
-- ソースがClickHouse、MySQL、PostgreSQL、ODBCの場合、`update_field`は最終更新時刻と比較して大なりまたは等しい追加の`WHERE`部分が作成されます。
-    - デフォルトでは、この`WHERE`条件はSQLクエリの最上位レベルでチェックされます。あるいは、`{condition}`キーワードを使用してクエリの他の`WHERE`句内で条件をチェックすることもできます。例：
-    ```sql
-    ...
-    SOURCE(CLICKHOUSE(...
-        update_field 'added_time'
-        QUERY '
-            SELECT my_arr.1 AS x, my_arr.2 AS y, creation_time
-            FROM (
-                SELECT arrayZip(x_arr, y_arr) AS my_arr, creation_time
-                FROM dictionary_source
-                WHERE {condition}
-            )'
-    ))
-    ...
-    ```
+- ソースがHTTPの場合、`update_field`は最後の更新時間をパラメータ値として持つクエリパラメータとして追加されます。
+- ソースがExecutableの場合、`update_field`は最後の更新時間を引数値として持つ実行可能スクリプトの引数として追加されます。
+- ソースがClickHouse、MySQL、PostgreSQL、ODBCの場合、`update_field`が最後の更新時間以上であることと比較する`WHERE`の追加部分があります。
+  - デフォルトでは、この`WHERE`条件はSQLクエリの最上部でチェックされます。あるいは、`{condition}`キーワードを使用して、クエリ内の他の`WHERE`句で条件をチェックすることもできます。例：
+```sql
+...
+SOURCE(CLICKHOUSE(...
+    update_field 'added_time'
+    QUERY '
+        SELECT my_arr.1 AS x, my_arr.2 AS y, creation_time
+        FROM (
+            SELECT arrayZip(x_arr, y_arr) AS my_arr, creation_time
+            FROM dictionary_source
+            WHERE {condition}
+        )'
+))
+...
+```
 
-`update_field`オプションが設定されている場合、追加オプション`update_lag`を設定することもできます。`update_lag`オプションの値は、更新されたデータをリクエストする前に前回の更新時刻から引かれます。
+`update_field`オプションが設定されている場合、追加オプション`update_lag`を設定できます。`update_lag`オプションの値は、更新されたデータを要求する前に前回の更新時間から減算されます。
 
 設定の例：
 
@@ -1012,9 +1021,9 @@ SOURCE(CLICKHOUSE(... update_field 'added_time' update_lag 15))
 
 <CloudDetails />
 
-辞書は、さまざまなソースからClickHouseに接続できます。
+辞書は、多くの異なるソースからClickHouseに接続できます。
 
-辞書がxmlファイルを使用して設定されている場合、設定は次のようになります：
+辞書がxmlファイルを使用して設定されている場合、構成は次のようになります：
 
 ```xml
 <clickhouse>
@@ -1022,7 +1031,7 @@ SOURCE(CLICKHOUSE(... update_field 'added_time' update_lag 15))
     ...
     <source>
       <source_type>
-        <!-- ソース設定 -->
+        <!-- Source configuration -->
       </source_type>
     </source>
     ...
@@ -1031,18 +1040,18 @@ SOURCE(CLICKHOUSE(... update_field 'added_time' update_lag 15))
 </clickhouse>
 ```
 
-[DDLクエリ](../../sql-reference/statements/create/dictionary.md)の場合、上記の設定は次のようになります：
+[DDLクエリ](../../sql-reference/statements/create/dictionary.md)の場合、上記の構成は次のように見えます：
 
 ```sql
 CREATE DICTIONARY dict_name (...)
 ...
-SOURCE(SOURCE_TYPE(param1 val1 ... paramN valN)) -- ソース設定
+SOURCE(SOURCE_TYPE(param1 val1 ... paramN valN)) -- Source configuration
 ...
 ```
 
 ソースは`source`セクションで設定されます。
 
-ソースタイプ [Local file](#local-file)、[Executable file](#executable-file)、[HTTP(s)](#https)、[ClickHouse](#clickhouse)に対してオプション設定が可能です：
+[Local file](#local-file)、[Executable file](#executable-file)、[HTTP(s)](#https)、[ClickHouse](#clickhouse)のソースタイプには、オプション設定が利用できます：
 
 ```xml
 <source>
@@ -1063,20 +1072,20 @@ SOURCE(FILE(path './user_files/os.tsv' format 'TabSeparated'))
 SETTINGS(format_csv_allow_single_quotes = 0)
 ```
 
-ソースの種類（`source_type`）：
+ソースタイプ（`source_type`）：
 
 - [Local file](#local-file)
 - [Executable File](#executable-file)
 - [Executable Pool](#executable-pool)
 - [HTTP(S)](#https)
 - DBMS
-    - [ODBC](#odbc)
-    - [MySQL](#mysql)
-    - [ClickHouse](#clickhouse)
-    - [MongoDB](#mongodb)
-    - [Redis](#redis)
-    - [Cassandra](#cassandra)
-    - [PostgreSQL](#postgresql)
+  - [ODBC](#odbc)
+  - [MySQL](#mysql)
+  - [ClickHouse](#clickhouse)
+  - [MongoDB](#mongodb)
+  - [Redis](#redis)
+  - [Cassandra](#cassandra)
+  - [PostgreSQL](#postgresql)
 ### ローカルファイル {#local-file}
 
 設定の例：
@@ -1098,17 +1107,17 @@ SOURCE(FILE(path './user_files/os.tsv' format 'TabSeparated'))
 
 設定フィールド：
 
-- `path` – ファイルの絶対パス。
-- `format` – ファイル形式。 [Formats](/sql-reference/formats) に記載されているすべての形式がサポートされています。
+- `path` – ファイルへの絶対パス。
+- `format` – ファイル形式。[Formats](/sql-reference/formats)で説明されているすべての形式がサポートされています。
 
-`FILE`ソースを持つ辞書がDDLコマンド（`CREATE DICTIONARY ...`）を介して作成されるとき、ソースファイルは`user_files`ディレクトリに配置される必要があります。これにより、DBユーザーがClickHouseノードの任意のファイルにアクセスすることを防ぎます。
+ソースが`FILE`の辞書がDDLコマンドで作成されるとき（`CREATE DICTIONARY ...`）、ソースファイルは`user_files`ディレクトリ内にある必要があります。これにより、DBユーザーがClickHouseノード上の任意のファイルにアクセスするのを防ぎます。
 
 **関連情報**
 
 - [辞書関数](/sql-reference/table-functions/dictionary)
 ### 実行可能ファイル {#executable-file}
 
-実行可能ファイルとの作業は、[辞書がメモリにどのように格納されるか](#storing-dictionaries-in-memory)に依存します。辞書が`cache`および`complex_key_cache`を使用して格納されている場合、ClickHouseは必要なキーを実行可能ファイルのSTDINにリクエストを送信して要求します。そうでない場合、ClickHouseは実行可能ファイルを起動し、その出力を辞書データとして扱います。
+実行可能ファイルとの作業は、[メモリに辞書がどのように保存されるか](#storing-dictionaries-in-memory)に依存します。辞書が`cache`および`complex_key_cache`を使用して保存されている場合、ClickHouseは実行可能ファイルのSTDINにリクエストを送信することによって必要なキーを要求します。さもなければ、ClickHouseは実行可能ファイルを起動し、その出力を辞書データとして扱います。
 
 設定の例：
 
@@ -1124,21 +1133,21 @@ SOURCE(FILE(path './user_files/os.tsv' format 'TabSeparated'))
 
 設定フィールド：
 
-- `command` — 実行可能ファイルへの絶対パス、またはファイル名（コマンドのディレクトリが`PATH`に含まれている場合）。
-- `format` — ファイル形式。 [Formats](/sql-reference/formats) に記載されているすべての形式がサポートされています。
-- `command_termination_timeout` — 実行可能スクリプトはメインの読み取り/書き込みループを含むべきです。辞書が破棄された後、パイプは閉じられ、実行可能ファイルはClickHouseが子プロセスにSIGTERMシグナルを送信する前に`command_termination_timeout`秒でシャットダウンする必要があります。`command_termination_timeout`は秒単位で指定します。デフォルト値は10です。オプションパラメータ。
-- `command_read_timeout` - コマンドの標準出力からのデータを読み取るためのタイムアウト（ミリ秒単位）。デフォルト値は10000です。オプションパラメータ。
-- `command_write_timeout` - コマンドの標準入力にデータを書き込むためのタイムアウト（ミリ秒単位）。デフォルト値は10000です。オプションパラメータ。
-- `implicit_key` — 実行可能ソースファイルは値のみを返すことができ、要求されたキーとの対応は暗黙的に結果の行の順序によって決定されます。デフォルト値はfalseです。
-- `execute_direct` - `execute_direct` = `1`の場合、`command`は[ user_scripts_path](../../operations/server-configuration-parameters/settings.md#user_scripts_path)で指定されたuser_scriptsフォルダ内で検索されます。追加のスクリプト引数は、空白区切りで指定できます。例：`script_name arg1 arg2`。`execute_direct` = `0`の場合、`command`は`bin/sh -c`の引数として渡されます。デフォルト値は`0`です。オプションパラメータ。
-- `send_chunk_header` - データのチャンクを処理する前に行数を送信するかどうかを制御します。オプション。デフォルト値は`false`です。
+- `command` — 実行可能ファイルへの絶対パス、またはファイル名（コマンドのディレクトリが`PATH`にある場合）。
+- `format` — ファイル形式。[Formats](/sql-reference/formats)で説明されているすべての形式がサポートされています。
+- `command_termination_timeout` — 実行可能スクリプトは、主な読み書きループを含む必要があります。辞書が破棄された後、パイプが閉じられ、実行可能ファイルは`command_termination_timeout`秒内にシャットダウンする必要があります。デフォルト値は10。オプションのパラメータ。
+- `command_read_timeout` - コマンドのstdoutからデータを読み取るタイムアウト（ミリ秒単位）。デフォルト値10000。オプションのパラメータ。
+- `command_write_timeout` - コマンドのstdinにデータを書き込むタイムアウト（ミリ秒単位）。デフォルト値10000。オプションのパラメータ。
+- `implicit_key` — 実行可能ソースファイルは値のみを返すことができ、要求されたキーへの対応は結果の行の順序によって暗黙的に決定されます。デフォルト値はfalse。
+- `execute_direct` - `execute_direct` = `1`の場合、`command`は[user_scripts_path](../../operations/server-configuration-parameters/settings.md#user_scripts_path)で指定されたユーザースクリプトフォルダ内で検索されます。追加のスクリプト引数はスペース区切りを使用して指定できます。例：`script_name arg1 arg2`。 `execute_direct` = `0`の場合、`command`は`bin/sh -c`の引数として渡されます。デフォルト値は`0`。オプションのパラメータ。
+- `send_chunk_header` - データのチャンクを処理する前に行数を送信するかどうかを制御します。オプション。デフォルト値は`false`。
 
-この辞書ソースは、XML設定を介してのみ構成できます。DDLを介して実行可能ソースを持つ辞書を作成することは無効になっています。そうでない場合、DBユーザーはClickHouseノード上で任意のバイナリを実行できるようになります。
+この辞書ソースはXML設定を介してのみ構成できます。DDLを介して実行可能ソースを持つ辞書の作成は無効になっています。そうしないと、DBユーザーはClickHouseノードで任意のバイナリを実行できるようになります。
 ### 実行可能プール {#executable-pool}
 
-実行可能プールは、プロセスのプールからデータをロードすることを可能にします。このソースは、ソースからすべてのデータをロードする必要がある辞書レイアウトでは機能しません。実行可能プールは、辞書が`cache`、`complex_key_cache`、`ssd_cache`、`complex_key_ssd_cache`、`direct`、または`complex_key_direct`レイアウトを使用して[格納されても](#ways-to-store-dictionaries-in-memory)機能します。
+実行可能プールは、プロセスのプールからデータをロードすることを可能にします。このソースは、ソースからすべてのデータをロードする必要がある辞書レイアウトと一緒に機能しません。実行可能プールは、辞書が`cache`、`complex_key_cache`、`ssd_cache`、`complex_key_ssd_cache`、`direct`、または`complex_key_direct`レイアウトを使用して保存されている場合に機能します。
 
-実行可能プールは、指定されたコマンドのプロセスプールを生成し、それらが終了するまで実行し続けます。プログラムは、STDINからデータを読み取り、結果をSTDOUTに出力する必要があります。STDIN上で次のデータブロックを待つことができます。ClickHouseはデータブロックを処理した後、STDINを閉じることはなく、必要に応じて別のデータチャンクをパイプします。実行可能スクリプトはこのデータ処理の方法に対応できるようにする必要があります。STDINをポーリングし、早期にデータをSTDOUTにフラッシュする必要があります。
+実行可能プールは、指定されたコマンドでプロセスのプールを生成し、終了するまでそれらを実行し続けます。プログラムは、STDINからデータを読み取り、結果をSTDOUTに出力する必要があります。次のデータブロックをSTDINで待機できます。ClickHouseは、データブロックの処理後にSTDINを閉じることはありませんが、必要に応じて別のデータチャンクをパイプします。実行可能スクリプトは、このデータ処理の方法に対応できなければなりません — STDINをポーリングし、早期にSTDOUTにデータを書き込む必要があります。
 
 設定の例：
 
@@ -1156,23 +1165,24 @@ SOURCE(FILE(path './user_files/os.tsv' format 'TabSeparated'))
 
 設定フィールド：
 
-- `command` — 実行可能ファイルへの絶対パス、またはファイル名（プログラムのディレクトリが`PATH`に書き込まれている場合）。
-- `format` — ファイル形式。 [Formats](/sql-reference/formats) に記載されているすべての形式がサポートされています。
-- `pool_size` — プールのサイズ。`pool_size`に0を指定すると、プールサイズの制限がなくなります。デフォルト値は`16`です。
-- `command_termination_timeout` — 実行可能スクリプトはメインの読み取り/書き込みループを含むべきです。辞書が破棄された後、パイプは閉じられ、実行可能ファイルはClickHouseが子プロセスにSIGTERMシグナルを送信する前に`command_termination_timeout`秒でシャットダウンする必要があります。秒単位で指定します。デフォルト値は10です。オプションパラメータ。
-- `max_command_execution_time` — データブロックを処理するための最大実行可能スクリプトコマンド実行時間。秒単位で指定します。デフォルト値は10です。オプションパラメータ。
-- `command_read_timeout` - コマンドの標準出力からのデータを読み取るためのタイムアウト（ミリ秒単位）。デフォルト値は10000です。オプションパラメータ。
-- `command_write_timeout` - コマンドの標準入力にデータを書き込むためのタイムアウト（ミリ秒単位）。デフォルト値は10000です。オプションパラメータ。
-- `implicit_key` — 実行可能ソースファイルは値のみを返すことができ、要求されたキーとの対応は暗黙的に結果の行の順序によって決定されます。デフォルト値はfalseです。オプションパラメータ。
-- `execute_direct` - `execute_direct` = `1`の場合、`command`は[ user_scripts_path](../../operations/server-configuration-parameters/settings.md#user_scripts_path)で指定されたuser_scriptsフォルダ内で検索されます。追加のスクリプト引数は、空白区切りで指定できます。例：`script_name arg1 arg2`。`execute_direct` = `0`の場合、`command`は`bin/sh -c`の引数として渡されます。デフォルト値は`1`です。オプションパラメータ。
-- `send_chunk_header` - データ処理の前に行数を送信するかどうかを制御します。オプション。デフォルト値は`false`です。
+- `command` — 実行可能ファイルへの絶対パス、またはファイル名（プログラムディレクトリが`PATH`に記載されている場合）。
+- `format` — ファイル形式。すべての形式が"[Formats](/sql-reference/formats)"のいずれかがサポートされています。
+- `pool_size` — プールのサイズ。`pool_size`に0が指定された場合、プールサイズの制限はありません。デフォルト値は`16`。
+- `command_termination_timeout` — 実行可能スクリプトは主な読み書きループを含む必要があります。辞書が破棄された後、パイプが閉じられ、実行可能ファイルは`command_termination_timeout`秒内にシャットダウンする必要があります。指定は秒単位です。デフォルト値は10。オプションのパラメータ。
+- `max_command_execution_time` — データブロックを処理するための最大実行可能スクリプトコマンド実行時間。指定は秒単位です。デフォルト値は10。オプションのパラメータ。
+- `command_read_timeout` - コマンドのstdoutからデータを読み取るタイムアウト（ミリ秒単位）。デフォルト値10000。オプションのパラメータ。
+- `command_write_timeout` - コマンドのstdinにデータを書き込むタイムアウト（ミリ秒単位）。デフォルト値10000。オプションのパラメータ。
+- `implicit_key` — 実行可能ソースファイルは値のみを返すことができ、要求されたキーへの対応は結果の行の順序によって暗黙的に決定されます。デフォルト値はfalse。オプションのパラメータ。
+- `execute_direct` - `execute_direct` = `1`の場合、`command`は[user_scripts_path](../../operations/server-configuration-parameters/settings.md#user_scripts_path)で指定されたユーザースクリプトフォルダ内で検索されます。追加のスクリプト引数はスペース区切りを使用して指定できます。例：`script_name arg1 arg2`。 `execute_direct` = `0`の場合、`command`は`bin/sh -c`の引数として渡されます。デフォルト値は`1`。オプションのパラメータ。
+- `send_chunk_header` - データを処理する前に行数を送信するかどうかを制御します。オプション。デフォルト値は`false`。
 
-この辞書ソースは、XML設定を介してのみ構成できます。DDLを介して実行可能ソースを持つ辞書を作成することは無効になっています。そうでない場合、DBユーザーはClickHouseノード上で任意のバイナリを実行できるようになります。
+この辞書ソースはXML設定を介してのみ構成できます。DDLを介して実行可能ソースを持つ辞書の作成は無効になっています。そうしないと、DBユーザーはClickHouseノード上で任意のバイナリを実行できる可能性があります。
+
 ### HTTP(S) {#https}
 
-HTTP(S)サーバーとの作業は、[辞書がメモリにどのように格納されるか](#storing-dictionaries-in-memory)に依存します。辞書が`cache`および`complex_key_cache`を使用して格納されている場合、ClickHouseは必要なキーを`POST`メソッドを使用してリクエストします。
+HTTP(S)サーバーとの作業は、[辞書がメモリに保存されている方法](#storing-dictionaries-in-memory)に依存します。辞書が `cache` および `complex_key_cache` を使用して保存されている場合、ClickHouseは `POST` メソッドを介してリクエストを送信することにより、必要なキーを要求します。
 
-設定の例：
+設定例：
 
 ```xml
 <source>
@@ -1204,27 +1214,28 @@ SOURCE(HTTP(
 ))
 ```
 
-ClickHouseがHTTPSリソースにアクセスできるようにするには、サーバーの設定で[openSSL](../../operations/server-configuration-parameters/settings.md#openssl)を構成する必要があります。
+ClickHouseがHTTPSリソースにアクセスするには、サーバー構成で[openSSLを設定](../../operations/server-configuration-parameters/settings.md#openssl)する必要があります。
 
 設定フィールド：
 
 - `url` – ソースURL。
-- `format` – ファイル形式。 [Formats](/sql-reference/formats) に記載されているすべての形式がサポートされています。
-- `credentials` – 基本HTTP認証。オプションパラメータ。
+- `format` – ファイル形式。[「フォーマット」](/sql-reference/formats)に記載されているすべての形式がサポートされています。
+- `credentials` – 基本HTTP認証。オプションのパラメータ。
 - `user` – 認証に必要なユーザー名。
 - `password` – 認証に必要なパスワード。
-- `headers` – HTTPリクエストに使用されるすべてのカスタムHTTPヘッダーエントリー。オプションパラメータ。
-- `header` – 単一のHTTPヘッダーエントリー。
-- `name` – リクエストで送信されるヘッダーに使用される識別子名。
-- `value` – 特定の識別子名に設定される値。
+- `headers` – HTTPリクエストに使用されるすべてのカスタムHTTPヘッダーエントリ。オプションのパラメータ。
+- `header` – 単一のHTTPヘッダーエントリ。
+- `name` – リクエストで送信されるヘッダーの識別子名。
+- `value` – 特定の識別子名に設定された値。
 
-DDLコマンド（`CREATE DICTIONARY ...`）を使用して辞書を作成するとき、HTTP辞書のリモートホストは、データベースユーザーが任意のHTTPサーバーにアクセスするのを防ぐために、設定の`remote_url_allow_hosts`セクションの内容に対して確認されます。
+DDLコマンド（`CREATE DICTIONARY ...`）を使用して辞書を作成する際、HTTP辞書のリモートホストは、データベースユーザーが任意のHTTPサーバーにアクセスするのを防ぐために、設定の `remote_url_allow_hosts` セクションの内容と照合されます。
+
 ### DBMS {#dbms}
 #### ODBC {#odbc}
 
-ODBCドライバーを持つ任意のデータベースに接続するためにこのメソッドを使用できます。
+ODBCドライバーを持つ任意のデータベースに接続するために、この方法を使用できます。
 
-設定の例：
+設定例：
 
 ```xml
 <source>
@@ -1252,29 +1263,30 @@ SOURCE(ODBC(
 
 設定フィールド：
 
-- `db` – データベースの名前。`<connection_string>`パラメータでデータベース名が設定されている場合は省略します。
-- `table` – 存在する場合のテーブル名とスキーマ名。
+- `db` – データベースの名前。`<connection_string>` パラメータでデータベース名が設定されている場合は省略できます。
+- `table` – テーブル名（存在する場合はスキーマ名）。
 - `connection_string` – 接続文字列。
-- `invalidate_query` – 辞書のステータスを確認するためのクエリ。オプションパラメータ。 [LIFETIMEを使用して辞書データを更新する](#refreshing-dictionary-data-using-lifetime)のセクションで詳細を確認してください。
-- `background_reconnect` – 接続に失敗した場合にバックグラウンドでレプリカに再接続します。オプションパラメータ。
-- `query` – カスタムクエリ。オプションパラメータ。
+- `invalidate_query` – 辞書のステータスを確認するためのクエリ。オプションのパラメータ。 [LIFETIMEを使用した辞書データの更新](#refreshing-dictionary-data-using-lifetime)のセクションで詳細を読む。
+- `background_reconnect` – 接続に失敗した場合にレプリカにバックグラウンドで再接続します。オプションのパラメータ。
+- `query` – カスタムクエリ。オプションのパラメータ。
 
 :::note
-`table` と `query` フィールドは一緒に使用できません。`table` または `query` フィールドのどちらかは宣言する必要があります。
+`table` と `query` フィールドは一緒に使用できません。`table` または `query` フィールドのいずれか一方は宣言する必要があります。
 :::
 
-ClickHouseはODBCドライバーから引用記号を受け取り、クエリ内のすべての設定を引用符で囲むため、テーブル名はデータベース内のテーブル名の大文字小文字に応じて適切に設定する必要があります。
+ClickHouseはODBCドライバーから引用符を受け取り、ドライバーへのクエリ内のすべての設定を引用符で囲むため、テーブル名はデータベースのテーブル名のケースに合わせて設定する必要があります。
 
-Oracleを使用する際にエンコーディングに問題がある場合は、対応する[FAQ](/knowledgebase/oracle-odbc)項目を参照してください。
+Oracleを使用する場合にエンコーディングに問題がある場合は、対応する[FAQ](/knowledgebase/oracle-odbc)項目を参照してください。
+
 ##### ODBC辞書機能の既知の脆弱性 {#known-vulnerability-of-the-odbc-dictionary-functionality}
 
 :::note
-ODBCドライバーを介してデータベースに接続する際、接続パラメータ`Servername`が置き換えられることがあります。この場合、`odbc.ini`からの`USERNAME`と`PASSWORD`の値がリモートサーバーに送信され、危険にさらされる可能性があります。
+ODBCドライバーを介してデータベースに接続する場合、接続パラメータ `Servername` を置き換えることができます。この場合、`odbc.ini` の `USERNAME` および `PASSWORD` の値がリモートサーバーに送信され、危険にさらされる可能性があります。
 :::
 
-**不安全な使用の例**
+**安全でない使用の例**
 
-PostgreSQL用にunixODBCを構成しましょう。`/etc/odbc.ini`の内容：
+PostgreSQL用にunixODBCを構成します。 `/etc/odbc.ini`の内容：
 
 ```text
 [gregtest]
@@ -1287,45 +1299,46 @@ USERNAME = test
 PASSWORD = test
 ```
 
-次に、次のようなクエリを実行すると
+その後、次のようなクエリを実行すると、
 
 ```sql
 SELECT * FROM odbc('DSN=gregtest;Servername=some-server.com', 'test_db');
 ```
 
-ODBCドライバーは`odbc.ini`からの`USERNAME`と`PASSWORD`の値を`some-server.com`に送信します。
+ODBCドライバーは `odbc.ini` の `USERNAME` および `PASSWORD` の値を `some-server.com` に送信します。
+
 ##### PostgreSQLへの接続の例 {#example-of-connecting-postgresql}
 
 Ubuntu OS。
 
-unixODBCおよびPostgreSQL用のODBCドライバーをインストールします：
+PostgreSQL用のunixODBCおよびODBCドライバーをインストールします：
 
 ```bash
 $ sudo apt-get install -y unixodbc odbcinst odbc-postgresql
 ```
 
-`/etc/odbc.ini`を構成します（または、ClickHouseを実行しているユーザーでサインインしている場合は`~/.odbc.ini`）：
+`/etc/odbc.ini`を構成します（ClickHouseを実行しているユーザーでサインインしている場合は `~/.odbc.ini`）：
 
 ```text
-    [DEFAULT]
-    Driver = myconnection
+[DEFAULT]
+Driver = myconnection
 
-    [myconnection]
-    Description         = PostgreSQL connection to my_db
-    Driver              = PostgreSQL Unicode
-    Database            = my_db
-    Servername          = 127.0.0.1
-    UserName            = username
-    Password            = password
-    Port                = 5432
-    Protocol            = 9.3
-    ReadOnly            = No
-    RowVersioning       = No
-    ShowSystemTables    = No
-    ConnSettings        =
+[myconnection]
+Description         = PostgreSQL connection to my_db
+Driver              = PostgreSQL Unicode
+Database            = my_db
+Servername          = 127.0.0.1
+UserName            = username
+Password            = password
+Port                = 5432
+Protocol            = 9.3
+ReadOnly            = No
+RowVersioning       = No
+ShowSystemTables    = No
+ConnSettings        =
 ```
 
-ClickHouseの辞書設定：
+ClickHouseの辞書構成：
 
 ```xml
 <clickhouse>
@@ -1333,7 +1346,7 @@ ClickHouseの辞書設定：
         <name>table_name</name>
         <source>
             <odbc>
-                <!-- 次のパラメータをconnection_stringに指定できます: -->
+                <!-- You can specify the following parameters in connection_string: -->
                 <!-- DSN=myconnection;UID=username;PWD=password;HOST=127.0.0.1;PORT=5432;DATABASE=my_db -->
                 <connection_string>DSN=myconnection</connection_string>
                 <table>postgresql_table</table>
@@ -1373,12 +1386,13 @@ LAYOUT(HASHED())
 LIFETIME(MIN 300 MAX 360)
 ```
 
-おそらく、ドライバのライブラリへのフルパスを指定するために`odbc.ini`を編集する必要があります`DRIVER=/usr/local/lib/psqlodbcw.so`。
+ODBCドライバーを指定するために、`odbc.ini`を編集して、ドライバーのライブラリへのフルパスを指定する必要があるかもしれません `DRIVER=/usr/local/lib/psqlodbcw.so`。
+
 ##### MS SQL Serverへの接続の例 {#example-of-connecting-ms-sql-server}
 
 Ubuntu OS。
 
-MS SQLに接続するためのODBCドライバーをインストールします：
+MS SQLへの接続用のODBCドライバーをインストールします：
 
 ```bash
 $ sudo apt-get install tdsodbc freetds-bin sqsh
@@ -1387,49 +1401,52 @@ $ sudo apt-get install tdsodbc freetds-bin sqsh
 ドライバーを構成します：
 
 ```bash
-    $ cat /etc/freetds/freetds.conf
-    ...
+$ cat /etc/freetds/freetds.conf
+...
 
-    [MSSQL]
-    host = 192.168.56.101
-    port = 1433
-    tds version = 7.0
-    client charset = UTF-8
-
-    # test TDS connection
-    $ sqsh -S MSSQL -D database -U user -P password
+[MSSQL]
+host = 192.168.56.101
+port = 1433
+tds version = 7.0
+client charset = UTF-8
 
 
-    $ cat /etc/odbcinst.ini
-
-    [FreeTDS]
-    Description     = FreeTDS
-    Driver          = /usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so
-    Setup           = /usr/lib/x86_64-linux-gnu/odbc/libtdsS.so
-    FileUsage       = 1
-    UsageCount      = 5
-
-    $ cat /etc/odbc.ini
-    # $ cat ~/.odbc.ini # if you signed in under a user that runs ClickHouse
-
-    [MSSQL]
-    Description     = FreeTDS
-    Driver          = FreeTDS
-    Servername      = MSSQL
-    Database        = test
-    UID             = test
-    PWD             = test
-    Port            = 1433
+# test TDS connection
+$ sqsh -S MSSQL -D database -U user -P password
 
 
-    # (optional) test ODBC connection (to use isql-tool install the [unixodbc](https://packages.debian.org/sid/unixodbc)-package)
-    $ isql -v MSSQL "user" "password"
+$ cat /etc/odbcinst.ini
+
+[FreeTDS]
+Description     = FreeTDS
+Driver          = /usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so
+Setup           = /usr/lib/x86_64-linux-gnu/odbc/libtdsS.so
+FileUsage       = 1
+UsageCount      = 5
+
+$ cat /etc/odbc.ini
+
+# $ cat ~/.odbc.ini # if you signed in under a user that runs ClickHouse
+
+[MSSQL]
+Description     = FreeTDS
+Driver          = FreeTDS
+Servername      = MSSQL
+Database        = test
+UID             = test
+PWD             = test
+Port            = 1433
+
+
+
+# (optional) test ODBC connection (to use isql-tool install the [unixodbc](https://packages.debian.org/sid/unixodbc)-package)
+$ isql -v MSSQL "user" "password"
 ```
 
 備考：
-- 特定のSQL Serverバージョンでサポートされる最も早いTDSバージョンを特定するには、製品のドキュメントを参照するか、[MS-TDS製品動作](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-tds/135d0ebe-5c4c-4a94-99bf-1811eccb9f4a)を確認してください。
+- 特定のSQL Serverバージョンでサポートされる最も古いTDSバージョンを特定するには、製品ドキュメントを参照するか、[MS-TDS製品動作](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-tds/135d0ebe-5c4c-4a94-99bf-1811eccb9f4a)を確認してください。
 
-ClickHouseでの辞書構成：
+ClickHouseの辞書を構成します：
 
 ```xml
 <clickhouse>
@@ -1477,9 +1494,10 @@ SOURCE(ODBC(table 'dict' connection_string 'DSN=MSSQL;UID=test;PWD=test'))
 LAYOUT(FLAT())
 LIFETIME(MIN 300 MAX 360)
 ```
-#### MySQL {#mysql}
 
-設定の例：
+#### Mysql {#mysql}
+
+設定例：
 
 ```xml
 <source>
@@ -1525,40 +1543,40 @@ SOURCE(MYSQL(
 
 設定フィールド：
 
-- `port` – MySQLサーバーのポート。すべてのレプリカに対して、または各レプリカ個別（`<replica>`内）に指定できます。
+- `port` – MySQLサーバーのポート。すべてのレプリカまたは個々の各レプリカ（ `<replica>` 内）に指定できます。
 
-- `user` – MySQLユーザーの名前。すべてのレプリカに対して、または各レプリカ個別（`<replica>`内）に指定できます。
+- `user` – MySQLユーザー名。すべてのレプリカまたは個々の各レプリカ（ `<replica>` 内）に指定できます。
 
-- `password` – MySQLユーザーのパスワード。すべてのレプリカに対して、または各レプリカ個別（`<replica>`内）に指定できます。
+- `password` – MySQLユーザーのパスワード。すべてのレプリカまたは個々の各レプリカ（ `<replica>` 内）に指定できます。
 
-- `replica` – レプリカ構成のセクション。複数のセクションを指定できます。
+- `replica` – レプリカ構成のセクション。複数のセクションが存在する可能性があります。
 
         - `replica/host` – MySQLホスト。
-        - `replica/priority` – レプリカの優先度。接続を試みる際、ClickHouseは優先度に従ってレプリカを走査します。数値が小さいほど優先度が高くなります。
+        - `replica/priority` – レプリカの優先度。接続を試みる際、ClickHouseは優先度の順にレプリカをたどります。数字が小さいほど優先度が高いです。
 
 - `db` – データベースの名前。
 
 - `table` – テーブルの名前。
 
-- `where` – 選択条件。条件の構文はMySQLの`WHERE`句と同じで、例えば`id > 10 AND id < 20`のように記述されます。オプションパラメータ。
+- `where` – 選択基準。条件の構文はMySQLの `WHERE` 句と同じで、例えば、 `id > 10 AND id < 20` などです。オプションのパラメータ。
 
-- `invalidate_query` – 辞書のステータスを確認するためのクエリ。オプションパラメータ。 [LIFETIMEを使用して辞書データを更新する](#refreshing-dictionary-data-using-lifetime)のセクションで詳細を確認してください。
+- `invalidate_query` – 辞書のステータスを確認するためのクエリ。オプションのパラメータ。[LIFETIMEを使用した辞書データの更新](#refreshing-dictionary-data-using-lifetime)のセクションで詳細を読む。
 
-- `fail_on_connection_loss` – 接続損失時のサーバーの動作を制御する設定パラメータ。`true`の場合、クライアントとサーバー間の接続が失われた瞬間に例外がスローされます。`false`の場合、ClickHouseサーバーは例外をスローする前にクエリを三回再実行します。なお、再試行は応答時間を延長する可能性があります。デフォルト値：`false`。
+- `fail_on_connection_loss` – 接続ロス時のサーバーの動作を制御する構成パラメータ。 `true` の場合、クライアントとサーバー間の接続が失われるとすぐに例外がスローされます。 `false` の場合、ClickHouseサーバーは例外がスローされる前に3回クエリの実行を再試行します。再試行は応答時間が長くなることに注意してください。デフォルト値： `false`。
 
-- `query` – カスタムクエリ。オプションパラメータ。
+- `query` – カスタムクエリ。オプションのパラメータ。
 
 :::note
-`table` または `where` フィールドは`query`フィールドと一緒に使用できません。そして、`table` または `query` フィールドのいずれかは宣言する必要があります。
+`table` または `where` フィールドは `query` フィールドと共に使用できません。 `table` または `query` フィールドのいずれか一方は宣言する必要があります。
 :::
 
 :::note
-明示的な`secure`パラメータはありません。SSL接続を確立する際にはセキュリティが必須です。
+明示的な `secure` パラメータはありません。SSL接続を確立する際にはセキュリティが必須です。
 :::
 
-MySQLには、ソケットを介してローカルホストに接続できます。これを行うには、`host`と`socket`を設定します。
+MySQLにはローカルホストを介してソケットで接続可能です。そのためには、 `host` および `socket` を設定します。
 
-設定の例：
+設定例：
 
 ```xml
 <source>
@@ -1593,9 +1611,10 @@ SOURCE(MYSQL(
     query 'SELECT id, value_1, value_2 FROM db_name.table_name'
 ))
 ```
+
 #### ClickHouse {#clickhouse}
 
-設定の例：
+設定例：
 
 ```xml
 <source>
@@ -1631,23 +1650,24 @@ SOURCE(CLICKHOUSE(
 
 設定フィールド：
 
-- `host` – ClickHouseホスト。ローカルホストの場合、ネットワークアクティビティなしでクエリが処理されます。障害耐性を高めるために、[分散](../../engines/table-engines/special/distributed.md)テーブルを作成し、その後の設定で参照することができます。
+- `host` – ClickHouseホスト。ローカルホストの場合、クエリはネットワークアクティビティなしで処理されます。耐障害性を改善するために、[分散テーブル](../../engines/table-engines/special/distributed.md)を作成し、その後の構成にそれを入力することができます。
 - `port` – ClickHouseサーバーのポート。
 - `user` – ClickHouseユーザーの名前。
 - `password` – ClickHouseユーザーのパスワード。
-- `db` – データベース名。
-- `table` – テーブル名。
-- `where` – 選択条件。省略可能。
-- `invalidate_query` – 辞書のステータスを確認するためのクエリ。オプションパラメータ。 [LIFETIMEを使用して辞書データを更新する](#refreshing-dictionary-data-using-lifetime)のセクションで詳細を確認してください。
+- `db` – データベースの名前。
+- `table` – テーブルの名前。
+- `where` – 選択基準。省略可能です。
+- `invalidate_query` – 辞書のステータスを確認するためのクエリ。オプションのパラメータ。[LIFETIMEを使用した辞書データの更新](#refreshing-dictionary-data-using-lifetime)のセクションで詳細を読む。
 - `secure` - 接続にSSLを使用します。
-- `query` – カスタムクエリ。オプションパラメータ。
+- `query` – カスタムクエリ。オプションのパラメータ。
 
 :::note
-`table` または `where` フィールドは`query`フィールドと一緒に使用できません。そして、`table` または `query` フィールドのいずれかは宣言する必要があります。
+`table` または `where` フィールドは `query` フィールドと共に使用できません。 `table` または `query` フィールドのいずれか一方は宣言する必要があります。
 :::
+
 #### MongoDB {#mongodb}
 
-設定の例：
+設定例：
 
 ```xml
 <source>
@@ -1694,9 +1714,9 @@ SOURCE(MONGODB(
 - `port` – MongoDBサーバーのポート。
 - `user` – MongoDBユーザーの名前。
 - `password` – MongoDBユーザーのパスワード。
-- `db` – データベース名。
-- `collection` – コレクション名。
-- `options` - MongoDB接続文字列オプション（オプションパラメータ）。
+- `db` – データベースの名前。
+- `collection` – コレクションの名前。
+- `options` - MongoDB接続文字列オプション（オプションのパラメータ）。
 
 または
 
@@ -1710,12 +1730,13 @@ SOURCE(MONGODB(
 設定フィールド：
 
 - `uri` - 接続を確立するためのURI。
-- `collection` – コレクション名。
+- `collection` – コレクションの名前。
 
 [エンジンに関する詳細情報](../../engines/table-engines/integrations/mongodb.md)
+
 #### Redis {#redis}
 
-設定の例：
+設定例：
 
 ```xml
 <source>
@@ -1743,11 +1764,12 @@ SOURCE(REDIS(
 
 - `host` – Redisホスト。
 - `port` – Redisサーバーのポート。
-- `storage_type` – キーを使用して内部Redisストレージの構造。 `simple` は単純なソースとハッシュ化された単一キーソース用、 `hash_map` は2つのキーを持つハッシュ化されたソース用。範囲ソースおよび複雑なキーを持つキャッシュソースはサポートされていません。省略可能で、デフォルト値は `simple` です。
+- `storage_type` – キーとの作業に使用される内部Redisストレージの構造。 `simple` は単純なソースおよびハッシュされた単一キーソース用、 `hash_map` は二つのキーを持つハッシュされたソース用です。範囲ソースおよび複雑なキーのキャッシュソースはサポートされていません。省略可能で、デフォルト値は `simple` です。
 - `db_index` – Redis論理データベースの特定の数値インデックス。省略可能で、デフォルト値は0です。
+
 #### Cassandra {#cassandra}
 
-設定の例：
+設定例：
 
 ```xml
 <source>
@@ -1771,24 +1793,25 @@ SOURCE(REDIS(
 設定フィールド：
 
 - `host` – Cassandraホストまたはカンマ区切りのホストのリスト。
-- `port` – Cassandraサーバーのポート。指定しない場合、デフォルトポート9042が使用されます。
+- `port` – Cassandraサーバーのポート。指定されていない場合、デフォルトポート9042が使用されます。
 - `user` – Cassandraユーザーの名前。
 - `password` – Cassandraユーザーのパスワード。
 - `keyspace` – キースペース（データベース）の名前。
 - `column_family` – カラムファミリー（テーブル）の名前。
-- `allow_filtering` – クラスターキー列に対する高コストな条件を許可するフラグ。デフォルト値は1です。
-- `partition_key_prefix` – Cassandraテーブルの主キーにおけるパーティションキー列の数。構成キー辞書に必要です。辞書定義でのキー列の順序はCassandraと同じでなければなりません。デフォルト値は1（最初のキー列はパーティションキーであり、他のキー列はクラスターキーです）。
+- `allow_filtering` – クラスタリングキー列に対する潜在的に高コストな条件を許可するフラグ。デフォルト値は1。
+- `partition_key_prefix` – Cassandraテーブルの主キー内のパーティションキー列の数。合成キー辞書には必須です。辞書定義内のキー列の順序はCassandraにおける順序と同じでなければなりません。デフォルト値は1（最初のキー列がパーティションキーで、他のキー列がクラスタリングキーです）。
 - `consistency` – 一貫性レベル。可能な値： `One`, `Two`, `Three`, `All`, `EachQuorum`, `Quorum`, `LocalQuorum`, `LocalOne`, `Serial`, `LocalSerial`。デフォルト値は `One` です。
 - `where` – オプションの選択基準。
-- `max_threads` – 複数のパーティションからデータを読み込むために使用する最大スレッド数。
+- `max_threads` – 合成キー辞書から複数のパーティションのデータをロードするために使用する最大スレッド数。
 - `query` – カスタムクエリ。オプションのパラメータ。
 
 :::note
-`column_family` または `where` フィールドは、 `query` フィールドと一緒に使用することはできません。また、 `column_family` または `query` フィールドのいずれかは宣言する必要があります。
+`column_family` または `where` フィールドは `query` フィールドと共に使用できません。`column_family` または `query` フィールドのいずれか一方は宣言する必要があります。
 :::
+
 #### PostgreSQL {#postgresql}
 
-設定の例：
+設定例：
 
 ```xml
 <source>
@@ -1826,27 +1849,28 @@ SOURCE(POSTGRESQL(
 
 設定フィールド：
 
-- `host` – PostgreSQLサーバーのホスト。すべてのレプリカに対して指定できるか、各レプリカに個別に指定できます（ `<replica>` 内）。
-- `port` – PostgreSQLサーバーのポート。すべてのレプリカに対して指定できるか、各レプリカに個別に指定できます（ `<replica>` 内）。
-- `user` – PostgreSQLユーザーの名前。すべてのレプリカに対して指定できるか、各レプリカに個別に指定できます（ `<replica>` 内）。
-- `password` – PostgreSQLユーザーのパスワード。すべてのレプリカに対して指定できるか、各レプリカに個別に指定できます（ `<replica>` 内）。
-- `replica` – レプリカ構成のセクション。複数のセクションを持つことができます：
-    - `replica/host` – PostgreSQLホスト。
-    - `replica/port` – PostgreSQLポート。
-    - `replica/priority` – レプリカの優先度。接続を試みるとき、ClickHouseは優先度の順序でレプリカを探索します。数字が小さいほど優先度が高くなります。
+- `host` – PostgreSQLサーバーのホスト。すべてのレプリカまたは個々の各レプリカ（ `<replica>` 内）に指定できます。
+- `port` – PostgreSQLサーバーのポート。すべてのレプリカまたは個々の各レプリカ（ `<replica>` 内）に指定できます。
+- `user` – PostgreSQLユーザーの名前。すべてのレプリカまたは個々の各レプリカ（ `<replica>` 内）に指定できます。
+- `password` – PostgreSQLユーザーのパスワード。すべてのレプリカまたは個々の各レプリカ（ `<replica>` 内）に指定できます。
+- `replica` – レプリカ構成のセクション。複数のセクションが存在する可能性があります：
+  - `replica/host` – PostgreSQLホスト。
+  - `replica/port` – PostgreSQLポート。
+  - `replica/priority` – レプリカの優先度。接続を試みる際、ClickHouseは優先度の順にレプリカをたどります。数字が小さいほど優先度が高いです。
 - `db` – データベースの名前。
 - `table` – テーブルの名前。
-- `where` – 選択基準。条件の構文はPostgreSQLの `WHERE` 句と同じです。例えば、 `id > 10 AND id < 20` 。オプションのパラメータ。
-- `invalidate_query` – 辞書の状態を確認するためのクエリ。オプションのパラメータ。詳細はセクション [Refreshing dictionary data using LIFETIME](#refreshing-dictionary-data-using-lifetime) を参照してください。
-- `background_reconnect` – 接続に失敗した場合、バックグラウンドでレプリカに再接続します。オプションのパラメータ。
+- `where` – 選択基準。条件の構文はPostgreSQLの `WHERE` 句と同じです。例えば、 `id > 10 AND id < 20` などです。オプションのパラメータ。
+- `invalidate_query` – 辞書のステータスを確認するためのクエリ。オプションのパラメータ。[LIFETIMEを使用した辞書データの更新](#refreshing-dictionary-data-using-lifetime)のセクションで詳細を読む。
+- `background_reconnect` – 接続に失敗した場合にレプリカにバックグラウンドで再接続します。オプションのパラメータ。
 - `query` – カスタムクエリ。オプションのパラメータ。
 
 :::note
-`table` または `where` フィールドは、 `query` フィールドと一緒に使用することはできません。また、 `table` または `query` フィールドのいずれかは宣言する必要があります。
+`table` または `where` フィールドは `query` フィールドと共に使用できません。`table` または `query` フィールドのいずれか一方は宣言する必要があります。
 :::
+
 ### Null {#null}
 
-ダミー（空の）辞書を作成するために使用できる特別なソース。このような辞書はテストや、分散テーブルを持つデータノードとクエリノードが分離されているセットアップで便利です。
+ダミー（空）辞書を作成するために使用できる特別なソース。このような辞書はテストや、分散テーブルのノードでデータとクエリノードが分離されているセットアップで便利です。
 
 ```sql
 CREATE DICTIONARY null_dict (
@@ -1860,11 +1884,12 @@ SOURCE(NULL())
 LAYOUT(FLAT())
 LIFETIME(0);
 ```
-## 辞書のキーとフィールド {#dictionary-key-and-fields}
+
+## 辞書キーとフィールド {#dictionary-key-and-fields}
 
 <CloudDetails />
 
-`structure` 句は、辞書のキーとクエリに使用可能なフィールドを説明します。
+`structure`句は、辞書のキーとクエリで利用可能なフィールドを説明します。
 
 XML記述：
 
@@ -1876,7 +1901,7 @@ XML記述：
         </id>
 
         <attribute>
-            <!-- 属性パラメータ -->
+            <!-- Attribute parameters -->
         </attribute>
 
         ...
@@ -1885,43 +1910,45 @@ XML記述：
 </dictionary>
 ```
 
-属性は以下の要素で説明されています：
+属性は次の要素で説明されています：
 
 - `<id>` — キーカラム
-- `<attribute>` — データカラム：複数の属性を持つことができます。
+- `<attribute>` — データカラム：属性の数は複数である可能性があります。
 
 DDLクエリ：
 
 ```sql
 CREATE DICTIONARY dict_name (
     Id UInt64,
-    -- 属性
+    -- attributes
 )
 PRIMARY KEY Id
 ...
 ```
 
-属性はクエリの本文で説明されています：
+属性はクエリ本文で説明されています：
 
 - `PRIMARY KEY` — キーカラム
-- `AttrName AttrType` — データカラム。複数の属性を持つことができます。
+- `AttrName AttrType` — データカラム。属性の数は複数である可能性があります。
+
 ## キー {#key}
 
-ClickHouseは以下のタイプのキーをサポートします：
+ClickHouseは次のタイプのキーをサポートしています：
 
-- 数値キー。 `UInt64` 。 `<id>` タグで定義されるか、 `PRIMARY KEY` キーワードを使用します。
-- 複合キー。異なるタイプの値のセット。 `<key>` タグまたは `PRIMARY KEY` キーワードで定義されます。
+- 数値キー。`UInt64`。 `<id>`タグまたは `PRIMARY KEY` キーワードで定義されます。
+- 複合キー。異なるタイプの値のセット。 `<key>`タグまたは `PRIMARY KEY` キーワードで定義されます。
 
-XML構造には `<id>` または `<key>` のいずれかを含むことができます。DDLクエリには単一の `PRIMARY KEY` を含める必要があります。
+xml構造は `<id>` または `<key>` のいずれかを含むことができます。DDLクエリは単一の `PRIMARY KEY` を含む必要があります。
 
 :::note
 キーを属性として記述してはいけません。
 :::
+
 ### 数値キー {#numeric-key}
 
-タイプ: `UInt64`。
+タイプ： `UInt64`。
 
-設定の例：
+構成例：
 
 ```xml
 <id>
@@ -1929,11 +1956,11 @@ XML構造には `<id>` または `<key>` のいずれかを含むことができ
 </id>
 ```
 
-設定フィールド：
+構成フィールド：
 
 - `name` – キーを持つカラムの名前。
 
-DDLクエリ用：
+DDLクエリ：
 
 ```sql
 CREATE DICTIONARY (
@@ -1945,15 +1972,16 @@ PRIMARY KEY Id
 ```
 
 - `PRIMARY KEY` – キーを持つカラムの名前。
+
 ### 複合キー {#composite-key}
 
-キーは、任意のデータ型フィールドの `tuple` であることができます。この場合の [layout](#storing-dictionaries-in-memory) は `complex_key_hashed` または `complex_key_cache` にする必要があります。
+キーは任意のフィールドタイプの `tuple` であることができます。この場合、[レイアウト](#storing-dictionaries-in-memory)は `complex_key_hashed` または `complex_key_cache` である必要があります。
 
 :::tip
-複合キーは単一の要素で構成することができます。これにより、文字列をキーとして使用することが可能です。
+複合キーは単一の要素から構成されることがあります。これにより、例えば文字列をキーとして使用することが可能になります。
 :::
 
-キーの構造は `<key>` 要素で設定されます。キーのフィールドは辞書の [属性](#dictionary-key-and-fields) と同じ形式で指定されます。例：
+キー構造は `<key>` 要素で設定されます。キーフィールドは辞書の[属性](#dictionary-key-and-fields)と同じ形式で指定されます。例：
 
 ```xml
 <structure>
@@ -1976,17 +2004,18 @@ PRIMARY KEY Id
 ```sql
 CREATE DICTIONARY (
     field1 String,
-    field2 String
+    field2 UInt32
     ...
 )
 PRIMARY KEY field1, field2
 ...
 ```
 
-`dictGet*` 関数へのクエリでは、タプルがキーとして渡されます。例： `dictGetString('dict_name', 'attr_name', tuple('string for field1', num_for_field2))`。
+`dictGet*`関数へのクエリでは、キーとしてタプルが渡されます。例： `dictGetString('dict_name', 'attr_name', tuple('string for field1', num_for_field2))`。
+
 ## 属性 {#attributes}
 
-設定の例：
+構成例：
 
 ```xml
 <structure>
@@ -2011,54 +2040,54 @@ CREATE DICTIONARY somename (
 )
 ```
 
-設定フィールド：
+構成フィールド：
 
-| タグ                                                  | 説明                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | 必須   |
-|------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|
-| `name`                                               | カラム名。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | はい   |
-| `type`                                               | ClickHouseデータ型： [UInt8](../../sql-reference/data-types/int-uint.md)、 [UInt16](../../sql-reference/data-types/int-uint.md)、 [UInt32](../../sql-reference/data-types/int-uint.md)、 [UInt64](../../sql-reference/data-types/int-uint.md)、 [Int8](../../sql-reference/data-types/int-uint.md)、 [Int16](../../sql-reference/data-types/int-uint.md)、 [Int32](../../sql-reference/data-types/int-uint.md)、 [Int64](../../sql-reference/data-types/int-uint.md)、 [Float32](../../sql-reference/data-types/float.md)、 [Float64](../../sql-reference/data-types/float.md)、 [UUID](../../sql-reference/data-types/uuid.md)、 [Decimal32](../../sql-reference/data-types/decimal.md)、 [Decimal64](../../sql-reference/data-types/decimal.md)、 [Decimal128](../../sql-reference/data-types/decimal.md)、 [Decimal256](../../sql-reference/data-types/decimal.md)、[Date](../../sql-reference/data-types/date.md)、 [Date32](../../sql-reference/data-types/date32.md)、 [DateTime](../../sql-reference/data-types/datetime.md)、 [DateTime64](../../sql-reference/data-types/datetime64.md)、 [String](../../sql-reference/data-types/string.md)、 [Array](../../sql-reference/data-types/array.md)。<br/>ClickHouseは辞書の値を指定されたデータ型にキャストしようとします。例えば、MySQLの場合、フィールドはMySQLのソーステーブルで `TEXT`、 `VARCHAR`、または `BLOB` ですが、ClickHouseでは `String` としてアップロードすることができます。<br/>[Nullable](../../sql-reference/data-types/nullable.md)は現在、[フラット](#flat)、 [ハッシュ化](#hashed)、 [複雑キー・ハッシュ化](#complex_key_hashed)、 [直接](#direct)、 [複雑キー・直接](#complex_key_direct)、 [範囲ハッシュ化](#range_hashed)、ポリゴン、 [キャッシュ](#cache)、[複雑キー・キャッシュ](#complex_key_cache)、 [SSDキャッシュ](#ssd_cache)、 [SSD複雑キーキャッシュ](#complex_key_ssd_cache) 辞書にサポートされています。 [IPTrie](#ip_trie) 辞書では `Nullable` タイプはサポートされていません。 | はい   |
-| `null_value`                                         | 存在しない要素のデフォルト値。<br/>この例では、空の文字列です。[NULL](../syntax.md#null) 値は `Nullable` タイプにのみ使用できます（前の行のタイプ説明を参照）。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | はい   |
-| `expression`                                         | ClickHouseが値に対して実行する [式](../../sql-reference/syntax.md#expressions)。<br/>式はリモートSQLデータベース内のカラム名として使用できます。したがって、リモートカラムのエイリアスを作成するために使用できます。<br/><br/>デフォルト値：式なし。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | いいえ |
-| <a name="hierarchical-dict-attr"></a> `hierarchical` | `true` の場合、属性は現在のキーの親キーの値を含みます。[階層型辞書](#hierarchical-dictionaries)を参照してください。<br/><br/>デフォルト値： `false` 。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | いいえ |
-| `injective`                                          | `id -> attribute` 画像が [単射](https://en.wikipedia.org/wiki/Injective_function) であるかどうかを示すフラグ。<br/> `true` の場合、ClickHouseは自動的に `GROUP BY` 句の後に辞書へのリクエストを配置できます。通常、これによりそのようなリクエストの数が大幅に減少します。<br/><br/>デフォルト値： `false` 。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | いいえ |
-| `is_object_id`                                       | クエリが `ObjectID` によってMongoDBドキュメントに対して実行されるかどうかを示すフラグ。<br/><br/>デフォルト値： `false` 。  
-## 階層型辞書 {#hierarchical-dictionaries}
+| タグ                                                 | 説明                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | 必須 |
+|------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
+| `name`                                               | カラム名。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | はい      |
+| `type`                                               | ClickHouseデータ型：[UInt8](../../sql-reference/data-types/int-uint.md)、[UInt16](../../sql-reference/data-types/int-uint.md)、[UInt32](../../sql-reference/data-types/int-uint.md)、[UInt64](../../sql-reference/data-types/int-uint.md)、[Int8](../../sql-reference/data-types/int-uint.md)、[Int16](../../sql-reference/data-types/int-uint.md)、[Int32](../../sql-reference/data-types/int-uint.md)、[Int64](../../sql-reference/data-types/int-uint.md)、[Float32](../../sql-reference/data-types/float.md)、[Float64](../../sql-reference/data-types/float.md)、[UUID](../../sql-reference/data-types/uuid.md)、[Decimal32](../../sql-reference/data-types/decimal.md)、[Decimal64](../../sql-reference/data-types/decimal.md)、[Decimal128](../../sql-reference/data-types/decimal.md)、[Decimal256](../../sql-reference/data-types/decimal.md)、[Date](../../sql-reference/data-types/date.md)、[Date32](../../sql-reference/data-types/date32.md)、[DateTime](../../sql-reference/data-types/datetime.md)、[DateTime64](../../sql-reference/data-types/datetime64.md)、[String](../../sql-reference/data-types/string.md)、[Array](../../sql-reference/data-types/array.md)。<br/>ClickHouseは辞書から指定されたデータ型に値を変換しようとします。たとえば、MySQLの場合、フィールドはMySQLソーステーブルの `TEXT`、 `VARCHAR`、または `BLOB`ですが、ClickHouseでは `String` としてアップロードできます。<br/>[Nullable](../../sql-reference/data-types/nullable.md)は現在[Flat](#flat)、[Hashed](#hashed)、[ComplexKeyHashed](#complex_key_hashed)、[Direct](#direct)、[ComplexKeyDirect](#complex_key_direct)、[RangeHashed](#range_hashed)、Polygon、[Cache](#cache)、[ComplexKeyCache](#complex_key_cache)、[SSDCache](#ssd_cache)、[SSDComplexKeyCache](#complex_key_ssd_cache)辞書でサポートされています。[IPTrie](#ip_trie)辞書では `Nullable` タイプはサポートされていません。    | はい      |
+| `null_value`                                         | 存在しない要素のデフォルト値。<br/>例では、空の文字列です。 [NULL](../syntax.md#null) 値は `Nullable` タイプのみ（前の行のタイプの説明を参照）で使用できます。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | はい      |
+| `expression`                                         | [式](../../sql-reference/syntax.md#expressions)がClickHouseで値に対して実行されます。<br/>式はリモートSQLデータベース内のカラム名になることがあります。このようにして、リモートカラムのエイリアスを作成することができます。<br/><br/>デフォルト値：式なし。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | いいえ      |
+| <a name="hierarchical-dict-attr"></a> `hierarchical` | `true` の場合、属性は現在のキーの親キーの値を含みます。[階層的辞書](#hierarchical-dictionaries)を参照してください。<br/><br/>デフォルト値： `false`。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | いいえ      |
+| `injective`                                          | `id -> attribute` の写像が[1対1](https://en.wikipedia.org/wiki/Injective_function)であるかどうかを示すフラグ。<br/>`true` の場合、ClickHouseは通常、これはそのようなリクエストの数を大幅に削減しますので、 `GROUP BY` 句の後に辞書への要求を自動的に配置できます。<br/><br/>デフォルト値： `false`。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | いいえ      |
+| `is_object_id`                                       | クエリが `ObjectID` によるMongoDB文書に対して実行されるかどうかを示すフラグ。<br/><br/>デフォルト値： `false`。
+## 階層辞書 {#hierarchical-dictionaries}
 
-ClickHouseは [数値キー](#numeric-key) を持つ階層型辞書をサポートします。
+ClickHouseは、[数値キー](#numeric-key)を持つ階層辞書をサポートしています。
 
-以下の階層構造を見てください：
+以下の階層構造を見てみましょう：
 
 ```text
-0 (共通の親)
+0 (Common parent)
 │
-├── 1 (ロシア)
+├── 1 (Russia)
 │   │
-│   └── 2 (モスクワ)
+│   └── 2 (Moscow)
 │       │
-│       └── 3 (中心)
+│       └── 3 (Center)
 │
-└── 4 (グレートブリテン)
+└── 4 (Great Britain)
     │
-    └── 5 (ロンドン)
+    └── 5 (London)
 ```
 
-この階層は次の辞書テーブルとして表現できます。
+この階層は、次の辞書テーブルとして表現できます。
 
 | region_id | parent_region | region_name  |
 |------------|----------------|---------------|
-| 1          | 0              | ロシア        |
-| 2          | 1              | モスクワ      |
-| 3          | 2              | 中心          |
-| 4          | 0              | グレートブリテン |
-| 5          | 4              | ロンドン      |
+| 1          | 0              | ロシア       |
+| 2          | 1              | モスクワ     |
+| 3          | 2              | センター     |
+| 4          | 0              | イギリス     |
+| 5          | 4              | ロンドン     |
 
-このテーブルには、要素の最近接親のキーを含む `parent_region` カラムが含まれています。
+このテーブルには、要素の最近の親のキーを含むカラム `parent_region` が含まれています。
 
-ClickHouseは外部辞書の属性に階層型の特性をサポートします。この特性により、上記のように階層型辞書を設定できます。
+ClickHouseは、外部辞書属性に対する階層的プロパティをサポートしています。このプロパティを使用すると、上記のように階層辞書を設定できます。
 
-[dictGetHierarchy](../../sql-reference/functions/ext-dict-functions.md#dictgethierarchy) 関数を使用すると、要素の親チェーンを取得できます。
+[dictGetHierarchy](../../sql-reference/functions/ext-dict-functions.md#dictgethierarchy) 関数は、要素の親チェーンを取得することを可能にします。
 
-私たちの例では、辞書の構造は次のようになります：
+私たちの例では、辞書の構造は以下のようになります：
 
 ```xml
 <dictionary>
@@ -2083,12 +2112,13 @@ ClickHouseは外部辞書の属性に階層型の特性をサポートします�
     </structure>
 </dictionary>
 ```
-## Polygon dictionaries {#polygon-dictionaries}
+## ポリゴン辞書 {#polygon-dictionaries}
 
-Polygon dictionariesは、指定されたポイントを含むポリゴンを効率的に検索することを可能にします。
-例えば、地理座標による市の地域を定義することです。
+この辞書は、ポイントインポリゴンクエリのために最適化されており、実質的に「逆ジオコーディング」ルックアップを行います。座標（緯度/経度）が与えられると、それを含むポリゴン/地域（国や地域の境界など、多くのポリゴンからのセット）を効率的に見つけます。この機能は、位置座標をそれを含む地域にマッピングするのに適しています。
 
-ポリゴン辞書の設定例：
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/FyRsriQp46E?si=Kf8CXoPKEpGQlC-Y" title="ClickHouseのポリゴン辞書" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+ポリゴン辞書の設定の例：
 
 <CloudDetails />
 
@@ -2125,7 +2155,7 @@ Polygon dictionariesは、指定されたポイントを含むポリゴンを効
 </dictionary>
 ```
 
-対応する [DDL-query](/sql-reference/statements/create/dictionary):
+対応する[DDL-クエリ](/sql-reference/statements/create/dictionary):
 ```sql
 CREATE DICTIONARY polygon_dict_name (
     key Array(Array(Array(Array(Float64)))),
@@ -2137,35 +2167,30 @@ LAYOUT(POLYGON(STORE_POLYGON_KEY_COLUMN 1))
 ...
 ```
 
-ポリゴン辞書を設定する際、キーは以下のいずれかの2つのタイプを持たなければなりません：
+ポリゴン辞書を設定する際、キーは次の2つのタイプのいずれかである必要があります：
 
-- 単純ポリゴン。これはポイントの配列です。
-- MultiPolygon。これはポリゴンの配列です。各ポリゴンは2次元ポイントの配列であり、この配列の最初の要素はポリゴンの外境界であり、以降の要素は除外する領域を指定します。
+- 単純なポリゴン。これはポイントの配列です。
+- マルチポリゴン。これはポリゴンの配列です。各ポリゴンはポイントの2次元配列です。この配列の最初の要素はポリゴンの外境界であり、以降の要素はそれから除外される領域を指定します。
 
-ポイントはその座標の配列またはタプルとして指定できます。現在の実装では、2次元ポイントのみがサポートされています。
+ポイントは、座標の配列またはタプルとして指定できます。現在の実装では、2次元ポイントのみがサポートされています。
 
-ユーザーはClickHouseがサポートするすべてのフォーマットで独自のデータをアップロードできます。
+ユーザーは、ClickHouseがサポートするすべての形式で独自のデータをアップロードできます。
 
-利用可能な3種類の [インメモリストレージ](#storing-dictionaries-in-memory) があります：
+利用可能な3つのタイプの[インメモリストレージ](#storing-dictionaries-in-memory)があります：
 
-- `POLYGON_SIMPLE`。これはナイーブな実装で、クエリごとにすべてのポリゴンを線形に通過し、追加のインデックスを使用せずにそれぞれのメンバーシップを確認します。
+- `POLYGON_SIMPLE`。これは単純な実装であり、各クエリごとにすべてのポリゴンを線形に通過し、追加のインデックスを使用せずにそれぞれの会員をチェックします。
 
-- `POLYGON_INDEX_EACH`。各ポリゴンに対して別々のインデックスが構築されており、大部分の場合に迅速にそれに属するかどうかをチェックできます（地理的地域に最適化されています）。
-また、考慮対象の領域にグリッドが重ねられ、考慮すべきポリゴンの数が大幅に絞り込まれます。
-グリッドはセルを16等分して再帰的に分割することによって作成され、2つのパラメータで設定されます。
-再帰の深さが `MAX_DEPTH` に達するか、セルが `MIN_INTERSECTIONS` ポリゴンを超えない場合に分割が停止します。
-クエリに応じて、対応するセルがあり、その中に保存されたポリゴンのインデックスが交互にアクセスされます。
+- `POLYGON_INDEX_EACH`。各ポリゴンに対して別々のインデックスが構築され、ほとんどの場合迅速に属しているかどうかを確認できます（地理的地域に最適化されています）。また、考慮中の領域にグリッドが重ねられ、考慮すべきポリゴンの数が大幅に絞り込まれます。グリッドは、セルを16等分に再帰的に分割することによって作成され、2つのパラメータで設定されます。分割は、再帰の深さが `MAX_DEPTH` に達するか、セルが `MIN_INTERSECTIONS` ポリゴンを越えない場合に停止します。クエリに応じて、対応するセルが存在し、その中に保存されているポリゴンのインデックスが交互にアクセスされます。
 
-- `POLYGON_INDEX_CELL`。この配置は、上記で説明したグリッドを作成します。同じオプションが利用可能です。各シートセルに対して、その中に入るすべてのポリゴンのパーツに関してインデックスが構築されており、迅速にリクエストに応答できます。
+- `POLYGON_INDEX_CELL`。この配置も、上記に記載されたグリッドを生成します。同じオプションが利用可能です。各シートセルに対して、その中に落ちているすべてのポリゴンのパーツに対してインデックスが構築され、リクエストに迅速に応答できます。
 
-- `POLYGON`。 `POLYGON_INDEX_CELL` の同義語です。
+- `POLYGON`。`POLYGON_INDEX_CELL`の同義語です。
 
-辞書クエリは、辞書に対して操作するための標準 [関数](../../sql-reference/functions/ext-dict-functions.md) を使用して実行されます。
-重要な違いは、ここでのキーがポリゴンを見つけたいポイントになることです。
+辞書クエリは、辞書で作業するための標準の[関数](../../sql-reference/functions/ext-dict-functions.md)を使用して実行されます。重要な違いは、ここでのキーは、ポリゴンを見つけようとするポイントになることです。
 
 **例**
 
-上記で定義した辞書を使用する例：
+上記で定義された辞書を使用した例：
 
 ```sql
 CREATE TABLE points (
@@ -2176,11 +2201,11 @@ CREATE TABLE points (
 SELECT tuple(x, y) AS key, dictGet(dict_name, 'name', key), dictGet(dict_name, 'value', key) FROM points ORDER BY x, y;
 ```
 
-'points' テーブル内の各ポイントに対して、最後のコマンドを実行した結果、一番小さいエリアのポリゴンがそのポイントを含むものが見つかり、要求された属性が出力されます。
+'points' テーブルの各ポイントに対して最後のコマンドを実行した結果、最小面積ポリゴンが見つかり、要求された属性が出力されます。
 
 **例**
 
-ポリゴン辞書からカラムをSELECTクエリを介して読むことができます。辞書設定または対応するDDLクエリに `store_polygon_key_column = 1` をオンにするだけです。
+ポリゴン辞書から列をSELECTクエリを介して読み取ることができ、辞書設定または対応するDDLクエリの `store_polygon_key_column = 1` をオンにするだけです。
 
 クエリ：
 
@@ -2213,12 +2238,14 @@ SELECT * FROM polygons_test_dictionary;
 │ [[[(3,1),(0,1),(0,-1),(3,-1)]]] │ Value │
 └─────────────────────────────────┴───────┘
 ```
-## Regular Expression Tree Dictionary {#regexp-tree-dictionary}
+## 正規表現ツリー辞書 {#regexp-tree-dictionary}
 
-正規表現ツリー辞書は、キーから属性へのマッピングを正規表現のツリーを使用して表現する特殊な辞書のタイプです。いくつかのユースケース、例えば [ユーザーエージェント](https://en.wikipedia.org/wiki/User_agent) 文字列の解析など、正規表現ツリー辞書で優雅に表現することができます。
-### ClickHouse Open-Sourceで正規表現ツリー辞書を使用する {#use-regular-expression-tree-dictionary-in-clickhouse-open-source}
+この辞書は、階層的な正規表現パターンに基づいてキーを値にマッピングします。これは、正確なキーのマッチングではなく、パターンマッチルックアップ（例：ユーザーエージェント文字列の分類）に最適化されています。
 
-正規表現ツリー辞書は、YAMLファイルを指定するYAMLRegExpTreeソースを使用してClickHouseオープンソースで定義されています。
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/ESlAhUJMoz8?si=sY2OVm-zcuxlDRaX" title="ClickHouse regexツリー辞書の紹介" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+### ClickHouseオープンソースで正規表現ツリー辞書を使用する {#use-regular-expression-tree-dictionary-in-clickhouse-open-source}
+
+正規表現ツリー辞書は、YAMLファイル内の正規表現ツリーを含むパスが提供されているYAMLRegExpTreeソースを使用してClickHouseオープンソースで定義されています。
 
 ```sql
 CREATE DICTIONARY regexp_dict
@@ -2233,7 +2260,7 @@ LAYOUT(regexp_tree)
 ...
 ```
 
-辞書ソース `YAMLRegExpTree` は、正規表現ツリーの構造を表します。例えば：
+辞書ソース `YAMLRegExpTree` は、regexpツリーの構造を表します。例えば：
 
 ```yaml
 - regexp: 'Linux/(\d+[\.\d]*).+tlinux'
@@ -2245,22 +2272,22 @@ LAYOUT(regexp_tree)
   versions:
     - regexp: '33/tclwebkit'
       version: '13'
-    - regexp: '3[12]/tcl.webkit'
+    - regexp: '3[12]/tclwebkit'
       version: '12'
-    - regexp: '30/tcl.webkit'
+    - regexp: '30/tclwebkit'
       version: '11'
-    - regexp: '29/tcl.webkit'
+    - regexp: '29/tclwebkit'
       version: '10'
 ```
 
-この構成は、正規表現ツリーのノードのリストで構成されています。各ノードは以下の構造を持っています：
+この設定は、正規表現ツリーのノードのリストで構成されています。各ノードは以下の構造を持っています：
 
 - **regexp**: ノードの正規表現。
-- **attributes**: ユーザー定義の辞書属性のリスト。この例では、2つの属性があります： `name` および `version` 。最初のノードは両方の属性を定義しています。2番目のノードは属性 `name` のみを定義しています。属性 `version` は2番目のノードの子ノードによって提供されます。
-  - 属性の値には **バックリファレンス** が含まれる場合があり、マッチした正規表現のキャプチャグループを参照します。例として、最初のノードの属性 `version` の値は、正規表現内のキャプチャグループ `(\d+[\.\d]*)` へのバックリファレンス `\1` で構成されます。バックリファレンスの番号は1から9までの範囲で、 `$1` または `\1`（番号1の場合）として記述されます。バックリファレンスはクエリ実行時にマッチしたキャプチャグループに置き換えられます。
-- **子ノード**: 正規表現ツリーのノードの子ノードのリストで、各ノードは独自の属性と（潜在的に）子ノードを持ちます。文字列のマッチングは深さ優先方式で進行します。文字列が正規表現ノードにマッチすると、辞書はそれがノードの子ノードにもマッチするかどうかを確認します。そうであれば、最も深いマッチングノードの属性が割り当てられます。子ノードの属性は、親ノードの同名の属性を上書きします。YAMLファイル内の子ノードの名前は任意であり、上記の例の `versions` なども可能です。
+- **attributes**: ユーザー定義の辞書属性のリスト。この例では、2つの属性：`name` と `version` が存在します。最初のノードは両方の属性を定義します。2番目のノードは属性 `name` のみを定義します。属性 `version` は、2番目のノードの子ノードによって提供されます。
+  - 属性の値には、マッチした正規表現のキャプチャグループを参照する**バックリファレンス**を含めることができます。この例では、最初のノードの属性 `version` の値は、正規表現内のキャプチャグループ `(\d+[\.\d]*)` に対するバックリファレンス `\1` で構成されています。バックリファレンスの番号は1から9までで、`$1` または `\1`（番号1の場合）として書かれます。バックリファレンスは、クエリ実行中に一致したキャプチャグループで置き換えられます。
+- **子ノード**: regexpツリーノードの子のリストであり、それぞれは独自の属性と（潜在的に）子ノードを持ちます。文字列マッチングは深さ優先の方式で進行します。文字列がregexpノードと一致すると、辞書はそのノードの子ノードにも一致するかどうかを確認します。その場合、最も深く一致するノードの属性が割り当てられます。子ノードの属性は、親ノードの同名属性を上書きします。YAMLファイル内の子ノードの名前は任意で、上記の例では `versions` です。
 
-Regexpツリー辞書は、`dictGet`、`dictGetOrDefault`、`dictGetAll` の関数を使用してのみアクセスできます。
+Regexpツリ辞書へのアクセスは、`dictGet`、`dictGetOrDefault`、および `dictGetAll` 関数を使用することでのみ許可されます。
 
 例：
 
@@ -2276,14 +2303,14 @@ SELECT dictGet('regexp_dict', ('name', 'version'), '31/tclwebkit1024');
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-この場合、最初にトップレイヤーの2番目のノードで正規表現 `\d+/tclwebkit(?:\d+[\.\d]*)` にマッチします。その後辞書は子ノードをさらに確認し、文字列が `3[12]/tclwebkit` にもマッチすることを見つけます。その結果、属性 `name` の値は `Android`（最初のレイヤーで定義されている）で、属性 `version` の値は `12`（子ノードで定義されている）になります。
+この場合、最初に上層の2番目のノードで正規表現 `\d+/tclwebkit(?:\d+[\.\d]*)` に一致します。辞書はさらに子ノードに進み、文字列が `3[12]/tclwebkit` にも一致することを見つけます。その結果、属性 `name` の値は `Android`（最初の層で定義されている）となり、属性 `version` の値は `12`（子ノードで定義されている）になります。
 
-強力なYAML設定ファイルを使用することで、ユーザーエージェント文字列パーサーとして正規表現ツリーディクショナリを使用できます。 [uap-core](https://github.com/ua-parser/uap-core) をサポートし、実行テスト [02504_regexp_dictionary_ua_parser](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/02504_regexp_dictionary_ua_parser.sh) の使用方法を示します。
+強力なYAML設定ファイルを使用することで、regexpツリ辞書をユーザーエージェント文字列パーサーとして利用できます。私は[uap-core](https://github.com/ua-parser/uap-core)をサポートし、機能テスト [02504_regexp_dictionary_ua_parser](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/02504_regexp_dictionary_ua_parser.sh) での使用方法を示します。
 #### 属性値の収集 {#collecting-attribute-values}
 
-場合によっては、葉ノードの値だけでなく、マッチした複数の正規表現からの値を返すことが有用です。このような場合には、特別な [`dictGetAll`](../../sql-reference/functions/ext-dict-functions.md#dictgetall) 関数を使用できます。ノードに属性値がタイプ `T` の場合、`dictGetAll` はゼロ以上の値を含む `Array(T)` を返します。
+時には、単一の葉ノードの値だけでなく、マッチした複数の正規表現から値を返すことが便利な場合があります。このような場合、専用の[`dictGetAll`](../../sql-reference/functions/ext-dict-functions.md#dictgetall)関数を使用できます。ノードが属性値の型 `T` を持つ場合、`dictGetAll` は零またはそれ以上の値を含む `Array(T)` を返します。
 
-デフォルトでは、キーごとに返されるマッチの数には上限はありません。制限は、`dictGetAll` にオプションの第4引数として渡すことができます。配列は _トポロジカル順序_ で格納され、子ノードが親ノードの前に、兄弟ノードはソースでの順序に従います。
+デフォルトでは、キーごとに返される一致の数に制限はありません。制限は、`dictGetAll` のオプションの第4引数として渡すことができます。配列は _トポロジカルオーダー_ でポピュレートされ、子ノードは親ノードの前に来て、兄弟ノードはソースの順序に従います。
 
 例：
 
@@ -2340,20 +2367,20 @@ SELECT url, dictGetAll('regexp_dict', ('tag', 'topological_index', 'captured', '
 │ github.com/clickhouse/tree/master/docs │ (['Documentation','GitHub'],[2,3],[NULL],[])                                          │
 └────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────┘
 ```
-#### マッチングモード {#matching-modes}
+#### 一致モード {#matching-modes}
 
-パターンマッチングの動作は、特定の辞書設定で変更できます：
-- `regexp_dict_flag_case_insensitive`: 大文字と小文字を区別しないマッチングを使用します（デフォルトは `false` です）。個々の式において `(?i)` および `(?-i)` でオーバーライドできます。
-- `regexp_dict_flag_dotall`: `.` が改行文字にマッチすることを許可します（デフォルトは `false` です）。
+パターンマッチングの動作は、特定の辞書設定によって変更できます：
+- `regexp_dict_flag_case_insensitive`: ケースインセンシティブマッチングを使用します（デフォルトは `false`）。個々の表現では `(?i)` と `(?-i)` で上書き可能です。
+- `regexp_dict_flag_dotall`: '.'が改行文字と一致することを許可します（デフォルトは `false`）。
 ### ClickHouse Cloudで正規表現ツリー辞書を使用する {#use-regular-expression-tree-dictionary-in-clickhouse-cloud}
 
-上記で使用した `YAMLRegExpTree` ソースはClickHouseオープンソースでは機能しますが、ClickHouse Cloudでは機能しません。ClickHouse Cloudで正規表現ツリー辞書を使用するには、まずClickHouseオープンソースでYAMLファイルから正規表現ツリーディクショナリを作成し、その後、`dictionary` テーブル関数と [INTO OUTFILE](../statements/select/into-outfile.md) 句を使用してこの辞書をCSVファイルにダンプします。
+上述の `YAMLRegExpTree` ソースはClickHouseオープンソースで動作しますが、ClickHouse Cloudでは動作しません。ClickHouseでregexpツリ辞書を使用するには、まずClickHouseオープンソースでYAMLファイルからregexpツリ辞書を作成し、その辞書を `dictionary` テーブル関数と [INTO OUTFILE](../statements/select/into-outfile.md) 句を使用してCSVファイルにダンプしてください。
 
 ```sql
 SELECT * FROM dictionary(regexp_dict) INTO OUTFILE('regexp_dict.csv')
 ```
 
-CSVファイルの内容は次の通りです：
+CSVファイルの内容は以下の通りです：
 
 ```text
 1,0,"Linux/(\d+[\.\d]*).+tlinux","['version','name']","['\\1','TencentOS']"
@@ -2364,15 +2391,15 @@ CSVファイルの内容は次の通りです：
 6,2,"3[12]/tclwebkit","['version']","['10']"
 ```
 
-ダンプされたファイルのスキーマは次の通りです：
+ダンプされたファイルのスキーマは：
 
 - `id UInt64`: RegexpTreeノードのID。
 - `parent_id UInt64`: ノードの親のID。
 - `regexp String`: 正規表現文字列。
-- `keys Array(String)`: ユーザー定義の属性の名称。
-- `values Array(String)`: ユーザー定義の属性の値。
+- `keys Array(String)`: ユーザー定義属性の名前。
+- `values Array(String)`: ユーザー定義属性の値。
 
-ClickHouse Cloudで辞書を作成するには、まず以下のテーブル構造の `regexp_dictionary_source_table` を作成します：
+ClickHouse Cloudで辞書を作成するには、まず以下のテーブル構造で `regexp_dictionary_source_table` テーブルを作成します：
 
 ```sql
 CREATE TABLE regexp_dictionary_source_table
@@ -2385,7 +2412,7 @@ CREATE TABLE regexp_dictionary_source_table
 ) ENGINE=Memory;
 ```
 
-その後、ローカルCSVを次のように更新します：
+次に、ローカルCSVを以下のように更新します：
 
 ```bash
 clickhouse client \
@@ -2398,7 +2425,7 @@ clickhouse client \
     FORMAT CSV" < regexp_dict.csv
 ```
 
-詳しくは、[ローカルファイルを挿入する方法](/integrations/data-ingestion/insert-local-files) を参照してください。ソーステーブルを初期化したら、テーブルソースからRegexpTreeを作成できます：
+詳細については、[ローカルファイルの挿入](https://clickhouse.com/docs/ja/engines/table-engines/others/insert-local-files)を参照してください。ソーステーブルを初期化したら、テーブルソースからRegexpTreeを作成できます：
 
 ```sql
 CREATE DICTIONARY regexp_dict
@@ -2411,51 +2438,51 @@ SOURCE(CLICKHOUSE(TABLE 'regexp_dictionary_source_table'))
 LIFETIME(0)
 LAYOUT(regexp_tree);
 ```
-## Embedded Dictionaries {#embedded-dictionaries}
+## 組み込み辞書 {#embedded-dictionaries}
 
 <SelfManaged />
 
-ClickHouseには、ジオベースワークフローのための組み込み機能が含まれています。
+ClickHouseには、ジオベースと連携するためのビルトイン機能があります。
 
-これにより以下が可能になります：
+これにより、次のことが可能になります：
 
-- 地域のIDを使用して、希望する言語でその名前を取得します。
-- 地域のIDを使用して、都市、地域、連邦地区、国、または大陸のIDを取得します。
-- 地域が別の地域の一部であるかどうかを確認します。
-- 親地域のチェーンを取得します。
+- 地域のIDを使用して、その名前を希望の言語で取得する。
+- 地域のIDを使用して、都市、地域、連邦地区、国、または大陸のIDを取得する。
+- 地域が別の地域の一部であるか確認する。
+- 親地域のチェーンを取得する。
 
-すべての関数は「トランスローカリティ」をサポートしており、地域の所有権に関する異なる視点を同時に使用することができます。詳細については、「ウェブ分析辞書操作用の関数」セクションを参照してください。
+すべての関数は「トランスローカリティ」をサポートしており、地域所有権に関する異なる視点を同時に使用する能力があります。詳細については、「WEB分析辞書と作業するための関数」のセクションを参照してください。
 
-内部辞書はデフォルトパッケージで無効になっています。
-それらを有効にするには、サーバー設定ファイル内の `path_to_regions_hierarchy_file` および `path_to_regions_names_files` のパラメータのコメントを解除します。
+内部辞書は、デフォルトパッケージでは無効になっています。
+それらを有効にするには、サーバー構成ファイルで `path_to_regions_hierarchy_file` および `path_to_regions_names_files` のパラメータのコメントを解除します。
 
-ジオベースはテキストファイルから読み込まれます。
+ジオベースはテキストファイルからロードされます。
 
-`regions_hierarchy*.txt` ファイルを `path_to_regions_hierarchy_file` ディレクトリに配置します。この設定パラメータには `regions_hierarchy.txt` ファイルへのパス（デフォルトの地域階層）を含める必要があり、他のファイル（`regions_hierarchy_ua.txt`）は同じディレクトリに配置する必要があります。
+`regions_hierarchy*.txt` ファイルを `path_to_regions_hierarchy_file` ディレクトリに配置してください。この構成パラメータには、`regions_hierarchy.txt` ファイル（デフォルトの地域階層）のパスを含める必要があり、他のファイル（`regions_hierarchy_ua.txt`）も同じディレクトリに配置する必要があります。
 
-`regions_names_*.txt` ファイルを `path_to_regions_names_files` ディレクトリに配置します。
+`regions_names_*.txt` ファイルを `path_to_regions_names_files` ディレクトリに置いてください。
 
-これらのファイルは自分で作成することもできます。ファイルフォーマットは次のとおりです：
+これらのファイルを自分で作成することもできます。ファイル形式は次のとおりです：
 
 `regions_hierarchy*.txt`: タブ区切り（ヘッダーなし）、カラム：
 
 - 地域ID (`UInt32`)
 - 親地域ID (`UInt32`)
-- 地域タイプ (`UInt8`): 1 - 大陸、3 - 国、4 - 連邦地区、5 - 地域、6 - 都市; 他のタイプには値はありません
-- 人口 (`UInt32`) — オプションカラム
+- 地域タイプ (`UInt8`): 1 - 大陸、3 - 国、4 - 連邦地区、5 - 地域、6 - 市；他のタイプには値がありません
+- 人口 (`UInt32`) — オプションのカラム
 
 `regions_names_*.txt`: タブ区切り（ヘッダーなし）、カラム：
 
 - 地域ID (`UInt32`)
-- 地域名 (`String`) — タブや改行を含むことはできません（エスケープされたものでも）。
+- 地域名 (`String`) — タブや改行を含むことはできません（エスケープされたものも含みません）。
 
-RAMに保存するためにフラットな配列が使用されています。このため、IDは百万を超えてはいけません。
+RAMに保存するためにフラットな配列が使用されます。この理由から、IDは100万を超えてはいけません。
 
-辞書はサーバーを再起動することなく更新できます。ただし、利用可能な辞書のセットは更新されません。
-更新では、ファイルの修正時刻がチェックされます。ファイルが変更された場合、辞書が更新されます。
-変更を確認する間隔は、`builtin_dictionaries_reload_interval` パラメータで構成されます。
-辞書の更新（初回使用時の読み込みを除いて）は、クエリをブロックしません。更新中は、クエリは古いバージョンの辞書を使用します。更新中にエラーが発生した場合、そのエラーはサーバーログに書き込まれ、クエリは古いバージョンの辞書を使用し続けます。
+辞書はサーバーを再起動せずに更新できます。ただし、利用可能な辞書のセットは更新されません。
+更新のためにファイルの変更時間がチェックされます。ファイルが変更された場合、辞書が更新されます。
+変更を確認する間隔は、`builtin_dictionaries_reload_interval` パラメータで設定されています。
+辞書の更新（初回使用時のロードを除く）はクエリをブロックしません。更新中は、旧バージョンの辞書を使用するクエリが実行されます。更新中にエラーが発生した場合、そのエラーはサーバーログに書き込まれ、クエリは旧バージョンの辞書を使用し続けます。
 
-地理的にベースの辞書を定期的に更新することをお勧めします。更新中に新しいファイルを生成し、別の場所に書き込みます。すべてが準備が整ったら、サーバーが使用しているファイルに名前を変更します。
+私たちは、ジオベースを持つ辞書の定期的な更新をお勧めします。更新中は新しいファイルを生成し、それらを別の場所に書き込んでください。すべてが準備完了したら、それらをサーバーによって使用されるファイルに名前を変更してください。
 
-OS識別子や検索エンジンに関する関数もありますが、それらは使用しない方が良いです。
+OS識別子や検索エンジンで作業するための関数もありますが、それらは使用するべきではありません。

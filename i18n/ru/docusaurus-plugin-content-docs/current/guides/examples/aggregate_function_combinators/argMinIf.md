@@ -1,25 +1,24 @@
 ---
 slug: '/examples/aggregate-function-combinators/argMinIf'
-title: 'argMinIf'
-description: 'Пример использования комбинации argMinIf'
+sidebar_label: argMinIf
+description: 'Пример использования комбинатора argMinIf'
+title: argMinIf
 keywords: ['argMin', 'if', 'combinator', 'examples', 'argMinIf']
-sidebar_label: 'argMinIf'
+doc_type: reference
 ---
-
-
 # argMinIf {#argminif}
 
 ## Описание {#description}
 
-Комбинация [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применена к функции [`argMin`](/sql-reference/aggregate-functions/reference/argmin) для нахождения значения `arg`, соответствующего минимальному значению `val` для строк, где условие истинно, используя агрегатную функцию-комбинированную функцию `argMinIf`.
+Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применен к функции [`argMin`](/sql-reference/aggregate-functions/reference/argmin) для нахождения значения `arg`, соответствующего минимальному значению `val` для строк, где условие истинно, с использованием агрегатной функции-комбинатора `argMinIf`.
 
-Функция `argMinIf` полезна, когда необходимо найти значение, связанное с минимальным значением в наборе данных, но только для строк, которые удовлетворяют определенному условию.
+Функция `argMinIf` полезна, когда вам нужно найти значение, связанное с минимальным значением в наборе данных, но только для строк, которые удовлетворяют определенному условию.
 
 ## Пример использования {#example-usage}
 
 В этом примере мы создадим таблицу, которая хранит цены на продукты и их временные метки, и будем использовать `argMinIf`, чтобы найти самую низкую цену для каждого продукта, когда он на складе.
 
-```sql title="Запрос"
+```sql title="Query"
 CREATE TABLE product_prices(
     product_id UInt32,
     price Decimal(10,2),
@@ -37,23 +36,23 @@ INSERT INTO product_prices VALUES
 
 SELECT
     product_id,
-    argMinIf(price, timestamp, in_stock = 1) as lowest_price_when_in_stock
+    argMinIf(price, timestamp, in_stock = 1) AS lowest_price_when_in_stock
 FROM product_prices
 GROUP BY product_id;
 ```
 
-Функция `argMinIf` найдет цену, которая соответствует самой ранней временной метке для каждого продукта, но только учитывая строки, где `in_stock = 1`. Например:
-- Продукт 1: Среди строк на складе, 10.99 имеет самую раннюю временную метку (10:00:00)
-- Продукт 2: Среди строк на складе, 20.99 имеет самую раннюю временную метку (11:00:00)
+Функция `argMinIf` найдет цену, соответствующую ранней временной метке для каждого продукта, но только рассматривая строки, где `in_stock = 1`. Например:
+- Продукт 1: Среди рядов на складе, 10.99 имеет самую раннюю временную метку (10:00:00)
+- Продукт 2: Среди рядов на складе, 20.99 имеет самую раннюю временную метку (11:00:00)
 
-```response title="Ответ"
+```response title="Response"
    ┌─product_id─┬─lowest_price_when_in_stock─┐
 1. │          1 │                      10.99 │
 2. │          2 │                      20.99 │
    └────────────┴────────────────────────────┘
 ```
 
-## Смотрите также {#see-also}
+## См. также {#see-also}
 - [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
 - [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
 - [`argMaxIf`](/examples/aggregate-function-combinators/argMaxIf)

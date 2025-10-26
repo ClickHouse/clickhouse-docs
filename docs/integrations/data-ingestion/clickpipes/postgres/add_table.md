@@ -1,10 +1,11 @@
 ---
 title: 'Adding specific tables to a ClickPipe'
 description: 'Describes the steps need to add specific tables to a ClickPipe.'
-sidebar_label: 'Add Table'
+sidebar_label: 'Add table'
 slug: /integrations/clickpipes/postgres/add_table
 show_title: false
 keywords: ['clickpipes postgres', 'add table', 'table configuration', 'initial load', 'snapshot']
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -26,3 +27,7 @@ This can be done by the following steps:
 
 5. Click update.
 6. Upon successful update, the pipe will have statuses `Setup`, `Snapshot` and `Running` in that order. The table's initial load can be tracked in the **Tables** tab.
+
+:::info
+CDC for existing tables resumes automatically after the new table’s snapshot completes.
+:::

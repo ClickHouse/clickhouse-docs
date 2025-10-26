@@ -1,10 +1,11 @@
 ---
-'description': '系统表包含关于当前正在运行的后台提取的信息。'
+'description': '系统表包含有关当前正在运行的后台提取的信息。'
 'keywords':
 - 'system table'
 - 'replicated_fetches'
 'slug': '/operations/system-tables/replicated_fetches'
 'title': 'system.replicated_fetches'
+'doc_type': 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
@@ -14,7 +15,7 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud/>
 
-包含当前正在运行的后台获取的相关信息。
+包含有关当前正在运行的后台拉取的信息。
 
 列：
 
@@ -22,13 +23,13 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
 - `table` ([String](../../sql-reference/data-types/string.md)) — 表的名称。
 
-- `elapsed` ([Float64](../../sql-reference/data-types/float.md)) — 自显示当前运行的后台获取开始以来经过的时间（以秒为单位）。
+- `elapsed` ([Float64](../../sql-reference/data-types/float.md)) — 自当前正在运行的后台拉取开始以来的经过时间（以秒为单位）。
 
 - `progress` ([Float64](../../sql-reference/data-types/float.md)) — 完成工作的百分比，从 0 到 1。
 
-- `result_part_name` ([String](../../sql-reference/data-types/string.md)) — 作为显示当前运行的后台获取结果形成的部分的名称。
+- `result_part_name` ([String](../../sql-reference/data-types/string.md)) — 作为当前正在运行的后台拉取结果形成的部分的名称。
 
-- `result_part_path` ([String](../../sql-reference/data-types/string.md)) — 作为显示当前运行的后台获取结果形成的部分的绝对路径。
+- `result_part_path` ([String](../../sql-reference/data-types/string.md)) — 作为当前正在运行的后台拉取结果形成的部分的绝对路径。
 
 - `partition_id` ([String](../../sql-reference/data-types/string.md)) — 分区的 ID。
 
@@ -46,7 +47,7 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
 - `URI` ([String](../../sql-reference/data-types/string.md)) — 统一资源标识符。
 
-- `to_detached` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 标志指示当前运行的后台获取是否使用 `TO DETACHED` 表达式执行。
+- `to_detached` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 标志指示当前正在运行的后台拉取是否使用 `TO DETACHED` 表达式执行。
 
 - `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 线程标识符。
 
@@ -77,6 +78,6 @@ to_detached:                 0
 thread_id:                   54
 ```
 
-**另见**
+**另请参见**
 
 - [管理 ReplicatedMergeTree 表](../../sql-reference/statements/system.md/#managing-replicatedmergetree-tables)

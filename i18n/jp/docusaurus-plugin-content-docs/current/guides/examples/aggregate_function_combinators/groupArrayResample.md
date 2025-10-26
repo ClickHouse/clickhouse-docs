@@ -1,7 +1,7 @@
 ---
 'slug': '/examples/aggregate-function-combinators/groupArrayResample'
 'title': 'groupArrayResample'
-'description': 'groupArrayをResampleコンビネータと共に使用する例'
+'description': 'groupArray を使用した Resample 組み合わせ子の例'
 'keywords':
 - 'groupArray'
 - 'Resample'
@@ -9,22 +9,25 @@
 - 'examples'
 - 'groupArrayResample'
 'sidebar_label': 'groupArrayResample'
+'doc_type': 'reference'
 ---
-
-
 
 
 # groupArrayResample {#grouparrayresample}
 
-## 説明 {#description}
+## Description {#description}
 
 [`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
-コンビネータは、指定されたキー列の範囲を固定数の間隔 (`N`) に分割し、各間隔に該当するデータポイントから最小のキーに対応する代表値を選択して結果の配列を構築するために、[`groupArray`](/sql-reference/aggregate-functions/reference/sum) 集約関数に適用できます。
-これにより、すべての値を収集するのではなく、データのダウンサンプルされたビューが作成されます。
+コンビネータは、[`groupArray`](/sql-reference/aggregate-functions/reference/sum) 集約関数に適用して、
+指定されたキー列の範囲を固定数の区間 (`N`) に分割し、
+それぞれの区間に含まれるデータポイントから最小のキーに対応する
+1つの代表値を選択することで、結果の配列を構築します。
+すべての値を集めるのではなく、データのダウンサンプリングされたビューを作成します。
 
-## 使用例 {#example-usage}
+## Example usage {#example-usage}
 
-例を見てみましょう。従業員の `name`、`age`、`wage` を含むテーブルを作成し、いくつかのデータを挿入します:
+例を見てみましょう。`name`、`age`、および
+`wage` を含むテーブルを作成し、データを挿入します：
 
 ```sql
 CREATE TABLE employee_data 
@@ -44,12 +47,13 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-年齢が `[30,60)` と `[60,75)` の間にある人々の名前を取得しましょう。
-年齢を整数値で表現するため、`[30, 59]` と `[60,74]` の間隔になります。
+`[30,60)` および `[60,75)` の区間に年齢が含まれる人々の名前を取得しましょう。
+整数表現を使用して年齢を取得するため、`[30, 59]` および `[60,74]` の区間の年齢を取得します。
 
-名前を配列で集約するために、`groupArray` 集約関数を使用します。
-これは1つの引数を取ります。私たちの場合、それは名前の列です。`groupArrayResample`
-関数は年齢列を使用して年齢ごとに名前を集約する必要があります。必要な間隔を定義するために、`30`、`75`、`30` を `groupArrayResample`
+名前を配列に集約するために、`groupArray` 集約関数を使用します。
+1つの引数を取ります。私たちの場合、それは名前の列です。`groupArrayResample`
+関数は、年齢によって名前を集約するために年齢列を使用する必要があります。
+必要な区間を定義するために、`30`、`75`、`30` を `groupArrayResample`
 関数に引数として渡します：
 
 ```sql
@@ -62,6 +66,6 @@ SELECT groupArrayResample(30, 75, 30)(name, age) FROM employee_data
 └───────────────────────────────────────────────┘
 ```
 
-## さらに見る {#see-also}
+## See also {#see-also}
 - [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
 - [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)

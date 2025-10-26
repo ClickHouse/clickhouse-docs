@@ -3,136 +3,133 @@
 'sidebar_position': 3
 'title': 'サーバーパケット'
 'description': 'ネイティブプロトコルサーバー'
+'doc_type': 'reference'
 ---
-
-
 
 
 # サーバーパケット
 
-| value | name                             | description                                                     |
-|-------|----------------------------------|-----------------------------------------------------------------|
-| 0     | [Hello](#hello)                  | サーバーハンドシェイクレスポンス                                           |
-| 1     | Data                             | [クライアントデータ](./client.md#data) と同様                                  |
-| 2     | [Exception](#exception)          | クエリ処理中の例外                                                 |
-| 3     | [Progress](#progress)            | クエリの進捗                                                     |
-| 4     | [Pong](#pong)                    | Pingレスポンス                                                  |
-| 5     | [EndOfStream](#end-of-stream)    | すべてのパケットが転送されました                                     |
-| 6     | [ProfileInfo](#profile-info)     | プロファイリングデータ                                               |
-| 7     | Totals                           | 合計値                                                         |
-| 8     | Extremes                         | 極値（最小、最大）                                               |
-| 9     | TablesStatusResponse             | TableStatusリクエストへのレスポンス                             |
-| 10    | [Log](#log)                      | クエリシステムログ                                              |
-| 11    | TableColumns                     | カラムの説明                                                   |
-| 12    | UUIDs                            | 一意のパーツIDのリスト                                           |
-| 13    | ReadTaskRequest                  | 次のタスクが必要なリクエストを説明する文字列（UUID）                    |
-| 14    | [ProfileEvents](#profile-events) | サーバーからのプロファイルイベントを含むパケット                       |
+| 値   | 名前                             | 説明                                                        |
+|------|----------------------------------|-----------------------------------------------------------|
+| 0    | [Hello](#hello)                  | サーバーハンドシェイク応答                                   |
+| 1    | データ                             | [クライアントデータ](./client.md#data) と同じ                   |
+| 2    | [例外](#exception)               | クエリ処理の例外                                           |
+| 3    | [進行状況](#progress)             | クエリの進行状況                                          |
+| 4    | [Pong](#pong)                    | Ping 応答                                                |
+| 5    | [ストリームの終わり](#end-of-stream) | すべてのパケットが転送されました                           |
+| 6    | [プロファイル情報](#profile-info) | プロファイリングデータ                                       |
+| 7    | 合計                             | 合計値                                                    |
+| 8    | 極値                             | 極値 (最小、最大)                                          |
+| 9    | TablesStatusResponse             | TableStatus リクエストへの応答                           |
+| 10   | [ログ](#log)                      | クエリシステムログ                                        |
+| 11   | テーブルカラム                     | カラムの説明                                             |
+| 12   | UUIDs                            | ユニークパーツIDのリスト                                  |
+| 13   | ReadTaskRequest                  | 次のタスクが必要なリクエストを示す文字列 (UUID)          |
+| 14   | [プロファイルイベント](#profile-events) | サーバーからのプロファイルイベントを含むパケット         |
 
-`Data`、`Totals` および `Extremes` は圧縮可能です。
+`データ`、`合計`、および `極値` は圧縮できる。
 
 ## Hello {#hello}
 
-[クライアントhello](./client.md#hello) へのレスポンス。
+[クライアント hello](./client.md#hello) への応答。
 
-| field         | type    | value           | description          |
-|---------------|---------|-----------------|----------------------|
-| name          | String  | `Clickhouse`    | サーバー名          |
-| version_major | UVarInt | `21`            | サーバーのメジャーバージョン |
-| version_minor | UVarInt | `12`            | サーバーのマイナーバージョン |
-| revision      | UVarInt | `54452`         | サーバーのリビジョン      |
-| tz            | String  | `Europe/Moscow` | サーバーのタイムゾーン     |
-| display_name  | String  | `Clickhouse`    | UI用のサーバー名        |
-| version_patch | UVarInt | `3`             | サーバーパッチバージョン  |
+| フィールド         | 型      | 値               | 説明                       |
+|--------------------|---------|-------------------|--------------------------|
+| 名前               | 文字列  | `Clickhouse`     | サーバー名                |
+| version_major      | UVarInt | `21`              | サーバーのメジャーバージョン |
+| version_minor      | UVarInt | `12`              | サーバーのマイナーバージョン |
+| revision           | UVarInt | `54452`           | サーバーのリビジョン      |
+| tz                 | 文字列  | `Europe/Moscow`  | サーバーのタイムゾーン    |
+| display_name       | 文字列  | `Clickhouse`     | UI用のサーバー名          |
+| version_patch      | UVarInt | `3`               | サーバーのパッチバージョン  |
 
-
-## Exception {#exception}
+## 例外 {#exception}
 
 クエリ処理中のサーバー例外。
 
-| field       | type   | value                                  | description                  |
-|-------------|--------|----------------------------------------|------------------------------|
-| code        | Int32  | `60`                                   | [ErrorCodes.cpp][codes] を参照。 |
-| name        | String | `DB::Exception`                        | サーバーのメジャーバージョン      |
-| message     | String | `DB::Exception: Table X doesn't exist` | サーバーのマイナーバージョン      |
-| stack_trace | String | ~                                      | C++スタックトレース               |
-| nested      | Bool   | `true`                                 | さらにエラーがある               |
+| フィールド       | 型     | 値                                    | 説明                        |
+|------------------|--------|----------------------------------------|---------------------------|
+| コード            | Int32  | `60`                                   | [ErrorCodes.cpp][codes]を参照。 |
+| 名前              | 文字列 | `DB::Exception`                        | サーバーのメジャーバージョン       |
+| メッセージ        | 文字列 | `DB::Exception: Table X doesn't exist` | サーバーのマイナーバージョン       |
+| stack_trace       | 文字列 | ~                                      | C++ スタックトレース            |
+| nested            | Bool   | `true`                                 | 他のエラー                       |
 
-`nested`が`false`になるまで例外が連続して表示される場合があります。
+`nested` が `false` になるまで、例外の連続リストが続くことがあります。
 
 [codes]: https://clickhouse.com/codebrowser/ClickHouse/src/Common/ErrorCodes.cpp.html "エラーコードのリスト"
 
-## Progress {#progress}
+## 進行状況 {#progress}
 
-クエリ実行の進捗がサーバーから定期的に報告されます。
+サーバーによって定期的に報告されるクエリ実行の進行状況。
 
 :::tip
-進捗は**デルタ**で報告されます。合計値はクライアント側で蓄積してください。
+進行状況は **データ** で報告されます。合計については、クライアントで累積してください。
 :::
 
-| field       | type    | value    | description       |
-|-------------|---------|----------|-------------------|
-| rows        | UVarInt | `65535`  | 行数               |
-| bytes       | UVarInt | `871799` | バイト数            |
-| total_rows  | UVarInt | `0`      | 合計行数            |
-| wrote_rows  | UVarInt | `0`      | クライアントからの行数  |
-| wrote_bytes | UVarInt | `0`      | クライアントからのバイト数 |
+| フィールド     | 型      | 値      | 説明                   |
+|----------------|---------|----------|------------------------|
+| 行数           | UVarInt | `65535`  | 行の数                 |
+| バイト数       | UVarInt | `871799` | バイトの数             |
+| 合計行数       | UVarInt | `0`      | 合計行数               |
+| クライアントから書き込み行数 | UVarInt | `0` | クライアントからの行数    |
+| クライアントから書き込みバイト数 | UVarInt | `0` | クライアントからのバイト数 |
 
 ## Pong {#pong}
 
-[クライアントping](./client.md#ping)へのレスポンス、パケット本体はなし。
+[クライアント ping](./client.md#ping) への応答、パケットボディなし。
 
 ## ストリームの終わり {#end-of-stream}
 
-これ以上の**Data**パケットは送信されず、クエリ結果はサーバーからクライアントに完全にストリーミングされます。
+これ以上の **データ** パケットは送信されず、クエリ結果はサーバーからクライアントに完全にストリーミングされました。
 
-パケット本体はありません。
+パケットボディなし。
 
 ## プロファイル情報 {#profile-info}
 
-| field                        | type    |
-|------------------------------|---------|
-| rows                         | UVarInt |
-| blocks                       | UVarInt |
-| bytes                        | UVarInt |
-| applied_limit                | Bool    |
-| rows_before_limit            | UVarInt |
-| calculated_rows_before_limit | Bool    |
+| フィールド          | 型      |
+|---------------------|---------|
+| 行数                | UVarInt |
+| ブロック数          | UVarInt |
+| バイト数            | UVarInt |
+| 適用された制限      | Bool    |
+| 制限前の行数        | UVarInt |
+| 制限前に計算された行数 | Bool    |
 
-## Log {#log}
+## ログ {#log}
 
-**データブロック**にサーバーログが含まれています。
+**データブロック**としてのサーバーログ。
 
 :::tip
-**カラムのデータブロック**としてエンコードされていますが、圧縮されることはありません。
+**カラムのデータブロック**としてエンコードされますが、圧縮されることはありません。
 :::
 
-| column     | type     |
-|------------|----------|
-| time       | DateTime |
-| time_micro | UInt32   |
-| host_name  | String   |
-| query_id   | String   |
-| thread_id  | UInt64   |
-| priority   | Int8     |
-| source     | String   |
-| text       | String   |
+| カラム       | 型      |
+|--------------|---------|
+| 時間         | DateTime |
+| マイクロ秒   | UInt32   |
+| ホスト名     | 文字列   |
+| クエリID     | 文字列   |
+| スレッドID   | UInt64   |
+| 優先度       | Int8     |
+| ソース       | 文字列   |
+| テキスト     | 文字列   |
 
 ## プロファイルイベント {#profile-events}
 
-**データブロック**にプロファイルイベントが含まれています。
+**データブロック**としてのプロファイルイベント。
 
 :::tip
-**カラムのデータブロック**としてエンコードされていますが、圧縮されることはありません。
+**カラムのデータブロック**としてエンコードされますが、圧縮されることはありません。
 
-`value`の型はサーバーのリビジョンに応じて`UInt64`または`Int64`になります。
+`値` の型は、サーバーのリビジョンに応じて `UInt64` または `Int64` です。
 :::
 
-
-| column       | type            |
-|--------------|-----------------|
-| host_name    | String          |
-| current_time | DateTime        |
-| thread_id    | UInt64          |
-| type         | Int8            |
-| name         | String          |
-| value        | UInt64 or Int64 |
+| カラム         | 型            |
+|----------------|-----------------|
+| ホスト名       | 文字列          |
+| 現在の時間     | DateTime        |
+| スレッドID     | UInt64          |
+| 型             | Int8            |
+| 名前           | 文字列          |
+| 値             | UInt64 または Int64 |

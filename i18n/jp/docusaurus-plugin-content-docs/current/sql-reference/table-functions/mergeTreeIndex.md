@@ -1,42 +1,41 @@
 ---
-'description': 'Represents the contents of index and marks files of MergeTree tables.
-  It can be used for introspection.'
+'description': 'MergeTree テーブルのインデックスとマークファイルの内容を表します。それは内省に使用することができます。'
 'sidebar_label': 'mergeTreeIndex'
 'sidebar_position': 77
 'slug': '/sql-reference/table-functions/mergeTreeIndex'
 'title': 'mergeTreeIndex'
+'doc_type': 'reference'
 ---
-
-
 
 
 # mergeTreeIndex テーブル関数
 
-MergeTree テーブルのインデックスとマークファイルの内容を表します。これは内部確認に使用できます。
+MergeTree テーブルのインデックスおよびマークファイルの内容を表します。これを使用して内部情報を取得できます。
 
 ## 構文 {#syntax}
 
 ```sql
-mergeTreeIndex(database, table, [with_marks = true])
+mergeTreeIndex(database, table [, with_marks = true] [, with_minmax = true])
 ```
 
 ## 引数 {#arguments}
 
-| 引数         | 説明                                           |
-|--------------|------------------------------------------------|
-| `database`   | インデックスとマークを読み込むデータベース名。   |
-| `table`      | インデックスとマークを読み込むテーブル名。      |
-| `with_marks` | 結果にマーク付きカラムを含めるかどうか。        |
+| 引数          | 説明                                           |
+|---------------|------------------------------------------------|
+| `database`    | インデックスとマークを読み取るデータベース名。   |
+| `table`       | インデックスとマークを読み取るテーブル名。      |
+| `with_marks`  | 結果にマーク付きのカラムを含めるかどうか。      |
+| `with_minmax` | 結果に最小-最大インデックスを含めるかどうか。    |
 
-## 戻り値 {#returned_value}
+## 返される値 {#returned_value}
 
-ソーステーブルの主キーの値を持つカラム、すべてのデータパーツに対するマークの値を持つカラム（有効な場合）、および仮想カラムを持つテーブルオブジェクト：
+ソーステーブルの主インデックスおよび最小-最大インデックス（有効な場合）の値を持つカラムを含むテーブルオブジェクト、ソーステーブルのデータパーツにあるすべての可能なファイルのマークの値を持つカラム（有効な場合）および仮想カラムを返します：
 
-- `part_name` - データパートの名前。
-- `mark_number` - データパート内の現在のマークの番号。
+- `part_name` - データパーツの名前。
+- `mark_number` - データパーツ内の現在のマークの番号。
 - `rows_in_granule` - 現在のグラニュール内の行数。
 
-マークのカラムは、データパートにカラムが存在しない場合や、そのサブストリームのいずれかのマークが書き込まれていない場合（例：コンパクトパーツ）に `(NULL, NULL)` 値を含むことがあります。
+マークカラムは、データパーツにカラムが存在しない場合や、そのサブストリームのいずれかのマークが書き込まれていない場合（例：コンパクトなパーツ）に `(NULL, NULL)` 値を含むことがあります。
 
 ## 使用例 {#usage-example}
 
@@ -90,4 +89,4 @@ DESCRIBE mergeTreeIndex(currentDatabase(), test_table, with_marks = true) SETTIN
 │ arr.size0.mark  │ Tuple(offset_in_compressed_file Nullable(UInt64), offset_in_decompressed_block Nullable(UInt64)) │
 │ arr.mark        │ Tuple(offset_in_compressed_file Nullable(UInt64), offset_in_decompressed_block Nullable(UInt64)) │
 └─────────────────┴──────────────────────────────────────────────────────────────────────────────────────────────────┘
-
+```

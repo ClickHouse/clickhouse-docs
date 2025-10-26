@@ -1,47 +1,42 @@
 ---
-'description': 'System table containing information about columns in all tables'
+'description': '全テーブルのカラムに関する情報を含むシステムテーブル'
 'keywords':
 - 'system table'
 - 'columns'
 'slug': '/operations/system-tables/columns'
 'title': 'system.columns'
+'doc_type': 'reference'
 ---
 
+カラムに関する情報をすべてのテーブルから取得できます。
 
+このテーブルを使用して、複数のテーブルに対して同時に情報を取得できる [DESCRIBE TABLE](../../sql-reference/statements/describe-table.md) クエリと類似の情報を得ることができます。
 
-以下は、テキストの日本語訳です。
+[一時テーブル](../../sql-reference/statements/create/table.md#temporary-tables)のカラムは、作成されたセッションでのみ `system.columns` に表示されます。これらは空の `database` フィールドで示されます。
 
----
+`system.columns` テーブルには以下のカラムが含まれています（カラムタイプは括弧内に示されています）：
 
-すべてのテーブルにおけるカラムに関する情報を含みます。
-
-このテーブルを使用して、複数のテーブルに対して、[DESCRIBE TABLE](../../sql-reference/statements/describe-table.md) クエリに似た情報を取得できます。
-
-[一時テーブル](../../sql-reference/statements/create/table.md#temporary-tables)のカラムは、作成されたセッション内のみで `system.columns` に表示されます。これらは空の `database` フィールドで表示されます。
-
-`system.columns` テーブルには以下のカラムが含まれています（カラムのタイプは括弧内に示されています）：
-
-- `database` ([String](../../sql-reference/data-types/string.md)) — データベース名。
-- `table` ([String](../../sql-reference/data-types/string.md)) — テーブル名。
-- `name` ([String](../../sql-reference/data-types/string.md)) — カラム名。
-- `type` ([String](../../sql-reference/data-types/string.md)) — カラムタイプ。
-- `position` ([UInt64](../../sql-reference/data-types/int-uint.md)) — テーブル内のカラムの序数位置（1から始まる）。
-- `default_kind` ([String](../../sql-reference/data-types/string.md)) — デフォルト値の式タイプ（`DEFAULT`, `MATERIALIZED`, `ALIAS`）、定義されていない場合は空文字列。
-- `default_expression` ([String](../../sql-reference/data-types/string.md)) — デフォルト値の式、定義されていない場合は空文字列。
-- `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 圧縮データのサイズ（バイト）。
-- `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 非圧縮データのサイズ（バイト）。
-- `marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — マークのサイズ（バイト）。
-- `comment` ([String](../../sql-reference/data-types/string.md)) — カラムに関するコメント、定義されていない場合は空文字列。
-- `is_in_partition_key` ([UInt8](../../sql-reference/data-types/int-uint.md)) — カラムがパーティション式に含まれているかを示すフラグ。
-- `is_in_sorting_key` ([UInt8](../../sql-reference/data-types/int-uint.md)) — カラムがソートキー式に含まれているかを示すフラグ。
-- `is_in_primary_key` ([UInt8](../../sql-reference/data-types/int-uint.md)) — カラムが主キー式に含まれているかを示すフラグ。
-- `is_in_sampling_key` ([UInt8](../../sql-reference/data-types/int-uint.md)) — カラムがサンプリングキー式に含まれているかを示すフラグ。
-- `compression_codec` ([String](../../sql-reference/data-types/string.md)) — 圧縮コーデック名。
-- `character_octet_length` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — バイナリデータ、キャラクターデータ、テキストデータ、および画像に対する最大バイト長。ClickHouseでは`FixedString`データ型にのみ意味があります。それ以外では`NULL`値が返されます。
-- `numeric_precision` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — おおよその数値データ、正確な数値データ、整数データ、または貨幣データの精度。ClickHouseでは整数型のビット幅および`Decimal`型の小数精度を示します。それ以外では`NULL`値が返されます。
-- `numeric_precision_radix` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — 数値システムの基数は、おおよその数値データ、正確な数値データ、整数データ、または貨幣データの精度です。ClickHouseでは整数型が2、`Decimal`型が10です。それ以外では`NULL`値が返されます。
-- `numeric_scale` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — おおよその数値データ、正確な数値データ、整数データ、または貨幣データのスケールです。ClickHouseでは`Decimal`型にのみ意味があります。それ以外では`NULL`値が返されます。
-- `datetime_precision` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — `DateTime64`データ型の小数精度。その他のデータ型については、`NULL`値が返されます。
+- `database` （[String](../../sql-reference/data-types/string.md)） — データベース名。
+- `table` （[String](../../sql-reference/data-types/string.md)） — テーブル名。
+- `name` （[String](../../sql-reference/data-types/string.md)） — カラム名。
+- `type` （[String](../../sql-reference/data-types/string.md)） — カラムタイプ。
+- `position` （[UInt64](../../sql-reference/data-types/int-uint.md)） — テーブルにおけるカラムの序列位置（1から始まる）。
+- `default_kind` （[String](../../sql-reference/data-types/string.md)） — デフォルト値の式タイプ（`DEFAULT`、`MATERIALIZED`、`ALIAS`）、未定義の場合は空文字列。
+- `default_expression` （[String](../../sql-reference/data-types/string.md)） — デフォルト値の式、未定義の場合は空文字列。
+- `data_compressed_bytes` （[UInt64](../../sql-reference/data-types/int-uint.md)） — 圧縮データのサイズ（バイト単位）。
+- `data_uncompressed_bytes` （[UInt64](../../sql-reference/data-types/int-uint.md)） — 非圧縮データのサイズ（バイト単位）。
+- `marks_bytes` （[UInt64](../../sql-reference/data-types/int-uint.md)） — マークのサイズ（バイト単位）。
+- `comment` （[String](../../sql-reference/data-types/string.md)） — カラムに関するコメント、未定義の場合は空文字列。
+- `is_in_partition_key` （[UInt8](../../sql-reference/data-types/int-uint.md)） — カラムがパーティション式に含まれているかどうかを示すフラグ。
+- `is_in_sorting_key` （[UInt8](../../sql-reference/data-types/int-uint.md)） — カラムがソートキー式に含まれているかどうかを示すフラグ。
+- `is_in_primary_key` （[UInt8](../../sql-reference/data-types/int-uint.md)） — カラムが主キー式に含まれているかどうかを示すフラグ。
+- `is_in_sampling_key` （[UInt8](../../sql-reference/data-types/int-uint.md)） — カラムがサンプリングキー式に含まれているかどうかを示すフラグ。
+- `compression_codec` （[String](../../sql-reference/data-types/string.md)） — 圧縮コーデックの名前。
+- `character_octet_length` （[Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md)）） — バイナリデータ、文字データ、テキストデータ、画像の最大長（バイト単位）。ClickHouseでは `FixedString` データタイプに対してのみ意味を持ちます。それ以外の場合は `NULL` 値が返されます。
+- `numeric_precision` （[Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md)）） — おおよその数値データ、正確な数値データ、整数データ、または金銭データの精度。ClickHouseでは整数タイプのビット幅と `Decimal` タイプの小数精度です。それ以外の場合は `NULL` 値が返されます。
+- `numeric_precision_radix` （[Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md)）） — おおよその数値データ、正確な数値データ、整数データ、または金銭データの精度を表す数値システムの基数。ClickHouseでは整数タイプには 2、`Decimal` タイプには 10 が対応します。それ以外の場合は `NULL` 値が返されます。
+- `numeric_scale` （[Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md)）） — おおよその数値データ、正確な数値データ、整数データ、または金銭データのスケール。ClickHouseでは `Decimal` タイプに対してのみ意味を持ちます。それ以外の場合は `NULL` 値が返されます。
+- `datetime_precision` （[Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md)）） — `DateTime64` データタイプの小数精度。その他のデータタイプでは `NULL` 値が返されます。
 
 **例**
 
@@ -98,7 +93,3 @@ numeric_precision_radix: ᴺᵁᴸᴸ
 numeric_scale:           ᴺᵁᴸᴸ
 datetime_precision:      ᴺᵁᴸᴸ
 ```
-
----
-
-この翻訳が元のテキストの意味を明確に伝えることを確認しました。また、HTMLタグやMarkdown構造はすべて保持されています。

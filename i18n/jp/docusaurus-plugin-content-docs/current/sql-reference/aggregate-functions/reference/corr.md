@@ -1,16 +1,15 @@
 ---
-'description': 'Pearson相関係数を計算します。'
+'description': '計算 Pearson 相関係数。'
 'sidebar_position': 117
 'slug': '/sql-reference/aggregate-functions/reference/corr'
 'title': 'corr'
+'doc_type': 'reference'
 ---
-
-
 
 
 # corr
 
-[ピアソン相関係数](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient)を計算します：
+[ピアソンの相関係数](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient)を計算します：
 
 $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{\sqrt{\Sigma{(x - \bar{x})^2} * \Sigma{(y - \bar{y})^2}}}
@@ -18,7 +17,7 @@ $$
 
 <br/>
 :::note
-この関数は数値的に不安定なアルゴリズムを使用しています。計算で[数値安定性](https://en.wikipedia.org/wiki/Numerical_stability)が必要な場合は、[`corrStable`](../reference/corrstable.md)関数を使用してください。遅くなりますが、より正確な結果を提供します。
+この関数は数値的に不安定なアルゴリズムを使用しています。計算で[数値的安定性](https://en.wikipedia.org/wiki/Numerical_stability)が必要な場合は、[`corrStable`](../reference/corrstable.md)関数を使用してください。この関数は遅くなりますが、より正確な結果を提供します。
 :::
 
 **構文**
@@ -30,11 +29,11 @@ corr(x, y)
 **引数**
 
 - `x` — 最初の変数。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)。
-- `y` — 2番目の変数。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)。
+- `y` — 二番目の変数。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)。
 
 **返される値**
 
-- ピアソン相関係数。[Float64](../../data-types/float.md)。
+- ピアソンの相関係数。 [Float64](../../data-types/float.md)。
 
 **例**
 

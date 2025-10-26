@@ -1,10 +1,10 @@
 ---
 description: '131 million rows of weather observation data for the last 128 yrs'
-sidebar_label: 'Taiwan Historical Weather Datasets'
-sidebar_position: 1
+sidebar_label: 'Taiwan historical weather datasets'
 slug: /getting-started/example-datasets/tw-weather
-title: 'Taiwan Historical Weather Datasets'
-keywords: ['Taiwan weather data', 'historical weather', 'meteorological observations', 'weather dataset', 'getting started']
+title: 'Taiwan historical weather datasets'
+doc_type: 'guide'
+keywords: ['example dataset', 'weather', 'taiwan', 'sample data', 'climate data']
 ---
 
 This dataset contains historical meteorological observations measurements for the last 128 years. Each row is a measurement for a point in date time and weather station.

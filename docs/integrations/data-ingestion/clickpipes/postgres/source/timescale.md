@@ -4,6 +4,7 @@ description: 'Set up Postgres with the TimescaleDB extension as a source for Cli
 slug: /integrations/clickpipes/postgres/source/timescale
 title: 'Postgres with TimescaleDB source setup guide'
 keywords: ['TimescaleDB']
+doc_type: 'guide'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
@@ -83,11 +84,13 @@ Make sure to replace `clickpipes_user` and `clickpipes_password` with your desir
 
 ```sql
 -- When adding new tables to the ClickPipe, you'll need to add them to the publication as well manually. 
-  CREATE PUBLICATION clickpipes_publication FOR TABLE <...>, TABLES IN SCHEMA _timescaledb_internal;
+  CREATE PUBLICATION clickpipes_publication FOR TABLE <...>, <...>, TABLES IN SCHEMA _timescaledb_internal;
 ```
 
 :::tip
 We don't recommend creating a publication `FOR ALL TABLES`, this leads to more traffic from Postgres to ClickPipes (to sending changes for other tables not in the pipe) and reduces overall efficiency.
+
+For manually created publications, please add any tables you want to the publication before adding them to the pipe.
 ::: 
 
 :::info
@@ -104,16 +107,6 @@ steps and perform a one-time load of your data.
 ```
 
 After these steps, you should be able to proceed with [creating a ClickPipe](../index.md).
-
-## Troubleshooting {#troubleshooting}
-
-Initial load for tables can fail with an error:
-
-```sql
-ERROR: transparent decompression only supports tableoid system column (SQLSTATE 42P10)
-```
-
-You may need to disable [compression](https://docs.timescale.com/api/latest/compression/decompress_chunk) or [hypercore columnstore](https://docs.timescale.com/api/latest/hypercore/convert_to_rowstore) for these tables.
 
 ## Configure network access {#configure-network-access}
 

@@ -1,110 +1,99 @@
 ---
 'slug': '/integrations/clickpipes/secure-kinesis'
-'sidebar_label': 'Kinesis Role-Based Access'
-'title': 'Kinesis Role-Based Access'
-'description': 'This article demonstrates how ClickPipes customers can leverage role-based
-  access to authenticate with Amazon Kinesis and access their data streams securely.'
+'sidebar_label': 'Kinesis ロールベースのアクセス'
+'title': 'Kinesis ロールベースのアクセス'
+'description': 'この記事は、ClickPipesの顧客がどのようにロールベースのアクセスを利用してAmazon Kinesisに認証し、安全にデータストリームにアクセスできるかを示します。'
+'doc_type': 'guide'
+'keywords':
+- 'Amazon Kinesis'
 ---
 
 import secure_kinesis from '@site/static/images/integrations/data-ingestion/clickpipes/securekinesis.jpg';
 import secures3_arn from '@site/static/images/cloud/security/secures3_arn.png';
 import Image from '@theme/IdealImage';
 
-この文書では、ClickPipes の顧客が役割ベースのアクセスを利用して Amazon Kinesis に認証し、安全にデータストリームにアクセスできる方法を示します。
+このドキュメントでは、ClickPipes の顧客が、役割ベースのアクセスを利用して Amazon Kinesis に認証し、データストリームに安全にアクセスする方法を示します。
+
+## 前提条件 {#prerequisite}
+
+このガイドに従うには、次のものが必要です：
+- アクティブな ClickHouse Cloud サービス
+- AWS アカウント
 
 ## はじめに {#introduction}
 
-安全な Kinesis アクセスの設定に dive する前に、そのメカニズムを理解することが重要です。ここでは、ClickPipes が顧客の AWS アカウント内で役割を引き受けて Amazon Kinesis ストリームにアクセスする方法の概要を示します。
+安全な Kinesis アクセスの設定に入る前に、メカニズムを理解することが重要です。以下は、ClickPipes が顧客の AWS アカウント内の役割を引き受けて Amazon Kinesis ストリームにアクセスする方法の概要です。
 
 <Image img={secure_kinesis} alt="Secure Kinesis" size="lg" border/>
 
-このアプローチを使用することで、顧客はそれぞれのストリームのアクセスポリシーを個別に変更することなく（引き受けた役割の IAM ポリシーで）単一の場所で Kinesis データストリームへのすべてのアクセスを管理できます。
+このアプローチを使用することで、顧客は各ストリームのアクセスポリシーを個別に修正することなく、引き受けた役割の IAM ポリシーの中で Kinesis データストリームへのすべてのアクセスを一元管理できます。
 
-## セットアップ {#setup}
+## 設定 {#setup}
 
-### ClickHouse サービス IAM ロール Arn の取得 {#obtaining-the-clickhouse-service-iam-role-arn}
+<VerticalStepper headerLevel="h3"/>
 
-1 - ClickHouse クラウドアカウントにログインします。
+### ClickHouse サービス IAM ロールの Arn を取得する {#obtaining-the-clickhouse-service-iam-role-arn}
 
-2 - 統合を作成したい ClickHouse サービスを選択します。
-
-3 - **設定** タブを選択します。
-
-4 - ページの下部にある **ネットワークセキュリティ情報** セクションにスクロールします。
-
-5 - 以下のようにサービスに属する **サービスロール ID (IAM)** の値をコピーします。
+- 1. ClickHouse Cloud アカウントにログインします。
+- 2. 統合を作成する ClickHouse サービスを選択します。
+- 3. **設定**タブを選択します。
+- 4. ページの下部にある **ネットワークセキュリティ情報** セクションまでスクロールします。
+- 5. 以下のようにサービスに属する **サービスロール ID (IAM)** の値をコピーします。
 
 <Image img={secures3_arn} alt="Secure S3 ARN" size="lg" border/>
 
-### IAM の役割を引き受ける設定 {#setting-up-iam-assume-role}
+### IAM の引き受け役割を設定する {#setting-up-iam-assume-role}
 
-#### IAM ロールを手動で作成します。 {#manually-create-iam-role}
+#### IAM ロールを手動で作成する。 {#manually-create-iam-role}
 
-1 - IAM ロールを作成および管理する権限を持つ IAM ユーザーを使用して、ウェブブラウザで AWS アカウントにログインします。
+- 1. IAM ロールを作成および管理する権限を持つ IAM ユーザーで AWS アカウントにウェブブラウザからログインします。
+- 2. IAM サービスコンソールに移動します。
+- 3. Trusted Entity Type を `AWS account` とする新しい IAM ロールを作成します。このロールの名前は **必ず** `ClickHouseAccessRole-` で始まる必要があります。
 
-2 - IAM サービスコンソールに移動します。
-
-3 - 次の IAM およびトラストポリシーで新しい IAM ロールを作成します。これが機能するには IAM ロールの名前は **必ず `ClickHouseAccessRole-` で始まる必要があります**。
-
-トラストポリシー（ここで `{ClickHouse_IAM_ARN}` をあなたの ClickHouse インスタンスに属する IAM ロール ARN に置き換えてください）:
+信頼ポリシーでは、`{ClickHouse_IAM_ARN}` を ClickHouse インスタンスに属する IAM ロールの arn に置き換えてください。
+IAM ポリシーでは、`{STREAM_NAME}` をあなたの Kinesis ストリーム名に置き換えてください。
 
 ```json
 {
   "Version": "2012-10-17",
   "Statement": [
     {
+      "Sid": "Statement1",
       "Effect": "Allow",
       "Principal": {
         "AWS": "{ClickHouse_IAM_ARN}"
       },
       "Action": "sts:AssumeRole"
+    },
+    {
+      "Action": [
+        "kinesis:DescribeStream",
+        "kinesis:GetShardIterator",
+        "kinesis:GetRecords",
+        "kinesis:ListShards",
+        "kinesis:SubscribeToShard",
+        "kinesis:DescribeStreamConsumer",
+        "kinesis:RegisterStreamConsumer",
+        "kinesis:DeregisterStreamConsumer",
+        "kinesis:ListStreamConsumers"
+      ],
+      "Resource": [
+        "arn:aws:kinesis:region:account-id:stream/{STREAM_NAME}/*"
+      ],
+      "Effect": "Allow"
+    },
+    {
+      "Action": [
+        "kinesis:ListStreams"
+      ],
+      "Resource": "*",
+      "Effect": "Allow"
     }
   ]
 }
+
+</VerticalStepper>
+
 ```
 
-IAM ポリシー（ここで `{STREAM_NAME}` をあなたの Kinesis ストリーム名に置き換えてください）:
-
-```json
-{
-    "Version": "2012-10-17",
-        "Statement": [
-        {
-            "Action": [
-                "kinesis:DescribeStream",
-                "kinesis:GetShardIterator",
-                "kinesis:GetRecords",
-                "kinesis:ListShards",
-                "kinesis:SubscribeToShard",
-                "kinesis:DescribeStreamConsumer",
-                "kinesis:RegisterStreamConsumer",
-                "kinesis:DeregisterStreamConsumer",
-                "kinesis:ListStreamConsumers"
-            ],
-            "Resource": [
-                "arn:aws:kinesis:region:account-id:stream/{STREAM_NAME}"
-            ],
-            "Effect": "Allow"
-        },
-        {
-            "Action": [
-                "kinesis:SubscribeToShard",
-                "kinesis:DescribeStreamConsumer"
-            ],
-            "Resource": [
-                "arn:aws:kinesis:region:account-id:stream/{STREAM_NAME}/*"
-            ],
-            "Effect": "Allow"
-        },
-        {
-            "Action": [
-                "kinesis:ListStreams"
-            ],
-            "Resource": "*",
-            "Effect": "Allow"
-        }
-    ]
-}
-```
-
-4 - 作成後に新しい **IAM ロール ARN** をコピーします。これが Kinesis ストリームにアクセスするために必要です。
+- 4. 作成後に新しい **IAM ロール Arn** をコピーします。これは、Kinesis ストリームにアクセスするために必要です。

@@ -2,6 +2,7 @@
 slug: /about
 title: 'About ClickHouse'
 description: 'Landing page for About ClickHouse'
+doc_type: 'landing-page'
 keywords: ['about', 'overview', 'introduction']
 ---
 
@@ -12,7 +13,6 @@ the table of contents below for a list of pages in this section of the docs.
 
 | Page                                                                       | Description                                                                                                                                                                                                       |
 |----------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [What is ClickHouse](/about-clickhouse)                                    | Introduces ClickHouse's core features, architecture, and uses, providing a concise overview for new users.                                                                                                        |
 | [Adopters](/about-us/adopters)                                             | A list of companies using ClickHouse and their success stories, assembled from public sources                                                                                                                     |
 | [Support](/about-us/support)                                               | An introduction to ClickHouse Cloud support services and their mission.                                                                                                                                           |
 | [Beta features and experimental features](/beta-and-experimental-features) | Learn about how ClickHouse uses "Beta" and "Experimental" labels to distinguish between officially supported and early-stage, unsupported features due to varied development speeds from community contributions. |

@@ -3,6 +3,7 @@ slug: /data-modeling/backfilling
 title: 'Backfilling Data'
 description: 'How to use backfill large datasets in ClickHouse'
 keywords: ['materialized views', 'backfilling', 'inserting data', 'resilient data load']
+doc_type: 'guide'
 ---
 
 import nullTableMV from '@site/static/images/data-modeling/null_table_mv.png';
@@ -196,13 +197,11 @@ If we experienced a failure at any point during this second load, we could simpl
 With our data load complete, we can move the data from our duplicate tables to the main tables using the [`ALTER TABLE MOVE PARTITION`](/sql-reference/statements/alter/partition#move-partition-to-table) clause.
 
 ```sql
-ALTER TABLE pypi
- (MOVE PARTITION () FROM pypi_v2)
+ALTER TABLE pypi_v2 MOVE PARTITION () TO pypi
 
 0 rows in set. Elapsed: 1.401 sec.
 
-ALTER TABLE pypi_downloads
- (MOVE PARTITION () FROM pypi_downloads_v2)
+ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
 
 0 rows in set. Elapsed: 0.389 sec.
 ```
@@ -309,11 +308,9 @@ Filtering on timestamp columns in Parquet can be very efficient. ClickHouse will
 Once this insert is complete, we can move the associated partitions.
 
 ```sql
-ALTER TABLE pypi
- (MOVE PARTITION () FROM pypi_v2)
+ALTER TABLE pypi_v2 MOVE PARTITION () TO pypi
 
-ALTER TABLE pypi_downloads
- (MOVE PARTITION () FROM pypi_downloads_v2)
+ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
 ```
 
 If the historical data is an isolated bucket, the above time filter is not required. If a time or monotonic column is unavailable, isolate your historical data.

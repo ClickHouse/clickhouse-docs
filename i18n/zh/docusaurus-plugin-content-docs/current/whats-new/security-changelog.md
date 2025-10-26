@@ -1,12 +1,13 @@
 ---
 slug: /whats-new/security-changelog
 sidebar_position: 20
-sidebar_label: 'Security Changelog'
-title: 'Security Changelog'
+sidebar_label: 'Security changelog'
+title: 'Security changelog'
 description: 'Security changelog detailing security related updates and changes'
+doc_type: 'changelog'
 ---
 
-# Security Changelog
+# Security changelog
 
 ## Fixed in ClickHouse v25.1.5.5, 2025-01-05 {#fixed-in-clickhouse-release-2025-01-05}
 

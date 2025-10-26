@@ -7,6 +7,7 @@ pagination_next: null
 description: 'Learn how to build a LlamaIndex AI agent that can interact with ClickHouse MCP Server.'
 keywords: ['ClickHouse', 'MCP', 'LlamaIndex']
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 # How to build a LlamaIndex AI agent using ClickHouse MCP Server
@@ -32,11 +33,8 @@ You can run the following steps either from your Python REPL or via script.
 Install the required libraries by running the following commands:
 
 ```python
-!pip install -q --upgrade pip
-!pip install -q llama-index
-!pip install -q clickhouse-connect
-!pip install -q llama-index-llms-anthropic
-!pip install -q llama-index-tools-mcp
+pip install -q --upgrade pip
+pip install -q llama-index clickhouse-connect llama-index-llms-anthropic llama-index-tools-mcp
 ```
 
 ## Setup credentials {#setup-credentials}

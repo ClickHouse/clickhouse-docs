@@ -1,9 +1,9 @@
 ---
-'description': 'Documentation for Other Functions'
-'sidebar_label': 'Other'
-'sidebar_position': 140
+'description': 'Other Functionsに関するDocumentation'
+'sidebar_label': 'その他'
 'slug': '/sql-reference/functions/other-functions'
-'title': 'Other Functions'
+'title': 'その他の機能'
+'doc_type': 'reference'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
@@ -15,8 +15,8 @@ import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 # その他の関数
 ## hostName {#hostname}
 
-この関数が実行されたホストの名前を返します。関数がリモートサーバーで実行されている場合（分散処理）、リモートサーバーの名前が返されます。
-関数が分散テーブルのコンテキストで実行されると、各シャードに関連する値を持つ通常のカラムが生成されます。それ以外の場合は、定数値が生成されます。
+この関数が実行されたホストの名前を返します。関数がリモートサーバー（分散処理）で実行される場合、リモートサーバー名が返されます。
+関数が分散テーブルのコンテキストで実行される場合、各シャードに関連する値を持つ通常のカラムが生成されます。それ以外の場合は定数値が生成されます。
 
 **構文**
 
@@ -24,12 +24,12 @@ import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 hostName()
 ```
 
-**戻り値**
+**返される値**
 
-- ホスト名。 [String](../data-types/string.md)。
+- ホスト名。 [String](../data-types/string.md).
 ## getMacro {#getMacro}
 
-サーバー構成の [macros](../../operations/server-configuration-parameters/settings.md#macros) セクションから名前付き値を返します。
+サーバー設定の [macros](../../operations/server-configuration-parameters/settings.md#macros) セクションから名前付き値を返します。
 
 **構文**
 
@@ -41,13 +41,13 @@ getMacro(name);
 
 - `name` — `<macros>` セクションから取得するマクロ名。 [String](/sql-reference/data-types/string).
 
-**戻り値**
+**返される値**
 
-- 指定されたマクロの値。 [String](../data-types/string.md).
+- 指定したマクロの値。 [String](../data-types/string.md).
 
 **例**
 
-サーバー設定ファイルの `<macros>` セクションの例:
+サーバー設定ファイル内の例 `<macros>` セクション:
 
 ```xml
 <macros>
@@ -93,9 +93,9 @@ fqdn();
 
 エイリアス: `fullHostName`, `FQDN`.
 
-**戻り値**
+**返される値**
 
-- 完全修飾ドメイン名の文字列。 [String](../data-types/string.md).
+- 完全修飾ドメイン名を持つ文字列。 [String](../data-types/string.md).
 
 **例**
 
@@ -112,7 +112,7 @@ SELECT FQDN();
 ```
 ## basename {#basename}
 
-文字列の末尾をその最後のスラッシュまたはバックスラッシュに従って抽出します。この関数は、パスからファイル名を抽出するためによく使用されます。
+文字列の最後のスラッシュまたはバックスラッシュ以降を抽出します。この関数は、パスからファイル名を抽出するのによく使用されます。
 
 ```sql
 basename(expr)
@@ -120,14 +120,14 @@ basename(expr)
 
 **引数**
 
-- `expr` — [String](../data-types/string.md) 型の値。バックスラッシュはエスケープする必要があります。
+- `expr` — [String](../data-types/string.md)型の値。バックスラッシュはエスケープする必要があります。
 
-**戻り値**
+**返される値**
 
-以下を含む文字列:
+入力文字列の最後のスラッシュまたはバックスラッシュの後にある:
 
-- 最後のスラッシュまたはバックスラッシュの後の入力文字列の末尾。入力文字列がスラッシュまたはバックスラッシュで終わる場合（例: `/` または `c:\`）、関数は空の文字列を返します。
-- スラッシュまたはバックスラッシュがない場合は、元の文字列。
+- 入力文字列がスラッシュまたはバックスラッシュで終わる場合（例: `/` または `c:\`）、関数は空の文字列を返します。
+- スラッシュまたはバックスラッシュが存在しない場合は元の文字列を返します。
 
 **例**
 
@@ -174,10 +174,10 @@ SELECT 'some-file-name' AS a, basename(a)
 ```
 ## visibleWidth {#visiblewidth}
 
-値をテキスト形式（タブ区切り）でコンソールに出力する際のおおよその幅を計算します。
-この関数は、システムによって [Pretty formats](../../interfaces/formats.md)を実装するために使用されます。
+値をテキスト形式（タブ区切り）でコンソールに出力する際の概算幅を計算します。
+この関数は、[Pretty形式](../../interfaces/formats.md)を実装するためにシステムによって使用されます。
 
-`NULL`は `Pretty`フォーマットの `NULL` に相当する文字列として表されます。
+`NULL`は、`Pretty`形式の`NULL`に対応する文字列として表されます。
 
 **構文**
 
@@ -204,7 +204,7 @@ SELECT visibleWidth(NULL)
 
 渡された引数の型名を返します。
 
-`NULL`が渡された場合、関数は `Nullable(Nothing)` 型を返します。これは、ClickHouseの内部 `NULL` 表現に対応します。
+`NULL`が渡された場合、関数は型 `Nullable(Nothing)` を返し、これはClickHouseの内部での`NULL`表現に対応しています。
 
 **構文**
 
@@ -216,7 +216,7 @@ toTypeName(value)
 
 - `value` — 任意の型の値。
 
-**戻り値**
+**返される値**
 
 - 入力値のデータ型名。 [String](../data-types/string.md).
 
@@ -237,8 +237,8 @@ SELECT toTypeName(123);
 ```
 ## blockSize {#blockSize}
 
-ClickHouseでは、クエリは [blocks](/development/architecture#block)（チャンク）で処理されます。
-この関数は、関数が呼び出されたブロックのサイズ（行数）を返します。
+ClickHouseでは、クエリは[ブロック](/development/architecture#block)（チャンク）で処理されます。
+この関数は、関数が呼び出されているブロックのサイズ（行数）を返します。
 
 **構文**
 
@@ -274,7 +274,7 @@ FROM test;
 ```
 ## byteSize {#bytesize}
 
-メモリ内の引数の未圧縮バイトサイズの見積もりを返します。
+メモリ内の引数の非圧縮バイトサイズの推定値を返します。
 
 **構文**
 
@@ -286,13 +286,13 @@ byteSize(argument [, ...])
 
 - `argument` — 値。
 
-**戻り値**
+**返される値**
 
-- メモリ内の引数のバイトサイズの見積もり。 [UInt64](../data-types/int-uint.md).
+- メモリ内の引数のバイトサイズの推定値。 [UInt64](../data-types/int-uint.md).
 
 **例**
 
-[String](../data-types/string.md) 引数の場合、関数は文字列の長さ + 9（終端ゼロ + 長さ）を返します。
+[String](../data-types/string.md) 引数の場合、この関数は文字列の長さ + 8（長さ）を返します。
 
 クエリ:
 
@@ -351,7 +351,7 @@ byteSize(Float32): 4
 byteSize(Float64): 8
 ```
 
-関数が複数の引数を持つ場合は、引数のバイトサイズを累積します。
+関数に複数の引数がある場合、関数はそれらのバイトサイズを合計します。
 
 クエリ:
 
@@ -368,9 +368,9 @@ SELECT byteSize(NULL, 1, 0.3, '');
 ```
 ## materialize {#materialize}
 
-定数を単一の値を含む完全なカラムに変換します。
-完全なカラムと定数がメモリにおいて異なる方法で表現されます。
-関数は通常、通常の引数と定数引数で異なるコードを実行しますが、結果は通常同じです。
+定数を単一値を含む完全なカラムに変換します。
+完全なカラムと定数は、メモリ内で異なる形で表されます。
+関数は通常、通常の引数と定数引数のために異なるコードを実行しますが、通常、結果は同じである必要があります。
 この関数は、この動作をデバッグするために使用できます。
 
 **構文**
@@ -383,14 +383,15 @@ materialize(x)
 
 - `x` — 定数。 [Constant](overview.md/#constants).
 
-**戻り値**
+**返される値**
 
-- 単一の値 `x` を含むカラム。
+- 単一値 `x` を含むカラム。
 
 **例**
 
 以下の例では、`countMatches` 関数は定数の第二引数を期待します。
-この動作は、定数を完全なカラムに変換するために `materialize` 関数を使用することでデバッグでき、非定数引数に対して関数がエラーを投げることを確認できます。
+この動作は、`materialize` 関数を使用して定数を完全なカラムに変換することでデバッグでき、
+関数が非定数引数に対してエラーをスローすることを確認します。
 
 クエリ:
 
@@ -408,7 +409,7 @@ Code: 44. DB::Exception: Received from localhost:9000. DB::Exception: Illegal ty
 ## ignore {#ignore}
 
 任意の引数を受け入れ、無条件に `0` を返します。
-引数は内部的に評価されるため、ベンチマーク等に役立ちます。
+引数は内部で評価されるため、たとえばベンチマーキングに便利です。
 
 **構文**
 
@@ -418,9 +419,9 @@ ignore([arg1[, arg2[, ...]])
 
 **引数**
 
-- 任意の型の任意の個数の引数を受け入れ、`NULL`も含まれます。
+- 任意の型の任意の数の引数を受け入れ、`NULL`を含むことができます。
 
-**戻り値**
+**返される値**
 
 - `0` を返します。
 
@@ -441,7 +442,7 @@ SELECT ignore(0, 'ClickHouse', NULL);
 ```
 ## sleep {#sleep}
 
-クエリの実行に遅延や一時停止を導入するために使用します。主にテストやデバッグ目的で使用されます。
+クエリの実行に遅延または一時停止を導入するために使用されます。主にテストやデバッグの目的で使用されます。
 
 **構文**
 
@@ -451,19 +452,15 @@ sleep(seconds)
 
 **引数**
 
-- `seconds`: [UInt*](../data-types/int-uint.md) または [Float](../data-types/float.md) クエリ実行を最大3秒間停止する秒数です。小数点以下の秒数を指定するために浮動小数点値を使用できます。
+- `seconds`: [UInt*](../data-types/int-uint.md) または [Float](../data-types/float.md) クエリの実行を最大3秒間一時停止する秒数。小数点値を指定することで、部分的な秒数を指定できます。
 
-**戻り値**
+**返される値**
 
-この関数は値を返しません。
+この関数は、値を返しません。
 
 **例**
 
-```sql
-SELECT sleep(2);
-```
-
-この関数は値を返しません。しかし、`clickhouse client` でこの関数を実行すると、以下のような出力が得られます:
+この関数は値を返しません。ただし、`clickhouse client` で関数を実行すると、以下のような出力が表示されます：
 
 ```response
 SELECT sleep(2)
@@ -477,20 +474,20 @@ Query id: 8aa9943e-a686-45e1-8317-6e8e3a5596ac
 1 row in set. Elapsed: 2.012 sec.
 ```
 
-このクエリは完了する前に2秒間一時停止します。この間に結果は返されず、クエリがハングしているか応答がないように見えるでしょう。
+このクエリは、完了するまでに2秒間一時停止します。この間、結果は返されず、クエリはハングしているか、応答がないように見えるでしょう。
 
 **実装の詳細**
 
-`sleep()` 関数は一般的に本番環境では使用されず、クエリのパフォーマンスやシステムの応答性に悪影響を及ぼす可能性があります。しかし、以下のシナリオでは有用です。
+`sleep()` 関数は、クエリのパフォーマンスやシステムの応答性に悪影響を及ぼす可能性があるため、一般的に本番環境では使用されません。しかし、次のシナリオでは役立ちます。
 
-1. **テスト**: ClickHouseのテストやベンチマーク時に、特定の条件下でのシステムの動作を観察するために遅延をシミュレートしたり、一時停止を導入したりすることができます。
-2. **デバッグ**: システムの状態や特定の時点でのクエリの実行を検査する必要がある場合、`sleep()`を使用して一時停止を導入し、関連情報を確認できます。
-3. **シミュレーション**: 特定の外部システムやネットワーク遅延など、実際のシナリオをシミュレートする必要がある場合、遅延を発生させることがあります。
+1. **テスト**: ClickHouseをテストまたはベンチマークする際、システムの特定の条件下での動作を観察するために遅延をシミュレートしたり、一時停止を導入したりすることがあります。
+2. **デバッグ**: システムの状態やクエリの実行を特定の時点で検査する必要がある場合は、`sleep()` を使用して一時停止を導入し、関連情報を検査または収集できます。
+3. **シミュレーション**: 一部のケースでは、遅延や一時停止が発生する現実のシナリオをシミュレートしたい場合があります。たとえば、ネットワークの遅延や外部システムの依存関係などです。
 
-`sleep()` 関数は慎重に使用し、必要なときだけ使用することが重要です。システム全体のパフォーマンスや応答性に影響を及ぼす可能性があるためです。
+`sleep()` 関数は、慎重に必要な場合のみ使用することが重要です。特に大きな結果セットを扱う際には、ClickHouseシステム全体のパフォーマンスや応答性に影響を与える可能性があります。
 ## sleepEachRow {#sleepeachrow}
 
-結果セットの各行に対して指定された秒数の間クエリの実行を一時停止します。
+結果セット内の各行に対して指定された秒数、クエリの実行を一時停止します。
 
 **構文**
 
@@ -500,11 +497,11 @@ sleepEachRow(seconds)
 
 **引数**
 
-- `seconds`: [UInt*](../data-types/int-uint.md) または [Float*](../data-types/float.md) 結果セット内の各行のクエリ実行を最大3秒間一時停止する秒数です。小数点以下の秒数を指定するために浮動小数点値を使用できます。
+- `seconds`: [UInt*](../data-types/int-uint.md) または [Float*](../data-types/float.md) 結果セット内の各行に対してクエリの実行を1行あたり最大3秒間一時停止するための秒数。小数点値を指定することで、部分的な秒数を指定できます。
 
-**戻り値**
+**返される値**
 
-この関数は受け取った引数と同じ値を返し、変更しません。
+この関数は受け取った入力値と同じ値を返し、変更しません。
 
 **例**
 
@@ -522,19 +519,19 @@ SELECT number, sleepEachRow(0.5) FROM system.numbers LIMIT 5;
 └────────┴───────────────────┘
 ```
 
-しかし出力は遅延し、各行の間に0.5秒の一時停止があります。
+ただし、出力は遅延され、各行の間に0.5秒の一時停止があります。
 
-`sleepEachRow()` 関数は、主に `sleep()` 関数と同様に、テストとデバッグに使用されます。行ごとの処理に遅延をシミュレートしたり、一時停止を導入したりすることができ、以下のようなシナリオで有用です。
+`sleepEachRow()`関数は、`sleep()`関数と同様に、主にテストやデバッグの目的で使用されます。各行の処理に遅延をシミュレートまたは導入することで、次のようなシナリオに役立ちます。
 
-1. **テスト**: 特定の条件下でClickHouseのパフォーマンスをテストまたはベンチマークする際に、処理される各行に遅延を導入したり、一時的な停止を行うことができます。
-2. **デバッグ**: 各行の処理の状態を調べる必要がある場合、`sleepEachRow()` を使用して一時停止を導入し、関連情報を確認できます。
-3. **シミュレーション**: 外部システムやネットワーク遅延など、処理される各行に遅延を加えるシナリオをシミュレートする必要がある場合があります。
+1. **テスト**: 特定の条件下でのClickHouseのパフォーマンスをテストまたはベンチマークする際に、`sleepEachRow()`を使用して処理される各行の遅延や一時停止をシミュレートできます。
+2. **デバッグ**: 各行が処理される際にシステムの状態またはクエリの実行を調査する必要がある場合は、`sleepEachRow()`を使用して一時停止を導入し、関連情報を検査または収集できます。
+3. **シミュレーション**: 一部のケースでは、外部システムやネットワークの遅延を扱う際に、各行処理の遅延や一時停止をシミュレートしたい場合があります。
 
-`sleep()` 関数と同様に、`sleepEachRow()` を慎重に使用し、必要なときだけ使用することが重要です。特に大規模な結果セットを処理する場合、ClickHouseシステムの全体的なパフォーマンスと応答性に重大な影響を及ぼす可能性があります。
+[`sleep()` 関数](#sleep)と同様に、`sleepEachRow()`は慎重に必要な場合のみ使用することが重要です。特に大きな結果セットを扱う際には、ClickHouseシステム全体のパフォーマンスや応答性に大きな影響を与える可能性があります。
 ## currentDatabase {#currentdatabase}
 
 現在のデータベースの名前を返します。
-`CREATE TABLE` クエリのテーブルエンジンパラメータで、データベースを指定する必要がある場合に便利です。
+`CREATE TABLE`クエリのテーブルエンジンパラメータにおいて、データベースを指定する必要がある場合に役立ちます。
 
 **構文**
 
@@ -542,7 +539,7 @@ SELECT number, sleepEachRow(0.5) FROM system.numbers LIMIT 5;
 currentDatabase()
 ```
 
-**戻り値**
+**返される値**
 
 - 現在のデータベース名を返します。 [String](../data-types/string.md).
 
@@ -563,7 +560,7 @@ SELECT currentDatabase()
 ```
 ## currentUser {#currentUser}
 
-現在のユーザーの名前を返します。分散クエリの場合、クエリを初期化したユーザーの名前が返されます。
+現在のユーザーの名前を返します。分散クエリの場合は、クエリを開始したユーザーの名前が返されます。
 
 **構文**
 
@@ -573,10 +570,10 @@ currentUser()
 
 エイリアス: `user()`, `USER()`, `current_user()`。エイリアスは大文字と小文字を区別しません。
 
-**戻り値**
+**返される値**
 
 - 現在のユーザーの名前。 [String](../data-types/string.md).
-- 分散クエリの場合、クエリを初期化したユーザーのログイン名。 [String](../data-types/string.md).
+- 分散クエリの場合、クエリを開始したユーザーのログイン名。 [String](../data-types/string.md).
 
 **例**
 
@@ -593,7 +590,7 @@ SELECT currentUser();
 ```
 ## currentSchemas {#currentschemas}
 
-現在のデータベーススキーマの名前を持つ単一要素配列を返します。
+現在のデータベーススキーマの名前を含む単一要素配列を返します。
 
 **構文**
 
@@ -601,19 +598,19 @@ SELECT currentUser();
 currentSchemas(bool)
 ```
 
-エイリアス: `current_schemas`.
+エイリアス: `current_schemas`。
 
 **引数**
 
 - `bool`: ブール値。 [Bool](../data-types/boolean.md).
 
 :::note
-ブール引数は無視されます。それはこの関数のPostgreSQLでの実装との互換性のために存在します。
+ブール引数は無視されます。これは、PostgreSQLでのこの関数の[実装](https://www.postgresql.org/docs/7.3/functions-misc.html)との互換性のために存在するだけです。
 :::
 
-**戻り値**
+**返される値**
 
-- 現在のデータベースの名前を持つ単一要素配列を返します。
+- 現在のデータベースの名前を含む単一要素配列を返します。
 
 **例**
 
@@ -626,13 +623,137 @@ SELECT currentSchemas(true);
 ```response
 ['default']
 ```
+## colorSRGBToOKLCH {#colorsrgbtoOKLCH}
+
+**sRGB** カラー空間でエンコードされた色を知覚的一様な **OKLCH** カラー空間に変換します。
+
+もし入力チャンネルのいずれかが `[0...255]` の範囲外であるか、ガンマ値が非正である場合、動作は実装依存です。
+
+:::note
+**OKLCH** は OKLab カラー空間の円柱バージョンです。  
+その3つの座標は **L** (範囲 `[0...1]` の明るさ)、 **C** (クロマ `>= 0`) および **H** (度数としての色相 `[0...360]`) です。  
+OKLab/OKLCH は計算が安価でありながら、知覚的に一様であるように設計されています。
+:::
+
+**構文**
+
+```sql
+colorSRGBToOKLCH(tuple [, gamma])
+```
+
+**引数**
+
+- `tuple` - 値の範囲 `[0...255]` の三つの数値 R, G, B。 [Tuple](../data-types/tuple.md).
+- `gamma` - 任意の数値。各チャンネル `x` に `(x / 255)^gamma` を適用して sRGB を線形化するために使用される指数。デフォルトは `2.2` です。
+
+**返される値**
+
+- (L, C, H) の `tuple` (type `Tuple(Float64, Float64, Float64)`)。
+
+**実装の詳細**
+
+変換は3つのステージで構成します:
+
+1) sRGB から Linear sRGB へ
+2) Linear sRGB から OKLab へ
+3) OKLab から OKLCH へ 。
+
+ガンマは最初のステージ、つまり線形sRGBを計算する際に使用されます。  
+そのため、sRGB値を正規化し、それらをガンマの冪で計算します。  
+これにより、浮動小数点の丸め誤差により精度が失われることがあります。  
+この設計選択は、異なるガンマの値を迅速に計算できるようにするために行われました、そしてその違いは色の知覚に大きな影響を与えないからです。
+
+次の二つの段階は、それぞれ行列の乗算と三角関数の変換を含みます。  
+数学に関する詳細は、OKLabカラースペースに関する記事を参照してください: https://bottosson.github.io/posts/OKLab/
+
+OKLCH空間の色とそれがsRGB色にどのように対応するかの参照を持つために、https://OKLCH.com/ をご覧ください。
+
+**例**
+
+```sql
+SELECT colorSRGBToOKLCH((128, 64, 32), 2.2) AS lch;
+```
+
+結果:
+```response
+┌─lch─────────────────────────────────────────────────────────┐
+│ (0.4436238384931984,0.10442699545678624,45.907345481930236) │
+└─────────────────────────────────────────────────────────────┘
+```
+## colorOKLCHToSRGB {#colorOKLCHtosrgb}
+
+**OKLCH** 知覚色空間から一般的な **sRGB** 色空間に色を変換します。
+
+**L** が `[0...1]` の範囲外であるか、 **C** が負であるか、 **H** が `[0...360]` の範囲外の場合、結果は実装依存です。
+
+:::note
+**OKLCH** は OKLab カラー空間の円柱バージョンです。  
+その3つの座標は **L** (範囲 `[0...1]` の明るさ)、 **C** (クロマ `>= 0`) および **H** (度数としての色相 `[0...360]`) です。  
+OKLab/OKLCH は計算が安価でありながら、知覚的に一様であるように設計されています。
+:::
+
+**構文**
+
+```sql
+colorOKLCHToSRGB(tuple [, gamma])
+```
+
+**引数**
+
+- `tuple` - 三つの数値 **L**, **C**, **H** で構成されるタプル、 **L** は範囲 `[0...1]`、 **C** は `>= 0` であり **H** は範囲 `[0...360]` です。 [Tuple](../data-types/tuple.md).
+- `gamma` - 任意の数値。線形 sRGB を sRGB に戻すために `(x ^ (1 / gamma)) * 255` を各チャンネル `x` に適用するために使用される指数。デフォルトは `2.2` です。
+
+**返される値**
+
+- (R, G, B) の `tuple` (type `Tuple(Float64, Float64, Float64)`)。
+
+:::note
+この関数は浮動小数点数を返します。整数値ではなく、丸めを強制しないようにするためです。ユーザーは自分で丸めを行なうことができます。
+:::
+
+**実装の詳細**
+
+変換は `colorSRGBToOKLCH` の逆です:
+
+1) OKLCH から OKLab へ。
+2) OKLab から Linear sRGB へ。
+3) Linear sRGB から sRGB へ。
+
+第2引数のガンマは最終段階で使用されます。  
+すべての3つのチャンネルは、線形 sRGB を計算する直前に `[0...1]` の範囲でクリップされ、その後 `1 / gamma` の冪に設定されます。  
+ガンマが `0` の場合、 `1 / gamma` は `1'000'000` に変更されます。  
+そのため、入力に関係なく、通常は `[0...255]` の範囲の浮動小数点が返されます。
+
+`colorSRGBToOKLCH` の場合と同様に、他の二つの段階ではそれぞれ三角関数の変換と行列の乗算が含まれます。  
+数学に関する詳細は、OKLab カラースペースに関する記事を参照してください: https://bottosson.github.io/posts/oklab/
+
+OKLCH 空間の色とそれが sRGB 色にどのように対応するかの参照を持つために、https://oklch.com/ をご覧ください。
+
+**例**
+
+```sql
+SELECT colorOKLCHToSRGB((0.4466, 0.0991, 45.44), 2.2) AS rgb
+WITH colorOKLCHToSRGB((0.7, 0.1, 54)) as t SELECT tuple(toUInt8(t.1), toUInt8(t.2), toUInt8(t.3)) AS RGB
+
+```
+
+結果:
+```response
+┌─rgb──────────────────────────────────────────────────────┐
+│ (127.03349738778945,66.06672044472008,37.11802592155851) │
+└──────────────────────────────────────────────────────────┘
+
+┌─RGB──────────┐
+│ (205,139,97) │
+└──────────────┘
+```
 ## isConstant {#isconstant}
 
 引数が定数式であるかどうかを返します。
 
-定数式は、クエリ解析中に結果が既に知られている式、すなわち実行前の式です。例えば、[リテラル](../../sql-reference/syntax.md#literals)に対する式は定数式です。
+定数式は、クエリ解析中に結果が知られている式、すなわち実行前に知られている式です。たとえば、[リテラル](../../sql-reference/syntax.md#literals) に対する式は定数式です。
 
-この関数は主に開発、デバッグ、デモ用に設計されています。
+この関数は主に開発、デバッグ、およびデモンストレーションを目的としています。
 
 **構文**
 
@@ -644,10 +765,10 @@ isConstant(x)
 
 - `x` — 確認する式。
 
-**戻り値**
+**返される値**
 
-- `1` もし `x` が定数であれば。 [UInt8](../data-types/int-uint.md).
-- `0` もし `x` が非定数であれば。 [UInt8](../data-types/int-uint.md).
+- `1` 如果 `x` 是定数 します。 [UInt8](../data-types/int-uint.md).
+- `0` 如果 `x` 是非定数 します。 [UInt8](../data-types/int-uint.md).
 
 **例**
 
@@ -694,7 +815,7 @@ SELECT isConstant(number) FROM numbers(1)
 ```
 ## hasColumnInTable {#hascolumnintable}
 
-データベース名、テーブル名、および定数文字列としてのカラム名を与えると、指定されたカラムが存在する場合は1を返し、そうでない場合は0を返します。
+データベース名、テーブル名、およびカラム名を定数文字列として与えられた場合、指定されたカラムが存在すれば1を返し、そうでなければ0を返します。
 
 **構文**
 
@@ -707,18 +828,18 @@ hasColumnInTable(\['hostname'\[, 'username'\[, 'password'\]\],\] 'database', 'ta
 - `database` : データベースの名前。 [String literal](/sql-reference/syntax#string)
 - `table` : テーブルの名前。 [String literal](/sql-reference/syntax#string)
 - `column` : カラムの名前。 [String literal](/sql-reference/syntax#string)
-- `hostname` : チェックを行うリモートサーバーの名前。 [String literal](/sql-reference/syntax#string)
+- `hostname` : チェックを行うリモートサーバー名。 [String literal](/sql-reference/syntax#string)
 - `username` : リモートサーバーのユーザー名。 [String literal](/sql-reference/syntax#string)
 - `password` : リモートサーバーのパスワード。 [String literal](/sql-reference/syntax#string)
 
-**戻り値**
+**返される値**
 
 - 指定されたカラムが存在する場合は `1`。
 - それ以外の場合は `0`。
 
 **実装の詳細**
 
-ネストされたデータ構造の要素について、カラムの存在を確認します。ネストされたデータ構造自体については、関数は0を返します。
+ネストされたデータ構造内の要素に対して、関数はカラムの存在を確認します。ネストされたデータ構造自体に対しては、関数は0を返します。
 
 **例**
 
@@ -741,7 +862,7 @@ SELECT hasColumnInTable('system','metrics','non-existing_column')
 ```
 ## hasThreadFuzzer {#hasthreadfuzzer}
 
-Thread Fuzzerが有効かどうかを返します。テストに使用して、実行が長すぎないようにすることができます。
+スレッドファズァが有效かどうかを返します。これは、テストで実行時間が長すぎることを防ぐために使用できます。
 
 **構文**
 
@@ -750,17 +871,17 @@ hasThreadFuzzer();
 ```
 ## bar {#bar}
 
-棒グラフを作成します。
+棒グラフを構築します。
 
-`bar(x, min, max, width)` は、`(x - min)` に比例した幅を持つバンドを描画し、`x = max` の場合は幅 `width` の文字を同じ数描画します。
+`bar(x, min, max, width)` は `(x - min)` に比例した幅を描き、 `x = max` のときに `width` 文字に等しいバンドを描きます。
 
 **引数**
 
 - `x` — 表示するサイズ。
-- `min, max` — 整数の定数。値は `Int64` に収まる必要があります。
-- `width` — 定数の正の整数。小数にすることもできます。
+- `min, max` — 整数定数。値は `Int64` に収まる必要があります。
+- `width` — 定数の正の整数で、小数点数になる可能性があります。
 
-バンドはシンボルの八分の一までの精度で描画されます。
+バンドは、1つの記号の8分の1の精度で描かれます。
 
 例:
 
@@ -804,29 +925,30 @@ ORDER BY h ASC
 ```
 ## transform {#transform}
 
-明示的に定義されたいくつかの要素を他のものに変換するために値を変換します。
-この関数には2つのバリエーションがあります:
+明示的に定義されたいくつかの要素のマッピングに従って値を変換します。
+この関数には2つのバリエーションがあります。
 ### transform(x, array_from, array_to, default) {#transformx-array_from-array_to-default}
 
 `x` – 変換するもの。
 
-`array_from` – 変換するための定数配列。
+`array_from` – 変換する値の定数配列。
 
-`array_to` – 'from'の値を変換するための定数配列。
+`array_to` – `from` の値を変換するための値の定数配列。
 
-`default` – 'x'が'from'のいずれの値とも等しくない場合に使用する値。
+`default` – `x` が `from` のいずれの値とも等しくない場合に使用する値。
 
-`array_from` と `array_to` は等しい数の要素を持たなければなりません。
+`array_from` と `array_to` は同じ数の要素を持っている必要があります。
 
 シグネチャ:
 
-`x` が `array_from` の要素の1つと等しい場合、関数は `array_to` の対応する要素（すなわち、同じ配列インデックスの要素）を返します。それ以外の場合は、`default` を返します。 `array_from` に一致する複数の要素がある場合は、その最初の要素に対応するものを返します。
+`array_from` の要素のいずれかと等しい `x` の場合、関数は `array_to` の対応する要素を、すなわち同じ配列インデックスのものを返します。  
+そうでない場合は `default` を返します。 `array_from` に複数の一致する要素が存在する場合、最初の一致する要素に対応する要素が返されます。
 
 `transform(T, Array(T), Array(U), U) -> U`
 
-`T` と `U` は数値、文字列、または日付または日時型です。
-同じ文字（TまたはU）は、型が相互に互換性があり、必ずしも等しい必要はないことを意味します。
-例えば、最初の引数は `Int64` 型である一方、第二の引数は `Array(UInt16)` 型である可能性があります。
+`T` および `U` は数値、文字列、または Date または DateTime 型であることができます。
+同じ文字（T または U）は、型が相互に互換性があり、必ずしも等しくはないことを意味します。  
+たとえば、最初の引数は型 `Int64` である一方、2番目の引数は型 `Array(UInt16)` である可能性があります。
 
 例:
 
@@ -849,7 +971,7 @@ ORDER BY c DESC
 ```
 ### transform(x, array_from, array_to) {#transformx-array_from-array_to}
 
-他のバリエーションに似ていますが、'default' 引数がありません。一致部分が見つからなかった場合、`x` が返されます。
+他のバリエーションと同様ですが、'default' 引数がありません。一致するものが見つからない場合は `x` を返します。
 
 例:
 
@@ -878,9 +1000,9 @@ LIMIT 10
 ```
 ## formatReadableDecimalSize {#formatreadabledecimalsize}
 
-サイズ（バイト数）を与えると、この関数は可読性のある丸められたサイズをサフィックス（KB、MB、等）付きで文字列として返します。
+サイズ（バイト数）を受け取ると、この関数は suffix (KB, MB など) を含む可読性のある四捨五入されたサイズを文字列として返します。
 
-この関数の逆操作は [parseReadableSize](#parsereadablesize)、[parseReadableSizeOrZero](#parsereadablesizeorzero)、および [parseReadableSizeOrNull](#parsereadablesizeornull) です。
+この関数の逆操作は、[parseReadableSize](#parsereadablesize)、[parseReadableSizeOrZero](#parsereadablesizeorzero)、および [parseReadableSizeOrNull](#parsereadablesizeornull) です。
 
 **構文**
 
@@ -910,19 +1032,20 @@ SELECT
 ```
 ## formatReadableSize {#formatreadablesize}
 
-サイズ（バイト数）を与えると、この関数は可読性のある丸められたサイズをサフィックス（KiB、MiB等）付きで文字列として返します。
+サイズ（バイト数）を受け取ると、この関数は suffix (KiB, MiB など) を含む可読性のある四捨五入されたサイズを文字列として返します。
 
-この関数の逆操作は [parseReadableSize](#parsereadablesize)、[parseReadableSizeOrZero](#parsereadablesizeorzero)、および [parseReadableSizeOrNull](#parsereadablesizeornull) です。
+この関数の逆操作は、[parseReadableSize](#parsereadablesize)、[parseReadableSizeOrZero](#parsereadablesizeorzero)、および [parseReadableSizeOrNull](#parsereadablesizeornull) です。
 
 **構文**
 
 ```sql
 formatReadableSize(x)
 ```
+
 エイリアス: `FORMAT_BYTES`.
 
 :::note
-この関数は任意の数値型を入力として受け入れますが、内部ではそれらをFloat64にキャストします。大きな値の場合、結果は最適でない場合があります。
+この関数はあらゆる数値型の入力を受け入れますが、内部的には Float64 にキャストします。大きな値の場合の結果は最適でない可能性があります。
 :::
 
 **例**
@@ -947,7 +1070,7 @@ SELECT
 ```
 ## formatReadableQuantity {#formatreadablequantity}
 
-数値が与えられると、この関数はサフィックス（千、百万、十億等）付きの丸められた数値を文字列として返します。
+数値を受け取ると、この関数は、サフィックス（千、百万、十億など）を含む、丸められた数値を文字列として返します。
 
 **構文**
 
@@ -956,7 +1079,7 @@ formatReadableQuantity(x)
 ```
 
 :::note
-この関数は任意の数値型を入力として受け入れますが、内部ではそれらをFloat64にキャストします。大きな値の場合、結果は最適でない場合があります。
+この関数はあらゆる数値型の入力を受け入れますが、内部的には Float64 にキャストします。大きな値の場合の結果は最適でない可能性があります。
 :::
 
 **例**
@@ -981,7 +1104,7 @@ SELECT
 ```
 ## formatReadableTimeDelta {#formatreadabletimedelta}
 
-与えられた時間の間隔（デルタ）を秒単位で、この関数は年/月/日/時間/分/秒/ミリ秒/マイクロ秒/ナノ秒として文字列の時間のデルタを返します。
+秒単位の時間間隔（デルタ）を受け取ると、この関数は年/月/日/時間/分/秒/ミリ秒/マイクロ秒/ナノ秒を含む時間デルタを文字列として返します。
 
 **構文**
 
@@ -990,19 +1113,19 @@ formatReadableTimeDelta(column[, maximum_unit, minimum_unit])
 ```
 
 :::note
-この関数は任意の数値型を入力として受け入れますが、内部ではそれらをFloat64にキャストします。大きな値の場合、結果は最適でない場合があります。
+この関数はあらゆる数値型の入力を受け入れますが、内部的には Float64 にキャストします。大きな値の場合の結果は最適でない可能性があります。
 :::
 
 **引数**
 
-- `column` — 数値の時間のデルタを含むカラム。
-- `maximum_unit` — オプション。表示する最大単位。
-  - 許可される値: `nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, `days`, `months`, `years`.
-  - デフォルト値: `years`.
-- `minimum_unit` — オプション。表示する最小単位。すべての小さい単位は切り捨てられます。
-  - 許可される値: `nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, `days`, `months`, `years`.
-  - 明示的に指定された値が `maximum_unit` より大きい場合、例外が発生します。
-  - デフォルト値: `seconds` が `maximum_unit` が `seconds` 以上の場合、`nanoseconds` それ以外。
+- `column` — 数値時間デルタを持つカラム。
+- `maximum_unit` — 任意。表示する最大単位。
+  - 許容値: `nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, `days`, `months`, `years`。
+  - デフォルト値: `years`。
+- `minimum_unit` — 任意。表示する最小単位。すべての小さい単位は切り捨てられます。
+  - 許容値: `nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, `days`, `months`, `years`。
+  - 明示的に指定された値が `maximum_unit` よりも大きい場合、例外がスローされます。
+  - デフォルト値: `seconds`（`maximum_unit` が `seconds` またはそれ以上の場合）、それ以外は `nanoseconds`。
 
 **例**
 
@@ -1049,10 +1172,10 @@ SELECT
 ```
 ## parseReadableSize {#parsereadablesize}
 
-与えられた文字列はバイトサイズを含み、`B`, `KiB`, `KB`, `MiB`, `MB`などの単位（すなわち、[ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) または十進バイト単位）を持つ場合、この関数は対応するバイト数を返します。  
-この関数が入力値を解析できない場合、例外が発生します。
+バイトサイズと `B`, `KiB`, `KB`, `MiB`, `MB` などの単位を含む文字列を受け取ると、この関数は対応するバイト数を返します。  
+もし関数が入力値を解析できない場合、例外がスローされます。
 
-この関数の逆操作は [formatReadableSize](#formatreadablesize) および [formatReadableDecimalSize](#formatreadabledecimalsize) です。
+この関数の逆操作は、[formatReadableSize](#formatreadablesize) および [formatReadableDecimalSize](#formatreadabledecimalsize) です。
 
 **構文**
 
@@ -1062,11 +1185,11 @@ parseReadableSize(x)
 
 **引数**
 
-- `x` : ISO/IEC 80000-13または十進バイト単位での可読サイズ ([String](../../sql-reference/data-types/string.md))。
+- `x` : ISO/IEC 80000-13 または十進バイト単位を持つ可読サイズ ([String](../../sql-reference/data-types/string.md))。
 
-**戻り値**
+**返される値**
 
-- バイト数、整数に切り上げられた値 ([UInt64](../../sql-reference/data-types/int-uint.md))。
+- バイト数、最も近い整数に四捨五入されます ([UInt64](../../sql-reference/data-types/int-uint.md))。
 
 **例**
 
@@ -1086,10 +1209,10 @@ SELECT
 ```
 ## parseReadableSizeOrNull {#parsereadablesizeornull}
 
-与えられた文字列はバイトサイズを含み、`B`, `KiB`, `KB`, `MiB`, `MB`などの単位（すなわち、[ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) または十進バイト単位）を持つ場合、この関数は対応するバイト数を返します。  
-この関数が入力値を解析できない場合、`NULL` を返します。
+バイトサイズと `B`, `KiB`, `KB`, `MiB`, `MB` などの単位を含む文字列を受け取ると、この関数は対応するバイト数を返します。  
+もし関数が入力値を解析できない場合、`NULL` を返します。
 
-この関数の逆操作は [formatReadableSize](#formatreadablesize) および [formatReadableDecimalSize](#formatreadabledecimalsize) です。
+この関数の逆操作は、[formatReadableSize](#formatreadablesize) および [formatReadableDecimalSize](#formatreadabledecimalsize) です。
 
 **構文**
 
@@ -1099,11 +1222,11 @@ parseReadableSizeOrNull(x)
 
 **引数**
 
-- `x` : ISO/IEC 80000-13または十進バイト単位での可読サイズ ([String](../../sql-reference/data-types/string.md))。
+- `x` : ISO/IEC 80000-13 または十進バイト単位を持つ可読サイズ ([String](../../sql-reference/data-types/string.md))。
 
-**戻り値**
+**返される値**
 
-- バイト数、整数に切り上げられた値、または入力を解析できなかった場合はNULL（Nullable([UInt64](../../sql-reference/data-types/int-uint.md))）。
+- バイト数、最も近い整数に四捨五入されるか、入力を解析できない場合は NULL (Nullable([UInt64](../../sql-reference/data-types/int-uint.md)))。
 
 **例**
 
@@ -1124,9 +1247,9 @@ SELECT
 ```
 ## parseReadableSizeOrZero {#parsereadablesizeorzero}
 
-与えられた文字列はバイトサイズを含み、`B`, `KiB`, `KB`, `MiB`, `MB`などの単位（すなわち、[ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) または十進バイト単位）を持つ場合、この関数は対応するバイト数を返します。もしこの関数が入力値を解析できない場合、`0` を返します。
+バイトサイズと `B`, `KiB`, `KB`, `MiB`, `MB` などの単位を含む文字列を受け取ると、この関数は対応するバイト数を返します。関数が入力値を解析できない場合、`0` を返します。
 
-この関数の逆操作は [formatReadableSize](#formatreadablesize) および [formatReadableDecimalSize](#formatreadabledecimalsize) です。
+この関数の逆操作は、[formatReadableSize](#formatreadablesize) および [formatReadableDecimalSize](#formatreadabledecimalsize) です。
 
 **構文**
 
@@ -1136,11 +1259,11 @@ parseReadableSizeOrZero(x)
 
 **引数**
 
-- `x` : ISO/IEC 80000-13または十進バイト単位での可読サイズ ([String](../../sql-reference/data-types/string.md))。
+- `x` : ISO/IEC 80000-13 または十進バイト単位を持つ可読サイズ ([String](../../sql-reference/data-types/string.md))。
 
-**戻り値**
+**返される値**
 
-- バイト数、整数に切り上げられた値、または入力を解析できなかった場合は0 ([UInt64](../../sql-reference/data-types/int-uint.md))。
+- バイト数、最も近い整数に四捨五入されるか、入力を解析できない場合は `0` ([UInt64](../../sql-reference/data-types/int-uint.md))。
 
 **例**
 
@@ -1159,10 +1282,9 @@ SELECT
 │ invalid        │       0 │
 └────────────────┴─────────┘
 ```
-
 ## parseTimeDelta {#parsetimedelta}
 
-数値の配列を解析し、時間単位に似たものの後に続くものを解析します。
+時間単位に類似した何かの後に続く数字のシーケンスを解析します。
 
 **構文**
 
@@ -1172,11 +1294,11 @@ parseTimeDelta(timestr)
 
 **引数**
 
-- `timestr` — 数値のシーケンスと、時間単位に似たものの配列。
+- `timestr` — 時間単位に類似した何かの後に続く数字のシーケンス。
 
 **返される値**
 
-- 秒数の浮動小数点数。
+- 秒数を持つ浮動小数点数。
 
 **例**
 
@@ -1201,7 +1323,7 @@ SELECT parseTimeDelta('1yr2mo')
 ```
 ## least {#least}
 
-1つ以上の入力引数の中で最小の引数を返します。`NULL` 引数は無視されます。
+1つ以上の入力引数の中で最も小さい引数を返します。 `NULL` 引数は無視されます。
 
 **構文**
 
@@ -1210,11 +1332,11 @@ least(a, b)
 ```
 
 :::note
-バージョン [24.12](/whats-new/changelog/2024#a-id2412a-clickhouse-release-2412-2024-12-19) では互換性のない変更が導入され、`NULL` 値が無視されるようになりました。以前は、引数の1つが `NULL` の場合は `NULL` を返していました。以前の動作を保持するには、設定 `least_greatest_legacy_null_behavior` （デフォルト: `false`）を `true` に設定します。
+バージョン [24.12](/whats-new/changelog/2024#a-id2412a-clickhouse-release-2412-2024-12-19) では、`NULL`値が無視されるという後方互換性のない変更が導入されましたが、以前は引数のいずれかが `NULL` であれば `NULL` を返していました。以前の動作を保持するには、設定 `least_greatest_legacy_null_behavior`（デフォルト: `false`）を `true` に設定してください。
 :::
 ## greatest {#greatest}
 
-1つ以上の入力引数の中で最大の引数を返します。`NULL` 引数は無視されます。
+1つ以上の入力引数の中で最も大きい引数を返します。 `NULL` 引数は無視されます。
 
 **構文**
 
@@ -1223,11 +1345,11 @@ greatest(a, b)
 ```
 
 :::note
-バージョン [24.12](/whats-new/changelog/2024#a-id2412a-clickhouse-release-2412-2024-12-19) では互換性のない変更が導入され、`NULL` 値が無視されるようになりました。以前は、引数の1つが `NULL` の場合は `NULL` を返していました。以前の動作を保持するには、設定 `least_greatest_legacy_null_behavior` （デフォルト: `false`）を `true` に設定します。
+バージョン [24.12](/whats-new/changelog/2024#a-id2412a-clickhouse-release-2412-2024-12-19) では、`NULL`値が無視されるという後方互換性のない変更が導入されましたが、以前は引数のいずれかが `NULL` であれば `NULL` を返していました。以前の動作を保持するには、設定 `least_greatest_legacy_null_behavior`（デフォルト: `false`）を `true` に設定してください。
 :::
 ## uptime {#uptime}
 
-サーバの稼働時間を秒単位で返します。
+サーバーの稼働時間を秒単位で返します。
 分散テーブルのコンテキストで実行される場合、この関数は各シャードに関連する値を持つ通常のカラムを生成します。それ以外の場合は定数値を生成します。
 
 **構文**
@@ -1238,14 +1360,14 @@ uptime()
 
 **返される値**
 
-- 秒の時間値。 [UInt32](../data-types/int-uint.md)。
+- 時間の値（秒）。 [UInt32](../data-types/int-uint.md).
 
 **例**
 
 クエリ:
 
 ```sql
-SELECT uptime() as Uptime;
+SELECT uptime() AS Uptime;
 ```
 
 結果:
@@ -1257,12 +1379,12 @@ SELECT uptime() as Uptime;
 ```
 ## version {#version}
 
-現在の ClickHouse のバージョンを文字列形式で返します。
+ClickHouseの現在のバージョンを文字列形式で返します:
 
 - メジャーバージョン
 - マイナーバージョン
 - パッチバージョン
-- 前回の安定リリースからのコミット数。
+- 前回の安定版リリースからのコミット数
 
 ```text
 major_version.minor_version.patch_version.number_of_commits_since_the_previous_stable_release
@@ -1282,9 +1404,9 @@ version()
 
 **返される値**
 
-- 現在の ClickHouse のバージョン。 [String](../data-types/string)。
+- ClickHouseの現在のバージョン。 [String](../data-types/string).
 
-**実装詳細**
+**実装の詳細**
 
 なし。
 
@@ -1305,7 +1427,7 @@ SELECT version()
 ```
 ## buildId {#buildid}
 
-実行中の ClickHouse サーバーのバイナリに対してコンパイラによって生成されたビルドIDを返します。
+実行中のClickHouseサーバーバイナリ用にコンパイラによって生成されたビルドIDを返します。
 分散テーブルのコンテキストで実行される場合、この関数は各シャードに関連する値を持つ通常のカラムを生成します。それ以外の場合は定数値を生成します。
 
 **構文**
@@ -1315,8 +1437,8 @@ buildId()
 ```
 ## blockNumber {#blocknumber}
 
-行を含む [ブロック](../../development/architecture.md#block) の単調増加シーケンス番号を返します。
-返されるブロック番号は最善を尽くして更新されるため、完全に正確でない場合があります。
+行を含むデータの[ブロック](../../development/architecture.md#block)の monotonically increasing なシーケンス番号を返します。
+返されたブロック番号は最善の努力のもとで更新されます。つまり、必ずしも完全に正確であるとは限りません。
 
 **構文**
 
@@ -1326,7 +1448,7 @@ blockNumber()
 
 **返される値**
 
-- 行が存在するデータブロックのシーケンス番号。 [UInt64](../data-types/int-uint.md)。
+- 行が位置するデータブロックのシーケンス番号。 [UInt64](../data-types/int-uint.md).
 
 **例**
 
@@ -1368,8 +1490,8 @@ FROM
 ```
 ## rowNumberInBlock {#rowNumberInBlock}
 
-`rowNumberInBlock` が処理する各 [ブロック](../../development/architecture.md#block) の現在の行の番号を返します。
-返される番号は、各ブロックで0から始まります。
+`rowNumberInBlock` によって処理される各[ブロック](../../development/architecture.md#block)に対して、現在の行の番号を返します。
+返される番号は各ブロックごとに0から始まります。
 
 **構文**
 
@@ -1379,7 +1501,7 @@ rowNumberInBlock()
 
 **返される値**
 
-- データブロック内の行の序数番号、0から始まります。 [UInt64](../data-types/int-uint.md)。
+- データブロック内の行の順序番号（0から始まる）。 [UInt64](../data-types/int-uint.md).
 
 **例**
 
@@ -1431,7 +1553,7 @@ rowNumberInAllBlocks()
 
 **返される値**
 
-- データブロック内の行の序数番号、0から始まります。 [UInt64](../data-types/int-uint.md)。
+- データブロック内の行の順序番号（0から始まる）。 [UInt64](../data-types/int-uint.md).
 
 **例**
 
@@ -1474,7 +1596,7 @@ SETTINGS max_block_size = 2
 ```
 ## normalizeQuery {#normalizequery}
 
-リテラル、リテラルのシーケンスおよび複雑なエイリアス（空白を含む、2桁以上または36バイト以上の長さのもの、UUIDなど）をプレースホルダー `?` に置き換えます。
+リテラル、リテラルのシーケンス、および複雑なエイリアス(ホワイトスペース、2桁以上、または最少36バイトの長さのUUIDを含む) をプレースホルダー`?`に置き換えます。
 
 **構文**
 
@@ -1484,11 +1606,11 @@ normalizeQuery(x)
 
 **引数**
 
-- `x` — 文字のシーケンス。 [String](../data-types/string.md)。
+- `x` — 文字のシーケンス。 [String](../data-types/string.md).
 
 **返される値**
 
-- プレースホルダーを含む文字のシーケンス。 [String](../data-types/string.md)。
+- プレースホルダーを含む文字のシーケンス。 [String](../data-types/string.md).
 
 **例**
 
@@ -1507,7 +1629,7 @@ SELECT normalizeQuery('[1, 2, 3, x]') AS query;
 ```
 ## normalizeQueryKeepNames {#normalizequerykeepnames}
 
-リテラルおよびリテラルのシーケンスをプレースホルダー `?` に置き換えますが、複雑なエイリアス（空白を含む、2桁以上または36バイト以上の長さのものを含む）を置き換えません。これにより、複雑なクエリログをよりよく分析できます。
+リテラル、リテラルのシーケンスをプレースホルダー`?` に置き換えますが、複雑なエイリアス（ホワイトスペース、2桁以上、または最少36バイトの長さのUUIDを含む）は置き換えません。これにより、複雑なクエリログをより良く分析できます。
 
 **構文**
 
@@ -1517,11 +1639,11 @@ normalizeQueryKeepNames(x)
 
 **引数**
 
-- `x` — 文字のシーケンス。 [String](../data-types/string.md)。
+- `x` — 文字のシーケンス。 [String](../data-types/string.md).
 
 **返される値**
 
-- プレースホルダーを含む文字のシーケンス。 [String](../data-types/string.md)。
+- プレースホルダーを含む文字のシーケンス。 [String](../data-types/string.md).
 
 **例**
 
@@ -1540,7 +1662,7 @@ SELECT normalizeQuery('SELECT 1 AS aComplexName123'), normalizeQueryKeepNames('S
 ```
 ## normalizedQueryHash {#normalizedqueryhash}
 
-類似のクエリに対してリテラルの値を除外した同一の64ビットハッシュ値を返します。クエリログを分析するのに役立ちます。
+類似のクエリに対してリテラルの値なしで同一の64ビットハッシュ値を返します。クエリログを分析するのに役立ちます。
 
 **構文**
 
@@ -1550,11 +1672,11 @@ normalizedQueryHash(x)
 
 **引数**
 
-- `x` — 文字のシーケンス。 [String](../data-types/string.md)。
+- `x` — 文字のシーケンス。 [String](../data-types/string.md).
 
 **返される値**
 
-- ハッシュ値。 [UInt64](/sql-reference/data-types/int-uint#integer-ranges)。
+- ハッシュ値。 [UInt64](/sql-reference/data-types/int-uint#integer-ranges).
 
 **例**
 
@@ -1573,7 +1695,7 @@ SELECT normalizedQueryHash('SELECT 1 AS `xyz`') != normalizedQueryHash('SELECT 1
 ```
 ## normalizedQueryHashKeepNames {#normalizedqueryhashkeepnames}
 
-[normalizedQueryHash](#normalizedqueryhash) と同様の機能ですが、リテラルの値を除外した同一の64ビットハッシュ値を返しますが、ハッシュ前に複雑なエイリアス（空白を含む、2桁以上または36バイト以上の長さのものなど）をプレースホルダーに置き換えません。クエリログを分析するのに役立ちます。
+[normalizedQueryHash](#normalizedqueryhash) と同様に、リテラルの値なしで類似の クエリに対して同一の64ビットハッシュ値を返しますが、ハッシュ化の前に複雑なエイリアス (ホワイトスペース、2桁以上または最少36バイト長のUUIDを含む) はプレースホルダーで置き換えません。クエリログを分析するのに役立ちます。
 
 **構文**
 
@@ -1583,11 +1705,11 @@ normalizedQueryHashKeepNames(x)
 
 **引数**
 
-- `x` — 文字のシーケンス。 [String](../data-types/string.md)。
+- `x` — 文字のシーケンス。 [String](../data-types/string.md).
 
 **返される値**
 
-- ハッシュ値。 [UInt64](/sql-reference/data-types/int-uint#integer-ranges)。
+- ハッシュ値。 [UInt64](/sql-reference/data-types/int-uint#integer-ranges).
 
 **例**
 
@@ -1606,11 +1728,12 @@ SELECT normalizedQueryHashKeepNames('SELECT 1 AS `xyz123`') != normalizedQueryHa
 │                            1 │
 └──────────────────────────────┘
 ```
+
 ## neighbor {#neighbor}
 
 <DeprecatedBadge/>
 
-指定されたオフセットの前または後の行にアクセスするウィンドウ関数です。
+指定されたオフセットの前または後の行へのアクセスを提供するウィンドウ関数です。
 
 **構文**
 
@@ -1618,29 +1741,29 @@ SELECT normalizedQueryHashKeepNames('SELECT 1 AS `xyz123`') != normalizedQueryHa
 neighbor(column, offset[, default_value])
 ```
 
-この関数の結果は、影響を受けるデータブロックおよびブロック内のデータの順序に依存します。
+関数の結果は、影響を受けるデータブロックとブロック内のデータの順序に依存します。
 
 :::note
-現在処理しているデータブロックの内部でのみ隣接を返します。
-このエラーが起こりやすい動作のため、この関数は非推奨です。適切なウィンドウ関数を使用してください。
+現在処理されているデータブロック内の隣接行のみを返します。
+このエラープローンな動作のため、この関数は非推奨となっていますので、適切なウィンドウ関数を使用してください。
 :::
 
 `neighbor()` の計算中の行の順序は、ユーザーに返される行の順序とは異なる場合があります。
-それを防ぐために、[ORDER BY](../../sql-reference/statements/select/order-by.md) を使用してサブクエリを作成し、サブクエリの外部から関数を呼び出すことができます。
+これを防ぐために、[ORDER BY](../../sql-reference/statements/select/order-by.md) でサブクエリを作成し、サブクエリの外部から関数を呼び出すことができます。
 
 **引数**
 
 - `column` — カラム名またはスカラー式。
-- `offset` — `column` における現在の行の前または後ろを見ている行数。 [Int64](../data-types/int-uint.md)。
-- `default_value` — オプション。オフセットがブロック境界を超えた場合の返される値。影響を受けるデータブロックのデータ型です。
+- `offset` — `column`内の現在の行の前または後に見る行の数。[Int64](../data-types/int-uint.md)。
+- `default_value` — オプション。オフセットがブロックの境界を超えた場合に返される値。影響を受けるデータブロックの型。
 
 **返される値**
 
-- 現在の行から `offset` の距離にある `column` の値（`offset` がブロック境界の外でない場合）。
-- `column` のデフォルト値または `default_value`（指定されている場合）(オフセットがブロック境界の外にある場合)。
+- 現在の行から`offset`距離の`column`の値。ただし、`offset`がブロックの境界を超えていない場合。
+- `column`のデフォルト値または`default_value`（指定された場合）。オフセットがブロックの境界を超えた場合。
 
 :::note
-返される型は、影響を受けるデータブロックのものであるか、デフォルト値の型です。
+返される型は、影響を受けるデータブロックの型またはデフォルト値の型になります。
 :::
 
 **例**
@@ -1691,7 +1814,7 @@ SELECT number, neighbor(number, 2, 999) FROM system.numbers LIMIT 10;
 └────────┴──────────────────────────┘
 ```
 
-この関数は、前年対前年の指標値を計算するために使用できます。
+この関数は、前年同期の指標値を計算するために使用できます:
 
 クエリ:
 
@@ -1730,17 +1853,17 @@ FROM numbers(16)
 ## runningDifference {#runningDifference}
 
 データブロック内の2つの連続した行の値の差を計算します。
-最初の行については0を返し、以降の行については前の行との違いを返します。
+最初の行には0を返し、その後の行には前の行との違いを返します。
 
 :::note
-現在処理しているデータブロック内のみで差異が返されます。
-このエラーが起こりやすい動作のため、この関数は非推奨です。適切なウィンドウ関数を使用してください。
+現在処理されているデータブロック内の違いのみを返します。
+このエラープローンな動作のため、この関数は非推奨となっていますので、適切なウィンドウ関数を使用してください。
 :::
 
-この関数の結果は、影響を受けるデータブロックおよびブロック内のデータの順序に依存します。
+関数の結果は、影響を受けるデータブロックとブロック内のデータの順序に依存します。
 
-`runningDifference()` の計算中の行の順序は、ユーザーに返される行の順序とは異なる場合があります。
-それを防ぐために、[ORDER BY](../../sql-reference/statements/select/order-by.md) を使用してサブクエリを作成し、サブクエリの外部から関数を呼び出すことができます。
+`runningDifference()`の計算中の行の順序は、ユーザーに返される行の順序とは異なる場合があります。
+これを防ぐために、[ORDER BY](../../sql-reference/statements/select/order-by.md)でサブクエリを作成し、サブクエリの外部から関数を呼び出すことができます。
 
 **構文**
 
@@ -1781,7 +1904,7 @@ FROM
 └─────────┴─────────────────────┴───────┘
 ```
 
-ブロックサイズが結果に影響することに注意してください。 `runningDifference` の内部状態は新しいブロックごとにリセットされます。
+ブロックサイズが結果に影響することに注意してください。`runningDifference`の内部状態は各新しいブロックに対してリセットされます。
 
 クエリ:
 
@@ -1826,18 +1949,18 @@ WHERE diff != 1
 ## runningDifferenceStartingWithFirstValue {#runningdifferencestartingwithfirstvalue}
 
 :::note
-この関数は非推奨です （`runningDifference` の注記を参照）。
+この関数は非推奨です（`runningDifference`の注意事項を参照してください）。
 :::
 
-[生の `runningDifference`](/sql-reference/functions/other-functions#runningDifference) と同様ですが、最初の行の値を最初の行の値として返します。
+[runningDifference](/sql-reference/functions/other-functions#runningDifference)と同じですが、最初の行の値を最初の行の値として返します。
 ## runningConcurrency {#runningconcurrency}
 
-同時発生イベントの数を計算します。
-各イベントには開始時刻と終了時刻があります。開始時刻はイベントに含まれ、終了時刻は含まれません。開始時刻と終了時刻を持つカラムは同じデータ型でなければなりません。
-この関数は、各イベントの開始時刻でのアクティブな（同時に発生している）イベントの総数を計算します。
+同時に発生するイベントの数を計算します。
+各イベントには開始時刻と終了時刻があります。開始時刻はイベントに含まれ、終了時刻は除外されます。開始時刻と終了時刻を持つカラムは、同じデータ型でなければなりません。
+関数は、各イベント開始時刻のアクティブ（同時）イベントの合計数を計算します。
 
 :::tip
-イベントは開始時刻で昇順に並べられている必要があります。この要件が違反された場合、関数は例外を発生させます。各データブロックは別個に処理されます。異なるデータブロックのイベントが重なる場合、正しく処理することはできません。
+イベントは開始時刻の昇順で並べる必要があります。この要件が破られると、関数は例外を発生させます。各データブロックは別々に処理されます。異なるデータブロックのイベントが重なる場合、正しく処理されません。
 :::
 
 **構文**
@@ -1848,16 +1971,16 @@ runningConcurrency(start, end)
 
 **引数**
 
-- `start` — イベントの開始時刻を持つカラム。 [Date](../data-types/date.md)、 [DateTime](../data-types/datetime.md)、または [DateTime64](../data-types/datetime64.md)。
-- `end` — イベントの終了時刻を持つカラム。 [Date](../data-types/date.md)、 [DateTime](../data-types/datetime.md)、または [DateTime64](../data-types/datetime64.md)。
+- `start` — イベントの開始時刻を持つカラム。[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、または[DateTime64](../data-types/datetime64.md)。
+- `end` — イベントの終了時刻を持つカラム。[Date](../data-types/date.md)、[DateTime](../data-types/datetime.md)、または[DateTime64](../data-types/datetime64.md)。
 
 **返される値**
 
-- 各イベントの開始時刻での同時発生イベントの数。 [UInt32](../data-types/int-uint.md)
+- 各イベント開始時刻の同時イベント数。[UInt32](../data-types/int-uint.md)
 
 **例**
 
-テーブルを考慮してください:
+次のテーブルを考えてみましょう:
 
 ```text
 ┌──────start─┬────────end─┐
@@ -1886,7 +2009,7 @@ SELECT start, runningConcurrency(start, end) FROM example_table;
 ```
 ## MACNumToString {#macnumtostring}
 
-UInt64 数をビッグエンディアン形式の MAC アドレスとして解釈します。対応する MAC アドレスを AA:BB:CC:DD:EE:FF（コロン区切りの16進数形式の数字）として文字列で返します。
+UInt64の数をMACアドレスのビッグエンディアン形式として解釈します。対応するMACアドレスをAA:BB:CC:DD:EE:FF（16進数形式でコロンで区切られた数）として文字列で返します。
 
 **構文**
 
@@ -1895,7 +2018,7 @@ MACNumToString(num)
 ```
 ## MACStringToNum {#macstringtonum}
 
-MACNumToString の逆関数。MAC アドレスが無効な形式の場合、0 を返します。
+MACNumToStringの逆関数です。MACアドレスが無効な形式の場合、0を返します。
 
 **構文**
 
@@ -1904,7 +2027,7 @@ MACStringToNum(s)
 ```
 ## MACStringToOUI {#macstringtooui}
 
-AA:BB:CC:DD:EE:FF（コロン区切りの16進数形式の数字）である MAC アドレスから最初の3つのオクテットを UInt64 数として返します。MAC アドレスが無効な形式の場合、0 を返します。
+AA:BB:CC:DD:EE:FF形式のMACアドレスを受け取り、最初の3オクテットをUInt64の数として返します。MACアドレスが無効な形式の場合、0を返します。
 
 **構文**
 
@@ -1913,8 +2036,8 @@ MACStringToOUI(s)
 ```
 ## getSizeOfEnumType {#getsizeofenumtype}
 
-[Enum](../data-types/enum.md) のフィールド数を返します。
-タイプが `Enum` でない場合は例外がスローされます。
+[Enum](../data-types/enum.md)のフィールド数を返します。
+型が`Enum`でない場合は例外がスローされます。
 
 **構文**
 
@@ -1924,11 +2047,11 @@ getSizeOfEnumType(value)
 
 **引数:**
 
-- `value` — `Enum` 型の値。
+- `value` — `Enum`型の値。
 
 **返される値**
 
-- `Enum` 入力値を持つフィールドの数。
+- `Enum`入力値を持つフィールドの数。
 
 **例**
 
@@ -1951,18 +2074,18 @@ blockSerializedSize(value[, value[, ...]])
 
 **引数**
 
-- `value` — すべての値。
+- `value` — 任意の値。
 
 **返される値**
 
-- 圧縮なしで値のブロックを書き込むためにディスクに書き込まれるバイト数。
+- 圧縮なしでブロック値がディスクに書き込まれるバイト数。
 
 **例**
 
 クエリ:
 
 ```sql
-SELECT blockSerializedSize(maxState(1)) as x
+SELECT blockSerializedSize(maxState(1)) AS x
 ```
 
 結果:
@@ -1984,15 +2107,15 @@ toColumnTypeName(value)
 
 **引数:**
 
-- `value` — すべての型の値。
+- `value` — 任意の型の値。
 
 **返される値**
 
-- `value` を表現するために使用される内部データ型名。
+- `value`を表すのに使用される内部データ型名。
 
 **例**
 
-`toTypeName` と `toColumnTypeName` の違いを示します。
+`toTypeName`と`toColumnTypeName`の違い:
 
 ```sql
 SELECT toTypeName(CAST('2018-01-01 01:02:03' AS DateTime))
@@ -2020,7 +2143,7 @@ SELECT toColumnTypeName(CAST('2018-01-01 01:02:03' AS DateTime))
 └───────────────────────────────────────────────────────────┘
 ```
 
-この例は、`DateTime` データ型が内部的に `Const(UInt32)` として保存されることを示しています。
+この例は、`DateTime`データ型が内部的には`Const(UInt32)`として保存されていることを示しています。
 ## dumpColumnStructure {#dumpcolumnstructure}
 
 RAM内のデータ構造の詳細な説明を出力します。
@@ -2031,11 +2154,11 @@ dumpColumnStructure(value)
 
 **引数:**
 
-- `value` — すべての型の値。
+- `value` — 任意の型の値。
 
 **返される値**
 
-- `value` を表すために使用されるカラム構造の説明。
+- `value`を表すために使用されるカラム構造の説明。
 
 **例**
 
@@ -2052,7 +2175,7 @@ SELECT dumpColumnStructure(CAST('2018-01-01 01:02:03', 'DateTime'))
 
 指定されたデータ型のデフォルト値を返します。
 
-ユーザーが設定したカスタムカラムによるデフォルト値は含まれません。
+ユーザーが設定したカスタムカラムのデフォルト値は含まれません。
 
 **構文**
 
@@ -2066,9 +2189,9 @@ defaultValueOfArgumentType(expression)
 
 **返される値**
 
-- 数値の場合は `0`。
-- 文字列の場合は空の文字列。
-- [Nullable](../data-types/nullable.md) の場合は `ᴺᵁᴸᴸ`。
+- 数字の場合は`0`。
+- 文字列の場合は空文字列。
+- [Nullable](../data-types/nullable.md)の場合は`ᴺᵁᴸᴸ`。
 
 **例**
 
@@ -2103,7 +2226,7 @@ SELECT defaultValueOfArgumentType( CAST(1 AS Nullable(Int8) ) )
 
 指定された型名のデフォルト値を返します。
 
-ユーザーが設定したカスタムカラムによるデフォルト値は含まれません。
+ユーザーが設定したカスタムカラムのデフォルト値は含まれません。
 
 ```sql
 defaultValueOfTypeName(type)
@@ -2115,9 +2238,9 @@ defaultValueOfTypeName(type)
 
 **返される値**
 
-- 数値の場合は `0`。
-- 文字列の場合は空の文字列。
-- [Nullable](../data-types/nullable.md) の場合は `ᴺᵁᴸᴸ`。
+- 数字の場合は`0`。
+- 文字列の場合は空文字列。
+- [Nullable](../data-types/nullable.md)の場合は`ᴺᵁᴸᴸ`。
 
 **例**
 
@@ -2150,9 +2273,9 @@ SELECT defaultValueOfTypeName('Nullable(Int8)')
 ```
 ## indexHint {#indexhint}
 
-この関数はデバッグと内部視察用に意図されています。引数を無視し、常に1を返します。引数は評価されません。
+この関数はデバッグとイントロスペクションを目的としています。引数を無視して常に1を返します。引数は評価されません。
 
-ただし、インデックス分析中に、この関数をラップされていない引数は選択されます。この状態によりインデックスレンジを条件によって選択し、さらにその条件によってフィルタリングされないように思います。ClickHouse のインデックスはスパースであり、`indexHint` を使用すると、同じ条件を直接指定するよりも多くのデータが得られます。
+しかし、インデックス分析中、この関数の引数は`indexHint`でラップされていないものと見なされます。これにより、条件に基づいてインデックス範囲でデータを選択できますが、この条件によるさらなるフィルタリングはできません。ClickHouseのインデックスはスパースであり、`indexHint`を使用すると、同じ条件を直接指定するよりも多くのデータが得られます。
 
 **構文**
 
@@ -2162,11 +2285,11 @@ SELECT * FROM table WHERE indexHint(<expression>)
 
 **返される値**
 
-- `1`. [Uint8](../data-types/int-uint.md)。
+- `1`。[Uint8](../data-types/int-uint.md)。
 
 **例**
 
-以下は、テーブル [ontime](../../getting-started/example-datasets/ontime.md) からのテストデータの例です。
+テーブル [ontime](../../getting-started/example-datasets/ontime.md) からのテストデータの例を以下に示します。
 
 テーブル:
 
@@ -2180,15 +2303,15 @@ SELECT count() FROM ontime
 └─────────┘
 ```
 
-テーブルは `(FlightDate, (Year, FlightDate))` のフィールドにインデックスがあります。
+テーブルにはフィールド `(FlightDate, (Year, FlightDate))` にインデックスがあります。
 
-インデックスを使用していないクエリを作成します:
+インデックスを使用しないクエリを作成します:
 
 ```sql
 SELECT FlightDate AS k, count() FROM ontime GROUP BY k ORDER BY k
 ```
 
-ClickHouse は全テーブルを処理しました (`Processed 4.28 million rows`)。
+ClickHouseはテーブル全体を処理しました（`4.28百万行を処理しました`）。
 
 結果:
 
@@ -2203,13 +2326,13 @@ ClickHouse は全テーブルを処理しました (`Processed 4.28 million rows
 └────────────┴─────────┘
 ```
 
-特定の日付を選択しインデックスを適用します:
+インデックスを適用するには、特定の日付を選択します:
 
 ```sql
 SELECT FlightDate AS k, count() FROM ontime WHERE k = '2017-09-15' GROUP BY k ORDER BY k
 ```
 
-ClickHouse は同様に少ない行数を処理します（`Processed 32.74 thousand rows`）。
+ClickHouseは現在、より少ない行数を処理するためにインデックスを使用しています（`32.74千行を処理しました`）。
 
 結果:
 
@@ -2219,7 +2342,7 @@ ClickHouse は同様に少ない行数を処理します（`Processed 32.74 thou
 └────────────┴─────────┘
 ```
 
-今度は、式 `k = '2017-09-15'` を関数 `indexHint` にラップします:
+現在、式 `k = '2017-09-15'` を`indexHint`関数でラップします:
 
 クエリ:
 
@@ -2233,9 +2356,9 @@ GROUP BY k
 ORDER BY k ASC
 ```
 
-ClickHouse は再度インデックスを使用し、前回と同様に（`Processed 32.74 thousand rows`）です。
-式 `k = '2017-09-15'` は結果を生成する際には使用されません。
-この例の中で、`indexHint` 関数は隣接する日付が表示できるようにします。
+ClickHouseは、以前と同様にインデックスを使用しました（`32.74千行を処理しました`）。
+結果を生成する際に、式 `k = '2017-09-15'` は使用されませんでした。
+この例では、`indexHint`関数は隣接する日付を見ることを可能にします。
 
 結果:
 
@@ -2252,7 +2375,7 @@ ClickHouse は再度インデックスを使用し、前回と同様に（`Proce
 単一の値を持つ配列を作成します。
 
 :::note
-この関数は、[arrayJoin](/sql-reference/functions/array-join) の内部実装に使用されます。
+この関数は、[arrayJoin](/sql-reference/functions/array-join)の内部実装に使用されます。
 :::
 
 **構文**
@@ -2263,12 +2386,12 @@ replicate(x, arr)
 
 **引数**
 
-- `x` — 結果の配列に埋め込む値。
-- `arr` — 配列。 [Array](../data-types/array.md)。
+- `x` — 結果配列に埋め込む値。
+- `arr` — 配列。[Array](../data-types/array.md)。
 
 **返される値**
 
-`arr` と同じ長さの配列を作成し、値 `x` で埋めます。 [Array](../data-types/array.md)。
+`arr`と同じ長さの配列で、値`x`で埋められます。[Array](../data-types/array.md)。
 
 **例**
 
@@ -2287,7 +2410,7 @@ SELECT replicate(1, ['a', 'b', 'c']);
 ```
 ## revision {#revision}
 
-現在の ClickHouse [サーバーのリビジョン](../../operations/system-tables/metrics#revision)を返します。
+現在のClickHouse [サーバーリビジョン](../../operations/system-tables/metrics#revision)を返します。
 
 **構文**
 
@@ -2297,7 +2420,7 @@ revision()
 
 **返される値**
 
-- 現在の ClickHouse サーバーのリビジョン。 [UInt32](../data-types/int-uint.md)。
+- 現在のClickHouseサーバーリビジョン。[UInt32](../data-types/int-uint.md)。
 
 **例**
 
@@ -2316,7 +2439,7 @@ SELECT revision();
 ```
 ## filesystemAvailable {#filesystemavailable}
 
-データベースの永続性をホストしているファイルシステムの空きスペースの量を返します。返された値は、総空きスペース ([filesystemUnreserved](#filesystemunreserved)) より常に小さくなります。これは、いくつかのスペースがオペレーティングシステムのために予約されているためです。
+データベースの永続性をホストするファイルシステムの空き容量を返します。返される値は、必ずファイルシステムの総空き容量([filesystemUnreserved](#filesystemunreserved))よりも小さく、オペレーティングシステムのための空間が予約されているためです。
 
 **構文**
 
@@ -2326,7 +2449,7 @@ filesystemAvailable()
 
 **返される値**
 
-- バイト単位の残りの空きスペースの量。 [UInt64](../data-types/int-uint.md)。
+- バイト単位での残りの空間の量。[UInt64](../data-types/int-uint.md)。
 
 **例**
 
@@ -2345,7 +2468,7 @@ SELECT formatReadableSize(filesystemAvailable()) AS "Available space";
 ```
 ## filesystemUnreserved {#filesystemunreserved}
 
-データベースの永続性をホストしているファイルシステムの総空きスペースの量を返します。（以前の `filesystemFree`）。 [filesystemAvailable](#filesystemavailable) も参照してください。
+データベースの永続性をホストするファイルシステムの総空きスペースを返します。（以前の `filesystemFree`）。 さらに [`filesystemAvailable`](#filesystemavailable) も参照してください。
 
 **構文**
 
@@ -2355,7 +2478,7 @@ filesystemUnreserved()
 
 **返される値**
 
-- バイト単位の空きスペースの量。 [UInt64](../data-types/int-uint.md)。
+- バイト単位での空きスペースの量。[UInt64](../data-types/int-uint.md)。
 
 **例**
 
@@ -2374,7 +2497,7 @@ SELECT formatReadableSize(filesystemUnreserved()) AS "Free space";
 ```
 ## filesystemCapacity {#filesystemcapacity}
 
-ファイルシステムの容量をバイト単位で返します。データディレクトリへの [path](../../operations/server-configuration-parameters/settings.md#path) が設定されている必要があります。
+ファイルシステムの容量をバイト単位で返します。データディレクトリへの[パス](../../operations/server-configuration-parameters/settings.md#path)を設定する必要があります。
 
 **構文**
 
@@ -2384,7 +2507,7 @@ filesystemCapacity()
 
 **返される値**
 
-- バイト単位のファイルシステムの容量。 [UInt64](../data-types/int-uint.md)。
+- バイト単位のファイルシステムの容量。[UInt64](../data-types/int-uint.md)。
 
 **例**
 
@@ -2403,7 +2526,7 @@ SELECT formatReadableSize(filesystemCapacity()) AS "Capacity";
 ```
 ## initializeAggregation {#initializeaggregation}
 
-単一の値に基づいて集約関数の結果を計算します。この関数は、[-State](/sql-reference/aggregate-functions/combinators#-state) を用いて集約関数を初期化するために使用できます。集約関数の状態を作成し、[AggregateFunction](/sql-reference/data-types/aggregatefunction) タイプのカラムに挿入するか、初期化された集約をデフォルト値として使用できます。
+単一の値に基づいて集約関数の結果を計算します。この関数は、[-State](/sql-reference/aggregate-functions/combinators#-state) を使用して集約関数を初期化するために使用できます。集約関数の状態を作成し、[AggregateFunction](/sql-reference/data-types/aggregatefunction)型のカラムに挿入するか、初期化された集約をデフォルト値として使用できます。
 
 **構文**
 
@@ -2413,14 +2536,14 @@ initializeAggregation (aggregate_function, arg1, arg2, ..., argN)
 
 **引数**
 
-- `aggregate_function` — 初期化する集約関数の名前。 [String](../data-types/string.md)。
+- `aggregate_function` — 初期化する集約関数の名前。[String](../data-types/string.md)。
 - `arg` — 集約関数の引数。
 
 **返される値**
 
 - 関数に渡された各行の集約結果。
 
-返される型は、`initializeAggregation` が最初の引数として受け取る型と同じです。
+返される型は、`initializeAggregation`が最初の引数として受け取る関数の返り値と同じです。
 
 **例**
 
@@ -2456,7 +2579,7 @@ SELECT finalizeAggregation(state), toTypeName(state) FROM (SELECT initializeAggr
 └────────────────────────────┴───────────────────────────────┘
 ```
 
-`AggregatingMergeTree` テーブルエンジンと `AggregateFunction` カラムの例：
+`AggregatingMergeTree` テーブルエンジンと `AggregateFunction`カラムの例:
 
 ```sql
 CREATE TABLE metrics
@@ -2474,11 +2597,10 @@ INSERT INTO metrics VALUES (0, initializeAggregation('sumState', toUInt64(42)))
 
 **参照**
 
-- [arrayReduce](../../sql-reference/functions/array-functions.md#arrayreduce)
-```
+- [arrayReduce](../../sql-reference/functions/array-functions.md#arrayReduce)
 ## finalizeAggregation {#finalizeaggregation}
 
-集約関数の状態が与えられた場合、この関数は集約の結果（または [-State](/sql-reference/aggregate-functions/combinators#-state) コンビネーターを使用している場合は最終状態）を返します。
+集約関数の状態を与えると、この関数は集約の結果（または[-State](/sql-reference/aggregate-functions/combinators#-state) コンビネータを使用した最終状態）を返します。
 
 **構文**
 
@@ -2495,7 +2617,7 @@ finalizeAggregation(state)
 - 集約された値。
 
 :::note
-返される型は、集約された任意の型と同じです。
+返される型は、集約された任意の型のものと等しいです。
 :::
 
 **例**
@@ -2528,7 +2650,7 @@ SELECT finalizeAggregation(( SELECT sumState(number) FROM numbers(10)));
 └──────────────────────────────────┘
 ```
 
-`NULL` 値は無視されます。
+`NULL`値は無視されることに注意してください。
 
 クエリ:
 
@@ -2544,7 +2666,7 @@ SELECT finalizeAggregation(arrayReduce('anyState', [NULL, 2, 3]));
 └────────────────────────────────────────────────────────────┘
 ```
 
-結合例:
+統合例:
 
 クエリ:
 
@@ -2574,17 +2696,17 @@ FROM numbers(10);
 └────────┴─────────────┴────────────────┘
 ```
 
-**関連項目**
+**参照**
 
-- [arrayReduce](../../sql-reference/functions/array-functions.md#arrayreduce)
+- [arrayReduce](../../sql-reference/functions/array-functions.md#arrayReduce)
 - [initializeAggregation](#initializeaggregation)
 ## runningAccumulate {#runningaccumulate}
 
-データブロックの各行に対して集約関数の状態を累計します。
+各データブロックの行ごとに集約関数の状態を累積します。
 
 :::note
 状態は各新しいデータブロックごとにリセットされます。
-このエラーを引き起こす可能性のある動作のため、この関数は非推奨です。代わりに適切なウィンドウ関数を使用してください。
+このエラープローンな動作のため、この関数は非推奨となっていますので、適切なウィンドウ関数を使用してください。
 :::
 
 **構文**
@@ -2596,22 +2718,22 @@ runningAccumulate(agg_state[, grouping]);
 **引数**
 
 - `agg_state` — 集約関数の状態。[AggregateFunction](/sql-reference/data-types/aggregatefunction)。
-- `grouping` — グルーピングキー。オプショナル。`grouping` 値が変更された場合、関数の状態がリセットされます。等号演算子が定義されている任意の [サポートされるデータ型](../data-types/index.md)を指定できます。
+- `grouping` — グルーピングキー。オプション。`grouping` の値が変わると関数の状態がリセットされます。等価演算子が定義された[サポートされるデータ型](../data-types/index.md)のいずれかになります。
 
 **返される値**
 
-- 各結果行には、現在の位置までのすべての入力行に対して累積された集約関数の結果が含まれます。`runningAccumulate` は、各新しいデータブロックごとに状態をリセットします、または `grouping` の値が変更されたとき。
+- 各結果行には、累積された集約関数の結果が含まれ、0から現在の位置までのすべての入力行に対して累積されます。`runningAccumulate`は、各新しいデータブロックまたは`grouping`の値が変わると状態をリセットします。
 
-型は使用される集約関数によって異なります。
+型は、使用する集約関数によって異なります。
 
 **例**
 
-`runningAccumulate` を使用して、グルーピングなしおよびグルーピングありで数値の累積合計を求める方法を考えます。
+グルーピングなしとグルーピングありでの数の累積和を求めるために`runningAccumulate`をどのように使用できるかを考えます。
 
 クエリ:
 
 ```sql
-SELECT k, runningAccumulate(sum_k) AS res FROM (SELECT number as k, sumState(k) AS sum_k FROM numbers(10) GROUP BY k ORDER BY k);
+SELECT k, runningAccumulate(sum_k) AS res FROM (SELECT number AS k, sumState(k) AS sum_k FROM numbers(10) GROUP BY k ORDER BY k);
 ```
 
 結果:
@@ -2631,16 +2753,16 @@ SELECT k, runningAccumulate(sum_k) AS res FROM (SELECT number as k, sumState(k) 
 └───┴─────┘
 ```
 
-サブクエリは、`0`から`9`までのそれぞれの数値に対して`sumState`を生成します。 `sumState`は、単一の数値の合計を含む[sum](../../sql-reference/aggregate-functions/reference/sum.md)関数の状態を返します。
+サブクエリは、`0`から`9`までの各数のために`sumState`を生成します。`sumState`は、単一の数の合計を含む[sum](../../sql-reference/aggregate-functions/reference/sum.md)関数の状態を返します。
 
-クエリ全体は以下のことを実行します:
+全体のクエリは次のことを行います:
 
-1. 最初の行では、`runningAccumulate`は`sumState(0)`を取得し、`0`を返します。
-2. 2番目の行では、関数は`sumState(0)`と`sumState(1)`をマージし、`sumState(0 + 1)`を生成し、合計として`1`を返します。
-3. 3番目の行では、関数は`sumState(0 + 1)`と`sumState(2)`をマージし、`sumState(0 + 1 + 2)`を生成し、結果として`3`を返します。
-4. この動作はブロックが終了するまで繰り返されます。
+1. 最初の行のために、`runningAccumulate`は`sumState(0)`を取得し、`0`を返します。
+2. 2行目のために、関数は`sumState(0)`と`sumState(1)`をマージし、`sumState(0 + 1)`を生成し、`1`を結果として返します。
+3. 3行目のために、関数は`sumState(0 + 1)`と`sumState(2)`をマージし、`sumState(0 + 1 + 2)`を生成し、`3`を結果として返します。
+4. このアクションはブロックが終了するまで繰り返されます。
 
-以下の例は、`groupping`パラメータの使用法を示しています:
+以下の例は`groupping`パラメータの使用を示します。
 
 クエリ:
 
@@ -2683,13 +2805,13 @@ FROM
 └──────────┴──────┴─────┘
 ```
 
-このように、`runningAccumulate`は各行のグループの状態を別々にマージします。
+ご覧のとおり、`runningAccumulate`は各行のグループのために状態を別々にマージします。
 ## joinGet {#joinget}
 
-この関数は、辞書と同様にテーブルからデータを抽出できるようにします。[Join](../../engines/table-engines/special/join.md#creating-a-table) テーブルから指定された結合キーを使用してデータを取得します。
+この関数は、[辞書](../../sql-reference/dictionaries/index.md)と同様にテーブルからデータを抽出することを可能にします。指定された結合キーを使用して[Join](../../engines/table-engines/special/join.md#creating-a-table)テーブルからデータを取得します。
 
 :::note
-`ENGINE = Join(ANY, LEFT, <join_keys>)`文で作成されたテーブルのみをサポートします。
+`ENGINE = Join(ANY, LEFT, <join_keys>)` ステートメントで作成されたテーブルのみをサポートします。
 :::
 
 **構文**
@@ -2700,12 +2822,12 @@ joinGet(join_storage_table_name, `value_column`, join_keys)
 
 **引数**
 
-- `join_storage_table_name` — 検索が行われる場所を示す [識別子](/sql-reference/syntax#identifiers)。
-- `value_column` — 必要なデータを含むテーブルのカラムの名前。
+- `join_storage_table_name` — 検索を行う場所を示す[識別子](/sql-reference/syntax#identifiers)。
+- `value_column` — 必要なデータを含むテーブルのカラム名。
 - `join_keys` — キーのリスト。
 
 :::note
-識別子はデフォルトデータベース内で検索されます（設定ファイル内の `default_database` を参照）。デフォルトデータベースを上書きするには、`USE db_name` を使用するか、例のようにセパレーター `db_name.db_table` を介してデータベースとテーブルを指定します。
+識別子はデフォルトデータベースで検索されます（設定ファイルの`default_database`を参照）。デフォルトのデータベースを上書きするには、`USE db_name` を使用するか、例のように区切り文字 `db_name.db_table` を通じてデータベースとテーブルを指定します。
 :::
 
 **返される値**
@@ -2713,8 +2835,8 @@ joinGet(join_storage_table_name, `value_column`, join_keys)
 - キーのリストに対応する値のリストを返します。
 
 :::note
-特定のキーがソーステーブルに存在しない場合、テーブル作成時の [join_use_nulls](../../operations/settings/settings.md#join_use_nulls) 設定に基づいて `0` または `null` が返されます。
-`join_use_nulls` に関する詳細は [Join operation](../../engines/table-engines/special/join.md)を参照してください。
+特定のキーがソーステーブルに存在しない場合、`join_use_nulls`設定に基づいて`0`または`null`が返されます。
+`join_use_nulls`についての詳細は、[Join操作](../../engines/table-engines/special/join.md)を参照してください。
 :::
 
 **例**
@@ -2739,7 +2861,7 @@ SELECT * FROM db_test.id_val;
 クエリ:
 
 ```sql
-SELECT number, joinGet(db_test.id_val, 'val', toUInt32(number)) from numbers(4);
+SELECT number, joinGet(db_test.id_val, 'val', toUInt32(number)) FROM numbers(4);
 ```
 
 結果:
@@ -2753,7 +2875,7 @@ SELECT number, joinGet(db_test.id_val, 'val', toUInt32(number)) from numbers(4);
    └────────┴────────────────────────────────────────────────────┘
 ```
 
-`join_use_nulls` 設定は、テーブル作成時にソーステーブルにキーが存在しない場合の返される動作を変更するために使用できます。
+テーブル作成時に`join_use_nulls`設定を使用して、ソーステーブルにキーが存在しない場合の返される動作を変更できます。
 
 ```sql
 CREATE DATABASE db_test;
@@ -2773,7 +2895,7 @@ SELECT * FROM db_test.id_val_nulls;
 クエリ:
 
 ```sql
-SELECT number, joinGet(db_test.id_val_nulls, 'val', toUInt32(number)) from numbers(4);
+SELECT number, joinGet(db_test.id_val_nulls, 'val', toUInt32(number)) FROM numbers(4);
 ```
 
 結果:
@@ -2788,7 +2910,7 @@ SELECT number, joinGet(db_test.id_val_nulls, 'val', toUInt32(number)) from numbe
 ```
 ## joinGetOrNull {#joingetornull}
 
-[joinGet](#joinget) のように動作しますが、キーが欠落している場合はデフォルト値の代わりに `NULL` を返します。
+[joinGet](#joinget) のようですが、キーが欠落している場合にデフォルト値を返すのではなく `NULL` を返します。
 
 **構文**
 
@@ -2798,12 +2920,12 @@ joinGetOrNull(join_storage_table_name, `value_column`, join_keys)
 
 **引数**
 
-- `join_storage_table_name` — 検索が行われる場所を示す [識別子](/sql-reference/syntax#identifiers)。
-- `value_column` — 必要なデータを含むテーブルのカラムの名前。
+- `join_storage_table_name` — 検索を行う場所を示す[識別子](/sql-reference/syntax#identifiers)。
+- `value_column` — 必要なデータを含むテーブルのカラム名。
 - `join_keys` — キーのリスト。
 
 :::note
-識別子はデフォルトデータベース内で検索されます（設定ファイル内の `default_database` を参照）。デフォルトデータベースを上書きするには、`USE db_name` を使用するか、例のようにセパレーター `db_name.db_table` を介してデータベースとテーブルを指定します。
+識別子はデフォルトデータベースで検索されます（設定ファイルの`default_database`を参照）。デフォルトのデータベースを上書きするには、`USE db_name` を使用するか、例のように区切り文字 `db_name.db_table` を通じてデータベースとテーブルを指定します。
 :::
 
 **返される値**
@@ -2811,7 +2933,7 @@ joinGetOrNull(join_storage_table_name, `value_column`, join_keys)
 - キーのリストに対応する値のリストを返します。
 
 :::note
-特定のキーがソーステーブルに存在しない場合、そのキーに対して `NULL` が返されます。
+特定のキーがソーステーブルに存在しない場合、そのキーに対して`NULL`が返されます。
 :::
 
 **例**
@@ -2836,7 +2958,7 @@ SELECT * FROM db_test.id_val;
 クエリ:
 
 ```sql
-SELECT number, joinGetOrNull(db_test.id_val, 'val', toUInt32(number)) from numbers(4);
+SELECT number, joinGetOrNull(db_test.id_val, 'val', toUInt32(number)) FROM numbers(4);
 ```
 
 結果:
@@ -2854,11 +2976,11 @@ SELECT number, joinGetOrNull(db_test.id_val, 'val', toUInt32(number)) from numbe
 <CloudNotSupportedBadge/>
 
 :::note
-この関数は ClickHouse Cloud では利用できません。
+この関数はClickHouse Cloudでは利用できません。
 :::
 
-外部の catboost モデルを評価します。[CatBoost](https://catboost.ai) は、Yandex が開発した機械学習用のオープンソースの勾配ブースティングライブラリです。
-catboost モデルへのパスとモデル引数（特徴）を受け取ります。Float64 を返します。
+外部のcatboostモデルを評価します。[CatBoost](https://catboost.ai)は、Yandexによって開発された機械学習のためのオープンソースの勾配ブースティングライブラリです。
+catboostモデルへのパスとモデル引数（特徴量）を受け取り、Float64を返します。
 
 **構文**
 
@@ -2875,11 +2997,11 @@ FROM data_table
 
 **前提条件**
 
-1. catboost 評価ライブラリをビルドする
+1. catboost評価ライブラリをビルドする
 
-catboost モデルを評価する前に、`libcatboostmodel.<so|dylib>` ライブラリを利用できるようにする必要があります。コンパイル方法については、[CatBoost documentation](https://catboost.ai/docs/concepts/c-plus-plus-api_dynamic-c-pluplus-wrapper.html)を参照してください。
+catboostモデルを評価する前に、`libcatboostmodel.<so|dylib>` ライブラリを利用できるようにする必要があります。どのようにコンパイルするかについては、[CatBoostのドキュメント](https://catboost.ai/docs/concepts/c-plus-plus-api_dynamic-c-pluplus-wrapper.html)を参照してください。
 
-次に、clickhouse 設定内で `libcatboostmodel.<so|dylib>` へのパスを指定します。
+次に、clickhouse設定で`libcatboostmodel.<so|dylib>`のパスを指定します:
 
 ```xml
 <clickhouse>
@@ -2889,8 +3011,8 @@ catboost モデルを評価する前に、`libcatboostmodel.<so|dylib>` ライ�
 </clickhouse>
 ```
 
-セキュリティと分離の理由で、モデル評価はサーバープロセスではなく、clickhouse-library-bridge プロセスで実行されます。
-`catboostEvaluate()` の最初の実行時、サーバーはライブラリブリッジプロセスを開始します。このプロセスは、すでに実行中でない限りです。両方のプロセスは HTTP インターフェイスを介して通信します。デフォルトでは、ポート `9012` が使用されます。別のポートを指定することも可能で、ポート `9012` が別のサービスに既に割り当てられている場合に便利です。
+セキュリティと隔離の理由から、モデル評価はサーバープロセス内ではなく、clickhouse-library-bridgeプロセス内で実行されます。
+`catboostEvaluate()` の初回実行時に、サーバーはライブラリブリッジプロセスを起動します（まだ実行されていない場合）。両方のプロセスはHTTPインターフェースを使用して通信します。デフォルトでは、ポート`9012`が使用されます。ポート`9012`がすでに他のサービスに割り当てられている場合は、次のように別のポートを指定できます。
 
 ```xml
 <library_bridge>
@@ -2898,12 +3020,12 @@ catboost モデルを評価する前に、`libcatboostmodel.<so|dylib>` ライ�
 </library_bridge>
 ```
 
-2. libcatboost を使用して catboost モデルをトレーニングする
+2. libcatboostを使用してcatboostモデルを訓練する
 
-トレーニングデータセットから catboost モデルをトレーニングする方法は、[Training and applying models](https://catboost.ai/docs/features/training.html#training)を参照してください。
+トレーニングデータセットからcatboostモデルを訓練する方法については、[モデルの訓練と適用](https://catboost.ai/docs/features/training.html#training)を参照してください。
 ## throwIf {#throwif}
 
-引数 `x` が true の場合、例外をスローします。
+引数`x`が真を返す場合、例外をスローします。
 
 **構文**
 
@@ -2914,12 +3036,14 @@ throwIf(x[, message[, error_code]])
 **引数**
 
 - `x` - チェックする条件。
-- `message` - カスタムエラーメッセージを提供する定数文字列。オプショナル。
-- `error_code` - カスタムエラーメッセージを提供する定数整数。オプショナル。
+- `message` - カスタムエラーメッセージを提供する定数文字列。オプション。
+- `error_code` - カスタムエラーコードを提供する定数整数。オプション。
 
-`error_code` 引数を使用するには、設定パラメータ `allow_custom_error_code_in_throwif` を有効にする必要があります。
+`error_code`引数を使用するには、設定パラメータ`allow_custom_error_code_in_throwif`を有効にする必要があります。
 
 **例**
+
+クエリ:
 
 ```sql
 SELECT throwIf(number = 3, 'Too many') FROM numbers(10);
@@ -2933,7 +3057,7 @@ Code: 395. DB::Exception: Received from localhost:9000. DB::Exception: Too many.
 ```
 ## identity {#identity}
 
-引数をそのまま返します。デバッグとテストを意図しています。インデックスを使用するのをキャンセルし、フルスキャンのクエリパフォーマンスを取得します。クエリがインデックスの使用を検討されるとき、アナライザーは`identity`関数内のすべてを無視します。また、定数の折り畳みを無効にします。
+その引数を返します。デバッグとテストを目的としています。インデックスの使用をキャンセルし、フルスキャンのクエリパフォーマンスを取得します。クエリがインデックスの使用を可能にするために分析されるとき、アナライザーは`identity`関数内のすべてを無視します。定数畳み込みも無効になります。
 
 **構文**
 
@@ -2958,7 +3082,7 @@ SELECT identity(42);
 ```
 ## getSetting {#getsetting}
 
-現在の [カスタム設定](/operations/settings/query-level#custom_settings) の値を返します。
+現在の[カスタム設定](/operations/settings/query-level#custom_settings)の値を返します。
 
 **構文**
 
@@ -2966,7 +3090,7 @@ SELECT identity(42);
 getSetting('custom_setting');
 ```
 
-**パラメータ**
+**引数**
 
 - `custom_setting` — 設定名。[String](../data-types/string.md)。
 
@@ -2975,6 +3099,8 @@ getSetting('custom_setting');
 - 設定の現在の値。
 
 **例**
+
+クエリ:
 
 ```sql
 SET custom_a = 123;
@@ -2987,12 +3113,12 @@ SELECT getSetting('custom_a');
 123
 ```
 
-**関連項目**
+**参照**
 
-- [Custom Settings](/operations/settings/query-level#custom_settings)
+- [カスタム設定](/operations/settings/query-level#custom_settings)
 ## getSettingOrDefault {#getsettingordefault}
 
-現在の [カスタム設定](/operations/settings/query-level#custom_settings) の値を返すか、カスタム設定が現在のプロファイルに設定されていない場合は、2 番目の引数で指定されているデフォルト値を返します。
+現在の[カスタム設定](/operations/settings/query-level#custom_settings)の値を返すか、カスタム設定が現在のプロファイルに設定されていない場合は第2引数で指定されたデフォルト値を返します。
 
 **構文**
 
@@ -3000,16 +3126,18 @@ SELECT getSetting('custom_a');
 getSettingOrDefault('custom_setting', default_value);
 ```
 
-**パラメータ**
+**引数**
 
 - `custom_setting` — 設定名。[String](../data-types/string.md)。
-- `default_value` — custom_setting が設定されていない場合に返す値。値は任意のデータ型または Null である可能性があります。
+- `default_value` — custom_settingが設定されていない場合に返す値。値は任意のデータ型またはNullであっても構いません。
 
 **返される値**
 
-- 設定の現在の値または、設定が設定されていない場合は default_value。
+- 設定の現在の値、または設定が設定されていない場合はdefault_value。
 
 **例**
+
+クエリ:
 
 ```sql
 SELECT getSettingOrDefault('custom_undef1', 'my_value');
@@ -3025,12 +3153,12 @@ my_value
 NULL
 ```
 
-**関連項目**
+**参照**
 
-- [Custom Settings](/operations/settings/query-level#custom_settings)
+- [カスタム設定](/operations/settings/query-level#custom_settings)
 ## isDecimalOverflow {#isdecimaloverflow}
 
-[Decimal](../data-types/decimal.md) 値がその精度を超えているか、指定された精度を超えているかをチェックします。
+[Decimal](../data-types/decimal.md)値がその精度の範囲外であるか、指定された精度の範囲外であるかどうかを確認します。
 
 **構文**
 
@@ -3041,12 +3169,12 @@ isDecimalOverflow(d, [p])
 **引数**
 
 - `d` — 値。[Decimal](../data-types/decimal.md)。
-- `p` — 精度。オプション。省略すると、最初の引数の初期精度が使用されます。このパラメータは、他のデータベースやファイル間でデータを移行する際に役立つことがあります。[UInt8](/sql-reference/data-types/int-uint#integer-ranges)。
+- `p` — 精度。オプション。省略すると、最初の引数の初期精度が使用されます。このパラメータは、別のデータベースまたはファイルからデータを移行するのに役立ちます。[UInt8](/sql-reference/data-types/int-uint#integer-ranges)。
 
 **返される値**
 
-- `1` — Decimal 値がその精度によって許可されるより多くの桁を持っている場合、
-- `0` — Decimal 値が指定された精度を満たしている場合。
+- `1` — Decimal値がその精度によって許可されるよりも多くの桁を持つ。
+- `0` — Decimal値が指定された精度を満たしている。
 
 **例**
 
@@ -3066,7 +3194,7 @@ SELECT isDecimalOverflow(toDecimal32(1000000000, 0), 9),
 ```
 ## countDigits {#countdigits}
 
-値を表すのに必要な小数桁数を返します。
+値を表すために必要な10進桁の数を返します。
 
 **構文**
 
@@ -3076,14 +3204,14 @@ countDigits(x)
 
 **引数**
 
-- `x` — [Int](../data-types/int-uint.md) または [Decimal](../data-types/decimal.md) 値。
+- `x` — [Int](../data-types/int-uint.md)または[Decimal](../data-types/decimal.md)値。
 
 **返される値**
 
-- 桁数。[UInt8](/sql-reference/data-types/int-uint#integer-ranges)。
+- 桁数。[UInt8](../data-types/int-uint.md)。
 
 :::note
-`Decimal` 値の場合、スケールを考慮します: 結果は基になる整数型 `(value * scale)` に対して計算されます。例えば: `countDigits(42) = 2`, `countDigits(42.000) = 5`, `countDigits(0.04200) = 4`。つまり、 `countDecimal(x) > 18` で `Decimal64` に対する小数オーバーフローをチェックできます。これは、[isDecimalOverflow](#isdecimaloverflow) の遅いバリアントです。
+`Decimal`値については、そのスケールを考慮に入れます: ベースとなる整数型に対して`(value * scale)`で計算します。例えば: `countDigits(42) = 2`、`countDigits(42.000) = 5`、`countDigits(0.04200) = 4`。すなわち、`Decimal64`に対して、`countDecimal(x) > 18`で小数オーバーフローを確認できます。これは、[isDecimalOverflow](#isdecimaloverflow)の遅いバリアントです。
 :::
 
 **例**
@@ -3118,8 +3246,8 @@ UNSUPPORTED_METHOD
 ```
 ## tcpPort {#tcpport}
 
-このサーバーがリッスンしている [ネイティブインターフェイス](../../interfaces/tcp.md) の TCP ポート番号を返します。
-分散テーブルのコンテキストで実行されると、この関数は各シャードに関連する正常なカラムを生成します。それ以外の場合は定数値が生成されます。
+このサーバーがリッスンしている [ネイティブインターフェース](../../interfaces/tcp.md) のTCPポート番号を返します。
+分散テーブルのコンテキストで実行されると、この関数は各シャードに関連する値を持つ通常のカラムを生成します。それ以外の場合は定数値を生成します。
 
 **構文**
 
@@ -3133,7 +3261,7 @@ tcpPort()
 
 **返される値**
 
-- TCP ポート番号。[UInt16](../data-types/int-uint.md)。
+- TCPポート番号。[UInt16](../data-types/int-uint.md)。
 
 **例**
 
@@ -3151,14 +3279,14 @@ SELECT tcpPort();
 └───────────┘
 ```
 
-**関連項目**
+**参照**
 
 - [tcp_port](../../operations/server-configuration-parameters/settings.md#tcp_port)
 ## currentProfiles {#currentprofiles}
 
-現在のユーザーの現在の [設定プロファイル](../../guides/sre/user-management/index.md#settings-profiles-management) のリストを返します。
+現在のユーザーの現在の[設定プロファイル](../../guides/sre/user-management/index.md#settings-profiles-management)のリストを返します。
 
-コマンド [SET PROFILE](/sql-reference/functions/other-functions#currentprofiles) を使用して、現在の設定プロファイルを変更できます。`SET PROFILE` コマンドが使用されていない場合、この関数は現在のユーザーの定義で指定されたプロファイルを返します（[CREATE USER](/sql-reference/statements/create/user) を参照）。
+[SET PROFILE](/sql-reference/functions/other-functions#currentprofiles)コマンドを使用して、現在の設定プロファイルを変更できます。`SET PROFILE`コマンドが使用されていない場合、関数は現在のユーザー定義で指定されたプロファイルを返します（[CREATE USER](/sql-reference/statements/create/user)を参照）。
 
 **構文**
 
@@ -3168,10 +3296,10 @@ currentProfiles()
 
 **返される値**
 
-- 現在のユーザーの設定プロファイルのリスト。[Array](../data-types/array.md)([String](../data-types/string.md)).
+- 現在のユーザー設定プロファイルのリスト。[Array](../data-types/array.md)([String](../data-types/string.md)).
 ## enabledProfiles {#enabledprofiles}
 
-現在のユーザーに明示的および暗黙的に割り当てられている設定プロファイルを返します。明示的に割り当てられたプロファイルは、[currentProfiles](#currentprofiles) 関数によって返されるものと同じです。暗黙的に割り当てられたプロファイルには、他の割り当てられたプロファイルの親プロファイル、付与されたロールを介して割り当てられたプロファイル、自身の設定を介して割り当てられたプロファイル、および主要なデフォルトプロファイルが含まれます（主要なサーバー設定ファイル内の `default_profile` セクションを参照）。
+現在のユーザーに明示的および暗黙的に割り当てられた設定プロファイルを返します。明示的に割り当てられたプロファイルは、[currentProfiles](#currentprofiles)関数とは同じです。暗黙的に割り当てられたプロファイルには、他の割り当てられたプロファイルの親プロファイル、付与されたロールを通じて割り当てられたプロファイル、独自の設定を通じて割り当てられたプロファイル、および主なデフォルトプロファイル（メインサーバー設定ファイルの `default_profile`セクションを参照）を含みます。
 
 **構文**
 
@@ -3184,7 +3312,7 @@ enabledProfiles()
 - 有効な設定プロファイルのリスト。[Array](../data-types/array.md)([String](../data-types/string.md)).
 ## defaultProfiles {#defaultprofiles}
 
-現在のユーザーの定義で指定されたすべてのプロファイルを返します（[CREATE USER](/sql-reference/statements/create/user) 文を参照）。
+現在のユーザー定義で指定されたすべてのプロファイルを返します（[CREATE USER](/sql-reference/statements/create/user)ステートメントを参照）。
 
 **構文**
 
@@ -3197,7 +3325,7 @@ defaultProfiles()
 - デフォルト設定プロファイルのリスト。[Array](../data-types/array.md)([String](../data-types/string.md)).
 ## currentRoles {#currentroles}
 
-現在のユーザーに割り当てられたロールを返します。ロールは [SET ROLE](/sql-reference/statements/set-role) 文によって変更できます。`SET ROLE` 文が使用されていない場合、関数 `currentRoles` は `defaultRoles` と同じものを返します。
+現在のユーザーに割り当てられているロールを返します。ロールは[SET ROLE](/sql-reference/statements/set-role)ステートメントによって変更できます。`SET ROLE`ステートメントが使用されなかった場合、関数`currentRoles`は`defaultRoles`と同じ結果を返します。
 
 **構文**
 
@@ -3210,7 +3338,7 @@ currentRoles()
 - 現在のユーザーの現在のロールのリスト。[Array](../data-types/array.md)([String](../data-types/string.md)).
 ## enabledRoles {#enabledroles}
 
-現在のロールおよび現在のロールに付与されたロールの名前を返します。
+現在のロールとそれに付与されたロールの名前を返します。
 
 **構文**
 
@@ -3220,10 +3348,10 @@ enabledRoles()
 
 **返される値**
 
-- 現在のユーザーに対して有効なロールのリスト。[Array](../data-types/array.md)([String](../data-types/string.md)).
+- 現在のユーザーの有効なロールのリスト。[Array](../data-types/array.md)([String](../data-types/string.md)).
 ## defaultRoles {#defaultroles}
 
-ユーザーがログインしたときにデフォルトで有効になるロールを返します。最初は、現在のユーザーに付与されたすべてのロールです（[GRANT](../../sql-reference/statements/grant.md#select)を参照）が、それは [SET DEFAULT ROLE](/sql-reference/statements/set-role#set-default-role) 文によって変更される可能性があります。
+ユーザーがログインしたときにデフォルトで有効なロールを返します。これらは最初は、現在のユーザーに付与されたすべてのロールです（[GRANT](../../sql-reference/statements/grant.md#select)を参照）が、[SET DEFAULT ROLE](/sql-reference/statements/set-role#set-default-role) ステートメントで変更できます。
 
 **構文**
 
@@ -3233,10 +3361,10 @@ defaultRoles()
 
 **返される値**
 
-- 現在のユーザーのデフォルトロールのリスト。[Array](../data-types/array.md)([String](../data-types/string.md)).
+- 現在のユーザーに対するデフォルトのロールのリスト。[Array](../data-types/array.md)([String](../data-types/string.md)).
 ## getServerPort {#getserverport}
 
-サーバーポート番号を返します。ポートがサーバーによって使用されていない場合、例外をスローします。
+サーバーポート番号を返します。このポートがサーバーによって使用されていない場合、例外が発生します。
 
 **構文**
 
@@ -3261,7 +3389,7 @@ getServerPort(port_name)
 
 **返される値**
 
-- サーバーポートの番号。[UInt16](../data-types/int-uint.md)。
+- サーバーポートの数。[UInt16](../data-types/int-uint.md)。
 
 **例**
 
@@ -3280,9 +3408,9 @@ SELECT getServerPort('tcp_port');
 ```
 ## queryID {#queryid}
 
-現在のクエリの ID を返します。クエリの他のパラメータは、[system.query_log](../../operations/system-tables/query_log.md) テーブルから `query_id` を介して抽出できます。
+現在のクエリのIDを返します。クエリの他のパラメータは、`query_id`を介して[system.query_log](../../operations/system-tables/query_log.md)テーブルから抽出できます。
 
-[initialQueryID](#initialqueryid) 関数とは対照的に、`queryID` は異なるシャードで異なる結果を返すことがあります（例を参照）。
+[initialQueryID](#initialqueryid)関数とは異なり、`queryID`は異なるシャードで異なる結果を返す場合があります（例を参照）。
 
 **構文**
 
@@ -3292,7 +3420,7 @@ queryID()
 
 **返される値**
 
-- 現在のクエリの ID。[String](../data-types/string.md)
+- 現在のクエリのID。[String](../data-types/string.md)
 
 **例**
 
@@ -3313,9 +3441,9 @@ SELECT count(DISTINCT t) FROM (SELECT queryID() AS t FROM remote('127.0.0.{1..3}
 ```
 ## initialQueryID {#initialqueryid}
 
-初期の現在のクエリの ID を返します。クエリの他のパラメータは、[system.query_log](../../operations/system-tables/query_log.md) テーブルから `initial_query_id` を介して抽出できます。
+初期の現在のクエリのIDを返します。クエリの他のパラメータは、`initial_query_id`を介して[system.query_log](../../operations/system-tables/query_log.md)テーブルから抽出できます。
 
-[queryID](/sql-reference/functions/other-functions#queryid) 関数とは対照的に、`initialQueryID` は異なるシャードで同じ結果を返します（例を参照）。
+[queryID](/sql-reference/functions/other-functions#queryid)関数とは異なり、`initialQueryID`は異なるシャードで同じ結果を返します（例を参照）。
 
 **構文**
 
@@ -3325,7 +3453,7 @@ initialQueryID()
 
 **返される値**
 
-- 初期の現在のクエリの ID。[String](../data-types/string.md)
+- 初期の現在のクエリのID。[String](../data-types/string.md)
 
 **例**
 
@@ -3346,9 +3474,9 @@ SELECT count(DISTINCT t) FROM (SELECT initialQueryID() AS t FROM remote('127.0.0
 ```
 ## initialQueryStartTime {#initialquerystarttime}
 
-初期の現在のクエリの開始時間を返します。
+初期の現在のクエリの開始時刻を返します。
 
-`initialQueryStartTime` は異なるシャードで同じ結果を返します（例を参照）。
+`initialQueryStartTime`は異なるシャードで同じ結果を返します（例を参照）。
 
 **構文**
 
@@ -3358,7 +3486,7 @@ initialQueryStartTime()
 
 **返される値**
 
-- 初期の現在のクエリの開始時間。[DateTime](../data-types/datetime.md)
+- 初期の現在のクエリの開始時刻。[DateTime](../data-types/datetime.md)
 
 **例**
 
@@ -3379,10 +3507,10 @@ SELECT count(DISTINCT t) FROM (SELECT initialQueryStartTime() AS t FROM remote('
 ```
 ## partitionID {#partitionid}
 
-[パーティション ID](../../engines/table-engines/mergetree-family/custom-partitioning-key.md) を計算します。
+[パーティションID](../../engines/table-engines/mergetree-family/custom-partitioning-key.md)を計算します。
 
 :::note
-この関数は遅く、大量の行には呼び出さないでください。
+この関数は遅く、大量の行に対して呼び出すべきではありません。
 :::
 
 **構文**
@@ -3393,12 +3521,12 @@ partitionID(x[, y, ...]);
 
 **引数**
 
-- `x` — パーティション ID を返す対象のカラム。
-- `y, ...` — パーティション ID を返す残りの N カラム（オプション）。
+- `x` — パーティションIDを返すカラム。
+- `y, ...` — パーティションIDを返すための残りのNカラム（オプション）。
 
 **返される値**
 
-- 行が属するパーティション ID。[String](../data-types/string.md)。
+- 行が属するパーティションID。[String](../data-types/string.md)。
 
 **例**
 
@@ -3437,8 +3565,7 @@ SELECT i, j, partitionID(i), _partition_id FROM tab ORDER BY i, j;
 ```
 ## shardNum {#shardnum}
 
-分散クエリ内でデータの一部を処理するシャードのインデックスを返します。インデックスは `1` から始まります。
-クエリが分散していない場合、定数値 `0` が返されます。
+分散クエリでデータの一部を処理するシャードのインデックスを返します。インデックスは `1` から始まります。クエリが分散されていない場合は、定数値 `0` が返されます。
 
 **構文**
 
@@ -3448,11 +3575,11 @@ shardNum()
 
 **返される値**
 
-- シャードインデックスまたは定数 `0`。[UInt32](../data-types/int-uint.md)。
+- シャードインデックスまたは定数 `0`。 [UInt32](../data-types/int-uint.md)。
 
 **例**
 
-以下の例では、2 つのシャードを持つ構成が使用されています。クエリは、すべてのシャードで [system.one](../../operations/system-tables/one.md) テーブルに対して実行されます。
+以下の例では、2つのシャードを持つ構成が使用されます。クエリはすべてのシャードで [system.one](../../operations/system-tables/one.md) テーブルに対して実行されます。
 
 クエリ:
 
@@ -3476,8 +3603,7 @@ SELECT dummy, shardNum(), shardCount() FROM shard_num_example;
 - [Distributed Table Engine](../../engines/table-engines/special/distributed.md)
 ## shardCount {#shardcount}
 
-分散クエリのためのシャードの総数を返します。
-クエリが分散していない場合、定数値 `0` が返されます。
+分散クエリのシャードの総数を返します。クエリが分散されていない場合は、定数値 `0` が返されます。
 
 **構文**
 
@@ -3487,14 +3613,14 @@ shardCount()
 
 **返される値**
 
-- シャードの総数または `0`。[UInt32](../data-types/int-uint.md)。
+- シャードの総数または `0`。 [UInt32](../data-types/int-uint.md)。
 
 **関連項目**
 
-- [shardNum()](#shardnum) 関数の例にも `shardCount()` 関数呼び出しが含まれています。
+- [shardNum()](#shardnum) 関数の例には、`shardCount()` 関数呼び出しも含まれています。
 ## getOSKernelVersion {#getoskernelversion}
 
-現在の OS カーネルバージョンを含む文字列を返します。
+現在のOSカーネルバージョンを含む文字列を返します。
 
 **構文**
 
@@ -3508,7 +3634,7 @@ getOSKernelVersion()
 
 **返される値**
 
-- 現在の OS カーネルバージョン。[String](../data-types/string.md)。
+- 現在のOSカーネルバージョン。 [String](../data-types/string.md)。
 
 **例**
 
@@ -3527,7 +3653,7 @@ SELECT getOSKernelVersion();
 ```
 ## zookeeperSessionUptime {#zookeepersessionuptime}
 
-現在の ZooKeeper セッションの稼働時間を秒単位で返します。
+現在のZooKeeperセッションの稼働時間（秒）を返します。
 
 **構文**
 
@@ -3541,7 +3667,7 @@ zookeeperSessionUptime()
 
 **返される値**
 
-- 現在の ZooKeeper セッションの稼働時間（秒）。[UInt32](../data-types/int-uint.md)。
+- 現在のZooKeeperセッションの稼働時間（秒）。 [UInt32](../data-types/int-uint.md)。
 
 **例**
 
@@ -3560,7 +3686,7 @@ SELECT zookeeperSessionUptime();
 ```
 ## generateRandomStructure {#generaterandomstructure}
 
-ランダムなテーブル構造を `column1_name column1_type, column2_name column2_type, ...` 形式で生成します。
+`column1_name column1_type, column2_name column2_type, ...` 形式のランダムなテーブル構造を生成します。
 
 **構文**
 
@@ -3570,14 +3696,14 @@ generateRandomStructure([number_of_columns, seed])
 
 **引数**
 
-- `number_of_columns` — 結果テーブル構造におけるカラムの数。0または`Null`に設定すると、カラムの数は1から128の間でランダムに決定されます。デフォルト値: `Null`。
-- `seed` - 安定した結果を生成するためのランダムシード。シードが指定されていないか`Null`に設定されている場合、ランダムに生成されます。
+- `number_of_columns` — 結果テーブル構造での希望するカラム数。0または `Null` に設定された場合、カラム数は1から128の間でランダムになります。デフォルト値: `Null`。
+- `seed` - 安定した結果を生成するためのランダムシード。シードが指定されていないか、`Null` に設定された場合は、ランダムに生成されます。
 
 すべての引数は定数でなければなりません。
 
 **返される値**
 
-- ランダムに生成されたテーブル構造。[String](../data-types/string.md)。
+- ランダムに生成されたテーブル構造。 [String](../data-types/string.md)。
 
 **例**
 
@@ -3623,12 +3749,12 @@ SELECT generateRandomStructure(NULL, 33)
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**注**: 複雑な型（Array, Tuple, Map, Nested）の最大ネスト深度は16に制限されています。
+**注意**: 複雑な型（Array, Tuple, Map, Nested）の最大ネストの深さは16に制限されています。
 
-この関数は、[generateRandom](../../sql-reference/table-functions/generate.md) と組み合わせて使用することで、完全にランダムなテーブルを生成するために使用できます。
+この関数は、[generateRandom](../../sql-reference/table-functions/generate.md) と組み合わせて、完全にランダムなテーブルを生成するために使用できます。
 ## structureToCapnProtoSchema {#structure_to_capn_proto_schema}
 
-ClickHouseのテーブル構造をCapnProtoスキーマに変換します。
+ClickHouseテーブル構造をCapnProtoスキーマに変換します。
 
 **構文**
 
@@ -3643,7 +3769,7 @@ structureToCapnProtoSchema(structure)
 
 **返される値**
 
-- CapnProtoスキーマ。[String](../data-types/string.md)。
+- CapnProtoスキーマ。 [String](../data-types/string.md)。
 
 **例**
 
@@ -3726,7 +3852,7 @@ struct Root
 ```
 ## structureToProtobufSchema {#structure_to_protobuf_schema}
 
-ClickHouseのテーブル構造をProtobufスキーマに変換します。
+ClickHouseテーブル構造をProtobufスキーマに変換します。
 
 **構文**
 
@@ -3741,7 +3867,7 @@ structureToProtobufSchema(structure)
 
 **返される値**
 
-- Protobufスキーマ。[String](../data-types/string.md)。
+- Protobufスキーマ。 [String](../data-types/string.md)。
 
 **例**
 
@@ -3807,9 +3933,9 @@ message Root
 ```
 ## formatQuery {#formatquery}
 
-指定されたSQLクエリのフォーマット済みのバージョンを返します。これは、複数行になる可能性があります。
+指定されたSQLクエリのフォーマットされた、可能性のある複数行版を返します。
 
-クエリが正しくない場合は例外がスローされます。その代わりに`NULL`を返すには、関数`formatQueryOrNull()`を使用できます。
+クエリが正常に構成されていない場合、例外がスローされます。代わりに `NULL` を返すためには、関数 `formatQueryOrNull()` を使用することができます。
 
 **構文**
 
@@ -3820,11 +3946,11 @@ formatQueryOrNull(query)
 
 **引数**
 
-- `query` - フォーマットするSQLクエリ。[String](../data-types/string.md)
+- `query` - フォーマットされるSQLクエリ。 [String](../data-types/string.md)
 
 **返される値**
 
-- フォーマットされたクエリ。[String](../data-types/string.md)。
+- フォーマットされたクエリ。 [String](../data-types/string.md)。
 
 **例**
 
@@ -3845,9 +3971,9 @@ WHERE (a > 3) AND (b < 3)            │
 ```
 ## formatQuerySingleLine {#formatquerysingleline}
 
-formatQuery()に似ていますが、返されるフォーマット済みの文字列には改行が含まれていません。
+formatQuery() と同様ですが、返されるフォーマットされた文字列に改行は含まれません。
 
-クエリが正しくない場合は例外がスローされます。その代わりに`NULL`を返すには、関数`formatQuerySingleLineOrNull()`を使用できます。
+クエリが正常に構成されていない場合、例外がスローされます。代わりに `NULL` を返すためには、関数 `formatQuerySingleLineOrNull()` を使用することができます。
 
 **構文**
 
@@ -3858,11 +3984,11 @@ formatQuerySingleLineOrNull(query)
 
 **引数**
 
-- `query` - フォーマットするSQLクエリ。[String](../data-types/string.md)
+- `query` - フォーマットされるSQLクエリ。 [String](../data-types/string.md)
 
 **返される値**
 
-- フォーマットされたクエリ。[String](../data-types/string.md)。
+- フォーマットされたクエリ。 [String](../data-types/string.md)。
 
 **例**
 
@@ -3879,7 +4005,7 @@ SELECT formatQuerySingleLine('select a,    b FRom tab WHERE a > 3 and  b < 3');
 ```
 ## variantElement {#variantelement}
 
-`Variant`カラムから指定された型のカラムを抽出します。
+`Variant` カラムから指定された型のカラムを抽出します。
 
 **構文**
 
@@ -3889,9 +4015,9 @@ variantElement(variant, type_name, [, default_value])
 
 **引数**
 
-- `variant` — Variantカラム。[Variant](../data-types/variant.md)。
-- `type_name` — 抽出するバリアント型の名前。[String](../data-types/string.md)。
-- `default_value` - 指定された型のバリアントが存在しない場合に使用されるデフォルト値。任意の型を指定できます。オプション。
+- `variant` — Variantカラム。 [Variant](../data-types/variant.md)。
+- `type_name` — 抽出するバリアント型の名前。 [String](../data-types/string.md)。
+- `default_value` - 指定された型での変種が存在しない場合に使用されるデフォルト値。任意の型が可能。
 
 **返される値**
 
@@ -3915,7 +4041,7 @@ SELECT v, variantElement(v, 'String'), variantElement(v, 'UInt64'), variantEleme
 ```
 ## variantType {#varianttype}
 
-`Variant`カラムの各行に対してバリアント型名を返します。行がNULLの場合は`'None'`を返します。
+`Variant` カラムの各行に対するバリアント型名を返します。行がNULLを含む場合、その行には `'None'` が返されます。
 
 **構文**
 
@@ -3925,11 +4051,11 @@ variantType(variant)
 
 **引数**
 
-- `variant` — Variantカラム。[Variant](../data-types/variant.md)。
+- `variant` — Variantカラム。 [Variant](../data-types/variant.md)。
 
 **返される値**
 
-- 各行のバリアント型名を持つEnum8カラム。
+- 各行のバリアント型名を含むEnum8カラム。
 
 **例**
 
@@ -3959,7 +4085,7 @@ SELECT toTypeName(variantType(v)) FROM test LIMIT 1;
 ```
 ## minSampleSizeConversion {#minsamplesizeconversion}
 
-2つのサンプルにおけるコンバージョン（比率）を比較するA/Bテストのための最小限のサンプルサイズを計算します。
+二つのサンプルでのコンバージョン（割合）を比較するためのA/Bテストに必要な最小サンプルサイズを計算します。
 
 **構文**
 
@@ -3967,26 +4093,26 @@ SELECT toTypeName(variantType(v)) FROM test LIMIT 1;
 minSampleSizeConversion(baseline, mde, power, alpha)
 ```
 
-[この記事](https://towardsdatascience.com/required-sample-size-for-a-b-testing-6f6608dd330a)で説明されている数式を使用します。治療群と対照群のサイズが等しいと仮定します。グループの1回あたり必要なサンプルサイズを返します（つまり、実験全体に必要なサンプルサイズは返された値の2倍です）。
+[このブログ記事](https://towardsdatascience.com/required-sample-size-for-a-b-testing-6f6608dd330a)で説明されている式を使用します。治療群とコントロール群が等しいサイズであると仮定します。一群に必要なサンプルサイズが返されます（すなわち、全体の実験に必要なサンプルサイズは返された値の2倍です）。
 
 **引数**
 
-- `baseline` — 基準コンバージョン。[Float](../data-types/float.md)。
-- `mde` — 最小検出効果（MDE）をパーセンテージポイントとして指定します（例：基準コンバージョン0.25の場合、MDE0.03は0.25 ± 0.03への変化を意味します）。[Float](../data-types/float.md)。
-- `power` — テストの必要な統計的パワー（1 - 第II種エラーの確率）。[Float](../data-types/float.md)。
-- `alpha` — テストの必要な有意水準（第I種エラーの確率）。[Float](../data-types/float.md)。
+- `baseline` — ベースラインコンバージョン。 [Float](../data-types/float.md)。
+- `mde` — 最小検出可能効果（MDE）をパーセンテージポイントで指定します（例: ベースラインコンバージョンが0.25の場合、MDE 0.03は0.25 ± 0.03 の変化を意味します）。 [Float](../data-types/float.md)。
+- `power` — テストの必要な統計的パワー（1 - II型誤差の確率）。 [Float](../data-types/float.md)。
+- `alpha` — テストの必要な有意水準（I型誤差の確率）。 [Float](../data-types/float.md)。
 
 **返される値**
 
-3つの要素を持つ名前付き[Tuple](../data-types/tuple.md):
+以下の3つの要素を持つ名前付き [Tuple](../data-types/tuple.md):
 
-- `"minimum_sample_size"` — 必要なサンプルサイズ。[Float64](../data-types/float.md)。
-- `"detect_range_lower"` — 指定された必要なサンプルサイズでは検出不可能な範囲の下限（つまり`"detect_range_lower"`以下のすべての値は指定された`alpha`および`power`で検出可能です）。`baseline - mde`として計算されます。[Float64](../data-types/float.md)。
-- `"detect_range_upper"` — 指定された必要なサンプルサイズでは検出不可能な範囲の上限（つまり`"detect_range_upper"`以上のすべての値は指定された`alpha`および`power`で検出可能です）。`baseline + mde`として計算されます。[Float64](../data-types/float.md)。
+- `"minimum_sample_size"` — 必要なサンプルサイズ。 [Float64](../data-types/float.md)。
+- `"detect_range_lower"` — 返された必要なサンプルサイズでは検出できない値の下限（すなわち、`"detect_range_lower"` 以下のすべての値は、提供された `alpha` および `power` で検出可能です）。 `baseline - mde` として計算されます。 [Float64](../data-types/float.md)。
+- `"detect_range_upper"` — 返された必要なサンプルサイズでは検出できない値の上限（すなわち、`"detect_range_upper"` 以上のすべての値は、提供された `alpha` および `power` で検出可能です）。 `baseline + mde` として計算されます。 [Float64](../data-types/float.md)。
 
 **例**
 
-次のクエリは、基準コンバージョン25%、MDE3%、有意水準5%、望ましい統計的パワー80%を持つA/Bテストのための必要なサンプルサイズを計算します。
+次のクエリは、ベースラインコンバージョンが25%、MDEが3%、有意水準が5%、期待される統計的パワーが80%のA/Bテストに必要なサンプルサイズを計算します。
 
 ```sql
 SELECT minSampleSizeConversion(0.25, 0.03, 0.80, 0.05) AS sample_size;
@@ -4001,7 +4127,7 @@ SELECT minSampleSizeConversion(0.25, 0.03, 0.80, 0.05) AS sample_size;
 ```
 ## minSampleSizeContinuous {#minsamplesizecontinuous}
 
-2つのサンプルで連続した指標の平均を比較するためのA/Bテストに必要な最小サンプルサイズを計算します。
+二つのサンプルでの連続メトリックの平均を比較するためのA/Bテストに必要な最小サンプルサイズを計算します。
 
 **構文**
 
@@ -4009,29 +4135,29 @@ SELECT minSampleSizeConversion(0.25, 0.03, 0.80, 0.05) AS sample_size;
 minSampleSizeContinous(baseline, sigma, mde, power, alpha)
 ```
 
-別名: `minSampleSizeContinous`
+エイリアス: `minSampleSizeContinous`
 
-[この記事](https://towardsdatascience.com/required-sample-size-for-a-b-testing-6f6608dd330a)で説明されている数式を使用します。治療群と対照群のサイズが等しいと仮定します。グループの1回あたり必要なサンプルサイズを返します（つまり、実験全体に必要なサンプルサイズは返された値の2倍です）。また、治療群と対照群でテスト指標の分散が等しいと仮定します。
+[このブログ記事](https://towardsdatascience.com/required-sample-size-for-a-b-testing-6f6608dd330a)で説明されている式を使用します。治療群とコントロール群が等しいサイズであると仮定します。一群に必要なサンプルサイズが返されます（すなわち、全体の実験に必要なサンプルサイズは返された値の2倍です）。テストメトリックの治療群とコントロール群の分散が等しいと仮定します。
 
 **引数**
 
-- `baseline` — 指標の基準値。[Integer](../data-types/int-uint.md) または [Float](../data-types/float.md)。
-- `sigma` — 指標の基準標準偏差。[Integer](../data-types/int-uint.md) または [Float](../data-types/float.md)。
-- `mde` — 基準値のパーセンテージとしての最小検出効果（MDE）（例：基準値112.25の場合、MDE0.03は112.25 ± 112.25\*0.03の変化を意味します）。[Integer](../data-types/int-uint.md) または [Float](../data-types/float.md)。
-- `power` — テストの必要な統計的パワー（1 - 第II種エラーの確率）。[Integer](../data-types/int-uint.md) または [Float](../data-types/float.md)。
-- `alpha` — テストの必要な有意水準（第I種エラーの確率）。[Integer](../data-types/int-uint.md) または [Float](../data-types/float.md)。
+- `baseline` — メトリックのベースライン値。 [Integer](../data-types/int-uint.md) または [Float](../data-types/float.md)。
+- `sigma` — メトリックのベースライン標準偏差。 [Integer](../data-types/int-uint.md) または [Float](../data-types/float.md)。
+- `mde` — ベースライン値のパーセンテージでの最小検出可能効果（MDE）（例: ベースライン値112.25の場合、MDE 0.03は112.25 ± 112.25\*0.03 の変化を意味します）。 [Integer](../data-types/int-uint.md) または [Float](../data-types/float.md)。
+- `power` — テストの必要な統計的パワー（1 - II型誤差の確率）。 [Integer](../data-types/int-uint.md) または [Float](../data-types/float.md)。
+- `alpha` — テストの必要な有意水準（I型誤差の確率）。 [Integer](../data-types/int-uint.md) または [Float](../data-types/float.md)。
 
 **返される値**
 
-3つの要素を持つ名前付き[Tuple](../data-types/tuple.md):
+以下の3つの要素を持つ名前付き [Tuple](../data-types/tuple.md)：
 
-- `"minimum_sample_size"` — 必要なサンプルサイズ。[Float64](../data-types/float.md)。
-- `"detect_range_lower"` — 指定された必要なサンプルサイズでは検出不可能な範囲の下限（つまり`"detect_range_lower"`以下のすべての値は指定された`alpha`および`power`で検出可能です）。`baseline * (1 - mde)`として計算されます。[Float64](../data-types/float.md)。
-- `"detect_range_upper"` — 指定された必要なサンプルサイズでは検出不可能な範囲の上限（つまり`"detect_range_upper"`以上のすべての値は指定された`alpha`および`power`で検出可能です）。`baseline * (1 + mde)`として計算されます。[Float64](../data-types/float.md)。
+- `"minimum_sample_size"` — 必要なサンプルサイズ。 [Float64](../data-types/float.md)。
+- `"detect_range_lower"` — 返された必要なサンプルサイズでは検出できない値の下限（すなわち、`"detect_range_lower"` 以下のすべての値は、提供された `alpha` と `power` で検出可能です）。 `baseline * (1 - mde)` として計算されます。 [Float64](../data-types/float.md)。
+- `"detect_range_upper"` — 返された必要なサンプルサイズでは検出できない値の上限（すなわち、`"detect_range_upper"` 以上のすべての値は、提供された `alpha` と `power` で検出可能です）。 `baseline * (1 + mde)` として計算されます。 [Float64](../data-types/float.md)。
 
 **例**
 
-次のクエリは、基準値112.25、標準偏差21.1、MDE3%、有意水準5%、望ましい統計的パワー80%を持つ指標のA/Bテストに必要なサンプルサイズを計算します。
+次のクエリは、ベースライン値112.25、標準偏差21.1、MDEが3%、有意水準が5%、期待される統計的パワーが80%のメトリックにおけるA/Bテストに必要なサンプルサイズを計算します。
 
 ```sql
 SELECT minSampleSizeContinous(112.25, 21.1, 0.03, 0.80, 0.05) AS sample_size;
@@ -4046,7 +4172,7 @@ SELECT minSampleSizeContinous(112.25, 21.1, 0.03, 0.80, 0.05) AS sample_size;
 ```
 ## connectionId {#connectionid}
 
-現在のクエリを提出したクライアントの接続IDを取得し、UInt64整数として返します。
+現在のクエリを送信したクライアントの接続IDを取得し、UInt64整数として返します。
 
 **構文**
 
@@ -4054,19 +4180,19 @@ SELECT minSampleSizeContinous(112.25, 21.1, 0.03, 0.80, 0.05) AS sample_size;
 connectionId()
 ```
 
-別名: `connection_id`.
+エイリアス: `connection_id`。
 
-**パラメータ**
+**パラメーター**
 
 なし。
 
 **返される値**
 
-現在の接続ID。[UInt64](../data-types/int-uint.md)。
+現在の接続ID。 [UInt64](../data-types/int-uint.md)。
 
 **実装の詳細**
 
-この関数はデバッグシナリオやMySQLハンドラ内での内部目的で最も有用です。MySQLの`CONNECTION_ID`関数との互換性のために作成されました。通常のプロダクションクエリでは一般的に使用されません。
+この関数は、デバッグシナリオやMySQLハンドラ内部のために最も便利です。[MySQLの `CONNECTION_ID` 関数](https://dev.mysql.com/doc/refman/8.0/en/information-functions.html#function_connection-id)との互換性のために作成されました。本番のクエリでは通常使用されません。
 
 **例**
 
@@ -4076,6 +4202,8 @@ connectionId()
 SELECT connectionId();
 ```
 
+結果:
+
 ```response
 0
 ```
@@ -4083,18 +4211,16 @@ SELECT connectionId();
 
 HTTPヘッダーの値を取得します。
 
-そのようなヘッダーが存在しないか、現在のリクエストがHTTPインターフェース経由で実行されていない場合、この関数は空の文字列を返します。
-特定のHTTPヘッダー（例：`Authentication`や`X-ClickHouse-*`）には制限があります。
+そのようなヘッダーがない場合や、現在のリクエストがHTTPインターフェースを介して行われていない場合、関数は空の文字列を返します。特定のHTTPヘッダー（例：`Authentication` や `X-ClickHouse-*`）は制限されています。
 
-この関数を使用するには、設定`allow_get_client_http_header`を有効にする必要があります。
-セキュリティ上の理由から、この設定はデフォルトでは有効になっていません。`Cookie`など、一部のヘッダーには機密情報が含まれている可能性があるためです。
+この関数は、`allow_get_client_http_header` 設定を有効にする必要があります。この設定はセキュリティ上の理由からデフォルトでは無効になっており、`Cookie` などのいくつかのヘッダーには機密情報が含まれる可能性があります。
 
-この関数では、HTTPヘッダーは大文字と小文字を区別します。
+この関数では、HTTPヘッダーはケースセンシティブです。
 
-この関数が分散クエリのコンテキストで使用される場合、イニシエーターノードでのみ非空の結果が返されます。
+この関数が分散クエリの文脈で使用される場合、イニシエータノードでのみ非空の結果が返されます。
 ## showCertificate {#showcertificate}
 
-現在のサーバーのSSL証明書に関する情報を表示します。SSL証明書が構成されている場合に限ります。接続を検証するためにOpenSSL証明書を使用するようにClickHouseを構成する方法については、[SSL-TLSの設定](/guides/sre/configuring-ssl)を参照してください。
+現在のサーバーのSecure Sockets Layer (SSL) 証明書に関する情報を表示します（設定されている場合）。ClickHouseがOpenSSL証明書を使用して接続を検証する方法についての詳細は、 [SSL-TLSの設定](/guides/sre/configuring-ssl) を参照してください。
 
 **構文**
 
@@ -4104,7 +4230,7 @@ showCertificate()
 
 **返される値**
 
-- 構成されたSSL証明書に関連するキーと値のペアのマップ。[Map](../data-types/map.md)([String](../data-types/string.md), [String](../data-types/string.md))。
+- 設定されたSSL証明書に関連するキー-バリューのマップ。 [Map](../data-types/map.md)([String](../data-types/string.md), [String](../data-types/string.md))。
 
 **例**
 
@@ -4121,7 +4247,7 @@ SELECT showCertificate() FORMAT LineAsString;
 ```
 ## lowCardinalityIndices {#lowcardinalityindices}
 
-[LowCardinality](../data-types/lowcardinality.md)カラムの辞書における値の位置を返します。位置は1から始まります。LowCardinalityはパーツごとの辞書を持っているため、この関数は異なるパーツで同じ値に対して異なる位置を返すことがあります。
+[LowCardinality](../data-types/lowcardinality.md) カラムの辞書における値の位置を返します。位置は1から始まります。LowCardinalityにはパーツごとの辞書があるため、この関数は同じ値に対して異なるパーツで異なる位置を返す場合があります。
 
 **構文**
 
@@ -4131,11 +4257,11 @@ lowCardinalityIndices(col)
 
 **引数**
 
-- `col` — ローカーダリティカラム。[LowCardinality](../data-types/lowcardinality.md)。
+- `col` — LowCardinalityカラム。 [LowCardinality](../data-types/lowcardinality.md)。
 
 **返される値**
 
-- 現在のパーツの辞書における値の位置。[UInt64](../data-types/int-uint.md)。
+- 現在のパーツの辞書における値の位置。 [UInt64](../data-types/int-uint.md)。
 
 **例**
 
@@ -4145,7 +4271,7 @@ lowCardinalityIndices(col)
 DROP TABLE IF EXISTS test;
 CREATE TABLE test (s LowCardinality(String)) ENGINE = Memory;
 
--- 2つのパーツを作成:
+-- create two parts:
 
 INSERT INTO test VALUES ('ab'), ('cd'), ('ab'), ('ab'), ('df');
 INSERT INTO test VALUES ('ef'), ('cd'), ('ab'), ('cd'), ('ef');
@@ -4173,21 +4299,21 @@ SELECT s, lowCardinalityIndices(s) FROM test;
 ```
 ## lowCardinalityKeys {#lowcardinalitykeys}
 
-[LowCardinality](../data-types/lowcardinality.md)カラムの辞書の値を返します。ブロックが辞書のサイズよりも小さいか大きい場合、結果は切り捨てられるか、デフォルト値で拡張されます。LowCardinalityはパーツごとの辞書を持っているため、この関数は異なるパーツで異なる辞書の値を返すことがあります。
+[LowCardinality](../data-types/lowcardinality.md) カラムの辞書値を返します。ブロックが辞書サイズより小さいか大きい場合、結果は途切れるか、デフォルト値で拡張されます。LowCardinalityにはパーツごとの辞書があるため、この関数は異なるパーツで異なる辞書値を返す場合があります。
 
 **構文**
 
 ```sql
-lowCardinalityIndices(col)
+lowCardinalityKeys(col)
 ```
 
 **引数**
 
-- `col` — ローカーダリティカラム。[LowCardinality](../data-types/lowcardinality.md)。
+- `col` — LowCardinalityカラム。 [LowCardinality](../data-types/lowcardinality.md)。
 
 **返される値**
 
-- 辞書のキー。[UInt64](../data-types/int-uint.md)。
+- 辞書キー。 [UInt64](../data-types/int-uint.md)。
 
 **例**
 
@@ -4197,7 +4323,7 @@ lowCardinalityIndices(col)
 DROP TABLE IF EXISTS test;
 CREATE TABLE test (s LowCardinality(String)) ENGINE = Memory;
 
--- 2つのパーツを作成:
+-- create two parts:
 
 INSERT INTO test VALUES ('ab'), ('cd'), ('ab'), ('ab'), ('df');
 INSERT INTO test VALUES ('ef'), ('cd'), ('ab'), ('cd'), ('ef');
@@ -4225,7 +4351,7 @@ SELECT s, lowCardinalityKeys(s) FROM test;
 ```
 ## displayName {#displayname}
 
-[config](/operations/configuration-files)から`display_name`の値を返します。設定されていない場合は、サーバーの完全修飾ドメイン名（FQDN）を返します。
+`config` (/operations/configuration-files) における `display_name` の値、または設定されていない場合はサーバーの完全修飾ドメイン名 (FQDN) を返します。
 
 **構文**
 
@@ -4235,15 +4361,15 @@ displayName()
 
 **返される値**
 
-- 設定からの`display_name`の値、設定されていない場合はサーバーのFQDN。[String](../data-types/string.md)。
+- 設定されている場合は `display_name` の値、設定されていない場合はサーバーのFQDN。 [String](../data-types/string.md)。
 
 **例**
 
-`config.xml`で`display_name`を設定できます。たとえば、`display_name`が'production'に設定されているサーバーの例を取り上げます：
+`config.xml` で `display_name` を設定できます。例えば、'production' に設定されたサーバーを考えてみましょう。
 
 ```xml
-<!-- クリックハウスクライアントで表示される名前です。
-     デフォルトでは、"production"を含むものはすべてクエリプロンプトで赤くハイライトされます。
+<!-- It is the name that will be shown in the clickhouse-client.
+     By default, anything with "production" will be highlighted in red in query prompt.
 -->
 <display_name>production</display_name>
 ```
@@ -4266,17 +4392,17 @@ SELECT displayName();
 <ExperimentalBadge/>
 <CloudNotSupportedBadge/>
 
-[transaction](/guides/developer/transactional#transactions-commit-and-rollback)のIDを返します。
+[transaction](/guides/developer/transactional#transactions-commit-and-rollback) のIDを返します。
 
 :::note
-この関数は実験的機能セットの一部です。設定ファイルにこの設定を追加して実験的なトランザクションサポートを有効にします：
+この関数は実験的な機能セットの一部です。実験的なトランザクションサポートを有効にするには、この設定を構成に追加します:
 ```xml
 <clickhouse>
   <allow_experimental_transactions>1</allow_experimental_transactions>
 </clickhouse>
 ```
 
-詳細については、[トランザクションサポート（ACID）](/guides/developer/transactional#transactions-commit-and-rollback)のページを参照してください。
+詳細については、[Transactional (ACID) support](/guides/developer/transactional#transactions-commit-and-rollback)のページを参照してください。
 :::
 
 **構文**
@@ -4287,11 +4413,11 @@ transactionID()
 
 **返される値**
 
-- `start_csn`、`local_tid`、および `host_id`からなるタプルを返します。[Tuple](../data-types/tuple.md)。
+- `start_csn`, `local_tid` および `host_id` からなるタプルを返します。 [Tuple](../data-types/tuple.md)。
 
-- `start_csn`: グローバルの連続番号で、このトランザクションが開始したときに見た最も新しいコミットタイムスタンプ。[UInt64](../data-types/int-uint.md)。
-- `local_tid`: 特定の`start_csn`内でこのホストによって開始された各トランザクションに対して一意のローカル連続番号。[UInt64](../data-types/int-uint.md)。
-- `host_id`: このトランザクションを開始したホストのUUID。[UUID](../data-types/uuid.md)。
+- `start_csn`: グローバル順序番号。このトランザクションが始まったときに見た最新のコミットタイムスタンプ。 [UInt64](../data-types/int-uint.md)。
+- `local_tid`: このホストによって開始された各トランザクションに対して一意のローカル順序番号。 [UInt64](../data-types/int-uint.md)。
+- `host_id`: このトランザクションを開始したホストのUUID。 [UUID](../data-types/uuid.md)。
 
 **例**
 
@@ -4315,10 +4441,10 @@ ROLLBACK;
 <ExperimentalBadge/>
 <CloudNotSupportedBadge/>
 
-読み取り可能な[transaction](/guides/developer/transactional#transactions-commit-and-rollback)の最新スナップショット（コミットシーケンス番号）を返します。
+読み取り可能な [transaction](/guides/developer/transactional#transactions-commit-and-rollback) の最新のスナップショット（コミットシーケンス番号）を返します。
 
 :::note
-この関数は実験的機能セットの一部です。設定ファイルにこの設定を追加して実験的なトランザクションサポートを有効にします：
+この関数は実験的な機能セットの一部です。実験的なトランザクションサポートを有効にするには、この設定を構成に追加します:
 
 ```xml
 <clickhouse>
@@ -4326,7 +4452,7 @@ ROLLBACK;
 </clickhouse>
 ```
 
-詳細については、[トランザクションサポート（ACID）](/guides/developer/transactional#transactions-commit-and-rollback)のページを参照してください。
+詳細については、[Transactional (ACID) support](/guides/developer/transactional#transactions-commit-and-rollback)のページを参照してください。
 :::
 
 **構文**
@@ -4337,7 +4463,7 @@ transactionLatestSnapshot()
 
 **返される値**
 
-- トランザクションの最新スナップショット（CSN）を返します。[UInt64](../data-types/int-uint.md)
+- トランザクションの最新のスナップショット（CSN）を返します。 [UInt64](../data-types/int-uint.md)
 
 **例**
 
@@ -4361,10 +4487,10 @@ ROLLBACK;
 <ExperimentalBadge/>
 <CloudNotSupportedBadge/>
 
-実行中の[transaction](/guides/developer/transactional#transactions-commit-and-rollback)に対して可視状態の最古のスナップショット（コミットシーケンス番号）を返します。
+実行中の [transaction](/guides/developer/transactional#transactions-commit-and-rollback) で可視の最古のスナップショット（コミットシーケンス番号）を返します。
 
 :::note
-この関数は実験的機能セットの一部です。設定ファイルにこの設定を追加して実験的なトランザクションサポートを有効にします：
+この関数は実験的な機能セットの一部です。実験的なトランザクションサポートを有効にするには、この設定を構成に追加します:
 
 ```xml
 <clickhouse>
@@ -4372,7 +4498,7 @@ ROLLBACK;
 </clickhouse>
 ```
 
-詳細については、[トランザクションサポート（ACID）](/guides/developer/transactional#transactions-commit-and-rollback)のページを参照してください。
+詳細については、[Transactional (ACID) support](/guides/developer/transactional#transactions-commit-and-rollback)のページを参照してください。
 :::
 
 **構文**
@@ -4383,7 +4509,7 @@ transactionOldestSnapshot()
 
 **返される値**
 
-- トランザクションの最古のスナップショット（CSN）を返します。[UInt64](../data-types/int-uint.md)
+- トランザクションの最古のスナップショット（CSN）を返します。 [UInt64](../data-types/int-uint.md)
 
 **例**
 
@@ -4404,7 +4530,7 @@ ROLLBACK;
 ```
 ## getSubcolumn {#getsubcolumn}
 
-テーブル式または識別子とサブカラムの名前を持つ定数文字列を受け取り、要求されたサブカラムを抽出して返します。
+テーブル表現または識別子とサブカラム名を持つ定数文字列を受け取り、式から抽出された要求されたサブカラムを返します。
 
 **構文**
 
@@ -4414,8 +4540,8 @@ getSubcolumn(col_name, subcol_name)
 
 **引数**
 
-- `col_name` — テーブル式または識別子。[Expression](../syntax.md/#expressions), [Identifier](../syntax.md/#identifiers)。
-- `subcol_name` — サブカラムの名前。[String](../data-types/string.md)。
+- `col_name` — テーブル表現または識別子。 [Expression](../syntax.md/#expressions), [Identifier](../syntax.md/#identifiers)。
+- `subcol_name` — サブカラムの名前。 [String](../data-types/string.md)。
 
 **返される値**
 
@@ -4441,7 +4567,7 @@ SELECT getSubcolumn(arr, 'subcolumn1'), getSubcolumn(arr, 'subcolumn2') FROM t_a
 ```
 ## getTypeSerializationStreams {#gettypeserializationstreams}
 
-データ型のシリアルストリームのパスを列挙します。
+データ型のストリームパスを列挙します。
 
 :::note
 この関数は開発者向けに設計されています。
@@ -4455,11 +4581,11 @@ getTypeSerializationStreams(col)
 
 **引数**
 
-- `col` — データ型を検出するためのカラムまたはデータ型の文字列表現。
+- `col` — データ型を検出するためのカラムまたは文字列表現。
 
 **返される値**
 
-- すべてのシリアルストリームのサブストリームパスを持つ配列を返します。[Array](../data-types/array.md)([String](../data-types/string.md))。
+- すべてのシリアライズされたサブストリームパスを含む配列を返します。 [Array](../data-types/array.md)([String](../data-types/string.md))。
 
 **例**
 
@@ -4492,7 +4618,7 @@ SELECT getTypeSerializationStreams('Map(String, Int64)');
 ```
 ## globalVariable {#globalvariable}
 
-定数文字列引数を受け取り、その名前のグローバル変数の値を返します。この関数はMySQLとの互換性のために設計されており、通常のClickHouseの操作には必要ないか、役に立ちません。定義されているダミーのグローバル変数はほんの数個です。
+定数文字列引数を取得し、その名前のグローバル変数の値を返します。この関数はMySQLとの互換性を目的としており、ClickHouseの通常の操作には必要ないか役立たないものです。定義されているダミーのグローバル変数は少数です。
 
 **構文**
 
@@ -4502,11 +4628,11 @@ globalVariable(name)
 
 **引数**
 
-- `name` — グローバル変数名。[String](../data-types/string.md)。
+- `name` — グローバル変数名。 [String](../data-types/string.md)。
 
 **返される値**
 
-- 変数`name`の値を返します。
+- 変数 `name` の値を返します。
 
 **例**
 
@@ -4525,7 +4651,7 @@ SELECT globalVariable('max_allowed_packet');
 ```
 ## getMaxTableNameLengthForDatabase {#getmaxtablenamelengthfordatabase}
 
-指定されたデータベースにおける最長テーブル名を返します。
+指定されたデータベース内の最大テーブル名の長さを返します。
 
 **構文**
 
@@ -4535,11 +4661,11 @@ getMaxTableNameLengthForDatabase(database_name)
 
 **引数**
 
-- `database_name` — 指定されたデータベースの名前。[String](../data-types/string.md)。
+- `database_name` — 指定されたデータベースの名前。 [String](../data-types/string.md)。
 
 **返される値**
 
-- 最長テーブル名の長さを返します。
+- 最大テーブル名の長さを返します。
 
 **例**
 
@@ -4558,7 +4684,7 @@ SELECT getMaxTableNameLengthForDatabase('default');
 ```
 ## getServerSetting {#getserversetting}
 
-サーバー設定の現在の値を返します。
+サーバー設定の現在の値を返します
 
 **構文**
 
@@ -4566,9 +4692,9 @@ SELECT getMaxTableNameLengthForDatabase('default');
 getServerSetting('server_setting');
 ```
 
-**パラメータ**
+**パラメーター**
 
-- `server_setting` — 設定名。[String](../data-types/string.md)。
+- `server_setting` — 設定名。 [String](../data-types/string.md)。
 
 **返される値**
 
@@ -4589,7 +4715,7 @@ SELECT getServerSetting('allow_use_jemalloc_memory');
 ```
 ## getMergeTreeSetting {#getmergetreesetting}
 
-マージツリー設定の現在の値を返します。
+マージツリー設定の現在の値を返します
 
 **構文**
 
@@ -4597,9 +4723,9 @@ SELECT getServerSetting('allow_use_jemalloc_memory');
 getMergeTreeSetting('merge_tree_setting');
 ```
 
-**パラメータ**
+**パラメーター**
 
-- `merge_tree_setting` — 設定名。[String](../data-types/string.md)。
+- `merge_tree_setting` — 設定名。 [String](../data-types/string.md)。
 
 **返される値**
 
@@ -4618,3 +4744,12 @@ SELECT getMergeTreeSetting('index_granularity');
 │                     8192         │
 └──────────────────────────────────┘
 ```
+
+<!-- 
+The inner content of the tags below are replaced at doc framework build time with 
+docs generated from system.functions. Please do not modify or remove the tags.
+See: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+-->
+
+<!--AUTOGENERATED_START-->
+<!--AUTOGENERATED_END-->

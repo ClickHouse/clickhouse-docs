@@ -4,7 +4,8 @@ sidebar_position: 3
 slug: /integrations/data-formats/parquet
 title: 'Working with Parquet in ClickHouse'
 description: 'Page describing how to work with Parquet in ClickHouse'
-keywords: ['Parquet format', 'columnar storage', 'data import', 'data export', 'file format']
+doc_type: 'guide'
+keywords: ['parquet', 'columnar format', 'data format', 'compression', 'apache parquet']
 ---
 
 # Working with Parquet in ClickHouse
@@ -27,7 +28,7 @@ Before loading data, we can use [file()](/sql-reference/functions/files.md/#file
 DESCRIBE TABLE file('data.parquet', Parquet);
 ```
 
-We've used [Parquet](/interfaces/formats.md/#data-format-parquet) as a second argument, so ClickHouse knows the file format. This will print columns with the types:
+We've used [Parquet](/interfaces/formats/Parquet) as a second argument, so ClickHouse knows the file format. This will print columns with the types:
 
 ```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐

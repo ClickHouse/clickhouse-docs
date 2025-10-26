@@ -1,23 +1,21 @@
 ---
-'description': 'Calculates the Pearson correlation coefficient, but uses a numerically
-  stable algorithm.'
+'description': '計算ピアソン相関係数ですが、数値的に安定したアルゴリズムを使用します。'
 'sidebar_position': 119
 'slug': '/sql-reference/aggregate-functions/reference/corrstable'
 'title': 'corrStable'
+'doc_type': 'reference'
 ---
-
-
 
 
 # corrStable
 
-[ピアソンの相関係数](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient)を計算します：
+[ピアソンの相関係数](https://ja.wikipedia.org/wiki/%E3%83%94%E3%82%A2%E3%82%BD%E3%83%B3%E3%81%AE%E7%9B%B8%E9%96%A2%E5%95%8F)を計算します： 
 
 $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{\sqrt{\Sigma{(x - \bar{x})^2} * \Sigma{(y - \bar{y})^2}}}
 $$
 
-[`corr`](../reference/corr.md) 関数と似ていますが、数値的に安定したアルゴリズムを使用しています。その結果、`corrStable` は `corr` よりも遅いですが、より正確な結果を生成します。
+[`corr`](../reference/corr.md) 関数に似ていますが、数値的に安定したアルゴリズムを使用しています。その結果、`corrStable` は `corr` よりも遅いですが、より正確な結果を生成します。
 
 **構文**
 
@@ -32,7 +30,7 @@ corrStable(x, y)
 
 **返される値**
 
-- ピアソンの相関係数。[Float64](../../data-types/float.md)。
+- ピアソンの相関係数。 [Float64](../../data-types/float.md)。
 
 ***例***
 

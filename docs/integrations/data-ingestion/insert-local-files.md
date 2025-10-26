@@ -5,7 +5,8 @@ title: 'Insert Local Files'
 slug: /integrations/data-ingestion/insert-local-files
 description: 'Learn about Insert Local Files'
 show_related_blogs: true
-keywords: [clickhouse client, local files, data ingestion, file upload, input function, data preprocessing, tsv, csv, file streaming]
+doc_type: 'guide'
+keywords: ['insert local files ClickHouse', 'ClickHouse local file import', 'clickhouse-client file upload']
 ---
 
 # Insert local files

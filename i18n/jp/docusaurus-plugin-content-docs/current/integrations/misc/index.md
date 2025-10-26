@@ -6,15 +6,14 @@
 - 'Splunk'
 'title': 'ツール'
 'description': 'ツールセクションのランディングページ'
+'doc_type': 'landing-page'
 ---
-
-
 
 
 # ツール
 
-| ページ              |
-|---------------------|
-| [ビジュアルインターフェース](/interfaces/third-party/gui) |
-| [プロキシ](/interfaces/third-party/proxy)               |
-| [統合](/interfaces/third-party/integrations)            |
+| ページ                    |
+|---------------------------|
+| [視覚インターフェース](/interfaces/third-party/gui) |
+| [プロキシ](/interfaces/third-party/proxy)         |
+| [インテグレーション](/interfaces/third-party/integrations)      |

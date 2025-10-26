@@ -4,7 +4,8 @@ sidebar_position: 1
 title: 'SQL Console'
 slug: /integrations/sql-clients/sql-console
 description: 'Learn about SQL Console'
-keywords: ['SQL Console', 'web interface', 'browser SQL client', 'ClickHouse Cloud', 'online query tool']
+doc_type: 'guide'
+keywords: ['sql console', 'query interface', 'web ui', 'sql editor', 'cloud console']
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';

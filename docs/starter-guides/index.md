@@ -4,6 +4,7 @@ title: 'Starter Guides'
 description: 'Landing page for starter guides'
 pagination_prev: null
 pagination_next: null
+doc_type: 'landing-page'
 keywords: ['beginner', 'tutorial', 'create table', 'insert data', 'select data', 'update data', 'delete data']
 ---
 

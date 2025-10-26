@@ -1,15 +1,15 @@
 ---
-description: 'Этот движок позволяет интегрировать ClickHouse с RocksDB'
-sidebar_label: 'EmbeddedRocksDB'
+slug: '/engines/table-engines/integrations/embedded-rocksdb'
+sidebar_label: EmbeddedRocksDB
 sidebar_position: 50
-slug: /engines/table-engines/integrations/embedded-rocksdb
+description: 'Этот движок позволяет интегрировать ClickHouse с RocksDB'
 title: 'Движок EmbeddedRocksDB'
+doc_type: reference
 ---
-
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# Движок EmbeddedRocksDB
+# Встроенный движок RocksDB
 
 <CloudNotSupportedBadge />
 
@@ -30,17 +30,17 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 Параметры движка:
 
 - `ttl` - время жизни значений. TTL принимается в секундах. Если TTL равен 0, используется обычный экземпляр RocksDB (без TTL).
-- `rocksdb_dir` - путь к директории существующего RocksDB или целевой путь созданного RocksDB. Открывает таблицу с указанным `rocksdb_dir`.
-- `read_only` - когда `read_only` установлен в true, используется режим только для чтения. Для хранилища с TTL компактация не будет включена (ни вручную, ни автоматически), поэтому истекшие записи не будут удалены.
+- `rocksdb_dir` - путь к директории существующего RocksDB или целевой путь для создаваемого RocksDB. Открывает таблицу с указанным `rocksdb_dir`.
+- `read_only` - при установке `read_only` в значение true, используется режим только для чтения. Для хранилища с TTL компактация не будет инициирована (ни ручная, ни автоматическая), таким образом, просроченные записи не удаляются.
 - `primary_key_name` – любое имя колонки в списке колонок.
-- `primary key` должен быть указан, он поддерживает только одну колонку в первичном ключе. Первичный ключ будет сериализован в бинарном виде как `rocksdb key`.
-- колонки, отличные от первичного ключа, будут сериализованы в бинарном виде как `rocksdb` значение в соответствующем порядке.
-- запросы с фильтрацией по ключу `equals` или `in` будут оптимизированы для многократного поиска ключей в `rocksdb`.
+- `primary key` должен быть указан, он поддерживает только одну колонку в первичном ключе. Первичный ключ будет сериализован в двоичном формате как `rocksdb key`.
+- колонки, отличные от первичного ключа, будут сериализованы в двоичном формате как `rocksdb` value в соответствующем порядке.
+- запросы с фильтрацией ключей `equals` или `in` будут оптимизированы для многократного поиска ключей в `rocksdb`.
 
 Настройки движка:
 
-- `optimize_for_bulk_insert` – Таблица оптимизирована для массовых вставок (вставка в конвейере создаст SST файлы и импортирует в базу данных rocksdb вместо записи в memtables); значение по умолчанию: `1`.
-- `bulk_insert_block_size` - Минимальный размер SST файлов (в терминах строк), создаваемых при массовой вставке; значение по умолчанию: `1048449`.
+- `optimize_for_bulk_insert` – Таблица оптимизирована для пакетных вставок (конвейер вставки будет создавать SST файлы и импортировать в базу данных rocksdb вместо записи в memtables); значение по умолчанию: `1`.
+- `bulk_insert_block_size` - Минимальный размер SST файлов (в терминах строк), создаваемых пакетной вставкой; значение по умолчанию: `1048449`.
 
 Пример:
 
@@ -58,7 +58,7 @@ PRIMARY KEY key
 
 ## Метрики {#metrics}
 
-Существует также таблица `system.rocksdb`, которая отображает статистику rocksdb:
+Существует также таблица `system.rocksdb`, которая предоставляет статистику rocksdb:
 
 ```sql
 SELECT
@@ -74,7 +74,7 @@ FROM system.rocksdb
 
 ## Конфигурация {#configuration}
 
-Вы также можете изменить любые [параметры rocksdb](https://github.com/facebook/rocksdb/wiki/Option-String-and-Option-Map), используя конфигурацию:
+Вы также можете изменить любые [опции rocksdb](https://github.com/facebook/rocksdb/wiki/Option-String-and-Option-Map) с помощью конфигурации:
 
 ```xml
 <rocksdb>
@@ -98,15 +98,15 @@ FROM system.rocksdb
 </rocksdb>
 ```
 
-По умолчанию оптимизация тривиального приближенного подсчета отключена, что может повлиять на производительность запросов `count()`. Чтобы включить эту
-оптимизацию, задайте `optimize_trivial_approximate_count_query = 1`. Также эта настройка влияет на `system.tables` для движка EmbeddedRocksDB,
-включите настройки, чтобы видеть приближенные значения для `total_rows` и `total_bytes`.
+По умолчанию тривиальная оптимизация приблизительного подсчета отключена, что может повлиять на производительность запросов `count()`. Чтобы включить эту
+оптимизацию, задайте `optimize_trivial_approximate_count_query = 1`. Также эта настройка влияет на `system.tables` для встроенного движка RocksDB,
+включите настройки, чтобы видеть приблизительные значения для `total_rows` и `total_bytes`.
 
 ## Поддерживаемые операции {#supported-operations}
 
 ### Вставки {#inserts}
 
-Когда новые строки вставляются в `EmbeddedRocksDB`, если ключ уже существует, значение будет обновлено, в противном случае создается новый ключ.
+При вставке новых строк в `EmbeddedRocksDB`, если ключ уже существует, значение будет обновлено, в противном случае будет создан новый ключ.
 
 Пример:
 
@@ -144,8 +144,8 @@ ALTER TABLE test UPDATE v1 = v1 * 10 + 2 WHERE key LIKE 'some%' AND v3 > 3.1;
 Это прямое соединение избегает формирования хеш-таблицы в памяти и получает
 данные непосредственно из EmbeddedRocksDB.
 
-При больших соединениях вы можете наблюдать гораздо более низкое использование памяти с прямыми соединениями,
-поскольку хеш-таблица не создается.
+При больших соединениях вы можете заметить значительно более низкое использование памяти при прямых соединениях,
+так как хеш-таблица не создается.
 
 Чтобы включить прямые соединения:
 ```sql
@@ -154,7 +154,7 @@ SET join_algorithm = 'direct, hash'
 
 :::tip
 Когда `join_algorithm` установлен в `direct, hash`, прямые соединения будут использоваться
-где это возможно, а хеш-соединения в противном случае.
+при возможности, а хеш в противном случае.
 :::
 
 #### Пример {#example}
@@ -174,9 +174,9 @@ PRIMARY KEY key
 ```sql
 INSERT INTO rdb
     SELECT
-        toUInt32(sipHash64(number) % 10) as key,
-        [key, key+1] as value,
-        ('val2' || toString(key)) as value2
+        toUInt32(sipHash64(number) % 10) AS key,
+        [key, key+1] AS value,
+        ('val2' || toString(key)) AS value2
     FROM numbers_mt(10);
 ```
 
@@ -201,7 +201,7 @@ FROM numbers_mt(10)
 SET join_algorithm = 'direct'
 ```
 
-##### ВНЕШНЕЕ СОЕДИНЕНИЕ {#an-inner-join}
+##### ВНУТРЕННЕЕ СОЕДИНЕНИЕ {#an-inner-join}
 ```sql
 SELECT *
 FROM
@@ -226,4 +226,4 @@ ORDER BY key ASC
 
 ### Дополнительная информация о соединениях {#more-information-on-joins}
 - [`join_algorithm` настройка](/operations/settings/settings.md#join_algorithm)
-- [JOIN clause](/sql-reference/statements/select/join.md)
+- [JOIN оператор](/sql-reference/statements/select/join.md)

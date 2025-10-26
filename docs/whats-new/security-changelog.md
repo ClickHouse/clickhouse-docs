@@ -4,7 +4,8 @@ sidebar_position: 20
 sidebar_label: 'Security changelog'
 title: 'Security changelog'
 description: 'Security changelog detailing security related updates and changes'
-keywords: ['ClickHouse security', 'CVE vulnerabilities', 'security updates', 'vulnerability fixes', 'security changelog']
+doc_type: 'changelog'
+keywords: ['security', 'CVE', 'vulnerabilities', 'security fixes', 'patches']
 ---
 
 # Security changelog

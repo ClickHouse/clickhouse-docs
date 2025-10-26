@@ -3,7 +3,8 @@ sidebar_label: 'Neon Postgres'
 description: 'Set up Neon Postgres instance as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/neon-postgres
 title: 'Neon Postgres Source Setup Guide'
-keywords: ['neon', 'postgres', 'clickpipes', 'logical replication', 'cdc']
+doc_type: 'guide'
+keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 import neon_commands from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/neon-postgres/neon-commands.png'

@@ -5,6 +5,8 @@ sidebar_label: 'Is it possible to deploy ClickHouse with separate storage and co
 toc_hidden: true
 toc_priority: 20
 description: 'This page provides an answer as to whether it is possible to deploy ClickHouse with separate storage and compute'
+doc_type: 'guide'
+keywords: ['storage', 'disk configuration', 'data organization', 'volume management', 'storage tiers']
 ---
 
 The short answer is "yes".

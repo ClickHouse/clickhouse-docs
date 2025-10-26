@@ -32,7 +32,7 @@
     "description": "The default label used for the Obsolete admonition (:::obsolete)"
   },
   "theme.blog.title": {
-    "message": "База знаний"
+    "message": "Knowledge Base"
   },
   "theme.docs.breadcrumbs.navAriaLabel": {
     "message": "Навигационная цепочка текущей страницы",
@@ -460,64 +460,80 @@
     "message": "Теги",
     "description": "The title of the tag list page"
   },
-  "sidebar.dropdownCategories.category.Getting Started": {
-    "message": "Начало работы",
-    "description": "Getting Started"
+  "sidebar.dropdownCategories.category.Get Started": {
+    "message": "Get Started",
+    "description": "Get Started"
   },
-  "sidebar.dropdownCategories.category.description.Getting Started": {
+  "sidebar.dropdownCategories.category.description.Get Started": {
     "message": "Изучите, как использовать ClickHouse",
     "description": "Learn how to use ClickHouse"
   },
-  "sidebar.dropdownCategories.category.Getting Started.Introduction": {
+  "sidebar.dropdownCategories.category.Get Started.Introduction": {
     "message": "Введение",
     "description": "Introduction"
   },
-  "sidebar.dropdownCategories.category.Getting Started.Introduction.description": {
+  "sidebar.dropdownCategories.category.Get Started.Introduction.description": {
     "message": "Введение в ClickHouse",
     "description": "An introduction to ClickHouse"
   },
-  "sidebar.dropdownCategories.category.Getting Started.Starter Guides": {
-    "message": "Руководства для начинающих",
-    "description": "Starter Guides"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Starter Guides.description": {
-    "message": "Начните изучение ClickHouse здесь",
-    "description": "Start here when learning ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Concepts": {
+  "sidebar.dropdownCategories.category.Get Started.Concepts": {
     "message": "Основные концепции",
     "description": "Concepts"
   },
-  "sidebar.dropdownCategories.category.Getting Started.Concepts.description": {
+  "sidebar.dropdownCategories.category.Get Started.Concepts.description": {
     "message": "Ключевые концепции, которые необходимо знать",
     "description": "Core concepts to know"
   },
-  "sidebar.dropdownCategories.category.Getting Started.Migration Guides": {
+  "sidebar.dropdownCategories.category.Get Started.Starter Guides": {
+    "message": "Руководства для начинающих",
+    "description": "Starter Guides"
+  },
+  "sidebar.dropdownCategories.category.Get Started.Starter Guides.description": {
+    "message": "Начните изучение ClickHouse здесь",
+    "description": "Start here when learning ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Get Started.Best Practices": {
+    "message": "Лучшие практики",
+    "description": "Best Practices"
+  },
+  "sidebar.dropdownCategories.category.Get Started.Best Practices.description": {
+    "message": "Следуйте лучшим практикам при работе с ClickHouse",
+    "description": "Follow best practices with ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Get Started.Migration Guides": {
     "message": "Руководства по миграции",
     "description": "Migration Guides"
   },
-  "sidebar.dropdownCategories.category.Getting Started.Migration Guides.description": {
+  "sidebar.dropdownCategories.category.Get Started.Migration Guides.description": {
     "message": "Перенесите свою базу данных в ClickHouse",
     "description": "Migrate your database to ClickHouse"
   },
-  "sidebar.dropdownCategories.category.Getting Started.Use Case Guides": {
+  "sidebar.dropdownCategories.category.Get Started.Use Case Guides": {
     "message": "Руководства по использованию",
     "description": "Use Case Guides"
   },
-  "sidebar.dropdownCategories.category.Getting Started.Use Case Guides.description": {
+  "sidebar.dropdownCategories.category.Get Started.Use Case Guides.description": {
     "message": "Типичные сценарии использования ClickHouse",
     "description": "Common use case guides for ClickHouse"
   },
-  "sidebar.dropdownCategories.category.Getting Started.Example datasets": {
+  "sidebar.dropdownCategories.category.Get Started.Tips and community wisdom": {
+    "message": "Советы и опыт сообщества",
+    "description": "Tips and community wisdom"
+  },
+  "sidebar.dropdownCategories.category.Get Started.Tips and community wisdom.description": {
+    "message": "Советы и рекомендации от сообщества",
+    "description": "Tips and tricks from the community"
+  },
+  "sidebar.dropdownCategories.category.Get Started.Example datasets": {
     "message": "Примеры наборов данных",
     "description": "Example datasets"
   },
-  "sidebar.dropdownCategories.category.Getting Started.Example datasets.description": {
+  "sidebar.dropdownCategories.category.Get Started.Example datasets.description": {
     "message": "Полезные наборы данных и учебные материалы",
     "description": "Helpful datasets and tutorials"
   },
   "sidebar.dropdownCategories.category.Cloud": {
-    "message": "Облако",
+    "message": "Cloud",
     "description": "Cloud"
   },
   "sidebar.dropdownCategories.category.description.Cloud": {
@@ -581,7 +597,7 @@
     "description": "Migrate your database to ClickHouse Cloud"
   },
   "sidebar.dropdownCategories.category.Manage Data": {
-    "message": "Управление данными",
+    "message": "Manage Data",
     "description": "Manage Data"
   },
   "sidebar.dropdownCategories.category.description.Manage Data": {
@@ -629,7 +645,7 @@
     "description": "Guides to help you optimize ClickHouse"
   },
   "sidebar.dropdownCategories.category.Server Admin": {
-    "message": "Администрирование сервера",
+    "message": "Server Admin",
     "description": "Server Admin"
   },
   "sidebar.dropdownCategories.category.description.Server Admin": {
@@ -677,7 +693,7 @@
     "description": "Metadata tables to help you manage ClickHouse"
   },
   "sidebar.dropdownCategories.category.Reference": {
-    "message": "Справочник",
+    "message": "Reference",
     "description": "Reference"
   },
   "sidebar.dropdownCategories.category.description.Reference": {
@@ -717,7 +733,7 @@
     "description": "Learn about other features in ClickHouse"
   },
   "sidebar.dropdownCategories.category.Integrations": {
-    "message": "Интеграции",
+    "message": "Integrations",
     "description": "Integrations"
   },
   "sidebar.dropdownCategories.category.description.Integrations": {
@@ -820,8 +836,72 @@
     "message": "Руководства по использованию chDB",
     "description": "Guides to help you use chDB"
   },
+  "sidebar.dropdownCategories.category.ClickStack": {
+    "message": "ClickStack",
+    "description": "ClickStack"
+  },
+  "sidebar.dropdownCategories.category.description.ClickStack": {
+    "message": "ClickStack - стек наблюдаемости ClickHouse",
+    "description": "ClickStack - The ClickHouse Observability Stack"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Getting Started": {
+    "message": "Начало работы",
+    "description": "Getting Started"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Getting Started.description": {
+    "message": "Начните работу с ClickStack",
+    "description": "Get started with ClickStack"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Sample Datasets": {
+    "message": "Примеры наборов данных",
+    "description": "Sample Datasets"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Sample Datasets.description": {
+    "message": "Изучайте ClickStack с примерами наборов данных",
+    "description": "Learn ClickStack with sample datasets"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Architecture": {
+    "message": "Архитектура",
+    "description": "Architecture"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Architecture.description": {
+    "message": "Ознакомьтесь с архитектурой ClickStack",
+    "description": "Familiarize yourself with the ClickStack architecture"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Deployment": {
+    "message": "Развертывание",
+    "description": "Deployment"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Deployment.description": {
+    "message": "Выберите режим развертывания ClickStack",
+    "description": "Choose a ClickStack deployment mode"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Ingesting Data": {
+    "message": "Загрузка данных",
+    "description": "Ingesting Data"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Ingesting Data.description": {
+    "message": "Загрузите данные в ClickStack",
+    "description": "Ingest data into ClickStack"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Configuration Options": {
+    "message": "Параметры конфигурации",
+    "description": "Configuration Options"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Configuration Options.description": {
+    "message": "Разверните ClickStack в продакшене",
+    "description": "Deploy ClickStack in production"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Production": {
+    "message": "Продакшен",
+    "description": "Production"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Production.description": {
+    "message": "Разверните ClickStack в продакшене",
+    "description": "Deploy ClickStack in production"
+  },
   "sidebar.dropdownCategories.category.About": {
-    "message": "О проекте",
+    "message": "About",
     "description": "About"
   },
   "sidebar.dropdownCategories.category.description.About": {

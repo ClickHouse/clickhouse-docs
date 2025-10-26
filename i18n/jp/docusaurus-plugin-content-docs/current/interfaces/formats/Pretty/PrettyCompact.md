@@ -1,12 +1,13 @@
 ---
 'alias': []
-'description': 'Documentation for the PrettyCompact format'
+'description': 'PrettyCompact フォーマットのドキュメント'
 'input_format': false
 'keywords':
 - 'PrettyCompact'
 'output_format': true
 'slug': '/interfaces/formats/PrettyCompact'
 'title': 'PrettyCompact'
+'doc_type': 'reference'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
@@ -17,7 +18,8 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 ## 説明 {#description}
 
-[`Pretty`](./Pretty.md) 形式とは異なり、行の間にグリッドが描画されたテーブルが表示されます。このため、結果はよりコンパクトになります。
+[`Pretty`](./Pretty.md) 形式とは異なり、行間にグリッドが描画されたテーブルが表示されます。 
+そのため、結果はよりコンパクトになります。
 
 :::note
 この形式は、インタラクティブモードのコマンドラインクライアントでデフォルトで使用されます。

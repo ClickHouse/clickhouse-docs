@@ -1,9 +1,10 @@
 ---
-title: 'Managing Data'
-description: 'Managing Data for Observability'
+title: 'Managing data'
+description: 'Managing data for Observability'
 slug: /observability/managing-data
 keywords: ['observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafana', 'OTel']
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';

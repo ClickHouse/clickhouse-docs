@@ -1,26 +1,23 @@
 ---
-'description': 'Documentation for Functions for Working with Dictionaries'
+'description': 'Dictionariesで作業するための関数に関するドキュメント'
 'sidebar_label': 'Dictionaries'
-'sidebar_position': 50
 'slug': '/sql-reference/functions/ext-dict-functions'
-'title': 'Functions for Working with Dictionaries'
+'title': '辞書で作業するための関数'
+'doc_type': 'reference'
 ---
 
 
-
-
-
-# 辞書操作用の関数
+# ディクショナリを操作するための関数
 
 :::note
-[DDLクエリ](../../sql-reference/statements/create/dictionary.md)で作成された辞書の場合、`dict_name`パラメータは完全に指定する必要があります。例えば、`<database>.<dict_name>`の形式です。そうでない場合、現在のデータベースが使用されます。
+[DDLクエリ](../../sql-reference/statements/create/dictionary.md)で作成されたディクショナリの場合、`dict_name`パラメータは完全に指定されている必要があります。たとえば、`<database>.<dict_name>`のように指定してください。そうでない場合は、現在のデータベースが使用されます。
 :::
 
-辞書の接続と設定に関する情報は、[辞書](../../sql-reference/dictionaries/index.md)を参照してください。
+ディクショナリの接続と構成に関する情報は、[Dictionaries](../../sql-reference/dictionaries/index.md)を参照してください。
 
 ## dictGet, dictGetOrDefault, dictGetOrNull {#dictget-dictgetordefault-dictgetornull}
 
-辞書から値を取得します。
+ディクショナリから値を取得します。
 
 ```sql
 dictGet('dict_name', attr_names, id_expr)
@@ -30,35 +27,35 @@ dictGetOrNull('dict_name', attr_name, id_expr)
 
 **引数**
 
-- `dict_name` — 辞書の名前。[文字列リテラル](/sql-reference/syntax#string)。
-- `attr_names` — 辞書のカラム名、[文字列リテラル](/sql-reference/syntax#string)またはカラム名のタプル、[タプル](/sql-reference/data-types/tuple)([文字列リテラル](/sql-reference/syntax#string)。
-- `id_expr` — キーの値。[式](/sql-reference/syntax#expressions)として辞書のキータイプ値または辞書の設定に応じた[タプル](../data-types/tuple.md)タイプの値を返す。
-- `default_value_expr` — 辞書に`id_expr`キーを持つ行がない場合に返される値。[式](/sql-reference/syntax#expressions)または[タプル](../data-types/tuple.md)([式](/sql-reference/syntax#expressions))で、`attr_names`属性に設定されたデータタイプで値を返す。
+- `dict_name` — ディクショナリの名前。[文字列リテラル](/sql-reference/syntax#string)。
+- `attr_names` — ディクショナリのカラムの名前、[文字列リテラル](/sql-reference/syntax#string)またはカラム名のタプル、[タプル](/sql-reference/data-types/tuple)([文字列リテラル](/sql-reference/syntax#string))。
+- `id_expr` — キー値。[式](/sql-reference/syntax#expressions)はディクショナリキー型の値またはディクショナリ設定に応じて[タプル](../data-types/tuple.md)型の値を返します。
+- `default_value_expr` — `id_expr`キーを持たない行がディクショナリに存在しない場合に返される値。[式](/sql-reference/syntax#expressions)または[タプル](../data-types/tuple.md)([式](/sql-reference/syntax#expressions))で、`attr_names`属性のデータ型で構成された値（または値）を返します。
 
 **返される値**
 
-- ClickHouseが属性を[属性のデータタイプ](/sql-reference/dictionaries#dictionary-key-and-fields)として正常に解析できた場合、関数は`id_expr`に対応する辞書属性の値を返します。
+- ClickHouseが[属性のデータ型](/sql-reference/dictionaries#dictionary-key-and-fields)で属性を正常に解析できた場合、関数は`id_expr`に対応するディクショナリ属性の値を返します。
 
-- 辞書に`id_expr`に対応するキーがない場合は次の通りです。
+- ディクショナリに`id_expr`に対応するキーが存在しない場合、次のようになります。
 
-        - `dictGet`は、辞書設定で属性に指定された`<null_value>`要素の内容を返します。
+        - `dictGet`は、ディクショナリ設定内で属性に指定された`<null_value>`要素の内容を返します。
         - `dictGetOrDefault`は、`default_value_expr`パラメータとして渡された値を返します。
-        - `dictGetOrNull`は、辞書でキーが見つからなかった場合には`NULL`を返します。
+        - `dictGetOrNull`は、ディクショナリ内にキーが見つからない場合に`NULL`を返します。
 
-ClickHouseは属性の値を解析できない場合や、値が属性のデータタイプと一致しない場合には例外をスローします。
+ClickHouseは、属性の値を解析できない場合や、それが属性のデータ型と一致しない場合に例外をスローします。
 
-**単純キー辞書の例**
+**単純キーのディクショナリの例**
 
-次の内容を持つテキストファイル `ext-dict-test.csv` を作成します。
+次の内容を含んだテキストファイル`ext-dict-test.csv`を作成します。
 
 ```text
 1,1
 2,2
 ```
 
-最初のカラムが `id` 、2番目のカラムが `c1` です。
+最初のカラムは`id`、二番目のカラムは`c1`です。
 
-辞書を設定します。
+ディクショナリを構成します：
 
 ```xml
 <clickhouse>
@@ -88,7 +85,7 @@ ClickHouseは属性の値を解析できない場合や、値が属性のデー�
 </clickhouse>
 ```
 
-クエリを実行します。
+クエリを実行します：
 
 ```sql
 SELECT
@@ -106,9 +103,9 @@ LIMIT 3;
 └─────┴────────┘
 ```
 
-**複雑キー辞書の例**
+**複雑キーのディクショナリの例**
 
-次の内容を持つテキストファイル `ext-dict-mult.csv` を作成します。
+次の内容を含んだテキストファイル`ext-dict-mult.csv`を作成します：
 
 ```text
 1,1,'1'
@@ -116,9 +113,9 @@ LIMIT 3;
 3,3,'3'
 ```
 
-最初のカラムが `id` 、2番目が `c1` 、3番目が `c2` です。
+最初のカラムは`id`、二番目は`c1`、三番目は`c2`です。
 
-辞書を設定します。
+ディクショナリを構成します：
 
 ```xml
 <clickhouse>
@@ -153,7 +150,7 @@ LIMIT 3;
 </clickhouse>
 ```
 
-クエリを実行します。
+クエリを実行します：
 
 ```sql
 SELECT
@@ -171,7 +168,7 @@ LIMIT 3;
 └─────────┴───────────────────────┘
 ```
 
-**範囲キー辞書の例**
+**範囲キーのディクショナリの例**
 
 入力テーブル：
 
@@ -191,7 +188,7 @@ INSERT INTO range_key_dictionary_source_table VALUES(2, toDate('2019-05-20'), to
 INSERT INTO range_key_dictionary_source_table VALUES(3, toDate('2019-05-20'), toDate('2019-05-20'), 'Third', 'Third');
 ```
 
-辞書を作成します。
+ディクショナリを作成します：
 
 ```sql
 CREATE DICTIONARY range_key_dictionary
@@ -209,7 +206,7 @@ LAYOUT(RANGE_HASHED())
 RANGE(MIN start_date MAX end_date);
 ```
 
-クエリを実行します。
+クエリを実行します：
 
 ```sql
 SELECT
@@ -232,11 +229,11 @@ FROM system.numbers LIMIT 5 FORMAT TabSeparated;
 
 **関連項目**
 
-- [辞書](../../sql-reference/dictionaries/index.md)
+- [Dictionaries](../../sql-reference/dictionaries/index.md)
 
 ## dictHas {#dicthas}
 
-キーが辞書に存在するかどうかを確認します。
+キーがディクショナリに存在するかどうかを確認します。
 
 ```sql
 dictHas('dict_name', id_expr)
@@ -244,17 +241,17 @@ dictHas('dict_name', id_expr)
 
 **引数**
 
-- `dict_name` — 辞書の名前。[文字列リテラル](/sql-reference/syntax#string)。
-- `id_expr` — キーの値。[式](/sql-reference/syntax#expressions)として辞書のキータイプ値または辞書の設定に応じた[タプル](../data-types/tuple.md)タイプの値を返します。
+- `dict_name` — ディクショナリの名前。[文字列リテラル](/sql-reference/syntax#string)。
+- `id_expr` — キー値。[式](/sql-reference/syntax#expressions)はディクショナリキー型の値または[タプル](../data-types/tuple.md)型の値を返します、ディクショナリの構成によります。
 
 **返される値**
 
-- キーがない場合は0。[UInt8](../data-types/int-uint.md)。
-- キーがある場合は1。[UInt8](../data-types/int-uint.md)。
+- キーが存在しない場合は0です。[UInt8](../data-types/int-uint.md)。
+- キーが存在する場合は1です。[UInt8](../data-types/int-uint.md)。
 
 ## dictGetHierarchy {#dictgethierarchy}
 
-キーのすべての親を含む配列を作成します。[階層辞書](../../sql-reference/dictionaries/index.md#hierarchical-dictionaries)。
+[階層的ディクショナリ](../../sql-reference/dictionaries/index.md#hierarchical-dictionaries)内のキーのすべての親を含む配列を作成します。
 
 **構文**
 
@@ -264,16 +261,16 @@ dictGetHierarchy('dict_name', key)
 
 **引数**
 
-- `dict_name` — 辞書の名前。[文字列リテラル](/sql-reference/syntax#string)。
-- `key` — キーの値。[式](/sql-reference/syntax#expressions)として[UInt64](../data-types/int-uint.md)型の値を返します。
+- `dict_name` — ディクショナリの名前。[文字列リテラル](/sql-reference/syntax#string)。
+- `key` — キー値。[式](/sql-reference/syntax#expressions)は[UInt64](../data-types/int-uint.md)型の値を返します。
 
 **返される値**
 
-- キーの親。[Array(UInt64)](../data-types/array.md)。
+- キーの親。[配列(UInt64)](../data-types/array.md)。
 
 ## dictIsIn {#dictisin}
 
-辞書の階層チェーン全体を通じてキーの先祖を確認します。
+ディクショナリ内の階層全体を通じてキーの先祖を確認します。
 
 ```sql
 dictIsIn('dict_name', child_id_expr, ancestor_id_expr)
@@ -281,18 +278,18 @@ dictIsIn('dict_name', child_id_expr, ancestor_id_expr)
 
 **引数**
 
-- `dict_name` — 辞書の名前。[文字列リテラル](/sql-reference/syntax#string)。
-- `child_id_expr` — チェックするキー。[式](/sql-reference/syntax#expressions)として[UInt64](../data-types/int-uint.md)型の値を返します。
-- `ancestor_id_expr` — `child_id_expr`キーの仮想的な先祖。[式](/sql-reference/syntax#expressions)として[UInt64](../data-types/int-uint.md)型の値を返します。
+- `dict_name` — ディクショナリの名前。[文字列リテラル](/sql-reference/syntax#string)。
+- `child_id_expr` — 確認するキー。[式](/sql-reference/syntax#expressions)は[UInt64](../data-types/int-uint.md)型の値を返します。
+- `ancestor_id_expr` — `child_id_expr`キーの推定先祖。[式](/sql-reference/syntax#expressions)は[UInt64](../data-types/int-uint.md)型の値を返します。
 
 **返される値**
 
-- `child_id_expr`が`ancestor_id_expr`の子でない場合は0。[UInt8](../data-types/int-uint.md)。
-- `child_id_expr`が`ancestor_id_expr`の子であるか、`child_id_expr`が`ancestor_id_expr`である場合は1。[UInt8](../data-types/int-uint.md)。
+- `child_id_expr`が`ancestor_id_expr`の子でない場合は0です。[UInt8](../data-types/int-uint.md)。
+- `child_id_expr`が`ancestor_id_expr`の子であるか、または`child_id_expr`が`ancestor_id_expr`である場合は1です。[UInt8](../data-types/int-uint.md)。
 
 ## dictGetChildren {#dictgetchildren}
 
-最初のレベルの子供をインデックスの配列として返します。それは[dictGetHierarchy](#dictgethierarchy)関数の逆変換です。
+第一レベルの子をインデックスの配列として返します。これは[dictGetHierarchy](#dictgethierarchy)の逆変換です。
 
 **構文**
 
@@ -302,16 +299,16 @@ dictGetChildren(dict_name, key)
 
 **引数**
 
-- `dict_name` — 辞書の名前。[文字列リテラル](/sql-reference/syntax#string)。
-- `key` — キーの値。[式](/sql-reference/syntax#expressions)として[UInt64](../data-types/int-uint.md)型の値を返します。
+- `dict_name` — ディクショナリの名前。[文字列リテラル](/sql-reference/syntax#string)。
+- `key` — キー値。[式](/sql-reference/syntax#expressions)は[UInt64](../data-types/int-uint.md)型の値を返します。
 
 **返される値**
 
-- キーの最初のレベルの子孫。[Array](../data-types/array.md)([UInt64](../data-types/int-uint.md))。
+- キーに対する第一レベルの子孫。[配列](../data-types/array.md)([UInt64](../data-types/int-uint.md))。
 
 **例**
 
-階層辞書を考えてみましょう。
+階層的ディクショナリを考えます：
 
 ```text
 ┌─id─┬─parent_id─┐
@@ -322,7 +319,7 @@ dictGetChildren(dict_name, key)
 └────┴───────────┘
 ```
 
-最初のレベルの子供：
+第一レベルの子：
 
 ```sql
 SELECT dictGetChildren('hierarchy_flat_dictionary', number) FROM system.numbers LIMIT 4;
@@ -339,7 +336,7 @@ SELECT dictGetChildren('hierarchy_flat_dictionary', number) FROM system.numbers 
 
 ## dictGetDescendant {#dictgetdescendant}
 
-[dictGetChildren](#dictgetchildren)関数が`level`回再帰的に適用されたかのようにすべての子孫を返します。
+[dictGetChildren](#dictgetchildren)関数が`level`回再帰的に適用されたかのように、すべての子孫を返します。
 
 **構文**
 
@@ -349,17 +346,17 @@ dictGetDescendants(dict_name, key, level)
 
 **引数**
 
-- `dict_name` — 辞書の名前。[文字列リテラル](/sql-reference/syntax#string)。
-- `key` — キーの値。[式](/sql-reference/syntax#expressions)として[UInt64](../data-types/int-uint.md)型の値を返します。
-- `level` — 階層レベル。`level = 0`の場合、すべての子孫を最後まで返します。[UInt8](../data-types/int-uint.md)。
+- `dict_name` — ディクショナリの名前。[文字列リテラル](/sql-reference/syntax#string)。
+- `key` — キー値。[式](/sql-reference/syntax#expressions)は[UInt64](../data-types/int-uint.md)型の値を返します。
+- `level` — 階層レベル。`level = 0`の場合、すべての子孫を返します。[UInt8](../data-types/int-uint.md)。
 
 **返される値**
 
-- キーの子孫。[Array](../data-types/array.md)([UInt64](../data-types/int-uint.md))。
+- キーに対する子孫。[配列](../data-types/array.md)([UInt64](../data-types/int-uint.md))。
 
 **例**
 
-階層辞書を考えてみましょう。
+階層的ディクショナリを考えます：
 
 ```text
 ┌─id─┬─parent_id─┐
@@ -384,7 +381,7 @@ SELECT dictGetDescendants('hierarchy_flat_dictionary', number) FROM system.numbe
 └─────────────────────────────────────────────────────────┘
 ```
 
-最初のレベルの子孫：
+第一レベルの子孫：
 
 ```sql
 SELECT dictGetDescendants('hierarchy_flat_dictionary', number, 1) FROM system.numbers LIMIT 4;
@@ -399,11 +396,12 @@ SELECT dictGetDescendants('hierarchy_flat_dictionary', number, 1) FROM system.nu
 └────────────────────────────────────────────────────────────┘
 ```
 
+
 ## dictGetAll {#dictgetall}
 
-[正規表現木辞書](../../sql-reference/dictionaries/index.md#regexp-tree-dictionary)に一致する各キーのノードのすべての属性値を取得します。
+[正規表現ツリーディクショナリ](../../sql-reference/dictionaries/index.md#regexp-tree-dictionary)内の各キーに一致するノードのすべての属性値を取得します。
 
-各値を`Array(T)`として返すことを除いて、この関数は[`dictGet`](#dictget-dictgetordefault-dictgetornull)と同様に動作します。
+`Array(T)`型の値を返す以外は、この関数は[`dictGet`](#dictget-dictgetordefault-dictgetornull)と似ています。
 
 **構文**
 
@@ -413,22 +411,22 @@ dictGetAll('dict_name', attr_names, id_expr[, limit])
 
 **引数**
 
-- `dict_name` — 辞書の名前。[文字列リテラル](/sql-reference/syntax#string)。
-- `attr_names` — 辞書のカラム名、[文字列リテラル](/sql-reference/syntax#string)またはカラム名のタプル、[タプル](/sql-reference/data-types/tuple)([文字列リテラル](/sql-reference/syntax#string))。
-- `id_expr` — キーの値。[式](/sql-reference/syntax#expressions)として辞書のキータイプ値の配列または辞書の設定に応じた[タプル](../data-types/tuple)-タイプの値を返す。
-- `limit` - 返される各値配列の最大長さ。切り捨てる際には、子ノードが親ノードより優先され、それ以外の場合は正規表現木辞書の定義されたリスト順序が尊重されます。指定されていない場合、配列の長さは無制限です。
+- `dict_name` — ディクショナリの名前。[文字列リテラル](/sql-reference/syntax#string)。
+- `attr_names` — ディクショナリのカラムの名前、[文字列リテラル](/sql-reference/syntax#string)またはカラム名のタプル、[タプル](/sql-reference/data-types/tuple)([文字列リテラル](/sql-reference/syntax#string))。
+- `id_expr` — キー値。[式](/sql-reference/syntax#expressions)はディクショナリキー型の値の配列または[タプル](../data-types/tuple)型の値を返します、ディクショナリの構成によります。
+- `limit` - 各値の配列として返される最大長。切り捨て時には、子ノードが親ノードに優先され、それ以外では正規表現ツリーディクショナリの定義されたリスト順が尊重されます。指定しない場合は、配列の長さは無制限です。
 
 **返される値**
 
-- ClickHouseが辞書内で属性を正常に解析した場合、`id_expr`に対応する各属性による辞書の属性値の配列を返します。
+- ClickHouseがディクショナリで定義された属性のデータ型において属性を正常に解析できた場合、`attr_names`によって指定された各属性に対応するディクショナリ属性値の配列を返します。
 
-- 辞書に`id_expr`に対応するキーがない場合、空の配列が返されます。
+- ディクショナリに`id_expr`に対応するキーが存在しない場合、空の配列が返されます。
 
-ClickHouseは属性の値を解析できない場合や、値が属性のデータタイプと一致しない場合には例外をスローします。
+ClickHouseは、属性の値を解析できない場合や、それが属性のデータ型と一致しない場合に例外をスローします。
 
 **例**
 
-次の正規表現木辞書を考えます。
+次の正規表現ツリーディクショナリを考えます：
 
 ```sql
 CREATE DICTIONARY regexp_dict
@@ -453,7 +451,7 @@ LAYOUT(regexp_tree)
   tag: 'baz_attr'
 ```
 
-一致するすべての値を取得します。
+すべての一致する値を取得します：
 
 ```sql
 SELECT dictGetAll('regexp_dict', 'tag', 'foobarbaz');
@@ -465,7 +463,7 @@ SELECT dictGetAll('regexp_dict', 'tag', 'foobarbaz');
 └───────────────────────────────────────────────┘
 ```
 
-一致する値を最大2つ取得します。
+最大2つの一致する値を取得します：
 
 ```sql
 SELECT dictGetAll('regexp_dict', 'tag', 'foobarbaz', 2);
@@ -479,7 +477,7 @@ SELECT dictGetAll('regexp_dict', 'tag', 'foobarbaz', 2);
 
 ## その他の関数 {#other-functions}
 
-ClickHouseは、辞書の設定に関係なく、特定のデータタイプに辞書属性値を変換する専門関数をサポートします。
+ClickHouseは、ディクショナリの構成に関係なく、ディクショナリ属性値を特定のデータ型に変換する専門の関数をサポートしています。
 
 関数：
 
@@ -492,7 +490,7 @@ ClickHouseは、辞書の設定に関係なく、特定のデータタイプに�
 - `dictGetString`
 - `dictGetIPv4`, `dictGetIPv6`
 
-これらすべての関数には`OrDefault`修飾子があります。例えば、`dictGetDateOrDefault`。
+これらのすべての関数には`OrDefault`変更があります。たとえば、`dictGetDateOrDefault`です。
 
 構文：
 
@@ -503,18 +501,27 @@ dictGet[Type]OrDefault('dict_name', 'attr_name', id_expr, default_value_expr)
 
 **引数**
 
-- `dict_name` — 辞書の名前。[文字列リテラル](/sql-reference/syntax#string)。
-- `attr_name` — 辞書のカラム名。[文字列リテラル](/sql-reference/syntax#string)。
-- `id_expr` — キーの値。[式](/sql-reference/syntax#expressions)として[UInt64](../data-types/int-uint.md)または[タプル](../data-types/tuple.md)タイプの値を返します。
-- `default_value_expr` — 辞書に`id_expr`キーを持つ行がない場合に返される値。[式](/sql-reference/syntax#expressions)で、`attr_name`属性に設定されたデータタイプで値を返します。
+- `dict_name` — ディクショナリの名前。[文字列リテラル](/sql-reference/syntax#string)。
+- `attr_name` — ディクショナリのカラムの名前。[文字列リテラル](/sql-reference/syntax#string)。
+- `id_expr` — キー値。[式](/sql-reference/syntax#expressions)は[UInt64](../data-types/int-uint.md)または[タプル](../data-types/tuple.md)型の値を返します、ディクショナリの構成によります。
+- `default_value_expr` — ディクショナリに`id_expr`キーを持つ行が存在しない場合に返される値。[式](/sql-reference/syntax#expressions)は`attr_name`属性に構成されたデータ型の値を返します。
 
 **返される値**
 
-- ClickHouseが[属性のデータタイプ](/sql-reference/dictionaries#dictionary-key-and-fields)として属性を正常に解析できた場合、関数は`id_expr`に対応する辞書属性の値を返します。
+- ClickHouseが[属性のデータ型](/sql-reference/dictionaries#dictionary-key-and-fields)で属性を正常に解析できた場合、関数は`id_expr`に対応するディクショナリ属性の値を返します。
 
-- 辞書に要求された`id_expr`がない場合は：
+- ディクショナリに要求された`id_expr`が存在しない場合、次のようになります。
 
-        - `dictGet[Type]`は、辞書設定で属性に指定された`<null_value>`要素の内容を返します。
+        - `dictGet[Type]`は、ディクショナリ設定内で属性に指定された`<null_value>`要素の内容を返します。
         - `dictGet[Type]OrDefault`は、`default_value_expr`パラメータとして渡された値を返します。
 
-ClickHouseは属性の値を解析できない場合や、値が属性のデータタイプと一致しない場合には例外をスローします。
+ClickHouseは、属性の値を解析できない場合や、それが属性のデータ型と一致しない場合に例外をスローします。
+
+<!-- 
+The inner content of the tags below are replaced at doc framework build time with 
+docs generated from system.functions. Please do not modify or remove the tags.
+See: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+-->
+
+<!--AUTOGENERATED_START-->
+<!--AUTOGENERATED_END-->

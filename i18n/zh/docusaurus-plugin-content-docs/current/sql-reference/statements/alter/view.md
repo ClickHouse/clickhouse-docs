@@ -1,17 +1,18 @@
 ---
-'description': 'ALTER TABLE ... MODIFY QUERY 语句 的文档'
+'description': 'ALTER TABLE ... MODIFY QUERY 语句的文档'
 'sidebar_label': 'VIEW'
 'sidebar_position': 50
 'slug': '/sql-reference/statements/alter/view'
 'title': 'ALTER TABLE ... MODIFY QUERY 语句'
+'doc_type': 'reference'
 ---
 
 
 # ALTER TABLE ... MODIFY QUERY 语句
 
-您可以使用 `ALTER TABLE ... MODIFY QUERY` 语句修改在创建 [物化视图](/sql-reference/statements/create/view#materialized-view) 时指定的 `SELECT` 查询，而不影响数据摄取过程。
+您可以使用 `ALTER TABLE ... MODIFY QUERY` 语句修改在创建 [物化视图](/sql-reference/statements/create/view#materialized-view) 时指定的 `SELECT` 查询，而无需中断数据摄取过程。
 
-此命令用于更改使用 `TO [db.]name` 子句创建的物化视图。它不会更改底层存储表的结构，也不会更改物化视图的列定义，因此，对于没有使用 `TO [db.]name` 子句创建的物化视图，此命令的应用非常有限。
+此命令旨在更改使用 `TO [db.]name` 子句创建的物化视图。它不会更改底层存储表的结构，也不会更改物化视图的列定义，因此，只有在没有使用 `TO [db.]name` 子句创建的物化视图时，此命令的应用非常有限。
 
 **带 TO 表的示例**
 
@@ -28,7 +29,7 @@ FROM events
 GROUP BY ts, event_type;
 
 INSERT INTO events
-SELECT Date '2020-01-01' + interval number * 900 second,
+SELECT DATE '2020-01-01' + interval number * 900 second,
        ['imp', 'click'][number%2+1]
 FROM numbers(100);
 
@@ -162,9 +163,9 @@ GROUP BY
     browser
 ```
 
-**无 TO 表的示例**
+**不带 TO 表的示例**
 
-应用非常有限，因为您只能更改 `SELECT` 部分而不能添加新列。
+应用非常有限，因为您只能更改 `SELECT` 部分，而不能添加新列。
 
 ```sql
 CREATE TABLE src_table (`a` UInt32) ENGINE = MergeTree ORDER BY a;
@@ -196,8 +197,8 @@ SELECT * FROM mv;
 
 ## ALTER LIVE VIEW 语句 {#alter-live-view-statement}
 
-`ALTER LIVE VIEW ... REFRESH` 语句用于刷新 [实时视图](/sql-reference/statements/create/view#live-view)。请参阅 [强制刷新实时视图](/sql-reference/statements/create/view#live-view)。
+`ALTER LIVE VIEW ... REFRESH` 语句刷新 [实时视图](/sql-reference/statements/create/view#live-view)。请参见 [强制刷新实时视图](/sql-reference/statements/create/view#live-view)。
 
 ## ALTER TABLE ... MODIFY REFRESH 语句 {#alter-table--modify-refresh-statement}
 
-`ALTER TABLE ... MODIFY REFRESH` 语句更改 [可刷新的物化视图](../create/view.md#refreshable-materialized-view) 的刷新参数。请参阅 [更改刷新参数](../create/view.md#changing-refresh-parameters)。
+`ALTER TABLE ... MODIFY REFRESH` 语句更改 [可刷新的物化视图](../create/view.md#refreshable-materialized-view) 的刷新参数。请参见 [更改刷新参数](../create/view.md#changing-refresh-parameters)。

@@ -1,17 +1,16 @@
 ---
-description: 'Функция таблицы `remote` позволяет получать доступ к удалённым серверам на лету, т.е. без создания распределенной таблицы. Функция таблицы `remoteSecure` идентична `remote`, но использует защищённое соединение.'
-sidebar_label: 'remote'
+slug: '/sql-reference/table-functions/remote'
+sidebar_label: remote
 sidebar_position: 175
-slug: /sql-reference/table-functions/remote
+description: 'Табличная функция `remote` позволяет обращаться к удаленным сервером'
 title: 'remote, remoteSecure'
+doc_type: reference
 ---
+# remote, remoteSecure Табличная Функция
 
+Табличная функция `remote` позволяет получать доступ к удалённым серверам в реальном времени, т.е. без создания таблицы [Distributed](../../engines/table-engines/special/distributed.md). Табличная функция `remoteSecure` аналогична `remote`, но использует защищённое соединение.
 
-# Функция таблицы remote, remoteSecure
-
-Функция таблицы `remote` позволяет получать доступ к удалённым серверам на лету, т.е. без создания [распределенной](../../engines/table-engines/special/distributed.md) таблицы. Функция таблицы `remoteSecure` идентична `remote`, но использует защищённое соединение.
-
-Обе функции могут использоваться в запросах `SELECT` и `INSERT`.
+Обе функции могут быть использованы в запросах `SELECT` и `INSERT`.
 
 ## Синтаксис {#syntax}
 
@@ -26,25 +25,16 @@ remoteSecure(named_collection[, option=value [,..]])
 
 ## Параметры {#parameters}
 
-- `addresses_expr` — Адрес удалённого сервера или выражение, генерирующее несколько адресов удалённых серверов. Формат: `host` или `host:port`.
+| Аргумент        | Описание                                                                                                                                                                                                                                                                                                                                                       |
+|-----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `addresses_expr` | Адрес удалённого сервера или выражение, генерирующее несколько адресов удалённых серверов. Формат: `host` или `host:port`.<br/><br/> `host` можно указать как имя сервера, или как адрес IPv4 или IPv6. Адрес IPv6 должен быть задан в квадратных скобках.<br/><br/> `port` — это TCP порт на удалённом сервере. Если порт не указан, используется [tcp_port](../../operations/server-configuration-parameters/settings.md#tcp_port) из конфигурационного файла сервера для табличной функции `remote` (по умолчанию 9000) и [tcp_port_secure](../../operations/server-configuration-parameters/settings.md#tcp_port_secure) для табличной функции `remoteSecure` (по умолчанию 9440).<br/><br/> Для адресов IPv6 порт обязателен.<br/><br/> Если указан только параметр `addresses_expr`, `db` и `table` по умолчанию будут использовать `system.one`.<br/><br/> Тип: [String](../../sql-reference/data-types/string.md). |
+| `db`            | Имя базы данных. Тип: [String](../../sql-reference/data-types/string.md).                                                                                                                                                                                                                                                                                      |
+| `table`         | Имя таблицы. Тип: [String](../../sql-reference/data-types/string.md).                                                                                                                                                                                                                                                                                        |
+| `user`          | Имя пользователя. Если не указано, используется `default`. Тип: [String](../../sql-reference/data-types/string.md).                                                                                                                                                                                                                                          |
+| `password`      | Пароль пользователя. Если не указан, используется пустой пароль. Тип: [String](../../sql-reference/data-types/string.md).                                                                                                                                                                                                                                    |
+| `sharding_key`  | Ключ шардирования для поддержки распределения данных по узлам. Например: `insert into remote('127.0.0.1:9000,127.0.0.2', db, table, 'default', rand())`. Тип: [UInt32](../../sql-reference/data-types/int-uint.md).                                                                                                                                            |
 
-    `host` может быть указан как имя сервера или как IPv4 или IPv6 адрес. IPv6 адрес должен быть указан в квадратных скобках.
-
-    `port` — это TCP порт на удалённом сервере. Если порт опущен, используется [tcp_port](../../operations/server-configuration-parameters/settings.md#tcp_port) из файла конфигурации сервера для функции таблицы `remote` (по умолчанию 9000) и [tcp_port_secure](../../operations/server-configuration-parameters/settings.md#tcp_port_secure) для функции таблицы `remoteSecure` (по умолчанию 9440).
-
-    Для адресов IPv6 порт требуется.
-
-    Если указан только параметр `addresses_expr`, `db` и `table` по умолчанию будут использовать `system.one`.
-
-    Тип: [String](../../sql-reference/data-types/string.md).
-
-- `db` — Имя базы данных. Тип: [String](../../sql-reference/data-types/string.md).
-- `table` — Имя таблицы. Тип: [String](../../sql-reference/data-types/string.md).
-- `user` — Имя пользователя. Если не указано, используется `default`. Тип: [String](../../sql-reference/data-types/string.md).
-- `password` — Пароль пользователя. Если не указан, используется пустой пароль. Тип: [String](../../sql-reference/data-types/string.md).
-- `sharding_key` — Ключ шардирования для поддержки распределения данных между узлами. Например: `insert into remote('127.0.0.1:9000,127.0.0.2', db, table, 'default', rand())`. Тип: [UInt32](../../sql-reference/data-types/int-uint.md).
-
-Аргументы также могут быть переданы с использованием [именованных коллекций](operations/named-collections.md).
+Аргументы также могут быть переданы с использованием [named collections](operations/named-collections.md).
 
 ## Возвращаемое значение {#returned-value}
 
@@ -52,15 +42,15 @@ remoteSecure(named_collection[, option=value [,..]])
 
 ## Использование {#usage}
 
-Так как функции таблицы `remote` и `remoteSecure` восстанавливают соединение для каждого запроса, рекомендуется использовать распределенную таблицу. Также, если установлены имена хостов, они разрешаются, и ошибки не учитываются при работе с различными репликами. При обработке большого количества запросов всегда создавайте распределенную таблицу заранее и не используйте функцию таблицы `remote`.
+Поскольку табличные функции `remote` и `remoteSecure` восстанавливают соединение для каждого запроса, рекомендуется использовать таблицу `Distributed` вместо этого. Кроме того, если заданы имена хостов, они разрешаются, и ошибки не учитываются при работе с различными репликами. При обработке большого количества запросов всегда создавайте таблицу `Distributed` заранее и не используйте табличную функцию `remote`.
 
-Функция таблицы `remote` может быть полезна в следующих случаях:
+Табличная функция `remote` может быть полезна в следующих случаях:
 
-- Однократная миграция данных из одной системы в другую
-- Доступ к определённому серверу для сравнения данных, отладки и тестирования, т.е. ad-hoc соединения.
-- Запросы между различными кластерами ClickHouse для исследовательских целей.
-- Редкие распределенные запросы, которые выполняются вручную.
-- Распределенные запросы, где набор серверов определяется заново каждый раз.
+- Одноразовая миграция данных из одной системы в другую.
+- Доступ к конкретному серверу для сравнения данных, отладки и тестирования, т.е. ad-hoc соединения.
+- Запросы между различными кластерами ClickHouse в исследовательских целях.
+- Редкие распределённые запросы, которые выполняются вручную.
+- Распределённые запросы, где набор серверов переопределяется каждый раз.
 
 ### Адреса {#addresses}
 
@@ -75,7 +65,7 @@ localhost
 [2a02:6b8:0:1111::11]:9000
 ```
 
-Несколько адресов могут быть разделены запятыми. В этом случае ClickHouse будет использовать распределенную обработку и отправлять запрос ко всем указанным адресам (как шардов с разными данными). Пример:
+Несколько адресов могут быть разделены запятыми. В этом случае ClickHouse будет использовать распределённую обработку и отправит запрос ко всем указанным адресам (как шардов с разными данными). Пример:
 
 ```text
 example01-01-1,example01-02-1
@@ -89,7 +79,7 @@ example01-01-1,example01-02-1
 SELECT * FROM remote('127.0.0.1', db.remote_engine_table) LIMIT 3;
 ```
 
-Или с использованием [именованных коллекций](operations/named-collections.md):
+Или с использованием [named collections](operations/named-collections.md):
 
 ```sql
 CREATE NAMED COLLECTION creds AS
@@ -108,61 +98,61 @@ SELECT * FROM remote_table;
 
 ### Миграция таблиц из одной системы в другую: {#migration-of-tables-from-one-system-to-another}
 
-В этом примере используется одна таблица из демонстрационного набора данных. База данных — `imdb`, а таблица — `actors`.
+Этот пример использует одну таблицу из выборки данных. База данных — `imdb`, а таблица — `actors`.
 
-#### На исходной системе ClickHouse (системе, которая в данный момент хранит данные) {#on-the-source-clickhouse-system-the-system-that-currently-hosts-the-data}
+#### На исходной системе ClickHouse (системе, в которой в данный момент хранятся данные) {#on-the-source-clickhouse-system-the-system-that-currently-hosts-the-data}
 
-- Проверьте имя баз данных и таблицы (`imdb.actors`)
+- Проверьте имя исходной базы данных и таблицы (`imdb.actors`)
 
-  ```sql
-  show databases
-  ```
+```sql
+show databases
+```
 
-  ```sql
-  show tables in imdb
-  ```
+```sql
+show tables in imdb
+```
 
 - Получите оператор CREATE TABLE из источника:
 
 ```sql
-  select create_table_query
-  from system.tables
-  where database = 'imdb' and table = 'actors'
-  ```
+SELECT create_table_query
+FROM system.tables
+WHERE database = 'imdb' AND table = 'actors'
+```
 
   Ответ
 
-  ```sql
-  CREATE TABLE imdb.actors (`id` UInt32,
-                            `first_name` String,
-                            `last_name` String,
-                            `gender` FixedString(1))
-                  ENGINE = MergeTree
-                  ORDER BY (id, first_name, last_name, gender);
-  ```
+```sql
+CREATE TABLE imdb.actors (`id` UInt32,
+                          `first_name` String,
+                          `last_name` String,
+                          `gender` FixedString(1))
+                ENGINE = MergeTree
+                ORDER BY (id, first_name, last_name, gender);
+```
 
 #### На целевой системе ClickHouse {#on-the-destination-clickhouse-system}
 
 - Создайте целевую базу данных:
 
-  ```sql
-  CREATE DATABASE imdb
-  ```
+```sql
+CREATE DATABASE imdb
+```
 
-- Используя оператор CREATE TABLE из источника, создайте объект назначения:
+- Используя оператор CREATE TABLE из источника, создайте целевую:
 
-  ```sql
-  CREATE TABLE imdb.actors (`id` UInt32,
-                            `first_name` String,
-                            `last_name` String,
-                            `gender` FixedString(1))
-                  ENGINE = MergeTree
-                  ORDER BY (id, first_name, last_name, gender);
-  ```
+```sql
+CREATE TABLE imdb.actors (`id` UInt32,
+                          `first_name` String,
+                          `last_name` String,
+                          `gender` FixedString(1))
+                ENGINE = MergeTree
+                ORDER BY (id, first_name, last_name, gender);
+```
 
-#### Вернуться к исходному развёртыванию {#back-on-the-source-deployment}
+#### Вернувшись на исходную установку {#back-on-the-source-deployment}
 
-Вставьте данные в новую базу данных и таблицу, созданную на удалённой системе. Вам понадобятся хост, порт, имя пользователя, пароль, целевая база данных и целевая таблица.
+Вставьте данные в новую базу данных и таблицу, созданные на удалённой системе. Вам понадобятся хост, порт, имя пользователя, пароль, целевая база данных и целевая таблица.
 
 ```sql
 INSERT INTO FUNCTION
@@ -170,16 +160,16 @@ remoteSecure('remote.clickhouse.cloud:9440', 'imdb.actors', 'USER', 'PASSWORD')
 SELECT * from imdb.actors
 ```
 
-## Глоббинги {#globs-in-addresses}
+## Генерация адресов {#globs-in-addresses}
 
 Шаблоны в фигурных скобках `{ }` используются для генерации набора шардов и для указания реплик. Если есть несколько пар фигурных скобок, то генерируется прямое произведение соответствующих множеств.
 
-Поддерживаются следующие типы шаблонов.
+Поддерживаются следующие типы шаблонов:
 
-- `{a,b,c}` - Представляет любую из альтернативных строк `a`, `b` или `c`. Шаблон заменяется на `a` в первом адресе шарда и заменяется на `b` во втором адресе шарда и так далее. Например, `example0{1,2}-1` генерирует адреса `example01-1` и `example02-1`.
+- `{a,b,c}` - Представляет любое из альтернативных строк `a`, `b` или `c`. Шаблон заменяется на `a` в адресе первого шарда и на `b` во втором адресе шарда и т.д. Например, `example0{1,2}-1` генерирует адреса `example01-1` и `example02-1`.
 - `{N..M}` - Диапазон чисел. Этот шаблон генерирует адреса шардов с увеличивающимися индексами от `N` до (включительно) `M`. Например, `example0{1..2}-1` генерирует `example01-1` и `example02-1`.
-- `{0n..0m}` - Диапазон чисел с ведющими нулями. Этот шаблон сохраняет ведущие нули в индексах. Например, `example{01..03}-1` генерирует `example01-1`, `example02-1` и `example03-1`.
-- `{a|b}` - Любое количество вариантов, разделённых `|`. Шаблон указывает реплики. Например, `example01-{1|2}` генерирует реплики `example01-1` и `example01-2`.
+- `{0n..0m}` - Диапазон чисел с ведущими нулями. Этот шаблон сохраняет ведущие нули в индексах. Например, `example{01..03}-1` генерирует `example01-1`, `example02-1` и `example03-1`.
+- `{a|b}` - Любое количество вариантов, разделённых символом `|`. Шаблон указывает реплики. Например, `example01-{1|2}` генерирует реплики `example01-1` и `example01-2`.
 
-Запрос будет отправлен на первую работоспособную реплику. Однако для функции `remote` реплики итерируются в порядке, установленном в настройке [load_balancing](../../operations/settings/settings.md#load_balancing).
-Количество сгенерированных адресов ограничивается настройкой [table_function_remote_max_addresses](../../operations/settings/settings.md#table_function_remote_max_addresses).
+Запрос будет отправлен на первую здоровую реплику. Однако для `remote` реплики перебираются в порядке, установленном в настройке [load_balancing](../../operations/settings/settings.md#load_balancing).
+Количество сгенерированных адресов ограничено настройкой [table_function_remote_max_addresses](../../operations/settings/settings.md#table_function_remote_max_addresses).

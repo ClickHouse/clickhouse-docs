@@ -1,8 +1,9 @@
 ---
 'slug': '/integrations/jupysql'
-'sidebar_label': 'Jupyterノートブック'
-'description': 'JupySQLはJupyter向けのマルチプラットフォームデータベースツールです。'
-'title': 'ClickHouseとJupySQLの使用方法'
+'sidebar_label': 'Jupyter ノートブック'
+'description': 'JupySQL は Jupyter 用のマルチプラットフォーム DATABASE ツールです。'
+'title': 'JupySQL を ClickHouse で使用する'
+'doc_type': 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -11,38 +12,38 @@ import jupysql_plot_2 from '@site/static/images/integrations/sql-clients/jupysql
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# ClickHouseとのJupySQLの使用
+# ClickHouseとJupySQLの使用
 
 <CommunityMaintainedBadge/>
 
-このガイドでは、ClickHouseとの統合を示します。
+このガイドでは、ClickHouseとの統合方法を示します。
 
-JupySQLを使用して、ClickHouse上でクエリを実行します。
-データが読み込まれた後、SQLプロットを介して可視化します。
+JupySQLを使用してClickHouse上でクエリを実行します。
+データが読み込まれたら、SQLプロットを通じて可視化します。
 
-JupySQLとClickHouseの統合は、clickhouse_sqlalchemyライブラリの使用によって可能となります。このライブラリは、両システム間の簡単な通信を可能にし、ユーザーがClickHouseに接続し、SQL方言を指定できるようにします。接続後、ユーザーはClickHouseのネイティブUIまたはJupyterノートブックから直接SQLクエリを実行できます。
+JupySQLとClickHouseの統合は、clickhouse_sqlalchemyライブラリを使用することによって可能になります。このライブラリにより、2つのシステム間の通信が容易になり、ユーザーはClickHouseに接続し、SQLダイアレクトを指定できます。接続が確立されると、ユーザーはClickHouseのネイティブUIまたはJupyterノートブックから直接SQLクエリを実行できます。
 
 ```python
 
-# 必要なパッケージをインストール
+# Install required packages
 %pip install --quiet jupysql clickhouse_sqlalchemy
 ```
 
-    注意: 更新されたパッケージを使用するには、カーネルを再起動する必要があります。
+    注意: 更新されたパッケージを使用するためにカーネルを再起動する必要があるかもしれません。
 
 ```python
 import pandas as pd
 from sklearn_evaluation import plot
 
 
-# SQLセルを作成するためにjupysql Jupyter拡張をインポート
+# Import jupysql Jupyter extension to create SQL cells
 %load_ext sql
 %config SqlMagic.autocommit=False
 ```
 
-**次のステージに進むために、Clickhouseが起動し、接続可能であることを確認する必要があります。ローカル版またはクラウド版のいずれかを使用できます。**
+**次のステージのために、ClickHouseが稼働し、アクセス可能であることを確認する必要があります。ローカル版またはクラウド版のいずれかを使用できます。**
 
-**注意:** 接続するインスタンスの種類に応じて接続文字列を調整する必要があります (url、user、password)。以下の例ではローカルインスタンスを使用しています。詳細については、[このガイド](/getting-started/quick-start)を参照してください。
+**注意:** 接続文字列は、接続しようとしているインスタンスのタイプに応じて調整する必要があります（url、ユーザー、パスワード）。以下の例では、ローカルインスタンスを使用しています。詳細については、[このガイド](../../get-started/quick-start)を参照してください。
 
 ```python
 %sql clickhouse://default:@localhost:8123/default
@@ -106,16 +107,10 @@ ORDER BY pickup_datetime;
     *  clickhouse://default:***@localhost:8123/default
     完了。
 
-
-
-
 <table>
     <tr>
     </tr>
 </table>
-
-
-
 
 ```sql
 %%sql
@@ -174,16 +169,10 @@ SELECT * FROM s3(
     *  clickhouse://default:***@localhost:8123/default
     完了。
 
-
-
-
 <table>
     <tr>
     </tr>
 </table>
-
-
-
 
 ```python
 %sql SELECT count() FROM trips limit 5;
@@ -191,9 +180,6 @@ SELECT * FROM s3(
 
     *  clickhouse://default:***@localhost:8123/default
     完了。
-
-
-
 
 <table>
     <tr>
@@ -204,18 +190,12 @@ SELECT * FROM s3(
     </tr>
 </table>
 
-
-
-
 ```python
 %sql SELECT DISTINCT(pickup_ntaname) FROM trips limit 5;
 ```
 
     *  clickhouse://default:***@localhost:8123/default
     完了。
-
-
-
 
 <table>
     <tr>
@@ -238,18 +218,12 @@ SELECT * FROM s3(
     </tr>
 </table>
 
-
-
-
 ```python
 %sql SELECT round(avg(tip_amount), 2) FROM trips
 ```
 
     *  clickhouse://default:***@localhost:8123/default
     完了。
-
-
-
 
 <table>
     <tr>
@@ -259,9 +233,6 @@ SELECT * FROM s3(
         <td>1.68</td>
     </tr>
 </table>
-
-
-
 
 ```sql
 %%sql
@@ -274,9 +245,6 @@ GROUP BY passenger_count
 
     *  clickhouse://default:***@localhost:8123/default
     完了。
-
-
-
 
 <table>
     <tr>
@@ -325,9 +293,6 @@ GROUP BY passenger_count
     </tr>
 </table>
 
-
-
-
 ```sql
 %%sql
 SELECT
@@ -342,7 +307,6 @@ limit 5;
 
 *  clickhouse://default:***@localhost:8123/default
 完了。
-
 
 <table>
     <tr>
@@ -395,7 +359,7 @@ WHERE trip_distance < 6.3
 ```
 
     *  clickhouse://default:***@localhost:8123/default
-    実行をスキップ...
+    実行をスキップ中...
 
 ```python
 %sqlplot histogram --table short-trips --column trip_distance --bins 10 --with short-trips
@@ -404,14 +368,13 @@ WHERE trip_distance < 6.3
 ```response
 <AxesSubplot: title={'center': "'trip_distance' from 'short-trips'"}, xlabel='trip_distance', ylabel='Count'>
 ```
-<Image img={jupysql_plot_1} size="md" alt="短距離のデータセットからの10個のビンを持つ旅行距離の分布を示すヒストグラム" border />
-
+<Image img={jupysql_plot_1} size="md" alt="短距離トリップデータセットの10ビンからのトリップ距離の分布を示すヒストグラム" border />
 
 ```python
 ax = %sqlplot histogram --table short-trips --column trip_distance --bins 50 --with short-trips
 ax.grid()
-ax.set_title("6.3未満の旅行距離")
-_ = ax.set_xlabel("旅行距離")
+ax.set_title("Trip distance from trips < 6.3")
+_ = ax.set_xlabel("Trip distance")
 ```
 
-<Image img={jupysql_plot_2} size="md" alt="6.3未満の旅行距離に関連する50個のビンとグリッドを持つヒストグラム" border />
+<Image img={jupysql_plot_2} size="md" alt="50ビンとグリッドを持つトリップ距離の分布を示すヒストグラム。タイトルは 'Trip distance from trips < 6.3'" border />

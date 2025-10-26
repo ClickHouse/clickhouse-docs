@@ -5,7 +5,8 @@ pagination_next: null
 sidebar_position: 7
 description: 'Ruby on Rails SDK for ClickStack - The ClickHouse Observability Stack'
 title: 'Ruby on Rails'
-keywords: [clickstack, ruby, opentelemetry, traces]
+doc_type: 'guide'
+keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
 
 This guide integrates:

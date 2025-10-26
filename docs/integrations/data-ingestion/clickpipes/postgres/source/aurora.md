@@ -3,6 +3,7 @@ sidebar_label: 'Amazon Aurora Postgres'
 description: 'Set up Amazon Aurora Postgres as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/aurora
 title: 'Aurora Postgres Source Setup Guide'
+doc_type: 'guide'
 keywords: ['Amazon Aurora', 'PostgreSQL', 'ClickPipes', 'AWS database', 'logical replication setup']
 ---
 

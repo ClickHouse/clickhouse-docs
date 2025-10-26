@@ -1,21 +1,20 @@
 ---
-'description': 'Documentation for the percent_rank window function'
+'description': 'percent_rank ウィンドウ関数のドキュメント'
 'sidebar_label': 'percent_rank'
 'sidebar_position': 8
 'slug': '/sql-reference/window-functions/percent_rank'
 'title': 'percent_rank'
+'doc_type': 'reference'
 ---
-
-
 
 
 # percent_rank
 
-ウィンドウパーティション内の行の相対的な順位（すなわちパーセンタイル）を返します。
+ウィンドウ パーティション内の行の相対的なランク（すなわち、パーセンタイル）を返します。
 
 **構文**
 
-エイリアス: `percentRank`（大文字小文字を区別）
+エイリアス: `percentRank` （大文字と小文字を区別）
 
 ```sql
 percent_rank ()
@@ -25,12 +24,11 @@ FROM table_name
 WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column] RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
 ```
 
-デフォルトかつ必須のウィンドウフレーム定義は `RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` です。
+デフォルトかつ必須のウィンドウ フレーム定義は `RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` です。
 
-ウィンドウ関数の構文の詳細については、[ウィンドウ関数 - 構文](./index.md/#syntax)を参照してください。
+ウィンドウ関数の構文に関する詳細は、[ウィンドウ関数 - 構文](./index.md/#syntax)をご覧ください。
 
 **例**
-
 
 クエリ:
 

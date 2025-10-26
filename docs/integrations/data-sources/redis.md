@@ -3,13 +3,11 @@ slug: /integrations/redis
 sidebar_label: 'Redis'
 title: 'Redis'
 description: 'Page describing the Redis table function'
-keywords: ['redis table function', 'key-value store', 'in-memory database']
+doc_type: 'reference'
+show_title: false
+keywords: ['redis', 'cache', 'integration', 'data source', 'key-value store']
 ---
 
 import RedisFunction from '@site/docs/sql-reference/table-functions/redis.md';
-
-# Redis integration
-
-Users can integrate with Redis via the table function. 
 
 <RedisFunction/>

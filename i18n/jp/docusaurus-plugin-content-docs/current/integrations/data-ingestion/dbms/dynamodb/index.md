@@ -2,14 +2,12 @@
 'sidebar_label': 'DynamoDB'
 'sidebar_position': 10
 'slug': '/integrations/dynamodb'
-'description': 'ClickPipes allows you to connect ClickHouse to DynamoDB.'
+'description': 'ClickPipes を使用すると、ClickHouse と DynamoDB を接続できます。'
 'keywords':
-- 'clickhouse'
 - 'DynamoDB'
-- 'connect'
-- 'integrate'
-- 'table'
-'title': 'CDC from DynamoDB to ClickHouse'
+'title': 'DynamoDB から ClickHouse への CDC'
+'show_related_blogs': true
+'doc_type': 'guide'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -20,36 +18,36 @@ import dynamodb_map_columns from '@site/static/images/integrations/data-ingestio
 import Image from '@theme/IdealImage';
 
 
-# CDC from DynamoDB to ClickHouse
+# DynamoDBからClickHouseへのCDC
 
 <ExperimentalBadge/>
 
 このページでは、ClickPipesを使用してDynamoDBからClickHouseへのCDCを設定する方法について説明します。この統合には2つのコンポーネントがあります：
 1. S3 ClickPipesを介した初期スナップショット
-2. Kinesis ClickPipesを介したリアルタイムの更新
+2. Kinesis ClickPipesを介したリアルタイム更新
 
-データは`ReplacingMergeTree`に取り込まれます。このテーブルエンジンはCDCシナリオによく使用され、更新操作を適用できるようにします。このパターンに関する詳細は、以下のブログ記事で見つかります：
+データは `ReplacingMergeTree` に取り込まれます。このテーブルエンジンは、更新操作が適用されるCDCシナリオで一般的に使用されます。このパターンに関する詳細は、以下のブログ記事を参照してください：
 
-* [PostgreSQLとClickHouseによる変更データキャプチャ（CDC） - パート1](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1?loc=docs-rockest-migrations)
-* [PostgreSQLとClickHouseによる変更データキャプチャ（CDC） - パート2](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-2?loc=docs-rockest-migrations)
+* [PostgreSQLとClickHouseによる変更データキャプチャ (CDC) - パート1](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1?loc=docs-rockest-migrations)
+* [PostgreSQLとClickHouseによる変更データキャプチャ (CDC) - パート2](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-2?loc=docs-rockest-migrations)
 
-## 1. Kinesis Streamの設定 {#1-set-up-kinesis-stream}
+## 1. Kinesisストリームの設定 {#1-set-up-kinesis-stream}
 
-最初に、DynamoDBテーブルでKinesisストリームを有効にして、リアルタイムで変更をキャプチャします。スナップショットを作成する前にこれを行い、データの喪失を避ける必要があります。
+まず、DynamoDBテーブルでリアルタイムの変更をキャプチャするためにKinesisストリームを有効にします。スナップショットを作成する前にこれを行うことで、データを見逃すことを避けることができます。
 AWSガイドは[こちら](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/kds.html)にあります。
 
 <Image img={dynamodb_kinesis_stream} size="lg" alt="DynamoDB Kinesis Stream" border/>
 
-## 2. スナップショットの作成 {#2-create-the-snapshot}
+## 2. スナップショットを作成する {#2-create-the-snapshot}
 
-次に、DynamoDBテーブルのスナップショットを作成します。これは、AWSからS3へのエクスポートを通じて実行できます。AWSガイドは[こちら](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataExport.HowItWorks.html)にあります。
-**DynamoDB JSONフォーマットで「フルエクスポート」を実行する必要があります。**
+次に、DynamoDBテーブルのスナップショットを作成します。これはAWSエクスポートを使用してS3に達成できます。AWSガイドは[こちら](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataExport.HowItWorks.html)にあります。
+**DynamoDB JSON形式で「フルエクスポート」を行う必要があります。**
 
 <Image img={dynamodb_s3_export} size="md" alt="DynamoDB S3 Export" border/>
 
-## 3. スナップショットをClickHouseにロード {#3-load-the-snapshot-into-clickhouse}
+## 3. スナップショットをClickHouseにロードする {#3-load-the-snapshot-into-clickhouse}
 
-### 必要なテーブルの作成 {#create-necessary-tables}
+### 必要なテーブルを作成する {#create-necessary-tables}
 
 DynamoDBからのスナップショットデータは次のようになります：
 ```json
@@ -66,24 +64,24 @@ DynamoDBからのスナップショットデータは次のようになります
 }
 ```
 
-データがネストされた形式になっていることに注意してください。ClickHouseにロードする前に、このデータをフラット化する必要があります。これは、ClickHouseのMaterialized Viewで`JSONExtract`関数を使用して行えます。
+データがネストされた形式であることに注意してください。このデータをClickHouseにロードする前にフラット化する必要があります。これは、ClickHouseのマテリアライズドビューの`JSONExtract`関数を使用して行うことができます。
 
-次の3つのテーブルを作成する必要があります：
-1. DynamoDBからの生データを格納するテーブル
-2. 最終的にフラット化されたデータを格納するテーブル（宛先テーブル）
-3. データをフラット化するためのMaterialized View
+3つのテーブルを作成したいと思います：
+1. DynamoDBからの生データを保存するテーブル
+2. 最終的なフラット化されたデータを保存するテーブル（宛先テーブル）
+3. データをフラット化するためのマテリアライズドビュー
 
-上記の例のDynamoDBデータに対するClickHouseのテーブルは次のようになります：
+上記のDynamoDBデータの例に対して、ClickHouseのテーブルは次のようになります：
 
 ```sql
-/* スナップショットテーブル */
+/* Snapshot table */
 CREATE TABLE IF NOT EXISTS "default"."snapshot"
 (
     `item` String
 )
 ORDER BY tuple();
 
-/* 最終的にフラット化されたデータ用のテーブル */
+/* Table for final flattened data */
 CREATE MATERIALIZED VIEW IF NOT EXISTS "default"."snapshot_mv" TO "default"."destination" AS
 SELECT
     JSONExtractString(item, 'id', 'S') AS id,
@@ -91,7 +89,7 @@ SELECT
     JSONExtractString(item, 'first_name', 'S') AS first_name
 FROM "default"."snapshot";
 
-/* 最終的にフラット化されたデータ用のテーブル */
+/* Table for final flattened data */
 CREATE TABLE IF NOT EXISTS "default"."destination" (
     "id" String,
     "first_name" String,
@@ -105,12 +103,12 @@ ORDER BY id;
 宛先テーブルにはいくつかの要件があります：
 - このテーブルは`ReplacingMergeTree`テーブルである必要があります
 - テーブルには`version`カラムが必要です
-  - 後のステップで、Kinesisストリームから`ApproximateCreationDateTime`フィールドを`version`カラムにマッピングします。
-- テーブルはソートキーとしてパーティションキーを使用する必要があります（`ORDER BY`で指定）
+  - 後のステップでは、Kinesisストリームの`ApproximateCreationDateTime`フィールドを`version`カラムにマッピングします。
+- テーブルは、ソートキーとしてパーティションキーを使用する必要があります（`ORDER BY`で指定）
   - 同じソートキーを持つ行は`version`カラムに基づいて重複排除されます。
 
-### スナップショットClickPipeの作成 {#create-the-snapshot-clickpipe}
-次に、S3からClickHouseにスナップショットデータをロードするためのClickPipeを作成できます。S3 ClickPipeガイドに従って[こちら](/integrations/data-ingestion/clickpipes/object-storage.md)を参照してくださいが、次の設定を使用します：
+### スナップショットClickPipeを作成する {#create-the-snapshot-clickpipe}
+S3からClickHouseにスナップショットデータをロードするためのClickPipeを作成できます。S3 ClickPipeガイドは[こちら](/integrations/data-ingestion/clickpipes/object-storage.md)に従ってくださいが、次の設定を使用してください：
 
 - **インジェストパス**：エクスポートされたjsonファイルのS3内のパスを特定する必要があります。パスは次のようになります：
 
@@ -119,20 +117,20 @@ https://{bucket}.s3.amazonaws.com/{prefix}/AWSDynamoDB/{export-id}/data/*
 ```
 
 - **フォーマット**：JSONEachRow
-- **テーブル**：スナップショットテーブル（例：上記の`default.snapshot`）
+- **テーブル**：スナップショットテーブル（例：上記の `default.snapshot`）
 
-作成が完了すると、スナップショットテーブルと宛先テーブルにデータがポピュレートし始めます。次のステップに進む前にスナップショットのロードが完了するのを待つ必要はありません。
+作成が完了すると、スナップショットテーブルと宛先テーブルにデータが含まれ始めます。次のステップに進む前にスナップショットのロードが完了するまで待つ必要はありません。
 
-## 4. Kinesis ClickPipeの作成 {#4-create-the-kinesis-clickpipe}
+## 4. Kinesis ClickPipeを作成する {#4-create-the-kinesis-clickpipe}
 
-次に、Kinesisストリームからリアルタイムで変更をキャプチャするためのKinesis ClickPipeを設定できます。Kinesis ClickPipeガイドに従って[こちら](/integrations/data-ingestion/clickpipes/kinesis.md)を参照してくださいが、次の設定を使用します：
+次に、Kinesisストリームからのリアルタイムの変更をキャプチャするためのKinesis ClickPipeを設定できます。Kinesis ClickPipeガイドは[こちら](/integrations/data-ingestion/clickpipes/kinesis.md)に従ってくださいが、次の設定を使用してください：
 
-- **ストリーム**：ステップ1で使用したKinesisストリーム
-- **テーブル**：宛先テーブル（例：上記の`default.destination`）
+- **ストリーム**：ステップ1で使用されたKinesisストリーム
+- **テーブル**：宛先テーブル（例：上記の `default.destination`）
 - **オブジェクトのフラット化**：true
 - **カラムマッピング**：
   - `ApproximateCreationDateTime`: `version`
-  - 他のフィールドを、以下に示す宛先カラムに適切にマッピングします
+  - その他のフィールドを適切な宛先カラムにマッピングする（下記のように）
 
 <Image img={dynamodb_map_columns} size="md" alt="DynamoDB Map Columns" border/>
 

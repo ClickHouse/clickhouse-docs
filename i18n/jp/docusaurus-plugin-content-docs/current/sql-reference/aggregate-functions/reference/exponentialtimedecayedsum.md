@@ -1,16 +1,14 @@
 ---
-'description': 'Returns the sum of exponentially smoothed moving average values of
-  a time series at the index `t` in time.'
+'description': '時間のインデックス `t` における時系列の指数平滑移動平均値の合計を返します。'
 'sidebar_position': 136
 'slug': '/sql-reference/aggregate-functions/reference/exponentialTimeDecayedSum'
 'title': 'exponentialTimeDecayedSum'
+'doc_type': 'reference'
 ---
-
-
 
 ## exponentialTimeDecayedSum {#exponentialtimedecayedsum}
 
-時間のインデックス `t` における時系列の指数平滑移動平均値の合計を返します。
+時間系列のインデックス `t` における指数的に平滑化された移動平均値の合計を返します。
 
 **構文**
 
@@ -20,16 +18,16 @@ exponentialTimeDecayedSum(x)(v, t)
 
 **引数**
 
-- `v` — 値。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点](../../../sql-reference/data-types/float.md) または [小数](../../../sql-reference/data-types/decimal.md)。
-- `t` — 時間。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点](../../../sql-reference/data-types/float.md) または [小数](../../../sql-reference/data-types/decimal.md)、[DateTime](../../data-types/datetime.md)、[DateTime64](../../data-types/datetime64.md)。
+- `v` — 値。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点数](../../../sql-reference/data-types/float.md)、または[小数](../../../sql-reference/data-types/decimal.md)。
+- `t` — 時間。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点数](../../../sql-reference/data-types/float.md)、または[小数](../../../sql-reference/data-types/decimal.md)、[DateTime](../../data-types/datetime.md)、[DateTime64](../../data-types/datetime64.md)。
 
-**パラメーター**
+**パラメータ**
 
-- `x` — 半減期。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点](../../../sql-reference/data-types/float.md) または [小数](../../../sql-reference/data-types/decimal.md)。
+- `x` — 値の重みが 1/e に減衰するために必要な時間差。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点数](../../../sql-reference/data-types/float.md)、または[小数](../../../sql-reference/data-types/decimal.md)。
 
 **返される値**
 
-- 指定された時点における指数平滑移動平均値の合計を返します。 [Float64](../../data-types/float.md)。
+- 指定した時点における指数的に平滑化された移動平均値の合計を返します。 [Float64](../../data-types/float.md)。
 
 **例**
 

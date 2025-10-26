@@ -5,6 +5,7 @@ toc_hidden: true
 toc_priority: 101
 description: 'This page describes what a columnar database is'
 keywords: ['columnar database', 'column-oriented database', 'OLAP database', 'analytical database', 'data warehousing']
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';

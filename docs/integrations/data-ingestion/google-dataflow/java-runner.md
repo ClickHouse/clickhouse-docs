@@ -4,7 +4,8 @@ slug: /integrations/google-dataflow/java-runner
 sidebar_position: 2
 description: 'Users can ingest data into ClickHouse using Google Dataflow Java Runner'
 title: 'Dataflow Java Runner'
-keywords: [google dataflow, java runner, apache beam, clickhouse io, custom pipeline, etl, data processing, beam sdk]
+doc_type: 'guide'
+keywords: ['Dataflow Java Runner', 'Google Dataflow ClickHouse', 'Apache Beam Java ClickHouse', 'ClickHouseIO connector']
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';

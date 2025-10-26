@@ -1,9 +1,10 @@
 ---
-sidebar_label: 'Maintenance Windows'
+sidebar_label: 'Maintenance windows'
 description: 'Maintenance windows for ClickPipes for Postgres.'
 slug: /integrations/clickpipes/postgres/maintenance
 title: 'Maintenance windows for ClickPipes for Postgres'
-keywords: ['maintenance windows', 'postgres', 'clickpipes', 'downtime', 'scheduled maintenance']
+doc_type: 'reference'
+keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 # Maintenance windows for ClickPipes for Postgres

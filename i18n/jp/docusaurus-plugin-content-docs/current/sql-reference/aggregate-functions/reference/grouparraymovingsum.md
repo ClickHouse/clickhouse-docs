@@ -3,9 +3,8 @@
 'sidebar_position': 144
 'slug': '/sql-reference/aggregate-functions/reference/grouparraymovingsum'
 'title': 'groupArrayMovingSum'
+'doc_type': 'reference'
 ---
-
-
 
 
 # groupArrayMovingSum
@@ -17,7 +16,7 @@ groupArrayMovingSum(numbers_for_summing)
 groupArrayMovingSum(window_size)(numbers_for_summing)
 ```
 
-この関数はウィンドウサイズをパラメータとして受け取ることができます。指定しない場合、関数はカラムの行数と等しいウィンドウサイズを取ります。
+関数はウィンドウサイズをパラメータとして受け取ることができます。指定しない場合、関数はカラム内の行数と同じウィンドウサイズを使用します。
 
 **引数**
 
@@ -26,11 +25,11 @@ groupArrayMovingSum(window_size)(numbers_for_summing)
 
 **返される値**
 
-- 入力データと同じサイズおよびタイプの配列。
+- 入力データと同じサイズとタイプの配列。
 
 **例**
 
-サンプルテーブル:
+サンプルテーブル：
 
 ```sql
 CREATE TABLE t
@@ -51,7 +50,7 @@ ENGINE = TinyLog
 └─────┴───────┴──────┘
 ```
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT

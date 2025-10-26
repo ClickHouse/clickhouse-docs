@@ -1,10 +1,11 @@
 ---
 slug: /about-us/cloud
-sidebar_label: 'Cloud Service'
+sidebar_label: 'Cloud service'
 sidebar_position: 10
 description: 'ClickHouse Cloud'
 title: 'ClickHouse Cloud'
 keywords: ['ClickHouse Cloud', 'cloud database', 'managed ClickHouse', 'serverless database', 'cloud OLAP']
+doc_type: 'reference'
 ---
 
 # ClickHouse Cloud

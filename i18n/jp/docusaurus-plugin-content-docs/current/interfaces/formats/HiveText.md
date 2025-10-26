@@ -1,12 +1,11 @@
 ---
-'description': 'Documentation for the HiveText format'
+'description': 'HiveTextフォーマットのDocumentation'
 'keywords':
 - 'HiveText'
 'slug': '/interfaces/formats/HiveText'
 'title': 'HiveText'
+'doc_type': 'reference'
 ---
-
-
 
 ## 説明 {#description}
 

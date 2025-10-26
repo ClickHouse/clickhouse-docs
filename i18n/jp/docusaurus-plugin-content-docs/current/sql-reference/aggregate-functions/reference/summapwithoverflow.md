@@ -1,44 +1,41 @@
 ---
-'description': 'Totals a `value` array according to the keys specified in the `key`
-  array. Returns a tuple of two arrays: keys in sorted order, and values summed for
-  the corresponding keys. Differs from the sumMap function in that it does summation
-  with overflow.'
+'description': '指定された `key` 配列のキーに従って `value` 配列の合計を計算します。ソートされた順序のキーと、対応するキーの合計値から成る二つの配列のタプルを返します。sumMap
+  関数とは異なり、オーバーフローを伴う合計を行います。'
 'sidebar_position': 199
 'slug': '/sql-reference/aggregate-functions/reference/summapwithoverflow'
 'title': 'sumMapWithOverflow'
+'doc_type': 'reference'
 ---
-
-
 
 
 # sumMapWithOverflow
 
-指定された `key` 配列に従って `value` 配列の合計を計算します。ソートされた順序のキーと、対応するキーの合計値の2つの配列のタプルを返します。
-これは [sumMap](../reference/summap.md) 関数とは異なり、オーバーフローを伴う合計を行います。つまり、合計のデータ型は引数のデータ型と同じです。
+`value` の配列を `key` の配列で指定されたキーに基づいて合計します。ソートされた順序のキーと、対応するキーの合計値からなる二つの配列のタプルを返します。
+これは [sumMap](../reference/summap.md) 関数とは異なり、オーバーフローを伴って合計を行います。つまり、合計のデータ型は引数のデータ型と同じになります。
 
 **構文**
 
-- `sumMapWithOverflow(key <Array>, value <Array>)` [Array type](../../data-types/array.md)。
-- `sumMapWithOverflow(Tuple(key <Array>, value <Array>))` [Tuple type](../../data-types/tuple.md)。
+- `sumMapWithOverflow(key <Array>, value <Array>)` [Array type](../../data-types/array.md).
+- `sumMapWithOverflow(Tuple(key <Array>, value <Array>))` [Tuple type](../../data-types/tuple.md).
 
-**引数**
+**引数** 
 
-- `key`: [Array](../../data-types/array.md) 型のキー。
-- `value`: [Array](../../data-types/array.md) 型の値。
+- `key`: キーの [Array](../../data-types/array.md)。
+- `value`: 値の [Array](../../data-types/array.md)。
 
-キーと値の配列のタプルを渡すことは、鍵の配列と値の配列を別々に渡すことの同義です。
+キーと値の配列のタプルを渡すことは、キーの配列と値の配列を個別に渡すのと同義です。
 
 :::note 
-`key` と `value` の要素数は、合計を取る各行で同じでなければなりません。
+合計を求める各行に対して `key` と `value` の要素数は同じでなければなりません。
 :::
 
-**戻り値**
+**戻り値** 
 
-- ソートされた順序のキーと、対応するキーの合計値の2つの配列のタプルを返します。
+- ソートされた順序のキーと、対応するキーの合計値からなる二つの配列のタプルを返します。
 
 **例**
 
-まず、`sum_map` と呼ばれるテーブルを作成し、いくつかのデータを挿入します。キーと値の配列は、[Nested](../../data-types/nested-data-structures/index.md) 型の `statusMap` というカラムとして別々に保存され、2つの異なる構文の使用を示すために [tuple](../../data-types/tuple.md) 型の `statusMapTuple` というカラムとして一緒に保存されます。
+まず、`sum_map` という名前のテーブルを作成し、その中にいくつかのデータを挿入します。キーと値の配列は、[Nested](../../data-types/nested-data-structures/index.md) 型の `statusMap` というカラムとして別々に格納され、両者を合わせたものは [tuple](../../data-types/tuple.md) 型の `statusMapTuple` というカラムとして示され、上記の二つの異なる構文の使用例を示します。
 
 クエリ:
 
@@ -61,7 +58,7 @@ INSERT INTO sum_map VALUES
     ('2000-01-01', '2000-01-01 00:01:00', [6, 7, 8], [10, 10, 10], ([6, 7, 8], [10, 10, 10]));
 ```
 
-テーブルを `sumMap` と `sumMapWithOverflow` の配列タイプ構文、および `toTypeName` 関数を使用してクエリすると、`sumMapWithOverflow` 関数の場合、合計値配列のデータ型が引数の型と同じであることがわかります。両方とも `UInt8` です（つまり、オーバーフローを伴う合計が行われました）。 `sumMap` に対しては、合計値のデータ型が `UInt8` から `UInt64` に変更され、オーバーフローが発生しないようになっています。 
+`sumMap` および `sumMapWithOverflow` を配列型構文、さらに `toTypeName` 関数を使用してテーブルをクエリすると、`sumMapWithOverflow` 関数の合計値配列のデータ型は引数の型と同じで、どちらも `UInt8` であることが分かります（つまり、オーバーフローを伴って合計が行われた）。`sumMap` では、合計値の配列のデータ型は `UInt8` から `UInt64` に変更され、オーバーフローが発生しないようになっています。
 
 クエリ:
 
@@ -74,7 +71,7 @@ FROM sum_map
 GROUP BY timeslot
 ```
 
-同じ結果を得るために、タプル構文を使用することもできます。
+同等の結果を得るためにタプル構文を使用することもできます。
 
 ```sql
 SELECT

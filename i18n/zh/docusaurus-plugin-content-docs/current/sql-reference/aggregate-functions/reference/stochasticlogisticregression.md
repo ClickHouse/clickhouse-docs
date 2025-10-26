@@ -1,20 +1,21 @@
 ---
-'description': '该函数实现了随机逻辑回归。它可以用于二元分类问题，支持与 stochasticLinearRegression 相同的自定义参数，并且工作方式相同。'
+'description': '这个函数实现了随机逻辑回归。它可以用于二元分类问题，支持与 stochasticLinearRegression 相同的自定义参数，并以相同的方式工作。'
 'sidebar_position': 193
 'slug': '/sql-reference/aggregate-functions/reference/stochasticlogisticregression'
 'title': 'stochasticLogisticRegression'
+'doc_type': 'reference'
 ---
 
 
 # stochasticLogisticRegression
 
-此函数实现了随机逻辑回归。它可用于二元分类问题，支持与 stochasticLinearRegression 相同的自定义参数，并以相同的方式工作。
+此函数实现了随机逻辑回归。它可用于二分类问题，支持与stochasticLinearRegression相同的自定义参数，并以相同的方式工作。
 
 ### 参数 {#parameters}
 
-参数与 stochasticLinearRegression 中完全相同：
-`学习速率`、`l2 正则化系数`、`小批量大小`、`权重更新方法`。
-更多信息请参见 [parameters](../reference/stochasticlinearregression.md/#parameters)。
+参数与stochasticLinearRegression中的完全相同：
+`学习率`，`l2正则化系数`，`小批量大小`，`更新权重的方法`。
+有关更多信息，请参见 [参数](../reference/stochasticlinearregression.md/#parameters)。
 
 ```text
 stochasticLogisticRegression(1.0, 1.0, 10, 'SGD')
@@ -39,9 +40,9 @@ WITH (SELECT state FROM your_model) AS model SELECT
 evalMLMethod(model, param1, param2) FROM test_data
 ```
 
-    查询将返回一个概率列。请注意，`evalMLMethod` 的第一个参数是 `AggregateFunctionState` 对象，接下来的参数是特征列。
+    查询将返回一个概率列。注意，`evalMLMethod` 的第一个参数是 `AggregateFunctionState` 对象，下一个是特征的列。
 
-    我们还可以设置一个概率边界，将元素分配到不同的标签。
+    我们还可以设置概率界限，这将把元素分配给不同的标签。
 
 ```sql
 SELECT ans < 1.1 AND ans > 0.5 FROM

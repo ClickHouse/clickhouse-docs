@@ -7,6 +7,7 @@ pagination_next: null
 description: 'Learn how to build an OpenAI agent that can interact with ClickHouse MCP Server.'
 keywords: ['ClickHouse', 'MCP', 'OpenAI']
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 # How to build an OpenAI agent using ClickHouse MCP Server
@@ -32,8 +33,8 @@ You can run the following steps either from your Python REPL or via script.
 Install the required library by running the following commands:
 
 ```python
-!pip install -q --upgrade pip
-!pip install -q openai-agents
+pip install -q --upgrade pip
+pip install -q openai-agents
 ```
 
 ## Setup credentials {#setup-credentials}

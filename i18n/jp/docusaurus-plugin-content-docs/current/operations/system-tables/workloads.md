@@ -1,19 +1,17 @@
 ---
-'description': 'System table containing information for workloads residing on the
-  local server.'
+'description': 'ローカルサーバーに存在するワークロードに関する情報を含むシステムテーブル。'
 'keywords':
 - 'system table'
 - 'workloads'
 'slug': '/operations/system-tables/workloads'
 'title': 'system.workloads'
+'doc_type': 'reference'
 ---
-
-
 
 
 # system.workloads
 
-ローカルサーバーに存在する [workloads](/operations/workload-scheduling.md#workload_entity_storage) に関する情報を含みます。このテーブルは、すべてのワークロードに対して1行を含んでいます。
+ローカルサーバーに存在する [workloads](/operations/workload-scheduling.md#workload_entity_storage) に関する情報を含みます。テーブルには各ワークロードに対する行が含まれています。
 
 例:
 

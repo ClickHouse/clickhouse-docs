@@ -7,6 +7,7 @@ pagination_next: null
 description: 'Learn how to build a LangChain/LangGraph AI agent that can interact with ClickHouse''s SQL playground using ClickHouse''s MCP Server.'
 keywords: ['ClickHouse', 'MCP', 'LangChain', 'LangGraph']
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 # How to build a LangChain/LangGraph AI agent using ClickHouse MCP Server
@@ -32,10 +33,8 @@ You can run the following steps either from your Python REPL or via script.
 Install the required libraries by running the following commands:
 
 ```python
-!pip install -q --upgrade pip
-!pip install -q langchain-mcp-adapters
-!pip install -q langgraph
-!pip install -q "langchain[anthropic]"
+pip install -q --upgrade pip
+pip install -q langchain-mcp-adapters langgraph "langchain[anthropic]"
 ```
 
 ## Setup credentials {#setup-credentials}

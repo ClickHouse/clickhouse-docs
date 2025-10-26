@@ -1,12 +1,12 @@
 ---
 description: 'Dataset containing all of the commits and changes for the ClickHouse
   repository'
-sidebar_label: 'Github Repo'
-sidebar_position: 1
+sidebar_label: 'Github repo'
 slug: /getting-started/example-datasets/github
 title: 'Writing Queries in ClickHouse using GitHub Data'
 keywords: ['Github']
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';

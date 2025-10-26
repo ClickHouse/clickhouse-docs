@@ -3,9 +3,10 @@ slug: /use-cases/observability/clickstack/deployment/docker-compose
 title: 'Docker Compose'
 pagination_prev: null
 pagination_next: null
-sidebar_position: 2
+sidebar_position: 3
 description: 'Deploying ClickStack with Docker Compose - The ClickHouse Observability Stack'
-keywords: [clickstack, observability, docker-compose, docker, hyperdx, clickhouse, opentelemetry, otel, mongodb, deployment, monitoring, traces, logs, metrics, containers, orchestration]
+doc_type: 'guide'
+keywords: ['ClickStack Docker Compose', 'Docker Compose ClickHouse', 'HyperDX Docker deployment', 'ClickStack deployment guide', 'OpenTelemetry Docker Compose']
 ---
 
 import Image from '@theme/IdealImage';

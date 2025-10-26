@@ -1,60 +1,134 @@
 ---
-'title': 'Bun 用の chDB のインストール'
+'title': 'chDB for Bun'
 'sidebar_label': 'Bun'
 'slug': '/chdb/install/bun'
-'description': 'Bun 用の chDB のインストール方法'
+'description': 'Bun ランタイムで chDB をインストールして使用する方法'
 'keywords':
 - 'chdb'
-- 'embedded'
-- 'clickhouse-lite'
 - 'bun'
-- 'install'
+- 'javascript'
+- 'typescript'
+- 'embedded'
+- 'clickhouse'
+- 'sql'
+- 'olap'
+'doc_type': 'guide'
 ---
 
 
+# chDB for Bun
 
+chDB-bunは、chDBのための実験的なFFI（Foreign Function Interface）バインディングを提供し、ClickHouseクエリをBunアプリケーション内で外部依存関係なしに直接実行できます。
 
-# Bun用の chDB のインストール
+## インストール {#installation}
 
-## 要件 {#requirements}
+### ステップ 1: システム依存関係をインストール {#install-system-dependencies}
 
-[libchdb](https://github.com/chdb-io/chdb) をインストールします:
+まず、必要なシステム依存関係をインストールします。
+
+#### libchdbをインストール {#install-libchdb}
 
 ```bash
 curl -sL https://lib.chdb.io | bash
 ```
 
-## インストール {#install}
+#### ビルドツールをインストール {#install-build-tools}
 
-参照: [chdb-bun](https://github.com/chdb-io/chdb-bun)
+システムに`gcc`または`clang`がインストールされている必要があります。
 
-## GitHub リポジトリ {#github-repository}
+### ステップ 2: chDB-bunをインストール {#install-chdb-bun}
 
-プロジェクトの GitHub リポジトリは [chdb-io/chdb-bun](https://github.com/chdb-io/chdb-bun) で見つけることができます。
+```bash
+
+# Install from the GitHub repository
+bun add github:chdb-io/chdb-bun
+
+
+# Or clone and build locally
+git clone https://github.com/chdb-io/chdb-bun.git
+cd chdb-bun
+bun install
+bun run build
+```
 
 ## 使用法 {#usage}
 
-### Query(query, *format) (エフェメラル) {#queryquery-format-ephemeral}
+chDB-bunは、クエリモードとして一時的クエリ（ワンタイム操作用）と永続セッション（データベースの状態を維持するため）をサポートしています。
 
-```javascript
-// クエリ (エフェメラル)
-var result = query("SELECT version()", "CSV");
-console.log(result); // 23.10.1.1
+### 一時的クエリ {#ephemeral-queries}
+
+状態を永続化する必要のない単純な一回限りのクエリの場合：
+
+```typescript
+import { query } from 'chdb-bun';
+
+// Basic query
+const result = query("SELECT version()", "CSV");
+console.log(result); // "23.10.1.1"
+
+// Query with different output formats
+const jsonResult = query("SELECT 1 as id, 'Hello' as message", "JSON");
+console.log(jsonResult);
+
+// Query with calculations
+const mathResult = query("SELECT 2 + 2 as sum, pi() as pi_value", "Pretty");
+console.log(mathResult);
+
+// Query system information
+const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "CSV");
+console.log(systemInfo);
 ```
 
-<!-- vale ClickHouse.Headings = NO -->
-### Session.Query(query, *format) {#sessionqueryquery-format}
-<!-- vale ClickHouse.Headings = YES -->
+### 永続セッション {#persistent-sessions}
 
-```javascript
+クエリ間で状態を維持する必要がある複雑な操作の場合：
+
+```typescript
+import { Session } from 'chdb-bun';
+
+// Create a session with persistent storage
 const sess = new Session('./chdb-bun-tmp');
 
-// セッションでのクエリ (永続的)
-sess.query("CREATE FUNCTION IF NOT EXISTS hello AS () -> 'Hello chDB'", "CSV");
-var result = sess.query("SELECT hello()", "CSV");
-console.log(result);
+try {
+    // Create a database and table
+    sess.query(`
+        CREATE DATABASE IF NOT EXISTS mydb;
+        CREATE TABLE IF NOT EXISTS mydb.users (
+            id UInt32,
+            name String,
+            email String
+        ) ENGINE = MergeTree() ORDER BY id
+    `, "CSV");
 
-// クリーンアップ前に、`./chdb-bun-tmp` にデータベースファイルが見つかります。
+    // Insert data
+    sess.query(`
+        INSERT INTO mydb.users VALUES 
+        (1, 'Alice', 'alice@example.com'),
+        (2, 'Bob', 'bob@example.com'),
+        (3, 'Charlie', 'charlie@example.com')
+    `, "CSV");
 
-sess.cleanup(); // セッションをクリーンアップします。これによりデータベースが削除されます。
+    // Query the data
+    const users = sess.query("SELECT * FROM mydb.users ORDER BY id", "JSON");
+    console.log("Users:", users);
+
+    // Create and use custom functions
+    sess.query("CREATE FUNCTION IF NOT EXISTS hello AS () -> 'Hello chDB'", "CSV");
+    const greeting = sess.query("SELECT hello() as message", "Pretty");
+    console.log(greeting);
+
+    // Aggregate queries
+    const stats = sess.query(`
+        SELECT 
+            COUNT(*) as total_users,
+            MAX(id) as max_id,
+            MIN(id) as min_id
+        FROM mydb.users
+    `, "JSON");
+    console.log("Statistics:", stats);
+
+} finally {
+    // Always cleanup the session to free resources
+    sess.cleanup(); // This deletes the database files
+}
 ```

@@ -3,7 +3,8 @@
 'sidebar_label': 'Nested(Name1 Type1, Name2 Type2, ...)'
 'sidebar_position': 57
 'slug': '/sql-reference/data-types/nested-data-structures/nested'
-'title': '嵌套'
+'title': 'Nested'
+'doc_type': 'guide'
 ---
 
 
@@ -11,7 +12,7 @@
 
 ## Nested(name1 Type1, Name2 Type2, ...) {#nestedname1-type1-name2-type2-}
 
-嵌套数据结构就像是单元格内的一个表。嵌套数据结构的参数——列名和类型——以与 [CREATE TABLE](../../../sql-reference/statements/create/table.md) 查询中相同的方式指定。每个表行可以对应嵌套数据结构中的任意数量行。
+嵌套数据结构就像一个单元格内部的表。嵌套数据结构的参数——列名称和类型——与 [CREATE TABLE](../../../sql-reference/statements/create/table.md) 查询中指定的方式相同。每个表行可以对应于嵌套数据结构中的任意数量的行。
 
 示例：
 
@@ -38,11 +39,11 @@ CREATE TABLE test.visits
 ) ENGINE = CollapsingMergeTree(StartDate, intHash32(UserID), (CounterID, StartDate, intHash32(UserID), VisitID), 8192, Sign)
 ```
 
-此示例声明了 `Goals` 嵌套数据结构，该结构包含有关转化（达成的目标）的数据。'visits' 表中的每一行可以对应零个或任意数量的转化。
+此示例声明了 `Goals` 嵌套数据结构，它包含有关转换（达到目标）的数据。“visits” 表中的每一行可以对应于零个或任意数量的转换。
 
-当 [flatten_nested](/operations/settings/settings#flatten_nested) 设置为 `0` （默认情况下不是这样），支持任意层级的嵌套。
+当 [flatten_nested](/operations/settings/settings#flatten_nested) 设置为 `0`（默认情况下不是）时，支持任意级别的嵌套。
 
-在大多数情况下，处理嵌套数据结构时，其列以点号分隔的列名指定。这些列构成了相同类型的数组。单个嵌套数据结构的所有列数组具有相同的长度。
+在大多数情况下，在处理嵌套数据结构时，其列通过点分隔的列名称进行指定。这些列组成一个匹配类型的数组。单个嵌套数据结构的所有列数组具有相同的长度。
 
 示例：
 
@@ -70,9 +71,9 @@ LIMIT 10
 └────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-想象嵌套数据结构为多个同长度列数组的集合是最简单的。
+将嵌套数据结构视为一组相同长度的多个列数组是最简单的方式。
 
-SELECT 查询中唯一可以指定整个嵌套数据结构名称而不是单独列的地方是 ARRAY JOIN 子句。有关更多信息，请参见“ARRAY JOIN 子句”。示例：
+SELECT 查询唯一可以指定整个嵌套数据结构名称而不是单个列的地方是 ARRAY JOIN 子句。有关更多信息，请参见“ARRAY JOIN 子句”。示例：
 
 ```sql
 SELECT
@@ -99,10 +100,10 @@ LIMIT 10
 └─────────┴─────────────────────┘
 ```
 
-您不能对整个嵌套数据结构执行 SELECT。您只能显式列出其组成的单独列。
+您不能针对整个嵌套数据结构执行 SELECT。您只能明确列出它的单个列。
 
-对于 INSERT 查询，您应该将嵌套数据结构的所有组件列数组单独传递（就像它们是单独的列数组一样）。在插入过程中，系统会检查它们的长度是否相同。
+对于 INSERT 查询，您应单独传递嵌套数据结构的所有组件列数组（就像它们是单独的列数组一样）。在插入过程中，系统检查它们是否具有相同的长度。
 
 对于 DESCRIBE 查询，嵌套数据结构中的列以相同的方式单独列出。
 
-嵌套数据结构元素的 ALTER 查询具有一定的限制。
+ALTER 查询对于嵌套数据结构中的元素有其限制。

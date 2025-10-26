@@ -1,16 +1,15 @@
 ---
-'description': 'JSONカラムに保存された一意のパスのリストを計算します。'
+'description': 'JSON カラムに格納されている異なるパスのリストを計算します。'
 'sidebar_position': 216
 'slug': '/sql-reference/aggregate-functions/reference/distinctjsonpaths'
 'title': 'distinctJSONPaths'
+'doc_type': 'reference'
 ---
-
-
 
 
 # distinctJSONPaths
 
-[JSON](../../data-types/newjson.md) カラムに格納されている異なるパスのリストを計算します。
+[JSON](../../data-types/newjson.md) カラムに格納された一意のパスのリストを計算します。
 
 **構文**
 
@@ -22,7 +21,7 @@ distinctJSONPaths(json)
 
 - `json` — [JSON](../../data-types/newjson.md) カラム。
 
-**返される値**
+**戻り値**
 
 - パスのソートされたリスト [Array(String)](../../data-types/array.md)。
 
@@ -51,7 +50,7 @@ SELECT distinctJSONPaths(json) FROM test_json;
 
 # distinctJSONPathsAndTypes
 
-[JSON](../../data-types/newjson.md) カラムに格納されている異なるパスとそのタイプのリストを計算します。
+[JSON](../../data-types/newjson.md) カラムに格納された一意のパスとそのタイプのリストを計算します。
 
 **構文**
 
@@ -63,7 +62,7 @@ distinctJSONPathsAndTypes(json)
 
 - `json` — [JSON](../../data-types/newjson.md) カラム。
 
-**返される値**
+**戻り値**
 
 - パスとタイプのソートされたマップ [Map(String, Array(String))](../../data-types/map.md)。
 
@@ -89,9 +88,9 @@ SELECT distinctJSONPathsAndTypes(json) FROM test_json;
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**注記**
+**注意**
 
-JSON宣言に指定されたタイプを持つパスが含まれている場合、これらのパスは、入力データにこれらのパスの値がなかった場合でも、`distinctJSONPaths/distinctJSONPathsAndTypes` 関数の結果に常に含まれます。
+JSON 宣言に特定のタイプを持つパスが含まれている場合、これらのパスは、入力データがこれらのパスに対して値を持っていなくても、`distinctJSONPaths/distinctJSONPathsAndTypes` 関数の結果に常に含まれます。
 
 ```sql
 DROP TABLE IF EXISTS test_json;

@@ -5,6 +5,7 @@ description: 'ClickHouse offers four deployment options that all use the same po
 title: 'Deployment modes'
 keywords: ['Deployment Modes', 'chDB']
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import chServer from '@site/static/images/deployment-modes/ch-server.png';
@@ -67,7 +68,7 @@ The combination of remote table functions and access to the local file system ma
 
 ## chDB {#chdb}
 
-[chDB](/chdb) is ClickHouse embedded as an in-process database engine,, with Python being the primary implementation, though it's also available for Go, Rust, NodeJS, and Bun. This deployment option brings ClickHouse's powerful OLAP capabilities directly into your application's process, eliminating the need for a separate database installation.
+[chDB](/chdb) is ClickHouse embedded as an in-process database engine, with Python being the primary implementation, though it's also available for Go, Rust, NodeJS, and Bun. This deployment option brings ClickHouse's powerful OLAP capabilities directly into your application's process, eliminating the need for a separate database installation.
 
 <Image img={chDB} alt="chDB - Embedded ClickHouse" size="sm"/>
 

@@ -4,6 +4,8 @@ title: 'Which ClickHouse version to use in production?'
 toc_hidden: true
 toc_priority: 10
 description: 'This page provides guidance on which ClickHouse version to use in production'
+doc_type: 'guide'
+keywords: ['production', 'deployment', 'versions', 'best practices', 'upgrade strategy']
 ---
 
 # Which ClickHouse version to use in production? {#which-clickhouse-version-to-use-in-production}

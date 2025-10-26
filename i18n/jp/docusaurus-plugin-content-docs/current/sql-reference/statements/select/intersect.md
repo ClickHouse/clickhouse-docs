@@ -1,18 +1,17 @@
 ---
-'description': 'INTERSECT句のドキュメント'
+'description': 'INTERSECT クローズに関するドキュメント'
 'sidebar_label': 'INTERSECT'
 'slug': '/sql-reference/statements/select/intersect'
-'title': 'INTERSECT Clause'
+'title': 'INTERSECT クローズ'
+'doc_type': 'reference'
 ---
-
-
 
 
 # INTERSECT句
 
-`INTERSECT`句は、最初と二番目のクエリの両方からの結果の行のみを返します。クエリは、カラムの数、順序、型が一致している必要があります。`INTERSECT`の結果には重複行が含まれる場合があります。
+`INTERSECT`句は、最初のクエリと2番目のクエリの両方から結果が得られる行のみを返します。クエリはカラムの数、順序、および型が一致している必要があります。`INTERSECT`の結果には重複した行が含まれる可能性があります。
 
-複数の`INTERSECT`ステートメントは、丸括弧が指定されていない場合、左から右に実行されます。`INTERSECT`演算子は、`UNION`や`EXCEPT`句よりも優先度が高いです。
+複数の`INTERSECT`ステートメントは、括弧が指定されていない場合、左から右の順に実行されます。`INTERSECT`演算子は、`UNION`および`EXCEPT`句よりも優先度が高いです。
 
 ```sql
 SELECT column1 [, column2 ]
@@ -24,18 +23,19 @@ INTERSECT
 SELECT column1 [, column2 ]
 FROM table2
 [WHERE condition]
+
 ```
-条件は、あなたの要求に基づく任意の式である可能性があります。
+条件は、要件に応じた任意の式である可能性があります。
 
 ## 例 {#examples}
 
-1から10までの数字と3から8までの数字を交差させるシンプルな例を示します:
+次ののは、1から10までの数字を3から8までの数字と交差させる簡単な例です：
 
 ```sql
 SELECT number FROM numbers(1,10) INTERSECT SELECT number FROM numbers(3,8);
 ```
 
-結果:
+結果：
 
 ```response
 ┌─number─┐
@@ -48,7 +48,7 @@ SELECT number FROM numbers(1,10) INTERSECT SELECT number FROM numbers(3,8);
 └────────┘
 ```
 
-`INTERSECT`は、共通のカラム（またはカラム）を持つ2つのテーブルがある場合に便利です。結果が同じカラムを含む限り、2つのクエリの結果を交差させることができます。たとえば、取引価格とボリュームを含む数百万行の歴史的な暗号通貨データがあるとしましょう:
+`INTERSECT`は、共通のカラム（またはカラム）を共有する2つのテーブルがある場合に便利です。2つのクエリの結果を交差させることができ、結果に同じカラムが含まれている限り可能です。たとえば、取引価格とボリュームを含む数百万行の歴史的暗号通貨データがあるとします：
 
 ```sql
 CREATE TABLE crypto_prices
@@ -91,7 +91,7 @@ LIMIT 10;
 └────────────┴─────────────┴─────────────┴──────────┴──────────────┴───────────────┘
 ```
 
-次に、私たちが所有している暗号通貨のリストとそれぞれのコインの数が含まれている`holdings`という名前のテーブルがあるとしましょう:
+次に、私たちが所有する暗号通貨のリストとコインの数を含む`holdings`という名前のテーブルがあるとします：
 
 ```sql
 CREATE TABLE holdings
@@ -111,7 +111,7 @@ INSERT INTO holdings VALUES
    ('Bitcoin Diamond', 5000);
 ```
 
-`INTERSECT`を使って「$100以上で取引されたコインはどれですか？」という質問に答えることができます:
+`INTERSECT`を使用して、**「私たちが所有しているコインで、価格が$100を超えて取引されたのはどれですか？」**という質問に答えることができます：
 
 ```sql
 SELECT crypto_name FROM holdings
@@ -120,7 +120,7 @@ SELECT crypto_name FROM crypto_prices
 WHERE price > 100
 ```
 
-結果:
+結果：
 
 ```response
 ┌─crypto_name─┐
@@ -131,11 +131,11 @@ WHERE price > 100
 └─────────────┘
 ```
 
-これは、何らかの時点でBitcoinとEthereumが$100以上で取引されており、DOGEFIとBitcoin Diamondは$100以上で取引されたことがない（少なくともこの例に示されているデータでは）ことを意味します。
+これは、ある時点でビットコインとイーサリアムが$100以上で取引されたことを意味し、DOGEFIとビットコインダイヤモンドは$100以上で取引されたことがない（少なくともこの例のデータでは）ということです。
 
 ## INTERSECT DISTINCT {#intersect-distinct}
 
-前のクエリでは、$100以上で取引されたBitcoinとEthereumの保有が複数ありました。重複行を削除する（すでに知っていることを繰り返すだけなので）ことができると良いでしょう。結果から重複行を排除するために`INTERSECT`に`DISTINCT`を追加できます:
+前のクエリでは、$100以上で取引された複数のビットコインとイーサリアムの保有がありました。重複行を削除することができれば（それらは私たちがすでに知っていることを繰り返すだけですので）、便利かもしれません。重複行を結果から排除するために、`INTERSECT`に`DISTINCT`を追加できます：
 
 ```sql
 SELECT crypto_name FROM holdings
@@ -144,7 +144,7 @@ SELECT crypto_name FROM crypto_prices
 WHERE price > 100;
 ```
 
-結果:
+結果：
 
 ```response
 ┌─crypto_name─┐

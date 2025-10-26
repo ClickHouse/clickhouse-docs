@@ -5,13 +5,18 @@ slug: /integrations/apache-spark/spark-jdbc
 description: 'Introduction to Apache Spark with ClickHouse'
 keywords: ['clickhouse', 'Apache Spark', 'jdbc', 'migrating', 'data']
 title: 'Spark JDBC'
+doc_type: 'guide'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Spark JDBC
+
+<ClickHouseSupportedBadge/>
+
 JDBC is one of the most commonly used data sources in Spark.
 In this section, we will provide details on how to
 use the [ClickHouse official JDBC connector](/integrations/language-clients/java/jdbc) with Spark.

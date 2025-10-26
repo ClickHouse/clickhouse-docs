@@ -3,13 +3,13 @@
 'sidebar_position': 109
 'slug': '/sql-reference/aggregate-functions/reference/argmax'
 'title': 'argMax'
+'doc_type': 'reference'
 ---
 
 
 # argMax
 
-计算最大 `val` 值的 `arg` 值。如果存在多个行的 `val` 值相同且为最大，则返回哪个相关的 `arg` 是不确定的。
-这两个部分 `arg` 和 `max` 的行为类似于 [聚合函数](/sql-reference/aggregate-functions/index.md)，在处理过程中均会 [跳过 `Null`](/sql-reference/aggregate-functions/index.md#null-processing)，并在有可用的非 `Null` 值时返回非 `Null` 值。
+计算最大 `val` 值的 `arg` 值。如果有多行具有相等的最大 `val`，则返回的相关 `arg` 不具备确定性。两个部分 `arg` 和 `max` 都作为 [聚合函数](/sql-reference/aggregate-functions/index.md) 行为，它们在处理过程中都 [跳过 `Null`](/sql-reference/aggregate-functions/index.md#null-processing)，并在有可用的非 `Null` 值时返回非 `Null` 值。
 
 **语法**
 
@@ -24,7 +24,7 @@ argMax(arg, val)
 
 **返回值**
 
-- 与最大 `val` 值对应的 `arg` 值。
+- 与最大 `val` 值相对应的 `arg` 值。
 
 类型：与 `arg` 类型匹配。
 
@@ -66,7 +66,7 @@ ENGINE = Memory AS
 SELECT *
 FROM VALUES(('a', 1), ('b', 2), ('c', 2), (NULL, 3), (NULL, NULL), ('d', NULL));
 
-select * from test;
+SELECT * FROM test;
 ┌─a────┬────b─┐
 │ a    │    1 │
 │ b    │    2 │
@@ -107,6 +107,6 @@ SELECT argMax(a, tuple(b)) FROM test;
 └─────────────────────┘
 ```
 
-**参见**
+**另见**
 
-- [Tuple](/sql-reference/data-types/tuple.md)
+- [元组](/sql-reference/data-types/tuple.md)

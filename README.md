@@ -80,6 +80,10 @@ You can run a copy of this website locally within a few steps. Some folks find t
     # [INFO] Use `npm run serve` command to test your build locally.
     # ✨  Done in 105.96s.
     ```
+   
+> [!TIP]
+> If the build command is failing due to broken anchors, 
+> it is possible to ignore these temporarily by running `ON_BROKEN_ANCHORS=ignore yarn build` instead.
 
 1. Start the local web-server:
 
@@ -134,9 +138,9 @@ Please assign any pull request (PR) against an issue; this helps the docs team t
 
 Check out the GitHub docs for a refresher on [how to create a pull request](https://docs.github.com/en/desktop/working-with-your-remote-repository-on-github-or-github-enterprise/creating-an-issue-or-pull-request-from-github-desktop).
 
-### Style guidelines
+### Style and contribution guidelines
 
-For documentation style guidelines, see ["Style guide"](/contribute/style-guide.md). 
+For documentation style guidelines, see ["Style guide"](/contribute/style-guide.md).
 
 To check spelling and markdown is correct locally run:
 

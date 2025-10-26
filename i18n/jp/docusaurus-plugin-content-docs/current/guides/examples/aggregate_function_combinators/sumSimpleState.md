@@ -1,7 +1,7 @@
 ---
 'slug': '/examples/aggregate-function-combinators/sumSimpleState'
 'title': 'sumSimpleState'
-'description': 'sumSimpleStateコンビネータの使用例'
+'description': 'sumSimpleState コムビネーターの使用例'
 'keywords':
 - 'sum'
 - 'state'
@@ -10,25 +10,23 @@
 - 'examples'
 - 'sumSimpleState'
 'sidebar_label': 'sumSimpleState'
+'doc_type': 'reference'
 ---
-
-
-
 
 
 # sumSimpleState {#sumsimplestate}
 
 ## 説明 {#description}
 
-[`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) 組み合わせ子は、[`sum`](/sql-reference/aggregate-functions/reference/sum) 関数に適用され、すべての入力値の合計を返します。結果は[`SimpleAggregateFunction`](/sql-reference/data-types/simpleaggregatefunction)型で返されます。
+[`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) コンビネータは [`sum`](/sql-reference/aggregate-functions/reference/sum) 関数に適用でき、すべての入力値の合計を返します。結果は [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction) タイプで返されます。
 
 ## 使用例 {#example-usage}
 
-### 投票の追跡 {#tracking-post-votes}
+### 上昇票と下降票の追跡 {#tracking-post-votes}
 
-投稿に対する投票を追跡するテーブルを使用した実用的な例を見てみましょう。各投稿について、アップボート（賛成票）、ダウンボート（反対票）、および全体のスコアの累計を維持したいと考えています。合計を計算するために`SimpleAggregateFunction`型を使用することは、集計の全体の状態を保持する必要がないため、このユースケースに適しています。その結果、より迅速に処理でき、部分的な集約状態のマージを必要としません。
+投稿に対する票を追跡するテーブルを使用した実用例を見てみましょう。各投稿について、上昇票、下降票、および全体スコアの累計を維持したいと考えています。`SimpleAggregateFunction` タイプを使用した sum は、集計の全状態を保持するのではなく、累計のみを保存するため、このユースケースに適しています。その結果、処理が高速になり、部分的な集計状態のマージが不要になります。
 
-まず、原データ用のテーブルを作成します：
+まず、生データ用のテーブルを作成します:
 
 ```sql title="Query"
 CREATE TABLE raw_votes
@@ -40,7 +38,7 @@ ENGINE = MergeTree()
 ORDER BY post_id;
 ```
 
-次に、集計データを保存するターゲットテーブルを作成します：
+次に、集計データを保存するターゲットテーブルを作成します:
 
 ```sql
 CREATE TABLE vote_aggregates
@@ -54,24 +52,24 @@ ENGINE = AggregatingMergeTree()
 ORDER BY post_id;
 ```
 
-次に、`SimpleAggregateFunction`型のカラムを持つMaterialized Viewを作成します：
-
+その後、`SimpleAggregateFunction` タイプのカラムを持つマテリアライズドビューを作成します:
+       
 ```sql
 CREATE MATERIALIZED VIEW mv_vote_processor TO vote_aggregates
 AS
 SELECT
   post_id,
-  -- 合計状態の初期値（アップボートの場合は1、そうでなければ0）
+  -- Initial value for sum state (1 if upvote, 0 otherwise)
   toUInt64(vote_type = 'upvote') AS upvotes,
-  -- 合計状態の初期値（ダウンボートの場合は1、そうでなければ0）
+  -- Initial value for sum state (1 if downvote, 0 otherwise)
   toUInt64(vote_type = 'downvote') AS downvotes,
-  -- 合計状態の初期値（アップボートの場合は1、ダウンボートの場合は-1）
+  -- Initial value for sum state (1 for upvote, -1 for downvote)
   toInt64(vote_type) AS score
 FROM raw_votes;
 ```
 
-サンプルデータを挿入します：
-
+サンプルデータを挿入します:
+       
 ```sql
 INSERT INTO raw_votes VALUES
     (1, 'upvote'),
@@ -82,7 +80,7 @@ INSERT INTO raw_votes VALUES
     (3, 'downvote');
 ```
 
-`SimpleState` 組み合わせ子を使用して Materialized View にクエリを実行します：
+`SimpleState` コンビネータを使用してマテリアライズドビューにクエリを実行します:
 
 ```sql
 SELECT
@@ -90,7 +88,7 @@ SELECT
   sum(upvotes) AS total_upvotes,
   sum(downvotes) AS total_downvotes,
   sum(score) AS total_score
-FROM vote_aggregates -- ターゲットテーブルにクエリ
+FROM vote_aggregates -- Query the target table
 GROUP BY post_id
 ORDER BY post_id ASC;
 ```
@@ -103,7 +101,7 @@ ORDER BY post_id ASC;
 └─────────┴───────────────┴─────────────────┴─────────────┘
 ```
 
-## 関連情報 {#see-also}
+## 参照 {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
 - [`SimpleState combinator`](/sql-reference/aggregate-functions/combinators#-simplestate)
 - [`SimpleAggregateFunction type`](/sql-reference/data-types/simpleaggregatefunction)

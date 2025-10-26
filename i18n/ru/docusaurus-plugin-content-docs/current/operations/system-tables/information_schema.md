@@ -1,16 +1,16 @@
 ---
-description: 'Системная база данных, предоставляющая почти стандартизированный, не зависящий от СУБД взгляд на метаданные объектов базы данных.'
+slug: '/operations/system-tables/information_schema'
+description: 'Системная база данных, предоставляющая почти стандартизированный независимый'
+title: INFORMATION_SCHEMA
 keywords: ['системная база данных', 'information_schema']
-slug: /operations/system-tables/information_schema
-title: 'INFORMATION_SCHEMA'
+doc_type: reference
 ---
-
-`INFORMATION_SCHEMA` (или: `information_schema`) представляет собой системную базу данных, которая предоставляет (в некоторой степени) стандартизированный, [не зависящий от СУБД взгляд](https://en.wikipedia.org/wiki/Information_schema) на метаданные объектов базы данных. Представления в `INFORMATION_SCHEMA` обычно уступают обычным системным таблицам, но инструменты могут использовать их для получения основной информации в кросс-СУБД манере. Структура и содержание представлений в `INFORMATION_SCHEMA` предполагается развиваться обратно совместимым образом, т.е. добавляется только новый функционал, а существующий функционал не изменяется и не удаляется. С точки зрения внутренней реализации, представления в `INFORMATION_SCHEMA` обычно соотносятся с обычными системными таблицами, такими как [system.columns](../../operations/system-tables/columns.md), [system.databases](../../operations/system-tables/databases.md) и [system.tables](../../operations/system-tables/tables.md).
+`INFORMATION_SCHEMA` (или: `information_schema`) — это системная база данных, которая предоставляет (в некотором смысле) стандартизованный, [независимый от СУБД взгляд](https://en.wikipedia.org/wiki/Information_schema) на метаданные объектов базы данных. Представления в `INFORMATION_SCHEMA` обычно уступают обычным системным таблицам, но инструменты могут использовать их для получения основной информации в кросс-СУБД формате. Структура и содержание представлений в `INFORMATION_SCHEMA` должны развиваться обратно совместимым образом, то есть добавляется лишь новая функциональность, но существующая не изменяется и не удаляется. Что касается внутренней реализации, представления в `INFORMATION_SCHEMA` обычно сопоставляются с обычными системными таблицами, такими как [system.columns](../../operations/system-tables/columns.md), [system.databases](../../operations/system-tables/databases.md) и [system.tables](../../operations/system-tables/tables.md).
 
 ```sql
 SHOW TABLES FROM INFORMATION_SCHEMA;
 
--- или:
+-- or:
 SHOW TABLES FROM information_schema;
 ```
 
@@ -20,14 +20,14 @@ SHOW TABLES FROM information_schema;
 │ KEY_COLUMN_USAGE        │
 │ REFERENTIAL_CONSTRAINTS │
 │ SCHEMATA                │
-│ STATISTICS              │
+| STATISTICS              |
 │ TABLES                  │
 │ VIEWS                   │
 │ columns                 │
 │ key_column_usage        │
 │ referential_constraints │
 │ schemata                │
-│ statistics              │
+| statistics              |
 │ tables                  │
 │ views                   │
 └─────────────────────────┘
@@ -43,27 +43,27 @@ SHOW TABLES FROM information_schema;
 - [TABLES](#tables)
 - [VIEWS](#views)
 
-Для совместимости с другими базами данных предоставляются эквивалентные представления без учета регистра, например, `INFORMATION_SCHEMA.columns`. То же самое относится ко всем столбцам в этих представлениях - предоставляются как строчные (например, `table_name`), так и заглавные (`TABLE_NAME`) варианты.
+Представлены эквивалентные представления без учёта регистра, например, `INFORMATION_SCHEMA.columns`, по причинам совместимости с другими базами данных. То же самое касается всех колонок в этих представлениях — доступны как строчные (например, `table_name`), так и заглавные (`TABLE_NAME`) варианты.
 
 ## COLUMNS {#columns}
 
-Содержит столбцы, прочитанные из системной таблицы [system.columns](../../operations/system-tables/columns.md), а также столбцы, которые не поддерживаются в ClickHouse или не имеют смысла (всегда `NULL`), но должны быть по стандарту.
+Содержит колонки, считанные из системной таблицы [system.columns](../../operations/system-tables/columns.md), и колонки, которые не поддерживаются в ClickHouse или не имеют смысла (всегда `NULL`), но должны быть по стандарту.
 
-Столбцы:
+Колонки:
 
-- `table_catalog` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных, в которой расположена таблица.
-- `table_schema` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных, в которой расположена таблица.
+- `table_catalog` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных, в которой находится таблица.
+- `table_schema` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных, в которой находится таблица.
 - `table_name` ([String](../../sql-reference/data-types/string.md)) — Имя таблицы.
-- `column_name` ([String](../../sql-reference/data-types/string.md)) — Имя столбца.
-- `ordinal_position` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Позиция столбца в таблице, начиная с 1.
-- `column_default` ([String](../../sql-reference/data-types/string.md)) — Выражение для значения по умолчанию или пустая строка, если оно не определено.
-- `is_nullable` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Флаг, указывающий, является ли тип столбца `Nullable`.
-- `data_type` ([String](../../sql-reference/data-types/string.md)) — Тип столбца.
+- `column_name` ([String](../../sql-reference/data-types/string.md)) — Имя колонки.
+- `ordinal_position` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Позиция колонки в таблице, начиная с 1.
+- `column_default` ([String](../../sql-reference/data-types/string.md)) — Выражение для значения по умолчанию, или пустая строка, если она не определена.
+- `is_nullable` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Флаг, указывающий, является ли тип колонки `Nullable`.
+- `data_type` ([String](../../sql-reference/data-types/string.md)) — Тип колонки.
 - `character_maximum_length` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Максимальная длина в байтах для бинарных данных, символьных данных или текстовых данных и изображений. В ClickHouse имеет смысл только для типа данных `FixedString`. В противном случае возвращается значение `NULL`.
 - `character_octet_length` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Максимальная длина в байтах для бинарных данных, символьных данных или текстовых данных и изображений. В ClickHouse имеет смысл только для типа данных `FixedString`. В противном случае возвращается значение `NULL`.
-- `numeric_precision` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Точность приближенных числовых данных, точных числовых данных, целых данных или денежных данных. В ClickHouse это битовая ширина для целочисленных типов и десятичная точность для типов `Decimal`. В противном случае возвращается значение `NULL`.
-- `numeric_precision_radix` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Основание числовой системы, связанной с точностью приближенных числовых данных, точных числовых данных, целых данных или денежных данных. В ClickHouse это 2 для целочисленных типов и 10 для типов `Decimal`. В противном случае возвращается значение `NULL`.
-- `numeric_scale` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Масштаб приближенных числовых данных, точных числовых данных, целых данных или денежных данных. В ClickHouse имеет смысл только для типов `Decimal`. В противном случае возвращается значение `NULL`.
+- `numeric_precision` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Точность приблизительных числовых данных, точных числовых данных, целочисленных данных или денежных данных. В ClickHouse это битовая ширина для целочисленных типов и десятичная точность для типов `Decimal`. В противном случае возвращается значение `NULL`.
+- `numeric_precision_radix` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Основание числовой системы — это точность приблизительных числовых данных, точных числовых данных, целочисленных данных или денежных данных. В ClickHouse это 2 для целочисленных типов и 10 для типов `Decimal`. В противном случае возвращается значение `NULL`.
+- `numeric_scale` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Масштаб приблизительных числовых данных, точных числовых данных, целочисленных данных или денежных данных. В ClickHouse имеет смысл только для типов `Decimal`. В противном случае возвращается значение `NULL`.
 - `datetime_precision` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Десятичная точность типа данных `DateTime64`. Для других типов данных возвращается значение `NULL`.
 - `character_set_catalog` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`, не поддерживается.
 - `character_set_schema` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`, не поддерживается.
@@ -74,7 +74,7 @@ SHOW TABLES FROM information_schema;
 - `domain_catalog` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`, не поддерживается.
 - `domain_schema` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`, не поддерживается.
 - `domain_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`, не поддерживается.
-- `extra` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `STORED GENERATED` для столбцов типа `MATERIALIZED`, `VIRTUAL GENERATED` для столбцов типа `ALIAS`, `DEFAULT_GENERATED` для столбцов типа `DEFAULT` или `NULL`.
+- `extra` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `STORED GENERATED` для колонок типа `MATERIALIZED`, `VIRTUAL GENERATED` для колонок типа `ALIAS`, `DEFAULT_GENERATED` для колонок типа `DEFAULT`, или `NULL`.
 
 **Пример**
 
@@ -145,9 +145,9 @@ domain_name:              ᴺᵁᴸᴸ
 
 ## SCHEMATA {#schemata}
 
-Содержит столбцы, прочитанные из системной таблицы [system.databases](../../operations/system-tables/databases.md), а также столбцы, которые не поддерживаются в ClickHouse или не имеют смысла (всегда `NULL`), но должны быть по стандарту.
+Содержит колонки, считанные из системной таблицы [system.databases](../../operations/system-tables/databases.md), и колонки, которые не поддерживаются в ClickHouse или не имеют смысла (всегда `NULL`), но должны быть по стандарту.
 
-Столбцы:
+Колонки:
 
 - `catalog_name` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных.
 - `schema_name` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных.
@@ -170,7 +170,7 @@ SELECT catalog_name,
        default_character_set_name,
        sql_path
 FROM information_schema.schemata
-WHERE schema_name ilike 'information_schema' 
+WHERE schema_name ILIKE 'information_schema' 
 LIMIT 1 
 FORMAT Vertical;
 ```
@@ -191,24 +191,24 @@ sql_path:                      ᴺᵁᴸᴸ
 
 ## TABLES {#tables}
 
-Содержит столбцы, прочитанные из системной таблицы [system.tables](../../operations/system-tables/tables.md).
+Содержит колонки, считанные из системной таблицы [system.tables](../../operations/system-tables/tables.md).
 
-Столбцы:
+Колонки:
 
-- `table_catalog` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных, в которой расположена таблица.
-- `table_schema` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных, в которой расположена таблица.
+- `table_catalog` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных, в которой находится таблица.
+- `table_schema` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных, в которой находится таблица.
 - `table_name` ([String](../../sql-reference/data-types/string.md)) — Имя таблицы.
 - `table_type` ([String](../../sql-reference/data-types/string.md)) — Тип таблицы. Возможные значения:
-    - `BASE TABLE`
-    - `VIEW`
-    - `FOREIGN TABLE`
-    - `LOCAL TEMPORARY`
-    - `SYSTEM VIEW`
-- `table_rows` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Общее количество строк. NULL, если не может быть определено.
-- `data_length` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Размер данных на диске. NULL, если не может быть определено.
+  - `BASE TABLE`
+  - `VIEW`
+  - `FOREIGN TABLE`
+  - `LOCAL TEMPORARY`
+  - `SYSTEM VIEW`
+- `table_rows` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Общее количество строк. NULL, если не удалось определить.
+- `data_length` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Размер данных на диске. NULL, если не удалось определить.
 - `index_length` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Общий размер первичного ключа, вторичных индексов и всех меток.
-- `table_collation` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Стандартная сортировка таблицы. Всегда `utf8mb4_0900_ai_ci`.
-- `table_comment` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Комментарий, используемый при создании таблицы.
+- `table_collation` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Значение по умолчанию коллации таблицы. Всегда `utf8mb4_0900_ai_ci`.
+- `table_comment` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Комментарий, использованный при создании таблицы.
 
 **Пример**
 
@@ -243,19 +243,19 @@ table_comment:
 
 ## VIEWS {#views}
 
-Содержит столбцы, прочитанные из системной таблицы [system.tables](../../operations/system-tables/tables.md), когда используется движок таблицы [View](../../engines/table-engines/special/view.md).
+Содержит колонки, считанные из системной таблицы [system.tables](../../operations/system-tables/tables.md), когда используется движок таблицы [View](../../engines/table-engines/special/view.md).
 
-Столбцы:
+Колонки:
 
-- `table_catalog` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных, в которой расположена таблица.
-- `table_schema` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных, в которой расположена таблица.
+- `table_catalog` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных, в которой находится таблица.
+- `table_schema` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных, в которой находится таблица.
 - `table_name` ([String](../../sql-reference/data-types/string.md)) — Имя таблицы.
-- `view_definition` ([String](../../sql-reference/data-types/string.md)) — `SELECT` запрос для представления.
+- `view_definition` ([String](../../sql-reference/data-types/string.md)) — Запрос `SELECT` для представления.
 - `check_option` ([String](../../sql-reference/data-types/string.md)) — `NONE`, без проверки.
 - `is_updatable` ([Enum8](../../sql-reference/data-types/enum.md)) — `NO`, представление не обновляется.
-- `is_insertable_into` ([Enum8](../../sql-reference/data-types/enum.md)) — Показывает, является ли созданное представление [материализованным](/sql-reference/statements/create/view#materialized-view). Возможные значения:
-    - `NO` — Созданное представление не является материализованным.
-    - `YES` — Созданное представление является материализованным.
+- `is_insertable_into` ([Enum8](../../sql-reference/data-types/enum.md)) — Указывает, является ли созданное представление [материализованным](/sql-reference/statements/create/view#materialized-view). Возможные значения:
+  - `NO` — Созданное представление не является материализованным.
+  - `YES` — Созданное представление является материализованным.
 - `is_trigger_updatable` ([Enum8](../../sql-reference/data-types/enum.md)) — `NO`, триггер не обновляется.
 - `is_trigger_deletable` ([Enum8](../../sql-reference/data-types/enum.md)) — `NO`, триггер не удаляется.
 - `is_trigger_insertable_into` ([Enum8](../../sql-reference/data-types/enum.md)) — `NO`, данные не вставляются в триггер.
@@ -302,17 +302,17 @@ is_trigger_insertable_into: NO
 
 ## KEY_COLUMN_USAGE {#key_column_usage}
 
-Содержит столбцы из системной таблицы [system.tables](../../operations/system-tables/tables.md), которые ограничены ограничениями.
+Содержит колонки из системной таблицы [system.tables](../../operations/system-tables/tables.md), которые ограничены ограничениями.
 
-Столбцы:
+Колонки:
 
 - `constraint_catalog` ([String](../../sql-reference/data-types/string.md)) — В настоящее время не используется. Всегда `def`.
-- `constraint_schema` ([String](../../sql-reference/data-types/string.md)) — Имя схемы (базы данных), к которой относится ограничение.
+- `constraint_schema` ([String](../../sql-reference/data-types/string.md)) — Имя схемы (базы данных), к которой принадлежит ограничение.
 - `constraint_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Имя ограничения.
 - `table_catalog` ([String](../../sql-reference/data-types/string.md)) — В настоящее время не используется. Всегда `def`.
 - `table_schema` ([String](../../sql-reference/data-types/string.md)) — Имя схемы (базы данных), к которой принадлежит таблица.
-- `table_name` ([String](../../sql-reference/data-types/string.md)) — Имя таблицы, у которой есть ограничение.
-- `column_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Имя столбца, у которого есть ограничение.
+- `table_name` ([String](../../sql-reference/data-types/string.md)) — Имя таблицы, имеющей ограничение.
+- `column_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Имя колонки, имеющей ограничение.
 - `ordinal_position` ([UInt32](../../sql-reference/data-types/int-uint.md)) — В настоящее время не используется. Всегда `1`.
 - `position_in_unique_constraint` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt32](../../sql-reference/data-types/int-uint.md))) — В настоящее время не используется. Всегда `NULL`.
 - `referenced_table_schema` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — В настоящее время не используется. Всегда NULL.
@@ -361,9 +361,9 @@ referenced_column_name:        ᴺᵁᴸᴸ
 
 ## REFERENTIAL_CONSTRAINTS {#referential_constraints}
 
-Содержит информацию о внешних ключах. В настоящее время возвращает пустой результат (нет строк), что достаточно для обеспечения совместимости с сторонними инструментами, такими как Tableau Online.
+Содержит информацию о внешних ключах. В настоящее время возвращает пустой результат (нет строк), что достаточно для обеспечения совместимости с инструментами третьих сторон, такими как Tableau Online.
 
-Столбцы:
+Колонки:
 
 - `constraint_catalog` ([String](../../sql-reference/data-types/string.md)) — В настоящее время не используется.
 - `constraint_schema` ([String](../../sql-reference/data-types/string.md)) — В настоящее время не используется.
@@ -379,9 +379,9 @@ referenced_column_name:        ᴺᵁᴸᴸ
 
 ## STATISTICS {#statistics}
 
-Предоставляет информацию о индексах таблиц. В настоящее время возвращает пустой результат (нет строк), что достаточно для обеспечения совместимости с сторонними инструментами, такими как Tableau Online.
+Предоставляет информацию об индексах таблицы. В настоящее время возвращает пустой результат (нет строк), что достаточно для обеспечения совместимости с инструментами третьих сторон, такими как Tableau Online.
 
-Столбцы:
+Колонки:
 
 - `table_catalog` ([String](../../sql-reference/data-types/string.md)) — В настоящее время не используется.
 - `table_schema` ([String](../../sql-reference/data-types/string.md)) — В настоящее время не используется.

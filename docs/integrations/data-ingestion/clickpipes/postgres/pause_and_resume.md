@@ -1,9 +1,10 @@
 ---
 title: 'Pausing and Resuming a Postgres ClickPipe'
 description: 'Pausing and Resuming a Postgres ClickPipe'
-sidebar_label: 'Pause Table'
+sidebar_label: 'Pause table'
 slug: /integrations/clickpipes/postgres/pause_and_resume
-keywords: ['clickpipes postgres', 'pause clickpipe', 'resume clickpipe', 'change data capture', 'replication slots']
+doc_type: 'guide'
+keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 import Image from '@theme/IdealImage';

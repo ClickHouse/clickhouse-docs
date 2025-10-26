@@ -1,23 +1,22 @@
 ---
-description: 'Системная таблица, содержащая историю значений ошибок из таблицы `system.errors`,
-  периодически сбрасываемых на диск.'
+slug: '/operations/system-tables/system-error-log'
+description: 'Системная таблица, содержащая историю значений ошибок из таблицы `system.errors`,'
+title: system.error_log
 keywords: ['системная таблица', 'журнал ошибок']
-slug: /operations/system-tables/system-error-log
-title: 'system.error_log'
+doc_type: reference
 ---
-
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
-Содержит историю значений ошибок из таблицы `system.errors`, периодически сбрасываемых на диск.
+Содержит историю значений ошибок из таблицы `system.errors`, периодически сбрасываемую на диск.
 
-Колонки:
+Столбцы:
 - `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, выполняющего запрос.
 - `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата события.
 - `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время события.
 - `code` ([Int32](../../sql-reference/data-types/int-uint.md)) — Номер кода ошибки.
-- `error` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) - Название ошибки.
+- `error` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) - Имя ошибки.
 - `value` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Количество раз, когда произошла эта ошибка.
 - `remote` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Удаленное исключение (т.е. полученное во время одного из распределенных запросов).
 
@@ -39,8 +38,8 @@ value:      2
 remote:     0
 ```
 
-**См. также**
+**Смотрите также**
 
-- [настройка error_log](../../operations/server-configuration-parameters/settings.md#error_log) — Включение и отключение настройки.
+- [error_log setting](../../operations/server-configuration-parameters/settings.md#error_log) — Включение и отключение настройки.
 - [system.errors](../../operations/system-tables/errors.md) — Содержит коды ошибок с количеством раз, когда они были вызваны.
-- [Мониторинг](../../operations/monitoring.md) — Основные концепции мониторинга ClickHouse.
+- [Monitoring](../../operations/monitoring.md) — Основные концепции мониторинга ClickHouse.

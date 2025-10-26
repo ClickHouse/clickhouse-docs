@@ -4,6 +4,7 @@ sidebar_position: 1
 title: 'Basics'
 description: 'Native protocol basics'
 keywords: ['native protocol', 'TCP protocol', 'protocol basics', 'binary protocol', 'client-server communication']
+doc_type: 'guide'
 ---
 
 # Basics

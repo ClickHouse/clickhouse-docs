@@ -4,6 +4,7 @@ toc_hidden: true
 toc_priority: 10
 slug: /faq/general/dbms-naming
 description: 'Learn about What does "ClickHouse" mean?'
+doc_type: 'reference'
 keywords: ['ClickHouse name', 'clickstream', 'data warehouse', 'database naming', 'ClickHouse history']
 ---
 

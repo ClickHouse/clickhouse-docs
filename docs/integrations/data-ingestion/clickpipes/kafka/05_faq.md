@@ -1,10 +1,11 @@
 ---
 sidebar_label: 'FAQ'
-description: 'Frequently asked questions about Kafka ClickPipes'
+description: 'Frequently asked questions about ClickPipes for Kafka'
 slug: /integrations/clickpipes/kafka/faq
 sidebar_position: 1
 title: 'Kafka ClickPipes FAQ'
-keywords: ['kafka faq', 'clickpipes', 'upstash', 'azure event hubs', 'privatelink']
+doc_type: 'guide'
+keywords: ['kafka faq', 'clickpipes', 'upstash', 'azure event hubs', 'private link']
 ---
 
 ## Kafka ClickPipes FAQ {#faq}
@@ -24,14 +25,14 @@ ClickPipes uses a dedicated architecture running the Kafka Consumer API to read 
 
 The Kafka Table engine is a ClickHouse core capability that implements a "pull model" where the ClickHouse server itself connects to Kafka, pulls events then writes them locally.
 
-ClickPipes is a separate cloud service that runs independently of the ClickHouse Service, it connects to Kafka (or other data sources) and pushes events to an associated ClickHouse Cloud service. This decoupled architecture allows for superior operational flexibility, clear separation of concerns, scalable ingestion, graceful failure management, extensibility and more.
+ClickPipes is a separate cloud service that runs independently of the ClickHouse service. It connects to Kafka (or other data sources) and pushes events to an associated ClickHouse Cloud service. This decoupled architecture allows for superior operational flexibility, clear separation of concerns, scalable ingestion, graceful failure management, extensibility, and more.
 </details>
 
 <details>
 
 <summary>What are the requirements for using ClickPipes for Kafka?</summary>
 
-In order to use ClickPipes for Kafka, you will need a running Kafka broker and a ClickHouse Cloud service with ClickPipes enabled. You will also need to ensure that ClickHouse Cloud can access your Kafka broker. This can be achieved by allowing remote connection on the Kafka side, whitelisting [ClickHouse Cloud Egress IP addresses](/manage/security/cloud-endpoints-api) in your Kafka setup. Alternatively, you can use [AWS PrivateLink](/integrations/clickpipes/aws-privatelink) to connect ClickPipes for Kafka to your Kafka brokers.
+In order to use ClickPipes for Kafka, you will need a running Kafka broker and a ClickHouse Cloud service with ClickPipes enabled. You will also need to ensure that ClickHouse Cloud can access your Kafka broker. This can be achieved by allowing remote connection on the Kafka side, whitelisting [ClickHouse Cloud Egress IP addresses](/manage/data-sources/cloud-endpoints-api) in your Kafka setup. Alternatively, you can use [AWS PrivateLink](/integrations/clickpipes/aws-privatelink) to connect ClickPipes for Kafka to your Kafka brokers.
 </details>
 
 <details>
@@ -64,77 +65,54 @@ Horizontal scaling adds more replicas to increase throughput, while vertical sca
 This can be configured during ClickPipe creation, or at any other point under **Settings** -> **Advanced Settings** -> **Scaling**.
 </details>
 
-### Upstash {#upstash}
-
-<details>
-
-<summary>Does ClickPipes support Upstash?</summary>
-
-Yes. The Upstash Kafka product entered into a deprecation period on 11th September 2024 for 6 months. Existing customers can continue to use ClickPipes with their existing Upstash Kafka brokers using the generic Kafka tile on the ClickPipes user interface. Existing Upstash Kafka ClickPipes are unaffected before the deprecation notice. When the the deprecation period is up the ClickPipe will stop functioning.
-</details>
-
-<details>
-
-<summary>Does ClickPipes support Upstash schema registry?</summary>
-
-No. ClickPipes is not Upstash Kafka schema registry compatible.
-</details>
-
-<details>
-
-<summary>Does ClickPipes support the Upstash QStash Workflow?</summary>
-
-No. Unless a Kafka compatible surface is introduced in QStash Workflow it will not work with Kafka ClickPipes.
-</details>
-
-### Azure EventHubs {#azure-eventhubs}
+### Azure Event Hubs {#azure-eventhubs}
 
 <details>
 
 <summary>Does the Azure Event Hubs ClickPipe work without the Kafka surface?</summary>
 
-No. ClickPipes requires the Azure Event Hubs to have the Kafka surface enabled. The Kafka protocol is supported for their Standard, Premium and Dedicated SKU only pricing tiers.
+No. ClickPipes requires the Event Hubs namespace to have the Kafka surface enabled. This is only available in tiers above **basic**. See the [Azure Event Hubs documentation](https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-quickstart-kafka-enabled-event-hubs?tabs=passwordless#create-an-azure-event-hubs-namespace) for more information.
 </details>
 
 <details>
 
-<summary>Does Azure schema registry work with ClickPipes</summary>
+<summary>Does Azure Schema Registry work with ClickPipes?</summary>
 
-No. ClickPipes is not currently Event Hubs Schema Registry compatible.
+No. ClickPipes only supports schema registries that are API-compatible with the Confluent Schema Registry, which is not the case for Azure Schema Registry. If you require support for this schema registry, [reach out to our team](https://clickhouse.com/company/contact?loc=clickpipes).
 </details>
 
 <details>
 
 <summary>What permissions does my policy need to consume from Azure Event Hubs?</summary>
 
-To list topics and consume event, the shared access policy that is given to ClickPipes will at minimum require a 'Listen' claim.
+To list topics and consume events, the shared access policy that is given to ClickPipes requires, at minimum, a 'Listen' claim.
 </details>
 
 <details>
 
 <summary>Why is my Event Hubs not returning any data?</summary>
 
-If your ClickHouse instance is in a different region or continent from your Event Hubs deployment, you may experience timeouts when onboarding your ClickPipes, and higher-latency when consuming data from the Event Hub. It is considered a best practice to locate your ClickHouse Cloud deployment and Azure Event Hubs deployment in cloud regions located close to each other to avoid adverse performance.
+If your ClickHouse instance is in a different region or continent from your Event Hubs deployment, you may experience timeouts when onboarding your ClickPipes, and higher-latency when consuming data from the Event Hub. We recommend deploying ClickHouse Cloud and Azure Event Hubs in the same cloud region, or regions located close to each other, to avoid performance overhead.
 </details>
 
 <details>
 
 <summary>Should I include the port number for Azure Event Hubs?</summary>
 
-Yes. ClickPipes expects you to include your port number for the Kafka surface, which should be `:9093`.
+Yes. ClickPipes expects you to include the port number for the Kafka surface, which should be `:9093`.
 </details>
 
 <details>
 
-<summary>Are the ClickPipes IPs still relevant for Azure Event Hubs?</summary>
+<summary>Are ClickPipes IPs still relevant for Azure Event Hubs?</summary>
 
-Yes. If you restrict traffic to your Event Hubs instance please add the [documented static NAT IPs](../
-/index.md#list-of-static-ips).
+Yes. To restrict traffic to your Event Hubs instance, please add the [documented static NAT IPs](../
+/index.md#list-of-static-ips) to .
 
 </details>
 
 <details>
 <summary>Is the connection string for the Event Hub, or is it for the Event Hub namespace?</summary>
 
-Both will work, however, we recommend using a shared access policy at the namespace level to retrieve samples from multiple Event Hubs.
+Both work. We strongly recommend using a shared access policy at the **namespace level** to retrieve samples from multiple Event Hubs.
 </details>

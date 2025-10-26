@@ -3,9 +3,10 @@ slug: /use-cases/observability/clickstack/ingesting-data/otel-collector
 pagination_prev: null
 pagination_next: null
 description: 'OpenTelemetry collector for ClickStack - The ClickHouse Observability Stack'
-sidebar_label: 'OpenTelemetry Collector'
+sidebar_label: 'OpenTelemetry collector'
 title: 'ClickStack OpenTelemetry Collector'
-keywords: [clickstack, observability, opentelemetry, otel-collector, data-ingestion, gateway, agent, processing, filtering, batching, kafka, scaling, json-support, clickhouse-exporter]
+doc_type: 'guide'
+keywords: ['ClickStack', 'OpenTelemetry collector', 'ClickHouse observability', 'OTel collector configuration', 'OpenTelemetry ClickHouse']
 ---
 
 import Image from '@theme/IdealImage';
@@ -162,8 +163,7 @@ The following configuration shows collection of this [unstructured log file](htt
 
 Note the use of operators to extract structure from the log lines (`regex_parser`) and filter events, along with a processor to batch events and limit memory usage.
 
-```yaml
-# config-unstructured-logs-with-processor.yaml
+```yaml file=code_snippets/ClickStack/config-unstructured-logs-with-processor.yaml
 receivers:
   filelog:
     include:
@@ -191,7 +191,7 @@ exporters:
     headers:
       authorization: <YOUR_INGESTION_API_KEY>
     compression: gzip
- 
+
   # gRPC setup (alternative)
   otlp/hdx:
     endpoint: 'localhost:4317'
@@ -207,6 +207,7 @@ service:
       receivers: [filelog]
       processors: [batch]
       exporters: [otlphttp/hdx]
+
 ```
 
 Note the need to include an [authorization header containing your ingestion API key](#securing-the-collector) in any OTLP communication.

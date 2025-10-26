@@ -1,12 +1,13 @@
 ---
 'alias': []
-'description': 'PrettySpaceNoEscapes フォーマットに関するドキュメント'
+'description': 'PrettySpaceNoEscapesフォーマットのDocumentation'
 'input_format': false
 'keywords':
 - 'PrettySpaceNoEscapes'
 'output_format': true
 'slug': '/interfaces/formats/PrettySpaceNoEscapes'
 'title': 'PrettySpaceNoEscapes'
+'doc_type': 'reference'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
@@ -17,8 +18,8 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 ## 説明 {#description}
 
-[`PrettySpace`](./PrettySpace.md) 形式とは異なり、[ANSIエスケープシーケンス](http://en.wikipedia.org/wiki/ANSI_escape_code) は使用されません。 
-これは、この形式をブラウザで表示するため、および 'watch' コマンドラインユーティリティを使用するために必要です。
+[`PrettySpace`](./PrettySpace.md) 形式とは異なり、[ANSIエスケープシーケンス](http://en.wikipedia.org/wiki/ANSI_escape_code)は使用されません。 
+これは、ブラウザでこの形式を表示するために必要であり、また 'watch' コマンドラインユーティリティを使用するためにも必要です。
 
 ## 使用例 {#example-usage}
 

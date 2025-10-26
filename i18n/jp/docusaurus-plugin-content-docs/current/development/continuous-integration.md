@@ -1,21 +1,23 @@
 ---
 'description': 'ClickHouseの継続的インテグレーションシステムの概要'
-'sidebar_label': '継続的インテグレーション（CI）'
+'sidebar_label': '継続的インテグレーション (CI)'
 'sidebar_position': 55
 'slug': '/development/continuous-integration'
-'title': '継続的インテグレーション（CI）'
+'title': '継続的インテグレーション (CI)'
+'doc_type': 'reference'
 ---
+
 
 # 継続的インテグレーション (CI)
 
-プルリクエストを送信すると、ClickHouse の [継続的インテグレーション (CI) システム](tests.md#test-automation) によってコードの自動チェックが実行されます。
-これは、リポジトリのメンテナがあなたのコードを確認し、プルリクエストに `can be tested` ラベルを追加した後に行われます。
-チェックの結果は、[GitHub チェックのドキュメント](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-status-checks) に記載されているように、GitHub プルリクエストページにリストされます。
-チェックが失敗した場合は、それを修正する必要があるかもしれません。
-このページでは、遭遇する可能性のあるチェックの概要と、それを修正するためにできることについて説明します。
+プルリクエストを送信すると、ClickHouseの [継続的インテグレーション (CI) システム](tests.md#test-automation) による自動チェックがあなたのコードに対して実行されます。
+これは、リポジトリのメンテナ（ClickHouseチームの誰か）があなたのコードを確認し、プルリクエストに `can be tested` ラベルを追加した後に行われます。
+チェックの結果は、[GitHubチェックのドキュメント](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-status-checks)に記載されているように、GitHubのプルリクエストページに表示されます。
+チェックが失敗した場合は、修正する必要があります。
+このページでは、遭遇する可能性のあるチェックの概要と、それを修正するためにできることを示します。
 
 チェックの失敗があなたの変更に関連していないように見える場合、それは一時的な失敗やインフラストラクチャの問題である可能性があります。
-CI チェックを再起動するためには、プルリクエストに空のコミットをプッシュしてください：
+CIチェックを再起動するために、プルリクエストに空のコミットをプッシュします：
 
 ```shell
 git reset
@@ -23,158 +25,177 @@ git commit --allow-empty
 git push
 ```
 
-何をすべきか分からない場合は、メンテナに助けを求めてください。
+何をすべきかわからない場合は、メンテナに助けを求めてください。
 
 ## マスターへのマージ {#merge-with-master}
 
-PRがマスターにマージできるかどうかを確認します。
+PRがマスターにマージできることを確認します。
 できない場合は、`Cannot fetch mergecommit` というメッセージで失敗します。
-このチェックを修正するには、[GitHub のドキュメント](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/resolving-a-merge-conflict-on-github)に記載されているように、競合を解決するか、`master` ブランチをプルリクエストブランチにマージします。
+このチェックを修正するには、[GitHubのドキュメント](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/resolving-a-merge-conflict-on-github)に記載されているようにコンフリクトを解決するか、gitを使用して `master` ブランチをプルリクエストブランチにマージします。
 
 ## ドキュメントチェック {#docs-check}
 
-ClickHouse ドキュメントサイトのビルドを試みます。
-ドキュメントに何か変更があった場合、失敗する可能性があります。
-最も可能性の高い理由は、ドキュメント内のいくつかのクロスリンクが正しくないことです。
-チェックレポートに行き、`ERROR` および `WARNING` メッセージを探してください。
+ClickHouseのドキュメントウェブサイトをビルドしようとします。
+ドキュメントに何かを変更した場合、失敗することがあります。
+最も考えられる理由は、ドキュメント内のいくつかの相互リンクが間違っていることです。
+チェックレポートに移動し、`ERROR` および `WARNING` メッセージを探してください。
 
 ## 説明チェック {#description-check}
 
-プルリクエストの説明が [PULL_REQUEST_TEMPLATE.md](https://github.com/ClickHouse/ClickHouse/blob/master/.github/PULL_REQUEST_TEMPLATE.md) テンプレートに従っているかどうかを確認します。
-変更に対して変更履歴のカテゴリを指定する必要があります (例えば、バグ修正)、および [CHANGELOG.md](../whats-new/changelog/index.md) に変更を説明するユーザー向けのメッセージを書く必要があります。
+プルリクエストの説明が [PULL_REQUEST_TEMPLATE.md](https://github.com/ClickHouse/ClickHouse/blob/master/.github/PULL_REQUEST_TEMPLATE.md) テンプレートに準拠していることを確認します。
+変更のためのチェンジログカテゴリを指定する必要があり（例：バグ修正）、[CHANGELOG.md](../whats-new/changelog/index.md) の変更を説明するユーザーが読みやすいメッセージを書く必要があります。
 
-## DockerHub へのプッシュ {#push-to-dockerhub}
+## DockerHubへのプッシュ {#push-to-dockerhub}
 
-ビルドとテストに使用する docker イメージをビルドし、それを DockerHub にプッシュします。
+ビルドおよびテストに使用されるDockerイメージをビルドし、それをDockerHubにプッシュします。
 
-## マーカー チェック {#marker-check}
+## マーカーチェック {#marker-check}
 
-このチェックは、CI システムがプルリクエストの処理を開始したことを意味します。
-「pending」ステータスは、すべてのチェックがまだ開始されていないことを示します。
-すべてのチェックが開始されると、ステータスが「success」に変更されます。
+このチェックは、CIシステムがプルリクエストの処理を開始したことを示します。
+'pending' ステータスの場合、すべてのチェックがまだ開始されていないことを意味します。
+すべてのチェックが開始されると、ステータスが 'success' に変更されます。
 
-## スタイル チェック {#style-check}
+## スタイルチェック {#style-check}
 
 コードベースに対してさまざまなスタイルチェックを実行します。
 
-スタイルチェックジョブの基本チェック：
+スタイルチェックジョブの基本的なチェック：
 
 ##### cpp {#cpp}
-[`ci/jobs/scripts/check_style/check_cpp.sh`](https://github.com/ClickHouse/ClickHouse/blob/master/ci/jobs/scripts/check_style/check_cpp.sh) スクリプトを使用して、単純な正規表現ベースのコードスタイルチェックを行います (このスクリプトはローカルでも実行できます)。  
+[`ci/jobs/scripts/check_style/check_cpp.sh`](https://github.com/ClickHouse/ClickHouse/blob/master/ci/jobs/scripts/check_style/check_cpp.sh) スクリプトを使用して、単純な正規表現ベースのコードスタイルチェックを実行します（ローカルでも実行可能です）。  
 失敗した場合は、[コードスタイルガイド](style.md)に従ってスタイルの問題を修正してください。
 
 ##### codespell, aspell {#codespell}
-文法の間違いやタイポをチェックします。
+文法ミスやタイプミスをチェックします。
 
 ##### mypy {#mypy}
-Python コードの静的型チェックを実行します。
+Pythonコードに対して静的型チェックを実行します。
 
-### スタイル チェック ジョブをローカルで実行する {#running-style-check-locally}
+### スタイルチェックジョブをローカルで実行 {#running-style-check-locally}
 
-_Style Check_ ジョブ全体を以下のコマンドで Docker コンテナ内でローカルに実行できます：
+_スタイルチェック_ ジョブ全体をDockerコンテナでローカルに実行できます：
 
 ```sh
 python -m ci.praktika run "Style check"
 ```
 
-特定のチェック (例: _cpp_ チェック) を実行するには：
+特定のチェック（例：_cpp_ チェック）を実行するには：
 ```sh
 python -m ci.praktika run "Style check" --test cpp
 ```
 
-これらのコマンドは `clickhouse/style-test` Docker イメージをプルし、コンテナ化された環境内でジョブを実行します。
-Python 3 と Docker 以外の依存関係は必要ありません。
+これらのコマンドは `clickhouse/style-test` Dockerイメージをプルし、コンテナ化された環境でジョブを実行します。
+Python 3とDockerを除いて、他に依存関係は必要ありません。
 
 ## ファストテスト {#fast-test}
 
-通常、これは PR のために最初に実行されるチェックです。
-ClickHouse をビルドし、ほとんどの [ステートレスな機能テスト](tests.md#functional-tests) を実行し、いくつかを省略します。
-失敗した場合、それが修正されるまで追加のチェックは開始されません。
-どのテストが失敗したかを報告書で確認し、[こちら](https://github.com/ClickHouse/ClickHouse/tree/master/docker/test/performance-comparison#how-to-read-the-report) の説明に従ってローカルで失敗を再現してください。
+通常、これはPRのために最初に実行されるチェックです。
+ClickHouseをビルドし、いくつかを省略しながらほとんどの [ステートレス機能テスト](tests.md#functional-tests) を実行します。
+これが失敗すると、修正されるまでさらなるチェックは開始されません。
+どのテストが失敗しているかを確認するためにレポートを見て、[こちら](/development/tests#running-a-test-locally) に記載されているようにローカルで失敗を再現します。
 
-#### ローカルでファストテストを実行する： {#running-fast-test-locally}
+#### ローカルでファストテストを実行する {#running-fast-test-locally}
 
 ```sh
 python -m ci.praktika run "Fast test" [--test some_test_name]
 ```
 
-これらのコマンドは `clickhouse/fast-test` Docker イメージをプルし、コンテナ化された環境内でジョブを実行します。
-Python 3 と Docker 以外の依存関係は必要ありません。
+これらのコマンドは `clickhouse/fast-test` Dockerイメージをプルし、コンテナ化された環境でジョブを実行します。
+Python 3とDockerを除いて、他に依存関係は必要ありません。
 
-## ビルド チェック {#build-check}
+## ビルドチェック {#build-check}
 
-さまざまな構成で ClickHouse をビルドし、次のステップで使用します。
-失敗したビルドを修正する必要があります。
-ビルドログにはエラーを修正するための十分な情報が含まれていることがよくありますが、失敗をローカルで再現する必要があるかもしれません。
-`cmake` オプションはビルドログに見つけることができ、`cmake` で `grep` します。
-これらのオプションを使用して、[一般的なビルドプロセス](../development/build.md)に従ってください。
+さまざまな構成でClickHouseをビルドし、次のステップで使用します。
 
-### レポート詳細 {#report-details}
+### ローカルでビルドを実行 {#running-builds-locally}
 
-- **コンパイラ**: `clang-19`、ターゲットプラットフォームの名前をオプションとして指定できます
-- **ビルドタイプ**: `Debug` または `RelWithDebInfo` (cmake)。
-- **サニタイザー**: `none` (サニタイザーなし)、`address` (ASan)、`memory` (MSan)、`undefined` (UBSan)、または `thread` (TSan)。
-- **ステータス**: `success` または `fail`
-- **ビルドログ**: ビルドおよびファイルコピーのログへのリンク。ビルドに失敗した場合に役立ちます。
-- **ビルド時間**。
-- **アーティファクト**: ビルド結果ファイル (`XXX` はサーバーバージョン、例: `20.8.1.4344`)。
-  - `clickhouse-client_XXX_amd64.deb`
-  - `clickhouse-common-static-dbg_XXX[+asan, +msan, +ubsan, +tsan]_amd64.deb`
-  - `clickhouse-common-staticXXX_amd64.deb`
-  - `clickhouse-server_XXX_amd64.deb`
-  - `clickhouse`: メインビルドバイナリ。
-  - `clickhouse-odbc-bridge`
-  - `unit_tests_dbms`: ClickHouse ユニットテストを持つ GoogleTest バイナリ。
-  - `performance.tar.zst`: パフォーマンステスト用の特別なパッケージ。
+CIに似た環境でローカルにビルドを実行するには：
 
-
-## 特別ビルドチェック {#special-build-check}
-静的分析およびコードスタイルチェックを `clang-tidy` を使用して実行します。レポートは [ビルドチェック](#build-check) に類似しています。ビルドログで見つかったエラーを修正してください。
-
-#### ローカルで clang-tidy を実行する： {#running-clang-tidy-locally}
-
-Docker で clang-tidy ビルドを実行する便利な `packager` スクリプトがあります。
-```sh
-mkdir build_tidy
-./docker/packager/packager --output-dir=./build_tidy --package-type=binary --compiler=clang-19 --debug-build --clang-tidy
+```bash
+python -m ci.praktika run "<BUILD_JOB_NAME>"
 ```
 
-## 機能的ステートレス テスト {#functional-stateless-tests}
-さまざまな構成でビルドされた ClickHouse バイナリのための [ステートレスな機能テスト](tests.md#functional-tests) を実行します -- リリース、デバッグ、サニタイザー付きなど。
-どのテストが失敗したかを報告書で確認し、[こちら](https://github.com/ClickHouse/ClickHouse/tree/master/docker/test/performance-comparison#how-to-read-the-report) の説明に従ってローカルで失敗を再現してください。
-正しいビルド構成を使用して再現する必要があります。アドレスサニタイザーでは失敗するテストも、デバッグでは合格する可能性があります。
-[CI ビルドチェックページ](/install/advanced) からバイナリをダウンロードするか、ローカルでビルドしてください。
+Python 3とDockerを除いて、他に依存関係は必要ありません。
 
-## 機能的ステートフル テスト {#functional-stateful-tests}
+#### 利用可能なビルドジョブ {#available-build-jobs}
 
-[状態を持つ機能テスト](tests.md#functional-tests)を実行します。
-それらは機能的ステートレス テストと同じ方法で扱います。
-違いは、`hits` および `visits` テーブルが [clickstream データセット](../getting-started/example-datasets/metrica.md)から必要であることです。
+ビルドジョブ名は、CIレポートに表示されるものと正確に一致します：
+
+**AMD64 ビルド:**
+- `Build (amd_debug)` - シンボル付きデバッグビルド
+- `Build (amd_release)` - 最適化されたリリースビルド
+- `Build (amd_asan)` - アドレスサニタイザー付きビルド
+- `Build (amd_tsan)` - スレッドサニタイザー付きビルド
+- `Build (amd_msan)` - メモリサニタイザー付きビルド
+- `Build (amd_ubsan)` - 未定義の動作サニタイザー付きビルド
+- `Build (amd_binary)` - Thin LTOなしのクイックリリースビルド
+- `Build (amd_compat)` - 古いシステム向けの互換性ビルド
+- `Build (amd_musl)` - musl libcを使用したビルド
+- `Build (amd_darwin)` - macOSビルド
+- `Build (amd_freebsd)` - FreeBSDビルド
+
+**ARM64 ビルド:**
+- `Build (arm_release)` - ARM64最適化されたリリースビルド
+- `Build (arm_asan)` - ARM64アドレスサニタイザー付きビルド
+- `Build (arm_coverage)` - カバレッジ計測付きのARM64ビルド
+- `Build (arm_binary)` - Thin LTOなしのARM64クイックリリースビルド
+- `Build (arm_darwin)` - macOS ARM64ビルド
+- `Build (arm_v80compat)` - ARMv8.0互換ビルド
+
+**その他のアーキテクチャ:**
+- `Build (ppc64le)` - PowerPC 64ビットリトルエンディアン
+- `Build (riscv64)` - RISC-V 64ビット
+- `Build (s390x)` - IBM System/390 64ビット
+- `Build (loongarch64)` - LoongArch 64ビット
+
+ジョブが成功すると、ビルド結果は `<repo_root>/ci/tmp/build` ディレクトリに保存されます。
+
+**注意:** 「その他のアーキテクチャ」カテゴリに含まれないビルド（クロスコンパイルを使用するもの）では、ローカルマシンのアーキテクチャがビルドタイプと一致している必要があります。
+
+#### 例 {#example-run-local}
+
+ローカルデバッグビルドを実行するには：
+
+```bash
+python -m ci.praktika run "Build (amd_debug)"
+```
+
+上記の方法がうまくいかない場合は、ビルドログからcmakeオプションを使用し、[一般的なビルドプロセス](../development/build.md)に従ってください。
+## ステートレス機能テスト {#functional-stateless-tests}
+
+さまざまな構成でビルドされたClickHouseバイナリのための [ステートレス機能テスト](tests.md#functional-tests) を実行します。
+レポートを見て、どのテストが失敗しているかを確認し、[こちら](/development/tests#functional-tests) に記載されているようにローカルで失敗を再現します。
+正しいビルド構成を使用して再現する必要があることに注意してください。テストはアドレスサニタイザーの下で失敗する可能性がありますが、デバッグでは通過するかもしれません。
+[CIビルドチェックページ](/install/advanced) からバイナリをダウンロードするか、ローカルでビルドしてください。
 
 ## 統合テスト {#integration-tests}
-[integration tests](tests.md#integration-tests)を実行します。
+
+[統合テスト](tests.md#integration-tests)を実行します。
 
 ## バグ修正検証チェック {#bugfix-validate-check}
 
-新しいテスト (機能または統合) があるか、マスターブランチでビルドされたバイナリで失敗する変更されたテストがあるかどうかを確認します。
-このチェックは、プルリクエストに「pr-bugfix」ラベルが付けられるとトリガーされます。
+新しいテスト（機能または統合）または、マスターブランチでビルドされたバイナリに対して失敗する変更されたテストがあることを確認します。
+このチェックは、プルリクエストに "pr-bugfix" ラベルが付けられたときにトリガーされます。
 
 ## ストレステスト {#stress-test}
-複数のクライアントから同時にステートレスな機能テストを実行し、並行性に関連するエラーを検出します。失敗した場合：
 
-    * 最初に他のすべてのテストの失敗を修正します；
-    * レポートを見てサーバーログを見つけ、それらのエラーの可能性のある原因を確認します。
+複数のクライアントから同時にステートレス機能テストを実行し、同時実行関連のエラーを検出します。これが失敗した場合：
+
+* 最初に他のすべてのテストの失敗を修正してください；
+* レポートを見てサーバーログを見つけ、エラーの可能な原因を確認してください。
 
 ## 互換性チェック {#compatibility-check}
 
-`clickhouse` バイナリが古い libc バージョンを持つディストリビューションで実行できるかどうかを確認します。
+`clickhouse` バイナリが古いlibcバージョンを持つディストリビューションで動作することを確認します。
 失敗した場合は、メンテナに助けを求めてください。
 
-## AST ファザー {#ast-fuzzer}
-プログラムエラーをキャッチするためにランダムに生成されたクエリを実行します。
+## ASTファジング {#ast-fuzzer}
+
+ランダムに生成されたクエリを実行してプログラムエラーをキャッチします。
 失敗した場合は、メンテナに助けを求めてください。
 
 ## パフォーマンステスト {#performance-tests}
+
 クエリパフォーマンスの変化を測定します。
-これは約 6 時間かかる最も長いチェックです。
-パフォーマンステストの報告は、[こちら](https://github.com/ClickHouse/ClickHouse/tree/master/docker/test/performance-comparison#how-to-read-the-report) に詳しく説明されています。
+これは、実行にちょうど6時間未満かかる最も長いチェックです。
+パフォーマンステストレポートについての詳細は [こちら](https://github.com/ClickHouse/ClickHouse/tree/master/docker/test/performance-comparison#how-to-read-the-report) に記載されています。

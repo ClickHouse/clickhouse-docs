@@ -5,6 +5,7 @@ keywords: ['clickhouse', 'Airbyte', 'connect', 'integrate', 'etl', 'data integra
 slug: /integrations/airbyte
 description: 'Stream data into ClickHouse using Airbyte data pipelines'
 title: 'Connect Airbyte to ClickHouse'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -17,11 +18,11 @@ import airbyte06 from '@site/static/images/integrations/data-ingestion/etl-tools
 import airbyte07 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_07.png';
 import airbyte08 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_08.png';
 import airbyte09 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_09.png';
-import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
+import PartnerBadge from '@theme/badges/PartnerBadge';
 
 # Connect Airbyte to ClickHouse
 
-<CommunityMaintainedBadge/>
+<PartnerBadge/>
 
 :::note
 Please note that the Airbyte source and destination for ClickHouse are currently in Alpha status and not suitable for moving large datasets (> 10 million rows)

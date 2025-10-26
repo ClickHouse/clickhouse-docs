@@ -4,6 +4,7 @@ description: 'Step-by-step guide on how to set up Cloud SQL for MySQL as a sourc
 slug: /integrations/clickpipes/mysql/source/gcp
 title: 'Cloud SQL for MySQL source setup guide'
 keywords: ['google cloud sql', 'mysql', 'clickpipes', 'pitr', 'root ca certificate']
+doc_type: 'guide'
 ---
 
 import gcp_pitr from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/gcp/gcp-mysql-pitr.png';

@@ -1,10 +1,10 @@
 ---
-description: 'Системная таблица, содержащая информацию, полезную для обзора использования памяти и событий профилирования пользователей.'
+slug: '/operations/system-tables/user_processes'
+description: 'Системная таблица, содержащая информацию, полезную для обзора использования'
+title: system.user_processes
 keywords: ['системная таблица', 'user_processes']
-slug: /operations/system-tables/user_processes
-title: 'system.user_processes'
+doc_type: reference
 ---
-
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
@@ -12,14 +12,14 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud/>
 
-Эта системная таблица может быть использована для получения обзора использования памяти и событий профилирования пользователей.
+Эта системная таблица может использоваться для получения обзора использования памяти и ProfileEvents пользователей.
 
-Колонки:
+Столбцы:
 
 - `user` ([String](../../sql-reference/data-types/string.md)) — Имя пользователя.
-- `memory_usage` ([Int64](/sql-reference/data-types/int-uint#integer-ranges)) – Сумма оперативной памяти, используемой всеми процессами пользователя. Это может не включать некоторые типы выделенной памяти. Смотрите настройку [max_memory_usage](/operations/settings/settings#max_memory_usage).
-- `peak_memory_usage` ([Int64](/sql-reference/data-types/int-uint#integer-ranges)) — Пик использования памяти пользователем. Он может сбрасываться, когда для пользователя не выполняется никаких запросов.
-- `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/map)) – Сводка событий профилирования, которые измеряют различные метрики для пользователя. Описание этих событий можно найти в таблице [system.events](/operations/system-tables/events).
+- `memory_usage` ([Int64](/sql-reference/data-types/int-uint#integer-ranges)) – Сумма оперативной памяти, используемой всеми процессами пользователя. Она может не включать некоторые типы выделенной памяти. Смотрите настройку [max_memory_usage](/operations/settings/settings#max_memory_usage).
+- `peak_memory_usage` ([Int64](/sql-reference/data-types/int-uint#integer-ranges)) — Пик использования памяти пользователем. Он может сбрасываться, когда для пользователя не выполняются запросы.
+- `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/map)) – Сводка ProfileEvents, которые измеряют различные метрики для пользователя. Описание можно найти в таблице [system.events](/operations/system-tables/events)
 
 ```sql
 SELECT * FROM system.user_processes LIMIT 10 FORMAT Vertical;

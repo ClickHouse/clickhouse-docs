@@ -1,11 +1,12 @@
 ---
-'description': 'RowBinaryWithNames 格式的 Documentation'
+'description': 'RowBinaryWithNames 格式的文档'
 'input_format': true
 'keywords':
 - 'RowBinaryWithNames'
 'output_format': true
 'slug': '/interfaces/formats/RowBinaryWithNames'
 'title': 'RowBinaryWithNames'
+'doc_type': 'reference'
 ---
 
 import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settings.md'
@@ -16,7 +17,7 @@ import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settin
 
 ## 描述 {#description}
 
-类似于 [`RowBinary`](./RowBinary.md) 格式，但添加了标题：
+类似于 [`RowBinary`](./RowBinary.md) 格式，但增加了头部:
 
 - [`LEB128`](https://en.wikipedia.org/wiki/LEB128) 编码的列数 (N)。
 - N 个 `String` 指定列名。
@@ -28,6 +29,6 @@ import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settin
 <RowBinaryFormatSettings/>
 
 :::note
-- 如果设置 [`input_format_with_names_use_header`](/operations/settings/settings-formats.md/#input_format_with_names_use_header) 设为 `1`，则输入数据中的列将通过其名称映射到表中的列，名称未知的列将被跳过。
-- 如果设置 [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设为 `1`。否则，第一行将被跳过。
+- 如果设置 [`input_format_with_names_use_header`](/operations/settings/settings-formats.md/#input_format_with_names_use_header) 的值为 `1`，那么输入数据的列将根据名称映射到表的列，未知名称的列将被跳过。
+- 如果设置 [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 的值为 `1`。否则，将跳过第一行。
 :::

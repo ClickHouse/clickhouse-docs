@@ -1,19 +1,18 @@
 ---
-'description': 'System table containing information about contributors.'
+'description': 'システムテーブルには、寄稿者に関する情報が含まれています。'
 'keywords':
 - 'system table'
 - 'contributors'
 'slug': '/operations/system-tables/contributors'
 'title': 'system.contributors'
+'doc_type': 'reference'
 ---
 
-
-
-以下は貢献者に関する情報です。順序はクエリ実行時にランダムです。
+寄稿者に関する情報を含みます。順序はクエリ実行時にランダムです。
 
 カラム:
 
-- `name` (String) — git log からの貢献者（著者）名。
+- `name` (String) — git log からの寄稿者 (著者) 名。
 
 **例**
 
@@ -36,7 +35,7 @@ SELECT * FROM system.contributors LIMIT 10
 └──────────────────┘
 ```
 
-自分自身をテーブルで見つけるには、次のクエリを使用します：
+テーブルで自分を見つけるには、クエリを使用してください:
 
 ```sql
 SELECT * FROM system.contributors WHERE name = 'Olga Khvostikova'

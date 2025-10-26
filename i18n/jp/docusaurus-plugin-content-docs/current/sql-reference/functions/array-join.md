@@ -1,29 +1,35 @@
 ---
-'description': 'Documentation for arrayJoin function'
+'description': 'arrayJoin 関数に関するドキュメント'
 'sidebar_label': 'arrayJoin'
-'sidebar_position': 15
 'slug': '/sql-reference/functions/array-join'
-'title': 'arrayJoin function'
+'title': 'arrayJoin 関数'
+'doc_type': 'reference'
 ---
-
-
 
 
 # arrayJoin 関数
 
 これは非常に珍しい関数です。
 
-通常の関数は行のセットを変更することはなく、各行の値のみを変更します（マップ）。集約関数は行のセットを圧縮します（フォールドまたはリデュース）。`arrayJoin` 関数は各行を取り、行のセットを生成します（アンフォールド）。
+通常の関数は行のセットを変更するのではなく、各行の値を変更するだけです（マップ）。
+集約関数は行のセットを圧縮します（フォールドまたはリデュース）。
+`arrayJoin` 関数は、各行を取り、行のセットを生成します（アンフォールド）。
 
-この関数は配列を引数として受け取り、配列内の要素の数に応じてソース行を複数の行に伝播させます。この関数が適用されるカラム以外のすべての値は単純にコピーされ、そのカラムの値は対応する配列の値に置き換えられます。
+この関数は配列を引数として受け取り、配列の要素数に応じてソース行を複数の行に展開します。
+この関数が適用されるカラムの値を除いて、すべてのカラムの値は単純にコピーされ、対応する配列の値に置き換えられます。
 
-例:
+:::note
+配列が空の場合、`arrayJoin` は行を生成しません。
+配列型のデフォルト値を含む単一行を返すには、[emptyArrayToSingle](./array-functions.md#emptyArrayToSingle) でラップすることができます。例えば: `arrayJoin(emptyArrayToSingle(...))`。
+:::
 
-```sql
+例えば：
+
+```sql title="Query"
 SELECT arrayJoin([1, 2, 3] AS src) AS dst, 'Hello', src
 ```
 
-```text
+```text title="Response"
 ┌─dst─┬─\'Hello\'─┬─src─────┐
 │   1 │ Hello     │ [1,2,3] │
 │   2 │ Hello     │ [1,2,3] │
@@ -31,30 +37,27 @@ SELECT arrayJoin([1, 2, 3] AS src) AS dst, 'Hello', src
 └─────┴───────────┴─────────┘
 ```
 
-`arrayJoin` 関数はクエリのすべてのセクションに影響を与え、`WHERE` セクションも含みます。サブクエリが 1 行を返しているにもかかわらず、結果が 2 であることに注意してください。
+`arrayJoin` 関数は、クエリのすべてのセクションに影響を及ぼします。`WHERE` セクションを含みます。以下のクエリの結果が `2` になっていることに注意してください。サブクエリは1行を返しましたが。
 
-例:
-
-```sql
+```sql title="Query"
 SELECT sum(1) AS impressions
 FROM
 (
-    SELECT ['Istanbul', 'Berlin', 'Bobruisk'] AS cities
+    SELECT ['Istanbul', 'Berlin', 'Babruysk'] AS cities
 )
 WHERE arrayJoin(cities) IN ['Istanbul', 'Berlin'];
 ```
 
-```text
+```text title="Response"
 ┌─impressions─┐
 │           2 │
 └─────────────┘
 ```
 
-クエリは複数の `arrayJoin` 関数を使用できます。この場合、変換は複数回行われ、行が増加します。
+クエリは複数の `arrayJoin` 関数を使用できます。この場合、変換は複数回行われ、行が掛け算されます。
+例えば：
 
-例:
-
-```sql
+```sql title="Query"
 SELECT
     sum(1) AS impressions,
     arrayJoin(cities) AS city,
@@ -62,7 +65,7 @@ SELECT
 FROM
 (
     SELECT
-        ['Istanbul', 'Berlin', 'Bobruisk'] AS cities,
+        ['Istanbul', 'Berlin', 'Babruysk'] AS cities,
         ['Firefox', 'Chrome', 'Chrome'] AS browsers
 )
 GROUP BY
@@ -70,33 +73,38 @@ GROUP BY
     3
 ```
 
-```text
+```text title="Response"
 ┌─impressions─┬─city─────┬─browser─┐
 │           2 │ Istanbul │ Chrome  │
 │           1 │ Istanbul │ Firefox │
 │           2 │ Berlin   │ Chrome  │
 │           1 │ Berlin   │ Firefox │
-│           2 │ Bobruisk │ Chrome  │
-│           1 │ Bobruisk │ Firefox │
+│           2 │ Babruysk │ Chrome  │
+│           1 │ Babruysk │ Firefox │
 └─────────────┴──────────┴─────────┘
 ```
-### 重要な注意点! {#important-note}
-同じ式で複数の `arrayJoin` を使用すると、最適化のために期待した結果が得られない可能性があります。その場合は、結合結果に影響を与えない追加の操作で繰り返し配列式を修正することを検討してください。たとえば、`arrayJoin(arraySort(arr))` や `arrayJoin(arrayConcat(arr, []))` などです。
 
-例:
+### ベストプラクティス {#important-note}
+
+同じ式で複数の `arrayJoin` を使用すると、共通の副式の排除により期待した結果が得られない場合があります。
+そのような場合、結合結果に影響を与えない追加の操作で繰り返される配列式を修正することを検討してください。例えば、`arrayJoin(arraySort(arr))`、`arrayJoin(arrayConcat(arr, []))`
+
+例：
+
 ```sql
 SELECT
-    arrayJoin(dice) as first_throw,
-    /* arrayJoin(dice) as second_throw */ -- 技術的には正しいが、結果セットを無効にする
-    arrayJoin(arrayConcat(dice, [])) as second_throw -- 再評価を強制するために式を意図的に変更した
+    arrayJoin(dice) AS first_throw,
+    /* arrayJoin(dice) as second_throw */ -- is technically correct, but will annihilate result set
+    arrayJoin(arrayConcat(dice, [])) AS second_throw -- intentionally changed expression to force re-evaluation
 FROM (
-    SELECT [1, 2, 3, 4, 5, 6] as dice
+    SELECT [1, 2, 3, 4, 5, 6] AS dice
 );
 ```
 
-SELECT クエリでの [ARRAY JOIN](../statements/select/array-join.md) 構文に注意してください。これにより、より広範な可能性が提供されます。`ARRAY JOIN` を使用すると、同じ数の要素を持つ複数の配列を一度に変換できます。
+SELECT クエリの [`ARRAY JOIN`](../statements/select/array-join.md) 構文には、より広い可能性が提供されることに注意してください。
+`ARRAY JOIN` を使用すると、同じ数の要素を持つ複数の配列を同時に変換できます。
 
-例:
+例：
 
 ```sql
 SELECT
@@ -106,7 +114,7 @@ SELECT
 FROM
 (
     SELECT
-        ['Istanbul', 'Berlin', 'Bobruisk'] AS cities,
+        ['Istanbul', 'Berlin', 'Babruysk'] AS cities,
         ['Firefox', 'Chrome', 'Chrome'] AS browsers
 )
 ARRAY JOIN
@@ -121,15 +129,15 @@ GROUP BY
 ┌─impressions─┬─city─────┬─browser─┐
 │           1 │ Istanbul │ Firefox │
 │           1 │ Berlin   │ Chrome  │
-│           1 │ Bobruisk │ Chrome  │
+│           1 │ Babruysk │ Chrome  │
 └─────────────┴──────────┴─────────┘
 ```
 
-あるいは [Tuple](../data-types/tuple.md) を使用することもできます。
+または、[`Tuple`](../data-types/tuple.md) を使用できます。
 
-例:
+例：
 
-```sql
+```sql title="Query"
 SELECT
     sum(1) AS impressions,
     (arrayJoin(arrayZip(cities, browsers)) AS t).1 AS city,
@@ -137,7 +145,7 @@ SELECT
 FROM
 (
     SELECT
-        ['Istanbul', 'Berlin', 'Bobruisk'] AS cities,
+        ['Istanbul', 'Berlin', 'Babruysk'] AS cities,
         ['Firefox', 'Chrome', 'Chrome'] AS browsers
 )
 GROUP BY
@@ -145,10 +153,12 @@ GROUP BY
     3
 ```
 
-```text
+```text title="Row"
 ┌─impressions─┬─city─────┬─browser─┐
 │           1 │ Istanbul │ Firefox │
 │           1 │ Berlin   │ Chrome  │
-│           1 │ Bobruisk │ Chrome  │
+│           1 │ Babruysk │ Chrome  │
 └─────────────┴──────────┴─────────┘
 ```
+
+ClickHouse における `arrayJoin` という名前は、単一行内の配列に適用された JOIN 操作との概念的な類似性から来ており、伝統的な JOIN は異なるテーブルからの行を結合するのに対し、`arrayJoin` は行内の配列の各要素を「結合」し、各配列要素に対して複数の行を生成し、他のカラムの値を複製します。また、ClickHouse はこの関係を伝統的な JOIN 操作に対してより明示的にする [`ARRAY JOIN`](/sql-reference/statements/select/array-join) 句構文も提供しています。このプロセスは、配列を「アンフォールド」するとも呼ばれますが、「結合」という用語は関数名や句に使用され、配列要素とのテーブルを結合する様子を表し、JOIN 操作に類似した方法でデータセットを拡張します。

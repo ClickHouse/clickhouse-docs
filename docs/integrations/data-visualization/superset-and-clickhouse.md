@@ -6,6 +6,7 @@ keywords: ['superset']
 description: 'Apache Superset is an open-source data exploration and visualization platform.'
 title: 'Connect Superset to ClickHouse'
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
@@ -21,11 +22,11 @@ import superset_09 from '@site/static/images/integrations/data-visualization/sup
 import superset_10 from '@site/static/images/integrations/data-visualization/superset_10.png';
 import superset_11 from '@site/static/images/integrations/data-visualization/superset_11.png';
 import superset_12 from '@site/static/images/integrations/data-visualization/superset_12.png';
-import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Connect Superset to ClickHouse
 
-<CommunityMaintainedBadge/>
+<ClickHouseSupportedBadge/>
 
 <a href="https://superset.apache.org/" target="_blank">Apache Superset</a> is an open-source data exploration and visualization platform written in Python. Superset connects to ClickHouse using a Python driver provided by ClickHouse. Let's see how it works...
 

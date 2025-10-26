@@ -1,12 +1,11 @@
 ---
-'description': 'CREATEクエリのドキュメント'
+'description': 'CREATE クエリに関するドキュメント'
 'sidebar_label': 'CREATE'
 'sidebar_position': 34
 'slug': '/sql-reference/statements/create/'
-'title': 'CREATEクエリ'
+'title': 'CREATE クエリ'
+'doc_type': 'reference'
 ---
-
-
 
 
 # CREATE クエリ

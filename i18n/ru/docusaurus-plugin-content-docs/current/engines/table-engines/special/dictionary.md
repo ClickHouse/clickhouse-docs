@@ -1,19 +1,18 @@
 ---
-description: 'Движок `Dictionary` отображает данные словаря в виде таблицы ClickHouse.'
-sidebar_label: 'Dictionary'
+slug: '/engines/table-engines/special/dictionary'
+sidebar_label: Dictionary
 sidebar_position: 20
-slug: /engines/table-engines/special/dictionary
+description: 'Движок `Dictionary` отображает данные словаря как таблицу ClickHouse.'
 title: 'Движок таблицы Dictionary'
+doc_type: reference
 ---
-
-
 # Движок таблицы Dictionary
 
 Движок `Dictionary` отображает данные [словаря](../../../sql-reference/dictionaries/index.md) в виде таблицы ClickHouse.
 
 ## Пример {#example}
 
-В качестве примера рассмотрим словарь `products` с следующей конфигурацией:
+В качестве примера рассмотрим словарь `products` со следующей конфигурацией:
 
 ```xml
 <dictionaries>
@@ -46,7 +45,7 @@ title: 'Движок таблицы Dictionary'
 </dictionaries>
 ```
 
-Запросите данные словаря:
+Запросить данные словаря:
 
 ```sql
 SELECT
@@ -70,7 +69,7 @@ WHERE name = 'products'
 
 Вы можете использовать функцию [dictGet\*](/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull), чтобы получить данные словаря в этом формате.
 
-Этот вид не очень полезен, когда вам необходимо получить сырье данные или при выполнении операции `JOIN`. Для этих случаев вы можете использовать движок `Dictionary`, который отображает данные словаря в таблице.
+Этот вид не полезен, когда необходимо получить сырые данные или при выполнении операции `JOIN`. Для этих случаев вы можете использовать движок `Dictionary`, который отображает данные словаря в таблице.
 
 Синтаксис:
 
@@ -81,7 +80,7 @@ CREATE TABLE %table_name% (%fields%) engine = Dictionary(%dictionary_name%)`
 Пример использования:
 
 ```sql
-create table products (product_id UInt64, title String) Engine = Dictionary(products);
+CREATE TABLE products (product_id UInt64, title String) ENGINE = Dictionary(products);
 ```
 
       Ok
@@ -89,7 +88,7 @@ create table products (product_id UInt64, title String) Engine = Dictionary(prod
 Посмотрите, что находится в таблице.
 
 ```sql
-select * from products limit 1;
+SELECT * FROM products LIMIT 1;
 ```
 
 ```text
@@ -98,6 +97,6 @@ select * from products limit 1;
 └───────────────┴─────────────────┘
 ```
 
-**Смотрите также**
+**См. также**
 
 - [Функция Dictionary](/sql-reference/table-functions/dictionary)

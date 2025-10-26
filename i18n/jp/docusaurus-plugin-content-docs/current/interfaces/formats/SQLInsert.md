@@ -1,15 +1,14 @@
 ---
 'alias': []
-'description': 'SQLInsert フォーマットのドキュメント'
+'description': 'SQLInsert 形式に関するドキュメント'
 'input_format': false
 'keywords':
 - 'SQLInsert'
 'output_format': true
 'slug': '/interfaces/formats/SQLInsert'
 'title': 'SQLInsert'
+'doc_type': 'reference'
 ---
-
-
 
 | Input | Output | Alias |
 |-------|--------|-------|
@@ -35,14 +34,14 @@ INSERT INTO table (x, y, z) VALUES (6, 7, 'Hello'), (7, 8, 'Hello');
 INSERT INTO table (x, y, z) VALUES (8, 9, 'Hello'), (9, 10, 'Hello');
 ```
 
-このフォーマットで出力されたデータを読むには、[MySQLDump](../formats/MySQLDump.md) 入力フォーマットを使用できます。
+この形式で出力されたデータを読み取るには、[MySQLDump](../formats/MySQLDump.md) 入力形式を使用できます。
 
-## フォーマット設定 {#format-settings}
+## 形式の設定 {#format-settings}
 
-| 設定                                                                                                                                | 説明                                             | デフォルト   |
-|-------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------|--------------|
-| [`output_format_sql_insert_max_batch_size`](../../operations/settings/settings-formats.md/#output_format_sql_insert_max_batch_size)    | 1つのINSERTステートメントでの最大行数。          | `65505`      |
-| [`output_format_sql_insert_table_name`](../../operations/settings/settings-formats.md/#output_format_sql_insert_table_name)            | 出力INSERTクエリのテーブル名。                  | `'table'`    |
-| [`output_format_sql_insert_include_column_names`](../../operations/settings/settings-formats.md/#output_format_sql_insert_include_column_names) | INSERTクエリにカラム名を含めるか。              | `true`       |
-| [`output_format_sql_insert_use_replace`](../../operations/settings/settings-formats.md/#output_format_sql_insert_use_replace)          | INSERTの代わりにREPLACEステートメントを使用。   | `false`      |
-| [`output_format_sql_insert_quote_names`](../../operations/settings/settings-formats.md/#output_format_sql_insert_quote_names)          | カラム名を「\`」文字で引用符で囲む。           | `true`       |
+| 設定                                                                                                                                  | 説明                                              | デフォルト     |
+|---------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------|-----------------|
+| [`output_format_sql_insert_max_batch_size`](../../operations/settings/settings-formats.md/#output_format_sql_insert_max_batch_size)    | 1つのINSERTステートメント内の最大行数。                | `65505`         |
+| [`output_format_sql_insert_table_name`](../../operations/settings/settings-formats.md/#output_format_sql_insert_table_name)            | 出力INSERTクエリのテーブル名。                      | `'table'`       |
+| [`output_format_sql_insert_include_column_names`](../../operations/settings/settings-formats.md/#output_format_sql_insert_include_column_names) | INSERTクエリにカラム名を含める。                   | `true`          |
+| [`output_format_sql_insert_use_replace`](../../operations/settings/settings-formats.md/#output_format_sql_insert_use_replace)          | INSERTの代わりにREPLACEステートメントを使用する。   | `false`         |
+| [`output_format_sql_insert_quote_names`](../../operations/settings/settings-formats.md/#output_format_sql_insert_quote_names)          | カラム名を "\`" 文字で引用する。                   | `true`          |

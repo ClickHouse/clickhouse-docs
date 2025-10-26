@@ -1,22 +1,20 @@
 ---
-'description': 'Provides a read-only table-like interface to the Delta Lake tables
-  in Amazon S3.'
+'description': 'Amazon S3 における Delta Lake テーブルへの読み取り専用テーブルのようなインターフェースを提供します。'
 'sidebar_label': 'deltaLake'
 'sidebar_position': 45
 'slug': '/sql-reference/table-functions/deltalake'
 'title': 'deltaLake'
+'doc_type': 'reference'
 ---
-
-
 
 
 # deltaLake テーブル関数
 
-Amazon S3 または Azure Blob Storage 内の [Delta Lake](https://github.com/delta-io/delta) テーブルへの読み取り専用のテーブルのようなインターフェースを提供します。
+Amazon S3、Azure Blob Storage、またはローカルにマウントされたファイルシステムでの [Delta Lake](https://github.com/delta-io/delta) テーブルに対する読み取り専用のテーブルのようなインターフェースを提供します。
 
 ## 構文 {#syntax}
 
-`deltaLake` は `deltaLakeS3` のエイリアスであり、互換性のためにサポートされています。
+`deltaLake` は `deltaLakeS3` の別名であり、互換性のためにサポートされています。
 
 ```sql
 deltaLake(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
@@ -24,12 +22,13 @@ deltaLake(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure]
 deltaLakeS3(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
 
 deltaLakeAzure(connection_string|storage_account_url, container_name, blobpath, [,account_name], [,account_key] [,format] [,compression_method])
+
+deltaLakeLocal(path, [,format])
 ```
 
 ## 引数 {#arguments}
 
-引数の説明は、それぞれのテーブル関数 `s3`、`azureBlobStorage`、`HDFS` および `file` の引数の説明と一致します。
-`format` は Delta Lake テーブル内のデータファイルのフォーマットを表します。
+引数の説明は、テーブル関数 `s3`、`azureBlobStorage`、`HDFS` および `file` の引数の説明と一致します。`format` は Delta Lake テーブル内のデータファイルの形式を示します。
 
 ## 戻り値 {#returned_value}
 
@@ -37,7 +36,7 @@ deltaLakeAzure(connection_string|storage_account_url, container_name, blobpath, 
 
 ## 例 {#examples}
 
-S3 にあるテーブル `https://clickhouse-public-datasets.s3.amazonaws.com/delta_lake/hits/` からの行の選択:
+S3 `https://clickhouse-public-datasets.s3.amazonaws.com/delta_lake/hits/` からのテーブルの行を選択する：
 
 ```sql
 SELECT
@@ -55,7 +54,15 @@ LIMIT 2
 └───────────────────────────────────────────────────────────────────────┴───────────┘
 ```
 
-## 関連項目 {#related}
+## 仮想カラム {#virtual-columns}
+
+- `_path` — ファイルへのパス。型: `LowCardinality(String)`。
+- `_file` — ファイル名。型: `LowCardinality(String)`。
+- `_size` — ファイルサイズ（バイト単位)。型: `Nullable(UInt64)`。ファイルサイズが不明な場合、値は `NULL` です。
+- `_time` — ファイルの最終変更時刻。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL` です。
+- `_etag` — ファイルのetag。型: `LowCardinality(String)`。etagが不明な場合、値は `NULL` です。
+
+## 関連 {#related}
 
 - [DeltaLake エンジン](engines/table-engines/integrations/deltalake.md)
-- [DeltaLake クラスターテーブル関数](sql-reference/table-functions/deltalakeCluster.md)
+- [DeltaLake クラスタテーブル関数](sql-reference/table-functions/deltalakeCluster.md)

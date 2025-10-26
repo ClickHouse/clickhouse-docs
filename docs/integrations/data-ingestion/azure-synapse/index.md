@@ -4,14 +4,18 @@ slug: /integrations/azure-synapse
 description: 'Introduction to Azure Synapse with ClickHouse'
 keywords: ['clickhouse', 'azure synapse', 'azure', 'synapse', 'microsoft', 'azure spark', 'data']
 title: 'Integrating Azure Synapse with ClickHouse'
+doc_type: 'guide'
 ---
 
 import TOCInline from '@theme/TOCInline';
 import Image from '@theme/IdealImage';
 import sparkConfigViaNotebook from '@site/static/images/integrations/data-ingestion/azure-synapse/spark_notebook_conf.png';
 import sparkUICHSettings from '@site/static/images/integrations/data-ingestion/azure-synapse/spark_ui_ch_settings.png';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Integrating Azure Synapse with ClickHouse
+
+<ClickHouseSupportedBadge/>
 
 [Azure Synapse](https://azure.microsoft.com/en-us/products/synapse-analytics) is an integrated analytics service that combines big data, data science and warehousing to enable fast, large-scale data analysis.
 Within Synapse, Spark pools provide on-demand, scalable [Apache Spark](https://spark.apache.org) clusters that let users run complex data transformations, machine learning, and integrations with external systems.

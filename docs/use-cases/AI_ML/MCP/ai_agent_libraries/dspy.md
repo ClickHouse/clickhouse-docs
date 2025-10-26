@@ -7,6 +7,7 @@ pagination_next: null
 description: 'Learn how to build an AI agent with DSPy and the ClickHouse MCP Server'
 keywords: ['ClickHouse', 'MCP', 'DSPy']
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 # How to build an AI Agent with DSPy and the ClickHouse MCP Server
@@ -33,9 +34,9 @@ This example can be found as a notebook in the [examples repository](https://git
 Run the following commands using `pip` to install the required libraries:
 
 ```shell
-!pip install -q --upgrade pip
-!pip install -q dspy
-!pip install -q mcp
+pip install -q --upgrade pip
+pip install -q dspy
+pip install -q mcp
 ```
 
 ## Setup credentials {#setup-credentials}

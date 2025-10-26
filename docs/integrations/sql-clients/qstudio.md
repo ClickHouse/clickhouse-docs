@@ -3,7 +3,8 @@ slug: /integrations/qstudio
 sidebar_label: 'QStudio'
 description: 'QStudio is a free SQL tool.'
 title: 'Connect QStudio to ClickHouse'
-keywords: ['QStudio', 'SQL client', 'free SQL tool', 'database management', 'query tool']
+doc_type: 'guide'
+keywords: ['qstudio', 'sql client', 'database tool', 'query tool', 'ide']
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

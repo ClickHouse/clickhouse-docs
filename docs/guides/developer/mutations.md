@@ -1,11 +1,12 @@
 ---
 slug: /guides/developer/mutations
-sidebar_label: 'Updating and Deleting Data'
+sidebar_label: 'Updating and deleting data'
 sidebar_position: 1
 keywords: ['UPDATE', 'DELETE', 'mutations']
 title: 'Updating and deleting ClickHouse data'
 description: 'Describes how to perform update and delete operations in ClickHouse'
 show_related_blogs: false
+doc_type: 'guide'
 ---
 
 # Updating and deleting ClickHouse data with mutations
@@ -89,7 +90,7 @@ View the [`DELETE` statement](/sql-reference/statements/delete.md) docs page for
 
 ## Lightweight deletes {#lightweight-deletes}
 
-Another option for deleting rows it to use the `DELETE FROM` command, which is referred to as a **lightweight delete**. The deleted rows are marked as deleted immediately and will be automatically filtered out of all subsequent queries, so you do not have to wait for a merging of parts or use the `FINAL` keyword. Cleanup of data happens asynchronously in the background.
+Another option for deleting rows is to use the `DELETE FROM` command, which is referred to as a **lightweight delete**. The deleted rows are marked as deleted immediately and will be automatically filtered out of all subsequent queries, so you do not have to wait for a merging of parts or use the `FINAL` keyword. Cleanup of data happens asynchronously in the background.
 
 ``` sql
 DELETE FROM [db.]table [ON CLUSTER cluster] [WHERE expr]

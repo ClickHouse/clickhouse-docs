@@ -5,7 +5,8 @@ pagination_next: null
 sidebar_position: 7
 description: 'Python for ClickStack - The ClickHouse Observability Stack'
 title: 'Python'
-keywords: [clickstack, python, opentelemetry, traces, auto-instrumentation]
+doc_type: 'guide'
+keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
 
 import Tabs from '@theme/Tabs';

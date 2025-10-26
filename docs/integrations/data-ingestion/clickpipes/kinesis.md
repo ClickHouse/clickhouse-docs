@@ -3,7 +3,8 @@ sidebar_label: 'ClickPipes for Amazon Kinesis'
 description: 'Seamlessly connect your Amazon Kinesis data sources to ClickHouse Cloud.'
 slug: /integrations/clickpipes/kinesis
 title: 'Integrating Amazon Kinesis with ClickHouse Cloud'
-keywords: ['Amazon Kinesis', 'ClickPipes', 'streaming data', 'real-time ingestion', 'AWS integration']
+doc_type: 'guide'
+keywords: ['clickpipes', 'kinesis', 'streaming', 'aws', 'data ingestion']
 ---
 
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
@@ -86,14 +87,14 @@ You have familiarized yourself with the [ClickPipes intro](./index.md) and setup
 ## Supported data formats {#supported-data-formats}
 
 The supported formats are:
-- [JSON](../../../interfaces/formats.md/#json)
+- [JSON](/interfaces/formats/JSON)
 
 ## Supported data types {#supported-data-types}
 
 ### Standard types support {#standard-types-support}
 The following ClickHouse data types are currently supported in ClickPipes:
 
-- Base numeric types - \[U\]Int8/16/32/64 and Float32/64
+- Base numeric types - \[U\]Int8/16/32/64, Float32/64, and BFloat16
 - Large integer types - \[U\]Int128/256
 - Decimal Types
 - Boolean
@@ -108,19 +109,14 @@ The following ClickHouse data types are currently supported in ClickPipes:
 - all ClickHouse LowCardinality types
 - Map with keys and values using any of the above types (including Nullables)
 - Tuple and Array with elements using any of the above types (including Nullables, one level depth only)
-- 
-### Variant type support (experimental) {#variant-type-support}
-Variant type support is automatic if your Cloud service is running ClickHouse 25.3 or later.  Otherwise, you will
-have to submit a support ticket to enable it on your service.
+- SimpleAggregateFunction types (for AggregatingMergeTree or SummingMergeTree destinations)
 
+### Variant type support {#variant-type-support}
 You can manually specify a Variant type (such as `Variant(String, Int64, DateTime)`) for any JSON field
 in the source data stream.  Because of the way ClickPipes determines the correct variant subtype to use, only one integer or datetime
 type can be used in the Variant definition - for example, `Variant(Int64, UInt32)` is not supported.
 
-### JSON type support (experimental) {#json-type-support}
-JSON type support is automatic if your Cloud service is running ClickHouse 25.3 or later.  Otherwise, you will
-have to submit a support ticket to enable it on your service.
-
+### JSON type support {#json-type-support}
 JSON fields that are always a JSON object can be assigned to a JSON destination column.  You will have to manually change the destination
 column to the desired JSON type, including any fixed or skipped paths. 
 
@@ -149,7 +145,7 @@ view).  For such pipes, it may improve ClickPipes performance to delete all the 
 ClickPipes inserts data into ClickHouse in batches. This is to avoid creating too many parts in the database which can lead to performance issues in the cluster.
 
 Batches are inserted when one of the following criteria has been met:
-- The batch size has reached the maximum size (100,000 rows or 20MB)
+- The batch size has reached the maximum size (100,000 rows or 32MB per 1GB of replica memory)
 - The batch has been open for a maximum amount of time (5 seconds)
 
 ### Latency {#latency}

@@ -1,13 +1,12 @@
 ---
-description: 'Документация для оператора EXISTS'
-sidebar_label: 'EXISTS'
+slug: '/sql-reference/statements/exists'
+sidebar_label: EXISTS
 sidebar_position: 45
-slug: /sql-reference/statements/exists
+description: 'EXISTS \x7F\0\0\0\0'
 title: 'Оператор EXISTS'
+doc_type: reference
 ---
-
-
-# Оператор EXISTS
+# EXISTS Statement
 
 ```sql
 EXISTS [TEMPORARY] [TABLE|DICTIONARY|DATABASE] [db.]name [INTO OUTFILE filename] [FORMAT format]

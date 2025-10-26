@@ -1,27 +1,24 @@
 ---
-'description': 'Constraints on settings can be defined in the `profiles` section of
-  the `user.xml` configuration file and prohibit users from changing some of the settings
-  with the `SET` query.'
-'sidebar_label': 'Constraints on Settings'
+'description': '設定に関する制約は、`user.xml` 設定ファイルの `profiles` セクションで定義でき、ユーザーが `SET` クエリを使用していくつかの設定を変更することを禁止します。'
+'sidebar_label': '設定に関する制約'
 'sidebar_position': 62
 'slug': '/operations/settings/constraints-on-settings'
-'title': 'Constraints on Settings'
+'title': '設定に関する制約'
+'doc_type': 'reference'
 ---
 
 
-
-
-# 設定に対する制約
+# 設定に関する制約
 
 ## 概要 {#overview}
 
-ClickHouseにおける「設定に対する制約」とは、設定に対して割り当てることができる制限やルールを指します。これらの制約は、データベースの安定性、セキュリティ、および予測可能な動作を維持するために適用されます。
+ClickHouseにおける「設定の制約」とは、設定に対して割り当てることのできる制限やルールを指します。これらの制約は、データベースの安定性、安全性、予測可能な動作を維持するために適用されます。
 
 ## 制約の定義 {#defining-constraints}
 
-設定に対する制約は、`user.xml`構成ファイルの`profiles`セクションで定義できます。これにより、ユーザーが一部の設定を[`SET`](/sql-reference/statements/set)ステートメントを使用して変更することを禁止します。
+設定の制約は、`user.xml`設定ファイルの`profiles`セクションで定義できます。これにより、ユーザーが[`SET`](/sql-reference/statements/set)ステートメントを使用して特定の設定を変更することが禁止されます。
 
-制約は以下のように定義されます：
+制約は次のように定義されます：
 
 ```xml
 <profiles>
@@ -58,7 +55,7 @@ ClickHouseにおける「設定に対する制約」とは、設定に対して�
 </profiles>
 ```
 
-ユーザーが制約に違反しようとすると、例外がスローされ、設定は変更されません。
+ユーザーが制約を侵害しようとすると、例外がスローされ、設定は変更されません。
 
 ## 制約の種類 {#types-of-constraints}
 
@@ -69,13 +66,13 @@ ClickHouseでサポートされている制約の種類はいくつかありま�
 - `readonly`（エイリアス `const`）
 - `changeable_in_readonly`
 
-`min`および`max`制約は、数値設定の上限および下限を指定し、相互に組み合わせて使用できます。
+`min`および`max`制約は、数値設定の上限と下限を指定し、互いに組み合わせて使用できます。
 
-`disallowed`制約は、特定の設定に対して許可されていない特定の値を指定するために使用できます。
+`disallowed`制約は、特定の設定に対して許可されるべきでない値を指定するために使用できます。
 
-`readonly`または`const`制約は、ユーザーが対応する設定を一切変更できないことを指定します。
+`readonly`または`const`制約は、ユーザーが対応する設定を変更できないことを指定します。
 
-`changeable_in_readonly`制約タイプは、`readonly`設定が`1`に設定されていても、`min`/`max`範囲内で設定を変更できるようにします。それ以外の場合、`readonly=1`モードでは設定を変更できません。
+`changeable_in_readonly`制約タイプは、`readonly`設定が`1`の場合でも、`min`/`max`範囲内で設定を変更できるようにします。そうでない場合、`readonly=1`モードでは設定の変更は許可されません。
 
 :::note
 `changeable_in_readonly`は、`settings_constraints_replace_previous`が有効な場合のみサポートされます：
@@ -90,15 +87,15 @@ ClickHouseでサポートされている制約の種類はいくつかありま�
 ## 複数の制約プロファイル {#multiple-constraint-profiles}
 
 ユーザーに対して複数のプロファイルがアクティブな場合、制約はマージされます。マージプロセスは`settings_constraints_replace_previous`に依存します：
-- **true**（推奨）：同じ設定の制約はマージ時に置き換えられ、最後の制約が使用され、すべての以前の制約は無視されます。これには新しい制約で設定されていないフィールドも含まれます。
-- **false**（デフォルト）：同じ設定の制約は、すべての未設定の制約タイプは以前のプロファイルから取得され、すべての設定済みの制約タイプは新しいプロファイルからの値で置き換えられます。
+- **true**（推奨）：同じ設定に対する制約はマージ中に置き換えられ、最後の制約が使用され、以前の制約は無視されます。これには、新しい制約で設定されていないフィールドが含まれます。
+- **false**（デフォルト）：同じ設定に対する制約は、すべての未設定の制約タイプが前のプロファイルから取得され、すべての設定された制約タイプが新しいプロファイルからの値で置き換えられる形でマージされます。
 
 ## 読み取り専用モード {#read-only}
 
-読み取り専用モードは、`readonly`設定によって有効化され、`readonly`制約タイプと混同してはいけません：
-- `readonly=0`：読み取り専用の制限なし。
-- `readonly=1`：読み取りクエリのみが許可され、`changeable_in_readonly`が設定されていない限り設定は変更できません。
-- `readonly=2`：読み取りクエリのみが許可されますが、設定は変更可能で、`readonly`設定自体は除きます。
+読み取り専用モードは、`readonly`設定によって有効になり、これは`readonly`制約タイプとは混同しないでください：
+- `readonly=0`：読み取り制限なし。
+- `readonly=1`：読み取り専用クエリのみが許可され、`changeable_in_readonly`が設定されていない限り、設定は変更できません。
+- `readonly=2`：読み取り専用クエリのみが許可されますが、`readonly`設定そのものを除いて設定を変更できます。
 
 ### 例 {#example-read-only}
 
@@ -138,18 +135,18 @@ Code: 452, e.displayText() = DB::Exception: Setting force_index_by_date should n
 ```
 
 :::note
-`default`プロファイルは独自に処理されます：`default`プロファイルのために定義されたすべての制約はデフォルトの制約となり、それによって明示的にオーバーライドされるまで、すべてのユーザーを制限します。
+`default`プロファイルは独自に処理されます：`default`プロファイルに定義されたすべての制約がデフォルト制約となり、明示的にオーバーライドされるまで、すべてのユーザーに制限をかけます。
 :::
 
 ## MergeTree設定の制約 {#constraints-on-merge-tree-settings}
 
-[Merge tree設定](merge-tree-settings.md)に対する制約を設定することが可能です。これらの制約は、MergeTreeエンジンを持つテーブルが作成されるときや、そのストレージ設定が変更されるときに適用されます。
+[MergeTree設定](merge-tree-settings.md)に対して制約を設定することが可能です。これらの制約は、MergeTreeエンジンを持つテーブルが作成されるとき、またはそのストレージ設定が変更されるときに適用されます。
 
-Merge tree設定の名前は、`<constraints>`セクションで参照される際に`merge_tree_`プレフィックスを先頭に付ける必要があります。
+MergeTree設定の名前は、`<constraints>`セクションで引用される際に`merge_tree_`プレフィックスを追加する必要があります。
 
 ### 例 {#example-mergetree}
 
-`storage_policy`が明示的に指定された新しいテーブルの作成を禁止することができます：
+明示的に指定された`storage_policy`で新しいテーブルを作成することを禁止できます。
 
 ```xml
 <profiles>

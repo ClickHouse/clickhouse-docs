@@ -1,10 +1,11 @@
 ---
 description: 'Dataset containing 1.3 million records of historical data on the menus
   of hotels, restaurants and cafes with the dishes along with their prices.'
-sidebar_label: 'New York Public Library "What''s on the Menu?" Dataset'
+sidebar_label: 'New York Public Library "what''s on the menu?" dataset'
 slug: /getting-started/example-datasets/menus
 title: 'New York Public Library "What''s on the Menu?" Dataset'
-keywords: ['historical menu data', 'restaurant data', 'New York Public Library dataset', 'culinary history', 'getting started']
+doc_type: 'guide'
+keywords: ['example dataset', 'menus', 'historical data', 'sample data', 'nypl']
 ---
 
 The dataset is created by the New York Public Library. It contains historical data on the menus of hotels, restaurants and cafes with the dishes along with their prices.
@@ -121,7 +122,7 @@ clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_defa
 clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_default 0 --date_time_input_format best_effort --query "INSERT INTO menu_item FORMAT CSVWithNames" < MenuItem.csv
 ```
 
-We use [CSVWithNames](../../interfaces/formats.md#csvwithnames) format as the data is represented by CSV with header.
+We use [CSVWithNames](/interfaces/formats/CSVWithNames) format as the data is represented by CSV with header.
 
 We disable `format_csv_allow_single_quotes` as only double quotes are used for data fields and single quotes can be inside the values and should not confuse the CSV parser.
 

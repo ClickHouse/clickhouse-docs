@@ -5,7 +5,8 @@ pagination_next: null
 sidebar_position: 2
 description: 'Golang SDK for ClickStack - The ClickHouse Observability Stack'
 title: 'Golang'
-keywords: [clickstack, golang, opentelemetry, traces, auto-instrumentation]
+doc_type: 'guide'
+keywords: ['Golang ClickStack SDK', 'Go OpenTelemetry integration', 'Golang observability', 'Go tracing instrumentation', 'ClickStack Go SDK']
 ---
 
 ClickStack uses the OpenTelemetry standard for collecting telemetry data (logs and

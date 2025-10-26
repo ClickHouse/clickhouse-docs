@@ -4,6 +4,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Architecture of ClickStack - The ClickHouse Observability Stack'
 title: 'Architecture'
+doc_type: 'reference'
 keywords: ['ClickStack architecture', 'observability architecture', 'HyperDX', 'OpenTelemetry collector', 'MongoDB', 'system design']
 ---
 

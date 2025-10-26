@@ -1,12 +1,10 @@
 ---
-'description': 'Calculates the minimum from `value` array according to the keys specified
-  in the `key` array.'
+'description': '与 `key` 数组中指定的键对应，计算 `value` 数组中的最小值。'
 'sidebar_position': 169
 'slug': '/sql-reference/aggregate-functions/reference/minmap'
 'title': 'minMap'
+'doc_type': 'reference'
 ---
-
-
 
 
 # minMap
@@ -23,11 +21,11 @@
 minMap(Tuple(key, value))
 ```
 
-別名: `minMappedArrays`
+エイリアス: `minMappedArrays`
 
 :::note
 - キーと値の配列のタプルを渡すことは、キーの配列と値の配列を渡すことと同じです。
-- 各行の合計を計算するために、`key` と `value` の要素数は同じでなければなりません。
+- 各行で集計される `key` と `value` の要素数は同じでなければなりません。
 :::
 
 **パラメータ**
@@ -37,7 +35,7 @@ minMap(Tuple(key, value))
 
 **戻り値**
 
-- ソートされた順序のキーと、対応するキーに対して計算された値のタプルを返します。 [Tuple](../../data-types/tuple.md)([Array](../../data-types/array.md), [Array](../../data-types/array.md))。
+- ソートされた順序のキーと、対応するキーに対して計算された値の2つの配列のタプルを返します。 [Tuple](../../data-types/tuple.md)([Array](../../data-types/array.md), [Array](../../data-types/array.md))。
 
 **例**
 
@@ -45,7 +43,7 @@ minMap(Tuple(key, value))
 
 ```sql
 SELECT minMap(a, b)
-FROM values('a Array(Int32), b Array(Int64)', ([1, 2], [2, 2]), ([2, 3], [1, 1]))
+FROM VALUES('a Array(Int32), b Array(Int64)', ([1, 2], [2, 2]), ([2, 3], [1, 1]))
 ```
 
 結果:

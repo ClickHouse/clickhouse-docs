@@ -3,7 +3,8 @@ slug: /native-protocol/server
 sidebar_position: 3
 title: 'Server packets'
 description: 'Native protocol server'
-keywords: ['server packets', 'native protocol server', 'protocol packets', 'server communication', 'TCP packets']
+doc_type: 'reference'
+keywords: ['native protocol', 'tcp protocol', 'client-server', 'protocol specification', 'networking']
 ---
 
 # Server packets

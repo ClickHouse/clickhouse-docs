@@ -4,22 +4,22 @@ sidebar_label: 'Introduction'
 title: 'Introduction'
 sidebar_position: 1
 description: 'Page with deployment examples that are based on the advice provided to ClickHouse users by the ClickHouse Support and Services organization'
-keywords: ['deployment guides', 'replication', 'sharding', 'cluster architecture', 'fault tolerance']
+doc_type: 'guide'
+keywords: ['deployment', 'architecture', 'replication', 'sharding', 'cluster setup']
 ---
 
 import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';
 
-These deployment examples are based on the advice provided to ClickHouse users by the ClickHouse Support and Services organization.  These are working examples, and we recommend that you try them and then adjust them to suit your needs.  You may find an example here that fits your requirements exactly. Alternatively, should you have a requirement where data is replicated three times instead of two, you should be able to add another replica by following the patterns presented here.
+The deployment examples in this section are based on the advice provided to ClickHouse users by
+the ClickHouse Support and Services organization. These are working examples, and
+we recommend that you try them and then adjust them to suit your needs. You may find
+an example here that fits your requirements exactly.
+
+We offer 'recipes' of a number of different topologies in the [example repo](https://github.com/ClickHouse/examples/tree/main/docker-compose-recipes/recipes)
+and recommend taking a look at them if the examples in this section do not fit your
+needs exactly.
 
 <ReplicationShardingTerminology />
-
-## Examples {#examples}
-
-### Basic {#basic}
-
-- The [**Scaling out**](/deployment-guides/horizontal-scaling.md) example shows how to shard your data across two nodes, and use a distributed table.  This results in having data on two ClickHouse nodes.  The two ClickHouse nodes also run ClickHouse Keeper providing distributed synchronization.  A third node runs ClickHouse Keeper standalone to complete the ClickHouse Keeper quorum.
-
-- The [**Replication for fault tolerance**](/deployment-guides/replicated.md) example shows how to replicate your data across two nodes, and use a ReplicatedMergeTree table.  This results in having data on two ClickHouse nodes.  In addition to the two ClickHouse server nodes there are three ClickHouse Keeper standalone nodes to manage replication.
 
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/vBjCJtw_Ei0"
@@ -32,11 +32,3 @@ These deployment examples are based on the advice provided to ClickHouse users b
     allowfullscreen>
   </iframe>
 </div>
-
-### Intermediate {#intermediate}
-
-- Coming soon
-
-### Advanced {#advanced}
-
-- Coming soon

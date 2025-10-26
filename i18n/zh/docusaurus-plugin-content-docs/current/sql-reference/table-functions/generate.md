@@ -1,17 +1,18 @@
 ---
-'description': '生成具有给定架构的随机数据。允许用该数据填充测试表。并非所有类型都受支持。'
+'description': '生成具有给定架构的随机数据。允许用该数据填充测试表。并非所有类型都得到支持。'
 'sidebar_label': 'generateRandom'
 'sidebar_position': 75
 'slug': '/sql-reference/table-functions/generate'
 'title': 'generateRandom'
+'doc_type': 'reference'
 ---
 
 
 # generateRandom 表函数
 
-生成具有给定架构的随机数据。  
-允许用这些数据填充测试表。  
-并非所有类型都受支持。
+生成具有给定模式的随机数据。
+允许用这些数据填充测试表。
+并非所有类型都受到支持。
 
 ## 语法 {#syntax}
 
@@ -21,17 +22,17 @@ generateRandom(['name TypeName[, name TypeName]...', [, 'random_seed'[, 'max_str
 
 ## 参数 {#arguments}
 
-| 参数                 | 描述                                                                                           |
-|---------------------|------------------------------------------------------------------------------------------------|
-| `name`              | 对应列的名称。                                                                                 |
-| `TypeName`          | 对应列的类型。                                                                                 |
-| `random_seed`       | 手动指定随机种子以产生稳定的结果。如果为 `NULL`，则随机生成种子。                             |
-| `max_string_length` | 所有生成字符串的最大长度。默认为 `10`。                                                       |
-| `max_array_length`  | 所有生成数组或映射的最大元素数量。默认为 `10`。                                               |
+| 参数                   | 描述                                                                                           |
+|------------------------|------------------------------------------------------------------------------------------------|
+| `name`                 | 相应列的名称。                                                                                 |
+| `TypeName`             | 相应列的类型。                                                                                 |
+| `random_seed`          | 手动指定随机种子以生成稳定的结果。如果为 `NULL` — 种子将随机生成。                             |
+| `max_string_length`    | 所有生成字符串的最大长度。默认值为 `10`。                                                      |
+| `max_array_length`     | 所有生成数组或映射的最大元素数量。默认值为 `10`。                                              |
 
 ## 返回值 {#returned_value}
 
-具有请求架构的表对象。
+具有请求模式的表对象。
 
 ## 使用示例 {#usage-example}
 
@@ -48,7 +49,7 @@ SELECT * FROM generateRandom('a Array(Int8), d Decimal32(4), c Tuple(DateTime64(
 ```
 
 ```sql
-CREATE TABLE random (a Array(Int8), d Decimal32(4), c Tuple(DateTime64(3), UUID)) engine=Memory;
+CREATE TABLE random (a Array(Int8), d Decimal32(4), c Tuple(DateTime64(3), UUID)) ENGINE=Memory;
 INSERT INTO random SELECT * FROM generateRandom() LIMIT 2;
 SELECT * FROM random;
 ```
@@ -74,7 +75,7 @@ SELECT * FROM generateRandom(generateRandomStructure(4, 101), 101) LIMIT 3;
 └─────────────────────┴─────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────────────────────────────┘
 ```
 
-缺少 `structure` 参数（在这种情况下，结构是随机的）：
+缺少 `structure` 参数时（在这种情况下，结构为随机）：
 
 ```sql
 SELECT * FROM generateRandom() LIMIT 3;
@@ -88,7 +89,7 @@ SELECT * FROM generateRandom() LIMIT 3;
 └──────┴────────────┴────────────────────────┴─────────────────────────┴──────────┘
 ```
 
-对于随机结构和随机数据，使用随机种子：
+随机种子同时用于随机结构和随机数据：
 
 ```sql
 SELECT * FROM generateRandom(11) LIMIT 3;
@@ -103,7 +104,7 @@ SELECT * FROM generateRandom(11) LIMIT 3;
 ```
 
 :::note
-`generateRandom(generateRandomStructure(), [random seed], max_string_length, max_array_length)` 在 `max_array_length` 足够大的情况下，可能会由于复杂类型（`Array`、`Tuple`、`Map`、`Nested`）的深层嵌套（最多16层）而生成非常庞大的输出。
+`generateRandom(generateRandomStructure(), [random seed], max_string_length, max_array_length)` 当 `max_array_length` 足够大时，可以由于复杂类型（`Array`、`Tuple`、`Map`、`Nested`）的可能深层嵌套（最多 16）而生成非常大的输出。
 :::
 
 ## 相关内容 {#related-content}

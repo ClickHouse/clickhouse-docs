@@ -1,18 +1,19 @@
 ---
-'description': 'Http 的文档'
+'description': 'Http的文档'
 'slug': '/operations/external-authenticators/http'
 'title': 'HTTP'
+'doc_type': 'reference'
 ---
 
 import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
-HTTP服务器可以用来验证ClickHouse用户。HTTP认证只能被用作对在 `users.xml` 或本地访问控制路径中定义的现有用户的外部认证器。目前，仅支持使用GET方法的[基本](https://datatracker.ietf.org/doc/html/rfc7617)认证方案。
+HTTP 服务器可用于认证 ClickHouse 用户。HTTP 认证只能作为现有用户的外部认证器，这些用户在 `users.xml` 或本地访问控制路径中定义。当前支持使用 GET 方法的 [Basic](https://datatracker.ietf.org/doc/html/rfc7617) 认证方案。
 
-## HTTP认证服务器定义 {#http-auth-server-definition}
+## HTTP 认证服务器定义 {#http-auth-server-definition}
 
-要定义HTTP认证服务器，必须在 `config.xml` 中添加 `http_authentication_servers` 部分。
+要定义 HTTP 认证服务器，必须向 `config.xml` 添加 `http_authentication_servers` 部分。
 
 **示例**
 ```xml
@@ -38,32 +39,32 @@ HTTP服务器可以用来验证ClickHouse用户。HTTP认证只能被用作对�
 
 ```
 
-请注意，您可以在 `http_authentication_servers` 部分内定义多个HTTP服务器，使用不同的名称。
+请注意，您可以在 `http_authentication_servers` 部分内使用不同的名称定义多个 HTTP 服务器。
 
 **参数**
-- `uri` - 用于进行认证请求的URI
+- `uri` - 用于发起认证请求的 URI
 
-在与服务器通信所使用的套接字上的超时（以毫秒为单位）：
-- `connection_timeout_ms` - 默认: 1000 ms。
-- `receive_timeout_ms` - 默认: 1000 ms。
-- `send_timeout_ms` - 默认: 1000 ms。
+与服务器通信所用套接字的超时（以毫秒为单位）：
+- `connection_timeout_ms` - 默认：1000 毫秒。
+- `receive_timeout_ms` - 默认：1000 毫秒。
+- `send_timeout_ms` - 默认：1000 毫秒。
 
 重试参数：
-- `max_tries` - 进行认证请求的最大尝试次数。默认: 3
-- `retry_initial_backoff_ms` - 重试的初始退避间隔。默认: 50 ms
-- `retry_max_backoff_ms` - 最大退避间隔。默认: 1000 ms
+- `max_tries` - 发起认证请求的最大尝试次数。默认：3
+- `retry_initial_backoff_ms` - 重试时的初始回退间隔。默认：50 毫秒
+- `retry_max_backoff_ms` - 最大回退间隔。默认：1000 毫秒
 
 转发头：
 
-该部分定义了哪些头将从客户端请求头转发到外部HTTP认证器。
+该部分定义哪些头部将从客户端请求头转发到外部 HTTP 认证器。请注意，头部将在不区分大小写的情况下与配置的头部进行匹配，但将原样转发，即不加修改。
 
-### 在 `users.xml` 中启用HTTP认证 {#enabling-http-auth-in-users-xml}
+### 在 `users.xml` 中启用 HTTP 认证 {#enabling-http-auth-in-users-xml}
 
-为了启用用户的HTTP认证，指定 `http_authentication` 部分，而不是用户定义中的 `password` 或类似部分。
+为了为用户启用 HTTP 认证，请在用户定义中指定 `http_authentication` 部分，而不是 `password` 或类似的部分。
 
 参数：
-- `server` - 在主 `config.xml` 文件中配置的HTTP认证服务器的名称，如前所述。
-- `scheme` - HTTP认证方案。目前仅支持 `Basic`。默认: Basic
+- `server` - 在主 `config.xml` 文件中配置的 HTTP 认证服务器的名称，如上所述。
+- `scheme` - HTTP 认证方案。目前仅支持 `Basic`。默认：Basic
 
 示例（放入 `users.xml` 中）：
 ```xml
@@ -80,18 +81,18 @@ HTTP服务器可以用来验证ClickHouse用户。HTTP认证只能被用作对�
 ```
 
 :::note
-请注意，HTTP认证不能与任何其他认证机制一起使用。与 `http_authentication` 共同存在的任何其他部分，例如 `password`，将迫使ClickHouse关闭。
+请注意，HTTP 认证不能与任何其他认证机制一起使用。如果存在 `password` 等其他部分与 `http_authentication` 同时出现，会导致 ClickHouse 关闭。
 :::
 
-### 使用SQL启用HTTP认证 {#enabling-http-auth-using-sql}
+### 使用 SQL 启用 HTTP 认证 {#enabling-http-auth-using-sql}
 
-当ClickHouse中启用[SQL驱动的访问控制和账户管理](/operations/access-rights#access-control-usage)时，通过HTTP认证识别的用户也可以使用SQL语句创建。
+当在 ClickHouse 中启用 [SQL 驱动的访问控制和帐户管理](/operations/access-rights#access-control-usage) 时，也可以使用 SQL 语句创建通过 HTTP 认证识别的用户。
 
 ```sql
 CREATE USER my_user IDENTIFIED WITH HTTP SERVER 'basic_server' SCHEME 'Basic'
 ```
 
-...或者，不显式定义方案时，`Basic` 为默认值
+...或者，`Basic` 是默认值，如果没有明确的方案定义
 
 ```sql
 CREATE USER my_user IDENTIFIED WITH HTTP SERVER 'basic_server'
@@ -99,4 +100,4 @@ CREATE USER my_user IDENTIFIED WITH HTTP SERVER 'basic_server'
 
 ### 传递会话设置 {#passing-session-settings}
 
-如果来自HTTP认证服务器的响应体具有JSON格式并包含 `settings` 子对象，ClickHouse将尝试将其键：值对解析为字符串值，并将其设置为已认证用户的当前会话的会话设置。如果解析失败，将忽略来自服务器的响应体。
+如果 HTTP 认证服务器的响应体具有 JSON 格式并包含 `settings` 子对象，ClickHouse 将尝试将其键值对解析为字符串值，并将其设置为经过认证用户当前会话的会话设置。如果解析失败，将忽略来自服务器的响应体。

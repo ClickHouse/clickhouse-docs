@@ -1,10 +1,11 @@
 ---
 slug: /optimize/prewhere
-sidebar_label: 'PREWHERE Optimization'
+sidebar_label: 'PREWHERE optimization'
 sidebar_position: 21
 description: 'PREWHERE reduces I/O by avoiding reading unnecessary column data.'
 title: 'How does the PREWHERE optimization work?'
-keywords: ['prewhere optimization', 'prewhere clause', 'query optimization', 'I/O reduction', 'best practices']
+doc_type: 'guide'
+keywords: ['prewhere', 'query optimization', 'performance', 'filtering', 'best practices']
 ---
 
 import visual01 from '@site/static/images/guides/best-practices/prewhere_01.gif';
