@@ -10,15 +10,15 @@ doc_type: 'guide'
 
 # Time-series query performance
 
-After optimizing storage, the next step is improving query performance. 
-This section explores two key techniques: optimizing `ORDER BY` keys and using materialized views. 
+After optimizing storage, the next step is improving query performance.
+This section explores two key techniques: optimizing `ORDER BY` keys and using materialized views.
 We'll see how these approaches can reduce query times from seconds to milliseconds.
 
-## Optimize ORDER BY keys {#time-series-optimize-order-by}
+## Optimize `ORDER BY` keys {#time-series-optimize-order-by}
 
-Before attempting other optimizations, you should optimize their ordering key to ensure ClickHouse produces the fastest possible results. 
-Choosing the key right largely depends on the queries you're going to run. Suppose most of our queries filter by `project` and `subproject` columns. 
-In this case, its a good idea to add them to the ordering key - as well as the time column since we query on time as well:
+Before attempting other optimizations, you should optimize ordering keys to ensure ClickHouse produces the fastest possible results.
+Choosing the right key largely depends on the queries you're going to run. Suppose most of our queries filter by the `project` and `subproject` columns.
+In this case, it's a good idea to add them to the ordering key — as well as the `time` column since we query on time as well.
 
 Let's create another version of the table that has the same column types as `wikistat`, but is ordered by `(project, subproject, time)`.
 
@@ -171,7 +171,7 @@ GROUP BY path, month;
 
 This destination table will only be populated when new records are inserted into the `wikistat` table, so we need to do some [backfilling](/docs/data-modeling/backfilling).
 
-The easiest way to do this is using an [`INSERT INTO SELECT`](/docs/sql-reference/statements/insert-into#inserting-the-results-of-select) statement to insert directly into the materialized view's target table [using](https://github.com/ClickHouse/examples/tree/main/ClickHouse_vs_ElasticSearch/DataAnalytics#variant-1---directly-inserting-into-the-target-table-by-using-the-materialized-views-transformation-query) the view's SELECT query (transformation) :
+The easiest way to do this is using an [`INSERT INTO SELECT`](/docs/sql-reference/statements/insert-into#inserting-the-results-of-select) statement to insert directly into the materialized view's target table [using](https://github.com/ClickHouse/examples/tree/main/ClickHouse_vs_ElasticSearch/DataAnalytics#variant-1---directly-inserting-into-the-target-table-by-using-the-materialized-views-transformation-query) the view's `SELECT` query (transformation):
 
 ```sql
 INSERT INTO wikistat_top
@@ -187,10 +187,10 @@ Depending on the cardinality of the raw data set (we have 1 billion rows!), this
 
 * Creating a temporary table with a Null table engine
 * Connecting a copy of the normally used materialized view to that temporary table
-* Using an INSERT INTO SELECT query, copying all data from the raw data set into that temporary table
+* Using an `INSERT INTO SELECT` query, copying all data from the raw data set into that temporary table
 * Dropping the temporary table and the temporary materialized view.
 
-With that approach, rows from the raw data set are copied block-wise into the temporary table (which doesn't store any of these rows), and for each block of rows, a partial state is calculated and written to the target table, where these states are incrementally merged in the background.
+With this approach, rows from the raw data set are copied block-wise into the temporary table (which doesn't store any of these rows), and for each block of rows, a partial state is calculated and written to the target table, where these states are incrementally merged in the background.
 
 ```sql
 CREATE TABLE wikistat_backfill
@@ -261,5 +261,5 @@ LIMIT 10;
 10 rows in set. Elapsed: 0.004 sec.
 ```
 
-Our performance improvement here is dramatic. 
+Our performance improvement here is dramatic.
 Before it took just over 2 seconds to compute the answer to this query and now it takes only 4 milliseconds.

@@ -1,6 +1,6 @@
 ---
 slug: /managing-data/truncate
-sidebar_label: 'Truncate Table'
+sidebar_label: 'Truncate table'
 title: 'Truncate Table'
 hide_title: false
 description: 'Truncate allows the data in a table or database to be removed, while preserving their existence.'

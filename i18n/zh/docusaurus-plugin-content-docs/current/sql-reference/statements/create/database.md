@@ -4,10 +4,11 @@
 'sidebar_position': 35
 'slug': '/sql-reference/statements/create/database'
 'title': 'CREATE DATABASE'
+'doc_type': 'reference'
 ---
 
 
-# CREATE DATABASE
+# 创建数据库
 
 创建一个新的数据库。
 
@@ -15,36 +16,36 @@
 CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster] [ENGINE = engine(...)] [COMMENT 'Comment']
 ```
 
-## Clauses {#clauses}
+## 子句 {#clauses}
 
-### IF NOT EXISTS {#if-not-exists}
+### 如果不存在 {#if-not-exists}
 
-如果 `db_name` 数据库已经存在，则 ClickHouse 不会创建新数据库，并且：
+如果 `db_name` 数据库已经存在，则 ClickHouse 不会创建新的数据库，并且：
 
-- 如果指定了该子句，则不会抛出异常。
-- 如果未指定该子句，则会抛出异常。
+- 如果指定了子句，则不会抛出异常。
+- 如果未指定子句，则会抛出异常。
 
-### ON CLUSTER {#on-cluster}
+### 在集群上 {#on-cluster}
 
-ClickHouse 在指定集群的所有服务器上创建 `db_name` 数据库。更多细节请参阅 [Distributed DDL](../../../sql-reference/distributed-ddl.md) 文章。
+ClickHouse 在指定集群的所有服务器上创建 `db_name` 数据库。更多详细信息请参阅 [分布式 DDL](../../../sql-reference/distributed-ddl.md) 文章。
 
-### ENGINE {#engine}
+### 引擎 {#engine}
 
-默认情况下，ClickHouse 使用它自己的 [Atomic](../../../engines/database-engines/atomic.md) 数据库引擎。还有 [Lazy](../../../engines/database-engines/lazy.md)、[MySQL](../../../engines/database-engines/mysql.md)、[PostgresSQL](../../../engines/database-engines/postgresql.md)、[MaterializedPostgreSQL](../../../engines/database-engines/materialized-postgresql.md)、[Replicated](../../../engines/database-engines/replicated.md)、[SQLite](../../../engines/database-engines/sqlite.md)。
+默认情况下，ClickHouse 使用其自己的 [Atomic](../../../engines/database-engines/atomic.md) 数据库引擎。还提供 [Lazy](../../../engines/database-engines/lazy.md)、[MySQL](../../../engines/database-engines/mysql.md)、[PostgresSQL](../../../engines/database-engines/postgresql.md)、[MaterializedPostgreSQL](../../../engines/database-engines/materialized-postgresql.md)、[Replicated](../../../engines/database-engines/replicated.md)、[SQLite](../../../engines/database-engines/sqlite.md) 等引擎。
 
-### COMMENT {#comment}
+### 注释 {#comment}
 
-在创建数据库时可以添加注释。
+创建数据库时可以添加注释。
 
-该注释对所有数据库引擎都支持。
+所有数据库引擎都支持注释。
 
-**Syntax**
+**语法**
 
 ```sql
 CREATE DATABASE db_name ENGINE = engine(...) COMMENT 'Comment'
 ```
 
-**Example**
+**示例**
 
 查询：
 

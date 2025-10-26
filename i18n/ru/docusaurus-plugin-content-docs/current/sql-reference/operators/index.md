@@ -1,16 +1,15 @@
 ---
-description: 'Документация по операторам'
-displayed_sidebar: 'sqlreference'
-sidebar_label: 'Операторы'
+slug: '/sql-reference/operators/'
+sidebar_label: Операторы
 sidebar_position: 38
-slug: /sql-reference/operators/
-title: 'Операторы'
+description: 'Документация для Operators'
+title: Операторы
+doc_type: reference
+displayed_sidebar: sqlreference
 ---
-
-
 # Операторы
 
-ClickHouse преобразует операторы в соответствующие функции на этапе разбора запроса в зависимости от их приоритета, предшествования и ассоциативности.
+ClickHouse преобразует операторы в соответствующие функции на этапе разбора запроса в соответствии с их приоритетом, приоритетом и ассоциативностью.
 
 ## Операторы доступа {#access-operators}
 
@@ -28,7 +27,7 @@ ClickHouse преобразует операторы в соответствую
 
 `a * b` – Функция `multiply(a, b)`.
 
-Для умножения кортежа на число: [tupleMultiplyByNumber](../../sql-reference/functions/tuple-functions.md#tuplemultiplybynumber), для скалярного произведения: [dotProduct](/sql-reference/functions/array-functions#arraydotproduct).
+Для умножения кортежа на число: [tupleMultiplyByNumber](../../sql-reference/functions/tuple-functions.md#tuplemultiplybynumber), для скалярного произведения: [dotProduct](/sql-reference/functions/array-functions#arrayDotProduct).
 
 `a / b` – Функция `divide(a, b)`.
 
@@ -40,11 +39,11 @@ ClickHouse преобразует операторы в соответствую
 
 `a + b` – Функция `plus(a, b)`.
 
-Для сложения кортежа: [tuplePlus](../../sql-reference/functions/tuple-functions.md#tupleplus).
+Для сложения кортежей: [tuplePlus](../../sql-reference/functions/tuple-functions.md#tupleplus).
 
 `a - b` – Функция `minus(a, b)`.
 
-Для вычитания кортежа: [tupleMinus](../../sql-reference/functions/tuple-functions.md#tupleminus).
+Для вычитания кортежей: [tupleMinus](../../sql-reference/functions/tuple-functions.md#tupleminus).
 
 ## Операторы сравнения {#comparison-operators}
 
@@ -71,22 +70,22 @@ ClickHouse преобразует операторы в соответствую
 `a > b` – Функция `greater(a, b)`.
 
 ### функция like {#like-function}
-`a LIKE s` – Функция `like(a, b)`.
+`a LIKE b` – Функция `like(a, b)`.
 
 ### функция notLike {#notlike-function}
-`a NOT LIKE s` – Функция `notLike(a, b)`.
+`a NOT LIKE b` – Функция `notLike(a, b)`.
 
 ### функция ilike {#ilike-function}
-`a ILIKE s` – Функция `ilike(a, b)`.
+`a ILIKE b` – Функция `ilike(a, b)`.
 
 ### функция BETWEEN {#between-function}
-`a BETWEEN b AND c` – То же самое, что и `a >= b AND a <= c`.
+`a BETWEEN b AND c` – То же самое, что `a >= b AND a <= c`.
 
-`a NOT BETWEEN b AND c` – То же самое, что и `a < b OR a > c`.
+`a NOT BETWEEN b AND c` – То же самое, что `a < b OR a > c`.
 
 ## Операторы для работы с наборами данных {#operators-for-working-with-data-sets}
 
-См. [IN операторы](../../sql-reference/operators/in.md) и оператор [EXISTS](../../sql-reference/operators/exists.md).
+См. [операторы IN](../../sql-reference/operators/in.md) и [EXISTS](../../sql-reference/operators/exists.md).
 
 ### функция in {#in-function}
 `a IN ...` – Функция `in(a, b)`.
@@ -100,16 +99,16 @@ ClickHouse преобразует операторы в соответствую
 ### функция globalNotIn {#globalnotin-function}
 `a GLOBAL NOT IN ...` – Функция `globalNotIn(a, b)`.
 
-### функция in subquery {#in-subquery-function}
+### функция in подзапроса {#in-subquery-function}
 `a = ANY (subquery)` – Функция `in(a, subquery)`.
 
-### функция notIn subquery {#notin-subquery-function}
-`a != ANY (subquery)` – То же самое, что и `a NOT IN (SELECT singleValueOrNull(*) FROM subquery)`.
+### функция notIn подзапроса {#notin-subquery-function}
+`a != ANY (subquery)` – То же самое, что `a NOT IN (SELECT singleValueOrNull(*) FROM subquery)`.
 
-### функция in subquery {#in-subquery-function-1}
-`a = ALL (subquery)` – То же самое, что и `a IN (SELECT singleValueOrNull(*) FROM subquery)`.
+### функция in подзапроса {#in-subquery-function-1}
+`a = ALL (subquery)` – То же самое, что `a IN (SELECT singleValueOrNull(*) FROM subquery)`.
 
-### функция notIn subquery {#notin-subquery-function-1}
+### функция notIn подзапроса {#notin-subquery-function-1}
 `a != ALL (subquery)` – Функция `notIn(a, subquery)`.
 
 **Примеры**
@@ -160,18 +159,18 @@ EXTRACT(part FROM date);
 
 Извлекает части из заданной даты. Например, вы можете получить месяц из заданной даты или секунду из времени.
 
-Параметр `part` указывает, какую часть даты нужно извлечь. Доступные значения:
+Параметр `part` указывает, какую часть даты извлечь. Доступные значения:
 
-- `DAY` — День месяца. Возможные значения: 1–31.
-- `MONTH` — Номер месяца. Возможные значения: 1–12.
+- `DAY` — День месяца. Допустимые значения: 1–31.
+- `MONTH` — Номер месяца. Допустимые значения: 1–12.
 - `YEAR` — Год.
-- `SECOND` — Секунда. Возможные значения: 0–59.
-- `MINUTE` — Минутa. Возможные значения: 0–59.
-- `HOUR` — Час. Возможные значения: 0–23.
+- `SECOND` — Секунда. Допустимые значения: 0–59.
+- `MINUTE` — Минута. Допустимые значения: 0–59.
+- `HOUR` — Час. Допустимые значения: 0–23.
 
 Параметр `part` не чувствителен к регистру.
 
-Параметр `date` указывает дату или время для обработки. Поддерживаются типы [Date](../../sql-reference/data-types/date.md) или [DateTime](../../sql-reference/data-types/datetime.md).
+Параметр `date` указывает дату или время для обработки. Поддерживается тип [Date](../../sql-reference/data-types/date.md) или [DateTime](../../sql-reference/data-types/datetime.md).
 
 Примеры:
 
@@ -230,10 +229,10 @@ FROM test.Orders;
 - `QUARTER`
 - `YEAR`
 
-Вы также можете использовать строковый литерал при установке значения `INTERVAL`. Например, `INTERVAL 1 HOUR` идентичен `INTERVAL '1 hour'` или `INTERVAL '1' hour`.
+Вы также можете использовать строковый литерал при установке значения `INTERVAL`. Например, `INTERVAL 1 HOUR` эквивалентно `INTERVAL '1 hour'` или `INTERVAL '1' hour`.
 
 :::tip    
-Интервалы разных типов не могут быть объединены. Вы не можете использовать выражения вроде `INTERVAL 4 DAY 1 HOUR`. Указывайте интервалы в единицах, которые меньше или равны наименьшей единице интервала, например `INTERVAL 25 HOUR`. Вы можете использовать последовательные операции, как в приведенном ниже примере.
+Интервалы разных типов не могут быть объединены. Нельзя использовать выражения вроде `INTERVAL 4 DAY 1 HOUR`. Указывайте интервалы в единицах, которые меньше или равны наименьшей единице интервала, например, `INTERVAL 25 HOUR`. Вы можете использовать последовательные операции, как в примере ниже.
 :::
 
 Примеры:
@@ -269,7 +268,7 @@ SELECT now() AS current_date_time, current_date_time + INTERVAL '4' day + INTERV
 ```
 
 :::note    
-Синтаксис `INTERVAL` или функции `addDays` всегда предпочтительны. Простое сложение или вычитание (синтаксис типа `now() + ...`) не учитывает настройки времени. Например, переход на летнее/зимнее время.
+Синтаксис `INTERVAL` или функция `addDays` всегда предпочтительнее. Простой сложение или вычитание (синтаксис вроде `now() + ...`) не учитывает настройки времени. Например, переход на летнее время.
 :::
 
 Примеры:
@@ -289,17 +288,17 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 - Тип данных [Interval](../../sql-reference/data-types/special-data-types/interval.md)
 - Функции преобразования типов [toInterval](/sql-reference/functions/type-conversion-functions#tointervalyear)
 
-## Логический оператор И {#logical-and-operator}
+## Логический AND оператор {#logical-and-operator}
 
-Синтаксис `SELECT a AND b` — вычисляет логическое соединение `a` и `b` с помощью функции [and](/sql-reference/functions/logical-functions#and).
+Синтаксис `SELECT a AND b` — вычисляет логическое конъюнкцию `a` и `b` с использованием функции [and](/sql-reference/functions/logical-functions#and).
 
-## Логический оператор ИЛИ {#logical-or-operator}
+## Логический OR оператор {#logical-or-operator}
 
-Синтаксис `SELECT a OR b` — вычисляет логическое дизъюнкцию `a` и `b` с помощью функции [or](/sql-reference/functions/logical-functions#or).
+Синтаксис `SELECT a OR b` — вычисляет логическое дизъюнкцию `a` и `b` с использованием функции [or](/sql-reference/functions/logical-functions#or).
 
 ## Логический оператор отрицания {#logical-negation-operator}
 
-Синтаксис `SELECT NOT a` — вычисляет логическое отрицание `a` с помощью функции [not](/sql-reference/functions/logical-functions#not).
+Синтаксис `SELECT NOT a` — вычисляет логическое отрицание `a` с использованием функции [not](/sql-reference/functions/logical-functions#not).
 
 ## Условный оператор {#conditional-operator}
 
@@ -307,7 +306,7 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 
 Примечание:
 
-Условный оператор вычисляет значения `b` и `c`, затем проверяет, выполняется ли условие `a`, а затем возвращает соответствующее значение. Если `b` или `C` является функцией [arrayJoin()](/sql-reference/functions/array-join), каждая строка будет продублирована независимо от условия "a".
+Условный оператор вычисляет значения b и c, затем проверяет, выполнено ли условие a, и возвращает соответствующее значение. Если `b` или `C` являются функцией [arrayJoin()](/sql-reference/functions/array-join), каждая строка будет дублироваться независимо от условия "a".
 
 ## Условное выражение {#conditional-expression}
 
@@ -321,7 +320,7 @@ END
 
 Если `x` указан, то используется функция `transform(x, [a, ...], [b, ...], c)`. В противном случае – `multiIf(a, b, ..., c)`.
 
-Если в выражении нет `ELSE c`, то значение по умолчанию равно `NULL`.
+Если в выражении нет клаузулы `ELSE c`, то значением по умолчанию является `NULL`.
 
 Функция `transform` не работает с `NULL`.
 
@@ -329,7 +328,7 @@ END
 
 `s1 || s2` – Функция `concat(s1, s2)`.
 
-## Оператор создания лямбды {#lambda-creation-operator}
+## Оператор создания лямбда-функции {#lambda-creation-operator}
 
 `x -> expr` – Функция `lambda(x, expr)`.
 
@@ -337,18 +336,18 @@ END
 
 ## Оператор создания массива {#array-creation-operator}
 
-`[x1, ...]` – Функция `array(x1, ...)`.
+`[x1, ...]` – Функция `array(x1, ...)` .
 
 ## Оператор создания кортежа {#tuple-creation-operator}
 
-`(x1, x2, ...)` – Функция `tuple(x1, x2, ...)`.
+`(x1, x2, ...)` – Функция `tuple(x2, x2, ...)` .
 
 ## Ассоциативность {#associativity}
 
-Все бинарные операторы имеют левую ассоциативность. Например, `1 + 2 + 3` преобразуется в `plus(plus(1, 2), 3)`.
-Иногда это не работает так, как вы ожидаете. Например, `SELECT 4 > 2 > 3` вернет 0.
+Все бинарные операторы имеют левостороннюю ассоциативность. Например, `1 + 2 + 3` преобразуется в `plus(plus(1, 2), 3)`.
+Иногда это не срабатывает так, как вы ожидаете. Например, `SELECT 4 > 2 > 3` приведет к результату 0.
 
-Для повышения эффективности функции `and` и `or` принимают любое количество аргументов. Соответствующие цепочки операторов `AND` и `OR` преобразуются в один вызов этих функций.
+Для повышения эффективности функции `and` и `or` принимают любое количество аргументов. Соответствующие цепочки операторов `AND` и `OR` преобразуются в единственный вызов этих функций.
 
 ## Проверка на `NULL` {#checking-for-null}
 
@@ -356,12 +355,12 @@ ClickHouse поддерживает операторы `IS NULL` и `IS NOT NULL
 
 ### IS NULL {#is_null}
 
-- Для значений типа [Nullable](../../sql-reference/data-types/nullable.md) оператор `IS NULL` возвращает:
-    - `1`, если значение `NULL`.
-    - `0` в противном случае.
+- Для значений типов [Nullable](../../sql-reference/data-types/nullable.md) оператор `IS NULL` возвращает:
+  - `1`, если значение равно `NULL`.
+  - `0` в противном случае.
 - Для других значений оператор `IS NULL` всегда возвращает `0`.
 
-Можно оптимизировать, включив настройку [optimize_functions_to_subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns). С `optimize_functions_to_subcolumns = 1` функция читает только [null](../../sql-reference/data-types/nullable.md#finding-null) подколонку вместо чтения и обработки всех данных колонки. Запрос `SELECT n IS NULL FROM table` преобразуется в `SELECT n.null FROM TABLE`.
+Может быть оптимизировано включением настройки [optimize_functions_to_subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns). При `optimize_functions_to_subcolumns = 1` функция читает только подс колонку [null](../../sql-reference/data-types/nullable.md#finding-null) вместо полной обработки данных всей колонки. Запрос `SELECT n IS NULL FROM table` преобразуется в `SELECT n.null FROM TABLE`.
 
 <!-- -->
 
@@ -377,9 +376,9 @@ SELECT x+100 FROM t_null WHERE y IS NULL
 
 ### IS NOT NULL {#is_not_null}
 
-- Для значений типа [Nullable](../../sql-reference/data-types/nullable.md) оператор `IS NOT NULL` возвращает:
-    - `0`, если значение `NULL`.
-    - `1` в противном случае.
+- Для значений типов [Nullable](../../sql-reference/data-types/nullable.md) оператор `IS NOT NULL` возвращает:
+  - `0`, если значение равно `NULL`.
+  - `1` в противном случае.
 - Для других значений оператор `IS NOT NULL` всегда возвращает `1`.
 
 <!-- -->
@@ -394,4 +393,4 @@ SELECT * FROM t_null WHERE y IS NOT NULL
 └───┴───┘
 ```
 
-Можно оптимизировать, включив настройку [optimize_functions_to_subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns). С `optimize_functions_to_subcolumns = 1` функция читает только [null](../../sql-reference/data-types/nullable.md#finding-null) подколонку вместо чтения и обработки всех данных колонки. Запрос `SELECT n IS NOT NULL FROM table` преобразуется в `SELECT NOT n.null FROM TABLE`.
+Может быть оптимизировано включением настройки [optimize_functions_to_subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns). При `optimize_functions_to_subcolumns = 1` функция читает только подс колонку [null](../../sql-reference/data-types/nullable.md#finding-null) вместо полной обработки данных всей колонки. Запрос `SELECT n IS NOT NULL FROM table` преобразуется в `SELECT NOT n.null FROM TABLE`.

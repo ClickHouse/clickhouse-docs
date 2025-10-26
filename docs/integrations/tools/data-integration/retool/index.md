@@ -17,11 +17,11 @@ import retool_02 from '@site/static/images/integrations/tools/data-integration/r
 import retool_03 from '@site/static/images/integrations/tools/data-integration/retool/retool_03.png';
 import retool_04 from '@site/static/images/integrations/tools/data-integration/retool/retool_04.png';
 import retool_05 from '@site/static/images/integrations/tools/data-integration/retool/retool_05.png';
-import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
+import PartnerBadge from '@theme/badges/PartnerBadge';
 
 # Connecting Retool to ClickHouse
 
-<CommunityMaintainedBadge/>
+<PartnerBadge/>
 
 ## 1. Gather your connection details {#1-gather-your-connection-details}
 <ConnectionDetails />

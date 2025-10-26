@@ -1,114 +1,19 @@
 ---
-description: '条件付き関数のドキュメント'
-sidebar_label: '条件付き関数'
-sidebar_position: 40
-slug: '/sql-reference/functions/conditional-functions'
-title: 'Conditional Functions'
+'description': 'Conditional Functionsに関するDocumentation'
+'sidebar_label': '条件付き'
+'slug': '/sql-reference/functions/conditional-functions'
+'title': '条件付き関数'
+'doc_type': 'reference'
 ---
 
 
+# 条件関数
 
+## 概要 {#overview}
 
+### 条件結果の直接使用 {#using-conditional-results-directly}
 
-# 条件付き関数
-
-## if {#if}
-
-条件分岐を実行します。
-
-条件 `cond`がゼロ以外の値に評価される場合、関数は式 `then`の結果を返します。 `cond`がゼロまたは `NULL`に評価される場合は、`else`式の結果が返されます。
-
-設定 [short_circuit_function_evaluation](/operations/settings/settings#short_circuit_function_evaluation) は、ショートサーキット評価が使用されるかどうかを制御します。 有効にすると、`then`式は `cond`が `true`である行に対してのみ評価され、 `else`式は `cond`が `false`である場合に評価されます。 たとえば、ショートサーキット評価を使用すると、クエリ `SELECT if(number = 0, 0, intDiv(42, number)) FROM numbers(10)`を実行するときに、ゼロ除算の例外がスローされません。
-
-`then`と`else`は同様の型でなければなりません。
-
-**構文**
-
-```sql
-if(cond, then, else)
-```
-エイリアス: `cond ? then : else`（三項演算子）
-
-**引数**
-
-- `cond` – 評価される条件。 UInt8, Nullable(UInt8) または NULL。
-- `then` – `condition`が真である場合に返される式。
-- `else` – `condition`が偽であるかNULLである場合に返される式。
-
-**返される値**
-
-条件 `cond`に応じて、`then`または`else`式のいずれかの結果。
-
-**例**
-
-```sql
-SELECT if(1, plus(2, 2), plus(2, 6));
-```
-
-結果:
-
-```text
-┌─plus(2, 2)─┐
-│          4 │
-└────────────┘
-```
-
-## multiIf {#multiif}
-
-クエリ内で[CASE](../../sql-reference/operators/index.md#conditional-expression)演算子をよりコンパクトに記述できるようにします。
-
-**構文**
-
-```sql
-multiIf(cond_1, then_1, cond_2, then_2, ..., else)
-```
-
-設定 [short_circuit_function_evaluation](/operations/settings/settings#short_circuit_function_evaluation) は、ショートサーキット評価が使用されるかどうかを制御します。 有効にすると、`then_i`式は、`((NOT cond_1) AND (NOT cond_2) AND ... AND (NOT cond_{i-1}) AND cond_i)`が`true`である行に対してのみ評価され、`cond_i`は、`((NOT cond_1) AND (NOT cond_2) AND ... AND (NOT cond_{i-1}))`が`true`である行に対してのみ評価されます。たとえば、ショートサーキット評価を使用すると、クエリ `SELECT multiIf(number = 2, intDiv(1, number), number = 5) FROM numbers(10)`を実行するときに、ゼロ除算の例外が発生しません。
-
-**引数**
-
-関数は `2N+1` のパラメータを受け付けます:
-- `cond_N` — `then_N`が返されるべきかを制御するN番目の評価された条件。
-- `then_N` — `cond_N`が真である場合の関数の結果。
-- `else` — どの条件も真でない場合の関数の結果。
-
-**返される値**
-
-条件 `cond_N`に応じて、`then_N`または`else`の式のいずれかの結果。
-
-**例**
-
-次のテーブルを考えます。
-
-```text
-┌─left─┬─right─┐
-│ ᴺᵁᴸᴸ │     4 │
-│    1 │     3 │
-│    2 │     2 │
-│    3 │     1 │
-│    4 │  ᴺᵁᴸᴸ │
-└──────┴───────┘
-```
-
-```sql
-SELECT
-    left,
-    right,
-    multiIf(left < right, 'left is smaller', left > right, 'left is greater', left = right, 'Both equal', 'Null value') AS result
-FROM LEFT_RIGHT
-
-┌─left─┬─right─┬─result──────────┐
-│ ᴺᵁᴸᴸ │     4 │ Null value      │
-│    1 │     3 │ left is smaller │
-│    2 │     2 │ Both equal      │
-│    3 │     1 │ left is greater │
-│    4 │  ᴺᵁᴸᴸ │ Null value      │
-└──────┴───────┴─────────────────┘
-```
-
-## 条件結果を直接使用 {#using-conditional-results-directly}
-
-条件は常に `0`、`1` または `NULL` になります。したがって、次のように条件結果を直接使用できます。
+条件は常に `0`、 `1`、または `NULL` に評価されます。したがって、条件結果を次のように直接使用できます。
 
 ```sql
 SELECT left < right AS is_small
@@ -123,9 +28,9 @@ FROM LEFT_RIGHT
 └──────────┘
 ```
 
-## NULL値に関する条件 {#null-values-in-conditionals}
+### 条件内の NULL 値 {#null-values-in-conditionals}
 
-条件に `NULL` 値が関与すると、結果も `NULL` になります。
+`NULL` 値が条件に関与する場合、結果も `NULL` になります。
 
 ```sql
 SELECT
@@ -139,9 +44,9 @@ SELECT
 └───────────────┴───────────────┴──────────────────┴────────────────────┘
 ```
 
-したがって、タイプが `Nullable` の場合は、クエリを慎重に構築する必要があります。
+したがって、型が `Nullable` の場合は、クエリを注意深く構築する必要があります。
 
-次の例は、`multiIf`に等しい条件を追加できずに失敗することでこれを示しています。
+以下の例は、`multiIf` に等しい条件を追加できずに失敗することを示しています。
 
 ```sql
 SELECT
@@ -159,128 +64,15 @@ FROM LEFT_RIGHT
 └──────┴───────┴──────────────────┘
 ```
 
-## greatest {#greatest}
+### CASE ステートメント {#case-statement}
 
-値のリストの中で最大のものを返します。 リストのすべてのメンバーは互換性のある型でなければなりません。
+ClickHouse の CASE 式は、SQL の CASE 演算子と同様の条件ロジックを提供します。条件を評価し、最初に一致した条件に基づいて値を返します。
 
-例:
-
-```sql
-SELECT greatest(1, 2, toUInt8(3), 3.) result,  toTypeName(result) type;
-```
-```response
-┌─result─┬─type────┐
-│      3 │ Float64 │
-└────────┴─────────┘
-```
-
-:::note
-返される型はFloat64であり、UInt8は比較のために64ビットに昇格する必要があります。
-:::
-
-```sql
-SELECT greatest(['hello'], ['there'], ['world'])
-```
-```response
-┌─greatest(['hello'], ['there'], ['world'])─┐
-│ ['world']                                 │
-└───────────────────────────────────────────┘
-```
-
-```sql
-SELECT greatest(toDateTime32(now() + toIntervalDay(1)), toDateTime64(now(), 3))
-```
-```response
-┌─greatest(toDateTime32(plus(now(), toIntervalDay(1))), toDateTime64(now(), 3))─┐
-│                                                       2023-05-12 01:16:59.000 │
-└─────────────────────────────────────────────────────────────────────────────┘
-```
-
-:::note
-返される型はDateTime64であり、DateTime32は比較のために64ビットに昇格する必要があります。
-:::
-
-## least {#least}
-
-値のリストの中で最小のものを返します。 リストのすべてのメンバーは互換性のある型でなければなりません。
-
-例:
-
-```sql
-SELECT least(1, 2, toUInt8(3), 3.) result,  toTypeName(result) type;
-```
-```response
-┌─result─┬─type────┐
-│      1 │ Float64 │
-└────────┴─────────┘
-```
-
-:::note
-返される型はFloat64であり、UInt8は比較のために64ビットに昇格する必要があります。
-:::
-
-```sql
-SELECT least(['hello'], ['there'], ['world'])
-```
-```response
-┌─least(['hello'], ['there'], ['world'])─┐
-│ ['hello']                              │
-└────────────────────────────────────────┘
-```
-
-```sql
-SELECT least(toDateTime32(now() + toIntervalDay(1)), toDateTime64(now(), 3))
-```
-```response
-┌─least(toDateTime32(plus(now(), toIntervalDay(1))), toDateTime64(now(), 3))─┐
-│                                                    2023-05-12 01:16:59.000 │
-└────────────────────────────────────────────────────────────────────────────┘
-```
-
-:::note
-返される型はDateTime64であり、DateTime32は比較のために64ビットに昇格する必要があります。
-:::
-
-## clamp {#clamp}
-
-戻り値をAとBの間に制約します。
-
-**構文**
-
-```sql
-clamp(value, min, max)
-```
-
-**引数**
-
-- `value` – 入力値。
-- `min` – 下限を制限します。
-- `max` – 上限を制限します。
-
-**返される値**
-
-値が最小値より小さい場合、最小値を返します。最大値より大きい場合は、最大値を返します。それ以外の場合は、現在の値を返します。
-
-例:
-
-```sql
-SELECT clamp(1, 2, 3) result,  toTypeName(result) type;
-```
-```response
-┌─result─┬─type────┐
-│      2 │ Float64 │
-└────────┴─────────┘
-```
-
-## CASE文 {#case-statement}
-
-ClickHouseのCASE式は、SQLのCASE演算子に類似した条件ロジックを提供します。条件を評価し、最初に一致した条件に基づいて値を返します。
-
-ClickHouseは2つの形式のCASEをサポートしています。
+ClickHouse は、2 つの CASE の形式をサポートしています。
 
 1. `CASE WHEN ... THEN ... ELSE ... END`
-<br/>
-この形式は完全な柔軟性を提供し、内部的には[multiIf](/sql-reference/functions/conditional-functions#multiif)関数を使用して実装されています。各条件は独立して評価され、式は非定数の値を含むことができます。
+   <br/>
+   この形式は完全な柔軟性を提供し、[multiIf](/sql-reference/functions/conditional-functions#multiIf) 関数を用いて内部的に実装されています。各条件は独立して評価され、式には非定数の値を含めることができます。
 
 ```sql
 SELECT
@@ -293,7 +85,7 @@ SELECT
 FROM system.numbers
 WHERE number < 5;
 
--- 翻訳されます
+-- is translated to
 SELECT
     number,
     multiIf((number % 2) = 0, number + 1, (number % 2) = 1, number * 10, number) AS result
@@ -308,14 +100,14 @@ WHERE number < 5
 │      4 │      5 │
 └────────┴────────┘
 
-5件の行がセットされました。経過時間: 0.002秒。
+5 rows in set. Elapsed: 0.002 sec.
 ```
 
 2. `CASE <expr> WHEN <val1> THEN ... WHEN <val2> THEN ... ELSE ... END`
-<br/>
-このよりコンパクトな形式は、定数値の一致の最適化を行い、内部的に `caseWithExpression()`を使用します。
+   <br/>
+   このコンパクトな形式は、定数値のマッチングに最適化されており、内部的には `caseWithExpression()` を使用しています。
 
-たとえば、次のように記述できます。
+例えば、以下は有効です。
 
 ```sql
 SELECT
@@ -328,7 +120,7 @@ SELECT
 FROM system.numbers
 WHERE number < 3;
 
--- 翻訳されます
+-- is translated to
 
 SELECT
     number,
@@ -342,10 +134,10 @@ WHERE number < 3
 │      2 │      0 │
 └────────┴────────┘
 
-3件の行がセットされました。経過時間: 0.002秒。
+3 rows in set. Elapsed: 0.002 sec.
 ```
 
-この形式では、返す式が定数である必要はありません。
+この形式では、戻り値の式を定数にする必要はありません。
 
 ```sql
 SELECT
@@ -358,7 +150,7 @@ SELECT
 FROM system.numbers
 WHERE number < 3;
 
--- 翻訳されます
+-- is translated to
 
 SELECT
     number,
@@ -372,18 +164,18 @@ WHERE number < 3
 │      2 │                        2 │
 └────────┴──────────────────────────┘
 
-3件の行がセットされました。経過時間: 0.001秒。
+3 rows in set. Elapsed: 0.001 sec.
 ```
 
-### 注意点 {#caveats}
+#### 注意事項 {#caveats}
 
-ClickHouseは、CASE式（またはその内部相当物、たとえば `multiIf`）の結果型を、条件を評価する前に決定します。これは、返す式が異なる型、たとえば異なるタイムゾーンや数値型である場合に重要です。
+ClickHouse は、CASE 式 (またはその内部等価物である `multiIf`) の結果タイプを、任意の条件を評価する前に決定します。これは、戻り値の式が異なる型 (例えば、異なるタイムゾーンや数値型) の場合に重要です。
 
-- 結果型は、すべてのブランチの中で最大の互換性のある型に基づいて選択されます。
-- この型が選択されると、他のすべてのブランチは暗黙的にこの型にキャストされます - 実行時にそのロジックが実行されない場合でも。
-- DateTime64のような型では、タイムゾーンが型シグネチャの一部であるため、驚くべき動作を引き起こす可能性があります：最初に遭遇したタイムゾーンがすべてのブランチに使用される場合があります、他のブランチが異なるタイムゾーンを指定している場合であっても。
+- 結果の型は、すべてのブランチの中で互換性のある最大の型に基づいて選択されます。
+- この型が選択されたら、他のすべてのブランチは暗黙的にこの型にキャストされます - たとえそのロジックが実行時に実行されることは決してないとしても。
+- DateTime64 のように、タイムゾーンが型の署名の一部である型の場合、これは驚くべき動作を引き起こす可能性があります: 最初に遭遇したタイムゾーンが、他のブランチが異なるタイムゾーンを指定していても、すべてのブランチで使用される可能性があります。
 
-たとえば、以下ではすべての行が最初に一致したブランチのタイムスタンプを返します。つまり、`Asia/Kolkata`です。
+例えば、以下ではすべての行が最初にマッチしたブランチのタイムゾーンでタイムスタンプを返します。つまり、`Asia/Kolkata` です。
 
 ```sql
 SELECT
@@ -396,7 +188,7 @@ SELECT
 FROM system.numbers
 WHERE number < 3;
 
--- 翻訳されます
+-- is translated to
 
 SELECT
     number,
@@ -410,10 +202,10 @@ WHERE number < 3
 │      2 │ 1970-01-01 05:30:00.000 │
 └────────┴─────────────────────────┘
 
-3件の行がセットされました。経過時間: 0.011秒。
+3 rows in set. Elapsed: 0.011 sec.
 ```
 
-ここで、ClickHouseは複数の `DateTime64(3, <timezone>)`の返り値の型を見ます。最初に見るものを基に共通の型を推論し、他のブランチを暗黙的にこの型にキャストします。
+ここでは、ClickHouse は複数の `DateTime64(3, <timezone>)` の戻り型を見ます。最初に見るものとして `DateTime64(3, 'Asia/Kolkata'` を推測し、他のブランチをこの型に暗黙的にキャストします。
 
 これは、意図したタイムゾーンのフォーマットを保持するために文字列に変換することで対処できます。
 
@@ -428,7 +220,7 @@ SELECT
 FROM system.numbers
 WHERE number < 3;
 
--- 翻訳されます
+-- is translated to
 
 SELECT
     number,
@@ -442,4 +234,344 @@ WHERE number < 3
 │      2 │ 1970-01-01 00:00:00 │
 └────────┴─────────────────────┘
 
-3件の行がセットされました。経過時間: 0.002秒。
+3 rows in set. Elapsed: 0.002 sec.
+```
+
+<!-- 
+以下のタグの内部コンテンツは、ドキュメントフレームワークのビルド時に 
+system.functions から生成されたドキュメントで置き換えられます。タグを変更したり削除したりしないでください。
+参照: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+-->
+
+<!--AUTOGENERATED_START-->
+## clamp {#clamp}
+
+導入版: v24.5
+
+
+値を指定された最小および最大境界内に制限します。
+
+値が最小値未満の場合、最小値を返します。値が最大値を超える場合、最大値を返します。それ以外の場合は、値自体を返します。
+
+すべての引数は比較可能な型でなければなりません。結果の型は、すべての引数の中で互換性のある最大の型です。
+    
+
+**構文**
+
+```sql
+clamp(value, min, max)
+```
+
+**引数**
+
+- `value` — 制限する値。 - `min` — 最小境界。 - `max` — 最大境界。 
+
+**返される値**
+
+値を [min, max] 範囲に制限して返します。
+
+**例**
+
+**基本的な使用法**
+
+```sql title=Query
+SELECT clamp(5, 1, 10) AS result;
+```
+
+```response title=Response
+┌─result─┐
+│      5 │
+└────────┘
+```
+
+**最小値を下回る値**
+
+```sql title=Query
+SELECT clamp(-3, 0, 7) AS result;
+```
+
+```response title=Response
+┌─result─┐
+│      0 │
+└────────┘
+```
+
+**最大値を上回る値**
+
+```sql title=Query
+SELECT clamp(15, 0, 7) AS result;
+```
+
+```response title=Response
+┌─result─┐
+│      7 │
+└────────┘
+```
+
+
+
+## greatest {#greatest}
+
+導入版: v1.1
+
+
+引数の中で最大の値を返します。
+`NULL` 引数は無視されます。
+
+- 配列の場合、辞書式で最大の配列を返します。
+- `DateTime` 型の場合、結果の型は最大の型に昇格されます (例えば、`DateTime32` と混在している場合は `DateTime64`)。
+
+:::note 設定 `least_greatest_legacy_null_behavior` を使用して `NULL` の動作を変更します
+バージョン [24.12](/whats-new/changelog/2024#a-id2412a-clickhouse-release-2412-2024-12-19) は、`NULL` 値が無視されるという後方互換性のない変更を導入しました。これにより、以前は引数のいずれかが `NULL` の場合は `NULL` を返していました。
+以前の動作を保持するには、設定 `least_greatest_legacy_null_behavior` (デフォルト: `false`) を `true` に設定します。
+:::
+    
+
+**構文**
+
+```sql
+greatest(x1[, x2, ...])
+```
+
+**引数**
+
+- `x1[, x2, ...]` — 比較する 1 つまたは複数の値。すべての引数は比較可能な型でなければなりません。 [`Any`](/sql-reference/data-types)
+
+
+**返される値**
+
+引数の中で最大の値を返し、最大互換性のある型に昇格します。 [`Any`](/sql-reference/data-types)
+
+**例**
+
+**数値型**
+
+```sql title=Query
+SELECT greatest(1, 2, toUInt8(3), 3.) AS result, toTypeName(result) AS type;
+-- The type returned is a Float64 as the UInt8 must be promoted to 64 bit for the comparison.
+```
+
+```response title=Response
+┌─result─┬─type────┐
+│      3 │ Float64 │
+└────────┴─────────┘
+```
+
+**配列**
+
+```sql title=Query
+SELECT greatest(['hello'], ['there'], ['world']);
+```
+
+```response title=Response
+┌─greatest(['hello'], ['there'], ['world'])─┐
+│ ['world']                                 │
+└───────────────────────────────────────────┘
+```
+
+**DateTime 型**
+
+```sql title=Query
+SELECT greatest(toDateTime32(now() + toIntervalDay(1)), toDateTime64(now(), 3));
+-- The type returned is a DateTime64 as the DateTime32 must be promoted to 64 bit for the comparison.
+```
+
+```response title=Response
+┌─greatest(toD⋯(now(), 3))─┐
+│  2025-05-28 15:50:53.000 │
+└──────────────────────────┘
+```
+
+
+
+## if {#if}
+
+導入版: v1.1
+
+
+条件分岐を実行します。
+
+- 条件 `cond` がゼロでない値に評価される場合、関数は式 `then` の結果を返します。
+- `cond` がゼロまたは NULL に評価される場合、`else` 式の結果が返されます。
+
+設定 [`short_circuit_function_evaluation`](/operations/settings/settings#short_circuit_function_evaluation) は、ショートサーキット評価が使用されるかどうかを制御します。
+
+有効の場合、`then` 式は `cond` が真である行のみで評価され、`else` 式は `cond` が偽である行で評価されます。
+
+例えば、ショートサーキット評価を使用すると、以下のクエリを実行する際にゼロによる除算例外がスローされません。
+
+```sql
+SELECT if(number = 0, 0, intDiv(42, number)) FROM numbers(10)
+```
+
+`then` と `else` は同じ型である必要があります。
+
+
+**構文**
+
+```sql
+if(cond, then, else)
+```
+
+**引数**
+
+- `cond` — 評価される条件。 [`UInt8`](/sql-reference/data-types/int-uint) または [`Nullable(UInt8)`](/sql-reference/data-types/nullable) または [`NULL`](/sql-reference/syntax#null)
+- `then` — `cond` が真の場合に返される式。 - `else` — `cond` が偽または `NULL` の場合に返される式。 
+
+**返される値**
+
+条件 `cond` に応じた `then` または `else` 式の結果。
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT if(1, 2 + 2, 2 + 6) AS res;
+```
+
+```response title=Response
+┌─res─┐
+│   4 │
+└─────┘
+```
+
+
+
+## least {#least}
+
+導入版: v1.1
+
+
+引数の中で最小の値を返します。
+`NULL` 引数は無視されます。
+
+- 配列の場合、辞書式で最小の配列を返します。
+- DateTime 型の場合、結果の型は最大の型に昇格されます (例えば、DateTime64 が DateTime32 と混在している場合)。
+
+:::note 設定 `least_greatest_legacy_null_behavior` を使用して `NULL` の動作を変更します
+バージョン [24.12](/whats-new/changelog/2024#a-id2412a-clickhouse-release-2412-2024-12-19) は、`NULL` 値が無視されるという後方互換性のない変更を導入しました。これにより、以前は引数のいずれかが `NULL` の場合は `NULL` を返していました。
+以前の動作を保持するには、設定 `least_greatest_legacy_null_behavior` (デフォルト: `false`) を `true` に設定します。
+:::
+    
+
+**構文**
+
+```sql
+least(x1[, x2, ...])
+```
+
+**引数**
+
+- `x1[, x2, ...]` — 比較する単一の値または複数の値。すべての引数は比較可能な型でなければなりません。 [`Any`](/sql-reference/data-types)
+
+
+**返される値**
+
+引数の中で最小の値を返し、最大互換性のある型に昇格します。 [`Any`](/sql-reference/data-types)
+
+**例**
+
+**数値型**
+
+```sql title=Query
+SELECT least(1, 2, toUInt8(3), 3.) AS result, toTypeName(result) AS type;
+-- The type returned is a Float64 as the UInt8 must be promoted to 64 bit for the comparison.
+```
+
+```response title=Response
+┌─result─┬─type────┐
+│      1 │ Float64 │
+└────────┴─────────┘
+```
+
+**配列**
+
+```sql title=Query
+SELECT least(['hello'], ['there'], ['world']);
+```
+
+```response title=Response
+┌─least(['hell⋯ ['world'])─┐
+│ ['hello']                │
+└──────────────────────────┘
+```
+
+**DateTime 型**
+
+```sql title=Query
+SELECT least(toDateTime32(now() + toIntervalDay(1)), toDateTime64(now(), 3));
+-- The type returned is a DateTime64 as the DateTime32 must be promoted to 64 bit for the comparison.
+```
+
+```response title=Response
+┌─least(toDate⋯(now(), 3))─┐
+│  2025-05-27 15:55:20.000 │
+└──────────────────────────┘
+```
+
+
+
+## multiIf {#multiIf}
+
+導入版: v1.1
+
+
+[`CASE`](/sql-reference/operators#conditional-expression) 演算子をクエリ内でよりコンパクトに記述することを可能にします。
+条件を順に評価します。最初に真 (ゼロでなく、かつ `NULL` でない) である条件に対して、対応するブランチの値を返します。
+条件がすべて真でない場合、`else` 値が返されます。
+
+設定 [`short_circuit_function_evaluation`](/operations/settings/settings#short_circuit_function_evaluation) は、ショートサーキット評価が使用されるかどうかを制御します。 有効な場合、`then_i` 式は `((NOT cond_1) AND ... AND (NOT cond_{i-1}) AND cond_i)` が真である行でのみ評価されます。
+
+例えば、ショートサーキット評価を使用すると、以下のクエリを実行する際にゼロによる除算例外がスローされません。
+
+```sql
+SELECT multiIf(number = 2, intDiv(1, number), number = 5) FROM numbers(10)
+```
+
+すべてのブランチと else 式は共通のスーパータイプを持たなければなりません。 `NULL` 条件は false と見なされます。
+    
+
+**構文**
+
+```sql
+multiIf(cond_1, then_1, cond_2, then_2, ..., else)
+```
+
+**引数**
+
+- `cond_N` — `then_N` が返されるかどうかを制御する N 番目に評価される条件。 [`UInt8`](/sql-reference/data-types/int-uint) または [`Nullable(UInt8)`](/sql-reference/data-types/nullable) または [`NULL`](/sql-reference/syntax#null)
+- `then_N` — `cond_N` が真の場合の関数の結果。 - `else` — すべての条件が真でない場合の関数の結果。 
+
+**返される値**
+
+一致する `cond_N` に対する `then_N` の結果を返し、そうでなければ `else` 条件を返します。
+
+**例**
+
+**使用例**
+
+```sql title=Query
+CREATE TABLE LEFT_RIGHT (left Nullable(UInt8), right Nullable(UInt8)) ENGINE = Memory;
+INSERT INTO LEFT_RIGHT VALUES (NULL, 4), (1, 3), (2, 2), (3, 1), (4, NULL);
+
+SELECT
+    left,
+    right,
+    multiIf(left < right, 'left is smaller', left > right, 'left is greater', left = right, 'Both equal', 'Null value') AS result
+FROM LEFT_RIGHT;
+```
+
+```response title=Response
+┌─left─┬─right─┬─result──────────┐
+│ ᴺᵁᴸᴸ │     4 │ Null value      │
+│    1 │     3 │ left is smaller │
+│    2 │     2 │ Both equal      │
+│    3 │     1 │ left is greater │
+│    4 │  ᴺᵁᴸᴸ │ Null value      │
+└──────┴───────┴─────────────────┘
+```
+
+
+
+<!--AUTOGENERATED_END-->

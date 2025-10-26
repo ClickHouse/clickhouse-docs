@@ -1,37 +1,36 @@
 ---
-description: 'Системная таблица, содержащая информацию о потребителях Kafka.'
+slug: '/operations/system-tables/kafka_consumers'
+description: 'Системная таблица, содержащая информацию о Kafka consumers.'
+title: system.kafka_consumers
 keywords: ['системная таблица', 'kafka_consumers']
-slug: /operations/system-tables/kafka_consumers
-title: 'system.kafka_consumers'
+doc_type: reference
 ---
-
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
-Содержит информацию о потребителях Kafka.  
-Применимо для [Kafka table engine](../../engines/table-engines/integrations/kafka) (нативная интеграция ClickHouse)
+Содержит информацию о потребителях Kafka. Применимо для [Kafka table engine](../../engines/table-engines/integrations/kafka) (нативная интеграция ClickHouse)
 
 Столбцы:
 
 - `database` (String) - база данных таблицы с Kafka Engine.
 - `table` (String) - имя таблицы с Kafka Engine.
-- `consumer_id` (String) - идентификатор потребителя Kafka. Обратите внимание, что у одной таблицы может быть несколько потребителей. Указывается параметром `kafka_num_consumers`.
+- `consumer_id` (String) - идентификатор потребителя Kafka. Обратите внимание, что у таблицы может быть много потребителей. Указывается параметром `kafka_num_consumers`.
 - `assignments.topic` (Array(String)) - топик Kafka.
 - `assignments.partition_id` (Array(Int32)) - идентификатор партиции Kafka. Обратите внимание, что только один потребитель может быть назначен на партицию.
-- `assignments.current_offset` (Array(Int64)) - текущий смещение.
-- `exceptions.time`, (Array(DateTime)) - метка времени, когда были сгенерированы 10 последних исключений.
-- `exceptions.text`, (Array(String)) - текст 10 последних исключений.
-- `last_poll_time`, (DateTime) - метка времени последнего опроса.
-- `num_messages_read`, (UInt64) - количество сообщений, прочитанных потребителем.
-- `last_commit_time`, (DateTime) - метка времени последнего коммита.
-- `num_commits`, (UInt64) - общее количество коммитов для потребителя.
-- `last_rebalance_time`, (DateTime) - метка времени последней перебалансировки Kafka.
-- `num_rebalance_revocations`, (UInt64) - количество раз, когда потребителю были отозваны его партиции.
-- `num_rebalance_assignments`, (UInt64) - количество раз, когда потребитель был назначен в кластер Kafka.
-- `is_currently_used`, (UInt8) - потребитель используется.
-- `last_used`, (UInt64) - последний раз, когда этот потребитель использовался, unix-время в микросекундах.
-- `rdkafka_stat` (String) - внутренняя статистика библиотеки. См. https://github.com/ClickHouse/librdkafka/blob/master/STATISTICS.md . Установите `statistics_interval_ms` в 0, чтобы отключить, по умолчанию 3000 (раз в три секунды).
+- `assignments.current_offset` (Array(Int64)) - текущий смещения.
+- `exceptions.time` (Array(DateTime)) - временная метка, когда были сгенерированы 10 самых последних исключений.
+- `exceptions.text` (Array(String)) - текст 10 самых последних исключений.
+- `last_poll_time` (DateTime) - временная метка самого последнего опроса.
+- `num_messages_read` (UInt64) - количество сообщений, прочитанных потребителем.
+- `last_commit_time` (DateTime) - временная метка самого последнего коммита.
+- `num_commits` (UInt64) - общее количество коммитов для потребителя.
+- `last_rebalance_time` (DateTime) - временная метка самого последнего ребалансировки Kafka
+- `num_rebalance_revocations` (UInt64) - количество раз, когда у потребителя были отозваны его партиции
+- `num_rebalance_assignments` (UInt64) - количество раз, когда потребитель был назначен в кластер Kafka
+- `is_currently_used` (UInt8) - потребитель в использовании
+- `last_used` (UInt64) - последнее время, когда этот потребитель был использован, unix время в микросекундах
+- `rdkafka_stat` (String) - внутренняя статистика библиотеки. Смотрите https://github.com/ClickHouse/librdkafka/blob/master/STATISTICS.md . Установите `statistics_interval_ms` в 0, чтобы отключить, по умолчанию 3000 (один раз в три секунды).
 
 Пример:
 
@@ -61,4 +60,5 @@ num_rebalance_revocations:  0
 num_rebalance_assignments:  1
 is_currently_used:          1
 rdkafka_stat:               {...}
+
 ```

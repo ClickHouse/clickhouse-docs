@@ -1,11 +1,10 @@
 ---
-description: 'Системная таблица, содержащая историю значений памяти и метрик из таблицы
-  `system.events` для отдельных запросов, периодически сбрасываемая на диск.'
+slug: '/operations/system-tables/query_metric_log'
+description: 'Системная таблица, содержащая историю использования памяти и значений'
+title: system.query_metric_log
 keywords: ['системная таблица', 'query_metric_log']
-slug: /operations/system-tables/query_metric_log
-title: 'system.query_metric_log'
+doc_type: reference
 ---
-
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
@@ -15,7 +14,7 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 Содержит историю значений памяти и метрик из таблицы `system.events` для отдельных запросов, периодически сбрасываемую на диск.
 
-После того как запрос начинается, данные собираются через определённые интервалы времени в миллисекундах `query_metric_log_interval` (по умолчанию установлено значение 1000). Данные также собираются, когда запрос завершается, если он занимает больше времени, чем `query_metric_log_interval`.
+Когда запрос начинается, данные собираются через интервалы в `query_metric_log_interval` миллисекунд (по умолчанию установлено на 1000). Данные также собираются, когда запрос завершается, если он длится дольше, чем `query_metric_log_interval`.
 
 Столбцы:
 - `query_id` ([String](../../sql-reference/data-types/string.md)) — ID запроса.
@@ -52,7 +51,7 @@ ProfileEvent_FailedSelectQuery:                                  0
 
 - [query_metric_log setting](../../operations/server-configuration-parameters/settings.md#query_metric_log) — Включение и отключение настройки.
 - [query_metric_log_interval](../../operations/settings/settings.md#query_metric_log_interval)
-- [system.asynchronous_metrics](../../operations/system-tables/asynchronous_metrics.md) — Содержит периодически рассчитываемые метрики.
+- [system.asynchronous_metrics](../../operations/system-tables/asynchronous_metrics.md) — Содержит периодически вычисляемые метрики.
 - [system.events](/operations/system-tables/events) — Содержит ряд произошедших событий.
-- [system.metrics](../../operations/system-tables/metrics.md) — Содержит мгновенно рассчитываемые метрики.
+- [system.metrics](../../operations/system-tables/metrics.md) — Содержит мгновенно вычисляемые метрики.
 - [Monitoring](../../operations/monitoring.md) — Основные концепции мониторинга ClickHouse.

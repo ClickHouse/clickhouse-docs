@@ -1,10 +1,10 @@
 ---
-description: 'Агрегатная функция, которая вычисляет минимум среди группы значений.'
+slug: '/sql-reference/aggregate-functions/reference/min'
 sidebar_position: 168
-slug: /sql-reference/aggregate-functions/reference/min
-title: 'min'
+description: 'Агрегатная функция, которая вычисляет MINIMUM по группе значений.'
+title: min
+doc_type: reference
 ---
-
 Агрегатная функция, которая вычисляет минимум среди группы значений.
 
 Пример:

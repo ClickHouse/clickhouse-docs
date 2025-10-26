@@ -27,8 +27,11 @@ import tableau_workbook4 from '@site/static/images/integrations/data-visualizati
 import tableau_workbook5 from '@site/static/images/integrations/data-visualization/tableau_workbook5.png';
 import tableau_workbook6 from '@site/static/images/integrations/data-visualization/tableau_workbook6.png';
 import tableau_workbook7 from '@site/static/images/integrations/data-visualization/tableau_workbook7.png';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Connecting Tableau to ClickHouse
+
+<ClickHouseSupportedBadge/>
 
 ClickHouse offers an official Tableau Connector, featured on
 the [Tableau Exchange](https://exchange.tableau.com/products/1064).

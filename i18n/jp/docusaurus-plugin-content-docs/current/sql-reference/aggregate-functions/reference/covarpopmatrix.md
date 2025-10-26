@@ -1,16 +1,15 @@
 ---
-description: 'Returns the population covariance matrix over N variables.'
-sidebar_position: 122
-slug: '/sql-reference/aggregate-functions/reference/covarpopmatrix'
-title: 'covarPopMatrix'
+'description': 'N個の変数に対する母集団共分散行列を返します。'
+'sidebar_position': 122
+'slug': '/sql-reference/aggregate-functions/reference/covarpopmatrix'
+'title': 'covarPopMatrix'
+'doc_type': 'reference'
 ---
-
-
 
 
 # covarPopMatrix
 
-N変数にわたる母集団共分散行列を返します。
+N変数に対する母集団共分散行列を返します。
 
 **構文**
 
@@ -20,7 +19,7 @@ covarPopMatrix(x[, ...])
 
 **引数**
 
-- `x` — 任意の数のパラメータ。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
+- `x` — 可変数のパラメータ。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
 
 **返される値**
 

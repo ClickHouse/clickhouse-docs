@@ -1,10 +1,10 @@
 ---
-description: 'Системная таблица, содержащая информацию о ожидающих асинхронных вставках в очереди.'
+slug: '/operations/system-tables/asynchronous_inserts'
+description: 'Системная таблица, содержащая информацию о ожидающих асинхронных вставках'
+title: system.asynchronous_inserts
 keywords: ['системная таблица', 'асинхронные вставки']
-slug: /operations/system-tables/asynchronous_inserts
-title: 'system.asynchronous_inserts'
+doc_type: reference
 ---
-
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
@@ -14,13 +14,13 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 Столбцы:
 
 - `query` ([String](../../sql-reference/data-types/string.md)) — Строка запроса.
-- `database` ([String](../../sql-reference/data-types/string.md)) — Название базы данных, в которой находится таблица.
-- `table` ([String](../../sql-reference/data-types/string.md)) — Название таблицы.
-- `format` ([String](/sql-reference/data-types/string.md)) — Название формата.
-- `first_update` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Время первой вставки с разрешением до микросекунд.
-- `total_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Общее количество байт, ожидающее в очереди.
+- `database` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных, в которой находится таблица.
+- `table` ([String](../../sql-reference/data-types/string.md)) — Имя таблицы.
+- `format` ([String](/sql-reference/data-types/string.md)) — Имя формата.
+- `first_update` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Время первой вставки с разрешением в микросекундах.
+- `total_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Общее количество байтов, ожидающих в очереди.
 - `entries.query_id` ([Array(String)](../../sql-reference/data-types/array.md)) - Массив идентификаторов запросов вставок, ожидающих в очереди.
-- `entries.bytes` ([Array(UInt64)](../../sql-reference/data-types/array.md)) - Массив байт каждого запроса вставки, ожидающего в очереди.
+- `entries.bytes` ([Array(UInt64)](../../sql-reference/data-types/array.md)) - Массив байтов каждого запроса вставки, ожидающего в очереди.
 
 **Пример**
 
@@ -45,7 +45,7 @@ entries.query_id: ['b46cd4c4-0269-4d0b-99f5-d27668c6102e']
 entries.bytes:    [133223]
 ```
 
-**См. также**
+**Смотрите Также**
 
 - [system.query_log](/operations/system-tables/query_log) — Описание системной таблицы `query_log`, которая содержит общую информацию о выполнении запросов.
 - [system.asynchronous_insert_log](/operations/system-tables/asynchronous_insert_log) — Эта таблица содержит информацию о выполненных асинхронных вставках.

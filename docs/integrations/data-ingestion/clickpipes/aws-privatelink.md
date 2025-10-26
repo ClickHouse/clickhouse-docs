@@ -43,7 +43,7 @@ ClickPipes reverse private endpoint can be configured with one of the following 
 
 ### VPC resource {#vpc-resource}
 
-Your VPC resources can be accessed in ClickPipes using PrivateLink and [AWS VPC Lattice](https://docs.aws.amazon.com/vpc-lattice/latest/ug/what-is-vpc-lattice.html). This approach doesn't require setting up a load balancer in front of your data source.
+Your VPC resources can be accessed in ClickPipes using [PrivateLink](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html). This approach doesn't require setting up a load balancer in front of your data source.
 
 Resource configuration can be targeted with a specific host or RDS cluster ARN.
 Cross-region is not supported.

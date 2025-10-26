@@ -23,13 +23,13 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 Within dbt, these models can be cross-referenced and layered to allow the construction of higher-level concepts. The boilerplate SQL required to connect models is automatically generated. Furthermore, dbt identifies dependencies between models and ensures they are created in the appropriate order using a directed acyclic graph (DAG).
 
-Dbt is compatible with ClickHouse through a [ClickHouse-supported adapter](https://github.com/ClickHouse/dbt-clickhouse). We describe the process for connecting ClickHouse with a simple example based on a publicly available IMDB dataset. We additionally highlight some of the limitations of the current connector.
+dbt is compatible with ClickHouse through a [ClickHouse-supported adapter](https://github.com/ClickHouse/dbt-clickhouse).
 
 <TOCInline toc={toc}  maxHeadingLevel={2} />
 
 ## Supported features {#supported-features}
 
-**Supported features**
+List of supported features:
 - [x] Table materialization
 - [x] View materialization
 - [x] Incremental materialization
@@ -45,6 +45,12 @@ Dbt is compatible with ClickHouse through a [ClickHouse-supported adapter](https
 - [x] Distributed table materialization (experimental)
 - [x] Distributed incremental materialization (experimental)
 - [x] Contracts
+- [x] ClickHouse-specific column configurations (Codec, TTL...)
+- [x] ClickHouse-specific table settings (indexes, projections...)
+
+All features up to dbt-core 1.9 are supported. We will soon add the features added in dbt-core 1.10.
+
+This adapter is still not available for use inside [dbt Cloud](https://docs.getdbt.com/docs/dbt-cloud/cloud-overview), but we expect to make it available soon. Please reach out to support to get more information on this.
 
 ## Concepts {#concepts}
 
@@ -83,27 +89,32 @@ The following are [experimental features](https://clickhouse.com/docs/en/beta-an
 
 ### Install dbt-core and dbt-clickhouse {#install-dbt-core-and-dbt-clickhouse}
 
+dbt provides several options for installing the command-line interface (CLI), which are detailed [here](https://docs.getdbt.com/dbt-cli/install/overview). We recommend using `pip` to install both dbt and dbt-clickhouse.
+
 ```sh
-pip install dbt-clickhouse
+pip install dbt-core dbt-clickhouse
 ```
 
 ### Provide dbt with the connection details for our ClickHouse instance. {#provide-dbt-with-the-connection-details-for-our-clickhouse-instance}
-Configure `clickhouse` profile in `~/.dbt/profiles.yml` file and provide user, password, schema host properties. The full list of connection configuration options is available in the [Features and configurations](/integrations/dbt/features-and-configurations) page:
+Configure the `clickhouse-service` profile in the `~/.dbt/profiles.yml` file and provide the schema, host, port, user, and password properties. The full list of connection configuration options is available in the [Features and configurations](/integrations/dbt/features-and-configurations) page:
 ```yaml
-clickhouse:
+clickhouse-service:
   target: dev
   outputs:
     dev:
       type: clickhouse
-      schema: <target_schema>
-      host: <host>
-      port: 8443 # use 9440 for native
-      user: default
-      password: <password>
-      secure: True
+      schema: [ default ] # ClickHouse database for dbt models
+
+      # Optional
+      host: [ localhost ]
+      port: [ 8123 ]  # Defaults to 8123, 8443, 9000, 9440 depending on the secure and driver settings 
+      user: [ default ] # User for all database operations
+      password: [ <empty string> ] # Password for the user
+      secure: True  # Use TLS (native protocol) or HTTPS (http protocol)
 ```
 
 ### Create a dbt project {#create-a-dbt-project}
+You can now use this profile in one of your existing projects or create a new one using:
 
 ```sh
 dbt init project_name
@@ -112,23 +123,44 @@ dbt init project_name
 Inside `project_name` dir, update your `dbt_project.yml` file to specify a profile name to connect to the ClickHouse server.
 
 ```yaml
-profile: 'clickhouse'
+profile: 'clickhouse-service'
 ```
 
 ### Test connection {#test-connection}
 Execute `dbt debug` with the CLI tool to confirm whether dbt is able to connect to ClickHouse. Confirm the response includes `Connection test: [OK connection ok]` indicating a successful connection.
 
-We assume the use of the dbt CLI for the following examples. This adapter is still not available for usage inside [dbt Cloud](https://docs.getdbt.com/docs/dbt-cloud/cloud-overview), but we expect to get it available soon. Please reach out to support to get more info on this.
-
-dbt offers a number of options for CLI installation. Follow the instructions described[ here](https://docs.getdbt.com/dbt-cli/install/overview). At this stage install dbt-core only. We recommend the use of `pip` to install both dbt and dbt-clickhouse.
-
-```bash
-pip install dbt-clickhouse
-```
-
 Go to the [guides page](/integrations/dbt/guides) to learn more about how to use dbt with ClickHouse.
 
-## Troubleshooting Connections {#troubleshooting-connections}
+### Testing and Deploying your models (CI/CD) {#testing-and-deploying-your-models-ci-cd}
+
+There are many ways to test and deploy your dbt project. dbt has some suggestions for [best practice workflows](https://docs.getdbt.com/best-practices/best-practice-workflows#pro-tips-for-workflows) and [CI jobs](https://docs.getdbt.com/docs/deploy/ci-jobs). We are going to discuss several strategies, but keep in mind that these strategies may need to be deeply adjusted to fit your specific use case.
+
+#### CI/CD with simple data tests and unit tests {#ci-with-simple-data-tests-and-unit-tests}
+
+One simple way to kick-start your CI pipeline is to run a ClickHouse cluster inside your job and then run your models against it. You can insert demo data into this cluster before running your models. You can just use a [seed](https://docs.getdbt.com/reference/commands/seed) to populate the staging environment with a subset of your production data.
+
+Once the data is inserted, you can then run your [data tests](https://docs.getdbt.com/docs/build/data-tests) and your [unit tests](https://docs.getdbt.com/docs/build/unit-tests).
+
+Your CD step can be as simple as running `dbt build` against your production ClickHouse cluster.
+
+#### More complete CI/CD stage: Use recent data, only test affected models {#more-complete-ci-stage}
+
+One common strategy is to use [Slim CI](https://docs.getdbt.com/best-practices/best-practice-workflows#run-only-modified-models-to-test-changes-slim-ci) jobs, where only the modified models (and their up- and downstream dependencies) are re-deployed. This approach uses artifacts from your production runs (i.e., the [dbt manifest](https://docs.getdbt.com/reference/artifacts/manifest-json)) to reduce the run time of your project and ensure there is no schema drift across environments.
+
+To keep your development environments in sync and avoid running your models against stale deployments, you can use [clone](https://docs.getdbt.com/reference/commands/clone) or even [defer](https://docs.getdbt.com/reference/node-selection/defer).
+
+We recommend using a dedicated ClickHouse cluster or service for the testing environment (i.e., a staging environment) to avoid impacting the operation of your production environment. To ensure the testing environment is representative, it's important that you use a subset of your production data, as well as run dbt in a way that prevents schema drift between environments.
+
+- If you don't need fresh data to test against, you can restore a backup of your production data into the staging environment.
+- If you need fresh data to test against, you can use a combination of the [`remoteSecure()` table function](/sql-reference/table-functions/remote) and refreshable materialized views to insert at the desired frequency. Another option is to use object storage as an intermediate and periodically write data from your production service, then import it into the staging environment using the object storage table functions or ClickPipes (for continuous ingestion).
+
+Using a dedicated environment for CI testing also allows you to perform manual testing without impacting your production environment. For example, you may want to point a BI tool to this environment for testing.
+
+For deployment (i.e., the CD step), we recommend using the artifacts from your production deployments to only update the models that have changed. This requires setting up object storage (e.g., S3) as intermediate storage for your dbt artifacts. Once that is set up, you can run a command like `dbt build --select state:modified+ --state path/to/last/deploy/state.json` to selectively rebuild the minimum amount of models needed based on what changed since the last run in production.
+
+## Troubleshooting common issues {#troubleshooting-common-issues}
+
+### Connections {#troubleshooting-connections}
 
 If you encounter issues connecting to ClickHouse from dbt, make sure the following criteria are met:
 
@@ -137,20 +169,20 @@ If you encounter issues connecting to ClickHouse from dbt, make sure the followi
 - If you're not using the default table engine for the database, you must specify a table engine in your model
   configuration.
 
+### Understanding long-running operations {#understanding-long-running-operations}
+
+Some operations may take longer than expected due to specific ClickHouse queries. To gain more insight into which queries are taking longer, increase the [log level](https://docs.getdbt.com/reference/global-configs/logs#log-level) to `debug` — this will print the time used by each query. For example, this can be achieved by appending `--log-level debug` to dbt commands.
+
 ## Limitations {#limitations}
 
 The current ClickHouse adapter for dbt has several limitations users should be aware of:
 
-1. The adapter currently materializes models as tables using an `INSERT TO SELECT`. This effectively means data duplication. Very large datasets (PB) can result in extremely long run times, making some models unviable. Aim to minimize the number of rows returned by any query, utilizing GROUP BY where possible. Prefer models which summarize data over those which simply perform a transform whilst maintaining row counts of the source.
-2. To use Distributed tables to represent a model, users must create the underlying replicated tables on each node manually. The Distributed table can, in turn, be created on top of these. The adapter does not manage cluster creation.
-3. When dbt creates a relation (table/view) in a database, it usually creates it as: `{{ database }}.{{ schema }}.{{ table/view id }}`. ClickHouse has no notion of schemas. The adapter therefore uses `{{schema}}.{{ table/view id }}`, where `schema` is the ClickHouse database.
-4. Ephemeral models/CTEs don't work if placed before the `INSERT INTO` in a ClickHouse insert statement, see https://github.com/ClickHouse/ClickHouse/issues/30323. This should not affect most models, but care should be taken where an ephemeral model is placed in model definitions and other SQL statements. <!-- TODO review this limitation, looks like the issue was already closed and the fix was introduced in 24.10 -->
-
-Further Information
-
-The previous guides only touch the surface of dbt functionality. Users are recommended to read the excellent [dbt documentation](https://docs.getdbt.com/docs/introduction).
-
-Additional configuration for the adapter is described [here](https://github.com/silentsokolov/dbt-clickhouse#model-configuration).
+- The plugin uses syntax that requires ClickHouse version 25.3 or newer. We do not test older versions of Clickhouse. We also do not currently test Replicated tables.
+- Different runs of the `dbt-adapter` may collide if they are run at the same time as internally they can use the same table names for the same operations. For more information, check the issue [#420](https://github.com/ClickHouse/dbt-clickhouse/issues/420).
+- The adapter currently materializes models as tables using an [INSERT INTO SELECT](https://clickhouse.com/docs/sql-reference/statements/insert-into#inserting-the-results-of-select). This effectively means data duplication if the run is executed again. Very large datasets (PB) can result in extremely long run times, making some models unviable. To improve performance, use ClickHouse Materialized Views by implementing the view as `materialized: materialization_view`. Additionally, aim to minimize the number of rows returned by any query by utilizing `GROUP BY` where possible. Prefer models that summarize data over those that simply transform while maintaining row counts of the source.
+- To use Distributed tables to represent a model, users must create the underlying replicated tables on each node manually. The Distributed table can, in turn, be created on top of these. The adapter does not manage cluster creation.
+- When dbt creates a relation (table/view) in a database, it usually creates it as: `{{ database }}.{{ schema }}.{{ table/view id }}`. ClickHouse has no notion of schemas. The adapter therefore uses `{{schema}}.{{ table/view id }}`, where `schema` is the ClickHouse database.
+- Ephemeral models/CTEs don't work if placed before the `INSERT INTO` in a ClickHouse insert statement, see https://github.com/ClickHouse/ClickHouse/issues/30323. This should not affect most models, but care should be taken where an ephemeral model is placed in model definitions and other SQL statements. <!-- TODO review this limitation, looks like the issue was already closed and the fix was introduced in 24.10 -->
 
 ## Fivetran {#fivetran}
 

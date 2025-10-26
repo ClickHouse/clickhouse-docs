@@ -24,7 +24,7 @@ head error.log
 2023/01/16 05:34:55 [error]  client: 9.9.7.6, server: example.com "GET /h5/static/cert/icon_yanzhengma.png HTTP/1.1"
 ```
 
-We can use a [Template](/interfaces/formats.md/#format-template) format to import this data. We have to define a template string with values placeholders for each row of input data:
+We can use a [Template](/interfaces/formats/Template) format to import this data. We have to define a template string with values placeholders for each row of input data:
 
 ```response
 <time> [error] client: <ip>, server: <host> "<request>"
@@ -49,7 +49,7 @@ To import data using a given template, we have to save our template string in a 
 ${time:Escaped} [error]  client: ${ip:CSV}, server: ${host:CSV} ${request:JSON}
 ```
 
-We define a name of a column and escaping rule in a `${name:escaping}` format. Multiple options are available here, like CSV, JSON, Escaped, or Quoted, which implement [respective escaping rules](/interfaces/formats.md/#format-template).
+We define a name of a column and escaping rule in a `${name:escaping}` format. Multiple options are available here, like CSV, JSON, Escaped, or Quoted, which implement [respective escaping rules](/interfaces/formats/Template).
 
 Now we can use the given file as an argument to the `format_template_row` settings option while importing data (*note, that template and data files **should not have** an extra `\n` symbol at the end of file*):
 
@@ -80,7 +80,7 @@ GROUP BY request
 ```
 
 ### Skipping whitespaces {#skipping-whitespaces}
-Consider using [TemplateIgnoreSpaces](/interfaces/formats.md/#templateignorespaces), which allows skipping whitespaces between delimiters in a template:
+Consider using [TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces), which allows skipping whitespaces between delimiters in a template:
 ```text
 Template:               -->  "p1: ${p1:CSV}, p2: ${p2:CSV}"
 TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
@@ -148,7 +148,7 @@ SETTINGS format_template_resultset = 'html.results',
 
 Template format can be used to generate all imaginable text format files, including XML. Just put a relevant template and do the export.
 
-Also consider using an [XML](/interfaces/formats.md/#xml) format to get standard XML results including metadata:
+Also consider using an [XML](/interfaces/formats/XML) format to get standard XML results including metadata:
 
 ```sql
 SELECT *
@@ -190,7 +190,7 @@ FORMAT XML
 
 ## Importing data based on regular expressions {#importing-data-based-on-regular-expressions}
 
-[Regexp](/interfaces/formats.md/#data-format-regexp) format addresses more sophisticated cases when input data needs to be parsed in a more complex way. Let's parse our [error.log](assets/error.log) example file, but capture the file name and protocol this time to save them into separate columns. First, let's prepare a new table for that:
+[Regexp](/interfaces/formats/Regexp) format addresses more sophisticated cases when input data needs to be parsed in a more complex way. Let's parse our [error.log](assets/error.log) example file, but capture the file name and protocol this time to save them into separate columns. First, let's prepare a new table for that:
 
 ```sql
 CREATE TABLE error_log

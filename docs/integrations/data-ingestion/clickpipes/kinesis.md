@@ -89,7 +89,7 @@ You have familiarized yourself with the [ClickPipes intro](./index.md) and setup
 ## Supported data formats {#supported-data-formats}
 
 The supported formats are:
-- [JSON](../../../interfaces/formats.md/#json)
+- [JSON](/interfaces/formats/JSON)
 
 ## Supported data types {#supported-data-types}
 

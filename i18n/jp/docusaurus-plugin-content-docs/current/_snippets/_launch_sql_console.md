@@ -1,13 +1,11 @@
----
-{}
----
+
 
 import cloud_connect_to_sql_console from '@site/static/images/_snippets/cloud-connect-to-sql-console.png';
 import createservice8 from '@site/static/images/_snippets/createservice8.png';
 import Image from '@theme/IdealImage';
 
 :::tip SQLコンソール
-SQLクライアント接続が必要な場合、あなたのClickHouse Cloudサービスには関連するウェブベースのSQLコンソールがあります。詳細については、下の**SQLコンソールに接続**を展開してください。
+SQLクライアント接続が必要な場合、あなたのClickHouse Cloudサービスには関連するウェブベースのSQLコンソールがあります。詳細については、以下の**SQLコンソールに接続**を展開してください。
 :::
 
 <details>

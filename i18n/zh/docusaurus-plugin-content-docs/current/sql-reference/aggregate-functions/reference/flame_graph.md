@@ -1,14 +1,15 @@
 ---
-'description': '聚合函数，它使用堆栈跟踪列表构建一个 flamegraph。'
+'description': '聚合函数，用于使用堆栈跟踪列表构建 flamegraph。'
 'sidebar_position': 138
 'slug': '/sql-reference/aggregate-functions/reference/flame_graph'
 'title': 'flameGraph'
+'doc_type': 'reference'
 ---
 
 
 # flameGraph
 
-聚合函数，使用堆栈跟踪列表构建一个 [flamegraph](https://www.brendangregg.com/flamegraphs.html)。输出一个字符串数组，可由 [flamegraph.pl utility](https://github.com/brendangregg/FlameGraph) 生成火焰图的 SVG。
+聚合函数，通过堆栈跟踪列表构建一个 [flamegraph](https://www.brendangregg.com/flamegraphs.html)。输出一个字符串数组，可以被 [flamegraph.pl utility](https://github.com/brendangregg/FlameGraph) 用于渲染 flamegraph 的 SVG。
 
 ## Syntax {#syntax}
 
@@ -19,17 +20,17 @@ flameGraph(traces, [size], [ptr])
 ## Parameters {#parameters}
 
 - `traces` — 一个堆栈跟踪。[Array](../../data-types/array.md)([UInt64](../../data-types/int-uint.md))。
-- `size` — 内存分析的分配大小。(可选 - 默认 `1`。[UInt64](../../data-types/int-uint.md))。
-- `ptr` — 分配地址。(可选 - 默认 `0`。[UInt64](../../data-types/int-uint.md))。
+- `size` — 内存分析的分配大小。(可选 - 默认 `1`)。[UInt64](../../data-types/int-uint.md)。
+- `ptr` — 内存分配地址。(可选 - 默认 `0`)。[UInt64](../../data-types/int-uint.md)。
 
 :::note
-当 `ptr != 0` 时，flameGraph 将映射同一大小和 ptr 的分配（size > 0）和释放（size < 0）。 
-只显示未释放的分配。未映射的释放被忽略。
+在 `ptr != 0` 的情况下，flameGraph 将使用相同的 size 和 ptr 将分配（size > 0）和释放（size < 0）进行映射。
+只显示未被释放的分配。未映射的释放将被忽略。
 :::
 
 ## Returned value {#returned-value}
 
-- 一个字符串数组，可与 [flamegraph.pl utility](https://github.com/brendangregg/FlameGraph) 一起使用。[Array](../../data-types/array.md)([String](../../data-types/string.md))。
+- 一个字符串数组，用于与 [flamegraph.pl utility](https://github.com/brendangregg/FlameGraph) 一起使用。[Array](../../data-types/array.md)([String](../../data-types/string.md))。
 
 ## Examples {#examples}
 
@@ -76,7 +77,7 @@ SELECT SearchPhrase, COUNT(DISTINCT UserID) AS u FROM hits WHERE SearchPhrase <>
 - 1 - 每秒内存使用情况
 
 ```sql
-SELECT event_time, m, formatReadableSize(max(s) as m) FROM (SELECT event_time, sum(size) OVER (ORDER BY event_time) AS s FROM system.trace_log WHERE query_id = 'xxx' AND trace_type = 'MemorySample') GROUP BY event_time ORDER BY event_time;
+SELECT event_time, m, formatReadableSize(max(s) AS m) FROM (SELECT event_time, sum(size) OVER (ORDER BY event_time) AS s FROM system.trace_log WHERE query_id = 'xxx' AND trace_type = 'MemorySample') GROUP BY event_time ORDER BY event_time;
 ```
 
 - 2 - 找到内存使用量最大的时间点

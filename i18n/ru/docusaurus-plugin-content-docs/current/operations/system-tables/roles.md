@@ -1,14 +1,13 @@
 ---
+slug: '/operations/system-tables/roles'
 description: 'Системная таблица, содержащая информацию о настроенных ролях.'
+title: system.roles
 keywords: ['системная таблица', 'роли']
-slug: /operations/system-tables/roles
-title: 'system.roles'
+doc_type: reference
 ---
-
-
 # system.roles
 
-Содержит информацию о настроенных [ролях](../../guides/sre/user-management/index.md#role-management).
+Содержит информацию о сконфигурированных [ролях](../../guides/sre/user-management/index.md#role-management).
 
 Столбцы:
 

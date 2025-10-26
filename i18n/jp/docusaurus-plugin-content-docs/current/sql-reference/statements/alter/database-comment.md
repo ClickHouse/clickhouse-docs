@@ -1,25 +1,23 @@
 ---
-description: 'Documentation for ALTER DATABASE ... MODIFY COMMENT statements which
-  allow adding, modifying, or removing database comments.'
-slug: '/sql-reference/statements/alter/database-comment'
-sidebar_position: 51
-sidebar_label: 'ALTER DATABASE ... MODIFY COMMENT'
-title: 'ALTER DATABASE ... MODIFY COMMENT Statements'
-keywords:
+'description': 'ALTER DATABASE ... MODIFY COMMENT ステートメントのドキュメンテーションで、データベースコメントの追加、修正、または削除を可能にします。'
+'slug': '/sql-reference/statements/alter/database-comment'
+'sidebar_position': 51
+'sidebar_label': 'ALTER DATABASE ... MODIFY COMMENT'
+'title': 'ALTER DATABASE ... MODIFY COMMENT ステートメント'
+'keywords':
 - 'ALTER DATABASE'
 - 'MODIFY COMMENT'
+'doc_type': 'reference'
 ---
-
-
 
 
 # ALTER DATABASE ... MODIFY COMMENT
 
-データベースのコメントを追加、変更、または削除します。これまで設定されていたかどうかに関わらず、コメントの変更は [`system.databases`](/operations/system-tables/databases.md) および `SHOW CREATE DATABASE` クエリに反映されます。
+データベースのコメントを追加、変更、または削除します。以前に設定されていたかどうかにかかわらず、コメントの変更は [`system.databases`](/operations/system-tables/databases.md) と `SHOW CREATE DATABASE` クエリの両方に反映されます。
 
 ## Syntax {#syntax}
 
-``` sql
+```sql
 ALTER DATABASE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 ```
 
@@ -27,15 +25,15 @@ ALTER DATABASE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 
 コメント付きの `DATABASE` を作成するには:
 
-``` sql
-CREATE DATABASE database_with_comment ENGINE = Memory COMMENT '一時的なデータベース';
+```sql
+CREATE DATABASE database_with_comment ENGINE = Memory COMMENT 'The temporary database';
 ```
 
 コメントを変更するには:
 
-``` sql
+```sql
 ALTER DATABASE database_with_comment 
-MODIFY COMMENT 'データベースに対する新しいコメント';
+MODIFY COMMENT 'new comment on a database';
 ```
 
 変更されたコメントを表示するには:
@@ -48,26 +46,26 @@ WHERE name = 'database_with_comment';
 
 ```text
 ┌─comment─────────────────┐
-│ データベースに対する新しいコメント │
+│ new comment on database │
 └─────────────────────────┘
 ```
 
 データベースのコメントを削除するには:
 
-``` sql
+```sql
 ALTER DATABASE database_with_comment 
 MODIFY COMMENT '';
 ```
 
 コメントが削除されたことを確認するには:
 
-```sql title="クエリ"
+```sql title="Query"
 SELECT comment 
 FROM system.databases 
 WHERE  name = 'database_with_comment';
 ```
 
-```text title="レスポンス"
+```text title="Response"
 ┌─comment─┐
 │         │
 └─────────┘

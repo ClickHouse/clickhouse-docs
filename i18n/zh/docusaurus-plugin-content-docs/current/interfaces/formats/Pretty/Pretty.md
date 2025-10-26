@@ -7,27 +7,28 @@
 'output_format': true
 'slug': '/interfaces/formats/Pretty'
 'title': 'Pretty'
+'doc_type': 'reference'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| 输入 | 输出  | 别名 |
+| Input | Output  | Alias |
 |-------|---------|-------|
 | ✗     | ✔       |       |
 
 ## 描述 {#description}
 
-`Pretty` 格式以 Unicode 艺术表格形式输出数据， 
+`Pretty` 格式将数据输出为 Unicode 艺术表格， 
 使用 ANSI 转义序列在终端中显示颜色。
-表格的完整网格会被绘制，每行在终端中占用两行。
-每个结果块被输出为一个单独的表格。 
-这是为了使块可以在不缓冲结果的情况下输出（缓冲将在预计算所有值的可见宽度时是必要的）。
+整个表格的网格被绘制，每行在终端中占据两行。
+每个结果块作为一个单独的表格输出。 
+这样可以不对结果进行缓冲（如果缓冲，必须预先计算所有值的可见宽度）。
 
-[NULL](/sql-reference/syntax.md) 被输出为 `ᴺᵁᴸᴸ`。
+[NULL](/sql-reference/syntax.md) 输出为 `ᴺᵁᴸᴸ`。
 
 ## 示例用法 {#example-usage}
 
-示例（针对 [`PrettyCompact`](./PrettyCompact.md) 格式展示）：
+示例（显示用于 [`PrettyCompact`](./PrettyCompact.md) 格式）：
 
 ```sql title="Query"
 SELECT * FROM t_null
@@ -39,7 +40,7 @@ SELECT * FROM t_null
 └───┴──────┘
 ```
 
-在任何 `Pretty` 格式中，行都不会被转义。以下示例针对的是 [`PrettyCompact`](./PrettyCompact.md) 格式：
+在任何 `Pretty` 格式中，行都不会被转义。以下示例显示用于 [`PrettyCompact`](./PrettyCompact.md) 格式：
 
 ```sql title="Query"
 SELECT 'String with \'quotes\' and \t character' AS Escaping_test
@@ -51,16 +52,16 @@ SELECT 'String with \'quotes\' and \t character' AS Escaping_test
 └──────────────────────────────────────┘
 ```
 
-为了避免在终端中输出过多数据，仅打印前 `10,000` 行。 
-如果行数大于或等于 `10,000`，则会打印消息 "Showed first 10 000"。
+为了避免将过多数据转储到终端中，仅打印前 `10,000` 行。 
+如果行数大于或等于 `10,000`，则会打印消息 "显示前 10 000"。
 
 :::note
-此格式仅适合输出查询结果，而不适合解析数据。
+此格式仅适合输出查询结果，但不适合解析数据。
 :::
 
-Pretty 格式支持输出总值（在使用 `WITH TOTALS` 时）和极值（当 'extremes' 设置为 1 时）。 
-在这些情况下，总值和极值会在主数据后，以单独的表格输出。 
-以下示例使用了 [`PrettyCompact`](./PrettyCompact.md) 格式：
+Pretty 格式支持输出总值（当使用 `WITH TOTALS` 时）和极值（当 'extremes' 设置为 1 时）。 
+在这些情况下，总值和极值在主要数据之后输出，作为单独的表格。 
+以下示例展示了使用 [`PrettyCompact`](./PrettyCompact.md) 格式的情况：
 
 ```sql title="Query"
 SELECT EventDate, count() AS c 

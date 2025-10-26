@@ -1,51 +1,52 @@
 ---
+slug: '/interfaces/formats/RawBLOB'
 description: 'Документация для формата RawBLOB'
+title: RawBLOB
 keywords: ['RawBLOB']
-slug: /interfaces/formats/RawBLOB
-title: 'RawBLOB'
+doc_type: reference
 ---
-
 ## Описание {#description}
 
-Формат `RawBLOB` читает все входные данные как одно значение. Возможно разобрать только таблицу с единственным полем типа [`String`](/sql-reference/data-types/string.md) или аналогичным. Результат выводится в бинарном формате без разделителей и экранирования. Если выводится более одного значения, формат становится неоднозначным, и будет невозможно считать данные обратно.
+Формат `RawBLOB` считывает все входные данные в одно значение. Возможно парсить только таблицу с одним полем типа [`String`](/sql-reference/data-types/string.md) или подобным.
+Результат выводится в бинарном формате без ограничителей и экранирования. Если выводится более одного значения, формат становится неоднозначным, и будет невозможно прочитать данные обратно.
 
-### Сравнение сырьевых форматов {#raw-formats-comparison}
+### Сравнение форматов Raw {#raw-formats-comparison}
 
-Ниже приведено сравнение форматов `RawBLOB` и [`TabSeparatedRaw`](./TabSeparated/TabSeparatedRaw.md).
+Ниже представлено сравнение форматов `RawBLOB` и [`TabSeparatedRaw`](./TabSeparated/TabSeparatedRaw.md).
 
 `RawBLOB`:
 - данные выводятся в бинарном формате, без экранирования;
-- между значениями нет разделителей;
-- в конце каждого значения нет нового переноса строки.
+- между значениями нет ограничителей;
+- в конце каждого значения нет новой строки.
 
 `TabSeparatedRaw`:
 - данные выводятся без экранирования;
-- строки содержат значения, разделенные табуляцией;
-- после последнего значения в каждой строке имеется перенос строки.
+- строки содержат значения, разделённые табуляцией;
+- после последнего значения в каждой строке есть перевод строки.
 
 Следующее сравнение форматов `RawBLOB` и [RowBinary](./RowBinary/RowBinary.md).
 
 `RawBLOB`:
-- Строковые поля выводятся без префикса длиной.
+- Строковые поля выводятся без префикса длины.
 
 `RowBinary`:
-- Строковые поля представлены как длина в формате varint (беззнаковый [LEB128](https://en.wikipedia.org/wiki/LEB128)), за которой следуют байты строки.
+- Строковые поля представлены длиной в формате varint (бесподписный [LEB128](https://en.wikipedia.org/wiki/LEB128)), за которым следуют байты строки.
 
-Когда пустые данные передаются на ввод `RawBLOB`, ClickHouse выдает исключение:
+Когда пустые данные передаются на вход `RawBLOB`, ClickHouse выбрасывает исключение:
 
 ```text
-Код: 108. DB::Exception: Нет данных для вставки
+Code: 108. DB::Exception: No data to insert
 ```
 
 ## Пример использования {#example-usage}
 
-```bash title="Запрос"
+```bash title="Query"
 $ clickhouse-client --query "CREATE TABLE {some_table} (a String) ENGINE = Memory;"
 $ cat {filename} | clickhouse-client --query="INSERT INTO {some_table} FORMAT RawBLOB"
 $ clickhouse-client --query "SELECT * FROM {some_table} FORMAT RawBLOB" | md5sum
 ```
 
-```text title="Ответ"
+```text title="Response"
 f9725a22f9191e064120d718e26862a9  -
 ```
 

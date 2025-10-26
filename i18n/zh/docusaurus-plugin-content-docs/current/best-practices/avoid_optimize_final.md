@@ -7,8 +7,13 @@
 'keywords':
 - 'avoid OPTIMIZE FINAL'
 - 'background merges'
+'hide_title': true
+'doc_type': 'guide'
 ---
 
 import Content from '@site/i18n/zh/docusaurus-plugin-content-docs/current/best-practices/_snippets/_avoid_optimize_final.md';
+
+
+# 避免使用 `OPTIMIZE FINAL`
 
 <Content />

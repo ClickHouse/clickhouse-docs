@@ -1,23 +1,22 @@
 ---
 slug: '/examples/aggregate-function-combinators/avgMap'
-title: 'avgMap'
-description: 'Пример использования компилятора avgMap'
+sidebar_label: avgMap
+description: 'Пример использования комбинирования avgMap'
+title: avgMap
 keywords: ['avg', 'map', 'combinator', 'examples', 'avgMap']
-sidebar_label: 'avgMap'
+doc_type: reference
 ---
-
-
 # avgMap {#avgmap}
 
 ## Описание {#description}
 
-Компилятор [`Map`](/sql-reference/aggregate-functions/combinators#-map) может быть применен к функции [`avg`](/sql-reference/aggregate-functions/reference/avg) для вычисления арифметического среднего значений в Map по каждому ключу, используя агрегатную функцию `avgMap`.
+Комбинатор [`Map`](/sql-reference/aggregate-functions/combinators#-map) может быть применен к функции [`avg`](/sql-reference/aggregate-functions/reference/avg) для вычисления арифметического среднего значений в Map по каждому ключу с использованием агрегирующей комбинированной функции `avgMap`.
 
 ## Пример использования {#example-usage}
 
-В этом примере мы создадим таблицу, которая хранит коды статусов и их количества для различных временных интервалов, где каждая строка содержит Map кодов статусов и соответствующих им количеств. Мы используем `avgMap` для вычисления среднего значения для каждого кода статуса в каждом временном интервале.
+В этом примере мы создадим таблицу, которая хранит коды состояния и их количество для различных временных интервалов, где каждая строка содержит Map кодов состояния с соответствующими количествами. Мы будем использовать `avgMap` для вычисления среднего количества для каждого кода состояния в пределах каждого временного интервала.
 
-```sql title="Запрос"
+```sql title="Query"
 CREATE TABLE metrics(
     date Date,
     timeslot DateTime,
@@ -37,7 +36,7 @@ FROM metrics
 GROUP BY timeslot;
 ```
 
-Функция `avgMap` вычисляет среднее количество для каждого кода статуса в пределах каждого временного интервала. Например:
+Функция `avgMap` будет вычислять среднее количество для каждого кода состояния в пределах каждого временного интервала. Например:
 - В временном интервале '2000-01-01 00:00:00':
   - Статус 'a': 15
   - Статус 'b': 25
@@ -50,7 +49,7 @@ GROUP BY timeslot;
   - Статус 'f': (95 + 105) / 2 = 100
   - Статус 'g': (115 + 125) / 2 = 120
 
-```response title="Ответ"
+```response title="Response"
    ┌────────────timeslot─┬─avgMap(status)───────────────────────┐
 1. │ 2000-01-01 00:01:00 │ {'d':75,'e':85,'f':100,'g':120}      │
 2. │ 2000-01-01 00:00:00 │ {'a':15,'b':25,'c':40,'d':55,'e':65} │
@@ -59,4 +58,4 @@ GROUP BY timeslot;
 
 ## См. также {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
-- [`Map combinator`](/sql-reference/aggregate-functions/combinators#-map)
+- [`Map комбинатор`](/sql-reference/aggregate-functions/combinators#-map)

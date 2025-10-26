@@ -1,11 +1,10 @@
 ---
-description: '隣接する行との算術差を合計します。'
-sidebar_position: 129
-slug: '/sql-reference/aggregate-functions/reference/deltasum'
-title: 'deltaSum'
+'description': '連続する行の算術的な差を合計します。'
+'sidebar_position': 129
+'slug': '/sql-reference/aggregate-functions/reference/deltasum'
+'title': 'deltaSum'
+'doc_type': 'reference'
 ---
-
-
 
 
 # deltaSum
@@ -13,7 +12,7 @@ title: 'deltaSum'
 連続する行の算術的な差を合計します。差が負の場合は無視されます。
 
 :::note
-この関数が正しく動作するためには、基になるデータがソートされている必要があります。この関数を[マテリアライズドビュー](/sql-reference/statements/create/view#materialized-view)で使用したい場合は、ほぼ間違いなく[deltaSumTimestamp](/sql-reference/aggregate-functions/reference/deltasumtimestamp)メソッドを使用したいでしょう。
+この関数が正しく機能するためには、基になるデータがソートされている必要があります。この関数を[マテリアライズドビュー](/sql-reference/statements/create/view#materialized-view)で使用したい場合は、おそらく代わりに[deltaSumTimestamp](/sql-reference/aggregate-functions/reference/deltasumtimestamp)メソッドを使用することをお勧めします。
 :::
 
 **構文**
@@ -24,11 +23,11 @@ deltaSum(value)
 
 **引数**
 
-- `value` — 入力値で、[整数](../../data-types/int-uint.md)または[浮動小数点](../../data-types/float.md)型である必要があります。
+- `value` — 入力値で、[Integer](../../data-types/int-uint.md)または[Float](../../data-types/float.md)型である必要があります。
 
-**戻り値**
+**返される値**
 
-- `Integer` または `Float` 型の得られた算術的な差。
+- `Integer`または`Float`型の算術的な差が得られます。
 
 **例**
 

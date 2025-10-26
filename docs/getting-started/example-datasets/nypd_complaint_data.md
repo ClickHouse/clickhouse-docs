@@ -1,9 +1,9 @@
 ---
 description: 'Ingest and query Tab Separated Value data in 5 steps'
-sidebar_label: 'NYPD Complaint Data'
+sidebar_label: 'NYPD complaint data'
 slug: /getting-started/example-datasets/nypd_complaint_data
 title: 'NYPD Complaint Data'
-doc_type: 'reference'
+doc_type: 'guide'
 ---
 
 Tab separated value, or TSV, files are common and may include field headings as the first line of the file. ClickHouse can ingest TSVs, and also can query TSVs without ingesting the files.  This guide covers both of these cases. If you need to query or ingest CSV files, the same techniques work, simply substitute `TSV` with `CSV` in your format arguments.

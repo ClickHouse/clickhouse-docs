@@ -1,61 +1,62 @@
 ---
-'description': '系统表包含关于请求到ZooKeeper服务器的参数和它的响应的信息。'
+'description': '系统表包含有关请求到 ZooKeeper 服务器的参数和其响应的信息。'
 'keywords':
 - 'system table'
 - 'zookeeper_log'
 'slug': '/operations/system-tables/zookeeper_log'
 'title': 'system.zookeeper_log'
+'doc_type': 'reference'
 ---
 
 
 # system.zookeeper_log
 
-该表包含关于请求ZooKeeper服务器参数和其响应的信息。
+此表包含有关请求ZooKeeper服务器的参数和来自该服务器的响应的信息。
 
-对于请求，仅填充带有请求参数的列，其余列则填充默认值（`0`或`NULL`）。当响应到达时，响应中的数据将添加到其他列。
+对于请求，仅填写请求参数的列，其余列填充默认值（`0`或`NULL`）。当响应到达时，响应中的数据将添加到其他列中。
 
-带有请求参数的列：
+请求参数的列：
 
 - `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 执行查询的服务器的主机名。
-- `type` ([Enum](../../sql-reference/data-types/enum.md)) — ZooKeeper客户端中的事件类型。可以有以下值：
-    - `Request` — 请求已发送。
-    - `Response` — 收到响应。
-    - `Finalize` — 连接丢失，未收到响应。
+- `type` ([Enum](../../sql-reference/data-types/enum.md)) — ZooKeeper客户端中的事件类型。可以具有以下值之一：
+  - `Request` — 请求已被发送。
+  - `Response` — 响应已被接收。
+  - `Finalize` — 连接丢失，未收到响应。
 - `event_date` ([Date](../../sql-reference/data-types/date.md)) — 事件发生的日期。
 - `event_time` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — 事件发生的日期和时间。
-- `address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — 用于发送请求的ZooKeeper服务器的IP地址。
-- `port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — 用于发送请求的ZooKeeper服务器的端口。
+- `address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — 用于发起请求的ZooKeeper服务器的IP地址。
+- `port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — 用于发起请求的ZooKeeper服务器的端口。
 - `session_id` ([Int64](../../sql-reference/data-types/int-uint.md)) — ZooKeeper服务器为每个连接设置的会话ID。
-- `xid` ([Int32](../../sql-reference/data-types/int-uint.md)) — 会话内请求的ID。通常是一个顺序请求编号。它在请求行和配对的`response`/`finalize`行中是相同的。
-- `has_watch` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 请求是否已设置[watch](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#ch_zkWatches)。
+- `xid` ([Int32](../../sql-reference/data-types/int-uint.md)) — 会话内请求的ID。通常这是一个顺序请求编号。请求行和配对的`response`/`finalize`行具有相同的值。
+- `has_watch` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 请求是否设置了[watch](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#ch_zkWatches)。
 - `op_num` ([Enum](../../sql-reference/data-types/enum.md)) — 请求或响应的类型。
-- `path` ([String](../../sql-reference/data-types/string.md)) — 在请求中指定的ZooKeeper节点的路径，如果请求不需要指定路径，则为空字符串。
-- `data` ([String](../../sql-reference/data-types/string.md)) — 写入ZooKeeper节点的数据（对于`SET`和`CREATE`请求——请求想要写入的内容，对于`GET`请求的响应——读取的内容）或为空字符串。
+- `path` ([String](../../sql-reference/data-types/string.md)) — 请求中指定的ZooKeeper节点的路径，如果请求不需要指定路径，则为一个空字符串。
+- `data` ([String](../../sql-reference/data-types/string.md)) — 写入ZooKeeper节点的数据（对于`SET`和`CREATE`请求 — 请求希望写入的内容，对于`GET`请求的响应 — 读取到的内容）或空字符串。
 - `is_ephemeral` ([UInt8](../../sql-reference/data-types/int-uint.md)) — ZooKeeper节点是否作为[临时节点](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#Ephemeral+Nodes)创建。
 - `is_sequential` ([UInt8](../../sql-reference/data-types/int-uint.md)) — ZooKeeper节点是否作为[顺序节点](https://zookeeper.apache.org/doc/r3.3.3/zookeeperProgrammers.html#Sequence+Nodes+--+Unique+Naming)创建。
-- `version` ([Nullable(Int32)](../../sql-reference/data-types/nullable.md)) — 请求在执行时所期望的ZooKeeper节点的版本。这对于`CHECK`、`SET`、`REMOVE`请求是支持的（如果请求不检查版本，则为`-1`，对于不支持版本检查的其他请求，则为`NULL`）。
-- `requests_size` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 包含在多请求中的请求数量（这是一个特殊请求，由多个连续的普通请求组成，并以原子方式执行）。所有包含在多请求中的请求将具有相同的`xid`。
-- `request_idx` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 包含在多请求中的请求编号（对于多请求——`0`，然后按顺序为`1`）。
+- `version` ([Nullable(Int32)](../../sql-reference/data-types/nullable.md)) — 请求在执行时期望的ZooKeeper节点的版本。这适用于`CHECK`、`SET`、`REMOVE`请求（如果请求不检查版本，则相关`-1`，对于不支持版本检查的其他请求，则为`NULL`）。
+- `requests_size` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 包含在多请求中的请求数量（这是一个特殊请求，由几个连续的普通请求组成，并原子性执行）。所有包含在多请求中的请求将具有相同的`xid`。
+- `request_idx` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 包含在多请求中的请求编号（对于多请求 — `0`，然后按顺序 `1`）。
 
-带有请求响应参数的列：
+请求响应参数的列：
 
-- `zxid` ([Int64](../../sql-reference/data-types/int-uint.md)) — ZooKeeper事务ID。成功执行请求后，由ZooKeeper服务器发出的序列号（如果请求未执行/返回错误/客户端不知道请求是否执行，则为`0`）。
-- `error` ([Nullable(Enum)](../../sql-reference/data-types/nullable.md)) — 错误代码。可以有多种值，以下是其中一些：
-    - `ZOK` — 请求已成功执行。
-    - `ZCONNECTIONLOSS` — 连接丢失。
-    - `ZOPERATIONTIMEOUT` — 请求执行超时已过。
-    - `ZSESSIONEXPIRED` — 会话已过期。
-    - `NULL` — 请求已完成。
+- `zxid` ([Int64](../../sql-reference/data-types/int-uint.md)) — ZooKeeper事务ID。ZooKeeper服务器对成功执行的请求发出的序列号（如果请求未执行/返回错误/客户端不知道请求是否执行，则为`0`）。
+- `error` ([Nullable(Enum)](../../sql-reference/data-types/nullable.md)) — 错误代码。可以具有多个值，这里只是一些示例：
+  - `ZOK` — 请求已成功执行。
+  - `ZCONNECTIONLOSS` — 连接丢失。
+  - `ZOPERATIONTIMEOUT` — 请求执行超时已过期。
+  - `ZSESSIONEXPIRED` — 会话已过期。
+  - `NULL` — 请求已完成。
 - `watch_type` ([Nullable(Enum)](../../sql-reference/data-types/nullable.md)) — `watch`事件的类型（对于`op_num` = `Watch`的响应），对于其余响应：`NULL`。
 - `watch_state` ([Nullable(Enum)](../../sql-reference/data-types/nullable.md)) — `watch`事件的状态（对于`op_num` = `Watch`的响应），对于其余响应：`NULL`。
-- `path_created` ([String](../../sql-reference/data-types/string.md)) — 创建的ZooKeeper节点的路径（对于`CREATE`请求的响应），如果节点作为`sequential`创建，则可能与`path`不同。
-- `stat_czxid` ([Int64](../../sql-reference/data-types/int-uint.md)) — 导致此ZooKeeper节点被创建的更改的`zxid`。
-- `stat_mzxid` ([Int64](../../sql-reference/data-types/int-uint.md)) — 最后修改此ZooKeeper节点的更改的`zxid`。
-- `stat_pzxid` ([Int64](../../sql-reference/data-types/int-uint.md)) — 最后修改此ZooKeeper节点子项的更改的事务ID。
-- `stat_version` ([Int32](../../sql-reference/data-types/int-uint.md)) — 此ZooKeeper节点数据的更改次数。
-- `stat_cversion` ([Int32](../../sql-reference/data-types/int-uint.md)) — 此ZooKeeper节点子项的更改次数。
+- `path_created` ([String](../../sql-reference/data-types/string.md)) — 创建的ZooKeeper节点的路径（对于`CREATE`请求的响应），如果节点以`sequential`创建，则可能与`path`不同。
+- `stat_czxid` ([Int64](../../sql-reference/data-types/int-uint.md)) — 导致该ZooKeeper节点被创建的变更的`zxid`。
+- `stat_mzxid` ([Int64](../../sql-reference/data-types/int-uint.md)) — 最后修改该ZooKeeper节点的变更的`zxid`。
+- `stat_pzxid` ([Int64](../../sql-reference/data-types/int-uint.md)) — 最后修改该ZooKeeper节点的子节点的变更的事务ID。
+- `stat_version` ([Int32](../../sql-reference/data-types/int-uint.md)) — 此ZooKeeper节点数据的变更次数。
+- `stat_cversion` ([Int32](../../sql-reference/data-types/int-uint.md)) — 此ZooKeeper节点子节点的变更次数。
 - `stat_dataLength` ([Int32](../../sql-reference/data-types/int-uint.md)) — 此ZooKeeper节点数据字段的长度。
-- `stat_numChildren` ([Int32](../../sql-reference/data-types/int-uint.md)) — 此ZooKeeper节点的子项数量。
+- `stat_numChildren` ([Int32](../../sql-reference/data-types/int-uint.md)) — 此ZooKeeper节点的子节点数量。
 - `children` ([Array(String)](../../sql-reference/data-types/array.md)) — 子ZooKeeper节点的列表（对于`LIST`请求的响应）。
 
 **示例**
