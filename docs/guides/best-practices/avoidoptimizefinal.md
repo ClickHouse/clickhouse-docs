@@ -1,6 +1,6 @@
 ---
 slug: /optimize/avoidoptimizefinal
-sidebar_label: 'Avoid Optimize Final'
+sidebar_label: 'Avoid optimize final'
 title: 'Avoid Optimize Final'
 description: 'Using the OPTIMIZE TABLE ... FINAL query will initiate an unscheduled merge of data parts.'
 doc_type: 'guide'

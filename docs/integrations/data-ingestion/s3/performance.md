@@ -1,7 +1,7 @@
 ---
 slug: /integrations/s3/performance
 sidebar_position: 2
-sidebar_label: 'Optimizing for Performance'
+sidebar_label: 'Optimizing for performance'
 title: 'Optimizing for S3 Insert and Read Performance'
 description: 'Optimizing the performance of S3 read and insert'
 doc_type: 'guide'
@@ -182,7 +182,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 0 rows in set. Elapsed: 191.692 sec. Processed 59.82 million rows, 24.03 GB (312.06 thousand rows/s., 125.37 MB/s.)
 ```
 
-In our example we only return a few rows. If measuring the performance of `SELECT` queries, where large volumes of data are returned to the client, either utilize the [null format](/interfaces/formats/#null) for queries or direct results to the [`Null` engine](/engines/table-engines/special/null.md). This should avoid the client being overwhelmed with data and network saturation.
+In our example we only return a few rows. If measuring the performance of `SELECT` queries, where large volumes of data are returned to the client, either utilize the [null format](/interfaces/formats/Null) for queries or direct results to the [`Null` engine](/engines/table-engines/special/null.md). This should avoid the client being overwhelmed with data and network saturation.
 
 :::info
 When reading from queries, the initial query can often appear slower than if the same query is repeated. This can be attributed to both S3's own caching but also the [ClickHouse Schema Inference Cache](/operations/system-tables/schema_inference_cache). This stores the inferred schema for files and means the inference step can be skipped on subsequent accesses, thus reducing query time.

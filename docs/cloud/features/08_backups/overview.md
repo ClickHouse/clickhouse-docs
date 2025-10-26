@@ -154,9 +154,7 @@ After you have successfully inserted the data into your original service, make s
 
 ## Undeleting or undropping tables {#undeleting-or-undropping-tables}
 
-<CloudNotSupportedBadge/>
-
-The `UNDROP` command is not supported in ClickHouse Cloud. If you accidentally `DROP` a table, the best course of action is to restore your last backup and recreate the table from the backup.
+The `UNDROP` command is supported in ClickHouse Cloud through [Shared Catalog](https://clickhouse.com/docs/cloud/reference/shared-catalog).
 
 To prevent users from accidentally dropping tables, you can use [`GRANT` statements](/sql-reference/statements/grant) to revoke permissions for the [`DROP TABLE` command](/sql-reference/statements/drop#drop-table) for a specific user or role.
 
@@ -180,4 +178,4 @@ If you want to set up a backups schedule different from the default backup sched
 
 ## Export backups to your own cloud account {#export-backups-to-your-own-cloud-account}
 
-For users wanting to export backups to their own cloud account, see [here](./export-backups-to-own-cloud-account.md).
+For users wanting to export backups to their own cloud account, see [here](./backups-to-own-cloud/export-backups-to-own-cloud-account.md).

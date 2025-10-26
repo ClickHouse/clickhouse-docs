@@ -14,7 +14,8 @@ This page consolidates ClickHouse data skipping index examples, showing how to d
 **Index syntax:** 
 
 ```sql
-INDEX name expr TYPE type(...) [GRANULARITY N]`
+INDEX name expr TYPE type(...) [GRANULARITY N]
+```
 
 ClickHouse supports five skip index types:
 

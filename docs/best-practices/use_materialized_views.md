@@ -1,7 +1,7 @@
 ---
 slug: /best-practices/use-materialized-views
 sidebar_position: 10
-sidebar_label: 'Use Materialized Views'
+sidebar_label: 'Use materialized views'
 title: 'Use Materialized Views'
 description: 'Page describing Materialized Views'
 keywords: ['materialized views', 'medallion architecture']
@@ -45,7 +45,7 @@ Refreshable materialized views execute their queries periodically rather than in
 
 They are most useful when query performance is critical (e.g. sub-millisecond latency) and slightly stale results are acceptable. Since the query is re-run in full, refreshable views are best suited to queries that are either relatively fast to compute or which can be computed at infrequent intervals (e.g. hourly), such as caching “top N” results or lookup tables. 
 
-Execution frequency should be tuned carefully to avoid excessive load on the system. Extremely complex queries which consume significant resources should be scheduled cautiously - these can cause overall cluster performance to degrade by impacting caches and consuming CPU and memory. The query should run relatively quickly compared to the refresh interval to avoid overloading your cluster. For example, do not schedule a view to be updated every 10 seconds if the query itself takes at least 10 seconds to compute. 
+Execution frequency should be tuned carefully to avoid excessive load on the system. Extremely complex queries which consume significant resources should be scheduled cautiously — these can cause overall cluster performance to degrade by impacting caches and consuming CPU and memory. The query should run relatively quickly compared to the refresh interval to avoid overloading your cluster. For example, do not schedule a view to be updated every 10 seconds if the query itself takes at least 10 seconds to compute. 
 
 ## Summary {#summary}
 
