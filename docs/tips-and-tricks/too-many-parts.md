@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 slug: /tips-and-tricks/too-many-parts
-sidebar_label: 'Too Many Parts'
+sidebar_label: 'Too many parts'
 doc_type: 'guide'
 keywords: [
   'clickhouse too many parts',

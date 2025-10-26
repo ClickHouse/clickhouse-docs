@@ -24,7 +24,7 @@ Learn more about [ClickHouse Cloud](/getting-started/quick-start/cloud).
 
 ClickHouse Bring Your Own Cloud (BYOC) allows organizations to deploy and manage ClickHouse within their own cloud environment while leveraging a managed service layer. This option bridges the gap between the fully managed experience of ClickHouse Cloud and the complete control of self-managed deployments. With ClickHouse BYOC, users retain control over their data, infrastructure, and security policies, meeting specific compliance and regulatory requirements, while offloading operational tasks like patching, monitoring, and scaling to the ClickHouse. This model offers the flexibility of a private cloud deployment with the benefits of a managed service, making it suitable for large-scale deployments at enterprises with stringent security, governance, and data residency needs.
 
-Learn more about [Bring Your Own Cloud](/cloud/reference/byoc).
+Learn more about [Bring Your Own Cloud](/cloud/reference/byoc/overview).
 
 ## ClickHouse Private {#clickhouse-private}
 

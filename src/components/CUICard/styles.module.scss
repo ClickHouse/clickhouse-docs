@@ -1,0 +1,60 @@
+// CUICard styles - to be added
+
+.cuiCard {
+  border-radius: .5rem;
+  background: #323230;
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 1;
+  width: 100%;
+  border: 1px solid rgba(65, 65, 65, .8);
+  padding: 1rem;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+[data-theme='light'] .cuiCard {
+  background: #F6F7FA;
+  border-color: var(--ifm-color-emphasis-300);
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.cardHeader {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cardHeader img {
+  width: 5rem;
+  height: 5rem;
+  object-fit: contain;
+  max-width: 75%;
+  max-height: 75%;
+}
+
+.cardFooter {
+  line-height: 1.2;
+  font-size: clamp(0.65rem, 2vw, 0.85rem);
+  font-weight: 600;
+  text-align: center;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  flex-shrink: 1;
+  min-height: 0;
+}

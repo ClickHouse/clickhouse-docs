@@ -3,7 +3,7 @@ slug: /use-cases/observability/clickstack/ingesting-data/otel-collector
 pagination_prev: null
 pagination_next: null
 description: 'OpenTelemetry collector for ClickStack - The ClickHouse Observability Stack'
-sidebar_label: 'OpenTelemetry Collector'
+sidebar_label: 'OpenTelemetry collector'
 title: 'ClickStack OpenTelemetry Collector'
 doc_type: 'guide'
 ---

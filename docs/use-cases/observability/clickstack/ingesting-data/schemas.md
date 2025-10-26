@@ -3,7 +3,7 @@ slug: /use-cases/observability/clickstack/ingesting-data/schemas
 pagination_prev: null
 pagination_next: null
 description: 'Tables and schemas used by ClickStack - The ClickHouse Observability Stack'
-sidebar_label: 'Tables and Schemas'
+sidebar_label: 'Tables and schemas'
 title: 'Tables and schemas used by ClickStack'
 doc_type: 'reference'
 ---

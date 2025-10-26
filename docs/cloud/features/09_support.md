@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Cloud Support'
+sidebar_label: 'Cloud support'
 title: 'Support'
 slug: /cloud/support
 description: 'Learn about Cloud Support'

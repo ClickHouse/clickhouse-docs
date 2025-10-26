@@ -16,11 +16,11 @@ import quicksight_04 from '@site/static/images/integrations/data-visualization/q
 import quicksight_05 from '@site/static/images/integrations/data-visualization/quicksight_05.png';
 import quicksight_06 from '@site/static/images/integrations/data-visualization/quicksight_06.png';
 import quicksight_07 from '@site/static/images/integrations/data-visualization/quicksight_07.png';
-import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # QuickSight
 
-<CommunityMaintainedBadge/>
+<ClickHouseSupportedBadge/>
 
 QuickSight can connect to on-premise ClickHouse setup (23.11+) via MySQL interface using the official MySQL data source and Direct Query mode.
 
