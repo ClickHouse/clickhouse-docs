@@ -1,7 +1,7 @@
 ---
 title: 'Removing specific tables from a ClickPipe'
 description: 'Removing specific tables from a ClickPipe'
-sidebar_label: 'Remove Table'
+sidebar_label: 'Remove table'
 slug: /integrations/clickpipes/mysql/removing_tables
 doc_type: 'guide'
 ---

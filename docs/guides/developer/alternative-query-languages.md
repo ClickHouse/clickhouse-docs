@@ -1,6 +1,6 @@
 ---
 slug: /guides/developer/alternative-query-languages
-sidebar_label: 'Alternative Query Languages'
+sidebar_label: 'Alternative query languages'
 title: 'Alternative Query Languages'
 description: 'Use alternative query languages in ClickHouse'
 doc_type: 'reference'

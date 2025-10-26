@@ -1,6 +1,6 @@
 ---
 slug: /about-us/history
-sidebar_label: 'ClickHouse History'
+sidebar_label: 'ClickHouse history'
 sidebar_position: 40
 description: 'History of ClickHouse development'
 keywords: ['history','development','Metrica']

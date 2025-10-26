@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 slug: /community-wisdom/cost-optimization
-sidebar_label: 'Cost Optimization'
+sidebar_label: 'Cost optimization'
 doc_type: 'guide'
 keywords: [
   'cost optimization',

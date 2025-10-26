@@ -7,7 +7,11 @@ title: 'Bringing Azure Data into ClickHouse'
 doc_type: 'guide'
 ---
 
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
+
 # Bringing Azure Data into ClickHouse
+
+<ClickHouseSupportedBadge/>
 
 Microsoft Azure offers a wide range of tools to store, transform, and analyze
 data. However, in many scenarios, ClickHouse can provide significantly better
