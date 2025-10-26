@@ -1,9 +1,9 @@
 ---
-sidebar_title: 'SQL Console'
+sidebar_title: 'SQL console'
 slug: /cloud/get-started/sql-console
 description: 'Run queries and create visualizations using the SQL Console.'
 keywords: ['sql console', 'sql client', 'cloud console', 'console']
-title: 'SQL Console'
+title: 'SQL console'
 doc_type: 'guide'
 ---
 

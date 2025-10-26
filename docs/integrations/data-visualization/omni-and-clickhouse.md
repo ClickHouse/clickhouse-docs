@@ -11,11 +11,11 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 import Image from '@theme/IdealImage';
 import omni_01 from '@site/static/images/integrations/data-visualization/omni_01.png';
 import omni_02 from '@site/static/images/integrations/data-visualization/omni_02.png';
-import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
+import PartnerBadge from '@theme/badges/PartnerBadge';
 
 # Omni
 
-<CommunityMaintainedBadge/>
+<PartnerBadge/>
 
 Omni can connect to ClickHouse Cloud or on-premise deployment via the official ClickHouse data source.
 

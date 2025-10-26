@@ -16,7 +16,7 @@ We're going to use some_data [table](assets/some_data.sql) and [data](assets/som
 
 ## Exporting in a Native ClickHouse format {#exporting-in-a-native-clickhouse-format}
 
-The most efficient data format to export and import data between ClickHouse nodes is [Native](/interfaces/formats.md/#native) format. Exporting is done using `INTO OUTFILE` clause:
+The most efficient data format to export and import data between ClickHouse nodes is [Native](/interfaces/formats/Native) format. Exporting is done using `INTO OUTFILE` clause:
 
 ```sql
 SELECT * FROM some_data
@@ -74,7 +74,7 @@ FORMAT Native
 
 ## Exporting to RowBinary {#exporting-to-rowbinary}
 
-Another binary format supported is [RowBinary](/interfaces/formats.md/#rowbinary), which allows importing and exporting data in binary-represented rows:
+Another binary format supported is [RowBinary](/interfaces/formats/RowBinary), which allows importing and exporting data in binary-represented rows:
 
 ```sql
 SELECT * FROM some_data
@@ -101,7 +101,7 @@ LIMIT 5
 └────────────────────────────────┴────────────┴──────┘
 ```
 
-Consider using [RowBinaryWithNames](/interfaces/formats.md/#rowbinarywithnames), which also adds a header row with a columns list. [RowBinaryWithNamesAndTypes](/interfaces/formats.md/#rowbinarywithnamesandtypes) will also add an additional header row with column types.
+Consider using [RowBinaryWithNames](/interfaces/formats/RowBinaryWithNames), which also adds a header row with a columns list. [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes) will also add an additional header row with column types.
 
 ### Importing from RowBinary files {#importing-from-rowbinary-files}
 To load data from a RowBinary file, we can use a `FROM INFILE` clause:
@@ -115,7 +115,7 @@ FORMAT RowBinary
 ## Importing single binary value using RawBLOB {#importing-single-binary-value-using-rawblob}
 
 Suppose we want to read an entire binary file and save it into a field in a table.
-This is the case when the [RawBLOB format](/interfaces/formats.md/#rawblob) can be used. This format can be directly used with a single-column table only:
+This is the case when the [RawBLOB format](/interfaces/formats/RawBLOB) can be used. This format can be directly used with a single-column table only:
 
 ```sql
 CREATE TABLE images(data String) ENGINE = Memory
@@ -152,7 +152,7 @@ Note that we had to use `LIMIT 1` because exporting more than a single value wil
 
 ## MessagePack {#messagepack}
 
-ClickHouse supports importing and exporting to [MessagePack](https://msgpack.org/) using the [MsgPack](/interfaces/formats.md/#msgpack). To export to MessagePack format:
+ClickHouse supports importing and exporting to [MessagePack](https://msgpack.org/) using the [MsgPack](/interfaces/formats/MsgPack). To export to MessagePack format:
 
 ```sql
 SELECT *
@@ -173,7 +173,7 @@ FORMAT MsgPack
 
 <CloudNotSupportedBadge/>
 
-To work with [Protocol Buffers](/interfaces/formats.md/#protobuf) we first need to define a [schema file](assets/schema.proto):
+To work with [Protocol Buffers](/interfaces/formats/Protobuf) we first need to define a [schema file](assets/schema.proto):
 
 ```protobuf
 syntax = "proto3";
@@ -185,7 +185,7 @@ message MessageType {
 };
 ```
 
-Path to this schema file (`schema.proto` in our case) is set in a `format_schema` settings option for the [Protobuf](/interfaces/formats.md/#protobuf) format:
+Path to this schema file (`schema.proto` in our case) is set in a `format_schema` settings option for the [Protobuf](/interfaces/formats/Protobuf) format:
 
 ```sql
 SELECT * FROM some_data
@@ -194,7 +194,7 @@ FORMAT Protobuf
 SETTINGS format_schema = 'schema:MessageType'
 ```
 
-This saves data to the [proto.bin](assets/proto.bin) file. ClickHouse also supports importing Protobuf data as well as nested messages. Consider using [ProtobufSingle](/interfaces/formats.md/#protobufsingle) to work with a single Protocol Buffer message (length delimiters will be omitted in this case).
+This saves data to the [proto.bin](assets/proto.bin) file. ClickHouse also supports importing Protobuf data as well as nested messages. Consider using [ProtobufSingle](/interfaces/formats/ProtobufSingle) to work with a single Protocol Buffer message (length delimiters will be omitted in this case).
 
 ## Cap'n Proto {#capn-proto}
 
@@ -212,7 +212,7 @@ struct PathStats {
 }
 ```
 
-Now we can import and export using [CapnProto](/interfaces/formats.md/#capnproto) format and this schema:
+Now we can import and export using [CapnProto](/interfaces/formats/CapnProto) format and this schema:
 
 ```sql
 SELECT

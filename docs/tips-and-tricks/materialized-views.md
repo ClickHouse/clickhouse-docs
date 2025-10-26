@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 slug: /tips-and-tricks/materialized-views
-sidebar_label: 'Materialized Views'
+sidebar_label: 'Materialized views'
 doc_type: 'guide'
 keywords: [
   'clickhouse materialized views',

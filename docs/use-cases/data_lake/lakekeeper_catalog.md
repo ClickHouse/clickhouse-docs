@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/data-lake/lakekeeper-catalog
-sidebar_label: 'Lakekeeper Catalog'
-title: 'Lakekeeper Catalog'
+sidebar_label: 'Lakekeeper catalog'
+title: 'Lakekeeper catalog'
 pagination_prev: null
 pagination_next: null
 description: 'In this guide, we will walk you through the steps to query
