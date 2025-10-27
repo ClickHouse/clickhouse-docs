@@ -5,6 +5,9 @@ description: 'JupySQL is a multi-platform database tool for Jupyter.'
 title: 'Using JupySQL with ClickHouse'
 keywords: ['JupySQL', 'Jupyter notebook', 'Python', 'data analysis', 'interactive SQL']
 doc_type: 'guide'
+integration:
+  - support_level: 'community'
+  - category: 'sql_client'
 ---
 
 import Image from '@theme/IdealImage';

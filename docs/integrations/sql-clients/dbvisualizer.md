@@ -5,6 +5,9 @@ description: 'DbVisualizer is a database tool with extended support for ClickHou
 title: 'Connecting DbVisualizer to ClickHouse'
 keywords: ['DbVisualizer', 'database visualization', 'SQL client', 'JDBC driver', 'database tool']
 doc_type: 'guide'
+integration:
+  - support_level: 'partner'
+  - category: 'sql_client'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres
 title: 'Ingesting Data from Postgres to ClickHouse (using CDC)'
 keywords: ['PostgreSQL', 'ClickPipes', 'CDC', 'change data capture', 'database replication']
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';

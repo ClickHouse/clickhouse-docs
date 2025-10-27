@@ -4,6 +4,9 @@ description: 'Seamlessly connect your object storage to ClickHouse Cloud.'
 slug: /integrations/clickpipes/object-storage
 title: 'Integrating Object Storage with ClickHouse Cloud'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 keywords: ['clickpipes', 'object storage', 's3', 'data ingestion', 'batch loading']
 ---
 

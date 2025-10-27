@@ -5,6 +5,10 @@ title: 'MySQL'
 hide_title: true
 description: 'Page describing MySQL integration'
 doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
+  - website: 'https://github.com/ClickHouse/clickhouse'
 keywords: ['mysql', 'database integration', 'external table', 'data source', 'sql database']
 ---
 

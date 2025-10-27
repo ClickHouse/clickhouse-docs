@@ -1,9 +1,14 @@
 ---
+
+
 description: 'Landing page with table of contents for the Kafka ClickPipes section'
 slug: /integrations/clickpipes/kafka
 sidebar_position: 1
 title: 'Kafka ClickPipes'
 doc_type: 'landing-page'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 keywords: ['Kafka ClickPipes', 'Apache Kafka', 'streaming ingestion', 'real-time data', 'message broker']
 ---
 

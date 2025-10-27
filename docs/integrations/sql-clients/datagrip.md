@@ -4,6 +4,10 @@ slug: /integrations/datagrip
 description: 'DataGrip is a database IDE that supports ClickHouse out of the box.'
 title: 'Connecting DataGrip to ClickHouse'
 doc_type: 'guide'
+integration:
+  - support_level: 'partner'
+  - category: 'sql_client'
+  - website: 'https://www.jetbrains.com/datagrip/'
 keywords: ['DataGrip', 'database IDE', 'JetBrains', 'SQL client', 'integrated development environment']
 ---
 

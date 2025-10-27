@@ -6,6 +6,9 @@ title: 'Integrating S3 with ClickHouse'
 description: 'Page describing how to integrate S3 with ClickHouse'
 keywords: ['Amazon S3', 'object storage', 'cloud storage', 'data lake', 'S3 integration']
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 import BucketDetails from '@site/docs/_snippets/_S3_authentication_and_bucket.md';

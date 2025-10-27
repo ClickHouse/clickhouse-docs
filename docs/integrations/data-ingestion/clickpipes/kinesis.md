@@ -4,6 +4,9 @@ description: 'Seamlessly connect your Amazon Kinesis data sources to ClickHouse 
 slug: /integrations/clickpipes/kinesis
 title: 'Integrating Amazon Kinesis with ClickHouse Cloud'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 keywords: ['clickpipes', 'kinesis', 'streaming', 'aws', 'data ingestion']
 ---
 

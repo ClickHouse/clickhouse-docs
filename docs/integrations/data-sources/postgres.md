@@ -5,6 +5,9 @@ title: 'PostgreSQL'
 hide_title: false
 description: 'Page describing how to integrate Postgres with ClickHouse'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 keywords: ['postgresql', 'database integration', 'external table', 'data source', 'sql database']
 ---
 
