@@ -423,4 +423,4 @@ If you're experiencing this error:
 
 **Related documentation:**
 - [JOIN clause](/sql-reference/statements/select/join)
-- [Query analyzer](/operations/settings/settings#allow-experimental-analyzer)
+- [Query analyzer](/operations/settings/settings#allow_experimental_analyzer)

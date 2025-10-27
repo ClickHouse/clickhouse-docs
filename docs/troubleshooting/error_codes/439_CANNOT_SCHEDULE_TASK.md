@@ -743,4 +743,4 @@ If you're experiencing this error:
 **Related documentation:**
 - [Server settings](/operations/server-configuration-parameters/settings)
 - [Query settings](/operations/settings/settings)
-- [Thread pool configuration](/operations/server-configuration-parameters/settings#max-thread-pool-size)
+- [Thread pool configuration](/operations/server-configuration-parameters/settings#max_thread_pool_size)

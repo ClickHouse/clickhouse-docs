@@ -89,6 +89,6 @@ SELECT identity(column) FROM table WHERE NOT throwIf(column IS NULL);
 
 ### Related documentation {#related-documentation}
 
-- [`throwIf` function documentation](/sql-reference/functions/other-functions#throwif)
+- [`throwIf` function documentation](/sql-reference/functions/other-functions#throwIf)
 - [HTTP Interface and error handling](/interfaces/http)
 - [Session settings: allow_custom_error_code_in_throwif](/operations/settings/settings#allow_custom_error_code_in_throwif)

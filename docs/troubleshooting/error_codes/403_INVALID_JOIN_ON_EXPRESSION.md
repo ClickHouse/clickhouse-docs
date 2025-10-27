@@ -165,4 +165,3 @@ WHERE t1.val = 'constant' OR t1.id IS NOT NULL;
 - [JOIN with inequality conditions](/sql-reference/statements/select/join#join-with-inequality-conditions-for-columns-from-different-tables)
 - [NULL values in JOIN keys](/sql-reference/statements/select/join#null-values-in-join-keys)
 - [`join_algorithm` setting](/operations/settings/settings#join_algorithm)
-- [`allow_experimental_join_condition` setting](/operations/settings/settings#allow_experimental_join_condition)

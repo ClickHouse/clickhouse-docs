@@ -594,6 +594,6 @@ If you're experiencing this error:
 10. For persistent issues, check network connectivity between nodes
 
 **Related documentation:**
-- [Parallel replicas](/operations/settings/settings#allow-experimental-parallel-reading-from-replicas)
+- [Parallel replicas](/operations/settings/settings#allow_experimental_parallel_reading_from_replicas)
 - [Distributed queries](/engines/table-engines/special/distributed)
 - [Cluster functions](/sql-reference/table-functions/cluster)
