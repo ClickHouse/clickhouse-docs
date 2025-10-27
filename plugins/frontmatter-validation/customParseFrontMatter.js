@@ -5,6 +5,14 @@ const fs = require('fs');
 // List to track files with issues
 let filesWithIssues = [];
 
+// Valid doc_type values enum
+const VALID_DOC_TYPES = [
+    'guide',
+    'reference',
+    'changelog',
+    'landing-page',
+];
+
 // Exceptions list configuration
 const EXCEPTIONS_FILE_PATH = path.join(process.cwd(), 'plugins/frontmatter-validation/frontmatter-exceptions.txt');
 let exceptionList = [];
@@ -140,11 +148,19 @@ async function customParseFrontMatter(params) {
     try {
         // Use Docusaurus's default parser to get the frontmatter data
         const parsedData = await defaultParseFrontMatter(params);
+        
         // Check for required fields
         const requiredFields = ['title', 'slug', 'description', 'doc_type'];
         for (const field of requiredFields) {
             if (!parsedData.frontMatter[field]) {
                 issues.push(`missing required field: ${field}`);
+            }
+        }
+
+        // Validate doc_type against enum
+        if (parsedData.frontMatter.doc_type) {
+            if (!VALID_DOC_TYPES.includes(parsedData.frontMatter.doc_type)) {
+                issues.push(`invalid doc_type '${parsedData.frontMatter.doc_type}'. Must be one of: ${VALID_DOC_TYPES.join(', ')}`);
             }
         }
 
@@ -376,5 +392,7 @@ module.exports = {
     },
     // Export exception list management functions
     reloadExceptions,
-    getExceptions: () => [...exceptionList]
+    getExceptions: () => [...exceptionList],
+    // Export valid doc types for reference
+    getValidDocTypes: () => [...VALID_DOC_TYPES]
 };
