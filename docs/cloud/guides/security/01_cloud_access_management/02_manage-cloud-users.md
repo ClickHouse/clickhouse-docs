@@ -4,6 +4,7 @@ slug: /cloud/security/manage-cloud-users
 title: 'Manage cloud users'
 description: 'This page describes how administrators can add users, manage assignments, and remove users'
 doc_type: 'guide'
+keywords: ['cloud users', 'access management', 'security', 'permissions', 'team management']
 ---
 
 import Image from '@theme/IdealImage';

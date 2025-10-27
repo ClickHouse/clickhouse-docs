@@ -5,6 +5,7 @@ sidebar_position: 1
 description: 'Users can ingest data into ClickHouse using Google Dataflow'
 title: 'Integrating Google Dataflow with ClickHouse'
 doc_type: 'guide'
+keywords: ['Google Dataflow ClickHouse', 'Dataflow ClickHouse integration', 'Apache Beam ClickHouse', 'ClickHouseIO connector', 'Google Cloud ClickHouse integration']
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';

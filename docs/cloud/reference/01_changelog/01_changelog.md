@@ -1,9 +1,10 @@
 ---
 slug: /whats-new/cloud
-sidebar_label: 'Cloud Changelog'
+sidebar_label: 'Cloud changelog'
 title: 'Cloud Changelog'
 description: 'ClickHouse Cloud changelog providing descriptions of what is new in each ClickHouse Cloud release'
 doc_type: 'changelog'
+keywords: ['changelog', 'release notes', 'updates', 'new features', 'cloud changes']
 ---
 
 import Image from '@theme/IdealImage';
@@ -31,6 +32,15 @@ import query_endpoints from '@site/static/images/cloud/reference/may-17-query-en
 import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.png';
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/whats-new/cloud-compatibility) page.
+
+## October 17, 2025 {#october-17-2025}
+
+- **Service Monitoring - Resource Utilization Dashboard**  
+  The CPU utilization and memory utilization metrics display will change to show the maximum utilization metric during a particular time period to better surface instances of underprovisionment, from average.
+  In addition, the CPU utilization metric will show a kubernetes-level CPU utilization metric which more closely resembles the metric used by ClickHouse Cloud’s autoscaler. 
+- **External Buckets**  
+  ClickHouse Cloud now lets you export backups directly to your own cloud service provider account.
+  Connect your external storage bucket - AWS S3, Google Cloud Storage, or Azure Blob Storage - and take control of your backup management.
 
 ## August 29, 2025 {#august-29-2025}
 
@@ -214,7 +224,7 @@ remains within the ClickHouse VPC. This setup is ideal for large workloads that
 need to comply with strict data residency requirements by ensuring all data stays
 within a secure customer environment.
 
-- For more details, you can refer to the [documentation](/cloud/reference/byoc) for BYOC
+- For more details, you can refer to the [documentation](/cloud/reference/byoc/overview) for BYOC
   or read our [announcement blog post](https://clickhouse.com/blog/announcing-general-availability-of-clickhouse-bring-your-own-cloud-on-aws).
 - [Contact us](https://clickhouse.com/cloud/bring-your-own-cloud) to request access.
 

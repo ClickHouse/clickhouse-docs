@@ -44,7 +44,7 @@ Normally, ClickHouse avoids merging parts larger than ~150 GB (configurable via 
 
 * It may try to merge **multiple 150 GB parts** into one massive part
 * This could result in **long merge times**, **memory pressure**, or even **out-of-memory errors**
-* These large parts may become challenging to merge i.e. attempts to merge them further fails for the reasons stated above. In cases where merges are required for correct query time behavior, this can result in undesired consequences e.g. [duplicates accumulating for a ReplacingMergeTree](/guides/developer/deduplication#using-replacingmergetree-for-upserts), increasing query time performance.
+* These large parts may become challenging to merge, i.e. attempts to merge them further fails for the reasons stated above. In cases where merges are required for correct query time behavior, this can result in undesired consequences such as [duplicates accumulating for a ReplacingMergeTree](/guides/developer/deduplication#using-replacingmergetree-for-upserts), diminishing query time performance.
 
 ## Let background merges do the work {#let-background-merges-do-the-work}
 

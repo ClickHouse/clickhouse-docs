@@ -1,8 +1,9 @@
 ---
 slug: /guides/developer/alternative-query-languages
-sidebar_label: 'Alternative Query Languages'
+sidebar_label: 'Alternative query languages'
 title: 'Alternative Query Languages'
 description: 'Use alternative query languages in ClickHouse'
+keywords: ['alternative query languages', 'query dialects', 'MySQL dialect', 'PostgreSQL dialect', 'developer guide']
 doc_type: 'reference'
 ---
 

@@ -3,7 +3,8 @@ description: 'Explore the WikiStat dataset containing 0.5 trillion records.'
 sidebar_label: 'WikiStat'
 slug: /getting-started/example-datasets/wikistat
 title: 'WikiStat'
-doc_type: 'reference'
+doc_type: 'guide'
+keywords: ['example dataset', 'wikipedia', 'tutorial', 'sample data', 'pageviews']
 ---
 
 The dataset contains 0.5 trillion records.

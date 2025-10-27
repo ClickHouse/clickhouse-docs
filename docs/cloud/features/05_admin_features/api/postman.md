@@ -4,6 +4,7 @@ sidebar_label: 'Programmatic API access with Postman'
 title: 'Programmatic API access with Postman'
 description: 'This guide will help you test the ClickHouse Cloud API using Postman'
 doc_type: 'guide'
+keywords: ['api', 'postman', 'rest api', 'cloud management', 'integration']
 ---
 
 import Image from '@theme/IdealImage';

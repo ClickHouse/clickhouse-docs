@@ -6,6 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Getting started with ClickStack local and system data and metrics'
 doc_type: 'guide'
+keywords: ['clickstack', 'example data', 'sample dataset', 'logs', 'observability']
 ---
 
 import Image from '@theme/IdealImage';

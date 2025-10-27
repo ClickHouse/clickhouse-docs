@@ -4,6 +4,7 @@ slug: /cloud/security/audit-logging/database-audit-log
 title: 'Database audit log'
 description: 'This page describes how users can review the database audit log'
 doc_type: 'guide'
+keywords: ['audit logging', 'database logs', 'compliance', 'security', 'monitoring']
 ---
 
 # Database audit log {#database-audit-log}

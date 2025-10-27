@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 slug: /community-wisdom/performance-optimization
-sidebar_label: 'Performance Optimization'
+sidebar_label: 'Performance optimization'
 doc_type: 'guide'
 keywords: [
   'performance optimization',

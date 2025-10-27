@@ -4,6 +4,7 @@ slug: /cloud/manage/billing/overview
 title: 'Pricing'
 description: 'Overview page for ClickHouse Cloud pricing'
 doc_type: 'reference'
+keywords: ['ClickHouse Cloud', 'pricing', 'billing', 'cloud costs', 'compute pricing']
 ---
 
 For pricing information, see the [ClickHouse Cloud Pricing](https://clickhouse.com/pricing#pricing-calculator) page.
@@ -237,6 +238,9 @@ ClickHouse Cloud supports the following billing options:
 :::note
 ClickHouse Cloud credits for PAYG are invoiced in \$0.01 units, allowing us to charge customers for partial ClickHouse credits based on their usage. This differs from committed spend ClickHouse credits, which are purchased in advance in whole \$1 units.
 :::
+
+### Can I delete my credit card? {#can-i-delete-my-credit-card}
+You can’t remove a credit card in the Billing UI, but you can update it anytime. This helps ensure your organization always has a valid payment method. If you need to remove your credit card, please contact [ClickHouse Cloud support](https://console.clickhouse.cloud/support) for help.
 
 ### How long is the billing cycle? {#how-long-is-the-billing-cycle}
 

@@ -5,6 +5,7 @@ slug: /integrations/clickpipes/kafka/reference
 sidebar_position: 1
 title: 'Reference'
 doc_type: 'reference'
+keywords: ['kafka reference', 'clickpipes', 'data sources', 'avro', 'virtual columns']
 ---
 
 import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';

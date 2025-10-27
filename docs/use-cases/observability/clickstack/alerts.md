@@ -6,6 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Alerts with ClickStack'
 doc_type: 'guide'
+keywords: ['ClickStack', 'observability', 'alerts', 'search-alerts', 'notifications', 'thresholds', 'slack', 'email', 'pagerduty', 'error-monitoring', 'performance-monitoring', 'user-events']
 ---
 
 import Image from '@theme/IdealImage';

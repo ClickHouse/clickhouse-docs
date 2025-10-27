@@ -1,10 +1,16 @@
 ---
+
+
 sidebar_label: 'Integrating Kafka with ClickHouse'
 sidebar_position: 1
 slug: /integrations/kafka
 description: 'Introduction to Kafka with ClickHouse'
 title: 'Integrating Kafka with ClickHouse'
+keywords: ['Apache Kafka', 'event streaming', 'data pipeline', 'message broker', 'real-time data']
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 # Integrating Kafka with ClickHouse
@@ -101,6 +107,6 @@ To get started using the Kafka table engine, see the [reference documentation](.
 
 * **Custom code** - Custom code using Kafka and ClickHouse [client libraries](../../language-clients/index.md) may be appropriate in cases where custom processing of events is required.
 
-[BYOC]: /cloud/reference/byoc
+[BYOC]: /cloud/reference/byoc/overview
 [Cloud]: /cloud/get-started
 [Self-hosted]: ../../../intro.md

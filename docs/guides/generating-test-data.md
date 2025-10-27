@@ -147,7 +147,7 @@ Read the [Generating Random Data in ClickHouse](https://clickhouse.com/blog/gene
 
 ## Generating random tables {#generating-random-tables}
 
-The [`generateRandomStructure`](/sql-reference/functions/other-functions#generaterandomstructure) function is particularly useful when combined with the [`generateRandom`](/sql-reference/table-functions/generate) table engine for testing, benchmarking, or creating mock data with arbitrary schemas.
+The [`generateRandomStructure`](/sql-reference/functions/other-functions#generateRandomStructure) function is particularly useful when combined with the [`generateRandom`](/sql-reference/table-functions/generate) table engine for testing, benchmarking, or creating mock data with arbitrary schemas.
 
 Let's start by just seeing what a random structure looks like using the `generateRandomStructure` function:
 

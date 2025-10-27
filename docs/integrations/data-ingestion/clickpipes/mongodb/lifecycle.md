@@ -4,6 +4,7 @@ description: 'Various pipe statuses and their meanings'
 slug: /integrations/clickpipes/mongodb/lifecycle
 title: 'Lifecycle of a MongoDB ClickPipe'
 doc_type: 'guide'
+keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 # Lifecycle of a MongoDB ClickPipe {#lifecycle}

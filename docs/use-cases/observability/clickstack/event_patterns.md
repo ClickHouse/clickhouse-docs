@@ -6,6 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Event Patterns with ClickStack'
 doc_type: 'guide'
+keywords: ['clickstack', 'event patterns', 'log analysis', 'pattern matching', 'observability']
 ---
 
 import Image from '@theme/IdealImage';

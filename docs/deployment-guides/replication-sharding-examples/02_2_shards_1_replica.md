@@ -5,6 +5,7 @@ sidebar_position: 10
 title: 'Scaling'
 description: 'Page describing an example architecture designed to provide scalability'
 doc_type: 'guide'
+keywords: ['sharding', 'horizontal scaling', 'distributed data', 'cluster setup', 'data distribution']
 ---
 
 import Image from '@theme/IdealImage';
@@ -274,7 +275,7 @@ template for distributed DDL queries, which are queries that execute across the
 cluster using the `ON CLUSTER` clause. By default, distributed DDL queries
 are allowed, but can also be turned off with setting `allow_distributed_ddl_queries`.
 
-`internal_replication` is set to true so that data is written to just one of the replicas.
+`internal_replication` is left set to false by default since only one replica per shard.
 
 ```xml
 <remote_servers>
