@@ -261,4 +261,3 @@ clickhouse-client --query "SELECT formatReadableQuantity(count(*)) FROM hackerne
 ```
 
 </VerticalStepper>
-
