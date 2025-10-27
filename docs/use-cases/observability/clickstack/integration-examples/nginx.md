@@ -9,9 +9,12 @@ doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/finish-import.png';
 import example_dashboard from '@site/static/images/clickstack/example-dashboard.png';
+import log_view from '@site/static/images/clickstack/log-view.png';
+import dashboardJson from '@site/static/examples/example-dashboard.json';
 
 # Monitoring Nginx with ClickStack {#nginx-clickstack}
 
@@ -41,6 +44,13 @@ This section covers configuring your existing nginx installation to send logs to
 
 ## Configure nginx log format {#configure-nginx}
 First, configure nginx to output logs in JSON format for easier parsing. Add this log format definition to your nginx.conf:
+
+The `nginx.conf` file is typically located at:
+- **Linux (apt/yum)**: `/etc/nginx/nginx.conf`
+- **macOS (Homebrew)**: `/usr/local/etc/nginx/nginx.conf` or `/opt/homebrew/etc/nginx/nginx.conf`
+- **Docker**: Configuration is usually mounted as a volume
+
+Add this log format definition to the `http` block:
 
 ```json
 http {
@@ -146,8 +156,10 @@ Ensure the ClickStack collector has appropriate permissions to read the nginx lo
 Once configured, log into HyperDX and verify logs are flowing:
 
 1. Navigate to the Logs view
-2. Filter by source:nginx to see only nginx logs
-3. Verify you see JSON-parsed log entries with fields like request_method, request_uri, status, etc.
+2. Verify you see JSON-parsed log entries with fields like request, request_time, upstream_response_time, etc.
+
+<Image img={log_view} alt="Log view"/>
+
 </VerticalStepper>
 
 ## Troubleshooting {#troubleshooting}
@@ -155,8 +167,22 @@ Once configured, log into HyperDX and verify logs are flowing:
 ### Custom config not loading {#troubleshooting-not-loading}
 
 - Verify the environment variable CUSTOM_OTELCOL_CONFIG_FILE is set correctly
+
+```bash
+docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
+```
+
 - Check that the custom config file is mounted at /etc/otelcol-contrib/custom.config.yaml
-- Verify the file is mounted as a file, not a directory: docker exec `<container>` ls -la /etc/otelcol-contrib/
+
+```bash
+docker exec <container-name> ls -lh /etc/otelcol-contrib/custom.config.yaml
+```
+
+- View the custom config content to verify it's readable
+
+```bash
+docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
+```
 
 ### No logs appearing in HyperDX {#no-logs}
 
@@ -173,9 +199,9 @@ For users who want to test the nginx integration before configuring their produc
 
 ## Using the Sample Dataset {#using-data}
 
-1. [Download](../../../../../static/examples/nginx-sample-logs.json) and place the sample file in `/tmp/nginx-demo/access.log` 
+<a href={useBaseUrl('/examples/nginx-sample-logs.json')} download="nginx-sample-logs.json">Download</a> the sample file to your current directory and rename it to `access.log`
 
-2. **Create a test collector config** (`nginx-demo.yaml`):
+2. **Create a test collector config** (`nginx-demo.yaml`) in the same directory:
 
 ```yaml
 receivers:
@@ -213,7 +239,7 @@ docker run --name clickstack-demo \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
   -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
   -v "$(pwd)/nginx-demo.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-  -v /tmp/nginx-demo:/tmp/nginx-demo:ro \
+  -v "$(pwd)/access.log:/demo/access.log:ro" \
   docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
 ```
 
@@ -224,23 +250,6 @@ docker run --name clickstack-demo \
 - Set time range to last 24 hours
 - You should see ~10,000 log entries
 
-You can query the data to verify patterns:
-
-```shell
-docker exec clickstack-demo clickhouse-client --query "
-SELECT 
-  toHour(Timestamp) as hour,
-  count() as total_logs,
-  countIf(toInt32(LogAttributes['status']) >= 500) as server_errors,
-  countIf(toInt32(LogAttributes['status']) >= 400 AND toInt32(LogAttributes['status']) < 500) as client_errors,
-  round(avg(toFloat64OrNull(LogAttributes['request_time'])), 3) as avg_response_time
-FROM default.otel_logs 
-WHERE LogAttributes['source'] = 'nginx-demo'
-GROUP BY hour
-ORDER BY hour
-"
-```
-
 ::::note 
 The demo dataset uses dynamic timestamps (last 24 hours from generation). The traffic patterns are intentionally dramatic to make visualizations clear and obvious in dashboards.
 ::::
@@ -248,10 +257,10 @@ The demo dataset uses dynamic timestamps (last 24 hours from generation). The tr
 
 ## Dashboards and visualization {#dashboards}
 
-To help you get started monitoring nginx with ClickStack, we provide a pre-built dashboard with essential nginx metrics and visualizations.
+To help you get started monitoring nginx with ClickStack, we provide essential visualizations for nginx logs.
 
 ### Import Pre-built Dashboard {#import-dashboard}
-[Download](../../../../../static/examples/example-dashboard.json) the dashboard configuration.
+<a href={useBaseUrl('/examples/example-dashboard.json')} download="example-dashboard.json">Download</a> the dashboard configuration.
 
 1. Open HyperDX and navigate to the Dashboards section.
 2. Click "Import Dashboard" in the upper right corner under the elipses.
