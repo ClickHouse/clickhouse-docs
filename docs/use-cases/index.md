@@ -5,6 +5,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Landing page for use case guides'
 doc_type: 'landing-page'
+keywords: ['use cases', 'observability', 'time-series', 'data lake', 'machine learning', 'AI']
 ---
 
 In this section of the docs you can find our use case guides.

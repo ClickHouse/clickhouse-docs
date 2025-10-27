@@ -5,6 +5,7 @@ sidebar_label: 'Add table'
 slug: /integrations/clickpipes/mysql/add_table
 show_title: false
 doc_type: 'guide'
+keywords: ['clickpipes', 'mysql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 import Image from '@theme/IdealImage';

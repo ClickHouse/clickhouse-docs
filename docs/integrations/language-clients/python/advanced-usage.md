@@ -74,7 +74,7 @@ The code above yields an `output.csv` file with the following content:
 4,"4"
 ```
 
-Similarly, you could save data in [TabSeparated](/interfaces/formats#tabseparated) and other formats. See [Formats for Input and Output Data](/interfaces/formats) for an overview of all available format options.
+Similarly, you could save data in [TabSeparated](/interfaces/formats/TabSeparated) and other formats. See [Formats for Input and Output Data](/interfaces/formats) for an overview of all available format options.
 
 ## Multithreaded, multiprocess, and async/event driven use cases {#multithreaded-multiprocess-and-asyncevent-driven-use-cases}
 

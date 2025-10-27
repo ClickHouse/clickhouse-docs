@@ -3,6 +3,7 @@ slug: /cloud/reference/changelogs/release-notes
 title: 'Cloud Release Notes'
 description: 'Landing page for Cloud release notes'
 doc_type: 'changelog'
+keywords: ['changelog', 'release notes', 'updates', 'new features', 'cloud changes']
 ---
 
 <!-- The table of contents below is generated automatically from YAML front matter

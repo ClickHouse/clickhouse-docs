@@ -11,17 +11,13 @@ doc_type: 'guide'
 
 # JSON Overview
 
-<div style={{width:'1024px', height: '576px'}}>
-  <iframe src="//www.youtube.com/embed/gCg5ISOujtc"
-    width="1024"
-    height="576"
-    frameborder="0"
-    allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
-</div>
+<iframe src="//www.youtube.com/embed/gCg5ISOujtc"
+frameborder="0"
+allow="autoplay;
+fullscreen;
+picture-in-picture"
+allowfullscreen>
+</iframe>
 
 <br/>
 ClickHouse provides several approaches for handling JSON, each with its respective pros and cons and usage. In this guide, we will cover how to load JSON and design your schema optimally. This guide consists of the following sections:

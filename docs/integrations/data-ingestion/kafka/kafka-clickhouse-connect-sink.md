@@ -5,6 +5,7 @@ slug: /integrations/kafka/clickhouse-kafka-connect-sink
 description: 'The official Kafka connector from ClickHouse.'
 title: 'ClickHouse Kafka Connect Sink'
 doc_type: 'guide'
+keywords: ['ClickHouse Kafka Connect Sink', 'Kafka connector ClickHouse', 'official ClickHouse connector', 'ClickHouse Kafka integration']
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
@@ -162,7 +163,7 @@ Sink, use [Kafka Connect Transformations](https://docs.confluent.io/platform/cur
 
 **Without a schema declared:**
 
-A record is converted into JSON and sent to ClickHouse as a value in [JSONEachRow](../../../sql-reference/formats.mdx#jsoneachrow) format.
+A record is converted into JSON and sent to ClickHouse as a value in [JSONEachRow](/interfaces/formats/JSONEachRow) format.
 
 ### Configuration recipes {#configuration-recipes}
 
@@ -277,7 +278,7 @@ Please note: if you encounter issues with missing classes, not every environment
 
 ##### String support {#string-support}
 
-The connector supports the String Converter in different ClickHouse formats: [JSON](/interfaces/formats#jsoneachrow), [CSV](/interfaces/formats#csv), and [TSV](/interfaces/formats#tabseparated).
+The connector supports the String Converter in different ClickHouse formats: [JSON](/interfaces/formats/JSONEachRow), [CSV](/interfaces/formats/CSV), and [TSV](/interfaces/formats/TabSeparated).
 
 ```json
 {

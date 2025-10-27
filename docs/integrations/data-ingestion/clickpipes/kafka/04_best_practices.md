@@ -5,6 +5,7 @@ slug: /integrations/clickpipes/kafka/best-practices
 sidebar_position: 1
 title: 'Best practices'
 doc_type: 'guide'
+keywords: ['kafka best practices', 'clickpipes', 'compression', 'authentication', 'scaling']
 ---
 
 # Best practices {#best-practices}

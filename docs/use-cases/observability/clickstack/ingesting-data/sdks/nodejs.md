@@ -6,6 +6,7 @@ sidebar_position: 5
 description: 'Node.js SDK for ClickStack - The ClickHouse Observability Stack'
 title: 'Node.js'
 doc_type: 'guide'
+keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
 
 import Tabs from '@theme/Tabs';

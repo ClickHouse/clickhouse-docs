@@ -4,6 +4,7 @@ description: 'Doc for resyncing a database ClickPipe'
 slug: /integrations/clickpipes/mysql/resync
 sidebar_label: 'Resync ClickPipe'
 doc_type: 'guide'
+keywords: ['clickpipes', 'mysql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'

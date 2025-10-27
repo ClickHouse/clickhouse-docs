@@ -1,10 +1,16 @@
 ---
+
+
 sidebar_label: 'Integrating Kafka with ClickHouse'
 sidebar_position: 1
 slug: /integrations/kafka
 description: 'Introduction to Kafka with ClickHouse'
 title: 'Integrating Kafka with ClickHouse'
+keywords: ['Apache Kafka', 'event streaming', 'data pipeline', 'message broker', 'real-time data']
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 # Integrating Kafka with ClickHouse

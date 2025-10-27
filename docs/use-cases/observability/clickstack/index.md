@@ -4,6 +4,7 @@ title: 'ClickStack - The ClickHouse Observability Stack'
 pagination_prev: null
 pagination_next: null
 description: 'Landing page for the ClickHouse Observability Stack'
+keywords: ['ClickStack', 'observability stack', 'HyperDX', 'OpenTelemetry', 'logs', 'traces', 'metrics']
 doc_type: 'landing-page'
 ---
 

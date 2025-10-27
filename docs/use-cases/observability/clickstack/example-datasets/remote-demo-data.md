@@ -6,6 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Getting started with ClickStack and a remote demo dataset'
 doc_type: 'guide'
+keywords: ['clickstack', 'example data', 'sample dataset', 'logs', 'observability']
 ---
 
 import Image from '@theme/IdealImage';

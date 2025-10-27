@@ -5,6 +5,7 @@ slug: /integrations/clickpipes/mongodb/faq
 sidebar_position: 2
 title: 'ClickPipes for MongoDB FAQ'
 doc_type: 'reference'
+keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 # ClickPipes for MongoDB FAQ

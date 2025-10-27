@@ -4,6 +4,7 @@ description: 'Pausing and Resuming a MongoDB ClickPipe'
 sidebar_label: 'Pause table'
 slug: /integrations/clickpipes/mongodb/pause_and_resume
 doc_type: 'guide'
+keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 import Image from '@theme/IdealImage';
