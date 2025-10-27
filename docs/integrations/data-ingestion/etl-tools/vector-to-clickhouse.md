@@ -6,6 +6,7 @@ description: 'How to tail a log file into ClickHouse using Vector'
 title: 'Integrating Vector with ClickHouse'
 show_related_blogs: true
 doc_type: 'guide'
+keywords: ['vector', 'log collection', 'observability', 'data ingestion', 'pipeline']
 ---
 
 import Image from '@theme/IdealImage';

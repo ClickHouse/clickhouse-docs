@@ -4,6 +4,7 @@ slug: /cloud/security/manage-my-account
 title: 'Manage my account'
 description: 'This page describes how users can accept invitations, manage MFA settings, and reset passwords'
 doc_type: 'guide'
+keywords: ['account management', 'user profile', 'security', 'cloud console', 'settings']
 ---
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'

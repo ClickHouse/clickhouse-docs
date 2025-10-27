@@ -4,6 +4,7 @@ description: 'Removing specific tables from a ClickPipe'
 sidebar_label: 'Remove table'
 slug: /integrations/clickpipes/mongodb/removing_tables
 doc_type: 'guide'
+keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 import Image from '@theme/IdealImage';

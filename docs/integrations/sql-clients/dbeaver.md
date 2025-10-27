@@ -4,6 +4,7 @@ sidebar_label: 'DBeaver'
 description: 'DBeaver is a multi-platform database tool.'
 title: 'Connect DBeaver to ClickHouse'
 doc_type: 'guide'
+keywords: ['DBeaver', 'database management', 'SQL client', 'JDBC connection', 'multi-platform']
 ---
 
 import Image from '@theme/IdealImage';

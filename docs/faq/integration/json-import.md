@@ -4,6 +4,7 @@ title: 'How to import JSON into ClickHouse?'
 toc_hidden: true
 toc_priority: 11
 description: 'This page shows you how to import JSON into ClickHouse'
+keywords: ['JSON import', 'JSONEachRow format', 'data import', 'JSON ingestion', 'data formats']
 doc_type: 'guide'
 ---
 

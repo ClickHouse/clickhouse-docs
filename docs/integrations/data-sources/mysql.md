@@ -5,6 +5,7 @@ title: 'MySQL'
 hide_title: true
 description: 'Page describing MySQL integration'
 doc_type: 'reference'
+keywords: ['mysql', 'database integration', 'external table', 'data source', 'sql database']
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

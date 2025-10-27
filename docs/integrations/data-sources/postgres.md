@@ -5,6 +5,7 @@ title: 'PostgreSQL'
 hide_title: false
 description: 'Page describing how to integrate Postgres with ClickHouse'
 doc_type: 'guide'
+keywords: ['postgresql', 'database integration', 'external table', 'data source', 'sql database']
 ---
 
 import PostgreSQL from '@site/docs/integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql.md';

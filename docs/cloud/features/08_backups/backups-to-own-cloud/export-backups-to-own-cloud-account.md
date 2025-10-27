@@ -5,6 +5,7 @@ title: 'Export Backups to your Own Cloud Account'
 description: 'Describes how to export backups to your own Cloud account'
 sidebar_position: 1
 doc_type: 'guide'
+keywords: ['backups', 'disaster recovery', 'data protection', 'restore', 'cloud features']
 ---
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'

@@ -4,6 +4,7 @@ slug: /cloud/manage/billing/overview
 title: 'Pricing'
 description: 'Overview page for ClickHouse Cloud pricing'
 doc_type: 'reference'
+keywords: ['ClickHouse Cloud', 'pricing', 'billing', 'cloud costs', 'compute pricing']
 ---
 
 For pricing information, see the [ClickHouse Cloud Pricing](https://clickhouse.com/pricing#pricing-calculator) page.

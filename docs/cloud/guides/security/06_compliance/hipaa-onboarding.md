@@ -4,6 +4,7 @@ slug: /cloud/security/compliance/hipaa-onboarding
 title: 'HIPAA onboarding'
 description: 'Learn more about how to onboard to HIPAA compliant services'
 doc_type: 'guide'
+keywords: ['hipaa', 'compliance', 'healthcare', 'security', 'data protection']
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';

@@ -4,6 +4,7 @@ slug: /integrations/data-formats/sql
 title: 'Inserting and dumping SQL data in ClickHouse'
 description: 'Page describing how to transfer data between other databases and ClickHouse using SQL dumps.'
 doc_type: 'guide'
+keywords: ['sql format', 'data export', 'data import', 'backup', 'sql dumps']
 ---
 
 # Inserting and dumping SQL data in ClickHouse

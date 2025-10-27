@@ -4,6 +4,7 @@ slug: /cloud/security/audit-logging
 title: 'Console audit log events'
 description: 'This page describes the events that are recorded to the console audit log.'
 doc_type: 'reference'
+keywords: ['audit logging', 'security', 'compliance', 'logs', 'monitoring']
 ---
 
 ## Console audit log events {#console-audit-log-events}

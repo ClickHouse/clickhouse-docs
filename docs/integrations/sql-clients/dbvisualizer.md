@@ -3,6 +3,7 @@ sidebar_label: 'DbVisualizer'
 slug: /integrations/dbvisualizer
 description: 'DbVisualizer is a database tool with extended support for ClickHouse.'
 title: 'Connecting DbVisualizer to ClickHouse'
+keywords: ['DbVisualizer', 'database visualization', 'SQL client', 'JDBC driver', 'database tool']
 doc_type: 'guide'
 ---
 

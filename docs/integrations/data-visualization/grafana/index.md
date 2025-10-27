@@ -6,6 +6,7 @@ description: 'Introduction to using ClickHouse with Grafana'
 title: 'ClickHouse data source plugin for Grafana'
 show_related_blogs: true
 doc_type: 'guide'
+keywords: ['Grafana', 'data visualization', 'dashboard', 'plugin', 'data source']
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';

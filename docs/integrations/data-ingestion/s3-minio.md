@@ -5,6 +5,7 @@ slug: /integrations/minio
 description: 'Page describing how to use MinIO with ClickHouse'
 title: 'Using MinIO'
 doc_type: 'guide'
+keywords: ['s3', 'minio', 'object storage', 'data loading', 'compatible storage']
 ---
 
 # Using MinIO

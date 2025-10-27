@@ -6,6 +6,7 @@ pagination_next: null
 sidebar_position: 5
 description: 'Deploying ClickStack with Local Mode Only - The ClickHouse Observability Stack'
 doc_type: 'guide'
+keywords: ['clickstack', 'deployment', 'setup', 'configuration', 'observability']
 ---
 
 import Image from '@theme/IdealImage';

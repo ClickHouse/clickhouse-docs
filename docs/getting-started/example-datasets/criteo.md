@@ -2,6 +2,7 @@
 description: 'A terabyte of click logs from Criteo'
 sidebar_label: 'Criteo 1TB click logs'
 slug: /getting-started/example-datasets/criteo
+keywords: ['Criteo click logs', 'advertising data', 'click-through data', 'terabyte dataset', 'getting started']
 title: 'Terabyte click logs from Criteo'
 doc_type: 'guide'
 ---
