@@ -8,6 +8,7 @@ doc_type: 'guide'
 integration:
   - support_level: 'core'
   - category: 'data_ingestion'
+keywords: ['fivetran', 'data movement', 'etl', 'clickhouse destination', 'automated data platform']
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';

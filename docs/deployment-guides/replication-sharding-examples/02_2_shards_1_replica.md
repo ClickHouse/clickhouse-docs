@@ -5,6 +5,7 @@ sidebar_position: 10
 title: 'Scaling'
 description: 'Page describing an example architecture designed to provide scalability'
 doc_type: 'guide'
+keywords: ['sharding', 'horizontal scaling', 'distributed data', 'cluster setup', 'data distribution']
 ---
 
 import Image from '@theme/IdealImage';

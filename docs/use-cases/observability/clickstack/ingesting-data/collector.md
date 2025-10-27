@@ -6,6 +6,7 @@ description: 'OpenTelemetry collector for ClickStack - The ClickHouse Observabil
 sidebar_label: 'OpenTelemetry collector'
 title: 'ClickStack OpenTelemetry Collector'
 doc_type: 'guide'
+keywords: ['ClickStack', 'OpenTelemetry collector', 'ClickHouse observability', 'OTel collector configuration', 'OpenTelemetry ClickHouse']
 ---
 
 import Image from '@theme/IdealImage';

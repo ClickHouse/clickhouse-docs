@@ -10,6 +10,7 @@ integration:
   - support_level: 'partner'
   - category: 'data_ingestion'
   - website: 'https://vector.dev/'
+keywords: ['vector', 'log collection', 'observability', 'data ingestion', 'pipeline']
 ---
 
 import Image from '@theme/IdealImage';

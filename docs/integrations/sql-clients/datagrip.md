@@ -8,6 +8,7 @@ integration:
   - support_level: 'partner'
   - category: 'sql_client'
   - website: 'https://www.jetbrains.com/datagrip/'
+keywords: ['DataGrip', 'database IDE', 'JetBrains', 'SQL client', 'integrated development environment']
 ---
 
 import Image from '@theme/IdealImage';

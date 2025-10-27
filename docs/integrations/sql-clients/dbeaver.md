@@ -8,6 +8,7 @@ integration:
   - support_level: 'partner'
   - category: 'sql_client'
   - website: 'https://github.com/dbeaver/dbeaver'
+keywords: ['DBeaver', 'database management', 'SQL client', 'JDBC connection', 'multi-platform']
 ---
 
 import Image from '@theme/IdealImage';

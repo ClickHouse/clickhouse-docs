@@ -3,6 +3,7 @@ sidebar_label: 'Binary and Native'
 slug: /integrations/data-formats/binary-native
 title: 'Using native and binary formats in ClickHouse'
 description: 'Page describing how to use native and binary formats in ClickHouse'
+keywords: ['binary formats', 'native format', 'rowbinary', 'rawblob', 'messagepack', 'protobuf', 'capn proto', 'data formats', 'performance', 'compression']
 doc_type: 'guide'
 ---
 

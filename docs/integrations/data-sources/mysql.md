@@ -9,6 +9,7 @@ integration:
   - support_level: 'core'
   - category: 'data_ingestion'
   - website: 'https://github.com/ClickHouse/clickhouse'
+keywords: ['mysql', 'database integration', 'external table', 'data source', 'sql database']
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';

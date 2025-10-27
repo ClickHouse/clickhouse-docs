@@ -4,6 +4,7 @@ slug: /cloud/security/cmek
 title: 'Data encryption'
 description: 'Learn more about data encryption in ClickHouse Cloud'
 doc_type: 'guide'
+keywords: ['ClickHouse Cloud', 'encryption', 'CMEK', 'KMS key poller']
 ---
 
 import Image from '@theme/IdealImage';

@@ -4,6 +4,7 @@ description: 'This document describes how to connect to ClickHouse Cloud using G
 sidebar_label: 'GCP private service connect'
 slug: /manage/security/gcp-private-service-connect
 doc_type: 'guide'
+keywords: ['Private Service Connect']
 ---
 
 import Image from '@theme/IdealImage';

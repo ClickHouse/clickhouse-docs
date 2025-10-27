@@ -8,6 +8,7 @@ doc_type: 'guide'
 integration:
   - support_level: 'core'
   - category: 'data_ingestion'
+keywords: ['s3', 'minio', 'object storage', 'data loading', 'compatible storage']
 ---
 
 # Using MinIO

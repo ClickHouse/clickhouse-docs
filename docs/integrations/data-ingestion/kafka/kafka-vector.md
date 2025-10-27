@@ -5,6 +5,7 @@ slug: /integrations/kafka/kafka-vector
 description: 'Using Vector with Kafka and ClickHouse'
 title: 'Using Vector with Kafka and ClickHouse'
 doc_type: 'guide'
+keywords: ['kafka', 'vector', 'log collection', 'observability', 'integration']
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

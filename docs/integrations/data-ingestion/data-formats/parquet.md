@@ -5,6 +5,7 @@ slug: /integrations/data-formats/parquet
 title: 'Working with Parquet in ClickHouse'
 description: 'Page describing how to work with Parquet in ClickHouse'
 doc_type: 'guide'
+keywords: ['parquet', 'columnar format', 'data format', 'compression', 'apache parquet']
 ---
 
 # Working with Parquet in ClickHouse

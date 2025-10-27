@@ -7,6 +7,7 @@ doc_type: 'guide'
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
+keywords: ['clickpipes', 'kinesis', 'streaming', 'aws', 'data ingestion']
 ---
 
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';

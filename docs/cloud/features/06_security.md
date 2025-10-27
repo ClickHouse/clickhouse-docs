@@ -4,6 +4,7 @@ slug: /cloud/security
 title: 'Security'
 description: 'Learn more about securing ClickHouse Cloud and BYOC'
 doc_type: 'reference'
+keywords: ['security', 'cloud security', 'access control', 'compliance', 'data protection']
 ---
 
 # ClickHouse Cloud Security

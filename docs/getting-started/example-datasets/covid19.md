@@ -4,6 +4,7 @@ description: 'COVID-19 Open-Data is a large, open-source database of COVID-19 ep
 sidebar_label: 'COVID-19 open-data'
 slug: /getting-started/example-datasets/covid19
 title: 'COVID-19 Open-Data'
+keywords: ['COVID-19 data', 'epidemiological data', 'health dataset', 'example dataset', 'getting started']
 doc_type: 'guide'
 ---
 

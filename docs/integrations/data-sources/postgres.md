@@ -8,6 +8,7 @@ doc_type: 'guide'
 integration:
   - support_level: 'core'
   - category: 'data_ingestion'
+keywords: ['postgresql', 'database integration', 'external table', 'data source', 'sql database']
 ---
 
 import PostgreSQL from '@site/docs/integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql.md';

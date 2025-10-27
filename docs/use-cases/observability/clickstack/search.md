@@ -6,6 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Search with ClickStack'
 doc_type: 'guide'
+keywords: ['clickstack', 'search', 'logs', 'observability', 'full-text search']
 ---
 
 import Image from '@theme/IdealImage';

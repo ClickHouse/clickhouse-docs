@@ -8,6 +8,7 @@ doc_type: 'guide'
 integration:
   - support_level: 'partner'
   - category: 'data_ingestion'
+keywords: ['EMQX ClickHouse integration', 'MQTT ClickHouse connector', 'EMQX Cloud ClickHouse', 'IoT data ClickHouse', 'MQTT broker ClickHouse']
 ---
 
 import emqx_cloud_artitecture from '@site/static/images/integrations/data-ingestion/emqx/emqx-cloud-artitecture.png';

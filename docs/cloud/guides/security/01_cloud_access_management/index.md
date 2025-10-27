@@ -4,6 +4,7 @@ slug: /cloud/security/cloud_access_management
 title: 'Cloud access management'
 description: 'Learn more about cloud access management'
 doc_type: 'landing-page'
+keywords: ['access management', 'security', 'user management', 'permissions', 'authentication']
 ---
 
 # Cloud access management

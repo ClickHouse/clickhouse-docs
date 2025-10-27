@@ -4,6 +4,7 @@ slug: /cloud/security/console-roles
 title: 'Console roles and permissions'
 description: 'This page describes the standard roles and associated permissions in ClickHouse Cloud console'
 doc_type: 'reference'
+keywords: ['console roles', 'permissions', 'access control', 'security', 'rbac']
 ---
 
 ## Organization roles {#organization-roles}

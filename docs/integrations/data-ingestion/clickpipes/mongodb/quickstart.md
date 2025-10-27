@@ -4,6 +4,7 @@ sidebar_label: 'Working with JSON'
 slug: /integrations/clickpipes/mongodb/quickstart
 description: 'Common patterns for working with JSON data replicated from MongoDB to ClickHouse via ClickPipes'
 doc_type: 'guide'
+keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 # Working with JSON in ClickHouse

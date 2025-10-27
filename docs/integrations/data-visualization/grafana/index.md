@@ -10,6 +10,7 @@ integration:
   - support_level: 'partner'
   - category: 'data_visualization'
   - website: 'https://grafana.com/grafana/plugins/grafana-clickhouse-datasource/'
+keywords: ['Grafana', 'data visualization', 'dashboard', 'plugin', 'data source']
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';

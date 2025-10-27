@@ -5,6 +5,7 @@ sidebar_label: 'Environmental sensors data'
 slug: /getting-started/example-datasets/environmental-sensors
 title: 'Environmental Sensors Data'
 doc_type: 'guide'
+keywords: ['environmental sensors', 'Sensor.Community', 'air quality data', 'environmental data', 'getting started']
 ---
 
 import Image from '@theme/IdealImage';

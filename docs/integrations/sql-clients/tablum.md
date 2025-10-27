@@ -7,6 +7,7 @@ doc_type: 'guide'
 integration:
   - support_level: 'partner'
   - category: 'sql_client'
+keywords: ['tablum', 'sql client', 'database tool', 'query tool', 'desktop app']
 ---
 
 import Image from '@theme/IdealImage';

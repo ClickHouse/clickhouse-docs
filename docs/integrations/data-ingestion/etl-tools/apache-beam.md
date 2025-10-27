@@ -7,6 +7,7 @@ doc_type: 'guide'
 integration:
   - support_level: 'core'
   - category: 'data_ingestion'
+keywords: ['apache beam', 'stream processing', 'batch processing', 'jdbc connector', 'data pipeline']
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';

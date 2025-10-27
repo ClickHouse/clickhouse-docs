@@ -3,6 +3,7 @@ sidebar_label: 'Architecture'
 slug: /cloud/reference/architecture
 title: 'ClickHouse Cloud architecture'
 description: 'This page describes the architecture of ClickHouse Cloud'
+keywords: ['ClickHouse Cloud', 'cloud architecture', 'separation of storage and compute']
 doc_type: 'reference'
 ---
 

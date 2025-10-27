@@ -4,6 +4,7 @@ slug: /cloud/security/audit-logging/byoc-security-playbook
 title: 'BYOC security playbook'
 description: 'This page illustrates methods customers can use to identify potential security events'
 doc_type: 'guide'
+keywords: ['byoc', 'security', 'playbook', 'best practices', 'compliance']
 ---
 
 # BYOC security playbook {#byoc-security-playbook}

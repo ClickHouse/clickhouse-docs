@@ -4,6 +4,7 @@ slug: /manage/integrations
 title: 'Integrations'
 description: 'Integrations for ClickHouse'
 doc_type: 'landing-page'
+keywords: ['integrations', 'cloud features', 'third-party tools', 'data sources', 'connectors']
 ---
 
 import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';
