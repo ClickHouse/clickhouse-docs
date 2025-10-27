@@ -40,7 +40,7 @@ The `type` field tells you which external library or system component failed. Fo
 
 **Real example from production:**
 
-```
+```text
 std::exception. Code: 1001, type: Azure::Storage::StorageException,
 e.what() = 400 The requested URI does not represent any resource on the server.
 RequestId:8e4bfa97-201e-0093-7ed7-bb478b000000
@@ -60,7 +60,7 @@ RequestId:8e4bfa97-201e-0093-7ed7-bb478b000000
 
 **Real example:**
 
-```
+```text
 std::exception. Code: 1001, type: pqxx::sql_error,
 e.what() = ERROR: cannot execute COPY during recovery
 ```
@@ -76,7 +76,7 @@ e.what() = ERROR: cannot execute COPY during recovery
 
 **Real examples:**
 
-```
+```text
 std::exception. Code: 1001, type: std::out_of_range,
 e.what() = unordered_map::at: key not found (version 25.6.2.6054)
 ```
@@ -95,7 +95,7 @@ e.what() = unordered_map::at: key not found (version 25.6.2.6054)
 
 **Real example:**
 
-```
+```text
 std::exception. Code: 1001, type: std::out_of_range, e.what() = basic_string
 (in query: SELECT * FROM hdfsCluster('test_cluster_two_shards_localhost', '', 'TSV'))
 ```
@@ -115,7 +115,7 @@ std::exception. Code: 1001, type: std::out_of_range, e.what() = basic_string
 
 **Stack trace pattern:**
 
-```
+```text
 ~MergeTreeDataPartWide()
 → IMergeTreeDataPart::removeIfNeeded()
 → undoTransaction()
@@ -133,7 +133,7 @@ ClickHouse tries to clean up temporary files in Azure Blob Storage, but the blob
 
 **Error message:**
 
-```
+```text
 std::exception. Code: 1001, type: std::out_of_range,
 e.what() = unordered_map::at: key not found
 ```
@@ -156,7 +156,7 @@ Version 25.6.2.5983 introduced a bug where ClickHouse couldn't find schema mappi
 
 **Error message:**
 
-```
+```text
 std::exception. Code: 1001, type: pqxx::sql_error, 
 e.what() = ERROR: cannot execute COPY during recovery
 ```
@@ -169,7 +169,7 @@ e.what() = ERROR: cannot execute COPY during recovery
 
 **Error message:**
 
-```
+```text
 std::exception. Code: 1001, type: std::out_of_range, e.what() = basic_string
 ```
 
@@ -215,7 +215,7 @@ SELECT version();
 # Request upgrade through ClickHouse Cloud support if needed
 ```
 
-### Fix 3: PostgreSQL integration errors {#postgres-integration-errors}
+### Fix 3: PostgreSQL integration errors {#postgres-integration-errors-fix}
 
 **For "cannot execute COPY during recovery":**
 

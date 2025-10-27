@@ -125,7 +125,7 @@ Newer ClickHouse versions suggest similar table names:
 
 **Scenario 1: Client using table name as database name**
 
-```
+```text
 Error: Database my_table doesn't exist
 ```
 
@@ -135,7 +135,7 @@ Error: Database my_table doesn't exist
 
 **Scenario 2: Missing distributed local tables**
 
-```
+```text
 Error: Table default.my_table_local doesn't exist
 ```
 
@@ -150,7 +150,7 @@ CREATE TABLE my_table_local ON CLUSTER your_cluster
 ```
 
 **Scenario 3: Temporary table expired**
-```
+```text
 Error: Table default.my_temp_table_1681159380741 doesn't exist
 ```
 
@@ -160,7 +160,7 @@ Error: Table default.my_temp_table_1681159380741 doesn't exist
 
 **Scenario 4: Wrong database context**
 
-```
+```text
 Error: Table default.my_table doesn't exist
 ```
 
@@ -179,7 +179,7 @@ SELECT * FROM my_table;
 
 **Scenario 5: Integration table disappeared**
 
-```
+```text
 Error: Table 'source_db.source_table' doesn't exist
 ```
 

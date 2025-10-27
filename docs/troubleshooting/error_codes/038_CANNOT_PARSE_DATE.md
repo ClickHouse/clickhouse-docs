@@ -55,7 +55,7 @@ This typically happens when the date string format doesn't match the expected fo
 
 The error message usually indicates what went wrong:
 
-```
+```text
 Cannot parse date: value is too short: Cannot parse Date from String
 Cannot parse string '2021-hi-10' as Date: syntax error at position 9
 Value is too short
@@ -174,7 +174,7 @@ FROM your_table;
 
 **Scenario 1: Value too short error**
 
-```
+```text
 Cannot parse date: value is too short: Cannot parse Date from String
 ```
 
@@ -205,7 +205,7 @@ FROM movies;
 
 **Scenario 2: parseDateTime broken with %F format (version 24.5 bug)**
 
-```
+```text
 Code: 0. DB::Exception: while executing 'FUNCTION parseDateTime(formatDateTime(...), '%F %T')'. (OK)
 ```
 
@@ -226,7 +226,7 @@ SELECT parseDateTimeBestEffort('2024-06-20 1200', 'Europe/Paris');
 
 **Scenario 3: Single-digit months/days with %e format**
 
-```
+```text
 Code: 41. DB::Exception: Unable to parse fragment LITERAL from 2024 because literal / is expected but 2 provided
 ```
 
@@ -247,7 +247,7 @@ SELECT parseDateTimeBestEffortUS('9/3/2024');  -- American format
 
 **Scenario 4: ClickPipes date format not recognized**
 
-```
+```text
 could not parse 2024-09-03T16:03Z as a DateTime
 ```
 

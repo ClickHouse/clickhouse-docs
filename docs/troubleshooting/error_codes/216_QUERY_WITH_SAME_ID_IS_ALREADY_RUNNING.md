@@ -18,7 +18,7 @@ ClickHouse enforces unique query IDs to prevent duplicate execution and enable p
 
 **What you'll see:**
 
-```
+```text
 Code: 216. DB::Exception: Query with id = ca038ba5-bcdc-4b93-a857-79b066382917 is already running. 
 (QUERY_WITH_SAME_ID_IS_ALREADY_RUNNING)
 ```
@@ -105,7 +105,7 @@ response = client.query(sql, queryId).execute();
 
 ## Common solutions {#common-solutions}
 
-### **1. Generate truly unique query IDs**
+### **1. Generate truly unique query IDs** {#generate-unique-query-ids}
 
 ```python
 # ✅ Best practice: Use UUID4
@@ -153,7 +153,7 @@ SELECT * FROM table;
 -- ClickHouse auto-generates: query_id like 'a1b2c3d4-...'
 ```
 
-### **2. Implement proper retry logic**
+### **2. Implement proper retry logic** {#implement-retry-logic}
 
 ```python
 # WRONG: Reusing same query_id on retry
@@ -217,7 +217,7 @@ def kill_query(client, query_id):
         pass
 ```
 
-### **3. Check if query is still running before retry**
+### **3. Check if query is still running before retry** {#check-query-running-before-retry}
 
 ```sql
 -- Check if a specific query_id is still running
@@ -240,7 +240,7 @@ FROM clusterAllReplicas('default', system.processes)
 WHERE query_id = 'ca038ba5-bcdc-4b93-a857-79b066382917';
 ```
 
-### **4. Kill stuck queries before retry**
+### **4. Kill stuck queries before retry** {#kill-stuck-queries}
 
 ```sql
 -- Kill a specific query by ID
@@ -262,7 +262,7 @@ ORDER BY event_time DESC
 LIMIT 1;
 ```
 
-### **5. Don't use query_id for idempotency**
+### **5. Don't use query_id for idempotency** {#dont-use-query-id-for-idempotency}
 
 ```python
 # WRONG: Using query_id to prevent duplicate inserts
@@ -295,7 +295,7 @@ def idempotent_insert_correct(client, data, request_id):
     # Set replicated_deduplication_window in config
 ```
 
-### **6. Workaround for 25.5.1 regression**
+### **6. Workaround for 25.5.1 regression** {#workaround-25-5-1-regression}
 
 ```bash
 # If experiencing widespread issues on 25.5.1, downgrade immediately
@@ -331,14 +331,14 @@ sudo apt-get install clickhouse-server=25.4.5 clickhouse-client=25.4.5
 7. **Monitor query cleanup**: Set up alerts for queries stuck in `system.processes` for > 5 minutes.
 
 8. **Implement proper ID structure**:
-   ```
+   ```text
    {app_name}-{environment}-{uuid}-{timestamp_ns}
    example: myapp-prod-a1b2c3d4-1234567890123456789
    ```
 
 ## Debugging steps {#debugging-steps}
 
-### **1. Check if query is actually running**
+### **1. Check if query is actually running** {#check-query-actually-running}
 
 ```sql
 -- Is this query_id currently running?
@@ -355,7 +355,7 @@ WHERE query_id = 'your-query-id';
 -- If no results, it's not running (might be an application bug)
 ```
 
-### **2. Check query execution history**
+### **2. Check query execution history** {#check-query-execution-history}
 
 ```sql
 -- See all executions of this query_id in last hour
@@ -384,7 +384,7 @@ WHERE query_id = 'your-query-id'
 GROUP BY query_id;
 ```
 
-### **3. Investigate 25.5.1 regression pattern**
+### **3. Investigate 25.5.1 regression pattern** {#investigate-regression-pattern}
 
 ```sql
 -- Look for the telltale double-execution pattern
@@ -404,7 +404,7 @@ ORDER BY time_diff_sec ASC;
 -- If you see many results with time_diff < 0.1 sec, it's likely the 25.5.1 bug
 ```
 
-### **4. Find duplicate query_id patterns**
+### **4. Find duplicate query_id patterns** {#find-duplicate-query-id-patterns}
 
 ```sql
 -- Identify queries with non-unique IDs
@@ -432,7 +432,7 @@ HAVING count() > 10
 ORDER BY count() DESC;
 ```
 
-### **5. Check for stuck queries**
+### **5. Check for stuck queries** {#check-for-stuck-queries}
 
 ```sql
 -- Find long-running queries that might be stuck
@@ -452,7 +452,7 @@ ORDER BY elapsed DESC;
 
 Despite the limitations, `query_id` is valuable for:
 
-### **1. Query tracking and correlation**
+### **1. Query tracking and correlation** {#query-tracking-correlation}
 
 ```python
 # Correlate ClickHouse queries with application logs
@@ -466,7 +466,7 @@ logger.info(f"Query {query_id} completed in {duration}s")
 # Now you can search logs: "query_id: a1b2c3d4-..."
 ```
 
-### **2. Selective query cancellation**
+### **2. Selective query cancellation** {#selective-query-cancellation}
 
 ```sql
 -- Start a long-running batch job
@@ -478,7 +478,7 @@ SETTINGS query_id = 'batch-monthly-report-2024-01';
 KILL QUERY WHERE query_id = 'batch-monthly-report-2024-01';
 ```
 
-### **3. Performance analysis over time**
+### **3. Performance analysis over time** {#performance-analysis-over-time}
 
 ```sql
 -- Track how query performance changes over time
@@ -496,7 +496,7 @@ GROUP BY date
 ORDER BY date DESC;
 ```
 
-### **4. Distributed tracing integration**
+### **4. Distributed tracing integration** {#distributed-tracing-integration}
 
 ```python
 # OpenTelemetry example

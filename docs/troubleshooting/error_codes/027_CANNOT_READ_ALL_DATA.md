@@ -54,9 +54,9 @@ This typically indicates file corruption, truncation, or issues with remote stor
 
 The error message specifies which part and column failed:
 
-```
-Cannot read all data. Bytes read: 114. Bytes expected: 266.: 
-(while reading column operationName): (while reading from part 
+```text
+Cannot read all data. Bytes read: 114. Bytes expected: 266.:
+(while reading column operationName): (while reading from part
 /var/lib/clickhouse/.../1670889600_0_33677_2140/ from mark 26)
 ```
 
@@ -165,9 +165,9 @@ SET s3_request_timeout_ms = 30000;
 
 **Scenario 1: LowCardinality column on S3 with threadpool read method**
 
-```
-Cannot read all data. Bytes read: 114. Bytes expected: 266.: 
-(while reading column operationName): (while reading from part 
+```text
+Cannot read all data. Bytes read: 114. Bytes expected: 266.:
+(while reading column operationName): (while reading from part
 /var/lib/clickhouse/disks/s3_disk/store/.../1670889600_0_33677_2140/)
 ```
 
@@ -187,8 +187,8 @@ SELECT * FROM your_table;
 
 **Scenario 2: JSON field variant discriminator corruption**
 
-```
-Cannot read all data. Bytes read: 7. Bytes expected: 25.: 
+```text
+Cannot read all data. Bytes read: 7. Bytes expected: 25.:
 While reading or decompressing dimensions.Phone_number.variant_discr.cmrk2
 ```
 
@@ -206,7 +206,7 @@ ALTER TABLE events ATTACH PARTITION '202501';
 
 **Scenario 3: Packed data format corruption on restart**
 
-```
+```text
 Code: 32. DB::Exception: Attempt to read after eof. (ATTEMPT_TO_READ_AFTER_EOF)
 while loading part all_10009167_10009239_16 from disk s3disk
 ```
@@ -230,8 +230,8 @@ find /var/lib/clickhouse/disks/*/detached/broken-on-start_* -type f -size 0 -del
 
 **Scenario 4: S3 network interruption during read**
 
-```
-Cannot read all data. Bytes read: 28248. Bytes expected: 38739.: 
+```text
+Cannot read all data. Bytes read: 28248. Bytes expected: 38739.:
 (while reading from part .../202206_10626_10770_3/ from mark 0)
 Connection reset by peer
 ```
@@ -251,8 +251,8 @@ SET s3_request_timeout_ms = 30000;
 
 **Scenario 5: Invalid SerializationLowCardinality version**
 
-```
-Invalid version for SerializationLowCardinality key column: 
+```text
+Invalid version for SerializationLowCardinality key column:
 (while reading column valuation_result_type)
 ```
 

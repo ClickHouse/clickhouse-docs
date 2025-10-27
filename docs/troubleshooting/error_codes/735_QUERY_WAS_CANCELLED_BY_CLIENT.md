@@ -34,9 +34,9 @@ This is the expected behavior when:
 5. **Load balancer/proxy timeouts** - Intermediate infrastructure timing out before the query completes
 6. **Resource exhaustion** - Client running out of memory or resources while processing results
 
-## When you'll see it {#when-you'll-see-it}
+## When you'll see it {#when-youll-see-it}
 
-### Common scenarios from production: {#common-scenarios}
+### Common scenarios from production {#common-scenarios}
 
 ```sql
 -- Long-running query cancelled by user
@@ -48,11 +48,11 @@ Code: 735. DB::Exception: Received 'Cancel' packet from the client, canceling th
 (QUERY_WAS_CANCELLED_BY_CLIENT) (version 24.12.1.18350)
 ```
 
-### Real-world examples:
+### Real-world examples {#real-world-examples}
 
 **Example 1: Grafana dashboard timeout**
 
-```
+```text
 event_time: 2025-05-09 19:52:51
 initial_user: grafana_ro
 exception_code: 735
@@ -62,7 +62,7 @@ canceling the query. (QUERY_WAS_CANCELLED_BY_CLIENT)
 
 **Example 2: Application driver timeout**
 
-```
+```text
 error: write: write tcp 172.30.103.188:51408->18.225.29.123:9440: i/o timeout
 err: driver: bad connection
 ```

@@ -99,8 +99,8 @@ SELECT yourFunction(arg1, arg2);
 **6. Review Error Message for Hints**
 
 The error message often indicates what was expected:
-```
-Number of arguments for function X doesn't match: 
+```text
+Number of arguments for function X doesn't match:
 passed 5, should be 2
 ```
 

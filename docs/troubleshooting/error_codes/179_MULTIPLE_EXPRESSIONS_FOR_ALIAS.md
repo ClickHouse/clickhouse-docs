@@ -52,7 +52,7 @@ This is a semantic error that prevents the query from executing.
 
 **1. Check the error message for conflicting expressions**
 
-```
+```text
 Different expressions with the same alias alias1:
 ((position(path, '/a') > 0) AND (NOT (position(path, 'a') > 0))) OR ((path IN ('/b', '/b/')) AS alias1) AS alias1
 and
@@ -169,7 +169,7 @@ SELECT max(calculated_value);
 
 **Scenario 1: Query optimizer bug in 23.1-23.2 with LowCardinality**
 
-```
+```text
 Code: 179. DB::Exception: Different expressions with the same alias alias1:
 ((position(path, '/a') > 0) AND (NOT (position(path, 'a') > 0))) OR ((path IN ('/b', '/b/')) AS alias1) AS alias1
 and
@@ -198,7 +198,7 @@ WHERE id = 299386662;
 
 **Scenario 2: Self-referential alias in SELECT**
 
-```
+```text
 Code: 179. DB::Exception: Different expressions with the same alias num:
 num * 1 AS num
 and
@@ -225,7 +225,7 @@ FROM numbers(10);
 
 **Scenario 3: ALIAS column conflicts with SELECT alias on distributed tables**
 
-```
+```text
 Code: 179. DB::Exception: Multiple expressions toStartOfHour(__table1.t) AS ta 
 and max(toStartOfHour(__table1.t) AS ta) AS ta for alias ta
 ```
@@ -258,7 +258,7 @@ SETTINGS enable_analyzer = 0;
 
 **Scenario 4: Parallel replicas with self-referential alias**
 
-```
+```text
 Code: 179. DB::Exception: Different expressions with the same alias platform:
 if((_CAST(os, 'String') AS platform) = 'ios', 'apple', platform) AS platform
 and

@@ -122,7 +122,7 @@ INSERT INTO table VALUES ('85c59771-ae5d-4a53-9eed-9418296281f8', 'Intelligent S
 
 **Scenario 1: Missing comma in column list**
 
-```
+```text
 Error: Syntax error: failed at position X
 ```
 
@@ -148,7 +148,7 @@ FROM users;
 
 **Scenario 2: Data interpreted as SQL**
 
-```
+```text
 Error: Syntax error: failed at position 1 ('85c59771')
 ```
 
@@ -159,12 +159,12 @@ Error: Syntax error: failed at position 1 ('85c59771')
 ```sql
 -- Use proper INSERT syntax
 INSERT INTO table FORMAT TSV
-85c59771-ae5d-4a53-9eed-9418296281f8	Intelligent Search	2021-06-18
+85c59771-ae5d-4a53-9eed-9418296281f8    Intelligent Search    2021-06-18
 ```
 
 **Scenario 3: Unescaped quotes in strings**
 
-```
+```text
 Error: Syntax error (missing closing quote)
 ```
 
@@ -184,7 +184,7 @@ SELECT 'It''s a test';
 
 **Scenario 4: Missing parentheses in function calls**
 
-```
+```text
 Error: Syntax error
 ```
 
@@ -204,7 +204,7 @@ FROM table;
 
 **Scenario 5: Invalid alias syntax**
 
-```
+```text
 Error: Syntax error
 ```
 
@@ -240,7 +240,7 @@ FROM table;
 
 1. **Read the error message carefully:**
 
-   ```
+   ```text
    Syntax error: failed at position 45 ('WHERE') (line 3, col 5)
    ```
    

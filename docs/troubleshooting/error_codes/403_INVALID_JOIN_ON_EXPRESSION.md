@@ -16,17 +16,17 @@ The error indicates that the JOIN expression violates ClickHouse's rules for joi
 
 **Error Message Format:**
 
-```
+```text
 Code: 403. DB::Exception: Cannot get JOIN keys from JOIN ON section: '<condition>'. (INVALID_JOIN_ON_EXPRESSION)
 ```
 
 or
 
-```
+```text
 Code: 403. DB::Exception: Invalid expression for JOIN ON. Expected equals expression, got <expression>. (INVALID_JOIN_ON_EXPRESSION)
 ```
 
-### When you'll see it {#when-you'll-see-it}
+### When you'll see it {#when-youll-see-it}
 
 1. **OR conditions not in disjunctive normal form (DNF):**
    - `t1.a = t2.a AND (t1.b = t2.b OR t1.c = t2.c)` - OR not at top level
@@ -149,15 +149,15 @@ WHERE t1.val = 'constant' OR t1.id IS NOT NULL;
 - **Experimental analyzer:** The new query analyzer (`allow_experimental_analyzer = 1`) has better support for complex JOIN conditions, including NULL handling. It may become default in future versions.
 
 - **Performance considerations:**
-   - Each OR branch creates a separate hash table, increasing memory usage linearly
-   - Using `COALESCE` for NULL matching is ~5x faster than OR with NULL checks
-   - Power BI bidirectional filters generate complex OR conditions that may not work
+  - Each OR branch creates a separate hash table, increasing memory usage linearly
+  - Using `COALESCE` for NULL matching is ~5x faster than OR with NULL checks
+  - Power BI bidirectional filters generate complex OR conditions that may not work
 
 - **BI tool compatibility:** Tools like Power BI, Tableau, and Looker may generate incompatible JOIN syntax. Solutions:
-   - Use import mode instead of DirectQuery
-   - Enable `allow_experimental_analyzer = 1` at cluster level
-   - Use ODBC direct queries with custom SQL
-   - Create views with compatible JOIN syntax
+  - Use import mode instead of DirectQuery
+  - Enable `allow_experimental_analyzer = 1` at cluster level
+  - Use ODBC direct queries with custom SQL
+  - Create views with compatible JOIN syntax
 
 ### Related documentation {#related-documentation}
 

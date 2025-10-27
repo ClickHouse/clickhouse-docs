@@ -159,7 +159,7 @@ LIMIT 10;
 
 **Scenario 1: User killed query**
 
-```
+```text
 Error: Code: 394. DB::Exception: Query was cancelled
 ```
 
@@ -173,7 +173,7 @@ Error: Code: 394. DB::Exception: Query was cancelled
 
 **Scenario 2: Client disconnection auto-cancel**
 
-```
+```text
 Error: Query was cancelled (after client disconnect)
 ```
 
@@ -191,7 +191,7 @@ SET cancel_http_readonly_queries_on_client_close = 0;
 
 **Scenario 3: Graceful shutdown during rolling update**
 
-```
+```text
 Error: Query was cancelled during pod termination
 ```
 
@@ -205,7 +205,7 @@ Error: Query was cancelled during pod termination
 
 **Scenario 4: Query takes too long to cancel**
 
-```
+```text
 KILL QUERY executed but query continues running for minutes
 ```
 
@@ -219,7 +219,7 @@ KILL QUERY executed but query continues running for minutes
 
 **Scenario 5: Cannot cancel query**
 
-```
+```text
 Cancellation signal sent but query doesn't stop
 ```
 

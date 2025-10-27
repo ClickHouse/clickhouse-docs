@@ -158,7 +158,7 @@ props.setProperty("socket_sndbuf", "524288");   // 512KB send buffer
 
 **Scenario 1: Timeout writing to socket**
 
-```
+```text
 Error: Code: 209. DB: Timeout exceeded while writing to socket
 ```
 
@@ -173,7 +173,7 @@ Error: Code: 209. DB: Timeout exceeded while writing to socket
 
 **Scenario 2: Distributed query socket timeout**
 
-```
+```text
 Error: Timeout exceeded while writing to socket (distributed query)
 ```
 
@@ -190,7 +190,7 @@ SET connect_timeout_with_failover_ms = 5000;
 
 **Scenario 3: Client receive window = 1**
 
-```
+```text
 TCP window size drops to 1 byte, then timeout
 ```
 
@@ -204,7 +204,7 @@ TCP window size drops to 1 byte, then timeout
 
 **Scenario 4: Network problems**
 
-```
+```text
 Error: Timeout exceeded (with network packet loss visible in tcpdump)
 ```
 
@@ -218,7 +218,7 @@ Error: Timeout exceeded (with network packet loss visible in tcpdump)
 
 **Scenario 5: External network problems**
 
-```
+```text
 Error: Code 209 timeout writing to socket
 ```
 

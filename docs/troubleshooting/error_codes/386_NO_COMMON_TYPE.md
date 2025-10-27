@@ -17,14 +17,14 @@ This error occurs when ClickHouse cannot find a common (super) type to unify dif
 
 **What you'll see:**
 
-```
+```text
 Code: 386. DB::Exception: There is no supertype for types String, UInt8 because some of them are String/FixedString/Enum and some of them are not. 
 (NO_COMMON_TYPE)
 ```
 
 Or:
 
-```
+```text
 Code: 386. DB::Exception: There is no supertype for types Int64, UInt64 because some of them are signed integers and some are unsigned integers, but there is no signed integer type that can exactly represent all required unsigned integer values.
 (NO_COMMON_TYPE)
 ```
@@ -73,7 +73,7 @@ SELECT CASE WHEN condition THEN uniqMerge(total_claims) ELSE 0 END
 
 ## Most common causes {#most-common-causes}
 
-### 1. **UNION with incompatible types**
+### 1. **UNION with incompatible types** {#union-incompatible-types}
 
 The most common cause—trying to UNION queries that return fundamentally different types.
 
@@ -91,7 +91,7 @@ SELECT 18446744073709551615::UInt64;
 -- Error: No signed integer type can represent all required unsigned values
 ```
 
-### 2. **IF/CASE expressions with mixed types**
+### 2. **IF/CASE expressions with mixed types** {#if-case-mixed-types}
 
 ```sql
 -- Returns different types based on condition
@@ -107,7 +107,7 @@ SELECT if(date_field >= '2024-01-01', date_field, '1970-01-01');
 -- Error: No supertype for DateTime, String
 ```
 
-### 3. **AggregateFunction mixed with regular types**
+### 3. **AggregateFunction mixed with regular types** {#aggregatefunction-mixed-types}
 
 This is a subtle error when working with AggregatingMergeTree tables:
 
@@ -131,7 +131,7 @@ FROM test_table;
 -- Error: No supertype for UInt8, AggregateFunction
 ```
 
-### 4. **Array operations with mixed types**
+### 4. **Array operations with mixed types** {#array-mixed-types}
 
 ```sql
 -- Array with mixed element types
@@ -143,7 +143,7 @@ SELECT arrayConcat([1, 2], ['a', 'b']);
 -- Error: No supertype
 ```
 
-### 5. **Dynamic/JSON column type mismatches (25.x+)**
+### 5. **Dynamic/JSON column type mismatches (25.x+)** {#dynamic-json-mismatches}
 
 Starting in ClickHouse 25.x with stable JSON/Dynamic types:
 
@@ -164,7 +164,7 @@ SELECT * FROM events WHERE attributes.label = 5;
 -- (Because one row has String "5", another has Int64 5)
 ```
 
-### 6. **Signed vs Unsigned integer range issues**
+### 6. **Signed vs Unsigned integer range issues** {#signed-unsigned-issues}
 
 ```sql
 -- Cannot find common type for these ranges
@@ -178,7 +178,7 @@ SELECT
 
 ## Common solutions {#common-solutions}
 
-### **1. Explicit type casting to common type**
+### **1. Explicit type casting to common type** {#explicit-type-casting}
 
 ```sql
 -- Cast everything to String
@@ -199,7 +199,7 @@ SELECT
     ) AS result;
 ```
 
-### **2. Use appropriate merge functions for AggregateFunctions**
+### **2. Use appropriate merge functions for AggregateFunctions** {#use-merge-functions}
 
 ```sql
 -- Apply uniqMerge first
@@ -217,7 +217,7 @@ FROM test_table
 WHERE roll_up_date BETWEEN '2022-01-01' AND '2022-12-31';
 ```
 
-### **3. Handle Dynamic/JSON columns explicitly (25.x+)**
+### **3. Handle Dynamic/JSON columns explicitly (25.x+)** {#handle-dynamic-json-explicitly}
 
 ```sql
 -- Cast Dynamic column to specific type
@@ -233,7 +233,7 @@ SELECT * FROM events
 WHERE toString(attributes.label) = '5';
 ```
 
-### **4. Restructure CASE/IF to return consistent types**
+### **4. Restructure CASE/IF to return consistent types** {#restructure-case-if}
 
 ```sql
 -- Original: mixed types
@@ -256,7 +256,7 @@ SELECT
     if(status = 'active', '', 'inactive') AS status_text;
 ```
 
-### **5. Use widest compatible numeric type**
+### **5. Use widest compatible numeric type** {#use-widest-numeric-type}
 
 ```sql
 -- When dealing with signed and unsigned integers
@@ -274,7 +274,7 @@ SELECT
     END AS value;
 ```
 
-### **6. Enable Variant type for UNION (future versions)**
+### **6. Enable Variant type for UNION (future versions)** {#enable-variant-type}
 
 Starting from a future ClickHouse version (PR in progress):
 
@@ -291,7 +291,7 @@ UNION ALL
 SELECT CAST('Hello' AS Variant(UInt8, String));
 ```
 
-###  **7. Fix array homogeneity**
+###  **7. Fix array homogeneity** {#fix-array-homogeneity}
 
 ```sql
 -- Mixed types
@@ -341,8 +341,8 @@ SELECT [1, 2, 3];
 ## Related error codes {#related-error-codes}
 
 - [Error 258: `UNION_ALL_RESULT_STRUCTURES_MISMATCH`](/troubleshooting/error-codes/258_UNION_ALL_RESULT_STRUCTURES_MISMATCH) - Column count or structure mismatch in UNION
-- [Error 53: `TYPE_MISMATCH`](/troubleshooting/error-codes/53_TYPE_MISMATCH) - General type mismatch error
-- [Error 70: `CANNOT_CONVERT_TYPE`](/troubleshooting/error-codes/70_CANNOT_CONVERT_TYPE) - Type conversion failure
+- [Error 53: `TYPE_MISMATCH`](/troubleshooting/error-codes/053_TYPE_MISMATCH) - General type mismatch error
+- [Error 70: `CANNOT_CONVERT_TYPE`](/troubleshooting/error-codes/070_CANNOT_CONVERT_TYPE) - Type conversion failure
 
 ## Additional resources {#additional-resources}
 
@@ -351,5 +351,5 @@ SELECT [1, 2, 3];
 - [Type Conversion Functions](/sql-reference/functions/type-conversion-functions) - CAST and conversion functions
 - [UNION Clause](/sql-reference/statements/select/union) - UNION behavior and type unification
 - [Dynamic Type](/sql-reference/data-types/dynamic) - Working with Dynamic columns (25.x+)
-- [JSON Type](/sql-reference/data-types/json) - Working with JSON columns (25.x+)
+- [JSON Type](/sql-reference/data-types/object-data-type) - Working with JSON columns (25.x+)
 - [Variant Type](/sql-reference/data-types/variant) - Variant type for mixed types

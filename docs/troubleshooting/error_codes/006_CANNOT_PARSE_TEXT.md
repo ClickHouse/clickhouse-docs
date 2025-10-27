@@ -58,7 +58,7 @@ The error message typically indicates:
 - What was expected vs. what was found
 - The actual parsed text that failed
 
-```
+```text
 Cannot parse input: expected ',' before: 'some_text': (at row 429980)
 Row 429979: Column 8, name: blockspending, type: Int32, ERROR: text "<TAB><TAB>7027<TAB>181" is not like Int32
 ```
@@ -170,7 +170,7 @@ SELECT * FROM file(
 
 **Scenario 1: CSV expected comma but found tab**
 
-```
+```text
 Cannot parse input: expected ',' before: '<TAB><TAB>7027<TAB>181'
 ```
 
@@ -189,7 +189,7 @@ INSERT INTO table FROM INFILE 'file.tsv' FORMAT CustomSeparated;
 
 **Scenario 2: Malformed string with embedded delimiters**
 
-```
+```text
 Cannot parse input: expected '\t' before: 'I49d(I\""\t\t\t13\t1350000'
 ```
 
@@ -209,7 +209,7 @@ INSERT INTO table FROM INFILE 'file.tsv' FORMAT CustomSeparated;
 
 **Scenario 3: Syntax error at unexpected position**
 
-```
+```text
 Syntax error: failed at position 1 ('85c59771') (line 1, col 1): 85c59771-ae5d-4a53-9eed...
 ```
 
@@ -226,7 +226,7 @@ SELECT * FROM file('data.tsv', 'TSVWithNames');
 
 **Scenario 4: Cannot parse decimal type from Parquet**
 
-```
+```text
 Cannot parse type Decimal(76, 38), expected non-empty binary data with size equal to or less than 32, got 36
 ```
 
@@ -247,7 +247,7 @@ FROM file('data.parquet', 'Parquet', 'decimal_col String, ...');
 
 **Scenario 5: Schema inference fails on complex data**
 
-```
+```text
 The table structure cannot be extracted from a JSONEachRow format file
 ```
 

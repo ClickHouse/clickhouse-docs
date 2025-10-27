@@ -197,7 +197,7 @@ WHERE id IN (SELECT x FROM distributed_table);
 
 **Scenario 1: Distributed table returning multiple rows**
 
-```
+```text
 Scalar subquery returned more than one row: While processing (SELECT t3.x FROM ap_dist.tab3 AS t3) AS filter
 ```
 
@@ -218,7 +218,7 @@ WHERE x IN (SELECT x FROM filter_user);
 
 **Scenario 2: Scalar subquery alias conflicts with column name (old analyzer)**
 
-```
+```text
 Returns wrong values when scalar subquery alias matches table column name
 ```
 
@@ -247,7 +247,7 @@ SET allow_experimental_analyzer = 1;  -- Or upgrade to 24.3+
 
 **Scenario 3: CTE wildcard reference error (24.5-24.10)**
 
-```
+```text
 Code: 49. DB::Exception: Table expression t1 AS (...) data must be initialized
 ```
 
@@ -272,7 +272,7 @@ SELECT * FROM t2;
 
 **Scenario 4: Correlated subquery not using WHERE**
 
-```
+```text
 Scalar subquery returned more than one row
 ```
 
@@ -301,7 +301,7 @@ WHERE customers.premium = 1;
 
 **Scenario 5: Missing aggregation in scalar context**
 
-```
+```text
 Scalar subquery returned more than one row
 ```
 

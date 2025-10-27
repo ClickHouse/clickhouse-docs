@@ -159,7 +159,7 @@ ORDER BY id;
 
 **Scenario 1: Query aggregating high-cardinality column**
 
-```
+```text
 Error: Memory limit (for query) exceeded: 
 would use 10.50 GiB, maximum: 10.00 GiB
 ```
@@ -185,7 +185,7 @@ GROUP BY hour;
 
 **Scenario 2: Total server memory exceeded**
 
-```
+```text
 Error: Memory limit (total) exceeded: 
 would use 66.23 GiB, maximum: 56.48 GiB
 ```
@@ -212,7 +212,7 @@ SET max_concurrent_queries = 50;  -- Server config
 
 **Scenario 3: Large JOIN operation**
 
-```
+```text
 Error: Memory limit exceeded while executing JOIN
 ```
 
@@ -237,7 +237,7 @@ SETTINGS join_algorithm = 'hash';  -- or 'parallel_hash'
 
 **Scenario 4: Background merge consuming memory**
 
-```
+```text
 Error: Memory limit (total) exceeded during merge operation
 ```
 
@@ -261,7 +261,7 @@ SYSTEM STOP MERGES your_table;
 
 **Scenario 5: Pod OOMKilled (ClickHouse Cloud)**
 
-```
+```text
 Pod terminated with OOMKilled status
 ```
 

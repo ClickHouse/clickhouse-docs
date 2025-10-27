@@ -147,7 +147,7 @@ SELECT * FROM regular_mergetree_table;  -- No FINAL needed
 
 **Scenario 1: FINAL on subquery result**
 
-```
+```text
 Code: 181. DB::Exception: ILLEGAL_FINAL
 ```
 
@@ -169,7 +169,7 @@ WHERE date > '2024-01-01';
 
 **Scenario 2: FINAL in CTE used as derived table**
 
-```
+```text
 Code: 181. DB::Exception: ILLEGAL_FINAL
 ```
 
@@ -192,7 +192,7 @@ SELECT * FROM filtered;
 
 **Scenario 3: FINAL on Distributed table incorrectly**
 
-```
+```text
 Code: 181. DB::Exception: ILLEGAL_FINAL
 ```
 
@@ -212,7 +212,7 @@ SELECT * FROM (SELECT * FROM distributed_table FINAL);
 
 **Scenario 4: FINAL on UNION result**
 
-```
+```text
 Code: 181. DB::Exception: ILLEGAL_FINAL
 ```
 

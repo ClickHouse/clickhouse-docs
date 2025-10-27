@@ -157,7 +157,7 @@ ORDER BY threads_used DESC;
 
 **Scenario 1: No free threads in pool**
 
-```
+```text
 Error: Cannot schedule a task: no free thread (timeout=0) 
 (threads=15000, jobs=15000)
 ```
@@ -172,7 +172,7 @@ Error: Cannot schedule a task: no free thread (timeout=0)
 
 **Scenario 2: Failed to start thread**
 
-```
+```text
 Error: Cannot schedule a task: failed to start the thread 
 (threads=14755, jobs=14754)
 ```
@@ -196,7 +196,7 @@ sysctl -w kernel.pid_max=100000
 
 **Scenario 3: Cannot allocate thread**
 
-```
+```text
 Error: Cannot schedule a task: cannot allocate thread
 ```
 
@@ -210,7 +210,7 @@ Error: Cannot schedule a task: cannot allocate thread
 
 **Scenario 4: Insert spike with `max_insert_threads`**
 
-```
+```text
 Error: CANNOT_SCHEDULE_TASK during high insert load
 ```
 
@@ -232,7 +232,7 @@ SET async_insert = 1;
 
 **Scenario 5: Query spike exhausting thread pool**
 
-```
+```text
 Error appears during traffic spike
 Multiple queries failing simultaneously
 ```
@@ -568,7 +568,7 @@ ORDER BY minute DESC;
    sysctl -w kernel.threads-max=200000
    ```
 
-## Prevention tips {#prevention-tips}
+## Prevention tips {#prevention-tips-summary}
 
 1. **Set appropriate max_threads:** Don't use default if you have high concurrency
 2. **Monitor thread metrics:** Track thread pool usage trends
@@ -677,7 +677,7 @@ Consider increasing if:
 
 ## Thread pool sizing guidelines {#sizing-guidelines}
 
-```
+```text
 Recommended max_thread_pool_size calculation:
 = (concurrent_queries × max_threads_per_query) × 1.5 safety margin
 
@@ -744,4 +744,3 @@ If you're experiencing this error:
 - [Server settings](/operations/server-configuration-parameters/settings)
 - [Query settings](/operations/settings/settings)
 - [Thread pool configuration](/operations/server-configuration-parameters/settings#max-thread-pool-size)
-

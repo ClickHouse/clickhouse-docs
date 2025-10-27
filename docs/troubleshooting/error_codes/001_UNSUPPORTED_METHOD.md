@@ -51,7 +51,7 @@ This error occurs when you attempt to use a method, operation, or feature that i
 
 The error message usually tells you exactly what method or operation is not supported:
 
-```
+```text
 Method write is not supported by storage View
 Method serializeValueIntoMemory is not supported for Object
 WITH RECURSIVE is not supported with the old analyzer
@@ -181,7 +181,7 @@ ALTER TABLE your_table
 
 **Scenario 1: Method write is not supported by storage View**
 
-```
+```text
 Code: 1. DB::Exception: Method write is not supported by storage View
 ```
 
@@ -206,7 +206,7 @@ CREATE TABLE my_table (
 
 **Scenario 2: Method serializeValueIntoMemory not supported for Object/JSON**
 
-```
+```text
 Method serializeValueIntoMemory is not supported for Object(max_dynamic_paths=1024, max_dynamic_types=32)
 ```
 
@@ -232,7 +232,7 @@ GROUP BY str_col;
 
 **Scenario 3: WITH RECURSIVE not supported with old analyzer**
 
-```
+```text
 WITH RECURSIVE is not supported with the old analyzer. Please use `enable_analyzer=1`
 ```
 
@@ -261,7 +261,7 @@ SELECT * FROM hierarchy;
 
 **Scenario 4: Correlated subqueries not supported**
 
-```
+```text
 Resolved identifier in parent scope with correlated columns (Enable 'allow_experimental_correlated_subqueries' setting)
 ```
 
@@ -290,7 +290,7 @@ LEFT JOIN platform_lists l ON l.id = p.list_id;
 
 **Scenario 5: Hash functions not supported for JSON type**
 
-```
+```text
 Method getDataAt is not supported for Object
 ```
 

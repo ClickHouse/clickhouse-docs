@@ -49,7 +49,7 @@ ClickHouse column names are case-sensitive, so `name` and `Name` are different c
 
 The error message indicates which column name is duplicated:
 
-```
+```text
 Cannot add column `remark`: column with this name already exists
 Cannot add column bid: column with this name already exists
 Different expressions with the same alias custom_properties_map
@@ -205,7 +205,7 @@ FROM s3('file.csv', 'CSVWithNames');
 
 **Scenario 1: Replicated DDL executed twice (race condition)**
 
-```
+```text
 Cannot add column `remark`: column with this name already exists. (DUPLICATE_COLUMN)
 Task query-0000000004 was not executed by anyone, maximum number of retries exceeded
 ```

@@ -130,8 +130,8 @@ SELECT toTypeName(your_column);
 
 **Scenario 1: Signed/Unsigned Integer Conflicts**
 
-```
-Error: There is no supertype for types Int64, UInt64 because some of them 
+```text
+Error: There is no supertype for types Int64, UInt64 because some of them
 are signed integers and some are unsigned integers
 ```
 
@@ -139,8 +139,8 @@ are signed integers and some are unsigned integers
 
 **Scenario 2: Nullable Arithmetic**
 
-```
-Error: Arguments of 'minus' have incorrect data types: 
+```text
+Error: Arguments of 'minus' have incorrect data types:
 'UInt64' and 'Nullable(Nothing)'
 ```
 
@@ -148,7 +148,7 @@ Error: Arguments of 'minus' have incorrect data types:
 
 **Scenario 3: Failed Background Mutations**
 
-```
+```text
 Latest_fail_reason: ILLEGAL_TYPE_OF_ARGUMENT in mutation
 ```
 

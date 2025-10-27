@@ -317,7 +317,7 @@ ORDER BY count() DESC, d ASC;  -- Use alias instead
 
 ## Version-specific notes {#version-specific-notes}
 
-### 22.3.16, 22.8+ - Alias substitution regression
+### 22.3.16, 22.8+ - Alias substitution regression {#alias-substitution-regression}
 
 Starting in these versions, PR #42827 changed how aliases are handled in GROUP BY queries. This causes previously working queries to fail:
 
@@ -328,7 +328,7 @@ SELECT max(b) AS b, b AS b1 FROM t GROUP BY a;
 
 **Workaround**: Use subqueries, different aliases, or enable `allow_experimental_analyzer=1`.
 
-### 23.5 - Conditional expression issues
+### 23.5 - Conditional expression issues {#conditional-expression-issues}
 
 Version 23.5 introduced stricter validation for conditional expressions in GROUP BY:
 
@@ -342,7 +342,7 @@ GROUP BY post_nat_source_ipv4;
 
 **Workaround**: Ensure all columns referenced in conditional expressions are in GROUP BY, even if the condition is always false.
 
-### 24.11+ - Positional GROUP BY in materialized views
+### 24.11+ - Positional GROUP BY in materialized views {#positional-group-by-mv}
 
 Version 24.11 broke positional GROUP BY syntax in materialized views:
 
@@ -356,4 +356,4 @@ GROUP BY 1, 2, 3  -- in materialized view definition
 ## Related error codes {#related-error-codes}
 
 - [Error 184: `ILLEGAL_AGGREGATION`](/docs/troubleshooting/error-codes/184_ILLEGAL_AGGREGATION) - Aggregate function used incorrectly (e.g., nested aggregates)
-- [Error 47: `UNKNOWN_IDENTIFIER`](/docs/troubleshooting/error-codes/47_UNKNOWN_IDENTIFIER) - Column not found in the context
+- [Error 47: `UNKNOWN_IDENTIFIER`](/docs/troubleshooting/error-codes/047_UNKNOWN_IDENTIFIER) - Column not found in the context

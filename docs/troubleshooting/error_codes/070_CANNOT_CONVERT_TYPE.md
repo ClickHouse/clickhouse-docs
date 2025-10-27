@@ -169,7 +169,7 @@ SELECT * FROM table WHERE toString(id) = 'value';  -- Instead of id = 'value'
 
 **Scenario 1: Enum conversion during merge**
 
-```
+```text
 Enum conversion changes value for element 'SystemLibrary' from 18 to 17
 ```
 
@@ -182,7 +182,7 @@ Enum conversion changes value for element 'SystemLibrary' from 18 to 17
 
 **Scenario 2: Empty string to integer conversion**
 
-```
+```text
 Attempt to read after eof: while converting '' to UInt8
 ```
 
@@ -199,7 +199,7 @@ SELECT if(column_name = '', 0, toUInt8(column_name)) FROM table;
 
 **Scenario 3: Field value out of range**
 
-```
+```text
 Field value 18446744073709551516 is out of range of long type
 ```
 
@@ -218,7 +218,7 @@ ALTER TABLE your_table
 
 **Scenario 4: ClickPipe/Replication type mismatch**
 
-```
+```text
 Cannot convert string to type UInt8
 ```
 

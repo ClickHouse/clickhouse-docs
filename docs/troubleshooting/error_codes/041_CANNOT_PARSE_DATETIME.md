@@ -62,7 +62,7 @@ SELECT version();
 
 The error typically indicates what failed to parse:
 
-```
+```text
 Cannot read DateTime: neither Date nor Time was parsed successfully
 Unable to parse fragment LITERAL from 2024 because literal / is expected
 Cannot parse DateTime: while converting '0' to DateTime64(9, 'UTC')
@@ -175,7 +175,7 @@ FROM table;
 
 **Scenario 1: parseDateTime broken in 24.5 with %F format**
 
-```
+```text
 Code: 0. DB: while executing 'FUNCTION parseDateTime(formatDateTime(...), '%F %T')'. (OK)
 ```
 
@@ -195,8 +195,8 @@ SELECT parseDateTimeBestEffort('2024-06-20 1200', 'Europe/Paris');
 
 **Scenario 2: parseDateTimeBestEffort with WHERE clause (analyzer issue)**
 
-```
-Cannot read DateTime: neither Date nor Time was parsed successfully: 
+```text
+Cannot read DateTime: neither Date nor Time was parsed successfully:
 while executing 'FUNCTION parseDateTimeBestEffort(...)'
 ```
 
@@ -227,7 +227,7 @@ END;
 
 **Scenario 3: Single-digit month/day parsing with MySQL syntax**
 
-```
+```text
 Code: 41. DB::Exception: Unable to parse fragment LITERAL from 2024 because literal / is expected but 2 provided
 ```
 
@@ -248,7 +248,7 @@ SELECT parseDateTimeBestEffortUS('9/3/2024');  -- American format MM/DD/YYYY
 
 **Scenario 4: Distributed table with DateTime64 IN clause**
 
-```
+```text
 Code: 41. DB::Exception: Cannot parse DateTime: while converting '0' to DateTime64(9, 'UTC')
 ```
 
@@ -277,7 +277,7 @@ WHERE report_time >= toDateTime64('1970-01-01 00:00:00', 9, 'UTC')
 
 **Scenario 5: ISO 8601 format missing seconds**
 
-```
+```text
 could not parse 2024-09-03T16:03Z as a DateTime
 ```
 

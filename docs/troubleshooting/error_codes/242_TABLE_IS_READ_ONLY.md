@@ -204,7 +204,7 @@ ALTER TABLE database.table_name DROP PART 'part_name';
 
 **Scenario 1: Keeper connection timeout**
 
-```
+```text
 Code: 242. DB::Exception: Table is in readonly mode (replica path: /clickhouse/tables/{uuid}/default/replicas/c-server-0). 
 (TABLE_IS_READ_ONLY)
 ```
@@ -226,7 +226,7 @@ SYSTEM RESTART REPLICA database.table_name;
 
 **Scenario 2: Metadata mismatch after ALTER**
 
-```
+```text
 Error: Existing table metadata in ZooKeeper differs in TTL
 Table is in readonly mode
 ```
@@ -248,7 +248,7 @@ SYSTEM RESTART REPLICA database.table_name;
 
 **Scenario 3: Suspicious parts on startup**
 
-```
+```text
 Error: The local set of parts doesn't look like the set of parts in ZooKeeper: 
 6.23 million rows are suspicious
 Table is in readonly mode
@@ -277,7 +277,7 @@ LIMIT 20;
 
 **Scenario 4: Part validation failure**
 
-```
+```text
 Error: Cannot read all marks from file
 ATTEMPT_TO_READ_AFTER_EOF
 Table is in readonly mode
@@ -307,7 +307,7 @@ SYSTEM SYNC REPLICA database.table_name;
 
 **Scenario 5: Concurrent ALTER cancelling INSERT**
 
-```
+```text
 Error: Insert query was cancelled by concurrent ALTER PARTITION
 Table is in readonly mode
 ```
@@ -331,7 +331,7 @@ ALTER TABLE database.table_name DROP PARTITION 'partition_id' SYNC;
 
 **Scenario 6: Disk space exhaustion**
 
-```
+```text
 Error: Not enough space on disk
 Table is in readonly mode
 ```

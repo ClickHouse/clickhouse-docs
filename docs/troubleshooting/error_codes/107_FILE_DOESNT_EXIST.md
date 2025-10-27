@@ -130,7 +130,7 @@ ALTER TABLE your_table DETACH PART 'part_name';
 
 **Scenario 1: File missing during query**
 
-```
+```text
 Error: File data/uuid/all_XXX_XXX_X/date.bin doesn't exist
 ```
 
@@ -143,7 +143,7 @@ Error: File data/uuid/all_XXX_XXX_X/date.bin doesn't exist
 
 **Scenario 2: Missing marks file**
 
-```
+```text
 Error: Marks file '.../column.mrk2' doesn't exist
 ```
 
@@ -161,7 +161,7 @@ ALTER TABLE your_table DETACH PART 'broken_part_name';
 
 **Scenario 3: S3 object not found**
 
-```
+```text
 Error: The specified key does not exist (S3_ERROR)
 ```
 
@@ -175,7 +175,7 @@ Error: The specified key does not exist (S3_ERROR)
 
 **Scenario 4: Checksums.txt references excess files**
 
-```
+```text
 Error: File 'column.sparse.idx.cmrk2' doesn't exist
 ```
 
@@ -188,7 +188,7 @@ Error: File 'column.sparse.idx.cmrk2' doesn't exist
 
 **Scenario 5: Azure blob missing**
 
-```
+```text
 Error: The specified blob does not exist
 ```
 
@@ -213,7 +213,7 @@ Error: The specified blob does not exist
 
 1. **Identify the missing file:**
 
-   ```
+   ```text
    Error message shows: File data/uuid/part_name/file.bin doesn't exist
    ```
 

@@ -48,7 +48,7 @@ This error occurs when aggregate functions are used incorrectly, such as nesting
 
 **1. Check the error message for the specific aggregate function**
 
-```
+```text
 Aggregate function count(*) is found inside another aggregate function
 Aggregate function sum(value) cannot be used in WHERE clause
 ```
@@ -160,7 +160,7 @@ GROUP BY category;
 
 **Scenario 1: Nested aggregate functions**
 
-```
+```text
 Code: 184. DB::Exception: Aggregate function count(*) is found inside another aggregate function
 ```
 
@@ -189,7 +189,7 @@ SELECT max(cnt) FROM (
 
 **Scenario 2: Aggregate in WHERE clause**
 
-```
+```text
 Code: 184. DB::Exception: Aggregate function in WHERE clause
 ```
 
@@ -221,7 +221,7 @@ WHERE cnt > 10;
 
 **Scenario 3: Missing GROUP BY**
 
-```
+```text
 Code: 184. DB::Exception: Column 'name' is not under aggregate function and not in GROUP BY
 ```
 
@@ -245,7 +245,7 @@ SELECT uniq(name), count(*) FROM users;
 
 **Scenario 4: Aggregate in JOIN condition**
 
-```
+```text
 Code: 184. DB::Exception: Aggregate function not allowed in JOIN ON clause
 ```
 
@@ -271,7 +271,7 @@ JOIN (
 
 **Scenario 5: Complex calculations with aggregate results**
 
-```
+```text
 Code: 184. DB::Exception: Aggregate function found inside another aggregate function
 ```
 

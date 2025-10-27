@@ -136,7 +136,7 @@ If a specific query pattern triggers the error, try rewriting the query differen
 
 **Scenario 1: Buffer offset mismatch**
 
-```
+```text
 Logical error: 'Expected 46044 >= 88088'
 ```
 
@@ -147,7 +147,7 @@ This typically occurs with S3 or remote filesystem cache. Try:
 
 **Scenario 2: Part management errors**
 
-```
+```text
 Logical error: 'Entry actual part isn't empty yet'
 ```
 
@@ -158,7 +158,7 @@ Related to merge tree part operations. Try:
 
 **Scenario 3: LLVM compilation errors**
 
-```
+```text
 Logical error: Incorrect operand type
 ```
 

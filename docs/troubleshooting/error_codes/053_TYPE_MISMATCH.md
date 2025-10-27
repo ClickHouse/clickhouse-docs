@@ -149,8 +149,8 @@ ALTER TABLE your_table DETACH PART 'part_name';
 
 **Scenario 1: Bad cast during merge**
 
-```
-Bad cast from type DB::ColumnDecimal<DB::Decimal<long>> to 
+```text
+Bad cast from type DB::ColumnDecimal<DB::Decimal<long>> to
 DB::ColumnDecimal<DB::Decimal<wide::integer<128ul, int>>>
 ```
 
@@ -163,7 +163,7 @@ DB::ColumnDecimal<DB::Decimal<wide::integer<128ul, int>>>
 
 **Scenario 2: Sparse column serialization**
 
-```
+```text
 Bad cast from type DB::ColumnSparse to DB::ColumnVector<double>
 ```
 
@@ -178,8 +178,8 @@ Or upgrade to newer version with fixes.
 
 **Scenario 3: PostgreSQL replication type mismatch**
 
-```
-Bad cast from type DB::ColumnDecimal<DB::DateTime64> to 
+```text
+Bad cast from type DB::ColumnDecimal<DB::DateTime64> to
 DB::ColumnDecimal<DB::Decimal<long>>
 ```
 
@@ -192,7 +192,7 @@ DB::ColumnDecimal<DB::Decimal<long>>
 
 **Scenario 4: Integration type conflicts**
 
-```
+```text
 Unexpected type string for mysql type 15, got bool
 ```
 

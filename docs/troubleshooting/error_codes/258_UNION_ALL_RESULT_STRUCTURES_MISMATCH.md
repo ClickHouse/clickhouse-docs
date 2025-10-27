@@ -17,14 +17,14 @@ This error occurs when the result sets of queries combined with `UNION ALL` have
 
 **What you'll see:**
 
-```
+```text
 Code: 258. DB::Exception: UNION ALL result structures mismatch. 
 (UNION_ALL_RESULT_STRUCTURES_MISMATCH)
 ```
 
 Or in recent versions, this may manifest as:
 
-```
+```text
 Code: 352. DB::Exception: Block structure mismatch in (columns with identical name must have identical structure) stream: different types:
 NULL Nullable(String) Nullable(size = 0, String(size = 0), UInt8(size = 0))
 NULL Nullable(Nothing) Const(size = 0, Nullable(size = 1, Nothing(size = 1), UInt8(size = 1))). 
@@ -86,7 +86,7 @@ SELECT 'xxx', NULL;
 
 ## Most common causes {#most-common-causes}
 
-### 1. **Different number of columns**
+### 1. **Different number of columns** {#different-number-of-columns}
 
 The most straightforward cause—each SELECT in the UNION ALL must return the same number of columns.
 
@@ -102,7 +102,7 @@ UNION ALL
 SELECT id, name, NULL AS email FROM customers;
 ```
 
-### 2. **Incompatible column types**
+### 2. **Incompatible column types** {#incompatible-column-types}
 
 Even if column names match, types must be compatible or convertible.
 
@@ -123,7 +123,7 @@ UNION ALL
 SELECT CAST(123 AS String) AS col1;
 ```
 
-### 3. **NULL type inference issues (version-specific)**
+### 3. **NULL type inference issues (version-specific)** {#null-type-inference-issues}
 
 Before version 21.9, NULL handling was more lenient. Starting from 21.9+, ClickHouse is stricter about NULL type inference.
 
@@ -149,7 +149,7 @@ UNION ALL
 SELECT 'xxx', NULL;
 ```
 
-### 4. **Column order mismatch**
+### 4. **Column order mismatch** {#column-order-mismatch}
 
 Column positions matter, not names. UNION ALL matches columns by position.
 
@@ -167,7 +167,7 @@ UNION ALL
 SELECT name, age FROM employees;  -- Correct order
 ```
 
-### 5. **Projection optimization conflicts (24.10+ version-specific)**
+### 5. **Projection optimization conflicts (24.10+ version-specific)** {#projection-optimization-conflicts}
 
 In versions 24.10+, there's a known issue where projection optimization can cause block structure mismatches in UNION operations, particularly with:
 - Tables that have PROJECTION defined
@@ -195,7 +195,7 @@ SETTINGS optimize_use_projections = 0;
 
 ## Common solutions {#common-solutions}
 
-### **1. Match column counts**
+### **1. Match column counts** {#match-column-counts}
 
 ```sql
 -- Ensure all queries return same number of columns
@@ -204,7 +204,7 @@ UNION ALL
 SELECT col1, col2, NULL AS col3 FROM table2;  -- Add NULL for missing columns
 ```
 
-### **2. Cast to compatible types**
+### **2. Cast to compatible types** {#cast-to-compatible-types}
 
 ```sql
 -- Different numeric types
@@ -223,7 +223,7 @@ UNION ALL
 SELECT toDateTime(order_date) FROM archived_orders;
 ```
 
-### **3. Fix NULL type ambiguity**
+### **3. Fix NULL type ambiguity** {#fix-null-type-ambiguity}
 
 ```sql
 -- Method 1: Explicit type casting
@@ -244,7 +244,7 @@ UNION ALL
 SELECT NULL::Nullable(String), NULL::Nullable(Int64);
 ```
 
-### **4. Use UNION DISTINCT mode for automatic type coercion**
+### **4. Use UNION DISTINCT mode for automatic type coercion** {#use-union-distinct}
 
 ```sql
 -- UNION (without ALL) applies type coercion more aggressively
@@ -256,7 +256,7 @@ SELECT 123;
 -- For performance, prefer UNION ALL with explicit casts
 ```
 
-### **5. Verify column order**
+### **5. Verify column order** {#verify-column-order}
 
 ```sql
 -- Wrong: column positions don't match
@@ -279,7 +279,7 @@ SELECT
 FROM archived_users;
 ```
 
-### **6. Disable projection optimization (24.10+ workaround)**
+### **6. Disable projection optimization (24.10+ workaround)** {#disable-projection-optimization}
 
 If you're encountering "Block structure mismatch in UnionStep stream" errors related to projections:
 
@@ -303,7 +303,7 @@ FROM system.projections
 WHERE table = 'your_table';
 ```
 
-### **7. Debug with DESCRIBE**
+### **7. Debug with DESCRIBE** {#debug-with-describe}
 
 ```sql
 -- Check structure of each query
@@ -338,6 +338,6 @@ DESCRIBE (SELECT col1, col2 FROM table2);
 
 ## Related error codes {#related-error-codes}
 
-- [Error 49: `LOGICAL_ERROR`](/docs/troubleshooting/error-codes/49_LOGICAL_ERROR) - Related to internal block structure mismatches
+- [Error 49: `LOGICAL_ERROR`](/docs/troubleshooting/error-codes/049_LOGICAL_ERROR) - Related to internal block structure mismatches
 - [Error 352: `AMBIGUOUS_COLUMN_NAME`](/docs/troubleshooting/error-codes/352_AMBIGUOUS_COLUMN_NAME) - Can occur with UNION and column name conflicts
 - [Error 386: `NO_COMMON_TYPE`](/docs/troubleshooting/error-codes/386_NO_COMMON_TYPE) - When types cannot be unified

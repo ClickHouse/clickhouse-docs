@@ -54,8 +54,8 @@ This error occurs when ClickHouse attempts to read data from a file but encounte
 
 The error message usually indicates the specific file:
 
-```
-Code: 3. DB::Exception: Unexpected end of file while reading: 
+```text
+Code: 3. DB::Exception: Unexpected end of file while reading:
 Marks file '/path/to/part/column.mrk2' doesn't exist or is truncated
 ```
 
@@ -168,7 +168,7 @@ SYSTEM DROP FILESYSTEM CACHE;
 
 **Scenario 1: Broken parts after server restart**
 
-```
+```text
 Code: 32. DB::Exception: Attempt to read after eof.
 while loading part all_41390134_41390134_0 on path store/.../all_41390134_41390134_0
 ```
@@ -190,7 +190,7 @@ find /var/lib/clickhouse/disks/s3disk/store/*/detached/broken-on-start_* -type d
 
 **Scenario 2: Empty marks file**
 
-```
+```text
 Empty marks file: 0, must be: 75264
 Code: 246. DB::Exception: CORRUPTED_DATA
 ```
@@ -211,7 +211,7 @@ TRUNCATE TABLE system.text_log;
 
 **Scenario 3: Cannot read all data - bytes expected vs received**
 
-```
+```text
 Cannot read all data. Bytes read: 32. Bytes expected: 40.
 while loading part 202311_0_158_42_159
 ```
@@ -237,7 +237,7 @@ SYSTEM RESTART REPLICA your_table;
 
 **Scenario 4: Filesystem cache "Having zero bytes" error**
 
-```
+```text
 Having zero bytes, but range is not finished: file offset: 0, cache file size: 11038
 read type: CACHED, cache file path: /mnt/clickhouse-cache/.../0
 ```
@@ -261,7 +261,7 @@ SYSTEM DROP FILESYSTEM CACHE;
 
 **Scenario 5: S3/Remote storage read truncation**
 
-```
+```text
 Code: 3. DB::Exception: Unexpected end of file while reading from S3
 Connection reset by peer
 ```

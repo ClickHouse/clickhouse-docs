@@ -136,7 +136,7 @@ JOIN customers c ON o.customer_id = c.id;
 
 **Scenario 1: Simple JOIN with shared column name**
 
-```
+```text
 Error: JOIN database.t4 ALL INNER JOIN database.t4 AS right_0 ON t4.c0 = right_0.c0 
 ambiguous identifier 't4.c0'
 ```
@@ -156,7 +156,7 @@ INNER JOIN t4 AS right_t ON left_t.id = right_t.id;
 
 **Scenario 2: Multi-table JOIN ambiguity**
 
-```
+```text
 Error: Ambiguous column 'id' in SELECT
 ```
 
@@ -177,7 +177,7 @@ JOIN t3 ON t2.key = t3.key;
 
 **Scenario 3: WHERE clause ambiguity**
 
-```
+```text
 Error: Ambiguous column reference in WHERE clause
 ```
 
@@ -199,7 +199,7 @@ WHERE o.status = 'active';
 
 **Scenario 4: Analyzer differences**
 
-```
+```text
 Query works with old analyzer but fails with new analyzer
 ```
 
@@ -217,7 +217,7 @@ SET allow_experimental_analyzer = 0;
 
 **Scenario 5: Column name from wrong table in multi-JOIN**
 
-```
+```text
 Query accidentally uses t1.d but d doesn't exist in t1
 (exists in t2 but query succeeds incorrectly)
 ```
@@ -232,8 +232,8 @@ Query accidentally uses t1.d but d doesn't exist in t1
 ## Debugging steps {#debugging-steps}
 
 1. **Identify the ambiguous column:**
-2. 
-   ```
+2.
+   ```text
    Error message shows: "ambiguous identifier 't4.c0'"
    ```
    The column name causing ambiguity is listed in the error.

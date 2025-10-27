@@ -175,7 +175,7 @@ def execute_with_retry(query, max_retries=3):
 
 **Scenario 1: Broken pipe during long query**
 
-```
+```text
 Error: I/O error: Broken pipe, while writing to socket
 ```
 
@@ -189,7 +189,7 @@ Error: I/O error: Broken pipe, while writing to socket
 
 **Scenario 2: Connection refused in distributed query**
 
-```
+```text
 Error: Connection refused (server-name:9000)
 Code: 279. ALL_CONNECTION_TRIES_FAILED
 ```
@@ -215,7 +215,7 @@ WHERE cluster = 'default';
 
 **Scenario 3: Socket not connected after query completes**
 
-```
+```text
 Error: Poco::Exception. Code: 1000, e.code() = 107
 Net Exception: Socket is not connected
 ```
@@ -230,7 +230,7 @@ Net Exception: Socket is not connected
 
 **Scenario 4: Connection reset by peer**
 
-```
+```text
 Error: Connection reset by peer (code: 104)
 ```
 
@@ -244,7 +244,7 @@ Error: Connection reset by peer (code: 104)
 
 **Scenario 5: All connection tries failed**
 
-```
+```text
 Error: Code: 279. All connection tries failed
 Multiple Code: 210. Connection refused attempts
 ```

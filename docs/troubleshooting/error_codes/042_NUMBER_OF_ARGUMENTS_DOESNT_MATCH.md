@@ -1,10 +1,3 @@
-
-Let me search for more specific information about function argument errors:
-
-**Search Pattern:** Semantic search for NUMBER_OF_ARGUMENTS_DOESNT_MATCH scenarios
-
-Perfect! Based on my search results, I've found excellent information about error code 42 (NUMBER_OF_ARGUMENTS_DOESNT_MATCH). This is a straightforward error that occurs when the number of arguments passed to a function doesn't match what the function expects. Now I'll create the documentation following your template format.
-
 ---
 slug: /troubleshooting/error-codes/042_NUMBER_OF_ARGUMENTS_DOESNT_MATCH
 sidebar_label: '042 NUMBER_OF_ARGUMENTS_DOESNT_MATCH'
@@ -56,7 +49,7 @@ This error occurs when you call a ClickHouse function with the wrong number of a
 
 The error message tells you exactly what went wrong:
 
-```
+```text
 Number of arguments for function multiSearchAny doesn't match: passed 5, should be 2
 Number of arguments for function toFixedString doesn't match: passed 1, should be 2
 Incorrect number of arguments for function generateSnowflakeID provided 2, expected 0 to 1
@@ -153,7 +146,7 @@ SELECT name, origin FROM system.functions WHERE name LIKE '%YourFunction%';
 
 **Scenario 1: multiSearchAny with multiple string literals**
 
-```
+```text
 Number of arguments for function multiSearchAny doesn't match: passed 5, should be 2
 ```
 
@@ -178,7 +171,7 @@ FROM logs;
 
 **Scenario 2: toFixedString with missing length parameter**
 
-```
+```text
 Number of arguments for function toFixedString doesn't match: passed 1, should be 2
 ```
 
@@ -205,7 +198,7 @@ FROM table;
 
 **Scenario 3: generateSnowflakeID with too many arguments**
 
-```
+```text
 Incorrect number of arguments for function generateSnowflakeID provided 2 (UInt8, DateTime64(3)), expected 0 to 1
 ```
 
@@ -230,7 +223,7 @@ SELECT generateSnowflakeID(toUInt8(1));
 
 **Scenario 4: parseDateTime with wrong argument count**
 
-```
+```text
 Number of arguments for function parseDateTime doesn't match
 ```
 
@@ -256,7 +249,7 @@ SELECT parseDateTimeBestEffort('2024-01-15', 'Europe/London');
 
 **Scenario 5: Array distance functions with wrong types**
 
-```
+```text
 Arguments of function arrayL2Distance have different array sizes: 0 and 1536
 ```
 

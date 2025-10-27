@@ -160,7 +160,7 @@ SETTINGS input_format_tsv_use_best_effort_in_schema_inference = 0;
 
 **Scenario 1: PostgreSQL array migration**
 
-```
+```text
 Code: 130. DB::Exception: Array does not start with '[' character. (CANNOT_READ_ARRAY_FROM_TEXT)
 ```
 
@@ -187,7 +187,7 @@ FROM staging;
 
 **Scenario 2: Scalar CTE with array in IN clause**
 
-```
+```text
 Code: 130. DB::Exception: Array does not start with '[' character: 
 while executing 'FUNCTION in(toString(number), _subquery) UInt8'. (CANNOT_READ_ARRAY_FROM_TEXT)
 ```
@@ -217,7 +217,7 @@ SELECT * FROM numbers(100) WHERE number IN ids;
 
 **Scenario 3: Array format in TSV import**
 
-```
+```text
 Code: 130. DB::Exception: Array does not start with '[' character: (at row 2)
 ```
 
@@ -248,7 +248,7 @@ FROM temp;
 
 **Scenario 4: Nested CSV arrays**
 
-```
+```text
 Array does not start with '[' character in CSV nested array
 ```
 
@@ -269,7 +269,7 @@ SELECT * FROM format(CSV, '"[''Hello'', ''world'']"');
 
 **Scenario 5: Incompatible array delimiters in custom formats**
 
-```
+```text
 CANNOT_READ_ARRAY_FROM_TEXT in CustomSeparated format
 ```
 

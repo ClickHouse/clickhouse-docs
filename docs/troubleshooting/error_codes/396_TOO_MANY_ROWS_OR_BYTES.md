@@ -16,17 +16,17 @@ It's a safety mechanism to prevent queries from consuming excessive memory or ne
 
 **Error Message Format:**
 
-```
+```text
 Code: 396. DB::Exception: Limit for result exceeded, max bytes: X MiB, current bytes: Y MiB. (TOO_MANY_ROWS_OR_BYTES)
 ```
 
 or
 
-```
+```text
 Code: 396. DB::Exception: Limit for result exceeded, max rows: X thousand, current rows: Y thousand. (TOO_MANY_ROWS_OR_BYTES)
 ```
 
-### When you'll see it
+### When you'll see it {#when-youll-see-it}
 
 1. **Large query results:**
    - When a `SELECT` query returns more rows than `max_result_rows` (default: unlimited in self-hosted, varies in ClickHouse Cloud)
@@ -45,7 +45,7 @@ Code: 396. DB::Exception: Limit for result exceeded, max rows: X thousand, curre
    - When organization/user settings profiles enforce restrictive result limits
    - Default limits may be set at the profile level for resource control
 
-### Potential causes
+### Potential causes {#potential-causes}
 
 1. **Queries returning too many rows** - The query legitimately returns more data than allowed by `max_result_rows`
 
@@ -63,7 +63,7 @@ Code: 396. DB::Exception: Limit for result exceeded, max rows: X thousand, curre
 
 5. **Missing ORDER BY optimization** - Queries without `ORDER BY` may hit the limit, while adding `ORDER BY` allows the query to succeed (query execution differences)
 
-### Quick fixes
+### Quick fixes {#quick-fixes}
 
 **1. Increase result limits:**
 
@@ -144,25 +144,25 @@ curl "https://your-host:8443/?max_result_rows=0&max_result_bytes=0" \
 jdbc:clickhouse://host:port/database?max_result_rows=0&max_result_bytes=0
 ```
 
-### Important notes
+### Important notes {#important-notes}
 
 - **Cloud SQL Console behavior:** ClickHouse Cloud SQL Console automatically sets `result_overflow_mode=break` and `max_result_rows=500000` in HTTP query parameters
 
 - **LowCardinality overhead:** When using `LowCardinality`, dictionary metadata is sent with each data block, which can cause unexpected size bloat:
-   - 209 rows × 1 column can exceed 10MB limit
-   - 110 rows can require 979MB due to dictionary overhead
-   - Solution: Remove `LowCardinality` or increase `max_result_bytes`
+  - 209 rows × 1 column can exceed 10MB limit
+  - 110 rows can require 979MB due to dictionary overhead
+  - Solution: Remove `LowCardinality` or increase `max_result_bytes`
 
 - **Setting precedence:** Settings passed in query parameters override profile settings, but profile settings apply if not explicitly overridden
 
 - **`result_overflow_mode` behavior:**
-   - `'throw'` (default): Throws exception when limit exceeded
-   - `'break'`: Returns partial results (incompatible with query cache in 24.9+)
-   - Using `'break'` provides no indication that results were truncated
+  - `'throw'` (default): Throws exception when limit exceeded
+  - `'break'`: Returns partial results (incompatible with query cache in 24.9+)
+  - Using `'break'` provides no indication that results were truncated
 
 - **Version compatibility:** The query cache + overflow mode restriction was introduced in ClickHouse 24.9.
 
-### Related documentation
+### Related documentation {#related-documentation}
 
 - [`max_result_rows` setting](/operations/settings/settings#max_result_rows)
 - [`max_result_bytes` setting](/operations/settings/settings#max_result_bytes)

@@ -138,7 +138,7 @@ SELECT userId FROM users;  -- Correct
 
 **Scenario 1: Missing column in materialized view**
 
-```
+```text
 Error: Missing columns: 'email_id' while processing query
 ```
 
@@ -146,7 +146,7 @@ Error: Missing columns: 'email_id' while processing query
 
 **Scenario 2: Column ambiguity in joins**
 
-```
+```text
 Error: Unknown column: customtag1, there are only columns sum(viewercount), sumMap(eventcount_map)
 ```
 

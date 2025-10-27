@@ -50,7 +50,7 @@ ClickHouse requires explicit `Nullable()` type declaration to accept null values
 
 The error message indicates which column cannot accept NULL:
 
-```
+```text
 Cannot convert NULL value to non-Nullable type: while converting source column 
 price to destination column price
 ```
@@ -169,7 +169,7 @@ SELECT assumeNotNull(nullable_column) FROM source;
 
 **Scenario 1: Parquet file import with NULL values**
 
-```
+```text
 Cannot convert NULL value to non-Nullable type: While executing ParquetBlockInputFormat
 ```
 
@@ -191,7 +191,7 @@ SELECT coalesce(name, '') AS name FROM s3('file.parquet');
 
 **Scenario 2: Materialized view with NULL results**
 
-```
+```text
 Cannot convert NULL value to non-Nullable type: while pushing to view mv
 ```
 
@@ -209,7 +209,7 @@ FROM source_table;
 
 **Scenario 3: S3 import with wildcards or functions fails**
 
-```
+```text
 Cannot convert NULL value to non-Nullable type: while converting source column 
 TMSR_FEATURES to destination column features
 ```
@@ -241,7 +241,7 @@ SET schema_inference_make_columns_nullable = 0;
 
 **Scenario 4: Tuple fields with NULL values**
 
-```
+```text
 Cannot convert NULL value to non-Nullable type: while converting source column 
 price to destination column price: while executing FUNCTION _CAST
 ```
@@ -269,7 +269,7 @@ SELECT tuple(
 
 **Scenario 5: Using bare NULL in materialized views**
 
-```
+```text
 Data type Nullable(Nothing) cannot be used in tables
 ```
 

@@ -159,7 +159,7 @@ Remove non-existent hosts from configuration:
 
 **Scenario 1: Kubernetes pod not ready**
 
-```
+```text
 Error: Cannot resolve host (pod-name.headless-service.namespace.svc.cluster.local), 
 error 0: Host not found
 ```
@@ -173,7 +173,7 @@ error 0: Host not found
 
 **Scenario 2: Stale cluster configuration**
 
-```
+```text
 DNSResolver: Cannot resolve host (old-server-name), error 0: Host not found
 DNSResolver: Cached hosts dropped: old-server-name
 DNSCacheUpdater: IPs of some hosts have been changed. Will reload cluster config
@@ -188,7 +188,7 @@ DNSCacheUpdater: IPs of some hosts have been changed. Will reload cluster config
 
 **Scenario 3: DNS server unreachable**
 
-```
+```text
 Error: Cannot resolve host, error: Temporary failure in name resolution
 ```
 
@@ -202,7 +202,7 @@ Error: Cannot resolve host, error: Temporary failure in name resolution
 
 **Scenario 4: Embedded Keeper quorum issues**
 
-```
+```text
 DNSResolver: Cannot resolve host (node-3.cluster.local), error 0: Host not found
 ```
 

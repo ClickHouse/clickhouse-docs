@@ -178,7 +178,7 @@ def execute_with_retry(query, max_retries=3):
 
 **Scenario 1: Parallel replicas stale connections**
 
-```
+```text
 Error: Code: 279. DB::Exception: Can't connect to any replica chosen 
 for query execution: While executing Remote. (ALL_CONNECTION_TRIES_FAILED)
 ```
@@ -192,7 +192,7 @@ for query execution: While executing Remote. (ALL_CONNECTION_TRIES_FAILED)
 
 **Scenario 2: All replicas down**
 
-```
+```text
 Error: Code: 279. All connection tries failed. Log:
 Code: 210. Connection refused (server:9000)
 Code: 210. Connection refused (server:9000)
@@ -209,7 +209,7 @@ Code: 210. Connection refused (server:9000)
 
 **Scenario 3: Rolling restart with load balancer delay**
 
-```
+```text
 Error: Connection failures during rolling restart
 Multiple failed attempts to same terminating replica
 ```
@@ -224,7 +224,7 @@ Multiple failed attempts to same terminating replica
 
 **Scenario 4: clusterAllReplicas() with unavailable replicas**
 
-```
+```text
 Error: ALL_CONNECTION_TRIES_FAILED in clusterAllReplicas query
 ```
 
@@ -244,7 +244,7 @@ WHERE shard_num = 1;
 
 **Scenario 5: Distributed table with dead shards**
 
-```
+```text
 Error: All connection tries failed during distributed query
 ```
 

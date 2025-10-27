@@ -163,7 +163,7 @@ SETTINGS priority = 1;
 
 **Scenario 1: Traffic spike**
 
-```
+```text
 Error: Code: 202, message: Too many simultaneous queries. Maximum: 1000
 ```
 
@@ -177,7 +177,7 @@ Error: Code: 202, message: Too many simultaneous queries. Maximum: 1000
 
 **Scenario 2: Slow queries creating backlog**
 
-```
+```text
 Error: Too many simultaneous queries
 ```
 
@@ -191,7 +191,7 @@ Error: Too many simultaneous queries
 
 **Scenario 3: Per-user limit exceeded**
 
-```
+```text
 Error: Too many simultaneous queries for user 'app_user'
 ```
 
@@ -210,7 +210,7 @@ SETTINGS max_concurrent_queries_for_user = 200;
 
 **Scenario 4: Async inserts causing limit**
 
-```
+```text
 Error: Too many simultaneous queries (mostly async inserts)
 ```
 
@@ -229,7 +229,7 @@ SET async_insert_busy_timeout_ms = 1000;    -- Flush more frequently
 
 **Scenario 5: Connection pool misconfiguration**
 
-```
+```text
 Error: Too many simultaneous queries
 ```
 

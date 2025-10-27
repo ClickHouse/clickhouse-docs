@@ -7,14 +7,14 @@ title: '395 FUNCTION_THROW_IF_VALUE_IS_NON_ZERO'
 description: 'ClickHouse error code - 395 FUNCTION_THROW_IF_VALUE_IS_NON_ZERO'
 ---
 
-## Error Code 395: FUNCTION_THROW_IF_VALUE_IS_NON_ZERO
+## Error Code 395: FUNCTION_THROW_IF_VALUE_IS_NON_ZERO {#error-code-395}
 
 :::tip
 This error occurs when the `throwIf` function evaluates to a non-zero (true) value.
 The `throwIf` function is designed to intentionally throw an exception when its condition is met, and error code 395 is the standard error code for this behavior.
 :::
 
-### When you'll see it
+### When you'll see it {#when-youll-see-it}
 
 You'll encounter this error in the following situations:
 
@@ -34,7 +34,7 @@ You'll encounter this error in the following situations:
    - With the setting `allow_custom_error_code_in_throwif = 1`, you can specify custom error codes
    - Example: `throwIf(1, 'test', toInt32(49))` - but this is generally not recommended
 
-### Potential causes
+### Potential causes {#potential-causes}
 
 1. **Intentional validation failure** - The most common cause, where `throwIf` is working as designed to catch invalid data
 
@@ -44,7 +44,7 @@ You'll encounter this error in the following situations:
 
 4. **HTTP response timing** - In HTTP queries, error code 395 can appear mid-response when processing rows incrementally
 
-### Quick fixes
+### Quick fixes {#quick-fixes}
 
 **1. For legitimate validation failures:**
 
@@ -81,13 +81,13 @@ SELECT if(value > 100, NULL, value) FROM table;
 SELECT identity(column) FROM table WHERE NOT throwIf(column IS NULL);
 ```
 
-### Important notes
+### Important notes {#important-notes}
 
 - The `throwIf` function is **intentional** - it's meant to throw exceptions when the condition is true
 - Error code 395 itself is not a bug; it indicates the function is working as designed
 - When using custom error codes (with `allow_custom_error_code_in_throwif = 1`), thrown exceptions may have unexpected error codes, making debugging harder
 
-### Related documentation
+### Related documentation {#related-documentation}
 
 - [`throwIf` function documentation](/sql-reference/functions/other-functions#throwif)
 - [HTTP Interface and error handling](/interfaces/http)

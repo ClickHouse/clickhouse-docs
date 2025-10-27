@@ -121,7 +121,7 @@ SET async_insert_timeout = 300;
 
 **Scenario 1: Query timeout with `max_execution_time`**
 
-```
+```text
 Error: Timeout exceeded: elapsed 98448.998521 ms, maximum: 5000 ms
 ```
 
@@ -139,7 +139,7 @@ SETTINGS max_execution_time = 120;
 
 **Scenario 2: Network socket timeout**
 
-```
+```text
 Error: Timeout exceeded while writing to socket
 ```
 
@@ -153,7 +153,7 @@ Error: Timeout exceeded while writing to socket
 
 **Scenario 3: JDBC/HTTP client timeout**
 
-```
+```text
 Error: Read timed out
 ```
 
@@ -172,7 +172,7 @@ jdbc:clickhouse://host:8443/database?socket_timeout=7200000
 
 **Scenario 4: Distributed query timeout**
 
-```
+```text
 Error: Timeout exceeded while communicating with remote server
 ```
 
@@ -190,7 +190,7 @@ SELECT * FROM system.clusters WHERE cluster = 'your_cluster';
 
 **Scenario 5: Load balancer timeout**
 
-```
+```text
 Client receives timeout but query completes successfully on server
 ```
 

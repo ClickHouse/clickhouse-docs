@@ -17,14 +17,14 @@ This error occurs when a table accumulates too many data parts, indicating that 
 
 **What you'll see:**
 
-```
+```text
 Code: 252. DB::Exception: Too many parts (300). Merges are processing significantly slower than inserts. 
 (TOO_MANY_PARTS)
 ```
 
 Or:
 
-```
+```text
 Code: 252. DB::Exception: Too many parts (10004) in all partitions in total in table 'default.table_name'. 
 This indicates wrong choice of partition key. The threshold can be modified with 'max_parts_in_total' setting.
 (TOO_MANY_PARTS)
@@ -87,7 +87,7 @@ KILL QUERY WHERE query_id = 'problem-query-id';
 
 ## Most common causes {#most-common-causes}
 
-### 1. **Too many small inserts (most common root cause)**
+### 1. **Too many small inserts (most common root cause)** {#too-many-small-inserts}
 
 Each `INSERT` statement creates a new data part on disk. ClickHouse merges these parts in the background, but if you insert too frequently, parts accumulate faster than they can be merged.
 
@@ -101,7 +101,7 @@ Each `INSERT` statement creates a new data part on disk. ClickHouse merges these
 
 A hypothetical example:
 
-```
+```text
 Time    Inserts/sec    Parts Created    Parts Merged    Net Parts
 0:00    100           100              10              +90
 0:01    100           100              10              +180
@@ -109,7 +109,7 @@ Time    Inserts/sec    Parts Created    Parts Merged    Net Parts
 0:03    100           100              10              +360 -> Error!
 ```
 
-### 2. **Inappropriate partition key**
+### 2. **Inappropriate partition key** {#inappropriate-partition-key}
 
 Using overly granular partition keys (daily, hourly, or by high-cardinality columns) creates too many partitions. Each partition has its own set of parts, multiplying the problem.
 
@@ -131,7 +131,7 @@ PARTITION BY toYYYYMM(date)
 -- No PARTITION BY clause
 ```
 
-### 3. **Merge process blocked or slowed**
+### 3. **Merge process blocked or slowed** {#merge-process-blocked}
 
 Merges can be prevented or slowed by:
 - Heavy SELECT queries consuming all resources
@@ -140,14 +140,14 @@ Merges can be prevented or slowed by:
 - Parts with different projections that can't be merged
 - Maximum part size reached (parts won't merge further)
 
-### 4. **Wrong table engine or settings**
+### 4. **Wrong table engine or settings** {#wrong-table-engine}
 
 - Using special engines (AggregatingMergeTree, SummingMergeTree) with complex aggregations
 - Very large ORDER BY keys causing slow merges
 - `max_bytes_to_merge_at_max_space_in_pool` set too low
 - Insufficient background merge threads
 
-### 5. **Version-specific issues**
+### 5. **Version-specific issues** {#version-specific-issues}
 
 - **Projection mismatch**: Parts with different projection sets cannot be merged (see error: "Parts have different projection sets")
 - **Small parts not merging**: Parts below minimum merge size threshold won't merge even when idle
@@ -156,7 +156,7 @@ Merges can be prevented or slowed by:
 
 ## Common solutions {#common-solutions}
 
-### **1. Fix your insert pattern (PRIMARY SOLUTION)**
+### **1. Fix your insert pattern (PRIMARY SOLUTION)** {#fix-insert-pattern}
 
 This is the #1 fix for 99% of TOO_MANY_PARTS errors.
 
@@ -191,7 +191,7 @@ for file in *.csv; do
 done
 ```
 
-### **2. Use Buffer tables for high-frequency small inserts**
+### **2. Use Buffer tables for high-frequency small inserts** {#use-buffer-tables}
 
 If you cannot change your application to batch inserts, use a Buffer table to accumulate data in memory before flushing to disk.
 
@@ -229,7 +229,7 @@ SELECT * FROM buffer_table;
 - Rows: When 10,000-1,000,000 rows accumulated
 - Bytes: When 10MB-100MB accumulated
 
-### **3. Fix partition key (if applicable)**
+### **3. Fix partition key (if applicable)** {#fix-partition-key}
 
 ```sql
 -- Check current partitions
@@ -263,7 +263,7 @@ RENAME TABLE
 DROP TABLE your_table_old;
 ```
 
-### **4. Manually trigger merges (emergency fix)**
+### **4. Manually trigger merges (emergency fix)** {#manually-trigger-merges}
 
 ```sql
 -- Force merge all parts in a table
@@ -281,7 +281,7 @@ OPTIMIZE TABLE your_table ON CLUSTER 'cluster_name' FINAL;
 Use during low-traffic periods.
 :::
 
-### **5. Temporarily increase limits (emergency only - not a real fix)**
+### **5. Temporarily increase limits (emergency only - not a real fix)** {#temporarily-increase-limits}
 
 ```sql
 -- Increase per-partition limit
@@ -302,7 +302,7 @@ This is **not** a solution, it only buys time.
 You must fix the root cause (insert pattern or partition key).
 :::
 
-### **6. Check for blocking merges**
+### **6. Check for blocking merges** {#check-blocking-merges}
 
 ```sql
 -- Check if merges are running
@@ -336,7 +336,7 @@ FROM system.metrics
 WHERE metric LIKE '%Merge%' OR metric LIKE '%BackgroundPool%';
 ```
 
-### **7. Increase merge capacity**
+### **7. Increase merge capacity** {#increase-merge-capacity}
 
 ```xml
 <!-- In config.xml -->
@@ -387,7 +387,6 @@ For ClickHouse Cloud users, contact support to adjust these settings.
 
 8. **Scale appropriately**: If you legitimately need more than 500K rows/second, you need a distributed cluster, not setting adjustments.
 
-
 ## Understanding ClickHouse parts {#understanding-parts}
 
 **What is a "part"?**
@@ -399,7 +398,7 @@ A part is a directory on disk containing:
 
 **Example:**
 
-```
+```text
 /var/lib/clickhouse/data/default/my_table/
 ├── 202410_1_1_0/    <- Part 1
 ├── 202410_2_2_0/    <- Part 2
@@ -426,7 +425,7 @@ A part is a directory on disk containing:
 
 ## Debugging steps {#debugging-steps}
 
-### **1. Identify which table and partition**
+### **1. Identify which table and partition** {#identify-table-partition}
 
 ```sql
 -- Find tables with most parts
@@ -456,7 +455,7 @@ ORDER BY parts DESC
 LIMIT 20;
 ```
 
-### **2. Check recent insert patterns**
+### **2. Check recent insert patterns** {#check-insert-patterns}
 
 ```sql
 -- Analyze recent inserts
@@ -474,7 +473,7 @@ ORDER BY minute DESC
 LIMIT 20;
 ```
 
-### **3. Check merge activity**
+### **3. Check merge activity** {#check-merge-activity}
 
 ```sql
 -- Current merges
@@ -508,7 +507,7 @@ ORDER BY event_time DESC
 LIMIT 10;
 ```
 
-### **4. Identify blocking issues**
+### **4. Identify blocking issues** {#identify-blocking-issues}
 
 ```sql
 -- Check for parts that can't merge due to projection differences

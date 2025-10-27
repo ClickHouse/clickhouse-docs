@@ -51,7 +51,7 @@ The Join engine has specific limitations on which key types it supports, especia
 
 The error indicates which key type is unsupported:
 
-```
+```text
 Unsupported JOIN keys in StorageJoin. Type: 8
 Unsupported JOIN keys of type keys128 in StorageJoin
 Unsupported JOIN keys of type keys256 in StorageJoin
@@ -177,7 +177,7 @@ LEFT JOIN join_data ON
 
 **Scenario 1: Multiple join columns broke in 23.10-23.12**
 
-```
+```text
 Code: 121. DB::Exception: Unsupported JOIN keys in StorageJoin. Type: 8
 ```
 
@@ -206,7 +206,7 @@ LEFT JOIN cart_join ON
 
 **Scenario 2: UUID keys (keys128) with StorageJoin**
 
-```
+```text
 Code: 121. DB::Exception: Unsupported JOIN keys of type keys128 in StorageJoin
 ```
 
@@ -234,7 +234,7 @@ LEFT JOIN joint ON toString(main_table.id) = joint.id;
 
 **Scenario 3: Three or more join keys (keys256)**
 
-```
+```text
 Code: 121. DB::Exception: Unsupported JOIN keys of type keys256 in StorageJoin
 ```
 
@@ -277,7 +277,7 @@ LAYOUT(COMPLEX_KEY_HASHED());
 
 **Scenario 4: String + Date32 composite keys (version 25.6)**
 
-```
+```text
 Code: 121. DB::Exception: Unsupported JOIN keys of type hashed in StorageJoin
 ```
 
@@ -318,7 +318,7 @@ WHERE true;
 
 **Scenario 5: SELECT from StorageJoin with composite keys**
 
-```
+```text
 Code: 121. DB::Exception: Unsupported JOIN keys in StorageJoin. Type: 11
 ```
 
