@@ -10,7 +10,8 @@ description: 'ClickHouse error code - 042 NUMBER_OF_ARGUMENTS_DOESNT_MATCH'
 # Error 42: NUMBER_OF_ARGUMENTS_DOESNT_MATCH
 
 :::tip
-This error occurs when you call a ClickHouse function with the wrong number of arguments. The function expects a specific number of parameters, but you provided either too many or too few.
+This error occurs when you call a ClickHouse function with the wrong number of arguments.
+The function expects a specific number of parameters, but you provided either too many or too few.
 :::
 
 ## Most common causes {#most-common-causes}

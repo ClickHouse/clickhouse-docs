@@ -10,7 +10,7 @@ description: 'ClickHouse error code - 215 NOT_AN_AGGREGATE'
 # Error 215: NOT_AN_AGGREGATE
 
 :::tip
-This error occurs when a column in a SELECT statement with GROUP BY is not wrapped in an aggregate function and is not listed in the GROUP BY clause. Every column in the SELECT list must either be aggregated (e.g., using SUM, COUNT, MAX) or be part of the GROUP BY clause.
+This error occurs when a column in a `SELECT` statement with `GROUP BY` is not wrapped in an aggregate function and is not listed in the GROUP BY clause. Every column in the SELECT list must either be aggregated (e.g., using SUM, COUNT, MAX) or be part of the GROUP BY clause.
 :::
 
 ## Quick reference {#quick-reference}

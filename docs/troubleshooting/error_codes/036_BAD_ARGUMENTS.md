@@ -13,7 +13,7 @@ description: 'ClickHouse error code - 036 BAD_ARGUMENTS'
 This error occurs when a function or table function is called with an incorrect number of arguments or with arguments of incompatible types.
 It typically indicates that parameters provided to a function don't match what the function expects.
 :::
-> 
+
 ## Most common causes {#most-common-causes}
 
 1. **Wrong Number of Arguments**

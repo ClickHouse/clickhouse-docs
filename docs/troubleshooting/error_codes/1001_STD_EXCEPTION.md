@@ -11,8 +11,8 @@ description: 'ClickHouse error code - 1001 STD_EXCEPTION'
 
 :::tip
 The error message format is always: `std::exception. Code: 1001, type: [ExceptionType], e.what() = [actual error message]`
-
-The `type` field tells you which external library or system component failed. Focus your troubleshooting there, not on ClickHouse itself.
+The `type` field tells you which external library or system component failed.
+Focus your troubleshooting there, not on ClickHouse itself.
 :::
 
 ## What this error means {#what-this-error-means}
