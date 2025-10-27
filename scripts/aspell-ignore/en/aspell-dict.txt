@@ -726,6 +726,7 @@ Lyft
 MACNumToString
 MACStringToNum
 MACStringToOUI
+MBean
 MCPHost
 MEDIUMINT
 MEMTABLE
