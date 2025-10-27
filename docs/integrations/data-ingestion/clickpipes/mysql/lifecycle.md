@@ -4,6 +4,7 @@ description: 'Various pipe statuses and their meanings'
 slug: /integrations/clickpipes/mysql/lifecycle
 title: 'Lifecycle of a MySQL ClickPipe'
 doc_type: 'guide'
+keywords: ['clickpipes', 'mysql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 # Lifecycle of a MySQL ClickPipe {#lifecycle}

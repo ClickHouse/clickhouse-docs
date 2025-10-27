@@ -1,10 +1,11 @@
 ---
 title: 'Adding specific tables to a ClickPipe'
 description: 'Describes the steps needed to add specific tables to a ClickPipe.'
-sidebar_label: 'Add Table'
+sidebar_label: 'Add table'
 slug: /integrations/clickpipes/mongodb/add_table
 show_title: false
 doc_type: 'guide'
+keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 import Image from '@theme/IdealImage';

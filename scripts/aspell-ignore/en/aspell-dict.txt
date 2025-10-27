@@ -1,4 +1,4 @@
-personal_ws-1.1 en 3746
+personal_ws-1.1 en 3749
 AArch
 ACLs
 AICPA
@@ -726,6 +726,7 @@ Lyft
 MACNumToString
 MACStringToNum
 MACStringToOUI
+MBean
 MCPHost
 MEDIUMINT
 MEMTABLE
@@ -963,6 +964,7 @@ OperationalError
 OrDefault
 OrNull
 OrZero
+OutOfMemory
 OvercommitTracker
 OverflowMode
 OverflowModeGroupBy
@@ -2331,9 +2333,9 @@ haversine
 hdbc
 hdfs
 hdfsCluster
+heatmap
 heredoc
 heredocs
-heatmap
 hilbertDecode
 hilbertEncode
 hiveHash

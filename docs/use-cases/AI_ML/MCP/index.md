@@ -62,7 +62,9 @@ Below are some guides showing how to use the ClickHouse MCP Server.
 | [How to build an AI Agent with CopilotKit and the ClickHouse MCP Server](/use-cases/AI/MCP/ai-agent-libraries/copilotkit) | Learn how to build an agentic application using data stored in ClickHouse with ClickHouse MCP and CopilotKit |
 | [How to build an AI Agent with CrewAI and the ClickHouse MCP Server](/use-cases/AI/MCP/ai-agent-libraries/crewai) | Learn how build an AI Agent with CrewAI and the ClickHouse MCP Server |
 | [How to build an AI Agent with DSPy and the ClickHouse MCP Server](/use-cases/AI/MCP/ai-agent-libraries/DSPy) | Learn how to build an AI agent with DSPy and the ClickHouse MCP Server |
+| [How to build an AI Agent with mcp-agent and the ClickHouse MCP Server](/use-cases/AI/MCP/ai-agent-libraries/mcp-agent) | Learn how build an AI Agent with mcp-agent and the ClickHouse MCP Server |
 | [How to build an AI Agent with Microsoft Agent Framework and the ClickHouse MCP Server](/use-cases/AI/MCP/ai-agent-libraries/microsoft-agent-framework) | Learn how build an AI Agent with Microsoft Agent Framework and the ClickHouse MCP Server |
+| [How to build an AI Agent with Upsonic and the ClickHouse MCP Server](/use-cases/AI/MCP/ai-agent-libraries/upsonic) | Learn how build an AI Agent with Upsonic and the ClickHouse MCP Server |
 | [How to build an OpenAI agent using ClickHouse MCP Server.](/use-cases/AI/MCP/ai-agent-libraries/openai-agents) | Learn how to build an OpenAI agent that can interact with ClickHouse MCP Server. |
 | [Set Up ClickHouse MCP Server with AnythingLLM and ClickHouse Cloud](/use-cases/AI/MCP/anythingllm) | This guide explains how to set up AnythingLLM with a ClickHouse MCP server using Docker. |
 | [Set Up ClickHouse MCP Server with Claude Desktop](/use-cases/AI/MCP/claude-desktop) | This guide explains how to set up Claude Desktop with a ClickHouse MCP server. |

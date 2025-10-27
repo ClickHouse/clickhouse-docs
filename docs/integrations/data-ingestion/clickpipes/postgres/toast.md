@@ -3,6 +3,7 @@ title: 'Handling TOAST Columns'
 description: 'Learn how to handle TOAST columns when replicating data from PostgreSQL to ClickHouse.'
 slug: /integrations/clickpipes/postgres/toast
 doc_type: 'guide'
+keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 When replicating data from PostgreSQL to ClickHouse, it's important to understand the limitations and special considerations for TOAST (The Oversized-Attribute Storage Technique) columns. This guide will help you identify and properly handle TOAST columns in your replication process.

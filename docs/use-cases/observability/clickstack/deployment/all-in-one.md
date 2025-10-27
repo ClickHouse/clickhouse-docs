@@ -6,6 +6,7 @@ pagination_next: null
 sidebar_position: 0
 description: 'Deploying ClickStack with All In One - The ClickHouse Observability Stack'
 doc_type: 'guide'
+keywords: ['ClickStack', 'observability', 'all-in-one', 'deployment']
 ---
 
 import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';

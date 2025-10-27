@@ -4,6 +4,7 @@ slug: /use-cases/time-series
 title: 'Time-Series'
 pagination_prev: null
 pagination_next: null
+keywords: ['time-series', 'time-based data', 'metrics', 'sensor data', 'temporal analysis', 'trend analysis']
 doc_type: 'guide'
 ---
 

@@ -4,6 +4,7 @@ slug: /cloud/security/setting-ip-filters
 title: 'Setting IP filters'
 description: 'This page explains how to set IP filters in ClickHouse Cloud to control access to ClickHouse services.'
 doc_type: 'guide'
+keywords: ['IP filters', 'IP access list']
 ---
 
 import Image from '@theme/IdealImage';

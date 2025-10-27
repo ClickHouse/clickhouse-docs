@@ -11,34 +11,6 @@ doc_type: 'guide'
 import postgres_inserts from '@site/static/images/guides/postgres-inserts.png';
 import Image from '@theme/IdealImage';
 
-## Basic example {#basic-example}
-
-You can use the familiar `INSERT INTO TABLE` command with ClickHouse. Let's insert some data into the table that we created in the start guide ["Creating Tables in ClickHouse"](./creating-tables).
-
-```sql
-INSERT INTO helloworld.my_first_table (user_id, message, timestamp, metric) VALUES
-    (101, 'Hello, ClickHouse!',                                 now(),       -1.0    ),
-    (102, 'Insert a lot of rows per batch',                     yesterday(), 1.41421 ),
-    (102, 'Sort your data based on your commonly-used queries', today(),     2.718   ),
-    (101, 'Granules are the smallest chunks of data read',      now() + 5,   3.14159 )
-```
-
-To verify that worked, we'll run the following `SELECT` query:
-
-```sql
-SELECT * FROM helloworld.my_first_table
-```
-
-Which returns:
-
-```response
-user_id message                                             timestamp           metric
-101         Hello, ClickHouse!                                  2024-11-13 20:01:22     -1
-101         Granules are the smallest chunks of data read           2024-11-13 20:01:27 3.14159
-102         Insert a lot of rows per batch                          2024-11-12 00:00:00 1.41421
-102         Sort your data based on your commonly-used queries  2024-11-13 00:00:00     2.718
-```
-
 ## Inserting into ClickHouse vs. OLTP databases {#inserting-into-clickhouse-vs-oltp-databases}
 
 As an OLAP (Online Analytical Processing) database, ClickHouse is optimized for high performance and scalability, allowing potentially millions of rows to be inserted per second.
@@ -143,16 +115,149 @@ The native protocol does allow query progress to be easily tracked.
 
 See [HTTP Interface](/interfaces/http) for further details.
 
+## Basic example {#basic-example}
+
+You can use the familiar `INSERT INTO TABLE` command with ClickHouse. Let's insert some data into the table that we created in the start guide ["Creating Tables in ClickHouse"](./creating-tables).
+
+```sql
+INSERT INTO helloworld.my_first_table (user_id, message, timestamp, metric) VALUES
+    (101, 'Hello, ClickHouse!',                                 now(),       -1.0    ),
+    (102, 'Insert a lot of rows per batch',                     yesterday(), 1.41421 ),
+    (102, 'Sort your data based on your commonly-used queries', today(),     2.718   ),
+    (101, 'Granules are the smallest chunks of data read',      now() + 5,   3.14159 )
+```
+
+To verify that worked, we'll run the following `SELECT` query:
+
+```sql
+SELECT * FROM helloworld.my_first_table
+```
+
+Which returns:
+
+```response
+user_id message                                             timestamp           metric
+101         Hello, ClickHouse!                                  2024-11-13 20:01:22     -1
+101         Granules are the smallest chunks of data read           2024-11-13 20:01:27 3.14159
+102         Insert a lot of rows per batch                          2024-11-12 00:00:00 1.41421
+102         Sort your data based on your commonly-used queries  2024-11-13 00:00:00     2.718
+```
+
 ## Loading data from Postgres {#loading-data-from-postgres}
 
 For loading data from Postgres, users can use:
 
-- `PeerDB by ClickHouse`, an ETL tool specifically designed for PostgreSQL database replication. This is available in both:
-  - ClickHouse Cloud - available through our [new connector](/integrations/clickpipes/postgres) in ClickPipes, our managed ingestion service.
-  - Self-managed - via the [open-source project](https://github.com/PeerDB-io/peerdb).
+- `ClickPipes`, an ETL tool specifically designed for PostgreSQL database replication. This is available in both:
+  - ClickHouse Cloud - available through our [managed ingestion service](/integrations/clickpipes/postgres) in ClickPipes.
+  - Self-managed - via the [PeerDB open-source project](https://github.com/PeerDB-io/peerdb).
 - The [PostgreSQL table engine](/integrations/postgresql#using-the-postgresql-table-engine) to read data directly as shown in previous examples. Typically appropriate if batch replication based on a known watermark, e.g., timestamp, is sufficient or if it's a one-off migration. This approach can scale to 10's of millions of rows. Users looking to migrate larger datasets should consider multiple requests, each dealing with a chunk of the data. Staging tables can be used for each chunk prior to its partitions being moved to a final table. This allows failed requests to be retried. For further details on this bulk-loading strategy, see here.
 - Data can be exported from PostgreSQL in CSV format. This can then be inserted into ClickHouse from either local files or via object storage using table functions.
 
 :::note Need help inserting large datasets?
 If you need help inserting large datasets or encounter any errors when importing data into ClickHouse Cloud, please contact us at support@clickhouse.com and we can assist.
 :::
+
+## Inserting data from the command line {#inserting-data-from-command-line}
+
+**Prerequisites**
+- You have [installed](/install) ClickHouse
+- `clickhouse-server` is running
+- You have access to a terminal with `wget`, `zcat` and `curl`
+
+In this example you'll see how to insert a CSV file into ClickHouse from the command line using clickhouse-client in batch mode. For more information and examples of inserting data via command line using clickhouse-client in batch mode, see ["Batch mode"](/interfaces/cli#batch-mode).
+
+We'll be using the [Hacker News dataset](/getting-started/example-datasets/hacker-news) for this example, which contains 28 million rows of Hacker News data.
+
+<VerticalStepper headerLevel="h3">
+    
+### Download the CSV {#download-csv}
+
+Run the following command to download a CSV version of the dataset from our public S3 bucket:
+
+```bash
+wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz
+```
+
+At 4.6GB, and 28m rows, this compressed file should take 5-10 minutes to download.
+
+### Create the table {#create-table}
+
+With `clickhouse-server` running, you can create an empty table with the following schema directly from the command line using `clickhouse-client` in batch mode:
+
+```bash
+clickhouse-client <<'_EOF'
+CREATE TABLE hackernews(
+    `id` UInt32,
+    `deleted` UInt8,
+    `type` Enum('story' = 1, 'comment' = 2, 'poll' = 3, 'pollopt' = 4, 'job' = 5),
+    `by` LowCardinality(String),
+    `time` DateTime,
+    `text` String,
+    `dead` UInt8,
+    `parent` UInt32,
+    `poll` UInt32,
+    `kids` Array(UInt32),
+    `url` String,
+    `score` Int32,
+    `title` String,
+    `parts` Array(UInt32),
+    `descendants` Int32
+)
+ENGINE = MergeTree
+ORDER BY id
+_EOF
+```
+
+If there are no errors, then the table has been successfully created. In the command above single quotes are used around the heredoc delimiter (`_EOF`) to prevent any interpolation. Without single quotes it would be necessary to escape the backticks around the column names. 
+
+### Insert the data from the command line {#insert-data-via-cmd}
+
+Next run the command below to insert the data from the file you downloaded earlier into your table:
+
+```bash
+zcat < hacknernews.csv.gz | ./clickhouse client --query "INSERT INTO hackernews FORMAT CSV"
+```
+
+As our data is compressed, we need to first decompress the file using a tool like `gzip`, `zcat`, or similar, and then pipe the decompressed data into `clickhouse-client` with the appropriate `INSERT` statement and `FORMAT`.
+
+:::note
+When inserting data with clickhouse-client in interactive mode, it is possible to let ClickHouse handle the decompression for you on insert using the `COMPRESSION` clause. ClickHouse can automatically detect the compression type from the file extension, but you can also specify it explicitly.
+
+The query to insert would then look like this: 
+
+```bash
+clickhouse-client --query "INSERT INTO hackernews FROM INFILE 'hacknernews.csv.gz' COMPRESSION 'gzip' FORMAT CSV;"
+```
+:::
+
+When the data has finished inserting you can run the following command to see the number of rows in the `hackernews` table:
+
+```bash
+clickhouse-client --query "SELECT formatReadableQuantity(count(*)) FROM hackernews"
+28.74 million
+```
+
+### inserting data via command line with curl {#insert-using-curl}
+
+In the previous steps you first downloaded the csv file to your local machine using `wget`. It is also possible to directly insert the data from the remote URL using a single command.
+
+Run the following command to truncate the data from the `hackernews` table so that you can insert it again without the intermediate step of downloading to your local machine:
+
+```bash
+clickhouse-client --query "TRUNCATE hackernews"
+```
+
+Now run:
+
+```bash
+curl https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz | zcat | clickhouse-client --query "INSERT INTO hackernews FORMAT CSV"
+```
+
+You can now run the same command as previously to verify that the data was inserted again:
+
+```bash
+clickhouse-client --query "SELECT formatReadableQuantity(count(*)) FROM hackernews"
+28.74 million
+```
+
+</VerticalStepper>

@@ -4,6 +4,7 @@ sidebar_label: 'Adopters'
 title: 'ClickHouse Adopters'
 sidebar_position: 60
 description: 'A list of companies using ClickHouse and their success stories'
+keywords: ['ClickHouse adopters', 'success stories', 'case studies', 'company testimonials', 'ClickHouse users']
 doc_type: 'reference'
 ---
 

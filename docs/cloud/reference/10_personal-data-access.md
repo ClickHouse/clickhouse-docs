@@ -4,6 +4,7 @@ slug: /cloud/manage/personal-data-access
 title: 'Personal data access'
 description: 'As a registered user, ClickHouse allows you to view and manage your personal account data, including contact information.'
 doc_type: 'reference'
+keywords: ['ClickHouse Cloud', 'personal data', 'DSAR', 'data subject access request', 'privacy policy', 'GDPR']
 ---
 
 import Image from '@theme/IdealImage';

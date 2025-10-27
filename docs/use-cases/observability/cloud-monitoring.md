@@ -1,8 +1,10 @@
 ---
 slug: /use-cases/observability/cloud-monitoring
-title: 'ClickHouse Cloud Monitoring'
+title: 'ClickHouse Cloud monitoring'
+sidebar_label: 'ClickHouse Cloud monitoring'
 description: 'ClickHouse Cloud Monitoring Guide'
 doc_type: 'guide'
+keywords: ['observability', 'monitoring', 'cloud', 'metrics', 'system health']
 ---
 
 import AdvancedDashboard from '@site/static/images/cloud/manage/monitoring/advanced_dashboard.png';

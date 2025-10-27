@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/data-lake/nessie-catalog
-sidebar_label: 'Nessie Catalog'
-title: 'Nessie Catalog'
+sidebar_label: 'Nessie catalog'
+title: 'Nessie catalog'
 pagination_prev: null
 pagination_next: null
 description: 'In this guide, we will walk you through the steps to query

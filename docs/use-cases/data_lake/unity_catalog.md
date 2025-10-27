@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/data-lake/unity-catalog
-sidebar_label: 'Unity Catalog'
-title: 'Unity Catalog'
+sidebar_label: 'Unity catalog'
+title: 'Unity catalog'
 pagination_prev: null
 pagination_next: null
 description: 'In this guide, we will walk you through the steps to query

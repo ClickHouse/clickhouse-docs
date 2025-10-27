@@ -135,6 +135,7 @@ body {
 
 [data-theme='dark'] .theme-admonition-tip.alert--success .alert-content  {
   background-color: rgba(255,255,255,0.1);
+
 }
 
 [data-theme='dark'] .DocSearch-Hit-source {
@@ -1142,14 +1143,36 @@ button.DocSearch {
   display: block;
 }
 
+.theme-admonition-warning {
+  .alert-icon {
+    background: var(--click-color-warning-text) !important;
+  }
+
+  .alert-content {
+    background: var(--click-color-warning-background) !important;
+
+    code {
+      background: #bfbfbf !important;
+    }
+  }
+}
+
+[data-theme='dark'] .theme-admonition-warning {
+    color: black !important;
+
+   a {
+     color: black !important;
+   }
+}
+
 .theme-admonition-tip {
   &.alert--warning {
     .alert-icon {
-      background: var(--click-color-warning-text);
+      background: var(--click-color-warning-text) !important;
     }
 
     .alert-content {
-      background: var(--click-color-warning-background);
+      background: var(--click-color-warning-background) !important;
     }
   }
 
