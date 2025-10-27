@@ -268,7 +268,7 @@ SELECT 1, [] :: Array(String);
 
 ## Related error codes {#related-error-codes}
 
-- [ILLEGAL_TYPE_OF_ARGUMENT (43)](/troubleshooting/errors/ILLEGAL_TYPE_OF_ARGUMENT) - Wrong type used for function argument
-- [CANNOT_CONVERT_TYPE (70)](/troubleshooting/errors/CANNOT_CONVERT_TYPE) - Type conversion not possible
-- [TYPE_MISMATCH (386)](/troubleshooting/errors/TYPE_MISMATCH) - Types don't match in operation
-- [UNKNOWN_IDENTIFIER (47)](/troubleshooting/errors/UNKNOWN_IDENTIFIER) - Column or identifier not found
+- [ILLEGAL_TYPE_OF_ARGUMENT (43)](/troubleshooting/error-codes/043_ILLEGAL_TYPE_OF_ARGUMENT) - Wrong type used for function argument
+- [CANNOT_CONVERT_TYPE (70)](/troubleshooting/error-codes/070_CANNOT_CONVERT_TYPE) - Type conversion not possible
+- [TYPE_MISMATCH (386)](/troubleshooting/error-codes/053_TYPE_MISMATCH) - Types don't match in operation
+- [UNKNOWN_IDENTIFIER (47)](/troubleshooting/error-codes/047_UNKNOWN_IDENTIFIER) - Column or identifier not found

@@ -190,7 +190,7 @@ SELECT * FROM table WHERE complex_condition;
 
 ## Related error codes {#related-error-codes}
 
-- [UNSUPPORTED_METHOD (1001)](/troubleshooting/errors/UNSUPPORTED_METHOD) - Method not supported in current context
-- [ILLEGAL_TYPE_OF_ARGUMENT (43)](/troubleshooting/errors/ILLEGAL_TYPE_OF_ARGUMENT) - Operation not supported for data type
-- [BAD_ARGUMENTS (36)](/troubleshooting/errors/BAD_ARGUMENTS) - Invalid arguments for function or operation
-- [TABLE_IS_READ_ONLY (242)](/troubleshooting/errors/TABLE_IS_READ_ONLY) - Cannot modify read-only tables
+- [UNSUPPORTED_METHOD (1001)](/troubleshooting/error-codes/001_UNSUPPORTED_METHOD) - Method not supported in current context
+- [ILLEGAL_TYPE_OF_ARGUMENT (43)](/troubleshooting/error-codes/043_ILLEGAL_TYPE_OF_ARGUMENT) - Operation not supported for data type
+- [BAD_ARGUMENTS (36)](/troubleshooting/error-codes/036_BAD_ARGUMENTS) - Invalid arguments for function or operation
+- [TABLE_IS_READ_ONLY (242)](/troubleshooting/error-codes/242_TABLE_IS_READ_ONLY) - Cannot modify read-only tables

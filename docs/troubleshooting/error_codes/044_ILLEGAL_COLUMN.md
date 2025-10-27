@@ -195,7 +195,7 @@ GROUP BY category;
 
 ## Related error codes {#related-error-codes}
 
-- [UNKNOWN_IDENTIFIER (47)](/troubleshooting/errors/UNKNOWN_IDENTIFIER) - Column or identifier not found
-- [NOT_AN_AGGREGATE (215)](/troubleshooting/errors/NOT_AN_AGGREGATE) - Non-aggregate function used where aggregate expected
-- [ILLEGAL_AGGREGATION (184)](/troubleshooting/errors/ILLEGAL_AGGREGATION) - Invalid aggregation usage
-- [AMBIGUOUS_COLUMN_NAME (352)](/troubleshooting/errors/AMBIGUOUS_COLUMN_NAME) - Column name exists in multiple tables
+- [UNKNOWN_IDENTIFIER (47)](/troubleshooting/error-codes/047_UNKNOWN_IDENTIFIER) - Column or identifier not found
+- [NOT_AN_AGGREGATE (215)](/troubleshooting/error-codes/215_NOT_AN_AGGREGATE) - Non-aggregate function used where aggregate expected
+- [ILLEGAL_AGGREGATION (184)](/troubleshooting/error-codes/184_ILLEGAL_AGGREGATION) - Invalid aggregation usage
+- [AMBIGUOUS_COLUMN_NAME (352)](/troubleshooting/error-codes/352_AMBIGUOUS_COLUMN_NAME) - Column name exists in multiple tables

@@ -62,7 +62,7 @@ SELECT (1, 'hello', 3.14).3;  -- Returns: 3.14
 
 ## Related error codes {#related-error-codes}
 
-- [INDEX_OF_POSITIONAL_ARGUMENT_IS_OUT_OF_RANGE (69)](/troubleshooting/errors/INDEX_OF_POSITIONAL_ARGUMENT_IS_OUT_OF_RANGE) - Tuple/array index exceeds bounds
-- [ILLEGAL_TYPE_OF_ARGUMENT (43)](/troubleshooting/errors/ILLEGAL_TYPE_OF_ARGUMENT) - Wrong type used for index
-- [SIZES_OF_ARRAYS_DONT_MATCH (190)](/troubleshooting/errors/SIZES_OF_ARRAYS_DONT_MATCH) - Array size mismatches
-- [ILLEGAL_INDEX (127)](/troubleshooting/errors/ILLEGAL_INDEX) - Invalid index usage
+- [INDEX_OF_POSITIONAL_ARGUMENT_IS_OUT_OF_RANGE (69)](/troubleshooting/error-codes/069_INDEX_OF_POSITIONAL_ARGUMENT_IS_OUT_OF_RANGE) - Tuple/array index exceeds bounds
+- [ILLEGAL_TYPE_OF_ARGUMENT (43)](/troubleshooting/error-codes/043_ILLEGAL_TYPE_OF_ARGUMENT) - Wrong type used for index
+- [SIZES_OF_ARRAYS_DONT_MATCH (190)](/troubleshooting/error-codes/190_SIZES_OF_ARRAYS_DONT_MATCH) - Array size mismatches
+- [ILLEGAL_INDEX (127)](/troubleshooting/error-codes/127_ILLEGAL_INDEX) - Invalid index usage

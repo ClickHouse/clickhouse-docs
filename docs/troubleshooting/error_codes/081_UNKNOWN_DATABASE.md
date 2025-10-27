@@ -320,7 +320,7 @@ SELECT * FROM correct_database.events;
 
 ## Related error codes {#related-error-codes}
 
-- [UNKNOWN_TABLE (60)](/troubleshooting/errors/UNKNOWN_TABLE) - Table doesn't exist in database
-- [ACCESS_DENIED (497)](/troubleshooting/errors/ACCESS_DENIED) - Insufficient permissions to access resource
-- [DATABASE_ALREADY_EXISTS (82)](/troubleshooting/errors/DATABASE_ALREADY_EXISTS) - Attempting to create existing database
-- [UNKNOWN_IDENTIFIER (47)](/troubleshooting/errors/UNKNOWN_IDENTIFIER) - Column or identifier not found
+- [UNKNOWN_TABLE (60)](/troubleshooting/error-codes/060_UNKNOWN_TABLE) - Table doesn't exist in database
+- [ACCESS_DENIED (497)](/troubleshooting/error-codes/497_ACCESS_DENIED) - Insufficient permissions to access resource
+- [DATABASE_ALREADY_EXISTS (82)](/troubleshooting/error-codes/082_DATABASE_ALREADY_EXISTS) - Attempting to create existing database
+- [UNKNOWN_IDENTIFIER (47)](/troubleshooting/error-codes/047_UNKNOWN_IDENTIFIER) - Column or identifier not found
