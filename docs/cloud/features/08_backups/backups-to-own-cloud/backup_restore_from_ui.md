@@ -62,7 +62,7 @@ AWS uses role based authentication, so create an IAM role that the ClickHouse Cl
         "AWS":  "arn:aws:iam::463754717262:role/CH-S3-bordeaux-ar-90-ue2-29-Role"
       },
       "Action": "sts:AssumeRole"
-    },
+    }
   ]
 }
 ```
