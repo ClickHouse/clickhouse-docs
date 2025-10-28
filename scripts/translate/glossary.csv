@@ -47,6 +47,7 @@ distributed joins,распределенные соединения,distributed 
 distributed processing,распределенная обработка,distributed processing,distributed processing,procesamiento distribuido
 distributed queries,распределенные запросы,distributed queries,distributed queries,consultas distribuidas
 distributed table,распределенная таблица,分散テーブル,分布式表,tabla distribuida
+engine,движок,engine,engine,motor
 ETL processes,процессы ETL,ETL processes,ETL processes,procesos ETL
 experimental features,экспериментальные функции,experimental features,experimental features,características experimentales
 external dictionaries,внешние словари,external dictionaries,external dictionaries,diccionarios externos

@@ -1,4 +1,4 @@
-personal_ws-1.1 en 3749
+personal_ws-1.1 en 3812
 AArch
 ACLs
 AICPA
@@ -15,6 +15,7 @@ ARMv
 ASLR
 ASOF
 ASan
+ATTR
 AWND
 AWST
 Accepter
@@ -23,6 +24,7 @@ ActionsMenu
 ActiveRecord
 AddressSanitizer
 AggregateFunction
+AggregateFunctions
 AggregatedFunction
 Aggregatefunction
 AggregatingMergeTree
@@ -73,7 +75,9 @@ BIGSERIAL
 BORO
 BSON
 BSONEachRow
+BUZZHOUSE
 BYOC
+BZIP
 BackgroundBufferFlushSchedulePool
 BackgroundBufferFlushSchedulePoolSize
 BackgroundBufferFlushSchedulePoolTask
@@ -249,6 +253,7 @@ ContextLockWait
 Contrib
 CopilotKit
 Copilotkit
+CoreDNS
 CountMin
 Covid
 Craigslist
@@ -268,6 +273,7 @@ CustomSeparatedIgnoreSpacesWithNamesAndTypes
 CustomSeparatedWithNames
 CustomSeparatedWithNamesAndTypes
 Cython
+DATALAKE
 DBAPI
 DBAs
 DBMSs
@@ -282,6 +288,8 @@ DECRYPT
 DELETEs
 DESC
 DIEs
+DLOPEN
+DLSYM
 DOGEFI
 DSAR
 DSPy
@@ -339,7 +347,9 @@ DestroyAggregatesThreadsActive
 DictCacheRequests
 DigiCert
 DigitalOcean
+DirectQuery
 DiskAvailable
+DiskEncrypted
 DiskObjectStorage
 DiskObjectStorageAsyncThreads
 DiskObjectStorageAsyncThreadsActive
@@ -366,6 +376,7 @@ ECMA
 EDOT
 EMQX
 ENIs
+EPOLL
 ETag
 EachRow
 Easypanel
@@ -394,11 +405,14 @@ ExecutablePool
 ExperimentalBadge
 ExtType
 ExternalDistributed
+FCNTL
 FFFD
 FFFFFFFF
+FILECACHE
 FIPS
 FOSDEM
 FQDN
+FSTAT
 Fabi
 Failover
 FarmHash
@@ -433,6 +447,9 @@ FreeBSD
 Fuzzer
 Fuzzers
 GDPR
+GETPWUID
+GETTIME
+GETTIMEOFDAY
 GHCN
 GTID
 GTIDs
@@ -474,9 +491,11 @@ Greenwald
 Gunicorn
 Guram
 HANA
+HAProxy
 HDDs
 HHMM
 HIPAA
+HIVEMETASTORE
 HMAC
 HNSW
 HSTS
@@ -516,6 +535,7 @@ IDNA
 IMDS
 IMDb
 INFILE
+INIT
 INOUT
 INSERTed
 INSERTs
@@ -523,6 +543,7 @@ INVOKER
 IOPS
 IOPrefetchThreads
 IOPrefetchThreadsActive
+IOSETUP
 IOThreads
 IOThreadsActive
 IOUringInFlightEvents
@@ -533,6 +554,7 @@ IPTrie
 IProcessor
 IPv
 IPython
+ISTREAM
 ITION
 IcebergCluster
 Identifiant
@@ -667,6 +689,7 @@ Kusto
 Kyuubi
 LDAP
 LGPL
+LIBSSH
 LIMITs
 LINEITEM
 LLDB
@@ -736,8 +759,10 @@ MMappedAllocBytes
 MMappedAllocs
 MMappedFileBytes
 MMappedFiles
+MPROTECT
 MQTT
 MQTTX
+MREMAP
 MSSQL
 MSan
 MTTD
@@ -829,6 +854,7 @@ NATS
 NCHAR
 NDJSON
 NEKUDOTAYIM
+NETLINK
 NEWDATE
 NEWDECIMAL
 NFKC
@@ -836,7 +862,9 @@ NFKD
 NIST
 NLBs
 NOAA
+NONENCRYPTED
 NULLIF
+NULLs
 NVME
 NVMe
 NYPD
@@ -885,8 +913,10 @@ OFNS
 OIDC
 OLAP
 OLTP
+OOMKilled
 OOMs
 ORCCompression
+ORMs
 OSContextSwitches
 OSGuestNiceTime
 OSGuestNiceTimeCPU
@@ -927,6 +957,7 @@ OSStealTimeNormalized
 OSSystemTime
 OSSystemTimeCPU
 OSSystemTimeNormalized
+OSTREAM
 OSThreadsRunnable
 OSThreadsTotal
 OSUptime
@@ -979,6 +1010,7 @@ PROCESSLIST
 PROXYv
 PRQL
 PSUN
+PTHREAD
 Packetbeat
 PagerDuty
 ParallelFormattingOutputFormatThreads
@@ -1091,6 +1123,7 @@ RDMS
 REPL
 RHEL
 RIPEMD
+RMDIR
 ROLLUP
 RWLock
 RWLockActiveReaders
@@ -1174,6 +1207,8 @@ SDKs
 SELECTs
 SERIALIZABLE
 SIEM
+SIGQUEUE
+SIGSET
 SIGTERM
 SIMD
 SLAs
@@ -1195,6 +1230,8 @@ SSDs
 SSLManager
 SSRF
 SSSE
+STATVFS
+SYSCONF
 SaaS
 Sackmann's
 SageMaker
@@ -1215,6 +1252,8 @@ Sematext
 SendExternalTables
 SendScalars
 SerDe
+SerializationLowCardinality
+SerializationObject
 Serverless
 ServiceNow
 ServiceNow's
@@ -1254,6 +1293,8 @@ StartupSystemTables
 StartupSystemTablesThreads
 StartupSystemTablesThreadsActive
 Stateful
+StatefulSet
+StatefulSets
 StorageBufferBytes
 StorageBufferRows
 StorageDistributed
@@ -1262,6 +1303,7 @@ StorageDistributedThreadsActive
 StorageHive
 StorageHiveThreads
 StorageHiveThreadsActive
+StorageJoin
 StorageODBC
 StorageS
 StreamingResult
@@ -1389,8 +1431,10 @@ UIntN
 ULID
 ULIDStringToDateTime
 UMTS
+UNCOMPRESS
 UNDROP
 UNIONs
+UNLINK
 UPDATEs
 URIs
 URL
@@ -1415,6 +1459,7 @@ Unbatched
 UncompressedCacheBytes
 UncompressedCacheCells
 UnidirectionalEdgeIsValid
+UnionStep
 UniqThetaSketch
 Updatable
 Uppercased
@@ -1446,6 +1491,7 @@ VideoContainer
 ViewAllLink
 VirtualBox
 Vose
+WAITPID
 WALs
 WSFG
 WarpStream
@@ -1477,7 +1523,9 @@ YYYYMMDDToDate
 YYYYMMDDhhmmssToDateTime
 Yandex
 Yasm
+ZCONNECTIONLOSS
 ZCurve
+ZSESSIONEXPIRED
 ZSTDQAT
 Zabbix
 Zipkin
@@ -2016,6 +2064,7 @@ deployable
 dequeued
 dequeues
 dereference
+deregistration
 deserialization
 deserializations
 deserialize
@@ -2103,7 +2152,9 @@ enqueued
 enum
 enum's
 enums
+equi
 erfc
+errno
 errorCodeToName
 errored
 etag
@@ -2479,6 +2530,7 @@ konsole
 kostik
 kostikConsistentHash
 ksqlDB
+kube
 kurtPop
 kurtSamp
 kurtosis
@@ -2921,6 +2973,7 @@ preprocessing
 preprocessor
 presentational
 prestable
+prestop
 prettycompact
 prettycompactmonoblock
 prettycompactnoescapes
@@ -3005,6 +3058,7 @@ queryID
 queryString
 queryStringAndFragment
 queryable
+queueing
 quickstart
 qwen
 rabbitmq
@@ -3055,6 +3109,8 @@ reddit
 redis
 redisstreams
 refcounter
+refetch
+refetched
 refreshable
 regexpExtract
 regexpQuoteMeta
@@ -3159,6 +3215,7 @@ rw
 safelist
 sasl
 satisfiable
+savepoints
 scala
 scalable
 sccache
@@ -3170,6 +3227,7 @@ sequenceCount
 sequenceMatch
 sequenceMatchEvents
 sequenceNextNode
+serializeValueIntoMemory
 seriesDecomposeSTL
 seriesOutliersDetectTukey
 seriesPeriodDetectFFT
@@ -3586,6 +3644,7 @@ typename
 ubuntu
 uint
 ulid
+ulimits
 unacked
 unary
 unassign
@@ -3601,6 +3660,7 @@ unencoded
 unencrypted
 unescaped
 unescaping
+ungrouped
 unhex
 unicode
 unidimensional
@@ -3665,10 +3725,12 @@ uuidv
 uvicorn
 vCPU
 vCPUs
+validator
 varPop
 varPopStable
 varSamp
 varSampStable
+varargs
 variadic
 variantElement
 variantType
