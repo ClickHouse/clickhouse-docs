@@ -115,7 +115,7 @@ Body:           151.233.185.144 - - [22/Jan/2019:19:08:54 +0330] "GET /image/105
 LogAttributes: {'log.file.name':'access-unstructured.log'}
 ```
 
-A similar query for the unstructured logs requires the use of regular expressions via the [`extractAllGroupsVertical` function](/sql-reference/functions/string-search-functions#extractAllGroupsVertical).
+A similar query for the unstructured logs requires the use of regular expressions via the `extractAllGroupsVertical` function.
 
 ```sql
 SELECT
