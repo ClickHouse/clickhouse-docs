@@ -1634,7 +1634,7 @@ const sidebars = {
         },
         {
           type: "category",
-          label: "Integration guides",
+          label: "Integration quick start",
           link: { type: "doc", id: "use-cases/observability/clickstack/integration-examples/index" },
           collapsed: true,
           collapsible: true,
