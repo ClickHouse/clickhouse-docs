@@ -32,11 +32,8 @@ of migrating a database or full service in opensource ClickHouse to Cloud via an
 
 **Prerequisites**
 - You have Docker installed
-- AWS
-  - You have an [S3 bucket and IAM user](/integrations/s3/creating-iam-user-and-s3-bucket)
-- ClickHouse Cloud
-  - You are able to create a new service
-  - You have created an access role following ["Accessing S3 data securely"](/cloud/data-sources/secure-s3)
+- You have an [S3 bucket and IAM user](/integrations/s3/creating-iam-user-and-s3-bucket)
+- You are able to create a new service ClickHouse Cloud service
 
 To make the steps in this guide easy to follow along with and reproducible, we'll use one of the docker compose recipes
 for a 2 shards 2 replicas ClickHouse cluster.
