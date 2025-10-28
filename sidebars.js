@@ -1635,6 +1635,7 @@ const sidebars = {
         {
           type: "category",
           label: "Integration guides",
+          link: { type: "doc", id: "use-cases/observability/clickstack/integration-examples/index" },
           collapsed: true,
           collapsible: true,
           items: [
