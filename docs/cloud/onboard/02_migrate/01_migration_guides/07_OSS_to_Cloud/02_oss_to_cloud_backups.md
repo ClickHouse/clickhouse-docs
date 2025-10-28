@@ -212,8 +212,8 @@ Your updated policy for the S3 bucket will look something like this:
             "Principal": {
                 "AWS": [
 #highlight-start                  
-                    "arn:aws:iam::785082772763:role/ClickHouseAccess-001",
-                    "arn:aws:iam::785082772763:user/docs-s3-user"
+                    "arn:aws:iam::123456789123:role/ClickHouseAccess-001",
+                    "arn:aws:iam::123456789123:user/docs-s3-user"
 #highlight-end                            
                 ]
             },
