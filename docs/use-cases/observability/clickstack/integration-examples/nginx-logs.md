@@ -291,7 +291,7 @@ To help you get started monitoring nginx with ClickStack, we provide essential v
 
 <Image img={finish_import} alt="Finish Import"/>
 
-## The dashboard will be created with all visualizations pre-configured.
+## The dashboard will be created with all visualizations pre-configured. {#created-dashboard}
 
 <Image img={example_dashboard} alt="Example Dashboard"/>
 
@@ -345,4 +345,3 @@ If you want to explore further, here are some next steps to experiment with your
 
 - Set up alerts for critical metrics (error rates, latency thresholds)
 - Create additional dashboards for specific use cases (API monitoring, security events)
-

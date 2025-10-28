@@ -14,7 +14,6 @@ import import_dashboard from '@site/static/images/clickstack/import-dashboard.pn
 import finish_import from '@site/static/images/clickstack/finish-trace-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/example-trace-dashboard.png';
 
-
 # Monitoring Nginx Traces with ClickStack {#nginx-traces-clickstack}
 
 ::::note[TL;DR]
@@ -44,7 +43,7 @@ This section covers adding distributed tracing to your existing nginx installati
 
 The easiest way to add tracing to nginx is using the official nginx image with OpenTelemetry support built-in.
 
-### Using the nginx:otel image
+### Using the nginx:otel image {#using-otel-image}
 
 Replace your current nginx image with the OpenTelemetry-enabled version:
 
@@ -131,7 +130,7 @@ Replace `<clickstack-host>` with your ClickStack instance hostname or IP address
 - Change **otel_service_name** to match your environment for easier identification in HyperDX
 ::::
 
-### Understanding the Configuration
+### Understanding the Configuration {#understanding-configuration}
 
 **What gets traced:**
 Each request to nginx creates a trace span showing:
@@ -260,7 +259,7 @@ To help you get started monitoring traces with ClickStack, we provide essential 
 
 <VerticalStepper>
 
-## <a href={useBaseUrl('/examples/example-traces.json')} download="example-traces.json">Download</a> the dashboard configuration.
+## <a href={useBaseUrl('/examples/example-traces.json')} download="example-traces.json">Download</a> the dashboard configuration. {#download}
 
 ## Import Pre-built Dashboard {#import-dashboard}
 1. Open HyperDX and navigate to the Dashboards section.
@@ -272,7 +271,7 @@ To help you get started monitoring traces with ClickStack, we provide essential 
 
 <Image img={finish_import} alt="Finish Import"/>
 
-## The dashboard will be created with all visualizations pre-configured.
+## The dashboard will be created with all visualizations pre-configured. {#created-dashboard}
 
 <Image img={example_dashboard} alt="Example Dashboard"/>
 
