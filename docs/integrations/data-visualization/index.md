@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Overview'
 sidebar_position: 1
-keywords: ['ClickHouse', 'connect', 'Luzmo', 'Explo', 'Fabi.ai', 'Tableau', 'Grafana', 'Metabase', 'Mitzu', 'superset', 'Deepnote', 'Draxlr', 'RocketBI', 'Omni', 'bi', 'visualization', 'tool']
+keywords: ['ClickHouse', 'connect', 'Luzmo', 'Explo', 'Fabi.ai', 'Tableau', 'Grafana', 'Metabase', 'Mitzu', 'superset', 'Deepnote', 'Draxlr', 'RocketBI', 'Omni', 'bi', 'visualization', 'tool', 'lightdash']
 title: 'Visualizing Data in ClickHouse'
 slug: /integrations/data-visualization
 description: 'Learn about Visualizing Data in ClickHouse'
@@ -35,6 +35,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 - [Explo](./community_integrations/explo-and-clickhouse.md)
 - [Fabi.ai](./community_integrations/fabi-and-clickhouse.md)
 - [Grafana](./grafana/index.md)
+- [Lightdash] (./lightdash-and-clickhouse.md)
 - [Looker](./looker-and-clickhouse.md)
 - [Luzmo](./community_integrations/luzmo-and-clickhouse.md)
 - [Metabase](./metabase-and-clickhouse.md)
@@ -73,3 +74,5 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 | [Tableau Desktop](./tableau/tableau-and-clickhouse.md)       | ClickHouse official connector | ✅      | ✅          |                                                                                                               |
 | [Tableau Online](./tableau/tableau-online-and-clickhouse.md) | MySQL interface               | ✅      | ✅          | Works with some limitations, see [the documentation](./tableau/tableau-online-and-clickhouse.md) for more details            |
 | [Zing Data](./community_integrations/zingdata-and-clickhouse.md)            | Native connector              | ✅      | ✅          |                                                                                                                                         |
+| [Lightdash](./lightdash-and-clickhouse.md)      | Native connector | ✅      | ✅          | 
+            |
