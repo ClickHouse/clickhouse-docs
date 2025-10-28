@@ -6,6 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Visualizations and Dashboards with ClickStack'
 doc_type: 'guide'
+keywords: ['clickstack', 'dashboards', 'visualization', 'monitoring', 'observability']
 ---
 
 import Image from '@theme/IdealImage';

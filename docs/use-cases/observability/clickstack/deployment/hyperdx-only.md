@@ -6,6 +6,7 @@ pagination_next: null
 sidebar_position: 4
 description: 'Deploying HyperDX only'
 doc_type: 'guide'
+keywords: ['HyperDX standalone deployment', 'HyperDX ClickHouse integration', 'deploy HyperDX only', 'HyperDX Docker installation', 'ClickHouse visualization tool']
 ---
 
 import Image from '@theme/IdealImage';

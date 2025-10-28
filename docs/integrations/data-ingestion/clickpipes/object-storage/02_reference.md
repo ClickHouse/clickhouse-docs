@@ -5,6 +5,10 @@ slug: /integrations/clickpipes/object-storage/reference
 sidebar_position: 1
 title: 'Reference'
 doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
+keywords: ['clickpipes', 'object storage', 's3', 'data ingestion', 'batch loading']
 ---
 
 import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';

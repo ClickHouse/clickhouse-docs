@@ -5,6 +5,7 @@ title: 'Audit logging'
 hide_title: true
 description: 'Table of contents page for the ClickHouse Cloud audit logging section'
 doc_type: 'landing-page'
+keywords: ['audit logging', 'compliance', 'security', 'logging', 'monitoring']
 ---
 
 # Audit logging

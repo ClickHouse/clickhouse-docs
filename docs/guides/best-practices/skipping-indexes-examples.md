@@ -5,6 +5,7 @@ sidebar_position: 2
 description: 'Consolidated Skip Index Examples'
 title: 'Data Skipping Index Examples'
 doc_type: 'guide'
+keywords: ['skipping indexes', 'data skipping', 'performance', 'indexing', 'best practices']
 ---
 
 # Data skipping index examples {#data-skipping-index-examples}

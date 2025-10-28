@@ -1159,10 +1159,10 @@ button.DocSearch {
 
 [data-theme='dark'] .theme-admonition-warning {
     color: black !important;
-}
 
-[data-theme='dark'] .theme-admonition-warning .alert a {
-    color: black !important;
+   a {
+     color: black !important;
+   }
 }
 
 .theme-admonition-tip {

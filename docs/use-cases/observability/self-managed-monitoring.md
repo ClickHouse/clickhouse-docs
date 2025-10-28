@@ -4,6 +4,7 @@ title: 'Self-managed monitoring'
 sidebar_label: 'Self-managed monitoring'
 description: 'Self-Managed Monitoring Guide'
 doc_type: 'guide'
+keywords: ['observability', 'monitoring', 'self-managed', 'metrics', 'system health']
 ---
 
 import ObservabilityIntegrations from '@site/docs/_snippets/_observability_integration_options.md';

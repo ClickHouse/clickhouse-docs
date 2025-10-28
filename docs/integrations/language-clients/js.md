@@ -6,6 +6,10 @@ slug: /integrations/javascript
 description: 'The official JS client for connecting to ClickHouse.'
 title: 'ClickHouse JS'
 doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'language_client'
+  - website: 'https://github.com/ClickHouse/clickhouse-js'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
@@ -288,7 +292,7 @@ You should start consuming the `ResultSet` as soon as possible, as it holds the 
 
 Alternatively, if it's too large to fit into memory at once, you can call the `stream` method, and process the data in the streaming mode. Each of the response chunks will be transformed into a relatively small arrays of rows instead (the size of this array depends on the size of a particular chunk the client receives from the server, as it may vary, and the size of an individual row), one chunk at a time. 
 
-Please refer to the list of the [supported data formats](./js.md#supported-data-formats) to determine what the best format is for streaming in your case. For example, if you want to stream JSON objects, you could choose [JSONEachRow](/sql-reference/formats#jsoneachrow), and each row will be parsed as a JS object, or, perhaps, a more compact [JSONCompactColumns](/sql-reference/formats#jsoncompactcolumns) format that will result in each row being a compact array of values. See also: [streaming files](./js.md#streaming-files-nodejs-only).
+Please refer to the list of the [supported data formats](./js.md#supported-data-formats) to determine what the best format is for streaming in your case. For example, if you want to stream JSON objects, you could choose [JSONEachRow](/interfaces/formats/JSONEachRow), and each row will be parsed as a JS object, or, perhaps, a more compact [JSONCompactColumns](/interfaces/formats/JSONCompactColumns) format that will result in each row being a compact array of values. See also: [streaming files](./js.md#streaming-files-nodejs-only).
 
 :::important
 If the `ResultSet` or its stream is not fully consumed, it will be destroyed after the `request_timeout` period of inactivity.
@@ -774,11 +778,11 @@ If you specify `format` as one from the JSON family of formats (`JSONEachRow`, `
 Data provided in the "raw" text formats (`CSV`, `TabSeparated` and `CustomSeparated` families) are sent over the wire without additional transformations.
 
 :::tip
-There might be confusion between JSON as a general format and [ClickHouse JSON format](/sql-reference/formats#json). 
+There might be confusion between JSON as a general format and [ClickHouse JSON format](/interfaces/formats/JSON). 
 
-The client supports streaming JSON objects with formats such as [JSONEachRow](/sql-reference/formats#jsoneachrow) (see the table overview for other streaming-friendly formats; see also the `select_streaming_` [examples in the client repository](https://github.com/ClickHouse/clickhouse-js/tree/main/examples/node)). 
+The client supports streaming JSON objects with formats such as [JSONEachRow](/interfaces/formats/JSONEachRow) (see the table overview for other streaming-friendly formats; see also the `select_streaming_` [examples in the client repository](https://github.com/ClickHouse/clickhouse-js/tree/main/examples/node)). 
 
-It's only that formats like [ClickHouse JSON](/sql-reference/formats#json) and a few others are represented as a single object in the response and cannot be streamed by the client.
+It's only that formats like [ClickHouse JSON](/interfaces/formats/JSON) and a few others are represented as a single object in the response and cannot be streamed by the client.
 :::
 
 | Format                                     | Input (array) | Input (object) | Input/Output (Stream) | Output (JSON) | Output (text)  |

@@ -4,6 +4,9 @@ description: 'Seamlessly connect your object storage to ClickHouse Cloud.'
 slug: /integrations/clickpipes/object-storage
 title: 'Creating your first object-storage ClickPipe'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';

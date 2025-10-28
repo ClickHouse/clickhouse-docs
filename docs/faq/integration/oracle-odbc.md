@@ -5,6 +5,7 @@ toc_hidden: true
 toc_priority: 20
 description: 'This page provides guidance on what to do if you have a problem with encodings when using Oracle via ODBC'
 doc_type: 'guide'
+keywords: ['oracle', 'odbc', 'encoding', 'integration', 'external dictionary']
 ---
 
 # What if I have a problem with encodings when using Oracle via ODBC? {#oracle-odbc-encodings}

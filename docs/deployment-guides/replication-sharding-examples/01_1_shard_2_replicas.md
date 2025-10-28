@@ -5,6 +5,7 @@ sidebar_position: 10
 title: 'Replicating data'
 description: 'Page describing an example architecture with five servers configured. Two are used to host copies of the data and the rest are used to coordinate the replication of data'
 doc_type: 'guide'
+keywords: ['replication', 'high availability', 'cluster setup', 'data redundancy', 'fault tolerance']
 ---
 
 import Image from '@theme/IdealImage';

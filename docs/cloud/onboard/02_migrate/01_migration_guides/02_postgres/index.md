@@ -5,6 +5,7 @@ pagination_next: null
 title: 'PostgreSQL'
 description: 'Landing page for the PostgreSQL migrations section'
 doc_type: 'landing-page'
+keywords: ['PostgreSQL migration', 'database migration', 'ClickHouse migration', 'CDC replication', 'data migration']
 ---
 
 | Page                                                                                                                 | Description                                                                                                                                                             |

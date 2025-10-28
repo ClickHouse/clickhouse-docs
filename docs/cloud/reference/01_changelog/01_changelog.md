@@ -4,6 +4,7 @@ sidebar_label: 'Cloud changelog'
 title: 'Cloud Changelog'
 description: 'ClickHouse Cloud changelog providing descriptions of what is new in each ClickHouse Cloud release'
 doc_type: 'changelog'
+keywords: ['changelog', 'release notes', 'updates', 'new features', 'cloud changes']
 ---
 
 import Image from '@theme/IdealImage';

@@ -4,6 +4,7 @@ sidebar_label: 'TPC-H'
 slug: /getting-started/example-datasets/tpch
 title: 'TPC-H (1999)'
 doc_type: 'guide'
+keywords: ['example dataset', 'tpch', 'benchmark', 'sample data', 'performance testing']
 ---
 
 A popular benchmark which models the internal data warehouse of a wholesale supplier.

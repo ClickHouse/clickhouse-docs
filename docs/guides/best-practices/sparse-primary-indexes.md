@@ -6,6 +6,7 @@ title: 'A Practical Introduction to Primary Indexes in ClickHouse'
 slug: /guides/best-practices/sparse-primary-indexes
 show_related_blogs: true
 doc_type: 'guide'
+keywords: ['primary index', 'indexing', 'performance', 'query optimization', 'best practices']
 ---
 
 import sparsePrimaryIndexes01 from '@site/static/images/guides/best-practices/sparse-primary-indexes-01.png';

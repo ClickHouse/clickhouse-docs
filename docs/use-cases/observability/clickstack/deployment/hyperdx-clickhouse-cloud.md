@@ -6,6 +6,7 @@ pagination_next: null
 sidebar_position: 1
 description: 'Deploying ClickStack with ClickHouse Cloud'
 doc_type: 'guide'
+keywords: ['clickstack', 'deployment', 'setup', 'configuration', 'observability']
 ---
 
 import Image from '@theme/IdealImage';

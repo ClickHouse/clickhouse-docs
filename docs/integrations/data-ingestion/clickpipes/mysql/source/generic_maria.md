@@ -4,6 +4,7 @@ description: 'Set up any MariaDB instance as a source for ClickPipes'
 slug: /integrations/clickpipes/mysql/source/generic_maria
 title: 'Generic MariaDB source setup guide'
 doc_type: 'guide'
+keywords: ['generic mariadb', 'clickpipes', 'binary logging', 'ssl tls', 'self hosted']
 ---
 
 # Generic MariaDB source setup guide

@@ -4,6 +4,7 @@ slug: /cloud/security/compliance/pci-onboarding
 title: 'PCI onboarding'
 description: 'Learn more about how to onboard to PCI compliant services'
 doc_type: 'guide'
+keywords: ['pci', 'compliance', 'payment security', 'data protection', 'security']
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';

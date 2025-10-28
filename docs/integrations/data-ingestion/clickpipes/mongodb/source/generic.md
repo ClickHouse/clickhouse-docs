@@ -4,6 +4,7 @@ description: 'Set up any MongoDB instance as a source for ClickPipes'
 slug: /integrations/clickpipes/mongodb/source/generic
 title: 'Generic MongoDB source setup guide'
 doc_type: 'guide'
+keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 # Generic MongoDB source setup guide

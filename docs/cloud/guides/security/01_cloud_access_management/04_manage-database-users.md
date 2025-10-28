@@ -4,6 +4,7 @@ slug: /cloud/security/manage-database-users
 title: 'Manage database users'
 description: 'This page describes how administrators can add database users, manage assignments, and remove database users'
 doc_type: 'guide'
+keywords: ['database users', 'access management', 'security', 'permissions', 'user management']
 ---
 
 import Image from '@theme/IdealImage';

@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/object-storage/faq
 sidebar_position: 1
 title: 'FAQ'
 doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 ## FAQ {#faq}

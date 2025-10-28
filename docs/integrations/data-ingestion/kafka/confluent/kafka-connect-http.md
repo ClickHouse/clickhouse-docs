@@ -5,6 +5,8 @@ slug: /integrations/kafka/cloud/confluent/http
 description: 'Using HTTP Connector Sink with Kafka Connect and ClickHouse'
 title: 'Confluent HTTP Sink Connector'
 doc_type: 'guide'
+keywords: ['Confluent HTTP Sink Connector', 'HTTP Sink ClickHouse', 'Kafka HTTP connector
+', 'ClickHouse HTTP integration', 'Confluent Cloud HTTP Sink']
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
@@ -146,7 +148,7 @@ The following additional parameters are relevant to using the HTTP Sink with Cli
 * `batch.max.size` - The number of rows to send in a single batch. Ensure this set is to an appropriately large number. Per ClickHouse [recommendations](/sql-reference/statements/insert-into#performance-considerations) a value of 1000 should be considered a minimum.
 * `tasks.max` - The HTTP Sink connector supports running one or more tasks. This can be used to increase performance. Along with batch size this represents your primary means of improving performance.
 * `key.converter` - set according to the types of your keys.
-* `value.converter` - set based on the type of data on your topic. This data does not need a schema. The format here must be consistent with the FORMAT specified in the parameter `http.api.url`. The simplest here is to use JSON and the org.apache.kafka.connect.json.JsonConverter converter. Treating the value as a string, via the converter org.apache.kafka.connect.storage.StringConverter, is also possible - although this will require the user to extract a value in the insert statement using functions. [Avro format](../../../../interfaces/formats.md#data-format-avro) is also supported in ClickHouse if using the io.confluent.connect.avro.AvroConverter converter.
+* `value.converter` - set based on the type of data on your topic. This data does not need a schema. The format here must be consistent with the FORMAT specified in the parameter `http.api.url`. The simplest here is to use JSON and the org.apache.kafka.connect.json.JsonConverter converter. Treating the value as a string, via the converter org.apache.kafka.connect.storage.StringConverter, is also possible - although this will require the user to extract a value in the insert statement using functions. [Avro format](/interfaces/formats/Avro) is also supported in ClickHouse if using the io.confluent.connect.avro.AvroConverter converter.
 
 A full list of settings, including how to configure a proxy, retries, and advanced SSL, can be found [here](https://docs.confluent.io/kafka-connect-http/current/connector_config.html).
 

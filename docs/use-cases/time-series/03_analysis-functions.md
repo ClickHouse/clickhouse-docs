@@ -3,7 +3,7 @@ title: 'Analysis functions - Time-series'
 sidebar_label: 'Analysis functions'
 description: 'Functions for analyzing time-series data in ClickHouse.'
 slug: /use-cases/time-series/analysis-functions
-keywords: ['time-series']
+keywords: ['time-series', 'analysis functions', 'window functions', 'aggregation functions', 'moving averages', 'trend analysis']
 show_related_blogs: true
 doc_type: 'reference'
 ---

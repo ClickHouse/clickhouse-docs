@@ -3,6 +3,7 @@ title: 'Controlling the Syncing of a MySQL ClickPipe'
 description: 'Doc for controllling the sync a MySQL ClickPipe'
 slug: /integrations/clickpipes/mysql/sync_control
 sidebar_label: 'Controlling syncs'
+keywords: ['MySQL ClickPipe', 'ClickPipe sync control', 'MySQL CDC replication', 'ClickHouse MySQL connector', 'database synchronization ClickHouse']
 doc_type: 'guide'
 ---
 

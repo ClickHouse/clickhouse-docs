@@ -4,6 +4,7 @@ description: 'Resyncing specific tables in a MongoDB ClickPipe'
 slug: /integrations/clickpipes/mongodb/table_resync
 sidebar_label: 'Resync table'
 doc_type: 'guide'
+keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 # Resyncing specific tables {#resync-tables}
