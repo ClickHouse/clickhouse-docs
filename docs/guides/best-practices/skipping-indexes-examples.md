@@ -128,7 +128,7 @@ See [parameter docs](/engines/table-engines/mergetree-family/mergetree#n-gram-bl
 
 ## Token Bloom filter (tokenbf\_v1) for word-based search {#token-bloom-filter-tokenbf-v1-for-word-based-search}
 
-`tokenbf_v1` indexes tokens separated by non-alphanumeric characters. You should use it with [`hasToken`](/sql-reference/functions/string-search-functions#hastoken), `LIKE` word patterns or equals/IN. It supports `String`/`FixedString`/`Map` types.
+`tokenbf_v1` indexes tokens separated by non-alphanumeric characters. You should use it with [`hasToken`](/sql-reference/functions/string-search-functions#hasToken), `LIKE` word patterns or equals/IN. It supports `String`/`FixedString`/`Map` types.
 
 See [Token bloom filter](/engines/table-engines/mergetree-family/mergetree#token-bloom-filter) and [Bloom filter types](/optimize/skipping-indexes#skip-index-types) pages for more details.
 

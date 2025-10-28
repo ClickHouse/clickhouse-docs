@@ -13,18 +13,32 @@ WITH function_docs AS (
         examples
     FROM system.functions
     WHERE categories = {category:String}
+    AND alias_to = ''
 ORDER BY name ASC
-    )
+    ),
+function_aliases AS (
+    SELECT
+        alias_to AS function_name,
+        groupArray(name) AS aliases
+    FROM system.functions
+    WHERE alias_to != ''
+    AND alias_to IN (SELECT name FROM function_docs)
+    GROUP BY alias_to
+)
 SELECT
     format(
-            '{}{}{}{}{}{}{}',
-            '## ' || name || ' ' || printf('{#%s}', name) || '\n\n',
-            'Introduced in: v' || introduced_in || '\n\n',
-            description || '\n\n',
-            '**Syntax**\n\n' || printf('```sql\n%s\n```', syntax) || '\n\n',
-            if(empty(arguments), '**Arguments**\n\n- None.\n', '**Arguments**\n\n' || arguments || '\n\n'),
-            '**Returned value**\n\n' || trim(returned_value) || '\n\n',
-            '**Examples**\n\n' || examples || '\n'
+        '{}{}{}{}{}{}{}{}',
+        '## ' || fd.name || ' ' || printf('{#%s}', fd.name) || '\n\n',
+        'Introduced in: v' || fd.introduced_in || '\n\n',
+        fd.description || '\n\n',
+        '**Syntax**\n\n' || printf('```sql\n%s\n```', fd.syntax) || '\n\n',
+        if(fa.aliases IS NOT NULL AND length(fa.aliases) > 0,
+           '**Aliases**: ' || arrayStringConcat(arrayMap(x -> '`' || x || '`', fa.aliases), ', ') || '\n\n',
+           ''),
+        if(empty(fd.arguments), '**Arguments**\n\n- None.\n\n', '**Arguments**\n\n' || fd.arguments || '\n\n'),
+        '**Returned value**\n\n' || trim(fd.returned_value) || '\n\n',
+        '**Examples**\n\n' || fd.examples || '\n'
     )
-FROM function_docs
+FROM function_docs fd
+LEFT JOIN function_aliases fa ON fd.name = fa.function_name
 INTO OUTFILE 'temp-functions.md' TRUNCATE FORMAT LineAsString
