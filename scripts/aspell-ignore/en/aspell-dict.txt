@@ -1,4 +1,4 @@
-personal_ws-1.1 en 3810
+personal_ws-1.1 en 3812
 AArch
 ACLs
 AICPA
@@ -15,6 +15,7 @@ ARMv
 ASLR
 ASOF
 ASan
+ATTR
 AWND
 AWST
 Accepter
@@ -254,6 +255,7 @@ Contrib
 CoreDNS
 CopilotKit
 Copilotkit
+CoreDNS
 CountMin
 Covid
 Craigslist
@@ -273,6 +275,7 @@ CustomSeparatedIgnoreSpacesWithNamesAndTypes
 CustomSeparatedWithNames
 CustomSeparatedWithNamesAndTypes
 Cython
+DATALAKE
 DBAPI
 DBAs
 DBMSs
@@ -287,6 +290,8 @@ DECRYPT
 DELETEs
 DESC
 DIEs
+DLOPEN
+DLSYM
 DOGEFI
 DATALAKE
 DLOPEN
@@ -377,6 +382,7 @@ EDOT
 EMQX
 EPOLL
 ENIs
+EPOLL
 ETag
 EachRow
 Easypanel
@@ -405,8 +411,10 @@ ExecutablePool
 ExperimentalBadge
 ExtType
 ExternalDistributed
+FCNTL
 FFFD
 FFFFFFFF
+FILECACHE
 FIPS
 FOSDEM
 FQDN
@@ -447,6 +455,9 @@ FreeBSD
 Fuzzer
 Fuzzers
 GDPR
+GETPWUID
+GETTIME
+GETTIMEOFDAY
 GHCN
 GTID
 GTIDs
@@ -491,10 +502,12 @@ Greenwald
 Gunicorn
 Guram
 HANA
+HAProxy
 HDDs
 HHMM
 HIVEMETASTORE
 HIPAA
+HIVEMETASTORE
 HMAC
 HNSW
 HSTS
@@ -536,6 +549,7 @@ IMDS
 IMDb
 INIT
 INFILE
+INIT
 INOUT
 INSERTed
 INSERTs
@@ -545,6 +559,7 @@ ISTREAM
 IOPS
 IOPrefetchThreads
 IOPrefetchThreadsActive
+IOSETUP
 IOThreads
 IOThreadsActive
 IOUringInFlightEvents
@@ -555,6 +570,7 @@ IPTrie
 IProcessor
 IPv
 IPython
+ISTREAM
 ITION
 IcebergCluster
 Identifiant
@@ -689,6 +705,7 @@ Kusto
 Kyuubi
 LDAP
 LGPL
+LIBSSH
 LIMITs
 LINEITEM
 LLDB
@@ -759,6 +776,7 @@ MMappedAllocBytes
 MMappedAllocs
 MMappedFileBytes
 MMappedFiles
+MPROTECT
 MQTT
 MQTTX
 MPROTECT
@@ -854,6 +872,7 @@ NATS
 NCHAR
 NDJSON
 NEKUDOTAYIM
+NETLINK
 NEWDATE
 NEWDECIMAL
 NETLINK
@@ -913,6 +932,7 @@ OFNS
 OIDC
 OLAP
 OLTP
+OOMKilled
 OOMs
 OOMKilled
 ORCCompression
@@ -957,6 +977,7 @@ OSStealTimeNormalized
 OSSystemTime
 OSSystemTimeCPU
 OSSystemTimeNormalized
+OSTREAM
 OSThreadsRunnable
 OSThreadsTotal
 OSUptime
@@ -1431,8 +1452,10 @@ UIntN
 ULID
 ULIDStringToDateTime
 UMTS
+UNCOMPRESS
 UNDROP
 UNIONs
+UNLINK
 UPDATEs
 URIs
 URL
@@ -1492,6 +1515,7 @@ VideoContainer
 ViewAllLink
 VirtualBox
 Vose
+WAITPID
 WALs
 WAITPID
 WSFG
@@ -1524,7 +1548,9 @@ YYYYMMDDToDate
 YYYYMMDDhhmmssToDateTime
 Yandex
 Yasm
+ZCONNECTIONLOSS
 ZCurve
+ZSESSIONEXPIRED
 ZSTDQAT
 Zabbix
 Zipkin
@@ -2066,6 +2092,7 @@ dequeued
 dequeues
 deregistration
 dereference
+deregistration
 deserialization
 deserializations
 deserialize
@@ -2155,6 +2182,7 @@ enum's
 enums
 equi
 erfc
+errno
 errorCodeToName
 errno
 errored
@@ -2532,6 +2560,7 @@ kostik
 kostikConsistentHash
 kube
 ksqlDB
+kube
 kurtPop
 kurtSamp
 kurtosis
@@ -2975,6 +3004,7 @@ preprocessor
 presentational
 prestop
 prestable
+prestop
 prettycompact
 prettycompactmonoblock
 prettycompactnoescapes
@@ -3059,6 +3089,7 @@ queryID
 queryString
 queryStringAndFragment
 queryable
+queueing
 quickstart
 qwen
 rabbitmq
@@ -3111,6 +3142,8 @@ redisstreams
 refetch
 refetched
 refcounter
+refetch
+refetched
 refreshable
 regexpExtract
 regexpQuoteMeta
@@ -3227,6 +3260,7 @@ sequenceCount
 sequenceMatch
 sequenceMatchEvents
 sequenceNextNode
+serializeValueIntoMemory
 seriesDecomposeSTL
 seriesOutliersDetectTukey
 seriesPeriodDetectFFT
@@ -3725,10 +3759,12 @@ uuidv
 uvicorn
 vCPU
 vCPUs
+validator
 varPop
 varPopStable
 varSamp
 varSampStable
+varargs
 variadic
 variantElement
 variantType
