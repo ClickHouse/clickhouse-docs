@@ -13,5 +13,5 @@ quick start guides for various log and trace sources.
 
 | Section | Description |
 |------|-------------|
-| [Nginix Logs](./nginx-logs.md) | Introduction to data ingestion methods and architecture |
-| [Nginix Traces](./nginx-traces.md) | Introduction to data ingestion methods and architecture |
+| [Nginx Logs](./nginx-logs.md) | Introduction to data ingestion methods and architecture |
+| [Nginx Traces](./nginx-traces.md) | Introduction to data ingestion methods and architecture |
