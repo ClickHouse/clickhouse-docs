@@ -121,11 +121,8 @@ marketplace for the remainder of the subscription. However, if the subscription
 is not renewed and expires, we will then attempt to process payment using the 
 credit card on file for the organization, if any.
 
-In either scenario, if we are unable to charge the configured credit card, the 
-unpaid invoice restrictions outlined above for [Pay-as-you-go (PAYG)](#direct-payg)
-billing with a credit card will apply—this includes the suspension of services. 
-However, for committed contract customers, we will contact you regarding any 
-unpaid invoices before initiating data deletion. Data is not automatically 
+In either scenario, if we are unable to charge the configured credit card or credit card exists, then we will contact you regarding any 
+unpaid invoices before initiating service suspension or data deletion. Data is not automatically 
 deleted after any period of time.
 
 If you’d like to add additional credits before your existing ones expire or are 
