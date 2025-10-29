@@ -28,7 +28,7 @@ There are two primary methods to migrate from self-managed ClickHouse (OSS) to C
 - Using `BACKUP`/`RESTORE` commands via cloud object storage
 
 >This migration guide focuses on the `BACKUP`/`RESTORE` approach and offers a practical example
-of migrating a database or full service in opensource ClickHouse to Cloud via an S3 bucket.
+of migrating a database or full service in open source ClickHouse to Cloud via an S3 bucket.
 
 **Prerequisites**
 - You have Docker installed
