@@ -726,6 +726,7 @@ LinksDeployment
 Linq
 ListObject
 ListObjects
+Lightdash
 LlamaIndex
 LoadAverage
 LoadBalancing

@@ -806,6 +806,7 @@ const sidebars = {
             "integrations/data-visualization/grafana/config",
           ],
         },
+        "integrations/data-visualization/lightdash-and-clickhouse",
         "integrations/data-visualization/looker-and-clickhouse",
         "integrations/data-visualization/looker-studio-and-clickhouse",
         "integrations/data-visualization/metabase-and-clickhouse",
