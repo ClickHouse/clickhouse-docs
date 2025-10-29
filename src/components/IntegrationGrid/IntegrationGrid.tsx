@@ -72,37 +72,60 @@ function IntegrationCard({ integration }: { integration: IntegrationData }) {
 
   const linkTo = getNavigationLink(integration.docsLink, integration.slug);
 
+  // Check if this is an external link (not to clickhouse.com/docs)
+  const isExternalLink = linkTo.startsWith('http') && !linkTo.includes('clickhouse.com/docs');
+
   return (
-    <Link
-      to={linkTo}
-      style={{ textDecoration: 'none', color: 'inherit' }}
-    >
-      <CUICard style={{ position: 'relative' }}>
-        {/* Tier Icon in top right corner */}
-        {integration.integration_tier && integration.integration_tier !== 'community' && (
-          <div style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            zIndex: 1,
-            opacity: 0.7
-          }}>
-            {getTierIcon(integration.integration_tier)}
-          </div>
-        )}
-        <CUICard.Body>
-        <CUICard.Header>
-          <img
-            src={getLogoSrc()}
-            alt={`${integration.integration_title || integration.slug} logo`}
-          />
-        </CUICard.Header>
-        <CUICard.Footer>
-            {integration.integration_title}
-        </CUICard.Footer>
-        </CUICard.Body>
-      </CUICard>
-    </Link>
+    <div className={styles.cardWrapper}>
+      <Link
+        to={linkTo}
+        style={{ textDecoration: 'none', color: 'inherit' }}
+      >
+        <CUICard style={{ position: 'relative' }}>
+          {/* Tier Icon in top right corner */}
+          {integration.integration_tier && integration.integration_tier !== 'community' && (
+            <div style={{
+              position: 'absolute',
+              top: '12px',
+              right: '12px',
+              zIndex: 1,
+              opacity: 0.7
+            }}>
+              {getTierIcon(integration.integration_tier)}
+            </div>
+          )}
+          <CUICard.Body>
+          <CUICard.Header>
+            <img
+              src={getLogoSrc()}
+              alt={`${integration.integration_title || integration.slug} logo`}
+            />
+          </CUICard.Header>
+          <CUICard.Footer>
+              {integration.integration_title}
+          </CUICard.Footer>
+          </CUICard.Body>
+        </CUICard>
+      </Link>
+      {/* External link overlay */}
+      {isExternalLink && (
+        <div className={styles.externalLinkOverlay}>
+          <svg
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+            />
+          </svg>
+        </div>
+      )}
+    </div>
   );
 }
 
