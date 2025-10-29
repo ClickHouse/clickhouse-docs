@@ -60,6 +60,8 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 | [Fabi.ai](./community_integrations/fabi-and-clickhouse.md)                  | Native connector              | ✅      | ✅          |                                                                                                                                         |
 | [Grafana](./grafana/index.md)                        | ClickHouse official connector | ✅      | ✅          |                                                                                                                                         |
 | [Hashboard](./community_integrations/hashboard-and-clickhouse.md)           | Native connector              | ✅      | ✅          |                                                                                                                                         |
+| [Lightdash](./lightdash-and-clickhouse.md)      | Native connector | ✅      | ✅          | 
+            |
 | [Looker](./looker-and-clickhouse.md)                 | Native connector              | ✅      | ✅          | Works with some limitations, see [the documentation](./looker-and-clickhouse.md) for more details                    |
 | Looker                                                                  | MySQL interface               | 🚧     | ❌          |                                                                                                                                         |
 | [Luzmo](./community_integrations/luzmo-and-clickhouse.md)                   | ClickHouse official connector | ✅      | ✅          |                                                                                                                                         |
@@ -74,5 +76,3 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 | [Tableau Desktop](./tableau/tableau-and-clickhouse.md)       | ClickHouse official connector | ✅      | ✅          |                                                                                                               |
 | [Tableau Online](./tableau/tableau-online-and-clickhouse.md) | MySQL interface               | ✅      | ✅          | Works with some limitations, see [the documentation](./tableau/tableau-online-and-clickhouse.md) for more details            |
 | [Zing Data](./community_integrations/zingdata-and-clickhouse.md)            | Native connector              | ✅      | ✅          |                                                                                                                                         |
-| [Lightdash](./lightdash-and-clickhouse.md)      | Native connector | ✅      | ✅          | 
-            |
