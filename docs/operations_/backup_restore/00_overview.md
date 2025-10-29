@@ -206,7 +206,6 @@ Each of the commands above is detailed below:
 
 <AzureSettings/>
 
-
 ## Administration and troubleshooting {#check-the-status-of-backups}
 
 The backup command returns an `id` and `status`, and that `id` can be used to
@@ -303,5 +302,3 @@ bytes_read:              0
 
 2 rows in set. Elapsed: 0.075 sec.
 ```
-
-
