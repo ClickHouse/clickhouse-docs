@@ -35,5 +35,4 @@ else
     sed -i 's|(/cloud/security/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|(/cloud/data-sources/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|g' docs/sql-reference/table-functions/s3Cluster.md
     sed -i 's|(#cuttofirstsignificantsubdomaincustom)|(#cutToFirstSignificantSubdomainCustom)|g' docs/sql-reference/functions/url-functions.md
     sed -i 's|(/cloud/data-sources/secure-s3#setup)|(/cloud/data-sources/secure-s3)|g' docs/sql-reference/table-functions/s3.md
-    (/cloud/data-sources/secure-s3#setup)
 fi
