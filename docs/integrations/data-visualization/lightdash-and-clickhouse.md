@@ -31,7 +31,7 @@ Developers love Lightdash for its open architecture, version-controlled YAML mod
 
 This partnership brings together **ClickHouse’s speed** and **Lightdash’s developer experience**, making it easier than ever to explore, visualize, and automate insights with AI.
 
-## Build an interactive dashboard with Lightdash and ClickHouse
+## Build an interactive dashboard with Lightdash and ClickHouse {#build-an-interactive-dashboard}
 
 In this guide, you’ll see how **Lightdash** connects to **ClickHouse** to explore your dbt models and build interactive dashboards.  
 The example below shows a finished dashboard powered by data from ClickHouse.
@@ -152,7 +152,7 @@ Learn more about how to create and organize dashboards here:
 
 ### Ask AI: self-serve analytics powered by dbt {#ask-ai}
 
-Lightdash’s **AI Agents** make data exploration truly self-serve.  
+**AI Agents** in Lightdash make data exploration truly self-serve.  
 Instead of writing queries, users can simply ask questions in plain language — like *“What was our monthly revenue growth?”* — and the AI Agent automatically generates the right visualization, referencing your dbt-defined metrics and models to ensure accuracy and consistency.
 
 It’s powered by the same semantic layer you use in dbt, meaning every answer stays governed, explainable, and fast — all backed by ClickHouse.
