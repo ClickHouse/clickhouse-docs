@@ -158,7 +158,6 @@ The bucket name must be unique across AWS, not just the organization, or it will
 |Action | What operations are allowed on the bucket| s3:*|
 |Resource | Which resources in the bucket will operations be allowed in | "arn:aws:s3:::ch-docs-s3-bucket", "arn:aws:s3:::ch-docs-s3-bucket/*" |
 
-
 :::note
 You should work with your security team to determine the permissions to be used, consider these as a starting point.
 For more information on Policies and settings, refer to AWS documentation:
