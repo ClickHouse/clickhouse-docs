@@ -18,26 +18,25 @@ import log from '@site/static/images/clickstack/redis/redis-log.png';
 
 # Monitoring Redis Logs with ClickStack {#redis-clickstack}
 
-::::note[TL;DR]
+:::note[TL;DR]
 This guide shows you how to monitor Redis with ClickStack by configuring the OpenTelemetry collector to ingest Redis server logs. You'll learn how to:
 
 - Configure the OTel collector to parse Redis log format
 - Deploy ClickStack with your custom configuration
 - Use a pre-built dashboard to visualize Redis metrics (connections, commands, memory, errors)
 
-A demo dataset with 10,000 sample logs is provided to test the integration before connecting your production Redis instances.
-
-Time Required: 5-10 minutes.
-::::
-
-## Prerequisites {#prerequisites}
-- ClickStack instance running
-- Existing Redis installation (version 3.0 or newer)
-- Access to Redis log files
+Time Required: 5-10 minutes
+:::
 
 ## Integration with existing Redis {#existing-redis}
 
 This section covers configuring your existing Redis installation to send logs to ClickStack by modifying the ClickStack OTel collector configuration.
+If you would like to test the Redis integration before configuring your own existing setup, you can test with our preconfigured setup and sample data in the [following section](/use-cases/observability/clickstack/integrations/redis#demo-dataset).
+
+### Prerequisites {#prerequisites}
+- ClickStack instance running
+- Existing Redis installation (version 3.0 or newer)
+- Access to Redis log files
 
 <VerticalStepper>
 
@@ -79,7 +78,6 @@ docker restart <redis-container>
 ClickStack allows you to extend the base OpenTelemetry Collector configuration by mounting a custom configuration file and setting an environment variable. The custom configuration is merged with the base configuration managed by HyperDX via OpAMP.
 
 Create a file named `redis-monitoring.yaml` with the following configuration:
-
 ```yaml
 receivers:
   filelog/redis:
@@ -88,7 +86,7 @@ receivers:
     start_at: beginning
     operators:
       - type: regex_parser
-        regex: '^(?P<pid>\d+):(?P<role>\w+) (?P<timestamp>\d{2} \w+ \d{4} \d{2}:\d{2}:\d{2})\.\d+ (?P<log_level>[.\-*#]) (?P<message>.*)$'
+        regex: '^(?P\d+):(?P\w+) (?P\d{2} \w+ \d{4} \d{2}:\d{2}:\d{2})\.\d+ (?P[.\-*#]) (?P.*)$'
         parse_from: body
         parse_to: attributes
       
@@ -118,17 +116,15 @@ service:
 
 This configuration:
 - Reads Redis logs from their standard location
-- Uses `start_at: beginning` to read all existing logs when the collector starts
-- Parses Redis's log format using regex to extract timestamp, level, and message
-- Maps Redis log level symbols to OpenTelemetry severity levels
+- Parses Redis's log format using regex to extract structured fields (pid, role, timestamp, log_level, message)
 - Adds `source: redis` attribute for filtering in HyperDX
-- Adds `service.name` resource attribute to identify the Redis service
 - Routes logs to the ClickHouse exporter via a dedicated pipeline
 
-:::warning[Production Consideration]
-This configuration uses `start_at: beginning`, which reads all existing logs when ClickStack starts. This is ideal for initial setup and testing as you'll see logs immediately.
-
-For production deployments where you want to avoid re-ingesting logs on collector restarts, change `start_at: beginning` to `start_at: end`. With `start_at: end`, the collector will only capture new log entries written after it starts.
+:::note
+- You only define new receivers and pipelines in the custom config
+- The processors (memory_limiter, transform, batch) and exporters (clickhouse) are already defined in the base ClickStack configuration - you just reference them by name
+- The time_parser operator extracts timestamps from Redis logs to preserve original log timing
+- This configuration uses `start_at: beginning` to read all existing logs when the collector starts, allowing you to see logs immediately. For production deployments where you want to avoid re-ingesting logs on collector restarts, change to `start_at: end`.
 :::
 
 ## Configure ClickStack to load custom configuration {#load-custom}
@@ -139,44 +135,36 @@ To enable custom collector configuration in your existing ClickStack deployment,
 2. Set the environment variable `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
 3. Mount your Redis log directory so the collector can read them
 
-Update your ClickStack deployment configuration to include these settings. This example uses docker compose with both ClickStack and Redis in the same compose file:
+### Option 1: Docker Compose {#docker-compose}
 
+Update your ClickStack deployment configuration:
 ```yaml
 services:
-  redis:
-    image: redis:7.2-alpine
-    container_name: redis-prod
-    ports:
-      - "6379:6379"
-    volumes:
-      - ./redis.conf:/usr/local/etc/redis/redis.conf:ro
-      - redis-logs:/var/log/redis
-    command: sh -c "mkdir -p /var/log/redis && chmod 777 /var/log/redis && redis-server /usr/local/etc/redis/redis.conf"
-
   clickstack:
-    image: docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
-    container_name: clickstack-prod
-    ports:
-      - "8080:8080"
-      - "4317:4317"
-      - "4318:4318"
+    # ... existing configuration ...
     environment:
       - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
+      # ... other environment variables ...
     volumes:
       - ./redis-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
-      - redis-logs:/var/log/redis:ro
-    depends_on:
-      - redis
-
-volumes:
-  redis-logs:
+      - /var/log/redis:/var/log/redis:ro
+      # ... other volumes ...
 ```
 
-:::note[Key Points]
-- Both containers share the same `redis-logs` volume
-- ClickStack mounts the logs as read-only (`:ro`) following the principle of least privilege
-- The shared volume allows ClickStack to read Redis logs in real-time
-- For standalone deployments, ensure the log directory is accessible to both Redis and ClickStack
+### Option 2: Docker Run (All-in-One Image) {#all-in-one}
+
+If using the all-in-one image with docker run:
+```bash
+docker run --name clickstack \
+  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -v "$(pwd)/redis-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  -v /var/log/redis:/var/log/redis:ro \
+  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+```
+
+:::note
+Ensure the ClickStack collector has appropriate permissions to read the Redis log files. In production, use read-only mounts (`:ro`) and follow the principle of least privilege.
 :::
 
 ## Verifying Logs in ClickStack {#verifying-logs}
@@ -197,18 +185,11 @@ For users who want to test the Redis integration before configuring their produc
 
 ## Download the sample dataset {#download-sample}
 
-Download the sample log file and update timestamps to the current time:
+Download the sample log file:
 
 ```bash
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-server.log
 ```
-
-The dataset includes:
-- 10,000 log entries with realistic Redis activity distributed over 24 hours
-- Traffic peaks during typical busy hours (9-11am, 1-3pm, 7-9pm)
-- Mix of log levels: INFO (70-85%), WARNING (7-27%), DEBUG (3-5%)
-- Varied attributes: multiple process IDs, roles, client addresses, and metrics
-- Common events: connections, commands, persistence operations, memory warnings
 
 ## Create test collector configuration {#test-config}
 
@@ -277,7 +258,7 @@ Once ClickStack is running:
 2. Once logged in, open this [link](http://localhost:8080/search?from=1761577200000&to=1761663600000&isLive=false&source=690280cfd3754c36b73402cc&where=&select=Timestamp,ServiceName,SeverityText,Body&whereLanguage=lucene&orderBy=&filters=[]). You should see what's pictured in the screenshots below.
 
 :::note
-Even when clicking the link you may not see any logs populate, in some cases you may still have to select logs as the source and re-run the search. Using the link is important to get the proper time range of results. For reference the time range for this data is 2025-10-27 10:00:00 - 2025-10-28 10:00:00.
+If you don't see logs, ensure the time range is set to 2025-10-27 10:00:00 - 2025-10-28 10:00:00 and 'Logs' is selected as the source. Using the link is important to get the proper time range of results.
 :::
 
 <Image img={log_view} alt="Log view"/>

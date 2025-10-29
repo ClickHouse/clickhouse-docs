@@ -26,19 +26,18 @@ This guide shows you how to monitor nginx with ClickStack by configuring the Ope
 - Deploy ClickStack with your custom configuration
 - Use a pre-built dashboard to visualize nginx metrics (requests, errors, latency)
 
-A demo dataset with 10,000 sample logs is provided to test the integration before connecting your production nginx instances.
-
-Time Required: 5-10 minutes.
+Time Required: 5-10 minutes
 ::::
-
-## Prerequisites {#prerequisites}
-- ClickStack instance running
-- Existing nginx installation
-- Access to modify nginx configuration files
 
 ## Integration with existing nginx {#existing-nginx}
 
 This section covers configuring your existing nginx installation to send logs to ClickStack by modifying the ClickStack OTel collector configuration.
+If you would like to test the integration before configuring your own existing setup, you can test with our preconfigured setup and sample data in the [following section](/use-cases/observability/clickstack/integrations/nginx#demo-dataset).
+
+### Prerequisites {#prerequisites}
+- ClickStack instance running
+- Existing nginx installation
+- Access to modify nginx configuration files
 
 <VerticalStepper>
 
@@ -255,11 +254,15 @@ Once ClickStack is running (you may have to create an account and login first):
 
 1. Open [HyperDX](http://localhost:8080/search?from=1760976000000&to=1761062400000&isLive=false&source=690235c1a9b7fc5a7c0fffc7&select=Timestamp,ServiceName,SeverityText,Body&where=&whereLanguage=lucene&filters=[]&orderBy=)
 
-::::note
-It is important to use the link above to get the correct time range, if you don't use this link set your time range to Oct 20 11:00:00 - Oct 21 11:00:00 to see proper results.
-::::
-
 Here's what you should see in your search view:
+
+:::note
+If you don't see logs, ensure the time range is set to 2025-10-20 11:00:00 - 2025-10-21 11:00:00 and 'Logs' is selected as the source. Using the link is important to get the proper time range of results.
+:::
+
+:::note
+If you don't see logs, ensure the time range is set to 2025-10-20 11:00:00 - 2025-10-21 11:00:00 and 'Logs' is selected as the source. Using the link is important to get the proper time range of results.
+:::
 
 <Image img={search_view} alt="Log view"/>
 

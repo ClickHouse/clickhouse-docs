@@ -25,18 +25,19 @@ This guide shows you how to capture distributed traces from your existing nginx 
 - Verify traces are appearing in HyperDX
 - Use a pre-built dashboard to visualize request performance (latency, errors, throughput)
 
-Time Required: 5-10 minutes.
+Time Required: 5-10 minutes
 ::::
-
-## Prerequisites {#prerequisites}
-- ClickStack instance running with OTLP endpoints accessible (ports 4317/4318)
-- Existing nginx installation (version 1.18 or higher)
-- Root or sudo access to modify nginx configuration
-- ClickStack hostname or IP address
 
 ## Integration with existing nginx {#existing-nginx}
 
 This section covers adding distributed tracing to your existing nginx installation by installing the OpenTelemetry module and configuring it to send traces to ClickStack.
+If you would like to test the integration before configuring your own existing setup, you can test with our preconfigured setup and sample data in the [following section](/use-cases/observability/clickstack/integrations/nginx-traces#demo-dataset).
+
+### Prerequisites {#prerequisites}
+- ClickStack instance running with OTLP endpoints accessible (ports 4317/4318)
+- Existing nginx installation (version 1.18 or higher)
+- Root or sudo access to modify nginx configuration
+- ClickStack hostname or IP address
 
 <VerticalStepper>
 
@@ -235,11 +236,11 @@ You should see a response like `{"partialSuccess":{}}` indicating the traces wer
 
 1. Open [HyperDX](http://localhost:8080/search?from=1761501600000&to=1761588000000&isLive=false&source=69023d1b4f1d41a964641b09&where=&select=Timestamp,ServiceName,StatusCode,round(Duration/1e6),SpanName&whereLanguage=lucene&orderBy=&filters=[])
 
-::::note
-It is important to use the link above to get the correct time range, if you don't use this link set your time range to Oct 26 13:00:00 - Oct 27 13:00:00 to see proper results.
-::::
-
 Here's what you should see in your search view:
+
+:::note
+If you don't see logs, ensure the time range is set to 2025-10-26 13:00:00 - 2025-10-27 13:00:00 and 'Logs' is selected as the source. Using the link is important to get the proper time range of results.
+:::
 
 <Image img={view_traces} alt="View Traces"/>
 
