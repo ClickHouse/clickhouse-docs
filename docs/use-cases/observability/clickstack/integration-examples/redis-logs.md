@@ -13,7 +13,8 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/redis/import-redis-log-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/redis/redis-log-dashboard.png';
-import log_view from '@site/static/images/clickstack/log-view.png';
+import log_view from '@site/static/images/clickstack/redis/redis-log-view.png';
+import log from '@site/static/images/clickstack/redis/redis-log.png';
 
 # Monitoring Redis Logs with ClickStack {#redis-clickstack}
 
@@ -124,11 +125,11 @@ This configuration:
 - Adds `service.name` resource attribute to identify the Redis service
 - Routes logs to the ClickHouse exporter via a dedicated pipeline
 
-::::warning[Production Consideration]
+:::warning[Production Consideration]
 This configuration uses `start_at: beginning`, which reads all existing logs when ClickStack starts. This is ideal for initial setup and testing as you'll see logs immediately.
 
 For production deployments where you want to avoid re-ingesting logs on collector restarts, change `start_at: beginning` to `start_at: end`. With `start_at: end`, the collector will only capture new log entries written after it starts.
-::::
+:::
 
 ## Configure ClickStack to load custom configuration {#load-custom}
 
@@ -171,18 +172,20 @@ volumes:
   redis-logs:
 ```
 
-::::note[Key Points]
+:::note[Key Points]
 - Both containers share the same `redis-logs` volume
 - ClickStack mounts the logs as read-only (`:ro`) following the principle of least privilege
 - The shared volume allows ClickStack to read Redis logs in real-time
 - For standalone deployments, ensure the log directory is accessible to both Redis and ClickStack
-::::
+:::
 
 ## Verifying Logs in ClickStack {#verifying-logs}
 
 Once configured, log into HyperDX and verify logs are flowing:
 
 <Image img={log_view} alt="Log view"/>
+
+<Image img={log} alt="Log"/>
 
 </VerticalStepper>
 
@@ -197,58 +200,7 @@ For users who want to test the Redis integration before configuring their produc
 Download the sample log file and update timestamps to the current time:
 
 ```bash
-# Download the logs
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-server.log
-
-# Update timestamps to current time while preserving traffic patterns
-python3 << 'EOF'
-from datetime import datetime, timedelta
-import re
-
-# Read all log lines
-with open('redis-server.log', 'r') as f:
-    logs = f.readlines()
-
-# Parse Redis timestamp format: DD Mon YYYY HH:MM:SS.mmm
-def parse_redis_time(time_str):
-    return datetime.strptime(time_str, "%d %b %Y %H:%M:%S.%f")
-
-# Extract timestamps using regex
-pattern = r'\d+:\w+ (\d{2} \w+ \d{4} \d{2}:\d{2}:\d{2}\.\d+)'
-timestamps = []
-for log in logs:
-    match = re.search(pattern, log)
-    if match:
-        timestamps.append(parse_redis_time(match.group(1)))
-
-if not timestamps:
-    print('❌ No timestamps found in logs')
-    exit(1)
-
-# Calculate time shift
-newest_time = max(timestamps)
-now = datetime.now()
-time_shift = now - newest_time
-
-# Update all timestamps
-updated_logs = []
-for log in logs:
-    match = re.search(pattern, log)
-    if match:
-        original_time = parse_redis_time(match.group(1))
-        new_time = original_time + time_shift
-        new_timestamp = new_time.strftime("%d %b %Y %H:%M:%S.%f")[:-3]  # Trim to milliseconds
-        updated_log = log.replace(match.group(1), new_timestamp)
-        updated_logs.append(updated_log)
-    else:
-        updated_logs.append(log)
-
-# Write back
-with open('redis-server.log', 'w') as f:
-    f.writelines(updated_logs)
-
-print('✅ Log timestamps updated to current time')
-EOF
 ```
 
 The dataset includes:
@@ -263,6 +215,7 @@ The dataset includes:
 Create a file named `redis-demo.yaml` with the following configuration:
 
 ```yaml
+cat > redis-demo.yaml << 'EOF'
 receivers:
   filelog/redis:
     include:
@@ -296,6 +249,7 @@ service:
         - batch
       exporters:
         - clickhouse
+EOF
 ```
 
 ## Run ClickStack with demo configuration {#run-demo}
@@ -311,21 +265,24 @@ docker run --name clickstack-demo \
   docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
 ```
 
-::::note
+:::note
 **This mounts the log file directly into the container. This is done for testing purposes with static demo data.**
-::::
+:::
 
 ## Verify logs in HyperDX {#verify-demo-logs}
 
 Once ClickStack is running:
 
-1. Open HyperDX at http://localhost:8080
-2. Navigate to the **Logs** view
-3. Set time range to "Last 1 Day"
-4. Filter by `source: redis-demo`
-5. You should see 10,000 log entries
+1. Open [HyperDX](http://localhost:8080/) and log in to your account, you may need to create an account first.
+2. Once logged in, open this [link](http://localhost:8080/search?from=1761577200000&to=1761663600000&isLive=false&source=690280cfd3754c36b73402cc&where=&select=Timestamp,ServiceName,SeverityText,Body&whereLanguage=lucene&orderBy=&filters=[]). You should see what's pictured in the screenshots below.
+
+:::note
+Even when clicking the link you may not see any logs populate, in some cases you may still have to select logs as the source and re-run the search. Using the link is important to get the proper time range of results. For reference the time range for this data is 2025-10-27 10:00:00 - 2025-10-28 10:00:00.
+:::
 
 <Image img={log_view} alt="Log view"/>
+
+<Image img={log} alt="Log"/>
 
 </VerticalStepper>
 
