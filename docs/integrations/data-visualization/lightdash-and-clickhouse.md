@@ -47,7 +47,7 @@ When setting up your connection between Lightdash and ClickHouse, you’ll need 
 - **Password:** Your ClickHouse database password  
 - **DB name:** The name of your ClickHouse database  
 - **Schema:** The default schema used by dbt to compile and run your project (found in your `profiles.yml`)  
-- **Port:** The ClickHouse HTTP interface port (default: `8123`)  
+- **Port:** The ClickHouse HTTPS interface port (default: `8443`)  
 - **Secure:** Enable this option to use HTTPS/SSL for secure connections  
 - **Retries:** Number of times Lightdash retries failed ClickHouse queries (default: `3`)  
 - **Start of week:** Choose which day your reporting week starts; defaults to your warehouse setting
