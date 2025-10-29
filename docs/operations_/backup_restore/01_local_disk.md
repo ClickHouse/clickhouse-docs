@@ -3,6 +3,7 @@ description: 'Details backup/restore to or from a local disk'
 sidebar_label: 'Local disk / S3 disk'
 slug: /operations/backup/disk
 title: 'Backup and Restore in ClickHouse'
+doc_type: 'guide'
 ---
 
 import GenericSettings from '@site/docs/operations_/backup_restore/_snippets/_generic_settings.md';

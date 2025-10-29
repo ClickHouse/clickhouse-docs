@@ -3,6 +3,7 @@ description: 'Overview of ClickHouse backup and restore'
 sidebar_label: 'Overview'
 slug: /operations/backup/overview
 title: 'Backup and Restore in ClickHouse'
+doc_type: 'reference'
 ---
 
 import GenericSettings from '@site/docs/operations_/backup_restore/_snippets/_generic_settings.md';
