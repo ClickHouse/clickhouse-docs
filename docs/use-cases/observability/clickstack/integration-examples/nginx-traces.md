@@ -13,6 +13,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/finish-trace-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/example-trace-dashboard.png';
+import view_traces from '@site/static/images/clickstack/nginx-traces-search-view.png';
 
 # Monitoring Nginx Traces with ClickStack {#nginx-traces-clickstack}
 
@@ -158,11 +159,9 @@ sudo systemctl reload nginx
 
 ## Verifying Traces in ClickStack {#verifying-traces}
 
-Once configured, log into HyperDX and verify traces are flowing:
+Once configured, log into HyperDX and verify traces are flowing, you should see something like this, if you don't see traces, try adjusting your time range:
 
-1. Navigate to the **Traces** view
-2. Set the time range to "last 1 day"
-4. You should see trace entries appearing as requests hit your nginx instance
+<Image img={view_traces} alt="View Traces"/>
 
 </VerticalStepper>
 
@@ -172,6 +171,22 @@ For users who want to test the nginx trace integration before configuring their 
 
 <VerticalStepper>
 
+## Start ClickStack {#start-clickstack}
+
+If you don't have ClickStack running yet, start it with:
+
+```bash
+docker run --name clickstack-demo \
+  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+```
+
+Wait about 30 seconds for ClickStack to fully initialize before proceeding.
+
+- Port 8080: HyperDX web interface
+- Port 4317: OTLP gRPC endpoint (used by nginx module)
+- Port 4318: OTLP HTTP endpoint (used for demo traces)
+
 ## Download the sample dataset {#download-sample}
 
 Download the sample traces file and update timestamps to the current time:
@@ -179,38 +194,6 @@ Download the sample traces file and update timestamps to the current time:
 ```bash
 # Download the traces
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/nginx-traces-sample.json
-```
-
-Shift timestamps to current time while preserving traffic patterns
-```bash
-python3 << 'EOF'
-import json, time
-
-with open('nginx-traces-sample.json', 'r') as f:
-    data = json.load(f)
-
-# Get all current timestamps
-spans = data['resourceSpans'][0]['scopeSpans'][0]['spans']
-original_timestamps = [int(span['startTimeUnixNano']) for span in spans]
-
-# Calculate the time shift needed (shift newest trace to now, rest in past)
-newest_timestamp = max(original_timestamps)
-now_ns = int(time.time() * 1e9)
-time_shift = now_ns - newest_timestamp
-
-# Apply the shift to all spans
-for span in spans:
-    original_start = int(span['startTimeUnixNano'])
-    original_end = int(span['endTimeUnixNano'])
-    
-    span['startTimeUnixNano'] = str(original_start + time_shift)
-    span['endTimeUnixNano'] = str(original_end + time_shift)
-
-with open('nginx-traces-sample.json', 'w') as f:
-    json.dump(data, f)
-
-print('✅ Timestamps shifted to current time (preserving traffic patterns)')
-EOF
 ```
 
 The dataset includes:
@@ -236,20 +219,29 @@ export CLICKSTACK_API_KEY=your-api-key-here
 Then send the traces to ClickStack:
 
 ```bash
-curl -X POST http://<clickstack-host>:4318/v1/traces \
+curl -X POST http://localhost:4318/v1/traces \
   -H "Content-Type: application/json" \
   -H "Authorization: $CLICKSTACK_API_KEY" \
   -d @nginx-traces-sample.json
 ```
 
+::::note[Running on localhost]
+This demo assumes ClickStack is running locally on `localhost:4318`. For remote instances, replace `localhost` with your ClickStack hostname.
+::::
+
 You should see a response like `{"partialSuccess":{}}` indicating the traces were successfully sent. All 1,000 traces will be ingested into ClickStack.
 
 ## Verify traces in HyperDX {#verify-demo-traces}
 
-1. Open HyperDX at your ClickStack URL
-2. Navigate to the **Traces** view
-3. Set time range to "Last 1 day"
-4. You should see 1,000 trace entries
+1. Open [HyperDX](http://localhost:8080/search?from=1761501600000&to=1761588000000&isLive=false&source=69023d1b4f1d41a964641b09&where=&select=Timestamp,ServiceName,StatusCode,round(Duration/1e6),SpanName&whereLanguage=lucene&orderBy=&filters=[])
+
+::::note
+It is important to use the link above to get the correct time range, if you don't use this link set your time range to Oct 26 13:00:00 - Oct 27 13:00:00 to see proper results.
+::::
+
+Here's what you should see in your search view:
+
+<Image img={view_traces} alt="View Traces"/>
 
 </VerticalStepper>
 

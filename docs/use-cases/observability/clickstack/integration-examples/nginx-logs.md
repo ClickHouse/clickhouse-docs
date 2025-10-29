@@ -14,6 +14,7 @@ import import_dashboard from '@site/static/images/clickstack/import-dashboard.pn
 import finish_import from '@site/static/images/clickstack/finish-import.png';
 import example_dashboard from '@site/static/images/clickstack/example-logs-dashboard.png';
 import log_view from '@site/static/images/clickstack/log-view.png';
+import search_view from '@site/static/images/clickstack/nginx-logs-search-view.png';
 
 # Monitoring Nginx Logs with ClickStack {#nginx-clickstack}
 
@@ -132,8 +133,9 @@ To enable custom collector configuration in your existing ClickStack deployment,
 2. Set the environment variable CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
 3. Mount your nginx log directories so the collector can read them
 
-Update your ClickStack deployment configuration to include these settings, this example uses docker compose.
+### Option 1: Docker Compose {#docker-compose}
 
+Update your ClickStack deployment configuration:
 ```yaml
 services:
   clickstack:
@@ -147,6 +149,18 @@ services:
       # ... other volumes ...
 ```
 
+### Option 2: Docker Run (All-in-One Image) {#all-in-one}
+
+If using the all-in-one image with docker run:
+```bash
+docker run --name clickstack \
+  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -v "$(pwd)/nginx-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  -v /var/log/nginx:/var/log/nginx:ro \
+  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+```
+
 ::::note
 Ensure the ClickStack collector has appropriate permissions to read the nginx log files. In production, use read-only mounts (:ro) and follow the principle of least privilege.
 ::::
@@ -156,6 +170,10 @@ Once configured, log into HyperDX and verify logs are flowing:
 
 1. Navigate to the Logs view
 2. Verify you see JSON-parsed log entries with fields like request, request_time, upstream_response_time, etc.
+
+This is an example of what you should see:
+
+<Image img={search_view} alt="Log view"/>
 
 <Image img={log_view} alt="Log view"/>
 
@@ -174,38 +192,6 @@ Download the sample log file and update timestamps to the current time:
 ```bash
 # Download the logs
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/access.log
-
-# Update timestamps to current time while preserving traffic patterns
-python3 << 'EOF'
-import json
-from datetime import datetime, timedelta
-
-# Read all log lines
-with open('access.log', 'r') as f:
-    logs = [json.loads(line) for line in f]
-
-# Parse timestamps and find the newest
-def parse_time(time_str):
-    return datetime.strptime(time_str, "%d/%b/%Y:%H:%M:%S %z")
-
-original_times = [parse_time(log['time_local']) for log in logs]
-newest_time = max(original_times)
-now = datetime.now(newest_time.tzinfo)
-time_shift = now - newest_time
-
-# Update all timestamps
-for log in logs:
-    original_time = parse_time(log['time_local'])
-    new_time = original_time + time_shift
-    log['time_local'] = new_time.strftime("%d/%b/%Y:%H:%M:%S %z")
-
-# Write back as newline-delimited JSON
-with open('access.log', 'w') as f:
-    for log in logs:
-        f.write(json.dumps(log) + '\n')
-
-print('✅ Log timestamps updated to current time')
-EOF
 ```
 
 The dataset includes:
@@ -220,6 +206,7 @@ The dataset includes:
 Create a file named `nginx-demo.yaml` with the following configuration:
 
 ```yaml
+cat > nginx-demo.yaml << 'EOF'
 receivers:
   filelog:
     include:
@@ -246,6 +233,7 @@ service:
         - batch
       exporters:
         - clickhouse
+EOF
 ```
 
 ## Run ClickStack with demo configuration {#run-demo}
@@ -263,12 +251,17 @@ docker run --name clickstack-demo \
 
 ## Verify logs in HyperDX {#verify-demo-logs}
 
-Once ClickStack is running:
+Once ClickStack is running (you may have to create an account and login first):
 
-1. Open HyperDX at http://localhost:8080
-2. Navigate to the Logs view
-3. Set time range to "Last 1 Day"
-4. You should see ~10,000 log entries
+1. Open [HyperDX](http://localhost:8080/search?from=1760976000000&to=1761062400000&isLive=false&source=690235c1a9b7fc5a7c0fffc7&select=Timestamp,ServiceName,SeverityText,Body&where=&whereLanguage=lucene&filters=[]&orderBy=)
+
+::::note
+It is important to use the link above to get the correct time range, if you don't use this link set your time range to Oct 20 11:00:00 - Oct 21 11:00:00 to see proper results.
+::::
+
+Here's what you should see in your search view:
+
+<Image img={search_view} alt="Log view"/>
 
 <Image img={log_view} alt="Log view"/>
 
