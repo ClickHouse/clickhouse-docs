@@ -133,8 +133,9 @@ To enable custom collector configuration in your existing ClickStack deployment,
 2. Set the environment variable CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
 3. Mount your nginx log directories so the collector can read them
 
-Update your ClickStack deployment configuration to include these settings, this example uses docker compose.
+### Option 1: Docker Compose
 
+Update your ClickStack deployment configuration:
 ```yaml
 services:
   clickstack:
@@ -146,6 +147,18 @@ services:
       - ./nginx-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
       - /var/log/nginx:/var/log/nginx:ro
       # ... other volumes ...
+```
+
+### Option 2: Docker Run (All-in-One Image)
+
+If using the all-in-one image with docker run:
+```bash
+docker run --name clickstack \
+  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -v "$(pwd)/nginx-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  -v /var/log/nginx:/var/log/nginx:ro \
+  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
 ```
 
 ::::note
