@@ -71,7 +71,7 @@ For example:
 Once your dbt profile is configured for ClickHouse, you’ll also need to connect your **dbt project** to Lightdash.
 
 Because this process is the same for all data warehouses, we won’t go into detail here — you can follow the official Lightdash guide for importing a dbt project:  
-[Import a dbt project → Lightdash Docs](https://docs.lightdash.com/get-started/setup-lightdash/connect-project#2-import-a-dbt-project)
+[Import a dbt project → Lightdash Docs](https://docs.lightdash.com/get-started/setup-lightdash/connect-project#2-import-a-dbt-project?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs)
 
 After connecting your dbt project, Lightdash will automatically detect your ClickHouse configuration from the `profiles.yml` file. Once the connection test succeeds, you’ll be able to start exploring your dbt models and building dashboards powered by ClickHouse.
 
@@ -99,8 +99,8 @@ In Lightdash, all **metrics** and **dimensions** are defined directly in your db
 Defining these in YAML ensures your team is using the same definitions across dashboards and analyses. For example, you can create reusable metrics like `total_order_count`, `total_revenue`, or `avg_order_value` right next to your dbt models — no duplication required in the UI.
 
 To learn more about how to define these, see the Lightdash guides:  
-- [How to create metrics](https://docs.lightdash.com/guides/how-to-create-metrics)  
-- [How to create dimensions](https://docs.lightdash.com/guides/how-to-create-dimensions)
+- [How to create metrics](https://docs.lightdash.com/guides/how-to-create-metrics?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs)  
+- [How to create dimensions](https://docs.lightdash.com/guides/how-to-create-dimensions?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs)
 
 ---
 
@@ -127,7 +127,7 @@ The **Explore** page is made up of five main areas:
 From here, you can build and adjust queries interactively — dragging and dropping fields, adding filters, and switching between visualization types such as tables, bar charts, or time series.
 
 For a deeper look at explores and how to query from your tables, see:  
-[An intro to tables and the Explore page → Lightdash Docs](https://docs.lightdash.com/get-started/exploring-data/using-explores#an-intro-to-tables-and-the-explore-page)
+[An intro to tables and the Explore page → Lightdash Docs](https://docs.lightdash.com/get-started/exploring-data/using-explores#an-intro-to-tables-and-the-explore-page?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs)
 
 ---
 
@@ -148,7 +148,7 @@ To create a dashboard-only chart:
 <Image size="lg" img={lightdash_05} alt="Creating and organizing charts within a Lightdash dashboard" border />
 
 Learn more about how to create and organize dashboards here:  
-[Building dashboards → Lightdash Docs](https://docs.lightdash.com/get-started/exploring-data/dashboards)
+[Building dashboards → Lightdash Docs](https://docs.lightdash.com/get-started/exploring-data/dashboards?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs)
 
 ---
 
@@ -162,9 +162,9 @@ It’s powered by the same semantic layer you use in dbt, meaning every answer s
 <Image size="lg" img={lightdash_06} alt="Lightdash Ask AI interface showing natural language query powered by dbt metrics" border />
 
 Learn more about AI Agents here:  
-[AI Agents → Lightdash Docs](https://docs.lightdash.com/guides/ai-agents)
+[AI Agents → Lightdash Docs](https://docs.lightdash.com/guides/ai-agents?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs)
 
 
 ## Learn more
 
-To learn more about connecting dbt projects to Lightdash, visit the [Lightdash Docs → ClickHouse setup](https://docs.lightdash.com/get-started/setup-lightdash/connect-project#clickhouse).
+To learn more about connecting dbt projects to Lightdash, visit the [Lightdash Docs → ClickHouse setup](https://docs.lightdash.com/get-started/setup-lightdash/connect-project#clickhouse?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs).
