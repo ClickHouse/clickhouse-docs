@@ -25,6 +25,10 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
+:::tip
+Looking to store ClickHouse audit logs to Splunk? Follow the ["Storing ClickHouse Cloud Audit logs into Splunk"](/integrations/audit-splunk) guide.
+:::
+
 Splunk is a popular technology for security and observability. It is also a powerful search and dashboarding engine. There are hundreds of Splunk apps available to address different use cases.
 
 For ClickHouse specifically, we are leveraging the [Splunk DB Connect App](https://splunkbase.splunk.com/app/2686) which has a simple integration to the highly performant ClickHouse JDBC driver to query tables in ClickHouse directly.
