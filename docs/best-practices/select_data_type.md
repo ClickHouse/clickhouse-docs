@@ -1,10 +1,11 @@
 ---
 slug: /best-practices/select-data-types
 sidebar_position: 10
-sidebar_label: 'Selecting data Types'
-title: 'Selecting data Types'
+sidebar_label: 'Selecting data types'
+title: 'Selecting data types'
 description: 'Page describing how to choose data types in ClickHouse'
 keywords: ['data types']
+doc_type: 'reference'
 ---
 
 import NullableColumns from '@site/docs/best-practices/_snippets/_avoid_nullable_columns.md';
@@ -15,10 +16,9 @@ Compression efficiency in ClickHouse depends mainly on three factors: the orderi
 
 Some straightforward guidelines can significantly enhance the schema:
 
-
 * **Use Strict Types:** Always select the correct data type for columns. Numeric and date fields should use appropriate numeric and date types rather than general-purpose String types. This ensures correct semantics for filtering and aggregations.
 
-* **Avoid Nullable Columns:** Nullable columns introduce additional overhead by maintaining separate columns for tracking null values. Only use Nullable if explicitly required to distinguish between empty and null states. Otherwise, default or zero-equivalent values typically suffice. For further information on why this type should be avoided unless needed, see [Avoid Nullable Columns](/best-practices/select-data-types#avoid-nullable-columns).
+* **Avoid nullable Columns:** Nullable columns introduce additional overhead by maintaining separate columns for tracking null values. Only use Nullable if explicitly required to distinguish between empty and null states. Otherwise, default or zero-equivalent values typically suffice. For further information on why this type should be avoided unless needed, see [Avoid nullable Columns](/best-practices/select-data-types#avoid-nullable-columns).
 
 * **Minimize Numeric Precision:** Select numeric types with minimal bit-width that still accommodate the expected data range. For instance, prefer [UInt16 over Int32](/sql-reference/data-types/int-uint) if negative values aren't needed, and the range fits within 0–65535.
 
@@ -35,7 +35,6 @@ ClickHouse offers built-in tools to streamline type optimization. For example, s
 :::note
 By default, ClickHouse maps these to equivalent Nullable types. This is preferred as the schema is based on a sample of the rows only.
 :::
-
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
@@ -99,7 +98,7 @@ By applying our early simple rules to our posts table, we can identify an optima
 | `CommunityOwnedDate`     | No         | 2008-08-12 04:59:35.017000000, 2024-04-01 05:36:41.380000000           | -              | Yes    | Consider default 1970-01-01 for Nulls. Millisecond granularity is not required, use DateTime | DateTime                                 |
 | `ClosedDate`             | No         | 2008-09-04 20:56:44, 2024-04-06 18:49:25.393000000                     | -              | Yes    | Consider default 1970-01-01 for Nulls. Millisecond granularity is not required, use DateTime | DateTime                                 |
 
-:::note tip
+:::note Tip
 Identifying the type for a column relies on understanding its numeric range and number of unique values. To find the range of all columns, and the number of distinct values, users can use the simple query `SELECT * APPLY min, * APPLY max, * APPLY uniq FROM table FORMAT Vertical`. We recommend performing this over a smaller subset of the data as this can be expensive.
 :::
 
@@ -136,6 +135,6 @@ ENGINE = MergeTree
 ORDER BY tuple()
 ```
 
-## Avoid Nullable columns {#avoid-nullable-columns}
+## Avoid nullable columns {#avoid-nullable-columns}
 
 <NullableColumns />

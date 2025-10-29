@@ -5,6 +5,11 @@ slug: /integrations/tableau
 keywords: ['clickhouse', 'tableau', 'connect', 'integrate', 'ui']
 description: 'Tableau can use ClickHouse databases and tables as a data source.'
 title: 'Connecting Tableau to ClickHouse'
+doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_visualization'
+  - website: 'https://github.com/analytikaplus/clickhouse-tableau-connector-jdbc'
 ---
 
 import TOCInline from '@theme/TOCInline';
@@ -22,21 +27,22 @@ import tableau_workbook4 from '@site/static/images/integrations/data-visualizati
 import tableau_workbook5 from '@site/static/images/integrations/data-visualization/tableau_workbook5.png';
 import tableau_workbook6 from '@site/static/images/integrations/data-visualization/tableau_workbook6.png';
 import tableau_workbook7 from '@site/static/images/integrations/data-visualization/tableau_workbook7.png';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Connecting Tableau to ClickHouse
+
+<ClickHouseSupportedBadge/>
 
 ClickHouse offers an official Tableau Connector, featured on
 the [Tableau Exchange](https://exchange.tableau.com/products/1064).
 The connector is based on ClickHouse's advanced [JDBC driver](/integrations/language-clients/java/jdbc).
 
 With this connector, Tableau integrates ClickHouse databases and tables as data sources. To enable this functionality,
-follow the setup guide bellow.
-
+follow the setup guide below.
 
 <TOCInline toc={toc}/>
 
-## Setup Required Prior Usage {#setup-required-prior-usage}
-
+## Setup required prior usage {#setup-required-prior-usage}
 
 1. Gather your connection details
    <ConnectionDetails />
@@ -47,10 +53,10 @@ follow the setup guide bellow.
    of <a href="https://github.com/ClickHouse/clickhouse-java/releases/" target="_blank">ClickHouse JDBC driver</a>.
 
 :::note
-Make sure you download the **clickhouse-jdbc-x.x.x-shaded-all.jar** JAR file. Currently, we recommended using versions `0.8.X`.
+Make sure you download the [clickhouse-jdbc-X.X.X-all-dependencies.jar](https://github.com/ClickHouse/clickhouse-java/releases) JAR file. This artifact is available from version `0.9.2`.
 :::
 
-4. Store the JDBC driver in the following folder (based on your OS, if the folder doesn't exist you can create it):
+4. Store the JDBC driver in the following folder (based on your OS, if the folder doesn't exist, you can create it):
     - macOS: `~/Library/Tableau/Drivers`
     - Windows: `C:\Program Files\Tableau\Drivers`
 5. Configure a ClickHouse data source in Tableau and start building data visualizations!
@@ -78,7 +84,7 @@ To solve that, consider upgrading your Tableau Desktop application, or [install 
 <br/>
  
 4. Click **Install and Restart Tableau**. Restart the application.
-5. After restarting, the connector will have its full name: `ClickHouse JDBC by ClickHouse, Inc.`. When clicking it the following dialog will pop up:
+5. After restarting, the connector will have its full name: `ClickHouse JDBC by ClickHouse, Inc.`. When clicking it, the following dialog will pop up:
 
 <Image size="md" img={tableau_connector_dialog} alt="ClickHouse connection dialog in Tableau showing fields for server, port, database, username and password" border />
 <br/>
@@ -97,7 +103,6 @@ To solve that, consider upgrading your Tableau Desktop application, or [install 
 When working with ClickHouse cloud, it's required to enable the SSL checkbox for secured connections.
 :::
 <br/>
-
 
 :::note
 Our ClickHouse database is named **TPCD**, but you must set the **Database** to **default** in the dialog above, then
@@ -119,7 +124,7 @@ You are now ready to build some visualizations in Tableau!
 
 ## Building Visualizations in Tableau {#building-visualizations-in-tableau}
 
-Now that have a ClickHouse data source configured in Tableau, let's visualize the data...
+Now that we have a ClickHouse data source configured in Tableau, let's visualize the data...
 
 1. Drag the **CUSTOMER** table onto the workbook. Notice the columns appear, but the data table is empty:
 
@@ -127,7 +132,6 @@ Now that have a ClickHouse data source configured in Tableau, let's visualize th
 <br/>
 
 2. Click the **Update Now** button and 100 rows from **CUSTOMER** will populate the table.
-
 
 3. Drag the **ORDERS** table into the workbook, then set **Custkey** as the relationship field between the two tables:
 
@@ -177,7 +181,7 @@ You should see the following:
 Well done! You have successfully connected Tableau to ClickHouse, and you have opened up a whole world of possibilities
 for analyzing and visualizing your ClickHouse data.
 
-## Install the Connector Manually {#install-the-connector-manually}
+## Install the connector manually {#install-the-connector-manually}
 
 In case you use an outdated Tableau Desktop version that doesn't include the connector by default, you can install it manually by following these steps:
 
@@ -187,7 +191,7 @@ In case you use an outdated Tableau Desktop version that doesn't include the con
    * Windows: `C:\Users\[Windows User]\Documents\My Tableau Repository\Connectors`
 3. Restart Tableau Desktop, if your setup went successfully, you will set the connector under the `New Data Source` section.
 
-## Connection and Analysis Tips {#connection-and-analysis-tips}
+## Connection and analysis tips {#connection-and-analysis-tips}
 
 For more guidance on optimizing your Tableau-ClickHouse integration, 
 please visit [Connection Tips](/integrations/tableau/connection-tips) and [Analysis Tips](/integrations/tableau/analysis-tips).

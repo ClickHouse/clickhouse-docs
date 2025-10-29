@@ -4,6 +4,8 @@ title: 'Starter Guides'
 description: 'Landing page for starter guides'
 pagination_prev: null
 pagination_next: null
+doc_type: 'landing-page'
+keywords: ['beginner', 'tutorial', 'create table', 'insert data', 'select data', 'update data', 'delete data']
 ---
 
 In this section of the docs you'll find starter guides for common SQL queries: `CREATE`, `INSERT`, `SELECT`, and mutations `UPDATE` and `DELETE`.

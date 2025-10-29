@@ -1,18 +1,16 @@
 ---
-'description': 'Allows to instantly attach table/database from backups in read-only
-  mode.'
+'description': 'バックアップからテーブル/データベースを読み取り専用モードで即座に接続することを許可します。'
 'sidebar_label': 'バックアップ'
 'sidebar_position': 60
 'slug': '/engines/database-engines/backup'
-'title': 'Backup'
+'title': 'バックアップ'
+'doc_type': 'reference'
 ---
-
-
 
 
 # バックアップ
 
-データベースバックアップでは、[バックアップ](../../operations/backup)からテーブル/データベースを読み取り専用モードで瞬時にアタッチできます。
+データベースバックアップは、[バックアップ](../../operations/backup)からテーブル/データベースを即座に読み取り専用モードでアタッチすることを可能にします。
 
 データベースバックアップは、増分バックアップと非増分バックアップの両方で機能します。
 
@@ -23,23 +21,23 @@ CREATE DATABASE backup_database
 ENGINE = Backup('database_name_inside_backup', 'backup_destination')
 ```
 
-バックアップ先は、`Disk`、`S3`、`File`など、すべての有効なバックアップ[宛先](../../operations/backup#configure-a-backup-destination)にすることができます。
+バックアップの宛先は、`Disk`、`S3`、`File`などの有効なバックアップ[宛先](../../operations/backup#configure-a-backup-destination)にすることができます。
 
-`Disk`バックアップ先を使用した場合、バックアップからデータベースを作成するクエリは次のようになります：
+`Disk`バックアップ宛先で、バックアップからデータベースを作成するためのクエリは次のようになります：
 
 ```sql
 CREATE DATABASE backup_database
 ENGINE = Backup('database_name_inside_backup', Disk('disk_name', 'backup_name'))
 ```
 
-**エンジンパラメータ**
+**エンジンパラメーター**
 
-- `database_name_inside_backup` — バックアップ内のデータベース名。
-- `backup_destination` — バックアップ先。
+- `database_name_inside_backup` — バックアップ内のデータベースの名前。
+- `backup_destination` — バックアップ宛先。
 
 ## 使用例 {#usage-example}
 
-`Disk`バックアップ先を使用した例を見てみましょう。まず、`storage.xml`でバックアップディスクを設定しましょう：
+`Disk`バックアップ宛先を使用した例を見てみましょう。まず、`storage.xml`にバックアップディスクを設定しましょう：
 
 ```xml
 <storage_configuration>
@@ -56,7 +54,7 @@ ENGINE = Backup('database_name_inside_backup', Disk('disk_name', 'backup_name'))
 </backups>
 ```
 
-使用の例です。テストデータベースを作成し、テーブルを作成し、いくつかのデータを挿入し、最後にバックアップを作成しましょう：
+使用例です。テストデータベースを作成し、テーブルを作成し、データを挿入した後、バックアップを作成します：
 
 ```sql
 CREATE DATABASE test_database;
@@ -73,13 +71,13 @@ INSERT INTO test_database.test_table_3 VALUES (0, 'test_database.test_table_3');
 BACKUP DATABASE test_database TO Disk('backups', 'test_database_backup');
 ```
 
-これで`test_database_backup`バックアップができました。次に、バックアップを使用してデータベースを作成しましょう：
+これで`test_database_backup`バックアップができましたので、データベースBackupを作成します：
 
 ```sql
 CREATE DATABASE test_database_backup ENGINE = Backup('test_database', Disk('backups', 'test_database_backup'));
 ```
 
-これで、データベースから任意のテーブルをクエリすることができます：
+これで、データベースから任意のテーブルをクエリできます：
 
 ```sql
 SELECT id, value FROM test_database_backup.test_table_1;
@@ -101,10 +99,10 @@ SELECT id, value FROM test_database_backup.test_table_3;
 └────┴────────────────────────────┘
 ```
 
-このバックアップデータベースを普通のデータベースと同様に操作することも可能です。例えば、テーブルをクエリすることもできます：
+このデータベースBackupも通常のデータベースのように扱うことが可能です。たとえば、その中のテーブルをクエリすることができます：
 
 ```sql
-SELECT database, name FROM system.tables WHERE database = 'test_database_backup';
+SELECT database, name FROM system.tables WHERE database = 'test_database_backup':
 
 ┌─database─────────────┬─name─────────┐
 │ test_database_backup │ test_table_1 │

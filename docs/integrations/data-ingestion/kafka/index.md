@@ -1,9 +1,16 @@
 ---
+
+
 sidebar_label: 'Integrating Kafka with ClickHouse'
 sidebar_position: 1
 slug: /integrations/kafka
 description: 'Introduction to Kafka with ClickHouse'
 title: 'Integrating Kafka with ClickHouse'
+keywords: ['Apache Kafka', 'event streaming', 'data pipeline', 'message broker', 'real-time data']
+doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 # Integrating Kafka with ClickHouse
@@ -14,11 +21,11 @@ title: 'Integrating Kafka with ClickHouse'
 
 Choosing the right option for your use case depends on multiple factors, including your ClickHouse deployment type, data flow direction and operational requirements.
 
-|Option   | Deployment type | Fully managed | Kafka to ClickHouse | ClickHouse to Kafka |
-|---------|------------|:-------------------:|:-------------------:|:------------------:|
-| [ClickPipes for Kafka](../clickpipes/kafka.md) | [Cloud], [BYOC] (coming soon!)   | ✅ | ✅ |   |
-| [Kafka Connect Sink](./kafka-clickhouse-connect-sink.md)   | [Cloud], [BYOC], [Self-hosted] | | ✅ |   |
-| [Kafka table engine](./kafka-table-engine.md)   | [Cloud], [BYOC], [Self-hosted] | | ✅ | ✅ |
+| Option                                                  | Deployment type | Fully managed | Kafka to ClickHouse | ClickHouse to Kafka |
+|---------------------------------------------------------|------------|:-------------------:|:-------------------:|:------------------:|
+| [ClickPipes for Kafka](/integrations/clickpipes/kafka)                                | [Cloud], [BYOC] (coming soon!)   | ✅ | ✅ |   |
+| [Kafka Connect Sink](./kafka-clickhouse-connect-sink.md) | [Cloud], [BYOC], [Self-hosted] | | ✅ |   |
+| [Kafka table engine](./kafka-table-engine.md)           | [Cloud], [BYOC], [Self-hosted] | | ✅ | ✅ |
 
 For a more detailed comparison between these options, see [Choosing an option](#choosing-an-option).
 
@@ -37,14 +44,14 @@ This is the recommended option if you're a ClickHouse Cloud user. ClickPipes is 
 * Optimized for ClickHouse Cloud, delivering blazing-fast performance
 * Horizontal and vertical scalability for high-throughput workloads
 * Built-in fault tolerance with configurable replicas and automatic retries
-* Deployment and management via ClickHouse Cloud UI, [Open API](../../../cloud/manage/api/api-overview.md), or [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.3.3-alpha2/docs/resources/clickpipe)
+* Deployment and management via ClickHouse Cloud UI, [Open API](/cloud/manage/api/api-overview), or [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.3.3-alpha2/docs/resources/clickpipe)
 * Enterprise-grade security with support for cloud-native authorization (IAM) and private connectivity (PrivateLink)
-* Supports a wide range of [data sources](../clickpipes/kafka.md#supported-data-sources), including Confluent Cloud, Amazon MSK, Redpanda Cloud, and Azure Event Hubs
+* Supports a wide range of [data sources](/integrations/clickpipes/kafka/reference/), including Confluent Cloud, Amazon MSK, Redpanda Cloud, and Azure Event Hubs
 * Supports most common serialization formats (JSON, Avro, Protobuf coming soon!)
 
 #### Getting started {#clickpipes-for-kafka-getting-started}
 
-To get started using ClickPipes for Kafka, see the [reference documentation](../clickpipes/kafka.md) or navigate to the `Data Sources` tab in the ClickHouse Cloud UI.
+To get started using ClickPipes for Kafka, see the [reference documentation](/integrations/clickpipes/kafka/reference) or navigate to the `Data Sources` tab in the ClickHouse Cloud UI.
 
 ### Kafka Connect Sink {#kafka-connect-sink}
 
@@ -100,6 +107,6 @@ To get started using the Kafka table engine, see the [reference documentation](.
 
 * **Custom code** - Custom code using Kafka and ClickHouse [client libraries](../../language-clients/index.md) may be appropriate in cases where custom processing of events is required.
 
-[BYOC]: ../../../cloud/reference/byoc.md
-[Cloud]: ../../../cloud-index.md
+[BYOC]: /cloud/reference/byoc/overview
+[Cloud]: /cloud/get-started
 [Self-hosted]: ../../../intro.md

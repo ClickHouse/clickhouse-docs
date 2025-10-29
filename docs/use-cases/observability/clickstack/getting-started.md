@@ -1,10 +1,12 @@
 ---
 slug: /use-cases/observability/clickstack/getting-started
 title: 'Getting Started with ClickStack'
-sidebar_label: 'Getting Started'
+sidebar_label: 'Getting started'
 pagination_prev: null
 pagination_next: use-cases/observability/clickstack/example-datasets/index
 description: 'Getting started with ClickStack - The ClickHouse Observability Stack'
+doc_type: 'guide'
+keywords: ['ClickStack', 'getting started', 'Docker deployment', 'HyperDX UI', 'ClickHouse Cloud', 'local deployment']
 ---
 
 import Image from '@theme/IdealImage';
@@ -20,7 +22,6 @@ import delete_source from '@site/static/images/use-cases/observability/delete_so
 import delete_connection from '@site/static/images/use-cases/observability/delete_connection.png';
 import created_sources from '@site/static/images/use-cases/observability/created_sources.png';
 import edit_connection from '@site/static/images/use-cases/observability/edit_connection.png';
-
 
 Getting started with **ClickStack** is straightforward thanks to the availability of prebuilt Docker images. These images are based on the official ClickHouse Debian package and are available in multiple distributions to suit different use cases.
 

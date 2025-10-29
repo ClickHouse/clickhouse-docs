@@ -3,6 +3,8 @@ sidebar_label: 'Amazon RDS Postgres'
 description: 'Set up Amazon RDS Postgres as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/rds
 title: 'RDS Postgres Source Setup Guide'
+doc_type: 'guide'
+keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
@@ -14,13 +16,13 @@ import security_group_in_rds_postgres from '@site/static/images/integrations/dat
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-# RDS Postgres Source Setup Guide
+# RDS Postgres source setup guide
 
 ## Supported Postgres versions {#supported-postgres-versions}
 
 ClickPipes supports Postgres version 12 and later.
 
-## Enable Logical Replication {#enable-logical-replication}
+## Enable logical replication {#enable-logical-replication}
 
 You can skip this section if your RDS instance already has the following settings configured:
 - `rds.logical_replication = 1`
@@ -62,7 +64,7 @@ If not already configured, follow these steps:
 
 <Image img={reboot_rds} alt="Reboot RDS Postgres" size="lg" border/>
 
-## Configure Database User {#configure-database-user}
+## Configure database user {#configure-database-user}
 
 Connect to your RDS Postgres instance as an admin user and execute the following commands:
 
@@ -92,10 +94,9 @@ Connect to your RDS Postgres instance as an admin user and execute the following
     CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
     ```
 
+## Configure network access {#configure-network-access}
 
-## Configure Network Access {#configure-network-access}
-
-### IP-based Access Control {#ip-based-access-control}
+### IP-based access control {#ip-based-access-control}
 
 If you want to restrict traffic to your RDS instance, please add the [documented static NAT IPs](../../index.md#list-of-static-ips) to the `Inbound rules` of your RDS security group.
 

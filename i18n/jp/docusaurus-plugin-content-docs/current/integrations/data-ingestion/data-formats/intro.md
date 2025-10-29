@@ -9,16 +9,16 @@
 - 'Parquet'
 - 'clickhouse-client'
 - 'clickhouse-local'
-'title': 'ClickHouseへのさまざまなデータ形式からのインポート'
-'description': 'さまざまなデータ形式をClickHouseにインポートする方法について説明するページ'
+'title': 'さまざまなデータフォーマットをClickHouseにインポートする'
+'description': 'ClickHouseにさまざまなデータフォーマットをインポートする方法を説明するページ'
+'show_related_blogs': true
+'doc_type': 'guide'
 ---
 
 
+# ClickHouseへのさまざまなデータ形式のインポート
 
-
-# ClickHouseへのさまざまなデータ形式からのインポート
-
-このドキュメントのセクションでは、さまざまなファイルタイプからのロードの例を見つけることができます。
+このドキュメントのこのセクションでは、さまざまなファイルタイプからの読み込みの例を見つけることができます。
 
 ### [**バイナリ**](/integrations/data-ingestion/data-formats/binary.md) {#binary}
 
@@ -26,22 +26,18 @@ ClickHouse Native、MessagePack、Protocol Buffers、Cap'n Protoなどのバイ�
 
 ### [**CSVおよびTSV**](/integrations/data-ingestion/data-formats/csv-tsv.md) {#csv-and-tsv}
 
-カスタムヘッダーと区切り文字を使用して、TSVを含むCSVファミリーをインポートおよびエクスポートします。
+カスタムヘッダーとセパレーターを使って、TSVを含むCSVファミリーのインポートおよびエクスポートを行います。
 
 ### [**JSON**](/integrations/data-ingestion/data-formats/json/intro.md) {#json}
 
-オブジェクトとしておよび行区切りのNDJSONとしてさまざまな形式のJSONをロードおよびエクスポートします。
+オブジェクトや行区切りのNDJSONとして含むさまざまな形式のJSONをロードおよびエクスポートします。
 
 ### [**Parquetデータ**](/integrations/data-ingestion/data-formats/parquet.md) {#parquet-data}
 
-ParquetやArrowなどの一般的なApache形式を扱います。
+ParquetやArrowなどの一般的なApacheフォーマットを扱います。
 
 ### [**SQLデータ**](/integrations/data-ingestion/data-formats/sql.md) {#sql-data}
 
-MySQLやPostgresqlにインポートするためのSQLダンプが必要ですか？他を探す必要はありません。
+MySQLやPostgresqlにインポートするためのSQLダンプが必要ですか？ これ以上探す必要はありません。
 
-Grafana、TableauなどのBIツールを接続したい場合は、ドキュメントの[可視化カテゴリ](../../data-visualization/index.md)をチェックしてください。
-
-## 関連コンテンツ {#related-content}
-
-- ブログ: [ClickHouseにおけるデータ形式の紹介](https://clickhouse.com/blog/data-formats-clickhouse-csv-tsv-parquet-native)
+Grafana、TableauなどのBIツールを接続することを検討している場合は、ドキュメントの[可視化カテゴリー](../../data-visualization/index.md)をチェックしてください。

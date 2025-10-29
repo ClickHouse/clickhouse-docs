@@ -1,8 +1,10 @@
 ---
-sidebar_label: 'Deduplication Strategies'
+sidebar_label: 'Deduplication strategies'
 description: 'Handle duplicates and deleted rows.'
 slug: /integrations/clickpipes/postgres/deduplication
 title: 'Deduplication strategies (using CDC)'
+keywords: ['deduplication', 'postgres', 'clickpipes', 'replacingmergetree', 'final']
+doc_type: 'guide'
 ---
 
 import clickpipes_initial_load from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-cdc-initial-load.png';
@@ -179,9 +181,9 @@ ORDER BY viewcount DESC
 LIMIT 10
 ```
 
-#### Refreshable Material view {#refreshable-material-view}
+#### Refreshable materialized view {#refreshable-material-view}
 
-Another approach is to use a [Refreshable Materialized View](/materialized-view/refreshable-materialized-view), which enables you to schedule query execution for deduplicating rows and storing the results in a destination table. With each scheduled refresh, the destination table is replaced with the latest query results.
+Another approach is to use a [refreshable materialized view](/materialized-view/refreshable-materialized-view), which enables you to schedule query execution for deduplicating rows and storing the results in a destination table. With each scheduled refresh, the destination table is replaced with the latest query results.
 
 The key advantage of this method is that the query using the FINAL keyword runs only once during the refresh, eliminating the need for subsequent queries on the destination table to use FINAL.
 

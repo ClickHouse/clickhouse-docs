@@ -1,19 +1,15 @@
 ---
-'description': 'Calculates the `arg` value for a minimum `val` value. If there are
-  multiple rows with equal `val` being the maximum, which of the associated `arg`
-  is returned is not deterministic.'
+'description': '最小 `val` 値のために `arg` 値を計算します。複数の行が同じ `val` を持つ場合、どの関連する `arg` が返されるかは決定論的ではありません。'
 'sidebar_position': 110
 'slug': '/sql-reference/aggregate-functions/reference/argmin'
 'title': 'argMin'
+'doc_type': 'reference'
 ---
-
-
 
 
 # argMin
 
-`val` の最小値に対応する `arg` 値を計算します。複数の行が同じ `val` に対して最大である場合、どの関連する `arg` が返されるかは決定論的ではありません。
-`arg` と `min` の両方は [集約関数](/sql-reference/aggregate-functions/index.md) として振る舞い、処理中に `Null` を [スキップ](/sql-reference/aggregate-functions/index.md#null-processing) し、利用可能な場合には `Null` でない値を返します。
+最小の `val` 値に対する `arg` 値を計算します。`val` が最大で同値の行が複数存在する場合、どの関連する `arg` が返されるかは非決定的です。 `arg` と `min` の両方は、[集約関数](/sql-reference/aggregate-functions/index.md)として動作し、処理中に [`Null` をスキップ](/sql-reference/aggregate-functions/index.md#null-processing)し、利用可能な `Null` でない値がある場合は `Null` でない値を返します。
 
 **構文**
 
@@ -28,9 +24,9 @@ argMin(arg, val)
 
 **返される値**
 
-- 最小 `val` 値に対応する `arg` 値。
+- 最小の `val` 値に対応する `arg` 値。
 
-タイプ: `arg` の型と一致します。
+タイプ: `arg` タイプに一致します。
 
 **例**
 
@@ -70,7 +66,7 @@ ENGINE = Memory AS
 SELECT *
 FROM VALUES((NULL, 0), ('a', 1), ('b', 2), ('c', 2), (NULL, NULL), ('d', NULL));
 
-select * from test;
+SELECT * FROM test;
 ┌─a────┬────b─┐
 │ ᴺᵁᴸᴸ │    0 │
 │ a    │    1 │
@@ -82,40 +78,40 @@ select * from test;
 
 SELECT argMin(a, b), min(b) FROM test;
 ┌─argMin(a, b)─┬─min(b)─┐
-│ a            │      0 │ -- argMin = a は最初の `NULL` でない値で、min(b) は別の行からの値です！
+│ a            │      0 │ -- argMin = a because it the first not `NULL` value, min(b) is from another row!
 └──────────────┴────────┘
 
 SELECT argMin(tuple(a), b) FROM test;
 ┌─argMin(tuple(a), b)─┐
-│ (NULL)              │ -- a の `Tuple` が単に `NULL` 値を含む場合、集約関数はその行をスキップしません
+│ (NULL)              │ -- The a `Tuple` that contains only a `NULL` value is not `NULL`, so the aggregate functions won't skip that row because of that `NULL` value
 └─────────────────────┘
 
 SELECT (argMin((a, b), b) as t).1 argMinA, t.2 argMinB from test;
 ┌─argMinA─┬─argMinB─┐
-│ ᴺᵁᴸᴸ    │       0 │ -- `Tuple` を使用して、対応する max(b) のすべての (全 - tuple(*)) カラムを取得できます
+│ ᴺᵁᴸᴸ    │       0 │ -- you can use `Tuple` and get both (all - tuple(*)) columns for the according max(b)
 └─────────┴─────────┘
 
 SELECT argMin(a, b), min(b) FROM test WHERE a IS NULL and b IS NULL;
 ┌─argMin(a, b)─┬─min(b)─┐
-│ ᴺᵁᴸᴸ         │   ᴺᵁᴸᴸ │ -- フィルターのためにすべての集約行が少なくとも1つの `NULL` 値を含むため、すべての行がスキップされ、したがって結果は `NULL` になります
+│ ᴺᵁᴸᴸ         │   ᴺᵁᴸᴸ │ -- All aggregated rows contains at least one `NULL` value because of the filter, so all rows are skipped, therefore the result will be `NULL`
 └──────────────┴────────┘
 
 SELECT argMin(a, (b, a)), min(tuple(b, a)) FROM test;
 ┌─argMin(a, tuple(b, a))─┬─min(tuple(b, a))─┐
-│ d                      │ (NULL,NULL)      │ -- 'd' は最小のための最初の `NULL` でない値です
+│ d                      │ (NULL,NULL)      │ -- 'd' is the first not `NULL` value for the min
 └────────────────────────┴──────────────────┘
 
 SELECT argMin((a, b), (b, a)), min(tuple(b, a)) FROM test;
 ┌─argMin(tuple(a, b), tuple(b, a))─┬─min(tuple(b, a))─┐
-│ (NULL,NULL)                      │ (NULL,NULL)      │ -- argMin はここで (NULL,NULL) を返します、なぜなら `Tuple` が `NULL` をスキップしないためです、また、この場合 min(tuple(b, a)) はこのデータセットの最小値です
+│ (NULL,NULL)                      │ (NULL,NULL)      │ -- argMin returns (NULL,NULL) here because `Tuple` allows to don't skip `NULL` and min(tuple(b, a)) in this case is minimal value for this dataset
 └──────────────────────────────────┴──────────────────┘
 
 SELECT argMin(a, tuple(b)) FROM test;
 ┌─argMin(a, tuple(b))─┐
-│ d                   │ -- `Tuple` は `NULL` 値を持つ行をスキップしないために `min` で使用できます
+│ d                   │ -- `Tuple` can be used in `min` to not skip rows with `NULL` values as b.
 └─────────────────────┘
 ```
 
-**参照**
+**関連項目**
 
-- [Tuple](/sql-reference/data-types/tuple.md)
+- [タプル](/sql-reference/data-types/tuple.md)

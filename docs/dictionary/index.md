@@ -3,6 +3,7 @@ slug: /dictionary
 title: 'Dictionary'
 keywords: ['dictionary', 'dictionaries']
 description: 'A dictionary provides a key-value representation of data for fast lookups.'
+doc_type: 'reference'
 ---
 
 import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-cases.png';
@@ -155,7 +156,6 @@ SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes
 │ (34999,32) │
 └────────────┘
 
-
 Exploiting this in our earlier query, we can remove the JOIN:
 
 WITH PostIds AS
@@ -207,10 +207,8 @@ WHERE Title ILIKE '%clickhouse%'
 LIMIT 5
 FORMAT PrettyCompactMonoBlock
 
-
-
 ┌───────Id─┬─Title─────────────────────────────────────────────────────────┬─Location──────────────┐
-│ 52296928 │ Comparision between two Strings in ClickHouse                 │ Spain                 │
+│ 52296928 │ Comparison between two Strings in ClickHouse                  │ Spain                 │
 │ 52345137 │ How to use a file to migrate data from mysql to a clickhouse? │ 中国江苏省Nanjing Shi   │
 │ 61452077 │ How to change PARTITION in clickhouse                         │ Guangzhou, 广东省中国   │
 │ 55608325 │ Clickhouse select last record without max() on all table      │ Moscow, Russia        │
@@ -314,7 +312,7 @@ LIMIT 4
 Peak memory usage: 666.82 MiB.
 ```
 
-## Advanced Dictionary Topics {#advanced-dictionary-topics}
+## Advanced dictionary topics {#advanced-dictionary-topics}
 
 ### Choosing the Dictionary `LAYOUT` {#choosing-the-dictionary-layout}
 

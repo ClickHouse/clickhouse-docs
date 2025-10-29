@@ -5,6 +5,11 @@ keywords: ['clickhouse', 'Airbyte', 'connect', 'integrate', 'etl', 'data integra
 slug: /integrations/airbyte
 description: 'Stream data into ClickHouse using Airbyte data pipelines'
 title: 'Connect Airbyte to ClickHouse'
+doc_type: 'guide'
+integration:
+  - support_level: 'community'
+  - category: 'data_ingestion'
+  - website: 'https://airbyte.com/'
 ---
 
 import Image from '@theme/IdealImage';
@@ -17,11 +22,11 @@ import airbyte06 from '@site/static/images/integrations/data-ingestion/etl-tools
 import airbyte07 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_07.png';
 import airbyte08 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_08.png';
 import airbyte09 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_09.png';
-import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
+import PartnerBadge from '@theme/badges/PartnerBadge';
 
 # Connect Airbyte to ClickHouse
 
-<CommunityMaintainedBadge/>
+<PartnerBadge/>
 
 :::note
 Please note that the Airbyte source and destination for ClickHouse are currently in Alpha status and not suitable for moving large datasets (> 10 million rows)
@@ -29,9 +34,7 @@ Please note that the Airbyte source and destination for ClickHouse are currently
 
 <a href="https://www.airbyte.com/" target="_blank">Airbyte</a> is an open-source data integration platform. It allows the creation of <a href="https://airbyte.com/blog/why-the-future-of-etl-is-not-elt-but-el" target="_blank">ELT</a> data pipelines and is shipped with more than 140 out-of-the-box connectors. This step-by-step tutorial shows how to connect Airbyte to ClickHouse as a destination and load a sample dataset.
 
-
 ## 1. Download and run Airbyte {#1-download-and-run-airbyte}
-
 
 1. Airbyte runs on Docker and uses `docker-compose`. Make sure to download and install the latest versions of Docker.
 
@@ -81,11 +84,9 @@ GRANT CREATE ON * TO my_airbyte_user;
 ```
 :::
 
-
 ## 3. Add a dataset as a source {#3-add-a-dataset-as-a-source}
 
 The example dataset we will use is the <a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">New York City Taxi Data</a> (on <a href="https://github.com/toddwschneider/nyc-taxi-data" target="_blank">Github</a>). For this tutorial, we will use a subset of this dataset which corresponds to the month of Jan 2022.
-
 
 1. Within Airbyte, select the "Sources" page and add a new source of type file.
 
@@ -101,14 +102,11 @@ The example dataset we will use is the <a href="https://clickhouse.com/docs/gett
 
 3. Congratulations! You have now added a source file in Airbyte.
 
-
 ## 4. Create a connection and load the dataset into ClickHouse {#4-create-a-connection-and-load-the-dataset-into-clickhouse}
 
 1. Within Airbyte, select the "Connections" page and add a new connection
 
-
 <Image img={airbyte06} size="lg" border alt="Add a connection in Airbyte" />
-
 
 2. Select "Use existing source" and select the New York City Taxi Data, the select "Use existing destination" and select you ClickHouse instance.
 
@@ -164,8 +162,6 @@ The example dataset we will use is the <a href="https://clickhouse.com/docs/gett
         └─────────┘
         ```
 
-
-
 7. Notice that Airbyte automatically inferred the data types and added 4 columns to the destination table. These columns are used by Airbyte to manage the replication logic and log the operations. More details are available in the  <a href="https://docs.airbyte.com/integrations/destinations/clickhouse#output-schema" target="_blank">Airbyte official documentation</a>.
 
         ```sql
@@ -176,6 +172,5 @@ The example dataset we will use is the <a href="https://clickhouse.com/docs/gett
         ```
 
         Now that the dataset is loaded on your ClickHouse instance, you can create an new table and use more suitable ClickHouse data types (<a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">more details</a>).
-
 
 8. Congratulations - you have successfully loaded the NYC taxi data into ClickHouse using Airbyte!

@@ -1,20 +1,19 @@
 ---
-description: 'Документация для геометрических типов данных в ClickHouse, используемых для представления
-  географических объектов и локаций'
-sidebar_label: 'Гео'
+slug: '/sql-reference/data-types/geo'
+sidebar_label: Гео
 sidebar_position: 54
-slug: /sql-reference/data-types/geo
-title: 'Геометрические'
+description: 'Документация по геометрическим типам данных в ClickHouse, используемым'
+title: Геометрические
+doc_type: reference
 ---
-
-ClickHouse поддерживает типы данных для представления географических объектов — локаций, земель и т.д.
+ClickHouse поддерживает типы данных для представления географических объектов — местоположений, земель и т.д.
 
 **См. также**
 - [Представление простых географических объектов](https://en.wikipedia.org/wiki/GeoJSON).
 
 ## Point {#point}
 
-`Point` представляется своими координатами X и Y, которые хранятся как [Tuple](tuple.md)([Float64](float.md), [Float64](float.md)).
+`Point` представляется своими координатами X и Y, хранимыми как [Tuple](tuple.md)([Float64](float.md), [Float64](float.md)).
 
 **Пример**
 
@@ -77,7 +76,7 @@ SELECT l, toTypeName(l) FROM geo_linestring;
 
 ## MultiLineString {#multilinestring}
 
-`MultiLineString` — это несколько линий, хранящихся как массив `LineString`: [Array](array.md)([LineString](#linestring)).
+`MultiLineString` состоит из нескольких линий, хранящихся как массив `LineString`: [Array](array.md)([LineString](#linestring)).
 
 **Пример**
 
@@ -98,7 +97,7 @@ SELECT l, toTypeName(l) FROM geo_multilinestring;
 
 ## Polygon {#polygon}
 
-`Polygon` — это многоугольник с отверстиями, хранящийся как массив колец: [Array](array.md)([Ring](#ring)). Первый элемент внешнего массива представляет собой внешнюю форму многоугольника, а все последующие элементы — это отверстия.
+`Polygon` — это многоугольник с отверстиями, хранящийся как массив колец: [Array](array.md)([Ring](#ring)). Первый элемент внешнего массива — это внешняя форма многоугольника, а все последующие элементы — отверстия.
 
 **Пример**
 
@@ -124,7 +123,7 @@ SELECT pg, toTypeName(pg) FROM geo_polygon;
 
 **Пример**
 
-Этот мультиполиго́н состоит из двух отдельных многоугольников — первый без отверстий, а второй с одним отверстием:
+Этот мультиполигон состоит из двух отдельных многоугольников — первый без отверстий, а второй с одним отверстием:
 
 ```sql
 CREATE TABLE geo_multipolygon (mpg MultiPolygon) ENGINE = Memory();
@@ -139,6 +138,6 @@ SELECT mpg, toTypeName(mpg) FROM geo_multipolygon;
 └─────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────┘
 ```
 
-## Related Content {#related-content}
+## Связанный контент {#related-content}
 
-- [Изучение масштабных реальных наборов данных: более 100 лет метеорологических записей в ClickHouse](https://clickhouse.com/blog/real-world-data-noaa-climate-data)
+- [Изучение массивных реальных наборов данных: 100+ лет метеорологических записей в ClickHouse](https://clickhouse.com/blog/real-world-data-noaa-climate-data)

@@ -1,15 +1,14 @@
 ---
-'description': 'The TPC-H benchmark data set and queries.'
+'description': 'TPC-H ベンチマークデータセットとクエリ。'
 'sidebar_label': 'TPC-H'
 'slug': '/getting-started/example-datasets/tpch'
 'title': 'TPC-H (1999)'
+'doc_type': 'reference'
 ---
 
-
-
 A popular benchmark which models the internal data warehouse of a wholesale supplier.  
-データは3rd正規形の表現で保存され、多くのジョインがクエリ実行時に必要です。  
-その古さとデータが均一かつ独立して分布しているという非現実的な前提にもかかわらず、TPC-Hは現在まで最も人気のあるOLAPベンチマークです。
+このデータは、クエリ実行時に多くの結合を必要とする第三正規形の表現として保存されます。  
+その年齢と、データが均等かつ独立に分布しているという非現実的な仮定にもかかわらず、TPC-Hは現在まで最も人気のあるOLAPベンチマークです。
 
 **References**
 
@@ -20,7 +19,7 @@ A popular benchmark which models the internal data warehouse of a wholesale supp
 
 ## Data Generation and Import {#data-generation-and-import}
 
-まず、TPC-Hリポジトリをチェックアウトし、データジェネレーターをコンパイルします。
+First, checkout the TPC-H repository and compile the data generator:
 
 ```bash
 git clone https://github.com/gregrahn/tpch-kit.git
@@ -28,13 +27,13 @@ cd tpch-kit/dbgen
 make
 ```
 
-次に、データを生成します。パラメータ `-s` はスケールファクターを指定します。例えば、`-s 100` を指定すると、'lineitem' テーブルに対して6億行が生成されます。
+Then, generate the data. Parameter `-s` specifies the scale factor. For example, with `-s 100`, 600 million rows are generated for table 'lineitem'.
 
 ```bash
 ./dbgen -s 100
 ```
 
-スケールファクター100の詳細なテーブルサイズ:
+Detailed table sizes with scale factor 100:
 
 | Table    | size (in rows) | size (compressed in ClickHouse) |
 |----------|----------------|---------------------------------|
@@ -45,18 +44,19 @@ make
 | partsupp | 80.000.000     | 4.37 GB                         |
 | customer | 15.000.000     | 1.19 GB                         |
 | orders   | 150.000.000    | 6.15 GB                         |
-| lineitem | 600.00.00      | 26.69 GB                        |
+| lineitem | 600.000.000    | 26.69 GB                        |
 
-(ClickHouseの圧縮サイズは `system.tables.total_bytes` から取得され、以下のテーブル定義に基づいています。)
+(Compressed sizes in ClickHouse are taken from `system.tables.total_bytes` and based on below table definitions.)
 
-次に、ClickHouseにテーブルを作成します。
+Now create tables in ClickHouse.
 
-私たちはTPC-H仕様のルールにできるだけ近く従います:
-- 主キーは、仕様のセクション1.4.2.2に記載されたカラムに対してのみ作成します。
-- 置換パラメータは、仕様のセクション2.1.x.4のクエリ検証の値に置き換えました。
-- 仕様のセクション1.4.2.1に従い、テーブル定義ではオプションの `NOT NULL` 制約を使用しておらず、たとえ `dbgen` がデフォルトで生成してもそうです。 
-  ClickHouseでの `SELECT` クエリのパフォーマンスは、 `NOT NULL` 制約の存在または欠如に影響されません。
-- 仕様のセクション1.3.1に従い、クリックハウスのネイティブデータ型（例: `Int32`, `String`）を使用して、仕様に記載されている抽象データ型（例: `Identifier`, `Variable text, size N`）を実装しています。これにより可読性が向上します。`dbgen` によって生成されるSQL-92データ型（例: `INTEGER`, `VARCHAR(40)`）もClickHouseで使用することができます。
+We stick as closely as possible to the rules of the TPC-H specification:
+- 主キーは仕様のセクション1.4.2.2で言及されているカラムのみに作成されます。
+- 置換パラメータは、仕様のセクション2.1.x.4でのクエリ検証のための値に置き換えられました。
+- セクション1.4.2.1に従い、テーブル定義ではオプションの`NOT NULL`制約を使用しません。`dbgen`がデフォルトで生成してもです。  
+  ClickHouseでの`SELECT`クエリのパフォーマンスは、`NOT NULL`制約の有無に影響されません。
+- セクション1.3.1に従い、ClickHouseのネイティブデータ型（例：`Int32`、`String`）を使用して仕様で言及される抽象データ型（例：`Identifier`、`Variable text, size N`）を実装します。  
+  このことの唯一の影響は可読性が向上することであり、`dbgen`によって生成されるSQL-92データ型（例：`INTEGER`、`VARCHAR(40)`）もClickHouseで機能します。
 
 ```sql
 CREATE TABLE nation (
@@ -124,8 +124,8 @@ CREATE TABLE orders  (
     o_shippriority   Int32,
     o_comment        String)
 ORDER BY (o_orderkey);
--- 以下は公式のTPC-Hルールに準拠していない代替のオーダーキーですが、
--- 「Quantifying TPC-H Choke Points and Their Optimizations」のセクション4.5で推奨されています:
+-- The following is an alternative order key which is not compliant with the official TPC-H rules but recommended by sec. 4.5 in
+-- "Quantifying TPC-H Choke Points and Their Optimizations":
 -- ORDER BY (o_orderdate, o_orderkey);
 
 CREATE TABLE lineitem (
@@ -146,12 +146,12 @@ CREATE TABLE lineitem (
     l_shipmode       String,
     l_comment        String)
 ORDER BY (l_orderkey, l_linenumber);
--- 以下は公式のTPC-Hルールに準拠していない代替のオーダーキーですが、
--- 「Quantifying TPC-H Choke Points and Their Optimizations」のセクション4.5で推奨されています:
+-- The following is an alternative order key which is not compliant with the official TPC-H rules but recommended by sec. 4.5 in
+-- "Quantifying TPC-H Choke Points and Their Optimizations":
 -- ORDER BY (l_shipdate, l_orderkey, l_linenumber);
 ```
 
-データは以下のようにインポートできます:
+The data can be imported as follows:
 
 ```bash
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO nation FORMAT CSV" < nation.tbl
@@ -164,12 +164,11 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO orders FORMAT 
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO lineitem FORMAT CSV" < lineitem.tbl
 ```
 
-:::note
-tpch-kitを使用してテーブルを自分で生成する代わりに、公開されたS3バケットからデータをインポートすることもできます。  
-最初に上記の `CREATE` ステートメントを使用して空のテーブルを作成することを確認してください。
-
+:::note  
+Instead of using tpch-kit and generating the tables by yourself, you can alternatively import the data from a public S3 bucket. Make sure  
+to create empty tables first using above `CREATE` statements.  
 ```sql
--- スケールファクター1
+-- Scaling factor 1
 INSERT INTO nation SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/nation.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO region SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/region.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO part SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/part.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
@@ -179,7 +178,7 @@ INSERT INTO customer SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 INSERT INTO orders SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/orders.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/lineitem.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 
--- スケールファクター100
+-- Scaling factor 100
 INSERT INTO nation SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/nation.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO region SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/region.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO part SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/part.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
@@ -188,20 +187,32 @@ INSERT INTO partsupp SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 INSERT INTO customer SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/customer.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO orders SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/orders.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/lineitem.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
-```  
+````
 :::
 
 ## Queries {#queries}
 
 :::note
-正しい結果を生成するために [`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls) を有効にする必要があります。
+Setting [`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls) should be enabled to produce correct results according to SQL standard.
 :::
 
-クエリは `./qgen -s <scaling_factor>` によって生成されます。スケールファクター `s = 100` の例のクエリ:
+:::note
+Some TPC-H queries query use correlated subqueries which are available since v25.8.
+Please use at least this ClickHouse version to run the queries.
 
-**Correctness**
+In ClickHouse versions 25.5, 25.6, 25.7, it is necessary to set additionally:
 
-クエリの結果は、特に記載がない限り、公式の結果と一致します。確認するためには、スケールファクター = 1 (`dbgen`、上記参照) でTPC-Hデータベースを生成し、[tpch-kitの期待される結果](https://github.com/gregrahn/tpch-kit/tree/master/dbgen/answers)と比較してください。
+```sql
+SET allow_experimental_correlated_subqueries = 1;
+```  
+:::
+
+The queries are generated by `./qgen -s <scaling_factor>`. Example queries for `s = 100` below:
+
+**Correctness**  
+
+The result of the queries agrees with the official results unless mentioned otherwise. To verify, generate a TPC-H database with scale  
+factor = 1 (`dbgen`, see above) and compare with the [expected results in tpch-kit](https://github.com/gregrahn/tpch-kit/tree/master/dbgen/answers).
 
 **Q1**
 
@@ -232,8 +243,6 @@ ORDER BY
 **Q2**
 
 ```sql
-SET allow_experimental_correlated_subqueries = 1; -- since v25.5
-
 SELECT
     s_acctbal,
     s_name,
@@ -279,62 +288,6 @@ ORDER BY
     p_partkey;
 ```
 
-::::note
-v25.5まで、クエリは相関サブクエリのため、すぐに動作しない場合があります。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697
-
-この代替のフォームは動作し、参照結果を返すことが確認されています。
-
-```sql
-WITH MinSupplyCost AS (
-    SELECT
-        ps_partkey,
-        MIN(ps_supplycost) AS min_supplycost
-    FROM
-        partsupp ps
-    JOIN
-        supplier s ON ps.ps_suppkey = s.s_suppkey
-    JOIN
-        nation n ON s.s_nationkey = n.n_nationkey
-    JOIN
-        region r ON n.n_regionkey = r.r_regionkey
-    WHERE
-        r.r_name = 'EUROPE'
-    GROUP BY
-        ps_partkey
-)
-SELECT
-    s.s_acctbal,
-    s.s_name,
-    n.n_name,
-    p.p_partkey,
-    p.p_mfgr,
-    s.s_address,
-    s.s_phone,
-    s.s_comment
-FROM
-    part p
-JOIN
-    partsupp ps ON p.p_partkey = ps.ps_partkey
-JOIN
-    supplier s ON s.s_suppkey = ps.ps_suppkey
-JOIN
-    nation n ON s.s_nationkey = n.n_nationkey
-JOIN
-    region r ON n.n_regionkey = r.r_regionkey
-JOIN
-    MinSupplyCost msc ON ps.ps_partkey = msc.ps_partkey AND ps.ps_supplycost = msc.min_supplycost
-WHERE
-    p.p_size = 15
-    AND p.p_type LIKE '%BRASS'
-    AND r.r_name = 'EUROPE'
-ORDER BY
-    s.s_acctbal DESC,
-    n.n_name,
-    s.s_name,
-    p.p_partkey;
-```
-::::
-
 **Q3**
 
 ```sql
@@ -365,8 +318,6 @@ ORDER BY
 **Q4**
 
 ```sql
-SET allow_experimental_correlated_subqueries = 1; -- since v25.5
-
 SELECT
     o_orderpriority,
     count(*) AS order_count
@@ -390,39 +341,6 @@ ORDER BY
     o_orderpriority;
 ```
 
-::::note
-v25.5まで、クエリは相関サブクエリのため、すぐに動作しない場合があります。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697
-
-この代替のフォームは動作し、参照結果を返すことが確認されています。
-
-```sql
-WITH ValidLineItems AS (
-    SELECT
-        l_orderkey
-    FROM
-        lineitem
-    WHERE
-        l_commitdate < l_receiptdate
-    GROUP BY
-        l_orderkey
-)
-SELECT
-    o.o_orderpriority,
-    COUNT(*) AS order_count
-FROM
-    orders o
-JOIN
-    ValidLineItems vli ON o.o_orderkey = vli.l_orderkey
-WHERE
-    o.o_orderdate >= DATE '1993-07-01'
-    AND o.o_orderdate < DATE '1993-07-01' + INTERVAL '3' MONTH
-GROUP BY
-    o.o_orderpriority
-ORDER BY
-    o.o_orderpriority;
-```
-::::
-
 **Q5**
 
 ```sql
@@ -442,7 +360,7 @@ WHERE
     AND l_suppkey = s_suppkey
     AND c_nationkey = s_nationkey
     AND s_nationkey = n_nationkey
-    AND n_regionkey = r.regionkey
+    AND n_regionkey = r_regionkey
     AND r_name = 'ASIA'
     AND o_orderdate >= DATE '1994-01-01'
     AND o_orderdate < DATE '1994-01-01' + INTERVAL '1' year
@@ -466,10 +384,10 @@ WHERE
     AND l_quantity < 24;
 ```
 
-::::note
-2025年2月現在、このクエリはDecimalの加算のバグのため、すぐに動作しません。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/70136
+::::note  
+As of February 2025, the query does not work out-of-the box due to a bug with Decimal addition. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/70136  
 
-この代替のフォームは動作し、参照結果を返すことが確認されています。
+This alternative formulation works and was verified to return the reference results.  
 
 ```sql
 SELECT
@@ -481,7 +399,7 @@ WHERE
     AND l_shipdate < DATE '1994-01-01' + INTERVAL '1' year
     AND l_discount BETWEEN 0.05 AND 0.07
     AND l_quantity < 24;
-```
+```  
 ::::
 
 **Q7**
@@ -557,7 +475,7 @@ FROM (
         AND l_orderkey = o_orderkey
         AND o_custkey = c_custkey
         AND c_nationkey = n1.n_nationkey
-        AND n1.n_regionkey = r.r_regionkey
+        AND n1.n_regionkey = r_regionkey
         AND r_name = 'AMERICA'
         AND s_nationkey = n2.n_nationkey
         AND o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1996-12-31'
@@ -696,7 +614,7 @@ FROM
     lineitem
 WHERE
     o_orderkey = l_orderkey
-    AND l_shipmode in ('MAIL', 'SHIP')
+    AND l_shipmode IN ('MAIL', 'SHIP')
     AND l_commitdate < l_receiptdate
     AND l_shipdate < l_commitdate
     AND l_receiptdate >= DATE '1994-01-01'
@@ -716,7 +634,7 @@ SELECT
 FROM (
     SELECT
         c_custkey,
-        count(o_orderkey) as c_count
+        count(o_orderkey) AS c_count
     FROM
         customer LEFT OUTER JOIN orders ON
             c_custkey = o_custkey
@@ -794,7 +712,7 @@ SELECT
     p_brand,
     p_type,
     p_size,
-    count(distinct ps_suppkey) AS supplier_cnt
+    count(DISTINCT ps_suppkey) AS supplier_cnt
 FROM
     partsupp,
     part
@@ -802,8 +720,8 @@ WHERE
     p_partkey = ps_partkey
     AND p_brand <> 'Brand#45'
     AND p_type NOT LIKE 'MEDIUM POLISHED%'
-    AND p_size in (49, 14, 23,  45, 19, 3, 36, 9)
-    AND ps_suppkey NOT in (
+    AND p_size IN (49, 14, 23,  45, 19, 3, 36, 9)
+    AND ps_suppkey NOT IN (
         SELECT
             s_suppkey
         FROM
@@ -825,8 +743,6 @@ ORDER BY
 **Q17**
 
 ```sql
-SET allow_experimental_correlated_subqueries = 1; -- since v25.5
-
 SELECT
     sum(l_extendedprice) / 7.0 AS avg_yearly
 FROM
@@ -846,37 +762,6 @@ WHERE
     );
 ```
 
-::::note
-v25.5まで、クエリは相関サブクエリのため、すぐに動作しない場合があります。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697
-
-この代替のフォームは動作し、参照結果を返すことが確認されています。
-
-```sql
-WITH AvgQuantity AS (
-    SELECT
-        l_partkey,
-        AVG(l_quantity) * 0.2 AS avg_quantity
-    FROM
-        lineitem
-    GROUP BY
-        l_partkey
-)
-SELECT
-    SUM(l.l_extendedprice) / 7.0 AS avg_yearly
-FROM
-    lineitem l
-JOIN
-    part p ON p.p_partkey = l.l_partkey
-JOIN
-    AvgQuantity aq ON l.l_partkey = aq.l_partkey
-WHERE
-    p.p_brand = 'Brand#23'
-    AND p.p_container = 'MED BOX'
-    AND l.l_quantity < aq.avg_quantity;
-
-```
-::::
-
 **Q18**
 
 ```sql
@@ -892,7 +777,7 @@ FROM
     orders,
     lineitem
 WHERE
-    o_orderkey in (
+    o_orderkey IN (
         SELECT
             l_orderkey
         FROM
@@ -927,30 +812,30 @@ WHERE
     (
         p_partkey = l_partkey
         AND p_brand = 'Brand#12'
-        AND p_container in ('SM CASE', 'SM BOX', 'SM PACK', 'SM PKG')
+        AND p_container IN ('SM CASE', 'SM BOX', 'SM PACK', 'SM PKG')
         AND l_quantity >= 1 AND l_quantity <= 1 + 10
         AND p_size BETWEEN 1 AND 5
-        AND l_shipmode in ('AIR', 'AIR REG')
+        AND l_shipmode IN ('AIR', 'AIR REG')
         AND l_shipinstruct = 'DELIVER IN PERSON'
     )
     OR
     (
         p_partkey = l_partkey
         AND p_brand = 'Brand#23'
-        AND p_container in ('MED BAG', 'MED BOX', 'MED PKG', 'MED PACK')
+        AND p_container IN ('MED BAG', 'MED BOX', 'MED PKG', 'MED PACK')
         AND l_quantity >= 10 AND l_quantity <= 10 + 10
         AND p_size BETWEEN 1 AND 10
-        AND l_shipmode in ('AIR', 'AIR REG')
+        AND l_shipmode IN ('AIR', 'AIR REG')
         AND l_shipinstruct = 'DELIVER IN PERSON'
     )
     OR
     (
         p_partkey = l_partkey
         AND p_brand = 'Brand#34'
-        AND p_container in ('LG CASE', 'LG BOX', 'LG PACK', 'LG PKG')
+        AND p_container IN ('LG CASE', 'LG BOX', 'LG PACK', 'LG PKG')
         AND l_quantity >= 20 AND l_quantity <= 20 + 10
         AND p_size BETWEEN 1 AND 15
-        AND l_shipmode in ('AIR', 'AIR REG')
+        AND l_shipmode IN ('AIR', 'AIR REG')
         AND l_shipinstruct = 'DELIVER IN PERSON'
     );
 ```
@@ -958,8 +843,6 @@ WHERE
 **Q20**
 
 ```sql
-SET allow_experimental_correlated_subqueries = 1; -- since v25.5
-
 SELECT
     s_name,
     s_address
@@ -999,15 +882,9 @@ ORDER BY
     s_name;
 ```
 
-::::note
-v25.5まで、クエリは相関サブクエリのため、すぐに動作しない場合があります。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697
-::::
-
 **Q21**
 
 ```sql
-SET allow_experimental_correlated_subqueries = 1; -- since v25.5
-
 SELECT
     s_name,
     count(*) AS numwait
@@ -1048,15 +925,10 @@ ORDER BY
     numwait DESC,
     s_name;
 ```
-::::note
-v25.5まで、クエリは相関サブクエリのため、すぐに動作しない場合があります。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697
-::::
 
 **Q22**
 
 ```sql
-SET allow_experimental_correlated_subqueries = 1; -- since v25.5
-
 SELECT
     cntrycode,
     count(*) AS numcust,
@@ -1094,7 +966,3 @@ GROUP BY
 ORDER BY
     cntrycode;
 ```
-
-::::note
-v25.5まで、クエリは相関サブクエリのため、すぐに動作しない場合があります。対応する問題: https://github.com/ClickHouse/ClickHouse/issues/6697
-::::

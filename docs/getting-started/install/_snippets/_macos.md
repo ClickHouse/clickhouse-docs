@@ -16,7 +16,7 @@ the ClickHouse community [homebrew formula](https://formulae.brew.sh/cask/clickh
 brew install --cask clickhouse
 ```
 
-## Fix the developer verification error in MacOS {#fix-developer-verification-error-macos}
+## Fix the developer verification error in macOS {#fix-developer-verification-error-macos}
 
 If you install ClickHouse using `brew`, you may encounter an error from MacOS.
 By default, MacOS will not run applications or tools created by a developer who cannot be verified.
@@ -62,7 +62,7 @@ This should output something like:
 /opt/homebrew/bin/clickhouse
 ```
 
-Remove `clickhouse` from the quarantine bin by running `xattr -d com.apple.quarantine` following by the path from the previous command:
+Remove `clickhouse` from the quarantine bin by running `xattr -d com.apple.quarantine` followed by the path from the previous command:
 
 ```shell
 xattr -d com.apple.quarantine /opt/homebrew/bin/clickhouse
@@ -81,7 +81,7 @@ Use one of the following commands:
 clickhouse local [args]
 clickhouse client [args]
 clickhouse benchmark [args]
-...
+```
 
 ## Fix the issue by reinstalling ClickHouse {#fix-issue}
 

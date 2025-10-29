@@ -8,7 +8,8 @@ The library provides its own API to send requests to a server. The library also 
 ## Setup {#setup}
 
 - Maven Central (project web page): https://mvnrepository.com/artifact/com.clickhouse/client-v2
-- Nightly builds (repository link): https://s01.oss.sonatype.org/content/repositories/snapshots/com/clickhouse/
+- Nightly builds (repository link): https://central.sonatype.com/repository/maven-snapshots/
+- Old Nightly builds artifactory (repository link): https://s01.oss.sonatype.org/content/repositories/snapshots/
 <br/>
 <Tabs groupId="client-setup">
 <TabItem value="maven" label="Maven" >
@@ -17,7 +18,7 @@ The library provides its own API to send requests to a server. The library also 
 <dependency>
     <groupId>com.clickhouse</groupId>
     <artifactId>client-v2</artifactId>
-    <version>0.9.0</version>
+    <version>0.9.1</version>
 </dependency>
 ```
 
@@ -26,14 +27,14 @@ The library provides its own API to send requests to a server. The library also 
 
 ```kotlin
 // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation("com.clickhouse:client-v2:0.9.0")
+implementation("com.clickhouse:client-v2:0.9.1")
 ```
 </TabItem>
 <TabItem value="gradle" label="Gradle">
 
 ```groovy
 // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation 'com.clickhouse:client-v2:0.9.0'
+implementation 'com.clickhouse:client-v2:0.9.1'
 ```
 
 </TabItem>
@@ -76,7 +77,7 @@ Authentication by an access token requires setting access token by calling `setA
         .build();
 ```
 
-Authentication by a SSL Client Certificate require setting username, enabling SSL Authentication, setting a client sertificate and a client key by calling `setUsername(String)`,  `useSSLAuthentication(boolean)`, `setClientCertificate(String)` and `setClientKey(String)` accordingly:
+Authentication by a SSL Client Certificate require setting username, enabling SSL Authentication, setting a client certificate and a client key by calling `setUsername(String)`,  `useSSLAuthentication(boolean)`, `setClientCertificate(String)` and `setClientKey(String)` accordingly:
 ```java showLineNumbers
 Client client = new Client.Builder()
         .useSSLAuthentication(true)
@@ -96,7 +97,6 @@ Please use tools like [openssl](https://docs.openssl.org/master/man1/openssl/) t
 
 :::
 
-
 ## Configuration {#configuration}
 
 All settings are defined by instance methods (a.k.a configuration methods) that make the scope and context of each value clear.
@@ -108,7 +108,7 @@ Configuration is defined during client creation. See `com.clickhouse.client.api.
 <WideTableWrapper>
 | Configuration Method  | Arguments                   |  Description                                |
 |-----------------------|-----------------------------|:--------------------------------------------|
-| `addEndpoint(String endpoint)`          | - `enpoint` - URL formatted a server address.      | Adds a server endpoint to list of available servers. Currently only one endpoint is supported. <br/> <br/> Default: `none` <br/> Enum: `none` <br/> Key: `none`  |
+| `addEndpoint(String endpoint)`          | - `endpoint` - URL formatted a server address.      | Adds a server endpoint to list of available servers. Currently only one endpoint is supported. <br/> <br/> Default: `none` <br/> Enum: `none` <br/> Key: `none`  |
 | `addEndpoint(Protocol protocol, String host, int port, boolean secure)` | - `protocol` - connection protocol `com.clickhouse.client.api.enums.Protocol#HTTP`.<br />- `host` - IP or hostname of a server.<br />- `secure` - if communication should use secure version of the protocol (HTTPS) | Adds a server endpoint to list of available servers. Currently only one endpoint is supported. <br/> <br/> Default: `none` <br/> Enum: `none` <br/> Key: `none` |
 | `setOption(String key, String value)`   | - `key` - String key of the client configuration option.<br /> - `value` - String value of the option | Sets raw value of client options. Useful when reading configuration from properties files. | 
 | `setUsername(String username)`          | - `username` - User's username to use while authentication | Sets username for an authentication method that is selected by further configuration <br/> <br/> Default: `default` <br/> Enum: `ClientConfigProperties.USER` <br/> Key: `user` |
@@ -150,7 +150,7 @@ Configuration is defined during client creation. See `com.clickhouse.client.api.
 | `setServerTimeZone(String timeZone)` |  `timeZone` - string value of java valid timezone ID (see `java.time.ZoneId`) | Sets server side timezone. UTC timezone will be used by default. <br/> <br/> Default: `UTC` <br/> Enum: `ClientConfigProperties.SERVER_TIMEZONE` <br/> Key: `server_time_zone` |
 | `useAsyncRequests(boolean async)` | `async` - flag that indicates if the option should be enabled. | Sets if client should execute request in a separate thread. Disabled by default because application knows better how to organize multi-threaded tasks and running tasks in separate thread do not help with performance. <br/> <br/> Default: `false` <br/> Enum: `ClientConfigProperties.ASYNC_OPERATIONS` <br/> Key: `async` |
 | `setSharedOperationExecutor(ExecutorService executorService)` | `executorService` - instance of executor service. | Sets executor service for operation tasks. <br/> <br/> Default: `none` <br/> Enum: `none` <br/> Key: `none`|
-| `setClientNetworkBufferSize(int size)` | - `size` - size in bytes | Sets size of a buffer in application memory space that is used to copy data back-and-forth between socket and application. Greater reduces system calls to TCP stack, but affects how much memory is spent on every connection. This buffer is also subject for GC because connections are shortlive. Also keep in mind that allocating big continious block of memory might be a problem. <br/> <br/> Default: `300000` <br/> Enum: `ClientConfigProperties.CLIENT_NETWORK_BUFFER_SIZE` <br/> Key: `client_network_buffer_size`|
+| `setClientNetworkBufferSize(int size)` | - `size` - size in bytes | Sets size of a buffer in application memory space that is used to copy data back-and-forth between socket and application. Greater reduces system calls to TCP stack, but affects how much memory is spent on every connection. This buffer is also subject for GC because connections are shortlive. Also keep in mind that allocating big continuous block of memory might be a problem. <br/> <br/> Default: `300000` <br/> Enum: `ClientConfigProperties.CLIENT_NETWORK_BUFFER_SIZE` <br/> Key: `client_network_buffer_size`|
 | `retryOnFailures(ClientFaultCause ...causes)` | - `causes` - enum constant of `com.clickhouse.client.api.ClientFaultCause` | Sets recoverable/retriable fault types. <br/> <br/> Default: `NoHttpResponse,ConnectTimeout,ConnectionRequestTimeout` <br/> Enum: `ClientConfigProperties.CLIENT_RETRY_ON_FAILURE` <br/> Key: `client_retry_on_failures` |
 | `setMaxRetries(int maxRetries)` | - `maxRetries` - number of retries | Sets maximum number of retries for failures defined by `retryOnFailures(ClientFaultCause ...causes)` <br/> <br/> Default: `3` <br/> Enum: `ClientConfigProperties.RETRY_ON_FAILURE` <br/> Key: `retry` |
 | `allowBinaryReaderToReuseBuffers(boolean reuse)` | - `reuse` - flag that indicates if the option should be enabled | Most datasets contain numeric data encoded as small byte sequences. By default reader will allocate required buffer, read data into it and then transform into a target Number class. That may cause significant GC preasure because of many small objects are being allocated and released. If this option is enabled then reader will use preallocated buffers to do numbers transcoding. It is safe because each reader has own set of buffers and readers are used by one thread. |
@@ -163,6 +163,10 @@ Configuration is defined during client creation. See `com.clickhouse.client.api.
 | `useHTTPBasicAuth(boolean useBasicAuth)` | - `useBasicAuth` - flag that indicates if the option should be enabled | Sets if basic HTTP authentication should be used for user-password authentication. Default is enabled. Using this type of authentication resolves issues with passwords containing special characters that cannot be transferred over HTTP headers. <br/> <br/> Default: `true` <br/> Enum: `ClientConfigProperties.HTTP_USE_BASIC_AUTH` <br/> Key: `http_use_basic_auth` |
 | `setClientName(String clientName)` | - `clientName` - a string representing application name | Sets additional information about calling application. This string will be passed to server as a client name. In case of HTTP protocol it will be passed as a `User-Agent` header. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.CLIENT_NAME` <br/> Key: `client_name`|
 | `useBearerTokenAuth(String bearerToken)` | - `bearerToken` - an encoded bearer token |  Specifies whether to use Bearer Authentication and what token to use. The token will be sent as is, so it should be encoded before passing to this method. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.BEARERTOKEN_AUTH` <br/> Key: `bearer_token` |
+| `registerClientMetrics(Object registry, String name)` | - `registry` - Micrometer registry instance<br /> - `name` - metrics group name | Registers sensors with Micrometer (https://micrometer.io/) registry instance. |
+| `setServerVersion(String version)` | - `version` - string value of a server version | Sets server version to avoid version detection. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.SERVER_VERSION` <br/> Key: `server_version` |
+| `typeHintMapping(Map typeHintMapping)` | - `typeHintMapping` - map of type hints | Sets type hint mapping for ClickHouse types. For example, to make multidimesional arrays be present as Java containers instead of own Array objects. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.TYPE_HINT_MAPPING` <br/> Key: `type_hint_mapping` |
+| `sslSocketSNI(String sni)` | - `sni` - string value of a server name | Sets server name to be used for SNI (Server Name Indication) in SSL/TLS connection. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.SSL_SOCKET_SNI` <br/> Key: `ssl_socket_sni` |
 </WideTableWrapper>
 
 ### Server Settings
@@ -181,7 +185,6 @@ Server side settings can be set on the client level once while creation (see `se
         .serverSetting("roles", Arrays.asList("role1", "role2"))
 
         .build()) {
-
 
 	// Operation level
 	QuerySettings querySettings = new QuerySettings();
@@ -205,7 +208,6 @@ QuerySettings settings = new QuerySettings()
 
 When options are set via `setOption` method (either the `Client.Builder` or operation settings class) then custom header name should be prefixed with `http_header_`. Method `com.clickhouse.client.api.ClientConfigProperties#httpHeader()` may be handy in this case.
 
-
 ## Common Definitions {#common-definitions}
 
 ### ClickHouseFormat {#clickhouseformat}
@@ -220,88 +222,87 @@ This client version supports:
 
 | Format                                                                                                                        | Input  | Output  |
 |-------------------------------------------------------------------------------------------------------------------------------|:------:|:-------:|
-| [TabSeparated](/interfaces/formats#tabseparated)                                                                      | raw    | raw     |
-| [TabSeparatedRaw](/interfaces/formats#tabseparatedraw)                                                                | raw    | raw     |
-| [TabSeparatedWithNames](/interfaces/formats#tabseparatedwithnames)                                                    | raw    | raw     |
-| [TabSeparatedWithNamesAndTypes](/interfaces/formats#tabseparatedwithnamesandtypes)                                    | raw    | raw     |
-| [TabSeparatedRawWithNames](/interfaces/formats#tabseparatedrawwithnames)                                              | raw    | raw     |
-| [TabSeparatedRawWithNamesAndTypes](/interfaces/formats#tabseparatedrawwithnamesandtypes)                              | raw    | raw     |
-| [Template](/interfaces/formats#format-template)                                                                       | raw    | raw     |
-| [TemplateIgnoreSpaces](/interfaces/formats#templateignorespaces)                                                      | raw    |  -      |
-| [CSV](/interfaces/formats#csv)                                                                                        | raw    | raw     |
-| [CSVWithNames](/interfaces/formats#csvwithnames)                                                                      | raw    | raw     |
-| [CSVWithNamesAndTypes](/interfaces/formats#csvwithnamesandtypes)                                                      | raw    | raw     |
-| [CustomSeparated](/interfaces/formats#format-customseparated)                                                         | raw    | raw     |
-| [CustomSeparatedWithNames](/interfaces/formats#customseparatedwithnames)                                              | raw    | raw     |
-| [CustomSeparatedWithNamesAndTypes](/interfaces/formats#customseparatedwithnamesandtypes)                              | raw    | raw     |
-| [SQLInsert](/interfaces/formats#sqlinsert)                                                                            | -      | raw     |
-| [Values](/interfaces/formats#data-format-values)                                                                      | raw    | raw     |
-| [Vertical](/interfaces/formats#vertical)                                                                              | -      | raw     |
-| [JSON](/interfaces/formats#json)                                                                                      | raw    | raw     |
-| [JSONAsString](/interfaces/formats#jsonasstring)                                                                      | raw    | -       |
-| [JSONAsObject](/interfaces/formats#jsonasobject)                                                                      | raw    | -       |
-| [JSONStrings](/interfaces/formats#jsonstrings)                                                                        | raw    | raw     |
-| [JSONColumns](/interfaces/formats#jsoncolumns)                                                                        | raw    | raw     |
-| [JSONColumnsWithMetadata](/interfaces/formats#jsoncolumnsmonoblock)                                                   | raw    | raw     |
-| [JSONCompact](/interfaces/formats#jsoncompact)                                                                        | raw    | raw     |
-| [JSONCompactStrings](/interfaces/formats#jsoncompactstrings)                                                          | -      | raw     |
-| [JSONCompactColumns](/interfaces/formats#jsoncompactcolumns)                                                          | raw    | raw     |
-| [JSONEachRow](/interfaces/formats#jsoneachrow)                                                                        | raw    | raw     |
-| [PrettyJSONEachRow](/interfaces/formats#prettyjsoneachrow)                                                            | -      | raw     |
-| [JSONEachRowWithProgress](/interfaces/formats#jsoneachrowwithprogress)                                                | -      | raw     |
-| [JSONStringsEachRow](/interfaces/formats#jsonstringseachrow)                                                          | raw    | raw     |
-| [JSONStringsEachRowWithProgress](/interfaces/formats#jsonstringseachrowwithprogress)                                  | -      | raw     |
-| [JSONCompactEachRow](/interfaces/formats#jsoncompacteachrow)                                                          | raw    | raw     |
-| [JSONCompactEachRowWithNames](/interfaces/formats#jsoncompacteachrowwithnames)                                        | raw    | raw     |
-| [JSONCompactEachRowWithNamesAndTypes](/interfaces/formats#jsoncompacteachrowwithnamesandtypes)                        | raw    | raw     |
-| [JSONCompactStringsEachRow](/interfaces/formats#jsoncompactstringseachrow)                                            | raw    | raw     |
-| [JSONCompactStringsEachRowWithNames](/interfaces/formats#jsoncompactstringseachrowwithnames)                          | raw    | raw     |
-| [JSONCompactStringsEachRowWithNamesAndTypes](/interfaces/formats#jsoncompactstringseachrowwithnamesandtypes)          | raw    | raw     |
-| [JSONObjectEachRow](/interfaces/formats#jsonobjecteachrow)                                                            | raw    | raw     |
-| [BSONEachRow](/interfaces/formats#bsoneachrow)                                                                        | raw    | raw     |
-| [TSKV](/interfaces/formats#tskv)                                                                                      | raw    | raw     |
-| [Pretty](/interfaces/formats#pretty)                                                                                  | -      | raw     |
-| [PrettyNoEscapes](/interfaces/formats#prettynoescapes)                                                                | -      | raw     |
-| [PrettyMonoBlock](/interfaces/formats#prettymonoblock)                                                                | -      | raw     |
-| [PrettyNoEscapesMonoBlock](/interfaces/formats#prettynoescapesmonoblock)                                              | -      | raw     |
-| [PrettyCompact](/interfaces/formats#prettycompact)                                                                    | -      | raw     |
-| [PrettyCompactNoEscapes](/interfaces/formats#prettycompactnoescapes)                                                  | -      | raw     |
-| [PrettyCompactMonoBlock](/interfaces/formats#prettycompactmonoblock)                                                  | -      | raw     |
-| [PrettyCompactNoEscapesMonoBlock](/interfaces/formats#prettycompactnoescapesmonoblock)                                | -      | raw     |
-| [PrettySpace](/interfaces/formats#prettyspace)                                                                        | -      | raw     |
-| [PrettySpaceNoEscapes](/interfaces/formats#prettyspacenoescapes)                                                      | -      | raw     |
-| [PrettySpaceMonoBlock](/interfaces/formats#prettyspacemonoblock)                                                      | -      | raw     |
-| [PrettySpaceNoEscapesMonoBlock](/interfaces/formats#prettyspacenoescapesmonoblock)                                    | -      | raw     |
-| [Prometheus](/interfaces/formats#prometheus)                                                                          | -      | raw     |
-| [Protobuf](/interfaces/formats#protobuf)                                                                              | raw    | raw     |
-| [ProtobufSingle](/interfaces/formats#protobufsingle)                                                                  | raw    | raw     |
-| [ProtobufList](/interfaces/formats#protobuflist)                                                                                                      | raw    | raw     |
-| [Avro](/interfaces/formats#data-format-avro)                                                                          | raw    | raw     |
-| [AvroConfluent](/interfaces/formats#data-format-avro-confluent)                                                       | raw    | -       |
-| [Parquet](/interfaces/formats#data-format-parquet)                                                                    | raw    | raw     |
-| [ParquetMetadata](/interfaces/formats#data-format-parquet-metadata)                                                   | raw    | -       |
-| [Arrow](/interfaces/formats#data-format-arrow)                                                                        | raw    | raw     |
-| [ArrowStream](/interfaces/formats#data-format-arrow-stream)                                                           | raw    | raw     |
-| [ORC](/interfaces/formats#data-format-orc)                                                                            | raw    | raw     |
-| [One](/interfaces/formats#data-format-one)                                                                            | raw    | -       |
-| [Npy](/interfaces/formats#data-format-npy)                                                                            | raw    | raw     |
-| [RowBinary](/interfaces/formats#rowbinary)                                                                            | full   | full    |
-| [RowBinaryWithNames](/interfaces/formats#rowbinarywithnamesandtypes)                                                  | full   | full    |
-| [RowBinaryWithNamesAndTypes](/interfaces/formats#rowbinarywithnamesandtypes)                                          | full   | full    |
-| [RowBinaryWithDefaults](/interfaces/formats#rowbinarywithdefaults)                                                    | full   | -       |
-| [Native](/interfaces/formats#native)                                                                                  | full   | raw     |
-| [Null](/interfaces/formats#null)                                                                                      | -      | raw     |
-| [XML](/interfaces/formats#xml)                                                                                        | -      | raw     |
-| [CapnProto](/interfaces/formats#capnproto)                                                                            | raw    | raw     |
-| [LineAsString](/interfaces/formats#lineasstring)                                                                      | raw    | raw     |
-| [Regexp](/interfaces/formats#data-format-regexp)                                                                      | raw    | -       |
-| [RawBLOB](/interfaces/formats#rawblob)                                                                                | raw    | raw     |
-| [MsgPack](/interfaces/formats#msgpack)                                                                                | raw    | raw     |
-| [MySQLDump](/interfaces/formats#mysqldump)                                                                            | raw    | -       |
-| [DWARF](/interfaces/formats#dwarf)                                                                                    | raw    | -       |
-| [Markdown](/interfaces/formats#markdown)                                                                              | -      | raw     |
-| [Form](/interfaces/formats#form)                                                                                      | raw    | -       |
-
+| [TabSeparated](/interfaces/formats/TabSeparated)                                                                      | raw    | raw     |
+| [TabSeparatedRaw](/interfaces/formats/TabSeparatedRaw)                                                                | raw    | raw     |
+| [TabSeparatedWithNames](/interfaces/formats/TabSeparatedWithNames)                                                    | raw    | raw     |
+| [TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedWithNamesAndTypes)                                    | raw    | raw     |
+| [TabSeparatedRawWithNames](/interfaces/formats/TabSeparatedRawWithNames)                                              | raw    | raw     |
+| [TabSeparatedRawWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes)                              | raw    | raw     |
+| [Template](/interfaces/formats/Template)                                                                       | raw    | raw     |
+| [TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces)                                                      | raw    |  -      |
+| [CSV](/interfaces/formats/CSV)                                                                                        | raw    | raw     |
+| [CSVWithNames](/interfaces/formats/CSVWithNames)                                                                      | raw    | raw     |
+| [CSVWithNamesAndTypes](/interfaces/formats/CSVWithNamesAndTypes)                                                      | raw    | raw     |
+| [CustomSeparated](/interfaces/formats/CustomSeparated)                                                         | raw    | raw     |
+| [CustomSeparatedWithNames](/interfaces/formats/CustomSeparatedWithNames)                                              | raw    | raw     |
+| [CustomSeparatedWithNamesAndTypes](/interfaces/formats/CustomSeparatedWithNamesAndTypes)                              | raw    | raw     |
+| [SQLInsert](/interfaces/formats/SQLInsert)                                                                            | -      | raw     |
+| [Values](/interfaces/formats/Values)                                                                      | raw    | raw     |
+| [Vertical](/interfaces/formats/Vertical)                                                                              | -      | raw     |
+| [JSON](/interfaces/formats/JSON)                                                                                      | raw    | raw     |
+| [JSONAsString](/interfaces/formats/JSONAsString)                                                                      | raw    | -       |
+| [JSONAsObject](/interfaces/formats/JSONAsObject)                                                                      | raw    | -       |
+| [JSONStrings](/interfaces/formats/JSONStrings)                                                                        | raw    | raw     |
+| [JSONColumns](/interfaces/formats/JSONColumns)                                                                        | raw    | raw     |
+| [JSONColumnsWithMetadata](/interfaces/formats/JSONColumnsWithMetadata)                                                   | raw    | raw     |
+| [JSONCompact](/interfaces/formats/JSONCompact)                                                                        | raw    | raw     |
+| [JSONCompactStrings](/interfaces/formats/JSONCompactStrings)                                                          | -      | raw     |
+| [JSONCompactColumns](/interfaces/formats/JSONCompactColumns)                                                          | raw    | raw     |
+| [JSONEachRow](/interfaces/formats/JSONEachRow)                                                                        | raw    | raw     |
+| [PrettyJSONEachRow](/interfaces/formats/PrettyJSONEachRow)                                                            | -      | raw     |
+| [JSONEachRowWithProgress](/interfaces/formats/JSONEachRowWithProgress)                                                | -      | raw     |
+| [JSONStringsEachRow](/interfaces/formats/JSONStringsEachRow)                                                          | raw    | raw     |
+| [JSONStringsEachRowWithProgress](/interfaces/formats/JSONStringsEachRowWithProgress)                                  | -      | raw     |
+| [JSONCompactEachRow](/interfaces/formats/JSONCompactEachRow)                                                          | raw    | raw     |
+| [JSONCompactEachRowWithNames](/interfaces/formats/JSONCompactEachRowWithNames)                                        | raw    | raw     |
+| [JSONCompactEachRowWithNamesAndTypes](/interfaces/formats/JSONCompactEachRowWithNamesAndTypes)                        | raw    | raw     |
+| [JSONCompactStringsEachRow](/interfaces/formats/JSONCompactStringsEachRow)                                            | raw    | raw     |
+| [JSONCompactStringsEachRowWithNames](/interfaces/formats/JSONCompactStringsEachRowWithNames)                          | raw    | raw     |
+| [JSONCompactStringsEachRowWithNamesAndTypes](/interfaces/formats/JSONCompactStringsEachRowWithNamesAndTypes)          | raw    | raw     |
+| [JSONObjectEachRow](/interfaces/formats/JSONObjectEachRow)                                                            | raw    | raw     |
+| [BSONEachRow](/interfaces/formats/BSONEachRow)                                                                        | raw    | raw     |
+| [TSKV](/interfaces/formats/TSKV)                                                                                      | raw    | raw     |
+| [Pretty](/interfaces/formats/Pretty)                                                                                  | -      | raw     |
+| [PrettyNoEscapes](/interfaces/formats/PrettyNoEscapes)                                                                | -      | raw     |
+| [PrettyMonoBlock](/interfaces/formats/PrettyMonoBlock)                                                                | -      | raw     |
+| [PrettyNoEscapesMonoBlock](/interfaces/formats/PrettyNoEscapesMonoBlock)                                              | -      | raw     |
+| [PrettyCompact](/interfaces/formats/PrettyCompact)                                                                    | -      | raw     |
+| [PrettyCompactNoEscapes](/interfaces/formats/PrettyCompactNoEscapes)                                                  | -      | raw     |
+| [PrettyCompactMonoBlock](/interfaces/formats/PrettyCompactMonoBlock)                                                  | -      | raw     |
+| [PrettyCompactNoEscapesMonoBlock](/interfaces/formats/PrettyCompactNoEscapesMonoBlock)                                | -      | raw     |
+| [PrettySpace](/interfaces/formats/PrettySpace)                                                                        | -      | raw     |
+| [PrettySpaceNoEscapes](/interfaces/formats/PrettySpaceNoEscapes)                                                      | -      | raw     |
+| [PrettySpaceMonoBlock](/interfaces/formats/PrettySpaceMonoBlock)                                                      | -      | raw     |
+| [PrettySpaceNoEscapesMonoBlock](/interfaces/formats/PrettySpaceNoEscapesMonoBlock)                                    | -      | raw     |
+| [Prometheus](/interfaces/formats/Prometheus)                                                                          | -      | raw     |
+| [Protobuf](/interfaces/formats/Protobuf)                                                                              | raw    | raw     |
+| [ProtobufSingle](/interfaces/formats/ProtobufSingle)                                                                  | raw    | raw     |
+| [ProtobufList](/interfaces/formats/ProtobufList)                                                                                                      | raw    | raw     |
+| [Avro](/interfaces/formats/Avro)                                                                          | raw    | raw     |
+| [AvroConfluent](/interfaces/formats/AvroConfluent)                                                       | raw    | -       |
+| [Parquet](/interfaces/formats/Parquet)                                                                    | raw    | raw     |
+| [ParquetMetadata](/interfaces/formats/ParquetMetadata)                                                   | raw    | -       |
+| [Arrow](/interfaces/formats/Arrow)                                                                        | raw    | raw     |
+| [ArrowStream](/interfaces/formats/ArrowStream)                                                           | raw    | raw     |
+| [ORC](/interfaces/formats/ORC)                                                                            | raw    | raw     |
+| [One](/interfaces/formats/One)                                                                            | raw    | -       |
+| [Npy](/interfaces/formats/Npy)                                                                            | raw    | raw     |
+| [RowBinary](/interfaces/formats/RowBinary)                                                                            | full   | full    |
+| [RowBinaryWithNames](/interfaces/formats/RowBinaryWithNamesAndTypes)                                                  | full   | full    |
+| [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes)                                          | full   | full    |
+| [RowBinaryWithDefaults](/interfaces/formats/RowBinaryWithDefaults)                                                    | full   | -       |
+| [Native](/interfaces/formats/Native)                                                                                  | full   | raw     |
+| [Null](/interfaces/formats/Null)                                                                                      | -      | raw     |
+| [XML](/interfaces/formats/XML)                                                                                        | -      | raw     |
+| [CapnProto](/interfaces/formats/CapnProto)                                                                            | raw    | raw     |
+| [LineAsString](/interfaces/formats/LineAsString)                                                                      | raw    | raw     |
+| [Regexp](/interfaces/formats/Regexp)                                                                      | raw    | -       |
+| [RawBLOB](/interfaces/formats/RawBLOB)                                                                                | raw    | raw     |
+| [MsgPack](/interfaces/formats/MsgPack)                                                                                | raw    | raw     |
+| [MySQLDump](/interfaces/formats/MySQLDump)                                                                            | raw    | -       |
+| [DWARF](/interfaces/formats/DWARF)                                                                                    | raw    | -       |
+| [Markdown](/interfaces/formats/Markdown)                                                                              | -      | raw     |
+| [Form](/interfaces/formats/Form)                                                                                      | raw    | -       |
 
 ## Insert API {#insert-api}
 
@@ -348,7 +349,7 @@ try (InputStream dataStream = getDataStream()) {
 
 ### insert(String tableName, List&lt;?> data, InsertSettings settings) {#insertstring-tablename-listlt-data-insertsettings-settings}
 
-Sends a write request to database. The list of objects is converted into an efficient format and then is sent to a server. The class of the list items should be registed up-front using `register(Class, TableSchema)` method.
+Sends a write request to database. The list of objects is converted into an efficient format and then is sent to a server. The class of the list items should be registered up-front using `register(Class, TableSchema)` method.
 
 **Signatures**
 ```java
@@ -373,7 +374,6 @@ Future of `InsertResponse` type - the result of the operation and additional inf
 ```java showLineNumbers
 // Important step (done once) - register class to pre-compile object serializer according to the table schema. 
 client.register(ArticleViewEvent.class, client.getTableSchema(TABLE_NAME));
-
 
 List<ArticleViewEvent> events = loadBatch();
 
@@ -491,7 +491,7 @@ Future of `QueryResponse` type - a result dataset and additional information lik
 Map<String, Object> queryParams = new HashMap<>();
 queryParams.put("param1", 2);
 
-try (QueryResponse queryResponse =
+try (QueryResponse response =
         client.query("SELECT * FROM " + table + " WHERE col1 >= {param1:UInt32}", queryParams, new QuerySettings()).get()) {
 
     // Create a reader to access the data in a convenient way
@@ -645,7 +645,6 @@ void register(Class<?> clazz, TableSchema schema)
 `clazz` - Class representing the POJO used to read/write data.
 
 `schema` - Data schema to use for matching with POJO properties.
-
 
 **Examples**
 

@@ -5,6 +5,8 @@ pagination_next: null
 sidebar_position: 1
 description: 'Elixir SDK for ClickStack - The ClickHouse Observability Stack'
 title: 'Elixir'
+doc_type: 'guide'
+keywords: ['Elixir ClickStack SDK', 'Elixir observability', 'HyperDX Elixir', 'Elixir logging SDK', 'ClickStack Elixir integration']
 ---
 
 <table>

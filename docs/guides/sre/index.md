@@ -2,6 +2,8 @@
 slug: /security-and-authentication
 title: 'Security and Authentication'
 description: 'Landing page for Security and Authentication'
+doc_type: 'landing-page'
+keywords: ['security and authentication', 'access control', 'RBAC', 'user management', 'SRE guide']
 ---
 
 | Page                                                                   | Description                                                                                             |

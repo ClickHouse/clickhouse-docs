@@ -4,13 +4,14 @@ description: 'Using ClickHouse as an observability solution'
 slug: /use-cases/observability/introduction
 keywords: ['observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafana', 'OTel']
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import observability_1 from '@site/static/images/use-cases/observability/observability-1.png';
 import observability_2 from '@site/static/images/use-cases/observability/observability-2.png';
 import Image from '@theme/IdealImage';
 
-# Using ClickHouse for Observability
+# Using ClickHouse for observability
 
 ## Introduction {#introduction}
 
@@ -84,7 +85,7 @@ We currently recommend ClickHouse for storing two types of observability data:
 While ClickHouse can be used to store metrics data, this pillar is less mature in ClickHouse with pending support for features such as support for the Prometheus data format and PromQL.
 :::
 
-### Distributed Tracing {#distributed-tracing}
+### Distributed tracing {#distributed-tracing}
 
 Distributed tracing is a critical feature of Observability. A distributed trace, simply called a trace, maps the journey of a request through a system. The request will originate from an end user or application and proliferate throughout a system, typically resulting in a flow of actions between microservices. By recording this sequence, and allowing the subsequent events to be correlated, it allows an observability user or SRE to be able to diagnose issues in an application flow irrespective of how complex or serverless the architecture is.
 

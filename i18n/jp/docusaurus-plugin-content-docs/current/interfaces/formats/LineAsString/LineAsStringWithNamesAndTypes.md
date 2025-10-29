@@ -1,23 +1,22 @@
 ---
 'alias': []
-'description': 'LineAsStringWithNamesAndTypes フォーマットのドキュメント'
+'description': 'LineAsStringWithNamesAndTypes フォーマットの Documentation'
 'input_format': false
 'keywords':
 - 'LineAsStringWithNamesAndTypes'
 'output_format': true
 'slug': '/interfaces/formats/LineAsStringWithNamesAndTypes'
 'title': 'LineAsStringWithNamesAndTypes'
+'doc_type': 'reference'
 ---
 
-
-
-| Input | Output | Alias |
-|-------|--------|-------|
-| ✗     | ✔      |       |
+| 入力 | 出力 | エイリアス |
+|------|------|----------|
+| ✗    | ✔    |          |
 
 ## 説明 {#description}
 
-`LineAsStringWithNames` フォーマットは、[`LineAsString`](./LineAsString.md) フォーマットに似ていますが、2つのヘッダ行を印刷します：1つはカラム名、もう1つはタイプです。
+`LineAsStringWithNames` フォーマットは、[`LineAsString`](./LineAsString.md) フォーマットに似ていますが、2つのヘッダ行を印刷します。一つはカラム名、もう一つはタイプです。
 
 ## 例の使用法 {#example-usage}
 
@@ -33,7 +32,7 @@ INSERT INTO example VALUES ('John', 30), ('Jane', 25), ('Peter', 35);
 SELECT * FROM example FORMAT LineAsStringWithNamesAndTypes;
 ```
 
-```response title="応答"
+```response title="Response"
 name    value
 String    Int32
 John    30

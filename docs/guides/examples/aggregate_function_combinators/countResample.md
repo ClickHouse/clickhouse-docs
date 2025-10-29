@@ -4,6 +4,7 @@ title: 'countResample'
 description: 'Example of using the Resample combinator with count'
 keywords: ['count', 'Resample', 'combinator', 'examples', 'countResample']
 sidebar_label: 'countResample'
+doc_type: 'reference'
 ---
 
 # countResample {#countResample}
@@ -15,7 +16,7 @@ combinator can be applied to the [`count`](/sql-reference/aggregate-functions/re
 aggregate function to count values of a specified key column in a fixed number
 of intervals (`N`).
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 ### Basic example {#basic-example}
 

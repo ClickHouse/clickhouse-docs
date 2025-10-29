@@ -4,6 +4,7 @@ title: 'sumMap'
 description: 'Example of using the sumMap combinator'
 keywords: ['sum', 'map', 'combinator', 'examples', 'sumMap']
 sidebar_label: 'sumMap'
+doc_type: 'reference'
 ---
 
 # sumMap {#summap}
@@ -14,7 +15,7 @@ The [`Map`](/sql-reference/aggregate-functions/combinators#-map) combinator can 
 function to calculate the sum of values in a Map according to each key, using the `sumMap` 
 aggregate combinator function.
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 In this example, we'll create a table that stores status codes and their counts for different timeslots,
 where each row contains a Map of status codes to their corresponding counts. We'll use 

@@ -4,6 +4,7 @@ title: 'avgMap'
 description: 'Example of using the avgMap combinator'
 keywords: ['avg', 'map', 'combinator', 'examples', 'avgMap']
 sidebar_label: 'avgMap'
+doc_type: 'reference'
 ---
 
 # avgMap {#avgmap}
@@ -14,7 +15,7 @@ The [`Map`](/sql-reference/aggregate-functions/combinators#-map) combinator can 
 function to calculate the arithmetic mean of values in a Map according to each key, using the `avgMap` 
 aggregate combinator function.
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 In this example, we'll create a table that stores status codes and their counts for different timeslots,
 where each row contains a Map of status codes to their corresponding counts. We'll use 

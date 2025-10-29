@@ -4,6 +4,8 @@ title: 'Configuration Options'
 pagination_prev: null
 pagination_next: null
 description: 'Configuration options for ClickStack - The ClickHouse Observability Stack'
+keywords: ['ClickStack configuration', 'observability configuration', 'HyperDX settings', 'collector configuration', 'environment variables']
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';
@@ -167,8 +169,6 @@ The following settings are available for each source:
 | `Span Events Expression`        | Expression to extract span events. Typically a `Nested` type column. This allows rendering of exception stack traces with supported language SDKs.                                                   | Yes      | Yes                         | `Events`                 |
 | `Implicit Column Expression`   | Column used for full-text search if no field is specified (Lucene-style). Typically the log body.  | Yes  | Yes  | `SpanName`|
 
-
-
 #### Metrics {#metrics}
 
 | Setting               | Description                                                                                   | Required | Inferred in Default Schema | Inferred Value              |
@@ -214,128 +214,133 @@ For example, below is the Logs source configured with correlated sources:
 ### Application configuration settings {#application-configuration-settings}
 
 - `HYPERDX_API_KEY`
-    - **Default:** None (required)
-    - **Description:** Authentication key for the HyperDX API.
-    - **Guidance:** 
-    - Required for telemetry and logging
-    - In local development, can be any non-empty value
-    - For production, use a secure, unique key
-    - Can be obtained from the team settings page after account creation
+  - **Default:** None (required)
+  - **Description:** Authentication key for the HyperDX API.
+  - **Guidance:** 
+  - Required for telemetry and logging
+  - In local development, can be any non-empty value
+  - For production, use a secure, unique key
+  - Can be obtained from the team settings page after account creation
 
 - `HYPERDX_LOG_LEVEL`
-    - **Default:** `info`
-    - **Description:** Sets the logging verbosity level.
-    - **Options:** `debug`, `info`, `warn`, `error`
-    - **Guidance:**
-    - Use `debug` for detailed troubleshooting
-    - Use `info` for normal operation
-    - Use `warn` or `error` in production to reduce log volume
+  - **Default:** `info`
+  - **Description:** Sets the logging verbosity level.
+  - **Options:** `debug`, `info`, `warn`, `error`
+  - **Guidance:**
+  - Use `debug` for detailed troubleshooting
+  - Use `info` for normal operation
+  - Use `warn` or `error` in production to reduce log volume
 
 - `HYPERDX_API_PORT`
-    - **Default:** `8000`
-    - **Description:** Port for the HyperDX API server.
-    - **Guidance:**
-    - Ensure this port is available on your host
-    - Change if you have port conflicts
-    - Must match the port in your API client configurations
+  - **Default:** `8000`
+  - **Description:** Port for the HyperDX API server.
+  - **Guidance:**
+  - Ensure this port is available on your host
+  - Change if you have port conflicts
+  - Must match the port in your API client configurations
 
 - `HYPERDX_APP_PORT`
-    - **Default:** `8000`
-    - **Description:** Port for the HyperDX frontend app.
-    - **Guidance:**
-    - Ensure this port is available on your host
-    - Change if you have port conflicts
-    - Must be accessible from your browser
+  - **Default:** `8000`
+  - **Description:** Port for the HyperDX frontend app.
+  - **Guidance:**
+  - Ensure this port is available on your host
+  - Change if you have port conflicts
+  - Must be accessible from your browser
 
 - `HYPERDX_APP_URL`
-    - **Default:** `http://localhost`
-    - **Description:** Base URL for the frontend app.
-    - **Guidance:**
-    - Set to your domain in production
-    - Include protocol (http/https)
-    - Don't include trailing slash
+  - **Default:** `http://localhost`
+  - **Description:** Base URL for the frontend app.
+  - **Guidance:**
+  - Set to your domain in production
+  - Include protocol (http/https)
+  - Don't include trailing slash
 
 - `MONGO_URI`
-    - **Default:** `mongodb://db:27017/hyperdx`
-    - **Description:** MongoDB connection string.
-    - **Guidance:**
-    - Use default for local development with Docker
-    - For production, use a secure connection string
-    - Include authentication if required
-    - Example: `mongodb://user:pass@host:port/db`
+  - **Default:** `mongodb://db:27017/hyperdx`
+  - **Description:** MongoDB connection string.
+  - **Guidance:**
+  - Use default for local development with Docker
+  - For production, use a secure connection string
+  - Include authentication if required
+  - Example: `mongodb://user:pass@host:port/db`
 
 - `MINER_API_URL`
-    - **Default:** `http://miner:5123`
-    - **Description:** URL for the log pattern mining service.
-    - **Guidance:**
-    - Use default for local development with Docker
-    - Set to your miner service URL in production
-    - Must be accessible from the API service
+  - **Default:** `http://miner:5123`
+  - **Description:** URL for the log pattern mining service.
+  - **Guidance:**
+  - Use default for local development with Docker
+  - Set to your miner service URL in production
+  - Must be accessible from the API service
 
 - `FRONTEND_URL`
-    - **Default:** `http://localhost:3000`
-    - **Description:** URL for the frontend app.
-    - **Guidance:**
-    - Use default for local development
-    - Set to your domain in production
-    - Must be accessible from the API service
+  - **Default:** `http://localhost:3000`
+  - **Description:** URL for the frontend app.
+  - **Guidance:**
+  - Use default for local development
+  - Set to your domain in production
+  - Must be accessible from the API service
 
 - `OTEL_SERVICE_NAME`
-    - **Default:** `hdx-oss-api`
-    - **Description:** Service name for OpenTelemetry instrumentation.
-    - **Guidance:**
-    - Use descriptive name for your HyperDX service. Applicable if HyperDX self-instruments.
-    - Helps identify the HyperDX service in telemetry data
+  - **Default:** `hdx-oss-api`
+  - **Description:** Service name for OpenTelemetry instrumentation.
+  - **Guidance:**
+  - Use descriptive name for your HyperDX service. Applicable if HyperDX self-instruments.
+  - Helps identify the HyperDX service in telemetry data
 
 - `NEXT_PUBLIC_OTEL_EXPORTER_OTLP_ENDPOINT`
-    - **Default:** `http://localhost:4318`
-    - **Description:** OpenTelemetry collector endpoint.
-    - **Guidance:**
-    - Relevant of self-instrumenting HyperDX.
-    - Use default for local development
-    - Set to your collector URL in production
-    - Must be accessible from your HyperDX service
+  - **Default:** `http://localhost:4318`
+  - **Description:** OpenTelemetry collector endpoint.
+  - **Guidance:**
+  - Relevant of self-instrumenting HyperDX.
+  - Use default for local development
+  - Set to your collector URL in production
+  - Must be accessible from your HyperDX service
 
 - `USAGE_STATS_ENABLED`
-    - **Default:** `true`
-    - **Description:** Toggles usage statistics collection.
-    - **Guidance:**
-    - Set to `false` to disable usage tracking
-    - Useful for privacy-sensitive deployments
-    - Default is `true` for better product improvement
+  - **Default:** `true`
+  - **Description:** Toggles usage statistics collection.
+  - **Guidance:**
+  - Set to `false` to disable usage tracking
+  - Useful for privacy-sensitive deployments
+  - Default is `true` for better product improvement
 
 - `IS_OSS`
-    - **Default:** `true`
-    - **Description:** Indicates if running in OSS mode.
-    - **Guidance:**
-    - Keep as `true` for open-source deployments
-    - Set to `false` for enterprise deployments
-    - Affects feature availability
+  - **Default:** `true`
+  - **Description:** Indicates if running in OSS mode.
+  - **Guidance:**
+  - Keep as `true` for open-source deployments
+  - Set to `false` for enterprise deployments
+  - Affects feature availability
 
 - `IS_LOCAL_MODE`
-    - **Default:** `false`
-    - **Description:** Indicates if running in local mode.
-    - **Guidance:**
-    - Set to `true` for local development
-    - Disables certain production features
-    - Useful for testing and development
+  - **Default:** `false`
+  - **Description:** Indicates if running in local mode.
+  - **Guidance:**
+  - Set to `true` for local development
+  - Disables certain production features
+  - Useful for testing and development
 
 - `EXPRESS_SESSION_SECRET`
-    - **Default:** `hyperdx is cool 👋`
-    - **Description:** Secret for Express session management.
-    - **Guidance:**
-    - Change in production
-    - Use a strong, random string
-    - Keep secret and secure
+  - **Default:** `hyperdx is cool 👋`
+  - **Description:** Secret for Express session management.
+  - **Guidance:**
+  - Change in production
+  - Use a strong, random string
+  - Keep secret and secure
 
 - `ENABLE_SWAGGER`
-    - **Default:** `false`
-    - **Description:** Toggles Swagger API documentation.
-    - **Guidance:**
-    - Set to `true` to enable API documentation
-    - Useful for development and testing
-    - Disable in production
+  - **Default:** `false`
+  - **Description:** Toggles Swagger API documentation.
+  - **Guidance:**
+  - Set to `true` to enable API documentation
+  - Useful for development and testing
+  - Disable in production
 
+- `BETA_CH_OTEL_JSON_SCHEMA_ENABLED`
+  - **Default:** `false`
+  - **Description:** Enables Beta support for the JSON type in HyperDX. See also [`OTEL_AGENT_FEATURE_GATE_ARG`](#otel-collector) to enable JSON support in the OTel collector.
+  - **Guidance:**
+  - Set to `true` to enable JSON support in ClickStack.
 
 ## OpenTelemetry collector {#otel-collector}
 
@@ -382,6 +387,12 @@ See ["ClickStack OpenTelemetry Collector"](/use-cases/observability/clickstack/i
   - **Guidance:**  
     - Set if using a custom database name  
     - Ensure the specified user has access to this database  
+
+- `OTEL_AGENT_FEATURE_GATE_ARG`
+  - **Default:** `<empty string>`
+  - **Description:** Enables feature flags to enabled in the collector. If set to `--feature-gates=clickhouse.json` enables Beta support for the JSON type in collector, ensuring schemas are created with the type. See also [`BETA_CH_OTEL_JSON_SCHEMA_ENABLED`](#hyperdx) to enable JSON support in HyperDX.
+  - **Guidance:**
+  - Set to `true` to enable JSON support in ClickStack.
 
 ## ClickHouse {#clickhouse}
 

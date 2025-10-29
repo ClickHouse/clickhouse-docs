@@ -4,6 +4,7 @@ sidebar_label: 'Querying data in S3'
 slug: /chdb/guides/querying-s3
 description: 'Learn how to query data in an S3 bucket with chDB.'
 keywords: ['chdb', 's3']
+doc_type: 'guide'
 ---
 
 A lot of the world's data lives in Amazon S3 buckets.
@@ -48,7 +49,7 @@ To do this, we can use the [`s3` table function](/sql-reference/table-functions/
 If you pass just the bucket name it will throw an exception.
 :::
 
-We're also going to use the [`One`](/interfaces/formats#data-format-one) input format so that the file isn't parsed, instead a single row is returned per file and we can access the file via the `_file` virtual column and the path via the `_path` virtual column.
+We're also going to use the [`One`](/interfaces/formats/One) input format so that the file isn't parsed, instead a single row is returned per file and we can access the file via the `_file` virtual column and the path via the `_path` virtual column.
 
 ```python
 import chdb

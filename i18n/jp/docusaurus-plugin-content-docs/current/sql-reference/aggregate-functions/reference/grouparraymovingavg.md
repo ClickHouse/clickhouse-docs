@@ -1,11 +1,10 @@
 ---
-'description': 'Calculates the moving average of input values.'
+'description': '入力値の移動平均を計算します。'
 'sidebar_position': 144
 'slug': '/sql-reference/aggregate-functions/reference/grouparraymovingavg'
 'title': 'groupArrayMovingAvg'
+'doc_type': 'reference'
 ---
-
-
 
 
 # groupArrayMovingAvg
@@ -17,18 +16,18 @@ groupArrayMovingAvg(numbers_for_summing)
 groupArrayMovingAvg(window_size)(numbers_for_summing)
 ```
 
-この関数はウィンドウサイズをパラメータとして受け取ることができます。指定しない場合、関数はカラム内の行数と等しいウィンドウサイズを取ります。
+この関数はウィンドウサイズをパラメータとして受け取ることができます。指定されない場合、関数はカラム内の行数と等しいウィンドウサイズを取ります。
 
 **引数**
 
-- `numbers_for_summing` — 数値データ型の値を返す [式](/sql-reference/syntax#expressions)。
+- `numbers_for_summing` — 数値データ型の値を生成する[式](/sql-reference/syntax#expressions)。
 - `window_size` — 計算ウィンドウのサイズ。
 
 **返される値**
 
-- 入力データと同じサイズおよび型の配列。
+- 入力データと同じサイズおよびタイプの配列。
 
-この関数は[ゼロに向けた丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用します。結果のデータ型にとって重要でない小数点以下の桁を切り捨てます。
+この関数は[ゼロに向かって丸める](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用します。結果のデータ型に対して重要でない小数点以下の桁は切り捨てられます。
 
 **例**
 

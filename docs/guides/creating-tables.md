@@ -4,6 +4,8 @@ sidebar_label: 'Creating tables'
 title: 'Creating tables in ClickHouse'
 slug: /guides/creating-tables
 description: 'Learn about Creating Tables in ClickHouse'
+keywords: ['creating tables', 'CREATE TABLE', 'table creation', 'database guide', 'MergeTree engine']
+doc_type: 'guide'
 ---
 
 # Creating tables in ClickHouse
@@ -47,7 +49,7 @@ The table engine determines:
 There are many engines to choose from, but for a simple table on a single-node ClickHouse server, [MergeTree](/engines/table-engines/mergetree-family/mergetree.md) is your likely choice.
 :::
 
-## A Brief Intro to Primary Keys {#a-brief-intro-to-primary-keys}
+## A brief intro to primary keys {#a-brief-intro-to-primary-keys}
 
 Before you go any further, it is important to understand how primary keys work in ClickHouse (the implementation
 of primary keys might seem unexpected!):

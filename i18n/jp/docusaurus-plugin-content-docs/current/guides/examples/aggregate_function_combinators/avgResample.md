@@ -1,7 +1,7 @@
 ---
 'slug': '/examples/aggregate-function-combinators/avgResample'
 'title': 'avgResample'
-'description': '平均を利用した Resample combinator の例'
+'description': 'avgを使用したResampleコンビネータの例'
 'keywords':
 - 'avg'
 - 'Resample'
@@ -9,27 +9,23 @@
 - 'examples'
 - 'avgResample'
 'sidebar_label': 'avgResample'
+'doc_type': 'reference'
 ---
-
-
-
 
 
 # countResample {#countResample}
 
-## Description {#description}
+## 説明 {#description}
 
 [`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
-コンビネータは、指定されたキー列の値を固定数の 
-インターバル (`N`) でカウントするために、[`count`](/sql-reference/aggregate-functions/reference/count)
+コンビネータは、指定されたキー カラムの値を固定数の間隔 (`N`) でカウントするために[`count`](/sql-reference/aggregate-functions/reference/count) 
 集約関数に適用できます。
 
-## Example Usage {#example-usage}
+## 使用例 {#example-usage}
 
-### Basic example {#basic-example}
+### 基本的な例 {#basic-example}
 
-例を見てみましょう。従業員の `name`、`age`、および `wage` を含むテーブルを作成し、
-データを挿入します。
+例を見てみましょう。従業員の`name`、`age`、および`wage`を含むテーブルを作成し、その中にデータを挿入します。
 
 ```sql
 CREATE TABLE employee_data 
@@ -50,10 +46,7 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-年齢が `[30,60)` および `[60,75)` の間にある人々の平均賃金を取得してみましょう 
-(`[` は排他的、`)` は包含的です)。整数表現を使用するため、年齢は
-インターバル `[30, 59]` および `[60,74]` になります。これを行うために、`avg` 
-集約関数に `Resample` コンビネータを適用します。
+年齢が `[30,60)` および `[60,75)` の人々の平均賃金を取得しましょう（`[` は排他的で、`]` は包含的です）。整数表現を使用しているため、年齢は `[30, 59]` および `[60,74]` の範囲になります。これを行うために、`avg` 集約関数に `Resample` コンビネータを適用します。
 
 ```sql
 WITH avg_wage AS
@@ -72,6 +65,6 @@ FROM avg_wage;
 └──────────────────┘
 ```
 
-## See also {#see-also}
+## 参照 {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)
 - [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)

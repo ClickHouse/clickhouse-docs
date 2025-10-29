@@ -4,6 +4,7 @@ slug: /integrations/azure-data-factory/http-interface
 description: 'Using ClickHouse''s HTTP interface to bring data from Azure Data Factory into ClickHouse'
 keywords: ['azure data factory', 'azure', 'microsoft', 'data', 'http interface']
 title: 'Using ClickHouse HTTP Interface to bring Azure data into ClickHouse'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -34,7 +35,7 @@ import adfCopyDataSource                        from '@site/static/images/integr
 import adfCopyDataSinkSelectPost                from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-sink-select-post.png';
 import adfCopyDataDebugSuccess                  from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-debug-success.png';
 
-# Using ClickHouse HTTP Interface in Azure Data Factory {#using-clickhouse-http-interface-in-azure-data-factory}
+# Using ClickHouse HTTP interface in Azure data factory {#using-clickhouse-http-interface-in-azure-data-factory}
 
 The [`azureBlobStorage` Table Function](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
 is a fast and convenient way to ingest data from Azure Blob Storage into
@@ -118,7 +119,7 @@ Service to your ClickHouse instance, define a Dataset for the
 [REST sink](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest),
 and create a Copy Data activity to send data from Azure to ClickHouse.
 
-## Creating an Azure Data Factory instance {#create-an-azure-data-factory-instance}
+## Creating an Azure data factory instance {#create-an-azure-data-factory-instance}
 
 This guide assumes that you have access to Microsoft Azure account, and you
 already have configured a subscription and a resource group. If you have
@@ -313,7 +314,6 @@ Now that we've configured both the input and output datasets, we can set up a
    :::
    <Image img={adfCopyDataSinkSelectPost} size="lg" alt="Copy Data Sink Select Post" border/>
 
-
 5. Click **Debug** at the top of the canvas to run the pipeline. After a short
    wait, the activity will be queued and executed. If everything is configured
    correctly, the task should finish with a **Success** status.
@@ -321,7 +321,7 @@ Now that we've configured both the input and output datasets, we can set up a
 
 6. Once complete, click **Publish all** to save your pipeline and dataset changes.
 
-## Additional Resources {#additional-resources-1}
+## Additional resources {#additional-resources-1}
 - [HTTP Interface](https://clickhouse.com/docs/interfaces/http)
 - [Copy and transform data from and to a REST endpoint by using Azure Data Factory](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest?tabs=data-factory)
 - [Selecting an Insert Strategy](https://clickhouse.com/docs/best-practices/selecting-an-insert-strategy)

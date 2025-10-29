@@ -5,11 +5,12 @@ sidebar_label: 'Alerts'
 pagination_prev: null
 pagination_next: null
 description: 'Alerts with ClickStack'
+doc_type: 'guide'
+keywords: ['ClickStack', 'observability', 'alerts', 'search-alerts', 'notifications', 'thresholds', 'slack', 'email', 'pagerduty', 'error-monitoring', 'performance-monitoring', 'user-events']
 ---
 
 import Image from '@theme/IdealImage';
 import search_alert from '@site/static/images/use-cases/observability/search_alert.png';
-
 
 ## Search alerts {#search-alerts}
 

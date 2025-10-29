@@ -1,14 +1,13 @@
 ---
-'description': 'Documentation for the ClickHouse ODBC driver'
-'sidebar_label': 'ODBC Driver'
+'description': 'ClickHouse ODBC ドライバーのDocumentation'
+'sidebar_label': 'ODBC ドライバー'
 'sidebar_position': 35
 'slug': '/interfaces/odbc'
-'title': 'ODBC Driver'
+'title': 'ODBC ドライバー'
+'doc_type': 'reference'
 ---
 
 
+# ODBCドライバ
 
-
-# ODBCドライバー
-
-[公式のODBCドライバー](https://github.com/ClickHouse/clickhouse-odbc)を使用して、ClickHouseにデータソースとしてアクセスします。
+[公式ODBCドライバ](https://github.com/ClickHouse/clickhouse-odbc)を使用して、データソースとしてClickHouseにアクセスします。

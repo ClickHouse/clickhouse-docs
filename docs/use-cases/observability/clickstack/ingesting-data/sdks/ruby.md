@@ -5,6 +5,8 @@ pagination_next: null
 sidebar_position: 7
 description: 'Ruby on Rails SDK for ClickStack - The ClickHouse Observability Stack'
 title: 'Ruby on Rails'
+doc_type: 'guide'
+keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
 
 This guide integrates:
@@ -18,7 +20,6 @@ This guide integrates:
     </tr>
   </tbody>
 </table>
-
 
 _To send logs to ClickStack, please send logs via the [OpenTelemetry collector](/use-cases/observability/clickstack/ingesting-data/otel-collector)._
 

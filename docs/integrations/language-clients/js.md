@@ -5,6 +5,11 @@ keywords: ['clickhouse', 'js', 'JavaScript', 'NodeJS', 'web', 'browser', 'Cloudf
 slug: /integrations/javascript
 description: 'The official JS client for connecting to ClickHouse.'
 title: 'ClickHouse JS'
+doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'language_client'
+  - website: 'https://github.com/ClickHouse/clickhouse-js'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
@@ -25,7 +30,7 @@ When using TypeScript, make sure it is at least [version 4.5](https://www.typesc
 
 The client source code is available in the [ClickHouse-JS GitHub repository](https://github.com/ClickHouse/clickhouse-js).
 
-## Environment requirements (Node.js) {#environment-requirements-nodejs}
+## Environment requirements (node.js) {#environment-requirements-nodejs}
 
 Node.js must be available in the environment to run the client.
 The client is compatible with all the [maintained](https://github.com/nodejs/release#readme) Node.js releases.
@@ -41,7 +46,7 @@ Current Node.js versions support:
 | 18.x            | ✔           |
 | 16.x            | Best effort |
 
-## Environment requirements (Web) {#environment-requirements-web}
+## Environment requirements (web) {#environment-requirements-web}
 
 The web version of the client is officially tested with the latest Chrome/Firefox browsers and can be used as a dependency in, for example, React/Vue/Angular applications, or Cloudflare workers.
 
@@ -63,7 +68,7 @@ npm i @clickhouse/client-web
 
 | Client version | ClickHouse |
 |----------------|------------|
-| 1.8.0          | 23.3+      |
+| 1.12.0         | 24.8+      |
 
 Likely, the client will work with the older versions, too; however, this is best-effort support and is not guaranteed. If you have a ClickHouse version older than 23.3, please refer to [ClickHouse security policy](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md) and consider upgrading.
 
@@ -107,32 +112,32 @@ A client instance can be [pre-configured](./js.md#configuration) during instanti
 
 When creating a client instance, the following connection settings can be adjusted:
 
-| Setting                                                                | Description                                                                            | Default Value           | See Also                                                                                                                |
-|------------------------------------------------------------------------|----------------------------------------------------------------------------------------|-------------------------|-------------------------------------------------------------------------------------------------------------------------|
-| **url**?: string                                                       | A ClickHouse instance URL.                                                             | `http://localhost:8123` | [URL configuration docs](./js.md#url-configuration)                                                                     |
-| **pathname**?: string                                                  | An optional pathname to add to the ClickHouse URL after it is parsed by the client.    | `''`                    | [Proxy with a pathname docs](./js.md#proxy-with-a-pathname)                                                                                       |
-| **request_timeout**?: number                                           | The request timeout in milliseconds.                                                   | `30_000`                | -                                                                                                                       |
-| **compression**?: `{ **response**?: boolean; **request**?: boolean }`    | Enable compression.                                                                    | -                       | [Compression docs](./js.md#compression)                                                                                                 |
-| **username**?: string                                                  | The name of the user on whose behalf requests are made.                                | `default`               | -                                                                                                                       |
-| **password**?: string                                                  | The user password.                                                                     | `''`                    | -                                                                                                                       |
-| **application**?: string                                               | The name of the application using the Node.js client.                                  | `clickhouse-js`         | -                                                                                                                       |
-| **database**?: string                                                  | The database name to use.                                                              | `default`               | -                                                                                                                       |
-| **clickhouse_settings**?: ClickHouseSettings                           | ClickHouse settings to apply to all requests.                                          | `{}`                    | -                                                                                                                       |
-| **log**?: `{ **LoggerClass**?: Logger, **level**?: ClickHouseLogLevel }` | Internal client logs configuration.                                                    | -                       | [Logging docs](./js.md#logging-nodejs-only)                                                                             |
-| **session_id**?: string                                                | Optional ClickHouse Session ID to send with every request.                             | -                       | -                                                                                                                       |
-| **keep_alive**?: `{ **enabled**?: boolean }`                             | Enabled by default in both Node.js and Web versions.                                   | -                       | -                                                                                                                       |
-| **http_headers**?: `Record<string, string>`                              | Additional HTTP headers for outgoing ClickHouse requests.                              | -                       | [Reverse proxy with authentication docs](./js.md#reverse-proxy-with-authentication)                                                                           |
-| **roles**?: string \|  string[]                                        | ClickHouse role name(s) to attach to the outgoing requests.                            | -                       | [Using roles with the HTTP interface](/interfaces/http#setting-role-with-query-parameters)|
+| Setting                                                                  | Description                                                                         | Default Value           | See Also                                                                                   |
+|--------------------------------------------------------------------------|-------------------------------------------------------------------------------------|-------------------------|--------------------------------------------------------------------------------------------|
+| **url**?: string                                                         | A ClickHouse instance URL.                                                          | `http://localhost:8123` | [URL configuration docs](./js.md#url-configuration)                                        |
+| **pathname**?: string                                                    | An optional pathname to add to the ClickHouse URL after it is parsed by the client. | `''`                    | [Proxy with a pathname docs](./js.md#proxy-with-a-pathname)                                |
+| **request_timeout**?: number                                             | The request timeout in milliseconds.                                                | `30_000`                | -                                                                                          |
+| **compression**?: `{ **response**?: boolean; **request**?: boolean }`    | Enable compression.                                                                 | -                       | [Compression docs](./js.md#compression)                                                    |
+| **username**?: string                                                    | The name of the user on whose behalf requests are made.                             | `default`               | -                                                                                          |
+| **password**?: string                                                    | The user password.                                                                  | `''`                    | -                                                                                          |
+| **application**?: string                                                 | The name of the application using the Node.js client.                               | `clickhouse-js`         | -                                                                                          |
+| **database**?: string                                                    | The database name to use.                                                           | `default`               | -                                                                                          |
+| **clickhouse_settings**?: ClickHouseSettings                             | ClickHouse settings to apply to all requests.                                       | `{}`                    | -                                                                                          |
+| **log**?: `{ **LoggerClass**?: Logger, **level**?: ClickHouseLogLevel }` | Internal client logs configuration.                                                 | -                       | [Logging docs](./js.md#logging-nodejs-only)                                                |
+| **session_id**?: string                                                  | Optional ClickHouse Session ID to send with every request.                          | -                       | -                                                                                          |
+| **keep_alive**?: `{ **enabled**?: boolean }`                             | Enabled by default in both Node.js and Web versions.                                | -                       | -                                                                                          |
+| **http_headers**?: `Record<string, string>`                              | Additional HTTP headers for outgoing ClickHouse requests.                           | -                       | [Reverse proxy with authentication docs](./js.md#reverse-proxy-with-authentication)        |
+| **roles**?: string \|  string[]                                          | ClickHouse role name(s) to attach to the outgoing requests.                         | -                       | [Using roles with the HTTP interface](/interfaces/http#setting-role-with-query-parameters) |
 
 #### Node.js-specific configuration parameters {#nodejs-specific-configuration-parameters}
 
-| Setting                                                                  | Description                                                 | Default Value | See Also                                                                                             |
-|--------------------------------------------------------------------------|-------------------------------------------------------------|---------------|------------------------------------------------------------------------------------------------------|
-| **max_open_connections**?: number                                        | A maximum number of connected sockets to allow per host.    | `10`          | -                                                                                                    |
+| Setting                                                                    | Description                                                 | Default Value | See Also                                                                                             |
+|----------------------------------------------------------------------------|-------------------------------------------------------------|---------------|------------------------------------------------------------------------------------------------------|
+| **max_open_connections**?: number                                          | A maximum number of connected sockets to allow per host.    | `10`          | -                                                                                                    |
 | **tls**?: `{ **ca_cert**: Buffer, **cert**?: Buffer, **key**?: Buffer }`   | Configure TLS certificates.                                 | -             | [TLS docs](./js.md#tls-certificates-nodejs-only)                                                     |
 | **keep_alive**?: `{ **enabled**?: boolean, **idle_socket_ttl**?: number }` | -                                                           | -             | [Keep Alive docs](./js.md#keep-alive-configuration-nodejs-only)                                      |
-| **http_agent**?: http.Agent \| https.Agent <br/><ExperimentalBadge/>     | Custom HTTP agent for the client.                           | -             | [HTTP agent docs](./js.md#custom-httphttps-agent-experimental-nodejs-only)                           |
-| **set_basic_auth_header**?: boolean <br/><ExperimentalBadge/>            | Set the `Authorization` header with basic auth credentials. | `true`        | [this setting usage in the HTTP agent docs](./js.md#custom-httphttps-agent-experimental-nodejs-only) |
+| **http_agent**?: http.Agent \| https.Agent <br/><ExperimentalBadge/>       | Custom HTTP agent for the client.                           | -             | [HTTP agent docs](./js.md#custom-httphttps-agent-experimental-nodejs-only)                           |
+| **set_basic_auth_header**?: boolean <br/><ExperimentalBadge/>              | Set the `Authorization` header with basic auth credentials. | `true`        | [this setting usage in the HTTP agent docs](./js.md#custom-httphttps-agent-experimental-nodejs-only) |
 
 ### URL configuration {#url-configuration}
 
@@ -142,20 +147,20 @@ URL configuration will _always_ overwrite the hardcoded values and a warning wil
 
 It is possible to configure most of the client instance parameters with a URL. The URL format is `http[s]://[username:password@]hostname:port[/database][?param1=value1&param2=value2]`. In almost every case, the name of a particular parameter reflects its path in the config options interface, with a few exceptions. The following parameters are supported:
 
-| Parameter                                   | Type                                                           |
-|---------------------------------------------|----------------------------------------------------------------|
-| `pathname`                                  | an arbitrary string.                                           |
-| `application_id`                            | an arbitrary string.                                           |
-| `session_id`                                | an arbitrary string.                                           |
-| `request_timeout`                           | non-negative number.                                           |
-| `max_open_connections`                      | non-negative number, greater than zero.                        |
-| `compression_request`                       | boolean. See below (1)                                        |
-| `compression_response`                      | boolean.                                                       |
+| Parameter                                   | Type                                                              |
+|---------------------------------------------|-------------------------------------------------------------------|
+| `pathname`                                  | an arbitrary string.                                              |
+| `application_id`                            | an arbitrary string.                                              |
+| `session_id`                                | an arbitrary string.                                              |
+| `request_timeout`                           | non-negative number.                                              |
+| `max_open_connections`                      | non-negative number, greater than zero.                           |
+| `compression_request`                       | boolean. See below (1)                                            |
+| `compression_response`                      | boolean.                                                          |
 | `log_level`                                 | allowed values: `OFF`, `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`. |
-| `keep_alive_enabled`                        | boolean.                                                       |
-| `clickhouse_setting_*` or `ch_*`            | see below (2)                                                 |
-| `http_header_*`                             | see below (3)                                                 |
-| (Node.js only) `keep_alive_idle_socket_ttl` | non-negative number.                                           |
+| `keep_alive_enabled`                        | boolean.                                                          |
+| `clickhouse_setting_*` or `ch_*`            | see below (2)                                                     |
+| `http_header_*`                             | see below (3)                                                     |
+| (Node.js only) `keep_alive_idle_socket_ttl` | non-negative number.                                              |
 
 - (1) For booleans, valid values will be `true`/`1` and `false`/`0`. 
 - (2) Any parameter prefixed with `clickhouse_setting_` or `ch_` will have this prefix removed and the rest added to client's `clickhouse_settings`. For example, `?ch_async_insert=1&ch_wait_for_async_insert=1` will be the same as:
@@ -287,7 +292,7 @@ You should start consuming the `ResultSet` as soon as possible, as it holds the 
 
 Alternatively, if it's too large to fit into memory at once, you can call the `stream` method, and process the data in the streaming mode. Each of the response chunks will be transformed into a relatively small arrays of rows instead (the size of this array depends on the size of a particular chunk the client receives from the server, as it may vary, and the size of an individual row), one chunk at a time. 
 
-Please refer to the list of the [supported data formats](./js.md#supported-data-formats) to determine what the best format is for streaming in your case. For example, if you want to stream JSON objects, you could choose [JSONEachRow](/sql-reference/formats#jsoneachrow), and each row will be parsed as a JS object, or, perhaps, a more compact [JSONCompactColumns](/sql-reference/formats#jsoncompactcolumns) format that will result in each row being a compact array of values. See also: [streaming files](./js.md#streaming-files-nodejs-only).
+Please refer to the list of the [supported data formats](./js.md#supported-data-formats) to determine what the best format is for streaming in your case. For example, if you want to stream JSON objects, you could choose [JSONEachRow](/interfaces/formats/JSONEachRow), and each row will be parsed as a JS object, or, perhaps, a more compact [JSONCompactColumns](/interfaces/formats/JSONCompactColumns) format that will result in each row being a compact array of values. See also: [streaming files](./js.md#streaming-files-nodejs-only).
 
 :::important
 If the `ResultSet` or its stream is not fully consumed, it will be destroyed after the `request_timeout` period of inactivity.
@@ -698,14 +703,35 @@ type PingResult =
   | { success: true }
   | { success: false; error: Error }
 
+/** Parameters for the health-check request - using the built-in `/ping` endpoint. 
+ *  This is the default behavior for the Node.js version. */
+export type PingParamsWithEndpoint = {
+  select: false
+  /** AbortSignal instance to cancel a request in progress. */
+  abort_signal?: AbortSignal
+  /** Additional HTTP headers to attach to this particular request. */
+  http_headers?: Record<string, string>
+}
+/** Parameters for the health-check request - using a SELECT query.
+ *  This is the default behavior for the Web version, as the `/ping` endpoint does not support CORS.
+ *  Most of the standard `query` method params, e.g., `query_id`, `abort_signal`, `http_headers`, etc. will work, 
+ *  except for `query_params`, which does not make sense to allow in this method. */
+export type PingParamsWithSelectQuery = { select: true } & Omit<
+  BaseQueryParams,
+  'query_params'
+>
+export type PingParams = PingParamsWithEndpoint | PingParamsWithSelectQuery
+
 interface ClickHouseClient {
-  ping(): Promise<PingResult>
+  ping(params?: PingParams): Promise<PingResult>
 }
 ```
 
-Ping might be a useful tool to check if the server is available when the application starts, especially with ClickHouse Cloud, where an instance might be idling and will wake up after a ping.
+Ping might be a useful tool to check if the server is available when the application starts, especially with ClickHouse Cloud, where an instance might be idling and will wake up after a ping: in that case, you might want to retry it a few times with a delay in between. 
 
-**Example:** (Node.js/Web) Ping a ClickHouse server instance. NB: for the Web version, captured errors will be different.
+Note that by default, Node.js version uses the `/ping` endpoint, while the Web version uses a simple `SELECT 1` query to achieve a similar result, as the `/ping` endpoint does not support CORS.
+
+**Example:** (Node.js/Web) A simple ping to the ClickHouse server instance. NB: for the Web version, captured errors will be different.
 [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/ping.ts).
 
 ```ts
@@ -715,7 +741,13 @@ if (!result.success) {
 }
 ```
 
-NB: due to `/ping` endpoint not implementing CORS, the web version uses a simple `SELECT 1` to achieve a similar result. 
+**Example:** If you want to also check the credentials when calling the `ping` method, or specify additional params such as `query_id`, you could use it as follows:
+
+```ts
+const result = await client.ping({ select: true, /* query_id, abort_signal, http_headers, or any other query params */ });
+```
+
+The ping method will allow most of the standard `query` method parameters - see the `PingParamsWithSelectQuery` typing definition.
 
 ### Close (Node.js only) {#close-nodejs-only}
 
@@ -737,20 +769,20 @@ There are several file streaming examples with popular data formats (NDJSON, CSV
 Streaming other formats into a file should be similar to Parquet, 
 the only difference will be in the format used for `query` call (`JSONEachRow`, `CSV`, etc.) and the output file name.
 
-## Supported Data formats {#supported-data-formats}
+## Supported data formats {#supported-data-formats}
 
 The client handles data formats as JSON or text.
 
-If you specify `format` as one of the JSON-family (`JSONEachRow`, `JSONCompactEachRow`, etc.), the client will serialize and deserialize data during the communication over the wire.
+If you specify `format` as one from the JSON family of formats (`JSONEachRow`, `JSONCompactEachRow`, etc.), the client will serialize and deserialize data during the communication over the wire.
 
 Data provided in the "raw" text formats (`CSV`, `TabSeparated` and `CustomSeparated` families) are sent over the wire without additional transformations.
 
 :::tip
-There might be confusion between JSON as a general format and [ClickHouse JSON format](/sql-reference/formats#json). 
+There might be confusion between JSON as a general format and [ClickHouse JSON format](/interfaces/formats/JSON). 
 
-The client supports streaming JSON objects with formats such as [JSONEachRow](/sql-reference/formats#jsoneachrow) (see the table overview for other streaming-friendly formats; see also the `select_streaming_` [examples in the client repository](https://github.com/ClickHouse/clickhouse-js/tree/main/examples/node)). 
+The client supports streaming JSON objects with formats such as [JSONEachRow](/interfaces/formats/JSONEachRow) (see the table overview for other streaming-friendly formats; see also the `select_streaming_` [examples in the client repository](https://github.com/ClickHouse/clickhouse-js/tree/main/examples/node)). 
 
-It's only that formats like [ClickHouse JSON](/sql-reference/formats#json) and a few others are represented as a single object in the response and cannot be streamed by the client.
+It's only that formats like [ClickHouse JSON](/interfaces/formats/JSON) and a few others are represented as a single object in the response and cannot be streamed by the client.
 :::
 
 | Format                                     | Input (array) | Input (object) | Input/Output (Stream) | Output (JSON) | Output (text)  |
@@ -795,40 +827,46 @@ The entire list of ClickHouse input and output formats is available
 The related JS type is relevant for any `JSON*` formats except the ones that represent everything as a string (e.g. `JSONStringEachRow`)
 :::
 
-| Type               | Status          | JS type                    |
-|--------------------|-----------------|----------------------------|
-| UInt8/16/32        | ✔️              | number                     |
-| UInt64/128/256     | ✔️ ❗- see below | string                     |
-| Int8/16/32         | ✔️              | number                     |
-| Int64/128/256      | ✔️ ❗- see below | string                     |
-| Float32/64         | ✔️              | number                     |
-| Decimal            | ✔️ ❗- see below | number                     |
-| Boolean            | ✔️              | boolean                    |
-| String             | ✔️              | string                     |
-| FixedString        | ✔️              | string                     |
-| UUID               | ✔️              | string                     |
-| Date32/64          | ✔️              | string                     |
-| DateTime32/64      | ✔️ ❗- see below | string                     |
-| Enum               | ✔️              | string                     |
-| LowCardinality     | ✔️              | string                     |
-| Array(T)           | ✔️              | T[]                        |
-| (new) JSON         | ✔️              | object                     |
-| Variant(T1, T2...) | ✔️              | T (depends on the variant) |
-| Dynamic            | ✔️              | T (depends on the variant) |
-| Nested             | ✔️              | T[]                        |
-| Tuple(T1, T2, ...) | ✔️              | [T1, T2, ...]              |
-| Tuple(n1 T1, n2 T2...)  | ✔️         | \{ n1: T1; n2: T2; ...}     |
-| Nullable(T)        | ✔️              | JS type for T or null      |
-| IPv4               | ✔️              | string                     |
-| IPv6               | ✔️              | string                     |
-| Point              | ✔️              | [ number, number ]         |
-| Ring               | ✔️              | Array&lt;Point\>              |
-| Polygon            | ✔️              | Array&lt;Ring\>               |
-| MultiPolygon       | ✔️              | Array&lt;Polygon\>            |
-| Map(K, V)          | ✔️              | Record&lt;K, V\>              |
+| Type                   | Status          | JS type                    |
+|------------------------|-----------------|----------------------------|
+| UInt8/16/32            | ✔️              | number                     |
+| UInt64/128/256         | ✔️ ❗- see below | string                     |
+| Int8/16/32             | ✔️              | number                     |
+| Int64/128/256          | ✔️ ❗- see below | string                     |
+| Float32/64             | ✔️              | number                     |
+| Decimal                | ✔️ ❗- see below | number                     |
+| Boolean                | ✔️              | boolean                    |
+| String                 | ✔️              | string                     |
+| FixedString            | ✔️              | string                     |
+| UUID                   | ✔️              | string                     |
+| Date32/64              | ✔️              | string                     |
+| DateTime32/64          | ✔️ ❗- see below | string                     |
+| Enum                   | ✔️              | string                     |
+| LowCardinality         | ✔️              | string                     |
+| Array(T)               | ✔️              | T[]                        |
+| (new) JSON             | ✔️              | object                     |
+| Variant(T1, T2...)     | ✔️              | T (depends on the variant) |
+| Dynamic                | ✔️              | T (depends on the variant) |
+| Nested                 | ✔️              | T[]                        |
+| Tuple(T1, T2, ...)     | ✔️              | [T1, T2, ...]              |
+| Tuple(n1 T1, n2 T2...) | ✔️              | \{ n1: T1; n2: T2; ...}    |
+| Nullable(T)            | ✔️              | JS type for T or null      |
+| IPv4                   | ✔️              | string                     |
+| IPv6                   | ✔️              | string                     |
+| Point                  | ✔️              | [ number, number ]         |
+| Ring                   | ✔️              | Array&lt;Point\>           |
+| Polygon                | ✔️              | Array&lt;Ring\>            |
+| MultiPolygon           | ✔️              | Array&lt;Polygon\>         |
+| Map(K, V)              | ✔️              | Record&lt;K, V\>           |
+| Time/Time64            | ✔️              | string                     |
 
 The entire list of supported ClickHouse formats is available 
 [here](/sql-reference/data-types/).
+
+See also: 
+
+- [Working with Dynamic/Variant/JSON examples](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/dynamic_variant_json.ts)
+- [Working with Time/Time64 examples](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/time_time64.ts)
 
 ### Date/Date32 types caveats {#datedate32-types-caveats}
 
@@ -837,7 +875,6 @@ strings.
 
 **Example:** Insert a `Date` type value. 
 [Source code](https://github.com/ClickHouse/clickhouse-js/blob/ba387d7f4ce375a60982ac2d99cb47391cf76cec/__tests__/integration/date_time.test.ts)
-.
 
 ```ts
 await client.insert({
@@ -1105,7 +1142,7 @@ const client = createClient({
 
 See full examples for [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/basic_tls.ts) and [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/mutual_tls.ts) TLS in the repository.
 
-### Keep-Alive configuration (Node.js only) {#keep-alive-configuration-nodejs-only}
+### Keep-alive configuration (Node.js only) {#keep-alive-configuration-nodejs-only}
 
 The client enables Keep-Alive in the underlying HTTP agent by default, meaning that the connected sockets will be reused for subsequent requests, and `Connection: keep-alive` header will be sent. Sockets that are idling will remain in the connection pool for 2500 milliseconds by default (see the [notes about adjusting this option](./js.md#adjusting-idle_socket_ttl)).
 
@@ -1136,11 +1173,21 @@ Check the values of `Connection` and `Keep-Alive` headers in the response. For e
 
 In this case, `keep_alive_timeout` is 10 seconds, and you could try increasing `keep_alive.idle_socket_ttl` to 9000 or even 9500 milliseconds to keep the idling sockets open for a bit longer than by default. Keep an eye on potential "Socket hang-up" errors, which will indicate that the server closes the connections before the client does so, and lower the value until the errors disappear.
 
-#### Keep-Alive troubleshooting {#keep-alive-troubleshooting}
+#### Troubleshooting {#troubleshooting}
 
-If you are experiencing `socket hang up` errors while using Keep-Alive, there are the following options to resolve this issue:
+If you are experiencing `socket hang up` errors even when using the latest version of the client, there are the following options to resolve this issue:
 
-* Slightly reduce `keep_alive.idle_socket_ttl` setting in the ClickHouse server configuration. In certain situations, for example, high network latency between client and server, it could be beneficial to reduce `keep_alive.idle_socket_ttl` by another 200-500 milliseconds, ruling out the situation where an outgoing request could obtain a socket that the server is going to close. 
+* Enable logs with at least `WARN` log level. This will allow for checking if there is an unconsumed or a dangling stream in the application code: the transport layer will log it on the WARN level, as that could potentially lead to the socket being closed by the server. You can enable logging in the client configuration as follows:
+  
+  ```ts
+  const client = createClient({
+    log: { level: ClickHouseLogLevel.WARN },
+  })
+  ```
+  
+* Check your application code with [no-floating-promises](https://typescript-eslint.io/rules/no-floating-promises/) ESLint rule enabled, which will help to identify unhandled promises that could lead to dangling streams and sockets.
+
+* Slightly reduce `keep_alive.idle_socket_ttl` setting in the ClickHouse server configuration. In certain situations, for example, high network latency between client and server, it could be beneficial to reduce `keep_alive.idle_socket_ttl` by another 200–500 milliseconds, ruling out the situation where an outgoing request could obtain a socket that the server is going to close. 
 
 * If this error is happening during long-running queries with no data coming in or out (for example, a long-running `INSERT FROM SELECT`), this might be due to the load balancer closing idling connections. You could try forcing some data coming in during long-running queries by using a combination of these ClickHouse settings:
 
@@ -1288,13 +1335,13 @@ const client = createClient({
 
 With certificates _and_ a custom _HTTPS_ Agent, it is likely necessary to disable the default authorization header via the `set_basic_auth_header` setting (introduced in 1.2.0), as it conflicts with the TLS headers. All the TLS headers should be provided manually.
 
-## Known limitations (Node.js/Web) {#known-limitations-nodejsweb}
+## Known limitations (Node.js/web) {#known-limitations-nodejsweb}
 
 - There are no data mappers for the result sets, so only language primitives are used. Certain data type mappers are planned with [RowBinary format support](https://github.com/ClickHouse/clickhouse-js/issues/216).
 - There are some [Decimal* and Date\* / DateTime\* data types caveats](./js.md#datedate32-types-caveats).
 - When using JSON* family formats, numbers larger than Int32 are represented as strings, as Int64+ types maximum values are larger than `Number.MAX_SAFE_INTEGER`. See the [Integral types](./js.md#integral-types-int64-int128-int256-uint64-uint128-uint256) section for more details.
 
-## Known limitations (Web) {#known-limitations-web}
+## Known limitations (web) {#known-limitations-web}
 
 - Streaming for select queries works, but it is disabled for inserts (on the type level as well).
 - Request compression is disabled and configuration is ignored. Response compression works.

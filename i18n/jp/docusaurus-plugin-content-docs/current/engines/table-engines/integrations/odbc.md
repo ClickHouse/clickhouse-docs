@@ -1,9 +1,10 @@
 ---
-'description': 'Allows ClickHouse to connect to external databases via ODBC.'
+'description': 'ClickHouseがODBCを介して外部データベースに接続することを許可します。'
 'sidebar_label': 'ODBC'
 'sidebar_position': 150
 'slug': '/engines/table-engines/integrations/odbc'
 'title': 'ODBC'
+'doc_type': 'reference'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -13,9 +14,9 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge/>
 
-ClickHouseを利用して、[ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity)を介して外部のデータベースに接続できます。
+ClickHouseは、[ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity)を介して外部データベースに接続することができます。
 
-ODBC接続を安全に実装するために、ClickHouseは別のプログラム`clickhouse-odbc-bridge`を使用します。ODBCドライバーが`clickhouse-server`から直接読み込まれると、ドライバーの問題によってClickHouseサーバーがクラッシュする可能性があります。ClickHouseは必要に応じて自動的に`clickhouse-odbc-bridge`を起動します。ODBCブリッジプログラムは、`clickhouse-server`と同じパッケージからインストールされます。
+ODBC接続を安全に実装するために、ClickHouseは別のプログラム`clickhouse-odbc-bridge`を使用します。 ODBCドライバーが`clickhouse-server`から直接読み込まれる場合、ドライバーの問題がClickHouseサーバをクラッシュさせる可能性があります。 ClickHouseは、必要に応じて自動的に`clickhouse-odbc-bridge`を起動します。 ODBCブリッジプログラムは、`clickhouse-server`と同じパッケージからインストールされます。
 
 このエンジンは、[Nullable](../../../sql-reference/data-types/nullable.md)データ型をサポートしています。
 
@@ -28,32 +29,34 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
     name2 [type2],
     ...
 )
-ENGINE = ODBC(connection_settings, external_database, external_table)
+ENGINE = ODBC(datasource, external_database, external_table)
 ```
 
 [CREATE TABLE](/sql-reference/statements/create/table)クエリの詳細な説明を参照してください。
 
-テーブルの構造は、ソーステーブルの構造と異なる場合があります：
+テーブル構造は、ソーステーブルの構造と異なる場合があります：
 
-- カラム名はソーステーブルと同じである必要がありますが、これらのカラムの一部を任意の順序で使用することができます。
-- カラムタイプはソーステーブルのものと異なる場合があります。ClickHouseは、値をClickHouseデータ型に[キャスト](/sql-reference/functions/type-conversion-functions#cast)しようとします。
-- [external_table_functions_use_nulls](/operations/settings/settings#external_table_functions_use_nulls)設定は、Nullableカラムの扱い方を定義します。デフォルト値は1です。0の場合、テーブル関数はNullableカラムを作成せず、nullの代わりにデフォルト値を挿入します。これは配列内のNULL値にも適用されます。
+- カラム名はソーステーブルと同じである必要がありますが、これらのカラムの一部のみを使用し、任意の順序で配置することができます。
+- カラムの型は、ソーステーブルの型と異なる場合があります。 ClickHouseは、値をClickHouseデータ型に[キャスト](/sql-reference/functions/type-conversion-functions#cast)しようとします。
+- [external_table_functions_use_nulls](/operations/settings/settings#external_table_functions_use_nulls)設定は、Nullableカラムの扱いを定義します。 デフォルト値：1。 0の場合、テーブル関数はNullableカラムを作成せず、nullの代わりにデフォルト値を挿入します。 これは、配列内のNULL値にも適用されます。
 
 **エンジンパラメータ**
 
-- `connection_settings` — `odbc.ini`ファイル内の接続設定セクションの名前。
-- `external_database` — 外部DBMS内のデータベース名。
-- `external_table` — `external_database`内のテーブル名。
+- `datasource` — `odbc.ini`ファイル内の接続設定セクションの名前。
+- `external_database` — 外部DBMS内のデータベースの名前。
+- `external_table` — `external_database`内のテーブルの名前。
+
+これらのパラメータは、[名前付きコレクション](operations/named-collections.md)を使用して渡すこともできます。
 
 ## 使用例 {#usage-example}
 
 **ODBCを介してローカルのMySQLインストールからデータを取得する**
 
-この例は、Ubuntu Linux 18.04およびMySQLサーバー5.7で検証されています。
+この例は、Ubuntu Linux 18.04およびMySQLサーバ5.7で確認されています。
 
 unixODBCとMySQL Connectorがインストールされていることを確認してください。
 
-デフォルトでは（パッケージからインストールされた場合）、ClickHouseはユーザー`clickhouse`として起動します。したがって、MySQLサーバー内でこのユーザーを作成し、構成する必要があります。
+デフォルトでは（パッケージからインストールされた場合）、ClickHouseはユーザー`clickhouse`として起動します。 そのため、このユーザーをMySQLサーバで作成し、構成する必要があります。
 
 ```bash
 $ sudo mysql
@@ -77,7 +80,7 @@ USER = clickhouse
 PASSWORD = clickhouse
 ```
 
-unixODBCインストールの`isql`ユーティリティを使って接続を確認できます。
+unixODBCインストールからの`isql`ユーティリティを使用して接続を確認できます。
 
 ```bash
 $ isql -v mysqlconn
@@ -113,7 +116,7 @@ mysql> select * from test.test;
 1 row in set (0,00 sec)
 ```
 
-ClickHouse内のテーブル（MySQLテーブルからデータを取得）：
+ClickHouseのテーブル、MySQLテーブルからデータを取得：
 
 ```sql
 CREATE TABLE odbc_t
@@ -134,7 +137,7 @@ SELECT * FROM odbc_t
 └────────┴────────────────┘
 ```
 
-## 関連項目 {#see-also}
+## 参照 {#see-also}
 
 - [ODBC辞書](/sql-reference/dictionaries#mysql)
 - [ODBCテーブル関数](../../../sql-reference/table-functions/odbc.md)

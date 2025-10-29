@@ -5,6 +5,7 @@ keywords: ['clickhouse', 'jdbc', 'connect', 'integrate']
 slug: /integrations/jdbc/jdbc-with-clickhouse
 description: 'The ClickHouse JDBC Bridge allows ClickHouse to access data from any external data source for which a JDBC driver is available'
 title: 'Connecting ClickHouse to external data sources with JDBC'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -17,7 +18,7 @@ import Jdbc03 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-03
 # Connecting ClickHouse to external data sources with JDBC
 
 :::note
-Using JDBC requires the ClickHouse JDBC bridge, so you will need to use `clickhouse-local` on a local machine to stream the data from your database to ClickHouse Cloud. Visit the [**Using clickhouse-local**](/integrations/migration/clickhouse-local-etl.md#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge) page in the **Migrate** section of the docs for details.
+Using JDBC requires the ClickHouse JDBC bridge, so you will need to use `clickhouse-local` on a local machine to stream the data from your database to ClickHouse Cloud. Visit the [**Using clickhouse-local**](/cloud/migration/clickhouse-local#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge) page in the **Migrate** section of the docs for details.
 :::
 
 **Overview:** The <a href="https://github.com/ClickHouse/clickhouse-jdbc-bridge" target="_blank">ClickHouse JDBC Bridge</a> in combination with the [jdbc table function](/sql-reference/table-functions/jdbc.md) or the [JDBC table engine](/engines/table-engines/integrations/jdbc.md) allows ClickHouse to access data from any external data source for which a <a href="https://en.wikipedia.org/wiki/JDBC_driver" target="_blank">JDBC driver</a> is available:
@@ -98,14 +99,11 @@ Now we are ready to start the ClickHouse JDBC Bridge:
 We started the ClickHouse JDBC Bridge in foreground mode. In order to stop the Bridge you can bring the Unix shell window from above in foreground and press `CTRL+C`.
 :::
 
-
 ## Use the JDBC connection from within ClickHouse {#use-the-jdbc-connection-from-within-clickhouse}
 
 ClickHouse can now access MySQL data by either using the [jdbc table function](/sql-reference/table-functions/jdbc.md) or the [JDBC table engine](/engines/table-engines/integrations/jdbc.md).
 
 The easiest way to execute the following examples is to copy and paste them into the [`clickhouse-client`](/interfaces/cli.md) or into the [Play UI](/interfaces/http.md).
-
-
 
 - jdbc Table Function:
 
@@ -115,8 +113,6 @@ The easiest way to execute the following examples is to copy and paste them into
 :::note
 As the first parameter for the jdbc table function we are using the name of the named data source that we configured above.
 :::
-
-
 
 - JDBC Table Engine:
  ```sql
@@ -134,12 +130,6 @@ As the first parameter for the jdbc table function we are using the name of the 
  The schema of the ClickHouse JDBC engine table and schema of the connected MySQL table must be aligned, e.g. the column names and order must be the same, and the column data types must be compatible
 :::
 
-
-
-
-
-
-
 ## Install the ClickHouse JDBC Bridge externally {#install-the-clickhouse-jdbc-bridge-externally}
 
 For a distributed ClickHouse cluster (a cluster with more than one ClickHouse host) it makes sense to install and run the ClickHouse JDBC Bridge externally on its own host:
@@ -147,7 +137,6 @@ For a distributed ClickHouse cluster (a cluster with more than one ClickHouse ho
 This has the advantage that each ClickHouse host can access the JDBC Bridge. Otherwise the JDBC Bridge would need to be installed locally for each ClickHouse instance that is supposed to access external data sources via the Bridge.
 
 In order to install the ClickHouse JDBC Bridge externally, we do the following steps:
-
 
 1. We install, configure and run the ClickHouse JDBC Bridge on a dedicated host by following the steps described in section 1 of this guide.
 
@@ -176,12 +165,9 @@ jdbc_bridge:
 </Tabs>
 
 :::note
-   - you need to replace `JDBC-Bridge-Host` with the hostname or ip address of the dedicated ClickHouse JDBC Bridge host
-   - we specified the default ClickHouse JDBC Bridge port `9019`, if you are using a different port for the JDBC Bridge then you must adapt the configuration above accordingly
+- you need to replace `JDBC-Bridge-Host` with the hostname or ip address of the dedicated ClickHouse JDBC Bridge host
+- we specified the default ClickHouse JDBC Bridge port `9019`, if you are using a different port for the JDBC Bridge then you must adapt the configuration above accordingly
 :::
-
-
-
 
 [//]: # (## 4. Additional Info)
 
@@ -195,6 +181,3 @@ jdbc_bridge:
 
 [//]: # ()
 [//]: # (- mention insert into )
-
-
-

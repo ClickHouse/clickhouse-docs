@@ -1,11 +1,12 @@
 ---
-slug: /integrations/index
+slug: /integrations/data-sources/index
 keywords: ['AWS S3', 'Azure Data Factory', 'PostgreSQL', 'Kafka', 'MySQL', 'Cassandra', 'Data Factory', 'Redis', 'RabbitMQ', 'MongoDB', 'Google Cloud Storage', 'Hive', 'Hudi', 'Iceberg', 'MinIO', 'Delta Lake', 'RocksDB', 'Splunk', 'SQLite', 'NATS', 'EMQX', 'local files', 'JDBC', 'ODBC']
 description: 'Datasources overview page'
 title: 'Data Sources'
+doc_type: 'landing-page'
 ---
 
-# Data Sources
+# Data sources
 
 ClickHouse allows you to easily ingest data into your database from a variety of sources.
 For further information see the pages listed below:

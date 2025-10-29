@@ -3,9 +3,11 @@ sidebar_label: 'Generic Postgres'
 description: 'Set up any Postgres instance as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/generic
 title: 'Generic Postgres Source Setup Guide'
+doc_type: 'guide'
+keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal level']
 ---
 
-# Generic Postgres Source Setup Guide
+# Generic Postgres source setup guide
 
 :::info
 
@@ -13,10 +15,9 @@ If you use one of the supported providers (in the sidebar), please refer to the 
 
 :::
 
-
 ClickPipes supports Postgres version 12 and later.
 
-## Enable Logical Replication {#enable-logical-replication}
+## Enable logical replication {#enable-logical-replication}
 
 1. To enable replication on your Postgres instance, we need to make sure that the following settings are set:
 
@@ -51,7 +52,6 @@ ClickPipes supports Postgres version 12 and later.
     ```
 3. If you have made any changes to the configuration as mentioned above, you NEED to RESTART the Postgres instance for the changes to take effect.
 
-
 ## Creating a user with permissions and publication {#creating-a-user-with-permissions-and-publication}
 
 Let's create a new user for ClickPipes with the necessary permissions suitable for CDC,
@@ -76,7 +76,6 @@ Make sure to replace `clickpipes_user` and `clickpipes_password` with your desir
 
 :::
 
-
 ## Enabling connections in pg_hba.conf to the ClickPipes User {#enabling-connections-in-pg_hbaconf-to-the-clickpipes-user}
 
 If you are self serving, you need to allow connections to the ClickPipes user from the ClickPipes IP addresses by following the below steps. If you are using a managed service, you can do the same by following the provider's documentation.
@@ -90,7 +89,6 @@ If you are self serving, you need to allow connections to the ClickPipes user fr
     ```sql
     SELECT pg_reload_conf();
     ```
-
 
 ## Increase `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
 

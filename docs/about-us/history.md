@@ -1,13 +1,14 @@
 ---
 slug: /about-us/history
-sidebar_label: 'ClickHouse History'
+sidebar_label: 'ClickHouse history'
 sidebar_position: 40
 description: 'History of ClickHouse development'
 keywords: ['history','development','Metrica']
 title: 'ClickHouse History'
+doc_type: 'reference'
 ---
 
-# ClickHouse History {#clickhouse-history}
+# ClickHouse history {#clickhouse-history}
 
 ClickHouse was initially developed to power [Yandex.Metrica](https://metrica.yandex.com/), [the second largest web analytics platform in the world](http://w3techs.com/technologies/overview/traffic_analysis/all), and continues to be its core component. With more than 13 trillion records in the database and more than 20 billion events daily, ClickHouse allows generating custom reports on the fly directly from non-aggregated data. This article briefly covers the goals of ClickHouse in the early stages of its development.
 
@@ -15,7 +16,7 @@ Yandex.Metrica builds customized reports on the fly based on hits and sessions, 
 
 As of April 2014, Yandex.Metrica was tracking about 12 billion events (page views and clicks) daily. All these events needed to be stored, in order to build custom reports. A single query may have required scanning millions of rows within a few hundred milliseconds, or hundreds of millions of rows in just a few seconds.
 
-## Usage in Yandex.Metrica and Other Yandex Services {#usage-in-yandex-metrica-and-other-yandex-services}
+## Usage in Yandex.Metrica and other Yandex services {#usage-in-yandex-metrica-and-other-yandex-services}
 
 ClickHouse serves multiple purposes in Yandex.Metrica.
 Its main task is to build reports in online mode using non-aggregated data. It uses a cluster of 374 servers, which store over 20.3 trillion rows in the database. The volume of compressed data is about 2 PB, without accounting for duplicates and replicas. The volume of uncompressed data (in TSV format) would be approximately 17 PB.
@@ -30,7 +31,7 @@ ClickHouse also plays a key role in the following processes:
 
 Nowadays, there are a multiple dozen ClickHouse installations in other Yandex services and departments: search verticals, e-commerce, advertisement, business analytics, mobile development, personal services, and others.
 
-## Aggregated and Non-aggregated Data {#aggregated-and-non-aggregated-data}
+## Aggregated and non-aggregated data {#aggregated-and-non-aggregated-data}
 
 There is a widespread opinion that to calculate statistics effectively, you must aggregate data since this reduces the volume of data.
 
@@ -54,4 +55,3 @@ Starting in 2009, Yandex.Metrica also used a specialized OLAP database for non-a
 OLAPServer worked well for non-aggregated data, but it had many restrictions that did not allow it to be used for all reports as desired. These included a lack of support for data types (numbers only), and the inability to incrementally update data in real-time (it could only be done by rewriting data daily). OLAPServer is not a DBMS, but a specialized DB.
 
 The initial goal for ClickHouse was to remove the limitations of OLAPServer and solve the problem of working with non-aggregated data for all reports, but over the years, it has grown into a general-purpose database management system suitable for a wide range of analytical tasks.
-

@@ -1,11 +1,10 @@
 ---
-'description': 'Applies bit-wise `XOR` for series of numbers.'
+'description': '数値の系列に対してビット単位の `XOR` を適用します。'
 'sidebar_position': 153
 'slug': '/sql-reference/aggregate-functions/reference/groupbitxor'
 'title': 'groupBitXor'
+'doc_type': 'reference'
 ---
-
-
 
 
 # groupBitXor
@@ -18,7 +17,7 @@ groupBitXor(expr)
 
 **引数**
 
-`expr` – `UInt*` または `Int*` 型の結果を返す式。
+`expr` – `UInt*` または `Int*` 型になる式。
 
 **戻り値**
 

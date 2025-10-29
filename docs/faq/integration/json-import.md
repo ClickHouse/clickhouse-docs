@@ -4,11 +4,13 @@ title: 'How to import JSON into ClickHouse?'
 toc_hidden: true
 toc_priority: 11
 description: 'This page shows you how to import JSON into ClickHouse'
+keywords: ['JSON import', 'JSONEachRow format', 'data import', 'JSON ingestion', 'data formats']
+doc_type: 'guide'
 ---
 
 # How to Import JSON Into ClickHouse? {#how-to-import-json-into-clickhouse}
 
-ClickHouse supports a wide range of [data formats for input and output](../../interfaces/formats.md). There are multiple JSON variations among them, but the most commonly used for data ingestion is [JSONEachRow](../../interfaces/formats.md#jsoneachrow). It expects one JSON object per row, each object separated by a newline.
+ClickHouse supports a wide range of [data formats for input and output](/interfaces/formats). There are multiple JSON variations among them, but the most commonly used for data ingestion is [JSONEachRow](/interfaces/formats/JSONEachRow). It expects one JSON object per row, each object separated by a newline.
 
 ## Examples {#examples}
 
@@ -26,7 +28,7 @@ $ echo '{"foo":"bar"}'  | clickhouse-client --query="INSERT INTO test FORMAT JSO
 
 Instead of inserting data manually, you might consider to use an [integration tool](../../integrations/index.mdx) instead.
 
-## Useful Settings {#useful-settings}
+## Useful settings {#useful-settings}
 
 - `input_format_skip_unknown_fields` allows to insert JSON even if there were additional fields not present in table schema (by discarding them).
 - `input_format_import_nested_json` allows to insert nested JSON objects into columns of [Nested](../../sql-reference/data-types/nested-data-structures/index.md) type.

@@ -1,11 +1,11 @@
 ---
-description: 'Документация по профилям настроек'
+slug: '/sql-reference/statements/create/settings-profile'
 sidebar_label: 'SETTINGS PROFILE'
 sidebar_position: 43
-slug: /sql-reference/statements/create/settings-profile
+description: 'Документация для Settings Profile'
 title: 'CREATE SETTINGS PROFILE'
+doc_type: reference
 ---
-
 Создает [профили настроек](../../../guides/sre/user-management/index.md#settings-profiles-management), которые могут быть назначены пользователю или роли.
 
 Синтаксис:
@@ -18,7 +18,7 @@ CREATE SETTINGS PROFILE [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]]
     [TO {{role1 | user1 [, role2 | user2 ...]} | NONE | ALL | ALL EXCEPT {role1 | user1 [, role2 | user2 ...]}}]
 ```
 
-Клаузула `ON CLUSTER` позволяет создавать профили настроек в кластере, см. [Распределенный DDL](../../../sql-reference/distributed-ddl.md).
+Клауза `ON CLUSTER` позволяет создавать профили настроек в кластере, см. [Распределенный DDL](../../../sql-reference/distributed-ddl.md).
 
 ## Пример {#example}
 
@@ -27,7 +27,7 @@ CREATE SETTINGS PROFILE [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]]
 CREATE USER robin IDENTIFIED BY 'password';
 ```
 
-Создайте профиль настроек `max_memory_usage_profile` с значением и ограничениями для настройки `max_memory_usage` и назначьте его пользователю `robin`:
+Создайте профиль настроек `max_memory_usage_profile` со значением и ограничениями для настройки `max_memory_usage` и назначьте его пользователю `robin`:
 
 ```sql
 CREATE

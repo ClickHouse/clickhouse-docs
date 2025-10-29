@@ -1,28 +1,28 @@
 ---
-'description': 'Guide to configuring secure SSL/TLS communication between ClickHouse
-  and ZooKeeper'
-'sidebar_label': 'Secured Communication with Zookeeper'
+'description': 'ClickHouseとZooKeeper間のセキュアなSSL/TLS通信を設定するためのガイド'
+'sidebar_label': 'Zookeeperとのセキュアな通信'
 'sidebar_position': 45
 'slug': '/operations/ssl-zookeeper'
-'title': 'Optional secured communication between ClickHouse and Zookeeper'
+'title': 'ClickHouseとZookeeper間のオプションのセキュアな通信'
+'doc_type': 'guide'
 ---
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 
 
-# ClickHouse と Zookeeper の間のオプションの安全な通信
+# ClickHouseとZookeeper間のオプションの安全な通信
 <SelfManaged />
 
-ClickHouse クライアントとの SSL 通信のために、`ssl.keyStore.location`、`ssl.keyStore.password`、`ssl.trustStore.location`、`ssl.trustStore.password` を指定する必要があります。これらのオプションは Zookeeper バージョン 3.5.2 以降で使用可能です。
+ClickHouseクライアントとのSSL通信のために、`ssl.keyStore.location`、`ssl.keyStore.password`、`ssl.trustStore.location`、`ssl.trustStore.password`を指定する必要があります。これらのオプションはZookeeperバージョン3.5.2から利用可能です。
 
-信頼された証明書に `zookeeper.crt` を追加できます。
+`zookeeper.crt`を信頼された証明書に追加することができます。
 
 ```bash
 sudo cp zookeeper.crt /usr/local/share/ca-certificates/zookeeper.crt
 sudo update-ca-certificates
 ```
 
-`config.xml` のクライアントセクションは次のようになります。
+`config.xml`内のクライアントセクションは次のようになります:
 
 ```xml
 <client>
@@ -38,7 +38,7 @@ sudo update-ca-certificates
 </client>
 ```
 
-いくつかのクラスターとマクロを使用して、ClickHouse の設定に Zookeeper を追加します。
+クラスターとマクロを持つClickHouse設定にZookeeperを追加します:
 
 ```xml
 <clickhouse>
@@ -52,30 +52,30 @@ sudo update-ca-certificates
 </clickhouse>
 ```
 
-`clickhouse-server` を起動します。ログには次のように表示されるはずです。
+`clickhouse-server`を開始します。ログには次のように表示されます:
 
 ```text
 <Trace> ZooKeeper: initialized, hosts: secure://localhost:2281
 ```
 
-接続が SSL によって保護されていることを示すには、接頭辞 `secure://` が表示されます。
+プレフィックス`secure://`は接続がSSLによって保護されていることを示します。
 
-トラフィックが暗号化されていることを確認するには、保護されたポートで `tcpdump` を実行します。
+トラフィックが暗号化されていることを確認するためには、保護されたポートで`tcpdump`を実行します:
 
 ```bash
 tcpdump -i any dst port 2281 -nnXS
 ```
 
-そして、`clickhouse-client` でクエリを実行します。
+そして、`clickhouse-client`でクエリを実行します:
 
 ```sql
 SELECT * FROM system.zookeeper WHERE path = '/';
 ```
 
-暗号化されていない接続では、`tcpdump` の出力に次のようなものが表示されます。
+暗号化されていない接続では、`tcpdump`の出力に次のようなものが表示されます:
 
 ```text
 ..../zookeeper/quota.
 ```
 
-暗号化された接続では、これが表示されないはずです。
+暗号化された接続では、これを表示してはいけません。

@@ -1,8 +1,10 @@
 ---
-description: 'A terabyte of Click Logs from Criteo'
-sidebar_label: 'Terabyte Click Logs from Criteo'
+description: 'A terabyte of click logs from Criteo'
+sidebar_label: 'Criteo 1TB click logs'
 slug: /getting-started/example-datasets/criteo
-title: 'Terabyte Click Logs from Criteo'
+keywords: ['Criteo click logs', 'advertising data', 'click-through data', 'terabyte dataset', 'getting started']
+title: 'Terabyte click logs from Criteo'
+doc_type: 'guide'
 ---
 
 Download the data from http://labs.criteo.com/downloads/download-terabyte-click-logs/

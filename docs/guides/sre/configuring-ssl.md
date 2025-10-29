@@ -4,6 +4,8 @@ sidebar_label: 'Configuring SSL-TLS'
 sidebar_position: 20
 title: 'Configuring SSL-TLS'
 description: 'This guide provides simple and minimal settings to configure ClickHouse to use OpenSSL certificates to validate connections.'
+keywords: ['SSL configuration', 'TLS setup', 'OpenSSL certificates', 'secure connections', 'SRE guide']
+doc_type: 'guide'
 ---
 
 import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
@@ -32,11 +34,9 @@ This guide was written using Ubuntu 20.04 and ClickHouse installed on the follow
 |`chnode2` |192.168.1.222|
 |`chnode3` |192.168.1.223|
 
-
 :::note
 View the [Quick Start](/getting-started/install/install.mdx) for more details on how to install ClickHouse.
 :::
-
 
 ## 2. Create SSL certificates {#2-create-ssl-certificates}
 :::note
@@ -126,7 +126,6 @@ Recommended port is `9281` for ClickHouse Keeper. However, the port is configura
 
 For a full explanation of all options, visit https://clickhouse.com/docs/operations/clickhouse-keeper/
 :::
-
 
 1. Add the following inside the `<clickhouse>` tag in ClickHouse server `config.xml`
 
@@ -301,8 +300,6 @@ The settings below are configured in the ClickHouse server `config.xml`
 
     For more information, visit https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#server_configuration_parameters-openssl
 
-
-
 7. Configure gRPC for SSL on every node:
     ```xml
     <grpc>
@@ -406,7 +403,7 @@ The typical [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-c
   ...
   ```
 
-   - Send the 4LW commands in the openssl session
+- Send the 4LW commands in the openssl session
 
   ```bash
   mntr

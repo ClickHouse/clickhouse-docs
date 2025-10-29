@@ -3,6 +3,11 @@ sidebar_label: 'Apache Beam'
 slug: /integrations/apache-beam
 description: 'Users can ingest data into ClickHouse using Apache Beam'
 title: 'Integrating Apache Beam and ClickHouse'
+doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
+keywords: ['apache beam', 'stream processing', 'batch processing', 'jdbc connector', 'data pipeline']
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
@@ -14,7 +19,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 **Apache Beam**  is an open-source, unified programming model that enables developers to define and execute both batch and stream (continuous) data processing pipelines. The flexibility of Apache Beam lies in its ability to support a wide range of data processing scenarios, from ETL (Extract, Transform, Load) operations to complex event processing and real-time analytics.
 This integration leverage ClickHouse's official [JDBC connector](https://github.com/ClickHouse/clickhouse-java) for the underlying insertion layer.
 
-## Integration Package {#integration-package}
+## Integration package {#integration-package}
 
 The integration package required to integrate Apache Beam and ClickHouse is maintained and developed under [Apache Beam I/O Connectors](https://beam.apache.org/documentation/io/connectors/) - an integrations bundle of many popular data storage systems and databases.
 `org.apache.beam.sdk.io.clickhouse.ClickHouseIO` implementation located within the [Apache Beam repo](https://github.com/apache/beam/tree/0bf43078130d7a258a0f1638a921d6d5287ca01e/sdks/java/io/clickhouse/src/main/java/org/apache/beam/sdk/io/clickhouse).
@@ -37,10 +42,9 @@ The `ClickHouseIO` connector is recommended for use starting from Apache Beam ve
 Earlier versions may not fully support the connector's functionality.
 :::
 
-
 The artifacts could be found in the [official maven repository](https://mvnrepository.com/artifact/org.apache.beam/beam-sdks-java-io-clickhouse).
 
-### Code Example {#code-example}
+### Code example {#code-example}
 
 The following example reads a CSV file named `input.csv` as a `PCollection`, converts it to a Row object (using the defined schema) and inserts it into a local ClickHouse instance using `ClickHouseIO`:
 
@@ -58,9 +62,7 @@ import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.values.Row;
 import org.joda.time.DateTime;
 
-
 public class Main {
-
 
     public static void main(String[] args) {
         // Create a Pipeline object.
@@ -73,10 +75,8 @@ public class Main {
                         .addField(Schema.Field.of("insertion_time", Schema.FieldType.DATETIME).withNullable(false))
                         .build();
 
-
         // Apply transforms to the pipeline.
         PCollection<String> lines = p.apply("ReadLines", TextIO.read().from("src/main/resources/input.csv"));
-
 
         PCollection<Row> rows = lines.apply("ConvertToRow", ParDo.of(new DoFn<String, Row>() {
             @ProcessElement
@@ -100,7 +100,7 @@ public class Main {
 
 ```
 
-## Supported Data Types {#supported-data-types}
+## Supported data types {#supported-data-types}
 
 | ClickHouse                         | Apache Beam                | Is Supported | Notes                                                                                                                                    |
 |------------------------------------|----------------------------|--------------|------------------------------------------------------------------------------------------------------------------------------------------|
@@ -126,7 +126,7 @@ public class Main {
 |                                    | `Schema.TypeName#DECIMAL`  | ❌            |                                                                                                                                          |
 |                                    | `Schema.TypeName#MAP`      | ❌            |                                                                                                                                          |
 
-## ClickHouseIO.Write Parameters {#clickhouseiowrite-parameters}
+## ClickHouseIO.Write parameters {#clickhouseiowrite-parameters}
 
 You can adjust the `ClickHouseIO.Write` configuration with the following setter functions:
 
@@ -148,7 +148,6 @@ Please consider the following limitations when using the connector:
 * ClickHouse performs deduplication when inserting into a `ReplicatedMergeTree` or a `Distributed` table built on top of a `ReplicatedMergeTree`. Without replication, inserting into a regular MergeTree can result in duplicates if an insert fails and then successfully retries. However, each block is inserted atomically, and the block size can be configured using `ClickHouseIO.Write.withMaxInsertBlockSize(long)`. Deduplication is achieved by using checksums of the inserted blocks. For more information about deduplication, please visit [Deduplication](/guides/developer/deduplication) and [Deduplicate insertion config](/operations/settings/settings#insert_deduplicate).
 * The connector doesn't perform any DDL statements; therefore, the target table must exist prior insertion.
 
-
-## Related Content {#related-content}
+## Related content {#related-content}
 * `ClickHouseIO` class [documentation](https://beam.apache.org/releases/javadoc/current/org/apache/beam/sdk/io/clickhouse/ClickHouseIO.html).
 * `Github` repository of examples [clickhouse-beam-connector](https://github.com/ClickHouse/clickhouse-beam-connector).

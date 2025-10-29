@@ -1,12 +1,13 @@
 ---
 slug: '/examples/aggregate-function-combinators/sumForEach'
 title: 'sumForEach'
-description: 'Example of using the sumArray combinator'
-keywords: ['sum', 'array', 'combinator', 'examples', 'sumArray']
-sidebar_label: 'sumArray'
+description: 'Example of using the sumForEach aggregate function'
+keywords: ['sum', 'ForEach', 'combinator', 'examples', 'sumForEach']
+sidebar_label: 'sumForEach'
+doc_type: 'reference'
 ---
 
-# sumArray {#sumforeach}
+# sumForEach {#sumforeach}
 
 ## Description {#description}
 
@@ -15,7 +16,7 @@ can be applied to the [`sum`](/sql-reference/aggregate-functions/reference/sum) 
 function which operates on row values to an aggregate function which operates on
 array columns, applying the aggregate to each element in the array across rows.
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 For this example we'll make use of the `hits` dataset available in our [SQL playground](https://sql.clickhouse.com/).
 
@@ -45,4 +46,4 @@ ORDER BY hour_of_day;
 
 ## See also {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`ForEach combinator`](/sql-reference/aggregate-functions/combinators#-foreach)
+- [`ForEach` combinator](/sql-reference/aggregate-functions/combinators#-foreach)

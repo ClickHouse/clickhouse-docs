@@ -1,484 +1,491 @@
 ---
-'description': 'Overview of supported data formats for input and output in ClickHouse'
-'sidebar_label': 'View all formats...'
+'description': 'ClickHouseにおける入力と出力のサポートされているデータフォーマットの概要'
+'sidebar_label': 'すべてのフォーマットを見る...'
 'sidebar_position': 21
 'slug': '/interfaces/formats'
-'title': 'Formats for input and output data'
+'title': '入力と出力データのフォーマット'
+'doc_type': 'reference'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
+# 入力と出力データのフォーマット {#formats-for-input-and-output-data}
 
-# 入力データと出力データの形式 {#formats-for-input-and-output-data}
+ClickHouseは、既知のほとんどのテキストおよびバイナリデータフォーマットをサポートしています。これにより、ClickHouseの利点を活かすためにほぼすべての作業データパイプラインへの簡単な統合が可能になります。
 
-ClickHouseは、既知のテキストおよびバイナリデータ形式のほとんどをサポートしています。これにより、ClickHouseの利点を活かすためのほぼすべてのデータパイプラインへの容易な統合が可能になります。
+## 入力フォーマット {#input-formats}
 
-## 入力形式 {#input-formats}
+入力フォーマットは次の用途に使用されます：
+- `INSERT`ステートメントに提供されたデータを解析するため
+- `File`、`URL`、または`HDFS`のようなファイルバックテーブルからの`SELECT`クエリを実行するため
+- 辞書を読み取るため
 
-入力形式は次の目的で使用されます。
-- `INSERT`文に提供されたデータの解析
-- `File`、`URL`、または`HDFS`などのファイルバックテーブルからの`SELECT`クエリの実行
-- 辞書の読み取り
+適切な入力フォーマットを選択することは、ClickHouseにおける効率的なデータイングestionにとって非常に重要です。70を超えるサポートフォーマットの中から、最もパフォーマンスの高いオプションを選ぶことで、挿入速度、CPUとメモリの使用量、全体的なシステムの効率に大きな影響を与えることができます。これらの選択肢をナビゲートするために、私たちはフォーマット間でのイングestionパフォーマンスをベンチマークし、重要な知見を明らかにしました：
 
-適切な入力形式を選択することは、ClickHouseでの効率的なデータ取り込みにとって重要です。70以上のサポートされている形式の中から、最もパフォーマンスの高いオプションを選択することは、挿入速度、CPUおよびメモリ使用量、全体的なシステム効率に大きな影響を与える可能性があります。これらの選択肢をナビゲートするために、形式間の取り込みパフォーマンスをベンチマークし、重要なポイントを明らかにしました。
+- **[Native](formats/Native.md)フォーマットは最も効率的な入力フォーマットです**。最高の圧縮、最低のリソース使用量、最小のサーバー側処理オーバーヘッドを提供します。
+- **圧縮は必須です** - LZ4は最小限のCPUコストでデータサイズを削減し、ZSTDは追加のCPU使用量の代償により高圧縮を提供します。
+- **事前ソートには中程度の影響があります**。ClickHouseはすでに効率的にソートを行います。
+- **バッチ処理は効率を大幅に改善します** - 大きなバッチは挿入オーバーヘッドを削減し、スループットを改善します。
 
-- **[Native](formats/Native.md)形式が最も効率的な入力形式です**。最良の圧縮、最低のリソース使用、最小のサーバー側処理オーバーヘッドを提供します。
-- **圧縮は重要です** - LZ4は最小限のCPUコストでデータサイズを削減し、ZSTDは追加のCPU使用量を犠牲にしてより高い圧縮を提供します。
-- **事前ソートは中程度の影響を持ちます**。ClickHouseはすでに効率的にソートを行います。
-- **バッチ処理は効率を大幅に改善します** - 大きなバッチは挿入オーバーヘッドを削減し、スループットを向上させます。
+結果とベストプラクティスについての詳細は、完全な[ベンチマーク分析](https://www.clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient)をお読みください。完全なテスト結果については、[FastFormats](https://fastformats.clickhouse.com/)オンラインダッシュボードを探検してください。
 
-結果やベストプラクティスの詳細については、完全な[ベンチマーク分析](https://www.clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient)をお読みください。完全なテスト結果については、[FastFormats](https://fastformats.clickhouse.com/)オンラインダッシュボードを探索してください。
+## 出力フォーマット {#output-formats}
 
-## 出力形式 {#output-formats}
+出力にサポートされているフォーマットは次の用途に使用されます：
+- `SELECT`クエリの結果を整理するため
+- ファイルバックテーブルに対する`INSERT`操作を実行するため
 
-出力用にサポートされている形式は次の目的で使用されます。
-- `SELECT`クエリの結果の整列
-- ファイルバックテーブルへの`INSERT`操作の実行
+## フォーマットの概要 {#formats-overview}
 
-## 形式の概要 {#formats-overview}
+サポートされているフォーマットは以下の通りです：
 
-サポートされている形式は次のとおりです：
-
-| 形式                                                                                    | 入力 | 出力 |
-|-------------------------------------------------------------------------------------------|-----|-------|
-| [TabSeparated](#tabseparated)                                                             | ✔   | ✔     |
-| [TabSeparatedRaw](#tabseparatedraw)                                                       | ✔   | ✔     |
-| [TabSeparatedWithNames](#tabseparatedwithnames)                                           | ✔   | ✔     |
-| [TabSeparatedWithNamesAndTypes](#tabseparatedwithnamesandtypes)                           | ✔   | ✔     |
-| [TabSeparatedRawWithNames](#tabseparatedrawwithnames)                                     | ✔   | ✔     |
-| [TabSeparatedRawWithNamesAndTypes](#tabseparatedrawwithnamesandtypes)                     | ✔   | ✔     |
-| [Template](#format-template)                                                              | ✔   | ✔     |
-| [TemplateIgnoreSpaces](#templateignorespaces)                                             | ✔   | ✗     |
-| [CSV](#csv)                                                                               | ✔   | ✔     |
-| [CSVWithNames](#csvwithnames)                                                             | ✔   | ✔     |
-| [CSVWithNamesAndTypes](#csvwithnamesandtypes)                                             | ✔   | ✔     |
-| [CustomSeparated](#format-customseparated)                                                | ✔   | ✔     |
-| [CustomSeparatedWithNames](#customseparatedwithnames)                                     | ✔   | ✔     |
-| [CustomSeparatedWithNamesAndTypes](#customseparatedwithnamesandtypes)                     | ✔   | ✔     |
-| [SQLInsert](#sqlinsert)                                                                   | ✗   | ✔     |
-| [Values](#data-format-values)                                                             | ✔   | ✔     |
-| [Vertical](#vertical)                                                                     | ✗   | ✔     |
-| [JSON](#json)                                                                             | ✔   | ✔     |
-| [JSONAsString](#jsonasstring)                                                             | ✔   | ✗     |
-| [JSONAsObject](#jsonasobject)                                                             | ✔   | ✗     |
-| [JSONStrings](#jsonstrings)                                                               | ✔   | ✔     |
-| [JSONColumns](#jsoncolumns)                                                               | ✔   | ✔     |
-| [JSONColumnsWithMetadata](#jsoncolumnsmonoblock)                                          | ✔   | ✔     |
-| [JSONCompact](#jsoncompact)                                                               | ✔   | ✔     |
-| [JSONCompactStrings](#jsoncompactstrings)                                                 | ✗   | ✔     |
-| [JSONCompactColumns](#jsoncompactcolumns)                                                 | ✔   | ✔     |
-| [JSONEachRow](#jsoneachrow)                                                               | ✔   | ✔     |
-| [PrettyJSONEachRow](#prettyjsoneachrow)                                                   | ✗   | ✔     |
-| [JSONEachRowWithProgress](#jsoneachrowwithprogress)                                       | ✗   | ✔     |
-| [JSONStringsEachRow](#jsonstringseachrow)                                                 | ✔   | ✔     |
-| [JSONStringsEachRowWithProgress](#jsonstringseachrowwithprogress)                         | ✗   | ✔     |
-| [JSONCompactEachRow](#jsoncompacteachrow)                                                 | ✔   | ✔     |
-| [JSONCompactEachRowWithNames](#jsoncompacteachrowwithnames)                               | ✔   | ✔     |
-| [JSONCompactEachRowWithNamesAndTypes](#jsoncompacteachrowwithnamesandtypes)               | ✔   | ✔     |
-| [JSONCompactEachRowWithProgress](#jsoncompacteachrow)                                     | ✗    | ✔     |
-| [JSONCompactStringsEachRow](#jsoncompactstringseachrow)                                   | ✔   | ✔     |
-| [JSONCompactStringsEachRowWithNames](#jsoncompactstringseachrowwithnames)                 | ✔   | ✔     |
+| フォーマット                                                                                   | 入力 | 出力 |
+|---------------------------------------------------------------------------------------|-----|-------|
+| [TabSeparated](#tabseparated)                                                            | ✔   | ✔     |
+| [TabSeparatedRaw](#tabseparatedraw)                                                      | ✔   | ✔     |
+| [TabSeparatedWithNames](#tabseparatedwithnames)                                          | ✔   | ✔     |
+| [TabSeparatedWithNamesAndTypes](#tabseparatedwithnamesandtypes)                          | ✔   | ✔     |
+| [TabSeparatedRawWithNames](#tabseparatedrawwithnames)                                    | ✔   | ✔     |
+| [TabSeparatedRawWithNamesAndTypes](#tabseparatedrawwithnamesandtypes)                    | ✔   | ✔     |
+| [Template](#format-template)                                                             | ✔   | ✔     |
+| [TemplateIgnoreSpaces](#templateignorespaces)                                            | ✔   | ✗     |
+| [CSV](#csv)                                                                              | ✔   | ✔     |
+| [CSVWithNames](#csvwithnames)                                                            | ✔   | ✔     |
+| [CSVWithNamesAndTypes](#csvwithnamesandtypes)                                            | ✔   | ✔     |
+| [CustomSeparated](#format-customseparated)                                               | ✔   | ✔     |
+| [CustomSeparatedWithNames](#customseparatedwithnames)                                    | ✔   | ✔     |
+| [CustomSeparatedWithNamesAndTypes](#customseparatedwithnamesandtypes)                    | ✔   | ✔     |
+| [SQLInsert](#sqlinsert)                                                                  | ✗   | ✔     |
+| [Values](#data-format-values)                                                            | ✔   | ✔     |
+| [Vertical](#vertical)                                                                    | ✗   | ✔     |
+| [JSON](#json)                                                                            | ✔   | ✔     |
+| [JSONAsString](#jsonasstring)                                                            | ✔   | ✗     |
+| [JSONAsObject](#jsonasobject)                                                            | ✔   | ✗     |
+| [JSONStrings](#jsonstrings)                                                              | ✔   | ✔     |
+| [JSONColumns](#jsoncolumns)                                                              | ✔   | ✔     |
+| [JSONColumnsWithMetadata](#jsoncolumnsmonoblock)                                         | ✔   | ✔     |
+| [JSONCompact](#jsoncompact)                                                              | ✔   | ✔     |
+| [JSONCompactStrings](#jsoncompactstrings)                                                | ✗   | ✔     |
+| [JSONCompactColumns](#jsoncompactcolumns)                                                | ✔   | ✔     |
+| [JSONEachRow](#jsoneachrow)                                                              | ✔   | ✔     |
+| [PrettyJSONEachRow](#prettyjsoneachrow)                                                  | ✗   | ✔     |
+| [JSONEachRowWithProgress](#jsoneachrowwithprogress)                                      | ✗   | ✔     |
+| [JSONStringsEachRow](#jsonstringseachrow)                                                | ✔   | ✔     |
+| [JSONStringsEachRowWithProgress](#jsonstringseachrowwithprogress)                        | ✗   | ✔     |
+| [JSONCompactEachRow](#jsoncompacteachrow)                                                | ✔   | ✔     |
+| [JSONCompactEachRowWithNames](#jsoncompacteachrowwithnames)                              | ✔   | ✔     |
+| [JSONCompactEachRowWithNamesAndTypes](#jsoncompacteachrowwithnamesandtypes)              | ✔   | ✔     |
+| [JSONCompactEachRowWithProgress](#jsoncompacteachrow)                                    | ✗   | ✔     |
+| [JSONCompactStringsEachRow](#jsoncompactstringseachrow)                                  | ✔   | ✔     |
+| [JSONCompactStringsEachRowWithNames](#jsoncompactstringseachrowwithnames)                | ✔   | ✔     |
 | [JSONCompactStringsEachRowWithNamesAndTypes](#jsoncompactstringseachrowwithnamesandtypes) | ✔   | ✔     |
-| [JSONCompactStringsEachRowWithProgress](#jsoncompactstringseachrowwithnamesandtypes)      | ✗   | ✔     |
-| [JSONObjectEachRow](#jsonobjecteachrow)                                                   | ✔   | ✔     |
-| [BSONEachRow](#bsoneachrow)                                                               | ✔   | ✔     |
-| [TSKV](#tskv)                                                                             | ✔   | ✔     |
-| [Pretty](#pretty)                                                                         | ✗   | ✔     |
-| [PrettyNoEscapes](#prettynoescapes)                                                       | ✗   | ✔     |
-| [PrettyMonoBlock](#prettymonoblock)                                                       | ✗   | ✔     |
-| [PrettyNoEscapesMonoBlock](#prettynoescapesmonoblock)                                     | ✗   | ✔     |
-| [PrettyCompact](#prettycompact)                                                           | ✗   | ✔     |
-| [PrettyCompactNoEscapes](#prettycompactnoescapes)                                         | ✗   | ✔     |
-| [PrettyCompactMonoBlock](#prettycompactmonoblock)                                         | ✗   | ✔     |
-| [PrettyCompactNoEscapesMonoBlock](#prettycompactnoescapesmonoblock)                       | ✗   | ✔     |
-| [PrettySpace](#prettyspace)                                                               | ✗   | ✔     |
-| [PrettySpaceNoEscapes](#prettyspacenoescapes)                                             | ✗   | ✔     |
-| [PrettySpaceMonoBlock](#prettyspacemonoblock)                                             | ✗   | ✔     |
-| [PrettySpaceNoEscapesMonoBlock](#prettyspacenoescapesmonoblock)                           | ✗   | ✔     |
+| [JSONCompactStringsEachRowWithProgress](#jsoncompactstringseachrowwithnamesandtypes)     | ✗   | ✔     |
+| [JSONObjectEachRow](#jsonobjecteachrow)                                                  | ✔   | ✔     |
+| [BSONEachRow](#bsoneachrow)                                                              | ✔   | ✔     |
+| [TSKV](#tskv)                                                                            | ✔   | ✔     |
+| [Pretty](#pretty)                                                                        | ✗   | ✔     |
+| [PrettyNoEscapes](#prettynoescapes)                                                      | ✗   | ✔     |
+| [PrettyMonoBlock](#prettymonoblock)                                                      | ✗   | ✔     |
+| [PrettyNoEscapesMonoBlock](#prettynoescapesmonoblock)                                    | ✗   | ✔     |
+| [PrettyCompact](#prettycompact)                                                          | ✗   | ✔     |
+| [PrettyCompactNoEscapes](#prettycompactnoescapes)                                        | ✗   | ✔     |
+| [PrettyCompactMonoBlock](#prettycompactmonoblock)                                        | ✗   | ✔     |
+| [PrettyCompactNoEscapesMonoBlock](#prettycompactnoescapesmonoblock)                     | ✗   | ✔     |
+| [PrettySpace](#prettyspace)                                                              | ✗   | ✔     |
+| [PrettySpaceNoEscapes](#prettyspacenoescapes)                                            | ✗   | ✔     |
+| [PrettySpaceMonoBlock](#prettyspacemonoblock)                                            | ✗   | ✔     |
+| [PrettySpaceNoEscapesMonoBlock](#prettyspacenoescapesmonoblock)                         | ✗   | ✔     |
 | [Prometheus](#prometheus)                                                                 | ✗   | ✔     |
-| [Protobuf](#protobuf)                                                                     | ✔   | ✔     |
-| [ProtobufSingle](#protobufsingle)                                                         | ✔   | ✔     |
-| [ProtobufList](#protobuflist)                                                                                     | ✔   | ✔     |
-| [Avro](#data-format-avro)                                                                 | ✔   | ✔     |
-| [AvroConfluent](#data-format-avro-confluent)                                              | ✔   | ✗     |
-| [Parquet](#data-format-parquet)                                                           | ✔   | ✔     |
-| [ParquetMetadata](#data-format-parquet-metadata)                                          | ✔   | ✗     |
-| [Arrow](#data-format-arrow)                                                               | ✔   | ✔     |
-| [ArrowStream](#data-format-arrow-stream)                                                  | ✔   | ✔     |
-| [ORC](#data-format-orc)                                                                   | ✔   | ✔     |
-| [One](#data-format-one)                                                                   | ✔   | ✗     |
-| [Npy](#data-format-npy)                                                                   | ✔   | ✔     |
-| [RowBinary](#rowbinary)                                                                   | ✔   | ✔     |
-| [RowBinaryWithNames](#rowbinarywithnames)                                                 | ✔   | ✔     |
-| [RowBinaryWithNamesAndTypes](#rowbinarywithnamesandtypes)                                 | ✔   | ✔     |
-| [RowBinaryWithDefaults](#rowbinarywithdefaults)                                           | ✔   | ✗     |
-| [Native](#native)                                                                         | ✔   | ✔     |
-| [Null](#null)                                                                             | ✗   | ✔     |
-| [XML](#xml)                                                                               | ✗   | ✔     |
-| [CapnProto](#capnproto)                                                                   | ✔   | ✔     |
-| [LineAsString](#lineasstring)                                                             | ✔   | ✔     |
-| [Regexp](#data-format-regexp)                                                             | ✔   | ✗     |
-| [RawBLOB](#rawblob)                                                                       | ✔   | ✔     |
-| [MsgPack](#msgpack)                                                                       | ✔   | ✔     |
-| [MySQLDump](#mysqldump)                                                                   | ✔   | ✗     |
-| [DWARF](#dwarf)                                                                           | ✔   | ✗     |
-| [Markdown](#markdown)                                                                     | ✗   | ✔     |
-| [Form](#form)                                                                             | ✔   | ✗     |
+| [Protobuf](#protobuf)                                                                    | ✔   | ✔     |
+| [ProtobufSingle](#protobufsingle)                                                        | ✔   | ✔     |
+| [ProtobufList](#protobuflist)                                                            | ✔   | ✔     |
+| [Avro](#data-format-avro)                                                                | ✔   | ✔     |
+| [AvroConfluent](#data-format-avro-confluent)                                             | ✔   | ✗     |
+| [Parquet](#data-format-parquet)                                                          | ✔   | ✔     |
+| [ParquetMetadata](#data-format-parquet-metadata)                                         | ✔   | ✗     |
+| [Arrow](#data-format-arrow)                                                                | ✔   | ✔     |
+| [ArrowStream](#data-format-arrow-stream)                                                 | ✔   | ✔     |
+| [ORC](#data-format-orc)                                                                  | ✔   | ✔     |
+| [One](#data-format-one)                                                                  | ✔   | ✗     |
+| [Npy](#data-format-npy)                                                                  | ✔   | ✔     |
+| [RowBinary](#rowbinary)                                                                  | ✔   | ✔     |
+| [RowBinaryWithNames](#rowbinarywithnamesandtypes)                                        | ✔   | ✔     |
+| [RowBinaryWithNamesAndTypes](#rowbinarywithnamesandtypes)                                | ✔   | ✔     |
+| [RowBinaryWithDefaults](#rowbinarywithdefaults)                                          | ✔   | ✗     |
+| [Native](#native)                                                                        | ✔   | ✔     |
+| [Null](#null)                                                                            | ✗   | ✔     |
+| [Hash](#hash)                                                                            | ✗   | ✔     |
+| [XML](#xml)                                                                              | ✗   | ✔     |
+| [CapnProto](#capnproto)                                                                  | ✔   | ✔     |
+| [LineAsString](#lineasstring)                                                            | ✔   | ✔     |
+| [Regexp](#data-format-regexp)                                                            | ✔   | ✗     |
+| [RawBLOB](#rawblob)                                                                      | ✔   | ✔     |
+| [MsgPack](#msgpack)                                                                      | ✔   | ✔     |
+| [MySQLDump](#mysqldump)                                                                  | ✔   | ✗     |
+| [DWARF](#dwarf)                                                                          | ✔   | ✗     |
+| [Markdown](#markdown)                                                                    | ✗   | ✔     |
+| [Form](#form)                                                                            | ✔   | ✗     |
 
-
-ClickHouseの設定を使用して、一部の形式処理パラメータを制御することができます。詳細については、[Settings](/operations/settings/settings-formats.md)セクションをお読みください。
+ClickHouse設定でフォーマット処理パラメーターの一部を制御できます。詳細については、[設定](/operations/settings/settings-formats.md)セクションをお読みください。
 
 ### TabSeparated {#tabseparated}
 
-[TabSeparated](/interfaces/formats/TabSeparated)を参照してください。
+See [TabSeparated](/interfaces/formats/TabSeparated)
 
 ### TabSeparatedRaw {#tabseparatedraw}
 
-[TabSeparatedRaw](/interfaces/formats/TabSeparatedRaw)を参照してください。
+See [TabSeparatedRaw](/interfaces/formats/TabSeparatedRaw)
 
 ### TabSeparatedWithNames {#tabseparatedwithnames}
 
-[TabSeparatedWithNames](/interfaces/formats/TabSeparatedWithNames)を参照してください。
+See [TabSeparatedWithNames](/interfaces/formats/TabSeparatedWithNames)
 
 ### TabSeparatedWithNamesAndTypes {#tabseparatedwithnamesandtypes}
 
-[TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedWithNamesAndTypes)を参照してください。
+See [TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedWithNamesAndTypes)
 
 ### TabSeparatedRawWithNames {#tabseparatedrawwithnames}
 
-[TabSeparatedRawWithNames](/interfaces/formats/TabSeparatedRawWithNames)を参照してください。
+See [TabSeparatedRawWithNames](/interfaces/formats/TabSeparatedRawWithNames)
 
 ### TabSeparatedRawWithNamesAndTypes {#tabseparatedrawwithnamesandtypes}
 
-[TabSeparatedRawWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes)を参照してください。
+See [TabSeparatedRawWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes)
 
 ### Template {#format-template}
 
-[Template](/interfaces/formats/Template)を参照してください。
+See [Template](/interfaces/formats/Template)
 
 ### TemplateIgnoreSpaces {#templateignorespaces}
 
-[TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces)を参照してください。
+See [TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces)
 
 ### TSKV {#tskv}
 
-[TSKV](/interfaces/formats/TSKV)を参照してください。
+See [TSKV](/interfaces/formats/TSKV)
 
 ### CSV {#csv}
 
-[CSV](../interfaces/formats/CSV)を参照してください。
+See [CSV](../interfaces/formats/CSV)
 
 ### CSVWithNames {#csvwithnames}
 
-[CSVWithNames](/interfaces/formats/CSVWithNames)を参照してください。
+See [CSVWithNames](/interfaces/formats/CSVWithNames)
 
 ### CSVWithNamesAndTypes {#csvwithnamesandtypes}
 
-[CSVWithNamesAndTypes](/interfaces/formats/CSVWithNamesAndTypes)を参照してください。
+See [CSVWithNamesAndTypes](/interfaces/formats/CSVWithNamesAndTypes)
 
 ### CustomSeparated {#format-customseparated}
 
-[CustomSeparated](/interfaces/formats/CustomSeparated)を参照してください。
+See [CustomSeparated](/interfaces/formats/CustomSeparated)
 
 ### CustomSeparatedWithNames {#customseparatedwithnames}
 
-[CustomSeparatedWithNames](/interfaces/formats/CustomSeparatedWithNames)を参照してください。
+See [CustomSeparatedWithNames](/interfaces/formats/CustomSeparatedWithNames)
 
 ### CustomSeparatedWithNamesAndTypes {#customseparatedwithnamesandtypes}
 
-[CustomSeparatedWithNamesAndTypes](/interfaces/formats/CustomSeparatedWithNamesAndTypes)を参照してください。
+See [CustomSeparatedWithNamesAndTypes](/interfaces/formats/CustomSeparatedWithNamesAndTypes)
 
 ### SQLInsert {#sqlinsert}
 
-[SQLInsert](/interfaces/formats/SQLInsert)を参照してください。
+See [SQLInsert](/interfaces/formats/SQLInsert)
 
 ### JSON {#json}
 
-[JSON](/interfaces/formats/JSON)を参照してください。
+See [JSON](/interfaces/formats/JSON)
 
 ### JSONStrings {#jsonstrings}
 
-[JSONStrings](/interfaces/formats/JSONStrings)を参照してください。
+See [JSONStrings](/interfaces/formats/JSONStrings)
 
 ### JSONColumns {#jsoncolumns}
 
-[JSONColumns](/interfaces/formats/JSONColumns)を参照してください。
+See [JSONColumns](/interfaces/formats/JSONColumns)
 
 ### JSONColumnsWithMetadata {#jsoncolumnsmonoblock}
 
-[JSONColumnsWithMetadata](/interfaces/formats/JSONColumnsWithMetadata)を参照してください。
+See [JSONColumnsWithMetadata](/interfaces/formats/JSONColumnsWithMetadata)
 
 ### JSONAsString {#jsonasstring}
 
-[JSONAsString](/interfaces/formats/JSONAsString)を参照してください。
+See [JSONAsString](/interfaces/formats/JSONAsString)
 
 ### JSONAsObject {#jsonasobject}
 
-[JSONAsObject](/interfaces/formats/JSONAsObject)を参照してください。
+See [JSONAsObject](/interfaces/formats/JSONAsObject)
 
 ### JSONCompact {#jsoncompact}
 
-[JSONCompact](/interfaces/formats/JSONCompact)を参照してください。
+See [JSONCompact](/interfaces/formats/JSONCompact)
 
 ### JSONCompactStrings {#jsoncompactstrings}
 
-[JSONCompactStrings](/interfaces/formats/JSONCompactStrings)を参照してください。
+See [JSONCompactStrings](/interfaces/formats/JSONCompactStrings)
 
 ### JSONCompactColumns {#jsoncompactcolumns}
 
-[JSONCompactColumns](/interfaces/formats/JSONCompactColumns)を参照してください。
+See [JSONCompactColumns](/interfaces/formats/JSONCompactColumns)
 
 ### JSONEachRow {#jsoneachrow}
 
-[JSONEachRow](/interfaces/formats/JSONEachRow)を参照してください。
+See [JSONEachRow](/interfaces/formats/JSONEachRow)
 
 ### PrettyJSONEachRow {#prettyjsoneachrow}
 
-[PrettyJSONEachRow](/interfaces/formats/PrettyJSONEachRow)を参照してください。
+See [PrettyJSONEachRow](/interfaces/formats/PrettyJSONEachRow)
 
 ### JSONStringsEachRow {#jsonstringseachrow}
 
-[JSONStringsEachRow](/interfaces/formats/JSONStringsEachRow)を参照してください。
+See [JSONStringsEachRow](/interfaces/formats/JSONStringsEachRow)
 
 ### JSONCompactEachRow {#jsoncompacteachrow}
 
-[JSONCompactEachRow](/interfaces/formats/JSONCompactEachRow)を参照してください。
+See [JSONCompactEachRow](/interfaces/formats/JSONCompactEachRow)
 
 ### JSONCompactStringsEachRow {#jsoncompactstringseachrow}
 
-[JSONCompactStringsEachRow](/interfaces/formats/JSONCompactStringsEachRow)を参照してください。
+See [JSONCompactStringsEachRow](/interfaces/formats/JSONCompactStringsEachRow)
 
 ### JSONEachRowWithProgress {#jsoneachrowwithprogress}
 
-[JSONEachRowWithProgress](/interfaces/formats/JSONEachRowWithProgress)を参照してください。
+See [JSONEachRowWithProgress](/interfaces/formats/JSONEachRowWithProgress)
 
 ### JSONStringsEachRowWithProgress {#jsonstringseachrowwithprogress}
 
-[JSONStringsEachRowWithProgress](/interfaces/formats/JSONStringsEachRowWithProgress)を参照してください。
+See [JSONStringsEachRowWithProgress](/interfaces/formats/JSONStringsEachRowWithProgress)
 
 ### JSONCompactEachRowWithNames {#jsoncompacteachrowwithnames}
 
-[JSONCompactEachRowWithNames](/interfaces/formats/JSONCompactEachRowWithNames)を参照してください。
+See [JSONCompactEachRowWithNames](/interfaces/formats/JSONCompactEachRowWithNames)
 
 ### JSONCompactEachRowWithNamesAndTypes {#jsoncompacteachrowwithnamesandtypes}
 
-[JSONCompactEachRowWithNamesAndTypes](/interfaces/formats/JSONCompactEachRowWithNamesAndTypes)を参照してください。
+See [JSONCompactEachRowWithNamesAndTypes](/interfaces/formats/JSONCompactEachRowWithNamesAndTypes)
 
 ### JSONCompactEachRowWithProgress {#jsoncompacteachrowwithprogress}
 
-`JSONEachRowWithProgress`に似ていますが、`JSONCompactEachRow`形式のように`row`イベントをコンパクトな形式で出力します。
+`JSONEachRowWithProgress`と似ていますが、`JSONCompactEachRow`フォーマットのように、`row`イベントをコンパクトな形式で出力します。
 
 ### JSONCompactStringsEachRowWithNames {#jsoncompactstringseachrowwithnames}
 
-[JSONCompactStringsEachRowWithNames](/interfaces/formats/JSONCompactStringsEachRowWithNames)を参照してください。
+See [JSONCompactStringsEachRowWithNames](/interfaces/formats/JSONCompactStringsEachRowWithNames)
 
 ### JSONCompactStringsEachRowWithNamesAndTypes {#jsoncompactstringseachrowwithnamesandtypes}
 
-[JSONCompactStringsEachRowWithNamesAndTypes](/interfaces/formats/JSONCompactStringsEachRowWithNamesAndTypes)を参照してください。
+See [JSONCompactStringsEachRowWithNamesAndTypes](/interfaces/formats/JSONCompactStringsEachRowWithNamesAndTypes)
 
 ### JSONObjectEachRow {#jsonobjecteachrow}
 
-[JSONObjectEachRow](/interfaces/formats/JSONObjectEachRow)を参照してください。
+See [JSONObjectEachRow](/interfaces/formats/JSONObjectEachRow)
 
-### JSON形式設定 {#json-formats-settings}
+### JSONフォーマットの設定 {#json-formats-settings}
 
-[JSON形式設定](/operations/settings/formats)を参照してください。
+See [JSON Format Settings](/operations/settings/formats)
 
 ### BSONEachRow {#bsoneachrow}
 
-[BSONEachRow](/interfaces/formats/BSONEachRow)を参照してください。
+See [BSONEachRow](/interfaces/formats/BSONEachRow)
 
 ### Native {#native}
 
-[Native](/interfaces/formats/Native)を参照してください。
+See [Native](/interfaces/formats/Native)
 
 ### Null {#null}
 
-[Null](/interfaces/formats/Null)を参照してください。
+See [Null](/interfaces/formats/Null)
+
+### Hash {#hash}
+
+See [Hash](/interfaces/formats/Hash)
 
 ### Pretty {#pretty}
 
-[Pretty](/interfaces/formats/Pretty)を参照してください。
+See [Pretty](/interfaces/formats/Pretty)
 
 ### PrettyNoEscapes {#prettynoescapes}
 
-[PrettyNoEscapes](/interfaces/formats/PrettyNoEscapes)を参照してください。
+See [PrettyNoEscapes](/interfaces/formats/PrettyNoEscapes)
 
 ### PrettyMonoBlock {#prettymonoblock}
 
-[PrettyMonoBlock](/interfaces/formats/PrettyMonoBlock)を参照してください。
+See [PrettyMonoBlock](/interfaces/formats/PrettyMonoBlock)
 
 ### PrettyNoEscapesMonoBlock {#prettynoescapesmonoblock}
 
-[PrettyNoEscapesMonoBlock](/interfaces/formats/PrettyNoEscapesMonoBlock)を参照してください。
+See [PrettyNoEscapesMonoBlock](/interfaces/formats/PrettyNoEscapesMonoBlock)
 
 ### PrettyCompact {#prettycompact}
 
-[PrettyCompact](/interfaces/formats/PrettyCompact)を参照してください。
+See [PrettyCompact](/interfaces/formats/PrettyCompact)
 
 ### PrettyCompactNoEscapes {#prettycompactnoescapes}
 
-[PrettyCompactNoEscapes](/interfaces/formats/PrettyCompactNoEscapes)を参照してください。
+See [PrettyCompactNoEscapes](/interfaces/formats/PrettyCompactNoEscapes)
 
 ### PrettyCompactMonoBlock {#prettycompactmonoblock}
 
-[PrettyCompactMonoBlock](/interfaces/formats/PrettyCompactMonoBlock)を参照してください。
+See [PrettyCompactMonoBlock](/interfaces/formats/PrettyCompactMonoBlock)
 
 ### PrettyCompactNoEscapesMonoBlock {#prettycompactnoescapesmonoblock}
 
-[PrettyCompactNoEscapesMonoBlock](/interfaces/formats/PrettyCompactNoEscapesMonoBlock)を参照してください。
+See [PrettyCompactNoEscapesMonoBlock](/interfaces/formats/PrettyCompactNoEscapesMonoBlock)
 
 ### PrettySpace {#prettyspace}
 
-[PrettySpace](/interfaces/formats/PrettySpace)を参照してください。
+See [PrettySpace](/interfaces/formats/PrettySpace)
 
 ### PrettySpaceNoEscapes {#prettyspacenoescapes}
 
-[PrettySpaceNoEscapes](/interfaces/formats/PrettySpaceNoEscapes)を参照してください。
+See [PrettySpaceNoEscapes](/interfaces/formats/PrettySpaceNoEscapes)
 
 ### PrettySpaceMonoBlock {#prettyspacemonoblock}
 
-[PrettySpaceMonoBlock](/interfaces/formats/PrettySpaceMonoBlock)を参照してください。
+See [PrettySpaceMonoBlock](/interfaces/formats/PrettySpaceMonoBlock)
 
 ### PrettySpaceNoEscapesMonoBlock {#prettyspacenoescapesmonoblock}
 
-[PrettySpaceNoEscapesMonoBlock](/interfaces/formats/PrettySpaceNoEscapesMonoBlock)を参照してください。
+See [PrettySpaceNoEscapesMonoBlock](/interfaces/formats/PrettySpaceNoEscapesMonoBlock)
 
 ### RowBinary {#rowbinary}
 
-[RowBinary](/interfaces/formats/RowBinary)を参照してください。
+See [RowBinary](/interfaces/formats/RowBinary)
 
 ### RowBinaryWithNames {#rowbinarywithnames}
 
-[RowBinaryWithNames](/interfaces/formats/RowBinaryWithNames)を参照してください。
+See [RowBinaryWithNames](/interfaces/formats/RowBinaryWithNames)
 
 ### RowBinaryWithNamesAndTypes {#rowbinarywithnamesandtypes}
 
-[RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes)を参照してください。
+See [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes)
 
 ### RowBinaryWithDefaults {#rowbinarywithdefaults}
 
-[RowBinaryWithDefaults](/interfaces/formats/RowBinaryWithDefaults)を参照してください。
+See [RowBinaryWithDefaults](/interfaces/formats/RowBinaryWithDefaults)
 
 ### Values {#data-format-values}
 
-[Values](/interfaces/formats/Values)を参照してください。
+See [Values](/interfaces/formats/Values)
 
 ### Vertical {#vertical}
 
-[Vertical](/interfaces/formats/Vertical)を参照してください。
+See [Vertical](/interfaces/formats/Vertical)
 
 ### XML {#xml}
 
-[XML](/interfaces/formats/XML)を参照してください。
+See [XML](/interfaces/formats/XML)
 
 ### CapnProto {#capnproto}
 
-[CapnProto](/interfaces/formats/CapnProto)を参照してください。
+See [CapnProto](/interfaces/formats/CapnProto)
 
 ### Prometheus {#prometheus}
 
-[Prometheus](/interfaces/formats/Prometheus)を参照してください。
+See [Prometheus](/interfaces/formats/Prometheus)
 
 ### Protobuf {#protobuf}
 
-[Protobuf](/interfaces/formats/Protobuf)を参照してください。
+See [Protobuf](/interfaces/formats/Protobuf)
 
 ### ProtobufSingle {#protobufsingle}
 
-[ProtobufSingle](/interfaces/formats/ProtobufSingle)を参照してください。
+See [ProtobufSingle](/interfaces/formats/ProtobufSingle)
 
 ### ProtobufList {#protobuflist}
 
-[ProtobufList](/interfaces/formats/ProtobufList)を参照してください。
+See [ProtobufList](/interfaces/formats/ProtobufList)
 
 ### Avro {#data-format-avro}
 
-[Avro](/interfaces/formats/Avro)を参照してください。
+See [Avro](/interfaces/formats/Avro)
 
 ### AvroConfluent {#data-format-avro-confluent}
 
-[AvroConfluent](/interfaces/formats/AvroConfluent)を参照してください。
+See [AvroConfluent](/interfaces/formats/AvroConfluent)
 
 ### Parquet {#data-format-parquet}
 
-[Parquet](/interfaces/formats/Parquet)を参照してください。
+See [Parquet](/interfaces/formats/Parquet)
 
 ### ParquetMetadata {#data-format-parquet-metadata}
 
-[ParquetMetadata](/interfaces/formats/ParquetMetadata)を参照してください。
+See [ParquetMetadata](/interfaces/formats/ParquetMetadata)
 
 ### Arrow {#data-format-arrow}
 
-[Arrow](/interfaces/formats/ArrowStream)を参照してください。
+See [Arrow](/interfaces/formats/ArrowStream)
 
 ### ArrowStream {#data-format-arrow-stream}
 
-[ArrowStream](/interfaces/formats/ArrowStream)を参照してください。
+See [ArrowStream](/interfaces/formats/ArrowStream)
 
 ### ORC {#data-format-orc}
 
-[ORC](/interfaces/formats/ORC)を参照してください。
+See [ORC](/interfaces/formats/ORC)
 
 ### One {#data-format-one}
 
-[One](/interfaces/formats/One)を参照してください。
+See [One](/interfaces/formats/One)
 
 ### Npy {#data-format-npy}
 
-[Npy](/interfaces/formats/Npy)を参照してください。
+See [Npy](/interfaces/formats/Npy)
 
 ### LineAsString {#lineasstring}
 
-次を参照してください：
+See:
 - [LineAsString](/interfaces/formats/LineAsString)
 - [LineAsStringWithNames](/interfaces/formats/LineAsStringWithNames)
 - [LineAsStringWithNamesAndTypes](/interfaces/formats/LineAsStringWithNamesAndTypes)
 
 ### Regexp {#data-format-regexp}
 
-[Regexp](/interfaces/formats/Regexp)を参照してください。
+See [Regexp](/interfaces/formats/Regexp)
 
 ### RawBLOB {#rawblob}
 
-[RawBLOB](/interfaces/formats/RawBLOB)を参照してください。
+See [RawBLOB](/interfaces/formats/RawBLOB)
 
 ### Markdown {#markdown}
 
-[Markdown](/interfaces/formats/Markdown)を参照してください。
+See [Markdown](/interfaces/formats/Markdown)
 
 ### MsgPack {#msgpack}
 
-[MsgPack](/interfaces/formats/MsgPack)を参照してください。
+See [MsgPack](/interfaces/formats/MsgPack)
 
 ### MySQLDump {#mysqldump}
 
-[MySQLDump](/interfaces/formats/MySQLDump)を参照してください。
+See [MySQLDump](/interfaces/formats/MySQLDump)
 
 ### DWARF {#dwarf}
 
-[Dwarf](/interfaces/formats/DWARF)を参照してください。
+See [Dwarf](/interfaces/formats/DWARF)
 
 ### Form {#form}
 
-[Form](/interfaces/formats/Form)を参照してください。
+See [Form](/interfaces/formats/Form)
 
-## 形式スキーマ {#formatschema}
+## フォーマットスキーマ {#formatschema}
 
-形式スキーマを含むファイル名は、`format_schema`設定によって設定されます。
-この設定を設定する必要があるのは、`Cap'n Proto`および`Protobuf`形式の1つが使用される場合です。
-形式スキーマは、ファイル名とこのファイル内のメッセージ型の名前の組み合わせで、コロンで区切られます（例：`schemafile.proto:MessageType`）。
-ファイルが形式に対して標準の拡張子を持っている場合（例えば、`Protobuf`の場合は`.proto`）、省略可能であり、この場合、形式スキーマは`schemafile:MessageType`のようになります。
+フォーマットスキーマを含むファイル名は、`format_schema`設定によって設定されます。
+これは、`Cap'n Proto`および`Protobuf`のいずれかのフォーマットが使用される場合には、この設定を設定することが必須です。
+フォーマットスキーマは、ファイル名とそのファイル内のメッセージタイプの名前の組み合わせで、コロンで区切られています。
+例えば、`schemafile.proto:MessageType`のようにします。
+ファイルがフォーマットの標準拡張子を持っている場合（例えば、`Protobuf`の場合は`.proto`）、省略することができ、
+この場合、フォーマットスキーマは`schemafile:MessageType`のようになります。
 
-[client](/interfaces/cli.md)を介して対話モードでデータを入力または出力する場合、形式スキーマで指定されたファイル名には、絶対パスまたはクライアントの現在のディレクトリに対する相対パスを含めることができます。
-[バッチモード](/interfaces/cli.md/#batch-mode)でクライアントを使用する場合、スキーマへのパスは、セキュリティ上の理由から相対的である必要があります。
+[クライアント](/interfaces/cli.md)を介してインタラクティブモードでデータを入力または出力する場合、フォーマットスキーマで指定されたファイル名には絶対パスまたはクライアントの現在のディレクトリに対する相対パスを含めることができます。
+[バッチモード](/interfaces/cli.md/#batch-mode)でクライアントを使用する場合、セキュリティ上の理由から、スキーマへのパスは相対である必要があります。
 
-[HTTPインターフェース](/interfaces/http.md)を介してデータを入力または出力する場合、形式スキーマで指定されたファイル名は、サーバー構成の[format_schema_path](/operations/server-configuration-parameters/settings.md/#format_schema_path)で指定されたディレクトリに存在する必要があります。
+[HTTPインターフェース](/interfaces/http.md)を介してデータを入力または出力する場合、フォーマットスキーマで指定されたファイル名は、
+サーバー設定の[format_schema_path](/operations/server-configuration-parameters/settings.md/#format_schema_path)で指定されたディレクトリにある必要があります。
 
-## エラーをスキップ {#skippingerrors}
+## エラーをスキップする {#skippingerrors}
 
-`CSV`、`TabSeparated`、`TSKV`、`JSONEachRow`、`Template`、`CustomSeparated`、および`Protobuf`などの一部の形式は、解析エラーが発生した場合に壊れた行をスキップし、次の行の先頭から解析を続行できます。 [input_format_allow_errors_num](/operations/settings/settings-formats.md/#input_format_allow_errors_num)および[input_format_allow_errors_ratio](/operations/settings/settings-formats.md/#input_format_allow_errors_ratio)の設定を参照してください。
-制約：
-- 解析エラーが発生した場合、`JSONEachRow`は新しい行（またはEOF）までのすべてのデータをスキップするため、行は正しくエラーをカウントするために`\n`で区切る必要があります。
-- `Template`と`CustomSeparated`は、次の行の先頭を見つけるために、最後のカラム後のデリミタと行間のデリミタを使用するため、エラーをスキップするのは、少なくとも一方が空でない場合のみ機能します。
+`CSV`、`TabSeparated`、`TSKV`、`JSONEachRow`、`Template`、`CustomSeparated`、`Protobuf`などのいくつかのフォーマットは、解析エラーが発生した場合に壊れた行をスキップし、次の行の最初から解析を続行できます。 [input_format_allow_errors_num](/operations/settings/settings-formats.md/#input_format_allow_errors_num)および[input_format_allow_errors_ratio](/operations/settings/settings-formats.md/#input_format_allow_errors_ratio)設定を参照してください。
+制限：
+- 解析エラーの場合、`JSONEachRow`は新しい行（またはEOF）までの全データをスキップするため、行はエラーを正しくカウントするために`\n`で区切られている必要があります。
+- `Template`および`CustomSeparated`は、次の行の開始を見つけるために最後の列の後の区切り記号と行の間の区切り記号を使用するため、いずれかが空でない場合にのみエラーをスキップできます。

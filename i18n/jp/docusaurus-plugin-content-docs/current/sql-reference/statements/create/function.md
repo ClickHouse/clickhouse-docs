@@ -1,14 +1,13 @@
 ---
-'description': 'Functionのためのドキュメント'
+'description': 'Functionに関するドキュメント'
 'sidebar_label': 'FUNCTION'
 'sidebar_position': 38
 'slug': '/sql-reference/statements/create/function'
-'title': 'CREATE FUNCTION -ユーザー定義関数 (UDF)'
+'title': 'CREATE FUNCTION - ユーザー定義関数 (UDF)'
+'doc_type': 'reference'
 ---
 
-
-
-ユーザー定義関数 (UDF) をラムダ式から作成します。この式は関数パラメータ、定数、演算子、または他の関数呼び出しで構成されている必要があります。
+ユーザー定義関数 (UDF) をラムダ式から作成します。式は、関数のパラメータ、定数、演算子、または他の関数呼び出しから構成されなければなりません。
 
 **構文**
 
@@ -19,11 +18,11 @@ CREATE FUNCTION name [ON CLUSTER cluster] AS (parameter0, ...) -> expression
 
 いくつかの制限があります：
 
-- 関数の名前は、ユーザー定義関数とシステム関数の間で一意である必要があります。
+- 関数の名前は、ユーザー定義関数とシステム関数の間でユニークでなければなりません。
 - 再帰関数は許可されていません。
-- 関数内で使用されるすべての変数は、そのパラメータリストに指定する必要があります。
+- 関数で使用されるすべての変数は、そのパラメータリストに指定されている必要があります。
 
-これらの制限のいずれかが違反されると、例外が発生します。
+いずれかの制限に違反した場合、例外が発生します。
 
 **例**
 
@@ -44,7 +43,7 @@ SELECT number, linear_equation(number, 2, 1) FROM numbers(3);
 └────────┴──────────────────────────────┘
 ```
 
-次のクエリではユーザー定義関数内で[条件付き関数](../../../sql-reference/functions/conditional-functions.md)が呼び出されています：
+次のクエリでは、[条件付き関数](../../../sql-reference/functions/conditional-functions.md) がユーザー定義関数内で呼び出されています：
 
 ```sql
 CREATE FUNCTION parity_str AS (n) -> if(n % 2, 'odd', 'even');
@@ -63,6 +62,6 @@ SELECT number, parity_str(number) FROM numbers(3);
 
 ## 関連コンテンツ {#related-content}
 
-### [実行可能な UDF]( /sql-reference/functions/udf.md). {#executable-udfs}
+### [実行可能な UDF]( /sql-reference/functions/udf.md)。 {#executable-udfs}
 
 ### [ClickHouse Cloud のユーザー定義関数](https://clickhouse.com/blog/user-defined-functions-clickhouse-udfs) {#user-defined-functions-in-clickhouse-cloud}

@@ -1,10 +1,11 @@
-description: 'Установка ClickHouse'
-keywords: ['clickhouse', 'установка', 'начало работы', 'быстрый старт']
-sidebar_label: 'Установка'
-slug: /install
+---
+slug: '/install'
+sidebar_label: Установка
+description: 'Установить ClickHouse'
 title: 'Установка ClickHouse'
-```
-
+keywords: ['clickhouse', 'установка', 'начало работы', 'быстрый старт']
+doc_type: guide
+---
 import InstallSelector from '@site/src/components/Install/Install'
 import Windows from './_snippets/_windows_install.md'
 import TarProd from './_snippets/_linux_tar_install.md'
@@ -14,25 +15,26 @@ import RPMProd from './_snippets/_rpm_install.md'
 import MacOSProd from './_snippets/_macos.md'
 import Docker from './_snippets/_docker.md'
 import {CardPrimary} from '@clickhouse/click-ui/bundled';
+import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
 
 # Инструкции по установке
 
 <CardPrimary
     alignContent="center"
-    description="Начните строить мгновенно, не беспокоясь о размерности и масштабировании вашего кластера. Мы заботимся о размере, масштабировании, безопасности, надежности и обновлениях."
+    description="Начните строить мгновенно, не беспокоясь о размере и масштабировании вашего кластера. Мы позаботимся о размерности, масштабировании, безопасности, надежности и обновлениях."
     icon="cloud"
-    infoText="Начните бесплатно"
-    infoUrl="https://auth.clickhouse.cloud/"
+    infoText="Начать бесплатно"
+    infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner"
     isSelected
-    onButtonClick={function Da(){}}
+    onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')}
     size="md"
     title="ClickHouse Cloud"
     topBadgeText="Рекомендуется"
 />
 <br/>
 
-В качестве альтернативы выберите платформу, дистрибутив и метод установки ниже, чтобы увидеть инструкции по установке для Open Source ClickHouse:
+В качестве альтернативы выберите платформу, дистрибутив и метод установки ниже, чтобы просмотреть инструкции по установке для Opensource ClickHouse:
 
 <InstallSelector
     windows={<Windows/>}

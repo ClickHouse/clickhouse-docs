@@ -1,16 +1,13 @@
 ---
-description: 'Выдает значение `arg` для минимального значения `val`. Если есть несколько
-  строк с равным `val`, которое является максимальным, то возвращаемое значение из
-  соответствующего `arg` не является детерминированным.'
+slug: '/sql-reference/aggregate-functions/reference/argmin'
 sidebar_position: 110
-slug: /sql-reference/aggregate-functions/reference/argmin
-title: 'argMin'
+description: 'Вычисляет значение `arg` для минимального значения `val`. Если есть'
+title: argMin
+doc_type: reference
 ---
-
-
 # argMin
 
-Выдает значение `arg` для минимального значения `val`. Если есть несколько строк с равным `val`, которое является максимальным, то возвращаемое значение из соответствующего `arg` не является детерминированным. Обе части, как `arg`, так и `min`, ведут себя как [агрегатные функции](/sql-reference/aggregate-functions/index.md), они обе [пропускают `Null`](/sql-reference/aggregate-functions/index.md#null-processing) во время обработки и возвращают не `Null` значения, если такие значения доступны.
+Вычисляет значение `arg` для минимального значения `val`. Если существует несколько строк с одинаковым максимальным значением `val`, то какое из связанных `arg` будет возвращено, не является детерминированным. Обе части `arg` и `min` ведут себя как [агрегатные функции](/sql-reference/aggregate-functions/index.md), они обе [пропускают `Null`](/sql-reference/aggregate-functions/index.md#null-processing) во время обработки и возвращают не `Null` значения, если такие доступны.
 
 **Синтаксис**
 
@@ -25,9 +22,9 @@ argMin(arg, val)
 
 **Возвращаемое значение**
 
-- Значение `arg`, соответствующее минимальному значению `val`.
+- Значение `arg`, которое соответствует минимальному значению `val`.
 
-Тип: соответствует типу `arg`.
+Тип: совпадает с типом `arg`.
 
 **Пример**
 
@@ -67,7 +64,7 @@ ENGINE = Memory AS
 SELECT *
 FROM VALUES((NULL, 0), ('a', 1), ('b', 2), ('c', 2), (NULL, NULL), ('d', NULL));
 
-select * from test;
+SELECT * FROM test;
 ┌─a────┬────b─┐
 │ ᴺᵁᴸᴸ │    0 │
 │ a    │    1 │
@@ -79,40 +76,40 @@ select * from test;
 
 SELECT argMin(a, b), min(b) FROM test;
 ┌─argMin(a, b)─┬─min(b)─┐
-│ a            │      0 │ -- argMin = a потому что это первое не `NULL` значение, min(b) из другой строки!
+│ a            │      0 │ -- argMin = a because it the first not `NULL` value, min(b) is from another row!
 └──────────────┴────────┘
 
 SELECT argMin(tuple(a), b) FROM test;
 ┌─argMin(tuple(a), b)─┐
-│ (NULL)              │ -- a `Tuple`, который содержит только `NULL`, не является `NULL`, поэтому агрегатные функции не пропускают эту строку из-за этого `NULL`
+│ (NULL)              │ -- The a `Tuple` that contains only a `NULL` value is not `NULL`, so the aggregate functions won't skip that row because of that `NULL` value
 └─────────────────────┘
 
 SELECT (argMin((a, b), b) as t).1 argMinA, t.2 argMinB from test;
 ┌─argMinA─┬─argMinB─┐
-│ ᴺᵁᴸᴸ    │       0 │ -- вы можете использовать `Tuple` и получить оба (все - tuple(*)) столбца для соответствующего max(b)
+│ ᴺᵁᴸᴸ    │       0 │ -- you can use `Tuple` and get both (all - tuple(*)) columns for the according max(b)
 └─────────┴─────────┘
 
 SELECT argMin(a, b), min(b) FROM test WHERE a IS NULL and b IS NULL;
 ┌─argMin(a, b)─┬─min(b)─┐
-│ ᴺᵁᴸᴸ         │   ᴺᵁᴸᴸ │ -- Все агрегированные строки содержат хотя бы одно `NULL` значение из-за фильтра, поэтому все строки пропускаются, следовательно, результат будет `NULL`
+│ ᴺᵁᴸᴸ         │   ᴺᵁᴸᴸ │ -- All aggregated rows contains at least one `NULL` value because of the filter, so all rows are skipped, therefore the result will be `NULL`
 └──────────────┴────────┘
 
 SELECT argMin(a, (b, a)), min(tuple(b, a)) FROM test;
 ┌─argMin(a, tuple(b, a))─┬─min(tuple(b, a))─┐
-│ d                      │ (NULL,NULL)      │ -- 'd' является первым не `NULL` значением для min
+│ d                      │ (NULL,NULL)      │ -- 'd' is the first not `NULL` value for the min
 └────────────────────────┴──────────────────┘
 
 SELECT argMin((a, b), (b, a)), min(tuple(b, a)) FROM test;
 ┌─argMin(tuple(a, b), tuple(b, a))─┬─min(tuple(b, a))─┐
-│ (NULL,NULL)                      │ (NULL,NULL)      │ -- argMin возвращает (NULL,NULL) здесь потому что `Tuple` позволяет не пропускать `NULL`, а min(tuple(b, a)) в этом случае является минимальным значением для этого набора данных
+│ (NULL,NULL)                      │ (NULL,NULL)      │ -- argMin returns (NULL,NULL) here because `Tuple` allows to don't skip `NULL` and min(tuple(b, a)) in this case is minimal value for this dataset
 └──────────────────────────────────┴──────────────────┘
 
 SELECT argMin(a, tuple(b)) FROM test;
 ┌─argMin(a, tuple(b))─┐
-│ d                   │ -- `Tuple` может использоваться в `min`, чтобы не пропускать строки с `NULL` значениями как b.
+│ d                   │ -- `Tuple` can be used in `min` to not skip rows with `NULL` values as b.
 └─────────────────────┘
 ```
 
-**Смотрите также**
+**См. также**
 
 - [Tuple](/sql-reference/data-types/tuple.md)

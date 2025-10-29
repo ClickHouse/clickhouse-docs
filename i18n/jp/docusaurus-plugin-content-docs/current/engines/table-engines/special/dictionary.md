@@ -1,22 +1,20 @@
 ---
-'description': 'The `Dictionary` engine displays the dictionary data as a ClickHouse
-  table.'
+'description': '`Dictionary` エンジンは、Dictionary データを ClickHouse テーブルとして表示します。'
 'sidebar_label': 'Dictionary'
 'sidebar_position': 20
 'slug': '/engines/table-engines/special/dictionary'
-'title': 'Dictionary Table Engine'
+'title': 'Dictionary テーブルエンジン'
+'doc_type': 'reference'
 ---
 
 
-
-
-# Dictionary Table Engine
+# Dictionary table engine
 
 `Dictionary` エンジンは、[dictionary](../../../sql-reference/dictionaries/index.md) データを ClickHouse テーブルとして表示します。
 
-## 例 {#example}
+## Example {#example}
 
-例として、次の構成を持つ `products` の辞書を考えてみます。
+例として、次の構成を持つ `products` の辞書を考えます。
 
 ```xml
 <dictionaries>
@@ -71,9 +69,9 @@ WHERE name = 'products'
 └──────────┴──────┴────────┴─────────────────┴─────────────────┴─────────────────┴───────────────┴─────────────────┘
 ```
 
-[dictGet\*](/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull) 関数を使用して、この形式で辞書データを取得できます。
+この形式で辞書データを取得するには、[dictGet\*](/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull) 関数を使用できます。
 
-このビューは、生データを取得したり、`JOIN` 操作を行ったりする必要があるときには役立ちません。そのような場合には、辞書データをテーブル形式で表示する `Dictionary` エンジンを使用できます。
+このビューは、生データを取得したり、`JOIN` 操作を実行したりする必要がある場合には役に立ちません。そのため、辞書データをテーブル形式で表示する `Dictionary` エンジンを使用できます。
 
 構文：
 
@@ -84,15 +82,15 @@ CREATE TABLE %table_name% (%fields%) engine = Dictionary(%dictionary_name%)`
 使用例：
 
 ```sql
-create table products (product_id UInt64, title String) Engine = Dictionary(products);
+CREATE TABLE products (product_id UInt64, title String) ENGINE = Dictionary(products);
 ```
 
       Ok
 
-テーブルの内容を確認します。
+テーブルの内容を確認してください。
 
 ```sql
-select * from products limit 1;
+SELECT * FROM products LIMIT 1;
 ```
 
 ```text
@@ -101,6 +99,6 @@ select * from products limit 1;
 └───────────────┴─────────────────┘
 ```
 
-**関連情報**
+**See Also**
 
 - [Dictionary function](/sql-reference/table-functions/dictionary)

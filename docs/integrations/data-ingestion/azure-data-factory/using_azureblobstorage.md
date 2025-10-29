@@ -4,10 +4,10 @@ slug: /integrations/azure-data-factory/table-function
 description: 'Using ClickHouse''s azureBlobStorage table function'
 keywords: ['azure data factory', 'azure', 'microsoft', 'data', 'azureBlobStorage']
 title: 'Using ClickHouse''s azureBlobStorage table function to bring Azure data into ClickHouse'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
-
 import azureDataStoreSettings                   from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-settings.png';
 import azureDataStoreAccessKeys                 from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-access-keys.png';
 
@@ -78,7 +78,7 @@ SELECT * FROM azureBlobStorage(
 This allows you to efficiently pull external data into ClickHouse without
 needing intermediate ETL steps.
 
-## A simple example using the Environmental Sensors Dataset {#simple-example-using-the-environmental-sensors-dataset}
+## A simple example using the Environmental sensors dataset {#simple-example-using-the-environmental-sensors-dataset}
 
 As an example we will download a single file from the Environmental Sensors
 Dataset.
@@ -152,7 +152,7 @@ inference from input data](https://clickhouse.com/docs/interfaces/schema-inferen
 Your sensors table is now populated with data from the `2019-06_bmp180.csv.zst`
 file stored in Azure Blob Storage.
 
-## Additional Resources {#additional-resources}
+## Additional resources {#additional-resources}
 
 This is just a basic introduction to using the azureBlobStorage function. For
 more advanced options and configuration details, please refer to the official

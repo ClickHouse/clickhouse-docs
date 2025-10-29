@@ -1,20 +1,19 @@
 ---
 'slug': '/faq/integration/oracle-odbc'
-'title': 'Oracleを使用する際にODBC経由でエンコードに問題が発生した場合はどうすればよいですか？'
+'title': 'ODBCを介してOracleを使用しているときにエンコーディングに問題がある場合はどうすればよいですか？'
 'toc_hidden': true
 'toc_priority': 20
-'description': 'このページでは、Oracleを使用する際にODBC経由でエンコーディングに問題が発生した場合の対処方法についてのガイダンスを提供します。'
+'description': 'このページでは、ODBCを介してOracleを使用しているときにエンコーディングに問題がある場合に何をすればよいかについてのガイダンスを提供します'
+'doc_type': 'guide'
 ---
 
 
+# Oracle ODBCを使用しているときにエンコーディングに問題がある場合はどうすればよいですか？ {#oracle-odbc-encodings}
 
-
-# Oracle ODBCを使用しているときのエンコーディングに関する問題がある場合はどうすればよいですか？ {#oracle-odbc-encodings}
-
-Oracle ODBCドライバを介してClickHouseの外部ディクショナリのソースとしてOracleを使用する場合、 `/etc/default/clickhouse` にある `NLS_LANG` 環境変数に正しい値を設定する必要があります。詳細については、[Oracle NLS_LANG FAQ](https://www.oracle.com/technetwork/products/globalization/nls-lang-099431.html)を参照してください。
+Oracle ODBCドライバーを介してClickHouseの外部ディクショナリのソースとしてOracleを使用している場合は、`NLS_LANG`環境変数に正しい値を設定する必要があります。詳細については、[Oracle NLS_LANG FAQ](https://www.oracle.com/technetwork/products/globalization/nls-lang-099431.html)を参照してください。
 
 **例**
 
-``` sql
+```sql
 NLS_LANG=RUSSIAN_RUSSIA.UTF8
 ```

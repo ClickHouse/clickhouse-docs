@@ -1,10 +1,13 @@
 ---
-'description': 'Dataset containing all of the commits and changes for the ClickHouse
-  repository'
+'description': 'ClickHouseリポジトリのすべてのコミットと変更を含むデータセット'
 'sidebar_label': 'Github Repo'
 'sidebar_position': 1
 'slug': '/getting-started/example-datasets/github'
-'title': 'Writing Queries in ClickHouse using GitHub Data'
+'title': 'GitHubデータを使用したClickHouseでのクエリの作成'
+'keywords':
+- 'Github'
+'show_related_blogs': true
+'doc_type': 'reference'
 ---
 
 import Image from '@theme/IdealImage';
@@ -13,22 +16,23 @@ import superset_commits_authors from '@site/static/images/getting-started/exampl
 import superset_authors_matrix from '@site/static/images/getting-started/example-datasets/superset-authors-matrix.png'
 import superset_authors_matrix_v2 from '@site/static/images/getting-started/example-datasets/superset-authors-matrix_v2.png'
 
-このデータセットには、ClickHouseリポジトリに関するすべてのコミットと変更が含まれています。これは、ClickHouseに付属しているネイティブな `git-import` ツールを使用して生成できます。
+このデータセットには、ClickHouseリポジトリのすべてのコミットと変更が含まれています。これは、ClickHouseに付属しているネイティブな `git-import` ツールを使用して生成できます。
 
-生成されたデータは、以下の各テーブルに対して `tsv` ファイルを提供します。
+生成されたデータは、次の各テーブルのために `tsv` ファイルを提供します：
 
-- `commits` - 統計付きのコミット。
-- `file_changes` - 各コミットで変更されたファイルと変更に関する情報および統計。
-- `line_changes` - 各コミットの各変更されたファイル内の変更行すべてと、その行の詳細情報、そしてこの行の以前の変更に関する情報。
+- `commits` - 統計を含むコミット。
+- `file_changes` - 各コミットで変更されたファイルの情報と統計。
+- `line_changes` - 各コミットで変更されたファイルの中の各変更行のフル情報と、この行の前の変更に関する情報。
 
-2022年11月8日現在、各TSVは約以下のサイズと行数です：
+2022年11月8日現在、各TSVのサイズと行数はおおよそ以下の通りです：
 
 - `commits` - 7.8M - 266,051行
 - `file_changes` - 53M - 266,051行
 - `line_changes` - 2.7G - 7,535,157行
-## データの生成 {#generating-the-data}
 
-これは任意です。我々はデータを自由に配布しています - [データのダウンロードと挿入について](#downloading-and-inserting-the-data)を参照してください。
+## データ生成 {#generating-the-data}
+
+これは任意です。我々はデータを自由に配布しています - 詳細は [データのダウンロードと挿入](#downloading-and-inserting-the-data) を参照してください。
 
 ```bash
 git clone git@github.com:ClickHouse/ClickHouse.git
@@ -36,15 +40,15 @@ cd ClickHouse
 clickhouse git-import --skip-paths 'generated\.cpp|^(contrib|docs?|website|libs/(libcityhash|liblz4|libdivide|libvectorclass|libdouble-conversion|libcpuid|libzstd|libfarmhash|libmetrohash|libpoco|libwidechar_width))/' --skip-commits-with-messages '^Merge branch '
 ```
 
-この作業は、ClickHouseリポジトリのために、約3分かかります（2022年11月8日のMacBook Pro 2021の場合）。
+これは、ClickHouseリポジトリのために、約3分（2022年11月8日現在、MacBook Pro 2021で）で完了します。
 
-利用可能なオプションの完全な一覧は、ツールのネイティブヘルプから取得できます。
+利用可能なオプションの完全なリストは、ツールのネイティブヘルプから取得できます。
 
 ```bash
 clickhouse git-import -h
 ```
 
-このヘルプでは、上記の各テーブルのDDLも提供されます。例えば：
+このヘルプには、上記の各テーブルのDDLも提供されています。例えば、
 
 ```sql
 CREATE TABLE git.commits
@@ -65,25 +69,26 @@ CREATE TABLE git.commits
 ) ENGINE = MergeTree ORDER BY time;
 ```
 
-**これらのクエリは任意のリポジトリで機能するはずです。調査してフィードバックをお寄せください。** 実行時間に関するいくつかのガイドライン（2022年11月現在）：
+**これらのクエリは、任意のリポジトリで機能するはずです。自由に探索し、発見を報告してください** 2022年11月時点の実行時間に関するガイドライン：
 
 - Linux - `~/clickhouse git-import` - 160分
+
 ## データのダウンロードと挿入 {#downloading-and-inserting-the-data}
 
-以下のデータは、動作環境を再現するために使用できます。あるいは、このデータセットはplay.clickhouse.comで入手可能です - 詳細については[クエリ](#queries)を参照してください。
+以下のデータを使用して、作業環境を再現できます。あるいは、このデータセットは play.clickhouse.com で利用可能です - 詳細については [クエリ](#queries) を参照してください。
 
-以下のリポジトリに対する生成されたファイルは、以下で見つけることができます：
+以下のリポジトリのために生成されたファイルは次の通りです：
 
 - ClickHouse (2022年11月8日)
-    - https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/commits.tsv.xz - 2.5 MB
-    - https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/file_changes.tsv.xz - 4.5MB
-    - https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/line_changes.tsv.xz - 127.4 MB
+  - https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/commits.tsv.xz - 2.5 MB
+  - https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/file_changes.tsv.xz - 4.5MB
+  - https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/line_changes.tsv.xz - 127.4 MB
 - Linux (2022年11月8日)
-    - https://datasets-documentation.s3.amazonaws.com/github/commits/linux/commits.tsv.xz - 44 MB
-    - https://datasets-documentation.s3.amazonaws.com/github/commits/linux/file_changes.tsv.xz - 467MB
-    - https://datasets-documentation.s3.amazonaws.com/github/commits/linux/line_changes.tsv.xz - 1.1G
+  - https://datasets-documentation.s3.amazonaws.com/github/commits/linux/commits.tsv.xz - 44 MB
+  - https://datasets-documentation.s3.amazonaws.com/github/commits/linux/file_changes.tsv.xz - 467MB
+  - https://datasets-documentation.s3.amazonaws.com/github/commits/linux/line_changes.tsv.xz - 1.1G
 
-このデータを挿入するには、次のクエリを実行してデータベースを準備します。
+このデータを挿入するには、以下のクエリを実行してデータベースを準備します：
 
 ```sql
 DROP DATABASE IF EXISTS git;
@@ -178,7 +183,7 @@ CREATE TABLE git.line_changes
 ) ENGINE = MergeTree ORDER BY time;
 ```
 
-データを挿入するには、`INSERT INTO SELECT` と [s3 function](/sql-reference/table-functions/s3)を使用します。例えば、以下ではClickHouseのファイルをそれぞれのテーブルに挿入します：
+データを `INSERT INTO SELECT` と [s3 関数](/sql-reference/table-functions/s3)を使用して挿入します。例えば、以下では、ClickHouseのファイルをそれぞれのテーブルに挿入します：
 
 *commits*
 
@@ -206,14 +211,16 @@ FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhou
 
 0 rows in set. Elapsed: 50.535 sec. Processed 7.54 million rows, 2.09 GB (149.11 thousand rows/s., 41.40 MB/s.)
 ```
+
 ## クエリ {#queries}
 
-ツールは、そのヘルプ出力を介していくつかのクエリを提案しています。我々は、これらに加え、いくつかの追加の補足的な質問に対しても回答しました。これらのクエリは、ツールの任意の順序に対して、約増加する複雑さで構成されています。
+ツールはヘルプ出力を介していくつかのクエリを提案します。これに加えて、いくつかの追加的な興味のある質問に対する回答も提供しました。これらのクエリは、ツールの任意の順序に対しておおよそ増加する複雑さです。
 
-このデータセットは、`git_clickhouse` データベース内で [play.clickhouse.com](https://sql.clickhouse.com?query_id=DCQPNPAIMAQXRLHYURLKVJ) で利用可能です。すべてのクエリに対してこの環境へのリンクを提供し、必要に応じてデータベース名を適応しています。データ収集の時期の違いにより、プレイ結果はここに示されているものと異なる場合がありますのでご注意ください。
+このデータセットは、`git_clickhouse` データベースの [play.clickhouse.com](https://sql.clickhouse.com?query_id=DCQPNPAIMAQXRLHYURLKVJ) で利用可能です。すべてのクエリに対するこの環境へのリンクを提供し、データベース名を必要に応じて調整します。データ収集の時期によって、playの結果はここに示されたものと異なる場合があることに注意してください。
+
 ### 単一ファイルの履歴 {#history-of-a-single-file}
 
-最もシンプルなクエリです。ここでは `StorageReplicatedMergeTree.cpp` のすべてのコミットメッセージを見ていきます。これらはおそらくもっと興味深いので、最近のメッセージから順に並べ替えます。
+最も単純なクエリです。ここでは `StorageReplicatedMergeTree.cpp` に対するすべてのコミットメッセージを見ていきます。これらはおそらくより興味深いものなので、最新のメッセージから順に並べます。
 
 [play](https://sql.clickhouse.com?query_id=COAZRFX2YFULDBXRQTCQ1S)
 
@@ -249,7 +256,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.006 sec. Processed 12.10 thousand rows, 1.60 MB (1.93 million rows/s., 255.40 MB/s.)
 ```
 
-リネームイベントの前に存在したファイルの変更を表示しないことにより、リネームを除外して行の変更を確認することもできます：
+また、リネームを除外して行変更もレビューできます。つまり、ファイルが異なる名前の下で存在した時のリネームイベントの前の変更は表示しません：
 
 [play](https://sql.clickhouse.com?query_id=AKS9SYLARFMZCHGAAQNEBN)
 
@@ -280,12 +287,16 @@ LIMIT 10
 │ 2022-04-21 20:19:13 │ 9133e398b8c │    1 │              11 │              12 │ Nikolai Kochetov │ #include <Storages/MergeTree/DataPartStorageOnDisk.h> │
 └─────────────────────┴─────────────┴──────┴─────────────────┴─────────────────┴──────────────────┴───────────────────────────────────────────────────────┘
 
-このクエリには、[行ごとのコミット履歴](#line-by-line-commit-history-of-a-file)を考慮に入れたより複雑なバリアントが存在することに注意してください。
-### 現在のアクティブファイルの検索 {#find-the-current-active-files}
+10 rows in set. Elapsed: 0.258 sec. Processed 7.54 million rows, 654.92 MB (29.24 million rows/s., 2.54 GB/s.)
+```
 
-これは、リポジトリ内の現在のファイルのみを考慮したい後の分析に重要です。このセットは、リネームまたは削除されず（その後再追加/リネームされない）ファイルと見なされるファイルとして推定します。
+リネームを考慮しながら、ファイルの[行単位のコミット履歴](#line-by-line-commit-history-of-a-file)を見つけるためのより複雑なバリアントが存在することに注意してください。
 
-**ファイルのリネームに関しては、`dbms`、`libs`、`tests/testflows/` ディレクトリ内で壊れたコミット履歴があったように見受けられます。したがって、それらも除外します。**
+### 現在のアクティブファイルを見つける {#find-the-current-active-files}
+
+これは、リポジトリ内の現在のファイルのみを考慮した後の分析に重要です。リネームまたは削除されず（その後再追加/リネームされた）ファイルの集合としてこのセットを推定します。
+
+** `dbms`、`libs`、および `tests/testflows/` ディレクトリに関するファイルに関しては、リネーム中に壊れたコミット履歴があったようです。したがって、これらも除外します。**
 
 [play](https://sql.clickhouse.com?query_id=2HNFWPCFWEEY92WTAPMA7W)
 
@@ -327,7 +338,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.085 sec. Processed 532.10 thousand rows, 8.68 MB (6.30 million rows/s., 102.64 MB/s.)
 ```
 
-これは、ファイルがリネームされ、その後元の値に再リネームされることも許可します。まず、リネームの結果として削除されたファイルのリストのために `old_path` を集約します。このリストを最後の操作を持つすべての `path` で UNION します。最後に、最終イベントが `Delete` でないリストをフィルタリングします。
+これにより、ファイルをリネームした後再リネームすることも可能です。最初に、リネームの結果として削除されたファイルのリストに対して `old_path` を集約します。これをすべての `path` の最終操作とユニオンします。最後に、最終イベントが `Delete` ではないリストにフィルタリングします。
 
 [play](https://sql.clickhouse.com?query_id=1OXCKMOH2JVMSHD3NS2WW6)
 
@@ -362,7 +373,7 @@ FROM
 1 row in set. Elapsed: 0.089 sec. Processed 532.10 thousand rows, 8.68 MB (6.01 million rows/s., 97.99 MB/s.)
 ```
 
-ここでは、インポート中にいくつかのディレクトリをスキップしました。つまり、
+インポート時にいくつかのディレクトリをスキップしたことに注意してください。つまり、
 
 `--skip-paths 'generated\.cpp|^(contrib|docs?|website|libs/(libcityhash|liblz4|libdivide|libvectorclass|libdouble-conversion|libcpuid|libzstd|libfarmhash|libmetrohash|libpoco|libwidechar_width))/'`
 
@@ -373,45 +384,47 @@ git ls-files | grep -v -E 'generated\.cpp|^(contrib|docs?|website|libs/(libcityh
    18155
 ```
 
-**我々の現在の解決策は、従って現在のファイルの推定値です。**
+**したがって、我々の現在の解決策は現在のファイルの推定です。**
 
 ここでの違いは、いくつかの要因によって引き起こされます：
 
-- リネームは、ファイルへの他の変更と同時に発生する可能性があります。これらはファイル変更の中で別々のイベントとしてリストされていますが、同じ時間で行われます。`argMax`関数はそれらを区別する方法を持っていないため、最初の値を選択します。挿入の自然順序（正しい順序を知る唯一の手段）は、union全体で維持されないため、修正イベントが選択される可能性があります。例えば、以下の `src/Functions/geometryFromColumn.h`ファイルは、`src/Functions/geometryConverters.h`にリネームされる前に複数の修正が行われています。我々の現在の解決策はModifyイベントを選択し、`src/Functions/geometryFromColumn.h`を保持することになります。
+- リネームは、ファイルへの他の修正と共に発生する可能性があります。これらは `file_changes` において別個のイベントとしてリストされますが、同じ時間でのことです。 `argMax` 関数はこれらを区別する手段がなく、最初の値を選びます。挿入の自然な順序（正しい順序を知る唯一の手段）は、共通のクエリによって維持されないため、修正されたイベントが選択されることがあります。例えば、以下の `src/Functions/geometryFromColumn.h` ファイルは、`src/Functions/geometryConverters.h` にリネームされる前に複数回修正されています。我々の現在の解決策では、`src/Functions/geometryFromColumn.h` を保持する最新の変更として修正イベントが選ばれることがあります。
 
 [play](https://sql.clickhouse.com?query_id=SCXWMR9GBMJ9UNZYQXQBFA)
 
 ```sql
-  SELECT
-      change_type,
-      path,
-      old_path,
-      time,
-      commit_hash
-  FROM git.file_changes
-  WHERE (path = 'src/Functions/geometryFromColumn.h') OR (old_path = 'src/Functions/geometryFromColumn.h')
+SELECT
+    change_type,
+    path,
+    old_path,
+    time,
+    commit_hash
+FROM git.file_changes
+WHERE (path = 'src/Functions/geometryFromColumn.h') OR (old_path = 'src/Functions/geometryFromColumn.h')
 
-  ┌─change_type─┬─path───────────────────────────────┬─old_path───────────────────────────┬────────────────time─┬─commit_hash──────────────────────────────┐
-  │ Add         │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 9376b676e9a9bb8911b872e1887da85a45f7479d │
-  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 6d59be5ea4768034f6526f7f9813062e0c369f7b │
-  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 33acc2aa5dc091a7cb948f78c558529789b2bad8 │
-  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 78e0db268ceadc42f82bc63a77ee1a4da6002463 │
-  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 14a891057d292a164c4179bfddaef45a74eaf83a │
-  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ d0d6e6953c2a2af9fb2300921ff96b9362f22edb │
-  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ fe8382521139a58c0ba277eb848e88894658db66 │
-  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 3be3d5cde8788165bc0558f1e2a22568311c3103 │
-  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ afad9bf4d0a55ed52a3f55483bc0973456e10a56 │
-  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ e3290ecc78ca3ea82b49ebcda22b5d3a4df154e6 │
-  │ Rename      │ src/Functions/geometryConverters.h │ src/Functions/geometryFromColumn.h │ 2021-03-11 12:08:16 │ 125945769586baf6ffd15919b29565b1b2a63218 │
-  └─────────────┴────────────────────────────────────┴────────────────────────────────────┴─────────────────────┴──────────────────────────────────────────┘
-  11 rows in set. Elapsed: 0.030 sec. Processed 266.05 thousand rows, 6.61 MB (8.89 million rows/s., 220.82 MB/s.)
+┌─change_type─┬─path───────────────────────────────┬─old_path───────────────────────────┬────────────────time─┬─commit_hash──────────────────────────────┐
+│ Add         │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 9376b676e9a9bb8911b872e1887da85a45f7479d │
+│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 6d59be5ea4768034f6526f7f9813062e0c369f7b │
+│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 33acc2aa5dc091a7cb948f78c558529789b2bad8 │
+│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 78e0db268ceadc42f82bc63a77ee1a4da6002463 │
+│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 14a891057d292a164c4179bfddaef45a74eaf83a │
+│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ d0d6e6953c2a2af9fb2300921ff96b9362f22edb │
+│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ fe8382521139a58c0ba277eb848e88894658db66 │
+│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 3be3d5cde8788165bc0558f1e2a22568311c3103 │
+│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ afad9bf4d0a55ed52a3f55483bc0973456e10a56 │
+│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ e3290ecc78ca3ea82b49ebcda22b5d3a4df154e6 │
+│ Rename      │ src/Functions/geometryConverters.h │ src/Functions/geometryFromColumn.h │ 2021-03-11 12:08:16 │ 125945769586baf6ffd15919b29565b1b2a63218 │
+└─────────────┴────────────────────────────────────┴────────────────────────────────────┴─────────────────────┴──────────────────────────────────────────┘
+11 rows in set. Elapsed: 0.030 sec. Processed 266.05 thousand rows, 6.61 MB (8.89 million rows/s., 220.82 MB/s.)
 ```
-- 壊れたコミット履歴 - 削除イベントが欠落しています。ソースと原因は未定です。
 
-これらの違いは、当社の分析に有意義な影響を与えるべきではありません。**このクエリの改善版を歓迎します。**
-### 変更回数が最も多いファイルのリスト {#list-files-with-most-modifications}
+- 壊れたコミット履歴 - 削除イベントの欠落。ソースと原因は未確定です。
 
-現在のファイルに限定し、削除と追加の合計として変更回数を考慮します。
+これらの違いは我々の分析に意味のある影響を与えるべきではありません。**このクエリの改善版を歓迎します。**
+
+### 最も修正されたファイルのリスト {#list-files-with-most-modifications}
+
+現在のファイルに制限し、修正の数を削除と追加の合計と見なします。
 
 [play](https://sql.clickhouse.com?query_id=MHXPSBNPTDMJYR3OYSXVR7)
 
@@ -463,7 +476,8 @@ LIMIT 10
 
 10 rows in set. Elapsed: 0.134 sec. Processed 798.15 thousand rows, 16.46 MB (5.95 million rows/s., 122.62 MB/s.)
 ```
-### 通常コミットが行われる曜日はいつですか？ {#what-day-of-the-week-do-commits-usually-occur}
+
+### コミットが通常発生する曜日は何か？ {#what-day-of-the-week-do-commits-usually-occur}
 
 [play](https://sql.clickhouse.com?query_id=GED2STFSYJDRAA59H8RLIV)
 
@@ -486,10 +500,11 @@ GROUP BY dayOfWeek(time) AS day_of_week
 7 rows in set. Elapsed: 0.262 sec. Processed 62.78 thousand rows, 251.14 KB (239.73 thousand rows/s., 958.93 KB/s.)
 ```
 
-これは、金曜日に生産性が低下していることに納得がいきます。週末にコードをコミットする人々を見るのは素晴らしいことです！多大な感謝を当社の貢献者に送ります！
-### サブディレクトリ/ファイルの履歴 - 行数、コミット数、貢献者数の推移 {#history-of-subdirectoryfile---number-of-lines-commits-and-contributors-over-time}
+これは、金曜日に生産性が下がると考えられます。週末にコードをコミットしている人々を見られるのは素晴らしいことです！ 参加者の皆様に大きな感謝を！
 
-フィルタリングされていない場合、大きなクエリ結果が生成され、表示や視覚化が現実的ではない可能性があります。したがって、以下の例では、ファイルまたはサブディレクトリをフィルタリングできるようにします。ここでは、`toStartOfWeek`関数を使用して週ごとにグループ化しています - 必要に応じて調整してください。
+### サブディレクトリ/ファイルの履歴 - 行数、コミット数、時間の経過に及ぼす貢献者の数 {#history-of-subdirectoryfile---number-of-lines-commits-and-contributors-over-time}
+
+フィルタなしの場合、これは現実的に表示または視覚化するには非常に大きなクエリ結果を生成します。したがって、以下の例ではファイルまたはサブディレクトリをフィルタリングできるようにします。ここでは、`toStartOfWeek` 関数を使用して週ごとにグループ化します - 必要に応じて調整してください。
 
 [play](https://sql.clickhouse.com?query_id=REZRXDVU7CAWT5WKNJSTNY)
 
@@ -521,18 +536,19 @@ LIMIT 10
 10 rows in set. Elapsed: 0.043 sec. Processed 266.05 thousand rows, 15.85 MB (6.12 million rows/s., 364.61 MB/s.)
 ```
 
-このデータは視覚化に適しています。以下ではSupersetを使用します。
+このデータはうまく視覚化されます。以下ではSupersetを使用します。
 
-**追加および削除された行について:**
+**追加された行と削除された行について：**
 
-<Image img={superset_github_lines_added_deleted} alt="追加および削除された行について" size="md"/>
+<Image img={superset_github_lines_added_deleted} alt="追加された行と削除された行について" size="md"/>
 
-**コミットと作者について:**
+**コミットと作成者について：**
 
-<Image img={superset_commits_authors} alt="コミットと作者について" size="md"/>
-### 最大の著者数を持つファイルのリスト {#list-files-with-maximum-number-of-authors}
+<Image img={superset_commits_authors} alt="コミットと作成者について" size="md"/>
 
-現在のファイルのみに制限しています。
+### 最大の著者数のファイルのリスト {#list-files-with-maximum-number-of-authors}
+
+現在のファイルに限定します。
 
 [play](https://sql.clickhouse.com?query_id=CYQFNQNK9TAMPU2OZ8KG5Y)
 
@@ -584,9 +600,10 @@ LIMIT 10
 
 10 rows in set. Elapsed: 0.239 sec. Processed 798.15 thousand rows, 14.13 MB (3.35 million rows/s., 59.22 MB/s.)
 ```
+
 ### リポジトリ内の最古のコード行 {#oldest-lines-of-code-in-the-repository}
 
-現在のファイルのみに制限されています。
+現在のファイルに限定します。
 
 [play](https://sql.clickhouse.com?query_id=VWPBPGRZVGTHOCQYWNQZNT)
 
@@ -640,9 +657,10 @@ LIMIT 10
 
 10 rows in set. Elapsed: 1.101 sec. Processed 8.07 million rows, 905.86 MB (7.33 million rows/s., 823.13 MB/s.)
 ```
-### 最も長い履歴を持つファイル {#files-with-longest-history}
 
-現在のファイルのみに制限されています。
+### 最も長い履歴のファイル {#files-with-longest-history}
+
+現在のファイルに限定します。
 
 [play](https://sql.clickhouse.com?query_id=VWPBPGRZVGTHOCQYWNQZNT)
 
@@ -696,12 +714,13 @@ LIMIT 10
 10 rows in set. Elapsed: 0.124 sec. Processed 798.15 thousand rows, 14.71 MB (6.44 million rows/s., 118.61 MB/s.)
 ```
 
-私たちのコアデータ構造である Merge Tree は、常に進化し続けており、長い編集の歴史を持っています！
-### ドキュメントとコードに対する寄稿者の分布 {#distribution-of-contributors-with-respect-to-docs-and-code-over-the-month}
+我々のコアデータ構造であるMerge Treeは、常に進化しており、長い編輯の歴史があります！
 
-**データ取得中に `docs/` フォルダの変更が非常にコミットの汚れた履歴のためにフィルタリングされました。このクエリの結果は正確ではありません。**
+### ドキュメントとコードに関する貢献者の分布 {#distribution-of-contributors-with-respect-to-docs-and-code-over-the-month}
 
-私たちはリリース日周辺など、特定の時期にドキュメントを書くことが多いのでしょうか？ `countIf` 関数を利用して簡単な比率を算出し、`bar` 関数を使って結果を視覚化できます。
+**データ収集中、`docs/` フォルダーの変更が非常にコミットされた汚れた履歴のためにフィルタリングされました。このクエリの結果は正確ではありません。**
+
+特定の月のある時期、例えばリリース日の周辺に、より多くのドキュメントを執筆するのか？ `countIf` 関数を使用して単純な比率を計算し、結果を `bar` 関数で視覚化できます。
 
 [play](https://sql.clickhouse.com?query_id=BA4RZUXUHNQBH9YK7F2T9J)
 
@@ -758,10 +777,11 @@ FROM
 31 rows in set. Elapsed: 0.043 sec. Processed 7.54 million rows, 40.53 MB (176.71 million rows/s., 950.40 MB/s.)
 ```
 
-月の終わりに近づくにつれて少し多くなるかもしれませんが、全体として良好な分配を維持しています。再度、これはデータ挿入中のドキュメントフィルタのフィルタリングによるため不正確です。
-### 最も多様な影響を与える著者 {#authors-with-the-most-diverse-impact}
+月末に少し多くなりますが、全体的には良い均等な分布を保っています。これは、データ挿入中にドキュメントフィルタをフィルタリングしたため信頼性がありません。
 
-ここでの多様性は、著者が寄稿したユニークなファイルの数を示します。
+### 最も多様な影響を持つ著者 {#authors-with-the-most-diverse-impact}
+
+ここでの多様性は、著者が貢献したユニークなファイルの数と見なします。
 
 [play](https://sql.clickhouse.com?query_id=MT8WBABUKYBYSBA78W5TML)
 
@@ -791,7 +811,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.041 sec. Processed 266.05 thousand rows, 4.92 MB (6.56 million rows/s., 121.21 MB/s.)
 ```
 
-最近の作業において最も多様なコミットを持つ人を見てみましょう。日付で制限するのではなく、著者の最後の N 回のコミットに制限します（この場合、3 を使用しましたが、変更も自由です）。
+最近の作業で最も多様なコミットを持つ人物を見てみましょう。日付で制限するのではなく、著者の最後のNコミット（今回は3回を使用しましたが、変更しても構いません）のみに制限します。
 
 [play](https://sql.clickhouse.com?query_id=4Q3D67FWRIVWTY8EIDDE5U)
 
@@ -835,9 +855,10 @@ LIMIT 10
 
 10 rows in set. Elapsed: 0.106 sec. Processed 266.05 thousand rows, 21.04 MB (2.52 million rows/s., 198.93 MB/s.)
 ```
-### 著者のお気に入りのファイル {#favorite-files-for-an-author}
 
-ここでは、私たちの創設者である [Alexey Milovidov](https://github.com/alexey-milovidov) を選択し、分析を現在のファイルに制限します。
+### 特定の著者の好きなファイル {#favorite-files-for-an-author}
+
+ここでは、我々の創業者 [Alexey Milovidov](https://github.com/alexey-milovidov) を選択し、分析を現在のファイルに制限します。
 
 [play](https://sql.clickhouse.com?query_id=OKGZBACRHVGCRAGCZAJKMF)
 
@@ -890,7 +911,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.106 sec. Processed 798.15 thousand rows, 13.97 MB (7.51 million rows/s., 131.41 MB/s.)
 ```
 
-これは、Alexeyが変更履歴を維持する責任を持っているため、理にかなっています。しかし、ファイルの基本名を使用して人気のファイルを識別する場合はどうでしょうか - これにより、名前変更を許可し、コードの貢献に焦点を当てることができます。
+これは、Alexeyが変更ログの維持を担当しているため、意味があります。しかし、ファイルの基本名を使用して彼の人気のあるファイルを特定すると、リネームを考慮し、コードの貢献に焦点を当てることができます。
 
 [play](https://sql.clickhouse.com?query_id=P9PBDZGOSVTKXEXU73ZNAJ)
 
@@ -920,11 +941,12 @@ LIMIT 10
 ```
 
 これは、彼の関心のある分野をより反映しているかもしれません。
-### 著者数が最も少ない最大のファイル {#largest-files-with-lowest-number-of-authors}
 
-これには、まず最大のファイルを特定する必要があります。すべてのファイルの完全なファイル再構築による推定は非常に高価です！
+### 最も大きいファイルと最少の著者の数 {#largest-files-with-lowest-number-of-authors}
 
-現在のファイルに制限すると仮定して、行の追加を合計し、削除を引き算して推定できます。それから、長さと著者数の比率を計算できます。
+これを行うには、まず最大のファイルを特定する必要があります。コミットの履歴からすべてのファイルを完全に再構成することを前提に推定することは非常に高コストです。
+
+推定するためには、現在のファイルに制限すると仮定し、行の追加を合計し、削除を差し引くことで推定します。その後、著者数に対する長さの比を計算できます。
 
 [play](https://sql.clickhouse.com?query_id=PVSDOHZYUMRDDUZFEYJC7J)
 
@@ -979,7 +1001,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.138 sec. Processed 798.15 thousand rows, 16.57 MB (5.79 million rows/s., 120.11 MB/s.)
 ```
 
-テキスト辞書は現実的でないかもしれないので、ファイル拡張子フィルターを使用してコードのみに制限しましょう！
+テキスト辞書は現実的ではないので、ファイル拡張子フィルタを介してコードのみに制限しましょう！
 
 [play](https://sql.clickhouse.com?query_id=BZHGWUIZMPZZUHS5XRBK2M)
 
@@ -1033,7 +1055,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.140 sec. Processed 798.15 thousand rows, 16.84 MB (5.70 million rows/s., 120.32 MB/s.)
 ```
 
-これは最近の偏りを持っている - 新しいファイルはコミットの機会が少なくなります。少なくとも1年前のファイルに制限するとどうなるでしょうか？
+これには最近のバイアスがあります。新しいファイルはコミットの機会が少なくなります。では、少なくとも1年前のファイルに制限するとどうなりますか？
 
 [play](https://sql.clickhouse.com?query_id=RMHHZEDHFUCBGRQVQA2732)
 
@@ -1089,9 +1111,10 @@ LIMIT 10
 
 10 rows in set. Elapsed: 0.143 sec. Processed 798.15 thousand rows, 18.00 MB (5.58 million rows/s., 125.87 MB/s.)
 ```
-### Commits and lines of code distribution by time; by weekday, by author; for specific subdirectories {#commits-and-lines-of-code-distribution-by-time-by-weekday-by-author-for-specific-subdirectories}
 
-これを曜日ごとの追加および削除された行数として解釈します。この場合、[Functionsディレクトリ](https://github.com/ClickHouse/ClickHouse/tree/master/src/Functions) に焦点を当てます。
+### 時間帯別のコミットとコード行の分布; 曜日別、著者別; 特定のサブディレクトリについて {#commits-and-lines-of-code-distribution-by-time-by-weekday-by-author-for-specific-subdirectories}
+
+これは、曜日別に追加された行と削除された行の数として解釈します。この場合、[Functions directory](https://github.com/ClickHouse/ClickHouse/tree/master/src/Functions) に焦点を当てます。
 
 [play](https://sql.clickhouse.com?query_id=PF3KEMYG5CVLJGCFYQEGB1)
 
@@ -1118,7 +1141,7 @@ GROUP BY toDayOfWeek(time) AS dayOfWeek
 7 rows in set. Elapsed: 0.034 sec. Processed 266.05 thousand rows, 14.66 MB (7.73 million rows/s., 425.56 MB/s.)
 ```
 
-そして、時刻別に、
+日中の時間帯によっても、
 
 [play](https://sql.clickhouse.com?query_id=Q4VDVKEGHHRBCUJHNCVTF1)
 
@@ -1162,7 +1185,7 @@ GROUP BY toHour(time) AS hourOfDay
 24 rows in set. Elapsed: 0.039 sec. Processed 266.05 thousand rows, 14.66 MB (6.77 million rows/s., 372.89 MB/s.)
 ```
 
-この分布は、私たちの開発チームのほとんどがアムステルダムにいることを考慮すると納得がいきます。 `bar` 関数がこれらの分布を視覚化するのに役立ちます：
+この分布は、我々の開発チームの大半がアムステルダムにいることを考えると妥当です。`bar` 関数はこれらの分布を視覚化するのに役立ちます：
 
 [play](https://sql.clickhouse.com?query_id=9AZ8CENV8N91YGW7T6IB68)
 
@@ -1213,16 +1236,17 @@ FROM
 
 24 rows in set. Elapsed: 0.038 sec. Processed 266.05 thousand rows, 14.66 MB (7.09 million rows/s., 390.69 MB/s.)
 ```
-### Matrix of authors that shows what authors tends to rewrite another authors code {#matrix-of-authors-that-shows-what-authors-tends-to-rewrite-another-authors-code}
 
-`sign = -1` はコード削除を示します。句読点と空行の追加は除外します。
+### 他の著者のコードを書き直す傾向がある著者のマトリックス {#matrix-of-authors-that-shows-what-authors-tends-to-rewrite-another-authors-code}
+
+`sign = -1` はコード削除を示します。句読点や空行の挿入は除外します。
 
 [play](https://sql.clickhouse.com?query_id=448O8GWAHY3EM6ZZ7AGLAM)
 
 ```sql
 SELECT
-    prev_author || '(a)' as add_author,
-    author  || '(d)' as delete_author,
+    prev_author || '(a)' AS add_author,
+    author  || '(d)' AS delete_author,
     count() AS c
 FROM git.line_changes
 WHERE (sign = -1) AND (file_extension IN ('h', 'cpp')) AND (line_type NOT IN ('Punct', 'Empty')) AND (author != prev_author) AND (prev_author != '')
@@ -1259,16 +1283,17 @@ LIMIT 100
 20 rows in set. Elapsed: 0.098 sec. Processed 7.54 million rows, 42.16 MB (76.67 million rows/s., 428.99 MB/s.)
 ```
 
-Sankeyチャート（SuperSet）を使用すると、これをうまく視覚化できます。ここでは、各著者に対して上位3件のコード削除者を取得するために、`LIMIT BY` を3に増やして可視性を向上させます。
+Sankeyチャート（SuperSet）を使用すると、これをうまく視覚化できます。視覚での多様性を改善するために、各著者に対する上位3名のコード削除者を得るために `LIMIT BY` を3に増やしています。
 
 <Image img={superset_authors_matrix} alt="Superset authors matrix" size="md"/>
 
-Alexeyは他の人のコードを削除するのが明らかに好きです。彼を除外してコード削除のバランスを見ることにしましょう。
+Alexeyは、他の人のコードを削除するのが好きなようです。彼を除いて、よりバランスのとれた視点を得ましょう。
 
 <Image img={superset_authors_matrix_v2} alt="Superset authors matrix v2" size="md"/>
-### Who is the highest percentage contributor per day of week? {#who-is-the-highest-percentage-contributor-per-day-of-week}
 
-コミットの数で考慮する場合：
+### 曜日別で最も高い割合の寄稿者は誰か {#who-is-the-highest-percentage-contributor-per-day-of-week}
+
+単にコミット数で考慮すると：
 
 [play](https://sql.clickhouse.com?query_id=WXPKFJCAHOKYKEVTWNFVCY)
 
@@ -1299,7 +1324,7 @@ LIMIT 1 BY day_of_week
 7 rows in set. Elapsed: 0.012 sec. Processed 62.78 thousand rows, 395.47 KB (5.44 million rows/s., 34.27 MB/s.)
 ```
 
-OK、ここには我々の創設者Alexeyによる最も長い貢献者の利点があります。分析を過去1年間に制限しましょう。
+さて、ここでのいくつかの利点は、最も長い寄稿者である創業者Alexeyにあります。我々の分析を昨年の最後に制限しましょう。
 
 [play](https://sql.clickhouse.com?query_id=8YRJGHFTNJAWJ96XCJKKEH)
 
@@ -1331,9 +1356,9 @@ LIMIT 1 BY day_of_week
 7 rows in set. Elapsed: 0.004 sec. Processed 21.82 thousand rows, 140.02 KB (4.88 million rows/s., 31.29 MB/s.)
 ```
 
-これはまだ少し単純で、人々の仕事を反映していません。
+これはまだ少し単純で、人々の作業を反映していません。
 
-より良い指標は、過去1年間の実行された全作業の割合として毎日最高の貢献者を特定することかもしれません。削除と追加のコードを同様に扱うことに注意してください。
+より良い指標は、過去1年の総作業のうち、毎日誰が寄稿のトップであったかという割合かもしれません。削除と追加のコードは同等として扱います。
 
 [play](https://sql.clickhouse.com?query_id=VQF4KMRDSUEXGS1JFVDJHV)
 
@@ -1380,9 +1405,10 @@ INNER JOIN
 
 7 rows in set. Elapsed: 0.014 sec. Processed 106.12 thousand rows, 1.38 MB (7.61 million rows/s., 98.65 MB/s.)
 ```
-### Distribution of code age across repository {#distribution-of-code-age-across-repository}
 
-現在のファイルに分析を制限します。簡潔さのために、結果を深さ2に制限し、ルートフォルダごとに5ファイルを制限します。必要に応じて調整してください。
+### リポジトリ全体のコード年齢の分布 {#distribution-of-code-age-across-repository}
+
+分析は現在のファイルに制限します。簡潔さのために、結果を深さ2に制限し、ルートフォルダごとに5ファイルとします。必要に応じて調整してください。
 
 [play](https://sql.clickhouse.com?query_id=6YWAUQYPZINZDJGBEZBNWG)
 
@@ -1462,9 +1488,10 @@ LIMIT 5 BY root
 
 24 rows in set. Elapsed: 0.129 sec. Processed 798.15 thousand rows, 15.11 MB (6.19 million rows/s., 117.08 MB/s.)
 ```
-### What percentage of code for an author has been removed by other authors? {#what-percentage-of-code-for-an-author-has-been-removed-by-other-authors}
 
-この質問については、著者によって書かれた行数を、他の貢献者によって削除された行数の合計で割ります。
+### ある著者のコードの何パーセントが他の著者によって削除されたか {#what-percentage-of-code-for-an-author-has-been-removed-by-other-authors}
+
+この質問のために、著者によって書かれた行数を、他の貢献者によって削除されたラインの総数で割ります。
 
 [play](https://sql.clickhouse.com?query_id=T4DTWTB36WFSEYAZLMGRNF)
 
@@ -1511,9 +1538,10 @@ LIMIT 10
 
 10 rows in set. Elapsed: 0.126 sec. Processed 15.07 million rows, 73.51 MB (119.97 million rows/s., 585.16 MB/s.)
 ```
-### List files that were rewritten most number of times? {#list-files-that-were-rewritten-most-number-of-times}
 
-この質問の最も単純なアプローチは、パスごとの行の変更回数を単純にカウントすることかもしれません（現在のファイルに制限されています）。例えば：
+### 最も書き直されたファイルのリスト {#list-files-that-were-rewritten-most-number-of-times}
+
+この質問に対する最も単純なアプローチは、パスごとの行の修正数を単にカウントすることかもしれません（現在のファイルに限定して）：
 
 ```sql
 WITH current_files AS
@@ -1564,7 +1592,9 @@ LIMIT 10
 10 rows in set. Elapsed: 0.160 sec. Processed 8.07 million rows, 98.99 MB (50.49 million rows/s., 619.49 MB/s.)
 ```
 
-これは「書き換え」の概念を捉えていないことに注意してください。ただし、コミットの中でファイルの大部分が変更される場合です。このためには、より複雑なクエリが必要です。書き換えを、ファイルの50%以上が削除され、50%以上が追加された場合と考えます。このクエリは現在のファイルのみに制限されます。`path`と`commit_hash`でグループ化し、追加された行数と削除された行数を返すことで、ファイル変更をリストします。ウィンドウ関数を用いて、任意の時点でファイルの合計サイズを累積合計で推定し、ファイルサイズへの影響を`行の追加 - 行の削除`として評価します。この統計を使用して、各変更に対して追加されたまたは削除されたファイルの割合を計算できます。最後に、書き換えを構成するファイル変更の回数をカウントします。すなわち`(percent_add >= 0.5) AND (percent_delete >= 0.5) AND current_size > 50`です。ファイルの初期の貢献をカウントを回避するために50行以上である必要があります。これにより、小さなファイルが書き換えられる可能性が高くなるというバイアスも避けます。
+ただし、これは「リライト」の概念を捉えません。すなわち、コミット内でのファイルの大部分が変更されることを意味します。これはより複雑なクエリを必要とします。50％以上のファイルが削除され、50％が追加される場合にリライトと見なすとします。自分の解釈に基づいてこのクエリを調整できます。
+
+このクエリは現在のファイルにのみ制限されています。すべてのファイル変更を、`path` と `commit_hash` でグループ化してリストアップし、追加された行数と削除された行数を返します。ウィンドウ関数を使用して、ファイルの任意の時点でのサイズを累積合計で推定し、ファイルサイズへの変更の影響を `lines added - lines removed` として評価します。この統計を使用して、各変更の追加または削除されたファイルの割合を計算できます。最終的に、リライトを構成するファイル変更の数をカウントします。すなわち、`(percent_add >= 0.5) AND (percent_delete >= 0.5) AND current_size > 50`。リライトとしてカウントされるのを避けるためには、ファイルが50行よりも多くなければなりません。これにより、小さなファイルに早期の寄与がカウントされることや、リライトされる可能性が高い非常に小さいファイルへのバイアスを避けます。
 
 [play](https://sql.clickhouse.com?query_id=5PL1QLNSH6QQTR8H9HINNP)
 
@@ -1649,13 +1679,14 @@ LIMIT 10
 
 10 rows in set. Elapsed: 0.299 sec. Processed 798.15 thousand rows, 31.52 MB (2.67 million rows/s., 105.29 MB/s.)
 ```
-### What weekday does the code have the highest chance to stay in the repository? {#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository}
 
-これに対しては、コードの行を一意に特定する必要があります。これは（同じ行がファイルに複数回現れる可能性があるため）、パスと行の内容を使用して見積もります。
+### コードがリポジトリに残る確率が最も高い曜日は？ {#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository}
 
-追加された行をクエリし、これは削除された行と結合し、後者が前者よりも最近発生したケースにフィルタリングします。これにより、削除された行が得られ、これら2つのイベント間の時間を計算できます。
+これを行うためには、コード行を一意に特定する必要があります。これを推定します（同じ行がファイル内に複数回現れることがあるため）、パスと行の内容を使用します。
 
-最後に、週の各曜日に対して行がリポジトリに滞留する平均日数を計算するために、このデータセットを集約します。
+追加された行をクエリし、削除された行と結合します - 後者が前者より最近に発生したケースでフィルタリングします。これにより、削除された行から、これらの2つのイベントの間の時間を計算することができます。
+
+最終的に、このデータセットを集計して、曜日ごとにリポジトリにどれくらいの平均日数コードが残るかを計算します。
 
 [play](https://sql.clickhouse.com?query_id=GVF23LEZTNZI22BT8LZBBE)
 
@@ -1710,9 +1741,11 @@ GROUP BY dayOfWeek(added_day) AS day_of_week_added
 
 7 rows in set. Elapsed: 3.965 sec. Processed 15.07 million rows, 1.92 GB (3.80 million rows/s., 483.50 MB/s.)
 ```
-### 平均コード年齢でソートされたファイル {#files-sorted-by-average-code-age}
 
-このクエリは、[コードがリポジトリに留まる確率が最も高い曜日は何か](#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository)という原則と同じです。パスと行内容を使用してコードの行をユニークに特定することを目的としています。これにより、行が追加されてから削除されるまでの時間を特定することができます。ただし、現在のファイルとコードのみにフィルタリングし、行ごとに各ファイルの時間を平均します。
+### 平均コード年齢別にソートされたファイル {#files-sorted-by-average-code-age}
+
+このクエリは、[リポジトリにコードが最高の確率で留まる曜日は？](#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository) と同じ原則を使用します - パスと行の内容を使用してコード行を一意に特定することを目的としています。
+これにより、行が追加されて削除されるまでの時間を特定できます。現在のファイルおよびコードに制限しながら、各ファイル間の行での時間の平均のみを算出します。
 
 [play](https://sql.clickhouse.com?query_id=3CYYT7HEHWRFHVCM9JCKSU)
 
@@ -1796,14 +1829,14 @@ LIMIT 10
 │ src/Interpreters/createBlockSelector.cpp                        │               795 │
 └─────────────────────────────────────────────────────────────────┴───────────────────┘
 
-10 行の結果が含まれています。経過時間: 3.134 秒。処理された行数: 1613万、サイズ: 1.83 GB (毎秒 515 万行、毎秒 582.99 MB)。
+10 rows in set. Elapsed: 3.134 sec. Processed 16.13 million rows, 1.83 GB (5.15 million rows/s., 582.99 MB/s.)
 ```
 
-### 誰がより多くのテスト / CPP コード / コメントを書く傾向があるか {#who-tends-to-write-more-tests--cpp-code--comments}
+### 誰がもっともテスト/CPPコード/コメントを書く傾向があるか {#who-tends-to-write-more-tests--cpp-code--comments}
 
-この質問にはいくつかのアプローチがあります。コードとテストの比率に焦点を当てると、このクエリは比較的シンプルです。`tests`を含むフォルダへの貢献の数をカウントし、全体の貢献数に対する比率を計算します。
+この質問には、いくつかのアプローチがあります。コード対テストの比率に焦点を当て、このクエリは比較的シンプルです - `tests` を含むフォルダーへの寄与の数をカウントし、総寄与に対する比率を計算します。
 
-特定の偏りを避けるため、20 回以上の変更を行ったユーザーに限定します。
+異常な寄与を避けるために、20回以上変更されたユーザーに制限します。
 
 [play](https://sql.clickhouse.com?query_id=JGKZSEQDPDTDKZXD3ZCGLE)
 
@@ -1842,10 +1875,10 @@ LIMIT 20
 │ Alexander Kuzmenkov  │  298 │  2092 │ 0.8753138075313808 │
 └──────────────────────┴──────┴───────┴────────────────────┘
 
-20 行の結果が含まれています。経過時間: 0.034 秒。処理された行数: 26.605万、サイズ: 4.65 MB (毎秒 793 万行、毎秒 138.76 MB)。
+20 rows in set. Elapsed: 0.034 sec. Processed 266.05 thousand rows, 4.65 MB (7.93 million rows/s., 138.76 MB/s.)
 ```
 
-この分布をヒストグラムとしてプロットすることができます。
+この分布をヒストグラムとして描画できます。
 
 [play](https://sql.clickhouse.com?query_id=S5AJIIRGSUAY1JXEVHQDAK)
 
@@ -1883,13 +1916,12 @@ SELECT
 │  0.871392376017531 │  0.904916108899021 │ ████████████████████████████▋ │
 │  0.904916108899021 │ 0.9358408629263851 │ █████████████████▌            │
 └────────────────────┴────────────────────┴───────────────────────────────┘
-
-10 行の結果が含まれています。経過時間: 0.051 秒。処理された行数: 26.605万、サイズ: 4.65 MB (毎秒 524 万行、毎秒 91.64 MB)。
+10 rows in set. Elapsed: 0.051 sec. Processed 266.05 thousand rows, 4.65 MB (5.24 million rows/s., 91.64 MB/s.)
 ```
 
-ほとんどの貢献者は、予想通り、テストよりも多くのコードを書いています。
+ほとんどの寄与者は、期待通り、テストよりも多くのコードを記述しています。
 
-コードを貢献するときに最も多くコメントを追加するのは誰でしょうか？
+コードを寄与する際に最も多くのコメントを追加するのは誰ですか？
 
 [play](https://sql.clickhouse.com?query_id=EXPHDIURBTOXXOK1TGNNYD)
 
@@ -1926,14 +1958,14 @@ LIMIT 10
 │ kssenii            │ 0.07455322590796751 │  131143 │
 │ Artur              │ 0.12383737231074826 │  121484 │
 └────────────────────┴─────────────────────┴─────────┘
-10 行の結果が含まれています。経過時間: 0.290 秒。処理された行数: 754 万、サイズ: 394.57 MB (毎秒 2600 万行、毎秒 1.36 GB)。
+10 rows in set. Elapsed: 0.290 sec. Processed 7.54 million rows, 394.57 MB (26.00 million rows/s., 1.36 GB/s.)
 ```
 
-コードの貢献をもとにソートしています。意外と高い%は、私たちの最大の貢献者に見られ、私たちのコードが非常に読みやすい理由の一部です。
+コード寄与に基づいてソートしています。驚くべきことに、全ての大寄与者の中で高い割合が見られ、我々のコードを読みやすくする一因です。
 
-### 作者のコミットが時間に伴ってコード / コメントの割合に関してどう変化するか {#how-does-an-authors-commits-change-over-time-with-respect-to-codecomments-percentage}
+### 著者のコミットはどのように時間経過とともにコード/コメントの割合に対して変化するか {#how-does-an-authors-commits-change-over-time-with-respect-to-codecomments-percentage}
 
-これを作者ごとに計算するのは簡単です。
+著者別でこれを計算するのは簡単です。
 
 ```sql
 SELECT
@@ -1964,14 +1996,14 @@ LIMIT 10
 │ ANDREI STAROVEROV           │         32 │       12 │ 0.7272727272727273 │ 2021-05-09 │
 └─────────────────────────────┴────────────┴──────────┴────────────────────┴────────────┘
 
-10 行の結果が含まれています。経過時間: 0.145 秒。処理された行数: 754 万、サイズ: 51.09 MB (毎秒 5183 万行、毎秒 351.44 MB)。
+10 rows in set. Elapsed: 0.145 sec. Processed 7.54 million rows, 51.09 MB (51.83 million rows/s., 351.44 MB/s.)
 ```
 
-理想的には、すべての作者がコミットを開始した最初の日から、これがどのように集計で変化するかを確認したいです。彼らは徐々に書くコメントの数を減らしているのでしょうか？
+しかし、できれば、彼らがコミットをし始めた日からすべての著者における合計の変化を見たいと思います。彼らは徐々に書くコメントの数を減らしますか？
 
-これを計算するために、まず各作者のコメントの割合を時間の経過とともに算出します。これは、[誰がより多くのテスト / CPP コード / コメントを書く傾向があるか](#who-tends-to-write-more-tests--cpp-code--comments)に似ています。これらは各作者の開始日と結合され、コメントの割合を週のオフセットで計算することができます。
+これを計算するために、各著者のコメント比率を時系列で計算します - [誰がもっともテスト/CPPコード/コメントを書く傾向があるか](#who-tends-to-write-more-tests--cpp-code--comments) に類似しています。これは、各著者の開始日と結合され、週オフセットによってコメント比率を計算できるようにします。
 
-すべての作者にわたって、平均を週のオフセットで計算した後、結果をサンプリングして10週ごとに選択します。
+すべての著者に対する週ごとの平均を計算した後、これらの結果をサンプリングし、10週ごとに選択します。
 
 [play](https://sql.clickhouse.com?query_id=SBHEWR8XC4PRHY13HPPKCN)
 
@@ -2042,14 +2074,14 @@ LIMIT 20
 │         190 │ 0.20677550885049117 │
 └─────────────┴─────────────────────┘
 
-20 行の結果が含まれています。経過時間: 0.167 秒。処理された行数: 1507万、サイズ: 101.74 MB (毎秒 905 万行、毎秒 610.98 MB)。
+20 rows in set. Elapsed: 0.167 sec. Processed 15.07 million rows, 101.74 MB (90.51 million rows/s., 610.98 MB/s.)
 ```
 
-励ましいことに、私たちのコメントの%はかなり一定しており、著者が貢献を続けるにつれて低下することはありません。
+励ましいことに、我々のコメント％はかなり安定しており、著者が寄与し続けることで劣化しません。
 
-### コードが書き直されるまでの平均時間と中央値（コード減衰の半減期）は何か？ {#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay}
+### コードが書き直されるまでの平均時間と中央値（コードの劣化の半減期） {#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay}
 
-前のクエリで示した[最も多く書き直されたファイルや複数の著者によるファイルの一覧](#list-files-that-were-rewritten-most-number-of-times)の同じ原則を使用して、すべてのファイルを考慮に入れて書き直しを特定できます。ウィンドウ関数を使用して各ファイルの書き直し間の時間を計算します。これにより、すべてのファイルでの平均と中央値を計算できます。
+我々は、すべてのファイルを考慮に入れて書き直しを特定するために、前述の[最も書き直されたファイルのリスト](#list-files-that-were-rewritten-most-number-of-times) と同じ原則を使用します。ウィンドウ関数を使用して、各ファイルの書き直しのタイミングを計算します。この結果から、累積的な平均と中央値を計算できます。
 
 [play](https://sql.clickhouse.com?query_id=WSHUEPJP9TNJUH7QITWWOR)
 
@@ -2104,12 +2136,12 @@ FROM rewrites
 │      122.2890625 │ [23]      │
 └──────────────────┴───────────┘
 
-1 行の結果が含まれています。経過時間: 0.388 秒。処理された行数: 26.605万、サイズ: 22.85 MB (毎秒 685.82 千行、毎秒 58.89 MB)。
+1 row in set. Elapsed: 0.388 sec. Processed 266.05 thousand rows, 22.85 MB (685.82 thousand rows/s., 58.89 MB/s.)
 ```
 
-### いつコードを書くのが最も悪いか（最も書き直される可能性が高いコード） {#what-is-the-worst-time-to-write-code-in-sense-that-the-code-has-highest-chance-to-be-re-written}
+### コードの書き直しのチャンスが最も高い時間は？ {#what-is-the-worst-time-to-write-code-in-sense-that-the-code-has-highest-chance-to-be-re-written}
 
-[コードが書き直されるまでの平均時間と中央値（コード減衰の半減期）](#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay)と[最も多くの著者によって書き直されたファイルの一覧](#list-files-that-were-rewritten-most-number-of-times)と類似していますが、曜日ごとに集約します。必要に応じて調整してください（たとえば、月ごと）。
+[書き直されるまでの平均時間と中央値（コードの劣化の半減期）](#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay) と同様、[最も書き直されたファイルのリスト](#list-files-that-were-rewritten-most-number-of-times) の集計です。曜日で集計します。例えば、年の月に調整します。
 
 [play](https://sql.clickhouse.com?query_id=8PQNWEWHAJTGN6FTX59KH2)
 
@@ -2168,12 +2200,12 @@ GROUP BY dayOfWeek
 │         7 │            46 │
 └───────────┴───────────────┘
 
-7 行の結果が含まれています。経過時間: 0.466 秒。処理された行数: 754 万、サイズ: 701.52 MB (毎秒 1615 万行、毎秒 1.50 GB)。
+7 rows in set. Elapsed: 0.466 sec. Processed 7.54 million rows, 701.52 MB (16.15 million rows/s., 1.50 GB/s.)
 ```
 
-### どの著者のコードが最も「粘着性」があるか {#which-authors-code-is-the-most-sticky}
+### どの著者のコードが最も「スティッキー」か {#which-authors-code-is-the-most-sticky}
 
-「粘着性」とは、著者のコードがどのくらいの期間書き直されずに保持されるかを定義します。前の質問[コードが書き直されるまでの平均時間と中央値（コード減衰の半減期）](#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay)に類似しており、書き直しの基準として、ファイルへの追加が50％、削除も50％することを考慮しています。著者ごとに平均書き直し時間を計算し、2つ以上のファイルを持つ貢献者のみを考慮します。
+「スティッキー」とは、著者のコードが書き直されるまでの時間を定義します。前の質問 [書き直しまでの平均時間と中央値（コードの劣化の半減期）](#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay) と同じ指標を使用し、ファイルへの50％の追加と50％の削除を考慮します。我々は毎著者ごとの平均書き直し時間を計算し、2つ以上のファイルを持つ寄与者のみを考慮します。
 
 [play](https://sql.clickhouse.com?query_id=BKHLVVWN5SET1VTIFQ8JVK)
 
@@ -2245,14 +2277,14 @@ LIMIT 10
 │ Alexey Zatelepin    │               22.5 │         4 │
 └─────────────────────┴────────────────────┴───────────┘
 
-10 行の結果が含まれています。経過時間: 0.555 秒。処理された行数: 754 万、サイズ: 720.60 MB (毎秒 1358 万行、毎秒 1.30 GB)。
+10 rows in set. Elapsed: 0.555 sec. Processed 7.54 million rows, 720.60 MB (13.58 million rows/s., 1.30 GB/s.)
 ```
 
-### 作者ごとの連続コミット日数 {#most-consecutive-days-of-commits-by-an-author}
+### 著者による連続コミット日数 {#most-consecutive-days-of-commits-by-an-author}
 
-このクエリでは、最初に作者がコミットした日を計算する必要があります。ウィンドウ関数を使用して、作者ごとにコミット日をパーティション化し、コミット間の日数を計算します。各コミットに対して、前回のコミットからの時間が1日であれば連続しているとマークし（1）、そうでなければ0とします。この結果を`consecutive_day`に保存します。
+このクエリは、まず著者がコミットした日を計算する必要があります。ウィンドウ関数を使用して著者ごとにパーティション分けし、彼らのコミットの間の日数を計算します。各コミットについて、最後のコミットから1日経っている場合は連続（1）とマークし、そうでない場合は0をマークします - この結果を `consecutive_day` に保存します。
 
-続いて、各著者の最長連続1の配列を計算するために、配列関数を使用します。最初に`groupArray`関数を使用して、著者のすべての`consecutive_day`値を集約します。この1と0の配列を0の値で分割し、サブ配列に分けます。最後に、最長のサブ配列を計算します。
+次に、配列関数を使用して、各著者の最も長い連続する1のシーケンスを計算します。最初に、著者に対する全 `consecutive_day` 値をまとめるために `groupArray` 関数を使用します。この1と0の配列は、その後0の値で区切られ、サブ配列に分割されます。最後に、最長のサブ配列を計算します。
 
 [play](https://sql.clickhouse.com?query_id=S3E64UYCAMDAYJRSXINVFR)
 
@@ -2300,11 +2332,12 @@ LIMIT 10
 │ Nikita Vasilev   │                   11 │
 └──────────────────┴──────────────────────┘
 
-10 行の結果が含まれています。経過時間: 0.025 秒。処理された行数: 6.278万、サイズ: 395.47 KB (毎秒 254 万行、毎秒 16.02 MB)。
+10 rows in set. Elapsed: 0.025 sec. Processed 62.78 thousand rows, 395.47 KB (2.54 million rows/s., 16.02 MB/s.)
 ```
-### Line by line commit history of a file {#line-by-line-commit-history-of-a-file}
 
-ファイルは名前を変更できます。これが発生すると、`path` カラムはファイルの新しいパスに設定され、`old_path` は以前の場所を表します。例えば：
+### ファイルの行単位のコミット履歴 {#line-by-line-commit-history-of-a-file}
+
+ファイルはリネームされる可能性があります。この場合、リネームイベントが発生し、`path` カラムにはファイルの新しいパスが設定され、`old_path` は以前の場所を表します。
 
 [play](https://sql.clickhouse.com?query_id=AKTW3Z8JZAPQ4H9BH2ZFRX)
 
@@ -2322,14 +2355,14 @@ WHERE (path = 'src/Storages/StorageReplicatedMergeTree.cpp') AND (change_type = 
 │ 2020-04-03 16:14:31 │ src/Storages/StorageReplicatedMergeTree.cpp │ dbms/Storages/StorageReplicatedMergeTree.cpp │ 06446b4f08a142d6f1bc30664c47ded88ab51782 │ dbms/ → src/   │
 └─────────────────────┴─────────────────────────────────────────────┴──────────────────────────────────────────────┴──────────────────────────────────────────┴────────────────┘
 
-1 行がセットされました。経過時間: 0.135 秒。処理された行数: 266.05 千、容量: 20.73 MB (1.98 百万行/s., 154.04 MB/s.)
+1 row in set. Elapsed: 0.135 sec. Processed 266.05 thousand rows, 20.73 MB (1.98 million rows/s., 154.04 MB/s.)
 ```
 
-これにより、ファイルの完全な履歴を表示することが難しくなります。なぜなら、すべての行またはファイルの変更を結びつける単一の値がないからです。
+これにより、ファイルの完全な履歴を見るのが難しくなります。なぜなら、すべての行またはファイル変更を接続する単一の値を持っていないからです。
 
-これに対処するために、ユーザー定義関数 (UDF) を使用します。これらは現在、再帰的にすることはできないため、ファイルの履歴を特定するには、互いに明示的に呼び出す一連の UDF を定義する必要があります。
+これに対処するために、ユーザー定義関数（UDFs）を使用できます。これらは現在、再帰的にすることができないので、ファイルの履歴を特定するには、互いに明示的に呼び出す一連のUDFを定義する必要があります。
 
-つまり、名前の変更を最大深度まで追跡できます - 以下の例は 5 深です。ファイルがこれ以上名前を変更される可能性は低いため、現時点ではこれで十分です。
+つまり、リネームの最大の深さを追跡できるのは、以下の例のように5層までです。この深さよりも多くリネームされることは考えにくいため、現在のところこれで十分です。
 
 ```sql
 CREATE FUNCTION file_path_history AS (n) -> if(empty(n),  [], arrayConcat([n], file_path_history_01((SELECT if(empty(old_path), Null, old_path) FROM git.file_changes WHERE path = n AND (change_type = 'Rename' OR change_type = 'Add') LIMIT 1))));
@@ -2340,9 +2373,9 @@ CREATE FUNCTION file_path_history_04 AS (n) -> if(isNull(n), [], arrayConcat([n]
 CREATE FUNCTION file_path_history_05 AS (n) -> if(isNull(n), [], [n]);
 ```
 
-`file_path_history('src/Storages/StorageReplicatedMergeTree.cpp')` を呼び出すことで、名前の変更履歴を再帰的に探索します。各関数は `old_path` を用いて次のレベルを呼び出します。結果は `arrayConcat` を使用して結合されます。
+`file_path_history('src/Storages/StorageReplicatedMergeTree.cpp')` と呼び出すことで、リネーム履歴を再帰的に追跡し、各関数は次のレベルに `old_path` を渡します。結果は `arrayConcat` を使用して結合されます。
 
-例えば：
+例えば、
 
 ```sql
 SELECT file_path_history('src/Storages/StorageReplicatedMergeTree.cpp') AS paths
@@ -2351,10 +2384,10 @@ SELECT file_path_history('src/Storages/StorageReplicatedMergeTree.cpp') AS paths
 │ ['src/Storages/StorageReplicatedMergeTree.cpp','dbms/Storages/StorageReplicatedMergeTree.cpp','dbms/src/Storages/StorageReplicatedMergeTree.cpp'] │
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
-1 行がセットされました。経過時間: 0.074 秒。処理された行数: 344.06 千、容量: 6.27 MB (4.65 百万行/s., 84.71 MB/s.)
+1 row in set. Elapsed: 0.074 sec. Processed 344.06 thousand rows, 6.27 MB (4.65 million rows/s., 84.71 MB/s.)
 ```
 
-この機能を使用して、ファイルの完全な履歴に対するコミットを組み立てることができます。この例では、各 `path` 値に対して 1 つのコミットを示します。
+この機能を使用して、ファイルの全履歴に対するコミットを組み立てることができます。この例では、各 `path` 値ごとに1つのコミットを示しています。
 
 ```sql
 SELECT
@@ -2376,14 +2409,16 @@ FORMAT PrettyCompactMonoBlock
 │ 2020-04-01 19:21:27 │ 1d5a77c1132 │ Modify      │ alesapin           │ dbms/src/Storages/StorageReplicatedMergeTree.cpp │ Tried to add ability to rename primary key columns but just banned this ability │
 └─────────────────────┴─────────────┴─────────────┴────────────────────┴──────────────────────────────────────────────────┴─────────────────────────────────────────────────────────────────────────────────┘
 
-3 行がセットされました。経過時間: 0.170 秒。処理された行数: 611.53 千、容量: 41.76 MB (3.60 百万行/s., 246.07 MB/s.)
+3 rows in set. Elapsed: 0.170 sec. Processed 611.53 thousand rows, 41.76 MB (3.60 million rows/s., 246.07 MB/s.)
 ```
-## Unsolved Questions {#unsolved-questions}
+
+## 解決されていない質問 {#unsolved-questions}
+
 ### Git blame {#git-blame}
 
-これは、現在のところ配列関数で状態を保持できなため、正確な結果を得るのが特に難しいです。各反復で状態を保持できる `arrayFold` または `arrayReduce` を使用することで可能になるでしょう。
+これは、現在のところ配列関数内で状態を保持することができないため、正確な結果を得るのが特に難しいです。これは、各反復で状態を保持できる `arrayFold` や `arrayReduce` によって可能になります。
 
-高レベルの分析に十分な近似解は次のようになります：
+高レベルの分析に適した近似解は、このようになります：
 
 ```sql
 SELECT
@@ -2418,13 +2453,7 @@ LIMIT 20
 │              19 │ s-kat                │ #include <Storages/MergeTree/PinnedPartUUIDs.h>               │
 │              20 │ Nikita Mikhaylov     │ #include <Storages/MergeTree/MergeMutateExecutor.h>           │
 └─────────────────┴──────────────────────┴───────────────────────────────────────────────────────────────┘
-20 行がセットされました。経過時間: 0.547 秒。処理された行数: 7.88 百万、容量: 679.20 MB (14.42 百万行/s., 1.24 GB/s.)
+20 rows in set. Elapsed: 0.547 sec. Processed 7.88 million rows, 679.20 MB (14.42 million rows/s., 1.24 GB/s.)
 ```
 
-ここでの正確で改善された解決策を歓迎します。
-## Related Content {#related-content}
-
-- Blog: [Git commits and our community](https://clickhouse.com/blog/clickhouse-git-community-commits)
-- Blog: [Window and array functions for Git commit sequences](https://clickhouse.com/blog/clickhouse-window-array-functions-git-commits)
-- Blog: [Building a Real-time Analytics Apps with ClickHouse and Hex](https://clickhouse.com/blog/building-real-time-applications-with-clickhouse-and-hex-notebook-keeper-engine)
-- Blog: [A Story of Open-source GitHub Activity using ClickHouse + Grafana](https://clickhouse.com/blog/introduction-to-clickhouse-and-grafana-webinar)
+ここで、正確で改善された解決策を歓迎します。

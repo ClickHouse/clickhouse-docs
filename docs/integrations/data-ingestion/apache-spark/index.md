@@ -5,15 +5,20 @@ slug: /integrations/apache-spark
 description: 'Introduction to Apache Spark with ClickHouse'
 keywords: ['clickhouse', 'Apache Spark', 'migrating', 'data']
 title: 'Integrating Apache Spark with ClickHouse'
+doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Integrating Apache Spark with ClickHouse
 
-<br/>
+<ClickHouseSupportedBadge/>
 
 [Apache Spark](https://spark.apache.org/) is a multi-language engine for executing data engineering, data
 science, and machine learning on single-node machines or clusters.
@@ -28,4 +33,3 @@ There are two main ways to connect Apache Spark and ClickHouse:
 <br/>
 <br/>
 Both solutions have been successfully tested and are fully compatible with various APIs, including Java, Scala, PySpark, and Spark SQL.
-

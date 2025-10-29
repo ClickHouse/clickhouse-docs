@@ -3,6 +3,7 @@ title: 'Using JOINs in ClickHouse'
 description: 'How to join tables in ClickHouse'
 keywords: ['joins', 'join tables']
 slug: /guides/joining-tables
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -123,7 +124,7 @@ WHERE (VoteTypeId = 2) AND (PostId IN (
 Peak memory usage: 250.66 MiB.
 ```
 
-## Choosing a join algorithm {#choosing-a-join-algorithm}
+## Choosing a JOIN algorithm {#choosing-a-join-algorithm}
 
 ClickHouse supports a number of [join algorithms](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1). These algorithms typically trade memory usage for performance. The following provides an overview of the ClickHouse join algorithms based on their relative memory consumption and execution time:
 

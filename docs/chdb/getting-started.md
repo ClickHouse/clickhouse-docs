@@ -4,6 +4,7 @@ sidebar_label: 'Getting started'
 slug: /chdb/getting-started
 description: 'chDB is an in-process SQL OLAP Engine powered by ClickHouse'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'in-process', 'in process']
+doc_type: 'guide'
 ---
 
 # Getting started with chDB
@@ -105,7 +106,6 @@ chdb.query(
 ```
 
 We can also count the number of rows in that file:
-
 
 ```python
 chdb.query(
@@ -236,7 +236,6 @@ sess.query(f"""
 
 We can then use the `DESCRIBE` clause to inspect the schema:
 
-
 ```python
 sess.query(f"""
    DESCRIBE youtube.dislikes
@@ -275,7 +274,6 @@ sess.query(f"""
 "uploader_badges","String"
 "video_badges","String"
 ```
-
 
 Next, let's populate that table:
 
@@ -342,7 +340,7 @@ We could write the following code:
 df["likeDislikeRatio"] = df["likeCount"] / df["dislikeCount"]
 ```
 
-## Querying a Pandas DataFrame {#querying-a-pandas-dataframe}
+## Querying a Pandas dataframe {#querying-a-pandas-dataframe}
 
 We can then query that DataFrame from chDB:
 

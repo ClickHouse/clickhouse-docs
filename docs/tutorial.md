@@ -1,11 +1,12 @@
 ---
 slug: /tutorial
-sidebar_label: 'Advanced Tutorial'
-title: 'Advanced Tutorial'
+sidebar_label: 'Advanced tutorial'
+title: 'Advanced tutorial'
 description: 'Learn how to ingest and query data in ClickHouse using a New York City taxi example dataset.'
 sidebar_position: 0.5
 keywords: ['clickhouse', 'install', 'tutorial', 'dictionary', 'dictionaries', 'example', 'advanced', 'taxi', 'new york', 'nyc']
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 # Advanced Tutorial
@@ -25,9 +26,8 @@ You need access to a running ClickHouse service to complete this tutorial. For i
 The New York City taxi dataset contains details about millions of taxi rides, with columns including tip amount, tolls, payment type, and more. Create a table to store this data.
 
 1. Connect to the SQL console:
-- For ClickHouse Cloud, select a service from the dropdown menu and then select **SQL Console** from the left navigation menu.
-- For self-managed ClickHouse, connect to the SQL console at `https://_hostname_:8443/play`. Check with your ClickHouse administrator for the details.
-
+    - For ClickHouse Cloud, select a service from the dropdown menu and then select **SQL Console** from the left navigation menu.
+    - For self-managed ClickHouse, connect to the SQL console at `https://_hostname_:8443/play`. Check with your ClickHouse administrator for the details.
 
 2. Create the following `trips` table in the `default` database:
     ```sql
@@ -144,7 +144,6 @@ Now that you've created a table, add the New York City taxi data from CSV files 
     ```
 
 2. Wait for the `INSERT` to finish. It might take a moment for the 150 MB of data to be downloaded.
-
 
 3. When the insert is finished, verify it worked:
     ```sql
@@ -268,7 +267,6 @@ Run some queries to analyze the data. Explore the following examples or try your
     </p>
     </details>
 
-
 - Show the number of pickups in each neighborhood broken down by hour of the day:
     ```sql
     SELECT
@@ -324,7 +322,6 @@ Run some queries to analyze the data. Explore the following examples or try your
 
     </p>
     </details>
-
     
 7. Retrieve  rides to LaGuardia or JFK airports:
     ```sql
@@ -384,7 +381,6 @@ Here's an excerpt from the CSV file you're using in table format. The `LocationI
   | 3   |   Bronx     |  Allerton/Pelham Gardens    |    Boro Zone     |
   | 4     |    Manhattan    |    Alphabet City  |     Yellow Zone    |
   | 5     |  Staten Island      |   Arden Heights   |    Boro Zone     |
-
 
 1. Run the following SQL command, which creates a dictionary named `taxi_zone_dictionary` and populates the dictionary from the CSV file in S3. The URL for the file is `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`. 
   ```sql
@@ -462,7 +458,6 @@ Here's an excerpt from the CSV file you're using in table format. The `LocationI
     7 rows in set. Elapsed: 0.019 sec. Processed 2.00 million rows, 4.00 MB (105.70 million rows/s., 211.40 MB/s.)
     ```
 
-
 ## Perform a join {#perform-a-join}
 
 Write some queries that join the `taxi_zone_dictionary` with your `trips` table.
@@ -479,7 +474,7 @@ Write some queries that join the `taxi_zone_dictionary` with your `trips` table.
     ORDER BY total DESC
     ```
 
-    The response looks is identical to the `dictGet` query:
+    The response looks identical to the `dictGet` query:
     ```response
     ┌─total─┬─Borough───────┐
     │  7053 │ Manhattan     │
@@ -508,7 +503,7 @@ Write some queries that join the `taxi_zone_dictionary` with your `trips` table.
     LIMIT 1000
     ```
         :::note
-        Generally, we avoid using `SELECT *` often in ClickHouse. You should only retrieve the columns you actually need. However, this query is slower for the purposes of the example.
+        Generally, we avoid using `SELECT *` often in ClickHouse. You should only retrieve the columns you actually need.
         :::
 
 </VerticalStepper>
@@ -521,4 +516,3 @@ Learn more about ClickHouse with the following documentation:
 - [Integrate an external data source](/integrations/index.mdx): Review data source integration options, including files, Kafka, PostgreSQL, data pipelines, and many others.
 - [Visualize data in ClickHouse](./integrations/data-visualization/index.md): Connect your favorite UI/BI tool to ClickHouse.
 - [SQL Reference](./sql-reference/index.md): Browse the SQL functions available in ClickHouse for transforming, processing and analyzing data.
-

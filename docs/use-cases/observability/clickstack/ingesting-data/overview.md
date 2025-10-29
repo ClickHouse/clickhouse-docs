@@ -6,6 +6,8 @@ sidebar_position: 0
 pagination_prev: null
 pagination_next: use-cases/observability/clickstack/ingesting-data/opentelemetry
 description: 'Overview for ingesting data to ClickStack'
+doc_type: 'guide'
+keywords: ['clickstack', 'observability', 'logs', 'monitoring', 'platform']
 ---
 
 import Image from '@theme/IdealImage';
@@ -31,5 +33,3 @@ More specifically:
 :::note OpenTelemetry compatibility
 While ClickStack offers its own language SDKs and a custom OpenTelemetry, with enhanced telemetry and features, users can also use their existing OpenTelemetry SDKs and agents seamlessly.
 :::
-
-

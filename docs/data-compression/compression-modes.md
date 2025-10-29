@@ -4,6 +4,7 @@ sidebar_position: 6
 title: 'Compression Modes'
 description: 'ClickHouse column compression modes'
 keywords: ['compression', 'codec', 'encoding', 'modes']
+doc_type: 'reference'
 ---
 
 import CompressionBlock from '@site/static/images/data-compression/ch_compression_block.png';

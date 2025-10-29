@@ -4,6 +4,7 @@ title: 'anyIf'
 description: 'Example of using the anyIf combinator'
 keywords: ['any', 'if', 'combinator', 'examples', 'anyIf']
 sidebar_label: 'anyIf'
+doc_type: 'reference'
 ---
 
 # anyIf {#avgif}
@@ -14,7 +15,7 @@ The [`If`](/sql-reference/aggregate-functions/combinators#-if) combinator can be
 aggregate function to select the first encountered element from a given column
 that matches the given condition.
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 In this example, we'll create a table that stores sales data with success flags,
 and we'll use `anyIf` to select the first `transaction_id`s which are above and

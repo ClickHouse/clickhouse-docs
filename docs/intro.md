@@ -3,6 +3,8 @@ slug: /intro
 sidebar_label: 'What is ClickHouse?'
 description: 'ClickHouse® is a column-oriented SQL database management system (DBMS) for online analytical processing (OLAP). It is available as both an open-source software and a cloud offering.'
 title: 'What is ClickHouse?'
+keywords: ['ClickHouse', 'columnar database', 'OLAP database', 'analytical database', 'high-performance database']
+doc_type: 'guide'
 ---
 
 import column_example from '@site/static/images/column-oriented-example-query.png';
@@ -28,7 +30,7 @@ Databases store data either [row-oriented or column-oriented](https://clickhouse
 
 In a row-oriented database, consecutive table rows are sequentially stored one after the other. This layout allows to retrieve rows quickly as the column values of each row are stored together.
 
-ClickHouse is a column-oriented databases. In such systems, tables are stored as a collection of columns, i.e. the values of each column are stored sequentially one after the other. This layout makes it harder to restore single rows (as there are now gaps between the row values) but column operations such as filters or aggregation becomes much faster than in a row-oriented database.
+ClickHouse is a column-oriented database. In such systems, tables are stored as a collection of columns, i.e. the values of each column are stored sequentially one after the other. This layout makes it harder to restore single rows (as there are now gaps between the row values) but column operations such as filters or aggregation become much faster than in a row-oriented database.
 
 The difference is best explained with an example query running over 100 million rows of [real-world anonymized web analytics data](/getting-started/example-datasets/metrica):
 
@@ -50,7 +52,7 @@ You can [run this query on the ClickHouse SQL Playground](https://sql.clickhouse
 
 <Image img={column_example} alt="Example query in a column-oriented database" size="lg"/>
 
-As you can see in the stats section in the above diagram, the query processed 100 million rows in 92 milliseconds, a throughput of approximately 300 million rows or just under 7 GB per second.
+As you can see in the stats section in the above diagram, the query processed 100 million rows in 92 milliseconds, a throughput of approximately over 1 billion rows per second or just under 7 GB of data transferred per second.
 
 **Row-oriented DBMS**
 
@@ -65,7 +67,7 @@ Because the block-wise storage and transfer from disk to memory is aligned with 
 
 <Image img={column_orientated} alt="Column-oriented database structure" size="lg"/>
 
-## Data Replication and Integrity {#data-replication-and-integrity}
+## Data replication and integrity {#data-replication-and-integrity}
 
 ClickHouse uses an asynchronous multi-master replication scheme to ensure that data is stored redundantly on multiple nodes. After being written to any available replica, all the remaining replicas retrieve their copy in the background. The system maintains identical data on different replicas. Recovery after most failures is performed automatically, or semi-automatically in complex cases.
 
@@ -73,7 +75,7 @@ ClickHouse uses an asynchronous multi-master replication scheme to ensure that d
 
 ClickHouse implements user account management using SQL queries and allows for role-based access control configuration similar to what can be found in ANSI SQL standard and popular relational database management systems.
 
-## SQL Support {#sql-support}
+## SQL support {#sql-support}
 
 ClickHouse supports a [declarative query language based on SQL](/sql-reference) that is identical to the ANSI SQL standard in many cases. Supported query clauses include [GROUP BY](/sql-reference/statements/select/group-by), [ORDER BY](/sql-reference/statements/select/order-by), subqueries in [FROM](/sql-reference/statements/select/from), [JOIN](/sql-reference/statements/select/join) clause, [IN](/sql-reference/operators/in) operator, [window functions](/sql-reference/window-functions) and scalar subqueries.
 
@@ -83,14 +85,12 @@ ClickHouse provides ways to trade accuracy for performance. For example, some of
 
 ## Adaptive join algorithms {#adaptive-join-algorithms}
 
-ClickHouse chooses the join algorithm adaptively, it starts with fast hash joins and falls back to merge joins if there's more than one large table.
+ClickHouse chooses the join algorithm adaptively: it starts with fast hash joins and falls back to merge joins if there's more than one large table.
 
 ## Superior query performance {#superior-query-performance}
 
 ClickHouse is well known for having extremely fast query performance.
-To learn why ClickHouse is so fast, see the [Why is ClickHouse fast?](/concepts/why-clickhouse-is-so-fast.md) guide.
-
-
+To learn why ClickHouse is so fast, see the [Why is ClickHouse fast?](/concepts/why-clickhouse-is-so-fast.mdx) guide.
 
 <!--
 ## What is OLAP? {#what-is-olap}
@@ -100,15 +100,14 @@ OLAP scenarios require real-time responses on top of large datasets for complex 
 - Only a few columns are selected to answer any particular query
 - Results must be returned in milliseconds or seconds
 
-## Column-Oriented vs Row-Oriented Databases {#column-oriented-vs-row-oriented-databases}
+## Column-oriented vs row-oriented databases {#column-oriented-vs-row-oriented-databases}
 In a row-oriented DBMS, data is stored in rows, with all the values related to a row physically stored next to each other.
 
 In a column-oriented DBMS, data is stored in columns, with values from the same columns stored together.
 
-## Why Column-Oriented Databases Work Better in the OLAP Scenario {#why-column-oriented-databases-work-better-in-the-olap-scenario}
+## Why column-oriented databases work better in the OLAP scenario {#why-column-oriented-databases-work-better-in-the-olap-scenario}
 
 Column-oriented databases are better suited to OLAP scenarios: they are at least 100 times faster in processing most queries. The reasons are explained in detail below, but the fact is easier to demonstrate visually:
-
 
 See the difference?
 
@@ -123,7 +122,7 @@ Helpful articles to dive deeper into this topic include:
 - [Distinctive Features of ClickHouse](/about-us/distinctive-features.md)
 - [FAQ: Why is ClickHouse so fast?](/knowledgebase/why-clickhouse-is-so-fast)
 
-## Processing Analytical Queries in Real Time {#processing-analytical-queries-in-real-time}
+## Processing analytical queries in real time {#processing-analytical-queries-in-real-time}
 
 In a row-oriented DBMS, data is stored in this order:
 
@@ -156,7 +155,7 @@ Different orders for storing data are better suited to different scenarios. The 
 
 The higher the load on the system, the more important it is to customize the system set up to match the requirements of the usage scenario, and the more fine grained this customization becomes. There is no system that is equally well-suited to significantly different scenarios. If a system is adaptable to a wide set of scenarios, under a high load, the system will handle all the scenarios equally poorly, or will work well for just one or few of possible scenarios.
 
-### Key Properties of OLAP Scenario {#key-properties-of-olap-scenario}
+### Key properties of the OLAP scenario {#key-properties-of-olap-scenario}
 
 - Tables are "wide," meaning they contain a large number of columns.
 - Datasets are large and queries require high throughput when processing a single query (up to billions of rows per second per server).
@@ -170,8 +169,6 @@ The higher the load on the system, the more important it is to customize the sys
 - Transactions are not necessary.
 
 It is easy to see that the OLAP scenario is very different from other popular scenarios (such as OLTP or Key-Value access). So it does not make sense to try to use OLTP or a Key-Value DB for processing analytical queries if you want to get decent performance. For example, if you try to use MongoDB or Redis for analytics, you will get very poor performance compared to OLAP databases.
-
-
 
 ### Input/output {#inputoutput}
 

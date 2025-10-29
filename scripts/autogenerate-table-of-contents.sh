@@ -40,10 +40,13 @@ COMMANDS=(
     '--single-toc --dir="docs/sql-reference/aggregate-functions/reference" --md="docs/sql-reference/aggregate-functions/reference/index.md"'
     '--single-toc --dir="docs/sql-reference/table-functions" --md="docs/sql-reference/table-functions/index.md"'
     '--single-toc --dir="docs/chdb/guides" --md="docs/chdb/guides/index.md" --ignore images'
-    '--single-toc --dir="docs/cloud/manage/jan2025_faq" --md="docs/cloud/manage/jan2025_faq/index.md" --ignore images'
-    '--single-toc --dir="docs/cloud/changelogs" --md="docs/cloud/reference/release-notes-index.md"'
+    '--single-toc --dir="docs/cloud/reference/01_changelog" --md="docs/cloud/reference/01_changelog/02_release_notes/index.md"'
     '--single-toc --dir="docs/development" --md="docs/development/index.md" --ignore images'
     '--single-toc --dir="docs/getting-started/example-datasets" --md="docs/getting-started/index.md" --ignore images'
+    '--single-toc --dir="docs/integrations/data-ingestion/clickpipes/kafka" --md="docs/integrations/data-ingestion/clickpipes/kafka/index.md" --ignore images'
+    '--single-toc --dir="docs/use-cases/AI_ML/MCP" --md="docs/use-cases/AI_ML/MCP/index.md" --ignore images'
+    '--single-toc --dir="docs/use-cases/AI_ML/MCP/ai_agent_libraries" --md="docs/use-cases/AI_ML/MCP/ai_agent_libraries/index.md"'
+    '--single-toc --dir="docs/cloud/guides" --md="docs/cloud/guides/index.md"'
 )
 
 # Execute each command

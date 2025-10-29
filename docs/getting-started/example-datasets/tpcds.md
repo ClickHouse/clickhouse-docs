@@ -3,6 +3,8 @@ description: 'The TPC-DS benchmark data set and queries.'
 sidebar_label: 'TPC-DS'
 slug: /getting-started/example-datasets/tpcds
 title: 'TPC-DS (2012)'
+doc_type: 'guide'
+keywords: ['example dataset', 'tpcds', 'benchmark', 'sample data', 'performance testing']
 ---
 
 Similar to the [Star Schema Benchmark (SSB)](star-schema.md), TPC-DS is based on [TPC-H](tpch.md), but it took the opposite route, i.e. it expanded the number of joins needed by storing the data in a complex snowflake schema (24 instead of 8 tables).
@@ -407,7 +409,7 @@ CREATE TABLE store (
     s_zip                     LowCardinality(Nullable(String)),
     s_country                 LowCardinality(Nullable(String)),
     s_gmt_offset              Nullable(Decimal(7,2)),
-    s_tax_precentage          Nullable(Decimal(7,2)),
+    s_tax_percentage          Nullable(Decimal(7,2)),
     PRIMARY KEY (s_store_sk)
 );
 

@@ -5,6 +5,7 @@
 - 'query_cache'
 'slug': '/operations/system-tables/query_cache'
 'title': 'system.query_cache'
+'doc_type': 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
@@ -22,10 +23,10 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 - `query_id` ([String](../../sql-reference/data-types/string.md)) — 查询的 ID。
 - `result_size` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 查询缓存条目的大小。
 - `tag` ([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md)) — 查询缓存条目的标签。
-- `stale` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 查询缓存条目是否过期。
+- `stale` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 查询缓存条目是否已过期。
 - `shared` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 查询缓存条目是否在多个用户之间共享。
 - `compressed` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 查询缓存条目是否被压缩。
-- `expires_at` ([DateTime](../../sql-reference/data-types/datetime.md)) — 查询缓存条目何时变为过期。
+- `expires_at` ([DateTime](../../sql-reference/data-types/datetime.md)) — 查询缓存条目变为过期的时间。
 - `key_hash` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 查询字符串的哈希值，用作查找查询缓存条目的键。
 
 **示例**

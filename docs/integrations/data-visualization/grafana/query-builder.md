@@ -4,6 +4,8 @@ sidebar_position: 2
 slug: /integrations/grafana/query-builder
 description: 'Using the Query Builder in the ClickHouse Grafana plugin'
 title: 'Query Builder'
+doc_type: 'guide'
+keywords: ['grafana', 'query builder', 'visualization', 'dashboards', 'plugin']
 ---
 
 import Image from '@theme/IdealImage';
@@ -34,7 +36,7 @@ The available query types are:
 - [Traces](#traces): optimized for searching/viewing traces. Works best in explore view with [defaults configured](./config.md#traces).
 - [SQL Editor](#sql-editor): the SQL Editor can be used when you want full control over the query. In this mode, any SQL query can be executed.
 
-## Query Types {#query-types}
+## Query types {#query-types}
 
 The *Query Type* setting will change the layout of the query builder to match the type of query being built.
 The query type also determines which panel is used when visualizing data.
@@ -89,16 +91,15 @@ This query type will render the data in the logs panel along with a logs histogr
 Extra columns that are selected in the query can be viewed in the expanded log row:
 <Image size="md" img={demo_logs_query_fields} alt="Example of extra fields on logs query" border />
 
-
-### Time Series {#time-series}
+### Time series {#time-series}
 
 The time series query type is similar to [table](#table), but with a focus on time series data.
 
 The two views are mostly the same, with these notable differences:
-  - A dedicated *Time* field.
-  - In Aggregate mode, a time interval macro is automatically applied along with a Group By for the Time field.
-  - In Aggregate mode, the "Columns" field is hidden.
-  - A time range filter and Order By are automatically added for the **Time** field.
+- A dedicated *Time* field.
+- In Aggregate mode, a time interval macro is automatically applied along with a Group By for the Time field.
+- In Aggregate mode, the "Columns" field is hidden.
+- A time range filter and Order By are automatically added for the **Time** field.
 
 :::important Is your visualization missing data?
 In some cases the time series panel will appear to be cut off because the limit defaults to `1000`.
@@ -158,7 +159,7 @@ The trace query type supports [data links](#data-links).
 
 This query type will render the data with the table view for Trace Search mode, and the trace panel for Trace ID mode.
 
-## SQL Editor {#sql-editor}
+## SQL editor {#sql-editor}
 
 For queries that are too complex for the query builder, you can use the SQL Editor.
 This gives you full control over the query by allowing you to write and run plain ClickHouse SQL.
@@ -172,7 +173,7 @@ This switch also has an effect even in dashboard view, notably with time series 
 
 <Image size="md" img={demo_raw_sql_query} alt="Example raw SQL query" border />
 
-## Data Links {#data-links}
+## Data links {#data-links}
 
 Grafana [data links](https://grafana.com/docs/grafana/latest/panels-visualizations/configure-data-links)
 can be used to link to new queries.
@@ -210,7 +211,6 @@ Having defaults configured for both [logs](./config.md#logs) and [traces](./conf
   <Image size="md" img={demo_data_links} alt="Example of data links linking" border />
 </div>
 
-
 ## Macros {#macros}
 
 Macros are a simple way to add dynamic SQL to your query.
@@ -218,8 +218,7 @@ Before a query gets sent to the ClickHouse server, the plugin will expand the ma
 
 Queries from both the SQL Editor and Query Builder can use macros.
 
-
-### Using Macros {#using-macros}
+### Using macros {#using-macros}
 
 Macros can be included anywhere in the query, multiple times if needed.
 
@@ -243,7 +242,7 @@ In this example, the Grafana dashboard's time range is applied to the `log_time`
 
 The plugin also supports notation using braces `{}`. Use this notation when queries are needed inside [parameters](/sql-reference/syntax.md#defining-and-using-query-parameters).
 
-### List of Macros {#list-of-macros}
+### List of macros {#list-of-macros}
 
 This is a list of all macros available in the plugin:
 

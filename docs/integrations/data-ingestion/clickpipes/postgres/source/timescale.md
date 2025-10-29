@@ -4,11 +4,12 @@ description: 'Set up Postgres with the TimescaleDB extension as a source for Cli
 slug: /integrations/clickpipes/postgres/source/timescale
 title: 'Postgres with TimescaleDB source setup guide'
 keywords: ['TimescaleDB']
+doc_type: 'guide'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-# Postgres with TimescaleDB Source Setup Guide
+# Postgres with TimescaleDB source setup guide
 
 <BetaBadge/>
 
@@ -35,7 +36,7 @@ to the process of replicating them, which is why the ability to replicate Timesc
 
 ClickPipes supports Postgres version 12 and later.
 
-## Enable Logical Replication {#enable-logical-replication}
+## Enable logical replication {#enable-logical-replication}
 
 The steps to be follow depend on how your Postgres instance with TimescaleDB is deployed. 
 
@@ -83,11 +84,13 @@ Make sure to replace `clickpipes_user` and `clickpipes_password` with your desir
 
 ```sql
 -- When adding new tables to the ClickPipe, you'll need to add them to the publication as well manually. 
-  CREATE PUBLICATION clickpipes_publication FOR TABLE <...>, TABLES IN SCHEMA _timescaledb_internal;
+  CREATE PUBLICATION clickpipes_publication FOR TABLE <...>, <...>, TABLES IN SCHEMA _timescaledb_internal;
 ```
 
 :::tip
 We don't recommend creating a publication `FOR ALL TABLES`, this leads to more traffic from Postgres to ClickPipes (to sending changes for other tables not in the pipe) and reduces overall efficiency.
+
+For manually created publications, please add any tables you want to the publication before adding them to the pipe.
 ::: 
 
 :::info
@@ -105,17 +108,7 @@ steps and perform a one-time load of your data.
 
 After these steps, you should be able to proceed with [creating a ClickPipe](../index.md).
 
-## Troubleshooting {#troubleshooting}
-
-Initial load for tables can fail with an error:
-
-```sql
-ERROR: transparent decompression only supports tableoid system column (SQLSTATE 42P10)
-```
-
-You may need to disable [compression](https://docs.timescale.com/api/latest/compression/decompress_chunk) or [hypercore columnstore](https://docs.timescale.com/api/latest/hypercore/convert_to_rowstore) for these tables.
-
-## Configure Network Access {#configure-network-access}
+## Configure network access {#configure-network-access}
 
 If you want to restrict traffic to your Timescale instance, please allowlist the [documented static NAT IPs](../../index.md#list-of-static-ips).
 Instructions to do this will vary across providers, please consult the sidebar if your provider is listed or raise a 

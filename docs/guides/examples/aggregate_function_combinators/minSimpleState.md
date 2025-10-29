@@ -4,6 +4,7 @@ title: 'minSimpleState'
 description: 'Example of using the minSimpleState combinator'
 keywords: ['min', 'state', 'simple', 'combinator', 'examples', 'minSimpleState']
 sidebar_label: 'minSimpleState'
+doc_type: 'reference'
 ---
 
 # minSimpleState {#minsimplestate}
@@ -14,7 +15,7 @@ The [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate)
 function to return the minimum value across all input values. It returns the 
 result with type [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction).
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 Let's look at a practical example using a table that tracks daily temperature 
 readings. For each location, we want to maintain the lowest temperature recorded.
@@ -49,7 +50,7 @@ ENGINE = AggregatingMergeTree()
 ORDER BY location_id;
 ```
 
-Create an Incremental Materialized View that will act as an insert trigger
+Create an Incremental materialized view that will act as an insert trigger
 for inserted data and maintains the minimum, maximum temperatures per location.
 
 ```sql
@@ -74,7 +75,7 @@ INSERT INTO raw_temperature_readings (location_id, location_name, temperature) V
 (4, 'East', 8);
 ```
 
-These readings are automatically processed by the Materialized View. Let's check
+These readings are automatically processed by the materialized view. Let's check
 the current state:
 
 ```sql

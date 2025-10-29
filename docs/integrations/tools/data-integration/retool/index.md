@@ -4,6 +4,10 @@ slug: /integrations/retool
 keywords: ['clickhouse', 'retool', 'connect', 'integrate', 'ui', 'admin', 'panel', 'dashboard', 'nocode', 'no-code']
 description: 'Quickly build web and mobile apps with rich user interfaces, automate complex tasks, and integrate AI—all powered by your data.'
 title: 'Connecting Retool to ClickHouse'
+doc_type: 'guide'
+integration:
+  - support_level: 'partner'
+  - category: 'data_integration'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
@@ -13,11 +17,11 @@ import retool_02 from '@site/static/images/integrations/tools/data-integration/r
 import retool_03 from '@site/static/images/integrations/tools/data-integration/retool/retool_03.png';
 import retool_04 from '@site/static/images/integrations/tools/data-integration/retool/retool_04.png';
 import retool_05 from '@site/static/images/integrations/tools/data-integration/retool/retool_05.png';
-import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
+import PartnerBadge from '@theme/badges/PartnerBadge';
 
 # Connecting Retool to ClickHouse
 
-<CommunityMaintainedBadge/>
+<PartnerBadge/>
 
 ## 1. Gather your connection details {#1-gather-your-connection-details}
 <ConnectionDetails />

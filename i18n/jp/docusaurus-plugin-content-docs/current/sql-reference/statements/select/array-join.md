@@ -1,20 +1,20 @@
 ---
-'description': 'Documentation for ARRAY JOIN Clause'
+'description': 'ARRAY JOIN 句に関するドキュメント'
 'sidebar_label': 'ARRAY JOIN'
 'slug': '/sql-reference/statements/select/array-join'
-'title': 'ARRAY JOIN Clause'
+'title': 'ARRAY JOIN 句'
+'doc_type': 'reference'
 ---
-
 
 
 
 # ARRAY JOIN句
 
-配列カラムを含むテーブルに対して一般的な操作は、新しいテーブルを生成し、そのテーブルには最初のカラムの各個別の配列要素ごとに行があり、他のカラムの値は重複します。これが`ARRAY JOIN`句の基本的な動作です。
+配列カラムを含むテーブルの一般的な操作は、最初のカラムの各個々の配列要素を持つ行がある新しいテーブルを生成し、他のカラムの値が重複することです。これが `ARRAY JOIN`句が行う基本的なケースです。
 
-その名前は、配列またはネストされたデータ構造に対して`JOIN`を実行することとして見ることができることから来ています。意図は[ arrayJoin ](/sql-reference/functions/array-join)関数に似ていますが、句の機能はより広範です。
+その名前は、配列やネストされたデータ構造で `JOIN` を実行するように見えることから来ています。意図は [arrayJoin](/sql-reference/functions/array-join) 関数と似ていますが、句の機能はより広範です。
 
-構文:
+構文：
 
 ```sql
 SELECT <expr_list>
@@ -24,16 +24,16 @@ FROM <left_subquery>
 ...
 ```
 
-サポートされている`ARRAY JOIN`のタイプは以下の通りです。
+サポートされている `ARRAY JOIN` のタイプは以下に示されています：
 
-- `ARRAY JOIN` - 基本ケースでは、空の配列は`JOIN`の結果に含まれません。
-- `LEFT ARRAY JOIN` - `JOIN`の結果には空の配列を持つ行が含まれます。空の配列の値は、配列要素の型のデフォルト値（通常は0、空文字列、またはNULL）に設定されます。
+- `ARRAY JOIN` - 基本ケースでは、空の配列は `JOIN` の結果に含まれません。
+- `LEFT ARRAY JOIN` - `JOIN` の結果には空の配列を持つ行が含まれます。空の配列の値は、配列要素の型のデフォルト値（通常は 0、空文字列または NULL）に設定されます。
 
-## 基本ARRAY JOINの例 {#basic-array-join-examples}
+## 基本的なARRAY JOINの例 {#basic-array-join-examples}
 
-### ARRAY JOINおよびLEFT ARRAY JOIN {#array-join-left-array-join-examples}
+### ARRAY JOIN と LEFT ARRAY JOIN {#array-join-left-array-join-examples}
 
-以下の例は、`ARRAY JOIN`および`LEFT ARRAY JOIN`句の使用法を示しています。[Array](../../../sql-reference/data-types/array.md)型カラムを持つテーブルを作成し、値を挿入しましょう:
+以下の例は、`ARRAY JOIN` と `LEFT ARRAY JOIN` 句の使用法を示しています。[Array](../../../sql-reference/data-types/array.md) 型のカラムを持つテーブルを作成し、それに値を挿入します：
 
 ```sql
 CREATE TABLE arrays_test
@@ -54,7 +54,7 @@ VALUES ('Hello', [1,2]), ('World', [3,4,5]), ('Goodbye', []);
 └─────────────┴─────────┘
 ```
 
-以下の例は、`ARRAY JOIN`句を使用しています:
+以下の例では `ARRAY JOIN` 句を使用しています：
 
 ```sql
 SELECT s, arr
@@ -72,7 +72,7 @@ ARRAY JOIN arr;
 └───────┴─────┘
 ```
 
-次の例は、`LEFT ARRAY JOIN`句を使用しています:
+次の例では `LEFT ARRAY JOIN` 句を使用しています：
 
 ```sql
 SELECT s, arr
@@ -91,9 +91,9 @@ LEFT ARRAY JOIN arr;
 └─────────────┴─────┘
 ```
 
-### ARRAY JOINおよびarrayEnumerate関数 {#array-join-arrayEnumerate}
+### ARRAY JOIN と arrayEnumerate 関数 {#array-join-arrayEnumerate}
 
-この関数は通常`ARRAY JOIN`とともに使用されます。`ARRAY JOIN`を適用した後、各配列の数を一度だけカウントすることを可能にします。例:
+この関数は通常 `ARRAY JOIN` と一緒に使用されます。`ARRAY JOIN` を適用した後に各配列について何かを一度だけカウントすることを可能にします。例：
 
 ```sql
 SELECT
@@ -113,7 +113,7 @@ LIMIT 10
 └─────────┴───────┘
 ```
 
-この例では、Reachesはコンバージョンの数（`ARRAY JOIN`が適用された後に受信された文字列）、Hitsはページビューの数（`ARRAY JOIN`の前の文字列）です。この特定のケースでは、より簡単な方法で同じ結果を得ることができます:
+この例では、Reaches はコンバージョンの数（`ARRAY JOIN` を適用した後に得られた文字列）、Hits はページビューの数（`ARRAY JOIN` 前の文字列）です。この特定のケースでは、より簡単な方法で同じ結果を得ることができます：
 
 ```sql
 SELECT
@@ -129,11 +129,11 @@ WHERE (CounterID = 160656) AND notEmpty(GoalsReached)
 └─────────┴───────┘
 ```
 
-### ARRAY JOINおよびarrayEnumerateUniq {#array_join_arrayEnumerateUniq}
+### ARRAY JOIN と arrayEnumerateUniq {#array_join_arrayEnumerateUniq}
 
-この関数は、`ARRAY JOIN`を使用して配列要素を集約する際に役立ちます。
+この関数は `ARRAY JOIN` を使用して配列要素を集計する際に有用です。
 
-この例では、各目標IDごとのコンバージョンの数（Goalsのネストデータ構造内の各要素は到達された目標であり、これをコンバージョンと呼びます）とセッションの数を計算しています。`ARRAY JOIN`なしでは、セッションの数はsum(Sign)としてカウントされます。しかし、この特定のケースでは、行がネストされたGoals構造によって乗算されているため、これを行った後に各セッションを一度だけカウントするために、`arrayEnumerateUniq(Goals.ID)`関数の値に条件を適用します。
+この例では、各ゴールIDに対してコンバージョンの数（Goals のネストされたデータ構造の各要素は到達したゴールであり、これをコンバージョンと呼びます）とセッションの数を計算します。`ARRAY JOIN` なしでは、セッションの数を sum(Sign) としてカウントしていました。しかしこの特定のケースでは、行がネストされた Goals 構造によって乗算されたため、この後に各セッションを一度だけカウントするために、`arrayEnumerateUniq(Goals.ID)` 関数の値に条件を適用します。
 
 ```sql
 SELECT
@@ -167,7 +167,7 @@ LIMIT 10
 
 ## エイリアスの使用 {#using-aliases}
 
-`ARRAY JOIN`句で配列のエイリアスを指定することができます。この場合、配列アイテムにはこのエイリアスを介してアクセスできますが、配列自体は元の名前でアクセスされます。例:
+`ARRAY JOIN` 句では配列にエイリアスを指定できます。この場合、配列アイテムはこのエイリアスでアクセスできますが、配列自体には元の名前でアクセスします。例：
 
 ```sql
 SELECT s, arr, a
@@ -185,7 +185,7 @@ ARRAY JOIN arr AS a;
 └───────┴─────────┴───┘
 ```
 
-エイリアスを使用すると、外部配列との`ARRAY JOIN`を行うことができます。例えば:
+エイリアスを使用すると、外部配列で `ARRAY JOIN` を行うことができます。例えば：
 
 ```sql
 SELECT s, arr_external
@@ -207,7 +207,7 @@ ARRAY JOIN [1, 2, 3] AS arr_external;
 └─────────────┴──────────────┘
 ```
 
-`ARRAY JOIN`句では、複数の配列をカンマで区切って指定できます。この場合、同時に`JOIN`が行われます（直接的な和であり、直積ではありません）。デフォルトでは、すべての配列は同じサイズである必要があります。例:
+複数の配列は `ARRAY JOIN` 句でカンマ区切りで指定できます。この場合、`JOIN` はそれらを同時に行います（直接の合計であり、直積ではありません）。全ての配列はデフォルトで同じサイズである必要があります。例：
 
 ```sql
 SELECT s, arr, a, num, mapped
@@ -225,7 +225,7 @@ ARRAY JOIN arr AS a, arrayEnumerate(arr) AS num, arrayMap(x -> x + 1, arr) AS ma
 └───────┴─────────┴───┴─────┴────────┘
 ```
 
-以下の例では、[arrayEnumerate](/sql-reference/functions/array-functions#arrayenumeratearr)関数を使用しています:
+以下の例では [arrayEnumerate](/sql-reference/functions/array-functions#arrayEnumerate) 関数を使用しています：
 
 ```sql
 SELECT s, arr, a, num, arrayEnumerate(arr)
@@ -243,11 +243,11 @@ ARRAY JOIN arr AS a, arrayEnumerate(arr) AS num;
 └───────┴─────────┴───┴─────┴─────────────────────┘
 ```
 
-異なるサイズの複数の配列を結合するには、`SETTINGS enable_unaligned_array_join = 1`を使用します。例:
+異なるサイズの複数の配列を結合するには： `SETTINGS enable_unaligned_array_join = 1` を使用することができます。例：
 
 ```sql
 SELECT s, arr, a, b
-FROM arrays_test ARRAY JOIN arr as a, [['a','b'],['c']] as b
+FROM arrays_test ARRAY JOIN arr AS a, [['a','b'],['c']] AS b
 SETTINGS enable_unaligned_array_join = 1;
 ```
 
@@ -263,9 +263,9 @@ SETTINGS enable_unaligned_array_join = 1;
 └─────────┴─────────┴───┴───────────┘
 ```
 
-## ネストデータ構造を持つARRAY JOIN {#array-join-with-nested-data-structure}
+## ネストされたデータ構造とのARRAY JOIN {#array-join-with-nested-data-structure}
 
-`ARRAY JOIN`は、[ネストされたデータ構造](../../../sql-reference/data-types/nested-data-structures/index.md)でも機能します:
+`ARRAY JOIN` は [ネストされたデータ構造](../../../sql-reference/data-types/nested-data-structures/index.md) に対しても機能します：
 
 ```sql
 CREATE TABLE nested_test
@@ -304,7 +304,7 @@ ARRAY JOIN nest;
 └───────┴────────┴────────┘
 ```
 
-`ARRAY JOIN`でネストデータ構造の名前を指定する際、その意味はそれが構成するすべての配列要素を持つ`ARRAY JOIN`と同じです。以下の例が挙げられます:
+`ARRAY JOIN` でネストされたデータ構造の名前を指定すると、その意味はその構造が含む全ての配列要素を持つ `ARRAY JOIN` と同じです。以下に例を示します：
 
 ```sql
 SELECT s, `nest.x`, `nest.y`
@@ -322,7 +322,7 @@ ARRAY JOIN `nest.x`, `nest.y`;
 └───────┴────────┴────────┘
 ```
 
-このバリエーションも意味があります:
+このバリエーションも意味があります：
 
 ```sql
 SELECT s, `nest.x`, `nest.y`
@@ -340,7 +340,7 @@ ARRAY JOIN `nest.x`;
 └───────┴────────┴────────────┘
 ```
 
-ネストデータ構造にエイリアスを使用することで、`JOIN`の結果または元の配列のいずれかを選択できます。例:
+ネストされたデータ構造でもエイリアスを使用して、`JOIN` 結果またはソース配列のいずれかを選択できます。例：
 
 ```sql
 SELECT s, `n.x`, `n.y`, `nest.x`, `nest.y`
@@ -358,7 +358,7 @@ ARRAY JOIN nest AS n;
 └───────┴─────┴─────┴─────────┴────────────┘
 ```
 
-[ arrayEnumerate ](/sql-reference/functions/array-functions#arrayenumeratearr)関数を使用した例:
+[arrayEnumerate](/sql-reference/functions/array-functions#arrayEnumerate) 関数を使用した例：
 
 ```sql
 SELECT s, `n.x`, `n.y`, `nest.x`, `nest.y`, num
@@ -378,14 +378,14 @@ ARRAY JOIN nest AS n, arrayEnumerate(`nest.x`) AS num;
 
 ## 実装の詳細 {#implementation-details}
 
-クエリの実行順序は、`ARRAY JOIN`を実行する際に最適化されます。`ARRAY JOIN`は常に[WHERE](../../../sql-reference/statements/select/where.md)/[PREWHERE](../../../sql-reference/statements/select/prewhere.md)句の前に指定しなければなりませんが、技術的には`ARRAY JOIN`の結果がフィルタリングに使用されない限り、どの順序でも実行できます。処理の順序はクエリオプティマイザによって制御されます。
+クエリの実行順序は、`ARRAY JOIN` を実行する際に最適化されます。`ARRAY JOIN` は常にクエリ内の [WHERE](../../../sql-reference/statements/select/where.md)/[PREWHERE](../../../sql-reference/statements/select/prewhere.md) 句の前に指定する必要がありますが、実際には結果の `ARRAY JOIN` がフィルタリングに使用されない限り、任意の順序で実行できます。処理順序はクエリオプティマイザによって制御されます。
 
-### 短絡評価との互換性の無さ {#incompatibility-with-short-circuit-function-evaluation}
+### ショートサーキット関数評価との互換性のない場合 {#incompatibility-with-short-circuit-function-evaluation}
 
-[短絡関数評価](/operations/settings/settings#short_circuit_function_evaluation)は、`if`、`multiIf`、`and`、`or`などの特定の関数における複雑な式の実行を最適化する機能です。これは、これらの関数の実行中にゼロ除算などの潜在的な例外が発生するのを防ぎます。
+[ショートサーキット関数評価](/operations/settings/settings#short_circuit_function_evaluation) は、`if`、`multiIf`、`and`、および `or` などの特定の関数における複雑な式の実行を最適化する機能です。これにより、ゼロ除算などの潜在的な例外がこれらの関数の実行中に発生することを防ぎます。
 
-`arrayJoin`は常に実行され、短絡関数評価に対応していません。これは、クエリの解析と実行中にすべての他の関数とは別に処理される特異な関数であり、短絡関数実行に対して機能する追加のロジックを必要とするためです。理由は、結果の行数がarrayJoinの結果に依存し、`arrayJoin`を遅延実行することは非常に複雑でコストがかかるからです。
+`arrayJoin` は常に実行され、ショートサーキット関数評価には対応していません。これは、クエリ分析および実行中に他の全ての関数とは別に処理されるユニークな関数であり、ショートサーキット関数実行では機能しない追加のロジックを必要とするためです。その理由は、結果の行数は `arrayJoin` の結果に依存し、`arrayJoin` の遅延実行を実装するのがあまりにも複雑で高価であるからです。
 
-## 関連コンテンツ {#related-content}
+## 関連内容 {#related-content}
 
-- ブログ: [ClickHouseでの時系列データの取り扱い](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
+- ブログ: [ClickHouseでの時系列データの操作](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)

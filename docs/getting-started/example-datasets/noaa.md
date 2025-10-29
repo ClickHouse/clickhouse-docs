@@ -1,9 +1,10 @@
 ---
 description: '2.5 billion rows of climate data for the last 120 yrs'
 sidebar_label: 'NOAA Global Historical Climatology Network '
-sidebar_position: 1
 slug: /getting-started/example-datasets/noaa
 title: 'NOAA Global Historical Climatology Network'
+doc_type: 'guide'
+keywords: ['example dataset', 'noaa', 'weather data', 'sample data', 'climate']
 ---
 
 This dataset contains weather measurements for the last 120 years. Each row is a measurement for a point in time and station.
@@ -81,24 +82,23 @@ $ clickhouse-local --query "SELECT * FROM '2021.csv.gz' LIMIT 10" --format Prett
 
 Summarizing the [format documentation](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn):
 
-
 Summarizing the format documentation and the columns in order:
 
- - An 11 character station identification code. This itself encodes some useful information
- - YEAR/MONTH/DAY = 8 character date in YYYYMMDD format (e.g. 19860529 = May 29, 1986)
- - ELEMENT = 4 character indicator of element type. Effectively the measurement type. While there are many measurements available, we select the following:
-    - PRCP - Precipitation (tenths of mm)
-    - SNOW - Snowfall (mm)
-    - SNWD - Snow depth (mm)
-    - TMAX - Maximum temperature (tenths of degrees C)
-    - TAVG - Average temperature (tenths of a degree C)
-    - TMIN - Minimum temperature (tenths of degrees C)
-    - PSUN - Daily percent of possible sunshine (percent)
-    - AWND - Average daily wind speed (tenths of meters per second)
-    - WSFG - Peak gust wind speed (tenths of meters per second)
-    - WT** = Weather Type where ** defines the weather type. Full list of weather types here.
-- DATA VALUE = 5 character data value for ELEMENT i.e. the value of the measurement.
-- M-FLAG = 1 character Measurement Flag. This has 10 possible values. Some of these values indicate questionable data accuracy. We accept data where this is set to "P" - identified as missing presumed zero, as this is only relevant to the PRCP, SNOW and SNWD measurements.
+- An 11 character station identification code. This itself encodes some useful information
+- YEAR/MONTH/DAY = 8 character date in YYYYMMDD format (e.g. 19860529 = May 29, 1986)
+- ELEMENT = 4 character indicator of element type. Effectively the measurement type. While there are many measurements available, we select the following:
+  - PRCP - Precipitation (tenths of mm)
+  - SNOW - Snowfall (mm)
+  - SNWD - Snow depth (mm)
+  - TMAX - Maximum temperature (tenths of degrees C)
+  - TAVG - Average temperature (tenths of a degree C)
+  - TMIN - Minimum temperature (tenths of degrees C)
+  - PSUN - Daily percent of possible sunshine (percent)
+  - AWND - Average daily wind speed (tenths of meters per second)
+  - WSFG - Peak gust wind speed (tenths of meters per second)
+  - WT** = Weather Type where ** defines the weather type. Full list of weather types here.
+  - DATA VALUE = 5 character data value for ELEMENT i.e. the value of the measurement.
+  - M-FLAG = 1 character Measurement Flag. This has 10 possible values. Some of these values indicate questionable data accuracy. We accept data where this is set to "P" - identified as missing presumed zero, as this is only relevant to the PRCP, SNOW and SNWD measurements.
 - Q-FLAG is the measurement quality flag with 14 possible values. We are only interested in data with an empty value i.e. it did not fail any quality assurance checks.
 - S-FLAG is the source flag for the observation. Not useful for our analysis and ignored.
 - OBS-TIME = 4-character time of observation in hour-minute format (i.e. 0700 =7:00 am). Typically not present in older data. We ignore this for our purposes.
@@ -117,7 +117,6 @@ FROM file('*.csv.gz', CSV, 'station_id String, date String, measurement String, 
 ```
 
 With over 2.6 billion rows, this isn't a fast query since it involves parsing all the files. On our 8 core  machine, this takes around 160 seconds.
-
 
 ### Pivot data {#pivot-data}
 

@@ -7,9 +7,8 @@
 'output_format': true
 'slug': '/interfaces/formats/JSONEachRowWithProgress'
 'title': 'JSONEachRowWithProgress'
+'doc_type': 'reference'
 ---
-
-
 
 | Input | Output | Alias |
 |-------|--------|-------|
@@ -17,9 +16,9 @@
 
 ## 説明 {#description}
 
-[`JSONEachRow`](./JSONEachRow.md)/[`JSONStringsEachRow`](./JSONStringsEachRow.md) と異なり、ClickHouse は JSON 値として進捗情報も提供します。
+[`JSONEachRow`](./JSONEachRow.md)/[`JSONStringsEachRow`](./JSONStringsEachRow.md) とは異なり、ClickHouse は JSON 値として進行状況情報も生成します。
 
-## 例の使い方 {#example-usage}
+## 例の使用法 {#example-usage}
 
 ```json
 {"row":{"num":42,"str":"hello","arr":[0,1]}}

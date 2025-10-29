@@ -3,6 +3,12 @@ slug: /integrations/dbeaver
 sidebar_label: 'DBeaver'
 description: 'DBeaver is a multi-platform database tool.'
 title: 'Connect DBeaver to ClickHouse'
+doc_type: 'guide'
+integration:
+  - support_level: 'partner'
+  - category: 'sql_client'
+  - website: 'https://github.com/dbeaver/dbeaver'
+keywords: ['DBeaver', 'database management', 'SQL client', 'JDBC connection', 'multi-platform']
 ---
 
 import Image from '@theme/IdealImage';
@@ -78,6 +84,6 @@ Open a query editor and run a query.
 
 <Image img={dbeaver_query_log_select} size="md" border alt="A sample query" />
 
-## Next Steps {#next-steps}
+## Next steps {#next-steps}
 
 See the [DBeaver wiki](https://github.com/dbeaver/dbeaver/wiki) to learn about the capabilities of DBeaver, and the [ClickHouse documentation](https://clickhouse.com/docs) to learn about the capabilities of ClickHouse.

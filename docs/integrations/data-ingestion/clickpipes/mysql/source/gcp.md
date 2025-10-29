@@ -3,6 +3,8 @@ sidebar_label: 'Cloud SQL For MySQL '
 description: 'Step-by-step guide on how to set up Cloud SQL for MySQL as a source for ClickPipes'
 slug: /integrations/clickpipes/mysql/source/gcp
 title: 'Cloud SQL for MySQL source setup guide'
+keywords: ['google cloud sql', 'mysql', 'clickpipes', 'pitr', 'root ca certificate']
+doc_type: 'guide'
 ---
 
 import gcp_pitr from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/gcp/gcp-mysql-pitr.png';
@@ -65,14 +67,14 @@ Connect to your Cloud SQL MySQL instance as the root user and execute the follow
 ## Configure network access {#configure-network-access-gcp-mysql}
 
 If you want to restrict traffic to your Cloud SQL instance, please add the [documented static NAT IPs](../../index.md#list-of-static-ips) to the allowlisted IPs of your Cloud SQL MySQL instance.
-This can be done either by editing the instance or by heading over to the `Connections` tab in the sidebar in Cloud Console.
+This can be done either by editing the instance or by heading over to the `Connections` tab in the sidebar in Cloud console.
 
 <Image img={gcp_mysql_ip} alt="IP allowlisting in GCP MySQL" size="lg" border/>
 
-## Download and Use Root CA certificate {#download-root-ca-certificate-gcp-mysql}
+## Download and use root CA certificate {#download-root-ca-certificate-gcp-mysql}
 To connect to your Cloud SQL instance, you need to download the root CA certificate.
 
-1. Go to your Cloud SQL instance in the Cloud Console.
+1. Go to your Cloud SQL instance in the Cloud console.
 2. Click on `Connections` in the sidebar.
 3. Click on the `Security` tab.
 4. In the `Manage server CA certificates` section, click on the `DOWNLOAD CERTIFICATES` button at the bottom.

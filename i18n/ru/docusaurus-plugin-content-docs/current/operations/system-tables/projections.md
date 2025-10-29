@@ -1,20 +1,19 @@
 ---
-description: 'Системная таблица, содержащая информацию о существующих проекциях во всех таблицах.'
+slug: '/operations/system-tables/projections'
+description: 'Системная таблица, содержащая информацию о существующих projections'
+title: system.projections
 keywords: ['системная таблица', 'проекции']
-slug: /operations/system-tables/projections
-title: 'system.projections'
+doc_type: reference
 ---
-
-
 # system.projections
 
 Содержит информацию о существующих проекциях во всех таблицах.
 
 Столбцы:
 
-- `database` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных.
-- `table` ([String](../../sql-reference/data-types/string.md)) — Имя таблицы.
-- `name` ([String](../../sql-reference/data-types/string.md)) — Имя проекции.
+- `database` ([String](../../sql-reference/data-types/string.md)) — Название базы данных.
+- `table` ([String](../../sql-reference/data-types/string.md)) — Название таблицы.
+- `name` ([String](../../sql-reference/data-types/string.md)) — Название проекции.
 - `type` ([Enum](../../sql-reference/data-types/enum.md)) — Тип проекции ('Normal' = 0, 'Aggregate' = 1).
 - `sorting_key` ([Array(String)](../../sql-reference/data-types/array.md)) — Ключ сортировки проекции.
 - `query` ([String](../../sql-reference/data-types/string.md)) — Запрос проекции.

@@ -1,5 +1,5 @@
 ---
-'description': 'ALTER TABLE ... MODIFY COMMENT により、テーブルコメントの追加、変更、削除が可能となるドキュメント'
+'description': 'ALTER TABLE ... MODIFY COMMENT に関するドキュメントで、テーブルコメントの追加、変更、または削除を許可します。'
 'sidebar_label': 'ALTER TABLE ... MODIFY COMMENT'
 'sidebar_position': 51
 'slug': '/sql-reference/statements/alter/comment'
@@ -7,14 +7,13 @@
 'keywords':
 - 'ALTER TABLE'
 - 'MODIFY COMMENT'
+'doc_type': 'reference'
 ---
-
-
 
 
 # ALTER TABLE ... MODIFY COMMENT
 
-テーブルコメントを追加、変更、または削除します。以前に設定されていたかどうかに関係なく、コメントの変更は、[`system.tables`](../../../operations/system-tables/tables.md) および `SHOW CREATE TABLE` クエリの両方に反映されます。
+テーブルのコメントを追加、変更、または削除します。コメントが以前に設定されていたかどうかに関係なく、変更は反映されます。コメントの変更は [`system.tables`](../../../operations/system-tables/tables.md) と `SHOW CREATE TABLE` クエリの両方に反映されます。
 
 ## Syntax {#syntax}
 
@@ -33,14 +32,14 @@ CREATE TABLE table_with_comment
     `s` String
 )
 ENGINE = Memory()
-COMMENT '一時テーブル';
+COMMENT 'The temporary table';
 ```
 
 テーブルコメントを変更するには:
 
 ```sql
 ALTER TABLE table_with_comment 
-MODIFY COMMENT 'テーブルの新しいコメント';
+MODIFY COMMENT 'new comment on a table';
 ```
 
 変更されたコメントを表示するには:
@@ -53,7 +52,7 @@ WHERE database = currentDatabase() AND name = 'table_with_comment';
 
 ```text title="Response"
 ┌─comment────────────────┐
-│ テーブルの新しいコメント │
+│ new comment on a table │
 └────────────────────────┘
 ```
 
@@ -79,9 +78,9 @@ WHERE database = currentDatabase() AND name = 'table_with_comment';
 
 ## Caveats {#caveats}
 
-レプリケーションテーブルの場合、コメントは異なるレプリカごとに異なる可能性があります。コメントの変更は単一のレプリカに適用されます。
+レプリケートされたテーブルの場合、コメントは異なるレプリカで異なる場合があります。コメントの変更は単一のレプリカに適用されます。
 
-この機能はバージョン23.9以降で利用可能であり、以前のClickHouseバージョンでは機能しません。
+この機能はバージョン 23.9 から利用可能です。以前の ClickHouse バージョンでは動作しません。
 
 ## Related content {#related-content}
 

@@ -1,31 +1,38 @@
 ---
-description: 'Возвращает таблицу, подключенную через ODBC.'
-sidebar_label: 'odbc'
+slug: '/sql-reference/table-functions/odbc'
+sidebar_label: odbc
 sidebar_position: 150
-slug: /sql-reference/table-functions/odbc
-title: 'odbc'
+description: 'Возвращает таблицу, которая подключена через ODBC.'
+title: odbc
+doc_type: reference
 ---
-
-
 # odbc Табличная Функция
 
-Возвращает таблицу, подключенную через [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity).
+Возвращает таблицу, которая подключена через [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity).
+
+## Синтаксис {#syntax}
 
 ```sql
-odbc(connection_settings, external_database, external_table)
+odbc(datasource, external_database, external_table)
+odbc(datasource, external_table)
+odbc(named_collection)
 ```
 
-Параметры:
+## Аргументы {#arguments}
 
-- `connection_settings` — Имя секции с настройками подключения в файле `odbc.ini`.
-- `external_database` — Имя базы данных во внешней СУБД.
-- `external_table` — Имя таблицы в `external_database`.
+| Аргумент            | Описание                                                                |
+|---------------------|-------------------------------------------------------------------------|
+| `datasource` | Имя секции с настройками подключения в файле `odbc.ini`.                |
+| `external_database` | Имя базы данных во внешней СУБД.                                       |
+| `external_table`    | Имя таблицы во `external_database`.                                     |
 
-Чтобы безопасно реализовать ODBC подключения, ClickHouse использует отдельную программу `clickhouse-odbc-bridge`. Если ODBC драйвер загружается напрямую из `clickhouse-server`, проблемы с драйвером могут привести к сбою ClickHouse сервера. ClickHouse автоматически запускает `clickhouse-odbc-bridge`, когда это требуется. Программа моста ODBC устанавливается из того же пакета, что и `clickhouse-server`.
+Эти параметры также могут быть переданы с использованием [именованных коллекций](operations/named-collections.md).
 
-Поля с `NULL` значениями из внешней таблицы преобразуются в значения по умолчанию для базового типа данных. Например, если поле таблицы MySQL имеет тип `INT NULL`, оно преобразуется в 0 (значение по умолчанию для типа данных ClickHouse `Int32`).
+Для безопасной реализации ODBC подключений ClickHouse использует отдельную программу `clickhouse-odbc-bridge`. Если ODBC драйвер загружается напрямую из `clickhouse-server`, проблемы с драйвером могут привести к сбою сервера ClickHouse. ClickHouse автоматически запускает `clickhouse-odbc-bridge`, когда это требуется. Программа ODBC моста устанавливается из того же пакета, что и `clickhouse-server`.
 
-## Пример Использования {#usage-example}
+Поля с `NULL` значениями из внешней таблицы преобразуются в значения по умолчанию для базового типа данных. Например, если поле таблицы MySQL на удаленном сервере имеет тип `INT NULL`, оно преобразуется в 0 (значение по умолчанию для типа данных ClickHouse `Int32`).
+
+## Пример использования {#usage-example}
 
 **Получение данных из локальной установки MySQL через ODBC**
 
@@ -33,7 +40,7 @@ odbc(connection_settings, external_database, external_table)
 
 Убедитесь, что установлены unixODBC и MySQL Connector.
 
-По умолчанию (если установлено из пакетов), ClickHouse запускается от имени пользователя `clickhouse`. Поэтому вам нужно создать и настроить этого пользователя на сервере MySQL.
+По умолчанию (если установлено из пакетов) ClickHouse запускается от имени пользователя `clickhouse`. Таким образом, вам нужно создать и настроить этого пользователя на сервере MySQL.
 
 ```bash
 $ sudo mysql
@@ -44,7 +51,7 @@ mysql> CREATE USER 'clickhouse'@'localhost' IDENTIFIED BY 'clickhouse';
 mysql> GRANT ALL PRIVILEGES ON *.* TO 'clickhouse'@'clickhouse' WITH GRANT OPTION;
 ```
 
-Затем настройте подключение в `/etc/odbc.ini`.
+Затем настройте соединение в `/etc/odbc.ini`.
 
 ```bash
 $ cat /etc/odbc.ini
@@ -102,7 +109,7 @@ SELECT * FROM odbc('DSN=mysqlconn', 'test', 'test')
 └────────┴──────────────┴───────┴────────────────┘
 ```
 
-## См. Также {#see-also}
+## См. также {#see-also}
 
 - [ODBC словари](/sql-reference/dictionaries#dbms)
-- [ODBC движок таблицы](/engines/table-engines/integrations/odbc).
+- [ODBC движок таблиц](/engines/table-engines/integrations/odbc).

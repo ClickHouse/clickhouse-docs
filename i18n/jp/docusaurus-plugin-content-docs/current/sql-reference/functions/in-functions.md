@@ -1,16 +1,14 @@
 ---
-'description': 'IN演算子を実装するための関数のドキュメント'
-'sidebar_label': 'IN演算子'
-'sidebar_position': 90
+'description': 'IN 演算子を実装するための関数に関する Documentation'
+'sidebar_label': 'IN 演算子'
 'slug': '/sql-reference/functions/in-functions'
-'title': 'IN演算子の実装に関する関数'
+'title': 'IN 演算子を実装するための関数'
+'doc_type': 'reference'
 ---
-
-
 
 
 # IN 演算子を実装するための関数
 
 ## in, notIn, globalIn, globalNotIn {#in-notin-globalin-globalnotin}
 
-[IN 演算子](/sql-reference/operators/in) セクションを参照してください。
+セクション [IN 演算子](/sql-reference/operators/in) を参照してください。

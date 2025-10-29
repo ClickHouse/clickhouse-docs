@@ -4,6 +4,7 @@ title: 'argMinIf'
 description: 'Example of using the argMinIf combinator'
 keywords: ['argMin', 'if', 'combinator', 'examples', 'argMinIf']
 sidebar_label: 'argMinIf'
+doc_type: 'reference'
 ---
 
 # argMinIf {#argminif}
@@ -18,7 +19,7 @@ The `argMinIf` function is useful when you need to find the value associated
 with the minimum value in a dataset, but only for rows that satisfy a specific 
 condition.
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 In this example, we'll create a table that stores product prices and their timestamps,
 and we'll use `argMinIf` to find the lowest price for each product when it's in stock.

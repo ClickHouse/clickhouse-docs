@@ -1,15 +1,14 @@
 ---
 'alias': []
-'description': 'Regexp形式のドキュメント'
+'description': 'Regexp 形式のドキュメント'
 'input_format': true
 'keywords':
 - 'Regexp'
 'output_format': false
 'slug': '/interfaces/formats/Regexp'
 'title': 'Regexp'
+'doc_type': 'reference'
 ---
-
-
 
 | Input | Output | Alias |
 |-------|--------|-------|
@@ -21,42 +20,42 @@
 
 **使用法**
 
-[format_regexp](/operations/settings/settings-formats.md/#format_regexp) 設定からの正規表現が、インポートされたデータの各行に適用されます。正規表現のサブパターンの数は、インポートされたデータセットのカラム数と等しくなければなりません。
+[format_regexp](/operations/settings/settings-formats.md/#format_regexp) 設定からの正規表現は、インポートされたデータの各行に適用されます。正規表現のサブパターンの数は、インポートされたデータセットのカラム数と等しくなければなりません。
 
-インポートされたデータの行は、改行文字 `'\n'` または DOS スタイルの改行 `"\r\n"` で区切られている必要があります。
+インポートされたデータの行は、改行文字 `'\n'` または DOS スタイルの改行 `"\r\n"` で区切る必要があります。
 
 一致した各サブパターンの内容は、[format_regexp_escaping_rule](/operations/settings/settings-formats.md/#format_regexp_escaping_rule) 設定に従って、対応するデータ型のメソッドで解析されます。
 
-正規表現が行に一致しない場合、且つ [format_regexp_skip_unmatched](/operations/settings/settings-formats.md/#format_regexp_escaping_rule) が 1 に設定されている場合、その行は静かにスキップされます。そうでない場合、例外がスローされます。
+正規表現が行と一致しない場合、かつ [format_regexp_skip_unmatched](/operations/settings/settings-formats.md/#format_regexp_escaping_rule) が 1 に設定されていると、その行は静かにスキップされます。それ以外の場合は、例外がスローされます。
 
 ## 使用例 {#example-usage}
 
-ファイル `data.tsv` を考えてみましょう：
+ファイル `data.tsv` を考慮してください：
 
 ```text title="data.tsv"
 id: 1 array: [1,2,3] string: str1 date: 2020-01-01
 id: 2 array: [1,2,3] string: str2 date: 2020-01-02
 id: 3 array: [1,2,3] string: str3 date: 2020-01-03
 ```
-テーブル `imp_regex_table` は次の通りです：
+およびテーブル `imp_regex_table`：
 
 ```sql
 CREATE TABLE imp_regex_table (id UInt32, array Array(UInt32), string String, date Date) ENGINE = Memory;
 ```
 
-次のクエリを使用して上記のファイルからデータをテーブルに挿入します：
+次のクエリを使用して、前述のファイルからのデータを上記のテーブルに挿入します：
 
 ```bash
 $ cat data.tsv | clickhouse-client  --query "INSERT INTO imp_regex_table SETTINGS format_regexp='id: (.+?) array: (.+?) string: (.+?) date: (.+?)', format_regexp_escaping_rule='Escaped', format_regexp_skip_unmatched=0 FORMAT Regexp;"
 ```
 
-これで、テーブルからデータを `SELECT` して、`Regex` フォーマットがファイルからのデータをどのように解析したかを確認できます：
+テーブルからデータを `SELECT` して、`Regex` フォーマットがファイルからデータをどのように解析したかを確認できます：
 
-```sql title="クエリ"
+```sql title="Query"
 SELECT * FROM imp_regex_table;
 ```
 
-```text title="レスポンス"
+```text title="Response"
 ┌─id─┬─array───┬─string─┬───────date─┐
 │  1 │ [1,2,3] │ str1   │ 2020-01-01 │
 │  2 │ [1,2,3] │ str2   │ 2020-01-02 │
@@ -66,15 +65,15 @@ SELECT * FROM imp_regex_table;
 
 ## フォーマット設定 {#format-settings}
 
-`Regexp` フォーマットを使用する場合、次の設定を使用できます：
+`Regexp` フォーマットで作業する際に、以下の設定を使用できます：
 
-- `format_regexp` — [String](/sql-reference/data-types/string.md)。 [re2](https://github.com/google/re2/wiki/Syntax) フォーマットの正規表現を含みます。
-- `format_regexp_escaping_rule` — [String](/sql-reference/data-types/string.md)。次のエスケープルールがサポートされています：
+- `format_regexp` — [文字列](/sql-reference/data-types/string.md)。 [re2](https://github.com/google/re2/wiki/Syntax) フォーマットの正規表現を含みます。
+- `format_regexp_escaping_rule` — [文字列](/sql-reference/data-types/string.md)。以下のエスケープルールがサポートされています：
 
-  - CSV（[CSV](/interfaces/formats/CSV)に類似）
-  - JSON（[JSONEachRow](/interfaces/formats/JSONEachRow)に類似）
-  - Escaped（[TSV](/interfaces/formats/TabSeparated)に類似）
-  - Quoted（[Values](/interfaces/formats/Values)に類似）
-  - Raw（サブパターンをまるごと抽出し、エスケープルールなし、[TSVRaw](/interfaces/formats/TabSeparated)に類似）
+  - CSV ( [CSV](/interfaces/formats/CSV) と類似)
+  - JSON ( [JSONEachRow](/interfaces/formats/JSONEachRow) と類似)
+  - エスケープ ( [TSV](/interfaces/formats/TabSeparated) と類似)
+  - クオート ( [Values](/interfaces/formats/Values) と類似)
+  - 生 (サブパターンをそのまま抽出、エスケープルールなし、 [TSVRaw](/interfaces/formats/TabSeparated) と類似)
 
-- `format_regexp_skip_unmatched` — [UInt8](/sql-reference/data-types/int-uint.md)。 `format_regexp` の式がインポートされたデータに一致しない場合に例外をスローする必要性を定義します。 `0` または `1` に設定できます。
+- `format_regexp_skip_unmatched` — [UInt8](/sql-reference/data-types/int-uint.md)。 `format_regexp` 式がインポートされたデータと一致しない場合に例外をスローする必要があるかどうかを定義します。 `0` または `1` に設定できます。

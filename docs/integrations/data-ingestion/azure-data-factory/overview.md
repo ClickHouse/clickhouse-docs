@@ -4,9 +4,14 @@ slug: /integrations/azure-data-factory/overview
 description: 'Bringing Azure Data into ClickHouse - Overview'
 keywords: ['azure data factory', 'azure', 'microsoft', 'data']
 title: 'Bringing Azure Data into ClickHouse'
+doc_type: 'guide'
 ---
 
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
+
 # Bringing Azure Data into ClickHouse
+
+<ClickHouseSupportedBadge/>
 
 Microsoft Azure offers a wide range of tools to store, transform, and analyze
 data. However, in many scenarios, ClickHouse can provide significantly better
@@ -22,4 +27,3 @@ into ClickHouse:
 |----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [Using the `azureBlobStorage` Table Function](./using_azureblobstorage.md) | Involves using ClickHouse's [`azureBlobStorage` Table Function](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage) to transfer data directly from Azure Blob Storage.                       |
 | [Using the ClickHouse HTTP interface](./using_http_interface.md)           | Uses the [ClickHouse HTTP interface](https://clickhouse.com/docs/interfaces/http) as a data source within Azure Data Factory, allowing you to copy data or use it in data flow activities as part of your pipelines. |
-

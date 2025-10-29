@@ -5,6 +5,7 @@ sidebar_label: 'Foursquare places'
 slug: /getting-started/example-datasets/foursquare-places
 title: 'Foursquare places'
 keywords: ['visualizing']
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -275,4 +276,3 @@ Some of our favourite visualizations are produced here below for you to enjoy.
 <Image img={visualization_3} size="md" alt="ATMs"/>
 
 <Image img={visualization_4} size="md" alt="Map of Europe with points of interest categorised by country"/>
-

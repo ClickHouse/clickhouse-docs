@@ -1,9 +1,11 @@
 ---
 slug: /faq/operations/
 sidebar_position: 3
-sidebar_label: 'Question about Operating ClickHouse Servers and Clusters'
+sidebar_label: 'Question about operating ClickHouse servers and clusters'
 title: 'Question about operating ClickHouse servers and clusters'
 description: 'Landing page for questions about operating ClickHouse servers and clusters'
+doc_type: 'landing-page'
+keywords: ['operations', 'administration', 'deployment', 'cluster management', 'faq']
 ---
 
 # Question about operating ClickHouse servers and clusters
@@ -20,4 +22,3 @@ description: 'Landing page for questions about operating ClickHouse servers and 
 :::info Don't see what you're looking for?
 Check out our [Knowledge Base](/knowledgebase/) and also browse the many helpful articles found here in the documentation.
 :::
-

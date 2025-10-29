@@ -1,20 +1,18 @@
 ---
-'description': 'Documentation for Show'
+'description': 'SHOWに関するドキュメント'
 'sidebar_label': 'SHOW'
 'sidebar_position': 37
 'slug': '/sql-reference/statements/show'
-'title': 'SHOW Statements'
+'title': 'SHOW ステートメント'
+'doc_type': 'reference'
 ---
-
-
-
 
 :::note
 
-`SHOW CREATE (TABLE|DATABASE|USER)` は、以下の設定が有効でない限り、シークレットを隠します:
+`SHOW CREATE (TABLE|DATABASE|USER)`は、以下の設定がオンになっている場合を除き、秘密情報を非表示にします。
 
 - [`display_secrets_in_show_and_select`](../../operations/server-configuration-parameters/settings/#display_secrets_in_show_and_select) (サーバー設定)
-- [`format_display_secrets_in_show_and_select`](../../operations/settings/formats/#format_display_secrets_in_show_and_select) (フォーマット設定)  
+- [`format_display_secrets_in_show_and_select`](../../operations/settings/formats/#format_display_secrets_in_show_and_select) (フォーマット設定)
 
 さらに、ユーザーは [`displaySecretsInShowAndSelect`](grant.md/#displaysecretsinshowandselect) 権限を持っている必要があります。
 :::
@@ -23,36 +21,35 @@
 
 これらのステートメントは、指定されたオブジェクトを作成するために使用された `CREATE` クエリを含む、String 型の単一カラムを返します。
 
-### Syntax {#syntax}
+### 構文 {#syntax}
 
 ```sql title="Syntax"
 SHOW [CREATE] TABLE | TEMPORARY TABLE | DICTIONARY | VIEW | DATABASE [db.]table|view [INTO OUTFILE filename] [FORMAT format]
 ```
 
 :::note
-このステートメントを使用して、システムテーブルの `CREATE` クエリを取得すると、
-テーブル構造を宣言するだけの *偽* クエリが得られ、テーブルを作成するためには使用できません。
+このステートメントを使用してシステムテーブルの `CREATE` クエリを取得した場合、テーブル構造のみを宣言する*偽の*クエリが得られ、テーブルを作成するためには使用できません。
 :::
 
 ## SHOW DATABASES {#show-databases}
 
-このステートメントは、すべてのデータベースのリストを表示します。
+このステートメントは、すべてのデータベースのリストを印刷します。
 
-### Syntax {#syntax-1}
+### 構文 {#syntax-1}
 
 ```sql title="Syntax"
 SHOW DATABASES [[NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE filename] [FORMAT format]
 ```
 
-これは、次のクエリと同じです：
+これはクエリと同一です：
 
 ```sql
 SELECT name FROM system.databases [WHERE name [NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE filename] [FORMAT format]
 ```
 
-### Examples {#examples}
+### 例 {#examples}
 
-この例では、`SHOW` を使用して、名前にシンボルのシーケンス 'de' を含むデータベース名を取得します：
+この例では、名前に'se'というシンボルシーケンスが含まれているデータベース名を取得するために `SHOW` を使用します：
 
 ```sql title="Query"
 SHOW DATABASES LIKE '%de%'
@@ -64,7 +61,7 @@ SHOW DATABASES LIKE '%de%'
 └─────────┘
 ```
 
-大文字小文字を区別せずに行うこともできます：
+無視大文字小文字の方式でも行うことができます：
 
 ```sql title="Query"
 SHOW DATABASES ILIKE '%DE%'
@@ -76,7 +73,7 @@ SHOW DATABASES ILIKE '%DE%'
 └─────────┘
 ```
 
-また、名前に 'de' を含まないデータベース名を取得することもできます：
+あるいは、名前に'de'が含まれていないデータベース名を取得する場合：
 
 ```sql title="Query"
 SHOW DATABASES NOT LIKE '%de%'
@@ -91,7 +88,7 @@ SHOW DATABASES NOT LIKE '%de%'
 └────────────────────────────────┘
 ```
 
-最終的に、最初の2つのデータベースの名前を取得できます：
+最後に、最初の2つのデータベースの名前のみを取得できます：
 
 ```sql title="Query"
 SHOW DATABASES LIMIT 2
@@ -104,7 +101,7 @@ SHOW DATABASES LIMIT 2
 └────────────────────────────────┘
 ```
 
-### See also {#see-also}
+### 関連項目 {#see-also}
 
 - [`CREATE DATABASE`](/sql-reference/statements/create/database)
 
@@ -112,23 +109,23 @@ SHOW DATABASES LIMIT 2
 
 `SHOW TABLES` ステートメントは、テーブルのリストを表示します。
 
-### Syntax {#syntax-2}
+### 構文 {#syntax-2}
 
 ```sql title="Syntax"
 SHOW [FULL] [TEMPORARY] TABLES [{FROM | IN} <db>] [[NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE <filename>] [FORMAT <format>]
 ```
 
-`FROM` 句が指定されていない場合、クエリは現在のデータベースからのテーブルのリストを返します。
+`FROM` 句が指定されていない場合、クエリは現在のデータベースからテーブルのリストを返します。
 
-このステートメントは、次のクエリと同じです：
+このステートメントはクエリと同一です：
 
 ```sql
 SELECT name FROM system.tables [WHERE name [NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE <filename>] [FORMAT <format>]
 ```
 
-### Examples {#examples-1}
+### 例 {#examples-1}
 
-この例では、`SHOW TABLES` ステートメントを使用して、名前に 'user' を含むすべてのテーブルを検索します：
+この例では、名前に 'user' が含まれているすべてのテーブルを見つけるために `SHOW TABLES` ステートメントを使用します：
 
 ```sql title="Query"
 SHOW TABLES FROM system LIKE '%user%'
@@ -141,7 +138,7 @@ SHOW TABLES FROM system LIKE '%user%'
 └──────────────────┘
 ```
 
-大文字小文字を区別せずに行うこともできます：
+無視大文字小文字の方式でも行うことができます：
 
 ```sql title="Query"
 SHOW TABLES FROM system ILIKE '%USER%'
@@ -154,7 +151,7 @@ SHOW TABLES FROM system ILIKE '%USER%'
 └──────────────────┘
 ```
 
-また、名前に 's' を含まないテーブルを見つけることもできます：
+あるいは、名前に 's' の文字が含まれていないテーブルを見つける場合：
 
 ```sql title="Query"
 SHOW TABLES FROM system NOT LIKE '%s%'
@@ -168,7 +165,7 @@ SHOW TABLES FROM system NOT LIKE '%s%'
 └──────────────┘
 ```
 
-最終的に、最初の2つのテーブルの名前を取得できます：
+最後に、最初の2つのテーブルの名前のみを取得できます：
 
 ```sql title="Query"
 SHOW TABLES FROM system LIMIT 2
@@ -181,7 +178,7 @@ SHOW TABLES FROM system LIMIT 2
 └────────────────────────────────┘
 ```
 
-### See also {#see-also-1}
+### 関連項目 {#see-also-1}
 
 - [`Create Tables`](/sql-reference/statements/create/table)
 - [`SHOW CREATE TABLE`](#show-create-table--dictionary--view--database)
@@ -190,37 +187,34 @@ SHOW TABLES FROM system LIMIT 2
 
 `SHOW COLUMNS` ステートメントは、カラムのリストを表示します。
 
-### Syntax {#syntax-3}
+### 構文 {#syntax-3}
 
 ```sql title="Syntax"
 SHOW [EXTENDED] [FULL] COLUMNS {FROM | IN} <table> [{FROM | IN} <db>] [{[NOT] {LIKE | ILIKE} '<pattern>' | WHERE <expr>}] [LIMIT <N>] [INTO
 OUTFILE <filename>] [FORMAT <format>]
 ```
 
-データベースとテーブル名は `<db>.<table>` として省略形で指定でき、  
-これは `FROM tab FROM db` と `FROM db.tab` が同等であることを意味します。  
-データベースが指定されていない場合、クエリは現在のデータベースからのカラムのリストを返します。
+データベース名とテーブル名は、 `<db>.<table>` の略称で指定できます。つまり、 `FROM tab FROM db` と `FROM db.tab` は同じです。データベースが指定されていない場合、クエリは現在のデータベースからカラムのリストを返します。
 
-`EXTENDED` と `FULL` の2つのオプションのキーワードがあります。`EXTENDED` キーワードは現在は効果がなく、MySQLの互換性のために存在します。`FULL` キーワードは、出力に照合順序、コメント、権限カラムを含ませます。
+2つのオプションキーワード `EXTENDED` と `FULL` があります。 `EXTENDED` キーワードは現在影響がなく、MySQLの互換性のために存在します。 `FULL` キーワードは、出力に照合、コメント、権限カラムを含むことを引き起こします。
 
-`SHOW COLUMNS` ステートメントは、次の構造の結果テーブルを生成します：
+`SHOW COLUMNS` ステートメントは以下の構造の結果テーブルを生成します：
 
 | Column      | Description                                                                                                                   | Type               |
 |-------------|-------------------------------------------------------------------------------------------------------------------------------|--------------------|
 | `field`     | カラムの名前                                                                                                                | `String`           |
-| `type`      | カラムのデータ型。クエリがMySQLワイヤプロトコルを介して行われた場合、同等の型名がMySQLで表示されます。                               | `String`           |
-| `null`      | カラムのデータ型がNullableであれば `YES`、そうでなければ `NO`                                                                | `String`           |
-| `key`       | カラムが主キーの一部であれば `PRI`、ソートキーの一部であれば `SOR`、それ以外は空                                            | `String`           |
-| `default`   | カラムが `ALIAS`、 `DEFAULT`、または `MATERIALIZED` の型の場合のデフォルト表現、それ以外は `NULL`。                             | `Nullable(String)` |
-| `extra`     | 追加情報、現在は未使用                                                                                                      | `String`           |
-| `collation` | ( `FULL` キーワードが指定された場合のみ) カラムの照合順序、ClickHouseにはカラムごとの照合順序がないため常に `NULL`                    | `Nullable(String)` |
-| `comment`   | ( `FULL` キーワードが指定された場合のみ) カラムに関するコメント                                                                    | `String`           |
-| `privilege` | ( `FULL` キーワードが指定された場合のみ) このカラムに対する権限、現在は利用不可                                                  | `String`           |
+| `type`      | カラムのデータ型。クエリがMySQLワイヤプロトコルを介して行われた場合、MySQLの同等の型名が表示されます。                     | `String`           |
+| `null`      | カラムのデータ型がNullableの場合は`YES`、そうでなければ`NO`                                                               | `String`           |
+| `key`       | カラムが主キーの一部であれば`PRI`、ソートキーの一部であれば`SOR`、そうでなければ空                                                                                          | `String`           |
+| `default`   | カラムが `ALIAS`、 `DEFAULT`、または `MATERIALIZED` の型の場合はデフォルト式、それ以外は `NULL`。                                   | `Nullable(String)` |
+| `extra`     | 追加情報、現在は未使用                                                                                                     | `String`           |
+| `collation` | （`FULL` キーワードが指定された場合のみ） カラムの照合、ClickHouseはカラムごとの照合を持たないため常に`NULL`                      | `Nullable(String)` |
+| `comment`   | （`FULL` キーワードが指定された場合のみ）カラムに関するコメント                                                            | `String`           |
+| `privilege` | （`FULL` キーワードが指定された場合のみ）このカラムに対するあなたの権限、現在は利用できない                                  | `String`           |
 
-### Examples {#examples-2}
+### 例 {#examples-2}
 
-この例では、`SHOW COLUMNS` ステートメントを使用して、テーブル 'orders' のすべてのカラムに関する情報を取得します。  
-'delivery_' で始まるカラムを対象にします：
+この例では、`orders` テーブルのすべてのカラムに関する情報を取得するために `SHOW COLUMNS` ステートメントを使用します。開始されるのは 'delivery_' からです：
 
 ```sql title="Query"
 SHOW COLUMNS FROM 'orders' LIKE 'delivery_%'
@@ -233,7 +227,7 @@ SHOW COLUMNS FROM 'orders' LIKE 'delivery_%'
 └─────────────────┴──────────┴──────┴─────────┴─────────┴───────┘
 ```
 
-### See also {#see-also-2}
+### 関連項目 {#see-also-2}
 
 - [`system.columns`](../../operations/system-tables/columns.md)
 
@@ -241,23 +235,23 @@ SHOW COLUMNS FROM 'orders' LIKE 'delivery_%'
 
 `SHOW DICTIONARIES` ステートメントは、[Dictionaries](../../sql-reference/dictionaries/index.md)のリストを表示します。
 
-### Syntax {#syntax-4}
+### 構文 {#syntax-4}
 
 ```sql title="Syntax"
 SHOW DICTIONARIES [FROM <db>] [LIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE <filename>] [FORMAT <format>]
 ```
 
-`FROM` 句が指定されていない場合、クエリは現在のデータベースからの辞書のリストを返します。
+`FROM` 句が指定されていない場合、クエリは現在のデータベースからディクショナリのリストを返します。
 
-次のようにして、`SHOW DICTIONARIES` クエリと同じ結果を取得できます：
+以下の方法で `SHOW DICTIONARIES` クエリと同じ結果を得ることができます：
 
 ```sql
 SELECT name FROM system.dictionaries WHERE database = <db> [AND name LIKE <pattern>] [LIMIT <N>] [INTO OUTFILE <filename>] [FORMAT <format>]
 ```
 
-### Examples {#examples-3}
+### 例 {#examples-3}
 
-以下のクエリは、`system` データベース内のテーブルのリストから最初の2行を選択し、名前に `reg` を含むものを表示します。
+以下のクエリは、名前に `reg` が含まれている `system` データベース内のテーブルリストから最初の2行を選択します。
 
 ```sql title="Query"
 SHOW DICTIONARIES FROM db LIKE '%reg%' LIMIT 2
@@ -274,44 +268,41 @@ SHOW DICTIONARIES FROM db LIKE '%reg%' LIMIT 2
 
 テーブルの主キーとデータスキッピングインデックスのリストを表示します。
 
-このステートメントは主にMySQLとの互換性のために存在します。  
-システムテーブル [`system.tables`](../../operations/system-tables/tables.md) (主キー用) および [`system.data_skipping_indices`](../../operations/system-tables/data_skipping_indices.md) (データスキッピングインデックス用) は、ClickHouseによりよりネイティブな方法で同等の情報を提供します。
+このステートメントは主にMySQLとの互換性のために存在します。システムテーブル [`system.tables`](../../operations/system-tables/tables.md) （主キー用）および[`system.data_skipping_indices`](../../operations/system-tables/data_skipping_indices.md)（データスキッピングインデックス用）は、ClickHouseによりネイティブな形式で同等の情報を提供します。
 
-### Syntax {#syntax-5}
+### 構文 {#syntax-5}
 
 ```sql title="Syntax"
 SHOW [EXTENDED] {INDEX | INDEXES | INDICES | KEYS } {FROM | IN} <table> [{FROM | IN} <db>] [WHERE <expr>] [INTO OUTFILE <filename>] [FORMAT <format>]
 ```
 
-データベースとテーブル名は `<db>.<table>` として省略形で指定でき、  
-つまり`FROM tab FROM db` と `FROM db.tab` が同等です。  
-データベースが指定されていない場合、クエリは現在のデータベースを前提とします。
+データベース名とテーブル名は、 `<db>.<table>` の略称で指定できます。つまり、 `FROM tab FROM db` と `FROM db.tab` は同じです。データベースが指定されていない場合、クエリは現在のデータベースをデータベースと見なします。
 
-オプションのキーワード `EXTENDED` は現在効果がなく、MySQLの互換性のために存在します。
+オプションのキーワード `EXTENDED` は現在無効であり、MySQLとの互換性のために存在します。
 
-ステートメントは次の構造の結果テーブルを生成します：
+このステートメントは以下の構造の結果テーブルを生成します：
 
 | Column          | Description                                                                                                              | Type               |
 |-----------------|--------------------------------------------------------------------------------------------------------------------------|--------------------|
-| `table`         | テーブルの名前。                                                                                                       | `String`           |
-| `non_unique`    | ClickHouseは一意制約を支持していないため、常に `1` 。                                                                          | `UInt8`            |
-| `key_name`      | インデックスの名前、インデックスが主キーインデックスの場合は `PRIMARY`。                                                  | `String`           |
-| `seq_in_index`  | 主キーインデックスの場合、1から始まるカラムの位置。データスキッピングインデックスの場合は常に `1` 。                     | `UInt8`            |
-| `column_name`   | 主キーインデックスの場合、『カラムの名前。データスキッピングインデックスの場合、空文字列、"expression" フィールドを参照。 | `String`           |
-| `collation`     | インデックス内のカラムのソート：昇順の場合は `A`、降順の場合は `D`、ソートされていない場合は `NULL`。                         | `Nullable(String)` |
-| `cardinality`   | インデックスのカーディナリティの推定 (インデックス内の一意の値の数)。現在は常に 0。                                           | `UInt64`           |
-| `sub_part`      | ClickHouseはMySQLのようなインデックスプレフィックスをサポートしないため、常に `NULL`。                                      | `Nullable(String)` |
-| `packed`        | ClickHouseはMySQLのような圧縮されたインデックスをサポートしないため、常に `NULL`。                                         | `Nullable(String)` |
-| `null`          | 現在未使用                                                                                                            |                    |
-| `index_type`    | インデックスのタイプ、例： `PRIMARY`, `MINMAX`, `BLOOM_FILTER` など。                                                     | `String`           |
-| `comment`       | インデックスに関する追加情報、現在は常に空文字列。                                                                        | `String`           |
-| `index_comment` | ClickHouseではインデックスに `COMMENT` フィールドを持つことができないため、空文字列。                                          | `String`           |
-| `visible`       | インデックスがオプティマイザーに見える場合、常に `YES`。                                                                  | `String`           |
-| `expression`    | データスキッピングインデックスの場合、インデックスの式。主キーインデックスの場合は、空文字列。                               | `String`           |
+| `table`         | テーブル名。                                                                                                | `String`           |
+| `non_unique`    | ClickHouseは一意性制約をサポートしていないため常に `1`。                                                             | `UInt8`            |
+| `key_name`      | インデックスの名前。インデックスが主キーインデックスであれば `PRIMARY`。                                                 | `String`           |
+| `seq_in_index`  | 主キーインデックスの場合、1から始まるカラムの位置。データスキッピングインデックスの場合は常に `1`。                          | `UInt8`            |
+| `column_name`   | 主キーインデックスの場合、カラムの名前。データスキッピングインデックスの場合は空の文字列、フィールド "expression" を参照。 | `String`           |
+| `collation`     | インデックス内のカラムのソート：昇順の場合は `A`、降順の場合は `D`、未ソートの場合は `NULL`。                                    | `Nullable(String)` |
+| `cardinality`   | インデックスの推定カーディナリティ（インデックス内の一意な値の数）の推定値。現在は常に0。                                       | `UInt64`           |
+| `sub_part`      | ClickHouseはMySQLのようなインデックスのプレフィックスをサポートしていないため常に `NULL`。                                        | `Nullable(String)` |
+| `packed`        | ClickHouseはMySQLのようなパックインデックスをサポートしていないため常に `NULL`。                                             | `Nullable(String)` |
+| `null`          | 現在未使用                                                                                                         |                    |
+| `index_type`    | インデックスの種類、例： `PRIMARY`、 `MINMAX`、 `BLOOM_FILTER` など。                                                   | `String`           |
+| `comment`       | インデックスに関する追加情報。現在は常に空の文字列。                                                                          | `String`           |
+| `index_comment` | ClickHouseのインデックスには `COMMENT` フィールドがないため、空の文字列。                                                                      | `String`           |
+| `visible`       | インデックスがオプティマイザに見える場合は常に `YES`。                                                                  | `String`           |
+| `expression`    | データスキッピングインデックスの場合、インデックス式。主キーインデックスの場合は空の文字列。                                    | `String`           |
 
-### Examples {#examples-4}
+### 例 {#examples-4}
 
-この例では、`SHOW INDEX` ステートメントを使用して、テーブル 'tbl' のすべてのインデックスに関する情報を取得します。
+この例では、`tbl` テーブルのすべてのインデックスに関する情報を取得するために `SHOW INDEX` ステートメントを使用します。
 
 ```sql title="Query"
 SHOW INDEX FROM 'tbl'
@@ -328,26 +319,25 @@ SHOW INDEX FROM 'tbl'
 └───────┴────────────┴──────────┴──────────────┴─────────────┴───────────┴─────────────┴──────────┴────────┴──────┴──────────────┴─────────┴───────────────┴─────────┴────────────┘
 ```
 
-### See also {#see-also-3}
+### 関連項目 {#see-also-3}
 
 - [`system.tables`](../../operations/system-tables/tables.md)
 - [`system.data_skipping_indices`](../../operations/system-tables/data_skipping_indices.md)
 
 ## SHOW PROCESSLIST {#show-processlist}
 
-[`system.processes`](/operations/system-tables/processes) テーブルの内容を出力します。  
-このテーブルには、現在処理中のクエリのリストが含まれており、 `SHOW PROCESSLIST` クエリは除外されます。
+[`system.processes`](/operations/system-tables/processes) テーブルの内容を出力します。このテーブルには、現在処理中のクエリのリストが含まれ、 `SHOW PROCESSLIST` クエリは除外されます。
 
-### Syntax {#syntax-6}
+### 構文 {#syntax-6}
 
 ```sql title="Syntax"
 SHOW PROCESSLIST [INTO OUTFILE filename] [FORMAT format]
 ```
 
-`SELECT * FROM system.processes` クエリは、現在のすべてのクエリに関するデータを返します。
+`SELECT * FROM system.processes` クエリは、すべての現在のクエリに関するデータを返します。
 
 :::tip
-コンソールで実行する：
+コンソールで実行します：
 
 ```bash
 $ watch -n1 "clickhouse-client --query='SHOW PROCESSLIST'"
@@ -358,7 +348,7 @@ $ watch -n1 "clickhouse-client --query='SHOW PROCESSLIST'"
 
 `SHOW GRANTS` ステートメントは、ユーザーの権限を表示します。
 
-### Syntax {#syntax-7}
+### 構文 {#syntax-7}
 
 ```sql title="Syntax"
 SHOW GRANTS [FOR user1 [, user2 ...]] [WITH IMPLICIT] [FINAL]
@@ -366,15 +356,15 @@ SHOW GRANTS [FOR user1 [, user2 ...]] [WITH IMPLICIT] [FINAL]
 
 ユーザーが指定されていない場合、クエリは現在のユーザーの権限を返します。
 
-`WITH IMPLICIT` 修飾子を使うと、暗黙の権限（例： `GRANT SELECT ON system.one`）を表示できます。
+`WITH IMPLICIT` 修飾子を使用すると、暗黙の権限（例： `GRANT SELECT ON system.one`）を表示できます。
 
-`FINAL` 修飾子は、ユーザーとその付与されたロール（継承を含む）のすべての権限をマージします。
+`FINAL` 修飾子は、ユーザーとその付与されたロール（継承あり）からのすべての権限をマージします。
 
 ## SHOW CREATE USER {#show-create-user}
 
-`SHOW CREATE USER` ステートメントは、[ユーザー作成時](../../sql-reference/statements/create/user.md) に使用されたパラメーターを表示します。
+`SHOW CREATE USER` ステートメントは、[ユーザー作成](../../sql-reference/statements/create/user.md)時に使用されたパラメータを示します。
 
-### Syntax {#syntax-8}
+### 構文 {#syntax-8}
 
 ```sql title="Syntax"
 SHOW CREATE USER [name1 [, name2 ...] | CURRENT_USER]
@@ -382,9 +372,9 @@ SHOW CREATE USER [name1 [, name2 ...] | CURRENT_USER]
 
 ## SHOW CREATE ROLE {#show-create-role}
 
-`SHOW CREATE ROLE` ステートメントは、[ロール作成時](../../sql-reference/statements/create/role.md) に使用されたパラメーターを表示します。
+`SHOW CREATE ROLE` ステートメントは、[ロール作成](../../sql-reference/statements/create/role.md)時に使用されたパラメータを示します。
 
-### Syntax {#syntax-9}
+### 構文 {#syntax-9}
 
 ```sql title="Syntax"
 SHOW CREATE ROLE name1 [, name2 ...]
@@ -392,9 +382,9 @@ SHOW CREATE ROLE name1 [, name2 ...]
 
 ## SHOW CREATE ROW POLICY {#show-create-row-policy}
 
-`SHOW CREATE ROW POLICY` ステートメントは、[行ポリシー作成時](../../sql-reference/statements/create/row-policy.md) に使用されたパラメーターを表示します。
+`SHOW CREATE ROW POLICY` ステートメントは、[ロウポリシー作成](../../sql-reference/statements/create/row-policy.md)時に使用されたパラメータを示します。
 
-### Syntax {#syntax-10}
+### 構文 {#syntax-10}
 
 ```sql title="Syntax"
 SHOW CREATE [ROW] POLICY name ON [database1.]table1 [, [database2.]table2 ...]
@@ -402,9 +392,9 @@ SHOW CREATE [ROW] POLICY name ON [database1.]table1 [, [database2.]table2 ...]
 
 ## SHOW CREATE QUOTA {#show-create-quota}
 
-`SHOW CREATE QUOTA` ステートメントは、[クォータ作成時](../../sql-reference/statements/create/quota.md) に使用されたパラメーターを表示します。
+`SHOW CREATE QUOTA` ステートメントは、[クォータ作成](../../sql-reference/statements/create/quota.md)時に使用されたパラメータを示します。
 
-### Syntax {#syntax-11}
+### 構文 {#syntax-11}
 
 ```sql title="Syntax"
 SHOW CREATE QUOTA [name1 [, name2 ...] | CURRENT]
@@ -412,9 +402,9 @@ SHOW CREATE QUOTA [name1 [, name2 ...] | CURRENT]
 
 ## SHOW CREATE SETTINGS PROFILE {#show-create-settings-profile}
 
-`SHOW CREATE SETTINGS PROFILE` ステートメントは、[設定プロファイル作成時](../../sql-reference/statements/create/settings-profile.md) に使用されたパラメーターを表示します。
+`SHOW CREATE SETTINGS PROFILE` ステートメントは、[設定プロファイル作成](../../sql-reference/statements/create/settings-profile.md)時に使用されたパラメータを示します。
 
-### Syntax {#syntax-12}
+### 構文 {#syntax-12}
 
 ```sql title="Syntax"
 SHOW CREATE [SETTINGS] PROFILE name1 [, name2 ...]
@@ -422,10 +412,9 @@ SHOW CREATE [SETTINGS] PROFILE name1 [, name2 ...]
 
 ## SHOW USERS {#show-users}
 
-`SHOW USERS` ステートメントは、[ユーザーアカウント](../../guides/sre/user-management/index.md#user-account-management)名のリストを返します。  
-ユーザーアカウントパラメータを表示するには、システムテーブル [`system.users`](/operations/system-tables/users) を参照してください。
+`SHOW USERS` ステートメントは、[ユーザーアカウント](../../guides/sre/user-management/index.md#user-account-management)の名前のリストを返します。ユーザーアカウントパラメータを見るには、システムテーブル [`system.users`](/operations/system-tables/users) を参照してください。
 
-### Syntax {#syntax-13}
+### 構文 {#syntax-13}
 
 ```sql title="Syntax"
 SHOW USERS
@@ -433,10 +422,9 @@ SHOW USERS
 
 ## SHOW ROLES {#show-roles}
 
-`SHOW ROLES` ステートメントは、[ロール](../../guides/sre/user-management/index.md#role-management)のリストを返します。  
-他のパラメータを表示するには、システムテーブル [`system.roles`](/operations/system-tables/roles) および [`system.role_grants`](/operations/system-tables/role-grants) を参照してください。
+`SHOW ROLES` ステートメントは、[ロール](../../guides/sre/user-management/index.md#role-management)のリストを返します。他のパラメータを表示するには、システムテーブル [`system.roles`](/operations/system-tables/roles) と [`system.role_grants`](/operations/system-tables/role_grants) を参照してください。
 
-### Syntax {#syntax-14}
+### 構文 {#syntax-14}
 
 ```sql title="Syntax"
 SHOW [CURRENT|ENABLED] ROLES
@@ -444,10 +432,9 @@ SHOW [CURRENT|ENABLED] ROLES
 
 ## SHOW PROFILES {#show-profiles}
 
-`SHOW PROFILES` ステートメントは、[設定プロファイル](../../guides/sre/user-management/index.md#settings-profiles-management)のリストを返します。  
-ユーザーアカウントパラメータを表示するには、システムテーブル [`settings_profiles`](/operations/system-tables/settings_profiles) を参照してください。
+`SHOW PROFILES` ステートメントは、[設定プロファイル](../../guides/sre/user-management/index.md#settings-profiles-management)のリストを返します。ユーザーアカウントパラメータを見るには、システムテーブル [`settings_profiles`](/operations/system-tables/settings_profiles) を参照してください。
 
-### Syntax {#syntax-15}
+### 構文 {#syntax-15}
 
 ```sql title="Syntax"
 SHOW [SETTINGS] PROFILES
@@ -455,10 +442,9 @@ SHOW [SETTINGS] PROFILES
 
 ## SHOW POLICIES {#show-policies}
 
-`SHOW POLICIES` ステートメントは、指定されたテーブルに対する[行ポリシー](../../guides/sre/user-management/index.md#row-policy-management)のリストを返します。  
-ユーザーアカウントパラメータを表示するには、システムテーブル [`system.row_policies`](/operations/system-tables/row_policies) を参照してください。
+`SHOW POLICIES` ステートメントは、指定されたテーブルの[ロウポリシー](../../guides/sre/user-management/index.md#row-policy-management)のリストを出力します。ユーザーアカウントパラメータを確認するには、システムテーブル [`system.row_policies`](/operations/system-tables/row_policies) を参照してください。
 
-### Syntax {#syntax-16}
+### 構文 {#syntax-16}
 
 ```sql title="Syntax"
 SHOW [ROW] POLICIES [ON [db.]table]
@@ -466,10 +452,9 @@ SHOW [ROW] POLICIES [ON [db.]table]
 
 ## SHOW QUOTAS {#show-quotas}
 
-`SHOW QUOTAS` ステートメントは、[クォータ](../../guides/sre/user-management/index.md#quotas-management)のリストを返します。  
-クォータパラメータを表示するには、システムテーブル [`system.quotas`](/operations/system-tables/quotas) を参照してください。
+`SHOW QUOTAS` ステートメントは、[クォータ](../../guides/sre/user-management/index.md#quotas-management)のリストを返します。クォータパラメータを確認するには、システムテーブル [`system.quotas`](/operations/system-tables/quotas) を参照してください。
 
-### Syntax {#syntax-17}
+### 構文 {#syntax-17}
 
 ```sql title="Syntax"
 SHOW QUOTAS
@@ -477,10 +462,9 @@ SHOW QUOTAS
 
 ## SHOW QUOTA {#show-quota}
 
-`SHOW QUOTA` ステートメントは、すべてのユーザーまたは現在のユーザーの[クォータ](../../operations/quotas.md)消費量を返します。  
-他のパラメータを表示するには、システムテーブル [`system.quotas_usage`](/operations/system-tables/quotas_usage) および [`system.quota_usage`](/operations/system-tables/quota_usage) を参照してください。
+`SHOW QUOTA` ステートメントは、すべてのユーザーまたは現在のユーザーの[クォータ](../../operations/quotas.md)の消費状況を返します。他のパラメータを表示するには、システムテーブル [`system.quotas_usage`](/operations/system-tables/quotas_usage) と [`system.quota_usage`](/operations/system-tables/quota_usage) を参照してください。
 
-### Syntax {#syntax-18}
+### 構文 {#syntax-18}
 
 ```sql title="Syntax"
 SHOW [CURRENT] QUOTA
@@ -488,9 +472,9 @@ SHOW [CURRENT] QUOTA
 
 ## SHOW ACCESS {#show-access}
 
-`SHOW ACCESS` ステートメントは、すべての[ユーザー](../../guides/sre/user-management/index.md#user-account-management)、[ロール](../../guides/sre/user-management/index.md#role-management)、[プロファイル](../../guides/sre/user-management/index.md#settings-profiles-management)などとそのすべての[権限](../../sql-reference/statements/grant.md#privileges)を表示します。
+`SHOW ACCESS` ステートメントは、すべての[ユーザー](../../guides/sre/user-management/index.md#user-account-management)、[ロール](../../guides/sre/user-management/index.md#role-management)、[プロファイル](../../guides/sre/user-management/index.md#settings-profiles-management)など、およびそのすべての[権限](../../sql-reference/statements/grant.md#privileges)を表示します。
 
-### Syntax {#syntax-19}
+### 構文 {#syntax-19}
 
 ```sql title="Syntax"
 SHOW ACCESS
@@ -498,21 +482,20 @@ SHOW ACCESS
 
 ## SHOW CLUSTER(S) {#show-clusters}
 
-`SHOW CLUSTER(S)` ステートメントは、クラスタのリストを返します。  
-すべての利用可能なクラスタは、[`system.clusters`](../../operations/system-tables/clusters.md) テーブルにリストされています。
+`SHOW CLUSTER(S)` ステートメントはクラスターのリストを返します。すべての利用可能なクラスターは [`system.clusters`](../../operations/system-tables/clusters.md) テーブルにリストされています。
 
 :::note
-`SHOW CLUSTER name` クエリは指定されたクラスタ名に対して、 `system.clusters` テーブルから `cluster`、`shard_num`、`replica_num`、`host_name`、`host_address`、`port` を表示します。
+`SHOW CLUSTER name` クエリは、指定されたクラスター名の `system.clusters` テーブルに対して `cluster`、 `shard_num`、 `replica_num`、 `host_name`、 `host_address`、および `port` を表示します。
 :::
 
-### Syntax {#syntax-20}
+### 構文 {#syntax-20}
 
 ```sql title="Syntax"
 SHOW CLUSTER '<name>'
 SHOW CLUSTERS [[NOT] LIKE|ILIKE '<pattern>'] [LIMIT <N>]
 ```
 
-### Examples {#examples-5}
+### 例 {#examples-5}
 
 ```sql title="Query"
 SHOW CLUSTERS;
@@ -556,25 +539,23 @@ port:                    9000
 
 ## SHOW SETTINGS {#show-settings}
 
-`SHOW SETTINGS` ステートメントは、システム設定とその値のリストを返します。  
-[`system.settings`](../../operations/system-tables/settings.md) テーブルからデータを選択します。
+`SHOW SETTINGS` ステートメントは、システム設定とその値のリストを返します。これは、[`system.settings`](../../operations/system-tables/settings.md) テーブルからデータを選択します。
 
-### Syntax {#syntax-21}
+### 構文 {#syntax-21}
 
 ```sql title="Syntax"
 SHOW [CHANGED] SETTINGS LIKE|ILIKE <name>
 ```
 
-### Clauses {#clauses}
+### 句 {#clauses}
 
-`LIKE|ILIKE` は、設定名に対する一致パターンを指定することを可能にします。  
-ワイルドカード（ `%` や `_` ）を含めることができます。 `LIKE` 句は大文字小文字を区別し、`ILIKE` は区別しません。
+`LIKE|ILIKE` は設定名に対するマッチングパターンを指定できます。 `%` や `_` のようなグロブを含めることができます。 `LIKE` 句は大文字小文字を区別し、 `ILIKE` は大文字小文字を区別しません。
 
-`CHANGED` 句が使用されている場合、クエリはデフォルト値から変更された設定のみを返します。
+`CHANGED` 句が使用されると、クエリはデフォルト値から変更された設定のみを返します。
 
-### Examples {#examples-6}
+### 例 {#examples-6}
 
-`LIKE` 句を使用したクエリ：
+`LIKE` 句を持つクエリ：
 
 ```sql title="Query"
 SHOW SETTINGS LIKE 'send_timeout';
@@ -586,7 +567,7 @@ SHOW SETTINGS LIKE 'send_timeout';
 └──────────────┴─────────┴───────┘
 ```
 
-`ILIKE` 句を使用したクエリ：
+`ILIKE` 句を持つクエリ：
 
 ```sql title="Query"
 SHOW SETTINGS ILIKE '%CONNECT_timeout%'
@@ -600,7 +581,7 @@ SHOW SETTINGS ILIKE '%CONNECT_timeout%'
 └─────────────────────────────────────────┴──────────────┴───────┘
 ```
 
-`CHANGED` 句を使用したクエリ：
+`CHANGED` 句を持つクエリ：
 
 ```sql title="Query"
 SHOW CHANGED SETTINGS ILIKE '%MEMORY%'
@@ -616,19 +597,19 @@ SHOW CHANGED SETTINGS ILIKE '%MEMORY%'
 
 `SHOW SETTING` ステートメントは、指定された設定名の設定値を出力します。
 
-### Syntax {#syntax-22}
+### 構文 {#syntax-22}
 
 ```sql title="Syntax"
 SHOW SETTING <name>
 ```
 
-### See also {#see-also-4}
+### 関連項目 {#see-also-4}
 
 - [`system.settings`](../../operations/system-tables/settings.md) テーブル
 
 ## SHOW FILESYSTEM CACHES {#show-filesystem-caches}
 
-### Examples {#examples-7}
+### 例 {#examples-7}
 
 ```sql title="Query"
 SHOW FILESYSTEM CACHES
@@ -640,22 +621,21 @@ SHOW FILESYSTEM CACHES
 └───────────┘
 ```
 
-### See also {#see-also-5}
+### 関連項目 {#see-also-5}
 
 - [`system.settings`](../../operations/system-tables/settings.md) テーブル
 
 ## SHOW ENGINES {#show-engines}
 
-`SHOW ENGINES` ステートメントは、[`system.table_engines`](../../operations/system-tables/table_engines.md) テーブルの内容を出力します。  
-このテーブルには、サーバーがサポートするテーブルエンジンの説明とその機能サポート情報が含まれています。
+`SHOW ENGINES` ステートメントは、[`system.table_engines`](../../operations/system-tables/table_engines.md) テーブルの内容を出力します。このテーブルには、サーバーによってサポートされるテーブルエンジンの説明とその機能サポート情報が含まれています。
 
-### Syntax {#syntax-23}
+### 構文 {#syntax-23}
 
 ```sql title="Syntax"
 SHOW ENGINES [INTO OUTFILE filename] [FORMAT format]
 ```
 
-### See also {#see-also-6}
+### 関連項目 {#see-also-6}
 
 - [system.table_engines](../../operations/system-tables/table_engines.md) テーブル
 
@@ -663,41 +643,40 @@ SHOW ENGINES [INTO OUTFILE filename] [FORMAT format]
 
 `SHOW FUNCTIONS` ステートメントは、[`system.functions`](../../operations/system-tables/functions.md) テーブルの内容を出力します。
 
-### Syntax {#syntax-24}
+### 構文 {#syntax-24}
 
 ```sql title="Syntax"
 SHOW FUNCTIONS [LIKE | ILIKE '<pattern>']
 ```
 
-`LIKE` または `ILIKE` 句が指定されている場合、クエリは指定された `<pattern>` に一致するシステム関数のリストを返します。
+`LIKE` または `ILIKE` 句が指定された場合、クエリは提供された `<pattern>` に一致するシステム関数のリストを返します。
 
-### See Also {#see-also-7}
+### 関連項目 {#see-also-7}
 
 - [`system.functions`](../../operations/system-tables/functions.md) テーブル
 
 ## SHOW MERGES {#show-merges}
 
-`SHOW MERGES` ステートメントは、マージのリストを返します。  
-すべてのマージは [`system.merges`](../../operations/system-tables/merges.md) テーブルにリストされています：
+`SHOW MERGES` ステートメントは、マージのリストを返します。すべてのマージは、[`system.merges`](../../operations/system-tables/merges.md) テーブルにリストされています：
 
 | Column              | Description                                                |
 |---------------------|------------------------------------------------------------|
-| `table`             | テーブル名。                                               |
-| `database`          | テーブルが属するデータベース名。                         |
-| `estimate_complete` | 完了推定時間（秒単位）。                                 |
-| `elapsed`           | マージが開始されてから経過した時間（秒単位）。           |
-| `progress`          | 完了した作業の割合（0-100％）。                          |
-| `is_mutation`       | このプロセスが部分的なマージであれば 1。                  |
-| `size_compressed`   | マージされた部分の圧縮データの合計サイズ。               |
-| `memory_usage`      | マージプロセスのメモリ消費。                             |
+| `table`             | テーブル名。                                                |
+| `database`          | テーブルがあるデータベースの名前。                          |
+| `estimate_complete` | 完了推定時間（秒単位）。                                   |
+| `elapsed`           | マージが開始されてから経過した時間（秒単位）。               |
+| `progress`          | 完了した作業の割合（0-100％）。                           |
+| `is_mutation`       | このプロセスが部分的な変異であれば1。                       |
+| `size_compressed`   | マージされたパーツの圧縮データの合計サイズ。                |
+| `memory_usage`      | マージプロセスのメモリ消費。                               |
 
-### Syntax {#syntax-25}
+### 構文 {#syntax-25}
 
 ```sql title="Syntax"
 SHOW MERGES [[NOT] LIKE|ILIKE '<table_name_pattern>'] [LIMIT <N>]
 ```
 
-### Examples {#examples-8}
+### 例 {#examples-8}
 
 ```sql title="Query"
 SHOW MERGES;

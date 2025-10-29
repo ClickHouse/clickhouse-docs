@@ -1,6 +1,6 @@
 ---
 'title': '管理数据'
-'description': '用于可观察性的管理数据'
+'description': '用于可观测性的管理数据'
 'slug': '/observability/managing-data'
 'keywords':
 - 'observability'
@@ -11,26 +11,26 @@
 - 'Grafana'
 - 'OTel'
 'show_related_blogs': true
+'doc_type': 'guide'
 ---
 
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';
 import Image from '@theme/IdealImage';
 
 
+# 管理数据
 
-# 数据管理
-
-用于可观察性的 ClickHouse 部署不可避免地涉及大量数据集，这些数据集需要进行管理。ClickHouse 提供多种功能以协助数据管理。
+用于可观察性的 ClickHouse 部署不可避免地涉及大量数据集，这需要进行管理。ClickHouse 提供了一系列功能以协助进行数据管理。
 
 ## 分区 {#partitions}
 
-ClickHouse 中的分区允许根据列或 SQL 表达式在磁盘上逻辑上分隔数据。通过逻辑上分隔数据，每个分区可以独立操作，例如删除。这使得用户能够有效地在存储层之间移动分区，从而有效地过期数据或从集群中删除数据 [expire data/efficiently delete from a cluster](/sql-reference/statements/alter/partition)。
+在 ClickHouse 中，分区允许根据列或 SQL 表达式在磁盘上逻辑上分离数据。通过逻辑分离数据，每个分区可以独立操作，例如被删除。这使得用户可以在存储层之间高效地移动分区，从而高效地[过期数据/从集群中高效删除](/sql-reference/statements/alter/partition)。
 
-分区在表最初定义时通过 `PARTITION BY` 子句指定。该子句可以包含任何列的 SQL 表达式，其结果将定义一行被发送到的分区。
+分区在表初始定义时通过 `PARTITION BY` 子句指定。此子句可以包含对任意列的 SQL 表达式，其结果将定义一行被发送到哪个分区。
 
-<Image img={observability_14} alt="Partitions" size="md"/>
+<Image img={observability_14} alt="分区" size="md"/>
 
-数据片段在磁盘上与每个分区逻辑上相关联（通过共同的文件夹名称前缀），可以单独查询。下面的示例中，默认的 `otel_logs` 模式按天分区，使用表达式 `toDate(Timestamp)`。随着行被插入到 ClickHouse 中，该表达式将针对每一行进行评估，并在存在时路由到结果分区（如果该行是一天中的第一行，则会创建该分区）。
+数据部分在磁盘上与每个分区逻辑上关联（通过一个共同的文件夹名称前缀），并可以单独查询。以下示例中，默认的 `otel_logs` 模式通过使用表达式 `toDate(Timestamp)` 按天分区。当数据行插入到 ClickHouse 中时，此表达式将被评估针对每一行，并且如果存在，则路由到相应的分区（如果该行是某一天的第一行，则将创建该分区）。
 
 ```sql
 CREATE TABLE default.otel_logs
@@ -42,9 +42,9 @@ PARTITION BY toDate(Timestamp)
 ORDER BY (ServiceName, SeverityText, toUnixTimestamp(Timestamp), TraceId)
 ```
 
-可以在分区上执行 [多种操作](/sql-reference/statements/alter/partition)，包括 [备份](/sql-reference/statements/alter/partition#freeze-partition)、[列操作](/sql-reference/statements/alter/partition#clear-column-in-partition)、突变 [更改](/sql-reference/statements/alter/partition#update-in-partition)/[删除](/sql-reference/statements/alter/partition#delete-in-partition) 行的数据以及 [索引清除（例如，二级索引）](/sql-reference/statements/alter/partition#clear-index-in-partition)。
+可以对分区执行[多种操作](/sql-reference/statements/alter/partition)，包括[备份](/sql-reference/statements/alter/partition#freeze-partition)、[列操作](/sql-reference/statements/alter/partition#clear-column-in-partition)、变更[修改](/sql-reference/statements/alter/partition#update-in-partition)/[删除](/sql-reference/statements/alter/partition#delete-in-partition)数据（按行）和[索引清除（例如，次级索引）](/sql-reference/statements/alter/partition#clear-index-in-partition)。
 
-例如，假设我们的 `otel_logs` 表按天分区。如果填充结构化日志数据集，它将包含几天的数据：
+作为一个例子，假设我们的 `otel_logs` 表按天进行分区。如果填充了结构化日志数据集，则会包含几天的数据：
 
 ```sql
 SELECT Timestamp::Date AS day,
@@ -65,7 +65,7 @@ ORDER BY c DESC
 Peak memory usage: 4.41 MiB.
 ```
 
-可以使用简单的系统表查询来查找当前分区：
+当前分区可以使用简单的系统表查询找到：
 
 ```sql
 SELECT DISTINCT partition
@@ -83,7 +83,7 @@ WHERE `table` = 'otel_logs'
 5 rows in set. Elapsed: 0.005 sec.
 ```
 
-我们可能还有另一个表 `otel_logs_archive`，用于存储较旧的数据。数据可以按照分区有效地移动到此表（这仅是元数据的变化）。
+我们可能还有另一个表 `otel_logs_archive`，用于存储旧数据。可以通过分区高效地将数据移动到此表（这只是一个元数据更改）。
 
 ```sql
 CREATE TABLE otel_logs_archive AS otel_logs
@@ -122,13 +122,13 @@ ORDER BY c DESC
 Peak memory usage: 4.99 MiB.
 ```
 
-这与其他技术形成对比，这些技术需要使用 `INSERT INTO SELECT` 并将数据重新写入新的目标表。
+这与其他技术形成对比，后者需要使用 `INSERT INTO SELECT` 并将数据重新写入新目标表。
 
 :::note 移动分区
-[在表之间移动分区](/sql-reference/statements/alter/partition#move-partition-to-table) 需要满足多个条件，尤其是表必须具有相同的结构、分区键、主键以及索引/投影。在 `ALTER` DDL 中如何指定分区的详细说明可以在 [这里](/sql-reference/statements/alter/partition#how-to-set-partition-expression) 找到。
+[在表之间移动分区](/sql-reference/statements/alter/partition#move-partition-to-table)需要满足多个条件，其中包括表必须具有相同的结构、分区键、主键和索引/投影。关于如何在 `ALTER` DDL 中指定分区的详细说明可以在[这里](/sql-reference/statements/alter/partition#how-to-set-partition-expression)找到。
 :::
 
-此外，数据可以按分区有效地删除。这比替代技术（突变或轻量级删除）更具资源效率，应该优先考虑。
+此外，可以按分区高效地删除数据。这比其他技术（变更或轻量级删除）更有效率，并且应该优先考虑。
 
 ```sql
 ALTER TABLE otel_logs
@@ -148,32 +148,31 @@ ORDER BY c DESC
 ```
 
 :::note
-当使用设置 [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) 时，此功能被 TTL 利用。有关详细信息，请参见 [使用 TTL 进行数据管理](#data-management-with-ttl-time-to-live)。
+当使用设置 [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) 时，该功能已被 TTL 利用。有关详细信息，请参见[使用 TTL 进行数据管理](#data-management-with-ttl-time-to-live)。
 :::
-
 
 ### 应用 {#applications}
 
-上述示例说明了如何有效地按分区移动和操作数据。实际上，用户可能在可观察性用例中最频繁地利用分区操作的两种情况：
+上述内容说明了如何通过分区高效地移动和操作数据。在实际操作中，用户可能在可观察性用例中最频繁使用分区操作以用于两个场景：
 
-- **分层架构** - 在存储层之间移动数据（参考 [存储层](#storage-tiers)），从而构建热冷架构。
-- **有效删除** - 当数据达到指定的 TTL（参考 [使用 TTL 进行数据管理](#data-management-with-ttl-time-to-live)）
+- **分层架构** - 在存储层之间移动数据（见[存储层](#storage-tiers)），从而构建热-冷架构。
+- **高效删除** - 当数据达到指定的 TTL 时（见[使用 TTL 进行数据管理](#data-management-with-ttl-time-to-live)）
 
-以下我们将详细探讨这两种情况。
+我们将在下面详细探讨这两点。
 
 ### 查询性能 {#query-performance}
 
-虽然分区可以协助提高查询性能，但这在很大程度上取决于访问模式。如果查询仅针对少数几个分区（理想情况下是一个），性能可能会有所提升。这通常只有在分区键不在主键中且您正在按其过滤时才有用。但是，需要覆盖许多分区的查询性能可能比不使用分区的性能更差（因为可能存在更多的片段）。如果分区键已经是主键中的一个早期条目，针对单个分区的好处将更加微不足道。分区还可以用于 [优化 GROUP BY 查询](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key)，如果每个分区中的值是唯一的。然而，通常用户应该确保主键已优化，仅在访问模式访问数据的特定可预测子集时考虑将分区作为查询优化技术，例如按日分区，并且大多数查询在过去的一天内。有关此行为的示例，请参见 [这里](https://medium.com/datadenys/using-partitions-in-clickhouse-3ea0decb89c4)。
+虽然分区可以帮助提高查询性能，但这在很大程度上取决于访问模式。如果查询只针对少数几个分区（理想情况下为一个），性能可能会有所改善。仅当分区键不在主键中而且您按其过滤时，这通常是有用的。但是，覆盖许多分区的查询可能会比不使用分区的性能更差（因为可能有更多部分）。如果分区键已经是主键中的早期条目，则单个分区的目标优势将显得微不足道甚至不存在。如果每个分区中的值是唯一的，分区还可以用于[优化 GROUP BY 查询](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key)。但一般来说，用户应确保主键得到优化，并仅在访问模式访问特定可预测数据子集的特殊情况下考虑将分区作为查询优化技术，例如按天分区，而大多数查询集中在最后一天。有关此行为的示例，请参见[这里](https://medium.com/datadenys/using-partitions-in-clickhouse-3ea0decb89c4)。
 
 ## 使用 TTL（生存时间）进行数据管理 {#data-management-with-ttl-time-to-live}
 
-生存时间（TTL）是 ClickHouse 支持的可观察性解决方案中有效数据保留和管理的重要特性，特别是考虑到大量数据持续生成。在 ClickHouse 中实施 TTL 允许自动过期和删除较旧数据，确保以最佳方式使用存储并在无需手动干预的情况下维护性能。此功能对于保持数据库精简、降低存储成本，并确保查询维持快速和高效至关重要，通过专注于最相关和最新的数据。此外，它有助于遵循数据保留政策，通过系统地管理数据生命周期，从而增强可观察性解决方案的整体可持续性和可扩展性。
+生存时间（TTL）是由 ClickHouse 提供的可观察性解决方案中的关键特性，用于高效的数据保留和管理，尤其是考虑到大量数据不断生成。 在 ClickHouse 中实施 TTL 使得旧数据的自动过期和删除成为可能，从而确保存储被最佳利用，且性能在没有人工干预的情况下维持。这一能力对保持数据库高效，减少存储成本，并确保查询专注于最相关和最新的数据，使其保持快速高效至关重要。此外，它通过系统地管理数据生命周期，帮助满足数据保留政策，从而提升可观察性解决方案的整体可持续性和可扩展性。
 
-TTL 可以在 ClickHouse 中指定在表级或列级。
+TTL 可以在 ClickHouse 中针对表或列级别指定。
 
 ### 表级 TTL {#table-level-ttl}
 
-日志和跟踪的默认模式包括一个 TTL，以在指定时间段后使数据过期。这在 ClickHouse 导出程序中通过 `ttl` 键指定，例如：
+日志和跟踪的默认模式包括在指定时间段后过期数据的 TTL。这在 ClickHouse 导出器中通过 `ttl` 键指定，例如：
 
 ```yaml
 exporters:
@@ -182,7 +181,7 @@ exporters:
    ttl: 72h
 ```
 
-此语法当前支持 [Golang Duration syntax](https://pkg.go.dev/time#ParseDuration)。**我们建议用户使用 `h` 并确保这与分区周期保持一致。例如，如果您按天分区，请确保它是天数的倍数，例如 24h、48h、72h。** 这将自动确保将 TTL 子句添加到表中，例如：如果 `ttl: 96h`。
+该语法当前支持 [Golang Duration 语法](https://pkg.go.dev/time#ParseDuration)。**我们建议用户使用 `h` 并确保这与分区期对齐。例如，如果按天分区，确保它是天数的倍数，例如 24h、48h、72h。** 这将自动确保将 TTL 子句添加到表中，例如如果 `ttl: 96h`。
 
 ```sql
 PARTITION BY toDate(Timestamp)
@@ -191,17 +190,17 @@ TTL toDateTime(Timestamp) + toIntervalDay(4)
 SETTINGS ttl_only_drop_parts = 1
 ```
 
-默认情况下，当 ClickHouse [合并数据片段](/engines/table-engines/mergetree-family/mergetree#mergetree-data-storage) 时，将删除过期 TTL 的数据。当 ClickHouse 检测到数据已过期时，执行一个非计划的合并。
+默认情况下，过期 TTL 的数据在 ClickHouse [合并数据部分](/engines/table-engines/mergetree-family/mergetree#mergetree-data-storage) 时被删除。当 ClickHouse 检测到数据过期时，它会执行非定期合并。
 
 :::note 定期 TTL
-TTL 不是立即应用的，而是按计划应用的，如上所述。MergeTree 表设置 `merge_with_ttl_timeout` 设置在带有删除 TTL 的合并重复之前的最小延迟（以秒为单位）。默认值为 14400 秒（4 小时）。但这只是最低延迟，可能需要更长时间才能触发 TTL 合并。如果该值过低，将执行许多非计划合并，这可能会消耗大量资源。可以使用命令 `ALTER TABLE my_table MATERIALIZE TTL` 强制执行 TTL 过期。
+TTL 不会立即应用，而是根据计划应用，如上所述。MergeTree 表设置 `merge_with_ttl_timeout` 设置重复合并带有删除 TTL 的最小延迟（以秒为单位）。默认值为 14400 秒（4 小时）。但这只是最小延迟，它可能会花费更长时间才能触发 TTL 合并。如果值设置得过低，将会进行许多非定期合并，这可能会消耗大量资源。可以使用命令 `ALTER TABLE my_table MATERIALIZE TTL` 强制执行 TTL 到期。
 :::
 
-**重要：我们建议使用设置 [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts)**（由默认模式应用）。启用此设置后，ClickHouse 会在所有行都过期时丢弃整个部分。丢弃整个部分而不是部分清理 TTL-d 行（通过资源密集型突变实现，当 `ttl_only_drop_parts=0`）允许更短的 `merge_with_ttl_timeout` 时间和对系统性能的较低影响。如果数据按您执行 TTL 过期的相同单元分区，例如天，则部分将自然仅包含定义区间内的数据。这将确保 `ttl_only_drop_parts=1` 可以被有效地应用。
+**重要：我们建议使用设置 [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts)**（应用于默认模式）。启用此设置时，ClickHouse 在所有行均过期时会丢弃整个部分。丢弃整个部分而不是对 TTL 的行进行部分清理（通过资源密集型变更实现，当 `ttl_only_drop_parts=0` 时），可以缩短 `merge_with_ttl_timeout` 的时间并降低对系统性能的影响。如果数据按您进行 TTL 过期的相同单位（例如天）进行分区，则部分将自然仅包含来自定义间隔的数据。这将确保可以高效应用 `ttl_only_drop_parts=1`。
 
 ### 列级 TTL {#column-level-ttl}
 
-上述示例在表级过期数据。用户还可以在列级过期数据。随着数据老化，这可以用于删除在调查中其值无法 justify 的资源开销的列。例如，我们建议保留 `Body` 列，以防添加新动态元数据，而在插入时尚未提取，例如新的 Kubernetes 标签。在一段时间后，例如 1 个月，可能显然该附加元数据没有用处 - 从而限制了保留 `Body` 列的价值。
+上述示例在表级别过期数据。用户还可以在列级别过期数据。随着数据老化，可以用来删除在调查中其值不值得保留其资源开销的列。例如，我们建议保留 `Body` 列，以防在插入时未提取的新动态元数据，例如新的 Kubernetes 标签。在一段时间后，例如 1 个月，可能会明显发现这些额外的元数据没有用，从而限制了保留 `Body` 列的价值。
 
 下面，我们展示如何在 30 天后删除 `Body` 列。
 
@@ -217,14 +216,14 @@ ORDER BY (ServiceName, Timestamp)
 ```
 
 :::note
-指定列级 TTL 要求用户指定自己的模式。这不能在 OTel 收集器中指定。
+指定列级 TTL 需要用户自行指定模式。此设置不能在 OTel 收集器中指定。
 :::
 
 ## 重新压缩数据 {#recompressing-data}
 
-虽然我们通常推荐在观察数据集上使用 `ZSTD(1)`，用户可以尝试不同的压缩算法或更高的压缩级别，例如 `ZSTD(3)`。除了可以在架构创建时指定此设置外，压缩设置还可以在设置的时间段后更改。如果编解码器或压缩算法改善了压缩但导致查询性能下降，这可能是合适的。这种权衡可能在较旧的数据上是不可接受的，因为这些数据的查询频率较低，而对于最近的数据，则更常用于调查。
+虽然我们通常建议对可观察性数据集使用 `ZSTD(1)`，但用户可以尝试不同的压缩算法或更高的压缩级别，例如 `ZSTD(3)`。除了可以在模式创建时指定此项外，还可以配置在设定的时间段后进行更改。如果编解码器或压缩算法能够改善压缩，但导致查询性能下降，这可能是合适的。这种权衡可能在旧数据的情况下是可接受的，因为其查询频率较低，但对于频繁在调查中使用的最近数据，则不适用。
 
-以下是一个示例，我们在 4 天后使用 `ZSTD(3)` 压缩数据，而不是删除它。
+下面的示例中，我们在 4 天后使用 `ZSTD(3)` 压缩数据，而不是删除它。
 
 ```sql
 CREATE TABLE default.otel_logs_v2
@@ -253,36 +252,36 @@ TTL Timestamp + INTERVAL 4 DAY RECOMPRESS CODEC(ZSTD(3))
 ```
 
 :::note 评估性能
-我们建议用户始终评估不同压缩级别和算法的插入和查询性能影响。例如，增量编解码器对于时间戳的压缩可能非常有用。但是，如果这些是主键的一部分，则过滤性能可能会受到影响。
+我们建议用户始终评估不同压缩级别和算法对插入和查询性能的影响。例如，增量编解码器在压缩时间戳时可能很有帮助。然而，如果这些是主键的一部分，则过滤性能可能会下降。
 :::
 
-有关配置 TTL 的进一步详细信息和示例可以在 [这里](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes) 找到。有关如何为表和列添加和修改 TTL 的示例，请参考 [这里](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl)。关于 TTL 如何使热-温-冷存储层次结构，详见 [存储层](#storage-tiers)。
+有关配置 TTL 的进一步详情和示例可以在[这里](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes)找到。有关如何为表和列添加和修改 TTL 的示例，可以在[这里](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl)找到。有关 TTL 如何启用存储层次结构如热-温冷架构的信息，请参见[存储层](#storage-tiers)。
 
 ## 存储层 {#storage-tiers}
 
-在 ClickHouse 中，用户可以在不同的磁盘上创建存储层，例如：在 SSD 上存储热/最近的数据，而将较旧的数据放在 S3 上。这种架构允许对较旧的数据使用更便宜的存储，因为其查询 SLAs 较高，因为在调查中不常使用它。
+在 ClickHouse 中，用户可以在不同的磁盘上创建存储层，例如，在 SSD 上存储热/近期数据，而在 S3 上存储旧数据。这种架构允许对旧数据使用较便宜的存储，由于其在调查中使用频率较低，因此具有较高的查询 SLA。
 
 :::note 与 ClickHouse Cloud 无关
-ClickHouse Cloud 使用单个数据副本，该副本由 S3 支持，具有基于 SSD 的节点缓存。因此，在 ClickHouse Cloud 中不需要存储层。
+ClickHouse Cloud 使用 S3 上的单一数据副本，并具有 SSD 支持的节点缓存。因此，在 ClickHouse Cloud 中不需要存储层。
 :::
 
-创建存储层需要用户创建磁盘，然后使用这些磁盘制定存储策略，在表创建时可以指定卷。数据可以根据填充率、部分大小和卷优先级在磁盘之间自动移动。进一步的详细信息可以在 [这里](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes) 找到。
+创建存储层要求用户创建磁盘，然后用于形成存储策略，在创建表时可以指定卷。数据可以根据填充率、部分大小和卷优先级自动在磁盘之间移动。有关进一步细节，请参见[这里](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes)。
 
-虽然可以使用 `ALTER TABLE MOVE PARTITION` 命令手动在磁盘之间移动数据，但通过 TTL 也可以控制卷之间的数据移动。完好的示例可以在 [这里](/guides/developer/ttl#implementing-a-hotwarmcold-architecture) 找到。
+虽然可以使用 `ALTER TABLE MOVE PARTITION` 命令手动在磁盘之间移动数据，但也可以使用 TTL 控制数据在卷之间的移动。完整示例可以在[这里](/guides/developer/ttl#implementing-a-hotwarmcold-architecture)找到。
 
-## 管理架构更改 {#managing-schema-changes}
+## 管理模式变化 {#managing-schema-changes}
 
-日志和跟踪架构在系统生命周期内不可避免地会发生变化，例如：因为用户监视具有不同元数据或 pod 标签的新系统。通过使用 OTel 架构生成数据，并以结构化格式捕获原始事件数据，ClickHouse 架构将对这些变化具有稳健性。不过，随着新元数据的可用和查询访问模式的变化，用户希望更新架构以反映这些变化。
+日志和追踪模式在系统的生命周期中不可避免地会发生变化，例如，用户监控具有不同元数据或 pod 标签的新系统。通过使用 OTel 模式生成数据，并以结构化格式捕获原始事件数据，ClickHouse 的模式在这些变化中将是稳健的。然而，随着新元数据的可用性增加和查询访问模式的变化，用户将希望更新模式以反映这些变化。
 
-为了避免在架构更改期间停机，用户有几种选项，我们将在下面介绍。
+为了避免在模式变化期间出现停机，用户有几种选择，下面我们将介绍。
 
 ### 使用默认值 {#use-default-values}
 
-可以使用 [`DEFAULT` 值](/sql-reference/statements/create/table#default) 添加列到架构中。如果在 INSERT 期间未指定，则使用指定的默认值。
+可以使用 [`DEFAULT` 值](/sql-reference/statements/create/table#default) 将列添加到模式中。如果在 INSERT 时未指定，则会使用指定的默认值。
 
-在修改任何物化视图变换逻辑或 OTel 收集器配置之前，可以进行架构更改，这会导致这些新列被发送。
+在修改任何物化视图转换逻辑或 OTel 收集器配置之前，可以进行模式更改，这会导致将这些新列发送。
 
-架构更改后，用户可以重新配置 OTel 收集器。假设用户使用 ["使用 SQL 提取结构"](/docs/use-cases/observability/schema-design#extracting-structure-with-sql) 中概述的推荐过程，其中 OTel 收集器将其数据发送到 Null 数据表引擎，具有负责提取目标架构并将结果发送到目标表以进行存储的物化视图，可以使用 [`ALTER TABLE ... MODIFY QUERY` 语法](/sql-reference/statements/alter/view) 修改视图。假设我们有如下目标表及其相应的物化视图（类似于在 "使用 SQL 提取结构" 中所用）从 OTel 结构化日志中提取目标架构：
+一旦模式发生变化，用户可以重新配置 OTel 收集器。假设用户使用的是 ["使用 SQL 提取结构"](/docs/use-cases/observability/schema-design#extracting-structure-with-sql) 中推荐的过程，其中 OTel 收集器将其数据发送到 Null 表引擎，具有负责提取目标模式并将结果发送到目标表进行存储的物化视图，可以使用 [`ALTER TABLE ... MODIFY QUERY` 语法](/sql-reference/statements/alter/view) 修改视图。假设我们有以下目标表及其对应的物化视图（类似于在 "使用 SQL 提取结构" 中使用的），用于从 OTel 结构化日志中提取目标模式：
 
 ```sql
 CREATE TABLE default.otel_logs_v2
@@ -328,14 +327,14 @@ SELECT
 FROM otel_logs
 ```
 
-假设我们希望从 `LogAttributes` 中提取一个新列 `Size`。我们可以使用 `ALTER TABLE` 将其添加到架构中，指定默认值：
+假设我们希望从 `LogAttributes` 提取一个新列 `Size`。我们可以使用 `ALTER TABLE` 将其添加到我们的模式中，指定默认值：
 
 ```sql
 ALTER TABLE otel_logs_v2
         (ADD COLUMN `Size` UInt64 DEFAULT JSONExtractUInt(Body, 'size'))
 ```
 
-在上述示例中，我们将默认值指定为 `LogAttributes` 中的 `size` 键（如果不存在则为 0）。这意味着访问此列的查询必须访问 Map，因此会变慢。我们也可以轻松地将此设置为常量，例如 0，从而降低后续对没有值的行的查询成本。查询该表显示值按预期从 Map 中填充：
+在上面的示例中，我们将默认值指定为 `LogAttributes` 中的 `size` 键（如果不存在，则为 0）。这意味着对这种列访问但未插入值的行的查询必须访问 Map，因此会更慢。我们还可以轻松地将其指定为常量，例如 0，从而降低对未插入值的行后续查询的成本。查询此表显示该值按预期从 Map 中填充：
 
 ```sql
 SELECT Size
@@ -352,7 +351,7 @@ LIMIT 5
 5 rows in set. Elapsed: 0.012 sec.
 ```
 
-为了确保此值对所有未来数据进行插入，我们可以使用如下的 `ALTER TABLE` 语法修改我们的物化视图：
+为了确保该值对所有未来数据进行插入，我们可以使用以下所示的 `ALTER TABLE` 语法修改我们的物化视图：
 
 ```sql
 ALTER TABLE otel_logs_mv
@@ -378,13 +377,13 @@ SELECT
 FROM otel_logs
 ```
 
-随后的行将在插入时具有填充的 `Size` 列。
+随后的行将在插入时填充 `Size` 列。
 
 ### 创建新表 {#create-new-tables}
 
-作为上述过程的替代，用户可以简单地创建一个具有新架构的目标表。然后，任何物化视图可以修改为使用新表，使用上述的 `ALTER TABLE MODIFY QUERY`。通过这种方法，用户可以对其表进行版本控制，例如 `otel_logs_v3`。
+作为上述过程的替代，用户可以简单地创建一个带有新模式的新目标表。然后可以修改任何物化视图以使用新表，使用上述 `ALTER TABLE MODIFY QUERY`。通过这种方法，用户可以对表进行版本控制，例如 `otel_logs_v3`。
 
-这种方法使用户拥有多个表可供查询。为了在表之间进行查询，用户可以使用 [`merge` 函数](/sql-reference/table-functions/merge)，该函数接受通配符模式作为表名称。以下是我们通过查询 `otel_logs` 表的 v2 和 v3 进行演示：
+这种方法会让用户面临多个表的查询。要跨多个表查询，用户可以使用 [`merge` 函数](/sql-reference/table-functions/merge)，该函数接受表名的通配符模式。我们在下面展示如何查询 `otel_logs` 表的 v2 和 v3：
 
 ```sql
 SELECT Status, count() AS c
@@ -404,7 +403,7 @@ LIMIT 5
 5 rows in set. Elapsed: 0.137 sec. Processed 41.46 million rows, 82.92 MB (302.43 million rows/s., 604.85 MB/s.)
 ```
 
-如果用户希望避免使用 `merge` 函数并向最终用户提供一个结合了多个表的表，则可以使用 [Merge 表引擎](/engines/table-engines/special/merge)。我们在下面演示：
+如果用户希望避免使用 `merge` 函数并向最终用户展示一个结合多个表的表，可以使用 [合并表引擎](/engines/table-engines/special/merge)。我们在下面展示：
 
 ```sql
 CREATE TABLE otel_logs_merged
@@ -427,7 +426,7 @@ LIMIT 5
 5 rows in set. Elapsed: 0.073 sec. Processed 41.46 million rows, 82.92 MB (565.43 million rows/s., 1.13 GB/s.)
 ```
 
-每当添加新表时，都可以使用 `EXCHANGE` 表语法进行更新。例如，要添加一个 v4 表，我们可以创建一个新表并与先前版本原子地交换。
+只要创建一个新表并以原子方式与前一个版本交换，即可在添加新表时进行更新。
 
 ```sql
 CREATE TABLE otel_logs_merged_temp

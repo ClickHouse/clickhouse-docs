@@ -2,6 +2,8 @@
 title: 'FAQ'
 slug: /about-us/faq
 description: 'Landing page'
+doc_type: 'landing-page'
+keywords: ['ClickHouse FAQ', 'frequently asked questions', 'common questions', 'help documentation', 'troubleshooting']
 ---
 
 | FAQ                                                                                                                           |

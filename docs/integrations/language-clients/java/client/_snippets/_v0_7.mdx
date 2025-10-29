@@ -41,7 +41,6 @@ implementation 'com.clickhouse:clickhouse-http-client:0.7.2'
 
 Since version `0.5.0`, the driver uses a new client http library that needs to be added as a dependency.
 
-
 <Tabs groupId="client-v1-http-client">
 <TabItem value="maven" label="Maven">
 
@@ -124,14 +123,11 @@ try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.H
 }
 ```
 
-
 See [complete code example](https://github.com/ClickHouse/clickhouse-java/blob/main/examples/client/src/main/java/com/clickhouse/examples/jdbc/Main.java#L73) in the [repo](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client).
 
 ## Insert API {#insert-api}
 
 ```java showLineNumbers
-
-
 
 try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
      ClickHouseResponse response = client.read(servers).write()
@@ -148,10 +144,9 @@ See [complete code example](https://github.com/ClickHouse/clickhouse-java/blob/m
 
 **RowBinary Encoding**
 
-RowBinary format is described on its [page](/interfaces/formats#rowbinarywithnamesandtypes).
+RowBinary format is described on its [page](/interfaces/formats/RowBinaryWithNamesAndTypes).
 
 There is an example of [code](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/main/src/main/java/com/clickhouse/kafka/connect/sink/db/ClickHouseWriter.java#L622).
-
 
 ## Features {#features}
 ### Compression {#compression}
@@ -187,7 +182,6 @@ implementation 'org.lz4:lz4-java:1.8.0'
 
 </TabItem>
 </Tabs>
-
 
 You can choose to use gzip instead by setting `compress_algorithm=gzip` in the connection URL.
 

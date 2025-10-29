@@ -4,6 +4,7 @@ title: 'maxMap'
 description: 'Example of using the maxMap combinator'
 keywords: ['max', 'map', 'combinator', 'examples', 'maxMap']
 sidebar_label: 'maxMap'
+doc_type: 'reference'
 ---
 
 # maxMap {#maxmap}
@@ -14,7 +15,7 @@ The [`Map`](/sql-reference/aggregate-functions/combinators#-map) combinator can 
 function to calculate the maximum value in a Map according to each key, using the `maxMap` 
 aggregate combinator function.
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 In this example, we'll create a table that stores status codes and their counts for different timeslots,
 where each row contains a Map of status codes to their corresponding counts. We'll use 

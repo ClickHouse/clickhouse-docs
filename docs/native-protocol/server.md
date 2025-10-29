@@ -3,6 +3,8 @@ slug: /native-protocol/server
 sidebar_position: 3
 title: 'Server packets'
 description: 'Native protocol server'
+doc_type: 'reference'
+keywords: ['native protocol', 'tcp protocol', 'client-server', 'protocol specification', 'networking']
 ---
 
 # Server packets
@@ -40,7 +42,6 @@ Response to [client hello](./client.md#hello).
 | tz            | String  | `Europe/Moscow` | Server timezone      |
 | display_name  | String  | `Clickhouse`    | Server name for UI   |
 | version_patch | UVarInt | `3`             | Server patch version |
-
 
 ## Exception {#exception}
 
@@ -123,7 +124,6 @@ Encoded as **data block** of columns, but is never compressed.
 
 The `value` type is `UInt64` or `Int64`, depending on server revision.
 :::
-
 
 | column       | type            |
 |--------------|-----------------|

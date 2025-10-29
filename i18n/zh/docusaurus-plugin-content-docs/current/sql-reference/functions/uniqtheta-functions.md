@@ -1,20 +1,20 @@
 ---
 'description': 'uniqTheta 函数的文档'
 'sidebar_label': 'uniqTheta'
-'sidebar_position': 210
 'slug': '/sql-reference/functions/uniqtheta-functions'
 'title': 'uniqTheta 函数'
+'doc_type': 'reference'
 ---
 
 
 # uniqTheta 函数
 
-uniqTheta 函数用于两个 uniqThetaSketch 对象之间进行集合操作计算，如 ∪ / ∩ / ×（并集/交集/补集），返回一个包含结果的新的 uniqThetaSketch 对象。
+uniqTheta 函数用于两个 uniqThetaSketch 对象之间进行集合操作计算，例如 ∪ / ∩ / ×（并集/交集/差集），返回一个新的 uniqThetaSketch 对象，其中包含结果。
 
-uniqThetaSketch 对象是通过聚合函数 uniqTheta 与 -State 构建的。
+uniqThetaSketch 对象通过聚合函数 uniqTheta 构造，使用 -State。
 
 UniqThetaSketch 是一种存储近似值集合的数据结构。
-有关 RoaringBitmap 的更多信息，请参见: [Theta Sketch Framework](https://datasketches.apache.org/docs/Theta/ThetaSketchFramework.html)。
+有关 RoaringBitmap 的更多信息，请参阅：[Theta Sketch Framework](https://datasketches.apache.org/docs/Theta/ThetaSketchFramework.html)。
 
 ## uniqThetaUnion {#uniqthetaunion}
 
@@ -31,9 +31,9 @@ uniqThetaUnion(uniqThetaSketch,uniqThetaSketch)
 **示例**
 
 ```sql
-select finalizeAggregation(uniqThetaUnion(a, b)) as a_union_b, finalizeAggregation(a) as a_cardinality, finalizeAggregation(b) as b_cardinality
-from
-(select arrayReduce('uniqThetaState',[1,2]) as a, arrayReduce('uniqThetaState',[2,3,4]) as b );
+SELECT finalizeAggregation(uniqThetaUnion(a, b)) AS a_union_b, finalizeAggregation(a) AS a_cardinality, finalizeAggregation(b) AS b_cardinality
+FROM
+(SELECT arrayReduce('uniqThetaState',[1,2]) AS a, arrayReduce('uniqThetaState',[2,3,4]) AS b );
 ```
 
 ```text
@@ -57,9 +57,9 @@ uniqThetaIntersect(uniqThetaSketch,uniqThetaSketch)
 **示例**
 
 ```sql
-select finalizeAggregation(uniqThetaIntersect(a, b)) as a_intersect_b, finalizeAggregation(a) as a_cardinality, finalizeAggregation(b) as b_cardinality
-from
-(select arrayReduce('uniqThetaState',[1,2]) as a, arrayReduce('uniqThetaState',[2,3,4]) as b );
+SELECT finalizeAggregation(uniqThetaIntersect(a, b)) AS a_intersect_b, finalizeAggregation(a) AS a_cardinality, finalizeAggregation(b) AS b_cardinality
+FROM
+(SELECT arrayReduce('uniqThetaState',[1,2]) AS a, arrayReduce('uniqThetaState',[2,3,4]) AS b );
 ```
 
 ```text
@@ -83,9 +83,9 @@ uniqThetaNot(uniqThetaSketch,uniqThetaSketch)
 **示例**
 
 ```sql
-select finalizeAggregation(uniqThetaNot(a, b)) as a_not_b, finalizeAggregation(a) as a_cardinality, finalizeAggregation(b) as b_cardinality
-from
-(select arrayReduce('uniqThetaState',[2,3,4]) as a, arrayReduce('uniqThetaState',[1,2]) as b );
+SELECT finalizeAggregation(uniqThetaNot(a, b)) AS a_not_b, finalizeAggregation(a) AS a_cardinality, finalizeAggregation(b) AS b_cardinality
+FROM
+(SELECT arrayReduce('uniqThetaState',[2,3,4]) AS a, arrayReduce('uniqThetaState',[1,2]) AS b );
 ```
 
 ```text

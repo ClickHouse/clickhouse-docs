@@ -4,6 +4,7 @@ title: 'sumSimpleState'
 description: 'Example of using the sumSimpleState combinator'
 keywords: ['sum', 'state', 'simple', 'combinator', 'examples', 'sumSimpleState']
 sidebar_label: 'sumSimpleState'
+doc_type: 'reference'
 ---
 
 # sumSimpleState {#sumsimplestate}
@@ -14,7 +15,7 @@ The [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate)
 function to return the sum across all input values. It returns the result with 
 type [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction).
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 ### Tracking upvotes and downvotes {#tracking-post-votes}
 
@@ -51,7 +52,7 @@ ENGINE = AggregatingMergeTree()
 ORDER BY post_id;
 ```
 
-We then create a Materialized View with `SimpleAggregateFunction` type columns:
+We then create a materialized view with `SimpleAggregateFunction` type columns:
        
 ```sql
 CREATE MATERIALIZED VIEW mv_vote_processor TO vote_aggregates
@@ -79,7 +80,7 @@ INSERT INTO raw_votes VALUES
     (3, 'downvote');
 ```
 
-Query the Materialized View using the `SimpleState` combinator:
+Query the materialized view using the `SimpleState` combinator:
 
 ```sql
 SELECT

@@ -1,23 +1,22 @@
 ---
 slug: '/examples/aggregate-function-combinators/sumIf'
-title: 'sumIf'
-description: 'Пример использования комбинирования sumIf'
+sidebar_label: sumIf
+description: 'Пример использования комбинации sumIf'
+title: sumIf
 keywords: ['sum', 'if', 'combinator', 'examples', 'sumIf']
-sidebar_label: 'sumIf'
+doc_type: reference
 ---
-
-
 # sumIf {#sumif}
 
 ## Описание {#description}
 
-Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`sum`](/sql-reference/aggregate-functions/reference/sum), чтобы вычислить сумму значений для строк, где условие истинно, используя агрегатную функцию-комбинатор `sumIf`.
+Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`sum`](/sql-reference/aggregate-functions/reference/sum) для вычисления суммы значений для строк, где условие истинно, используя агрегатную функцию комбинатора `sumIf`.
 
 ## Пример использования {#example-usage}
 
-В этом примере мы создадим таблицу, которая хранит данные о продажах с флагами успеха, и будем использовать `sumIf` для расчета общей суммы продаж успешных транзакций.
+В этом примере мы создадим таблицу, которая хранит данные о продажах с флагами успешности, и мы будем использовать `sumIf` для расчета общей суммы продаж для успешных транзакций.
 
-```sql title="Запрос"
+```sql title="Query"
 CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
@@ -33,23 +32,23 @@ INSERT INTO sales VALUES
     (6, 175.25, 1);
 
 SELECT
-    sumIf(amount, is_successful = 1) as total_successful_sales
+    sumIf(amount, is_successful = 1) AS total_successful_sales
 FROM sales;
 ```
 
 Функция `sumIf` будет суммировать только те суммы, где `is_successful = 1`. В этом случае она суммирует: 100.50 + 200.75 + 300.00 + 175.25.
 
-```response title="Ответ"
+```response title="Response"
    ┌─total_successful_sales─┐
 1. │                  776.50 │
    └───────────────────────┘
 ```
 
-### Расчет объема торгов по направлению цен {#calculate-trading-vol-price-direction}
+### Расчет торгового объема по направлению цены {#calculate-trading-vol-price-direction}
 
-В этом примере мы используем таблицу `stock`, доступную в [ClickHouse playground](https://sql.clickhouse.com/), чтобы рассчитать объем торгов по направлению цен в первой половине 2002 года.
+В этом примере мы используем таблицу `stock`, доступную на [ClickHouse playground](https://sql.clickhouse.com/), чтобы рассчитать торговый объем по направлению цены за первую половину 2002 года.
 
-```sql title="Запрос"
+```sql title="Query"
 SELECT 
     toStartOfMonth(date) AS month,
     formatReadableQuantity(sumIf(volume, price > open)) AS volume_on_up_days,
@@ -79,11 +78,11 @@ ORDER BY month;
     └────────────┴───────────────────┴─────────────────────┴────────────────────────┴───────────────┘
 ```
 
-### Расчет объема торгов по символу акции {#calculate-trading-volume}
+### Расчет торгового объема по символу акции {#calculate-trading-volume}
 
-В этом примере мы используем таблицу `stock`, доступную в [ClickHouse playground](https://sql.clickhouse.com/), чтобы рассчитать объем торгов по символу акции в 2006 году для трех крупнейших технологических компаний того времени.
+В этом примере мы используем таблицу `stock`, доступную на [ClickHouse playground](https://sql.clickhouse.com/), чтобы рассчитать торговый объем по символу акции в 2006 году для трех крупнейших технологических компаний в то время.
 
-```sql title="Запрос"
+```sql title="Query"
 SELECT 
     toStartOfMonth(date) AS month,
     formatReadableQuantity(sumIf(volume, symbol = 'AAPL')) AS apple_volume,
@@ -97,7 +96,7 @@ GROUP BY month
 ORDER BY month;
 ```
 
-```markdown title="Ответ"
+```markdown title="Response"
     ┌──────month─┬─apple_volume───┬─microsoft_volume─┬─google_volume──┬─total_volume─┬─major_tech_percentage─┐
  1. │ 2006-01-01 │ 782.21 million │ 1.39 billion     │ 299.69 million │  84343937700 │                  2.93 │
  2. │ 2006-02-01 │ 670.38 million │ 1.05 billion     │ 297.65 million │  73524748600 │                  2.74 │
@@ -114,6 +113,6 @@ ORDER BY month;
     └────────────┴────────────────┴──────────────────┴────────────────┴──────────────┴───────────────────────┘
 ```
 
-## Смотрите также {#see-also}
+## См. также {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

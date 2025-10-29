@@ -1,19 +1,15 @@
 ---
-'description': 'Selects the last encountered value, similar to `anyLast`, but could
-  accept NULL.'
+'description': '最後に遭遇した値を選択します。これは `anyLast` に似ていますが、NULLを受け入れることができます。'
 'sidebar_position': 160
 'slug': '/sql-reference/aggregate-functions/reference/last_value'
 'title': 'last_value'
+'doc_type': 'reference'
 ---
-
-
 
 
 # last_value
 
-最後に遭遇した値を選択します。これは `anyLast` に似ていますが、NULL を受け入れることができます。
-主に [Window Functions](../../window-functions/index.md) と一緒に使用されるべきです。
-ウィンドウ関数なしでは、ソースストリームが順序付けられていない場合、結果はランダムになります。
+最後に遭遇した値を選択します。`anyLast`と似ていますが、NULLを受け入れることができます。主に [Window Functions](../../window-functions/index.md) と一緒に使用すべきです。ウィンドウ関数なしでは、ソースストリームが順序付けられていない場合、結果はランダムになります。
 
 ## examples {#examples}
 
@@ -25,13 +21,13 @@ CREATE TABLE test_data
 )
 ENGINE = Memory;
 
-INSERT INTO test_data (a, b) Values (1,null), (2,3), (4, 5), (6,null)
+INSERT INTO test_data (a, b) VALUES (1,null), (2,3), (4, 5), (6,null)
 ```
 
-### example1 {#example1}
-NULL 値はデフォルトで無視されます。
+### Example 1 {#example1}
+NULL値はデフォルトで無視されます。
 ```sql
-select last_value(b) from test_data
+SELECT last_value(b) FROM test_data
 ```
 
 ```text
@@ -40,10 +36,10 @@ select last_value(b) from test_data
 └────────────────────────────┘
 ```
 
-### example2 {#example2}
-NULL 値は無視されます。
+### Example 2 {#example2}
+NULL値は無視されます。
 ```sql
-select last_value(b) ignore nulls from test_data
+SELECT last_value(b) ignore nulls FROM test_data
 ```
 
 ```text
@@ -52,10 +48,10 @@ select last_value(b) ignore nulls from test_data
 └────────────────────────────┘
 ```
 
-### example3 {#example3}
-NULL 値は受け入れられます。
+### Example 3 {#example3}
+NULL値は受け入れられます。
 ```sql
-select last_value(b) respect nulls from test_data
+SELECT last_value(b) respect nulls FROM test_data
 ```
 
 ```text
@@ -64,8 +60,8 @@ select last_value(b) respect nulls from test_data
 └─────────────────────────────┘
 ```
 
-### example4 {#example4}
-`ORDER BY` を使用したサブクエリで安定した結果を取得します。
+### Example 4 {#example4}
+`ORDER BY`を使用したサブクエリによって安定した結果が得られます。
 ```sql
 SELECT
     last_value_respect_nulls(b),

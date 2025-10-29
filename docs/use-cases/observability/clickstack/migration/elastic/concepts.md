@@ -8,6 +8,7 @@ sidebar_position: 1
 description: 'Equivalent concepts - ClickStack and Elastic'
 show_related_blogs: true
 keywords: ['Elasticsearch']
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';
@@ -68,7 +69,6 @@ If not using [`JSON`](/integrations/data-formats/json/overview), the schema is s
 Elasticsearch uses ingest pipelines with processors (e.g., `enrich`, `rename`, `grok`) to transform documents before indexing. In ClickHouse, similar functionality is achieved using [**incremental materialized views**](/materialized-view/incremental-materialized-view), which can [filter, transform](/materialized-view/incremental-materialized-view#filtering-and-transformation), or [enrich](/materialized-view/incremental-materialized-view#lookup-table) incoming data and insert results into target tables. You can also insert data to a `Null` table engine if you only need the output of the materialized view to be stored. This means that only the results of any materialized views are preserved, but the original data is discarded - thus saving storage space.
 
 For enrichment, Elasticsearch supports dedicated [enrich processors](https://www.elastic.co/docs/reference/enrich-processor/enrich-processor) to add context to documents. In ClickHouse, [**dictionaries**](/dictionary) can be used at both [query time](/dictionary#query-time-enrichment) and [ingest time](/dictionary#index-time-enrichment) to enrich rows - for example, to [map IPs to locations](/use-cases/observability/schema-design#using-ip-dictionaries) or apply [user agent lookups](/use-cases/observability/schema-design#using-regex-dictionaries-user-agent-parsing) on insert.
-
 
 ### Query languages {#query-languages}
 
@@ -169,7 +169,7 @@ On a single node, execution lanes split data into independent ranges allowing co
 
 Query execution is further parallelized by:
 1. **SIMD vectorization**: operations on columnar data use [CPU SIMD instructions](https://en.wikipedia.org/wiki/Single_instruction,_multiple_data) (e.g., [AVX512](https://en.wikipedia.org/wiki/AVX-512)), allowing batch processing of values.
-2. **Cluster-level parallelism**: in distributed setups, each node performs query processing locally. [Partial aggregation states](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states#working-with-aggregation-states) are streamed to the initiating node and merged. If the query's `GROUP BY` keys align with the [sharding keys](/architecture/horizontal-scaling#shard), merging can be [minimized or avoided entirely](/operations/settings/settings#distributed_group_by_no_merge).
+2. **Cluster-level parallelism**: in distributed setups, each node performs query processing locally. [Partial aggregation states](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states#working-with-aggregation-states) are streamed to the initiating node and merged. If the query's `GROUP BY` keys align with the sharding keys, merging can be [minimized or avoided entirely](/operations/settings/settings#distributed_group_by_no_merge).
 <br/>
 This model enables efficient scaling across cores and nodes, making ClickHouse well-suited for large-scale analytics. The use of *partial aggregation states* allows intermediate results from different threads and nodes to be merged without loss of accuracy.
 

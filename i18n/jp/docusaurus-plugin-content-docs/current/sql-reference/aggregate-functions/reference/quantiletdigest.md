@@ -1,23 +1,21 @@
 ---
-'description': 'Computes an approximate quantile of a numeric data sequence using
-  the t-digest algorithm.'
+'description': 't-digestアルゴリズムを使用して、数値データシーケンスの近似的な分位数を計算します。'
 'sidebar_position': 178
 'slug': '/sql-reference/aggregate-functions/reference/quantiletdigest'
 'title': 'quantileTDigest'
+'doc_type': 'reference'
 ---
-
-
 
 
 # quantileTDigest
 
-数値データ系列の近似[分位数](https://en.wikipedia.org/wiki/Quantile)を[t-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf)アルゴリズムを使用して計算します。
+数値データ列の近似 [quantile](https://en.wikipedia.org/wiki/Quantile) を [t-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf) アルゴリズムを使用して計算します。
 
-メモリ消費量は`log(n)`であり、ここで`n`は値の数です。結果はクエリの実行順序に依存し、非決定的です。
+メモリ消費は `log(n)` であり、ここで `n` は値の数です。結果はクエリの実行順序に依存し、非決定的です。
 
-この関数のパフォーマンスは、[quantile](/sql-reference/aggregate-functions/reference/quantile)や[quantileTiming](/sql-reference/aggregate-functions/reference/quantiletiming)のパフォーマンスよりも低くなります。状態のサイズと精度の比率に関しては、この関数は`quantile`よりもはるかに優れています。
+この関数の性能は、[quantile](/sql-reference/aggregate-functions/reference/quantile) または [quantileTiming](/sql-reference/aggregate-functions/reference/quantiletiming) の性能よりも劣ります。状態サイズと精度の比率に関しては、この関数は `quantile` よりはるかに優れています。
 
-異なるレベルの複数の`quantile*`関数をクエリ内で使用する場合、内部状態は結合されません（つまり、クエリは効率的に機能しません）。この場合は、[quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles)関数を使用してください。
+異なるレベルの複数の `quantile*` 関数をクエリ内で使用する場合、内部状態は結合されません（つまり、クエリは本来可能なほど効率よく機能しません）。その場合は、[quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles) 関数を使用してください。
 
 **構文**
 
@@ -25,22 +23,22 @@
 quantileTDigest(level)(expr)
 ```
 
-エイリアス: `medianTDigest`。
+エイリアス: `medianTDigest`.
 
 **引数**
 
-- `level` — 分位数のレベル。オプションのパラメータ。0から1までの定数浮動小数点数です。`level`の値は`[0.01, 0.99]`の範囲で使用することをお勧めします。デフォルト値: 0.5。`level=0.5`では、関数は[中央値](https://en.wikipedia.org/wiki/Median)を計算します。
-- `expr` — 数値[データ型](/sql-reference/data-types)、[Date](../../../sql-reference/data-types/date.md)または[DateTime](../../../sql-reference/data-types/datetime.md)の列の値に基づく式。
+- `level` — 分位数のレベル。オプションのパラメータ。0 から 1 の間の定数浮動小数点数。`level` 値は `[0.01, 0.99]` の範囲を使用することを推奨します。デフォルト値: 0.5。`level=0.5` の場合、この関数は [median](https://en.wikipedia.org/wiki/Median) を計算します。
+- `expr` — 数値の [データ型](/sql-reference/data-types)、[Date](../../../sql-reference/data-types/date.md) または [DateTime](../../../sql-reference/data-types/datetime.md) の列値に対する式。
 
-**返される値**
+**戻り値**
 
 - 指定されたレベルの近似分位数。
 
 タイプ:
 
-- 数値データ型の入力に対して[Float64](../../../sql-reference/data-types/float.md)。
-- 入力値が`Date`型の場合は[Date](../../../sql-reference/data-types/date.md)。
-- 入力値が`DateTime`型の場合は[DateTime](../../../sql-reference/data-types/datetime.md)。
+- 数値データ型入力の場合は [Float64](../../../sql-reference/data-types/float.md)。
+- 入力値が `Date` 型であるなら [Date](../../../sql-reference/data-types/date.md)。
+- 入力値が `DateTime` 型であるなら [DateTime](../../../sql-reference/data-types/datetime.md)。
 
 **例**
 
@@ -58,7 +56,7 @@ SELECT quantileTDigest(number) FROM numbers(10)
 └─────────────────────────┘
 ```
 
-**関連情報**
+**参考**
 
 - [median](/sql-reference/aggregate-functions/reference/median)
 - [quantiles](/sql-reference/aggregate-functions/reference/quantiles)

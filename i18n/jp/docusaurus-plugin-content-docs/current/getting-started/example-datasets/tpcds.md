@@ -1,24 +1,19 @@
 ---
-'description': 'The TPC-DS benchmark data set and queries.'
+'description': 'TPC-DS ベンチマークデータセットとクエリ。'
 'sidebar_label': 'TPC-DS'
 'slug': '/getting-started/example-datasets/tpcds'
 'title': 'TPC-DS (2012)'
+'doc_type': 'reference'
 ---
 
+似たように、[Star Schema Benchmark (SSB)](star-schema.md)に基づくTPC-DSは[TPC-H](tpch.md)に基づいていますが、反対の道を選びました。つまり、データを複雑なスノーフレークスキーマに格納することで必要な結合の数を拡大しました（8テーブルではなく24テーブル）。
+データ分布は偏っています（例：正規分布とポアソン分布）。
+また、ランダムな置換を含む99のレポートおよびアドホッククエリが含まれています。
 
+参照
+- [The Making of TPC-DS](https://dl.acm.org/doi/10.5555/1182635.1164217) (Nambiar), 2006
 
-以下は、指定されたテキストの日本語訳です。
-
----
-
-[Star Schema Benchmark (SSB)](star-schema.md)と同様に、TPC-DSは[TPC-H](tpch.md)に基づいていますが、逆のアプローチを取り、つまり複雑なスノーフレークスキーマにデータを保存することによって、必要な結合の数を8から24に拡張しました。
-データ分布は歪んでいます（たとえば、正規分布とポアソン分布）。
-ランダムな置き換えを含む99のレポーティングおよびアドホッククエリを含みます。
-
-### 参考文献
-- [TPC-DSの制作](https://dl.acm.org/doi/10.5555/1182635.1164217) (Nambiar)、2006
-
-最初に、TPC-DSリポジトリをチェックアウトし、データ生成器をコンパイルします:
+まず、TPC-DSリポジトリをチェックアウトし、データジェネレーターをコンパイルします：
 
 ```bash
 git clone https://github.com/gregrahn/tpcds-kit.git
@@ -26,20 +21,20 @@ cd tpcds-kit/tools
 make
 ```
 
-次に、データを生成します。パラメーター`-scale`はスケールファクターを指定します。
+次に、データを生成します。パラメータ `-scale` はスケールファクターを指定します。
 
 ```bash
 ./dsdgen -scale 1
 ```
 
-次に、クエリを生成します（同じスケールファクターを使用）:
+次に、クエリを生成します（同じスケールファクターを使用してください）：
 
 ```bash
-./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # out/query_0.sqlに99クエリを生成
+./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # generates 99 queries in out/query_0.sql
 ```
 
-次に、ClickHouseでテーブルを作成します。
-元のテーブル定義（tools/tpcds.sql）を使用するか、適切に定義された主キーインデックスとLowCardinality型カラム定義を備えた「調節された」テーブル定義を使用することができます。
+次に、ClickHouseにテーブルを作成します。
+元のテーブル定義（tools/tpcds.sql）を使用するか、適切に定義された主キーインデックスとLowCardinality型カラムタイプを持つ「調整された」テーブル定義を使用できます。
 
 ```sql
 CREATE TABLE call_center(
@@ -263,7 +258,7 @@ CREATE TABLE inventory (
     inv_date_sk             UInt32,
     inv_item_sk             Int64,
     inv_warehouse_sk        Int64,
-    inv_quantity_on_hand    Nullable(Int32)
+    inv_quantity_on_hand    Nullable(Int32),
     PRIMARY KEY (inv_date_sk, inv_item_sk, inv_warehouse_sk),
 );
 
@@ -413,7 +408,7 @@ CREATE TABLE store (
     s_zip                     LowCardinality(Nullable(String)),
     s_country                 LowCardinality(Nullable(String)),
     s_gmt_offset              Nullable(Decimal(7,2)),
-    s_tax_precentage          Nullable(Decimal(7,2)),
+    s_tax_percentage          Nullable(Decimal(7,2)),
     PRIMARY KEY (s_store_sk)
 );
 
@@ -564,7 +559,7 @@ CREATE TABLE web_site (
 );
 ```
 
-データは以下のようにインポートできます:
+データは次のようにインポートできます：
 
 ```bash
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO call_center FORMAT CSV" < call_center.tbl
@@ -596,6 +591,6 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO web_site FORMA
 次に、生成されたクエリを実行します。
 
 ::::warning
-TPC-DSは、執筆時点（2024年9月）のClickHouseではサポートされていない相関サブクエリを多用します（[issue #6697](https://github.com/ClickHouse/ClickHouse/issues/6697)）。
-その結果、上記のベンチマーククエリの多くがエラーで失敗します。
+TPC-DSは相関サブクエリを多用しており、執筆時点（2024年9月）ではClickHouseではサポートされていません（[issue #6697](https://github.com/ClickHouse/ClickHouse/issues/6697)）。
+その結果、上記のベンチマーククエリの多くはエラーで失敗します。
 ::::

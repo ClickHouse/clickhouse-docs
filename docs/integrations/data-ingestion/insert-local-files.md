@@ -5,9 +5,11 @@ title: 'Insert Local Files'
 slug: /integrations/data-ingestion/insert-local-files
 description: 'Learn about Insert Local Files'
 show_related_blogs: true
+doc_type: 'guide'
+keywords: ['insert local files ClickHouse', 'ClickHouse local file import', 'clickhouse-client file upload']
 ---
 
-# Insert Local Files
+# Insert local files
 
 You can use `clickhouse-client` to stream local files into your ClickHouse service. This allows you the ability to preprocess
 the data using the many powerful and convenient ClickHouse functions. Let's look at an example...
@@ -41,7 +43,7 @@ ENGINE = MergeTree
 ORDER BY toYYYYMMDD(timestamp)
 ```
 
-3. We want to lowercase the `author` column, which is easily done with the [`lower` function](/sql-reference/functions/string-functions#lower). We also want to split the `comment` string into tokens and store the result in the `tokens` column, which can be done using the [`extractAll` function](/sql-reference/functions/string-search-functions#extractall). You do all of this in one `clickhouse-client` command - notice how the `comments.tsv` file is piped into the `clickhouse-client` using the `<` operator:
+3. We want to lowercase the `author` column, which is easily done with the [`lower` function](/sql-reference/functions/string-functions#lower). We also want to split the `comment` string into tokens and store the result in the `tokens` column, which can be done using the [`extractAll` function](/sql-reference/functions/string-search-functions#extractAll). You do all of this in one `clickhouse-client` command - notice how the `comments.tsv` file is piped into the `clickhouse-client` using the `<` operator:
 
 ```bash
 clickhouse-client \
@@ -89,7 +91,6 @@ The result is:
 │ 5102 │ comment │ staunch      │ 2007-03-20 02:42:47 │ "Well this is exactly the kind of thing that isn't very obvious. It sounds like once you're wealthy there's a new set of rules you have to live by. It's a shame everyone has had to re-learn these things for themselves because a few bad apples can control their jealousy.<p>Very good to hear it's somewhere in your essay queue though. I'll try not to get rich before you write it, so I have some idea of what to expect :-)" │ []       │ ['Well','this','is','exactly','the','kind','of','thing','that','isn','t','very','obvious','It','sounds','like','once','you','re','wealthy','there','s','a','new','set','of','rules','you','have','to','live','by','It','s','a','shame','everyone','has','had','to','re','learn','these','things','for','themselves','because','a','few','bad','apples','can','control','their','jealousy','p','Very','good','to','hear','it','s','somewhere','in','your','essay','queue','though','I','ll','try','not','to','get','rich','before','you','write','it','so','I','have','some','idea','of','what','to','expect'] │
 
 ```
-
 
 5. Another option is to use a tool like `cat` to stream the file to `clickhouse-client`. For example, the following command has the same result as using the `<` operator:
 

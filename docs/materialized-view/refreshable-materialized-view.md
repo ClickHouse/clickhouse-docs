@@ -1,8 +1,9 @@
 ---
 slug: /materialized-view/refreshable-materialized-view
-title: 'Refreshable Materialized View'
+title: 'Refreshable materialized view'
 description: 'How to use materialized views to speed up queries'
 keywords: ['refreshable materialized view', 'refresh', 'materialized views', 'speed up queries', 'query optimization']
+doc_type: 'guide'
 ---
 
 import refreshableMaterializedViewDiagram from '@site/static/images/materialized-view/refreshable-materialized-view-diagram.png';
@@ -14,11 +15,9 @@ The diagram explains how Refreshable Materialized Views work:
 
 <Image img={refreshableMaterializedViewDiagram} size="lg" alt="Refreshable materialized view diagram"/>
 
-
 You can also see the following video:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-KhFJSY8yrs?si=VPRSZb20vaYkuR_C" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
 
 ## When should refreshable materialized views be used? {#when-should-refreshable-materialized-views-be-used}
 
@@ -236,7 +235,7 @@ The syntax here is identical to an incremental materialized view, except we incl
 
 ### IMDb {#imdb}
 
-In the [dbt and ClickHouse integration guide](/integrations/dbt#dbt) we populated an IMDb dataset with the following tables: `actors`, `directors`, `genres`, `movie_directors`, `movies`, and `roles`.
+In the [dbt and ClickHouse integration guide](/integrations/dbt) we populated an IMDb dataset with the following tables: `actors`, `directors`, `genres`, `movie_directors`, `movies`, and `roles`.
 
 We can then write the following query can be used to compute a summary of each actor, ordered by the most movie appearances.
 

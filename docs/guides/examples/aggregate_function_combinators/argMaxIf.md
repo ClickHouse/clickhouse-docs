@@ -4,6 +4,7 @@ title: 'argMaxIf'
 description: 'Example of using the argMaxIf combinator'
 keywords: ['argMax', 'if', 'combinator', 'examples', 'argMaxIf']
 sidebar_label: 'argMaxIf'
+doc_type: 'reference'
 ---
 
 # argMaxIf {#argmaxif}
@@ -18,7 +19,7 @@ The `argMaxIf` function is useful when you need to find the value associated wit
 the maximum value in a dataset, but only for rows that satisfy a specific 
 condition.
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 In this example, we'll use a sample dataset of product sales to demonstrate how 
 `argMaxIf` works. We'll find the product name that has the highest price, but 
@@ -36,7 +37,7 @@ INSERT INTO product_sales VALUES
     ('Laptop', 999.99, 10),
     ('Phone', 499.99, 15),
     ('Tablet', 299.99, 0),
-    ('Watch', 199.99, 5),
+    ('Watch', 1199.99, 5),
     ('Headphones', 79.99, 20);
 
 SELECT argMaxIf(product_name, price, sales_count >= 10) AS most_expensive_popular_product

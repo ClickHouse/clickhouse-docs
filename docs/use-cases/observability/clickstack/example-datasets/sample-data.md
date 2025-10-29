@@ -5,6 +5,8 @@ sidebar_position: 0
 pagination_prev: null
 pagination_next: null
 description: 'Getting started with ClickStack and a sample dataset with logs, sessions, traces and metrics'
+doc_type: 'guide'
+keywords: ['clickstack', 'example data', 'sample dataset', 'logs', 'observability']
 ---
 
 import Image from '@theme/IdealImage';
@@ -31,17 +33,25 @@ import copy_api_key from '@site/static/images/use-cases/observability/copy_api_k
 
 # ClickStack - Sample logs, traces and metrics {#clickstack-sample-dataset}
 
-The following example assumes you have started ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started) and connected to the [local ClickHouse instance](/use-cases/observability/clickstack/getting-started#complete-connection-credentials) or a [ClickHouse Cloud instance](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
+The following example assumes you have started ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started) and connected to the [local ClickHouse instance](/use-cases/observability/clickstack/getting-started#complete-connection-credentials) or a [ClickHouse Cloud instance](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection). 
+
+:::note HyperDX in ClickHouse Cloud
+This sample dataset can also be used with HyperDX in ClickHouse Cloud, with only minor adjustments to the flow as noted. If using HyperDX in ClickHouse Cloud, users will require an Open Telemetry collector to be running locally as described in the [getting started guide for this deployment model](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud).
+:::
 
 <VerticalStepper>
 
 ## Navigate to the HyperDX UI {#navigate-to-the-hyperdx-ui}
 
-Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
+Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI if deploying locally. If using HyperDX in ClickHouse Cloud, select your service and `HyperDX` from the left menu.
 
 <Image img={hyperdx} alt="HyperDX UI" size="lg"/>
 
 ## Copy ingestion API key {#copy-ingestion-api-key}
+
+:::note HyperDX in ClickHouse Cloud
+This step is not required if using HyperDX in ClickHouse Cloud, where ingestion key support is not currently supported.
+:::
 
 Navigate to [`Team Settings`](http://localhost:8080/team) and copy the `Ingestion API Key` from the `API Keys` section. This API key ensures data ingestion through the OpenTelemetry collector is secure.
 
@@ -68,6 +78,10 @@ To load this data, we simply send it to the HTTP endpoint of the deployed OpenTe
 
 First, export the API key copied above.
 
+:::note HyperDX in ClickHouse Cloud
+This step is not required if using HyperDX in ClickHouse Cloud, where ingestion key support is not currently supported.
+:::
+
 ```shell
 # export API key
 export CLICKSTACK_API_KEY=<YOUR_INGESTION_API_KEY>
@@ -80,7 +94,7 @@ for filename in $(tar -tf sample.tar.gz); do
   endpoint="http://localhost:4318/v1/${filename%.json}"
   echo "loading ${filename%.json}"
   tar -xOf sample.tar.gz "$filename" | while read -r line; do
-    echo "$line" | curl -s -o /dev/null -X POST "$endpoint" \
+    printf '%s\n' "$line" | curl -s -o /dev/null -X POST "$endpoint" \
     -H "Content-Type: application/json" \
     -H "authorization: ${CLICKSTACK_API_KEY}" \
     --data-binary @-
@@ -88,9 +102,9 @@ for filename in $(tar -tf sample.tar.gz); do
 done
 ```
 
-This simulates OLTP log, trace, and metric sources sending data to the OTel collector. In production, these sources may be language clients or even other OTel collectors.
+This simulates OTLP log, trace, and metric sources sending data to the OTel collector. In production, these sources may be language clients or even other OTel collectors.
 
-Returning to the `Search` view, you should see that data has started to load:
+Returning to the `Search` view, you should see that data has started to load (adjust the time frame to the `Last 1 hour` if the data does not render):
 
 <Image img={hyperdx_10} alt="HyperDX search" size="lg"/>
 

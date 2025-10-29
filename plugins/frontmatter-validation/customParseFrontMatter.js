@@ -141,7 +141,7 @@ async function customParseFrontMatter(params) {
         // Use Docusaurus's default parser to get the frontmatter data
         const parsedData = await defaultParseFrontMatter(params);
         // Check for required fields
-        const requiredFields = ['title', 'slug', 'description'];
+        const requiredFields = ['title', 'slug', 'description', 'doc_type'];
         for (const field of requiredFields) {
             if (!parsedData.frontMatter[field]) {
                 issues.push(`missing required field: ${field}`);
@@ -175,15 +175,17 @@ async function customParseFrontMatter(params) {
                     currentFieldName = fieldMatch[1];
 
                     // Check for single space between key and value
-                    if (!/^[a-zA-Z_]+: /.test(line) && !line.includes(': [')) {
+                    // Exception: 'integration' field is allowed to have no value (block style array follows)
+                    if (!/^[a-zA-Z_]+: /.test(line) && !line.includes(': [') && currentFieldName !== 'integration') {
                         issues.push(`incorrect spacing in line: "${line.trim()}"`);
                     }
 
                     // Check for block style arrays (should be flow style with brackets)
+                    // Exception: 'integration' field is allowed to use block style
                     if (line.trim().match(/^[a-zA-Z_]+: ?$/)) {
                         // This field has no value on the same line, check if next line starts with a dash
                         const nextLine = (i + 1 < yamlLines.length) ? yamlLines[i + 1].trim() : '';
-                        if (nextLine.startsWith('-')) {
+                        if (nextLine.startsWith('-') && currentFieldName !== 'integration') {
                             issues.push(`field '${currentFieldName}' should use flow style array with square brackets`);
                         }
                     }
@@ -303,6 +305,7 @@ async function customParseFrontMatter(params) {
                     // This is not a new field nor a continuation of a multi-line value
 
                     // Check for block style array items that should be flow style
+                    // Exception: 'integration' field is allowed to use block style
                     if (line.trim().startsWith('-')) {
                         // Find the previous field to associate with this block array item
                         let j = i - 1;
@@ -311,7 +314,8 @@ async function customParseFrontMatter(params) {
                             if (prevLine.match(/^[a-zA-Z_]+: ?$/)) {
                                 const fieldName = prevLine.split(':')[0].trim();
                                 // Only report once per field to avoid multiple errors
-                                if (!issues.some(issue => issue.includes(`field '${fieldName}'`) && issue.includes('flow style array'))) {
+                                // Exception: 'integration' field is allowed to use block style
+                                if (fieldName !== 'integration' && !issues.some(issue => issue.includes(`field '${fieldName}'`) && issue.includes('flow style array'))) {
                                     issues.push(`field '${fieldName}' should use flow style array with square brackets`);
                                 }
                                 break;

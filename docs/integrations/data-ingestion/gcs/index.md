@@ -4,6 +4,8 @@ sidebar_position: 4
 slug: /integrations/gcs
 description: 'Google Cloud Storage (GCS) Backed MergeTree'
 title: 'Integrate Google Cloud Storage with ClickHouse'
+doc_type: 'guide'
+keywords: ['Google Cloud Storage ClickHouse', 'GCS ClickHouse integration', 'GCS backed MergeTree', 'ClickHouse GCS storage', 'Google Cloud ClickHouse']
 ---
 
 import BucketDetails from '@site/docs/_snippets/_GCS_authentication_and_bucket.md';
@@ -19,13 +21,13 @@ If you are using ClickHouse Cloud on [Google Cloud](https://cloud.google.com), t
 
 ClickHouse recognizes that GCS represents an attractive storage solution for users seeking to separate storage and compute. To help achieve this, support is provided for using GCS as the storage for a MergeTree engine. This will enable users to exploit the scalability and cost benefits of GCS, and the insert and query performance of the MergeTree engine.
 
-## GCS Backed MergeTree {#gcs-backed-mergetree}
+## GCS backed MergeTree {#gcs-backed-mergetree}
 
-### Creating a Disk {#creating-a-disk}
+### Creating a disk {#creating-a-disk}
 
 To utilize a GCS bucket as a disk, we must first declare it within the ClickHouse configuration in a file under `conf.d`. An example of a GCS disk declaration is shown below.  This configuration includes multiple sections to configure the GCS "disk", the cache, and the policy that is specified in DDL queries when tables are to be created on the GCS disk.  Each of these are described below.
 
-#### storage_configuration > disks > gcs {#storage_configuration--disks--gcs}
+#### Storage configuration > disks > gcs {#storage_configuration--disks--gcs}
 
 This part of the configuration is shown in the highlighted section and specifies that:
 - Batch deletes are not to be performed.  GCS does not currently support batch deletes, so the autodetect is disabled to suppress error messages.
@@ -61,7 +63,7 @@ This part of the configuration is shown in the highlighted section and specifies
     </storage_configuration>
 </clickhouse>
 ```
-#### storage_configuration > disks > cache {#storage_configuration--disks--cache}
+#### Storage configuration > disks > cache {#storage_configuration--disks--cache}
 
 The example configuration highlighted below enables a 10Gi memory cache for the disk `gcs`.
 
@@ -98,7 +100,7 @@ The example configuration highlighted below enables a 10Gi memory cache for the 
     </storage_configuration>
 </clickhouse>
 ```
-#### storage_configuration > policies > gcs_main {#storage_configuration--policies--gcs_main}
+#### Storage configuration > policies > gcs_main {#storage_configuration--policies--gcs_main}
 
 Storage configuration policies allow choosing where data is stored.  The policy highlighted below allows data to be stored on the disk `gcs` by specifying the policy `gcs_main`.  For example, `CREATE TABLE ... SETTINGS storage_policy='gcs_main'`.
 
@@ -170,17 +172,15 @@ Depending on the hardware, this latter insert of 1m rows may take a few minutes 
 SELECT passenger_count, avg(tip_amount) AS avg_tip, avg(total_amount) AS avg_amount FROM trips_gcs GROUP BY passenger_count;
 ```
 
-### Handling Replication {#handling-replication}
+### Handling replication {#handling-replication}
 
 Replication with GCS disks can be accomplished by using the `ReplicatedMergeTree` table engine.  See the [replicating a single shard across two GCP regions using GCS](#gcs-multi-region) guide for details.
 
-
-### Learn More {#learn-more}
+### Learn more {#learn-more}
 
 The [Cloud Storage XML API](https://cloud.google.com/storage/docs/xml-api/overview) is interoperable with some tools and libraries that work with services such as Amazon Simple Storage Service (Amazon S3).
 
 For further information on tuning threads, see [Optimizing for Performance](../s3/index.md#s3-optimizing-performance).
-
 
 ## Using Google Cloud Storage (GCS) {#gcs-multi-region}
 
@@ -201,7 +201,7 @@ Sample requirements for high availability:
 
 ClickHouse Keeper requires two nodes to function, hence a requirement for three nodes for high availability.
 
-### Prepare VMs {#prepare-vms}
+### Prepare virtual machines {#prepare-vms}
 
 Deploy five VMS in three regions:
 
@@ -295,7 +295,7 @@ All of the ClickHouse Keeper nodes have the same configuration file except for t
 </clickhouse>
 ```
 
-### Configure ClickHouse Server {#configure-clickhouse-server}
+### Configure ClickHouse server {#configure-clickhouse-server}
 
 :::note best practice
 Some of the steps in this guide will ask you to place a configuration file in `/etc/clickhouse-server/config.d/`.  This is the default location on Linux systems for configuration override files.  When you put these files into that directory ClickHouse will merge the content with the default configuration.  By placing these files in the `config.d` directory you will avoid losing your configuration during an upgrade.
@@ -316,7 +316,6 @@ Replication is coordinated by ClickHouse Keeper.  This configuration file identi
 
 - Edit the hostnames to match your Keeper hosts
 
-
 ```xml title=/etc/clickhouse-server/config.d/use-keeper.xml
 <clickhouse>
     <zookeeper>
@@ -335,7 +334,6 @@ Replication is coordinated by ClickHouse Keeper.  This configuration file identi
     </zookeeper>
 </clickhouse>
 ```
-
 
 #### Remote ClickHouse servers {#remote-clickhouse-servers}
 
@@ -624,7 +622,7 @@ formatReadableSize(total_bytes): 36.42 MiB
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-#### Verify in Google Cloud Console {#verify-in-google-cloud-console}
+#### Verify in Google Cloud console {#verify-in-google-cloud-console}
 
 Looking at the buckets you will see that a folder was created in each bucket with the name that was used in the `storage.xml` configuration file.  Expand the folders and you will see many files, representing the data partitions.
 #### Bucket for replica one {#bucket-for-replica-one}

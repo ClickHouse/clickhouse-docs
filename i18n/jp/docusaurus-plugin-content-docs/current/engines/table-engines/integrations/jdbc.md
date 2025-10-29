@@ -1,9 +1,10 @@
 ---
-'description': 'Allows ClickHouse to connect to external databases via JDBC.'
+'description': 'ClickHouseがJDBCを介して外部DATABASEに接続することを可能にします。'
 'sidebar_label': 'JDBC'
 'sidebar_position': 100
 'slug': '/engines/table-engines/integrations/jdbc'
 'title': 'JDBC'
+'doc_type': 'reference'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -14,13 +15,13 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 <CloudNotSupportedBadge/>
 
 :::note
-clickhouse-jdbc-bridge には実験的なコードが含まれており、もはやサポートされていません。信頼性の問題やセキュリティの脆弱性が含まれている可能性があります。自己の責任で使用してください。  
-ClickHouseは、アドホッククエリシナリオに対してより良い代替手段を提供する、ClickHouse内の組み込みテーブル関数の使用を推奨しています（Postgres、MySQL、MongoDBなど）。
+clickhouse-jdbc-bridgeには実験的なコードが含まれており、もはやサポートされていません。信頼性の問題やセキュリティの脆弱性が含まれている可能性があります。自己責任でご利用ください。
+ClickHouseは、Postgres、MySQL、MongoDBなどの即席クエリシナリオに対してより良い代替手段を提供するClickHouse内蔵のテーブル関数を使用することを推奨します。
 :::
 
-ClickHouseが外部データベースに[ JDBC](https://en.wikipedia.org/wiki/Java_Database_Connectivity)を介して接続できるようにします。
+ClickHouseが外部データベースに接続することを可能にするのは[JDBC](https://en.wikipedia.org/wiki/Java_Database_Connectivity)です。
 
-JDBC接続を実装するために、ClickHouseはデーモンとして実行する必要がある別のプログラム[clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge)を使用します。
+JDBC接続を実装するために、ClickHouseはデーモンとして実行されるべき別のプログラム[clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge)を使用します。
 
 このエンジンは[Nullable](../../../sql-reference/data-types/nullable.md)データ型をサポートしています。
 
@@ -31,24 +32,25 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name
 (
     columns list...
 )
-ENGINE = JDBC(datasource_uri, external_database, external_table)
+ENGINE = JDBC(datasource, external_database, external_table)
 ```
 
 **エンジンパラメータ**
 
+- `datasource` — 外部DBMSのURIまたは名前。
 
-- `datasource_uri` — 外部DBMSのURIまたは名前。
-
-    URI形式: `jdbc:<driver_name>://<host_name>:<port>/?user=<username>&password=<password>`。  
+    URIフォーマット: `jdbc:<driver_name>://<host_name>:<port>/?user=<username>&password=<password>`。
     MySQLの例: `jdbc:mysql://localhost:3306/?user=root&password=root`。
 
-- `external_database` — 外部DBMS内のデータベース。
+- `external_database` — 外部DBMS内のデータベースの名前、または明示的に定義されたテーブルスキーマ（例を参照）。
 
-- `external_table` — `external_database`内のテーブル名、または`select * from table1 where column1=1`のような選択クエリ。
+- `external_table` — 外部データベース内のテーブルの名前、または `select * from table1 where column1=1` のような選択クエリ。
+
+- これらのパラメータは[named collections](operations/named-collections.md)を使用して渡すこともできます。
 
 ## 使用例 {#usage-example}
 
-MySQLサーバーにおいて、コンソールクライアントを介して直接テーブルを作成します:
+MySQLサーバーでコンソールクライアントに直接接続してテーブルを作成します:
 
 ```text
 mysql> CREATE TABLE `test`.`test` (
@@ -71,7 +73,7 @@ mysql> select * from test;
 1 row in set (0,00 sec)
 ```
 
-ClickHouseサーバーにテーブルを作成し、そこからデータを選択します:
+ClickHouseサーバーでテーブルを作成し、そこからデータを選択します:
 
 ```sql
 CREATE TABLE jdbc_table

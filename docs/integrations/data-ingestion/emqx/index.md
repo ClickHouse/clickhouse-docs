@@ -4,6 +4,11 @@ sidebar_position: 1
 slug: /integrations/emqx
 description: 'Introduction to EMQX with ClickHouse'
 title: 'Integrating EMQX with ClickHouse'
+doc_type: 'guide'
+integration:
+  - support_level: 'partner'
+  - category: 'data_ingestion'
+keywords: ['EMQX ClickHouse integration', 'MQTT ClickHouse connector', 'EMQX Cloud ClickHouse', 'IoT data ClickHouse', 'MQTT broker ClickHouse']
 ---
 
 import emqx_cloud_artitecture from '@site/static/images/integrations/data-ingestion/emqx/emqx-cloud-artitecture.png';
@@ -53,8 +58,7 @@ With the infrastructure provided by cloud providers, EMQX Cloud serves dozens of
 * You have prepared a Clickhouse Cloud instance to persist device data.
 * We are using [MQTT X](https://mqttx.app/)  as an MQTT client testing tool to connect the deployment of EMQX Cloud to publish MQTT data. Or other methods connecting to the MQTT broker will do the job as well.
 
-
-## Get Your ClickHouse Cloud Service {#get-your-clickhouse-cloudservice}
+## Get your ClickHouse Cloud service {#get-your-clickhouse-cloudservice}
 
 During this setup, we deployed the ClickHouse instance on AWS in N. Virginia (us-east -1), while an EMQX Cloud instance was also deployed in the same region.
 
@@ -107,7 +111,7 @@ Start at the [EMQX Cloud sign up](https://accounts.emqx.com/signup?continue=http
 
 ### Create an MQTT cluster {#create-an-mqtt-cluster}
 
-Once logged in, click on "Cloud Console" under the account menu and you will be able to see the green button to create a new deployment.
+Once logged in, click on "Cloud console" under the account menu and you will be able to see the green button to create a new deployment.
 
 <Image img={emqx_cloud_create_1} size="lg" border alt="EMQX Cloud Create Deployment Step 1 showing deployment options" />
 
@@ -121,7 +125,7 @@ Now click the panel to go to the cluster view. On this dashboard, you will see t
 
 <Image img={emqx_cloud_overview} size="lg" border alt="EMQX Cloud Overview Dashboard showing broker metrics" />
 
-### Add Client Credential {#add-client-credential}
+### Add client credential {#add-client-credential}
 
 EMQX Cloud does not allow anonymous connections by default，so you need add a client credential so you can use the MQTT client tool to send data to this broker.
 
@@ -141,7 +145,6 @@ Go back to the Overview page and scroll down to the bottom of the page where you
 
 Once it has been created, you will find the public IP address in the widget. Please note that if you select "Connect from a specific location" during ClickHouse Cloud setup, you will need to add this IP address to the whitelist.
 
-
 ## Integration EMQX Cloud with ClickHouse Cloud {#integration-emqx-cloud-with-clickhouse-cloud}
 
 The [EMQX Cloud Data Integrations](https://docs.emqx.com/en/cloud/latest/rule_engine/introduction.html#general-flow) is used to configure the rules for handling and responding to EMQX message flows and device events. The Data Integrations not only provides a clear and flexible "configurable" architecture solution, but also simplifies the development process, improves user usability, and reduces the coupling degree between the business system and EMQX Cloud. It also provides a superior infrastructure for customization of EMQX Cloud's proprietary capabilities.
@@ -152,7 +155,7 @@ EMQX Cloud offers more than 30 native integrations with popular data systems. Cl
 
 <Image img={data_integration_clickhouse} size="lg" border alt="EMQX Cloud ClickHouse Data Integration connector details" />
 
-### Create ClickHouse Resource {#create-clickhouse-resource}
+### Create ClickHouse resource {#create-clickhouse-resource}
 
 Click "Data Integrations" on the left menu and click "View All Resources". You will find the ClickHouse in the Data Persistence section or you can search for ClickHouse.
 
@@ -166,7 +169,7 @@ Click the ClickHouse card to create a new resource.
 
 <Image img={data_integration_resource} size="lg" border alt="EMQX Cloud ClickHouse Resource Setup form with connection details" />
 
-### Create A New Rule {#create-a-new-rule}
+### Create a new rule {#create-a-new-rule}
 
 During the creation of the resource, you will see a popup, and clicking 'New' will leads you to the rule creation page.
 
@@ -214,7 +217,7 @@ INSERT INTO temp_hum (client_id, timestamp, topic, temp, hum) VALUES ('${client_
 
 This is a template for inserting data into Clickhouse, you can see the variables are used here.
 
-### View Rules Details {#view-rules-details}
+### View rules details {#view-rules-details}
 
 Click "Confirm" and "View Details". Now, everything should be well set. You can see the data integration works from rule details page.
 

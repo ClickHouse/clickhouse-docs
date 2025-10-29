@@ -4,6 +4,9 @@ pagination_prev: null
 pagination_next: null
 description: 'Data ingestion for ClickStack - The ClickHouse Observability Stack'
 title: 'Ingesting data'
+doc_type: 'landing-page'
+keywords: ['ClickStack data ingestion', 'observability data ingestion
+', 'ClickStack OpenTelemetry', 'ClickHouse observability ingestion', 'telemetry data collection']
 ---
 
 ClickStack provides multiple ways to ingest observability data into your ClickHouse instance. Whether you're collecting logs, metrics, traces, or session data, you can use the OpenTelemetry (OTel) collector as a unified ingestion point or leverage platform-specific integrations for specialized use cases.

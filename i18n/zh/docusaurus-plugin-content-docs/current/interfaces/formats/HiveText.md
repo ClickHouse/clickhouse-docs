@@ -4,6 +4,7 @@
 - 'HiveText'
 'slug': '/interfaces/formats/HiveText'
 'title': 'HiveText'
+'doc_type': 'reference'
 ---
 
 ## 描述 {#description}

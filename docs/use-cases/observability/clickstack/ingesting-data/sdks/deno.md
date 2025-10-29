@@ -5,6 +5,8 @@ pagination_next: null
 sidebar_position: 6
 description: 'Deno SDK for ClickStack - The ClickHouse Observability Stack'
 title: 'Deno'
+doc_type: 'guide'
+keywords: ['Deno ClickStack SDK', 'Deno OpenTelemetry', 'ClickStack Deno integration', 'Deno observability', 'Deno logging SDK']
 ---
 
 This guide Integrates the following:

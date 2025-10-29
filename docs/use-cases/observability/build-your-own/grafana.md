@@ -4,6 +4,7 @@ description: 'Using Grafana and ClickHouse for observability'
 slug: /observability/grafana
 keywords: ['Observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafana', 'OTel']
 show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import observability_15 from '@site/static/images/use-cases/observability/observability-15.png';
@@ -38,7 +39,6 @@ The Logs configuration requires a time, log level, and message column in order f
 The Traces configuration is slightly more complex (full list [here](/engines/table-engines/mergetree-family/mergetree#mergetree-data-storage)). The required columns here are needed such that subsequent queries, which build a full trace profile, can be abstracted. These queries assume data is structured similarly to OTel, so users deviating significantly from the standard schema will need to use views to benefit from this feature.
 
 <Image img={observability_15} alt="Connector config" size="sm"/>
-
 
 Once configured users can navigate to [Grafana Explore](https://grafana.com/docs/grafana/latest/explore/) and begin searching logs and traces.
 
@@ -83,7 +83,7 @@ This query returns the column names expected by Grafana, rendering a table of tr
 
 Users wishing to write more complex queries can switch to the `SQL Editor`.
 
-### View Trace details {#view-trace-details}
+### View trace details {#view-trace-details}
 
 As shown above, Trace ids are rendered as clickable links. On clicking on a trace Id, a user can choose to view the associated spans via the link `View Trace`. This issues the following query (assuming OTel columns) to retrieve the spans in the required structure, rendering the results as a waterfall.
 

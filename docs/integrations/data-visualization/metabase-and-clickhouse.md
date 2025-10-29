@@ -6,6 +6,11 @@ keywords: ['Metabase']
 description: 'Metabase is an easy-to-use, open source UI tool for asking questions about your data.'
 title: 'Connecting Metabase to ClickHouse'
 show_related_blogs: true
+doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_visualization'
+  - website: 'https://github.com/clickhouse/metabase-clickhouse-driver'
 ---
 
 import Image from '@theme/IdealImage';
@@ -17,11 +22,11 @@ import metabase_04 from '@site/static/images/integrations/data-visualization/met
 import metabase_06 from '@site/static/images/integrations/data-visualization/metabase_06.png';
 import metabase_07 from '@site/static/images/integrations/data-visualization/metabase_07.png';
 import metabase_08 from '@site/static/images/integrations/data-visualization/metabase_08.png';
-import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
+import PartnerBadge from '@theme/badges/PartnerBadge';
 
 # Connecting Metabase to ClickHouse
 
-<CommunityMaintainedBadge/>
+<PartnerBadge/>
 
 Metabase is an easy-to-use, open source UI tool for asking questions about your data. Metabase is a Java application that can be run by simply <a href="https://www.metabase.com/start/oss/jar" target="_blank">downloading the JAR file</a> and running it with `java -jar metabase.jar`. Metabase connects to ClickHouse using a JDBC driver that you download and put in the `plugins` folder:
 
@@ -50,7 +55,6 @@ If you do not have a dataset to work with you can add one of the examples.  This
 4. Start (or restart) Metabase so that the driver gets loaded properly.
 
 5. Access Metabase at <a href="http://localhost:3000/" target="_blank">http://hostname:3000</a>. On the initial startup, you will see a welcome screen and have to work your way through a list of questions. If prompted to select a database, select "**I'll add my data later**":
-
 
 ## 3.  Connect Metabase to ClickHouse {#3--connect-metabase-to-clickhouse}
 

@@ -1,27 +1,25 @@
 ---
-'title': 'Getting started with chDB'
-'sidebar_label': 'Getting started'
+'title': 'chDBの始め方'
+'sidebar_label': '始め方'
 'slug': '/chdb/getting-started'
-'description': 'chDBはClickHouseを搭載したインプロセスSQL OLAPエンジンです'
+'description': 'chDBはClickHouseによって支えられたプロセス内SQL OLAPエンジンです'
 'keywords':
 - 'chdb'
 - 'embedded'
 - 'clickhouse-lite'
 - 'in-process'
 - 'in process'
+'doc_type': 'guide'
 ---
 
 
+# Getting started with chDB
 
+このガイドでは、chDBのPythonバリアントを使って、導入を行います。
+最初にS3にあるJSONファイルをクエリし、そのファイルに基づいてchDBにテーブルを作成し、データに対していくつかのクエリを実行します。
+また、クエリの結果をApache ArrowやPandasなどの異なるフォーマットで返す方法を見ていき、最後にPandas DataFramesをクエリする方法を学びます。 
 
-
-# chDBの使い方
-
-このガイドでは、chDBのPythonバリアントを使用して設定を行います。
-まず、S3に保存されたJSONファイルをクエリしてから、そのJSONファイルに基づいてchDBにテーブルを作成し、データに対していくつかのクエリを実行します。
-また、クエリがApache ArrowやPandaを含むさまざまな形式でデータを返す方法を見て、最後にPandas DataFramesをクエリする方法を学びます。
-
-## セットアップ {#setup}
+## Setup {#setup}
 
 まず、仮想環境を作成しましょう：
 
@@ -31,7 +29,7 @@ source .venv/bin/activate
 ```
 
 次に、chDBをインストールします。
-バージョン2.0.3以上であることを確認してください：
+バージョンは2.0.3以上であることを確認してください：
 
 ```bash
 pip install "chdb>=2.0.2"
@@ -43,23 +41,23 @@ pip install "chdb>=2.0.2"
 pip install ipython
 ```
 
-このガイドの残りのコマンドを実行するために`ipython`を使用する予定です。次のコマンドを実行して起動できます：
+このガイドの残りの部分でコマンドを実行するために`ipython`を使用します。ipythonを起動するには、次のコマンドを実行します：
 
 ```bash
 ipython
 ```
 
-このガイドではPandasとApache Arrowも使用するので、これらのライブラリもインストールしましょう：
+このガイドではPandasとApache Arrowも使用するので、それらのライブラリもインストールします：
 
 ```bash
 pip install pandas pyarrow
 ```
 
-## S3内のJSONファイルをクエリする {#querying-a-json-file-in-s3}
+## Querying a JSON file in S3 {#querying-a-json-file-in-s3}
 
-次に、S3バケットに保存されているJSONファイルをどのようにクエリするかを見ていきます。
-[YouTubeの嫌いなデータセット](/getting-started/example-datasets/youtube-dislikes)には、2021年までのYouTube動画の嫌いの数が40億行以上含まれています。
-そのデータセットからのJSONファイルの1つを使用します。
+次に、S3バケットに保存されているJSONファイルをクエリする方法を見てみましょう。
+[YouTubeの嫌いなデータセット](/getting-started/example-datasets/youtube-dislikes)には、2021年までのYouTube動画に対する嫌いな数が40億行以上含まれています。
+私たちはそのデータセットのJSONファイルの1つを使用します。
 
 chdbをインポートします：
 
@@ -67,7 +65,7 @@ chdbをインポートします：
 import chdb
 ```
 
-次に、JSONファイルの構造を記述するクエリを次のように書くことができます：
+JSONファイルの構造を説明するために、次のクエリを書きます：
 
 ```python
 chdb.query(
@@ -113,7 +111,7 @@ chdb.query(
 "video_badges","Nullable(String)"
 ```
 
-そのファイル内の行数をカウントすることもできます：
+また、そのファイルの行数をカウントすることもできます：
 
 ```python
 chdb.query(
@@ -131,9 +129,9 @@ chdb.query(
 336432
 ```
 
-このファイルにはちょうど300,000件を超えるレコードが含まれています。
+このファイルには30万件以上のレコードが含まれています。
 
-chdbはまだクエリパラメータを渡すことをサポートしていませんが、パスを抽出してf-Stringを介して渡すことができます。
+chdbはまだクエリパラメータの受け渡しをサポートしていませんが、パスを引き出してf-Stringを介して渡すことができます。
 
 ```python
 path = 's3://clickhouse-public-datasets/youtube/original/files/youtubedislikes_20211127161229_18654868.1637897329_vid.json.zst'
@@ -149,13 +147,13 @@ chdb.query(
 ```
 
 :::warning
-プログラム内で定義された変数を使うのは問題ありませんが、ユーザー提供の入力に対しては行わないでください。そうしないと、クエリがSQLインジェクション攻撃を受ける可能性があります。
+この方法はプログラムで定義した変数に対しては問題ありませんが、ユーザー提供の入力に対しては行わないでください。そうでないと、クエリはSQLインジェクションに対して脆弱になります。
 :::
 
-## 出力形式の設定 {#configuring-the-output-format}
+## Configuring the output format {#configuring-the-output-format}
 
-デフォルトの出力形式は`CSV`ですが、`output_format`パラメーターを介して変更できます。
-chDBはClickHouseのデータ形式をサポートしており、[独自の形式もいくつか用意しています](/chdb/reference/data-formats.md)。その中には、Pandas DataFrameを返す`DataFrame`という形式もあります：
+デフォルトの出力フォーマットは`CSV`ですが、`output_format`パラメータを使用して変更できます。
+chDBはClickHouseデータフォーマットのサポートに加えて、[独自のフォーマット](/chdb/reference/data-formats.md)もサポートしています。例えば、`DataFrame`を使用すると、Pandas DataFrameを返します：
 
 ```python
 result = chdb.query(
@@ -178,7 +176,7 @@ print(result)
 1            True    35307
 ```
 
-また、Apache Arrowテーブルを得たい場合は次のようにします：
+また、Apache Arrowのテーブルを返す場合は次のようにします：
 
 ```python
 result = chdb.query(
@@ -204,18 +202,18 @@ is_live_content: [[false,true]]
 count(): [[315746,20686]]
 ```
 
-## JSONファイルからテーブルを作成する {#creating-a-table-from-json-file}
+## Creating a table from JSON file {#creating-a-table-from-json-file}
 
-次に、chDBにテーブルを作成する方法を見ていきましょう。
-このために異なるAPIを使用する必要があるので、まずそれをインポートします：
+次に、chDBでテーブルを作成する方法を見てみましょう。
+それには別のAPIを使用する必要があるので、まずそれをインポートします：
 
 ```python
 from chdb import session as chs
 ```
 
 次に、セッションを初期化します。
-セッションをディスクに保持する場合は、ディレクトリ名を提供する必要があります。
-空白のままにすると、データベースはメモリ内に留まることになり、Pythonプロセスが終了すると失われます。
+もしセッションをディスクに永続化したい場合は、ディレクトリ名を指定する必要があります。
+空白のままにすると、データベースはメモリ内にあり、Pythonプロセスを終了させると失われます。
 
 ```python
 sess = chs.Session("gettingStarted.chdb")
@@ -227,8 +225,8 @@ sess = chs.Session("gettingStarted.chdb")
 sess.query("CREATE DATABASE IF NOT EXISTS youtube")
 ```
 
-次に、`CREATE...EMPTY AS`技法を使用して、JSONファイルからのスキーマに基づいて`dislikes`テーブルを作成します。
-すべてのカラムタイプを`Nullable`にしないために、[`schema_inference_make_columns_nullable`](/operations/settings/formats/#schema_inference_make_columns_nullable)設定を使用します。
+これで、JSONファイルのスキーマに基づいて`dislikes`テーブルを作成できます。`CREATE...EMPTY AS`のテクニックを使用します。
+カラムタイプが全て`Nullable`でないようにするために、[`schema_inference_make_columns_nullable`](/operations/settings/formats/#schema_inference_make_columns_nullable)設定を使用します。
 
 ```python
 sess.query(f"""
@@ -242,7 +240,7 @@ sess.query(f"""
 )
 ```
 
-次に、`DESCRIBE`句を使用してスキーマを確認します：
+その後、`DESCRIBE`句を使用してスキーマを確認できます：
 
 ```python
 sess.query(f"""
@@ -283,7 +281,7 @@ sess.query(f"""
 "video_badges","String"
 ```
 
-次に、そのテーブルにデータを挿入します：
+次に、そのテーブルをポピュレートします：
 
 ```python
 sess.query(f"""
@@ -295,8 +293,8 @@ sess.query(f"""
 )
 ```
 
-これらの手順を1回で実行するために、`CREATE...AS`技法を使うこともできます。
-その技法を使用して別のテーブルを作成しましょう：
+これら2つのステップを1回の操作で行うために、`CREATE...AS`のテクニックを使用することもできます。
+そのテクニックを使用して別のテーブルを作成しましょう：
 
 ```python
 sess.query(f"""
@@ -310,9 +308,9 @@ sess.query(f"""
 )
 ```
 
-## テーブルをクエリする {#querying-a-table}
+## Querying a table {#querying-a-table}
 
-最後に、テーブルをクエリしてみましょう：
+最後に、そのテーブルをクエリします：
 
 ```sql
 df = sess.query("""
@@ -341,16 +339,16 @@ df
 9                    RC Cars OFF Road   31952962     101503         49489
 ```
 
-データフレームに「いいね」と「嫌い」の比率を計算するために追加のカラムを加えるとします。
-次のように書くことができます：
+その後、DataFrameにいいねと嫌いの比率を計算するための追加のカラムを追加するとしましょう。
+次のコードを書けます：
 
 ```python
 df["likeDislikeRatio"] = df["likeCount"] / df["dislikeCount"]
 ```
 
-## Pandas DataFrameをクエリする {#querying-a-pandas-dataframe}
+## Querying a Pandas dataframe {#querying-a-pandas-dataframe}
 
-その後、chDBからそのDataFrameをクエリできます：
+次に、chDBからそのDataFrameをクエリできます：
 
 ```python
 chdb.query(
@@ -376,14 +374,14 @@ chdb.query(
 9                    RC Cars OFF Road          2.051021
 ```
 
-Pandas DataFramesのクエリに関しては、[Pandasをクエリする開発者ガイド](guides/querying-pandas.md)でさらに詳しく読むことができます。
+Pandas DataFramesをクエリする方法については、[Querying Pandas開発者ガイド](guides/querying-pandas.md)でも詳しく読むことができます。
 
-## 次のステップ {#next-steps}
+## Next steps {#next-steps}
 
-このガイドがchDBの概要を把握するのに役立ったことを願っています。
-使用方法の詳細については、以下の開発者ガイドを参照してください：
+このガイドがchDBの概要を把握するのに役立ったことを願います。 
+それを使う方法についてさらに知りたい場合は、次の開発者ガイドを参照してください：
 
-* [Pandas DataFramesをクエリする](guides/querying-pandas.md)
-* [Apache Arrowをクエリする](guides/querying-apache-arrow.md)
-* [JupySQLでchDBを使用する](guides/jupysql.md)
-* [既存のclickhouse-localデータベースでchDBを使用する](guides/clickhouse-local.md)
+* [Querying Pandas DataFrames](guides/querying-pandas.md)
+* [Querying Apache Arrow](guides/querying-apache-arrow.md)
+* [Using chDB in JupySQL](guides/jupysql.md)
+* [Using chDB with an existing clickhouse-local database](guides/clickhouse-local.md)

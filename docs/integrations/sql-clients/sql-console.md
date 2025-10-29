@@ -4,6 +4,8 @@ sidebar_position: 1
 title: 'SQL Console'
 slug: /integrations/sql-clients/sql-console
 description: 'Learn about SQL Console'
+doc_type: 'guide'
+keywords: ['sql console', 'query interface', 'web ui', 'sql editor', 'cloud console']
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
@@ -54,9 +56,9 @@ SQL console is the fastest and easiest way to explore and query your databases i
 - Execute queries and visualize result data in just a few clicks
 - Share queries with team members and collaborate more effectively.
 
-## Exploring Tables {#exploring-tables}
+## Exploring tables {#exploring-tables}
 
-### Viewing Table List and Schema Info {#viewing-table-list-and-schema-info}
+### Viewing table list and schema info {#viewing-table-list-and-schema-info}
 
 An overview of tables contained in your ClickHouse instance can be found in the left sidebar area. Use the database selector at the top of the left bar to view the tables in a specific database
 
@@ -66,19 +68,19 @@ Tables in the list can also be expanded to view columns and types
 
 <Image img={view_columns} size="lg" border alt="View of expanded table showing column names and data types"/>
 
-### Exploring Table Data {#exploring-table-data}
+### Exploring table data {#exploring-table-data}
 
 Click on a table in the list to open it in a new tab. In the Table View, data can be easily viewed, selected, and copied. Note that structure and formatting are preserved when copy-pasting to spreadsheet applications such as Microsoft Excel and Google Sheets. You can flip between pages of table data (paginated in 30-row increments) using the navigation in the footer.
 
 <Image img={abc} size="lg" border alt="Table view showing data that can be selected and copied"/>
 
-### Inspecting Cell Data {#inspecting-cell-data}
+### Inspecting cell data {#inspecting-cell-data}
 
 The Cell Inspector tool can be used to view large amounts of data contained within a single cell. To open it, right-click on a cell and select 'Inspect Cell'. The contents of the cell inspector can be copied by clicking the copy icon in the top right corner of the inspector contents.
 
 <Image img={inspecting_cell_content} size="lg" border alt="Cell inspector dialog showing the content of a selected cell"/>
 
-## Filtering and Sorting Tables {#filtering-and-sorting-tables}
+## Filtering and sorting tables {#filtering-and-sorting-tables}
 
 ### Sorting a table {#sorting-a-table}
 
@@ -118,9 +120,9 @@ Filters and sorts are not mandatory when using the 'Create Query' feature.
 
 You can learn more about querying in the SQL console by reading the (link) query documentation.
 
-## Creating and Running a Query {#creating-and-running-a-query}
+## Creating and running a query {#creating-and-running-a-query}
 
-### Creating a Query {#creating-a-query}
+### Creating a query {#creating-a-query}
 
 There are two ways to create a new query in the SQL console.
 
@@ -129,7 +131,7 @@ There are two ways to create a new query in the SQL console.
 
 <Image img={creating_a_query} size="lg" border alt="Interface showing how to create a new query using the + button or New Query button"/>
 
-### Running a Query {#running-a-query}
+### Running a query {#running-a-query}
 
 To run a query, type your SQL command(s) into the SQL Editor and click the 'Run' button or use the shortcut `cmd / ctrl + enter`. To write and run multiple commands sequentially, make sure to add a semicolon after each command.
 
@@ -149,7 +151,7 @@ Running the command at the current cursor position can be achieved in two ways:
 
 <Image img={run_at_cursor_2} size="lg" border alt="Run at cursor option in the extended run options menu"/>
 
-  - Selecting 'Run at cursor' from the SQL Editor context menu
+- Selecting 'Run at cursor' from the SQL Editor context menu
 
 <Image img={run_at_cursor} size="lg" border alt="Run at cursor option in the SQL Editor context menu"/>
 
@@ -157,13 +159,13 @@ Running the command at the current cursor position can be achieved in two ways:
 The command present at the cursor position will flash yellow on execution.
 :::
 
-### Canceling a Query {#canceling-a-query}
+### Canceling a query {#canceling-a-query}
 
 While a query is running, the 'Run' button in the Query Editor toolbar will be replaced with a 'Cancel' button. Simply click this button or press `Esc` to cancel the query. Note: Any results that have already been returned will persist after cancellation.
 
 <Image img={cancel_a_query} size="lg" border alt="Cancel button that appears during query execution"/>
 
-### Saving a Query {#saving-a-query}
+### Saving a query {#saving-a-query}
 
 If not previously named, your query should be called 'Untitled Query'. Click on the query name to change it. Renaming a query will cause the query to be saved.
 
@@ -297,7 +299,7 @@ Now, let's test the query debugging capabilities of GenAI.
 
 Keep in mind that GenAI is an experimental feature. Use caution when running GenAI-generated queries against any dataset.
 
-## Advanced Querying Features {#advanced-querying-features}
+## Advanced querying features {#advanced-querying-features}
 
 ### Searching query results {#searching-query-results}
 
@@ -325,7 +327,7 @@ Query result sets can be easily exported to CSV format directly from the SQL con
 
 <Image img={download_as_csv} size="lg" border alt="Download as CSV"/>
 
-## Visualizing Query Data {#visualizing-query-data}
+## Visualizing query data {#visualizing-query-data}
 
 Some data can be more easily interpreted in chart form. You can quickly create visualizations from query result data directly from the SQL console in just a few clicks. As an example, we'll use a query that calculates weekly statistics for NYC taxi trips:
 
@@ -385,7 +387,7 @@ In some scenarios, it may be necessary to adjust the axis scales for each field 
 
 <Image img={adjust_axis_scale} size="lg" border alt="Adjust axis scale"/>
 
-## Sharing Queries {#sharing-queries}
+## Sharing queries {#sharing-queries}
 
 The SQL console enables you to share queries with your team. When a query is shared, all members of the team can see and edit the query. Shared queries are a great way to collaborate with your team.
 
@@ -404,4 +406,3 @@ A dialog will open, allowing you to share the query with all members of a team. 
 In some scenarios, it may be necessary to adjust the axis scales for each field independently. This can also be accomplished in the 'Advanced' section of the chart configuration pane by specifying min and max values for an axis range. As an example, the above chart looks good, but in order to demonstrate the correlation between our `trip_total` and `fare_total` fields, the axis ranges need some adjustment:
 
 <Image img={sql_console_access_queries} size="lg" border alt="Shared with me section in the query list"/>
-

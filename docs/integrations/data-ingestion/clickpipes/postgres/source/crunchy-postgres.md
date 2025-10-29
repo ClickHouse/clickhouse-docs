@@ -3,18 +3,19 @@ sidebar_label: 'Crunchy Bridge Postgres'
 description: 'Set up Crunchy Bridge Postgres as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/crunchy-postgres
 title: 'Crunchy Bridge Postgres Source Setup Guide'
+keywords: ['crunchy bridge', 'postgres', 'clickpipes', 'logical replication', 'data ingestion']
+doc_type: 'guide'
 ---
 
 import firewall_rules_crunchy_bridge from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/crunchy-postgres/firewall_rules_crunchy_bridge.png'
 import add_firewall_rules_crunchy_bridge from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/crunchy-postgres/add_firewall_rules_crunchy_bridge.png'
 import Image from '@theme/IdealImage';
 
-# Crunchy Bridge Postgres Source Setup Guide
-
+# Crunchy Bridge Postgres source setup guide
 
 ClickPipes supports Postgres version 12 and later.
 
-## Enable Logical Replication {#enable-logical-replication}
+## Enable logical replication {#enable-logical-replication}
 
 Crunchy Bridge comes with logical replication enabled by [default](https://docs.crunchybridge.com/how-to/logical-replication). Ensure that the settings below are configured correctly. If not, adjust them accordingly.
 
@@ -24,7 +25,7 @@ SHOW max_wal_senders; -- should be 10
 SHOW max_replication_slots; -- should be 10
 ```
 
-## Creating ClickPipes User and Granting permissions {#creating-clickpipes-user-and-granting-permissions}
+## Creating ClickPipes user and granting permissions {#creating-clickpipes-user-and-granting-permissions}
 
 Connect to your Crunchy Bridge Postgres through the `postgres` user and run the below commands:
 
@@ -61,8 +62,6 @@ Safelist [ClickPipes IPs](../../index.md#list-of-static-ips) by adding the Firew
 <Image size="lg" img={firewall_rules_crunchy_bridge} alt="Where to find Firewall Rules in Crunchy Bridge?" border/>
 
 <Image size="lg" img={add_firewall_rules_crunchy_bridge} alt="Add the Firewall Rules for ClickPipes" border/>
-
-
 
 ## What's next? {#whats-next}
 

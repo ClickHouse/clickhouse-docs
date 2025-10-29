@@ -1,36 +1,35 @@
 ---
 'slug': '/faq/operations/delete-old-data'
-'title': 'ClickHouseテーブルから古いレコードを削除することは可能ですか？'
+'title': '古いレコードを ClickHouse テーブルから削除することは可能ですか？'
 'toc_hidden': true
 'toc_priority': 20
-'description': 'このページでは、ClickHouseテーブルから古いレコードを削除することが可能かどうかについて説明します。'
+'description': 'このページでは、古いレコードを ClickHouse テーブルから削除することが可能かどうかの質問に回答します。'
+'doc_type': 'reference'
 ---
 
 
+# 古いレコードをClickHouseテーブルから削除することは可能ですか？ {#is-it-possible-to-delete-old-records-from-a-clickhouse-table}
 
-
-# 古いレコードを ClickHouse テーブルから削除することは可能ですか？ {#is-it-possible-to-delete-old-records-from-a-clickhouse-table}
-
-短い答えは「はい」です。ClickHouse には、古いデータを削除してディスクスペースを解放する複数のメカニズムがあります。それぞれのメカニズムは異なるシナリオを対象としています。
+短い答えは「はい」です」。ClickHouseは古いデータを削除することによってディスクスペースを解放する複数のメカニズムを持っています。各メカニズムは異なるシナリオに対して設計されています。
 
 ## TTL {#ttl}
 
-ClickHouse は、特定の条件が発生したときに自動的に値を削除することを許可します。この条件は、通常は任意のタイムスタンプカラムに対して静的オフセットとして設定された式に基づいて構成されます。
+ClickHouseは、特定の条件が発生した時に自動的に値を削除することを許可します。この条件は、通常は任意のタイムスタンプカラムの静的オフセットに基づく式として構成されます。
 
-このアプローチの主な利点は、TTL が構成された後、データの削除がバックグラウンドで自動的に行われるため、トリガー用の外部システムを必要としないことです。
+このアプローチの主な利点は、TTLが設定されるとデータの削除がバックグラウンドで自動的に行われるため、外部システムをトリガーとして使用する必要がないことです。
 
 :::note
-TTL は、データを [/dev/null](https://en.wikipedia.org/wiki/Null_device) に移動するだけでなく、SSD から HDD などの異なるストレージシステム間で移動するためにも使用できます。
+TTLはデータを[/dev/null](https://en.wikipedia.org/wiki/Null_device)に移動するだけでなく、SSDからHDDなど異なるストレージシステム間で移動するためにも使用できます。
 :::
 
-[TTL の構成に関する詳細](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl)。
+[TTLの構成](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl)についての詳細。
 
 ## DELETE FROM {#delete-from}
 
-[DELETE FROM](/sql-reference/statements/delete.md) は、ClickHouse で標準の DELETE クエリを実行できるようにします。フィルター句で指定された行は削除されたとしてマークされ、将来の結果セットから削除されます。行のクリーンアップは非同期で行われます。
+[DELETE FROM](/sql-reference/statements/delete.md)は、ClickHouseで標準のDELETEクエリを実行することを可能にします。フィルター句でターゲットにされた行は削除されたとマークされ、将来の結果セットからは削除されます。行のクリーンアップは非同期的に行われます。
 
 :::note
-DELETE FROM は、バージョン 23.3 以降から一般的に利用可能です。古いバージョンでは、実験的であり、次のように有効にする必要があります：
+DELETE FROMはバージョン23.3以降で一般的に利用可能です。古いバージョンでは、これは実験的であり、次のように有効にする必要があります：
 ```sql
 SET allow_experimental_lightweight_delete = true;
 ```
@@ -38,22 +37,22 @@ SET allow_experimental_lightweight_delete = true;
 
 ## ALTER DELETE {#alter-delete}
 
-ALTER DELETE は、非同期のバッチ操作を使用して行を削除します。DELETE FROM とは異なり、ALTER DELETE の後、およびバッチ操作が完了する前に実行されたクエリには、削除対象の行が含まれます。詳細については、[ALTER DELETE](/sql-reference/statements/alter/delete.md) ドキュメントを参照してください。
+ALTER DELETEは、非同期バッチ操作を使用して行を削除します。DELETE FROMとは異なり、ALTER DELETEの後に実行されたクエリは、バッチ操作の完了前に削除対象の行を含みます。詳細は[ALTER DELETE](/sql-reference/statements/alter/delete.md)のドキュメントを参照してください。
 
-`ALTER DELETE` は、古いデータを柔軟に削除するために発行できます。定期的に削除する必要がある場合、主な欠点はクエリを送信するために外部システムを持つ必要があることです。また、単一の行を削除するだけでも、変更によって完全なパーツが再書き込みされるため、パフォーマンス上の考慮点もあります。
+`ALTER DELETE`は古いデータを柔軟に削除するために発行できます。定期的に行う必要がある場合の主な欠点は、クエリを送信するために外部システムが必要になることです。また、単一の行を削除する場合でも、変異によって完全なパーツが書き換えられるため、パフォーマンスの考慮事項もあります。
 
-これは、ClickHouse ベースのシステムを [GDPR](https://gdpr-info.eu) 準拠にするための最も一般的なアプローチです。
+これはClickHouseに基づくシステムが[GDPR](https://gdpr-info.eu)に準拠するための最も一般的なアプローチです。
 
-[変更](/sql-reference/statements/alter#mutations) に関する詳細。
+[変異](https://sql-reference/statements/alter#mutations)の詳細について。
 
 ## DROP PARTITION {#drop-partition}
 
-`ALTER TABLE ... DROP PARTITION` は、全体のパーティションを削除するコスト効率の良い方法を提供します。それほど柔軟ではなく、テーブル作成時に適切なパーティショニングスキームを設定する必要がありますが、一般的なケースのほとんどをカバーしています。定期的な使用のためには、外部システムから実行する必要があります。
+`ALTER TABLE ... DROP PARTITION`は、全体のパーティションを削除するためのコスト効率の良い方法を提供します。これはそれほど柔軟ではなく、テーブル作成時に適切なパーティショニングスキームが構成される必要がありますが、ほとんどの一般的なケースをカバーしています。変異は定期的に使用するために外部システムから実行する必要があります。
 
-[パーティションの操作に関する詳細](/sql-reference/statements/alter/partition)。
+[パーティションの操作](https://sql-reference/statements/alter/partition)についての詳細。
 
 ## TRUNCATE {#truncate}
 
-テーブルからすべてのデータを削除するのはかなり過激ですが、場合によっては正にそれが必要な場合があります。
+テーブルからすべてのデータを削除するのはかなり過激ですが、場合によっては正に必要なことかもしれません。
 
-[テーブルのトランケートに関する詳細](/sql-reference/statements/truncate.md)。
+[テーブルのトランケーション](https://sql-reference/statements/truncate.md)の詳細について。

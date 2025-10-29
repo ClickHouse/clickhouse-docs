@@ -3,6 +3,8 @@ slug: /integrations/qstudio
 sidebar_label: 'QStudio'
 description: 'QStudio is a free SQL tool.'
 title: 'Connect QStudio to ClickHouse'
+doc_type: 'guide'
+keywords: ['qstudio', 'sql client', 'database tool', 'query tool', 'ide']
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
@@ -61,6 +63,6 @@ If QStudio detects that you do not have the ClickHouse JDBC driver installed, it
 
 <Image img={qstudio_running_query} size="lg" border alt="QStudio interface showing sample SQL query execution against ClickHouse database" />
 
-## Next Steps {#next-steps}
+## Next steps {#next-steps}
 
 See [QStudio](https://www.timestored.com/qstudio) to learn about the capabilities of QStudio, and the [ClickHouse documentation](https://clickhouse.com/docs) to learn about the capabilities of ClickHouse.

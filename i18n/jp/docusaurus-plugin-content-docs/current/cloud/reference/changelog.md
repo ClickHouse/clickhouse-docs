@@ -1,8 +1,8 @@
 ---
-'slug': '/whats-new/cloud'
-'sidebar_label': 'クラウド変更履歴'
-'title': 'クラウド変更履歴'
-'description': '各ClickHouse Cloudリリースの新機能に関する説明を提供するClickHouse Cloud変更履歴'
+slug: '/whats-new/cloud'
+sidebar_label: 'クラウド変更履歴'
+title: 'クラウド変更履歴'
+description: '各ClickHouse Cloudリリースの新機能に関する説明を提供するClickHouse Cloud変更履歴'
 ---
 
 import Image from '@theme/IdealImage';
@@ -146,7 +146,7 @@ ClickHouse Cloudの安定した使用を確保し、ベストプラクティス�
 
 [Golang](https://github.com/ClickHouse/clickhouse-go/releases/tag/v2.30.1)、[Python](https://github.com/ClickHouse/clickhouse-connect/releases/tag/v0.8.11)、および[NodeJS](https://github.com/ClickHouse/clickhouse-js/releases/tag/1.10.1)クライアントが、Dynamic、Variant、およびJSONタイプリクエストをサポートしました。
 
-### DBT support for Refreshable Materialized Views {#dbt-support-for-refreshable-materialized-views}
+### DBT support for refreshable materialized views {#dbt-support-for-refreshable-materialized-views}
 
 DBTは、`1.8.7`リリースで[リフレッシュ可能なマテリアライズドビュー](https://github.com/ClickHouse/dbt-clickhouse/releases/tag/v1.8.7)をサポートしています。
 
@@ -297,7 +297,7 @@ ClickHouse Cloudは、いくつかの請求およびスケーリングイベン�
 
 多要素認証を使用している顧客は、電話を失ったりトークンを誤って削除した場合に使用できる回復コードを取得できるようになりました。初めてMFAに登録する顧客には、設定時にコードが提供されます。既存のMFAを持っている顧客は、既存のMFAトークンを削除し新しいトークンを追加することで回復コードを取得できます。
 
-### ClickPipes Update: Custom Certificates, Latency Insights, and More! {#clickpipes-update-custom-certificates-latency-insights-and-more}
+### ClickPipes update: custom certificates, latency insights, and more! {#clickpipes-update-custom-certificates-latency-insights-and-more}
 
 ClickPipes、データをClickHouseサービスに取り込むための最も簡単な方法に関する最新の更新情報をお知らせできることを嬉しく思います！これらの新機能は、データ取り込みの制御を強化し、パフォーマンスメトリクスへの可視化を提供することを目的としています。
 
@@ -1003,7 +1003,7 @@ ClickHouse 23.1 の機能のサブセットを追加します。たとえば:
 - [Metabase](/integrations/data-visualization/metabase-and-clickhouse.md)プラグイン: ClickHouseによって維持される公式ソリューションになりました
 - [dbt](/integrations/data-ingestion/etl-tools/dbt/index.md)プラグイン: [複数スレッド](https://github.com/ClickHouse/dbt-clickhouse/blob/main/CHANGELOG.md)のサポートを追加
 - [Grafana](/integrations/data-visualization/grafana/index.md)プラグイン: 接続エラーの処理が改善されました
-- [Python](/integrations/language-clients/python/index.md)クライアント: 挿入操作のための[ストリーミングサポート](/integrations/language-clients/python/index.md#streaming-queries)
+- [Python](/integrations/language-clients/python/index.md)クライアント: 挿入操作のための[ストリーミングサポート](/integrations/language-clients/python/advanced-querying.md#streaming-queries)
 - [Go](/integrations/language-clients/go/index.md)クライアント: [バグ修正](https://github.com/ClickHouse/clickhouse-go/blob/main/CHANGELOG.md): キャンセルされた接続を閉じ、接続エラーの処理を改善
 - [JS](/integrations/language-clients/js.md)クライアント: [exec/insertの破壊的変更](https://github.com/ClickHouse/clickhouse-js/releases/tag/0.0.12); 戻り値の型でquery_idを公開
 - [Java](https://github.com/ClickHouse/clickhouse-java#readme)クライアント/JDBCドライバーのメジャーリリース

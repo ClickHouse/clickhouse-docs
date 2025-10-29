@@ -5,6 +5,10 @@ keywords: ['clickhouse', 'NiFi', 'connect', 'integrate', 'etl', 'data integratio
 slug: /integrations/nifi
 description: 'Stream data into ClickHouse using NiFi data pipelines'
 title: 'Connect Apache NiFi to ClickHouse'
+doc_type: 'guide'
+integration:
+  - support_level: 'community'
+  - category: 'data_ingestion'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
@@ -38,7 +42,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 ## 2. Download and run Apache NiFi {#2-download-and-run-apache-nifi}
 
 1. For a new setup, download the binary from https://nifi.apache.org/download.html and start by running `./bin/nifi.sh start`
-
 
 ## 3. Download the ClickHouse JDBC driver {#3-download-the-clickhouse-jdbc-driver}
 

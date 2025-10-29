@@ -3,6 +3,8 @@ sidebar_label: 'Ordering keys'
 description: 'How to define custom ordering keys.'
 slug: /integrations/clickpipes/postgres/ordering_keys
 title: 'Ordering Keys'
+doc_type: 'guide'
+keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 Ordering Keys (a.k.a. sorting keys) define how data is sorted on disk and indexed for a table in ClickHouse. When replicating from Postgres, ClickPipes sets the Postgres primary key of a table as the ordering key for the corresponding table in ClickHouse. In most cases, the Postgres primary key serves as a sufficient ordering key, as ClickHouse is already optimized for fast scans, and custom ordering keys are often not required.
@@ -11,7 +13,7 @@ As describe in the [migration guide](/migrations/postgresql/data-modeling-techni
 
 By default with CDC, choosing an ordering key different from the Postgres primary key can cause data deduplication issues in ClickHouse. This happens because the ordering key in ClickHouse serves a dual role: it controls data indexing and sorting while acting as the deduplication key. The easiest way to address this issue is by defining refreshable materialized views.
 
-## Use Refreshable Materialized Views {#use-refreshable-materialized-views}
+## Use refreshable materialized views {#use-refreshable-materialized-views}
 
 A simple way to define custom ordering keys (ORDER BY) is using [refreshable materialized views](/materialized-view/refreshable-materialized-view) (MVs). These allow you to periodically (e.g., every 5 or 10 minutes) copy the entire table with the desired ordering key. 
 

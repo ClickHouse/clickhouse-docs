@@ -1,25 +1,24 @@
 ---
-'description': 'System iceberg snapshot history'
+'description': 'システムアイスバーグスナップショットの履歴'
 'keywords':
 - 'system iceberg_history'
 'slug': '/operations/system-tables/iceberg_history'
 'title': 'system.iceberg_history'
+'doc_type': 'reference'
 ---
-
-
 
 
 # system.iceberg_history
 
-アイスバーグテーブルのスナップショット履歴を含みます。
+このシステムテーブルは、ClickHouseに存在するIcebergテーブルのスナップショット履歴を含みます。ClickHouseにIcebergテーブルがない場合、これは空になります。
 
-カラム：
+カラム:
 
-- `database` ([String](../../sql-reference/data-types/string.md)) — テーブルがあるデータベースの名前。
+- `database` ([String](../../sql-reference/data-types/string.md)) — テーブルが存在するデータベースの名前。
 
-- `name` ([String](../../sql-reference/data-types/string.md)) — テーブル名。
+- `table` ([String](../../sql-reference/data-types/string.md)) — テーブル名。
 
-- `made_current_at` ([DateTime](../../sql-reference/data-types/uuid.md)) — スナップショットが最新スナップショットになった時間。
+- `made_current_at` ([DateTime](../../sql-reference/data-types/uuid.md)) — スナップショットが現在のスナップショットとして作成された日時。
 
 - `snapshot_id` ([Int64](../../sql-reference/data-types/int-uint.md)) — スナップショットID。
 

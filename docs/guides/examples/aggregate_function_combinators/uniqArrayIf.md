@@ -4,6 +4,7 @@ title: 'uniqArrayIf'
 description: 'Example of using the uniqArrayIf combinator'
 keywords: ['uniq', 'array', 'if', 'combinator', 'examples', 'uniqArrayIf']
 sidebar_label: 'uniqArrayIf'
+doc_type: 'reference'
 ---
 
 # uniqArrayIf {#uniqarrayif}
@@ -21,7 +22,7 @@ condition is true, using the `uniqArrayIf` aggregate combinator function.
 This is useful when you want to count unique elements in an array based on 
 specific conditions without having to use `arrayJoin`.
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 ### Count unique products viewed by segment type and engagement level {#count-unique-products}
 

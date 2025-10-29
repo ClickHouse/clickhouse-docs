@@ -1,5 +1,5 @@
 ---
-'description': '关于 ALTER DATABASE ... MODIFY COMMENT 语句的文档，这些语句允许添加、修改或删除数据库注释。'
+'description': 'ALTER DATABASE ... MODIFY COMMENT 语句的文档，允许添加、修改或删除数据库注释。'
 'slug': '/sql-reference/statements/alter/database-comment'
 'sidebar_position': 51
 'sidebar_label': 'ALTER DATABASE ... MODIFY COMMENT'
@@ -7,12 +7,13 @@
 'keywords':
 - 'ALTER DATABASE'
 - 'MODIFY COMMENT'
+'doc_type': 'reference'
 ---
 
 
 # ALTER DATABASE ... MODIFY COMMENT
 
-添加、修改或删除数据库注释，无论之前是否设置过该注释。注释变更在 [`system.databases`](/operations/system-tables/databases.md) 以及 `SHOW CREATE DATABASE` 查询中均有反映。
+添加、修改或删除数据库注释，无论之前是否设置过。注释更改会反映在 [`system.databases`](/operations/system-tables/databases.md) 和 `SHOW CREATE DATABASE` 查询中。
 
 ## Syntax {#syntax}
 
@@ -56,7 +57,7 @@ ALTER DATABASE database_with_comment
 MODIFY COMMENT '';
 ```
 
-要验证注释是否已删除：
+要验证注释是否已被删除：
 
 ```sql title="Query"
 SELECT comment 

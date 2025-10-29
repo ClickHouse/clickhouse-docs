@@ -6,6 +6,11 @@ keywords: ['superset']
 description: 'Apache Superset is an open-source data exploration and visualization platform.'
 title: 'Connect Superset to ClickHouse'
 show_related_blogs: true
+doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_visualization'
+  - website: 'https://github.com/ClickHouse/clickhouse-connect'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
@@ -21,11 +26,11 @@ import superset_09 from '@site/static/images/integrations/data-visualization/sup
 import superset_10 from '@site/static/images/integrations/data-visualization/superset_10.png';
 import superset_11 from '@site/static/images/integrations/data-visualization/superset_11.png';
 import superset_12 from '@site/static/images/integrations/data-visualization/superset_12.png';
-import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Connect Superset to ClickHouse
 
-<CommunityMaintainedBadge/>
+<ClickHouseSupportedBadge/>
 
 <a href="https://superset.apache.org/" target="_blank">Apache Superset</a> is an open-source data exploration and visualization platform written in Python. Superset connects to ClickHouse using a Python driver provided by ClickHouse. Let's see how it works...
 
@@ -66,9 +71,9 @@ If you do not have a dataset to work with you can add one of the examples. This 
 <br/>
 
 3. In the second step:
-  - Set SSL on or off.
-  - Enter the connection information that you collected earlier
-  - Specify the **DISPLAY NAME**: this can be any name you prefer. If you will be connecting to multiple ClickHouse databases then make the name more descriptive.
+- Set SSL on or off.
+- Enter the connection information that you collected earlier
+- Specify the **DISPLAY NAME**: this can be any name you prefer. If you will be connecting to multiple ClickHouse databases then make the name more descriptive.
 
 <Image size="sm" img={superset_03} alt="Superset connection configuration form showing ClickHouse connection parameters" border />
 <br/>
@@ -85,7 +90,6 @@ If you do not have a dataset to work with you can add one of the examples. This 
 <br/>
 
 3. Click the **ADD** button at the bottom of the dialog window and your table appears in the list of datasets. You are ready to build a dashboard and analyze your ClickHouse data!
-
 
 ## 5.  Creating charts and a dashboard in Superset {#5--creating-charts-and-a-dashboard-in-superset}
 

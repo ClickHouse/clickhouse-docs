@@ -5,6 +5,7 @@ sidebar_position: 10
 description: 'Filling gaps in time-series data.'
 keywords: ['time series', 'gap fill']
 title: 'Filling gaps in time-series data'
+doc_type: 'guide'
 ---
 
 # Filling gaps in time-series data
@@ -117,7 +118,6 @@ We can see that the gaps have been filled with 0 values in the `count` column.
 ## WITH FILL...FROM {#with-fillfrom}
 
 There is, however, still a gap at the beginning of the time range, which we can fix by specifying `FROM`:
-
 
 ```sql
 SELECT

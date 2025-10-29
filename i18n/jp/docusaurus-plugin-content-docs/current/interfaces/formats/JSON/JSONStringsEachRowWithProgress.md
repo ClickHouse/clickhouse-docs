@@ -1,16 +1,15 @@
 ---
-'description': 'JSONStringsEachRowWithProgress フォーマットのドキュメント'
+'description': 'JSONStringsEachRowWithProgress フォーマットに関するドキュメント'
 'keywords':
 - 'JSONStringsEachRowWithProgress'
 'slug': '/interfaces/formats/JSONStringsEachRowWithProgress'
 'title': 'JSONStringsEachRowWithProgress'
+'doc_type': 'reference'
 ---
-
-
 
 ## 説明 {#description}
 
-`JSONEachRow`/`JSONStringsEachRow` とは異なり、ClickHouse は進行状況情報を JSON 値としても出力します。
+`JSONEachRow`/`JSONStringsEachRow` と異なり、ClickHouse は JSON 値として進行情報も提供します。
 
 ## 使用例 {#example-usage}
 

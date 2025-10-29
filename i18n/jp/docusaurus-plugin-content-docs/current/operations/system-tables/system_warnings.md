@@ -1,10 +1,11 @@
 ---
-'description': 'This table contains warning messages about clickhouse server.'
+'description': 'このテーブルには、ClickHouseサーバーに関する警告メッセージが含まれています。'
 'keywords':
 - 'system table'
 - 'warnings'
 'slug': '/operations/system-tables/system_warnings'
 'title': 'system.warnings'
+'doc_type': 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
@@ -14,9 +15,12 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud/>
 
-このテーブルは、ClickHouse サーバーに関する警告を表示します。 同じ種類の警告は、1 つの警告にまとめられます。 たとえば、接続されているデータベースの数 N が構成可能な閾値 T を超えると、N 個の個別のエントリの代わりに、現在の値 N を含む単一のエントリが表示されます。 現在の値が閾値を下回ると、エントリはテーブルから削除されます。
+このテーブルは ClickHouse サーバーの警告を示します。  
+同じタイプの警告は1つの警告にまとめられます。  
+例えば、接続されているデータベースの数 N が設定可能な閾値 T を超えると、現在の値 N を含む1つのエントリが表示され、N 個の別々のエントリは表示されません。  
+現在の値が閾値を下回ると、そのエントリはテーブルから削除されます。
 
-テーブルは、次の設定で構成できます：
+このテーブルは次の設定で構成できます：
 
 - [max_table_num_to_warn](../server-configuration-parameters/settings.md#max_table_num_to_warn)
 - [max_database_num_to_warn](../server-configuration-parameters/settings.md#max_database_num_to_warn)
@@ -25,8 +29,10 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 - [max_part_num_to_warn](../server-configuration-parameters/settings.md#max_part_num_to_warn)
 - [max_pending_mutations_to_warn](../server-configuration-parameters/settings.md#max_pending_mutations_to_warn)
 - [max_pending_mutations_execution_time_to_warn](/operations/server-configuration-parameters/settings#max_pending_mutations_execution_time_to_warn)
+- [max_named_collection_num_to_warn](../server-configuration-parameters/settings.md#max_named_collection_num_to_warn)
+- [resource_overload_warnings](/operations/settings/server-overload#resource-overload-warnings)
 
-カラム：
+列：
 
 - `message` ([String](../../sql-reference/data-types/string.md)) — 警告メッセージ。
 - `message_format_string` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — メッセージをフォーマットするために使用されるフォーマット文字列。
@@ -36,7 +42,7 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 クエリ：
 
 ```sql
- SELECT * FROM system.warnings LIMIT 2 \G;
+SELECT * FROM system.warnings LIMIT 2 \G;
 ```
 
 結果：
@@ -44,11 +50,11 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 ```text
 Row 1:
 ──────
-message:               アクティブなパーツの数が 10 を超えています。
-message_format_string: アクティブなパーツの数が {} を超えています。
+message:               The number of active parts is more than 10.
+message_format_string: The number of active parts is more than {}.
 
 Row 2:
 ──────
-message:               接続されているデータベースの数が 2 を超えています。
-message_format_string: 接続されているデータベースの数が {} を超えています。
+message:               The number of attached databases is more than 2.
+message_format_string: The number of attached databases is more than {}.
 ```

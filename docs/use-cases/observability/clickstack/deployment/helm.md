@@ -3,13 +3,16 @@ slug: /use-cases/observability/clickstack/deployment/helm
 title: 'Helm'
 pagination_prev: null
 pagination_next: null
-sidebar_position: 1
+sidebar_position: 2
 description: 'Deploying ClickStack with Helm - The ClickHouse Observability Stack'
+doc_type: 'guide'
+keywords: ['ClickStack Helm chart', 'Helm ClickHouse deployment', 'HyperDX Helm installation', 'Kubernetes observability stack', 'ClickStack Kubernetes deployment']
 ---
 
 import Image from '@theme/IdealImage';
 import hyperdx_24 from '@site/static/images/use-cases/observability/hyperdx-24.png';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
+import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 The helm chart for HyperDX can be found [here](https://github.com/hyperdxio/helm-charts) and is the **recommended** method for production deployments.
 
@@ -90,7 +93,6 @@ Create a user, providing a username and password which means the requirements.
 
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
 
-
 On clicking `Create`, data sources will be created for the ClickHouse instance deployed with the Helm chart.
 
 :::note Overriding default connection
@@ -145,7 +147,6 @@ For handling sensitive data such as API keys or database credentials, use Kubern
 #### Using pre-configured secrets {#using-pre-configured-secrets}
 
 The Helm chart includes a default secret template located at [`charts/hdx-oss-v2/templates/secrets.yaml`](https://github.com/hyperdxio/helm-charts/blob/main/charts/hdx-oss-v2/templates/secrets.yaml). This file provides a base structure for managing secrets.
-
 
 If you need to manually apply a secret, modify and apply the provided `secrets.yaml` template:
 
@@ -219,6 +220,18 @@ clickhouse:
 
 otel:
   clickhouseEndpoint: ${CLICKHOUSE_URL}
+
+hyperdx:
+  defaultConnections: |
+    [
+      {
+        "name": "External ClickHouse",
+        "host": "http://your-clickhouse-server:8123",
+        "port": 8123,
+        "username": "your-username",
+        "password": "your-password"
+      }
+    ]
 ```
 
 ```shell
@@ -226,7 +239,6 @@ helm install my-hyperdx hyperdx/hdx-oss-v2 -f values.yaml
 # or if installed...
 # helm upgrade my-hyperdx hyperdx/hdx-oss-v2 -f values.yaml
 ```
-
 
 ## Production notes {#production-notes}
 
@@ -290,4 +302,33 @@ helm install my-hyperdx hyperdx/hdx-oss-v2 --debug --dry-run
 
 ```shell
 kubectl get pods -l app.kubernetes.io/name=hdx-oss-v2
+```
+
+<JSONSupport/>
+
+Users can set these environment variables via either parameters or the `values.yaml` e.g.
+
+*values.yaml*
+
+```yaml
+hyperdx:
+  ...
+  env:
+    - name: BETA_CH_OTEL_JSON_SCHEMA_ENABLED
+      value: "true"
+
+otel:
+  ...
+  env:
+    - name: OTEL_AGENT_FEATURE_GATE_ARG
+      value: "--feature-gates=clickhouse.json"
+```
+
+or via `--set`:
+
+```shell
+helm install myrelease hyperdx-helm --set "hyperdx.env[0].name=BETA_CH_OTEL_JSON_SCHEMA_ENABLED" \
+  --set "hyperdx.env[0].value=true" \
+  --set "otel.env[0].name=OTEL_AGENT_FEATURE_GATE_ARG" \
+  --set "otel.env[0].value=--feature-gates=clickhouse.json"
 ```

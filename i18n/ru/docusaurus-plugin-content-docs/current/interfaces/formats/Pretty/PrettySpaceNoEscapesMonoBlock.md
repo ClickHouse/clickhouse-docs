@@ -1,23 +1,22 @@
 ---
-alias: []
+slug: '/interfaces/formats/PrettySpaceNoEscapesMonoBlock'
 description: 'Документация для формата PrettySpaceNoEscapesMonoBlock'
-input_format: false
+title: PrettySpaceNoEscapesMonoBlock
 keywords: ['PrettySpaceNoEscapesMonoBlock']
+doc_type: reference
+input_format: false
 output_format: true
-slug: /interfaces/formats/PrettySpaceNoEscapesMonoBlock
-title: 'PrettySpaceNoEscapesMonoBlock'
 ---
-
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| Вход | Выход  | Псевдоним |
-|------|--------|-----------|
-| ✗    | ✔      |           |
+| Input | Output  | Alias |
+|-------|---------|-------|
+| ✗     | ✔       |       |
 
 ## Описание {#description}
 
 Отличается от формата [`PrettySpaceNoEscapes`](./PrettySpaceNoEscapes.md) тем, что до `10,000` строк буферизуются, 
-и затем выводятся как одна таблица, а не по [блокам](/development/architecture#block).
+а затем выводятся в виде одной таблицы, а не по [блокам](/development/architecture#block).
 
 ## Пример использования {#example-usage}
 

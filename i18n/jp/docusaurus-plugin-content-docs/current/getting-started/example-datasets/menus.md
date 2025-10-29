@@ -1,12 +1,10 @@
 ---
-'description': 'Dataset containing 1.3 million records of historical data on the menus
-  of hotels, restaurants and cafes with the dishes along with their prices.'
-'sidebar_label': 'New York Public Library "What''s on the Menu?" Dataset'
+'description': 'データセットには、ホテル、レストラン、カフェのメニューに関する歴史的データの130万件のレコードが含まれており、料理とその価格が記載されています。'
+'sidebar_label': 'ニューヨーク公立図書館「メニューに何があるか？」データセット'
 'slug': '/getting-started/example-datasets/menus'
-'title': 'New York Public Library "What''s on the Menu?" Dataset'
+'title': 'ニューヨーク公立図書館「メニューに何があるか？」データセット'
+'doc_type': 'reference'
 ---
-
-
 
 The dataset is created by the New York Public Library. It contains historical data on the menus of hotels, restaurants and cafes with the dishes along with their prices.
 
@@ -16,7 +14,7 @@ The data is in public domain.
 The data is from library's archive and it may be incomplete and difficult for statistical analysis. Nevertheless it is also very yummy.
 The size is just 1.3 million records about dishes in the menus — it's a very small data volume for ClickHouse, but it's still a good example.
 
-## ダウンロード データセット {#download-dataset}
+## Download the dataset {#download-dataset}
 
 Run the command:
 
@@ -32,7 +30,7 @@ md5sum 2021_08_01_07_01_17_data.tgz
 Replace the link to the up to date link from http://menus.nypl.org/data if needed.
 Download size is about 35 MB.
 
-## データセットを展開 {#unpack-dataset}
+## Unpack the dataset {#unpack-dataset}
 
 ```bash
 tar xvf 2021_08_01_07_01_17_data.tgz
@@ -46,7 +44,7 @@ The data is normalized consisted of four tables:
 - `MenuPage` — Information about the pages in the menus, because every page belongs to some menu.
 - `MenuItem` — An item of the menu. A dish along with its price on some menu page: links to dish and menu page.
 
-## テーブルを作成 {#create-tables}
+## Create the tables {#create-tables}
 
 We use [Decimal](../../sql-reference/data-types/decimal.md) data type to store prices.
 
@@ -113,7 +111,7 @@ CREATE TABLE menu_item
 ) ENGINE = MergeTree ORDER BY id;
 ```
 
-## データをインポート {#import-data}
+## Import the data {#import-data}
 
 Upload data into ClickHouse, run:
 
@@ -132,7 +130,7 @@ We disable [input_format_null_as_default](/operations/settings/formats#input_for
 
 The setting [date_time_input_format best_effort](/operations/settings/formats#date_time_input_format) allows to parse [DateTime](../../sql-reference/data-types/datetime.md)  fields in wide variety of formats. For example, ISO-8601 without seconds like '2000-01-01 01:02' will be recognized. Without this setting only fixed DateTime format is allowed.
 
-## データを非正規化 {#denormalize-data}
+## Denormalize the data {#denormalize-data}
 
 Data is presented in multiple tables in [normalized form](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms). It means you have to perform [JOIN](/sql-reference/statements/select/join) if you want to query, e.g. dish names from menu items.
 For typical analytical tasks it is way more efficient to deal with pre-JOINed data to avoid doing `JOIN` every time. It is called "denormalized" data.
@@ -184,7 +182,7 @@ FROM menu_item
     JOIN menu ON menu_page.menu_id = menu.id;
 ```
 
-## データを検証 {#validate-data}
+## Validate the data {#validate-data}
 
 Query:
 
@@ -200,9 +198,9 @@ Result:
 └─────────┘
 ```
 
-## クエリを実行 {#run-queries}
+## Run some queries {#run-queries}
 
-### 平均的な歴史的価格 {#query-averaged-historical-prices}
+### Averaged historical prices of dishes {#query-averaged-historical-prices}
 
 Query:
 
@@ -244,7 +242,7 @@ Result:
 
 Take it with a grain of salt.
 
-### ハンバーガーの価格 {#query-burger-prices}
+### Burger prices {#query-burger-prices}
 
 Query:
 
@@ -281,7 +279,7 @@ Result:
 └──────┴─────────┴──────────────────────┴───────────────────────────────────────┘
 ```
 
-### ウォッカ {#query-vodka}
+### Vodka {#query-vodka}
 
 Query:
 
@@ -315,7 +313,7 @@ Result:
 
 To get vodka we have to write `ILIKE '%vodka%'` and this definitely makes a statement.
 
-### キャビア {#query-caviar}
+### Caviar {#query-caviar}
 
 Let's print caviar prices. Also let's print a name of any dish with caviar.
 
@@ -358,6 +356,6 @@ Result:
 
 At least they have caviar with vodka. Very nice.
 
-## オンラインプレイグラウンド {#playground}
+## Online playground {#playground}
 
 The data is uploaded to ClickHouse Playground, [example](https://sql.clickhouse.com?query_id=KB5KQJJFNBKHE5GBUJCP1B).

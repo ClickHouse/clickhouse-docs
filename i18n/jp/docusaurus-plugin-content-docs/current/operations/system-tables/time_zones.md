@@ -1,20 +1,19 @@
 ---
-'description': 'ClickHouseサーバーでサポートされているタイムゾーンのリストを含むシステムテーブル。'
+'description': 'システムテーブルは、ClickHouseサーバーによってサポートされているタイムゾーンのリストを含みます。'
 'keywords':
 - 'system table'
 - 'time_zones'
 'slug': '/operations/system-tables/time_zones'
 'title': 'system.time_zones'
+'doc_type': 'reference'
 ---
-
-
 
 
 # system.time_zones
 
-ClickHouseサーバーがサポートしているタイムゾーンのリストを含みます。このタイムゾーンのリストは、ClickHouseのバージョンによって異なる場合があります。
+ClickHouseサーバーがサポートするタイムゾーンのリストが含まれています。このタイムゾーンのリストは、ClickHouseのバージョンによって異なる場合があります。
 
-列:
+カラム:
 
 - `time_zone` (String) — サポートされているタイムゾーンのリスト。
 

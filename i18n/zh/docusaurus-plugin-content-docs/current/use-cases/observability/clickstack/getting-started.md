@@ -4,7 +4,8 @@
 'sidebar_label': '开始使用'
 'pagination_prev': null
 'pagination_next': 'use-cases/observability/clickstack/example-datasets/index'
-'description': '开始使用 ClickStack - ClickHouse 观察性堆栈'
+'description': '开始使用 ClickStack - ClickHouse 观察性栈'
+'doc_type': 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -25,30 +26,30 @@ Getting started with **ClickStack** is straightforward thanks to the availabilit
 
 ## Local deployment {#local-deployment}
 
-The simplest option is a **single-image distribution** that includes all core components of the stack bundled together:
+最简单的选项是**单镜像分发**，它将堆栈的所有核心组件捆绑在一起：
 
 - **HyperDX UI**
 - **OpenTelemetry (OTel) collector**
 - **ClickHouse**
 
-This all-in-one image allows you to launch the full stack with a single command, making it ideal for testing, experimentation, or quick local deployments.
+这个一体化镜像让您可以通过一条命令启动整个堆栈，非常适合测试、实验或快速本地部署。
 
 <VerticalStepper headerLevel="h3">
 
 ### Deploy stack with docker {#deploy-stack-with-docker}
 
-The following will run an OpenTelemetry collector (on port 4317 and 4318) and the HyperDX UI (on port 8080).
+以下命令将运行一个 OpenTelemetry collector（在端口 4317 和 4318 上）以及 HyperDX UI（在端口 8080 上）。
 
-```bash
+```shell
 docker run -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
 
 :::note Persisting data and settings
-To persist data and settings across restarts of the container, users can modify the above docker command to mount the paths `/data/db`, `/var/lib/clickhouse` and `/var/log/clickhouse-server`.
+为了在容器重启之间保持数据和设置，用户可以修改上述 docker 命令以挂载路径 `/data/db`、`/var/lib/clickhouse` 和 `/var/log/clickhouse-server`。
 
-For example:
+例如：
 
-```bash
+```shell
 
 # modify command to mount paths
 docker run \
@@ -64,131 +65,131 @@ docker run \
 
 ### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui}
 
-Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
+访问 [http://localhost:8080](http://localhost:8080) 来访问 HyperDX UI。
 
-Create a user, providing a username and password that meets the complexity requirements.
+创建一个用户，提供符合复杂性要求的用户名和密码。
 
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
 
-HyperDX will automatically connect to the local cluster and create data sources for the logs, traces, metrics, and sessions - allowing you to explore the product immediately.
+HyperDX 将自动连接到本地集群并为日志、跟踪、指标和会话创建数据源 - 让您能立即探索产品。
 
 ### Explore the product {#explore-the-product}
 
-With the stack deployed, try one of our same datasets.
+在堆栈部署后，尝试我们的一些相同数据集。
 
-To continue using the local cluster:
+要继续使用本地集群：
 
-- [Example dataset](/use-cases/observability/clickstack/getting-started/sample-data) - Load an example dataset from our public demo. Diagnose a simple issue.
-- [Local files and metrics](/use-cases/observability/clickstack/getting-started/local-data) - Load local files and monitor system on OSX or Linux using a local OTel collector.
+- [Example dataset](/use-cases/observability/clickstack/getting-started/sample-data) - 从我们的公共演示加载示例数据集。诊断一个简单的问题。
+- [Local files and metrics](/use-cases/observability/clickstack/getting-started/local-data) - 加载本地文件并使用本地 OTel collector 在 OSX 或 Linux 上监控系统。
 
 <br/>
-Alternatively, you can connect to a demo cluster where you can explore a larger dataset:
+或者，您可以连接到一个演示集群，在那里您可以探索更大的数据集：
 
-- [Remote demo dataset](/use-cases/observability/clickstack/getting-started/remote-demo-data) - Explore a demo dataset in our demo ClickHouse service.
+- [Remote demo dataset](/use-cases/observability/clickstack/getting-started/remote-demo-data) - 在我们的演示 ClickHouse 服务中探索演示数据集。
 
 </VerticalStepper>
 
 ## Deploy with ClickHouse Cloud {#deploy-with-clickhouse-cloud}
 
-Users can deploy ClickStack against ClickHouse Cloud, benefiting from a fully managed, secure backend while retaining complete control over ingestion, schema, and observability workflows.
+用户可以针对 ClickHouse Cloud 部署 ClickStack，受益于完全托管的安全后端，同时保留对数据摄取、模式和可观察性工作流的完全控制。
 
 <VerticalStepper headerLevel="h3">
 
 ### Create a ClickHouse Cloud service {#create-a-service}
 
-Follow the [getting started guide for ClickHouse Cloud](/cloud/get-started/cloud-quick-start#1-create-a-clickhouse-service) to create a service.
+请遵循 [getting started guide for ClickHouse Cloud](/getting-started/quick-start/cloud#1-create-a-clickhouse-service) 来创建服务。
 
 ### Copy connection details {#copy-cloud-connection-details}
 
-To find the connection details for HyperDX, navigate to the ClickHouse Cloud console and click the <b>Connect</b> button on the sidebar.
+要查找 HyperDX 的连接详细信息，请导航到 ClickHouse Cloud 控制台并单击侧边栏上的 <b>Connect</b> 按钮。
 
-Copy the HTTP connection details, specifically the HTTPS endpoint (`endpoint`) and password.
+复制 HTTP 连接详细信息，特别是 HTTPS 端点（`endpoint`）和密码。
 
 <Image img={connect_cloud} alt="Connect Cloud" size="md"/>
 
 :::note Deploying to production
-While we will use the `default` user to connect HyperDX, we recommend creating a dedicated user when [going to production](/use-cases/observability/clickstack/production#create-a-user).
+虽然我们将使用 `default` 用户连接 HyperDX，但我们建议在 [去生产时](/use-cases/observability/clickstack/production#create-a-user) 创建一个专用用户。
 :::
 
 ### Deploy with docker {#deploy-with-docker}
 
-Open a terminal and export the credentials copied above:
+打开终端并导出上面复制的凭据：
 
-```bash
+```shell
 export CLICKHOUSE_USER=default
 export CLICKHOUSE_ENDPOINT=<YOUR HTTPS ENDPOINT>
 export CLICKHOUSE_PASSWORD=<YOUR_PASSWORD>
 ```
 
-Run the following docker command:
+运行以下 docker 命令：
 
-```bash
+```shell
 docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
 
-This will expose an OpenTelemetry collector (on port 4317 and 4318), and the HyperDX UI (on port 8080).
+这将暴露一个 OpenTelemetry collector（在端口 4317 和 4318 上）和 HyperDX UI（在端口 8080 上）。
 
 ### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui-cloud}
 
-Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
+访问 [http://localhost:8080](http://localhost:8080) 来访问 HyperDX UI。
 
-Create a user, providing a username and password which meets the complexity requirements.
+创建一个用户，提供符合复杂性要求的用户名和密码。
 
 <Image img={hyperdx_login} alt="HyperDX Login" size="lg"/>
 
 ### Create a ClickHouse Cloud connection {#create-a-cloud-connection}
 
-Navigate to `Team Settings` and click `Edit` for the `Local Connection`:
+导航到 `Team Settings` 并点击 `Edit` 以获取 `Local Connection`：
 
 <Image img={edit_connection} alt="Edit Connection" size="lg"/>
 
-Rename the connection to `Cloud` and complete the subsequent form with your ClickHouse Cloud service credentials before clicking `Save`:
+将连接重命名为 `Cloud` 并在单击 `Save` 之前填写后续表单与您的 ClickHouse Cloud 服务凭据：
 
 <Image img={edit_cloud_connection} alt="Create Cloud connection" size="lg"/>
 
 ### Explore the product {#explore-the-product-cloud}
 
-With the stack deployed, try one of our same datasets.
+在堆栈部署后，尝试我们的一些相同数据集。
 
-- [Example dataset](/use-cases/observability/clickstack/getting-started/sample-data) - Load an example dataset from our public demo. Diagnose a simple issue.
-- [Local files and metrics](/use-cases/observability/clickstack/getting-started/local-data) - Load local files and monitor the system on OSX or Linux using a local OTel collector.
+- [Example dataset](/use-cases/observability/clickstack/getting-started/sample-data) - 从我们的公共演示加载示例数据集。诊断一个简单的问题。
+- [Local files and metrics](/use-cases/observability/clickstack/getting-started/local-data) - 加载本地文件并使用本地 OTel collector 在 OSX 或 Linux 上监控系统。
 
 </VerticalStepper>
 
 ## Local mode {#local-mode}
 
-Local mode is a way to deploy HyperDX without a database or OTel collector. You can connect directly to a ClickHouse server from your browser directly, with configuration stored locally in your browser's local or session storage. This image **only** includes the HyperDX UI.
+本地模式是一种在不需要身份验证的情况下部署 HyperDX 的方式。
 
-Authentication is not supported.
+不支持身份验证。
 
-This mode is intended to be used for quick testing, development, demos and debugging use cases where deploying a full HyperDX instance is not necessary.
+此模式旨在用于快速测试、开发、演示以及调试用例，其中不需要身份验证和设置持久化。
 
-### Hosted Version {#hosted-version}
+### Hosted version {#hosted-version}
 
-You can use a hosted version of HyperDX in local mode available at [play.hyperdx.io](https://play.hyperdx.io).
+您可以使用可在 [play.hyperdx.io](https://play.hyperdx.io) 中提供的本地模式托管版本。
 
-### Self-Hosted Version {#self-hosted-version}
+### Self-hosted version {#self-hosted-version}
 
 <VerticalStepper headerLevel="h3">
 
 ### Run with docker {#run-local-with-docker}
 
-The self-hosted local mode image comes with an OpenTelemetry collector and a ClickHouse server pre-configured as well. This makes it easy to consume telemetry data from your applications and visualize it in HyperDX with minimal external setup. To get started with the self-hosted version, simply run the Docker container with the appropriate ports forwarded:
+自托管本地模式镜像预配置了 OpenTelemetry collector 和 ClickHouse 服务器。这使得从您的应用中获取遥测数据并在 HyperDX 中可视化变得简单，外部设置最少。要开始使用自托管版本，只需运行 Docker 容器并转发相应的端口：
 
-```bash
+```shell
 docker run -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx-local
 ```
 
-You will not be promoted to create a user as local mode does not include authentication.
+您将不会被提示创建用户，因为本地模式不包括身份验证。
 
 ### Complete connection credentials {#complete-connection-credentials}
 
-To connect to your own **external ClickHouse cluster**, you can manually enter your connection credentials.
+要连接到您自己的**外部 ClickHouse 集群**，您可以手动输入连接凭据。
 
-Alternatively, for a quick exploration of the product, you can also click **Connect to Demo Server** to access preloaded datasets and try ClickStack with no setup required.
+或者，若要快速探索产品，您还可以单击**Connect to Demo Server**来访问预加载的数据集，无需设置即可尝试 ClickStack。
 
 <Image img={hyperdx_2} alt="Credentials" size="md"/>
 
-If connecting to the demo server, users can explore the dataset with the [demo dataset instructions](/use-cases/observability/clickstack/getting-started/remote-demo-data).
+如果连接到演示服务器，用户可以使用 [demo dataset instructions](/use-cases/observability/clickstack/getting-started/remote-demo-data) 探索数据集。
 
 </VerticalStepper>

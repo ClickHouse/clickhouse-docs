@@ -1,0 +1,67 @@
+`mntr` 命令通常用于验证 ClickHouse Keeper 是否正在运行，并获取有关三个 Keeper 节点关系的状态信息。在本示例中使用的配置中，有三个节点协同工作。节点将选举出一个领导者，其余的节点将作为跟随者。
+
+`mntr` 命令提供与性能相关的信息，以及某个特定节点是跟随者还是领导者。
+
+:::tip
+您可能需要安装 `netcat` 以便将 `mntr` 命令发送到 Keeper。请参见 [nmap.org](https://nmap.org/ncat/) 页面以获取下载信息。
+:::
+
+在 `clickhouse-keeper-01`、`clickhouse-keeper-02` 和 `clickhouse-keeper-03` 上从 shell 运行以下命令，以检查每个 Keeper 节点的状态。`clickhouse-keeper-01` 的命令如下所示：
+
+```bash
+docker exec -it clickhouse-keeper-01  /bin/sh -c 'echo mntr | nc 127.0.0.1 9181'
+```
+
+下面的响应显示了来自跟随者节点的示例响应：
+
+```response title="Response"
+zk_version      v23.3.1.2823-testing-46e85357ce2da2a99f56ee83a079e892d7ec3726
+zk_avg_latency  0
+zk_max_latency  0
+zk_min_latency  0
+zk_packets_received     0
+zk_packets_sent 0
+zk_num_alive_connections        0
+zk_outstanding_requests 0
+
+# highlight-next-line
+zk_server_state follower
+zk_znode_count  6
+zk_watch_count  0
+zk_ephemerals_count     0
+zk_approximate_data_size        1271
+zk_key_arena_size       4096
+zk_latest_snapshot_size 0
+zk_open_file_descriptor_count   46
+zk_max_file_descriptor_count    18446744073709551615
+```
+
+下面的响应显示了来自领导者节点的示例响应：
+
+```response title="Response"
+zk_version      v23.3.1.2823-testing-46e85357ce2da2a99f56ee83a079e892d7ec3726
+zk_avg_latency  0
+zk_max_latency  0
+zk_min_latency  0
+zk_packets_received     0
+zk_packets_sent 0
+zk_num_alive_connections        0
+zk_outstanding_requests 0
+
+# highlight-next-line
+zk_server_state leader
+zk_znode_count  6
+zk_watch_count  0
+zk_ephemerals_count     0
+zk_approximate_data_size        1271
+zk_key_arena_size       4096
+zk_latest_snapshot_size 0
+zk_open_file_descriptor_count   48
+zk_max_file_descriptor_count    18446744073709551615
+
+# highlight-start
+zk_followers    2
+zk_synced_followers     2
+
+# highlight-end
+```

@@ -1,68 +1,67 @@
 ---
-'title': 'リモートClickHouseサーバーのクエリ方法'
-'sidebar_label': 'リモートClickHouseのクエリ'
+'title': 'リモート ClickHouse サーバーへのクエリの方法'
+'sidebar_label': 'リモート ClickHouse のクエリ'
 'slug': '/chdb/guides/query-remote-clickhouse'
-'description': 'このガイドでは、chDBからリモートClickHouseサーバーにクエリする方法について学びます。'
+'description': 'このガイドでは、chDB からリモート ClickHouse サーバーにクエリを送信する方法を学びます。'
 'keywords':
 - 'chdb'
 - 'clickhouse'
+'doc_type': 'guide'
 ---
-
-
 
 In this guide, we're going to learn how to query a remote ClickHouse server from chDB.
 
 ## Setup {#setup}
 
-まず、仮想環境を作成します。
+Let's first create a virtual environment:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-次に、chDBをインストールします。
-バージョン2.0.2以上であることを確認してください：
+And now we'll install chDB.
+Make sure you have version 2.0.2 or higher:
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-次に、pandasとipythonをインストールします：
+And now we're going to install pandas, and ipython:
 
 ```bash
 pip install pandas ipython
 ```
 
-このガイドの残りの部分でコマンドを実行するために、`ipython`を使用します。これを起動するには、次のコマンドを実行します：
+We're going to use `ipython` to run the commands in the rest of the guide, which you can launch by running:
 
 ```bash
 ipython
 ```
 
-コードをPythonスクリプトやお気に入りのノートブックで使用することもできます。
+You can also use the code in a Python script or in your favorite notebook.
 
 ## An intro to ClickPy {#an-intro-to-clickpy}
 
-私たちがクエリを実行するリモートClickHouseサーバーは[ClickPy](https://clickpy.clickhouse.com)です。
-ClickPyはPyPIパッケージのすべてのダウンロードを追跡し、UIを介してパッケージの統計を探索できます。
-基礎データベースは`play`ユーザーを使用してクエリが可能です。
+クエリを実行するリモート ClickHouse サーバーは [ClickPy](https://clickpy.clickhouse.com) です。
+ClickPy は PyPI パッケージのダウンロードを追跡し、UI を介してパッケージの統計を探索することを可能にします。
+基盤となるデータベースは、`play` ユーザーを使用してクエリを実行できます。
 
-ClickPyの詳細については、[GitHubリポジトリ](https://github.com/ClickHouse/clickpy)を参照してください。
+ClickPy についての詳細は [その GitHub レポジトリ](https://github.com/ClickHouse/clickpy) を参照してください。
 
 ## Querying the ClickPy ClickHouse service {#querying-the-clickpy-clickhouse-service}
 
-まずchDBをインポートします：
+Let's import chDB:
 
 ```python
 import chdb
 ```
 
-`remoteSecure`関数を使ってClickPyにクエリを実行します。
-この関数は、ホスト名、テーブル名、ユーザー名を最低限必要とします。
+We're going to query ClickPy using the `remoteSecure` function.
+This function takes in a host name, table name, and username at a minimum.
 
-次のクエリを記述して、[`openai`パッケージ](https://clickpy.clickhouse.com/dashboard/openai)の1日あたりのダウンロード数をPandas DataFrameとして返します：
-
+We can write the following query to return the number of downloads per day of the [`openai` package](https://clickpy.clickhouse.com/dashboard/openai) as a Pandas DataFrame:
+ 
 ```python
 query = """
 SELECT
@@ -96,7 +95,7 @@ openai_df.sort_values(by=["x"], ascending=False).head(n=10)
 2383  2024-09-23  1777554
 ```
 
-次に、[`scikit-learn`](https://clickpy.clickhouse.com/dashboard/scikit-learn)のダウンロード数を返すために同じことを行います：
+Now let's do the same to return the downloads for [`scikit-learn`](https://clickpy.clickhouse.com/dashboard/scikit-learn):
 
 ```python
 query = """
@@ -133,7 +132,7 @@ sklearn_df.sort_values(by=["x"], ascending=False).head(n=10)
 
 ## Merging Pandas DataFrames {#merging-pandas-dataframes}
 
-現在、2つのDataFrameができたので、日付（`x`列）に基づいてマージできます：
+We now have two DataFrames, which we can merge together based on date (which is the `x` column) like this:
 
 ```python
 df = openai_df.merge(
@@ -153,7 +152,7 @@ df.head(n=5)
 4  2018-03-02         5      23842
 ```
 
-次に、Open AIのダウンロード数と`scikit-learn`のダウンロード数の比率を計算します：
+We can then compute the ratio of Open AI downloads to `scikit-learn` downloads like this:
 
 ```python
 df['ratio'] = df['y_openai'] / df['y_sklearn']
@@ -171,8 +170,8 @@ df.head(n=5)
 
 ## Querying Pandas DataFrames {#querying-pandas-dataframes}
 
-次に、最高と最低の比率の日付を見つけたいとしましょう。
-chDBに戻ってそれらの値を計算できます：
+Next, let's say we want to find the dates with the best and worst ratios. 
+We can go back to chDB and compute those values:
 
 ```python
 chdb.query("""
@@ -189,4 +188,4 @@ FROM Python(df)
 0   0.693855  2024-09-19    0.000003  2020-02-09
 ```
 
-Pandas DataFramesのクエリについてさらに学ぶには、[Pandas DataFrames開発者ガイド](querying-pandas.md)を参照してください。
+If you want to learn more about querying Pandas DataFrames, see the [Pandas DataFrames developer guide](querying-pandas.md).

@@ -4,9 +4,11 @@ title: 'Is it possible to delete old records from a ClickHouse table?'
 toc_hidden: true
 toc_priority: 20
 description: 'This page answers the question of whether it is possible to delete old records from a ClickHouse table'
+doc_type: 'reference'
+keywords: ['delete data', 'TTL', 'data retention', 'cleanup', 'data lifecycle']
 ---
 
-# Is It Possible to Delete Old Records from a ClickHouse Table? {#is-it-possible-to-delete-old-records-from-a-clickhouse-table}
+# Is it possible to delete old records from a ClickHouse table? {#is-it-possible-to-delete-old-records-from-a-clickhouse-table}
 
 The short answer is “yes”. ClickHouse has multiple mechanisms that allow freeing up disk space by removing old data. Each mechanism is aimed for different scenarios.
 

@@ -1,17 +1,16 @@
 ---
-'description': 'Perturbs a JSON string with random variations.'
+'description': 'JSON文字列をランダムな変化で摂動させます。'
 'sidebar_label': 'fuzzJSON'
 'sidebar_position': 75
 'slug': '/sql-reference/table-functions/fuzzJSON'
 'title': 'fuzzJSON'
+'doc_type': 'reference'
 ---
-
-
 
 
 # fuzzJSON テーブル関数
 
-ランダムな変化を伴う JSON 文字列を変化させます。
+ランダムな変化を伴うJSON文字列を生成します。
 
 ## 構文 {#syntax}
 
@@ -21,26 +20,26 @@ fuzzJSON({ named_collection [, option=value [,..]] | json_str[, random_seed] })
 
 ## 引数 {#arguments}
 
-| 引数                               | 説明                                                                                       |
-|------------------------------------|---------------------------------------------------------------------------------------------|
-| `named_collection`                 | [NAMED COLLECTION](sql-reference/statements/create/named-collection.md)。                     |
-| `option=value`                     | Named collection のオプションパラメータとその値。                                         |
-| `json_str` (String)                | JSON 形式の構造化データを表すソース文字列。                                               |
-| `random_seed` (UInt64)             | 安定した結果を得るための手動ランダムシード。                                               |
-| `reuse_output` (boolean)           | フェザリングプロセスからの出力を次のフェザーの入力として再利用します。                         |
-| `malform_output` (boolean)         | JSON オブジェクトとして解析できない文字列を生成します。                                    |
-| `max_output_length` (UInt64)       | 生成されたまたは変化させた JSON 文字列の最大許可長。                                       |
-| `probability` (Float64)            | JSON フィールド（キー・バリューペア）をフェザリングする確率。範囲は [0, 1] にします。      |
-| `max_nesting_level` (UInt64)       | JSON データ内のネストされた構造の最大許可深度。                                        |
-| `max_array_size` (UInt64)          | JSON 配列の最大許可サイズ。                                                           |
-| `max_object_size` (UInt64)         | 単一レベルの JSON オブジェクト内のフィールド数の最大許可数。                             |
-| `max_string_value_length` (UInt64) | 文字列値の最大長。                                                                      |
-| `min_key_length` (UInt64)          | 最小キー長。少なくとも 1 である必要があります。                                          |
-| `max_key_length` (UInt64)          | 最大キー長。指定されている場合、`min_key_length` 以上でなければなりません。               |
+| 引数                                 | 説明                                                                                       |
+|--------------------------------------|--------------------------------------------------------------------------------------------|
+| `named_collection`                   | A [NAMED COLLECTION](sql-reference/statements/create/named-collection.md).                 |
+| `option=value`                       | Named collectionのオプションパラメータとその値。                                           |
+| `json_str`（String）                 | 構造化されたデータをJSON形式で表現するソース文字列。                                        |
+| `random_seed`（UInt64）              | 安定した結果を生成するための手動ランダムシード。                                          |
+| `reuse_output`（boolean）            | 前回のファジングプロセスの出力を次のファズァの入力として再利用する。                          |
+| `malform_output`（boolean）          | JSONオブジェクトとしてパースできない文字列を生成します。                                     |
+| `max_output_length`（UInt64）        | 生成または変化したJSON文字列の最大許容長。                                               |
+| `probability`（Float64）             | JSONフィールド（キーと値のペア）をファズする確率。0から1の範囲内でなければならない。          |
+| `max_nesting_level`（UInt64）        | JSONデータ内のネストされた構造の最大許容深さ。                                           |
+| `max_array_size`（UInt64）           | JSON配列の最大許容サイズ。                                                                  |
+| `max_object_size`（UInt64）          | JSONオブジェクトの単一レベルにおける最大フィールド数。                                     |
+| `max_string_value_length`（UInt64）  | String値の最大長。                                                                          |
+| `min_key_length`（UInt64）           | 最小キー長。少なくとも1である必要があります。                                              |
+| `max_key_length`（UInt64）           | 最大キー長。指定されている場合は、`min_key_length`以上である必要があります。                |
 
 ## 戻り値 {#returned_value}
 
-変化させた JSON 文字列を含む単一列のテーブルオブジェクト。
+変化したJSON文字列を含む単一カラムのテーブルオブジェクト。
 
 ## 使用例 {#usage-example}
 
@@ -103,4 +102,4 @@ SELECT * FROM fuzzJSON(json_nc, json_str='{"name" : "FuzzJSON"}', random_seed=13
 U"name":"FuzzJSON*"SpByjZKtr2VAyHCO"falseh
 {"name"keFuzzJSON, "g6vVO7TCIk":jTt^
 {"DBhz":YFuzzJSON5}
-
+```

@@ -1,15 +1,14 @@
 ---
-'description': 'Documentation for Svg'
+'description': 'SVGのためのDocumentation'
 'sidebar_label': 'SVG'
 'slug': '/sql-reference/functions/geo/svg'
-'title': 'Functions for Generating SVG images from Geo data'
+'title': '地理データからSVG画像を生成するための関数'
+'doc_type': 'reference'
 ---
-
-
 
 ## Svg {#svg}
 
-Geo データから選択した SVG 要素タグの文字列を返します。
+Geoデータから選択されたSVG要素タグの文字列を返します。
 
 **構文**
 
@@ -21,19 +20,19 @@ Svg(geometry,[style])
 
 **パラメータ**
 
-- `geometry` — Geo データ。 [Geo](../../data-types/geo)。
-- `style` — オプショナルなスタイル名。 [String](../../data-types/string)。
+- `geometry` — Geoデータ。 [Geo](../../data-types/geo).
+- `style` — オプションのスタイル名。 [String](../../data-types/string).
 
-**返される値**
+**戻り値**
 
-- ジオメトリの SVG 表現。 [String](../../data-types/string)。
-  - SVG サークル
-  - SVG ポリゴン
-  - SVG パス
+- 幾何学のSVG表現。 [String](../../data-types/string).
+  - SVG円
+  - SVGポリゴン
+  - SVGパス
 
 **例**
 
-**サークル**
+**円**
 
 クエリ:
 

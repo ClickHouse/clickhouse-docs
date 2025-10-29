@@ -1,52 +1,51 @@
 ---
-'description': 'Documentation for Functions for Working with URLs'
+'description': 'URLを操作するための関数に関するDocumentation'
 'sidebar_label': 'URLs'
-'sidebar_position': 200
 'slug': '/sql-reference/functions/url-functions'
-'title': 'Functions for Working with URLs'
+'title': 'URLを操作するための関数'
+'doc_type': 'reference'
 ---
 
 
 
-
-# URLを操作する関数
+# URL操作のための関数
 
 :::note
-このセクションで説明する関数は最大限のパフォーマンスのために最適化されており、ほとんどはRFC-3986標準に従っていません。RFC-3986を実装する関数には、関数名の末尾に`RFC`が付けられており、一般的に遅くなります。
+このセクションで言及されている関数は最大のパフォーマンスのために最適化されており、ほとんどがRFC-3986標準に従っていません。RFC-3986を実装した関数は、その関数名に`RFC`が付加され、一般的に遅くなります。
 :::
 
-一般的に、ユーザー文字列や`@`シンボルを含まない公に登録されたドメインを扱う場合は、非`RFC`関数バリアントを使用できます。下の表は、URL内のどのシンボルがそれぞれの`RFC`および非`RFC`バリアントによって解析可能（`✔`）または不可能（`✗`）であるかを示しています：
+一般に、ユーザー文字列や`@`記号を含まない公的に登録されたドメインで作業する場合、非`RFC`関数のバリアントを使用できます。以下の表は、URL内のどの記号がそれぞれの`RFC`および非`RFC`バリアントによって解析可能(`✔`)または不可能(`✗`)であるかを示しています。
 
-|シンボル | 非`RFC`| `RFC` |
+|記号  |非`RFC` | `RFC` |
 |-------|----------|-------|
-| ' '   | ✗        | ✗     |
-|  \t   | ✗        | ✗     |
-|  &lt; | ✗        | ✗     |
-|  >    | ✗        | ✗     |
-|  %    | ✗        | ✔*    |
-|  \{   | ✗        | ✗     |
-|  }    | ✗        | ✗     |
-|  \|   | ✗        | ✗     |
-|  \\\  | ✗        | ✗     |
-|  ^    | ✗        | ✗     |
-|  ~    | ✗        | ✔*    |
-|  [    | ✗        | ✗     |
-|  ]    | ✗        | ✔     |
-|  ;    | ✗        | ✔*    |
-|  =    | ✗        | ✔*    |
-|  &    | ✗        | ✔*    |
+| ' '   | ✗        |✗      |
+|  \t   | ✗        |✗      |
+|  &lt; | ✗        |✗      |
+|  >    | ✗        |✗      |
+|  %    | ✗        |✔*     |
+|  \{   | ✗        |✗      |
+|  }    | ✗        |✗      |
+|  \|   | ✗        |✗      |
+|  \\\  | ✗        |✗      |
+|  ^    | ✗        |✗      |
+|  ~    | ✗        |✔*     |
+|  [    | ✗        |✗      |
+|  ]    | ✗        |✔      |
+|  ;    | ✗        |✔*     |
+|  =    | ✗        |✔*     |
+|  &    | ✗        |✔*     |
 
-`*`でマークされたシンボルはRFC 3986のサブデリミターであり、`@`シンボルに続くユーザー情報に対して許可されています。
+`*`でマークされた記号はRFC 3986のサブ区切りであり、`@`記号に続くユーザー情報のために許可されています。
 
-## URLのパーツを抽出する関数 {#functions-that-extract-parts-of-a-url}
+## URLの部分を抽出する関数 {#functions-that-extract-parts-of-a-url}
 
-関連する部分がURLに存在しない場合は、空の文字列が返されます。
+関連する部分がURLに存在しない場合、空の文字列が返されます。
 
 ### protocol {#protocol}
 
 URLからプロトコルを抽出します。
 
-典型的に返される値の例：http, https, ftp, mailto, tel, magnet。
+典型的な返される値の例: http, https, ftp, mailto, tel, magnet。
 
 ### domain {#domain}
 
@@ -62,7 +61,7 @@ domain(url)
 
 - `url` — URL。 [String](../../sql-reference/data-types/string.md)。
 
-URLはプロトコルありまたはなしで指定できます。例：
+URLはプロトコルありまたはなしのいずれかで指定できます。例:
 
 ```text
 svn+ssh://some.svn-hosting.com:80/repo/trunk
@@ -70,7 +69,7 @@ some.svn-hosting.com:80/repo/trunk
 https://clickhouse.com/time/
 ```
 
-これらの例に対して、`domain`関数は次の結果を返します：
+これらの例では、`domain`関数は次の結果を返します:
 
 ```text
 some.svn-hosting.com
@@ -80,7 +79,7 @@ clickhouse.com
 
 **返される値**
 
-- 入力文字列がURLとして解析可能であればホスト名、それ以外の場合は空の文字列。 [String](../data-types/string.md)。
+- 入力文字列がURLとしてパースできる場合はホスト名、そうでない場合は空の文字列。 [String](../data-types/string.md)。
 
 **例**
 
@@ -96,7 +95,7 @@ SELECT domain('svn+ssh://some.svn-hosting.com:80/repo/trunk');
 
 ### domainRFC {#domainrfc}
 
-URLからホスト名を抽出します。[domain](#domain)に似ていますが、RFC 3986に準拠しています。
+URLからホスト名を抽出します。[domain](#domain)と似ていますが、RFC 3986に準拠しています。
 
 **構文**
 
@@ -110,7 +109,7 @@ domainRFC(url)
 
 **返される値**
 
-- 入力文字列がURLとして解析可能であればホスト名、それ以外の場合は空の文字列。 [String](../data-types/string.md)。
+- 入力文字列がURLとしてパースできる場合はホスト名、そうでない場合は空の文字列。 [String](../data-types/string.md)。
 
 **例**
 
@@ -128,7 +127,7 @@ SELECT
 
 ### domainWithoutWWW {#domainwithoutwww}
 
-先頭の`www.`が存在する場合、それを取り除いたドメインを返します。
+存在する場合、先頭の`www.`を除去してドメインを返します。
 
 **構文**
 
@@ -142,7 +141,7 @@ domainWithoutWWW(url)
 
 **返される値**
 
-- 入力文字列がURLとして解析可能であれば（先頭の`www.`なしの）ドメイン名、それ以外の場合は空の文字列。 [String](../data-types/string.md)。
+- 入力文字列がURLとしてパースできる場合のドメイン名（先頭の`www.`なし）、そうでない場合は空の文字列。 [String](../data-types/string.md)。
 
 **例**
 
@@ -158,7 +157,7 @@ SELECT domainWithoutWWW('http://paul@www.example.com:80/');
 
 ### domainWithoutWWWRFC {#domainwithoutwwwrfc}
 
-先頭の`www.`が存在する場合、それを取り除いたドメインを返します。[domainWithoutWWW](#domainwithoutwww)に似ていますが、RFC 3986に準拠しています。
+存在する場合、先頭の`www.`を除去してドメインを返します。[domainWithoutWWW](#domainwithoutwww)に似ていますが、RFC 3986に準拠しています。
 
 **構文**
 
@@ -172,11 +171,11 @@ domainWithoutWWWRFC(url)
 
 **返される値**
 
-- 入力文字列がURLとして解析可能であれば（先頭の`www.`なしの）ドメイン名、それ以外の場合は空の文字列。 [String](../data-types/string.md)。
+- 入力文字列がURLとしてパースできる場合のドメイン名（先頭の`www.`なし）、そうでない場合は空の文字列。 [String](../data-types/string.md)。
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT
@@ -184,7 +183,7 @@ SELECT
     domainWithoutWWWRFC('http://user:password@www.example.com:8080/path?query=value#fragment');
 ```
 
-結果：
+結果:
 
 ```response
 ┌─domainWithoutWWW('http://user:password@www.example.com:8080/path?query=value#fragment')─┬─domainWithoutWWWRFC('http://user:password@www.example.com:8080/path?query=value#fragment')─┐
@@ -205,7 +204,7 @@ topLevelDomain(url)
 - `url` — URL。 [String](../../sql-reference/data-types/string.md)。
 
 :::note
-URLはプロトコルありまたはなしで指定できます。例：
+URLはプロトコルありまたはなしのいずれかで指定できます。例:
 
 ```text
 svn+ssh://some.svn-hosting.com:80/repo/trunk
@@ -216,17 +215,17 @@ https://clickhouse.com/time/
 
 **返される値**
 
-- 入力文字列がURLとして解析可能であればドメイン名。それ以外の場合は空の文字列。 [String](../../sql-reference/data-types/string.md)。
+- 入力文字列がURLとしてパースできる場合のドメイン名。そうでない場合は空の文字列。 [String](../../sql-reference/data-types/string.md)。
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT topLevelDomain('svn+ssh://www.some.svn-hosting.com:80/repo/trunk');
 ```
 
-結果：
+結果:
 
 ```text
 ┌─topLevelDomain('svn+ssh://www.some.svn-hosting.com:80/repo/trunk')─┐
@@ -236,8 +235,7 @@ SELECT topLevelDomain('svn+ssh://www.some.svn-hosting.com:80/repo/trunk');
 
 ### topLevelDomainRFC {#topleveldomainrfc}
 
-URLからトップレベルドメインを抽出します。
-[topLevelDomain](#topleveldomain)に似ていますが、RFC 3986に準拠しています。
+URLからトップレベルドメインを抽出します。[topLevelDomain](#topleveldomain)と似ていますが、RFC 3986に準拠しています。
 
 ```sql
 topLevelDomainRFC(url)
@@ -248,7 +246,7 @@ topLevelDomainRFC(url)
 - `url` — URL。 [String](../../sql-reference/data-types/string.md)。
 
 :::note
-URLはプロトコルありまたはなしで指定できます。例：
+URLはプロトコルありまたはなしのいずれかで指定できます。例:
 
 ```text
 svn+ssh://some.svn-hosting.com:80/repo/trunk
@@ -259,17 +257,17 @@ https://clickhouse.com/time/
 
 **返される値**
 
-- 入力文字列がURLとして解析可能であればドメイン名。それ以外の場合は空の文字列。 [String](../../sql-reference/data-types/string.md)。
+- 入力文字列がURLとしてパースできる場合のドメイン名。そうでない場合は空の文字列。 [String](../../sql-reference/data-types/string.md)。
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT topLevelDomain('http://foo:foo%41bar@foo.com'), topLevelDomainRFC('http://foo:foo%41bar@foo.com');
 ```
 
-結果：
+結果:
 
 ```text
 ┌─topLevelDomain('http://foo:foo%41bar@foo.com')─┬─topLevelDomainRFC('http://foo:foo%41bar@foo.com')─┐
@@ -280,7 +278,7 @@ SELECT topLevelDomain('http://foo:foo%41bar@foo.com'), topLevelDomainRFC('http:/
 ### firstSignificantSubdomain {#firstsignificantsubdomain}
 
 「最初の重要なサブドメイン」を返します。
-最初の重要なサブドメインは、`com`、`net`、`org`、または`co`のときはセカンドレベルドメインであり、それ以外の場合はサードレベルドメインです。
+最初の重要なサブドメインは`com`、`net`、`org`、または`co`のセカンドレベルドメインで、それ以外の場合はサードレベルドメインです。
 例えば、`firstSignificantSubdomain ('https://news.clickhouse.com/') = 'clickhouse'`、`firstSignificantSubdomain ('https://news.clickhouse.com.tr/') = 'clickhouse'`。
 「重要でない」セカンドレベルドメインのリストやその他の実装の詳細は将来的に変更される可能性があります。
 
@@ -300,13 +298,13 @@ firstSignificantSubdomain(url)
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT firstSignificantSubdomain('http://www.example.com/a/b/c?a=b')
 ```
 
-結果：
+結果:
 
 ```reference
 ┌─firstSignificantSubdomain('http://www.example.com/a/b/c?a=b')─┐
@@ -317,10 +315,10 @@ SELECT firstSignificantSubdomain('http://www.example.com/a/b/c?a=b')
 ### firstSignificantSubdomainRFC {#firstsignificantsubdomainrfc}
 
 「最初の重要なサブドメイン」を返します。
-最初の重要なサブドメインは、`com`、`net`、`org`、または`co`のときはセカンドレベルドメインであり、それ以外の場合はサードレベルドメインです。
+最初の重要なサブドメインは`com`、`net`、`org`、または`co`のセカンドレベルドメインで、それ以外の場合はサードレベルドメインです。
 例えば、`firstSignificantSubdomain ('https://news.clickhouse.com/') = 'clickhouse'`、`firstSignificantSubdomain ('https://news.clickhouse.com.tr/') = 'clickhouse'`。
 「重要でない」セカンドレベルドメインのリストやその他の実装の詳細は将来的に変更される可能性があります。
-[firstSignificantsubdomain](#firstsignificantsubdomain)に似ていますが、RFC 1034に準拠しています。
+[FirstSignificantSubdomain](#firstsignificantsubdomain)に似ていますが、RFC 1034に準拠しています。
 
 **構文**
 
@@ -338,7 +336,7 @@ firstSignificantSubdomainRFC(url)
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT
@@ -346,7 +344,7 @@ SELECT
     firstSignificantSubdomainRFC('http://user:password@example.com:8080/path?query=value#fragment');
 ```
 
-結果：
+結果:
 
 ```reference
 ┌─firstSignificantSubdomain('http://user:password@example.com:8080/path?query=value#fragment')─┬─firstSignificantSubdomainRFC('http://user:password@example.com:8080/path?query=value#fragment')─┐
@@ -370,11 +368,11 @@ cutToFirstSignificantSubdomain(url)
 
 **返される値**
 
-- 可能であれば、最初の重要なサブドメインまでのトップレベルサブドメインを含むドメインの部分。それ以外の場合は空の文字列。 [String](../data-types/string.md)。
+- 可能な場合、最初の重要なサブドメインまでのトップレベルサブドメインを含むドメインの部分、そうでない場合は空の文字列。 [String](../data-types/string.md)。
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT
@@ -383,7 +381,7 @@ SELECT
     cutToFirstSignificantSubdomain('tr');
 ```
 
-結果：
+結果:
 
 ```response
 ┌─cutToFirstSignificantSubdomain('https://news.clickhouse.com.tr/')─┬─cutToFirstSignificantSubdomain('www.tr')─┬─cutToFirstSignificantSubdomain('tr')─┐
@@ -394,7 +392,7 @@ SELECT
 ### cutToFirstSignificantSubdomainRFC {#cuttofirstsignificantsubdomainrfc}
 
 「最初の重要なサブドメイン」までのトップレベルサブドメインを含むドメインの部分を返します。
-[cutToFirstSignificantSubdomain](#cuttofirstsignificantsubdomain)に似ていますが、RFC 3986に準拠しています。
+[CutToFirstSignificantSubdomain](#cuttofirstsignificantsubdomain)に似ていますが、RFC 3986に準拠しています。
 
 **構文**
 
@@ -408,11 +406,11 @@ cutToFirstSignificantSubdomainRFC(url)
 
 **返される値**
 
-- 可能であれば、最初の重要なサブドメインまでのトップレベルサブドメインを含むドメインの部分。それ以外の場合は空の文字列。 [String](../data-types/string.md)。
+- 可能な場合、最初の重要なサブドメインまでのトップレベルサブドメインを含むドメインの部分、そうでない場合は空の文字列。 [String](../data-types/string.md)。
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT
@@ -420,7 +418,7 @@ SELECT
     cutToFirstSignificantSubdomainRFC('http://user:password@example.com:8080');
 ```
 
-結果：
+結果:
 
 ```response
 ┌─cutToFirstSignificantSubdomain('http://user:password@example.com:8080')─┬─cutToFirstSignificantSubdomainRFC('http://user:password@example.com:8080')─┐
@@ -430,7 +428,7 @@ SELECT
 
 ### cutToFirstSignificantSubdomainWithWWW {#cuttofirstsignificantsubdomainwithwww}
 
-「最初の重要なサブドメイン」までのトップレベルサブドメインを含むドメインの部分を返しますが、`www`は削除しません。
+`www`を除去せずに、「最初の重要なサブドメイン」までのトップレベルサブドメインを含むドメインの部分を返します。
 
 **構文**
 
@@ -444,11 +442,11 @@ cutToFirstSignificantSubdomainWithWWW(url)
 
 **返される値**
 
-- 可能であれば、最初の重要なサブドメインまでのトップレベルサブドメインを含むドメインの部分（`www`あり）。それ以外の場合は空の文字列。 [String](../data-types/string.md)。
+- 可能な場合、最初の重要なサブドメインまでのトップレベルサブドメインを含むドメインの部分（`www`付き）、そうでない場合は空の文字列。 [String](../data-types/string.md)。
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT
@@ -457,7 +455,7 @@ SELECT
     cutToFirstSignificantSubdomainWithWWW('tr');
 ```
 
-結果：
+結果:
 
 ```response
 ┌─cutToFirstSignificantSubdomainWithWWW('https://news.clickhouse.com.tr/')─┬─cutToFirstSignificantSubdomainWithWWW('www.tr')─┬─cutToFirstSignificantSubdomainWithWWW('tr')─┐
@@ -467,13 +465,13 @@ SELECT
 
 ### cutToFirstSignificantSubdomainWithWWWRFC {#cuttofirstsignificantsubdomainwithwwwrfc}
 
-「最初の重要なサブドメイン」までのトップレベルサブドメインを含むドメインの部分を返しますが、`www`は削除しません。
-[cutToFirstSignificantSubdomainWithWWW](#cuttofirstsignificantsubdomaincustomwithwww)に似ていますが、RFC 3986に準拠しています。
+`www`を除去せずに、「最初の重要なサブドメイン」までのトップレベルサブドメインを含むドメインの部分を返します。
+[CutToFirstSignificantSubdomainWithWWW](#cuttofirstsignificantsubdomainwithwww)に似ていますが、RFC 3986に準拠しています。
 
 **構文**
 
 ```sql
-cutToFirstSignificantSubdomainWithWWWRFC(url)
+cutToFirstSignificantSubdomainWithWWW(url)
 ```
 
 **引数**
@@ -482,11 +480,11 @@ cutToFirstSignificantSubdomainWithWWWRFC(url)
 
 **返される値**
 
-- 可能であれば、最初の重要なサブドメインまでのトップレベルサブドメインを含むドメインの部分（`www`あり）。それ以外の場合は空の文字列。 [String](../data-types/string.md)。
+- 可能な場合、最初の重要なサブドメインまでのトップレベルサブドメインを含むドメインの部分（`www`付き）、そうでない場合は空の文字列。 [String](../data-types/string.md)。
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT
@@ -494,7 +492,7 @@ SELECT
     cutToFirstSignificantSubdomainWithWWWRFC('http:%2F%2Fwwwww.nova@mail.ru/economicheskiy');
 ```
 
-結果：
+結果:
 
 ```response
 ┌─cutToFirstSignificantSubdomainWithWWW('http:%2F%2Fwwwww.nova@mail.ru/economicheskiy')─┬─cutToFirstSignificantSubdomainWithWWWRFC('http:%2F%2Fwwwww.nova@mail.ru/economicheskiy')─┐
@@ -504,9 +502,9 @@ SELECT
 
 ### cutToFirstSignificantSubdomainCustom {#cuttofirstsignificantsubdomaincustom}
 
-最初の重要なサブドメインまでのトップレベルサブドメインを含むドメインの部分を返します。
-カスタム[TLDリスト](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains)名を受け付けます。
-この関数は新しいTLDリストが必要な場合やカスタムリストを持っている場合に便利です。
+「最初の重要なサブドメイン」までのトップレベルサブドメインを含むドメインの部分を返します。
+カスタムの[TLDリスト](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains)名を受け入れます。
+この関数は、新しいTLDリストが必要な場合やカスタムリストがある場合に便利です。
 
 **構成例**
 
@@ -536,13 +534,13 @@ cutToFirstSignificantSubdomain(url, tld)
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT cutToFirstSignificantSubdomainCustom('bar.foo.there-is-no-such-domain', 'public_suffix_list');
 ```
 
-結果：
+結果:
 
 ```text
 ┌─cutToFirstSignificantSubdomainCustom('bar.foo.there-is-no-such-domain', 'public_suffix_list')─┐
@@ -550,16 +548,16 @@ SELECT cutToFirstSignificantSubdomainCustom('bar.foo.there-is-no-such-domain', '
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**参照**
+**関連項目**
 
 - [firstSignificantSubdomain](#firstsignificantsubdomain)。
 
 ### cutToFirstSignificantSubdomainCustomRFC {#cuttofirstsignificantsubdomaincustomrfc}
 
-最初の重要なサブドメインまでのトップレベルサブドメインを含むドメインの部分を返します。
-カスタム[TLDリスト](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains)名を受け付けます。
-この関数は新しいTLDリストが必要な場合やカスタムリストを持っている場合に便利です。
-[cutToFirstSignificantSubdomainCustom](#cuttofirstsignificantsubdomaincustom)に似ていますが、RFC 3986に準拠しています。
+「最初の重要なサブドメイン」までのトップレベルサブドメインを含むドメインの部分を返します。
+カスタムの[TLDリスト](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains)名を受け入れます。
+この関数は、新しいTLDリストが必要な場合やカスタムリストがある場合に便利です。
+[CutToFirstSignificantSubdomainCustom](#cuttofirstsignificantsubdomaincustom)に似ていますが、RFC 3986に準拠しています。
 
 **構文**
 
@@ -576,15 +574,15 @@ cutToFirstSignificantSubdomainRFC(url, tld)
 
 - 最初の重要なサブドメインまでのトップレベルサブドメインを含むドメインの部分。 [String](../../sql-reference/data-types/string.md)。
 
-**参照**
+**関連項目**
 
 - [firstSignificantSubdomain](#firstsignificantsubdomain)。
 
 ### cutToFirstSignificantSubdomainCustomWithWWW {#cuttofirstsignificantsubdomaincustomwithwww}
 
-最初の重要なサブドメインまでのトップレベルサブドメインを含むドメインの部分を返しますが、`www`は削除しません。
-カスタムTLDリスト名を受け付けます。
-これは新しいTLDリストが必要な場合やカスタムリストを持っている場合に便利です。
+「最初の重要なサブドメイン」までのトップレベルサブドメインを含むドメインの部分を返しますが、`www`を除去しません。
+カスタムのTLDリスト名を受け入れます。
+新しいTLDリストが必要な場合やカスタムリストがある場合に便利です。
 
 **構成例**
 
@@ -610,17 +608,17 @@ cutToFirstSignificantSubdomainCustomWithWWW(url, tld)
 
 **返される値**
 
-- 最初の重要なサブドメインまでのトップレベルサブドメインを含むドメインの部分（`www`あり）。それ以外の場合は空の文字列。 [String](../data-types/string.md)。
+- 最初の重要なサブドメインまでのトップレベルサブドメインを含むドメインの部分（`www`付き）。 [String](../data-types/string.md)。
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT cutToFirstSignificantSubdomainCustomWithWWW('www.foo', 'public_suffix_list');
 ```
 
-結果：
+結果:
 
 ```text
 ┌─cutToFirstSignificantSubdomainCustomWithWWW('www.foo', 'public_suffix_list')─┐
@@ -628,17 +626,17 @@ SELECT cutToFirstSignificantSubdomainCustomWithWWW('www.foo', 'public_suffix_lis
 └──────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**参照**
+**関連項目**
 
 - [firstSignificantSubdomain](#firstsignificantsubdomain)。
 - [top_level_domains_list](../../operations/server-configuration-parameters/settings.md/#top_level_domains_list)
 
 ### cutToFirstSignificantSubdomainCustomWithWWWRFC {#cuttofirstsignificantsubdomaincustomwithwwwrfc}
 
-最初の重要なサブドメインまでのトップレベルサブドメインを含むドメインの部分を返しますが、`www`は削除しません。
-カスタムTLDリスト名を受け付けます。
-新しいTLDリストが必要な場合やカスタムリストを持っている場合に便利です。
-[cutToFirstSignificantSubdomainCustomWithWWW](#cuttofirstsignificantsubdomaincustomwithwww)に似ていますが、RFC 3986に準拠しています。
+「最初の重要なサブドメイン」までのトップレベルサブドメインを含むドメインの部分を返しますが、`www`を除去しません。
+カスタムのTLDリスト名を受け入れます。
+新しいTLDリストが必要な場合やカスタムリストがある場合に便利です。
+[CutToFirstSignificantSubdomainCustomWithWWW](#cuttofirstsignificantsubdomaincustomwithwww)に似ていますが、RFC 3986に準拠しています。
 
 **構文**
 
@@ -653,9 +651,9 @@ cutToFirstSignificantSubdomainCustomWithWWWRFC(url, tld)
 
 **返される値**
 
-- 最初の重要なサブドメインまでのトップレベルサブドメインを含むドメインの部分（`www`あり）。それ以外の場合は空の文字列。 [String](../../sql-reference/data-types/string.md)。
+- 最初の重要なサブドメインまでのトップレベルサブドメインを含むドメインの部分（`www`付き）。 [String](../../sql-reference/data-types/string.md)。
 
-**参照**
+**関連項目**
 
 - [firstSignificantSubdomain](#firstsignificantsubdomain)。
 - [top_level_domains_list](../../operations/server-configuration-parameters/settings.md/#top_level_domains_list)
@@ -663,10 +661,10 @@ cutToFirstSignificantSubdomainCustomWithWWWRFC(url, tld)
 ### firstSignificantSubdomainCustom {#firstsignificantsubdomaincustom}
 
 最初の重要なサブドメインを返します。
-カスタムTLDリスト名を受け付けます。
-新しいTLDリストが必要な場合やカスタムリストを持っている場合に便利です。
+カスタムのTLDリスト名を受け入れます。
+新しいTLDリストが必要な場合やカスタムリストがある場合に便利です。
 
-構成例：
+構成例:
 
 ```xml
 <!-- <top_level_domains_path>/var/lib/clickhouse/top_level_domains/</top_level_domains_path> -->
@@ -694,13 +692,13 @@ firstSignificantSubdomainCustom(url, tld)
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT firstSignificantSubdomainCustom('bar.foo.there-is-no-such-domain', 'public_suffix_list');
 ```
 
-結果：
+結果:
 
 ```text
 ┌─firstSignificantSubdomainCustom('bar.foo.there-is-no-such-domain', 'public_suffix_list')─┐
@@ -708,7 +706,7 @@ SELECT firstSignificantSubdomainCustom('bar.foo.there-is-no-such-domain', 'publi
 └──────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**参照**
+**関連項目**
 
 - [firstSignificantSubdomain](#firstsignificantsubdomain)。
 - [top_level_domains_list](../../operations/server-configuration-parameters/settings.md/#top_level_domains_list)
@@ -716,9 +714,9 @@ SELECT firstSignificantSubdomainCustom('bar.foo.there-is-no-such-domain', 'publi
 ### firstSignificantSubdomainCustomRFC {#firstsignificantsubdomaincustomrfc}
 
 最初の重要なサブドメインを返します。
-カスタムTLDリスト名を受け付けます。
-新しいTLDリストが必要な場合やカスタムリストを持っている場合に便利です。
-[firstSignificantSubdomainCustom](#firstsignificantsubdomaincustom)に似ていますが、RFC 3986に準拠しています。
+カスタムのTLDリスト名を受け入れます。
+新しいTLDリストが必要な場合やカスタムリストがある場合に便利です。
+[FirstSignificantSubdomainCustom](#firstsignificantsubdomaincustom)に似ていますが、RFC 3986に準拠しています。
 
 **構文**
 
@@ -735,14 +733,14 @@ firstSignificantSubdomainCustomRFC(url, tld)
 
 - 最初の重要なサブドメイン。 [String](../../sql-reference/data-types/string.md)。
 
-**参照**
+**関連項目**
 
 - [firstSignificantSubdomain](#firstsignificantsubdomain)。
 - [top_level_domains_list](../../operations/server-configuration-parameters/settings.md/#top_level_domains_list)
 
 ### port {#port}
 
-ポートを返すか、URLにポートが含まれていない場合や解析できない場合は`default_port`を返します。
+ポートを返すか、URLにポートが含まれていない場合や解析できない場合に`default_port`を返します。
 
 **構文**
 
@@ -757,17 +755,17 @@ port(url [, default_port = 0])
 
 **返される値**
 
-- ポートまたは、URLにポートがない場合、または検証エラーの場合はデフォルトポート。 [UInt16](../data-types/int-uint.md)。
+- URLにポートがない場合や検証エラーがある場合は、ポートまたはデフォルトポート。 [UInt16](../data-types/int-uint.md)。
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT port('http://paul@www.example.com:80/');
 ```
 
-結果：
+結果:
 
 ```response
 ┌─port('http://paul@www.example.com:80/')─┐
@@ -777,8 +775,8 @@ SELECT port('http://paul@www.example.com:80/');
 
 ### portRFC {#portrfc}
 
-ポートを返すか、URLにポートが含まれていない場合や解析できない場合は`default_port`を返します。
-[port](#port)に似ていますが、RFC 3986に準拠しています。
+ポートを返すか、URLにポートが含まれていない場合や解析できない場合に`default_port`を返します。
+[Port](#port)に似ていますが、RFC 3986に準拠しています。
 
 **構文**
 
@@ -793,11 +791,11 @@ portRFC(url [, default_port = 0])
 
 **返される値**
 
-- ポートまたは、URLにポートがない場合、または検証エラーの場合はデフォルトポート。 [UInt16](../data-types/int-uint.md)。
+- URLにポートがない場合や検証エラーがある場合は、ポートまたはデフォルトポート。 [UInt16](../data-types/int-uint.md)。
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT
@@ -805,7 +803,7 @@ SELECT
     portRFC('http://user:password@example.com:8080');
 ```
 
-結果：
+結果:
 
 ```resposne
 ┌─port('http://user:password@example.com:8080')─┬─portRFC('http://user:password@example.com:8080')─┐
@@ -815,15 +813,15 @@ SELECT
 
 ### path {#path}
 
-クエリ文字列なしでパスを返します。
+クエリ文字列を含まないパスを返します。
 
-例：`/top/news.html`。
+例: `/top/news.html`。
 
 ### pathFull {#pathfull}
 
 上記と同じですが、クエリ文字列とフラグメントを含みます。
 
-例：`/top/news.html?page=2#comments`。
+例: `/top/news.html?page=2#comments`。
 
 ### protocol {#protocol-1}
 
@@ -837,21 +835,21 @@ protocol(url)
 
 **引数**
 
-- `url` — プロトコルを抽出するURL。 [String](../data-types/string.md)。
+- `url` — プロトコルを抽出するためのURL。 [String](../data-types/string.md)。
 
 **返される値**
 
-- プロトコル、または決定できない場合は空の文字列。 [String](../data-types/string.md)。
+- プロトコル、または判断できない場合は空の文字列。 [String](../data-types/string.md)。
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT protocol('https://clickhouse.com/');
 ```
 
-結果：
+結果:
 
 ```response
 ┌─protocol('https://clickhouse.com/')─┐
@@ -861,25 +859,25 @@ SELECT protocol('https://clickhouse.com/');
 
 ### queryString {#querystring}
 
-初期の疑問符、`#`、および`#`以降のすべてを除いたクエリ文字列を返します。
+最初の質問マーク`?`および`#`とその後の全てを取り除いたクエリ文字列を返します。
 
-例：`page=1&lr=213`。
+例: `page=1&lr=213`。
 
 ### fragment {#fragment}
 
-初期のハッシュシンボルを除いたフラグメント識別子を返します。
+最初のハッシュシンボルなしでフラグメント識別子を返します。
 
 ### queryStringAndFragment {#querystringandfragment}
 
 クエリ文字列とフラグメント識別子を返します。
 
-例：`page=1#29390`。
+例: `page=1#29390`。
 
 ### extractURLParameter(url, name) {#extracturlparameterurl-name}
 
-URLに`name`パラメータが存在する場合、その値を返し、存在しない場合は空の文字列を返します。
-同じ名前のパラメータが複数ある場合、最初の出現が返されます。
-関数は、`url`パラメータ内のパラメータが`name`引数と同じ方法でエンコードされていると仮定します。
+URL内に存在する場合は`name`パラメータの値を返し、そうでない場合は空の文字列が返されます。
+同じ名前の複数のパラメータが存在する場合は最初の出現が返されます。
+関数は、`url`パラメータ内のパラメータが`name`引数と同じ方法でエンコードされていると仮定しています。
 
 ### extractURLParameters(url) {#extracturlparametersurl}
 
@@ -893,13 +891,13 @@ URLパラメータの名前に対応する名前文字列の配列を返しま�
 
 ### URLHierarchy(url) {#urlhierarchyurl}
 
-URLを含む配列を返しますが、パスとクエリ文字列によって`/`、`?`の記号で切り詰められます。
-連続するセパレーターは一つとしてカウントされます。
-切り詰めは、すべての連続するセパレーターの後の位置で行われます。
+URLを含む配列を返し、パスとクエリ文字列の終わりを`/`、`?`で切り捨てます。
+連続する区切り文字は1つとしてカウントされます。
+切り捨ては、すべての連続する区切り文字の後の位置で行われます。
 
 ### URLPathHierarchy(url) {#urlpathhierarchyurl}
 
-上記と同じですが、結果にプロトコルとホストを含みません。 `/`要素（ルート）は含まれません。
+上記と同じですが、結果にプロトコルとホストは含まれません。`/`要素（ルート）は含まれません。
 
 ```text
 URLPathHierarchy('https://example.com/browse/CONV-6788') =
@@ -913,7 +911,7 @@ URLPathHierarchy('https://example.com/browse/CONV-6788') =
 
 エンコードされたURLを返します。
 
-例：
+例:
 
 ```sql
 SELECT encodeURLComponent('http://127.0.0.1:8123/?query=SELECT 1;') AS EncodedURL;
@@ -929,7 +927,7 @@ SELECT encodeURLComponent('http://127.0.0.1:8123/?query=SELECT 1;') AS EncodedUR
 
 デコードされたURLを返します。
 
-例：
+例:
 
 ```sql
 SELECT decodeURLComponent('http://127.0.0.1:8123/?query=SELECT%201%3B') AS DecodedURL;
@@ -943,9 +941,9 @@ SELECT decodeURLComponent('http://127.0.0.1:8123/?query=SELECT%201%3B') AS Decod
 
 ### encodeURLFormComponent(url) {#encodeurlformcomponenturl}
 
-エンコードされたURLを返します。RFC-1866に従い、スペース（` `）はプラス（`+`）としてエンコードされます。
+エンコードされたURLを返します。RFC-1866に従い、空白(` `)はプラス(`+`)としてエンコードされます。
 
-例：
+例:
 
 ```sql
 SELECT encodeURLFormComponent('http://127.0.0.1:8123/?query=SELECT 1 2+3') AS EncodedURL;
@@ -959,9 +957,9 @@ SELECT encodeURLFormComponent('http://127.0.0.1:8123/?query=SELECT 1 2+3') AS En
 
 ### decodeURLFormComponent(url) {#decodeurlformcomponenturl}
 
-デコードされたURLを返します。RFC-1866に従い、通常のプラス（`+`）はスペース（` `）としてデコードされます。
+デコードされたURLを返します。RFC-1866に従い、通常のプラス(`+`)は空白(` `)としてデコードされます。
 
-例：
+例:
 
 ```sql
 SELECT decodeURLFormComponent('http://127.0.0.1:8123/?query=SELECT%201+2%2B3') AS DecodedURL;
@@ -993,13 +991,13 @@ netloc(url)
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT netloc('http://paul@www.example.com:80/');
 ```
 
-結果：
+結果:
 
 ```text
 ┌─netloc('http://paul@www.example.com:80/')─┐
@@ -1007,28 +1005,30 @@ SELECT netloc('http://paul@www.example.com:80/');
 └───────────────────────────────────────────┘
 ```
 
-## URLの部分を削除する関数 {#functions-that-remove-part-of-a-url}
+## URLの一部を削除する関数 {#functions-that-remove-part-of-a-url}
 
-URLに似たものが存在しない場合、URLは変更されません。
+URLに似たものがない場合、URLは変更されません。
 
 ### cutWWW {#cutwww}
 
-URLのドメインから先頭の`www.`を削除します（存在する場合）。
+URLのドメインから先頭の`www.`（存在する場合）を削除します。
 
 ### cutQueryString {#cutquerystring}
 
-疑問符を含むクエリ文字列を削除します。
+質問マークを含むクエリ文字列を削除します。
 
 ### cutFragment {#cutfragment}
 
-フラグメント識別子を削除します。
+番号付きのフラグメント識別子を削除します。
+
 ### cutQueryStringAndFragment {#cutquerystringandfragment}
 
-クエリ文字列とフラグメント識別子を、クエスチョンマークや番号記号を含めて削除します。
+質問マークおよび番号付きのフラグメント識別子を含むクエリ文字列を削除します。
+
 ### cutURLParameter(url, name) {#cuturlparameterurl-name}
 
-URLから`name`パラメータを削除します（存在する場合）。
-この関数は、パラメータ名の文字をエンコードまたはデコードしません。たとえば、`Client ID`と`Client%20ID`は異なるパラメータ名として扱われます。
+URL内の`name`パラメータを削除します（存在する場合）。
+この関数は、パラメータ名内の文字をエンコードまたはデコードしません。例えば、`Client ID`と`Client%20ID`は異なるパラメータ名として扱われます。
 
 **構文**
 
@@ -1038,12 +1038,12 @@ cutURLParameter(url, name)
 
 **引数**
 
-- `url` — URL。 [String](../../sql-reference/data-types/string.md).
-- `name` — URLパラメータの名前。 [String](../../sql-reference/data-types/string.md) または [Array](../../sql-reference/data-types/array.md) の Strings。
+- `url` — URL。 [String](../../sql-reference/data-types/string.md)。
+- `name` — URLパラメータの名前。 [String](../../sql-reference/data-types/string.md)または[Array](../../sql-reference/data-types/array.md)のStrings。
 
-**戻り値**
+**返される値**
 
-- `name` URLパラメータが削除されたURL。 [String](../data-types/string.md)。
+- `name`のURLパラメータを削除したURL。 [String](../data-types/string.md)。
 
 **例**
 
@@ -1051,8 +1051,8 @@ cutURLParameter(url, name)
 
 ```sql
 SELECT
-    cutURLParameter('http://bigmir.net/?a=b&c=d&e=f#g', 'a') as url_without_a,
-    cutURLParameter('http://bigmir.net/?a=b&c=d&e=f#g', ['c', 'e']) as url_without_c_and_e;
+    cutURLParameter('http://bigmir.net/?a=b&c=d&e=f#g', 'a') AS url_without_a,
+    cutURLParameter('http://bigmir.net/?a=b&c=d&e=f#g', ['c', 'e']) AS url_without_c_and_e;
 ```
 
 結果:

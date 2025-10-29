@@ -1,20 +1,18 @@
 ---
-'description': 'The function plots a frequency histogram for values `x` and the repetition
-  rate `y` of these values over the interval `[min_x, max_x]`.'
+'description': 'この関数は、値 `x` の頻度ヒストグラムと、区間 `[min_x, max_x]` におけるこれらの値の繰り返し率 `y` をプロットします。'
 'sidebar_label': 'sparkbar'
 'sidebar_position': 187
 'slug': '/sql-reference/aggregate-functions/reference/sparkbar'
 'title': 'sparkbar'
+'doc_type': 'reference'
 ---
-
-
 
 
 # sparkbar
 
-この関数は、値 `x` に対する頻度ヒストグラムと、これらの値の繰り返し率 `y` を、区間 `[min_x, max_x]` でプロットします。同じバケットに該当するすべての `x` の繰り返しは平均化されるため、データは事前に集約されている必要があります。負の繰り返しは無視されます。
+この関数は、値 `x` とその値の出現率 `y` の頻度ヒストグラムを、区間 `[min_x, max_x]` に対してプロットします。 同じバケットに入るすべての `x` の出現回数は平均されるため、データは事前に集約されている必要があります。 負の出現回数は無視されます。
 
-区間が指定されていない場合、最小の `x` が区間の開始として使用され、最大の `x` が区間の終了として使用されます。それ以外の場合、区間外の値は無視されます。
+区間が指定されていない場合、最小の `x` が区間の開始として使用され、最大の `x` が区間の終了として使用されます。 それ以外の場合、区間外の値は無視されます。
 
 **構文**
 
@@ -22,16 +20,16 @@
 sparkbar(buckets[, min_x, max_x])(x, y)
 ```
 
-**パラメータ**
+**パラメーター**
 
 - `buckets` — セグメントの数。タイプ: [Integer](../../../sql-reference/data-types/int-uint.md)。
-- `min_x` — 区間の開始。オプションのパラメータ。
-- `max_x` — 区間の終了。オプションのパラメータ。
+- `min_x` — 区間の開始。オプションのパラメーター。
+- `max_x` — 区間の終了。オプションのパラメーター。
 
 **引数**
 
-- `x` — 値を持つフィールド。
-- `y` — 値の頻度を持つフィールド。
+- `x` — 値を含むフィールド。
+- `y` — 値の頻度を含むフィールド。
 
 **返される値**
 
