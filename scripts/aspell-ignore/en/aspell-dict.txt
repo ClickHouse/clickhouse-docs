@@ -1,4 +1,4 @@
-personal_ws-1.1 en 3812
+personal_ws-1.1 en 3816
 AArch
 ACLs
 AICPA
@@ -216,6 +216,7 @@ ClickPipes
 ClickPipes's
 ClickPy
 ClickStack
+ClickStack's
 ClickVisual
 ClickableSquare
 CloudAvailableBadge
@@ -1256,6 +1257,7 @@ SerializationLowCardinality
 SerializationObject
 Serverless
 ServiceNow
+ServiceName
 ServiceNow's
 SetOperationMode
 SeverityText
@@ -1280,6 +1282,7 @@ Smirnov's
 Smirnov'test
 Sonatype
 Soundex
+SpanAttributes
 SpanKind
 Spearman's
 Splunk
@@ -1883,6 +1886,7 @@ clickhousedb
 clickhousex
 clickmate
 clickpipe
+clickstack
 clickstream
 clickvisual
 clockhour
@@ -2784,6 +2788,7 @@ nestjs
 netloc
 newjson
 nextset
+nginx
 ngram
 ngramDistance
 ngramDistanceCaseInsensitive
@@ -3811,3 +3816,13 @@ znode
 znodes
 zookeeperSessionUptime
 zstd
+OTELCOL
+elipses
+geolocation
+nginx's
+otel
+otelcol
+href
+useBaseUrl
+SpanName
+lucene
