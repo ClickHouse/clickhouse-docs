@@ -45,7 +45,7 @@ If you are wanting to back up tables from a single instance, consider following 
 in ["Migrating between self-managed ClickHouse and ClickHouse Cloud using remoteSecure"](/cloud/migration/clickhouse-to-cloud)
 :::
 
-## OSS preparation {#setup}
+## OSS preparation {#oss-setup}
 
 1. Clone the [examples repository](https://github.com/ClickHouse/examples) to your local machine
 2. From your terminal cd into `examples/docker-compose-recipes/recipes/cluster_2S_2R`
@@ -171,7 +171,7 @@ WHERE name = 'trips_small' AND database = 'nyc_taxi';
 You are now ready to proceed with setting up your Cloud service in preparation for later
 restoring a backup from your S3 bucket.
 
-## Cloud preparation
+## Cloud preparation {#cloud-setup}
 
 You will be restoring your data into a new Cloud service.
 Follow the steps below to create a new Cloud service.
@@ -228,7 +228,7 @@ Specifying both the user ARN and the ClickHouse Cloud access user role ensures
 that you will be able to both backup to the S3 bucket and later restore from it
 using the Cloud access role.
 
-## Taking the backup (On OSS)
+## Taking the backup (On OSS) {#taking-a-backup-on-oss}
 
 To make a backup of a single database, run the following command from clickhouse-client
 connected to your OSS deployment:
@@ -318,7 +318,7 @@ WHERE id = 'abc123-def456-789'
 It is also possible to take incremental backups.
 For more detail on backups in general, the reader is referred to the documentation for [backup and restore](/operations/backup).
 
-## Restore to ClickHouse Cloud
+## Restore to ClickHouse Cloud {#restore-to-clickhouse-cloud}
 
 To restore a single database run the following query from your Cloud service, substituting your AWS credentials below,
 setting `ROLE_ARN` equal to the value which you obtained as output of the steps detailed
