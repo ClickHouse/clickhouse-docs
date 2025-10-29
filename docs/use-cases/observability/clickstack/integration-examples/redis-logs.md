@@ -198,7 +198,7 @@ Download the sample log file and update timestamps to the current time:
 
 ```bash
 # Download the logs
-curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis-server.log
+curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-server.log
 
 # Update timestamps to current time while preserving traffic patterns
 python3 << 'EOF'
