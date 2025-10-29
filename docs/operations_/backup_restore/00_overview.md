@@ -17,7 +17,7 @@ in the sidebar.
 
 ## Introduction {#introduction}
 
-While [replication](../engines/table-engines/mergetree-family/replication.md) provides protection from hardware failures, it does not 
+While [replication](/engines/table-engines/mergetree-family/replication) provides protection from hardware failures, it does not 
 protect against human errors: accidental deletion of data, deletion of the wrong 
 table or a table on the wrong cluster, and software bugs that result in incorrect 
 data processing or data corruption. 
@@ -50,12 +50,12 @@ it on a spare ClickHouse cluster regularly.
 The following pages detail the various backup and 
 restore methods available in ClickHouse:
 
-| Page                                                             | Description                                               |
-|------------------------------------------------------------------|-----------------------------------------------------------|
-| [Backup/restore using local disk or S3 disk](./01_local_disk.md) | Details backup/restore to or from a local disk or S3 disk |
-| [Backup/restore using S3 endpoint](./02_s3_endpoint.md)          | Details backup/restore to or from an S3 endpoint          |
-| [Backup/restore using AzureBlobStorage](./03_s3_disk.md)       | Details backup/restore to or from Azure blob storage      |
-| [Alternative methods](./04_alternative_methods.md)               | Discusses alternative backup methods                      |        
+| Page                                                                | Description                                               |
+|---------------------------------------------------------------------|-----------------------------------------------------------|
+| [Backup/restore using local disk or S3 disk](./01_local_disk.md)    | Details backup/restore to or from a local disk or S3 disk |
+| [Backup/restore using S3 endpoint](./02_s3_endpoint.md)             | Details backup/restore to or from an S3 endpoint          |
+| [Backup/restore using AzureBlobStorage](./03_azure_blob_storage.md) | Details backup/restore to or from Azure blob storage      |
+| [Alternative methods](./04_alternative_methods.md)                  | Discusses alternative backup methods                      |        
 
 Backups can:
 - be [full or incremental](#backup-types)

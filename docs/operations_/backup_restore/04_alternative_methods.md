@@ -26,7 +26,7 @@ or a distributed filesystem like [HDFS](https://hadoop.apache.org/docs/stable/ha
 Some local filesystems provide snapshot functionality (for example, [ZFS](https://en.wikipedia.org/wiki/ZFS)), 
 but they might not be the best choice for serving live queries. A possible solution
 is to create additional replicas with this kind of filesystem and exclude them 
-from the [Distributed](../engines/table-engines/special/distributed.md) tables that are used for `SELECT` queries. 
+from the [Distributed](/engines/table-engines/special/distributed) tables that are used for `SELECT` queries. 
 Snapshots on such replicas will be out of reach of any queries that modify data.
 As a bonus, these replicas might have special hardware configurations with more 
 disks attached per server, which would be cost-effective.
