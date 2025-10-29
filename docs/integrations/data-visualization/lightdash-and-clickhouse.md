@@ -21,24 +21,26 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 import Image from '@theme/IdealImage';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Goal
+# Lightdash
+
+<PartnerBadge/>
+
+Lightdash is the **AI-first BI platform** built for modern data teams, combining the openness of dbt with the performance of ClickHouse. By connecting ClickHouse to Lightdash, teams get an **AI-powered self-serve analytics experience** grounded in their dbt semantic layer, so every question is answered with governed, consistent metrics.
+
+Developers love Lightdash for its open architecture, version-controlled YAML models, and integrations that fit directly into their workflow - from GitHub to the IDE.
+
+This partnership brings together **ClickHouse’s speed** and **Lightdash’s developer experience**, making it easier than ever to explore, visualize, and automate insights with AI.
+
+## Build an interactive dashboard with Lightdash and ClickHouse
 
 In this guide, you’ll see how **Lightdash** connects to **ClickHouse** to explore your dbt models and build interactive dashboards.  
 The example below shows a finished dashboard powered by data from ClickHouse.
 
-<Image size="lg" img={lightdash_02} alt="Lightdash dashboard example" border />
+<Image size="md" img={lightdash_02} alt="Lightdash dashboard example" border />
 
-# Connecting Lightdash to ClickHouse
+<VerticalStepper headerLevel="h3">
 
-<PartnerBadge/>
-
-Lightdash is the **AI-first BI platform** built for modern data teams, combining the openness of dbt with the performance of ClickHouse. By connecting ClickHouse to Lightdash, teams get an **AI-powered self-serve analytics experience** grounded in their dbt semantic layer, so every question is answered with governed, consistent metrics.  
-
-Developers love Lightdash for its open architecture, version-controlled YAML models, and integrations that fit directly into their workflow - from GitHub to the IDE.  
-This partnership brings together **ClickHouse’s speed** and **Lightdash’s developer experience**, making it easier than ever to explore, visualize, and automate insights with AI.
-
-
-## Connection data required {#connection-data-required}
+### Gather connection data {#connection-data-required}
 
 When setting up your connection between Lightdash and ClickHouse, you’ll need the following details:
 
@@ -56,7 +58,7 @@ When setting up your connection between Lightdash and ClickHouse, you’ll need 
 
 ---
 
-## Configuring your dbt profile for ClickHouse {#configuring-your-dbt-profile-for-clickhouse}
+### Configure your dbt profile for ClickHouse {#configuring-your-dbt-profile-for-clickhouse}
 
 In Lightdash, connections are based on your existing **dbt project**.  
 To connect ClickHouse, make sure your local `~/.dbt/profiles.yml` file contains a valid ClickHouse target configuration.
@@ -66,18 +68,19 @@ For example:
 <Image size="md" img={lightdash_01} alt="Example profiles.yml configuration for a lightdash-clickhouse project" border />
 <br/>
 
-## Creating a Lightdash project connected to ClickHouse {#creating-a-lightdash-project-connected-to-clickhouse}
+### Create a Lightdash project connected to ClickHouse {#creating-a-lightdash-project-connected-to-clickhouse}
 
 Once your dbt profile is configured for ClickHouse, you’ll also need to connect your **dbt project** to Lightdash.
 
-Because this process is the same for all data warehouses, we won’t go into detail here — you can follow the official Lightdash guide for importing a dbt project:  
+Because this process is the same for all data warehouses, we won’t go into detail here — you can follow the official Lightdash guide for importing a dbt project:
+
 [Import a dbt project → Lightdash Docs](https://docs.lightdash.com/get-started/setup-lightdash/connect-project#2-import-a-dbt-project?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs)
 
 After connecting your dbt project, Lightdash will automatically detect your ClickHouse configuration from the `profiles.yml` file. Once the connection test succeeds, you’ll be able to start exploring your dbt models and building dashboards powered by ClickHouse.
 
 ---
 
-## Exploring your ClickHouse data in Lightdash {#exploring-your-clickhouse-data-in-lightdash}
+### Explore your ClickHouse data in Lightdash {#exploring-your-clickhouse-data-in-lightdash}
 
 Once connected, Lightdash automatically syncs your dbt models and exposes:
 
@@ -89,7 +92,7 @@ You can now build dashboards, share insights, and even use **Ask AI** to generat
 
 ---
 
-## Defining metrics and dimensions in Lightdash {#defining-metrics-and-dimensions-in-lightdash}
+### Define metrics and dimensions in Lightdash {#defining-metrics-and-dimensions-in-lightdash}
 
 In Lightdash, all **metrics** and **dimensions** are defined directly in your dbt model `.yml` files. This makes your business logic version-controlled, consistent, and fully transparent.
 
@@ -98,21 +101,16 @@ In Lightdash, all **metrics** and **dimensions** are defined directly in your db
 
 Defining these in YAML ensures your team is using the same definitions across dashboards and analyses. For example, you can create reusable metrics like `total_order_count`, `total_revenue`, or `avg_order_value` right next to your dbt models — no duplication required in the UI.
 
-To learn more about how to define these, see the Lightdash guides:  
+To learn more about how to define these, see the following Lightdash guides:  
 - [How to create metrics](https://docs.lightdash.com/guides/how-to-create-metrics?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs)  
 - [How to create dimensions](https://docs.lightdash.com/guides/how-to-create-dimensions?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs)
 
 ---
 
-## Querying your data from tables {#querying-your-data-from-tables}
+### Query your data from tables {#querying-your-data-from-tables}
 
 Once your dbt project is connected and synced with Lightdash, you can start exploring data directly from your **tables** (or “explores”).  
 Each table represents a dbt model and includes the metrics and dimensions you’ve defined in YAML.
-
-## Querying your data from tables {#querying-your-data-from-tables}
-
-Once your dbt project is connected and synced with Lightdash, you can start exploring data directly from your **tables** (also called “explores”).  
-Each explore represents a dbt model and includes the metrics and dimensions you’ve defined in YAML.
 
 The **Explore** page is made up of five main areas:
 
@@ -131,7 +129,7 @@ For a deeper look at explores and how to query from your tables, see:
 
 ---
 
-## Building dashboards {#building-dashboards}
+### Build dashboards {#building-dashboards}
 
 Once you’ve explored your data and saved visualizations, you can combine them into **dashboards** to share with your team.
 
@@ -152,7 +150,7 @@ Learn more about how to create and organize dashboards here:
 
 ---
 
-## Ask AI: self-serve analytics powered by dbt {#ask-ai}
+### Ask AI: self-serve analytics powered by dbt {#ask-ai}
 
 Lightdash’s **AI Agents** make data exploration truly self-serve.  
 Instead of writing queries, users can simply ask questions in plain language — like *“What was our monthly revenue growth?”* — and the AI Agent automatically generates the right visualization, referencing your dbt-defined metrics and models to ensure accuracy and consistency.
@@ -161,10 +159,11 @@ It’s powered by the same semantic layer you use in dbt, meaning every answer s
 
 <Image size="lg" img={lightdash_06} alt="Lightdash Ask AI interface showing natural language query powered by dbt metrics" border />
 
-Learn more about AI Agents here:  
-[AI Agents → Lightdash Docs](https://docs.lightdash.com/guides/ai-agents?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs)
+:::tip
+Learn more about AI Agents here: [AI Agents → Lightdash Docs](https://docs.lightdash.com/guides/ai-agents?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs)
+:::
+</VerticalStepper>
 
-
-## Learn more
+## Learn more {#learn-more}
 
 To learn more about connecting dbt projects to Lightdash, visit the [Lightdash Docs → ClickHouse setup](https://docs.lightdash.com/get-started/setup-lightdash/connect-project#clickhouse?utm_source=clickhouse&utm_medium=partner&utm_campaign=integration_docs).
