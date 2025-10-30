@@ -27,7 +27,7 @@ This feature is in ClickHouse Cloud private preview. If your org is interested i
 <TrackedLink href="https://clickhouse.com/cloud/clickstack-private-preview" eventName="docs.clickstack_deployment.waitlist_cta">join the waitlist</TrackedLink>.
 
 If you're new to ClickHouse Cloud, click
-<TrackedLink href="/docs/cloud/overview" eventName="clickstack.deployment.cloud_learn_more.cta">here</TrackedLink>  to learn more or <TrackedLink href="https://clickhouse.cloud/signUp" eventName="docs.clickstack_deployment.cloud_signup_cta" target="_blank" rel="noopener noreferrer">sign up for a free trial</TrackedLink> to get started.
+<TrackedLink href="/docs/cloud/overview" eventName="docs.clickstack_deployment.cloud_learn_more_cta">here</TrackedLink>  to learn more or <TrackedLink href="https://clickhouse.cloud/signUp" eventName="docs.clickstack_deployment.cloud_signup_cta" target="_blank" rel="noopener noreferrer">sign up for a free trial</TrackedLink> to get started.
 ::::
 
 This option is designed for users who are using ClickHouse Cloud. In this deployment pattern, both ClickHouse and HyperDX are hosted in ClickHouse Cloud, minimizing the number of components the user needs to self-host.
