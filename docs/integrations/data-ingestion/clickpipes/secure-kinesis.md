@@ -49,7 +49,7 @@ Using this approach, customers can manage all access to their Kinesis data strea
 - 2. Browse to IAM Service Console
 - 3. Create a new IAM role with Trusted Entity Type of `AWS account`. Note that the name of the IAM role **must start with** `ClickHouseAccessRole-` for this to work.
 
-   #### i. Configure the Trust Policy {#configure-trust-policy}
+   **i. Configure the Trust Policy**
 
    The trust policy allows the ClickHouse IAM role to assume this role. Replace `{ClickHouse_IAM_ARN}` with the IAM Role ARN from your ClickHouse service (obtained in the previous step).
 
@@ -68,7 +68,7 @@ Using this approach, customers can manage all access to their Kinesis data strea
    }
    ```
 
-   #### ii. Configure the Permission Policy {#configure-permission-policy}
+   **ii. Configure the Permission Policy**
 
    The permission policy grants access to your Kinesis stream. Replace the following placeholders:
   - `{REGION}`: Your AWS region (e.g., `us-east-1`)
