@@ -3528,7 +3528,7 @@
     },
     {
       "source": "/docs/cloud/security/secure-s3",
-      "destination": "/cloud/data-sources/secure-s3",
+      "destination": "/docs/cloud/data-sources/secure-s3",
       "permanent": true
     },
     {
@@ -3562,8 +3562,6 @@
       "permanent": true
     },
     {
-      "source": "/docs/cloud/security/secure-s3",
-      "destination": "/docs/cloud/data-sources/secure-s3",
       "source": "/docs/operations/system-tables/crash-log",
       "destination": "/docs/operations/system-tables/crash_log",
       "permanent": true
