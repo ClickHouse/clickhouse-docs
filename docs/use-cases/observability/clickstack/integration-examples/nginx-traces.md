@@ -6,6 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Monitoring Nginx Traces with ClickStack'
 doc_type: 'guide'
+keywords: ['ClickStack', 'nginx', 'traces', 'otel']
 ---
 
 import Image from '@theme/IdealImage';
@@ -131,7 +132,7 @@ Replace `<clickstack-host>` with your ClickStack instance hostname or IP address
 - Change **otel_service_name** to match your environment for easier identification in HyperDX
 :::
 
-### Understanding the Configuration {#understanding-configuration}
+### Understanding the configuration {#understanding-configuration}
 
 **What gets traced:**
 Each request to nginx creates a trace span showing:
@@ -307,7 +308,7 @@ Look for OpenTelemetry-related errors.
 tail -f /var/log/nginx/access.log
 ```
 
-## Next Steps {#next-steps}
+## Next steps {#next-steps}
 If you want to explore further, here are some next steps to experiment with your dashboard
 
 - Set up alerts for critical metrics (error rates, latency thresholds)
