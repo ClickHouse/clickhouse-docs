@@ -26,8 +26,6 @@ To avoid that too many parts accumulate, ClickHouse runs a [merge](/merges) oper
 
 This approach has several advantages: All data processing can be [offloaded to background part merges](/concepts/why-clickhouse-is-so-fast#storage-layer-merge-time-computation), keeping data writes lightweight and highly efficient. Individual inserts are "local" in the sense that they do not need to update global, i.e. per-table data structures. As a result, multiple simultaneous inserts need no mutual synchronization or synchronization with existing table data, and thus inserts can be performed almost at the speed of disk I/O.
 
- the holistic performance optimization section of the VLDB paper.
-
 🤿 Deep dive into this in the [On-Disk Format](/docs/academic_overview#3-1-on-disk-format) section of the web version of our VLDB 2024 paper.
 
 ## Storage layer: concurrent inserts and selects are isolated {#storage-layer-concurrent-inserts-and-selects-are-isolated}
