@@ -550,6 +550,7 @@ const sidebars = {
             "interfaces/third-party/client-libraries",
           ],
         },
+        "integrations/language-clients/fortran"
       ],
     },
     {
