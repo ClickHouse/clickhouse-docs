@@ -254,7 +254,7 @@ To help you get started monitoring traces with ClickStack, we provide essential 
 
 ## <a href={useBaseUrl('/examples/example-traces.json')} download="example-traces.json">Download</a> the dashboard configuration. {#download}
 
-## Import Pre-built Dashboard {#import-dashboard}
+## Import the pre-built dashboard {#import-dashboard}
 1. Open HyperDX and navigate to the Dashboards section.
 2. Click "Import Dashboard" in the upper right corner under the ellipses.
 
