@@ -71,7 +71,7 @@ Refer to [Databrain's IP whitelisting documentation](https://docs.usedatabrain.c
 
 5. Fill in the connection details:
    - **Destination Name**: Enter a descriptive name for this connection (e.g., "Production ClickHouse" or "Analytics DB")
-   - **Host**: Enter your ClickHouse host URL (e.g., `https://ru7b3vwqoe.eu-west-1.aws.clickhouse.cloud`)
+   - **Host**: Enter your ClickHouse host URL (e.g., `https://your-instance.region.aws.clickhouse.cloud`)
    - **Port**: Enter `8443` (default HTTPS port for ClickHouse)
    - **Username**: Enter your ClickHouse username
    - **Password**: Enter your ClickHouse password
