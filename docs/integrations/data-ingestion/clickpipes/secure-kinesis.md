@@ -116,4 +116,3 @@ Using this approach, customers can manage all access to their Kinesis data strea
    ```
 
 - 4. Copy the new **IAM Role Arn** after creation. This is what is needed to access your Kinesis stream.
-</VerticalStepper>
