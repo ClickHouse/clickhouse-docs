@@ -56,9 +56,9 @@ image: nginx:1.27-otel
 
 This image includes the `ngx_otel_module.so` pre-installed and ready to use.
 
-::::note
+:::note
 If you're running nginx outside of Docker, refer to the [OpenTelemetry nginx documentation](https://github.com/open-telemetry/opentelemetry-cpp-contrib/tree/main/instrumentation/nginx) for manual installation instructions.
-::::
+:::
 
 ## Configure nginx to send traces to ClickStack {#configure-nginx}
 
