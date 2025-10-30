@@ -162,7 +162,7 @@ Notice that the second string returned is the user agent successfully parsed fro
 
 Before looking at the final `CREATE MATERIALIZED VIEW` command, let's view a couple more functions used to clean up the data.
 For example, the value of `RequestMethod` is `"GET` containing an unwanted double-quote.
-You can use the [`trim`](/sql-reference/functions/string-functions#trim) function to remove the double quote:
+You can use the [`trimBoth` (alias `trim`)](/sql-reference/functions/string-functions#trimBoth) function to remove the double quote:
 
 ```sql
 SELECT trim(LEADING '"' FROM '"GET')
