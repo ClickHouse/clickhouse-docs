@@ -210,7 +210,7 @@
   @media (min-width: 768px) {
     flex-direction: row;
     padding-top: 2rem;
-    padding-bottom: 2rem;
+    padding-bottom: 2.5rem;
     padding-right: 2rem;
     justify-content: space-between;
   }
@@ -229,6 +229,15 @@
     flex: 1;
     justify-content: right;
   }
+}
+
+.docs-doc-id-home-page .home-page-section-search p + .home-page-hero-right-search {
+  margin-top: 0 !important;
+}
+
+/* Also target the SearchBar wrapper directly */
+.docs-doc-id-home-page .home-page-hero-right-search {
+  margin-top: 0 !important;
 }
 
 .home-page-section:last-of-type {
