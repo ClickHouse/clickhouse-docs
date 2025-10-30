@@ -17,7 +17,7 @@ import view_traces from '@site/static/images/clickstack/nginx-traces-search-view
 
 # Monitoring Nginx Traces with ClickStack {#nginx-traces-clickstack}
 
-::::note[TL;DR]
+:::note[TL;DR]
 This guide shows you how to capture distributed traces from your existing nginx installation and visualize them in ClickStack. You'll learn how to:
 
 - Add the OpenTelemetry module to nginx
@@ -26,7 +26,7 @@ This guide shows you how to capture distributed traces from your existing nginx 
 - Use a pre-built dashboard to visualize request performance (latency, errors, throughput)
 
 Time Required: 5-10 minutes.
-::::
+:::
 
 ## Prerequisites {#prerequisites}
 - ClickStack instance running with OTLP endpoints accessible (ports 4317/4318)
@@ -55,9 +55,9 @@ image: nginx:1.27-otel
 
 This image includes the `ngx_otel_module.so` pre-installed and ready to use.
 
-::::note
+:::note
 If you're running nginx outside of Docker, refer to the [OpenTelemetry nginx documentation](https://github.com/open-telemetry/opentelemetry-cpp-contrib/tree/main/instrumentation/nginx) for manual installation instructions.
-::::
+:::
 
 ## Configure nginx to send traces to ClickStack {#configure-nginx}
 
@@ -125,11 +125,11 @@ services:
 
 Replace `<clickstack-host>` with your ClickStack instance hostname or IP address.
 
-::::note
+:::note
 - **Port 4317** is the gRPC endpoint used by the nginx module
 - **otel_service_name** should be descriptive of your nginx instance (e.g., "api-gateway", "frontend-proxy")
 - Change **otel_service_name** to match your environment for easier identification in HyperDX
-::::
+:::
 
 ### Understanding the Configuration {#understanding-configuration}
 
@@ -225,9 +225,9 @@ curl -X POST http://localhost:4318/v1/traces \
   -d @nginx-traces-sample.json
 ```
 
-::::note[Running on localhost]
+:::note[Running on localhost]
 This demo assumes ClickStack is running locally on `localhost:4318`. For remote instances, replace `localhost` with your ClickStack hostname.
-::::
+:::
 
 You should see a response like `{"partialSuccess":{}}` indicating the traces were successfully sent. All 1,000 traces will be ingested into ClickStack.
 
@@ -235,9 +235,9 @@ You should see a response like `{"partialSuccess":{}}` indicating the traces wer
 
 1. Open [HyperDX](http://localhost:8080/search?from=1761501600000&to=1761588000000&isLive=false&source=69023d1b4f1d41a964641b09&where=&select=Timestamp,ServiceName,StatusCode,round(Duration/1e6),SpanName&whereLanguage=lucene&orderBy=&filters=[])
 
-::::note
+:::note
 It is important to use the link above to get the correct time range, if you don't use this link set your time range to Oct 26 13:00:00 - Oct 27 13:00:00 to see proper results.
-::::
+:::
 
 Here's what you should see in your search view:
 
