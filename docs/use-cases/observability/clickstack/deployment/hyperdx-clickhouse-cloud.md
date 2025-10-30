@@ -24,9 +24,9 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 ::::note[Private Preview]
 This feature is in ClickHouse Cloud private preview. If your org is interested in getting priority access,
-<TrackedLink href="https://clickhouse.com/cloud/clickstack-private-preview" eventName="clickstack.deployment.waitlist.cta">join the waitlist</TrackedLink>.
+<TrackedLink href="https://clickhouse.com/cloud/clickstack-private-preview" eventName="docs.clickstack_deployment.waitlist_cta">join the waitlist</TrackedLink>.
 
-If you're new to ClickHouse Cloud click
+If you're new to ClickHouse Cloud, click
 <TrackedLink href="/docs/cloud/overview" eventName="clickstack.deployment.cloud_learn_more.cta">here</TrackedLink>  to learn more or <TrackedLink href="https://clickhouse.cloud/signUp" eventName="docs.clickstack_deployment.cloud_signup_cta" target="_blank" rel="noopener noreferrer">sign up for a free trial</TrackedLink> to get started.
 ::::
 
