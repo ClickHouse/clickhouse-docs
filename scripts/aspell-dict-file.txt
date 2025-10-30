@@ -1181,3 +1181,5 @@ testchbackups
 --docs/integrations/data-ingestion/data-ingestion-index.md--
 DataStream
 Flink's
+--docs/integrations/data-visualization/lightdash-and-clickhouse.md--
+Lightdash’s

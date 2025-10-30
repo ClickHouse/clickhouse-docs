@@ -4,13 +4,14 @@ import Image from '@theme/IdealImage';
 
 To connect to ClickHouse with native TCP you need this information:
 
-- The HOST and PORT: typically, the port is 9440 when using TLS, or 9000 when not using TLS.
+| Parameter(s)              | Description                                                                                                   |
+|---------------------------|---------------------------------------------------------------------------------------------------------------|
+| `HOST` and `PORT`         | Typically, the port is 9440 when using TLS, or 9000 when not using TLS.                                       |
+| `DATABASE NAME`           | Out of the box there is a database named `default`, use the name of the database that you want to connect to. |
+| `USERNAME` and `PASSWORD` | Out of the box the username is `default`. Use the username appropriate for your use case.                     |
 
-- The DATABASE NAME: out of the box there is a database named `default`, use the name of the database that you want to connect to.
-
-- The USERNAME and PASSWORD: out of the box the username is `default`. Use the username appropriate for your use case.
-
-The details for your ClickHouse Cloud service are available in the ClickHouse Cloud console.  Select the service that you will connect to and click **Connect**:
+The details for your ClickHouse Cloud service are available in the ClickHouse Cloud console.
+Select the service that you will connect to and click **Connect**:
 
 <Image img={cloud_connect_button} size="md" alt="ClickHouse Cloud service connect button" border/>
 

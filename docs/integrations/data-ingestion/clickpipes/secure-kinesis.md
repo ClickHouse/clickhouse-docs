@@ -49,50 +49,70 @@ Using this approach, customers can manage all access to their Kinesis data strea
 - 2. Browse to IAM Service Console
 - 3. Create a new IAM role with Trusted Entity Type of `AWS account`. Note that the name of the IAM role **must start with** `ClickHouseAccessRole-` for this to work.
 
-For the trust policy, please replace `{ClickHouse_IAM_ARN}` with the IAM Role arn belong to your ClickHouse instance.
-For the IAM policy, please replace `{STREAM_NAME}` with your Kinesis stream name.
+   **i. Configure the Trust Policy**
 
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "Statement1",
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "{ClickHouse_IAM_ARN}"
-      },
-      "Action": "sts:AssumeRole"
-    },
-    {
-      "Action": [
-        "kinesis:DescribeStream",
-        "kinesis:GetShardIterator",
-        "kinesis:GetRecords",
-        "kinesis:ListShards",
-        "kinesis:SubscribeToShard",
-        "kinesis:DescribeStreamConsumer",
-        "kinesis:RegisterStreamConsumer",
-        "kinesis:DeregisterStreamConsumer",
-        "kinesis:ListStreamConsumers"
-      ],
-      "Resource": [
-        "arn:aws:kinesis:region:account-id:stream/{STREAM_NAME}/*"
-      ],
-      "Effect": "Allow"
-    },
-    {
-      "Action": [
-        "kinesis:ListStreams"
-      ],
-      "Resource": "*",
-      "Effect": "Allow"
-    }
-  ]
-}
+   The trust policy allows the ClickHouse IAM role to assume this role. Replace `{ClickHouse_IAM_ARN}` with the IAM Role ARN from your ClickHouse service (obtained in the previous step).
 
-</VerticalStepper>
+   ```json
+   {
+     "Version": "2012-10-17",
+     "Statement": [
+       {
+         "Effect": "Allow",
+         "Principal": {
+           "AWS": "{ClickHouse_IAM_ARN}"
+         },
+         "Action": "sts:AssumeRole"
+       }
+     ]
+   }
+   ```
 
-```
+   **ii. Configure the Permission Policy**
+
+   The permission policy grants access to your Kinesis stream. Replace the following placeholders:
+  - `{REGION}`: Your AWS region (e.g., `us-east-1`)
+  - `{ACCOUNT_ID}`: Your AWS account ID
+  - `{STREAM_NAME}`: Your Kinesis stream name
+
+   ```json
+   {
+     "Version": "2012-10-17",
+     "Statement": [
+       {
+         "Effect": "Allow",
+         "Action": [
+           "kinesis:DescribeStream",
+           "kinesis:GetShardIterator",
+           "kinesis:GetRecords",
+           "kinesis:ListShards",
+           "kinesis:RegisterStreamConsumer",
+           "kinesis:DeregisterStreamConsumer",
+           "kinesis:ListStreamConsumers"
+         ],
+         "Resource": [
+           "arn:aws:kinesis:{REGION}:{ACCOUNT_ID}:stream/{STREAM_NAME}"
+         ]
+       },
+       {
+         "Effect": "Allow",
+         "Action": [
+           "kinesis:SubscribeToShard",
+           "kinesis:DescribeStreamConsumer"
+         ],
+         "Resource": [
+           "arn:aws:kinesis:{REGION}:{ACCOUNT_ID}:stream/{STREAM_NAME}/*"
+         ]
+       },
+       {
+         "Effect": "Allow",
+         "Action": [
+           "kinesis:ListStreams"
+         ],
+         "Resource": "*"
+       }
+     ]
+   }
+   ```
 
 - 4. Copy the new **IAM Role Arn** after creation. This is what is needed to access your Kinesis stream.
