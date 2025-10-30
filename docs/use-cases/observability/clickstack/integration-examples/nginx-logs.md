@@ -18,7 +18,7 @@ import search_view from '@site/static/images/clickstack/nginx-logs-search-view.p
 
 # Monitoring Nginx Logs with ClickStack {#nginx-clickstack}
 
-::::note[TL;DR]
+:::note[TL;DR]
 This guide shows you how to monitor nginx with ClickStack by configuring the OpenTelemetry collector to ingest nginx access logs. You'll learn how to:
 
 - Configure nginx to output JSON-formatted logs
@@ -117,12 +117,12 @@ This configuration:
 - Adds source: nginx attribute for filtering in HyperDX
 - Routes logs to the ClickHouse exporter via a dedicated pipeline
 
-::::note
+:::note
 - You only define new receivers and pipelines in the custom config
 - The processors (memory_limiter, transform, batch) and exporters (clickhouse) are already defined in the base ClickStack configuration - you just reference them by name
 - The time_parser operator extracts timestamps from nginx's time_local field to preserve original log timing
 - The pipelines route data from your receivers to the ClickHouse exporter via the existing processors
-::::
+:::
 
 ## Configure ClickStack to load custom configuration {#load-custom}
 
@@ -160,9 +160,9 @@ docker run --name clickstack \
   docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
 ```
 
-::::note
+:::note
 Ensure the ClickStack collector has appropriate permissions to read the nginx log files. In production, use read-only mounts (:ro) and follow the principle of least privilege.
-::::
+:::
 
 ## Verifying Logs in ClickStack {#verifying-logs}
 Once configured, log into HyperDX and verify logs are flowing:
@@ -260,10 +260,6 @@ Here's what you should see in your search view:
 If you don't see logs, ensure the time range is set to 2025-10-20 11:00:00 - 2025-10-21 11:00:00 and 'Logs' is selected as the source. Using the link is important to get the proper time range of results.
 :::
 
-:::note
-If you don't see logs, ensure the time range is set to 2025-10-20 11:00:00 - 2025-10-21 11:00:00 and 'Logs' is selected as the source. Using the link is important to get the proper time range of results.
-:::
-
 <Image img={search_view} alt="Log view"/>
 
 <Image img={log_view} alt="Log view"/>
@@ -277,7 +273,7 @@ To help you get started monitoring nginx with ClickStack, we provide essential v
 <VerticalStepper>
 ## <a href={useBaseUrl('/examples/example-logs-dashboard.json')} download="nginx-logs-dashboard.json">Download</a> the dashboard configuration.
 
-## Import Pre-built Dashboard {#import-dashboard}
+## Import the pre-built dashboard {#import-dashboard}
 1. Open HyperDX and navigate to the Dashboards section.
 2. Click "Import Dashboard" in the upper right corner under the ellipses.
 
@@ -336,7 +332,7 @@ docker exec `<container>` cat /etc/otel/supervisor-data/effective.yaml | grep fi
 docker exec `<container>` cat /etc/otel/supervisor-data/agent.log
 ```
 
-## Next Steps {#next-steps}
+## Next steps {#next-steps}
 If you want to explore further, here are some next steps to experiment with your dashboard
 
 - Set up alerts for critical metrics (error rates, latency thresholds)

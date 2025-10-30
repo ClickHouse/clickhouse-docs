@@ -6,6 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Monitoring Nginx Traces with ClickStack'
 doc_type: 'guide'
+keywords: ['ClickStack', 'nginx', 'traces', 'otel']
 ---
 
 import Image from '@theme/IdealImage';
@@ -17,7 +18,7 @@ import view_traces from '@site/static/images/clickstack/nginx-traces-search-view
 
 # Monitoring Nginx Traces with ClickStack {#nginx-traces-clickstack}
 
-::::note[TL;DR]
+:::note[TL;DR]
 This guide shows you how to capture distributed traces from your existing nginx installation and visualize them in ClickStack. You'll learn how to:
 
 - Add the OpenTelemetry module to nginx
@@ -126,13 +127,13 @@ services:
 
 Replace `<clickstack-host>` with your ClickStack instance hostname or IP address.
 
-::::note
+:::note
 - **Port 4317** is the gRPC endpoint used by the nginx module
 - **otel_service_name** should be descriptive of your nginx instance (e.g., "api-gateway", "frontend-proxy")
 - Change **otel_service_name** to match your environment for easier identification in HyperDX
-::::
+:::
 
-### Understanding the Configuration {#understanding-configuration}
+### Understanding the configuration {#understanding-configuration}
 
 **What gets traced:**
 Each request to nginx creates a trace span showing:
@@ -226,9 +227,9 @@ curl -X POST http://localhost:4318/v1/traces \
   -d @nginx-traces-sample.json
 ```
 
-::::note[Running on localhost]
+:::note[Running on localhost]
 This demo assumes ClickStack is running locally on `localhost:4318`. For remote instances, replace `localhost` with your ClickStack hostname.
-::::
+:::
 
 You should see a response like `{"partialSuccess":{}}` indicating the traces were successfully sent. All 1,000 traces will be ingested into ClickStack.
 
@@ -254,7 +255,7 @@ To help you get started monitoring traces with ClickStack, we provide essential 
 
 ## <a href={useBaseUrl('/examples/example-traces.json')} download="example-traces.json">Download</a> the dashboard configuration. {#download}
 
-## Import Pre-built Dashboard {#import-dashboard}
+## Import the pre-built dashboard {#import-dashboard}
 1. Open HyperDX and navigate to the Dashboards section.
 2. Click "Import Dashboard" in the upper right corner under the ellipses.
 
@@ -308,7 +309,7 @@ Look for OpenTelemetry-related errors.
 tail -f /var/log/nginx/access.log
 ```
 
-## Next Steps {#next-steps}
+## Next steps {#next-steps}
 If you want to explore further, here are some next steps to experiment with your dashboard
 
 - Set up alerts for critical metrics (error rates, latency thresholds)

@@ -16,10 +16,13 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 [Google Dataflow](https://cloud.google.com/dataflow) is a fully managed stream and batch data processing service. It supports pipelines written in Java or Python and is built on the Apache Beam SDK.
 
-There are two main ways to use Google Dataflow with ClickHouse, both are leveraging [`ClickHouseIO Apache Beam connector`](/integrations/apache-beam):
+There are two main ways to use Google Dataflow with ClickHouse, both of which leverage [`ClickHouseIO Apache Beam connector`](/integrations/apache-beam).
+These are:
+- [Java runner](#1-java-runner)
+- [Predefined templates](#2-predefined-templates)
 
-## 1. Java runner {#1-java-runner}
-The [Java Runner](./java-runner) allows users to implement custom Dataflow pipelines using the Apache Beam SDK `ClickHouseIO` integration. This approach provides full flexibility and control over the pipeline logic, enabling users to tailor the ETL process to specific requirements.
+## Java runner {#1-java-runner}
+The [Java runner](./java-runner) allows users to implement custom Dataflow pipelines using the Apache Beam SDK `ClickHouseIO` integration. This approach provides full flexibility and control over the pipeline logic, enabling users to tailor the ETL process to specific requirements.
 However, this option requires knowledge of Java programming and familiarity with the Apache Beam framework.
 
 ### Key features {#key-features}
@@ -27,7 +30,7 @@ However, this option requires knowledge of Java programming and familiarity with
 - Ideal for complex or advanced use cases.
 - Requires coding and understanding of the Beam API.
 
-## 2. Predefined templates {#2-predefined-templates}
+## Predefined templates {#2-predefined-templates}
 ClickHouse offers [predefined templates](./templates) designed for specific use cases, such as importing data from BigQuery into ClickHouse. These templates are ready-to-use and simplify the integration process, making them an excellent choice for users who prefer a no-code solution.
 
 ### Key features {#key-features-1}
