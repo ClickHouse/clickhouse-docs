@@ -274,7 +274,7 @@ To help you get started monitoring nginx with ClickStack, we provide essential v
 <VerticalStepper>
 ## <a href={useBaseUrl('/examples/example-logs-dashboard.json')} download="nginx-logs-dashboard.json">Download</a> the dashboard configuration.
 
-## Import Pre-built Dashboard {#import-dashboard}
+## Import the pre-built dashboard {#import-dashboard}
 1. Open HyperDX and navigate to the Dashboards section.
 2. Click "Import Dashboard" in the upper right corner under the ellipses.
 
@@ -333,7 +333,7 @@ docker exec `<container>` cat /etc/otel/supervisor-data/effective.yaml | grep fi
 docker exec `<container>` cat /etc/otel/supervisor-data/agent.log
 ```
 
-## Next Steps {#next-steps}
+## Next steps {#next-steps}
 If you want to explore further, here are some next steps to experiment with your dashboard
 
 - Set up alerts for critical metrics (error rates, latency thresholds)
