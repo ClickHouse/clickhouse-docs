@@ -124,6 +124,7 @@ credit card on file for the organization, if any.
 In either scenario, if we are unable to charge the configured credit card, the 
 unpaid invoice restrictions outlined above for [Pay-as-you-go (PAYG)](#direct-payg)
 billing with a credit card will apply—this includes the suspension of services. 
+For more details on moving from your committed contract to PAYG billing, please refer to the “Overconsumption” section in our [Terms and Conditions](https://clickhouse.com/legal/agreements/terms-of-service).
 However, for committed contract customers, we will contact you regarding any 
 unpaid invoices before initiating data deletion. Data is not automatically 
 deleted after any period of time.
